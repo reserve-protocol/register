@@ -1,5 +1,6 @@
 import CommandMenu from '@/components/command-menu'
 import DarkModeToggle from '@/components/dark-mode-toggle'
+import { ContactBellButton } from '@/components/layout/contact-modal'
 import { cn } from '@/lib/utils'
 import Account from 'components/account'
 import { ReactNode } from 'react'
@@ -31,6 +32,7 @@ const AppHeader = () => (
     <div className="container flex items-center h-[56px] md:h-[72px] px-4 sm:px-6">
       <Brand className="text-primary mr-2 sm:mr-4 cursor-pointer md:-mt-1" />
       <AppNavigation />
+      <ContactBellButton />
       <CommandMenu />
       <div className="flex ml-1 items-center">
         <DarkModeToggle className="flex px-2 mr-2 sm:mr-3 py-[3px] max-w-8 rounded-md ml-auto cursor-pointer hover:bg-muted" />
