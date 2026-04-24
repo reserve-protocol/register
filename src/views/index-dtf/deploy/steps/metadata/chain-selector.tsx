@@ -55,7 +55,9 @@ const ChainSelector = () => {
   const readonlySteps = useAtomValue(readonlyStepsAtom)
   const chains =
     readonlySteps.size > 0
-      ? SUPPORTED_CHAINS.filter((c) => c === ChainId.Base)
+      ? SUPPORTED_CHAINS.filter(
+          (c) => c === ChainId.Base || c === ChainId.Mainnet
+        )
       : SUPPORTED_CHAINS
 
   const handleChainChange = (newChain: AvailableChain) => {
