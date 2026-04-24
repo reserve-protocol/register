@@ -8,7 +8,7 @@ import { t, Trans } from '@lingui/macro'
 import Governance from 'abis/Governance'
 import { Modal } from 'components'
 import useContractWrite from 'hooks/useContractWrite'
-import { useAtomValue } from 'jotai'
+import { useAtomValue, useSetAtom } from 'jotai'
 import {
   CheckCircle,
   ExternalLink,
@@ -16,8 +16,8 @@ import {
   ThumbsDown,
   ThumbsUp,
 } from 'lucide-react'
-import { useEffect, useState } from 'react'
-import { chainIdAtom } from 'state/atoms'
+import { useEffect, useRef, useState } from 'react'
+import { chainIdAtom, walletAtom } from 'state/atoms'
 import { getProposalTitle } from 'utils'
 import {
   ETHERSCAN_NAMES,
@@ -25,8 +25,8 @@ import {
   getExplorerLink,
 } from 'utils/getExplorerLink'
 import EnsName from '@/components/utils/ens-name'
-import { proposalDetailAtom } from '../atom'
-import { proposalRefreshFnAtom } from '../updater'
+import { accountVotesAtom, proposalDetailAtom } from '../atom'
+import { optimisticVoteActionAtom } from '../optimistic-actions'
 
 export const VOTE_TYPE = {
   AGAINST: 0,
@@ -39,8 +39,11 @@ const VoteModal = (props: ModalProps) => {
   const chainId = useAtomValue(chainIdAtom)
   const [vote, setVote] = useState(-1)
   const proposal = useAtomValue(proposalDetailAtom)
+  const account = useAtomValue(walletAtom)
+  const voterRef = useRef<string | null>(null)
+  const accountVotes = useAtomValue(accountVotesAtom)
+  const optimisticVote = useSetAtom(optimisticVoteActionAtom)
   const isValid = proposal?.id && vote !== -1
-  const refreshFn = useAtomValue(proposalRefreshFnAtom)
 
   const { hash, isLoading, isReady, write } = useContractWrite(
     isValid
@@ -65,8 +68,12 @@ const VoteModal = (props: ModalProps) => {
   })
 
   useEffect(() => {
-    if (status === 'success') {
-      refreshFn?.()
+    if (status === 'success' && voterRef.current && accountVotes.votePower) {
+      optimisticVote({
+        voteType: vote,
+        votePower: accountVotes.votePower,
+        voter: voterRef.current,
+      })
     }
   }, [status])
 
@@ -149,7 +156,10 @@ const VoteModal = (props: ModalProps) => {
         text={t`Vote`}
         loadingText={isMining ? t`Confirming...` : undefined}
         className="w-full"
-        onClick={write}
+        onClick={() => {
+          voterRef.current = account ?? null
+          write?.()
+        }}
         disabled={!isReady || isLoading || isMining}
       />
     </Modal>

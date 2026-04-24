@@ -2,17 +2,17 @@ import DTFIndexGovernance from '@/abis/dtf-index-governance'
 import { Button } from '@/components/ui/button'
 import { chainIdAtom, walletAtom } from '@/state/atoms'
 import { indexDTFAtom, iTokenAddressAtom } from '@/state/dtf/atoms'
-import { ROUTES } from '@/utils/constants'
 import { atom, useAtomValue } from 'jotai'
 import { Loader2 } from 'lucide-react'
-import { memo, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { memo, useRef, useMemo } from 'react'
 import { Address } from 'viem'
 import { useWaitForTransactionReceipt, useWriteContract } from 'wagmi'
 import { proposalDescriptionAtom, basketProposalCalldatasAtom } from '../atoms'
 import { useIsProposeAllowed } from '@/views/index-dtf/governance/hooks/use-is-propose-allowed'
-import { indexDTFRefreshFnAtom } from '@/views/index-dtf/index-dtf-container'
 import { TransactionButtonContainer } from '@/components/ui/transaction'
+import useProposalCreated, {
+  type SubmitProposalData,
+} from '../../hooks/use-proposal-created'
 
 const isProposalReady = atom((get) => {
   const wallet = get(walletAtom)
@@ -44,42 +44,39 @@ const ProposeGatekeeper = memo(() => {
 })
 
 const SubmitProposalButton = () => {
-  const navigate = useNavigate()
   const chainId = useAtomValue(chainIdAtom)
+  const wallet = useAtomValue(walletAtom)
   const isReady = useAtomValue(isProposalReady)
   const description = useAtomValue(proposalDescriptionAtom)
   const calldatas = useAtomValue(basketProposalCalldatasAtom)
   const dtf = useAtomValue(iTokenAddressAtom)
   const govAddress = useAtomValue(tradingGovAddress)
-  const refreshFn = useAtomValue(indexDTFRefreshFnAtom)
+  const submitDataRef = useRef<SubmitProposalData | null>(null)
 
-  const { writeContract, isPending, data, error } = useWriteContract()
-  const { isSuccess } = useWaitForTransactionReceipt({
+  const targets = useMemo(() => {
+    if (!dtf || !calldatas) return []
+    return calldatas.map(() => dtf) as Address[]
+  }, [dtf, calldatas])
+
+  const { writeContract, isPending, data } = useWriteContract()
+  const { data: receipt } = useWaitForTransactionReceipt({
     hash: data,
     chainId,
   })
 
-  useEffect(() => {
-    if (isSuccess) {
-      // Give some time for the proposal to be created on the subgraph
-      const timer = setTimeout(() => {
-        refreshFn?.()
-        navigate(`../${ROUTES.GOVERNANCE}`)
-      }, 10000) // TODO: who knows if this works well!!! they can just refresh the page
-
-      return () => clearTimeout(timer)
-    }
-  }, [isSuccess])
+  useProposalCreated({ receipt, dataRef: submitDataRef })
 
   const handleSubmit = () => {
-    if (dtf && calldatas && description && govAddress) {
-      const targets: Address[] = []
-      const values: bigint[] = []
-
-      for (let i = 0; i < calldatas.length; i++) {
-        targets.push(dtf)
-        values.push(0n)
+    if (dtf && calldatas && description && govAddress && wallet) {
+      submitDataRef.current = {
+        targets,
+        calldatas,
+        description,
+        govAddress: govAddress as Address,
+        proposer: wallet,
       }
+
+      const values: bigint[] = new Array(calldatas.length).fill(0n)
 
       writeContract({
         address: govAddress,

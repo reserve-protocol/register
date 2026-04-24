@@ -1,0 +1,622 @@
+{
+  "_meta": {
+    "source": "https://api.goldsky.com/api/public/project_cmgzim3e100095np2gjnbh6ry/subgraphs/dtf-index-base/prod/gn",
+    "capturedAt": "2026-04-08T20:31:27.523Z",
+    "dtf": "0x47686106181b3cefe4eaf94c4c10b48ac750370b",
+    "chainId": 8453,
+    "query": "getGovernanceStats"
+  },
+  "data": {
+    "governances": [
+      {
+        "id": "0xa8ce43762de703d285b019fac8829148e3013442",
+        "proposals": [
+          {
+            "id": "23280830173525764972191079024975916784780492697104535582172571363019782541689",
+            "description": "# Eject Dust \n []() \n Eject Dust",
+            "creationTime": "1750622643",
+            "state": "EXECUTED",
+            "forWeightedVotes": "1622850479106443663897",
+            "abstainWeightedVotes": "0",
+            "againstWeightedVotes": "0",
+            "executionETA": "1751426081",
+            "executionTime": "1753044433",
+            "quorumVotes": "1556564776640061126192",
+            "voteStart": "1750795443",
+            "voteEnd": "1751054643",
+            "executionBlock": "33127543",
+            "creationBlock": "31916648",
+            "proposer": {
+              "address": "0xd84e0c72dc2f8363b46d4adfc58bfd82e49222d9"
+            }
+          },
+          {
+            "id": "2629873563842112205099096145487311195441039990876081182824485379326727057953",
+            "description": "DTF V4 Upgrade",
+            "creationTime": "1752853627",
+            "state": "EXECUTED",
+            "forWeightedVotes": "2133081418538281462079",
+            "abstainWeightedVotes": "0",
+            "againstWeightedVotes": "0",
+            "executionETA": "1753499651",
+            "executionTime": "1753650243",
+            "quorumVotes": "1605515247181826282371",
+            "voteStart": "1753026427",
+            "voteEnd": "1753285627",
+            "executionBlock": "33430448",
+            "creationBlock": "33032140",
+            "proposer": {
+              "address": "0xd8b0f4e54a8dac04e0a57392f5a630cedb99c940"
+            }
+          },
+          {
+            "id": "28053048921564815009089558884720098121130037712020192305632729299040530728246",
+            "description": "# Change Auction Launcher Role\nChange Auction Launcher Role",
+            "creationTime": "1742353905",
+            "state": "EXECUTED",
+            "forWeightedVotes": "311000000000000000000",
+            "abstainWeightedVotes": "0",
+            "againstWeightedVotes": "0",
+            "executionETA": "1742998419",
+            "executionTime": "1743005565",
+            "quorumVotes": "139143939273022946549",
+            "voteStart": "1742526705",
+            "voteEnd": "1742785905",
+            "executionBlock": "28108109",
+            "creationBlock": "27782279",
+            "proposer": {
+              "address": "0x03d03a026e71979be3b08d44b01eae4c5ff9da99"
+            }
+          },
+          {
+            "id": "46366792428628137513301405702666187049614045429260826945706663062187288565406",
+            "description": "# Remove ACOLYT Dust \n []() \n Remove ACOLYT Dust",
+            "creationTime": "1754670657",
+            "state": "EXECUTED",
+            "forWeightedVotes": "1651081418538281462079",
+            "abstainWeightedVotes": "0",
+            "againstWeightedVotes": "0",
+            "executionETA": "1755283945",
+            "executionTime": "1755290817",
+            "quorumVotes": "1605515247181826282371",
+            "voteStart": "1754843457",
+            "voteEnd": "1755102657",
+            "executionBlock": "34250735",
+            "creationBlock": "33940655",
+            "proposer": {
+              "address": "0xd8b0f4e54a8dac04e0a57392f5a630cedb99c940"
+            }
+          },
+          {
+            "id": "58690251783213005655212814156332023266977544847288263505334462889426185395960",
+            "description": "# Increase Auction Delay Window\nIncrease Auction Delay Window",
+            "creationTime": "1744063267",
+            "state": "EXECUTED",
+            "forWeightedVotes": "158945032746224720639",
+            "abstainWeightedVotes": "0",
+            "againstWeightedVotes": "0",
+            "executionETA": "1744751759",
+            "executionTime": "1744804993",
+            "quorumVotes": "157138442547645418612",
+            "voteStart": "1744236067",
+            "voteEnd": "1744495267",
+            "executionBlock": "29007823",
+            "creationBlock": "28636960",
+            "proposer": {
+              "address": "0x03d03a026e71979be3b08d44b01eae4c5ff9da99"
+            }
+          },
+          {
+            "id": "6096488669514488270181676010364072697203463409378296513995225068487046857246",
+            "description": "Deprecate VTF Index DTF (2)",
+            "creationTime": "1773756121",
+            "state": "EXECUTED",
+            "forWeightedVotes": "901081418538281462079",
+            "abstainWeightedVotes": "0",
+            "againstWeightedVotes": "0",
+            "executionETA": "1774377975",
+            "executionTime": "1774439037",
+            "quorumVotes": "664369411331952627386",
+            "voteStart": "1773928921",
+            "voteEnd": "1774188121",
+            "executionBlock": "43824845",
+            "creationBlock": "43483387",
+            "proposer": {
+              "address": "0xb209eed4d80fb47e5c16577e44dad1073c5c5015"
+            }
+          },
+          {
+            "id": "69653046894811715947919219050670478064239450454632421407859134169016389687440",
+            "description": "Deprecate VTF Index DTF",
+            "creationTime": "1773171515",
+            "state": "PENDING",
+            "forWeightedVotes": "0",
+            "abstainWeightedVotes": "0",
+            "againstWeightedVotes": "0",
+            "executionETA": null,
+            "executionTime": null,
+            "quorumVotes": "507131123495068804257",
+            "voteStart": "1773344315",
+            "voteEnd": "1773603515",
+            "executionBlock": null,
+            "creationBlock": "43191084",
+            "proposer": {
+              "address": "0xb209eed4d80fb47e5c16577e44dad1073c5c5015"
+            }
+          },
+          {
+            "id": "78241145935188863773293721766593884020369075103333706055418598066598149749254",
+            "description": "Renounce ProxyAdmin ownership for VTF Index DTF",
+            "creationTime": "1773670191",
+            "state": "EXECUTED",
+            "forWeightedVotes": "901081418538281462079",
+            "abstainWeightedVotes": "0",
+            "againstWeightedVotes": "0",
+            "executionETA": "1774377601",
+            "executionTime": "1774439051",
+            "quorumVotes": "657829139986330893742",
+            "voteStart": "1773842991",
+            "voteEnd": "1774102191",
+            "executionBlock": "43824852",
+            "creationBlock": "43440422",
+            "proposer": {
+              "address": "0xb209eed4d80fb47e5c16577e44dad1073c5c5015"
+            }
+          },
+          {
+            "id": "91868332642880002623980633970813054651521200735238415551115985203527563851265",
+            "description": "Upgrade to version 2.0.0",
+            "creationTime": "1744998595",
+            "state": "EXECUTED",
+            "forWeightedVotes": "343474339623236823980",
+            "abstainWeightedVotes": "0",
+            "againstWeightedVotes": "0",
+            "executionETA": "1745650737",
+            "executionTime": "1745794981",
+            "quorumVotes": "83441937236946154461",
+            "voteStart": "1745171395",
+            "voteEnd": "1745430595",
+            "executionBlock": "29502817",
+            "creationBlock": "29104624",
+            "proposer": {
+              "address": "0xd8b0f4e54a8dac04e0a57392f5a630cedb99c940"
+            }
+          },
+          {
+            "id": "91960843638633994549942325514029618623969667842970679214954734819875378715817",
+            "description": "# Eject Dust \n []() \n Eject Dust",
+            "creationTime": "1749579329",
+            "state": "ACTIVE",
+            "forWeightedVotes": "1622850479106443663897",
+            "abstainWeightedVotes": "0",
+            "againstWeightedVotes": "0",
+            "executionETA": null,
+            "executionTime": null,
+            "quorumVotes": "1554980616545155463783",
+            "voteStart": "1749752129",
+            "voteEnd": "1750011329",
+            "executionBlock": null,
+            "creationBlock": "31394991",
+            "proposer": {
+              "address": "0xd84e0c72dc2f8363b46d4adfc58bfd82e49222d9"
+            }
+          }
+        ],
+        "proposalCount": "10"
+      },
+      {
+        "id": "0xc570368439b4e26e30e6fb8a51122b1d33c3b3ba",
+        "proposals": [
+          {
+            "id": "102933354192671534869821689206724949255840555808942499040413174712136316318894",
+            "description": "# June 2025 Basket Rebalance \n []() \n ",
+            "creationTime": "1748606283",
+            "state": "EXECUTED",
+            "forWeightedVotes": "1133641501384787860775",
+            "abstainWeightedVotes": "0",
+            "againstWeightedVotes": "0",
+            "executionETA": "1748786887",
+            "executionTime": "1749036857",
+            "quorumVotes": "180221974195714022509",
+            "voteStart": "1748613483",
+            "voteEnd": "1748642283",
+            "executionBlock": "31123755",
+            "creationBlock": "30908468",
+            "proposer": {
+              "address": "0xd8b0f4e54a8dac04e0a57392f5a630cedb99c940"
+            }
+          },
+          {
+            "id": "103736616681873888593527091391325776729452777718863742170615401259555363112085",
+            "description": "# Oct Rebalance \n []() \n Oct Rebalance",
+            "creationTime": "1759343973",
+            "state": "EXECUTED",
+            "forWeightedVotes": "720081418538281462079",
+            "abstainWeightedVotes": "0",
+            "againstWeightedVotes": "0",
+            "executionETA": "1759815101",
+            "executionTime": "1759840399",
+            "quorumVotes": "417688147707422908270",
+            "voteStart": "1759430373",
+            "voteEnd": "1759516773",
+            "executionBlock": "36525526",
+            "creationBlock": "36277313",
+            "proposer": {
+              "address": "0xd8b0f4e54a8dac04e0a57392f5a630cedb99c940"
+            }
+          },
+          {
+            "id": "106386368224617545443869606529593961555468391830115146502071706331430892653960",
+            "description": "# VTF Rebalancing Out of FREYA \n []() \n ",
+            "creationTime": "1742226853",
+            "state": "EXECUTED",
+            "forWeightedVotes": "300000000000000000000",
+            "abstainWeightedVotes": "0",
+            "againstWeightedVotes": "0",
+            "executionETA": "1742270817",
+            "executionTime": "1742272393",
+            "quorumVotes": "138043939273022946549",
+            "voteStart": "1742234053",
+            "voteEnd": "1742262853",
+            "executionBlock": "27741523",
+            "creationBlock": "27718753",
+            "proposer": {
+              "address": "0xd8b0f4e54a8dac04e0a57392f5a630cedb99c940"
+            }
+          },
+          {
+            "id": "114377588586405444365860887394553223973213833004807368907720283880573810732",
+            "description": "# Remove FREYA From Index \n []() \n Due to token migration, remove $FREYA from the Index and replace with $VIRTUAL",
+            "creationTime": "1742226793",
+            "state": "EXECUTED",
+            "forWeightedVotes": "300000000000000000000",
+            "abstainWeightedVotes": "0",
+            "againstWeightedVotes": "0",
+            "executionETA": "1742270797",
+            "executionTime": "1742399713",
+            "quorumVotes": "138043939273022946549",
+            "voteStart": "1742233993",
+            "voteEnd": "1742262793",
+            "executionBlock": "27805183",
+            "creationBlock": "27718723",
+            "proposer": {
+              "address": "0xd8b0f4e54a8dac04e0a57392f5a630cedb99c940"
+            }
+          },
+          {
+            "id": "12363133641630060248109079323658248704951028046943506297927176372961790502242",
+            "description": "# Remove FREYA from the Virtuals DTF \n []() \n Remove Freya ",
+            "creationTime": "1742407871",
+            "state": "EXECUTED",
+            "forWeightedVotes": "150000000000000000000",
+            "abstainWeightedVotes": "0",
+            "againstWeightedVotes": "0",
+            "executionETA": "1742480329",
+            "executionTime": "1742487209",
+            "quorumVotes": "139143939273022946549",
+            "voteStart": "1742415071",
+            "voteEnd": "1742443871",
+            "executionBlock": "27848931",
+            "creationBlock": "27809262",
+            "proposer": {
+              "address": "0xc164411ccb8468e0c9f6a0fc0b06e69f5845ac30"
+            }
+          },
+          {
+            "id": "1324231493184401819165525042538848372667685113668163260360073378553028037057",
+            "description": "# Remove FREYA From Virtuals DTF \n []() \n ",
+            "creationTime": "1742227165",
+            "state": "EXECUTED",
+            "forWeightedVotes": "300000000000000000000",
+            "abstainWeightedVotes": "0",
+            "againstWeightedVotes": "0",
+            "executionETA": "1742270845",
+            "executionTime": "1742271489",
+            "quorumVotes": "138043939273022946549",
+            "voteStart": "1742234365",
+            "voteEnd": "1742263165",
+            "executionBlock": "27741071",
+            "creationBlock": "27718909",
+            "proposer": {
+              "address": "0xd8b0f4e54a8dac04e0a57392f5a630cedb99c940"
+            }
+          },
+          {
+            "id": "14990752486401126221766758772596866446253547651957785759172073473327339901757",
+            "description": "# VTF August Rebalance \n []() \n VTF August Rebalance",
+            "creationTime": "1753863487",
+            "state": "EXECUTED",
+            "forWeightedVotes": "2976777887176844602215",
+            "abstainWeightedVotes": "0",
+            "againstWeightedVotes": "0",
+            "executionETA": "1754077959",
+            "executionTime": "1754313935",
+            "quorumVotes": "1605515247181826282371",
+            "voteStart": "1753870687",
+            "voteEnd": "1753899487",
+            "executionBlock": "33762294",
+            "creationBlock": "33537070",
+            "proposer": {
+              "address": "0xd8b0f4e54a8dac04e0a57392f5a630cedb99c940"
+            }
+          },
+          {
+            "id": "24018569354937383054216392209346922610109420020400216610048450399452895461010",
+            "description": "# test \n [test](test) \n test",
+            "creationTime": "1739563039",
+            "state": "PENDING",
+            "forWeightedVotes": "0",
+            "abstainWeightedVotes": "0",
+            "againstWeightedVotes": "0",
+            "executionETA": null,
+            "executionTime": null,
+            "quorumVotes": "27036490877677825847",
+            "voteStart": "1739570239",
+            "voteEnd": "1739599039",
+            "executionBlock": null,
+            "creationBlock": "26386846",
+            "proposer": {
+              "address": "0x03d03a026e71979be3b08d44b01eae4c5ff9da99"
+            }
+          },
+          {
+            "id": "2757473303196015674602988920648347008551695336291314174652476052465558194000",
+            "description": "# new basket governance settings \n []() \n Voting delay = 1 day\nVoting period = 1 day\nExecution delay = 1 day",
+            "creationTime": "1758121655",
+            "state": "EXECUTED",
+            "forWeightedVotes": "720081418538281462079",
+            "abstainWeightedVotes": "0",
+            "againstWeightedVotes": "0",
+            "executionETA": "1758848033",
+            "executionTime": "1759252589",
+            "quorumVotes": "276194280885965218353",
+            "voteStart": "1758128855",
+            "voteEnd": "1758157655",
+            "executionBlock": "36231621",
+            "creationBlock": "35666154",
+            "proposer": {
+              "address": "0xb209eed4d80fb47e5c16577e44dad1073c5c5015"
+            }
+          },
+          {
+            "id": "27904147759162533817786985008694002954738549783906579895309544734509833479565",
+            "description": "# December 2025 Rebalance \n []() \n ",
+            "creationTime": "1764692005",
+            "state": "EXECUTED",
+            "forWeightedVotes": "720081418538281462079",
+            "abstainWeightedVotes": "0",
+            "againstWeightedVotes": "0",
+            "executionETA": "1765137903",
+            "executionTime": "1765200377",
+            "quorumVotes": "559795031169523200004",
+            "voteStart": "1764778405",
+            "voteEnd": "1764864805",
+            "executionBlock": "39205515",
+            "creationBlock": "38951329",
+            "proposer": {
+              "address": "0xd8b0f4e54a8dac04e0a57392f5a630cedb99c940"
+            }
+          },
+          {
+            "id": "31418538768274182141019730880396434723505265004357556343435111038895587206045",
+            "description": "# VTF September Rebalance \n []() \n VTF September Rebalance",
+            "creationTime": "1756821307",
+            "state": "EXECUTED",
+            "forWeightedVotes": "1490081418538281462079",
+            "abstainWeightedVotes": "0",
+            "againstWeightedVotes": "0",
+            "executionETA": "1756922595",
+            "executionTime": "1756994825",
+            "quorumVotes": "351194280885965218353",
+            "voteStart": "1756828507",
+            "voteEnd": "1756857307",
+            "executionBlock": "35102739",
+            "creationBlock": "35015980",
+            "proposer": {
+              "address": "0xd8b0f4e54a8dac04e0a57392f5a630cedb99c940"
+            }
+          },
+          {
+            "id": "40781951924618127097625430013567255743311512399432492700666386931494736309426",
+            "description": "# November 2025 Rebalance \n []() \n November 2025 Rebalance",
+            "creationTime": "1761914455",
+            "state": "EXECUTED",
+            "forWeightedVotes": "824000000000000000000",
+            "abstainWeightedVotes": "0",
+            "againstWeightedVotes": "0",
+            "executionETA": "1762188649",
+            "executionTime": "1762287009",
+            "quorumVotes": "429405581235528503861",
+            "voteStart": "1762000855",
+            "voteEnd": "1762087255",
+            "executionBlock": "37748831",
+            "creationBlock": "37562554",
+            "proposer": {
+              "address": "0xd8b0f4e54a8dac04e0a57392f5a630cedb99c940"
+            }
+          },
+          {
+            "id": "52774234910417928713218536774732515391337046068765673406117492735342119578078",
+            "description": "# Remove FREYA from the Virtuals DTF: 2 \n []() \n Remove Freya",
+            "creationTime": "1742408315",
+            "state": "QUEUED",
+            "forWeightedVotes": "150000000000000000000",
+            "abstainWeightedVotes": "0",
+            "againstWeightedVotes": "0",
+            "executionETA": "1742492391",
+            "executionTime": null,
+            "quorumVotes": "139143939273022946549",
+            "voteStart": "1742415515",
+            "voteEnd": "1742444315",
+            "executionBlock": null,
+            "creationBlock": "27809484",
+            "proposer": {
+              "address": "0xc164411ccb8468e0c9f6a0fc0b06e69f5845ac30"
+            }
+          },
+          {
+            "id": "66901229481284405677336873567928624237071224006129281566993111215504335531662",
+            "description": "# VTF October Rebalance \n []() \n VTF October Rebalance",
+            "creationTime": "1758896133",
+            "state": "QUEUED",
+            "forWeightedVotes": "720081418538281462079",
+            "abstainWeightedVotes": "0",
+            "againstWeightedVotes": "0",
+            "executionETA": "1759179031",
+            "executionTime": null,
+            "quorumVotes": "301493268568844455041",
+            "voteStart": "1758903333",
+            "voteEnd": "1758932133",
+            "executionBlock": null,
+            "creationBlock": "36053393",
+            "proposer": {
+              "address": "0xd8b0f4e54a8dac04e0a57392f5a630cedb99c940"
+            }
+          },
+          {
+            "id": "78186285567398183532640211497453356036739698374874364730343200901686777646889",
+            "description": "# update basket governance cycle \n []() \n Voting delay - 1 day\nVoting period - 1 day\nExecutio delay - 1 day",
+            "creationTime": "1758067019",
+            "state": "PENDING",
+            "forWeightedVotes": "0",
+            "abstainWeightedVotes": "0",
+            "againstWeightedVotes": "0",
+            "executionETA": null,
+            "executionTime": null,
+            "quorumVotes": "351194280885965218353",
+            "voteStart": "1758074219",
+            "voteEnd": "1758103019",
+            "executionBlock": null,
+            "creationBlock": "35638836",
+            "proposer": {
+              "address": "0xb209eed4d80fb47e5c16577e44dad1073c5c5015"
+            }
+          }
+        ],
+        "proposalCount": "15"
+      },
+      {
+        "id": "0xd8f869c8d9ee22f4dd786ea37efcd236810f9942",
+        "proposals": [
+          {
+            "id": "47318137960742260211552528113905768638425589475265371850357498483689168428422",
+            "description": "# Add VTF and RSR as reward tokens for vlDAO holders v2\nAdd VTF and RSR as reward tokens for vlDAO holders v2",
+            "creationTime": "1743049433",
+            "state": "EXECUTED",
+            "forWeightedVotes": "158945032746224720639",
+            "abstainWeightedVotes": "0",
+            "againstWeightedVotes": "0",
+            "executionETA": "1743546209",
+            "executionTime": "1743660121",
+            "quorumVotes": "155138442547645418612",
+            "voteStart": "1743056633",
+            "voteEnd": "1743067433",
+            "executionBlock": "28435387",
+            "creationBlock": "28130043",
+            "proposer": {
+              "address": "0xd84e0c72dc2f8363b46d4adfc58bfd82e49222d9"
+            }
+          },
+          {
+            "id": "48246535150541060190711230224791015380424491881120386628484452314437238129829",
+            "description": "# Add VTF and RSR as reward tokens for vlDAO holders\nAdd VTF and RSR as reward tokens for vlDAO holders",
+            "creationTime": "1743028557",
+            "state": "ACTIVE",
+            "forWeightedVotes": "83945032746224720639",
+            "abstainWeightedVotes": "0",
+            "againstWeightedVotes": "0",
+            "executionETA": null,
+            "executionTime": null,
+            "quorumVotes": "147638442547645418612",
+            "voteStart": "1743035757",
+            "voteEnd": "1743046557",
+            "executionBlock": null,
+            "creationBlock": "28119605",
+            "proposer": {
+              "address": "0xd84e0c72dc2f8363b46d4adfc58bfd82e49222d9"
+            }
+          },
+          {
+            "id": "61421545701523631374798454133311872074675825058131903256291649293583760794163",
+            "description": "# Approve to Revenue to vlDAO\nApprove to Revenue to vlDAO",
+            "creationTime": "1742965601",
+            "state": "PENDING",
+            "forWeightedVotes": "0",
+            "abstainWeightedVotes": "0",
+            "againstWeightedVotes": "0",
+            "executionETA": null,
+            "executionTime": null,
+            "quorumVotes": "139243939273022946549",
+            "voteStart": "1742972801",
+            "voteEnd": "1742983601",
+            "executionBlock": null,
+            "creationBlock": "28088127",
+            "proposer": {
+              "address": "0x048b76c55cb47707c08cbacf2a010698e91930a9"
+            }
+          }
+        ],
+        "proposalCount": "3"
+      }
+    ],
+    "stakingToken": {
+      "id": "0x3305c5bd8da08bd6982dd40be3eecc7b2433e5c3",
+      "totalDelegates": "45",
+      "token": {
+        "totalSupply": "5495645434580065647501"
+      },
+      "delegates": [
+        {
+          "address": "0x49b4564cb533e092d43c628386258f0b78d86c52",
+          "delegatedVotes": "1182.949362658433420408",
+          "numberVotes": 3
+        },
+        {
+          "address": "0xbbf4533819a6d28fa5aca363c257bffca87e1fb1",
+          "delegatedVotes": "1000",
+          "numberVotes": 0
+        },
+        {
+          "address": "0xb209eed4d80fb47e5c16577e44dad1073c5c5015",
+          "delegatedVotes": "901.081418538281462079",
+          "numberVotes": 9
+        },
+        {
+          "address": "0xc6f7067b596e9b14244575584bbb18e4555f5874",
+          "delegatedVotes": "560.768454418919875266",
+          "numberVotes": 0
+        },
+        {
+          "address": "0xd8b0f4e54a8dac04e0a57392f5a630cedb99c940",
+          "delegatedVotes": "343.47433962323682398",
+          "numberVotes": 1
+        },
+        {
+          "address": "0x63c070e5030ed4389042adf741aaf04459579eca",
+          "delegatedVotes": "276.061504555784633958",
+          "numberVotes": 0
+        },
+        {
+          "address": "0xc2c3d355e53780416a981294a4f679ae4480966e",
+          "delegatedVotes": "158.414654799259226381",
+          "numberVotes": 0
+        },
+        {
+          "address": "0x1e8cd608e37fbfede9721ff1b94bd5e5b149c911",
+          "delegatedVotes": "30",
+          "numberVotes": 0
+        },
+        {
+          "address": "0x903b722fa153e9d0618a86d5b4a12acd58b06051",
+          "delegatedVotes": "10",
+          "numberVotes": 0
+        },
+        {
+          "address": "0x11a49404b74ae8dd718e339bcf2d152b71e08ff2",
+          "delegatedVotes": "10",
+          "numberVotes": 0
+        }
+      ]
+    }
+  }
+}

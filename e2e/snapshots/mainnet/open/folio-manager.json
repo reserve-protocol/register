@@ -1,0 +1,44 @@
+{
+  "_meta": {
+    "source": "https://api.reserve.org/folio-manager/read?folio=0x323c03c48660fe31186fa82c289b0766d331ce21&chainId=1",
+    "capturedAt": "2026-04-08T20:31:20.447Z",
+    "dtf": "0x323c03c48660fe31186fa82c289b0766d331ce21",
+    "chainId": 1
+  },
+  "data": {
+    "status": "ok",
+    "parsedData": {
+      "hidden": false,
+      "dtf": {
+        "icon": "https://l5394zf57b.ufs.sh/f/mupND8QUUvXxqD7AIQfxfH57h2mseoNual3tKBRCYyvnS1E8",
+        "cover": "https://l5394zf57b.ufs.sh/f/mupND8QUUvXxcwPs6NedT8k4DKLMpQBrH6YAOCP1Wh72svtR",
+        "mobileCover": "https://l5394zf57b.ufs.sh/f/mupND8QUUvXx5L45b0hN1x8WsPzKQYEGuJwIpDVehmXl4fqM",
+        "description": "The Open Stablecoin Networks Index is a value-weighted DTF that tracks DeFi’s ten strongest open stablecoin networks in one $OPEN token. Eligible projects are first whitelisted by vSQUILL-OPEN governance, which reviews asset backing, peg design, mint and redeem rules, safety mechanisms, revenue sharing, and decentralized control. Whitelisted projects are then ranked and weighted, with only the top ten included. \n\nWeights use a composite score: 60% on TVL relative to FDV, comparing supplied value to market valuation, 20% on year-over-year TVL growth, and 20% on liquidity efficiency. Quarterly rebalances cap holdings at 40% and set a 1% minimum to help reduce concentration risk and smooth large swings.\n",
+        "notesFromCreator": "",
+        "tags": [
+          "Stablecoins",
+          "DeFi",
+          "Majors",
+          "Ecosystem"
+        ],
+        "basketType": "percentage-based"
+      },
+      "creator": {
+        "name": "SQUID DAO",
+        "icon": "https://l5394zf57b.ufs.sh/f/mupND8QUUvXx6ZP5JGjo5HX2ruyDEOjm3xTQzMYsRS9JwBNA",
+        "link": ""
+      },
+      "curator": {
+        "name": "SQUID DAO",
+        "icon": "https://l5394zf57b.ufs.sh/f/mupND8QUUvXx8A1cfDLGalgPSqjk8NZnKMIoY9WVLOwsbxD6",
+        "link": ""
+      },
+      "socials": {
+        "twitter": "https://x.com/OpenStableIndex",
+        "telegram": "https://t.me/+fIODVyG8z5A1ZTNh",
+        "discord": "",
+        "website": "https://forum.reserve.org/c/open-dtf/67"
+      }
+    }
+  }
+}

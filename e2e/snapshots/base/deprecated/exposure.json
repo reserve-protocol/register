@@ -1,0 +1,170 @@
+{
+  "_meta": {
+    "source": "https://api.reserve.org/dtf/exposure?chainId=8453&address=0x47686106181b3cefe4eaf94c4c10b48ac750370b&period=7d",
+    "capturedAt": "2026-04-08T20:31:26.563Z",
+    "dtf": "0x47686106181b3cefe4eaf94c4c10b48ac750370b",
+    "chainId": 8453
+  },
+  "data": [
+    {
+      "native": null,
+      "tokens": [
+        {
+          "address": "0x4F9Fd6Be4a90f2620860d680c0d4d5Fb53d1A825",
+          "symbol": "AIXBT",
+          "weight": 16.59,
+          "change": 0.0712273905852662,
+          "marketCap": 24999271
+        }
+      ],
+      "totalWeight": 16.59,
+      "change": 0.0712273905852662,
+      "hasNewlyAdded": false,
+      "marketCap": 24999271
+    },
+    {
+      "native": null,
+      "tokens": [
+        {
+          "address": "0x1C4CcA7C5DB003824208aDDA61Bd749e55F463a3",
+          "symbol": "GAME",
+          "weight": 6.05,
+          "change": -0.008385826957328781,
+          "marketCap": 8801973
+        }
+      ],
+      "totalWeight": 6.05,
+      "change": -0.008385826957328781,
+      "hasNewlyAdded": false,
+      "marketCap": 8801973
+    },
+    {
+      "native": null,
+      "tokens": [
+        {
+          "address": "0x731814e491571A2e9eE3c5b1F7f3b962eE8f4870",
+          "symbol": "VADER",
+          "weight": 0.71,
+          "change": -0.024662220228894378,
+          "marketCap": 1130095
+        }
+      ],
+      "totalWeight": 0.71,
+      "change": -0.024662220228894378,
+      "hasNewlyAdded": false,
+      "marketCap": 1130095
+    },
+    {
+      "native": null,
+      "tokens": [
+        {
+          "address": "0x55cD6469F597452B5A7536e2CD98fDE4c1247ee4",
+          "symbol": "LUNA",
+          "weight": 3.03,
+          "change": 0.002496421182294022,
+          "marketCap": 6116041
+        }
+      ],
+      "totalWeight": 3.03,
+      "change": 0.002496421182294022,
+      "hasNewlyAdded": false,
+      "marketCap": 6116041
+    },
+    {
+      "native": null,
+      "tokens": [
+        {
+          "address": "0x58Db197E91Bc8Cf1587F75850683e4bd0730e6BF",
+          "symbol": "AXR",
+          "weight": 0.4,
+          "change": -0.04302490736469014,
+          "marketCap": 622833
+        }
+      ],
+      "totalWeight": 0.4,
+      "change": -0.04302490736469014,
+      "hasNewlyAdded": false,
+      "marketCap": 622833
+    },
+    {
+      "native": null,
+      "tokens": [
+        {
+          "address": "0x0b3AE50BaBE7FFa4E1A50569ceE6bDEFd4ccAeE0",
+          "symbol": "WIRE",
+          "weight": 1.49,
+          "change": -0.2785804835577243,
+          "marketCap": 1806298
+        }
+      ],
+      "totalWeight": 1.49,
+      "change": -0.2785804835577243,
+      "hasNewlyAdded": false,
+      "marketCap": 1806298
+    },
+    {
+      "native": null,
+      "tokens": [
+        {
+          "address": "0x98aC5B33A4Ef1151f138941c979211599c2fF953",
+          "symbol": "VPAY",
+          "weight": 0.87,
+          "change": 0.033431866549914445,
+          "marketCap": 1198276
+        }
+      ],
+      "totalWeight": 0.87,
+      "change": 0.033431866549914445,
+      "hasNewlyAdded": false,
+      "marketCap": 1198276
+    },
+    {
+      "native": null,
+      "tokens": [
+        {
+          "address": "0xA4A2E2ca3fBfE21aed83471D28b6f65A233C6e00",
+          "symbol": "TIBBIR",
+          "weight": 69.79,
+          "change": 0.013886338619197986,
+          "marketCap": 107645028
+        }
+      ],
+      "totalWeight": 69.79,
+      "change": 0.013886338619197986,
+      "hasNewlyAdded": false,
+      "marketCap": 107645028
+    },
+    {
+      "native": null,
+      "tokens": [
+        {
+          "address": "0xFAC77f01957ed1B3DD1cbEa992199B8f85B6E886",
+          "symbol": "FACY",
+          "weight": 0.45,
+          "change": -0.04077008008207753,
+          "marketCap": 1311238
+        }
+      ],
+      "totalWeight": 0.45,
+      "change": -0.04077008008207753,
+      "hasNewlyAdded": false,
+      "marketCap": 1311238
+    },
+    {
+      "native": null,
+      "tokens": [
+        {
+          "address": "0xC44141a684f6AA4E36cD9264ab55550B03C88643",
+          "symbol": "ETHY",
+          "weight": 0.62,
+          "change": -0.06683419999520132,
+          "marketCap": 1163302
+        }
+      ],
+      "totalWeight": 0.62,
+      "change": -0.06683419999520132,
+      "hasNewlyAdded": false,
+      "marketCap": 1163302
+    }
+  ]
+}

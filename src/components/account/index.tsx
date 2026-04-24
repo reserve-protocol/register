@@ -83,6 +83,7 @@ const Account = () => {
               if (!connected) {
                 return (
                   <Button
+                    data-testid="header-connect-btn"
                     variant="accent"
                     onClick={openConnectModal}
                     className="px-3.5 py-1 rounded-full font-normal"
@@ -105,6 +106,7 @@ const Account = () => {
                     currentChain={chainId}
                   >
                     <div
+                      data-testid="header-wallet"
                       className="flex items-center cursor-pointer text-base"
                       onClick={openAccountModal}
                     >

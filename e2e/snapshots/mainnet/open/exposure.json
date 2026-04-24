@@ -1,0 +1,347 @@
+{
+  "_meta": {
+    "source": "https://api.reserve.org/dtf/exposure?chainId=1&address=0x323c03c48660fe31186fa82c289b0766d331ce21&period=7d",
+    "capturedAt": "2026-04-08T20:31:21.369Z",
+    "dtf": "0x323c03c48660fe31186fa82c289b0766d331ce21",
+    "chainId": 1
+  },
+  "data": [
+    {
+      "native": {
+        "symbol": "AAVE",
+        "name": "Aave",
+        "logo": "https://assets.coingecko.com/coins/images/12645/standard/aave-token-round.png?1720472354",
+        "caip2": "eip155:1",
+        "url": "https://coinmarketcap.com/currencies/aave/",
+        "coingeckoId": "aave"
+      },
+      "tokens": [
+        {
+          "address": "0x7Fc66500c84A76Ad7e9c93437bFc5Ac33E2DDaE9",
+          "symbol": "AAVE",
+          "weight": 39.61,
+          "change": -0.06264733815994708,
+          "marketCap": 1412502269,
+          "bridge": {
+            "id": "native_wrap",
+            "name": "Native Wrapped",
+            "url": "",
+            "description": "Native blockchain wrapped version (e.g., WBTC for BTC, WETH for ETH)",
+            "logo": "",
+            "risks": [
+              "Smart contract risk - Wrapper contracts could have vulnerabilities",
+              "Custodial risk - Underlying assets are held by the wrapper protocol"
+            ],
+            "wrappedVersion": false
+          }
+        }
+      ],
+      "totalWeight": 39.61,
+      "change": -0.06264733815994708,
+      "hasNewlyAdded": false,
+      "marketCap": 1412502269
+    },
+    {
+      "native": {
+        "symbol": "CRV",
+        "name": "Curve DAO",
+        "logo": "https://assets.coingecko.com/coins/images/12124/standard/Curve.png?1696511967",
+        "caip2": "eip155:1",
+        "address": "0xd533a949740bb3306d119cc777fa900ba034cd52",
+        "url": "https://coinmarketcap.com/currencies/curve-dao-token/",
+        "coingeckoId": "curve-dao-token"
+      },
+      "tokens": [
+        {
+          "address": "0xD533a949740bb3306d119CC777fa900bA034cd52",
+          "symbol": "CRV",
+          "weight": 6.96,
+          "change": -0.010229341205461599,
+          "marketCap": 328858547,
+          "bridge": {
+            "id": "native_wrap",
+            "name": "Native Wrapped",
+            "url": "",
+            "description": "Native blockchain wrapped version (e.g., WBTC for BTC, WETH for ETH)",
+            "logo": "",
+            "risks": [
+              "Smart contract risk - Wrapper contracts could have vulnerabilities",
+              "Custodial risk - Underlying assets are held by the wrapper protocol"
+            ],
+            "wrappedVersion": false
+          }
+        }
+      ],
+      "totalWeight": 6.96,
+      "change": -0.010229341205461599,
+      "hasNewlyAdded": false,
+      "marketCap": 328858547
+    },
+    {
+      "native": {
+        "symbol": "OGN",
+        "name": "Origin Protocol",
+        "logo": "https://assets.coingecko.com/coins/images/3296/standard/op.jpg?1696504006",
+        "caip2": "eip155:1",
+        "address": "0x8207c1ffc5b6804f6024322ccf34f29c3541ae26",
+        "url": "https://coinmarketcap.com/currencies/origin-protocol/",
+        "coingeckoId": "origin-protocol"
+      },
+      "tokens": [
+        {
+          "address": "0x8207c1FfC5B6804F6024322CcF34F29c3541Ae26",
+          "symbol": "OGN",
+          "weight": 4.13,
+          "change": 0.025209638326431746,
+          "marketCap": 14199691,
+          "bridge": {
+            "id": "native_wrap",
+            "name": "Native Wrapped",
+            "url": "",
+            "description": "Native blockchain wrapped version (e.g., WBTC for BTC, WETH for ETH)",
+            "logo": "",
+            "risks": [
+              "Smart contract risk - Wrapper contracts could have vulnerabilities",
+              "Custodial risk - Underlying assets are held by the wrapper protocol"
+            ],
+            "wrappedVersion": false
+          }
+        }
+      ],
+      "totalWeight": 4.13,
+      "change": 0.025209638326431746,
+      "hasNewlyAdded": false,
+      "marketCap": 14199691
+    },
+    {
+      "native": null,
+      "tokens": [
+        {
+          "address": "0x3432B6A60D23Ca0dFCa7761B7ab56459D9C964D0",
+          "symbol": "FXS",
+          "weight": 7.34,
+          "change": 0.04114349881452963,
+          "marketCap": 42022377
+        }
+      ],
+      "totalWeight": 7.34,
+      "change": 0.04114349881452963,
+      "hasNewlyAdded": false,
+      "marketCap": 42022377
+    },
+    {
+      "native": {
+        "symbol": "INV",
+        "name": "Inverse Finance",
+        "logo": "https://assets.coingecko.com/coins/images/14205/standard/inverse_finance.jpg?1696513922",
+        "caip2": "eip155:1",
+        "address": "0x41d5d79431a913c4ae7d69a668ecdfe5ff9dfb68",
+        "url": "https://coinmarketcap.com/currencies/inverse-finance/",
+        "coingeckoId": "inverse-finance"
+      },
+      "tokens": [
+        {
+          "address": "0x41D5D79431A913C4aE7d69a668ecdfE5fF9DFB68",
+          "symbol": "INV",
+          "weight": 6.32,
+          "change": 0.022364166591046796,
+          "marketCap": 10663004,
+          "bridge": {
+            "id": "native_wrap",
+            "name": "Native Wrapped",
+            "url": "",
+            "description": "Native blockchain wrapped version (e.g., WBTC for BTC, WETH for ETH)",
+            "logo": "",
+            "risks": [
+              "Smart contract risk - Wrapper contracts could have vulnerabilities",
+              "Custodial risk - Underlying assets are held by the wrapper protocol"
+            ],
+            "wrappedVersion": false
+          }
+        }
+      ],
+      "totalWeight": 6.32,
+      "change": 0.022364166591046796,
+      "hasNewlyAdded": false,
+      "marketCap": 10663004
+    },
+    {
+      "native": {
+        "symbol": "LQTY",
+        "name": "Liquity",
+        "logo": "https://assets.coingecko.com/coins/images/14665/standard/logo_V2.png?1725437146",
+        "caip2": "eip155:1",
+        "address": "0x6dea81c8171d0ba574754ef6f8b412f2ed88c54d",
+        "url": "https://coinmarketcap.com/currencies/liquity/",
+        "coingeckoId": "liquity"
+      },
+      "tokens": [
+        {
+          "address": "0x6DEA81C8171D0bA574754EF6F8b412F2Ed88c54D",
+          "symbol": "LQTY",
+          "weight": 16.91,
+          "change": -0.011494714509219562,
+          "marketCap": 27397835,
+          "bridge": {
+            "id": "native_wrap",
+            "name": "Native Wrapped",
+            "url": "",
+            "description": "Native blockchain wrapped version (e.g., WBTC for BTC, WETH for ETH)",
+            "logo": "",
+            "risks": [
+              "Smart contract risk - Wrapper contracts could have vulnerabilities",
+              "Custodial risk - Underlying assets are held by the wrapper protocol"
+            ],
+            "wrappedVersion": false
+          }
+        }
+      ],
+      "totalWeight": 16.91,
+      "change": -0.011494714509219562,
+      "hasNewlyAdded": false,
+      "marketCap": 27397835
+    },
+    {
+      "native": {
+        "symbol": "RSR",
+        "name": "Reserve Rights",
+        "logo": "https://assets.coingecko.com/coins/images/8365/standard/RSR_Blue_Circle_1000.png?1721777856",
+        "caip2": "eip155:1",
+        "address": "0x320623b8e4ff03373931769a31fc52a4e78b5d70",
+        "url": "https://coinmarketcap.com/currencies/reserve-rights/",
+        "coingeckoId": "reserve-rights-token"
+      },
+      "tokens": [
+        {
+          "address": "0x320623b8E4fF03373931769A31Fc52A4E78B5d70",
+          "symbol": "RSR",
+          "weight": 1.34,
+          "change": -0.02498455187858356,
+          "marketCap": 92615689,
+          "bridge": {
+            "id": "native_wrap",
+            "name": "Native Wrapped",
+            "url": "",
+            "description": "Native blockchain wrapped version (e.g., WBTC for BTC, WETH for ETH)",
+            "logo": "",
+            "risks": [
+              "Smart contract risk - Wrapper contracts could have vulnerabilities",
+              "Custodial risk - Underlying assets are held by the wrapper protocol"
+            ],
+            "wrappedVersion": false
+          }
+        }
+      ],
+      "totalWeight": 1.34,
+      "change": -0.02498455187858356,
+      "hasNewlyAdded": false,
+      "marketCap": 92615689
+    },
+    {
+      "native": {
+        "symbol": "RSUP",
+        "name": "Resupply",
+        "logo": "https://assets.coingecko.com/coins/images/54833/standard/RSUP-icon.png?1741965338",
+        "caip2": "eip155:1",
+        "address": "0x419905009e4656fdc02418c7df35b1e61ed5f726",
+        "coingeckoId": "resupply"
+      },
+      "tokens": [
+        {
+          "address": "0x419905009e4656fdC02418C7Df35B1E61Ed5F726",
+          "symbol": "RSUP",
+          "weight": 4.38,
+          "change": -0.08570487767214628,
+          "marketCap": 2301458,
+          "bridge": {
+            "id": "native_wrap",
+            "name": "Native Wrapped",
+            "url": "",
+            "description": "Native blockchain wrapped version (e.g., WBTC for BTC, WETH for ETH)",
+            "logo": "",
+            "risks": [
+              "Smart contract risk - Wrapper contracts could have vulnerabilities",
+              "Custodial risk - Underlying assets are held by the wrapper protocol"
+            ],
+            "wrappedVersion": false
+          }
+        }
+      ],
+      "totalWeight": 4.38,
+      "change": -0.08570487767214628,
+      "hasNewlyAdded": false,
+      "marketCap": 2301458
+    },
+    {
+      "native": {
+        "symbol": "FXN",
+        "name": "f(x) Protocol",
+        "logo": "https://assets.coingecko.com/coins/images/31889/standard/FXN_200x200.png?1696530700",
+        "caip2": "eip155:1",
+        "address": "0x365accfca291e7d3914637abf1f7635db165bb09",
+        "coingeckoId": "fxn-token"
+      },
+      "tokens": [
+        {
+          "address": "0x365AccFCa291e7D3914637ABf1F7635dB165Bb09",
+          "symbol": "FXN",
+          "weight": 9.31,
+          "change": -0.1020484992030545,
+          "marketCap": 1894506,
+          "bridge": {
+            "id": "native_wrap",
+            "name": "Native Wrapped",
+            "url": "",
+            "description": "Native blockchain wrapped version (e.g., WBTC for BTC, WETH for ETH)",
+            "logo": "",
+            "risks": [
+              "Smart contract risk - Wrapper contracts could have vulnerabilities",
+              "Custodial risk - Underlying assets are held by the wrapper protocol"
+            ],
+            "wrappedVersion": false
+          }
+        }
+      ],
+      "totalWeight": 9.31,
+      "change": -0.1020484992030545,
+      "hasNewlyAdded": false,
+      "marketCap": 1894506
+    },
+    {
+      "native": {
+        "symbol": "ALCX",
+        "name": "Alchemix",
+        "logo": "https://assets.coingecko.com/coins/images/14113/standard/Alchemix.png?1696513834",
+        "caip2": "eip155:1",
+        "address": "0xdbdb4d16eda451d0503b854cf79d55697f90c8df",
+        "url": "https://coinmarketcap.com/currencies/alchemix/",
+        "coingeckoId": "alchemix"
+      },
+      "tokens": [
+        {
+          "address": "0xdBdb4d16EdA451D0503b854CF79D55697F90c8DF",
+          "symbol": "ALCX",
+          "weight": 3.7,
+          "change": -0.0042411223932847224,
+          "marketCap": 12793916,
+          "bridge": {
+            "id": "native_wrap",
+            "name": "Native Wrapped",
+            "url": "",
+            "description": "Native blockchain wrapped version (e.g., WBTC for BTC, WETH for ETH)",
+            "logo": "",
+            "risks": [
+              "Smart contract risk - Wrapper contracts could have vulnerabilities",
+              "Custodial risk - Underlying assets are held by the wrapper protocol"
+            ],
+            "wrappedVersion": false
+          }
+        }
+      ],
+      "totalWeight": 3.7,
+      "change": -0.0042411223932847224,
+      "hasNewlyAdded": false,
+      "marketCap": 12793916
+    }
+  ]
+}

@@ -1,0 +1,56 @@
+{
+  "_meta": {
+    "source": "https://api.goldsky.com/api/public/project_cmgzim3e100095np2gjnbh6ry/subgraphs/dtf-index-base/prod/gn",
+    "capturedAt": "2026-04-08T20:31:28.560Z",
+    "dtf": "0x47686106181b3cefe4eaf94c4c10b48ac750370b",
+    "chainId": 8453,
+    "query": "getProposalDetail",
+    "proposalId": "91868332642880002623980633970813054651521200735238415551115985203527563851265"
+  },
+  "data": {
+    "proposal": {
+      "id": "91868332642880002623980633970813054651521200735238415551115985203527563851265",
+      "timelockId": "0x2462c583521aeaa8ab9ad1670be6a5acdcb42e4523d8e6d01a57cd8559c77773",
+      "description": "Upgrade to version 2.0.0",
+      "creationTime": "1744998595",
+      "voteStart": "1745171395",
+      "voteEnd": "1745430595",
+      "queueBlock": "29344295",
+      "queueTime": "1745477937",
+      "state": "EXECUTED",
+      "executionETA": "1745650737",
+      "executionTime": "1745794981",
+      "creationBlock": "29104624",
+      "cancellationTime": null,
+      "calldatas": [
+        "0x86e5ab2e00000000000000000000000047686106181b3cefe4eaf94c4c10b48ac750370bb4bcb154e38601c389396fa918314da42d4626f13ef6d0ceb07e5f5d26b2fbc300000000000000000000000000000000000000000000000000000000000000600000000000000000000000000000000000000000000000000000000000000000"
+      ],
+      "targets": [
+        "0x7c1faffc7f3a52aa9dbd265e5709202eea3a8a48"
+      ],
+      "proposer": {
+        "address": "0xd8b0f4e54a8dac04e0a57392f5a630cedb99c940"
+      },
+      "votes": [
+        {
+          "choice": "FOR",
+          "voter": {
+            "address": "0xd8b0f4e54a8dac04e0a57392f5a630cedb99c940"
+          },
+          "weight": "343474339623236823980"
+        }
+      ],
+      "forWeightedVotes": "343474339623236823980",
+      "againstWeightedVotes": "0",
+      "abstainWeightedVotes": "0",
+      "quorumVotes": "83441937236946154461",
+      "forDelegateVotes": "1",
+      "abstainDelegateVotes": "0",
+      "againstDelegateVotes": "0",
+      "executionTxnHash": "0x5304b7566acb86553f1f9ea8fd9acdf391b59672379d69c6c4aad069023be148",
+      "governance": {
+        "id": "0xa8ce43762de703d285b019fac8829148e3013442"
+      }
+    }
+  }
+}

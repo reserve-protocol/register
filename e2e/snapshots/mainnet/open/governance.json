@@ -1,0 +1,375 @@
+{
+  "_meta": {
+    "source": "https://api.goldsky.com/api/public/project_cmgzim3e100095np2gjnbh6ry/subgraphs/dtf-index-mainnet/prod/gn",
+    "capturedAt": "2026-04-08T20:31:23.363Z",
+    "dtf": "0x323c03c48660fe31186fa82c289b0766d331ce21",
+    "chainId": 1,
+    "query": "getGovernanceStats"
+  },
+  "data": {
+    "governances": [
+      {
+        "id": "0x020d7c4a87485709d91e78aeeb2b2177ebfbaf41",
+        "proposals": [
+          {
+            "id": "22408187448678684076280204584290262121201672900977952611245090834594623585528",
+            "description": "# Remove ENA dust \n []() \n Recently OPEN was rebalanced using the 2.0.0 protocol and there was ENA dust leftover. This proposal aims to clean up.",
+            "creationTime": "1754335535",
+            "state": "EXECUTED",
+            "forWeightedVotes": "335867053820880253451100",
+            "abstainWeightedVotes": "0",
+            "againstWeightedVotes": "0",
+            "executionETA": "1755207419",
+            "executionTime": "1755207539",
+            "quorumVotes": "75519979727362954279248",
+            "voteStart": "1754508335",
+            "voteEnd": "1754767535",
+            "executionBlock": "23142013",
+            "creationBlock": "23069775",
+            "proposer": {
+              "address": "0x9d1d4d631ae6bc24bd09adff6ca82651e928b650"
+            }
+          },
+          {
+            "id": "50163959493205990251856159236938436846025822409652731360294725029045024323190",
+            "description": "DTF V4 Upgrade",
+            "creationTime": "1752695483",
+            "state": "EXECUTED",
+            "forWeightedVotes": "342993190996591347957342",
+            "abstainWeightedVotes": "0",
+            "againstWeightedVotes": "0",
+            "executionETA": "1753381871",
+            "executionTime": "1753392479",
+            "quorumVotes": "74452597332266753919558",
+            "voteStart": "1752868283",
+            "voteEnd": "1753127483",
+            "executionBlock": "22991694",
+            "creationBlock": "22933957",
+            "proposer": {
+              "address": "0x9d1d4d631ae6bc24bd09adff6ca82651e928b650"
+            }
+          },
+          {
+            "id": "63511867276756253935176677354287187016481633026732754489476927579637542443189",
+            "description": "# Extend auction launch window to 48 hours and adding ABC Labs as auction launcher\nExtend auction launch window to 48 hours and adding ABC Labs as auction launcher",
+            "creationTime": "1752775031",
+            "state": "QUEUED",
+            "forWeightedVotes": "309889735527804032308366",
+            "abstainWeightedVotes": "0",
+            "againstWeightedVotes": "0",
+            "executionETA": "1753381943",
+            "executionTime": null,
+            "quorumVotes": "74465804068511393315841",
+            "voteStart": "1752947831",
+            "voteEnd": "1753207031",
+            "executionBlock": null,
+            "creationBlock": "22940562",
+            "proposer": {
+              "address": "0x9d1d4d631ae6bc24bd09adff6ca82651e928b650"
+            }
+          },
+          {
+            "id": "77558800234949346436775589906286196331721514357281173173652826324733753979944",
+            "description": "# Add ABC Labs as auction launcher \n [n/a](n/a) \n Auctions can only launch after proposals pass vlSQUILL governance. Granting ABC Labs Auction Launcher rights adds flexibility beyond the SQUILL multisig’s sole control.",
+            "creationTime": "1757533175",
+            "state": "EXECUTED",
+            "forWeightedVotes": "86637124772271984804283",
+            "abstainWeightedVotes": "0",
+            "againstWeightedVotes": "0",
+            "executionETA": "1758143399",
+            "executionTime": "1758297479",
+            "quorumVotes": "77498736614114758067426",
+            "voteStart": "1757705975",
+            "voteEnd": "1757965175",
+            "executionBlock": "23398167",
+            "creationBlock": "23334809",
+            "proposer": {
+              "address": "0x9d1d4d631ae6bc24bd09adff6ca82651e928b650"
+            }
+          }
+        ],
+        "proposalCount": "4"
+      },
+      {
+        "id": "0x34a5fac531a7576d22df18d6cac89478f5688d90",
+        "proposals": [
+          {
+            "id": "15748852789219193762478408309890491086381123198933212253787613310879980393719",
+            "description": "# Approve $OPEN, eUSD, RSR for VIDA0 Rewards \n []() \n $OPEN needs to be approved as a reward token for VIDA0 so it can be claimed by SQUILL voters. eUSD and RSR are proposed to be used in future rewards. SQUILL program.\n\n",
+            "creationTime": "1745870867",
+            "state": "EXECUTED",
+            "forWeightedVotes": "322590107420176520000000",
+            "abstainWeightedVotes": "0",
+            "againstWeightedVotes": "0",
+            "executionETA": "1745949323",
+            "executionTime": "1745951579",
+            "quorumVotes": "38441642113975147165448",
+            "voteStart": "1745878067",
+            "voteEnd": "1745888867",
+            "executionBlock": "22376525",
+            "creationBlock": "22369842",
+            "proposer": {
+              "address": "0x9d1d4d631ae6bc24bd09adff6ca82651e928b650"
+            }
+          },
+          {
+            "id": "24772461670023241142033256853129160570492938116134050825294045193599788460182",
+            "description": "# Make vote long again\n\nWhile some people complain the governanc is a slow process, 7h from proposal to execution is a bit too fast\n\nAs such this proposal will set the voting delay, voting period and execution delay to last 1 day each.\n\nSee https://github.com/Rozengarden/OPEN_DAO/blob/ab2d5c7ed79ce8104c011a06c6473511bc2b1d8e/scripts/proposals.py for implementation",
+            "creationTime": "1746217775",
+            "state": "ACTIVE",
+            "forWeightedVotes": "0",
+            "abstainWeightedVotes": "0",
+            "againstWeightedVotes": "23516990164282276632715",
+            "executionETA": null,
+            "executionTime": null,
+            "quorumVotes": "39618054913037988690385",
+            "voteStart": "1746224975",
+            "voteEnd": "1746235775",
+            "executionBlock": null,
+            "creationBlock": "22398502",
+            "proposer": {
+              "address": "0x02feb744ca516fd6e41d940ae2d0f7cb6fcb1ac3"
+            }
+          },
+          {
+            "id": "26436857730956334062589037166126567845454062707908893165812112571719833847097",
+            "description": "# Approve $OPEN, eUSD, RSR for vIDAO rewards \n []() \n $OPEN needs to be approved as a reward token to the VIDAO so it can be claimed by SQUILL vote-lockers. eUSD and RSR are proposed as rewards tokens for future campaigns.",
+            "creationTime": "1745625695",
+            "state": "PENDING",
+            "forWeightedVotes": "0",
+            "abstainWeightedVotes": "0",
+            "againstWeightedVotes": "0",
+            "executionETA": null,
+            "executionTime": null,
+            "quorumVotes": "32376138726056944765448",
+            "voteStart": "1745632895",
+            "voteEnd": "1745643695",
+            "executionBlock": null,
+            "creationBlock": "22349488",
+            "proposer": {
+              "address": "0x9d1d4d631ae6bc24bd09adff6ca82651e928b650"
+            }
+          },
+          {
+            "id": "35624031272988913685515733627879373544904287946923251646686832018184824623986",
+            "description": "# Adjust the vlDAO delays and threshold\n\n> target: [DAO Governance](https://etherscan.io/address/0x34a5fac531a7576d22df18d6cac89478f5688d90)\n\nCurrently the vlDAO can expediate a vote in 7h. Which is both a risk of governance attack and a problem to coordinate voters (see the [first ever proposal on this DAO who collected 0 votes](https://app.reserve.org/ethereum/index-dtf/0x323c03c48660fe31186fa82c289b0766d331ce21/governance/proposal/26436857730956334062589037166126567845454062707908893165812112571719833847097) )\n\nAs such this proposal will set the voting delay to two day, the voting period to three day and the execution delay to last two day for the vlDAO.\nMoreover to lower the risk of proposal spam this proposal will set the threshold to create a proposal to 1% (With the current number of stacked token this represent ~4k vlSQUILL or a bit less than 1500$) \n\n## TL;DR:\n\n**vlDAO:**\n| Parameter          | Before  | After  |\n| ------------------ | ------- | ------ |\n| voting delay       | 2 hours | 2 days |\n| voting period      | 3 hours | 3 days |\n| execution delay    | 2 hours | 2 days |\n| proposal threshold | 0.01%   | 1%     |\n\nSee https://github.com/Rozengarden/OPEN_DAO/blob/main/scripts/proposals.py for implementation",
+            "creationTime": "1746564767",
+            "state": "EXECUTED",
+            "forWeightedVotes": "215098256671310470253822",
+            "abstainWeightedVotes": "0",
+            "againstWeightedVotes": "0",
+            "executionETA": "1746606527",
+            "executionTime": "1746633791",
+            "quorumVotes": "44761142921917938123208",
+            "voteStart": "1746571967",
+            "voteEnd": "1746582767",
+            "executionBlock": "22432802",
+            "creationBlock": "22427166",
+            "proposer": {
+              "address": "0x02feb744ca516fd6e41d940ae2d0f7cb6fcb1ac3"
+            }
+          },
+          {
+            "id": "81842708688966764611439493126840873081304332512921447970828360995279261870943",
+            "description": "# Open relationship Commitment can be scary, for this Reason I propose to lower the unstaking delay to 1 second",
+            "creationTime": "1746042791",
+            "state": "ACTIVE",
+            "forWeightedVotes": "0",
+            "abstainWeightedVotes": "0",
+            "againstWeightedVotes": "236702362202662879632715",
+            "executionETA": null,
+            "executionTime": null,
+            "quorumVotes": "39246633475478854528720",
+            "voteStart": "1746049991",
+            "voteEnd": "1746060791",
+            "executionBlock": null,
+            "creationBlock": "22384065",
+            "proposer": {
+              "address": "0x02feb744ca516fd6e41d940ae2d0f7cb6fcb1ac3"
+            }
+          }
+        ],
+        "proposalCount": "5"
+      },
+      {
+        "id": "0xedebefe7179c5fc74853ad30147beecc20860579",
+        "proposals": [
+          {
+            "id": "34122924272494016731058133705213408319660077627438526260619109247062109540403",
+            "description": "# Q1 2026 Rebalance following v1.1 Index Rules upgrade \n [https://forum.reserve.org/t/rfc-the-open-universe-rules-upgrade-v1-1/1356/12](https://forum.reserve.org/t/rfc-the-open-universe-rules-upgrade-v1-1/1356/12) \n In Q4 2025 vlSQUILL community approved an upgrade to the OPEN index methodology rules which can be seen in linked RFC. This rebalance applies those weighting rules. Inspectable maths for the rebalance are also linked in the RFC.",
+            "creationTime": "1768373567",
+            "state": "EXECUTED",
+            "forWeightedVotes": "290775117231548969316243",
+            "abstainWeightedVotes": "0",
+            "againstWeightedVotes": "219855460232900451251664",
+            "executionETA": "1768663139",
+            "executionTime": "1768689767",
+            "quorumVotes": "137918885227595353579840",
+            "voteStart": "1768459967",
+            "voteEnd": "1768546367",
+            "executionBlock": "24257525",
+            "creationBlock": "24231273",
+            "proposer": {
+              "address": "0x9d1d4d631ae6bc24bd09adff6ca82651e928b650"
+            }
+          },
+          {
+            "id": "64626357794545431673488307494321271916170526436391766920057475631344758941154",
+            "description": "# IP: OPEN Stablecoin Index Q3 Index Regenesis - add ALCX, OGN, FXN...remove ENA \n [https://forum.reserve.org/t/rfc-open-stablecoin-index-regenesis-q3-2025/1158](https://forum.reserve.org/t/rfc-open-stablecoin-index-regenesis-q3-2025/1158) \n This onchain vote performs two key measures (1) adding FXN, OGN, ALCX and removing ENA from the OPEN basket and (2) equal-weighting the basket 10% per each of the ten constituents.",
+            "creationTime": "1751821391",
+            "state": "EXECUTED",
+            "forWeightedVotes": "92717042402009214914756",
+            "abstainWeightedVotes": "0",
+            "againstWeightedVotes": "0",
+            "executionETA": "1752118967",
+            "executionTime": "1752162779",
+            "quorumVotes": "77660404423268980896470",
+            "voteStart": "1751907791",
+            "voteEnd": "1751994191",
+            "executionBlock": "22889798",
+            "creationBlock": "22861526",
+            "proposer": {
+              "address": "0x9d1d4d631ae6bc24bd09adff6ca82651e928b650"
+            }
+          },
+          {
+            "id": "67089972767866055323323349443092687365917271884451317737073037466301213423690",
+            "description": "# Adjust OPEN basket change governance to 3d voting period (up from 1d) \n [n/a](n/a) \n This proposal increases the voting period for OPEN basket changes from 1d to 3d.\n\nThe sequence duration for OPEN basket changes will follow:\n\n- 5d offchain forum discussion \n- 1d onchain proposal voting delay\n- 3d onchain voting period (<--change)\n- 1d onchain execution delay\n \nOPEN basket changes will follow the programmatic OPEN Rules.",
+            "creationTime": "1768954463",
+            "state": "EXECUTED",
+            "forWeightedVotes": "225114782707439464862807",
+            "abstainWeightedVotes": "0",
+            "againstWeightedVotes": "0",
+            "executionETA": "1769278895",
+            "executionTime": "1769470895",
+            "quorumVotes": "141906463933335630913383",
+            "voteStart": "1769040863",
+            "voteEnd": "1769127263",
+            "executionBlock": "24322351",
+            "creationBlock": "24279506",
+            "proposer": {
+              "address": "0x9d1d4d631ae6bc24bd09adff6ca82651e928b650"
+            }
+          },
+          {
+            "id": "91759882675975319050407368179136735380489756061091806916271331462856333367339",
+            "description": "# OPEN Q3 Rebalance - 3rd try \n [https://forum.reserve.org/t/rfc-open-stablecoin-index-regenesis-q3-2025/1158](https://forum.reserve.org/t/rfc-open-stablecoin-index-regenesis-q3-2025/1158) \n ",
+            "creationTime": "1753393847",
+            "state": "EXECUTED",
+            "forWeightedVotes": "144433308658399866799265",
+            "abstainWeightedVotes": "0",
+            "againstWeightedVotes": "0",
+            "executionETA": "1753660907",
+            "executionTime": "1753715015",
+            "quorumVotes": "74940404068511393315841",
+            "voteStart": "1753480247",
+            "voteEnd": "1753566647",
+            "executionBlock": "23018414",
+            "creationBlock": "22991808",
+            "proposer": {
+              "address": "0x9d1d4d631ae6bc24bd09adff6ca82651e928b650"
+            }
+          },
+          {
+            "id": "96866162507510886206860257598701122528991223717420400168861565559137261537149",
+            "description": "# OPEN Q3 Rebalance - 2nd try \n [https://forum.reserve.org/t/rfc-open-stablecoin-index-regenesis-q3-2025/1158](https://forum.reserve.org/t/rfc-open-stablecoin-index-regenesis-q3-2025/1158) \n OPEN Q3 Rebalance - 2nd try.\n10 tokens at 10% each.",
+            "creationTime": "1753115255",
+            "state": "ACTIVE",
+            "forWeightedVotes": "4422000000000000000000",
+            "abstainWeightedVotes": "0",
+            "againstWeightedVotes": "361517793845854189656531",
+            "executionETA": null,
+            "executionTime": null,
+            "quorumVotes": "74465804068511393315841",
+            "voteStart": "1753201655",
+            "voteEnd": "1753288055",
+            "executionBlock": null,
+            "creationBlock": "22968755",
+            "proposer": {
+              "address": "0x9d1d4d631ae6bc24bd09adff6ca82651e928b650"
+            }
+          },
+          {
+            "id": "99306824025753887049499209860408314386927603871777738652666476262009666739513",
+            "description": "# OPEN Q4 Rebalance \n [https://forum.reserve.org/t/rfc-open-stablecoin-index-regenesis-q4-2025/1250](https://forum.reserve.org/t/rfc-open-stablecoin-index-regenesis-q4-2025/1250) \n RSUP added. SKY removed. Based on vlSQUILL Snapshot vote. \n\nhttps://snapshot.box/#/s:openindex.eth/proposal/0x6d6505d29b5bba3c87f02dbf0b291cb4659a4debea9589acc8f1f75aa2dda570",
+            "creationTime": "1760728871",
+            "state": "EXECUTED",
+            "forWeightedVotes": "476233170005079705771510",
+            "abstainWeightedVotes": "0",
+            "againstWeightedVotes": "833360767986158626492",
+            "executionETA": "1761059723",
+            "executionTime": "1761060707",
+            "quorumVotes": "141428621923632854888524",
+            "voteStart": "1760815271",
+            "voteEnd": "1760901671",
+            "executionBlock": "23626846",
+            "creationBlock": "23599434",
+            "proposer": {
+              "address": "0x9d1d4d631ae6bc24bd09adff6ca82651e928b650"
+            }
+          }
+        ],
+        "proposalCount": "6"
+      }
+    ],
+    "stakingToken": {
+      "id": "0x2aea77c4757d897aae2710b8a60280777f504e8c",
+      "totalDelegates": "232",
+      "token": {
+        "totalSupply": "1349162309886015995651074"
+      },
+      "delegates": [
+        {
+          "address": "0x81f9b40dee106a4c5822aed7641d5c1e2b40f922",
+          "delegatedVotes": "194224.241517929",
+          "numberVotes": 6
+        },
+        {
+          "address": "0x73eb240a06f0e0747c698a219462059be6aaccc8",
+          "delegatedVotes": "102227.999396624347439034",
+          "numberVotes": 3
+        },
+        {
+          "address": "0xec092c15e8d5a48a77cde36827f8e228ce39471a",
+          "delegatedVotes": "93153.680264353647282715",
+          "numberVotes": 1
+        },
+        {
+          "address": "0x759a159d78342340ebacffb027c05910c093f430",
+          "delegatedVotes": "86393.828909184803968949",
+          "numberVotes": 2
+        },
+        {
+          "address": "0x9d1d4d631ae6bc24bd09adff6ca82651e928b650",
+          "delegatedVotes": "65961.9605002116",
+          "numberVotes": 8
+        },
+        {
+          "address": "0xb19d6b66b18fae0fca1023138b229e5f970b5180",
+          "delegatedVotes": "63000",
+          "numberVotes": 6
+        },
+        {
+          "address": "0x9c768177521c9a832b0f8567265ef02e89d0282e",
+          "delegatedVotes": "60467.787309696818",
+          "numberVotes": 1
+        },
+        {
+          "address": "0xb7d411007208143b9fec4f0790f56a3de984e66b",
+          "delegatedVotes": "57136",
+          "numberVotes": 0
+        },
+        {
+          "address": "0xfe11a5009f2121622271e7dd0fd470264e076af6",
+          "delegatedVotes": "53612.606181379603405963",
+          "numberVotes": 0
+        },
+        {
+          "address": "0x17a8683c7a2490de2707e60c7c3a3341907a4b86",
+          "delegatedVotes": "50309.106197996347142734",
+          "numberVotes": 8
+        }
+      ]
+    }
+  }
+}

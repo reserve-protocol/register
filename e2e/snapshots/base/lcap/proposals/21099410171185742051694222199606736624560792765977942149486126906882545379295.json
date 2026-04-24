@@ -1,0 +1,112 @@
+{
+  "_meta": {
+    "source": "https://api.goldsky.com/api/public/project_cmgzim3e100095np2gjnbh6ry/subgraphs/dtf-index-base/prod/gn",
+    "capturedAt": "2026-04-08T20:31:15.223Z",
+    "dtf": "0x4da9a0f397db1397902070f93a4d6ddbc0e0e6e8",
+    "chainId": 8453,
+    "query": "getProposalDetail",
+    "proposalId": "21099410171185742051694222199606736624560792765977942149486126906882545379295"
+  },
+  "data": {
+    "proposal": {
+      "id": "21099410171185742051694222199606736624560792765977942149486126906882545379295",
+      "timelockId": null,
+      "description": "# Increasing Governance share of revenue from 5% to 10% \n []() \n Increasing Governance share of revenue from 5% to 10% and Decreasing Creator share by 2.5% and External share by 2.5% ",
+      "creationTime": "1762028901",
+      "voteStart": "1762201701",
+      "voteEnd": "1762460901",
+      "queueBlock": null,
+      "queueTime": null,
+      "state": "ACTIVE",
+      "executionETA": null,
+      "executionTime": null,
+      "creationBlock": "37619777",
+      "cancellationTime": null,
+      "calldatas": [
+        "0xe1e7bd590000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000300000000000000000000000045a96cd0e4d89a41eebf3cc4204b00b1cf1582fa00000000000000000000000000000000000000000000000002c68af0bb1400000000000000000000000000005e6ef4cfd64e29981fb3a8703a584dde407032d2000000000000000000000000000000000000000000000000058d15e176280000000000000000000000000000718841c68eab4038ef389c154f8e91f9923b2fda000000000000000000000000000000000000000000000000058d15e176280000"
+      ],
+      "targets": [
+        "0x4da9a0f397db1397902070f93a4d6ddbc0e0e6e8"
+      ],
+      "proposer": {
+        "address": "0xf6f3a23061ce784fb526a605ea20320fc830502d"
+      },
+      "votes": [
+        {
+          "choice": "AGAINST",
+          "voter": {
+            "address": "0x03d03a026e71979be3b08d44b01eae4c5ff9da99"
+          },
+          "weight": "5515892736289069969864153"
+        },
+        {
+          "choice": "AGAINST",
+          "voter": {
+            "address": "0x292372c183f4e3a750107b1b4d7354f2cf1d76d0"
+          },
+          "weight": "2570027100086020000000000"
+        },
+        {
+          "choice": "AGAINST",
+          "voter": {
+            "address": "0x49b4564cb533e092d43c628386258f0b78d86c52"
+          },
+          "weight": "5011992000000000000000000"
+        },
+        {
+          "choice": "AGAINST",
+          "voter": {
+            "address": "0x560d4a9a83a635023d08d59f052ce3181c3416b0"
+          },
+          "weight": "254345298239750000000000"
+        },
+        {
+          "choice": "AGAINST",
+          "voter": {
+            "address": "0x718841c68eab4038ef389c154f8e91f9923b2fda"
+          },
+          "weight": "7431647251300000000000000"
+        },
+        {
+          "choice": "AGAINST",
+          "voter": {
+            "address": "0x9458579d65e99c59858fdea120fa59dc618e732c"
+          },
+          "weight": "1819477290819645604662491"
+        },
+        {
+          "choice": "AGAINST",
+          "voter": {
+            "address": "0xd84e0c72dc2f8363b46d4adfc58bfd82e49222d9"
+          },
+          "weight": "4052807919884588299358240"
+        },
+        {
+          "choice": "FOR",
+          "voter": {
+            "address": "0xf6f3a23061ce784fb526a605ea20320fc830502d"
+          },
+          "weight": "15000000000000000000000000"
+        },
+        {
+          "choice": "AGAINST",
+          "voter": {
+            "address": "0xffa68ea3d4541493e29f9ca6f4d8219e45f5f23c"
+          },
+          "weight": "152061000000000000000000"
+        }
+      ],
+      "forWeightedVotes": "15000000000000000000000000",
+      "againstWeightedVotes": "26808250596619073873884884",
+      "abstainWeightedVotes": "0",
+      "quorumVotes": "9019252062451532094856108",
+      "forDelegateVotes": "1",
+      "abstainDelegateVotes": "0",
+      "againstDelegateVotes": "8",
+      "executionTxnHash": null,
+      "governance": {
+        "id": "0x719eded05c7a6468e44acfbbd19b2df2eed7759e"
+      }
+    }
+  }
+}

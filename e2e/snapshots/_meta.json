@@ -1,0 +1,31 @@
+{
+  "_meta": {
+    "source": "capture-snapshots.ts",
+    "capturedAt": "2026-04-08T20:31:28.676Z"
+  },
+  "data": {
+    "capturedAt": "2026-04-08T20:31:28.675Z",
+    "dtfs": [
+      {
+        "slug": "lcap",
+        "address": "0x4dA9A0f397dB1397902070f93a4D6ddBC0E0E6e8",
+        "chainId": 8453
+      },
+      {
+        "slug": "cmc20",
+        "address": "0x2f8A339B5889FfaC4c5A956787cdA593b3c36867",
+        "chainId": 56
+      },
+      {
+        "slug": "open",
+        "address": "0x323c03c48660fe31186fa82c289b0766d331ce21",
+        "chainId": 1
+      },
+      {
+        "slug": "deprecated",
+        "address": "0x47686106181b3cefe4eaf94c4c10b48ac750370b",
+        "chainId": 8453
+      }
+    ]
+  }
+}

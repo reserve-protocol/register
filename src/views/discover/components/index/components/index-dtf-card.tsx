@@ -17,7 +17,7 @@ const IndexDTFCard = ({ dtf }: { dtf: IndexDTFItem }) => {
   const [imageLoaded, setImageLoaded] = useState(false)
   const [imageError, setImageError] = useState(false)
 
-  const head = dtf.basket.slice(0, LIMIT)
+  const head = (dtf.basket ?? []).slice(0, LIMIT)
 
   const inactive = isInactiveDTF(dtf.status)
 

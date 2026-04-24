@@ -1,0 +1,261 @@
+{
+  "_meta": {
+    "source": "https://api.reserve.org/dtf/exposure?chainId=8453&address=0x4da9a0f397db1397902070f93a4d6ddbc0e0e6e8&period=7d",
+    "capturedAt": "2026-04-08T20:31:13.950Z",
+    "dtf": "0x4da9a0f397db1397902070f93a4d6ddbc0e0e6e8",
+    "chainId": 8453
+  },
+  "data": [
+    {
+      "native": {
+        "symbol": "BTC",
+        "name": "Bitcoin",
+        "logo": "https://assets.coingecko.com/coins/images/1/large/bitcoin.png",
+        "caip2": "bip122:000000000019d6689c085ae165831e93",
+        "url": "https://coinmarketcap.com/currencies/bitcoin/",
+        "coingeckoId": "bitcoin"
+      },
+      "tokens": [
+        {
+          "address": "0xcbB7C0000aB88B473b1f5aFd9ef808440eed33Bf",
+          "symbol": "cbBTC",
+          "weight": 45.19,
+          "change": 0.04712654721929826,
+          "marketCap": 6199535742,
+          "bridge": {
+            "id": "coinbase",
+            "name": "Coinbase",
+            "url": "https://www.coinbase.com",
+            "description": "Coinbase Wrapped Bitcoin - institutional-grade wrapped Bitcoin on Base",
+            "logo": "https://assets.coingecko.com/coins/images/40143/large/cbbtc.webp?1726136727",
+            "risks": [
+              "Custodial risk - Bitcoin is held by Coinbase Custody",
+              "Smart contract risk - cbBTC contract implementation",
+              "Centralization risk - Depends on Coinbase as the issuer"
+            ],
+            "wrappedVersion": true
+          }
+        }
+      ],
+      "totalWeight": 45.19,
+      "change": 0.04712654721929826,
+      "hasNewlyAdded": false,
+      "marketCap": 1429503524257
+    },
+    {
+      "native": {
+        "symbol": "ETH",
+        "name": "Ethereum",
+        "logo": "https://assets.coingecko.com/coins/images/279/large/ethereum.png",
+        "caip2": "eip155:1",
+        "url": "https://coinmarketcap.com/currencies/ethereum/",
+        "coingeckoId": "ethereum"
+      },
+      "tokens": [
+        {
+          "address": "0x4200000000000000000000000000000000000006",
+          "symbol": "WETH",
+          "weight": 24.55,
+          "change": 0.03035494503911176,
+          "marketCap": 524097162,
+          "bridge": {
+            "id": "native_wrap",
+            "name": "Native Wrapped",
+            "url": "",
+            "description": "Native blockchain wrapped version (e.g., WBTC for BTC, WETH for ETH)",
+            "logo": "",
+            "risks": [
+              "Smart contract risk - Wrapper contracts could have vulnerabilities",
+              "Custodial risk - Underlying assets are held by the wrapper protocol"
+            ],
+            "wrappedVersion": true
+          }
+        }
+      ],
+      "totalWeight": 24.55,
+      "change": 0.03035494503911176,
+      "hasNewlyAdded": false,
+      "marketCap": 267224902690
+    },
+    {
+      "native": {
+        "symbol": "XRP",
+        "name": "XRP",
+        "logo": "https://assets.coingecko.com/coins/images/44/large/xrp-symbol-white-128.png",
+        "caip2": "xrpl:mainnet",
+        "url": "https://coinmarketcap.com/currencies/xrp/",
+        "coingeckoId": "ripple"
+      },
+      "tokens": [
+        {
+          "address": "0x2615a94df961278DcbC41Fb0a54fEc5f10a693aE",
+          "symbol": "uXRP",
+          "weight": 14.74,
+          "change": -0.0018436600168629056,
+          "marketCap": 2355975,
+          "bridge": {
+            "id": "universal",
+            "name": "Universal Protocol",
+            "url": "https://universal.xyz",
+            "description": "Asset-backed token platform with 1:1 backing and Coinbase Custody",
+            "logo": "https://storage.reserve.org/universal.svg",
+            "risks": [
+              "Smart contract risk - Tokens are minted and burned using open-source smart contracts",
+              "Custodial risks - A custodian holds the underlying asset with Coinbase Custody",
+              "Liquidity risks - Redemptions rely on liquidity pools or merchant networks"
+            ],
+            "wrappedVersion": false
+          }
+        }
+      ],
+      "totalWeight": 14.74,
+      "change": -0.0018436600168629056,
+      "hasNewlyAdded": false,
+      "marketCap": 82898930458
+    },
+    {
+      "native": {
+        "symbol": "SOL",
+        "name": "Solana",
+        "logo": "https://assets.coingecko.com/coins/images/4128/large/solana.png",
+        "caip2": "solana:mainnet",
+        "url": "https://coinmarketcap.com/currencies/solana/",
+        "coingeckoId": "solana"
+      },
+      "tokens": [
+        {
+          "address": "0x9B8Df6E244526ab5F6e6400d331DB28C8fdDdb55",
+          "symbol": "uSOL",
+          "weight": 9.82,
+          "change": -0.009396856829501811,
+          "marketCap": 4531508,
+          "bridge": {
+            "id": "universal",
+            "name": "Universal Protocol",
+            "url": "https://universal.xyz",
+            "description": "Asset-backed token platform with 1:1 backing and Coinbase Custody",
+            "logo": "https://storage.reserve.org/universal.svg",
+            "risks": [
+              "Smart contract risk - Tokens are minted and burned using open-source smart contracts",
+              "Custodial risks - A custodian holds the underlying asset with Coinbase Custody",
+              "Liquidity risks - Redemptions rely on liquidity pools or merchant networks"
+            ],
+            "wrappedVersion": false
+          }
+        }
+      ],
+      "totalWeight": 9.82,
+      "change": -0.009396856829501811,
+      "hasNewlyAdded": false,
+      "marketCap": 47775538048
+    },
+    {
+      "native": {
+        "symbol": "DOGE",
+        "name": "Dogecoin",
+        "logo": "https://assets.coingecko.com/coins/images/5/large/dogecoin.png",
+        "caip2": "dogecoin:mainnet",
+        "url": "https://coinmarketcap.com/currencies/dogecoin/",
+        "coingeckoId": "dogecoin"
+      },
+      "tokens": [
+        {
+          "address": "0x12E96C2BFEA6E835CF8Dd38a5834fa61Cf723736",
+          "symbol": "uDOGE",
+          "weight": 2.77,
+          "change": 0.0010497940812414007,
+          "marketCap": 328259,
+          "bridge": {
+            "id": "universal",
+            "name": "Universal Protocol",
+            "url": "https://universal.xyz",
+            "description": "Asset-backed token platform with 1:1 backing and Coinbase Custody",
+            "logo": "https://storage.reserve.org/universal.svg",
+            "risks": [
+              "Smart contract risk - Tokens are minted and burned using open-source smart contracts",
+              "Custodial risks - A custodian holds the underlying asset with Coinbase Custody",
+              "Liquidity risks - Redemptions rely on liquidity pools or merchant networks"
+            ],
+            "wrappedVersion": false
+          }
+        }
+      ],
+      "totalWeight": 2.77,
+      "change": 0.0010497940812414007,
+      "hasNewlyAdded": false,
+      "marketCap": 14317399816
+    },
+    {
+      "native": {
+        "symbol": "ADA",
+        "name": "Cardano",
+        "logo": "https://assets.coingecko.com/coins/images/975/large/cardano.png",
+        "caip2": "cardano:mainnet",
+        "url": "https://coinmarketcap.com/currencies/cardano/",
+        "coingeckoId": "cardano"
+      },
+      "tokens": [
+        {
+          "address": "0xa3A34A0D9A08CCDDB6Ed422Ac0A28a06731335aA",
+          "symbol": "uADA",
+          "weight": 2.06,
+          "change": 0.013261320344444655,
+          "marketCap": 36.01,
+          "bridge": {
+            "id": "universal",
+            "name": "Universal Protocol",
+            "url": "https://universal.xyz",
+            "description": "Asset-backed token platform with 1:1 backing and Coinbase Custody",
+            "logo": "https://storage.reserve.org/universal.svg",
+            "risks": [
+              "Smart contract risk - Tokens are minted and burned using open-source smart contracts",
+              "Custodial risks - A custodian holds the underlying asset with Coinbase Custody",
+              "Liquidity risks - Redemptions rely on liquidity pools or merchant networks"
+            ],
+            "wrappedVersion": false
+          }
+        }
+      ],
+      "totalWeight": 2.06,
+      "change": 0.013261320344444655,
+      "hasNewlyAdded": false,
+      "marketCap": 9317684553
+    },
+    {
+      "native": {
+        "symbol": "XLM",
+        "name": "Stellar",
+        "logo": "https://assets.coingecko.com/coins/images/100/large/Stellar_symbol_black_RGB.png",
+        "caip2": "stellar:public",
+        "url": "https://coinmarketcap.com/currencies/stellar/",
+        "coingeckoId": "stellar"
+      },
+      "tokens": [
+        {
+          "address": "0x378c326A472915d38b2D8D41e1345987835FaB64",
+          "symbol": "uXLM",
+          "weight": 0.87,
+          "change": -0.07363694695101936,
+          "marketCap": 96252,
+          "bridge": {
+            "id": "universal",
+            "name": "Universal Protocol",
+            "url": "https://universal.xyz",
+            "description": "Asset-backed token platform with 1:1 backing and Coinbase Custody",
+            "logo": "https://storage.reserve.org/universal.svg",
+            "risks": [
+              "Smart contract risk - Tokens are minted and burned using open-source smart contracts",
+              "Custodial risks - A custodian holds the underlying asset with Coinbase Custody",
+              "Liquidity risks - Redemptions rely on liquidity pools or merchant networks"
+            ],
+            "wrappedVersion": false
+          }
+        }
+      ],
+      "totalWeight": 0.87,
+      "change": -0.07363694695101936,
+      "hasNewlyAdded": false,
+      "marketCap": 5235349375
+    }
+  ]
+}

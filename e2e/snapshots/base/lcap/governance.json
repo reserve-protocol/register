@@ -1,0 +1,318 @@
+{
+  "_meta": {
+    "source": "https://api.goldsky.com/api/public/project_cmgzim3e100095np2gjnbh6ry/subgraphs/dtf-index-base/prod/gn",
+    "capturedAt": "2026-04-08T20:31:14.908Z",
+    "dtf": "0x4da9a0f397db1397902070f93a4d6ddbc0e0e6e8",
+    "chainId": 8453,
+    "query": "getGovernanceStats"
+  },
+  "data": {
+    "governances": [
+      {
+        "id": "0x2dee428bd8131faa4288750d707de6f3901afe3c",
+        "proposals": [
+          {
+            "id": "68272769802136591261684389202734608107648772552843553377352838258475495078679",
+            "description": "# Approve LCAP, RSR, eUSD as revenue tokens to be claimed by vlDAO \n []() \n Approve LCAP, RSR, eUSD as revenue tokens to be claimed by vlDAO",
+            "creationTime": "1754333847",
+            "state": "PENDING",
+            "forWeightedVotes": "0",
+            "abstainWeightedVotes": "0",
+            "againstWeightedVotes": "0",
+            "executionETA": null,
+            "executionTime": null,
+            "quorumVotes": "1000000000000000000000",
+            "voteStart": "1754506647",
+            "voteEnd": "1754765847",
+            "executionBlock": null,
+            "creationBlock": "33772250",
+            "proposer": {
+              "address": "0x03d03a026e71979be3b08d44b01eae4c5ff9da99"
+            }
+          },
+          {
+            "id": "70804661896960099341741498127893653003811689553631016484689245898326737377960",
+            "description": "# Approve LCAP and eUSD as revenue tokens to be claimed by vlDAO \n []() \n Approve LCAP and eUSD as revenue tokens to be claimed by vlDAO",
+            "creationTime": "1754354021",
+            "state": "EXECUTED",
+            "forWeightedVotes": "9999000000000000000000",
+            "abstainWeightedVotes": "0",
+            "againstWeightedVotes": "0",
+            "executionETA": "1755094531",
+            "executionTime": "1755266009",
+            "quorumVotes": "1000200000000000000000",
+            "voteStart": "1754526821",
+            "voteEnd": "1754786021",
+            "executionBlock": "34238331",
+            "creationBlock": "33782337",
+            "proposer": {
+              "address": "0x03d03a026e71979be3b08d44b01eae4c5ff9da99"
+            }
+          }
+        ],
+        "proposalCount": "2"
+      },
+      {
+        "id": "0x719eded05c7a6468e44acfbbd19b2df2eed7759e",
+        "proposals": [
+          {
+            "id": "21099410171185742051694222199606736624560792765977942149486126906882545379295",
+            "description": "# Increasing Governance share of revenue from 5% to 10% \n []() \n Increasing Governance share of revenue from 5% to 10% and Decreasing Creator share by 2.5% and External share by 2.5% ",
+            "creationTime": "1762028901",
+            "state": "ACTIVE",
+            "forWeightedVotes": "15000000000000000000000000",
+            "abstainWeightedVotes": "0",
+            "againstWeightedVotes": "26808250596619073873884884",
+            "executionETA": null,
+            "executionTime": null,
+            "quorumVotes": "9019252062451532094856108",
+            "voteStart": "1762201701",
+            "voteEnd": "1762460901",
+            "executionBlock": null,
+            "creationBlock": "37619777",
+            "proposer": {
+              "address": "0xf6f3a23061ce784fb526a605ea20320fc830502d"
+            }
+          },
+          {
+            "id": "46347775395229423481452440602769062960895737390777561395564910332719474080385",
+            "description": "# Reduce Auction Length to 15 Minutes  \n []() \n Reduce auction length period to 15 minutes for rebalancing",
+            "creationTime": "1755278899",
+            "state": "EXECUTED",
+            "forWeightedVotes": "6602000000000000000000",
+            "abstainWeightedVotes": "0",
+            "againstWeightedVotes": "0",
+            "executionETA": "1755892513",
+            "executionTime": "1755893501",
+            "quorumVotes": "1000200000000000000000",
+            "voteStart": "1755451699",
+            "voteEnd": "1755710899",
+            "executionBlock": "34552077",
+            "creationBlock": "34244776",
+            "proposer": {
+              "address": "0xb209eed4d80fb47e5c16577e44dad1073c5c5015"
+            }
+          },
+          {
+            "id": "59274871759334197584826743421189781944064432614559846181318714946039948866971",
+            "description": "# Update Role Addresses \n []() \n ",
+            "creationTime": "1774029571",
+            "state": "EXECUTED",
+            "forWeightedVotes": "13257126290819645604662491",
+            "abstainWeightedVotes": "0",
+            "againstWeightedVotes": "0",
+            "executionETA": "1774705355",
+            "executionTime": "1774880991",
+            "quorumVotes": "6854845824700858013739399",
+            "voteStart": "1774202371",
+            "voteEnd": "1774461571",
+            "executionBlock": "44045822",
+            "creationBlock": "43620112",
+            "proposer": {
+              "address": "0x03d03a026e71979be3b08d44b01eae4c5ff9da99"
+            }
+          },
+          {
+            "id": "61501961740004193021732694383712757067893478802036142853669598247049254071435",
+            "description": "# Adjust LCAP Revenue Distribution \n []() \n Adjust LCAP Revenue Distribution",
+            "creationTime": "1773937743",
+            "state": "EXECUTED",
+            "forWeightedVotes": "11437649000000000000000000",
+            "abstainWeightedVotes": "0",
+            "againstWeightedVotes": "0",
+            "executionETA": "1774627357",
+            "executionTime": "1774631565",
+            "quorumVotes": "6854845824700858013739399",
+            "voteStart": "1774110543",
+            "voteEnd": "1774369743",
+            "executionBlock": "43921109",
+            "creationBlock": "43574198",
+            "proposer": {
+              "address": "0x03d03a026e71979be3b08d44b01eae4c5ff9da99"
+            }
+          }
+        ],
+        "proposalCount": "4"
+      },
+      {
+        "id": "0xf9edb4491fbd5e1185e05ecba2d69251dd869096",
+        "proposals": [
+          {
+            "id": "111337429388977163548785296806473337490511918976677753366781905746718791330309",
+            "description": "# January 2026 Rebalance \n []() \n January 2026 Rebalance",
+            "creationTime": "1772056255",
+            "state": "ACTIVE",
+            "forWeightedVotes": "1819477290819645604662491",
+            "abstainWeightedVotes": "0",
+            "againstWeightedVotes": "14768172656173658269222393",
+            "executionETA": null,
+            "executionTime": null,
+            "quorumVotes": "6480829230771807651539250",
+            "voteStart": "1772063455",
+            "voteEnd": "1772149855",
+            "executionBlock": null,
+            "creationBlock": "42633454",
+            "proposer": {
+              "address": "0xb209eed4d80fb47e5c16577e44dad1073c5c5015"
+            }
+          },
+          {
+            "id": "25979926908810924384774529469222246449141574478669251933086824265062700319526",
+            "description": "# September rebalance  \n []() \n This proposal allows the curator, MEV Capital, to conduct the quarterly rebalance for the LCAP DTF\n",
+            "creationTime": "1756318497",
+            "state": "ACTIVE",
+            "forWeightedVotes": "3301000000000000000000",
+            "abstainWeightedVotes": "0",
+            "againstWeightedVotes": "6603000000000000000000",
+            "executionETA": null,
+            "executionTime": null,
+            "quorumVotes": "1000200000000000000000",
+            "voteStart": "1756325697",
+            "voteEnd": "1756412097",
+            "executionBlock": null,
+            "creationBlock": "34764575",
+            "proposer": {
+              "address": "0x5e6ef4cfd64e29981fb3a8703a584dde407032d2"
+            }
+          },
+          {
+            "id": "26244218294169394927302516063498641182236653630882173428882307784464461525270",
+            "description": "# Replace wstETH with WETH in basket \n []() \n Replace wstETH with WETH in basket",
+            "creationTime": "1755811005",
+            "state": "EXECUTED",
+            "forWeightedVotes": "6603000000000000000000",
+            "abstainWeightedVotes": "0",
+            "againstWeightedVotes": "0",
+            "executionETA": "1756253071",
+            "executionTime": "1756253139",
+            "quorumVotes": "1000200000000000000000",
+            "voteStart": "1755818205",
+            "voteEnd": "1755904605",
+            "executionBlock": "34731896",
+            "creationBlock": "34510829",
+            "proposer": {
+              "address": "0xb209eed4d80fb47e5c16577e44dad1073c5c5015"
+            }
+          },
+          {
+            "id": "34955191216609602978446990881131167657790509793766619943539506244819947888212",
+            "description": "# September Rebalance  \n []() \n This proposal allows the curator, MEV Capital, to conduct the quarterly rebalance for the LCAP DTF",
+            "creationTime": "1756334095",
+            "state": "EXECUTED",
+            "forWeightedVotes": "6602000000000000000000",
+            "abstainWeightedVotes": "0",
+            "againstWeightedVotes": "0",
+            "executionETA": "1756601973",
+            "executionTime": "1756818401",
+            "quorumVotes": "1000200000000000000000",
+            "voteStart": "1756341295",
+            "voteEnd": "1756427695",
+            "executionBlock": "35014527",
+            "creationBlock": "34772374",
+            "proposer": {
+              "address": "0x5e6ef4cfd64e29981fb3a8703a584dde407032d2"
+            }
+          },
+          {
+            "id": "75914420127307026715482575065237560171750119736187673455028325639939191395841",
+            "description": "# March 2026 Rebalance \n []() \n This proposal allows the curator to conduct the quarterly rebalance for the LCAP DTF",
+            "creationTime": "1772056617",
+            "state": "EXECUTED",
+            "forWeightedVotes": "20688773542119645604662491",
+            "abstainWeightedVotes": "0",
+            "againstWeightedVotes": "0",
+            "executionETA": "1772324669",
+            "executionTime": "1772485327",
+            "quorumVotes": "6480829230771807651539250",
+            "voteStart": "1772063817",
+            "voteEnd": "1772150217",
+            "executionBlock": "42847990",
+            "creationBlock": "42633635",
+            "proposer": {
+              "address": "0xb209eed4d80fb47e5c16577e44dad1073c5c5015"
+            }
+          },
+          {
+            "id": "93840575552696127948181442815373175097230501948597790565838637490843880216744",
+            "description": "# December 2025 Rebalance \n []() \n This proposal allows the Auction Launchers to conduct the quarterly rebalance for the LCAP DTF.\n\n",
+            "creationTime": "1764021379",
+            "state": "EXECUTED",
+            "forWeightedVotes": "18669296251300000000000000",
+            "abstainWeightedVotes": "0",
+            "againstWeightedVotes": "0",
+            "executionETA": "1764293879",
+            "executionTime": "1764320431",
+            "quorumVotes": "6641875588830149949618553",
+            "voteStart": "1764028579",
+            "voteEnd": "1764114979",
+            "executionBlock": "38765542",
+            "creationBlock": "38616016",
+            "proposer": {
+              "address": "0xd84e0c72dc2f8363b46d4adfc58bfd82e49222d9"
+            }
+          }
+        ],
+        "proposalCount": "6"
+      }
+    ],
+    "stakingToken": {
+      "id": "0x45a96cd0e4d89a41eebf3cc4204b00b1cf1582fa",
+      "totalDelegates": "65",
+      "token": {
+        "totalSupply": "73813253099754097304102862"
+      },
+      "delegates": [
+        {
+          "address": "0xda14865a0d9ac1009741302910ae830180265fe1",
+          "delegatedVotes": "11097389.702708803556951421",
+          "numberVotes": 0
+        },
+        {
+          "address": "0x03d03a026e71979be3b08d44b01eae4c5ff9da99",
+          "delegatedVotes": "9556180.656173658269222393",
+          "numberVotes": 3
+        },
+        {
+          "address": "0x718841c68eab4038ef389c154f8e91f9923b2fda",
+          "delegatedVotes": "7431647.2513",
+          "numberVotes": 6
+        },
+        {
+          "address": "0xb209eed4d80fb47e5c16577e44dad1073c5c5015",
+          "delegatedVotes": "6225657",
+          "numberVotes": 8
+        },
+        {
+          "address": "0x5e6ef4cfd64e29981fb3a8703a584dde407032d2",
+          "delegatedVotes": "6123302",
+          "numberVotes": 2
+        },
+        {
+          "address": "0x49b4564cb533e092d43c628386258f0b78d86c52",
+          "delegatedVotes": "5011992",
+          "numberVotes": 6
+        },
+        {
+          "address": "0x04f6980cbec49220e8bd380e89e962f9e5cf50fc",
+          "delegatedVotes": "5011137",
+          "numberVotes": 0
+        },
+        {
+          "address": "0x048b76c55cb47707c08cbacf2a010698e91930a9",
+          "delegatedVotes": "3897656",
+          "numberVotes": 0
+        },
+        {
+          "address": "0x292372c183f4e3a750107b1b4d7354f2cf1d76d0",
+          "delegatedVotes": "2570027.10008602",
+          "numberVotes": 1
+        },
+        {
+          "address": "0xb3e2e1c258a7c218c9b0e26fc848de01b3bce6fb",
+          "delegatedVotes": "2498709.3092",
+          "numberVotes": 0
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,87 @@
+{
+  "_meta": {
+    "source": "https://api.goldsky.com/api/public/project_cmgzim3e100095np2gjnbh6ry/subgraphs/dtf-index-base/prod/gn",
+    "capturedAt": "2026-04-08T20:31:15.430Z",
+    "dtf": "0x4da9a0f397db1397902070f93a4d6ddbc0e0e6e8",
+    "chainId": 8453,
+    "query": "getProposalDetail",
+    "proposalId": "59274871759334197584826743421189781944064432614559846181318714946039948866971"
+  },
+  "data": {
+    "proposal": {
+      "id": "59274871759334197584826743421189781944064432614559846181318714946039948866971",
+      "timelockId": "0x058bf9bff48dda1381a30f507dacee4f1d132d13bcdfcb711b617c56ec9be463",
+      "description": "# Update Role Addresses \n []() \n ",
+      "creationTime": "1774029571",
+      "voteStart": "1774202371",
+      "voteEnd": "1774461571",
+      "queueBlock": "43871604",
+      "queueTime": "1774532555",
+      "state": "EXECUTED",
+      "executionETA": "1774705355",
+      "executionTime": "1774880991",
+      "creationBlock": "43620112",
+      "cancellationTime": null,
+      "calldatas": [
+        "0xd547741ffd643c72710c63c0180259aba6b2d05451e3591a24e58b62239378085726f7830000000000000000000000005e6ef4cfd64e29981fb3a8703a584dde407032d2",
+        "0xd547741ffd643c72710c63c0180259aba6b2d05451e3591a24e58b62239378085726f7830000000000000000000000006f1d6b86d4ad705385e751e6e88b0fdfdbadf298",
+        "0xd547741ffd643c72710c63c0180259aba6b2d05451e3591a24e58b62239378085726f783000000000000000000000000719eded05c7a6468e44acfbbd19b2df2eed7759e",
+        "0x2f2ff15dfd643c72710c63c0180259aba6b2d05451e3591a24e58b62239378085726f7830000000000000000000000007f7bf1d0b4bb7395bb68e99e20c732f3aefffe47",
+        "0xd547741f2d8e650da9bd8c373ab2450d770f2ed39549bfc28d3630025cecc51511bcd3740000000000000000000000005e6ef4cfd64e29981fb3a8703a584dde407032d2",
+        "0xd547741f13ff1b2625181b311f257c723b5e6d366eb318b212d9dd694c48fcf227659df50000000000000000000000005e6ef4cfd64e29981fb3a8703a584dde407032d2"
+      ],
+      "targets": [
+        "0x98e702320f055c1073f9cee2b93f46c9715bc32d",
+        "0x98e702320f055c1073f9cee2b93f46c9715bc32d",
+        "0x98e702320f055c1073f9cee2b93f46c9715bc32d",
+        "0x98e702320f055c1073f9cee2b93f46c9715bc32d",
+        "0x4da9a0f397db1397902070f93a4d6ddbc0e0e6e8",
+        "0x4da9a0f397db1397902070f93a4d6ddbc0e0e6e8"
+      ],
+      "proposer": {
+        "address": "0x03d03a026e71979be3b08d44b01eae4c5ff9da99"
+      },
+      "votes": [
+        {
+          "choice": "FOR",
+          "voter": {
+            "address": "0x49b4564cb533e092d43c628386258f0b78d86c52"
+          },
+          "weight": "5011992000000000000000000"
+        },
+        {
+          "choice": "FOR",
+          "voter": {
+            "address": "0x9458579d65e99c59858fdea120fa59dc618e732c"
+          },
+          "weight": "1819477290819645604662491"
+        },
+        {
+          "choice": "FOR",
+          "voter": {
+            "address": "0xb209eed4d80fb47e5c16577e44dad1073c5c5015"
+          },
+          "weight": "6225657000000000000000000"
+        },
+        {
+          "choice": "FOR",
+          "voter": {
+            "address": "0xcfc0805e42589d04a5ab4bcaff49f81d5210e065"
+          },
+          "weight": "200000000000000000000000"
+        }
+      ],
+      "forWeightedVotes": "13257126290819645604662491",
+      "againstWeightedVotes": "0",
+      "abstainWeightedVotes": "0",
+      "quorumVotes": "6854845824700858013739399",
+      "forDelegateVotes": "4",
+      "abstainDelegateVotes": "0",
+      "againstDelegateVotes": "0",
+      "executionTxnHash": "0xcc1da34fbe7429a947f51ee0a20c739340fac5b8b0b53aab9fd64f3a7a52926a",
+      "governance": {
+        "id": "0x719eded05c7a6468e44acfbbd19b2df2eed7759e"
+      }
+    }
+  }
+}

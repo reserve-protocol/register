@@ -1,0 +1,52 @@
+{
+  "_meta": {
+    "source": "https://api.goldsky.com/api/public/project_cmgzim3e100095np2gjnbh6ry/subgraphs/dtf-index-base/prod/gn",
+    "capturedAt": "2026-04-08T20:31:15.009Z",
+    "dtf": "0x4da9a0f397db1397902070f93a4d6ddbc0e0e6e8",
+    "chainId": 8453,
+    "query": "getProposalDetail",
+    "proposalId": "68272769802136591261684389202734608107648772552843553377352838258475495078679"
+  },
+  "data": {
+    "proposal": {
+      "id": "68272769802136591261684389202734608107648772552843553377352838258475495078679",
+      "timelockId": null,
+      "description": "# Approve LCAP, RSR, eUSD as revenue tokens to be claimed by vlDAO \n []() \n Approve LCAP, RSR, eUSD as revenue tokens to be claimed by vlDAO",
+      "creationTime": "1754333847",
+      "voteStart": "1754506647",
+      "voteEnd": "1754765847",
+      "queueBlock": null,
+      "queueTime": null,
+      "state": "PENDING",
+      "executionETA": null,
+      "executionTime": null,
+      "creationBlock": "33772250",
+      "cancellationTime": null,
+      "calldatas": [
+        "0x1c03e6cc0000000000000000000000004da9a0f397db1397902070f93a4d6ddbc0e0e6e8",
+        "0x1c03e6cc000000000000000000000000ab36452dbac151be02b16ca17d8919826072f64a",
+        "0x1c03e6cc000000000000000000000000cfa3ef56d303ae4faaba0592388f19d7c3399fb4"
+      ],
+      "targets": [
+        "0x45a96cd0e4d89a41eebf3cc4204b00b1cf1582fa",
+        "0x45a96cd0e4d89a41eebf3cc4204b00b1cf1582fa",
+        "0x45a96cd0e4d89a41eebf3cc4204b00b1cf1582fa"
+      ],
+      "proposer": {
+        "address": "0x03d03a026e71979be3b08d44b01eae4c5ff9da99"
+      },
+      "votes": [],
+      "forWeightedVotes": "0",
+      "againstWeightedVotes": "0",
+      "abstainWeightedVotes": "0",
+      "quorumVotes": "1000000000000000000000",
+      "forDelegateVotes": "0",
+      "abstainDelegateVotes": "0",
+      "againstDelegateVotes": "0",
+      "executionTxnHash": null,
+      "governance": {
+        "id": "0x2dee428bd8131faa4288750d707de6f3901afe3c"
+      }
+    }
+  }
+}

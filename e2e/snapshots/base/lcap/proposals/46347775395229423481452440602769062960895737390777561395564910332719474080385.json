@@ -1,0 +1,63 @@
+{
+  "_meta": {
+    "source": "https://api.goldsky.com/api/public/project_cmgzim3e100095np2gjnbh6ry/subgraphs/dtf-index-base/prod/gn",
+    "capturedAt": "2026-04-08T20:31:15.330Z",
+    "dtf": "0x4da9a0f397db1397902070f93a4d6ddbc0e0e6e8",
+    "chainId": 8453,
+    "query": "getProposalDetail",
+    "proposalId": "46347775395229423481452440602769062960895737390777561395564910332719474080385"
+  },
+  "data": {
+    "proposal": {
+      "id": "46347775395229423481452440602769062960895737390777561395564910332719474080385",
+      "timelockId": "0x673ba82e88da9a981bbe89e7ee9c907bd2b93dc3d6f166584cfe49ba57128c33",
+      "description": "# Reduce Auction Length to 15 Minutes  \n []() \n Reduce auction length period to 15 minutes for rebalancing",
+      "creationTime": "1755278899",
+      "voteStart": "1755451699",
+      "voteEnd": "1755710899",
+      "queueBlock": "34465183",
+      "queueTime": "1755719713",
+      "state": "EXECUTED",
+      "executionETA": "1755892513",
+      "executionTime": "1755893501",
+      "creationBlock": "34244776",
+      "cancellationTime": null,
+      "calldatas": [
+        "0xb579605b0000000000000000000000000000000000000000000000000000000000000384"
+      ],
+      "targets": [
+        "0x4da9a0f397db1397902070f93a4d6ddbc0e0e6e8"
+      ],
+      "proposer": {
+        "address": "0xb209eed4d80fb47e5c16577e44dad1073c5c5015"
+      },
+      "votes": [
+        {
+          "choice": "FOR",
+          "voter": {
+            "address": "0x718841c68eab4038ef389c154f8e91f9923b2fda"
+          },
+          "weight": "3301000000000000000000"
+        },
+        {
+          "choice": "FOR",
+          "voter": {
+            "address": "0xb209eed4d80fb47e5c16577e44dad1073c5c5015"
+          },
+          "weight": "3301000000000000000000"
+        }
+      ],
+      "forWeightedVotes": "6602000000000000000000",
+      "againstWeightedVotes": "0",
+      "abstainWeightedVotes": "0",
+      "quorumVotes": "1000200000000000000000",
+      "forDelegateVotes": "2",
+      "abstainDelegateVotes": "0",
+      "againstDelegateVotes": "0",
+      "executionTxnHash": "0xa98c0a03026e340f28982df9b860309cfdbcdfa54b771ea30a59bdddd435673d",
+      "governance": {
+        "id": "0x719eded05c7a6468e44acfbbd19b2df2eed7759e"
+      }
+    }
+  }
+}

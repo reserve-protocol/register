@@ -1,0 +1,78 @@
+{
+  "_meta": {
+    "source": "https://api.reserve.org/current/dtf?address=0x4da9a0f397db1397902070f93a4d6ddbc0e0e6e8&chainId=8453",
+    "capturedAt": "2026-04-08T20:31:12.849Z",
+    "dtf": "0x4da9a0f397db1397902070f93a4d6ddbc0e0e6e8",
+    "chainId": 8453
+  },
+  "data": {
+    "price": 6.2323732239029646,
+    "marketCap": 3493199.409333026,
+    "totalSupply": 560492.6540560167,
+    "basket": [
+      {
+        "address": "0xcbB7C0000aB88B473b1f5aFd9ef808440eed33Bf",
+        "amount": 0.00003943,
+        "amountRaw": "3943",
+        "decimals": 8,
+        "price": 71426.91818162281,
+        "weight": "45.19",
+        "priceSource": "zapper, odos, alchemy, defillama"
+      },
+      {
+        "address": "0x4200000000000000000000000000000000000006",
+        "amount": 0.00069099385690165,
+        "amountRaw": "690993856901650",
+        "decimals": 18,
+        "price": 2214.2233288121324,
+        "weight": "24.55",
+        "priceSource": "zapper, zapper-decompose, odos, alchemy, defillama"
+      },
+      {
+        "address": "0x2615a94df961278DcbC41Fb0a54fEc5f10a693aE",
+        "amount": 0.6808931037317912,
+        "amountRaw": "680893103731791195",
+        "decimals": 18,
+        "price": 1.3490562078389914,
+        "weight": "14.74",
+        "priceSource": "coinbase, alchemy, defillama"
+      },
+      {
+        "address": "0x9B8Df6E244526ab5F6e6400d331DB28C8fdDdb55",
+        "amount": 0.00735891510476906,
+        "amountRaw": "7358915104769060",
+        "decimals": 18,
+        "price": 83.16804344547064,
+        "weight": "9.82",
+        "priceSource": "coinbase, alchemy, defillama"
+      },
+      {
+        "address": "0x12E96C2BFEA6E835CF8Dd38a5834fa61Cf723736",
+        "amount": 1.852458395139138,
+        "amountRaw": "1852458395139138067",
+        "decimals": 18,
+        "price": 0.09335530469061266,
+        "weight": "2.77",
+        "priceSource": "coinbase, alchemy, defillama"
+      },
+      {
+        "address": "0xa3A34A0D9A08CCDDB6Ed422Ac0A28a06731335aA",
+        "amount": 0.5075540767022544,
+        "amountRaw": "507554076702254403",
+        "decimals": 18,
+        "price": 0.25322305233936654,
+        "weight": "2.06",
+        "priceSource": "coinbase, alchemy, defillama"
+      },
+      {
+        "address": "0x378c326A472915d38b2D8D41e1345987835FaB64",
+        "amount": 0.3409050098910628,
+        "amountRaw": "340905009891062808",
+        "decimals": 18,
+        "price": 0.15823842529472645,
+        "weight": "0.87",
+        "priceSource": "coinbase, alchemy, defillama"
+      }
+    ]
+  }
+}

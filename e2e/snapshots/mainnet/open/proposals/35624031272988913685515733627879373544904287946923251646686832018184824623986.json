@@ -1,0 +1,111 @@
+{
+  "_meta": {
+    "source": "https://api.goldsky.com/api/public/project_cmgzim3e100095np2gjnbh6ry/subgraphs/dtf-index-mainnet/prod/gn",
+    "capturedAt": "2026-04-08T20:31:24.233Z",
+    "dtf": "0x323c03c48660fe31186fa82c289b0766d331ce21",
+    "chainId": 1,
+    "query": "getProposalDetail",
+    "proposalId": "35624031272988913685515733627879373544904287946923251646686832018184824623986"
+  },
+  "data": {
+    "proposal": {
+      "id": "35624031272988913685515733627879373544904287946923251646686832018184824623986",
+      "timelockId": "0x87e80472f386f066cbdc082fbf6671a61a7ffce8ddd5e276344f73fdb27168f4",
+      "description": "# Adjust the vlDAO delays and threshold\n\n> target: [DAO Governance](https://etherscan.io/address/0x34a5fac531a7576d22df18d6cac89478f5688d90)\n\nCurrently the vlDAO can expediate a vote in 7h. Which is both a risk of governance attack and a problem to coordinate voters (see the [first ever proposal on this DAO who collected 0 votes](https://app.reserve.org/ethereum/index-dtf/0x323c03c48660fe31186fa82c289b0766d331ce21/governance/proposal/26436857730956334062589037166126567845454062707908893165812112571719833847097) )\n\nAs such this proposal will set the voting delay to two day, the voting period to three day and the execution delay to last two day for the vlDAO.\nMoreover to lower the risk of proposal spam this proposal will set the threshold to create a proposal to 1% (With the current number of stacked token this represent ~4k vlSQUILL or a bit less than 1500$) \n\n## TL;DR:\n\n**vlDAO:**\n| Parameter          | Before  | After  |\n| ------------------ | ------- | ------ |\n| voting delay       | 2 hours | 2 days |\n| voting period      | 3 hours | 3 days |\n| execution delay    | 2 hours | 2 days |\n| proposal threshold | 0.01%   | 1%     |\n\nSee https://github.com/Rozengarden/OPEN_DAO/blob/main/scripts/proposals.py for implementation",
+      "creationTime": "1746564767",
+      "voteStart": "1746571967",
+      "voteEnd": "1746582767",
+      "queueBlock": "22430012",
+      "queueTime": "1746599327",
+      "state": "EXECUTED",
+      "executionETA": "1746606527",
+      "executionTime": "1746633791",
+      "creationBlock": "22427166",
+      "cancellationTime": null,
+      "calldatas": [
+        "0x79051887000000000000000000000000000000000000000000000000000000000002a300",
+        "0xe540d01d000000000000000000000000000000000000000000000000000000000003f480",
+        "0x64d62353000000000000000000000000000000000000000000000000000000000002a300",
+        "0xece40cc1000000000000000000000000000000000000000000000000002386f26fc10000"
+      ],
+      "targets": [
+        "0x34a5fac531a7576d22df18d6cac89478f5688d90",
+        "0x34a5fac531a7576d22df18d6cac89478f5688d90",
+        "0xe67dbb662ac0ce48829f040f031c974cee869f04",
+        "0x34a5fac531a7576d22df18d6cac89478f5688d90"
+      ],
+      "proposer": {
+        "address": "0x02feb744ca516fd6e41d940ae2d0f7cb6fcb1ac3"
+      },
+      "votes": [
+        {
+          "choice": "FOR",
+          "voter": {
+            "address": "0x02feb744ca516fd6e41d940ae2d0f7cb6fcb1ac3"
+          },
+          "weight": "5403731864322418000000"
+        },
+        {
+          "choice": "FOR",
+          "voter": {
+            "address": "0x17a8683c7a2490de2707e60c7c3a3341907a4b86"
+          },
+          "weight": "507324490052234253822"
+        },
+        {
+          "choice": "FOR",
+          "voter": {
+            "address": "0x2cf70d98851ff4681d3cde774191452ccc00029e"
+          },
+          "weight": "1816954342673920000000"
+        },
+        {
+          "choice": "FOR",
+          "voter": {
+            "address": "0x84afb4b60844f8759154d6ff7b0580daa2d4e37d"
+          },
+          "weight": "2273498164353480000000"
+        },
+        {
+          "choice": "FOR",
+          "voter": {
+            "address": "0x9c768177521c9a832b0f8567265ef02e89d0282e"
+          },
+          "weight": "60467787309696818000000"
+        },
+        {
+          "choice": "FOR",
+          "voter": {
+            "address": "0x9d1d4d631ae6bc24bd09adff6ca82651e928b650"
+          },
+          "weight": "65628960500211600000000"
+        },
+        {
+          "choice": "FOR",
+          "voter": {
+            "address": "0xac844ada82f3d0241533d827ebf84deb89617792"
+          },
+          "weight": "54000000000000000000000"
+        },
+        {
+          "choice": "FOR",
+          "voter": {
+            "address": "0xccbf601eb2f5aa2d5d68b069610da6f1627d485d"
+          },
+          "weight": "25000000000000000000000"
+        }
+      ],
+      "forWeightedVotes": "215098256671310470253822",
+      "againstWeightedVotes": "0",
+      "abstainWeightedVotes": "0",
+      "quorumVotes": "44761142921917938123208",
+      "forDelegateVotes": "8",
+      "abstainDelegateVotes": "0",
+      "againstDelegateVotes": "0",
+      "executionTxnHash": "0xdbcfbf4e3c7f80f934a4dde6433a87b3a4d217b0cac1c4f1b08e07af57cc45c2",
+      "governance": {
+        "id": "0x34a5fac531a7576d22df18d6cac89478f5688d90"
+      }
+    }
+  }
+}

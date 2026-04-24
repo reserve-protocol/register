@@ -1,0 +1,56 @@
+{
+  "_meta": {
+    "source": "https://api.goldsky.com/api/public/project_cmgzim3e100095np2gjnbh6ry/subgraphs/dtf-index-bsc/prod/gn",
+    "capturedAt": "2026-04-08T20:31:19.627Z",
+    "dtf": "0x2f8a339b5889ffac4c5a956787cda593b3c36867",
+    "chainId": 56,
+    "query": "getProposalDetail",
+    "proposalId": "72998511073209140169695856282864906685657971422669560258060551757392694198717"
+  },
+  "data": {
+    "proposal": {
+      "id": "72998511073209140169695856282864906685657971422669560258060551757392694198717",
+      "timelockId": "0x734dd814c05a7c2b5a7594bcffb438ac246ffa0df16ff20119d3e75543fc29fc",
+      "description": "# Approve CMC20 as Revenue Token to be Claimed by vlDAO \n []() \n Approve CMC20 as a revenue token for vlDAO",
+      "creationTime": "1762458373",
+      "voteStart": "1762631173",
+      "voteEnd": "1762890373",
+      "queueBlock": "67969758",
+      "queueTime": "1762978342",
+      "state": "EXECUTED",
+      "executionETA": "1763151142",
+      "executionTime": "1763152100",
+      "creationBlock": "67276537",
+      "cancellationTime": null,
+      "calldatas": [
+        "0x1c03e6cc0000000000000000000000002f8a339b5889ffac4c5a956787cda593b3c36867"
+      ],
+      "targets": [
+        "0xede6a014caa31e23e9d8c345c022101477a91292"
+      ],
+      "proposer": {
+        "address": "0xb209eed4d80fb47e5c16577e44dad1073c5c5015"
+      },
+      "votes": [
+        {
+          "choice": "FOR",
+          "voter": {
+            "address": "0xb209eed4d80fb47e5c16577e44dad1073c5c5015"
+          },
+          "weight": "1000000000000000000000"
+        }
+      ],
+      "forWeightedVotes": "1000000000000000000000",
+      "againstWeightedVotes": "0",
+      "abstainWeightedVotes": "0",
+      "quorumVotes": "100000000000000000000",
+      "forDelegateVotes": "1",
+      "abstainDelegateVotes": "0",
+      "againstDelegateVotes": "0",
+      "executionTxnHash": "0xb5de57e560fdff4517633fc21efdb68cdb93065013d8c57dacbe1c02969226f6",
+      "governance": {
+        "id": "0x3d047abc5b95bc9989904c557789c1bcf3057d99"
+      }
+    }
+  }
+}

@@ -1,0 +1,131 @@
+{
+  "_meta": {
+    "source": "https://api.goldsky.com/api/public/project_cmgzim3e100095np2gjnbh6ry/subgraphs/dtf-index-bsc/prod/gn",
+    "capturedAt": "2026-04-08T20:31:17.324Z",
+    "dtf": "0x2f8a339b5889ffac4c5a956787cda593b3c36867",
+    "chainId": 56,
+    "query": "getDTF"
+  },
+  "data": {
+    "dtf": {
+      "id": "0x2f8a339b5889ffac4c5a956787cda593b3c36867",
+      "proxyAdmin": "0x91a42b577189a52f211e830b73dc5479d611579a",
+      "timestamp": "1761830972",
+      "deployer": "0x89e68b97466c65e215c0b13de256188867f358ae",
+      "ownerAddress": "0x6d44e530f298ddea2ef69af60d54150d563415d7",
+      "mintingFee": "3000000000000000",
+      "tvlFee": "95272355",
+      "annualizedTvlFee": "3000000000000000",
+      "mandate": "The CoinMarketCap 20 Index DTF (CMC20) is a liquid index token powered by Reserve that tracks the CoinMarketCap 20 Index. The CMC20 Index is a benchmark designed to measure the performance of the top 20 cryptocurrency projects by market capitalization, as ranked by CoinMarketCap. It excludes stablecoins (i.e. USDT), tokens that are pegged to other crypto assets (i.e. WBTC or stETH), and assets with limited investability (e.g. potential litigation risk, or limited circulating liquidity). The index represents the broader cryptocurrency market while providing insight into the performance of a diverse set of digital assets.",
+      "auctionDelay": "0",
+      "auctionLength": "1800",
+      "auctionApprovers": [
+        "0x0fec839eba2e311daf16663cc367c77473bbf728"
+      ],
+      "auctionLaunchers": [
+        "0x7daaf7bc2ee8bf4c0ac7f37e6b6cfaeb3ed9a868"
+      ],
+      "brandManagers": [
+        "0x7daaf7bc2ee8bf4c0ac7f37e6b6cfaeb3ed9a868",
+        "0xc04d6885c1f45b2e69a56de7d791a573ef5894ce"
+      ],
+      "totalRevenue": "1200890794211940695301",
+      "protocolRevenue": "400296931403980236050",
+      "governanceRevenue": "59745810657310585250",
+      "externalRevenue": "740848052150649874001",
+      "feeRecipients": "0x1d60bbbef79fb9540d271dbb01925380323a8f66:74626865671641780,0x51292ffb1f70b26b771ff3f410db18e3e2c450d7:850746268656716300,0xede6a014caa31e23e9d8c345c022101477a91292:74626865671641920",
+      "ownerGovernance": {
+        "id": "0x6304135c135da8553d66b0065c8a7c3b0d16c1e8",
+        "votingDelay": "172800",
+        "votingPeriod": "259200",
+        "proposalThreshold": "10000000000000000",
+        "quorumNumerator": "100000000000000000",
+        "quorumDenominator": "1000000000000000000",
+        "timelock": {
+          "id": "0x6d44e530f298ddea2ef69af60d54150d563415d7",
+          "guardians": [
+            "0x6304135c135da8553d66b0065c8a7c3b0d16c1e8",
+            "0x7f7bf1d0b4bb7395bb68e99e20c732f3aefffe47",
+            "0xf49bca9c5119e340e01af83e452f0a27a5321898"
+          ],
+          "executionDelay": "172800"
+        }
+      },
+      "legacyAdmins": [
+        "0x5bed18aca50e6057e6658fe8498004092eedcdcf"
+      ],
+      "tradingGovernance": {
+        "id": "0x12940889e849012c633f47ba8925bbee4ee96d45",
+        "votingDelay": "7200",
+        "votingPeriod": "79200",
+        "proposalThreshold": "1000000000000000",
+        "quorumNumerator": "100000000000000000",
+        "quorumDenominator": "1000000000000000000",
+        "timelock": {
+          "id": "0x0fec839eba2e311daf16663cc367c77473bbf728",
+          "guardians": [
+            "0x12940889e849012c633f47ba8925bbee4ee96d45",
+            "0x7f7bf1d0b4bb7395bb68e99e20c732f3aefffe47",
+            "0xf49bca9c5119e340e01af83e452f0a27a5321898"
+          ],
+          "executionDelay": "86400"
+        }
+      },
+      "legacyAuctionApprovers": [],
+      "token": {
+        "id": "0x2f8a339b5889ffac4c5a956787cda593b3c36867",
+        "name": "CoinMarketCap 20 Index DTF",
+        "symbol": "CMC20",
+        "decimals": 18,
+        "totalSupply": "103261151900783424006365",
+        "currentHolderCount": "38209"
+      },
+      "stToken": {
+        "id": "0xede6a014caa31e23e9d8c345c022101477a91292",
+        "token": {
+          "name": "Vote Lock vlRSR-CMCindex",
+          "symbol": "vlRSR-CMCindex",
+          "decimals": 18,
+          "totalSupply": "225762091083339590148587660"
+        },
+        "underlying": {
+          "name": "Reserve Rights",
+          "symbol": "RSR",
+          "address": "0x23f72a3db61d6cb8abe5d9af1ac4b6c99327bfee",
+          "decimals": 18
+        },
+        "governance": {
+          "id": "0x3d047abc5b95bc9989904c557789c1bcf3057d99",
+          "votingDelay": "172800",
+          "votingPeriod": "259200",
+          "proposalThreshold": "10000000000000000",
+          "quorumNumerator": "100000000000000000",
+          "quorumDenominator": "1000000000000000000",
+          "timelock": {
+            "id": "0x1a30fa4a274e08cc537a589a7669ab8fe564163a",
+            "guardians": [
+              "0x3d047abc5b95bc9989904c557789c1bcf3057d99",
+              "0x7f7bf1d0b4bb7395bb68e99e20c732f3aefffe47",
+              "0xf49bca9c5119e340e01af83e452f0a27a5321898"
+            ],
+            "executionDelay": "172800"
+          }
+        },
+        "legacyGovernance": [
+          "0x0000000000000000000000000000000000000000",
+          "0x270d928b9ee38bad93601d197256390b3c3c13ec"
+        ],
+        "rewards": [
+          {
+            "rewardToken": {
+              "address": "0x2f8a339b5889ffac4c5a956787cda593b3c36867",
+              "name": "CoinMarketCap 20 Index DTF",
+              "symbol": "CMC20",
+              "decimals": 18
+            }
+          }
+        ]
+      }
+    }
+  }
+}

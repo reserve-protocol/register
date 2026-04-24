@@ -1,0 +1,52 @@
+{
+  "_meta": {
+    "source": "https://api.goldsky.com/api/public/project_cmgzim3e100095np2gjnbh6ry/subgraphs/dtf-index-mainnet/prod/gn",
+    "capturedAt": "2026-04-08T20:31:24.150Z",
+    "dtf": "0x323c03c48660fe31186fa82c289b0766d331ce21",
+    "chainId": 1,
+    "query": "getProposalDetail",
+    "proposalId": "26436857730956334062589037166126567845454062707908893165812112571719833847097"
+  },
+  "data": {
+    "proposal": {
+      "id": "26436857730956334062589037166126567845454062707908893165812112571719833847097",
+      "timelockId": null,
+      "description": "# Approve $OPEN, eUSD, RSR for vIDAO rewards \n []() \n $OPEN needs to be approved as a reward token to the VIDAO so it can be claimed by SQUILL vote-lockers. eUSD and RSR are proposed as rewards tokens for future campaigns.",
+      "creationTime": "1745625695",
+      "voteStart": "1745632895",
+      "voteEnd": "1745643695",
+      "queueBlock": null,
+      "queueTime": null,
+      "state": "PENDING",
+      "executionETA": null,
+      "executionTime": null,
+      "creationBlock": "22349488",
+      "cancellationTime": null,
+      "calldatas": [
+        "0x1c03e6cc000000000000000000000000323c03c48660fe31186fa82c289b0766d331ce21",
+        "0x1c03e6cc000000000000000000000000a0d69e286b938e21cbf7e51d71f6a4c8918f482f",
+        "0x1c03e6cc000000000000000000000000320623b8e4ff03373931769a31fc52a4e78b5d70"
+      ],
+      "targets": [
+        "0x2aea77c4757d897aae2710b8a60280777f504e8c",
+        "0x2aea77c4757d897aae2710b8a60280777f504e8c",
+        "0x2aea77c4757d897aae2710b8a60280777f504e8c"
+      ],
+      "proposer": {
+        "address": "0x9d1d4d631ae6bc24bd09adff6ca82651e928b650"
+      },
+      "votes": [],
+      "forWeightedVotes": "0",
+      "againstWeightedVotes": "0",
+      "abstainWeightedVotes": "0",
+      "quorumVotes": "32376138726056944765448",
+      "forDelegateVotes": "0",
+      "abstainDelegateVotes": "0",
+      "againstDelegateVotes": "0",
+      "executionTxnHash": null,
+      "governance": {
+        "id": "0x34a5fac531a7576d22df18d6cac89478f5688d90"
+      }
+    }
+  }
+}

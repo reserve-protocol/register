@@ -1,0 +1,147 @@
+{
+  "_meta": {
+    "source": "https://api.goldsky.com/api/public/project_cmgzim3e100095np2gjnbh6ry/subgraphs/dtf-index-mainnet/prod/gn",
+    "capturedAt": "2026-04-08T20:31:20.809Z",
+    "dtf": "0x323c03c48660fe31186fa82c289b0766d331ce21",
+    "chainId": 1,
+    "query": "getDTF"
+  },
+  "data": {
+    "dtf": {
+      "id": "0x323c03c48660fe31186fa82c289b0766d331ce21",
+      "proxyAdmin": "0x0b79e381ed8d6d676c772dba61cbeea0b2d28c7d",
+      "timestamp": "1744659395",
+      "deployer": "0x66f66192f91eaa3d48c95ab6bdaf9ade26db06f1",
+      "ownerAddress": "0xd900b9a9cf3a0ecc394b6b9935ea3e56dafc02c1",
+      "mintingFee": "3000000000000000",
+      "tvlFee": "238719762",
+      "annualizedTvlFee": "7500000000000000",
+      "mandate": "Track leading decentralized stablecoin-networks advancing transparency, composability, and user-led governance. Included protocols should be evaluated on verifiable asset-backing, peg design, mint/redeem logic, safety mechanisms, yield-sharing, and decentralized control.",
+      "auctionDelay": "86400",
+      "auctionLength": "1800",
+      "auctionApprovers": [
+        "0x075fa5a4fbf5a32cd0660e9cdfff4a6bfa0c6b4a"
+      ],
+      "auctionLaunchers": [
+        "0xde3b1a502a6f25b92434a00c4169b195b2f1528c",
+        "0x7daaf7bc2ee8bf4c0ac7f37e6b6cfaeb3ed9a868"
+      ],
+      "brandManagers": [
+        "0x66f66192f91eaa3d48c95ab6bdaf9ade26db06f1"
+      ],
+      "totalRevenue": "10843097489110555375211",
+      "protocolRevenue": "5421548744555277688006",
+      "governanceRevenue": "3252929246733166612328",
+      "externalRevenue": "2168619497822111074877",
+      "feeRecipients": "0x2aea77c4757d897aae2710b8a60280777f504e8c:600000000000000000,0xde3b1a502a6f25b92434a00c4169b195b2f1528c:400000000000000000",
+      "ownerGovernance": {
+        "id": "0x020d7c4a87485709d91e78aeeb2b2177ebfbaf41",
+        "votingDelay": "172800",
+        "votingPeriod": "259200",
+        "proposalThreshold": "10000000000000000",
+        "quorumNumerator": "10",
+        "quorumDenominator": "100",
+        "timelock": {
+          "id": "0xd900b9a9cf3a0ecc394b6b9935ea3e56dafc02c1",
+          "guardians": [
+            "0x020d7c4a87485709d91e78aeeb2b2177ebfbaf41",
+            "0xde3b1a502a6f25b92434a00c4169b195b2f1528c"
+          ],
+          "executionDelay": "172800"
+        }
+      },
+      "legacyAdmins": [
+        "0xaafb13a3df7ce70c140e40c959d58fd5cc443cba",
+        "0x7498c6ab0669a09de7b9185ba72a98fa3ca39cc9"
+      ],
+      "tradingGovernance": {
+        "id": "0xedebefe7179c5fc74853ad30147beecc20860579",
+        "votingDelay": "86400",
+        "votingPeriod": "259200",
+        "proposalThreshold": "10000000000000000",
+        "quorumNumerator": "10",
+        "quorumDenominator": "100",
+        "timelock": {
+          "id": "0x075fa5a4fbf5a32cd0660e9cdfff4a6bfa0c6b4a",
+          "guardians": [
+            "0xedebefe7179c5fc74853ad30147beecc20860579",
+            "0xde3b1a502a6f25b92434a00c4169b195b2f1528c"
+          ],
+          "executionDelay": "86400"
+        }
+      },
+      "legacyAuctionApprovers": [
+        "0xedebefe7179c5fc74853ad30147beecc20860579"
+      ],
+      "token": {
+        "id": "0x323c03c48660fe31186fa82c289b0766d331ce21",
+        "name": "Open Stablecoin Index",
+        "symbol": "OPEN",
+        "decimals": 18,
+        "totalSupply": "462297209045510553031258",
+        "currentHolderCount": "139"
+      },
+      "stToken": {
+        "id": "0x2aea77c4757d897aae2710b8a60280777f504e8c",
+        "token": {
+          "name": "Vote Lock vlSQUILL-OPEN",
+          "symbol": "vlSQUILL-OPEN",
+          "decimals": 18,
+          "totalSupply": "1349162309886015995651074"
+        },
+        "underlying": {
+          "name": "Squid Pro Quo",
+          "symbol": "SQUILL",
+          "address": "0x7ebab7190d3d574ce82d29f2fa1422f18e29969c",
+          "decimals": 18
+        },
+        "governance": {
+          "id": "0x34a5fac531a7576d22df18d6cac89478f5688d90",
+          "votingDelay": "172800",
+          "votingPeriod": "259200",
+          "proposalThreshold": "10000000000000000",
+          "quorumNumerator": "10",
+          "quorumDenominator": "100",
+          "timelock": {
+            "id": "0xe67dbb662ac0ce48829f040f031c974cee869f04",
+            "guardians": [
+              "0x34a5fac531a7576d22df18d6cac89478f5688d90",
+              "0xde3b1a502a6f25b92434a00c4169b195b2f1528c"
+            ],
+            "executionDelay": "172800"
+          }
+        },
+        "legacyGovernance": [
+          "0x0000000000000000000000000000000000000000",
+          "0xe926577a152ffd5f5036f88bf7e8e8d3652b558c"
+        ],
+        "rewards": [
+          {
+            "rewardToken": {
+              "address": "0x320623b8e4ff03373931769a31fc52a4e78b5d70",
+              "name": "Reserve Rights",
+              "symbol": "RSR",
+              "decimals": 18
+            }
+          },
+          {
+            "rewardToken": {
+              "address": "0x323c03c48660fe31186fa82c289b0766d331ce21",
+              "name": "Open Stablecoin Index",
+              "symbol": "OPEN",
+              "decimals": 18
+            }
+          },
+          {
+            "rewardToken": {
+              "address": "0xa0d69e286b938e21cbf7e51d71f6a4c8918f482f",
+              "name": "Electronic Dollar",
+              "symbol": "eUSD",
+              "decimals": 18
+            }
+          }
+        ]
+      }
+    }
+  }
+}

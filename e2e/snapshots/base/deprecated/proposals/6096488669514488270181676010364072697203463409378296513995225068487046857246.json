@@ -1,0 +1,66 @@
+{
+  "_meta": {
+    "source": "https://api.goldsky.com/api/public/project_cmgzim3e100095np2gjnbh6ry/subgraphs/dtf-index-base/prod/gn",
+    "capturedAt": "2026-04-08T20:31:28.155Z",
+    "dtf": "0x47686106181b3cefe4eaf94c4c10b48ac750370b",
+    "chainId": 8453,
+    "query": "getProposalDetail",
+    "proposalId": "6096488669514488270181676010364072697203463409378296513995225068487046857246"
+  },
+  "data": {
+    "proposal": {
+      "id": "6096488669514488270181676010364072697203463409378296513995225068487046857246",
+      "timelockId": "0xe61421292b6232a790ae50c9c775176733f03848511a03edb3214f5331b48f93",
+      "description": "Deprecate VTF Index DTF (2)",
+      "creationTime": "1773756121",
+      "voteStart": "1773928921",
+      "voteEnd": "1774188121",
+      "queueBlock": "43707914",
+      "queueTime": "1774205175",
+      "state": "EXECUTED",
+      "executionETA": "1774377975",
+      "executionTime": "1774439037",
+      "creationBlock": "43483387",
+      "cancellationTime": null,
+      "calldatas": [
+        "0x7aeaafb3",
+        "0xd547741f4ff6ae4d6a29e79ca45c6441bdc89b93878ac6118485b33c8baa3749fc3cb130000000000000000000000000ccb16edde81843e42f3c39ab70598671eb668bb0",
+        "0xd547741f13ff1b2625181b311f257c723b5e6d366eb318b212d9dd694c48fcf227659df500000000000000000000000093db2e90f8b2b073010b425f9350202330bd923e",
+        "0xd547741f13ff1b2625181b311f257c723b5e6d366eb318b212d9dd694c48fcf227659df50000000000000000000000006f1d6b86d4ad705385e751e6e88b0fdfdbadf298",
+        "0xd547741f13ff1b2625181b311f257c723b5e6d366eb318b212d9dd694c48fcf227659df50000000000000000000000007daaf7bc2ee8bf4c0ac7f37e6b6cfaeb3ed9a868",
+        "0xd547741f0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000c290b859f4f6f0644600dd18d53822bcf95d2602"
+      ],
+      "targets": [
+        "0x47686106181b3cefe4eaf94c4c10b48ac750370b",
+        "0x47686106181b3cefe4eaf94c4c10b48ac750370b",
+        "0x47686106181b3cefe4eaf94c4c10b48ac750370b",
+        "0x47686106181b3cefe4eaf94c4c10b48ac750370b",
+        "0x47686106181b3cefe4eaf94c4c10b48ac750370b",
+        "0x47686106181b3cefe4eaf94c4c10b48ac750370b"
+      ],
+      "proposer": {
+        "address": "0xb209eed4d80fb47e5c16577e44dad1073c5c5015"
+      },
+      "votes": [
+        {
+          "choice": "FOR",
+          "voter": {
+            "address": "0xb209eed4d80fb47e5c16577e44dad1073c5c5015"
+          },
+          "weight": "901081418538281462079"
+        }
+      ],
+      "forWeightedVotes": "901081418538281462079",
+      "againstWeightedVotes": "0",
+      "abstainWeightedVotes": "0",
+      "quorumVotes": "664369411331952627386",
+      "forDelegateVotes": "1",
+      "abstainDelegateVotes": "0",
+      "againstDelegateVotes": "0",
+      "executionTxnHash": "0x98e89dbf099f4f394e0d5c4651943f639c6d1b3af3fc6303e2483c7f90a07e69",
+      "governance": {
+        "id": "0xa8ce43762de703d285b019fac8829148e3013442"
+      }
+    }
+  }
+}

@@ -48,7 +48,7 @@ const useIndexDTFList = () => {
           fee: item.fee,
           marketCap: item.marketCap,
           chainId: item.chainId,
-          basket: item.basket,
+          basket: item.basket ?? [],
           status: item.status ?? 'active',
           performance: item.performance ?? [],
           performancePercent: 0,

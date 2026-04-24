@@ -56,6 +56,7 @@ const DiscoverTabs = ({ className }: { className: string }) => {
         <TitleContainer title="Select a DTF Category" className="mt-10" />
 
         <Tabs
+          data-testid="discover-tabs"
           defaultValue={defaultTab}
           onValueChange={(value) => {
             trackClick('discover', value)

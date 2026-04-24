@@ -1,0 +1,58 @@
+{
+  "_meta": {
+    "source": "https://api.goldsky.com/api/public/project_cmgzim3e100095np2gjnbh6ry/subgraphs/dtf-index-base/prod/gn",
+    "capturedAt": "2026-04-08T20:31:15.105Z",
+    "dtf": "0x4da9a0f397db1397902070f93a4d6ddbc0e0e6e8",
+    "chainId": 8453,
+    "query": "getProposalDetail",
+    "proposalId": "70804661896960099341741498127893653003811689553631016484689245898326737377960"
+  },
+  "data": {
+    "proposal": {
+      "id": "70804661896960099341741498127893653003811689553631016484689245898326737377960",
+      "timelockId": "0x1c1cefc3298fefc182086566f5193ef4fda1d0fa8014329a750ee34523704114",
+      "description": "# Approve LCAP and eUSD as revenue tokens to be claimed by vlDAO \n []() \n Approve LCAP and eUSD as revenue tokens to be claimed by vlDAO",
+      "creationTime": "1754354021",
+      "voteStart": "1754526821",
+      "voteEnd": "1754786021",
+      "queueBlock": "34066192",
+      "queueTime": "1754921731",
+      "state": "EXECUTED",
+      "executionETA": "1755094531",
+      "executionTime": "1755266009",
+      "creationBlock": "33782337",
+      "cancellationTime": null,
+      "calldatas": [
+        "0x1c03e6cc0000000000000000000000004da9a0f397db1397902070f93a4d6ddbc0e0e6e8",
+        "0x1c03e6cc000000000000000000000000cfa3ef56d303ae4faaba0592388f19d7c3399fb4"
+      ],
+      "targets": [
+        "0x45a96cd0e4d89a41eebf3cc4204b00b1cf1582fa",
+        "0x45a96cd0e4d89a41eebf3cc4204b00b1cf1582fa"
+      ],
+      "proposer": {
+        "address": "0x03d03a026e71979be3b08d44b01eae4c5ff9da99"
+      },
+      "votes": [
+        {
+          "choice": "FOR",
+          "voter": {
+            "address": "0x03d03a026e71979be3b08d44b01eae4c5ff9da99"
+          },
+          "weight": "9999000000000000000000"
+        }
+      ],
+      "forWeightedVotes": "9999000000000000000000",
+      "againstWeightedVotes": "0",
+      "abstainWeightedVotes": "0",
+      "quorumVotes": "1000200000000000000000",
+      "forDelegateVotes": "1",
+      "abstainDelegateVotes": "0",
+      "againstDelegateVotes": "0",
+      "executionTxnHash": "0x2f3f6d0fb56545a582569c1eef276161eaca2ba5969e8d44d358163a608db7c3",
+      "governance": {
+        "id": "0x2dee428bd8131faa4288750d707de6f3901afe3c"
+      }
+    }
+  }
+}
