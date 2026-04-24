@@ -14,7 +14,7 @@ const DTF_VIDEO_ID = "EL9OHjIab_w";
 const DTFExplainerButton = ({ className }: { className?: string }) => (
   <Dialog>
     <DialogTrigger asChild>
-      <Button variant="outline" className={cn("gap-1 text-legend", className)}>
+      <Button variant="outline" className={cn("gap-1 text-legend px-6", className)}>
         <Play className="h-4 w-4" />
         Watch DTF Explainer
       </Button>

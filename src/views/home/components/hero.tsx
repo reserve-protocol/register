@@ -10,12 +10,13 @@ const SPLASH_DARK_1X = '/imgs/home-splash-dark@1x.webp'
 const SPLASH_DARK_2X = '/imgs/home-splash-dark.webp'
 
 const Header = ({ className }: { className?: string }) => (
-  <h1 className={cn("text-5xl text-primary dark:text-foreground", className)}>Reserve lets you buy entire portfolios<br /> as a single token</h1>
+  <h1 className={cn("text-5xl leading-[1.10] text-primary dark:text-foreground", className)}>Reserve lets you buy entire portfolios<br /> as a single token</h1>
 )
 
 const SubHeader = ({ className }: { className?: string }) => (
   <h4 className={cn("text-xl dark:text-legend", className)}>
-    These tokenized portfolios are called DTFs: <br /><strong className="dark:text-foreground">Decentralized Token Folios</strong>
+    These tokenized portfolios are called DTFs: <br />
+    <strong className="dark:text-foreground">Decentralized Token Folios</strong>
   </h4>
 )
 
@@ -55,7 +56,7 @@ const SplashImage = () => {
   return (
     <div className="relative">
       <img
-        className="lg:my-6 w-full h-auto min-h-48 px-2 2xl:px-0 object-cover"
+        className="lg:mb-6 lg:mt-10 w-full h-auto min-h-48 px-2 2xl:px-0 object-cover"
         src={splash1x}
         srcSet={`${splash1x} 1x, ${splash2x} 2x`}
         width={2800}
@@ -81,14 +82,14 @@ const DesktopSubHeader = () => (
 )
 
 const Hero = () => (
-  <div className="lg:mt-6 mb-12">
+  <div className="lg:mt-10 mb-12">
     <div className="hidden lg:block mx-6 text-center">
       <Header className="mx-auto" />
     </div>
     <div className="relative">
       <SplashImage />
       <MobileHeading />
-      <div className="lg:absolute lg:inset-x-0 lg:bottom-0 lg:translate-y-1/2 lg:flex lg:justify-center lg:px-6">
+      <div className="lg:absolute lg:inset-x-0 lg:bottom-0 lg:translate-y-1/2 lg:flex lg:justify-center lg:px-10">
         <MetricsContainer />
       </div>
     </div>

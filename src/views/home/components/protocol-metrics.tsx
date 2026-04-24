@@ -96,7 +96,7 @@ const ProtocolMetrics = () => {
     <div className="w-full min-w-0 lg:w-auto overflow-hidden lg:overflow-visible pl-2 lg:pl-0">
       <div
         ref={ref}
-        className="flex items-center gap-2 lg:gap-6 will-change-transform touch-pan-y lg:touch-auto select-none"
+        className="flex items-center gap-2 lg:gap-10 will-change-transform touch-pan-y lg:touch-auto select-none"
       >
         {renderBoxes(0)}
         {!disabled && renderBoxes(1)}
