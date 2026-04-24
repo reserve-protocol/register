@@ -117,11 +117,37 @@ const TokenImage = React.memo(
     src?: string
     width?: number | string
   }) => {
+    const [currentSrc, setCurrentSrc] = React.useState('/svgs/defaultLogo.svg')
+
+    React.useEffect(() => {
+      let alive = true
+      const img = new Image()
+      img.src = src
+
+      img.onload = () => {
+        if (alive) setCurrentSrc(src)
+      }
+
+      img.onerror = () => {
+        if (alive) setCurrentSrc('/svgs/defaultLogo.svg')
+      }
+
+      return () => {
+        alive = false
+        img.onload = null
+        img.onerror = null
+        img.src = ''
+      }
+    }, [src])
+
     return (
       <img
-        src={src}
+        src={currentSrc}
         className="h-auto"
         style={{ width }}
+        loading="lazy"
+        decoding="async"
+        fetchPriority="low"
         onError={({ currentTarget }) => {
           currentTarget.onerror = null // prevents looping
           currentTarget.src = '/svgs/defaultLogo.svg'

@@ -1,0 +1,25 @@
+{
+  "linkset": [
+    {
+      "anchor": "https://api.reserve.org",
+      "service-desc": [
+        {
+          "href": "https://api.reserve.org/documentation/v1.json",
+          "type": "application/openapi+json"
+        }
+      ],
+      "service-doc": [
+        {
+          "href": "https://api.reserve.org/documentation",
+          "type": "text/html"
+        }
+      ],
+      "status": [
+        {
+          "href": "https://api.reserve.org/healthcheck",
+          "type": "application/json"
+        }
+      ]
+    }
+  ]
+}

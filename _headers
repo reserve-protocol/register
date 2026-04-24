@@ -2,3 +2,51 @@
   X-Frame-Options: SAMEORIGIN
   Strict-Transport-Security: max-age=63072000; includeSubDomains; preload
   Content-Security-Policy: object-src 'none'; base-uri 'self'; frame-ancestors 'none';
+  X-Robots-Tag: index, follow
+  Content-Signal: search=yes, ai-input=yes, ai-train=no
+  Link: <https://app.reserve.org/sitemap.xml>; rel="sitemap"
+  Link: <https://app.reserve.org/llms.txt>; rel="describedby"; type="text/plain"
+  Link: <https://app.reserve.org/.well-known/api-catalog>; rel="api-catalog"; type="application/linkset+json"
+
+/sitemap.xml
+  Content-Type: application/xml; charset=utf-8
+  Cache-Control: public, max-age=3600
+
+/llms.txt
+  Content-Type: text/plain; charset=utf-8
+  Cache-Control: public, max-age=3600
+
+/llms-full.txt
+  Content-Type: text/plain; charset=utf-8
+  Cache-Control: public, max-age=3600
+
+/robots.txt
+  Content-Type: text/plain; charset=utf-8
+
+/.well-known/ai.txt
+  Content-Type: text/plain; charset=utf-8
+
+/.well-known/security.txt
+  Content-Type: text/plain; charset=utf-8
+
+/.well-known/api-catalog
+  Content-Type: application/linkset+json; charset=utf-8
+
+/.well-known/agent-skills/index.json
+  Content-Type: application/json; charset=utf-8
+
+/skills/dtf.md
+  Content-Type: text/markdown; charset=utf-8
+  X-Robots-Tag: index, follow
+
+/skills/index.json
+  Content-Type: application/json; charset=utf-8
+
+/*.md
+  Content-Type: text/markdown; charset=utf-8
+  X-Robots-Tag: index, follow
+
+# Per-DTF HTML pages advertise their markdown counterpart via an HTML
+# <link rel="alternate"> tag (injected in generate-seo-pages.ts) — not a
+# splat-based Link header, because Cloudflare :splat captures the full
+# remainder (subroute included) and would yield the wrong .md URL.

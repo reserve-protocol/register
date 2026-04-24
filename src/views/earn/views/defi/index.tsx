@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import mixpanel from 'mixpanel-browser/src/loaders/loader-module-core'
 import FeaturedPools from './components/featured-pools'
-import RegisterAbout from '@/views/discover/components/yield/components/RegisterAbout'
+import RegisterAbout from '@/views/home/components/register-about'
 import DTFDefiEarn from './components/dtf-defi-earn'
 import EarnHeading from './components/earn-heading'
 

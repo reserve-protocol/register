@@ -1,0 +1,25 @@
+# ai.txt — AI training and agent usage preferences for app.reserve.org
+# https://site.ai.txt.example / emerging convention
+
+Site: https://app.reserve.org
+Owner: Reserve Protocol
+Contact: https://reserve.org
+
+# Agent access
+# This site is the official Reserve Protocol interface for Decentralized Token Folios (DTFs).
+# Read-only content (docs, factsheets, skill definitions) may be used by AI agents to
+# answer user questions about the Reserve Protocol and DTFs.
+
+Agent-Skill: https://app.reserve.org/skills/dtf.md
+Agent-Skill-Source: https://www.npmjs.com/package/@reserve-protocol/dtf-cli
+API-Catalog: https://app.reserve.org/.well-known/api-catalog
+LLMS: https://app.reserve.org/llms.txt
+LLMS-Full: https://app.reserve.org/llms-full.txt
+
+# Training data
+# Training on public pages (docs, factsheets) is permitted.
+# User wallet / portfolio pages are excluded (see robots.txt).
+Allow-Training: /
+Disallow-Training: /portfolio
+Disallow-Training: /internal
+Disallow-Training: /deploy

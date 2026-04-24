@@ -10,6 +10,7 @@ import Brand from './Brand'
 const Container = ({ children }: { children: ReactNode }) => {
   // Check if the route is a "index-dtf" route
   const { pathname } = useLocation()
+  const isHome = pathname === '/'
 
   const border =
     pathname.includes('earn') ||
@@ -17,7 +18,12 @@ const Container = ({ children }: { children: ReactNode }) => {
       !pathname.includes('bridge'))
 
   return (
-    <div className={cn('w-full flex-shrink-0', border && 'border-b')}>
+    <div
+      className={cn(
+        'w-full flex-shrink-0',
+        border && (isHome ? 'lg:border-b' : 'border-b')
+      )}
+    >
       {children}
     </div>
   )
