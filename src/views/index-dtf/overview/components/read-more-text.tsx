@@ -28,7 +28,7 @@ const ReadMoreText = ({
     shouldTruncate && !expanded ? truncateAtWord(text, maxLength) : text
 
   return (
-    <p className={className}>
+    <p className={`whitespace-pre-line ${className ?? ''}`}>
       {displayText}
       {shouldTruncate && (
         <>
