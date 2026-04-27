@@ -25,14 +25,19 @@ const useDelegateState = () => {
       {
         address: proposal?.voteToken ?? '0x',
         abi: votesTokenAbi,
-        functionName: 'delegates',
+        functionName: proposal?.isOptimistic
+          ? 'optimisticDelegates'
+          : 'delegates',
         chainId,
         args: [account ?? '0x'],
       },
     ],
     allowFailure: false,
     query: {
-      enabled: !!account && !!proposal?.voteToken,
+      enabled:
+        !!account &&
+        !!proposal?.voteToken &&
+        proposal.isOptimistic !== undefined,
       select: (data) => {
         return {
           balance: data[0] as bigint,

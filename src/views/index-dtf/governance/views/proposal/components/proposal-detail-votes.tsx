@@ -89,6 +89,22 @@ const VoteList = ({ votes }: { votes: Vote[] }) => {
 
 const ProposalDetailVotes = () => {
   const votes = useAtomValue(proposalVotesAtom)
+  const proposal = useAtomValue(proposalDetailAtom)
+
+  if (proposal?.isOptimistic) {
+    return (
+      <Tabs className="bg-background rounded-3xl p-2" defaultValue={TABS.AGAINST}>
+        <TabsList>
+          <TabsTrigger value={TABS.AGAINST}>Vetoes</TabsTrigger>
+        </TabsList>
+        <div className="bg-card rounded-3xl p-4 border mt-2">
+          <TabsContent value={TABS.AGAINST}>
+            <VoteList votes={votes[TABS.AGAINST]} />
+          </TabsContent>
+        </div>
+      </Tabs>
+    )
+  }
 
   return (
     <Tabs className="bg-background rounded-3xl p-2" defaultValue={TABS.FOR}>

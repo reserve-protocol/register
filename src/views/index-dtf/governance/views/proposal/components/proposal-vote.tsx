@@ -116,7 +116,9 @@ const ProposalVoteOverview = () => {
       <div className="flex items-center justify-between gap-2 p-3 flex-wrap text-sm border-b">
         <div className="flex items-center gap-1">
           <AsteriskIcon />
-          <span>Your voting power:</span>
+          <span>
+            {proposal?.isOptimistic ? 'Your veto power:' : 'Your voting power:'}
+          </span>
           <span className="font-bold">
             {formatCurrency(votePower ? +votePower : 0)}
           </span>
@@ -137,6 +139,7 @@ const ProposalVoteOverview = () => {
         <DelegateModal
           tokenAddress={proposal?.voteToken}
           delegated={!hasNoDelegates}
+          optimistic={proposal?.isOptimistic}
           onClose={() => setDelegateVisible(false)}
         />
       )}

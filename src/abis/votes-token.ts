@@ -15,9 +15,40 @@ export default [
   },
   {
     type: 'function',
+    name: 'delegateOptimistic',
+    inputs: [{ name: 'delegatee', type: 'address', internalType: 'address' }],
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
     name: 'delegates',
     inputs: [{ name: 'account', type: 'address', internalType: 'address' }],
     outputs: [{ name: '', type: 'address', internalType: 'address' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    name: 'optimisticDelegates',
+    inputs: [{ name: 'account', type: 'address', internalType: 'address' }],
+    outputs: [{ name: '', type: 'address', internalType: 'address' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    name: 'getPastOptimisticVotes',
+    inputs: [
+      { name: 'account', type: 'address', internalType: 'address' },
+      { name: 'timepoint', type: 'uint256', internalType: 'uint256' },
+    ],
+    outputs: [{ name: '', type: 'uint256', internalType: 'uint256' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    name: 'getPastTotalSupply',
+    inputs: [{ name: 'timepoint', type: 'uint256', internalType: 'uint256' }],
+    outputs: [{ name: '', type: 'uint256', internalType: 'uint256' }],
     stateMutability: 'view',
   },
 ] as const

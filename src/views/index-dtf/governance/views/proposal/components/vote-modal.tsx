@@ -53,11 +53,13 @@ const VoteModal = (props: ModalProps) => {
       : undefined
   )
 
-  const voteOptions = [
-    { label: t`For`, value: VOTE_TYPE.FOR },
-    { label: t`Against`, value: VOTE_TYPE.AGAINST },
-    { label: t`Abstain`, value: VOTE_TYPE.ABSTAIN },
-  ]
+  const voteOptions = proposal?.isOptimistic
+    ? [{ label: t`Veto`, value: VOTE_TYPE.AGAINST }]
+    : [
+        { label: t`For`, value: VOTE_TYPE.FOR },
+        { label: t`Against`, value: VOTE_TYPE.AGAINST },
+        { label: t`Abstain`, value: VOTE_TYPE.ABSTAIN },
+      ]
 
   const { status, isMining } = useWatchTransaction({
     hash,
@@ -95,7 +97,11 @@ const VoteModal = (props: ModalProps) => {
   }
 
   return (
-    <Modal {...props} title={t`Voting`} style={{ maxWidth: 420 }}>
+    <Modal
+      {...props}
+      title={proposal?.isOptimistic ? t`Vetoing` : t`Voting`}
+      style={{ maxWidth: 420 }}
+    >
       <div className="flex flex-col items-center">
         <span className="text-xl font-medium">
           "
@@ -146,7 +152,7 @@ const VoteModal = (props: ModalProps) => {
       <TransactionButton
         loading={isLoading || isMining}
         variant={!!hash ? 'accent' : 'default'}
-        text={t`Vote`}
+        text={proposal?.isOptimistic ? t`Veto` : t`Vote`}
         loadingText={isMining ? t`Confirming...` : undefined}
         className="w-full"
         onClick={write}

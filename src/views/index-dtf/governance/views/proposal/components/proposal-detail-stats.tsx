@@ -3,6 +3,8 @@ import { useAtomValue } from 'jotai'
 import { CircleSlash, ThumbsDown, ThumbsUp, X } from 'lucide-react'
 
 import dtfIndexGovernance from '@/abis/dtf-index-governance'
+import reserveOptimisticGovernorAbi from '@/abis/reserve-optimistic-governor'
+import votesTokenAbi from '@/abis/votes-token'
 import { Separator } from '@/components/ui/separator'
 import { chainIdAtom } from '@/state/atoms'
 import { formatCurrency, formatPercentage } from '@/utils'
@@ -10,7 +12,7 @@ import { PROPOSAL_STATES } from '@/utils/constants'
 import { Check } from 'lucide-react'
 import { useMemo } from 'react'
 import { formatEther } from 'viem'
-import { useReadContracts } from 'wagmi'
+import { useReadContract } from 'wagmi'
 import { proposalDetailAtom, proposalStateAtom } from '../atom'
 
 const BooleanIcon = ({
@@ -42,25 +44,58 @@ const BooleanIcon = ({
 const useProposalDetailStats = () => {
   const proposal = useAtomValue(proposalDetailAtom)
   const chainId = useAtomValue(chainIdAtom)
-  const { data } = useReadContracts({
-    contracts: [
-      {
-        address: proposal?.governor ?? '0x1',
-        abi: dtfIndexGovernance,
-        functionName: 'proposalVotes',
-        args: [BigInt(proposal?.id || '0')],
-        chainId,
-      },
-    ],
-    allowFailure: false,
+  const { data: votes = [0n, 0n, 0n] } = useReadContract({
+    address: proposal?.governor,
+    abi: dtfIndexGovernance,
+    functionName: 'proposalVotes',
+    args: proposal ? [BigInt(proposal.id)] : undefined,
+    chainId,
     query: { enabled: !!proposal },
   })
+  const { data: vetoThresholdRatio } = useReadContract({
+    address: proposal?.governor,
+    abi: reserveOptimisticGovernorAbi,
+    functionName: 'vetoThreshold',
+    args: proposal ? [BigInt(proposal.id)] : undefined,
+    chainId,
+    query: { enabled: !!proposal && proposal.isOptimistic === true },
+  })
+  const { data: pastTotalSupply } = useReadContract({
+    address: proposal?.voteToken,
+    abi: votesTokenAbi,
+    functionName: 'getPastTotalSupply',
+    args: proposal ? [BigInt(proposal.voteStart)] : undefined,
+    chainId,
+    query: {
+      enabled:
+        !!proposal && proposal.isOptimistic === true && !!proposal.voteToken,
+    },
+  })
 
-  const [votes] = data ?? [[0n, 0n, 0n]]
   const [againstVotes, forVotes, abstainVotes] = useMemo(
     () => votes.map((v) => +formatEther(v)),
     [votes]
   )
+  const vetoThreshold = useMemo(() => {
+    if (
+      !proposal?.isOptimistic ||
+      vetoThresholdRatio === undefined ||
+      pastTotalSupply === undefined
+    ) {
+      return 0
+    }
+
+    const threshold = (vetoThresholdRatio * pastTotalSupply) / 10n ** 18n
+
+    return +formatEther(threshold > 0n ? threshold : 1n)
+  }, [proposal?.isOptimistic, vetoThresholdRatio, pastTotalSupply])
+  const [vetoWeight, vetoReached] = useMemo(() => {
+    if (!vetoThreshold) return [0, false]
+
+    const weight = againstVotes / vetoThreshold
+
+    return [weight, againstVotes >= vetoThreshold]
+  }, [againstVotes, vetoThreshold])
 
   const [quorumWeight, currentQuorum, quorumNeeded, quorumReached] =
     useMemo(() => {
@@ -103,6 +138,10 @@ const useProposalDetailStats = () => {
     quorumReached,
     majorityWeight,
     majoritySupport,
+    vetoThreshold,
+    vetoWeight,
+    vetoReached,
+    isOptimistic: proposal?.isOptimistic === true,
   }
 }
 
@@ -148,6 +187,54 @@ const QuorumStat = ({
         <div
           className={`h-full rounded-full ${quorumReached ? 'bg-green-500' : 'bg-orange-500'}`}
           style={{ width: `${Math.min(quorumWeight * 100, 100)}%` }}
+        />
+      </div>
+    </div>
+  )
+}
+
+const VetoThresholdStat = ({
+  vetoWeight,
+  vetoVotes,
+  vetoThreshold,
+  vetoReached,
+}: {
+  vetoWeight: number
+  vetoVotes: number
+  vetoThreshold: number
+  vetoReached: boolean
+}) => {
+  return (
+    <div className="flex flex-col gap-3 p-4">
+      <div className="flex items-center justify-between gap-2">
+        <div className="flex items-center gap-3">
+          <BooleanIcon value={vetoReached} />
+          <span>Veto threshold</span>
+        </div>
+        <div className="flex items-center gap-2 text-base sm:text-lg">
+          <span
+            className={`font-bold ${vetoReached ? 'text-green-500' : 'text-orange-500'}`}
+          >
+            {formatPercentage(Math.min(vetoWeight, 1) * 100)}
+          </span>
+
+          <span className="text-legend whitespace-nowrap">
+            {formatCurrency(vetoVotes, 0, {
+              notation: 'compact',
+              compactDisplay: 'short',
+            })}{' '}
+            of{' '}
+            {formatCurrency(vetoThreshold, 0, {
+              notation: 'compact',
+              compactDisplay: 'short',
+            })}
+          </span>
+        </div>
+      </div>
+      <div className=" relative h-1 bg-gray-200 rounded-full">
+        <div
+          className={`h-full rounded-full ${vetoReached ? 'bg-green-500' : 'bg-orange-500'}`}
+          style={{ width: `${Math.min(vetoWeight * 100, 100)}%` }}
         />
       </div>
     </div>
@@ -270,6 +357,29 @@ const VoteDistributionStat = ({
   )
 }
 
+const OptimisticVoteDistributionStat = ({
+  vetoVotes,
+}: {
+  vetoVotes: number
+}) => {
+  return (
+    <div className="flex items-center justify-between p-4">
+      <div className="flex items-center gap-3">
+        <div className="flex items-center justify-center w-7 h-7 text-destructive bg-muted rounded">
+          <ThumbsDown size={18} />
+        </div>
+        <span className="min-w-[60px]">Vetoes</span>
+      </div>
+      <span className="font-bold text-destructive">
+        {formatCurrency(+vetoVotes, 0, {
+          notation: 'compact',
+          compactDisplay: 'short',
+        })}
+      </span>
+    </div>
+  )
+}
+
 const ProposalDetailStats = () => {
   const state = useAtomValue(proposalStateAtom) ?? ''
   const {
@@ -282,6 +392,10 @@ const ProposalDetailStats = () => {
     againstVotes,
     forVotes,
     abstainVotes,
+    vetoThreshold,
+    vetoWeight,
+    vetoReached,
+    isOptimistic,
   } = useProposalDetailStats()
 
   return (
@@ -293,23 +407,38 @@ const ProposalDetailStats = () => {
         votes
       </h4>
       <div className="flex flex-col bg-card rounded-3xl border">
-        <QuorumStat
-          quorumWeight={quorumWeight}
-          currentQuorum={currentQuorum}
-          quorumNeeded={quorumNeeded}
-          quorumReached={quorumReached}
-        />
-        <Separator />
-        <MajoritySupportStat
-          majorityWeight={majorityWeight}
-          majoritySupport={majoritySupport}
-        />
-        <Separator />
-        <VoteDistributionStat
-          forVotes={forVotes}
-          againstVotes={againstVotes}
-          abstainVotes={abstainVotes}
-        />
+        {isOptimistic ? (
+          <>
+            <VetoThresholdStat
+              vetoWeight={vetoWeight}
+              vetoVotes={againstVotes}
+              vetoThreshold={vetoThreshold}
+              vetoReached={vetoReached}
+            />
+            <Separator />
+            <OptimisticVoteDistributionStat vetoVotes={againstVotes} />
+          </>
+        ) : (
+          <>
+            <QuorumStat
+              quorumWeight={quorumWeight}
+              currentQuorum={currentQuorum}
+              quorumNeeded={quorumNeeded}
+              quorumReached={quorumReached}
+            />
+            <Separator />
+            <MajoritySupportStat
+              majorityWeight={majorityWeight}
+              majoritySupport={majoritySupport}
+            />
+            <Separator />
+            <VoteDistributionStat
+              forVotes={forVotes}
+              againstVotes={againstVotes}
+              abstainVotes={abstainVotes}
+            />
+          </>
+        )}
       </div>
     </div>
   )

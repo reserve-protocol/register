@@ -23,6 +23,7 @@ const DelegateButton = () => {
         <DelegateModal
           tokenAddress={proposal?.voteToken}
           delegated={!hasNoDelegates}
+          optimistic={proposal?.isOptimistic}
           onClose={() => setDelegateVisible(false)}
         />
       )}
@@ -36,6 +37,7 @@ const ProposalVoteButton = () => {
   const { hasUndelegatedBalance } = useDelegateState()
   const { votePower = '0.0', vote } = useAtomValue(accountVotesAtom)
   const state = useAtomValue(proposalStateAtom)
+  const proposal = useAtomValue(proposalDetailAtom)
 
   if (hasUndelegatedBalance) {
     return <DelegateButton />
@@ -56,8 +58,12 @@ const ProposalVoteButton = () => {
       >
         {!account ? (
           'Please connect your wallet'
+        ) : vote && proposal?.isOptimistic ? (
+          'You vetoed'
         ) : vote ? (
           `You voted "${vote}"`
+        ) : proposal?.isOptimistic ? (
+          'Veto on-chain'
         ) : (
           <Trans>Vote on-chain</Trans>
         )}

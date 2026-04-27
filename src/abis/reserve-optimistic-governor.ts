@@ -38,6 +38,13 @@ const reserveOptimisticGovernorAbi = [
   },
   {
     type: 'function',
+    name: 'vetoThreshold',
+    stateMutability: 'view',
+    inputs: [{ name: 'proposalId', type: 'uint256' }],
+    outputs: [{ name: '', type: 'uint256' }],
+  },
+  {
+    type: 'function',
     name: 'proposalThrottleCapacity',
     stateMutability: 'view',
     inputs: [],

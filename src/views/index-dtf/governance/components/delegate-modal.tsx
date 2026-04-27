@@ -12,10 +12,12 @@ const DelegateModal = ({
   onClose,
   delegated,
   tokenAddress,
+  optimistic = false,
 }: {
   onClose: () => void
   delegated: boolean
   tokenAddress?: Address
+  optimistic?: boolean
 }) => {
   const account = useAtomValue(walletAtom)
   const [address, setAddress] = useState(!delegated && account ? account : '')
@@ -25,7 +27,7 @@ const DelegateModal = ({
       ? {
           abi: votesTokenAbi,
           address: tokenAddress,
-          functionName: 'delegate',
+          functionName: optimistic ? 'delegateOptimistic' : 'delegate',
           args: [validAddress],
         }
       : undefined
