@@ -4,6 +4,7 @@ import { useAtomValue } from 'jotai'
 import SectionAnchor from '@/components/section-anchor'
 import { Link } from 'react-router-dom'
 import { ROUTES } from '@/utils/constants'
+import ReadMoreText from '../read-more-text'
 
 const YieldIndexAbout = () => {
   const data = useAtomValue(indexDTFAtom)
@@ -25,9 +26,10 @@ const YieldIndexAbout = () => {
         </h2>
         <SectionAnchor id="about" />
       </div>
-      <p className="text-legend mb-4">
-        {brandData.dtf?.description || data.mandate}
-      </p>
+      <ReadMoreText
+        text={brandData.dtf?.description || data.mandate}
+        className="text-legend mb-4"
+      />
       <div className="flex items-center gap-4 text-sm">
         {brandData.socials?.website && (
           <Link

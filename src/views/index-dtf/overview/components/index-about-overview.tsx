@@ -11,6 +11,7 @@ import { BrickWall, ImagePlus } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { useTrackIndexDTFClick } from '../../hooks/useTrackIndexDTFPage'
 import SectionAnchor from '@/components/section-anchor'
+import ReadMoreText from './read-more-text'
 
 const BrandManagerEditButton = () => {
   const isBrandManager = useAtomValue(isBrandManagerAtom)
@@ -65,9 +66,10 @@ const Mandate = () => {
         <h2 className="text-2xl font-light mb-1">About this DTF</h2>
         <SectionAnchor id="about" />
       </div>
-      <p className="text-legend">
-        {brandData.dtf?.description || data.mandate}
-      </p>
+      <ReadMoreText
+        text={brandData.dtf?.description || data.mandate}
+        className="text-legend"
+      />
     </div>
   )
 }
