@@ -30,15 +30,15 @@ const ReadMoreText = ({
   return (
     <p className={className}>
       {displayText}
-      {shouldTruncate && !expanded && (
+      {shouldTruncate && (
         <>
-          ...{' '}
+          {!expanded && '...'}{' '}
           <button
             type="button"
             className="font-medium text-foreground underline underline-offset-2 hover:text-primary"
-            onClick={() => setExpanded(true)}
+            onClick={() => setExpanded((value) => !value)}
           >
-            Read more...
+            {expanded ? 'Read less' : 'Read more...'}
           </button>
         </>
       )}
