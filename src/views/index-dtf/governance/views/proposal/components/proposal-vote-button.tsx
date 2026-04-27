@@ -34,10 +34,16 @@ const DelegateButton = () => {
 const ProposalVoteButton = () => {
   const account = useAtomValue(walletAtom)
   const [isVoteVisible, setVoteVisible] = useState(false)
-  const { hasUndelegatedBalance } = useDelegateState()
+  const { delegate, hasUndelegatedBalance } = useDelegateState()
   const { votePower = '0.0', vote } = useAtomValue(accountVotesAtom)
   const state = useAtomValue(proposalStateAtom)
   const proposal = useAtomValue(proposalDetailAtom)
+  const hasExternalOptimisticDelegate = Boolean(
+    proposal?.isOptimistic &&
+      account &&
+      delegate &&
+      delegate.toLowerCase() !== account.toLowerCase()
+  )
 
   if (hasUndelegatedBalance) {
     return <DelegateButton />
@@ -62,6 +68,10 @@ const ProposalVoteButton = () => {
           'You vetoed'
         ) : vote ? (
           `You voted "${vote}"`
+        ) : proposal?.isOptimistic && hasExternalOptimisticDelegate ? (
+          'Veto power delegated'
+        ) : proposal?.isOptimistic && (!votePower || votePower === '0.0') ? (
+          'No veto power'
         ) : proposal?.isOptimistic ? (
           'Veto on-chain'
         ) : (

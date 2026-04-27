@@ -1,8 +1,8 @@
 import DelegateIcon from '@/components/icons/DelegateIcon'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
-import { chainIdAtom } from '@/state/atoms'
-import { formatCurrency } from '@/utils'
+import { chainIdAtom, walletAtom } from '@/state/atoms'
+import { formatCurrency, shortenAddress } from '@/utils'
 import { PROPOSAL_STATES } from '@/utils/constants'
 import { ExplorerDataType, getExplorerLink } from '@/utils/getExplorerLink'
 import { useAtomValue } from 'jotai'
@@ -106,22 +106,40 @@ const ProposalVoteOverview = () => {
   const state = useAtomValue(proposalStateAtom) ?? ''
   const [isDelegateVisible, setDelegateVisible] = useState(false)
   const proposal = useAtomValue(proposalDetailAtom)
+  const account = useAtomValue(walletAtom)
   const { votePower = '0.0' } = useAtomValue(accountVotesAtom)
-  const { hasUndelegatedBalance, hasNoDelegates } = useDelegateState()
+  const { delegate, hasUndelegatedBalance, hasNoDelegates } =
+    useDelegateState()
+  const hasExternalOptimisticDelegate = Boolean(
+    proposal?.isOptimistic &&
+      account &&
+      delegate &&
+      delegate.toLowerCase() !== account.toLowerCase()
+  )
 
   if (FINAL_STATES.includes(state)) return null
 
   return (
     <>
       <div className="flex items-center justify-between gap-2 p-3 flex-wrap text-sm border-b">
-        <div className="flex items-center gap-1">
-          <AsteriskIcon />
-          <span>
-            {proposal?.isOptimistic ? 'Your veto power:' : 'Your voting power:'}
-          </span>
-          <span className="font-bold">
-            {formatCurrency(votePower ? +votePower : 0)}
-          </span>
+        <div className="flex flex-col gap-1 text-left">
+          <div className="flex items-center gap-1">
+            <AsteriskIcon />
+            <span>
+              {proposal?.isOptimistic
+                ? 'Your veto power:'
+                : 'Your voting power:'}
+            </span>
+            <span className="font-bold">
+              {formatCurrency(votePower ? +votePower : 0)}
+            </span>
+          </div>
+          {hasExternalOptimisticDelegate && (
+            <span className="text-xs text-legend">
+              Veto power delegated to {shortenAddress(delegate ?? '')}. That
+              delegate must veto for this power to count.
+            </span>
+          )}
         </div>
         <div
           className={cn(

@@ -59,10 +59,12 @@ const useDelegateState = () => {
 
   return useMemo(() => {
     return {
+      balance: data?.balance ?? 0n,
+      delegate: data?.delegate,
       hasNoDelegates,
       hasUndelegatedBalance,
     }
-  }, [hasNoDelegates, hasUndelegatedBalance])
+  }, [data?.balance, data?.delegate, hasNoDelegates, hasUndelegatedBalance])
 }
 
 export default useDelegateState

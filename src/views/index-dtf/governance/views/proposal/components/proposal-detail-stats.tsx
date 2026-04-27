@@ -6,7 +6,7 @@ import dtfIndexGovernance from '@/abis/dtf-index-governance'
 import reserveOptimisticGovernorAbi from '@/abis/reserve-optimistic-governor'
 import votesTokenAbi from '@/abis/votes-token'
 import { Separator } from '@/components/ui/separator'
-import { chainIdAtom } from '@/state/atoms'
+import { chainIdAtom, walletAtom } from '@/state/atoms'
 import { formatCurrency, formatPercentage } from '@/utils'
 import { PROPOSAL_STATES } from '@/utils/constants'
 import { Check } from 'lucide-react'
@@ -44,6 +44,7 @@ const BooleanIcon = ({
 const useProposalDetailStats = () => {
   const proposal = useAtomValue(proposalDetailAtom)
   const chainId = useAtomValue(chainIdAtom)
+  const account = useAtomValue(walletAtom)
   const { data: votes = [0n, 0n, 0n] } = useReadContract({
     address: proposal?.governor,
     abi: dtfIndexGovernance,
@@ -96,6 +97,26 @@ const useProposalDetailStats = () => {
 
     return [weight, againstVotes >= vetoThreshold]
   }, [againstVotes, vetoThreshold])
+  const vetoRecords = useMemo(() => {
+    if (!proposal?.isOptimistic) return []
+
+    return proposal.votes.filter(
+      (vote) => vote.choice.toUpperCase() === 'AGAINST'
+    )
+  }, [proposal?.isOptimistic, proposal?.votes])
+  const zeroWeightVetoCount = useMemo(
+    () => vetoRecords.filter((vote) => !Number(vote.weight)).length,
+    [vetoRecords]
+  )
+  const hasZeroWeightAccountVeto = useMemo(() => {
+    if (!account) return false
+
+    return vetoRecords.some(
+      (vote) =>
+        vote.voter.toLowerCase() === account.toLowerCase() &&
+        !Number(vote.weight)
+    )
+  }, [account, vetoRecords])
 
   const [quorumWeight, currentQuorum, quorumNeeded, quorumReached] =
     useMemo(() => {
@@ -141,6 +162,9 @@ const useProposalDetailStats = () => {
     vetoThreshold,
     vetoWeight,
     vetoReached,
+    submittedVetoCount: vetoRecords.length,
+    zeroWeightVetoCount,
+    hasZeroWeightAccountVeto,
     isOptimistic: proposal?.isOptimistic === true,
   }
 }
@@ -368,7 +392,7 @@ const OptimisticVoteDistributionStat = ({
         <div className="flex items-center justify-center w-7 h-7 text-destructive bg-muted rounded">
           <ThumbsDown size={18} />
         </div>
-        <span className="min-w-[60px]">Vetoes</span>
+        <span className="min-w-[60px]">Counted veto power</span>
       </div>
       <span className="font-bold text-destructive">
         {formatCurrency(+vetoVotes, 0, {
@@ -376,6 +400,45 @@ const OptimisticVoteDistributionStat = ({
           compactDisplay: 'short',
         })}
       </span>
+    </div>
+  )
+}
+
+const SubmittedVetoStat = ({
+  submittedVetoCount,
+  zeroWeightVetoCount,
+  hasZeroWeightAccountVeto,
+}: {
+  submittedVetoCount: number
+  zeroWeightVetoCount: number
+  hasZeroWeightAccountVeto: boolean
+}) => {
+  return (
+    <div className="flex flex-col gap-3 p-4">
+      <div className="flex items-center justify-between gap-2">
+        <div className="flex items-center gap-3">
+          <div className="flex items-center justify-center w-7 h-7 text-destructive bg-muted rounded">
+            <ThumbsDown size={18} />
+          </div>
+          <span>Submitted vetoes</span>
+        </div>
+        <div className="flex items-center gap-2 text-base sm:text-lg">
+          <span className="font-bold text-destructive">
+            {submittedVetoCount}
+          </span>
+          {!!zeroWeightVetoCount && (
+            <span className="text-legend whitespace-nowrap">
+              {zeroWeightVetoCount} counted as 0
+            </span>
+          )}
+        </div>
+      </div>
+      {hasZeroWeightAccountVeto && (
+        <div className="rounded-xl border border-orange-500/30 bg-orange-500/10 p-3 text-sm text-orange-700 dark:text-orange-300">
+          Your veto was submitted, but it counted as 0 because this wallet had
+          no optimistic veto power at the proposal snapshot.
+        </div>
+      )}
     </div>
   )
 }
@@ -395,6 +458,9 @@ const ProposalDetailStats = () => {
     vetoThreshold,
     vetoWeight,
     vetoReached,
+    submittedVetoCount,
+    zeroWeightVetoCount,
+    hasZeroWeightAccountVeto,
     isOptimistic,
   } = useProposalDetailStats()
 
@@ -417,6 +483,12 @@ const ProposalDetailStats = () => {
             />
             <Separator />
             <OptimisticVoteDistributionStat vetoVotes={againstVotes} />
+            <Separator />
+            <SubmittedVetoStat
+              submittedVetoCount={submittedVetoCount}
+              zeroWeightVetoCount={zeroWeightVetoCount}
+              hasZeroWeightAccountVeto={hasZeroWeightAccountVeto}
+            />
           </>
         ) : (
           <>
