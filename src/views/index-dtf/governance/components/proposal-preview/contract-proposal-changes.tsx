@@ -23,6 +23,7 @@ import {
   SetVotingDelayPreview,
   SetVotingPeriodPreview,
   SetProposalThresholdPreview,
+  SetOptimisticParamsPreview,
   UpdateQuorumNumeratorPreview,
   UpdateDelayPreview,
 } from './dtf-settings-preview'
@@ -47,6 +48,7 @@ const ChangesOverviewComponentMap: Record<
   setVotingDelay: SetVotingDelayPreview,
   setVotingPeriod: SetVotingPeriodPreview,
   setProposalThreshold: SetProposalThresholdPreview,
+  setOptimisticParams: SetOptimisticParamsPreview,
   updateQuorumNumerator: UpdateQuorumNumeratorPreview,
   // Timelock functions
   updateDelay: UpdateDelayPreview,

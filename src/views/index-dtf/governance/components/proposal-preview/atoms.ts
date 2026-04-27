@@ -3,6 +3,7 @@ import dtfIndexAbiV2 from '@/abis/dtf-index-abi-v2'
 import dtfIndexAbiV4 from '@/abis/dtf-index-abi-v4'
 import dtfIndexGovernance from '@/abis/dtf-index-governance'
 import dtfIndexStakingVault from '@/abis/dtf-index-staking-vault'
+import reserveOptimisticGovernorAbi from '@/abis/reserve-optimistic-governor'
 import Timelock from '@/abis/Timelock'
 import { indexDTFAtom } from '@/state/dtf/atoms'
 import { atom } from 'jotai'
@@ -22,6 +23,11 @@ import {
 import dtfIndexAbi from '@/abis/dtf-index-abi'
 import dtfIndexAbiV1 from '@/abis/dtf-index-abi-v1'
 
+const governanceAbi = [
+  ...dtfIndexGovernance,
+  ...reserveOptimisticGovernorAbi,
+] as Abi
+
 export const dtfAbiMapppingAtom = atom((get) => {
   const dtf = get(indexDTFAtom)
 
@@ -35,12 +41,12 @@ export const dtfAbiMapppingAtom = atom((get) => {
   }
 
   if (dtf.ownerGovernance) {
-    abiMapping[dtf.ownerGovernance.id.toLowerCase()] = dtfIndexGovernance
+    abiMapping[dtf.ownerGovernance.id.toLowerCase()] = governanceAbi
     abiMapping[dtf.ownerGovernance.timelock.id.toLowerCase()] = Timelock
   }
 
   if (dtf.tradingGovernance) {
-    abiMapping[dtf.tradingGovernance.id.toLowerCase()] = dtfIndexGovernance
+    abiMapping[dtf.tradingGovernance.id.toLowerCase()] = governanceAbi
     abiMapping[dtf.tradingGovernance.timelock.id.toLowerCase()] = Timelock
   }
 
@@ -48,7 +54,7 @@ export const dtfAbiMapppingAtom = atom((get) => {
     abiMapping[dtf.stToken.id.toLowerCase()] = dtfIndexStakingVault
 
     if (dtf.stToken.governance) {
-      abiMapping[dtf.stToken.governance.id.toLowerCase()] = dtfIndexGovernance
+      abiMapping[dtf.stToken.governance.id.toLowerCase()] = governanceAbi
       abiMapping[dtf.stToken.governance.timelock.id.toLowerCase()] = Timelock
     }
   }

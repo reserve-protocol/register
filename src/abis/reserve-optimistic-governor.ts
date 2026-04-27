@@ -14,6 +14,23 @@ const reserveOptimisticGovernorAbi = [
   },
   {
     type: 'function',
+    name: 'setOptimisticParams',
+    stateMutability: 'nonpayable',
+    inputs: [
+      {
+        name: 'params',
+        type: 'tuple',
+        components: [
+          { name: 'vetoDelay', type: 'uint48' },
+          { name: 'vetoPeriod', type: 'uint32' },
+          { name: 'vetoThreshold', type: 'uint256' },
+        ],
+      },
+    ],
+    outputs: [],
+  },
+  {
+    type: 'function',
     name: 'isOptimistic',
     stateMutability: 'view',
     inputs: [{ name: 'proposalId', type: 'uint256' }],
@@ -25,6 +42,13 @@ const reserveOptimisticGovernorAbi = [
     stateMutability: 'view',
     inputs: [],
     outputs: [{ name: '', type: 'uint256' }],
+  },
+  {
+    type: 'function',
+    name: 'setProposalThrottle',
+    stateMutability: 'nonpayable',
+    inputs: [{ name: 'newProposalThrottleCapacity', type: 'uint256' }],
+    outputs: [],
   },
   {
     type: 'function',

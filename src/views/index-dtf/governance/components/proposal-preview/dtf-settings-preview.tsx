@@ -2,7 +2,7 @@ import { chainIdAtom } from '@/state/atoms'
 import { indexDTFAtom, indexDTFFeeAtom } from '@/state/dtf/atoms'
 import { DecodedCalldata } from '@/types'
 import EnsName from '@/components/utils/ens-name'
-import { shortenAddress } from '@/utils'
+import { formatPercentage, parseDuration, shortenAddress } from '@/utils'
 import { ExplorerDataType, getExplorerLink } from '@/utils/getExplorerLink'
 import { useAtomValue } from 'jotai'
 import {
@@ -16,7 +16,7 @@ import {
   Users
 } from 'lucide-react'
 import { Link } from 'react-router-dom'
-import { Address, zeroHash } from 'viem'
+import { Address, formatEther, zeroHash } from 'viem'
 import {
   getDTFSettingsGovernance,
   getGovernanceVoteTokenAddress,
@@ -547,6 +547,68 @@ export const SetProposalThresholdPreview = ({
             <Shield size={14} className="text-primary" />
             <span className="text-sm font-medium text-primary">
               {percentage.toFixed(2)}%
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+type OptimisticGovernanceParams = {
+  vetoDelay: number
+  vetoPeriod: number
+  vetoThreshold: bigint
+}
+
+export const SetOptimisticParamsPreview = ({
+  decodedCalldata,
+}: {
+  decodedCalldata: DecodedCalldata
+  targetAddress?: Address
+}) => {
+  const rawParams = decodedCalldata.data[0] as
+    | OptimisticGovernanceParams
+    | [number, number, bigint]
+
+  const params = Array.isArray(rawParams)
+    ? {
+        vetoDelay: rawParams[0],
+        vetoPeriod: rawParams[1],
+        vetoThreshold: rawParams[2],
+      }
+    : rawParams
+
+  return (
+    <div className="rounded-2xl border bg-muted/70 p-4 space-y-3">
+      <div className="flex items-center gap-2">
+        <Edit2 size={16} className="text-primary" />
+        <div className="text-sm font-medium">
+          Update Optimistic Governance Parameters
+        </div>
+      </div>
+      <div className="space-y-2">
+        <div className="p-3 rounded-xl bg-primary/5 border border-primary/20">
+          <div className="flex items-center justify-between">
+            <span className="text-sm text-muted-foreground">Veto delay:</span>
+            <span className="text-sm font-medium text-primary">
+              {parseDuration(Number(params.vetoDelay))}
+            </span>
+          </div>
+        </div>
+        <div className="p-3 rounded-xl bg-primary/5 border border-primary/20">
+          <div className="flex items-center justify-between">
+            <span className="text-sm text-muted-foreground">Veto period:</span>
+            <span className="text-sm font-medium text-primary">
+              {parseDuration(Number(params.vetoPeriod))}
+            </span>
+          </div>
+        </div>
+        <div className="p-3 rounded-xl bg-primary/5 border border-primary/20">
+          <div className="flex items-center justify-between">
+            <span className="text-sm text-muted-foreground">Veto threshold:</span>
+            <span className="text-sm font-medium text-primary">
+              {formatPercentage(Number(formatEther(params.vetoThreshold)) * 100)}
             </span>
           </div>
         </div>
