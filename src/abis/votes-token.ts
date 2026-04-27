@@ -46,6 +46,13 @@ export default [
   },
   {
     type: 'function',
+    name: 'getOptimisticVotes',
+    inputs: [{ name: 'account', type: 'address', internalType: 'address' }],
+    outputs: [{ name: '', type: 'uint256', internalType: 'uint256' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
     name: 'getPastTotalSupply',
     inputs: [{ name: 'timepoint', type: 'uint256', internalType: 'uint256' }],
     outputs: [{ name: '', type: 'uint256', internalType: 'uint256' }],

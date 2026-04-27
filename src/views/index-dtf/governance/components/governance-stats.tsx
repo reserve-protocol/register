@@ -12,7 +12,12 @@ import { useVotingPower } from '../hooks/use-voting-power'
 import { getDTFSettingsGovernance } from '../governance-helpers'
 
 const VotingPower = () => {
-  const { votingPower } = useVotingPower()
+  const {
+    votingPower,
+    optimisticVotingPower,
+    isOptimisticGovernance,
+    isOptimisticLoading,
+  } = useVotingPower()
   const dtf = useAtomValue(indexDTFAtom)
   const chainId = useAtomValue(chainIdAtom)
   const governanceToken = getDTFSettingsGovernance(dtf)?.token?.token
@@ -36,17 +41,39 @@ const VotingPower = () => {
         }
         chain={chainId}
       />
-      <div className="flex flex-col ">
-        <span className="text-legend text-sm">
-          {isVoteLockToken ? 'Vote locked' : 'Voting power'}
-        </span>
-        <span className="font-bold">
-          {formatCurrency(votingPower, 1, {
-            notation: 'compact',
-            compactDisplay: 'short',
-          })}{' '}
-          {isVoteLockToken ? `$${dtf?.stToken?.token.symbol}` : governanceToken?.symbol}
-        </span>
+      <div className="flex flex-col gap-2">
+        <div className="flex flex-col">
+          <span className="text-legend text-sm">
+            {isVoteLockToken ? 'Vote locked' : 'Voting power'}
+          </span>
+          <span className="font-bold">
+            {formatCurrency(votingPower, 1, {
+              notation: 'compact',
+              compactDisplay: 'short',
+            })}{' '}
+            {isVoteLockToken
+              ? `$${dtf?.stToken?.token.symbol}`
+              : governanceToken?.symbol}
+          </span>
+        </div>
+        {isOptimisticGovernance && (
+          <div className="flex flex-col">
+            <span className="text-legend text-sm">Optimistic voting power</span>
+            {isOptimisticLoading ? (
+              <Skeleton className="h-4 w-24" />
+            ) : (
+              <span className="font-bold">
+                {formatCurrency(optimisticVotingPower, 1, {
+                  notation: 'compact',
+                  compactDisplay: 'short',
+                })}{' '}
+                {isVoteLockToken
+                  ? `$${dtf?.stToken?.token.symbol}`
+                  : governanceToken?.symbol}
+              </span>
+            )}
+          </div>
+        )}
       </div>
     </div>
   )
