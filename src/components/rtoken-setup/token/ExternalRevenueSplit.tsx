@@ -15,7 +15,7 @@ interface ExternalRevenueSplitProps {
 
 const inputValidation = {
   required: true,
-  pattern: /^[0-9]*[.]?[0-9]$/i,
+  pattern: /^[0-9]*[.]?[0-9]{0,2}$/i,
   min: 0,
   max: 100,
 }
@@ -55,7 +55,7 @@ const ExternalRevenueSpit = ({
       +stakers >= 0 &&
       +stakers <= 100
     ) {
-      setValue('holders', ((1000 - +stakers * 10) / 10).toString())
+      setValue('holders', ((10000 - +stakers * 100) / 100).toString())
     }
   }, [formValues[1]])
 
@@ -70,7 +70,7 @@ const ExternalRevenueSpit = ({
       +holders >= 0 &&
       +holders <= 100
     ) {
-      setValue('stakers', ((1000 - +holders * 10) / 10).toString())
+      setValue('stakers', ((10000 - +holders * 100) / 100).toString())
     }
   }, [formValues[2]])
 
