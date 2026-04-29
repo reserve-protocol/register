@@ -1,13 +1,22 @@
 import { Skeleton } from '@/components/ui/skeleton'
-import { indexDTFAtom, indexDTFBrandAtom } from '@/state/dtf/atoms'
+import {
+  indexDTFAtom,
+  indexDTFBrandAtom,
+  isBrandManagerAtom,
+} from '@/state/dtf/atoms'
 import { useAtomValue } from 'jotai'
 import SectionAnchor from '@/components/section-anchor'
 import { Link } from 'react-router-dom'
 import { ROUTES } from '@/utils/constants'
+import { Button } from '@/components/ui/button'
+import { ImagePlus } from 'lucide-react'
+import { useTrackIndexDTFClick } from '../../../hooks/useTrackIndexDTFPage'
 
 const YieldIndexAbout = () => {
   const data = useAtomValue(indexDTFAtom)
   const brandData = useAtomValue(indexDTFBrandAtom)
+  const isBrandManager = useAtomValue(isBrandManagerAtom)
+  const { trackClick } = useTrackIndexDTFClick('overview', 'overview')
 
   if (!data || !brandData) {
     return (
@@ -19,11 +28,27 @@ const YieldIndexAbout = () => {
 
   return (
     <div className="p-4 sm:p-6">
-      <div className="flex items-center gap-1">
+      <div className="mb-4 flex items-center gap-2">
         <h2 className="text-2xl font-light mb-1">
           About {data.token.symbol}
         </h2>
         <SectionAnchor id="about" />
+        {isBrandManager && (
+          <Button
+            asChild
+            variant="outline"
+            size="sm"
+            className="ml-auto gap-1 rounded-full"
+          >
+            <Link
+              to={`../${ROUTES.MANAGE}`}
+              onClick={() => trackClick('brand_manager')}
+            >
+              <ImagePlus size={14} />
+              Edit page
+            </Link>
+          </Button>
+        )}
       </div>
       <p className="text-legend mb-4">
         {brandData.dtf?.description || data.mandate}
