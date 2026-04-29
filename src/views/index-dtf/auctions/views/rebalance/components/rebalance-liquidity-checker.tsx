@@ -4,7 +4,6 @@ import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import Help from '@/components/ui/help'
 import { cn } from '@/lib/utils'
 import { chainIdAtom } from '@/state/atoms'
-import { devModeAtom } from '@/state/chain/atoms/chainAtoms'
 import { formatCurrency } from '@/utils'
 import { LiquidityLevel } from '@/utils/liquidity'
 import { SwapLeg, WRAPPED_NATIVE } from '@/utils/zapper'
@@ -151,14 +150,6 @@ const TokenSection = ({
 }
 
 const RebalanceLiquidityChecker = () => {
-  const isDevMode = useAtomValue(devModeAtom)
-
-  if (!isDevMode) return null
-
-  return <LiquidityCheckerContent />
-}
-
-const LiquidityCheckerContent = () => {
   const tokenMap = useAtomValue(rebalanceTokenMapAtom)
   const { tokens, liquidityMap, isLoading, isFetching, retryingTokens, refetch, retryToken } =
     useRebalanceLiquidityCheck()
