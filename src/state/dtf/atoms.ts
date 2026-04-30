@@ -132,6 +132,7 @@ export const indexDTFBrandAtom = atom<IndexDTFBrand | undefined>(undefined)
 export const indexDTFTransactionsAtom = atom<Transaction[]>([])
 
 export const indexDTFFeeAtom = atom<number | undefined>(undefined)
+export const indexDTFFeeFloorAtom = atom<number | undefined>(undefined)
 
 export const indexDTF24hVolumeAtom = atom<number>((get) => {
   const txs = get(indexDTFTransactionsAtom)
@@ -256,4 +257,3 @@ export const isHybridDTFAtom = atom((get) => {
     dtf?.id.toLowerCase() === '0x92d7e020ab1cc45eaf744a5fe5954734fcd07119'
   )
 })
-

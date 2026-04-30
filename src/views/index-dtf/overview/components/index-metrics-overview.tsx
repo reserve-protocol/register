@@ -4,11 +4,13 @@ import {
   indexDTF24hVolumeAtom,
   indexDTFAtom,
   indexDTFBrandAtom,
+  indexDTFFeeFloorAtom,
   indexDTFMarketCapAtom,
   indexDTFTransactionsAtom,
 } from '@/state/dtf/atoms'
 import { useEnsName } from '@/hooks/use-ens-name'
 import { formatCurrency, formatPercentage } from '@/utils'
+import { formatDtfFeePercentage } from '@/utils/fees'
 import { ExplorerDataType, getExplorerLink } from '@/utils/getExplorerLink'
 import { atom, useAtomValue } from 'jotai'
 import {
@@ -180,28 +182,26 @@ const Created = () => {
 
 const AnnualizedTvlFee = () => {
   const dtf = useAtomValue(indexDTFAtom)
+  const feeFloor = useAtomValue(indexDTFFeeFloorAtom)
   return (
     <MetricsItem
       label="Annualized TVL Fee"
-      value={
-        dtf?.annualizedTvlFee
-          ? formatPercentage(dtf?.annualizedTvlFee * 100)
-          : ''
-      }
+      value={dtf ? formatDtfFeePercentage(dtf.annualizedTvlFee, feeFloor) : ''}
       icon={<TableRowsSplit size={16} />}
-      loading={!dtf?.annualizedTvlFee}
+      loading={!dtf}
     />
   )
 }
 
 const MintingFee = () => {
   const dtf = useAtomValue(indexDTFAtom)
+  const feeFloor = useAtomValue(indexDTFFeeFloorAtom)
   return (
     <MetricsItem
       label="Minting Fee"
-      value={dtf?.mintingFee ? formatPercentage(dtf?.mintingFee * 100) : ''}
+      value={dtf ? formatDtfFeePercentage(dtf.mintingFee, feeFloor) : ''}
       icon={<ChartPie size={16} />}
-      loading={!dtf?.mintingFee}
+      loading={!dtf}
     />
   )
 }

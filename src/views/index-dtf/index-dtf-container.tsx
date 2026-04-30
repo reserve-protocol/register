@@ -19,6 +19,7 @@ import {
   indexDTFBrandAtom,
   indexDTFExposureDataAtom,
   indexDTFFeeAtom,
+  indexDTFFeeFloorAtom,
   indexDTFPerformanceLoadingAtom,
   indexDTFRebalanceControlAtom,
   indexDTFStatusAtom,
@@ -33,6 +34,7 @@ import {
 } from '@/state/dtf/yield-index-atoms'
 import { useDTFStatus } from '@/hooks/use-dtf-status'
 import { isAddress } from '@/utils'
+import { MIN_DAO_FEE_PERCENTAGE } from '@/utils/fees'
 import { AvailableChain, supportedChains } from '@/utils/chains'
 import {
   FALLBACK_PLATFORM_FEES,
@@ -44,7 +46,7 @@ import { useQuery } from '@tanstack/react-query'
 import { atom, useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { useEffect, useState } from 'react'
 import { Outlet, useNavigate, useParams, useLocation } from 'react-router-dom'
-import { Address } from 'viem'
+import { Address, formatEther } from 'viem'
 import { useReadContract, useSwitchChain } from 'wagmi'
 import IndexDTFNavigation from './components/navigation'
 import GovernanceUpdater from './governance/updater'
@@ -187,6 +189,7 @@ const PlatformFeeUpdater = ({
   chainId: number
 }) => {
   const setFee = useSetAtom(indexDTFFeeAtom)
+  const setFeeFloor = useSetAtom(indexDTFFeeFloorAtom)
 
   const { data: registryAddress, isError: registryError } = useReadContract({
     address: tokenAddress as Address,
@@ -207,10 +210,12 @@ const PlatformFeeUpdater = ({
 
   useEffect(() => {
     if (feeDetails) {
-      const [, feeNumerator, feeDenominator] = feeDetails
+      const [, feeNumerator, feeDenominator, feeFloor] = feeDetails
       setFee(Number((feeNumerator * 100n) / feeDenominator))
+      setFeeFloor(Number(formatEther(feeFloor)) * 100)
     } else if (registryError || feeError) {
       setFee(FALLBACK_PLATFORM_FEES[chainId] ?? 50)
+      setFeeFloor(MIN_DAO_FEE_PERCENTAGE)
     }
   }, [feeDetails, registryError, feeError, chainId])
 
@@ -264,6 +269,7 @@ const resetStateAtom = atom(null, (_, set) => {
   set(indexDTFBrandAtom, undefined)
   set(indexDTFRebalanceControlAtom, undefined)
   set(indexDTFFeeAtom, undefined)
+  set(indexDTFFeeFloorAtom, undefined)
   set(indexDTF7dChangeAtom, undefined)
   set(indexDTFPerformanceLoadingAtom, false)
   set(indexDTFExposureDataAtom, null)

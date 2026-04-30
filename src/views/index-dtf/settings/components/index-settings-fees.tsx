@@ -1,5 +1,13 @@
-import { indexDTFAtom, indexDTFFeeAtom } from '@/state/dtf/atoms'
+import {
+  indexDTFAtom,
+  indexDTFFeeAtom,
+  indexDTFFeeFloorAtom,
+} from '@/state/dtf/atoms'
 import { formatPercentage } from '@/utils'
+import {
+  formatDtfFeePercentage,
+  getEffectivePlatformShare,
+} from '@/utils/fees'
 import { t } from '@lingui/macro'
 import { atom, useAtomValue } from 'jotai'
 import {
@@ -26,15 +34,22 @@ type Recipient = {
 const feeRecipientsAtom = atom((get) => {
   const indexDTF = get(indexDTFAtom)
   const platformFee = get(indexDTFFeeAtom)
+  const feeFloor = get(indexDTFFeeFloorAtom)
   const governanceTokenAddress = getGovernanceVoteTokenAddress(
     getDTFSettingsGovernance(indexDTF),
     indexDTF?.stToken?.id
   )
 
   if (!indexDTF || platformFee === undefined) return undefined
+  const smallestFee = Math.min(indexDTF.annualizedTvlFee, indexDTF.mintingFee)
+  const effectivePlatformShare = getEffectivePlatformShare({
+    fee: smallestFee,
+    feeFloor,
+    platformShare: platformFee,
+  })
   const platformShare = {
     label: t`Fixed Platform Share`,
-    value: `${platformFee}%`,
+    value: formatPercentage(effectivePlatformShare),
     icon: <IconWrapper Component={TrainTrack} />,
   }
   const deployerShare = {
@@ -49,24 +64,23 @@ const feeRecipientsAtom = atom((get) => {
     icon: <IconWrapper Component={Landmark} />,
   }
   const externalRecipients: Recipient[] = []
-  const PERCENT_ADJUST = 100 / (100 - platformFee)
+  const nonPlatformShare = Math.max(0, 100 - effectivePlatformShare)
+  const PERCENT_ADJUST = nonPlatformShare ? 100 / nonPlatformShare : 0
+  const toShare = (percentage: string) =>
+    PERCENT_ADJUST ? formatPercentage(Number(percentage) / PERCENT_ADJUST) : '0%'
 
   for (const recipient of indexDTF.feeRecipients) {
     // Deployer share - adjust from contract percentage to actual percentage
     if (recipient.address.toLowerCase() === indexDTF.deployer.toLowerCase()) {
-      deployerShare.value = formatPercentage(
-        Number(recipient.percentage) / PERCENT_ADJUST
-      )
+      deployerShare.value = toShare(recipient.percentage)
     } else if (
       recipient.address.toLowerCase() === governanceTokenAddress?.toLowerCase()
     ) {
-      governanceShare.value = formatPercentage(
-        Number(recipient.percentage) / PERCENT_ADJUST
-      )
+      governanceShare.value = toShare(recipient.percentage)
     } else {
       externalRecipients.push({
         label: `Other recipient ${externalRecipients.length + 1}`,
-        value: formatPercentage(Number(recipient.percentage) / PERCENT_ADJUST),
+        value: toShare(recipient.percentage),
         address: recipient.address,
         icon: <IconWrapper Component={Hash} />,
       })
@@ -84,6 +98,7 @@ const feeRecipientsAtom = atom((get) => {
 // TODO: Share distribution pending subgraph work!
 const FeesInfo = () => {
   const indexDTF = useAtomValue(indexDTFAtom)
+  const feeFloor = useAtomValue(indexDTFFeeFloorAtom)
   const feeRecipients = useAtomValue(feeRecipientsAtom)
 
   return (
@@ -96,7 +111,7 @@ const FeesInfo = () => {
           label={t`Annualized TVL Fee`}
           value={
             indexDTF
-              ? formatPercentage(indexDTF?.annualizedTvlFee * 100)
+              ? formatDtfFeePercentage(indexDTF.annualizedTvlFee, feeFloor)
               : undefined
           }
         />
@@ -106,7 +121,9 @@ const FeesInfo = () => {
           icon={<IconWrapper Component={ChartPie} />}
           label={t`Minting Fee`}
           value={
-            indexDTF ? formatPercentage(indexDTF?.mintingFee * 100) : undefined
+            indexDTF
+              ? formatDtfFeePercentage(indexDTF.mintingFee, feeFloor)
+              : undefined
           }
         />
       </div>
