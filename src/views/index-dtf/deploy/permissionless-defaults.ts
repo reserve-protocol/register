@@ -4,7 +4,7 @@ import { DeployInputs, DeployStepId } from './form-fields'
 
 // Fixed vote-lock DAO addresses per chain for permissionless deploys
 export const PERMISSIONLESS_VOTE_LOCK: Record<number, Address> = {
-  [ChainId.Mainnet]: '0x39Ee5CECDf6f151359DA1AC9FA4A32d4c765951e',
+  [ChainId.Mainnet]: '0xAFac0054FD8b3233c7b3b0E10E34188f6a7175f0',
   [ChainId.Base]: '0xeDAB3789D7D2283214d8F65A6E412B00b1cBfB7a',
   [ChainId.BSC]: zeroAddress, // TODO: Real address needed
 }
