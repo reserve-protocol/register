@@ -13,14 +13,18 @@ const DelegateModal = ({
   delegated,
   tokenAddress,
   optimistic = false,
+  defaultAddress,
 }: {
   onClose: () => void
   delegated: boolean
   tokenAddress?: Address
   optimistic?: boolean
+  defaultAddress?: string
 }) => {
   const account = useAtomValue(walletAtom)
-  const [address, setAddress] = useState(!delegated && account ? account : '')
+  const [address, setAddress] = useState(
+    defaultAddress ?? (!delegated && account ? account : '')
+  )
   const validAddress = isAddress(address)
   const call = useMemo(() => {
     return tokenAddress && validAddress
@@ -31,18 +35,24 @@ const DelegateModal = ({
           args: [validAddress],
         }
       : undefined
-  }, [tokenAddress, validAddress])
+  }, [tokenAddress, validAddress, optimistic])
 
   return (
     <TransactionModal
-      title={t`Delegate votes`}
-      description="Delegate"
+      title={optimistic ? t`Delegate optimistic votes` : t`Delegate votes`}
+      description={optimistic ? 'Delegate optimistic votes' : 'Delegate votes'}
       call={call}
-      confirmLabel={t`Confirm delegate`}
+      confirmLabel={
+        optimistic ? t`Confirm optimistic delegate` : t`Confirm delegate`
+      }
       onClose={onClose}
     >
       <label className="text-legend ml-3">
-        <Trans>Delegate to</Trans>
+        {optimistic ? (
+          <Trans>Delegate optimistic votes to</Trans>
+        ) : (
+          <Trans>Delegate to</Trans>
+        )}
       </label>
       <Input
         autoFocus

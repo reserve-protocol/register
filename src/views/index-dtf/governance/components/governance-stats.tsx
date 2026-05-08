@@ -1,83 +1,11 @@
 import { Skeleton } from '@/components/ui/skeleton'
 import { cn } from '@/lib/utils'
-import { chainIdAtom } from '@/state/atoms'
-import { indexDTFAtom } from '@/state/dtf/atoms'
 import { formatCurrency } from '@/utils'
 import { t } from '@lingui/macro'
 import { atom, useAtomValue } from 'jotai'
 import { governanceStatsAtom } from '../atoms'
 import { Archive, FileStack, Notebook } from 'lucide-react'
-import TokenLogo from '@/components/token-logo'
-import { useVotingPower } from '../hooks/use-voting-power'
-import { getDTFSettingsGovernance } from '../governance-helpers'
-
-const VotingPower = () => {
-  const {
-    votingPower,
-    optimisticVotingPower,
-    isOptimisticGovernance,
-    isOptimisticLoading,
-  } = useVotingPower()
-  const dtf = useAtomValue(indexDTFAtom)
-  const chainId = useAtomValue(chainIdAtom)
-  const governanceToken = getDTFSettingsGovernance(dtf)?.token?.token
-  const isVoteLockToken =
-    !!dtf?.stToken?.id &&
-    governanceToken?.address.toLowerCase() === dtf.stToken.id.toLowerCase()
-
-  return (
-    <div className="flex items-center gap-3 p-6">
-      <TokenLogo
-        size="lg"
-        symbol={
-          isVoteLockToken
-            ? dtf?.stToken?.underlying.symbol
-            : governanceToken?.symbol
-        }
-        address={
-          isVoteLockToken
-            ? dtf?.stToken?.underlying.address
-            : governanceToken?.address
-        }
-        chain={chainId}
-      />
-      <div className="flex flex-col gap-2">
-        <div className="flex flex-col">
-          <span className="text-legend text-sm">
-            {isVoteLockToken ? 'Vote locked' : 'Voting power'}
-          </span>
-          <span className="font-bold">
-            {formatCurrency(votingPower, 1, {
-              notation: 'compact',
-              compactDisplay: 'short',
-            })}{' '}
-            {isVoteLockToken
-              ? `$${dtf?.stToken?.token.symbol}`
-              : governanceToken?.symbol}
-          </span>
-        </div>
-        {isOptimisticGovernance && (
-          <div className="flex flex-col">
-            <span className="text-legend text-sm">Optimistic voting power</span>
-            {isOptimisticLoading ? (
-              <Skeleton className="h-4 w-24" />
-            ) : (
-              <span className="font-bold">
-                {formatCurrency(optimisticVotingPower, 1, {
-                  notation: 'compact',
-                  compactDisplay: 'short',
-                })}{' '}
-                {isVoteLockToken
-                  ? `$${dtf?.stToken?.token.symbol}`
-                  : governanceToken?.symbol}
-              </span>
-            )}
-          </div>
-        )}
-      </div>
-    </div>
-  )
-}
+import GovernanceVotingPower from './governance-voting-power'
 
 export interface IconInfoProps {
   icon: any
@@ -139,7 +67,7 @@ const GovernanceStats = () => {
           <IconInfo icon={icon} title={title} text={text} />
         </div>
       ))}
-      <VotingPower />
+      <GovernanceVotingPower />
     </div>
   )
 }

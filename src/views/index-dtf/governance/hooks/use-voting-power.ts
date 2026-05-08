@@ -7,6 +7,7 @@ import { chainIdAtom, walletAtom } from '@/state/atoms'
 import { indexDTFAtom } from '@/state/dtf/atoms'
 import { getCurrentTime } from '@/utils'
 import { useAtomValue } from 'jotai'
+import { useMemo } from 'react'
 import {
   getDTFSettingsGovernance,
   getGovernanceVoteTokenAddress,
@@ -22,12 +23,16 @@ export const useVotingPower = () => {
     governance,
     dtf?.stToken?.id
   )
+  const votingPowerTimepoint = useMemo(
+    () => BigInt(getCurrentTime() - 12),
+    [account, governanceAddress, chainId]
+  )
 
   const { data: votes, isLoading } = useReadContract({
     address: governanceAddress ?? '0x',
     functionName: 'getVotes',
     abi: dtfIndexGovernance,
-    args: [account as Address, BigInt(getCurrentTime() - 12)],
+    args: [account as Address, votingPowerTimepoint],
     chainId,
     query: {
       enabled: !!account && !!governanceAddress && !!chainId,
