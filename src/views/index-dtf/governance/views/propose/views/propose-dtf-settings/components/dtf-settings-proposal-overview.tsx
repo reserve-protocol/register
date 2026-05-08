@@ -11,6 +11,7 @@ import {
   isFormValidAtom,
   dtfSettingsProposalDataAtom,
   proposalDescriptionAtom,
+  hasOnlyRolesChangesAtom,
 } from '../atoms'
 import DTFSettingsProposalChanges from './dtf-settings-proposal-changes'
 import SubmitProposalButton from './submit-proposal-button'
@@ -21,18 +22,30 @@ import {
   getDTFSettingsGovernance,
   getGovernanceVoteTokenAddress,
 } from '@/views/index-dtf/governance/governance-helpers'
+import { useFormContext } from 'react-hook-form'
 
 const ConfirmProposalButton = () => {
   const isValid = useAtomValue(isProposalValidAtom)
   const isFormValid = useAtomValue(isFormValidAtom)
+  const hasOnlyRolesChanges = useAtomValue(hasOnlyRolesChangesAtom)
   const [isProposalConfirmed, setIsProposalConfirmed] = useAtom(
     isProposalConfirmedAtom
   )
+  const {
+    formState: { errors },
+  } = useFormContext()
+  const hasRoleErrors = !!(
+    errors.roles ||
+    errors.guardians ||
+    errors.brandManagers ||
+    errors.auctionLaunchers
+  )
+  const canIgnoreUnchangedSectionErrors = hasOnlyRolesChanges && !hasRoleErrors
 
   const handleConfirm = () => {
     if (!isProposalConfirmed) {
       // When confirming, check if form is valid
-      if (!isFormValid) {
+      if (!isFormValid && !canIgnoreUnchangedSectionErrors) {
         // The form will show validation errors
         return
       }
@@ -40,8 +53,8 @@ const ConfirmProposalButton = () => {
     setIsProposalConfirmed(!isProposalConfirmed)
   }
 
-  // Enable button only if there are changes AND form is valid
-  const isButtonEnabled = isValid && isFormValid
+  const isButtonEnabled =
+    isValid && (isFormValid || canIgnoreUnchangedSectionErrors)
 
   return (
     <Button

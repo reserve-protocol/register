@@ -124,6 +124,21 @@ export const hasGovernanceChangesAtom = atom((get) => {
   )
 })
 
+export const hasOnlyRolesChangesAtom = atom((get) => {
+  return (
+    get(hasRolesChangesAtom) &&
+    get(removedBasketTokensAtom).length === 0 &&
+    !get(hasTokenNameChangeAtom) &&
+    !get(hasMandateChangeAtom) &&
+    !get(hasRevenueDistributionChangesAtom) &&
+    !get(hasDtfRevenueChangesAtom) &&
+    !get(hasAuctionLengthChangeAtom) &&
+    !get(hasWeightControlChangeAtom) &&
+    !get(hasBidsEnabledChangeAtom) &&
+    !get(hasGovernanceChangesAtom)
+  )
+})
+
 // remove-dust-tokens
 export const removedBasketTokensAtom = atom<Token[]>([])
 export const currentBasketTokensAtom = atom((get) => {

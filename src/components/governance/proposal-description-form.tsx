@@ -1,10 +1,8 @@
 import { ArrowLeftIcon } from 'lucide-react'
-import { lazy, Suspense, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Button } from '../ui/button'
 import { Input } from '../ui/input'
-import { Skeleton } from '../ui/skeleton'
-
-const MDEditor = lazy(() => import('@uiw/react-md-editor'))
+import { Textarea } from '../ui/textarea'
 
 interface IProposalDescriptionForm {
   onChange: (description: string) => void // Proposal description
@@ -61,13 +59,13 @@ const ProposalDescriptionForm = ({
         <label className="font-semibold ml-3 mb-2 block" htmlFor="description">
           Description
         </label>
-        <Suspense fallback={<Skeleton className="h-[596.72px]" />}>
-          <MDEditor
-            id="description"
-            value={description}
-            onChange={setDescription}
-          />
-        </Suspense>
+        <Textarea
+          id="description"
+          className="min-h-[240px]"
+          value={description}
+          placeholder="Input proposal description"
+          onChange={(e) => setDescription(e.target.value)}
+        />
       </div>
     </div>
   )
