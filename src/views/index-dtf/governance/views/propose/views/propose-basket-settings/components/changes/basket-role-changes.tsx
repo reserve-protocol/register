@@ -10,9 +10,14 @@ import {
   ArrowUpRight,
   PlusCircle,
   MinusCircle,
+  MousePointerClick,
 } from 'lucide-react'
 import { Address } from 'viem'
-import { rolesChangesAtom, hasRolesChangesAtom } from '../../atoms'
+import {
+  rolesChangesAtom,
+  hasRolesChangesAtom,
+  optimisticProposerRoleStateAtom,
+} from '../../atoms'
 import { ChangeSection, RevertButton } from '../../../propose-dao-settings/components/changes/shared'
 import { useMemo } from 'react'
 import { cn } from '@/lib/utils'
@@ -121,37 +126,41 @@ const RoleChangesList = ({
   )
 }
 
+type RoleField = 'guardians' | 'optimisticProposers'
+
 const BasketRoleChanges = () => {
   const indexDTF = useAtomValue(indexDTFAtom)
+  const optimisticProposerState = useAtomValue(optimisticProposerRoleStateAtom)
   const [rolesChanges, setRolesChanges] = useAtom(rolesChangesAtom)
   const hasRolesChanges = useAtomValue(hasRolesChangesAtom)
   const { setValue } = useFormContext()
 
-  if (!hasRolesChanges || !indexDTF?.tradingGovernance?.timelock) return null
+  if (!hasRolesChanges || !indexDTF?.tradingGovernance) return null
 
-  const currentGuardians = indexDTF.tradingGovernance.timelock.guardians || []
+  const currentGuardians = indexDTF.tradingGovernance.timelock?.guardians || []
+  const currentOptimisticProposers = optimisticProposerState.proposers
 
-  const handleRevertRoleAddition = (address: string) => {
-    const currentProposed = rolesChanges.guardians || []
+  const handleRevertRoleAddition = (roleType: RoleField, address: string) => {
+    const currentProposed = rolesChanges[roleType] || []
     const newProposed = currentProposed.filter(
       (addr) => addr.toLowerCase() !== address.toLowerCase()
     )
 
-    setRolesChanges({ ...rolesChanges, guardians: newProposed })
-    setValue('guardians', newProposed)
+    setRolesChanges({ ...rolesChanges, [roleType]: newProposed })
+    setValue(roleType, newProposed)
   }
 
-  const handleRevertRoleRemoval = (address: string) => {
-    const currentProposed = rolesChanges.guardians || []
+  const handleRevertRoleRemoval = (roleType: RoleField, address: string) => {
+    const currentProposed = rolesChanges[roleType] || []
     const newProposed = [...currentProposed, address as Address]
 
-    setRolesChanges({ ...rolesChanges, guardians: newProposed })
-    setValue('guardians', newProposed)
+    setRolesChanges({ ...rolesChanges, [roleType]: newProposed })
+    setValue(roleType, newProposed)
   }
 
-  const onRevertAllGuardians = () => {
-    setRolesChanges({ ...rolesChanges, guardians: undefined })
-    setValue('guardians', currentGuardians)
+  const onRevertAll = (roleType: RoleField, current: Address[]) => {
+    setRolesChanges({ ...rolesChanges, [roleType]: undefined })
+    setValue(roleType, current)
   }
 
   return (
@@ -164,14 +173,51 @@ const BasketRoleChanges = () => {
                 <ShieldHalf size={14} />
                 Guardians
               </div>
-              <RevertButton onClick={onRevertAllGuardians} label="Revert All" />
+              <RevertButton
+                onClick={() => onRevertAll('guardians', currentGuardians)}
+                label="Revert All"
+              />
             </div>
 
             <RoleChangesList
               current={currentGuardians}
               proposed={rolesChanges.guardians}
-              onRevertAdd={handleRevertRoleAddition}
-              onRevertRemove={handleRevertRoleRemoval}
+              onRevertAdd={(address) =>
+                handleRevertRoleAddition('guardians', address)
+              }
+              onRevertRemove={(address) =>
+                handleRevertRoleRemoval('guardians', address)
+              }
+            />
+          </div>
+        )}
+        {rolesChanges.optimisticProposers && (
+          <div className="p-2 rounded-lg bg-muted/70 border space-y-3">
+            <div className="flex items-center justify-between p-2 pb-0">
+              <div className="flex items-center gap-2 text-sm font-medium">
+                <MousePointerClick size={14} />
+                Optimistic Proposers
+              </div>
+              <RevertButton
+                onClick={() =>
+                  onRevertAll(
+                    'optimisticProposers',
+                    currentOptimisticProposers
+                  )
+                }
+                label="Revert All"
+              />
+            </div>
+
+            <RoleChangesList
+              current={currentOptimisticProposers}
+              proposed={rolesChanges.optimisticProposers}
+              onRevertAdd={(address) =>
+                handleRevertRoleAddition('optimisticProposers', address)
+              }
+              onRevertRemove={(address) =>
+                handleRevertRoleRemoval('optimisticProposers', address)
+              }
             />
           </div>
         )}

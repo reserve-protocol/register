@@ -1,7 +1,7 @@
 import { indexDTFAtom } from '@/state/dtf/atoms'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { useEffect, useRef } from 'react'
-import { useFormContext } from 'react-hook-form'
+import { useFormContext, useWatch } from 'react-hook-form'
 import { Address } from 'viem'
 import {
   resetAtom,
@@ -10,23 +10,34 @@ import {
   isFormValidAtom,
   isProposalConfirmedAtom,
   currentQuorumPercentageAtom,
+  optimisticProposerRoleStateAtom,
 } from './atoms'
 import { proposalThresholdToPercentage, secondsToDays } from '../../shared'
+import useOptimisticGovernance from '@/views/index-dtf/settings/use-optimistic-governance'
 
 const Updater = () => {
   const indexDTF = useAtomValue(indexDTFAtom)
   const reset = useSetAtom(resetAtom)
-  const { reset: resetForm, watch, formState } = useFormContext()
+  const { reset: resetForm, watch, formState, setValue, control } =
+    useFormContext()
   const governanceChanges = useAtomValue(basketGovernanceChangesAtom)
   const rolesChanges = useAtomValue(rolesChangesAtom)
   const isProposalConfirmed = useAtomValue(isProposalConfirmedAtom)
   const currentQuorumPercentage = useAtomValue(currentQuorumPercentageAtom)
+  const {
+    isOptimisticGovernance,
+    optimisticProposers: currentOptimisticProposers,
+    optimisticTimelock,
+  } = useOptimisticGovernance(indexDTF, indexDTF?.tradingGovernance)
   const isResettingForm = useRef(false)
 
   // Set atoms for changes
   const setGovernanceChanges = useSetAtom(basketGovernanceChangesAtom)
   const setRolesChanges = useSetAtom(rolesChangesAtom)
   const setIsFormValid = useSetAtom(isFormValidAtom)
+  const setOptimisticProposerRoleState = useSetAtom(
+    optimisticProposerRoleStateAtom
+  )
 
   // Watch form fields
   const basketVotingDelay = watch('basketVotingDelay')
@@ -34,7 +45,27 @@ const Updater = () => {
   const basketVotingThreshold = watch('basketVotingThreshold')
   const basketVotingQuorum = watch('basketVotingQuorum')
   const basketExecutionDelay = watch('basketExecutionDelay')
-  const guardians = watch('guardians')
+  const guardians = useWatch({
+    name: 'guardians',
+    control,
+  })
+  const optimisticProposers = useWatch({
+    name: 'optimisticProposers',
+    control,
+  })
+
+  useEffect(() => {
+    setOptimisticProposerRoleState({
+      timelock: optimisticTimelock,
+      proposers: isOptimisticGovernance ? currentOptimisticProposers : [],
+      isSupported: isOptimisticGovernance,
+    })
+  }, [
+    currentOptimisticProposers,
+    isOptimisticGovernance,
+    optimisticTimelock,
+    setOptimisticProposerRoleState,
+  ])
 
   useEffect(() => {
     if (indexDTF && indexDTF.tradingGovernance) {
@@ -80,6 +111,10 @@ const Updater = () => {
         guardians: rolesChanges.guardians !== undefined 
           ? rolesChanges.guardians 
           : currentGuardians,
+        optimisticProposers:
+          rolesChanges.optimisticProposers !== undefined
+            ? rolesChanges.optimisticProposers
+            : currentOptimisticProposers,
       })
 
       // Reset the flag after form reset
@@ -88,6 +123,29 @@ const Updater = () => {
       }, 100)
     }
   }, [indexDTF?.tradingGovernance?.id])
+
+  useEffect(() => {
+    if (!isOptimisticGovernance) {
+      setValue('optimisticProposers', [], { shouldValidate: true })
+      setRolesChanges((prevChanges) => {
+        const { optimisticProposers: _, ...rest } = prevChanges
+        return rest
+      })
+      return
+    }
+
+    if (rolesChanges.optimisticProposers === undefined) {
+      setValue('optimisticProposers', currentOptimisticProposers, {
+        shouldValidate: true,
+      })
+    }
+  }, [
+    currentOptimisticProposers,
+    isOptimisticGovernance,
+    rolesChanges.optimisticProposers,
+    setRolesChanges,
+    setValue,
+  ])
 
   // Watch for governance changes
   useEffect(() => {
@@ -216,6 +274,54 @@ const Updater = () => {
       })
     }
   }, [guardians, indexDTF?.tradingGovernance?.timelock, setRolesChanges])
+
+  // Watch for optimistic proposer role changes
+  useEffect(() => {
+    if (!isOptimisticGovernance) return
+
+    // Filter out empty strings and convert to addresses
+    const formOptimisticProposers = (optimisticProposers || [])
+      .filter((p: string) => p && p.trim() !== '')
+      .map((p: string) => p as Address)
+
+    // Check if optimistic proposers have changed
+    const hasChanged = (() => {
+      if (formOptimisticProposers.length !== currentOptimisticProposers.length) {
+        return true
+      }
+
+      const formSet = new Set(
+        formOptimisticProposers.map((p: string) => p.toLowerCase())
+      )
+      const currentSet = new Set(
+        currentOptimisticProposers.map((p: string) => p.toLowerCase())
+      )
+
+      for (const proposer of formOptimisticProposers) {
+        if (!currentSet.has(proposer.toLowerCase())) return true
+      }
+
+      for (const proposer of currentOptimisticProposers) {
+        if (!formSet.has(proposer.toLowerCase())) return true
+      }
+
+      return false
+    })()
+
+    setRolesChanges((prevChanges) => {
+      if (hasChanged) {
+        return { ...prevChanges, optimisticProposers: formOptimisticProposers }
+      } else {
+        const { optimisticProposers: _, ...rest } = prevChanges
+        return rest
+      }
+    })
+  }, [
+    currentOptimisticProposers,
+    isOptimisticGovernance,
+    optimisticProposers,
+    setRolesChanges,
+  ])
 
   // Track form validation state
   useEffect(() => {

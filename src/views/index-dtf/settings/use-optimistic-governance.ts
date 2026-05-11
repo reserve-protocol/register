@@ -241,6 +241,7 @@ const useOptimisticGovernance = (
   return {
     isOptimisticGovernance,
     optimisticParams,
+    optimisticTimelock: timelock,
     proposalThrottleCapacity,
     selectorRegistry,
     selectorAllowlist,

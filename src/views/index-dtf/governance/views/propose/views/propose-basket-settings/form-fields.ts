@@ -68,14 +68,26 @@ export const createProposeBasketSettingsSchema = (quorumDenominator?: number) =>
       'Must be 0 or greater'
     ),
   // Role fields
-  guardians: z.array(
-    z
-      .string()
-      .refine((value) => !value || isAddressNotStrict(value), {
-        message: 'Invalid Address',
-      })
-      .optional()
-  ),
+  guardians: z
+    .array(
+      z
+        .string()
+        .refine((value) => !value || isAddressNotStrict(value), {
+          message: 'Invalid Address',
+        })
+        .optional()
+    )
+    .default([]),
+  optimisticProposers: z
+    .array(
+      z
+        .string()
+        .refine((value) => !value || isAddressNotStrict(value), {
+          message: 'Invalid Address',
+        })
+        .optional()
+    )
+    .default([]),
 })
 .refine(
   (data) =>
@@ -83,6 +95,16 @@ export const createProposeBasketSettingsSchema = (quorumDenominator?: number) =>
       .size === data.guardians.length,
   {
     message: 'Duplicated guardians',
+    path: ['roles'],
+  }
+)
+.refine(
+  (data) =>
+    new Set(
+      data.optimisticProposers?.map((item) => item?.toLowerCase() || item)
+    ).size === data.optimisticProposers.length,
+  {
+    message: 'Duplicated optimistic proposers',
     path: ['roles'],
   }
 )

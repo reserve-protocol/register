@@ -1,7 +1,11 @@
 import InputWithTitle from '@/views/index-dtf/deploy/components/input-with-title'
-import { ShieldHalf } from 'lucide-react'
+import { useAtomValue } from 'jotai'
+import { MousePointerClick, ShieldHalf } from 'lucide-react'
+import { optimisticProposerRoleStateAtom } from '../../atoms'
 
 const ProposeBasketRoles = () => {
+  const { isSupported } = useAtomValue(optimisticProposerRoleStateAtom)
+
   return (
     <div className="px-2 mb-2">
       <div className="px-4 pb-6 text-base">
@@ -20,6 +24,17 @@ const ProposeBasketRoles = () => {
           inputLabel="Address"
           placeholder="0x..."
         />
+        {isSupported && (
+          <InputWithTitle
+            title="Optimistic Proposer"
+            description="A trusted actor that can submit optimistic basket proposals for allowlisted actions."
+            icon={<MousePointerClick size={14} strokeWidth={1.5} />}
+            fieldName="optimisticProposers"
+            buttonLabel="Add additional optimistic proposer"
+            inputLabel="Address"
+            placeholder="0x..."
+          />
+        )}
       </div>
     </div>
   )

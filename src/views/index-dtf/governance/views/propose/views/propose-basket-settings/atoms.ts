@@ -1,4 +1,5 @@
 import timelockAbi from '@/abis/Timelock'
+import { OPTIMISTIC_PROPOSER_ROLE } from '@/abis/reserve-optimistic-governor'
 import { indexDTFAtom } from '@/state/dtf/atoms'
 import { atom } from 'jotai'
 import { Address, encodeFunctionData, Hex, keccak256, toBytes } from 'viem'
@@ -42,11 +43,24 @@ export const hasBasketGovernanceChangesAtom = atom((get) => {
 // Role changes atoms
 export const rolesChangesAtom = atom<{
   guardians?: Address[]
+  optimisticProposers?: Address[]
 }>({})
+
+export const optimisticProposerRoleStateAtom = atom<{
+  timelock?: Address
+  proposers: Address[]
+  isSupported: boolean
+}>({
+  proposers: [],
+  isSupported: false,
+})
 
 export const hasRolesChangesAtom = atom((get) => {
   const changes = get(rolesChangesAtom)
-  return changes.guardians !== undefined
+  return (
+    changes.guardians !== undefined ||
+    changes.optimisticProposers !== undefined
+  )
 })
 
 // Check if proposal is valid (has changes)
@@ -62,6 +76,7 @@ export const basketSettingsProposalDataAtom = atom<ProposalData | undefined>(
   (get) => {
     const governanceChanges = get(basketGovernanceChangesAtom)
     const rolesChanges = get(rolesChangesAtom)
+    const optimisticProposerState = get(optimisticProposerRoleStateAtom)
     const dtf = get(indexDTFAtom)
 
     if (!dtf || !dtf.tradingGovernance) return undefined
@@ -150,6 +165,54 @@ export const basketSettingsProposalDataAtom = atom<ProposalData | undefined>(
         }
       }
 
+      // Handle optimistic proposer role changes
+      if (
+        rolesChanges.optimisticProposers &&
+        optimisticProposerState.timelock
+      ) {
+        const timelockAddress = optimisticProposerState.timelock
+        const currentOptimisticProposers = optimisticProposerState.proposers
+        const newOptimisticProposers = rolesChanges.optimisticProposers
+
+        // Revoke removed optimistic proposers
+        for (const proposer of currentOptimisticProposers) {
+          if (
+            !newOptimisticProposers.some(
+              (newProposer) =>
+                newProposer.toLowerCase() === proposer.toLowerCase()
+            )
+          ) {
+            calldatas.push(
+              encodeFunctionData({
+                abi: timelockAbi,
+                functionName: 'revokeRole',
+                args: [OPTIMISTIC_PROPOSER_ROLE, proposer],
+              })
+            )
+            targets.push(timelockAddress)
+          }
+        }
+
+        // Grant new optimistic proposers
+        for (const proposer of newOptimisticProposers) {
+          if (
+            !currentOptimisticProposers.some(
+              (currentProposer) =>
+                currentProposer.toLowerCase() === proposer.toLowerCase()
+            )
+          ) {
+            calldatas.push(
+              encodeFunctionData({
+                abi: timelockAbi,
+                functionName: 'grantRole',
+                args: [OPTIMISTIC_PROPOSER_ROLE, proposer],
+              })
+            )
+            targets.push(timelockAddress)
+          }
+        }
+      }
+
       return calldatas.length > 0 ? { calldatas, targets } : undefined
     } catch (error) {
       // Return undefined if encoding fails (e.g., during typing)
@@ -230,6 +293,7 @@ export const resetAtom = atom(null, (_, set) => {
   set(proposalDescriptionAtom, undefined)
   set(basketGovernanceChangesAtom, {})
   set(rolesChangesAtom, {})
+  set(optimisticProposerRoleStateAtom, { proposers: [], isSupported: false })
   set(selectedSectionAtom, undefined)
   set(isFormValidAtom, false)
 })
