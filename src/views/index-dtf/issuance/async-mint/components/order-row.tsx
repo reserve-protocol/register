@@ -11,7 +11,7 @@ import { ArrowUpRight, Check, Loader } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { formatUnits } from 'viem'
 import { useOrderStatus } from '../hooks/use-order-status'
-import { inputTokenAtom } from '../atoms'
+import { inputTokenAtom, ordersAtom } from '../atoms'
 
 // CoW explorer uses no prefix for mainnet, chain name for others
 const COW_EXPLORER_NETWORK: Record<number, string> = {
@@ -76,9 +76,14 @@ const OrderRow = ({
   disableFetch?: boolean
 }) => {
   const chainId = useAtomValue(chainIdAtom)
-  const { data } = useOrderStatus({ orderId, disabled: disableFetch })
+  const { data: fetchedOrder } = useOrderStatus({
+    orderId,
+    disabled: disableFetch,
+  })
+  const orders = useAtomValue(ordersAtom)
   const basket = useAtomValue(indexDTFBasketAtom)
   const inputToken = useAtomValue(inputTokenAtom)
+  const data = fetchedOrder ?? orders.find((order) => order.orderId === orderId)
 
   const token = data?.buyToken
   const buyAmount = data?.buyAmount
@@ -99,7 +104,11 @@ const OrderRow = ({
         <div className="flex flex-col">
           {sellAmount ? (
             <div className="text-sm font-semibold">
-              - {formatCurrency(Number(formatUnits(BigInt(sellAmount), inputToken.decimals)))} {inputToken.symbol}
+              -{' '}
+              {formatCurrency(
+                Number(formatUnits(BigInt(sellAmount), inputToken.decimals))
+              )}{' '}
+              {inputToken.symbol}
             </div>
           ) : (
             <Skeleton className="w-24 h-3 mb-1" />
@@ -108,7 +117,9 @@ const OrderRow = ({
             <div className="text-sm text-primary">
               +{' '}
               {formatTokenAmount(
-                Number(formatUnits(BigInt(buyAmount), tokenInfo?.decimals || 18))
+                Number(
+                  formatUnits(BigInt(buyAmount), tokenInfo?.decimals || 18)
+                )
               )}{' '}
               {tokenInfo?.symbol || ''}
             </div>
@@ -118,7 +129,11 @@ const OrderRow = ({
         </div>
       </div>
       {data?.status ? (
-        <OrderStatusBadge status={data.status} orderId={orderId} chainId={chainId} />
+        <OrderStatusBadge
+          status={data.status}
+          orderId={orderId}
+          chainId={chainId}
+        />
       ) : (
         <Skeleton className="w-28 h-4" />
       )}

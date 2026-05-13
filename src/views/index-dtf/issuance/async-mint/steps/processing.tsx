@@ -38,7 +38,13 @@ import MintExecute from '../components/mint-execute'
 import OrderRow from '../components/order-row'
 import { checkMintFeasibility } from '../hooks/use-recovery'
 import { useMintQuotes } from '../hooks/use-mint-quotes'
+import { useOrderStatus } from '../hooks/use-order-status'
 import { useSubmitOrders } from '../hooks/use-submit-orders'
+
+const OrderStatusWatcher = ({ orderId }: { orderId: string }) => {
+  useOrderStatus({ orderId })
+  return null
+}
 
 const Processing = () => {
   const setStep = useSetAtom(wizardStepAtom)
@@ -66,8 +72,7 @@ const Processing = () => {
   useEffect(() => {
     if (!ordersCreatedAt) return
     const interval = setInterval(() => {
-      const elapsed =
-        (Date.now() - new Date(ordersCreatedAt).getTime()) / 1000
+      const elapsed = (Date.now() - new Date(ordersCreatedAt).getTime()) / 1000
       setElapsedTime(elapsed)
     }, 1000)
     return () => clearInterval(interval)
@@ -123,6 +128,10 @@ const Processing = () => {
 
   return (
     <div className="bg-secondary rounded-3xl p-1 w-[468px] max-w-full mx-auto">
+      {orderIds.map((id) => (
+        <OrderStatusWatcher key={id} orderId={id} />
+      ))}
+
       {/* Toolbar */}
       <div className="flex items-center justify-between p-2">
         <div className="flex items-center gap-1">
@@ -134,10 +143,7 @@ const Processing = () => {
             onClick={() => refetch()}
             disabled={isFetching}
           >
-            <RefreshCw
-              size={16}
-              className={isFetching ? 'animate-spin' : ''}
-            />
+            <RefreshCw size={16} className={isFetching ? 'animate-spin' : ''} />
           </button>
         </div>
         {(isSeriousFailure || isSimpleRetry) && (
@@ -159,10 +165,9 @@ const Processing = () => {
               ${formatCurrency(parsedAmount)}
             </div>
             <div className="flex items-center gap-1.5 shrink-0">
-              <TokenLogo symbol={inputToken.symbol} size="lg" />
-              <div className="bg-muted rounded-full p-1">
-                <ChevronDown size={16} className="text-muted-foreground" />
-              </div>
+              <span className="rounded bg-muted px-3 py-2 text-base font-medium">
+                USD
+              </span>
             </div>
           </div>
         </div>
