@@ -9,6 +9,7 @@ import { Address } from 'viem'
 import { ArrowLeft, ArrowRight } from 'lucide-react'
 import { useEffect } from 'react'
 import {
+  customCollateralAmountsAtom,
   inputTokenAtom,
   mintStrategyAtom,
   selectedCollateralsAtom,
@@ -40,6 +41,7 @@ const CollateralDecision = () => {
   const setStep = useSetAtom(wizardStepAtom)
   const setStrategy = useSetAtom(mintStrategyAtom)
   const setSelectedCollaterals = useSetAtom(selectedCollateralsAtom)
+  const setCustomCollateralAmounts = useSetAtom(customCollateralAmountsAtom)
   const basket = useAtomValue(indexDTFBasketAtom)
   const chainId = useAtomValue(chainIdAtom)
   const inputToken = useAtomValue(inputTokenAtom)
@@ -80,6 +82,7 @@ const CollateralDecision = () => {
   const handleSingle = () => {
     setStrategy('single')
     setSelectedCollaterals(new Set<Address>())
+    setCustomCollateralAmounts({})
     setStep('quote-summary')
   }
 
@@ -92,7 +95,7 @@ const CollateralDecision = () => {
             variant="ghost"
             size="icon"
             className="rounded-full bg-background h-8 w-8"
-            onClick={() => setStep('operation-select')}
+            onClick={() => setStep('configure')}
           >
             <ArrowLeft size={16} />
           </Button>

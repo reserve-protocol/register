@@ -25,10 +25,7 @@ import {
 import { OrderStatus } from '@cowprotocol/cow-sdk'
 import { Address } from 'viem'
 
-const makeOrder = (
-  orderId: string,
-  status: OrderStatus
-) =>
+const makeOrder = (orderId: string, status: OrderStatus) =>
   ({
     orderId,
     status,
@@ -50,10 +47,7 @@ describe('Wizard Atoms', () => {
     // Set various state
     store.set(wizardStepAtom, 'processing')
     store.set(mintStrategyAtom, 'partial')
-    store.set(
-      selectedCollateralsAtom,
-      new Set<Address>(['0x123' as Address])
-    )
+    store.set(selectedCollateralsAtom, new Set<Address>(['0x123' as Address]))
     store.set(mintAmountAtom, '1000')
     store.set(orderIdsAtom, ['order-1'])
     store.set(ordersCreatedAtAtom, '2024-01-01')
@@ -166,6 +160,7 @@ describe('Wizard Atoms', () => {
     store.set(walletBalancesAtom, { [addr]: 1000n })
     store.set(tokenPricesAtom, { [addr]: 2000 })
     store.set(folioDetailsAtom, {
+      shares: 1000n,
       assets: [addr],
       mintValues: [1000n],
     })

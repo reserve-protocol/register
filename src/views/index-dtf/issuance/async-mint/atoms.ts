@@ -44,6 +44,9 @@ export const MINT_INPUT_TOKENS: Record<number, Token> = {
 export const wizardStepAtom = atom<WizardStep>('gnosis-check')
 export const mintStrategyAtom = atom<MintStrategy>('single')
 export const selectedCollateralsAtom = atom<Set<Address>>(new Set<Address>())
+export const customCollateralAmountsAtom = atom<Record<Address, string>>({})
+export const collateralSelectionInitializedAtom = atom<boolean>(false)
+export const useWalletCollateralAtom = atom<boolean>(false)
 export const mintAmountAtom = atom<string>('')
 export const slippageAtom = atom<string>('100') // basis points
 
@@ -74,6 +77,7 @@ export const actualMintedSharesAtom = atom<bigint>(0n)
 export const walletBalancesAtom = atom<Record<Address, bigint>>({})
 export const tokenPricesAtom = atom<Record<Address, number>>({})
 export const folioDetailsAtom = atom<{
+  shares: bigint
   assets: Address[]
   mintValues: bigint[]
 } | null>(null)
@@ -82,39 +86,63 @@ export const folioDetailsAtom = atom<{
 export const mintSharesAtom = atom<bigint>((get) => {
   const dollarAmount = Number(get(mintAmountAtom))
   const dtfPrice = get(indexDTFPriceAtom) || 0
-  if (!dtfPrice || !dollarAmount || !isFinite(dollarAmount) || dollarAmount <= 0) return 0n
+  if (
+    !dtfPrice ||
+    !dollarAmount ||
+    !isFinite(dollarAmount) ||
+    dollarAmount <= 0
+  )
+    return 0n
   const shares = dollarAmount / dtfPrice
   return safeParseEther(shares.toFixed(18))
 })
 
 // ─── Collateral allocation (derived — calls the tested pure function) ─
-export const collateralAllocationAtom = atom<Record<Address, CollateralAllocation>>(
-  (get) => {
-    const folioDetails = get(folioDetailsAtom)
-    const mintShares = get(mintSharesAtom)
-    if (!folioDetails || mintShares === 0n) return {}
+export const collateralAllocationAtom = atom<
+  Record<Address, CollateralAllocation>
+>((get) => {
+  const folioDetails = get(folioDetailsAtom)
+  const mintShares = get(mintSharesAtom)
+  if (!folioDetails || mintShares === 0n) return {}
 
-    const basket = get(indexDTFBasketAtom)
-    const decimalsMap: Record<Address, number> = {}
-    if (basket) {
-      for (const token of basket) {
-        decimalsMap[token.address.toLowerCase() as Address] = token.decimals
-      }
+  const basket = get(indexDTFBasketAtom)
+  const decimalsMap: Record<Address, number> = {}
+  if (basket) {
+    for (const token of basket) {
+      decimalsMap[token.address.toLowerCase() as Address] = token.decimals
     }
-
-    return calculateCollateralAllocation({
-      mintShares,
-      assets: folioDetails.assets,
-      mintValues: folioDetails.mintValues,
-      balances: get(walletBalancesAtom),
-      prices: get(tokenPricesAtom),
-      decimals: decimalsMap,
-      selectedCollaterals: get(selectedCollateralsAtom),
-      strategy: get(mintStrategyAtom),
-      inputToken: get(inputTokenAtom),
-    })
   }
-)
+
+  const mintValues =
+    folioDetails.shares === mintShares
+      ? folioDetails.mintValues
+      : folioDetails.mintValues.map(
+          (value) => (value * mintShares) / folioDetails.shares
+        )
+  const customCollateralAmounts: Record<Address, bigint> = {}
+  const customInputs = get(customCollateralAmountsAtom)
+  for (const [address, value] of Object.entries(customInputs)) {
+    const normalized = address.toLowerCase() as Address
+    if (!value) continue
+    customCollateralAmounts[normalized] = safeParseEther(
+      value,
+      decimalsMap[normalized] ?? 18
+    )
+  }
+
+  return calculateCollateralAllocation({
+    mintShares,
+    assets: folioDetails.assets,
+    mintValues,
+    balances: get(walletBalancesAtom),
+    prices: get(tokenPricesAtom),
+    decimals: decimalsMap,
+    selectedCollaterals: get(selectedCollateralsAtom),
+    customCollateralAmounts,
+    strategy: get(mintStrategyAtom),
+    inputToken: get(inputTokenAtom),
+  })
+})
 
 // ─── Recovery atoms ──────────────────────────────────────────────────
 export const recoveryChoiceAtom = atom<RecoveryChoice>(null)
@@ -158,9 +186,7 @@ export const failedOrdersAtom = atom((get) => {
 export const pendingOrdersAtom = atom((get) => {
   const orders = get(ordersAtom)
   return orders.filter((order) =>
-    [OrderStatus.OPEN, OrderStatus.PRESIGNATURE_PENDING].includes(
-      order.status
-    )
+    [OrderStatus.OPEN, OrderStatus.PRESIGNATURE_PENDING].includes(order.status)
   )
 })
 
@@ -176,6 +202,9 @@ export const resetWizardAtom = atom(null, (_, set) => {
   set(wizardStepAtom, 'gnosis-check')
   set(mintStrategyAtom, 'single')
   set(selectedCollateralsAtom, new Set())
+  set(customCollateralAmountsAtom, {})
+  set(collateralSelectionInitializedAtom, false)
+  set(useWalletCollateralAtom, false)
   set(mintAmountAtom, '')
   set(mintQuotesAtom, {})
   set(quotesTimestampAtom, undefined)

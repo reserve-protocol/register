@@ -1,13 +1,15 @@
 import { Button } from '@/components/ui/button'
 import { NumericalInput } from '@/components/ui/input'
 import { balancesAtom } from '@/state/atoms'
-import { indexDTFBasketAtom } from '@/state/dtf/atoms'
-import { formatCurrency } from '@/utils'
+import { indexDTFBasketAtom, indexDTFPriceAtom } from '@/state/dtf/atoms'
+import { formatCurrency, safeParseEther } from '@/utils'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { ArrowLeft, Minus, Plus } from 'lucide-react'
 import { useEffect, useMemo, useState } from 'react'
 import { Address, formatUnits } from 'viem'
 import {
+  customCollateralAmountsAtom,
+  folioDetailsAtom,
   inputTokenAtom,
   mintAmountAtom,
   mintStrategyAtom,
@@ -23,12 +25,15 @@ const AmountInput = () => {
   const inputToken = useAtomValue(inputTokenAtom)
   const [amount, setAmount] = useAtom(mintAmountAtom)
   const balances = useAtomValue(balancesAtom)
+  const dtfPrice = useAtomValue(indexDTFPriceAtom)
   const [showExplanation, setShowExplanation] = useState(false)
 
   const walletBalances = useAtomValue(walletBalancesAtom)
   const tokenPrices = useAtomValue(tokenPricesAtom)
   const selectedCollaterals = useAtomValue(selectedCollateralsAtom)
+  const customAmounts = useAtomValue(customCollateralAmountsAtom)
   const basket = useAtomValue(indexDTFBasketAtom)
+  const folioDetails = useAtomValue(folioDetailsAtom)
 
   const inputBalance = balances[inputToken.address]
   const availableBalance = inputBalance
@@ -44,7 +49,21 @@ const AmountInput = () => {
     }
     return map
   }, [basket])
+  const customCollateralAmounts = useMemo(() => {
+    const result: Record<Address, bigint> = {}
+    for (const [address, value] of Object.entries(customAmounts)) {
+      const normalized = address.toLowerCase() as Address
+      if (!value) continue
+      result[normalized] = safeParseEther(value, decimalsMap[normalized] ?? 18)
+    }
+    return result
+  }, [customAmounts, decimalsMap])
 
+  const parsedAmount = Number(amount) || 0
+  const folioReferenceAmount =
+    folioDetails && dtfPrice
+      ? Number(formatUnits(folioDetails.shares, 18)) * dtfPrice
+      : parsedAmount
   const maxMintAmount = useMemo(
     () =>
       calculateMaxMintAmount({
@@ -53,8 +72,12 @@ const AmountInput = () => {
         tokenPrices,
         tokenDecimals: decimalsMap,
         selectedCollaterals,
+        customCollateralAmounts,
         strategy,
         inputTokenAddress: inputToken.address as Address,
+        assets: folioDetails?.assets,
+        mintValues: folioDetails?.mintValues,
+        referenceAmount: folioReferenceAmount,
       }),
     [
       availableBalance,
@@ -62,8 +85,11 @@ const AmountInput = () => {
       tokenPrices,
       decimalsMap,
       selectedCollaterals,
+      customCollateralAmounts,
       strategy,
       inputToken,
+      folioDetails,
+      folioReferenceAmount,
     ]
   )
 
@@ -75,7 +101,6 @@ const AmountInput = () => {
   }, [maxMintAmount]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const MIN_MINT_AMOUNT = 1
-  const parsedAmount = Number(amount) || 0
   const isValid = parsedAmount >= MIN_MINT_AMOUNT
   const exceedsBalance = parsedAmount > maxMintAmount
 
@@ -89,7 +114,7 @@ const AmountInput = () => {
   const subtitle =
     strategy === 'partial'
       ? `Enter the total amount across all your selected tokens. We'll use your collateral first, then ${inputToken.symbol} for the rest.`
-      : `Enter the amount of ${inputToken.symbol} you'd like to use.`
+      : `Enter the USD value you'd like to mint.`
 
   // Show "Why can't I mint more?" when using partial strategy
   const showConstraintInfo = strategy === 'partial'
@@ -157,11 +182,7 @@ const AmountInput = () => {
                 <span className="text-sm font-semibold">
                   Why can&apos;t I mint more?
                 </span>
-                {showExplanation ? (
-                  <Minus size={16} />
-                ) : (
-                  <Plus size={16} />
-                )}
+                {showExplanation ? <Minus size={16} /> : <Plus size={16} />}
               </button>
               {showExplanation && (
                 <p className="text-sm text-muted-foreground font-light pb-2">

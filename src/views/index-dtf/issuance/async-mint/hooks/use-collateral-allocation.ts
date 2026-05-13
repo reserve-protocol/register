@@ -4,7 +4,7 @@ import { RESERVE_API } from '@/utils/constants'
 import { useQuery } from '@tanstack/react-query'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { useEffect } from 'react'
-import { Address } from 'viem'
+import { Address, parseUnits } from 'viem'
 import { useFolioDetails } from '../../async-swaps/hooks/useFolioDetails'
 import {
   folioDetailsAtom,
@@ -25,12 +25,14 @@ export function useAllocationData() {
   const setWalletBalances = useSetAtom(walletBalancesAtom)
   const setTokenPrices = useSetAtom(tokenPricesAtom)
   const setFolioDetails = useSetAtom(folioDetailsAtom)
+  const requestedShares = mintShares > 0n ? mintShares : parseUnits('1', 18)
 
   const folioResult = useFolioDetails({
-    shares: mintShares > 0n ? mintShares : undefined,
+    shares: requestedShares,
   })
   const folioData = folioResult.data
-  const isFolioLoading = 'isLoading' in folioResult ? (folioResult as any).isLoading : false
+  const isFolioLoading =
+    'isLoading' in folioResult ? (folioResult as any).isLoading : false
 
   const { data: balanceData, isLoading: isBalanceLoading } = useERC20Balances(
     (folioData?.assets || []).map((address) => ({
@@ -43,11 +45,12 @@ export function useAllocationData() {
   useEffect(() => {
     if (folioData?.assets?.length) {
       setFolioDetails({
+        shares: requestedShares,
         assets: [...folioData.assets],
         mintValues: [...folioData.mintValues],
       })
     }
-  }, [folioData, setFolioDetails])
+  }, [folioData, requestedShares, setFolioDetails])
 
   // Sync balances to atom
   useEffect(() => {
@@ -82,7 +85,8 @@ export function useAllocationData() {
     if (!priceData?.length) return
     const prices: Record<Address, number> = {}
     for (const p of priceData) {
-      if (p.price !== undefined) prices[p.address.toLowerCase() as Address] = p.price
+      if (p.price !== undefined)
+        prices[p.address.toLowerCase() as Address] = p.price
     }
     setTokenPrices(prices)
   }, [priceData, setTokenPrices])

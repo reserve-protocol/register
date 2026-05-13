@@ -92,7 +92,7 @@ const OperationSelect = () => {
           title="Mint"
           description="Acquire collateral and mint DTF tokens"
           icon={Wallet}
-          onClick={() => setStep('collateral-decision')}
+          onClick={() => setStep('configure')}
         />
         <OperationCard
           title="Redeem"

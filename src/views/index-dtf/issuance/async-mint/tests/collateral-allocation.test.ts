@@ -101,6 +101,31 @@ describe('calculateCollateralAllocation', () => {
     expect(result[WBTC].fromSwap).toBe(0n)
   })
 
+  it('partial strategy with custom amount uses only the custom wallet amount', () => {
+    const result = calculateCollateralAllocation({
+      mintShares: parseEther('1'),
+      assets: [WETH],
+      mintValues: [parseEther('1')],
+      balances: {
+        [WETH.toLowerCase() as Address]: parseEther('1'),
+      },
+      prices: {
+        [WETH.toLowerCase() as Address]: 2000,
+      },
+      decimals: DECIMALS,
+      selectedCollaterals: new Set<Address>([WETH]),
+      customCollateralAmounts: {
+        [WETH.toLowerCase() as Address]: parseEther('0.25'),
+      },
+      strategy: 'partial',
+      inputToken: INPUT_TOKEN,
+    })
+
+    expect(result[WETH].fromWallet).toBe(parseEther('0.25'))
+    expect(result[WETH].fromSwap).toBe(parseEther('0.75'))
+    expect(result[WETH].explanation).toBe('Using custom amount')
+  })
+
   it('partial strategy with mixed coverage: some from wallet, rest from swap', () => {
     const wethRequired = parseEther('1')
     const walletWeth = parseEther('0.3') // Only 30% coverage
@@ -273,7 +298,8 @@ describe('calculateCollateralAllocation', () => {
   })
 
   it('handles case-insensitive address matching for selectedCollaterals', () => {
-    const wethChecksummed = '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2' as Address
+    const wethChecksummed =
+      '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2' as Address
     const wethLower = wethChecksummed.toLowerCase() as Address
 
     const result = calculateCollateralAllocation({
@@ -289,8 +315,8 @@ describe('calculateCollateralAllocation', () => {
     })
 
     // Should still match and use wallet
-    expect(result[wethChecksummed].fromWallet).toBe(parseEther('0.5'))
-    expect(result[wethChecksummed].fromSwap).toBe(0n)
+    expect(result[wethLower].fromWallet).toBe(parseEther('0.5'))
+    expect(result[wethLower].fromSwap).toBe(0n)
   })
 
   it('handles partial strategy with zero wallet balance for selected token', () => {
@@ -345,6 +371,28 @@ describe('calculateMaxMintAmount', () => {
       inputTokenAddress: USDC,
     })
     expect(result).toBe(3000)
+  })
+
+  it('caps single strategy max by required non-input basket swaps when folio details are provided', () => {
+    const result = calculateMaxMintAmount({
+      inputTokenBalance: 1000,
+      walletBalances: {},
+      tokenPrices: {
+        [WETH.toLowerCase() as Address]: 2000,
+        [WBTC.toLowerCase() as Address]: 40000,
+      },
+      tokenDecimals: DECIMALS,
+      selectedCollaterals: new Set<Address>(),
+      strategy: 'single',
+      inputTokenAddress: USDC,
+      assets: [WETH, WBTC],
+      // At $1000 reference amount, swaps require $1000.01 due pricing.
+      mintValues: [parseEther('0.25'), parseUnits('0.01250025', 8)],
+      referenceAmount: 1000,
+    })
+
+    expect(result).toBeLessThan(1000)
+    expect(result).toBeCloseTo(999.99, 2)
   })
 
   it('adds selected collateral value for partial strategy', () => {
@@ -440,5 +488,58 @@ describe('calculateMaxMintAmount', () => {
     })
     // $1000 + $2000 = $3000
     expect(result).toBe(3000)
+  })
+
+  it('caps selected collateral by basket weight when folio details are provided', () => {
+    const result = calculateMaxMintAmount({
+      inputTokenBalance: 1000,
+      walletBalances: {
+        [WETH.toLowerCase() as Address]: parseEther('1'), // $2000 available
+      },
+      tokenPrices: {
+        [WETH.toLowerCase() as Address]: 2000,
+        [WBTC.toLowerCase() as Address]: 40000,
+      },
+      tokenDecimals: DECIMALS,
+      selectedCollaterals: new Set<Address>([WETH]),
+      strategy: 'partial',
+      inputTokenAddress: USDC,
+      assets: [WETH, WBTC],
+      // At $1000 reference amount: WETH is 10% ($100), WBTC is 90% ($900).
+      mintValues: [parseEther('0.05'), parseUnits('0.0225', 8)],
+      referenceAmount: 1000,
+    })
+
+    // WETH can only cover 10% of the mint. With $1000 USDC covering the
+    // remaining 90%, the max mint is $1111.11, not $3000.
+    expect(result).toBeCloseTo(1111.11, 2)
+  })
+
+  it('uses custom collateral amount for max mint calculation', () => {
+    const result = calculateMaxMintAmount({
+      inputTokenBalance: 1000,
+      walletBalances: {
+        [WETH.toLowerCase() as Address]: parseEther('10'),
+      },
+      tokenPrices: {
+        [WETH.toLowerCase() as Address]: 2000,
+        [WBTC.toLowerCase() as Address]: 40000,
+      },
+      tokenDecimals: DECIMALS,
+      selectedCollaterals: new Set<Address>([WETH]),
+      customCollateralAmounts: {
+        [WETH.toLowerCase() as Address]: parseEther('0.1'), // $200
+      },
+      strategy: 'partial',
+      inputTokenAddress: USDC,
+      assets: [WETH, WBTC],
+      // At $1000 reference amount: WETH is 50% ($500), WBTC is 50% ($500).
+      mintValues: [parseEther('0.25'), parseUnits('0.0125', 8)],
+      referenceAmount: 1000,
+    })
+
+    // $200 custom WETH covers part of the 50% WETH side. $1000 USDC covers
+    // the remaining $800, so total max is $1200.
+    expect(result).toBeCloseTo(1200, 2)
   })
 })

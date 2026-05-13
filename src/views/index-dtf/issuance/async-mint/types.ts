@@ -3,6 +3,7 @@ import { OrderQuoteResponse } from '@cowprotocol/cow-sdk'
 export type WizardStep =
   | 'gnosis-check'
   | 'operation-select'
+  | 'configure'
   | 'collateral-decision'
   | 'token-selection'
   | 'amount-input'

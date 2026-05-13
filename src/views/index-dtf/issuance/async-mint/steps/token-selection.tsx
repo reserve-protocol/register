@@ -9,6 +9,7 @@ import { ArrowLeft, Check } from 'lucide-react'
 import { useEffect } from 'react'
 import { Address } from 'viem'
 import {
+  customCollateralAmountsAtom,
   inputTokenAtom,
   selectedCollateralsAtom,
   wizardStepAtom,
@@ -20,6 +21,7 @@ const TokenSelection = () => {
   const chainId = useAtomValue(chainIdAtom)
   const inputToken = useAtomValue(inputTokenAtom)
   const [selected, setSelected] = useAtom(selectedCollateralsAtom)
+  const setCustomAmounts = useSetAtom(customCollateralAmountsAtom)
 
   const { data: balances } = useERC20Balances(
     (basket || []).map((token) => ({
@@ -45,12 +47,20 @@ const TokenSelection = () => {
   }, [basket, balances, inputToken.address])
 
   const toggleToken = (address: Address) => {
+    const normalized = address.toLowerCase() as Address
     setSelected((prev: Set<Address>) => {
       const next = new Set(prev)
-      if (next.has(address)) {
+      if (next.has(normalized) || next.has(address)) {
+        next.delete(normalized)
         next.delete(address)
+        setCustomAmounts((custom) => {
+          const nextCustom = { ...custom }
+          delete nextCustom[normalized]
+          delete nextCustom[address]
+          return nextCustom
+        })
       } else {
-        next.add(address)
+        next.add(normalized)
       }
       return next
     })
@@ -85,11 +95,16 @@ const TokenSelection = () => {
       </div>
 
       {/* Token rows */}
-      <div className="flex-1 min-h-0 overflow-y-auto" style={{ scrollbarWidth: 'none' }}>
+      <div
+        className="flex-1 min-h-0 overflow-y-auto"
+        style={{ scrollbarWidth: 'none' }}
+      >
         <div className="flex flex-col gap-0.5">
           {basket.map((token) => {
             const isInput = isInputToken(token.address)
-            const isSelected = selected.has(token.address)
+            const isSelected =
+              selected.has(token.address) ||
+              selected.has(token.address.toLowerCase() as Address)
 
             return (
               <div
