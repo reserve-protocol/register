@@ -2,6 +2,15 @@ import { Hex } from 'viem'
 
 const reserveOptimisticGovernorAbi = [
   {
+    type: 'event',
+    name: 'OptimisticProposalCreated',
+    inputs: [
+      { name: 'proposalId', type: 'uint256', indexed: true },
+      { name: 'vetoThreshold', type: 'uint256', indexed: false },
+    ],
+    anonymous: false,
+  },
+  {
     type: 'function',
     name: 'optimisticParams',
     stateMutability: 'view',

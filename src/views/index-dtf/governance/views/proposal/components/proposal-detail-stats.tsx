@@ -9,11 +9,21 @@ import { Separator } from '@/components/ui/separator'
 import { chainIdAtom, walletAtom } from '@/state/atoms'
 import { formatCurrency, formatPercentage } from '@/utils'
 import { PROPOSAL_STATES } from '@/utils/constants'
+import { useQuery } from '@tanstack/react-query'
 import { Check } from 'lucide-react'
 import { useMemo } from 'react'
 import { formatEther } from 'viem'
-import { useReadContract } from 'wagmi'
+import { usePublicClient, useReadContract } from 'wagmi'
 import { proposalDetailAtom, proposalStateAtom } from '../atom'
+
+const TRANSITIONED_VETO_THRESHOLD = 2n ** 256n - 1n
+
+const formatVotePower = (value: number) =>
+  formatCurrency(value, value > 0 && value < 1 ? 4 : 0, {
+    minimumFractionDigits: 0,
+    notation: 'compact',
+    compactDisplay: 'short',
+  })
 
 const BooleanIcon = ({
   value,
@@ -45,6 +55,7 @@ const useProposalDetailStats = () => {
   const proposal = useAtomValue(proposalDetailAtom)
   const chainId = useAtomValue(chainIdAtom)
   const account = useAtomValue(walletAtom)
+  const publicClient = usePublicClient({ chainId })
   const { data: votes = [0n, 0n, 0n] } = useReadContract({
     address: proposal?.governor,
     abi: dtfIndexGovernance,
@@ -53,7 +64,7 @@ const useProposalDetailStats = () => {
     chainId,
     query: { enabled: !!proposal },
   })
-  const { data: vetoThresholdRatio } = useReadContract({
+  const { data: currentVetoThresholdRatio } = useReadContract({
     address: proposal?.governor,
     abi: reserveOptimisticGovernorAbi,
     functionName: 'vetoThreshold',
@@ -61,6 +72,47 @@ const useProposalDetailStats = () => {
     chainId,
     query: { enabled: !!proposal && proposal.isOptimistic === true },
   })
+  const { data: createdVetoThresholdRatio } = useQuery({
+    queryKey: [
+      'optimistic-proposal-created-veto-threshold',
+      chainId,
+      proposal?.governor,
+      proposal?.id,
+      proposal?.creationBlock,
+    ],
+    queryFn: async () => {
+      if (!publicClient || !proposal?.governor || !proposal?.creationBlock) {
+        return undefined
+      }
+
+      const events = await publicClient.getContractEvents({
+        address: proposal.governor,
+        abi: reserveOptimisticGovernorAbi,
+        eventName: 'OptimisticProposalCreated',
+        args: { proposalId: BigInt(proposal.id) },
+        fromBlock: BigInt(proposal.creationBlock),
+        toBlock: BigInt(proposal.creationBlock),
+      })
+
+      return events[0]?.args.vetoThreshold
+    },
+    enabled:
+      !!publicClient &&
+      !!proposal?.governor &&
+      !!proposal?.creationBlock &&
+      proposal.isOptimistic === true,
+  })
+  const vetoThresholdRatio = useMemo(() => {
+    if (createdVetoThresholdRatio !== undefined) {
+      return createdVetoThresholdRatio
+    }
+
+    if (currentVetoThresholdRatio === TRANSITIONED_VETO_THRESHOLD) {
+      return undefined
+    }
+
+    return currentVetoThresholdRatio
+  }, [createdVetoThresholdRatio, currentVetoThresholdRatio])
   const { data: pastTotalSupply } = useReadContract({
     address: proposal?.voteToken,
     abi: votesTokenAbi,
@@ -243,15 +295,7 @@ const VetoThresholdStat = ({
           </span>
 
           <span className="text-legend whitespace-nowrap">
-            {formatCurrency(vetoVotes, 0, {
-              notation: 'compact',
-              compactDisplay: 'short',
-            })}{' '}
-            of{' '}
-            {formatCurrency(vetoThreshold, 0, {
-              notation: 'compact',
-              compactDisplay: 'short',
-            })}
+            {formatVotePower(vetoVotes)} of {formatVotePower(vetoThreshold)}
           </span>
         </div>
       </div>
@@ -395,10 +439,7 @@ const OptimisticVoteDistributionStat = ({
         <span className="min-w-[60px]">Counted veto power</span>
       </div>
       <span className="font-bold text-destructive">
-        {formatCurrency(+vetoVotes, 0, {
-          notation: 'compact',
-          compactDisplay: 'short',
-        })}
+        {formatVotePower(vetoVotes)}
       </span>
     </div>
   )
