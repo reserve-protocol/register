@@ -93,7 +93,11 @@ const ProposalDetailVotes = () => {
 
   if (proposal?.isOptimistic) {
     return (
-      <Tabs className="bg-background rounded-3xl p-2" defaultValue={TABS.AGAINST}>
+      <Tabs
+        key="optimistic"
+        className="bg-background rounded-3xl p-2"
+        defaultValue={TABS.AGAINST}
+      >
         <TabsList>
           <TabsTrigger value={TABS.AGAINST}>Vetoes</TabsTrigger>
         </TabsList>
@@ -107,7 +111,11 @@ const ProposalDetailVotes = () => {
   }
 
   return (
-    <Tabs className="bg-background rounded-3xl p-2" defaultValue={TABS.FOR}>
+    <Tabs
+      key="standard"
+      className="bg-background rounded-3xl p-2"
+      defaultValue={TABS.FOR}
+    >
       <TabsList>
         <TabsTrigger value={TABS.FOR}>Votes for</TabsTrigger>
         <TabsTrigger value={TABS.AGAINST}>Votes against</TabsTrigger>
