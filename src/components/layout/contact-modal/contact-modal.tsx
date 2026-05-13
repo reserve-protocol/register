@@ -8,24 +8,54 @@ import {
 import { Button } from '@/components/ui/button'
 import { Sparkles, X } from 'lucide-react'
 import { useAtom } from 'jotai'
+import mixpanel from 'mixpanel-browser/src/loaders/loader-module-core'
+import { useEffect } from 'react'
+import { Address } from 'viem'
 import { contactModalOpenAtom } from './atoms'
-import { useContactDismissal } from './use-contact-dismissal'
+import {
+  getContactDismissalKey,
+  useContactDismissal,
+} from './use-contact-dismissal'
 import { useContactCriteria } from './use-criteria'
 
 const CALENDLY_URL =
   'https://calendly.com/d/cycf-7kz-xjv/reserve-customer-discovery?from=slack'
+
+const isReopen = (wallet: Address | null) =>
+  !!wallet && localStorage.getItem(getContactDismissalKey(wallet)) === '1'
 
 const ContactModal = () => {
   const [open, setOpen] = useAtom(contactModalOpenAtom)
   const { wallet } = useContactCriteria()
   const { dismiss } = useContactDismissal(wallet)
 
+  useEffect(() => {
+    if (open) {
+      mixpanel.track('contact_us_modal_view', {
+        wallet,
+        is_reopen: isReopen(wallet),
+      })
+    }
+  }, [open, wallet])
+
   const handleOpenChange = (next: boolean) => {
-    if (!next) dismiss()
+    if (!next) {
+      mixpanel.track('contact_us_modal_click', {
+        action: 'dismissed',
+        wallet,
+        is_reopen: isReopen(wallet),
+      })
+      dismiss()
+    }
     setOpen(next)
   }
 
   const handleSchedule = () => {
+    mixpanel.track('contact_us_modal_click', {
+      action: 'scheduled',
+      wallet,
+      is_reopen: isReopen(wallet),
+    })
     dismiss()
     setOpen(false)
   }
