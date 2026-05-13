@@ -8,13 +8,13 @@ import { GlobalProtocolKitProvider } from '../async-swaps/providers/GlobalProtoc
 import { wizardStepAtom } from './atoms'
 import { useAllocationData } from './hooks/use-collateral-allocation'
 import GnosisRequired from './steps/gnosis-required'
-import OperationSelect from './steps/operation-select'
 import CollateralDecision from './steps/collateral-decision'
+import ConfigureMint from './steps/configure-mint'
 import TokenSelection from './steps/token-selection'
 import AmountInput from './steps/amount-input'
 import ReviewInputs from './steps/review-inputs'
 import QuoteSummary from './steps/quote-summary'
-import Processing from './steps/processing'
+import Processing from './steps/processing-v2'
 import RecoveryOptions from './steps/recovery-options'
 import Success from './steps/success'
 
@@ -26,7 +26,7 @@ const WizardRouter = () => {
   // Auto-skip gnosis check when wallet supports atomic batch
   useEffect(() => {
     if (step === 'gnosis-check' && atomicSupported && !isLoading) {
-      setStep('operation-select')
+      setStep('configure')
     }
   }, [step, atomicSupported, isLoading, setStep])
 
@@ -38,7 +38,9 @@ const WizardRouter = () => {
     case 'gnosis-check':
       return <GnosisRequired />
     case 'operation-select':
-      return <OperationSelect />
+      return <ConfigureMint />
+    case 'configure':
+      return <ConfigureMint />
     case 'collateral-decision':
       return <CollateralDecision />
     case 'token-selection':
@@ -56,7 +58,7 @@ const WizardRouter = () => {
     case 'success':
       return <Success />
     default:
-      return <OperationSelect />
+      return <ConfigureMint />
   }
 }
 
@@ -73,9 +75,9 @@ const AsyncMintWizard = () => {
   if (!indexDTF) return null
 
   return (
-    <div className="container flex flex-col items-center sm:justify-start md:justify-center gap-2 lg:border-2 lg:border-secondary lg:bg-secondary/30 lg:min-h-[calc(100vh-100px)] dark:bg-card rounded-4xl w-full">
-      <div className="flex flex-col w-fit rounded-4xl p-1">
-        <div className="w-full max-w-[468px] mx-auto">
+    <div className="container flex flex-col items-center justify-start gap-2 lg:min-h-[calc(100vh-100px)] w-full">
+      <div className="flex flex-col w-full rounded-4xl">
+        <div className="w-full mx-auto">
           <DataSync />
           <WizardRouter />
         </div>

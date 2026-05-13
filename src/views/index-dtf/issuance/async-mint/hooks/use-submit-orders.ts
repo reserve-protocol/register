@@ -20,6 +20,7 @@ import {
 import { useGlobalProtocolKit } from '../../async-swaps/providers/GlobalProtocolKitProvider'
 import {
   failedOrdersAtom,
+  collateralAllocationAtom,
   inputTokenAtom,
   mintAmountAtom,
   mintQuotesAtom,
@@ -45,6 +46,7 @@ export function useSubmitOrders(refresh = false) {
   const inputToken = useAtomValue(inputTokenAtom)
   const mintAmount = useAtomValue(mintAmountAtom)
   const quotes = useAtomValue(mintQuotesAtom)
+  const allocation = useAtomValue(collateralAllocationAtom)
   const slippage = useAtomValue(slippageAtom)
   const failedOrders = useAtomValue(failedOrdersAtom)
   const { orderBookApi } = useGlobalProtocolKit()
@@ -61,8 +63,16 @@ export function useSubmitOrders(refresh = false) {
     mutationKey: ['async-mint/submit-orders', chainId, address, refresh],
     mutationFn: async () => {
       if (!address || !orderBookApi || !chainId || !indexDTF) {
-        console.error('Submit orders: missing prerequisites', { address: !!address, orderBookApi: !!orderBookApi, chainId, indexDTF: !!indexDTF })
-        notifyError('Cannot submit', 'Wallet or protocol not ready. Please try again.')
+        console.error('Submit orders: missing prerequisites', {
+          address: !!address,
+          orderBookApi: !!orderBookApi,
+          chainId,
+          indexDTF: !!indexDTF,
+        })
+        notifyError(
+          'Cannot submit',
+          'Wallet or protocol not ready. Please try again.'
+        )
         return { orders: [] }
       }
 
@@ -100,6 +110,20 @@ export function useSubmitOrders(refresh = false) {
       const successfulQuotes = Object.entries(quotes).filter(
         ([_, q]) => q.success
       )
+      const requiredSwapCount = Object.values(allocation).filter(
+        (item) => item.fromSwap > 0n
+      ).length
+
+      if (
+        requiredSwapCount > 0 &&
+        successfulQuotes.length < requiredSwapCount
+      ) {
+        notifyError(
+          'Missing quotes',
+          `Only ${successfulQuotes.length} of ${requiredSwapCount} required collateral quotes are available. Try a larger amount or refresh quotes.`
+        )
+        throw new Error('Missing required collateral quotes')
+      }
 
       if (successfulQuotes.length === 0) {
         return { orders: [] }
@@ -172,10 +196,7 @@ export function useSubmitOrders(refresh = false) {
             submitted = true
             break
           } catch (error) {
-            console.error(
-              `sendOrder attempt ${attempt + 1} failed:`,
-              error
-            )
+            console.error(`sendOrder attempt ${attempt + 1} failed:`, error)
             if (attempt < 2) {
               await new Promise((r) =>
                 setTimeout(r, 1000 * Math.pow(2, attempt))
@@ -200,15 +221,13 @@ export function useSubmitOrders(refresh = false) {
         if (refresh) {
           setOrderIds((prev) => [
             ...prev.filter(
-              (id) =>
-                !failedOrders.map((o) => o.orderId).includes(id)
+              (id) => !failedOrders.map((o) => o.orderId).includes(id)
             ),
             ...orderIds,
           ])
           setOrders((prev) =>
             prev.filter(
-              (o) =>
-                !failedOrders.map((fo) => fo.orderId).includes(o.orderId)
+              (o) => !failedOrders.map((fo) => fo.orderId).includes(o.orderId)
             )
           )
         } else {

@@ -1,6 +1,7 @@
 import { chainIdAtom, walletAtom } from '@/state/atoms'
-import { useQuery } from '@tanstack/react-query'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
+import { useEffect } from 'react'
 import { Address } from 'viem'
 import { getCowswapQuote } from '../../async-swaps/hooks/useQuote'
 import { useGlobalProtocolKit } from '../../async-swaps/providers/GlobalProtocolKitProvider'
@@ -22,6 +23,7 @@ export function useMintQuotes() {
   const [quotes, setQuotes] = useAtom(mintQuotesAtom)
   const setQuotesTimestamp = useSetAtom(quotesTimestampAtom)
   const { orderBookApi } = useGlobalProtocolKit()
+  const queryClient = useQueryClient()
 
   // Only request quotes for tokens that need swaps
   const tokensNeedingSwap = Object.entries(allocation).filter(
@@ -73,16 +75,26 @@ export function useMintQuotes() {
         })
       )
 
-      setQuotes(results)
-      setQuotesTimestamp(Date.now())
       return results
     },
     enabled: false, // Manual trigger via refetch
   })
 
+  useEffect(() => {
+    if (!query.data) return
+
+    setQuotes(query.data)
+    setQuotesTimestamp(Date.now())
+  }, [query.data, setQuotes, setQuotesTimestamp])
+
   return {
     quotes,
     refetch: query.refetch,
+    cancel: () =>
+      queryClient.cancelQueries({
+        queryKey: ['async-mint/quotes'],
+        exact: false,
+      }),
     isLoading: query.isLoading,
     isFetching: query.isFetching,
   }
