@@ -36,7 +36,6 @@ export const TOKEN_LOGO_MAPPINGS: Record<string, string> = {
   "uapt": "https://raw.githubusercontent.com/SmolDapp/tokenAssets/main/tokens/8453/0x9c0e042d65a2e1ff31ac83f404e5cb79f452c337/logo-128.png",
   "usei": "https://raw.githubusercontent.com/SmolDapp/tokenAssets/main/tokens/8453/0x71a67215a2025f501f386a49858a9ced2fc0249d/logo-128.png",
   "usui": "https://raw.githubusercontent.com/SmolDapp/tokenAssets/main/tokens/8453/0xb0505e5a99abd03d94a1169e638b78edfed26ea4/logo-128.png",
-  "usdi": "https://logo.svgcdn.com/token-branded/usdi.svg",
   "uatom": "https://token-icons.llamao.fi/icons/tokens/8453/0x6e934283dae5d5d1831cbe8d557c44c9b83f30ee",
   "uavax": "https://token-icons.llamao.fi/icons/tokens/8453/0xd6a34b430c05ac78c24985f8abee2616bc1788cb",
   "ubch": "https://raw.githubusercontent.com/SmolDapp/tokenAssets/main/tokens/8453/0x7be0cc2cadcd4a8f9901b4a66244dcdd9bd02e0f/logo-128.png",

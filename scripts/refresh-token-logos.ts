@@ -102,6 +102,7 @@ const SVGS = new Set([
   'fxs',
   'weeth',
   'king',
+  'usdi',
 ])
 
 const PNGS = new Set([
