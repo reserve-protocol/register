@@ -93,7 +93,7 @@ export const mintSharesAtom = atom<bigint>((get) => {
     dollarAmount <= 0
   )
     return 0n
-  const shares = dollarAmount / dtfPrice
+  const shares = (dollarAmount / dtfPrice) * (1 - ASYNC_MINT_BUFFER)
   return safeParseEther(shares.toFixed(18))
 })
 
@@ -168,8 +168,15 @@ export const ordersSubmittedAtom = atom<boolean>((get) => {
   return Boolean(get(ordersCreatedAtAtom))
 })
 
-export const allOrdersFulfilledAtom = atom<boolean>((get) => {
+export const currentOrdersAtom = atom((get) => {
+  const orderIds = new Set(get(orderIdsAtom))
   const orders = get(ordersAtom)
+  if (orderIds.size === 0) return []
+  return orders.filter((order) => orderIds.has(order.orderId))
+})
+
+export const allOrdersFulfilledAtom = atom<boolean>((get) => {
+  const orders = get(currentOrdersAtom)
   return (
     orders.length > 0 &&
     orders.every((order) => order.status === OrderStatus.FULFILLED)
@@ -177,14 +184,14 @@ export const allOrdersFulfilledAtom = atom<boolean>((get) => {
 })
 
 export const failedOrdersAtom = atom((get) => {
-  const orders = get(ordersAtom)
+  const orders = get(currentOrdersAtom)
   return orders.filter((order) =>
     [OrderStatus.CANCELLED, OrderStatus.EXPIRED].includes(order.status)
   )
 })
 
 export const pendingOrdersAtom = atom((get) => {
-  const orders = get(ordersAtom)
+  const orders = get(currentOrdersAtom)
   return orders.filter((order) =>
     [OrderStatus.OPEN, OrderStatus.PRESIGNATURE_PENDING].includes(order.status)
   )

@@ -9,6 +9,7 @@ import { useMemo } from 'react'
 import { Address, formatEther, formatUnits } from 'viem'
 import {
   acquiredBalancesAtom,
+  ASYNC_MINT_BUFFER,
   folioDetailsAtom,
   inputTokenAtom,
   leftoverCollateralAtom,
@@ -21,9 +22,9 @@ import {
   wizardStepAtom,
 } from '../atoms'
 import {
+  calculateCollateralTopUp,
   calculateReducedMint,
   calculateReversalEstimate,
-  calculateTopUp,
 } from '../hooks/use-recovery'
 import { useReverseOrders } from '../hooks/use-reverse-orders'
 
@@ -48,6 +49,9 @@ const RecoveryOptions = () => {
   const { reverseAsync, isPending: isReversing } = useReverseOrders()
 
   const parsedAmount = Number(mintAmount)
+  const targetDtfAmount = dtfPrice
+    ? (parsedAmount / dtfPrice) * (1 - ASYNC_MINT_BUFFER)
+    : 0
   const slippageBps = Number(slippage)
 
   const inputTokenBalance = useMemo(() => {
@@ -65,19 +69,16 @@ const RecoveryOptions = () => {
     return map
   }, [basket])
 
-  const totalAcquiredUsd = useMemo(() => {
-    let total = 0
-    for (const [addr, amount] of Object.entries(walletBalances)) {
-      const price = tokenPrices[addr as Address] ?? 0
-      const dec = decimalsMap[addr as Address] ?? 18
-      total += Number(formatUnits(amount, dec)) * price
-    }
-    return total
-  }, [walletBalances, tokenPrices, decimalsMap])
-
   const topUp = useMemo(() => {
-    return calculateTopUp(parsedAmount, totalAcquiredUsd)
-  }, [parsedAmount, totalAcquiredUsd])
+    if (!folioDetails) return { topUpAmount: 0, shortfalls: [] }
+    return calculateCollateralTopUp({
+      availableBalances: walletBalances,
+      targetMintValues: folioDetails.mintValues,
+      assets: folioDetails.assets,
+      prices: tokenPrices,
+      decimals: decimalsMap,
+    })
+  }, [folioDetails, walletBalances, tokenPrices, decimalsMap])
 
   const canTopUp = inputTokenBalance >= topUp.topUpAmount
 
@@ -182,12 +183,12 @@ const RecoveryOptions = () => {
                 <span className="text-sm text-muted-foreground font-light">
                   {canTopUp ? (
                     <>
-                      Approve an additional{' '}
+                      Use about{' '}
                       <span className="font-semibold text-foreground">
                         ${formatCurrency(topUp.topUpAmount)} {inputToken.symbol}
                       </span>{' '}
-                      to receive{' '}
-                      {formatTokenAmount(parsedAmount / (dtfPrice || 1))}{' '}
+                      to reacquire missing collateral and receive{' '}
+                      {formatTokenAmount(targetDtfAmount)}{' '}
                       {indexDTF?.token.symbol}
                     </>
                   ) : (
@@ -198,6 +199,25 @@ const RecoveryOptions = () => {
                     </>
                   )}
                 </span>
+                {topUp.shortfalls.length > 0 && (
+                  <div className="mt-2 flex flex-wrap gap-1.5">
+                    {topUp.shortfalls.map((shortfall) => {
+                      const token = basket?.find(
+                        (item) =>
+                          item.address.toLowerCase() === shortfall.address
+                      )
+                      return (
+                        <span
+                          key={shortfall.address}
+                          className="rounded-full bg-muted px-2 py-1 text-xs text-muted-foreground"
+                        >
+                          ${formatCurrency(shortfall.usdValue)}{' '}
+                          {token?.symbol ?? shortfall.address.slice(0, 6)}
+                        </span>
+                      )
+                    })}
+                  </div>
+                )}
               </div>
             </div>
             <div className="bg-muted group-hover:bg-primary group-hover:text-primary-foreground size-8 rounded-full flex items-center justify-center transition-colors shrink-0 ml-3">

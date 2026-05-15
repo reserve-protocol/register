@@ -6,15 +6,25 @@ import { TransactionButtonContainer } from '@/components/ui/transaction-button'
 import { useERC20Balances } from '@/hooks/useERC20Balance'
 import { notifyError } from '@/hooks/useNotification'
 import { chainIdAtom, walletAtom } from '@/state/atoms'
-import { indexDTFAtom, indexDTFPriceAtom, indexDTFVersionAtom } from '@/state/dtf/atoms'
+import {
+  indexDTFAtom,
+  indexDTFPriceAtom,
+  indexDTFVersionAtom,
+} from '@/state/dtf/atoms'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { Loader } from 'lucide-react'
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { Address, encodeFunctionData, erc20Abi, parseEther } from 'viem'
-import { useSendCalls } from 'wagmi'
+import { useSendCalls, useWaitForCallsStatus } from 'wagmi'
 import { useFolioDetails } from '../../async-swaps/hooks/useFolioDetails'
 import { sendCallsWithRetry } from '../../async-swaps/hooks/utils'
-import { ASYNC_MINT_BUFFER, actualMintedSharesAtom, mintAmountAtom, mintTxHashAtom, wizardStepAtom } from '../atoms'
+import {
+  ASYNC_MINT_BUFFER,
+  actualMintedSharesAtom,
+  mintAmountAtom,
+  mintTxHashAtom,
+  wizardStepAtom,
+} from '../atoms'
 
 const MintExecute = () => {
   const account = useAtomValue(walletAtom)
@@ -28,19 +38,25 @@ const MintExecute = () => {
   const setStep = useSetAtom(wizardStepAtom)
 
   const [isMinting, setIsMinting] = useState(false)
+  const [submittedCallId, setSubmittedCallId] = useState<string>()
+  const [pendingMintShares, setPendingMintShares] = useState<bigint>(0n)
 
   // Calculate mint value with buffer
   const parsedAmount = Number(mintAmount) || 0
   const safeDtfPrice = dtfPrice && dtfPrice > 0 ? dtfPrice : 0
-  const mintValue = safeDtfPrice > 0
-    ? (parsedAmount / safeDtfPrice) * (1 - ASYNC_MINT_BUFFER)
-    : 0
-  const folioAmount = parseEther(
-    Math.max(mintValue, 0.000001).toFixed(18)
-  )
+  const mintValue =
+    safeDtfPrice > 0
+      ? (parsedAmount / safeDtfPrice) * (1 - ASYNC_MINT_BUFFER)
+      : 0
+  const folioAmount = parseEther(Math.max(mintValue, 0.000001).toFixed(18))
 
-  const { data: folioDetails } = useFolioDetails({ shares: safeDtfPrice > 0 ? folioAmount : undefined })
+  const { data: folioDetails } = useFolioDetails({
+    shares: safeDtfPrice > 0 ? folioAmount : undefined,
+  })
   const { sendCallsAsync } = useSendCalls()
+  const { data: callsStatus } = useWaitForCallsStatus({
+    id: submittedCallId || '',
+  })
 
   const { data: balanceData, isFetching: isFetchingBalanceData } =
     useERC20Balances(
@@ -61,14 +77,17 @@ const MintExecute = () => {
       return (balance * folioAmount) / mintValue
     })
 
-    const participating = mintableAmounts.filter((_, i) => folioDetails.mintValues[i] > 0n)
+    const participating = mintableAmounts.filter(
+      (_, i) => folioDetails.mintValues[i] > 0n
+    )
     return participating.length > 0
       ? participating.reduce((min, amount) => (amount < min ? amount : min))
       : 0n
   }, [folioDetails?.mintValues, balanceData, folioAmount])
 
   const handleMint = async () => {
-    if (!account || !folioDetails || !indexDTF || maxMintableAmount === 0n) return
+    if (!account || !folioDetails || !indexDTF || maxMintableAmount === 0n)
+      return
 
     setIsMinting(true)
 
@@ -76,9 +95,10 @@ const MintExecute = () => {
       // WHY: Scale approvals from folioAmount to maxMintableAmount + 1% buffer
       // mintValues are proportional to folioAmount, but we mint maxMintableAmount
       const approvalCalls = folioDetails.assets.map((asset, i) => {
-        const scaledAmount = folioAmount > 0n
-          ? (folioDetails.mintValues[i] * maxMintableAmount) / folioAmount
-          : folioDetails.mintValues[i]
+        const scaledAmount =
+          folioAmount > 0n
+            ? (folioDetails.mintValues[i] * maxMintableAmount) / folioAmount
+            : folioDetails.mintValues[i]
         return {
           to: asset as Address,
           value: 0n,
@@ -98,12 +118,20 @@ const MintExecute = () => {
             ? encodeFunctionData({
                 abi: dtfIndexAbiV2,
                 functionName: 'mint',
-                args: [maxMintableAmount, account, (maxMintableAmount * 99n) / 100n],
+                args: [
+                  maxMintableAmount,
+                  account,
+                  (maxMintableAmount * 99n) / 100n,
+                ],
               })
             : encodeFunctionData({
                 abi: dtfIndexAbi,
                 functionName: 'mint',
-                args: [maxMintableAmount, account, (maxMintableAmount * 99n) / 100n],
+                args: [
+                  maxMintableAmount,
+                  account,
+                  (maxMintableAmount * 99n) / 100n,
+                ],
               }),
       }
 
@@ -114,11 +142,8 @@ const MintExecute = () => {
         account as Address
       )
 
-      setActualMintedShares(maxMintableAmount)
-      // WHY: wallet_sendCalls returns a bundle ID, not a tx hash.
-      // Store it — success-header validates format before linking to explorer.
-      setMintTxHash(result?.id)
-      setStep('success')
+      setPendingMintShares(maxMintableAmount)
+      setSubmittedCallId(result?.id)
     } catch (error) {
       console.error('Mint execution failed:', error)
       if (error instanceof Error && error.message !== 'USER_CANCELLED_TX') {
@@ -128,6 +153,36 @@ const MintExecute = () => {
       setIsMinting(false)
     }
   }
+
+  useEffect(() => {
+    if (!callsStatus) return
+
+    if (callsStatus.status === 'success') {
+      const receipts = callsStatus.receipts ?? []
+      const mintTxHash = receipts.slice(-1)[0]?.transactionHash
+
+      setActualMintedShares(pendingMintShares)
+      setMintTxHash(mintTxHash || submittedCallId)
+      setSubmittedCallId(undefined)
+      setPendingMintShares(0n)
+      setIsMinting(false)
+      setStep('success')
+    }
+
+    if (callsStatus.status === 'failure') {
+      setSubmittedCallId(undefined)
+      setPendingMintShares(0n)
+      setIsMinting(false)
+      notifyError('Mint failed', 'Transaction failed. Please try again.')
+    }
+  }, [
+    callsStatus,
+    pendingMintShares,
+    setActualMintedShares,
+    setMintTxHash,
+    setStep,
+    submittedCallId,
+  ])
 
   if (!indexDTF) return null
 
@@ -145,11 +200,7 @@ const MintExecute = () => {
             <div className="font-semibold">Confirm Mint</div>
           </div>
           <div className="border border-primary/40 rounded-full p-1.5 text-primary">
-            <Loader
-              size={16}
-              strokeWidth={1.5}
-              className="animate-spin-slow"
-            />
+            <Loader size={16} strokeWidth={1.5} className="animate-spin-slow" />
           </div>
         </div>
       </div>

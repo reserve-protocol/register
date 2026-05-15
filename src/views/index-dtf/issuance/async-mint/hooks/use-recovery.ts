@@ -41,6 +41,60 @@ export function calculateTopUp(
 }
 
 /**
+ * Calculate additional input-token value needed from per-asset basket deficits.
+ * A simple total USD comparison can hide that one required asset is missing
+ * while another is over-acquired.
+ */
+export function calculateCollateralTopUp({
+  availableBalances,
+  targetMintValues,
+  assets,
+  prices,
+  decimals,
+}: {
+  availableBalances: Record<Address, bigint>
+  targetMintValues: bigint[]
+  assets: Address[]
+  prices: Record<Address, number>
+  decimals: Record<Address, number>
+}): {
+  topUpAmount: number
+  shortfalls: {
+    address: Address
+    amount: bigint
+    usdValue: number
+  }[]
+} {
+  const shortfalls: {
+    address: Address
+    amount: bigint
+    usdValue: number
+  }[] = []
+
+  for (let i = 0; i < assets.length; i++) {
+    const address = assets[i].toLowerCase() as Address
+    const required = targetMintValues[i] ?? 0n
+    const available = availableBalances[address] ?? 0n
+    const amount = required > available ? required - available : 0n
+
+    if (amount === 0n) continue
+
+    const price = prices[address] ?? 0
+    const dec = decimals[address] ?? 18
+    shortfalls.push({
+      address,
+      amount,
+      usdValue: Number(formatUnits(amount, dec)) * price,
+    })
+  }
+
+  return {
+    topUpAmount: shortfalls.reduce((sum, item) => sum + item.usdValue, 0),
+    shortfalls,
+  }
+}
+
+/**
  * Calculate the max DTF mintable from only the acquired collateral.
  * Uses the same logic as mint-button.tsx: min((balance * folioAmount) / mintValue) across all tokens.
  */
@@ -70,8 +124,7 @@ export function calculateReducedMint({
   // For each token, calculate how many folio tokens we can mint based on acquired balance
   const mintableAmounts: bigint[] = []
   for (let i = 0; i < assets.length; i++) {
-    const balance =
-      acquiredBalances[assets[i].toLowerCase() as Address] ?? 0n
+    const balance = acquiredBalances[assets[i].toLowerCase() as Address] ?? 0n
     const mintValue = mintValues[i]
     if (mintValue === 0n) {
       mintableAmounts.push(0n)
@@ -81,16 +134,20 @@ export function calculateReducedMint({
   }
 
   // Take the minimum (bottleneck token) — only tokens with mintValue > 0n participate
-  const participatingAmounts = mintableAmounts.filter((_, i) => mintValues[i] > 0n)
-  const reducedShares = participatingAmounts.length > 0
-    ? participatingAmounts.reduce((min, amount) => (amount < min ? amount : min))
-    : 0n
+  const participatingAmounts = mintableAmounts.filter(
+    (_, i) => mintValues[i] > 0n
+  )
+  const reducedShares =
+    participatingAmounts.length > 0
+      ? participatingAmounts.reduce((min, amount) =>
+          amount < min ? amount : min
+        )
+      : 0n
 
   // Calculate unused collateral per token
   const unusedCollateral: Record<Address, bigint> = {}
   for (let i = 0; i < assets.length; i++) {
-    const balance =
-      acquiredBalances[assets[i].toLowerCase() as Address] ?? 0n
+    const balance = acquiredBalances[assets[i].toLowerCase() as Address] ?? 0n
     const usedForMint =
       mintValues[i] > 0n ? (reducedShares * mintValues[i]) / folioAmount : 0n
     const unused = balance - usedForMint

@@ -2,6 +2,7 @@ import { createStore } from 'jotai'
 import { describe, it, expect } from 'vitest'
 import {
   allOrdersFulfilledAtom,
+  currentOrdersAtom,
   failedOrdersAtom,
   folioDetailsAtom,
   leftoverCollateralAtom,
@@ -72,6 +73,7 @@ describe('Wizard Atoms', () => {
 
   it('allOrdersFulfilledAtom returns true when all fulfilled', () => {
     const store = createStore()
+    store.set(orderIdsAtom, ['1', '2'])
     store.set(ordersAtom, [
       makeOrder('1', OrderStatus.FULFILLED),
       makeOrder('2', OrderStatus.FULFILLED),
@@ -81,6 +83,7 @@ describe('Wizard Atoms', () => {
 
   it('allOrdersFulfilledAtom returns false when any pending', () => {
     const store = createStore()
+    store.set(orderIdsAtom, ['1', '2'])
     store.set(ordersAtom, [
       makeOrder('1', OrderStatus.FULFILLED),
       makeOrder('2', OrderStatus.OPEN),
@@ -95,6 +98,7 @@ describe('Wizard Atoms', () => {
 
   it('failedOrdersAtom filters cancelled/expired', () => {
     const store = createStore()
+    store.set(orderIdsAtom, ['1', '2', '3', '4'])
     store.set(ordersAtom, [
       makeOrder('1', OrderStatus.FULFILLED),
       makeOrder('2', OrderStatus.CANCELLED),
@@ -108,6 +112,7 @@ describe('Wizard Atoms', () => {
 
   it('pendingOrdersAtom filters open/presignature_pending', () => {
     const store = createStore()
+    store.set(orderIdsAtom, ['1', '2', '3', '4'])
     store.set(ordersAtom, [
       makeOrder('1', OrderStatus.FULFILLED),
       makeOrder('2', OrderStatus.OPEN),
@@ -121,6 +126,7 @@ describe('Wizard Atoms', () => {
 
   it('priceMovedAtom true when failed > 0 and pending === 0', () => {
     const store = createStore()
+    store.set(orderIdsAtom, ['1', '2'])
     store.set(ordersAtom, [
       makeOrder('1', OrderStatus.FULFILLED),
       makeOrder('2', OrderStatus.CANCELLED),
@@ -130,6 +136,7 @@ describe('Wizard Atoms', () => {
 
   it('priceMovedAtom false when still pending', () => {
     const store = createStore()
+    store.set(orderIdsAtom, ['1', '2'])
     store.set(ordersAtom, [
       makeOrder('1', OrderStatus.CANCELLED),
       makeOrder('2', OrderStatus.OPEN),
@@ -139,11 +146,27 @@ describe('Wizard Atoms', () => {
 
   it('priceMovedAtom false when no failures', () => {
     const store = createStore()
+    store.set(orderIdsAtom, ['1', '2'])
     store.set(ordersAtom, [
       makeOrder('1', OrderStatus.FULFILLED),
       makeOrder('2', OrderStatus.FULFILLED),
     ])
     expect(store.get(priceMovedAtom)).toBe(false)
+  })
+
+  it('current order status ignores failed orders from previous attempts', () => {
+    const store = createStore()
+    store.set(orderIdsAtom, ['retry-1'])
+    store.set(ordersAtom, [
+      makeOrder('expired-1', OrderStatus.EXPIRED),
+      makeOrder('retry-1', OrderStatus.FULFILLED),
+    ])
+
+    expect(store.get(currentOrdersAtom).map((o) => o.orderId)).toEqual([
+      'retry-1',
+    ])
+    expect(store.get(failedOrdersAtom)).toHaveLength(0)
+    expect(store.get(allOrdersFulfilledAtom)).toBe(true)
   })
 
   it('ordersSubmittedAtom true when ordersCreatedAt set', () => {
@@ -181,12 +204,14 @@ describe('Wizard Atoms', () => {
 
   it('allOrdersFulfilledAtom handles single order', () => {
     const store = createStore()
+    store.set(orderIdsAtom, ['1'])
     store.set(ordersAtom, [makeOrder('1', OrderStatus.FULFILLED)])
     expect(store.get(allOrdersFulfilledAtom)).toBe(true)
   })
 
   it('failedOrdersAtom returns empty when all fulfilled', () => {
     const store = createStore()
+    store.set(orderIdsAtom, ['1', '2'])
     store.set(ordersAtom, [
       makeOrder('1', OrderStatus.FULFILLED),
       makeOrder('2', OrderStatus.FULFILLED),
@@ -196,6 +221,7 @@ describe('Wizard Atoms', () => {
 
   it('pendingOrdersAtom returns empty when all resolved', () => {
     const store = createStore()
+    store.set(orderIdsAtom, ['1', '2'])
     store.set(ordersAtom, [
       makeOrder('1', OrderStatus.FULFILLED),
       makeOrder('2', OrderStatus.CANCELLED),

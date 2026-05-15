@@ -2,6 +2,7 @@ import { describe, it, expect } from 'vitest'
 import { Address, parseEther, parseUnits } from 'viem'
 import {
   checkMintFeasibility,
+  calculateCollateralTopUp,
   calculateTopUp,
   calculateReducedMint,
   calculateReversalEstimate,
@@ -41,11 +42,7 @@ describe('checkMintFeasibility', () => {
   })
 
   it('returns false when acquired balance is zero', () => {
-    const result = checkMintFeasibility(
-      {},
-      [parseEther('0.5')],
-      [WETH]
-    )
+    const result = checkMintFeasibility({}, [parseEther('0.5')], [WETH])
     expect(result).toBe(false)
   })
 
@@ -85,6 +82,56 @@ describe('calculateTopUp', () => {
   it('handles over-acquired (no negative)', () => {
     const result = calculateTopUp(10000, 11000)
     expect(result.topUpAmount).toBe(0)
+  })
+})
+
+describe('calculateCollateralTopUp', () => {
+  it('calculates shortfall by required basket asset', () => {
+    const result = calculateCollateralTopUp({
+      availableBalances: {
+        [WETH.toLowerCase() as Address]: parseEther('0.25'),
+        [DAI.toLowerCase() as Address]: parseEther('1200'),
+      },
+      targetMintValues: [parseEther('0.5'), parseEther('1000')],
+      assets: [WETH, DAI],
+      prices: {
+        [WETH.toLowerCase() as Address]: 2000,
+        [DAI.toLowerCase() as Address]: 1,
+      },
+      decimals: {
+        [WETH.toLowerCase() as Address]: 18,
+        [DAI.toLowerCase() as Address]: 18,
+      },
+    })
+
+    expect(result.topUpAmount).toBe(500)
+    expect(result.shortfalls).toHaveLength(1)
+    expect(result.shortfalls[0]).toMatchObject({
+      address: WETH.toLowerCase(),
+      amount: parseEther('0.25'),
+      usdValue: 500,
+    })
+  })
+
+  it('does not let surplus in one asset offset another asset deficit', () => {
+    const result = calculateCollateralTopUp({
+      availableBalances: {
+        [WETH.toLowerCase() as Address]: parseEther('0'),
+        [DAI.toLowerCase() as Address]: parseEther('2000'),
+      },
+      targetMintValues: [parseEther('0.5'), parseEther('1000')],
+      assets: [WETH, DAI],
+      prices: {
+        [WETH.toLowerCase() as Address]: 2000,
+        [DAI.toLowerCase() as Address]: 1,
+      },
+      decimals: {
+        [WETH.toLowerCase() as Address]: 18,
+        [DAI.toLowerCase() as Address]: 18,
+      },
+    })
+
+    expect(result.topUpAmount).toBe(1000)
   })
 })
 
