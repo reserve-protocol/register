@@ -15,9 +15,13 @@ interface ExternalRevenueSplitProps {
 
 const inputValidation = {
   required: true,
-  pattern: /^[0-9]*[.]?[0-9]$/i,
+  pattern: /^\d+(\.\d{1,2})?$/,
   min: 0,
   max: 100,
+}
+
+const getComplementarySplit = (value: string) => {
+  return (100 - Number(value)).toFixed(2).replace(/\.00$/, '')
 }
 
 const ExternalRevenueSpit = ({
@@ -55,7 +59,7 @@ const ExternalRevenueSpit = ({
       +stakers >= 0 &&
       +stakers <= 100
     ) {
-      setValue('holders', ((1000 - +stakers * 10) / 10).toString())
+      setValue('holders', getComplementarySplit(stakers))
     }
   }, [formValues[1]])
 
@@ -70,7 +74,7 @@ const ExternalRevenueSpit = ({
       +holders >= 0 &&
       +holders <= 100
     ) {
-      setValue('stakers', ((1000 - +holders * 10) / 10).toString())
+      setValue('stakers', getComplementarySplit(holders))
     }
   }, [formValues[2]])
 

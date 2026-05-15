@@ -34,7 +34,7 @@ const updateExternalShareAtom = atom(
 
 const inputValidation = {
   required: true,
-  pattern: /^[0-9]*[.]?[0-9]$/i,
+  pattern: /^\d+(\.\d{1,2})?$/,
   min: 0,
   max: 100,
 }
