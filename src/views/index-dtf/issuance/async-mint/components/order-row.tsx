@@ -1,4 +1,4 @@
-import TokenLogo from '@/components/token-logo'
+import TokenLogoWithChain from '@/components/token-logo/TokenLogoWithChain'
 import { Skeleton } from '@/components/ui/skeleton'
 import { cn } from '@/lib/utils'
 import { chainIdAtom } from '@/state/atoms'
@@ -33,7 +33,39 @@ const STATUS_MAP: Record<CowSwapOrderStatus, string> = {
   [CowSwapOrderStatus.EXPIRED]: 'Not Filled',
 }
 
-const OrderStatusBadge = ({
+const OrderStatusIcon = ({ status }: { status: CowSwapOrderStatus }) => {
+  const label = STATUS_MAP[status]
+
+  if (label === 'Order Filled') {
+    return <Check size={14} className="text-primary" />
+  }
+
+  if (label === 'Processing') {
+    return <Loader size={14} className="animate-spin-slow" />
+  }
+
+  return null
+}
+
+const OrderStatusLine = ({ status }: { status: CowSwapOrderStatus }) => {
+  const label = STATUS_MAP[status]
+
+  return (
+    <span
+      className={cn(
+        'inline-flex items-center gap-1.5',
+        label === 'Not Filled' && 'text-[#D05A67]',
+        label === 'Processing' && 'text-muted-foreground',
+        label === 'Order Filled' && 'text-primary'
+      )}
+    >
+      <OrderStatusIcon status={status} />
+      <span>{label}</span>
+    </span>
+  )
+}
+
+const OrderExplorerLink = ({
   status,
   orderId,
   chainId,
@@ -42,29 +74,15 @@ const OrderStatusBadge = ({
   orderId: string
   chainId: number
 }) => {
-  const label = STATUS_MAP[status]
   return (
-    <div
-      className={cn(
-        'text-sm font-light flex items-center gap-2',
-        label === 'Not Filled' && 'text-[#D05A67]',
-        label === 'Processing' && 'text-muted-foreground',
-        label === 'Order Filled' && 'text-primary'
-      )}
+    <Link
+      to={getCowExplorerUrl(chainId, orderId)}
+      target="_blank"
+      className="flex h-6 w-6 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+      aria-label={`Open ${STATUS_MAP[status].toLowerCase()} order on CoW Explorer`}
     >
-      {label === 'Order Filled' && <Check size={16} className="text-primary" />}
-      {label === 'Processing' && (
-        <Loader size={16} className="animate-spin-slow" />
-      )}
-      <span>{label}</span>
-      <Link
-        to={getCowExplorerUrl(chainId, orderId)}
-        target="_blank"
-        className="p-1 bg-muted dark:bg-white/5 rounded-full text-gray-700 ml-1"
-      >
-        <ArrowUpRight size={16} />
-      </Link>
-    </div>
+      <ArrowUpRight size={13} />
+    </Link>
   )
 }
 
@@ -91,52 +109,84 @@ const OrderRow = ({
   const tokenInfo = basket?.find(
     (t) => t.address.toLowerCase() === token?.toLowerCase()
   )
+  const status = data?.status
+  const isFilled = status === CowSwapOrderStatus.FULFILLED
+  const isFailed =
+    status === CowSwapOrderStatus.CANCELLED ||
+    status === CowSwapOrderStatus.EXPIRED
 
   return (
-    <div className="flex items-center justify-between gap-2 border-b border-border py-3 last:border-b-0">
-      <div className="flex items-center gap-2">
-        <TokenLogo
+    <div
+      className={cn(
+        '-mx-2 rounded-[18px] border px-4 py-3 transition-colors',
+        isFilled && 'border-primary/35 bg-primary/5',
+        isFailed && 'border-destructive/25 bg-destructive/5',
+        !isFilled && !isFailed && 'border-border/70 bg-background'
+      )}
+    >
+      <div className="flex items-center gap-4">
+        <TokenLogoWithChain
           address={token}
           symbol={tokenInfo?.symbol || ''}
           chain={chainId}
-          size="lg"
+          size="xl"
         />
-        <div className="flex flex-col">
-          {sellAmount ? (
-            <div className="text-sm font-semibold">
-              -{' '}
-              {formatCurrency(
-                Number(formatUnits(BigInt(sellAmount), inputToken.decimals))
-              )}{' '}
+        <div className="min-w-0 flex-1">
+          <div className="font-medium text-base truncate">
+            {tokenInfo?.name || tokenInfo?.symbol || 'Collateral'}
+          </div>
+          <div className="flex items-center gap-1.5 text-sm text-muted-foreground font-light truncate">
+            {status ? (
+              <OrderStatusLine status={status} />
+            ) : (
+              <Skeleton className="h-4 w-20" />
+            )}
+            <span className="truncate">
+              · Buying {tokenInfo?.symbol || 'collateral'} with{' '}
               {inputToken.symbol}
-            </div>
+            </span>
+          </div>
+        </div>
+        <div className="min-w-[156px] text-right">
+          <div className="text-base font-medium">
+            {sellAmount ? (
+              <>
+                $
+                {formatCurrency(
+                  Number(formatUnits(BigInt(sellAmount), inputToken.decimals))
+                )}
+              </>
+            ) : (
+              <Skeleton className="ml-auto h-5 w-20" />
+            )}
+          </div>
+          <div className="text-sm text-muted-foreground font-light">
+            {buyAmount ? (
+              <>
+                {formatTokenAmount(
+                  Number(
+                    formatUnits(BigInt(buyAmount), tokenInfo?.decimals || 18)
+                  )
+                )}{' '}
+                {tokenInfo?.symbol || ''}
+              </>
+            ) : (
+              <Skeleton className="ml-auto mt-1 h-4 w-24" />
+            )}
+          </div>
+        </div>
+        <div className="flex w-6 shrink-0 justify-end">
+          {status ? (
+            <OrderExplorerLink
+              status={status}
+              orderId={orderId}
+              chainId={chainId}
+            />
           ) : (
-            <Skeleton className="w-24 h-3 mb-1" />
-          )}
-          {buyAmount ? (
-            <div className="text-sm text-primary">
-              +{' '}
-              {formatTokenAmount(
-                Number(
-                  formatUnits(BigInt(buyAmount), tokenInfo?.decimals || 18)
-                )
-              )}{' '}
-              {tokenInfo?.symbol || ''}
-            </div>
-          ) : (
-            <Skeleton className="w-24 h-3" />
+            <Skeleton className="h-6 w-6 rounded-full" />
           )}
         </div>
       </div>
-      {data?.status ? (
-        <OrderStatusBadge
-          status={data.status}
-          orderId={orderId}
-          chainId={chainId}
-        />
-      ) : (
-        <Skeleton className="w-28 h-4" />
-      )}
     </div>
   )
 }

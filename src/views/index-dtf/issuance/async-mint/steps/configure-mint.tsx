@@ -34,8 +34,8 @@ import {
   ArrowDown,
   ArrowUp,
   Check,
-  Coins,
   Info,
+  ListChecks,
   Minus,
   Pencil,
   Plus,
@@ -66,6 +66,7 @@ const NATIVE_TOKEN_ADDRESS =
 const WRAPPED_NATIVE_SYMBOLS = new Set(['WETH', 'WBETH'])
 const MIN_DISPLAYABLE_USD_SHORTFALL = 0.005
 const MAX_MINT_INPUT_DECIMALS = 2
+const COLLATERAL_DUST_USD_THRESHOLD = 0.01
 type AsyncOperation = 'mint' | 'redeem'
 type MaxChangeStatus = {
   direction: 'up' | 'down'
@@ -95,7 +96,9 @@ const calculateMintSharesForUsd = (
   dtfPrice?: number | null
 ) => {
   if (!dtfPrice || !amount || !isFinite(amount) || amount <= 0) return 0n
-  return safeParseEther((amount / dtfPrice).toFixed(18))
+  return safeParseEther(
+    ((amount / dtfPrice) * (1 - ASYNC_MINT_BUFFER)).toFixed(18)
+  )
 }
 
 const ConfigureMint = () => {
@@ -164,9 +167,13 @@ const ConfigureMint = () => {
       )
       const balance =
         (basketBalanceData as bigint[] | undefined)?.[tokenIndex] ?? 0n
-      return balance > 0n
+      const normalized = token.address.toLowerCase() as Address
+      const price = tokenPrices[normalized] ?? basketPrices[normalized] ?? 0
+      const balanceUsd = Number(formatUnits(balance, token.decimals)) * price
+
+      return balanceUsd >= COLLATERAL_DUST_USD_THRESHOLD
     })
-  }, [basket, basketBalanceData, inputToken.address])
+  }, [basket, basketBalanceData, basketPrices, inputToken.address, tokenPrices])
 
   const basketWalletBalances = useMemo(() => {
     const result: Record<Address, bigint> = {}
@@ -240,6 +247,15 @@ const ConfigureMint = () => {
     () => (useWalletCollateral ? customCollateralAmounts : {}),
     [customCollateralAmounts, useWalletCollateral]
   )
+  const heldCollateralSelection = useMemo(
+    () =>
+      new Set<Address>(
+        heldCollateralTokens.map(
+          (token) => token.address.toLowerCase() as Address
+        )
+      ),
+    [heldCollateralTokens]
+  )
   const maxMintAmount = useMemo(
     () =>
       calculateMaxMintAmount({
@@ -308,35 +324,119 @@ const ConfigureMint = () => {
     inputToken,
   ])
 
-  const usableHeldCollateralUsd = useMemo(() => {
-    if (!folioDetails || mintShares === 0n) return 0
+  const walletCollateralPreview = useMemo(() => {
+    if (!folioDetails || heldCollateralSelection.size === 0) {
+      return { maxUsableUsd: 0, inputReductionUsd: 0 }
+    }
 
-    const mintValues =
-      folioDetails.shares === mintShares
+    const getMintValuesForShares = (shares: bigint) => {
+      if (shares === 0n) return undefined
+      return folioDetails.shares === shares
         ? folioDetails.mintValues
         : folioDetails.mintValues.map(
-            (value) => (value * mintShares) / folioDetails.shares
+            (value) => (value * shares) / folioDetails.shares
           )
+    }
 
-    return heldCollateralTokens.reduce((sum, token) => {
-      const normalized = token.address.toLowerCase() as Address
-      const assetIndex = folioDetails.assets.findIndex(
-        (asset) => asset.toLowerCase() === normalized
+    const getUsableUsdForShares = (shares: bigint) => {
+      const mintValues = getMintValuesForShares(shares)
+      if (!mintValues) return 0
+
+      return heldCollateralTokens.reduce((sum, token) => {
+        const normalized = token.address.toLowerCase() as Address
+        const assetIndex = folioDetails.assets.findIndex(
+          (asset) => asset.toLowerCase() === normalized
+        )
+        if (assetIndex === -1) return sum
+
+        const balance = basketWalletBalances[normalized] ?? 0n
+        const requiredAmount = mintValues[assetIndex] ?? 0n
+        const usableAmount = balance < requiredAmount ? balance : requiredAmount
+        const price = tokenPricesForMax[normalized] ?? 0
+
+        return sum + Number(formatUnits(usableAmount, token.decimals)) * price
+      }, 0)
+    }
+
+    if (parsedAmount > 0 && mintShares > 0n) {
+      const mintValues = getMintValuesForShares(mintShares)
+      if (!mintValues) return { maxUsableUsd: 0, inputReductionUsd: 0 }
+
+      const singleAllocation = calculateCollateralAllocation({
+        mintShares,
+        assets: folioDetails.assets,
+        mintValues,
+        balances: basketWalletBalances,
+        prices: tokenPricesForMax,
+        decimals: decimalsMap,
+        selectedCollaterals: new Set<Address>(),
+        customCollateralAmounts: {},
+        strategy: 'single',
+        inputToken,
+      })
+      const withWalletAllocation = calculateCollateralAllocation({
+        mintShares,
+        assets: folioDetails.assets,
+        mintValues,
+        balances: basketWalletBalances,
+        prices: tokenPricesForMax,
+        decimals: decimalsMap,
+        selectedCollaterals: heldCollateralSelection,
+        customCollateralAmounts: {},
+        strategy: 'partial',
+        inputToken,
+      })
+
+      const singleSwapUsd = Object.values(singleAllocation).reduce(
+        (sum, item) => sum + item.usdValue,
+        0
       )
-      if (assetIndex === -1) return sum
+      const withWalletSwapUsd = Object.values(withWalletAllocation).reduce(
+        (sum, item) => sum + item.usdValue,
+        0
+      )
+      const inputReductionUsd = Math.max(singleSwapUsd - withWalletSwapUsd, 0)
 
-      const balance = basketWalletBalances[normalized] ?? 0n
-      const requiredAmount = mintValues[assetIndex] ?? 0n
-      const usableAmount = balance < requiredAmount ? balance : requiredAmount
-      const price = tokenPricesForMax[normalized] ?? 0
+      return {
+        maxUsableUsd: getUsableUsdForShares(mintShares),
+        inputReductionUsd,
+      }
+    }
 
-      return sum + Number(formatUnits(usableAmount, token.decimals)) * price
-    }, 0)
+    const previewMaxMintAmount = calculateMaxMintAmount({
+      inputTokenBalance: inputBalanceAmount,
+      walletBalances: basketWalletBalances,
+      tokenPrices: tokenPricesForMax,
+      tokenDecimals: decimalsMap,
+      selectedCollaterals: heldCollateralSelection,
+      customCollateralAmounts: {},
+      strategy: 'partial',
+      inputTokenAddress: inputToken.address as Address,
+      assets: folioDetails.assets,
+      mintValues: folioDetails.mintValues,
+      referenceAmount: folioReferenceAmount,
+    })
+    const previewMintShares = calculateMintSharesForUsd(
+      previewMaxMintAmount,
+      dtfPrice
+    )
+
+    return {
+      maxUsableUsd: getUsableUsdForShares(previewMintShares),
+      inputReductionUsd: 0,
+    }
   }, [
     basketWalletBalances,
+    decimalsMap,
+    dtfPrice,
     folioDetails,
+    folioReferenceAmount,
+    heldCollateralSelection,
     heldCollateralTokens,
+    inputBalanceAmount,
+    inputToken,
     mintShares,
+    parsedAmount,
     tokenPricesForMax,
   ])
 
@@ -347,8 +447,23 @@ const ConfigureMint = () => {
       Object.values(allocation).reduce((sum, item) => sum + item.usdValue, 0),
     [allocation]
   )
-  const collateralUsd = Math.max(parsedAmount - totalSwapUsd, 0)
-  const inputShortfall = Math.max(totalSwapUsd - inputBalanceAmount, 0)
+  const walletCollateralUsd = useMemo(
+    () =>
+      Object.entries(allocation).reduce((sum, [address, alloc]) => {
+        if (alloc.fromWallet === 0n) return sum
+        const token = basket?.find(
+          (item) => item.address.toLowerCase() === address.toLowerCase()
+        )
+        if (!token) return sum
+        const price = tokenPricesForMax[address.toLowerCase() as Address] ?? 0
+        return (
+          sum + Number(formatUnits(alloc.fromWallet, token.decimals)) * price
+        )
+      }, 0),
+    [allocation, basket, tokenPricesForMax]
+  )
+  const inputUsedUsd = Math.max(parsedAmount - walletCollateralUsd, 0)
+  const inputShortfall = Math.max(inputUsedUsd - inputBalanceAmount, 0)
   const hasInputShortfall = inputShortfall >= MIN_DISPLAYABLE_USD_SHORTFALL
   const showMaxExceeded = exceedsBalance && !isMaxAmountMode
   const showInputShortfall =
@@ -356,8 +471,23 @@ const ConfigureMint = () => {
   const showAmountError = showInputShortfall || showMaxExceeded
   const canUpdateToLatestMax =
     showInputShortfall && maxMintAmount > 0 && parsedAmount > maxMintAmount
+  const isTotalUsdInputMode = useWalletCollateral
+  const inputSourceTokens = useMemo(() => {
+    if (!isTotalUsdInputMode || !basket) return [inputToken]
+
+    const walletSources = basket.filter((token) => {
+      const normalized = token.address.toLowerCase() as Address
+      const alloc = allocation[token.address] ?? allocation[normalized]
+
+      return selected.has(normalized) || (alloc?.fromWallet ?? 0n) > 0n
+    })
+
+    return [inputToken, ...walletSources]
+  }, [allocation, basket, inputToken, isTotalUsdInputMode, selected])
+  const visibleInputSourceTokens = inputSourceTokens.slice(0, 3)
+  const hiddenInputSourceTokenCount = Math.max(inputSourceTokens.length - 3, 0)
   const slippagePct = Number(slippage) / 10000
-  const bufferReturn = totalSwapUsd * (ASYNC_MINT_BUFFER + slippagePct)
+  const bufferReturn = inputUsedUsd * (ASYNC_MINT_BUFFER + slippagePct)
   const dtfAmount = dtfPrice
     ? (parsedAmount / dtfPrice) * (1 - ASYNC_MINT_BUFFER)
     : 0
@@ -766,10 +896,7 @@ const ConfigureMint = () => {
     <div className="bg-secondary rounded-3xl p-1 w-full lg:min-h-[calc(100vh-100px)]">
       <div
         className={cn(
-          'grid w-full gap-0.5 lg:items-stretch',
-          useWalletCollateral
-            ? 'lg:min-h-[calc(100vh-108px)] lg:grid-cols-[minmax(0,1fr)_minmax(420px,0.95fr)] lg:grid-rows-[auto_1fr]'
-            : 'mx-auto max-w-[620px]'
+          'grid w-full gap-0.5 lg:min-h-[calc(100vh-108px)] lg:grid-cols-[minmax(0,1fr)_minmax(420px,0.95fr)] lg:grid-rows-[auto_1fr] lg:items-stretch'
         )}
       >
         <div className="min-w-0 lg:contents">
@@ -824,84 +951,135 @@ const ConfigureMint = () => {
           ) : (
             <>
               <div className="min-w-0 flex flex-col gap-0.5 lg:col-start-1 lg:row-start-2 lg:h-full">
-                <div className={cn('bg-card rounded-2xl p-2')}>
+                <div className="bg-card rounded-2xl p-2">
                   <div className="px-4 py-3 flex items-center justify-between">
                     <div>
-                      <h3 className="font-medium text-base">Mint amount</h3>
+                      <h3 className="font-medium text-base">Mint Input</h3>
                       <p className="text-sm text-muted-foreground font-light">
-                        Enter the total USD value you want to mint. Max accounts
-                        for your available sources and basket weights.
+                        {isTotalUsdInputMode
+                          ? 'Enter total USD to mint. Max accounts for sources and basket weights.'
+                          : `Enter the amount of ${inputToken.symbol} you want to mint with.`}
                       </p>
                     </div>
                   </div>
                   <div
                     className={cn(
-                      'rounded-xl bg-muted px-4 py-3 focus-within:ring-1 focus-within:ring-ring',
+                      'rounded-xl border border-border/70 bg-muted px-4 py-3 focus-within:ring-1 focus-within:ring-ring',
                       showAmountError && 'rounded-b-none'
                     )}
                   >
-                    <div className="flex items-center justify-between gap-3">
-                      <div className="flex items-center min-w-0 flex-1">
-                        {mintAmount && (
-                          <span
-                            className={cn(
-                              'text-[32px] font-light leading-8',
-                              exceedsBalance
-                                ? 'text-destructive'
-                                : 'text-primary'
-                            )}
-                          >
-                            $
-                          </span>
-                        )}
-                        <NumericalInput
-                          variant="transparent"
-                          value={mintAmount}
-                          onChange={handleMintAmountChange}
-                          placeholder="$0.00"
-                          className={cn(
-                            'text-[32px] font-light leading-8 w-full placeholder:text-muted-foreground/50',
-                            exceedsBalance && 'text-destructive'
+                    <div className="text-sm text-muted-foreground mb-3">
+                      You provide
+                    </div>
+                    <div className="flex items-start justify-between gap-4">
+                      <div className="min-w-0 flex-1">
+                        <div className="flex h-8 min-w-0 items-start">
+                          {isTotalUsdInputMode && mintAmount && (
+                            <span
+                              className={cn(
+                                'text-[32px] font-light leading-8 text-muted-foreground',
+                                exceedsBalance && 'text-destructive'
+                              )}
+                            >
+                              $
+                            </span>
                           )}
-                        />
+                          <NumericalInput
+                            variant="transparent"
+                            value={mintAmount}
+                            onChange={handleMintAmountChange}
+                            placeholder={isTotalUsdInputMode ? '$0.00' : '0.00'}
+                            className={cn(
+                              'h-8 w-full text-[32px] font-light leading-8 text-primary placeholder:text-muted-foreground/50',
+                              exceedsBalance && 'text-destructive'
+                            )}
+                          />
+                        </div>
+                        <div className="mt-2 text-sm font-light text-muted-foreground">
+                          ${formatCurrency(parsedAmount)}
+                        </div>
                       </div>
 
-                      <div className="flex items-center gap-2 shrink-0">
-                        <span
-                          className={cn(
-                            'flex items-center gap-1 text-sm font-light whitespace-nowrap transition-colors',
-                            maxChangeStatus?.direction === 'up' &&
-                              'text-primary',
-                            maxChangeStatus?.direction === 'down' &&
-                              'text-destructive',
-                            !maxChangeStatus && 'text-muted-foreground'
-                          )}
-                        >
-                          {maxChangeStatus ? (
-                            <>
-                              {maxChangeStatus.direction === 'up' ? (
-                                <ArrowUp size={13} />
-                              ) : (
-                                <ArrowDown size={13} />
-                              )}
-                              {maxChangeStatus.label}
-                            </>
-                          ) : (
-                            <>Up to ${formatCurrency(maxMintAmount)}</>
-                          )}
-                        </span>
-                        <button
-                          className={cn(
-                            'flex items-center gap-1 text-sm font-medium rounded-full px-2 py-0.5 transition-colors',
-                            isMaxAmountMode
-                              ? 'bg-primary text-primary-foreground'
-                              : 'bg-primary/10 text-primary'
-                          )}
-                          onClick={handleMax}
-                        >
-                          {isMaxAmountMode && <Check size={13} />}
-                          Max
-                        </button>
+                      <div className="flex shrink-0 flex-col items-end gap-2">
+                        {isTotalUsdInputMode ? (
+                          <div className="flex h-9 max-w-[260px] items-center justify-end overflow-hidden pl-4">
+                            {visibleInputSourceTokens.map((token, index) => (
+                              <span
+                                key={token.address}
+                                className={cn(
+                                  'flex size-9 shrink-0 items-center justify-center rounded-full border-2 border-muted bg-background',
+                                  index > 0 && '-ml-4'
+                                )}
+                              >
+                                <TokenLogo
+                                  address={token.address}
+                                  symbol={token.symbol}
+                                  chain={chainId}
+                                  size="xl"
+                                />
+                              </span>
+                            ))}
+                            {hiddenInputSourceTokenCount > 0 && (
+                              <span className="flex size-9 -ml-4 shrink-0 items-center justify-center rounded-full border-2 border-muted bg-background text-xs font-medium">
+                                +{hiddenInputSourceTokenCount}
+                              </span>
+                            )}
+                          </div>
+                        ) : (
+                          <div className="flex h-8 items-center gap-2">
+                            <TokenLogo
+                              address={inputToken.address}
+                              symbol={inputToken.symbol}
+                              chain={chainId}
+                              size="xl"
+                            />
+                            <span className="text-[32px] font-light leading-8 text-muted-foreground">
+                              {inputToken.symbol}
+                            </span>
+                          </div>
+                        )}
+                        <div className="flex items-center gap-2">
+                          <span
+                            className={cn(
+                              'flex items-center gap-1 text-sm font-light whitespace-nowrap transition-colors',
+                              maxChangeStatus?.direction === 'up' &&
+                                'text-primary',
+                              maxChangeStatus?.direction === 'down' &&
+                                'text-destructive',
+                              !maxChangeStatus && 'text-muted-foreground'
+                            )}
+                          >
+                            {maxChangeStatus ? (
+                              <>
+                                {maxChangeStatus.direction === 'up' ? (
+                                  <ArrowUp size={13} />
+                                ) : (
+                                  <ArrowDown size={13} />
+                                )}
+                                {maxChangeStatus.label}
+                              </>
+                            ) : (
+                              <>
+                                Up to{' '}
+                                {isTotalUsdInputMode
+                                  ? `$${formatCurrency(maxMintAmount)}`
+                                  : `${formatCurrency(maxMintAmount)} ${inputToken.symbol}`}
+                              </>
+                            )}
+                          </span>
+                          <button
+                            className={cn(
+                              'flex items-center gap-1 text-sm font-medium rounded-full px-2 py-0.5 transition-colors',
+                              isMaxAmountMode
+                                ? 'bg-primary text-primary-foreground'
+                                : 'bg-primary/10 text-primary'
+                            )}
+                            onClick={handleMax}
+                          >
+                            {isMaxAmountMode && <Check size={13} />}
+                            Max
+                          </button>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -945,147 +1123,47 @@ const ConfigureMint = () => {
                       </div>
                     </div>
                   )}
-
-                  {!isBasketBalanceLoading &&
-                    !useWalletCollateral &&
-                    heldCollateralTokens.length > 0 && (
-                      <div className="mt-1 rounded-xl border border-border/70 px-4 py-3">
-                        <label className="flex cursor-pointer items-center gap-3">
-                          <Checkbox
-                            className="mt-0.5 h-5 w-5 rounded-md border-muted-foreground/35 data-[state=checked]:border-primary"
-                            checked={useWalletCollateral}
-                            onCheckedChange={(enabled) =>
-                              handleWalletCollateralToggle(enabled === true)
-                            }
-                          />
-                          <div className="flex min-w-0 flex-1 items-center justify-between gap-3">
-                            <div className="min-w-0">
-                              <div className="text-sm font-medium">
-                                Use wallet collateral
-                              </div>
-                              <div className="mt-0.5 whitespace-nowrap text-[13px] font-light text-muted-foreground">
-                                {usableHeldCollateralUsd > 0
-                                  ? `Up to $${formatCurrency(
-                                      usableHeldCollateralUsd
-                                    )} usable from your wallet`
-                                  : 'Basket assets found in your wallet'}
-                              </div>
-                            </div>
-                            <div className="flex shrink-0 items-center">
-                              {collateralPreviewTokens.map((token, index) => (
-                                <div
-                                  key={token.address}
-                                  className={cn(
-                                    'rounded-full border-2 border-card bg-card',
-                                    index > 0 && '-ml-2'
-                                  )}
-                                >
-                                  <TokenLogoWithChain
-                                    address={token.address}
-                                    symbol={token.symbol}
-                                    chain={chainId}
-                                    size="sm"
-                                  />
-                                </div>
-                              ))}
-                              {hiddenCollateralPreviewCount > 0 && (
-                                <div className="-ml-2 flex h-7 min-w-7 items-center justify-center rounded-full border-2 border-card bg-muted px-1.5 text-[11px] font-medium text-muted-foreground">
-                                  +{hiddenCollateralPreviewCount}
-                                </div>
-                              )}
-                            </div>
-                          </div>
-                        </label>
-                      </div>
-                    )}
                 </div>
 
-                <div
-                  className={cn(
-                    'bg-card rounded-2xl p-5 flex flex-col gap-5 lg:flex-1 '
-                  )}
-                >
-                  <div>
-                    <div className="text-sm text-muted-foreground mb-2">
+                <div className="bg-card rounded-2xl p-2 flex flex-col gap-5 lg:flex-1">
+                  <div className="rounded-xl border border-border/70 bg-transparent px-4 py-3">
+                    <div className="text-sm text-muted-foreground mb-3">
                       Estimated receive
                     </div>
-                    <div className="flex items-center justify-between gap-3">
-                      <div>
-                        <div className="text-[32px] font-light text-primary leading-8">
+                    <div className="flex items-start justify-between gap-4">
+                      <div className="min-w-0">
+                        <span className="text-[32px] font-light text-primary leading-8">
                           {formatTokenAmount(dtfAmount)}
-                        </div>
-                        <div className="text-sm text-muted-foreground font-light mt-1">
-                          ${formatCurrency(dtfValue)}
+                        </span>
+                        <div className="text-sm text-muted-foreground font-light mt-2 whitespace-nowrap">
+                          ${formatCurrency(dtfValue)} (-
+                          {spreadPct.toFixed(2)}%)
                         </div>
                       </div>
-                      <div className="flex items-center gap-2">
-                        <TokenLogo
-                          address={indexDTF.id}
-                          symbol={indexDTF.token.symbol}
-                          chain={chainId}
-                          size="lg"
-                        />
-                        <span className="text-[26px] font-light">
-                          {indexDTF.token.symbol}
-                        </span>
+                      <div className="flex shrink-0 flex-col items-end">
+                        <div className="flex items-center gap-2">
+                          <TokenLogo
+                            address={indexDTF.id}
+                            symbol={indexDTF.token.symbol}
+                            chain={chainId}
+                            size="xl"
+                          />
+                          <span className="text-[32px] font-light text-muted-foreground leading-8">
+                            {indexDTF.token.symbol}
+                          </span>
+                        </div>
                       </div>
                     </div>
                   </div>
 
-                  {useWalletCollateral && (
-                    <div className="flex flex-col gap-2">
-                      <div className="text-sm font-medium">
-                        Estimated source breakdown
-                      </div>
-                      <div className="flex min-h-[34px] flex-wrap content-start gap-1.5">
-                        {totalSwapUsd > 0 && (
-                          <span className="text-sm bg-muted rounded-full px-2 py-1">
-                            {inputToken.symbol} ${formatCurrency(totalSwapUsd)}
-                          </span>
-                        )}
-                        {Object.entries(allocation)
-                          .filter(([, alloc]) => alloc.fromWallet > 0n)
-                          .map(([address, alloc]) => {
-                            const token = basket.find(
-                              (item) =>
-                                item.address.toLowerCase() ===
-                                address.toLowerCase()
-                            )
-                            if (!token) return null
-                            const price =
-                              tokenPricesForMax[
-                                address.toLowerCase() as Address
-                              ] ?? 0
-                            const value =
-                              Number(
-                                formatUnits(alloc.fromWallet, token.decimals)
-                              ) * price
-                            return (
-                              <span
-                                key={address}
-                                className="text-sm bg-muted rounded-full px-2 py-1"
-                              >
-                                {token.symbol} ${formatCurrency(value)}
-                              </span>
-                            )
-                          })}
-                        {parsedAmount === 0 && (
-                          <span className="text-sm text-muted-foreground font-light">
-                            Enter an amount to preview sources.
-                          </span>
-                        )}
-                      </div>
-                    </div>
-                  )}
-
-                  <div className="flex flex-col gap-3 text-sm">
+                  <div className="flex flex-col gap-3 px-4 text-sm">
                     {useWalletCollateral && (
                       <div className="flex items-center justify-between">
                         <span className="text-muted-foreground">
                           Collateral used
                         </span>
                         <span className="font-medium">
-                          ${formatCurrency(collateralUsd)}
+                          ${formatCurrency(walletCollateralUsd)}
                         </span>
                       </div>
                     )}
@@ -1111,12 +1189,12 @@ const ConfigureMint = () => {
                       </span>
                     </div>
                     <div className="flex items-center justify-between">
-                      <span className="text-muted-foreground">Fee</span>
+                      <span className="text-muted-foreground">Minting fee</span>
                       <span className="font-medium">{mintFee}%</span>
                     </div>
                   </div>
 
-                  {totalSwapUsd > 0 && (
+                  {inputUsedUsd > 0 && (
                     <div className="rounded-2xl bg-muted/60 p-3 text-sm text-muted-foreground font-light flex gap-2">
                       <Info size={16} className="mt-0.5 shrink-0" />
                       <span>
@@ -1137,186 +1215,282 @@ const ConfigureMint = () => {
                         }
                         onClick={handleContinue}
                       >
-                        <span className="font-bold">
-                          Confirm inputs & get quote
-                        </span>
+                        <span className="font-bold">Get Quote</span>
                       </Button>
                     </TransactionButtonContainer>
                   </div>
                 </div>
               </div>
 
-              {useWalletCollateral && (
-                <div className="bg-background rounded-2xl p-2 lg:col-start-2 lg:row-start-2 lg:flex lg:h-full lg:flex-col ">
-                  <div className="px-4 py-3 flex items-center justify-between">
-                    <div>
-                      <h3 className="font-medium text-base">Input sources</h3>
-                      <p className="text-sm text-muted-foreground font-light">
-                        Collateral is used first. {inputToken.symbol} covers the
-                        remainder.
-                      </p>
-                    </div>
-                  </div>
-
-                  <ScrollArea className="h-[min(560px,calc(100vh-340px))] min-h-[300px] lg:h-auto lg:min-h-0 lg:flex-1">
-                    <div className="flex flex-col gap-1 px-2">
-                      <div className="grid grid-cols-[minmax(0,1fr)_156px_20px] items-center gap-4 px-2 pt-4 pb-1 text-xs font-medium uppercase tracking-wide text-muted-foreground">
-                        <span>Used sources</span>
-                        <span className="col-span-2 text-right">
-                          Amount used
-                        </span>
+              <div className="bg-background rounded-2xl p-2 lg:col-start-2 lg:row-start-2 lg:flex lg:h-full lg:flex-col">
+                {useWalletCollateral ? (
+                  <>
+                    <div className="px-4 py-3 flex items-center justify-between">
+                      <div>
+                        <h3 className="font-medium text-base">Input sources</h3>
+                        <p className="text-sm text-muted-foreground font-light">
+                          Collateral is used first. {inputToken.symbol} covers
+                          the remainder.
+                        </p>
                       </div>
-                      <div className="px-2 py-3 flex items-center gap-4">
-                        <TokenLogoWithChain
-                          address={inputToken.address}
-                          symbol={inputToken.symbol}
-                          chain={chainId}
-                          size="xl"
-                        />
-                        <div className="min-w-0 flex-1">
-                          <div className="flex items-center gap-2">
-                            <span className="font-medium text-base">
-                              {inputToken.symbol}
-                            </span>
-                            <span className="text-xs bg-muted px-2 py-0.5 rounded-full">
-                              Always included
-                            </span>
-                          </div>
-                          <span className="text-sm text-muted-foreground font-light">
-                            Wallet{' '}
-                            {formatTokenBalance(
-                              inputBalanceValue,
-                              inputToken.decimals
-                            )}
+                    </div>
+
+                    <ScrollArea className="h-[min(560px,calc(100vh-340px))] min-h-[300px] lg:h-auto lg:min-h-0 lg:flex-1">
+                      <div className="flex flex-col gap-1 px-2">
+                        <div className="grid grid-cols-[minmax(0,1fr)_156px_20px] items-center gap-4 px-2 pt-4 pb-1 text-xs font-medium uppercase tracking-wide text-muted-foreground">
+                          <span>Used sources</span>
+                          <span className="col-span-2 text-right">
+                            Amount used
                           </span>
                         </div>
-                        <div className="min-w-[192px] text-right shrink-0">
-                          <div className="text-base font-medium">
-                            ${formatCurrency(totalSwapUsd)}
+                        <div className="px-2 py-3 flex items-center gap-4">
+                          <TokenLogoWithChain
+                            address={inputToken.address}
+                            symbol={inputToken.symbol}
+                            chain={chainId}
+                            size="xl"
+                          />
+                          <div className="min-w-0 flex-1">
+                            <div className="flex items-center gap-2">
+                              <span className="font-medium text-base">
+                                {inputToken.symbol}
+                              </span>
+                              <span className="text-xs bg-muted px-2 py-0.5 rounded-full">
+                                Always included
+                              </span>
+                            </div>
+                            <span className="text-sm text-muted-foreground font-light">
+                              Wallet{' '}
+                              {formatTokenBalance(
+                                inputBalanceValue,
+                                inputToken.decimals
+                              )}
+                            </span>
                           </div>
-                          <div className="text-sm text-muted-foreground font-light">
-                            Remainder + buffer
+                          <div className="min-w-[192px] text-right shrink-0">
+                            <div className="text-base font-medium">
+                              ${formatCurrency(inputUsedUsd)}
+                            </div>
+                            <div className="text-sm text-muted-foreground font-light">
+                              Remainder + buffer
+                            </div>
                           </div>
                         </div>
-                      </div>
 
-                      {isBasketBalanceLoading ? (
-                        <>
-                          {[0, 1, 2].map((item) => (
-                            <Skeleton
-                              key={item}
-                              className="h-[76px] rounded-[18px]"
-                            />
-                          ))}
-                        </>
-                      ) : heldCollateralTokens.length === 0 ? (
-                        <div className="rounded-[18px] bg-secondary/40 p-4 text-sm text-muted-foreground font-light">
-                          {similarHeld ? (
-                            <span>
-                              You hold similar tokens (
-                              {similarTokens.join(', ')}) but this DTF requires
-                              their wrapped versions (
-                              {requiredWrapped?.join(', ')}).
-                            </span>
-                          ) : (
-                            <span>
-                              You don&apos;t hold any of this DTF&apos;s basket
-                              tokens
-                            </span>
-                          )}
-                        </div>
-                      ) : (
-                        <>
-                          {heldCollateralTokens
-                            .filter((token) => {
+                        {isBasketBalanceLoading ? (
+                          <>
+                            {[0, 1, 2].map((item) => (
+                              <Skeleton
+                                key={item}
+                                className="h-[76px] rounded-[18px]"
+                              />
+                            ))}
+                          </>
+                        ) : heldCollateralTokens.length === 0 ? (
+                          <div className="rounded-[18px] bg-secondary/40 p-4 text-sm text-muted-foreground font-light">
+                            {similarHeld ? (
+                              <span>
+                                You hold similar tokens (
+                                {similarTokens.join(', ')}) but this DTF
+                                requires their wrapped versions (
+                                {requiredWrapped?.join(', ')}).
+                              </span>
+                            ) : (
+                              <span>
+                                You don&apos;t hold any of this DTF&apos;s
+                                basket tokens
+                              </span>
+                            )}
+                          </div>
+                        ) : (
+                          <>
+                            {heldCollateralTokens
+                              .filter((token) => {
+                                const normalized =
+                                  token.address.toLowerCase() as Address
+                                return (
+                                  selected.has(normalized) ||
+                                  selected.has(token.address)
+                                )
+                              })
+                              .map(renderCollateralRow)}
+
+                            {heldCollateralTokens.some((token) => {
                               const normalized =
                                 token.address.toLowerCase() as Address
                               return (
-                                selected.has(normalized) ||
-                                selected.has(token.address)
+                                !selected.has(normalized) &&
+                                !selected.has(token.address)
                               )
-                            })
-                            .map(renderCollateralRow)}
-
-                          {heldCollateralTokens.some((token) => {
-                            const normalized =
-                              token.address.toLowerCase() as Address
-                            return (
-                              !selected.has(normalized) &&
-                              !selected.has(token.address)
-                            )
-                          }) && (
-                            <>
-                              <div className="grid grid-cols-[minmax(0,1fr)_156px_20px] items-center gap-4 px-2 pt-5 pb-2 text-xs font-medium uppercase tracking-wide text-muted-foreground">
-                                <div className="flex items-center gap-1.5">
-                                  <span>Available collateral</span>
-                                  <TooltipProvider delayDuration={0}>
-                                    <Tooltip>
-                                      <TooltipTrigger asChild>
-                                        <button
-                                          type="button"
-                                          className="flex h-4 w-4 items-center justify-center rounded-full text-muted-foreground transition-colors hover:text-foreground"
-                                          aria-label="What does max usable mean?"
+                            }) && (
+                              <>
+                                <div className="grid grid-cols-[minmax(0,1fr)_156px_20px] items-center gap-4 px-2 pt-5 pb-2 text-xs font-medium uppercase tracking-wide text-muted-foreground">
+                                  <div className="flex items-center gap-1.5">
+                                    <span>Available collateral</span>
+                                    <TooltipProvider delayDuration={0}>
+                                      <Tooltip>
+                                        <TooltipTrigger asChild>
+                                          <button
+                                            type="button"
+                                            className="flex h-4 w-4 items-center justify-center rounded-full text-muted-foreground transition-colors hover:text-foreground"
+                                            aria-label="What does max usable mean?"
+                                          >
+                                            <Info size={13} />
+                                          </button>
+                                        </TooltipTrigger>
+                                        <TooltipContent
+                                          side="top"
+                                          className="max-w-[280px] normal-case tracking-normal"
                                         >
-                                          <Info size={13} />
-                                        </button>
-                                      </TooltipTrigger>
-                                      <TooltipContent
-                                        side="top"
-                                        className="max-w-[280px] normal-case tracking-normal"
-                                      >
-                                        Max usable is the most of this wallet
-                                        token that can be applied to the current
-                                        mint. It is limited by your wallet
-                                        balance, the DTF basket weight for this
-                                        token, and the mint amount entered.
-                                      </TooltipContent>
-                                    </Tooltip>
-                                  </TooltipProvider>
+                                          Max usable is the most of this wallet
+                                          token that can be applied to the
+                                          current mint. It is limited by your
+                                          wallet balance, the DTF basket weight
+                                          for this token, and the mint amount
+                                          entered.
+                                        </TooltipContent>
+                                      </Tooltip>
+                                    </TooltipProvider>
+                                  </div>
+                                  <span className="col-span-2 text-right">
+                                    Max usable
+                                  </span>
                                 </div>
-                                <span className="col-span-2 text-right">
-                                  Max usable
-                                </span>
-                              </div>
-                              {heldCollateralTokens
-                                .filter((token) => {
-                                  const normalized =
-                                    token.address.toLowerCase() as Address
-                                  return (
-                                    !selected.has(normalized) &&
-                                    !selected.has(token.address)
-                                  )
-                                })
-                                .map(renderCollateralRow)}
-                            </>
-                          )}
-                        </>
-                      )}
-                    </div>
-                  </ScrollArea>
+                                {heldCollateralTokens
+                                  .filter((token) => {
+                                    const normalized =
+                                      token.address.toLowerCase() as Address
+                                    return (
+                                      !selected.has(normalized) &&
+                                      !selected.has(token.address)
+                                    )
+                                  })
+                                  .map(renderCollateralRow)}
+                              </>
+                            )}
+                          </>
+                        )}
+                      </div>
+                    </ScrollArea>
 
-                  <Collapsible
-                    open={showConstraintInfo}
-                    onOpenChange={setShowConstraintInfo}
-                  >
-                    <CollapsibleTrigger className="w-full px-4 py-3 flex items-center justify-between text-sm">
-                      <span className="font-medium">
-                        Why can&apos;t I mint more?
-                      </span>
-                      {showConstraintInfo ? (
-                        <Minus size={16} />
-                      ) : (
-                        <Plus size={16} />
+                    <Collapsible
+                      open={showConstraintInfo}
+                      onOpenChange={setShowConstraintInfo}
+                    >
+                      <CollapsibleTrigger className="w-full px-4 py-3 flex items-center justify-between text-sm">
+                        <span className="font-medium">
+                          Why can&apos;t I mint more?
+                        </span>
+                        {showConstraintInfo ? (
+                          <Minus size={16} />
+                        ) : (
+                          <Plus size={16} />
+                        )}
+                      </CollapsibleTrigger>
+                      <CollapsibleContent className="px-4 pb-4 text-sm text-muted-foreground font-light">
+                        Collateral tokens can only be used up to their weight in
+                        the DTF. The rest of the mint depends on your{' '}
+                        {inputToken.symbol} balance.
+                      </CollapsibleContent>
+                    </Collapsible>
+                  </>
+                ) : (
+                  <div className="flex h-full min-h-[360px] flex-col gap-2">
+                    {!isBasketBalanceLoading &&
+                      heldCollateralTokens.length > 0 && (
+                        <div className="flex min-h-[320px] flex-1 flex-col rounded-2xl border border-border/70">
+                          <div className="flex flex-1 items-center justify-center px-4 py-10">
+                            <div className="flex max-w-[300px] flex-col items-center text-center">
+                              <div className="mb-4 flex h-12 items-center justify-center">
+                                {collateralPreviewTokens.map((token, index) => (
+                                  <div
+                                    key={token.address}
+                                    className={cn(
+                                      'rounded-full border-2 border-background bg-background shadow-sm',
+                                      index > 0 && '-ml-2'
+                                    )}
+                                  >
+                                    <TokenLogo
+                                      address={token.address}
+                                      symbol={token.symbol}
+                                      chain={chainId}
+                                      size="lg"
+                                    />
+                                  </div>
+                                ))}
+                                {hiddenCollateralPreviewCount > 0 && (
+                                  <div className="-ml-2 flex h-10 min-w-10 items-center justify-center rounded-full border-2 border-background bg-muted px-2 text-xs font-medium text-muted-foreground">
+                                    +{hiddenCollateralPreviewCount}
+                                  </div>
+                                )}
+                              </div>
+                              <div className="text-base font-medium">
+                                Include wallet collateral
+                              </div>
+                              <p className="mt-1 text-sm font-light text-muted-foreground">
+                                {parsedAmount > 0 ? (
+                                  <>
+                                    You can use about $
+                                    {formatCurrency(
+                                      walletCollateralPreview.maxUsableUsd
+                                    )}{' '}
+                                    from your wallet and need about $
+                                    {formatCurrency(
+                                      walletCollateralPreview.inputReductionUsd
+                                    )}{' '}
+                                    less {inputToken.symbol}.
+                                  </>
+                                ) : (
+                                  <>
+                                    You have up to $
+                                    {formatCurrency(
+                                      walletCollateralPreview.maxUsableUsd
+                                    )}{' '}
+                                    of basket assets available if you mint your
+                                    max amount.
+                                  </>
+                                )}
+                              </p>
+                              <Button
+                                type="button"
+                                size="sm"
+                                className="mt-4 h-8 rounded-full px-4"
+                                onClick={() =>
+                                  handleWalletCollateralToggle(true)
+                                }
+                              >
+                                Enable
+                              </Button>
+                            </div>
+                          </div>
+                        </div>
                       )}
-                    </CollapsibleTrigger>
-                    <CollapsibleContent className="px-4 pb-4 text-sm text-muted-foreground font-light">
-                      Collateral tokens can only be used up to their weight in
-                      the DTF. The rest of the mint depends on your{' '}
-                      {inputToken.symbol} balance.
-                    </CollapsibleContent>
-                  </Collapsible>
-                </div>
-              )}
+
+                    <div
+                      className={cn(
+                        'flex min-h-[320px] flex-1 flex-col rounded-2xl',
+                        !isBasketBalanceLoading &&
+                          heldCollateralTokens.length > 0 &&
+                          'border border-border/70'
+                      )}
+                    >
+                      <div className="flex flex-1 items-center justify-center px-4 py-10">
+                        <div className="flex max-w-[300px] flex-col items-center text-center">
+                          <div className="mb-4 flex size-12 items-center justify-center text-muted-foreground">
+                            <ListChecks size={24} strokeWidth={1.5} />
+                          </div>
+                          <div className="text-base font-medium text-foreground">
+                            Collateral orders
+                          </div>
+                          <p className="mt-1 text-sm font-light text-muted-foreground">
+                            Orders will appear here while the mint is ongoing.
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
             </>
           )}
         </div>
