@@ -1,7 +1,7 @@
 catalogMode: manual
 blockExoticSubdeps: true
 cleanupUnusedCatalogs: true
-minimumReleaseAge: 1440
+minimumReleaseAge: 10080
 catalog:
   react: ^18.3.1
   react-dom: ^18.3.1
