@@ -304,6 +304,7 @@ export const SVGS = new Set([
   'fxs',
   'weeth',
   'king',
+  'usdi',
 ])
 
 export const PNGS = new Set([
