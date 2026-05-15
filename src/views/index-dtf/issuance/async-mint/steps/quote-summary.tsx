@@ -13,7 +13,7 @@ import {
 } from '@/components/ui/tooltip'
 import useDebounce from '@/hooks/useDebounce'
 import { cn } from '@/lib/utils'
-import { balancesAtom, chainIdAtom, walletAtom } from '@/state/atoms'
+import { balancesAtom, chainIdAtom } from '@/state/atoms'
 import {
   indexDTFAtom,
   indexDTFBasketAtom,
@@ -54,8 +54,6 @@ import {
 import { calculateMaxMintAmount } from '../utils'
 import { useMintQuotes } from '../hooks/use-mint-quotes'
 import { useSubmitOrders } from '../hooks/use-submit-orders'
-import { getCowswapQuote } from '../../async-swaps/hooks/useQuote'
-import { useGlobalProtocolKit } from '../../async-swaps/providers/GlobalProtocolKitProvider'
 
 const formatTokenBalance = (value: bigint, decimals: number) =>
   formatTokenAmount(Number(formatUnits(value, decimals)))
@@ -77,27 +75,10 @@ const calculateMintSharesForUsd = (
   )
 }
 
-const QUOTE_PROBE_USD_TARGETS = [2, 5, 10, 20, 50, 100, 250]
-
-type QuoteProbeTest = {
-  usd: number
-  buyAmount: bigint
-  success: boolean
-  error?: string
-}
-
-type QuoteProbeResult = {
-  status: 'running' | 'done' | 'error'
-  tests: QuoteProbeTest[]
-  firstSuccessUsd?: number
-  error?: string
-}
-
 const QuoteSummary = () => {
   const setStep = useSetAtom(wizardStepAtom)
   const indexDTF = useAtomValue(indexDTFAtom)
   const chainId = useAtomValue(chainIdAtom)
-  const wallet = useAtomValue(walletAtom)
   const dtfPrice = useAtomValue(indexDTFPriceAtom)
   const inputToken = useAtomValue(inputTokenAtom)
   const mintAmount = useAtomValue(mintAmountAtom)
@@ -113,12 +94,7 @@ const QuoteSummary = () => {
   const allocation = useAtomValue(collateralAllocationAtom)
   const { refetch, cancel, isFetching } = useMintQuotes()
   const { submit, isPending } = useSubmitOrders(recoveryChoice === 'top-up')
-  const { orderBookApi } = useGlobalProtocolKit()
-  const [isProbingQuotes, setIsProbingQuotes] = useState(false)
   const [sourcesSettled, setSourcesSettled] = useState(false)
-  const [quoteProbeResults, setQuoteProbeResults] = useState<
-    Record<Address, QuoteProbeResult>
-  >({})
 
   // WHY: In multi-token flow, all tokens may come from wallet (no swaps needed)
   const allocationLoaded = Object.keys(allocation).length > 0
@@ -486,128 +462,6 @@ const QuoteSummary = () => {
     setStep('configure')
   }
 
-  const handleProbeQuoteMinimums = async () => {
-    if (!orderBookApi || !wallet) {
-      setQuoteProbeResults(
-        Object.fromEntries(
-          missingQuoteDetails.map((item) => [
-            item.address,
-            {
-              status: 'error',
-              tests: [],
-              error: 'Missing wallet or CowSwap order book API',
-            } satisfies QuoteProbeResult,
-          ])
-        ) as Record<Address, QuoteProbeResult>
-      )
-      return
-    }
-
-    setIsProbingQuotes(true)
-    setQuoteProbeResults(
-      Object.fromEntries(
-        missingQuoteDetails.map((item) => [
-          item.address,
-          { status: 'running', tests: [] } satisfies QuoteProbeResult,
-        ])
-      ) as Record<Address, QuoteProbeResult>
-    )
-
-    try {
-      for (const item of missingQuoteDetails) {
-        if (item.currentUsd <= 0) {
-          setQuoteProbeResults((prev) => ({
-            ...prev,
-            [item.address]: {
-              status: 'error',
-              tests: [],
-              error: 'Missing token price; cannot estimate USD probe sizes',
-            },
-          }))
-          continue
-        }
-
-        const targetUsdValues = [
-          item.currentUsd,
-          item.currentUsd * 2,
-          item.currentUsd * 5,
-          item.currentUsd * 10,
-          ...QUOTE_PROBE_USD_TARGETS,
-        ]
-          .filter((value) => value >= item.currentUsd * 0.99)
-          .sort((a, b) => a - b)
-
-        const seenAmounts = new Set<string>()
-        const tests: QuoteProbeTest[] = []
-        let firstSuccessUsd: number | undefined
-
-        for (const targetUsd of targetUsdValues) {
-          const scale = Math.max(
-            1,
-            Math.ceil((targetUsd / item.currentUsd) * 1_000_000)
-          )
-          const buyAmount = (item.amount * BigInt(scale)) / 1_000_000n
-          const normalizedBuyAmount = buyAmount > 0n ? buyAmount : 1n
-          const amountKey = normalizedBuyAmount.toString()
-
-          if (seenAmounts.has(amountKey)) continue
-          seenAmounts.add(amountKey)
-
-          try {
-            const quote = await getCowswapQuote({
-              sellToken: inputToken.address,
-              buyToken: item.address,
-              amount: normalizedBuyAmount,
-              address: wallet as Address,
-              operation: 'mint',
-              orderBookApi,
-            })
-            const success = Boolean(quote)
-
-            tests.push({
-              usd: targetUsd,
-              buyAmount: normalizedBuyAmount,
-              success,
-              error: success ? undefined : 'Quote returned null',
-            })
-
-            setQuoteProbeResults((prev) => ({
-              ...prev,
-              [item.address]: {
-                status: 'running',
-                tests: [...tests],
-                firstSuccessUsd,
-              },
-            }))
-
-            if (success) {
-              firstSuccessUsd = targetUsd
-              break
-            }
-          } catch (error) {
-            tests.push({
-              usd: targetUsd,
-              buyAmount: normalizedBuyAmount,
-              success: false,
-              error: String(error),
-            })
-          }
-        }
-
-        setQuoteProbeResults((prev) => ({
-          ...prev,
-          [item.address]: {
-            status: 'done',
-            tests,
-            firstSuccessUsd,
-          },
-        }))
-      }
-    } finally {
-      setIsProbingQuotes(false)
-    }
-  }
-
   return (
     <div className="bg-secondary rounded-3xl p-1 w-full lg:min-h-[calc(100vh-100px)]">
       <div className="grid w-full gap-0.5 lg:min-h-[calc(100vh-108px)] lg:grid-cols-[minmax(0,1fr)_minmax(420px,0.95fr)] lg:grid-rows-[auto_1fr] lg:items-stretch">
@@ -871,78 +725,8 @@ const QuoteSummary = () => {
                             </div>
                           </div>
                         </div>
-
-                        {quoteProbeResults[item.address] && (
-                          <div className="mt-2 border-t border-destructive/10 pt-2 text-xs">
-                            {quoteProbeResults[item.address].status ===
-                              'error' && (
-                              <div className="text-destructive/70">
-                                {quoteProbeResults[item.address].error}
-                              </div>
-                            )}
-                            {quoteProbeResults[item.address].status !==
-                              'error' && (
-                              <>
-                                <div className="font-medium">
-                                  {quoteProbeResults[item.address]
-                                    .firstSuccessUsd
-                                    ? `First quote around $${formatCurrency(
-                                        quoteProbeResults[item.address]
-                                          .firstSuccessUsd ?? 0
-                                      )}`
-                                    : quoteProbeResults[item.address].status ===
-                                        'running'
-                                      ? 'Probing quote sizes...'
-                                      : 'No quote found in tested sizes'}
-                                </div>
-                                <div className="mt-1 flex flex-wrap gap-1.5">
-                                  {quoteProbeResults[item.address].tests.map(
-                                    (test) => (
-                                      <span
-                                        key={`${item.address}-${test.buyAmount}`}
-                                        className={cn(
-                                          'rounded-full px-2 py-0.5',
-                                          test.success
-                                            ? 'bg-primary/10 text-primary'
-                                            : 'bg-destructive/10 text-destructive/70'
-                                        )}
-                                      >
-                                        ${formatCurrency(test.usd)}{' '}
-                                        {test.success ? 'ok' : 'failed'}
-                                      </span>
-                                    )
-                                  )}
-                                </div>
-                              </>
-                            )}
-                          </div>
-                        )}
                       </div>
                     ))}
-                  </div>
-                  <div className="mt-3 rounded-lg border border-dashed border-destructive/25 bg-background/50 p-3">
-                    <div className="flex items-center justify-between gap-3">
-                      <div>
-                        <div className="text-xs font-semibold uppercase tracking-wide">
-                          Temporary dev quote probe
-                        </div>
-                        <div className="mt-1 text-xs text-destructive/70">
-                          Quote-only diagnostic. Tests larger synthetic buy
-                          sizes for the missing tokens and does not submit or
-                          sign orders.
-                        </div>
-                      </div>
-                      <Button
-                        type="button"
-                        size="xs"
-                        variant="outline"
-                        className="shrink-0 border-destructive/25 text-destructive hover:bg-destructive/10 hover:text-destructive"
-                        disabled={isProbingQuotes}
-                        onClick={handleProbeQuoteMinimums}
-                      >
-                        {isProbingQuotes ? 'Probing...' : 'Probe sizes'}
-                      </Button>
-                    </div>
                   </div>
                 </div>
               </details>
