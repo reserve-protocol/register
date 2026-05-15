@@ -51,7 +51,11 @@ import {
   walletBalancesAtom,
   wizardStepAtom,
 } from '../atoms'
-import { calculateMaxMintAmount } from '../utils'
+import {
+  calculateMaxMintAmount,
+  getQuoteResultForAddress,
+  getRequiredQuoteStatus,
+} from '../utils'
 import { useMintQuotes } from '../hooks/use-mint-quotes'
 import { useSubmitOrders } from '../hooks/use-submit-orders'
 
@@ -246,13 +250,12 @@ const QuoteSummary = () => {
   const visibleInputSourceTokens = inputSourceTokens.slice(0, 3)
   const hiddenInputSourceTokenCount = Math.max(inputSourceTokens.length - 3, 0)
   const hasQuotes = Object.keys(quotes).length > 0
-  const successfulQuotes = Object.values(quotes).filter((q) => q.success)
-  const requiredSwapCount = Object.values(allocation).filter(
-    (item) => item.fromSwap > 0n
-  ).length
+  const quoteStatus = useMemo(
+    () => getRequiredQuoteStatus({ allocation, quotes }),
+    [allocation, quotes]
+  )
   const allRequiredQuotesReady =
-    noSwapsNeeded ||
-    (requiredSwapCount > 0 && successfulQuotes.length === requiredSwapCount)
+    noSwapsNeeded || (quoteStatus.requiredCount > 0 && quoteStatus.allReady)
   const basketByAddress = useMemo(() => {
     const map: Record<Address, NonNullable<typeof basket>[number]> = {}
     for (const token of basket ?? []) {
@@ -262,28 +265,37 @@ const QuoteSummary = () => {
   }, [basket])
   const missingQuoteDetails = useMemo(
     () =>
-      Object.entries(allocation)
-        .filter(([_, item]) => item.fromSwap > 0n)
-        .map(([address, item]) => {
-          const normalized = address.toLowerCase() as Address
-          const quote = quotes[address as Address] ?? quotes[normalized]
-          const token = basketByAddress[normalized]
-          const decimals = token?.decimals ?? 18
-          const price = tokenPrices[normalized] ?? 0
-          const currentUsd =
-            Number(formatUnits(item.fromSwap, decimals)) * price
+      quoteStatus.missingAddresses.map((address) => {
+        const normalized = address.toLowerCase() as Address
+        const item =
+          allocation[address] ??
+          Object.entries(allocation).find(
+            ([allocationAddress]) =>
+              allocationAddress.toLowerCase() === normalized
+          )?.[1]
+        const quote = getQuoteResultForAddress(quotes, address)
+        const token = basketByAddress[normalized]
+        const decimals = token?.decimals ?? 18
+        const price = tokenPrices[normalized] ?? 0
+        const currentUsd =
+          Number(formatUnits(item?.fromSwap ?? 0n, decimals)) * price
 
-          return {
-            address: normalized,
-            symbol: token?.symbol ?? `${normalized.slice(0, 6)}...`,
-            decimals,
-            amount: item.fromSwap,
-            currentUsd,
-            quote,
-          }
-        })
-        .filter((item) => !item.quote?.success),
-    [allocation, basketByAddress, quotes, tokenPrices]
+        return {
+          address: normalized,
+          symbol: token?.symbol ?? `${normalized.slice(0, 6)}...`,
+          decimals,
+          amount: item?.fromSwap ?? 0n,
+          currentUsd,
+          quote,
+        }
+      }),
+    [
+      allocation,
+      basketByAddress,
+      quoteStatus.missingAddresses,
+      quotes,
+      tokenPrices,
+    ]
   )
   const missingQuoteCount = missingQuoteDetails.length
   const quoteLoading = noSwapsNeeded

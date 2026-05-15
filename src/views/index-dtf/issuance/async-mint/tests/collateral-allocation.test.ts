@@ -1,12 +1,19 @@
 import { describe, it, expect } from 'vitest'
 import { Address, parseEther, parseUnits } from 'viem'
-import { calculateCollateralAllocation, calculateMaxMintAmount } from '../utils'
+import {
+  calculateCollateralAllocation,
+  calculateMaxMintAmount,
+  getRequiredQuoteStatus,
+} from '../utils'
+import { QuoteResult } from '../types'
 
 const USDC = '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48' as Address
 const WETH = '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2' as Address
 const WBTC = '0x2260fac5e5542a773aa44fbcfedf7c193bc2c599' as Address
 
 const INPUT_TOKEN = { address: USDC, decimals: 6, symbol: 'USDC' }
+const SUCCESS_QUOTE = { success: true, data: {} } as QuoteResult
+const FAILED_QUOTE = { success: false, error: 'No quote' } as QuoteResult
 
 const DECIMALS: Record<Address, number> = {
   [USDC.toLowerCase() as Address]: 6,
@@ -354,6 +361,99 @@ describe('calculateCollateralAllocation', () => {
 
     // 100 tokens * $10 = $1000 (using 18 decimals fallback)
     expect(result[UNKNOWN].usdValue).toBeCloseTo(1000, 0)
+  })
+})
+
+describe('getRequiredQuoteStatus', () => {
+  it('requires successful quotes for each token with a swap amount', () => {
+    const allocation = {
+      [WETH.toLowerCase() as Address]: {
+        fromWallet: 0n,
+        fromSwap: parseEther('1'),
+        usdValue: 2000,
+        explanation: 'Covering the remainder',
+      },
+      [WBTC.toLowerCase() as Address]: {
+        fromWallet: 0n,
+        fromSwap: parseUnits('0.05', 8),
+        usdValue: 2000,
+        explanation: 'Covering the remainder',
+      },
+      [USDC.toLowerCase() as Address]: {
+        fromWallet: 0n,
+        fromSwap: 0n,
+        usdValue: 0,
+        explanation: 'Covering the remainder',
+      },
+    }
+
+    const result = getRequiredQuoteStatus({
+      allocation,
+      quotes: {
+        [WETH.toLowerCase() as Address]: SUCCESS_QUOTE,
+        [USDC.toLowerCase() as Address]: SUCCESS_QUOTE,
+      },
+    })
+
+    expect(result.requiredCount).toBe(2)
+    expect(result.successfulCount).toBe(1)
+    expect(result.allReady).toBe(false)
+    expect(result.missingAddresses).toEqual([WBTC.toLowerCase()])
+    expect(result.successfulQuotes.map((item) => item.address)).toEqual([
+      WETH.toLowerCase(),
+    ])
+  })
+
+  it('ignores failed quotes and extra successful quotes', () => {
+    const allocation = {
+      [WETH.toLowerCase() as Address]: {
+        fromWallet: 0n,
+        fromSwap: parseEther('1'),
+        usdValue: 2000,
+        explanation: 'Covering the remainder',
+      },
+      [WBTC.toLowerCase() as Address]: {
+        fromWallet: 0n,
+        fromSwap: parseUnits('0.05', 8),
+        usdValue: 2000,
+        explanation: 'Covering the remainder',
+      },
+    }
+
+    const result = getRequiredQuoteStatus({
+      allocation,
+      quotes: {
+        [WETH.toLowerCase() as Address]: SUCCESS_QUOTE,
+        [WBTC.toLowerCase() as Address]: FAILED_QUOTE,
+        [USDC.toLowerCase() as Address]: SUCCESS_QUOTE,
+      },
+    })
+
+    expect(result.requiredCount).toBe(2)
+    expect(result.successfulCount).toBe(1)
+    expect(result.allReady).toBe(false)
+    expect(result.missingAddresses).toEqual([WBTC.toLowerCase()])
+  })
+
+  it('is ready when there are no required swap quotes', () => {
+    const result = getRequiredQuoteStatus({
+      allocation: {
+        [WETH.toLowerCase() as Address]: {
+          fromWallet: parseEther('1'),
+          fromSwap: 0n,
+          usdValue: 0,
+          explanation: 'Using your full balance',
+        },
+      },
+      quotes: {
+        [WBTC.toLowerCase() as Address]: SUCCESS_QUOTE,
+      },
+    })
+
+    expect(result.requiredCount).toBe(0)
+    expect(result.successfulCount).toBe(0)
+    expect(result.allReady).toBe(true)
+    expect(result.successfulQuotes).toEqual([])
   })
 })
 

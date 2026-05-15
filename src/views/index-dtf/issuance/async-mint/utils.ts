@@ -1,5 +1,5 @@
 import { Address, formatUnits } from 'viem'
-import { CollateralAllocation, MintStrategy } from './types'
+import { CollateralAllocation, MintStrategy, QuoteResult } from './types'
 
 // ─── Max mint amount (accounts for wallet collateral) ────────────────
 export function calculateMaxMintAmount({
@@ -211,4 +211,54 @@ export function calculateCollateralAllocation({
   }
 
   return result
+}
+
+type SuccessfulQuote = Extract<QuoteResult, { success: true }>
+
+export const getQuoteResultForAddress = (
+  quotes: Record<Address, QuoteResult>,
+  address: Address
+) => {
+  const normalized = address.toLowerCase() as Address
+  return (
+    quotes[address] ??
+    quotes[normalized] ??
+    Object.entries(quotes).find(
+      ([quoteAddress]) => quoteAddress.toLowerCase() === normalized
+    )?.[1]
+  )
+}
+
+export function getRequiredQuoteStatus({
+  allocation,
+  quotes,
+}: {
+  allocation: Record<Address, CollateralAllocation>
+  quotes: Record<Address, QuoteResult>
+}) {
+  const requiredAddresses = Object.entries(allocation)
+    .filter(([_, item]) => item.fromSwap > 0n)
+    .map(([address]) => address.toLowerCase() as Address)
+
+  const successfulQuotes: { address: Address; quote: SuccessfulQuote }[] = []
+  const missingAddresses: Address[] = []
+
+  for (const address of requiredAddresses) {
+    const quote = getQuoteResultForAddress(quotes, address)
+
+    if (quote?.success) {
+      successfulQuotes.push({ address, quote })
+    } else {
+      missingAddresses.push(address)
+    }
+  }
+
+  return {
+    requiredAddresses,
+    successfulQuotes,
+    missingAddresses,
+    requiredCount: requiredAddresses.length,
+    successfulCount: successfulQuotes.length,
+    allReady: missingAddresses.length === 0,
+  }
 }

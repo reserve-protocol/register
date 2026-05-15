@@ -30,6 +30,7 @@ import {
   slippageAtom,
   wizardStepAtom,
 } from '../atoms'
+import { getRequiredQuoteStatus } from '../utils'
 
 type CowswapPreSignTx = {
   orderId: string
@@ -106,34 +107,24 @@ export function useSubmitOrders(refresh = false) {
         appDataHex = ('0x' + '0'.repeat(64)) as AppDataHash
       }
 
-      // Filter successful quotes
-      const successfulQuotes = Object.entries(quotes).filter(
-        ([_, q]) => q.success
-      )
-      const requiredSwapCount = Object.values(allocation).filter(
-        (item) => item.fromSwap > 0n
-      ).length
+      const quoteStatus = getRequiredQuoteStatus({ allocation, quotes })
 
-      if (
-        requiredSwapCount > 0 &&
-        successfulQuotes.length < requiredSwapCount
-      ) {
+      if (quoteStatus.requiredCount > 0 && !quoteStatus.allReady) {
         notifyError(
           'Missing quotes',
-          `Only ${successfulQuotes.length} of ${requiredSwapCount} required collateral quotes are available. Try a larger amount or refresh quotes.`
+          `Only ${quoteStatus.successfulCount} of ${quoteStatus.requiredCount} required collateral quotes are available. Try a larger amount or refresh quotes.`
         )
         throw new Error('Missing required collateral quotes')
       }
 
-      if (successfulQuotes.length === 0) {
+      if (quoteStatus.requiredCount === 0) {
         return { orders: [] }
       }
 
       // Generate pre-sign transactions
       const orderData = (
         await Promise.all(
-          successfulQuotes.map(async ([_, quote]) => {
-            if (!quote.success) return undefined
+          quoteStatus.successfulQuotes.map(async ({ quote }) => {
             return getCowswapPreSignTx({
               chainId,
               orderQuote: quote.data,
