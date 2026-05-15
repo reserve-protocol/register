@@ -45,7 +45,7 @@ type DTFQueryResponse = {
           totalSupply: string
         }
       }
-    }
+    } | null
     legacyAdmins: Address[]
     tradingGovernance?: {
       id: Address
@@ -70,7 +70,7 @@ type DTFQueryResponse = {
           totalSupply: string
         }
       }
-    }
+    } | null
     legacyAuctionApprovers: Address[]
     token: {
       id: Address
@@ -93,7 +93,7 @@ type DTFQueryResponse = {
         symbol: string
         address: Address
         decimals: number
-      }
+      } | null
       governance?: {
         id: Address
         votingDelay: number
@@ -117,7 +117,7 @@ type DTFQueryResponse = {
             totalSupply: string
           }
         }
-      }
+      } | null
       legacyGovernance: Address[]
       rewards: {
         rewardToken: {
@@ -127,7 +127,7 @@ type DTFQueryResponse = {
           decimals: number
         }
       }[]
-    }
+    } | null
     totalRevenue: number
     protocolRevenue: number
     governanceRevenue: number
@@ -327,9 +327,10 @@ const useIndexDTF = (address: string | undefined, chainId: AvailableChain) => {
         feeRecipients: parseFeeRecipients(dtf.feeRecipients),
         ownerGovernance: parseGovernance(dtf.ownerGovernance),
         tradingGovernance: parseGovernance(dtf.tradingGovernance),
-        stToken: dtf.stToken
+        stToken: dtf.stToken?.underlying
           ? {
               ...dtf.stToken,
+              underlying: dtf.stToken.underlying,
               rewardTokens:
                 dtf.stToken?.rewards.map((reward) => reward.rewardToken) || [],
               governance: parseGovernance(dtf.stToken.governance),
