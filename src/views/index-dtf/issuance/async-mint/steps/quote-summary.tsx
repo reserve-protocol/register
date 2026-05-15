@@ -5,6 +5,12 @@ import { TransactionButtonContainer } from '@/components/ui/transaction-button'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { Skeleton } from '@/components/ui/skeleton'
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/components/ui/tooltip'
 import useDebounce from '@/hooks/useDebounce'
 import { cn } from '@/lib/utils'
 import { balancesAtom, chainIdAtom, walletAtom } from '@/state/atoms'
@@ -17,6 +23,7 @@ import { formatCurrency, formatTokenAmount, safeParseEther } from '@/utils'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import {
   ChevronRight,
+  Info,
   ListChecks,
   Pencil,
   RefreshCw,
@@ -52,6 +59,23 @@ import { useGlobalProtocolKit } from '../../async-swaps/providers/GlobalProtocol
 
 const formatTokenBalance = (value: bigint, decimals: number) =>
   formatTokenAmount(Number(formatUnits(value, decimals)))
+
+const getLockedSourceStatus = (explanation?: string, fromWallet?: bigint) => {
+  if (!fromWallet || fromWallet === 0n) return ''
+  if (explanation === 'Token at its maximum weight') return 'Capped at'
+  if (explanation === 'Using your full balance') return 'Using full balance'
+  return ''
+}
+
+const calculateMintSharesForUsd = (
+  amount: number,
+  dtfPrice?: number | null
+) => {
+  if (!dtfPrice || !amount || !isFinite(amount) || amount <= 0) return 0n
+  return safeParseEther(
+    ((amount / dtfPrice) * (1 - ASYNC_MINT_BUFFER)).toFixed(18)
+  )
+}
 
 const QUOTE_PROBE_USD_TARGETS = [2, 5, 10, 20, 50, 100, 250]
 
@@ -91,6 +115,7 @@ const QuoteSummary = () => {
   const { submit, isPending } = useSubmitOrders(recoveryChoice === 'top-up')
   const { orderBookApi } = useGlobalProtocolKit()
   const [isProbingQuotes, setIsProbingQuotes] = useState(false)
+  const [sourcesSettled, setSourcesSettled] = useState(false)
   const [quoteProbeResults, setQuoteProbeResults] = useState<
     Record<Address, QuoteProbeResult>
   >({})
@@ -199,8 +224,6 @@ const QuoteSummary = () => {
   )
   const hasWalletCollateralUsed = walletCollateralUsd > 0
   const inputUsedUsd = Math.max(parsedAmount - walletCollateralUsd, 0)
-  const slippagePct = Number(slippage) / 10000
-  const bufferReturn = inputUsedUsd * (ASYNC_MINT_BUFFER + slippagePct)
   const inputSourceTokens = useMemo(() => {
     if (!useWalletCollateral || !basket) return [inputToken]
 
@@ -215,6 +238,35 @@ const QuoteSummary = () => {
       ? [inputToken, ...walletSources]
       : walletSources
   }, [allocation, basket, inputToken, inputUsedUsd, useWalletCollateral])
+  const lockedCollateralTokens = useMemo(() => {
+    if (!basket) return []
+
+    return basket.filter((token) => {
+      const normalized = token.address.toLowerCase() as Address
+
+      if (normalized === inputToken.address.toLowerCase()) return false
+
+      const walletBalance = walletBalances[normalized] ?? 0n
+      const alloc = allocation[token.address] ?? allocation[normalized]
+      const balanceUsd =
+        Number(formatUnits(walletBalance, token.decimals)) *
+        (tokenPrices[normalized] ?? 0)
+
+      return (
+        balanceUsd >= 0.01 ||
+        selectedCollaterals.has(normalized) ||
+        selectedCollaterals.has(token.address) ||
+        (alloc?.fromWallet ?? 0n) > 0n
+      )
+    })
+  }, [
+    allocation,
+    basket,
+    inputToken.address,
+    selectedCollaterals,
+    tokenPrices,
+    walletBalances,
+  ])
   const visibleInputSourceTokens = inputSourceTokens.slice(0, 3)
   const hiddenInputSourceTokenCount = Math.max(inputSourceTokens.length - 3, 0)
   const hasQuotes = Object.keys(quotes).length > 0
@@ -268,48 +320,141 @@ const QuoteSummary = () => {
     ? (indexDTF.mintingFee * 100).toFixed(2)
     : '0'
 
-  const getWalletSourceContext = (
-    token: NonNullable<typeof basket>[number],
-    usedAmount: bigint,
-    usedUsd: number,
-    explanation?: string
+  const renderLockedCollateralSourceRow = (
+    token: NonNullable<typeof basket>[number]
   ) => {
     const normalized = token.address.toLowerCase() as Address
+    const alloc = allocation[token.address] ?? allocation[normalized]
+    const usedAmount = alloc?.fromWallet ?? 0n
+    const usedUsd =
+      Number(formatUnits(usedAmount, token.decimals)) *
+      (tokenPrices[normalized] ?? 0)
     const walletBalance = walletBalances[normalized] ?? 0n
-    const walletBalanceText = formatTokenBalance(walletBalance, token.decimals)
-    const usedAmountText = formatTokenBalance(usedAmount, token.decimals)
+    const mintShares = calculateMintSharesForUsd(parsedAmount, dtfPrice)
+    const tokenIndex = folioDetails?.assets.findIndex(
+      (asset) => asset.toLowerCase() === normalized
+    )
+    const requiredAmount =
+      tokenIndex !== undefined &&
+      tokenIndex >= 0 &&
+      folioDetails &&
+      mintShares > 0n
+        ? folioDetails.shares === mintShares
+          ? (folioDetails.mintValues[tokenIndex] ?? 0n)
+          : ((folioDetails.mintValues[tokenIndex] ?? 0n) * mintShares) /
+            folioDetails.shares
+        : 0n
+    const maxUsableAmount =
+      walletBalance < requiredAmount ? walletBalance : requiredAmount
+    const maxUsableUsd =
+      Number(formatUnits(maxUsableAmount, token.decimals)) *
+      (tokenPrices[normalized] ?? 0)
+    const checked = usedAmount > 0n
+    const status = getLockedSourceStatus(alloc?.explanation, usedAmount)
+    const usedAmountText = `${formatTokenBalance(usedAmount, token.decimals)} ${token.symbol}`
+    const walletBalanceText = `${formatTokenBalance(walletBalance, token.decimals)} ${token.symbol}`
     const weightPct =
       parsedAmount > 0 ? Math.min((usedUsd / parsedAmount) * 100, 100) : 0
     const weightText = Number.isInteger(weightPct)
       ? weightPct.toFixed(0)
       : weightPct.toFixed(2)
+    const statusTooltip =
+      alloc?.explanation === 'Token at its maximum weight'
+        ? `${token.symbol} is ${weightText}% of this ${indexDTF?.token.symbol}, so we can use up to $${formatCurrency(usedUsd)} (${usedAmountText}) of your ${walletBalanceText} for this mint.`
+        : alloc?.explanation === 'Using your full balance'
+          ? `You hold ${walletBalanceText}, which is within this token's basket weight, so we're using all of it.`
+          : ''
 
-    if (explanation === 'Token at its maximum weight') {
-      return {
-        title: 'Token at its maximum weight',
-        description: `${token.symbol} is ${weightText}% of this ${indexDTF?.token.symbol}, so we can use up to $${formatCurrency(usedUsd)} (${usedAmountText} ${token.symbol}) of your ${walletBalanceText} ${token.symbol} for this mint.`,
-      }
-    }
-
-    if (explanation === 'Using your full balance') {
-      return {
-        title: 'Using your full balance',
-        description: `You hold ${walletBalanceText} ${token.symbol}, which is within this token's basket weight, so we're using all of it.`,
-      }
-    }
-
-    if (explanation === 'Using custom amount') {
-      return {
-        title: 'Using custom amount',
-        description: `Using your selected ${usedAmountText} ${token.symbol} for this mint.`,
-      }
-    }
-
-    return {
-      title: 'Using wallet collateral',
-      description: `${usedAmountText} ${token.symbol} is being used from your wallet for this mint.`,
-    }
+    return (
+      <div
+        key={token.address}
+        className={cn(
+          '-mx-2 rounded-[18px] border px-4 py-3 transition-colors',
+          checked
+            ? 'border-primary/35 bg-primary/5'
+            : 'border-border/70 bg-background'
+        )}
+      >
+        <div className="flex items-center">
+          <TokenLogoWithChain
+            address={token.address}
+            symbol={token.symbol}
+            chain={chainId}
+            size="xl"
+          />
+          <div className="ml-4 min-w-0 flex-1">
+            <div className="font-medium text-base truncate">
+              {token.name || token.symbol}
+            </div>
+            <div className="text-sm text-muted-foreground font-light truncate">
+              {token.symbol} · Wallet{' '}
+              {formatTokenBalance(walletBalance, token.decimals)}
+            </div>
+          </div>
+          <div
+            className="ml-4 text-right transition-[min-width] duration-300 ease-out"
+            style={{ minWidth: sourcesSettled ? 192 : 156 }}
+          >
+            <div className="text-base font-medium">
+              ${formatCurrency(checked ? usedUsd : maxUsableUsd)}
+            </div>
+            <div className="flex h-5 items-center justify-end gap-1.5 text-sm text-muted-foreground font-light">
+              {checked ? (
+                <>
+                  {status && <span>{status}</span>}
+                  {status !== 'Using full balance' && (
+                    <span>{usedAmountText}</span>
+                  )}
+                  {statusTooltip && (
+                    <TooltipProvider delayDuration={0}>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <button
+                            type="button"
+                            className="flex h-4 w-4 items-center justify-center rounded-full text-muted-foreground transition-colors hover:text-foreground"
+                            aria-label={`${status} explanation`}
+                          >
+                            <Info size={13} />
+                          </button>
+                        </TooltipTrigger>
+                        <TooltipContent side="top" className="max-w-[320px]">
+                          {statusTooltip}
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
+                  )}
+                  <span
+                    className="h-5 shrink-0 opacity-0 transition-[width] duration-300 ease-out"
+                    style={{ width: sourcesSettled ? 0 : 20 }}
+                    aria-hidden
+                  />
+                </>
+              ) : (
+                <span>
+                  {parsedAmount > 0
+                    ? `${formatTokenBalance(maxUsableAmount, token.decimals)} ${token.symbol}`
+                    : 'Set mint amount'}
+                </span>
+              )}
+            </div>
+          </div>
+          <div
+            className="h-5 shrink-0 opacity-0 transition-[width,margin] duration-300 ease-out"
+            style={{
+              marginLeft: sourcesSettled ? 0 : 16,
+              width: sourcesSettled ? 0 : 20,
+            }}
+            aria-hidden
+          />
+        </div>
+      </div>
+    )
   }
+
+  useEffect(() => {
+    const frame = requestAnimationFrame(() => setSourcesSettled(true))
+    return () => cancelAnimationFrame(frame)
+  }, [])
 
   // Debounced refetch when amount changes
   const prevDebouncedRef = useRef(debouncedAmount)
@@ -874,8 +1019,26 @@ const QuoteSummary = () => {
               </div>
 
               <ScrollArea className="h-[min(560px,calc(100vh-340px))] min-h-[300px] lg:h-auto lg:min-h-0 lg:flex-1">
-                <div className="flex flex-col gap-0.5 pr-2">
-                  <div className="px-4 py-3">
+                <div className="flex flex-col gap-1 px-2">
+                  <div className="flex items-center px-2 pt-4 pb-1 text-xs font-medium uppercase tracking-wide text-muted-foreground">
+                    <span className="min-w-0 flex-1">Sources</span>
+                    <span
+                      className="ml-4 text-right transition-[min-width] duration-300 ease-out"
+                      style={{ minWidth: sourcesSettled ? 192 : 156 }}
+                    >
+                      Amount
+                    </span>
+                    <span
+                      className="h-5 shrink-0 transition-[width,margin] duration-300 ease-out"
+                      style={{
+                        marginLeft: sourcesSettled ? 0 : 16,
+                        width: sourcesSettled ? 0 : 20,
+                      }}
+                      aria-hidden
+                    />
+                  </div>
+
+                  <div className="px-2 py-3">
                     <div className="flex items-center gap-4">
                       <TokenLogoWithChain
                         address={inputToken.address}
@@ -900,96 +1063,20 @@ const QuoteSummary = () => {
                           )}
                         </span>
                       </div>
-                      <div className="text-right shrink-0">
+                      <div className="min-w-[192px] shrink-0 text-right">
                         <div className="text-base font-medium">
                           ${formatCurrency(inputUsedUsd)}
                         </div>
-                        <div className="text-sm text-muted-foreground font-light">
+                        <div className="flex h-5 items-center justify-end text-sm text-muted-foreground font-light">
                           {hasWalletCollateralUsed
                             ? 'Remainder + buffer'
                             : 'Full amount + buffer'}
                         </div>
                       </div>
                     </div>
-                    <div className="mt-2 max-w-[340px] text-sm">
-                      <div className="font-medium text-foreground mb-1">
-                        {hasWalletCollateralUsed
-                          ? 'Covering the remainder'
-                          : `${inputToken.symbol} covers the mint`}
-                      </div>
-                      <div className="text-muted-foreground font-light">
-                        Up to {formatCurrency(inputUsedUsd)} {inputToken.symbol}{' '}
-                        will be used to{' '}
-                        {hasWalletCollateralUsed
-                          ? 'complete'
-                          : 'cover the full'}{' '}
-                        mint. Up to ${formatCurrency(bufferReturn)}{' '}
-                        {inputToken.symbol} may be returned.
-                      </div>
-                    </div>
                   </div>
 
-                  {basket
-                    ?.filter((token) => {
-                      const normalized = token.address.toLowerCase() as Address
-                      const alloc =
-                        allocation[token.address] ?? allocation[normalized]
-                      return alloc && alloc.fromWallet > 0n
-                    })
-                    .map((token) => {
-                      const normalized = token.address.toLowerCase() as Address
-                      const alloc =
-                        allocation[token.address] ?? allocation[normalized]
-                      const usedAmount = alloc?.fromWallet ?? 0n
-                      const usedUsd =
-                        Number(formatUnits(usedAmount, token.decimals)) *
-                        (tokenPrices[normalized] ?? 0)
-
-                      const sourceContext = getWalletSourceContext(
-                        token,
-                        usedAmount,
-                        usedUsd,
-                        alloc?.explanation
-                      )
-
-                      return (
-                        <div key={token.address} className="px-4 py-3">
-                          <div className="flex items-center gap-4">
-                            <TokenLogoWithChain
-                              address={token.address}
-                              symbol={token.symbol}
-                              chain={chainId}
-                              size="xl"
-                            />
-                            <div className="min-w-0 flex-1">
-                              <div className="font-medium text-base truncate">
-                                {token.name || token.symbol}
-                              </div>
-                              <div className="text-sm text-muted-foreground font-light truncate">
-                                {token.symbol} used for mint
-                              </div>
-                            </div>
-                            <div className="text-right min-w-[156px]">
-                              <div className="text-base font-medium">
-                                ${formatCurrency(usedUsd)}
-                              </div>
-                              <div className="text-sm text-muted-foreground font-light">
-                                {formatTokenBalance(usedAmount, token.decimals)}{' '}
-                                {token.symbol}
-                              </div>
-                            </div>
-                          </div>
-                          <div className="mt-2 max-w-[340px] text-sm">
-                            <div className="font-medium text-foreground mb-1">
-                              {sourceContext.title}
-                            </div>
-                            <div className="text-muted-foreground font-light">
-                              {sourceContext.description}
-                            </div>
-                          </div>
-                        </div>
-                      )
-                    })}
+                  {lockedCollateralTokens.map(renderLockedCollateralSourceRow)}
                 </div>
               </ScrollArea>
             </>

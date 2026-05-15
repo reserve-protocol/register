@@ -76,6 +76,7 @@ type MaxChangeStatus = {
 const getStatusLabel = (explanation?: string, fromWallet?: bigint) => {
   if (!fromWallet || fromWallet === 0n) return ''
   if (explanation === 'Token at its maximum weight') return 'Capped at'
+  if (explanation === 'Using your full balance') return 'Using full balance'
   return ''
 }
 
@@ -733,6 +734,19 @@ const ConfigureMint = () => {
     const status = isCustom
       ? ''
       : getStatusLabel(alloc?.explanation, usedAmount)
+    const usedAmountText = `${formatTokenBalance(usedAmount, token.decimals)} ${token.symbol}`
+    const walletBalanceText = `${formatTokenBalance(balance, token.decimals)} ${token.symbol}`
+    const weightPct =
+      parsedAmount > 0 ? Math.min((usedUsd / parsedAmount) * 100, 100) : 0
+    const weightText = Number.isInteger(weightPct)
+      ? weightPct.toFixed(0)
+      : weightPct.toFixed(2)
+    const statusTooltip =
+      alloc?.explanation === 'Token at its maximum weight'
+        ? `${token.symbol} is ${weightText}% of this ${indexDTF?.token.symbol}, so we can use up to $${formatCurrency(usedUsd)} (${usedAmountText}) of your ${walletBalanceText} for this mint.`
+        : alloc?.explanation === 'Using your full balance'
+          ? `You hold ${walletBalanceText}, which is within this token's basket weight, so we're using all of it.`
+          : ''
 
     return (
       <div
@@ -797,18 +811,36 @@ const ConfigureMint = () => {
             <div className="text-base font-medium">
               ${formatCurrency(checked ? usedUsd : maxUsableUsd)}
             </div>
-            <div className="flex items-center justify-end gap-1.5 text-sm text-muted-foreground font-light">
+            <div className="flex h-5 items-center justify-end gap-1.5 text-sm text-muted-foreground font-light">
               {checked ? (
                 <>
                   {status && <span>{status}</span>}
-                  <span>
-                    {formatTokenBalance(usedAmount, token.decimals)}{' '}
-                    {token.symbol}
-                  </span>
+                  {status !== 'Using full balance' && (
+                    <span>{usedAmountText}</span>
+                  )}
+                  {statusTooltip && (
+                    <TooltipProvider delayDuration={0}>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <button
+                            type="button"
+                            className="flex h-4 w-4 items-center justify-center rounded-full text-muted-foreground transition-colors hover:text-foreground"
+                            onClick={(event) => event.stopPropagation()}
+                            aria-label={`${status} explanation`}
+                          >
+                            <Info size={13} />
+                          </button>
+                        </TooltipTrigger>
+                        <TooltipContent side="top" className="max-w-[320px]">
+                          {statusTooltip}
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
+                  )}
                   <button
                     type="button"
                     className={cn(
-                      'flex h-6 w-6 items-center justify-center rounded-full transition-colors',
+                      'flex h-5 w-5 items-center justify-center rounded-full transition-colors',
                       isCustom
                         ? 'text-primary'
                         : 'text-muted-foreground hover:bg-muted hover:text-foreground'
@@ -996,7 +1028,9 @@ const ConfigureMint = () => {
                           />
                         </div>
                         <div className="mt-2 text-sm font-light text-muted-foreground">
-                          ${formatCurrency(parsedAmount)}
+                          {useWalletCollateral && walletCollateralUsd > 0
+                            ? `$${formatCurrency(inputUsedUsd)} ${inputToken.symbol} + $${formatCurrency(walletCollateralUsd)} Collateral`
+                            : `$${formatCurrency(parsedAmount)}`}
                         </div>
                       </div>
 
@@ -1157,16 +1191,6 @@ const ConfigureMint = () => {
                   </div>
 
                   <div className="flex flex-col gap-3 px-4 text-sm">
-                    {useWalletCollateral && (
-                      <div className="flex items-center justify-between">
-                        <span className="text-muted-foreground">
-                          Collateral used
-                        </span>
-                        <span className="font-medium">
-                          ${formatCurrency(walletCollateralUsd)}
-                        </span>
-                      </div>
-                    )}
                     <div className="flex items-center justify-between">
                       <span className="text-muted-foreground">
                         Price impact
@@ -1238,10 +1262,8 @@ const ConfigureMint = () => {
                     <ScrollArea className="h-[min(560px,calc(100vh-340px))] min-h-[300px] lg:h-auto lg:min-h-0 lg:flex-1">
                       <div className="flex flex-col gap-1 px-2">
                         <div className="grid grid-cols-[minmax(0,1fr)_156px_20px] items-center gap-4 px-2 pt-4 pb-1 text-xs font-medium uppercase tracking-wide text-muted-foreground">
-                          <span>Used sources</span>
-                          <span className="col-span-2 text-right">
-                            Amount used
-                          </span>
+                          <span>Sources</span>
+                          <span className="col-span-2 text-right">Amount</span>
                         </div>
                         <div className="px-2 py-3 flex items-center gap-4">
                           <TokenLogoWithChain
@@ -1303,72 +1325,7 @@ const ConfigureMint = () => {
                             )}
                           </div>
                         ) : (
-                          <>
-                            {heldCollateralTokens
-                              .filter((token) => {
-                                const normalized =
-                                  token.address.toLowerCase() as Address
-                                return (
-                                  selected.has(normalized) ||
-                                  selected.has(token.address)
-                                )
-                              })
-                              .map(renderCollateralRow)}
-
-                            {heldCollateralTokens.some((token) => {
-                              const normalized =
-                                token.address.toLowerCase() as Address
-                              return (
-                                !selected.has(normalized) &&
-                                !selected.has(token.address)
-                              )
-                            }) && (
-                              <>
-                                <div className="grid grid-cols-[minmax(0,1fr)_156px_20px] items-center gap-4 px-2 pt-5 pb-2 text-xs font-medium uppercase tracking-wide text-muted-foreground">
-                                  <div className="flex items-center gap-1.5">
-                                    <span>Available collateral</span>
-                                    <TooltipProvider delayDuration={0}>
-                                      <Tooltip>
-                                        <TooltipTrigger asChild>
-                                          <button
-                                            type="button"
-                                            className="flex h-4 w-4 items-center justify-center rounded-full text-muted-foreground transition-colors hover:text-foreground"
-                                            aria-label="What does max usable mean?"
-                                          >
-                                            <Info size={13} />
-                                          </button>
-                                        </TooltipTrigger>
-                                        <TooltipContent
-                                          side="top"
-                                          className="max-w-[280px] normal-case tracking-normal"
-                                        >
-                                          Max usable is the most of this wallet
-                                          token that can be applied to the
-                                          current mint. It is limited by your
-                                          wallet balance, the DTF basket weight
-                                          for this token, and the mint amount
-                                          entered.
-                                        </TooltipContent>
-                                      </Tooltip>
-                                    </TooltipProvider>
-                                  </div>
-                                  <span className="col-span-2 text-right">
-                                    Max usable
-                                  </span>
-                                </div>
-                                {heldCollateralTokens
-                                  .filter((token) => {
-                                    const normalized =
-                                      token.address.toLowerCase() as Address
-                                    return (
-                                      !selected.has(normalized) &&
-                                      !selected.has(token.address)
-                                    )
-                                  })
-                                  .map(renderCollateralRow)}
-                              </>
-                            )}
-                          </>
+                          heldCollateralTokens.map(renderCollateralRow)
                         )}
                       </div>
                     </ScrollArea>
