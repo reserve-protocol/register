@@ -19,6 +19,11 @@ import {
   wizardStepAtom,
 } from '../atoms'
 import { calculateMaxMintAmount } from '../utils'
+
+// Temporary QA bypass: allow oversized amounts through quote fetching while
+// keeping execution blocked later in the flow.
+const ALLOW_OVERSIZED_ASYNC_MINT_QUOTES = true
+
 const AmountInput = () => {
   const setStep = useSetAtom(wizardStepAtom)
   const strategy = useAtomValue(mintStrategyAtom)
@@ -200,6 +205,9 @@ const AmountInput = () => {
       {exceedsBalance && (
         <div className="text-sm text-destructive px-4 py-1">
           Exceeds available balance
+          {ALLOW_OVERSIZED_ASYNC_MINT_QUOTES
+            ? ' - quote testing is enabled'
+            : ''}
         </div>
       )}
 
@@ -213,7 +221,9 @@ const AmountInput = () => {
       <Button
         size="lg"
         className="w-full h-[49px] rounded-[20px] mt-1"
-        disabled={!isValid || exceedsBalance}
+        disabled={
+          !isValid || (!ALLOW_OVERSIZED_ASYNC_MINT_QUOTES && exceedsBalance)
+        }
         onClick={() =>
           setStep(strategy === 'single' ? 'quote-summary' : 'review')
         }

@@ -67,6 +67,9 @@ const WRAPPED_NATIVE_SYMBOLS = new Set(['WETH', 'WBETH'])
 const MIN_DISPLAYABLE_USD_SHORTFALL = 0.005
 const MAX_MINT_INPUT_DECIMALS = 2
 const COLLATERAL_DUST_USD_THRESHOLD = 0.01
+// Temporary QA bypass: allow oversized amounts through quote fetching while
+// keeping execution blocked later in the flow.
+const ALLOW_OVERSIZED_ASYNC_MINT_QUOTES = true
 type AsyncOperation = 'mint' | 'redeem'
 type MaxChangeStatus = {
   direction: 'up' | 'down'
@@ -1130,7 +1133,9 @@ const ConfigureMint = () => {
                           {formatCurrency(inputShortfall)} {inputToken.symbol}{' '}
                           gap. Update to the latest max, add more{' '}
                           {inputToken.symbol}, or enter a smaller amount before
-                          getting a quote.
+                          minting.
+                          {ALLOW_OVERSIZED_ASYNC_MINT_QUOTES &&
+                            ' Quotes are still enabled for testing.'}
                         </div>
                       </div>
                       {canUpdateToLatestMax && (
@@ -1154,6 +1159,12 @@ const ConfigureMint = () => {
                         <div className="font-medium">
                           Amount is above your current max
                         </div>
+                        {ALLOW_OVERSIZED_ASYNC_MINT_QUOTES && (
+                          <div className="mt-0.5 text-destructive/80">
+                            You can still get a quote for testing, but will need
+                            enough {inputToken.symbol} before minting.
+                          </div>
+                        )}
                       </div>
                     </div>
                   )}
@@ -1235,7 +1246,9 @@ const ConfigureMint = () => {
                         size="lg"
                         className="w-full h-[49px] rounded-[12px]"
                         disabled={
-                          !isValidAmount || exceedsBalance || showInputShortfall
+                          !isValidAmount ||
+                          (!ALLOW_OVERSIZED_ASYNC_MINT_QUOTES &&
+                            (exceedsBalance || showInputShortfall))
                         }
                         onClick={handleContinue}
                       >
