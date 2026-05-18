@@ -5,12 +5,6 @@ import { TransactionButtonContainer } from '@/components/ui/transaction-button'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { Skeleton } from '@/components/ui/skeleton'
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from '@/components/ui/tooltip'
 import useDebounce from '@/hooks/useDebounce'
 import { cn } from '@/lib/utils'
 import { balancesAtom, chainIdAtom } from '@/state/atoms'
@@ -21,15 +15,8 @@ import {
 } from '@/state/dtf/atoms'
 import { formatCurrency, formatTokenAmount, safeParseEther } from '@/utils'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
-import {
-  ChevronRight,
-  Info,
-  ListChecks,
-  Pencil,
-  RefreshCw,
-  Settings,
-} from 'lucide-react'
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { ChevronRight, Pencil, RefreshCw, Settings } from 'lucide-react'
+import { useEffect, useMemo, useRef } from 'react'
 import { Address, formatUnits } from 'viem'
 import {
   ASYNC_MINT_BUFFER,
@@ -62,23 +49,6 @@ import { useSubmitOrders } from '../hooks/use-submit-orders'
 const formatTokenBalance = (value: bigint, decimals: number) =>
   formatTokenAmount(Number(formatUnits(value, decimals)))
 
-const getLockedSourceStatus = (explanation?: string, fromWallet?: bigint) => {
-  if (!fromWallet || fromWallet === 0n) return ''
-  if (explanation === 'Token at its maximum weight') return 'Capped at'
-  if (explanation === 'Using your full balance') return 'Using full balance'
-  return ''
-}
-
-const calculateMintSharesForUsd = (
-  amount: number,
-  dtfPrice?: number | null
-) => {
-  if (!dtfPrice || !amount || !isFinite(amount) || amount <= 0) return 0n
-  return safeParseEther(
-    ((amount / dtfPrice) * (1 - ASYNC_MINT_BUFFER)).toFixed(18)
-  )
-}
-
 const QuoteSummary = () => {
   const setStep = useSetAtom(wizardStepAtom)
   const indexDTF = useAtomValue(indexDTFAtom)
@@ -98,7 +68,6 @@ const QuoteSummary = () => {
   const allocation = useAtomValue(collateralAllocationAtom)
   const { refetch, cancel, isFetching } = useMintQuotes()
   const { submit, isPending } = useSubmitOrders(recoveryChoice === 'top-up')
-  const [sourcesSettled, setSourcesSettled] = useState(false)
 
   // WHY: In multi-token flow, all tokens may come from wallet (no swaps needed)
   const allocationLoaded = Object.keys(allocation).length > 0
@@ -116,9 +85,8 @@ const QuoteSummary = () => {
 
   // Balance
   const inputBalance = balances[inputToken.address]
-  const inputBalanceValue = inputBalance?.value ?? 0n
   const availableBalance = inputBalance
-    ? Number(formatUnits(inputBalanceValue, inputToken.decimals))
+    ? Number(formatUnits(inputBalance.value ?? 0n, inputToken.decimals))
     : 0
 
   const decimalsMap = useMemo(() => {
@@ -182,11 +150,6 @@ const QuoteSummary = () => {
   const dtfValue = dtfPrice ? dtfAmount * dtfPrice : 0
   const spreadPct =
     parsedAmount > 0 ? ((parsedAmount - dtfValue) / parsedAmount) * 100 : 0
-  const totalSwapUsd = useMemo(
-    () =>
-      Object.values(allocation).reduce((sum, item) => sum + item.usdValue, 0),
-    [allocation]
-  )
   const walletCollateralUsd = useMemo(
     () =>
       Object.entries(allocation).reduce((sum, [address, alloc]) => {
@@ -218,35 +181,6 @@ const QuoteSummary = () => {
       ? [inputToken, ...walletSources]
       : walletSources
   }, [allocation, basket, inputToken, inputUsedUsd, useWalletCollateral])
-  const lockedCollateralTokens = useMemo(() => {
-    if (!basket) return []
-
-    return basket.filter((token) => {
-      const normalized = token.address.toLowerCase() as Address
-
-      if (normalized === inputToken.address.toLowerCase()) return false
-
-      const walletBalance = walletBalances[normalized] ?? 0n
-      const alloc = allocation[token.address] ?? allocation[normalized]
-      const balanceUsd =
-        Number(formatUnits(walletBalance, token.decimals)) *
-        (tokenPrices[normalized] ?? 0)
-
-      return (
-        balanceUsd >= 0.01 ||
-        selectedCollaterals.has(normalized) ||
-        selectedCollaterals.has(token.address) ||
-        (alloc?.fromWallet ?? 0n) > 0n
-      )
-    })
-  }, [
-    allocation,
-    basket,
-    inputToken.address,
-    selectedCollaterals,
-    tokenPrices,
-    walletBalances,
-  ])
   const visibleInputSourceTokens = inputSourceTokens.slice(0, 3)
   const hiddenInputSourceTokenCount = Math.max(inputSourceTokens.length - 3, 0)
   const hasQuotes = Object.keys(quotes).length > 0
@@ -308,141 +242,125 @@ const QuoteSummary = () => {
     ? (indexDTF.mintingFee * 100).toFixed(2)
     : '0'
 
-  const renderLockedCollateralSourceRow = (
-    token: NonNullable<typeof basket>[number]
-  ) => {
-    const normalized = token.address.toLowerCase() as Address
-    const alloc = allocation[token.address] ?? allocation[normalized]
-    const usedAmount = alloc?.fromWallet ?? 0n
-    const usedUsd =
-      Number(formatUnits(usedAmount, token.decimals)) *
-      (tokenPrices[normalized] ?? 0)
-    const walletBalance = walletBalances[normalized] ?? 0n
-    const mintShares = calculateMintSharesForUsd(parsedAmount, dtfPrice)
-    const tokenIndex = folioDetails?.assets.findIndex(
-      (asset) => asset.toLowerCase() === normalized
+  const collateralQuoteRows = useMemo(
+    () =>
+      Object.entries(allocation)
+        .filter(([_, item]) => item.fromSwap > 0n)
+        .map(([address, item]) => {
+          const normalized = address.toLowerCase() as Address
+          const token = basketByAddress[normalized]
+          const quote = getQuoteResultForAddress(quotes, normalized)
+          const decimals = token?.decimals ?? 18
+          const price = tokenPrices[normalized] ?? 0
+
+          return {
+            address: normalized,
+            symbol: token?.symbol ?? `${normalized.slice(0, 6)}...`,
+            name: token?.name ?? token?.symbol ?? 'Collateral',
+            decimals,
+            quotedBuyAmount: quote?.success
+              ? BigInt(quote.data.quote.buyAmount)
+              : undefined,
+            quotedSellAmount: quote?.success
+              ? BigInt(quote.data.quote.sellAmount)
+              : undefined,
+            requiredBuyAmount: item.fromSwap,
+            estimatedSellAmount:
+              price > 0
+                ? safeParseEther(
+                    (
+                      Number(formatUnits(item.fromSwap, decimals)) * price
+                    ).toString(),
+                    inputToken.decimals
+                  )
+                : undefined,
+            quote,
+          }
+        }),
+    [allocation, basketByAddress, inputToken.decimals, quotes, tokenPrices]
+  )
+  const totalQuotedSellAmount = useMemo(() => {
+    const amounts = collateralQuoteRows.map(
+      (item) => item.quotedSellAmount ?? item.estimatedSellAmount
     )
-    const requiredAmount =
-      tokenIndex !== undefined &&
-      tokenIndex >= 0 &&
-      folioDetails &&
-      mintShares > 0n
-        ? folioDetails.shares === mintShares
-          ? (folioDetails.mintValues[tokenIndex] ?? 0n)
-          : ((folioDetails.mintValues[tokenIndex] ?? 0n) * mintShares) /
-            folioDetails.shares
-        : 0n
-    const maxUsableAmount =
-      walletBalance < requiredAmount ? walletBalance : requiredAmount
-    const maxUsableUsd =
-      Number(formatUnits(maxUsableAmount, token.decimals)) *
-      (tokenPrices[normalized] ?? 0)
-    const checked = usedAmount > 0n
-    const status = getLockedSourceStatus(alloc?.explanation, usedAmount)
-    const usedAmountText = `${formatTokenBalance(usedAmount, token.decimals)} ${token.symbol}`
-    const walletBalanceText = `${formatTokenBalance(walletBalance, token.decimals)} ${token.symbol}`
-    const weightPct =
-      parsedAmount > 0 ? Math.min((usedUsd / parsedAmount) * 100, 100) : 0
-    const weightText = Number.isInteger(weightPct)
-      ? weightPct.toFixed(0)
-      : weightPct.toFixed(2)
-    const statusTooltip =
-      alloc?.explanation === 'Token at its maximum weight'
-        ? `${token.symbol} is ${weightText}% of this ${indexDTF?.token.symbol}, so we can use up to $${formatCurrency(usedUsd)} (${usedAmountText}) of your ${walletBalanceText} for this mint.`
-        : alloc?.explanation === 'Using your full balance'
-          ? `You hold ${walletBalanceText}, which is within this token's basket weight, so we're using all of it.`
-          : ''
+
+    return amounts.length > 0 && amounts.every((amount) => amount !== undefined)
+      ? amounts.reduce((sum, amount) => sum + (amount ?? 0n), 0n)
+      : undefined
+  }, [collateralQuoteRows])
+
+  const renderCollateralQuoteRow = (
+    item: (typeof collateralQuoteRows)[number]
+  ) => {
+    const quoteReady = item.quote?.success === true
+    const quoteFailed = item.quote?.success === false
+    const showLoading = quoteLoading && !quoteReady && !quoteFailed
+    const sellAmount = item.quotedSellAmount ?? item.estimatedSellAmount
+    const buyAmount = item.quotedBuyAmount ?? item.requiredBuyAmount
 
     return (
       <div
-        key={token.address}
+        key={item.address}
         className={cn(
           '-mx-2 rounded-[18px] border px-4 py-3 transition-colors',
-          checked
-            ? 'border-primary/35 bg-primary/5'
-            : 'border-border/70 bg-background'
+          quoteReady && 'border-primary/35 bg-primary/5',
+          quoteFailed && 'border-destructive/25 bg-destructive/5',
+          !quoteReady && !quoteFailed && 'border-border/70 bg-background'
         )}
       >
-        <div className="flex items-center">
+        <div className="flex items-center gap-4">
           <TokenLogoWithChain
-            address={token.address}
-            symbol={token.symbol}
+            address={item.address}
+            symbol={item.symbol}
             chain={chainId}
             size="xl"
           />
-          <div className="ml-4 min-w-0 flex-1">
-            <div className="font-medium text-base truncate">
-              {token.name || token.symbol}
-            </div>
-            <div className="text-sm text-muted-foreground font-light truncate">
-              {token.symbol} · Wallet{' '}
-              {formatTokenBalance(walletBalance, token.decimals)}
+          <div className="min-w-0 flex-1">
+            <div className="font-medium text-base truncate">{item.name}</div>
+            <div
+              className={cn(
+                'text-sm text-muted-foreground font-light truncate',
+                quoteFailed && 'text-destructive/70'
+              )}
+            >
+              {quoteReady
+                ? `Quote ready · Buying ${item.symbol} with ${inputToken.symbol}`
+                : item.quote?.success === false
+                  ? item.quote.error || 'Quote unavailable'
+                  : `Fetching ${item.symbol} quote`}
             </div>
           </div>
-          <div
-            className="ml-4 text-right transition-[min-width] duration-300 ease-out"
-            style={{ minWidth: sourcesSettled ? 192 : 156 }}
-          >
+          <div className="min-w-[156px] text-right">
             <div className="text-base font-medium">
-              ${formatCurrency(checked ? usedUsd : maxUsableUsd)}
-            </div>
-            <div className="flex h-5 items-center justify-end gap-1.5 text-sm text-muted-foreground font-light">
-              {checked ? (
+              {showLoading ? (
+                <Skeleton className="ml-auto h-5 w-20" />
+              ) : sellAmount ? (
                 <>
-                  {status && <span>{status}</span>}
-                  {status !== 'Using full balance' && (
-                    <span>{usedAmountText}</span>
-                  )}
-                  {statusTooltip && (
-                    <TooltipProvider delayDuration={0}>
-                      <Tooltip>
-                        <TooltipTrigger asChild>
-                          <button
-                            type="button"
-                            className="flex h-4 w-4 items-center justify-center rounded-full text-muted-foreground transition-colors hover:text-foreground"
-                            aria-label={`${status} explanation`}
-                          >
-                            <Info size={13} />
-                          </button>
-                        </TooltipTrigger>
-                        <TooltipContent side="top" className="max-w-[320px]">
-                          {statusTooltip}
-                        </TooltipContent>
-                      </Tooltip>
-                    </TooltipProvider>
-                  )}
-                  <span
-                    className="h-5 shrink-0 opacity-0 transition-[width] duration-300 ease-out"
-                    style={{ width: sourcesSettled ? 0 : 20 }}
-                    aria-hidden
-                  />
+                  -
+                  {formatCurrency(
+                    Number(formatUnits(sellAmount, inputToken.decimals))
+                  )}{' '}
+                  {inputToken.symbol}
                 </>
               ) : (
-                <span>
-                  {parsedAmount > 0
-                    ? `${formatTokenBalance(maxUsableAmount, token.decimals)} ${token.symbol}`
-                    : 'Set mint amount'}
-                </span>
+                `- ${inputToken.symbol}`
+              )}
+            </div>
+            <div className="text-sm text-muted-foreground font-light">
+              {showLoading ? (
+                <Skeleton className="ml-auto mt-1 h-4 w-24" />
+              ) : (
+                <>
+                  +{formatTokenBalance(buyAmount, item.decimals)} {item.symbol}
+                </>
               )}
             </div>
           </div>
-          <div
-            className="h-5 shrink-0 opacity-0 transition-[width,margin] duration-300 ease-out"
-            style={{
-              marginLeft: sourcesSettled ? 0 : 16,
-              width: sourcesSettled ? 0 : 20,
-            }}
-            aria-hidden
-          />
+          <div className="h-6 w-6 shrink-0" />
         </div>
       </div>
     )
   }
-
-  useEffect(() => {
-    const frame = requestAnimationFrame(() => setSourcesSettled(true))
-    return () => cancelAnimationFrame(frame)
-  }, [])
 
   // Debounced refetch when amount changes
   const prevDebouncedRef = useRef(debouncedAmount)
@@ -802,93 +720,86 @@ const QuoteSummary = () => {
         </div>
 
         <div className="bg-background rounded-2xl p-2 lg:col-start-2 lg:row-start-2 lg:flex lg:h-full lg:flex-col">
-          {useWalletCollateral ? (
-            <>
-              <div className="px-4 py-3 flex items-center justify-between">
-                <div>
-                  <h3 className="font-medium text-base">Input sources</h3>
-                  <p className="text-sm text-muted-foreground font-light">
-                    Collateral is used first. {inputToken.symbol} covers the
-                    remainder.
-                  </p>
-                </div>
-              </div>
+          <div className="px-4 py-3 flex items-start justify-between gap-4">
+            <div>
+              <h3 className="font-medium text-base">Collateral quotes</h3>
+              <p className="text-sm text-muted-foreground font-light">
+                {noSwapsNeeded
+                  ? 'No collateral swaps are needed for this mint.'
+                  : `This total is split across the required basket assets below.`}
+              </p>
+            </div>
+          </div>
 
-              <ScrollArea className="h-[min(560px,calc(100vh-340px))] min-h-[300px] lg:h-auto lg:min-h-0 lg:flex-1">
-                <div className="flex flex-col gap-1 px-2">
-                  <div className="flex items-center px-2 pt-4 pb-1 text-xs font-medium uppercase tracking-wide text-muted-foreground">
-                    <span className="min-w-0 flex-1">Sources</span>
-                    <span
-                      className="ml-4 text-right transition-[min-width] duration-300 ease-out"
-                      style={{ minWidth: sourcesSettled ? 192 : 156 }}
-                    >
-                      Amount
-                    </span>
-                    <span
-                      className="h-5 shrink-0 transition-[width,margin] duration-300 ease-out"
-                      style={{
-                        marginLeft: sourcesSettled ? 0 : 16,
-                        width: sourcesSettled ? 0 : 20,
-                      }}
-                      aria-hidden
-                    />
+          <ScrollArea className="h-[min(620px,calc(100vh-290px))] min-h-[360px] lg:h-auto lg:min-h-0 lg:flex-1">
+            <div className="flex min-h-full flex-col gap-1 px-2">
+              {noSwapsNeeded ? (
+                <div className="flex min-h-[320px] flex-1 items-center justify-center px-4 py-10 text-center">
+                  <div className="max-w-[320px]">
+                    <h4 className="font-medium text-base">
+                      Wallet collateral covers this mint
+                    </h4>
+                    <p className="mt-1 text-sm text-muted-foreground font-light">
+                      You can proceed directly to mint without placing swap
+                      orders.
+                    </p>
                   </div>
-
-                  <div className="px-2 py-3">
-                    <div className="flex items-center gap-4">
-                      <TokenLogoWithChain
-                        address={inputToken.address}
-                        symbol={inputToken.symbol}
-                        chain={chainId}
-                        size="xl"
-                      />
-                      <div className="min-w-0 flex-1">
-                        <div className="flex items-center gap-2">
-                          <span className="font-medium text-base">
-                            {inputToken.symbol}
-                          </span>
-                          <span className="text-xs bg-muted px-2 py-0.5 rounded-full">
-                            Always included
-                          </span>
+                </div>
+              ) : (
+                <>
+                  {collateralQuoteRows.length > 0 && (
+                    <div className="-mx-2 mb-2 rounded-[18px] border border-primary/25 bg-primary/5 px-4 py-4">
+                      <div className="flex items-start justify-between gap-4">
+                        <div className="min-w-0">
+                          <div className="text-sm text-muted-foreground font-light">
+                            {inputToken.symbol} swapped into assets
+                          </div>
+                          <div className="mt-1 text-2xl font-light text-primary">
+                            {quoteLoading &&
+                            totalQuotedSellAmount === undefined ? (
+                              <Skeleton className="h-8 w-32" />
+                            ) : totalQuotedSellAmount !== undefined ? (
+                              <>
+                                -
+                                {formatCurrency(
+                                  Number(
+                                    formatUnits(
+                                      totalQuotedSellAmount,
+                                      inputToken.decimals
+                                    )
+                                  )
+                                )}{' '}
+                                {inputToken.symbol}
+                              </>
+                            ) : (
+                              `- ${inputToken.symbol}`
+                            )}
+                          </div>
                         </div>
-                        <span className="text-sm text-muted-foreground font-light">
-                          Wallet{' '}
-                          {formatTokenBalance(
-                            inputBalanceValue,
-                            inputToken.decimals
-                          )}
-                        </span>
-                      </div>
-                      <div className="min-w-[192px] shrink-0 text-right">
-                        <div className="text-base font-medium">
-                          ${formatCurrency(inputUsedUsd)}
-                        </div>
-                        <div className="flex h-5 items-center justify-end text-sm text-muted-foreground font-light">
-                          {hasWalletCollateralUsed
-                            ? 'Remainder + buffer'
-                            : 'Full amount + buffer'}
+                        <div className="max-w-[180px] text-right text-sm text-muted-foreground font-light">
+                          Split across the collateral purchases below
                         </div>
                       </div>
                     </div>
+                  )}
+
+                  <div className="grid grid-cols-[minmax(0,1fr)_156px_24px] items-center gap-4 px-2 pt-4 pb-1 text-xs font-medium uppercase tracking-wide text-muted-foreground">
+                    <span>Asset</span>
+                    <span className="col-span-2 text-right">Split</span>
                   </div>
 
-                  {lockedCollateralTokens.map(renderLockedCollateralSourceRow)}
-                </div>
-              </ScrollArea>
-            </>
-          ) : (
-            <div className="flex min-h-[360px] flex-1 flex-col p-4">
-              <div className="flex flex-1 flex-col items-center justify-center text-center">
-                <div className="mb-4 flex size-12 items-center justify-center text-muted-foreground">
-                  <ListChecks size={24} strokeWidth={1.5} />
-                </div>
-                <h3 className="font-medium text-base">Collateral orders</h3>
-                <p className="mt-1 max-w-[320px] text-sm text-muted-foreground font-light">
-                  Orders will appear here while the mint is ongoing.
-                </p>
-              </div>
+                  {collateralQuoteRows.length > 0
+                    ? collateralQuoteRows.map(renderCollateralQuoteRow)
+                    : [0, 1, 2].map((item) => (
+                        <Skeleton
+                          key={item}
+                          className="h-[76px] rounded-[18px]"
+                        />
+                      ))}
+                </>
+              )}
             </div>
-          )}
+          </ScrollArea>
         </div>
       </div>
     </div>
