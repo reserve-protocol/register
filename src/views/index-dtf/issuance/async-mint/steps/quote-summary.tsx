@@ -15,15 +15,23 @@ import {
 } from '@/state/dtf/atoms'
 import { formatCurrency, formatTokenAmount, safeParseEther } from '@/utils'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
-import { ChevronRight, Pencil, RefreshCw, Settings } from 'lucide-react'
+import { ChevronRight, Info, Pencil, RefreshCw, Settings } from 'lucide-react'
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/components/ui/tooltip'
 import { useEffect, useMemo, useRef } from 'react'
 import { Address, formatUnits } from 'viem'
 import {
   ASYNC_MINT_BUFFER,
   collateralAllocationAtom,
   customCollateralAmountsAtom,
+  effectiveMintSharesAtom,
   folioDetailsAtom,
   inputTokenAtom,
+  iterationStateAtom,
   mintAmountAtom,
   mintQuotesAtom,
   mintStrategyAtom,
@@ -44,6 +52,7 @@ import {
   getRequiredQuoteStatus,
 } from '../utils'
 import { useMintQuotes } from '../hooks/use-mint-quotes'
+import { useQuoteIteration } from '../hooks/use-quote-iteration'
 import { useSubmitOrders } from '../hooks/use-submit-orders'
 
 const formatTokenBalance = (value: bigint, decimals: number) =>
@@ -66,8 +75,14 @@ const QuoteSummary = () => {
   const balances = useAtomValue(balancesAtom)
 
   const allocation = useAtomValue(collateralAllocationAtom)
-  const { refetch, cancel, isFetching } = useMintQuotes()
+  const { cancel, isFetching } = useMintQuotes()
+  const { runIteration, cancel: cancelIteration, state: iterationState } =
+    useQuoteIteration()
+  const effectiveShares = useAtomValue(effectiveMintSharesAtom)
   const { submit, isPending } = useSubmitOrders(recoveryChoice === 'top-up')
+
+  // Combined refetch: orchestrator handles seed + iteration.
+  const refetch = runIteration
 
   // WHY: In multi-token flow, all tokens may come from wallet (no swaps needed)
   const allocationLoaded = Object.keys(allocation).length > 0
@@ -232,9 +247,15 @@ const QuoteSummary = () => {
     ]
   )
   const missingQuoteCount = missingQuoteDetails.length
+  // The orchestrator (useQuoteIteration) calls getCowswapQuote directly and
+  // bypasses useMintQuotes, so `isFetching` stays false during iteration.
+  // We add `iterationState.status === 'iterating'` so the UI shows loading
+  // states for every round, including round 0.
   const quoteLoading = noSwapsNeeded
     ? false
-    : isFetching || debouncedAmount !== mintAmount
+    : isFetching ||
+      iterationState.status === 'iterating' ||
+      debouncedAmount !== mintAmount
   const exceedsBalance = parsedAmount > maxMintAmount
   const isValidAmount = parsedAmount >= 1
   const isTotalUsdInputMode = strategy !== 'single'
@@ -289,23 +310,83 @@ const QuoteSummary = () => {
       : undefined
   }, [collateralQuoteRows])
 
+  // Sum of ACTUAL sellAmounts (only successful quotes). Used to compute
+  // realized aggregate price impact + utilization vs target budget.
+  const actualQuotedSellAmount = useMemo(() => {
+    if (!allRequiredQuotesReady || collateralQuoteRows.length === 0)
+      return undefined
+    let total = 0n
+    for (const row of collateralQuoteRows) {
+      if (row.quotedSellAmount === undefined) return undefined
+      total += row.quotedSellAmount
+    }
+    return total
+  }, [allRequiredQuotesReady, collateralQuoteRows])
+
+  const targetBudgetUsd = parsedAmount * (1 - ASYNC_MINT_BUFFER)
+  const realizedCostUsd =
+    actualQuotedSellAmount !== undefined
+      ? Number(formatUnits(actualQuotedSellAmount, inputToken.decimals))
+      : undefined
+
+  const showRealMode =
+    allRequiredQuotesReady &&
+    !quoteLoading &&
+    realizedCostUsd !== undefined &&
+    iterationState.status !== 'iterating'
+
+  // In real mode: derive shares from the orchestrator's converged result.
+  // In estimated mode: oracle-based seed (same as configure-mint).
+  const realDtfAmount =
+    showRealMode && effectiveShares > 0n
+      ? Number(formatUnits(effectiveShares, 18))
+      : dtfAmount
+  const realDtfValue = realDtfAmount * (dtfPrice ?? 0)
+
+  const displayDtfAmount = showRealMode ? realDtfAmount : dtfAmount
+  const displayDtfValue = showRealMode ? realDtfValue : dtfValue
+  const dtfDisplayPrefix = showRealMode ? '' : '~'
+
+  // Realized aggregate price impact, signed from the user's perspective:
+  //   positive = paid less USDC than reference prices predicted (user "profit")
+  //   negative = paid more USDC than predicted (impact ate into the buffer)
+  // Computed against the buffer-adjusted target, not the raw budget.
+  const realizedImpactPct =
+    showRealMode && targetBudgetUsd > 0 && realizedCostUsd !== undefined
+      ? ((targetBudgetUsd - realizedCostUsd) / targetBudgetUsd) * 100
+      : 0
+  // Utilization: how much of the user's TOTAL budget got spent. The remaining
+  // % is the buffer (2%) plus any under-utilization from the iteration.
+  const utilizationPct =
+    showRealMode && parsedAmount > 0 && realizedCostUsd !== undefined
+      ? (realizedCostUsd / parsedAmount) * 100
+      : 0
+
   const renderCollateralQuoteRow = (
     item: (typeof collateralQuoteRows)[number]
   ) => {
     const quoteReady = item.quote?.success === true
     const quoteFailed = item.quote?.success === false
-    const showLoading = quoteLoading && !quoteReady && !quoteFailed
+    // While loading, always show skeleton — even if a stale quote from a
+    // previous iteration round is still in the atom. Avoids the UI looking
+    // "done" mid-iteration.
+    const showLoading = quoteLoading
     const sellAmount = item.quotedSellAmount ?? item.estimatedSellAmount
     const buyAmount = item.quotedBuyAmount ?? item.requiredBuyAmount
+    const tokenImpact = iterationState.perTokenImpacts[item.address]
+    const showImpact = !showLoading && quoteReady && tokenImpact !== undefined
 
     return (
       <div
         key={item.address}
         className={cn(
           '-mx-2 rounded-[18px] border px-4 py-3 transition-colors',
-          quoteReady && 'border-primary/35 bg-primary/5',
-          quoteFailed && 'border-destructive/25 bg-destructive/5',
-          !quoteReady && !quoteFailed && 'border-border/70 bg-background'
+          !showLoading && quoteReady && 'border-primary/35 bg-primary/5',
+          !showLoading &&
+            quoteFailed &&
+            'border-destructive/25 bg-destructive/5',
+          (showLoading || (!quoteReady && !quoteFailed)) &&
+            'border-border/70 bg-background'
         )}
       >
         <div className="flex items-center gap-4">
@@ -320,14 +401,16 @@ const QuoteSummary = () => {
             <div
               className={cn(
                 'text-sm text-muted-foreground font-light truncate',
-                quoteFailed && 'text-destructive/70'
+                !showLoading && quoteFailed && 'text-destructive/70'
               )}
             >
-              {quoteReady
-                ? `Quote ready · Buying ${item.symbol} with ${inputToken.symbol}`
-                : item.quote?.success === false
-                  ? item.quote.error || 'Quote unavailable'
-                  : `Fetching ${item.symbol} quote`}
+              {showLoading
+                ? `Fetching ${item.symbol} quote`
+                : quoteReady
+                  ? `Quote ready · Buying ${item.symbol} with ${inputToken.symbol}`
+                  : item.quote?.success === false
+                    ? item.quote.error || 'Quote unavailable'
+                    : `Fetching ${item.symbol} quote`}
             </div>
           </div>
           <div className="min-w-[156px] text-right">
@@ -355,6 +438,19 @@ const QuoteSummary = () => {
                 </>
               )}
             </div>
+            {showImpact && (
+              <div
+                className={cn(
+                  'text-xs font-light mt-0.5',
+                  -tokenImpact < -0.05
+                    ? 'text-destructive'
+                    : 'text-muted-foreground'
+                )}
+              >
+                Price impact: {-tokenImpact > 0 ? '+' : ''}
+                {(-tokenImpact * 100).toFixed(2)}%
+              </div>
+            )}
           </div>
           <div className="h-6 w-6 shrink-0" />
         </div>
@@ -387,6 +483,7 @@ const QuoteSummary = () => {
 
   const handleEdit = () => {
     cancel()
+    cancelIteration()
     setQuotes({})
     setQuotesTimestamp(undefined)
     setStep('configure')
@@ -580,6 +677,48 @@ const QuoteSummary = () => {
               </div>
             </div>
 
+            {iterationState.status === 'iterating' &&
+              iterationState.round > 0 && (
+                <div className="mb-3 rounded-xl border border-primary/25 bg-primary/5 px-4 py-2 text-sm flex items-center justify-between gap-3">
+                  <span className="font-medium text-primary">
+                    Optimizing quotes (round {iterationState.round + 1}/
+                    {iterationState.maxRounds})…
+                  </span>
+                  {iterationState.history.length > 0 && parsedAmount > 0 && (
+                    <span className="text-muted-foreground font-light">
+                      Last round: {(
+                        (iterationState.history[
+                          iterationState.history.length - 1
+                        ].costUsd /
+                          parsedAmount) *
+                        100
+                      ).toFixed(1)}
+                      % of budget
+                    </span>
+                  )}
+                </div>
+              )}
+            {iterationState.status === 'capped' && (
+              <div className="mb-3 rounded-xl border border-yellow-200 dark:border-yellow-800 bg-yellow-50 dark:bg-yellow-900/20 px-4 py-2 text-sm">
+                Best effort: using {utilizationPct.toFixed(1)}% of your budget
+                after {iterationState.maxRounds} optimization rounds.
+              </div>
+            )}
+            {iterationState.status === 'over_buffer' && (
+              <div className="mb-3 rounded-xl border border-yellow-200 dark:border-yellow-800 bg-yellow-50 dark:bg-yellow-900/20 px-4 py-2 text-sm">
+                Mint will use {utilizationPct.toFixed(1)}% of your input,
+                exceeding the{' '}
+                {((1 - ASYNC_MINT_BUFFER) * 100).toFixed(0)}% buffer target.
+                It will still go through, but the safety margin is consumed.
+              </div>
+            )}
+            {iterationState.status === 'infeasible' && (
+              <div className="mb-3 rounded-xl border border-destructive/25 bg-destructive/10 text-destructive px-4 py-2 text-sm">
+                {iterationState.error ??
+                  'Cost exceeds your total budget. Lower the amount or try again.'}
+              </div>
+            )}
+
             <div className="rounded-xl border border-border/70 bg-transparent px-4 py-3">
               <div className="text-sm text-muted-foreground mb-3">
                 Quoted receive
@@ -590,14 +729,15 @@ const QuoteSummary = () => {
                     <Skeleton className="w-[120px] h-8" />
                   ) : (
                     <span className="text-[32px] font-light text-primary leading-8">
-                      {formatTokenAmount(dtfAmount)}
+                      {dtfDisplayPrefix}
+                      {formatTokenAmount(displayDtfAmount)}
                     </span>
                   )}
                   {quoteLoading ? (
                     <Skeleton className="w-[80px] h-5 mt-2" />
                   ) : (
                     <div className="text-sm text-muted-foreground font-light mt-2 whitespace-nowrap">
-                      ${formatCurrency(dtfValue)} (-{spreadPct.toFixed(2)}%)
+                      {dtfDisplayPrefix}${formatCurrency(displayDtfValue)}
                     </div>
                   )}
                 </div>
@@ -663,27 +803,89 @@ const QuoteSummary = () => {
             )}
 
             <div className="mt-5 flex flex-col gap-3 px-4 text-sm">
-              <div className="flex items-center justify-between">
-                <span className="text-muted-foreground">Price impact</span>
-                <span
-                  className={cn(
-                    'font-medium',
-                    spreadPct > 2 ? 'text-destructive' : 'text-foreground'
+              <TooltipProvider delayDuration={200}>
+                <div className="flex items-center justify-between">
+                  <span className="text-muted-foreground flex items-center gap-1">
+                    Price impact
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <Info
+                          size={14}
+                          className="cursor-help text-muted-foreground/70"
+                        />
+                      </TooltipTrigger>
+                      <TooltipContent className="max-w-[280px]">
+                        The deviation between the {inputToken.symbol} each
+                        swap actually costs (CoWSwap quote) and what the
+                        basket would cost at reference prices (Reserve API).
+                        Negative means you're paying more than expected;
+                        positive means you got a better price. We apply a{' '}
+                        {(ASYNC_MINT_BUFFER * 100).toFixed(0)}% buffer on
+                        your input to absorb negative impact.
+                      </TooltipContent>
+                    </Tooltip>
+                  </span>
+                  {quoteLoading ? (
+                    <Skeleton className="h-4 w-16" />
+                  ) : showRealMode ? (
+                    <span
+                      className={cn(
+                        'font-medium',
+                        realizedImpactPct < -3
+                          ? 'text-destructive'
+                          : 'text-foreground'
+                      )}
+                    >
+                      {realizedImpactPct > 0 ? '+' : ''}
+                      {realizedImpactPct.toFixed(2)}%
+                    </span>
+                  ) : (
+                    <span className="font-medium text-muted-foreground">-</span>
                   )}
-                >
-                  -{spreadPct.toFixed(2)}%
-                </span>
-              </div>
-              <div className="flex items-center justify-between">
-                <span className="text-muted-foreground">Max slippage</span>
-                <span className="font-medium">
-                  {(Number(slippage) / 100).toFixed(2)}%
-                </span>
-              </div>
-              <div className="flex items-center justify-between">
-                <span className="text-muted-foreground">Minting fee</span>
-                <span className="font-medium">{mintFee}%</span>
-              </div>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-muted-foreground flex items-center gap-1">
+                    Budget used
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <Info
+                          size={14}
+                          className="cursor-help text-muted-foreground/70"
+                        />
+                      </TooltipTrigger>
+                      <TooltipContent className="max-w-[280px]">
+                        {inputToken.symbol} actually spent on swaps as a
+                        share of your total input. We reserve a{' '}
+                        {(ASYNC_MINT_BUFFER * 100).toFixed(0)}% buffer to
+                        cover potential price impact and slippage, so the
+                        maximum target is{' '}
+                        {((1 - ASYNC_MINT_BUFFER) * 100).toFixed(0)}%.
+                        Unused budget stays in your wallet.
+                      </TooltipContent>
+                    </Tooltip>
+                  </span>
+                  {quoteLoading ? (
+                    <Skeleton className="h-4 w-32" />
+                  ) : showRealMode && realizedCostUsd !== undefined ? (
+                    <span className="font-medium">
+                      {formatCurrency(realizedCostUsd)} {inputToken.symbol} (
+                      {utilizationPct.toFixed(2)}%)
+                    </span>
+                  ) : (
+                    <span className="font-medium text-muted-foreground">-</span>
+                  )}
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-muted-foreground">Max slippage</span>
+                  <span className="font-medium">
+                    {(Number(slippage) / 100).toFixed(2)}%
+                  </span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-muted-foreground">Minting fee</span>
+                  <span className="font-medium">{mintFee}%</span>
+                </div>
+              </TooltipProvider>
             </div>
 
             <div className="mt-5 lg:mt-auto">
@@ -694,6 +896,8 @@ const QuoteSummary = () => {
                   disabled={
                     isPending ||
                     quoteLoading ||
+                    iterationState.status === 'iterating' ||
+                    iterationState.status === 'infeasible' ||
                     !isValidAmount ||
                     exceedsBalance ||
                     !allRequiredQuotesReady ||
@@ -755,12 +959,10 @@ const QuoteSummary = () => {
                             {inputToken.symbol} swapped into assets
                           </div>
                           <div className="mt-1 text-2xl font-light text-primary">
-                            {quoteLoading &&
-                            totalQuotedSellAmount === undefined ? (
+                            {quoteLoading ? (
                               <Skeleton className="h-8 w-32" />
                             ) : totalQuotedSellAmount !== undefined ? (
                               <>
-                                -
                                 {formatCurrency(
                                   Number(
                                     formatUnits(

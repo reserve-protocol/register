@@ -1177,12 +1177,21 @@ const ConfigureMint = () => {
                     </div>
                     <div className="flex items-start justify-between gap-4">
                       <div className="min-w-0">
-                        <span className="text-[32px] font-light text-primary leading-8">
-                          {formatTokenAmount(dtfAmount)}
-                        </span>
+                        <TooltipProvider delayDuration={200}>
+                          <Tooltip>
+                            <TooltipTrigger asChild>
+                              <span className="text-[32px] font-light text-primary leading-8 cursor-help">
+                                ~{formatTokenAmount(dtfAmount)}
+                              </span>
+                            </TooltipTrigger>
+                            <TooltipContent>
+                              Estimated based on DTF price. Final amount
+                              adjusts after fetching swap quotes.
+                            </TooltipContent>
+                          </Tooltip>
+                        </TooltipProvider>
                         <div className="text-sm text-muted-foreground font-light mt-2 whitespace-nowrap">
-                          ${formatCurrency(dtfValue)} (-
-                          {spreadPct.toFixed(2)}%)
+                          ~${formatCurrency(dtfValue)}
                         </div>
                       </div>
                       <div className="flex shrink-0 flex-col items-end">
@@ -1202,19 +1211,10 @@ const ConfigureMint = () => {
                   </div>
 
                   <div className="flex flex-col gap-3 px-4 text-sm">
-                    <div className="flex items-center justify-between">
-                      <span className="text-muted-foreground">
-                        Price impact
-                      </span>
-                      <span
-                        className={cn(
-                          'font-medium',
-                          spreadPct > 2 ? 'text-destructive' : 'text-foreground'
-                        )}
-                      >
-                        -{spreadPct.toFixed(2)}%
-                      </span>
-                    </div>
+                    {/* Price impact intentionally omitted here — at the
+                        configure step we don't have CoWSwap quotes yet, so any
+                        impact number would be misleading. It's shown for real
+                        in quote-summary after the iteration runs. */}
                     <div className="flex items-center justify-between">
                       <span className="text-muted-foreground">
                         Max slippage
@@ -1233,7 +1233,7 @@ const ConfigureMint = () => {
                     <div className="rounded-2xl bg-muted/60 p-3 text-sm text-muted-foreground font-light flex gap-2">
                       <Info size={16} className="mt-0.5 shrink-0" />
                       <span>
-                        A buffer only applies to the {inputToken.symbol}
+                        A buffer only applies to the {inputToken.symbol}{' '}
                         portion. Up to ${formatCurrency(bufferReturn)} may be
                         returned.
                       </span>

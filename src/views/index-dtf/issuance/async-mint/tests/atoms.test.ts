@@ -1,13 +1,19 @@
 import { createStore } from 'jotai'
 import { describe, it, expect } from 'vitest'
 import {
+  INITIAL_ITERATION_STATE,
+  activeMintSharesAtom,
   allOrdersFulfilledAtom,
+  collateralAllocationAtom,
   currentOrdersAtom,
+  effectiveMintSharesAtom,
   failedOrdersAtom,
   folioDetailsAtom,
+  iterationStateAtom,
   leftoverCollateralAtom,
   mintAmountAtom,
   mintQuotesAtom,
+  mintSharesAtom,
   mintStrategyAtom,
   mintTxHashAtom,
   orderIdsAtom,
@@ -17,6 +23,7 @@ import {
   pendingOrdersAtom,
   priceMovedAtom,
   recoveryChoiceAtom,
+  resetIterationAtom,
   resetWizardAtom,
   selectedCollateralsAtom,
   tokenPricesAtom,
@@ -227,5 +234,80 @@ describe('Wizard Atoms', () => {
       makeOrder('2', OrderStatus.CANCELLED),
     ])
     expect(store.get(pendingOrdersAtom)).toHaveLength(0)
+  })
+})
+
+describe('Iteration override atoms', () => {
+  it('effectiveMintSharesAtom defaults to 0n', () => {
+    const store = createStore()
+    expect(store.get(effectiveMintSharesAtom)).toBe(0n)
+  })
+
+  it('activeMintSharesAtom falls back to seed (mintSharesAtom) when override is 0n', () => {
+    const store = createStore()
+    // No mintAmount, no price → mintSharesAtom returns 0n → activeMintSharesAtom returns 0n
+    expect(store.get(mintSharesAtom)).toBe(0n)
+    expect(store.get(activeMintSharesAtom)).toBe(0n)
+  })
+
+  it('activeMintSharesAtom returns override when set, regardless of seed', () => {
+    const store = createStore()
+    const override = 5_000000000000000000n // 5e18
+    store.set(effectiveMintSharesAtom, override)
+    // Seed is 0n (no mintAmount), but override is set
+    expect(store.get(mintSharesAtom)).toBe(0n)
+    expect(store.get(activeMintSharesAtom)).toBe(override)
+  })
+
+  it('collateralAllocationAtom derives fromSwap based on activeMintSharesAtom override', () => {
+    const store = createStore()
+    const TOKEN = '0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa' as Address
+    store.set(folioDetailsAtom, {
+      shares: 10_000000000000000000n, // 10
+      assets: [TOKEN],
+      mintValues: [2_000000000000000000n], // 2 tokens for 10 shares = 0.2 per share
+    })
+
+    // Override to 5 shares → required = mintValues * 5/10 = 1 token
+    store.set(effectiveMintSharesAtom, 5_000000000000000000n)
+    const small = store.get(collateralAllocationAtom)
+    expect(small[TOKEN]?.fromSwap).toBe(1_000000000000000000n)
+
+    // Override to 1 share → required = 0.2 token
+    store.set(effectiveMintSharesAtom, 1_000000000000000000n)
+    const tiny = store.get(collateralAllocationAtom)
+    expect(tiny[TOKEN]?.fromSwap).toBe(200000000000000000n)
+  })
+
+  it('resetIterationAtom clears override and iteration state without touching mintAmount', () => {
+    const store = createStore()
+    store.set(mintAmountAtom, '500')
+    store.set(effectiveMintSharesAtom, 123n)
+    store.set(iterationStateAtom, {
+      ...INITIAL_ITERATION_STATE,
+      status: 'iterating',
+      round: 2,
+    })
+
+    store.set(resetIterationAtom)
+
+    expect(store.get(effectiveMintSharesAtom)).toBe(0n)
+    expect(store.get(iterationStateAtom)).toEqual(INITIAL_ITERATION_STATE)
+    expect(store.get(mintAmountAtom)).toBe('500') // preserved
+  })
+
+  it('resetWizardAtom also clears iteration override and state', () => {
+    const store = createStore()
+    store.set(effectiveMintSharesAtom, 999n)
+    store.set(iterationStateAtom, {
+      ...INITIAL_ITERATION_STATE,
+      status: 'converged',
+      round: 3,
+    })
+
+    store.set(resetWizardAtom)
+
+    expect(store.get(effectiveMintSharesAtom)).toBe(0n)
+    expect(store.get(iterationStateAtom)).toEqual(INITIAL_ITERATION_STATE)
   })
 })

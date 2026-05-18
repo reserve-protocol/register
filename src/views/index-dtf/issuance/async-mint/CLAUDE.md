@@ -39,8 +39,10 @@ gnosis-check → operation-select → collateral-decision → [token-selection] 
 
 ### Amount Calculation
 - `mintAmountAtom` → dollar string the user enters
-- `mintSharesAtom` → derived: converts dollars to DTF shares using `indexDTFPriceAtom`
-- `collateralAllocationAtom` → derived: calls `calculateCollateralAllocation()` to split each basket token into fromWallet vs fromSwap
+- `mintSharesAtom` → derived: oracle-based **seed** estimate. `(dollars / dtfPrice) · (1 − ASYNC_MINT_BUFFER)`. Used as the initial guess for iteration.
+- `effectiveMintSharesAtom` → primitive bigint, written by the iteration orchestrator. 0n means "no override".
+- `activeMintSharesAtom` → derived: returns `effectiveMintSharesAtom` if > 0n, otherwise the seed `mintSharesAtom`. This is what `collateralAllocationAtom` consumes.
+- `collateralAllocationAtom` → derived: calls `calculateCollateralAllocation()` to split each basket token into fromWallet vs fromSwap. Reads from `activeMintSharesAtom` so it tracks iteration progress.
 
 ### Max Mint Amount
 - `calculateMaxMintAmount()` in utils.ts computes the upper bound a user can mint
@@ -68,13 +70,52 @@ The code implicitly assumes input token price ≈ $1 (stablecoin). `inputTokenBa
 
 ## Pure Functions (utils.ts)
 
-Both are fully tested in `tests/collateral-allocation.test.ts`.
+Tested in `tests/collateral-allocation.test.ts` and `tests/quote-iteration.test.ts`.
 
 ### calculateMaxMintAmount
 Upper-bound estimate of total mintable USD. Sums input token balance + selected collateral USD value.
 
 ### calculateCollateralAllocation
 Per-token breakdown: how much from wallet vs how much needs swapping. Caps wallet usage at DTF weight (the `required` amount from `folioDetails.mintValues`).
+
+### Quote-iteration helpers (`measureImpactPerToken`, `predictShrinkageTarget`, `applyGreedyClamp`, `detectConvergence`, `sumQuotedCostBaseUnits`)
+Used by the orchestrator (`use-quote-iteration.ts`) to converge on a shares target that fits inside the user's budget after CoWSwap price impact. See "Quote Iteration" below.
+
+## Quote Iteration
+
+Naive single-shot quoting fails at large notional because CoWSwap price impact is ignored. The iteration loop measures realized per-token impact against Reserve API reference prices and adjusts the shares target until the total `sellAmount` fits inside `mintAmount · (1 − ASYNC_MINT_BUFFER)`.
+
+### Algorithm
+
+1. Seed: `S₀ = mintShares` (oracle-based estimate).
+2. Quote each basket token at the current `S`. Sum sellAmounts → `cost`.
+3. Per-token impact: `impactᵢ = (sellUsdᵢ − Sᵢ · wᵢ · referencePriceᵢ) / (Sᵢ · wᵢ · referencePriceᵢ)`.
+4. Stop if `cost ≤ target AND utilization ≥ 98%`. Or if the marginal share change is < 0.5%.
+5. Otherwise predict the next `S` via a quadratic model `cost(r) = r · K_lin + r² · K_quad / S_prev` (closed form), clamp by greedy `S · target/cost` (always feasible thanks to convexity), and re-quote.
+6. Cap at 3 rounds. After cap: use best feasible round (`status = 'capped'` if utilization < 98%, otherwise `converged`). If no feasible round ever existed: `infeasible`.
+
+### State (`iterationStateAtom`)
+
+```
+{ status, round, maxRounds, history, bestFeasible, perTokenImpacts, error? }
+```
+
+Statuses: `idle | iterating | converged | capped | infeasible | failed`.
+
+### Where it lives
+
+| File | Responsibility |
+|---|---|
+| `hooks/use-quote-iteration.ts` | Orchestrator. State machine, abort handling, commits final quotes. |
+| `hooks/use-mint-quotes.ts` | Single-round primitive used by processing flows. Auto-commits via useEffect for backwards compat. |
+| `utils.ts` | Pure functions for impact measurement + shrinkage prediction. |
+| `steps/quote-summary.tsx` | Triggers `runIteration()`, shows progress banner, displays realized impact + utilization in real mode, falls back to oracle estimate (`~` prefix) in estimated mode. |
+| `steps/configure-mint.tsx` | Shows the seed estimate with `~` prefix to set expectation that final shares may shrink after quotes. |
+
+### Reset behavior
+
+- `mintAmountAtom` change → orchestrator's `useEffect` calls `resetIteration()` and aborts the in-flight iteration.
+- `resetWizardAtom` clears `effectiveMintSharesAtom` and `iterationStateAtom` along with everything else.
 
 ## Hooks
 

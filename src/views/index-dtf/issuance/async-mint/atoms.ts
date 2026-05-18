@@ -16,7 +16,10 @@ import {
 } from './types'
 
 // ─── Constants ───────────────────────────────────────────────────────
-export const ASYNC_MINT_BUFFER = 0.01
+export const ASYNC_MINT_BUFFER = 0.02
+export const ASYNC_MINT_MAX_ITERATIONS = 3
+export const ASYNC_MINT_CONVERGENCE_UTILIZATION = 0.98
+export const ASYNC_MINT_MARGINAL_THRESHOLD = 0.005
 
 // Input token per chain: USDC for Mainnet/Base, USDT for BSC
 export const MINT_INPUT_TOKENS: Record<number, Token> = {
@@ -97,12 +100,24 @@ export const mintSharesAtom = atom<bigint>((get) => {
   return safeParseEther(shares.toFixed(18))
 })
 
+// ─── Iteration override ─────────────────────────────────────────────
+// The quote-iteration orchestrator writes here to drive `activeMintSharesAtom`
+// during recursive re-quoting. 0n means "no override" — fall back to seed.
+export const effectiveMintSharesAtom = atom<bigint>(0n)
+
+// What the allocation and quote pipeline actually consume. Falls back to the
+// oracle-based seed when no iteration has overridden it.
+export const activeMintSharesAtom = atom<bigint>((get) => {
+  const override = get(effectiveMintSharesAtom)
+  return override > 0n ? override : get(mintSharesAtom)
+})
+
 // ─── Collateral allocation (derived — calls the tested pure function) ─
 export const collateralAllocationAtom = atom<
   Record<Address, CollateralAllocation>
 >((get) => {
   const folioDetails = get(folioDetailsAtom)
-  const mintShares = get(mintSharesAtom)
+  const mintShares = get(activeMintSharesAtom)
   if (!folioDetails || mintShares === 0n) return {}
 
   const basket = get(indexDTFBasketAtom)
@@ -203,6 +218,61 @@ export const priceMovedAtom = atom<boolean>((get) => {
   return failed.length > 0 && pending.length === 0
 })
 
+// ─── Iteration state ─────────────────────────────────────────────────
+export type IterationStatus =
+  | 'idle'
+  | 'iterating'
+  | 'converged'
+  | 'capped'
+  | 'over_buffer'
+  | 'infeasible'
+  | 'failed'
+
+export type IterationRound = {
+  round: number
+  shares: bigint
+  costBaseUnits: bigint
+  costUsd: number
+  utilization: number
+  feasible: boolean
+  allSucceeded: boolean
+  impacts: Record<Address, number>
+}
+
+export type FeasibleSnapshot = {
+  shares: bigint
+  costBaseUnits: bigint
+  costUsd: number
+  utilization: number
+  quotes: Record<Address, QuoteResult>
+}
+
+export type IterationState = {
+  status: IterationStatus
+  round: number
+  maxRounds: number
+  history: IterationRound[]
+  bestFeasible: FeasibleSnapshot | null
+  perTokenImpacts: Record<Address, number>
+  error?: string
+}
+
+export const INITIAL_ITERATION_STATE: IterationState = {
+  status: 'idle',
+  round: 0,
+  maxRounds: ASYNC_MINT_MAX_ITERATIONS,
+  history: [],
+  bestFeasible: null,
+  perTokenImpacts: {},
+}
+
+export const iterationStateAtom = atom<IterationState>(INITIAL_ITERATION_STATE)
+
+export const resetIterationAtom = atom(null, (_, set) => {
+  set(effectiveMintSharesAtom, 0n)
+  set(iterationStateAtom, INITIAL_ITERATION_STATE)
+})
+
 // ─── Reset action atom ───────────────────────────────────────────────
 // NOTE: collateralAllocationAtom is derived — resets automatically when dependencies reset
 export const resetWizardAtom = atom(null, (_, set) => {
@@ -226,4 +296,6 @@ export const resetWizardAtom = atom(null, (_, set) => {
   set(walletBalancesAtom, {})
   set(tokenPricesAtom, {})
   set(folioDetailsAtom, null)
+  set(effectiveMintSharesAtom, 0n)
+  set(iterationStateAtom, INITIAL_ITERATION_STATE)
 })

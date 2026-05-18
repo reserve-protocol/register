@@ -1,7 +1,7 @@
 import { chainIdAtom, walletAtom } from '@/state/atoms'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
-import { useAtom, useAtomValue, useSetAtom } from 'jotai'
-import { useEffect } from 'react'
+import { useAtomValue, useSetAtom } from 'jotai'
+import { useCallback, useEffect } from 'react'
 import { Address } from 'viem'
 import { getCowswapQuote } from '../../async-swaps/hooks/useQuote'
 import { useGlobalProtocolKit } from '../../async-swaps/providers/GlobalProtocolKitProvider'
@@ -20,7 +20,8 @@ export function useMintQuotes() {
   const inputToken = useAtomValue(inputTokenAtom)
   const allocation = useAtomValue(collateralAllocationAtom)
   const mintAmount = useAtomValue(mintAmountAtom)
-  const [quotes, setQuotes] = useAtom(mintQuotesAtom)
+  const quotes = useAtomValue(mintQuotesAtom)
+  const setQuotes = useSetAtom(mintQuotesAtom)
   const setQuotesTimestamp = useSetAtom(quotesTimestampAtom)
   const { orderBookApi } = useGlobalProtocolKit()
   const queryClient = useQueryClient()
@@ -80,16 +81,40 @@ export function useMintQuotes() {
     enabled: false, // Manual trigger via refetch
   })
 
+  // Auto-commit query data to global state. Backwards compatibility for the
+  // `processing` / `processing-v2` flows that call refetch() and expect the
+  // quotes atom + timestamp to update as a side effect. The iteration
+  // orchestrator (useQuoteIteration) also relies on this — it doesn't need to
+  // call writeQuotes explicitly during normal convergence.
   useEffect(() => {
     if (!query.data) return
-
     setQuotes(query.data)
     setQuotesTimestamp(Date.now())
   }, [query.data, setQuotes, setQuotesTimestamp])
 
+  // Imperative refetch that returns the quote map directly. The orchestrator
+  // calls this between rounds and inspects the result before deciding whether
+  // to continue iterating or stop.
+  const refetch = useCallback(async (): Promise<Record<Address, QuoteResult>> => {
+    const result = await query.refetch()
+    return result.data ?? {}
+  }, [query])
+
+  // Manually commit a quote set + timestamp. Used by the orchestrator to
+  // restore a previous feasible round when the current round fails or the
+  // iteration cap is hit without convergence.
+  const writeQuotes = useCallback(
+    (next: Record<Address, QuoteResult>) => {
+      setQuotes(next)
+      setQuotesTimestamp(Date.now())
+    },
+    [setQuotes, setQuotesTimestamp]
+  )
+
   return {
     quotes,
-    refetch: query.refetch,
+    refetch,
+    writeQuotes,
     cancel: () =>
       queryClient.cancelQueries({
         queryKey: ['async-mint/quotes'],
