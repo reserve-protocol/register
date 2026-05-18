@@ -21,6 +21,7 @@ import FeesStats from './components/fees-stats'
 import YieldIndexAbout from './components/yield-index/yield-index-about'
 import YieldIndexAssetExposure from './components/yield-index/yield-index-asset-exposure'
 import YieldIndexComposition from './components/yield-index/yield-index-composition'
+import useIsComplianceRestricted from '@/hooks/use-is-compliance-restricted'
 
 const AboutSection = () => {
   const isYieldIndexDTF = useAtomValue(isYieldIndexDTFAtom)
@@ -56,6 +57,7 @@ const Content = () => {
   const indexDTF = useAtomValue(indexDTFAtom)
   const quoteSource = useAtomValue(indexDTFQuoteSourceAtom)
   const isDeprecated = isInactiveDTF(useAtomValue(indexDTFStatusAtom))
+  const isRestricted = useIsComplianceRestricted()
   useScrollToHash()
 
   return (
@@ -77,6 +79,7 @@ const Content = () => {
             zapperApiUrl={ZAPPER_API}
             defaultSource={quoteSource}
             sellOnly={isDeprecated}
+            disabled={isRestricted}
           />
         )}
       </div>

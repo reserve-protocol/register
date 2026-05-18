@@ -10,6 +10,7 @@ import ZapperWrapper from '../components/zapper/zapper-wrapper'
 import useTrackIndexDTFPage, {
   useTrackIndexDTFClick,
 } from '../hooks/useTrackIndexDTFPage'
+import useIsComplianceRestricted from '@/hooks/use-is-compliance-restricted'
 
 const DTF_DISABLED_FOR_ZAP = [] as string[]
 export const indexDTFQuoteSourceAtom = atom<ZapperProps['defaultSource']>(
@@ -31,6 +32,7 @@ const IndexDTFIssuance = () => {
   const isDeprecated = isInactiveDTF(useAtomValue(indexDTFStatusAtom))
   const { currentTab } = useZapperModal()
   const { trackClick } = useTrackIndexDTFClick('overview', 'mint')
+  const isRestricted = useIsComplianceRestricted()
 
   if (!indexDTF) return null
 
@@ -49,6 +51,7 @@ const IndexDTFIssuance = () => {
               debug={devMode}
               defaultSource={quoteSource}
               sellOnly={isDeprecated}
+              disabled={isRestricted}
             />
           </div>
         </div>

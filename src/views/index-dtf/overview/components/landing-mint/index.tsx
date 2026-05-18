@@ -15,6 +15,7 @@ import { useAtomValue } from 'jotai'
 import { ArrowDown, ArrowLeftRight } from 'lucide-react'
 import React, { useEffect, useState } from 'react'
 import DTFBalance from './dtf-balance'
+import useIsComplianceRestricted from '@/hooks/use-is-compliance-restricted'
 
 const TokenInfo = () => {
   const dtf = useAtomValue(indexDTFAtom)
@@ -65,6 +66,7 @@ const MintBox = () => {
   const { open, setTab } = useZapperModal()
   const status = useAtomValue(indexDTFStatusAtom)
   const isDeprecated = isInactiveDTF(status)
+  const isRestricted = useIsComplianceRestricted()
 
   return (
     <div className="rounded-3xl bg-card p-2">
@@ -72,7 +74,7 @@ const MintBox = () => {
       <div className="flex flex-col gap-2">
         <Button
           className="rounded-xl h-12"
-          disabled={isDeprecated}
+          disabled={isDeprecated || isRestricted}
           onClick={() => {
             trackClick('buy')
             setTab('buy')
@@ -83,6 +85,7 @@ const MintBox = () => {
         </Button>
         <Button
           className="rounded-xl h-12"
+          disabled={isRestricted}
           variant="outline"
           onClick={() => {
             trackClick('sell')
@@ -130,7 +133,7 @@ const CoverImage = () => {
           if (brand?.dtf?.cover) {
             await tryLoadImage(brand.dtf.cover)
           }
-        } catch (error) {}
+        } catch (error) { }
         setIsLoading(false)
       }
 

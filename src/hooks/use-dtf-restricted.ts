@@ -16,7 +16,7 @@ type DTFRestrictedResult = {
 }
 
 const RESTRICTED_ASSETS = new Set([
-  '0x57f5e098cad7a3d1eed53991d4d66c45c9af7812',
+  '0x71E2400CF1Cb83204f33794eD326636A71a9AAfC'.toLowerCase(),
 ])
 
 const useDTFRestricted = () => {
