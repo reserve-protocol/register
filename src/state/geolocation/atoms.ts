@@ -1,11 +1,11 @@
 import { atom } from 'jotai'
+import { rTokenCollateralStatusAtom } from 'state/atoms'
 import { atomWithLoadable } from 'utils/atoms/utils'
 import {
   BLOCKED_COLLATERALS,
   BLOCKED_COLLATERALS_COUNTRIES,
   BLOCKED_COUNTRIES,
 } from '.'
-import { rTokenCollateralStatusAtom, rTokenStateAtom } from 'state/atoms'
 
 const cloudflareFallbackURLs = [
   'https://one.one.one.one/cdn-cgi/trace',
