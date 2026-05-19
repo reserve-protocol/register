@@ -14,7 +14,8 @@ const DTFMaxAmount = () => {
   const maxAmount = useAtomValue(maxAmountAtom)
   const setMaxAmount = useSetAtom(amountAtom)
   const brand = useAtomValue(indexDTFBrandAtom)
-  const isRestricted = useIsComplianceRestricted()
+  const mode = useAtomValue(modeAtom)
+  const isRestricted = useIsComplianceRestricted() && mode === 'buy'
 
   return (
     <div className="flex flex-col gap-2">
@@ -50,7 +51,7 @@ const AmountInput = () => {
   const mode = useAtomValue(modeAtom)
   const [amount, setAmount] = useAtom(amountAtom)
   const usdAmount = useAtomValue(usdAmountAtom)
-  const isRestricted = useIsComplianceRestricted()
+  const isRestricted = useIsComplianceRestricted() && mode === 'buy'
 
   useEffect(() => {
     setAmount('')

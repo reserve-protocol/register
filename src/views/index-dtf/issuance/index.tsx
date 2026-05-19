@@ -11,6 +11,8 @@ import useTrackIndexDTFPage, {
   useTrackIndexDTFClick,
 } from '../hooks/useTrackIndexDTFPage'
 import useIsComplianceRestricted from '@/hooks/use-is-compliance-restricted'
+import { Alert, AlertTitle } from '@/components/ui/alert'
+import useComplianceRestrictions from '@/hooks/use-compliance-restrictions'
 
 const DTF_DISABLED_FOR_ZAP = [] as string[]
 export const indexDTFQuoteSourceAtom = atom<ZapperProps['defaultSource']>(
@@ -23,6 +25,20 @@ export const indexDTFQuoteSourceAtom = atom<ZapperProps['defaultSource']>(
     return 'best'
   }
 )
+
+const ComplianceAlert = () => {
+  const { isLoading, data } = useComplianceRestrictions()
+
+  console.log('data', data)
+
+  if (isLoading || (data && !data.restricted)) return null
+
+  return (
+    <Alert variant="destructive" className='rounded-3xl mb-4 text-sm sm:w-[420px] mx-auto'>
+      You are accessing our products and services from a restricted jurisdiction. We do not allow access from certain jurisdictions including locations subject to sanctions restrictions and other jurisdictions where our services are ineligible for use. For more information, see our <a className='underline' target='_blank' href="https://reserve.org/terms-and-conditions">Terms of Use</a>. If you think this is an error, try refreshing the page or opening a support ticket.
+    </Alert>
+  )
+}
 
 const IndexDTFIssuance = () => {
   useTrackIndexDTFPage('mint')
@@ -40,6 +56,7 @@ const IndexDTFIssuance = () => {
     <div className="container">
       <div className="flex flex-col items-center justify-start sm:justify-center gap-2 lg:bg-secondary sm:min-h-[calc(100vh-136px)] lg:min-h-[calc(100vh-80px)] rounded-4xl lg:mr-2 ">
         <div className="flex flex-col w-fit rounded-4xl">
+          <ComplianceAlert />
           <div className="bg-card rounded-3xl border-2 border-secondary sm:w-[420px] p-2 m-auto">
             <ZapperWrapper
               wagmiConfig={wagmiConfig}
