@@ -1,0 +1,19 @@
+{
+  "skills": [
+    {
+      "name": "dtf",
+      "title": "Reserve DTF skill",
+      "description": "Inspect, query, and transact with Reserve Protocol Decentralized Token Folios (DTFs). Covers Index DTFs and Yield DTFs across Ethereum, Base, and BSC: discovery, baskets, prices, quotes, fees, revenue, RSR burns, governance, proposals, roles, delegates, staking, rebalancing, holders, and history.",
+      "version": "1.0",
+      "source": "https://www.npmjs.com/package/@reserve-protocol/dtf-cli",
+      "install": "npx @reserve-protocol/dtf-cli",
+      "document": "https://app.reserve.org/skills/dtf.md",
+      "upstream": "https://github.com/reserve-protocol/reserve-sdk/blob/main/dtf-plugin/plugins/dtf/skills/dtf/SKILL.md",
+      "api": {
+        "base": "https://api.reserve.org",
+        "openapi": "https://api.reserve.org/documentation/v1.json",
+        "catalog": "https://app.reserve.org/.well-known/api-catalog"
+      }
+    }
+  ]
+}

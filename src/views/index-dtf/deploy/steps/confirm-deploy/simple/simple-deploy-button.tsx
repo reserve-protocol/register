@@ -11,6 +11,7 @@ import useWatchTransaction from '@/hooks/useWatchTransaction'
 import { indexDeployFormDataAtom } from '../atoms'
 import { defaultInputTokenAtom, inputTokenAtom, ongoingTxAtom } from './atoms'
 import { chainIdAtom } from '@/state/atoms'
+import { safeGasLimit } from '@/utils/gas'
 
 const SimpleDeployButton = ({
   data: { approvalNeeded, approvalAddress, tokenIn, amountIn, tx, gas },
@@ -75,7 +76,7 @@ const SimpleDeployButton = ({
 
     sendTransaction({
       data: tx.data as Address,
-      gas: BigInt(gas ?? 0) || undefined,
+      gas: safeGasLimit(BigInt(gas ?? 0) || undefined),
       to: tx.to as Address,
       value: BigInt(tx.value),
     })

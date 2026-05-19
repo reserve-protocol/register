@@ -1,6 +1,16 @@
 import { useAccount } from 'wagmi'
-import { Zapper, ZapperProps } from '@reserve-protocol/react-zapper'
+import {
+  Zapper,
+  ZapperProps,
+  PROVIDER_ENABLED,
+} from '@reserve-protocol/react-zapper'
 import { useConnectModal } from '@rainbow-me/rainbowkit'
+import { bsc } from 'viem/chains'
+
+const bscProviders = PROVIDER_ENABLED[bsc.id]
+if (bscProviders) {
+  bscProviders.odos = false
+}
 
 const ZapperWithConnect = (props: ZapperProps) => {
   const { openConnectModal } = useConnectModal()

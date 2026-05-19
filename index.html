@@ -51,14 +51,75 @@
       content="/imgs/og_image.webp"
     />
 
+    <!-- Canonical -->
+    <link rel="canonical" href="https://app.reserve.org/" />
+
+    <!-- Identity (rel=me) -->
+    <link rel="me" href="https://reserve.org/" />
+    <link rel="me" href="https://github.com/reserve-protocol" />
+
     <!-- Favicon -->
     <link rel="icon" href="/favicon.ico" />
     <link rel="apple-touch-icon" href="/logo192.png" />
     <link rel="manifest" href="/manifest.json" />
 
     <!-- Preconnect to third-party domains -->
-    <link rel="preconnect" href="https://connect.facebook.net" crossorigin />
+    <link rel="preconnect" href="https://api.reserve.org" crossorigin />
+    <link rel="preconnect" href="https://api.goldsky.com" crossorigin />
+    <link rel="dns-prefetch" href="https://token-icons.llamao.fi" />
     <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
+    <link rel="dns-prefetch" href="https://connect.facebook.net" />
+
+    <!-- Preload hero splash — ONLY on home. The image is React-rendered,
+         so the parser can't discover it; injecting via JS runs before the
+         main bundle downloads, which is the real bottleneck anyway. -->
+    <script>
+      (function () {
+        if (location.pathname !== '/') return
+        var base = matchMedia('(prefers-color-scheme: dark)').matches
+          ? '/imgs/home-splash-dark'
+          : '/imgs/home-splash'
+        var link = document.createElement('link')
+        link.rel = 'preload'
+        link.as = 'image'
+        link.fetchPriority = 'high'
+        link.href = base + '@1x.webp'
+        link.imageSrcset = base + '@1x.webp 1x, ' + base + '.webp 2x'
+        document.head.appendChild(link)
+      })()
+    </script>
+
+    <!-- Agent discovery -->
+    <link rel="alternate" type="text/plain" href="/llms.txt" title="llms.txt" />
+    <link rel="describedby" href="/llms.txt" />
+
+    <!-- Structured data: Organization + WebSite (static; no volatile fields) -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "Organization",
+            "@id": "https://reserve.org/#org",
+            "name": "Reserve Protocol",
+            "url": "https://reserve.org",
+            "logo": "https://app.reserve.org/logo192.png",
+            "sameAs": [
+              "https://github.com/reserve-protocol",
+              "https://x.com/reserveprotocol"
+            ]
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://app.reserve.org/#site",
+            "name": "Reserve Register",
+            "url": "https://app.reserve.org/",
+            "description": "Official interface for Decentralized Token Folios (DTFs) on the Reserve Protocol.",
+            "publisher": { "@id": "https://reserve.org/#org" }
+          }
+        ]
+      }
+    </script>
 
     <!-- Preload Fonts -->
     <link
@@ -83,13 +144,26 @@
       crossorigin
     />
 
-    <!-- Google Tag Manager -->
-    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-    })(window,document,'script','dataLayer','GTM-WPKVXLPX');</script>
-    <!-- End Google Tag Manager -->
+    <!-- Google Tag Manager — deferred to idle so GTM-fired tags (Criteo,
+         Taboola, Adform, Hotjar, Mixpanel, etc.) stay off the critical path.
+         dataLayer is defined synchronously so app code can push events early. -->
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      (function () {
+        function loadGTM() {
+          window.dataLayer.push({ 'gtm.start': Date.now(), event: 'gtm.js' });
+          var s = document.createElement('script');
+          s.async = true;
+          s.src = 'https://www.googletagmanager.com/gtm.js?id=GTM-WPKVXLPX';
+          document.head.appendChild(s);
+        }
+        if ('requestIdleCallback' in window) {
+          requestIdleCallback(loadGTM, { timeout: 3000 });
+        } else {
+          addEventListener('load', function () { setTimeout(loadGTM, 1500); });
+        }
+      })();
+    </script>
 
 
     <!-- 
@@ -102,33 +176,37 @@
 
     <script type="module" src="/src/index.tsx"></script>
 
-    <!-- Meta Pixel -->
+    <!-- Meta Pixel — stub is synchronous so app code can call fbq(...) right
+         away; SDK + initial PageView load on idle. -->
     <script>
-      !(function (f, b, e, v, n, t, s) {
+      !(function (f) {
         if (f.fbq) return
-        n = f.fbq = function () {
+        var n = (f.fbq = function () {
           n.callMethod
             ? n.callMethod.apply(n, arguments)
             : n.queue.push(arguments)
-        }
+        })
         if (!f._fbq) f._fbq = n
         n.push = n
         n.loaded = !0
         n.version = '2.0'
         n.queue = []
-        t = b.createElement(e)
-        t.async = !0
-        t.src = v
-        s = b.getElementsByTagName(e)[0]
-        s.parentNode.insertBefore(t, s)
-      })(
-        window,
-        document,
-        'script',
-        'https://connect.facebook.net/en_US/fbevents.js'
-      )
-      fbq('init', '1639552693295571')
-      fbq('track', 'PageView')
+      })(window)
+      ;(function () {
+        function loadPixel() {
+          var s = document.createElement('script')
+          s.async = true
+          s.src = 'https://connect.facebook.net/en_US/fbevents.js'
+          document.head.appendChild(s)
+          fbq('init', '1639552693295571')
+          fbq('track', 'PageView')
+        }
+        if ('requestIdleCallback' in window) {
+          requestIdleCallback(loadPixel, { timeout: 3000 })
+        } else {
+          addEventListener('load', function () { setTimeout(loadPixel, 1500) })
+        }
+      })()
     </script>
     <noscript>
       <img

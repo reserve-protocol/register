@@ -1,0 +1,12 @@
+{
+  "$schema": "https://schemas.agentskills.io/discovery/0.2.0/schema.json",
+  "skills": [
+    {
+      "name": "dtf",
+      "type": "skill-md",
+      "description": "Inspect, query, and transact with Reserve Protocol Decentralized Token Folios (DTFs) across Ethereum, Base, and BSC.",
+      "url": "https://app.reserve.org/skills/dtf.md",
+      "digest": "sha256:6e3e5be6eef2d5e3c3b87b876000b25ed8cf054a1844a88a083c2ce31c9b1fb9"
+    }
+  ]
+}

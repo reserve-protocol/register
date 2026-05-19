@@ -40,7 +40,7 @@
     "@radix-ui/react-tooltip": "^1.2.8",
     "@rainbow-me/rainbowkit": "^2.2.10",
     "@reserve-protocol/dtf-rebalance-lib": "^3.2.1",
-    "@reserve-protocol/react-zapper": "^1.6.2",
+    "@reserve-protocol/react-zapper": "^1.7.1",
     "@reserve-protocol/rtokens": "^1.1.23",
     "@reserve-protocol/trusted-fillers-sdk": "^0.3.0",
     "@sentry/react": "^9.47.1",
@@ -88,9 +88,9 @@
   },
   "scripts": {
     "start": "vite",
-    "build": "npm run refresh-token-logos && tsc && vite build && npm run generate-seo-pages",
+    "build": "pnpm run refresh-token-logos && tsc && vite build && pnpm run generate-seo-pages",
     "build:no-seo": "tsc && vite build",
-    "refresh-token-logos": "npx tsx scripts/refresh-token-logos.ts",
+    "refresh-token-logos": "pnpm exec tsx scripts/refresh-token-logos.ts",
     "serve": "vite preview",
     "typecheck": "tsc --noEmit",
     "typecheck:watch": "tsc --noEmit --watch",
@@ -98,12 +98,13 @@
     "test": "vitest",
     "test:run": "vitest run",
     "test:coverage": "vitest run --coverage",
-    "test:e2e": "npx playwright test",
+    "test:e2e": "pnpm exec playwright test",
     "translations": "lingui extract --clean && lingui compile",
     "forknet": "anvil --fork-url https://eth.llamarpc.com --chain-id 1 --balance 10000000",
     "parse-collaterals": "node scripts/parseCollaterals",
-    "generate-seo-tokens": "npx tsx scripts/generate-seo-tokens.ts",
-    "generate-seo-pages": "npx tsx src/seo/generate-seo-pages.ts"
+    "generate-seo-tokens": "pnpm exec tsx scripts/generate-seo-tokens.ts",
+    "generate-seo-pages": "pnpm exec tsx src/seo/generate-seo-pages.ts",
+    "seo:refresh": "pnpm exec tsx scripts/seo/refresh.ts"
   },
   "engines": {
     "node": ">=20.0.0"
@@ -146,6 +147,7 @@
     "postcss": "^8.5.10",
     "prettier": "^3.8.3",
     "tailwindcss": "^3.4.19",
+    "tsx": "^4.21.0",
     "typescript": "^5.9.3",
     "vite": "^7.3.2",
     "vite-bundle-visualizer": "^1.2.1",

@@ -1,8 +1,8 @@
 import { t } from '@lingui/macro'
 import ListedTokensTable from 'components/tables/ListedTokensTable'
 import { Separator } from '@/components/ui/separator'
-import DeployHero from '@/views/discover/components/yield/components/DeployHero'
-import RegisterAbout from '@/views/discover/components/yield/components/RegisterAbout'
+import YieldDTFDeployHero from '@/components/yield-dtf-deploy-hero'
+import RegisterAbout from '@/views/home/components/register-about'
 import UnlistedTokensTable from './components/UnlistedTokensTable'
 
 const Tokens = () => {
@@ -28,7 +28,7 @@ const Tokens = () => {
           </p>
         </div>
         <UnlistedTokensTable />
-        <DeployHero className="mt-8" />
+        <YieldDTFDeployHero className="mt-8" />
       </div>
       <RegisterAbout />
     </>

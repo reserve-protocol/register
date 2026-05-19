@@ -1,12 +1,14 @@
 import { Button } from '@/components/ui/button'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { Skeleton } from '@/components/ui/skeleton'
+import { isInactiveDTF } from '@/hooks/use-dtf-status'
 import {
   getProposalState,
   PartialProposal,
   VotingState,
 } from '@/lib/governance'
 import { cn } from '@/lib/utils'
+import { indexDTFStatusAtom } from '@/state/dtf/atoms'
 import { formatPercentage, getProposalTitle, parseDuration } from '@/utils'
 import { formatConstant, PROPOSAL_STATES, ROUTES } from '@/utils/constants'
 import { useAtomValue } from 'jotai'
@@ -16,30 +18,43 @@ import { Link } from 'react-router-dom'
 import { useTrackIndexDTFClick } from '../../hooks/useTrackIndexDTFPage'
 import { governanceProposalsAtom } from '../atoms'
 
-const Header = () => {
+const ProposalButton = () => {
   const { trackClick } = useTrackIndexDTFClick('overview', 'governance')
+  const status = useAtomValue(indexDTFStatusAtom)
+  const isDeprecated = isInactiveDTF(status)
+
+  const button = (
+    <Button
+      className="text-primary hover:text-primary gap-1"
+      variant="ghost"
+      size="sm"
+      disabled={isDeprecated}
+    >
+      <PlusSquare size={16} />
+      Create proposal
+    </Button>
+  )
+
+  if (isDeprecated) return button
 
   return (
-    <div className="py-4 px-5 flex items-center gap-2">
-      <h1 className="font-semibold text-xl text-primary dark:text-muted-foreground mr-auto">
-        Recent proposals
-      </h1>
-      <Link
-        to={ROUTES.GOVERNANCE_PROPOSE}
-        onClick={() => trackClick('create_proposal')}
-      >
-        <Button
-          className="text-primary hover:text-primary gap-1"
-          variant="ghost"
-          size="sm"
-        >
-          <PlusSquare size={16} />
-          Create proposal
-        </Button>
-      </Link>
-    </div>
+    <Link
+      to={ROUTES.GOVERNANCE_PROPOSE}
+      onClick={() => trackClick('create_proposal')}
+    >
+      {button}
+    </Link>
   )
 }
+
+const Header = () => (
+  <div className="py-4 px-5 flex items-center gap-2">
+    <h1 className="font-semibold text-xl text-primary dark:text-muted-foreground mr-auto">
+      Recent proposals
+    </h1>
+    <ProposalButton />
+  </div>
+)
 const VoteStateHeader = ({ data }: { data: VotingState }) => {
   if (
     (data.state === PROPOSAL_STATES.ACTIVE ||

@@ -89,6 +89,7 @@ const PermissionlessDeploy = () => {
   const form = useForm({
     resolver: zodResolver(DeployFormSchema),
     defaultValues: getPermissionlessDefaults(ChainId.Base, 50),
+    mode: 'onTouched',
   })
 
   return (

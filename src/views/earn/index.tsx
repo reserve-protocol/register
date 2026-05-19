@@ -1,8 +1,11 @@
+import { useDeprecatedAddresses } from '@/hooks/use-dtf-status'
 import { cn } from '@/lib/utils'
 import { ROUTES } from '@/utils/constants'
+import { useSetAtom } from 'jotai'
 import mixpanel from 'mixpanel-browser/src/loaders/loader-module-core'
 import { useEffect } from 'react'
 import { NavLink, Outlet } from 'react-router-dom'
+import { deprecatedDTFAddressesAtom } from './atoms'
 
 const EARN_ROUTES = [
   {
@@ -46,6 +49,17 @@ const EarnNavigation = () => {
   )
 }
 
+const DeprecatedDTFsUpdater = () => {
+  const deprecated = useDeprecatedAddresses()
+  const setDeprecated = useSetAtom(deprecatedDTFAddressesAtom)
+
+  useEffect(() => {
+    setDeprecated(deprecated)
+  }, [deprecated, setDeprecated])
+
+  return null
+}
+
 const Earn = () => {
   useEffect(() => {
     mixpanel.track('Visted Earn Page', {})
@@ -55,6 +69,7 @@ const Earn = () => {
     <div className="container px-0 lg:px-4 mb-4">
       <EarnNavigation />
       <Outlet />
+      <DeprecatedDTFsUpdater />
     </div>
   )
 }

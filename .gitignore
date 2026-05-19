@@ -44,3 +44,4 @@ tests/RTokens.json
 
 # temp file for LLM integration
 /temp
+.playwright-mcp/

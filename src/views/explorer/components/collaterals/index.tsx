@@ -19,7 +19,7 @@ import {
 import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
 import collateralPlugins from 'utils/plugins'
 import { formatUnits } from 'viem'
-import DeployHero from '@/views/discover/components/yield/components/DeployHero'
+import YieldDTFDeployHero from '@/components/yield-dtf-deploy-hero'
 import { readContracts } from 'wagmi/actions'
 import { erc20Abi } from 'viem'
 import { wagmiConfig } from 'state/chain'
@@ -198,7 +198,7 @@ const Collaterals = () => {
         </div>
       </div>
       <PluginList />
-      <DeployHero className="mt-6" />
+      <YieldDTFDeployHero className="mt-6" />
     </div>
   )
 }

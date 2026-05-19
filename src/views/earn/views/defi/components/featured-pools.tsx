@@ -1,21 +1,29 @@
-import FeaturedPoolItem from './featured-pool-item'
+import { deprecatedDTFAddressesAtom } from '@/views/earn/atoms'
 import { useAtomValue } from 'jotai'
-import { poolsAtom } from 'state/pools/atoms'
 import { useMemo } from 'react'
+import { poolsAtom } from 'state/pools/atoms'
+import FeaturedPoolItem from './featured-pool-item'
 
 const FeaturedPools = () => {
   const pools = useAtomValue(poolsAtom)
+  const deprecated = useAtomValue(deprecatedDTFAddressesAtom)
 
   const selectedPools = useMemo(() => {
     const handPickedPools = pools
-      .filter((pool) => pool.symbol !== 'RSR-WETH')
+      .filter(
+        (pool) =>
+          pool.symbol !== 'RSR-WETH' &&
+          !pool.underlyingTokens.some((token) =>
+            deprecated.has(token.address.toLowerCase())
+          )
+      )
       .sort((a, b) => b.apy - a.apy)
       .slice(0, 3)
 
     return handPickedPools.length === 3
       ? handPickedPools
       : [undefined, undefined, undefined]
-  }, [pools])
+  }, [pools, deprecated])
 
   return (
     <div className="bg-secondary p-1 rounded-4xl">

@@ -177,21 +177,21 @@ const parseRevenue = (trades: readonly RevenueResponse[], chain: number) => {
 }
 
 const useAvailableRevenue = (): Revenue | undefined => {
-  const { data: mainnet } = useReadContract({
+  const { data: mainnet, isPending: mainnetPending } = useReadContract({
     abi: FacadeRead,
     address: FACADE_ADDRESS[ChainId.Mainnet],
     functionName: 'revenues',
     chainId: ChainId.Mainnet,
     args: [Object.keys(rtokens[ChainId.Mainnet]) as Address[]],
   })
-  const { data: base } = useReadContract({
+  const { data: base, isPending: basePending } = useReadContract({
     abi: FacadeRead,
     address: FACADE_ADDRESS[ChainId.Base],
     functionName: 'revenues',
     chainId: ChainId.Base,
     args: [Object.keys(rtokens[ChainId.Base]) as Address[]],
   })
-  const { data: arbitrum } = useReadContract({
+  const { data: arbitrum, isPending: arbitrumPending } = useReadContract({
     abi: FacadeRead,
     address: FACADE_ADDRESS[ChainId.Arbitrum],
     functionName: 'revenues',
@@ -200,47 +200,45 @@ const useAvailableRevenue = (): Revenue | undefined => {
   })
 
   return useMemo(() => {
-    if (mainnet && base && arbitrum) {
-      const parsedData = {
-        [ChainId.Mainnet]: parseRevenue(mainnet, ChainId.Mainnet),
-        [ChainId.Base]: parseRevenue(base, ChainId.Base),
-        [ChainId.Arbitrum]: parseRevenue(arbitrum, ChainId.Arbitrum),
-      }
+    if (mainnetPending || basePending || arbitrumPending) return undefined
 
-      const result = Object.keys(parsedData).reduce(
-        (acc, chain) => {
-          const revenue = parsedData[+chain].totalRevenue
-          const trades = parsedData[+chain].availableTrades
-          const outstandingTrades = parsedData[+chain].outstandingTrades
-
-          acc.networks.push({
-            chain: +chain,
-            revenue,
-            trades,
-          })
-          acc.revenue += revenue
-          acc.outstandingTrades += outstandingTrades
-          acc.trades += trades
-          acc.tokens.push(...Object.values(parsedData[+chain].tokens))
-
-          return acc
-        },
-        {
-          revenue: 0,
-          trades: 0,
-          outstandingTrades: 0,
-          networks: [],
-          tokens: [],
-        } as Revenue
-      )
-
-      result.tokens.sort((a, b) => b.total - a.total)
-
-      return result
+    const parsedData = {
+      [ChainId.Mainnet]: parseRevenue(mainnet ?? [], ChainId.Mainnet),
+      [ChainId.Base]: parseRevenue(base ?? [], ChainId.Base),
+      [ChainId.Arbitrum]: parseRevenue(arbitrum ?? [], ChainId.Arbitrum),
     }
 
-    return undefined
-  }, [base, mainnet, arbitrum])
+    const result = Object.keys(parsedData).reduce(
+      (acc, chain) => {
+        const revenue = parsedData[+chain].totalRevenue
+        const trades = parsedData[+chain].availableTrades
+        const outstandingTrades = parsedData[+chain].outstandingTrades
+
+        acc.networks.push({
+          chain: +chain,
+          revenue,
+          trades,
+        })
+        acc.revenue += revenue
+        acc.outstandingTrades += outstandingTrades
+        acc.trades += trades
+        acc.tokens.push(...Object.values(parsedData[+chain].tokens))
+
+        return acc
+      },
+      {
+        revenue: 0,
+        trades: 0,
+        outstandingTrades: 0,
+        networks: [],
+        tokens: [],
+      } as Revenue
+    )
+
+    result.tokens.sort((a, b) => b.total - a.total)
+
+    return result
+  }, [base, mainnet, arbitrum, mainnetPending, basePending, arbitrumPending])
 }
 
 const TradesTable = ({

@@ -22,7 +22,6 @@ import ExploreGovernance from 'views/explorer/components/governance'
 import AvailableRevenue from 'views/explorer/components/revenue'
 import ExploreTokens from 'views/explorer/components/tokens'
 import ExploreTransactions from 'views/explorer/components/transactions'
-import Discover from './views/discover'
 import IndexDTFAuctions from './views/index-dtf/auctions'
 import IndexDTFAuctionsLegacy from './views/index-dtf/auctions/legacy'
 import Rebalance from './views/index-dtf/auctions/views/rebalance'
@@ -51,12 +50,14 @@ import IndexDTFFactsheet from './views/index-dtf/factsheet'
 import EarnIndexDTF from './views/earn/views/index-dtf'
 import EarnYieldDTF from './views/earn/views/yield-dtf'
 import EarnDefi from './views/earn/views/defi'
+import Home from './views/home'
+
 const AsyncMintWizard = lazy(() => import('./views/index-dtf/issuance/async-mint'))
 
 // TODO: Fix recoll call on yield dtf auction page
 const AppRoutes = () => (
   <Routes>
-    <Route path={ROUTES.HOME} element={<Discover />} />
+    <Route path={ROUTES.HOME} element={<Home />} />
     {/* Internal routes */}
     <Route path="/internal/dtf-list" element={<InternalDTFList />} />
     <Route path="/internal/dtf-listed" element={<InternalDTFListed />} />

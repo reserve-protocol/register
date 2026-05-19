@@ -2,6 +2,7 @@ import { ChainId } from '@/utils/chains'
 import { atom } from 'jotai'
 import { VoteLockPosition } from './hooks/use-vote-lock-positions'
 import { IndexDTFItem } from '@/hooks/useIndexDTFList'
+import { deprecatedDTFAddressesAtom } from '@/views/earn/atoms'
 
 export const voteLockPositionsAtom = atom<VoteLockPosition[] | undefined>(
   undefined
@@ -40,12 +41,21 @@ export const filteredVoteLockPositionsAtom = atom((get) => {
   const search = get(searchFilterAtom).toLowerCase()
   const chains = get(chainsFilterAtom)
   const selectedDtfs = get(dtfsFilterAtom)
+  const deprecated = get(deprecatedDTFAddressesAtom)
 
   if (!positions) return undefined
 
   return positions.filter((position) => {
     // Chain filter
     if (!chains.includes(position.chainId.toString())) {
+      return false
+    }
+
+    // Deprecated filter: hide positions that only govern deprecated DTFs
+    if (
+      position.dtfs.length > 0 &&
+      position.dtfs.every((dtf) => deprecated.has(dtf.address.toLowerCase()))
+    ) {
       return false
     }
 
@@ -82,12 +92,15 @@ export const filteredVoteLockPositionsAtom = atom((get) => {
 // Get unique DTFs from all positions for the dropdown options
 export const availableDtfsAtom = atom((get) => {
   const positions = get(voteLockPositionsAtom)
+  const deprecated = get(deprecatedDTFAddressesAtom)
   if (!positions) return []
 
   const dtfSet = new Set<string>()
   positions.forEach((position) => {
     position.dtfs.forEach((dtf) => {
-      dtfSet.add(dtf.symbol)
+      if (!deprecated.has(dtf.address.toLowerCase())) {
+        dtfSet.add(dtf.symbol)
+      }
     })
   })
 

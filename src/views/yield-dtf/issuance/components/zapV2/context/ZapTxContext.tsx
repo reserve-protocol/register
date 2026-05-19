@@ -13,15 +13,13 @@ import {
 import { Allowance } from 'types'
 import { ChainId } from 'utils/chains'
 import { CHAIN_TAGS } from 'utils/constants'
+import { safeGasLimit } from 'utils/gas'
 import { Address, TransactionReceipt, parseUnits } from 'viem'
 import { useSendTransaction } from 'wagmi'
 import { useApproval } from '../hooks/useApproval'
 import { useRevokeUSDT } from '../hooks/useRevokeUSDT'
 import { ZapErrorType } from '../ZapError'
 import { useZap } from './ZapContext'
-
-// EIP-7825: per-transaction gas cap introduced in the Fusaka hardfork
-const FUSAKA_GAS_LIMIT = 2n ** 24n
 
 type ZapTxContextType = {
   error?: ZapErrorType
@@ -237,8 +235,7 @@ export const ZapTxProvider: FC<PropsWithChildren<any>> = ({ children }) => {
     const rawGas = BigInt(zapResult?.gas ?? 0)
     if (!rawGas) return undefined
     const gasMultiplier = chainId === ChainId.Mainnet ? 2n : 3n
-    const buffered = rawGas * gasMultiplier
-    return buffered < FUSAKA_GAS_LIMIT ? buffered : FUSAKA_GAS_LIMIT
+    return safeGasLimit(rawGas * gasMultiplier)
   }, [zapResult?.gas, chainId])
 
   const execute = useCallback(() => {
@@ -259,7 +256,7 @@ export const ZapTxProvider: FC<PropsWithChildren<any>> = ({ children }) => {
       validatingTx ||
       receipt ||
       loadingRevoke) &&
-      !error
+    !error
   )
 
   useEffect(() => {

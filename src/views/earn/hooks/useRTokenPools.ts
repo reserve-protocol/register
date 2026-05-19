@@ -21,21 +21,9 @@ import {
 import { EarnPool, getEarnPools } from '@/lib/meta'
 import useIndexDTFList from '@/hooks/useIndexDTFList'
 
-// Only map what I care about the response...
-interface DefillamaPool {
-  symbol: string
-  pool: string
-  apy: number
-  apyBase: number
-  apyReward: number
-  stablecoin: boolean
-  poolMeta: string | null
-  project: string
-  chain: string
-  tvlUsd: number
-  underlyingTokens: string[]
-  rewardTokens: string[]
-}
+import { DefiLlamaPool } from '@/types/defillama'
+
+type DefillamaPool = DefiLlamaPool
 
 const listedDTFs = Object.values(rtokens).reduce((acc, curr) => {
   // Defillama has some addresses on lowercase... better to transform to lowercase than to an Address format
@@ -111,6 +99,9 @@ const enrichPoolUnderlyingAndId = (
 
     return {
       ...pool,
+      apyReward: pool.apyReward ?? 0,
+      rewardTokens: pool.rewardTokens ?? [],
+      stablecoin: pool.stablecoin ?? false,
       id: pool.pool,
       symbol: `${pool.symbol}${
         pool.poolMeta?.toLowerCase()?.includes('lending')

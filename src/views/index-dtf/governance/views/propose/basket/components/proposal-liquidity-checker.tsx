@@ -4,7 +4,6 @@ import TokenLogo from '@/components/token-logo'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import Help from '@/components/ui/help'
 import { chainIdAtom } from '@/state/atoms'
-import { devModeAtom } from '@/state/chain/atoms/chainAtoms'
 import { cn } from '@/lib/utils'
 import { formatCurrency } from '@/utils'
 import {
@@ -202,14 +201,6 @@ const UnsupportedTokensWarning = ({
 }
 
 const ProposalLiquidityChecker = () => {
-  const isDevMode = useAtomValue(devModeAtom)
-
-  if (!isDevMode) return null
-
-  return <LiquidityCheckerContent />
-}
-
-const LiquidityCheckerContent = () => {
   const chainId = useAtomValue(chainIdAtom)
   const { tokens, liquidityMap, unsupportedTokens, isLoading, isFetching, isDebouncing, retryingTokens, refetch, retryToken } =
     useProposalLiquidityCheck()

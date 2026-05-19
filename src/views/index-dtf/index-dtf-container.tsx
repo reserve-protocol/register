@@ -26,10 +26,20 @@ import {
   iTokenAddressAtom,
   performanceTimeRangeAtom,
 } from '@/state/dtf/atoms'
+import {
+  indexDTFApyAtom,
+  indexDTFPoolsDataAtom,
+  indexDTFUnderlyingNamesAtom,
+} from '@/state/dtf/yield-index-atoms'
 import { useDTFStatus } from '@/hooks/use-dtf-status'
 import { isAddress } from '@/utils'
 import { AvailableChain, supportedChains } from '@/utils/chains'
-import { FALLBACK_PLATFORM_FEES, NETWORKS, RESERVE_API, ROUTES } from '@/utils/constants'
+import {
+  FALLBACK_PLATFORM_FEES,
+  NETWORKS,
+  RESERVE_API,
+  ROUTES,
+} from '@/utils/constants'
 import { useQuery } from '@tanstack/react-query'
 import { atom, useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { useEffect, useState } from 'react'
@@ -38,6 +48,7 @@ import { Address } from 'viem'
 import { useReadContract, useSwitchChain } from 'wagmi'
 import IndexDTFNavigation from './components/navigation'
 import GovernanceUpdater from './governance/updater'
+import YieldIndexUpdater from '@/state/updaters/yield-index-updater'
 
 const DEFAULT_DESCRIPTION =
   'Reserve is the leading platform for permissionless DTFs and asset-backed currencies. Create, manage & trade tokenized indexes with 24/7 transparency.'
@@ -54,7 +65,14 @@ const IndexDTFSEO = () => {
 
   useFavicon(brand?.dtf?.icon)
 
-  return <SEO title={title} description={description} image={image} url={location.pathname} />
+  return (
+    <SEO
+      title={title}
+      description={description}
+      image={image}
+      url={location.pathname}
+    />
+  )
 }
 
 const useChainWatch = () => {
@@ -190,7 +208,7 @@ const PlatformFeeUpdater = ({
   useEffect(() => {
     if (feeDetails) {
       const [, feeNumerator, feeDenominator] = feeDetails
-      setFee(Number(feeNumerator * 100n / feeDenominator))
+      setFee(Number((feeNumerator * 100n) / feeDenominator))
     } else if (registryError || feeError) {
       setFee(FALLBACK_PLATFORM_FEES[chainId] ?? 50)
     }
@@ -249,6 +267,9 @@ const resetStateAtom = atom(null, (_, set) => {
   set(indexDTF7dChangeAtom, undefined)
   set(indexDTFPerformanceLoadingAtom, false)
   set(indexDTFExposureDataAtom, null)
+  set(indexDTFApyAtom, undefined)
+  set(indexDTFPoolsDataAtom, undefined)
+  set(indexDTFUnderlyingNamesAtom, {})
   set(performanceTimeRangeAtom, '7d')
   set(indexDTFStatusAtom, 'active')
 })
@@ -342,6 +363,7 @@ const Updater = () => {
       <IndexDTFBasketUpdater tokenAddress={currentToken} chainId={chainId} />
       <PlatformFeeUpdater tokenAddress={currentToken} chainId={chainId} />
       <IndexDTFExposureUpdater chainId={chainId} />
+      <YieldIndexUpdater chainId={chainId} />
       <DeprecationStatusUpdater tokenAddress={currentToken} chainId={chainId} />
       <GovernanceUpdater />
     </div>
