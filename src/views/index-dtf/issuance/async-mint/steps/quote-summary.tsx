@@ -1,0 +1,1011 @@
+import TokenLogo from '@/components/token-logo'
+import TokenLogoWithChain from '@/components/token-logo/TokenLogoWithChain'
+import { Button } from '@/components/ui/button'
+import { TransactionButtonContainer } from '@/components/ui/transaction-button'
+import { ScrollArea } from '@/components/ui/scroll-area'
+import { Skeleton } from '@/components/ui/skeleton'
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import useDebounce from '@/hooks/useDebounce'
+import { cn } from '@/lib/utils'
+import { balancesAtom, chainIdAtom } from '@/state/atoms'
+import {
+  indexDTFAtom,
+  indexDTFBasketAtom,
+  indexDTFPriceAtom,
+} from '@/state/dtf/atoms'
+import { formatCurrency, formatTokenAmount, safeParseEther } from '@/utils'
+import { useAtom, useAtomValue, useSetAtom } from 'jotai'
+import { ChevronRight, Info, Pencil, RefreshCw, Settings } from 'lucide-react'
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/components/ui/tooltip'
+import { useEffect, useMemo, useRef } from 'react'
+import { Address, formatUnits } from 'viem'
+import {
+  ASYNC_MINT_BUFFER,
+  collateralAllocationAtom,
+  customCollateralAmountsAtom,
+  effectiveMintSharesAtom,
+  folioDetailsAtom,
+  inputTokenAtom,
+  iterationStateAtom,
+  mintAmountAtom,
+  mintQuotesAtom,
+  mintStrategyAtom,
+  priceMovedAtom,
+  quotesTimestampAtom,
+  quotesStaleAtom,
+  recoveryChoiceAtom,
+  selectedCollateralsAtom,
+  slippageAtom,
+  tokenPricesAtom,
+  useWalletCollateralAtom,
+  walletBalancesAtom,
+  wizardStepAtom,
+} from '../atoms'
+import {
+  calculateMaxMintAmount,
+  getQuoteResultForAddress,
+  getRequiredQuoteStatus,
+} from '../utils'
+import { useMintQuotes } from '../hooks/use-mint-quotes'
+import { useQuoteIteration } from '../hooks/use-quote-iteration'
+import { useSubmitOrders } from '../hooks/use-submit-orders'
+
+const formatTokenBalance = (value: bigint, decimals: number) =>
+  formatTokenAmount(Number(formatUnits(value, decimals)))
+
+const QuoteSummary = () => {
+  const setStep = useSetAtom(wizardStepAtom)
+  const indexDTF = useAtomValue(indexDTFAtom)
+  const chainId = useAtomValue(chainIdAtom)
+  const dtfPrice = useAtomValue(indexDTFPriceAtom)
+  const inputToken = useAtomValue(inputTokenAtom)
+  const mintAmount = useAtomValue(mintAmountAtom)
+  const [quotes, setQuotes] = useAtom(mintQuotesAtom)
+  const setQuotesTimestamp = useSetAtom(quotesTimestampAtom)
+  const priceMoved = useAtomValue(priceMovedAtom)
+  const quotesStale = useAtomValue(quotesStaleAtom)
+  const recoveryChoice = useAtomValue(recoveryChoiceAtom)
+  const strategy = useAtomValue(mintStrategyAtom)
+  const slippage = useAtomValue(slippageAtom)
+  const balances = useAtomValue(balancesAtom)
+
+  const allocation = useAtomValue(collateralAllocationAtom)
+  const { cancel, isFetching } = useMintQuotes()
+  const { runIteration, cancel: cancelIteration, state: iterationState } =
+    useQuoteIteration()
+  const effectiveShares = useAtomValue(effectiveMintSharesAtom)
+  const { submit, isPending } = useSubmitOrders(recoveryChoice === 'top-up')
+
+  // Combined refetch: orchestrator handles seed + iteration.
+  const refetch = runIteration
+
+  // WHY: In multi-token flow, all tokens may come from wallet (no swaps needed)
+  const allocationLoaded = Object.keys(allocation).length > 0
+  const noSwapsNeeded =
+    allocationLoaded &&
+    Object.values(allocation).every((a) => a.fromSwap === 0n)
+
+  const walletBalances = useAtomValue(walletBalancesAtom)
+  const tokenPrices = useAtomValue(tokenPricesAtom)
+  const selectedCollaterals = useAtomValue(selectedCollateralsAtom)
+  const customAmounts = useAtomValue(customCollateralAmountsAtom)
+  const useWalletCollateral = useAtomValue(useWalletCollateralAtom)
+  const basket = useAtomValue(indexDTFBasketAtom)
+  const folioDetails = useAtomValue(folioDetailsAtom)
+
+  // Balance
+  const inputBalance = balances[inputToken.address]
+  const availableBalance = inputBalance
+    ? Number(formatUnits(inputBalance.value ?? 0n, inputToken.decimals))
+    : 0
+
+  const decimalsMap = useMemo(() => {
+    const map: Record<Address, number> = {}
+    if (basket) {
+      for (const token of basket) {
+        map[token.address.toLowerCase() as Address] = token.decimals
+      }
+    }
+    return map
+  }, [basket])
+  const customCollateralAmounts = useMemo(() => {
+    const result: Record<Address, bigint> = {}
+    for (const [address, value] of Object.entries(customAmounts)) {
+      const normalized = address.toLowerCase() as Address
+      if (!value) continue
+      result[normalized] = safeParseEther(value, decimalsMap[normalized] ?? 18)
+    }
+    return result
+  }, [customAmounts, decimalsMap])
+
+  const parsedAmount = Number(mintAmount) || 0
+  const folioReferenceAmount =
+    folioDetails && dtfPrice
+      ? Number(formatUnits(folioDetails.shares, 18)) * dtfPrice
+      : parsedAmount
+  const maxMintAmount = useMemo(
+    () =>
+      calculateMaxMintAmount({
+        inputTokenBalance: availableBalance,
+        walletBalances,
+        tokenPrices,
+        tokenDecimals: decimalsMap,
+        selectedCollaterals,
+        customCollateralAmounts,
+        strategy,
+        inputTokenAddress: inputToken.address as Address,
+        assets: folioDetails?.assets,
+        mintValues: folioDetails?.mintValues,
+        referenceAmount: folioReferenceAmount,
+      }),
+    [
+      availableBalance,
+      walletBalances,
+      tokenPrices,
+      decimalsMap,
+      selectedCollaterals,
+      customCollateralAmounts,
+      strategy,
+      inputToken,
+      folioDetails,
+      folioReferenceAmount,
+    ]
+  )
+
+  const debouncedAmount = useDebounce(mintAmount, 500)
+
+  const dtfAmount = dtfPrice
+    ? (parsedAmount / dtfPrice) * (1 - ASYNC_MINT_BUFFER)
+    : 0
+  const dtfValue = dtfPrice ? dtfAmount * dtfPrice : 0
+  const spreadPct =
+    parsedAmount > 0 ? ((parsedAmount - dtfValue) / parsedAmount) * 100 : 0
+  const walletCollateralUsd = useMemo(
+    () =>
+      Object.entries(allocation).reduce((sum, [address, alloc]) => {
+        if (alloc.fromWallet === 0n) return sum
+        const token = basket?.find(
+          (item) => item.address.toLowerCase() === address.toLowerCase()
+        )
+        if (!token) return sum
+        const price = tokenPrices[address.toLowerCase() as Address] ?? 0
+        return (
+          sum + Number(formatUnits(alloc.fromWallet, token.decimals)) * price
+        )
+      }, 0),
+    [allocation, basket, tokenPrices]
+  )
+  const hasWalletCollateralUsed = walletCollateralUsd > 0
+  const inputUsedUsd = Math.max(parsedAmount - walletCollateralUsd, 0)
+  const inputSourceTokens = useMemo(() => {
+    if (!useWalletCollateral || !basket) return [inputToken]
+
+    const walletSources = basket.filter((token) => {
+      const normalized = token.address.toLowerCase() as Address
+      const alloc = allocation[token.address] ?? allocation[normalized]
+
+      return (alloc?.fromWallet ?? 0n) > 0n
+    })
+
+    return inputUsedUsd > 0 || walletSources.length === 0
+      ? [inputToken, ...walletSources]
+      : walletSources
+  }, [allocation, basket, inputToken, inputUsedUsd, useWalletCollateral])
+  const visibleInputSourceTokens = inputSourceTokens.slice(0, 3)
+  const hiddenInputSourceTokenCount = Math.max(inputSourceTokens.length - 3, 0)
+  const hasQuotes = Object.keys(quotes).length > 0
+  const quoteStatus = useMemo(
+    () => getRequiredQuoteStatus({ allocation, quotes }),
+    [allocation, quotes]
+  )
+  const allRequiredQuotesReady =
+    noSwapsNeeded || (quoteStatus.requiredCount > 0 && quoteStatus.allReady)
+  const basketByAddress = useMemo(() => {
+    const map: Record<Address, NonNullable<typeof basket>[number]> = {}
+    for (const token of basket ?? []) {
+      map[token.address.toLowerCase() as Address] = token
+    }
+    return map
+  }, [basket])
+  const missingQuoteDetails = useMemo(
+    () =>
+      quoteStatus.missingAddresses.map((address) => {
+        const normalized = address.toLowerCase() as Address
+        const item =
+          allocation[address] ??
+          Object.entries(allocation).find(
+            ([allocationAddress]) =>
+              allocationAddress.toLowerCase() === normalized
+          )?.[1]
+        const quote = getQuoteResultForAddress(quotes, address)
+        const token = basketByAddress[normalized]
+        const decimals = token?.decimals ?? 18
+        const price = tokenPrices[normalized] ?? 0
+        const currentUsd =
+          Number(formatUnits(item?.fromSwap ?? 0n, decimals)) * price
+
+        return {
+          address: normalized,
+          symbol: token?.symbol ?? `${normalized.slice(0, 6)}...`,
+          decimals,
+          amount: item?.fromSwap ?? 0n,
+          currentUsd,
+          quote,
+        }
+      }),
+    [
+      allocation,
+      basketByAddress,
+      quoteStatus.missingAddresses,
+      quotes,
+      tokenPrices,
+    ]
+  )
+  const missingQuoteCount = missingQuoteDetails.length
+  // The orchestrator (useQuoteIteration) calls getCowswapQuote directly and
+  // bypasses useMintQuotes, so `isFetching` stays false during iteration.
+  // We add `iterationState.status === 'iterating'` so the UI shows loading
+  // states for every round, including round 0.
+  const quoteLoading = noSwapsNeeded
+    ? false
+    : isFetching ||
+      iterationState.status === 'iterating' ||
+      debouncedAmount !== mintAmount
+  const exceedsBalance = parsedAmount > maxMintAmount
+  const isValidAmount = parsedAmount >= 1
+  const isTotalUsdInputMode = strategy !== 'single'
+  const mintFee = indexDTF?.mintingFee
+    ? (indexDTF.mintingFee * 100).toFixed(2)
+    : '0'
+
+  const collateralQuoteRows = useMemo(
+    () =>
+      Object.entries(allocation)
+        .filter(([_, item]) => item.fromSwap > 0n)
+        .map(([address, item]) => {
+          const normalized = address.toLowerCase() as Address
+          const token = basketByAddress[normalized]
+          const quote = getQuoteResultForAddress(quotes, normalized)
+          const decimals = token?.decimals ?? 18
+          const price = tokenPrices[normalized] ?? 0
+
+          return {
+            address: normalized,
+            symbol: token?.symbol ?? `${normalized.slice(0, 6)}...`,
+            name: token?.name ?? token?.symbol ?? 'Collateral',
+            decimals,
+            quotedBuyAmount: quote?.success
+              ? BigInt(quote.data.quote.buyAmount)
+              : undefined,
+            quotedSellAmount: quote?.success
+              ? BigInt(quote.data.quote.sellAmount)
+              : undefined,
+            requiredBuyAmount: item.fromSwap,
+            estimatedSellAmount:
+              price > 0
+                ? safeParseEther(
+                    (
+                      Number(formatUnits(item.fromSwap, decimals)) * price
+                    ).toString(),
+                    inputToken.decimals
+                  )
+                : undefined,
+            quote,
+          }
+        }),
+    [allocation, basketByAddress, inputToken.decimals, quotes, tokenPrices]
+  )
+  const totalQuotedSellAmount = useMemo(() => {
+    const amounts = collateralQuoteRows.map(
+      (item) => item.quotedSellAmount ?? item.estimatedSellAmount
+    )
+
+    return amounts.length > 0 && amounts.every((amount) => amount !== undefined)
+      ? amounts.reduce((sum, amount) => sum + (amount ?? 0n), 0n)
+      : undefined
+  }, [collateralQuoteRows])
+
+  // Sum of ACTUAL sellAmounts (only successful quotes). Used to compute
+  // realized aggregate price impact + utilization vs target budget.
+  const actualQuotedSellAmount = useMemo(() => {
+    if (!allRequiredQuotesReady || collateralQuoteRows.length === 0)
+      return undefined
+    let total = 0n
+    for (const row of collateralQuoteRows) {
+      if (row.quotedSellAmount === undefined) return undefined
+      total += row.quotedSellAmount
+    }
+    return total
+  }, [allRequiredQuotesReady, collateralQuoteRows])
+
+  const targetBudgetUsd = parsedAmount * (1 - ASYNC_MINT_BUFFER)
+  const realizedCostUsd =
+    actualQuotedSellAmount !== undefined
+      ? Number(formatUnits(actualQuotedSellAmount, inputToken.decimals))
+      : undefined
+
+  const showRealMode =
+    allRequiredQuotesReady &&
+    !quoteLoading &&
+    realizedCostUsd !== undefined &&
+    iterationState.status !== 'iterating'
+
+  // In real mode: derive shares from the orchestrator's converged result.
+  // In estimated mode: oracle-based seed (same as configure-mint).
+  const realDtfAmount =
+    showRealMode && effectiveShares > 0n
+      ? Number(formatUnits(effectiveShares, 18))
+      : dtfAmount
+  const realDtfValue = realDtfAmount * (dtfPrice ?? 0)
+
+  const displayDtfAmount = showRealMode ? realDtfAmount : dtfAmount
+  const displayDtfValue = showRealMode ? realDtfValue : dtfValue
+  const dtfDisplayPrefix = showRealMode ? '' : '~'
+
+  // Realized aggregate price impact, signed from the user's perspective:
+  //   positive = paid less USDC than reference prices predicted (user "profit")
+  //   negative = paid more USDC than predicted (impact ate into the buffer)
+  // Computed against the buffer-adjusted target, not the raw budget.
+  const realizedImpactPct =
+    showRealMode && targetBudgetUsd > 0 && realizedCostUsd !== undefined
+      ? ((targetBudgetUsd - realizedCostUsd) / targetBudgetUsd) * 100
+      : 0
+  // Utilization: how much of the user's TOTAL budget got spent. The remaining
+  // % is the buffer (2%) plus any under-utilization from the iteration.
+  const utilizationPct =
+    showRealMode && parsedAmount > 0 && realizedCostUsd !== undefined
+      ? (realizedCostUsd / parsedAmount) * 100
+      : 0
+
+  const renderCollateralQuoteRow = (
+    item: (typeof collateralQuoteRows)[number]
+  ) => {
+    const quoteReady = item.quote?.success === true
+    const quoteFailed = item.quote?.success === false
+    // While loading, always show skeleton — even if a stale quote from a
+    // previous iteration round is still in the atom. Avoids the UI looking
+    // "done" mid-iteration.
+    const showLoading = quoteLoading
+    const sellAmount = item.quotedSellAmount ?? item.estimatedSellAmount
+    const buyAmount = item.quotedBuyAmount ?? item.requiredBuyAmount
+    const tokenImpact = iterationState.perTokenImpacts[item.address]
+    const showImpact = !showLoading && quoteReady && tokenImpact !== undefined
+
+    return (
+      <div
+        key={item.address}
+        className={cn(
+          '-mx-2 rounded-[18px] border px-4 py-3 transition-colors',
+          !showLoading && quoteReady && 'border-primary/35 bg-primary/5',
+          !showLoading &&
+            quoteFailed &&
+            'border-destructive/25 bg-destructive/5',
+          (showLoading || (!quoteReady && !quoteFailed)) &&
+            'border-border/70 bg-background'
+        )}
+      >
+        <div className="flex items-center gap-4">
+          <TokenLogoWithChain
+            address={item.address}
+            symbol={item.symbol}
+            chain={chainId}
+            size="xl"
+          />
+          <div className="min-w-0 flex-1">
+            <div className="font-medium text-base truncate">{item.name}</div>
+            <div
+              className={cn(
+                'text-sm text-muted-foreground font-light truncate',
+                !showLoading && quoteFailed && 'text-destructive/70'
+              )}
+            >
+              {showLoading
+                ? `Fetching ${item.symbol} quote`
+                : quoteReady
+                  ? `Quote ready · Buying ${item.symbol} with ${inputToken.symbol}`
+                  : item.quote?.success === false
+                    ? item.quote.error || 'Quote unavailable'
+                    : `Fetching ${item.symbol} quote`}
+            </div>
+          </div>
+          <div className="min-w-[156px] text-right">
+            <div className="text-base font-medium">
+              {showLoading ? (
+                <Skeleton className="ml-auto h-5 w-20" />
+              ) : sellAmount ? (
+                <>
+                  -
+                  {formatCurrency(
+                    Number(formatUnits(sellAmount, inputToken.decimals))
+                  )}{' '}
+                  {inputToken.symbol}
+                </>
+              ) : (
+                `- ${inputToken.symbol}`
+              )}
+            </div>
+            <div className="text-sm text-muted-foreground font-light">
+              {showLoading ? (
+                <Skeleton className="ml-auto mt-1 h-4 w-24" />
+              ) : (
+                <>
+                  +{formatTokenBalance(buyAmount, item.decimals)} {item.symbol}
+                </>
+              )}
+            </div>
+            {showImpact && (
+              <div
+                className={cn(
+                  'text-xs font-light mt-0.5',
+                  -tokenImpact < -0.05
+                    ? 'text-destructive'
+                    : 'text-muted-foreground'
+                )}
+              >
+                Price impact: {-tokenImpact > 0 ? '+' : ''}
+                {(-tokenImpact * 100).toFixed(2)}%
+              </div>
+            )}
+          </div>
+          <div className="h-6 w-6 shrink-0" />
+        </div>
+      </div>
+    )
+  }
+
+  // Debounced refetch when amount changes
+  const prevDebouncedRef = useRef(debouncedAmount)
+  useEffect(() => {
+    if (
+      debouncedAmount !== prevDebouncedRef.current &&
+      Number(debouncedAmount) >= 1
+    ) {
+      prevDebouncedRef.current = debouncedAmount
+      refetch()
+    }
+  }, [debouncedAmount, refetch])
+
+  // WHY: Auto-fetch when allocation is ready (not just on mount) — allocation
+  // may still be loading if folioDetails hasn't propagated yet
+  const hasFetchedRef = useRef(false)
+  useEffect(() => {
+    if (hasFetchedRef.current || hasQuotes || noSwapsNeeded) return
+    if (parsedAmount >= 1 && allocationLoaded) {
+      hasFetchedRef.current = true
+      refetch()
+    }
+  }, [allocationLoaded, parsedAmount, hasQuotes, noSwapsNeeded, refetch])
+
+  const handleEdit = () => {
+    cancel()
+    cancelIteration()
+    setQuotes({})
+    setQuotesTimestamp(undefined)
+    setStep('configure')
+  }
+
+  return (
+    <div className="bg-secondary rounded-3xl p-1 w-full lg:min-h-[calc(100vh-100px)]">
+      <div className="grid w-full gap-0.5 lg:min-h-[calc(100vh-108px)] lg:grid-cols-[minmax(0,1fr)_minmax(420px,0.95fr)] lg:grid-rows-[auto_1fr] lg:items-stretch">
+        <div className="px-5 pt-5 pb-3 flex items-start justify-between gap-4 lg:col-start-1 lg:row-start-1">
+          <Tabs value="mint">
+            <TabsList className="h-9 px-0.5">
+              <TabsTrigger
+                value="mint"
+                className="flex items-center gap-1.5 px-3 data-[state=active]:text-primary"
+              >
+                Mint
+              </TabsTrigger>
+              <TabsTrigger
+                value="redeem"
+                disabled
+                className="flex items-center gap-1.5 px-3 data-[state=active]:text-primary"
+              >
+                Redeem
+              </TabsTrigger>
+            </TabsList>
+          </Tabs>
+        </div>
+
+        <div className="min-w-0 flex flex-col gap-0.5 lg:col-start-1 lg:row-start-2 lg:h-full">
+          {(recoveryChoice === 'top-up' ||
+            recoveryChoice === 'mint-reduced' ||
+            (!recoveryChoice && quotesStale && !priceMoved) ||
+            (!recoveryChoice && priceMoved)) && (
+            <div className="bg-card rounded-2xl p-2">
+              {recoveryChoice === 'top-up' && (
+                <div className="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-xl p-3 text-sm">
+                  Approving additional {inputToken.symbol} to mint your full
+                  amount
+                </div>
+              )}
+              {recoveryChoice === 'mint-reduced' && (
+                <div className="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-xl p-3 text-sm">
+                  Minting with your original inputs - reduced output
+                </div>
+              )}
+              {!recoveryChoice && quotesStale && !priceMoved && (
+                <div className="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-xl p-3 flex items-center justify-between">
+                  <span className="text-sm font-medium">
+                    Quotes may be outdated
+                  </span>
+                  <Button size="sm" variant="outline" onClick={() => refetch()}>
+                    Refresh quotes
+                  </Button>
+                </div>
+              )}
+              {!recoveryChoice && priceMoved && (
+                <div className="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-xl p-3 flex items-center justify-between">
+                  <span className="text-sm font-medium">Prices have moved</span>
+                  <Button size="sm" variant="outline" onClick={() => refetch()}>
+                    Accept new quotes
+                  </Button>
+                </div>
+              )}
+            </div>
+          )}
+
+          <div className="bg-card rounded-2xl p-2">
+            <div className="px-4 py-3 flex items-center justify-between">
+              <div>
+                <h3 className="font-medium text-base">Mint amount</h3>
+                <p className="text-sm text-muted-foreground font-light">
+                  {isTotalUsdInputMode
+                    ? 'Enter total USD to mint. Max accounts for sources and basket weights.'
+                    : `Using ${inputToken.symbol} directly for this mint.`}
+                </p>
+              </div>
+            </div>
+            <div className="rounded-xl border border-border/70 bg-transparent px-4 py-3">
+              <div className="text-sm text-muted-foreground mb-3">
+                You provide
+              </div>
+              <div className="flex items-start justify-between gap-4">
+                <div className="min-w-0 flex-1">
+                  <div className="flex h-8 min-w-0 items-start">
+                    {isTotalUsdInputMode && mintAmount && (
+                      <span
+                        className={cn(
+                          'text-[32px] font-light leading-8 text-muted-foreground',
+                          exceedsBalance && 'text-destructive'
+                        )}
+                      >
+                        $
+                      </span>
+                    )}
+                    <div
+                      className={cn(
+                        'flex h-8 min-w-0 items-center text-[32px] font-light leading-8 text-primary',
+                        exceedsBalance && 'text-destructive'
+                      )}
+                    >
+                      {mintAmount || '0.00'}
+                    </div>
+                  </div>
+                  <div className="mt-2 text-sm font-light text-muted-foreground">
+                    {hasWalletCollateralUsed
+                      ? `$${formatCurrency(inputUsedUsd)} ${inputToken.symbol} + $${formatCurrency(walletCollateralUsd)} Collateral`
+                      : `$${formatCurrency(parsedAmount)} ${inputToken.symbol}`}
+                  </div>
+                </div>
+
+                <div className="flex shrink-0 flex-col items-end gap-2">
+                  {isTotalUsdInputMode ? (
+                    <div className="flex h-9 max-w-[260px] items-center justify-end overflow-hidden pl-4">
+                      {visibleInputSourceTokens.map((token, index) => (
+                        <span
+                          key={token.address}
+                          className={cn(
+                            'flex size-9 shrink-0 items-center justify-center rounded-full border-2 border-card bg-background',
+                            index > 0 && '-ml-4'
+                          )}
+                        >
+                          <TokenLogo
+                            address={token.address}
+                            symbol={token.symbol}
+                            chain={chainId}
+                            size="xl"
+                          />
+                        </span>
+                      ))}
+                      {hiddenInputSourceTokenCount > 0 && (
+                        <span className="flex size-9 -ml-4 shrink-0 items-center justify-center rounded-full border-2 border-card bg-background text-xs font-medium">
+                          +{hiddenInputSourceTokenCount}
+                        </span>
+                      )}
+                    </div>
+                  ) : (
+                    <div className="flex h-8 items-center gap-2">
+                      <TokenLogo
+                        address={inputToken.address}
+                        symbol={inputToken.symbol}
+                        chain={chainId}
+                        size="xl"
+                      />
+                      <span className="text-[32px] font-light leading-8 text-muted-foreground">
+                        {inputToken.symbol}
+                      </span>
+                    </div>
+                  )}
+                  <div className="flex items-center gap-2">
+                    <button
+                      className="text-sm font-medium text-primary bg-primary/10 rounded-full px-2 py-0.5 flex items-center gap-1"
+                      onClick={handleEdit}
+                    >
+                      <Pencil size={12} />
+                      Edit
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {exceedsBalance && (
+              <div className="mt-0.5 rounded-xl bg-destructive/10 text-destructive text-sm py-3 px-4">
+                Exceeds available balance
+              </div>
+            )}
+          </div>
+
+          <div className="bg-card rounded-2xl p-2 flex flex-col lg:flex-1">
+            <div className="flex items-start justify-between gap-4 px-4 py-3">
+              <div>
+                <h3 className="font-medium text-base">Quote review</h3>
+                <p className="text-sm text-muted-foreground font-light">
+                  Inputs are locked while swap quotes are fetched.
+                </p>
+              </div>
+              <div className="flex items-center gap-1">
+                <button className="rounded-[12px] border border-border/70 bg-transparent h-8 w-8 flex items-center justify-center transition-colors hover:bg-primary hover:text-primary-foreground">
+                  <Settings size={16} />
+                </button>
+                <button
+                  className="rounded-[12px] border border-border/70 bg-transparent h-8 w-8 flex items-center justify-center transition-colors hover:bg-primary hover:text-primary-foreground"
+                  onClick={() => refetch()}
+                  disabled={isFetching}
+                >
+                  <RefreshCw
+                    size={16}
+                    className={isFetching ? 'animate-spin' : ''}
+                  />
+                </button>
+              </div>
+            </div>
+
+            {iterationState.status === 'iterating' &&
+              iterationState.round > 0 && (
+                <div className="mb-3 rounded-xl border border-primary/25 bg-primary/5 px-4 py-2 text-sm flex items-center justify-between gap-3">
+                  <span className="font-medium text-primary">
+                    Optimizing quotes (round {iterationState.round + 1}/
+                    {iterationState.maxRounds})…
+                  </span>
+                  {iterationState.history.length > 0 && parsedAmount > 0 && (
+                    <span className="text-muted-foreground font-light">
+                      Last round: {(
+                        (iterationState.history[
+                          iterationState.history.length - 1
+                        ].costUsd /
+                          parsedAmount) *
+                        100
+                      ).toFixed(1)}
+                      % of budget
+                    </span>
+                  )}
+                </div>
+              )}
+            {iterationState.status === 'capped' && (
+              <div className="mb-3 rounded-xl border border-yellow-200 dark:border-yellow-800 bg-yellow-50 dark:bg-yellow-900/20 px-4 py-2 text-sm">
+                Best effort: using {utilizationPct.toFixed(1)}% of your budget
+                after {iterationState.maxRounds} optimization rounds.
+              </div>
+            )}
+            {iterationState.status === 'over_buffer' && (
+              <div className="mb-3 rounded-xl border border-yellow-200 dark:border-yellow-800 bg-yellow-50 dark:bg-yellow-900/20 px-4 py-2 text-sm">
+                Mint will use {utilizationPct.toFixed(1)}% of your input,
+                exceeding the{' '}
+                {((1 - ASYNC_MINT_BUFFER) * 100).toFixed(0)}% buffer target.
+                It will still go through, but the safety margin is consumed.
+              </div>
+            )}
+            {iterationState.status === 'infeasible' && (
+              <div className="mb-3 rounded-xl border border-destructive/25 bg-destructive/10 text-destructive px-4 py-2 text-sm">
+                {iterationState.error ??
+                  'Cost exceeds your total budget. Lower the amount or try again.'}
+              </div>
+            )}
+
+            <div className="rounded-xl border border-border/70 bg-transparent px-4 py-3">
+              <div className="text-sm text-muted-foreground mb-3">
+                Quoted receive
+              </div>
+              <div className="flex items-start justify-between gap-4">
+                <div className="min-w-0">
+                  {quoteLoading ? (
+                    <Skeleton className="w-[120px] h-8" />
+                  ) : (
+                    <span className="text-[32px] font-light text-primary leading-8">
+                      {dtfDisplayPrefix}
+                      {formatTokenAmount(displayDtfAmount)}
+                    </span>
+                  )}
+                  {quoteLoading ? (
+                    <Skeleton className="w-[80px] h-5 mt-2" />
+                  ) : (
+                    <div className="text-sm text-muted-foreground font-light mt-2 whitespace-nowrap">
+                      {dtfDisplayPrefix}${formatCurrency(displayDtfValue)}
+                    </div>
+                  )}
+                </div>
+                <div className="flex shrink-0 flex-col items-end">
+                  <div className="flex items-center gap-2">
+                    <TokenLogo
+                      address={indexDTF?.id}
+                      symbol={indexDTF?.token.symbol}
+                      chain={chainId}
+                      size="xl"
+                    />
+                    <span className="text-[32px] font-light text-muted-foreground leading-8">
+                      {indexDTF?.token.symbol}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {hasQuotes && !quoteLoading && missingQuoteCount > 0 && (
+              <details className="group mt-5 rounded-xl bg-destructive/10 text-destructive text-sm">
+                <summary className="flex cursor-pointer list-none items-center justify-between gap-3 px-4 py-3 [&::-webkit-details-marker]:hidden">
+                  <span>
+                    {missingQuoteCount} required collateral quote
+                    {missingQuoteCount === 1 ? '' : 's'} unavailable. Try a
+                    larger amount or refresh quotes.
+                  </span>
+                  <ChevronRight
+                    size={16}
+                    className="shrink-0 transition-transform group-open:rotate-90"
+                  />
+                </summary>
+                <div className="border-t border-destructive/15 px-4 py-3">
+                  <div className="flex flex-col gap-2">
+                    {missingQuoteDetails.map((item) => (
+                      <div
+                        key={item.address}
+                        className="rounded-lg bg-background/70 px-3 py-2"
+                      >
+                        <div className="flex items-start justify-between gap-3">
+                          <div className="min-w-0">
+                            <div className="font-medium">{item.symbol}</div>
+                            <div className="truncate text-xs text-destructive/70">
+                              {item.address}
+                            </div>
+                          </div>
+                          <div className="shrink-0 text-right">
+                            <div className="font-medium">
+                              {formatTokenBalance(item.amount, item.decimals)}
+                            </div>
+                            <div className="max-w-[220px] truncate text-xs text-destructive/70">
+                              {item.quote?.success === false && item.quote.error
+                                ? item.quote.error
+                                : 'No quote returned'}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </details>
+            )}
+
+            <div className="mt-5 flex flex-col gap-3 px-4 text-sm">
+              <TooltipProvider delayDuration={200}>
+                <div className="flex items-center justify-between">
+                  <span className="text-muted-foreground flex items-center gap-1">
+                    Price impact
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <Info
+                          size={14}
+                          className="cursor-help text-muted-foreground/70"
+                        />
+                      </TooltipTrigger>
+                      <TooltipContent className="max-w-[280px]">
+                        The deviation between the {inputToken.symbol} each
+                        swap actually costs (CoWSwap quote) and what the
+                        basket would cost at reference prices (Reserve API).
+                        Negative means you're paying more than expected;
+                        positive means you got a better price. We apply a{' '}
+                        {(ASYNC_MINT_BUFFER * 100).toFixed(0)}% buffer on
+                        your input to absorb negative impact.
+                      </TooltipContent>
+                    </Tooltip>
+                  </span>
+                  {quoteLoading ? (
+                    <Skeleton className="h-4 w-16" />
+                  ) : showRealMode ? (
+                    <span
+                      className={cn(
+                        'font-medium',
+                        realizedImpactPct < -3
+                          ? 'text-destructive'
+                          : 'text-foreground'
+                      )}
+                    >
+                      {realizedImpactPct > 0 ? '+' : ''}
+                      {realizedImpactPct.toFixed(2)}%
+                    </span>
+                  ) : (
+                    <span className="font-medium text-muted-foreground">-</span>
+                  )}
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-muted-foreground flex items-center gap-1">
+                    Budget used
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <Info
+                          size={14}
+                          className="cursor-help text-muted-foreground/70"
+                        />
+                      </TooltipTrigger>
+                      <TooltipContent className="max-w-[280px]">
+                        {inputToken.symbol} actually spent on swaps as a
+                        share of your total input. We reserve a{' '}
+                        {(ASYNC_MINT_BUFFER * 100).toFixed(0)}% buffer to
+                        cover potential price impact and slippage, so the
+                        maximum target is{' '}
+                        {((1 - ASYNC_MINT_BUFFER) * 100).toFixed(0)}%.
+                        Unused budget stays in your wallet.
+                      </TooltipContent>
+                    </Tooltip>
+                  </span>
+                  {quoteLoading ? (
+                    <Skeleton className="h-4 w-32" />
+                  ) : showRealMode && realizedCostUsd !== undefined ? (
+                    <span className="font-medium">
+                      {formatCurrency(realizedCostUsd)} {inputToken.symbol} (
+                      {utilizationPct.toFixed(2)}%)
+                    </span>
+                  ) : (
+                    <span className="font-medium text-muted-foreground">-</span>
+                  )}
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-muted-foreground">Max slippage</span>
+                  <span className="font-medium">
+                    {(Number(slippage) / 100).toFixed(2)}%
+                  </span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-muted-foreground">Minting fee</span>
+                  <span className="font-medium">{mintFee}%</span>
+                </div>
+              </TooltipProvider>
+            </div>
+
+            <div className="mt-5 lg:mt-auto">
+              <TransactionButtonContainer chain={chainId}>
+                <Button
+                  size="lg"
+                  className="w-full h-[49px] rounded-[12px]"
+                  disabled={
+                    isPending ||
+                    quoteLoading ||
+                    iterationState.status === 'iterating' ||
+                    iterationState.status === 'infeasible' ||
+                    !isValidAmount ||
+                    exceedsBalance ||
+                    !allRequiredQuotesReady ||
+                    quotesStale
+                  }
+                  onClick={() =>
+                    noSwapsNeeded ? setStep('processing') : submit()
+                  }
+                >
+                  {isPending ? (
+                    'Signing...'
+                  ) : noSwapsNeeded ? (
+                    <span className="font-bold">Approve & Mint</span>
+                  ) : (
+                    <span className="flex items-center gap-1">
+                      <span className="font-bold">Prepare mint</span>
+                      <span className="font-light opacity-80">- Step 1/2</span>
+                    </span>
+                  )}
+                </Button>
+              </TransactionButtonContainer>
+            </div>
+          </div>
+        </div>
+
+        <div className="bg-background rounded-2xl p-2 lg:col-start-2 lg:row-start-2 lg:flex lg:h-full lg:flex-col">
+          <div className="px-4 py-3 flex items-start justify-between gap-4">
+            <div>
+              <h3 className="font-medium text-base">Collateral quotes</h3>
+              <p className="text-sm text-muted-foreground font-light">
+                {noSwapsNeeded
+                  ? 'No collateral swaps are needed for this mint.'
+                  : `This total is split across the required basket assets below.`}
+              </p>
+            </div>
+          </div>
+
+          <ScrollArea className="h-[min(620px,calc(100vh-290px))] min-h-[360px] lg:h-auto lg:min-h-0 lg:flex-1">
+            <div className="flex min-h-full flex-col gap-1 px-2">
+              {noSwapsNeeded ? (
+                <div className="flex min-h-[320px] flex-1 items-center justify-center px-4 py-10 text-center">
+                  <div className="max-w-[320px]">
+                    <h4 className="font-medium text-base">
+                      Wallet collateral covers this mint
+                    </h4>
+                    <p className="mt-1 text-sm text-muted-foreground font-light">
+                      You can proceed directly to mint without placing swap
+                      orders.
+                    </p>
+                  </div>
+                </div>
+              ) : (
+                <>
+                  {collateralQuoteRows.length > 0 && (
+                    <div className="-mx-2 mb-2 rounded-[18px] border border-primary/25 bg-primary/5 px-4 py-4">
+                      <div className="flex items-start justify-between gap-4">
+                        <div className="min-w-0">
+                          <div className="text-sm text-muted-foreground font-light">
+                            {inputToken.symbol} swapped into assets
+                          </div>
+                          <div className="mt-1 text-2xl font-light text-primary">
+                            {quoteLoading ? (
+                              <Skeleton className="h-8 w-32" />
+                            ) : totalQuotedSellAmount !== undefined ? (
+                              <>
+                                {formatCurrency(
+                                  Number(
+                                    formatUnits(
+                                      totalQuotedSellAmount,
+                                      inputToken.decimals
+                                    )
+                                  )
+                                )}{' '}
+                                {inputToken.symbol}
+                              </>
+                            ) : (
+                              `- ${inputToken.symbol}`
+                            )}
+                          </div>
+                        </div>
+                        <div className="max-w-[180px] text-right text-sm text-muted-foreground font-light">
+                          Split across the collateral purchases below
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  <div className="grid grid-cols-[minmax(0,1fr)_156px_24px] items-center gap-4 px-2 pt-4 pb-1 text-xs font-medium uppercase tracking-wide text-muted-foreground">
+                    <span>Asset</span>
+                    <span className="col-span-2 text-right">Split</span>
+                  </div>
+
+                  {collateralQuoteRows.length > 0
+                    ? collateralQuoteRows.map(renderCollateralQuoteRow)
+                    : [0, 1, 2].map((item) => (
+                        <Skeleton
+                          key={item}
+                          className="h-[76px] rounded-[18px]"
+                        />
+                      ))}
+                </>
+              )}
+            </div>
+          </ScrollArea>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+export default QuoteSummary

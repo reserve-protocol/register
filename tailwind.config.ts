@@ -131,6 +131,10 @@ const config = {
             transform: 'rotate(360deg)',
           },
         },
+        shimmer: {
+          '0%': { backgroundPosition: '200% 0' },
+          '100%': { backgroundPosition: '-200% 0' },
+        },
         'slide-left': {
           from: { left: '50%' },
           to: { left: 'calc(50% - 150px)' },
@@ -148,6 +152,7 @@ const config = {
         'width-expand':
           'width-expand 0.4s cubic-bezier(0.25, 0.8, 0.25, 1) forwards',
         'spin-slow': 'spin-slow 4s linear infinite',
+        shimmer: 'shimmer 2s linear infinite',
         'slide-left': 'slide-left 0.5s forwards',
         'slide-out-right': 'slide-out-right 0.5s forwards',
       },

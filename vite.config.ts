@@ -65,7 +65,12 @@ export default defineConfig({
     },
   },
 
-  // Aliases handled by viteTsconfigPaths - no need to duplicate here
+  resolve: {
+    alias: {
+      // Polyfill for @cowprotocol/cow-sdk
+      'node-fetch': 'cross-fetch',
+    },
+  },
 
   optimizeDeps: {
     exclude: ['ts-node'],
