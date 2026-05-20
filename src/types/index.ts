@@ -1,4 +1,5 @@
 import { AvailableChain } from '@/utils/chains'
+import type { IndexDtfData } from '@reserve-protocol/react-sdk'
 import { Address, Hex } from 'viem'
 
 export type TimeRange = '24h' | '7d' | '1m' | '3m' | '1y' | 'all'
@@ -266,100 +267,7 @@ export interface TenderlySimulation {
 
 export type Trader = 'backingManager' | 'rsrTrader' | 'rTokenTrader'
 
-export type IndexDTF = {
-  id: Address
-  proxyAdmin: Address
-  timestamp: number
-  chainId: AvailableChain
-  deployer: Address
-  ownerAddress: Address
-  mintingFee: number
-  tvlFee: number
-  annualizedTvlFee: number
-  mandate: string
-  auctionDelay: number
-  auctionLength: number
-  auctionApprovers: Address[]
-  auctionLaunchers: Address[]
-  brandManagers: Address[]
-  feeRecipients: {
-    address: Address
-    percentage: string
-  }[]
-  ownerGovernance?: {
-    id: Address
-    votingDelay: number
-    votingPeriod: number
-    proposalThreshold: number
-    quorumNumerator: number
-    quorumDenominator: number
-    quorum: number
-    timelock: {
-      id: Address
-      guardians: Address[]
-      executionDelay: number
-    }
-  }
-  legacyAdmins: Address[]
-  tradingGovernance?: {
-    id: Address
-    votingDelay: number
-    votingPeriod: number
-    proposalThreshold: number
-    quorumNumerator: number
-    quorumDenominator: number
-    quorum: number
-    timelock: {
-      id: Address
-      guardians: Address[]
-      executionDelay: number
-    }
-  }
-  legacyAuctionApprovers: Address[]
-  token: {
-    id: Address
-    name: string
-    symbol: string
-    decimals: number
-    totalSupply: string
-    currentHolderCount: number
-  }
-  stToken?: {
-    id: Address
-    token: {
-      name: string
-      symbol: string
-      decimals: number
-      totalSupply: string
-    }
-    underlying: {
-      name: string
-      symbol: string
-      address: Address
-      decimals: number
-    }
-    governance?: {
-      id: Address
-      votingDelay: number
-      votingPeriod: number
-      proposalThreshold: number
-      quorumNumerator: number
-      quorumDenominator: number
-      quorum: number
-      timelock: {
-        id: Address
-        guardians: Address[]
-        executionDelay: number
-      }
-    }
-    legacyGovernance: Address[]
-    rewardTokens: Token[]
-  }
-  totalRevenue: number
-  protocolRevenue: number
-  governanceRevenue: number
-  externalRevenue: number
-}
+export type IndexDTF = IndexDtfData
 
 export type IndexAuction = {
   sell: Address

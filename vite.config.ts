@@ -66,6 +66,9 @@ export default defineConfig({
   },
 
   // Aliases handled by viteTsconfigPaths - no need to duplicate here
+  resolve: {
+    dedupe: ['react', 'react-dom', '@tanstack/react-query'],
+  },
 
   optimizeDeps: {
     exclude: ['ts-node'],

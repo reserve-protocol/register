@@ -1,12 +1,9 @@
 import daoFeeRegistryAbi from '@/abis/dao-fee-registry-abi'
 import dtfIndexAbi from '@/abis/dtf-index-abi-v1'
-import dtfIndexAbiV4 from '@/abis/dtf-index-abi-v4'
 import FeedbackButton from '@/components/feedback-button'
 import SEO from '@/components/seo'
 import useFavicon from '@/hooks/useFavicon'
-import useIndexDTF from '@/hooks/useIndexDTF'
 import useIndexDTFTransactions from '@/hooks/useIndexDTFTransactions'
-import { useIndexBasket } from '@/hooks/useIndexPrice'
 import { chainIdAtom, walletChainAtom } from '@/state/atoms'
 import {
   indexDTF7dChangeAtom,
@@ -33,16 +30,25 @@ import {
 } from '@/state/dtf/yield-index-atoms'
 import { useDTFStatus } from '@/hooks/use-dtf-status'
 import { isAddress } from '@/utils'
-import { AvailableChain, supportedChains } from '@/utils/chains'
+import { AvailableChain } from '@/utils/chains'
 import {
   FALLBACK_PLATFORM_FEES,
   NETWORKS,
   RESERVE_API,
   ROUTES,
 } from '@/utils/constants'
+import {
+  IndexDtfProvider,
+  useCurrentIndexDtf,
+  useIndexDtfIdentity,
+  supportedChainIds,
+  type IndexDtfBrand as SdkIndexDtfBrand,
+  type IndexDtfData,
+  type SupportedChainId,
+} from '@reserve-protocol/react-sdk'
 import { useQuery } from '@tanstack/react-query'
 import { atom, useAtom, useAtomValue, useSetAtom } from 'jotai'
-import { useEffect, useState } from 'react'
+import { useEffect, useLayoutEffect, useState } from 'react'
 import { Outlet, useNavigate, useParams, useLocation } from 'react-router-dom'
 import { Address } from 'viem'
 import { useReadContract, useSwitchChain } from 'wagmi'
@@ -52,6 +58,67 @@ import YieldIndexUpdater from '@/state/updaters/yield-index-updater'
 
 const DEFAULT_DESCRIPTION =
   'Reserve is the leading platform for permissionless DTFs and asset-backed currencies. Create, manage & trade tokenized indexes with 24/7 transparency.'
+
+const isIndexDtfChain = (chainId: number): chainId is SupportedChainId =>
+  supportedChainIds.includes(chainId as SupportedChainId)
+
+const mapSdkBrand = (brand: SdkIndexDtfBrand | undefined) => {
+  if (!brand) return undefined
+
+  return {
+    dtf: {
+      icon: brand.icon ?? '',
+      cover: brand.cover ?? '',
+      mobileCover: brand.mobileCover ?? '',
+      description: brand.description ?? '',
+      notesFromCreator: brand.notesFromCreator ?? '',
+      prospectus: brand.prospectus ?? '',
+      tags: [...brand.tags],
+      basketType:
+        brand.basketType === 'unit-based' ? 'unit-based' : 'percentage-based',
+    },
+    creator: {
+      name: brand.creator?.name ?? '',
+      icon: brand.creator?.icon ?? '',
+      link: brand.creator?.link ?? '',
+    },
+    curator: {
+      name: brand.curator?.name ?? '',
+      icon: brand.curator?.icon ?? '',
+      link: brand.curator?.link ?? '',
+    },
+    socials: {
+      twitter: brand.socials.twitter ?? '',
+      telegram: brand.socials.telegram ?? '',
+      discord: brand.socials.discord ?? '',
+      website: brand.socials.website ?? '',
+    },
+  } satisfies IndexDTFBrand
+}
+
+const getBasketState = (dtf: IndexDtfData) => {
+  const prices: Record<string, number> = {
+    [dtf.id.toLowerCase()]: dtf.market.price,
+  }
+  const amounts: Record<string, number> = {}
+  const shares: Record<string, string> = {}
+  const basket = Object.values(dtf.basket)
+    .map((asset) => {
+      const address = asset.token.address.toLowerCase()
+
+      prices[address] = asset.price
+      amounts[address] = Number(asset.amount.formatted) * asset.price
+      shares[address] = asset.weight
+
+      return {
+        ...asset.token,
+        price: asset.price,
+      }
+    })
+    .sort((a, b) => Number(shares[b.address.toLowerCase()]) - Number(shares[a.address.toLowerCase()]))
+
+  return { basket, prices, amounts, shares }
+}
 
 const IndexDTFSEO = () => {
   const dtf = useAtomValue(indexDTFAtom)
@@ -87,94 +154,52 @@ const useChainWatch = () => {
   }, [chainId])
 }
 
-const IndexDTFMetadataUpdater = ({
-  tokenAddress,
-  chainId,
-}: {
-  tokenAddress?: string
-  chainId: number
-}) => {
+const IndexDTFDataUpdater = () => {
   const setIndexDTF = useSetAtom(indexDTFAtom)
   const setIndexDTFBrand = useSetAtom(indexDTFBrandAtom)
-  const { data } = useIndexDTF(tokenAddress, chainId as AvailableChain)
-  const { data: brandData } = useQuery({
-    queryKey: ['brand', data?.id],
-    queryFn: async () => {
-      if (!data) return undefined
-
-      const res = await fetch(
-        `${RESERVE_API}folio-manager/read?folio=${data.id.toLowerCase()}&chainId=${chainId}`
-      )
-
-      const response = await res.json()
-
-      if (response.status !== 'ok')
-        throw new Error('Failed to fetch brand data')
-
-      return response.parsedData as IndexDTFBrand
-    },
-    enabled: !!data,
-  })
-
-  useEffect(() => {
-    if (data) {
-      setIndexDTF(data)
-    }
-  }, [data])
-
-  useEffect(() => {
-    if (brandData) {
-      setIndexDTFBrand(brandData)
-    }
-  }, [brandData])
-
-  return null
-}
-
-const IndexDTFBasketUpdater = ({
-  tokenAddress,
-  chainId,
-}: {
-  tokenAddress?: string
-  chainId: number
-}) => {
   const setBasket = useSetAtom(indexDTFBasketAtom)
   const setBasketPrices = useSetAtom(indexDTFBasketPricesAtom)
   const setBasketAmounts = useSetAtom(indexDTFBasketAmountsAtom)
   const setBasketShares = useSetAtom(indexDTFBasketSharesAtom)
   const setRebalanceControl = useSetAtom(indexDTFRebalanceControlAtom)
+  const { data } = useCurrentIndexDtf()
 
-  const { data } = useIndexBasket(tokenAddress, chainId)
-  // 4.0 onwards
-  const { data: rebalanceControl } = useReadContract({
-    abi: dtfIndexAbiV4,
-    address: tokenAddress as Address,
-    functionName: 'rebalanceControl',
+  useEffect(() => {
+    if (!data) return
+
+    const { basket, prices, amounts, shares } = getBasketState(data)
+
+    setIndexDTF(data)
+    setIndexDTFBrand(mapSdkBrand(data.brand))
+    setBasket(basket)
+    setBasketPrices(prices)
+    setBasketAmounts(amounts)
+    setBasketShares(shares)
+    setRebalanceControl({
+      weightControl: data.rebalance.weightControl,
+      priceControl: data.rebalance.priceControl,
+    })
+  }, [data])
+
+  return null
+}
+
+const IndexDTFVersionUpdater = () => {
+  const { address, chainId } = useIndexDtfIdentity()
+  const setIndexDTFVersion = useSetAtom(indexDTFVersionAtom)
+
+  const { data: version } = useReadContract({
+    address,
+    abi: dtfIndexAbi,
+    functionName: 'version',
     chainId,
   })
 
   useEffect(() => {
-    if (data) {
-      setBasket(
-        data.basket.sort(
-          (a, b) =>
-            Number(data.shares[b.address]) - Number(data.shares[a.address])
-        )
-      )
-      setBasketPrices(data.prices)
-      setBasketAmounts(data.amounts)
-      setBasketShares(data.shares)
+    if (version) {
+      setIndexDTFVersion(version)
     }
-  }, [data])
-
-  useEffect(() => {
-    if (rebalanceControl) {
-      setRebalanceControl({
-        weightControl: rebalanceControl[0],
-        priceControl: rebalanceControl[1],
-      })
-    }
-  }, [rebalanceControl])
+  }, [version])
 
   return null
 }
@@ -295,26 +320,14 @@ export const indexDTFRefreshFnAtom = atom<(() => void) | null>(null)
 
 // TODO: Hook currently re-renders a lot because of a wagmi bug, different component to avoid tree re-renders
 const Updater = () => {
-  const { chain, tokenId } = useParams()
-  const navigate = useNavigate()
+  const { address: tokenAddress, chainId } = useIndexDtfIdentity()
   const setChain = useSetAtom(chainIdAtom)
-  const setIndexDTFVersion = useSetAtom(indexDTFVersionAtom)
+  const currentChainId = useAtomValue(chainIdAtom)
   const [currentToken, setTokenAddress] = useAtom(iTokenAddressAtom)
   const resetAtoms = useSetAtom(resetStateAtom)
   const setRefreshFn = useSetAtom(indexDTFRefreshFnAtom)
-  const chainId = NETWORKS[chain ?? '']
   const [key, setKey] = useState(0)
-  useIndexDTFTransactions(currentToken ?? '', chainId)
-
-  const { data: version } = useReadContract({
-    address: currentToken,
-    abi: dtfIndexAbi,
-    functionName: 'version',
-    chainId,
-    query: {
-      enabled: !!currentToken,
-    },
-  })
+  useIndexDTFTransactions(tokenAddress, chainId)
 
   useChainWatch()
 
@@ -332,54 +345,62 @@ const Updater = () => {
   }, [])
 
   // Handle token change
-  useEffect(() => {
-    const tokenAddress = isAddress(tokenId ?? '')
-
-    if (!supportedChains.has(chainId) || !tokenAddress) {
-      navigate(ROUTES.NOT_FOUND)
-    }
-
-    if (tokenAddress !== currentToken) {
+  useLayoutEffect(() => {
+    if (tokenAddress !== currentToken || chainId !== currentChainId) {
       resetState()
-      if (chainId) {
-        setChain(chainId as AvailableChain)
-      }
-      setTokenAddress(tokenAddress ?? undefined)
+      setChain(chainId as AvailableChain)
+      setTokenAddress(tokenAddress)
     }
-  }, [tokenId, chainId])
-
-  useEffect(() => {
-    if (version) {
-      setIndexDTFVersion(version)
-    }
-  }, [version])
+  }, [tokenAddress, chainId, currentChainId, currentToken])
 
   // Reset state on unmount
   useEffect(() => resetState, [])
 
   return (
     <div key={key}>
-      <IndexDTFMetadataUpdater tokenAddress={currentToken} chainId={chainId} />
-      <IndexDTFBasketUpdater tokenAddress={currentToken} chainId={chainId} />
-      <PlatformFeeUpdater tokenAddress={currentToken} chainId={chainId} />
+      <IndexDTFDataUpdater />
+      <IndexDTFVersionUpdater />
+      <PlatformFeeUpdater tokenAddress={tokenAddress} chainId={chainId} />
       <IndexDTFExposureUpdater chainId={chainId} />
       <YieldIndexUpdater chainId={chainId} />
-      <DeprecationStatusUpdater tokenAddress={currentToken} chainId={chainId} />
+      <DeprecationStatusUpdater tokenAddress={tokenAddress} chainId={chainId} />
       <GovernanceUpdater />
     </div>
   )
 }
 
-const IndexDTFContainer = () => (
-  <div className="container flex flex-col-reverse md:flex-row mb-16 lg:mb-0">
-    <IndexDTFSEO />
-    <FeedbackButton />
-    <Updater />
-    <IndexDTFNavigation />
-    <div className="flex-grow">
-      <Outlet />
-    </div>
-  </div>
-)
+const InvalidIndexDTFRoute = () => {
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    navigate(ROUTES.NOT_FOUND)
+  }, [])
+
+  return null
+}
+
+const IndexDTFContainer = () => {
+  const { chain, tokenId } = useParams()
+  const chainId = NETWORKS[chain ?? '']
+  const tokenAddress = isAddress(tokenId ?? '')
+
+  if (!isIndexDtfChain(chainId) || !tokenAddress) {
+    return <InvalidIndexDTFRoute />
+  }
+
+  return (
+    <IndexDtfProvider address={tokenAddress} chainId={chainId}>
+      <div className="container flex flex-col-reverse md:flex-row mb-16 lg:mb-0">
+        <IndexDTFSEO />
+        <FeedbackButton />
+        <Updater />
+        <IndexDTFNavigation />
+        <div className="flex-grow">
+          <Outlet />
+        </div>
+      </div>
+    </IndexDtfProvider>
+  )
+}
 
 export default IndexDTFContainer
