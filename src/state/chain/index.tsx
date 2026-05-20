@@ -59,7 +59,6 @@ export const wagmiConfig = createConfig({
           http(`https://rpc.ankr.com/mainnet/${import.meta.env.VITE_ANKR}`),
         ]),
     [base.id]: fallback([
-      http(`https://base-rpc.publicnode.com`),
       http(`https://base.gateway.tenderly.co`),
       http(`https://base-mainnet.infura.io/v3/${import.meta.env.VITE_INFURA}`),
       http(
