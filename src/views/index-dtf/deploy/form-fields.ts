@@ -76,10 +76,7 @@ export const DeployFormSchema = z
     tokenName: z
       .string()
       .min(1, 'Token name is required')
-      .max(80, 'Token name must be 80 characters or less')
-      .refine(noSpecialCharacters, {
-        message: 'Token name cannot contain special characters or emojis',
-      }),
+      .max(80, 'Token name must be 80 characters or less'),
     symbol: z
       .string()
       .min(1, 'Token symbol is required')

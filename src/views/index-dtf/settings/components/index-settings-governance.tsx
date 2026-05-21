@@ -10,7 +10,6 @@ import {
   Pause,
   ShieldCheck,
 } from 'lucide-react'
-import { formatEther } from 'viem'
 import { IconWrapper, InfoCard, InfoCardItem } from './settings-info-card'
 import { cn } from '@/lib/utils'
 import Help from '@/components/ui/help'
@@ -68,13 +67,7 @@ export const InnerGovernanceInfo = ({
       <InfoCardItem
         icon={<IconWrapper Component={FileLock2} />}
         label={t`Proposal Threshold`}
-        value={
-          data
-            ? formatPercentage(
-                Number(formatEther(BigInt(data.proposalThreshold)))
-              )
-            : undefined
-      }
+        value={data ? formatPercentage(data.proposalThreshold) : undefined}
       />
       <InfoCardItem
         icon={<IconWrapper Component={ShieldCheck} />}
