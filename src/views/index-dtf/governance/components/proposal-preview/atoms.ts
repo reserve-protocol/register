@@ -19,6 +19,10 @@ import {
   spellAbi as v5SpellAbi,
   spellAddress as v5SpellAddress,
 } from '../../views/propose/upgrade-banners/propose-v5-upgrade'
+import {
+  spellAbi as v5OptimisticSpellAbi,
+  spellAddress as v5OptimisticSpellAddress,
+} from '../../views/propose/upgrade-banners/propose-v5-optimistic-upgrade'
 import dtfIndexAbi from '@/abis/dtf-index-abi'
 import dtfIndexAbiV1 from '@/abis/dtf-index-abi-v1'
 
@@ -64,6 +68,10 @@ export const dtfAbiMapppingAtom = atom((get) => {
 
   if (v5SpellAddress[dtf.chainId]) {
     abiMapping[v5SpellAddress[dtf.chainId].toLowerCase()] = v5SpellAbi
+  }
+
+  if (v5OptimisticSpellAddress[dtf.chainId]) {
+    abiMapping[v5OptimisticSpellAddress[dtf.chainId].toLowerCase()] = v5OptimisticSpellAbi
   }
 
   return abiMapping
@@ -115,6 +123,10 @@ export const dtfContractAliasAtom = atom((get) => {
 
   if (v5SpellAddress[dtf.chainId]) {
     aliasMapping[v5SpellAddress[dtf.chainId].toLowerCase()] = 'V5 Upgrade Spell'
+  }
+
+  if (v5OptimisticSpellAddress[dtf.chainId]) {
+    aliasMapping[v5SpellAddress[dtf.chainId].toLowerCase()] = 'Reserve Optimistic Governance Spell'
   }
 
   return aliasMapping

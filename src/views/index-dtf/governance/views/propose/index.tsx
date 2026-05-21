@@ -12,6 +12,7 @@ import {
 import { Link } from 'react-router-dom'
 import ProposeV4Upgrade from './upgrade-banners/propose-v4-upgrade'
 import ProposeV5Upgrade from './upgrade-banners/propose-v5-upgrade'
+import ProposeV5UpgradeOptimistic from './upgrade-banners/propose-v5-optimistic-upgrade'
 
 const proposalTypes = [
   {
@@ -95,7 +96,7 @@ const ProposalTypeSelection = () => {
         <div className="flex flex-col gap-4 items-center justify-center m-4 flex-grow border-none sm:border-dashed border-2 border-foreground/40 rounded-3xl">
           <ProposeV4Upgrade />
           <ProposeV5Upgrade />
-
+          <ProposeV5UpgradeOptimistic />
           <div className="bg-secondary rounded-3xl w-full sm:w-[408px]">
             <Header />
             <TypeList />
