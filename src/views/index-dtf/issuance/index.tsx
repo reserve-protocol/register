@@ -55,16 +55,16 @@ const IndexDTFIssuance = () => {
         <div className="w-full mt-4 sm:w-[420px] flex justify-center ">
           <Link
             to={`./manual`}
-            className="mx-auto"†
-          onClick={() => trackClick('switch_to_manual')}
+            className="mx-auto"
+            onClick={() => trackClick('switch_to_manual')}
           >
-          <span className="text-legend underline text-md ">
-            Having issues? Switch to manual{' '}
-            {currentTab === 'buy' ? 'minting' : 'redeeming'}
-          </span>
-        </Link>
+            <span className="text-legend underline text-md ">
+              Having issues? Switch to manual{' '}
+              {currentTab === 'buy' ? 'minting' : 'redeeming'}
+            </span>
+          </Link>
+        </div>
       </div>
-    </div>
     </div >
   )
 }
