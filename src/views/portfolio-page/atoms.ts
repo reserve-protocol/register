@@ -4,12 +4,8 @@ import {
   portfolioStTokenAtom,
   stakingSidebarOpenAtom,
 } from '@/views/index-dtf/overview/components/staking/atoms'
-import {
-  PortfolioPeriod,
-  PortfolioProposal,
-  PortfolioResponse,
-} from './types'
-import { getProposalState, VotingState } from '@/lib/governance'
+import { PortfolioPeriod, PortfolioProposal, PortfolioResponse } from './types'
+import { VotingState } from '@/lib/governance'
 import { PROPOSAL_STATES } from '@/utils/constants'
 
 export const portfolioPageTimeRangeAtom = atom<PortfolioPeriod>('3m')
@@ -17,6 +13,8 @@ export const portfolioPageTimeRangeAtom = atom<PortfolioPeriod>('3m')
 export const portfolioDataAtom = atom<PortfolioResponse | null>(null)
 
 export const portfolioAddressAtom = atom<Address | undefined>(undefined)
+
+export const portfolioNowAtom = atom(Math.floor(Date.now() / 1000))
 
 export const portfolioIndexDTFsAtom = atom(
   (get) => get(portfolioDataAtom)?.indexDTFs ?? []
@@ -53,27 +51,80 @@ const ACTIVE_STATES = new Set([
   PROPOSAL_STATES.QUEUED,
 ])
 
-const resolveState = (p: PortfolioProposal) =>
-  getProposalState({
-    id: p.id,
-    timelockId: '',
-    description: p.description,
-    creationTime: Number(p.creationTime),
-    creationBlock: 0,
+// WHY: Portfolio proposals are aggregate API rows, not SDK proposal DTOs.
+// Do not rebuild fake SDK Amounts from formatted strings for display filtering.
+const getPortfolioProposalVotingState = (
+  p: PortfolioProposal,
+  timestamp: number
+): VotingState => {
+  const voteStart = Number(p.voteStart)
+  const voteEnd = Number(p.voteEnd)
+  const forVotes = Number(p.forWeightedVotes)
+  const abstainVotes = Number(p.abstainWeightedVotes)
+  const againstVotes = Number(p.againstWeightedVotes)
+  const quorumVotes = Number(p.quorumVotes)
+  const totalVotes = forVotes + againstVotes + abstainVotes
+  const isOptimistic = p.isOptimistic === true
+  const state: VotingState = {
     state: p.state,
-    forWeightedVotes: Number(p.forWeightedVotes),
-    abstainWeightedVotes: Number(p.abstainWeightedVotes),
-    againstWeightedVotes: Number(p.againstWeightedVotes),
-    quorumVotes: Number(p.quorumVotes),
-    voteStart: Number(p.voteStart),
-    voteEnd: Number(p.voteEnd),
-    executionETA: p.executionETA ? Number(p.executionETA) : undefined,
-    proposer: { address: p.proposer as `0x${string}` },
-  })
+    deadline: null,
+    quorum: isOptimistic ? false : forVotes > 0 && forVotes >= quorumVotes,
+    forVotesReachedQuorum: isOptimistic
+      ? false
+      : forVotes > 0 && forVotes >= quorumVotes,
+    participationQuorumReached: isOptimistic
+      ? false
+      : forVotes + abstainVotes >= quorumVotes,
+    vetoReached: false,
+    for: 0,
+    against: 0,
+    abstain: 0,
+  }
+
+  if (p.state === PROPOSAL_STATES.QUEUED && p.executionETA) {
+    state.deadline = Number(p.executionETA) - timestamp
+  } else if (p.state === PROPOSAL_STATES.PENDING) {
+    if (timestamp >= voteStart && timestamp < voteEnd) {
+      state.state = PROPOSAL_STATES.ACTIVE
+      state.deadline = voteEnd - timestamp
+    } else if (timestamp < voteStart) {
+      state.deadline = voteStart - timestamp
+    } else if (isOptimistic) {
+      // Index vote-lock proposals are optimistic: after the veto window, the
+      // default result is pass unless the veto threshold was reached.
+      state.state = PROPOSAL_STATES.SUCCEEDED
+    } else {
+      state.state = PROPOSAL_STATES.EXPIRED
+    }
+  } else if (p.state === PROPOSAL_STATES.ACTIVE) {
+    if (timestamp >= voteEnd) {
+      if (isOptimistic) {
+        state.state = PROPOSAL_STATES.SUCCEEDED
+      } else if (againstVotes > forVotes || forVotes === 0) {
+        state.state = PROPOSAL_STATES.DEFEATED
+      } else if (forVotes + abstainVotes < quorumVotes) {
+        state.state = PROPOSAL_STATES.QUORUM_NOT_REACHED
+      } else {
+        state.state = PROPOSAL_STATES.SUCCEEDED
+      }
+    } else {
+      state.deadline = voteEnd - timestamp
+    }
+  }
+
+  if (totalVotes > 0) {
+    state.for = (forVotes / totalVotes) * 100
+    state.against = (againstVotes / totalVotes) * 100
+    state.abstain = (abstainVotes / totalVotes) * 100
+  }
+
+  return state
+}
 
 export type ActiveProposalRow = PortfolioProposal & { voting: VotingState }
 
 export const portfolioActiveProposalsAtom = atom<ActiveProposalRow[]>((get) => {
+  const timestamp = get(portfolioNowAtom)
   const stakedRSR = get(portfolioStakedRSRAtom)
   const voteLocks = get(portfolioVoteLocksAtom)
   const staked = stakedRSR
@@ -101,7 +152,10 @@ export const portfolioActiveProposalsAtom = atom<ActiveProposalRow[]>((get) => {
       }))
     )
   return [...staked, ...locked]
-    .map((p) => ({ ...p, voting: resolveState(p) }))
+    .map((p) => ({
+      ...p,
+      voting: getPortfolioProposalVotingState(p, timestamp),
+    }))
     .filter((p) => ACTIVE_STATES.has(p.voting.state))
     .sort((a, b) => Number(b.creationTime) - Number(a.creationTime))
 })

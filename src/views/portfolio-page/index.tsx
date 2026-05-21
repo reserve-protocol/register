@@ -7,7 +7,11 @@ import { useEffect } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { isAddress } from 'viem'
 import { useAccount } from 'wagmi'
-import { portfolioAddressAtom, portfolioDataAtom } from './atoms'
+import {
+  portfolioAddressAtom,
+  portfolioDataAtom,
+  portfolioNowAtom,
+} from './atoms'
 import AvailableRewards from './components/available-rewards'
 import ActiveProposals from './components/active-proposals'
 import {
@@ -80,6 +84,18 @@ const PortfolioPage = () => {
   const { data, isLoading, isError, refetch } = usePortfolio(address)
   const setPortfolioData = useSetAtom(portfolioDataAtom)
   const setPortfolioAddress = useSetAtom(portfolioAddressAtom)
+  const setPortfolioNow = useSetAtom(portfolioNowAtom)
+
+  useEffect(() => {
+    const updatePortfolioNow = () => {
+      setPortfolioNow(Math.floor(Date.now() / 1000))
+    }
+
+    updatePortfolioNow()
+    const interval = setInterval(updatePortfolioNow, 60_000)
+
+    return () => clearInterval(interval)
+  }, [setPortfolioNow])
 
   useEffect(() => {
     setPortfolioData(data ?? null)

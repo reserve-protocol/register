@@ -8,6 +8,7 @@ import { chainIdAtom } from '@/state/atoms'
 import { formatCurrency } from '@/utils'
 import { ExplorerDataType, getExplorerLink } from '@/utils/getExplorerLink'
 import { Trans } from '@lingui/macro'
+import type { Amount } from '@reserve-protocol/react-sdk'
 import { atom, useAtomValue } from 'jotai'
 import { proposalDetailAtom } from '../atom'
 
@@ -19,7 +20,7 @@ const TABS = {
 
 interface Vote {
   voter: string
-  weight: string
+  weight: Amount
   choice: string
 }
 
@@ -75,7 +76,7 @@ const VoteList = ({ votes }: { votes: Vote[] }) => {
                 vote.choice === 'ABSTAIN' && 'text-legend'
               )}
             >
-              {formatCurrency(+vote.weight, 0, {
+              {formatCurrency(Number(vote.weight.formatted), 0, {
                 notation: 'compact',
                 compactDisplay: 'short',
               })}

@@ -2,18 +2,14 @@ import { Button } from '@/components/ui/button'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { Skeleton } from '@/components/ui/skeleton'
 import { isInactiveDTF } from '@/hooks/use-dtf-status'
-import {
-  getProposalState,
-  PartialProposal,
-  VotingState,
-} from '@/lib/governance'
+import { PartialProposal, VotingState } from '@/lib/governance'
 import { cn } from '@/lib/utils'
 import { indexDTFStatusAtom } from '@/state/dtf/atoms'
 import { formatPercentage, getProposalTitle, parseDuration } from '@/utils'
 import { formatConstant, PROPOSAL_STATES, ROUTES } from '@/utils/constants'
 import { useAtomValue } from 'jotai'
 import { Circle, PlusSquare } from 'lucide-react'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useTrackIndexDTFClick } from '../../hooks/useTrackIndexDTFPage'
 import { governanceProposalsAtom } from '../atoms'
@@ -82,7 +78,13 @@ const VoteStateHeader = ({ data }: { data: VotingState }) => {
   return null
 }
 
-export const ProposalVotingState = ({ data }: { data: VotingState }) => {
+export const ProposalVotingState = ({
+  data,
+  isOptimistic,
+}: {
+  data: VotingState
+  isOptimistic?: boolean
+}) => {
   if (data.state === PROPOSAL_STATES.PENDING && data.deadline) {
     return (
       <div className="flex items-center mt-2 text-xs sm:text-sm">
@@ -97,19 +99,29 @@ export const ProposalVotingState = ({ data }: { data: VotingState }) => {
     )
   }
 
+  const thresholdReached = isOptimistic ? !!data.vetoReached : data.quorum
+
   return (
     <>
       <VoteStateHeader data={data} />
       <div className="flex items-center mt-2 gap-2 text-xs sm:text-sm">
         <div>
-          <span className="text-legend">Quorum?:</span>{' '}
+          <span className="text-legend">
+            {isOptimistic ? 'Veto?:' : 'Quorum?:'}
+          </span>{' '}
           <span
             className={cn(
               'font-semibold',
-              data.quorum ? 'text-success' : 'text-warning'
+              isOptimistic
+                ? thresholdReached
+                  ? 'text-destructive'
+                  : 'text-success'
+                : thresholdReached
+                  ? 'text-success'
+                  : 'text-warning'
             )}
           >
-            {data.quorum ? 'Yes' : 'No'}
+            {thresholdReached ? 'Yes' : 'No'}
           </span>
         </div>
         <Circle size={4} />
@@ -142,22 +154,7 @@ const BADGE_VARIANT = {
 }
 
 const ProposalListItem = ({ proposal }: { proposal: PartialProposal }) => {
-  const proposalState = getProposalState(proposal)
-  const [, forceUpdate] = useState({})
-
-  // Re-render component every minute
-  useEffect(() => {
-    if (
-      proposalState.state === PROPOSAL_STATES.ACTIVE ||
-      proposalState.state === PROPOSAL_STATES.PENDING
-    ) {
-      const interval = setInterval(() => {
-        forceUpdate({})
-      }, 60 * 1000)
-
-      return () => clearInterval(interval)
-    }
-  }, [proposalState.state])
+  const proposalState = proposal.votingState
 
   const stateText = formatConstant(proposalState.state)
 
@@ -170,7 +167,10 @@ const ProposalListItem = ({ proposal }: { proposal: PartialProposal }) => {
         <h2 className="font-semibold text-sm sm:text-base">
           {getProposalTitle(proposal.description)}
         </h2>
-        <ProposalVotingState data={proposalState} />
+        <ProposalVotingState
+          data={proposalState}
+          isOptimistic={proposal.isOptimistic}
+        />
       </div>
       <div
         className={cn(

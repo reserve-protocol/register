@@ -16,7 +16,7 @@ export const indexDTFQuoteSourceAtom = atom<ZapperProps['defaultSource']>(
   (get) => {
     // const dtf = get(indexDTFAtom)
     // if (dtf?.id && DTF_DISABLED_FOR_ZAP.includes(dtf?.id.toLowerCase())) {
-    //   return 'odos'
+    //   return 'odos'†
     // }
     // return 'best'
     return 'best'
@@ -55,17 +55,17 @@ const IndexDTFIssuance = () => {
         <div className="w-full mt-4 sm:w-[420px] flex justify-center ">
           <Link
             to={`./manual`}
-            className="mx-auto"
-            onClick={() => trackClick('switch_to_manual')}
+            className="mx-auto"†
+          onClick={() => trackClick('switch_to_manual')}
           >
-            <span className="text-legend underline text-md ">
-              Having issues? Switch to manual{' '}
-              {currentTab === 'buy' ? 'minting' : 'redeeming'}
-            </span>
-          </Link>
-        </div>
+          <span className="text-legend underline text-md ">
+            Having issues? Switch to manual{' '}
+            {currentTab === 'buy' ? 'minting' : 'redeeming'}
+          </span>
+        </Link>
       </div>
     </div>
+    </div >
   )
 }
 

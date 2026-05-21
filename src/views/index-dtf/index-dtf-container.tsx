@@ -41,6 +41,7 @@ import {
   IndexDtfProvider,
   useCurrentIndexDtf,
   useIndexDtfIdentity,
+  useIndexDtfVersion,
   supportedChainIds,
   type IndexDtfBrand as SdkIndexDtfBrand,
   type IndexDtfData,
@@ -188,12 +189,7 @@ const IndexDTFVersionUpdater = () => {
   const { address, chainId } = useIndexDtfIdentity()
   const setIndexDTFVersion = useSetAtom(indexDTFVersionAtom)
 
-  const { data: version } = useReadContract({
-    address,
-    abi: dtfIndexAbi,
-    functionName: 'version',
-    chainId,
-  })
+  const { data: version } = useIndexDtfVersion({ address, chainId })
 
   useEffect(() => {
     if (version) {

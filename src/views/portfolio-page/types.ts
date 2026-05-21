@@ -97,6 +97,7 @@ export interface PortfolioStakedProposal {
   id: string
   description: string
   state: string
+  isOptimistic?: boolean | null
   proposer: string
   creationTime: string
   voteStart: string

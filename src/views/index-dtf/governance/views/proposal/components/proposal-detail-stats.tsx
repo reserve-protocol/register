@@ -2,15 +2,11 @@ import { cn } from '@/lib/utils'
 import { useAtomValue } from 'jotai'
 import { CircleSlash, ThumbsDown, ThumbsUp, X } from 'lucide-react'
 
-import dtfIndexGovernance from '@/abis/dtf-index-governance'
 import { Separator } from '@/components/ui/separator'
-import { chainIdAtom } from '@/state/atoms'
 import { formatCurrency, formatPercentage } from '@/utils'
 import { PROPOSAL_STATES } from '@/utils/constants'
 import { Check } from 'lucide-react'
 import { useMemo } from 'react'
-import { formatEther } from 'viem'
-import { useReadContracts } from 'wagmi'
 import { proposalDetailAtom, proposalStateAtom } from '../atom'
 
 const BooleanIcon = ({
@@ -41,43 +37,30 @@ const BooleanIcon = ({
 // TODO: Abstract atoms from these components!
 const useProposalDetailStats = () => {
   const proposal = useAtomValue(proposalDetailAtom)
-  const chainId = useAtomValue(chainIdAtom)
-  const { data } = useReadContracts({
-    contracts: [
-      {
-        address: proposal?.governor ?? '0x1',
-        abi: dtfIndexGovernance,
-        functionName: 'proposalVotes',
-        args: [BigInt(proposal?.id || '0')],
-        chainId,
-      },
-    ],
-    allowFailure: false,
-    query: { enabled: !!proposal },
-  })
-
-  const [votes] = data ?? [[0n, 0n, 0n]]
-  const [againstVotes, forVotes, abstainVotes] = useMemo(
-    () => votes.map((v) => +formatEther(v)),
-    [votes]
-  )
+  const againstVotes = Number(proposal?.againstWeightedVotes.formatted ?? 0)
+  const forVotes = Number(proposal?.forWeightedVotes.formatted ?? 0)
+  const abstainVotes = Number(proposal?.abstainWeightedVotes.formatted ?? 0)
 
   const [quorumWeight, currentQuorum, quorumNeeded, quorumReached] =
     useMemo(() => {
       if (!proposal) return [0, 0, 0, false]
-      const _quorumNeeded = proposal.quorumVotes
-      const _currentQuorum = +forVotes + +abstainVotes
+      const _quorumNeeded = proposal.isOptimistic
+        ? Number(proposal.optimistic?.vetoThresholdVotes.formatted ?? 0)
+        : Number(proposal.quorumVotes.formatted)
+      const _currentQuorum = proposal.isOptimistic
+        ? againstVotes
+        : forVotes + abstainVotes
+      const _quorumReached = proposal.votingState.quorum
 
       if (!_quorumNeeded)
         return [
-          _currentQuorum > _quorumNeeded ? 1 : 0,
+          _quorumReached ? 1 : 0,
           _currentQuorum,
           _quorumNeeded,
-          _currentQuorum > _quorumNeeded,
+          _quorumReached,
         ]
 
       const _quorumWeight = _currentQuorum / _quorumNeeded
-      const _quorumReached = _quorumWeight > 1
 
       return [_quorumWeight, _currentQuorum, _quorumNeeded, _quorumReached]
     }, [proposal, againstVotes, forVotes, abstainVotes])
@@ -97,6 +80,7 @@ const useProposalDetailStats = () => {
     againstVotes,
     forVotes,
     abstainVotes,
+    isOptimistic: proposal?.isOptimistic,
     quorumWeight,
     currentQuorum,
     quorumNeeded,
@@ -107,26 +91,34 @@ const useProposalDetailStats = () => {
 }
 
 const QuorumStat = ({
+  isOptimistic,
   quorumWeight,
   currentQuorum,
   quorumNeeded,
   quorumReached,
 }: {
+  isOptimistic?: boolean
   quorumWeight: number
   currentQuorum: number
   quorumNeeded: number
   quorumReached: boolean
 }) => {
+  const isGood = isOptimistic ? !quorumReached : quorumReached
+
   return (
     <div className="flex flex-col gap-3 p-4">
       <div className="flex items-center justify-between gap-2">
         <div className="flex items-center gap-3">
-          <BooleanIcon value={quorumReached} />
-          <span>Quorum</span>
+          <BooleanIcon
+            value={isGood}
+            colorSuccess="green-500"
+            colorFailure="red-500"
+          />
+          <span>{isOptimistic ? 'Veto threshold' : 'Quorum'}</span>
         </div>
         <div className="flex items-center gap-2 text-base sm:text-lg">
           <span
-            className={`font-bold ${quorumReached ? 'text-green-500' : 'text-orange-500'}`}
+            className={`font-bold ${isGood ? 'text-green-500' : 'text-red-500'}`}
           >
             {formatPercentage(quorumWeight * 100)}
           </span>
@@ -146,7 +138,7 @@ const QuorumStat = ({
       </div>
       <div className=" relative h-1 bg-gray-200 rounded-full">
         <div
-          className={`h-full rounded-full ${quorumReached ? 'bg-green-500' : 'bg-orange-500'}`}
+          className={`h-full rounded-full ${isGood ? 'bg-green-500' : 'bg-red-500'}`}
           style={{ width: `${Math.min(quorumWeight * 100, 100)}%` }}
         />
       </div>
@@ -277,6 +269,7 @@ const ProposalDetailStats = () => {
     currentQuorum,
     quorumNeeded,
     quorumReached,
+    isOptimistic,
     majorityWeight,
     majoritySupport,
     againstVotes,
@@ -294,6 +287,7 @@ const ProposalDetailStats = () => {
       </h4>
       <div className="flex flex-col bg-card rounded-3xl border">
         <QuorumStat
+          isOptimistic={isOptimistic}
           quorumWeight={quorumWeight}
           currentQuorum={currentQuorum}
           quorumNeeded={quorumNeeded}

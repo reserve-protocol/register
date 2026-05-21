@@ -2,7 +2,7 @@ import dtfAdminAbi from '@/abis/dtf-admin-abi'
 import dtfIndexAbi from '@/abis/dtf-index-abi-v1'
 import DTFIndexGovernance from '@/abis/dtf-index-governance'
 import { Button } from '@/components/ui/button'
-import { getProposalState, PartialProposal } from '@/lib/governance'
+import { PartialProposal } from '@/lib/governance'
 import { chainIdAtom } from '@/state/atoms'
 import { indexDTFAtom, indexDTFVersionAtom } from '@/state/dtf/atoms'
 import { getCurrentTime } from '@/utils'
@@ -191,13 +191,11 @@ const validProposalExists = (proposals: PartialProposal[]): boolean => {
       return false
     }
 
-    const pState = getProposalState(p)
-
-    if (pState.state === PROPOSAL_STATES.EXPIRED) {
+    if (p.votingState.state === PROPOSAL_STATES.EXPIRED) {
       return false
     }
 
-    return states.includes(pState.state)
+    return states.includes(p.votingState.state)
   })
 }
 

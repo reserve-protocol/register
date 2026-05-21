@@ -1,140 +1,113 @@
 import { PartialProposal } from '@/lib/governance'
-import { chainIdAtom, INDEX_DTF_SUBGRAPH_URL } from '@/state/atoms'
-import { indexDTFAtom } from '@/state/dtf/atoms'
-import { useQuery } from '@tanstack/react-query'
-import request, { gql } from 'graphql-request'
+import {
+  useCurrentIndexDtf,
+  useIndexDtfDelegates,
+  useIndexDtfProposalList,
+  type IndexDtfDelegate,
+  type IndexDtfProposalSummary,
+} from '@reserve-protocol/react-sdk'
 import { useAtomValue, useSetAtom } from 'jotai'
-import { useEffect } from 'react'
-import { Address, formatEther } from 'viem'
+import { useEffect, useRef } from 'react'
+import { Address } from 'viem'
 import { indexGovernanceOverviewAtom, refetchTokenAtom } from './atoms'
 
-type Response = {
-  governances: {
-    proposals: PartialProposal[]
-    proposalCount: number
-  }[]
-  ownerGovernance: {
-    proposals: PartialProposal[]
-    proposalCount: number
-  }
-  tradingGovernance?: {
-    proposals: PartialProposal[]
-    proposalCount: number
-  }
-  vaultGovernance?: {
-    proposals: PartialProposal[]
-    proposalCount: number
-  }
-  stakingToken?: {
-    totalDelegates: number
-    token: {
-      decimals: number
-      totalSupply: bigint
-    }
-    delegates: {
-      address: Address
-      delegatedVotes: number
-      numberVotes: number
-    }[]
+const mapProposal = (proposal: IndexDtfProposalSummary): PartialProposal => {
+  return {
+    id: proposal.id,
+    timelockId: '',
+    description: proposal.description,
+    creationTime: proposal.creationTime,
+    creationBlock: proposal.creationBlock,
+    state: proposal.state,
+    forWeightedVotes: proposal.forWeightedVotes,
+    abstainWeightedVotes: proposal.abstainWeightedVotes,
+    againstWeightedVotes: proposal.againstWeightedVotes,
+    quorumVotes: proposal.quorumVotes,
+    voteStart: proposal.voteStart,
+    voteEnd: proposal.voteEnd,
+    executionETA: proposal.executionETA,
+    executionTime: proposal.executionTime?.toString(),
+    executionBlock: proposal.executionBlock?.toString(),
+    isOptimistic: proposal.isOptimistic,
+    wasChallenged: proposal.wasChallenged,
+    challengedProposalId: proposal.challengedProposalId,
+    voteToken: proposal.voteToken,
+    votingState: proposal.votingState,
+    proposer: {
+      address: proposal.proposer as Address,
+    },
   }
 }
 
-const query = gql`
-  query getGovernanceStats($governanceIds: [String!]!, $stToken: String!) {
-    governances(where: { id_in: $governanceIds }) {
-      id
-      proposals {
-        id
-        description
-        creationTime
-        state
-        forWeightedVotes
-        abstainWeightedVotes
-        againstWeightedVotes
-        executionETA
-        executionTime
-        quorumVotes
-        voteStart
-        voteEnd
-        executionBlock
-        creationBlock
-        proposer {
-          address
-        }
-      }
-      proposalCount
-    }
-    stakingToken(id: $stToken) {
-      id
-      totalDelegates
-      token {
-        totalSupply
-      }
-      delegates(
-        first: 10
-        orderBy: delegatedVotes
-        orderDirection: desc
-        where: { address_not: "0x0000000000000000000000000000000000000000" }
-      ) {
-        address
-        delegatedVotes
-        numberVotes
-      }
-    }
+const mapDelegate = (delegate: IndexDtfDelegate) => {
+  return {
+    address: delegate.address,
+    delegatedVotes: Number(delegate.delegatedVotes.formatted),
+    numberVotes: delegate.numberVotes,
   }
-`
+}
 
-// TODO: Multichain
 // TODO: This updater assumes that DTF share same stToken between owner and trading
 // TODO: Maybe move this updater to the top of the context? and reset on token change
 const Updater = () => {
   const setGovernanceOverview = useSetAtom(indexGovernanceOverviewAtom)
   const refetchToken = useAtomValue(refetchTokenAtom)
-  const dtf = useAtomValue(indexDTFAtom)
-  const chainId = useAtomValue(chainIdAtom)
-  const { data } = useQuery({
-    queryKey: ['governance-overview', dtf?.ownerGovernance?.id, refetchToken],
-    queryFn: async () => {
-      const data = await request<Response>(
-        INDEX_DTF_SUBGRAPH_URL[chainId],
-        query,
-        {
-          governanceIds: [
-            dtf?.ownerGovernance?.id,
-            ...(dtf?.legacyAdmins || []),
-            dtf?.tradingGovernance?.id,
-            ...(dtf?.legacyAuctionApprovers || []),
-            dtf?.stToken?.governance?.id,
-            ...(dtf?.stToken?.legacyGovernance || []),
-          ],
-          stToken: dtf?.stToken?.id ?? '',
-        }
-      )
-
-      return {
-        proposals: data.governances
-          .flatMap((g) => g.proposals)
-          .sort((a, b) => b.creationTime - a.creationTime),
-        proposalCount: data.governances.reduce(
-          (x, y) => x + Number(y.proposalCount),
-          0
-        ),
-        delegates: data.stakingToken?.delegates ?? [],
-        delegatesCount: +(data.stakingToken?.totalDelegates ?? 0),
-        voteSupply: +formatEther(data.stakingToken?.token.totalSupply ?? 0n),
-      }
-    },
-    enabled: !!dtf?.ownerGovernance?.id && !!dtf?.stToken?.id,
-    refetchInterval: 1000 * 60 * 10, // 10 minutes
+  const previousRefetchToken = useRef(refetchToken)
+  const { data: dtf, refetch: refetchDtf } = useCurrentIndexDtf({
+    refetchInterval: 1000 * 60 * 10,
   })
 
+  const proposalParams =
+    dtf?.ownerGovernance?.id && dtf?.stToken?.id
+      ? { dtf, limit: 100 }
+      : undefined
+  const delegateParams = dtf?.stToken?.id
+    ? { chainId: dtf.chainId, stToken: dtf.stToken.id, limit: 10 }
+    : undefined
+
+  const { data: proposalList, refetch: refetchProposals } =
+    useIndexDtfProposalList(proposalParams, {
+      refetchInterval: 1000 * 60,
+    })
+  const { data: delegates, refetch: refetchDelegates } = useIndexDtfDelegates(
+    delegateParams,
+    {
+      refetchInterval: 1000 * 60 * 10,
+    }
+  )
+
   useEffect(() => {
-    if (data) {
-      setGovernanceOverview(data)
+    if (previousRefetchToken.current === refetchToken) return
+
+    previousRefetchToken.current = refetchToken
+
+    void refetchDtf()
+    if (proposalParams) void refetchProposals()
+    if (delegateParams) void refetchDelegates()
+  }, [
+    delegateParams,
+    proposalParams,
+    refetchDelegates,
+    refetchDtf,
+    refetchProposals,
+    refetchToken,
+  ])
+
+  useEffect(() => {
+    if (proposalList && delegates && dtf?.voteLockVault) {
+      setGovernanceOverview({
+        proposals: proposalList.proposals.map(mapProposal),
+        proposalCount: proposalList.proposalCount,
+        delegates: delegates.map(mapDelegate),
+        delegatesCount: dtf.voteLockVault.delegation.totalDelegates,
+        voteSupply: Number(
+          dtf.voteLockVault.token.snapshot.totalSupply.formatted
+        ),
+      })
     } else {
       setGovernanceOverview(undefined)
     }
-  }, [data])
+  }, [delegates, dtf?.voteLockVault, proposalList, setGovernanceOverview])
 
   return null
 }

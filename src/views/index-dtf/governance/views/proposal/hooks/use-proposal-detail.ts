@@ -1,9 +1,18 @@
-import { getProposalState, ProposalDetail } from '@/lib/governance'
-import { chainIdAtom, INDEX_DTF_SUBGRAPH_URL } from '@/state/atoms'
-import { useQuery } from '@tanstack/react-query'
-import request, { gql } from 'graphql-request'
-import { useAtomValue } from 'jotai'
-import { Address, formatEther, Hex } from 'viem'
+import { ProposalDetail } from '@/lib/governance'
+import {
+  getProposalState,
+  useIndexDtfIdentity,
+  useIndexDtfOptimisticProposalContext,
+  useIndexDtfProposal,
+  type IndexDtfOptimisticProposalContext,
+  type IndexDtfProposalDetail,
+} from '@reserve-protocol/react-sdk'
+import { useMemo } from 'react'
+import { Address } from 'viem'
+
+const OPTIMISTIC_CONTEXT_MISSING_ERROR = new Error(
+  'Optimistic proposal context is required for optimistic proposal detail'
+)
 
 export enum ProposalStatus {
   Pending,
@@ -16,150 +25,131 @@ export enum ProposalStatus {
   Executed,
 }
 
-type Result = {
-  proposal: {
-    id: string
-    timelockId: string
-    description: string
-    creationTime: string
-    voteStart: string
-    voteEnd: string
-    queueBlock?: string
-    queueTime?: string
-    state: string
-    executionETA?: string
-    executionTime?: string
-    creationBlock: string
-    cancellationTime?: string
-    calldatas: Hex[]
-    targets: Address[]
+const mapProposalDetail = (
+  proposal: IndexDtfProposalDetail,
+  optimistic?: IndexDtfOptimisticProposalContext | null
+): ProposalDetail => {
+  const optimisticContext = optimistic ?? undefined
+  const votingState = optimisticContext
+    ? getProposalState({ ...proposal, optimistic: optimisticContext })
+    : proposal.votingState
+  const proposalDetail: ProposalDetail = {
+    id: proposal.id,
+    timelockId: proposal.timelockId ?? '',
+    description: proposal.description,
+    creationTime: proposal.creationTime,
+    creationBlock: proposal.creationBlock,
+    state: votingState.state,
+    forWeightedVotes: proposal.forWeightedVotes,
+    abstainWeightedVotes: proposal.abstainWeightedVotes,
+    againstWeightedVotes: proposal.againstWeightedVotes,
+    quorumVotes: proposal.quorumVotes,
+    voteStart: proposal.voteStart,
+    voteEnd: proposal.voteEnd,
+    executionETA: proposal.executionETA,
+    executionTime: proposal.executionTime?.toString(),
+    executionBlock: proposal.executionBlock?.toString(),
+    isOptimistic: proposal.isOptimistic,
+    optimistic: optimisticContext,
+    wasChallenged: proposal.wasChallenged,
+    challengedProposalId: proposal.challengedProposalId,
+    voteToken: proposal.voteToken,
     proposer: {
-      address: Address
-    }
-    votes: {
-      choice: string
-      voter: {
-        address: string
-      }
-      weight: string
-    }[]
-    forWeightedVotes: string
-    againstWeightedVotes: string
-    abstainWeightedVotes: string
-    quorumVotes: string
-    forDelegateVotes: string
-    abstainDelegateVotes: string
-    againstDelegateVotes: string
-    executionTxnHash?: string
-    governance: {
-      id: string
-    }
+      address: proposal.proposer as Address,
+    },
+    calldatas: [...proposal.calldatas],
+    targets: [...proposal.targets],
+    votes: proposal.votes.map((vote) => ({
+      choice: vote.choice,
+      voter: vote.voter,
+      weight: vote.weight,
+    })),
+    queueBlock: proposal.queueBlock,
+    queueTime: proposal.queueTime?.toString(),
+    cancellationTime: proposal.cancellationTime?.toString(),
+    forDelegateVotes: proposal.forDelegateVotes.toString(),
+    abstainDelegateVotes: proposal.abstainDelegateVotes.toString(),
+    againstDelegateVotes: proposal.againstDelegateVotes.toString(),
+    executionTxnHash: proposal.executionTxnHash,
+    governor: proposal.governance,
+    votingState,
   }
+
+  return proposalDetail
 }
 
-const query = gql`
-  query getProposalDetail($id: String!) {
-    proposal(id: $id) {
-      id
-      timelockId
-      description
-      creationTime
-      voteStart
-      voteEnd
-      queueBlock
-      queueTime
-      state
-      executionETA
-      executionTime
-      creationBlock
-      cancellationTime
-      calldatas
-      targets
-      proposer {
-        address
-      }
-      votes {
-        choice
-        voter {
-          address
-        }
-        weight
-      }
-      forWeightedVotes
-      againstWeightedVotes
-      abstainWeightedVotes
-      quorumVotes
-      forDelegateVotes
-      abstainDelegateVotes
-      againstDelegateVotes
-      executionTxnHash
-      governance {
-        id
-      }
-    }
-  }
-`
-
 const useProposalDetail = (proposalId: string | undefined) => {
-  const chainId = useAtomValue(chainIdAtom)
-
-  return useQuery({
-    queryKey: ['proposal', chainId, proposalId],
-    queryFn: async () => {
-      if (!proposalId) {
-        return undefined
-      }
-
-      const { proposal } = await request<Result>(
-        INDEX_DTF_SUBGRAPH_URL[chainId],
-        query,
-        {
-          id: proposalId,
+  const { address, chainId } = useIndexDtfIdentity()
+  const proposalQuery = useIndexDtfProposal(
+    proposalId ? { address, chainId, proposalId } : undefined,
+    { refetchInterval: 1000 * 60 }
+  )
+  const proposal = proposalQuery.data
+  const shouldReadOptimisticContext = proposal?.isOptimistic === true
+  const optimisticContextQuery = useIndexDtfOptimisticProposalContext(
+    shouldReadOptimisticContext
+      ? {
+          chainId,
+          governance: proposal.governance,
+          proposalId: proposal.id,
+          isOptimistic: true,
         }
-      )
+      : undefined,
+    { refetchInterval: 1000 * 60 }
+  )
+  const isOptimisticContextPending =
+    shouldReadOptimisticContext && optimisticContextQuery.isPending
+  const isOptimisticContextError =
+    shouldReadOptimisticContext && optimisticContextQuery.isError
+  const isOptimisticContextMissing =
+    shouldReadOptimisticContext &&
+    optimisticContextQuery.isSuccess &&
+    !optimisticContextQuery.data
+  const optimisticContextError = isOptimisticContextMissing
+    ? OPTIMISTIC_CONTEXT_MISSING_ERROR
+    : optimisticContextQuery.error
+  const data = useMemo(() => {
+    if (
+      !proposal ||
+      isOptimisticContextPending ||
+      isOptimisticContextError ||
+      isOptimisticContextMissing
+    ) {
+      return undefined
+    }
 
-      const proposalDetail: ProposalDetail = {
-        ...proposal,
-        id: proposal.id,
-        timelockId: proposal.timelockId,
-        description: proposal.description,
-        creationTime: +proposal.creationTime,
-        creationBlock: +proposal.creationBlock,
-        votes: (proposal.votes || []).map((data: any) => ({
-          choice: data.choice,
-          voter: data.voter?.address ?? '',
-          weight: data.weight ? formatEther(data.weight) : '0',
-        })),
-        voteStart: +proposal.voteStart,
-        voteEnd: +proposal.voteEnd,
-        queueBlock: proposal.queueBlock ? +proposal.queueBlock : undefined,
-        executionETA: proposal.executionETA
-          ? +proposal.executionETA
-          : undefined,
-        forWeightedVotes: +formatEther(BigInt(proposal.forWeightedVotes)),
-        againstWeightedVotes: +formatEther(
-          BigInt(proposal.againstWeightedVotes)
-        ),
-        abstainWeightedVotes: +formatEther(
-          BigInt(proposal.abstainWeightedVotes)
-        ),
-        quorumVotes: +formatEther(BigInt(proposal.quorumVotes)),
-        governor: proposal.governance.id as Address,
-        votingState: {
-          state: proposal.state,
-          deadline: null,
-          quorum: false,
-          for: 0,
-          against: 0,
-          abstain: 0,
-        },
-      }
-      proposalDetail.votingState = getProposalState(proposalDetail)
-      proposalDetail.state = proposalDetail.votingState.state
+    return mapProposalDetail(proposal, optimisticContextQuery.data)
+  }, [
+    proposal,
+    optimisticContextQuery.data,
+    isOptimisticContextPending,
+    isOptimisticContextError,
+    isOptimisticContextMissing,
+  ])
 
-      return proposalDetail
-    },
-  })
+  return {
+    ...proposalQuery,
+    data,
+    error: proposalQuery.error ?? optimisticContextError,
+    isError:
+      proposalQuery.isError ||
+      isOptimisticContextError ||
+      isOptimisticContextMissing,
+    isFetching: proposalQuery.isFetching || optimisticContextQuery.isFetching,
+    isLoading: proposalQuery.isLoading || isOptimisticContextPending,
+    isPending: proposalQuery.isPending || isOptimisticContextPending,
+    isSuccess:
+      proposalQuery.isSuccess &&
+      !isOptimisticContextPending &&
+      !isOptimisticContextError &&
+      !isOptimisticContextMissing,
+    status:
+      isOptimisticContextError || isOptimisticContextMissing
+        ? 'error'
+        : isOptimisticContextPending
+          ? 'pending'
+          : proposalQuery.status,
+  }
 }
 
 export default useProposalDetail

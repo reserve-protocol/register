@@ -95,6 +95,17 @@ export const tokenBalanceAtomFamily = atomFamily((tokenId: string) =>
 
 ### Data Fetching Patterns
 
+#### Index DTF SDK Boundary
+
+Index DTF data should come from `@reserve-protocol/react-sdk` when a hook exists. Register owns UI state, routing, transaction sending, toasts, and product copy; the SDK owns proposal reads, voting-state derivation, builders, and exact on-chain math.
+
+- Keep SDK `Amount` objects in atoms and intermediate types. Do not convert `Amount.formatted` to `Number` and then rebuild fake `Amount` values for SDK helpers.
+- Use SDK-provided `proposal.votingState` for Index DTF proposal display state. Do not add a Register-local Index DTF `getProposalState` wrapper.
+- Convert amounts to `Number` only at display leaves like chart/stat formatting, never before business logic or proposal-state checks.
+- For optimistic Index DTF proposals, call `useIndexDtfOptimisticProposalContext` on detail/voting flows when exact veto threshold, snapshot, or optimistic voting power is needed. Pass that context into SDK proposal/voter-state helpers.
+- Proposal list/overview should avoid hidden per-row RPC hydration. Use SDK list data and documented refresh behavior unless product explicitly needs exact optimistic context there.
+- Keep Yield DTF governance state logic separate under `views/yield-dtf`; do not reuse Yield helpers for Index DTF proposals.
+
 #### Pattern 1: Updater Components
 
 ```typescript
@@ -697,6 +708,7 @@ src/
 See `/docs/data-sources.md` for the full data routing table, API endpoints, and subgraph schema reference.
 
 **Quick reference**:
+
 - Basket/balances → RPC (`totalAssets()`)
 - Prices → Reserve API (`/current/prices`, 7-source consensus)
 - Metadata (governance, fees, roles) → Subgraph
