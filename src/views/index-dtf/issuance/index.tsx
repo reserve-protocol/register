@@ -11,7 +11,7 @@ import useTrackIndexDTFPage, {
   useTrackIndexDTFClick,
 } from '../hooks/useTrackIndexDTFPage'
 import useIsComplianceRestricted from '@/hooks/use-is-compliance-restricted'
-import { Alert, AlertTitle } from '@/components/ui/alert'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import useComplianceRestrictions from '@/hooks/use-compliance-restrictions'
 
 const DTF_DISABLED_FOR_ZAP = [] as string[]
@@ -29,13 +29,26 @@ export const indexDTFQuoteSourceAtom = atom<ZapperProps['defaultSource']>(
 const ComplianceAlert = () => {
   const { isLoading, data } = useComplianceRestrictions()
 
-  console.log('data', data)
-
-  if (isLoading || (data && !data.restricted)) return null
+  if (isLoading || !data?.restricted) return null
 
   return (
-    <Alert variant="destructive" className='rounded-3xl mb-4 text-sm sm:w-[420px] mx-auto'>
-      You are accessing our products and services from a restricted jurisdiction. We do not allow access from certain jurisdictions including locations subject to sanctions restrictions and other jurisdictions where our services are ineligible for use. For more information, see our <a className='underline' target='_blank' href="https://reserve.org/terms-and-conditions">Terms of Use</a>. If you think this is an error, try refreshing the page or opening a support ticket.
+    <Alert
+      variant="destructive"
+      className="rounded-3xl mb-4 text-sm sm:w-[420px] mx-auto"
+    >
+      <AlertTitle>{data.title}</AlertTitle>
+      <AlertDescription>
+        {data.description} For more information, see our{' '}
+        <a
+          className="underline"
+          target="_blank"
+          rel="noopener noreferrer"
+          href="https://reserve.org/terms-and-conditions"
+        >
+          Terms of Use
+        </a>
+        .
+      </AlertDescription>
     </Alert>
   )
 }

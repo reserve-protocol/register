@@ -6,7 +6,7 @@ import useWalletCompliance, {
   type WalletCompliance,
 } from './use-wallet-compliance'
 
-export type ComplianceRestrictionReason = 'wallet' | 'geolocation'
+export type ComplianceRestrictionReason = 'wallet' | 'geolocation' | 'vpn'
 
 export type ComplianceRestrictionsData = {
   restricted: boolean
@@ -23,16 +23,6 @@ export type ComplianceRestrictionsResult = {
   isLoading: boolean
 }
 
-const PRODUCT_RESTRICTED_COUNTRIES = new Set([
-  'cu', // Cuba
-  'ir', // Iran
-  'kp', // North Korea
-  'sy', // Syria
-  'ua', // Ukraine
-  'ru', // Russia
-  'unknown',
-])
-
 const RESTRICTION_MESSAGES = {
   wallet: {
     title: 'Wallet restricted',
@@ -43,6 +33,11 @@ const RESTRICTION_MESSAGES = {
     title: 'Restricted jurisdiction',
     description:
       'You are accessing our products and services from a restricted jurisdiction. We do not allow access from certain jurisdictions, including locations subject to sanctions restrictions and other jurisdictions where our services are ineligible for use. If you think this is an error, try refreshing the page or contact support.',
+  },
+  vpn: {
+    title: 'VPN detected',
+    description:
+      'We detected that you are connecting through a VPN. Please disable it and refresh the page to access this product. If you think this is an error, contact support.',
   },
 } satisfies Record<
   ComplianceRestrictionReason,
@@ -110,11 +105,29 @@ const useComplianceRestrictions = () => {
       return { data: undefined, isLoading: true }
     }
 
-    if (
-      geolocation.isError ||
-      !geolocation.data ||
-      PRODUCT_RESTRICTED_COUNTRIES.has(geolocation.data.country_code)
-    ) {
+    if (geolocation.isError || !geolocation.data) {
+      return {
+        data: restricted({
+          reason: 'geolocation',
+          geolocation: geolocation.data,
+          wallet: walletCompliance.data,
+        }),
+        isLoading: false,
+      }
+    }
+
+    if (geolocation.data.isVPN) {
+      return {
+        data: restricted({
+          reason: 'vpn',
+          geolocation: geolocation.data,
+          wallet: walletCompliance.data,
+        }),
+        isLoading: false,
+      }
+    }
+
+    if (geolocation.data.restricted) {
       return {
         data: restricted({
           reason: 'geolocation',
