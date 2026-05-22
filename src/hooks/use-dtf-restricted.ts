@@ -45,6 +45,18 @@ const ASSET_RESTRICTED_COUNTRY_CODES = new Set([
   'US', // United States
 ])
 
+const isDTFGeolocationStatus = (
+  value: unknown
+): value is DTFGeolocationStatus => {
+  if (typeof value !== 'object' || value === null) return false
+  const data = value as Record<string, unknown>
+  return (
+    typeof data.country === 'string' &&
+    typeof data.countryCode === 'string' &&
+    typeof data.restricted === 'boolean'
+  )
+}
+
 const useDTFGeolocation = (dtfAddress?: Address) => {
   return useQuery({
     queryKey: ['dtf-geolocation', dtfAddress?.toLowerCase()],
@@ -61,7 +73,12 @@ const useDTFGeolocation = (dtfAddress?: Address) => {
         throw new Error('Failed to fetch DTF geolocation')
       }
 
-      return response.json()
+      const payload: unknown = await response.json()
+      if (!isDTFGeolocationStatus(payload)) {
+        throw new Error('Invalid DTF geolocation payload')
+      }
+
+      return payload
     },
     enabled: !!dtfAddress,
   })

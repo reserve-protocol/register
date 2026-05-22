@@ -10,6 +10,17 @@ export type GeolocationStatus = {
 
 const GEOLOCATION_QUERY_KEY = ['geolocation'] as const
 
+const isGeolocationStatus = (value: unknown): value is GeolocationStatus => {
+  if (typeof value !== 'object' || value === null) return false
+  const data = value as Record<string, unknown>
+  return (
+    typeof data.country === 'string' &&
+    typeof data.countryCode === 'string' &&
+    typeof data.restricted === 'boolean' &&
+    typeof data.isVPN === 'boolean'
+  )
+}
+
 const useGeolocation = () => {
   return useQuery({
     queryKey: GEOLOCATION_QUERY_KEY,
@@ -20,7 +31,12 @@ const useGeolocation = () => {
         throw new Error('Failed to fetch geolocation')
       }
 
-      return response.json()
+      const payload: unknown = await response.json()
+      if (!isGeolocationStatus(payload)) {
+        throw new Error('Invalid geolocation payload')
+      }
+
+      return payload
     },
   })
 }

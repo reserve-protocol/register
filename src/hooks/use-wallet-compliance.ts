@@ -10,6 +10,16 @@ export type WalletCompliance = {
   shouldSkipRestrictions: boolean
 }
 
+const isWalletCompliance = (value: unknown): value is WalletCompliance => {
+  if (typeof value !== 'object' || value === null) return false
+  const data = value as Record<string, unknown>
+  return (
+    typeof data.address === 'string' &&
+    typeof data.isRestricted === 'boolean' &&
+    typeof data.shouldSkipRestrictions === 'boolean'
+  )
+}
+
 const useWalletCompliance = () => {
   const wallet = useAtomValue(walletAtom)
 
@@ -28,7 +38,12 @@ const useWalletCompliance = () => {
         throw new Error('Failed to check wallet compliance')
       }
 
-      return response.json()
+      const payload: unknown = await response.json()
+      if (!isWalletCompliance(payload)) {
+        throw new Error('Invalid wallet compliance payload')
+      }
+
+      return payload
     },
     enabled: !!wallet,
   })
