@@ -4,7 +4,7 @@ import { indexDTFAtom } from '@/state/dtf/atoms'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { useEffect } from 'react'
 import useTrackIndexDTFPage from '../../hooks/useTrackIndexDTFPage'
-import { GlobalProtocolKitProvider } from '../async-swaps/providers/GlobalProtocolKitProvider'
+import { AsyncZapMintProvider } from './async-zap-context'
 import { wizardStepAtom } from './atoms'
 import { useAllocationData } from './hooks/use-collateral-allocation'
 import GnosisRequired from './steps/gnosis-required'
@@ -15,7 +15,6 @@ import AmountInput from './steps/amount-input'
 import ReviewInputs from './steps/review-inputs'
 import QuoteSummary from './steps/quote-summary'
 import Processing from './steps/processing-v2'
-import RecoveryOptions from './steps/recovery-options'
 import Success from './steps/success'
 
 const WizardRouter = () => {
@@ -37,8 +36,6 @@ const WizardRouter = () => {
   switch (step) {
     case 'gnosis-check':
       return <GnosisRequired />
-    case 'operation-select':
-      return <ConfigureMint />
     case 'configure':
       return <ConfigureMint />
     case 'collateral-decision':
@@ -53,8 +50,6 @@ const WizardRouter = () => {
       return <QuoteSummary />
     case 'processing':
       return <Processing />
-    case 'recovery-options':
-      return <RecoveryOptions />
     case 'success':
       return <Success />
     default:
@@ -88,9 +83,9 @@ const AsyncMintWizard = () => {
 
 const AsyncMintWithProvider = () => {
   return (
-    <GlobalProtocolKitProvider>
+    <AsyncZapMintProvider>
       <AsyncMintWizard />
-    </GlobalProtocolKitProvider>
+    </AsyncZapMintProvider>
   )
 }
 

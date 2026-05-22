@@ -1,8 +1,5 @@
-import { OrderQuoteResponse } from '@cowprotocol/cow-sdk'
-
 export type WizardStep =
   | 'gnosis-check'
-  | 'operation-select'
   | 'configure'
   | 'collateral-decision'
   | 'token-selection'
@@ -10,16 +7,9 @@ export type WizardStep =
   | 'review'
   | 'quote-summary'
   | 'processing'
-  | 'recovery-options'
   | 'success'
 
 export type MintStrategy = 'partial' | 'single'
-
-export type RecoveryChoice = 'top-up' | 'mint-reduced' | 'cancel' | null
-
-export type QuoteResult =
-  | { success: true; data: OrderQuoteResponse }
-  | { success: false; error?: string }
 
 export type CollateralAllocation = {
   fromWallet: bigint

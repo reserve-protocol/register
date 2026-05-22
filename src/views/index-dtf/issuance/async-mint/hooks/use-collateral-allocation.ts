@@ -5,7 +5,7 @@ import { useQuery } from '@tanstack/react-query'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { useEffect } from 'react'
 import { Address, parseUnits } from 'viem'
-import { useFolioDetails } from '../../async-swaps/hooks/useFolioDetails'
+import { useFolioDetails } from './use-folio-details'
 import {
   folioDetailsAtom,
   mintSharesAtom,

@@ -5,9 +5,6 @@
   "packageManager": "pnpm@10.33.0",
   "dependencies": {
     "@binance/w3w-rainbow-connector-v2": "^1.0.8",
-    "@cowprotocol/cow-sdk": "^7.4.1",
-    "@cowprotocol/sdk-app-data": "^4.6.7",
-    "@cowprotocol/sdk-viem-adapter": "^0.3.10",
     "@dnd-kit/core": "^6.3.1",
     "@dnd-kit/sortable": "^7.0.2",
     "@dnd-kit/utilities": "^3.2.2",
@@ -39,6 +36,7 @@
     "@radix-ui/react-toggle-group": "^1.1.11",
     "@radix-ui/react-tooltip": "^1.2.8",
     "@rainbow-me/rainbowkit": "^2.2.10",
+    "@reserve-protocol/async-zap-sdk": "0.0.1",
     "@reserve-protocol/dtf-rebalance-lib": "^3.2.1",
     "@reserve-protocol/react-zapper": "^1.7.1",
     "@reserve-protocol/rtokens": "^1.1.23",
