@@ -110,8 +110,8 @@ importers:
         specifier: ^2.2.10
         version: 2.2.10(@tanstack/react-query@5.99.0(react@18.3.1))(@types/react@18.3.28)(babel-plugin-macros@3.1.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.9.3)(viem@2.48.0(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@5.0.10)(zod@4.3.6))(wagmi@2.19.5(@tanstack/query-core@5.99.0)(@tanstack/react-query@5.99.0(react@18.3.1))(@types/react@18.3.28)(bufferutil@4.1.0)(react@18.3.1)(typescript@5.9.3)(utf-8-validate@5.0.10)(viem@2.48.0(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@5.0.10)(zod@4.3.6))(zod@4.3.6))
       '@reserve-protocol/async-zap-sdk':
-        specifier: 0.0.1
-        version: 0.0.1(@tanstack/react-query@5.99.0(react@18.3.1))(ajv@8.18.0)(cross-fetch@4.1.0)(multiformats@14.0.0)(react@18.3.1)(viem@2.48.0(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@5.0.10)(zod@4.3.6))(wagmi@2.19.5(@tanstack/query-core@5.99.0)(@tanstack/react-query@5.99.0(react@18.3.1))(@types/react@18.3.28)(bufferutil@4.1.0)(react@18.3.1)(typescript@5.9.3)(utf-8-validate@5.0.10)(viem@2.48.0(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@5.0.10)(zod@4.3.6))(zod@4.3.6))
+        specifier: 0.2.0
+        version: 0.2.0(@tanstack/react-query@5.99.0(react@18.3.1))(ajv@8.18.0)(cross-fetch@4.1.0)(multiformats@14.0.0)(react@18.3.1)(viem@2.48.0(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@5.0.10)(zod@4.3.6))(wagmi@2.19.5(@tanstack/query-core@5.99.0)(@tanstack/react-query@5.99.0(react@18.3.1))(@types/react@18.3.28)(bufferutil@4.1.0)(react@18.3.1)(typescript@5.9.3)(utf-8-validate@5.0.10)(viem@2.48.0(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@5.0.10)(zod@4.3.6))(zod@4.3.6))
       '@reserve-protocol/dtf-rebalance-lib':
         specifier: ^3.2.1
         version: 3.2.1(decimal.js-light@2.5.1)
@@ -1064,8 +1064,8 @@ packages:
       multiformats:
         optional: true
 
-  '@cowprotocol/cow-sdk@9.1.0':
-    resolution: {integrity: sha512-gBQXj7CS4YJAJ/vu8hDiuL089gWsx4gT9PfGxESNlxsN8AffsCKrmBQMvTiCA1yGM2rd9pJnnOo/uwZqd/YsSg==}
+  '@cowprotocol/cow-sdk@9.1.2':
+    resolution: {integrity: sha512-jnmk7zQ+iFRc0Lv06FphiYn0th9FsJ5BFXQ91yTe/kiU7zkAKLft1Lwgw6YvaKczWRBTSKZkJUQEgNDWwr3NjQ==}
     peerDependencies:
       '@openzeppelin/merkle-tree': ^1.x
       cross-fetch: ^3.x
@@ -1084,8 +1084,8 @@ packages:
       ipfs-only-hash: ^4.x
       multiformats: ^9.x
 
-  '@cowprotocol/sdk-app-data@5.1.0':
-    resolution: {integrity: sha512-jvbhBmSzQXR+ZZ/Q8JlQfmLMeNWV1aZ69X/yPoAmo33m8Or+1yOKIEEKrYMs4QFfUYORxL5qYGT5vFqXwc5Ahw==}
+  '@cowprotocol/sdk-app-data@5.1.2':
+    resolution: {integrity: sha512-gstMI79KU7sz5zc2y7KATTLMgGo2lhmH+lmm0ZBfRjLvn70iLsRjTfnnmXwzp+KalkRfF+hF4UnUnt87hn+KJg==}
     peerDependencies:
       ajv: ^8.x
       cross-fetch: ^3.x
@@ -1094,8 +1094,8 @@ packages:
   '@cowprotocol/sdk-common@0.10.1':
     resolution: {integrity: sha512-2EYpgXDwD0F5KR9W+jT2Vr/vzaJ8meAvEPm4fGjJUVr2otrUkhUG7ayx68L1AgKZWYzDtNrlM/+1EeyEjjEaWg==}
 
-  '@cowprotocol/sdk-common@0.10.2':
-    resolution: {integrity: sha512-4FrQu6/yCjlI6P5KaBnsfYpu2lNsiyDuPqXrMsj3VgKGAR7+3FddrUE5ojpl82iPLOZzQb9zjFk7+N0UN8V65A==}
+  '@cowprotocol/sdk-common@0.10.3':
+    resolution: {integrity: sha512-hBJFtUXXw9zeNBeCP6YTz0r/L6Ma0xLILYBRZs7RNbg8EdTi4KAaCXHgYQIK08S1Lr/hKQcYHJD0ZLH5GkM+jg==}
 
   '@cowprotocol/sdk-common@0.7.0':
     resolution: {integrity: sha512-cJZ8qdDXFu4JWNFdbGvM9nspfTTxyeuQvhbbh20boztJ+O7KfanjuW4/pePkZRJAs0O8e187Vgih2nKqQnH3EA==}
@@ -1106,32 +1106,32 @@ packages:
   '@cowprotocol/sdk-config@1.2.0':
     resolution: {integrity: sha512-upZ2OPycc+rikwAnfNt58qBMlYb+7zpFPzG6zT/sfE50FS1f2ba4SMtw37HVq+v0e9R32o/rWZFcDZT5Ty5yyQ==}
 
-  '@cowprotocol/sdk-config@2.0.0':
-    resolution: {integrity: sha512-ZeND/fzuzQShpVqOoJ3LbU0DoeKIb2SH2iANumX5LN7R/H495jIfExsb67JANqnrpupJtbUUw1FxfBchN5MVoQ==}
+  '@cowprotocol/sdk-config@2.1.0':
+    resolution: {integrity: sha512-tEmWSAAineima2f7Fp5H2QSzUiBwCrlNhq9fwd6ygz7EMdz4a4V07NFB5Fsg3JMwNnJItXUSzt6wfoLSTxlsFA==}
 
   '@cowprotocol/sdk-contracts-ts@1.8.0':
     resolution: {integrity: sha512-C+h34iYCYZWbuWT1u+taCegtqxewPaBmKGLLU7YLX7IqOGHqZ9VM2Opavy0iS52BLmqyXH0V2deb+g9QbDcq1Q==}
 
-  '@cowprotocol/sdk-contracts-ts@3.0.1':
-    resolution: {integrity: sha512-bOB0nYROfOzsJ5nww/QL1+/4scWmkzfQ2Ryd+wSgqHnvzM/zgsG22Fo8loXPKSDhs46FzdV7FkAfmzSVrOVtZg==}
+  '@cowprotocol/sdk-contracts-ts@3.0.3':
+    resolution: {integrity: sha512-i/Uj4oFLZ9akZMrEtE0+lGCr2VPPKQH+4TvBRA09dMFJci5PX7ztJRFYvfIzMX0iYNscPzOlqcsnsCr2EXCdAw==}
 
   '@cowprotocol/sdk-order-book@1.1.2':
     resolution: {integrity: sha512-KDMmlg1EwU5ATOdkttPuxluI1SNPQ73IQaMkacRAw36QUF1FVPaLLUEEZyrBSOABxlmSu4jwpZBV7mPnLATZAQ==}
 
-  '@cowprotocol/sdk-order-book@3.0.0':
-    resolution: {integrity: sha512-tDW3LZK4RnvXtaoUmulU0broirDeZ/Rp1QcVBzIklvBDDUEUcjRavN3sIUdDIOsYJhn6lKsSQTZ7u1MuYRPtDQ==}
+  '@cowprotocol/sdk-order-book@3.1.0':
+    resolution: {integrity: sha512-Ct7x9yivwK8wcAgg2L9z7u+wynE6JNdm9SUeZWcDlAFkx03XvWkBizsuki81oNbIoFZdWFXbGYanuV/Le6TcGw==}
 
   '@cowprotocol/sdk-order-signing@0.1.37':
     resolution: {integrity: sha512-aY0z0keHFy7Ss1CTQv6eAZQ7s4B1E9HullWq8NeofFKs+1ZAuQfs+WebHaxPzp2q+YahZ9Ai9r/rvwdHIdKCOQ==}
 
-  '@cowprotocol/sdk-order-signing@1.0.1':
-    resolution: {integrity: sha512-ILWej4zc1PD2Ea+LVhAL+kpP+Y2U3xKf4bcrH0yXRlWZCxQKH0SruovZ2rTv4zPW53U0mu5sConc5PEmYQZ97Q==}
+  '@cowprotocol/sdk-order-signing@1.0.3':
+    resolution: {integrity: sha512-S21seBqbhLR8G8QjMkN/LPOLR6Bk3IyEzb1KzjGwfuIG96ZCA699zFlz42gxY3ftES15N1VmNdNLbPNrlFhcaQ==}
 
   '@cowprotocol/sdk-trading@1.0.3':
     resolution: {integrity: sha512-Wkfd1HjweiS8YYvMnA4o/e+wfrD8BjkPfoUZ2GYCz8P8AZvVLmrraQxAGYO3N7QQSE7uRILqvBwPIFhcGrdZvw==}
 
-  '@cowprotocol/sdk-trading@2.0.3':
-    resolution: {integrity: sha512-OHiqbL/h8hfZXn+fFW57gpIdW3d8Lhr0pWHxp6v4WBBoO6RHsCy30bBcwpBzSHWtJJlI/dqyR7mnDl/ber57xw==}
+  '@cowprotocol/sdk-trading@2.0.5':
+    resolution: {integrity: sha512-7ecPA6Bmi508UkQ6VzsFGebVUgBgxp2JDy1zBiyC0F7MZECajDM/JB266EQ5g7AXSCV2UKqDa3Yv8k6ID7AXdg==}
 
   '@cowprotocol/sdk-viem-adapter@0.3.17':
     resolution: {integrity: sha512-RqrnlCWGpvp9SlRTs+xCPbHVVix4vpOBY8kyFJUZbpWk8wtzsIx0sMSRydmojVMosKgtzg17CKRwgxBlu8kFUg==}
@@ -3093,8 +3093,8 @@ packages:
   '@reown/appkit@1.7.8':
     resolution: {integrity: sha512-51kTleozhA618T1UvMghkhKfaPcc9JlKwLJ5uV+riHyvSoWPKPRIa5A6M1Wano5puNyW0s3fwywhyqTHSilkaA==}
 
-  '@reserve-protocol/async-zap-sdk@0.0.1':
-    resolution: {integrity: sha512-oaKddVxIX6Ude0pw2rb49awol9uCy63kd3N9t4g58R9XAnpZiR6XD0LJyZvkd8PUepLBFmIKysGlWh6LHbG5TQ==}
+  '@reserve-protocol/async-zap-sdk@0.2.0':
+    resolution: {integrity: sha512-SE888KpGYpRSDyCLMxr0kGpOQY2c5aWtpFSBB/MdMwxGBo+aFMQbN0UyAjE6p30DgfCCU64DFus4X4/jU3v70w==}
     peerDependencies:
       '@tanstack/react-query': ^5.0.0
       react: ^18.3.1
@@ -5829,6 +5829,10 @@ packages:
   ky@1.14.3:
     resolution: {integrity: sha512-9zy9lkjac+TR1c2tG+mkNSVlyOpInnWdSMiue4F+kq8TwJSgv6o8jhLRg8Ho6SnZ9wOYUq/yozts9qQCfk7bIw==}
     engines: {node: '>=18'}
+
+  ky@2.0.2:
+    resolution: {integrity: sha512-/GmXpo9F9W+f8n4Ivr2iH+7h7wL7jLbLKWkMlpflcCRb6kGjBfTlASEXaZ9qUgNTn4VgS0P2pwxxzQ4EM6Ulgg==}
+    engines: {node: '>=22'}
 
   leven@3.1.0:
     resolution: {integrity: sha512-qsda+H8jTaUaN/x5vzW2rzc+8Rw4TAQ/4KjB46IwK5VH+IlVeeeje/EoZRpiXvIqjFgK84QffqPztGI3VBLG1A==}
@@ -9186,15 +9190,15 @@ snapshots:
       - ajv
       - encoding
 
-  '@cowprotocol/cow-sdk@9.1.0(ajv@8.18.0)(cross-fetch@4.1.0)(multiformats@14.0.0)':
+  '@cowprotocol/cow-sdk@9.1.2(ajv@8.18.0)(cross-fetch@4.1.0)(multiformats@14.0.0)':
     dependencies:
-      '@cowprotocol/sdk-app-data': 5.1.0(ajv@8.18.0)(cross-fetch@4.1.0)(multiformats@14.0.0)
-      '@cowprotocol/sdk-common': 0.10.2
-      '@cowprotocol/sdk-config': 2.0.0
-      '@cowprotocol/sdk-contracts-ts': 3.0.1
-      '@cowprotocol/sdk-order-book': 3.0.0
-      '@cowprotocol/sdk-order-signing': 1.0.1
-      '@cowprotocol/sdk-trading': 2.0.3(ajv@8.18.0)(cross-fetch@4.1.0)(multiformats@14.0.0)
+      '@cowprotocol/sdk-app-data': 5.1.2(ajv@8.18.0)(cross-fetch@4.1.0)(multiformats@14.0.0)
+      '@cowprotocol/sdk-common': 0.10.3
+      '@cowprotocol/sdk-config': 2.1.0
+      '@cowprotocol/sdk-contracts-ts': 3.0.3
+      '@cowprotocol/sdk-order-book': 3.1.0
+      '@cowprotocol/sdk-order-signing': 1.0.3
+      '@cowprotocol/sdk-trading': 2.0.5(ajv@8.18.0)(cross-fetch@4.1.0)(multiformats@14.0.0)
       cross-fetch: 4.1.0
     optionalDependencies:
       multiformats: 14.0.0
@@ -9212,9 +9216,9 @@ snapshots:
       json-stringify-deterministic: 1.0.13
       multiformats: 14.0.0
 
-  '@cowprotocol/sdk-app-data@5.1.0(ajv@8.18.0)(cross-fetch@4.1.0)(multiformats@14.0.0)':
+  '@cowprotocol/sdk-app-data@5.1.2(ajv@8.18.0)(cross-fetch@4.1.0)(multiformats@14.0.0)':
     dependencies:
-      '@cowprotocol/sdk-common': 0.10.2
+      '@cowprotocol/sdk-common': 0.10.3
       ajv: 8.18.0
       cross-fetch: 4.1.0
       ipfs-unixfs-importer: 16.1.5
@@ -9228,9 +9232,9 @@ snapshots:
     dependencies:
       '@cowprotocol/sdk-config': 1.2.0
 
-  '@cowprotocol/sdk-common@0.10.2':
+  '@cowprotocol/sdk-common@0.10.3':
     dependencies:
-      '@cowprotocol/sdk-config': 2.0.0
+      '@cowprotocol/sdk-config': 2.1.0
 
   '@cowprotocol/sdk-common@0.7.0':
     dependencies:
@@ -9246,7 +9250,7 @@ snapshots:
       exponential-backoff: 3.1.3
       limiter: 2.1.0
 
-  '@cowprotocol/sdk-config@2.0.0':
+  '@cowprotocol/sdk-config@2.1.0':
     dependencies:
       exponential-backoff: 3.1.3
       limiter: 2.1.0
@@ -9256,10 +9260,10 @@ snapshots:
       '@cowprotocol/sdk-common': 0.7.0
       '@cowprotocol/sdk-config': 0.10.0
 
-  '@cowprotocol/sdk-contracts-ts@3.0.1':
+  '@cowprotocol/sdk-contracts-ts@3.0.3':
     dependencies:
-      '@cowprotocol/sdk-common': 0.10.2
-      '@cowprotocol/sdk-config': 2.0.0
+      '@cowprotocol/sdk-common': 0.10.3
+      '@cowprotocol/sdk-config': 2.1.0
 
   '@cowprotocol/sdk-order-book@1.1.2':
     dependencies:
@@ -9271,10 +9275,10 @@ snapshots:
     transitivePeerDependencies:
       - encoding
 
-  '@cowprotocol/sdk-order-book@3.0.0':
+  '@cowprotocol/sdk-order-book@3.1.0':
     dependencies:
-      '@cowprotocol/sdk-common': 0.10.2
-      '@cowprotocol/sdk-config': 2.0.0
+      '@cowprotocol/sdk-common': 0.10.3
+      '@cowprotocol/sdk-config': 2.1.0
       cross-fetch: 3.2.0
       exponential-backoff: 3.1.3
       limiter: 3.0.0
@@ -9290,12 +9294,12 @@ snapshots:
     transitivePeerDependencies:
       - encoding
 
-  '@cowprotocol/sdk-order-signing@1.0.1':
+  '@cowprotocol/sdk-order-signing@1.0.3':
     dependencies:
-      '@cowprotocol/sdk-common': 0.10.2
-      '@cowprotocol/sdk-config': 2.0.0
-      '@cowprotocol/sdk-contracts-ts': 3.0.1
-      '@cowprotocol/sdk-order-book': 3.0.0
+      '@cowprotocol/sdk-common': 0.10.3
+      '@cowprotocol/sdk-config': 2.1.0
+      '@cowprotocol/sdk-contracts-ts': 3.0.3
+      '@cowprotocol/sdk-order-book': 3.1.0
     transitivePeerDependencies:
       - encoding
 
@@ -9315,14 +9319,14 @@ snapshots:
       - ipfs-only-hash
       - multiformats
 
-  '@cowprotocol/sdk-trading@2.0.3(ajv@8.18.0)(cross-fetch@4.1.0)(multiformats@14.0.0)':
+  '@cowprotocol/sdk-trading@2.0.5(ajv@8.18.0)(cross-fetch@4.1.0)(multiformats@14.0.0)':
     dependencies:
-      '@cowprotocol/sdk-app-data': 5.1.0(ajv@8.18.0)(cross-fetch@4.1.0)(multiformats@14.0.0)
-      '@cowprotocol/sdk-common': 0.10.2
-      '@cowprotocol/sdk-config': 2.0.0
-      '@cowprotocol/sdk-contracts-ts': 3.0.1
-      '@cowprotocol/sdk-order-book': 3.0.0
-      '@cowprotocol/sdk-order-signing': 1.0.1
+      '@cowprotocol/sdk-app-data': 5.1.2(ajv@8.18.0)(cross-fetch@4.1.0)(multiformats@14.0.0)
+      '@cowprotocol/sdk-common': 0.10.3
+      '@cowprotocol/sdk-config': 2.1.0
+      '@cowprotocol/sdk-contracts-ts': 3.0.3
+      '@cowprotocol/sdk-order-book': 3.1.0
+      '@cowprotocol/sdk-order-signing': 1.0.3
       deepmerge: 4.3.1
     transitivePeerDependencies:
       - ajv
@@ -11605,10 +11609,11 @@ snapshots:
       - utf-8-validate
       - zod
 
-  '@reserve-protocol/async-zap-sdk@0.0.1(@tanstack/react-query@5.99.0(react@18.3.1))(ajv@8.18.0)(cross-fetch@4.1.0)(multiformats@14.0.0)(react@18.3.1)(viem@2.48.0(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@5.0.10)(zod@4.3.6))(wagmi@2.19.5(@tanstack/query-core@5.99.0)(@tanstack/react-query@5.99.0(react@18.3.1))(@types/react@18.3.28)(bufferutil@4.1.0)(react@18.3.1)(typescript@5.9.3)(utf-8-validate@5.0.10)(viem@2.48.0(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@5.0.10)(zod@4.3.6))(zod@4.3.6))':
+  '@reserve-protocol/async-zap-sdk@0.2.0(@tanstack/react-query@5.99.0(react@18.3.1))(ajv@8.18.0)(cross-fetch@4.1.0)(multiformats@14.0.0)(react@18.3.1)(viem@2.48.0(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@5.0.10)(zod@4.3.6))(wagmi@2.19.5(@tanstack/query-core@5.99.0)(@tanstack/react-query@5.99.0(react@18.3.1))(@types/react@18.3.28)(bufferutil@4.1.0)(react@18.3.1)(typescript@5.9.3)(utf-8-validate@5.0.10)(viem@2.48.0(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@5.0.10)(zod@4.3.6))(zod@4.3.6))':
     dependencies:
-      '@cowprotocol/cow-sdk': 9.1.0(ajv@8.18.0)(cross-fetch@4.1.0)(multiformats@14.0.0)
+      '@cowprotocol/cow-sdk': 9.1.2(ajv@8.18.0)(cross-fetch@4.1.0)(multiformats@14.0.0)
       '@tanstack/react-query': 5.99.0(react@18.3.1)
+      ky: 2.0.2
       react: 18.3.1
       viem: 2.48.0(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@5.0.10)(zod@4.3.6)
       wagmi: 2.19.5(@tanstack/query-core@5.99.0)(@tanstack/react-query@5.99.0(react@18.3.1))(@types/react@18.3.28)(bufferutil@4.1.0)(react@18.3.1)(typescript@5.9.3)(utf-8-validate@5.0.10)(viem@2.48.0(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@5.0.10)(zod@4.3.6))(zod@4.3.6)
@@ -15130,6 +15135,8 @@ snapshots:
   kleur@4.1.5: {}
 
   ky@1.14.3: {}
+
+  ky@2.0.2: {}
 
   leven@3.1.0: {}
 

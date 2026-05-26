@@ -1,16 +1,24 @@
 import TokenLogo from '@/components/token-logo'
+import TokenLogoWithChain from '@/components/token-logo/TokenLogoWithChain'
 import { Button } from '@/components/ui/button'
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { chainIdAtom } from '@/state/atoms'
+import { chainIdAtom, walletAtom } from '@/state/atoms'
 import { indexDTFAtom } from '@/state/dtf/atoms'
 import { formatCurrency, formatTokenAmount, getFolioRoute } from '@/utils'
 import { ROUTES } from '@/utils/constants'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { ArrowUpRight, Check, RotateCcw } from 'lucide-react'
 import { Link } from 'react-router-dom'
-import { formatUnits } from 'viem'
-import { useAsyncZapMint } from '../async-zap-context'
-import { inputTokenAtom, mintAmountAtom, wizardStepAtom } from '../atoms'
+import { Address, formatUnits } from 'viem'
+import { useAsyncZap } from '../async-zap-context'
+import {
+  dustStartBalancesAtom,
+  inputTokenAtom,
+  mintAmountAtom,
+  redeemAmountAtom,
+  wizardStepAtom,
+} from '../atoms'
+import { useDust } from '../hooks/use-dust'
 
 const SummaryRow = ({
   label,
@@ -39,29 +47,49 @@ const Success = () => {
   const chainId = useAtomValue(chainIdAtom)
   const inputToken = useAtomValue(inputTokenAtom)
   const mintAmount = useAtomValue(mintAmountAtom)
+  const redeemAmount = useAtomValue(redeemAmountAtom)
   const setStep = useSetAtom(wizardStepAtom)
   const setMintAmount = useSetAtom(mintAmountAtom)
-  const { currentQuote, execution } = useAsyncZapMint()
+  const setRedeemAmount = useSetAtom(redeemAmountAtom)
+  const account = useAtomValue(walletAtom)
+  const dustStartBalances = useAtomValue(dustStartBalancesAtom)
+  const { quote, execution, operation } = useAsyncZap()
+  const isMint = operation === 'mint'
+
+  const { items: dustItems, totalUsd: dustTotalUsd } = useDust({
+    quote,
+    startBalances: dustStartBalances,
+    account: account as Address | undefined,
+    chainId,
+    inputToken,
+  })
 
   if (!indexDTF) return null
 
-  const parsedAmount = Number(mintAmount)
-  const dtfAmount = currentQuote
-    ? Number(formatUnits(currentQuote.shares, 18))
+  const paidAmount = Number(isMint ? mintAmount : redeemAmount)
+  // Mint: actual minted shares. Redeem: shares redeemed (the input).
+  const mintedShares = execution.mintedShares ?? quote?.shares
+  const sharesAmount = mintedShares
+    ? Number(formatUnits(mintedShares, 18))
+    : Number(redeemAmount) || 0
+  const quoteTokenAmount = quote
+    ? Number(formatUnits(quote.totalQuoteTokenAmount, inputToken.decimals))
     : 0
-  const spentUsd = currentQuote
-    ? Number(
-        formatUnits(currentQuote.totalQuoteTokenAmount, inputToken.decimals)
-      )
-    : 0
-  const unusedBuffer = Math.max(parsedAmount - spentUsd, 0)
-  const mintFee = indexDTF.mintingFee
+
+  // Big number: mint = shares received; redeem = quoteToken received.
+  const receiveAmount = isMint ? sharesAmount : quoteTokenAmount
+  const receiveSymbol = isMint ? indexDTF.token.symbol : inputToken.symbol
+  const receiveAddress = isMint ? indexDTF.id : inputToken.address
+
+  const unusedBuffer = isMint ? Math.max(paidAmount - quoteTokenAmount, 0) : 0
+  const feePct = indexDTF.mintingFee
     ? (indexDTF.mintingFee * 100).toFixed(2)
     : '0'
 
-  const handleNewMint = () => {
+  const handleNewOperation = () => {
     execution.reset()
     setMintAmount('')
+    setRedeemAmount('')
     setStep('configure')
   }
 
@@ -69,15 +97,12 @@ const Success = () => {
     <div className="bg-secondary rounded-3xl p-1 w-full lg:min-h-[calc(100vh-100px)]">
       <div className="grid w-full gap-0.5 lg:min-h-[calc(100vh-108px)] lg:grid-cols-[minmax(0,1fr)_minmax(420px,0.95fr)] lg:grid-rows-[auto_1fr] lg:items-stretch">
         <div className="px-5 pt-5 pb-3 flex items-start justify-between gap-4 lg:col-start-1 lg:row-start-1">
-          <Tabs value="mint">
+          <Tabs value={operation}>
             <TabsList className="h-9">
-              <TabsTrigger
-                value="mint"
-                className="px-3 data-[state=active]:text-primary"
-              >
+              <TabsTrigger value="mint" className="px-3">
                 Mint
               </TabsTrigger>
-              <TabsTrigger value="redeem" disabled className="px-3">
+              <TabsTrigger value="redeem" className="px-3">
                 Redeem
               </TabsTrigger>
             </TabsList>
@@ -96,10 +121,10 @@ const Success = () => {
                     variant="outline"
                     size="sm"
                     className="gap-1.5 rounded-full"
-                    onClick={handleNewMint}
+                    onClick={handleNewOperation}
                   >
                     <RotateCcw size={14} />
-                    New mint
+                    New {isMint ? 'mint' : 'redeem'}
                   </Button>
                   <Button asChild size="sm" className="rounded-full">
                     <Link
@@ -111,25 +136,26 @@ const Success = () => {
                 </div>
               </div>
               <div className="min-w-0">
-                <div className="mb-3 text-base text-primary">Mint Completed</div>
+                <div className="mb-3 text-base text-primary">
+                  {isMint ? 'Mint Completed' : 'Redeem Completed'}
+                </div>
                 <div className="flex items-center gap-2">
                   <TokenLogo
-                    address={indexDTF.id}
-                    symbol={indexDTF.token.symbol}
+                    address={receiveAddress}
+                    symbol={receiveSymbol}
                     chain={chainId}
                     size="xl"
                   />
                   <div className="flex min-w-0 items-center gap-1.5">
                     <span className="text-[40px] font-light text-primary leading-10">
-                      {formatTokenAmount(dtfAmount)}
+                      {isMint
+                        ? formatTokenAmount(receiveAmount)
+                        : `$${formatCurrency(receiveAmount)}`}
                     </span>
                     <span className="text-[40px] font-light text-muted-foreground leading-10">
-                      {indexDTF.token.symbol}
+                      {receiveSymbol}
                     </span>
                   </div>
-                </div>
-                <div className="mt-2 text-base text-muted-foreground font-light">
-                  ${formatCurrency(spentUsd)}
                 </div>
               </div>
             </div>
@@ -137,21 +163,78 @@ const Success = () => {
 
           <div className="bg-card rounded-2xl p-6 flex flex-col gap-6 lg:flex-1">
             <div className="grid gap-3">
+              {isMint ? (
+                <>
+                  <SummaryRow
+                    label="Input amount"
+                    value={`$${formatCurrency(paidAmount)} ${inputToken.symbol}`}
+                  />
+                  <SummaryRow
+                    label="Spent"
+                    value={`$${formatCurrency(quoteTokenAmount)} ${inputToken.symbol}`}
+                    subvalue={`${formatTokenAmount(sharesAmount)} ${indexDTF.token.symbol}`}
+                  />
+                  <SummaryRow
+                    label="Unused (returned)"
+                    value={`$${formatCurrency(unusedBuffer)} ${inputToken.symbol}`}
+                  />
+                </>
+              ) : (
+                <>
+                  <SummaryRow
+                    label="Redeemed"
+                    value={`${formatTokenAmount(paidAmount)} ${indexDTF.token.symbol}`}
+                  />
+                  <SummaryRow
+                    label="Received"
+                    value={`$${formatCurrency(quoteTokenAmount)} ${inputToken.symbol}`}
+                  />
+                </>
+              )}
               <SummaryRow
-                label="Input amount"
-                value={`$${formatCurrency(parsedAmount)} ${inputToken.symbol}`}
+                label={isMint ? 'Mint fee' : 'Redemption fee'}
+                value={`${feePct}%`}
               />
-              <SummaryRow
-                label="Spent"
-                value={`$${formatCurrency(spentUsd)} ${inputToken.symbol}`}
-                subvalue={`${formatTokenAmount(dtfAmount)} ${indexDTF.token.symbol}`}
-              />
-              <SummaryRow
-                label="Unused (returned)"
-                value={`$${formatCurrency(unusedBuffer)} ${inputToken.symbol}`}
-              />
-              <SummaryRow label="Mint fee" value={`${mintFee}%`} />
             </div>
+
+            {dustTotalUsd >= 0.01 && (
+              <div className="rounded-2xl border border-border/70 p-4">
+                <div className="flex items-center justify-between gap-4">
+                  <div>
+                    <div className="font-medium text-base">Leftover dust</div>
+                    <p className="mt-1 text-sm font-light text-muted-foreground">
+                      Swaps leave a small residue in your wallet.
+                    </p>
+                  </div>
+                  <div className="text-right text-base font-medium">
+                    ${formatCurrency(dustTotalUsd)}
+                  </div>
+                </div>
+                <div className="mt-3 flex flex-col gap-2">
+                  {dustItems.map((item) => (
+                    <div
+                      key={item.token.address}
+                      className="flex items-center justify-between gap-3 text-sm"
+                    >
+                      <div className="flex items-center gap-2 min-w-0">
+                        <TokenLogoWithChain
+                          address={item.token.address}
+                          symbol={item.token.symbol}
+                          chain={chainId}
+                          size="sm"
+                        />
+                        <span className="font-light text-muted-foreground truncate">
+                          {formatTokenAmount(item.amount)} {item.token.symbol}
+                        </span>
+                      </div>
+                      <span className="font-medium">
+                        ${formatCurrency(item.usd)}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
         </div>
 
@@ -159,13 +242,13 @@ const Success = () => {
           <div className="px-4 py-3">
             <h3 className="font-medium text-base">Activity history</h3>
             <p className="text-sm text-muted-foreground font-light">
-              Collateral swaps for this mint.
+              Collateral swaps for this {operation}.
             </p>
           </div>
 
           <div className="flex flex-col gap-1 px-2 pb-2 lg:flex-1">
-            {execution.orders.length > 0 ? (
-              execution.orders.map((order) => (
+            {Object.values(execution.ordersByLegId).length > 0 ? (
+              Object.values(execution.ordersByLegId).map((order) => (
                 <a
                   key={order.legId}
                   href={
@@ -185,7 +268,7 @@ const Success = () => {
                     </div>
                     <div className="flex items-center gap-1.5 text-sm font-light text-primary">
                       <Check size={14} />
-                      <span>{(order.status as string) ?? 'submitted'}</span>
+                      <span>{order.phase}</span>
                     </div>
                   </div>
                   {order.orderUid && (

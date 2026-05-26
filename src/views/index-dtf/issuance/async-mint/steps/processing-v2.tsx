@@ -6,42 +6,32 @@ import { chainIdAtom } from '@/state/atoms'
 import { formatTokenAmount } from '@/utils'
 import {
   AsyncZapExecutionStep,
-  AsyncZapOrderAttempt,
+  AsyncZapOrderState,
 } from '@reserve-protocol/async-zap-sdk'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { Check, Loader, X } from 'lucide-react'
 import { useEffect } from 'react'
 import { formatUnits } from 'viem'
-import { useAsyncZapMint } from '../async-zap-context'
+import { useAsyncZap } from '../async-zap-context'
 import { inputTokenAtom, wizardStepAtom } from '../atoms'
 
 const STEP_LABELS: Record<AsyncZapExecutionStep, string> = {
   idle: 'Preparing…',
-  submitting_orders: 'Submitting orders…',
-  signing_first_batch: 'Sign the transaction in your wallet…',
-  waiting_first_batch: 'Confirming transaction…',
-  syncing_redeem: 'Syncing…',
+  finalized: 'Finalizing quote…',
+  submitting_and_signing: 'Sign the transaction in your wallet…',
+  waiting_submit_and_sign: 'Confirming transaction…',
   waiting_orders: 'Waiting for swaps to fill…',
-  signing_second_batch: 'Sign the final transaction in your wallet…',
-  waiting_second_batch: 'Confirming final transaction…',
+  finishing: 'Sign the final transaction in your wallet…',
+  waiting_finish: 'Confirming final transaction…',
   complete: 'Complete',
   error: 'Something went wrong',
 }
 
-const isTerminalSettled = (status?: string) =>
-  status === 'fulfilled'
-
-const isFailed = (status?: string) =>
-  status === 'submissionFailed' ||
-  status === 'cancelled' ||
-  status === 'expired'
-
-const OrderAttemptRow = ({ order }: { order: AsyncZapOrderAttempt }) => {
+const OrderAttemptRow = ({ order }: { order: AsyncZapOrderState }) => {
   const chainId = useAtomValue(chainIdAtom)
   const inputToken = useAtomValue(inputTokenAtom)
-  const status = order.status as string | undefined
-  const settled = isTerminalSettled(status)
-  const failed = isFailed(status)
+  const settled = order.phase === 'fulfilled'
+  const failed = order.phase === 'failed'
 
   return (
     <div
@@ -74,11 +64,14 @@ const OrderAttemptRow = ({ order }: { order: AsyncZapOrderAttempt }) => {
               failed && 'text-destructive/70'
             )}
           >
-            {order.error?.message ?? status ?? 'pending'}
+            {order.error?.message ?? order.phase}
           </div>
         </div>
         <div className="shrink-0 text-right text-sm font-medium">
-          -{formatTokenAmount(Number(formatUnits(order.sellAmount, inputToken.decimals)))}{' '}
+          -
+          {formatTokenAmount(
+            Number(formatUnits(order.sellAmount, inputToken.decimals))
+          )}{' '}
           {inputToken.symbol}
         </div>
         <div className="h-5 w-5 shrink-0">
@@ -94,11 +87,11 @@ const OrderAttemptRow = ({ order }: { order: AsyncZapOrderAttempt }) => {
 }
 
 const ProcessingV2 = () => {
-  const chainId = useAtomValue(chainIdAtom)
   const setStep = useSetAtom(wizardStepAtom)
-  const { execution } = useAsyncZapMint()
+  const { execution } = useAsyncZap()
 
-  const { step, orders, error } = execution
+  const { step, ordersByLegId, error } = execution
+  const orders = Object.values(ordersByLegId)
 
   // Move to success once the SDK reports completion.
   useEffect(() => {
@@ -129,7 +122,7 @@ const ProcessingV2 = () => {
             )}
             {!isError && (
               <p className="mt-1 text-sm text-muted-foreground font-light">
-                Keep this window open until your mint completes.
+                Keep this window open until your operation completes.
               </p>
             )}
           </div>
@@ -150,9 +143,9 @@ const ProcessingV2 = () => {
             <Button
               size="lg"
               className="w-full h-[49px] rounded-[12px]"
-              onClick={() => void execution.executeNext()}
+              onClick={() => void execution.retryFailedOrders()}
             >
-              Retry
+              Retry failed orders
             </Button>
             <Button
               size="lg"

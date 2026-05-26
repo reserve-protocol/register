@@ -1,15 +1,9 @@
 import { chainIdAtom } from '@/state/atoms'
-import { indexDTFBasketAtom, indexDTFPriceAtom } from '@/state/dtf/atoms'
 import { Token } from '@/types'
 import { ChainId } from '@/utils/chains'
 import { atom } from 'jotai'
 import { Address } from 'viem'
-import { safeParseEther } from '@/utils'
-import { calculateCollateralAllocation } from './utils'
-import { CollateralAllocation, MintStrategy, WizardStep } from './types'
-
-// ─── Constants ───────────────────────────────────────────────────────
-export const ASYNC_MINT_BUFFER = 0.02
+import { WizardStep } from './types'
 
 // Input token per chain: USDC for Mainnet/Base, USDT for BSC
 export const MINT_INPUT_TOKENS: Record<number, Token> = {
@@ -33,15 +27,17 @@ export const MINT_INPUT_TOKENS: Record<number, Token> = {
   },
 }
 
-// ─── Core wizard state ───────────────────────────────────────────────
+// ─── Wizard state ────────────────────────────────────────────────────
 export const wizardStepAtom = atom<WizardStep>('gnosis-check')
-export const mintStrategyAtom = atom<MintStrategy>('single')
-export const selectedCollateralsAtom = atom<Set<Address>>(new Set<Address>())
-export const customCollateralAmountsAtom = atom<Record<Address, string>>({})
-export const collateralSelectionInitializedAtom = atom<boolean>(false)
-export const useWalletCollateralAtom = atom<boolean>(false)
-export const mintAmountAtom = atom<string>('')
 export const slippageAtom = atom<string>('100') // basis points
+
+// ─── Operation (mint | redeem) ───────────────────────────────────────
+export const operationAtom = atom<'mint' | 'redeem'>('mint')
+// Whether to use the user's existing basket-token balances to reduce swaps.
+export const useExistingBalancesAtom = atom<boolean>(false)
+// Amounts (strings). mint: quoteToken/USD; redeem: DTF shares (18 dec).
+export const mintAmountAtom = atom<string>('')
+export const redeemAmountAtom = atom<string>('')
 
 // ─── Input token ─────────────────────────────────────────────────────
 export const inputTokenAtom = atom<Token>((get) => {
@@ -49,86 +45,18 @@ export const inputTokenAtom = atom<Token>((get) => {
   return MINT_INPUT_TOKENS[chainId] ?? MINT_INPUT_TOKENS[ChainId.Base]
 })
 
-// ─── Async data atoms (populated by useAllocationData hook) ──────────
-// NOTE: Only valid when useAllocationData() is mounted. Used by the collateral
-// selection / preview UI (configure-mint, review-inputs); the actual quoting is
-// handled by the async-zap SDK.
-export const walletBalancesAtom = atom<Record<Address, bigint>>({})
-export const tokenPricesAtom = atom<Record<Address, number>>({})
-export const folioDetailsAtom = atom<{
-  shares: bigint
-  assets: Address[]
-  mintValues: bigint[]
-} | null>(null)
-
-// ─── Dollar → DTF shares conversion (preview estimate) ───────────────
-export const mintSharesAtom = atom<bigint>((get) => {
-  const dollarAmount = Number(get(mintAmountAtom))
-  const dtfPrice = get(indexDTFPriceAtom) || 0
-  if (!dtfPrice || !dollarAmount || !isFinite(dollarAmount) || dollarAmount <= 0)
-    return 0n
-  const shares = (dollarAmount / dtfPrice) * (1 - ASYNC_MINT_BUFFER)
-  return safeParseEther(shares.toFixed(18))
-})
-
-// ─── Collateral allocation (derived — preview for granular selection UI) ─
-export const collateralAllocationAtom = atom<
-  Record<Address, CollateralAllocation>
->((get) => {
-  const folioDetails = get(folioDetailsAtom)
-  const mintShares = get(mintSharesAtom)
-  if (!folioDetails || mintShares === 0n) return {}
-
-  const basket = get(indexDTFBasketAtom)
-  const decimalsMap: Record<Address, number> = {}
-  if (basket) {
-    for (const token of basket) {
-      decimalsMap[token.address.toLowerCase() as Address] = token.decimals
-    }
-  }
-
-  const mintValues =
-    folioDetails.shares === mintShares
-      ? folioDetails.mintValues
-      : folioDetails.mintValues.map(
-          (value) => (value * mintShares) / folioDetails.shares
-        )
-  const customCollateralAmounts: Record<Address, bigint> = {}
-  const customInputs = get(customCollateralAmountsAtom)
-  for (const [address, value] of Object.entries(customInputs)) {
-    const normalized = address.toLowerCase() as Address
-    if (!value) continue
-    customCollateralAmounts[normalized] = safeParseEther(
-      value,
-      decimalsMap[normalized] ?? 18
-    )
-  }
-
-  return calculateCollateralAllocation({
-    mintShares,
-    assets: folioDetails.assets,
-    mintValues,
-    balances: get(walletBalancesAtom),
-    prices: get(tokenPricesAtom),
-    decimals: decimalsMap,
-    selectedCollaterals: get(selectedCollateralsAtom),
-    customCollateralAmounts,
-    strategy: get(mintStrategyAtom),
-    inputToken: get(inputTokenAtom),
-  })
-})
+// Wallet balances of basket tokens + quote token captured right before
+// execution, used to compute leftover dust afterwards (the SDK uses sell
+// orders, so swap outputs don't match basket proportions exactly). Keyed by
+// lowercase address.
+export const dustStartBalancesAtom = atom<Record<string, bigint>>({})
 
 // ─── Reset action atom ───────────────────────────────────────────────
-// NOTE: collateralAllocationAtom is derived — resets automatically when deps reset
 export const resetWizardAtom = atom(null, (_, set) => {
   set(wizardStepAtom, 'gnosis-check')
-  set(mintStrategyAtom, 'single')
-  set(selectedCollateralsAtom, new Set())
-  set(customCollateralAmountsAtom, {})
-  set(collateralSelectionInitializedAtom, false)
-  set(useWalletCollateralAtom, false)
+  set(operationAtom, 'mint')
+  set(useExistingBalancesAtom, false)
   set(mintAmountAtom, '')
-  set(walletBalancesAtom, {})
-  set(tokenPricesAtom, {})
-  set(folioDetailsAtom, null)
+  set(redeemAmountAtom, '')
+  set(dustStartBalancesAtom, {})
 })
