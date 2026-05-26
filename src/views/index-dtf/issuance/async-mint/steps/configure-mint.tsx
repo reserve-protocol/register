@@ -50,7 +50,9 @@ const ConfigureMint = () => {
   const parsedAmount = Number(amount) || 0
   const maxAmount = isMint ? inputBalanceAmount : dtfBalanceAmount
   const exceedsBalance = parsedAmount > maxAmount
-  const isValid = parsedAmount > 0 && !exceedsBalance
+  // Allow exceeding the balance so the user can still preview quotes; the
+  // error stays visible and submission is blocked on the quote screen.
+  const isValid = parsedAmount > 0
 
   const handleMax = () => {
     if (maxAmount > 0) {

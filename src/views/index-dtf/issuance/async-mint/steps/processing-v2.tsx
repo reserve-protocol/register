@@ -103,63 +103,80 @@ const ProcessingV2 = () => {
   const isError = step === 'error'
 
   return (
-    <div className="bg-secondary rounded-3xl p-1 w-full lg:min-h-[calc(100vh-100px)]">
-      <div className="bg-card rounded-2xl p-2 flex flex-col gap-2">
-        <div className="px-4 py-5 flex flex-col items-center text-center gap-3">
-          {isError ? (
-            <div className="h-12 w-12 rounded-full bg-destructive/10 flex items-center justify-center">
-              <X size={24} className="text-destructive" />
+    <div className="bg-secondary rounded-3xl p-1 w-full">
+      <div className="grid w-full gap-0.5 lg:grid-cols-[480px_minmax(0,1fr)] lg:grid-rows-[auto_1fr] lg:items-stretch">
+        <div className="bg-card rounded-2xl p-2 flex flex-col lg:col-start-1 lg:row-start-2 lg:h-full">
+          <div className="flex flex-1 flex-col items-center justify-center text-center gap-3 px-4 py-10">
+            {isError ? (
+              <div className="h-12 w-12 rounded-full bg-destructive/10 flex items-center justify-center">
+                <X size={24} className="text-destructive" />
+              </div>
+            ) : (
+              <Loader size={32} className="animate-spin text-primary" />
+            )}
+            <div>
+              <h3 className="font-medium text-lg">{STEP_LABELS[step]}</h3>
+              {isError && error && (
+                <p className="mt-1 text-sm text-destructive/80 max-w-[420px]">
+                  {error.message}
+                </p>
+              )}
+              {!isError && (
+                <p className="mt-1 text-sm text-muted-foreground font-light">
+                  Keep this window open until your operation completes.
+                </p>
+              )}
             </div>
-          ) : (
-            <Loader size={32} className="animate-spin text-primary" />
-          )}
-          <div>
-            <h3 className="font-medium text-lg">{STEP_LABELS[step]}</h3>
-            {isError && error && (
-              <p className="mt-1 text-sm text-destructive/80 max-w-[420px]">
-                {error.message}
-              </p>
-            )}
-            {!isError && (
-              <p className="mt-1 text-sm text-muted-foreground font-light">
-                Keep this window open until your operation completes.
-              </p>
-            )}
           </div>
+
+          {isError && (
+            <div className="px-2 pb-2 flex flex-col gap-2">
+              <Button
+                size="lg"
+                className="w-full h-[49px] rounded-[12px]"
+                onClick={() => void execution.retryFailedOrders()}
+              >
+                Retry failed orders
+              </Button>
+              <Button
+                size="lg"
+                variant="outline"
+                className="w-full h-[49px] rounded-[12px]"
+                onClick={() => {
+                  execution.reset()
+                  setStep('configure')
+                }}
+              >
+                Start over
+              </Button>
+            </div>
+          )}
         </div>
 
-        {orders.length > 0 && (
-          <ScrollArea className="max-h-[420px]">
+        <div className="bg-background rounded-2xl p-2 lg:col-start-2 lg:row-start-2 lg:flex lg:h-full lg:flex-col">
+          <div className="px-4 py-3">
+            <h3 className="font-medium text-base">Order progress</h3>
+            <p className="text-sm text-muted-foreground font-light">
+              Swaps are settled by CoW Protocol solvers.
+            </p>
+          </div>
+
+          <ScrollArea className="h-[min(620px,calc(100vh-290px))] min-h-[360px] lg:h-auto lg:min-h-0 lg:flex-1">
             <div className="flex flex-col gap-1 px-2">
-              {orders.map((order) => (
-                <OrderAttemptRow key={order.legId} order={order} />
-              ))}
+              {orders.length > 0 ? (
+                orders.map((order) => (
+                  <OrderAttemptRow key={order.legId} order={order} />
+                ))
+              ) : (
+                <div className="flex min-h-[320px] flex-1 items-center justify-center px-4 py-10 text-center">
+                  <p className="max-w-[260px] text-sm text-muted-foreground font-light">
+                    Waiting for swaps to start…
+                  </p>
+                </div>
+              )}
             </div>
           </ScrollArea>
-        )}
-
-        {isError && (
-          <div className="px-2 pb-2 flex flex-col gap-2">
-            <Button
-              size="lg"
-              className="w-full h-[49px] rounded-[12px]"
-              onClick={() => void execution.retryFailedOrders()}
-            >
-              Retry failed orders
-            </Button>
-            <Button
-              size="lg"
-              variant="outline"
-              className="w-full h-[49px] rounded-[12px]"
-              onClick={() => {
-                execution.reset()
-                setStep('configure')
-              }}
-            >
-              Start over
-            </Button>
-          </div>
-        )}
+        </div>
       </div>
     </div>
   )

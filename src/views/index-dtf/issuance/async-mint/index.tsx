@@ -1,5 +1,6 @@
 import useAtomicBatch from '@/hooks/use-atomic-batch'
 import { Skeleton } from '@/components/ui/skeleton'
+import { cn } from '@/lib/utils'
 import { indexDTFAtom } from '@/state/dtf/atoms'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { useEffect } from 'react'
@@ -11,6 +12,10 @@ import ConfigureMint from './steps/configure-mint'
 import QuoteSummary from './steps/quote-summary'
 import Processing from './steps/processing-v2'
 import Success from './steps/success'
+import { WizardStep } from './types'
+
+// Steps that show the swaps/orders panel on the right and use the wide layout.
+const WIDE_STEPS: WizardStep[] = ['quote-summary', 'processing', 'success']
 
 const WizardRouter = () => {
   const step = useAtomValue(wizardStepAtom)
@@ -44,19 +49,27 @@ const WizardRouter = () => {
   }
 }
 
-// Keeps balance/price syncing alive across all wizard steps
+// Keeps balance/price syncing alive across all wizard steps. The wrapper width
+// animates between the narrow configure card and the wide quote/orders layout,
+// so the right panel grows into view instead of snapping in.
 const AsyncMintWizard = () => {
   useTrackIndexDTFPage('mint-async-wizard')
   const indexDTF = useAtomValue(indexDTFAtom)
+  const step = useAtomValue(wizardStepAtom)
 
   if (!indexDTF) return null
 
+  const isWide = WIDE_STEPS.includes(step)
+
   return (
     <div className="container flex flex-col items-center justify-start gap-2 lg:min-h-[calc(100vh-100px)] w-full">
-      <div className="flex flex-col w-full rounded-4xl">
-        <div className="w-full mx-auto">
-          <WizardRouter />
-        </div>
+      <div
+        className={cn(
+          'w-full mx-auto overflow-hidden rounded-3xl transition-[max-width] duration-500 ease-out',
+          isWide ? 'max-w-[960px]' : 'max-w-[480px]'
+        )}
+      >
+        <WizardRouter />
       </div>
     </div>
   )

@@ -94,8 +94,8 @@ const Success = () => {
   }
 
   return (
-    <div className="bg-secondary rounded-3xl p-1 w-full lg:min-h-[calc(100vh-100px)]">
-      <div className="grid w-full gap-0.5 lg:min-h-[calc(100vh-108px)] lg:grid-cols-[minmax(0,1fr)_minmax(420px,0.95fr)] lg:grid-rows-[auto_1fr] lg:items-stretch">
+    <div className="bg-secondary rounded-3xl p-1 w-full">
+      <div className="grid w-full gap-0.5 lg:grid-cols-[480px_minmax(0,1fr)] lg:grid-rows-[auto_1fr] lg:items-stretch">
         <div className="px-5 pt-5 pb-3 flex items-start justify-between gap-4 lg:col-start-1 lg:row-start-1">
           <Tabs value={operation}>
             <TabsList className="h-9">
@@ -238,7 +238,7 @@ const Success = () => {
           </div>
         </div>
 
-        <div className="bg-background rounded-2xl p-2 lg:col-start-2 lg:row-start-2 lg:flex lg:h-full lg:flex-col">
+        <div className="bg-background rounded-2xl p-2 lg:col-start-2 lg:row-start-2 lg:flex lg:h-full lg:flex-col animate-in fade-in duration-500">
           <div className="px-4 py-3">
             <h3 className="font-medium text-base">Activity history</h3>
             <p className="text-sm text-muted-foreground font-light">

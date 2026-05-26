@@ -188,8 +188,8 @@ const QuoteSummary = () => {
   }
 
   return (
-    <div className="bg-secondary rounded-3xl p-1 w-full lg:min-h-[calc(100vh-100px)]">
-      <div className="grid w-full gap-0.5 lg:min-h-[calc(100vh-108px)] lg:grid-cols-[minmax(0,1fr)_minmax(420px,0.95fr)] lg:grid-rows-[auto_1fr] lg:items-stretch">
+    <div className="bg-secondary rounded-3xl p-1 w-full">
+      <div className="grid w-full gap-0.5 lg:grid-cols-[480px_minmax(0,1fr)] lg:grid-rows-[auto_1fr] lg:items-stretch">
         <div className="min-w-0 flex flex-col gap-0.5 lg:col-start-1 lg:row-start-2 lg:h-full">
           <div className="bg-card rounded-2xl p-2">
             <div className="px-4 py-3 flex items-center justify-between">
@@ -396,7 +396,7 @@ const QuoteSummary = () => {
           </div>
         </div>
 
-        <div className="bg-background rounded-2xl p-2 lg:col-start-2 lg:row-start-2 lg:flex lg:h-full lg:flex-col">
+        <div className="bg-background rounded-2xl p-2 lg:col-start-2 lg:row-start-2 lg:flex lg:h-full lg:flex-col animate-in fade-in duration-500">
           <div className="px-4 py-3 flex items-start justify-between gap-4">
             <div>
               <h3 className="font-medium text-base">Collateral swaps</h3>
