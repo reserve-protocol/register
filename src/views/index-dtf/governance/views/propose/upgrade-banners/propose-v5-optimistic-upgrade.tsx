@@ -164,7 +164,7 @@ export const newFeeRecipientAddress: Record<number, Address> = {
   [ChainId.BSC]: getAddress('0xf67454a5e8081F52768cD350A4Ac9E832c5101b6'),
 }
 
-const UPGRADE_FOLIO_MESSAGE = 'Reserve Optimistic Governanor Upgrade'
+const UPGRADE_FOLIO_MESSAGE = 'Reserve Optimistic Governor upgrade'
 
 const matchesUpgradeMessage = (description: string) =>
   description === UPGRADE_FOLIO_MESSAGE ||
@@ -222,7 +222,7 @@ const ProposeBanner = ({ refetch, description }: SpellUpgradeProps) => {
     const optimisticProposers = [
       getAddress('0x7DaAf7Bc2eE8bf4C0ac7f37E6b6cfaEB3ed9a868'),
     ]
-    const guardians = dtf.ownerGovernance.timelock.guardians
+    const guardians = dtf.ownerGovernance.timelock.guardians.filter(guardian => guardian.toLowerCase() !== oldFolioGovernor.toLowerCase())
     const newFeeRecipient = newFeeRecipientAddress[chainId]
     // Generate a random 32-byte value for deploymentNonce as bytes32
     const deploymentNonce = `0x${[...crypto.getRandomValues(new Uint8Array(32))]
@@ -356,15 +356,13 @@ export default function ProposeV5Upgrade() {
   // Show banner for v5.x DTFs
   const isUpgradeable = typeof version === 'string' && version.startsWith('5.')
 
-  console.log('isProposed', isProposeAllowed, proposals, isUpgradeable)
-
   if (!isProposeAllowed || !proposals || !isUpgradeable) return null
 
   const existsFolioUpgrade = validProposalExists(proposals)
 
-  if (existsFolioUpgrade) {
-    return null
-  }
+  // if (existsFolioUpgrade) {
+  //   return null
+  // }
 
   const description = getNextUpgradeDescription(proposals)
 
