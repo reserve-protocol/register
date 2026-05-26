@@ -15,12 +15,13 @@ import { balancesAtom, chainIdAtom, walletAtom } from '@/state/atoms'
 import { wagmiConfig } from '@/state/chain'
 import { indexDTFAtom } from '@/state/dtf/atoms'
 import { formatCurrency, formatTokenAmount } from '@/utils'
-import { AsyncZapLeg } from '@reserve-protocol/async-zap-sdk'
+import { AsyncZapLegState } from '@reserve-protocol/async-zap-sdk'
 import { useAtomValue, useSetAtom } from 'jotai'
-import { Info, Pencil, RefreshCw } from 'lucide-react'
+import { Info, Loader2, Pencil, RefreshCw } from 'lucide-react'
 import { Address, erc20Abi, formatUnits } from 'viem'
 import { readContracts } from 'wagmi/actions'
 import { useAsyncZap } from '../async-zap-context'
+import { usePriceImpact } from '../hooks/use-price-impact'
 import {
   dustStartBalancesAtom,
   inputTokenAtom,
@@ -30,8 +31,18 @@ import {
   wizardStepAtom,
 } from '../atoms'
 
+// Below this (unfavorable) price impact the figure turns destructive.
+const HIGH_PRICE_IMPACT = 0.02 // 2%
+
 const formatTokenBalance = (value: bigint, decimals: number) =>
   formatTokenAmount(Number(formatUnits(value, decimals)))
+
+// Signed percentage; collapses imperceptible values to ~0% to avoid "-0.00%".
+const formatPriceImpact = (impact: number) => {
+  const pct = impact * 100
+  if (Math.abs(pct) < 0.01) return '~0%'
+  return `${pct > 0 ? '+' : ''}${pct.toFixed(2)}%`
+}
 
 const QuoteSummary = () => {
   const setStep = useSetAtom(wizardStepAtom)
@@ -45,10 +56,26 @@ const QuoteSummary = () => {
   const account = useAtomValue(walletAtom)
   const setDustStart = useSetAtom(dustStartBalancesAtom)
 
-  const { quote, quoteQuery, execution, operation } = useAsyncZap()
+  const { quote, quoteQuery, execution, operation, legStates } = useAsyncZap()
   const isMint = operation === 'mint'
 
-  const quoteLoading = quoteQuery.isFetching && !quote
+  // Only CoW swap legs are shown; direct/balance-covered legs aren't swaps.
+  const cowLegStates = legStates.filter(
+    (ls) => ls.leg.kind === 'cowswap' && ls.leg.assetAmount > 0n
+  )
+  const legsResolving = cowLegStates.some(
+    (ls) => ls.status === 'pending' || ls.status === 'idle'
+  )
+  // Legs not computed yet but the base quote is still being built.
+  const initialLoading = legStates.length === 0 && quoteQuery.isFetching
+  // Any quote work in flight: drives aggregate skeletons + the submit spinner.
+  const quotesLoading = initialLoading || legsResolving
+
+  const { byLeg: legImpacts, aggregate: aggregateImpact } = usePriceImpact({
+    legs: cowLegStates.map((ls) => ls.leg),
+    quoteToken: inputToken,
+    chainId,
+  })
 
   // What the user provides (pay side).
   const payAmountStr = isMint ? mintAmount : redeemAmount
@@ -84,8 +111,9 @@ const QuoteSummary = () => {
   const utilizationPct =
     isMint && parsedPay > 0 ? (quoteTokenAmount / parsedPay) * 100 : 0
 
-  const swapLegs = (quote?.legs ?? []).filter((leg) => leg.kind === 'cowswap')
-  const hasFailedLegs = (quote?.legs ?? []).some((leg) => !!leg.error)
+  const hasFailedLegs = cowLegStates.some(
+    (ls) => ls.status === 'error' || !!ls.leg.error
+  )
   const quoteErrors = quote?.errors ?? []
 
   const isExecuting =
@@ -131,15 +159,21 @@ const QuoteSummary = () => {
     void execution.run()
   }
 
-  const renderLeg = (leg: AsyncZapLeg) => {
-    const failed = !!leg.error
+  const renderLegState = (ls: AsyncZapLegState) => {
+    const leg = ls.leg
+    const loading = ls.status === 'pending' || ls.status === 'idle'
+    const failed = ls.status === 'error'
     const sell = leg.side === 'sell'
+    const impact = legImpacts[leg.id]
+    const highImpact = impact !== undefined && impact < -HIGH_PRICE_IMPACT
+
     return (
       <div
         key={leg.id}
         className={cn(
           '-mx-2 rounded-[18px] border px-4 py-3 transition-colors',
-          !failed && 'border-primary/35 bg-primary/5',
+          loading && 'border-border/70 bg-background',
+          !loading && !failed && 'border-primary/35 bg-primary/5',
           failed && 'border-destructive/25 bg-destructive/5'
         )}
       >
@@ -160,28 +194,55 @@ const QuoteSummary = () => {
                 failed && 'text-destructive/70'
               )}
             >
-              {failed
-                ? leg.error?.message || 'Quote unavailable'
-                : sell
-                  ? `Selling ${leg.asset.symbol} for ${inputToken.symbol}`
-                  : `Buying ${leg.asset.symbol} with ${inputToken.symbol}`}
+              {loading
+                ? `Fetching ${leg.asset.symbol} quote…`
+                : failed
+                  ? leg.error?.message ||
+                    ls.error?.message ||
+                    'Quote unavailable'
+                  : sell
+                    ? `Selling ${leg.asset.symbol} for ${inputToken.symbol}`
+                    : `Buying ${leg.asset.symbol} with ${inputToken.symbol}`}
             </div>
           </div>
           <div className="min-w-[156px] text-right">
-            <div className="text-base font-medium">
-              {sell ? '+' : '-'}
-              {formatCurrency(
-                Number(formatUnits(leg.quoteTokenAmount, inputToken.decimals))
-              )}{' '}
-              {inputToken.symbol}
-            </div>
-            <div className="text-sm text-muted-foreground font-light">
-              {sell ? '-' : '+'}
-              {formatTokenBalance(leg.assetAmount, leg.asset.decimals)}{' '}
-              {leg.asset.symbol}
-            </div>
+            {loading ? (
+              <div className="flex flex-col items-end gap-1.5">
+                <Skeleton className="h-5 w-24" />
+                <Skeleton className="h-4 w-20" />
+                <Skeleton className="h-3 w-16" />
+              </div>
+            ) : failed ? (
+              <div className="text-sm text-destructive/70">—</div>
+            ) : (
+              <>
+                <div className="text-base font-medium">
+                  {sell ? '+' : '-'}
+                  {formatCurrency(
+                    Number(
+                      formatUnits(leg.quoteTokenAmount, inputToken.decimals)
+                    )
+                  )}{' '}
+                  {inputToken.symbol}
+                </div>
+                <div className="text-sm text-muted-foreground font-light">
+                  {sell ? '-' : '+'}
+                  {formatTokenBalance(leg.assetAmount, leg.asset.decimals)}{' '}
+                  {leg.asset.symbol}
+                </div>
+                {impact !== undefined && (
+                  <div
+                    className={cn(
+                      'text-xs font-light mt-0.5',
+                      highImpact ? 'text-destructive' : 'text-muted-foreground'
+                    )}
+                  >
+                    Price impact: {formatPriceImpact(impact)}
+                  </div>
+                )}
+              </>
+            )}
           </div>
-          <div className="h-6 w-6 shrink-0" />
         </div>
       </div>
     )
@@ -290,7 +351,7 @@ const QuoteSummary = () => {
               </div>
               <div className="flex items-start justify-between gap-4">
                 <div className="min-w-0">
-                  {quoteLoading ? (
+                  {quotesLoading ? (
                     <Skeleton className="w-[120px] h-8" />
                   ) : (
                     <span className="text-[32px] font-light text-primary leading-8">
@@ -335,7 +396,7 @@ const QuoteSummary = () => {
                         </TooltipContent>
                       </Tooltip>
                     </span>
-                    {quoteLoading ? (
+                    {quotesLoading ? (
                       <Skeleton className="h-4 w-32" />
                     ) : quote ? (
                       <span className="font-medium">
@@ -349,6 +410,38 @@ const QuoteSummary = () => {
                     )}
                   </div>
                 )}
+                <div className="flex items-center justify-between">
+                  <span className="text-muted-foreground flex items-center gap-1">
+                    Price impact
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <Info
+                          size={14}
+                          className="cursor-help text-muted-foreground/70"
+                        />
+                      </TooltipTrigger>
+                      <TooltipContent className="max-w-[280px]">
+                        Aggregate difference between the swap prices and Reserve
+                        API reference prices. Positive is better than reference.
+                      </TooltipContent>
+                    </Tooltip>
+                  </span>
+                  {quotesLoading ? (
+                    <Skeleton className="h-4 w-20" />
+                  ) : aggregateImpact !== undefined ? (
+                    <span
+                      className={cn(
+                        'font-medium',
+                        aggregateImpact < -HIGH_PRICE_IMPACT &&
+                          'text-destructive'
+                      )}
+                    >
+                      {formatPriceImpact(aggregateImpact)}
+                    </span>
+                  ) : (
+                    <span className="font-medium text-muted-foreground">-</span>
+                  )}
+                </div>
                 <div className="flex items-center justify-between">
                   <span className="text-muted-foreground">Max slippage</span>
                   <span className="font-medium">
@@ -364,14 +457,14 @@ const QuoteSummary = () => {
               </TooltipProvider>
             </div>
 
-            <div className="mt-5 lg:mt-auto">
+            <div className="mt-6 lg:mt-auto lg:pt-6">
               <TransactionButtonContainer chain={chainId}>
                 <Button
                   size="lg"
                   className="w-full h-[49px] rounded-[12px]"
                   disabled={
                     isExecuting ||
-                    quoteLoading ||
+                    quotesLoading ||
                     !isValidAmount ||
                     exceedsBalance ||
                     !quote?.success ||
@@ -381,7 +474,15 @@ const QuoteSummary = () => {
                   onClick={handleSubmit}
                 >
                   {isExecuting ? (
-                    'Signing...'
+                    <span className="flex items-center gap-2">
+                      <Loader2 size={16} className="animate-spin" />
+                      Signing...
+                    </span>
+                  ) : quotesLoading ? (
+                    <span className="flex items-center gap-2">
+                      <Loader2 size={16} className="animate-spin" />
+                      Fetching quotes...
+                    </span>
                   ) : (
                     <span className="flex items-center gap-1">
                       <span className="font-bold">
@@ -401,7 +502,7 @@ const QuoteSummary = () => {
             <div>
               <h3 className="font-medium text-base">Collateral swaps</h3>
               <p className="text-sm text-muted-foreground font-light">
-                {swapLegs.length === 0 && !quoteLoading
+                {cowLegStates.length === 0 && !quotesLoading
                   ? 'No swaps are needed for this operation.'
                   : isMint
                     ? 'The basket assets bought with your input.'
@@ -412,17 +513,17 @@ const QuoteSummary = () => {
 
           <ScrollArea className="h-[min(620px,calc(100vh-290px))] min-h-[360px] lg:h-auto lg:min-h-0 lg:flex-1">
             <div className="flex min-h-full flex-col gap-1 px-2">
-              {quoteLoading ? (
+              {initialLoading ? (
                 [0, 1, 2].map((item) => (
                   <Skeleton key={item} className="h-[76px] rounded-[18px]" />
                 ))
-              ) : swapLegs.length > 0 ? (
+              ) : cowLegStates.length > 0 ? (
                 <>
-                  <div className="grid grid-cols-[minmax(0,1fr)_156px_24px] items-center gap-4 px-2 pt-4 pb-1 text-xs font-medium uppercase tracking-wide text-muted-foreground">
+                  <div className="grid grid-cols-[minmax(0,1fr)_156px] items-center gap-4 px-2 pt-4 pb-1 text-xs font-medium uppercase tracking-wide text-muted-foreground">
                     <span>Asset</span>
-                    <span className="col-span-2 text-right">Swap</span>
+                    <span className="text-right">Swap</span>
                   </div>
-                  {swapLegs.map(renderLeg)}
+                  {cowLegStates.map(renderLegState)}
                 </>
               ) : (
                 <div className="flex min-h-[320px] flex-1 items-center justify-center px-4 py-10 text-center">

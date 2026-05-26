@@ -19,6 +19,8 @@ types.ts             → WizardStep
 steps/               → configure-mint, quote-summary, processing-v2, success,
                        gnosis-required
 hooks/use-dust.ts    → leftover dust calc (balances before/after, USD valued)
+hooks/use-price-impact.ts → per-leg price impact (CoW quote price vs Reserve
+                       API reference price), signed: + favorable / − worse
 ```
 
 ## Flow
@@ -29,8 +31,10 @@ hooks/use-dust.ts    → leftover dust calc (balances before/after, USD valued)
   wallet supports atomic batch.
 - `configure`: tabs mint/redeem, amount input (USD for mint / DTF shares for
   redeem), "use my wallet balances" toggle.
-- `quote-summary`: shows the SDK `quote` (shares, legs, budget used), submit
-  via `execution.run()`.
+- `quote-summary`: shows the SDK `quote` (shares, budget used) plus a per-leg
+  swap list driven by `legStates` (each leg loads individually — skeleton while
+  `pending`/`idle`, final amounts + price impact on `success`). Submit (with a
+  loading spinner while quotes resolve) via `execution.run()`.
 - `processing`: observes `execution.step` + `ordersByLegId`. Retry via
   `execution.retryFailedOrders()`.
 - `success`: minted shares / received quote token + **leftover dust**.
@@ -40,7 +44,8 @@ hooks/use-dust.ts    → leftover dust calc (balances before/after, USD valued)
 Both `useFolioMintZap` and `useFolioRedeemZap` are invoked once in
 `AsyncZapProvider` (their `execution` is instance state, so they must be shared,
 not called per-step). `enabled` is toggled by `operationAtom`. The active
-result is exposed as `{ operation, quote, quoteQuery, execution }`.
+result is exposed as `{ operation, quote, quoteQuery, legStates, execution }`
+(`legStates` is the per-leg status array used for per-asset loading).
 
 SDK params: `mode: 'maxInput'` + `inputAmount` for mint, `shares` for redeem;
 `slippageBps`, `useExistingBalances`. The SDK resolves folio price internally

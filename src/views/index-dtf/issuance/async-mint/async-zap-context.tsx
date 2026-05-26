@@ -4,6 +4,7 @@ import { indexDTFAtom } from '@/state/dtf/atoms'
 import { safeParseEther } from '@/utils'
 import {
   AsyncZapExecution,
+  AsyncZapLegState,
   AsyncZapQuote,
   useFolioMintZap,
   useFolioRedeemZap,
@@ -26,6 +27,9 @@ type AsyncZapContextValue = {
   operation: 'mint' | 'redeem'
   quote: AsyncZapQuote | undefined
   quoteQuery: UseQueryResult<AsyncZapQuote, Error>
+  // Per-leg state, populated with all legs (skeleton data) before their CoW
+  // quotes resolve — drives per-asset loading in the quote screen.
+  legStates: AsyncZapLegState[]
   execution: AsyncZapExecution
 }
 
@@ -106,6 +110,7 @@ export const AsyncZapProvider = ({ children }: { children: ReactNode }) => {
         operation,
         quote: active.quote,
         quoteQuery: active.quoteQuery,
+        legStates: active.legStates,
         execution: active.execution,
       }}
     >

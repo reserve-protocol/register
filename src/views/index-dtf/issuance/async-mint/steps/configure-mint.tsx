@@ -57,14 +57,16 @@ const ConfigureMint = () => {
   const handleMax = () => {
     if (maxAmount > 0) {
       setAmount(
-        isMint ? maxAmount.toFixed(2) : maxAmount.toFixed(18).replace(/\.?0+$/, '')
+        isMint
+          ? maxAmount.toFixed(2)
+          : maxAmount.toFixed(18).replace(/\.?0+$/, '')
       )
     }
   }
 
   return (
     <div className="bg-secondary rounded-3xl p-1 w-full">
-      <div className="px-5 pt-5 pb-3">
+      <div className="px-3 pt-3 pb-3">
         <Tabs
           value={operation}
           onValueChange={(v) => setOperation(v as 'mint' | 'redeem')}
