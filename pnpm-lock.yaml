@@ -182,8 +182,8 @@ importers:
         specifier: ^2.19.1
         version: 2.19.1(@babel/core@7.29.0)(@babel/template@7.28.6)(@types/react@18.3.28)(react@18.3.1)
       lucide-react:
-        specifier: ^0.461.0
-        version: 0.461.0(react@18.3.1)
+        specifier: ^1.16.0
+        version: 1.16.0(react@18.3.1)
       mixpanel-browser:
         specifier: ^2.78.0
         version: 2.78.0
@@ -5777,6 +5777,11 @@ packages:
 
   lucide-react@0.461.0:
     resolution: {integrity: sha512-Scpw3D/dV1bgVRC5Kh774RCm99z0iZpPv75M6kg7QL1lLvkQ1rmI1Sjjic1aGp1ULBwd7FokV6ry0g+d6pMB+w==}
+    peerDependencies:
+      react: ^18.3.1
+
+  lucide-react@1.16.0:
+    resolution: {integrity: sha512-dYwyPzb4MEKpGUmNYk3WKWPnMrHs3FKM+q94kAnJrcDIqqn1hq2xY8scaS2ovsOCM5D51ey2gaRG3PBb1vgoYQ==}
     peerDependencies:
       react: ^18.3.1
 
@@ -14788,6 +14793,10 @@ snapshots:
       yallist: 4.0.0
 
   lucide-react@0.461.0(react@18.3.1):
+    dependencies:
+      react: 18.3.1
+
+  lucide-react@1.16.0(react@18.3.1):
     dependencies:
       react: 18.3.1
 

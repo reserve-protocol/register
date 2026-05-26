@@ -138,7 +138,8 @@ const currentBasketMapAtom = atom<Record<string, Token> | undefined>((get) => {
   return (
     currentBasket?.reduce(
       (acc, token) => {
-        acc[token.address] = token
+        const address = token.address.toLowerCase() as Address
+        acc[address] = { ...token, address }
         return acc
       },
       {} as Record<string, Token>
@@ -150,9 +151,10 @@ const currentBasketMapAtom = atom<Record<string, Token> | undefined>((get) => {
 // Uses current basket info and only fetches missing tokens
 const useTokens = (tokens: string[]): Record<string, Token> | undefined => {
   const currentBasketMap = useAtomValue(currentBasketMapAtom)
+  const tokenAddresses = tokens.map((token) => token.toLowerCase())
   // Wait until we have the current basket map to fetch missing tokens info
   const missingTokens = currentBasketMap
-    ? tokens.filter((token) => !currentBasketMap[token])
+    ? tokenAddresses.filter((token) => !currentBasketMap[token])
     : []
   const { data: missingTokensInfo } = useTokensInfo(missingTokens)
 
@@ -240,9 +242,14 @@ const useRebalanceBasketPreview = (
     )
       return undefined
 
+    const tokenList = rebalance.data.tokens.map((token) => token.toLowerCase())
+    if (tokenList.some((token) => !tokens[token] || !prices[token])) {
+      return undefined
+    }
+
     const initialPrices: Record<string, number> = {}
     for (let i = 0; i < rebalance.data.weights.length; i++) {
-      const token = rebalance.data.tokens[i].toLowerCase()
+      const token = tokenList[i]
       const decimals = tokens[token].decimals
 
       initialPrices[token] = calculatePriceFromRange(
@@ -255,7 +262,6 @@ const useRebalanceBasketPreview = (
     }
 
     // keep track of the token order for the target basket
-    const tokenList = rebalance.data.tokens.map((token) => token.toLowerCase())
     // if weight control is true (tracking dtf), use current price, otherwise use snapshot price
     const priceList = tokenList.map((token, index) => {
       if (rebalanceControl.weightControl) {

@@ -14,7 +14,7 @@ import EnsName from '@/components/utils/ens-name'
 import { chainIdAtom } from '@/state/atoms'
 import { indexDTFAtom } from '@/state/dtf/atoms'
 import { ExplorerDataType, getExplorerLink } from '@/utils/getExplorerLink'
-import { useIndexDtfDelegates } from '@reserve-protocol/react-sdk'
+import { IndexDtfDelegate, useIndexDtfDelegates } from '@reserve-protocol/react-sdk'
 import { useAtomValue } from 'jotai'
 import { useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
@@ -40,6 +40,62 @@ const EmptySkeleton = () => (
   </TableRow>
 )
 
+const DelegateTable = ({ delegates, isLoading, chainId, isOptimistic }: { delegates: readonly IndexDtfDelegate[] | undefined, isLoading: boolean, chainId: number, isOptimistic: boolean }) => (
+  <Table>
+    <TableHeader>
+      <TableRow className="border-none text-legend">
+        <TableHead>Address</TableHead>
+        <TableHead>Votes</TableHead>
+        <TableHead>Vote weight</TableHead>
+        {/* <TableHead>Proposals voted</TableHead> */}
+      </TableRow>
+    </TableHeader>
+    <TableBody>
+      {isLoading && (
+        <LoadingSkeleton />
+      )}
+      {delegates !== undefined && delegates.length === 0 && (
+        <EmptySkeleton />
+      )}
+      {delegates &&
+        delegates.map((delegate) => (
+          <TableRow key={delegate.address}>
+            <TableCell>
+              <Link
+                target="_blank"
+                className="text-legend underline"
+                to={getExplorerLink(
+                  delegate.address,
+                  chainId,
+                  ExplorerDataType.ADDRESS
+                )}
+              >
+                <EnsName address={delegate.address} />
+              </Link>
+            </TableCell>
+            <TableCell>
+              {formatCurrency(Number(isOptimistic ? delegate.optimisticDelegatedVotes.formatted : delegate.delegatedVotes.formatted), 2)}
+            </TableCell>
+            <TableCell>
+              {formatPercentage(isOptimistic ? delegate.optimisticWeightedVotes : delegate.weightedVotes)}
+            </TableCell>
+          </TableRow>
+        ))}
+    </TableBody>
+  </Table>
+)
+
+const DelegateListOptions = () => (
+  <TabsList >
+    <TabsTrigger value="normal">
+      Normal
+    </TabsTrigger>
+    <TabsTrigger value="optimistic">
+      Optimistic
+    </TabsTrigger>
+  </TabsList>
+)
+
 const GovernanceDelegateList = () => {
   const dtf = useAtomValue(indexDTFAtom)
   const chainId = useAtomValue(chainIdAtom)
@@ -58,65 +114,16 @@ const GovernanceDelegateList = () => {
     return data?.optimisticDelegates
   }, [isOptimistic, data])
 
-
   return (
-    <Tabs value={currentTab} onValueChange={(value) => setTab(value as DelegateTabs)}>
-      <div className="rounded-4xl bg-background ">
-        <div className="flex items-center gap-2 py-4 px-5">
-          <h2 className="font-semibold mr-auto">Top {isOptimistic ? 'veto' : 'voting'} addresses</h2>
-          <TabsList >
-            <TabsTrigger value="normal">
-              Normal
-            </TabsTrigger>
-            <TabsTrigger value="optimistic">
-              Optimistic
-            </TabsTrigger>
-          </TabsList>
-        </div>
-        <div className="bg-card m-1 mt-0 rounded-3xl overflow-auto">
-          <Table>
-            <TableHeader>
-              <TableRow className="border-none text-legend">
-                <TableHead>Address</TableHead>
-                <TableHead>Votes</TableHead>
-                <TableHead>Vote weight</TableHead>
-                {/* <TableHead>Proposals voted</TableHead> */}
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {(!dtf || isLoading) && (
-                <LoadingSkeleton />
-              )}
-              {delegates !== undefined && delegates.length === 0 && (
-                <EmptySkeleton />
-              )}
-              {delegates &&
-                delegates.map((delegate) => (
-                  <TableRow key={delegate.address}>
-                    <TableCell>
-                      <Link
-                        target="_blank"
-                        className="text-legend underline"
-                        to={getExplorerLink(
-                          delegate.address,
-                          chainId,
-                          ExplorerDataType.ADDRESS
-                        )}
-                      >
-                        <EnsName address={delegate.address} />
-                      </Link>
-                    </TableCell>
-                    <TableCell>
-                      {formatCurrency(Number(isOptimistic ? delegate.optimisticDelegatedVotes.formatted : delegate.delegatedVotes.formatted), 2)}
-                    </TableCell>
-                    <TableCell>
-                      {formatPercentage(isOptimistic ? delegate.optimisticWeightedVotes : delegate.weightedVotes)}
-                    </TableCell>
-                  </TableRow>
-                ))}
-            </TableBody>
-          </Table>
-        </div>
+    <Tabs value={currentTab} onValueChange={(value) => setTab(value as DelegateTabs)} className="rounded-4xl bg-background">
+      <div className="flex items-center gap-2 py-4 px-5">
+        <h2 className="font-semibold mr-auto">Top {isOptimistic ? 'veto' : 'voting'} addresses</h2>
+        {!!dtf?.ownerGovernance?.isOptimistic && (
+          <DelegateListOptions />
+        )}
+      </div>
+      <div className="bg-card mr-1 mt-0 rounded-3xl overflow-auto">
+        <DelegateTable delegates={delegates} isLoading={!dtf || isLoading} chainId={chainId} isOptimistic={isOptimistic} />
       </div>
     </Tabs>
   )
