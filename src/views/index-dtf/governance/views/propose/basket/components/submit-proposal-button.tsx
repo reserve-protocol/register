@@ -30,7 +30,8 @@ const tradingGovAddress = atom((get) => {
 })
 
 const ProposeGatekeeper = memo(() => {
-  const { isProposeAllowed, isLoading } = useIsProposeAllowed()
+  const govAddress = useAtomValue(tradingGovAddress)
+  const { isProposeAllowed, isLoading } = useIsProposeAllowed(govAddress)
 
   if (!isLoading && !isProposeAllowed) {
     return (

@@ -2,11 +2,14 @@ import { Button } from '@/components/ui/button'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { Skeleton } from '@/components/ui/skeleton'
 import { isInactiveDTF } from '@/hooks/use-dtf-status'
-import { PartialProposal, VotingState } from '@/lib/governance'
 import { cn } from '@/lib/utils'
 import { indexDTFStatusAtom } from '@/state/dtf/atoms'
 import { formatPercentage, getProposalTitle, parseDuration } from '@/utils'
 import { formatConstant, PROPOSAL_STATES, ROUTES } from '@/utils/constants'
+import type {
+  IndexDtfProposalSummary,
+  ProposalVotingState as IndexDtfProposalVotingState,
+} from '@reserve-protocol/react-sdk'
 import { useAtomValue } from 'jotai'
 import { Circle, PlusSquare } from 'lucide-react'
 import { useState } from 'react'
@@ -51,7 +54,7 @@ const Header = () => (
     <ProposalButton />
   </div>
 )
-const VoteStateHeader = ({ data }: { data: VotingState }) => {
+const VoteStateHeader = ({ data }: { data: IndexDtfProposalVotingState }) => {
   if (
     (data.state === PROPOSAL_STATES.ACTIVE ||
       data.state === PROPOSAL_STATES.QUEUED) &&
@@ -82,7 +85,7 @@ export const ProposalVotingState = ({
   data,
   isOptimistic,
 }: {
-  data: VotingState
+  data: IndexDtfProposalVotingState
   isOptimistic?: boolean
 }) => {
   if (data.state === PROPOSAL_STATES.PENDING && data.deadline) {
@@ -153,7 +156,11 @@ const BADGE_VARIANT = {
   [PROPOSAL_STATES.EXPIRED]: 'legend',
 }
 
-const ProposalListItem = ({ proposal }: { proposal: PartialProposal }) => {
+const ProposalListItem = ({
+  proposal,
+}: {
+  proposal: IndexDtfProposalSummary
+}) => {
   const proposalState = proposal.votingState
 
   const stateText = formatConstant(proposalState.state)
@@ -190,7 +197,7 @@ const ProposalList = () => {
 
   if (!allProposals) return <Skeleton className="h-[520px] m-1 rounded-3xl" />
 
-  const sortedProposals = allProposals.sort(
+  const sortedProposals = [...allProposals].sort(
     (a, b) => b.creationTime - a.creationTime
   )
 

@@ -1,4 +1,3 @@
-import { PartialProposal } from '@/lib/governance'
 import { getBasketPortion } from '@/lib/index-rebalance/utils'
 import { walletAtom } from '@/state/atoms'
 import {
@@ -8,6 +7,7 @@ import {
 } from '@/state/dtf/atoms'
 import { Token } from '@/types'
 import { getCurrentTime } from '@/utils'
+import type { IndexDtfProposalSummary } from '@reserve-protocol/react-sdk'
 import { atom } from 'jotai'
 import { governanceProposalsAtom } from '../../governance/atoms'
 import { IndexAuctionSimulation } from '@/hooks/useSimulatedBasket'
@@ -106,7 +106,7 @@ export const VOLATILITY_VALUES = {
 
 // TODO: Expand this? can know if trades expired or are permissionless or are all run or if there is one active etc
 export type TradesByProposal = {
-  proposal: PartialProposal
+  proposal: IndexDtfProposalSummary
   trades: AssetTrade[]
   permissionless: boolean
   completed: number
@@ -250,8 +250,10 @@ export const dtfTradesByProposalMapAtom = atom<
   const tradesByProposal: Record<string, TradesByProposal> = {}
 
   for (const proposal of proposals) {
-    if (proposal.executionBlock) {
-      tradesByProposal[proposal.executionBlock] = {
+    if (proposal.executionBlock !== undefined) {
+      const executionBlock = proposal.executionBlock.toString()
+
+      tradesByProposal[executionBlock] = {
         proposal,
         trades: [],
         permissionless: false,
@@ -259,7 +261,7 @@ export const dtfTradesByProposalMapAtom = atom<
         expired: 0,
         availableAt: 0,
         expiresAt: 0,
-        blockNumber: Number(proposal.executionBlock),
+        blockNumber: proposal.executionBlock,
         status: 'PENDING',
       }
     }
@@ -313,7 +315,7 @@ export const dtfTradesByProposalAtom = atom<TradesByProposal[] | undefined>(
       .filter((proposal) => proposal.trades.length > 0)
       .sort(
         (a, b) =>
-          Number(b.proposal.executionBlock) - Number(a.proposal.executionBlock)
+          (b.proposal.executionBlock ?? 0) - (a.proposal.executionBlock ?? 0)
       )
   }
 )

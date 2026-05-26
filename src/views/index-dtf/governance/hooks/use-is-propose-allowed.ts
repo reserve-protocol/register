@@ -1,27 +1,35 @@
+import { walletAtom } from '@/state/atoms'
 import { indexDTFAtom } from '@/state/dtf/atoms'
+import { IndexDTF } from '@/types'
+import { useIndexDtfProposerState } from '@reserve-protocol/react-sdk'
 import { useAtomValue } from 'jotai'
-import { indexGovernanceOverviewAtom } from '../atoms'
-import { useVotingPower } from './use-voting-power'
+import { Address } from 'viem'
 
-export const useIsProposeAllowed = () => {
-  const dtf = useAtomValue(indexDTFAtom)
-  const governance = useAtomValue(indexGovernanceOverviewAtom)
-  const { votingPower, isLoading } = useVotingPower()
+function getParams(
+  dtf: IndexDTF | undefined,
+  account: Address | null,
+  governance?: Address
+) {
+  const governanceAddress = governance ?? dtf?.ownerGovernance?.id
 
-  const voteSupply = governance?.voteSupply
-  const proposalThreshold =
-    dtf?.ownerGovernance?.proposalThreshold === undefined
-      ? undefined
-      : dtf.ownerGovernance.proposalThreshold / 100
+  if (!dtf || !governanceAddress || !account) return undefined
 
   return {
-    isProposeAllowed:
-      !!voteSupply &&
-      proposalThreshold !== undefined &&
-      votingPower / voteSupply >= proposalThreshold,
-    isLoading:
-      isLoading ||
-      typeof voteSupply === 'undefined' ||
-      typeof proposalThreshold === 'undefined',
+    chainId: dtf.chainId,
+    governance: governanceAddress,
+    account,
+  }
+}
+
+export const useIsProposeAllowed = (governance?: Address) => {
+  const dtf = useAtomValue(indexDTFAtom)
+  const account = useAtomValue(walletAtom)
+  const { data, isLoading } = useIndexDtfProposerState(
+    getParams(dtf, account, governance)
+  )
+
+  return {
+    isProposeAllowed: !!data && data.canPropose,
+    isLoading: !!account && isLoading,
   }
 }

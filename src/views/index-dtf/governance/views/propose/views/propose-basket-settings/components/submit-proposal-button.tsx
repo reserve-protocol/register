@@ -14,7 +14,7 @@ import {
   proposalDescriptionAtom,
   basketSettingsProposalDataAtom,
 } from '../atoms'
-import { useIsBasketProposeAllowed } from '@/views/index-dtf/governance/hooks/use-is-basket-propose-allowed'
+import { useIsProposeAllowed } from '@/views/index-dtf/governance/hooks/use-is-propose-allowed'
 
 const isProposalReady = atom((get) => {
   const wallet = get(walletAtom)
@@ -26,7 +26,10 @@ const isProposalReady = atom((get) => {
 })
 
 const ProposeGatekeeper = memo(() => {
-  const { isProposeAllowed, isLoading } = useIsBasketProposeAllowed()
+  const dtf = useAtomValue(indexDTFAtom)
+  const { isProposeAllowed, isLoading } = useIsProposeAllowed(
+    dtf?.tradingGovernance?.id
+  )
   const chainId = useAtomValue(chainIdAtom)
 
   if (!isLoading && !isProposeAllowed) {

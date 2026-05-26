@@ -3,12 +3,12 @@ import dtfIndexAbi from '@/abis/dtf-index-abi-v1'
 import DTFIndexGovernance from '@/abis/dtf-index-governance'
 import stakingVaultAbi from '@/abis/dtf-index-staking-vault'
 import { Button } from '@/components/ui/button'
-import { PartialProposal } from '@/lib/governance'
 import { chainIdAtom } from '@/state/atoms'
 import { indexDTFAtom } from '@/state/dtf/atoms'
 import { getCurrentTime } from '@/utils'
 import { ChainId } from '@/utils/chains'
 import { PROPOSAL_STATES } from '@/utils/constants'
+import type { IndexDtfProposalSummary } from '@reserve-protocol/react-sdk'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { AlertCircle, Loader2 } from 'lucide-react'
 import { useCallback, useEffect } from 'react'
@@ -400,7 +400,7 @@ const ProposeGovernanceSpell31032025StakingVault = ({
 }
 
 const validProposalExists = (
-  proposals: PartialProposal[],
+  proposals: readonly IndexDtfProposalSummary[],
   description: string
 ): boolean => {
   const states = [

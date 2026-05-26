@@ -11,7 +11,7 @@ import { useNavigate } from 'react-router-dom'
 import { Address } from 'viem'
 import { useWaitForTransactionReceipt, useWriteContract } from 'wagmi'
 import { proposalDescriptionAtom, daoSettingsProposalDataAtom } from '../atoms'
-import { useIsDAOProposeAllowed } from '@/views/index-dtf/governance/hooks/use-is-dao-propose-allowed'
+import { useIsProposeAllowed } from '@/views/index-dtf/governance/hooks/use-is-propose-allowed'
 
 const isProposalReady = atom((get) => {
   const wallet = get(walletAtom)
@@ -23,7 +23,10 @@ const isProposalReady = atom((get) => {
 })
 
 const ProposeGatekeeper = memo(() => {
-  const { isProposeAllowed, isLoading } = useIsDAOProposeAllowed()
+  const dtf = useAtomValue(indexDTFAtom)
+  const { isProposeAllowed, isLoading } = useIsProposeAllowed(
+    dtf?.stToken?.governance?.id
+  )
   const chainId = useAtomValue(chainIdAtom)
 
   if (!isLoading && !isProposeAllowed) {

@@ -1,4 +1,4 @@
-import { PartialProposal } from '@/lib/governance'
+import type { IndexDtfProposalSummary } from '@reserve-protocol/react-sdk'
 import { atom } from 'jotai'
 import { Address } from 'viem'
 
@@ -13,7 +13,7 @@ type Delegate = {
   numberVotes: number
 }
 export type IndexGovernanceOverview = {
-  proposals: PartialProposal[]
+  proposals: readonly IndexDtfProposalSummary[]
   delegates: Delegate[]
   voteSupply: number
   delegatesCount: number
@@ -36,24 +36,8 @@ export const governanceStatsAtom = atom<GovernanceStats | undefined>((get) => {
   }
 })
 
-export const topDelegatesAtom = atom<
-  Array<Delegate & { weightedVotes: number }> | undefined
->((get) => {
-  const overview = get(indexGovernanceOverviewAtom)
-
-  if (!overview) return undefined
-
-  return overview.delegates.map((delegate) => ({
-    ...delegate,
-    weightedVotes: (delegate.delegatedVotes / overview.voteSupply) * 100,
-  }))
-})
-
-export const governanceProposalsAtom = atom<PartialProposal[] | undefined>(
-  (get) => {
-    const overview = get(indexGovernanceOverviewAtom)
-    return overview?.proposals
-  }
-)
+export const governanceProposalsAtom = atom<
+  readonly IndexDtfProposalSummary[] | undefined
+>(undefined)
 
 export const refetchTokenAtom = atom(0)

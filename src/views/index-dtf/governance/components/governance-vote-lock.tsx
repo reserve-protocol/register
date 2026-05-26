@@ -56,7 +56,7 @@ const GovernanceVoteLock = () => {
             address={indexDTF.stToken.underlying.address}
             chain={chainId}
           />
-          {apr && (
+          {!!apr && (
             <div className="rounded-full bg-primary/10 border border-primary px-2 py-1 text-primary text-sm font-semibold ml-auto">
               {Number(apr?.toFixed(2)) > 0 && `${apr?.toFixed(2)}% APR`}
             </div>

@@ -8,7 +8,6 @@ import {
   type IndexDtfProposalDetail,
 } from '@reserve-protocol/react-sdk'
 import { useMemo } from 'react'
-import { Address } from 'viem'
 
 const OPTIMISTIC_CONTEXT_MISSING_ERROR = new Error(
   'Optimistic proposal context is required for optimistic proposal detail'
@@ -55,7 +54,7 @@ const mapProposalDetail = (
     challengedProposalId: proposal.challengedProposalId,
     voteToken: proposal.voteToken,
     proposer: {
-      address: proposal.proposer as Address,
+      address: proposal.proposer,
     },
     calldatas: [...proposal.calldatas],
     targets: [...proposal.targets],

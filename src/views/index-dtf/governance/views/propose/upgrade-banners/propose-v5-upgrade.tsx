@@ -2,12 +2,12 @@ import dtfAdminAbi from '@/abis/dtf-admin-abi'
 import dtfIndexAbi from '@/abis/dtf-index-abi-v1'
 import DTFIndexGovernance from '@/abis/dtf-index-governance'
 import { Button } from '@/components/ui/button'
-import { PartialProposal } from '@/lib/governance'
 import { chainIdAtom } from '@/state/atoms'
 import { indexDTFAtom, indexDTFVersionAtom } from '@/state/dtf/atoms'
 import { getCurrentTime } from '@/utils'
 import { ChainId } from '@/utils/chains'
 import { PROPOSAL_STATES } from '@/utils/constants'
+import type { IndexDtfProposalSummary } from '@reserve-protocol/react-sdk'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { AlertCircle, Loader2 } from 'lucide-react'
 import { useCallback, useEffect } from 'react'
@@ -54,7 +54,9 @@ const matchesUpgradeMessage = (description: string) =>
   description === UPGRADE_FOLIO_MESSAGE ||
   description.startsWith(`${UPGRADE_FOLIO_MESSAGE} #`)
 
-const getNextUpgradeDescription = (proposals: PartialProposal[]): string => {
+const getNextUpgradeDescription = (
+  proposals: readonly IndexDtfProposalSummary[]
+): string => {
   let maxNonce = 0
   const prefix = `${UPGRADE_FOLIO_MESSAGE} #`
   for (const p of proposals) {
@@ -178,7 +180,9 @@ const ProposeBanner = ({ refetch, description }: SpellUpgradeProps) => {
   )
 }
 
-const validProposalExists = (proposals: PartialProposal[]): boolean => {
+const validProposalExists = (
+  proposals: readonly IndexDtfProposalSummary[]
+): boolean => {
   const states = [
     PROPOSAL_STATES.PENDING,
     PROPOSAL_STATES.ACTIVE,
