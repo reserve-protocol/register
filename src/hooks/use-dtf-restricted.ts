@@ -53,6 +53,7 @@ const isDTFGeolocationStatus = (
   return (
     typeof data.country === 'string' &&
     typeof data.countryCode === 'string' &&
+    /^[A-Z]{2}$/.test(data.countryCode.toUpperCase()) &&
     typeof data.restricted === 'boolean'
   )
 }

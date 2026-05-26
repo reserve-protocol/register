@@ -2,7 +2,7 @@ import { walletAtom } from '@/state/atoms'
 import { RESERVE_API } from '@/utils/constants'
 import { useQuery } from '@tanstack/react-query'
 import { useAtomValue } from 'jotai'
-import { type Address } from 'viem'
+import { isAddress, type Address } from 'viem'
 
 export type WalletCompliance = {
   address: Address
@@ -15,6 +15,7 @@ const isWalletCompliance = (value: unknown): value is WalletCompliance => {
   const data = value as Record<string, unknown>
   return (
     typeof data.address === 'string' &&
+    isAddress(data.address) &&
     typeof data.isRestricted === 'boolean' &&
     typeof data.shouldSkipRestrictions === 'boolean'
   )
