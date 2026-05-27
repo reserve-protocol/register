@@ -22,13 +22,15 @@ import {
   TableRowsSplit,
   Wallet,
 } from 'lucide-react'
-import { formatEther } from 'viem'
 import MetricsItem from './metrics-item'
 
 const supplyChange24hAtom = atom<number>((get) => {
   const txs = get(indexDTFTransactionsAtom)
   const dtf = get(indexDTFAtom)
   if (!dtf?.token?.totalSupply) return 0
+  const totalSupply = Number(dtf.token.totalSupply.formatted)
+  if (!totalSupply) return 0
+
   const cutoff = Date.now() / 1000 - 24 * 60 * 60
   const delta = txs
     .filter((t) => t.timestamp > cutoff)
@@ -37,7 +39,7 @@ const supplyChange24hAtom = atom<number>((get) => {
       (acc, t) => acc + (t.type === 'Redeem' ? -1 : 1) * t.amount,
       0
     )
-  return (delta / Number(formatEther(BigInt(dtf.token.totalSupply)))) * 100
+  return (delta / totalSupply) * 100
 })
 
 const Creator = () => {
@@ -121,7 +123,7 @@ const Supply = () => {
     <MetricsItem
       label="Supply"
       value={formatCurrency(
-        Number(formatEther(BigInt(dtf?.token?.totalSupply || 0))),
+        Number(dtf?.token?.totalSupply.formatted ?? 0),
         0
       )}
       icon={<HandCoins size={16} />}

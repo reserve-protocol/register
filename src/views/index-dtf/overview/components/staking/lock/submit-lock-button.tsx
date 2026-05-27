@@ -4,7 +4,7 @@ import { walletAtom } from '@/state/atoms'
 import { useQueryClient } from '@tanstack/react-query'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { useResetAtom } from 'jotai/utils'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { toast } from 'sonner'
 import { Address, erc20Abi, getAddress, isAddress, parseUnits } from 'viem'
 import {
@@ -20,6 +20,8 @@ import {
   stakingSidebarOpenAtom,
   stTokenAtom,
   underlyingBalanceAtom,
+  updateStTokenSupplyAtom,
+  voteLockStateRefreshTokenAtom,
 } from '../atoms'
 
 export const DelegateButton = () => {
@@ -29,6 +31,7 @@ export const DelegateButton = () => {
   const chainId = stToken?.chainId
   const isValidDelegate = isAddress(delegate, { strict: false })
   const setCurrentDelegate = useSetAtom(currentDelegateAtom)
+  const bumpVoteLockStateRefresh = useSetAtom(voteLockStateRefreshTokenAtom)
 
   const { writeContract, data: hash, isPending, error } = useWriteContract()
 
@@ -52,8 +55,9 @@ export const DelegateButton = () => {
   useEffect(() => {
     if (receipt?.status === 'success') {
       setCurrentDelegate(delegate)
+      bumpVoteLockStateRefresh((token) => token + 1)
     }
-  }, [receipt, delegate, setCurrentDelegate])
+  }, [receipt, delegate, setCurrentDelegate, bumpVoteLockStateRefresh])
 
   return (
     <div>
@@ -81,9 +85,12 @@ const SubmitLockButton = () => {
   const delegate = useAtomValue(delegateAtom)
   const resetInput = useResetAtom(stakingInputAtom)
   const setStakingSidebarOpen = useSetAtom(stakingSidebarOpenAtom)
+  const bumpVoteLockStateRefresh = useSetAtom(voteLockStateRefreshTokenAtom)
+  const updateStTokenSupply = useSetAtom(updateStTokenSupplyAtom)
   const queryClient = useQueryClient()
   const chainId = stToken?.chainId
   const [isProcessing, setIsProcessing] = useState(false)
+  const pendingSupplyDelta = useRef(0n)
 
   const isValidDelegate = isAddress(delegate, { strict: false })
   const isSelfDelegate = delegate === account
@@ -102,6 +109,15 @@ const SubmitLockButton = () => {
   })
 
   const hasAllowance = (allowance || 0n) >= amountToLock
+
+  const { data: sharesToMint } = useReadContract({
+    abi: dtfIndexStakingVault,
+    functionName: 'previewDeposit',
+    address: stToken?.id,
+    args: [amountToLock],
+    chainId,
+    query: { enabled: amountToLock > 0n && !!stToken?.id },
+  })
 
   const {
     writeContract: writeApprove,
@@ -146,6 +162,8 @@ const SubmitLockButton = () => {
   const write = () => {
     if (!account || !readyToSubmit || !isValidDelegate || !stToken?.id) return
 
+    pendingSupplyDelta.current = sharesToMint ?? amountToLock
+
     writeContract({
       abi: dtfIndexStakingVault,
       functionName: isSelfDelegate ? 'depositAndDelegate' : 'deposit',
@@ -164,6 +182,8 @@ const SubmitLockButton = () => {
 
   useEffect(() => {
     if (receipt?.status === 'success') {
+      updateStTokenSupply(pendingSupplyDelta.current)
+      bumpVoteLockStateRefresh((token) => token + 1)
       setIsProcessing(true)
       const timer = setTimeout(() => {
         resetInput()
@@ -175,7 +195,14 @@ const SubmitLockButton = () => {
 
       return () => clearTimeout(timer)
     }
-  }, [receipt, resetInput, setStakingSidebarOpen, queryClient])
+  }, [
+    receipt,
+    resetInput,
+    setStakingSidebarOpen,
+    queryClient,
+    bumpVoteLockStateRefresh,
+    updateStTokenSupply,
+  ])
 
   return (
     <div>

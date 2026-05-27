@@ -137,7 +137,6 @@ const ProposalTitle = ({ proposal }: IProposalListItem) => (
   </div>
 )
 
-
 const ProposalProgress = ({ proposal }: IProposalListItem) => {
   const stages = useProposalStages(proposal)
   if (FINISHED_STATES.has(proposal.state)) return null
@@ -149,22 +148,18 @@ const ProposalProgress = ({ proposal }: IProposalListItem) => {
 
 const ProposalListItem = ({
   proposal,
-}: IProposalListItem) => {
-  console.log('proposal', proposal)
-
-  return (
-    <Link
-      to={`proposal/${proposal.id}`}
-      className="flex flex-col gap-2 p-4 [&:not(:last-child)]:border-b cursor-pointer transition-all hover:bg-border/50"
-    >
-      <ProposalTitle proposal={proposal} />
-      <ProposalProgress proposal={proposal} />
-      <div className='flex items-center'>
-        <ProposalState proposal={proposal} />
-        <ProposalVoteState proposal={proposal} />
-      </div>
-    </Link>
-  )
-}
+}: IProposalListItem) => (
+  <Link
+    to={`proposal/${proposal.id}`}
+    className="flex flex-col gap-2 p-4 [&:not(:last-child)]:border-b cursor-pointer transition-all hover:bg-border/50"
+  >
+    <ProposalTitle proposal={proposal} />
+    <ProposalProgress proposal={proposal} />
+    <div className='flex items-center'>
+      <ProposalState proposal={proposal} />
+      <ProposalVoteState proposal={proposal} />
+    </div>
+  </Link>
+)
 
 export default ProposalListItem

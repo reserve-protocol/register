@@ -4,16 +4,18 @@ import { walletAtom } from '@/state/atoms'
 import { useQueryClient } from '@tanstack/react-query'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { useResetAtom } from 'jotai/utils'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { toast } from 'sonner'
 import { parseUnits } from 'viem'
-import { useWaitForTransactionReceipt, useWriteContract } from 'wagmi'
+import { useReadContract, useWaitForTransactionReceipt, useWriteContract } from 'wagmi'
 import {
   stakingInputAtom,
   stakingSidebarOpenAtom,
   stTokenAtom,
   unlockBalanceRawAtom,
   unlockDelayAtom,
+  updateStTokenSupplyAtom,
+  voteLockStateRefreshTokenAtom,
 } from '../atoms'
 
 const SubmitUnlockButton = () => {
@@ -25,12 +27,24 @@ const SubmitUnlockButton = () => {
   const unlockDelay = useAtomValue(unlockDelayAtom)
   const resetInput = useResetAtom(stakingInputAtom)
   const setStakingSidebarOpen = useSetAtom(stakingSidebarOpenAtom)
+  const bumpVoteLockStateRefresh = useSetAtom(voteLockStateRefreshTokenAtom)
+  const updateStTokenSupply = useSetAtom(updateStTokenSupplyAtom)
   const queryClient = useQueryClient()
   const chainId = stToken?.chainId
   const [isProcessing, setIsProcessing] = useState(false)
+  const pendingSupplyDelta = useRef(0n)
 
   const readyToSubmit =
     !!account && !!balance && amountToUnlock > 0n && amountToUnlock <= balance
+
+  const { data: sharesToBurn } = useReadContract({
+    abi: dtfIndexStakingVault,
+    functionName: 'previewWithdraw',
+    address: stToken?.id,
+    args: [amountToUnlock],
+    chainId,
+    query: { enabled: readyToSubmit && !!stToken?.id },
+  })
 
   const {
     writeContract,
@@ -41,6 +55,8 @@ const SubmitUnlockButton = () => {
 
   const write = () => {
     if (!account || !readyToSubmit || !stToken?.id) return
+
+    pendingSupplyDelta.current = -(sharesToBurn ?? amountToUnlock)
 
     writeContract({
       abi: dtfIndexStakingVault,
@@ -58,6 +74,8 @@ const SubmitUnlockButton = () => {
 
   useEffect(() => {
     if (receipt?.status === 'success') {
+      updateStTokenSupply(pendingSupplyDelta.current)
+      bumpVoteLockStateRefresh((token) => token + 1)
       setIsProcessing(true)
       const timer = setTimeout(() => {
         resetInput()
@@ -69,7 +87,14 @@ const SubmitUnlockButton = () => {
 
       return () => clearTimeout(timer)
     }
-  }, [receipt, resetInput, setStakingSidebarOpen, queryClient])
+  }, [
+    receipt,
+    resetInput,
+    setStakingSidebarOpen,
+    queryClient,
+    bumpVoteLockStateRefresh,
+    updateStTokenSupply,
+  ])
 
   return (
     <div>

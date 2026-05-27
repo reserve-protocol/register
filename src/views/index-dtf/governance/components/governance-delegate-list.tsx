@@ -16,6 +16,7 @@ import { indexDTFAtom } from '@/state/dtf/atoms'
 import { ExplorerDataType, getExplorerLink } from '@/utils/getExplorerLink'
 import { IndexDtfDelegate, useIndexDtfDelegates } from '@reserve-protocol/react-sdk'
 import { useAtomValue } from 'jotai'
+import { User2 } from 'lucide-react'
 import { useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 
@@ -117,7 +118,10 @@ const GovernanceDelegateList = () => {
   return (
     <Tabs value={currentTab} onValueChange={(value) => setTab(value as DelegateTabs)} className="rounded-4xl bg-background">
       <div className="flex items-center gap-2 py-4 px-5">
-        <h2 className="font-semibold mr-auto">Top {isOptimistic ? 'veto' : 'voting'} addresses</h2>
+        <div className="border rounded-full border-foreground p-1">
+          <User2 size={14} />
+        </div>
+        <h2 className="font-semibold text-xl text-primary ml-1 mr-auto">Delegates</h2>
         {!!dtf?.ownerGovernance?.isOptimistic && (
           <DelegateListOptions />
         )}

@@ -20,6 +20,39 @@ export const unlockDelayAtom = atom<number | undefined>(undefined)
 export const lockCheckboxAtom = atom<boolean>(false)
 export const currentDelegateAtom = atom<string>('')
 export const delegateAtom = atom<string>('')
+export const voteLockStateRefreshTokenAtom = atom(0)
+
+export const updateStTokenSupplyAtom = atom(null, (get, set, delta: bigint) => {
+  const indexDTF = get(indexDTFAtom)
+  const stToken = indexDTF?.stToken
+
+  if (!indexDTF || !stToken) return
+
+  const nextRaw = stToken.token.totalSupply.raw + delta
+  const totalSupply = {
+    raw: nextRaw < 0n ? 0n : nextRaw,
+    formatted: formatUnits(nextRaw < 0n ? 0n : nextRaw, stToken.token.decimals),
+  }
+
+  set(indexDTFAtom, {
+    ...indexDTF,
+    stToken: {
+      ...stToken,
+      token: {
+        ...stToken.token,
+        totalSupply,
+        ...(stToken.token.snapshot
+          ? {
+              snapshot: {
+                ...stToken.token.snapshot,
+                totalSupply,
+              },
+            }
+          : {}),
+      },
+    },
+  })
+})
 
 export const stTokenAtom = atom<StTokenExtended | undefined>((get) => {
   const portfolioStToken = get(portfolioStTokenAtom)

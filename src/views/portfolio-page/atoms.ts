@@ -263,7 +263,7 @@ export const openStakingSidebarAtom = atom(
         name: params.tokenSymbol,
         symbol: params.tokenSymbol,
         decimals: 18,
-        totalSupply: '',
+        totalSupply: { raw: 0n, formatted: '0' },
       },
       underlying: {
         name: params.underlyingSymbol,
@@ -273,6 +273,10 @@ export const openStakingSidebarAtom = atom(
       },
       legacyGovernance: [],
       rewardTokens: [],
+      totalDelegates: 0,
+      currentDelegates: 0,
+      totalOptimisticDelegates: 0,
+      currentOptimisticDelegates: 0,
       chainId: params.chainId,
     })
     set(stakingSidebarOpenAtom, true)
