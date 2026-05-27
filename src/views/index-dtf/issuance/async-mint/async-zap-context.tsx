@@ -99,7 +99,12 @@ export const AsyncZapProvider = ({ children }: { children: ReactNode }) => {
   const redeemResult = useFolioRedeemZap({
     ...baseParams,
     shares: redeemShares,
-    enabled: ready && operation === 'redeem' && redeemShares > 0n,
+    // With "use my wallet balances" on, redeem can run with 0 shares to convert
+    // basket tokens already held in the wallet into the quote token.
+    enabled:
+      ready &&
+      operation === 'redeem' &&
+      (redeemShares > 0n || useExistingBalances),
   })
 
   const active = operation === 'mint' ? mintResult : redeemResult

@@ -52,7 +52,9 @@ const ConfigureMint = () => {
   const exceedsBalance = parsedAmount > maxAmount
   // Allow exceeding the balance so the user can still preview quotes; the
   // error stays visible and submission is blocked on the quote screen.
-  const isValid = parsedAmount > 0
+  // Redeem with "use my wallet balances" can run at 0 shares — it converts the
+  // basket tokens already held in the wallet into the quote token.
+  const isValid = parsedAmount > 0 || (!isMint && useExistingBalances)
 
   const handleMax = () => {
     if (maxAmount > 0) {

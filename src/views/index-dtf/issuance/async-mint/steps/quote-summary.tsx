@@ -32,6 +32,7 @@ import {
   mintAmountAtom,
   redeemAmountAtom,
   slippageAtom,
+  useExistingBalancesAtom,
   wizardStepAtom,
 } from '../atoms'
 
@@ -70,6 +71,7 @@ const QuoteSummary = () => {
   const slippage = useAtomValue(slippageAtom)
   const balances = useAtomValue(balancesAtom)
   const account = useAtomValue(walletAtom)
+  const useExistingBalances = useAtomValue(useExistingBalancesAtom)
   const setDustStart = useSetAtom(dustStartBalancesAtom)
 
   const { quote, quoteQuery, execution, operation, legStates } = useAsyncZap()
@@ -106,7 +108,10 @@ const QuoteSummary = () => {
     : 0
   const payBalance = isMint ? inputBalanceAmount : dtfBalanceAmount
   const exceedsBalance = parsedPay > payBalance
-  const isValidAmount = parsedPay > 0
+  // Redeem with "use my wallet balances" at 0 shares: convert held basket
+  // tokens to the quote token (no DTF redeemed).
+  const isConvertHeld = !isMint && useExistingBalances && parsedPay === 0
+  const isValidAmount = parsedPay > 0 || isConvertHeld
 
   const mintFee = indexDTF?.mintingFee
     ? (indexDTF.mintingFee * 100).toFixed(2)
@@ -310,7 +315,9 @@ const QuoteSummary = () => {
                 <p className="text-sm text-muted-foreground font-light">
                   {isMint
                     ? `Using ${inputToken.symbol} to mint the basket.`
-                    : `Redeeming ${indexDTF?.token.symbol} for ${inputToken.symbol}.`}
+                    : isConvertHeld
+                      ? `Converting basket tokens held in your wallet to ${inputToken.symbol}.`
+                      : `Redeeming ${indexDTF?.token.symbol} for ${inputToken.symbol}.`}
                 </p>
               </div>
             </div>
@@ -320,36 +327,55 @@ const QuoteSummary = () => {
               </div>
               <div className="flex items-start justify-between gap-4">
                 <div className="min-w-0 flex-1">
-                  <div className="flex h-8 min-w-0 items-center">
-                    <span
-                      className={cn(
-                        'text-[32px] font-light leading-8 text-primary',
-                        exceedsBalance && 'text-destructive'
-                      )}
-                    >
-                      {isMint ? `$${payAmountStr || '0.00'}` : payAmountStr || '0'}
-                    </span>
-                  </div>
-                  <div className="mt-2 text-sm font-light text-muted-foreground">
-                    {isMint
-                      ? `$${formatCurrency(parsedPay)} ${inputToken.symbol}`
-                      : `${formatTokenAmount(parsedPay)} ${indexDTF?.token.symbol}`}
-                  </div>
+                  {isConvertHeld ? (
+                    <>
+                      <div className="flex h-8 min-w-0 items-center">
+                        <span className="text-base font-light leading-8 text-primary">
+                          Basket tokens in your wallet
+                        </span>
+                      </div>
+                      <div className="mt-2 text-sm font-light text-muted-foreground">
+                        Converted to {inputToken.symbol} — see breakdown
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      <div className="flex h-8 min-w-0 items-center">
+                        <span
+                          className={cn(
+                            'text-[32px] font-light leading-8 text-primary',
+                            exceedsBalance && 'text-destructive'
+                          )}
+                        >
+                          {isMint
+                            ? `$${payAmountStr || '0.00'}`
+                            : payAmountStr || '0'}
+                        </span>
+                      </div>
+                      <div className="mt-2 text-sm font-light text-muted-foreground">
+                        {isMint
+                          ? `$${formatCurrency(parsedPay)} ${inputToken.symbol}`
+                          : `${formatTokenAmount(parsedPay)} ${indexDTF?.token.symbol}`}
+                      </div>
+                    </>
+                  )}
                 </div>
                 <div className="flex shrink-0 flex-col items-end gap-2">
-                  <div className="flex h-8 items-center gap-2">
-                    <TokenLogo
-                      address={isMint ? inputToken.address : indexDTF?.id}
-                      symbol={
-                        isMint ? inputToken.symbol : indexDTF?.token.symbol
-                      }
-                      chain={chainId}
-                      size="xl"
-                    />
-                    <span className="text-[32px] font-light leading-8 text-muted-foreground">
-                      {isMint ? inputToken.symbol : indexDTF?.token.symbol}
-                    </span>
-                  </div>
+                  {!isConvertHeld && (
+                    <div className="flex h-8 items-center gap-2">
+                      <TokenLogo
+                        address={isMint ? inputToken.address : indexDTF?.id}
+                        symbol={
+                          isMint ? inputToken.symbol : indexDTF?.token.symbol
+                        }
+                        chain={chainId}
+                        size="xl"
+                      />
+                      <span className="text-[32px] font-light leading-8 text-muted-foreground">
+                        {isMint ? inputToken.symbol : indexDTF?.token.symbol}
+                      </span>
+                    </div>
+                  )}
                   <button
                     className="text-sm font-medium text-primary bg-primary/10 rounded-full px-2 py-0.5 flex items-center gap-1 disabled:opacity-50 disabled:pointer-events-none"
                     onClick={handleEdit}
