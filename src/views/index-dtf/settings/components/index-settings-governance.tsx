@@ -95,7 +95,8 @@ const GovernanceInfo = ({
   if (
     (kind === 'trading' && !indexDTF.tradingGovernance) ||
     (kind === 'owner' && !indexDTF.ownerGovernance) ||
-    (kind === 'dao' && !indexDTF.stToken?.governance)
+    (kind === 'dao' && !indexDTF.stToken?.governance) ||
+    (kind === 'trading' && indexDTF.tradingGovernance?.id === indexDTF.ownerGovernance?.id)
   )
     return null
 
@@ -112,7 +113,7 @@ const GovernanceInfo = ({
         kind === 'trading'
           ? t`Basket Governance`
           : kind === 'owner'
-            ? t`Non-Basket Governance`
+            ? t`DTF Governance`
             : t`DAO Governance`
       }
       id={

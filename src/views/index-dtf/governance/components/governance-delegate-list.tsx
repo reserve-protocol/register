@@ -88,10 +88,10 @@ const DelegateTable = ({ delegates, isLoading, chainId, isOptimistic }: { delega
 
 const DelegateListOptions = () => (
   <TabsList >
-    <TabsTrigger value="normal">
+    <TabsTrigger value="normal" className='text-xs'>
       Normal
     </TabsTrigger>
-    <TabsTrigger value="optimistic">
+    <TabsTrigger value="optimistic" className='text-xs'>
       Optimistic
     </TabsTrigger>
   </TabsList>
