@@ -36,7 +36,7 @@
     "@radix-ui/react-toggle-group": "^1.1.11",
     "@radix-ui/react-tooltip": "^1.2.8",
     "@rainbow-me/rainbowkit": "^2.2.10",
-    "@reserve-protocol/async-zap-sdk": "0.2.0",
+    "@reserve-protocol/async-zap-sdk": "file:/tmp/reserve-protocol-async-zap-sdk-0.2.0.tgz",
     "@reserve-protocol/dtf-rebalance-lib": "^3.2.1",
     "@reserve-protocol/react-zapper": "^1.7.1",
     "@reserve-protocol/rtokens": "^1.1.23",

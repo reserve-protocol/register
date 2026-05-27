@@ -16,8 +16,7 @@ async-zap-context.tsx→ single invocation of useFolioMintZap + useFolioRedeemZa
                        active one shared via context (useAsyncZap)
 atoms.ts             → UI state only (operation, amounts, slippage, toggle)
 types.ts             → WizardStep
-steps/               → configure-mint, quote-summary, processing-v2, success,
-                       gnosis-required
+steps/               → configure-mint, quote-summary, success, gnosis-required
 hooks/use-dust.ts    → leftover dust calc (balances before/after, USD valued)
 hooks/use-price-impact.ts → per-leg price impact (CoW quote price vs Reserve
                        API reference price), signed: + favorable / − worse
@@ -25,18 +24,23 @@ hooks/use-price-impact.ts → per-leg price impact (CoW quote price vs Reserve
 
 ## Flow
 
-`gnosis-check → configure → quote-summary → processing → success`
+`gnosis-check → configure → quote-summary → success`
 
 - `gnosis-check`: gated by `useAtomicBatch` (EIP-5792). Auto-skips when the
   wallet supports atomic batch.
 - `configure`: tabs mint/redeem, amount input (USD for mint / DTF shares for
   redeem), "use my wallet balances" toggle.
-- `quote-summary`: shows the SDK `quote` (shares, budget used) plus a per-leg
-  swap list driven by `legStates` (each leg loads individually — skeleton while
-  `pending`/`idle`, final amounts + price impact on `success`). Submit (with a
-  loading spinner while quotes resolve) via `execution.run()`.
-- `processing`: observes `execution.step` + `ordersByLegId`. Retry via
-  `execution.retryFailedOrders()`.
+- `quote-summary`: drives the **whole execution lifecycle in place** (there is no
+  separate processing step). Shows the SDK `quote` (shares, budget used) plus a
+  per-leg list driven by `legStates` (each leg loads individually — skeleton
+  while `pending`/`idle`, final amounts + price impact on `success`). On submit
+  it calls `execution.run()` *without navigating away*: the button becomes a
+  loading button labelled by `execution.step`, and each leg row gains a status
+  icon read from `execution.ordersByLegId[leg.id].phase` (spinner → check / X).
+  On `execution.step === 'error'` (incl. a rejected signature) the screen stays
+  put and shows the error inline with **Try again** (`execution.run()` — the SDK
+  resumes from where it stopped) and **Start over** (`reset()` → configure). It
+  advances to `success` only when `execution.step === 'complete'`.
 - `success`: minted shares / received quote token + **leftover dust**.
 
 ## Context (`useAsyncZap`)

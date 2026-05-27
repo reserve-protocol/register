@@ -10,12 +10,13 @@ import { wizardStepAtom } from './atoms'
 import GnosisRequired from './steps/gnosis-required'
 import ConfigureMint from './steps/configure-mint'
 import QuoteSummary from './steps/quote-summary'
-import Processing from './steps/processing-v2'
 import Success from './steps/success'
 import { WizardStep } from './types'
 
 // Steps that show the swaps/orders panel on the right and use the wide layout.
-const WIDE_STEPS: WizardStep[] = ['quote-summary', 'processing', 'success']
+// quote-summary now drives the whole execution lifecycle in place (no separate
+// processing step), so it stays wide through signing → orders → completion.
+const WIDE_STEPS: WizardStep[] = ['quote-summary', 'success']
 
 const WizardRouter = () => {
   const step = useAtomValue(wizardStepAtom)
@@ -40,8 +41,6 @@ const WizardRouter = () => {
       return <ConfigureMint />
     case 'quote-summary':
       return <QuoteSummary />
-    case 'processing':
-      return <Processing />
     case 'success':
       return <Success />
     default:

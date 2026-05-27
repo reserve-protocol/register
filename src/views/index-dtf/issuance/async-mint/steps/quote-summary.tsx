@@ -15,9 +15,13 @@ import { balancesAtom, chainIdAtom, walletAtom } from '@/state/atoms'
 import { wagmiConfig } from '@/state/chain'
 import { indexDTFAtom } from '@/state/dtf/atoms'
 import { formatCurrency, formatTokenAmount } from '@/utils'
-import { AsyncZapLegState } from '@reserve-protocol/async-zap-sdk'
+import {
+  AsyncZapExecutionStep,
+  AsyncZapLegState,
+} from '@reserve-protocol/async-zap-sdk'
 import { useAtomValue, useSetAtom } from 'jotai'
-import { Info, Loader2, Pencil, RefreshCw } from 'lucide-react'
+import { Check, Info, Loader, Loader2, Pencil, RefreshCw, X } from 'lucide-react'
+import { useEffect } from 'react'
 import { Address, erc20Abi, formatUnits } from 'viem'
 import { readContracts } from 'wagmi/actions'
 import { useAsyncZap } from '../async-zap-context'
@@ -33,6 +37,18 @@ import {
 
 // Below this (unfavorable) price impact the figure turns destructive.
 const HIGH_PRICE_IMPACT = 0.02 // 2%
+
+// Submit-button label while the execution lifecycle is running (signing happens
+// at the button level; the per-leg orders carry their own status icons).
+const EXECUTION_BUTTON_LABELS: Partial<Record<AsyncZapExecutionStep, string>> = {
+  idle: 'Preparing…',
+  finalized: 'Preparing…',
+  submitting_and_signing: 'Confirm in your wallet…',
+  waiting_submit_and_sign: 'Confirming…',
+  waiting_orders: 'Filling orders…',
+  finishing: 'Confirm final step…',
+  waiting_finish: 'Confirming…',
+}
 
 const formatTokenBalance = (value: bigint, decimals: number) =>
   formatTokenAmount(Number(formatUnits(value, decimals)))
@@ -120,10 +136,27 @@ const QuoteSummary = () => {
     execution.step !== 'idle' &&
     execution.step !== 'complete' &&
     execution.step !== 'error'
+  const isError = execution.step === 'error'
+  // Once submitted, the right-hand "quotes" panel reads as live orders.
+  const executionStarted =
+    isExecuting || isError || Object.keys(execution.ordersByLegId).length > 0
+
+  // The whole lifecycle runs in place on this screen; only completion advances.
+  useEffect(() => {
+    if (execution.step === 'complete') {
+      setStep('success')
+    }
+  }, [execution.step, setStep])
 
   const handleEdit = () => {
     execution.reset()
     setStep('configure')
+  }
+
+  // Resumable: re-running after an error / rejected signature continues from
+  // where it stopped without re-doing already-submitted orders.
+  const handleRetry = () => {
+    void execution.run()
   }
 
   const handleSubmit = async () => {
@@ -155,17 +188,24 @@ const QuoteSummary = () => {
         setDustStart({})
       }
     }
-    setStep('processing')
     void execution.run()
   }
 
   const renderLegState = (ls: AsyncZapLegState) => {
     const leg = ls.leg
     const loading = ls.status === 'pending' || ls.status === 'idle'
-    const failed = ls.status === 'error'
     const sell = leg.side === 'sell'
     const impact = legImpacts[leg.id]
     const highImpact = impact !== undefined && impact < -HIGH_PRICE_IMPACT
+
+    // Once execution starts, the quote row doubles as an order row: the icon on
+    // the right reflects the leg's order phase (signing → pending → done/failed).
+    const order = execution.ordersByLegId[leg.id]
+    const orderSettled = order?.phase === 'fulfilled'
+    const orderFailed = order?.phase === 'failed'
+    const orderPending = !!order && !orderSettled && !orderFailed
+    const quoteFailed = ls.status === 'error'
+    const failed = quoteFailed || orderFailed
 
     return (
       <div
@@ -196,13 +236,15 @@ const QuoteSummary = () => {
             >
               {loading
                 ? `Fetching ${leg.asset.symbol} quote…`
-                : failed
+                : quoteFailed
                   ? leg.error?.message ||
                     ls.error?.message ||
                     'Quote unavailable'
-                  : sell
-                    ? `Selling ${leg.asset.symbol} for ${inputToken.symbol}`
-                    : `Buying ${leg.asset.symbol} with ${inputToken.symbol}`}
+                  : orderFailed
+                    ? order?.error?.message || 'Order failed'
+                    : sell
+                      ? `Selling ${leg.asset.symbol} for ${inputToken.symbol}`
+                      : `Buying ${leg.asset.symbol} with ${inputToken.symbol}`}
             </div>
           </div>
           <div className="min-w-[156px] text-right">
@@ -212,7 +254,7 @@ const QuoteSummary = () => {
                 <Skeleton className="h-4 w-20" />
                 <Skeleton className="h-3 w-16" />
               </div>
-            ) : failed ? (
+            ) : quoteFailed ? (
               <div className="text-sm text-destructive/70">—</div>
             ) : (
               <>
@@ -241,6 +283,13 @@ const QuoteSummary = () => {
                   </div>
                 )}
               </>
+            )}
+          </div>
+          <div className="flex h-6 w-6 shrink-0 items-center justify-center">
+            {orderSettled && <Check size={18} className="text-primary" />}
+            {orderFailed && <X size={18} className="text-destructive" />}
+            {orderPending && (
+              <Loader size={18} className="animate-spin text-muted-foreground" />
             )}
           </div>
         </div>
@@ -302,8 +351,9 @@ const QuoteSummary = () => {
                     </span>
                   </div>
                   <button
-                    className="text-sm font-medium text-primary bg-primary/10 rounded-full px-2 py-0.5 flex items-center gap-1"
+                    className="text-sm font-medium text-primary bg-primary/10 rounded-full px-2 py-0.5 flex items-center gap-1 disabled:opacity-50 disabled:pointer-events-none"
                     onClick={handleEdit}
+                    disabled={isExecuting}
                   >
                     <Pencil size={12} />
                     Edit
@@ -330,7 +380,7 @@ const QuoteSummary = () => {
               <button
                 className="rounded-[12px] border border-border/70 bg-transparent h-8 w-8 flex items-center justify-center transition-colors hover:bg-primary hover:text-primary-foreground"
                 onClick={() => quoteQuery.refetch()}
-                disabled={quoteQuery.isFetching}
+                disabled={quoteQuery.isFetching || isExecuting}
               >
                 <RefreshCw
                   size={16}
@@ -458,41 +508,66 @@ const QuoteSummary = () => {
             </div>
 
             <div className="mt-6 lg:mt-auto lg:pt-6">
-              <TransactionButtonContainer chain={chainId}>
-                <Button
-                  size="lg"
-                  className="w-full h-[49px] rounded-[12px]"
-                  disabled={
-                    isExecuting ||
-                    quotesLoading ||
-                    !isValidAmount ||
-                    exceedsBalance ||
-                    !quote?.success ||
-                    quoteErrors.length > 0 ||
-                    hasFailedLegs
-                  }
-                  onClick={handleSubmit}
-                >
-                  {isExecuting ? (
-                    <span className="flex items-center gap-2">
-                      <Loader2 size={16} className="animate-spin" />
-                      Signing...
-                    </span>
-                  ) : quotesLoading ? (
-                    <span className="flex items-center gap-2">
-                      <Loader2 size={16} className="animate-spin" />
-                      Fetching quotes...
-                    </span>
-                  ) : (
-                    <span className="flex items-center gap-1">
-                      <span className="font-bold">
-                        {isMint ? 'Prepare mint' : 'Prepare redeem'}
+              {isError && execution.error && (
+                <div className="mb-2 rounded-xl border border-destructive/25 bg-destructive/10 text-destructive px-4 py-2 text-sm">
+                  {execution.error.message}
+                </div>
+              )}
+              {isError ? (
+                <div className="flex flex-col gap-2">
+                  <Button
+                    size="lg"
+                    className="w-full h-[49px] rounded-[12px]"
+                    onClick={handleRetry}
+                  >
+                    Try again
+                  </Button>
+                  <Button
+                    size="lg"
+                    variant="outline"
+                    className="w-full h-[49px] rounded-[12px]"
+                    onClick={handleEdit}
+                  >
+                    Start over
+                  </Button>
+                </div>
+              ) : (
+                <TransactionButtonContainer chain={chainId}>
+                  <Button
+                    size="lg"
+                    className="w-full h-[49px] rounded-[12px]"
+                    disabled={
+                      isExecuting ||
+                      quotesLoading ||
+                      !isValidAmount ||
+                      exceedsBalance ||
+                      !quote?.success ||
+                      quoteErrors.length > 0 ||
+                      hasFailedLegs
+                    }
+                    onClick={handleSubmit}
+                  >
+                    {isExecuting ? (
+                      <span className="flex items-center gap-2">
+                        <Loader2 size={16} className="animate-spin" />
+                        {EXECUTION_BUTTON_LABELS[execution.step] ?? 'Working…'}
                       </span>
-                      <span className="font-light opacity-80">- Step 1/2</span>
-                    </span>
-                  )}
-                </Button>
-              </TransactionButtonContainer>
+                    ) : quotesLoading ? (
+                      <span className="flex items-center gap-2">
+                        <Loader2 size={16} className="animate-spin" />
+                        Fetching quotes...
+                      </span>
+                    ) : (
+                      <span className="flex items-center gap-1">
+                        <span className="font-bold">
+                          {isMint ? 'Prepare mint' : 'Prepare redeem'}
+                        </span>
+                        <span className="font-light opacity-80">- Step 1/2</span>
+                      </span>
+                    )}
+                  </Button>
+                </TransactionButtonContainer>
+              )}
             </div>
           </div>
         </div>
@@ -500,13 +575,17 @@ const QuoteSummary = () => {
         <div className="bg-background rounded-2xl p-2 lg:col-start-2 lg:row-start-2 lg:flex lg:h-full lg:flex-col animate-in fade-in duration-500">
           <div className="px-4 py-3 flex items-start justify-between gap-4">
             <div>
-              <h3 className="font-medium text-base">Collateral swaps</h3>
+              <h3 className="font-medium text-base">
+                {executionStarted ? 'Orders' : 'Collateral swaps'}
+              </h3>
               <p className="text-sm text-muted-foreground font-light">
-                {cowLegStates.length === 0 && !quotesLoading
-                  ? 'No swaps are needed for this operation.'
-                  : isMint
-                    ? 'The basket assets bought with your input.'
-                    : 'The basket assets sold for your output.'}
+                {executionStarted
+                  ? 'Swaps settle via CoW Protocol solvers.'
+                  : cowLegStates.length === 0 && !quotesLoading
+                    ? 'No swaps are needed for this operation.'
+                    : isMint
+                      ? 'The basket assets bought with your input.'
+                      : 'The basket assets sold for your output.'}
               </p>
             </div>
           </div>
@@ -519,9 +598,10 @@ const QuoteSummary = () => {
                 ))
               ) : cowLegStates.length > 0 ? (
                 <>
-                  <div className="grid grid-cols-[minmax(0,1fr)_156px] items-center gap-4 px-2 pt-4 pb-1 text-xs font-medium uppercase tracking-wide text-muted-foreground">
+                  <div className="grid grid-cols-[minmax(0,1fr)_156px_24px] items-center gap-4 px-2 pt-4 pb-1 text-xs font-medium uppercase tracking-wide text-muted-foreground">
                     <span>Asset</span>
                     <span className="text-right">Swap</span>
+                    <span />
                   </div>
                   {cowLegStates.map(renderLegState)}
                 </>
