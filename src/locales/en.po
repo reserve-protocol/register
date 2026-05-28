@@ -122,6 +122,18 @@ msgstr ""
 msgid "15 params"
 msgstr ""
 
+#: src/views/index-dtf/overview/components/index-metrics-overview.tsx:140
+msgid "24h Supply Change"
+msgstr ""
+
+#: src/views/index-dtf/overview/components/index-metrics-overview.tsx:154
+msgid "24h Tx Volume"
+msgstr ""
+
+#: src/views/index-dtf/overview/components/fees-stats.tsx:68
+msgid "24h Volume"
+msgstr ""
+
 #: src/views/yield-dtf/governance/views/proposal/components/SpellUpgrade3_4_0.tsx:45
 msgid "3.4.0 Upgrade spells"
 msgstr ""
@@ -148,6 +160,10 @@ msgstr ""
 
 #: src/views/home/components/register-about.tsx:142
 msgid "ABC Labs uses industry standard anonymized analytics tools to understand usage and improve the user experience. ABC Labs does not collect any information about users or their financial activity."
+msgstr ""
+
+#: src/views/index-dtf/overview/components/index-about-overview.tsx:67
+msgid "About this DTF"
 msgstr ""
 
 #: src/views/yield-dtf/auctions/auctions-sidebar/Revenue.tsx:99
@@ -189,6 +205,10 @@ msgstr ""
 msgid "Address"
 msgstr ""
 
+#: src/views/index-dtf/overview/components/index-token-address.tsx:36
+msgid "Address copied to clipboard"
+msgstr ""
+
 #: src/components/rtoken-setup/token/TokenConfiguration.tsx:30
 msgid "Advanced config:"
 msgstr ""
@@ -212,6 +232,7 @@ msgstr ""
 
 #: src/components/transactions/table/index.tsx:77
 #: src/views/explorer/components/transactions/useTransactionColumns.tsx:76
+#: src/views/index-dtf/overview/components/index-transaction-table.tsx:35
 #: src/views/yield-dtf/auctions/components/useColumns.tsx:39
 #: src/views/yield-dtf/overview/components/rtoken-transactions.tsx:109
 msgid "Amount"
@@ -221,6 +242,8 @@ msgstr ""
 msgid "Amount:"
 msgstr ""
 
+#: src/views/index-dtf/overview/components/fees-stats.tsx:26
+#: src/views/index-dtf/overview/components/index-metrics-overview.tsx:186
 #: src/views/index-dtf/settings/components/index-settings-fees.tsx:91
 msgid "Annualized TVL Fee"
 msgstr ""
@@ -446,6 +469,10 @@ msgstr ""
 msgid "Buy"
 msgstr ""
 
+#: src/views/index-dtf/overview/components/index-ctas-overview-mobile.tsx:33
+msgid "BUY"
+msgstr ""
+
 #: src/views/yield-dtf/auctions/components/useColumns.tsx:35
 msgid "Buying"
 msgstr ""
@@ -659,6 +686,11 @@ msgstr ""
 msgid "Copied!"
 msgstr ""
 
+#: src/views/index-dtf/overview/components/index-token-address.tsx:92
+#: src/views/index-dtf/overview/components/index-token-address.tsx:112
+msgid "Copy address"
+msgstr ""
+
 #: src/components/section-anchor.tsx:11
 msgid "Copy link"
 msgstr ""
@@ -685,8 +717,25 @@ msgstr ""
 msgid "Create proposal"
 msgstr ""
 
+#: src/views/index-dtf/overview/components/fees-stats.tsx:92
+#: src/views/index-dtf/overview/components/index-metrics-overview.tsx:166
+msgid "Created"
+msgstr ""
+
 #: src/views/explorer/components/governance/index.tsx:92
 msgid "Created At"
+msgstr ""
+
+#: src/views/index-dtf/overview/components/index-creator-overview.tsx:38
+msgid "Created by:"
+msgstr ""
+
+#: src/views/index-dtf/overview/components/index-metrics-overview.tsx:53
+msgid "Creator"
+msgstr ""
+
+#: src/views/index-dtf/overview/components/index-creator-notes.tsx:29
+msgid "Creator:"
 msgstr ""
 
 #: src/views/yield-dtf/governance/components/GovernanceOverview.tsx:107
@@ -885,6 +934,14 @@ msgstr ""
 msgid "DTF Explorer"
 msgstr ""
 
+#: src/views/index-dtf/overview/components/index-factsheet-overview.tsx:21
+msgid "DTF Factsheet"
+msgstr ""
+
+#: src/views/index-dtf/overview/components/index-token-logo.tsx:20
+msgid "dtf token logo"
+msgstr ""
+
 #: src/views/home/components/register-about.tsx:56
 msgid "DTFs live on blockchain networks including Ethereum, Base, Binance Smart Chain, enabling worldwide transactions within seconds. Each DTF is 100% backed by other assets on the same blockchain. Users can redeem their DTF tokens for the underlying backing assets at any time without anyone else’s involvement."
 msgstr ""
@@ -925,6 +982,10 @@ msgstr ""
 
 #: src/views/yield-dtf/governance/views/proposal/components/ConfirmProposalOverview.tsx:117
 msgid "Edit"
+msgstr ""
+
+#: src/views/index-dtf/overview/components/index-about-overview.tsx:31
+msgid "Edit page"
 msgstr ""
 
 #: src/components/layout/navigation/TokenNavigation.tsx:215
@@ -1019,6 +1080,10 @@ msgstr ""
 msgid "Exit Deployer"
 msgstr ""
 
+#: src/views/index-dtf/overview/components/index-transaction-table.tsx:75
+msgid "Explore"
+msgstr ""
+
 #. placeholder {0}: rToken?.symbol ?? ''
 #: src/views/yield-dtf/overview/components/rtoken-earn.tsx:40
 msgid "Explore yield opportunities for {0}"
@@ -1042,6 +1107,10 @@ msgstr ""
 
 #: src/views/index-dtf/settings/components/index-settings-fees.tsx:85
 msgid "Fees & Revenue Distribution"
+msgstr ""
+
+#: src/views/index-dtf/overview/components/fees-stats.tsx:114
+msgid "Fees & Stats"
 msgstr ""
 
 #: src/views/index-dtf/settings/components/distribute-fees.tsx:84
@@ -1426,6 +1495,11 @@ msgstr ""
 msgid "Mandate is required"
 msgstr ""
 
+#: src/views/index-dtf/overview/components/fees-stats.tsx:54
+#: src/views/index-dtf/overview/components/index-metrics-overview.tsx:76
+msgid "Market Cap"
+msgstr ""
+
 #: src/views/home/components/discover-yield-dtf/token-stats.tsx:26
 msgid "Market cap:"
 msgstr ""
@@ -1531,6 +1605,8 @@ msgstr ""
 msgid "Mintable now"
 msgstr ""
 
+#: src/views/index-dtf/overview/components/fees-stats.tsx:42
+#: src/views/index-dtf/overview/components/index-metrics-overview.tsx:200
 #: src/views/index-dtf/settings/components/index-settings-fees.tsx:102
 msgid "Minting Fee"
 msgstr ""
@@ -1657,6 +1733,10 @@ msgstr ""
 msgid "Not ready to set up governance?"
 msgstr ""
 
+#: src/views/index-dtf/overview/components/index-creator-notes.tsx:52
+msgid "Notes from the creator"
+msgstr ""
+
 #: src/views/index-dtf/issuance/manual/components/approve-all-button.tsx:102
 msgid "One or more approvals failed"
 msgstr ""
@@ -1747,6 +1827,10 @@ msgstr ""
 #: src/views/yield-dtf/deploy/components/GovernanceOverview.tsx:25
 #: src/views/yield-dtf/governance/views/proposal/components/ConfirmProposalOverview.tsx:57
 msgid "Pending, sign in wallet"
+msgstr ""
+
+#: src/views/index-dtf/overview/components/index-about-overview.tsx:96
+msgid "Performance Sheet"
 msgstr ""
 
 #: src/components/rtoken-setup/token/BackingForm.tsx:46
@@ -2275,6 +2359,10 @@ msgstr ""
 msgid "Sell"
 msgstr ""
 
+#: src/views/index-dtf/overview/components/index-ctas-overview-mobile.tsx:23
+msgid "SELL"
+msgstr ""
+
 #: src/views/yield-dtf/auctions/components/useColumns.tsx:31
 msgid "Selling"
 msgstr ""
@@ -2475,6 +2563,7 @@ msgstr ""
 msgid "Submit proposal on-chain"
 msgstr ""
 
+#: src/views/index-dtf/overview/components/index-metrics-overview.tsx:123
 #: src/views/yield-dtf/overview/components/charts/supply-chart.tsx:85
 msgid "Supply"
 msgstr ""
@@ -2623,6 +2712,7 @@ msgstr ""
 
 #: src/components/transactions/table/index.tsx:87
 #: src/views/explorer/components/transactions/useTransactionColumns.tsx:104
+#: src/views/index-dtf/overview/components/index-transaction-table.tsx:64
 #: src/views/yield-dtf/overview/components/rtoken-transactions.tsx:146
 msgid "Time"
 msgstr ""
@@ -2770,6 +2860,7 @@ msgstr ""
 
 #: src/components/layout/navigation/TokenNavigation.tsx:182
 #: src/views/explorer/components/transactions/index.tsx:38
+#: src/views/index-dtf/overview/components/index-transaction-table.tsx:128
 #: src/views/yield-dtf/overview/components/rtoken-transactions.tsx:221
 msgid "Transactions"
 msgstr ""
@@ -2844,6 +2935,7 @@ msgstr ""
 
 #: src/components/transactions/table/index.tsx:66
 #: src/views/explorer/components/transactions/useTransactionColumns.tsx:68
+#: src/views/index-dtf/overview/components/index-transaction-table.tsx:24
 #: src/views/yield-dtf/overview/components/rtoken-transactions.tsx:97
 msgid "Type"
 msgstr ""
@@ -2866,6 +2958,11 @@ msgstr ""
 
 #: src/views/yield-dtf/settings/components/freeze-manager.tsx:103
 msgid "Unfreeze"
+msgstr ""
+
+#: src/views/index-dtf/overview/components/fees-stats.tsx:80
+#: src/views/index-dtf/overview/components/index-metrics-overview.tsx:88
+msgid "Unique Holders"
 msgstr ""
 
 #: src/views/index-dtf/settings/components/index-settings-basic.tsx:57
@@ -3005,6 +3102,11 @@ msgstr ""
 msgid "View on Etherscan"
 msgstr ""
 
+#: src/views/index-dtf/overview/components/index-token-address.tsx:99
+#: src/views/index-dtf/overview/components/index-token-address.tsx:118
+msgid "View on explorer"
+msgstr ""
+
 #: src/views/tokens/components/UnlistedTokensTable.tsx:91
 msgid "Volume (all time)"
 msgstr ""
@@ -3101,6 +3203,11 @@ msgstr ""
 msgid "Watch an intro to RTokens"
 msgstr ""
 
+#: src/views/index-dtf/overview/components/index-about-overview.tsx:89
+#: src/views/index-dtf/overview/components/index-metrics-overview.tsx:101
+msgid "Website"
+msgstr ""
+
 #: src/views/index-dtf/settings/components/index-settings-basic.tsx:74
 msgid "Weight Control"
 msgstr ""
@@ -3173,6 +3280,10 @@ msgstr ""
 
 #: src/components/rtoken-setup/token/ExternalRevenueSplit.tsx:119
 msgid "X"
+msgstr ""
+
+#: src/views/index-dtf/overview/components/index-about-overview.tsx:104
+msgid "X Account"
 msgstr ""
 
 #: src/components/layout/header/components/app-navigation.tsx:125

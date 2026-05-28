@@ -11,6 +11,7 @@ import { BrickWall, ImagePlus } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { useTrackIndexDTFClick } from '../../hooks/useTrackIndexDTFPage'
 import SectionAnchor from '@/components/section-anchor'
+import { Trans } from '@lingui/react/macro'
 
 const BrandManagerEditButton = () => {
   const isBrandManager = useAtomValue(isBrandManagerAtom)
@@ -27,7 +28,7 @@ const BrandManagerEditButton = () => {
     >
       <Button variant="outline" size="sm" className="gap-1 rounded-full">
         <ImagePlus size={14} />
-        Edit page
+        <Trans>Edit page</Trans>
       </Button>
     </Link>
   )
@@ -62,7 +63,9 @@ const Mandate = () => {
   return (
     <div>
       <div className="flex items-center gap-1">
-        <h2 className="text-2xl font-light mb-1">About this DTF</h2>
+        <h2 className="text-2xl font-light mb-1">
+          <Trans>About this DTF</Trans>
+        </h2>
         <SectionAnchor id="about" />
       </div>
       <p className="text-legend">
@@ -83,14 +86,14 @@ const AboutLinks = () => {
           target="_blank"
           className="underline text-muted-foreground hover:text-foreground"
         >
-          Website
+          <Trans>Website</Trans>
         </Link>
       )}
       <Link
         to={`../${ROUTES.FACTSHEET}`}
         className="underline text-muted-foreground hover:text-foreground"
       >
-        Performance Sheet
+        <Trans>Performance Sheet</Trans>
       </Link>
       {brandData?.socials?.twitter && (
         <Link
@@ -98,7 +101,7 @@ const AboutLinks = () => {
           target="_blank"
           className="underline text-muted-foreground hover:text-foreground"
         >
-          X Account
+          <Trans>X Account</Trans>
         </Link>
       )}
     </div>

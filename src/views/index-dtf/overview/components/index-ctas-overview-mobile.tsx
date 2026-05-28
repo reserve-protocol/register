@@ -7,7 +7,7 @@ import {
 import { isInactiveDTF } from '@/hooks/use-dtf-status'
 import useIsComplianceRestricted from '@/hooks/use-is-compliance-restricted'
 import { indexDTFStatusAtom } from '@/state/dtf/atoms'
-import { Trans } from '@lingui/macro'
+import { Trans } from '@lingui/react/macro'
 import { useZapperModal } from '@reserve-protocol/react-zapper'
 import { useAtomValue } from 'jotai'
 import { ReactNode } from 'react'
@@ -63,7 +63,7 @@ const IndexCTAsOverviewMobile = () => {
               open()
             }}
           >
-            SELL
+            <Trans>SELL</Trans>
           </Button>
         </RestrictionPopover>
         <RestrictionPopover enabled={isRestricted}>
@@ -77,7 +77,7 @@ const IndexCTAsOverviewMobile = () => {
               open()
             }}
           >
-            BUY
+            <Trans>BUY</Trans>
           </Button>
         </RestrictionPopover>
       </div>

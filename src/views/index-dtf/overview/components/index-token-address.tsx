@@ -16,11 +16,7 @@ import { useAtomValue } from 'jotai'
 import { ArrowUpRight, ChevronDown, Copy, ExternalLink } from 'lucide-react'
 import { useMemo } from 'react'
 import { toast } from 'sonner'
-
-const copyAddress = (addr: string) => {
-  navigator.clipboard.writeText(isAddress(addr) || addr)
-  toast.success('Address copied to clipboard')
-}
+import { Trans, useLingui } from '@lingui/react/macro'
 
 const openExplorer = (addr: string, chain: number) => {
   window.open(getExplorerLink(addr, chain, ExplorerDataType.TOKEN), '_blank')
@@ -31,8 +27,14 @@ const IndexTokenAddress = ({
 }: {
   theme?: 'light' | 'dark'
 }) => {
+  const { t } = useLingui()
   const chainId = useAtomValue(chainIdAtom)
   const address = useAtomValue(iTokenAddressAtom)
+
+  const copyAddress = (addr: string) => {
+    navigator.clipboard.writeText(isAddress(addr) || addr)
+    toast.success(t`Address copied to clipboard`)
+  }
 
   const bridgedAddresses = useMemo(
     () => (address ? BRIDGED_INDEX_DTFS[address.toLowerCase()] : null),
@@ -87,14 +89,14 @@ const IndexTokenAddress = ({
                 <button
                   onClick={() => copyAddress(addr)}
                   className={iconButtonClassName}
-                  title="Copy address"
+                  title={t`Copy address`}
                 >
                   <Copy className="h-3.5 w-3.5" />
                 </button>
                 <button
                   onClick={() => openExplorer(addr, chain)}
                   className={iconButtonClassName}
-                  title="View on explorer"
+                  title={t`View on explorer`}
                 >
                   <ExternalLink className="h-3.5 w-3.5" />
                 </button>
@@ -107,13 +109,13 @@ const IndexTokenAddress = ({
               onClick={() => copyAddress(address)}
               className={menuItemClassName}
             >
-              Copy address
+              <Trans>Copy address</Trans>
             </DropdownMenuItem>
             <DropdownMenuItem
               onClick={() => openExplorer(address, chainId)}
               className={`${menuItemClassName} gap-1.5`}
             >
-              View on explorer
+              <Trans>View on explorer</Trans>
               <ArrowUpRight className="h-4 w-4" />
             </DropdownMenuItem>
           </>

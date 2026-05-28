@@ -17,12 +17,13 @@ import {
 } from 'lucide-react'
 import MetricsItem from './metrics-item'
 import SectionAnchor from '@/components/section-anchor'
+import { Trans } from '@lingui/react/macro'
 
 const AnnualizedTvlFee = () => {
   const dtf = useAtomValue(indexDTFAtom)
   return (
     <MetricsItem
-      label="Annualized TVL Fee"
+      label={<Trans>Annualized TVL Fee</Trans>}
       value={
         dtf?.annualizedTvlFee
           ? formatPercentage(dtf?.annualizedTvlFee * 100)
@@ -38,7 +39,7 @@ const MintingFee = () => {
   const dtf = useAtomValue(indexDTFAtom)
   return (
     <MetricsItem
-      label="Minting Fee"
+      label={<Trans>Minting Fee</Trans>}
       value={dtf?.mintingFee ? formatPercentage(dtf?.mintingFee * 100) : ''}
       icon={<ChartPie size={16} />}
       loading={!dtf?.mintingFee}
@@ -50,7 +51,7 @@ const MarketCap = () => {
   const marketCap = useAtomValue(indexDTFMarketCapAtom)
   return (
     <MetricsItem
-      label="Market Cap"
+      label={<Trans>Market Cap</Trans>}
       value={marketCap ? `$${formatCurrency(marketCap, 0)}` : '$0'}
       icon={<BadgeDollarSign size={16} />}
       loading={!marketCap}
@@ -64,7 +65,7 @@ const TxVolume = () => {
 
   return (
     <MetricsItem
-      label="24h Volume"
+      label={<Trans>24h Volume</Trans>}
       value={`$${formatCurrency(txVolume, 0)}`}
       icon={<ArrowUpDown size={16} />}
       loading={!transactions.length}
@@ -76,7 +77,7 @@ const UniqueHolders = () => {
   const dtf = useAtomValue(indexDTFAtom)
   return (
     <MetricsItem
-      label="Unique Holders"
+      label={<Trans>Unique Holders</Trans>}
       value={formatCurrency(dtf?.token?.currentHolderCount || 0, 0)}
       icon={<Wallet size={16} />}
       loading={!dtf?.token?.currentHolderCount}
@@ -88,7 +89,7 @@ const Created = () => {
   const dtf = useAtomValue(indexDTFAtom)
   return (
     <MetricsItem
-      label="Created"
+      label={<Trans>Created</Trans>}
       value={
         dtf?.timestamp
           ? new Date(dtf.timestamp * 1000).toLocaleDateString('en-US', {
@@ -109,7 +110,9 @@ const FeesStats = () => {
     <Card className="group/section" id="fees-stats">
       <div className="p-4 sm:p-6 pb-0 sm:pb-0">
         <div className="flex items-center gap-1">
-          <h2 className="text-2xl font-light mb-1">Fees & Stats</h2>
+          <h2 className="text-2xl font-light mb-1">
+            <Trans>Fees & Stats</Trans>
+          </h2>
           <SectionAnchor id="fees-stats" />
         </div>
       </div>

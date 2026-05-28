@@ -23,6 +23,7 @@ import {
   Wallet,
 } from 'lucide-react'
 import { formatEther } from 'viem'
+import { Trans } from '@lingui/react/macro'
 import MetricsItem from './metrics-item'
 
 const supplyChange24hAtom = atom<number>((get) => {
@@ -49,7 +50,7 @@ const Creator = () => {
 
   return (
     <MetricsItem
-      label="Creator"
+      label={<Trans>Creator</Trans>}
       value={displayName}
       valueHover={displayName}
       icon={
@@ -72,7 +73,7 @@ const MarketCap = () => {
   const marketCap = useAtomValue(indexDTFMarketCapAtom)
   return (
     <MetricsItem
-      label="Market Cap"
+      label={<Trans>Market Cap</Trans>}
       value={marketCap ? `$${formatCurrency(marketCap, 0)}` : '$0'}
       icon={<BadgeDollarSign size={16} />}
       loading={!marketCap}
@@ -84,7 +85,7 @@ const UniqueHolders = () => {
   const dtf = useAtomValue(indexDTFAtom)
   return (
     <MetricsItem
-      label="Unique Holders"
+      label={<Trans>Unique Holders</Trans>}
       value={formatCurrency(dtf?.token?.currentHolderCount || 0, 0)}
       icon={<Wallet size={16} />}
       loading={!dtf?.token?.currentHolderCount}
@@ -97,7 +98,7 @@ const Website = () => {
 
   return (
     <MetricsItem
-      label="Website"
+      label={<Trans>Website</Trans>}
       value={
         brandData?.socials?.website !== undefined
           ? brandData?.socials?.website
@@ -119,7 +120,7 @@ const Supply = () => {
   const dtf = useAtomValue(indexDTFAtom)
   return (
     <MetricsItem
-      label="Supply"
+      label={<Trans>Supply</Trans>}
       value={formatCurrency(
         Number(formatEther(BigInt(dtf?.token?.totalSupply || 0))),
         0
@@ -136,7 +137,7 @@ const Supply24h = () => {
 
   return (
     <MetricsItem
-      label="24h Supply Change"
+      label={<Trans>24h Supply Change</Trans>}
       value={`${supplyChange >= 0.005 ? '+' : ''}${formatPercentage(supplyChange)}`}
       icon={<ArrowUpDown size={16} />}
       loading={!transactions.length}
@@ -150,7 +151,7 @@ const TxVolume = () => {
 
   return (
     <MetricsItem
-      label="24h Tx Volume"
+      label={<Trans>24h Tx Volume</Trans>}
       value={`$${formatCurrency(txVolume, 0)}`}
       icon={<ArrowUpDown size={16} />}
       loading={!transactions.length}
@@ -162,7 +163,7 @@ const Created = () => {
   const dtf = useAtomValue(indexDTFAtom)
   return (
     <MetricsItem
-      label="Created"
+      label={<Trans>Created</Trans>}
       value={
         dtf?.timestamp
           ? new Date(dtf.timestamp * 1000).toLocaleDateString('en-US', {
@@ -182,7 +183,7 @@ const AnnualizedTvlFee = () => {
   const dtf = useAtomValue(indexDTFAtom)
   return (
     <MetricsItem
-      label="Annualized TVL Fee"
+      label={<Trans>Annualized TVL Fee</Trans>}
       value={
         dtf ? formatPercentage((dtf.annualizedTvlFee ?? 0) * 100) : ''
       }
@@ -196,7 +197,7 @@ const MintingFee = () => {
   const dtf = useAtomValue(indexDTFAtom)
   return (
     <MetricsItem
-      label="Minting Fee"
+      label={<Trans>Minting Fee</Trans>}
       value={dtf ? formatPercentage((dtf.mintingFee ?? 0) * 100) : ''}
       icon={<ChartPie size={16} />}
       loading={!dtf}
