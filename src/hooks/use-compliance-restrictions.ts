@@ -1,3 +1,4 @@
+import { t } from '@lingui/macro'
 import { useMemo } from 'react'
 import useDTFRestricted from './use-dtf-restricted'
 import useGeolocation, { type GeolocationStatus } from './use-geolocation'
@@ -21,26 +22,27 @@ export type ComplianceRestrictionsResult = {
   isLoading: boolean
 }
 
-const RESTRICTION_MESSAGES = {
-  wallet: {
-    title: 'Wallet restricted',
-    description:
-      'This wallet is not eligible to access this product. If you think this is an error, try connecting a different wallet or contact support.',
-  },
-  geolocation: {
-    title: 'Restricted jurisdiction',
-    description:
-      'You are accessing our products and services from a restricted jurisdiction. We do not allow access from certain jurisdictions, including locations subject to sanctions restrictions and other jurisdictions where our services are ineligible for use. If you think this is an error, try refreshing the page or contact support.',
-  },
-  vpn: {
-    title: 'VPN detected',
-    description:
-      'We detected that you are connecting through a VPN. Please disable it and refresh the page to access this product. If you think this is an error, contact support.',
-  },
-} satisfies Record<
-  ComplianceRestrictionReason,
-  { title: string; description: string }
->
+const getRestrictionMessage = (
+  reason: ComplianceRestrictionReason
+): { title: string; description: string } => {
+  switch (reason) {
+    case 'wallet':
+      return {
+        title: t`Wallet restricted`,
+        description: t`This wallet is not eligible to access this product. If you think this is an error, try connecting a different wallet or contact support.`,
+      }
+    case 'geolocation':
+      return {
+        title: t`Not available in your region`,
+        description: t`This product isn't available in your region due to local restrictions.`,
+      }
+    case 'vpn':
+      return {
+        title: t`VPN detected`,
+        description: t`We detected that you are connecting through a VPN. Please disable it and refresh the page to access this product. If you think this is an error, contact support.`,
+      }
+  }
+}
 
 const allowed = (
   geolocation?: GeolocationStatus,
@@ -62,7 +64,7 @@ const restricted = ({
 }): ComplianceRestrictionsData => ({
   restricted: true,
   reason,
-  ...RESTRICTION_MESSAGES[reason],
+  ...getRestrictionMessage(reason),
   geolocation,
   wallet,
 })

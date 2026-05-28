@@ -13,6 +13,7 @@ import useTrackIndexDTFPage, {
 import useIsComplianceRestricted from '@/hooks/use-is-compliance-restricted'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import useComplianceRestrictions from '@/hooks/use-compliance-restrictions'
+import { Trans } from '@lingui/macro'
 
 const DTF_DISABLED_FOR_ZAP = [] as string[]
 export const indexDTFQuoteSourceAtom = atom<ZapperProps['defaultSource']>(
@@ -38,16 +39,19 @@ const ComplianceAlert = () => {
     >
       <AlertTitle>{data.title}</AlertTitle>
       <AlertDescription>
-        {data.description} For more information, see our{' '}
-        <a
-          className="underline"
-          target="_blank"
-          rel="noopener noreferrer"
-          href="https://reserve.org/terms-and-conditions"
-        >
-          Terms of Use
-        </a>
-        .
+        {data.description}{' '}
+        <Trans>
+          For more information, see our{' '}
+          <a
+            className="underline"
+            target="_blank"
+            rel="noopener noreferrer"
+            href="https://reserve.org/terms-and-conditions"
+          >
+            Terms of Use
+          </a>
+          .
+        </Trans>
       </AlertDescription>
     </Alert>
   )

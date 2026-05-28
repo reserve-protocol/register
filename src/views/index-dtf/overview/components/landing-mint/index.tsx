@@ -4,6 +4,7 @@ import StackTokenLogo from '@/components/token-logo/StackTokenLogo'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
+import { Trans } from '@lingui/macro'
 import { isInactiveDTF } from '@/hooks/use-dtf-status'
 import {
   indexDTFAtom,
@@ -82,17 +83,16 @@ const MintBox = () => {
           </>
         ) : isRestricted ? (
           <Alert variant="destructive" className="rounded-2xl">
-            <AlertTitle>Not available in your region</AlertTitle>
+            <AlertTitle>{complianceData?.title}</AlertTitle>
             <AlertDescription>
-              This product isn't available in your region due to local
-              restrictions.{' '}
+              {complianceData?.description}{' '}
               <a
                 className="underline"
                 target="_blank"
                 rel="noopener noreferrer"
                 href="https://reserve.org/terms-and-conditions"
               >
-                Learn More
+                <Trans>Learn More</Trans>
               </a>
             </AlertDescription>
           </Alert>

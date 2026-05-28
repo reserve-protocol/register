@@ -7,6 +7,7 @@ import {
 import { isInactiveDTF } from '@/hooks/use-dtf-status'
 import useIsComplianceRestricted from '@/hooks/use-is-compliance-restricted'
 import { indexDTFStatusAtom } from '@/state/dtf/atoms'
+import { Trans } from '@lingui/macro'
 import { useZapperModal } from '@reserve-protocol/react-zapper'
 import { useAtomValue } from 'jotai'
 import { ReactNode } from 'react'
@@ -22,23 +23,26 @@ const RestrictionPopover = ({
 
   return (
     <Popover>
-      <PopoverTrigger asChild>
-        <span className="w-full">{children}</span>
-      </PopoverTrigger>
+      <PopoverTrigger asChild>{children}</PopoverTrigger>
       <PopoverContent className="w-[260px] text-sm text-center">
-        This product isn't available in your region due to local restrictions.{' '}
-        <a
-          className="underline"
-          target="_blank"
-          rel="noopener noreferrer"
-          href="https://reserve.org/terms-and-conditions"
-        >
-          Learn More
-        </a>
+        <Trans>
+          This product isn't available in your region due to local restrictions.{' '}
+          <a
+            className="underline"
+            target="_blank"
+            rel="noopener noreferrer"
+            href="https://reserve.org/terms-and-conditions"
+          >
+            Learn More
+          </a>
+        </Trans>
       </PopoverContent>
     </Popover>
   )
 }
+
+const DISABLED_BUTTON_CLASSES =
+  'aria-disabled:!bg-muted aria-disabled:!text-muted-foreground aria-disabled:!border-transparent aria-disabled:cursor-not-allowed disabled:!bg-muted disabled:!text-muted-foreground disabled:!border-transparent'
 
 const IndexCTAsOverviewMobile = () => {
   const { open, setTab } = useZapperModal()
@@ -50,10 +54,11 @@ const IndexCTAsOverviewMobile = () => {
       <div className="flex gap-2">
         <RestrictionPopover enabled={isRestricted}>
           <Button
-            className="rounded-3xl h-8 w-full disabled:!bg-muted disabled:!text-muted-foreground disabled:!border-transparent"
+            className={`rounded-3xl h-8 w-full ${DISABLED_BUTTON_CLASSES}`}
             variant="outline"
-            disabled={isRestricted}
+            aria-disabled={isRestricted || undefined}
             onClick={() => {
+              if (isRestricted) return
               setTab('sell')
               open()
             }}
@@ -63,9 +68,11 @@ const IndexCTAsOverviewMobile = () => {
         </RestrictionPopover>
         <RestrictionPopover enabled={isRestricted}>
           <Button
-            className="rounded-3xl h-8 w-full disabled:!bg-muted disabled:!text-muted-foreground disabled:!border-transparent"
-            disabled={isDeprecated || isRestricted}
+            className={`rounded-3xl h-8 w-full ${DISABLED_BUTTON_CLASSES}`}
+            aria-disabled={isRestricted || undefined}
+            disabled={isDeprecated && !isRestricted}
             onClick={() => {
+              if (isRestricted || isDeprecated) return
               setTab('buy')
               open()
             }}
