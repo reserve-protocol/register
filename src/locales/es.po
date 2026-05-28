@@ -26,6 +26,11 @@ msgstr ""
 msgid "(in their Github repository)"
 msgstr ""
 
+#. placeholder {0}: group.tokens.length
+#: src/views/index-dtf/overview/components/basket-overview/exposure-table-rows.tsx:62
+msgid "{0, plural, one {(# source)} other {(# sources)}}"
+msgstr ""
+
 #. placeholder {0}: !!holders ? `Mint ${formatCurrency(holders, 1)}% Est. APY` : 'Mint'
 #. placeholder {0}: CHAIN_TAGS[chainId]
 #: src/views/yield-dtf/deploy/components/TokenParameters.tsx:42
@@ -123,8 +128,16 @@ msgstr ""
 msgid "+ Mint {0}"
 msgstr ""
 
+#: src/views/index-dtf/overview/components/basket-overview/performance-cell.tsx:19
+msgid "1 year"
+msgstr ""
+
 #: src/components/rtoken-setup/token/TokenConfiguration.tsx:33
 msgid "15 params"
+msgstr ""
+
+#: src/views/index-dtf/overview/components/basket-overview/performance-cell.tsx:15
+msgid "24 hour"
 msgstr ""
 
 #: src/views/index-dtf/overview/components/index-metrics-overview.tsx:140
@@ -143,8 +156,20 @@ msgstr ""
 msgid "3.4.0 Upgrade spells"
 msgstr ""
 
+#: src/views/index-dtf/overview/components/basket-overview/performance-cell.tsx:17
+msgid "30 day"
+msgstr ""
+
 #: src/views/yield-dtf/governance/views/proposal/components/SpellUpgrade4_2_0.tsx:46
 msgid "4.2.0 Upgrade spell"
+msgstr ""
+
+#: src/views/index-dtf/overview/components/basket-overview/performance-cell.tsx:16
+msgid "7 day"
+msgstr ""
+
+#: src/views/index-dtf/overview/components/basket-overview/performance-cell.tsx:18
+msgid "90 day"
 msgstr ""
 
 #: src/views/home/components/register-about.tsx:34
@@ -210,6 +235,7 @@ msgstr ""
 msgid "Address"
 msgstr ""
 
+#: src/views/index-dtf/overview/components/basket-overview/bridge-info-dialog.tsx:66
 #: src/views/index-dtf/overview/components/index-token-address.tsx:36
 msgid "Address copied to clipboard"
 msgstr ""
@@ -231,6 +257,10 @@ msgstr ""
 #: src/views/index-dtf/overview/components/charts/time-range-selector.tsx:67
 #: src/views/index-dtf/overview/components/charts/time-range-selector.tsx:83
 msgid "All"
+msgstr ""
+
+#: src/views/index-dtf/overview/components/basket-overview/performance-cell.tsx:20
+msgid "all time"
 msgstr ""
 
 #: src/views/yield-dtf/governance/components/GovernanceOverview.tsx:126
@@ -480,6 +510,15 @@ msgstr ""
 msgid "Brand Manager"
 msgstr ""
 
+#. placeholder {0}: capitalize(ETHERSCAN_NAMES[chainId])
+#: src/views/index-dtf/overview/components/basket-overview/basket-table-header.tsx:140
+msgid "Bridge / {0}"
+msgstr ""
+
+#: src/views/index-dtf/overview/components/basket-overview/bridge-info-dialog.tsx:176
+msgid "Bridged asset (held in basket)"
+msgstr ""
+
 #: src/views/yield-dtf/settings/components/contracts-info.tsx:21
 msgid "Broker"
 msgstr ""
@@ -604,6 +643,10 @@ msgstr ""
 msgid "Click retry or use individual approve buttons below."
 msgstr ""
 
+#: src/views/index-dtf/overview/components/basket-overview/basket-table-header.tsx:107
+msgid "Collateral"
+msgstr ""
+
 #: src/views/yield-dtf/issuance/components/issue/CollateralDistribution.tsx:37
 msgid "Collateral distribution"
 msgstr ""
@@ -698,6 +741,10 @@ msgstr ""
 
 #: src/views/index-dtf/settings/components/index-settings-governance.tsx:116
 msgid "Controls settings of the vlDAO including vote lock duration and approving revenue tokens"
+msgstr ""
+
+#: src/views/index-dtf/overview/components/basket-overview/index.tsx:48
+msgid "Copied to clipboard"
 msgstr ""
 
 #: src/components/ui/copy-value.tsx:57
@@ -1112,6 +1159,10 @@ msgstr ""
 msgid "Explore yield opportunities for {0}"
 msgstr ""
 
+#: src/views/index-dtf/overview/components/basket-overview/basket-table-header.tsx:97
+msgid "Exposure"
+msgstr ""
+
 #: src/views/yield-dtf/governance/views/proposal-detail/components/proposal-summary/revenue-distribution-summary.tsx:39
 msgid "External"
 msgstr ""
@@ -1518,6 +1569,7 @@ msgstr ""
 msgid "Mandate is required"
 msgstr ""
 
+#: src/views/index-dtf/overview/components/basket-overview/basket-table-header.tsx:134
 #: src/views/index-dtf/overview/components/charts/data-type-selector.tsx:11
 #: src/views/index-dtf/overview/components/fees-stats.tsx:54
 #: src/views/index-dtf/overview/components/index-metrics-overview.tsx:76
@@ -1661,6 +1713,14 @@ msgstr ""
 #: src/views/yield-dtf/settings/components/basic-info.tsx:15
 #: src/views/yield-dtf/settings/components/governance-info.tsx:30
 msgid "Name"
+msgstr ""
+
+#: src/views/index-dtf/overview/components/basket-overview/bridge-info-dialog.tsx:119
+msgid "Native asset (reference)"
+msgstr ""
+
+#: src/views/index-dtf/overview/components/basket-overview/bridge-info-dialog.tsx:161
+msgid "Native L1 Asset"
 msgstr ""
 
 #: src/views/index-dtf/issuance/manual/components/index-manual-issuance.tsx:46
@@ -1812,6 +1872,7 @@ msgstr ""
 #: src/components/layout/navigation/index.tsx:76
 #: src/components/layout/navigation/TokenNavigation.tsx:175
 #: src/views/index-dtf/components/navigation/index.tsx:137
+#: src/views/index-dtf/overview/components/basket-overview/bridge-info-dialog.tsx:92
 msgid "Overview"
 msgstr ""
 
@@ -1935,6 +1996,11 @@ msgstr ""
 msgid "Portfolio"
 msgstr ""
 
+#. placeholder {0}: bridge.name
+#: src/views/index-dtf/overview/components/basket-overview/bridge-info-dialog.tsx:251
+msgid "Potential Risks Using {0}"
+msgstr ""
+
 #: src/components/transaction-modal/index.tsx:154
 msgid "Preparing transaction"
 msgstr ""
@@ -1945,6 +2011,11 @@ msgstr ""
 #: src/views/index-dtf/overview/components/charts/data-type-selector.tsx:16
 #: src/views/tokens/components/UnlistedTokensTable.tsx:80
 msgid "Price"
+msgstr ""
+
+#. placeholder {0}: periodLabel[timeRange]
+#: src/views/index-dtf/overview/components/basket-overview/basket-table-header.tsx:128
+msgid "Price Change ({0})"
 msgstr ""
 
 #: src/components/layout/navigation/TokenNavigation.tsx:214
@@ -2053,6 +2124,14 @@ msgstr ""
 
 #: src/views/yield-dtf/governance/components/ProposalList.tsx:112
 msgid "Quorum?:"
+msgstr ""
+
+#: src/views/index-dtf/overview/components/basket-overview/bridge-info-dialog.tsx:240
+msgid "Read about risks"
+msgstr ""
+
+#: src/views/index-dtf/overview/components/basket-overview/bridge-info-dialog.tsx:232
+msgid "Read docs"
 msgstr ""
 
 #: src/components/rtoken-setup/token/RevenueSplit.tsx:182
@@ -2271,6 +2350,10 @@ msgstr ""
 
 #: src/views/yield-dtf/staking/components/overview/about.tsx:48
 msgid "Risk evaluation"
+msgstr ""
+
+#: src/views/index-dtf/overview/components/basket-overview/bridge-info-dialog.tsx:101
+msgid "Risks"
 msgstr ""
 
 #: src/views/yield-dtf/governance/components/GovernanceOverview.tsx:175
@@ -2720,6 +2803,11 @@ msgstr ""
 msgid "This asset is already (being) registered"
 msgstr ""
 
+#. placeholder {0}: t(PERIOD_LABELS[timeRange])
+#: src/views/index-dtf/overview/components/basket-overview/performance-cell.tsx:55
+msgid "This asset was added to the basket during this {0} period"
+msgstr ""
+
 #: src/components/field/index.tsx:33
 msgid "This field is required"
 msgstr ""
@@ -3118,9 +3206,21 @@ msgstr ""
 msgid "View"
 msgstr ""
 
+#: src/views/index-dtf/overview/components/basket-overview/index.tsx:145
+msgid "View all {activeCount} assets"
+msgstr ""
+
+#: src/views/index-dtf/overview/components/basket-overview/index.tsx:146
+msgid "View all {activeCount} tokens"
+msgstr ""
+
 #: src/views/yield-dtf/staking/components/stake/confirm-stake-button.tsx:107
 #: src/views/yield-dtf/staking/components/unstake/confirm-unstake-button.tsx:68
 msgid "View in explorer"
+msgstr ""
+
+#: src/views/index-dtf/overview/components/basket-overview/index.tsx:143
+msgid "View less"
 msgstr ""
 
 #: src/components/transaction-modal/transaction-confirmed-modal.tsx:41
@@ -3238,6 +3338,10 @@ msgstr ""
 #: src/views/index-dtf/overview/components/index-about-overview.tsx:89
 #: src/views/index-dtf/overview/components/index-metrics-overview.tsx:101
 msgid "Website"
+msgstr ""
+
+#: src/views/index-dtf/overview/components/basket-overview/basket-table-header.tsx:119
+msgid "Weight"
 msgstr ""
 
 #: src/views/index-dtf/settings/components/index-settings-basic.tsx:74

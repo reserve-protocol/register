@@ -3,6 +3,7 @@ import { TableCell, TableRow } from '@/components/ui/table'
 import { chainIdAtom } from '@/state/atoms'
 import { TimeRange } from '@/types'
 import { formatMarketCap } from '@/utils'
+import { Plural } from '@lingui/react/macro'
 import { useAtomValue } from 'jotai'
 import { PerformanceCell } from './performance-cell'
 import { ExposureGroup } from '@/state/dtf/atoms'
@@ -58,7 +59,11 @@ export const ExposureTableRows = ({
                       ${native.symbol}
                       {group.tokens.length > 1 && (
                         <span className="ml-1 text-muted-foreground">
-                          ({group.tokens.length} sources)
+                          <Plural
+                            value={group.tokens.length}
+                            one="(# source)"
+                            other="(# sources)"
+                          />
                         </span>
                       )}
                     </span>
