@@ -1,5 +1,4 @@
 import { useMemo } from 'react'
-import { type Address } from 'viem'
 import useDTFRestricted from './use-dtf-restricted'
 import useGeolocation, { type GeolocationStatus } from './use-geolocation'
 import useWalletCompliance, {
@@ -15,7 +14,6 @@ export type ComplianceRestrictionsData = {
   description?: string
   geolocation?: GeolocationStatus
   wallet?: WalletCompliance
-  assets: Address[]
 }
 
 export type ComplianceRestrictionsResult = {
@@ -51,26 +49,22 @@ const allowed = (
   restricted: false,
   geolocation,
   wallet,
-  assets: [],
 })
 
 const restricted = ({
   reason,
   geolocation,
   wallet,
-  assets = [],
 }: {
   reason: ComplianceRestrictionReason
   geolocation?: GeolocationStatus
   wallet?: WalletCompliance
-  assets?: Address[]
 }): ComplianceRestrictionsData => ({
   restricted: true,
   reason,
   ...RESTRICTION_MESSAGES[reason],
   geolocation,
   wallet,
-  assets,
 })
 
 const useComplianceRestrictions = () => {
@@ -116,17 +110,6 @@ const useComplianceRestrictions = () => {
       }
     }
 
-    if (geolocation.data.isVPN) {
-      return {
-        data: restricted({
-          reason: 'vpn',
-          geolocation: geolocation.data,
-          wallet: walletCompliance.data,
-        }),
-        isLoading: false,
-      }
-    }
-
     if (geolocation.data.restricted) {
       return {
         data: restricted({
@@ -146,9 +129,8 @@ const useComplianceRestrictions = () => {
       return {
         data: restricted({
           reason: 'geolocation',
-          geolocation: dtfRestriction.data.geolocation ?? geolocation.data,
+          geolocation: geolocation.data,
           wallet: walletCompliance.data,
-          assets: dtfRestriction.data.assets,
         }),
         isLoading: false,
       }

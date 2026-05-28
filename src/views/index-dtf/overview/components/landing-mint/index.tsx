@@ -1,6 +1,7 @@
 import CoverPlaceholder from '@/components/icons/cover-placeholder'
 import TokenLogo from '@/components/token-logo'
 import StackTokenLogo from '@/components/token-logo/StackTokenLogo'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
 import { isInactiveDTF } from '@/hooks/use-dtf-status'
@@ -15,7 +16,7 @@ import { useAtomValue } from 'jotai'
 import { ArrowDown, ArrowLeftRight } from 'lucide-react'
 import React, { useEffect, useState } from 'react'
 import DTFBalance from './dtf-balance'
-import useIsComplianceRestricted from '@/hooks/use-is-compliance-restricted'
+import useComplianceRestrictions from '@/hooks/use-compliance-restrictions'
 
 const TokenInfo = () => {
   const dtf = useAtomValue(indexDTFAtom)
@@ -66,48 +67,60 @@ const MintBox = () => {
   const { open, setTab } = useZapperModal()
   const status = useAtomValue(indexDTFStatusAtom)
   const isDeprecated = isInactiveDTF(status)
-  const isRestricted = useIsComplianceRestricted()
+  const { isLoading: isComplianceLoading, data: complianceData } =
+    useComplianceRestrictions()
+  const isRestricted = !!complianceData?.restricted
 
   return (
     <div className="rounded-3xl bg-card p-2">
       <TokenInfo />
       <div className="flex flex-col gap-2">
-        <Button
-          className="rounded-xl h-12"
-          disabled={isDeprecated || isRestricted}
-          onClick={() => {
-            trackClick('buy')
-            setTab('buy')
-            open()
-          }}
-        >
-          Buy
-        </Button>
-        <Button
-          className="rounded-xl h-12"
-          disabled={isRestricted}
-          variant="outline"
-          onClick={() => {
-            trackClick('sell')
-            setTab('sell')
-            open()
-          }}
-        >
-          Sell
-        </Button>
-        {isRestricted && (
-          <p className="text-legend text-sm text-center px-2 pt-1">
-            This product isn't available in your region due to local
-            restrictions.{' '}
-            <a
-              className="text-primary underline"
-              target="_blank"
-              rel="noopener noreferrer"
-              href="https://reserve.org/terms-and-conditions"
+        {isComplianceLoading ? (
+          <>
+            <Skeleton className="rounded-xl h-12" />
+            <Skeleton className="rounded-xl h-12" />
+          </>
+        ) : isRestricted ? (
+          <Alert variant="destructive" className="rounded-2xl">
+            <AlertTitle>Not available in your region</AlertTitle>
+            <AlertDescription>
+              This product isn't available in your region due to local
+              restrictions.{' '}
+              <a
+                className="underline"
+                target="_blank"
+                rel="noopener noreferrer"
+                href="https://reserve.org/terms-and-conditions"
+              >
+                Learn More
+              </a>
+            </AlertDescription>
+          </Alert>
+        ) : (
+          <>
+            <Button
+              className="rounded-xl h-12"
+              disabled={isDeprecated}
+              onClick={() => {
+                trackClick('buy')
+                setTab('buy')
+                open()
+              }}
             >
-              Learn More
-            </a>
-          </p>
+              Buy
+            </Button>
+            <Button
+              className="rounded-xl h-12"
+              variant="outline"
+              onClick={() => {
+                trackClick('sell')
+                setTab('sell')
+                open()
+              }}
+            >
+              Sell
+            </Button>
+          </>
         )}
       </div>
     </div>
