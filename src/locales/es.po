@@ -71,6 +71,11 @@ msgstr ""
 msgid "{0} Description"
 msgstr ""
 
+#. placeholder {0}: formatPercentage(apyData.totalAPY)
+#: src/views/index-dtf/overview/components/charts/chart-overlay.tsx:83
+msgid "{0} Est. APY"
+msgstr ""
+
 #. placeholder {0}: formatCurrency(revenueData?.pendingToMelt ?? 0)
 #. placeholder {1}: rToken?.symbol ?? 'rToken'
 #: src/views/yield-dtf/auctions/auctions-sidebar/MeltingBox.tsx:42
@@ -222,6 +227,12 @@ msgstr ""
 msgid "Alexios is standard token-voting adopted from Compound Governor Bravo, with adjustments accounting for RSR being staked across multiple RTokens."
 msgstr ""
 
+#: src/views/index-dtf/overview/components/charts/percentage-change.tsx:54
+#: src/views/index-dtf/overview/components/charts/time-range-selector.tsx:67
+#: src/views/index-dtf/overview/components/charts/time-range-selector.tsx:83
+msgid "All"
+msgstr ""
+
 #: src/views/yield-dtf/governance/components/GovernanceOverview.tsx:126
 msgid "All time"
 msgstr ""
@@ -301,6 +312,14 @@ msgstr ""
 
 #: src/views/yield-dtf/issuance/components/balances/index.tsx:17
 msgid "Available collateral"
+msgstr ""
+
+#. placeholder {0}: formatPercentage(stats.avg)
+#. placeholder {1}: formatPercentage(stats.min)
+#. placeholder {2}: formatPercentage(stats.max)
+#. placeholder {3}: range === 'all' ? 'All' : range
+#: src/views/index-dtf/overview/components/charts/chart-overlay.tsx:90
+msgid "Avg {0} · range {1}–{2} ({3})"
 msgstr ""
 
 #: src/views/index-dtf/issuance/manual/components/approve-all-button.tsx:69
@@ -463,6 +482,10 @@ msgstr ""
 
 #: src/views/yield-dtf/settings/components/contracts-info.tsx:21
 msgid "Broker"
+msgstr ""
+
+#: src/views/index-dtf/overview/components/charts/data-type-selector.tsx:17
+msgid "BTC"
 msgstr ""
 
 #: src/views/index-dtf/issuance/manual/components/mode-selector.tsx:12
@@ -1495,6 +1518,7 @@ msgstr ""
 msgid "Mandate is required"
 msgstr ""
 
+#: src/views/index-dtf/overview/components/charts/data-type-selector.tsx:11
 #: src/views/index-dtf/overview/components/fees-stats.tsx:54
 #: src/views/index-dtf/overview/components/index-metrics-overview.tsx:76
 msgid "Market Cap"
@@ -1526,6 +1550,10 @@ msgstr ""
 
 #: src/components/rtoken-setup/token/OtherForm.tsx:105
 msgid "Maximum trade volume - maximum sized trade for any trade involving RToken, in terms of the unit of account eg. USD."
+msgstr ""
+
+#: src/views/index-dtf/overview/components/charts/market-cap.tsx:15
+msgid "MCap:"
 msgstr ""
 
 #: src/views/yield-dtf/staking/components/overview/about.tsx:24
@@ -1672,6 +1700,7 @@ msgid "No assets to unregister..."
 msgstr ""
 
 #: src/components/charts/area/AreaChart.tsx:132
+#: src/views/index-dtf/overview/components/charts/percentage-change.tsx:27
 msgid "No data"
 msgstr ""
 
@@ -1912,6 +1941,8 @@ msgstr ""
 
 #: src/components/tables/ListedTokensTable.tsx:37
 #: src/views/explorer/components/tokens/index.tsx:148
+#: src/views/index-dtf/overview/components/charts/data-type-selector.tsx:10
+#: src/views/index-dtf/overview/components/charts/data-type-selector.tsx:16
 #: src/views/tokens/components/UnlistedTokensTable.tsx:80
 msgid "Price"
 msgstr ""
@@ -2563,6 +2594,7 @@ msgstr ""
 msgid "Submit proposal on-chain"
 msgstr ""
 
+#: src/views/index-dtf/overview/components/charts/data-type-selector.tsx:12
 #: src/views/index-dtf/overview/components/index-metrics-overview.tsx:123
 #: src/views/yield-dtf/overview/components/charts/supply-chart.tsx:85
 msgid "Supply"
@@ -3284,6 +3316,10 @@ msgstr ""
 
 #: src/views/index-dtf/overview/components/index-about-overview.tsx:104
 msgid "X Account"
+msgstr ""
+
+#: src/views/index-dtf/overview/components/charts/data-type-selector.tsx:18
+msgid "Yield"
 msgstr ""
 
 #: src/components/layout/header/components/app-navigation.tsx:125
