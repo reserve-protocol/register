@@ -8,6 +8,9 @@ import { chainIdAtom, walletAtom } from '@/state/atoms'
 import { indexDTFAtom, indexDTFVersionAtom } from '@/state/dtf/atoms'
 import { formatCurrency, max, safeParseEther } from '@/utils'
 import { ROUTES } from '@/utils/constants'
+import { msg } from '@lingui/core/macro'
+import type { MessageDescriptor } from '@lingui/core'
+import { Trans, useLingui } from '@lingui/react/macro'
 import { atom, useAtom, useAtomValue } from 'jotai'
 import { AlertCircle } from 'lucide-react'
 import { useEffect, useState } from 'react'
@@ -39,11 +42,11 @@ const getErrorMessage = (error: Error) => {
 }
 
 const VALIDATION_ERRORS = {
-  BALANCE: 'Insufficient balance',
-  ALLOWANCE: 'Need to approve use of tokens',
+  BALANCE: msg`Insufficient balance`,
+  ALLOWANCE: msg`Need to approve use of tokens`,
 }
 
-const isValidAtom = atom<[boolean, string]>((get) => {
+const isValidAtom = atom<[boolean, MessageDescriptor | null]>((get) => {
   const mode = get(modeAtom)
   const amount = get(amountAtom)
   const indexDTF = get(indexDTFAtom)
@@ -59,13 +62,13 @@ const isValidAtom = atom<[boolean, string]>((get) => {
     !Object.keys(allowanceMap).length ||
     !Object.keys(requiredAmounts).length
   ) {
-    return [false, '']
+    return [false, null]
   }
 
   // Simple case, on redeem just check if the balance is enough
   if (mode === 'sell') {
     const isValid = balanceMap[indexDTF.id] >= safeParseEther(amount)
-    return [isValid, isValid ? '' : VALIDATION_ERRORS.BALANCE]
+    return [isValid, isValid ? null : VALIDATION_ERRORS.BALANCE]
   }
 
   // On mint, check if the allowance and balance is enough for each asset
@@ -78,7 +81,7 @@ const isValidAtom = atom<[boolean, string]>((get) => {
     }
   }
 
-  return [true, '']
+  return [true, null]
 })
 
 // TODO: Maybe worth doing the new tx button?
@@ -95,6 +98,7 @@ const SubmitButton = () => {
 }
 
 const MintRedeemButton = () => {
+  const { t } = useLingui()
   const chainId = useAtomValue(chainIdAtom)
   const mode = useAtomValue(modeAtom)
   const [amount, setAmount] = useAtom(amountAtom)
@@ -118,7 +122,7 @@ const MintRedeemButton = () => {
 
   useEffect(() => {
     if (isSuccess) {
-      toast('Transaction successful', {
+      toast(t`Transaction successful`, {
         description: actionMsg,
         icon: '🎉',
       })
@@ -132,7 +136,7 @@ const MintRedeemButton = () => {
 
     if (mode === 'buy') {
       setActionMsg(
-        `${formatCurrency(Number(amount))} ${indexDTF.token.symbol} minted!`
+        t`${formatCurrency(Number(amount))} ${indexDTF.token.symbol} minted!`
       )
 
       const shares = safeParseEther(amount)
@@ -171,7 +175,7 @@ const MintRedeemButton = () => {
       }
 
       setActionMsg(
-        `${formatCurrency(Number(amount))} ${indexDTF.token.symbol} redeemed!`
+        t`${formatCurrency(Number(amount))} ${indexDTF.token.symbol} redeemed!`
       )
       writeContract({
         address: indexDTF.id,
@@ -188,14 +192,14 @@ const MintRedeemButton = () => {
     }
   }
 
-  let label = mode === 'buy' ? 'Mint' : 'Redeem'
+  let label = mode === 'buy' ? t`Mint` : t`Redeem`
   const error = signError || txError
   const isLoading = (isPending || !!data) && !error
 
   if (isPending) {
-    label = 'Please sign in wallet...'
+    label = t`Please sign in wallet...`
   } else if (data) {
-    label = 'Confirming transaction...'
+    label = t`Confirming transaction...`
   }
   return (
     <div className="flex flex-col gap-2">
@@ -220,7 +224,7 @@ const MintRedeemButton = () => {
         >
           <AlertTitle className="flex items-center gap-2">
             <AlertCircle className="w-4 h-4" />{' '}
-            {validationError || 'Transaction failed'}
+            {validationError ? t(validationError) : t`Transaction failed`}
           </AlertTitle>
           {!!error && !validationError && (
             <AlertDescription className="ml-6">
@@ -244,13 +248,19 @@ const IndexManualIssuance = () => {
         <SubmitButton />
       </div>
       <div className="mt-4 rounded-3xl border p-4 flex items-center justify-between gap-2">
-        <p className="text-sm text-muted-foreground">Having issues minting?</p>
+        <p className="text-sm text-muted-foreground">
+          <Trans>Having issues minting?</Trans>
+        </p>
         <Link
           to={`../${ROUTES.ISSUANCE}`}
           onClick={() => trackClick('switch_to_zap')}
         >
           <Button variant="muted" size="xs">
-            Switch to zap {mode === 'buy' ? 'minting' : 'redeeming'}
+            {mode === 'buy' ? (
+              <Trans>Switch to zap minting</Trans>
+            ) : (
+              <Trans>Switch to zap redeeming</Trans>
+            )}
           </Button>
         </Link>
       </div>
