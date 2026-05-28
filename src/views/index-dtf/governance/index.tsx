@@ -1,8 +1,8 @@
 import useTrackIndexDTFPage from '../hooks/useTrackIndexDTFPage'
 import GovernanceAccountInfo from './components/governance-account-info'
 import GovernanceDelegateList from './components/governance-delegate-list'
-import GovernanceGuardians from './components/governance-guardians'
 import GovernanceProposalList from './components/governance-proposal-list'
+import GovernanceRoles from './components/governance-roles'
 import GovernanceStats from './components/governance-stats'
 import GovernanceVoteLock from './components/governance-vote-lock'
 
@@ -16,7 +16,7 @@ const IndexDTFGovernance = () => {
         <GovernanceVoteLock />
         <GovernanceAccountInfo />
         <GovernanceStats />
-        <GovernanceGuardians />
+        <GovernanceRoles />
         <GovernanceDelegateList />
       </div>
     </div>
