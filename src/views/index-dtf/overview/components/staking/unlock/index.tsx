@@ -1,5 +1,6 @@
 import Swap from '@/components/ui/swap'
 import { formatCurrency } from '@/utils'
+import { useLingui } from '@lingui/react/macro'
 import { useAtom, useAtomValue } from 'jotai'
 import {
   inputPriceAtom,
@@ -9,6 +10,7 @@ import {
 } from '../atoms'
 
 const UnlockView = () => {
+  const { t } = useLingui()
   const stToken = useAtomValue(stTokenAtom)
   const [input, onChange] = useAtom(stakingInputAtom)
   const inputPrice = useAtomValue(inputPriceAtom)
@@ -25,7 +27,7 @@ const UnlockView = () => {
   return (
     <Swap
       from={{
-        title: 'You unlock:',
+        title: t`You unlock:`,
         address: stToken.id,
         symbol: stToken.token.symbol,
         value: input,

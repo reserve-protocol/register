@@ -5,6 +5,7 @@ import { useQueryClient } from '@tanstack/react-query'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { useResetAtom } from 'jotai/utils'
 import { useEffect, useState } from 'react'
+import { useLingui } from '@lingui/react/macro'
 import { toast } from 'sonner'
 import { parseUnits } from 'viem'
 import { useWaitForTransactionReceipt, useWriteContract } from 'wagmi'
@@ -17,6 +18,7 @@ import {
 } from '../atoms'
 
 const SubmitUnlockButton = () => {
+  const { t } = useLingui()
   const account = useAtomValue(walletAtom)
   const stToken = useAtomValue(stTokenAtom)!
   const input = useAtomValue(stakingInputAtom)
@@ -62,7 +64,7 @@ const SubmitUnlockButton = () => {
       const timer = setTimeout(() => {
         resetInput()
         setStakingSidebarOpen(false)
-        toast.success('Unlock initiated successfully', { duration: 8000 })
+        toast.success(t`Unlock initiated successfully`, { duration: 8000 })
         queryClient.invalidateQueries({ queryKey: ['portfolio'] })
         setIsProcessing(false)
       }, 10000)
@@ -82,16 +84,18 @@ const SubmitUnlockButton = () => {
         }
         loadingText={
           isProcessing
-            ? 'Processing transaction...'
+            ? t`Processing transaction...`
             : !!hash
-              ? 'Confirming tx...'
-              : 'Pending, sign in wallet'
+              ? t`Confirming tx...`
+              : t`Pending, sign in wallet`
         }
         onClick={write}
         text={
           receipt?.status === 'success'
-            ? 'Transaction confirmed'
-            : `Begin ${unlockDelay ? `${unlockDelay}-day` : ''} unlock delay`
+            ? t`Transaction confirmed`
+            : unlockDelay
+              ? t`Begin ${unlockDelay}-day unlock delay`
+              : t`Begin unlock delay`
         }
         className="w-full"
         error={error || txError}

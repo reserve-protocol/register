@@ -172,6 +172,10 @@ msgstr ""
 msgid "90 day"
 msgstr ""
 
+#: src/views/index-dtf/overview/components/staking/index.tsx:119
+msgid "A {delay}-day unlock delay period begins & you stop accumulating rewards"
+msgstr ""
+
 #: src/views/home/components/register-about.tsx:34
 msgid "A Brief DTF Introduction"
 msgstr ""
@@ -303,6 +307,11 @@ msgstr ""
 
 #: src/components/transaction-modal/ApprovalStatus.tsx:29
 msgid "Approve in wallet"
+msgstr ""
+
+#. placeholder {0}: stToken?.underlying.symbol
+#: src/views/index-dtf/overview/components/staking/lock/submit-lock-button.tsx:218
+msgid "Approve use of {0}"
 msgstr ""
 
 #: src/views/index-dtf/settings/components/index-settings-reward-tokens.tsx:64
@@ -482,6 +491,10 @@ msgstr ""
 msgid "Be aware that anyone can create an RToken that ends up on this list. We don't apply any standards beyond what can be done with the Reserve Protocol."
 msgstr ""
 
+#: src/views/index-dtf/overview/components/staking/unlock/submit-unlock-button.tsx:97
+msgid "Begin {unlockDelay}-day unlock delay"
+msgstr ""
+
 #: src/views/yield-dtf/settings/components/governance-prompt.tsx:33
 msgid "Begin governance setup"
 msgstr ""
@@ -496,6 +509,10 @@ msgstr ""
 #. placeholder {1}: rToken?.symbol ?? ''
 #: src/views/yield-dtf/issuance/components/redeem/ConfirmRedemption.tsx:99
 msgid "Begin redemption of {0} {1}"
+msgstr ""
+
+#: src/views/index-dtf/overview/components/staking/unlock/submit-unlock-button.tsx:98
+msgid "Begin unlock delay"
 msgstr ""
 
 #: src/views/yield-dtf/auctions/auctions-sidebar/Revenue.tsx:122
@@ -667,6 +684,11 @@ msgstr ""
 msgid "Collateral(s)"
 msgstr ""
 
+#. placeholder {0}: stToken.underlying.symbol
+#: src/views/index-dtf/overview/components/staking/index.tsx:130
+msgid "Come back to your account balance page to withdraw your unlocked {0}"
+msgstr ""
+
 #: src/views/yield-dtf/governance/views/proposal/components/Intro.tsx:37
 msgid "Community Discord"
 msgstr ""
@@ -698,6 +720,12 @@ msgstr ""
 
 #: src/views/index-dtf/issuance/manual/components/index-manual-issuance.tsx:202
 msgid "Confirming transaction..."
+msgstr ""
+
+#: src/views/index-dtf/overview/components/staking/lock/submit-lock-button.tsx:67
+#: src/views/index-dtf/overview/components/staking/lock/submit-lock-button.tsx:209
+#: src/views/index-dtf/overview/components/staking/unlock/submit-unlock-button.tsx:89
+msgid "Confirming tx..."
 msgstr ""
 
 #: src/views/index-dtf/governance/views/proposal/components/vote-modal.tsx:150
@@ -871,9 +899,22 @@ msgstr ""
 msgid "Delegate"
 msgstr ""
 
+#. placeholder {0}: stToken?.underlying.symbol
+#: src/views/index-dtf/overview/components/staking/lock/submit-lock-button.tsx:70
+msgid "Delegate {0}"
+msgstr ""
+
 #: src/views/index-dtf/governance/components/delegate-modal.tsx:42
 #: src/views/yield-dtf/governance/components/DelegateModal.tsx:42
 msgid "Delegate to"
+msgstr ""
+
+#: src/views/index-dtf/overview/components/staking/index.tsx:215
+msgid "Delegate to address"
+msgstr ""
+
+#: src/views/index-dtf/overview/components/staking/index.tsx:196
+msgid "Delegate to self"
 msgstr ""
 
 #: src/views/index-dtf/governance/components/delegate-modal.tsx:35
@@ -1327,8 +1368,17 @@ msgstr ""
 msgid "Holders APY"
 msgstr ""
 
+#: src/views/index-dtf/overview/components/staking/index.tsx:82
+msgid "I'm aware of the {delay}-day unlock delay"
+msgstr ""
+
 #: src/views/home/components/register-about.tsx:122
 msgid "If a DTF is listed on this app, it doesn't mean that ABC Labs endorses the safety or risk levels of the DTF or that ABC Labs was involved in the creation of or is in anyway responsible for the DTF."
+msgstr ""
+
+#. placeholder {0}: stToken.underlying.symbol
+#: src/views/index-dtf/overview/components/staking/index.tsx:85
+msgid "If you decide to unlock {0} in the future, you'll need to wait {delay} days until you can complete the withdrawal"
 msgstr ""
 
 #: src/views/yield-dtf/settings/components/listing-info.tsx:44
@@ -1441,6 +1491,7 @@ msgstr ""
 
 #: src/components/rtoken-setup/basket/CustomCollateral.tsx:89
 #: src/components/rtoken-setup/components/RolesEdit.tsx:38
+#: src/views/index-dtf/overview/components/staking/index.tsx:222
 #: src/views/yield-dtf/staking/components/stake/edit-delegate.tsx:51
 msgid "Invalid address"
 msgstr ""
@@ -1913,6 +1964,9 @@ msgid "Pending distribution"
 msgstr ""
 
 #: src/components/transaction-modal/index.tsx:154
+#: src/views/index-dtf/overview/components/staking/lock/submit-lock-button.tsx:67
+#: src/views/index-dtf/overview/components/staking/lock/submit-lock-button.tsx:210
+#: src/views/index-dtf/overview/components/staking/unlock/submit-unlock-button.tsx:90
 #: src/views/yield-dtf/deploy/components/DeployOverview.tsx:25
 #: src/views/yield-dtf/deploy/components/GovernanceOverview.tsx:25
 #: src/views/yield-dtf/governance/views/proposal/components/ConfirmProposalOverview.tsx:57
@@ -2037,6 +2091,11 @@ msgstr ""
 
 #: src/views/yield-dtf/staking/components/stake/confirm-stake-button.tsx:71
 msgid "Proceed in wallet"
+msgstr ""
+
+#: src/views/index-dtf/overview/components/staking/lock/submit-lock-button.tsx:207
+#: src/views/index-dtf/overview/components/staking/unlock/submit-unlock-button.tsx:87
+msgid "Processing transaction..."
 msgstr ""
 
 #: src/views/yield-dtf/staking/components/withdraw/available-unstake.tsx:76
@@ -2306,6 +2365,7 @@ msgstr ""
 msgid "Revenue split"
 msgstr ""
 
+#: src/views/index-dtf/overview/components/staking/index.tsx:206
 #: src/views/yield-dtf/governance/views/proposal/components/ItemPreview.tsx:50
 #: src/views/yield-dtf/governance/views/proposal/components/ListItemPreview.tsx:28
 #: src/views/yield-dtf/governance/views/proposal/components/ProposedBackupPreview.tsx:98
@@ -2952,6 +3012,8 @@ msgid "Transaction 2"
 msgstr ""
 
 #: src/hooks/useWatchTransaction.ts:54
+#: src/views/index-dtf/overview/components/staking/lock/submit-lock-button.tsx:215
+#: src/views/index-dtf/overview/components/staking/unlock/submit-unlock-button.tsx:95
 msgid "Transaction confirmed"
 msgstr ""
 
@@ -3095,6 +3157,18 @@ msgstr ""
 
 #: src/views/index-dtf/issuance/manual/components/asset-list.tsx:308
 msgid "Unlimited"
+msgstr ""
+
+#: src/views/index-dtf/overview/components/staking/index.tsx:64
+msgid "Unlock"
+msgstr ""
+
+#: src/views/index-dtf/overview/components/staking/unlock/submit-unlock-button.tsx:67
+msgid "Unlock initiated successfully"
+msgstr ""
+
+#: src/views/index-dtf/overview/components/staking/index.tsx:115
+msgid "Unlock process"
 msgstr ""
 
 #: src/views/yield-dtf/settings/components/listing-info.tsx:43
@@ -3253,6 +3327,19 @@ msgstr ""
 msgid "Vote"
 msgstr ""
 
+#: src/views/index-dtf/overview/components/staking/index.tsx:59
+msgid "Vote lock"
+msgstr ""
+
+#. placeholder {0}: stToken?.underlying.symbol
+#: src/views/index-dtf/overview/components/staking/lock/submit-lock-button.tsx:217
+msgid "Vote lock {0}"
+msgstr ""
+
+#: src/views/index-dtf/overview/components/staking/lock/submit-lock-button.tsx:176
+msgid "Vote lock successful"
+msgstr ""
+
 #: src/views/index-dtf/governance/views/proposal/components/proposal-vote-button.tsx:60
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalVote.tsx:170
 msgid "Vote on-chain"
@@ -3315,8 +3402,16 @@ msgstr ""
 msgid "Voting power delegation"
 msgstr ""
 
+#: src/views/index-dtf/overview/components/staking/index.tsx:176
+msgid "Voting Power Delegation"
+msgstr ""
+
 #: src/views/index-dtf/settings/components/index-settings-governance.tsx:82
 msgid "Voting Quorum"
+msgstr ""
+
+#: src/views/index-dtf/overview/components/staking/index.tsx:126
+msgid "Wait {delay} days"
 msgstr ""
 
 #: src/views/yield-dtf/auctions/auctions-sidebar/RecollaterizationAlert.tsx:29
@@ -3438,12 +3533,20 @@ msgstr ""
 msgid "You can leave your RToken paused and come back to setting up governance later."
 msgstr ""
 
+#: src/views/index-dtf/overview/components/staking/lock/index.tsx:30
+msgid "You lock:"
+msgstr ""
+
 #: src/views/yield-dtf/staking/components/unstake/unstake-modal.tsx:31
 msgid "You receive:"
 msgstr ""
 
 #: src/views/yield-dtf/deploy/components/RTokenSetup.tsx:49
 msgid "You submit the transaction configuring your RToken design"
+msgstr ""
+
+#: src/views/index-dtf/overview/components/staking/unlock/index.tsx:30
+msgid "You unlock:"
 msgstr ""
 
 #: src/views/yield-dtf/staking/components/stake/stake-modal.tsx:34
