@@ -17,6 +17,7 @@ import { useAtomValue } from 'jotai'
 import { ArrowUpRight } from 'lucide-react'
 import React from 'react'
 import { Link } from 'react-router-dom'
+import { Plural, useLingui } from '@lingui/react/macro'
 import {
   COLUMN_HEADERS,
   CompositionTab,
@@ -112,7 +113,11 @@ const ProtocolRow = ({ protocol }: { protocol: CompositionProtocol }) => (
     </td>
     <td className="text-left py-4 pl-6">{protocol.role}</td>
     <td className="text-left py-4">
-      {protocol.usedIn} Strateg{protocol.usedIn === 1 ? 'y' : 'ies'}
+      <Plural
+        value={protocol.usedIn}
+        one="# Strategy"
+        other="# Strategies"
+      />
     </td>
   </tr>
 )
@@ -151,6 +156,7 @@ const DesktopBody = ({ activeTab }: { activeTab: CompositionTab }) => {
 }
 
 const CompositionDesktop = ({ activeTab }: { activeTab: CompositionTab }) => {
+  const { t } = useLingui()
   const headers = COLUMN_HEADERS[activeTab]
 
   return (
@@ -159,10 +165,10 @@ const CompositionDesktop = ({ activeTab }: { activeTab: CompositionTab }) => {
         <tr className="text-muted-foreground">
           <th className="text-left font-normal pb-3 w-[40%]" />
           <th className="text-right font-normal pb-3 px-2 w-[20%]">
-            {headers[0]}
+            {t(headers[0])}
           </th>
           <th className="text-left font-normal pb-3 pl-6 w-[25%]">
-            {headers[1]}
+            {t(headers[1])}
           </th>
           <th
             className={cn(
@@ -170,7 +176,7 @@ const CompositionDesktop = ({ activeTab }: { activeTab: CompositionTab }) => {
               activeTab === 'strategies' ? 'text-right' : 'text-left'
             )}
           >
-            {headers[2]}
+            {t(headers[2])}
           </th>
         </tr>
       </thead>

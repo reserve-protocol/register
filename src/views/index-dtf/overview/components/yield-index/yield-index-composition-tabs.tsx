@@ -1,20 +1,26 @@
 import { cn } from '@/lib/utils'
+import { msg } from '@lingui/core/macro'
+import type { MessageDescriptor } from '@lingui/core'
+import { Trans } from '@lingui/react/macro'
+import type { ReactNode } from 'react'
 
 export type CompositionTab = 'strategies' | 'assets' | 'protocols'
 
-export const COLUMN_HEADERS: Record<CompositionTab, [string, string, string]> =
-  {
-    strategies: ['Weight', 'Protocol(s)', 'Est. APY'],
-    assets: ['Exposure Share', 'Type', 'Provider'],
-    protocols: ['Exposure Share', 'Role', 'Used in'],
-  }
+export const COLUMN_HEADERS: Record<
+  CompositionTab,
+  [MessageDescriptor, MessageDescriptor, MessageDescriptor]
+> = {
+  strategies: [msg`Weight`, msg`Protocol(s)`, msg`Est. APY`],
+  assets: [msg`Exposure Share`, msg`Type`, msg`Provider`],
+  protocols: [msg`Exposure Share`, msg`Role`, msg`Used in`],
+}
 
 const TabButton = ({
   label,
   active,
   onClick,
 }: {
-  label: string
+  label: ReactNode
   active: boolean
   onClick: () => void
 }) => (
@@ -40,17 +46,17 @@ const TabSelector = ({
 }) => (
   <div className="inline-flex items-center rounded-2xl bg-muted p-0.5 gap-0.5">
     <TabButton
-      label="Strategies"
+      label={<Trans>Strategies</Trans>}
       active={activeTab === 'strategies'}
       onClick={() => setActiveTab('strategies')}
     />
     <TabButton
-      label="Assets"
+      label={<Trans>Assets</Trans>}
       active={activeTab === 'assets'}
       onClick={() => setActiveTab('assets')}
     />
     <TabButton
-      label="Protocols"
+      label={<Trans>Protocols</Trans>}
       active={activeTab === 'protocols'}
       onClick={() => setActiveTab('protocols')}
     />

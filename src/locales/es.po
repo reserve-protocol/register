@@ -31,6 +31,21 @@ msgstr ""
 msgid "{0, plural, one {(# source)} other {(# sources)}}"
 msgstr ""
 
+#. placeholder {0}: underlyingTokens.length
+#: src/views/index-dtf/overview/components/yield-index/yield-index-exposure-summary.tsx:32
+msgid "{0, plural, one {# Asset} other {# Assets}}"
+msgstr ""
+
+#. placeholder {0}: protocol.usedIn
+#: src/views/index-dtf/overview/components/yield-index/yield-index-composition-desktop.tsx:116
+msgid "{0, plural, one {# Strategy} other {# Strategies}}"
+msgstr ""
+
+#. placeholder {0}: p.usedIn
+#: src/views/index-dtf/overview/components/yield-index/yield-index-composition-mobile.tsx:133
+msgid "{0, plural, one {Used in # Strategy} other {Used in # Strategies}}"
+msgstr ""
+
 #. placeholder {0}: !!holders ? `Mint ${formatCurrency(holders, 1)}% Est. APY` : 'Mint'
 #. placeholder {0}: CHAIN_TAGS[chainId]
 #: src/views/yield-dtf/deploy/components/TokenParameters.tsx:42
@@ -54,6 +69,12 @@ msgstr ""
 #. placeholder {1}: indexDTF.token.symbol
 #: src/views/index-dtf/issuance/manual/components/index-manual-issuance.tsx:178
 msgid "{0} {1} redeemed!"
+msgstr ""
+
+#. placeholder {0}: formatPercentage(s.weight)
+#. placeholder {1}: formatPercentage(s.estApy)
+#: src/views/index-dtf/overview/components/yield-index/yield-index-composition-mobile.tsx:57
+msgid "{0} allocation · <0>{1}</0> Est. APY"
 msgstr ""
 
 #. placeholder {0}: fromToken ?? ''
@@ -81,6 +102,13 @@ msgstr ""
 msgid "{0} Est. APY"
 msgstr ""
 
+#. placeholder {0}: formatPercentage(a.weight)
+#. placeholder {0}: formatPercentage(p.exposureShare)
+#: src/views/index-dtf/overview/components/yield-index/yield-index-composition-mobile.tsx:96
+#: src/views/index-dtf/overview/components/yield-index/yield-index-composition-mobile.tsx:132
+msgid "{0} exposure"
+msgstr ""
+
 #. placeholder {0}: formatCurrency(revenueData?.pendingToMelt ?? 0)
 #. placeholder {1}: rToken?.symbol ?? 'rToken'
 #: src/views/yield-dtf/auctions/auctions-sidebar/MeltingBox.tsx:42
@@ -101,6 +129,14 @@ msgstr ""
 
 #: src/views/yield-dtf/settings/components/pause-manager.tsx:66
 msgid "{pauseLabel} paused"
+msgstr ""
+
+#: src/views/index-dtf/overview/components/yield-index/yield-index-exposure-summary.tsx:80
+msgid "{strategyCount, plural, one {# Strategy} other {# Strategies}}"
+msgstr ""
+
+#: src/views/index-dtf/overview/components/yield-index/yield-index-exposure-summary.tsx:63
+msgid "{uniqueProjects, plural, one {# Protocol} other {# Protocols}}"
 msgstr ""
 
 #: src/components/rtoken-setup/basket/UnitBasket.tsx:134
@@ -202,6 +238,11 @@ msgstr ""
 
 #: src/views/home/components/register-about.tsx:142
 msgid "ABC Labs uses industry standard anonymized analytics tools to understand usage and improve the user experience. ABC Labs does not collect any information about users or their financial activity."
+msgstr ""
+
+#. placeholder {0}: data.token.symbol
+#: src/views/index-dtf/overview/components/yield-index/yield-index-about.tsx:25
+msgid "About {0}"
 msgstr ""
 
 #: src/views/index-dtf/overview/components/index-about-overview.tsx:67
@@ -342,8 +383,16 @@ msgstr ""
 msgid "As RToken"
 msgstr ""
 
+#: src/views/index-dtf/overview/components/yield-index/yield-index-asset-exposure.tsx:65
+msgid "Asset Exposure"
+msgstr ""
+
 #: src/views/yield-dtf/settings/components/contracts-info.tsx:22
 msgid "Asset Registry"
+msgstr ""
+
+#: src/views/index-dtf/overview/components/yield-index/yield-index-composition-tabs.tsx:54
+msgid "Assets"
 msgstr ""
 
 #: src/views/index-dtf/settings/components/index-settings-roles.tsx:60
@@ -446,6 +495,10 @@ msgstr ""
 
 #: src/views/yield-dtf/governance/components/AccountVotes.tsx:74
 msgid "Balance: "
+msgstr ""
+
+#: src/views/index-dtf/overview/components/yield-index/yield-index-asset-exposure.tsx:31
+msgid "Base APY"
 msgstr ""
 
 #: src/views/index-dtf/settings/components/index-settings-basic.tsx:35
@@ -571,6 +624,11 @@ msgstr ""
 
 #: src/views/yield-dtf/auctions/components/useColumns.tsx:35
 msgid "Buying"
+msgstr ""
+
+#. placeholder {0}: a.provider
+#: src/views/index-dtf/overview/components/yield-index/yield-index-composition-mobile.tsx:100
+msgid "by {0}"
 msgstr ""
 
 #: src/views/yield-dtf/staking/components/stake/edit-delegate.tsx:39
@@ -716,6 +774,10 @@ msgstr ""
 
 #: src/views/yield-dtf/deploy/components/Intro.tsx:34
 msgid "Community Telegram"
+msgstr ""
+
+#: src/views/index-dtf/overview/components/yield-index/yield-index-composition.tsx:43
+msgid "Composition"
 msgstr ""
 
 #: src/views/yield-dtf/governance/components/AccountVotes.tsx:57
@@ -1175,6 +1237,8 @@ msgid "Ensure that the asset(s) you are unregistering do not have pending revenu
 msgstr ""
 
 #: src/views/home/components/discover-yield-dtf/token-actions.tsx:67
+#: src/views/index-dtf/overview/components/yield-index/yield-index-asset-exposure.tsx:101
+#: src/views/index-dtf/overview/components/yield-index/yield-index-composition-tabs.tsx:13
 msgid "Est. APY"
 msgstr ""
 
@@ -1236,6 +1300,11 @@ msgstr ""
 
 #: src/views/index-dtf/overview/components/basket-overview/basket-table-header.tsx:97
 msgid "Exposure"
+msgstr ""
+
+#: src/views/index-dtf/overview/components/yield-index/yield-index-composition-tabs.tsx:14
+#: src/views/index-dtf/overview/components/yield-index/yield-index-composition-tabs.tsx:15
+msgid "Exposure Share"
 msgstr ""
 
 #: src/views/yield-dtf/governance/views/proposal-detail/components/proposal-summary/revenue-distribution-summary.tsx:39
@@ -2049,6 +2118,7 @@ msgid "Pending, sign in wallet"
 msgstr ""
 
 #: src/views/index-dtf/overview/components/index-about-overview.tsx:96
+#: src/views/index-dtf/overview/components/yield-index/yield-index-about.tsx:46
 msgid "Performance Sheet"
 msgstr ""
 
@@ -2247,8 +2317,20 @@ msgstr ""
 msgid "Protocol Docs"
 msgstr ""
 
+#: src/views/index-dtf/overview/components/yield-index/yield-index-composition-tabs.tsx:13
+msgid "Protocol(s)"
+msgstr ""
+
+#: src/views/index-dtf/overview/components/yield-index/yield-index-composition-tabs.tsx:59
+msgid "Protocols"
+msgstr ""
+
 #: src/views/earn/views/defi/components/earn-heading.tsx:15
 msgid "Provide liquidity across DeFi & earn more with your DTFs"
+msgstr ""
+
+#: src/views/index-dtf/overview/components/yield-index/yield-index-composition-tabs.tsx:14
+msgid "Provider"
 msgstr ""
 
 #: src/views/index-dtf/governance/views/proposal/components/proposal-queue-button.tsx:78
@@ -2432,6 +2514,14 @@ msgstr ""
 msgid "Reserve Telegram"
 msgstr ""
 
+#: src/views/index-dtf/overview/components/yield-index/yield-index-asset-exposure.tsx:38
+msgid "Revenue Boost"
+msgstr ""
+
+#: src/views/index-dtf/overview/components/yield-index/yield-index-asset-exposure.tsx:47
+msgid "Revenue Boost is the yield redirected from protocol fees back to token holders."
+msgstr ""
+
 #: src/views/yield-dtf/deploy/components/NavigationSidebar.tsx:22
 #: src/views/yield-dtf/overview/components/backing/revenue-split-overview.tsx:104
 msgid "Revenue distribution"
@@ -2501,6 +2591,10 @@ msgstr ""
 
 #: src/views/index-dtf/overview/components/basket-overview/bridge-info-dialog.tsx:101
 msgid "Risks"
+msgstr ""
+
+#: src/views/index-dtf/overview/components/yield-index/yield-index-composition-tabs.tsx:15
+msgid "Role"
 msgstr ""
 
 #: src/views/yield-dtf/governance/components/GovernanceOverview.tsx:175
@@ -2835,6 +2929,10 @@ msgstr ""
 
 #: src/views/home/components/register-about.tsx:81
 msgid "Still have questions? Come talk to us in the Reserve Telegram chat. We’d be happy to help! You can also"
+msgstr ""
+
+#: src/views/index-dtf/overview/components/yield-index/yield-index-composition-tabs.tsx:49
+msgid "Strategies"
 msgstr ""
 
 #: src/components/rtoken-setup/token/OtherForm.tsx:78
@@ -3266,6 +3364,7 @@ msgstr ""
 #: src/components/transactions/table/index.tsx:66
 #: src/views/explorer/components/transactions/useTransactionColumns.tsx:68
 #: src/views/index-dtf/overview/components/index-transaction-table.tsx:24
+#: src/views/index-dtf/overview/components/yield-index/yield-index-composition-tabs.tsx:14
 #: src/views/yield-dtf/overview/components/rtoken-transactions.tsx:97
 msgid "Type"
 msgstr ""
@@ -3401,6 +3500,10 @@ msgstr ""
 
 #: src/components/rtoken-setup/governance/GovernanceSetup.tsx:48
 msgid "Use the Alexios governor format?"
+msgstr ""
+
+#: src/views/index-dtf/overview/components/yield-index/yield-index-composition-tabs.tsx:15
+msgid "Used in"
 msgstr ""
 
 #: src/views/home/components/register-about.tsx:139
@@ -3584,10 +3687,12 @@ msgstr ""
 
 #: src/views/index-dtf/overview/components/index-about-overview.tsx:89
 #: src/views/index-dtf/overview/components/index-metrics-overview.tsx:101
+#: src/views/index-dtf/overview/components/yield-index/yield-index-about.tsx:39
 msgid "Website"
 msgstr ""
 
 #: src/views/index-dtf/overview/components/basket-overview/basket-table-header.tsx:119
+#: src/views/index-dtf/overview/components/yield-index/yield-index-composition-tabs.tsx:13
 msgid "Weight"
 msgstr ""
 
@@ -3666,6 +3771,7 @@ msgid "X"
 msgstr ""
 
 #: src/views/index-dtf/overview/components/index-about-overview.tsx:104
+#: src/views/index-dtf/overview/components/yield-index/yield-index-about.tsx:54
 msgid "X Account"
 msgstr ""
 
