@@ -7,13 +7,14 @@ import {
 } from '@/state/dtf/atoms'
 import EnsName from '@/components/utils/ens-name'
 import { shortenAddress } from '@/utils'
-import { t } from '@lingui/macro'
+import { useLingui } from '@lingui/react/macro'
 import { useAtomValue } from 'jotai'
 import { Braces, DollarSign, Hash, Signature, ToggleRight } from 'lucide-react'
 import { useReadContract } from 'wagmi'
 import { IconWrapper, InfoCard, InfoCardItem } from './settings-info-card'
 
 const BasicInfo = () => {
+  const { t } = useLingui()
   const indexDTF = useAtomValue(indexDTFAtom)
   const version = useAtomValue(indexDTFVersionAtom)
   const rebalanceControl = useAtomValue(indexDTFRebalanceControlAtom)
@@ -31,7 +32,7 @@ const BasicInfo = () => {
   })
 
   return (
-    <InfoCard title="Basics" id="basics">
+    <InfoCard title={t`Basics`} id="basics">
       <InfoCardItem
         label={t`Name`}
         icon={<IconWrapper Component={Braces} />}
@@ -53,7 +54,7 @@ const BasicInfo = () => {
         label={t`Mandate`}
         icon={<IconWrapper Component={Signature} />}
         bold={false}
-        value={indexDTF?.mandate === '' ? 'Unknown' : indexDTF?.mandate}
+        value={indexDTF?.mandate === '' ? t`Unknown` : indexDTF?.mandate}
       />
       <InfoCardItem
         label={t`Deployer`}
@@ -72,14 +73,14 @@ const BasicInfo = () => {
         <InfoCardItem
           label={t`Weight Control`}
           icon={<IconWrapper Component={ToggleRight} />}
-          value={rebalanceControl.weightControl ? 'Enabled' : 'Disabled'}
+          value={rebalanceControl.weightControl ? t`Enabled` : t`Disabled`}
         />
       )}
       {isV5 && bidsEnabled !== undefined && (
         <InfoCardItem
           label={t`Permissionless Bids`}
           icon={<IconWrapper Component={ToggleRight} />}
-          value={bidsEnabled ? 'Enabled' : 'Disabled'}
+          value={bidsEnabled ? t`Enabled` : t`Disabled`}
         />
       )}
     </InfoCard>

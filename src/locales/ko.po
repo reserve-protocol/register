@@ -184,7 +184,7 @@ msgstr ""
 msgid "Add to primary basket"
 msgstr ""
 
-#: src/views/index-dtf/settings/components/index-settings-basic.tsx:47
+#: src/views/index-dtf/settings/components/index-settings-basic.tsx:48
 #: src/views/yield-dtf/governance/components/TopVoters.tsx:89
 msgid "Address"
 msgstr ""
@@ -221,7 +221,7 @@ msgstr ""
 msgid "Amount:"
 msgstr ""
 
-#: src/views/index-dtf/settings/components/index-settings-fees.tsx:88
+#: src/views/index-dtf/settings/components/index-settings-fees.tsx:91
 msgid "Annualized TVL Fee"
 msgstr ""
 
@@ -241,6 +241,10 @@ msgstr ""
 msgid "Approve in wallet"
 msgstr ""
 
+#: src/views/index-dtf/settings/components/index-settings-reward-tokens.tsx:64
+msgid "Approved Revenue Tokens"
+msgstr ""
+
 #: src/views/index-dtf/issuance/manual/components/asset-list.tsx:157
 msgid "Approving..."
 msgstr ""
@@ -257,7 +261,7 @@ msgstr ""
 msgid "Asset Registry"
 msgstr ""
 
-#: src/views/index-dtf/settings/components/index-settings-roles.tsx:59
+#: src/views/index-dtf/settings/components/index-settings-roles.tsx:60
 msgid "Auction Launcher"
 msgstr ""
 
@@ -351,6 +355,7 @@ msgstr ""
 msgid "Balance: "
 msgstr ""
 
+#: src/views/index-dtf/settings/components/index-settings-basic.tsx:35
 #: src/views/yield-dtf/deploy/components/NavigationSidebar.tsx:19
 #: src/views/yield-dtf/deploy/components/TokenParameters.tsx:123
 msgid "Basics"
@@ -365,7 +370,7 @@ msgstr ""
 msgid "Basket APY"
 msgstr ""
 
-#: src/views/index-dtf/settings/components/index-settings-governance.tsx:120
+#: src/views/index-dtf/settings/components/index-settings-governance.tsx:122
 msgid "Basket Governance"
 msgstr ""
 
@@ -429,7 +434,7 @@ msgstr ""
 msgid "Bought"
 msgstr ""
 
-#: src/views/index-dtf/settings/components/index-settings-roles.tsx:68
+#: src/views/index-dtf/settings/components/index-settings-roles.tsx:69
 msgid "Brand Manager"
 msgstr ""
 
@@ -633,15 +638,15 @@ msgstr ""
 msgid "Contracts"
 msgstr ""
 
-#: src/views/index-dtf/settings/components/index-settings-governance.tsx:111
+#: src/views/index-dtf/settings/components/index-settings-governance.tsx:113
 msgid "Controls changes to the basket of an Index DTF"
 msgstr ""
 
-#: src/views/index-dtf/settings/components/index-settings-governance.tsx:113
+#: src/views/index-dtf/settings/components/index-settings-governance.tsx:115
 msgid "Controls fees, voting parameters, and anything other than basket changes for an Index DTF"
 msgstr ""
 
-#: src/views/index-dtf/settings/components/index-settings-governance.tsx:114
+#: src/views/index-dtf/settings/components/index-settings-governance.tsx:116
 msgid "Controls settings of the vlDAO including vote lock duration and approving revenue tokens"
 msgstr ""
 
@@ -706,7 +711,7 @@ msgstr ""
 msgid "Customize"
 msgstr ""
 
-#: src/views/index-dtf/settings/components/index-settings-governance.tsx:123
+#: src/views/index-dtf/settings/components/index-settings-governance.tsx:125
 msgid "DAO Governance"
 msgstr ""
 
@@ -790,11 +795,11 @@ msgstr ""
 msgid "Deploy your own RToken"
 msgstr ""
 
-#: src/views/index-dtf/settings/components/index-settings-basic.tsx:59
+#: src/views/index-dtf/settings/components/index-settings-basic.tsx:60
 msgid "Deployer"
 msgstr ""
 
-#: src/views/index-dtf/settings/components/index-settings-fees.tsx:33
+#: src/views/index-dtf/settings/components/index-settings-fees.tsx:35
 msgid "Deployer Share"
 msgstr ""
 
@@ -819,6 +824,11 @@ msgstr ""
 msgid "Details + Roles"
 msgstr ""
 
+#: src/views/index-dtf/settings/components/index-settings-basic.tsx:76
+#: src/views/index-dtf/settings/components/index-settings-basic.tsx:83
+msgid "Disabled"
+msgstr ""
+
 #: src/views/yield-dtf/governance/views/proposal/components/ItemPreview.tsx:71
 msgid "Discard"
 msgstr ""
@@ -841,7 +851,12 @@ msgstr ""
 msgid "Display only {0} related collaterals"
 msgstr ""
 
-#: src/views/index-dtf/settings/components/distribute-fees.tsx:47
+#: src/views/index-dtf/settings/components/distribute-fees.tsx:50
+msgid "Distribute accumulated fees to the recipients. Anyone can trigger this transaction."
+msgstr ""
+
+#: src/views/index-dtf/settings/components/distribute-fees.tsx:48
+#: src/views/index-dtf/settings/components/distribute-fees.tsx:85
 msgid "Distribute Fees"
 msgstr ""
 
@@ -931,6 +946,11 @@ msgstr ""
 msgid "Empty Basket"
 msgstr ""
 
+#: src/views/index-dtf/settings/components/index-settings-basic.tsx:76
+#: src/views/index-dtf/settings/components/index-settings-basic.tsx:83
+msgid "Enabled"
+msgstr ""
+
 #: src/views/yield-dtf/auctions/components/useColumns.tsx:52
 msgid "Ended at"
 msgstr ""
@@ -989,7 +1009,7 @@ msgstr ""
 msgid "Execute proposal"
 msgstr ""
 
-#: src/views/index-dtf/settings/components/index-settings-governance.tsx:86
+#: src/views/index-dtf/settings/components/index-settings-governance.tsx:87
 #: src/views/yield-dtf/settings/components/governance-info.tsx:50
 msgid "Execution Delay"
 msgstr ""
@@ -1020,8 +1040,12 @@ msgstr ""
 msgid "Feedback"
 msgstr ""
 
-#: src/views/index-dtf/settings/components/index-settings-fees.tsx:82
+#: src/views/index-dtf/settings/components/index-settings-fees.tsx:85
 msgid "Fees & Revenue Distribution"
+msgstr ""
+
+#: src/views/index-dtf/settings/components/distribute-fees.tsx:84
+msgid "Fees distributed"
 msgstr ""
 
 #: src/components/layout/header/components/app-navigation.tsx:139
@@ -1032,7 +1056,7 @@ msgstr ""
 msgid "Final price in:"
 msgstr ""
 
-#: src/views/index-dtf/settings/components/index-settings-fees.tsx:28
+#: src/views/index-dtf/settings/components/index-settings-fees.tsx:30
 msgid "Fixed Platform Share"
 msgstr ""
 
@@ -1106,15 +1130,19 @@ msgstr ""
 msgid "Governance roles"
 msgstr ""
 
-#: src/views/index-dtf/settings/components/index-settings-fees.tsx:39
+#: src/views/index-dtf/settings/components/index-settings-fees.tsx:41
 msgid "Governance Share"
+msgstr ""
+
+#: src/views/index-dtf/settings/components/index-settings-governance-token.tsx:17
+msgid "Governance Token"
 msgstr ""
 
 #: src/views/yield-dtf/settings/components/governance-info.tsx:70
 msgid "Governor address"
 msgstr ""
 
-#: src/views/index-dtf/settings/components/index-settings-governance.tsx:46
+#: src/views/index-dtf/settings/components/index-settings-governance.tsx:47
 msgid "Governor Address"
 msgstr ""
 
@@ -1122,7 +1150,7 @@ msgstr ""
 msgid "Governor mandate"
 msgstr ""
 
-#: src/views/index-dtf/settings/components/index-settings-roles.tsx:50
+#: src/views/index-dtf/settings/components/index-settings-roles.tsx:51
 #: src/views/yield-dtf/governance/components/GovernanceOverview.tsx:180
 msgid "Guardian"
 msgstr ""
@@ -1137,6 +1165,14 @@ msgstr ""
 
 #: src/views/index-dtf/issuance/manual/components/index-manual-issuance.tsx:252
 msgid "Having issues minting?"
+msgstr ""
+
+#: src/views/index-dtf/issuance/index.tsx:64
+msgid "Having issues? Switch to manual minting"
+msgstr ""
+
+#: src/views/index-dtf/issuance/index.tsx:66
+msgid "Having issues? Switch to manual redeeming"
 msgstr ""
 
 #: src/components/layout/navigation/TokenNavigation.tsx:181
@@ -1339,6 +1375,7 @@ msgstr ""
 msgid "Launch your own Index DTF"
 msgstr ""
 
+#: src/views/index-dtf/settings/components/distribute-fees.tsx:82
 #: src/views/yield-dtf/settings/components/setting-item.tsx:60
 msgid "Loading..."
 msgstr ""
@@ -1373,7 +1410,7 @@ msgid "Make proposed changes to the backing basket, emergency collateral, govern
 msgstr ""
 
 #: src/components/rtoken-setup/token/TokenForm.tsx:37
-#: src/views/index-dtf/settings/components/index-settings-basic.tsx:53
+#: src/views/index-dtf/settings/components/index-settings-basic.tsx:54
 #: src/views/yield-dtf/deploy/components/TokenForm.tsx:49
 #: src/views/yield-dtf/settings/components/basic-info.tsx:20
 msgid "Mandate"
@@ -1494,7 +1531,7 @@ msgstr ""
 msgid "Mintable now"
 msgstr ""
 
-#: src/views/index-dtf/settings/components/index-settings-fees.tsx:99
+#: src/views/index-dtf/settings/components/index-settings-fees.tsx:102
 msgid "Minting Fee"
 msgstr ""
 
@@ -1516,7 +1553,7 @@ msgstr ""
 msgid "mth"
 msgstr ""
 
-#: src/views/index-dtf/settings/components/index-settings-basic.tsx:36
+#: src/views/index-dtf/settings/components/index-settings-basic.tsx:37
 #: src/views/yield-dtf/settings/components/basic-info.tsx:15
 #: src/views/yield-dtf/settings/components/governance-info.tsx:30
 msgid "Name"
@@ -1599,7 +1636,7 @@ msgstr ""
 msgid "No votes"
 msgstr ""
 
-#: src/views/index-dtf/settings/components/index-settings-governance.tsx:122
+#: src/views/index-dtf/settings/components/index-settings-governance.tsx:124
 msgid "Non-Basket Governance"
 msgstr ""
 
@@ -1654,6 +1691,11 @@ msgstr ""
 msgid "Other Parameters"
 msgstr ""
 
+#. placeholder {0}: externalRecipients.length + 1
+#: src/views/index-dtf/settings/components/index-settings-fees.tsx:62
+msgid "Other recipient {0}"
+msgstr ""
+
 #: src/views/yield-dtf/overview/components/backing/risks.tsx:109
 msgid "Other Risks"
 msgstr ""
@@ -1696,6 +1738,10 @@ msgstr ""
 msgid "Pending auctions to settle"
 msgstr ""
 
+#: src/views/index-dtf/settings/components/distribute-fees.tsx:56
+msgid "Pending distribution"
+msgstr ""
+
 #: src/components/transaction-modal/index.tsx:154
 #: src/views/yield-dtf/deploy/components/DeployOverview.tsx:25
 #: src/views/yield-dtf/deploy/components/GovernanceOverview.tsx:25
@@ -1707,7 +1753,7 @@ msgstr ""
 msgid "Period in seconds"
 msgstr ""
 
-#: src/views/index-dtf/settings/components/index-settings-basic.tsx:80
+#: src/views/index-dtf/settings/components/index-settings-basic.tsx:81
 msgid "Permissionless Bids"
 msgstr ""
 
@@ -1819,7 +1865,7 @@ msgstr ""
 msgid "Proposal execution delay (hours)"
 msgstr ""
 
-#: src/views/index-dtf/settings/components/index-settings-governance.tsx:70
+#: src/views/index-dtf/settings/components/index-settings-governance.tsx:71
 #: src/views/yield-dtf/settings/components/governance-info.tsx:54
 msgid "Proposal Threshold"
 msgstr ""
@@ -2087,6 +2133,11 @@ msgstr ""
 msgid "Revoking..."
 msgstr ""
 
+#. placeholder {0}: i + 1
+#: src/views/index-dtf/settings/components/index-settings-reward-tokens.tsx:68
+msgid "Reward #{0}"
+msgstr ""
+
 #: src/views/yield-dtf/settings/components/other-info.tsx:26
 msgid "Reward ratio"
 msgstr ""
@@ -2116,7 +2167,7 @@ msgid "Role held by:"
 msgstr ""
 
 #: src/components/rtoken-setup/governance/GovernanceSetup.tsx:68
-#: src/views/index-dtf/settings/components/index-settings-roles.tsx:37
+#: src/views/index-dtf/settings/components/index-settings-roles.tsx:38
 #: src/views/yield-dtf/settings/components/listing-info.tsx:47
 msgid "Roles"
 msgstr ""
@@ -2561,7 +2612,7 @@ msgid "This is the target collateral basket at the onset of an RToken that defin
 msgstr ""
 
 #: src/components/rtoken-setup/token/TokenForm.tsx:28
-#: src/views/index-dtf/settings/components/index-settings-basic.tsx:42
+#: src/views/index-dtf/settings/components/index-settings-basic.tsx:43
 #: src/views/yield-dtf/deploy/components/TokenForm.tsx:30
 msgid "Ticker"
 msgstr ""
@@ -2580,7 +2631,7 @@ msgstr ""
 msgid "Timelock address"
 msgstr ""
 
-#: src/views/index-dtf/settings/components/index-settings-governance.tsx:53
+#: src/views/index-dtf/settings/components/index-settings-governance.tsx:54
 msgid "Timelock Address"
 msgstr ""
 
@@ -2801,7 +2852,7 @@ msgstr ""
 msgid "Underlying Platform Exposure"
 msgstr ""
 
-#: src/views/index-dtf/settings/components/index-settings-governance-token.tsx:25
+#: src/views/index-dtf/settings/components/index-settings-governance-token.tsx:26
 msgid "Underlying Token"
 msgstr ""
 
@@ -2815,6 +2866,10 @@ msgstr ""
 
 #: src/views/yield-dtf/settings/components/freeze-manager.tsx:103
 msgid "Unfreeze"
+msgstr ""
+
+#: src/views/index-dtf/settings/components/index-settings-basic.tsx:57
+msgid "Unknown"
 msgstr ""
 
 #: src/views/yield-dtf/auctions/auctions-sidebar/RecollaterizationAlert.tsx:24
@@ -2926,7 +2981,7 @@ msgid "Verifying transaction..."
 msgstr ""
 
 #: src/components/rtoken-setup/basket/PluginItem.tsx:64
-#: src/views/index-dtf/settings/components/index-settings-basic.tsx:67
+#: src/views/index-dtf/settings/components/index-settings-basic.tsx:68
 msgid "Version"
 msgstr ""
 
@@ -2978,7 +3033,7 @@ msgstr ""
 msgid "Vote weight"
 msgstr ""
 
-#: src/views/index-dtf/settings/components/index-settings-governance-token.tsx:18
+#: src/views/index-dtf/settings/components/index-settings-governance-token.tsx:19
 msgid "Vote-Lock DAO Token"
 msgstr ""
 
@@ -3004,7 +3059,7 @@ msgstr ""
 msgid "Voting Addresses"
 msgstr ""
 
-#: src/views/index-dtf/settings/components/index-settings-governance.tsx:60
+#: src/views/index-dtf/settings/components/index-settings-governance.tsx:61
 msgid "Voting Delay"
 msgstr ""
 
@@ -3012,7 +3067,7 @@ msgstr ""
 msgid "Voting on the RToken you are staked on requires you to delegate your vote to yourself or another Eth address."
 msgstr ""
 
-#: src/views/index-dtf/settings/components/index-settings-governance.tsx:65
+#: src/views/index-dtf/settings/components/index-settings-governance.tsx:66
 #: src/views/yield-dtf/settings/components/governance-info.tsx:42
 msgid "Voting Period"
 msgstr ""
@@ -3026,7 +3081,7 @@ msgstr ""
 msgid "Voting power delegation"
 msgstr ""
 
-#: src/views/index-dtf/settings/components/index-settings-governance.tsx:81
+#: src/views/index-dtf/settings/components/index-settings-governance.tsx:82
 msgid "Voting Quorum"
 msgstr ""
 
@@ -3046,7 +3101,7 @@ msgstr ""
 msgid "Watch an intro to RTokens"
 msgstr ""
 
-#: src/views/index-dtf/settings/components/index-settings-basic.tsx:73
+#: src/views/index-dtf/settings/components/index-settings-basic.tsx:74
 msgid "Weight Control"
 msgstr ""
 

@@ -1,7 +1,7 @@
 import { Skeleton } from '@/components/ui/skeleton'
 import EnsName from '@/components/utils/ens-name'
 import { indexDTFAtom } from '@/state/dtf/atoms'
-import { t } from '@lingui/macro'
+import { useLingui } from '@lingui/react/macro'
 import { atom, useAtomValue } from 'jotai'
 import { Image, MousePointerClick, ShieldHalf } from 'lucide-react'
 import { IconWrapper, InfoCard, InfoCardItem } from './settings-info-card'
@@ -30,6 +30,7 @@ const guardiansAtom = atom((get) => {
 })
 
 const RolesInfo = () => {
+  const { t } = useLingui()
   const indexDTF = useAtomValue(indexDTFAtom)
   const guardians = useAtomValue(guardiansAtom)
 

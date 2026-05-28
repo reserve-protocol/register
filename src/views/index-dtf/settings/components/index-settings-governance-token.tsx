@@ -1,19 +1,20 @@
 import TokenLogo from '@/components/token-logo'
 import { chainIdAtom } from '@/state/atoms'
 import { indexDTFAtom } from '@/state/dtf/atoms'
-import { t } from '@lingui/macro'
+import { useLingui } from '@lingui/react/macro'
 import { useAtomValue } from 'jotai'
 import { Hash } from 'lucide-react'
 import { IconWrapper, InfoCard, InfoCardItem } from './settings-info-card'
 
 const GovernanceTokenInfo = () => {
+  const { t } = useLingui()
   const indexDTF = useAtomValue(indexDTFAtom)
   const chainId = useAtomValue(chainIdAtom)
 
   if (indexDTF && !indexDTF.stToken) return null
 
   return (
-    <InfoCard title="Governance Token" id="governance-token">
+    <InfoCard title={t`Governance Token`} id="governance-token">
       <InfoCardItem
         label={t`Vote-Lock DAO Token`}
         icon={<IconWrapper Component={Hash} />}

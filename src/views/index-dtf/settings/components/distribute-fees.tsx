@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
 import { indexDTFAtom, indexDTFPriceAtom } from '@/state/dtf/atoms'
 import { formatCurrency } from '@/utils'
-import { t } from '@lingui/macro'
+import { Trans, useLingui } from '@lingui/react/macro'
 import { useAtomValue } from 'jotai'
 import { formatEther } from 'viem'
 import {
@@ -15,6 +15,7 @@ import {
 import { InfoCard } from './settings-info-card'
 
 const DistributeFees = () => {
+  const { t } = useLingui()
   const indexDTF = useAtomValue(indexDTFAtom)
   const price = useAtomValue(indexDTFPriceAtom)
   const { data: hash, writeContract, isPending } = useWriteContract()
@@ -46,10 +47,14 @@ const DistributeFees = () => {
   return (
     <InfoCard title={t`Distribute Fees`} id="distribute-fees" secondary>
       <div className="p-4 flex flex-col gap-4">
-        Distribute accumulated fees to the recipients. Anyone can trigger this
-        transaction.
+        <Trans>
+          Distribute accumulated fees to the recipients. Anyone can trigger this
+          transaction.
+        </Trans>
         <div className="flex flex-col  gap-1">
-          <span className="text-legend block">Pending distribution</span>
+          <span className="text-legend block">
+            <Trans>Pending distribution</Trans>
+          </span>
           {pendingFees === undefined ? (
             <Skeleton className="h-4 w-20" />
           ) : (
@@ -74,10 +79,10 @@ const DistributeFees = () => {
             className="w-full"
           >
             {isPending || isLoading
-              ? 'Loading...'
+              ? t`Loading...`
               : receipt?.status === 'success'
-                ? 'Fees distributed'
-                : 'Distribute Fees'}
+                ? t`Fees distributed`
+                : t`Distribute Fees`}
           </Button>
         </TransactionButtonContainer>
       </div>
