@@ -7,7 +7,7 @@ import { indexDTFAtom } from '@/state/dtf/atoms'
 import { formatCurrency, formatTokenAmount, getFolioRoute } from '@/utils'
 import { ROUTES } from '@/utils/constants'
 import { useAtomValue, useSetAtom } from 'jotai'
-import { ArrowUpRight, Check, RotateCcw } from 'lucide-react'
+import { Check, RotateCcw } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { Address, formatUnits } from 'viem'
 import { useAsyncZap } from '../async-zap-context'
@@ -15,10 +15,13 @@ import {
   dustStartBalancesAtom,
   inputTokenAtom,
   mintAmountAtom,
+  operationAtom,
   redeemAmountAtom,
   wizardStepAtom,
 } from '../atoms'
+import LegRow from '../components/leg-row'
 import { useDust } from '../hooks/use-dust'
+import { getQuoteTokenSpent } from '../quote-utils'
 
 const SummaryRow = ({
   label,
@@ -51,6 +54,7 @@ const Success = () => {
   const setStep = useSetAtom(wizardStepAtom)
   const setMintAmount = useSetAtom(mintAmountAtom)
   const setRedeemAmount = useSetAtom(redeemAmountAtom)
+  const setOperation = useSetAtom(operationAtom)
   const account = useAtomValue(walletAtom)
   const dustStartBalances = useAtomValue(dustStartBalancesAtom)
   const { quote, execution, operation } = useAsyncZap()
@@ -72,19 +76,45 @@ const Success = () => {
   const sharesAmount = mintedShares
     ? Number(formatUnits(mintedShares, 18))
     : Number(redeemAmount) || 0
-  const quoteTokenAmount = quote
-    ? Number(formatUnits(quote.totalQuoteTokenAmount, inputToken.decimals))
+  // Mint: USDC actually consumed from the input = CoW swaps + direct USDC
+  // collateral (totalQuoteTokenAmount alone misses the direct collateral).
+  const spentAmount = quote
+    ? Number(
+        formatUnits(
+          getQuoteTokenSpent(quote, inputToken.address),
+          inputToken.decimals
+        )
+      )
+    : 0
+
+  // Wallet-sourced output token (USDC/USDT you already held, when it's a basket
+  // collateral) isn't "received"; only the DTF-redeemed + swapped output counts.
+  const walletSourcedQuoteToken = (quote?.legs ?? [])
+    .filter(
+      (leg) =>
+        leg.asset.address.toLowerCase() === inputToken.address.toLowerCase()
+    )
+    .reduce((sum, leg) => sum + leg.balanceUsed, 0n)
+  const receivedQuoteTokenAmount = quote
+    ? Number(
+        formatUnits(
+          quote.totalQuoteTokenAmount - walletSourcedQuoteToken,
+          inputToken.decimals
+        )
+      )
     : 0
 
   // Big number: mint = shares received; redeem = quoteToken received.
-  const receiveAmount = isMint ? sharesAmount : quoteTokenAmount
+  const receiveAmount = isMint ? sharesAmount : receivedQuoteTokenAmount
   const receiveSymbol = isMint ? indexDTF.token.symbol : inputToken.symbol
   const receiveAddress = isMint ? indexDTF.id : inputToken.address
 
-  const unusedBuffer = isMint ? Math.max(paidAmount - quoteTokenAmount, 0) : 0
-  const feePct = indexDTF.mintingFee
-    ? (indexDTF.mintingFee * 100).toFixed(2)
-    : '0'
+  const unusedBuffer = isMint ? Math.max(paidAmount - spentAmount, 0) : 0
+
+  // The swap legs, shown as finished orders in the activity history.
+  const cowLegs = (quote?.legs ?? []).filter(
+    (leg) => leg.kind === 'cowswap' && leg.assetAmount > 0n
+  )
 
   const handleNewOperation = () => {
     execution.reset()
@@ -93,11 +123,21 @@ const Success = () => {
     setStep('configure')
   }
 
+  // After completion, let the user jump straight to the other operation.
+  const handleSwitchOperation = (value: string) => {
+    if (value === operation) return
+    execution.reset()
+    setMintAmount('')
+    setRedeemAmount('')
+    setOperation(value as 'mint' | 'redeem')
+    setStep('configure')
+  }
+
   return (
     <div className="bg-secondary rounded-3xl p-1 w-full">
       <div className="grid w-full gap-0.5 lg:grid-cols-[480px_minmax(0,1fr)] lg:grid-rows-[auto_1fr] lg:items-stretch">
         <div className="px-5 pt-5 pb-3 flex items-start justify-between gap-4 lg:col-start-1 lg:row-start-1">
-          <Tabs value={operation}>
+          <Tabs value={operation} onValueChange={handleSwitchOperation}>
             <TabsList className="h-9">
               <TabsTrigger value="mint" className="px-3">
                 Mint
@@ -171,7 +211,7 @@ const Success = () => {
                   />
                   <SummaryRow
                     label="Spent"
-                    value={`$${formatCurrency(quoteTokenAmount)} ${inputToken.symbol}`}
+                    value={`$${formatCurrency(spentAmount)} ${inputToken.symbol}`}
                     subvalue={`${formatTokenAmount(sharesAmount)} ${indexDTF.token.symbol}`}
                   />
                   <SummaryRow
@@ -187,14 +227,10 @@ const Success = () => {
                   />
                   <SummaryRow
                     label="Received"
-                    value={`$${formatCurrency(quoteTokenAmount)} ${inputToken.symbol}`}
+                    value={`$${formatCurrency(receivedQuoteTokenAmount)} ${inputToken.symbol}`}
                   />
                 </>
               )}
-              <SummaryRow
-                label={isMint ? 'Mint fee' : 'Redemption fee'}
-                value={`${feePct}%`}
-              />
             </div>
 
             {dustTotalUsd >= 0.01 && (
@@ -247,38 +283,20 @@ const Success = () => {
           </div>
 
           <div className="flex flex-col gap-1 px-2 pb-2 lg:flex-1">
-            {Object.values(execution.ordersByLegId).length > 0 ? (
-              Object.values(execution.ordersByLegId).map((order) => (
-                <a
-                  key={order.legId}
-                  href={
-                    order.orderUid
-                      ? `https://explorer.cow.fi/orders/${order.orderUid}`
-                      : undefined
-                  }
-                  target="_blank"
-                  rel="noreferrer"
-                  className="-mx-2 rounded-[18px] border border-primary/35 bg-primary/5 px-4 py-3 flex items-center gap-3"
-                >
-                  <div className="min-w-0 flex-1">
-                    <div className="font-medium text-base truncate">
-                      {order.cowOrder?.buyToken
-                        ? `Bought ${order.cowOrder.buyToken.slice(0, 8)}…`
-                        : `Leg ${order.legId}`}
-                    </div>
-                    <div className="flex items-center gap-1.5 text-sm font-light text-primary">
-                      <Check size={14} />
-                      <span>{order.phase}</span>
-                    </div>
-                  </div>
-                  {order.orderUid && (
-                    <ArrowUpRight size={13} className="shrink-0" />
-                  )}
-                </a>
+            {cowLegs.length > 0 ? (
+              cowLegs.map((leg) => (
+                <LegRow
+                  key={leg.id}
+                  leg={leg}
+                  inputToken={inputToken}
+                  chainId={chainId}
+                  executionStep={execution.step}
+                  order={execution.ordersByLegId[leg.id]}
+                />
               ))
             ) : (
               <div className="-mx-2 rounded-[18px] border border-border/70 px-4 py-3 text-sm text-muted-foreground font-light">
-                No collateral swaps were needed for this mint.
+                No collateral swaps were needed for this {operation}.
               </div>
             )}
           </div>

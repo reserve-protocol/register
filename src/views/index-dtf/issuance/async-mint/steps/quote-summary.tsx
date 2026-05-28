@@ -1,5 +1,4 @@
 import TokenLogo from '@/components/token-logo'
-import TokenLogoWithChain from '@/components/token-logo/TokenLogoWithChain'
 import { Button } from '@/components/ui/button'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { Skeleton } from '@/components/ui/skeleton'
@@ -11,21 +10,25 @@ import {
 } from '@/components/ui/tooltip'
 import { TransactionButtonContainer } from '@/components/ui/transaction-button'
 import { cn } from '@/lib/utils'
-import { balancesAtom, chainIdAtom, walletAtom } from '@/state/atoms'
+import { chainIdAtom, walletAtom } from '@/state/atoms'
 import { wagmiConfig } from '@/state/chain'
 import { indexDTFAtom } from '@/state/dtf/atoms'
 import { formatCurrency, formatTokenAmount } from '@/utils'
-import {
-  AsyncZapExecutionStep,
-  AsyncZapLegState,
-} from '@reserve-protocol/async-zap-sdk'
+import { AsyncZapExecutionStep } from '@reserve-protocol/async-zap-sdk'
 import { useAtomValue, useSetAtom } from 'jotai'
-import { Check, Info, Loader, Loader2, Pencil, RefreshCw, X } from 'lucide-react'
+import { Info, Loader2, Pencil, RefreshCw } from 'lucide-react'
 import { useEffect } from 'react'
 import { Address, erc20Abi, formatUnits } from 'viem'
 import { readContracts } from 'wagmi/actions'
 import { useAsyncZap } from '../async-zap-context'
+import LegRow from '../components/leg-row'
 import { usePriceImpact } from '../hooks/use-price-impact'
+import { useWizardBalances } from '../hooks/use-wizard-balances'
+import {
+  formatPriceImpact,
+  getQuoteTokenSpent,
+  HIGH_PRICE_IMPACT,
+} from '../quote-utils'
 import {
   dustStartBalancesAtom,
   inputTokenAtom,
@@ -36,29 +39,16 @@ import {
   wizardStepAtom,
 } from '../atoms'
 
-// Below this (unfavorable) price impact the figure turns destructive.
-const HIGH_PRICE_IMPACT = 0.02 // 2%
-
 // Submit-button label while the execution lifecycle is running (signing happens
-// at the button level; the per-leg orders carry their own status icons).
+// at the button level; the per-leg orders carry their own status pills).
 const EXECUTION_BUTTON_LABELS: Partial<Record<AsyncZapExecutionStep, string>> = {
   idle: 'Preparing…',
   finalized: 'Preparing…',
-  submitting_and_signing: 'Confirm in your wallet…',
+  submitting_and_signing: 'Sign in your wallet…',
   waiting_submit_and_sign: 'Confirming…',
   waiting_orders: 'Filling orders…',
-  finishing: 'Confirm final step…',
-  waiting_finish: 'Confirming…',
-}
-
-const formatTokenBalance = (value: bigint, decimals: number) =>
-  formatTokenAmount(Number(formatUnits(value, decimals)))
-
-// Signed percentage; collapses imperceptible values to ~0% to avoid "-0.00%".
-const formatPriceImpact = (impact: number) => {
-  const pct = impact * 100
-  if (Math.abs(pct) < 0.01) return '~0%'
-  return `${pct > 0 ? '+' : ''}${pct.toFixed(2)}%`
+  finishing: 'Sign mint…',
+  waiting_finish: 'Completing mint…',
 }
 
 const QuoteSummary = () => {
@@ -69,10 +59,10 @@ const QuoteSummary = () => {
   const mintAmount = useAtomValue(mintAmountAtom)
   const redeemAmount = useAtomValue(redeemAmountAtom)
   const slippage = useAtomValue(slippageAtom)
-  const balances = useAtomValue(balancesAtom)
   const account = useAtomValue(walletAtom)
   const useExistingBalances = useAtomValue(useExistingBalancesAtom)
   const setDustStart = useSetAtom(dustStartBalancesAtom)
+  const { balanceOf } = useWizardBalances()
 
   const { quote, quoteQuery, execution, operation, legStates } = useAsyncZap()
   const isMint = operation === 'mint'
@@ -98,39 +88,59 @@ const QuoteSummary = () => {
   // What the user provides (pay side).
   const payAmountStr = isMint ? mintAmount : redeemAmount
   const parsedPay = Number(payAmountStr) || 0
-  const inputBalance = balances[inputToken.address]
-  const inputBalanceAmount = inputBalance
-    ? Number(formatUnits(inputBalance.value ?? 0n, inputToken.decimals))
-    : 0
-  const dtfBalance = indexDTF ? balances[indexDTF.id] : undefined
-  const dtfBalanceAmount = dtfBalance
-    ? Number(formatUnits(dtfBalance.value ?? 0n, 18))
+  const inputBalanceAmount = Number(
+    formatUnits(balanceOf(inputToken.address), inputToken.decimals)
+  )
+  const dtfBalanceAmount = indexDTF
+    ? Number(formatUnits(balanceOf(indexDTF.id), 18))
     : 0
   const payBalance = isMint ? inputBalanceAmount : dtfBalanceAmount
-  const exceedsBalance = parsedPay > payBalance
+  // Only meaningful before execution: once it starts, the balance drops as the
+  // DTF burns/tokens move, which would otherwise flip this to a false error.
+  const exceedsBalance = parsedPay > payBalance && execution.step === 'idle'
   // Redeem with "use my wallet balances" at 0 shares: convert held basket
   // tokens to the quote token (no DTF redeemed).
   const isConvertHeld = !isMint && useExistingBalances && parsedPay === 0
   const isValidAmount = parsedPay > 0 || isConvertHeld
 
-  const mintFee = indexDTF?.mintingFee
-    ? (indexDTF.mintingFee * 100).toFixed(2)
-    : '0'
-
   // Quote-derived amounts (folio shares = 18 dec; quoteToken in its decimals).
   const sharesAmount = quote ? Number(formatUnits(quote.shares, 18)) : 0
-  const quoteTokenAmount = quote
-    ? Number(formatUnits(quote.totalQuoteTokenAmount, inputToken.decimals))
+  // USDC actually consumed from the input = CoW swaps + direct USDC collateral.
+  const budgetSpent = quote
+    ? Number(
+        formatUnits(
+          getQuoteTokenSpent(quote, inputToken.address),
+          inputToken.decimals
+        )
+      )
+    : 0
+
+  // Wallet-sourced output token (e.g. USDC/USDT you already hold, when it's a
+  // basket collateral) isn't "received" — only count the quote token coming
+  // from the DTF redemption + swaps.
+  const walletSourcedQuoteToken = (quote?.legs ?? [])
+    .filter(
+      (leg) =>
+        leg.asset.address.toLowerCase() === inputToken.address.toLowerCase()
+    )
+    .reduce((sum, leg) => sum + leg.balanceUsed, 0n)
+  const receivedQuoteTokenAmount = quote
+    ? Number(
+        formatUnits(
+          quote.totalQuoteTokenAmount - walletSourcedQuoteToken,
+          inputToken.decimals
+        )
+      )
     : 0
 
   // Receive side.
-  const receiveAmount = isMint ? sharesAmount : quoteTokenAmount
+  const receiveAmount = isMint ? sharesAmount : receivedQuoteTokenAmount
   const receiveSymbol = isMint ? indexDTF?.token.symbol : inputToken.symbol
   const receiveAddress = isMint ? indexDTF?.id : inputToken.address
 
   // Budget used only meaningful for mint (USDC spent vs provided).
   const utilizationPct =
-    isMint && parsedPay > 0 ? (quoteTokenAmount / parsedPay) * 100 : 0
+    isMint && parsedPay > 0 ? (budgetSpent / parsedPay) * 100 : 0
 
   const hasFailedLegs = cowLegStates.some(
     (ls) => ls.status === 'error' || !!ls.leg.error
@@ -164,6 +174,12 @@ const QuoteSummary = () => {
     void execution.run()
   }
 
+  // Failed/expired orders that can be re-submitted (new CoW orders + signature).
+  const retryableLegIds = execution.getRetryableLegIds()
+  const handleRetryFailed = () => {
+    void execution.retryFailedOrders()
+  }
+
   const handleSubmit = async () => {
     // Snapshot basket + quote-token balances so we can show leftover dust
     // after the operation (SDK uses sell orders → outputs leave residue).
@@ -194,112 +210,6 @@ const QuoteSummary = () => {
       }
     }
     void execution.run()
-  }
-
-  const renderLegState = (ls: AsyncZapLegState) => {
-    const leg = ls.leg
-    const loading = ls.status === 'pending' || ls.status === 'idle'
-    const sell = leg.side === 'sell'
-    const impact = legImpacts[leg.id]
-    const highImpact = impact !== undefined && impact < -HIGH_PRICE_IMPACT
-
-    // Once execution starts, the quote row doubles as an order row: the icon on
-    // the right reflects the leg's order phase (signing → pending → done/failed).
-    const order = execution.ordersByLegId[leg.id]
-    const orderSettled = order?.phase === 'fulfilled'
-    const orderFailed = order?.phase === 'failed'
-    const orderPending = !!order && !orderSettled && !orderFailed
-    const quoteFailed = ls.status === 'error'
-    const failed = quoteFailed || orderFailed
-
-    return (
-      <div
-        key={leg.id}
-        className={cn(
-          '-mx-2 rounded-[18px] border px-4 py-3 transition-colors',
-          loading && 'border-border/70 bg-background',
-          !loading && !failed && 'border-primary/35 bg-primary/5',
-          failed && 'border-destructive/25 bg-destructive/5'
-        )}
-      >
-        <div className="flex items-center gap-4">
-          <TokenLogoWithChain
-            address={leg.asset.address}
-            symbol={leg.asset.symbol}
-            chain={chainId}
-            size="xl"
-          />
-          <div className="min-w-0 flex-1">
-            <div className="font-medium text-base truncate">
-              {leg.asset.name}
-            </div>
-            <div
-              className={cn(
-                'text-sm text-muted-foreground font-light truncate',
-                failed && 'text-destructive/70'
-              )}
-            >
-              {loading
-                ? `Fetching ${leg.asset.symbol} quote…`
-                : quoteFailed
-                  ? leg.error?.message ||
-                    ls.error?.message ||
-                    'Quote unavailable'
-                  : orderFailed
-                    ? order?.error?.message || 'Order failed'
-                    : sell
-                      ? `Selling ${leg.asset.symbol} for ${inputToken.symbol}`
-                      : `Buying ${leg.asset.symbol} with ${inputToken.symbol}`}
-            </div>
-          </div>
-          <div className="min-w-[156px] text-right">
-            {loading ? (
-              <div className="flex flex-col items-end gap-1.5">
-                <Skeleton className="h-5 w-24" />
-                <Skeleton className="h-4 w-20" />
-                <Skeleton className="h-3 w-16" />
-              </div>
-            ) : quoteFailed ? (
-              <div className="text-sm text-destructive/70">—</div>
-            ) : (
-              <>
-                <div className="text-base font-medium">
-                  {sell ? '+' : '-'}
-                  {formatCurrency(
-                    Number(
-                      formatUnits(leg.quoteTokenAmount, inputToken.decimals)
-                    )
-                  )}{' '}
-                  {inputToken.symbol}
-                </div>
-                <div className="text-sm text-muted-foreground font-light">
-                  {sell ? '-' : '+'}
-                  {formatTokenBalance(leg.assetAmount, leg.asset.decimals)}{' '}
-                  {leg.asset.symbol}
-                </div>
-                {impact !== undefined && (
-                  <div
-                    className={cn(
-                      'text-xs font-light mt-0.5',
-                      highImpact ? 'text-destructive' : 'text-muted-foreground'
-                    )}
-                  >
-                    Price impact: {formatPriceImpact(impact)}
-                  </div>
-                )}
-              </>
-            )}
-          </div>
-          <div className="flex h-6 w-6 shrink-0 items-center justify-center">
-            {orderSettled && <Check size={18} className="text-primary" />}
-            {orderFailed && <X size={18} className="text-destructive" />}
-            {orderPending && (
-              <Loader size={18} className="animate-spin text-muted-foreground" />
-            )}
-          </div>
-        </div>
-      </div>
-    )
   }
 
   return (
@@ -343,7 +253,7 @@ const QuoteSummary = () => {
                       <div className="flex h-8 min-w-0 items-center">
                         <span
                           className={cn(
-                            'text-[32px] font-light leading-8 text-primary',
+                            'min-w-0 truncate text-[32px] font-light leading-8 text-primary',
                             exceedsBalance && 'text-destructive'
                           )}
                         >
@@ -476,7 +386,7 @@ const QuoteSummary = () => {
                       <Skeleton className="h-4 w-32" />
                     ) : quote ? (
                       <span className="font-medium">
-                        {formatCurrency(quoteTokenAmount)} {inputToken.symbol} (
+                        {formatCurrency(budgetSpent)} {inputToken.symbol} (
                         {utilizationPct.toFixed(2)}%)
                       </span>
                     ) : (
@@ -524,12 +434,6 @@ const QuoteSummary = () => {
                     {(Number(slippage) / 100).toFixed(2)}%
                   </span>
                 </div>
-                <div className="flex items-center justify-between">
-                  <span className="text-muted-foreground">
-                    {isMint ? 'Minting fee' : 'Redemption fee'}
-                  </span>
-                  <span className="font-medium">{mintFee}%</span>
-                </div>
               </TooltipProvider>
             </div>
 
@@ -544,9 +448,17 @@ const QuoteSummary = () => {
                   <Button
                     size="lg"
                     className="w-full h-[49px] rounded-[12px]"
-                    onClick={handleRetry}
+                    onClick={
+                      retryableLegIds.length > 0
+                        ? handleRetryFailed
+                        : handleRetry
+                    }
                   >
-                    Try again
+                    {retryableLegIds.length > 0
+                      ? `Retry ${retryableLegIds.length} failed order${
+                          retryableLegIds.length > 1 ? 's' : ''
+                        }`
+                      : 'Try again'}
                   </Button>
                   <Button
                     size="lg"
@@ -624,12 +536,29 @@ const QuoteSummary = () => {
                 ))
               ) : cowLegStates.length > 0 ? (
                 <>
-                  <div className="grid grid-cols-[minmax(0,1fr)_156px_24px] items-center gap-4 px-2 pt-4 pb-1 text-xs font-medium uppercase tracking-wide text-muted-foreground">
+                  <div className="grid grid-cols-[minmax(0,1fr)_156px] items-center gap-4 px-2 pt-4 pb-1 text-xs font-medium uppercase tracking-wide text-muted-foreground">
                     <span>Asset</span>
                     <span className="text-right">Swap</span>
-                    <span />
                   </div>
-                  {cowLegStates.map(renderLegState)}
+                  {cowLegStates.map((ls) => (
+                    <LegRow
+                      key={ls.leg.id}
+                      leg={ls.leg}
+                      inputToken={inputToken}
+                      chainId={chainId}
+                      executionStep={execution.step}
+                      order={execution.ordersByLegId[ls.leg.id]}
+                      impact={legImpacts[ls.leg.id]}
+                      loading={ls.status === 'pending' || ls.status === 'idle'}
+                      quoteError={
+                        ls.status === 'error'
+                          ? ls.leg.error?.message ||
+                            ls.error?.message ||
+                            'Quote unavailable'
+                          : undefined
+                      }
+                    />
+                  ))}
                 </>
               ) : (
                 <div className="flex min-h-[320px] flex-1 items-center justify-center px-4 py-10 text-center">

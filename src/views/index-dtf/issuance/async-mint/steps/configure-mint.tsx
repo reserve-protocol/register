@@ -4,8 +4,8 @@ import { NumericalInput } from '@/components/ui/input'
 import { Switch } from '@/components/ui/switch'
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { cn } from '@/lib/utils'
-import { balancesAtom, chainIdAtom } from '@/state/atoms'
-import { indexDTFAtom } from '@/state/dtf/atoms'
+import { chainIdAtom } from '@/state/atoms'
+import { indexDTFAtom, indexDTFBasketAtom } from '@/state/dtf/atoms'
 import { formatCurrency, formatTokenAmount } from '@/utils'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { formatUnits } from 'viem'
@@ -17,13 +17,15 @@ import {
   useExistingBalancesAtom,
   wizardStepAtom,
 } from '../atoms'
+import { useWizardBalances } from '../hooks/use-wizard-balances'
 
 const ConfigureMint = () => {
   const setStep = useSetAtom(wizardStepAtom)
   const indexDTF = useAtomValue(indexDTFAtom)
   const chainId = useAtomValue(chainIdAtom)
   const inputToken = useAtomValue(inputTokenAtom)
-  const balances = useAtomValue(balancesAtom)
+  const basket = useAtomValue(indexDTFBasketAtom)
+  const { balanceOf } = useWizardBalances()
   const [operation, setOperation] = useAtom(operationAtom)
   const [mintAmount, setMintAmount] = useAtom(mintAmountAtom)
   const [redeemAmount, setRedeemAmount] = useAtom(redeemAmountAtom)
@@ -35,15 +37,24 @@ const ConfigureMint = () => {
 
   const isMint = operation === 'mint'
 
-  // Balances: input token for mint, DTF shares for redeem.
-  const inputBalance = balances[inputToken.address]
-  const inputBalanceAmount = inputBalance
-    ? Number(formatUnits(inputBalance.value ?? 0n, inputToken.decimals))
-    : 0
-  const dtfBalance = balances[indexDTF.id]
-  const dtfBalanceAmount = dtfBalance
-    ? Number(formatUnits(dtfBalance.value ?? 0n, 18))
-    : 0
+  // Balances: input token for mint, DTF shares for redeem. Read locally so the
+  // DTF share token + basket collaterals are covered (the global balancesAtom
+  // doesn't track them on an Index DTF page) and stay live after a tx.
+  const inputBalanceAmount = Number(
+    formatUnits(balanceOf(inputToken.address), inputToken.decimals)
+  )
+  const dtfBalanceAmount = Number(formatUnits(balanceOf(indexDTF.id), 18))
+  // Collaterals the user already holds (only those that matter: balance > 0).
+  // On redeem the input/output token (USDC/USDT) isn't a token we "use", so
+  // drop it from the list.
+  const heldCollaterals = (basket ?? [])
+    .filter(
+      (token) =>
+        isMint ||
+        token.address.toLowerCase() !== inputToken.address.toLowerCase()
+    )
+    .map((token) => ({ token, value: balanceOf(token.address) }))
+    .filter(({ value }) => value > 0n)
 
   const amount = isMint ? mintAmount : redeemAmount
   const setAmount = isMint ? setMintAmount : setRedeemAmount
@@ -57,12 +68,13 @@ const ConfigureMint = () => {
   const isValid = parsedAmount > 0 || (!isMint && useExistingBalances)
 
   const handleMax = () => {
-    if (maxAmount > 0) {
-      setAmount(
-        isMint
-          ? maxAmount.toFixed(2)
-          : maxAmount.toFixed(18).replace(/\.?0+$/, '')
-      )
+    if (isMint) {
+      if (inputBalanceAmount > 0) setAmount(inputBalanceAmount.toFixed(2))
+    } else {
+      // Use the exact on-chain balance string — Number(formatUnits()).toFixed
+      // loses precision and can round above the real balance, which reverts.
+      const dtfBalance = balanceOf(indexDTF.id)
+      if (dtfBalance > 0n) setAmount(formatUnits(dtfBalance, 18))
     }
   }
 
@@ -116,7 +128,7 @@ const ConfigureMint = () => {
               onChange={setAmount}
               placeholder={isMint ? '$0.00' : '0.00'}
               className={cn(
-                'text-[32px] font-light',
+                'min-w-0 flex-1 text-[32px] font-light',
                 exceedsBalance && 'text-destructive'
               )}
             />
@@ -153,6 +165,44 @@ const ConfigureMint = () => {
             onCheckedChange={setUseExistingBalances}
           />
         </div>
+
+        {useExistingBalances && heldCollaterals.length > 0 && (
+          <div className="rounded-xl border border-border/70 bg-transparent px-4 py-3">
+            <div className="text-sm text-muted-foreground mb-3">
+              Using your balances of
+            </div>
+            <div className="flex flex-col gap-3">
+              {heldCollaterals.map(({ token, value }) => (
+                <div
+                  key={token.address}
+                  className="flex items-center justify-between gap-3"
+                >
+                  <div className="flex items-center gap-2 min-w-0">
+                    <TokenLogo
+                      address={token.address}
+                      symbol={token.symbol}
+                      chain={chainId}
+                      size="lg"
+                    />
+                    <div className="min-w-0">
+                      <div className="text-sm font-medium truncate">
+                        {token.symbol}
+                      </div>
+                      <div className="text-xs text-muted-foreground font-light truncate">
+                        {token.name}
+                      </div>
+                    </div>
+                  </div>
+                  <span className="text-sm font-medium shrink-0">
+                    {formatTokenAmount(
+                      Number(formatUnits(value, token.decimals))
+                    )}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
 
         <Button
           size="lg"

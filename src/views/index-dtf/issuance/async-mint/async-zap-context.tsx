@@ -1,4 +1,5 @@
 import useDebounce from '@/hooks/useDebounce'
+import { useWatchReadContract } from '@/hooks/useWatchReadContract'
 import { chainIdAtom, walletAtom } from '@/state/atoms'
 import { indexDTFAtom } from '@/state/dtf/atoms'
 import { safeParseEther } from '@/utils'
@@ -11,8 +12,8 @@ import {
 } from '@reserve-protocol/async-zap-sdk'
 import { UseQueryResult } from '@tanstack/react-query'
 import { useAtomValue } from 'jotai'
-import { createContext, ReactNode, useContext } from 'react'
-import { Address, parseUnits, zeroAddress } from 'viem'
+import { createContext, ReactNode, useContext, useEffect, useRef } from 'react'
+import { Address, erc20Abi, parseUnits, zeroAddress } from 'viem'
 import {
   inputTokenAtom,
   mintAmountAtom,
@@ -89,6 +90,28 @@ export const AsyncZapProvider = ({ children }: { children: ReactNode }) => {
 
   const ready = !!indexDTF?.id && !!account
 
+  // Live DTF share balance. Cap redeem shares to it so a stale/over amount can
+  // never build a redeem that exceeds what the wallet holds (reverts on-chain).
+  const { data: dtfShareBalance } = useWatchReadContract({
+    address: (indexDTF?.id ?? zeroAddress) as Address,
+    abi: erc20Abi,
+    functionName: 'balanceOf',
+    args: [account as Address],
+    chainId,
+    query: { enabled: ready && operation === 'redeem' },
+  })
+  // Only cap while idle: once execution starts the balance drops as shares burn,
+  // and changing `shares` would reset the in-flight execution (it's in the
+  // query key) — wiping the orders. Freeze the submitted amount during the run.
+  const executingRef = useRef(false)
+  if (
+    !executingRef.current &&
+    dtfShareBalance !== undefined &&
+    redeemShares > dtfShareBalance
+  ) {
+    redeemShares = dtfShareBalance
+  }
+
   const mintResult = useFolioMintZap({
     ...baseParams,
     mode: 'maxInput',
@@ -108,6 +131,12 @@ export const AsyncZapProvider = ({ children }: { children: ReactNode }) => {
   })
 
   const active = operation === 'mint' ? mintResult : redeemResult
+
+  // Track whether the active execution has started so the redeem cap above
+  // freezes the submitted amount instead of following the dropping balance.
+  useEffect(() => {
+    executingRef.current = active.execution.step !== 'idle'
+  }, [active.execution.step])
 
   return (
     <AsyncZapContext.Provider

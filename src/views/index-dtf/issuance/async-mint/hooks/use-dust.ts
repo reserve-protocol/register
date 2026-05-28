@@ -36,14 +36,14 @@ export function useDust({
     if (!quote) return []
     const byAddress = new Map<string, TokenInfo>()
     for (const fa of quote.folioAssets) {
+      // The input/output token is never dust: for redeem it's the expected
+      // output, for mint it's the separately-shown unused budget. Skip it even
+      // when it's a basket collateral.
+      if (fa.asset.address.toLowerCase() === inputToken.address.toLowerCase()) {
+        continue
+      }
       byAddress.set(fa.asset.address.toLowerCase(), fa.asset)
     }
-    byAddress.set(inputToken.address.toLowerCase(), {
-      address: inputToken.address as Address,
-      symbol: inputToken.symbol,
-      decimals: inputToken.decimals,
-      name: inputToken.name ?? inputToken.symbol,
-    })
     return [...byAddress.values()]
   }, [quote, inputToken])
 
