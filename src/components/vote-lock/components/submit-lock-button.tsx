@@ -20,6 +20,7 @@ import {
   underlyingBalanceAtom,
   closeDrawerAtom,
 } from '../atoms'
+import useIsComplianceRestricted from '@/hooks/use-is-compliance-restricted'
 
 export const DelegateButton = () => {
   const account = useAtomValue(walletAtom)
@@ -82,6 +83,7 @@ const SubmitLockButton = () => {
   const setShouldClose = useSetAtom(closeDrawerAtom)
   const chainId = stToken?.chainId
   const [isProcessing, setIsProcessing] = useState(false)
+  const isRestricted = useIsComplianceRestricted()
 
   const isValidDelegate = isAddress(delegate, { strict: false })
   const isSelfDelegate = delegate === account
@@ -182,7 +184,8 @@ const SubmitLockButton = () => {
           !isValidDelegate ||
           !checkbox ||
           receipt?.status === 'success' ||
-          amountToLock === 0n
+          amountToLock === 0n ||
+          isRestricted
         }
         loading={
           isProcessing ||
@@ -190,9 +193,9 @@ const SubmitLockButton = () => {
             (readyToSubmit
               ? isLoading || !!hash || (hash && !receipt)
               : approving ||
-                !!approvalHash ||
-                validatingAllowance ||
-                (approvalHash && !approvalReceipt)))
+              !!approvalHash ||
+              validatingAllowance ||
+              (approvalHash && !approvalReceipt)))
         }
         loadingText={
           isProcessing

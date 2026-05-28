@@ -7,12 +7,15 @@ import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { formatEther } from 'viem'
 import { amountAtom, maxAmountAtom, modeAtom, usdAmountAtom } from '../atoms'
 import { useEffect } from 'react'
+import useIsComplianceRestricted from '@/hooks/use-is-compliance-restricted'
 
 const DTFMaxAmount = () => {
   const indexDTF = useAtomValue(indexDTFAtom)
   const maxAmount = useAtomValue(maxAmountAtom)
   const setMaxAmount = useSetAtom(amountAtom)
   const brand = useAtomValue(indexDTFBrandAtom)
+  const mode = useAtomValue(modeAtom)
+  const isRestricted = useIsComplianceRestricted() && mode === 'buy'
 
   return (
     <div className="flex flex-col gap-2">
@@ -34,6 +37,7 @@ const DTFMaxAmount = () => {
           variant="outline-primary"
           className="bg-primary/10 rounded-full border-primary/10"
           size="xs"
+          disabled={isRestricted}
           onClick={() => setMaxAmount(formatEther(maxAmount))}
         >
           Use
@@ -47,6 +51,7 @@ const AmountInput = () => {
   const mode = useAtomValue(modeAtom)
   const [amount, setAmount] = useAtom(amountAtom)
   const usdAmount = useAtomValue(usdAmountAtom)
+  const isRestricted = useIsComplianceRestricted() && mode === 'buy'
 
   useEffect(() => {
     setAmount('')
@@ -66,6 +71,7 @@ const AmountInput = () => {
             placeholder="0"
             onChange={setAmount}
             autoFocus
+            disabled={isRestricted}
           />
           <div className="w-full overflow-hidden">
             <span className="text-legend mt-1.5 block max-w-52 truncate">
