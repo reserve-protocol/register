@@ -115,6 +115,13 @@ msgstr ""
 msgid "{0} of {1}"
 msgstr ""
 
+#. placeholder {0}: dtf?.token?.name || 'Index DTF'
+#. placeholder {0}: dtf?.token?.symbol || 'Index DTF'
+#: src/views/index-dtf/factsheet/index.tsx:32
+#: src/views/index-dtf/factsheet/index.tsx:35
+msgid "{0} Performance"
+msgstr ""
+
 #. placeholder {0}: config.tokenName
 #: src/views/index-dtf/overview/components/index-disclousure.tsx:148
 msgid "{0} Token Whitepaper"
@@ -191,8 +198,16 @@ msgstr ""
 msgid "${0} is governed by the ${1} token. {2} holders must vote-lock their tokens to become a governor of the ${3}. Governors can propose changes to the basket and vote on proposal by other governors. In exchange for locking their tokens and participating in governance, governors earn a portion of the TVL fee charged by the DTF."
 msgstr ""
 
+#: src/views/index-dtf/factsheet/components/performance-table.tsx:26
+msgid "1 Month"
+msgstr ""
+
 #: src/views/index-dtf/overview/components/basket-overview/performance-cell.tsx:19
 msgid "1 year"
+msgstr ""
+
+#: src/views/index-dtf/factsheet/components/performance-table.tsx:30
+msgid "1 Year"
 msgstr ""
 
 #: src/components/rtoken-setup/token/TokenConfiguration.tsx:33
@@ -215,6 +230,10 @@ msgstr ""
 msgid "24h Volume"
 msgstr ""
 
+#: src/views/index-dtf/factsheet/components/performance-table.tsx:27
+msgid "3 Month"
+msgstr ""
+
 #: src/views/yield-dtf/governance/views/proposal/components/SpellUpgrade3_4_0.tsx:45
 msgid "3.4.0 Upgrade spells"
 msgstr ""
@@ -225,6 +244,10 @@ msgstr ""
 
 #: src/views/yield-dtf/governance/views/proposal/components/SpellUpgrade4_2_0.tsx:46
 msgid "4.2.0 Upgrade spell"
+msgstr ""
+
+#: src/views/index-dtf/factsheet/components/performance-table.tsx:28
+msgid "6 Month"
 msgstr ""
 
 #: src/views/index-dtf/overview/components/basket-overview/performance-cell.tsx:16
@@ -329,6 +352,7 @@ msgstr ""
 msgid "Alexios is standard token-voting adopted from Compound Governor Bravo, with adjustments accounting for RSR being staked across multiple RTokens."
 msgstr ""
 
+#: src/views/index-dtf/factsheet/components/chart-overlay.tsx:85
 #: src/views/index-dtf/overview/components/charts/percentage-change.tsx:54
 #: src/views/index-dtf/overview/components/charts/time-range-selector.tsx:67
 #: src/views/index-dtf/overview/components/charts/time-range-selector.tsx:83
@@ -341,6 +365,10 @@ msgstr ""
 
 #: src/views/yield-dtf/governance/components/GovernanceOverview.tsx:126
 msgid "All time"
+msgstr ""
+
+#: src/views/index-dtf/factsheet/components/performance-table.tsx:31
+msgid "All Time"
 msgstr ""
 
 #: src/views/tokens/Tokens.tsx:24
@@ -606,6 +634,10 @@ msgstr ""
 
 #: src/views/yield-dtf/auctions/auctions-sidebar/Revenue.tsx:122
 msgid "Below minimum trade volume"
+msgstr ""
+
+#: src/views/index-dtf/factsheet/components/net-performance-summary.tsx:246
+msgid "best"
 msgstr ""
 
 #: src/views/yield-dtf/auctions/components/useColumns.tsx:35
@@ -1155,6 +1187,14 @@ msgstr ""
 
 #: src/views/yield-dtf/governance/components/GovernanceOverview.tsx:205
 msgid "Documentation"
+msgstr ""
+
+#: src/views/index-dtf/factsheet/components/net-performance-summary.tsx:119
+msgid "Download as CSV"
+msgstr ""
+
+#: src/views/index-dtf/factsheet/components/net-performance-summary.tsx:116
+msgid "Download CSV"
 msgstr ""
 
 #: src/components/layout/header/components/app-navigation.tsx:105
@@ -1727,6 +1767,10 @@ msgstr ""
 msgid "Launch your own Index DTF"
 msgstr ""
 
+#: src/views/index-dtf/factsheet/components/net-performance-summary.tsx:62
+msgid "Loading performance data..."
+msgstr ""
+
 #: src/views/index-dtf/overview/components/zap-mint/submit-zap.tsx:44
 #: src/views/index-dtf/settings/components/distribute-fees.tsx:82
 #: src/views/yield-dtf/settings/components/setting-item.tsx:60
@@ -1932,6 +1976,10 @@ msgstr ""
 msgid "Mkt Cap"
 msgstr ""
 
+#: src/views/index-dtf/factsheet/components/chart-type-selector.tsx:33
+msgid "Monthly P&L"
+msgstr ""
+
 #: src/utils/index.ts:129
 msgid "mth"
 msgstr ""
@@ -1950,8 +1998,17 @@ msgstr ""
 msgid "Native L1 Asset"
 msgstr ""
 
+#: src/views/index-dtf/factsheet/components/chart-type-selector.tsx:21
+msgid "NAV Growth"
+msgstr ""
+
 #: src/views/index-dtf/issuance/manual/components/index-manual-issuance.tsx:46
 msgid "Need to approve use of tokens"
+msgstr ""
+
+#: src/views/index-dtf/factsheet/components/net-performance-summary.tsx:58
+#: src/views/index-dtf/factsheet/components/net-performance-summary.tsx:105
+msgid "Net Performance Summary"
 msgstr ""
 
 #: src/components/account/index.tsx:37
@@ -2148,6 +2205,10 @@ msgstr ""
 #: src/views/yield-dtf/deploy/components/GovernanceOverview.tsx:25
 #: src/views/yield-dtf/governance/views/proposal/components/ConfirmProposalOverview.tsx:57
 msgid "Pending, sign in wallet"
+msgstr ""
+
+#: src/views/index-dtf/factsheet/components/performance-table.tsx:42
+msgid "Performance from inception*"
 msgstr ""
 
 #: src/views/index-dtf/overview/components/index-about-overview.tsx:96
@@ -3796,6 +3857,10 @@ msgstr ""
 
 #: src/components/rtoken-setup/token/OtherForm.tsx:50
 msgid "Withdrawal leak (%)"
+msgstr ""
+
+#: src/views/index-dtf/factsheet/components/net-performance-summary.tsx:254
+msgid "worst"
 msgstr ""
 
 #: src/views/yield-dtf/auctions/components/useColumns.tsx:48
