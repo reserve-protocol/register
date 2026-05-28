@@ -95,6 +95,20 @@ const MintBox = () => {
         >
           Sell
         </Button>
+        {isRestricted && (
+          <p className="text-legend text-sm text-center px-2 pt-1">
+            This product isn't available in your region due to local
+            restrictions.{' '}
+            <a
+              className="text-primary underline"
+              target="_blank"
+              rel="noopener noreferrer"
+              href="https://reserve.org/terms-and-conditions"
+            >
+              Learn More
+            </a>
+          </p>
+        )}
       </div>
     </div>
   )

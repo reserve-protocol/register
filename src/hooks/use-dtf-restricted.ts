@@ -58,16 +58,16 @@ const isDTFGeolocationStatus = (
   )
 }
 
-const useDTFGeolocation = (dtfAddress?: Address) => {
+const useDTFGeolocation = (dtfAddress?: Address, chainId?: number) => {
   return useQuery({
-    queryKey: ['dtf-geolocation', dtfAddress?.toLowerCase()],
+    queryKey: ['dtf-geolocation', dtfAddress?.toLowerCase(), chainId],
     queryFn: async (): Promise<DTFGeolocationStatus> => {
-      if (!dtfAddress) {
-        throw new Error('Missing DTF address')
+      if (!dtfAddress || !chainId) {
+        throw new Error('Missing DTF address or chainId')
       }
 
       const response = await fetch(
-        `${RESERVE_API}v2/compliance/geolocation/dtf/${dtfAddress}`
+        `${RESERVE_API}v2/compliance/geolocation/dtf/${dtfAddress}?chainId=${chainId}`
       )
 
       if (!response.ok) {
@@ -81,7 +81,7 @@ const useDTFGeolocation = (dtfAddress?: Address) => {
 
       return payload
     },
-    enabled: !!dtfAddress,
+    enabled: !!dtfAddress && !!chainId,
   })
 }
 
@@ -89,7 +89,7 @@ const useDTFRestricted = () => {
   const dtf = useAtomValue(indexDTFAtom)
   const basket = useAtomValue(indexDTFBasketAtom)
   const geolocation = useGeolocation()
-  const dtfGeolocation = useDTFGeolocation(dtf?.id)
+  const dtfGeolocation = useDTFGeolocation(dtf?.id, dtf?.chainId)
 
   const basketRestrictedAssets = useMemo(() => {
     if (!basket) return dtf ? undefined : []
