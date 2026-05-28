@@ -115,6 +115,16 @@ msgstr ""
 msgid "{0} of {1}"
 msgstr ""
 
+#. placeholder {0}: config.tokenName
+#: src/views/index-dtf/overview/components/index-disclousure.tsx:148
+msgid "{0} Token Whitepaper"
+msgstr ""
+
+#. placeholder {0}: config.tokenName
+#: src/views/index-dtf/overview/components/index-disclousure.tsx:146
+msgid "{0} Token Whitepapers"
+msgstr ""
+
 #: src/views/index-dtf/issuance/manual/components/approve-all-button.tsx:77
 msgid "{failedCount, plural, one {# approval failed - Retry} other {# approvals failed - Retry}}"
 msgstr ""
@@ -143,6 +153,11 @@ msgstr ""
 msgid "{unit} Token distribution"
 msgstr ""
 
+#. placeholder {0}: apr?.toFixed(2)
+#: src/views/index-dtf/overview/components/index-governance-overview.tsx:93
+msgid "& Earn {0}% APR"
+msgstr ""
+
 #: src/components/rtoken-setup/token/BackingForm.tsx:101
 msgid "% Acceptable"
 msgstr ""
@@ -166,6 +181,14 @@ msgstr ""
 #. placeholder {0}: rToken?.symbol ?? ''
 #: src/views/yield-dtf/issuance/components/issue/Issue.tsx:116
 msgid "+ Mint {0}"
+msgstr ""
+
+#. placeholder {0}: dtf.token.symbol
+#. placeholder {1}: dtf.stToken?.underlying?.symbol
+#. placeholder {2}: dtf.stToken?.underlying?.symbol
+#. placeholder {3}: dtf.token.symbol
+#: src/views/index-dtf/overview/components/index-governance-overview.tsx:149
+msgid "${0} is governed by the ${1} token. {2} holders must vote-lock their tokens to become a governor of the ${3}. Governors can propose changes to the basket and vote on proposal by other governors. In exchange for locking their tokens and participating in governance, governors earn a portion of the TVL fee charged by the DTF."
 msgstr ""
 
 #: src/views/index-dtf/overview/components/basket-overview/performance-cell.tsx:19
@@ -516,6 +539,7 @@ msgstr ""
 msgid "Basket APY"
 msgstr ""
 
+#: src/views/index-dtf/overview/components/index-governance-overview.tsx:55
 #: src/views/index-dtf/settings/components/index-settings-governance.tsx:122
 msgid "Basket Governance"
 msgstr ""
@@ -1079,6 +1103,10 @@ msgstr ""
 
 #: src/views/yield-dtf/governance/views/proposal/components/ItemPreview.tsx:71
 msgid "Discard"
+msgstr ""
+
+#: src/views/index-dtf/overview/components/index-disclousure.tsx:236
+msgid "Disclosures"
 msgstr ""
 
 #: src/components/layout/header/components/app-navigation.tsx:58
@@ -1703,6 +1731,11 @@ msgstr ""
 #: src/views/index-dtf/settings/components/distribute-fees.tsx:82
 #: src/views/yield-dtf/settings/components/setting-item.tsx:60
 msgid "Loading..."
+msgstr ""
+
+#. placeholder {0}: dtf.stToken?.underlying.symbol ?? 'Unknown'
+#: src/views/index-dtf/overview/components/index-governance-overview.tsx:89
+msgid "Lock ${0} to Govern"
 msgstr ""
 
 #: src/views/yield-dtf/settings/components/freeze-manager.tsx:67
@@ -2333,6 +2366,11 @@ msgstr ""
 msgid "Provider"
 msgstr ""
 
+#. placeholder {0}: version.date
+#: src/views/index-dtf/overview/components/index-disclousure.tsx:182
+msgid "Published: {0}"
+msgstr ""
+
 #: src/views/index-dtf/governance/views/proposal/components/proposal-queue-button.tsx:78
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalQueue.tsx:31
 msgid "Queue proposal"
@@ -2549,6 +2587,11 @@ msgstr ""
 #: src/views/yield-dtf/governance/views/proposal/components/ProposedBasketPreview.tsx:47
 #: src/views/yield-dtf/governance/views/proposal/components/ProposedRevenueSplitPreview.tsx:140
 msgid "Revert"
+msgstr ""
+
+#. placeholder {0}: config.tokenName
+#: src/views/index-dtf/overview/components/index-disclousure.tsx:137
+msgid "Review {0} Whitepaper"
 msgstr ""
 
 #: src/views/yield-dtf/staking/components/stake/stake-modal.tsx:90
@@ -3548,6 +3591,11 @@ msgstr ""
 msgid "View less"
 msgstr ""
 
+#: src/views/index-dtf/overview/components/index-governance-overview.tsx:38
+#: src/views/index-dtf/overview/components/index-governance-overview.tsx:123
+msgid "View non-basket governance settings"
+msgstr ""
+
 #: src/components/transaction-modal/transaction-confirmed-modal.tsx:41
 #: src/components/transaction-modal/TransactionConfirmedModal.tsx:37
 #: src/views/index-dtf/governance/views/proposal/components/vote-modal.tsx:89
@@ -3562,6 +3610,10 @@ msgstr ""
 #: src/views/index-dtf/overview/components/index-token-address.tsx:99
 #: src/views/index-dtf/overview/components/index-token-address.tsx:118
 msgid "View on explorer"
+msgstr ""
+
+#: src/views/index-dtf/overview/components/index-disclousure.tsx:177
+msgid "View PDF →"
 msgstr ""
 
 #: src/views/tokens/components/UnlistedTokensTable.tsx:91

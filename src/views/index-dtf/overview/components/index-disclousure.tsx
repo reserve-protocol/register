@@ -20,6 +20,7 @@ import { Button } from '@/components/ui/button'
 import { indexDTFAtom } from '@/state/dtf/atoms'
 import { useAtomValue } from 'jotai'
 import { ChainId } from '@/utils/chains'
+import { Trans } from '@lingui/react/macro'
 
 // --- Whitepaper config ---
 // To add a new token: add a new entry keyed by lowercase address.
@@ -133,7 +134,7 @@ const WhitepaperModal = () => {
     <Dialog>
       <DialogTrigger asChild>
         <Button variant="outline" className="flex gap-2 mt-3 text-foreground">
-          Review {config.tokenName} Whitepaper
+          <Trans>Review {config.tokenName} Whitepaper</Trans>
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:rounded-4xl max-w-3xl p-0 overflow-hidden">
@@ -141,8 +142,11 @@ const WhitepaperModal = () => {
           <div className="p-6">
             <DialogHeader>
               <DialogTitle className="text-2xl">
-                {config.tokenName} Token{' '}
-                {hasMultipleVersions ? 'Whitepapers' : 'Whitepaper'}
+                {hasMultipleVersions ? (
+                  <Trans>{config.tokenName} Token Whitepapers</Trans>
+                ) : (
+                  <Trans>{config.tokenName} Token Whitepaper</Trans>
+                )}
               </DialogTitle>
               <DialogDescription className="text-muted-foreground">
                 {config.description}
@@ -170,12 +174,12 @@ const WhitepaperModal = () => {
                       rel="noopener noreferrer"
                       className="text-primary hover:underline text-sm font-medium flex items-center gap-1"
                     >
-                      View PDF →
+                      <Trans>View PDF →</Trans>
                     </a>
                   </div>
                   {version.date && (
                     <p className="text-xs text-muted-foreground mb-3">
-                      Published: {version.date}
+                      <Trans>Published: {version.date}</Trans>
                     </p>
                   )}
                   {!version.date && !version.changes && (
@@ -228,7 +232,9 @@ const IndexDisclousure = () => {
       </div>
       <div className="flex items-center gap-2 mb-4"></div>
       <div className="flex items-center gap-1">
-        <h2 className="text-2xl font-light mb-2">Disclosures</h2>
+        <h2 className="text-2xl font-light mb-2">
+          <Trans>Disclosures</Trans>
+        </h2>
         <SectionAnchor id="disclosures" />
       </div>
       <div className="flex flex-col gap-2">
