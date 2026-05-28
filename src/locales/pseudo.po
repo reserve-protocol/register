@@ -91,6 +91,10 @@ msgstr ""
 msgid "{failedCount, plural, one {# approval failed - Retry} other {# approvals failed - Retry}}"
 msgstr ""
 
+#: src/views/index-dtf/overview/components/zap-mint/submit-zap.tsx:144
+msgid "{inputAmount} {inputSymbol} for {outputAmount} {outputSymbol}"
+msgstr ""
+
 #: src/views/yield-dtf/settings/components/pause-manager.tsx:66
 msgid "{pauseLabel} not paused"
 msgstr ""
@@ -316,6 +320,10 @@ msgstr ""
 #. placeholder {0}: stToken?.underlying.symbol
 #: src/views/index-dtf/overview/components/staking/lock/submit-lock-button.tsx:218
 msgid "Approve use of {0}"
+msgstr ""
+
+#: src/views/index-dtf/overview/components/zap-mint/submit-zap.tsx:236
+msgid "Approve use of {inputSymbol}"
 msgstr ""
 
 #: src/views/index-dtf/settings/components/index-settings-reward-tokens.tsx:64
@@ -556,6 +564,11 @@ msgstr ""
 msgid "BUY"
 msgstr ""
 
+#. placeholder {0}: indexDTF.token.symbol
+#: src/views/index-dtf/overview/components/zap-mint/buy/index.tsx:156
+msgid "Buy {0}"
+msgstr ""
+
 #: src/views/yield-dtf/auctions/components/useColumns.tsx:35
 msgid "Buying"
 msgstr ""
@@ -733,6 +746,7 @@ msgstr ""
 #: src/views/index-dtf/overview/components/staking/lock/submit-lock-button.tsx:67
 #: src/views/index-dtf/overview/components/staking/lock/submit-lock-button.tsx:209
 #: src/views/index-dtf/overview/components/staking/unlock/submit-unlock-button.tsx:89
+#: src/views/index-dtf/overview/components/zap-mint/submit-zap.tsx:215
 msgid "Confirming tx..."
 msgstr ""
 
@@ -1430,6 +1444,11 @@ msgstr ""
 msgid "Immediate"
 msgstr ""
 
+#: src/views/index-dtf/overview/components/zap-mint/buy/index.tsx:139
+#: src/views/index-dtf/overview/components/zap-mint/sell/index.tsx:131
+msgid "in dust"
+msgstr ""
+
 #: src/views/yield-dtf/staking/components/withdraw/index.tsx:16
 msgid "In Withdraw Process"
 msgstr ""
@@ -1509,6 +1528,7 @@ msgid "Input withdrawal leak %"
 msgstr ""
 
 #: src/views/index-dtf/issuance/manual/components/index-manual-issuance.tsx:45
+#: src/views/index-dtf/overview/components/zap-mint/submit-zap.tsx:46
 msgid "Insufficient balance"
 msgstr ""
 
@@ -1610,6 +1630,7 @@ msgstr ""
 msgid "Launch your own Index DTF"
 msgstr ""
 
+#: src/views/index-dtf/overview/components/zap-mint/submit-zap.tsx:44
 #: src/views/index-dtf/settings/components/distribute-fees.tsx:82
 #: src/views/yield-dtf/settings/components/setting-item.tsx:60
 msgid "Loading..."
@@ -2020,6 +2041,7 @@ msgstr ""
 #: src/views/index-dtf/overview/components/staking/lock/submit-lock-button.tsx:67
 #: src/views/index-dtf/overview/components/staking/lock/submit-lock-button.tsx:210
 #: src/views/index-dtf/overview/components/staking/unlock/submit-unlock-button.tsx:90
+#: src/views/index-dtf/overview/components/zap-mint/submit-zap.tsx:216
 #: src/views/yield-dtf/deploy/components/DeployOverview.tsx:25
 #: src/views/yield-dtf/deploy/components/GovernanceOverview.tsx:25
 #: src/views/yield-dtf/governance/views/proposal/components/ConfirmProposalOverview.tsx:57
@@ -2326,6 +2348,10 @@ msgstr ""
 msgid "Redemption throttle rate (%)"
 msgstr ""
 
+#: src/views/index-dtf/overview/components/zap-mint/refresh-quote.tsx:41
+msgid "Refresh"
+msgstr ""
+
 #: src/views/index-dtf/deploy/steps/confirm-deploy/simple/index.tsx:54
 msgid "Refresh quote"
 msgstr ""
@@ -2598,6 +2624,11 @@ msgstr ""
 msgid "SELL"
 msgstr ""
 
+#. placeholder {0}: indexDTF.token.symbol
+#: src/views/index-dtf/overview/components/zap-mint/sell/index.tsx:150
+msgid "Sell {0}"
+msgstr ""
+
 #: src/views/yield-dtf/auctions/components/useColumns.tsx:31
 msgid "Selling"
 msgstr ""
@@ -2794,6 +2825,14 @@ msgstr ""
 msgid "Stay up to date in long form"
 msgstr ""
 
+#: src/views/index-dtf/overview/components/zap-mint/submit-zap.tsx:235
+msgid "Step 1. Approve use of {inputSymbol}"
+msgstr ""
+
+#: src/views/index-dtf/overview/components/zap-mint/submit-zap.tsx:232
+msgid "Step 2. {buttonLabel}"
+msgstr ""
+
 #: src/views/home/components/register-about.tsx:81
 msgid "Still have questions? Come talk to us in the Reserve Telegram chat. We’d be happy to help! You can also"
 msgstr ""
@@ -2818,6 +2857,14 @@ msgstr ""
 
 #: src/views/yield-dtf/auctions/auctions-sidebar/RevenueAuctionItem.tsx:20
 msgid "Surplus below minimum trade"
+msgstr ""
+
+#: src/views/index-dtf/overview/components/zap-mint/submit-zap.tsx:143
+msgid "Swapped"
+msgstr ""
+
+#: src/views/index-dtf/overview/components/zap-mint/submit-zap.tsx:141
+msgid "Swapped {inputSymbol} for {outputSymbol}"
 msgstr ""
 
 #: src/views/index-dtf/overview/components/zap-mint/zap-error-msg.tsx:57
