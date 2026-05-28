@@ -20,7 +20,7 @@ const isStaging =
 
 export const RESERVE_API = isStaging
   ? import.meta.env.VITE_STAGING_API
-  : 'https://api-staging.reserve.org/'
+  : 'https://api.reserve.org/'
 
 export const ZAPPER_API = isStaging
   ? 'https://zapper-staging.reserve-api.com/'
