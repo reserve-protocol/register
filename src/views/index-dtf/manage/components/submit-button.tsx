@@ -10,6 +10,7 @@ import {
   isBrandManagerAtom,
 } from '@/state/dtf/atoms'
 import { RESERVE_API } from '@/utils/constants'
+import { Trans, useLingui } from '@lingui/react/macro'
 import { useQuery } from '@tanstack/react-query'
 import { atom, useAtomValue, useSetAtom } from 'jotai'
 import { useEffect, useState } from 'react'
@@ -95,7 +96,7 @@ const AuthenticateButton = () => {
           disabled={!nonce}
           onClick={handleSignMessage}
         >
-          Verify wallet
+          <Trans>Verify wallet</Trans>
         </Button>
       </TransactionButtonContainer>
     </div>
@@ -127,6 +128,7 @@ const fileToPath: Record<string, string> = {
 }
 
 const SubmitButton = () => {
+  const { t } = useLingui()
   const dtf = useAtomValue(indexDTFAtom)
   const chainId = useAtomValue(chainIdAtom)
   const signature = useAtomValue(currentSignatureAtom)
@@ -160,7 +162,7 @@ const SubmitButton = () => {
         setState('uploading')
         const fileContents = await processFiles(pendingToUpload)
 
-        if (!signature) throw new Error('Missing signature')
+        if (!signature) throw new Error(t`Missing signature`)
 
         const uploadedFiles = await Promise.all(
           fileContents.map((file) =>
@@ -218,13 +220,13 @@ const SubmitButton = () => {
         throw new Error(body.message)
       }
       track('submit_successful')
-      toast.success('DTF updated successfully', { position: 'bottom-right' })
+      toast.success(t`DTF updated successfully`, { position: 'bottom-right' })
       updateBrandData(payload as IndexDTFBrand)
       setState('idle')
     } catch (e: any) {
       console.error('Error submitting form:', e)
-      toast.error('Failed to update DTF', { position: 'bottom-right' })
-      setError(e?.message ?? 'Unexpected error')
+      toast.error(t`Failed to update DTF`, { position: 'bottom-right' })
+      setError(e?.message ?? t`Unexpected error`)
       setState('idle')
     }
   }
@@ -233,16 +235,16 @@ const SubmitButton = () => {
     handleSubmit(onSubmit as SubmitHandler<FieldValues>)()
   }
 
-  let label = 'Submit all changes'
+  let label = t`Submit all changes`
 
-  if (state === 'uploading') label = 'Uploading files...'
-  if (state === 'submitting') label = 'Submitting...'
+  if (state === 'uploading') label = t`Uploading files...`
+  if (state === 'submitting') label = t`Submitting...`
 
   if (!isBrandManager)
     return (
       <div className="rounded-3xl p-2 shadow-md bg-card">
         <Button disabled className="w-full rounded-xl gap-1">
-          Only Brand Manager
+          <Trans>Only Brand Manager</Trans>
         </Button>
       </div>
     )

@@ -286,11 +286,17 @@ msgstr ""
 msgid "ABC Labs uses industry standard anonymized analytics tools to understand usage and improve the user experience. ABC Labs does not collect any information about users or their financial activity."
 msgstr ""
 
+#: src/views/index-dtf/manage/components/manage-form.tsx:38
+msgid "About"
+msgstr ""
+
 #. placeholder {0}: data.token.symbol
 #: src/views/index-dtf/overview/components/yield-index/yield-index-about.tsx:25
 msgid "About {0}"
 msgstr ""
 
+#: src/views/index-dtf/manage/components/manage-about.tsx:44
+#: src/views/index-dtf/manage/components/manage-about.tsx:47
 #: src/views/index-dtf/overview/components/index-about-overview.tsx:67
 msgid "About this DTF"
 msgstr ""
@@ -310,6 +316,10 @@ msgstr ""
 #: src/views/yield-dtf/governance/views/proposal/components/ListItemPreview.tsx:22
 #: src/views/yield-dtf/governance/views/proposal/components/ProposedRevenueSplitPreview.tsx:130
 msgid "Add"
+msgstr ""
+
+#: src/views/index-dtf/manage/components/manage-form.tsx:93
+msgid "Add links to your social media accounts and website."
 msgstr ""
 
 #: src/components/rtoken-setup/token/RevenueSplit.tsx:162
@@ -661,6 +671,10 @@ msgstr ""
 msgid "Broker"
 msgstr ""
 
+#: src/views/index-dtf/manage/components/logo-upload.tsx:168
+msgid "Browse files"
+msgstr ""
+
 #: src/views/index-dtf/overview/components/charts/data-type-selector.tsx:17
 msgid "BTC"
 msgstr ""
@@ -766,6 +780,10 @@ msgstr ""
 
 #: src/views/yield-dtf/issuance/components/redeem/RedeemNonceModal.tsx:41
 msgid "Choose Redemption Basket"
+msgstr ""
+
+#: src/views/index-dtf/manage/components/manage-tags.tsx:51
+msgid "Choose tags..."
 msgstr ""
 
 #: src/components/transactions/table/index.tsx:51
@@ -942,6 +960,10 @@ msgstr ""
 msgid "Copy to clipboard"
 msgstr ""
 
+#: src/views/index-dtf/manage/components/cover-image-upload.tsx:118
+msgid "Cover preview"
+msgstr ""
+
 #: src/components/layout/header/components/app-navigation.tsx:131
 msgid "Create a new overcollateralized Yield DTF"
 msgstr ""
@@ -972,12 +994,43 @@ msgstr ""
 msgid "Created by:"
 msgstr ""
 
+#: src/views/index-dtf/manage/components/manage-form.tsx:61
 #: src/views/index-dtf/overview/components/index-metrics-overview.tsx:53
 msgid "Creator"
 msgstr ""
 
+#: src/views/index-dtf/manage/components/manage-creator.tsx:20
+msgid "Creator Image"
+msgstr ""
+
+#: src/views/index-dtf/manage/components/manage-creator.tsx:47
+msgid "Creator Link"
+msgstr ""
+
+#: src/views/index-dtf/manage/components/manage-creator.tsx:32
+#: src/views/index-dtf/manage/components/manage-creator.tsx:35
+msgid "Creator Name"
+msgstr ""
+
 #: src/views/index-dtf/overview/components/index-creator-notes.tsx:29
 msgid "Creator:"
+msgstr ""
+
+#: src/views/index-dtf/manage/components/manage-form.tsx:76
+msgid "Curator"
+msgstr ""
+
+#: src/views/index-dtf/manage/components/manage-curator.tsx:20
+msgid "Curator Image"
+msgstr ""
+
+#: src/views/index-dtf/manage/components/manage-curator.tsx:47
+msgid "Curator Link"
+msgstr ""
+
+#: src/views/index-dtf/manage/components/manage-curator.tsx:32
+#: src/views/index-dtf/manage/components/manage-curator.tsx:35
+msgid "Curator Name"
 msgstr ""
 
 #: src/views/yield-dtf/governance/components/GovernanceOverview.tsx:107
@@ -1000,6 +1053,18 @@ msgstr ""
 
 #: src/components/rtoken-setup/token/TokenConfiguration.tsx:42
 msgid "Customize"
+msgstr ""
+
+#: src/views/index-dtf/manage/components/manage-form.tsx:41
+msgid "Customize the appearance of this DTF on <0>app.reserve.org</0> and provide additional information for prospective holders. These changes will not automatically populate on external services like CoinGecko or CoinMarketCap."
+msgstr ""
+
+#: src/views/index-dtf/manage/components/manage-form.tsx:64
+msgid "Customize the creator section below the DTF name. You can choose the profile picture, name of the creator, and provide a link to the creators website."
+msgstr ""
+
+#: src/views/index-dtf/manage/components/manage-form.tsx:79
+msgid "Customize the curator section below the DTF name. You can choose the profile picture, name of the creator, and provide a link to the creators website."
 msgstr ""
 
 #: src/views/index-dtf/settings/components/index-settings-governance.tsx:125
@@ -1141,6 +1206,10 @@ msgstr ""
 msgid "Disclosures"
 msgstr ""
 
+#: src/views/index-dtf/manage/components/manage-socials.tsx:50
+msgid "Discord Link"
+msgstr ""
+
 #: src/components/layout/header/components/app-navigation.tsx:58
 msgid "Discover DTFs"
 msgstr ""
@@ -1197,16 +1266,42 @@ msgstr ""
 msgid "Download CSV"
 msgstr ""
 
+#: src/views/index-dtf/manage/components/cover-image-upload.tsx:134
+#: src/views/index-dtf/manage/components/logo-upload.tsx:162
+msgid "Drag & drop to upload (max 1MB)"
+msgstr ""
+
+#: src/views/index-dtf/manage/components/cover-image-upload.tsx:145
+#: src/views/index-dtf/manage/components/logo-upload.tsx:178
+msgid "Drop image here"
+msgstr ""
+
+#: src/views/index-dtf/manage/components/manage-tags.tsx:39
+msgid "DTF Category Tags"
+msgstr ""
+
 #: src/components/layout/header/components/app-navigation.tsx:105
 msgid "DTF Explorer"
+msgstr ""
+
+#: src/views/index-dtf/manage/components/manage-about.tsx:74
+msgid "DTF Fact sheet"
 msgstr ""
 
 #: src/views/index-dtf/overview/components/index-factsheet-overview.tsx:21
 msgid "DTF Factsheet"
 msgstr ""
 
+#: src/views/index-dtf/manage/components/manage-about.tsx:31
+msgid "DTF Icon"
+msgstr ""
+
 #: src/views/index-dtf/overview/components/index-token-logo.tsx:20
 msgid "dtf token logo"
+msgstr ""
+
+#: src/views/index-dtf/manage/components/submit-button.tsx:223
+msgid "DTF updated successfully"
 msgstr ""
 
 #: src/views/home/components/register-about.tsx:56
@@ -1257,6 +1352,14 @@ msgstr ""
 
 #: src/views/yield-dtf/governance/views/proposal/components/ConfirmProposalOverview.tsx:117
 msgid "Edit"
+msgstr ""
+
+#: src/views/index-dtf/manage/components/cover-image-upload.tsx:157
+msgid "Edit {variant} cover image"
+msgstr ""
+
+#: src/views/index-dtf/manage/components/manage-form.tsx:144
+msgid "Edit Overview Content"
 msgstr ""
 
 #: src/views/index-dtf/overview/components/index-about-overview.tsx:31
@@ -1383,6 +1486,10 @@ msgstr ""
 msgid "Extra collateral to keep"
 msgstr ""
 
+#: src/views/index-dtf/manage/components/submit-button.tsx:228
+msgid "Failed to update DTF"
+msgstr ""
+
 #: src/views/explorer/components/tokens/index.tsx:190
 msgid "Featured RTokens"
 msgstr ""
@@ -1409,6 +1516,11 @@ msgstr ""
 
 #: src/components/layout/header/components/app-navigation.tsx:139
 msgid "File issues or upvote existing ones"
+msgstr ""
+
+#: src/views/index-dtf/manage/components/cover-image-upload.tsx:84
+#: src/views/index-dtf/manage/components/logo-upload.tsx:77
+msgid "File size exceeds 1MB limit. Please choose a smaller file."
 msgstr ""
 
 #: src/views/yield-dtf/auctions/dutch/components/AuctionTimeIndicators.tsx:32
@@ -1544,6 +1656,10 @@ msgstr ""
 
 #: src/views/index-dtf/issuance/index.tsx:66
 msgid "Having issues? Switch to manual redeeming"
+msgstr ""
+
+#: src/views/index-dtf/manage/components/manage-about.tsx:86
+msgid "Hide DTF"
 msgstr ""
 
 #. placeholder {0}: formatPercentage(Math.abs(priceImpact))
@@ -1970,6 +2086,10 @@ msgstr ""
 msgid "Missing collateral"
 msgstr ""
 
+#: src/views/index-dtf/manage/components/submit-button.tsx:165
+msgid "Missing signature"
+msgstr ""
+
 #: src/components/tables/ListedTokensTable.tsx:41
 #: src/views/explorer/components/tokens/index.tsx:152
 #: src/views/tokens/components/UnlistedTokensTable.tsx:84
@@ -1982,6 +2102,18 @@ msgstr ""
 
 #: src/utils/index.ts:129
 msgid "mth"
+msgstr ""
+
+#: src/views/index-dtf/manage/components/schema.ts:10
+msgid "Must be a valid Discord URL"
+msgstr ""
+
+#: src/views/index-dtf/manage/components/schema.ts:9
+msgid "Must be a valid Telegram URL"
+msgstr ""
+
+#: src/views/index-dtf/manage/components/schema.ts:8
+msgid "Must be a valid Twitter/X URL"
 msgstr ""
 
 #: src/views/index-dtf/settings/components/index-settings-basic.tsx:37
@@ -2106,6 +2238,11 @@ msgstr ""
 msgid "Not ready to set up governance?"
 msgstr ""
 
+#: src/views/index-dtf/manage/components/manage-about.tsx:59
+#: src/views/index-dtf/manage/components/manage-about.tsx:62
+msgid "Notes from Creator"
+msgstr ""
+
 #: src/views/index-dtf/overview/components/index-creator-notes.tsx:52
 msgid "Notes from the creator"
 msgstr ""
@@ -2120,6 +2257,10 @@ msgstr ""
 
 #: src/views/yield-dtf/auctions/dutch/components/OngoingDutchAuctions.tsx:13
 msgid "Ongoing dutch auctions"
+msgstr ""
+
+#: src/views/index-dtf/manage/components/submit-button.tsx:247
+msgid "Only Brand Manager"
 msgstr ""
 
 #: src/components/rtoken-setup/governance/GovernanceSetup.tsx:146
@@ -2281,6 +2422,11 @@ msgstr ""
 msgid "Please try refreshing, or switch to manual minting."
 msgstr ""
 
+#: src/views/index-dtf/manage/components/cover-image-upload.tsx:75
+#: src/views/index-dtf/manage/components/logo-upload.tsx:68
+msgid "Please upload an image file (PNG, JPG, GIF) less than 1MB."
+msgstr ""
+
 #: src/views/yield-dtf/governance/views/proposal/components/SimulateProposal.tsx:43
 msgid "Please wait while the simulation executes"
 msgstr ""
@@ -2300,6 +2446,10 @@ msgstr ""
 
 #: src/components/transaction-modal/index.tsx:154
 msgid "Preparing transaction"
+msgstr ""
+
+#: src/views/index-dtf/manage/components/logo-upload.tsx:125
+msgid "Preview"
 msgstr ""
 
 #: src/components/tables/ListedTokensTable.tsx:37
@@ -2572,6 +2722,10 @@ msgstr ""
 msgid "Remove"
 msgstr ""
 
+#: src/views/index-dtf/manage/components/logo-upload.tsx:142
+msgid "Remove image"
+msgstr ""
+
 #: src/views/index-dtf/issuance/manual/components/asset-list.tsx:324
 msgid "Required Approvals"
 msgstr ""
@@ -2814,6 +2968,10 @@ msgstr ""
 msgid "Select proposal type"
 msgstr ""
 
+#: src/views/index-dtf/manage/components/logo-upload.tsx:130
+msgid "Selected image"
+msgstr ""
+
 #: src/views/index-dtf/issuance/manual/components/mode-selector.tsx:13
 msgid "Sell"
 msgstr ""
@@ -2914,6 +3072,10 @@ msgstr ""
 
 #: src/views/yield-dtf/settings/components/governance-info.tsx:34
 msgid "Snapshot Delay"
+msgstr ""
+
+#: src/views/index-dtf/manage/components/manage-form.tsx:91
+msgid "Socials"
 msgstr ""
 
 #: src/views/yield-dtf/auctions/components/useColumns.tsx:31
@@ -3047,8 +3209,16 @@ msgstr ""
 msgid "stRSR Token"
 msgstr ""
 
+#: src/views/index-dtf/manage/components/submit-button.tsx:238
+msgid "Submit all changes"
+msgstr ""
+
 #: src/views/yield-dtf/governance/views/proposal/components/ConfirmProposalOverview.tsx:95
 msgid "Submit proposal on-chain"
+msgstr ""
+
+#: src/views/index-dtf/manage/components/submit-button.tsx:241
+msgid "Submitting..."
 msgstr ""
 
 #: src/views/index-dtf/overview/components/charts/data-type-selector.tsx:12
@@ -3093,6 +3263,10 @@ msgstr ""
 #: src/views/explorer/components/tokens/index.tsx:172
 #: src/views/tokens/components/UnlistedTokensTable.tsx:95
 msgid "Target(s)"
+msgstr ""
+
+#: src/views/index-dtf/manage/components/manage-socials.tsx:36
+msgid "Telegram Link"
 msgstr ""
 
 #: src/views/yield-dtf/auctions/auctions-sidebar/claim-rewards/components/TraderEmissions.tsx:156
@@ -3228,6 +3402,10 @@ msgstr ""
 
 #: src/views/index-dtf/overview/components/zap-mint/zap-settings.tsx:63
 msgid "This is useful if you want to mint the DTF without trading."
+msgstr ""
+
+#: src/views/index-dtf/manage/components/manage-about.tsx:89
+msgid "This will prevent the DTF from appearing in the DTF list. You can still access it on the UI using the direct link."
 msgstr ""
 
 #: src/components/rtoken-setup/token/TokenForm.tsx:28
@@ -3431,6 +3609,10 @@ msgstr ""
 msgid "TVL"
 msgstr ""
 
+#: src/views/index-dtf/manage/components/manage-socials.tsx:22
+msgid "Twitter / X Link"
+msgstr ""
+
 #: src/views/yield-dtf/deploy/components/NavigationSidebar.tsx:49
 msgid "Tx 1"
 msgstr ""
@@ -3487,6 +3669,10 @@ msgstr ""
 
 #: src/components/layout/header/components/app-navigation.tsx:151
 msgid "Understand the project and protocols"
+msgstr ""
+
+#: src/views/index-dtf/manage/components/submit-button.tsx:229
+msgid "Unexpected error"
 msgstr ""
 
 #: src/views/yield-dtf/settings/components/freeze-manager.tsx:103
@@ -3590,6 +3776,10 @@ msgstr ""
 msgid "Upgrade contracts"
 msgstr ""
 
+#: src/views/index-dtf/manage/components/submit-button.tsx:240
+msgid "Uploading files..."
+msgstr ""
+
 #: src/views/explorer/components/transactions/useTransactionColumns.tsx:94
 msgid "USD Value"
 msgstr ""
@@ -3616,6 +3806,10 @@ msgstr ""
 
 #: src/components/rtoken-setup/basket/CustomCollateral.tsx:120
 msgid "Validating..."
+msgstr ""
+
+#: src/views/index-dtf/manage/components/submit-button.tsx:99
+msgid "Verify wallet"
 msgstr ""
 
 #: src/views/yield-dtf/staking/components/stake/confirm-stake-button.tsx:46
@@ -3802,6 +3996,10 @@ msgstr ""
 #: src/views/index-dtf/overview/components/index-metrics-overview.tsx:101
 #: src/views/index-dtf/overview/components/yield-index/yield-index-about.tsx:39
 msgid "Website"
+msgstr ""
+
+#: src/views/index-dtf/manage/components/manage-socials.tsx:64
+msgid "Website Link"
 msgstr ""
 
 #: src/views/index-dtf/overview/components/basket-overview/basket-table-header.tsx:119

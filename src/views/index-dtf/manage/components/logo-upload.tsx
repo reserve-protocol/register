@@ -5,6 +5,7 @@ import { useDropzone } from 'react-dropzone'
 
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import { Button } from '@/components/ui/button'
+import { Trans, useLingui } from '@lingui/react/macro'
 
 const MAX_FILE_SIZE = 1024 * 1024 // 1MB
 
@@ -21,6 +22,7 @@ export function ImageUploader({
   className,
   defaultImage,
 }: ImageUploaderProps) {
+  const { t } = useLingui()
   const [preview, setPreview] = useState<string | null>(defaultImage || null)
   const [cleared, setCleared] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -63,7 +65,7 @@ export function ImageUploader({
       setError(null)
 
       if (rejectedFiles.length > 0) {
-        setError('Please upload an image file (PNG, JPG, GIF) less than 1MB.')
+        setError(t`Please upload an image file (PNG, JPG, GIF) less than 1MB.`)
         return
       }
 
@@ -72,7 +74,7 @@ export function ImageUploader({
       const file = acceptedFiles[0]
 
       if (file.size > MAX_FILE_SIZE) {
-        setError('File size exceeds 1MB limit. Please choose a smaller file.')
+        setError(t`File size exceeds 1MB limit. Please choose a smaller file.`)
         return
       }
 
@@ -80,7 +82,7 @@ export function ImageUploader({
       updatePreview(file)
       onChange?.(file)
     },
-    [onChange, updatePreview]
+    [onChange, updatePreview, t]
   )
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
@@ -120,12 +122,12 @@ export function ImageUploader({
             <div className="relative size-10 shrink-0">
               <img
                 src={preview}
-                alt="Preview"
+                alt={t`Preview`}
                 className="object-cover w-full h-full rounded-full"
               />
             </div>
             <span className="text-sm truncate flex-1">
-              {value?.name || 'Selected image'}
+              {value?.name || t`Selected image`}
             </span>
           </div>
           <Button
@@ -136,7 +138,9 @@ export function ImageUploader({
             className="shrink-0 hover:bg-destructive/10 hover:text-destructive"
           >
             <X className="size-4" />
-            <span className="sr-only">Remove image</span>
+            <span className="sr-only">
+              <Trans>Remove image</Trans>
+            </span>
           </Button>
         </div>
       ) : (
@@ -155,12 +159,14 @@ export function ImageUploader({
               <ImagePlus size={16} />
             </div>
             <p className="text-muted-foreground mr-auto">
-              Drag & drop to upload (max 1MB)
+              <Trans>Drag & drop to upload (max 1MB)</Trans>
             </p>
             <div className="p-1 rounded-full border border-dashed border-primary text-primary">
               <ImagePlus size={16} />
             </div>
-            <p className="text-primary">Browse files</p>
+            <p className="text-primary">
+              <Trans>Browse files</Trans>
+            </p>
           </div>
           <div
             className={cn(
@@ -168,7 +174,9 @@ export function ImageUploader({
               isDragActive && 'opacity-100'
             )}
           >
-            <p className="text-sm font-medium text-primary">Drop image here</p>
+            <p className="text-sm font-medium text-primary">
+              <Trans>Drop image here</Trans>
+            </p>
           </div>
         </div>
       )}
