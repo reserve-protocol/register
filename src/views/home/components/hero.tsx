@@ -3,6 +3,7 @@ import ProtocolMetrics from "./protocol-metrics";
 import useIsDarkMode from "@/hooks/use-is-dark-mode";
 import DTFExplainerButton from "./dtf-explainer-button";
 import { useEffect } from "react";
+import { Trans, useLingui } from "@lingui/react/macro";
 
 const SPLASH_LIGHT_1X = '/imgs/home-splash@1x.webp'
 const SPLASH_LIGHT_2X = '/imgs/home-splash.webp'
@@ -10,13 +11,15 @@ const SPLASH_DARK_1X = '/imgs/home-splash-dark@1x.webp'
 const SPLASH_DARK_2X = '/imgs/home-splash-dark.webp'
 
 const Header = ({ className }: { className?: string }) => (
-  <h1 className={cn("text-5xl leading-[1.10] text-primary dark:text-foreground", className)}>Reserve lets you buy entire portfolios<br /> as a single token</h1>
+  <h1 className={cn("text-5xl leading-[1.10] text-primary dark:text-foreground", className)}><Trans>Reserve lets you buy entire portfolios<br /> as a single token</Trans></h1>
 )
 
 const SubHeader = ({ className }: { className?: string }) => (
   <h4 className={cn("text-xl dark:text-legend", className)}>
-    These tokenized portfolios are called DTFs: <br />
-    <strong className="dark:text-foreground">Decentralized Token Folios</strong>
+    <Trans>
+      These tokenized portfolios are called DTFs: <br />
+      <strong className="dark:text-foreground">Decentralized Token Folios</strong>
+    </Trans>
   </h4>
 )
 
@@ -37,6 +40,7 @@ const MetricsContainer = () => {
 }
 
 const SplashImage = () => {
+  const { t } = useLingui()
   const isDark = useIsDarkMode()
   const splash1x = isDark ? SPLASH_DARK_1X : SPLASH_LIGHT_1X
   const splash2x = isDark ? SPLASH_DARK_2X : SPLASH_LIGHT_2X
@@ -61,7 +65,7 @@ const SplashImage = () => {
         srcSet={`${splash1x} 1x, ${splash2x} 2x`}
         width={2800}
         height={950}
-        alt="Decentralized Token Folios illustration"
+        alt={t`Decentralized Token Folios illustration`}
         fetchPriority="high"
         decoding="async"
       />

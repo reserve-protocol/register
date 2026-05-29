@@ -7,16 +7,19 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
+import { Trans, useLingui } from "@lingui/react/macro";
 import { Play, X } from "lucide-react";
 
 const DTF_VIDEO_ID = "EL9OHjIab_w";
 
-const DTFExplainerButton = ({ className }: { className?: string }) => (
+const DTFExplainerButton = ({ className }: { className?: string }) => {
+  const { t } = useLingui()
+  return (
   <Dialog>
     <DialogTrigger asChild>
       <Button variant="outline" className={cn("gap-1 text-legend px-6", className)}>
         <Play className="h-4 w-4" />
-        Watch DTF Explainer
+        <Trans>Watch DTF Explainer</Trans>
       </Button>
     </DialogTrigger>
     <DialogContent
@@ -25,17 +28,17 @@ const DTFExplainerButton = ({ className }: { className?: string }) => (
     >
       <div className="flex items-center justify-between px-6 py-4 border-b">
         <DialogTitle className="text-lg font-semibold">
-          What is a <span className="text-primary">DTF</span>?
+          <Trans>What is a <span className="text-primary">DTF</span>?</Trans>
         </DialogTitle>
         <DialogClose className="rounded-full p-1 opacity-70 hover:opacity-100 transition-opacity focus:outline-none focus:ring-2 focus:ring-ring">
           <X className="h-5 w-5" />
-          <span className="sr-only">Close</span>
+          <span className="sr-only"><Trans>Close</Trans></span>
         </DialogClose>
       </div>
       <div className="aspect-[5/3] w-full bg-black">
         <iframe
           src={`https://www.youtube-nocookie.com/embed/${DTF_VIDEO_ID}?autoplay=1&rel=0`}
-          title="DTF Explainer"
+          title={t`DTF Explainer`}
           allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
           allowFullScreen
           className="w-full h-full"
@@ -43,6 +46,7 @@ const DTFExplainerButton = ({ className }: { className?: string }) => (
       </div>
     </DialogContent>
   </Dialog>
-)
+  )
+}
 
 export default DTFExplainerButton

@@ -9,6 +9,7 @@ import {
 import { type IndexDTFItem } from '@/hooks/useIndexDTFList'
 import { getFolioRoute } from '@/utils'
 import { ROUTES } from '@/utils/constants'
+import { Trans } from '@lingui/react/macro'
 import { ArrowRightIcon } from 'lucide-react'
 import { useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
@@ -90,7 +91,7 @@ export function BasketHoverCard({ indexDTF, children }: BasketHoverCardProps) {
             className="border-border rounded-xl w-full h-12 text-base font-bold"
           >
             <div className="flex items-center gap-1.5">
-              <span>View entire basket</span>
+              <span><Trans>View entire basket</Trans></span>
               <ArrowRightIcon className="w-4 h-4" />
             </div>
           </Button>

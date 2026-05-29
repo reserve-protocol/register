@@ -8,11 +8,13 @@ import { isInactiveDTF } from '@/hooks/use-dtf-status'
 import { IndexDTFItem } from '@/hooks/useIndexDTFList'
 import { formatCurrency, getFolioRoute } from '@/utils'
 import { cn } from '@/lib/utils'
+import { Trans, useLingui } from '@lingui/react/macro'
 import { ArrowRight } from 'lucide-react'
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 
 const IndexDTFCard = ({ dtf }: { dtf: IndexDTFItem }) => {
+  const { t } = useLingui()
   const LIMIT = 10
   const [imageLoaded, setImageLoaded] = useState(false)
   const [imageError, setImageError] = useState(false)
@@ -41,7 +43,7 @@ const IndexDTFCard = ({ dtf }: { dtf: IndexDTFItem }) => {
                 "object-cover h-[100px] w-[100px] rounded-xl",
                 imageLoaded ? "animate-fade-in" : "opacity-0"
               )}
-              alt="DTF cover"
+              alt={t`DTF cover`}
               src={dtf.brand.cover}
               loading="lazy"
               onLoad={() => setImageLoaded(true)}
@@ -79,7 +81,7 @@ const IndexDTFCard = ({ dtf }: { dtf: IndexDTFItem }) => {
           <h4 className="font-semibold text-sm">{dtf.name}</h4>
           {inactive && (
             <span className="text-xs font-medium px-2 py-0.5 rounded-full bg-yellow-500/15 text-yellow-600 dark:text-yellow-400">
-              Inactive
+              <Trans>Inactive</Trans>
             </span>
           )}
         </div>
