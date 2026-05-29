@@ -279,6 +279,30 @@ msgstr ""
 msgid "{count, plural, one {# Collateral pegged to} other {# Collaterals pegged to}}"
 msgstr ""
 
+#: src/utils/index.ts:138
+msgid "{count}d"
+msgstr ""
+
+#: src/utils/index.ts:141
+msgid "{count}h"
+msgstr ""
+
+#: src/utils/index.ts:144
+msgid "{count}m"
+msgstr ""
+
+#: src/utils/index.ts:135
+msgid "{count}mth"
+msgstr ""
+
+#: src/utils/index.ts:147
+msgid "{count}s"
+msgstr ""
+
+#: src/utils/index.ts:132
+msgid "{count}y"
+msgstr ""
+
 #: src/views/yield-dtf/staking/components/unstake/confirm-unstake-button.tsx:59
 msgid "{delay} cooldown started"
 msgstr ""
@@ -306,7 +330,7 @@ msgstr ""
 msgid "{fromToken} to {toToken}"
 msgstr ""
 
-#: src/utils/index.ts:378
+#: src/utils/index.ts:387
 msgid "{humanized} ago"
 msgstr ""
 
@@ -605,8 +629,8 @@ msgid "A trusted actor that can veto any proposal prior to execution."
 msgstr ""
 
 #: src/utils/index.ts:128
-msgid "A year ago"
-msgstr ""
+#~ msgid "A year ago"
+#~ msgstr ""
 
 #: src/views/home/components/register-about.tsx:129
 msgid "ABC Labs requires additional information beyond what is available on the blockchain to give users relevant data to make informed decisions. As a user, please evaluate any new DTF carefully before holding, staking RSR, or vote locking tokens on them."
@@ -905,7 +929,7 @@ msgstr ""
 #: src/components/transactions/table/index.tsx:78
 #: src/views/explorer/components/revenue/index.tsx:348
 #: src/views/explorer/components/transactions/useTransactionColumns.tsx:77
-#: src/views/index-dtf/overview/components/index-transaction-table.tsx:35
+#: src/views/index-dtf/overview/components/index-transaction-table.tsx:47
 #: src/views/yield-dtf/auctions/components/useColumns.tsx:40
 #: src/views/yield-dtf/overview/components/rtoken-transactions.tsx:110
 msgid "Amount"
@@ -3417,7 +3441,7 @@ msgstr ""
 msgid "Expires in:"
 msgstr ""
 
-#: src/views/index-dtf/overview/components/index-transaction-table.tsx:75
+#: src/views/index-dtf/overview/components/index-transaction-table.tsx:87
 msgid "Explore"
 msgstr ""
 
@@ -4307,7 +4331,7 @@ msgstr ""
 msgid "Join the conversation or ask questions"
 msgstr ""
 
-#: src/utils/index.ts:370
+#: src/utils/index.ts:379
 msgid "just now"
 msgstr ""
 
@@ -4722,6 +4746,7 @@ msgstr ""
 #: src/views/explorer/components/transactions/useTransactionColumns.tsx:26
 #: src/views/home/components/discover-yield-dtf/token-actions.tsx:42
 #: src/views/index-dtf/issuance/manual/components/index-manual-issuance.tsx:195
+#: src/views/index-dtf/overview/components/index-transaction-table.tsx:22
 #: src/views/yield-dtf/issuance/components/issue/Issue.tsx:97
 #: src/views/yield-dtf/issuance/components/zapV2/ZapTabs.tsx:22
 #: src/views/yield-dtf/overview/components/hero/overview-actions.tsx:129
@@ -4853,8 +4878,8 @@ msgid "Monthly P&L"
 msgstr ""
 
 #: src/utils/index.ts:130
-msgid "mth"
-msgstr ""
+#~ msgid "mth"
+#~ msgstr ""
 
 #: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/form-fields.ts:14
 msgid "Must be 0 or greater"
@@ -6168,6 +6193,7 @@ msgstr ""
 #: src/views/explorer/components/filters/TransactionTypeFilter.tsx:12
 #: src/views/explorer/components/transactions/useTransactionColumns.tsx:27
 #: src/views/index-dtf/issuance/manual/components/index-manual-issuance.tsx:195
+#: src/views/index-dtf/overview/components/index-transaction-table.tsx:23
 #: src/views/yield-dtf/issuance/components/redeem/RedeemInput.tsx:16
 #: src/views/yield-dtf/issuance/components/zapV2/ZapTabs.tsx:24
 #: src/views/yield-dtf/overview/components/hero/overview-actions.tsx:139
@@ -7989,7 +8015,7 @@ msgstr ""
 #: src/views/explorer/components/transactions/useTransactionColumns.tsx:105
 #: src/views/index-dtf/auctions/views/rebalance/components/auction-bids-chart.tsx:213
 #: src/views/index-dtf/auctions/views/rebalance/components/auction-bids-chart.tsx:322
-#: src/views/index-dtf/overview/components/index-transaction-table.tsx:64
+#: src/views/index-dtf/overview/components/index-transaction-table.tsx:76
 #: src/views/yield-dtf/overview/components/rtoken-transactions.tsx:147
 msgid "Time"
 msgstr ""
@@ -8337,7 +8363,7 @@ msgstr ""
 #: src/components/layout/navigation/TokenNavigation.tsx:183
 #: src/views/explorer/components/transactions/index.tsx:38
 #: src/views/explorer/index.tsx:33
-#: src/views/index-dtf/overview/components/index-transaction-table.tsx:128
+#: src/views/index-dtf/overview/components/index-transaction-table.tsx:140
 #: src/views/portfolio-page/components/transactions.tsx:162
 #: src/views/yield-dtf/overview/components/rtoken-transactions.tsx:222
 msgid "Transactions"
@@ -8350,6 +8376,7 @@ msgstr ""
 #: src/components/transactions/table/index.tsx:48
 #: src/views/explorer/components/filters/TransactionTypeFilter.tsx:13
 #: src/views/explorer/components/transactions/useTransactionColumns.tsx:28
+#: src/views/index-dtf/overview/components/index-transaction-table.tsx:24
 #: src/views/yield-dtf/overview/components/rtoken-transactions.tsx:77
 msgid "Transfer"
 msgstr ""
@@ -8435,7 +8462,7 @@ msgstr ""
 
 #: src/components/transactions/table/index.tsx:67
 #: src/views/explorer/components/transactions/useTransactionColumns.tsx:69
-#: src/views/index-dtf/overview/components/index-transaction-table.tsx:24
+#: src/views/index-dtf/overview/components/index-transaction-table.tsx:38
 #: src/views/index-dtf/overview/components/yield-index/yield-index-composition-tabs.tsx:14
 #: src/views/portfolio-page/components/transactions.tsx:101
 #: src/views/yield-dtf/overview/components/rtoken-transactions.tsx:98

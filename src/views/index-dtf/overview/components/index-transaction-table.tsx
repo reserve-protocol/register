@@ -14,7 +14,21 @@ import { ColumnDef } from '@tanstack/react-table'
 import { useAtomValue } from 'jotai'
 import { ArrowDownUp, ArrowUpRight } from 'lucide-react'
 import SectionAnchor from '@/components/section-anchor'
-import { Trans } from '@lingui/react/macro'
+import { msg } from '@lingui/core/macro'
+import type { MessageDescriptor } from '@lingui/core'
+import { Trans, useLingui } from '@lingui/react/macro'
+
+const TRANSACTION_TYPE_LABELS: Record<Transaction['type'], MessageDescriptor> = {
+  Mint: msg`Mint`,
+  Redeem: msg`Redeem`,
+  Transfer: msg`Transfer`,
+}
+
+const TransactionTypeCell = ({ type }: { type: Transaction['type'] }) => {
+  const { t } = useLingui()
+  const label = TRANSACTION_TYPE_LABELS[type]
+  return <div className="font-semibold">{label ? t(label) : type}</div>
+}
 
 // Columns type/amount/usdAmount/Time/From/Hash
 const columns: ColumnDef<Transaction>[] = [
@@ -25,9 +39,7 @@ const columns: ColumnDef<Transaction>[] = [
       </SorteableButton>
     ),
     accessorKey: 'type',
-    cell: ({ row }) => {
-      return <div className="font-semibold">{row.original.type}</div>
-    },
+    cell: ({ row }) => <TransactionTypeCell type={row.original.type} />,
   },
   {
     header: ({ column }) => (

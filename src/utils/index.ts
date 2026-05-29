@@ -117,6 +117,9 @@ const timeUnits = {
   second: 0,
 }
 
+// Compact relative time ("4h", "1d", "2mth"). `from`/`to` are unix seconds.
+// Each unit token is a catalog message so locales can localize the abbreviation
+// (and reorder the count if needed).
 export const relativeTime = (from: number, to: number) => {
   let delta = Math.abs(to - from)
 
@@ -125,17 +128,23 @@ export const relativeTime = (from: number, to: number) => {
   }
 
   if (delta >= timeUnits.year) {
-    return t`A year ago`
+    const count = Math.floor(delta / timeUnits.year)
+    return t`${count}y`
   } else if (delta >= timeUnits.month) {
-    return `${Math.floor(delta / timeUnits.month)}` + t`mth`
+    const count = Math.floor(delta / timeUnits.month)
+    return t`${count}mth`
   } else if (delta >= timeUnits.day) {
-    return `${Math.floor(delta / timeUnits.day)}d`
+    const count = Math.floor(delta / timeUnits.day)
+    return t`${count}d`
   } else if (delta >= timeUnits.hour) {
-    return `${Math.floor(delta / timeUnits.hour)}h`
+    const count = Math.floor(delta / timeUnits.hour)
+    return t`${count}h`
   } else if (delta >= timeUnits.minute) {
-    return `${Math.floor(delta / timeUnits.minute)}m`
+    const count = Math.floor(delta / timeUnits.minute)
+    return t`${count}m`
   } else {
-    return `${delta}s`
+    const count = Math.floor(delta)
+    return t`${count}s`
   }
 }
 
