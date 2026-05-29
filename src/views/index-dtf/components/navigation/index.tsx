@@ -3,7 +3,11 @@ import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
 import { isInactiveDTF } from '@/hooks/use-dtf-status'
 import { cn } from '@/lib/utils'
-import { indexDTFAtom, indexDTFBrandAtom, indexDTFStatusAtom } from '@/state/dtf/atoms'
+import {
+  indexDTFAtom,
+  indexDTFBrandAtom,
+  indexDTFStatusAtom,
+} from '@/state/dtf/atoms'
 import { ROUTES } from '@/utils/constants'
 import { t } from '@lingui/macro'
 import { useAtomValue } from 'jotai'
@@ -63,7 +67,9 @@ const NavigationItem = ({
         <div
           className={cn(
             'flex flex-col gap-2 overflow-hidden transition-all duration-300 ease-in-out',
-            showSubItems ? 'mt-3 max-h-[500px] opacity-100' : 'max-h-0 opacity-0'
+            showSubItems
+              ? 'mt-3 max-h-[500px] opacity-100'
+              : 'max-h-0 opacity-0'
           )}
         >
           {subItems.map((item) => {
@@ -75,7 +81,8 @@ const NavigationItem = ({
                 {({ isActive }) => {
                   const isLikeMainItem = isActive && route === item.route
                   const _isActive =
-                    isActive && (!isLikeMainItem || !hasMoreThanOneActiveSubItem)
+                    isActive &&
+                    (!isLikeMainItem || !hasMoreThanOneActiveSubItem)
                   return (
                     <div
                       className={cn(
@@ -180,20 +187,16 @@ const NavigationItems = () => {
       },
       {
         icon: <Blend strokeWidth={1.5} size={16} />,
-        label: t`Mint + Redeem`,
+        label: t`Swap`,
         route: ROUTES.ISSUANCE,
         subItems: [
           {
-            label: t`Zap`,
+            label: t`Buy & Sell`,
             route: ROUTES.ISSUANCE,
           },
           {
-            label: t`Automated`,
+            label: t`Mint & Redeem`,
             route: ROUTES.ISSUANCE + '/automated',
-          },
-          {
-            label: t`Manual`,
-            route: ROUTES.ISSUANCE + '/manual',
           },
         ],
       },
@@ -219,8 +222,7 @@ const NavigationItems = () => {
   return (
     <div className="flex lg:flex-col gap-5 justify-evenly lg:justify-start">
       {items.map((item) =>
-        isDeprecated &&
-        DISABLED_ROUTES_WHEN_DEPRECATED.includes(item.route) ? (
+        isDeprecated && DISABLED_ROUTES_WHEN_DEPRECATED.includes(item.route) ? (
           <DisabledNavigationItem
             key={item.route}
             icon={item.icon}

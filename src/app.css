@@ -38,6 +38,30 @@ body {
   z-index: 0;
 }
 
+@keyframes large-order-card-in {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes large-order-card-slide-out {
+  from {
+    opacity: 0;
+    transform: translateX(-18px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
 @layer base {
   :root {
     --background: 24 71% 99%;
