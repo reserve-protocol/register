@@ -1,4 +1,4 @@
-import { Trans } from '@lingui/macro'
+import { Trans } from '@lingui/react/macro'
 import { Edit2 } from 'lucide-react'
 import { shortenAddress } from 'utils'
 import EditDelegate from './edit-delegate'

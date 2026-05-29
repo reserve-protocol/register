@@ -1,14 +1,10 @@
+import { useLingui } from '@lingui/react/macro'
 import TabMenu from 'components/tab-menu'
 import { useMemo, useState } from 'react'
 import { Minus, Plus } from 'lucide-react'
 import { Card } from '@/components/ui/card'
 import Stake from './stake'
 import Unstake from './unstake'
-
-const AllMenuOptions = [
-  { key: 1, label: 'Stake', icon: <Plus size={16} /> },
-  { key: 0, label: 'Unstake', icon: <Minus size={16} /> },
-]
 
 const Header = ({
   isStaking,
@@ -19,13 +15,14 @@ const Header = ({
   isStaking: boolean
   isDeprecated: boolean
 }) => {
-  const menuOptions = useMemo(
-    () =>
-      isDeprecated
-        ? AllMenuOptions.filter((o) => o.key === 0)
-        : AllMenuOptions,
-    [isDeprecated]
-  )
+  const { t } = useLingui()
+  const menuOptions = useMemo(() => {
+    const allOptions = [
+      { key: 1, label: t`Stake`, icon: <Plus size={16} /> },
+      { key: 0, label: t`Unstake`, icon: <Minus size={16} /> },
+    ]
+    return isDeprecated ? allOptions.filter((o) => o.key === 0) : allOptions
+  }, [isDeprecated, t])
 
   return (
     <div className="flex items-center border-b border-border p-6">

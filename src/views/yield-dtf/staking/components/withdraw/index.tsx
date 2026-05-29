@@ -1,4 +1,4 @@
-import { Trans } from '@lingui/macro'
+import { Trans } from '@lingui/react/macro'
 import { cn } from '@/lib/utils'
 import AvailableUnstake from './available-unstake'
 import CooldownUnstake from './cooldown-unstake'

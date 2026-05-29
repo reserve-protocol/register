@@ -1,4 +1,4 @@
-import { Trans } from '@lingui/macro'
+import { Trans, useLingui } from '@lingui/react/macro'
 import { Input } from 'components'
 import { useState } from 'react'
 import { isAddress } from 'utils'
@@ -13,6 +13,7 @@ const EditDelegate = ({
   onDismiss(): void
   current: string
 }) => {
+  const { t } = useLingui()
   const [address, setAddress] = useState(current)
   const isValid = !!isAddress(address)
 
@@ -43,7 +44,7 @@ const EditDelegate = ({
         className="mt-2 mb-3"
         autoFocus
         value={address}
-        placeholder="Input address"
+        placeholder={t`Input address`}
         onChange={(e) => setAddress(e.target.value)}
       />
       {address && !isValid && (

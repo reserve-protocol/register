@@ -1,3 +1,4 @@
+import { Trans } from '@lingui/react/macro'
 import AreaChart from 'components/charts/area/AreaChart'
 import dayjs from 'dayjs'
 import { gql } from 'graphql-request'
@@ -74,10 +75,14 @@ const StakeHistory = () => {
       height={160}
       title={
         !currentValue ? (
-          <span className="text-legend">Loading history...</span>
+          <span className="text-legend">
+            <Trans>Loading history...</Trans>
+          </span>
         ) : (
           <>
-            <span className="font-semibold">Total staked:</span>{' '}
+            <span className="font-semibold">
+              <Trans>Total staked:</Trans>
+            </span>{' '}
             <span className="ml-1 text-primary font-semibold">
               {formatCurrency(currentValue, 2, {
                 notation: 'compact',

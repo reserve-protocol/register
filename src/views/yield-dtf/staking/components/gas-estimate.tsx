@@ -1,4 +1,4 @@
-import { Trans } from '@lingui/macro'
+import { Trans } from '@lingui/react/macro'
 import GasIcon from 'components/icons/GasIcon'
 import { formatCurrency } from 'utils'
 import { cn } from '@/lib/utils'

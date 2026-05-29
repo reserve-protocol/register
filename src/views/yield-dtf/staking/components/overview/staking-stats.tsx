@@ -1,4 +1,4 @@
-import { t, Trans } from '@lingui/macro'
+import { Trans, useLingui } from '@lingui/react/macro'
 import Help from 'components/help'
 import useRToken from 'hooks/useRToken'
 import useTokenStats from 'hooks/useTokenStats'
@@ -34,6 +34,7 @@ interface StakingStatsProps {
 }
 
 const StakingStats = ({ className }: StakingStatsProps) => {
+  const { t } = useLingui()
   const { stakers } = useAtomValue(estimatedApyAtom)
   const distribution = useAtomValue(rTokenBackingDistributionAtom)
   const params = useAtomValue(rTokenConfigurationAtom)
