@@ -652,6 +652,7 @@ msgid "Action"
 msgstr ""
 
 #: src/views/explorer/components/governance/filters.tsx:17
+#: src/views/index-dtf/governance/components/governance-proposal-list.tsx:146
 msgid "Active"
 msgstr ""
 
@@ -1688,6 +1689,7 @@ msgid "Cancel unstake"
 msgstr ""
 
 #: src/views/explorer/components/governance/filters.tsx:21
+#: src/views/index-dtf/governance/components/governance-proposal-list.tsx:147
 #: src/views/index-dtf/governance/views/proposal/components/proposal-deadline-alert.tsx:61
 #: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:248
 #: src/views/yield-dtf/governance/views/proposal-detail/components/proposal-timeline/TimelineItem.tsx:258
@@ -2257,7 +2259,7 @@ msgstr ""
 msgid "Create New Index DTF"
 msgstr ""
 
-#: src/views/index-dtf/governance/components/governance-proposal-list.tsx:35
+#: src/views/index-dtf/governance/components/governance-proposal-list.tsx:37
 #: src/views/yield-dtf/governance/components/ProposalList.tsx:196
 msgid "Create proposal"
 msgstr ""
@@ -2510,6 +2512,7 @@ msgid "Default delay"
 msgstr ""
 
 #: src/views/explorer/components/governance/filters.tsx:18
+#: src/views/index-dtf/governance/components/governance-proposal-list.tsx:148
 #: src/views/index-dtf/governance/views/proposal/components/proposal-deadline-alert.tsx:49
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalAlert.tsx:50
 msgid "Defeated"
@@ -3334,6 +3337,7 @@ msgid "Execute proposal"
 msgstr ""
 
 #: src/views/explorer/components/governance/filters.tsx:19
+#: src/views/index-dtf/governance/components/governance-proposal-list.tsx:153
 #: src/views/index-dtf/governance/views/proposal/components/proposal-deadline-alert.tsx:43
 #: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:247
 #: src/views/yield-dtf/governance/views/proposal-detail/components/proposal-timeline/TimelineItem.tsx:257
@@ -3341,7 +3345,7 @@ msgstr ""
 msgid "Executed"
 msgstr ""
 
-#: src/views/index-dtf/governance/components/governance-proposal-list.tsx:72
+#: src/views/index-dtf/governance/components/governance-proposal-list.tsx:74
 #: src/views/yield-dtf/governance/components/ProposalList.tsx:90
 msgid "Execution available in:"
 msgstr ""
@@ -3395,6 +3399,7 @@ msgid "Expected volatility"
 msgstr ""
 
 #: src/views/explorer/components/governance/filters.tsx:23
+#: src/views/index-dtf/governance/components/governance-proposal-list.tsx:152
 #: src/views/index-dtf/governance/views/proposal/components/proposal-deadline-alert.tsx:55
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalAlert.tsx:56
 msgid "Expired"
@@ -5008,7 +5013,7 @@ msgstr ""
 
 #: src/views/earn/components/position-balance.tsx:65
 #: src/views/index-dtf/auctions/views/rebalance/components/rebalance-overview.tsx:74
-#: src/views/index-dtf/governance/components/governance-proposal-list.tsx:119
+#: src/views/index-dtf/governance/components/governance-proposal-list.tsx:121
 #: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:194
 #: src/views/portfolio-page/components/active-proposals.tsx:89
 #: src/views/yield-dtf/governance/components/ProposalList.tsx:119
@@ -5111,7 +5116,7 @@ msgstr ""
 msgid "No proposals created..."
 msgstr ""
 
-#: src/views/index-dtf/governance/components/governance-proposal-list.tsx:218
+#: src/views/index-dtf/governance/components/governance-proposal-list.tsx:234
 msgid "No proposals found"
 msgstr ""
 
@@ -5428,6 +5433,7 @@ msgid "Peg:"
 msgstr ""
 
 #: src/views/explorer/components/governance/filters.tsx:16
+#: src/views/index-dtf/governance/components/governance-proposal-list.tsx:145
 #: src/views/yield-dtf/issuance/components/issue/CollateralApprovals.tsx:109
 msgid "Pending"
 msgstr ""
@@ -6011,11 +6017,13 @@ msgstr ""
 msgid "Queue proposal"
 msgstr ""
 
+#: src/views/index-dtf/governance/components/governance-proposal-list.tsx:151
 #: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:231
 #: src/views/yield-dtf/governance/views/proposal-detail/components/proposal-timeline/TimelineItem.tsx:241
 msgid "Queued"
 msgstr ""
 
+#: src/views/index-dtf/governance/components/governance-proposal-list.tsx:149
 #: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:127
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalDetailStats.tsx:113
 #: src/views/yield-dtf/settings/components/governance-info.tsx:65
@@ -6038,7 +6046,7 @@ msgstr ""
 msgid "Quorum?"
 msgstr ""
 
-#: src/views/index-dtf/governance/components/governance-proposal-list.tsx:111
+#: src/views/index-dtf/governance/components/governance-proposal-list.tsx:113
 #: src/views/yield-dtf/governance/components/ProposalList.tsx:114
 msgid "Quorum?:"
 msgstr ""
@@ -6130,7 +6138,7 @@ msgstr ""
 msgid "Receiving eth address"
 msgstr ""
 
-#: src/views/index-dtf/governance/components/governance-proposal-list.tsx:54
+#: src/views/index-dtf/governance/components/governance-proposal-list.tsx:56
 #: src/views/yield-dtf/governance/components/ProposalList.tsx:188
 msgid "Recent proposals"
 msgstr ""
@@ -7032,7 +7040,7 @@ msgstr ""
 msgid "Short freezers have the responsibility of freezing an RToken if anything dangerous or suspicious is happening. This is a one-shot freeze and the role will be revoked after a single use. This field determines how long the RToken will remain frozen until the freeze expires or is extended by another actor."
 msgstr ""
 
-#: src/views/index-dtf/governance/components/governance-proposal-list.tsx:233
+#: src/views/index-dtf/governance/components/governance-proposal-list.tsx:249
 msgid "Show all"
 msgstr ""
 
@@ -7044,7 +7052,7 @@ msgstr ""
 msgid "show less"
 msgstr ""
 
-#: src/views/index-dtf/governance/components/governance-proposal-list.tsx:233
+#: src/views/index-dtf/governance/components/governance-proposal-list.tsx:249
 #: src/views/portfolio-page/components/expand-toggle.tsx:33
 #: src/views/yield-dtf/issuance/components/zapV2/submit/ZapSubmitModal.tsx:61
 msgid "Show less"
@@ -7481,6 +7489,7 @@ msgid "Submitting..."
 msgstr ""
 
 #: src/views/explorer/components/governance/filters.tsx:22
+#: src/views/index-dtf/governance/components/governance-proposal-list.tsx:150
 #: src/views/index-dtf/governance/views/proposal/components/proposal-deadline-alert.tsx:73
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalAlert.tsx:74
 msgid "Succeeded"
@@ -9037,7 +9046,7 @@ msgstr ""
 msgid "Votes for"
 msgstr ""
 
-#: src/views/index-dtf/governance/components/governance-proposal-list.tsx:125
+#: src/views/index-dtf/governance/components/governance-proposal-list.tsx:127
 #: src/views/portfolio-page/components/active-proposals.tsx:94
 #: src/views/yield-dtf/governance/components/ProposalList.tsx:125
 msgid "Votes:"
@@ -9085,7 +9094,7 @@ msgstr ""
 msgid "Voting delay is required"
 msgstr ""
 
-#: src/views/index-dtf/governance/components/governance-proposal-list.tsx:70
+#: src/views/index-dtf/governance/components/governance-proposal-list.tsx:72
 #: src/views/yield-dtf/governance/components/ProposalList.tsx:89
 msgid "Voting ends in:"
 msgstr ""
@@ -9164,7 +9173,7 @@ msgstr ""
 msgid "Voting quorum is required"
 msgstr ""
 
-#: src/views/index-dtf/governance/components/governance-proposal-list.tsx:93
+#: src/views/index-dtf/governance/components/governance-proposal-list.tsx:95
 #: src/views/portfolio-page/components/active-proposals.tsx:61
 #: src/views/yield-dtf/governance/components/ProposalList.tsx:102
 msgid "Voting starts in:"
@@ -9446,7 +9455,7 @@ msgstr ""
 
 #: src/views/index-dtf/auctions/views/rebalance/components/rebalance-overview.tsx:60
 #: src/views/index-dtf/auctions/views/rebalance/components/rebalance-overview.tsx:74
-#: src/views/index-dtf/governance/components/governance-proposal-list.tsx:119
+#: src/views/index-dtf/governance/components/governance-proposal-list.tsx:121
 #: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:194
 #: src/views/portfolio-page/components/active-proposals.tsx:89
 #: src/views/yield-dtf/governance/components/ProposalList.tsx:119

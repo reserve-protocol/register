@@ -11,7 +11,9 @@ import { cn } from '@/lib/utils'
 import { indexDTFStatusAtom } from '@/state/dtf/atoms'
 import { formatPercentage, getProposalTitle, parseDuration } from '@/utils'
 import { formatConstant, PROPOSAL_STATES, ROUTES } from '@/utils/constants'
-import { Trans } from '@lingui/react/macro'
+import { msg } from '@lingui/core/macro'
+import type { MessageDescriptor } from '@lingui/core'
+import { Trans, useLingui } from '@lingui/react/macro'
 import { useAtomValue } from 'jotai'
 import { Circle, PlusSquare } from 'lucide-react'
 import { useEffect, useState } from 'react'
@@ -138,6 +140,19 @@ export const ProposalVotingState = ({ data }: { data: VotingState }) => {
   )
 }
 
+// QUORUM_NOT_REACHED renders as "Quorum" (matching the prior display).
+const PROPOSAL_STATE_LABELS: Record<string, MessageDescriptor> = {
+  [PROPOSAL_STATES.PENDING]: msg`Pending`,
+  [PROPOSAL_STATES.ACTIVE]: msg`Active`,
+  [PROPOSAL_STATES.CANCELED]: msg`Canceled`,
+  [PROPOSAL_STATES.DEFEATED]: msg`Defeated`,
+  [PROPOSAL_STATES.QUORUM_NOT_REACHED]: msg`Quorum`,
+  [PROPOSAL_STATES.SUCCEEDED]: msg`Succeeded`,
+  [PROPOSAL_STATES.QUEUED]: msg`Queued`,
+  [PROPOSAL_STATES.EXPIRED]: msg`Expired`,
+  [PROPOSAL_STATES.EXECUTED]: msg`Executed`,
+}
+
 const BADGE_VARIANT = {
   [PROPOSAL_STATES.DEFEATED]: 'destructive',
   [PROPOSAL_STATES.QUORUM_NOT_REACHED]: 'destructive',
@@ -151,6 +166,7 @@ const BADGE_VARIANT = {
 }
 
 const ProposalListItem = ({ proposal }: { proposal: PartialProposal }) => {
+  const { t } = useLingui()
   const proposalState = getProposalState(proposal)
   const [, forceUpdate] = useState({})
 
@@ -168,7 +184,7 @@ const ProposalListItem = ({ proposal }: { proposal: PartialProposal }) => {
     }
   }, [proposalState.state])
 
-  const stateText = formatConstant(proposalState.state)
+  const stateLabel = PROPOSAL_STATE_LABELS[proposalState.state]
 
   return (
     <Link
@@ -187,7 +203,7 @@ const ProposalListItem = ({ proposal }: { proposal: PartialProposal }) => {
           `text-${BADGE_VARIANT[proposalState.state]}`
         )}
       >
-        {stateText.includes('reached') ? 'Quorum' : stateText}
+        {stateLabel ? t(stateLabel) : formatConstant(proposalState.state)}
       </div>
     </Link>
   )
