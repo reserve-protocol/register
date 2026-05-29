@@ -14,6 +14,7 @@ import { Link } from 'react-router-dom'
 import { ChainId } from '@/utils/chains'
 import { InternalDTF } from '../hooks/use-internal-dtf-list'
 import { ExternalLink } from 'lucide-react'
+import { Trans } from '@lingui/react/macro'
 import Copy from '@/components/ui/copy'
 
 const getChainName = (chainId: number) => {
@@ -59,7 +60,7 @@ const formatGovernanceSpeed = (dtf: InternalDTF) => {
   const governance = dtf.ownerGovernance || dtf.tradingGovernance || dtf.stToken?.governance
   
   if (!governance) {
-    return 'No governance'
+    return null
   }
   
   const votingDelay = governance.votingDelay
@@ -117,14 +118,16 @@ const DTFTableRow = ({ dtf }: { dtf: InternalDTF }) => {
       <TableCell className="text-right">
         {marketCap ? formatCurrency(marketCap, 0) : '-'}
       </TableCell>
-      <TableCell>{formatGovernanceSpeed(dtf)}</TableCell>
+      <TableCell>
+        {formatGovernanceSpeed(dtf) ?? <Trans>No governance</Trans>}
+      </TableCell>
       <TableCell>{formatTimestamp(dtf.timestamp)}</TableCell>
       <TableCell>
         <Link 
           to={dtfPath}
           className="inline-flex items-center gap-1 text-primary hover:underline"
         >
-          View
+          <Trans>View</Trans>
           <ExternalLink className="h-3 w-3" />
         </Link>
       </TableCell>
@@ -175,13 +178,27 @@ const DTFTable = () => {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>Name / Symbol</TableHead>
-              <TableHead>Chain</TableHead>
-              <TableHead>Address</TableHead>
-              <TableHead className="text-right">Market Cap</TableHead>
-              <TableHead>Gov Speed</TableHead>
-              <TableHead>Created</TableHead>
-              <TableHead>Action</TableHead>
+              <TableHead>
+                <Trans>Name / Symbol</Trans>
+              </TableHead>
+              <TableHead>
+                <Trans>Chain</Trans>
+              </TableHead>
+              <TableHead>
+                <Trans>Address</Trans>
+              </TableHead>
+              <TableHead className="text-right">
+                <Trans>Market Cap</Trans>
+              </TableHead>
+              <TableHead>
+                <Trans>Gov Speed</Trans>
+              </TableHead>
+              <TableHead>
+                <Trans>Created</Trans>
+              </TableHead>
+              <TableHead>
+                <Trans>Action</Trans>
+              </TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -196,9 +213,11 @@ const DTFTable = () => {
     return (
       <div className="rounded-lg border p-8">
         <div className="text-center">
-          <p className="text-muted-foreground">No DTFs found</p>
+          <p className="text-muted-foreground">
+            <Trans>No DTFs found</Trans>
+          </p>
           <p className="text-sm text-muted-foreground mt-1">
-            Try adjusting your filters or check back later
+            <Trans>Try adjusting your filters or check back later</Trans>
           </p>
         </div>
       </div>

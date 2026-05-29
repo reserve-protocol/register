@@ -1,5 +1,6 @@
 import TokenLogo from '@/components/token-logo'
 import StackTokenLogo from '@/components/token-logo/StackTokenLogo'
+import { Trans } from '@lingui/react/macro'
 import { Button } from '@/components/ui/button'
 import {
   HoverCard,
@@ -143,7 +144,9 @@ const Top100BasketHoverCard = ({
             className="border-border rounded-xl w-full h-12 text-base font-bold"
           >
             <div className="flex items-center gap-1.5">
-              <span>View entire basket</span>
+              <span>
+                <Trans>View entire basket</Trans>
+              </span>
               <ArrowRightIcon className="w-4 h-4" />
             </div>
           </Button>

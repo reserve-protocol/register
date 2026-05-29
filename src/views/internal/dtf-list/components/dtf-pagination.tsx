@@ -14,6 +14,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
+import { Trans } from '@lingui/react/macro'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 
 const DTFPagination = () => {
@@ -54,14 +55,16 @@ const DTFPagination = () => {
     <div className="flex flex-col sm:flex-row items-center justify-between gap-4 px-2">
       <div className="flex items-center gap-2 text-sm text-muted-foreground">
         <span>
-          Showing {startItem} to {endItem} of {totalCount} DTFs
+          <Trans>
+            Showing {startItem} to {endItem} of {totalCount} DTFs
+          </Trans>
         </span>
       </div>
       
       <div className="flex items-center gap-4">
         <div className="flex items-center gap-2">
           <label htmlFor="page-size" className="text-sm text-muted-foreground">
-            Items per page:
+            <Trans>Items per page:</Trans>
           </label>
           <Select
             value={pageSize.toString()}

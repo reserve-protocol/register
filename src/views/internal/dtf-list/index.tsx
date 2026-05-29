@@ -1,4 +1,5 @@
 import { useAtomValue } from 'jotai'
+import { Trans } from '@lingui/react/macro'
 import { walletAtom } from '@/state/atoms'
 import DTFTable from './components/dtf-table'
 import DTFFilters from './components/dtf-filters'
@@ -14,9 +15,13 @@ const InternalDTFList = () => {
       <Updater />
       
       <div className="mb-8 px-2">
-        <h1 className="text-3xl font-bold mb-2">Internal DTF List</h1>
+        <h1 className="text-3xl font-bold mb-2">
+          <Trans>Internal DTF List</Trans>
+        </h1>
         <p className="text-muted-foreground">
-          View all Index DTFs across networks for internal testing purposes
+          <Trans>
+            View all Index DTFs across networks for internal testing purposes
+          </Trans>
         </p>
       </div>
 
