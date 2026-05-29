@@ -1,33 +1,36 @@
-import { Trans } from '@lingui/macro'
+import { msg } from '@lingui/core/macro'
+import type { MessageDescriptor } from '@lingui/core'
+import { Trans, useLingui } from '@lingui/react/macro'
 import { useMemo } from 'react'
 import MultiselectDropdrown, {
   IMultiselectDropdrown,
 } from '../MultiselectDropdown'
 import TransactionsIcon from 'components/icons/TransactionsIcon'
 
-export const entryTypes = {
-  MINT: `Mint`,
-  REDEEM: `Redeem`,
-  TRANSFER: `Transfer`,
-  BURN: `Melt`,
-  ISSUE: `Issue`,
-  CLAIM: `Claim`,
-  STAKE: `Stake`,
-  UNSTAKE: `Unstake`,
-  WITHDRAW: `Withdraw`,
-  UNSTAKE_CANCELLED: `Unstake Cancelled`,
+export const entryTypes: Record<string, MessageDescriptor> = {
+  MINT: msg`Mint`,
+  REDEEM: msg`Redeem`,
+  TRANSFER: msg`Transfer`,
+  BURN: msg`Melt`,
+  ISSUE: msg`Issue`,
+  CLAIM: msg`Claim`,
+  STAKE: msg`Stake`,
+  UNSTAKE: msg`Unstake`,
+  WITHDRAW: msg`Withdraw`,
+  UNSTAKE_CANCELLED: msg`Unstake Cancelled`,
 }
 
 const TransactionTypeFilter = (
   props: Omit<IMultiselectDropdrown, 'options'>
 ) => {
+  const { t } = useLingui()
   const options = useMemo(() => {
     return Object.entries(entryTypes).map(([key, value]) => ({
-      label: value,
+      label: t(value),
       value: key,
       icon: null,
     }))
-  }, [])
+  }, [t])
 
   return (
     <div>
@@ -38,8 +41,8 @@ const TransactionTypeFilter = (
         <TransactionsIcon width={18} />
         <span className="ml-2 text-legend">
           {props.selected.length
-            ? `${props.selected.length} selected`
-            : 'All types'}
+            ? t`${props.selected.length} selected`
+            : t`All types`}
         </span>
       </MultiselectDropdrown>
     </div>

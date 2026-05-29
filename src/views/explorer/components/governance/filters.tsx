@@ -1,3 +1,6 @@
+import { msg } from '@lingui/core/macro'
+import type { MessageDescriptor } from '@lingui/core'
+import { useLingui } from '@lingui/react/macro'
 import VoteIcon from 'components/icons/VoteIcon'
 import TabMenu from 'components/tab-menu'
 import { useAtom } from 'jotai'
@@ -9,50 +12,52 @@ import MultiselectDropdrown, {
 import TokenFilter from '../filters/token-filter'
 import { type DTFType, filtersAtom } from './atoms'
 
-export const proposalStatus = {
-  [PROPOSAL_STATES.PENDING]: 'Pending',
-  [PROPOSAL_STATES.ACTIVE]: 'Active',
-  [PROPOSAL_STATES.DEFEATED]: 'Defeated',
-  [PROPOSAL_STATES.EXECUTED]: 'Executed',
-  [PROPOSAL_STATES.QUORUM_NOT_REACHED]: 'Quorum not reached',
-  [PROPOSAL_STATES.CANCELED]: 'Canceled',
-  [PROPOSAL_STATES.SUCCEEDED]: 'Succeeded',
-  [PROPOSAL_STATES.EXPIRED]: 'Expired',
+export const proposalStatus: Record<string, MessageDescriptor> = {
+  [PROPOSAL_STATES.PENDING]: msg`Pending`,
+  [PROPOSAL_STATES.ACTIVE]: msg`Active`,
+  [PROPOSAL_STATES.DEFEATED]: msg`Defeated`,
+  [PROPOSAL_STATES.EXECUTED]: msg`Executed`,
+  [PROPOSAL_STATES.QUORUM_NOT_REACHED]: msg`Quorum not reached`,
+  [PROPOSAL_STATES.CANCELED]: msg`Canceled`,
+  [PROPOSAL_STATES.SUCCEEDED]: msg`Succeeded`,
+  [PROPOSAL_STATES.EXPIRED]: msg`Expired`,
 }
 
 const ProposalStatusFilter = (
   props: Omit<IMultiselectDropdrown, 'options'>
 ) => {
+  const { t } = useLingui()
   const options = useMemo(() => {
     return Object.entries(proposalStatus).map(([key, value]) => ({
-      label: value,
+      label: t(value),
       value: key,
       icon: null,
     }))
-  }, [])
+  }, [t])
 
   return (
     <div>
-      <span className="text-legend">Status</span>
+      <span className="text-legend">{t`Status`}</span>
       <MultiselectDropdrown className="mt-1" options={options} {...props} allOption>
         <VoteIcon width={18} />
         <span className="ml-2 text-legend">
           {props.selected.length
-            ? `${props.selected.length} selected`
-            : 'All statuses'}
+            ? t`${props.selected.length} selected`
+            : t`All statuses`}
         </span>
       </MultiselectDropdrown>
     </div>
   )
 }
 
-const TYPE_ITEMS = [
-  { key: 'all', label: 'All' },
-  { key: 'yield', label: 'Yield' },
-  { key: 'index', label: 'Index' },
+const TYPE_ITEMS: { key: string; label: MessageDescriptor }[] = [
+  { key: 'all', label: msg`All` },
+  { key: 'yield', label: msg`Yield` },
+  { key: 'index', label: msg`Index` },
 ]
 
 const ProposalFilters = () => {
+  const { t } = useLingui()
   const [filters, setFilters] = useAtom(filtersAtom)
 
   const handleChange = (key: 'tokens' | 'status', selected: string[]) => {
@@ -70,7 +75,7 @@ const ProposalFilters = () => {
     <div className="flex items-end ml-1 gap-4 flex-wrap">
       <TabMenu
         active={filters.type}
-        items={TYPE_ITEMS}
+        items={TYPE_ITEMS.map((item) => ({ ...item, label: t(item.label) }))}
         onMenuChange={handleTypeChange}
       />
       <TokenFilter
