@@ -1,4 +1,5 @@
 import { getProposalTitle } from '@/utils'
+import { Trans } from '@lingui/react/macro'
 import { useNavigate } from 'react-router-dom'
 import { RebalanceByProposal } from '../../../atoms'
 import { MetricsRow } from './metrics-row'
@@ -24,7 +25,7 @@ export const HistoricalRebalanceItem = ({
         </h1>
 
         <h2 className="text-base md:text-lg lg:text-2xl line-clamp-2 text-legend flex-shrink-0">
-          Completed
+          <Trans>Completed</Trans>
         </h2>
       </div>
 

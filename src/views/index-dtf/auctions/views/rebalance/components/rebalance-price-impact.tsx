@@ -1,5 +1,6 @@
 import { formatCurrency } from '@/utils'
 import { Skeleton } from '@/components/ui/skeleton'
+import { Trans } from '@lingui/react/macro'
 import useRebalanceLiquidityCheck, {
   TokenInfo,
 } from '../hooks/use-rebalance-liquidity-check'
@@ -37,7 +38,9 @@ const RebalancePriceImpact = () => {
   return (
     <div className="flex flex-col gap-1 mt-2">
       <div className="flex items-center gap-2">
-        <h4 className="text-primary text-xl">Price Impact</h4>
+        <h4 className="text-primary text-xl">
+          <Trans>Price Impact</Trans>
+        </h4>
         {isFetching && !isLoading && (
           <div className="animate-spin h-4 w-4 border-2 border-primary border-t-transparent rounded-full" />
         )}

@@ -3,6 +3,7 @@ import { PartialProposal } from '@/lib/governance'
 import { chainIdAtom } from '@/state/atoms'
 import { formatDate } from '@/utils'
 import { ExplorerDataType, getExplorerLink } from '@/utils/getExplorerLink'
+import { Trans } from '@lingui/react/macro'
 import { useAtomValue } from 'jotai'
 import { Link } from 'react-router-dom'
 
@@ -16,7 +17,9 @@ export const RebalanceItemFooter = ({
   return (
     <div className="flex items-center gap-2 border-t border-secondary p-4 md:p-6">
       <div className="flex items-center gap-1 text-sm mr-auto">
-        <span className="text-legend">Proposed:</span>
+        <span className="text-legend">
+          <Trans>Proposed:</Trans>
+        </span>
         <Link
           onClick={(e) => e.stopPropagation()}
           to={getExplorerLink(
@@ -31,7 +34,9 @@ export const RebalanceItemFooter = ({
         </Link>
       </div>
       <div className="items-center gap-1 text-sm hidden sm:flex">
-        <span className="text-legend">Proposed by:</span>
+        <span className="text-legend">
+          <Trans>Proposed by:</Trans>
+        </span>
         <Link
           onClick={(e) => e.stopPropagation()}
           to={getExplorerLink(

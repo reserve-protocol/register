@@ -1,5 +1,6 @@
 import { Button } from '@/components/ui/button'
 import { getProposalTitle } from '@/utils'
+import { Trans } from '@lingui/react/macro'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { ArrowLeft } from 'lucide-react'
 import { currentRebalanceAtom } from '../../../../atoms'
@@ -22,7 +23,9 @@ const ManageWeightsHeader = () => {
         {getProposalTitle(rebalance?.proposal.description || '...')}
       </span>
       <span className="font-semibold">/</span>
-      <span className="font-semibold">Manage Basket Weights</span>
+      <span className="font-semibold">
+        <Trans>Manage Basket Weights</Trans>
+      </span>
     </div>
   )
 }

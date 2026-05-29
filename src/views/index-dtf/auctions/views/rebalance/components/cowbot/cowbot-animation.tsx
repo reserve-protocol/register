@@ -1,4 +1,5 @@
 import { cn } from '@/lib/utils'
+import { useLingui } from '@lingui/react/macro'
 
 interface CowbotAnimationProps {
   isRunning: boolean
@@ -16,6 +17,7 @@ const CowbotAnimation = ({
   showRainbow,
   className,
 }: CowbotAnimationProps) => {
+  const { t } = useLingui()
   if (showRainbow) {
     return (
       <div
@@ -38,7 +40,7 @@ const CowbotAnimation = ({
 
         {/* Cow facing right (mirrored) */}
         <div className="text-3xl select-none -ml-2 scale-x-[-1]">
-          <span role="img" aria-label="cow">
+          <span role="img" aria-label={t`cow`}>
             🐄
           </span>
         </div>
@@ -55,7 +57,7 @@ const CowbotAnimation = ({
       )}
       style={{ animationDuration: '1.5s' }}
     >
-      <span role="img" aria-label="cow">
+      <span role="img" aria-label={t`cow`}>
         🐄
       </span>
     </div>

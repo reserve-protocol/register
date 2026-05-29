@@ -3,6 +3,7 @@ import Help from '@/components/ui/help'
 import { Skeleton } from '@/components/ui/skeleton'
 import { cn } from '@/lib/utils'
 import { formatCurrency, formatPercentage } from '@/utils'
+import { Trans, useLingui } from '@lingui/react/macro'
 import { useAtomValue } from 'jotai'
 import {
   AlignVerticalSpaceAround,
@@ -51,6 +52,7 @@ const IncompleteProgressBar = ({ accuracy }: { accuracy?: number }) => {
 }
 
 const RebalanceCompleted = () => {
+  const { t } = useLingui()
   const metrics = useRebalanceCompletedMetrics()
   const isCompleted = useAtomValue(isCompletedAtom)
 
@@ -60,17 +62,17 @@ const RebalanceCompleted = () => {
   }, [metrics?.rebalanceAccuracy])
 
   const title = useMemo(() => {
-    const msg = 'Rebalance'
     if (!metrics?.timestamp) {
-      return msg
+      return t`Rebalance`
     }
 
     const date = new Date(metrics?.timestamp * 1000)
-    return `${msg} - ${date.toLocaleString('default', {
+    const formattedDate = date.toLocaleString('default', {
       month: 'long',
       year: 'numeric',
-    })}`
-  }, [metrics?.timestamp])
+    })
+    return t`Rebalance - ${formattedDate}`
+  }, [metrics?.timestamp, t])
 
   return (
     <div className="bg-secondary rounded-3xl min-w-[350px] sm:min-w-[420px]">
@@ -109,10 +111,10 @@ const RebalanceCompleted = () => {
                 {/* Success message */}
                 <div className="flex flex-col gap-1">
                   <div className="text-base font-light text-muted-foreground">
-                    Rebalance progress
+                    <Trans>Rebalance progress</Trans>
                   </div>
                   <h2 className="text-2xl text-[26px] font-light text-primary">
-                    Rebalance Finished
+                    <Trans>Rebalance Finished</Trans>
                   </h2>
                 </div>
 
@@ -136,7 +138,7 @@ const RebalanceCompleted = () => {
                   icon={
                     <ArrowLeftRight className="h-5 w-5" strokeWidth={1.2} />
                   }
-                  label="Total value traded"
+                  label={t`Total value traded`}
                   value={
                     metrics?.totalRebalancedUsd !== undefined
                       ? `$${formatCurrency(metrics?.totalRebalancedUsd)}`
@@ -154,10 +156,10 @@ const RebalanceCompleted = () => {
                       strokeWidth={1.2}
                     />
                   }
-                  label="Total price impact"
+                  label={t`Total price impact`}
                   tooltip={
                     !isCompleted
-                      ? 'Available after rebalance completion'
+                      ? t`Available after rebalance completion`
                       : undefined
                   }
                   value={
@@ -188,8 +190,8 @@ const RebalanceCompleted = () => {
               <div className="bg-background border-r border-t border-secondary rounded-bl-3xl">
                 <MetricCard
                   icon={<Scale className="h-5 w-5" strokeWidth={1.2} />}
-                  label="Rebalance accuracy"
-                  tooltip="A measure of how closely the new basket rebalanced compared to the proposed basket"
+                  label={t`Rebalance accuracy`}
+                  tooltip={t`A measure of how closely the new basket rebalanced compared to the proposed basket`}
                   value={
                     metrics?.rebalanceAccuracy !== undefined
                       ? `${formatPercentage(metrics?.rebalanceAccuracy)}`
@@ -204,11 +206,11 @@ const RebalanceCompleted = () => {
                   icon={
                     <ChartCandlestick className="h-5 w-5" strokeWidth={1.2} />
                   }
-                  label="NAV Change"
+                  label={t`NAV Change`}
                   tooltip={
                     !isCompleted
-                      ? 'Available after rebalance completion'
-                      : 'How much the value of the DTF basket changed due to the latest rebalance'
+                      ? t`Available after rebalance completion`
+                      : t`How much the value of the DTF basket changed due to the latest rebalance`
                   }
                   value={
                     metrics?.marketCapRebalanceImpact !== undefined ? (

@@ -10,6 +10,7 @@ import { ScrollArea } from '@/components/ui/scroll-area'
 import { Skeleton } from '@/components/ui/skeleton'
 import { chainIdAtom } from '@/state/atoms'
 import { Token } from '@/types'
+import { Trans } from '@lingui/react/macro'
 import { atom, useAtomValue } from 'jotai'
 import { rebalanceMetricsAtom, rebalanceTokenMapAtom } from '../atoms'
 
@@ -96,14 +97,18 @@ const RebalanceActionOverview = () => {
   return (
     <div className="grid grid-cols-3 border-t border-b border-secondary">
       <div className="flex flex-col p-4 md:p-6 border-r border-secondary">
-        <h4 className="text-legend text-sm mb-1">Est. trade value:</h4>
+        <h4 className="text-legend text-sm mb-1">
+          <Trans>Est. trade value:</Trans>
+        </h4>
         <span>
           $
           <DecimalDisplay value={metrics?.auctionSize ?? 0} />
         </span>
       </div>
       <div className="flex flex-col p-4 md:p-6 border-r border-secondary">
-        <h4 className="text-legend text-sm mb-1">Selling:</h4>
+        <h4 className="text-legend text-sm mb-1">
+          <Trans>Selling:</Trans>
+        </h4>
         <BasketHoverCard tokens={surplus}>
           <div>
             <StackTokenLogo
@@ -118,7 +123,9 @@ const RebalanceActionOverview = () => {
         {!surplus.length && <Skeleton className="w-20 h-6" />}
       </div>
       <div className="flex flex-col p-4 md:p-6 border-r border-secondary">
-        <h4 className="text-legend text-sm mb-1">Buying:</h4>
+        <h4 className="text-legend text-sm mb-1">
+          <Trans>Buying:</Trans>
+        </h4>
         <BasketHoverCard tokens={deficit}>
           <div>
             <StackTokenLogo

@@ -1,7 +1,8 @@
 import Spinner from '@/components/ui/spinner'
+import { ReactNode } from 'react'
 
 interface SectionHeaderProps {
-  title: string
+  title: ReactNode
   count: number
   color?: string
   isLoading?: boolean

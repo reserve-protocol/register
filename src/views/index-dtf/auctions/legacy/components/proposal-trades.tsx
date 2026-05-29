@@ -9,6 +9,7 @@ import Spinner from '@/components/ui/spinner'
 import { chainIdAtom } from '@/state/atoms'
 import { getCurrentTime, shortenAddress } from '@/utils'
 import { ExplorerDataType, getExplorerLink } from '@/utils/getExplorerLink'
+import { Trans } from '@lingui/react/macro'
 import humanizeDuration from 'humanize-duration'
 import { useAtomValue, useSetAtom } from 'jotai'
 import {
@@ -88,7 +89,9 @@ const ProposalIndicators = ({ data }: { data: TradesByProposal }) => {
     return (
       <Container>
         <Spinner className="text-primary" />
-        <span className="text-primary font-bold">Ongoing</span>
+        <span className="text-primary font-bold">
+          <Trans>Ongoing</Trans>
+        </span>
       </Container>
     )
   }
@@ -97,8 +100,12 @@ const ProposalIndicators = ({ data }: { data: TradesByProposal }) => {
       return (
         <Container>
           <Spinner />
-          Permissionless in:{' '}
-          <span className="font-semibold">{getTimerFormat(availableAt)}</span>
+          <Trans>
+            Permissionless in:{' '}
+            <span className="font-semibold">
+              {getTimerFormat(availableAt)}
+            </span>
+          </Trans>
         </Container>
       )
     }
@@ -107,8 +114,10 @@ const ProposalIndicators = ({ data }: { data: TradesByProposal }) => {
       return (
         <Container>
           <Spinner />
-          Auction expires in:{' '}
-          <span className="font-semibold">{getTimerFormat(expiresAt)}</span>
+          <Trans>
+            Auction expires in:{' '}
+            <span className="font-semibold">{getTimerFormat(expiresAt)}</span>
+          </Trans>
         </Container>
       )
     }
@@ -118,12 +127,16 @@ const ProposalIndicators = ({ data }: { data: TradesByProposal }) => {
     <div className="flex items-center gap-2 text-sm font-light mr-4">
       <div className="flex items-center gap-1 border-r pr-3">
         <AlarmClockOff size={16} />
-        <span className="hidden sm:block">Expired:</span>{' '}
+        <span className="hidden sm:block">
+          <Trans>Expired:</Trans>
+        </span>{' '}
         <span className="text-destructive">{data.expired}</span>
       </div>
       <div className="flex items-center gap-1">
         <Check size={16} />
-        <span className="hidden sm:block">Completed:</span>{' '}
+        <span className="hidden sm:block">
+          <Trans>Completed:</Trans>
+        </span>{' '}
         <span className="text-primary">{data.completed}</span>
       </div>
     </div>
@@ -139,7 +152,9 @@ const ProposalTradeHeader = ({ data }: { data: TradesByProposal }) => {
         <Folder size={16} />
       </div>
       <div className="text-left mr-auto">
-        <span className="block">Proposed by:</span>
+        <span className="block">
+          <Trans>Proposed by:</Trans>
+        </span>
         <Link
           to={getExplorerLink(
             data.proposal.proposer.address,
@@ -216,7 +231,9 @@ const Header = () => {
           <ArrowLeftIcon size={16} />
         </Button>
       </Link>
-      <h4 className="text-xl">Auctions history</h4>
+      <h4 className="text-xl">
+        <Trans>Auctions history</Trans>
+      </h4>
     </div>
   )
 }

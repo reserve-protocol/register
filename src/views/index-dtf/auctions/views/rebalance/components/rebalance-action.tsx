@@ -1,4 +1,7 @@
 import { isAuctionLauncherAtom, isHybridDTFAtom } from '@/state/dtf/atoms'
+import type { MessageDescriptor } from '@lingui/core'
+import { msg } from '@lingui/core/macro'
+import { Trans, useLingui } from '@lingui/react/macro'
 import { AuctionRound, WeightRange } from '@reserve-protocol/dtf-rebalance-lib'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { useMemo } from 'react'
@@ -18,19 +21,21 @@ import { Button } from '@/components/ui/button'
 import { PencilRuler } from 'lucide-react'
 import { getRebalanceWeights } from '../utils/transforms'
 
-const ROUND_TITLE = {
-  [AuctionRound.EJECT]: 'Remove Tokens',
-  [AuctionRound.PROGRESS]: 'Progressing',
-  [AuctionRound.FINAL]: 'Precision Rebalancing',
+const ROUND_TITLE: Record<number, MessageDescriptor> = {
+  [AuctionRound.EJECT]: msg`Remove Tokens`,
+  [AuctionRound.PROGRESS]: msg`Progressing`,
+  [AuctionRound.FINAL]: msg`Precision Rebalancing`,
 }
 
 const RoundDescription = () => {
+  const { t } = useLingui()
   const metrics = useAtomValue(rebalanceMetricsAtom)
   const params = useRebalanceParams()
   const tokenMap = useAtomValue(rebalanceTokenMapAtom)
 
   const description = useMemo(() => {
-    if (!params) return 'Buy/sell tokens to move closer to proposed weights.'
+    const defaultDescription = t`Buy/sell tokens to move closer to proposed weights.`
+    if (!params) return defaultDescription
 
     // Get weights using version-aware helper
     const rebalanceWeights = getRebalanceWeights(
@@ -42,7 +47,7 @@ const RoundDescription = () => {
       metrics?.round === AuctionRound.EJECT &&
       rebalanceWeights.find((w: WeightRange) => w.spot === 0n)
 
-    if (!removal) return 'Buy/sell tokens to move closer to proposed weights.'
+    if (!removal) return defaultDescription
 
     const tokens: string[] = []
 
@@ -54,16 +59,16 @@ const RoundDescription = () => {
 
     const formattedTokens =
       tokens.length > 1
-        ? `${tokens.slice(0, -1).join(', ')} and ${tokens[tokens.length - 1]}`
+        ? t`${tokens.slice(0, -1).join(', ')} and ${tokens[tokens.length - 1]}`
         : tokens[0]
 
-    return `Remove ${formattedTokens} from the basket`
-  }, [params, metrics, tokenMap])
+    return t`Remove ${formattedTokens} from the basket`
+  }, [params, metrics, tokenMap, t])
 
   return (
     <div className="p-4 md:p-6">
       <h1 className="text-2xl text-primary font-semibold">
-        {ROUND_TITLE[metrics?.round ?? 0]}
+        {t(ROUND_TITLE[metrics?.round ?? 0])}
       </h1>
       <p className="text-legend">{description}</p>
     </div>
@@ -80,10 +85,12 @@ const ManageWeights = () => {
           <PencilRuler className="w-4 h-4" />
         </div>
         <h1 className="text-xl text-primary mt-3">
-          Specify Exact Basket Weights
+          <Trans>Specify Exact Basket Weights</Trans>
         </h1>
         <p className="text-legend">
-          Set exact basket weights before launching the rebalance auctions
+          <Trans>
+            Set exact basket weights before launching the rebalance auctions
+          </Trans>
         </p>
       </div>
       <div className="p-2 pt-0 ">
@@ -92,7 +99,7 @@ const ManageWeights = () => {
           className="w-full rounded-xl text-base py-6"
           onClick={() => setShowManageWeights(true)}
         >
-          Manage Weights
+          <Trans>Manage Weights</Trans>
         </Button>
       </div>
     </div>

@@ -20,6 +20,7 @@ import {
   WeightRange,
 } from '@reserve-protocol/dtf-rebalance-lib'
 import { StartRebalanceArgsPartial as StartRebalanceArgsPartialV4 } from '@reserve-protocol/dtf-rebalance-lib/dist/4.0.0/types'
+import { Trans } from '@lingui/react/macro'
 import { useQuery } from '@tanstack/react-query'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { AlertTriangle, ArrowUpRight } from 'lucide-react'
@@ -194,7 +195,7 @@ const ManageWeightsContent = () => {
           >
             <AlertTriangle className="h-4 w-4" />
             <AlertTitle>
-              Tokens not available
+              <Trans>Tokens not available</Trans>
             </AlertTitle>
             <AlertDescription>
               <ul className="mt-1 list-disc pl-4 space-y-0.5">
@@ -236,7 +237,9 @@ const ManageWeightsContent = () => {
           onClick={handleSaveWeights}
           disabled={!validation.isValid}
         >
-          Save Weights {editedRows}/{totalRows} edited
+          <Trans>
+            Save Weights {editedRows}/{totalRows} edited
+          </Trans>
         </Button>
       </div>
     </div>
