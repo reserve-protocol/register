@@ -1001,7 +1001,7 @@ msgstr ""
 #. placeholder {0}: stToken?.underlying.symbol
 #. placeholder {0}: tokenIn.symbol
 #. placeholder {0}: usedToken.symbol || 'ERC20'
-#: src/components/vote-lock/components/submit-lock-button.tsx:213
+#: src/components/vote-lock/components/submit-lock-button.tsx:216
 #: src/views/index-dtf/deploy/steps/confirm-deploy/simple/simple-deploy-button.tsx:144
 #: src/views/index-dtf/overview/components/staking/lock/submit-lock-button.tsx:218
 #: src/views/yield-dtf/issuance/components/zapV2/submit/ZapApprovalButton.tsx:60
@@ -1586,10 +1586,11 @@ msgstr ""
 #: src/views/explorer/components/revenue/index.tsx:287
 #: src/views/index-dtf/auctions/legacy/components/auction-item.tsx:132
 #: src/views/index-dtf/issuance/manual/components/mode-selector.tsx:12
+#: src/views/index-dtf/overview/components/landing-mint/index.tsx:121
 msgid "Buy"
 msgstr ""
 
-#: src/views/index-dtf/overview/components/index-ctas-overview-mobile.tsx:33
+#: src/views/index-dtf/overview/components/index-ctas-overview-mobile.tsx:80
 msgid "BUY"
 msgstr ""
 
@@ -1600,6 +1601,11 @@ msgstr ""
 #: src/views/index-dtf/governance/views/propose/basket/components/proposal-basket-preview.tsx:247
 #: src/views/index-dtf/overview/components/zap-mint/buy/index.tsx:156
 msgid "Buy {0}"
+msgstr ""
+
+#. placeholder {0}: dtf?.token.symbol
+#: src/views/index-dtf/overview/components/landing-mint/index.tsx:54
+msgid "Buy/Sell ${0} onchain"
 msgstr ""
 
 #: src/views/index-dtf/auctions/views/rebalance/components/rebalance-action.tsx:37
@@ -2048,8 +2054,8 @@ msgstr ""
 
 #: src/components/stake-drawer/components/submit-stake-button.tsx:217
 #: src/components/stake-drawer/components/submit-unstake-button.tsx:104
-#: src/components/vote-lock/components/submit-lock-button.tsx:65
-#: src/components/vote-lock/components/submit-lock-button.tsx:204
+#: src/components/vote-lock/components/submit-lock-button.tsx:66
+#: src/components/vote-lock/components/submit-lock-button.tsx:207
 #: src/components/vote-lock/components/submit-unlock-button.tsx:86
 #: src/views/index-dtf/deploy/steps/confirm-deploy/manual/components/confirm-manual-deploy-button.tsx:298
 #: src/views/index-dtf/deploy/steps/confirm-deploy/simple/simple-deploy-button.tsx:133
@@ -2571,7 +2577,7 @@ msgid "Delegate"
 msgstr ""
 
 #. placeholder {0}: stToken?.underlying.symbol
-#: src/components/vote-lock/components/submit-lock-button.tsx:67
+#: src/components/vote-lock/components/submit-lock-button.tsx:68
 #: src/views/index-dtf/overview/components/staking/lock/submit-lock-button.tsx:70
 msgid "Delegate {0}"
 msgstr ""
@@ -2877,6 +2883,10 @@ msgstr ""
 
 #: src/views/yield-dtf/overview/components/hero/index.tsx:21
 msgid "DTF Inactive"
+msgstr ""
+
+#: src/views/index-dtf/overview/components/landing-mint/index.tsx:193
+msgid "DTF meme"
 msgstr ""
 
 #: src/views/index-dtf/governance/views/propose/index.tsx:33
@@ -3586,6 +3596,10 @@ msgstr ""
 msgid "For"
 msgstr ""
 
+#: src/views/index-dtf/issuance/index.tsx:43
+msgid "For more information, see our <0>Terms of Use</0>."
+msgstr ""
+
 #: src/views/yield-dtf/issuance/components/warnings/index.tsx:124
 msgid "For redemptions, please wait until the process is complete."
 msgstr ""
@@ -3825,11 +3839,11 @@ msgstr ""
 msgid "Having issues minting? Zaps are in beta"
 msgstr ""
 
-#: src/views/index-dtf/issuance/index.tsx:64
+#: src/views/index-dtf/issuance/index.tsx:100
 msgid "Having issues? Switch to manual minting"
 msgstr ""
 
-#: src/views/index-dtf/issuance/index.tsx:66
+#: src/views/index-dtf/issuance/index.tsx:102
 msgid "Having issues? Switch to manual redeeming"
 msgstr ""
 
@@ -4314,6 +4328,10 @@ msgstr ""
 msgid "Launching..."
 msgstr ""
 
+#: src/views/index-dtf/overview/components/landing-mint/index.tsx:106
+msgid "Learn More"
+msgstr ""
+
 #: src/views/portfolio-page/components/rewards-available.tsx:44
 msgid "Learn more about how to earn APY"
 msgstr ""
@@ -4584,7 +4602,7 @@ msgstr ""
 msgid "Max trade slippage (%)"
 msgstr ""
 
-#: src/views/index-dtf/issuance/manual/components/input-box.tsx:28
+#: src/views/index-dtf/issuance/manual/components/input-box.tsx:31
 #: src/views/yield-dtf/issuance/components/wrapping/CollateralItem.tsx:331
 msgid "Max:"
 msgstr ""
@@ -4730,7 +4748,7 @@ msgid "Mint amount above Global Max Mint"
 msgstr ""
 
 #: src/views/index-dtf/deploy/steps/confirm-deploy/manual/index.tsx:43
-#: src/views/index-dtf/issuance/manual/components/input-box.tsx:62
+#: src/views/index-dtf/issuance/manual/components/input-box.tsx:67
 msgid "Mint Amount:"
 msgstr ""
 
@@ -5200,6 +5218,10 @@ msgstr ""
 msgid "Not available"
 msgstr ""
 
+#: src/hooks/use-compliance-restrictions.ts:36
+msgid "Not available in your region"
+msgstr ""
+
 #: src/views/yield-dtf/auctions/dutch/components/AuctionActions.tsx:104
 msgid "Not enough balance to bid"
 msgstr ""
@@ -5325,6 +5347,10 @@ msgstr ""
 msgid "Other Risks"
 msgstr ""
 
+#: src/views/index-dtf/overview/components/landing-mint/index.tsx:65
+msgid "Our Zap-swaps support common assets like {tokensText} which makes DTFs easy to enter and exit."
+msgstr ""
+
 #: src/components/layout/navigation/index.tsx:77
 #: src/components/layout/navigation/TokenNavigation.tsx:176
 #: src/views/index-dtf/components/navigation/index.tsx:139
@@ -5429,8 +5455,8 @@ msgstr ""
 #: src/components/stake-drawer/components/submit-stake-button.tsx:220
 #: src/components/stake-drawer/components/submit-unstake-button.tsx:105
 #: src/components/transaction-modal/index.tsx:160
-#: src/components/vote-lock/components/submit-lock-button.tsx:65
-#: src/components/vote-lock/components/submit-lock-button.tsx:205
+#: src/components/vote-lock/components/submit-lock-button.tsx:66
+#: src/components/vote-lock/components/submit-lock-button.tsx:208
 #: src/components/vote-lock/components/submit-unlock-button.tsx:87
 #: src/views/index-dtf/deploy/steps/confirm-deploy/manual/components/confirm-manual-deploy-button.tsx:298
 #: src/views/index-dtf/deploy/steps/confirm-deploy/simple/simple-deploy-button.tsx:134
@@ -5778,7 +5804,7 @@ msgstr ""
 
 #: src/components/stake-drawer/components/submit-stake-button.tsx:215
 #: src/components/stake-drawer/components/submit-unstake-button.tsx:102
-#: src/components/vote-lock/components/submit-lock-button.tsx:202
+#: src/components/vote-lock/components/submit-lock-button.tsx:205
 #: src/components/vote-lock/components/submit-unlock-button.tsx:84
 #: src/views/index-dtf/overview/components/staking/lock/submit-lock-button.tsx:207
 #: src/views/index-dtf/overview/components/staking/unlock/submit-unlock-button.tsx:87
@@ -6153,7 +6179,7 @@ msgstr ""
 msgid "Redeem amount above Global Max Redeem"
 msgstr ""
 
-#: src/views/index-dtf/issuance/manual/components/input-box.tsx:64
+#: src/views/index-dtf/issuance/manual/components/input-box.tsx:69
 msgid "Redeem Amount:"
 msgstr ""
 
@@ -6841,10 +6867,11 @@ msgstr ""
 #: src/views/explorer/components/revenue/index.tsx:306
 #: src/views/index-dtf/auctions/legacy/components/auction-item.tsx:90
 #: src/views/index-dtf/issuance/manual/components/mode-selector.tsx:13
+#: src/views/index-dtf/overview/components/landing-mint/index.tsx:132
 msgid "Sell"
 msgstr ""
 
-#: src/views/index-dtf/overview/components/index-ctas-overview-mobile.tsx:23
+#: src/views/index-dtf/overview/components/index-ctas-overview-mobile.tsx:66
 msgid "SELL"
 msgstr ""
 
@@ -6858,6 +6885,11 @@ msgstr ""
 #: src/views/index-dtf/governance/views/propose/basket/components/legacy-proposal-auction-price-ranges.tsx:196
 #: src/views/index-dtf/governance/views/propose/basket/components/proposal-basket-preview.tsx:282
 msgid "Sell ${0}"
+msgstr ""
+
+#. placeholder {0}: dtf?.token.symbol
+#: src/views/index-dtf/overview/components/landing-mint/index.tsx:52
+msgid "Sell ${0} onchain"
 msgstr ""
 
 #: src/views/index-dtf/auctions/views/rebalance/components/auction-bids-chart.tsx:330
@@ -7859,6 +7891,11 @@ msgstr ""
 msgid "This DTF is no longer actively governed and can only be sold. This DTF cannot rebalance its basket nor can it new ${0} tokens be created."
 msgstr ""
 
+#. placeholder {0}: dtf?.token.symbol
+#: src/views/index-dtf/overview/components/landing-mint/index.tsx:59
+msgid "This DTF is no longer actively governed and can only be sold. This DTF cannot rebalance its basket nor can new ${0} tokens be created."
+msgstr ""
+
 #: src/components/field/index.tsx:35
 msgid "This field is required"
 msgstr ""
@@ -7889,6 +7926,14 @@ msgstr ""
 msgid "This list is not intended to be conclusive. <0>You can read more about risk in the Reserve docs.</0>"
 msgstr ""
 
+#: src/hooks/use-compliance-restrictions.ts:37
+msgid "This product isn't available in your region due to local restrictions."
+msgstr ""
+
+#: src/views/index-dtf/overview/components/index-ctas-overview-mobile.tsx:28
+msgid "This product isn't available in your region due to local restrictions. <0>Learn More</0>"
+msgstr ""
+
 #: src/views/yield-dtf/issuance/components/warnings/index.tsx:139
 msgid "This should last for a few hours, manual minting/redemption is available."
 msgstr ""
@@ -7899,6 +7944,10 @@ msgstr ""
 
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-governance-spell-31-03-2025.tsx:383
 msgid "This upgrade spell fixes the proposal-threshold on the FolioGovernor contract that administers the DAO (StakingVault) relevant to this DTF. Once this spell is approved and executed, the proposal-threshold will be the correct % that was initially intended at deployment."
+msgstr ""
+
+#: src/hooks/use-compliance-restrictions.ts:33
+msgid "This wallet is not eligible to access this product. If you think this is an error, try connecting a different wallet or contact support."
 msgstr ""
 
 #: src/views/index-dtf/manage/components/manage-about.tsx:89
@@ -8206,7 +8255,7 @@ msgstr ""
 
 #: src/components/stake-drawer/components/submit-stake-button.tsx:180
 #: src/components/stake-drawer/components/submit-unstake-button.tsx:80
-#: src/components/vote-lock/components/submit-lock-button.tsx:210
+#: src/components/vote-lock/components/submit-lock-button.tsx:213
 #: src/components/vote-lock/components/submit-unlock-button.tsx:92
 #: src/hooks/useWatchTransaction.ts:55
 #: src/views/index-dtf/overview/components/staking/lock/submit-lock-button.tsx:215
@@ -8654,7 +8703,7 @@ msgstr ""
 msgid "USD Value"
 msgstr ""
 
-#: src/views/index-dtf/issuance/manual/components/input-box.tsx:42
+#: src/views/index-dtf/issuance/manual/components/input-box.tsx:46
 msgid "Use"
 msgstr ""
 
@@ -8885,7 +8934,7 @@ msgid "Vote lock"
 msgstr ""
 
 #. placeholder {0}: stToken?.underlying.symbol
-#: src/components/vote-lock/components/submit-lock-button.tsx:212
+#: src/components/vote-lock/components/submit-lock-button.tsx:215
 #: src/views/index-dtf/overview/components/staking/lock/submit-lock-button.tsx:217
 msgid "Vote lock {0}"
 msgstr ""
@@ -8902,7 +8951,7 @@ msgstr ""
 msgid "Vote Lock Frequently Asked Questions"
 msgstr ""
 
-#: src/components/vote-lock/components/submit-lock-button.tsx:172
+#: src/components/vote-lock/components/submit-lock-button.tsx:174
 #: src/views/index-dtf/overview/components/staking/lock/submit-lock-button.tsx:176
 msgid "Vote lock successful"
 msgstr ""
@@ -9121,6 +9170,10 @@ msgstr ""
 msgid "Voting starts in:"
 msgstr ""
 
+#: src/hooks/use-compliance-restrictions.ts:40
+msgid "VPN detected"
+msgstr ""
+
 #: src/views/earn/views/defi/components/featured-pool-item.tsx:50
 msgid "w. {tokensLabel} in {projectLabel}"
 msgstr ""
@@ -9171,6 +9224,10 @@ msgstr ""
 msgid "Wallet address"
 msgstr ""
 
+#: src/hooks/use-compliance-restrictions.ts:32
+msgid "Wallet restricted"
+msgstr ""
+
 #: src/views/index-dtf/deploy/components/deploy-coming-soon.tsx:101
 msgid "Want to create an Index DTF?"
 msgstr ""
@@ -9202,6 +9259,10 @@ msgstr ""
 
 #: src/views/index-dtf/governance/components/proposal-preview/unknown-contract-preview.tsx:52
 msgid "We couldn’t retrieve the contract’s ABI from Etherscan. This usually means the contract is not verified. Without its interface, we’re unable to decode any function calls or parameters."
+msgstr ""
+
+#: src/hooks/use-compliance-restrictions.ts:41
+msgid "We detected that you are connecting through a VPN. Please disable it and refresh the page to access this product. If you think this is an error, contact support."
 msgstr ""
 
 #: src/views/index-dtf/deploy/steps/governance/form-existing-erc20.tsx:46

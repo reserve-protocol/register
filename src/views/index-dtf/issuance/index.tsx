@@ -14,7 +14,6 @@ import useTrackIndexDTFPage, {
 import useIsComplianceRestricted from '@/hooks/use-is-compliance-restricted'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import useComplianceRestrictions from '@/hooks/use-compliance-restrictions'
-import { Trans } from '@lingui/macro'
 
 const DTF_DISABLED_FOR_ZAP = [] as string[]
 export const indexDTFQuoteSourceAtom = atom<ZapperProps['defaultSource']>(
