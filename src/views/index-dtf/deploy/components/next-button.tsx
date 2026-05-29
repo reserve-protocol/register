@@ -1,4 +1,5 @@
 import { Button } from '@/components/ui/button'
+import { Trans } from '@lingui/react/macro'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { useEffect } from 'react'
 import { FieldErrors, FieldValues, useFormContext } from 'react-hook-form'
@@ -86,7 +87,7 @@ const NextButton = () => {
         className="rounded-xl w-full py-7 text-base"
         onClick={() => next()}
       >
-        Confirm
+        <Trans>Confirm</Trans>
       </Button>
     </div>
   )

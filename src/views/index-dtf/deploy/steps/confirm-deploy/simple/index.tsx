@@ -8,7 +8,7 @@ import { useZapDeployQuery } from '@/hooks/useZapDeployQuery'
 import { chainIdAtom } from '@/state/atoms'
 import { formatCurrency } from '@/utils'
 import zapper from '@/views/yield-dtf/issuance/components/zapV2/api'
-import { Trans } from '@lingui/macro'
+import { Trans, useLingui } from '@lingui/react/macro'
 import { useAtom, useAtomValue } from 'jotai'
 import { RefreshCw } from 'lucide-react'
 import { useEffect } from 'react'
@@ -31,7 +31,9 @@ const CopyPayloadButton = () => {
 
   return (
     <div className="flex items-center gap-1 text-xs">
-      <div>Copy payload to share with engineering team</div>
+      <div>
+        <Trans>Copy payload to share with engineering team</Trans>
+      </div>
       <Copy value={JSON.stringify(zapDeployPayload)} />
     </div>
   )
@@ -57,6 +59,7 @@ const RefreshQuote = ({
 }
 
 const SimpleIndexDeploy = () => {
+  const { t } = useLingui()
   const chainId = useAtomValue(chainIdAtom)
   const [inputToken, setInputToken] = useAtom(inputTokenAtom)
   const inputBalance = useAtomValue(inputBalanceAtom)
@@ -104,7 +107,7 @@ const SimpleIndexDeploy = () => {
       <div>
         <div className="flex items-center mx-2 mb-1">
           <h4 className="font-bold ml-4 mr-auto">
-            How much do you want to mint?
+            <Trans>How much do you want to mint?</Trans>
           </h4>
           <RefreshQuote
             onClick={refetch}
@@ -125,7 +128,7 @@ const SimpleIndexDeploy = () => {
               onTokenSelect: setInputToken,
             }}
             to={{
-              title: 'You mint:',
+              title: t`You mint:`,
               price: priceTo ? `$${formatCurrency(priceTo)}` : undefined,
               symbol: form.symbol,
               value: formatEther(BigInt(valueTo || 0)),
@@ -146,10 +149,10 @@ const SimpleIndexDeploy = () => {
             <>
               <Button size="lg" className="w-full" disabled>
                 {isLoading || isFetching
-                  ? 'Loading...'
+                  ? t`Loading...`
                   : insufficientBalance
-                    ? 'Insufficient balance'
-                    : 'Deploy'}
+                    ? t`Insufficient balance`
+                    : t`Deploy`}
               </Button>
               {(data?.error || failureReason?.message) && (
                 <div className="flex flex-col items-center gap-2">

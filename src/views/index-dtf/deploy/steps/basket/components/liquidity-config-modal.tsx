@@ -18,6 +18,7 @@ import { useAtom } from 'jotai'
 import { Settings } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { liquiditySimulationAmountAtom } from '../atoms'
+import { Trans } from '@lingui/react/macro'
 
 const MIN_AMOUNT = 10
 const MAX_AMOUNT = 100000
@@ -83,18 +84,24 @@ const LiquidityConfigModal = () => {
             </DialogTrigger>
           </TooltipTrigger>
           <TooltipContent>
-            <p>Simulation config</p>
+            <p>
+              <Trans>Simulation config</Trans>
+            </p>
           </TooltipContent>
         </Tooltip>
       </TooltipProvider>
 
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle>Liquidity simulation amount</DialogTitle>
+          <DialogTitle>
+            <Trans>Liquidity simulation amount</Trans>
+          </DialogTitle>
         </DialogHeader>
         <div className="flex flex-col gap-6">
           <p className="text-sm text-muted-foreground">
-            Set the USD amount per token used to simulate price impact.
+            <Trans>
+              Set the USD amount per token used to simulate price impact.
+            </Trans>
           </p>
           <div className="flex items-center gap-2">
             <span className="text-muted-foreground">$</span>
@@ -120,7 +127,7 @@ const LiquidityConfigModal = () => {
             </div>
           </div>
           <Button onClick={handleSimulate} className="w-full">
-            Simulate
+            <Trans>Simulate</Trans>
           </Button>
         </div>
       </DialogContent>

@@ -10,6 +10,7 @@ import { Token } from '@/types'
 import { isAddress } from '@/utils'
 import { useFormContext } from 'react-hook-form'
 import { basketAtom } from '../../atoms'
+import { Trans, useLingui } from '@lingui/react/macro'
 
 const MAX_FILE_SIZE = 1024 * 1024 // 1MB
 
@@ -37,6 +38,7 @@ const getRowValues = (row: string) => {
 }
 
 const BasketCsvSetup = () => {
+  const { t } = useLingui()
   const chainId = useAtomValue(chainIdAtom)
   const [basket, setBasket] = useAtom(basketAtom)
   const { data: tokenList } = useTokenList(chainId, { unfiltered: true })
@@ -47,12 +49,12 @@ const BasketCsvSetup = () => {
       setError(null)
 
       if (!tokenList) {
-        setError('Loading token list... please try again')
+        setError(t`Loading token list... please try again`)
         return
       }
 
       if (rejectedFiles.length > 0) {
-        setError('Please upload a CSV file less than 1MB.')
+        setError(t`Please upload a CSV file less than 1MB.`)
         return
       }
 
@@ -87,7 +89,7 @@ const BasketCsvSetup = () => {
 
           const csvText = event.target?.result as string
           if (!csvText) {
-            setError('Failed to read CSV file')
+            setError(t`Failed to read CSV file`)
             return
           }
 
@@ -122,21 +124,21 @@ const BasketCsvSetup = () => {
           setValue('tokensDistribution', newShares)
 
           if (newBasket.length === 0) {
-            setError('No valid tokens found in the CSV file.')
+            setError(t`No valid tokens found in the CSV file.`)
           }
         } catch (err) {
           console.error('Error parsing CSV:', err)
-          setError('Failed to parse CSV file. Please check the format.')
+          setError(t`Failed to parse CSV file. Please check the format.`)
         }
       }
 
       reader.onerror = () => {
-        setError('Error reading the file')
+        setError(t`Error reading the file`)
       }
 
       reader.readAsText(file)
     },
-    [tokenList, setValue, basket, setBasket]
+    [tokenList, setValue, basket, setBasket, t]
   )
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
@@ -203,12 +205,16 @@ const BasketCsvSetup = () => {
         <FilePlus2 size={16} />
       </div>
       <div className="text-base mr-auto">
-        <p className="font-bold">Setup Basket with CSV</p>
+        <p className="font-bold">
+          <Trans>Setup Basket with CSV</Trans>
+        </p>
         <p>
           <span className="text-primary cursor-pointer">
-            Select a CSV file to upload
+            <Trans>Select a CSV file to upload</Trans>
           </span>{' '}
-          <span className="text-legend">or drag and drop it here</span>
+          <span className="text-legend">
+            <Trans>or drag and drop it here</Trans>
+          </span>
         </p>
       </div>
       <Button
@@ -216,7 +222,7 @@ const BasketCsvSetup = () => {
         className="text-legend font-normal gap-2"
         onClick={handleTemplate}
       >
-        CSV Template
+        <Trans>CSV Template</Trans>
         <DownloadCloud size={14} />
       </Button>
     </div>

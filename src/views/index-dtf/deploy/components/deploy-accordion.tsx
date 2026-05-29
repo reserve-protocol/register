@@ -25,6 +25,9 @@ import {
 } from 'lucide-react'
 import { ReactNode, useEffect } from 'react'
 import { useFormContext } from 'react-hook-form'
+import { msg } from '@lingui/core/macro'
+import { useLingui } from '@lingui/react/macro'
+import type { MessageDescriptor } from '@lingui/core'
 import { chainIdAtom } from '@/state/atoms'
 import {
   basketAtom,
@@ -52,8 +55,8 @@ import { scrollToSection } from '../utils'
 export type DeployStep = {
   id: DeployStepId
   icon: ReactNode
-  title: string
-  titleSecondary: string
+  title: MessageDescriptor
+  titleSecondary: MessageDescriptor
   content: ReactNode
 }
 
@@ -61,57 +64,57 @@ export const DEPLOY_STEPS: DeployStep[] = [
   {
     id: 'metadata',
     icon: <Braces size={14} strokeWidth={1.5} />,
-    title: 'Metadata',
-    titleSecondary: 'Metadata',
+    title: msg`Metadata`,
+    titleSecondary: msg`Metadata`,
     content: <MetadataAndChain />,
   },
   {
     id: 'basket',
     icon: <Boxes size={14} strokeWidth={1.5} />,
-    title: 'Basket',
-    titleSecondary: 'Basket',
+    title: msg`Basket`,
+    titleSecondary: msg`Basket`,
     content: <FTokenBasket />,
   },
   {
     id: 'governance',
     icon: <Landmark size={14} strokeWidth={1.5} />,
-    title: 'Governance Body',
-    titleSecondary: 'Governance Body',
+    title: msg`Governance Body`,
+    titleSecondary: msg`Governance Body`,
     content: <Governance />,
   },
   {
     id: 'revenue-distribution',
     icon: <BadgePercent size={14} strokeWidth={1.5} />,
-    title: 'Fees',
-    titleSecondary: 'Fees',
+    title: msg`Fees`,
+    titleSecondary: msg`Fees`,
     content: <RevenueDistribution />,
   },
   {
     id: 'roles',
     icon: <Crown size={14} strokeWidth={1.5} />,
-    title: 'Roles',
-    titleSecondary: 'Roles',
+    title: msg`Roles`,
+    titleSecondary: msg`Roles`,
     content: <Roles />,
   },
   {
     id: 'auctions',
     icon: <ArrowDownUp size={14} strokeWidth={1.5} />,
-    title: 'Auctions',
-    titleSecondary: 'Auctions',
+    title: msg`Auctions`,
+    titleSecondary: msg`Auctions`,
     content: <Auctions />,
   },
   {
     id: 'basket-changes',
     icon: <ReplaceAll size={14} strokeWidth={1.5} />,
-    title: 'Basket Governance Settings',
-    titleSecondary: 'Basket Governance Settings',
+    title: msg`Basket Governance Settings`,
+    titleSecondary: msg`Basket Governance Settings`,
     content: <BasketChanges />,
   },
   {
     id: 'other-changes',
     icon: <PencilRuler size={14} strokeWidth={1.5} />,
-    title: 'Non-Basket Governance Settings',
-    titleSecondary: 'Non-Basket Governance Settings',
+    title: msg`Non-Basket Governance Settings`,
+    titleSecondary: msg`Non-Basket Governance Settings`,
     content: <OtherChanges />,
   },
 ]
@@ -122,6 +125,7 @@ const DeployAccordionTrigger = ({
   title,
   validated,
 }: Omit<DeployStep, 'content' | 'titleSecondary'> & { validated: boolean }) => {
+  const { t } = useLingui()
   const selectedSection = useAtomValue(deployStepAtom)
   const isActive = selectedSection === id
 
@@ -153,7 +157,7 @@ const DeployAccordionTrigger = ({
             isActive ? 'text-primary hidden' : ''
           )}
         >
-          {title}
+          {t(title)}
         </div>
       </div>
       <div className="flex items-center gap-1">
@@ -174,6 +178,7 @@ const DeployAccordionTrigger = ({
 }
 
 const DeployAccordion = () => {
+  const { t } = useLingui()
   const { reset, watch } = useFormContext()
   const [section, setSection] = useAtom(deployStepAtom)
   const setChainId = useSetAtom(chainIdAtom)
@@ -248,7 +253,7 @@ const DeployAccordion = () => {
           />
           <AccordionContent className="flex flex-col animate-fade-in">
             <div className="text-2xl font-bold text-primary ml-6 mb-2">
-              {titleSecondary}
+              {t(titleSecondary)}
             </div>
             {content}
           </AccordionContent>

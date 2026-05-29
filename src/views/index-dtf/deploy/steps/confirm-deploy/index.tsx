@@ -26,6 +26,7 @@ import SuccessView from './success'
 import Ticker from '../../utils/ticker'
 import { TransactionButtonContainer } from '@/components/ui/transaction-button'
 import { Address } from 'viem'
+import { Trans } from '@lingui/react/macro'
 
 const Header = () => {
   const form = useAtomValue(indexDeployFormDataAtom)
@@ -33,11 +34,13 @@ const Header = () => {
   return (
     <div className="p-6 py-2">
       <h1 className="text-primary text-2xl font-bold">
-        Create the genesis token
+        <Trans>Create the genesis token</Trans>
       </h1>
       <p className="mt-1">
-        You need to mint at least $1 worth of {form?.symbol} in order to create
-        your new Index DTF.
+        <Trans>
+          You need to mint at least $1 worth of {form?.symbol} in order to
+          create your new Index DTF.
+        </Trans>
       </p>
     </div>
   )
@@ -104,7 +107,9 @@ const ConfirmIndexDeploy = ({ isActive }: { isActive: boolean }) => {
             }}
           >
             <span>
-              Create <Ticker defaultSymbol="" />
+              <Trans>
+                Create <Ticker defaultSymbol="" />
+              </Trans>
             </span>
           </Button>
         </DrawerTrigger>
@@ -130,14 +135,14 @@ const ConfirmIndexDeploy = ({ isActive }: { isActive: boolean }) => {
                     resetInput()
                   }}
                 >
-                  Simple deploy
+                  <Trans>Simple deploy</Trans>
                 </TabsTrigger>
                 <TabsTrigger
                   value="manual"
                   className="w-max h-7"
                   onClick={resetInitialTokens}
                 >
-                  Manual deploy
+                  <Trans>Manual deploy</Trans>
                 </TabsTrigger>
               </TabsList>
             </DrawerTitle>

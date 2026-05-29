@@ -15,12 +15,15 @@ import { Token } from '@/types'
 import { formatUnits, parseUnits } from 'viem'
 import { getCurrentBasket } from '@/lib/index-rebalance/utils'
 import LiquidityUpdater from './components/liquidity-updater'
+import { Trans } from '@lingui/react/macro'
 
 const Description = () => (
   <div className="px-6 pb-6 text-base">
-    An Index DTF is a tokenized basket of assets. Please add the tokens that
-    will compose your index DTF basket at launch. The basket can be changed by
-    governance in the future.
+    <Trans>
+      An Index DTF is a tokenized basket of assets. Please add the tokens that
+      will compose your index DTF basket at launch. The basket can be changed by
+      governance in the future.
+    </Trans>
   </div>
 )
 

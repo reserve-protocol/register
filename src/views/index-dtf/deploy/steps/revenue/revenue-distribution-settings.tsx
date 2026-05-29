@@ -1,11 +1,14 @@
 import { Button } from '@/components/ui/button'
+import { msg } from '@lingui/core/macro'
+import { Trans, useLingui } from '@lingui/react/macro'
+import type { MessageDescriptor } from '@lingui/core'
 import { useAtomValue } from 'jotai'
 import {
   Landmark,
   LandPlot,
   TrainTrack,
 } from 'lucide-react'
-import { useCallback, useEffect } from 'react'
+import { ReactNode, useCallback, useEffect } from 'react'
 import { useFormContext, useWatch } from 'react-hook-form'
 import { selectedGovernanceOptionAtom } from '../../atoms'
 import BasicInput from '../../components/basic-input'
@@ -13,26 +16,30 @@ import { Decimal } from '../../utils/decimals'
 import AdditionalRevenueRecipients from './additional-revenue-recipients'
 import usePlatformFee from '@/hooks/use-platform-fee'
 
-const SETTINGS = [
+const SETTINGS: {
+  title: MessageDescriptor
+  description: MessageDescriptor
+  field: string
+  icon: ReactNode
+  disabled?: boolean
+}[] = [
   {
-    title: 'Platform',
-    description:
-      'Percentage of fee revenue sent to the protocol; cannot be changed by governance.',
+    title: msg`Platform`,
+    description: msg`Percentage of fee revenue sent to the protocol; cannot be changed by governance.`,
     field: 'fixedPlatformFee',
     icon: <TrainTrack size={14} strokeWidth={1.5} />,
     disabled: true,
   },
   {
-    title: 'Creator',
-    description: 'Percentage of fee revenue sent to the creator of the DTF.',
+    title: msg`Creator`,
+    description: msg`Percentage of fee revenue sent to the creator of the DTF.`,
     icon: <Landmark size={14} strokeWidth={1.5} />,
     field: 'deployerShare',
   },
   {
-    title: 'Governance',
+    title: msg`Governance`,
     icon: <LandPlot size={14} strokeWidth={1.5} />,
-    description:
-      'Percentage of fee revenue sent to the vote-lock DAO governing the DTF.',
+    description: msg`Percentage of fee revenue sent to the vote-lock DAO governing the DTF.`,
     field: 'governanceShare',
   },
 ]
@@ -86,7 +93,9 @@ const RemainingAllocation = () => {
 
   return (
     <div className="text-base ml-auto px-4">
-      <span className="text-muted-foreground">Remaining allocation:</span>{' '}
+      <span className="text-muted-foreground">
+        <Trans>Remaining allocation:</Trans>
+      </span>{' '}
       <span className={isNegative ? 'text-red-500' : ''}>
         {isNegative ? `-${displayValue}` : displayValue}%
       </span>
@@ -142,12 +151,13 @@ const EvenDistributionButton = () => {
       className="flex gap-2 text-base pl-3 pr-4 rounded-xl text-nowrap w-48 py-7 -mr-2 bg-muted/80"
       onClick={onEvenDistribution}
     >
-      Even distribution
+      <Trans>Even distribution</Trans>
     </Button>
   )
 }
 
 const RevenueDistributionSettings = () => {
+  const { t } = useLingui()
   const { getValues, watch, setValue } = useFormContext()
   const selectedGovOption = useAtomValue(selectedGovernanceOptionAtom)
   const chain = watch('chain')
@@ -173,7 +183,7 @@ const RevenueDistributionSettings = () => {
         {settings.map(({ title, description, field, icon, disabled }) => (
           <div
             className="w-full rounded-xl flex items-center gap-2 justify-between p-4 bg-muted/70"
-            key={title}
+            key={field}
           >
             <div className="flex items-center gap-2">
               <div className="p-2 border border-foreground rounded-full">
@@ -181,9 +191,9 @@ const RevenueDistributionSettings = () => {
               </div>
 
               <div className="flex flex-col">
-                <div className="text-base font-bold">{title}</div>
+                <div className="text-base font-bold">{t(title)}</div>
                 <div className="flex items-center gap-1 text-sm text-muted-foreground">
-                  {description}
+                  {t(description)}
                 </div>
               </div>
             </div>

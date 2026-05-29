@@ -27,6 +27,7 @@ import {
 
 import { useFormContext } from 'react-hook-form'
 import { useWaitForTransactionReceipt } from 'wagmi'
+import { useLingui } from '@lingui/react/macro'
 import { indexDeployFormDataAtom } from '../../atoms'
 import {
   basketRequiredAmountsAtom,
@@ -241,6 +242,7 @@ const txAtom = atom<
 })
 
 const ConfirmManualDeployButton = () => {
+  const { t } = useLingui()
   const { watch } = useFormContext()
   const formChainId = watch('chain')
   const tx = useAtomValue(txAtom)
@@ -276,14 +278,14 @@ const ConfirmManualDeployButton = () => {
     }
   }, [receipt])
 
-  let title = isReady ? 'Create DTF' : 'Preparing transaction...'
+  let title = isReady ? t`Create DTF` : t`Preparing transaction...`
 
   if (!hasAssetsAllowance) {
-    title = 'Pending allowance...'
+    title = t`Pending allowance...`
   }
 
   if (hasAssetsAllowance && !hasBalance) {
-    title = 'Insufficient asset balance'
+    title = t`Insufficient asset balance`
   }
 
   return (
@@ -293,7 +295,7 @@ const ConfirmManualDeployButton = () => {
           disabled={!isReady}
           gas={undefined}
           loading={isLoading || !!hash}
-          loadingText={!!hash ? 'Confirming tx...' : 'Pending, sign in wallet'}
+          loadingText={!!hash ? t`Confirming tx...` : t`Pending, sign in wallet`}
           onClick={write}
           text={title}
           className="w-full"
