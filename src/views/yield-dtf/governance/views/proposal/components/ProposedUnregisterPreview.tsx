@@ -1,4 +1,4 @@
-import { t } from '@lingui/macro'
+import { useLingui } from '@lingui/react/macro'
 import { useAtom } from 'jotai'
 import { cn } from '@/lib/utils'
 import { shortenAddress } from 'utils'
@@ -11,6 +11,7 @@ interface Props {
 }
 
 const ProposedUnregisterPreview = ({ className }: Props) => {
+  const { t } = useLingui()
   const [assetsToUnregister, setAssetsToUnregister] =
     useAtom(unregisterAssetsAtom)
 

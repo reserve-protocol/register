@@ -1,3 +1,4 @@
+import { Trans } from '@lingui/react/macro'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { Separator } from '@/components/ui/separator'
@@ -11,22 +12,30 @@ const PauseIssuanceProposal = () => {
 
   return (
     <Card className="p-6 bg-secondary">
-      <span className="text-lg font-semibold">Pause issuance</span>
+      <span className="text-lg font-semibold">
+        <Trans>Pause issuance</Trans>
+      </span>
       <Separator className="my-6 -mx-6 w-[calc(100%+3rem)]" />
       <div className="flex items-center justify-between">
         <div>
-          <span className="text-legend text-xs block">Current status</span>
+          <span className="text-legend text-xs block">
+            <Trans>Current status</Trans>
+          </span>
           <span className="font-semibold inline-flex items-center gap-1.5">
             <span
               className={`inline-block size-2.5 rounded-full ${issuancePaused ? 'bg-destructive' : 'bg-green-500'}`}
             />
-            {issuancePaused ? 'Issuance paused' : 'Issuance active'}
+            {issuancePaused ? (
+              <Trans>Issuance paused</Trans>
+            ) : (
+              <Trans>Issuance active</Trans>
+            )}
           </span>
         </div>
         <div className="flex gap-2">
           {pauseAction !== 'none' && (
             <Button variant="ghost" size="sm" onClick={() => setPauseAction('none')}>
-              Discard
+              <Trans>Discard</Trans>
             </Button>
           )}
           {!issuancePaused && (
@@ -37,7 +46,7 @@ const PauseIssuanceProposal = () => {
                 setPauseAction(pauseAction === 'pause' ? 'none' : 'pause')
               }
             >
-              Pause issuance
+              <Trans>Pause issuance</Trans>
             </Button>
           )}
           {issuancePaused && (
@@ -48,7 +57,7 @@ const PauseIssuanceProposal = () => {
                 setPauseAction(pauseAction === 'unpause' ? 'none' : 'unpause')
               }
             >
-              Unpause issuance
+              <Trans>Unpause issuance</Trans>
             </Button>
           )}
         </div>

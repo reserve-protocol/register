@@ -1,4 +1,4 @@
-import { Trans } from '@lingui/macro'
+import { Trans } from '@lingui/react/macro'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { Button } from '@/components/ui/button'
 import { isProposalEditingAtom, isProposalValidAtom } from '../atoms'
@@ -28,8 +28,10 @@ const ProposalOverview = ({ className }: Props) => {
             <Trans>Confirm changes made</Trans>
           </span>
           <p className="text-legend">
-            Preview of function calls & adding of a proposal description is
-            added in the next step.
+            <Trans>
+              Preview of function calls & adding of a proposal description is
+              added in the next step.
+            </Trans>
           </p>
           <Button
             onClick={handleProposal}

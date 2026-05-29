@@ -1,4 +1,4 @@
-import { Trans, t } from '@lingui/macro'
+import { Trans, useLingui } from '@lingui/react/macro'
 import { Button } from '@/components/ui/button'
 import ExternalArrowIcon from 'components/icons/ExternalArrowIcon'
 import IssuanceIcon from 'components/icons/IssuanceIcon'
@@ -25,6 +25,7 @@ const getButtonStyles = (sim: TenderlySimulation | null) => {
 }
 
 const ProposalStatus = () => {
+  const { t } = useLingui()
   const { sim, isLoading, error, handleSimulation } = useProposalSimulation()
   const resetSimulation = useResetAtom(simulationStateAtom)
 
@@ -57,21 +58,23 @@ const ProposalStatus = () => {
       </Button>
       {error && (
         <p className="text-sm text-destructive">
-          Simulation Error. Please try again later.
+          <Trans>Simulation Error. Please try again later.</Trans>
         </p>
       )}
       {sim && (
         <div className="flex flex-col items-center text-center">
           <span className="font-bold">
-            View on{' '}
-            <a
-              href={`${TENDERLY_SHARING_URL(sim.simulation.id)}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-primary hover:underline"
-            >
-              Tenderly <ExternalArrowIcon className="inline-block" />
-            </a>
+            <Trans>
+              View on{' '}
+              <a
+                href={`${TENDERLY_SHARING_URL(sim.simulation.id)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-primary hover:underline"
+              >
+                Tenderly <ExternalArrowIcon className="inline-block" />
+              </a>
+            </Trans>
           </span>
         </div>
       )}
@@ -91,12 +94,16 @@ const SimulateProposal = ({ tx, className }: Props) => {
             <Trans>Simulate Proposal</Trans>
           </span>
           <p className="text-legend">
-            Simulate your proposal to see the outcome of its execution. A report
-            of its execution will be generated
+            <Trans>
+              Simulate your proposal to see the outcome of its execution. A
+              report of its execution will be generated
+            </Trans>
           </p>
           <br />
           <div className="flex items-center text-center gap-2">
-            <span>Powered by </span>
+            <span>
+              <Trans>Powered by</Trans>{' '}
+            </span>
             <Tenderly height={30} width={100} />
           </div>
           <ProposalStatus />

@@ -1,4 +1,4 @@
-import { t, Trans } from '@lingui/macro'
+import { Trans, useLingui } from '@lingui/react/macro'
 import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
 import { backupCollateralAtom } from 'components/rtoken-setup/atoms'
@@ -22,6 +22,7 @@ interface Props {
 }
 
 const ProposedBackupPreview = ({ className }: Props) => {
+  const { t } = useLingui()
   const [isNewBackupProposed, setProposeNewBackup] = useAtom(
     isNewBackupProposedAtom
   )
@@ -104,7 +105,9 @@ const ProposedBackupPreview = ({ className }: Props) => {
               checked={autoRegister}
               onCheckedChange={() => setAutoRegister(!autoRegister)}
             />
-            <span className="font-semibold">Generate Asset Registry calls</span>
+            <span className="font-semibold">
+              <Trans>Generate Asset Registry calls</Trans>
+            </span>
           </div>
         </label>
       </div>

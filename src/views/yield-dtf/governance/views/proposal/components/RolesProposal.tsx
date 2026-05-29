@@ -1,4 +1,6 @@
-import { Trans } from '@lingui/macro'
+import { msg } from '@lingui/core/macro'
+import type { MessageDescriptor } from '@lingui/core'
+import { Trans, useLingui } from '@lingui/react/macro'
 import RolesEdit from 'components/rtoken-setup/components/RolesEdit'
 import { useAtom, useAtomValue } from 'jotai'
 import { useEffect } from 'react'
@@ -10,13 +12,13 @@ import { proposedRolesAtom } from '../atoms'
 
 const roleMap: {
   roleKey: RoleKey
-  title: string
+  title: MessageDescriptor
 }[] = [
-    { roleKey: 'owners', title: 'Owners' },
-    { roleKey: 'pausers', title: 'Pausers' },
-    { roleKey: 'freezers', title: 'Freezers' },
-    { roleKey: 'longFreezers', title: 'Long Freezers' },
-    { roleKey: 'guardians', title: 'Guardians' },
+    { roleKey: 'owners', title: msg`Owners` },
+    { roleKey: 'pausers', title: msg`Pausers` },
+    { roleKey: 'freezers', title: msg`Freezers` },
+    { roleKey: 'longFreezers', title: msg`Long Freezers` },
+    { roleKey: 'guardians', title: msg`Guardians` },
   ]
 
 interface RolesProposalProps {
@@ -24,6 +26,7 @@ interface RolesProposalProps {
 }
 
 const RolesProposal = ({ className }: RolesProposalProps) => {
+  const { t } = useLingui()
   const rTokenRoles = useAtomValue(rTokenManagersAtom)
   const { guardians = [] } = useAtomValue(rTokenGovernanceAtom)
   const [roles, setProposedRoles] = useAtom(proposedRolesAtom)
@@ -46,7 +49,7 @@ const RolesProposal = ({ className }: RolesProposalProps) => {
         <div key={roleKey}>
           {!!index && <Separator className="mb-4 mt-6 -mx-6 w-[calc(100%+3rem)]" />}
           <RolesEdit
-            title={title}
+            title={t(title)}
             addresses={roles[roleKey]}
             onChange={(value) => handleChange(roleKey, value)}
           />

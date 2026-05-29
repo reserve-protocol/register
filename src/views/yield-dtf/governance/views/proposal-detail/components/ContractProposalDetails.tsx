@@ -1,4 +1,4 @@
-import { Trans } from '@lingui/macro'
+import { Trans, useLingui } from '@lingui/react/macro'
 import GoTo from '@/components/ui/go-to'
 import { MODES } from 'components/dark-mode-toggle'
 import TabMenu from 'components/tab-menu'
@@ -76,6 +76,7 @@ const Header = ({ label, address }: { label: string; address: string }) => {
 }
 
 const JSONPreview = ({ data }: { data: any }) => {
+  const { t } = useLingui()
   const { theme } = useTheme()
 
   if (data.length === 1 && typeof data[0] === 'object') {
@@ -100,7 +101,7 @@ const JSONPreview = ({ data }: { data: any }) => {
 
   return (
     <span className="font-bold break-all">
-      {data && data[0] !== undefined ? data[0].toString() : 'None'}
+      {data && data[0] !== undefined ? data[0].toString() : t`None`}
     </span>
   )
 }
@@ -134,10 +135,13 @@ const DetailedCallPreview = ({
   return <BasketChangeSummary call={call} snapshotBlock={snapshotBlock} />
 }
 
-const previewOptions = [
-  { label: 'Summary', key: 'summary' },
-  { label: 'Raw', key: 'raw' },
-]
+const usePreviewOptions = () => {
+  const { t } = useLingui()
+  return [
+    { label: t`Summary`, key: 'summary' },
+    { label: t`Raw`, key: 'raw' },
+  ]
+}
 
 const CallPreview = ({
   call,
@@ -150,6 +154,8 @@ const CallPreview = ({
   total: number
   snapshotBlock?: number
 }) => {
+  const { t } = useLingui()
+  const previewOptions = usePreviewOptions()
   const displayDetailedOption = call.signature === 'setPrimeBasket'
   const [detailed, setDetailed] = useState(
     displayDetailedOption ? 'summary' : 'raw'
@@ -163,7 +169,7 @@ const CallPreview = ({
     >
       <div className="flex items-center mb-2">
         <span className="font-bold text-primary mr-auto text-sm">
-          {index + 1}/{total} {isDetailed && 'Set Primary basket'}
+          {index + 1}/{total} {isDetailed && t`Set Primary basket`}
         </span>
         {displayDetailedOption && (
           <TabMenu
@@ -202,6 +208,8 @@ const DistributionCallGroup = ({
   total: number
   snapshotBlock?: number
 }) => {
+  const { t } = useLingui()
+  const previewOptions = usePreviewOptions()
   const [detailed, setDetailed] = useState('summary')
   const isDetailed = detailed === 'summary'
 
@@ -210,7 +218,7 @@ const DistributionCallGroup = ({
       <div className="flex items-center mb-2">
         <span className="font-bold text-primary mr-auto text-sm">
           {index + 1}/{total}{' '}
-          {isDetailed && 'Set Revenue Distribution'}
+          {isDetailed && t`Set Revenue Distribution`}
         </span>
         <TabMenu
           ml="auto"

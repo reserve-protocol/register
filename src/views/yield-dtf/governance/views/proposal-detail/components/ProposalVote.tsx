@@ -1,4 +1,4 @@
-import { Trans } from '@lingui/macro'
+import { Trans, useLingui } from '@lingui/react/macro'
 import StRSRVotes from 'abis/StRSRVotes'
 import { Button } from '@/components/ui/button'
 import ExternalArrowIcon from 'components/icons/ExternalArrowIcon'
@@ -46,7 +46,9 @@ const ViewExecuteTxButton = () => {
         )
       }
     >
-      <span className="mr-2">View execute tx</span>
+      <span className="mr-2">
+        <Trans>View execute tx</Trans>
+      </span>
       <ExternalArrowIcon />
     </Button>
   )
@@ -72,6 +74,7 @@ interface ProposalVoteProps {
 
 // TODO: Validate voting power first?
 const ProposalVote = ({ className }: ProposalVoteProps) => {
+  const { t } = useLingui()
   const account = useAtomValue(walletAtom)
   const rToken = useRToken()
   const chainId = useAtomValue(chainIdAtom)
@@ -117,7 +120,9 @@ const ProposalVote = ({ className }: ProposalVoteProps) => {
           <div className="flex items-center gap-2 p-3 justify-between text-xs flex-wrap border-b border-secondary">
             <div className="flex items-center gap-1">
               <AsteriskIcon />
-              <span>Your voting power:</span>
+              <span>
+                <Trans>Your voting power:</Trans>
+              </span>
               <span className="font-bold">
                 {formatCurrency(votePower ? +votePower : 0)}
               </span>
@@ -132,7 +137,9 @@ const ProposalVote = ({ className }: ProposalVoteProps) => {
               onClick={() => hasUndelegatedBalance && setDelegateVisible(true)}
             >
               <DelegateIcon />
-              <span className="font-bold">Delegate</span>
+              <span className="font-bold">
+                <Trans>Delegate</Trans>
+              </span>
             </div>
           </div>
         )}
@@ -163,9 +170,9 @@ const ProposalVote = ({ className }: ProposalVoteProps) => {
               onClick={() => setVoteVisible(true)}
             >
               {!account ? (
-                'Please connect your wallet'
+                t`Please connect your wallet`
               ) : vote ? (
-                `You voted "${vote}"`
+                t`You voted "${vote}"`
               ) : (
                 <Trans>Vote on-chain</Trans>
               )}

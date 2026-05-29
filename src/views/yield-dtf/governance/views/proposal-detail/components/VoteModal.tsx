@@ -2,7 +2,7 @@ import { Checkbox } from '@/components/ui/checkbox'
 
 import { Separator } from '@/components/ui/separator'
 import TransactionButton from '@/components/ui/transaction-button'
-import { t, Trans } from '@lingui/macro'
+import { Trans, useLingui } from '@lingui/react/macro'
 import Governance from 'abis/Governance'
 import { Modal, ModalProps } from 'components'
 import useContractWrite from 'hooks/useContractWrite'
@@ -32,6 +32,7 @@ export const VOTE_TYPE = {
 }
 
 const VoteModal = (props: ModalProps) => {
+  const { t } = useLingui()
   const chainId = useAtomValue(chainIdAtom)
   const [vote, setVote] = useState(-1)
   const proposal = useAtomValue(proposalDetailAtom)
@@ -63,7 +64,9 @@ const VoteModal = (props: ModalProps) => {
         <div className="flex flex-col items-center justify-center p-6">
           <CheckCircle size={36} />
           <br />
-          <span>Transactions signed!</span>
+          <span>
+            <Trans>Transactions signed!</Trans>
+          </span>
           <br />
           <a
             href={getExplorerLink(hash, chainId, ExplorerDataType.TRANSACTION)}
@@ -86,7 +89,7 @@ const VoteModal = (props: ModalProps) => {
           "
           {proposal?.description
             ? getProposalTitle(proposal.description)
-            : 'Loading...'}
+            : t`Loading...`}
         </span>
         <div className="flex items-center mt-2">
           <span className="text-legend">

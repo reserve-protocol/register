@@ -1,4 +1,4 @@
-import { t, Trans } from '@lingui/macro'
+import { Trans, useLingui } from '@lingui/react/macro'
 import { createColumnHelper } from '@tanstack/react-table'
 import GoTo from '@/components/ui/go-to'
 import EmptyBoxIcon from 'components/icons/EmptyBoxIcon'
@@ -79,6 +79,7 @@ interface TopVotersProps {
 }
 
 const TopVoters = ({ className }: TopVotersProps) => {
+  const { t } = useLingui()
   const { data } = useVoters()
   const chainId = useAtomValue(chainIdAtom)
   const columnHelper = createColumnHelper<Voter>()
@@ -130,7 +131,7 @@ const TopVoters = ({ className }: TopVotersProps) => {
         header: t`Proposals voted`,
       }),
     ],
-    [chainId]
+    [chainId, t]
   )
 
   return (
