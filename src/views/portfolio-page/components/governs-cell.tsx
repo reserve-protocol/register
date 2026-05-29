@@ -1,4 +1,5 @@
 import { getFolioRoute } from '@/utils'
+import { Trans } from '@lingui/react/macro'
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { PortfolioVoteLock } from '../types'
@@ -42,7 +43,11 @@ const GovernsCell = ({
             setExpanded(!expanded)
           }}
         >
-          {expanded ? 'show less' : `+${remaining} more`}
+          {expanded ? (
+            <Trans>show less</Trans>
+          ) : (
+            <Trans>+{remaining} more</Trans>
+          )}
         </button>
       )}
     </div>

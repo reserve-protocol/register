@@ -1,8 +1,16 @@
 import { formatUSD } from '@/utils'
+import { Trans } from '@lingui/react/macro'
 import { useAtomValue } from 'jotai'
+import { ReactNode } from 'react'
 import { portfolioBreakdownAtom } from '../atoms'
 
-const BreakdownRow = ({ label, value }: { label: string; value: number }) => (
+const BreakdownRow = ({
+  label,
+  value,
+}: {
+  label: ReactNode
+  value: number
+}) => (
   <div className="flex items-center justify-between">
     <span className="text-base font-light">{label}</span>
     <span className="text-base font-bold whitespace-nowrap">{formatUSD(value)}</span>
@@ -18,15 +26,17 @@ const PortfolioBreakdown = () => {
     <div className="bg-card border border-border rounded-[20px] px-6 py-4">
       <div className="mb-4">
         <h3 className="font-bold text-xl text-primary leading-[30px]">
-          Portfolio Breakdown
+          <Trans>Portfolio Breakdown</Trans>
         </h3>
-        <p className="text-sm font-light text-legend">Value by asset type</p>
+        <p className="text-sm font-light text-legend">
+          <Trans>Value by asset type</Trans>
+        </p>
       </div>
       <div className="flex flex-col gap-2">
-        <BreakdownRow label="Index DTFs" value={indexValue} />
-        <BreakdownRow label="Yield DTFs" value={yieldValue} />
-        <BreakdownRow label="Staked RSR" value={stakedValue} />
-        <BreakdownRow label="Vote-locked" value={voteLockValue} />
+        <BreakdownRow label={<Trans>Index DTFs</Trans>} value={indexValue} />
+        <BreakdownRow label={<Trans>Yield DTFs</Trans>} value={yieldValue} />
+        <BreakdownRow label={<Trans>Staked RSR</Trans>} value={stakedValue} />
+        <BreakdownRow label={<Trans>Vote-locked</Trans>} value={voteLockValue} />
         <BreakdownRow label="RSR" value={rsrValue} />
       </div>
     </div>
