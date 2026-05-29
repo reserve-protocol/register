@@ -826,7 +826,7 @@ msgstr ""
 
 #: src/components/layout/navigation/index.tsx:79
 #: src/components/layout/navigation/TokenNavigation.tsx:197
-#: src/views/index-dtf/components/navigation/index.tsx:152
+#: src/views/index-dtf/components/navigation/index.tsx:154
 #: src/views/index-dtf/deploy/components/deploy-accordion.tsx:102
 #: src/views/index-dtf/deploy/components/deploy-accordion.tsx:103
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/dtf-settings-proposal-sections.tsx:149
@@ -1965,7 +1965,7 @@ msgstr ""
 
 #: src/components/layout/navigation/index.tsx:83
 #: src/components/layout/navigation/TokenNavigation.tsx:209
-#: src/views/index-dtf/components/navigation/index.tsx:157
+#: src/views/index-dtf/components/navigation/index.tsx:159
 msgid "Details + Roles"
 msgstr ""
 
@@ -2100,6 +2100,7 @@ msgstr ""
 msgid "DTF settings proposal"
 msgstr ""
 
+#: src/views/index-dtf/components/navigation/index.tsx:85
 #: src/views/index-dtf/overview/components/index-token-logo.tsx:20
 msgid "dtf token logo"
 msgstr ""
@@ -2682,7 +2683,7 @@ msgstr ""
 #: src/components/layout/navigation/TokenNavigation.tsx:203
 #: src/components/layout/navigation/TokenNavigation.tsx:219
 #: src/components/rtoken-setup/governance/GovernanceSetup.tsx:38
-#: src/views/index-dtf/components/navigation/index.tsx:147
+#: src/views/index-dtf/components/navigation/index.tsx:149
 #: src/views/index-dtf/deploy/steps/revenue/revenue-distribution-settings.tsx:40
 #: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:271
 #: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/basket-settings-proposal-sections.tsx:55
@@ -3424,7 +3425,7 @@ msgid "Mint {0}"
 msgstr ""
 
 #: src/components/layout/navigation/index.tsx:77
-#: src/views/index-dtf/components/navigation/index.tsx:142
+#: src/views/index-dtf/components/navigation/index.tsx:144
 msgid "Mint + Redeem"
 msgstr ""
 
@@ -3876,7 +3877,7 @@ msgstr ""
 
 #: src/components/layout/navigation/index.tsx:76
 #: src/components/layout/navigation/TokenNavigation.tsx:175
-#: src/views/index-dtf/components/navigation/index.tsx:137
+#: src/views/index-dtf/components/navigation/index.tsx:139
 #: src/views/index-dtf/overview/components/basket-overview/bridge-info-dialog.tsx:92
 msgid "Overview"
 msgstr ""
