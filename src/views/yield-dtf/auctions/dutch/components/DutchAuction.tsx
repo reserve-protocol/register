@@ -1,3 +1,4 @@
+import { useLingui } from '@lingui/react/macro'
 import TokenLogo from 'components/icons/TokenLogo'
 import { ArrowRight } from 'lucide-react'
 import { Card } from '@/components/ui/card'
@@ -13,6 +14,7 @@ interface Props {
 }
 
 const DutchAuction = ({ data }: Props) => {
+  const { t } = useLingui()
   const [currentPrice, currentPriceRaw, nextPrice] = useAuctionPrices(
     data.id as Address,
     data.buyingTokenDecimals
@@ -23,13 +25,13 @@ const DutchAuction = ({ data }: Props) => {
       <div className="flex-grow">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           <AuctionItem
-            title="Selling"
+            title={t`Selling`}
             icon={<TokenLogo width={16} symbol={data.sellingTokenSymbol} />}
             symbol={data.sellingTokenSymbol}
             amount={data.amount}
           />
           <AuctionItem
-            title="Buying (current price)"
+            title={t`Buying (current price)`}
             icon={<TokenLogo width={16} symbol={data.buyingTokenSymbol} />}
             symbol={data.buyingTokenSymbol}
             forSymbol={data.sellingTokenSymbol}
@@ -37,7 +39,7 @@ const DutchAuction = ({ data }: Props) => {
             price={currentPrice ? currentPrice / data.amount : 0}
           />
           <AuctionItem
-            title="Next block bid amount"
+            title={t`Next block bid amount`}
             icon={<ArrowRight size={16} />}
             symbol={data.buyingTokenSymbol}
             forSymbol={data.sellingTokenSymbol}
@@ -45,7 +47,7 @@ const DutchAuction = ({ data }: Props) => {
             price={nextPrice ? nextPrice / data.amount : 0}
           />
           <AuctionItem
-            title="Final price"
+            title={t`Final price`}
             icon={<ArrowRight size={16} />}
             symbol={data.buyingTokenSymbol}
             forSymbol={data.sellingTokenSymbol}

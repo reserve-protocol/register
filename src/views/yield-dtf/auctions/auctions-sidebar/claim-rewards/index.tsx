@@ -1,4 +1,4 @@
-import { t } from '@lingui/macro'
+import { useLingui } from '@lingui/react/macro'
 import EmissionsIcon from 'components/icons/EmissionsIcon'
 import { useAtomValue } from 'jotai'
 import { formatCurrency } from 'utils'
@@ -8,6 +8,7 @@ import RevenueBoxContainer from '../RevenueBoxContainer'
 import TraderEmissions from './components/TraderEmissions'
 
 const ClaimRewards = () => {
+  const { t } = useLingui()
   const data = useAtomValue(auctionsOverviewAtom)
 
   if (!data || !data.pendingEmissions) {

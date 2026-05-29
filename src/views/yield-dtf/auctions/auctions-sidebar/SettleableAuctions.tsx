@@ -1,4 +1,4 @@
-import { t } from '@lingui/macro'
+import { useLingui } from '@lingui/react/macro'
 import FacadeAct from 'abis/FacadeAct'
 import { ExecuteButton } from '@/components/ui/transaction-button'
 import { atom, useAtomValue, useSetAtom } from 'jotai'
@@ -58,6 +58,7 @@ const settleTxAtom = atom((get) => {
 })
 
 const SettleableAuctions = () => {
+  const { t } = useLingui()
   const settleable = useAtomValue(auctionsToSettleAtom)
   const call = useAtomValue(settleTxAtom)
   const setSession = useSetAtom(auctionSessionAtom)
@@ -78,7 +79,7 @@ const SettleableAuctions = () => {
           text={t`Settle all`}
           size="sm"
           className="ml-auto"
-          successLabel="Success!"
+          successLabel={t`Success!`}
           call={call}
           onSuccess={handleSuccess}
         />

@@ -1,4 +1,4 @@
-import { Trans } from '@lingui/macro'
+import { Trans } from '@lingui/react/macro'
 import { useAtomValue } from 'jotai'
 import { ongoingDutchTradesAtom } from '../atoms'
 import DutchAuction from './DutchAuction'

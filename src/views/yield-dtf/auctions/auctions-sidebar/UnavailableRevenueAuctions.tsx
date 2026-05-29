@@ -1,6 +1,6 @@
 import TransactionButton from '@/components/ui/transaction-button'
 import { Separator } from '@/components/ui/separator'
-import { t } from '@lingui/macro'
+import { useLingui } from '@lingui/react/macro'
 import FacadeAct from 'abis/FacadeAct'
 import AuctionsIcon from 'components/icons/AuctionsIcon'
 import useContractWrite from 'hooks/useContractWrite'
@@ -88,6 +88,7 @@ const useAuctions = () => {
 
 // TODO: maybe unnecesary
 const ConfirmAuction = () => {
+  const { t } = useLingui()
   const { isReady, write, hash, isLoading } = useAuctions()
   const { status } = useWatchTransaction({ hash, label: 'Run auctions' })
   const closeSidebar = useSetAtom(auctionSidebarAtom)
@@ -102,7 +103,7 @@ const ConfirmAuction = () => {
     <div>
       <TransactionButton
         className="w-full"
-        text="Run auctions"
+        text={t`Run auctions`}
         variant={isLoading ? 'accent' : 'default'}
         disabled={!isReady}
         loading={isLoading || (hash && status !== 'success')}
@@ -113,6 +114,7 @@ const ConfirmAuction = () => {
 }
 
 const UnavailableRevenueAuctions = () => {
+  const { t } = useLingui()
   const revenueData = useAtomValue(auctionsOverviewAtom)
   const selectedAuctions = useAtomValue(selectedUnavailableAuctionsAtom)
   const setSelectedAuctions = useSetAtom(setAuctionAtom)
@@ -128,8 +130,8 @@ const UnavailableRevenueAuctions = () => {
     <RevenueBoxContainer
       title={t`Small revenue auctions`}
       icon={<AuctionsIcon />}
-      subtitle={`${revenueData?.unavailableAuctions.length ?? 0} auctions`}
-      btnLabel="Inspect"
+      subtitle={t`${revenueData?.unavailableAuctions.length ?? 0} auctions`}
+      btnLabel={t`Inspect`}
       muted
       className="mb-4"
     >
