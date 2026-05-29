@@ -1,4 +1,5 @@
 import { Button } from '@/components/ui/button'
+import { Trans, useLingui } from '@lingui/react/macro'
 import { Modal } from 'components'
 import AsteriskIcon from 'components/icons/AsteriskIcon'
 import TokenLogo from 'components/icons/TokenLogo'
@@ -24,7 +25,9 @@ const ZapOverview = () => {
         <div className="flex items-center gap-3">
           <TokenLogo symbol={tokenIn.symbol} width={24} />
           <div className="flex flex-col">
-            <span>You use:</span>
+            <span>
+              <Trans>You use:</Trans>
+            </span>
             <span className="text-[26px] font-bold">
               {amountIn} {tokenIn.symbol}
             </span>
@@ -34,7 +37,9 @@ const ZapOverview = () => {
         <div className="flex items-center gap-3">
           <TokenLogo symbol={tokenOut.symbol} width={24} />
           <div className="flex flex-col">
-            <span>You receive:</span>
+            <span>
+              <Trans>You receive:</Trans>
+            </span>
             {loadingZap ? (
               <Skeleton width={300} height={35} />
             ) : (
@@ -52,7 +57,9 @@ const ZapOverview = () => {
           <Separator className="flex-1 border-dashed border-muted-foreground/30" />
           <Button size="sm" variant="ghost" onClick={() => setCollapsed((c) => !c)}>
             <span className="flex items-center text-muted-foreground min-w-[92px] justify-between">
-              <span className="mr-2">{collapsed ? 'Show more' : 'Show less'}</span>
+              <span className="mr-2">
+                {collapsed ? <Trans>Show more</Trans> : <Trans>Show less</Trans>}
+              </span>
               <AsteriskIcon />
             </span>
           </Button>
@@ -77,6 +84,7 @@ const ZapOverview = () => {
 }
 
 const ZapSubmitModal = () => {
+  const { t } = useLingui()
   const { setOpenSubmitModal, operation, refreshQuote } = useZap()
 
   const handleClose = () => {
@@ -85,7 +93,11 @@ const ZapSubmitModal = () => {
   }
 
   return (
-    <Modal title={`Review ${operation}`} onClose={handleClose} width={440}>
+    <Modal
+      title={operation === 'mint' ? t`Review Mint` : t`Review Redeem`}
+      onClose={handleClose}
+      width={440}
+    >
       <ZapOverview />
       <MintersModal />
     </Modal>

@@ -1,3 +1,4 @@
+import { Trans } from '@lingui/react/macro'
 import TokenLogo from 'components/icons/TokenLogo'
 import { formatCurrency } from 'utils'
 import { useZap } from '../context/ZapContext'
@@ -9,7 +10,9 @@ const ZapOutputBalance = () => {
     <div className="flex items-center gap-1">
       {operation === 'mint' && <TokenLogo symbol={tokenOut.symbol} />}
       <div>
-        <span>Balance </span>
+        <span>
+          <Trans>Balance</Trans>{' '}
+        </span>
         {tokenOut.balance && (
           <span className="font-bold">
             {formatCurrency(+tokenOut.balance, 2, {

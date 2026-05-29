@@ -1,4 +1,5 @@
 import { isInactiveDTF, useDTFStatus } from '@/hooks/use-dtf-status'
+import { useLingui } from '@lingui/react/macro'
 import TabMenu from 'components/tab-menu'
 import useRToken from 'hooks/useRToken'
 import { Minus, Plus } from 'lucide-react'
@@ -9,6 +10,7 @@ import { ChainId } from '@/utils/chains'
 import { useEffect, useMemo } from 'react'
 
 const ZapTabs = () => {
+  const { t } = useLingui()
   const { chainId, operation, setOperation } = useZap()
   const rToken = useRToken()
   const isDeprecated = isInactiveDTF(useDTFStatus(rToken?.address, rToken?.chainId))
@@ -17,11 +19,11 @@ const ZapTabs = () => {
   const backingOptions = useMemo(() => {
     return [
       ...(!disableMint
-        ? [{ key: 'mint', label: 'Mint', icon: <Plus size={16} /> }]
+        ? [{ key: 'mint', label: t`Mint`, icon: <Plus size={16} /> }]
         : []),
-      { key: 'redeem', label: 'Redeem', icon: <Minus size={16} /> },
+      { key: 'redeem', label: t`Redeem`, icon: <Minus size={16} /> },
     ]
-  }, [disableMint])
+  }, [disableMint, t])
 
   useEffect(() => {
     if (disableMint) {

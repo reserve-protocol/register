@@ -1,5 +1,6 @@
 import { NumericalInput } from 'components'
 import { Button } from '@/components/ui/button'
+import { Trans } from '@lingui/react/macro'
 import { useState } from 'react'
 import { useZap } from '../context/ZapContext'
 import { formatNumber } from '../utils'
@@ -20,7 +21,7 @@ const ZapSettingsCustomSlippage = ({
       onClick={() => setShowCustomSlippage(true)}
       className="w-[120px] rounded-lg px-3 py-2"
     >
-      Custom
+      <Trans>Custom</Trans>
     </Button>
   ) : (
     <div className="rounded-lg border border-muted-foreground/30">

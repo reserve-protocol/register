@@ -1,6 +1,7 @@
 import { Modal } from 'components'
 import TokenLogo from 'components/icons/TokenLogo'
 import { SearchInput } from '@/components/ui/input'
+import { Trans, useLingui } from '@lingui/react/macro'
 import { useMemo, useState } from 'react'
 import { ArrowUpRight, X } from 'lucide-react'
 import { Separator } from '@/components/ui/separator'
@@ -62,6 +63,7 @@ const ZapTokenList = ({
 }
 
 const ZapTokensModal = () => {
+  const { t } = useLingui()
   const { operation, chainId, tokens, setSelectedToken, setOpenTokenSelector } =
     useZap()
   const [search, setSearch] = useState<string>('')
@@ -103,7 +105,11 @@ const ZapTokensModal = () => {
       <div className="flex flex-col overflow-hidden h-full bg-card">
         <div className="flex items-center p-6 mb-4 sm:mb-0 pt-4 pb-0">
           <span className="text-lg font-bold">
-            {operation === 'mint' ? 'Mint' : 'Redeem'} using
+            {operation === 'mint' ? (
+              <Trans>Mint using</Trans>
+            ) : (
+              <Trans>Redeem using</Trans>
+            )}
           </span>
           <Button
             variant="ghost"
@@ -116,7 +122,7 @@ const ZapTokensModal = () => {
         </div>
         <div className="flex flex-col gap-2 p-3 pt-0">
           <SearchInput
-            placeholder="Search by token name or address"
+            placeholder={t`Search by token name or address`}
             autoFocus
             value={search}
             onChange={(e) => setSearch(e.target.value)}

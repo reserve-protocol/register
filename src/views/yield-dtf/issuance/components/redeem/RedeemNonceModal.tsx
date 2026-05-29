@@ -1,4 +1,4 @@
-import { t } from '@lingui/macro'
+import { Trans, useLingui } from '@lingui/react/macro'
 import { Modal } from 'components'
 import { ModalProps } from 'components'
 import TokenItem from 'components/token-item'
@@ -19,6 +19,7 @@ import {
 interface Props extends Partial<ModalProps> {}
 
 const RedeemNonceModal = ({ onClose, ...props }: Props) => {
+  const { t } = useLingui()
   const setNonce = useSetAtom(customRedeemNonceAtom)
   const nonce = useAtomValue(redeemNonceAtom)
   const basketNonce = useAtomValue(rTokenStateAtom).basketNonce
@@ -65,8 +66,11 @@ const RedeemNonceModal = ({ onClose, ...props }: Props) => {
               >
                 <Checkbox checked={Number(quoteNonce) === nonce} />
                 <span className="ml-1">
-                  {basketNonce === Number(quoteNonce) ? 'Current' : 'Previous'}{' '}
-                  basket
+                  {basketNonce === Number(quoteNonce) ? (
+                    <Trans>Current basket</Trans>
+                  ) : (
+                    <Trans>Previous basket</Trans>
+                  )}
                 </span>
               </div>
               <Separator className="mt-4 border-dashed" />

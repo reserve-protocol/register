@@ -1,3 +1,4 @@
+import { Trans, useLingui } from '@lingui/react/macro'
 import { useQuery } from '@tanstack/react-query'
 import { useChainlinkPrice } from 'hooks/useChainlinkPrice'
 import useDebounce from 'hooks/useDebounce'
@@ -154,6 +155,7 @@ export const useZap = () => {
 }
 
 export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
+  const { t } = useLingui()
   const [zapEnabled, setZapEnabled] = useState(true)
   const [operation, setOperation] = useState<IssuanceOperation>('mint')
   const [openSettings, setOpenSettings] = useState<boolean>(false)
@@ -295,17 +297,18 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
     setAmountIn(newAmount)
 
     if (+(tokenIn.balance ?? '0') > maxTokenIn) {
-      const op = operation === 'mint' ? 'Mint' : 'Redeem'
       const max = operation === 'mint' ? issuanceAvailable : redemptionAvailable
+      const maxFormatted = formatCurrency(max, 5)
+      const maxZap = formatCurrency(maxTokenIn, 5)
       setError({
-        title: `${op} amount above Global Max ${op}`,
-        message: `Sorry, your request exceeds the Global Max ${op} limit. The Global Max ${op} is set at ${formatCurrency(
-          max,
-          5
-        )} ${rToken?.symbol}. You can only zap a maximum of ${formatCurrency(
-          maxTokenIn,
-          5
-        )} ${tokenIn.symbol}.`,
+        title:
+          operation === 'mint'
+            ? t`Mint amount above Global Max Mint`
+            : t`Redeem amount above Global Max Redeem`,
+        message:
+          operation === 'mint'
+            ? t`Sorry, your request exceeds the Global Max Mint limit. The Global Max Mint is set at ${maxFormatted} ${rToken?.symbol}. You can only zap a maximum of ${maxZap} ${tokenIn.symbol}.`
+            : t`Sorry, your request exceeds the Global Max Redeem limit. The Global Max Redeem is set at ${maxFormatted} ${rToken?.symbol}. You can only zap a maximum of ${maxZap} ${tokenIn.symbol}.`,
         color: 'warning',
         secondaryColor: 'rgba(255, 138, 0, 0.20)',
       })
@@ -320,6 +323,7 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
     issuanceAvailable,
     redemptionAvailable,
     rToken?.symbol,
+    t,
   ])
 
   const endpoint = useDebounce(
@@ -519,19 +523,27 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
   useEffect(() => {
     if (apiError || (data && data.error)) {
       setError({
-        title: 'Failed to find a route',
+        title: t`Failed to find a route`,
         message: (
           <span>
-            {(apiError?.message || data?.error || 'An unknown error occurred') +
-              '. Please try again. If the problem persists, please '}{' '}
-            <a target="_blank" href={REGISTER_BUGS} rel="noreferrer" className="underline text-primary">
-              contact support.
-            </a>
+            {apiError?.message || data?.error || t`An unknown error occurred`}
+            {'. '}
+            <Trans>
+              Please try again. If the problem persists, please{' '}
+              <a
+                target="_blank"
+                href={REGISTER_BUGS}
+                rel="noreferrer"
+                className="underline text-primary"
+              >
+                contact support.
+              </a>
+            </Trans>
           </span>
         ),
         color: 'danger',
         secondaryColor: 'rgba(255, 0, 0, 0.20)',
-        submitButtonTitle: 'Error occurred, try again',
+        submitButtonTitle: t`Error occurred, try again`,
         disableSubmit: true,
       })
 
@@ -555,23 +567,20 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
       })
     } else if (insufficientFunds) {
       setError({
-        title: 'Insufficient funds',
-        message:
-          'You do not have enough funds to complete this transaction. Please try again with a smaller amount.',
+        title: t`Insufficient funds`,
+        message: t`You do not have enough funds to complete this transaction. Please try again with a smaller amount.`,
         color: 'danger',
         secondaryColor: 'rgba(255, 0, 0, 0.20)',
         disableSubmit: true,
       })
     } else if (priceImpact >= PRICE_IMPACT_THRESHOLD) {
       setError({
-        title: 'Warning: High price impact',
-        message:
-          'The price impact of this transaction is too high. Please consider using a smaller amount or a different token.',
+        title: t`Warning: High price impact`,
+        message: t`The price impact of this transaction is too high. Please consider using a smaller amount or a different token.`,
         color: 'danger',
         secondaryColor: 'rgba(255, 0, 0, 0.20)',
-        submitButtonTitle: `Zap ${
-          operation === 'mint' ? 'Mint' : 'Redeem'
-        } Anyway`,
+        submitButtonTitle:
+          operation === 'mint' ? t`Zap Mint Anyway` : t`Zap Redeem Anyway`,
       })
     } else {
       setError(undefined)
@@ -588,6 +597,7 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
     chainId,
     account,
     insufficientFunds,
+    t,
   ])
 
   const _setZapEnabled = useCallback(

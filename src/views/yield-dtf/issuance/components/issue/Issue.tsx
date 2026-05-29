@@ -1,4 +1,4 @@
-import { t, Trans } from '@lingui/macro'
+import { Trans, useLingui } from '@lingui/react/macro'
 import FacadeRead from 'abis/FacadeRead'
 import { Button } from '@/components/ui/button'
 import useRToken from 'hooks/useRToken'
@@ -65,6 +65,7 @@ const useMaxIssuable = async () => {
  * Issuance
  */
 const Issue = () => {
+  const { t } = useLingui()
   const chainId = useAtomValue(chainIdAtom)
   const [amount, setAmount] = useAtom(issueAmountAtom)
   const isValid = useAtomValue(isValidIssuableAmountAtom)

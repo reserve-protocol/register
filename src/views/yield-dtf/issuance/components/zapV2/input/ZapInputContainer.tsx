@@ -1,4 +1,5 @@
 import { cn } from '@/lib/utils'
+import { Trans } from '@lingui/react/macro'
 import ZapInput from './ZapInput'
 import ZapTokenSelector from '../token-selector/ZapTokenSelector'
 import ZapInputMaxButton from './ZapInputMaxButton'
@@ -16,7 +17,9 @@ const ZapInputContainer = () => {
       )}
     >
       <div className="flex flex-col overflow-hidden gap-2 items-start flex-grow">
-        <span>You use:</span>
+        <span>
+          <Trans>You use:</Trans>
+        </span>
         <ZapInput />
         <ZapInputUSD />
       </div>
