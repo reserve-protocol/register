@@ -4,7 +4,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from '@/components/ui/tooltip'
-import { t } from '@lingui/macro'
+import { useLingui } from '@lingui/react/macro'
 import ChevronRight from 'components/icons/ChevronRight'
 import CircleIcon from 'components/icons/CircleIcon'
 import CollaterizationIcon from 'components/icons/CollaterizationIcon'
@@ -22,6 +22,7 @@ type Props = {
 }
 
 const CollateralPieChartWrapper: FC<Props> = ({ token }) => {
+  const { t } = useLingui()
   const [isHovered, setIsHovered] = useState(false)
   const metadata = useAtomValue(collateralsMetadataAtom)
 

@@ -1,4 +1,5 @@
 import { cn } from '@/lib/utils'
+import { Trans, useLingui } from '@lingui/react/macro'
 import Help from 'components/help'
 import BackingBufferIcon from 'components/icons/BackingBufferIcon'
 import ProgressBar from 'components/progress-bar'
@@ -14,6 +15,7 @@ import {
 import { formatCurrency, formatPercentage } from 'utils'
 
 const BuckingBuffer = ({ className }: { className?: string }) => {
+  const { t } = useLingui()
   const rToken = useRToken()
   const backing = useAtomValue(rTokenBackingDistributionAtom)
   const rTokenState = useAtomValue(rTokenStateAtom)
@@ -43,13 +45,13 @@ const BuckingBuffer = ({ className }: { className?: string }) => {
           <div className="flex items-center gap-2">
             <BackingBufferIcon />
             <span className="text-lg font-semibold">
-              Revenue distribution backing buffer
+              <Trans>Revenue distribution backing buffer</Trans>
             </span>
           </div>
           <div className="flex items-center gap-2">
             <span className="hidden sm:inline text-xl opacity-20 mx-2">|</span>
             <span className="font-medium text-legend">
-              {rToken?.symbol || ''} buffer as % of mcap:
+              <Trans>{rToken?.symbol || ''} buffer as % of mcap:</Trans>
             </span>
             <span className="text-sm">{percentageOfMCap}</span>
           </div>
@@ -63,14 +65,14 @@ const BuckingBuffer = ({ className }: { className?: string }) => {
             foregroundText={
               <span>
                 <span className="hidden sm:inline">
-                  Current value in buffer:{' '}
+                  <Trans>Current value in buffer:</Trans>{' '}
                 </span>
                 <span className="font-bold">${actual}</span>
               </span>
             }
             backgroundText={
               <span>
-                100% at current mcap:{' '}
+                <Trans>100% at current mcap:</Trans>{' '}
                 <span className="font-bold">${required}</span>
               </span>
             }
@@ -81,10 +83,14 @@ const BuckingBuffer = ({ className }: { className?: string }) => {
       </div>
       <div className="mx-auto px-4 flex items-center gap-2">
         <span className="font-medium text-legend text-left sm:text-right">
-          Collateral yield is distributed as revenue when the backing buffer is
-          full
+          <Trans>
+            Collateral yield is distributed as revenue when the backing buffer
+            is full
+          </Trans>
         </span>
-        <Help content="The backing buffer is extra collateral held to prevent RSR seizure from trading slippage. When the buffer exceeds 100%, any additional appreciation of collateral is recognized as revenue and sold off in auctions." />
+        <Help
+          content={t`The backing buffer is extra collateral held to prevent RSR seizure from trading slippage. When the buffer exceeds 100%, any additional appreciation of collateral is recognized as revenue and sold off in auctions.`}
+        />
       </div>
     </div>
   )

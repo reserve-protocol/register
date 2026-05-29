@@ -1,4 +1,4 @@
-import { Trans } from '@lingui/macro'
+import { Trans } from '@lingui/react/macro'
 import MandateIcon from 'components/icons/MandateIcon'
 import useRToken from 'hooks/useRToken'
 import { useAtomValue } from 'jotai'
@@ -22,7 +22,7 @@ const OffChainNote = () => {
         role="button"
         onClick={() => setExpanded(!expanded)}
       >
-        <Trans>{expanded ? '-' : '+'} Description</Trans>
+        {expanded ? '-' : '+'} <Trans>Description</Trans>
       </span>
       {expanded && (
         <p className="text-legend">{rTokenList[rToken.address]?.about}</p>
