@@ -4897,6 +4897,10 @@ msgstr ""
 msgid "Monthly P&L"
 msgstr ""
 
+#: src/components/layout/header/components/app-navigation.tsx:209
+msgid "More"
+msgstr ""
+
 #: src/utils/index.ts:130
 #~ msgid "mth"
 #~ msgstr ""

@@ -205,7 +205,9 @@ const AppNavigation = () => {
         <NavigationMenuItem>
           <NavigationMenuTrigger>
             <LayoutGrid strokeWidth={1.5} size={16} />
-            <span className="hidden min-[850px]:block text-base">More</span>
+            <span className="hidden min-[850px]:block text-base">
+              <Trans>More</Trans>
+            </span>
           </NavigationMenuTrigger>
           <NavigationMenuContent className="rounded-4xl">
             <div className="bg-secondary w-72 sm:w-96 flex p-1 flex-col gap-1">
