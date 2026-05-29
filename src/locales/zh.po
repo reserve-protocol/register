@@ -303,6 +303,10 @@ msgstr ""
 msgid "{count}y"
 msgstr ""
 
+#: src/hooks/use-time-remaining.ts:33
+msgid "{days}d"
+msgstr ""
+
 #: src/views/yield-dtf/staking/components/unstake/confirm-unstake-button.tsx:59
 msgid "{delay} cooldown started"
 msgstr ""
@@ -330,6 +334,10 @@ msgstr ""
 msgid "{fromToken} to {toToken}"
 msgstr ""
 
+#: src/hooks/use-time-remaining.ts:34
+msgid "{hours}h"
+msgstr ""
+
 #: src/utils/index.ts:387
 msgid "{humanized} ago"
 msgstr ""
@@ -352,6 +360,10 @@ msgstr ""
 
 #: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:425
 msgid "{lengthInMinutes, plural, one {# minute} other {# minutes}}"
+msgstr ""
+
+#: src/hooks/use-time-remaining.ts:35
+msgid "{minutes}m"
 msgstr ""
 
 #: src/views/index-dtf/governance/views/propose/basket/components/proposal-basket-advance-settings.tsx:68
@@ -383,6 +395,10 @@ msgstr ""
 
 #: src/views/index-dtf/deploy/steps/basket/components/liquidity-badge.tsx:38
 msgid "{priceImpactLabel}% price impact swapping {amountLabel} {inputTokenSymbol} for {tokenSymbol}"
+msgstr ""
+
+#: src/hooks/use-time-remaining.ts:40
+msgid "{seconds}s"
 msgstr ""
 
 #: src/views/index-dtf/overview/components/yield-index/yield-index-exposure-summary.tsx:80
@@ -3135,6 +3151,10 @@ msgstr ""
 #: src/views/index-dtf/settings/components/index-settings-basic.tsx:76
 #: src/views/index-dtf/settings/components/index-settings-basic.tsx:83
 msgid "Enabled"
+msgstr ""
+
+#: src/hooks/use-time-remaining.ts:23
+msgid "Ended"
 msgstr ""
 
 #: src/views/yield-dtf/auctions/components/useColumns.tsx:53
