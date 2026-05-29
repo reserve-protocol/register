@@ -1,4 +1,4 @@
-import { t } from '@lingui/macro'
+import { t } from '@lingui/core/macro'
 import { CellContext } from '@tanstack/react-table'
 import ERC20 from 'abis/ERC20'
 import humanizeDuration from 'humanize-duration'

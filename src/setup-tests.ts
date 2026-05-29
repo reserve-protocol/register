@@ -41,9 +41,10 @@ vi.mock('@lingui/react/macro', () => ({
   SelectOrdinal: () => null,
 }))
 
-// Mock @lingui/core/macro — msg descriptors + defineMessage.
+// Mock @lingui/core/macro — msg descriptors + defineMessage + global t (used by pure utils).
 vi.mock('@lingui/core/macro', () => ({
   msg: resolveMessage,
+  t: resolveMessage,
   defineMessage: (msg: any) => msg,
 }))
 

@@ -8208,7 +8208,7 @@ msgstr ""
 #: src/components/stake-drawer/components/submit-unstake-button.tsx:80
 #: src/components/vote-lock/components/submit-lock-button.tsx:210
 #: src/components/vote-lock/components/submit-unlock-button.tsx:92
-#: src/hooks/useWatchTransaction.ts:54
+#: src/hooks/useWatchTransaction.ts:55
 #: src/views/index-dtf/overview/components/staking/lock/submit-lock-button.tsx:215
 #: src/views/index-dtf/overview/components/staking/unlock/submit-unlock-button.tsx:95
 msgid "Transaction confirmed"
@@ -8240,7 +8240,7 @@ msgstr ""
 msgid "Transaction rejected: Approval failed"
 msgstr ""
 
-#: src/hooks/useWatchTransaction.ts:71
+#: src/hooks/useWatchTransaction.ts:72
 msgid "Transaction reverted"
 msgstr ""
 
