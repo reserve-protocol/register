@@ -5,8 +5,11 @@ import { useAtomValue } from 'jotai'
 import { useMemo } from 'react'
 import { Address } from 'viem'
 
+export type DTFRestrictionReason = 'none' | 'geolocation' | 'vpn'
+
 type DTFRestrictedData = {
   restricted: boolean
+  reason?: Exclude<DTFRestrictionReason, 'none'>
 }
 
 type DTFRestrictedResult = {
@@ -18,7 +21,11 @@ type DTFGeolocationStatus = {
   country: string
   countryCode: string
   restricted: boolean
+  restriction: DTFRestrictionReason
 }
+
+const isDTFRestrictionReason = (value: unknown): value is DTFRestrictionReason =>
+  value === 'none' || value === 'geolocation' || value === 'vpn'
 
 const isDTFGeolocationStatus = (
   value: unknown
@@ -29,7 +36,8 @@ const isDTFGeolocationStatus = (
     typeof data.country === 'string' &&
     typeof data.countryCode === 'string' &&
     /^[A-Z]{2}$/.test(data.countryCode.toUpperCase()) &&
-    typeof data.restricted === 'boolean'
+    typeof data.restricted === 'boolean' &&
+    isDTFRestrictionReason(data.restriction)
   )
 }
 
@@ -69,11 +77,28 @@ const useDTFRestricted = () => {
       return { data: undefined, isLoading: true }
     }
 
-    const restricted =
-      dtfGeolocation.isError || dtfGeolocation.data?.restricted === true
+    // Fail-closed on error: restricted with unknown reason
+    if (dtfGeolocation.isError || !dtfGeolocation.data) {
+      return {
+        data: { restricted: true },
+        isLoading: false,
+      }
+    }
+
+    if (!dtfGeolocation.data.restricted) {
+      return {
+        data: { restricted: false },
+        isLoading: false,
+      }
+    }
+
+    // Restricted: prefer the backend's reason; default to 'geolocation' if
+    // it ever comes back as 'none' (shouldn't happen, but defensive).
+    const restriction = dtfGeolocation.data.restriction
+    const reason = restriction === 'none' ? 'geolocation' : restriction
 
     return {
-      data: { restricted },
+      data: { restricted: true, reason },
       isLoading: false,
     }
   }, [

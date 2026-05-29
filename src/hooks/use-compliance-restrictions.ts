@@ -130,7 +130,7 @@ const useComplianceRestrictions = () => {
     if (dtfRestriction.data?.restricted) {
       return {
         data: restricted({
-          reason: 'geolocation',
+          reason: dtfRestriction.data.reason ?? 'geolocation',
           geolocation: geolocation.data,
           wallet: walletCompliance.data,
         }),
