@@ -1,28 +1,32 @@
 import { useDeprecatedAddresses } from '@/hooks/use-dtf-status'
 import { cn } from '@/lib/utils'
 import { ROUTES } from '@/utils/constants'
+import type { MessageDescriptor } from '@lingui/core'
+import { msg } from '@lingui/core/macro'
+import { useLingui } from '@lingui/react/macro'
 import { useSetAtom } from 'jotai'
 import mixpanel from 'mixpanel-browser/src/loaders/loader-module-core'
 import { useEffect } from 'react'
 import { NavLink, Outlet } from 'react-router-dom'
 import { deprecatedDTFAddressesAtom } from './atoms'
 
-const EARN_ROUTES = [
+const EARN_ROUTES: { label: MessageDescriptor; path: string }[] = [
   {
-    label: 'Index DTF Governance',
+    label: msg`Index DTF Governance`,
     path: ROUTES.EARN_INDEX,
   },
   {
-    label: 'Yield DTF Staking',
+    label: msg`Yield DTF Staking`,
     path: ROUTES.EARN_YIELD,
   },
   {
-    label: 'DeFi Yield',
+    label: msg`DeFi Yield`,
     path: ROUTES.EARN_DEFI,
   },
 ]
 
 const EarnNavigation = () => {
+  const { t } = useLingui()
   return (
     <div className="flex justify-center mt-2 md:mt-12 mb-4 md:mb-10 px-1">
       <div className="flex items-center bg-border p-1 rounded-full">
@@ -39,7 +43,7 @@ const EarnNavigation = () => {
                   isActive && 'text-primary bg-card'
                 )}
               >
-                <span>{route.label}</span>
+                <span>{t(route.label)}</span>
               </div>
             )}
           </NavLink>

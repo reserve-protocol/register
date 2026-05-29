@@ -2,6 +2,7 @@ import { SearchInput } from '@/components/ui/input'
 import MultiselectDropdown from '@/components/ui/multiselect-dropdown'
 import TokenLogo from '@/components/token-logo'
 import StackTokenLogo from '@/components/token-logo/stack-token-logo'
+import { useLingui } from '@lingui/react/macro'
 import { useAtom, useAtomValue } from 'jotai'
 import { useMemo } from 'react'
 import {
@@ -15,6 +16,7 @@ import { CircleIcon } from 'lucide-react'
 import YieldChainFilter from './yield-chain-filter'
 
 const DtfFilterDropdown = () => {
+  const { t } = useLingui()
   const [selectedDtfs, setSelectedDtfs] = useAtom(dtfsFilterAtom)
   const availableDtfs = useAtomValue(availableDtfsAtom)
   const yieldDTFList = useAtomValue(yieldDTFListAtom)
@@ -46,9 +48,10 @@ const DtfFilterDropdown = () => {
 
   const displayText = () => {
     if (!selectedDtfs.length) {
-      return 'All DTFs'
+      return t`All DTFs`
     }
-    return `${selectedDtfs.length} DTF${selectedDtfs.length > 1 ? 's' : ''}`
+    const noun = selectedDtfs.length > 1 ? 'DTFs' : 'DTF'
+    return t`${selectedDtfs.length} ${noun}`
   }
 
   // Get tokens for stacked logo display (up to 5)
@@ -73,7 +76,7 @@ const DtfFilterDropdown = () => {
         options={options}
         selected={selectedDtfs}
         onChange={handleChange}
-        placeholder="Filter by DTFs"
+        placeholder={t`Filter by DTFs`}
         allOption={true}
         className="w-full min-w-[200px] h-16 px-4 justify-between bg-transparent hover:bg-transparent text-foreground rounded-3xl"
       >
@@ -91,13 +94,14 @@ const DtfFilterDropdown = () => {
 }
 
 const TableFilters = () => {
+  const { t } = useLingui()
   const [search, setSearch] = useAtom(searchFilterAtom)
   const [chains, setChains] = useAtom(chainsFilterAtom)
 
   return (
     <div className="flex flex-col items-stretch lg:flex-row lg:items-center gap-[2px] lg:gap-1">
       <SearchInput
-        placeholder="Search DTF name or symbol"
+        placeholder={t`Search DTF name or symbol`}
         value={search}
         onChange={(e) => setSearch(e.target.value)}
         className="flex-grow [&_input]:border-none [&_input]:rounded-none [&_input]:rounded-tl-3xl [&_input]:rounded-tr-3xl lg:[&_input]:rounded-3xl"
