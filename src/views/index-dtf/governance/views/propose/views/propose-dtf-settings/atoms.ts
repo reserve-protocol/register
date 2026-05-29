@@ -13,6 +13,8 @@ import {
 } from '@/state/dtf/atoms'
 import { Token } from '@/types'
 import { BIGINT_MAX } from '@/utils/constants'
+import type { MessageDescriptor } from '@lingui/core'
+import { msg } from '@lingui/core/macro'
 import { atom } from 'jotai'
 import { Address, encodeFunctionData, Hex, parseEther } from 'viem'
 import {
@@ -27,6 +29,13 @@ import {
   humanizeTimeFromSeconds,
   proposalThresholdToPercentage,
 } from '../../shared'
+
+type GovernanceChangeDisplayLocalized = Omit<
+  GovernanceChangeDisplay,
+  'title'
+> & {
+  title: MessageDescriptor
+}
 
 // UI
 export const selectedSectionAtom = atom<string | undefined>(undefined)
@@ -650,67 +659,67 @@ export const dtfSettingsProposalDataAtom = atom<ProposalData | undefined>(
 )
 
 // Atom for formatted governance changes for display
-export const dtfGovernanceChangesDisplayAtom = atom<GovernanceChangeDisplay[]>(
-  (get) => {
-    const governanceChanges = get(governanceChangesAtom)
-    const dtf = get(indexDTFAtom)
+export const dtfGovernanceChangesDisplayAtom = atom<
+  GovernanceChangeDisplayLocalized[]
+>((get) => {
+  const governanceChanges = get(governanceChangesAtom)
+  const dtf = get(indexDTFAtom)
 
-    if (!dtf?.ownerGovernance) return []
+  if (!dtf?.ownerGovernance) return []
 
-    const governance = dtf.ownerGovernance
-    const changes = []
+  const governance = dtf.ownerGovernance
+  const changes: GovernanceChangeDisplayLocalized[] = []
 
-    if (governanceChanges.votingDelay !== undefined) {
-      changes.push({
-        key: 'votingDelay' as keyof GovernanceChanges,
-        title: 'Voting Delay',
-        current: humanizeTimeFromSeconds(Number(governance.votingDelay)),
-        new: humanizeTimeFromSeconds(governanceChanges.votingDelay),
-      })
-    }
-
-    if (governanceChanges.votingPeriod !== undefined) {
-      changes.push({
-        key: 'votingPeriod' as keyof GovernanceChanges,
-        title: 'Voting Period',
-        current: humanizeTimeFromSeconds(Number(governance.votingPeriod)),
-        new: humanizeTimeFromSeconds(governanceChanges.votingPeriod),
-      })
-    }
-
-    if (governanceChanges.proposalThreshold !== undefined) {
-      changes.push({
-        key: 'proposalThreshold' as keyof GovernanceChanges,
-        title: 'Proposal Threshold',
-        current: `${proposalThresholdToPercentage(governance.proposalThreshold).toFixed(2)}%`,
-        new: `${Number(governanceChanges.proposalThreshold).toFixed(2)}%`,
-      })
-    }
-
-    if (governanceChanges.quorumPercent !== undefined) {
-      const currentQuorum = get(currentQuorumPercentageAtom)
-      changes.push({
-        key: 'quorumPercent' as keyof GovernanceChanges,
-        title: 'Voting Quorum',
-        current: `${currentQuorum.toFixed(2)}%`,
-        new: `${governanceChanges.quorumPercent}%`,
-      })
-    }
-
-    if (governanceChanges.executionDelay !== undefined) {
-      changes.push({
-        key: 'executionDelay' as keyof GovernanceChanges,
-        title: 'Execution Delay',
-        current: humanizeTimeFromSeconds(
-          Number(governance.timelock?.executionDelay || 0)
-        ),
-        new: humanizeTimeFromSeconds(governanceChanges.executionDelay),
-      })
-    }
-
-    return changes
+  if (governanceChanges.votingDelay !== undefined) {
+    changes.push({
+      key: 'votingDelay' as keyof GovernanceChanges,
+      title: msg`Voting Delay`,
+      current: humanizeTimeFromSeconds(Number(governance.votingDelay)),
+      new: humanizeTimeFromSeconds(governanceChanges.votingDelay),
+    })
   }
-)
+
+  if (governanceChanges.votingPeriod !== undefined) {
+    changes.push({
+      key: 'votingPeriod' as keyof GovernanceChanges,
+      title: msg`Voting Period`,
+      current: humanizeTimeFromSeconds(Number(governance.votingPeriod)),
+      new: humanizeTimeFromSeconds(governanceChanges.votingPeriod),
+    })
+  }
+
+  if (governanceChanges.proposalThreshold !== undefined) {
+    changes.push({
+      key: 'proposalThreshold' as keyof GovernanceChanges,
+      title: msg`Proposal Threshold`,
+      current: `${proposalThresholdToPercentage(governance.proposalThreshold).toFixed(2)}%`,
+      new: `${Number(governanceChanges.proposalThreshold).toFixed(2)}%`,
+    })
+  }
+
+  if (governanceChanges.quorumPercent !== undefined) {
+    const currentQuorum = get(currentQuorumPercentageAtom)
+    changes.push({
+      key: 'quorumPercent' as keyof GovernanceChanges,
+      title: msg`Voting Quorum`,
+      current: `${currentQuorum.toFixed(2)}%`,
+      new: `${governanceChanges.quorumPercent}%`,
+    })
+  }
+
+  if (governanceChanges.executionDelay !== undefined) {
+    changes.push({
+      key: 'executionDelay' as keyof GovernanceChanges,
+      title: msg`Execution Delay`,
+      current: humanizeTimeFromSeconds(
+        Number(governance.timelock?.executionDelay || 0)
+      ),
+      new: humanizeTimeFromSeconds(governanceChanges.executionDelay),
+    })
+  }
+
+  return changes
+})
 
 // Backwards compatibility atom
 export const dtfSettingsProposalCalldatasAtom = atom<Hex[] | undefined>(

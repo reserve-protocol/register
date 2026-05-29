@@ -8,6 +8,7 @@ import { ExplorerDataType, getExplorerLink } from '@/utils/getExplorerLink'
 import { atom, useAtomValue } from 'jotai'
 import { ArrowUpRight, ShieldHalf } from 'lucide-react'
 import { Link } from 'react-router-dom'
+import { Trans } from '@lingui/react/macro'
 
 const Placeholder = () => (
   <div className="flex items-center justify-between bg-background rounded-3xl p-4">
@@ -69,7 +70,9 @@ const GovernanceGuardians = () => {
             <ShieldHalf size={14} />
           </div>
           <div className="ml-3 mr-auto">
-            <span className="text-legend text-sm block">Guardians</span>
+            <span className="text-legend text-sm block">
+              <Trans>Guardians</Trans>
+            </span>
             <span className="font-bold"><EnsName address={guardian} /></span>
           </div>
           <div className="p-1 bg-muted rounded-full mr-2">

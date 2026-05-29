@@ -1,3 +1,4 @@
+import { Trans } from '@lingui/react/macro'
 import { useAtomValue } from 'jotai'
 import {
   removedRewardTokensAtom,
@@ -19,7 +20,11 @@ const DaoSettingsProposalChanges = () => {
   const hasAnyChanges = hasRevenueTokenChanges || hasGovernanceChanges || hasRolesChanges
 
   if (!hasAnyChanges) {
-    return <div className="p-6 text-center text-legend">No changes</div>
+    return (
+      <div className="p-6 text-center text-legend">
+        <Trans>No changes</Trans>
+      </div>
+    )
   }
 
   return (

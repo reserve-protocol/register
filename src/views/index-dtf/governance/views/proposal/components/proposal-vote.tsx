@@ -5,6 +5,7 @@ import { chainIdAtom } from '@/state/atoms'
 import { formatCurrency } from '@/utils'
 import { PROPOSAL_STATES } from '@/utils/constants'
 import { ExplorerDataType, getExplorerLink } from '@/utils/getExplorerLink'
+import { Trans } from '@lingui/react/macro'
 import { useAtomValue } from 'jotai'
 import { ArrowUpRight, AsteriskIcon } from 'lucide-react'
 import { useState } from 'react'
@@ -55,7 +56,9 @@ const ViewExecuteTxButton = () => {
         variant="outline-primary"
         className="flex items-center gap-2 justify-center w-full"
       >
-        <span>View execute tx</span>
+        <span>
+          <Trans>View execute tx</Trans>
+        </span>
         <ArrowUpRight size={16} strokeWidth={1.5} />
       </Button>
     </Link>
@@ -102,7 +105,9 @@ const ProposalVoteOverview = () => {
       <div className="flex items-center justify-between gap-2 p-3 flex-wrap text-sm border-b">
         <div className="flex items-center gap-1">
           <AsteriskIcon />
-          <span>Your voting power:</span>
+          <span>
+            <Trans>Your voting power:</Trans>
+          </span>
           <span className="font-bold">
             {formatCurrency(votePower ? +votePower : 0)}
           </span>
@@ -116,7 +121,9 @@ const ProposalVoteOverview = () => {
           onClick={() => hasUndelegatedBalance && setDelegateVisible(true)}
         >
           <DelegateIcon />
-          <span className="font-bold">Delegate</span>
+          <span className="font-bold">
+            <Trans>Delegate</Trans>
+          </span>
         </div>
       </div>
       {isDelegateVisible && (

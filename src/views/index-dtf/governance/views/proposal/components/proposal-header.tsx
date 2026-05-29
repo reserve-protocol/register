@@ -4,6 +4,7 @@ import ExplorerAddress from '@/components/utils/explorer-address'
 import { chainIdAtom } from '@/state/atoms'
 import { shortenString } from '@/utils'
 import { ROUTES } from '@/utils/constants'
+import { useLingui } from '@lingui/react/macro'
 import dayjs from 'dayjs'
 import { useAtomValue } from 'jotai'
 import {
@@ -48,9 +49,10 @@ const StatItem = ({
 )
 
 const ProposalTitle = () => {
+  const { t } = useLingui()
   const proposal = useAtomValue(proposalDetailAtom)
 
-  let title = 'Loading...'
+  let title = t`Loading...`
   let rfcLink = ''
 
   if (proposal?.description) {
@@ -77,6 +79,7 @@ const ProposalTitle = () => {
 }
 
 const ProposalParams = () => {
+  const { t } = useLingui()
   const proposal = useAtomValue(proposalDetailAtom)
   const chainId = useAtomValue(chainIdAtom)
 
@@ -84,17 +87,17 @@ const ProposalParams = () => {
     <div className="flex flex-col gap-5">
       <div className="flex flex-col md:flex-row md:items-center gap-2 md:gap-5 flex-wrap">
         <StatItem
-          label="Proposed on"
+          label={t`Proposed on`}
           icon={<ScrollText size={16} strokeWidth={1.5} />}
         >
           <span>
             {proposal?.creationTime
               ? dayjs.unix(+proposal.creationTime).format('MMM D, YYYY')
-              : 'Loading...'}
+              : t`Loading...`}
           </span>
         </StatItem>
         <StatItem
-          label="Proposed by"
+          label={t`Proposed by`}
           icon={<Wallet size={16} strokeWidth={1.5} />}
         >
           <div>
@@ -107,10 +110,13 @@ const ProposalParams = () => {
             )}
           </div>
         </StatItem>
-        <StatItem label="ID" icon={<Fingerprint size={16} strokeWidth={1.5} />}>
+        <StatItem
+          label={t`ID`}
+          icon={<Fingerprint size={16} strokeWidth={1.5} />}
+        >
           <div className="flex items-center gap-1">
             <span>
-              {proposal?.id ? shortenString(proposal.id) : 'Loading...'}
+              {proposal?.id ? shortenString(proposal.id) : t`Loading...`}
             </span>
             {!!proposal?.id && (
               <CopyValue text={proposal.id} value={proposal.id} />

@@ -14,6 +14,7 @@ import {
 import { LiquidityLevel } from '@/utils/liquidity'
 import { OndoInfo, OndoMarket } from '@/utils/rebalance-liquidity'
 import { NATIVE_SYMBOL, WRAPPED_NATIVE, SwapLeg } from '@/utils/zapper'
+import { Plural, Trans, useLingui } from '@lingui/react/macro'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { AlertTriangle, ArrowUpRight, RefreshCw } from 'lucide-react'
 import useProposalLiquidityCheck, {
@@ -78,14 +79,15 @@ const TokenRow = ({
   symbolMap: Record<string, string>
   onRetry: () => void
 }) => {
+  const { t } = useLingui()
   const chainId = useAtomValue(chainIdAtom)
 
   const tradeDescription = !token.counterpart
-    ? 'Wrap/unwrap only — no swap needed'
+    ? t`Wrap/unwrap only — no swap needed`
     : token.priceImpact !== undefined
       ? token.type === 'surplus'
-        ? `${token.priceImpact.toFixed(2)}% price impact selling $${formatCurrency(token.usdSize)} of ${token.tokenSymbol} for ${token.counterpart}`
-        : `${token.priceImpact.toFixed(2)}% price impact buying $${formatCurrency(token.usdSize)} of ${token.tokenSymbol} with ${token.counterpart}`
+        ? t`${token.priceImpact.toFixed(2)}% price impact selling $${formatCurrency(token.usdSize)} of ${token.tokenSymbol} for ${token.counterpart}`
+        : t`${token.priceImpact.toFixed(2)}% price impact buying $${formatCurrency(token.usdSize)} of ${token.tokenSymbol} with ${token.counterpart}`
       : undefined
 
   return (
@@ -187,7 +189,9 @@ const UnsupportedTokensWarning = ({
       className="rounded-xl bg-warning/10 border-warning/20"
     >
       <AlertTriangle className="h-4 w-4" />
-      <AlertTitle>Tokens not available</AlertTitle>
+      <AlertTitle>
+        <Trans>Tokens not available</Trans>
+      </AlertTitle>
       <AlertDescription>
         <ul className="mt-1 list-disc pl-4 space-y-0.5">
           {tokens.map((t) => (
@@ -215,6 +219,7 @@ const UnsupportedTokensWarning = ({
 }
 
 const ProposalLiquidityChecker = () => {
+  const { t } = useLingui()
   const chainId = useAtomValue(chainIdAtom)
   const { tokens, liquidityMap, ondoMap, market, unsupportedTokens, isLoading, isFetching, isDebouncing, retryingTokens, refetch, retryToken } =
     useProposalLiquidityCheck()
@@ -275,7 +280,9 @@ const ProposalLiquidityChecker = () => {
   return (
     <div className="bg-background rounded-3xl p-4 flex flex-col gap-3 border-4 border-secondary">
       <div className="flex items-center gap-2">
-        <span className="text-legend text-sm font-medium">Liquidity</span>
+        <span className="text-legend text-sm font-medium">
+          <Trans>Liquidity</Trans>
+        </span>
         {worstLevel && !isPending && <LiquidityBadge level={worstLevel} />}
         <div className="ml-auto flex items-center gap-1">
           <button
@@ -288,23 +295,32 @@ const ProposalLiquidityChecker = () => {
           <Help
             size={16}
             className="text-legend flex items-center"
-            content="Simulates swaps against the native token via the Zapper API to estimate price impact. Trades under $1 are simulated at $1 for reliable results. Summary badge is weighted by trade size."
+            content={t`Simulates swaps against the native token via the Zapper API to estimate price impact. Trades under $1 are simulated at $1 for reliable results. Summary badge is weighted by trade size.`}
           />
         </div>
       </div>
       {isPending && !tokens.length && (
-        <p className="text-sm text-muted-foreground">Analyzing liquidity...</p>
+        <p className="text-sm text-muted-foreground">
+          <Trans>Analyzing liquidity...</Trans>
+        </p>
       )}
       {highImpactTokens.length > 0 && !isLoading && (
         <Alert variant="destructive" className="rounded-xl">
           <AlertTriangle className="h-4 w-4" />
-          <AlertTitle>High price impact</AlertTitle>
+          <AlertTitle>
+            <Trans>High price impact</Trans>
+          </AlertTitle>
           <AlertDescription>
             {highImpactTokens.map((t) => t.tokenSymbol).join(', ')}{' '}
-            {highImpactTokens.length === 1 ? 'has' : 'have'} &gt;5% simulated
-            price impact.
+            <Plural
+              value={highImpactTokens.length}
+              one="has >5% simulated price impact."
+              other="have >5% simulated price impact."
+            />
             <br />
-            Estimated loss: ~${formatCurrency(totalSlippageDollars)}
+            <Trans>
+              Estimated loss: ~${formatCurrency(totalSlippageDollars)}
+            </Trans>
           </AlertDescription>
         </Alert>
       )}
@@ -324,16 +340,20 @@ const ProposalLiquidityChecker = () => {
           </AlertDescription>
         </Alert>
       )}
-      <TokenSection label="Selling" tokens={selling} isLoading={isLoading} market={market} retryingTokens={retryingTokens} symbolMap={symbolMap} onRetry={retryToken} />
-      <TokenSection label="Buying" tokens={buying} isLoading={isLoading} market={market} retryingTokens={retryingTokens} symbolMap={symbolMap} onRetry={retryToken} />
+      <TokenSection label={t`Selling`} tokens={selling} isLoading={isLoading} market={market} retryingTokens={retryingTokens} symbolMap={symbolMap} onRetry={retryToken} />
+      <TokenSection label={t`Buying`} tokens={buying} isLoading={isLoading} market={market} retryingTokens={retryingTokens} symbolMap={symbolMap} onRetry={retryToken} />
       {!isLoading && totalTradeValue > 0 && (
         <div className="flex flex-col gap-1 pt-2 border-t">
           <div className="flex items-center justify-between">
-            <span className="text-sm text-muted-foreground">Total trade value</span>
+            <span className="text-sm text-muted-foreground">
+              <Trans>Total trade value</Trans>
+            </span>
             <span className="text-sm font-medium">${formatCurrency(totalTradeValue)}</span>
           </div>
           <div className="flex items-center justify-between">
-            <span className="text-sm font-medium">Estimated total impact</span>
+            <span className="text-sm font-medium">
+              <Trans>Estimated total impact</Trans>
+            </span>
             <span className={cn('text-sm font-bold', impactColor(aggregateImpact))}>
               {aggregateImpact.toFixed(2)}%{totalSlippageDollars > 0 && ` (~$${formatCurrency(totalSlippageDollars)})`}
             </span>

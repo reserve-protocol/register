@@ -15,6 +15,7 @@ import { Link } from 'react-router-dom'
 import { ExplorerDataType, getExplorerLink } from '@/utils/getExplorerLink'
 import { chainIdAtom } from '@/state/atoms'
 import EnsName from '@/components/utils/ens-name'
+import { Trans } from '@lingui/react/macro'
 
 const GovernanceDelegateList = () => {
   const chainId = useAtomValue(chainIdAtom)
@@ -23,15 +24,23 @@ const GovernanceDelegateList = () => {
   return (
     <div className="rounded-4xl bg-background ">
       <div className="py-4 px-5">
-        <h2 className="font-semibold text-xl ">Top voting addresses</h2>
+        <h2 className="font-semibold text-xl ">
+          <Trans>Top voting addresses</Trans>
+        </h2>
       </div>
       <div className="bg-card m-1 mt-0 rounded-3xl overflow-auto">
         <Table>
           <TableHeader>
             <TableRow className="border-none text-legend">
-              <TableHead>Address</TableHead>
-              <TableHead>Votes</TableHead>
-              <TableHead>Vote weight</TableHead>
+              <TableHead>
+                <Trans>Address</Trans>
+              </TableHead>
+              <TableHead>
+                <Trans>Votes</Trans>
+              </TableHead>
+              <TableHead>
+                <Trans>Vote weight</Trans>
+              </TableHead>
               {/* <TableHead>Proposals voted</TableHead> */}
             </TableRow>
           </TableHeader>
@@ -49,7 +58,7 @@ const GovernanceDelegateList = () => {
             {delegates !== undefined && delegates.length === 0 && (
               <TableRow>
                 <TableCell className="text-center text-legend" colSpan={4}>
-                  No delegates found
+                  <Trans>No delegates found</Trans>
                 </TableCell>
               </TableRow>
             )}

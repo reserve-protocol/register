@@ -4,6 +4,7 @@ import { DecodedCalldata } from '@/types'
 import EnsName from '@/components/utils/ens-name'
 import { shortenAddress } from '@/utils'
 import { ExplorerDataType, getExplorerLink } from '@/utils/getExplorerLink'
+import { Plural, Trans, useLingui } from '@lingui/react/macro'
 import { useAtomValue } from 'jotai'
 import {
   ArrowUpRight,
@@ -31,7 +32,9 @@ export const SetMandatePreview = ({
     <div className="rounded-2xl border bg-muted/70 p-4 space-y-3">
       <div className="flex items-center gap-2">
         <Edit2 size={16} className="text-primary" />
-        <div className="text-sm font-medium">Update Mandate</div>
+        <div className="text-sm font-medium">
+          <Trans>Update Mandate</Trans>
+        </div>
       </div>
       <div className="p-3 rounded-xl bg-background/80 text-sm">
         <div className="break-words text-muted-foreground">{newMandate}</div>
@@ -54,11 +57,15 @@ export const RemoveFromBasketPreview = ({
     <div className="rounded-2xl border bg-muted/70 p-4 space-y-3">
       <div className="flex items-center gap-2">
         <MinusCircle size={16} className="text-destructive" />
-        <div className="text-sm font-medium">Remove Token from Basket</div>
+        <div className="text-sm font-medium">
+          <Trans>Remove Token from Basket</Trans>
+        </div>
       </div>
       <div className="p-3 rounded-xl bg-destructive/5 border border-destructive/20">
         <div className="flex items-center gap-2">
-          <span className="text-sm text-muted-foreground">Token:</span>
+          <span className="text-sm text-muted-foreground">
+            <Trans>Token:</Trans>
+          </span>
           <Link
             to={getExplorerLink(
               tokenAddress,
@@ -85,29 +92,32 @@ export const GrantRolePreview = ({
   decodedCalldata: DecodedCalldata
   targetAddress?: Address
 }) => {
+  const { t } = useLingui()
   const chainId = useAtomValue(chainIdAtom)
   const [roleHash, account] = decodedCalldata.data as [string, string]
 
   // Map role hashes to readable names
   const roleNames: Record<string, string> = {
-    [zeroHash]: 'Default Admin',
+    [zeroHash]: t`Default Admin`,
     '0xfd643c72710c63c0180259aba6b2d05451e3591a24e58b62239378085726f783':
-      'Guardian',
+      t`Guardian`,
     '0x2d8e650da9bd8c373ab2450d770f2ed39549bfc28d3630025cecc51511bcd374':
-      'Brand Manager',
+      t`Brand Manager`,
     '0x13ff1b2625181b311f257c723b5e6d366eb318b212d9dd694c48fcf227659df5':
-      'Auction Launcher',
+      t`Auction Launcher`,
     '0x4ff6ae4d6a29e79ca45c6441bdc89b93878ac6118485b33c8baa3749fc3cb130':
-      'Rebalance Manager',
+      t`Rebalance Manager`,
   }
 
-  const roleName = roleNames[roleHash] || 'Unknown Role'
+  const roleName = roleNames[roleHash] || t`Unknown Role`
 
   return (
     <div className="rounded-2xl border bg-muted/70 p-4 space-y-3">
       <div className="flex items-center gap-2">
         <PlusCircle size={16} className="text-success" />
-        <div className="text-sm font-medium">Grant Role</div>
+        <div className="text-sm font-medium">
+          <Trans>Grant Role</Trans>
+        </div>
       </div>
       <div className="p-3 rounded-xl bg-success/5 border border-success/20">
         <div className="flex items-center gap-2 mb-1">
@@ -135,28 +145,31 @@ export const RevokeRolePreview = ({
   decodedCalldata: DecodedCalldata
   targetAddress?: Address
 }) => {
+  const { t } = useLingui()
   const chainId = useAtomValue(chainIdAtom)
   const [roleHash, account] = decodedCalldata.data as [string, string]
 
   const roleNames: Record<string, string> = {
-    [zeroHash]: 'Default Admin',
+    [zeroHash]: t`Default Admin`,
     '0xfd643c72710c63c0180259aba6b2d05451e3591a24e58b62239378085726f783':
-      'Guardian',
+      t`Guardian`,
     '0x2d8e650da9bd8c373ab2450d770f2ed39549bfc28d3630025cecc51511bcd374':
-      'Brand Manager',
+      t`Brand Manager`,
     '0x13ff1b2625181b311f257c723b5e6d366eb318b212d9dd694c48fcf227659df5':
-      'Auction Launcher',
+      t`Auction Launcher`,
     '0x4ff6ae4d6a29e79ca45c6441bdc89b93878ac6118485b33c8baa3749fc3cb130':
-      'Rebalance Manager',
+      t`Rebalance Manager`,
   }
 
-  const roleName = roleNames[roleHash] || 'Unknown Role'
+  const roleName = roleNames[roleHash] || t`Unknown Role`
 
   return (
     <div className="rounded-2xl border bg-muted/70 p-4 space-y-3">
       <div className="flex items-center gap-2">
         <MinusCircle size={16} className="text-destructive" />
-        <div className="text-sm font-medium">Revoke Role</div>
+        <div className="text-sm font-medium">
+          <Trans>Revoke Role</Trans>
+        </div>
       </div>
       <div className="p-3 rounded-xl bg-destructive/5 border border-destructive/20">
         <div className="flex items-center gap-2 mb-1">
@@ -233,14 +246,16 @@ export const SetFeeRecipientsPreview = ({
     <div className="rounded-2xl border bg-muted/70 p-4 space-y-3">
       <div className="flex items-center gap-2">
         <Users size={16} className="text-primary" />
-        <div className="text-sm font-medium">Update Revenue Distribution</div>
+        <div className="text-sm font-medium">
+          <Trans>Update Revenue Distribution</Trans>
+        </div>
       </div>
       <div className="space-y-2">
         {/* Platform Fee (Fixed) */}
         <div className="p-3 rounded-xl bg-background/80 border opacity-60">
           <div className="flex items-center justify-between">
             <span className="text-sm text-muted-foreground">
-              Platform (Fixed)
+              <Trans>Platform (Fixed)</Trans>
             </span>
             <div className="flex items-center gap-2">
               <span className="text-sm font-medium">{platformFee}%</span>
@@ -252,7 +267,9 @@ export const SetFeeRecipientsPreview = ({
         {adjustedGovernanceShare > 0 && (
           <div className="p-3 rounded-xl bg-background/80 border">
             <div className="flex items-center justify-between">
-              <span className="text-sm text-muted-foreground">Governance</span>
+              <span className="text-sm text-muted-foreground">
+                <Trans>Governance</Trans>
+              </span>
               <div className="flex items-center gap-2">
                 <span className="text-sm font-medium text-primary">
                   {adjustedGovernanceShare.toFixed(2)}%
@@ -266,7 +283,9 @@ export const SetFeeRecipientsPreview = ({
         {adjustedDeployerShare > 0 && (
           <div className="p-3 rounded-xl bg-background/80 border">
             <div className="flex items-center justify-between">
-              <span className="text-sm text-muted-foreground">Creator</span>
+              <span className="text-sm text-muted-foreground">
+                <Trans>Creator</Trans>
+              </span>
               <div className="flex items-center gap-2">
                 <span className="text-sm font-medium text-primary">
                   {adjustedDeployerShare.toFixed(2)}%
@@ -322,11 +341,15 @@ export const SetMintFeePreview = ({
     <div className="rounded-2xl border bg-muted/70 p-4 space-y-3">
       <div className="flex items-center gap-2">
         <Edit2 size={16} className="text-primary" />
-        <div className="text-sm font-medium">Update Mint Fee</div>
+        <div className="text-sm font-medium">
+          <Trans>Update Mint Fee</Trans>
+        </div>
       </div>
       <div className="p-3 rounded-xl bg-primary/5 border border-primary/20">
         <div className="flex items-center justify-between">
-          <span className="text-sm text-muted-foreground">New mint fee:</span>
+          <span className="text-sm text-muted-foreground">
+            <Trans>New mint fee:</Trans>
+          </span>
           <div className="flex items-center gap-2">
             <span className="text-sm font-medium text-primary">
               {percentage.toFixed(2)}%
@@ -353,11 +376,15 @@ export const SetTVLFeePreview = ({
     <div className="rounded-2xl border bg-muted/70 p-4 space-y-3">
       <div className="flex items-center gap-2">
         <Edit2 size={16} className="text-primary" />
-        <div className="text-sm font-medium">Update Annualized TVL Fee</div>
+        <div className="text-sm font-medium">
+          <Trans>Update Annualized TVL Fee</Trans>
+        </div>
       </div>
       <div className="p-3 rounded-xl bg-primary/5 border border-primary/20">
         <div className="flex items-center justify-between">
-          <span className="text-sm text-muted-foreground">New TVL fee:</span>
+          <span className="text-sm text-muted-foreground">
+            <Trans>New TVL fee:</Trans>
+          </span>
           <div className="flex items-center gap-2">
             <span className="text-sm font-medium text-primary">
               {percentage.toFixed(2)}%
@@ -383,17 +410,23 @@ export const SetAuctionLengthPreview = ({
     <div className="rounded-2xl border bg-muted/70 p-4 space-y-3">
       <div className="flex items-center gap-2">
         <Edit2 size={16} className="text-primary" />
-        <div className="text-sm font-medium">Update Auction Length</div>
+        <div className="text-sm font-medium">
+          <Trans>Update Auction Length</Trans>
+        </div>
       </div>
       <div className="p-3 rounded-xl bg-primary/5 border border-primary/20">
         <div className="flex items-center justify-between">
           <span className="text-sm text-muted-foreground">
-            New auction duration:
+            <Trans>New auction duration:</Trans>
           </span>
           <div className="flex items-center gap-2">
             <Clock size={14} className="text-primary" />
             <span className="text-sm font-medium text-primary">
-              {lengthInMinutes} minutes
+              <Plural
+                value={lengthInMinutes}
+                one="# minute"
+                other="# minutes"
+              />
             </span>
           </div>
         </div>
@@ -417,12 +450,12 @@ export const SetDustAmountPreview = ({
       <div className="flex items-center gap-2">
         <Trash size={16} className="text-muted-foreground" />
         <div className="text-sm font-medium">
-          Set Dust Amount (Pre-requisite)
+          <Trans>Set Dust Amount (Pre-requisite)</Trans>
         </div>
       </div>
       <div className="p-3 rounded-xl bg-background/80 border">
         <div className="text-sm text-muted-foreground mb-2">
-          Setting dust amount for token removal
+          <Trans>Setting dust amount for token removal</Trans>
         </div>
         <Link
           to={getExplorerLink(tokenAddress, chainId, ExplorerDataType.ADDRESS)}
@@ -447,26 +480,33 @@ export const SetVotingDelayPreview = ({
 }) => {
   const delayInSeconds = Number(decodedCalldata.data[0])
   const delayInDays = delayInSeconds / 86400
-  const displayValue =
-    delayInDays < 1
-      ? `${delayInSeconds / 3600} hour${delayInSeconds / 3600 !== 1 ? 's' : ''}`
-      : `${delayInDays} day${delayInDays !== 1 ? 's' : ''}`
+  const delayInHours = delayInSeconds / 3600
 
   return (
     <div className="rounded-2xl border bg-muted/70 p-4 space-y-3">
       <div className="flex items-center gap-2">
         <Edit2 size={16} className="text-primary" />
-        <div className="text-sm font-medium">Update Voting Delay</div>
+        <div className="text-sm font-medium">
+          <Trans>Update Voting Delay</Trans>
+        </div>
       </div>
       <div className="p-3 rounded-xl bg-primary/5 border border-primary/20">
         <div className="flex items-center justify-between">
           <span className="text-sm text-muted-foreground">
-            New voting delay:
+            <Trans>New voting delay:</Trans>
           </span>
           <div className="flex items-center gap-2">
             <Clock size={14} className="text-primary" />
             <span className="text-sm font-medium text-primary">
-              {displayValue}
+              {delayInDays < 1 ? (
+                <Plural
+                  value={delayInHours}
+                  one="# hour"
+                  other="# hours"
+                />
+              ) : (
+                <Plural value={delayInDays} one="# day" other="# days" />
+              )}
             </span>
           </div>
         </div>
@@ -484,26 +524,33 @@ export const SetVotingPeriodPreview = ({
 }) => {
   const periodInSeconds = Number(decodedCalldata.data[0])
   const periodInDays = periodInSeconds / 86400
-  const displayValue =
-    periodInDays < 1
-      ? `${periodInSeconds / 3600} hour${periodInSeconds / 3600 !== 1 ? 's' : ''}`
-      : `${periodInDays} day${periodInDays !== 1 ? 's' : ''}`
+  const periodInHours = periodInSeconds / 3600
 
   return (
     <div className="rounded-2xl border bg-muted/70 p-4 space-y-3">
       <div className="flex items-center gap-2">
         <Edit2 size={16} className="text-primary" />
-        <div className="text-sm font-medium">Update Voting Period</div>
+        <div className="text-sm font-medium">
+          <Trans>Update Voting Period</Trans>
+        </div>
       </div>
       <div className="p-3 rounded-xl bg-primary/5 border border-primary/20">
         <div className="flex items-center justify-between">
           <span className="text-sm text-muted-foreground">
-            New voting period:
+            <Trans>New voting period:</Trans>
           </span>
           <div className="flex items-center gap-2">
             <Clock size={14} className="text-primary" />
             <span className="text-sm font-medium text-primary">
-              {displayValue}
+              {periodInDays < 1 ? (
+                <Plural
+                  value={periodInHours}
+                  one="# hour"
+                  other="# hours"
+                />
+              ) : (
+                <Plural value={periodInDays} one="# day" other="# days" />
+              )}
             </span>
           </div>
         </div>
@@ -527,12 +574,14 @@ export const SetProposalThresholdPreview = ({
     <div className="rounded-2xl border bg-muted/70 p-4 space-y-3">
       <div className="flex items-center gap-2">
         <Edit2 size={16} className="text-primary" />
-        <div className="text-sm font-medium">Update Proposal Threshold</div>
+        <div className="text-sm font-medium">
+          <Trans>Update Proposal Threshold</Trans>
+        </div>
       </div>
       <div className="p-3 rounded-xl bg-primary/5 border border-primary/20">
         <div className="flex items-center justify-between">
           <span className="text-sm text-muted-foreground">
-            New proposal threshold:
+            <Trans>New proposal threshold:</Trans>
           </span>
           <div className="flex items-center gap-2">
             <Shield size={14} className="text-primary" />
@@ -582,12 +631,14 @@ export const UpdateQuorumNumeratorPreview = ({
     <div className="rounded-2xl border bg-muted/70 p-4 space-y-3">
       <div className="flex items-center gap-2">
         <Edit2 size={16} className="text-primary" />
-        <div className="text-sm font-medium">Update Voting Quorum</div>
+        <div className="text-sm font-medium">
+          <Trans>Update Voting Quorum</Trans>
+        </div>
       </div>
       <div className="p-3 rounded-xl bg-primary/5 border border-primary/20">
         <div className="flex items-center justify-between">
           <span className="text-sm text-muted-foreground">
-            New voting quorum:
+            <Trans>New voting quorum:</Trans>
           </span>
           <div className="flex items-center gap-2">
             <Shield size={14} className="text-primary" />
@@ -610,26 +661,33 @@ export const UpdateDelayPreview = ({
 }) => {
   const delayInSeconds = Number(decodedCalldata.data[0])
   const delayInDays = delayInSeconds / 86400
-  const displayValue =
-    delayInDays < 1
-      ? `${delayInSeconds / 3600} hour${delayInSeconds / 3600 !== 1 ? 's' : ''}`
-      : `${delayInDays} day${delayInDays !== 1 ? 's' : ''}`
+  const delayInHours = delayInSeconds / 3600
 
   return (
     <div className="rounded-2xl border bg-muted/70 p-4 space-y-3">
       <div className="flex items-center gap-2">
         <Edit2 size={16} className="text-primary" />
-        <div className="text-sm font-medium">Update Execution Delay</div>
+        <div className="text-sm font-medium">
+          <Trans>Update Execution Delay</Trans>
+        </div>
       </div>
       <div className="p-3 rounded-xl bg-primary/5 border border-primary/20">
         <div className="flex items-center justify-between">
           <span className="text-sm text-muted-foreground">
-            New execution delay:
+            <Trans>New execution delay:</Trans>
           </span>
           <div className="flex items-center gap-2">
             <Clock size={14} className="text-primary" />
             <span className="text-sm font-medium text-primary">
-              {displayValue}
+              {delayInDays < 1 ? (
+                <Plural
+                  value={delayInHours}
+                  one="# hour"
+                  other="# hours"
+                />
+              ) : (
+                <Plural value={delayInDays} one="# day" other="# days" />
+              )}
             </span>
           </div>
         </div>

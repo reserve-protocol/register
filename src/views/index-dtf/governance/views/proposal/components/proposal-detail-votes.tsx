@@ -7,7 +7,7 @@ import { cn } from '@/lib/utils'
 import { chainIdAtom } from '@/state/atoms'
 import { formatCurrency } from '@/utils'
 import { ExplorerDataType, getExplorerLink } from '@/utils/getExplorerLink'
-import { Trans } from '@lingui/macro'
+import { Trans } from '@lingui/react/macro'
 import { atom, useAtomValue } from 'jotai'
 import { proposalDetailAtom } from '../atom'
 
@@ -93,9 +93,15 @@ const ProposalDetailVotes = () => {
   return (
     <Tabs className="bg-background rounded-3xl p-2" defaultValue={TABS.FOR}>
       <TabsList>
-        <TabsTrigger value={TABS.FOR}>Votes for</TabsTrigger>
-        <TabsTrigger value={TABS.AGAINST}>Votes against</TabsTrigger>
-        <TabsTrigger value={TABS.ABSTAIN}>Abstain</TabsTrigger>
+        <TabsTrigger value={TABS.FOR}>
+          <Trans>Votes for</Trans>
+        </TabsTrigger>
+        <TabsTrigger value={TABS.AGAINST}>
+          <Trans>Votes against</Trans>
+        </TabsTrigger>
+        <TabsTrigger value={TABS.ABSTAIN}>
+          <Trans>Abstain</Trans>
+        </TabsTrigger>
       </TabsList>
       <div className="bg-card rounded-3xl p-4 border mt-2">
         {Object.entries(votes).map(([key, value]) => (

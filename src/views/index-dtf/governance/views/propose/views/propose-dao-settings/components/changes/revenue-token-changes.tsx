@@ -2,6 +2,7 @@ import TokenLogo from '@/components/token-logo'
 import { chainIdAtom } from '@/state/atoms'
 import { Token } from '@/types'
 import { ExplorerDataType, getExplorerLink } from '@/utils/getExplorerLink'
+import { Trans, useLingui } from '@lingui/react/macro'
 import { useAtom, useAtomValue } from 'jotai'
 import { ArrowUpRight, Coins } from 'lucide-react'
 import {
@@ -22,6 +23,7 @@ const RewardTokenItem = ({
   onRevert: () => void
   id?: string
 }) => {
+  const { t } = useLingui()
   const chainId = useAtomValue(chainIdAtom)
 
   return (
@@ -36,13 +38,17 @@ const RewardTokenItem = ({
           target="_blank"
           href={getExplorerLink(token.address, chainId, ExplorerDataType.TOKEN)}
           tabIndex={0}
-          aria-label={`View ${token.symbol} on block explorer`}
+          aria-label={t`View ${token.symbol} on block explorer`}
         >
           {token.address}
           <ArrowUpRight size={12} />
         </a>
         <div className={`text-xs mt-1 ${type === 'added' ? 'text-success' : 'text-destructive'}`}>
-          {type === 'added' ? 'Added reward token' : 'Removed reward token'}
+          {type === 'added' ? (
+            <Trans>Added reward token</Trans>
+          ) : (
+            <Trans>Removed reward token</Trans>
+          )}
         </div>
       </div>
       <RevertButton size="icon-rounded" onClick={onRevert} />
@@ -112,7 +118,7 @@ const RevenueTokenChanges = () => {
   if (!removed.length && !added.length) return null
 
   return (
-    <ChangeSection title="Revenue Tokens" icon={<Coins size={16} />}>
+    <ChangeSection title={<Trans>Revenue Tokens</Trans>} icon={<Coins size={16} />}>
       <div className="space-y-2">
         <RemovedRewardTokens />
         <AddedRewardTokens />

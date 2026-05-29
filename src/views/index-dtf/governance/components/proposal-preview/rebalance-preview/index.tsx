@@ -15,6 +15,7 @@ import { ArrowUpRightIcon } from 'lucide-react'
 import { useMemo } from 'react'
 import { Link } from 'react-router-dom'
 import { Address, Hex } from 'viem'
+import { Trans } from '@lingui/react/macro'
 import GovernanceProposalPreviewSkeleton from '../governance-proposal-preview-skeleton'
 import { RawCallsPreview } from '../raw-call-preview'
 import BasketProposalPreview from './legacy-basket-proposal-preview'
@@ -32,7 +33,9 @@ const Header = ({ address }: { address: Address }) => {
 
   return (
     <div className="mx-4 py-4 flex items-center flex-wrap gap-2 border-b">
-      <h1 className="text-xl font-bold text-primary">Basket Change</h1>
+      <h1 className="text-xl font-bold text-primary">
+        <Trans>Basket Change</Trans>
+      </h1>
       <Link
         target="_blank"
         className="mr-auto"
@@ -48,11 +51,11 @@ const Header = ({ address }: { address: Address }) => {
 
       <TabsList className="h-9">
         <TabsTrigger value={TABS.SUMMARY} className="w-max h-7">
-          Summary
+          <Trans>Summary</Trans>
         </TabsTrigger>
 
         <TabsTrigger value={TABS.RAW} className="w-max h-7">
-          Raw
+          <Trans>Raw</Trans>
         </TabsTrigger>
       </TabsList>
     </div>

@@ -2,7 +2,7 @@ import dtfIndexGovernance from '@/abis/dtf-index-governance'
 import TransactionButton from '@/components/ui/transaction-button'
 import { indexDTFAtom } from '@/state/dtf/atoms'
 import { PROPOSAL_STATES } from '@/utils/constants'
-import { t } from '@lingui/macro'
+import { useLingui } from '@lingui/react/macro'
 import useContractWrite from 'hooks/useContractWrite'
 import useWatchTransaction from 'hooks/useWatchTransaction'
 import { atom, useAtom, useAtomValue } from 'jotai'
@@ -23,6 +23,7 @@ const executionDelayAtom = atom((get) => {
 })
 
 const ProposalQueue = () => {
+  const { t } = useLingui()
   const executionDelay = useAtomValue(executionDelayAtom)
   const [proposal, setProposal] = useAtom(proposalDetailAtom)
   const governor = proposal?.governor
@@ -38,7 +39,7 @@ const ProposalQueue = () => {
   )
   const { data, isMining, status } = useWatchTransaction({
     hash,
-    label: 'Queue proposal',
+    label: t`Queue proposal`,
   })
 
   useEffect(() => {

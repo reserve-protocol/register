@@ -1,7 +1,7 @@
 import { Button } from '@/components/ui/button'
 import { walletAtom } from '@/state/atoms'
 import { PROPOSAL_STATES } from '@/utils/constants'
-import { Trans } from '@lingui/macro'
+import { Trans } from '@lingui/react/macro'
 import { useAtomValue } from 'jotai'
 import { useState } from 'react'
 import DelegateModal from '../../../components/delegate-modal'
@@ -53,9 +53,9 @@ const ProposalVoteButton = () => {
         onClick={() => setVoteVisible(true)}
       >
         {!account ? (
-          'Please connect your wallet'
+          <Trans>Please connect your wallet</Trans>
         ) : vote ? (
-          `You voted "${vote}"`
+          <Trans>You voted "{vote}"</Trans>
         ) : (
           <Trans>Vote on-chain</Trans>
         )}

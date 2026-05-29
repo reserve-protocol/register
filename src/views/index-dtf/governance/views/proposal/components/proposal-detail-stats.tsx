@@ -1,4 +1,5 @@
 import { cn } from '@/lib/utils'
+import { Trans } from '@lingui/react/macro'
 import { useAtomValue } from 'jotai'
 import { CircleSlash, ThumbsDown, ThumbsUp, X } from 'lucide-react'
 
@@ -122,7 +123,9 @@ const QuorumStat = ({
       <div className="flex items-center justify-between gap-2">
         <div className="flex items-center gap-3">
           <BooleanIcon value={quorumReached} />
-          <span>Quorum</span>
+          <span>
+            <Trans>Quorum</Trans>
+          </span>
         </div>
         <div className="flex items-center gap-2 text-base sm:text-lg">
           <span
@@ -132,15 +135,17 @@ const QuorumStat = ({
           </span>
 
           <span className="text-legend whitespace-nowrap">
-            {formatCurrency(currentQuorum, 0, {
-              notation: 'compact',
-              compactDisplay: 'short',
-            })}{' '}
-            of{' '}
-            {formatCurrency(quorumNeeded, 0, {
-              notation: 'compact',
-              compactDisplay: 'short',
-            })}
+            <Trans>
+              {formatCurrency(currentQuorum, 0, {
+                notation: 'compact',
+                compactDisplay: 'short',
+              })}{' '}
+              of{' '}
+              {formatCurrency(quorumNeeded, 0, {
+                notation: 'compact',
+                compactDisplay: 'short',
+              })}
+            </Trans>
           </span>
         </div>
       </div>
@@ -178,13 +183,15 @@ const MajoritySupportStat = ({
             colorSuccess="text-accent-inverted"
             colorFailure="text-red-500"
           />
-          <span>Majority support</span>
+          <span>
+            <Trans>Majority support</Trans>
+          </span>
         </div>
         <div className="flex items-center gap-2 text-base sm:text-lg">
           <span
             className={`font-bold ${majoritySupport ? 'text-green-500' : 'text-red-500'}`}
           >
-            {majoritySupport ? 'Yes' : 'No'}
+            {majoritySupport ? <Trans>Yes</Trans> : <Trans>No</Trans>}
           </span>
           {percentage !== '100%' && (
             <span className="text-legend">{percentage}</span>
@@ -227,7 +234,9 @@ const VoteDistributionStat = ({
             <ThumbsUp size={18} className="text-primary" />
           </div>
           <div className="flex flex-col">
-            <span className="min-w-[60px]">For</span>
+            <span className="min-w-[60px]">
+              <Trans>For</Trans>
+            </span>
             <span className="font-bold text-accent-inverted">
               {formatCurrency(+forVotes, 0, {
                 notation: 'compact',
@@ -238,7 +247,9 @@ const VoteDistributionStat = ({
         </div>
         <div className="flex items-center gap-3 flex-grow p-4 justify-end text-right">
           <div className="flex flex-col">
-            <span className="min-w-[60px]">Against</span>
+            <span className="min-w-[60px]">
+              <Trans>Against</Trans>
+            </span>
             <span className="font-bold text-destructive">
               {formatCurrency(+againstVotes, 0, {
                 notation: 'compact',
@@ -257,7 +268,9 @@ const VoteDistributionStat = ({
           <div className="flex items-center justify-center w-7 h-7 bg-muted rounded">
             <CircleSlash size={18} />
           </div>
-          <span className="min-w-[60px]">Abstain</span>
+          <span className="min-w-[60px]">
+            <Trans>Abstain</Trans>
+          </span>
         </div>
         <span className="font-bold text-gray-500">
           {formatCurrency(+abstainVotes, 0, {
@@ -287,10 +300,11 @@ const ProposalDetailStats = () => {
   return (
     <div className="bg-background rounded-3xl p-2">
       <h4 className="font-bold text-xl p-4">
-        {[PROPOSAL_STATES.ACTIVE, PROPOSAL_STATES.PENDING].includes(state)
-          ? 'Current'
-          : 'Final'}{' '}
-        votes
+        {[PROPOSAL_STATES.ACTIVE, PROPOSAL_STATES.PENDING].includes(state) ? (
+          <Trans>Current votes</Trans>
+        ) : (
+          <Trans>Final votes</Trans>
+        )}
       </h4>
       <div className="flex flex-col bg-card rounded-3xl border">
         <QuorumStat

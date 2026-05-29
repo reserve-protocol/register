@@ -1,7 +1,7 @@
 import TransactionButton from '@/components/ui/transaction-button'
 import { indexDTFAtom } from '@/state/dtf/atoms'
 import { PROPOSAL_STATES } from '@/utils/constants'
-import { t } from '@lingui/macro'
+import { useLingui } from '@lingui/react/macro'
 import Timelock from 'abis/Timelock'
 import useContractWrite from 'hooks/useContractWrite'
 import useWatchTransaction from 'hooks/useWatchTransaction'
@@ -57,6 +57,7 @@ const timelockIdAtom = atom((get) => {
 })
 
 const ProposalCancel = () => {
+  const { t } = useLingui()
   const indexDTF = useAtomValue(indexDTFAtom)
   const timelockId = useAtomValue(timelockIdAtom)
   const account = useAtomValue(walletAtom)
@@ -103,7 +104,7 @@ const ProposalCancel = () => {
 
   const { isMining, status } = useWatchTransaction({
     hash,
-    label: 'Proposal canceled',
+    label: t`Proposal canceled`,
   })
 
   useEffect(() => {

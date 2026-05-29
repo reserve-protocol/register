@@ -11,6 +11,7 @@ import { cn } from '@/lib/utils'
 import { indexDTFStatusAtom } from '@/state/dtf/atoms'
 import { formatPercentage, getProposalTitle, parseDuration } from '@/utils'
 import { formatConstant, PROPOSAL_STATES, ROUTES } from '@/utils/constants'
+import { Trans } from '@lingui/react/macro'
 import { useAtomValue } from 'jotai'
 import { Circle, PlusSquare } from 'lucide-react'
 import { useEffect, useState } from 'react'
@@ -31,7 +32,7 @@ const ProposalButton = () => {
       disabled={isDeprecated}
     >
       <PlusSquare size={16} />
-      Create proposal
+      <Trans>Create proposal</Trans>
     </Button>
   )
 
@@ -50,7 +51,7 @@ const ProposalButton = () => {
 const Header = () => (
   <div className="py-4 px-5 flex items-center gap-2">
     <h1 className="font-semibold text-xl text-primary dark:text-muted-foreground mr-auto">
-      Recent proposals
+      <Trans>Recent proposals</Trans>
     </h1>
     <ProposalButton />
   </div>
@@ -65,9 +66,11 @@ const VoteStateHeader = ({ data }: { data: VotingState }) => {
     return (
       <div className="flex items-center text-sm gap-1 mt-0.5">
         <span className="text-legend">
-          {data.state === PROPOSAL_STATES.ACTIVE
-            ? 'Voting ends in:'
-            : 'Execution available in:'}
+          {data.state === PROPOSAL_STATES.ACTIVE ? (
+            <Trans>Voting ends in:</Trans>
+          ) : (
+            <Trans>Execution available in:</Trans>
+          )}
         </span>
         <span className="font-semibold">
           {parseDuration(data.deadline, {
@@ -86,7 +89,9 @@ export const ProposalVotingState = ({ data }: { data: VotingState }) => {
   if (data.state === PROPOSAL_STATES.PENDING && data.deadline) {
     return (
       <div className="flex items-center mt-2 text-xs sm:text-sm">
-        <span className="text-legend block mr-1">Voting starts in:</span>
+        <span className="text-legend block mr-1">
+          <Trans>Voting starts in:</Trans>
+        </span>
         <span className="font-semibold">
           {parseDuration(data.deadline, {
             units: ['d', 'h', 'm'],
@@ -102,19 +107,23 @@ export const ProposalVotingState = ({ data }: { data: VotingState }) => {
       <VoteStateHeader data={data} />
       <div className="flex items-center mt-2 gap-2 text-xs sm:text-sm">
         <div>
-          <span className="text-legend">Quorum?:</span>{' '}
+          <span className="text-legend">
+            <Trans>Quorum?:</Trans>
+          </span>{' '}
           <span
             className={cn(
               'font-semibold',
               data.quorum ? 'text-success' : 'text-warning'
             )}
           >
-            {data.quorum ? 'Yes' : 'No'}
+            {data.quorum ? <Trans>Yes</Trans> : <Trans>No</Trans>}
           </span>
         </div>
         <Circle size={4} />
         <div className="flex items-center gap-1">
-          <span className="text-legend">Votes:</span>
+          <span className="text-legend">
+            <Trans>Votes:</Trans>
+          </span>
           <span className="font-semibold text-primary">
             {formatPercentage(data.for)}
           </span>
@@ -205,7 +214,9 @@ const ProposalList = () => {
       <ScrollArea className="overflow-y-auto">
         {sortedProposals.length === 0 && (
           <div className="flex items-center justify-center h-96">
-            <p className="text-muted-foreground">No proposals found</p>
+            <p className="text-muted-foreground">
+              <Trans>No proposals found</Trans>
+            </p>
           </div>
         )}
         {displayedProposals.map((proposal) => (
@@ -219,7 +230,7 @@ const ProposalList = () => {
             onClick={() => setShowAll(!showAll)}
             className="gap-2"
           >
-            {showAll ? 'Show less' : `Show all `}
+            {showAll ? <Trans>Show less</Trans> : <Trans>Show all</Trans>}
           </Button>
         </div>
       )}

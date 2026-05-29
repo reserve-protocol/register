@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button'
 import { chainIdAtom } from '@/state/atoms'
 import { indexDTFAtom, indexDTFVersionAtom } from '@/state/dtf/atoms'
 import { ROUTES } from '@/utils/constants'
+import { Trans, useLingui } from '@lingui/react/macro'
 import { useAtomValue } from 'jotai'
 import { AlertCircle, Loader2 } from 'lucide-react'
 import { useEffect } from 'react'
@@ -17,6 +18,7 @@ function compareVersion(x: string, y: string): number {
 }
 
 const ProposeIndexUpgrade = () => {
+  const { t } = useLingui()
   const navigate = useNavigate()
   const dtf = useAtomValue(indexDTFAtom)
   const chainId = useAtomValue(chainIdAtom)
@@ -74,16 +76,20 @@ const ProposeIndexUpgrade = () => {
       <div className="flex flex-row items-center gap-2 ">
         <AlertCircle size={24} className="text-primary" />
         <div>
-          <h4 className="font-bold text-primary">Update available</h4>
+          <h4 className="font-bold text-primary">
+            <Trans>Update available</Trans>
+          </h4>
           <p className="text-sm">
-            Version 2.0.0 is now available.{' '}
-            <a
-              href="https://github.com/reserve-protocol/reserve-index-dtf/blob/main/CHANGELOG.md#release-200"
-              className="text-primary"
-              target="_blank"
-            >
-              View changelog
-            </a>
+            <Trans>
+              Version 2.0.0 is now available.{' '}
+              <a
+                href="https://github.com/reserve-protocol/reserve-index-dtf/blob/main/CHANGELOG.md#release-200"
+                className="text-primary"
+                target="_blank"
+              >
+                View changelog
+              </a>
+            </Trans>
           </p>
         </div>
       </div>
@@ -95,9 +101,9 @@ const ProposeIndexUpgrade = () => {
         {(isPending || !!data) && (
           <Loader2 className="w-4 h-4 animate-spin mr-2" />
         )}
-        {isPending && 'Pending, sign in wallet...'}
-        {!isPending && !!data && 'Waiting for confirmation...'}
-        {!isPending && !data && 'Create update proposal'}
+        {isPending && t`Pending, sign in wallet...`}
+        {!isPending && !!data && t`Waiting for confirmation...`}
+        {!isPending && !data && t`Create update proposal`}
       </Button>
     </div>
   )

@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/button'
 import { chainIdAtom, walletAtom } from '@/state/atoms'
 import { indexDTFAtom, iTokenAddressAtom } from '@/state/dtf/atoms'
 import { ROUTES } from '@/utils/constants'
+import { Trans, useLingui } from '@lingui/react/macro'
 import { atom, useAtomValue } from 'jotai'
 import { Loader2 } from 'lucide-react'
 import { memo, useEffect } from 'react'
@@ -35,7 +36,7 @@ const ProposeGatekeeper = memo(() => {
   if (!isLoading && !isProposeAllowed) {
     return (
       <Button disabled className="w-full" variant="default">
-        Not enough voting power
+        <Trans>Not enough voting power</Trans>
       </Button>
     )
   }
@@ -44,6 +45,7 @@ const ProposeGatekeeper = memo(() => {
 })
 
 const SubmitProposalButton = () => {
+  const { t } = useLingui()
   const navigate = useNavigate()
   const chainId = useAtomValue(chainIdAtom)
   const isReady = useAtomValue(isProposalReady)
@@ -105,9 +107,9 @@ const SubmitProposalButton = () => {
         {(isPending || !!data) && (
           <Loader2 className="w-4 h-4 animate-spin mr-2" />
         )}
-        {isPending && 'Pending, sign in wallet...'}
-        {!isPending && !!data && 'Waiting for confirmation...'}
-        {!isPending && !data && 'Submit proposal onchain'}
+        {isPending && t`Pending, sign in wallet...`}
+        {!isPending && !!data && t`Waiting for confirmation...`}
+        {!isPending && !data && t`Submit proposal onchain`}
       </Button>
     </TransactionButtonContainer>
   )

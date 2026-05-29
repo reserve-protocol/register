@@ -25,6 +25,7 @@ import { chainIdAtom } from '@/state/atoms'
 import { Token } from '@/types'
 import { shortenAddress } from '@/utils'
 import { ExplorerDataType, getExplorerLink } from '@/utils/getExplorerLink'
+import { Trans } from '@lingui/react/macro'
 import { useAtomValue } from 'jotai'
 import { ArrowUpRight, ArrowUpRightIcon, ChevronsUpDown } from 'lucide-react'
 import { useMemo } from 'react'
@@ -114,7 +115,9 @@ const Header = ({ address }: { address: Address }) => {
 
   return (
     <div className="mx-4 py-4 flex items-center flex-wrap gap-2 border-b">
-      <h1 className="text-xl font-bold text-primary">Basket Change</h1>
+      <h1 className="text-xl font-bold text-primary">
+        <Trans>Basket Change</Trans>
+      </h1>
       <Link
         target="_blank"
         className="mr-auto"
@@ -130,13 +133,13 @@ const Header = ({ address }: { address: Address }) => {
 
       <TabsList className="h-9">
         <TabsTrigger value={TABS.BASKET} className="w-max h-7">
-          Summary
+          <Trans>Summary</Trans>
         </TabsTrigger>
         <TabsTrigger value={TABS.TRADES} className="w-max h-7">
-          Trades
+          <Trans>Trades</Trans>
         </TabsTrigger>
         <TabsTrigger value={TABS.RAW} className="w-max h-7">
-          Raw
+          <Trans>Raw</Trans>
         </TabsTrigger>
       </TabsList>
     </div>
@@ -153,12 +156,18 @@ const BasketPreview = ({ basket }: { basket: EstimatedBasket | undefined }) => {
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead className="border-r">Token</TableHead>
-            <TableHead className="w-24 text-center">Current</TableHead>
-            <TableHead className="bg-primary/10 text-primary text-center font-bold w-24">
-              Expected
+            <TableHead className="border-r">
+              <Trans>Token</Trans>
             </TableHead>
-            <TableHead className="w-24 text-center">Delta</TableHead>
+            <TableHead className="w-24 text-center">
+              <Trans>Current</Trans>
+            </TableHead>
+            <TableHead className="bg-primary/10 text-primary text-center font-bold w-24">
+              <Trans>Expected</Trans>
+            </TableHead>
+            <TableHead className="w-24 text-center">
+              <Trans>Delta</Trans>
+            </TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -234,7 +243,9 @@ const ProposedTradeItem = ({
         address={trade.token.address}
       />
       <div className="mr-auto text-primary">
-        <span>Buy {trade.token.symbol}</span>
+        <span>
+          <Trans>Buy {trade.token.symbol}</Trans>
+        </span>
         <h4 className="text-xl font-bold">+{formatPercentage(trade.shares)}</h4>
       </div>
       {/* <ProposedTradeVolatility index={trade.index} /> */}
@@ -267,7 +278,9 @@ const ProposedTradeSold = ({
         />
       </div>
       <div className="flex flex-col justify-end flex-grow">
-        <h3 className="text-sm">Sell ${sell.token.symbol}</h3>
+        <h3 className="text-sm">
+          <Trans>Sell ${sell.token.symbol}</Trans>
+        </h3>
         <div className="flex items-center gap-2">
           <h4 className="text-xl font-bold mr-auto">
             {formatPercentage(Number(sell.shares) - sell.percent).replace(
@@ -276,8 +289,10 @@ const ProposedTradeSold = ({
             )}
           </h4>
           <span className="text-sm text-right">
-            From {formatPercentage(Number(sell.shares))} to{' '}
-            {formatPercentage(sell.percent)}
+            <Trans>
+              From {formatPercentage(Number(sell.shares))} to{' '}
+              {formatPercentage(sell.percent)}
+            </Trans>
           </span>
         </div>
       </div>
@@ -320,10 +335,16 @@ const TradesPreview = ({ trades }: { trades: OrganizedTrades | undefined }) => {
   return (
     <div className="flex flex-col gap-2 overflow-auto">
       <Row>
-        <div className="p-4 text-legend">Selling</div>
+        <div className="p-4 text-legend">
+          <Trans>Selling</Trans>
+        </div>
         <div className="flex items-center gap-2 flex-wrap p-4 flex-grow border-b text-legend">
-          <span className="mr-auto">Buying</span>
-          <span className="hidden sm:block">Expected volatility</span>
+          <span className="mr-auto">
+            <Trans>Buying</Trans>
+          </span>
+          <span className="hidden sm:block">
+            <Trans>Expected volatility</Trans>
+          </span>
         </div>
       </Row>
       {Object.keys(trades).map((key) => (
@@ -353,7 +374,9 @@ const RawPreview = ({
             {i + 1}/{totalTrades}
           </h4>
           <div>
-            <span className="text-legend text-sm block mb-1">Signature</span>
+            <span className="text-legend text-sm block mb-1">
+              <Trans>Signature</Trans>
+            </span>
             <span className="font-semibold">
               approveTrade(sell: address, buy: address, sellLimit: IFolio.Range,
               buyLimit: IFolio.Range, prices: IFolio.Range, ttl: uint256{' '}
@@ -361,7 +384,9 @@ const RawPreview = ({
             </span>
           </div>
           <div>
-            <span className="text-legend text-sm block mb-1">Parameters</span>
+            <span className="text-legend text-sm block mb-1">
+              <Trans>Parameters</Trans>
+            </span>
             <JsonView
               shouldExpandNode={collapseAllNested}
               style={defaultStyles}
@@ -371,7 +396,9 @@ const RawPreview = ({
           <div>
             <Collapsible>
               <CollapsibleTrigger className="flex items-center w-full border-b py-4 transition-colors hover:border-primary hover:text-primary">
-                <span className="font-semibold mr-auto">Executable code</span>
+                <span className="font-semibold mr-auto">
+                  <Trans>Executable code</Trans>
+                </span>
                 <ChevronsUpDown className="h-4 w-4" />
               </CollapsibleTrigger>
               <CollapsibleContent className="mt-4 p-2 bg-foreground/5 rounded-3xl">

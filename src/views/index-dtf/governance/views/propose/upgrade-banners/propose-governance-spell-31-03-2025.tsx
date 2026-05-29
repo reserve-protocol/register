@@ -9,6 +9,7 @@ import { indexDTFAtom } from '@/state/dtf/atoms'
 import { getCurrentTime } from '@/utils'
 import { ChainId } from '@/utils/chains'
 import { PROPOSAL_STATES } from '@/utils/constants'
+import { Trans, useLingui } from '@lingui/react/macro'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { AlertCircle, Loader2 } from 'lucide-react'
 import { useCallback, useEffect } from 'react'
@@ -167,6 +168,7 @@ type SpellUpgradeProps = {
 const ProposeGovernanceSpell31032025Folio = ({
   refetch,
 }: SpellUpgradeProps) => {
+  const { t } = useLingui()
   const dtf = useAtomValue(indexDTFAtom)
   const chainId = useAtomValue(chainIdAtom)
   const spell = spellAddress[chainId]
@@ -264,13 +266,15 @@ const ProposeGovernanceSpell31032025Folio = ({
         <AlertCircle size={24} className="text-primary" />
         <div>
           <h4 className="font-bold text-primary">
-            Upgrade Folio Governance (1/2):
+            <Trans>Upgrade Folio Governance (1/2):</Trans>
           </h4>
           <p className="text-sm">
-            This upgrade spell fixes the proposal-threshold on the Admin and
-            Basket FolioGovernor contracts that manage this DTF. Once this spell
-            is approved and executed, the proposal-threshold will be the correct
-            % that was initially intended at deployment.
+            <Trans>
+              This upgrade spell fixes the proposal-threshold on the Admin and
+              Basket FolioGovernor contracts that manage this DTF. Once this
+              spell is approved and executed, the proposal-threshold will be the
+              correct % that was initially intended at deployment.
+            </Trans>
           </p>
         </div>
       </div>
@@ -282,9 +286,9 @@ const ProposeGovernanceSpell31032025Folio = ({
         {(isPending || !!data) && (
           <Loader2 className="w-4 h-4 animate-spin mr-2" />
         )}
-        {isPending && 'Pending, sign in wallet...'}
-        {!isPending && !!data && 'Waiting for confirmation...'}
-        {!isPending && !data && 'Create Spell Proposal'}
+        {isPending && t`Pending, sign in wallet...`}
+        {!isPending && !!data && t`Waiting for confirmation...`}
+        {!isPending && !data && t`Create Spell Proposal`}
       </Button>
     </div>
   )
@@ -293,6 +297,7 @@ const ProposeGovernanceSpell31032025Folio = ({
 const ProposeGovernanceSpell31032025StakingVault = ({
   refetch,
 }: SpellUpgradeProps) => {
+  const { t } = useLingui()
   const dtf = useAtomValue(indexDTFAtom)
   const chainId = useAtomValue(chainIdAtom)
   const spell = spellAddress[chainId]
@@ -372,14 +377,16 @@ const ProposeGovernanceSpell31032025StakingVault = ({
         <AlertCircle size={24} className="text-primary" />
         <div>
           <h4 className="font-bold text-primary">
-            Upgrade Folio DAO Governor (2/2):
+            <Trans>Upgrade Folio DAO Governor (2/2):</Trans>
           </h4>
           <p className="text-sm">
-            This upgrade spell fixes the proposal-threshold on the FolioGovernor
-            contract that administers the DAO (StakingVault) relevant to this
-            DTF. Once this spell is approved and executed, the
-            proposal-threshold will be the correct % that was initially intended
-            at deployment.
+            <Trans>
+              This upgrade spell fixes the proposal-threshold on the
+              FolioGovernor contract that administers the DAO (StakingVault)
+              relevant to this DTF. Once this spell is approved and executed,
+              the proposal-threshold will be the correct % that was initially
+              intended at deployment.
+            </Trans>
           </p>
         </div>
       </div>
@@ -391,9 +398,9 @@ const ProposeGovernanceSpell31032025StakingVault = ({
         {(isPending || !!data) && (
           <Loader2 className="w-4 h-4 animate-spin mr-2" />
         )}
-        {isPending && 'Pending, sign in wallet...'}
-        {!isPending && !!data && 'Waiting for confirmation...'}
-        {!isPending && !data && 'Create Spell Proposal'}
+        {isPending && t`Pending, sign in wallet...`}
+        {!isPending && !!data && t`Waiting for confirmation...`}
+        {!isPending && !data && t`Create Spell Proposal`}
       </Button>
     </div>
   )

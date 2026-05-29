@@ -6,6 +6,7 @@ import { ExplorerDataType, getExplorerLink } from '@/utils/getExplorerLink'
 import { useAtomValue } from 'jotai'
 import { ArrowUpRightIcon } from 'lucide-react'
 import { Link } from 'react-router-dom'
+import { Trans } from '@lingui/react/macro'
 import { Address } from 'viem'
 import { dtfContractAliasAtom } from './atoms'
 import RawCallPreview from './raw-call-preview'
@@ -90,11 +91,11 @@ const ContractProposalChanges = ({
 
         <TabsList className="h-9">
           <TabsTrigger value={TABS.SUMMARY} className="w-max h-7">
-            Summary
+            <Trans>Summary</Trans>
           </TabsTrigger>
 
           <TabsTrigger value={TABS.RAW} className="w-max h-7">
-            Raw
+            <Trans>Raw</Trans>
           </TabsTrigger>
         </TabsList>
       </div>

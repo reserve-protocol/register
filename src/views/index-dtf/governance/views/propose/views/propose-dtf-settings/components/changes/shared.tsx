@@ -1,12 +1,14 @@
 import { Button } from '@/components/ui/button'
+import { useLingui } from '@lingui/react/macro'
 import { Undo } from 'lucide-react'
+import { ReactNode } from 'react'
 
 export const ChangeSection = ({
   title,
   icon,
   children,
 }: {
-  title: string
+  title: ReactNode
   icon: React.ReactNode
   children: React.ReactNode
 }) => (
@@ -22,14 +24,18 @@ export const ChangeSection = ({
 export const RevertButton = ({
   onClick,
   size = 'sm',
-  label = 'Revert',
+  label,
 }: {
   onClick: () => void
   size?: 'sm' | 'icon-rounded'
   label?: string
-}) => (
-  <Button variant="outline" className="text-xs" size={size} onClick={onClick}>
-    <Undo size={14} className={size === 'sm' ? 'mr-1' : ''} />
-    {size === 'sm' && label}
-  </Button>
-)
+}) => {
+  const { t } = useLingui()
+
+  return (
+    <Button variant="outline" className="text-xs" size={size} onClick={onClick}>
+      <Undo size={14} className={size === 'sm' ? 'mr-1' : ''} />
+      {size === 'sm' && (label ?? t`Revert`)}
+    </Button>
+  )
+}

@@ -16,6 +16,7 @@ import { useWaitForTransactionReceipt, useWriteContract } from 'wagmi'
 import { governanceProposalsAtom, refetchTokenAtom } from '../../../atoms'
 import { useIsProposeAllowed } from '../../../hooks/use-is-propose-allowed'
 import { toast } from 'sonner'
+import { Trans, useLingui } from '@lingui/react/macro'
 
 export const spellAbi = [
   { inputs: [], stateMutability: 'nonpayable', type: 'constructor' },
@@ -74,6 +75,7 @@ type SpellUpgradeProps = {
 }
 
 const ProposeBanner = ({ refetch, description }: SpellUpgradeProps) => {
+  const { t } = useLingui()
   const dtf = useAtomValue(indexDTFAtom)
   const chainId = useAtomValue(chainIdAtom)
   const spell = spellAddress[chainId]
@@ -127,8 +129,8 @@ const ProposeBanner = ({ refetch, description }: SpellUpgradeProps) => {
   useEffect(() => {
     if (isSuccess) {
       setTimeout(() => {
-        toast('Proposal created!', {
-          description: 'DTF V5.0.0 upgrade proposal created',
+        toast(t`Proposal created!`, {
+          description: t`DTF V5.0.0 upgrade proposal created`,
           icon: '🎉',
         })
         refetch()
@@ -145,20 +147,24 @@ const ProposeBanner = ({ refetch, description }: SpellUpgradeProps) => {
       <div className="flex flex-row items-center gap-2 ">
         <AlertCircle size={24} className="text-primary shrink-0" />
         <div>
-          <h4 className="font-bold text-primary">New version available</h4>
+          <h4 className="font-bold text-primary">
+            <Trans>New version available</Trans>
+          </h4>
           <p className="text-sm">
-            <strong>Release 5.0.0</strong> introduces improved rebalancing with
-            per-token auction size limits and the ability to disable bids for
-            individual tokens. <br />
-            See the{' '}
-            <a
-              className="text-primary underline"
-              href="https://github.com/reserve-protocol/reserve-index-dtf/releases/tag/r5.0.0"
-              target="_blank"
-            >
-              changelog
-            </a>{' '}
-            for more details.
+            <Trans>
+              <strong>Release 5.0.0</strong> introduces improved rebalancing
+              with per-token auction size limits and the ability to disable bids
+              for individual tokens. <br />
+              See the{' '}
+              <a
+                className="text-primary underline"
+                href="https://github.com/reserve-protocol/reserve-index-dtf/releases/tag/r5.0.0"
+                target="_blank"
+              >
+                changelog
+              </a>{' '}
+              for more details.
+            </Trans>
           </p>
         </div>
       </div>
@@ -170,9 +176,9 @@ const ProposeBanner = ({ refetch, description }: SpellUpgradeProps) => {
         {(isPending || !!data) && (
           <Loader2 className="w-4 h-4 animate-spin mr-2" />
         )}
-        {isPending && 'Pending, sign in wallet...'}
-        {!isPending && !!data && 'Waiting for confirmation...'}
-        {!isPending && !data && 'Propose upgrade'}
+        {isPending && t`Pending, sign in wallet...`}
+        {!isPending && !!data && t`Waiting for confirmation...`}
+        {!isPending && !data && t`Propose upgrade`}
       </Button>
     </div>
   )

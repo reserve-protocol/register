@@ -3,7 +3,9 @@ import { cn } from '@/lib/utils'
 import { chainIdAtom } from '@/state/atoms'
 import { indexDTFAtom } from '@/state/dtf/atoms'
 import { formatCurrency } from '@/utils'
-import { t } from '@lingui/macro'
+import type { MessageDescriptor } from '@lingui/core'
+import { msg } from '@lingui/core/macro'
+import { Trans, useLingui } from '@lingui/react/macro'
 import { atom, useAtomValue } from 'jotai'
 import { governanceStatsAtom } from '../atoms'
 import { Archive, FileStack, Notebook } from 'lucide-react'
@@ -24,7 +26,9 @@ const VotingPower = () => {
         chain={chainId}
       />
       <div className="flex flex-col ">
-        <span className="text-legend text-sm">Vote locked</span>
+        <span className="text-legend text-sm">
+          <Trans>Vote locked</Trans>
+        </span>
         <span className="font-bold">
           {formatCurrency(votingPower, 1, {
             notation: 'compact',
@@ -65,36 +69,42 @@ const IconInfo = ({
   </div>
 )
 
-const governanceStatsListAtom = atom((get) => {
+const governanceStatsListAtom = atom<
+  { id: string; icon: any; title: MessageDescriptor; text: string }[]
+>((get) => {
   const stats = get(governanceStatsAtom)
 
   return [
     {
+      id: 'proposals',
       icon: <FileStack size={14} />,
-      title: t`Proposals`,
+      title: msg`Proposals`,
       text: formatCurrency(stats?.proposalCount ?? 0, 0),
     },
     {
+      id: 'vote-supply',
       icon: <Archive size={14} />,
-      title: t`Vote Supply`,
+      title: msg`Vote Supply`,
       text: formatCurrency(stats?.voteTokenSupply ?? 0, 0),
     },
     {
+      id: 'voting-addresses',
       icon: <Notebook size={14} />,
-      title: t`Voting Addresses`,
+      title: msg`Voting Addresses`,
       text: formatCurrency(stats?.totalDelegates ?? 0, 0),
     },
   ]
 })
 
 const GovernanceStats = () => {
+  const { t } = useLingui()
   const governanceStatsList = useAtomValue(governanceStatsListAtom)
 
   return (
     <div className="flex flex-col rounded-3xl bg-background">
-      {governanceStatsList.map(({ icon, title, text }) => (
-        <div className="flex flex-col gap-4 p-6 border-b" key={title}>
-          <IconInfo icon={icon} title={title} text={text} />
+      {governanceStatsList.map(({ id, icon, title, text }) => (
+        <div className="flex flex-col gap-4 p-6 border-b" key={id}>
+          <IconInfo icon={icon} title={t(title)} text={text} />
         </div>
       ))}
       <VotingPower />

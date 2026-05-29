@@ -4,7 +4,7 @@ import { Input } from '@/components/ui/input'
 import { walletAtom } from '@/state/atoms'
 import { indexDTFAtom } from '@/state/dtf/atoms'
 import { isAddress } from '@/utils'
-import { t, Trans } from '@lingui/macro'
+import { Trans, useLingui } from '@lingui/react/macro'
 import { useAtomValue } from 'jotai'
 import { useMemo, useState } from 'react'
 
@@ -15,6 +15,7 @@ const DelegateModal = ({
   onClose: () => void
   delegated: boolean
 }) => {
+  const { t } = useLingui()
   const account = useAtomValue(walletAtom)
   const dtf = useAtomValue(indexDTFAtom)
   const [address, setAddress] = useState(!delegated && account ? account : '')
@@ -33,7 +34,7 @@ const DelegateModal = ({
   return (
     <TransactionModal
       title={t`Delegate votes`}
-      description="Delegate"
+      description={t`Delegate`}
       call={call}
       confirmLabel={t`Confirm delegate`}
       onClose={onClose}

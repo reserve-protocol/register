@@ -6,6 +6,7 @@ import { chainIdAtom } from '@/state/atoms'
 import { DecodedCalldata } from '@/types'
 import { ExplorerDataType, getExplorerLink } from '@/utils/getExplorerLink'
 import RawCallPreview from '@/views/index-dtf/governance/components/proposal-preview/raw-call-preview'
+import { Trans } from '@lingui/react/macro'
 import {
   SetMandatePreview,
   RemoveFromBasketPreview,
@@ -49,11 +50,11 @@ const Header = ({ address }: { address: Address }) => {
 
       <TabsList className="h-9">
         <TabsTrigger value={TABS.SUMMARY} className="w-max h-7">
-          Summary
+          <Trans>Summary</Trans>
         </TabsTrigger>
 
         <TabsTrigger value={TABS.RAW} className="w-max h-7">
-          Raw
+          <Trans>Raw</Trans>
         </TabsTrigger>
       </TabsList>
     </div>
@@ -137,7 +138,7 @@ const RawPreview = ({ data }: { data: DecodedCalldata[] }) => {
 const UnknownPreview = ({ signature }: { signature: string }) => {
   return (
     <div className="text-sm text-muted-foreground">
-      Preview not available for: {signature}
+      <Trans>Preview not available for: {signature}</Trans>
     </div>
   )
 }

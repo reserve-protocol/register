@@ -1,93 +1,125 @@
 import { isAddressNotStrict } from '@/views/index-dtf/deploy/utils'
+import type { MessageDescriptor } from '@lingui/core'
+import { msg } from '@lingui/core/macro'
+import { useLingui } from '@lingui/react/macro'
+import { useMemo } from 'react'
 import { z } from 'zod'
 
-export const createProposeBasketSettingsSchema = (quorumDenominator?: number) => z.object({
-  basketVotingDelay: z
-    .union([z.literal(''), z.string(), z.number()])
-    .transform((val) => {
-      if (val === '') return undefined
-      return Number(val)
+const messages = {
+  votingDelayRequired: msg`Voting delay is required`,
+  votingPeriodRequired: msg`Voting period is required`,
+  votingQuorumRequired: msg`Voting quorum is required`,
+  proposalThresholdRequired: msg`Proposal threshold is required`,
+  executionDelayRequired: msg`Execution delay is required`,
+  mustBeZeroOrGreater: msg`Must be 0 or greater`,
+  mustBeBetween0And100: msg`Must be between 0 and 100`,
+  onlyWholeNumbers: msg`Only whole numbers are allowed`,
+  invalidAddress: msg`Invalid Address`,
+  duplicatedGuardians: msg`Duplicated guardians`,
+}
+
+export const buildProposeBasketSettingsSchema = (
+  t: (descriptor: MessageDescriptor) => string,
+  quorumDenominator?: number
+) =>
+  z
+    .object({
+      basketVotingDelay: z
+        .union([z.literal(''), z.string(), z.number()])
+        .transform((val) => {
+          if (val === '') return undefined
+          return Number(val)
+        })
+        .refine((val) => val !== undefined, t(messages.votingDelayRequired))
+        .refine(
+          (val) => val === undefined || val >= 0,
+          t(messages.mustBeZeroOrGreater)
+        ),
+      basketVotingPeriod: z
+        .union([z.literal(''), z.string(), z.number()])
+        .transform((val) => {
+          if (val === '') return undefined
+          return Number(val)
+        })
+        .refine((val) => val !== undefined, t(messages.votingPeriodRequired))
+        .refine(
+          (val) => val === undefined || val >= 0,
+          t(messages.mustBeZeroOrGreater)
+        ),
+      basketVotingQuorum: z
+        .union([z.literal(''), z.string(), z.number()])
+        .transform((val) => {
+          if (val === '') return undefined
+          return Number(val)
+        })
+        .refine((val) => val !== undefined, t(messages.votingQuorumRequired))
+        .refine(
+          (val) => val === undefined || (val >= 0 && val <= 100),
+          t(messages.mustBeBetween0And100)
+        )
+        .refine(
+          (val) => {
+            // Only validate if we have a denominator and a value
+            if (quorumDenominator === 100 && val !== undefined) {
+              return Number.isInteger(val)
+            }
+            return true
+          },
+          t(messages.onlyWholeNumbers)
+        ),
+      basketVotingThreshold: z
+        .union([z.literal(''), z.string(), z.number()])
+        .transform((val) => {
+          if (val === '') return undefined
+          return Number(val)
+        })
+        .refine(
+          (val) => val !== undefined,
+          t(messages.proposalThresholdRequired)
+        )
+        .refine(
+          (val) => val === undefined || (val >= 0 && val <= 100),
+          t(messages.mustBeBetween0And100)
+        ),
+      basketExecutionDelay: z
+        .union([z.literal(''), z.string(), z.number()])
+        .transform((val) => {
+          if (val === '') return undefined
+          return Number(val)
+        })
+        .refine((val) => val !== undefined, t(messages.executionDelayRequired))
+        .refine(
+          (val) => val === undefined || val >= 0,
+          t(messages.mustBeZeroOrGreater)
+        ),
+      // Role fields
+      guardians: z.array(
+        z
+          .string()
+          .refine((value) => !value || isAddressNotStrict(value), {
+            message: t(messages.invalidAddress),
+          })
+          .optional()
+      ),
     })
-    .refine((val) => val !== undefined, 'Voting delay is required')
     .refine(
-      (val) => val === undefined || val >= 0,
-      'Must be 0 or greater'
-    ),
-  basketVotingPeriod: z
-    .union([z.literal(''), z.string(), z.number()])
-    .transform((val) => {
-      if (val === '') return undefined
-      return Number(val)
-    })
-    .refine((val) => val !== undefined, 'Voting period is required')
-    .refine(
-      (val) => val === undefined || val >= 0,
-      'Must be 0 or greater'
-    ),
-  basketVotingQuorum: z
-    .union([z.literal(''), z.string(), z.number()])
-    .transform((val) => {
-      if (val === '') return undefined
-      return Number(val)
-    })
-    .refine((val) => val !== undefined, 'Voting quorum is required')
-    .refine(
-      (val) => val === undefined || (val >= 0 && val <= 100),
-      'Must be between 0 and 100'
+      (data) =>
+        new Set(data.guardians?.map((item) => item?.toLowerCase() || item))
+          .size === data.guardians.length,
+      {
+        message: t(messages.duplicatedGuardians),
+        path: ['roles'],
+      }
     )
-    .refine(
-      (val) => {
-        // Only validate if we have a denominator and a value
-        if (quorumDenominator === 100 && val !== undefined) {
-          return Number.isInteger(val)
-        }
-        return true
-      },
-      'Only whole numbers are allowed'
-    ),
-  basketVotingThreshold: z
-    .union([z.literal(''), z.string(), z.number()])
-    .transform((val) => {
-      if (val === '') return undefined
-      return Number(val)
-    })
-    .refine((val) => val !== undefined, 'Proposal threshold is required')
-    .refine(
-      (val) => val === undefined || (val >= 0 && val <= 100),
-      'Must be between 0 and 100'
-    ),
-  basketExecutionDelay: z
-    .union([z.literal(''), z.string(), z.number()])
-    .transform((val) => {
-      if (val === '') return undefined
-      return Number(val)
-    })
-    .refine((val) => val !== undefined, 'Execution delay is required')
-    .refine(
-      (val) => val === undefined || val >= 0,
-      'Must be 0 or greater'
-    ),
-  // Role fields
-  guardians: z.array(
-    z
-      .string()
-      .refine((value) => !value || isAddressNotStrict(value), {
-        message: 'Invalid Address',
-      })
-      .optional()
-  ),
-})
-.refine(
-  (data) =>
-    new Set(data.guardians?.map((item) => item?.toLowerCase() || item))
-      .size === data.guardians.length,
-  {
-    message: 'Duplicated guardians',
-    path: ['roles'],
-  }
-)
 
-// Default schema for backward compatibility
-export const ProposeBasketSettingsSchema = createProposeBasketSettingsSchema()
+export const useProposeBasketSettingsSchema = (quorumDenominator?: number) => {
+  const { t } = useLingui()
+  return useMemo(
+    () => buildProposeBasketSettingsSchema(t, quorumDenominator),
+    [t, quorumDenominator]
+  )
+}
 
-export type ProposeBasketSettings = z.infer<typeof ProposeBasketSettingsSchema>
+export type ProposeBasketSettings = z.infer<
+  ReturnType<typeof buildProposeBasketSettingsSchema>
+>

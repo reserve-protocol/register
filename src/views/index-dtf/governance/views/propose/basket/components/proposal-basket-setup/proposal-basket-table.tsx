@@ -4,6 +4,7 @@ import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
 import { cn } from '@/lib/utils'
 import { isHybridDTFAtom } from '@/state/dtf/atoms'
 import { BasketInputType } from '@/views/index-dtf/deploy/atoms'
+import { Trans } from '@lingui/react/macro'
 import { atom, useAtom, useAtomValue } from 'jotai'
 import {
   _basketInputTypeAtom,
@@ -28,7 +29,9 @@ const assetsAtom = atom((get) => {
 const UnitsHeader = () => {
   return (
     <div className="flex items-center justify-center gap-1">
-      <span>New units</span>
+      <span>
+        <Trans>New units</Trans>
+      </span>
       <Help content={UNITS_DISCLAIMER} />
     </div>
   )
@@ -42,11 +45,13 @@ const Header = () => {
   return (
     <TableHeader>
       <TableRow>
-        <TableHead className="border-r min-w-48">Token</TableHead>
+        <TableHead className="border-r min-w-48">
+          <Trans>Token</Trans>
+        </TableHead>
         <TableHead
           className={cn(isUnitBasket ? 'text-right w-36' : 'w-16 text-center')}
         >
-          {isUnitBasket ? 'Old units' : 'Current'}
+          {isUnitBasket ? <Trans>Old units</Trans> : <Trans>Current</Trans>}
         </TableHead>
         <TableHead className="bg-primary/10 text-primary text-center font-bold">
           {isUnitBasket || isHybridDTF ? (
@@ -64,13 +69,13 @@ const Header = () => {
                 className="px-3 h-8 rounded-md data-[state=on]:bg-card text-secondary-foreground/80 data-[state=on]:text-primary"
                 value="unit"
               >
-                Unit
+                <Trans>Unit</Trans>
               </ToggleGroupItem>
               <ToggleGroupItem
                 className="px-3 h-8 rounded-md data-[state=on]:bg-card text-secondary-foreground/80 data-[state=on]:text-primary"
                 value="share"
               >
-                Share
+                <Trans>Share</Trans>
               </ToggleGroupItem>
             </ToggleGroup>
           )}
@@ -78,7 +83,7 @@ const Header = () => {
         <TableHead
           className={cn(isUnitBasket ? 'text-right w-24' : 'w-16 text-center')}
         >
-          {isUnitBasket ? '% of Basket' : 'Delta'}
+          {isUnitBasket ? <Trans>% of Basket</Trans> : <Trans>Delta</Trans>}
         </TableHead>
       </TableRow>
     </TableHeader>

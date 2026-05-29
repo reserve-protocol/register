@@ -10,6 +10,7 @@ import { useAtomValue } from 'jotai'
 import { ArrowUpRightIcon, ChevronsUpDown, AlertTriangle } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { Hex } from 'viem'
+import { Trans } from '@lingui/react/macro'
 
 const UnknownContractPreview = ({
   contract,
@@ -23,7 +24,9 @@ const UnknownContractPreview = ({
   return (
     <div className="flex flex-col gap-4 p-2 rounded-3xl bg-background">
       <div className="mx-4 py-4 flex items-center flex-wrap gap-2 border-b">
-        <h1 className="text-xl font-bold text-primary">Unknown Contract</h1>
+        <h1 className="text-xl font-bold text-primary">
+          <Trans>Unknown Contract</Trans>
+        </h1>
         <Link
           target="_blank"
           className="mr-auto"
@@ -42,11 +45,16 @@ const UnknownContractPreview = ({
         <div className="flex items-start gap-3">
           <AlertTriangle className="h-5 w-5 text-red-600 mt-0.5 flex-shrink-0" />
           <div className="text-sm text-red-800">
-            <p className="font-medium mb-1">Unable to parse contract data</p>
+            <p className="font-medium mb-1">
+              <Trans>Unable to parse contract data</Trans>
+            </p>
             <p>
-              We couldn’t retrieve the contract’s ABI from Etherscan. This
-              usually means the contract is not verified. Without its interface,
-              we’re unable to decode any function calls or parameters.
+              <Trans>
+                We couldn’t retrieve the contract’s ABI from Etherscan. This
+                usually means the contract is not verified. Without its
+                interface, we’re unable to decode any function calls or
+                parameters.
+              </Trans>
             </p>
           </div>
         </div>
@@ -60,7 +68,9 @@ const UnknownContractPreview = ({
             </h4>
             <Collapsible>
               <CollapsibleTrigger className="flex items-center w-full border-b py-4 transition-colors hover:border-primary hover:text-primary">
-                <span className="font-semibold mr-auto">Executable code</span>
+                <span className="font-semibold mr-auto">
+                  <Trans>Executable code</Trans>
+                </span>
                 <ChevronsUpDown className="h-4 w-4" />
               </CollapsibleTrigger>
               <CollapsibleContent className="mt-4 p-2 bg-foreground/5 rounded-3xl">

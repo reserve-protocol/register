@@ -7,6 +7,7 @@ import {
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 import { ROUTES } from '@/utils/constants'
+import { Trans, useLingui } from '@lingui/react/macro'
 import { useAtom, useAtomValue } from 'jotai'
 import {
   ArrowLeftIcon,
@@ -52,51 +53,6 @@ export type DTF_SETTING = {
   titleSecondary: string
   content: ReactNode
 }
-
-const DTF_SETTINGS: DTF_SETTING[] = [
-  {
-    id: 'mandate',
-    icon: <Braces size={14} strokeWidth={1.5} />,
-    title: 'Basics',
-    titleSecondary: 'Basics',
-    content: <ProposeMetadata />,
-  },
-  {
-    id: 'roles',
-    icon: <Crown size={14} strokeWidth={1.5} />,
-    title: 'Roles',
-    titleSecondary: 'Roles',
-    content: <ProposeDTFRoles />,
-  },
-  {
-    id: 'fees',
-    icon: <BadgePercent size={14} strokeWidth={1.5} />,
-    title: 'Fees & Distribution',
-    titleSecondary: 'Fees & Distribution',
-    content: <ProposeDTFRevenue />,
-  },
-  {
-    id: 'auction',
-    icon: <Scale size={14} strokeWidth={1.5} />,
-    title: 'Auctions',
-    titleSecondary: 'Auction settings',
-    content: <ProposeAuctionSettings />,
-  },
-  {
-    id: 'tokens',
-    icon: <Coins size={14} strokeWidth={1.5} />,
-    title: 'Remove Dust Tokens',
-    titleSecondary: 'Remove tokens from basket',
-    content: <RemoveDustTokens />,
-  },
-  {
-    id: 'governance',
-    icon: <Landmark size={14} strokeWidth={1.5} />,
-    title: 'Governance',
-    titleSecondary: 'Governance Parameters',
-    content: <ProposeGovernanceSettings />,
-  },
-]
 
 const ProposeSectionTrigger = ({
   id,
@@ -155,12 +111,60 @@ const Header = () => (
         <ArrowLeftIcon size={24} strokeWidth={1.5} />
       </Button>
     </Link>
-    <h1 className="font-bold text-xl">DTF settings proposal</h1>
+    <h1 className="font-bold text-xl">
+      <Trans>DTF settings proposal</Trans>
+    </h1>
   </div>
 )
 
 const DTFSettingsProposalSections = () => {
+  const { t } = useLingui()
   const [section, setSection] = useAtom(selectedSectionAtom)
+
+  const DTF_SETTINGS: DTF_SETTING[] = [
+    {
+      id: 'mandate',
+      icon: <Braces size={14} strokeWidth={1.5} />,
+      title: t`Basics`,
+      titleSecondary: t`Basics`,
+      content: <ProposeMetadata />,
+    },
+    {
+      id: 'roles',
+      icon: <Crown size={14} strokeWidth={1.5} />,
+      title: t`Roles`,
+      titleSecondary: t`Roles`,
+      content: <ProposeDTFRoles />,
+    },
+    {
+      id: 'fees',
+      icon: <BadgePercent size={14} strokeWidth={1.5} />,
+      title: t`Fees & Distribution`,
+      titleSecondary: t`Fees & Distribution`,
+      content: <ProposeDTFRevenue />,
+    },
+    {
+      id: 'auction',
+      icon: <Scale size={14} strokeWidth={1.5} />,
+      title: t`Auctions`,
+      titleSecondary: t`Auction settings`,
+      content: <ProposeAuctionSettings />,
+    },
+    {
+      id: 'tokens',
+      icon: <Coins size={14} strokeWidth={1.5} />,
+      title: t`Remove Dust Tokens`,
+      titleSecondary: t`Remove tokens from basket`,
+      content: <RemoveDustTokens />,
+    },
+    {
+      id: 'governance',
+      icon: <Landmark size={14} strokeWidth={1.5} />,
+      title: t`Governance`,
+      titleSecondary: t`Governance Parameters`,
+      content: <ProposeGovernanceSettings />,
+    },
+  ]
 
   return (
     <div className="w-full bg-secondary rounded-4xl h-fit">

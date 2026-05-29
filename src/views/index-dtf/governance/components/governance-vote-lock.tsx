@@ -7,6 +7,7 @@ import { useAtomValue } from 'jotai'
 import Staking from '../../overview/components/staking'
 import { useVoteLockAPR } from '../../overview/hooks/use-staking-vault-apy'
 import RSRBNBHelp from './rsr-bnb-help'
+import { Trans } from '@lingui/react/macro'
 
 const Placeholder = () => (
   <div className="rouend-3xl bg-background space-y-6 p-2 rounded-3xl">
@@ -63,13 +64,15 @@ const GovernanceVoteLock = () => {
           )}
         </div>
         <h4 className="text-lg font-bold break-words mb-1">
-          Governed by ${indexDTF.stToken.token.symbol}
+          <Trans>Governed by ${indexDTF.stToken.token.symbol}</Trans>
         </h4>
         <p className="text-sm text-legend">
-          ${indexDTF.stToken.underlying.symbol} holders must vote-lock their
-          tokens to become a governor. In exchange for locking their tokens and
-          participating in governance, governors earn a portion of the TVL fee
-          charged by the DTF.
+          <Trans>
+            ${indexDTF.stToken.underlying.symbol} holders must vote-lock their
+            tokens to become a governor. In exchange for locking their tokens
+            and participating in governance, governors earn a portion of the TVL
+            fee charged by the DTF.
+          </Trans>
         </p>
       </div>
 
@@ -82,7 +85,7 @@ const GovernanceVoteLock = () => {
             chain={chainId}
           />
           <span className="text-primary">
-            Vote-lock ${indexDTF.stToken.underlying.symbol}
+            <Trans>Vote-lock ${indexDTF.stToken.underlying.symbol}</Trans>
           </span>
         </Button>
       </Staking>

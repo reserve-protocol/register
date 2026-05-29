@@ -1,6 +1,6 @@
 import TransactionButton from '@/components/ui/transaction-button'
 import { getCurrentTime } from '@/utils'
-import { t } from '@lingui/macro'
+import { useLingui } from '@lingui/react/macro'
 import dtfIndexGovernanceAbi from 'abis/dtf-index-governance'
 import useContractWrite from 'hooks/useContractWrite'
 import useWatchTransaction from 'hooks/useWatchTransaction'
@@ -17,6 +17,7 @@ const canExecuteAtom = atom((get) => {
 })
 
 const ProposalExecute = () => {
+  const { t } = useLingui()
   const proposal = useAtomValue(proposalDetailAtom)
   const canExecute = useAtomValue(canExecuteAtom)
   const deadline = proposal?.votingState.deadline
@@ -61,7 +62,7 @@ const ProposalExecute = () => {
       mining={isMining}
       disabled={!isReady || !canExecute || status === 'success'}
       onClick={write}
-      text={isProcessing ? 'Processing...' : t`Execute proposal`}
+      text={isProcessing ? t`Processing...` : t`Execute proposal`}
       className="h-[44px]"
       error={validationError}
       errorWithName={false}

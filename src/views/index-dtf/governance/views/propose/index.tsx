@@ -1,6 +1,8 @@
 import { cn } from '@/lib/utils'
 import { GOVERNANCE_PROPOSAL_TYPES, ROUTES } from '@/utils/constants'
-import { Trans } from '@lingui/macro'
+import type { MessageDescriptor } from '@lingui/core'
+import { msg } from '@lingui/core/macro'
+import { Trans, useLingui } from '@lingui/react/macro'
 import {
   ArrowLeft,
   ArrowRight,
@@ -9,32 +11,38 @@ import {
   LayoutGrid,
   Settings,
 } from 'lucide-react'
+import { ReactNode } from 'react'
 import { Link } from 'react-router-dom'
 import ProposeV4Upgrade from './upgrade-banners/propose-v4-upgrade'
 import ProposeV5Upgrade from './upgrade-banners/propose-v5-upgrade'
 
-const proposalTypes = [
+const proposalTypes: {
+  icon: ReactNode
+  title: MessageDescriptor
+  route: string
+  enabled: boolean
+}[] = [
   {
     icon: <Boxes strokeWidth={1.5} size={16} />,
-    title: 'DTF Basket',
+    title: msg`DTF Basket`,
     route: GOVERNANCE_PROPOSAL_TYPES.BASKET,
     enabled: true,
   },
   {
     icon: <Settings size={16} strokeWidth={1.5} />,
-    title: 'DTF Settings',
+    title: msg`DTF Settings`,
     route: GOVERNANCE_PROPOSAL_TYPES.DTF,
     enabled: true,
   },
   {
     icon: <Crown size={16} strokeWidth={1.5} />,
-    title: 'Basket settings',
+    title: msg`Basket settings`,
     route: GOVERNANCE_PROPOSAL_TYPES.BASKET_SETTINGS,
     enabled: true,
   },
   {
     icon: <LayoutGrid size={16} strokeWidth={1.5} />,
-    title: 'DAO',
+    title: msg`DAO`,
     route: GOVERNANCE_PROPOSAL_TYPES.OTHER,
     enabled: true,
   },
@@ -54,11 +62,14 @@ const Header = () => (
   </div>
 )
 
-const TypeList = () => (
+const TypeList = () => {
+  const { t } = useLingui()
+
+  return (
   <div className="bg-card m-1 rounded-3xl">
     {proposalTypes.map(({ title, icon, route, enabled }, index) => (
       <Link
-        key={title}
+        key={route}
         to={enabled ? route : ''}
         className={cn(
           'flex flex-row items-center p-6 gap-4 hover:text-primary group',
@@ -69,10 +80,10 @@ const TypeList = () => (
         <div className="rounded-full h-8 w-8 border border-foreground flex items-center justify-center group-hover:border-primary">
           {icon}
         </div>
-        <h4 className="bg-card m-1 mr-auto font-bold">{title}</h4>
+        <h4 className="bg-card m-1 mr-auto font-bold">{t(title)}</h4>
         {!enabled && (
           <div className="text-nowrap text-legend text-xs border rounded-full px-2 py-1 bg-card">
-            Coming soon
+            <Trans>Coming soon</Trans>
           </div>
         )}
         <div
@@ -86,7 +97,8 @@ const TypeList = () => (
       </Link>
     ))}
   </div>
-)
+  )
+}
 
 const ProposalTypeSelection = () => {
   return (
