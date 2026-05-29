@@ -1,5 +1,6 @@
 import TokenLogo from '@/components/token-logo'
 import { ChartContainer } from '@/components/ui/chart'
+import { dateLocale } from '@/utils/locale'
 import { chainIdAtom } from '@/state/atoms'
 import { ExplorerDataType, getExplorerLink } from '@/utils/getExplorerLink'
 import { Trans, useLingui } from '@lingui/react/macro'
@@ -47,7 +48,10 @@ const formatUsdAmount = (amount: number): string => `$${amount.toFixed(2)}`
 
 const formatTime = (timestamp: number): string => {
   const date = new Date(timestamp * 1000)
-  return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+  return date.toLocaleTimeString(dateLocale(), {
+    hour: '2-digit',
+    minute: '2-digit',
+  })
 }
 
 interface Bid {

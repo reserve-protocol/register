@@ -1,4 +1,5 @@
 import { Card } from '@/components/ui/card'
+import { dateLocale } from '@/utils/locale'
 import {
   indexDTF24hVolumeAtom,
   indexDTFAtom,
@@ -92,7 +93,7 @@ const Created = () => {
       label={<Trans>Created</Trans>}
       value={
         dtf?.timestamp
-          ? new Date(dtf.timestamp * 1000).toLocaleDateString('en-US', {
+          ? new Date(dtf.timestamp * 1000).toLocaleDateString(dateLocale(), {
               year: 'numeric',
               month: 'long',
               day: 'numeric',

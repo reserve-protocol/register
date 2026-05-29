@@ -3,6 +3,7 @@ import StakingVault from 'abis/StakingVault'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { Separator } from '@/components/ui/separator'
+import { dateLocale } from '@/utils/locale'
 import Help from 'components/help'
 import { Loader2 } from 'lucide-react'
 import useContractWrite from 'hooks/useContractWrite'
@@ -120,7 +121,9 @@ const StakingVaultRevenue = () => {
 
     const _nextPeriodAPY = (futureAmt / (stBalance - futureAmt || 1)) * 52 * 100
 
-    const _rewardsEnds = new Date(rewardsEnd * 1000).toLocaleString()
+    const _rewardsEnds = new Date(rewardsEnd * 1000).toLocaleString(
+      dateLocale()
+    )
 
     const delta = (avgAPY - _nextPeriodAPY) / 100
     const _neededToHitAvg = delta > 0 ? (delta * stBalance) / 52 : 0

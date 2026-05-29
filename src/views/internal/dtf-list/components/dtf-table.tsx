@@ -1,6 +1,7 @@
 import { useAtomValue } from 'jotai'
 import { filteredDtfListAtom, isLoadingAtom, marketCapsAtom } from '../atoms'
 import { formatCurrency } from '@/utils'
+import { dateLocale } from '@/utils/locale'
 import {
   Table,
   TableBody,
@@ -75,7 +76,7 @@ const formatGovernanceSpeed = (dtf: InternalDTF) => {
 
 const formatTimestamp = (timestamp: number) => {
   const date = new Date(timestamp * 1000)
-  return date.toLocaleDateString('en-US', {
+  return date.toLocaleDateString(dateLocale(), {
     year: 'numeric',
     month: 'short',
     day: 'numeric',

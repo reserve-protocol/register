@@ -306,6 +306,10 @@ msgstr ""
 msgid "{fromToken} to {toToken}"
 msgstr ""
 
+#: src/utils/index.ts:378
+msgid "{humanized} ago"
+msgstr ""
+
 #. placeholder {0}: token.tokenSymbol
 #. placeholder {1}: token.counterpart
 #: src/views/index-dtf/auctions/views/rebalance/components/rebalance-liquidity-checker.tsx:85
@@ -488,15 +492,15 @@ msgstr ""
 msgid "24 hour"
 msgstr ""
 
-#: src/views/index-dtf/overview/components/index-metrics-overview.tsx:140
+#: src/views/index-dtf/overview/components/index-metrics-overview.tsx:141
 msgid "24h Supply Change"
 msgstr ""
 
-#: src/views/index-dtf/overview/components/index-metrics-overview.tsx:154
+#: src/views/index-dtf/overview/components/index-metrics-overview.tsx:155
 msgid "24h Tx Volume"
 msgstr ""
 
-#: src/views/index-dtf/overview/components/fees-stats.tsx:68
+#: src/views/index-dtf/overview/components/fees-stats.tsx:69
 msgid "24h Volume"
 msgstr ""
 
@@ -517,7 +521,7 @@ msgid "30-day blended APY:"
 msgstr ""
 
 #. placeholder {0}: rTokenVault.name
-#: src/views/yield-dtf/auctions/auctions-sidebar/StakingVaultRevenue.tsx:161
+#: src/views/yield-dtf/auctions/auctions-sidebar/StakingVaultRevenue.tsx:164
 msgid "30d avg {0} APY"
 msgstr ""
 
@@ -558,7 +562,7 @@ msgstr ""
 msgid "A good explainer for how Gnosis auctions work can be found"
 msgstr ""
 
-#: src/views/index-dtf/auctions/views/rebalance/components/rebalance-completed.tsx:194
+#: src/views/index-dtf/auctions/views/rebalance/components/rebalance-completed.tsx:195
 msgid "A measure of how closely the new basket rebalanced compared to the proposed basket"
 msgstr ""
 
@@ -600,7 +604,7 @@ msgstr ""
 msgid "A trusted actor that can veto any proposal prior to execution."
 msgstr ""
 
-#: src/utils/index.ts:127
+#: src/utils/index.ts:128
 msgid "A year ago"
 msgstr ""
 
@@ -644,7 +648,7 @@ msgstr ""
 msgid "Accept unstake delay"
 msgstr ""
 
-#: src/views/internal/dtf-list/components/dtf-table.tsx:200
+#: src/views/internal/dtf-list/components/dtf-table.tsx:201
 #: src/views/portfolio-page/components/pending-withdrawals.tsx:354
 #: src/views/portfolio-page/components/staked-positions.tsx:116
 #: src/views/portfolio-page/components/vote-locked-positions.tsx:152
@@ -772,7 +776,7 @@ msgstr ""
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-roles.tsx:41
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-roles.tsx:50
 #: src/views/index-dtf/settings/components/index-settings-basic.tsx:48
-#: src/views/internal/dtf-list/components/dtf-table.tsx:188
+#: src/views/internal/dtf-list/components/dtf-table.tsx:189
 #: src/views/internal/dtf-listed/components/listed-dtf-table.tsx:153
 #: src/views/yield-dtf/governance/components/TopVoters.tsx:90
 msgid "Address"
@@ -944,8 +948,8 @@ msgstr ""
 #: src/views/index-dtf/deploy/steps/revenue/index.tsx:72
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/changes/revenue-changes.tsx:460
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-revenue.tsx:74
-#: src/views/index-dtf/overview/components/fees-stats.tsx:26
-#: src/views/index-dtf/overview/components/index-metrics-overview.tsx:186
+#: src/views/index-dtf/overview/components/fees-stats.tsx:27
+#: src/views/index-dtf/overview/components/index-metrics-overview.tsx:187
 #: src/views/index-dtf/settings/components/index-settings-fees.tsx:91
 msgid "Annualized TVL Fee"
 msgstr ""
@@ -1191,8 +1195,8 @@ msgstr ""
 msgid "Auctions run"
 msgstr ""
 
-#: src/views/index-dtf/auctions/views/rebalance/components/rebalance-completed.tsx:162
-#: src/views/index-dtf/auctions/views/rebalance/components/rebalance-completed.tsx:212
+#: src/views/index-dtf/auctions/views/rebalance/components/rebalance-completed.tsx:163
+#: src/views/index-dtf/auctions/views/rebalance/components/rebalance-completed.tsx:213
 msgid "Available after rebalance completion"
 msgstr ""
 
@@ -1488,16 +1492,16 @@ msgstr ""
 
 #. placeholder {0}: bids.findIndex((b) => b.id === selectedBid.id) + 1
 #. placeholder {0}: totalBids - index
-#: src/views/index-dtf/auctions/views/rebalance/components/auction-bids-chart.tsx:274
-#: src/views/index-dtf/auctions/views/rebalance/components/rebalance-bids-list.tsx:143
+#: src/views/index-dtf/auctions/views/rebalance/components/auction-bids-chart.tsx:278
+#: src/views/index-dtf/auctions/views/rebalance/components/rebalance-bids-list.tsx:144
 msgid "Bid #{0}"
 msgstr ""
 
-#: src/views/index-dtf/auctions/views/rebalance/components/auction-bids-chart.tsx:300
+#: src/views/index-dtf/auctions/views/rebalance/components/auction-bids-chart.tsx:304
 msgid "Bidder"
 msgstr ""
 
-#: src/views/index-dtf/auctions/views/rebalance/components/rebalance-bids-list.tsx:168
+#: src/views/index-dtf/auctions/views/rebalance/components/rebalance-bids-list.tsx:169
 msgid "Bidder:"
 msgstr ""
 
@@ -1505,11 +1509,11 @@ msgstr ""
 msgid "Bidding is ongoing..."
 msgstr ""
 
-#: src/views/index-dtf/auctions/views/rebalance/components/auction-bids-chart.tsx:163
+#: src/views/index-dtf/auctions/views/rebalance/components/auction-bids-chart.tsx:167
 msgid "Bids"
 msgstr ""
 
-#: src/views/index-dtf/auctions/views/rebalance/components/rebalance-bids-list.tsx:127
+#: src/views/index-dtf/auctions/views/rebalance/components/rebalance-bids-list.tsx:128
 msgid "Bids ({totalBids})"
 msgstr ""
 
@@ -1613,7 +1617,7 @@ msgstr ""
 msgid "Buy/sell tokens to move closer to proposed weights."
 msgstr ""
 
-#: src/views/index-dtf/auctions/views/rebalance/components/auction-bids-chart.tsx:381
+#: src/views/index-dtf/auctions/views/rebalance/components/auction-bids-chart.tsx:385
 #: src/views/index-dtf/auctions/views/rebalance/components/rebalance-liquidity-checker.tsx:247
 #: src/views/index-dtf/governance/components/proposal-preview/rebalance-preview/legacy-basket-proposal-preview.tsx:260
 #: src/views/index-dtf/governance/views/propose/basket/components/legacy-proposal-auction-price-ranges.tsx:261
@@ -1728,7 +1732,7 @@ msgstr ""
 #: src/views/earn/components/pools-table.tsx:43
 #: src/views/earn/hooks/useEarnTableColumns.tsx:128
 #: src/views/internal/dtf-list/components/dtf-date-chain-filters.tsx:98
-#: src/views/internal/dtf-list/components/dtf-table.tsx:185
+#: src/views/internal/dtf-list/components/dtf-table.tsx:186
 #: src/views/internal/dtf-listed/components/listed-dtf-table.tsx:150
 #: src/views/yield-dtf/deploy/components/TokenParameters.tsx:96
 msgid "Chain"
@@ -2281,10 +2285,10 @@ msgstr ""
 msgid "Create yours"
 msgstr ""
 
-#: src/views/index-dtf/overview/components/fees-stats.tsx:92
-#: src/views/index-dtf/overview/components/index-metrics-overview.tsx:166
+#: src/views/index-dtf/overview/components/fees-stats.tsx:93
+#: src/views/index-dtf/overview/components/index-metrics-overview.tsx:167
 #: src/views/internal/dtf-list/components/dtf-date-chain-filters.tsx:67
-#: src/views/internal/dtf-list/components/dtf-table.tsx:197
+#: src/views/internal/dtf-list/components/dtf-table.tsx:198
 #: src/views/top100/components/top100-table-placeholder.tsx:24
 #: src/views/top100/components/top100-table.tsx:219
 msgid "Created"
@@ -2310,7 +2314,7 @@ msgstr ""
 #: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:287
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-revenue-distribution.tsx:241
 #: src/views/index-dtf/manage/components/manage-form.tsx:61
-#: src/views/index-dtf/overview/components/index-metrics-overview.tsx:53
+#: src/views/index-dtf/overview/components/index-metrics-overview.tsx:54
 msgid "Creator"
 msgstr ""
 
@@ -2375,7 +2379,7 @@ msgid "Current"
 msgstr ""
 
 #. placeholder {0}: rTokenVault.name
-#: src/views/yield-dtf/auctions/auctions-sidebar/StakingVaultRevenue.tsx:155
+#: src/views/yield-dtf/auctions/auctions-sidebar/StakingVaultRevenue.tsx:158
 msgid "Current {0} APY"
 msgstr ""
 
@@ -2408,7 +2412,7 @@ msgstr ""
 msgid "Current max charge"
 msgstr ""
 
-#: src/views/yield-dtf/auctions/auctions-sidebar/StakingVaultRevenue.tsx:168
+#: src/views/yield-dtf/auctions/auctions-sidebar/StakingVaultRevenue.tsx:171
 msgid "Current reward period ends"
 msgstr ""
 
@@ -2635,7 +2639,7 @@ msgstr ""
 msgid "Delta"
 msgstr ""
 
-#: src/views/yield-dtf/auctions/auctions-sidebar/StakingVaultRevenue.tsx:185
+#: src/views/yield-dtf/auctions/auctions-sidebar/StakingVaultRevenue.tsx:188
 msgid "Delta from 30d avg"
 msgstr ""
 
@@ -3518,7 +3522,7 @@ msgstr ""
 msgid "Fees & Revenue Distribution"
 msgstr ""
 
-#: src/views/index-dtf/overview/components/fees-stats.tsx:114
+#: src/views/index-dtf/overview/components/fees-stats.tsx:115
 msgid "Fees & Stats"
 msgstr ""
 
@@ -3669,7 +3673,7 @@ msgstr ""
 msgid "Furnace"
 msgstr ""
 
-#: src/views/yield-dtf/auctions/auctions-sidebar/StakingVaultRevenue.tsx:177
+#: src/views/yield-dtf/auctions/auctions-sidebar/StakingVaultRevenue.tsx:180
 msgid "Future sdgnETH APY (next period)"
 msgstr ""
 
@@ -3694,7 +3698,7 @@ msgstr ""
 msgid "Go to the RToken Deployer"
 msgstr ""
 
-#: src/views/internal/dtf-list/components/dtf-table.tsx:194
+#: src/views/internal/dtf-list/components/dtf-table.tsx:195
 msgid "Gov Speed"
 msgstr ""
 
@@ -3934,7 +3938,7 @@ msgid "How long governors have to cast their votes on a proposal after the votin
 msgstr ""
 
 #. placeholder {0}: rToken.symbol
-#: src/views/yield-dtf/auctions/auctions-sidebar/StakingVaultRevenue.tsx:188
+#: src/views/yield-dtf/auctions/auctions-sidebar/StakingVaultRevenue.tsx:191
 msgid "How much {0} is needed to hit the 30d avg"
 msgstr ""
 
@@ -3943,7 +3947,7 @@ msgstr ""
 msgid "How much do you want to mint?"
 msgstr ""
 
-#: src/views/index-dtf/auctions/views/rebalance/components/rebalance-completed.tsx:213
+#: src/views/index-dtf/auctions/views/rebalance/components/rebalance-completed.tsx:214
 msgid "How much the value of the DTF basket changed due to the latest rebalance"
 msgstr ""
 
@@ -4303,6 +4307,10 @@ msgstr ""
 msgid "Join the conversation or ask questions"
 msgstr ""
 
+#: src/utils/index.ts:370
+msgid "just now"
+msgstr ""
+
 #: src/views/internal/dtf-list/components/dtf-date-chain-filters.tsx:85
 msgid "Last 15 days"
 msgstr ""
@@ -4558,9 +4566,9 @@ msgstr ""
 #: src/views/home/components/discover-index-dtf/index-dtf-table-placeholder.tsx:21
 #: src/views/index-dtf/overview/components/basket-overview/basket-table-header.tsx:134
 #: src/views/index-dtf/overview/components/charts/data-type-selector.tsx:11
-#: src/views/index-dtf/overview/components/fees-stats.tsx:54
-#: src/views/index-dtf/overview/components/index-metrics-overview.tsx:76
-#: src/views/internal/dtf-list/components/dtf-table.tsx:191
+#: src/views/index-dtf/overview/components/fees-stats.tsx:55
+#: src/views/index-dtf/overview/components/index-metrics-overview.tsx:77
+#: src/views/internal/dtf-list/components/dtf-table.tsx:192
 #: src/views/portfolio-page/components/dtf-positions.tsx:118
 #: src/views/top100/components/top100-table-placeholder.tsx:18
 #: src/views/top100/components/top100-table.tsx:139
@@ -4794,8 +4802,8 @@ msgstr ""
 msgid "Mintable now"
 msgstr ""
 
-#: src/views/index-dtf/overview/components/fees-stats.tsx:42
-#: src/views/index-dtf/overview/components/index-metrics-overview.tsx:200
+#: src/views/index-dtf/overview/components/fees-stats.tsx:43
+#: src/views/index-dtf/overview/components/index-metrics-overview.tsx:201
 #: src/views/index-dtf/settings/components/index-settings-fees.tsx:102
 msgid "Minting Fee"
 msgstr ""
@@ -4844,7 +4852,7 @@ msgstr ""
 msgid "Monthly P&L"
 msgstr ""
 
-#: src/utils/index.ts:129
+#: src/utils/index.ts:130
 msgid "mth"
 msgstr ""
 
@@ -4881,7 +4889,7 @@ msgstr ""
 msgid "Name"
 msgstr ""
 
-#: src/views/internal/dtf-list/components/dtf-table.tsx:182
+#: src/views/internal/dtf-list/components/dtf-table.tsx:183
 #: src/views/internal/dtf-listed/components/listed-dtf-table.tsx:147
 msgid "Name / Symbol"
 msgstr ""
@@ -4894,7 +4902,7 @@ msgstr ""
 msgid "Native L1 Asset"
 msgstr ""
 
-#: src/views/index-dtf/auctions/views/rebalance/components/rebalance-completed.tsx:209
+#: src/views/index-dtf/auctions/views/rebalance/components/rebalance-completed.tsx:210
 msgid "NAV Change"
 msgstr ""
 
@@ -5064,7 +5072,7 @@ msgstr ""
 msgid "No description provided"
 msgstr ""
 
-#: src/views/internal/dtf-list/components/dtf-table.tsx:217
+#: src/views/internal/dtf-list/components/dtf-table.tsx:218
 #: src/views/top100/components/top100-table.tsx:247
 #: src/views/top100/index.tsx:52
 msgid "No DTFs found"
@@ -5082,7 +5090,7 @@ msgstr ""
 msgid "No ended auctions"
 msgstr ""
 
-#: src/views/internal/dtf-list/components/dtf-table.tsx:122
+#: src/views/internal/dtf-list/components/dtf-table.tsx:123
 msgid "No governance"
 msgstr ""
 
@@ -5259,7 +5267,7 @@ msgstr ""
 msgid "Notes from the creator"
 msgstr ""
 
-#: src/views/yield-dtf/auctions/auctions-sidebar/StakingVaultRevenue.tsx:204
+#: src/views/yield-dtf/auctions/auctions-sidebar/StakingVaultRevenue.tsx:207
 msgid "Nudge"
 msgstr ""
 
@@ -5400,7 +5408,7 @@ msgstr ""
 msgid "Passed"
 msgstr ""
 
-#: src/views/index-dtf/auctions/views/rebalance/components/auction-bids-chart.tsx:159
+#: src/views/index-dtf/auctions/views/rebalance/components/auction-bids-chart.tsx:163
 msgid "Past Price"
 msgstr ""
 
@@ -5747,8 +5755,8 @@ msgstr ""
 
 #: src/components/tables/ListedTokensTable.tsx:38
 #: src/views/explorer/components/tokens/index.tsx:152
-#: src/views/index-dtf/auctions/views/rebalance/components/auction-bids-chart.tsx:155
-#: src/views/index-dtf/auctions/views/rebalance/components/auction-bids-chart.tsx:187
+#: src/views/index-dtf/auctions/views/rebalance/components/auction-bids-chart.tsx:159
+#: src/views/index-dtf/auctions/views/rebalance/components/auction-bids-chart.tsx:191
 #: src/views/index-dtf/overview/components/charts/data-type-selector.tsx:10
 #: src/views/index-dtf/overview/components/charts/data-type-selector.tsx:16
 #: src/views/tokens/components/UnlistedTokensTable.tsx:81
@@ -6099,16 +6107,16 @@ msgstr ""
 msgid "Ready"
 msgstr ""
 
-#: src/views/index-dtf/auctions/views/rebalance/components/rebalance-completed.tsx:66
+#: src/views/index-dtf/auctions/views/rebalance/components/rebalance-completed.tsx:67
 msgid "Rebalance"
 msgstr ""
 
-#: src/views/index-dtf/auctions/views/rebalance/components/rebalance-completed.tsx:74
+#: src/views/index-dtf/auctions/views/rebalance/components/rebalance-completed.tsx:75
 msgid "Rebalance - {formattedDate}"
 msgstr ""
 
 #: src/views/index-dtf/auctions/views/rebalance-list/components/metrics-row.tsx:18
-#: src/views/index-dtf/auctions/views/rebalance/components/rebalance-completed.tsx:193
+#: src/views/index-dtf/auctions/views/rebalance/components/rebalance-completed.tsx:194
 msgid "Rebalance accuracy"
 msgstr ""
 
@@ -6116,7 +6124,7 @@ msgstr ""
 msgid "Rebalance error"
 msgstr ""
 
-#: src/views/index-dtf/auctions/views/rebalance/components/rebalance-completed.tsx:117
+#: src/views/index-dtf/auctions/views/rebalance/components/rebalance-completed.tsx:118
 msgid "Rebalance Finished"
 msgstr ""
 
@@ -6130,7 +6138,7 @@ msgstr ""
 msgid "Rebalance ongoing"
 msgstr ""
 
-#: src/views/index-dtf/auctions/views/rebalance/components/rebalance-completed.tsx:114
+#: src/views/index-dtf/auctions/views/rebalance/components/rebalance-completed.tsx:115
 msgid "Rebalance progress"
 msgstr ""
 
@@ -6665,7 +6673,7 @@ msgid "Roles & Controls"
 msgstr ""
 
 #. placeholder {0}: bid.auctionRound
-#: src/views/index-dtf/auctions/views/rebalance/components/rebalance-bids-list.tsx:146
+#: src/views/index-dtf/auctions/views/rebalance/components/rebalance-bids-list.tsx:147
 msgid "Round {0}"
 msgstr ""
 
@@ -6900,7 +6908,7 @@ msgstr ""
 msgid "Sell ${0} onchain"
 msgstr ""
 
-#: src/views/index-dtf/auctions/views/rebalance/components/auction-bids-chart.tsx:330
+#: src/views/index-dtf/auctions/views/rebalance/components/auction-bids-chart.tsx:334
 #: src/views/index-dtf/auctions/views/rebalance/components/rebalance-liquidity-checker.tsx:246
 #: src/views/index-dtf/governance/components/proposal-preview/rebalance-preview/legacy-basket-proposal-preview.tsx:256
 #: src/views/index-dtf/governance/views/propose/basket/components/legacy-proposal-auction-price-ranges.tsx:257
@@ -7371,7 +7379,7 @@ msgstr ""
 msgid "Staking token"
 msgstr ""
 
-#: src/views/yield-dtf/auctions/auctions-sidebar/StakingVaultRevenue.tsx:150
+#: src/views/yield-dtf/auctions/auctions-sidebar/StakingVaultRevenue.tsx:153
 msgid "Staking vault revenue stats"
 msgstr ""
 
@@ -7403,7 +7411,7 @@ msgid "Start next recollaterization auction"
 msgstr ""
 
 #. placeholder {0}: rTokenVault.name
-#: src/views/yield-dtf/auctions/auctions-sidebar/StakingVaultRevenue.tsx:207
+#: src/views/yield-dtf/auctions/auctions-sidebar/StakingVaultRevenue.tsx:210
 msgid "Starts the next {0} reward period once the current one ends. Disabled until then."
 msgstr ""
 
@@ -7524,7 +7532,7 @@ msgstr ""
 
 #: src/views/explorer/components/collaterals/index.tsx:154
 #: src/views/index-dtf/overview/components/charts/data-type-selector.tsx:12
-#: src/views/index-dtf/overview/components/index-metrics-overview.tsx:123
+#: src/views/index-dtf/overview/components/index-metrics-overview.tsx:124
 #: src/views/yield-dtf/overview/components/charts/supply-chart.tsx:86
 msgid "Supply"
 msgstr ""
@@ -7979,8 +7987,8 @@ msgstr ""
 
 #: src/components/transactions/table/index.tsx:88
 #: src/views/explorer/components/transactions/useTransactionColumns.tsx:105
-#: src/views/index-dtf/auctions/views/rebalance/components/auction-bids-chart.tsx:209
-#: src/views/index-dtf/auctions/views/rebalance/components/auction-bids-chart.tsx:318
+#: src/views/index-dtf/auctions/views/rebalance/components/auction-bids-chart.tsx:213
+#: src/views/index-dtf/auctions/views/rebalance/components/auction-bids-chart.tsx:322
 #: src/views/index-dtf/overview/components/index-transaction-table.tsx:64
 #: src/views/yield-dtf/overview/components/rtoken-transactions.tsx:147
 msgid "Time"
@@ -8167,7 +8175,7 @@ msgid "Total Market Cap"
 msgstr ""
 
 #: src/views/index-dtf/auctions/views/rebalance-list/components/metrics-row.tsx:65
-#: src/views/index-dtf/auctions/views/rebalance/components/rebalance-completed.tsx:159
+#: src/views/index-dtf/auctions/views/rebalance/components/rebalance-completed.tsx:160
 msgid "Total price impact"
 msgstr ""
 
@@ -8189,7 +8197,7 @@ msgstr ""
 msgid "Total trade value"
 msgstr ""
 
-#: src/views/index-dtf/auctions/views/rebalance/components/rebalance-completed.tsx:141
+#: src/views/index-dtf/auctions/views/rebalance/components/rebalance-completed.tsx:142
 msgid "Total value traded"
 msgstr ""
 
@@ -8366,7 +8374,7 @@ msgstr ""
 msgid "Trigger Unstake"
 msgstr ""
 
-#: src/views/internal/dtf-list/components/dtf-table.tsx:220
+#: src/views/internal/dtf-list/components/dtf-table.tsx:221
 msgid "Try adjusting your filters or check back later"
 msgstr ""
 
@@ -8471,8 +8479,8 @@ msgstr ""
 msgid "Unfreeze"
 msgstr ""
 
-#: src/views/index-dtf/overview/components/fees-stats.tsx:80
-#: src/views/index-dtf/overview/components/index-metrics-overview.tsx:88
+#: src/views/index-dtf/overview/components/fees-stats.tsx:81
+#: src/views/index-dtf/overview/components/index-metrics-overview.tsx:89
 msgid "Unique Holders"
 msgstr ""
 
@@ -8815,7 +8823,7 @@ msgid "Very Fast"
 msgstr ""
 
 #: src/views/earn/views/defi/components/featured-pool-item.tsx:67
-#: src/views/internal/dtf-list/components/dtf-table.tsx:130
+#: src/views/internal/dtf-list/components/dtf-table.tsx:131
 #: src/views/yield-dtf/settings/components/roles-view.tsx:61
 msgid "View"
 msgstr ""
@@ -9279,7 +9287,7 @@ msgid "We recommend launching your new ERC20 token on <0>CreateMyToken</0>"
 msgstr ""
 
 #: src/views/index-dtf/overview/components/index-about-overview.tsx:89
-#: src/views/index-dtf/overview/components/index-metrics-overview.tsx:101
+#: src/views/index-dtf/overview/components/index-metrics-overview.tsx:102
 #: src/views/index-dtf/overview/components/yield-index/yield-index-about.tsx:39
 #: src/views/yield-dtf/overview/components/backing/collateral-exposure.tsx:157
 #: src/views/yield-dtf/overview/components/backing/platform-exposure.tsx:85

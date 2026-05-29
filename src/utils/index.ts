@@ -2,6 +2,7 @@ import { t } from '@lingui/core/macro'
 import { CellContext } from '@tanstack/react-table'
 import ERC20 from 'abis/ERC20'
 import humanizeDuration from 'humanize-duration'
+import { durationLocale } from './locale'
 import { BigNumberMap } from 'types'
 import {
   Address,
@@ -326,7 +327,10 @@ export const parseDuration = (
   duration: number,
   options?: humanizeDuration.Options
 ) => {
-  return humanizeDuration(duration * 1000, options)
+  return humanizeDuration(duration * 1000, {
+    language: durationLocale(),
+    ...options,
+  })
 }
 
 export const parseDurationShort = (
@@ -363,15 +367,15 @@ export const humanizeDateToNow = (timestamp?: string | number) => {
   const date = dayjs(ts)
   const diffMs = Math.abs(dayjs().diff(date))
 
-  if (diffMs < 45 * 1000) return 'just now'
+  if (diffMs < 45 * 1000) return t`just now`
 
   const humanized = humanizeDuration(diffMs, {
     largest: 1,
     round: true,
-    language: 'en',
+    language: durationLocale(),
   })
 
-  return `${humanized} ago`
+  return t`${humanized} ago`
 }
 
 export const humanizeMinutes = (minutes: number) => {
@@ -379,19 +383,19 @@ export const humanizeMinutes = (minutes: number) => {
     return `${minutes}m`
   }
   return humanizeDuration(minutes * 60 * 1000, {
-    language: 'en',
+    language: durationLocale(),
   })
 }
 
 export const humanizeTimeFromHours = (hours: number) => {
   return humanizeDuration(hours * 60 * 60 * 1000, {
-    language: 'en',
+    language: durationLocale(),
   })
 }
 
 export const humanizeTimeFromDays = (days: number) => {
   return humanizeDuration(days * 24 * 60 * 60 * 1000, {
-    language: 'en',
+    language: durationLocale(),
   })
 }
 

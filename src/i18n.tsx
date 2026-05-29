@@ -1,8 +1,13 @@
 import { i18n } from '@lingui/core'
 import { I18nProvider } from '@lingui/react'
+import dayjs from 'dayjs'
+import 'dayjs/locale/es'
+import 'dayjs/locale/ko'
+import 'dayjs/locale/zh-cn'
 import { atom, useAtomValue } from 'jotai'
 import { atomWithStorage } from 'jotai/utils'
 import { ReactNode, useCallback, useEffect } from 'react'
+import { dayjsLocaleCode } from '@/utils/locale'
 
 export type SupportedLocale = 'en' | 'es' | 'ko' | 'zh' | 'pseudo'
 
@@ -25,6 +30,9 @@ export async function dynamicActivate(locale: SupportedLocale) {
   const { messages } = await import(`./locales/${target}.po`)
 
   i18n.load(target, messages)
+  // Keep dayjs in sync before activating, so date formatting is ready when
+  // Lingui re-renders its subscribers on activate.
+  dayjs.locale(dayjsLocaleCode(target))
   i18n.activate(target)
 }
 

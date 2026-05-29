@@ -6,6 +6,7 @@ import {
 import TokenLogo from '@/components/token-logo'
 import { chainIdAtom } from '@/state/atoms'
 import { formatCurrency } from '@/utils'
+import { dateLocale } from '@/utils/locale'
 import { ExplorerDataType, getExplorerLink } from '@/utils/getExplorerLink'
 import { Trans } from '@lingui/react/macro'
 import { useAtomValue } from 'jotai'
@@ -26,11 +27,11 @@ const formatAddress = (address: string): string =>
 
 const formatTime = (timestamp: number): string => {
   const date = new Date(timestamp * 1000)
-  return date.toLocaleTimeString([], { 
-    hour: '2-digit', 
+  return date.toLocaleTimeString(dateLocale(), {
+    hour: '2-digit',
     minute: '2-digit',
     month: 'short',
-    day: 'numeric'
+    day: 'numeric',
   })
 }
 

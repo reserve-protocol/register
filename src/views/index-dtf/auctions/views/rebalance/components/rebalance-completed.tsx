@@ -3,6 +3,7 @@ import Help from '@/components/ui/help'
 import { Skeleton } from '@/components/ui/skeleton'
 import { cn } from '@/lib/utils'
 import { formatCurrency, formatPercentage } from '@/utils'
+import { dateLocale } from '@/utils/locale'
 import { Trans, useLingui } from '@lingui/react/macro'
 import { useAtomValue } from 'jotai'
 import {
@@ -67,7 +68,7 @@ const RebalanceCompleted = () => {
     }
 
     const date = new Date(metrics?.timestamp * 1000)
-    const formattedDate = date.toLocaleString('default', {
+    const formattedDate = date.toLocaleString(dateLocale(), {
       month: 'long',
       year: 'numeric',
     })

@@ -1,4 +1,5 @@
 import TokenLogo from '@/components/token-logo'
+import { dateLocale } from '@/utils/locale'
 import { chainIdAtom } from '@/state/atoms'
 import {
   indexDTF24hVolumeAtom,
@@ -166,7 +167,7 @@ const Created = () => {
       label={<Trans>Created</Trans>}
       value={
         dtf?.timestamp
-          ? new Date(dtf.timestamp * 1000).toLocaleDateString('en-US', {
+          ? new Date(dtf.timestamp * 1000).toLocaleDateString(dateLocale(), {
               year: 'numeric',
               month: 'long',
               day: 'numeric',
