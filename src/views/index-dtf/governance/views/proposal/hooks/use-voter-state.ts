@@ -12,11 +12,8 @@ const useVoterState = () => {
   const { chainId } = useIndexDtfIdentity()
   const account = useAtomValue(walletAtom)
   const proposal = useAtomValue(proposalDetailAtom)
-  const hasOptimisticContext =
-    proposal?.isOptimistic !== true || !!proposal.optimistic
   const canReadVoterState =
-    proposal?.votingState.state === PROPOSAL_STATES.ACTIVE &&
-    hasOptimisticContext
+    proposal?.votingState.state === PROPOSAL_STATES.ACTIVE
 
   const params =
     account && proposal && canReadVoterState

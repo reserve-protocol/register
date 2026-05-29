@@ -1,17 +1,13 @@
 import { ProposalDetail } from '@/lib/governance'
 import {
-  getProposalState,
   useIndexDtfIdentity,
-  useIndexDtfOptimisticProposalContext,
   useIndexDtfProposal,
-  type IndexDtfOptimisticProposalContext,
   type IndexDtfProposalDetail,
+  type IndexDtfProposalVotingSnapshot,
+  useIndexDtfProposalVotingSnapshot,
 } from '@reserve-protocol/react-sdk'
 import { useMemo } from 'react'
-
-const OPTIMISTIC_CONTEXT_MISSING_ERROR = new Error(
-  'Optimistic proposal context is required for optimistic proposal detail'
-)
+import { PROPOSAL_STATES } from '@/utils/constants'
 
 export enum ProposalStatus {
   Pending,
@@ -24,21 +20,43 @@ export enum ProposalStatus {
   Executed,
 }
 
-const mapProposalDetail = (
+const withVotingSnapshot = (
   proposal: IndexDtfProposalDetail,
-  optimistic?: IndexDtfOptimisticProposalContext | null
-): ProposalDetail => {
-  const optimisticContext = optimistic ?? undefined
-  const votingState = optimisticContext
-    ? getProposalState({ ...proposal, optimistic: optimisticContext })
-    : proposal.votingState
+  votingSnapshot: IndexDtfProposalVotingSnapshot | undefined
+): IndexDtfProposalDetail => {
+  if (!votingSnapshot) return proposal
+
+  return {
+    ...proposal,
+    state: votingSnapshot.state,
+    voteStart: votingSnapshot.voteStart,
+    voteEnd: votingSnapshot.voteEnd,
+    quorumVotes: votingSnapshot.quorumVotes,
+    forWeightedVotes: votingSnapshot.forWeightedVotes,
+    againstWeightedVotes: votingSnapshot.againstWeightedVotes,
+    abstainWeightedVotes: votingSnapshot.abstainWeightedVotes,
+    votes: votingSnapshot.votes,
+    votingState: votingSnapshot.votingState,
+    ...(votingSnapshot.isOptimistic === undefined
+      ? {}
+      : { isOptimistic: votingSnapshot.isOptimistic }),
+    ...(votingSnapshot.vetoThreshold === undefined
+      ? {}
+      : { vetoThreshold: votingSnapshot.vetoThreshold }),
+    ...(votingSnapshot.optimistic
+      ? { optimistic: votingSnapshot.optimistic }
+      : {}),
+  }
+}
+
+const mapProposalDetail = (proposal: IndexDtfProposalDetail): ProposalDetail => {
   const proposalDetail: ProposalDetail = {
     id: proposal.id,
     timelockId: proposal.timelockId ?? '',
     description: proposal.description,
     creationTime: proposal.creationTime,
     creationBlock: proposal.creationBlock,
-    state: votingState.state,
+    state: proposal.votingState.state,
     forWeightedVotes: proposal.forWeightedVotes,
     abstainWeightedVotes: proposal.abstainWeightedVotes,
     againstWeightedVotes: proposal.againstWeightedVotes,
@@ -49,7 +67,8 @@ const mapProposalDetail = (
     executionTime: proposal.executionTime?.toString(),
     executionBlock: proposal.executionBlock?.toString(),
     isOptimistic: proposal.isOptimistic,
-    optimistic: optimisticContext,
+    vetoThreshold: proposal.vetoThreshold,
+    optimistic: proposal.optimistic,
     wasChallenged: proposal.wasChallenged,
     challengedProposalId: proposal.challengedProposalId,
     voteToken: proposal.voteToken,
@@ -71,7 +90,7 @@ const mapProposalDetail = (
     againstDelegateVotes: proposal.againstDelegateVotes.toString(),
     executionTxnHash: proposal.executionTxnHash,
     governor: proposal.governance,
-    votingState,
+    votingState: proposal.votingState,
   }
 
   return proposalDetail
@@ -84,70 +103,30 @@ const useProposalDetail = (proposalId: string | undefined) => {
     { refetchInterval: 1000 * 60 }
   )
   const proposal = proposalQuery.data
-  const shouldReadOptimisticContext = proposal?.isOptimistic === true
-  const optimisticContextQuery = useIndexDtfOptimisticProposalContext(
-    shouldReadOptimisticContext
-      ? {
-          chainId,
-          governance: proposal.governance,
-          proposalId: proposal.id,
-          isOptimistic: true,
-        }
+  const shouldReadVotingSnapshot =
+    proposal?.votingState.state === PROPOSAL_STATES.ACTIVE
+  const votingSnapshotQuery = useIndexDtfProposalVotingSnapshot(
+    shouldReadVotingSnapshot && proposal
+      ? { chainId, proposalId: proposal.id }
       : undefined,
-    { refetchInterval: 1000 * 60 }
+    { refetchInterval: 30_000 }
   )
-  const isOptimisticContextPending =
-    shouldReadOptimisticContext && optimisticContextQuery.isPending
-  const isOptimisticContextError =
-    shouldReadOptimisticContext && optimisticContextQuery.isError
-  const isOptimisticContextMissing =
-    shouldReadOptimisticContext &&
-    optimisticContextQuery.isSuccess &&
-    !optimisticContextQuery.data
-  const optimisticContextError = isOptimisticContextMissing
-    ? OPTIMISTIC_CONTEXT_MISSING_ERROR
-    : optimisticContextQuery.error
   const data = useMemo(() => {
-    if (
-      !proposal ||
-      isOptimisticContextPending ||
-      isOptimisticContextError ||
-      isOptimisticContextMissing
-    ) {
+    if (!proposal) {
       return undefined
     }
 
-    return mapProposalDetail(proposal, optimisticContextQuery.data)
-  }, [
-    proposal,
-    optimisticContextQuery.data,
-    isOptimisticContextPending,
-    isOptimisticContextError,
-    isOptimisticContextMissing,
-  ])
+    return mapProposalDetail(
+      withVotingSnapshot(proposal, votingSnapshotQuery.data)
+    )
+  }, [proposal, votingSnapshotQuery.data])
 
   return {
     ...proposalQuery,
     data,
-    error: proposalQuery.error ?? optimisticContextError,
-    isError:
-      proposalQuery.isError ||
-      isOptimisticContextError ||
-      isOptimisticContextMissing,
-    isFetching: proposalQuery.isFetching || optimisticContextQuery.isFetching,
-    isLoading: proposalQuery.isLoading || isOptimisticContextPending,
-    isPending: proposalQuery.isPending || isOptimisticContextPending,
-    isSuccess:
-      proposalQuery.isSuccess &&
-      !isOptimisticContextPending &&
-      !isOptimisticContextError &&
-      !isOptimisticContextMissing,
-    status:
-      isOptimisticContextError || isOptimisticContextMissing
-        ? 'error'
-        : isOptimisticContextPending
-          ? 'pending'
-          : proposalQuery.status,
+    error: proposalQuery.error ?? votingSnapshotQuery.error,
+    isError: proposalQuery.isError || votingSnapshotQuery.isError,
+    isFetching: proposalQuery.isFetching || votingSnapshotQuery.isFetching,
   }
 }
 

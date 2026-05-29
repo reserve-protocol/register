@@ -64,7 +64,7 @@ const GovernanceRoles = () => {
 
   return (
     <div className="flex flex-col bg-background rounded-3xl">
-      <div className="flex items-center px-4 pt-4 gap-4">
+      <div className="flex items-center px-4 pt-4 pb-2 gap-4">
         <div className="border rounded-full border-foreground p-1">
           <ShieldHalf size={14} />
         </div>
@@ -76,14 +76,14 @@ const GovernanceRoles = () => {
       {!!guardians &&
         guardians.map((guardian, index) => (
           <div
-            className={cn('flex items-center p-6', !!index && 'border-t')}
+            className={cn('flex items-center px-6 py-4', !!index && 'border-t')}
             key={`guardian-${guardian}`}
           >
             <div className="mr-auto">
               <span className="text-legend text-sm block">
                 <Trans>Guardian</Trans> {index + 1}
               </span>
-              <span className="font-bold">
+              <span className="font-semibold">
                 <EnsName address={guardian} />
               </span>
             </div>
@@ -103,7 +103,7 @@ const GovernanceRoles = () => {
         optimisticProposers.map((proposer, index) => (
           <div
             className={cn(
-              'flex items-center p-6',
+              'flex items-center px-6 py-4',
               (!!guardians?.length || !!index) && 'border-t'
             )}
             key={`optimistic-proposer-${proposer}`}
@@ -112,7 +112,7 @@ const GovernanceRoles = () => {
               <span className="text-legend text-sm block">
                 <Trans>Optimistic proposer</Trans> {index + 1}
               </span>
-              <span className="font-bold">
+              <span className="font-semibold">
                 <EnsName address={proposer} />
               </span>
             </div>

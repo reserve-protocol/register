@@ -8,7 +8,7 @@ import { t, Trans } from '@lingui/macro'
 import Governance from 'abis/Governance'
 import { Modal } from 'components'
 import useContractWrite from 'hooks/useContractWrite'
-import { useAtomValue } from 'jotai'
+import { useAtomValue, useSetAtom } from 'jotai'
 import {
   CheckCircle,
   ExternalLink,
@@ -25,13 +25,19 @@ import {
   getExplorerLink,
 } from 'utils/getExplorerLink'
 import EnsName from '@/components/utils/ens-name'
-import { proposalDetailAtom } from '../atom'
+import { accountVotesAtom, proposalDetailAtom } from '../atom'
 import { proposalRefreshFnAtom } from '../updater'
 
 export const VOTE_TYPE = {
   AGAINST: 0,
   FOR: 1,
   ABSTAIN: 2,
+}
+
+const VOTE_LABEL: Record<number, string> = {
+  [VOTE_TYPE.AGAINST]: 'AGAINST',
+  [VOTE_TYPE.FOR]: 'FOR',
+  [VOTE_TYPE.ABSTAIN]: 'ABSTAIN',
 }
 
 // TODO: Move to tailwind
@@ -41,6 +47,7 @@ const VoteModal = (props: ModalProps) => {
   const proposal = useAtomValue(proposalDetailAtom)
   const isValid = proposal?.id && vote !== -1
   const refreshFn = useAtomValue(proposalRefreshFnAtom)
+  const setAccountVotes = useSetAtom(accountVotesAtom)
 
   const { hash, isLoading, isReady, write } = useContractWrite(
     isValid
@@ -66,9 +73,13 @@ const VoteModal = (props: ModalProps) => {
 
   useEffect(() => {
     if (status === 'success') {
+      setAccountVotes((current) => ({
+        ...current,
+        vote: VOTE_LABEL[vote] ?? current.vote,
+      }))
       refreshFn?.()
     }
-  }, [status])
+  }, [refreshFn, setAccountVotes, status, vote])
 
   // TODO: Signed modal should be its own component
   // TODO: reused on other modals

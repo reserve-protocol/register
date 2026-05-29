@@ -5,9 +5,14 @@ import { CircleSlash, ThumbsDown, ThumbsUp, X } from 'lucide-react'
 import { Separator } from '@/components/ui/separator'
 import { formatCurrency, formatPercentage } from '@/utils'
 import { PROPOSAL_STATES } from '@/utils/constants'
+import { indexDTFAtom } from '@/state/dtf/atoms'
+import { Trans } from '@lingui/react/macro'
 import { Check } from 'lucide-react'
 import { useMemo } from 'react'
+import { formatEther } from 'viem'
 import { proposalDetailAtom, proposalStateAtom } from '../atom'
+
+const D18 = 10n ** 18n
 
 const BooleanIcon = ({
   value,
@@ -37,16 +42,35 @@ const BooleanIcon = ({
 // TODO: Abstract atoms from these components!
 const useProposalDetailStats = () => {
   const proposal = useAtomValue(proposalDetailAtom)
+  const dtf = useAtomValue(indexDTFAtom)
   const againstVotes = Number(proposal?.againstWeightedVotes.formatted ?? 0)
   const forVotes = Number(proposal?.forWeightedVotes.formatted ?? 0)
   const abstainVotes = Number(proposal?.abstainWeightedVotes.formatted ?? 0)
+  const shouldEstimateThreshold = !!(
+    proposal?.isOptimistic && !proposal.optimistic && !proposal.votes.length
+  )
+  const currentVoteLockSupply = dtf?.stToken?.token.totalSupply.raw
+  const estimatedVetoThreshold = useMemo(() => {
+    if (
+      !shouldEstimateThreshold ||
+      proposal?.vetoThreshold === undefined ||
+      currentVoteLockSupply === undefined
+    ) {
+      return undefined
+    }
+
+    const threshold = (proposal.vetoThreshold * currentVoteLockSupply) / D18
+
+    return Number(formatEther(threshold > 0n ? threshold : 1n))
+  }, [currentVoteLockSupply, proposal?.vetoThreshold, shouldEstimateThreshold])
+  const isThresholdEstimated = estimatedVetoThreshold !== undefined
+  const isThresholdPending = shouldEstimateThreshold && !isThresholdEstimated
 
   const [quorumWeight, currentQuorum, quorumNeeded, quorumReached] =
     useMemo(() => {
       if (!proposal) return [0, 0, 0, false]
-      const _quorumNeeded = proposal.isOptimistic
-        ? Number(proposal.optimistic?.vetoThresholdVotes.formatted ?? 0)
-        : Number(proposal.quorumVotes.formatted)
+      const _quorumNeeded =
+        estimatedVetoThreshold ?? Number(proposal.quorumVotes.formatted)
       const _currentQuorum = proposal.isOptimistic
         ? againstVotes
         : forVotes + abstainVotes
@@ -63,7 +87,7 @@ const useProposalDetailStats = () => {
       const _quorumWeight = _currentQuorum / _quorumNeeded
 
       return [_quorumWeight, _currentQuorum, _quorumNeeded, _quorumReached]
-    }, [proposal, againstVotes, forVotes, abstainVotes])
+    }, [proposal, againstVotes, forVotes, abstainVotes, estimatedVetoThreshold])
 
   const [majorityWeight, majoritySupport] = useMemo(() => {
     const totalVotes = +forVotes + +againstVotes
@@ -85,6 +109,8 @@ const useProposalDetailStats = () => {
     currentQuorum,
     quorumNeeded,
     quorumReached,
+    isThresholdEstimated,
+    isThresholdPending,
     majorityWeight,
     majoritySupport,
   }
@@ -96,14 +122,23 @@ const QuorumStat = ({
   currentQuorum,
   quorumNeeded,
   quorumReached,
+  isThresholdEstimated,
+  isThresholdPending,
 }: {
   isOptimistic?: boolean
   quorumWeight: number
   currentQuorum: number
   quorumNeeded: number
   quorumReached: boolean
+  isThresholdEstimated?: boolean
+  isThresholdPending?: boolean
 }) => {
   const isGood = isOptimistic ? !quorumReached : quorumReached
+  const title = isThresholdEstimated
+    ? 'Estimated veto threshold'
+    : isOptimistic
+      ? 'Veto threshold'
+      : 'Quorum'
 
   return (
     <div className="flex flex-col gap-3 p-4">
@@ -114,32 +149,43 @@ const QuorumStat = ({
             colorSuccess="green-500"
             colorFailure="red-500"
           />
-          <span>{isOptimistic ? 'Veto threshold' : 'Quorum'}</span>
+          <span>{title}</span>
         </div>
-        <div className="flex items-center gap-2 text-base sm:text-lg">
-          <span
-            className={`font-bold ${isGood ? 'text-green-500' : 'text-red-500'}`}
-          >
-            {formatPercentage(quorumWeight * 100)}
+        {isThresholdPending ? (
+          <span className="text-legend text-sm whitespace-nowrap">
+            Available at vote start
           </span>
+        ) : (
+          <div className="flex items-center gap-2 text-base sm:text-lg">
+            <span
+              className={`font-bold ${isGood ? 'text-green-500' : 'text-red-500'}`}
+            >
+              {formatPercentage(quorumWeight * 100)}
+            </span>
 
-          <span className="text-legend whitespace-nowrap">
-            {formatCurrency(currentQuorum, 0, {
-              notation: 'compact',
-              compactDisplay: 'short',
-            })}{' '}
-            of{' '}
-            {formatCurrency(quorumNeeded, 0, {
-              notation: 'compact',
-              compactDisplay: 'short',
-            })}
-          </span>
-        </div>
+            <span className="text-legend whitespace-nowrap">
+              {formatCurrency(currentQuorum, 0, {
+                notation: 'compact',
+                compactDisplay: 'short',
+              })}{' '}
+              of{' '}
+              {formatCurrency(quorumNeeded, 0, {
+                notation: 'compact',
+                compactDisplay: 'short',
+              })}
+              {isThresholdEstimated ? ' est.' : ''}
+            </span>
+          </div>
+        )}
       </div>
       <div className=" relative h-1 bg-gray-200 rounded-full">
         <div
           className={`h-full rounded-full ${isGood ? 'bg-green-500' : 'bg-red-500'}`}
-          style={{ width: `${Math.min(quorumWeight * 100, 100)}%` }}
+          style={{
+            width: isThresholdPending
+              ? '0%'
+              : `${Math.min(quorumWeight * 100, 100)}%`,
+          }}
         />
       </div>
     </div>
@@ -269,6 +315,8 @@ const ProposalDetailStats = () => {
     currentQuorum,
     quorumNeeded,
     quorumReached,
+    isThresholdEstimated,
+    isThresholdPending,
     isOptimistic,
     majorityWeight,
     majoritySupport,
@@ -276,14 +324,18 @@ const ProposalDetailStats = () => {
     forVotes,
     abstainVotes,
   } = useProposalDetailStats()
+  const isVotingLive = [PROPOSAL_STATES.ACTIVE, PROPOSAL_STATES.PENDING].includes(
+    state
+  )
 
   return (
     <div className="bg-background rounded-3xl p-2">
       <h4 className="font-bold text-xl p-4">
-        {[PROPOSAL_STATES.ACTIVE, PROPOSAL_STATES.PENDING].includes(state)
-          ? 'Current'
-          : 'Final'}{' '}
-        votes
+        {isVotingLive ? (
+          <Trans>Current votes</Trans>
+        ) : (
+          <Trans>Final votes</Trans>
+        )}
       </h4>
       <div className="flex flex-col bg-card rounded-3xl border">
         <QuorumStat
@@ -292,6 +344,8 @@ const ProposalDetailStats = () => {
           currentQuorum={currentQuorum}
           quorumNeeded={quorumNeeded}
           quorumReached={quorumReached}
+          isThresholdEstimated={isThresholdEstimated}
+          isThresholdPending={isThresholdPending}
         />
         <Separator />
         <MajoritySupportStat

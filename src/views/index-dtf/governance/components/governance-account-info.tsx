@@ -27,7 +27,7 @@ const InfoItem = ({
   text,
   className,
 }: IInfoItem) => (
-  <div className='flex flex-col gap-4 p-6 border-b'>
+  <div className='flex flex-col gap-4 py-4 px-6 border-b'>
     <div className={cn('flex items-center', className)}>
       <div>
         <div className="flex items-center">
@@ -53,12 +53,12 @@ const VotingPower = ({
     : undefined
 
   return (
-    <div className="flex flex-col p-6 border-b">
+    <div className="flex flex-col px-6 py-4 border-b">
       <span className="text-legend text-sm">Vote locked</span>
       {voteLocked === undefined ? (
         <Skeleton className="h-4 w-24" />
       ) : (
-        <span className="font-bold">
+        <span className="font-semibold">
           {voteLocked} ${dtf?.stToken?.token.symbol}
         </span>
       )}
@@ -122,7 +122,7 @@ const GovernanceAccountInfo = () => {
 
   return (
     <div className="flex flex-col rounded-3xl bg-background">
-      <div className='flex items-center px-4 pt-4 gap-4'>
+      <div className='flex items-center px-4 pt-4 pb-2 gap-4'>
         <div className="border rounded-full border-foreground p-1">
           <NotebookTabs size={14} />
         </div>

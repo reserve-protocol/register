@@ -23,6 +23,7 @@ export interface PartialProposal {
   isOptimistic?: boolean
   wasChallenged?: boolean
   challengedProposalId?: string
+  vetoThreshold?: bigint
   voteToken: Address
   optimistic?: IndexDtfOptimisticProposalContext
   votingState: VotingState

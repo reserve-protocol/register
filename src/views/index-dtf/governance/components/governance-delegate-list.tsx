@@ -117,7 +117,7 @@ const GovernanceDelegateList = () => {
 
   return (
     <Tabs value={currentTab} onValueChange={(value) => setTab(value as DelegateTabs)} className="rounded-4xl bg-background">
-      <div className="flex items-center gap-2 py-4 px-5">
+      <div className="flex items-center gap-2 py-4 px-4">
         <div className="border rounded-full border-foreground p-1">
           <User2 size={14} />
         </div>
