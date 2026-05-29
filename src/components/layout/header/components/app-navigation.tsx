@@ -19,7 +19,7 @@ import {
   ROUTES,
   TELEGRAM_INVITE,
 } from '@/utils/constants'
-import { t, Trans } from '@lingui/macro'
+import { Trans, useLingui } from '@lingui/react/macro'
 import {
   ArrowRight,
   ArrowUpRight,
@@ -70,6 +70,7 @@ const IconContainer = ({ children }: { children: ReactNode }) => (
 )
 
 const AppNavigation = () => {
+  const { t } = useLingui()
   const [menuItems, moreLinks, externalLinks] = useMemo(
     () => [
       [
@@ -165,7 +166,7 @@ const AppNavigation = () => {
         },
       ],
     ],
-    []
+    [t]
   )
 
   return (

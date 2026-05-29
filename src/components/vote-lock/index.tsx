@@ -1,3 +1,6 @@
+import { msg } from '@lingui/core/macro'
+import { Trans, useLingui } from '@lingui/react/macro'
+import type { MessageDescriptor } from '@lingui/core'
 import {
   Provider as AtomProvider,
   useSetAtom,
@@ -47,15 +50,15 @@ import SubmitLockButton, {
 import SubmitUnlockButton from './components/submit-unlock-button'
 import Updater from './updater'
 
-const TABS = [
+const TABS: { key: string; label: MessageDescriptor; icon: JSX.Element }[] = [
   {
     key: 'lock',
-    label: 'Vote lock',
+    label: msg`Vote lock`,
     icon: <LockKeyhole size={16} />,
   },
   {
     key: 'unlock',
-    label: 'Unlock',
+    label: msg`Unlock`,
     icon: <LockKeyholeOpen size={16} />,
   },
 ]
@@ -73,12 +76,14 @@ const LockCheckbox = () => {
       <div className="flex items-end gap-2 justify-between">
         <div className="max-w-sm">
           <div className="font-bold">
-            I'm aware of the {delay}-day unlock delay
+            <Trans>I'm aware of the {delay}-day unlock delay</Trans>
           </div>
           <div className="text-sm text-legend">
-            If you decide to unlock {stToken.underlying.symbol} in the future,
-            you'll need to wait {delay} days until you can complete the
-            withdrawal
+            <Trans>
+              If you decide to unlock {stToken.underlying.symbol} in the future,
+              you'll need to wait {delay} days until you can complete the
+              withdrawal
+            </Trans>
           </div>
         </div>
         <div className="flex items-center p-[6px] border border-border rounded-lg">
@@ -103,25 +108,33 @@ const UnlockProcess = () => {
       <div className="rounded-full bg-primary p-1 w-max">
         <Asterisk size={20} className="text-white" />
       </div>
-      <div className="font-bold mt-3">Unlock process</div>
+      <div className="font-bold mt-3">
+        <Trans>Unlock process</Trans>
+      </div>
       <div className="text-primary mt-3">1.</div>
       <div className="text-md max-w-sm text-center -mt-1">
-        A {delay}-day unlock delay period begins & you stop accumulating rewards
+        <Trans>
+          A {delay}-day unlock delay period begins & you stop accumulating
+          rewards
+        </Trans>
       </div>
       <div className="text-primary mt-3">2.</div>
       <div className="text-md max-w-sm text-center -mt-1">
-        Wait {delay} days
+        <Trans>Wait {delay} days</Trans>
       </div>
       <div className="text-primary mt-3">3.</div>
       <div className="text-md max-w-sm text-center -mt-1">
-        Come back to your account balance page to withdraw your unlocked{' '}
-        {stToken.underlying.symbol}
+        <Trans>
+          Come back to your account balance page to withdraw your unlocked{' '}
+          {stToken.underlying.symbol}
+        </Trans>
       </div>
     </div>
   )
 }
 
 const Delegate = () => {
+  const { t } = useLingui()
   const account = useAtomValue(walletAtom)
   const stToken = useAtomValue(stTokenAtom)
   const [currentDelegate, setCurrentDelegate] = useAtom(currentDelegateAtom)
@@ -138,7 +151,9 @@ const Delegate = () => {
             <div className="rounded-full border border-black p-1 w-max">
               <Vote size={16} />
             </div>
-            <div>Voting Power Delegation</div>
+            <div>
+              <Trans>Voting Power Delegation</Trans>
+            </div>
           </div>
 
           {!delegateVisible ? (
@@ -154,9 +169,11 @@ const Delegate = () => {
               }}
             >
               <div>
-                {currentDelegate && currentDelegate !== zeroAddress
-                  ? shortenAddress(currentDelegate)
-                  : 'Delegate to self'}
+                {currentDelegate && currentDelegate !== zeroAddress ? (
+                  shortenAddress(currentDelegate)
+                ) : (
+                  <Trans>Delegate to self</Trans>
+                )}
               </div>
               <Pencil size={14} />
             </div>
@@ -166,7 +183,7 @@ const Delegate = () => {
               role="button"
               onClick={() => setDelegateVisible(false)}
             >
-              Revert
+              <Trans>Revert</Trans>
               <Undo2 size={14} />
             </div>
           )}
@@ -175,14 +192,14 @@ const Delegate = () => {
       {delegateVisible && (
         <div>
           <Input
-            placeholder="Delegate to address"
+            placeholder={t`Delegate to address`}
             value={delegate}
             onChange={(e) => setDelegate(e.target.value)}
             className="rounded-xl bg-card px-4 text-base h-12"
           />
           {!isValidDelegate && (
             <div className="text-red-700/70 text-sm px-4 py-1">
-              Invalid address
+              <Trans>Invalid address</Trans>
             </div>
           )}
         </div>
@@ -199,6 +216,7 @@ const VoteLockDrawerInner = ({
   onClose,
   children,
 }: VoteLockDrawerProps) => {
+  const { t } = useLingui()
   const wallet = useAtomValue(walletAtom)
   const [currentTab, setCurrentTab] = useAtom(currentStakingTabAtom)
   const delegate = useAtomValue(delegateAtom)
@@ -281,7 +299,7 @@ const VoteLockDrawerInner = ({
                     className="flex gap-1 items-center pl-2 pr-3 data-[state=active]:text-primary"
                   >
                     {icon}
-                    {label}
+                    {t(label)}
                   </TabsTrigger>
                 ))}
               </TabsList>

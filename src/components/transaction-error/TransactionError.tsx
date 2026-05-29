@@ -1,4 +1,5 @@
 import { cn } from '@/lib/utils'
+import { useLingui } from '@lingui/react/macro'
 
 interface Props {
   error?: Error | null
@@ -7,6 +8,7 @@ interface Props {
 }
 
 const TransactionError = ({ error, withName = true, className }: Props) => {
+  const { t } = useLingui()
   if (!error) {
     return null
   }
@@ -20,8 +22,7 @@ const TransactionError = ({ error, withName = true, className }: Props) => {
 
   if (message.includes('0x168cdd18')) {
     parsed = true
-    message =
-      'Proposal cannot be executed while another auction is currently running'
+    message = t`Proposal cannot be executed while another auction is currently running`
   }
 
   return (

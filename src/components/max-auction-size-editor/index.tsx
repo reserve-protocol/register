@@ -12,6 +12,7 @@ import {
 } from '@/state/max-auction-sizes'
 import { Token } from '@/types'
 import { formatCurrency } from '@/utils'
+import { Trans } from '@lingui/react/macro'
 import { useAtom, useAtomValue } from 'jotai'
 import { ChevronsUpDown, DollarSign } from 'lucide-react'
 import { useState } from 'react'
@@ -74,11 +75,13 @@ const MaxAuctionSizeEditor = ({ tokens }: MaxAuctionSizeEditorProps) => {
         <CollapsibleTrigger className="flex items-center justify-between w-full">
           <div>
             <h4 className="font-semibold text-primary text-base text-left">
-              Max Auction Size per Token
+              <Trans>Max Auction Size per Token</Trans>
             </h4>
             <p className="text-sm text-muted-foreground text-left">
-              Set the maximum auction size in USD for each token. Default:{' '}
-              {formatCurrency(DEFAULT_MAX_AUCTION_SIZE_USD, 0)}
+              <Trans>
+                Set the maximum auction size in USD for each token. Default:{' '}
+                {formatCurrency(DEFAULT_MAX_AUCTION_SIZE_USD, 0)}
+              </Trans>
             </p>
           </div>
           <ChevronsUpDown className="h-4 w-4 text-primary flex-shrink-0 ml-2" />

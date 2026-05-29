@@ -1,4 +1,4 @@
-import { t, Trans } from '@lingui/macro'
+import { Trans, useLingui } from '@lingui/react/macro'
 import { FormField } from 'components/field'
 import { useAtomValue } from 'jotai'
 import { useMemo } from 'react'
@@ -16,6 +16,7 @@ const GovernanceParameters = ({
   timebased = true,
   className,
 }: GovernanceParametersProps) => {
+  const { t } = useLingui()
   const secondsPerBlock = useAtomValue(secondsPerBlockAtom)
   const { watch } = useFormContext()
   const [votingDelay, votingPeriod, minDelay] = watch([
@@ -47,12 +48,14 @@ const GovernanceParameters = ({
         <Trans>Governance parameters</Trans>
       </span>
       <FormField
-        label={`Snapshot delay ${timebased ? '(hours)' : '(blocks)'}`}
+        label={timebased ? t`Snapshot delay (hours)` : t`Snapshot delay (blocks)`}
         placeholder={t`Input delay`}
         helper={votingDelayHelper}
-        help={`Delay (in number of ${
-          timebased ? 'hours' : 'blocks'
-        }) since the proposal is submitted until voting power is fixed and voting starts. This can be used to enforce a delay after a proposal is published for users to buy tokens, or delegate their votes.`}
+        help={
+          timebased
+            ? t`Delay (in number of hours) since the proposal is submitted until voting power is fixed and voting starts. This can be used to enforce a delay after a proposal is published for users to buy tokens, or delegate their votes.`
+            : t`Delay (in number of blocks) since the proposal is submitted until voting power is fixed and voting starts. This can be used to enforce a delay after a proposal is published for users to buy tokens, or delegate their votes.`
+        }
         className="mb-4"
         name="votingDelay"
         options={{
@@ -63,12 +66,14 @@ const GovernanceParameters = ({
         }}
       />
       <FormField
-        label={`Voting period ${timebased ? '(hours)' : '(blocks)'}`}
+        label={timebased ? t`Voting period (hours)` : t`Voting period (blocks)`}
         placeholder={t`Input voting period`}
         helper={votingPeriodHelper}
-        help={t`Delay (in number of ${
-          timebased ? 'hours' : 'blocks'
-        }) since the proposal starts until voting ends.`}
+        help={
+          timebased
+            ? t`Delay (in number of hours) since the proposal starts until voting ends.`
+            : t`Delay (in number of blocks) since the proposal starts until voting ends.`
+        }
         className="mb-6"
         name="votingPeriod"
         options={{

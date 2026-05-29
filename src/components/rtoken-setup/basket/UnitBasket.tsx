@@ -1,4 +1,4 @@
-import { t, Trans } from '@lingui/macro'
+import { Trans, useLingui } from '@lingui/react/macro'
 import { NumericalInput } from 'components'
 import Help from 'components/help'
 import TokenLogo from 'components/icons/TokenLogo'
@@ -51,6 +51,7 @@ interface UnitBasketProps {
  * Display collateral composition for target unit
  */
 const UnitBasket = ({ data, readOnly, unit, className }: UnitBasketProps) => {
+  const { t } = useLingui()
   const updateBasket = useSetAtom(updateBasketUnitAtom)
   const targetUnitPrice = useAtomValue(basketTargetUnitPriceAtom)[unit]
 
@@ -136,7 +137,7 @@ const UnitBasket = ({ data, readOnly, unit, className }: UnitBasketProps) => {
             <span
               className={`ml-auto text-xs ${totalDistribution !== 100 ? 'text-destructive' : ''}`}
             >
-              Filled: {totalDistribution}%
+              <Trans>Filled: {totalDistribution}%</Trans>
             </span>
           </div>
         </>
@@ -146,16 +147,15 @@ const UnitBasket = ({ data, readOnly, unit, className }: UnitBasketProps) => {
           <IconInfo
             icon={<TokenLogo width={18} symbol={collateral.symbol} />}
             title={unit}
-            help={`Collateral Address: ${collateral.address}`}
-            text={
-              readOnly
-                ? collateralDisplay[collateral.symbol.toLowerCase()] ||
-                  collateral.symbol
-                : `${getCollateralDist(index)} in ${
-                    collateralDisplay[collateral.symbol.toLowerCase()] ||
-                    collateral.symbol
-                  }`
-            }
+            help={t`Collateral Address: ${collateral.address}`}
+            text={(() => {
+              const tokenName =
+                collateralDisplay[collateral.symbol.toLowerCase()] ||
+                collateral.symbol
+              if (readOnly) return tokenName
+              const amount = getCollateralDist(index)
+              return t`${amount} in ${tokenName}`
+            })()}
           />
           {!readOnly ? (
             <div className="ml-auto w-20 mr-2">

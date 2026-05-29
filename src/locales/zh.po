@@ -62,6 +62,7 @@ msgid "{0, plural, one {# target} other {# targets}}"
 msgstr ""
 
 #. placeholder {0}: selectedTokens.length
+#: src/components/token-selector-drawer/index.tsx:282
 #: src/views/index-dtf/deploy/steps/basket/token-selector.tsx:487
 msgid "{0, plural, one {Add # token} other {Add # tokens}}"
 msgstr ""
@@ -129,6 +130,11 @@ msgstr ""
 msgid "{0} and {1}"
 msgstr ""
 
+#. placeholder {0}: allowance.symbol
+#: src/components/transaction-modal/ApprovalStatus.tsx:20
+msgid "{0} Approved"
+msgstr ""
+
 #. placeholder {0}: rToken?.symbol ?? ''
 #: src/views/yield-dtf/overview/components/charts/apy-chart.tsx:294
 msgid "{0} APY"
@@ -189,6 +195,8 @@ msgid "{0} Performance"
 msgstr ""
 
 #. placeholder {0}: props.selected.length
+#. placeholder {0}: selected.length
+#: src/components/ui/multiselect-dropdown.tsx:170
 #: src/views/explorer/components/filters/token-filter.tsx:75
 #: src/views/explorer/components/filters/TransactionTypeFilter.tsx:44
 #: src/views/explorer/components/governance/filters.tsx:45
@@ -224,6 +232,10 @@ msgstr ""
 #. placeholder {3}: token.counterpart
 #: src/views/index-dtf/governance/views/propose/basket/components/proposal-liquidity-checker.tsx:84
 msgid "{0}% price impact selling ${1} of {2} for {3}"
+msgstr ""
+
+#: src/components/rtoken-setup/basket/UnitBasket.tsx:157
+msgid "{amount} in {tokenName}"
 msgstr ""
 
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/changes/auction-settings-changes.tsx:98
@@ -280,6 +292,10 @@ msgstr ""
 msgid "{pauseLabel} paused"
 msgstr ""
 
+#: src/components/liquidity-badge.tsx:252
+msgid "{percent} price impact"
+msgstr ""
+
 #: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:552
 msgid "{periodInDays, plural, one {# day} other {# days}}"
 msgstr ""
@@ -296,6 +312,10 @@ msgstr ""
 msgid "{strategyCount, plural, one {# Strategy} other {# Strategies}}"
 msgstr ""
 
+#: src/components/rtoken-setup/basket/EmergencyCollateral.tsx:117
+msgid "{targetUnit} Backups"
+msgstr ""
+
 #: src/views/index-dtf/auctions/views/rebalance/components/cowbot/cowbot-card.tsx:52
 #: src/views/index-dtf/auctions/views/rebalance/components/cowbot/cowbot-card.tsx:88
 msgid "{totalOrders, plural, one {# order submitted} other {# orders submitted}}"
@@ -305,7 +325,7 @@ msgstr ""
 msgid "{uniqueProjects, plural, one {# Protocol} other {# Protocols}}"
 msgstr ""
 
-#: src/components/rtoken-setup/basket/UnitBasket.tsx:134
+#: src/components/rtoken-setup/basket/UnitBasket.tsx:135
 msgid "{unit} Token distribution"
 msgstr ""
 
@@ -314,23 +334,24 @@ msgstr ""
 msgid "& Earn {0}% APR"
 msgstr ""
 
-#: src/components/rtoken-setup/token/BackingForm.tsx:101
+#: src/components/rtoken-setup/token/BackingForm.tsx:102
 msgid "% Acceptable"
 msgstr ""
 
+#: src/components/index-basket-setup/basket-table.tsx:70
 #: src/views/index-dtf/governance/views/propose/basket/components/proposal-basket-setup/proposal-basket-table.tsx:86
 msgid "% of Basket"
 msgstr ""
 
-#: src/components/rtoken-setup/token/ExternalRevenueSplit.tsx:85
+#: src/components/rtoken-setup/token/ExternalRevenueSplit.tsx:86
 msgid "% Revenue share"
 msgstr ""
 
-#: src/components/rtoken-setup/token/RevenueSplit.tsx:124
+#: src/components/rtoken-setup/token/RevenueSplit.tsx:127
 msgid "% Revenue to RSR Stakers"
 msgstr ""
 
-#: src/components/rtoken-setup/token/RevenueSplit.tsx:115
+#: src/components/rtoken-setup/token/RevenueSplit.tsx:116
 msgid "% Revenue to RToken Holders"
 msgstr ""
 
@@ -370,6 +391,10 @@ msgstr ""
 
 #: src/views/index-dtf/factsheet/components/performance-table.tsx:26
 msgid "1 Month"
+msgstr ""
+
+#: src/components/rtoken-setup/basket/PrimaryBasket.tsx:163
+msgid "1 Token ="
 msgstr ""
 
 #: src/views/index-dtf/overview/components/basket-overview/performance-cell.tsx:19
@@ -436,8 +461,13 @@ msgstr ""
 msgid "90 day"
 msgstr ""
 
+#: src/components/vote-lock/index.tsx:116
 #: src/views/index-dtf/overview/components/staking/index.tsx:119
 msgid "A {delay}-day unlock delay period begins & you stop accumulating rewards"
+msgstr ""
+
+#: src/components/stake-drawer/index.tsx:118
+msgid "A {delay}-day unstake delay period begins & you stop accumulating rewards"
 msgstr ""
 
 #: src/views/home/components/register-about.tsx:34
@@ -525,6 +555,10 @@ msgstr ""
 msgid "Abstain"
 msgstr ""
 
+#: src/components/stake-drawer/components/submit-stake-button.tsx:172
+msgid "Accept unstake delay"
+msgstr ""
+
 #: src/views/internal/dtf-list/components/dtf-table.tsx:200
 #: src/views/portfolio-page/components/pending-withdrawals.tsx:354
 #: src/views/portfolio-page/components/staked-positions.tsx:116
@@ -544,7 +578,7 @@ msgstr ""
 msgid "Active Rebalances"
 msgstr ""
 
-#: src/components/rtoken-setup/basket/CustomCollateral.tsx:144
+#: src/components/rtoken-setup/basket/CustomCollateral.tsx:147
 #: src/views/yield-dtf/governance/views/proposal/components/ItemPreview.tsx:45
 #: src/views/yield-dtf/governance/views/proposal/components/ListItemPreview.tsx:22
 #: src/views/yield-dtf/governance/views/proposal/components/ProposedRevenueSplitPreview.tsx:130
@@ -577,7 +611,12 @@ msgstr ""
 msgid "Add links to your social media accounts and website."
 msgstr ""
 
-#: src/components/rtoken-setup/token/RevenueSplit.tsx:162
+#. placeholder {0}: title.substring(0, title.length - 1).toLowerCase()
+#: src/components/rtoken-setup/components/RolesEdit.tsx:139
+msgid "Add new {0}"
+msgstr ""
+
+#: src/components/rtoken-setup/token/RevenueSplit.tsx:167
 msgid "Add new address"
 msgstr ""
 
@@ -586,26 +625,34 @@ msgstr ""
 msgid "Add new reward token"
 msgstr ""
 
+#: src/components/token-selector-drawer/index.tsx:43
+msgid "Add new token"
+msgstr ""
+
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/sections/propose-revenue-tokens.tsx:266
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/vault-proposal-form.tsx:248
 msgid "Add reward token"
 msgstr ""
 
-#: src/components/rtoken-setup/basket/CollateralModal.tsx:165
+#: src/components/rtoken-setup/basket/CollateralModal.tsx:166
 msgid "Add to backup basket"
 msgstr ""
 
-#: src/components/rtoken-setup/basket/EmergencyCollateral.tsx:122
-#: src/components/rtoken-setup/basket/PrimaryBasket.tsx:210
+#: src/components/rtoken-setup/basket/EmergencyCollateral.tsx:125
+#: src/components/rtoken-setup/basket/PrimaryBasket.tsx:213
 msgid "Add to basket"
 msgstr ""
 
-#: src/components/rtoken-setup/basket/CollateralModal.tsx:163
+#: src/components/rtoken-setup/basket/CollateralModal.tsx:164
 msgid "Add to primary basket"
 msgstr ""
 
 #: src/views/index-dtf/deploy/steps/basket/token-selector.tsx:67
 msgid "Add token"
+msgstr ""
+
+#: src/components/index-basket-setup/basket-table.tsx:196
+msgid "Add tokens to get started"
 msgstr ""
 
 #: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/changes/basket-role-changes.tsx:49
@@ -675,6 +722,7 @@ msgstr ""
 msgid "Alexios is standard token-voting adopted from Compound Governor Bravo, with adjustments accounting for RSR being staked across multiple RTokens."
 msgstr ""
 
+#: src/components/token-selector-drawer/index.tsx:142
 #: src/views/earn/components/table-filters.tsx:33
 #: src/views/explorer/components/governance/filters.tsx:54
 #: src/views/explorer/components/tokens/index.tsx:44
@@ -692,6 +740,7 @@ msgstr ""
 msgid "All Auctions <0>in proposal</0>"
 msgstr ""
 
+#: src/components/chain-filter/index.tsx:25
 #: src/views/earn/views/yield-dtf/components/yield-chain-filter.tsx:26
 #: src/views/home/components/discover-filters.tsx:64
 #: src/views/internal/dtf-list/components/dtf-date-chain-filters.tsx:110
@@ -705,6 +754,7 @@ msgstr ""
 msgid "All DTFs"
 msgstr ""
 
+#: src/components/ui/multiselect-dropdown.tsx:89
 #: src/views/explorer/components/MultiselectDropdown.tsx:82
 msgid "All options"
 msgstr ""
@@ -743,6 +793,10 @@ msgstr ""
 msgid "All unlisted RTokens"
 msgstr ""
 
+#: src/components/transaction-modal/index.tsx:53
+msgid "Allow use of {symbol}"
+msgstr ""
+
 #: src/views/index-dtf/deploy/steps/auctions/auctions-form.tsx:23
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-weight-control.tsx:21
 msgid "Allowing the weight control will allow the rebalance to adjust the weights of the tokens in the basket, turning this off is recommended for tracking DTFs."
@@ -752,7 +806,7 @@ msgstr ""
 msgid "Almost there..."
 msgstr ""
 
-#: src/components/transactions/table/index.tsx:77
+#: src/components/transactions/table/index.tsx:78
 #: src/views/explorer/components/revenue/index.tsx:348
 #: src/views/explorer/components/transactions/useTransactionColumns.tsx:77
 #: src/views/index-dtf/overview/components/index-transaction-table.tsx:35
@@ -818,6 +872,7 @@ msgstr ""
 msgid "Anyone can click the button above to check and trigger an auction for any revenue that has accrued or for rebalances that need to happen. Please note that for RTokens with many collateral types in the basket, this may be an expensive transaction to execute."
 msgstr ""
 
+#: src/components/ui/multiselect-dropdown.tsx:135
 #: src/views/explorer/components/MultiselectDropdown.tsx:118
 msgid "Apply"
 msgstr ""
@@ -832,12 +887,17 @@ msgstr ""
 msgid "Approve All ({totalCount})"
 msgstr ""
 
-#: src/components/transaction-modal/ApprovalStatus.tsx:29
+#: src/components/transaction-modal/ApprovalStatus.tsx:31
 msgid "Approve in wallet"
+msgstr ""
+
+#: src/components/stake-drawer/components/submit-stake-button.tsx:187
+msgid "Approve RSR"
 msgstr ""
 
 #. placeholder {0}: stToken?.underlying.symbol
 #. placeholder {0}: usedToken.symbol || 'ERC20'
+#: src/components/vote-lock/components/submit-lock-button.tsx:213
 #: src/views/index-dtf/deploy/steps/confirm-deploy/simple/simple-deploy-button.tsx:144
 #: src/views/index-dtf/overview/components/staking/lock/submit-lock-button.tsx:218
 msgid "Approve use of {0}"
@@ -868,12 +928,16 @@ msgstr ""
 msgid "Are you sure you want to leave? This may cause the auction to fail and value to be lost."
 msgstr ""
 
-#: src/components/rtoken-setup/token/ExternalRevenueSplit.tsx:96
+#: src/components/rtoken-setup/token/ExternalRevenueSplit.tsx:97
 msgid "As RSR"
 msgstr ""
 
-#: src/components/rtoken-setup/token/ExternalRevenueSplit.tsx:89
+#: src/components/rtoken-setup/token/ExternalRevenueSplit.tsx:90
 msgid "As RToken"
+msgstr ""
+
+#: src/components/ui/swap.tsx:236
+msgid "Assembling different routes"
 msgstr ""
 
 #: src/views/portfolio-page/components/portfolio-chart.tsx:156
@@ -974,8 +1038,8 @@ msgstr ""
 msgid "Auctionable revenue"
 msgstr ""
 
-#: src/components/layout/navigation/index.tsx:79
-#: src/components/layout/navigation/TokenNavigation.tsx:197
+#: src/components/layout/navigation/index.tsx:80
+#: src/components/layout/navigation/TokenNavigation.tsx:198
 #: src/views/index-dtf/components/navigation/index.tsx:154
 #: src/views/index-dtf/deploy/components/deploy-accordion.tsx:102
 #: src/views/index-dtf/deploy/components/deploy-accordion.tsx:103
@@ -1052,7 +1116,7 @@ msgstr ""
 msgid "Backing"
 msgstr ""
 
-#: src/components/layout/navigation/TokenNavigation.tsx:179
+#: src/components/layout/navigation/TokenNavigation.tsx:180
 #: src/views/yield-dtf/overview/components/backing/index.tsx:86
 msgid "Backing & Risk"
 msgstr ""
@@ -1070,15 +1134,15 @@ msgstr ""
 msgid "Backing buffer"
 msgstr ""
 
-#: src/components/rtoken-setup/token/BackingForm.tsx:89
+#: src/components/rtoken-setup/token/BackingForm.tsx:90
 msgid "Backing buffer - percentage value that describes how much additional collateral tokens to keep in the BackingManager before forwarding tokens to the RevenueTraders. The RevenueTraders here refers to the RToken and RSR traders. Why this matters? It allows collateral tokens to be periodically converted into the RToken, which is a more efficient form of revenue production than trading each individual collateral for the desired RToken. It also provides a buffer to prevent RSR seizure after trading slippage. For more info on the BackingManager and Trader types see the \"Revenue distribution to RToken holders\" and \"Summary of revenue distribution\" in our documentation."
 msgstr ""
 
-#: src/components/rtoken-setup/token/BackingForm.tsx:87
+#: src/components/rtoken-setup/token/BackingForm.tsx:88
 msgid "Backing buffer (%)"
 msgstr ""
 
-#: src/components/layout/navigation/TokenNavigation.tsx:217
+#: src/components/layout/navigation/TokenNavigation.tsx:218
 #: src/views/yield-dtf/governance/views/proposal/components/ProposalNavigation.tsx:16
 #: src/views/yield-dtf/settings/components/navigation-sidebar.tsx:14
 msgid "Backing config"
@@ -1106,6 +1170,7 @@ msgstr ""
 msgid "Backups"
 msgstr ""
 
+#: src/components/ui/swap.tsx:196
 #: src/views/portfolio-page/components/available-rewards.tsx:104
 #: src/views/portfolio-page/components/dtf-positions.tsx:131
 #: src/views/portfolio-page/components/pending-withdrawals.tsx:322
@@ -1137,7 +1202,7 @@ msgstr ""
 msgid "Basics Update"
 msgstr ""
 
-#: src/components/rtoken-setup/basket/UnitBasket.tsx:107
+#: src/components/rtoken-setup/basket/UnitBasket.tsx:108
 #: src/views/index-dtf/deploy/components/deploy-accordion.tsx:74
 #: src/views/index-dtf/deploy/components/deploy-accordion.tsx:75
 #: src/views/yield-dtf/settings/components/basket-info.tsx:21
@@ -1180,7 +1245,7 @@ msgstr ""
 msgid "Basket is not ready"
 msgstr ""
 
-#: src/components/rtoken-setup/basket/UnitBasket.tsx:128
+#: src/components/rtoken-setup/basket/UnitBasket.tsx:129
 msgid "Basket scale for this unit of account. This is used to initially calculate how much of each token is required for minting."
 msgstr ""
 
@@ -1200,11 +1265,11 @@ msgstr ""
 msgid "Batch auction length"
 msgstr ""
 
-#: src/components/rtoken-setup/token/BackingForm.tsx:61
+#: src/components/rtoken-setup/token/BackingForm.tsx:62
 msgid "Batch Auction length - defines how long Gnosis EasyAuction auctions should be. Gnosis EasyAuction is a platform enabling fair price discovery for tokens through the use of batch auctions."
 msgstr ""
 
-#: src/components/rtoken-setup/token/BackingForm.tsx:59
+#: src/components/rtoken-setup/token/BackingForm.tsx:60
 msgid "Batch Auction length (s)"
 msgstr ""
 
@@ -1216,6 +1281,7 @@ msgstr ""
 msgid "Be aware that anyone can create an RToken that ends up on this list. We don't apply any standards beyond what can be done with the Reserve Protocol."
 msgstr ""
 
+#: src/components/vote-lock/components/submit-unlock-button.tsx:94
 #: src/views/index-dtf/overview/components/staking/unlock/submit-unlock-button.tsx:97
 msgid "Begin {unlockDelay}-day unlock delay"
 msgstr ""
@@ -1236,6 +1302,7 @@ msgstr ""
 msgid "Begin redemption of {0} {1}"
 msgstr ""
 
+#: src/components/vote-lock/components/submit-unlock-button.tsx:95
 #: src/views/index-dtf/overview/components/staking/unlock/submit-unlock-button.tsx:98
 msgid "Begin unlock delay"
 msgstr ""
@@ -1408,7 +1475,7 @@ msgstr ""
 msgid "Cancel"
 msgstr ""
 
-#: src/components/transactions/table/index.tsx:52
+#: src/components/transactions/table/index.tsx:53
 #: src/views/explorer/components/transactions/useTransactionColumns.tsx:33
 #: src/views/yield-dtf/overview/components/rtoken-transactions.tsx:81
 msgid "Cancel Issue"
@@ -1465,8 +1532,16 @@ msgstr ""
 msgid "Chain"
 msgstr ""
 
+#: src/components/ui/seamless-transaction.tsx:41
+msgid "Chain {targetChain}"
+msgstr ""
+
 #: src/views/index-dtf/deploy/form-fields.ts:85
 msgid "Chain must be either Mainnet, Base or Binance Smart Chain"
+msgstr ""
+
+#: src/components/account/index.tsx:42
+msgid "Chain: {chainId}"
 msgstr ""
 
 #: src/views/yield-dtf/governance/components/AccountVotes.tsx:104
@@ -1503,11 +1578,12 @@ msgstr ""
 msgid "Check for auctions"
 msgstr ""
 
+#: src/components/liquidity-badge.tsx:219
 #: src/views/index-dtf/governance/views/propose/basket/components/basket-proposal-overview.tsx:62
 msgid "Checking liquidity..."
 msgstr ""
 
-#: src/components/rtoken-setup/governance/GovernanceSetup.tsx:51
+#: src/components/rtoken-setup/governance/GovernanceSetup.tsx:52
 msgid "Choose between our Alexios Governor and anything between one-person rule to arbitrary DAO structure under your defined Ethereum address."
 msgstr ""
 
@@ -1519,7 +1595,7 @@ msgstr ""
 msgid "Choose tags..."
 msgstr ""
 
-#: src/components/transactions/table/index.tsx:51
+#: src/components/transactions/table/index.tsx:52
 #: src/views/explorer/components/filters/TransactionTypeFilter.tsx:16
 #: src/views/explorer/components/transactions/useTransactionColumns.tsx:32
 #: src/views/portfolio-page/components/available-rewards.tsx:80
@@ -1567,6 +1643,11 @@ msgstr ""
 msgid "Collateral"
 msgstr ""
 
+#. placeholder {0}: collateral.address
+#: src/components/rtoken-setup/basket/UnitBasket.tsx:150
+msgid "Collateral Address: {0}"
+msgstr ""
+
 #: src/views/yield-dtf/issuance/components/issue/CollateralDistribution.tsx:37
 msgid "Collateral distribution"
 msgstr ""
@@ -1575,7 +1656,7 @@ msgstr ""
 msgid "Collateral Exposure"
 msgstr ""
 
-#: src/components/rtoken-setup/basket/CollateralModal.tsx:116
+#: src/components/rtoken-setup/basket/CollateralModal.tsx:117
 msgid "Collateral Plugins"
 msgstr ""
 
@@ -1600,8 +1681,13 @@ msgid "Collect Rewards"
 msgstr ""
 
 #. placeholder {0}: stToken.underlying.symbol
+#: src/components/vote-lock/index.tsx:127
 #: src/views/index-dtf/overview/components/staking/index.tsx:130
 msgid "Come back to your account balance page to withdraw your unlocked {0}"
+msgstr ""
+
+#: src/components/stake-drawer/index.tsx:129
+msgid "Come back to your account balance page to withdraw your unstaked RSR"
 msgstr ""
 
 #: src/views/index-dtf/governance/views/propose/index.tsx:86
@@ -1704,10 +1790,23 @@ msgstr ""
 msgid "Confirm delegate"
 msgstr ""
 
+#: src/components/stake-drawer/components/submit-stake-button.tsx:219
+msgid "Confirming approval..."
+msgstr ""
+
+#: src/components/transaction-modal/ApprovalStatus.tsx:35
+msgid "Confirming transaction"
+msgstr ""
+
 #: src/views/index-dtf/issuance/manual/components/index-manual-issuance.tsx:202
 msgid "Confirming transaction..."
 msgstr ""
 
+#: src/components/stake-drawer/components/submit-stake-button.tsx:217
+#: src/components/stake-drawer/components/submit-unstake-button.tsx:104
+#: src/components/vote-lock/components/submit-lock-button.tsx:65
+#: src/components/vote-lock/components/submit-lock-button.tsx:204
+#: src/components/vote-lock/components/submit-unlock-button.tsx:86
 #: src/views/index-dtf/deploy/steps/confirm-deploy/manual/components/confirm-manual-deploy-button.tsx:298
 #: src/views/index-dtf/deploy/steps/confirm-deploy/simple/simple-deploy-button.tsx:133
 #: src/views/index-dtf/overview/components/staking/lock/submit-lock-button.tsx:67
@@ -1728,10 +1827,12 @@ msgstr ""
 msgid "Congratulations {0} is now live"
 msgstr ""
 
-#: src/components/account/index.tsx:94
+#: src/components/account/index.tsx:96
 msgid "Connect"
 msgstr ""
 
+#: src/components/stake-drawer/components/submit-stake-button.tsx:160
+#: src/components/stake-drawer/components/submit-unstake-button.tsx:72
 #: src/views/explorer/components/governance/index.tsx:117
 msgid "Connect wallet"
 msgstr ""
@@ -1753,7 +1854,7 @@ msgstr ""
 msgid "Contact me"
 msgstr ""
 
-#: src/components/layout/navigation/TokenNavigation.tsx:220
+#: src/components/layout/navigation/TokenNavigation.tsx:221
 #: src/views/yield-dtf/settings/components/navigation-sidebar.tsx:17
 msgid "Contract Addresses"
 msgstr ""
@@ -1782,12 +1883,12 @@ msgstr ""
 msgid "Copied to clipboard"
 msgstr ""
 
-#: src/components/ui/copy-value.tsx:57
-#: src/components/ui/copy.tsx:21
+#: src/components/ui/copy-value.tsx:58
+#: src/components/ui/copy.tsx:22
 msgid "Copied to clipboard!"
 msgstr ""
 
-#: src/components/section-anchor.tsx:12
+#: src/components/section-anchor.tsx:13
 msgid "Copied!"
 msgstr ""
 
@@ -1796,7 +1897,7 @@ msgstr ""
 msgid "Copy address"
 msgstr ""
 
-#: src/components/section-anchor.tsx:11
+#: src/components/section-anchor.tsx:12
 msgid "Copy link"
 msgstr ""
 
@@ -1808,8 +1909,8 @@ msgstr ""
 msgid "Copy swap params to share with engineering team"
 msgstr ""
 
-#: src/components/ui/copy-value.tsx:56
-#: src/components/ui/copy.tsx:20
+#: src/components/ui/copy-value.tsx:57
+#: src/components/ui/copy.tsx:21
 msgid "Copy to clipboard"
 msgstr ""
 
@@ -1863,7 +1964,7 @@ msgstr ""
 msgid "Create a New DAO"
 msgstr ""
 
-#: src/components/layout/header/components/app-navigation.tsx:131
+#: src/components/layout/header/components/app-navigation.tsx:132
 msgid "Create a new overcollateralized Yield DTF"
 msgstr ""
 
@@ -1883,8 +1984,8 @@ msgstr ""
 msgid "Create Index DTF"
 msgstr ""
 
-#: src/components/layout/header/components/app-navigation.tsx:87
-#: src/components/layout/header/components/app-navigation.tsx:94
+#: src/components/layout/header/components/app-navigation.tsx:88
+#: src/components/layout/header/components/app-navigation.tsx:95
 msgid "Create New DTF"
 msgstr ""
 
@@ -1969,6 +2070,7 @@ msgstr ""
 msgid "Creator:"
 msgstr ""
 
+#: src/components/index-basket-setup/csv-import.tsx:214
 #: src/views/index-dtf/deploy/steps/basket/basket-csv-setup.tsx:225
 #: src/views/index-dtf/governance/views/propose/basket/components/proposal-basket-setup/basket-csv-setup.tsx:256
 msgid "CSV Template"
@@ -2006,11 +2108,19 @@ msgstr ""
 msgid "Current"
 msgstr ""
 
+#: src/components/index-basket-setup/basket-table.tsx:64
+msgid "Current %"
+msgstr ""
+
 #: src/views/index-dtf/auctions/views/rebalance/components/rebalance-overview.tsx:105
 msgid "Current basket deviation:"
 msgstr ""
 
-#: src/components/rtoken-setup/components/RolesEdit.tsx:109
+#: src/components/transaction-modal/index.tsx:116
+msgid "Current basket not capitalized, please try to redeem with a previous basket."
+msgstr ""
+
+#: src/components/rtoken-setup/components/RolesEdit.tsx:110
 msgid "Current holder"
 msgstr ""
 
@@ -2023,10 +2133,15 @@ msgstr ""
 msgid "Current status:"
 msgstr ""
 
+#: src/components/index-basket-setup/basket-table.tsx:64
+msgid "Current units"
+msgstr ""
+
 #: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:304
 msgid "Current votes"
 msgstr ""
 
+#: src/components/ui/swap.tsx:448
 #: src/views/index-dtf/deploy/components/toggle-group-preset.tsx:31
 msgid "Custom"
 msgstr ""
@@ -2130,20 +2245,35 @@ msgstr ""
 msgid "Define what portion of the revenue goes to the DTF's creator, the vote-lock DAO, or any arbitrary address (wallet or smart contract)."
 msgstr ""
 
-#: src/components/rtoken-setup/token/RevenueSplit.tsx:168
+#: src/components/rtoken-setup/token/RevenueSplit.tsx:173
 msgid "Define what portion of the revenue goes to the RToken holders versus RSR stakers. It can also be configured to send a portion of the revenue of an RToken to any arbitrary Ethereum address (wallet or smart contract).<0/><1/>"
 msgstr ""
 
-#. placeholder {0}: timebased ? 'hours' : 'blocks'
 #: src/components/rtoken-setup/governance/GovernanceParameters.tsx:69
-msgid "Delay (in number of {0}) since the proposal starts until voting ends."
+#~ msgid "Delay (in number of {0}) since the proposal starts until voting ends."
+#~ msgstr ""
+
+#: src/components/rtoken-setup/governance/GovernanceParameters.tsx:57
+msgid "Delay (in number of blocks) since the proposal is submitted until voting power is fixed and voting starts. This can be used to enforce a delay after a proposal is published for users to buy tokens, or delegate their votes."
 msgstr ""
 
-#: src/components/rtoken-setup/token/BackingForm.tsx:32
+#: src/components/rtoken-setup/governance/GovernanceParameters.tsx:75
+msgid "Delay (in number of blocks) since the proposal starts until voting ends."
+msgstr ""
+
+#: src/components/rtoken-setup/governance/GovernanceParameters.tsx:56
+msgid "Delay (in number of hours) since the proposal is submitted until voting power is fixed and voting starts. This can be used to enforce a delay after a proposal is published for users to buy tokens, or delegate their votes."
+msgstr ""
+
+#: src/components/rtoken-setup/governance/GovernanceParameters.tsx:74
+msgid "Delay (in number of hours) since the proposal starts until voting ends."
+msgstr ""
+
+#: src/components/rtoken-setup/token/BackingForm.tsx:33
 msgid "Delay in seconds"
 msgstr ""
 
-#: src/components/rtoken-setup/token/OtherForm.tsx:64
+#: src/components/rtoken-setup/token/OtherForm.tsx:65
 msgid "Delay in Seconds"
 msgstr ""
 
@@ -2154,6 +2284,7 @@ msgid "Delegate"
 msgstr ""
 
 #. placeholder {0}: stToken?.underlying.symbol
+#: src/components/vote-lock/components/submit-lock-button.tsx:67
 #: src/views/index-dtf/overview/components/staking/lock/submit-lock-button.tsx:70
 msgid "Delegate {0}"
 msgstr ""
@@ -2167,10 +2298,14 @@ msgstr ""
 msgid "Delegate to"
 msgstr ""
 
+#: src/components/stake-drawer/index.tsx:217
+#: src/components/vote-lock/index.tsx:195
 #: src/views/index-dtf/overview/components/staking/index.tsx:215
 msgid "Delegate to address"
 msgstr ""
 
+#: src/components/stake-drawer/index.tsx:197
+#: src/components/vote-lock/index.tsx:175
 #: src/views/index-dtf/overview/components/staking/index.tsx:196
 msgid "Delegate to self"
 msgstr ""
@@ -2197,6 +2332,7 @@ msgstr ""
 msgid "Delegated to: "
 msgstr ""
 
+#: src/components/index-basket-setup/basket-table.tsx:68
 #: src/views/index-dtf/governance/components/proposal-preview/rebalance-preview/rebalance-basket-preview.tsx:80
 #: src/views/index-dtf/governance/views/propose/basket/components/proposal-basket-preview.tsx:169
 #: src/views/index-dtf/governance/views/propose/basket/components/proposal-basket-setup/proposal-basket-table.tsx:86
@@ -2241,7 +2377,7 @@ msgstr ""
 msgid "Deploying through this UI doesn't require deep technical knowledge as long as you don't need novel collateral plugins for your baskets. However, we encourage you to talk to someone proficient in the protocol and read the docs to learn more before confirming any transactions."
 msgstr ""
 
-#: src/components/transactions/table/index.tsx:56
+#: src/components/transactions/table/index.tsx:57
 #: src/views/explorer/components/transactions/useTransactionColumns.tsx:37
 #: src/views/yield-dtf/overview/components/rtoken-transactions.tsx:85
 msgid "Deposit"
@@ -2251,6 +2387,7 @@ msgstr ""
 msgid "DEPRECATED"
 msgstr ""
 
+#: src/components/governance/proposal-description-form.tsx:64
 #: src/views/explorer/components/governance/index.tsx:76
 #: src/views/index-dtf/governance/views/proposal/components/proposal-detail-content.tsx:13
 #: src/views/index-dtf/governance/views/proposal/components/proposal-detail-content.tsx:47
@@ -2259,8 +2396,8 @@ msgstr ""
 msgid "Description"
 msgstr ""
 
-#: src/components/layout/navigation/index.tsx:83
-#: src/components/layout/navigation/TokenNavigation.tsx:209
+#: src/components/layout/navigation/index.tsx:84
+#: src/components/layout/navigation/TokenNavigation.tsx:210
 #: src/views/index-dtf/components/navigation/index.tsx:159
 msgid "Details + Roles"
 msgstr ""
@@ -2290,12 +2427,13 @@ msgstr ""
 msgid "Discover DTFs"
 msgstr ""
 
-#: src/components/layout/header/components/app-navigation.tsx:157
+#: src/components/layout/header/components/app-navigation.tsx:158
 msgid "Discussions of ecosystem ideas"
 msgstr ""
 
-#: src/components/rtoken-setup/basket/CustomCollateral.tsx:112
-#: src/components/rtoken-setup/components/RolesEdit.tsx:51
+#: src/components/rtoken-setup/basket/CustomCollateral.tsx:115
+#: src/components/rtoken-setup/components/RolesEdit.tsx:52
+#: src/components/transaction-modal/TransactionError.tsx:23
 msgid "Dismiss"
 msgstr ""
 
@@ -2325,7 +2463,7 @@ msgstr ""
 msgid "Distributed"
 msgstr ""
 
-#: src/components/rtoken-setup/token/RevenueSplit.tsx:146
+#: src/components/rtoken-setup/token/RevenueSplit.tsx:151
 msgid "Distributed revenue does not add up to 100%"
 msgstr ""
 
@@ -2334,7 +2472,7 @@ msgid "Distributor"
 msgstr ""
 
 #: src/components/rtoken-setup/basket/BackupBasket.tsx:26
-#: src/components/rtoken-setup/basket/EmergencyCollateral.tsx:128
+#: src/components/rtoken-setup/basket/EmergencyCollateral.tsx:131
 msgid "Diversity factor"
 msgstr ""
 
@@ -2398,7 +2536,7 @@ msgstr ""
 msgid "DTF Explainer"
 msgstr ""
 
-#: src/components/layout/header/components/app-navigation.tsx:105
+#: src/components/layout/header/components/app-navigation.tsx:106
 msgid "DTF Explorer"
 msgstr ""
 
@@ -2490,13 +2628,13 @@ msgstr ""
 msgid "Duplicated guardians"
 msgstr ""
 
-#: src/components/rtoken-setup/token/OtherForm.tsx:23
-#: src/components/rtoken-setup/token/OtherForm.tsx:37
+#: src/components/rtoken-setup/token/OtherForm.tsx:24
+#: src/components/rtoken-setup/token/OtherForm.tsx:38
 msgid "Duration in seconds"
 msgstr ""
 
-#: src/components/rtoken-setup/token/BackingForm.tsx:60
-#: src/components/rtoken-setup/token/BackingForm.tsx:74
+#: src/components/rtoken-setup/token/BackingForm.tsx:61
+#: src/components/rtoken-setup/token/BackingForm.tsx:75
 msgid "Duration in Seconds"
 msgstr ""
 
@@ -2512,7 +2650,7 @@ msgstr ""
 msgid "Dutch auction length"
 msgstr ""
 
-#: src/components/rtoken-setup/token/BackingForm.tsx:73
+#: src/components/rtoken-setup/token/BackingForm.tsx:74
 msgid "Dutch Auction length (s)"
 msgstr ""
 
@@ -2532,7 +2670,7 @@ msgstr ""
 msgid "Each type of trade can currently happen in only one way; the protocol launches a Gnosis EasyAuction. The Reserve Protocol is designed to make it easy to add other trading methods, but no other methods are currently supported."
 msgstr ""
 
-#: src/components/layout/navigation/TokenNavigation.tsx:180
+#: src/components/layout/navigation/TokenNavigation.tsx:181
 msgid "Earn"
 msgstr ""
 
@@ -2579,13 +2717,14 @@ msgstr ""
 msgid "Email address"
 msgstr ""
 
-#: src/components/layout/navigation/TokenNavigation.tsx:215
+#: src/components/layout/navigation/TokenNavigation.tsx:216
 #: src/views/yield-dtf/deploy/components/NavigationSidebar.tsx:21
 #: src/views/yield-dtf/governance/views/proposal/components/ProposalNavigation.tsx:21
 #: src/views/yield-dtf/settings/components/navigation-sidebar.tsx:12
 msgid "Emergency basket"
 msgstr ""
 
+#: src/components/rtoken-setup/basket/BackupBasket.tsx:77
 #: src/views/yield-dtf/settings/components/emergency-collateral-info.tsx:16
 msgid "Emergency Collateral"
 msgstr ""
@@ -2698,6 +2837,11 @@ msgstr ""
 msgid "Enter token name"
 msgstr ""
 
+#: src/components/stake-drawer/components/submit-stake-button.tsx:168
+#: src/components/stake-drawer/components/submit-unstake-button.tsx:76
+msgid "Enter valid amount"
+msgstr ""
+
 #: src/views/index-dtf/deploy/steps/governance/form-existing-erc20.tsx:78
 msgid "ERC20 address"
 msgstr ""
@@ -2750,7 +2894,7 @@ msgstr ""
 msgid "Est. Yield Distribution"
 msgstr ""
 
-#: src/components/rtoken-setup/basket/PrimaryBasket.tsx:168
+#: src/components/rtoken-setup/basket/PrimaryBasket.tsx:171
 msgid "Estimated basket APY"
 msgstr ""
 
@@ -2779,6 +2923,11 @@ msgstr ""
 msgid "ETH address"
 msgstr ""
 
+#: src/components/ui/swap.tsx:237
+msgid "Evaluating slippage"
+msgstr ""
+
+#: src/components/index-basket-setup/basket-table.tsx:137
 #: src/views/index-dtf/deploy/steps/basket/token-selector.tsx:112
 #: src/views/index-dtf/deploy/steps/revenue/revenue-distribution-settings.tsx:154
 #: src/views/index-dtf/governance/views/propose/basket/components/proposal-basket-setup/setup-native-dtf-basket.tsx:118
@@ -2903,14 +3052,19 @@ msgstr ""
 msgid "External"
 msgstr ""
 
-#: src/components/rtoken-setup/token/BackingForm.tsx:88
+#: src/components/rtoken-setup/token/BackingForm.tsx:89
 msgid "Extra collateral to keep"
+msgstr ""
+
+#: src/components/ui/seamless-transaction.tsx:92
+msgid "Failed to connect wallet"
 msgstr ""
 
 #: src/views/portfolio-page/index.tsx:108
 msgid "Failed to load portfolio data"
 msgstr ""
 
+#: src/components/token-selector-drawer/index.tsx:209
 #: src/views/index-dtf/deploy/steps/basket/token-selector.tsx:356
 msgid "Failed to load tokens"
 msgstr ""
@@ -2923,6 +3077,10 @@ msgstr ""
 #: src/views/index-dtf/deploy/steps/basket/basket-csv-setup.tsx:92
 #: src/views/index-dtf/governance/views/propose/basket/components/proposal-basket-setup/basket-csv-setup.tsx:156
 msgid "Failed to read CSV file"
+msgstr ""
+
+#: src/components/ui/seamless-transaction.tsx:72
+msgid "Failed to switch to {chainName}"
 msgstr ""
 
 #: src/views/index-dtf/manage/components/submit-button.tsx:228
@@ -2946,7 +3104,8 @@ msgstr ""
 msgid "Fee Distribution"
 msgstr ""
 
-#: src/components/layout/header/components/app-navigation.tsx:137
+#: src/components/feedback-button/index.tsx:26
+#: src/components/layout/header/components/app-navigation.tsx:138
 msgid "Feedback"
 msgstr ""
 
@@ -2972,7 +3131,7 @@ msgstr ""
 msgid "Fees distributed"
 msgstr ""
 
-#: src/components/layout/header/components/app-navigation.tsx:139
+#: src/components/layout/header/components/app-navigation.tsx:140
 msgid "File issues or upvote existing ones"
 msgstr ""
 
@@ -2983,6 +3142,10 @@ msgstr ""
 
 #: src/views/index-dtf/deploy/components/deploy-coming-soon.tsx:104
 msgid "Fill out the information below and ABC Labs will reach out!"
+msgstr ""
+
+#: src/components/rtoken-setup/basket/UnitBasket.tsx:140
+msgid "Filled: {totalDistribution}%"
 msgstr ""
 
 #: src/views/earn/views/index-dtf/components/table-filters.tsx:80
@@ -3069,7 +3232,7 @@ msgstr ""
 msgid "Furnace"
 msgstr ""
 
-#: src/components/layout/header/components/app-navigation.tsx:111
+#: src/components/layout/header/components/app-navigation.tsx:112
 msgid "Get an overview of everything going on"
 msgstr ""
 
@@ -3094,10 +3257,10 @@ msgstr ""
 msgid "Gov. Token"
 msgstr ""
 
-#: src/components/layout/navigation/index.tsx:80
-#: src/components/layout/navigation/TokenNavigation.tsx:203
-#: src/components/layout/navigation/TokenNavigation.tsx:219
-#: src/components/rtoken-setup/governance/GovernanceSetup.tsx:38
+#: src/components/layout/navigation/index.tsx:81
+#: src/components/layout/navigation/TokenNavigation.tsx:204
+#: src/components/layout/navigation/TokenNavigation.tsx:220
+#: src/components/rtoken-setup/governance/GovernanceSetup.tsx:39
 #: src/views/explorer/index.tsx:43
 #: src/views/index-dtf/components/navigation/index.tsx:149
 #: src/views/index-dtf/deploy/steps/revenue/revenue-distribution-settings.tsx:40
@@ -3137,7 +3300,7 @@ msgstr ""
 msgid "Governance gets deployed & your RToken is now usable (if unpaused)"
 msgstr ""
 
-#: src/components/rtoken-setup/governance/GovernanceParameters.tsx:47
+#: src/components/rtoken-setup/governance/GovernanceParameters.tsx:48
 msgid "Governance parameters"
 msgstr ""
 
@@ -3206,7 +3369,7 @@ msgstr ""
 msgid "Guardian"
 msgstr ""
 
-#: src/components/rtoken-setup/governance/GovernanceSetup.tsx:96
+#: src/components/rtoken-setup/governance/GovernanceSetup.tsx:97
 msgid "Guardian address"
 msgstr ""
 
@@ -3217,7 +3380,7 @@ msgstr ""
 msgid "Guardians"
 msgstr ""
 
-#: src/components/transactions/table/index.tsx:91
+#: src/components/transactions/table/index.tsx:92
 msgid "Hash"
 msgstr ""
 
@@ -3250,6 +3413,10 @@ msgstr ""
 msgid "High"
 msgstr ""
 
+#: src/components/liquidity-badge.tsx:44
+msgid "High liquidity"
+msgstr ""
+
 #: src/views/index-dtf/auctions/views/rebalance/components/rebalance-liquidity-checker.tsx:227
 #: src/views/index-dtf/governance/views/propose/basket/components/proposal-liquidity-checker.tsx:294
 msgid "High price impact"
@@ -3260,7 +3427,7 @@ msgstr ""
 msgid "High price impact: {0}"
 msgstr ""
 
-#: src/components/layout/navigation/TokenNavigation.tsx:181
+#: src/components/layout/navigation/TokenNavigation.tsx:182
 #: src/views/yield-dtf/overview/components/historical-metrics.tsx:14
 msgid "Historical metrics"
 msgstr ""
@@ -3323,8 +3490,13 @@ msgstr ""
 msgid "How much the value of the DTF basket changed due to the latest rebalance"
 msgstr ""
 
+#: src/components/vote-lock/index.tsx:79
 #: src/views/index-dtf/overview/components/staking/index.tsx:82
 msgid "I'm aware of the {delay}-day unlock delay"
+msgstr ""
+
+#: src/components/stake-drawer/index.tsx:82
+msgid "I'm aware of the {delay}-day unstake delay"
 msgstr ""
 
 #: src/views/index-dtf/governance/views/proposal/components/proposal-header.tsx:114
@@ -3336,8 +3508,13 @@ msgid "If a DTF is listed on this app, it doesn't mean that ABC Labs endorses th
 msgstr ""
 
 #. placeholder {0}: stToken.underlying.symbol
+#: src/components/vote-lock/index.tsx:82
 #: src/views/index-dtf/overview/components/staking/index.tsx:85
 msgid "If you decide to unlock {0} in the future, you'll need to wait {delay} days until you can complete the withdrawal"
+msgstr ""
+
+#: src/components/stake-drawer/index.tsx:85
+msgid "If you decide to unstake in the future, you'll need to wait {delay} days until you can complete the withdrawal"
 msgstr ""
 
 #: src/views/yield-dtf/settings/components/listing-info.tsx:44
@@ -3362,6 +3539,7 @@ msgstr ""
 msgid "In Withdraw Process"
 msgstr ""
 
+#: src/components/inactive-badge.tsx:18
 #: src/views/home/components/discover-index-dtf/index-dtf-card.tsx:84
 #: src/views/home/components/discover-index-dtf/index-dtf-table-columns.tsx:60
 #: src/views/home/components/discover-yield-dtf/yield-dtf-card.tsx:95
@@ -3397,13 +3575,14 @@ msgstr ""
 msgid "Index DTF successfully created"
 msgstr ""
 
+#: src/components/command-menu/index.tsx:67
 #: src/views/home/components/dtf-tabs.tsx:24
 #: src/views/portfolio-page/components/portfolio-breakdown.tsx:36
 #: src/views/portfolio-page/components/portfolio-chart.tsx:66
 msgid "Index DTFs"
 msgstr ""
 
-#: src/components/rtoken-setup/governance/GovernanceSetup.tsx:121
+#: src/components/rtoken-setup/governance/GovernanceSetup.tsx:122
 msgid "Initial RToken state after deployment"
 msgstr ""
 
@@ -3415,56 +3594,62 @@ msgstr ""
 msgid "Initial value must be positive"
 msgstr ""
 
-#: src/components/rtoken-setup/governance/GovernanceParameters.tsx:51
+#: src/components/rtoken-setup/components/RolesEdit.tsx:31
+msgid "Input address"
+msgstr ""
+
+#: src/components/rtoken-setup/governance/GovernanceParameters.tsx:52
 msgid "Input delay"
 msgstr ""
 
-#: src/components/rtoken-setup/governance/GovernanceParameters.tsx:83
+#: src/components/rtoken-setup/governance/GovernanceParameters.tsx:88
 msgid "Input delay in hours"
 msgstr ""
 
-#: src/components/rtoken-setup/basket/CustomCollateral.tsx:104
+#: src/components/rtoken-setup/basket/CustomCollateral.tsx:107
 msgid "Input plugin address (not ERC-20 address)"
 msgstr ""
 
-#: src/components/rtoken-setup/governance/GovernanceParameters.tsx:97
+#: src/components/rtoken-setup/governance/GovernanceParameters.tsx:102
 msgid "Input proposal threshold"
 msgstr ""
 
+#: src/components/governance/proposal-description-form.tsx:47
 #: src/views/yield-dtf/governance/views/proposal/components/ConfirmProposalForm.tsx:54
 msgid "Input proposal title"
 msgstr ""
 
-#: src/components/rtoken-setup/governance/GovernanceParameters.tsx:110
+#: src/components/rtoken-setup/governance/GovernanceParameters.tsx:115
 msgid "Input quorum percent"
 msgstr ""
 
+#: src/components/governance/proposal-description-form.tsx:58
 #: src/views/yield-dtf/governance/views/proposal/components/ConfirmProposalForm.tsx:62
 msgid "Input RFC link"
 msgstr ""
 
-#: src/components/rtoken-setup/token/RevenueSplit.tsx:126
+#: src/components/rtoken-setup/token/RevenueSplit.tsx:129
 msgid "Input RSR stakers revenue distribution"
 msgstr ""
 
-#: src/components/rtoken-setup/governance/GovernanceSetup.tsx:97
+#: src/components/rtoken-setup/governance/GovernanceSetup.tsx:98
 msgid "Input the guardian ethereum address"
 msgstr ""
 
-#: src/components/rtoken-setup/governance/GovernanceSetup.tsx:77
+#: src/components/rtoken-setup/governance/GovernanceSetup.tsx:78
 msgid "Input the owner ethereum address"
 msgstr ""
 
-#: src/components/rtoken-setup/token/TokenForm.tsx:29
+#: src/components/rtoken-setup/token/TokenForm.tsx:31
 #: src/views/yield-dtf/deploy/components/TokenForm.tsx:31
 msgid "Input ticker"
 msgstr ""
 
-#: src/components/rtoken-setup/token/RevenueSplit.tsx:117
+#: src/components/rtoken-setup/token/RevenueSplit.tsx:118
 msgid "Input token holders revenue distribution"
 msgstr ""
 
-#: src/components/rtoken-setup/token/TokenForm.tsx:20
+#: src/components/rtoken-setup/token/TokenForm.tsx:22
 #: src/views/yield-dtf/deploy/components/TokenForm.tsx:21
 msgid "Input token name"
 msgstr ""
@@ -3473,7 +3658,7 @@ msgstr ""
 msgid "Input token name or symbol"
 msgstr ""
 
-#: src/components/rtoken-setup/governance/GovernanceParameters.tsx:67
+#: src/components/rtoken-setup/governance/GovernanceParameters.tsx:70
 msgid "Input voting period"
 msgstr ""
 
@@ -3481,7 +3666,7 @@ msgstr ""
 msgid "Input wallet"
 msgstr ""
 
-#: src/components/rtoken-setup/token/OtherForm.tsx:51
+#: src/components/rtoken-setup/token/OtherForm.tsx:52
 msgid "Input withdrawal leak %"
 msgstr ""
 
@@ -3495,30 +3680,36 @@ msgstr ""
 msgid "Insufficient balance"
 msgstr ""
 
+#: src/components/liquidity-badge.tsx:56
+msgid "Insufficient liquidity"
+msgstr ""
+
 #: src/views/internal/dtf-list/index.tsx:19
 msgid "Internal DTF List"
 msgstr ""
 
-#: src/components/layout/navigation/TokenNavigation.tsx:178
+#: src/components/layout/navigation/TokenNavigation.tsx:179
 #: src/views/yield-dtf/deploy/components/NavigationSidebar.tsx:18
 #: src/views/yield-dtf/governance/views/proposal/components/ProposalNavigation.tsx:15
 msgid "Intro"
 msgstr ""
 
-#: src/components/rtoken-setup/atoms.ts:137
+#: src/components/rtoken-setup/atoms.ts:138
 msgid "Invalid ({targetUnit}) backup diversity factor"
 msgstr ""
 
-#: src/components/rtoken-setup/atoms.ts:122
+#: src/components/rtoken-setup/atoms.ts:123
 msgid "Invalid ({targetUnit}) basket distribution"
 msgstr ""
 
-#: src/components/rtoken-setup/atoms.ts:126
+#: src/components/rtoken-setup/atoms.ts:127
 msgid "Invalid ({targetUnit}) basket scale"
 msgstr ""
 
-#: src/components/rtoken-setup/basket/CustomCollateral.tsx:89
-#: src/components/rtoken-setup/components/RolesEdit.tsx:38
+#: src/components/rtoken-setup/basket/CustomCollateral.tsx:90
+#: src/components/rtoken-setup/components/RolesEdit.tsx:39
+#: src/components/stake-drawer/index.tsx:224
+#: src/components/vote-lock/index.tsx:202
 #: src/views/index-dtf/overview/components/staking/index.tsx:222
 #: src/views/yield-dtf/staking/components/stake/edit-delegate.tsx:51
 msgid "Invalid address"
@@ -3535,11 +3726,15 @@ msgstr ""
 msgid "Invalid asset"
 msgstr ""
 
-#: src/components/rtoken-setup/basket/CustomCollateral.tsx:81
+#: src/components/rtoken-setup/basket/CustomCollateral.tsx:82
 msgid "Invalid collateral"
 msgstr ""
 
-#: src/components/rtoken-setup/token/RevenueSplit.tsx:148
+#: src/components/stake-drawer/components/submit-stake-button.tsx:176
+msgid "Invalid delegate address"
+msgstr ""
+
+#: src/components/rtoken-setup/token/RevenueSplit.tsx:153
 msgid "Invalid destination address"
 msgstr ""
 
@@ -3547,8 +3742,8 @@ msgstr ""
 msgid "Invalid ERC20 address"
 msgstr ""
 
-#: src/components/rtoken-setup/governance/GovernanceSetup.tsx:90
-#: src/components/rtoken-setup/governance/GovernanceSetup.tsx:106
+#: src/components/rtoken-setup/governance/GovernanceSetup.tsx:91
+#: src/components/rtoken-setup/governance/GovernanceSetup.tsx:107
 msgid "Invalid ethereum address"
 msgstr ""
 
@@ -3556,15 +3751,15 @@ msgstr ""
 msgid "Invalid governance settings"
 msgstr ""
 
-#: src/components/field/index.tsx:37
+#: src/components/field/index.tsx:39
 msgid "Invalid maximum range"
 msgstr ""
 
-#: src/components/field/index.tsx:39
+#: src/components/field/index.tsx:41
 msgid "Invalid minimum range "
 msgstr ""
 
-#: src/components/field/index.tsx:35
+#: src/components/field/index.tsx:37
 msgid "Invalid number"
 msgstr ""
 
@@ -3573,20 +3768,20 @@ msgstr ""
 msgid "Invalid token address"
 msgstr ""
 
-#: src/components/field/index.tsx:41
+#: src/components/field/index.tsx:43
 msgid "Invalid value"
 msgstr ""
 
-#: src/components/rtoken-setup/token/BackingForm.tsx:128
+#: src/components/rtoken-setup/token/BackingForm.tsx:129
 msgid "Issuance amount - allows the issuer to limit the amount of RTokens issued per hour. This matters in the event of an exploit where an attacker tries to issue more RTokens. This buys time for users with pause or freeze permissions to reduce the amount of RTokens that can be issued."
 msgstr ""
 
-#: src/components/rtoken-setup/token/BackingForm.tsx:115
+#: src/components/rtoken-setup/token/BackingForm.tsx:116
 msgid "Issuance rate - allows the issuer to limit the amount of RTokens issued per hour based on a percentage of the current RToken market cap. This matters in the event of an exploit where an attacker tries to issue more RTokens. This buys time for users with pause or freeze permissions to reduce the amount of RTokens that can be issued."
 msgstr ""
 
-#: src/components/rtoken-setup/token/BackingForm.tsx:126
 #: src/components/rtoken-setup/token/BackingForm.tsx:127
+#: src/components/rtoken-setup/token/BackingForm.tsx:128
 #: src/views/yield-dtf/settings/components/backing-info.tsx:61
 msgid "Issuance throttle amount"
 msgstr ""
@@ -3595,15 +3790,15 @@ msgstr ""
 msgid "Issuance throttle rate"
 msgstr ""
 
-#: src/components/rtoken-setup/token/BackingForm.tsx:114
+#: src/components/rtoken-setup/token/BackingForm.tsx:115
 msgid "Issuance throttle Rate"
 msgstr ""
 
-#: src/components/rtoken-setup/token/BackingForm.tsx:113
+#: src/components/rtoken-setup/token/BackingForm.tsx:114
 msgid "Issuance throttle rate (%)"
 msgstr ""
 
-#: src/components/transactions/table/index.tsx:49
+#: src/components/transactions/table/index.tsx:50
 #: src/views/explorer/components/filters/TransactionTypeFilter.tsx:15
 #: src/views/explorer/components/transactions/useTransactionColumns.tsx:30
 #: src/views/yield-dtf/overview/components/rtoken-transactions.tsx:78
@@ -3614,7 +3809,7 @@ msgstr ""
 msgid "Items per page:"
 msgstr ""
 
-#: src/components/layout/header/components/app-navigation.tsx:163
+#: src/components/layout/header/components/app-navigation.tsx:164
 msgid "Join the conversation or ask questions"
 msgstr ""
 
@@ -3639,7 +3834,7 @@ msgstr ""
 msgid "Launch Settings"
 msgstr ""
 
-#: src/components/layout/header/components/app-navigation.tsx:100
+#: src/components/layout/header/components/app-navigation.tsx:101
 msgid "Launch your own Index DTF"
 msgstr ""
 
@@ -3677,6 +3872,10 @@ msgstr ""
 msgid "Live rebalance auction"
 msgstr ""
 
+#: src/components/ui/swap.tsx:239
+msgid "Loading DTF"
+msgstr ""
+
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/remove-dust-tokens.tsx:67
 msgid "Loading dust tokens..."
 msgstr ""
@@ -3708,6 +3907,7 @@ msgstr ""
 msgid "Loading your portfolio data..."
 msgstr ""
 
+#: src/components/stake-drawer/components/submit-stake-button.tsx:164
 #: src/views/explorer/components/revenue/index.tsx:547
 #: src/views/index-dtf/deploy/steps/confirm-deploy/simple/index.tsx:152
 #: src/views/index-dtf/governance/components/proposal-preview/token-reward-preview.tsx:66
@@ -3738,12 +3938,16 @@ msgstr ""
 msgid "Long freeze duration"
 msgstr ""
 
-#: src/components/rtoken-setup/token/OtherForm.tsx:38
+#: src/components/rtoken-setup/token/OtherForm.tsx:39
 msgid "Long freeze duration - freeze an RToken's system for a longer period of time. A long-freezer has 6 charges before losing the ability to freeze any more"
 msgstr ""
 
-#: src/components/rtoken-setup/token/OtherForm.tsx:36
+#: src/components/rtoken-setup/token/OtherForm.tsx:37
 msgid "Long freeze duration (s)"
+msgstr ""
+
+#: src/components/rtoken-setup/governance/RoleSetup.tsx:29
+msgid "Long Freezers"
 msgstr ""
 
 #: src/views/index-dtf/deploy/index.tsx:37
@@ -3759,11 +3963,15 @@ msgstr ""
 msgid "Low"
 msgstr ""
 
+#: src/components/liquidity-badge.tsx:52
+msgid "Low liquidity"
+msgstr ""
+
 #: src/views/home/components/register-about.tsx:179
 msgid "Made by ABC Labs"
 msgstr ""
 
-#: src/components/rtoken-setup/basket/CustomCollateral.tsx:132
+#: src/components/rtoken-setup/basket/CustomCollateral.tsx:135
 msgid "Made your own collateral?"
 msgstr ""
 
@@ -3791,7 +3999,7 @@ msgstr ""
 msgid "Manage weights before proceeding"
 msgstr ""
 
-#: src/components/rtoken-setup/token/TokenForm.tsx:37
+#: src/components/rtoken-setup/token/TokenForm.tsx:39
 #: src/views/index-dtf/deploy/steps/metadata/form-basic-metadata.tsx:17
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-metadata.tsx:51
 #: src/views/index-dtf/settings/components/index-settings-basic.tsx:54
@@ -3800,12 +4008,12 @@ msgstr ""
 msgid "Mandate"
 msgstr ""
 
-#: src/components/rtoken-setup/token/TokenForm.tsx:45
+#: src/components/rtoken-setup/token/TokenForm.tsx:47
 #: src/views/yield-dtf/deploy/components/TokenForm.tsx:58
 msgid "Mandate cannot be longer than 256 characters"
 msgstr ""
 
-#: src/components/rtoken-setup/token/TokenForm.tsx:42
+#: src/components/rtoken-setup/token/TokenForm.tsx:44
 #: src/views/yield-dtf/deploy/components/TokenForm.tsx:55
 msgid "Mandate is required"
 msgstr ""
@@ -3835,9 +4043,21 @@ msgstr ""
 msgid "Market cap:"
 msgstr ""
 
+#: src/components/ui/swap.tsx:205
+msgid "Max"
+msgstr ""
+
+#: src/components/max-auction-size-editor/index.tsx:78
+msgid "Max Auction Size per Token"
+msgstr ""
+
 #: src/views/index-dtf/deploy/form-fields.ts:93
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/form-fields.ts:17
 msgid "Max precision is 0.01%"
+msgstr ""
+
+#: src/components/ui/swap.tsx:421
+msgid "Max slippage"
 msgstr ""
 
 #: src/views/explorer/components/collaterals/index.tsx:139
@@ -3848,11 +4068,11 @@ msgstr ""
 msgid "Max trade slippage"
 msgstr ""
 
-#: src/components/rtoken-setup/token/BackingForm.tsx:102
+#: src/components/rtoken-setup/token/BackingForm.tsx:103
 msgid "Max trade slippage — maximum deviation from oracle prices that any trade can clear at. Why this matters? Acts as a form of slippage protection."
 msgstr ""
 
-#: src/components/rtoken-setup/token/BackingForm.tsx:100
+#: src/components/rtoken-setup/token/BackingForm.tsx:101
 msgid "Max trade slippage (%)"
 msgstr ""
 
@@ -3860,15 +4080,20 @@ msgstr ""
 msgid "Max:"
 msgstr ""
 
+#. placeholder {0}: formatCurrency(+maxAmount, 5)
+#: src/components/transaction-input/index.tsx:71
+msgid "Max: {0}"
+msgstr ""
+
 #: src/views/index-dtf/overview/components/zap-mint/zap-settings.tsx:50
 msgid "Max. mint slippage"
 msgstr ""
 
-#: src/components/rtoken-setup/token/OtherForm.tsx:104
+#: src/components/rtoken-setup/token/OtherForm.tsx:105
 msgid "Maximum trade for RToken"
 msgstr ""
 
-#: src/components/rtoken-setup/token/OtherForm.tsx:105
+#: src/components/rtoken-setup/token/OtherForm.tsx:106
 msgid "Maximum trade volume - maximum sized trade for any trade involving RToken, in terms of the unit of account eg. USD."
 msgstr ""
 
@@ -3890,7 +4115,11 @@ msgstr ""
 msgid "Medium"
 msgstr ""
 
-#: src/components/transactions/table/index.tsx:48
+#: src/components/liquidity-badge.tsx:48
+msgid "Medium liquidity"
+msgstr ""
+
+#: src/components/transactions/table/index.tsx:49
 #: src/views/explorer/components/filters/TransactionTypeFilter.tsx:14
 #: src/views/explorer/components/transactions/useTransactionColumns.tsx:29
 #: src/views/yield-dtf/overview/components/rtoken-transactions.tsx:77
@@ -3918,7 +4147,7 @@ msgstr ""
 msgid "Min. Trade"
 msgstr ""
 
-#: src/components/rtoken-setup/token/OtherForm.tsx:91
+#: src/components/rtoken-setup/token/OtherForm.tsx:92
 msgid "Minimum trade in USD terms"
 msgstr ""
 
@@ -3930,16 +4159,16 @@ msgstr ""
 msgid "Minimum trade volume"
 msgstr ""
 
-#: src/components/rtoken-setup/token/OtherForm.tsx:92
+#: src/components/rtoken-setup/token/OtherForm.tsx:93
 msgid "Minimum trade volume - minimum sized trade that can be performed, in terms of the unit of account eg. USD."
 msgstr ""
 
-#: src/components/rtoken-setup/token/OtherForm.tsx:90
+#: src/components/rtoken-setup/token/OtherForm.tsx:91
 msgid "Minimum trade volume ($)"
 msgstr ""
 
-#: src/components/layout/navigation/TokenNavigation.tsx:187
-#: src/components/transactions/table/index.tsx:45
+#: src/components/layout/navigation/TokenNavigation.tsx:188
+#: src/components/transactions/table/index.tsx:46
 #: src/views/explorer/components/filters/TransactionTypeFilter.tsx:11
 #: src/views/explorer/components/transactions/useTransactionColumns.tsx:26
 #: src/views/home/components/discover-yield-dtf/token-actions.tsx:42
@@ -3963,7 +4192,7 @@ msgstr ""
 msgid "Mint {0}% Est. APY"
 msgstr ""
 
-#: src/components/layout/navigation/index.tsx:77
+#: src/components/layout/navigation/index.tsx:78
 #: src/views/index-dtf/components/navigation/index.tsx:144
 msgid "Mint + Redeem"
 msgstr ""
@@ -4029,10 +4258,14 @@ msgstr ""
 msgid "Missing signature"
 msgstr ""
 
-#: src/components/tables/ListedTokensTable.tsx:41
+#: src/components/tables/ListedTokensTable.tsx:42
 #: src/views/explorer/components/tokens/index.tsx:156
 #: src/views/tokens/components/UnlistedTokensTable.tsx:85
 msgid "Mkt Cap"
+msgstr ""
+
+#: src/components/ui/modal.tsx:118
+msgid "Modal dialog"
 msgstr ""
 
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/changes/revenue-changes.tsx:333
@@ -4124,7 +4357,7 @@ msgid "Net Performance Summary"
 msgstr ""
 
 #: src/components/account/index.tsx:37
-#: src/components/tables/ListedTokensTable.tsx:59
+#: src/components/tables/ListedTokensTable.tsx:60
 #: src/views/explorer/components/collaterals/index.tsx:71
 #: src/views/explorer/components/tokens/index.tsx:136
 #: src/views/tokens/components/TableFilters.tsx:43
@@ -4134,6 +4367,10 @@ msgstr ""
 
 #: src/views/explorer/components/filters/ChainFilter.tsx:22
 msgid "Networks"
+msgstr ""
+
+#: src/components/index-basket-setup/basket-table.tsx:66
+msgid "New %"
 msgstr ""
 
 #: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:420
@@ -4177,6 +4414,7 @@ msgstr ""
 msgid "New TVL fee:"
 msgstr ""
 
+#: src/components/index-basket-setup/basket-table.tsx:66
 #: src/views/index-dtf/governance/views/propose/basket/components/proposal-basket-setup/proposal-basket-table.tsx:33
 msgid "New units"
 msgstr ""
@@ -4259,7 +4497,7 @@ msgstr ""
 msgid "No DTFs found"
 msgstr ""
 
-#: src/components/rtoken-setup/basket/BackupBasket.tsx:85
+#: src/components/rtoken-setup/basket/BackupBasket.tsx:87
 msgid "No emergency collateral for target"
 msgstr ""
 
@@ -4275,7 +4513,7 @@ msgstr ""
 msgid "No governance"
 msgstr ""
 
-#: src/components/rtoken-setup/components/RolesEdit.tsx:95
+#: src/components/rtoken-setup/components/RolesEdit.tsx:96
 msgid "No holders for this role..."
 msgstr ""
 
@@ -4292,7 +4530,7 @@ msgstr ""
 msgid "No Permissionless Launching Allowed"
 msgstr ""
 
-#: src/components/rtoken-setup/basket/CollateralModal.tsx:150
+#: src/components/rtoken-setup/basket/CollateralModal.tsx:151
 msgid "No plugins available"
 msgstr ""
 
@@ -4308,12 +4546,33 @@ msgstr ""
 msgid "No rebalances found"
 msgstr ""
 
+#: src/components/command-menu/index.tsx:117
+msgid "No results found."
+msgstr ""
+
+#: src/components/ui/data-table.tsx:456
+msgid "No results."
+msgstr ""
+
+#: src/components/tables/ListedTokensTable.tsx:95
+msgid "No RTokens listed for this chain"
+msgstr ""
+
 #: src/views/earn/views/index-dtf/components/header.tsx:30
 msgid "No Slashing Risk"
 msgstr ""
 
+#: src/components/liquidity-badge.tsx:57
+msgid "No swap path found. Consider removing this token."
+msgstr ""
+
+#: src/components/token-selector-drawer/index.tsx:224
 #: src/views/index-dtf/deploy/steps/basket/token-selector.tsx:374
 msgid "No tokens found"
+msgstr ""
+
+#: src/components/index-basket-setup/basket-table.tsx:192
+msgid "No tokens in basket"
 msgstr ""
 
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/remove-dust-tokens.tsx:75
@@ -4324,7 +4583,7 @@ msgstr ""
 msgid "No trades available"
 msgstr ""
 
-#: src/components/transactions/table/index.tsx:152
+#: src/components/transactions/table/index.tsx:153
 msgid "No transactions"
 msgstr ""
 
@@ -4445,7 +4704,7 @@ msgstr ""
 msgid "Only the auction launcher can start auctions"
 msgstr ""
 
-#: src/components/rtoken-setup/governance/GovernanceSetup.tsx:146
+#: src/components/rtoken-setup/governance/GovernanceSetup.tsx:147
 msgid "Only the guardian address or governance will be able to unpause"
 msgstr ""
 
@@ -4455,6 +4714,7 @@ msgstr ""
 msgid "Only whole numbers are allowed"
 msgstr ""
 
+#: src/components/index-basket-setup/csv-import.tsx:204
 #: src/views/index-dtf/deploy/steps/basket/basket-csv-setup.tsx:216
 #: src/views/index-dtf/governance/views/propose/basket/components/proposal-basket-setup/basket-csv-setup.tsx:247
 msgid "or drag and drop it here"
@@ -4464,7 +4724,7 @@ msgstr ""
 msgid "Other"
 msgstr ""
 
-#: src/components/layout/navigation/TokenNavigation.tsx:218
+#: src/components/layout/navigation/TokenNavigation.tsx:219
 #: src/views/yield-dtf/governance/views/proposal/components/ProposalNavigation.tsx:17
 #: src/views/yield-dtf/settings/components/navigation-sidebar.tsx:15
 msgid "Other config"
@@ -4487,8 +4747,8 @@ msgstr ""
 msgid "Other Risks"
 msgstr ""
 
-#: src/components/layout/navigation/index.tsx:76
-#: src/components/layout/navigation/TokenNavigation.tsx:175
+#: src/components/layout/navigation/index.tsx:77
+#: src/components/layout/navigation/TokenNavigation.tsx:176
 #: src/views/index-dtf/components/navigation/index.tsx:139
 #: src/views/index-dtf/overview/components/basket-overview/bridge-info-dialog.tsx:92
 msgid "Overview"
@@ -4498,7 +4758,7 @@ msgstr ""
 msgid "Owner"
 msgstr ""
 
-#: src/components/rtoken-setup/governance/GovernanceSetup.tsx:76
+#: src/components/rtoken-setup/governance/GovernanceSetup.tsx:77
 msgid "Owner address"
 msgstr ""
 
@@ -4513,7 +4773,7 @@ msgstr ""
 msgid "Parameters"
 msgstr ""
 
-#: src/components/layout/header/components/app-navigation.tsx:77
+#: src/components/layout/header/components/app-navigation.tsx:78
 msgid "Participate & Earn"
 msgstr ""
 
@@ -4529,8 +4789,12 @@ msgstr ""
 msgid "Past Price"
 msgstr ""
 
-#: src/components/rtoken-setup/governance/GovernanceSetup.tsx:127
+#: src/components/rtoken-setup/governance/GovernanceSetup.tsx:128
 msgid "Pause status"
+msgstr ""
+
+#: src/components/rtoken-setup/governance/RoleSetup.tsx:19
+msgid "Pausers"
 msgstr ""
 
 #: src/views/earn/views/index-dtf/components/header.tsx:42
@@ -4569,7 +4833,12 @@ msgstr ""
 msgid "Pending Withdrawals"
 msgstr ""
 
-#: src/components/transaction-modal/index.tsx:154
+#: src/components/stake-drawer/components/submit-stake-button.tsx:220
+#: src/components/stake-drawer/components/submit-unstake-button.tsx:105
+#: src/components/transaction-modal/index.tsx:160
+#: src/components/vote-lock/components/submit-lock-button.tsx:65
+#: src/components/vote-lock/components/submit-lock-button.tsx:205
+#: src/components/vote-lock/components/submit-unlock-button.tsx:87
 #: src/views/index-dtf/deploy/steps/confirm-deploy/manual/components/confirm-manual-deploy-button.tsx:298
 #: src/views/index-dtf/deploy/steps/confirm-deploy/simple/simple-deploy-button.tsx:134
 #: src/views/index-dtf/overview/components/staking/lock/submit-lock-button.tsx:67
@@ -4632,7 +4901,7 @@ msgstr ""
 msgid "Performance Sheet"
 msgstr ""
 
-#: src/components/rtoken-setup/token/BackingForm.tsx:46
+#: src/components/rtoken-setup/token/BackingForm.tsx:47
 msgid "Period in seconds"
 msgstr ""
 
@@ -4658,7 +4927,7 @@ msgstr ""
 msgid "Permissionless Launching Allowed"
 msgstr ""
 
-#: src/components/transactions/table/index.tsx:91
+#: src/components/transactions/table/index.tsx:92
 #: src/views/explorer/components/transactions/useTransactionColumns.tsx:132
 #: src/views/index-dtf/deploy/steps/revenue/revenue-distribution-settings.tsx:27
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-revenue-distribution.tsx:234
@@ -4726,6 +4995,11 @@ msgstr ""
 msgid "Please sign the transaction in your wallet to continue with the government configuration process."
 msgstr ""
 
+#: src/components/ui/seamless-transaction.tsx:60
+msgid "Please switch to {chainName} manually in your wallet"
+msgstr ""
+
+#: src/components/token-selector-drawer/index.tsx:212
 #: src/views/index-dtf/deploy/steps/basket/token-selector.tsx:359
 msgid "Please try again later"
 msgstr ""
@@ -4748,12 +5022,16 @@ msgstr ""
 msgid "Please wait while the simulation executes"
 msgstr ""
 
+#: src/components/rtoken-setup/basket/CustomCollateral.tsx:101
+msgid "Plugin address"
+msgstr ""
+
 #: src/views/earn/components/pools-table.tsx:37
 #: src/views/earn/hooks/useEarnTableColumns.tsx:69
 msgid "Pool"
 msgstr ""
 
-#: src/components/layout/header/components/app-navigation.tsx:82
+#: src/components/layout/header/components/app-navigation.tsx:83
 #: src/views/portfolio-page/index.tsx:33
 #: src/views/portfolio-page/index.tsx:105
 msgid "Portfolio"
@@ -4772,6 +5050,10 @@ msgstr ""
 msgid "Potential Risks Using {0}"
 msgstr ""
 
+#: src/components/liquidity-badge.tsx:116
+msgid "Potential swap route"
+msgstr ""
+
 #: src/views/index-dtf/governance/components/simulate-proposal.tsx:62
 msgid "Powered by"
 msgstr ""
@@ -4780,7 +5062,7 @@ msgstr ""
 msgid "Precision Rebalancing"
 msgstr ""
 
-#: src/components/transaction-modal/index.tsx:154
+#: src/components/transaction-modal/index.tsx:160
 msgid "Preparing transaction"
 msgstr ""
 
@@ -4796,7 +5078,7 @@ msgstr ""
 msgid "Preview not available for: {signature}"
 msgstr ""
 
-#: src/components/tables/ListedTokensTable.tsx:37
+#: src/components/tables/ListedTokensTable.tsx:38
 #: src/views/explorer/components/tokens/index.tsx:152
 #: src/views/index-dtf/auctions/views/rebalance/components/auction-bids-chart.tsx:155
 #: src/views/index-dtf/auctions/views/rebalance/components/auction-bids-chart.tsx:187
@@ -4831,7 +5113,7 @@ msgstr ""
 msgid "Price Settings"
 msgstr ""
 
-#: src/components/layout/navigation/TokenNavigation.tsx:214
+#: src/components/layout/navigation/TokenNavigation.tsx:215
 #: src/views/yield-dtf/deploy/components/NavigationSidebar.tsx:20
 #: src/views/yield-dtf/governance/views/proposal/components/ProposalNavigation.tsx:20
 #: src/views/yield-dtf/governance/views/proposal/components/ProposedBasketPreview.tsx:64
@@ -4839,19 +5121,24 @@ msgstr ""
 msgid "Primary basket"
 msgstr ""
 
-#: src/components/rtoken-setup/basket/PrimaryBasket.tsx:199
+#: src/components/rtoken-setup/basket/PrimaryBasket.tsx:202
 #: src/views/yield-dtf/settings/components/basket-info.tsx:15
 msgid "Primary Basket"
 msgstr ""
 
-#: src/components/rtoken-setup/atoms.ts:113
+#: src/components/rtoken-setup/atoms.ts:114
 msgid "Primary basket not defined"
 msgstr ""
 
+#: src/components/transaction-modal/ApprovalStatus.tsx:34
 #: src/views/yield-dtf/staking/components/stake/confirm-stake-button.tsx:71
 msgid "Proceed in wallet"
 msgstr ""
 
+#: src/components/stake-drawer/components/submit-stake-button.tsx:215
+#: src/components/stake-drawer/components/submit-unstake-button.tsx:102
+#: src/components/vote-lock/components/submit-lock-button.tsx:202
+#: src/components/vote-lock/components/submit-unlock-button.tsx:84
 #: src/views/index-dtf/overview/components/staking/lock/submit-lock-button.tsx:207
 #: src/views/index-dtf/overview/components/staking/unlock/submit-unlock-button.tsx:87
 msgid "Processing transaction..."
@@ -4879,6 +5166,10 @@ msgstr ""
 msgid "Proposal canceled"
 msgstr ""
 
+#: src/components/transaction-error/TransactionError.tsx:25
+msgid "Proposal cannot be executed while another auction is currently running"
+msgstr ""
+
 #: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:75
 msgid "Proposal created"
 msgstr ""
@@ -4892,7 +5183,7 @@ msgstr ""
 msgid "Proposal defeated"
 msgstr ""
 
-#: src/components/rtoken-setup/governance/GovernanceParameters.tsx:82
+#: src/components/rtoken-setup/governance/GovernanceParameters.tsx:87
 msgid "Proposal execution delay (hours)"
 msgstr ""
 
@@ -4927,12 +5218,16 @@ msgstr ""
 msgid "Proposal Threshold"
 msgstr ""
 
-#: src/components/rtoken-setup/governance/GovernanceParameters.tsx:96
+#: src/components/rtoken-setup/governance/GovernanceParameters.tsx:101
 msgid "Proposal Threshold (%)"
 msgstr ""
 
 #: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/form-fields.ts:12
 msgid "Proposal threshold is required"
+msgstr ""
+
+#: src/components/governance/proposal-description-form.tsx:42
+msgid "Proposal title"
 msgstr ""
 
 #: src/views/yield-dtf/governance/views/proposal/components/ConfirmProposalForm.tsx:49
@@ -5046,7 +5341,7 @@ msgstr ""
 msgid "Quorum"
 msgstr ""
 
-#: src/components/rtoken-setup/governance/GovernanceParameters.tsx:109
+#: src/components/rtoken-setup/governance/GovernanceParameters.tsx:114
 msgid "Quorum (%)"
 msgstr ""
 
@@ -5081,7 +5376,7 @@ msgstr ""
 msgid "Read docs"
 msgstr ""
 
-#: src/components/rtoken-setup/token/RevenueSplit.tsx:182
+#: src/components/rtoken-setup/token/RevenueSplit.tsx:187
 msgid "Read more about revenue distribution"
 msgstr ""
 
@@ -5124,7 +5419,7 @@ msgstr ""
 msgid "Rebalance progress"
 msgstr ""
 
-#: src/components/rtoken-setup/token/ExternalRevenueSplit.tsx:108
+#: src/components/rtoken-setup/token/ExternalRevenueSplit.tsx:109
 msgid "Receiving eth address"
 msgstr ""
 
@@ -5146,7 +5441,7 @@ msgstr ""
 msgid "Record limit"
 msgstr ""
 
-#: src/components/transactions/table/index.tsx:46
+#: src/components/transactions/table/index.tsx:47
 #: src/views/explorer/components/filters/TransactionTypeFilter.tsx:12
 #: src/views/explorer/components/transactions/useTransactionColumns.tsx:27
 #: src/views/index-dtf/issuance/manual/components/index-manual-issuance.tsx:195
@@ -5177,16 +5472,16 @@ msgstr ""
 msgid "Redeemable now"
 msgstr ""
 
-#: src/components/rtoken-setup/token/BackingForm.tsx:154
+#: src/components/rtoken-setup/token/BackingForm.tsx:155
 msgid "Redemption amount - allows the issuer to limit the amount of RTokens redeemed per hour. This matters in the event of an exploit where an attacker tries to redeem RTokens.This buys time for users with pause or freeze permissions to reduce the amount of RTokens that can be redeemed."
 msgstr ""
 
-#: src/components/rtoken-setup/token/BackingForm.tsx:141
+#: src/components/rtoken-setup/token/BackingForm.tsx:142
 msgid "Redemption rate - allows the issuer to limit the amount of RTokens redeemed per hour based on a percentage of the current RToken market cap. This matters in the event of an exploit where an attacker tries to redeem RTokens. This buys time for users with pause or freeze permissions to reduce the amount of RTokens that can be redeemed."
 msgstr ""
 
-#: src/components/rtoken-setup/token/BackingForm.tsx:152
 #: src/components/rtoken-setup/token/BackingForm.tsx:153
+#: src/components/rtoken-setup/token/BackingForm.tsx:154
 #: src/views/yield-dtf/settings/components/backing-info.tsx:75
 msgid "Redemption throttle amount"
 msgstr ""
@@ -5195,12 +5490,16 @@ msgstr ""
 msgid "Redemption throttle rate"
 msgstr ""
 
-#: src/components/rtoken-setup/token/BackingForm.tsx:140
+#: src/components/rtoken-setup/token/BackingForm.tsx:141
 msgid "Redemption throttle Rate"
 msgstr ""
 
-#: src/components/rtoken-setup/token/BackingForm.tsx:139
+#: src/components/rtoken-setup/token/BackingForm.tsx:140
 msgid "Redemption throttle rate (%)"
+msgstr ""
+
+#: src/components/ui/swap.tsx:238
+msgid "Reducing potential dust"
 msgstr ""
 
 #: src/views/index-dtf/overview/components/zap-mint/refresh-quote.tsx:41
@@ -5247,6 +5546,7 @@ msgstr ""
 msgid "Rely solely on the Auction Launcher to provide accurate pricing information when swapping assets. This option increases the amount of damage from mistakes or a rogue Auction Launcher."
 msgstr ""
 
+#: src/components/index-basket-setup/basket-table.tsx:149
 #: src/views/index-dtf/deploy/steps/basket/basket-preview.tsx:200
 #: src/views/index-dtf/deploy/steps/revenue/revenue-distribution-settings.tsx:97
 #: src/views/index-dtf/governance/views/propose/basket/components/proposal-basket-setup/setup-native-dtf-basket.tsx:82
@@ -5254,7 +5554,7 @@ msgstr ""
 msgid "Remaining allocation:"
 msgstr ""
 
-#: src/components/rtoken-setup/components/RolesEdit.tsx:121
+#: src/components/rtoken-setup/components/RolesEdit.tsx:122
 #: src/views/yield-dtf/governance/views/proposal/components/ItemPreview.tsx:45
 #: src/views/yield-dtf/governance/views/proposal/components/ListItemPreview.tsx:22
 #: src/views/yield-dtf/governance/views/proposal/components/ProposedRevenueSplitPreview.tsx:130
@@ -5318,6 +5618,7 @@ msgstr ""
 msgid "Removed reward token"
 msgstr ""
 
+#: src/components/index-basket-setup/csv-import.tsx:197
 #: src/views/index-dtf/governance/views/propose/basket/components/proposal-basket-setup/basket-csv-setup.tsx:240
 msgid "Replace Basket with CSV"
 msgstr ""
@@ -5356,19 +5657,19 @@ msgstr ""
 msgid "Reserve aims to help people around the world maintain their spending power by allowing anyone to create asset-backed currencies with tokenized assets on the Ethereum blockchain in customizable and novel ways."
 msgstr ""
 
-#: src/components/layout/header/components/app-navigation.tsx:143
+#: src/components/layout/header/components/app-navigation.tsx:144
 msgid "Reserve Blog"
 msgstr ""
 
-#: src/components/layout/header/components/app-navigation.tsx:115
+#: src/components/layout/header/components/app-navigation.tsx:116
 msgid "Reserve Bridge"
 msgstr ""
 
-#: src/components/layout/header/components/app-navigation.tsx:149
+#: src/components/layout/header/components/app-navigation.tsx:150
 msgid "Reserve Docs"
 msgstr ""
 
-#: src/components/layout/header/components/app-navigation.tsx:155
+#: src/components/layout/header/components/app-navigation.tsx:156
 msgid "Reserve Forum"
 msgstr ""
 
@@ -5388,7 +5689,7 @@ msgstr ""
 msgid "reserve splash"
 msgstr ""
 
-#: src/components/layout/header/components/app-navigation.tsx:161
+#: src/components/layout/header/components/app-navigation.tsx:162
 msgid "Reserve Telegram"
 msgstr ""
 
@@ -5418,7 +5719,7 @@ msgstr ""
 msgid "Revenue distribution"
 msgstr ""
 
-#: src/components/rtoken-setup/token/RevenueSplit.tsx:108
+#: src/components/rtoken-setup/token/RevenueSplit.tsx:109
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/changes/revenue-changes.tsx:92
 #: src/views/yield-dtf/settings/components/revenue-split-info.tsx:14
 msgid "Revenue Distribution"
@@ -5428,7 +5729,7 @@ msgstr ""
 msgid "Revenue Settings"
 msgstr ""
 
-#: src/components/layout/navigation/TokenNavigation.tsx:216
+#: src/components/layout/navigation/TokenNavigation.tsx:217
 #: src/views/yield-dtf/governance/views/proposal/components/ProposalNavigation.tsx:19
 #: src/views/yield-dtf/settings/components/navigation-sidebar.tsx:13
 msgid "Revenue share"
@@ -5449,6 +5750,8 @@ msgstr ""
 msgid "Revenue:"
 msgstr ""
 
+#: src/components/stake-drawer/index.tsx:208
+#: src/components/vote-lock/index.tsx:186
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/changes/shared.tsx:27
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/changes/shared.tsx:38
 #: src/views/index-dtf/overview/components/staking/index.tsx:206
@@ -5517,11 +5820,11 @@ msgstr ""
 msgid "Reward ratio"
 msgstr ""
 
-#: src/components/rtoken-setup/token/OtherForm.tsx:79
+#: src/components/rtoken-setup/token/OtherForm.tsx:80
 msgid "Reward ratio - amount of the current reward amount that should be handed out in a single block. The default corresponds to a half life of approximately 15 days."
 msgstr ""
 
-#: src/components/rtoken-setup/token/OtherForm.tsx:77
+#: src/components/rtoken-setup/token/OtherForm.tsx:78
 msgid "Reward ratio (decimals)"
 msgstr ""
 
@@ -5572,7 +5875,7 @@ msgstr ""
 msgid "Role Updates"
 msgstr ""
 
-#: src/components/rtoken-setup/governance/GovernanceSetup.tsx:68
+#: src/components/rtoken-setup/governance/GovernanceSetup.tsx:69
 #: src/views/index-dtf/deploy/components/deploy-accordion.tsx:95
 #: src/views/index-dtf/deploy/components/deploy-accordion.tsx:96
 #: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/basket-settings-proposal-sections.tsx:62
@@ -5584,7 +5887,7 @@ msgstr ""
 msgid "Roles"
 msgstr ""
 
-#: src/components/layout/navigation/TokenNavigation.tsx:212
+#: src/components/layout/navigation/TokenNavigation.tsx:213
 #: src/views/yield-dtf/settings/components/navigation-sidebar.tsx:9
 #: src/views/yield-dtf/settings/components/rtoken-management.tsx:43
 msgid "Roles & Controls"
@@ -5601,6 +5904,10 @@ msgstr ""
 
 #: src/views/yield-dtf/overview/components/charts/staking-chart.tsx:97
 msgid "RSR Staked"
+msgstr ""
+
+#: src/components/stake-drawer/components/submit-stake-button.tsx:147
+msgid "RSR staked successfully!"
 msgstr ""
 
 #: src/views/yield-dtf/governance/views/proposal-detail/components/proposal-summary/revenue-distribution-summary.tsx:38
@@ -5620,7 +5927,7 @@ msgstr ""
 msgid "RToken Deployment Transaction succeeded"
 msgstr ""
 
-#: src/components/rtoken-setup/token/TokenForm.tsx:15
+#: src/components/rtoken-setup/token/TokenForm.tsx:17
 msgid "RToken Details"
 msgstr ""
 
@@ -5636,7 +5943,7 @@ msgstr ""
 msgid "RToken in Wallet"
 msgstr ""
 
-#: src/components/rtoken-setup/token/TokenForm.tsx:38
+#: src/components/rtoken-setup/token/TokenForm.tsx:40
 #: src/views/yield-dtf/deploy/components/TokenForm.tsx:50
 msgid "RToken mandate"
 msgstr ""
@@ -5645,7 +5952,7 @@ msgstr ""
 msgid "RToken Maximum trade volume"
 msgstr ""
 
-#: src/components/rtoken-setup/token/OtherForm.tsx:103
+#: src/components/rtoken-setup/token/OtherForm.tsx:104
 msgid "RToken Maximum trade volume ($)"
 msgstr ""
 
@@ -5653,11 +5960,11 @@ msgstr ""
 msgid "RToken Trader"
 msgstr ""
 
-#: src/components/rtoken-setup/governance/GovernanceSetup.tsx:140
+#: src/components/rtoken-setup/governance/GovernanceSetup.tsx:141
 msgid "RToken will be fully functional"
 msgstr ""
 
-#: src/components/rtoken-setup/governance/GovernanceSetup.tsx:137
+#: src/components/rtoken-setup/governance/GovernanceSetup.tsx:138
 msgid "RToken will be left in pause state"
 msgstr ""
 
@@ -5678,8 +5985,8 @@ msgstr ""
 msgid "Run"
 msgstr ""
 
-#: src/components/rtoken-setup/basket/CustomCollateral.tsx:120
-#: src/components/rtoken-setup/components/RolesEdit.tsx:48
+#: src/components/rtoken-setup/basket/CustomCollateral.tsx:123
+#: src/components/rtoken-setup/components/RolesEdit.tsx:49
 #: src/views/yield-dtf/governance/views/proposal/components/RegisterEdit.tsx:47
 #: src/views/yield-dtf/staking/components/stake/edit-delegate.tsx:31
 msgid "Save"
@@ -5694,6 +6001,10 @@ msgstr ""
 msgid "Search"
 msgstr ""
 
+#: src/components/rtoken-setup/basket/CollateralModal.tsx:123
+msgid "Search by collateral symbol or target name"
+msgstr ""
+
 #: src/views/internal/dtf-list/components/dtf-date-chain-filters.tsx:56
 msgid "Search by name or symbol"
 msgstr ""
@@ -5706,12 +6017,17 @@ msgstr ""
 msgid "Search by name, ticker, tag or collateral"
 msgstr ""
 
+#: src/components/token-selector-drawer/index.tsx:60
 #: src/views/index-dtf/deploy/steps/basket/token-selector.tsx:159
 msgid "Search by token name or address"
 msgstr ""
 
 #: src/views/earn/views/yield-dtf/components/table-filters.tsx:104
 msgid "Search DTF name or symbol"
+msgstr ""
+
+#: src/components/command-menu/index.tsx:100
+msgid "Search for a DTF..."
 msgstr ""
 
 #: src/views/earn/views/index-dtf/components/table-filters.tsx:105
@@ -5722,20 +6038,31 @@ msgstr ""
 msgid "Search pool"
 msgstr ""
 
+#: src/components/ui/swap.tsx:235
+msgid "Searching DEX Liquidity"
+msgstr ""
+
+#: src/components/index-basket-setup/csv-import.tsx:201
 #: src/views/index-dtf/deploy/steps/basket/basket-csv-setup.tsx:213
 #: src/views/index-dtf/governance/views/propose/basket/components/proposal-basket-setup/basket-csv-setup.tsx:244
 msgid "Select a CSV file to upload"
+msgstr ""
+
+#: src/components/ui/multiselect-dropdown.tsx:167
+msgid "Select options"
 msgstr ""
 
 #: src/views/index-dtf/governance/views/propose/index.tsx:60
 msgid "Select proposal type"
 msgstr ""
 
+#: src/components/token-selector-drawer/index.tsx:280
 #: src/views/index-dtf/deploy/steps/basket/token-selector.tsx:485
 msgid "Select tokens"
 msgstr ""
 
 #. placeholder {0}: selectedTokens.length
+#: src/components/token-selector-drawer/index.tsx:145
 #: src/views/index-dtf/deploy/steps/basket/token-selector.tsx:244
 msgid "Selected ({0})"
 msgstr ""
@@ -5812,6 +6139,11 @@ msgstr ""
 msgid "Set the auction window for the rebalance."
 msgstr ""
 
+#. placeholder {0}: formatCurrency(DEFAULT_MAX_AUCTION_SIZE_USD, 0)
+#: src/components/max-auction-size-editor/index.tsx:81
+msgid "Set the maximum auction size in USD for each token. Default: {0}"
+msgstr ""
+
 #: src/views/index-dtf/deploy/steps/basket/components/liquidity-config-modal.tsx:102
 msgid "Set the USD amount per token used to simulate price impact."
 msgstr ""
@@ -5836,9 +6168,14 @@ msgstr ""
 msgid "Setup Governance"
 msgstr ""
 
+#: src/components/index-basket-setup/basket-table.tsx:109
 #: src/views/index-dtf/deploy/steps/basket/basket-preview.tsx:234
 #: src/views/index-dtf/governance/views/propose/basket/components/proposal-basket-setup/proposal-basket-table.tsx:78
 msgid "Share"
+msgstr ""
+
+#: src/components/index-basket-setup/basket-table.tsx:85
+msgid "Share %"
 msgstr ""
 
 #: src/views/yield-dtf/overview/components/backing/revenue-split-overview.tsx:41
@@ -5862,11 +6199,15 @@ msgstr ""
 msgid "Short freeze duration"
 msgstr ""
 
-#: src/components/rtoken-setup/token/OtherForm.tsx:22
+#: src/components/rtoken-setup/token/OtherForm.tsx:23
 msgid "Short freeze duration (s)"
 msgstr ""
 
-#: src/components/rtoken-setup/token/OtherForm.tsx:24
+#: src/components/rtoken-setup/governance/RoleSetup.tsx:24
+msgid "Short Freezers"
+msgstr ""
+
+#: src/components/rtoken-setup/token/OtherForm.tsx:25
 msgid "Short freezers have the responsibility of freezing an RToken if anything dangerous or suspicious is happening. This is a one-shot freeze and the role will be revoked after a single use. This field determines how long the RToken will remain frozen until the freeze expires or is extended by another actor."
 msgstr ""
 
@@ -5887,12 +6228,26 @@ msgstr ""
 msgid "Show less"
 msgstr ""
 
+#: src/components/transaction-modal/ShowMore.tsx:21
+msgid "Show more"
+msgstr ""
+
+#. placeholder {0}: Math.min( table.getState().pagination.pageSize, table.getFilteredRowModel().rows.length )
+#. placeholder {1}: table.getFilteredRowModel().rows.length
+#: src/components/ui/data-table.tsx:93
+msgid "Showing {0} out of {1}"
+msgstr ""
+
 #: src/views/internal/dtf-list/components/dtf-pagination.tsx:58
 msgid "Showing {startItem} to {endItem} of {totalCount} DTFs"
 msgstr ""
 
 #: src/views/internal/dtf-list/components/dtf-filters.tsx:124
 msgid "Showing DTFs matching your selected filters"
+msgstr ""
+
+#: src/components/transaction-modal/index.tsx:48
+msgid "Sign in wallet..."
 msgstr ""
 
 #: src/views/index-dtf/deploy/components/right-panel.tsx:51
@@ -5944,6 +6299,10 @@ msgstr ""
 msgid "Simulated Basket"
 msgstr ""
 
+#: src/components/liquidity-badge.tsx:175
+msgid "Simulated route. Actual auction path may differ."
+msgstr ""
+
 #: src/views/index-dtf/auctions/views/rebalance/components/rebalance-liquidity-checker.tsx:219
 #: src/views/index-dtf/governance/views/propose/basket/components/proposal-liquidity-checker.tsx:281
 msgid "Simulates swaps against the native token via the Zapper API to estimate price impact. Trades under $1 are simulated at $1 for reliable results. Summary badge is weighted by trade size."
@@ -5955,6 +6314,10 @@ msgstr ""
 
 #: src/views/index-dtf/deploy/steps/basket/components/liquidity-config-modal.tsx:88
 msgid "Simulation config"
+msgstr ""
+
+#: src/components/liquidity-badge.tsx:70
+msgid "Simulation failed"
 msgstr ""
 
 #: src/views/index-dtf/governance/components/simulate-proposal.tsx:31
@@ -5977,6 +6340,10 @@ msgstr ""
 msgid "Slashing Risk"
 msgstr ""
 
+#: src/components/ui/swap.tsx:418
+msgid "Slippage"
+msgstr ""
+
 #: src/views/index-dtf/deploy/components/toggle-group-preset.tsx:16
 msgid "Slow"
 msgstr ""
@@ -5987,6 +6354,14 @@ msgstr ""
 
 #: src/views/yield-dtf/settings/components/governance-info.tsx:34
 msgid "Snapshot Delay"
+msgstr ""
+
+#: src/components/rtoken-setup/governance/GovernanceParameters.tsx:51
+msgid "Snapshot delay (blocks)"
+msgstr ""
+
+#: src/components/rtoken-setup/governance/GovernanceParameters.tsx:51
+msgid "Snapshot delay (hours)"
 msgstr ""
 
 #: src/views/index-dtf/manage/components/manage-form.tsx:91
@@ -6052,15 +6427,15 @@ msgstr ""
 msgid "Stables"
 msgstr ""
 
-#: src/components/layout/navigation/TokenNavigation.tsx:192
-#: src/components/transactions/table/index.tsx:53
+#: src/components/layout/navigation/TokenNavigation.tsx:193
+#: src/components/transactions/table/index.tsx:54
 #: src/views/explorer/components/filters/TransactionTypeFilter.tsx:17
 #: src/views/explorer/components/transactions/useTransactionColumns.tsx:34
 #: src/views/yield-dtf/overview/components/rtoken-transactions.tsx:82
 msgid "Stake"
 msgstr ""
 
-#: src/components/layout/navigation/index.tsx:78
+#: src/components/layout/navigation/index.tsx:79
 msgid "Stake + Unstake"
 msgstr ""
 
@@ -6072,6 +6447,8 @@ msgstr ""
 msgid "Stake pool USD value:"
 msgstr ""
 
+#: src/components/stake-drawer/components/submit-stake-button.tsx:184
+#: src/components/stake-drawer/index.tsx:59
 #: src/views/home/components/discover-yield-dtf/token-actions.tsx:64
 #: src/views/yield-dtf/staking/components/stake/stake-button.tsx:30
 msgid "Stake RSR"
@@ -6142,7 +6519,7 @@ msgstr ""
 msgid "Start auction {auctionNumber}"
 msgstr ""
 
-#: src/components/transactions/table/index.tsx:50
+#: src/components/transactions/table/index.tsx:51
 #: src/views/explorer/components/transactions/useTransactionColumns.tsx:31
 #: src/views/yield-dtf/overview/components/rtoken-transactions.tsx:79
 msgid "Start Issue"
@@ -6164,7 +6541,7 @@ msgstr ""
 msgid "Stay patient while the transaction is in progress & don't close this window to avoid issues finding your way back here."
 msgstr ""
 
-#: src/components/layout/header/components/app-navigation.tsx:145
+#: src/components/layout/header/components/app-navigation.tsx:146
 msgid "Stay up to date in long form"
 msgstr ""
 
@@ -6192,7 +6569,7 @@ msgstr ""
 msgid "stRSR DAO contracts for Index DTFs are not supported"
 msgstr ""
 
-#: src/components/rtoken-setup/token/OtherForm.tsx:78
+#: src/components/rtoken-setup/token/OtherForm.tsx:79
 msgid "stRSR payout fraction 0.0"
 msgstr ""
 
@@ -6268,6 +6645,13 @@ msgstr ""
 msgid "Swapped {inputSymbol} for {outputSymbol}"
 msgstr ""
 
+#. placeholder {0}: CHAIN_TAGS[chain || chainId]
+#: src/components/ui/transaction-button.tsx:93
+#: src/components/ui/transaction-button.tsx:138
+#: src/components/ui/transaction.tsx:77
+msgid "Switch to {0}"
+msgstr ""
+
 #: src/views/index-dtf/overview/components/zap-mint/zap-error-msg.tsx:57
 msgid "switch to manual redeeming"
 msgstr ""
@@ -6298,7 +6682,7 @@ msgstr ""
 msgid "Target:"
 msgstr ""
 
-#: src/components/tables/ListedTokensTable.tsx:53
+#: src/components/tables/ListedTokensTable.tsx:54
 #: src/views/explorer/components/tokens/index.tsx:176
 #: src/views/tokens/components/UnlistedTokensTable.tsx:96
 msgid "Target(s)"
@@ -6328,7 +6712,7 @@ msgstr ""
 msgid "The basket governance provides a Guardian role that can improve the safety of DTF holders and governors. Guardians have the ability to veto any basket proposal prior to execution. This role is mutable and can be changed by governance in the future."
 msgstr ""
 
-#: src/components/account/index.tsx:47
+#: src/components/account/index.tsx:49
 msgid "The configured network \"{currentChain}\" is different from the wallet selected network \"{chainId}\"\". Change your network in the connected wallet."
 msgstr ""
 
@@ -6340,24 +6724,28 @@ msgstr ""
 msgid "The DAO governance provides a Guardian role that can improve the safety of DTF holders and governors. Guardians have the ability to veto any proposal prior to execution. This role is mutable and can be changed by governance in the future."
 msgstr ""
 
-#: src/components/rtoken-setup/basket/EmergencyCollateral.tsx:157
+#: src/components/rtoken-setup/basket/EmergencyCollateral.tsx:160
 msgid "The diversity factor determines the amount of emergency collateral that will be deployed to the RToken basket in the case of a default."
 msgstr ""
 
-#: src/components/rtoken-setup/token/BackingForm.tsx:75
+#: src/components/rtoken-setup/token/BackingForm.tsx:76
 msgid "The dutch auction length is how many seconds long falling-price dutch auctions should be. A longer period will result in less slippage due to better price granularity, and a shorter period will result in more slippage."
 msgstr ""
 
-#: src/components/rtoken-setup/token/OtherForm.tsx:52
+#: src/components/rtoken-setup/token/OtherForm.tsx:53
 msgid "The fraction of RSR stake that should be permitted to withdraw without a refresh. When cumulative withdrawals (or a single withdrawal) exceed this fraction, gas must be paid to refresh all assets."
 msgstr ""
 
-#: src/components/rtoken-setup/governance/GovernanceSetup.tsx:98
+#: src/components/rtoken-setup/governance/GovernanceSetup.tsx:99
 msgid "The guardian has the ability to reject proposals even if they pass. Should be assigned to a multisig or EOA that can be trusted to act as a backstop. It is acceptable if it is relatively slow to act. Only one guardian address should be defined."
 msgstr ""
 
 #: src/views/index-dtf/overview/components/zap-mint/zap-details.tsx:125
 msgid "The impact your trade has on the market price."
+msgstr ""
+
+#: src/components/rtoken-setup/governance/RoleSetup.tsx:30
+msgid "The long freezer has the ability to freeze an RToken's system for a long period of time. The LONG_FREEZER role should be assigned to an address that will highly optimize for no false positives. It is much longer than the short freeze. It can act slowly and needs to be trusted. It is probably expected to have only one long-freezer address. It allows only 6x uses per long-freezer. It exists so that in the case of a zero-day exploit, governance can act before the system unfreezes and resumes functioning."
 msgstr ""
 
 #: src/views/yield-dtf/deploy/components/TokenForm.tsx:51
@@ -6368,7 +6756,7 @@ msgstr ""
 msgid "The maximum amount of slippage you are willing to accept when minting. Higher slippage settings will make the transaction more likely to succeed, but may result in fewer tokens minted."
 msgstr ""
 
-#: src/components/rtoken-setup/governance/GovernanceParameters.tsx:85
+#: src/components/rtoken-setup/governance/GovernanceParameters.tsx:90
 msgid "The minimum amount of time after a proposal passes before it can be executed."
 msgstr ""
 
@@ -6386,11 +6774,11 @@ msgstr ""
 msgid "The minimum percentage of governance power needed in order to initiate a proposal."
 msgstr ""
 
-#: src/components/rtoken-setup/governance/GovernanceParameters.tsx:98
+#: src/components/rtoken-setup/governance/GovernanceParameters.tsx:103
 msgid "The minimum percentage of stRSR ownership on an RToken to be able to create a proposal."
 msgstr ""
 
-#: src/components/rtoken-setup/governance/GovernanceParameters.tsx:111
+#: src/components/rtoken-setup/governance/GovernanceParameters.tsx:116
 msgid "The minimum percentage of stRSR voter participation (either For or Abstain) on a proposal before it can be passed."
 msgstr ""
 
@@ -6403,6 +6791,10 @@ msgstr ""
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/sections/propose-dao-governance.tsx:79
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-governance-settings.tsx:77
 msgid "The minimum percentage of votes that must be cast as <0>yes</0> or <1>abstain</1> in order for the proposal to be eligible to pass (<2>yes</2> votes still must outnumber <3>no</3> votes in order to pass the proposal)."
+msgstr ""
+
+#: src/components/rtoken-setup/governance/RoleSetup.tsx:20
+msgid "The pauser has the ability to pause and unpause an RToken's system. The PAUSER role should be assigned to an address that is able to act quickly in response to off-chain events, such as a Chainlink feed failing. It is ok to have multiple pausers. It can be robot-controlled. It can also consist of a 1-of-N multisig for high availability and coverage. It is acceptable for there to be false positives, since redemption remains enabled."
 msgstr ""
 
 #: src/views/yield-dtf/settings/components/pause-manager.tsx:97
@@ -6428,6 +6820,10 @@ msgstr ""
 
 #: src/views/yield-dtf/auctions/components/About.tsx:17
 msgid "The Reserve Protocol makes a few different types of trades"
+msgstr ""
+
+#: src/components/rtoken-setup/governance/RoleSetup.tsx:25
+msgid "The short freezer has the ability to freeze an RToken's system for a short period of time. The SHORT_FREEZER role should be assigned to an address that might reasonably be expected to be the first to detect a bug in the code and can act quickly, and with some tolerance for false positives, though less than in pausing. It is acceptable to have multiple short freezers. It can be robot-controlled. It can also consist of a 1-of-N multisig for high availability and coverage. If a bug is detected, a short freeze can be triggered which will automatically expire if it is not renewed by LONG_FREEZER."
 msgstr ""
 
 #: src/views/index-dtf/deploy/form-fields.ts:127
@@ -6482,7 +6878,7 @@ msgstr ""
 msgid "The token supply is not enough for changing the primary basket safely, contact the Reserve team for recommendations."
 msgstr ""
 
-#: src/components/rtoken-setup/governance/GovernanceSetup.tsx:78
+#: src/components/rtoken-setup/governance/GovernanceSetup.tsx:79
 msgid ""
 "The top level decision maker, typically a decentralized governance smart contract, responsible for setting or updating all RToken parameter values, RToken baskets, etc. - The RToken OWNER has the power to:\n"
 "          grant and revoke roles to any Ethereum account\n"
@@ -6492,7 +6888,7 @@ msgid ""
 "          upgrade system contracts"
 msgstr ""
 
-#: src/components/rtoken-setup/token/BackingForm.tsx:47
+#: src/components/rtoken-setup/token/BackingForm.tsx:48
 msgid "The warmup period is how many seconds should pass after the basket regained the SOUND status before an RToken can be issued and/or a trade can be opened."
 msgstr ""
 
@@ -6513,7 +6909,7 @@ msgstr ""
 msgid "These tokenized portfolios are called DTFs: <0/><1>Decentralized Token Folios</1>"
 msgstr ""
 
-#: src/components/rtoken-setup/components/RolesEdit.tsx:36
+#: src/components/rtoken-setup/components/RolesEdit.tsx:37
 msgid "This address already holds this role"
 msgstr ""
 
@@ -6551,7 +6947,11 @@ msgstr ""
 msgid "This DTF does not have trading governance configured."
 msgstr ""
 
-#: src/components/field/index.tsx:33
+#: src/components/inactive-badge.tsx:22
+msgid "This DTF is inactive. New issuance and governance proposals are disabled, but holders can still redeem their tokens and stakers can unstake."
+msgstr ""
+
+#: src/components/field/index.tsx:35
 msgid "This field is required"
 msgstr ""
 
@@ -6585,7 +6985,7 @@ msgstr ""
 msgid "This will prevent the DTF from appearing in the DTF list. You can still access it on the UI using the direct link."
 msgstr ""
 
-#: src/components/rtoken-setup/token/TokenForm.tsx:28
+#: src/components/rtoken-setup/token/TokenForm.tsx:30
 #: src/views/index-dtf/settings/components/index-settings-basic.tsx:43
 #: src/views/yield-dtf/deploy/components/TokenForm.tsx:30
 msgid "Ticker"
@@ -6599,7 +6999,7 @@ msgstr ""
 msgid "Ticker - symbol eg. USD+"
 msgstr ""
 
-#: src/components/transactions/table/index.tsx:87
+#: src/components/transactions/table/index.tsx:88
 #: src/views/explorer/components/transactions/useTransactionColumns.tsx:105
 #: src/views/index-dtf/auctions/views/rebalance/components/auction-bids-chart.tsx:209
 #: src/views/index-dtf/auctions/views/rebalance/components/auction-bids-chart.tsx:318
@@ -6620,7 +7020,12 @@ msgstr ""
 msgid "Title"
 msgstr ""
 
-#: src/components/tables/ListedTokensTable.tsx:27
+#: src/components/ui/swap.tsx:437
+msgid "Toggle {option}"
+msgstr ""
+
+#: src/components/index-basket-setup/basket-table.tsx:62
+#: src/components/tables/ListedTokensTable.tsx:28
 #: src/views/explorer/components/governance/index.tsx:63
 #: src/views/explorer/components/tokens/index.tsx:142
 #: src/views/explorer/components/transactions/useTransactionColumns.tsx:47
@@ -6647,7 +7052,7 @@ msgstr ""
 msgid "Token already exists in the list"
 msgstr ""
 
-#: src/components/layout/navigation/TokenNavigation.tsx:213
+#: src/components/layout/navigation/TokenNavigation.tsx:214
 #: src/views/yield-dtf/settings/components/navigation-sidebar.tsx:10
 msgid "Token details"
 msgstr ""
@@ -6664,7 +7069,7 @@ msgstr ""
 msgid "Token exposure"
 msgstr ""
 
-#: src/components/rtoken-setup/token/TokenForm.tsx:19
+#: src/components/rtoken-setup/token/TokenForm.tsx:21
 #: src/views/yield-dtf/deploy/components/TokenForm.tsx:20
 msgid "Token name"
 msgstr ""
@@ -6695,7 +7100,7 @@ msgstr ""
 msgid "Token name must be 80 characters or less"
 msgstr ""
 
-#: src/components/rtoken-setup/token/TokenForm.tsx:24
+#: src/components/rtoken-setup/token/TokenForm.tsx:26
 #: src/views/yield-dtf/deploy/components/TokenForm.tsx:26
 msgid "Token name required"
 msgstr ""
@@ -6720,7 +7125,7 @@ msgstr ""
 msgid "Token symbol must be 12 characters or less"
 msgstr ""
 
-#: src/components/rtoken-setup/token/TokenForm.tsx:33
+#: src/components/rtoken-setup/token/TokenForm.tsx:35
 #: src/views/yield-dtf/deploy/components/TokenForm.tsx:35
 msgid "Token ticker is required"
 msgstr ""
@@ -6757,11 +7162,15 @@ msgstr ""
 msgid "Total"
 msgstr ""
 
-#: src/components/rtoken-setup/token/ExternalRevenueSplit.tsx:81
+#: src/components/rtoken-setup/token/ExternalRevenueSplit.tsx:82
 msgid "Total % to arbitrary address"
 msgstr ""
 
-#: src/components/rtoken-setup/basket/PrimaryBasket.tsx:176
+#: src/components/liquidity-badge.tsx:166
+msgid "Total impact"
+msgstr ""
+
+#: src/components/rtoken-setup/basket/PrimaryBasket.tsx:179
 msgid "Total initial RToken scale including all targets. If your RToken only has one target unit this will be the same as the basket scale input."
 msgstr ""
 
@@ -6793,6 +7202,10 @@ msgstr ""
 
 #: src/views/index-dtf/auctions/views/rebalance/components/rebalance-overview.tsx:93
 msgid "Total value traded:"
+msgstr ""
+
+#: src/components/track-asset/index.tsx:43
+msgid "Track token in your wallet"
 msgstr ""
 
 #: src/views/yield-dtf/governance/views/proposal/components/TraderImplementationProposal.tsx:23
@@ -6827,11 +7240,11 @@ msgstr ""
 msgid "Trading delay"
 msgstr ""
 
-#: src/components/rtoken-setup/token/BackingForm.tsx:33
+#: src/components/rtoken-setup/token/BackingForm.tsx:34
 msgid "Trading delay - how many seconds should pass after the basket has been changed, before a rebalancing trade is opened. Why does this matter? To avoid losses due to poor liquidity."
 msgstr ""
 
-#: src/components/rtoken-setup/token/BackingForm.tsx:31
+#: src/components/rtoken-setup/token/BackingForm.tsx:32
 msgid "Trading delay (s)"
 msgstr ""
 
@@ -6852,15 +7265,23 @@ msgstr ""
 msgid "Transaction 2"
 msgstr ""
 
+#: src/components/stake-drawer/components/submit-stake-button.tsx:180
+#: src/components/stake-drawer/components/submit-unstake-button.tsx:80
+#: src/components/vote-lock/components/submit-lock-button.tsx:210
+#: src/components/vote-lock/components/submit-unlock-button.tsx:92
 #: src/hooks/useWatchTransaction.ts:54
 #: src/views/index-dtf/overview/components/staking/lock/submit-lock-button.tsx:215
 #: src/views/index-dtf/overview/components/staking/unlock/submit-unlock-button.tsx:95
 msgid "Transaction confirmed"
 msgstr ""
 
-#: src/components/transaction-modal/index.tsx:140
+#: src/components/transaction-modal/index.tsx:146
 #: src/views/index-dtf/issuance/manual/components/index-manual-issuance.tsx:227
 msgid "Transaction failed"
+msgstr ""
+
+#: src/components/ui/transaction-button.tsx:225
+msgid "Transaction not valid"
 msgstr ""
 
 #: src/views/index-dtf/auctions/views/rebalance/components/launch-auctions-button.tsx:74
@@ -6889,7 +7310,7 @@ msgstr ""
 msgid "Transaction successful!"
 msgstr ""
 
-#: src/components/layout/navigation/TokenNavigation.tsx:182
+#: src/components/layout/navigation/TokenNavigation.tsx:183
 #: src/views/explorer/components/transactions/index.tsx:38
 #: src/views/explorer/index.tsx:33
 #: src/views/index-dtf/overview/components/index-transaction-table.tsx:128
@@ -6898,14 +7319,14 @@ msgstr ""
 msgid "Transactions"
 msgstr ""
 
-#: src/components/transactions/table/index.tsx:47
+#: src/components/transactions/table/index.tsx:48
 #: src/views/explorer/components/filters/TransactionTypeFilter.tsx:13
 #: src/views/explorer/components/transactions/useTransactionColumns.tsx:28
 #: src/views/yield-dtf/overview/components/rtoken-transactions.tsx:76
 msgid "Transfer"
 msgstr ""
 
-#: src/components/layout/header/components/app-navigation.tsx:121
+#: src/components/layout/header/components/app-navigation.tsx:122
 msgid "Transfer DTFs across chains"
 msgstr ""
 
@@ -6961,8 +7382,8 @@ msgstr ""
 msgid "Tx Hash"
 msgstr ""
 
-#: src/components/ui/transaction-button.tsx:140
-#: src/components/ui/transaction-button.tsx:200
+#: src/components/ui/transaction-button.tsx:146
+#: src/components/ui/transaction-button.tsx:210
 msgid "Tx in process..."
 msgstr ""
 
@@ -6978,13 +7399,13 @@ msgstr ""
 msgid "Tx2. Governance"
 msgstr ""
 
-#: src/components/tables/ListedTokensTable.tsx:45
+#: src/components/tables/ListedTokensTable.tsx:46
 #: src/views/explorer/index.tsx:30
 #: src/views/tokens/components/UnlistedTokensTable.tsx:89
 msgid "Txs"
 msgstr ""
 
-#: src/components/transactions/table/index.tsx:66
+#: src/components/transactions/table/index.tsx:67
 #: src/views/explorer/components/transactions/useTransactionColumns.tsx:69
 #: src/views/index-dtf/overview/components/index-transaction-table.tsx:24
 #: src/views/index-dtf/overview/components/yield-index/yield-index-composition-tabs.tsx:14
@@ -7014,7 +7435,7 @@ msgstr ""
 msgid "Underlying Token Exposure"
 msgstr ""
 
-#: src/components/layout/header/components/app-navigation.tsx:151
+#: src/components/layout/header/components/app-navigation.tsx:152
 msgid "Understand the project and protocols"
 msgstr ""
 
@@ -7035,11 +7456,13 @@ msgstr ""
 msgid "Unique Holders"
 msgstr ""
 
+#: src/components/index-basket-setup/basket-table.tsx:103
 #: src/views/index-dtf/deploy/steps/basket/basket-preview.tsx:228
 #: src/views/index-dtf/governance/views/propose/basket/components/proposal-basket-setup/proposal-basket-table.tsx:72
 msgid "Unit"
 msgstr ""
 
+#: src/components/index-basket-setup/basket-table.tsx:85
 #: src/views/index-dtf/deploy/steps/basket/basket-preview.tsx:61
 msgid "Units"
 msgstr ""
@@ -7057,6 +7480,11 @@ msgstr ""
 msgid "Unknown Contract"
 msgstr ""
 
+#: src/components/liquidity-badge.tsx:65
+#: src/components/liquidity-badge.tsx:69
+msgid "Unknown liquidity"
+msgstr ""
+
 #: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:112
 #: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:164
 msgid "Unknown Role"
@@ -7066,14 +7494,17 @@ msgstr ""
 msgid "Unlimited"
 msgstr ""
 
+#: src/components/vote-lock/index.tsx:61
 #: src/views/index-dtf/overview/components/staking/index.tsx:64
 msgid "Unlock"
 msgstr ""
 
+#: src/components/vote-lock/components/submit-unlock-button.tsx:65
 #: src/views/index-dtf/overview/components/staking/unlock/submit-unlock-button.tsx:67
 msgid "Unlock initiated successfully"
 msgstr ""
 
+#: src/components/vote-lock/index.tsx:112
 #: src/views/index-dtf/overview/components/staking/index.tsx:115
 msgid "Unlock process"
 msgstr ""
@@ -7098,7 +7529,9 @@ msgstr ""
 msgid "Unregistering assets"
 msgstr ""
 
-#: src/components/transactions/table/index.tsx:54
+#: src/components/stake-drawer/components/submit-unstake-button.tsx:83
+#: src/components/stake-drawer/index.tsx:64
+#: src/components/transactions/table/index.tsx:55
 #: src/views/explorer/components/filters/TransactionTypeFilter.tsx:18
 #: src/views/explorer/components/transactions/useTransactionColumns.tsx:35
 #: src/views/yield-dtf/overview/components/rtoken-transactions.tsx:83
@@ -7109,6 +7542,10 @@ msgstr ""
 #: src/views/explorer/components/transactions/useTransactionColumns.tsx:39
 #: src/views/yield-dtf/overview/components/rtoken-transactions.tsx:87
 msgid "Unstake Cancelled"
+msgstr ""
+
+#: src/components/stake-drawer/index.tsx:114
+msgid "Unstake process"
 msgstr ""
 
 #: src/views/yield-dtf/staking/components/unstake/unstake-button.tsx:35
@@ -7124,11 +7561,11 @@ msgstr ""
 msgid "Unstaking Delay"
 msgstr ""
 
-#: src/components/rtoken-setup/token/OtherForm.tsx:65
+#: src/components/rtoken-setup/token/OtherForm.tsx:66
 msgid "Unstaking delay - number of seconds that all RSR unstaking must be delayed in order to account for stakers trying to frontrun defaults and needs to be longer than \"governance\" for proper incentives for basket changes."
 msgstr ""
 
-#: src/components/rtoken-setup/token/OtherForm.tsx:63
+#: src/components/rtoken-setup/token/OtherForm.tsx:64
 msgid "Unstaking Delay (s)"
 msgstr ""
 
@@ -7136,11 +7573,15 @@ msgstr ""
 msgid "Unstaking delay:"
 msgstr ""
 
+#: src/components/stake-drawer/components/submit-unstake-button.tsx:58
+msgid "Unstaking initiated! You can withdraw your RSR after the delay period."
+msgstr ""
+
 #: src/views/yield-dtf/staking/components/overview/about.tsx:37
 msgid "Unstaking RSR"
 msgstr ""
 
-#: src/components/account/index.tsx:43
+#: src/components/account/index.tsx:45
 msgid "Unsupported"
 msgstr ""
 
@@ -7232,7 +7673,7 @@ msgstr ""
 msgid "Use"
 msgstr ""
 
-#: src/components/rtoken-setup/basket/CustomCollateral.tsx:135
+#: src/components/rtoken-setup/basket/CustomCollateral.tsx:138
 msgid "Use a custom plugin contract address"
 msgstr ""
 
@@ -7252,7 +7693,7 @@ msgstr ""
 msgid "Use connected wallet."
 msgstr ""
 
-#: src/components/rtoken-setup/governance/GovernanceSetup.tsx:48
+#: src/components/rtoken-setup/governance/GovernanceSetup.tsx:49
 msgid "Use the Alexios governor format?"
 msgstr ""
 
@@ -7268,7 +7709,7 @@ msgstr ""
 msgid "Users will not be able to mint / redeem using zaps in the US"
 msgstr ""
 
-#: src/components/rtoken-setup/basket/CustomCollateral.tsx:120
+#: src/components/rtoken-setup/basket/CustomCollateral.tsx:123
 msgid "Validating..."
 msgstr ""
 
@@ -7293,6 +7734,7 @@ msgstr ""
 msgid "Verify wallet"
 msgstr ""
 
+#: src/components/transaction-modal/index.tsx:53
 #: src/views/yield-dtf/staking/components/stake/confirm-stake-button.tsx:46
 msgid "Verifying allowance..."
 msgstr ""
@@ -7424,7 +7866,7 @@ msgstr ""
 msgid "Volume (all time)"
 msgstr ""
 
-#: src/components/tables/ListedTokensTable.tsx:49
+#: src/components/tables/ListedTokensTable.tsx:50
 msgid "Volume (last 7d)"
 msgstr ""
 
@@ -7434,11 +7876,13 @@ msgstr ""
 msgid "Vote"
 msgstr ""
 
+#: src/components/vote-lock/index.tsx:56
 #: src/views/index-dtf/overview/components/staking/index.tsx:59
 msgid "Vote lock"
 msgstr ""
 
 #. placeholder {0}: stToken?.underlying.symbol
+#: src/components/vote-lock/components/submit-lock-button.tsx:212
 #: src/views/index-dtf/overview/components/staking/lock/submit-lock-button.tsx:217
 msgid "Vote lock {0}"
 msgstr ""
@@ -7455,6 +7899,7 @@ msgstr ""
 msgid "Vote Lock Frequently Asked Questions"
 msgstr ""
 
+#: src/components/vote-lock/components/submit-lock-button.tsx:172
 #: src/views/index-dtf/overview/components/staking/lock/submit-lock-button.tsx:176
 msgid "Vote lock successful"
 msgstr ""
@@ -7606,6 +8051,14 @@ msgstr ""
 msgid "Voting Period"
 msgstr ""
 
+#: src/components/rtoken-setup/governance/GovernanceParameters.tsx:69
+msgid "Voting period (blocks)"
+msgstr ""
+
+#: src/components/rtoken-setup/governance/GovernanceParameters.tsx:69
+msgid "Voting period (hours)"
+msgstr ""
+
 #: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:147
 msgid "Voting Period Ends"
 msgstr ""
@@ -7631,6 +8084,8 @@ msgstr ""
 msgid "Voting power delegation"
 msgstr ""
 
+#: src/components/stake-drawer/index.tsx:177
+#: src/components/vote-lock/index.tsx:155
 #: src/views/index-dtf/overview/components/staking/index.tsx:176
 msgid "Voting Power Delegation"
 msgstr ""
@@ -7659,6 +8114,8 @@ msgstr ""
 msgid "w. {tokensLabel} in {projectLabel}"
 msgstr ""
 
+#: src/components/stake-drawer/index.tsx:125
+#: src/components/vote-lock/index.tsx:123
 #: src/views/index-dtf/overview/components/staking/index.tsx:126
 msgid "Wait {delay} days"
 msgstr ""
@@ -7669,6 +8126,10 @@ msgstr ""
 
 #: src/views/yield-dtf/auctions/auctions-sidebar/RecollaterizationAlert.tsx:29
 msgid "Wait to trigger revenue auctions until after recollateralization has finished."
+msgstr ""
+
+#: src/components/transaction-modal/index.tsx:48
+msgid "Waiting for allowance..."
 msgstr ""
 
 #: src/views/index-dtf/governance/views/propose/basket/components/submit-proposal-button.tsx:111
@@ -7699,7 +8160,7 @@ msgstr ""
 msgid "Want to launch a new ERC20 for governance?"
 msgstr ""
 
-#: src/components/rtoken-setup/token/BackingForm.tsx:45
+#: src/components/rtoken-setup/token/BackingForm.tsx:46
 msgid "Warmup period (s)"
 msgstr ""
 
@@ -7796,8 +8257,8 @@ msgstr ""
 msgid "Why do you think people want this DTF?"
 msgstr ""
 
-#: src/components/transactions/table/index.tsx:55
-#: src/components/transactions/table/index.tsx:57
+#: src/components/transactions/table/index.tsx:56
+#: src/components/transactions/table/index.tsx:58
 #: src/views/explorer/components/filters/TransactionTypeFilter.tsx:19
 #: src/views/explorer/components/transactions/useTransactionColumns.tsx:36
 #: src/views/explorer/components/transactions/useTransactionColumns.tsx:38
@@ -7816,7 +8277,7 @@ msgstr ""
 msgid "Withdrawal leak"
 msgstr ""
 
-#: src/components/rtoken-setup/token/OtherForm.tsx:50
+#: src/components/rtoken-setup/token/OtherForm.tsx:51
 msgid "Withdrawal leak (%)"
 msgstr ""
 
@@ -7861,7 +8322,7 @@ msgstr ""
 msgid "Wrapping collateral tokens"
 msgstr ""
 
-#: src/components/rtoken-setup/token/ExternalRevenueSplit.tsx:119
+#: src/components/rtoken-setup/token/ExternalRevenueSplit.tsx:122
 msgid "X"
 msgstr ""
 
@@ -7887,7 +8348,7 @@ msgstr ""
 msgid "Yield"
 msgstr ""
 
-#: src/components/layout/header/components/app-navigation.tsx:125
+#: src/components/layout/header/components/app-navigation.tsx:126
 msgid "Yield DTF Creator"
 msgstr ""
 
@@ -7899,6 +8360,7 @@ msgstr ""
 msgid "Yield DTF Staking"
 msgstr ""
 
+#: src/components/command-menu/index.tsx:68
 #: src/views/home/components/dtf-tabs.tsx:30
 #: src/views/portfolio-page/components/portfolio-breakdown.tsx:37
 #: src/views/portfolio-page/components/portfolio-chart.tsx:65
@@ -7926,6 +8388,7 @@ msgstr ""
 msgid "You created the {0} DTF"
 msgstr ""
 
+#: src/components/vote-lock/components/vote-lock.tsx:30
 #: src/views/index-dtf/overview/components/staking/lock/index.tsx:30
 msgid "You lock:"
 msgstr ""
@@ -7951,18 +8414,29 @@ msgstr ""
 msgid "You need to mint at least $1 worth of {0} in order to create your new Index DTF."
 msgstr ""
 
+#: src/components/ui/swap.tsx:325
 #: src/views/yield-dtf/staking/components/unstake/unstake-modal.tsx:31
 msgid "You receive:"
+msgstr ""
+
+#: src/components/stake-drawer/components/stake.tsx:35
+msgid "You stake:"
 msgstr ""
 
 #: src/views/yield-dtf/deploy/components/RTokenSetup.tsx:49
 msgid "You submit the transaction configuring your RToken design"
 msgstr ""
 
+#: src/components/vote-lock/components/vote-unlock.tsx:30
 #: src/views/index-dtf/overview/components/staking/unlock/index.tsx:30
 msgid "You unlock:"
 msgstr ""
 
+#: src/components/stake-drawer/components/unstake.tsx:38
+msgid "You unstake:"
+msgstr ""
+
+#: src/components/ui/swap.tsx:215
 #: src/views/yield-dtf/staking/components/stake/stake-modal.tsx:34
 #: src/views/yield-dtf/staking/components/unstake/unstake-modal.tsx:25
 msgid "You use:"
@@ -8014,6 +8488,10 @@ msgstr ""
 
 #: src/views/portfolio-page/components/dtf-positions.tsx:215
 msgid "Your yield-bearing stablecoin holdings."
+msgstr ""
+
+#: src/components/liquidity-badge.tsx:61
+msgid "Zapper error"
 msgstr ""
 
 #: src/views/index-dtf/overview/components/zap-mint/zap-healthcheck.tsx:24

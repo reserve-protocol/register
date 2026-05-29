@@ -1,4 +1,4 @@
-import { Trans } from '@lingui/macro'
+import { Trans } from '@lingui/react/macro'
 import TokenLogo from 'components/icons/TokenLogo'
 import Spinner from '@/components/ui/spinner'
 import { Check } from 'lucide-react'
@@ -16,7 +16,9 @@ const ApprovalStatus = ({ allowance, hash, success }: IApprovalStatus) => {
     return (
       <div className="flex items-center text-muted-foreground mb-4">
         <Check size={16} />
-        <span className="ml-2">{allowance.symbol} Approved</span>
+        <span className="ml-2">
+          <Trans>{allowance.symbol} Approved</Trans>
+        </span>
       </div>
     )
   }
@@ -29,8 +31,8 @@ const ApprovalStatus = ({ allowance, hash, success }: IApprovalStatus) => {
           <Trans>Approve in wallet</Trans>
         </span>
         <span className="text-legend">
-          {!hash && 'Proceed in wallet'}
-          {hash && 'Confirming transaction'}
+          {!hash && <Trans>Proceed in wallet</Trans>}
+          {hash && <Trans>Confirming transaction</Trans>}
         </span>
       </div>
       <Spinner className="ml-auto" size={16} />

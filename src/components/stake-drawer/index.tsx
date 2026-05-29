@@ -1,3 +1,6 @@
+import { msg } from '@lingui/core/macro'
+import { Trans, useLingui } from '@lingui/react/macro'
+import type { MessageDescriptor } from '@lingui/core'
 import { useSetAtom, useAtom, useAtomValue } from 'jotai'
 import { useResetAtom } from 'jotai/utils'
 import { ReactNode, useEffect, useState } from 'react'
@@ -50,15 +53,15 @@ import SubmitStakeButton from './components/submit-stake-button'
 import SubmitUnstakeButton from './components/submit-unstake-button'
 import Updater from './updater'
 
-const TABS = [
+const TABS: { key: string; label: MessageDescriptor; icon: JSX.Element }[] = [
   {
     key: 'stake',
-    label: 'Stake RSR',
+    label: msg`Stake RSR`,
     icon: <Plus size={16} />,
   },
   {
     key: 'unstake',
-    label: 'Unstake',
+    label: msg`Unstake`,
     icon: <Minus size={16} />,
   },
 ]
@@ -76,11 +79,13 @@ const UnstakeCheckbox = () => {
       <div className="flex items-end gap-2 justify-between">
         <div className="max-w-sm">
           <div className="font-bold">
-            I'm aware of the {delay}-day unstake delay
+            <Trans>I'm aware of the {delay}-day unstake delay</Trans>
           </div>
           <div className="text-sm text-legend">
-            If you decide to unstake in the future, you'll need to wait {delay} days
-            until you can complete the withdrawal
+            <Trans>
+              If you decide to unstake in the future, you'll need to wait{' '}
+              {delay} days until you can complete the withdrawal
+            </Trans>
           </div>
         </div>
         <div className="flex items-center p-[6px] border border-border rounded-lg">
@@ -105,18 +110,25 @@ const UnstakeProcess = () => {
       <div className="rounded-full bg-primary p-1 w-max">
         <Asterisk size={20} className="text-white" />
       </div>
-      <div className="font-bold mt-3">Unstake process</div>
+      <div className="font-bold mt-3">
+        <Trans>Unstake process</Trans>
+      </div>
       <div className="text-primary mt-3">1.</div>
       <div className="text-md max-w-sm text-center -mt-1">
-        A {delay}-day unstake delay period begins & you stop accumulating rewards
+        <Trans>
+          A {delay}-day unstake delay period begins & you stop accumulating
+          rewards
+        </Trans>
       </div>
       <div className="text-primary mt-3">2.</div>
       <div className="text-md max-w-sm text-center -mt-1">
-        Wait {delay} days
+        <Trans>Wait {delay} days</Trans>
       </div>
       <div className="text-primary mt-3">3.</div>
       <div className="text-md max-w-sm text-center -mt-1">
-        Come back to your account balance page to withdraw your unstaked RSR
+        <Trans>
+          Come back to your account balance page to withdraw your unstaked RSR
+        </Trans>
       </div>
     </div>
   )
@@ -140,6 +152,7 @@ const ErrorMessage = () => {
 }
 
 const Delegate = () => {
+  const { t } = useLingui()
   const account = useAtomValue(walletAtom)
   const stToken = useAtomValue(stTokenAtom)
   const isLegacy = useAtomValue(isLegacyAtom)
@@ -160,7 +173,9 @@ const Delegate = () => {
             <div className="rounded-full border border-black p-1 w-max">
               <Vote size={16} />
             </div>
-            <div>Voting Power Delegation</div>
+            <div>
+              <Trans>Voting Power Delegation</Trans>
+            </div>
           </div>
 
           {!delegateVisible ? (
@@ -176,9 +191,11 @@ const Delegate = () => {
               }}
             >
               <div>
-                {currentDelegate && currentDelegate !== zeroAddress
-                  ? shortenAddress(currentDelegate)
-                  : 'Delegate to self'}
+                {currentDelegate && currentDelegate !== zeroAddress ? (
+                  shortenAddress(currentDelegate)
+                ) : (
+                  <Trans>Delegate to self</Trans>
+                )}
               </div>
               <Pencil size={14} />
             </div>
@@ -188,7 +205,7 @@ const Delegate = () => {
               role="button"
               onClick={() => setDelegateVisible(false)}
             >
-              Revert
+              <Trans>Revert</Trans>
               <Undo2 size={14} />
             </div>
           )}
@@ -197,14 +214,14 @@ const Delegate = () => {
       {delegateVisible && (
         <div className="px-2">
           <Input
-            placeholder="Delegate to address"
+            placeholder={t`Delegate to address`}
             value={delegate}
             onChange={(e) => setDelegate(e.target.value)}
             className="rounded-xl bg-card px-4 text-base h-12"
           />
           {!isValidDelegate && delegate && (
             <div className="text-red-700/70 text-sm px-4 py-1">
-              Invalid address
+              <Trans>Invalid address</Trans>
             </div>
           )}
         </div>
@@ -223,6 +240,7 @@ const StakeDrawer = ({
   onClose,
   children
 }: StakeDrawerProps) => {
+  const { t } = useLingui()
   const wallet = useAtomValue(walletAtom)
   const [currentTab, setCurrentTab] = useAtom(currentStakingTabAtom)
   const isStake = currentTab === 'stake'
@@ -346,7 +364,7 @@ const StakeDrawer = ({
                     className="flex gap-1 items-center pl-2 pr-3 data-[state=active]:text-primary"
                   >
                     {icon}
-                    {label}
+                    {t(label)}
                   </TabsTrigger>
                 ))}
               </TabsList>

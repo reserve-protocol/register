@@ -1,6 +1,7 @@
 import dtfIndexStakingVault from '@/abis/dtf-index-staking-vault'
 import TransactionButton from '@/components/ui/transaction-button'
 import { walletAtom } from '@/state/atoms'
+import { useLingui } from '@lingui/react/macro'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { useResetAtom } from 'jotai/utils'
 import { useEffect, useState } from 'react'
@@ -23,6 +24,7 @@ import {
 import useIsComplianceRestricted from '@/hooks/use-is-compliance-restricted'
 
 export const DelegateButton = () => {
+  const { t } = useLingui()
   const account = useAtomValue(walletAtom)
   const stToken = useAtomValue(stTokenAtom)!
   const delegate = useAtomValue(delegateAtom)
@@ -61,9 +63,9 @@ export const DelegateButton = () => {
         chain={chainId}
         disabled={!account || !isValidDelegate}
         loading={isPending || !!hash || (hash && !receipt)}
-        loadingText={!!hash ? 'Confirming tx...' : 'Pending, sign in wallet'}
+        loadingText={!!hash ? t`Confirming tx...` : t`Pending, sign in wallet`}
         onClick={write}
-        text={`Delegate ${stToken?.underlying.symbol}`}
+        text={t`Delegate ${stToken?.underlying.symbol}`}
         className="w-full"
         error={error || txError}
       />
@@ -72,6 +74,7 @@ export const DelegateButton = () => {
 }
 
 const SubmitLockButton = () => {
+  const { t } = useLingui()
   const account = useAtomValue(walletAtom)
   const stToken = useAtomValue(stTokenAtom)!
   const input = useAtomValue(stakingInputAtom)
@@ -168,7 +171,7 @@ const SubmitLockButton = () => {
       const timer = setTimeout(() => {
         resetInput()
         setShouldClose(true)
-        toast.success('Vote lock successful', { duration: 8000 })
+        toast.success(t`Vote lock successful`, { duration: 8000 })
         setIsProcessing(false)
       }, 10000)
 
@@ -199,18 +202,18 @@ const SubmitLockButton = () => {
         }
         loadingText={
           isProcessing
-            ? 'Processing transaction...'
+            ? t`Processing transaction...`
             : !!hash
-              ? 'Confirming tx...'
-              : 'Pending, sign in wallet'
+              ? t`Confirming tx...`
+              : t`Pending, sign in wallet`
         }
         onClick={readyToSubmit ? write : approve}
         text={
           receipt?.status === 'success'
-            ? 'Transaction confirmed'
+            ? t`Transaction confirmed`
             : readyToSubmit
-              ? `Vote lock ${stToken?.underlying.symbol}`
-              : `Approve use of ${stToken?.underlying.symbol}`
+              ? t`Vote lock ${stToken?.underlying.symbol}`
+              : t`Approve use of ${stToken?.underlying.symbol}`
         }
         className="w-full"
         error={

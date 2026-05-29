@@ -1,4 +1,4 @@
-import { t } from '@lingui/macro'
+import { useLingui } from '@lingui/react/macro'
 import ERC20 from 'abis/ERC20'
 import TransactionButton from '@/components/ui/transaction-button'
 import { Separator } from '@/components/ui/separator'
@@ -31,6 +31,7 @@ const Approval = ({
 }: {
   data: Allowance
 }) => {
+  const { t } = useLingui()
   const { write, isLoading, isReady, hash, gas } = useContractWrite({
     address: token,
     abi: ERC20,
@@ -43,10 +44,14 @@ const Approval = ({
       <Separator className="-mx-4 my-6" />
       <TransactionButton
         loading={isLoading || !!hash}
-        loadingText={hash ? 'Waiting for allowance...' : 'Sign in wallet...'}
+        loadingText={
+          hash ? t`Waiting for allowance...` : t`Sign in wallet...`
+        }
         onClick={write}
         disabled={!isReady}
-        text={!isReady ? `Verifying allowance...` : `Allow use of ${symbol}`}
+        text={
+          !isReady ? t`Verifying allowance...` : t`Allow use of ${symbol}`
+        }
         className="w-full"
         gas={gas}
       />
@@ -89,6 +94,7 @@ const TransactionModal = ({
   onChange = () => {},
   ...props
 }: ITransactionModal) => {
+  const { t } = useLingui()
   const hasAllowance = useHasAllowance(requiredAllowance)
   const {
     isLoading,
@@ -107,12 +113,12 @@ const TransactionModal = ({
   const validationMessage = useMemo(() => {
     if (validationError) {
       if (validationError.message.indexOf('empty redemption') !== -1) {
-        return 'Current basket not capitalized, please try to redeem with a previous basket.'
+        return t`Current basket not capitalized, please try to redeem with a previous basket.`
       }
     }
 
     return null
-  }, [validationError?.message])
+  }, [validationError?.message, t])
 
   const handleConfirm = () => {
     if (write) {

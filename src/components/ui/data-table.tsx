@@ -34,6 +34,7 @@ import {
 } from './select'
 import { ArrowDown, ArrowUp, ChevronLeft, ChevronRight } from 'lucide-react'
 import Spinner from './spinner'
+import { Trans } from '@lingui/react/macro'
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
@@ -89,8 +90,14 @@ const Pagination = ({
     <div className="flex items-center justify-between md:py-4 ">
       <div className="flex items-center gap-2 text-sm text-muted-foreground ml-6 opacity-0 md:opacity-100">
         <span>
-          Showing {Math.min(table.getState().pagination.pageSize, table.getFilteredRowModel().rows.length)} out of{' '}
-          {table.getFilteredRowModel().rows.length}
+          <Trans>
+            Showing{' '}
+            {Math.min(
+              table.getState().pagination.pageSize,
+              table.getFilteredRowModel().rows.length
+            )}{' '}
+            out of {table.getFilteredRowModel().rows.length}
+          </Trans>
         </span>
         {showPageSizeSelector && (
           <Select
@@ -445,7 +452,9 @@ function NoResultsRow<TData, TValue>({
         colSpan={columns.length}
         className={cn('h-24 text-center', noResultsClassName)}
       >
-        <div className="my-auto">No results.</div>
+        <div className="my-auto">
+          <Trans>No results.</Trans>
+        </div>
       </TableCell>
     </TableRow>
   )

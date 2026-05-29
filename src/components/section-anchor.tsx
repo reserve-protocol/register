@@ -1,4 +1,4 @@
-import { t } from '@lingui/macro'
+import { useLingui } from '@lingui/react/macro'
 import {
   Tooltip,
   TooltipContent,
@@ -8,6 +8,7 @@ import { Link2 } from 'lucide-react'
 import { useState } from 'react'
 
 const SectionAnchor = ({ id }: { id: string }) => {
+  const { t } = useLingui()
   const copyText = t`Copy link`
   const confirmText = t`Copied!`
   const [displayText, setDisplayText] = useState(copyText)

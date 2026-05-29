@@ -1,6 +1,9 @@
 import ChainLogo from '@/components/icons/ChainLogo'
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
 import { ChainId } from '@/utils/chains'
+import { msg } from '@lingui/core/macro'
+import { useLingui } from '@lingui/react/macro'
+import type { MessageDescriptor } from '@lingui/core'
 import { LayoutGrid } from 'lucide-react'
 import { useEffect, useState } from 'react'
 
@@ -10,10 +13,16 @@ interface ChainFilterProps {
   className?: string
 }
 
-const chains = [
+const chains: {
+  icon: JSX.Element
+  text: string
+  label?: MessageDescriptor
+  filter: string[]
+}[] = [
   {
     icon: <LayoutGrid />,
     text: 'All chains',
+    label: msg`All chains`,
     filter: [
       ChainId.Base.toString(),
       ChainId.Mainnet.toString(),
@@ -46,6 +55,7 @@ const getSelectedIndex = (currentFilter: string[]) => {
 }
 
 const ChainFilter = (props: ChainFilterProps) => {
+  const { t } = useLingui()
   const { value: currentFilter, onChange: setFilters, className } = props
   const [selected, setSelected] = useState(getSelectedIndex(currentFilter))
 
@@ -68,14 +78,16 @@ const ChainFilter = (props: ChainFilterProps) => {
       onValueChange={handleSelect}
       className={displayClassName}
     >
-      {chains.map(({ text, icon }, index) => (
+      {chains.map(({ text, label, icon }, index) => (
         <ToggleGroupItem
           key={text}
           value={index.toString()}
           className="flex items-center gap-0 h-8 px-2 data-[state=on]:bg-muted data-[state=on]:text-primary hover:text-primary hover:bg-muted"
         >
           {icon}
-          <span className="hidden md:block ml-[6px]">{text}</span>
+          <span className="hidden md:block ml-[6px]">
+            {label ? t(label) : text}
+          </span>
         </ToggleGroupItem>
       ))}
     </ToggleGroup>

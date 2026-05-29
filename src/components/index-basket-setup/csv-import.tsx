@@ -2,6 +2,7 @@ import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 import { indexDTFAtom } from '@/state/dtf/atoms'
 import { isAddress } from '@/utils'
+import { Trans, useLingui } from '@lingui/react/macro'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { DownloadCloud, FilePlus2 } from 'lucide-react'
 import React, { useCallback, useState } from 'react'
@@ -23,11 +24,12 @@ interface CsvImportProps {
 }
 
 export const CsvImport = ({
-  title = 'Replace Basket with CSV',
+  title,
   description,
   templateFilename,
   onImportComplete,
 }: CsvImportProps) => {
+  const { t } = useLingui()
   const dtf = useAtomValue(indexDTFAtom)
   const basketItems = useAtomValue(basketItemsAtom)
   const currentInputType = useAtomValue(currentInputTypeAtom)
@@ -192,13 +194,15 @@ export const CsvImport = ({
         <FilePlus2 size={16} />
       </div>
       <div className="text-base mr-auto">
-        <p className="font-bold">{title}</p>
+        <p className="font-bold">{title ?? t`Replace Basket with CSV`}</p>
         {description || (
           <p>
             <span className="text-primary cursor-pointer">
-              Select a CSV file to upload
+              <Trans>Select a CSV file to upload</Trans>
             </span>{' '}
-            <span className="text-legend">or drag and drop it here</span>
+            <span className="text-legend">
+              <Trans>or drag and drop it here</Trans>
+            </span>
           </p>
         )}
       </div>
@@ -207,7 +211,7 @@ export const CsvImport = ({
         className="text-legend font-normal gap-2"
         onClick={handleTemplate}
       >
-        CSV Template
+        <Trans>CSV Template</Trans>
         <DownloadCloud size={14} />
       </Button>
     </div>
