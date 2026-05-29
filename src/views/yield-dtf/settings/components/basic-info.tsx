@@ -1,4 +1,4 @@
-import { t, Trans } from '@lingui/macro'
+import { useLingui } from '@lingui/react/macro'
 import useRToken from '@/hooks/useRToken'
 import { useAtomValue } from 'jotai'
 import { rTokenGovernanceAtom } from '@/state/atoms'
@@ -6,6 +6,7 @@ import { shortenAddress } from '@/utils'
 import { InfoCard, InfoCardItem } from './settings-info-card'
 
 const BasicInfo = () => {
+  const { t } = useLingui()
   const rToken = useRToken()
   const { governor, timelock } = useAtomValue(rTokenGovernanceAtom)
 

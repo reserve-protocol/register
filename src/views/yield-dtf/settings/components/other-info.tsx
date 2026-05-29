@@ -1,10 +1,11 @@
-import { t } from '@lingui/macro'
+import { useLingui } from '@lingui/react/macro'
 import { useAtomValue } from 'jotai'
 import { rTokenConfigurationAtom } from '@/state/atoms'
 import { formatCurrency, parseDuration } from '@/utils'
 import { InfoCard, InfoCardItem } from './settings-info-card'
 
 const OtherInfo = () => {
+  const { t } = useLingui()
   const params = useAtomValue(rTokenConfigurationAtom)
 
   return (

@@ -1,4 +1,4 @@
-import { Trans } from '@lingui/macro'
+import { Trans } from '@lingui/react/macro'
 import OtherForm from 'components/rtoken-setup/token/OtherForm'
 import { Card } from '@/components/ui/card'
 import { Separator } from '@/components/ui/separator'

@@ -1,4 +1,4 @@
-import { t } from '@lingui/macro'
+import { useLingui } from '@lingui/react/macro'
 import Main from '@/abis/Main'
 import DocsLink from '@/components/utils/docs-link'
 import useRToken from '@/hooks/useRToken'
@@ -32,6 +32,7 @@ const useGovernanceSetupRequired = () => {
 }
 
 const RTokenManagement = () => {
+  const { t } = useLingui()
   const isGovernanceSetupRequired = useGovernanceSetupRequired()
 
   if (isGovernanceSetupRequired) {

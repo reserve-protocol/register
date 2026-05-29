@@ -1,4 +1,4 @@
-import { Trans, t } from '@lingui/macro'
+import { Trans, useLingui } from '@lingui/react/macro'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { useAtomValue } from 'jotai'
@@ -40,6 +40,7 @@ const TransactionDivider = (props: { title: string; subtitle: string }) => (
 )
 
 export const DeploySuccessDivider = ({ hash = '' }) => {
+  const { t } = useLingui()
   const chainId = useAtomValue(chainIdAtom)
 
   return (

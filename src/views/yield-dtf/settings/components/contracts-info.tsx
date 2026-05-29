@@ -1,4 +1,4 @@
-import { t } from '@lingui/macro'
+import { useLingui } from '@lingui/react/macro'
 import useRToken from '@/hooks/useRToken'
 import { useAtomValue } from 'jotai'
 import { chainIdAtom, rTokenAssetsAtom, rTokenContractsAtom } from '@/state/atoms'
@@ -8,6 +8,7 @@ import { RSR_ADDRESS } from '@/utils/addresses'
 import { InfoCard, InfoCardItem } from './settings-info-card'
 
 const ContractsInfo = () => {
+  const { t } = useLingui()
   const contracts = useAtomValue(rTokenContractsAtom)
   const assets = useAtomValue(rTokenAssetsAtom) ?? {}
   const rToken = useRToken()
@@ -46,7 +47,7 @@ const ContractsInfo = () => {
         />
       ))}
       <InfoCardItem
-        label="RToken asset"
+        label={t`RToken asset`}
         value={
           !rToken?.address || !assets[rToken.address] ? undefined : (
             <span className="flex items-center">

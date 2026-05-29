@@ -1,4 +1,4 @@
-import { Trans, t } from '@lingui/macro'
+import { Trans, useLingui } from '@lingui/react/macro'
 import Main from '@/abis/Main'
 import MainLegacy from '@/abis/MainLegacy'
 import useContractWrite from '@/hooks/useContractWrite'
@@ -28,6 +28,7 @@ const Pausing = ({
   type: PAUSE_TYPES
   legacy?: boolean
 }) => {
+  const { t } = useLingui()
   const rToken = useRToken()
   const accountRole = useAtomValue(accountRoleAtom)
   const contracts = useAtomValue(rTokenContractsAtom)
@@ -76,15 +77,19 @@ const Pausing = ({
   )
 }
 
-const Pausers = () => (
-  <SettingItem
-    title="Pausing"
-    subtitle={t`Role held by:`}
-    value={<RolesView roles={useAtomValue(rTokenManagersAtom).pausers} />}
-    icon="danger"
-    className="mb-3"
-  />
-)
+const Pausers = () => {
+  const { t } = useLingui()
+
+  return (
+    <SettingItem
+      title="Pausing"
+      subtitle={t`Role held by:`}
+      value={<RolesView roles={useAtomValue(rTokenManagersAtom).pausers} />}
+      icon="danger"
+      className="mb-3"
+    />
+  )
+}
 
 const PauseActions = () => {
   const { main: isLegacy } = useAtomValue(isModuleLegacyAtom)

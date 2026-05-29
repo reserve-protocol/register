@@ -1,5 +1,5 @@
 import { Switch } from '@/components/ui/switch'
-import { t, Trans } from '@lingui/macro'
+import { Trans, useLingui } from '@lingui/react/macro'
 import { FormField } from 'components/field'
 import { useFormContext } from 'react-hook-form'
 
@@ -11,6 +11,7 @@ interface TokenFormProps {
  * View: Deploy -> Token setup
  */
 const TokenForm = ({ className }: TokenFormProps) => {
+  const { t } = useLingui()
   const { watch, setValue } = useFormContext()
   const [tickerValue, reweightable, enableIssuancePremium] = watch(['ticker', 'reweightable', 'enableIssuancePremium'])
 
@@ -60,16 +61,20 @@ const TokenForm = ({ className }: TokenFormProps) => {
         }}
       />
       <div className="mt-3 ml-3 flex flex-col gap-2">
-        <span className="font-bold">Allow RToken basket to change weights</span>
+        <span className="font-bold">
+          <Trans>Allow RToken basket to change weights</Trans>
+        </span>
         <p className="text-xs text-legend mb-2">
-          A re-weightable RToken can have its basket changed in terms of its
-          target units (USD/ETH/BTC/etc…). This flexibility allows for the
-          addition, removal, and update of target units in the basket via
-          governance actions, and could result in drastic shifts in the $USD
-          value of an RToken. RToken holders of re-weightable RTokens have fewer
-          guarantees than holders of non-re-weightable RTokens. This option
-          should only be used if an RToken must be re-weightable in order to
-          accomplish its core goals.
+          <Trans>
+            A re-weightable RToken can have its basket changed in terms of its
+            target units (USD/ETH/BTC/etc…). This flexibility allows for the
+            addition, removal, and update of target units in the basket via
+            governance actions, and could result in drastic shifts in the $USD
+            value of an RToken. RToken holders of re-weightable RTokens have
+            fewer guarantees than holders of non-re-weightable RTokens. This
+            option should only be used if an RToken must be re-weightable in
+            order to accomplish its core goals.
+          </Trans>
         </p>
         <div className="flex items-center gap-1">
           <Switch
@@ -79,13 +84,17 @@ const TokenForm = ({ className }: TokenFormProps) => {
         </div>
       </div>
       <div className="mt-3 ml-3 flex flex-col gap-2">
-        <span className="font-bold">Issuance Premium</span>
+        <span className="font-bold">
+          <Trans>Issuance Premium</Trans>
+        </span>
         <p className="text-xs text-legend mb-2">
-          This impacts whether the RToken charges higher rates for issuance when
-          collateral is under-peg. This mechanism can be useful for preventing
-          toxic issuance but comes with the tradeoff of making the onchain
-          oracle price unreliable, as the issuance/redemption band widens as a
-          collateral approaches its de-peg threshold.
+          <Trans>
+            This impacts whether the RToken charges higher rates for issuance
+            when collateral is under-peg. This mechanism can be useful for
+            preventing toxic issuance but comes with the tradeoff of making the
+            onchain oracle price unreliable, as the issuance/redemption band
+            widens as a collateral approaches its de-peg threshold.
+          </Trans>
         </p>
         <div className="flex items-center gap-1">
           <Switch
