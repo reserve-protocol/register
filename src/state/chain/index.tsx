@@ -88,7 +88,10 @@ const ChainProvider = ({ children }: { children: ReactNode }) => {
           appInfo={{ appName: 'Reserve Register', disclaimer: Disclaimer }}
         >
           <AtomUpdater />
-          <DtfSdkProvider chains={dtfSdkChains}>
+          <DtfSdkProvider
+            chains={dtfSdkChains}
+            etherscanApiKey={import.meta.env.VITE_ETHERSCAN_API_KEY}
+          >
             {children}
           </DtfSdkProvider>
         </RainbowKitProvider>

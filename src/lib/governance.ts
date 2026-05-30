@@ -1,12 +1,15 @@
 import type {
   Amount,
   IndexDtfOptimisticProposalContext,
+  IndexDtfProposalDecoded,
+  SupportedChainId,
 } from '@reserve-protocol/react-sdk'
 import { Address, Hex } from 'viem'
 
 export interface PartialProposal {
   id: string
-  timelockId: string
+  chainId: SupportedChainId
+  timelockId?: Hex
   description: string
   creationTime: number
   creationBlock: number
@@ -25,6 +28,7 @@ export interface PartialProposal {
   challengedProposalId?: string
   vetoThreshold?: bigint
   voteToken: Address
+  timelock: Address
   optimistic?: IndexDtfOptimisticProposalContext
   votingState: VotingState
   proposer: {
@@ -56,6 +60,7 @@ export interface ProposalDetail extends PartialProposal {
   againstDelegateVotes: string
   executionTxnHash?: string
   targets: Address[]
+  decoded: IndexDtfProposalDecoded
   votes: {
     choice: string
     weight: Amount

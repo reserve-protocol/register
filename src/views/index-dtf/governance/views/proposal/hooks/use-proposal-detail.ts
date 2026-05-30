@@ -9,6 +9,9 @@ import {
 import { useMemo } from 'react'
 import { PROPOSAL_STATES } from '@/utils/constants'
 
+const MAX_REFETCH_INTERVAL = 60_000
+const ACTIVE_REFETCH_INTERVAL = 30_000
+
 export enum ProposalStatus {
   Pending,
   Active,
@@ -52,7 +55,8 @@ const withVotingSnapshot = (
 const mapProposalDetail = (proposal: IndexDtfProposalDetail): ProposalDetail => {
   const proposalDetail: ProposalDetail = {
     id: proposal.id,
-    timelockId: proposal.timelockId ?? '',
+    chainId: proposal.chainId,
+    timelockId: proposal.timelockId,
     description: proposal.description,
     creationTime: proposal.creationTime,
     creationBlock: proposal.creationBlock,
@@ -72,6 +76,7 @@ const mapProposalDetail = (proposal: IndexDtfProposalDetail): ProposalDetail => 
     wasChallenged: proposal.wasChallenged,
     challengedProposalId: proposal.challengedProposalId,
     voteToken: proposal.voteToken,
+    timelock: proposal.timelock,
     proposer: {
       address: proposal.proposer,
     },
@@ -91,6 +96,7 @@ const mapProposalDetail = (proposal: IndexDtfProposalDetail): ProposalDetail => 
     executionTxnHash: proposal.executionTxnHash,
     governor: proposal.governance,
     votingState: proposal.votingState,
+    decoded: proposal.decoded,
   }
 
   return proposalDetail
@@ -100,7 +106,10 @@ const useProposalDetail = (proposalId: string | undefined) => {
   const { address, chainId } = useIndexDtfIdentity()
   const proposalQuery = useIndexDtfProposal(
     proposalId ? { address, chainId, proposalId } : undefined,
-    { refetchInterval: 1000 * 60 }
+    {
+      refetchInterval: (query) =>
+        getRefetchInterval(query.state.data as IndexDtfProposalDetail | undefined),
+    }
   )
   const proposal = proposalQuery.data
   const shouldReadVotingSnapshot =
@@ -109,7 +118,12 @@ const useProposalDetail = (proposalId: string | undefined) => {
     shouldReadVotingSnapshot && proposal
       ? { chainId, proposalId: proposal.id }
       : undefined,
-    { refetchInterval: 30_000 }
+    {
+      refetchInterval: (query) =>
+        getRefetchInterval(
+          query.state.data as IndexDtfProposalVotingSnapshot | undefined
+        ),
+    }
   )
   const data = useMemo(() => {
     if (!proposal) {
@@ -128,6 +142,23 @@ const useProposalDetail = (proposalId: string | undefined) => {
     isError: proposalQuery.isError || votingSnapshotQuery.isError,
     isFetching: proposalQuery.isFetching || votingSnapshotQuery.isFetching,
   }
+}
+
+function getRefetchInterval(
+  proposal: Pick<IndexDtfProposalDetail, 'votingState'> | undefined
+) {
+  if (!proposal) return MAX_REFETCH_INTERVAL
+
+  const deadline = proposal.votingState.deadline
+  if (deadline && deadline > 0) {
+    return Math.min(deadline * 1000 + 1000, MAX_REFETCH_INTERVAL)
+  }
+
+  if (proposal.votingState.state === PROPOSAL_STATES.ACTIVE) {
+    return ACTIVE_REFETCH_INTERVAL
+  }
+
+  return MAX_REFETCH_INTERVAL
 }
 
 export default useProposalDetail

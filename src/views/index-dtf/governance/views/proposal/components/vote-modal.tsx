@@ -5,7 +5,7 @@ import { Separator } from '@/components/ui/separator'
 import { ModalProps } from 'components'
 import useWatchTransaction from '@/hooks/useWatchTransaction'
 import { t, Trans } from '@lingui/macro'
-import Governance from 'abis/Governance'
+import { useIndexDtfVoteCall } from '@reserve-protocol/react-sdk'
 import { Modal } from 'components'
 import useContractWrite from 'hooks/useContractWrite'
 import { useAtomValue, useSetAtom } from 'jotai'
@@ -26,7 +26,7 @@ import {
 } from 'utils/getExplorerLink'
 import EnsName from '@/components/utils/ens-name'
 import { accountVotesAtom, proposalDetailAtom } from '../atom'
-import { proposalRefreshFnAtom } from '../updater'
+import useRefreshProposal from '../hooks/use-refresh-proposal'
 
 export const VOTE_TYPE = {
   AGAINST: 0,
@@ -46,16 +46,27 @@ const VoteModal = (props: ModalProps) => {
   const [vote, setVote] = useState(-1)
   const proposal = useAtomValue(proposalDetailAtom)
   const isValid = proposal?.id && vote !== -1
-  const refreshFn = useAtomValue(proposalRefreshFnAtom)
+  const refreshProposal = useRefreshProposal()
   const setAccountVotes = useSetAtom(accountVotesAtom)
+  const call = useIndexDtfVoteCall(
+    isValid && proposal
+      ? {
+          chainId: proposal.chainId,
+          governance: proposal.governor,
+          proposalId: proposal.id,
+          support: vote as 0 | 1 | 2,
+        }
+      : undefined
+  )
 
   const { hash, isLoading, isReady, write } = useContractWrite(
-    isValid
+    call
       ? {
-          address: proposal?.governor ?? '0x',
-          functionName: 'castVote',
-          abi: Governance,
-          args: [BigInt(proposal.id), vote],
+          address: call.contract.address,
+          chainId: call.chainId,
+          functionName: call.contract.functionName,
+          abi: call.contract.abi,
+          args: call.contract.args,
         }
       : undefined
   )
@@ -77,9 +88,9 @@ const VoteModal = (props: ModalProps) => {
         ...current,
         vote: VOTE_LABEL[vote] ?? current.vote,
       }))
-      refreshFn?.()
+      refreshProposal()
     }
-  }, [refreshFn, setAccountVotes, status, vote])
+  }, [refreshProposal, setAccountVotes, status, vote])
 
   // TODO: Signed modal should be its own component
   // TODO: reused on other modals

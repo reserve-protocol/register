@@ -55,6 +55,17 @@ const ProposalChanges = () => {
       <GovernanceProposalPreview
         targets={proposal?.targets}
         calldatas={proposal?.calldatas}
+        decoded={proposal?.decoded}
+        proposalGovernance={
+          proposal
+            ? {
+                address: proposal.governor,
+                timelock: {
+                  address: proposal.timelock,
+                },
+              }
+            : undefined
+        }
         timestamp={proposal?.creationTime}
       />
     </div>

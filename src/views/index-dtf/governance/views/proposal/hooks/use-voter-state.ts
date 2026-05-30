@@ -35,7 +35,7 @@ const useVoterState = () => {
       : undefined
 
   const { data: voterState } = useIndexDtfProposalVoterState(params, {
-    refetchInterval: 1000 * 60,
+    refetchInterval: 30_000,
   })
 
   return useMemo(() => {

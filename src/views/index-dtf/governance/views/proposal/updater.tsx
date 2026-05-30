@@ -1,11 +1,11 @@
-import { atom, useSetAtom } from 'jotai'
-import { useEffect, useState } from 'react'
+import { useSetAtom } from 'jotai'
+import { useEffect } from 'react'
 import { useParams } from 'react-router-dom'
+import { PROPOSAL_STATES } from '@/utils/constants'
+import type { ProposalDetail } from '@/lib/governance'
 import { accountVotesAtom, proposalDetailAtom } from './atom'
 import useProposalDetail from './hooks/use-proposal-detail'
 import useVoterState from './hooks/use-voter-state'
-
-export const proposalRefreshFnAtom = atom<(() => void) | null>(null)
 
 const ProposalUpdater = () => {
   const { proposalId } = useParams()
@@ -15,7 +15,11 @@ const ProposalUpdater = () => {
   const setAccountVotes = useSetAtom(accountVotesAtom)
 
   useEffect(() => {
-    setProposalDetail(proposalDetail)
+    setProposalDetail((current) =>
+      shouldKeepLocalProposalState(current, proposalDetail)
+        ? current
+        : proposalDetail
+    )
   }, [proposalDetail, setProposalDetail])
 
   useEffect(() => {
@@ -32,23 +36,32 @@ const ProposalUpdater = () => {
   return null
 }
 
-const Updater = () => {
-  const [key, setKey] = useState(0)
-  const setRefreshFn = useSetAtom(proposalRefreshFnAtom)
+function shouldKeepLocalProposalState(
+  current: ProposalDetail | undefined,
+  next: ProposalDetail | undefined
+) {
+  if (!current || !next || current.id !== next.id) return false
 
-  const refreshProposal = () => {
-    setKey((k) => k + 1)
+  const currentState = current.votingState.state
+  const nextState = next.votingState.state
+
+  if (currentState === PROPOSAL_STATES.EXECUTED) {
+    return nextState !== PROPOSAL_STATES.EXECUTED
   }
 
-  useEffect(() => {
-    setRefreshFn(() => refreshProposal)
-  }, [])
+  if (currentState === PROPOSAL_STATES.CANCELED) {
+    return nextState !== PROPOSAL_STATES.CANCELED
+  }
 
-  return (
-    <div key={key}>
-      <ProposalUpdater />
-    </div>
-  )
+  if (currentState === PROPOSAL_STATES.QUEUED) {
+    return [
+      PROPOSAL_STATES.PENDING,
+      PROPOSAL_STATES.ACTIVE,
+      PROPOSAL_STATES.SUCCEEDED,
+    ].includes(nextState)
+  }
+
+  return false
 }
 
-export default Updater
+export default ProposalUpdater

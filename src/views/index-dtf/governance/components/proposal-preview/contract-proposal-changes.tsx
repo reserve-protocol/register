@@ -60,13 +60,15 @@ const TABS = {
 const ContractProposalChanges = ({
   decodedCalldatas,
   address,
+  contractName,
 }: {
   decodedCalldatas: DecodedCalldata[]
   address: Address
+  contractName?: string
 }) => {
   const chainId = useAtomValue(chainIdAtom)
-  const alias =
-    useAtomValue(dtfContractAliasAtom)?.[address.toLowerCase()] ?? 'Unknown'
+  const contractAliases = useAtomValue(dtfContractAliasAtom)
+  const alias = contractName ?? contractAliases?.[address.toLowerCase()] ?? 'Unknown'
 
   return (
     <Tabs

@@ -15,9 +15,8 @@ import { getTargetBasket } from '@reserve-protocol/dtf-rebalance-lib'
 import { useQuery } from '@tanstack/react-query'
 import { atom, useAtomValue } from 'jotai'
 import { useMemo } from 'react'
-import { Address, formatUnits, Hex } from 'viem'
+import { Abi, Address, decodeFunctionData, formatUnits, getAbiItem, Hex } from 'viem'
 import useAssetPricesWithSnapshot from './use-asset-prices-with-snapshot'
-import { getDecodedCalldata } from './use-decoded-call-datas'
 import useTokensInfo from './useTokensInfo'
 import { IndexDTFPerformance } from '@/views/index-dtf/overview/hooks/use-dtf-price-history'
 
@@ -52,6 +51,28 @@ type Range = {
   low: bigint
   spot: bigint
   high: bigint
+}
+
+const getDecodedCalldata = (abi: Abi, calldata: Hex): DecodedCalldata => {
+  const { functionName, args } = decodeFunctionData({
+    abi,
+    data: calldata,
+  })
+
+  const result = getAbiItem({
+    abi,
+    name: functionName as string,
+  })
+
+  return {
+    signature: functionName,
+    parameters:
+      result && 'inputs' in result
+        ? result.inputs.map((input) => `${input.name}: ${input.type}`)
+        : [],
+    callData: calldata,
+    data: (args ?? []) as unknown as unknown[] as string[],
+  }
 }
 
 // V5 TokenRebalanceParams structure from the ABI

@@ -1,13 +1,14 @@
 import TransactionButton from '@/components/ui/transaction-button'
 import { getCurrentTime } from '@/utils'
 import { t } from '@lingui/macro'
-import dtfIndexGovernanceAbi from 'abis/dtf-index-governance'
+import { useIndexDtfExecuteProposalCall } from '@reserve-protocol/react-sdk'
 import useContractWrite from 'hooks/useContractWrite'
 import useWatchTransaction from 'hooks/useWatchTransaction'
-import { atom, useAtomValue } from 'jotai'
-import { useEffect, useState } from 'react'
-import { proposalDetailAtom, proposalTxArgsAtom } from '../atom'
-import { proposalRefreshFnAtom } from '../updater'
+import { atom, useAtom, useAtomValue } from 'jotai'
+import { useEffect } from 'react'
+import { PROPOSAL_STATES } from '@/utils/constants'
+import { proposalDetailAtom } from '../atom'
+import useRefreshProposal from '../hooks/use-refresh-proposal'
 
 const canExecuteAtom = atom((get) => {
   const timestamp = getCurrentTime()
@@ -17,51 +18,76 @@ const canExecuteAtom = atom((get) => {
 })
 
 const ProposalExecute = () => {
-  const proposal = useAtomValue(proposalDetailAtom)
+  const [proposal, setProposal] = useAtom(proposalDetailAtom)
   const canExecute = useAtomValue(canExecuteAtom)
   const deadline = proposal?.votingState.deadline
-  const governor = proposal?.governor
-  const txArgs = useAtomValue(proposalTxArgsAtom)
-  const refreshFn = useAtomValue(proposalRefreshFnAtom)
-  const [isProcessing, setIsProcessing] = useState(false)
-
-  const { write, isLoading, hash, isReady, validationError } = useContractWrite(
-    {
-      abi: dtfIndexGovernanceAbi,
-      address: governor && canExecute ? governor : undefined,
-      functionName: 'execute',
-      value: 0n,
-      args: txArgs,
-    }
+  const refreshProposal = useRefreshProposal()
+  const call = useIndexDtfExecuteProposalCall(
+    proposal && canExecute
+      ? {
+          chainId: proposal.chainId,
+          proposal: {
+            governance: proposal.governor,
+            timelock: proposal.timelock,
+            timelockId: proposal.timelockId,
+            targets: proposal.targets,
+            calldatas: proposal.calldatas,
+            description: proposal.description,
+          },
+        }
+      : undefined
   )
 
-  const { isMining, status } = useWatchTransaction({
+  const { write, isLoading, hash, isReady, validationError } = useContractWrite(
+    call
+      ? {
+          abi: call.contract.abi,
+          address: call.contract.address,
+          chainId: call.chainId,
+          functionName: call.contract.functionName,
+          value: call.value,
+          args: call.contract.args,
+        }
+      : undefined
+  )
+
+  const { data, isMining, status } = useWatchTransaction({
     hash,
     label: t`Execute proposal`,
   })
 
   useEffect(() => {
     if (status === 'success') {
-      setIsProcessing(true)
-      const timer = setTimeout(() => {
-        refreshFn?.()
-        setIsProcessing(false)
-      }, 10000)
-
-      return () => clearTimeout(timer)
+      refreshProposal()
+      setProposal((prev) =>
+        prev
+          ? {
+              ...prev,
+              votingState: {
+                ...prev.votingState,
+                state: PROPOSAL_STATES.EXECUTED,
+                deadline: null,
+              },
+              state: PROPOSAL_STATES.EXECUTED,
+              executionTime: Math.floor(Date.now() / 1000).toString(),
+              executionBlock: data?.blockNumber.toString(),
+              executionTxnHash: hash,
+            }
+          : undefined
+      )
     }
-  }, [status])
+  }, [data, hash, refreshProposal, setProposal, status])
 
   if (!deadline || deadline > 0) return null
 
   return (
     <TransactionButton
       size="sm"
-      loading={isProcessing || isMining || isLoading}
+      loading={isMining || isLoading}
       mining={isMining}
       disabled={!isReady || !canExecute || status === 'success'}
       onClick={write}
-      text={isProcessing ? 'Processing...' : t`Execute proposal`}
+      text={t`Execute proposal`}
       className="h-[44px]"
       error={validationError}
       errorWithName={false}

@@ -1,20 +1,21 @@
-import dtfIndexGovernance from '@/abis/dtf-index-governance'
 import TransactionButton from '@/components/ui/transaction-button'
 import { indexDTFAtom } from '@/state/dtf/atoms'
 import { PROPOSAL_STATES } from '@/utils/constants'
 import { t } from '@lingui/macro'
+import { useIndexDtfQueueProposalCall } from '@reserve-protocol/react-sdk'
 import useContractWrite from 'hooks/useContractWrite'
 import useWatchTransaction from 'hooks/useWatchTransaction'
 import { atom, useAtom, useAtomValue } from 'jotai'
 import { useEffect } from 'react'
-import { proposalDetailAtom, proposalTxArgsAtom } from '../atom'
+import { proposalDetailAtom } from '../atom'
+import useRefreshProposal from '../hooks/use-refresh-proposal'
 
 const executionDelayAtom = atom((get) => {
   const proposal = get(proposalDetailAtom)
   const indexDTF = get(indexDTFAtom)
   const governor = proposal?.governor
   if (governor === indexDTF?.stToken?.governance?.id) {
-    return indexDTF?.ownerGovernance?.timelock.executionDelay
+    return indexDTF?.stToken?.governance?.timelock.executionDelay
   }
   if (governor === indexDTF?.tradingGovernance?.id) {
     return indexDTF?.tradingGovernance?.timelock.executionDelay
@@ -25,16 +26,33 @@ const executionDelayAtom = atom((get) => {
 const ProposalQueue = () => {
   const executionDelay = useAtomValue(executionDelayAtom)
   const [proposal, setProposal] = useAtom(proposalDetailAtom)
-  const governor = proposal?.governor
-  const txArgs = useAtomValue(proposalTxArgsAtom)
+  const refreshProposal = useRefreshProposal()
+  const call = useIndexDtfQueueProposalCall(
+    proposal
+      ? {
+          chainId: proposal.chainId,
+          proposal: {
+            governance: proposal.governor,
+            timelock: proposal.timelock,
+            timelockId: proposal.timelockId,
+            targets: proposal.targets,
+            calldatas: proposal.calldatas,
+            description: proposal.description,
+          },
+        }
+      : undefined
+  )
 
   const { write, isLoading, hash, isReady, validationError } = useContractWrite(
-    {
-      abi: dtfIndexGovernance,
-      address: governor,
-      functionName: 'queue',
-      args: txArgs,
-    }
+    call
+      ? {
+          abi: call.contract.abi,
+          address: call.contract.address,
+          chainId: call.chainId,
+          functionName: call.contract.functionName,
+          args: call.contract.args,
+        }
+      : undefined
   )
   const { data, isMining, status } = useWatchTransaction({
     hash,
@@ -43,6 +61,7 @@ const ProposalQueue = () => {
 
   useEffect(() => {
     if (data && status === 'success') {
+      refreshProposal()
       setProposal((prev) =>
         prev
           ? {
@@ -62,11 +81,7 @@ const ProposalQueue = () => {
           : undefined
       )
     }
-  }, [data, status])
-
-  if (validationError) {
-    console.error('[QUEUE ERROR]', validationError)
-  }
+  }, [data, refreshProposal, setProposal, status, executionDelay])
 
   return (
     <TransactionButton
@@ -76,6 +91,8 @@ const ProposalQueue = () => {
       disabled={!isReady}
       onClick={write}
       text={t`Queue proposal`}
+      error={validationError}
+      errorWithName={false}
     />
   )
 }
