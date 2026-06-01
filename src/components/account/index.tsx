@@ -8,6 +8,7 @@ import {
 import Staking from '@/views/index-dtf/overview/components/staking'
 import { Trans } from '@lingui/macro'
 import { ConnectButton } from '@rainbow-me/rainbowkit'
+import { useDisconnect } from 'wagmi'
 import ChainLogo from 'components/icons/ChainLogo'
 import { useAtomValue } from 'jotai'
 import { AlertCircle, Wallet, Power } from 'lucide-react'
@@ -63,6 +64,21 @@ const ErrorWrapper = ({
 const Account = () => {
   const chainId = useAtomValue(chainIdAtom)
   const isTokenSelected = !!useAtomValue(selectedRTokenAtom)
+  const { disconnectAsync } = useDisconnect()
+
+  // Tear down any lingering connector state before opening the modal. Without
+  // this, a fresh Safe-over-WalletConnect connect can hang in "connecting" and
+  // never resolve, leaving the app showing disconnected until a manual refresh
+  // (the Gnosis-required flow already does this and connects reliably). A no-op
+  // for the common disconnected case, so other wallets are unaffected.
+  const handleConnect = async (openConnectModal: () => void) => {
+    try {
+      await disconnectAsync()
+    } catch {
+      // ignore — nothing to disconnect
+    }
+    openConnectModal()
+  }
 
   return (
     <ConnectButton.Custom>
@@ -84,7 +100,7 @@ const Account = () => {
                 return (
                   <Button
                     variant="accent"
-                    onClick={openConnectModal}
+                    onClick={() => handleConnect(openConnectModal)}
                     className="px-3.5 py-1 rounded-full font-normal"
                   >
                     <span className="flex md:hidden items-center py-1">
