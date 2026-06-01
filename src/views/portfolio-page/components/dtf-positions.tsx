@@ -12,7 +12,10 @@ import { ColumnDef } from '@tanstack/react-table'
 import { useAtomValue } from 'jotai'
 import { ArrowRight, Globe, Flower } from 'lucide-react'
 import { Link } from 'react-router-dom'
-import { portfolioIndexDTFsAtom, portfolioYieldDTFsAtom } from '../atoms'
+import {
+  portfolioIndexDTFPositionsAtom,
+  portfolioYieldDTFsAtom,
+} from '../atoms'
 import { PortfolioIndexDTF, PortfolioYieldDTF } from '../types'
 import { ExpandToggle, useExpandable } from './expand-toggle'
 import PerformanceCell from './performance-cell'
@@ -151,7 +154,7 @@ const columns: ColumnDef<DTFRow, any>[] = [
 ]
 
 const IndexDTFPositions = () => {
-  const data = useAtomValue(portfolioIndexDTFsAtom)
+  const data = useAtomValue(portfolioIndexDTFPositionsAtom)
   const { displayData, expanded, toggle, hasMore, total } =
     useExpandable(data)
 

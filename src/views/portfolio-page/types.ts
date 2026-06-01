@@ -24,6 +24,7 @@ export interface PortfolioIndexDTF {
   mintAPY?: number | null
   averageCost: number | null
   unrealizedPnL: number | null
+  rewards?: PortfolioReward[]
 }
 
 export interface PortfolioYieldDTF {
