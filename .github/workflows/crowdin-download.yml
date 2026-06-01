@@ -9,6 +9,13 @@ on:
   schedule:
     - cron: '0 */6 * * *' # every 6 hours
   workflow_dispatch:
+  # Temporary: run on PRs to master so the download can be exercised before
+  # merge. It will open the l10n_master -> master PR. Remove once verified.
+  pull_request:
+    branches: [master]
+    paths:
+      - .github/workflows/crowdin-download.yml
+      - crowdin.yml
 
 permissions:
   contents: write
