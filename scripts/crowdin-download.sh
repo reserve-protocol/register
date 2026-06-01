@@ -3,6 +3,8 @@
 # push. Only needs CROWDIN_PROJECT_ID and CROWDIN_PERSONAL_TOKEN; pushing uses
 # your existing git credentials and the PR is opened by you (no GitHub token).
 # Override the base branch with CROWDIN_BASE_BRANCH; branch name is arg 1.
+# Set DRY_RUN=1 to skip the push (the temp branch is created and cleaned up so
+# you can see the full flow with no side effects).
 set -euo pipefail
 
 cd "$(git rev-parse --show-toplevel)"
@@ -26,21 +28,44 @@ base="${CROWDIN_BASE_BRANCH:-master}"
 start="$(git branch --show-current)"
 branch="${1:-l10n/crowdin-download-$(date +%Y%m%d-%H%M%S)}"
 
+# Always return to the starting branch and drop the temp branch, even on error,
+# so a failure never strands you on it. Skipped once we've pushed for real.
+branch_created=0
+keep_branch=0
+cleanup() {
+  [ "$branch_created" = 1 ] || return 0
+  [ "$keep_branch" = 1 ] && return 0
+  git switch -f "$start" >/dev/null 2>&1 || true
+  git branch -D "$branch" >/dev/null 2>&1 || true
+}
+trap cleanup EXIT
+
 git fetch origin "$base"
 git switch -c "$branch" "origin/$base"
+branch_created=1
 
-pnpm exec crowdin download
+# crowdin exits non-zero when there's nothing translated yet; that's not an
+# error for us — the change check below handles the "nothing downloaded" case.
+pnpm exec crowdin download || true
 
 if [ -z "$(git status --porcelain src/locales)" ]; then
   echo "No translation changes from Crowdin."
-  git switch "$start"
-  git branch -D "$branch"
   exit 0
 fi
 
 git add src/locales
 git commit -m "chore(i18n): update translations"
+
+if [ "${DRY_RUN:-0}" = "1" ]; then
+  echo
+  echo "[dry-run] committed locally on $branch; skipping push and cleaning up."
+  echo "[dry-run] would run: git push -u origin $branch"
+  echo "[dry-run] would open: https://github.com/reserve-protocol/register/compare/$base...$branch?expand=1"
+  exit 0
+fi
+
 git push -u origin "$branch"
+keep_branch=1
 
 echo
 echo "Pushed $branch. Open a PR:"
