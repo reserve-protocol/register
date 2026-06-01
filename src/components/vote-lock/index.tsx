@@ -143,9 +143,8 @@ const Delegate = () => {
 
           {!delegateVisible ? (
             <div
-              className={`flex gap-1.5 items-center text-primary ${
-                !account ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'
-              }`}
+              className={`flex gap-1.5 items-center text-primary ${!account ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'
+                }`}
               role="button"
               onClick={() => {
                 const delegateOrSelf = currentDelegate || account || ''

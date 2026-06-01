@@ -11,7 +11,7 @@ import {
   useIndexDtfVoterState,
 } from '@reserve-protocol/react-sdk'
 import { useAtomValue } from 'jotai'
-import { NotebookTabs } from 'lucide-react'
+import { NotebookTabs, User2, Vote } from 'lucide-react'
 import React, { useEffect, useRef } from 'react'
 import { zeroAddress } from 'viem'
 
@@ -124,7 +124,7 @@ const GovernanceAccountInfo = () => {
     <div className="flex flex-col rounded-3xl bg-background">
       <div className='flex items-center px-4 pt-4 pb-2 gap-4'>
         <div className="border rounded-full border-foreground p-1">
-          <NotebookTabs size={14} />
+          <Vote size={14} />
         </div>
         <h4 className='text-xl font-semibold text-primary'><Trans>Voting Power</Trans></h4>
       </div>

@@ -40,11 +40,9 @@ const GovernanceVoteLock = () => {
   const chainId = useAtomValue(chainIdAtom)
   const apr = useVoteLockAPR()
 
-  if (!indexDTF) {
+  if (!indexDTF?.stToken) {
     return <Placeholder />
   }
-
-  if (!indexDTF.stToken) return null
 
   return (
     <div className="rounded-3xl bg-background p-2">

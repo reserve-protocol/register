@@ -13,6 +13,16 @@ const FORMS = [
     placeholder: '0x...',
   },
   {
+    title: 'Optimistic Proposer',
+    description:
+      'A trusted actor that can propose optimistic actions.',
+    icon: <ShieldHalf size={14} strokeWidth={1.5} />,
+    fieldName: 'guardians',
+    buttonLabel: 'Add additional guardian',
+    inputLabel: 'Address',
+    placeholder: '0x...',
+  },
+  {
     title: 'Brand Manager',
     description: (
       <span>
