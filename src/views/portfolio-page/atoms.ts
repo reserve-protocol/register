@@ -8,6 +8,7 @@ import {
   PortfolioPeriod,
   PortfolioProposal,
   PortfolioResponse,
+  PortfolioReward,
 } from './types'
 import { getProposalState, VotingState } from '@/lib/governance'
 import { PROPOSAL_STATES } from '@/utils/constants'
@@ -20,6 +21,9 @@ export const portfolioAddressAtom = atom<Address | undefined>(undefined)
 
 export const portfolioIndexDTFsAtom = atom(
   (get) => get(portfolioDataAtom)?.indexDTFs ?? []
+)
+export const portfolioIndexDTFPositionsAtom = atom((get) =>
+  get(portfolioIndexDTFsAtom).filter((d) => Number(d.amount) > 0)
 )
 export const portfolioYieldDTFsAtom = atom(
   (get) => get(portfolioDataAtom)?.yieldDTFs ?? []
@@ -178,16 +182,35 @@ export const portfolioPendingWithdrawalsAtom = atom<PendingWithdrawalRow[]>(
   }
 )
 
-export const portfolioRewardsAtom = atom((get) => {
+export type PortfolioRewardRow = PortfolioReward & {
+  source: 'staking' | 'revenue'
+  stTokenAddress?: Address
+  dtfAddress?: Address
+}
+
+export const portfolioRewardsAtom = atom<PortfolioRewardRow[]>((get) => {
   const voteLocks = get(portfolioVoteLocksAtom)
-  return voteLocks
-    .flatMap((lock) =>
-      (lock.rewards || []).map((r) => ({
-        ...r,
-        stTokenAddress: lock.stTokenAddress,
-      }))
-    )
-    .sort((a, b) => (b.value || 0) - (a.value || 0))
+  const indexDTFs = get(portfolioIndexDTFsAtom)
+
+  const stakingRewards = voteLocks.flatMap((lock) =>
+    (lock.rewards || []).map((r) => ({
+      ...r,
+      source: 'staking' as const,
+      stTokenAddress: lock.stTokenAddress,
+    }))
+  )
+
+  const revenueRewards = indexDTFs.flatMap((dtf) =>
+    (dtf.rewards || []).map((r) => ({
+      ...r,
+      source: 'revenue' as const,
+      dtfAddress: dtf.address,
+    }))
+  )
+
+  return [...stakingRewards, ...revenueRewards].sort(
+    (a, b) => (b.value || 0) - (a.value || 0)
+  )
 })
 
 export const openStakingSidebarAtom = atom(
