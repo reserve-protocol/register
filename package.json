@@ -98,6 +98,9 @@
     "test:e2e": "pnpm exec playwright test",
     "extract": "lingui extract",
     "translations": "lingui extract --clean",
+    "crowdin:status": "bash -c 'set -a; [ -f .env ] && . ./.env; set +a; crowdin status'",
+    "crowdin:upload": "bash scripts/crowdin-upload.sh",
+    "crowdin:download": "bash scripts/crowdin-download.sh",
     "forknet": "anvil --fork-url https://eth.llamarpc.com --chain-id 1 --balance 10000000",
     "parse-collaterals": "node scripts/parseCollaterals",
     "generate-seo-tokens": "pnpm exec tsx scripts/generate-seo-tokens.ts",
@@ -124,6 +127,7 @@
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20260415.1",
+    "@crowdin/cli": "^4.14.2",
     "@lingui/cli": "^5.9.5",
     "@lingui/vite-plugin": "^5.9.5",
     "@locator/babel-jsx": "^0.4.4",
