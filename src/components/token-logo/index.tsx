@@ -201,7 +201,9 @@ const TokenLogo = React.forwardRef<HTMLImageElement, Props>((props, ref) => {
       width={w}
       loading={loading}
       decoding="async"
-      fetchPriority={fetchPriority}
+      // React 18's DOM renderer doesn't map camelCase `fetchPriority`; pass the
+      // lowercase DOM attribute so the hint applies without a console warning.
+      {...{ fetchpriority: fetchPriority }}
       style={{ width: w, height: h }}
       className={cn(
         'flex-shrink-0 object-cover object-center rounded-full',

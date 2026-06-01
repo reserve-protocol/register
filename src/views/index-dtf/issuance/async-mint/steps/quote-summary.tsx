@@ -2,6 +2,7 @@ import TokenLogo from '@/components/token-logo'
 import { Button } from '@/components/ui/button'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { Skeleton } from '@/components/ui/skeleton'
+import { Switch } from '@/components/ui/switch'
 import {
   Tooltip,
   TooltipContent,
@@ -9,13 +10,22 @@ import {
   TooltipTrigger,
 } from '@/components/ui/tooltip'
 import { TransactionButtonContainer } from '@/components/ui/transaction-button'
+import { notifyError } from '@/hooks/useNotification'
 import { cn } from '@/lib/utils'
 import { chainIdAtom, walletAtom } from '@/state/atoms'
 import { wagmiConfig } from '@/state/chain'
-import { indexDTFAtom } from '@/state/dtf/atoms'
+import {
+  indexDTFAtom,
+  indexDTFBasketAtom,
+  indexDTFPriceAtom,
+} from '@/state/dtf/atoms'
 import { formatCurrency, formatTokenAmount } from '@/utils'
-import { AsyncZapExecutionStep } from '@reserve-protocol/async-zap-sdk'
-import { useAtomValue, useSetAtom } from 'jotai'
+import {
+  AsyncZapExecutionStep,
+  fetchTokenPrices,
+} from '@reserve-protocol/async-zap-sdk'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
+import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { Info, Loader2, Pencil, RefreshCw } from 'lucide-react'
 import { useEffect } from 'react'
 import { Address, erc20Abi, formatUnits } from 'viem'
@@ -24,11 +34,7 @@ import { useAsyncZap } from '../async-zap-context'
 import LegRow from '../components/leg-row'
 import { usePriceImpact } from '../hooks/use-price-impact'
 import { useWizardBalances } from '../hooks/use-wizard-balances'
-import {
-  formatPriceImpact,
-  getQuoteTokenSpent,
-  HIGH_PRICE_IMPACT,
-} from '../quote-utils'
+import { formatPriceImpact, HIGH_PRICE_IMPACT } from '../quote-utils'
 import {
   dustStartBalancesAtom,
   inputTokenAtom,
@@ -60,7 +66,10 @@ const QuoteSummary = () => {
   const redeemAmount = useAtomValue(redeemAmountAtom)
   const slippage = useAtomValue(slippageAtom)
   const account = useAtomValue(walletAtom)
-  const useExistingBalances = useAtomValue(useExistingBalancesAtom)
+  const basket = useAtomValue(indexDTFBasketAtom)
+  const [useExistingBalances, setUseExistingBalances] = useAtom(
+    useExistingBalancesAtom
+  )
   const setDustStart = useSetAtom(dustStartBalancesAtom)
   const { balanceOf } = useWizardBalances()
 
@@ -103,17 +112,19 @@ const QuoteSummary = () => {
   const isConvertHeld = !isMint && useExistingBalances && parsedPay === 0
   const isValidAmount = parsedPay > 0 || isConvertHeld
 
+  // Collaterals the user already holds (only those with balance > 0). On redeem
+  // the input/output token (USDC/USDT) isn't a token we "use", so drop it.
+  const heldCollaterals = (basket ?? [])
+    .filter(
+      (token) =>
+        isMint ||
+        token.address.toLowerCase() !== inputToken.address.toLowerCase()
+    )
+    .map((token) => ({ token, value: balanceOf(token.address) }))
+    .filter(({ value }) => value > 0n)
+
   // Quote-derived amounts (folio shares = 18 dec; quoteToken in its decimals).
   const sharesAmount = quote ? Number(formatUnits(quote.shares, 18)) : 0
-  // USDC actually consumed from the input = CoW swaps + direct USDC collateral.
-  const budgetSpent = quote
-    ? Number(
-        formatUnits(
-          getQuoteTokenSpent(quote, inputToken.address),
-          inputToken.decimals
-        )
-      )
-    : 0
 
   // Wallet-sourced output token (e.g. USDC/USDT you already hold, when it's a
   // basket collateral) isn't "received" — only count the quote token coming
@@ -138,9 +149,27 @@ const QuoteSummary = () => {
   const receiveSymbol = isMint ? indexDTF?.token.symbol : inputToken.symbol
   const receiveAddress = isMint ? indexDTF?.id : inputToken.address
 
-  // Budget used only meaningful for mint (USDC spent vs provided).
-  const utilizationPct =
-    isMint && parsedPay > 0 ? (budgetSpent / parsedPay) * 100 : 0
+  // USD value of each side, shown under the amounts in the quote review. The
+  // input token (USDC/USDT) is priced via the Reserve API; the DTF shares via
+  // the folio price.
+  const dtfPrice = useAtomValue(indexDTFPriceAtom)
+  const queryClient = useQueryClient()
+  const { data: inputPrices } = useQuery({
+    queryKey: ['async-mint/input-price', chainId, inputToken.address],
+    queryFn: () =>
+      fetchTokenPrices(queryClient, [
+        { chainId, tokenAddress: inputToken.address as Address },
+      ]),
+    staleTime: 30_000,
+    enabled: !!inputToken.address,
+  })
+  const inputTokenPrice = inputPrices?.[0]?.price ?? 1
+  const provideValueUsd = isMint
+    ? parsedPay * inputTokenPrice
+    : parsedPay * (dtfPrice ?? 0)
+  const receiveValueUsd = isMint
+    ? receiveAmount * (dtfPrice ?? 0)
+    : receiveAmount * inputTokenPrice
 
   const hasFailedLegs = cowLegStates.some(
     (ls) => ls.status === 'error' || !!ls.leg.error
@@ -170,14 +199,31 @@ const QuoteSummary = () => {
 
   // Resumable: re-running after an error / rejected signature continues from
   // where it stopped without re-doing already-submitted orders.
-  const handleRetry = () => {
-    void execution.run()
+  const handleRetry = async () => {
+    try {
+      await execution.run()
+    } catch (error) {
+      notifyError(
+        'Retry failed',
+        error instanceof Error ? error.message : 'Unknown error'
+      )
+    }
   }
 
   // Failed/expired orders that can be re-submitted (new CoW orders + signature).
   const retryableLegIds = execution.getRetryableLegIds()
-  const handleRetryFailed = () => {
-    void execution.retryFailedOrders()
+  const handleRetryFailed = async () => {
+    // Surface failures: retryFailedOrders re-quotes then sends a new presign
+    // batch; if any stage throws, a swallowed promise would leave the user with
+    // no feedback.
+    try {
+      await execution.retryFailedOrders()
+    } catch (error) {
+      notifyError(
+        'Retry failed',
+        error instanceof Error ? error.message : 'Unknown error'
+      )
+    }
   }
 
   const handleSubmit = async () => {
@@ -257,15 +303,11 @@ const QuoteSummary = () => {
                             exceedsBalance && 'text-destructive'
                           )}
                         >
-                          {isMint
-                            ? `$${payAmountStr || '0.00'}`
-                            : payAmountStr || '0'}
+                          {payAmountStr || (isMint ? '0.00' : '0')}
                         </span>
                       </div>
                       <div className="mt-2 text-sm font-light text-muted-foreground">
-                        {isMint
-                          ? `$${formatCurrency(parsedPay)} ${inputToken.symbol}`
-                          : `${formatTokenAmount(parsedPay)} ${indexDTF?.token.symbol}`}
+                        {`≈ $${formatCurrency(provideValueUsd)}`}
                       </div>
                     </>
                   )}
@@ -302,6 +344,66 @@ const QuoteSummary = () => {
               <div className="mt-0.5 rounded-xl bg-destructive/10 text-destructive text-sm py-3 px-4">
                 Exceeds available balance
               </div>
+            )}
+
+            {/* Mint only — for redeem the toggle lives on the configure screen
+                so 0 shares + this toggle can clear out just the dust. */}
+            {isMint && (
+              <>
+                <div className="mt-0.5 rounded-xl border border-border/70 bg-transparent px-4 py-3 flex items-center justify-between gap-4">
+                  <div>
+                    <div className="font-medium text-sm">
+                      Use my wallet balances
+                    </div>
+                    <p className="text-sm text-muted-foreground font-light">
+                      Use basket tokens you already hold to reduce swaps.
+                    </p>
+                  </div>
+                  <Switch
+                    checked={useExistingBalances}
+                    onCheckedChange={setUseExistingBalances}
+                    disabled={isExecuting}
+                  />
+                </div>
+
+                {useExistingBalances && heldCollaterals.length > 0 && (
+                  <div className="mt-0.5 rounded-xl border border-border/70 bg-transparent px-4 py-3">
+                    <div className="text-sm text-muted-foreground mb-3">
+                      Using your balances of
+                    </div>
+                    <div className="flex flex-col gap-3">
+                      {heldCollaterals.map(({ token, value }) => (
+                        <div
+                          key={token.address}
+                          className="flex items-center justify-between gap-3"
+                        >
+                          <div className="flex items-center gap-2 min-w-0">
+                            <TokenLogo
+                              address={token.address}
+                              symbol={token.symbol}
+                              chain={chainId}
+                              size="lg"
+                            />
+                            <div className="min-w-0">
+                              <div className="text-sm font-medium truncate">
+                                {token.symbol}
+                              </div>
+                              <div className="text-xs text-muted-foreground font-light truncate">
+                                {token.name}
+                              </div>
+                            </div>
+                          </div>
+                          <span className="text-sm font-medium shrink-0">
+                            {formatTokenAmount(
+                              Number(formatUnits(value, token.decimals))
+                            )}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </>
             )}
           </div>
 
@@ -340,11 +442,14 @@ const QuoteSummary = () => {
                   {quotesLoading ? (
                     <Skeleton className="w-[120px] h-8" />
                   ) : (
-                    <span className="text-[32px] font-light text-primary leading-8">
-                      {isMint
-                        ? formatTokenAmount(receiveAmount)
-                        : `$${formatCurrency(receiveAmount)}`}
-                    </span>
+                    <>
+                      <span className="text-[32px] font-light text-primary leading-8">
+                        {formatTokenAmount(receiveAmount)}
+                      </span>
+                      <div className="mt-2 text-sm font-light text-muted-foreground">
+                        {`≈ $${formatCurrency(receiveValueUsd)}`}
+                      </div>
+                    </>
                   )}
                 </div>
                 <div className="flex shrink-0 flex-col items-end">
@@ -365,37 +470,6 @@ const QuoteSummary = () => {
 
             <div className="mt-5 flex flex-col gap-3 px-4 text-sm">
               <TooltipProvider delayDuration={200}>
-                {isMint && (
-                  <div className="flex items-center justify-between">
-                    <span className="text-muted-foreground flex items-center gap-1">
-                      Budget used
-                      <Tooltip>
-                        <TooltipTrigger asChild>
-                          <Info
-                            size={14}
-                            className="cursor-help text-muted-foreground/70"
-                          />
-                        </TooltipTrigger>
-                        <TooltipContent className="max-w-[280px]">
-                          {inputToken.symbol} actually spent on swaps as a share
-                          of your input. Unused budget stays in your wallet.
-                        </TooltipContent>
-                      </Tooltip>
-                    </span>
-                    {quotesLoading ? (
-                      <Skeleton className="h-4 w-32" />
-                    ) : quote ? (
-                      <span className="font-medium">
-                        {formatCurrency(budgetSpent)} {inputToken.symbol} (
-                        {utilizationPct.toFixed(2)}%)
-                      </span>
-                    ) : (
-                      <span className="font-medium text-muted-foreground">
-                        -
-                      </span>
-                    )}
-                  </div>
-                )}
                 <div className="flex items-center justify-between">
                   <span className="text-muted-foreground flex items-center gap-1">
                     Price impact

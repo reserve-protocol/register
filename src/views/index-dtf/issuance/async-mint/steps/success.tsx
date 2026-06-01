@@ -3,7 +3,7 @@ import TokenLogoWithChain from '@/components/token-logo/TokenLogoWithChain'
 import { Button } from '@/components/ui/button'
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { chainIdAtom, walletAtom } from '@/state/atoms'
-import { indexDTFAtom } from '@/state/dtf/atoms'
+import { indexDTFAtom, indexDTFPriceAtom } from '@/state/dtf/atoms'
 import { formatCurrency, formatTokenAmount, getFolioRoute } from '@/utils'
 import { ROUTES } from '@/utils/constants'
 import { useAtomValue, useSetAtom } from 'jotai'
@@ -56,6 +56,7 @@ const Success = () => {
   const setRedeemAmount = useSetAtom(redeemAmountAtom)
   const setOperation = useSetAtom(operationAtom)
   const account = useAtomValue(walletAtom)
+  const dtfPrice = useAtomValue(indexDTFPriceAtom)
   const dustStartBalances = useAtomValue(dustStartBalancesAtom)
   const { quote, execution, operation } = useAsyncZap()
   const isMint = operation === 'mint'
@@ -108,8 +109,8 @@ const Success = () => {
   const receiveAmount = isMint ? sharesAmount : receivedQuoteTokenAmount
   const receiveSymbol = isMint ? indexDTF.token.symbol : inputToken.symbol
   const receiveAddress = isMint ? indexDTF.id : inputToken.address
-
-  const unusedBuffer = isMint ? Math.max(paidAmount - spentAmount, 0) : 0
+  // USD value of the minted shares, shown under the big DTF amount.
+  const receiveValueUsd = sharesAmount * (dtfPrice ?? 0)
 
   // The swap legs, shown as finished orders in the activity history.
   const cowLegs = (quote?.legs ?? []).filter(
@@ -197,6 +198,11 @@ const Success = () => {
                     </span>
                   </div>
                 </div>
+                {isMint && receiveValueUsd > 0 && (
+                  <div className="mt-2 text-lg font-light text-muted-foreground">
+                    {`≈ $${formatCurrency(receiveValueUsd)}`}
+                  </div>
+                )}
               </div>
             </div>
           </div>
@@ -207,16 +213,11 @@ const Success = () => {
                 <>
                   <SummaryRow
                     label="Input amount"
-                    value={`$${formatCurrency(paidAmount)} ${inputToken.symbol}`}
+                    value={`${formatCurrency(paidAmount)} ${inputToken.symbol}`}
                   />
                   <SummaryRow
                     label="Spent"
-                    value={`$${formatCurrency(spentAmount)} ${inputToken.symbol}`}
-                    subvalue={`${formatTokenAmount(sharesAmount)} ${indexDTF.token.symbol}`}
-                  />
-                  <SummaryRow
-                    label="Unused (returned)"
-                    value={`$${formatCurrency(unusedBuffer)} ${inputToken.symbol}`}
+                    value={`${formatCurrency(spentAmount)} ${inputToken.symbol}`}
                   />
                 </>
               ) : (
@@ -227,7 +228,7 @@ const Success = () => {
                   />
                   <SummaryRow
                     label="Received"
-                    value={`$${formatCurrency(receivedQuoteTokenAmount)} ${inputToken.symbol}`}
+                    value={`${formatCurrency(receivedQuoteTokenAmount)} ${inputToken.symbol}`}
                   />
                 </>
               )}

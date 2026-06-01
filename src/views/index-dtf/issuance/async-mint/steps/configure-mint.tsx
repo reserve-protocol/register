@@ -44,13 +44,12 @@ const ConfigureMint = () => {
     formatUnits(balanceOf(inputToken.address), inputToken.decimals)
   )
   const dtfBalanceAmount = Number(formatUnits(balanceOf(indexDTF.id), 18))
-  // Collaterals the user already holds (only those that matter: balance > 0).
-  // On redeem the input/output token (USDC/USDT) isn't a token we "use", so
-  // drop it from the list.
+
+  // Collaterals the user already holds (only those with balance > 0). On redeem
+  // the input/output token (USDC/USDT) isn't a token we "use", so drop it.
   const heldCollaterals = (basket ?? [])
     .filter(
       (token) =>
-        isMint ||
         token.address.toLowerCase() !== inputToken.address.toLowerCase()
     )
     .map((token) => ({ token, value: balanceOf(token.address) }))
@@ -68,14 +67,12 @@ const ConfigureMint = () => {
   const isValid = parsedAmount > 0 || (!isMint && useExistingBalances)
 
   const handleMax = () => {
-    if (isMint) {
-      if (inputBalanceAmount > 0) setAmount(inputBalanceAmount.toFixed(2))
-    } else {
-      // Use the exact on-chain balance string — Number(formatUnits()).toFixed
-      // loses precision and can round above the real balance, which reverts.
-      const dtfBalance = balanceOf(indexDTF.id)
-      if (dtfBalance > 0n) setAmount(formatUnits(dtfBalance, 18))
-    }
+    // Use the exact on-chain balance string — Number(formatUnits()).toFixed
+    // loses precision and can round above the real balance, which then trips
+    // "Exceeds available balance" (mint) or reverts (redeem).
+    const balance = isMint ? balanceOf(inputToken.address) : balanceOf(indexDTF.id)
+    const decimals = isMint ? inputToken.decimals : 18
+    if (balance > 0n) setAmount(formatUnits(balance, decimals))
   }
 
   return (
@@ -117,7 +114,7 @@ const ConfigureMint = () => {
             >
               Max:{' '}
               {isMint
-                ? `$${formatCurrency(maxAmount)}`
+                ? `${formatCurrency(maxAmount)} ${inputToken.symbol}`
                 : `${formatTokenAmount(maxAmount)} ${indexDTF.token.symbol}`}
             </button>
           </div>
@@ -126,7 +123,7 @@ const ConfigureMint = () => {
               variant="transparent"
               value={amount}
               onChange={setAmount}
-              placeholder={isMint ? '$0.00' : '0.00'}
+              placeholder="0.00"
               className={cn(
                 'min-w-0 flex-1 text-[32px] font-light',
                 exceedsBalance && 'text-destructive'
@@ -151,57 +148,60 @@ const ConfigureMint = () => {
           )}
         </div>
 
-        <div className="rounded-xl border border-border/70 bg-transparent px-4 py-3 flex items-center justify-between gap-4">
-          <div>
-            <div className="font-medium text-sm">Use my wallet balances</div>
-            <p className="text-sm text-muted-foreground font-light">
-              {isMint
-                ? `Use basket tokens you already hold to reduce swaps.`
-                : `Settle remaining basket tokens you already hold.`}
-            </p>
-          </div>
-          <Switch
-            checked={useExistingBalances}
-            onCheckedChange={setUseExistingBalances}
-          />
-        </div>
+        {!isMint && (
+          <>
+            <div className="rounded-xl border border-border/70 bg-transparent px-4 py-3 flex items-center justify-between gap-4">
+              <div>
+                <div className="font-medium text-sm">Use my wallet balances</div>
+                <p className="text-sm text-muted-foreground font-light">
+                  Settle remaining basket tokens you already hold. Redeem 0 to
+                  clear out just the dust.
+                </p>
+              </div>
+              <Switch
+                checked={useExistingBalances}
+                onCheckedChange={setUseExistingBalances}
+              />
+            </div>
 
-        {useExistingBalances && heldCollaterals.length > 0 && (
-          <div className="rounded-xl border border-border/70 bg-transparent px-4 py-3">
-            <div className="text-sm text-muted-foreground mb-3">
-              Using your balances of
-            </div>
-            <div className="flex flex-col gap-3">
-              {heldCollaterals.map(({ token, value }) => (
-                <div
-                  key={token.address}
-                  className="flex items-center justify-between gap-3"
-                >
-                  <div className="flex items-center gap-2 min-w-0">
-                    <TokenLogo
-                      address={token.address}
-                      symbol={token.symbol}
-                      chain={chainId}
-                      size="lg"
-                    />
-                    <div className="min-w-0">
-                      <div className="text-sm font-medium truncate">
-                        {token.symbol}
-                      </div>
-                      <div className="text-xs text-muted-foreground font-light truncate">
-                        {token.name}
-                      </div>
-                    </div>
-                  </div>
-                  <span className="text-sm font-medium shrink-0">
-                    {formatTokenAmount(
-                      Number(formatUnits(value, token.decimals))
-                    )}
-                  </span>
+            {useExistingBalances && heldCollaterals.length > 0 && (
+              <div className="rounded-xl border border-border/70 bg-transparent px-4 py-3">
+                <div className="text-sm text-muted-foreground mb-3">
+                  Using your balances of
                 </div>
-              ))}
-            </div>
-          </div>
+                <div className="flex flex-col gap-3">
+                  {heldCollaterals.map(({ token, value }) => (
+                    <div
+                      key={token.address}
+                      className="flex items-center justify-between gap-3"
+                    >
+                      <div className="flex items-center gap-2 min-w-0">
+                        <TokenLogo
+                          address={token.address}
+                          symbol={token.symbol}
+                          chain={chainId}
+                          size="lg"
+                        />
+                        <div className="min-w-0">
+                          <div className="text-sm font-medium truncate">
+                            {token.symbol}
+                          </div>
+                          <div className="text-xs text-muted-foreground font-light truncate">
+                            {token.name}
+                          </div>
+                        </div>
+                      </div>
+                      <span className="text-sm font-medium shrink-0">
+                        {formatTokenAmount(
+                          Number(formatUnits(value, token.decimals))
+                        )}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </>
         )}
 
         <Button
