@@ -1248,7 +1248,7 @@ msgstr ""
 msgid "Available Collaterals"
 msgstr ""
 
-#: src/views/portfolio-page/components/available-rewards.tsx:147
+#: src/views/portfolio-page/components/available-rewards.tsx:165
 msgid "Available Rewards"
 msgstr ""
 
@@ -1264,7 +1264,7 @@ msgstr ""
 msgid "Avg {0} · range {1}–{2} ({3})"
 msgstr ""
 
-#: src/views/portfolio-page/components/dtf-positions.tsx:100
+#: src/views/portfolio-page/components/dtf-positions.tsx:103
 msgid "Avg Cost"
 msgstr ""
 
@@ -1350,8 +1350,8 @@ msgid "Backups"
 msgstr ""
 
 #: src/components/ui/swap.tsx:196
-#: src/views/portfolio-page/components/available-rewards.tsx:104
-#: src/views/portfolio-page/components/dtf-positions.tsx:131
+#: src/views/portfolio-page/components/available-rewards.tsx:122
+#: src/views/portfolio-page/components/dtf-positions.tsx:134
 #: src/views/portfolio-page/components/pending-withdrawals.tsx:322
 #: src/views/portfolio-page/components/rsr-section.tsx:47
 #: src/views/portfolio-page/components/staked-positions.tsx:83
@@ -1612,11 +1612,11 @@ msgstr ""
 msgid "Broker"
 msgstr ""
 
-#: src/views/portfolio-page/components/dtf-positions.tsx:181
+#: src/views/portfolio-page/components/dtf-positions.tsx:184
 msgid "Browse all Index DTFs"
 msgstr ""
 
-#: src/views/portfolio-page/components/dtf-positions.tsx:222
+#: src/views/portfolio-page/components/dtf-positions.tsx:225
 msgid "Browse all Yield DTFs"
 msgstr ""
 
@@ -1845,8 +1845,8 @@ msgstr ""
 #: src/components/transactions/table/index.tsx:52
 #: src/views/explorer/components/filters/TransactionTypeFilter.tsx:16
 #: src/views/explorer/components/transactions/useTransactionColumns.tsx:32
-#: src/views/portfolio-page/components/available-rewards.tsx:80
-#: src/views/portfolio-page/components/available-rewards.tsx:129
+#: src/views/portfolio-page/components/available-rewards.tsx:79
+#: src/views/portfolio-page/components/available-rewards.tsx:147
 #: src/views/yield-dtf/overview/components/rtoken-transactions.tsx:81
 msgid "Claim"
 msgstr ""
@@ -2813,6 +2813,7 @@ msgstr ""
 
 #: src/views/index-dtf/settings/components/distribute-fees.tsx:48
 #: src/views/index-dtf/settings/components/distribute-fees.tsx:85
+#: src/views/portfolio-page/components/available-rewards.tsx:79
 msgid "Distribute Fees"
 msgstr ""
 
@@ -2821,6 +2822,7 @@ msgid "Distribute weights equally among all tokens in the basket."
 msgstr ""
 
 #: src/views/explorer/components/revenue/index.tsx:549
+#: src/views/portfolio-page/components/available-rewards.tsx:80
 msgid "Distributed"
 msgstr ""
 
@@ -3070,7 +3072,7 @@ msgstr ""
 msgid "Earn"
 msgstr ""
 
-#: src/views/portfolio-page/components/available-rewards.tsx:149
+#: src/views/portfolio-page/components/available-rewards.tsx:167
 msgid "Earn rewards by staking or participating in governance. <0>Learn more</0>."
 msgstr ""
 
@@ -3571,6 +3573,7 @@ msgid "Fees & Stats"
 msgstr ""
 
 #: src/views/index-dtf/settings/components/distribute-fees.tsx:84
+#: src/views/portfolio-page/components/available-rewards.tsx:42
 msgid "Fees distributed"
 msgstr ""
 
@@ -4083,7 +4086,7 @@ msgstr ""
 msgid "Index DTF Governance"
 msgstr ""
 
-#: src/views/portfolio-page/components/dtf-positions.tsx:173
+#: src/views/portfolio-page/components/dtf-positions.tsx:176
 msgid "Index DTF Positions"
 msgstr ""
 
@@ -4613,7 +4616,7 @@ msgstr ""
 #: src/views/index-dtf/overview/components/fees-stats.tsx:55
 #: src/views/index-dtf/overview/components/index-metrics-overview.tsx:77
 #: src/views/internal/dtf-list/components/dtf-table.tsx:192
-#: src/views/portfolio-page/components/dtf-positions.tsx:118
+#: src/views/portfolio-page/components/dtf-positions.tsx:121
 #: src/views/top100/components/top100-table-placeholder.tsx:18
 #: src/views/top100/components/top100-table.tsx:139
 msgid "Market Cap"
@@ -4929,7 +4932,7 @@ msgstr ""
 #: src/views/home/components/discover-index-dtf/index-dtf-table-placeholder.tsx:17
 #: src/views/index-dtf/deploy/steps/metadata/form-basic-metadata.tsx:10
 #: src/views/index-dtf/settings/components/index-settings-basic.tsx:37
-#: src/views/portfolio-page/components/dtf-positions.tsx:28
+#: src/views/portfolio-page/components/dtf-positions.tsx:31
 #: src/views/portfolio-page/components/rsr-section.tsx:18
 #: src/views/top100/components/top100-table-placeholder.tsx:9
 #: src/views/top100/components/top100-table.tsx:55
@@ -5560,7 +5563,7 @@ msgstr ""
 msgid "Percentage of fee revenue sent to the vote-lock DAO governing the DTF."
 msgstr ""
 
-#: src/views/portfolio-page/components/dtf-positions.tsx:50
+#: src/views/portfolio-page/components/dtf-positions.tsx:53
 #: src/views/portfolio-page/components/rsr-section.tsx:36
 msgid "Performance"
 msgstr ""
@@ -6501,6 +6504,7 @@ msgstr ""
 
 #: src/views/explorer/components/revenue/index.tsx:729
 #: src/views/explorer/index.tsx:46
+#: src/views/portfolio-page/components/available-rewards.tsx:110
 msgid "Revenue"
 msgstr ""
 
@@ -6653,7 +6657,7 @@ msgstr ""
 msgid "Reward ratio (decimals)"
 msgstr ""
 
-#: src/views/portfolio-page/components/available-rewards.tsx:89
+#: src/views/portfolio-page/components/available-rewards.tsx:98
 msgid "Reward Token"
 msgstr ""
 
@@ -6665,7 +6669,7 @@ msgstr ""
 msgid "Rewards Available"
 msgstr ""
 
-#: src/views/portfolio-page/components/available-rewards.tsx:50
+#: src/views/portfolio-page/components/available-rewards.tsx:42
 msgid "Rewards claimed"
 msgstr ""
 
@@ -7411,6 +7415,10 @@ msgstr ""
 
 #: src/views/explorer/components/tokens/index.tsx:172
 msgid "Stakers APY"
+msgstr ""
+
+#: src/views/portfolio-page/components/available-rewards.tsx:112
+msgid "Staking"
 msgstr ""
 
 #: src/views/earn/views/yield-dtf/index.tsx:52
@@ -8597,7 +8605,7 @@ msgstr ""
 msgid "Unpausing"
 msgstr ""
 
-#: src/views/portfolio-page/components/dtf-positions.tsx:63
+#: src/views/portfolio-page/components/dtf-positions.tsx:66
 msgid "Unrealized P/L"
 msgstr ""
 
@@ -8819,8 +8827,8 @@ msgstr ""
 msgid "Validating..."
 msgstr ""
 
-#: src/views/portfolio-page/components/available-rewards.tsx:117
-#: src/views/portfolio-page/components/dtf-positions.tsx:148
+#: src/views/portfolio-page/components/available-rewards.tsx:135
+#: src/views/portfolio-page/components/dtf-positions.tsx:151
 #: src/views/portfolio-page/components/pending-withdrawals.tsx:335
 #: src/views/portfolio-page/components/rsr-section.tsx:60
 #: src/views/portfolio-page/components/staked-positions.tsx:100
@@ -9532,7 +9540,7 @@ msgstr ""
 msgid "Yield DTF Creator"
 msgstr ""
 
-#: src/views/portfolio-page/components/dtf-positions.tsx:214
+#: src/views/portfolio-page/components/dtf-positions.tsx:217
 msgid "Yield DTF Positions"
 msgstr ""
 
@@ -9663,7 +9671,7 @@ msgstr ""
 msgid "You've unlocked an invitation to Reserve Institutional's elite program for large RToken holders. Participants enjoy access to:"
 msgstr ""
 
-#: src/views/portfolio-page/components/dtf-positions.tsx:174
+#: src/views/portfolio-page/components/dtf-positions.tsx:177
 msgid "Your Decentralized Token Folio investments."
 msgstr ""
 
@@ -9688,7 +9696,7 @@ msgstr ""
 msgid "Your voting power:"
 msgstr ""
 
-#: src/views/portfolio-page/components/dtf-positions.tsx:215
+#: src/views/portfolio-page/components/dtf-positions.tsx:218
 msgid "Your yield-bearing stablecoin holdings."
 msgstr ""
 
