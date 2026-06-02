@@ -1,4 +1,6 @@
+import { walletAtom } from '@/state/atoms'
 import { t } from '@lingui/macro'
+import { useAtomValue } from 'jotai'
 import { useMemo } from 'react'
 import useDTFRestricted from './use-dtf-restricted'
 import useGeolocation, { type GeolocationStatus } from './use-geolocation'
@@ -70,11 +72,17 @@ const restricted = ({
 })
 
 const useComplianceRestrictions = () => {
+  const wallet = useAtomValue(walletAtom)
   const geolocation = useGeolocation()
   const walletCompliance = useWalletCompliance()
   const dtfRestriction = useDTFRestricted()
 
   return useMemo<ComplianceRestrictionsResult>(() => {
+    // No wallet connected: nothing to restrict yet (enforced at transaction time)
+    if (!wallet) {
+      return { data: allowed(geolocation.data), isLoading: false }
+    }
+
     if (walletCompliance.isLoading) {
       return { data: undefined, isLoading: true }
     }
@@ -143,6 +151,7 @@ const useComplianceRestrictions = () => {
       isLoading: false,
     }
   }, [
+    wallet,
     dtfRestriction.data,
     dtfRestriction.isLoading,
     geolocation.data,
