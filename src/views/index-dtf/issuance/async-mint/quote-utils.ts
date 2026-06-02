@@ -8,10 +8,10 @@ export const HIGH_PRICE_IMPACT = 0.02 // 2%
 export const formatTokenBalance = (value: bigint, decimals: number) =>
   formatTokenAmount(Number(formatUnits(value, decimals)))
 
-// Signed percentage; collapses imperceptible values to ~0% to avoid "-0.00%".
+// Signed percentage; collapses imperceptible values to ~0.00% to avoid "-0.00%".
 export const formatPriceImpact = (impact: number) => {
   const pct = impact * 100
-  if (Math.abs(pct) < 0.01) return '~0%'
+  if (Math.abs(pct) < 0.01) return '~0.00%'
   return `${pct > 0 ? '+' : ''}${pct.toFixed(2)}%`
 }
 
@@ -30,11 +30,19 @@ export function getQuoteTokenSpent(
   const matchingLegs = quote.legs.filter(
     (leg) => leg.asset.address.toLowerCase() === lower
   )
-  const inLegs = matchingLegs.reduce((sum, leg) => sum + leg.quoteTokenAmount, 0n)
-  const fromWallet = matchingLegs.reduce((sum, leg) => sum + leg.balanceUsed, 0n)
+  const inLegs = matchingLegs.reduce(
+    (sum, leg) => sum + leg.quoteTokenAmount,
+    0n
+  )
+  const fromWallet = matchingLegs.reduce(
+    (sum, leg) => sum + leg.balanceUsed,
+    0n
+  )
   const collateral = quote.folioAssets
     .filter((fa) => fa.asset.address.toLowerCase() === lower)
     .reduce((sum, fa) => sum + fa.amount, 0n)
   const directFromInput = collateral - inLegs - fromWallet
-  return quote.totalQuoteTokenAmount + (directFromInput > 0n ? directFromInput : 0n)
+  return (
+    quote.totalQuoteTokenAmount + (directFromInput > 0n ? directFromInput : 0n)
+  )
 }

@@ -1,6 +1,7 @@
 import { Token } from '@/types'
 import {
   AsyncZapLeg,
+  AsyncZapOrderState,
   fetchTokenPrices,
 } from '@reserve-protocol/async-zap-sdk'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
@@ -18,16 +19,20 @@ export type PriceImpactResult = {
   byLeg: Record<string, number | undefined>
   // Reference-value-weighted aggregate across all priced legs.
   aggregate: number | undefined
+  // Same calculation using actual CoW executed amounts after orders fill.
+  actualAggregate: number | undefined
 }
 
 export function usePriceImpact({
   legs,
   quoteToken,
   chainId,
+  ordersByLegId,
 }: {
   legs: AsyncZapLeg[]
   quoteToken: Token
   chainId: number
+  ordersByLegId?: Record<string, AsyncZapOrderState>
 }): PriceImpactResult {
   // Unique asset addresses (+ quote token) to price, stable across re-quotes.
   const addresses = useMemo(() => {
@@ -62,9 +67,13 @@ export function usePriceImpact({
     const byLeg: Record<string, number | undefined> = {}
     let weightedSum = 0
     let totalReferenceUsd = 0
+    let actualWeightedSum = 0
+    let actualTotalReferenceUsd = 0
     for (const leg of legs) {
       const referencePrice = priceByAddress.get(leg.asset.address.toLowerCase())
-      const assetUnits = Number(formatUnits(leg.assetAmount, leg.asset.decimals))
+      const assetUnits = Number(
+        formatUnits(leg.assetAmount, leg.asset.decimals)
+      )
       const quoteUnits = Number(
         formatUnits(leg.quoteTokenAmount, quoteToken.decimals)
       )
@@ -87,9 +96,53 @@ export function usePriceImpact({
       byLeg[leg.id] = impact
       weightedSum += referenceUsd * impact
       totalReferenceUsd += referenceUsd
+
+      const order = ordersByLegId?.[leg.id]
+      const cowOrder = order?.cowOrder as
+        | {
+            executedSellAmount?: string | number | bigint
+            executedBuyAmount?: string | number | bigint
+          }
+        | undefined
+      const executedSellAmount = cowOrder?.executedSellAmount
+      const executedBuyAmount = cowOrder?.executedBuyAmount
+      if (
+        order?.phase !== 'fulfilled' ||
+        executedSellAmount === undefined ||
+        executedBuyAmount === undefined
+      ) {
+        continue
+      }
+
+      const actualAssetUnits = Number(
+        formatUnits(
+          BigInt(leg.side === 'sell' ? executedSellAmount : executedBuyAmount),
+          leg.asset.decimals
+        )
+      )
+      const actualQuoteUnits = Number(
+        formatUnits(
+          BigInt(leg.side === 'sell' ? executedBuyAmount : executedSellAmount),
+          quoteToken.decimals
+        )
+      )
+      if (actualAssetUnits <= 0 || actualQuoteUnits <= 0) continue
+
+      const actualReferenceUsd = actualAssetUnits * referencePrice
+      const actualExecutedUsd = actualQuoteUnits * quoteTokenPrice
+      const actualImpact =
+        leg.side === 'sell'
+          ? (actualExecutedUsd - actualReferenceUsd) / actualReferenceUsd
+          : (actualReferenceUsd - actualExecutedUsd) / actualReferenceUsd
+      actualWeightedSum += actualReferenceUsd * actualImpact
+      actualTotalReferenceUsd += actualReferenceUsd
     }
     const aggregate =
       totalReferenceUsd > 0 ? weightedSum / totalReferenceUsd : undefined
-    return { byLeg, aggregate }
-  }, [legs, prices, quoteToken.address, quoteToken.decimals])
+    const actualAggregate =
+      actualTotalReferenceUsd > 0
+        ? actualWeightedSum / actualTotalReferenceUsd
+        : undefined
+    return { byLeg, aggregate, actualAggregate }
+  }, [legs, ordersByLegId, prices, quoteToken.address, quoteToken.decimals])
 }
