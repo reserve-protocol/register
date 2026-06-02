@@ -13,16 +13,19 @@ import ZapperWrapper from '../components/zapper/zapper-wrapper'
 import useTrackIndexDTFPage, {
   useTrackIndexDTFClick,
 } from '../hooks/useTrackIndexDTFPage'
+import { inputTokenAtom } from './async-mint/atoms'
 
 const DTF_DISABLED_FOR_ZAP = [] as string[]
 const LARGE_ORDER_USD_THRESHOLD = 50_000
 
 const LargeOrderAsyncCompareCard = ({
   mintRoute,
+  inputSymbol,
   onCompare,
   onDismiss,
 }: {
   mintRoute: string
+  inputSymbol: string
   onCompare: () => void
   onDismiss: () => void
 }) => (
@@ -45,8 +48,8 @@ const LargeOrderAsyncCompareCard = ({
         Large orders may benefit from Automated Mint
       </div>
       <p className="mt-1 text-sm font-light leading-5 text-muted-foreground">
-        Your USDC input is over $50K. Automated Mint may find a better route by
-        splitting it across the basket before minting.
+        Your {inputSymbol} input is over $50K. Automated Mint may find a better
+        route by splitting it across the basket before minting.
       </p>
       <Link
         to={mintRoute}
@@ -78,6 +81,7 @@ const IndexDTFIssuance = () => {
   const indexDTF = useAtomValue(indexDTFAtom)
   const quoteSource = useAtomValue(indexDTFQuoteSourceAtom)
   const devMode = useAtomValue(devModeAtom)
+  const inputToken = useAtomValue(inputTokenAtom)
   const isDeprecated = isInactiveDTF(useAtomValue(indexDTFStatusAtom))
   const { trackClick } = useTrackIndexDTFClick('overview', 'mint')
   const [dismissedLargeOrderCard, setDismissedLargeOrderCard] = useState(false)
@@ -120,6 +124,7 @@ const IndexDTFIssuance = () => {
           {showLargeOrderCompareCard && (
             <LargeOrderAsyncCompareCard
               mintRoute={automatedMintRoute}
+              inputSymbol={inputToken.symbol}
               onCompare={() => trackClick('compare_automated_mint')}
               onDismiss={() => setDismissedLargeOrderCard(true)}
             />
