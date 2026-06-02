@@ -44,7 +44,7 @@ const NavigationItem = ({
 
   return (
     <div className="flex flex-col">
-      <NavLink to={route}>
+      <NavLink to={route} end={route === ROUTES.ISSUANCE}>
         {({ isActive }) => {
           return (
             <div
@@ -189,16 +189,11 @@ const NavigationItems = () => {
         icon: <Blend strokeWidth={1.5} size={16} />,
         label: t`Swap`,
         route: ROUTES.ISSUANCE,
-        subItems: [
-          {
-            label: t`Buy & Sell`,
-            route: ROUTES.ISSUANCE,
-          },
-          {
-            label: t`Mint & Redeem`,
-            route: ROUTES.ISSUANCE + '/automated',
-          },
-        ],
+      },
+      {
+        icon: <CirclePlus strokeWidth={1.5} size={16} />,
+        label: t`Mint`,
+        route: ROUTES.ISSUANCE + '/automated',
       },
       {
         icon: <Landmark strokeWidth={1.5} size={16} />,
