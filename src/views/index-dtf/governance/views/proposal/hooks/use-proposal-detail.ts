@@ -1,6 +1,10 @@
 import { ProposalDetail } from '@/lib/governance'
+import { timestampAtom } from '@/state/atoms'
 import { recentProposalsAtom } from '@/views/index-dtf/governance/atoms'
-import { getRecentProposalKey } from '@/views/index-dtf/governance/utils/recent-proposals'
+import {
+  getRecentProposalKey,
+  getUpdatedRecentProposalDetail,
+} from '@/views/index-dtf/governance/utils/recent-proposals'
 import {
   isSdkError,
   useIndexDtfIdentity,
@@ -102,6 +106,7 @@ const mapProposalDetail = (
     proposer: {
       address: proposal.proposer,
     },
+    txnHash: proposal.txnHash,
     calldatas: [...proposal.calldatas],
     targets: [...proposal.targets],
     votes: proposal.votes.map((vote) => ({
@@ -110,6 +115,7 @@ const mapProposalDetail = (
       weight: vote.weight,
     })),
     queueBlock: proposal.queueBlock,
+    queueTxnHash: proposal.queueTxnHash,
     queueTime: proposal.queueTime?.toString(),
     cancellationTime: proposal.cancellationTime?.toString(),
     forDelegateVotes: proposal.forDelegateVotes.toString(),
@@ -127,6 +133,7 @@ const mapProposalDetail = (
 const useProposalDetail = (proposalId: string | undefined) => {
   const { address, chainId } = useIndexDtfIdentity()
   const recentProposals = useAtomValue(recentProposalsAtom)
+  const timestamp = useAtomValue(timestampAtom)
   const proposalQuery = useIndexDtfProposal(
     proposalId ? { address, chainId, proposalId } : undefined,
     {
@@ -139,10 +146,15 @@ const useProposalDetail = (proposalId: string | undefined) => {
   const recentProposal = useMemo(() => {
     if (!proposalId) return undefined
 
-    return recentProposals[
-      getRecentProposalKey({ chainId, dtf: address, proposalId })
-    ]?.detail
-  }, [address, chainId, proposalId, recentProposals])
+    const recentProposal =
+      recentProposals[
+        getRecentProposalKey({ chainId, dtf: address, proposalId })
+      ]?.detail
+
+    return recentProposal
+      ? getUpdatedRecentProposalDetail(recentProposal)
+      : undefined
+  }, [address, chainId, proposalId, recentProposals, timestamp])
   const shouldUseRecentProposal =
     !proposalQuery.data &&
     !!recentProposal &&

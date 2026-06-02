@@ -51,9 +51,11 @@ export type VotingState = {
 }
 
 export interface ProposalDetail extends PartialProposal {
+  txnHash: string
   creationBlock: number
   calldatas: Hex[]
   queueBlock?: number
+  queueTxnHash?: string
   queueTime?: string
   executionTime?: string
   cancellationTime?: string

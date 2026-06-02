@@ -20,7 +20,6 @@ import {
   parseEther,
   type Address,
   type Hex,
-  type PublicClient,
   type TransactionReceipt,
 } from 'viem'
 
@@ -132,14 +131,12 @@ export const buildRecentProposalFromReceipt = async ({
   governor,
   dtf,
   chainId,
-  publicClient,
   sdk,
 }: {
   receipt: TransactionReceipt
   governor: Address
   dtf: IndexDTF
   chainId: SupportedChainId
-  publicClient: PublicClient
   sdk: DtfSdk
 }): Promise<{ key: string; proposal: RecentProposalData }> => {
   const parsed = parseProposalCreatedFromReceipt(receipt, governor)
@@ -151,10 +148,7 @@ export const buildRecentProposalFromReceipt = async ({
     throw new Error('Unable to resolve proposal governance context')
   }
 
-  const block = await publicClient.getBlock({
-    blockNumber: receipt.blockNumber,
-  })
-  const creationTime = Number(block.timestamp)
+  const creationTime = getCurrentTime()
   const event: ProposalCreatedEventData = { ...parsed, creationTime }
   const decoded = await decodeProposal({
     sdk,
@@ -164,13 +158,10 @@ export const buildRecentProposalFromReceipt = async ({
     dtf: dtfContext,
     proposalGovernance: governance.proposalGovernance,
   })
-  const votingState = getRecentProposalVotingState({
-    voteStart: event.voteStart,
-    voteEnd: event.voteEnd,
-    isActive:
-      governance.governance.votingDelay === 0 ||
-      event.voteStart <= creationTime,
-  })
+  const votingState = getRecentProposalVotingState(
+    event.voteStart,
+    event.voteEnd
+  )
   const isOptimistic = isOptimisticProposal(
     governance.governance,
     event.proposer
@@ -179,6 +170,7 @@ export const buildRecentProposalFromReceipt = async ({
 
   const detail: IndexDtfProposalDetail = {
     id: event.proposalId,
+    txnHash: event.transactionHash,
     chainId,
     governance: event.governor,
     timelock: governance.governance.timelock.id,
@@ -296,8 +288,30 @@ export const getRecentProposalsForDtf = (
   const prefix = `${chainId}:${dtf.toLowerCase()}:`
   return Object.entries(recentProposals)
     .filter(([key]) => key.startsWith(prefix))
-    .map(([, proposal]) => proposal)
+    .map(([, proposal]) => getUpdatedRecentProposal(proposal))
 }
+
+export const getUpdatedRecentProposalDetail = (
+  proposal: IndexDtfProposalDetail
+): IndexDtfProposalDetail => {
+  const votingState = getRecentProposalVotingState(
+    proposal.voteStart,
+    proposal.voteEnd
+  )
+
+  return {
+    ...proposal,
+    state: votingState.state,
+    votingState,
+  }
+}
+
+const getUpdatedRecentProposal = (
+  proposal: RecentProposalData
+): RecentProposalData => ({
+  ...proposal,
+  detail: getUpdatedRecentProposalDetail(proposal.detail),
+})
 
 const resolveProposalGovernance = (
   dtf: IndexDTF,
@@ -424,22 +438,18 @@ const getUnknownDecodedProposal = (
   }
 }
 
-const getRecentProposalVotingState = ({
-  voteStart,
-  voteEnd,
-  isActive,
-}: {
-  voteStart: number
+const getRecentProposalVotingState = (
+  voteStart: number,
   voteEnd: number
-  isActive: boolean
-}): ProposalVotingState => {
+): ProposalVotingState => {
   const now = getCurrentTime()
-  const state = isActive ? PROPOSAL_STATES.ACTIVE : PROPOSAL_STATES.PENDING
+  const state =
+    now >= voteStart ? PROPOSAL_STATES.ACTIVE : PROPOSAL_STATES.PENDING
   const deadline =
     state === PROPOSAL_STATES.PENDING
-      ? voteStart - now
+      ? Math.max(voteStart - now, 0)
       : state === PROPOSAL_STATES.ACTIVE
-        ? voteEnd - now
+        ? Math.max(voteEnd - now, 0)
         : null
 
   return {

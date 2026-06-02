@@ -7,7 +7,6 @@ import { useAtomValue, useSetAtom } from 'jotai'
 import { useCallback, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import type { Address, TransactionReceipt } from 'viem'
-import { usePublicClient } from 'wagmi'
 import { recentProposalsAtom } from '../atoms'
 import {
   buildRecentProposalFromReceipt,
@@ -24,7 +23,6 @@ type HandleRecentProposalReceiptParams = {
 export const useRecentProposalReceipt = () => {
   const dtf = useAtomValue(indexDTFAtom)
   const chainId = useAtomValue(chainIdAtom)
-  const publicClient = usePublicClient({ chainId })
   const sdk = useDtfSdk()
   const navigate = useNavigate()
   const setRecentProposals = useSetAtom(recentProposalsAtom)
@@ -40,7 +38,7 @@ export const useRecentProposalReceipt = () => {
       if (handledReceipt.current === receipt.transactionHash) return
       handledReceipt.current = receipt.transactionHash
 
-      if (!dtf || !publicClient) {
+      if (!dtf) {
         onFallback()
         return
       }
@@ -51,7 +49,6 @@ export const useRecentProposalReceipt = () => {
           governor,
           dtf,
           chainId: chainId as SupportedChainId,
-          publicClient,
           sdk,
         })
 
@@ -71,7 +68,7 @@ export const useRecentProposalReceipt = () => {
         onFallback()
       }
     },
-    [chainId, dtf, navigate, publicClient, sdk, setRecentProposals]
+    [chainId, dtf, navigate, sdk, setRecentProposals]
   )
 }
 

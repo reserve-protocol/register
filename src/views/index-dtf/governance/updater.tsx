@@ -1,5 +1,5 @@
 import { indexDTFAtom } from '@/state/dtf/atoms'
-import { chainIdAtom } from '@/state/atoms'
+import { chainIdAtom, timestampAtom } from '@/state/atoms'
 import { useIndexDtfProposalList } from '@reserve-protocol/react-sdk'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { useEffect, useRef } from 'react'
@@ -18,6 +18,7 @@ const Updater = () => {
   const previousRefetchToken = useRef(refetchToken)
   const dtf = useAtomValue(indexDTFAtom)
   const chainId = useAtomValue(chainIdAtom)
+  const timestamp = useAtomValue(timestampAtom)
   const recentProposals = useAtomValue(recentProposalsAtom)
 
   const proposalParams =
@@ -50,6 +51,7 @@ const Updater = () => {
     recentProposals,
     setGovernanceProposals,
     setProposalCount,
+    timestamp,
   ])
 
   useEffect(() => {

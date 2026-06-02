@@ -74,6 +74,7 @@ const ProposalQueue = () => {
               state: PROPOSAL_STATES.QUEUED,
               queueTime: Math.floor(Date.now() / 1000).toString(),
               queueBlock: Number(data.blockNumber),
+              queueTxnHash: hash,
               executionETA: Math.floor(
                 Date.now() / 1000 + (executionDelay || 0)
               ),
