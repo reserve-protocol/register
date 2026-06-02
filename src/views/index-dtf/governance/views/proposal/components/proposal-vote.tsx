@@ -6,7 +6,7 @@ import { formatCurrency } from '@/utils'
 import { PROPOSAL_STATES } from '@/utils/constants'
 import { ExplorerDataType, getExplorerLink } from '@/utils/getExplorerLink'
 import { useAtomValue } from 'jotai'
-import { ArrowUpRight, AsteriskIcon } from 'lucide-react'
+import { ArrowUpRight, AsteriskIcon, HandFist, Rocket } from 'lucide-react'
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import DelegateModal from '../../../components/delegate-modal'
@@ -21,16 +21,7 @@ import ProposalDeadlineAlert from './proposal-deadline-alert'
 import ProposalExecute from './proposal-execute-button'
 import ProposalQueue from './proposal-queue-button'
 import ProposalVoteButton from './proposal-vote-button'
-
-const FINAL_STATES = [
-  PROPOSAL_STATES.EXECUTED,
-  PROPOSAL_STATES.DEFEATED,
-  PROPOSAL_STATES.EXPIRED,
-  PROPOSAL_STATES.CANCELED,
-  PROPOSAL_STATES.QUORUM_NOT_REACHED,
-  PROPOSAL_STATES.SUCCEEDED,
-  PROPOSAL_STATES.QUEUED
-]
+import { Trans } from '@lingui/react/macro'
 
 const ViewExecuteTxButton = () => {
   const proposal = useAtomValue(proposalDetailAtom)
@@ -133,16 +124,55 @@ const ProposalSummary = () => (
     className="flex flex-col h-full rounded-xl bg-[#f2f2f2] dark:bg-input"
   >
     <ProposalVoteOverview />
-    <div className="flex-grow p-3">
+    <div className="flex-grow min-h-36 p-3">
       <ProposalDeadlineAlert />
     </div>
   </div>
 )
 
+const ChallengedProposalHelp = () => {
+  const proposal = useAtomValue(proposalDetailAtom)
+
+  if (!proposal || !proposal.wasChallenged) return null
+
+  return (
+    <div className='flex items-center rounded-xl bg-warning/10 p-2 gap-2'>
+      <div className='flex items-center justify-center p-2 text-warning bg-warning/10 rounded-full'>
+        <HandFist size={16} />
+      </div>
+      <span className='text-xs'>
+        <Trans>
+          This proposal was initially challenged via a fast proposal and has been re-submitted.
+        </Trans>
+      </span>
+    </div>
+  )
+}
+
+const FastProposalHelp = () => {
+  const proposal = useAtomValue(proposalDetailAtom)
+
+  if (!proposal || !proposal.isOptimistic) return null
+
+  return (
+    <div className='flex items-center rounded-xl bg-primary/10 p-2 gap-2'>
+      <div className='flex items-center justify-center p-2 text-primary bg-primary/10 rounded-full'>
+        <Rocket size={16} />
+      </div>
+      <span className='text-xs'>
+        <Trans>
+          This fast governance proposal can be challenged only. If the threshold is reached, it becomes a contested proposal and resubmitted in a standard voting process.        </Trans>
+      </span>
+    </div>
+  )
+}
+
 const ProposalVote = () => (
   <>
     <div className="flex flex-col gap-2 m-1 lg:m-2 p-2 border border-secondary rounded-2xl ">
       <ProposalSummary />
+      <FastProposalHelp />
+      <ChallengedProposalHelp />
       <ProposalActionButtons />
     </div>
   </>

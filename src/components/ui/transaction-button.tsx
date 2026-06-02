@@ -152,7 +152,7 @@ const TransactionButton = ({
       {!!gas && <GasEstimateLabel gas={gas} />}
       {!!error && (
         <TransactionError
-          className="text-center mt-4"
+          className="text-center mt-2"
           error={error}
           withName={errorWithName}
         />

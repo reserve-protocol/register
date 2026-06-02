@@ -21,6 +21,7 @@ import BasketProposalPreview from './legacy-basket-proposal-preview'
 import RebalanceBasketPreview, {
   EstimatedBasket,
 } from './rebalance-basket-preview'
+import { Trans } from '@lingui/react/macro'
 
 const TABS = {
   SUMMARY: 'summary',
@@ -32,7 +33,7 @@ const Header = ({ address }: { address: Address }) => {
 
   return (
     <div className="mx-4 py-4 flex items-center flex-wrap gap-2 border-b">
-      <h1 className="text-xl font-semibold text-primary">Basket Change</h1>
+      <h1 className="text-xl font-semibold text-primary"><Trans>Basket Change</Trans></h1>
       <Link
         target="_blank"
         className="mr-auto"
@@ -90,7 +91,7 @@ const RebalancePreview = ({
   return (
     <Tabs
       defaultValue={TABS.SUMMARY}
-      className="flex flex-col gap-4 p-2 rounded-3xl m-1 bg-background"
+      className="flex flex-col gap-4 rounded-3xl m-1 bg-background"
     >
       <Header address={dtf.id.toLowerCase() as Address} />
       <TabsContent className="m-0" value={TABS.SUMMARY}>

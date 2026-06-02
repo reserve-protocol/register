@@ -17,6 +17,8 @@ import { ReactNode } from 'react'
 import { Link } from 'react-router-dom'
 import { proposalDetailAtom } from '../atom'
 import { cn } from '@/lib/utils'
+import ContestedBadge from '../../../components/contest-badge'
+import OptimisticBadge from '../../../components/optimistic-badge'
 
 const BackButton = () => {
   return (
@@ -125,9 +127,23 @@ const ProposalParams = () => {
   )
 }
 
+const Badges = () => {
+  const proposal = useAtomValue(proposalDetailAtom)
+
+  return (
+    <div className='ml-auto'>
+      {!!proposal?.isOptimistic && <OptimisticBadge />}
+      {!!proposal?.wasChallenged && <ContestedBadge />}
+    </div>
+  )
+}
+
 const ProposalHeader = () => (
   <div className="flex flex-col justify-between gap-3 md:gap-7 p-4 lg:p-6 pb-2 ">
-    <BackButton />
+    <div className='flex items-center'>
+      <BackButton />
+      <Badges />
+    </div>
     <div className="flex flex-col gap-2 md:gap-4">
       <ProposalTitle />
       <ProposalParams />

@@ -6,9 +6,11 @@ import { Trans } from '@lingui/react/macro'
 import type {
   IndexDtfProposalSummary
 } from '@reserve-protocol/react-sdk'
-import { Ban, CheckCircle2, Clock, FileX, HandFist, Rocket, ThumbsDown, ThumbsUp, UserRoundCheck, UserRoundX } from 'lucide-react'
+import { Ban, CheckCircle2, Clock, FileX, ThumbsDown, ThumbsUp, UserRoundCheck, UserRoundX } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import useProposalStages from '../hooks/use-proposal-stages'
+import ContestedBadge from './contest-badge'
+import OptimisticBadge from './optimistic-badge'
 
 type IProposalListItem = {
   proposal: IndexDtfProposalSummary
@@ -91,18 +93,6 @@ const ProposalState = ({ proposal }: IProposalListItem) => {
     </div>
   )
 }
-
-const OptimisticBadge = () => (
-  <div className='flex items-center gap-1 rounded-full bg-primary/10 px-2 py-1 text-primary text-xs'>
-    <Rocket size={16} /> <span className='hidden sm:block'><Trans>Fast</Trans></span>
-  </div>
-)
-
-const ContestedBadge = () => (
-  <div className='flex items-center gap-1 rounded-full bg-[#F08E35]/10 px-2 py-1 text-[#F08E35] text-xs'>
-    <HandFist size={16} /> <span className='hidden sm:block'><Trans>Contested</Trans></span>
-  </div>
-)
 
 const ProposalVoteState = ({ proposal }: IProposalListItem) => {
   const isFinished = FINISHED_STATES.has(proposal.state)
