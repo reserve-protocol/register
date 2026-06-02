@@ -15,17 +15,33 @@ const TokenLogoWithChain = ({
   address,
   chain,
   size = 'lg',
+  width,
+  height,
 }: {
   symbol?: string
   address?: string
   chain: number
   size?: Size
+  width?: number
+  height?: number
 }) => {
-  const s = chainLogoSize[size]
+  const logoWidth = width ?? undefined
+  const logoHeight = height ?? undefined
+  const s =
+    width || height
+      ? Math.round(((width ?? height ?? 32) / 32) * chainLogoSize.xl)
+      : chainLogoSize[size]
 
   return (
     <div className="relative flex-shrink-0">
-      <TokenLogo symbol={symbol} address={address} chain={chain} size={size} />
+      <TokenLogo
+        symbol={symbol}
+        address={address}
+        chain={chain}
+        size={size}
+        width={logoWidth}
+        height={logoHeight}
+      />
       <ChainLogo
         chain={chain}
         className="absolute -bottom-0.5 -right-0.5"
