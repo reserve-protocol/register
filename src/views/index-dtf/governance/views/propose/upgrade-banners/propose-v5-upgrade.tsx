@@ -15,6 +15,7 @@ import { encodeFunctionData, getAddress, pad } from 'viem'
 import { useWaitForTransactionReceipt, useWriteContract } from 'wagmi'
 import { governanceProposalsAtom, refetchTokenAtom } from '../../../atoms'
 import { useIsProposeAllowed } from '../../../hooks/use-is-propose-allowed'
+import useRecentProposalReceipt from '../../../hooks/use-recent-proposal-receipt'
 import { toast } from 'sonner'
 
 export const spellAbi = [
@@ -79,11 +80,12 @@ const ProposeBanner = ({ refetch, description }: SpellUpgradeProps) => {
   const dtf = useAtomValue(indexDTFAtom)
   const chainId = useAtomValue(chainIdAtom)
   const spell = spellAddress[chainId]
+  const handleRecentProposalReceipt = useRecentProposalReceipt()
 
-  const { writeContract, data, isPending } = useWriteContract()
+  const { writeContract, data: hash, isPending } = useWriteContract()
 
-  const { isSuccess } = useWaitForTransactionReceipt({
-    hash: data,
+  const { data: receipt, isSuccess } = useWaitForTransactionReceipt({
+    hash,
     chainId,
   })
 
@@ -127,16 +129,35 @@ const ProposeBanner = ({ refetch, description }: SpellUpgradeProps) => {
   }
 
   useEffect(() => {
-    if (isSuccess) {
-      setTimeout(() => {
+    if (!isSuccess || !receipt || !dtf?.ownerGovernance?.id) return
+
+    void handleRecentProposalReceipt({
+      receipt,
+      governor: dtf.ownerGovernance.id,
+      onSuccess: () => {
         toast('Proposal created!', {
           description: 'DTF V5.0.0 upgrade proposal created',
           icon: '🎉',
         })
         refetch()
-      }, 10000)
-    }
-  }, [isSuccess])
+      },
+      onFallback: () => {
+        setTimeout(() => {
+          toast('Proposal created!', {
+            description: 'DTF V5.0.0 upgrade proposal created',
+            icon: '🎉',
+          })
+          refetch()
+        }, 10000)
+      },
+    })
+  }, [
+    dtf?.ownerGovernance?.id,
+    handleRecentProposalReceipt,
+    isSuccess,
+    receipt,
+    refetch,
+  ])
 
   if (!proposalAvailable) {
     return null
@@ -165,16 +186,16 @@ const ProposeBanner = ({ refetch, description }: SpellUpgradeProps) => {
         </div>
       </div>
       <Button
-        disabled={!isReady || isPending || !!data}
+        disabled={!isReady || isPending || !!hash}
         onClick={handlePropose}
         className="w-full mt-2"
       >
-        {(isPending || !!data) && (
+        {(isPending || !!hash) && (
           <Loader2 className="w-4 h-4 animate-spin mr-2" />
         )}
         {isPending && 'Pending, sign in wallet...'}
-        {!isPending && !!data && 'Waiting for confirmation...'}
-        {!isPending && !data && 'Propose upgrade'}
+        {!isPending && !!hash && 'Waiting for confirmation...'}
+        {!isPending && !hash && 'Propose upgrade'}
       </Button>
     </div>
   )

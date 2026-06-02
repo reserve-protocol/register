@@ -13,6 +13,7 @@ import { proposalDescriptionAtom, basketProposalCalldatasAtom } from '../atoms'
 import { useIsProposeAllowed } from '@/views/index-dtf/governance/hooks/use-is-propose-allowed'
 import { indexDTFRefreshFnAtom } from '@/views/index-dtf/index-dtf-container'
 import { TransactionButtonContainer } from '@/components/ui/transaction'
+import useRecentProposalReceipt from '@/views/index-dtf/governance/hooks/use-recent-proposal-receipt'
 
 const isProposalReady = atom((get) => {
   const wallet = get(walletAtom)
@@ -53,24 +54,35 @@ const SubmitProposalButton = () => {
   const dtf = useAtomValue(iTokenAddressAtom)
   const govAddress = useAtomValue(tradingGovAddress)
   const refreshFn = useAtomValue(indexDTFRefreshFnAtom)
+  const handleRecentProposalReceipt = useRecentProposalReceipt()
 
-  const { writeContract, isPending, data, error } = useWriteContract()
-  const { isSuccess } = useWaitForTransactionReceipt({
-    hash: data,
+  const { writeContract, isPending, data: hash } = useWriteContract()
+  const { data: receipt, isSuccess } = useWaitForTransactionReceipt({
+    hash,
     chainId,
   })
 
   useEffect(() => {
-    if (isSuccess) {
-      // Give some time for the proposal to be created on the subgraph
-      const timer = setTimeout(() => {
-        refreshFn?.()
-        navigate(`../${ROUTES.GOVERNANCE}`)
-      }, 10000) // TODO: who knows if this works well!!! they can just refresh the page
+    if (!isSuccess || !receipt || !govAddress) return
 
-      return () => clearTimeout(timer)
-    }
-  }, [isSuccess])
+    void handleRecentProposalReceipt({
+      receipt,
+      governor: govAddress,
+      onFallback: () => {
+        setTimeout(() => {
+          refreshFn?.()
+          navigate(`../${ROUTES.GOVERNANCE}`)
+        }, 10000)
+      },
+    })
+  }, [
+    govAddress,
+    handleRecentProposalReceipt,
+    isSuccess,
+    navigate,
+    receipt,
+    refreshFn,
+  ])
 
   const handleSubmit = () => {
     if (dtf && calldatas && description && govAddress) {
@@ -98,17 +110,17 @@ const SubmitProposalButton = () => {
       switchChainButtonClassName="w-full"
     >
       <Button
-        disabled={!isReady || isPending || !!data || !govAddress}
+        disabled={!isReady || isPending || !!hash || !govAddress}
         onClick={handleSubmit}
         className="w-full"
         variant="default"
       >
-        {(isPending || !!data) && (
+        {(isPending || !!hash) && (
           <Loader2 className="w-4 h-4 animate-spin mr-2" />
         )}
         {isPending && 'Pending, sign in wallet...'}
-        {!isPending && !!data && 'Waiting for confirmation...'}
-        {!isPending && !data && 'Submit proposal onchain'}
+        {!isPending && !!hash && 'Waiting for confirmation...'}
+        {!isPending && !hash && 'Submit proposal onchain'}
       </Button>
     </TransactionButtonContainer>
   )

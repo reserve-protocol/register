@@ -8,13 +8,13 @@ import { atom, useAtomValue } from 'jotai'
 import { Loader2 } from 'lucide-react'
 import { memo, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Address } from 'viem'
 import { useWaitForTransactionReceipt, useWriteContract } from 'wagmi'
 import {
   proposalDescriptionAtom,
   basketSettingsProposalDataAtom,
 } from '../atoms'
 import { useIsProposeAllowed } from '@/views/index-dtf/governance/hooks/use-is-propose-allowed'
+import useRecentProposalReceipt from '@/views/index-dtf/governance/hooks/use-recent-proposal-receipt'
 
 const isProposalReady = atom((get) => {
   const wallet = get(walletAtom)
@@ -52,33 +52,37 @@ const SubmitProposalButton = () => {
   const description = useAtomValue(proposalDescriptionAtom)
   const proposalData = useAtomValue(basketSettingsProposalDataAtom)
   const dtf = useAtomValue(indexDTFAtom)
-  const { writeContract, isPending, data } = useWriteContract()
-  const { isSuccess } = useWaitForTransactionReceipt({
-    hash: data,
+  const handleRecentProposalReceipt = useRecentProposalReceipt()
+  const { writeContract, isPending, data: hash } = useWriteContract()
+  const { data: receipt, isSuccess } = useWaitForTransactionReceipt({
+    hash,
     chainId,
   })
 
   useEffect(() => {
-    if (isSuccess) {
-      // Give some time for the proposal to be created on the subgraph
-      setTimeout(() => {
-        navigate(`../${ROUTES.GOVERNANCE}`)
-      }, 10000) // TODO: who knows if this works well!!! they can just refresh the page
-    }
-  }, [isSuccess])
+    if (!isSuccess || !receipt || !dtf?.tradingGovernance?.id) return
+
+    void handleRecentProposalReceipt({
+      receipt,
+      governor: dtf.tradingGovernance.id,
+      onFallback: () => {
+        setTimeout(() => {
+          navigate(`../${ROUTES.GOVERNANCE}`)
+        }, 10000)
+      },
+    })
+  }, [
+    dtf?.tradingGovernance?.id,
+    handleRecentProposalReceipt,
+    isSuccess,
+    navigate,
+    receipt,
+  ])
 
   const handleSubmit = () => {
     if (proposalData && description && dtf?.tradingGovernance?.id) {
       const { targets, calldatas } = proposalData
       const values = targets.map(() => 0n)
-
-      console.log('proposal', {
-        address: dtf.tradingGovernance.id,
-        abi: DTFIndexGovernance,
-        functionName: 'propose',
-        args: [targets, values, calldatas, description],
-        chainId,
-      })
 
       writeContract({
         address: dtf.tradingGovernance.id,
@@ -94,18 +98,18 @@ const SubmitProposalButton = () => {
     <TransactionButtonContainer chain={chainId}>
       <Button
         disabled={
-          !isReady || isPending || !!data || !dtf?.tradingGovernance?.id
+          !isReady || isPending || !!hash || !dtf?.tradingGovernance?.id
         }
         onClick={handleSubmit}
         className="w-full"
         variant="default"
       >
-        {(isPending || !!data) && (
+        {(isPending || !!hash) && (
           <Loader2 className="w-4 h-4 animate-spin mr-2" />
         )}
         {isPending && 'Pending, sign in wallet...'}
-        {!isPending && !!data && 'Waiting for confirmation...'}
-        {!isPending && !data && 'Submit proposal onchain'}
+        {!isPending && !!hash && 'Waiting for confirmation...'}
+        {!isPending && !hash && 'Submit proposal onchain'}
       </Button>
     </TransactionButtonContainer>
   )

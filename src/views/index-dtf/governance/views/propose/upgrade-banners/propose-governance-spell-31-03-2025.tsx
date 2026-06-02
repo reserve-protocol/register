@@ -27,6 +27,7 @@ import {
 } from 'wagmi'
 import { governanceProposalsAtom, refetchTokenAtom } from '../../../atoms'
 import { useIsProposeAllowed } from '../../../hooks/use-is-propose-allowed'
+import useRecentProposalReceipt from '../../../hooks/use-recent-proposal-receipt'
 
 export const spellAbi = [
   {
@@ -170,6 +171,7 @@ const ProposeGovernanceSpell31032025Folio = ({
   const dtf = useAtomValue(indexDTFAtom)
   const chainId = useAtomValue(chainIdAtom)
   const spell = spellAddress[chainId]
+  const handleRecentProposalReceipt = useRecentProposalReceipt()
 
   const { data: qdOwnerGov } = useReadContract({
     abi: DTFIndexGovernance,
@@ -179,10 +181,10 @@ const ProposeGovernanceSpell31032025Folio = ({
     query: queryParams,
   })
 
-  const { writeContract, data, isPending } = useWriteContract()
+  const { writeContract, data: hash, isPending } = useWriteContract()
 
-  const { isSuccess } = useWaitForTransactionReceipt({
-    hash: data,
+  const { data: receipt, isSuccess } = useWaitForTransactionReceipt({
+    hash,
     chainId,
   })
 
@@ -246,13 +248,25 @@ const ProposeGovernanceSpell31032025Folio = ({
   }
 
   useEffect(() => {
-    if (isSuccess) {
-      // Give some time for the proposal to be created on the subgraph
-      setTimeout(() => {
-        refetch()
-      }, 10000)
-    }
-  }, [isSuccess])
+    if (!isSuccess || !receipt || !dtf?.ownerGovernance?.id) return
+
+    void handleRecentProposalReceipt({
+      receipt,
+      governor: dtf.ownerGovernance.id,
+      onSuccess: refetch,
+      onFallback: () => {
+        setTimeout(() => {
+          refetch()
+        }, 10000)
+      },
+    })
+  }, [
+    dtf?.ownerGovernance?.id,
+    handleRecentProposalReceipt,
+    isSuccess,
+    receipt,
+    refetch,
+  ])
 
   if (!proposalAvailable) {
     return null
@@ -275,16 +289,16 @@ const ProposeGovernanceSpell31032025Folio = ({
         </div>
       </div>
       <Button
-        disabled={!isReady || isPending || !!data}
+        disabled={!isReady || isPending || !!hash}
         onClick={handlePropose}
         className="w-full mt-2"
       >
-        {(isPending || !!data) && (
+        {(isPending || !!hash) && (
           <Loader2 className="w-4 h-4 animate-spin mr-2" />
         )}
         {isPending && 'Pending, sign in wallet...'}
-        {!isPending && !!data && 'Waiting for confirmation...'}
-        {!isPending && !data && 'Create Spell Proposal'}
+        {!isPending && !!hash && 'Waiting for confirmation...'}
+        {!isPending && !hash && 'Create Spell Proposal'}
       </Button>
     </div>
   )
@@ -296,6 +310,7 @@ const ProposeGovernanceSpell31032025StakingVault = ({
   const dtf = useAtomValue(indexDTFAtom)
   const chainId = useAtomValue(chainIdAtom)
   const spell = spellAddress[chainId]
+  const handleRecentProposalReceipt = useRecentProposalReceipt()
 
   const { data: qdStakingVaultGov } = useReadContract({
     abi: DTFIndexGovernance,
@@ -305,10 +320,10 @@ const ProposeGovernanceSpell31032025StakingVault = ({
     query: queryParams,
   })
 
-  const { writeContract, data, isPending } = useWriteContract()
+  const { writeContract, data: hash, isPending } = useWriteContract()
 
-  const { isSuccess } = useWaitForTransactionReceipt({
-    hash: data,
+  const { data: receipt, isSuccess } = useWaitForTransactionReceipt({
+    hash,
     chainId,
   })
 
@@ -354,13 +369,25 @@ const ProposeGovernanceSpell31032025StakingVault = ({
   }
 
   useEffect(() => {
-    if (isSuccess) {
-      // Give some time for the proposal to be created on the subgraph
-      setTimeout(() => {
-        refetch()
-      }, 10000)
-    }
-  }, [isSuccess])
+    if (!isSuccess || !receipt || !dtf?.stToken?.governance?.id) return
+
+    void handleRecentProposalReceipt({
+      receipt,
+      governor: dtf.stToken.governance.id,
+      onSuccess: refetch,
+      onFallback: () => {
+        setTimeout(() => {
+          refetch()
+        }, 10000)
+      },
+    })
+  }, [
+    dtf?.stToken?.governance?.id,
+    handleRecentProposalReceipt,
+    isSuccess,
+    receipt,
+    refetch,
+  ])
 
   if (!proposalAvailable) {
     return null
@@ -384,16 +411,16 @@ const ProposeGovernanceSpell31032025StakingVault = ({
         </div>
       </div>
       <Button
-        disabled={!isReady || isPending || !!data}
+        disabled={!isReady || isPending || !!hash}
         onClick={handlePropose}
         className="w-full mt-2"
       >
-        {(isPending || !!data) && (
+        {(isPending || !!hash) && (
           <Loader2 className="w-4 h-4 animate-spin mr-2" />
         )}
         {isPending && 'Pending, sign in wallet...'}
-        {!isPending && !!data && 'Waiting for confirmation...'}
-        {!isPending && !data && 'Create Spell Proposal'}
+        {!isPending && !!hash && 'Waiting for confirmation...'}
+        {!isPending && !hash && 'Create Spell Proposal'}
       </Button>
     </div>
   )

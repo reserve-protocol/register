@@ -1,11 +1,15 @@
 import { ProposalDetail } from '@/lib/governance'
+import { recentProposalsAtom } from '@/views/index-dtf/governance/atoms'
+import { getRecentProposalKey } from '@/views/index-dtf/governance/utils/recent-proposals'
 import {
+  isSdkError,
   useIndexDtfIdentity,
   useIndexDtfProposal,
   type IndexDtfProposalDetail,
   type IndexDtfProposalVotingSnapshot,
   useIndexDtfProposalVotingSnapshot,
 } from '@reserve-protocol/react-sdk'
+import { useAtomValue } from 'jotai'
 import { useMemo } from 'react'
 import { PROPOSAL_STATES } from '@/utils/constants'
 
@@ -30,7 +34,9 @@ const withVotingSnapshot = (
   if (!votingSnapshot) return proposal
 
   const shouldKeepDetailThreshold =
-    proposal.isOptimistic && !!proposal.optimistic && votingSnapshot.votes.length === 0
+    proposal.isOptimistic &&
+    !!proposal.optimistic &&
+    votingSnapshot.votes.length === 0
 
   return {
     ...proposal,
@@ -66,7 +72,9 @@ const withVotingSnapshot = (
   }
 }
 
-const mapProposalDetail = (proposal: IndexDtfProposalDetail): ProposalDetail => {
+const mapProposalDetail = (
+  proposal: IndexDtfProposalDetail
+): ProposalDetail => {
   const proposalDetail: ProposalDetail = {
     id: proposal.id,
     chainId: proposal.chainId,
@@ -118,15 +126,32 @@ const mapProposalDetail = (proposal: IndexDtfProposalDetail): ProposalDetail => 
 
 const useProposalDetail = (proposalId: string | undefined) => {
   const { address, chainId } = useIndexDtfIdentity()
+  const recentProposals = useAtomValue(recentProposalsAtom)
   const proposalQuery = useIndexDtfProposal(
     proposalId ? { address, chainId, proposalId } : undefined,
     {
       refetchInterval: (query) =>
-        getRefetchInterval(query.state.data as IndexDtfProposalDetail | undefined),
+        getRefetchInterval(
+          query.state.data as IndexDtfProposalDetail | undefined
+        ),
     }
   )
-  const proposal = proposalQuery.data
+  const recentProposal = useMemo(() => {
+    if (!proposalId) return undefined
+
+    return recentProposals[
+      getRecentProposalKey({ chainId, dtf: address, proposalId })
+    ]?.detail
+  }, [address, chainId, proposalId, recentProposals])
+  const shouldUseRecentProposal =
+    !proposalQuery.data &&
+    !!recentProposal &&
+    isSdkError(proposalQuery.error) &&
+    proposalQuery.error.code === 'RECORD_NOT_FOUND'
+  const proposal =
+    proposalQuery.data ?? (shouldUseRecentProposal ? recentProposal : undefined)
   const shouldReadVotingSnapshot =
+    !shouldUseRecentProposal &&
     proposal?.votingState.state === PROPOSAL_STATES.ACTIVE
   const votingSnapshotQuery = useIndexDtfProposalVotingSnapshot(
     shouldReadVotingSnapshot && proposal
@@ -152,8 +177,12 @@ const useProposalDetail = (proposalId: string | undefined) => {
   return {
     ...proposalQuery,
     data,
-    error: proposalQuery.error ?? votingSnapshotQuery.error,
-    isError: proposalQuery.isError || votingSnapshotQuery.isError,
+    error: shouldUseRecentProposal
+      ? votingSnapshotQuery.error
+      : (proposalQuery.error ?? votingSnapshotQuery.error),
+    isError: shouldUseRecentProposal
+      ? votingSnapshotQuery.isError
+      : proposalQuery.isError || votingSnapshotQuery.isError,
     isFetching: proposalQuery.isFetching || votingSnapshotQuery.isFetching,
   }
 }
