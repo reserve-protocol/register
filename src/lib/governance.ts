@@ -2,6 +2,7 @@ import type {
   Amount,
   IndexDtfOptimisticProposalContext,
   IndexDtfProposalDecoded,
+  ProposalVotingState,
   SupportedChainId,
 } from '@reserve-protocol/react-sdk'
 import { Address, Hex } from 'viem'
@@ -46,6 +47,7 @@ export type VotingState = {
   forVotesReachedQuorum?: boolean
   participationQuorumReached?: boolean
   vetoReached?: boolean
+  threshold?: ProposalVotingState['threshold']
 }
 
 export interface ProposalDetail extends PartialProposal {

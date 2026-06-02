@@ -4,15 +4,14 @@ import { cn } from '@/lib/utils'
 import { walletAtom } from '@/state/atoms'
 import { indexDTFAtom } from '@/state/dtf/atoms'
 import { formatCurrency, formatPercentage } from '@/utils'
-import { voteLockStateRefreshTokenAtom } from '@/views/index-dtf/overview/components/staking/atoms'
 import { Trans } from '@lingui/react/macro'
 import {
   type IndexDtfVoterState,
   useIndexDtfVoterState,
 } from '@reserve-protocol/react-sdk'
 import { useAtomValue } from 'jotai'
-import { NotebookTabs, User2, Vote } from 'lucide-react'
-import React, { useEffect, useRef } from 'react'
+import { Vote } from 'lucide-react'
+import React from 'react'
 import { zeroAddress } from 'viem'
 
 export interface IInfoItem {
@@ -69,8 +68,6 @@ const VotingPower = ({
 const useVoterState = () => {
   const account = useAtomValue(walletAtom)
   const dtf = useAtomValue(indexDTFAtom)
-  const refreshToken = useAtomValue(voteLockStateRefreshTokenAtom)
-  const previousRefreshToken = useRef(refreshToken)
 
   const params =
     account && dtf?.stToken?.id
@@ -81,15 +78,7 @@ const useVoterState = () => {
       }
       : undefined
 
-  const { data: voterState, refetch } = useIndexDtfVoterState(params)
-
-  useEffect(() => {
-    if (previousRefreshToken.current === refreshToken) return
-
-    previousRefreshToken.current = refreshToken
-
-    if (params) void refetch()
-  }, [!!params, refetch, refreshToken])
+  const { data: voterState } = useIndexDtfVoterState(params)
 
   return voterState
 }

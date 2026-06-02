@@ -6,7 +6,6 @@ import {
   indexDTFBasketAtom,
   indexDTFBasketSharesAtom,
   indexDTFRebalanceControlAtom,
-  indexDTFVersionAtom,
 } from '@/state/dtf/atoms'
 import { DecodedCalldata, Token } from '@/types'
 import { calculatePriceFromRange } from '@/utils'
@@ -15,10 +14,18 @@ import { getTargetBasket } from '@reserve-protocol/dtf-rebalance-lib'
 import { useQuery } from '@tanstack/react-query'
 import { atom, useAtomValue } from 'jotai'
 import { useMemo } from 'react'
-import { Abi, Address, decodeFunctionData, formatUnits, getAbiItem, Hex } from 'viem'
+import {
+  Abi,
+  Address,
+  decodeFunctionData,
+  formatUnits,
+  getAbiItem,
+  Hex,
+  toFunctionSelector,
+} from 'viem'
 import useAssetPricesWithSnapshot from './use-asset-prices-with-snapshot'
 import useTokensInfo from './useTokensInfo'
-import { IndexDTFPerformance } from '@/views/index-dtf/overview/hooks/use-dtf-price-history'
+import type { IndexDTFPerformance } from '@/views/index-dtf/overview/hooks/use-dtf-price-history'
 
 // current/initial/snapshot will be the same at proposal time
 type BasketAsset = {
@@ -52,6 +59,13 @@ type Range = {
   spot: bigint
   high: bigint
 }
+
+const START_REBALANCE_V4_SELECTOR = toFunctionSelector(
+  'startRebalance(address[],(uint256,uint256,uint256)[],(uint256,uint256)[],(uint256,uint256,uint256),uint256,uint256)'
+)
+const START_REBALANCE_V5_SELECTOR = toFunctionSelector(
+  'startRebalance((address,(uint256,uint256,uint256),(uint256,uint256),uint256,bool)[],(uint256,uint256,uint256),uint256,uint256)'
+)
 
 const getDecodedCalldata = (abi: Abi, calldata: Hex): DecodedCalldata => {
   const { functionName, args } = decodeFunctionData({
@@ -87,18 +101,23 @@ type TokenRebalanceParams = {
 export const useDecodedRebalanceCalldata = (
   calldata: Hex[] | undefined
 ): { data: RebalanceCall; calldata: DecodedCalldata } | undefined => {
-  const version = useAtomValue(indexDTFVersionAtom)
+  const rebalanceCalldata = calldata?.length === 1 ? calldata[0] : undefined
 
   return useMemo(() => {
     // Rebalance calls is always only one
-    if (calldata?.length !== 1) return undefined
+    if (!rebalanceCalldata) return undefined
 
-    const isV5 = version.startsWith('5')
+    const selector = rebalanceCalldata.slice(0, 10)
+    const isV5 = selector === START_REBALANCE_V5_SELECTOR
+    let abi: Abi | undefined
+
+    if (isV5) abi = dtfIndexAbiV5
+    if (selector === START_REBALANCE_V4_SELECTOR) abi = dtfIndexAbiV4
+
+    if (!abi) return undefined
 
     try {
-      // Try to decode with the appropriate ABI based on version
-      const abi = isV5 ? dtfIndexAbiV5 : dtfIndexAbiV4
-      const decodedCalldata = getDecodedCalldata(abi, calldata[0])
+      const decodedCalldata = getDecodedCalldata(abi, rebalanceCalldata)
 
       if (decodedCalldata.signature !== 'startRebalance') return undefined
 
@@ -147,11 +166,10 @@ export const useDecodedRebalanceCalldata = (
           calldata: decodedCalldata,
         }
       }
-    } catch (e) {
-      console.error('Error decoding rebalance calldata', e)
+    } catch {
       return undefined
     }
-  }, [JSON.stringify(calldata), version])
+  }, [rebalanceCalldata])
 }
 
 const currentBasketMapAtom = atom<Record<string, Token> | undefined>((get) => {
@@ -237,8 +255,8 @@ const useDTFBasketWeights = (timestamp?: number) => {
 /**
  * Hook to parse and preview rebalance basket changes from calldata
  *
- * Currently processes only the first calldata in the array for 4.0 rebalance flow.
- * Future versions may need to handle multiple calldatas if the rebalance process changes.
+ * Historical proposals can use v4 or v5 startRebalance signatures, so decode by
+ * calldata selector instead of the DTF's current version.
  */
 const useRebalanceBasketPreview = (
   calldata: Hex[] | undefined,

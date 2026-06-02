@@ -25,6 +25,8 @@ import {
   SetProposalThresholdPreview,
   UpdateQuorumNumeratorPreview,
   UpdateDelayPreview,
+  SetOptimisticParamsPreview,
+  SelectorRegistryPreview,
 } from './dtf-settings-preview'
 
 const ChangesOverviewComponentMap: Record<
@@ -48,8 +50,12 @@ const ChangesOverviewComponentMap: Record<
   setVotingPeriod: SetVotingPeriodPreview,
   setProposalThreshold: SetProposalThresholdPreview,
   updateQuorumNumerator: UpdateQuorumNumeratorPreview,
+  setOptimisticParams: SetOptimisticParamsPreview,
   // Timelock functions
   updateDelay: UpdateDelayPreview,
+  // Optimistic selector registry functions
+  registerSelectors: SelectorRegistryPreview,
+  unregisterSelectors: SelectorRegistryPreview,
 }
 
 const TABS = {
@@ -90,7 +96,7 @@ const ContractProposalChanges = ({
           </Button>
         </Link>
 
-        <TabsList className="h-9">
+        <TabsList >
           <TabsTrigger value={TABS.SUMMARY} className="w-max h-7">
             Summary
           </TabsTrigger>

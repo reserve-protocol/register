@@ -17,6 +17,7 @@ import SubmitProposalButton from './submit-proposal-button'
 import SimulateProposalCard from '@/views/index-dtf/governance/components/simulate-proposal-card'
 import { chainIdAtom } from '@/state/atoms'
 import { Address } from 'viem'
+import { shouldBypassFormValidation } from '@/utils/form-validation'
 
 const ConfirmProposalButton = () => {
   const isValid = useAtomValue(isProposalValidAtom)
@@ -24,11 +25,12 @@ const ConfirmProposalButton = () => {
   const [isProposalConfirmed, setIsProposalConfirmed] = useAtom(
     isProposalConfirmedAtom
   )
+  const bypassFormValidation = shouldBypassFormValidation()
 
   const handleConfirm = () => {
     if (!isProposalConfirmed) {
       // When confirming, check if form is valid
-      if (!isFormValid) {
+      if (!isFormValid && !bypassFormValidation) {
         // The form will show validation errors
         return
       }
@@ -37,7 +39,7 @@ const ConfirmProposalButton = () => {
   }
 
   // Enable button only if there are changes AND form is valid
-  const isButtonEnabled = isValid && isFormValid
+  const isButtonEnabled = isValid && (isFormValid || bypassFormValidation)
 
   return (
     <Button
@@ -55,8 +57,9 @@ const ProposalInstructions = () => {
   const isValid = useAtomValue(isProposalValidAtom)
   const isFormValid = useAtomValue(isFormValidAtom)
   const confirmed = useAtomValue(isProposalConfirmedAtom)
+  const bypassFormValidation = shouldBypassFormValidation()
 
-  const canProceed = isValid && isFormValid
+  const canProceed = isValid && (isFormValid || bypassFormValidation)
 
   const timelineItems = [
     {

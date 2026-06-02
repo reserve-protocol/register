@@ -20,7 +20,6 @@ export const unlockDelayAtom = atom<number | undefined>(undefined)
 export const lockCheckboxAtom = atom<boolean>(false)
 export const currentDelegateAtom = atom<string>('')
 export const delegateAtom = atom<string>('')
-export const voteLockStateRefreshTokenAtom = atom(0)
 
 export const updateStTokenSupplyAtom = atom(null, (get, set, delta: bigint) => {
   const indexDTF = get(indexDTFAtom)

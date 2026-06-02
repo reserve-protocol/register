@@ -29,26 +29,40 @@ const withVotingSnapshot = (
 ): IndexDtfProposalDetail => {
   if (!votingSnapshot) return proposal
 
+  const shouldKeepDetailThreshold =
+    proposal.isOptimistic && !!proposal.optimistic && votingSnapshot.votes.length === 0
+
   return {
     ...proposal,
     state: votingSnapshot.state,
     voteStart: votingSnapshot.voteStart,
     voteEnd: votingSnapshot.voteEnd,
-    quorumVotes: votingSnapshot.quorumVotes,
+    quorumVotes: shouldKeepDetailThreshold
+      ? proposal.quorumVotes
+      : votingSnapshot.quorumVotes,
     forWeightedVotes: votingSnapshot.forWeightedVotes,
     againstWeightedVotes: votingSnapshot.againstWeightedVotes,
     abstainWeightedVotes: votingSnapshot.abstainWeightedVotes,
     votes: votingSnapshot.votes,
-    votingState: votingSnapshot.votingState,
+    votingState: shouldKeepDetailThreshold
+      ? {
+          ...votingSnapshot.votingState,
+          threshold: proposal.votingState.threshold,
+        }
+      : votingSnapshot.votingState,
     ...(votingSnapshot.isOptimistic === undefined
       ? {}
       : { isOptimistic: votingSnapshot.isOptimistic }),
-    ...(votingSnapshot.vetoThreshold === undefined
-      ? {}
-      : { vetoThreshold: votingSnapshot.vetoThreshold }),
-    ...(votingSnapshot.optimistic
-      ? { optimistic: votingSnapshot.optimistic }
-      : {}),
+    ...(shouldKeepDetailThreshold
+      ? { vetoThreshold: proposal.vetoThreshold }
+      : votingSnapshot.vetoThreshold === undefined
+        ? {}
+        : { vetoThreshold: votingSnapshot.vetoThreshold }),
+    ...(shouldKeepDetailThreshold
+      ? { optimistic: proposal.optimistic }
+      : votingSnapshot.optimistic
+        ? { optimistic: votingSnapshot.optimistic }
+        : {}),
   }
 }
 

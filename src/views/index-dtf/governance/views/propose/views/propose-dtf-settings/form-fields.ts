@@ -72,6 +72,18 @@ export const createProposeSettingsSchema = (quorumDenominator?: number) => z
       ),
     governanceVotingThreshold: z.coerce.number().min(0).max(100).optional(),
     governanceExecutionDelay: z.coerce.number().min(0).optional(),
+    optimisticVetoDelay: z.coerce.number().min(0).optional(),
+    optimisticVetoPeriod: z.coerce.number().min(0).optional(),
+    optimisticVetoThreshold: z.coerce.number().min(0).max(100).optional(),
+    optimisticProposers: z.array(
+      z
+        .string()
+        .refine((value) => !value || isAddressNotStrict(value), {
+          message: 'Invalid Address',
+        })
+        .optional()
+    ),
+    optimisticActions: z.array(z.string()).optional(),
     guardians: z.array(
       z
         .string()
@@ -122,6 +134,16 @@ export const createProposeSettingsSchema = (quorumDenominator?: number) => z
     {
       message: 'Duplicated auction launchers',
       path: ['roles'],
+    }
+  )
+  .refine(
+    (data) =>
+      new Set(
+        data.optimisticProposers?.map((item) => item?.toLowerCase() || item)
+      ).size === data.optimisticProposers.length,
+    {
+      message: 'Duplicated optimistic proposers',
+      path: ['optimistic'],
     }
   )
   .superRefine((data, ctx) => {

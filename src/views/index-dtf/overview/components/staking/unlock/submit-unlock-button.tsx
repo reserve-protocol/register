@@ -15,8 +15,10 @@ import {
   unlockBalanceRawAtom,
   unlockDelayAtom,
   updateStTokenSupplyAtom,
-  voteLockStateRefreshTokenAtom,
 } from '../atoms'
+import useRefreshVoteLockQueries, {
+  VOTE_LOCK_SUBGRAPH_REFRESH_DELAY,
+} from '../use-refresh-vote-lock-queries'
 
 const SubmitUnlockButton = () => {
   const account = useAtomValue(walletAtom)
@@ -27,12 +29,23 @@ const SubmitUnlockButton = () => {
   const unlockDelay = useAtomValue(unlockDelayAtom)
   const resetInput = useResetAtom(stakingInputAtom)
   const setStakingSidebarOpen = useSetAtom(stakingSidebarOpenAtom)
-  const bumpVoteLockStateRefresh = useSetAtom(voteLockStateRefreshTokenAtom)
   const updateStTokenSupply = useSetAtom(updateStTokenSupplyAtom)
   const queryClient = useQueryClient()
   const chainId = stToken?.chainId
   const [isProcessing, setIsProcessing] = useState(false)
   const pendingSupplyDelta = useRef(0n)
+  const processedReceiptHash = useRef<string>()
+  const processingTimer = useRef<ReturnType<typeof setTimeout>>()
+  const {
+    invalidateCurrentVoteLockRpcQueries,
+    scheduleCurrentVoteLockSubgraphRefresh,
+  } = useRefreshVoteLockQueries({ account, stToken })
+
+  useEffect(() => {
+    return () => {
+      if (processingTimer.current) clearTimeout(processingTimer.current)
+    }
+  }, [])
 
   const readyToSubmit =
     !!account && !!balance && amountToUnlock > 0n && amountToUnlock <= balance
@@ -73,27 +86,31 @@ const SubmitUnlockButton = () => {
   })
 
   useEffect(() => {
-    if (receipt?.status === 'success') {
-      updateStTokenSupply(pendingSupplyDelta.current)
-      bumpVoteLockStateRefresh((token) => token + 1)
-      setIsProcessing(true)
-      const timer = setTimeout(() => {
-        resetInput()
-        setStakingSidebarOpen(false)
-        toast.success('Unlock initiated successfully', { duration: 8000 })
-        queryClient.invalidateQueries({ queryKey: ['portfolio'] })
-        setIsProcessing(false)
-      }, 10000)
+    if (receipt?.status !== 'success' || !receipt.transactionHash) return
+    if (processedReceiptHash.current === receipt.transactionHash) return
 
-      return () => clearTimeout(timer)
-    }
+    processedReceiptHash.current = receipt.transactionHash
+    updateStTokenSupply(pendingSupplyDelta.current)
+    invalidateCurrentVoteLockRpcQueries()
+    scheduleCurrentVoteLockSubgraphRefresh()
+    setIsProcessing(true)
+    processingTimer.current = setTimeout(() => {
+      resetInput()
+      setStakingSidebarOpen(false)
+      toast.success('Unlock initiated successfully', { duration: 8000 })
+      queryClient.invalidateQueries({ queryKey: ['portfolio'] })
+      setIsProcessing(false)
+      processingTimer.current = undefined
+    }, VOTE_LOCK_SUBGRAPH_REFRESH_DELAY)
   }, [
-    receipt,
+    receipt?.status,
+    receipt?.transactionHash,
     resetInput,
     setStakingSidebarOpen,
     queryClient,
-    bumpVoteLockStateRefresh,
     updateStTokenSupply,
+    invalidateCurrentVoteLockRpcQueries,
+    scheduleCurrentVoteLockSubgraphRefresh,
   ])
 
   return (

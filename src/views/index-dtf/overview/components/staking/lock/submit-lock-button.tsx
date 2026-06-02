@@ -6,74 +6,23 @@ import { useAtomValue, useSetAtom } from 'jotai'
 import { useResetAtom } from 'jotai/utils'
 import { useEffect, useRef, useState } from 'react'
 import { toast } from 'sonner'
-import { Address, erc20Abi, getAddress, isAddress, parseUnits } from 'viem'
+import { erc20Abi, parseUnits } from 'viem'
 import {
   useReadContract,
   useWaitForTransactionReceipt,
   useWriteContract,
 } from 'wagmi'
 import {
-  currentDelegateAtom,
-  delegateAtom,
   lockCheckboxAtom,
   stakingInputAtom,
   stakingSidebarOpenAtom,
   stTokenAtom,
   underlyingBalanceAtom,
   updateStTokenSupplyAtom,
-  voteLockStateRefreshTokenAtom,
 } from '../atoms'
-
-export const DelegateButton = () => {
-  const account = useAtomValue(walletAtom)
-  const stToken = useAtomValue(stTokenAtom)!
-  const delegate = useAtomValue(delegateAtom)
-  const chainId = stToken?.chainId
-  const isValidDelegate = isAddress(delegate, { strict: false })
-  const setCurrentDelegate = useSetAtom(currentDelegateAtom)
-  const bumpVoteLockStateRefresh = useSetAtom(voteLockStateRefreshTokenAtom)
-
-  const { writeContract, data: hash, isPending, error } = useWriteContract()
-
-  const write = () => {
-    if (!account || !isValidDelegate || !stToken?.id) return
-
-    writeContract({
-      abi: dtfIndexStakingVault,
-      functionName: 'delegate',
-      address: stToken?.id,
-      args: [isValidDelegate ? getAddress(delegate) : account],
-      chainId,
-    })
-  }
-
-  const { data: receipt, error: txError } = useWaitForTransactionReceipt({
-    hash,
-    chainId,
-  })
-
-  useEffect(() => {
-    if (receipt?.status === 'success') {
-      setCurrentDelegate(delegate)
-      bumpVoteLockStateRefresh((token) => token + 1)
-    }
-  }, [receipt, delegate, setCurrentDelegate, bumpVoteLockStateRefresh])
-
-  return (
-    <div>
-      <TransactionButton
-        chain={chainId}
-        disabled={!account || !isValidDelegate}
-        loading={isPending || !!hash || (hash && !receipt)}
-        loadingText={!!hash ? 'Confirming tx...' : 'Pending, sign in wallet'}
-        onClick={write}
-        text={`Delegate ${stToken?.underlying.symbol}`}
-        className="w-full"
-        error={error || txError}
-      />
-    </div>
-  )
-}
+import useRefreshVoteLockQueries, {
+  VOTE_LOCK_SUBGRAPH_REFRESH_DELAY,
+} from '../use-refresh-vote-lock-queries'
 
 const SubmitLockButton = () => {
   const account = useAtomValue(walletAtom)
@@ -82,18 +31,25 @@ const SubmitLockButton = () => {
   const balance = useAtomValue(underlyingBalanceAtom)
   const amountToLock = parseUnits(input, stToken?.underlying.decimals)
   const checkbox = useAtomValue(lockCheckboxAtom)
-  const delegate = useAtomValue(delegateAtom)
   const resetInput = useResetAtom(stakingInputAtom)
   const setStakingSidebarOpen = useSetAtom(stakingSidebarOpenAtom)
-  const bumpVoteLockStateRefresh = useSetAtom(voteLockStateRefreshTokenAtom)
   const updateStTokenSupply = useSetAtom(updateStTokenSupplyAtom)
   const queryClient = useQueryClient()
   const chainId = stToken?.chainId
   const [isProcessing, setIsProcessing] = useState(false)
   const pendingSupplyDelta = useRef(0n)
+  const processedReceiptHash = useRef<string>()
+  const processingTimer = useRef<ReturnType<typeof setTimeout>>()
+  const {
+    invalidateCurrentVoteLockRpcQueries,
+    scheduleCurrentVoteLockSubgraphRefresh,
+  } = useRefreshVoteLockQueries({ account, stToken })
 
-  const isValidDelegate = isAddress(delegate, { strict: false })
-  const isSelfDelegate = delegate === account
+  useEffect(() => {
+    return () => {
+      if (processingTimer.current) clearTimeout(processingTimer.current)
+    }
+  }, [])
 
   const {
     data: allowance,
@@ -105,7 +61,7 @@ const SubmitLockButton = () => {
     address: stToken?.underlying.address,
     args: [account!, stToken?.id],
     chainId,
-    query: { enabled: !!account && isValidDelegate },
+    query: { enabled: !!account },
   })
 
   const hasAllowance = (allowance || 0n) >= amountToLock
@@ -160,17 +116,15 @@ const SubmitLockButton = () => {
   } = useWriteContract()
 
   const write = () => {
-    if (!account || !readyToSubmit || !isValidDelegate || !stToken?.id) return
+    if (!account || !readyToSubmit || !stToken?.id) return
 
     pendingSupplyDelta.current = sharesToMint ?? amountToLock
 
     writeContract({
       abi: dtfIndexStakingVault,
-      functionName: isSelfDelegate ? 'depositAndDelegate' : 'deposit',
+      functionName: 'depositAndDelegate',
       address: stToken?.id,
-      args: isSelfDelegate
-        ? [amountToLock]
-        : [amountToLock, account as Address],
+      args: [amountToLock],
       chainId,
     })
   }
@@ -181,27 +135,31 @@ const SubmitLockButton = () => {
   })
 
   useEffect(() => {
-    if (receipt?.status === 'success') {
-      updateStTokenSupply(pendingSupplyDelta.current)
-      bumpVoteLockStateRefresh((token) => token + 1)
-      setIsProcessing(true)
-      const timer = setTimeout(() => {
-        resetInput()
-        setStakingSidebarOpen(false)
-        toast.success('Vote lock successful', { duration: 8000 })
-        queryClient.invalidateQueries({ queryKey: ['portfolio'] })
-        setIsProcessing(false)
-      }, 10000)
+    if (receipt?.status !== 'success' || !receipt.transactionHash) return
+    if (processedReceiptHash.current === receipt.transactionHash) return
 
-      return () => clearTimeout(timer)
-    }
+    processedReceiptHash.current = receipt.transactionHash
+    updateStTokenSupply(pendingSupplyDelta.current)
+    invalidateCurrentVoteLockRpcQueries()
+    scheduleCurrentVoteLockSubgraphRefresh()
+    setIsProcessing(true)
+    processingTimer.current = setTimeout(() => {
+      resetInput()
+      setStakingSidebarOpen(false)
+      toast.success('Vote lock successful', { duration: 8000 })
+      queryClient.invalidateQueries({ queryKey: ['portfolio'] })
+      setIsProcessing(false)
+      processingTimer.current = undefined
+    }, VOTE_LOCK_SUBGRAPH_REFRESH_DELAY)
   }, [
-    receipt,
+    receipt?.status,
+    receipt?.transactionHash,
     resetInput,
     setStakingSidebarOpen,
     queryClient,
-    bumpVoteLockStateRefresh,
     updateStTokenSupply,
+    invalidateCurrentVoteLockRpcQueries,
+    scheduleCurrentVoteLockSubgraphRefresh,
   ])
 
   return (
@@ -209,7 +167,6 @@ const SubmitLockButton = () => {
       <TransactionButton
         chain={chainId}
         disabled={
-          !isValidDelegate ||
           !checkbox ||
           receipt?.status === 'success' ||
           amountToLock === 0n
@@ -220,9 +177,9 @@ const SubmitLockButton = () => {
             (readyToSubmit
               ? isLoading || !!hash || (hash && !receipt)
               : approving ||
-                !!approvalHash ||
-                validatingAllowance ||
-                (approvalHash && !approvalReceipt)))
+              !!approvalHash ||
+              validatingAllowance ||
+              (approvalHash && !approvalReceipt)))
         }
         loadingText={
           isProcessing

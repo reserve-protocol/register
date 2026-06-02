@@ -9,14 +9,42 @@ import {
   ArrowUpRight,
   Clock,
   Edit2,
+  FileLock2,
   MinusCircle,
   PlusCircle,
   Shield,
   Trash,
-  Users
+  Users,
+  Wand2
 } from 'lucide-react'
 import { Link } from 'react-router-dom'
-import { Address, zeroHash } from 'viem'
+import { formatEther, toFunctionSelector, zeroHash } from 'viem'
+import type { Address, Hex } from 'viem'
+
+const OPTIMISTIC_PROPOSER_ROLE =
+  '0x26f49d08685d9cdd4951a7470bc8fbe9dd0f00419c1a44c1b89f845867ae12e0'
+
+const OPTIMISTIC_SELECTOR_LABELS: Record<string, string> = {
+  [toFunctionSelector(
+    'startRebalance((address,(uint256,uint256,uint256),(uint256,uint256),uint256,bool)[],(uint256,uint256,uint256),uint256,uint256)'
+  )]: 'Start rebalance',
+  [toFunctionSelector('setAuctionLength(uint256)')]: 'Auction length',
+  [toFunctionSelector('setBidsEnabled(bool)')]: 'Permissionless bids',
+  [toFunctionSelector('setFeeRecipients((address,uint96)[])')]:
+    'Fee recipients',
+  [toFunctionSelector('setMandate(string)')]: 'Mandate',
+  [toFunctionSelector('setMintFee(uint256)')]: 'Mint fee',
+  [toFunctionSelector('setName(string)')]: 'Token name',
+  [toFunctionSelector('setRebalanceControl((bool,uint8))')]:
+    'Rebalance control',
+  [toFunctionSelector('setTVLFee(uint256)')]: 'TVL fee',
+  [toFunctionSelector('setTrustedFillerRegistry(address,bool)')]:
+    'Trusted fillers',
+}
+
+const formatSelectorLabel = (selector: Hex) => {
+  return OPTIMISTIC_SELECTOR_LABELS[selector.toLowerCase()] ?? selector
+}
 
 // Preview component for setMandate function
 export const SetMandatePreview = ({
@@ -99,6 +127,7 @@ export const GrantRolePreview = ({
       'Auction Launcher',
     '0x4ff6ae4d6a29e79ca45c6441bdc89b93878ac6118485b33c8baa3749fc3cb130':
       'Rebalance Manager',
+    [OPTIMISTIC_PROPOSER_ROLE]: 'Optimistic Proposer',
   }
 
   const roleName = roleNames[roleHash] || 'Unknown Role'
@@ -148,6 +177,7 @@ export const RevokeRolePreview = ({
       'Auction Launcher',
     '0x4ff6ae4d6a29e79ca45c6441bdc89b93878ac6118485b33c8baa3749fc3cb130':
       'Rebalance Manager',
+    [OPTIMISTIC_PROPOSER_ROLE]: 'Optimistic Proposer',
   }
 
   const roleName = roleNames[roleHash] || 'Unknown Role'
@@ -633,6 +663,114 @@ export const UpdateDelayPreview = ({
             </span>
           </div>
         </div>
+      </div>
+    </div>
+  )
+}
+
+export const SetOptimisticParamsPreview = ({
+  decodedCalldata,
+}: {
+  decodedCalldata: DecodedCalldata
+  targetAddress?: Address
+}) => {
+  const params = decodedCalldata.data[0] as {
+    vetoDelay?: bigint | number
+    vetoPeriod?: bigint | number
+    vetoThreshold?: bigint
+  }
+  const vetoDelay = Number(params.vetoDelay ?? 0)
+  const vetoPeriod = Number(params.vetoPeriod ?? 0)
+  const vetoThreshold = params.vetoThreshold ?? 0n
+  const vetoThresholdPercent = Number(formatEther(vetoThreshold)) * 100
+
+  return (
+    <div className="rounded-2xl border bg-muted/70 p-4 space-y-3">
+      <div className="flex items-center gap-2">
+        <Wand2 size={16} className="text-primary" />
+        <div className="text-sm font-medium">Update Optimistic Parameters</div>
+      </div>
+      <div className="space-y-2">
+        <div className="p-3 rounded-xl bg-primary/5 border border-primary/20">
+          <div className="flex items-center justify-between gap-4">
+            <span className="text-sm text-muted-foreground">Veto delay</span>
+            <div className="flex items-center gap-2">
+              <Clock size={14} className="text-primary" />
+              <span className="text-sm font-medium text-primary">
+                {vetoDelay ? `${vetoDelay / 3600} hours` : '0 seconds'}
+              </span>
+            </div>
+          </div>
+        </div>
+        <div className="p-3 rounded-xl bg-primary/5 border border-primary/20">
+          <div className="flex items-center justify-between gap-4">
+            <span className="text-sm text-muted-foreground">Veto period</span>
+            <div className="flex items-center gap-2">
+              <Clock size={14} className="text-primary" />
+              <span className="text-sm font-medium text-primary">
+                {vetoPeriod ? `${vetoPeriod / 3600} hours` : '0 seconds'}
+              </span>
+            </div>
+          </div>
+        </div>
+        <div className="p-3 rounded-xl bg-primary/5 border border-primary/20">
+          <div className="flex items-center justify-between gap-4">
+            <span className="text-sm text-muted-foreground">Veto threshold</span>
+            <div className="flex items-center gap-2">
+              <FileLock2 size={14} className="text-primary" />
+              <span className="text-sm font-medium text-primary">
+                {vetoThresholdPercent.toFixed(2)}%
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+export const SelectorRegistryPreview = ({
+  decodedCalldata,
+}: {
+  decodedCalldata: DecodedCalldata
+  targetAddress?: Address
+}) => {
+  const selectorData = decodedCalldata.data[0] as Array<{
+    target: Address
+    selectors: Hex[]
+  }>
+  const isRegister = decodedCalldata.signature === 'registerSelectors'
+
+  return (
+    <div className="rounded-2xl border bg-muted/70 p-4 space-y-3">
+      <div className="flex items-center gap-2">
+        {isRegister ? (
+          <PlusCircle size={16} className="text-success" />
+        ) : (
+          <MinusCircle size={16} className="text-destructive" />
+        )}
+        <div className="text-sm font-medium">
+          {isRegister ? 'Register Optimistic Actions' : 'Unregister Optimistic Actions'}
+        </div>
+      </div>
+      <div className="space-y-2">
+        {selectorData.map((data) => (
+          <div
+            key={`${data.target}-${data.selectors.join('-')}`}
+            className="p-3 rounded-xl bg-background/80 border"
+          >
+            <div className="flex flex-wrap gap-2">
+              {data.selectors.map((selector) => (
+                <span
+                  key={selector}
+                  className="rounded-full bg-primary/10 text-primary px-2 py-1 text-xs"
+                >
+                  {formatSelectorLabel(selector)}
+                </span>
+              ))}
+            </div>
+          </div>
+        ))}
       </div>
     </div>
   )
