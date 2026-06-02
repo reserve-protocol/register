@@ -6,7 +6,7 @@ import { useAtomValue, useSetAtom } from 'jotai'
 import { useEffect } from 'react'
 import useTrackIndexDTFPage from '../../hooks/useTrackIndexDTFPage'
 import { AsyncZapProvider } from './async-zap-context'
-import { wizardStepAtom } from './atoms'
+import { resetWizardAtom, wizardStepAtom } from './atoms'
 import GnosisRequired from './steps/gnosis-required'
 import ConfigureMint from './steps/configure-mint'
 import QuoteSummary from './steps/quote-summary'
@@ -55,6 +55,13 @@ const AsyncMintWizard = () => {
   useTrackIndexDTFPage('mint-async-wizard')
   const indexDTF = useAtomValue(indexDTFAtom)
   const step = useAtomValue(wizardStepAtom)
+  const resetWizard = useSetAtom(resetWizardAtom)
+
+  // Clear the wizard (step, amounts, toggle) when leaving the page. The SDK
+  // execution lives in the provider and is torn down on unmount too, so on the
+  // next visit everything starts fresh instead of showing the old input / a
+  // completed mint.
+  useEffect(() => () => resetWizard(), [resetWizard])
 
   if (!indexDTF) return null
 
@@ -66,7 +73,7 @@ const AsyncMintWizard = () => {
         className={cn(
           'w-full mx-auto overflow-hidden rounded-3xl transition-[max-width] duration-500 ease-out',
           isWide
-            ? 'max-w-[1200px] lg:h-[calc(100vh-100px)] lg:max-h-[900px]'
+            ? 'max-w-[1200px] lg:max-h-[calc(100vh-100px)]'
             : 'max-w-[480px]'
         )}
       >

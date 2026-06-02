@@ -201,10 +201,12 @@ const QuoteSummary = () => {
   const provideValueUsd = isMint
     ? parsedPay * inputTokenPrice
     : parsedPay * (indexDTFPrice ?? 0)
-  const walletCollateralUsedUsd =
-    isMint && useExistingBalances
+  const walletCollateralUsedUsd = useExistingBalances
+    ? isMint
       ? Math.min(heldCollateralTotalUsd, provideValueUsd)
-      : 0
+      : // Redeem settles all held basket tokens, so the full held value applies.
+        heldCollateralTotalUsd
+    : 0
   const remainingInputTokenAmount =
     isMint && inputTokenPrice > 0
       ? Math.max(
@@ -444,15 +446,20 @@ const QuoteSummary = () => {
     (executionStarted &&
       ((orderCount > 0 && filledOrderCount === orderCount) ||
         (orderCount === 0 && !!quote?.success && !quotesLoading)))
+  // `collateralReady` is mint-only (collaterals acquired → show the Mint CTA);
+  // it's hard-coded `true` for redeem, so guard the redeem-facing flags with
+  // `isMint` so redeem still gets its start CTA and existing-collateral toggle.
   const showCollateralAction =
-    !showFinalMintAction && !noCollateralOrdersNeeded && !collateralReady
+    !showFinalMintAction &&
+    !noCollateralOrdersNeeded &&
+    (!isMint || !collateralReady)
   const canStartFinalMint =
     isMint && collateralReady && !showFinalMintAction && !isError
   const showReadyMintOutput = isMint && (collateralReady || showFinalMintAction)
   const existingCollateralToggleDisabled =
-    isExecuting || executionStarted || collateralReady || mintComplete
+    isExecuting || executionStarted || mintComplete || (isMint && collateralReady)
   const showExistingCollateralToggle =
-    isMint && !isConvertHeld && !executionStarted && !collateralReady
+    !executionStarted && (isMint ? !isConvertHeld && !collateralReady : true)
   const showEditInputButton = !executionStarted
   const mintTransactionHash =
     execution.finishBatch?.status?.receipts?.find(
@@ -586,11 +593,11 @@ const QuoteSummary = () => {
   }
 
   return (
-    <div className="bg-secondary rounded-3xl p-1 w-full h-full">
-      <div className="grid h-full w-full gap-0.5 lg:min-h-[620px] lg:grid-cols-2 lg:items-stretch">
+    <div className="bg-secondary rounded-3xl p-1 w-full lg:h-full">
+      <div className="grid w-full gap-0.5 lg:h-full lg:grid-cols-2 lg:items-stretch">
         <div
           className={cn(
-            'min-w-0 flex flex-col lg:col-start-1 lg:h-full',
+            'min-w-0 flex flex-col lg:col-start-1',
             isMint ? 'gap-0' : 'gap-0.5'
           )}
         >
@@ -1029,7 +1036,7 @@ const QuoteSummary = () => {
           )}
 
           <div
-            className="bg-card rounded-2xl p-2 lg:flex-1"
+            className="bg-card rounded-2xl p-2"
             style={{ viewTransitionName: isMint ? 'async-mint-step-3' : '' }}
           >
             <div className="mb-1 flex items-start justify-between gap-4 px-4 py-3">
@@ -1260,7 +1267,11 @@ const QuoteSummary = () => {
           </div>
         </div>
 
-        <div className="bg-background rounded-2xl p-2 lg:col-start-2 lg:flex lg:h-full lg:flex-col animate-in fade-in duration-500">
+        <div className="bg-background rounded-2xl p-2 lg:col-start-2 lg:relative lg:min-h-0 lg:overflow-hidden animate-in fade-in duration-500">
+          {/* On desktop this fills the column (stretched to the left column's
+              height via the grid) without inflating it, so the modal stays the
+              height of the form and the orders list scrolls inside. */}
+          <div className="contents lg:absolute lg:inset-2 lg:flex lg:flex-col">
           {collateralExpanded && (
             <div className="px-4 py-3 flex items-start justify-between gap-4">
               <div>
@@ -1324,6 +1335,7 @@ const QuoteSummary = () => {
               )}
             </div>
           </ScrollArea>
+          </div>
         </div>
       </div>
     </div>
