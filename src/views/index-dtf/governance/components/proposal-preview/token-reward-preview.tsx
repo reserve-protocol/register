@@ -46,7 +46,7 @@ const TokenRewardPreview = ({
   })
 
   return (
-    <div className="flex items-center gap-2">
+    <div className="flex items-center gap-2 p-4 rounded-2xl bg-muted/70">
       <TokenLogo size="lg" chain={chainId} address={tokenAddress} />
       <div className="flex flex-col mr-auto">
         <h4

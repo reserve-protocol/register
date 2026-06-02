@@ -79,10 +79,10 @@ const ContractProposalChanges = ({
   return (
     <Tabs
       defaultValue={TABS.SUMMARY}
-      className="flex flex-col gap-4 p-2  rounded-3xl bg-background"
+      className="flex flex-col rounded-3xl bg-background m-1"
     >
       <div className="mx-4 py-4 flex items-center flex-wrap gap-2 border-b">
-        <h1 className="text-xl font-bold text-primary">{alias}</h1>
+        <h1 className="text-xl font-semibold text-primary">{alias}</h1>
         <Link
           target="_blank"
           className="mr-auto"
@@ -97,11 +97,11 @@ const ContractProposalChanges = ({
         </Link>
 
         <TabsList >
-          <TabsTrigger value={TABS.SUMMARY} className="w-max h-7">
+          <TabsTrigger value={TABS.SUMMARY}>
             Summary
           </TabsTrigger>
 
-          <TabsTrigger value={TABS.RAW} className="w-max h-7">
+          <TabsTrigger value={TABS.RAW}>
             Raw
           </TabsTrigger>
         </TabsList>
@@ -127,10 +127,10 @@ const ContractProposalChanges = ({
 
           return (
             <div
-              className="p-4"
+              className='p-2'
               key={`summary-${decodedCalldata.callData}-${index}`}
             >
-              <h4 className="text-primary text-lg font-semibold mb-2">
+              <h4 className="text-primary text-lg font-semibold mb-2 px-2 pt-2">
                 {index + 1}/{decodedCalldatas.length}
               </h4>
               <Component decodedCalldata={decodedCalldata} targetAddress={address} />

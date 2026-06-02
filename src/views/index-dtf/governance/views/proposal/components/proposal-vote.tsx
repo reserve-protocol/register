@@ -29,11 +29,7 @@ const FINAL_STATES = [
   PROPOSAL_STATES.CANCELED,
   PROPOSAL_STATES.QUORUM_NOT_REACHED,
   PROPOSAL_STATES.SUCCEEDED,
-]
-
-const STATES_WITH_ACTIONS = [
-  PROPOSAL_STATES.SUCCEEDED,
-  PROPOSAL_STATES.EXECUTED,
+  PROPOSAL_STATES.QUEUED
 ]
 
 const ViewExecuteTxButton = () => {
@@ -52,8 +48,8 @@ const ViewExecuteTxButton = () => {
       target="_blank"
     >
       <Button
-        variant="outline-primary"
-        className="flex items-center gap-2 justify-center w-full"
+        variant="outline"
+        className="flex items-center gap-2  justify-center w-full"
       >
         <span>View execute tx</span>
         <ArrowUpRight size={16} strokeWidth={1.5} />
@@ -95,29 +91,32 @@ const ProposalVoteOverview = () => {
   const { votePower = '0.0' } = useAtomValue(accountVotesAtom)
   const { hasUndelegatedBalance, hasNoDelegates } = useDelegateState()
 
-  if (FINAL_STATES.includes(state)) return null
+  if (state !== PROPOSAL_STATES.PENDING && state !== PROPOSAL_STATES.ACTIVE) return null
 
   return (
     <>
-      <div className="flex items-center justify-between gap-2 p-3 flex-wrap text-sm border-b">
+      <div className="flex items-center justify-between gap-2 p-3 flex-wrap text-sm border-b xl:min-w-80">
         <div className="flex items-center gap-1">
-          <AsteriskIcon />
+          <AsteriskIcon size={16} />
           <span>Your voting power:</span>
           <span className="font-bold">
             {formatCurrency(votePower ? +votePower : 0)}
           </span>
         </div>
-        <div
-          className={cn(
-            'flex items-center gap-1 cursor-pointer',
-            hasUndelegatedBalance ? 'text-[#2150A9]' : 'text-[#D9D9D9]',
-            !hasUndelegatedBalance && 'cursor-default'
-          )}
-          onClick={() => hasUndelegatedBalance && setDelegateVisible(true)}
-        >
-          <DelegateIcon />
-          <span className="font-bold">Delegate</span>
-        </div>
+        {state === PROPOSAL_STATES.PENDING && (
+          <div
+            className={cn(
+              'flex items-center gap-1 cursor-pointer',
+              hasUndelegatedBalance ? 'text-[#2150A9]' : 'text-[#D9D9D9]',
+              !hasUndelegatedBalance && 'cursor-default'
+            )}
+            onClick={() => hasUndelegatedBalance && setDelegateVisible(true)}
+          >
+            <DelegateIcon />
+            <span className="font-semibold hidden xl:block">Delegate</span>
+          </div>
+        )}
+
       </div>
       {isDelegateVisible && (
         <DelegateModal
@@ -129,31 +128,21 @@ const ProposalVoteOverview = () => {
   )
 }
 
-const ProposalSummary = () => {
-  const state = useAtomValue(proposalStateAtom) ?? ''
-
-  return (
-    <div
-      className={cn(
-        'flex flex-col h-full rounded-lg ',
-        STATES_WITH_ACTIONS.includes(state) && 'border',
-        !FINAL_STATES.includes(state) && 'bg-[#f2f2f2] dark:bg-input'
-      )}
-    >
-      <ProposalVoteOverview />
-      <div className="flex-grow p-3">
-        <ProposalDeadlineAlert />
-      </div>
+const ProposalSummary = () => (
+  <div
+    className="flex flex-col h-full rounded-xl bg-[#f2f2f2] dark:bg-input"
+  >
+    <ProposalVoteOverview />
+    <div className="flex-grow p-3">
+      <ProposalDeadlineAlert />
     </div>
-  )
-}
+  </div>
+)
 
 const ProposalVote = () => (
   <>
-    <div className="py-1 md:py-2 flex flex-col gap-2 m-2 border rounded-3xl p-2">
-      <div className="flex flex-col text-center justify-between p-2 flex-grow gap-2 border rounded-3xl">
-        <ProposalSummary />
-      </div>
+    <div className="flex flex-col gap-2 m-1 lg:m-2 p-2 border border-secondary rounded-2xl ">
+      <ProposalSummary />
       <ProposalActionButtons />
     </div>
   </>

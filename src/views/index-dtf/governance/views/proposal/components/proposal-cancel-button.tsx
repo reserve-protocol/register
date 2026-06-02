@@ -33,28 +33,28 @@ const ProposalCancel = () => {
   const call = useIndexDtfCancelProposalCall(
     proposal && canCancel
       ? {
-          chainId: proposal.chainId,
-          proposal: {
-            governance: proposal.governor,
-            timelock: proposal.timelock,
-            timelockId: proposal.timelockId,
-            targets: proposal.targets,
-            calldatas: proposal.calldatas,
-            description: proposal.description,
-          },
-        }
+        chainId: proposal.chainId,
+        proposal: {
+          governance: proposal.governor,
+          timelock: proposal.timelock,
+          timelockId: proposal.timelockId,
+          targets: proposal.targets,
+          calldatas: proposal.calldatas,
+          description: proposal.description,
+        },
+      }
       : undefined
   )
 
   const { write, isLoading, hash, isReady } = useContractWrite(
     call
       ? {
-          abi: call.contract.abi,
-          address: call.contract.address,
-          chainId: call.chainId,
-          functionName: call.contract.functionName,
-          args: call.contract.args,
-        }
+        abi: call.contract.abi,
+        address: call.contract.address,
+        chainId: call.chainId,
+        functionName: call.contract.functionName,
+        args: call.contract.args,
+      }
       : undefined
   )
 
@@ -69,18 +69,20 @@ const ProposalCancel = () => {
       setProposal((prev) =>
         prev
           ? {
-              ...prev,
-              votingState: {
-                ...prev.votingState,
-                state: PROPOSAL_STATES.CANCELED,
-              },
+            ...prev,
+            votingState: {
+              ...prev.votingState,
               state: PROPOSAL_STATES.CANCELED,
-              cancellationTime: Math.floor(Date.now() / 1000).toString(),
-            }
+            },
+            state: PROPOSAL_STATES.CANCELED,
+            cancellationTime: Math.floor(Date.now() / 1000).toString(),
+          }
           : undefined
       )
     }
   }, [refreshProposal, setProposal, status])
+
+  if (!canCancel) return null
 
   return (
     <TransactionButton
@@ -91,9 +93,8 @@ const ProposalCancel = () => {
       disabled={!isReady || !canCancel || status === 'success'}
       onClick={write}
       text={t`Cancel proposal`}
-      className={`h-11 bg-transparent border ${
-        account ? 'border-destructive text-destructive hover:text-destructive-foreground disabled:border-border disabled:text-muted-foreground' : 'border-primary'
-      }`}
+      className={`h-11 bg-transparent border ${account ? 'border-destructive text-destructive hover:text-destructive-foreground disabled:border-border disabled:text-muted-foreground' : 'border-primary'
+        }`}
     />
   )
 }

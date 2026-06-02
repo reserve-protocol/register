@@ -1,7 +1,7 @@
 import { Button } from '@/components/ui/button'
 import { walletAtom } from '@/state/atoms'
 import { PROPOSAL_STATES } from '@/utils/constants'
-import { Trans } from '@lingui/macro'
+import { Trans } from '@lingui/react/macro'
 import { useAtomValue } from 'jotai'
 import { useState } from 'react'
 import DelegateModal from '../../../components/delegate-modal'
@@ -39,6 +39,8 @@ const ProposalVoteButton = () => {
     return <DelegateButton />
   }
 
+  const noVotingPower = votePower === '0.0' || votePower === '0'
+
   return (
     <>
       <Button
@@ -47,7 +49,7 @@ const ProposalVoteButton = () => {
           !!vote ||
           state !== PROPOSAL_STATES.ACTIVE ||
           !votePower ||
-          votePower === '0.0'
+          noVotingPower
         }
         className="w-full"
         onClick={() => setVoteVisible(true)}
@@ -57,11 +59,11 @@ const ProposalVoteButton = () => {
         ) : vote ? (
           `You voted "${vote}"`
         ) : (
-          <Trans>Vote on-chain</Trans>
+          noVotingPower ? <Trans>No voting power</Trans> : <Trans>Vote on-chain</Trans>
         )}
-      </Button>
-
-      {isVoteVisible && <VoteModal onClose={() => setVoteVisible(false)} />}
+      </Button >
+      {isVoteVisible && <VoteModal onClose={() => setVoteVisible(false)} />
+      }
     </>
   )
 }

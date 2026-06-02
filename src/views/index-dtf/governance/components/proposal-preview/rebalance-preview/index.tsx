@@ -32,7 +32,7 @@ const Header = ({ address }: { address: Address }) => {
 
   return (
     <div className="mx-4 py-4 flex items-center flex-wrap gap-2 border-b">
-      <h1 className="text-xl font-bold text-primary">Basket Change</h1>
+      <h1 className="text-xl font-semibold text-primary">Basket Change</h1>
       <Link
         target="_blank"
         className="mr-auto"
@@ -46,12 +46,12 @@ const Header = ({ address }: { address: Address }) => {
         </Button>
       </Link>
 
-      <TabsList className="h-9">
-        <TabsTrigger value={TABS.SUMMARY} className="w-max h-7">
+      <TabsList>
+        <TabsTrigger value={TABS.SUMMARY} >
           Summary
         </TabsTrigger>
 
-        <TabsTrigger value={TABS.RAW} className="w-max h-7">
+        <TabsTrigger value={TABS.RAW} >
           Raw
         </TabsTrigger>
       </TabsList>
@@ -90,7 +90,7 @@ const RebalancePreview = ({
   return (
     <Tabs
       defaultValue={TABS.SUMMARY}
-      className="flex flex-col gap-4 p-2 pt-4 rounded-3xl bg-background"
+      className="flex flex-col gap-4 p-2 rounded-3xl m-1 bg-background"
     >
       <Header address={dtf.id.toLowerCase() as Address} />
       <TabsContent className="m-0" value={TABS.SUMMARY}>

@@ -1,12 +1,12 @@
 import TransactionButton from '@/components/ui/transaction-button'
 import { getCurrentTime } from '@/utils'
+import { PROPOSAL_STATES } from '@/utils/constants'
 import { t } from '@lingui/macro'
 import { useIndexDtfExecuteProposalCall } from '@reserve-protocol/react-sdk'
 import useContractWrite from 'hooks/useContractWrite'
 import useWatchTransaction from 'hooks/useWatchTransaction'
 import { atom, useAtom, useAtomValue } from 'jotai'
 import { useEffect } from 'react'
-import { PROPOSAL_STATES } from '@/utils/constants'
 import { proposalDetailAtom } from '../atom'
 import useRefreshProposal from '../hooks/use-refresh-proposal'
 
@@ -25,29 +25,29 @@ const ProposalExecute = () => {
   const call = useIndexDtfExecuteProposalCall(
     proposal && canExecute
       ? {
-          chainId: proposal.chainId,
-          proposal: {
-            governance: proposal.governor,
-            timelock: proposal.timelock,
-            timelockId: proposal.timelockId,
-            targets: proposal.targets,
-            calldatas: proposal.calldatas,
-            description: proposal.description,
-          },
-        }
+        chainId: proposal.chainId,
+        proposal: {
+          governance: proposal.governor,
+          timelock: proposal.timelock,
+          timelockId: proposal.timelockId,
+          targets: proposal.targets,
+          calldatas: proposal.calldatas,
+          description: proposal.description,
+        },
+      }
       : undefined
   )
 
   const { write, isLoading, hash, isReady, validationError } = useContractWrite(
     call
       ? {
-          abi: call.contract.abi,
-          address: call.contract.address,
-          chainId: call.chainId,
-          functionName: call.contract.functionName,
-          value: call.value,
-          args: call.contract.args,
-        }
+        abi: call.contract.abi,
+        address: call.contract.address,
+        chainId: call.chainId,
+        functionName: call.contract.functionName,
+        value: call.value,
+        args: call.contract.args,
+      }
       : undefined
   )
 
@@ -62,17 +62,17 @@ const ProposalExecute = () => {
       setProposal((prev) =>
         prev
           ? {
-              ...prev,
-              votingState: {
-                ...prev.votingState,
-                state: PROPOSAL_STATES.EXECUTED,
-                deadline: null,
-              },
+            ...prev,
+            votingState: {
+              ...prev.votingState,
               state: PROPOSAL_STATES.EXECUTED,
-              executionTime: Math.floor(Date.now() / 1000).toString(),
-              executionBlock: data?.blockNumber.toString(),
-              executionTxnHash: hash,
-            }
+              deadline: null,
+            },
+            state: PROPOSAL_STATES.EXECUTED,
+            executionTime: Math.floor(Date.now() / 1000).toString(),
+            executionBlock: data?.blockNumber.toString(),
+            executionTxnHash: hash,
+          }
           : undefined
       )
     }
@@ -88,7 +88,7 @@ const ProposalExecute = () => {
       disabled={!isReady || !canExecute || status === 'success'}
       onClick={write}
       text={t`Execute proposal`}
-      className="h-[44px]"
+      className="h-11"
       error={validationError}
       errorWithName={false}
     />

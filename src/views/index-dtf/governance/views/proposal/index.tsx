@@ -8,7 +8,7 @@ import ProposalVote from './components/proposal-vote'
 import Updater from './updater'
 
 const Header = () => (
-  <div className="grid grid-cols-1 lg:grid-cols-[10fr_5fr] gap-2 bg-card rounded-3xl mb-1 lg:mb-0">
+  <div className="grid grid-cols-1 lg:grid-cols-[10fr_5fr] bg-card rounded-3xl mb-1 lg:mb-0">
     <ProposalHeader />
     <ProposalVote />
   </div>
@@ -30,8 +30,8 @@ const Body = () => (
 )
 
 const Proposal = () => (
-  <div className="container lg:pr-2">
-    <div className="bg-secondary rounded-3xl p-1 lg:mb-2">
+  <div className="container px-1 pb-1 lg:pr-2">
+    <div className="bg-secondary rounded-3xl p-1">
       <Header />
       <Separator className="my-2 bg-background hidden lg:block" />
       <Body />

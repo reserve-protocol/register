@@ -42,7 +42,7 @@ const RebalanceBasketPreview = ({
   )
 
   return (
-    <div className="rounded-3xl bg-card">
+    <div className="rounded-3xl bg-card border">
       {removedAssets.length > 0 && (
         <div className="mb-4">
           <Alert

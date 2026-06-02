@@ -4,22 +4,76 @@ import { Check, Slash, X, Loader2 } from 'lucide-react'
 import { parseDurationShort } from 'utils'
 import { PROPOSAL_STATES } from 'utils/constants'
 import { proposalDetailAtom } from '../atom'
+import { cn } from '@/lib/utils'
+
+const FINAL_STATES = {
+  [PROPOSAL_STATES.EXECUTED]: {
+    label: 'Executed',
+    color: 'text-primary',
+    bgColor: 'rgba(9, 85, 172, 0.10)',
+    icon: <Check size={20} />,
+  },
+  [PROPOSAL_STATES.DEFEATED]: {
+    label: 'Defeated',
+    color: 'text-destructive',
+    bgColor: 'rgba(208, 90, 103, 0.10)',
+    icon: <X size={20} />,
+  },
+  [PROPOSAL_STATES.EXPIRED]: {
+    label: 'Expired',
+    color: 'text-legend',
+    bgColor: 'rgba(0, 0, 0, 0.10)',
+    icon: <Slash size={20} />,
+  },
+  [PROPOSAL_STATES.CANCELED]: {
+    label: 'Canceled',
+    color: 'text-destructive',
+    bgColor: 'rgba(208, 90, 103, 0.10)',
+    icon: <X size={20} />,
+  },
+  [PROPOSAL_STATES.QUORUM_NOT_REACHED]: {
+    label: 'Quorum not reached',
+    color: 'text-warning',
+    bgColor: 'rgba(255, 152, 0, 0.10)',
+    icon: <X size={20} />,
+  },
+  [PROPOSAL_STATES.SUCCEEDED]: {
+    label: 'Succeeded',
+    color: 'text-success',
+    bgColor: 'rgba(0, 255, 152, 0.10)',
+    icon: <Check size={20} />,
+  },
+}
+
+const DEADLINE_STATES = {
+  [PROPOSAL_STATES.ACTIVE]: {
+    text: 'Voting period ends in',
+    color: 'text-primary',
+  },
+  [PROPOSAL_STATES.PENDING]: {
+    text: 'Voting begins in',
+    color: 'text-primary',
+  },
+  [PROPOSAL_STATES.QUEUED]: {
+    text: 'Execution delay ends in',
+    color: 'text-warning',
+  },
+}
 
 const FinalState = ({
   label,
-  color,
+  className,
   bgColor,
   icon,
 }: {
   label: string
-  color: string
+  className?: string
   bgColor: string
   icon: ReactNode
 }) => {
   return (
     <div
-      className="flex flex-col items-center justify-center gap-2 h-full"
-      style={{ color }}
+      className={cn("flex flex-col items-center justify-center gap-2 h-full", className)}
     >
       <div
         className="flex items-center justify-center rounded-full p-2"
@@ -32,60 +86,6 @@ const FinalState = ({
   )
 }
 
-const FINAL_STATES = {
-  [PROPOSAL_STATES.EXECUTED]: {
-    label: 'Executed',
-    color: 'primary',
-    bgColor: 'rgba(9, 85, 172, 0.10)',
-    icon: <Check size={20} />,
-  },
-  [PROPOSAL_STATES.DEFEATED]: {
-    label: 'Defeated',
-    color: 'red',
-    bgColor: 'rgba(208, 90, 103, 0.10)',
-    icon: <X size={20} />,
-  },
-  [PROPOSAL_STATES.EXPIRED]: {
-    label: 'Expired',
-    color: 'gray',
-    bgColor: 'rgba(0, 0, 0, 0.10)',
-    icon: <Slash size={20} />,
-  },
-  [PROPOSAL_STATES.CANCELED]: {
-    label: 'Canceled',
-    color: 'red',
-    bgColor: 'rgba(208, 90, 103, 0.10)',
-    icon: <X size={20} />,
-  },
-  [PROPOSAL_STATES.QUORUM_NOT_REACHED]: {
-    label: 'Quorum not reached',
-    color: 'orange',
-    bgColor: 'rgba(255, 152, 0, 0.10)',
-    icon: <X size={20} />,
-  },
-  [PROPOSAL_STATES.SUCCEEDED]: {
-    label: 'Succeeded',
-    color: 'green',
-    bgColor: 'rgba(0, 255, 152, 0.10)',
-    icon: <Check size={20} />,
-  },
-}
-
-const DEADLINE_STATES = {
-  [PROPOSAL_STATES.ACTIVE]: {
-    text: 'Voting period ends in',
-    color: 'accentInverted',
-  },
-  [PROPOSAL_STATES.PENDING]: {
-    text: 'Voting begins in',
-    color: 'accentInverted',
-  },
-  [PROPOSAL_STATES.QUEUED]: {
-    text: 'Execution delay ends in',
-    color: 'orange',
-  },
-}
-
 const ProposalAlert = () => {
   const state = useAtomValue(proposalDetailAtom)?.votingState
 
@@ -95,7 +95,7 @@ const ProposalAlert = () => {
     return (
       <FinalState
         label={FINAL_STATES[state.state].label}
-        color={FINAL_STATES[state.state].color}
+        className={FINAL_STATES[state.state].color}
         bgColor={FINAL_STATES[state.state].bgColor}
         icon={FINAL_STATES[state.state].icon}
       />
@@ -118,7 +118,7 @@ const ProposalAlert = () => {
     return (
       <FinalState
         label="Passed"
-        color="primary"
+        className="text-primary"
         bgColor="rgba(9, 85, 172, 0.10)"
         icon={<Check size={20} />}
       />
@@ -126,10 +126,7 @@ const ProposalAlert = () => {
   }
 
   return (
-    <div
-      className="flex flex-col items-center justify-center h-full py-4"
-      style={{ color: DEADLINE_STATES[state.state].color }}
-    >
+    <div className={cn("flex flex-col items-center justify-center h-full py-4", DEADLINE_STATES[state.state].color)}>
       <Loader2 size={18} className="animate-spin" />
       <p className="text-sm mt-1">{DEADLINE_STATES[state.state].text}</p>
       <p className="font-bold">{deadline}</p>
