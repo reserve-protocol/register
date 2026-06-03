@@ -1,18 +1,21 @@
+import CopyValue from '@/components/ui/copy-value'
 import { Skeleton } from '@/components/ui/skeleton'
 import { useEnsName } from '@/hooks/use-ens-name'
 import { cn } from '@/lib/utils'
-import { walletAtom } from '@/state/atoms'
+import { chainIdAtom, walletAtom } from '@/state/atoms'
 import { indexDTFAtom } from '@/state/dtf/atoms'
 import { formatCurrency, formatPercentage } from '@/utils'
+import { ExplorerDataType, getExplorerLink } from '@/utils/getExplorerLink'
 import { Trans } from '@lingui/react/macro'
 import {
   type IndexDtfVoterState,
   useIndexDtfVoterState,
 } from '@reserve-protocol/react-sdk'
 import { useAtomValue } from 'jotai'
-import { Vote } from 'lucide-react'
+import { ArrowUpRight, Vote } from 'lucide-react'
 import React from 'react'
-import { zeroAddress } from 'viem'
+import { Link } from 'react-router-dom'
+import { Address, zeroAddress } from 'viem'
 
 export interface IInfoItem {
   text: string | number | undefined
@@ -37,6 +40,45 @@ const InfoItem = ({
     </div>
   </div>
 )
+
+const DelegateItem = ({
+  title,
+  address,
+  text,
+}: {
+  title: string | React.ReactElement
+  address: Address | undefined
+  text: string | undefined
+}) => {
+  const chainId = useAtomValue(chainIdAtom)
+
+  return (
+    <div className="flex items-center py-4 px-6 border-b">
+      <div className="mr-auto">
+        <span className="text-legend text-sm block">{title}</span>
+        {text === undefined ? (
+          <Skeleton className="h-4 w-24" />
+        ) : (
+          <strong>{text}</strong>
+        )}
+      </div>
+      {!!address && (
+        <>
+          <div className="p-1 bg-muted rounded-full mr-2">
+            <CopyValue value={address} />
+          </div>
+          <Link
+            to={getExplorerLink(address, chainId, ExplorerDataType.ADDRESS)}
+            target="_blank"
+            className="p-1 bg-muted rounded-full"
+          >
+            <ArrowUpRight size={14} />
+          </Link>
+        </>
+      )}
+    </div>
+  )
+}
 
 const VotingPower = ({
   voterState,
@@ -126,13 +168,15 @@ const GovernanceAccountInfo = () => {
         text={votingWeight}
       />
       {isOptimisticGovernance && (
-        <InfoItem
+        <DelegateItem
           title={<Trans>Optimistic delegate</Trans>}
+          address={optimisticDelegateAddress}
           text={optimisticDelegate}
         />
       )}
-      <InfoItem
+      <DelegateItem
         title={<Trans>Normal Delegate</Trans>}
+        address={normalDelegateAddress}
         text={normalDelegate}
       />
     </div>
