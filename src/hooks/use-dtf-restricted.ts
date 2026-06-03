@@ -24,7 +24,9 @@ type DTFGeolocationStatus = {
   restriction: DTFRestrictionReason
 }
 
-const isDTFRestrictionReason = (value: unknown): value is DTFRestrictionReason =>
+const isDTFRestrictionReason = (
+  value: unknown
+): value is DTFRestrictionReason =>
   value === 'none' || value === 'geolocation' || value === 'vpn'
 
 const isDTFGeolocationStatus = (
@@ -35,7 +37,6 @@ const isDTFGeolocationStatus = (
   return (
     typeof data.country === 'string' &&
     typeof data.countryCode === 'string' &&
-    /^[A-Z]{2}$/.test(data.countryCode.toUpperCase()) &&
     typeof data.restricted === 'boolean' &&
     isDTFRestrictionReason(data.restriction)
   )
