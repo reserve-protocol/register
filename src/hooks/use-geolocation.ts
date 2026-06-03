@@ -16,7 +16,6 @@ const isGeolocationStatus = (value: unknown): value is GeolocationStatus => {
   return (
     typeof data.country === 'string' &&
     typeof data.countryCode === 'string' &&
-    /^[A-Z]{2}$/.test(data.countryCode.toUpperCase()) &&
     typeof data.restricted === 'boolean' &&
     typeof data.isVPN === 'boolean'
   )
