@@ -84,6 +84,7 @@ const useVoterState = () => {
 }
 
 const GovernanceAccountInfo = () => {
+  const account = useAtomValue(walletAtom)
   const dtf = useAtomValue(indexDTFAtom)
   const voterState = useVoterState()
   const normalDelegateAddress =
@@ -108,6 +109,8 @@ const GovernanceAccountInfo = () => {
       ? optimisticDelegateName
       : 'Not delegated'
     : undefined
+
+  if (!account) return null
 
   return (
     <div className="flex flex-col rounded-3xl bg-background">
