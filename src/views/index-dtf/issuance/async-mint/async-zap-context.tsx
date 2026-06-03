@@ -1,4 +1,5 @@
 import useDebounce from '@/hooks/useDebounce'
+import { useIsMetaMask } from '@/hooks/useIsMetaMask'
 import { useWatchReadContract } from '@/hooks/useWatchReadContract'
 import { chainIdAtom, walletAtom } from '@/state/atoms'
 import { indexDTFAtom } from '@/state/dtf/atoms'
@@ -22,6 +23,9 @@ import {
   slippageAtom,
   useExistingBalancesAtom,
 } from './atoms'
+
+// MetaMask caps EIP-5792 `wallet_sendCalls` at 10 calls per batch.
+const METAMASK_MAX_CALLS_PER_BATCH = 10
 
 // Unified shape consumed by the wizard steps, independent of mint/redeem.
 type AsyncZapContextValue = {
@@ -56,6 +60,10 @@ export const AsyncZapProvider = ({ children }: { children: ReactNode }) => {
   const redeemAmount = useAtomValue(redeemAmountAtom)
   const slippage = useAtomValue(slippageAtom)
   const useExistingBalances = useAtomValue(useExistingBalancesAtom)
+  // MetaMask rejects EIP-5792 batches with more than 10 calls; cap the batch size
+  // so the SDK splits larger batches into sequential signatures. Other wallets
+  // keep a single atomic batch.
+  const isMetaMask = useIsMetaMask()
 
   // Debounce typed amounts so we don't re-quote on every keystroke.
   const debouncedMint = useDebounce(mintAmount, 500)
@@ -86,6 +94,7 @@ export const AsyncZapProvider = ({ children }: { children: ReactNode }) => {
     account: account as Address | undefined,
     slippageBps: Number(slippage) || undefined,
     useExistingBalances,
+    maxCallsPerBatch: isMetaMask ? METAMASK_MAX_CALLS_PER_BATCH : undefined,
   }
 
   const ready = !!indexDTF?.id && !!account

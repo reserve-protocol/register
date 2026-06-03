@@ -373,7 +373,9 @@ const QuoteSummary = () => {
     execution.step !== 'idle' &&
     execution.step !== 'complete' &&
     execution.step !== 'error' &&
-    !(noCollateralOrdersNeeded && execution.step === 'waiting_orders')
+    // Collaterals collected, paused for the user to trigger the mint — not
+    // actively executing.
+    execution.step !== 'collateral_ready'
   // Once submitted, the right-hand "quotes" panel reads as live orders.
   const executionStarted =
     isExecuting || isError || Object.keys(execution.ordersByLegId).length > 0
@@ -429,7 +431,9 @@ const QuoteSummary = () => {
   const collateralProgressDetail = executionStarted
     ? failedOrderCount > 0
       ? `${failedOrderCount} need retry`
-      : execution.step === 'finishing' || execution.step === 'waiting_finish'
+      : execution.step === 'collateral_ready' ||
+          execution.step === 'finishing' ||
+          execution.step === 'waiting_finish'
         ? 'Ready to mint'
         : orderExpirySeconds !== undefined
           ? `Orders expire in ${formatOrderCountdown(orderExpirySeconds)}`
