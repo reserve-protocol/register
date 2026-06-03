@@ -18,6 +18,7 @@ type HandleRecentProposalReceiptParams = {
   governor: Address
   onFallback: () => void
   onSuccess?: (proposal: RecentProposalData) => void
+  isOptimistic?: boolean
 }
 
 export const useRecentProposalReceipt = () => {
@@ -34,6 +35,7 @@ export const useRecentProposalReceipt = () => {
       governor,
       onFallback,
       onSuccess,
+      isOptimistic,
     }: HandleRecentProposalReceiptParams) => {
       if (handledReceipt.current === receipt.transactionHash) return
       handledReceipt.current = receipt.transactionHash
@@ -50,6 +52,7 @@ export const useRecentProposalReceipt = () => {
           dtf,
           chainId: chainId as SupportedChainId,
           sdk,
+          isOptimistic,
         })
 
         setRecentProposals((current) => ({

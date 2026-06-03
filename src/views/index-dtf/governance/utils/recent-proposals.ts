@@ -132,12 +132,14 @@ export const buildRecentProposalFromReceipt = async ({
   dtf,
   chainId,
   sdk,
+  isOptimistic: submittedIsOptimistic,
 }: {
   receipt: TransactionReceipt
   governor: Address
   dtf: IndexDTF
   chainId: SupportedChainId
   sdk: DtfSdk
+  isOptimistic?: boolean
 }): Promise<{ key: string; proposal: RecentProposalData }> => {
   const parsed = parseProposalCreatedFromReceipt(receipt, governor)
   if (!parsed) throw new Error('ProposalCreated event not found')
@@ -162,10 +164,7 @@ export const buildRecentProposalFromReceipt = async ({
     event.voteStart,
     event.voteEnd
   )
-  const isOptimistic = isOptimisticProposal(
-    governance.governance,
-    event.proposer
-  )
+  const isOptimistic = submittedIsOptimistic ?? false
   const vetoThreshold = getOptimisticVetoThreshold(governance.governance)
 
   const detail: IndexDtfProposalDetail = {
@@ -211,22 +210,6 @@ export const buildRecentProposalFromReceipt = async ({
       addedAt: getCurrentTime(),
     },
   }
-}
-
-const isOptimisticProposal = (
-  governance: ResolvedProposalGovernance['governance'],
-  proposer: Address
-) => {
-  if (!governance.isOptimistic) return false
-
-  const optimisticProposers = [
-    ...(governance.optimistic?.proposers ?? []),
-    ...governance.timelock.optimisticProposers,
-  ]
-
-  return optimisticProposers.some((candidate) =>
-    isAddressEqual(candidate, proposer)
-  )
 }
 
 const getOptimisticVetoThreshold = (

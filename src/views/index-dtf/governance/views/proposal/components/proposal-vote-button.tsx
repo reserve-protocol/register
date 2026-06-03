@@ -5,7 +5,7 @@ import { Trans } from '@lingui/react/macro'
 import { useAtomValue } from 'jotai'
 import { useState } from 'react'
 import DelegateModal from '../../../components/delegate-modal'
-import { accountVotesAtom, proposalStateAtom } from '../atom'
+import { accountVotesAtom, proposalDetailAtom, proposalStateAtom } from '../atom'
 import useDelegateState from '../hooks/use-delegate-state'
 import VoteModal from './vote-modal'
 
@@ -33,9 +33,11 @@ const ProposalVoteButton = () => {
   const [isVoteVisible, setVoteVisible] = useState(false)
   const { hasUndelegatedBalance } = useDelegateState()
   const { votePower = '0.0', vote } = useAtomValue(accountVotesAtom)
+  const proposal = useAtomValue(proposalDetailAtom)
   const state = useAtomValue(proposalStateAtom)
+  const isOptimistic = !!proposal?.isOptimistic
 
-  if (hasUndelegatedBalance) {
+  if (hasUndelegatedBalance && !isOptimistic) {
     return <DelegateButton />
   }
 
@@ -49,17 +51,23 @@ const ProposalVoteButton = () => {
           !!vote ||
           state !== PROPOSAL_STATES.ACTIVE ||
           !votePower ||
-          noVotingPower
+          (!isOptimistic && noVotingPower)
         }
         className="w-full"
         onClick={() => setVoteVisible(true)}
       >
         {!account ? (
           'Please connect your wallet'
+        ) : vote && isOptimistic ? (
+          <Trans>Challenged</Trans>
         ) : vote ? (
           `You voted "${vote}"`
+        ) : noVotingPower && !isOptimistic ? (
+          <Trans>No voting power</Trans>
+        ) : isOptimistic ? (
+          <Trans>Vote to challenge</Trans>
         ) : (
-          noVotingPower ? <Trans>No voting power</Trans> : <Trans>Vote on-chain</Trans>
+          <Trans>Vote on-chain</Trans>
         )}
       </Button >
       {isVoteVisible && <VoteModal onClose={() => setVoteVisible(false)} />

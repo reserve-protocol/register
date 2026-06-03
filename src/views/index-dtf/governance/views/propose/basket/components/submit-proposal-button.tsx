@@ -1,11 +1,10 @@
-import DTFIndexGovernance from '@/abis/dtf-index-governance'
 import { Button } from '@/components/ui/button'
 import { chainIdAtom, walletAtom } from '@/state/atoms'
 import { indexDTFAtom, iTokenAddressAtom } from '@/state/dtf/atoms'
 import { ROUTES } from '@/utils/constants'
 import { atom, useAtomValue } from 'jotai'
 import { Loader2 } from 'lucide-react'
-import { memo, useEffect } from 'react'
+import { memo, useEffect, useMemo, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Address } from 'viem'
 import { useWaitForTransactionReceipt, useWriteContract } from 'wagmi'
@@ -14,6 +13,15 @@ import { useIsProposeAllowed } from '@/views/index-dtf/governance/hooks/use-is-p
 import { indexDTFRefreshFnAtom } from '@/views/index-dtf/index-dtf-container'
 import { TransactionButtonContainer } from '@/components/ui/transaction'
 import useRecentProposalReceipt from '@/views/index-dtf/governance/hooks/use-recent-proposal-receipt'
+import {
+  proposalTypeAtom,
+  useProposalTypeEligibility,
+} from '@/views/index-dtf/governance/views/propose/shared'
+import {
+  prepareIndexDtfSubmitOptimisticProposal,
+  prepareIndexDtfSubmitProposal,
+  type SupportedChainId,
+} from '@reserve-protocol/react-sdk'
 
 const isProposalReady = atom((get) => {
   const wallet = get(walletAtom)
@@ -32,9 +40,43 @@ const tradingGovAddress = atom((get) => {
 
 const ProposeGatekeeper = memo(() => {
   const govAddress = useAtomValue(tradingGovAddress)
-  const { isProposeAllowed, isLoading } = useIsProposeAllowed(govAddress)
+  const indexDTF = useAtomValue(indexDTFAtom)
+  const dtf = useAtomValue(iTokenAddressAtom)
+  const calldatas = useAtomValue(basketProposalCalldatasAtom)
+  const proposalType = useAtomValue(proposalTypeAtom)
+  const targets = useMemo(() => {
+    if (!calldatas || !dtf) return undefined
 
-  if (!isLoading && !isProposeAllowed) {
+    return calldatas.map(() => dtf)
+  }, [calldatas, dtf])
+  const { isProposeAllowed, isLoading } = useIsProposeAllowed(govAddress)
+  const { isChecking, isOptimisticEligible } = useProposalTypeEligibility({
+    governance: indexDTF?.tradingGovernance,
+    targets,
+    calldatas,
+  })
+
+  if (isChecking) {
+    return (
+      <Button disabled className="w-full" variant="default">
+        Checking proposal type...
+      </Button>
+    )
+  }
+
+  if (isLoading && (!isOptimisticEligible || proposalType !== 'optimistic')) {
+    return (
+      <Button disabled className="w-full" variant="default">
+        Checking voting power...
+      </Button>
+    )
+  }
+
+  if (
+    !isLoading &&
+    !isProposeAllowed &&
+    (!isOptimisticEligible || proposalType !== 'optimistic')
+  ) {
     return (
       <Button disabled className="w-full" variant="default">
         Not enough voting power
@@ -51,9 +93,11 @@ const SubmitProposalButton = () => {
   const isReady = useAtomValue(isProposalReady)
   const description = useAtomValue(proposalDescriptionAtom)
   const calldatas = useAtomValue(basketProposalCalldatasAtom)
+  const proposalType = useAtomValue(proposalTypeAtom)
   const dtf = useAtomValue(iTokenAddressAtom)
   const govAddress = useAtomValue(tradingGovAddress)
   const refreshFn = useAtomValue(indexDTFRefreshFnAtom)
+  const submittedProposalType = useRef(proposalType)
   const handleRecentProposalReceipt = useRecentProposalReceipt()
 
   const { writeContract, isPending, data: hash } = useWriteContract()
@@ -68,6 +112,7 @@ const SubmitProposalButton = () => {
     void handleRecentProposalReceipt({
       receipt,
       governor: govAddress,
+      isOptimistic: submittedProposalType.current === 'optimistic',
       onFallback: () => {
         setTimeout(() => {
           refreshFn?.()
@@ -87,19 +132,34 @@ const SubmitProposalButton = () => {
   const handleSubmit = () => {
     if (dtf && calldatas && description && govAddress) {
       const targets: Address[] = []
-      const values: bigint[] = []
 
       for (let i = 0; i < calldatas.length; i++) {
         targets.push(dtf)
-        values.push(0n)
+      }
+      const params = {
+        chainId: chainId as SupportedChainId,
+        proposal: {
+          governance: govAddress,
+          targets,
+          calldatas,
+          description,
+        },
+      }
+      submittedProposalType.current = proposalType
+
+      if (proposalType === 'optimistic') {
+        const call = prepareIndexDtfSubmitOptimisticProposal(params)
+        writeContract({
+          ...call.contract,
+          chainId: call.chainId,
+        })
+        return
       }
 
+      const call = prepareIndexDtfSubmitProposal(params)
       writeContract({
-        address: govAddress,
-        abi: DTFIndexGovernance,
-        functionName: 'propose',
-        args: [targets, values, calldatas, description],
-        chainId,
+        ...call.contract,
+        chainId: call.chainId,
       })
     }
   }

@@ -89,7 +89,21 @@ const VoteList = ({ votes }: { votes: Vote[] }) => {
 }
 
 const ProposalDetailVotes = () => {
+  const proposal = useAtomValue(proposalDetailAtom)
   const votes = useAtomValue(proposalVotesAtom)
+
+  if (proposal?.isOptimistic) {
+    return (
+      <div className="bg-background rounded-3xl p-4">
+        <h2 className="text-xl ml-3 font-semibold mb-4">
+          <Trans>Challenged votes</Trans>
+        </h2>
+        <div className="bg-card rounded-3xl p-4 border">
+          <VoteList votes={votes[TABS.AGAINST]} />
+        </div>
+      </div>
+    )
+  }
 
   return (
     <Tabs className="bg-background rounded-3xl p-2" defaultValue={TABS.FOR}>

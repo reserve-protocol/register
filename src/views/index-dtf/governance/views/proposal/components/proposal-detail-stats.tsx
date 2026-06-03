@@ -182,6 +182,44 @@ const MajoritySupportStat = ({
   )
 }
 
+const ChallengeStat = ({
+  quorumWeight,
+  currentQuorum,
+  quorumNeeded,
+  hasQuorumTarget,
+}: {
+  quorumWeight: number
+  currentQuorum: number
+  quorumNeeded: number
+  hasQuorumTarget: boolean
+}) => {
+  const challengeProgress = Math.min(quorumWeight * 100, 100)
+
+  return (
+    <div className="flex flex-col gap-6 p-4">
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <div className="flex items-center gap-3">
+          <div className="flex items-center justify-center w-7 h-7 bg-muted rounded text-muted-foreground">
+            <Check size={18} strokeWidth={1.5} />
+          </div>
+          <span className="text-lg"><Trans>Challenge</Trans></span>
+        </div>
+        <span className="text-base text-legend sm:text-lg">
+          {formatTokenAmount(currentQuorum)} of{' '}
+          {hasQuorumTarget ? formatTokenAmount(quorumNeeded) : <Trans>Unavailable</Trans>}
+          {hasQuorumTarget && ` (${formatPercentage(challengeProgress)})`}
+        </span>
+      </div>
+      <div className="h-2 rounded-full bg-gray-100">
+        <div
+          className="h-full rounded-full bg-destructive"
+          style={{ width: `${challengeProgress}%` }}
+        />
+      </div>
+    </div>
+  )
+}
+
 const VoteDistributionStat = ({
   forVotes,
   againstVotes,
@@ -271,25 +309,36 @@ const ProposalDetailStats = () => {
         )}
       </h4>
       <div className="flex flex-col bg-card rounded-3xl border">
-        <QuorumStat
-          isOptimistic={isOptimistic}
-          quorumWeight={quorumWeight}
-          currentQuorum={currentQuorum}
-          quorumNeeded={quorumNeeded}
-          quorumReached={quorumReached}
-          hasQuorumTarget={hasQuorumTarget}
-        />
-        <Separator />
-        <MajoritySupportStat
-          majorityWeight={majorityWeight}
-          majoritySupport={majoritySupport}
-        />
-        <Separator />
-        <VoteDistributionStat
-          forVotes={forVotes}
-          againstVotes={againstVotes}
-          abstainVotes={abstainVotes}
-        />
+        {isOptimistic ? (
+          <ChallengeStat
+            quorumWeight={quorumWeight}
+            currentQuorum={currentQuorum}
+            quorumNeeded={quorumNeeded}
+            hasQuorumTarget={hasQuorumTarget}
+          />
+        ) : (
+          <>
+            <QuorumStat
+              isOptimistic={isOptimistic}
+              quorumWeight={quorumWeight}
+              currentQuorum={currentQuorum}
+              quorumNeeded={quorumNeeded}
+              quorumReached={quorumReached}
+              hasQuorumTarget={hasQuorumTarget}
+            />
+            <Separator />
+            <MajoritySupportStat
+              majorityWeight={majorityWeight}
+              majoritySupport={majoritySupport}
+            />
+            <Separator />
+            <VoteDistributionStat
+              forVotes={forVotes}
+              againstVotes={againstVotes}
+              abstainVotes={abstainVotes}
+            />
+          </>
+        )}
       </div>
     </div>
   )

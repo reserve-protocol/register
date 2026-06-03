@@ -108,7 +108,7 @@ const ProposalVoteState = ({ proposal }: IProposalListItem) => {
   return (
     <div className="flex items-center gap-2 text-xs">
       {proposal.state === PROPOSAL_STATES.ACTIVE && (
-        <div className='mr-1'>{proposal.votingState.quorum ? <UserRoundCheck size={14} className='text-success' /> : <UserRoundX size={14} className='text-destructive' />}</div>
+        <div className='mr-1'>{proposal.votingState.participationQuorumReached ? <UserRoundCheck size={14} className='text-success' /> : <UserRoundX size={14} className='text-destructive' />}</div>
       )}
       <ThumbsUp size={14} className={success} /> <strong className={cn(success, 'mr-1')}>{formatPercentage(proposal.votingState.for)}</strong>
       <ThumbsDown size={14} className={fail} /> <strong className={cn(fail, 'mr-1')}>{formatPercentage(proposal.votingState.against)}</strong>

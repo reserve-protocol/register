@@ -45,7 +45,9 @@ const VoteModal = (props: ModalProps) => {
   const chainId = useAtomValue(chainIdAtom)
   const [vote, setVote] = useState(-1)
   const proposal = useAtomValue(proposalDetailAtom)
-  const isValid = proposal?.id && vote !== -1
+  const isOptimistic = !!proposal?.isOptimistic
+  const support = isOptimistic ? VOTE_TYPE.AGAINST : vote
+  const isValid = proposal?.id && support !== -1
   const refreshProposal = useRefreshProposal()
   const setAccountVotes = useSetAtom(accountVotesAtom)
   const call = useIndexDtfVoteCall(
@@ -54,7 +56,7 @@ const VoteModal = (props: ModalProps) => {
           chainId: proposal.chainId,
           governance: proposal.governor,
           proposalId: proposal.id,
-          support: vote as 0 | 1 | 2,
+          support: support as 0 | 1 | 2,
         }
       : undefined
   )
@@ -79,18 +81,18 @@ const VoteModal = (props: ModalProps) => {
 
   const { status, isMining } = useWatchTransaction({
     hash,
-    label: t`Vote`,
+    label: isOptimistic ? t`Challenge` : t`Vote`,
   })
 
   useEffect(() => {
     if (status === 'success') {
       setAccountVotes((current) => ({
         ...current,
-        vote: VOTE_LABEL[vote] ?? current.vote,
+        vote: isOptimistic ? 'CHALLENGE' : VOTE_LABEL[support] ?? current.vote,
       }))
       refreshProposal()
     }
-  }, [refreshProposal, setAccountVotes, status, vote])
+  }, [isOptimistic, refreshProposal, setAccountVotes, status, support])
 
   // TODO: Signed modal should be its own component
   // TODO: reused on other modals
@@ -117,58 +119,73 @@ const VoteModal = (props: ModalProps) => {
   }
 
   return (
-    <Modal {...props} title={t`Voting`} style={{ maxWidth: 420 }}>
-      <div className="flex flex-col items-center">
-        <span className="text-xl font-medium">
-          "
-          {proposal?.description
-            ? getProposalTitle(proposal.description)
-            : 'Loading...'}
-        </span>
-        <div className="flex items-center mt-2">
-          <span className="text-legend">
-            <Trans>Proposed by</Trans>:
-          </span>
-          <span className="ml-1">
-            <EnsName address={proposal?.proposer?.address ?? ''} />
-          </span>
-          <GoTo
-            className="ml-2"
-            href={getExplorerLink(
-              proposal?.proposer?.address ?? '',
-              chainId,
-              ExplorerDataType.ADDRESS
-            )}
-          />
-        </div>
-      </div>
-      <Separator className="my-4 -mx-4 w-[calc(100%+2rem)]" />
-      {voteOptions.map((option, index) => (
-        <div
-          className={`flex items-center ${index ? 'mt-2' : ''}`}
-          key={option.value}
-        >
-          {option.value === VOTE_TYPE.FOR && <ThumbsUp size={16} />}
-          {option.value === VOTE_TYPE.AGAINST && <ThumbsDown size={16} />}
-          {option.value === VOTE_TYPE.ABSTAIN && <Slash size={16} />}
-          <span className="font-semibold ml-2">
-            {option.label}
-          </span>
-          <label className="ml-auto cursor-pointer">
-            <Checkbox
-              checked={vote === option.value}
-              onCheckedChange={() => setVote(option.value)}
-              disabled={isLoading || isMining}
-            />
-          </label>
-        </div>
-      ))}
+    <Modal
+      {...props}
+      title={isOptimistic ? undefined : t`Voting`}
+      titleProps={{ className: 'font-semibold' }}
+      style={{ maxWidth: 420 }}
+    >
+      {!isOptimistic && (
+        <>
+          <div className="flex flex-col items-center">
+            <span className="text-xl font-medium">
+              "
+              {proposal?.description
+                ? getProposalTitle(proposal.description)
+                : 'Loading...'}
+            </span>
+            <div className="flex items-center mt-2">
+              <span className="text-legend">
+                <Trans>Proposed by</Trans>:
+              </span>
+              <span className="ml-1">
+                <EnsName address={proposal?.proposer?.address ?? ''} />
+              </span>
+              <GoTo
+                className="ml-2"
+                href={getExplorerLink(
+                  proposal?.proposer?.address ?? '',
+                  chainId,
+                  ExplorerDataType.ADDRESS
+                )}
+              />
+            </div>
+          </div>
+          <Separator className="my-4 -mx-4 w-[calc(100%+2rem)]" />
+        </>
+      )}
+      {isOptimistic ? (
+        <h2 className="px-6 py-8 text-center text-2xl font-semibold leading-tight">
+          <Trans>Are you sure you wish to challenge?</Trans>
+        </h2>
+      ) : (
+        voteOptions.map((option, index) => (
+          <div
+            className={`flex items-center ${index ? 'mt-2' : ''}`}
+            key={option.value}
+          >
+            {option.value === VOTE_TYPE.FOR && <ThumbsUp size={16} />}
+            {option.value === VOTE_TYPE.AGAINST && <ThumbsDown size={16} />}
+            {option.value === VOTE_TYPE.ABSTAIN && <Slash size={16} />}
+            <span className="font-semibold ml-2">
+              {option.label}
+            </span>
+            <label className="ml-auto cursor-pointer">
+              <Checkbox
+                checked={vote === option.value}
+                onCheckedChange={() => setVote(option.value)}
+                disabled={isLoading || isMining}
+              />
+            </label>
+          </div>
+        ))
+      )}
 
       <Separator className="my-4 -mx-4 w-[calc(100%+2rem)]" />
       <TransactionButton
         loading={isLoading || isMining}
         variant={!!hash ? 'accent' : 'default'}
-        text={t`Vote`}
+        text={isOptimistic ? t`Challenge proposal` : t`Vote`}
         loadingText={isMining ? t`Confirming...` : undefined}
         className="w-full"
         onClick={write}
