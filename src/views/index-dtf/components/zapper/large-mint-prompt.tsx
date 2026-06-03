@@ -138,7 +138,7 @@ const LargeMintPrompt = ({ mode, dtfAddress, chain }: LargeMintPromptProps) => {
   // the slide-in keyframe (which animates `transform`) doesn't fight it.
   if (!isInline) {
     return createPortal(
-      <div className="pointer-events-none fixed bottom-0 left-1/2 top-0 z-50 ml-[224px] flex items-center">
+      <div className="pointer-events-none fixed bottom-0 left-1/2 top-0 z-50 ml-[228px] flex items-center">
         <div
           onPointerDown={stop}
           onMouseDown={stop}
