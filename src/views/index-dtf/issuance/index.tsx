@@ -1,5 +1,4 @@
 import { devModeAtom } from '@/state/atoms'
-import { wagmiConfig } from '@/state/chain'
 import { isInactiveDTF } from '@/hooks/use-dtf-status'
 import { indexDTFAtom, indexDTFStatusAtom } from '@/state/dtf/atoms'
 import { getFolioRoute } from '@/utils'
@@ -109,7 +108,6 @@ const IndexDTFIssuance = () => {
         <div className="relative flex w-full flex-col items-center gap-3 rounded-4xl sm:w-[420px] lg:gap-0">
           <div className="w-full rounded-3xl border-2 border-secondary bg-card p-2 sm:w-[420px]">
             <ZapperWrapper
-              wagmiConfig={wagmiConfig}
               chain={indexDTF.chainId}
               dtfAddress={indexDTF.id}
               mode="inline"
