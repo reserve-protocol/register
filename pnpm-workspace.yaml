@@ -5,10 +5,12 @@ minimumReleaseAge: 1440
 minimumReleaseAgeExclude:
   - '@reserve-protocol/react-zapper'
   - '@reserve-protocol/react-sdk'
+  - '@reserve-protocol/sdk'
 catalog:
   react: ^18.3.1
   react-dom: ^18.3.1
 overrides:
+  '@reserve-protocol/react-sdk>@reserve-protocol/sdk': 0.1.0
   react: 'catalog:'
   react-dom: 'catalog:'
   axios: ^1.15.0

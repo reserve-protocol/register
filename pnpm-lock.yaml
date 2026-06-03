@@ -5,6 +5,7 @@ settings:
   excludeLinksFromLockfile: false
 
 overrides:
+  '@reserve-protocol/react-sdk>@reserve-protocol/sdk': 0.1.0
   react: ^18.3.1
   react-dom: ^18.3.1
   axios: ^1.15.0
@@ -113,8 +114,8 @@ importers:
         specifier: ^3.2.1
         version: 3.2.1(decimal.js-light@2.5.1)
       '@reserve-protocol/react-sdk':
-        specifier: link:../dtf-sdk/packages/react-sdk
-        version: link:../dtf-sdk/packages/react-sdk
+        specifier: 0.1.0
+        version: 0.1.0(@tanstack/react-query@5.99.0(react@18.3.1))(bufferutil@4.1.0)(react@18.3.1)(typescript@5.9.3)(utf-8-validate@5.0.10)(viem@2.48.0(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@5.0.10)(zod@4.3.6))
       '@reserve-protocol/react-zapper':
         specifier: ^1.7.1
         version: 1.7.1(@babel/core@7.29.0)(@babel/template@7.28.6)(@tanstack/react-query@5.99.0(react@18.3.1))(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(next@16.2.4(@babel/core@7.29.0)(@playwright/test@1.59.1)(babel-plugin-macros@3.1.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)(wagmi@2.19.5(@tanstack/query-core@5.99.0)(@tanstack/react-query@5.99.0(react@18.3.1))(@types/react@18.3.28)(bufferutil@4.1.0)(react@18.3.1)(typescript@5.9.3)(utf-8-validate@5.0.10)(viem@2.48.0(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@5.0.10)(zod@4.3.6))(zod@4.3.6))
@@ -3026,10 +3027,22 @@ packages:
   '@reown/appkit@1.7.8':
     resolution: {integrity: sha512-51kTleozhA618T1UvMghkhKfaPcc9JlKwLJ5uV+riHyvSoWPKPRIa5A6M1Wano5puNyW0s3fwywhyqTHSilkaA==}
 
+  '@reserve-protocol/dtf-catalog@0.0.1':
+    resolution: {integrity: sha512-RyqAoRAhGWMKJ97wGUZip1GuCrGTSV+Q3NEOLnyIcPK4DSAog7+gl0+xGxeQStykLRhHZFKgYDACriM7OvkWTw==}
+    engines: {node: '>=24'}
+
   '@reserve-protocol/dtf-rebalance-lib@3.2.1':
     resolution: {integrity: sha512-QfxMA/rLRYlgQHJCULzNHAHxXSPGER4TcN/4r6o5qjJklC4fcSHuxaE1DUJW5eR+8zTXwuZil5JJNHTEBPco8Q==}
     peerDependencies:
       decimal.js-light: ^2.5.1
+
+  '@reserve-protocol/react-sdk@0.1.0':
+    resolution: {integrity: sha512-9gHZMfhXm0tfQJe0+B7fvjJB6KgkelJZwmsmsdZH5K6XkGGvDrXdXfLwypzwa18rNHsOCGQeQqhELo2fLmMG4w==}
+    engines: {node: '>=24'}
+    peerDependencies:
+      '@tanstack/react-query': ^5.99.0
+      react: ^18.3.1
+      viem: ^2.48.0
 
   '@reserve-protocol/react-zapper@1.7.1':
     resolution: {integrity: sha512-juBpaebtVMYQDaypkdevQkDHwFP/Sr5JNCIxgTh6ZaMi/GJUrUCtzZ7z4hdbi4T3ynnqOHg1B81yEEZzUjT7zg==}
@@ -3040,6 +3053,10 @@ packages:
 
   '@reserve-protocol/rtokens@1.1.23':
     resolution: {integrity: sha512-VYP0BNhULhFzAGpzaqe1pkuMpCvLmuNYsYHE0xkKgiqaMZdztSlnCNK2BRlsDbFD/HQZwcoAoYjFpEHQbq2GoA==}
+
+  '@reserve-protocol/sdk@0.1.0':
+    resolution: {integrity: sha512-dLUVj+eN/wZw17pjrAs+AGJhMze7dijSy80AZOQc1aFubnjAbjfWi3csqQt4VtJoeWza0b1J5etyUK9BWF4vHQ==}
+    engines: {node: '>=24'}
 
   '@reserve-protocol/trusted-fillers-sdk@0.3.0':
     resolution: {integrity: sha512-YYLaEYvR+ueEWvxpgVlXJcQuCGcF5H+8A7nypad5bHvrO1kIwaLE7unySK8Nw4uL9rMlC46GGElRft1RbmX7yw==}
@@ -6237,6 +6254,14 @@ packages:
       typescript:
         optional: true
 
+  ox@0.14.27:
+    resolution: {integrity: sha512-+xhLHo/f+f4BH121/1Pomm/1vgBBda1wYiFpTvjSo8o5OcEj76Pf1hGPJiepoYMTQoTm2SKdSBvWkFWk5l07PA==}
+    peerDependencies:
+      typescript: '>=5.4.0'
+    peerDependenciesMeta:
+      typescript:
+        optional: true
+
   ox@0.6.7:
     resolution: {integrity: sha512-17Gk/eFsFRAZ80p5eKqv89a57uXjd3NgIf1CaXojATPBuujVc/fQSVhBeAU9JCRB+k7J50WQAyWTxK19T9GgbA==}
     peerDependencies:
@@ -7606,6 +7631,14 @@ packages:
       typescript:
         optional: true
 
+  viem@2.52.0:
+    resolution: {integrity: sha512-py2QPYe9e1f4DmPJCsXF7zHmyZ0PkJrBxdQZ5dvNXvzy3UzWkUn7dNfC0TMeNm6Qv1tKw3b6qXXExpx6L0oMbw==}
+    peerDependencies:
+      typescript: '>=5.0.4'
+    peerDependenciesMeta:
+      typescript:
+        optional: true
+
   vite-bundle-visualizer@1.2.1:
     resolution: {integrity: sha512-cwz/Pg6+95YbgIDp+RPwEToc4TKxfsFWSG/tsl2DSZd9YZicUag1tQXjJ5xcL7ydvEoaC2FOZeaXOU60t9BRXw==}
     engines: {node: ^18.19.0 || >=20.6.0}
@@ -7847,6 +7880,18 @@ packages:
       utf-8-validate:
         optional: true
 
+  ws@8.20.1:
+    resolution: {integrity: sha512-It4dO0K5v//JtTXuPkfEOaI3uUN87iYPnqo/ZzqCoG3g8uhA66QUMs/SrM0YK7/NAu+r4LMh/9dq2A7k+rHs+w==}
+    engines: {node: '>=10.0.0'}
+    peerDependencies:
+      bufferutil: ^4.0.1
+      utf-8-validate: '>=5.0.2'
+    peerDependenciesMeta:
+      bufferutil:
+        optional: true
+      utf-8-validate:
+        optional: true
+
   xml-name-validator@5.0.0:
     resolution: {integrity: sha512-EvGK8EJ3DhaHfbRlETOWAS5pO9MZITeauHKJyb8wyajUfQUenkIg2MvLDTZ4T/TgIcm3HU0TFBgWWboAZ30UHg==}
     engines: {node: '>=18'}
@@ -7926,6 +7971,9 @@ packages:
 
   zod@4.3.6:
     resolution: {integrity: sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg==}
+
+  zod@4.4.3:
+    resolution: {integrity: sha512-ytENFjIJFl2UwYglde2jchW2Hwm4GJFLDiSXWdTrJQBIN9Fcyp7n4DhxJEiWNAJMV1/BqWfW/kkg71UDcHJyTQ==}
 
   zustand@5.0.0:
     resolution: {integrity: sha512-LE+VcmbartOPM+auOjCCLQOsQ05zUTp8RkgwRzefUk+2jISdMMFnxvyTjA4YNWr5ZGXYbVsEMZosttuxUBkojQ==}
@@ -11298,9 +11346,22 @@ snapshots:
       - utf-8-validate
       - zod
 
+  '@reserve-protocol/dtf-catalog@0.0.1': {}
+
   '@reserve-protocol/dtf-rebalance-lib@3.2.1(decimal.js-light@2.5.1)':
     dependencies:
       decimal.js-light: 2.5.1
+
+  '@reserve-protocol/react-sdk@0.1.0(@tanstack/react-query@5.99.0(react@18.3.1))(bufferutil@4.1.0)(react@18.3.1)(typescript@5.9.3)(utf-8-validate@5.0.10)(viem@2.48.0(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@5.0.10)(zod@4.3.6))':
+    dependencies:
+      '@reserve-protocol/sdk': 0.1.0(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@5.0.10)
+      '@tanstack/react-query': 5.99.0(react@18.3.1)
+      react: 18.3.1
+      viem: 2.48.0(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@5.0.10)(zod@4.3.6)
+    transitivePeerDependencies:
+      - bufferutil
+      - typescript
+      - utf-8-validate
 
   '@reserve-protocol/react-zapper@1.7.1(@babel/core@7.29.0)(@babel/template@7.28.6)(@tanstack/react-query@5.99.0(react@18.3.1))(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(next@16.2.4(@babel/core@7.29.0)(@playwright/test@1.59.1)(babel-plugin-macros@3.1.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)(wagmi@2.19.5(@tanstack/query-core@5.99.0)(@tanstack/react-query@5.99.0(react@18.3.1))(@types/react@18.3.28)(bufferutil@4.1.0)(react@18.3.1)(typescript@5.9.3)(utf-8-validate@5.0.10)(viem@2.48.0(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@5.0.10)(zod@4.3.6))(zod@4.3.6))':
     dependencies:
@@ -11345,6 +11406,21 @@ snapshots:
       - next
 
   '@reserve-protocol/rtokens@1.1.23': {}
+
+  '@reserve-protocol/sdk@0.1.0(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@5.0.10)':
+    dependencies:
+      '@graphql-typed-document-node/core': 3.2.0(graphql@16.13.2)
+      '@reserve-protocol/dtf-catalog': 0.0.1
+      '@reserve-protocol/dtf-rebalance-lib': 3.2.1(decimal.js-light@2.5.1)
+      decimal.js-light: 2.5.1
+      graphql: 16.13.2
+      graphql-request: 7.4.0(graphql@16.13.2)
+      viem: 2.52.0(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@5.0.10)(zod@4.4.3)
+      zod: 4.4.3
+    transitivePeerDependencies:
+      - bufferutil
+      - typescript
+      - utf-8-validate
 
   '@reserve-protocol/trusted-fillers-sdk@0.3.0(ajv@8.18.0)(cross-fetch@4.1.0)(ethers@5.8.0(bufferutil@4.1.0)(utf-8-validate@5.0.10))(ipfs-only-hash@4.0.0)(multiformats@9.9.0)(viem@2.48.0(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@5.0.10)(zod@4.3.6))':
     dependencies:
@@ -13007,6 +13083,11 @@ snapshots:
       typescript: 5.9.3
       zod: 4.3.6
 
+  abitype@1.2.3(typescript@5.9.3)(zod@4.4.3):
+    optionalDependencies:
+      typescript: 5.9.3
+      zod: 4.4.3
+
   acorn@8.16.0: {}
 
   aes-js@3.0.0: {}
@@ -14560,6 +14641,10 @@ snapshots:
     dependencies:
       ws: 8.18.3(bufferutil@4.1.0)(utf-8-validate@5.0.10)
 
+  isows@1.0.7(ws@8.20.1(bufferutil@4.1.0)(utf-8-validate@5.0.10)):
+    dependencies:
+      ws: 8.20.1(bufferutil@4.1.0)(utf-8-validate@5.0.10)
+
   it-all@1.0.6: {}
 
   it-batch@1.0.9: {}
@@ -15457,6 +15542,21 @@ snapshots:
       '@scure/bip32': 1.7.0
       '@scure/bip39': 1.6.0
       abitype: 1.2.3(typescript@5.9.3)(zod@4.3.6)
+      eventemitter3: 5.0.1
+    optionalDependencies:
+      typescript: 5.9.3
+    transitivePeerDependencies:
+      - zod
+
+  ox@0.14.27(typescript@5.9.3)(zod@4.4.3):
+    dependencies:
+      '@adraffy/ens-normalize': 1.11.1
+      '@noble/ciphers': 1.3.0
+      '@noble/curves': 1.9.1
+      '@noble/hashes': 1.8.0
+      '@scure/bip32': 1.7.0
+      '@scure/bip39': 1.6.0
+      abitype: 1.2.3(typescript@5.9.3)(zod@4.4.3)
       eventemitter3: 5.0.1
     optionalDependencies:
       typescript: 5.9.3
@@ -16991,6 +17091,23 @@ snapshots:
       - utf-8-validate
       - zod
 
+  viem@2.52.0(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@5.0.10)(zod@4.4.3):
+    dependencies:
+      '@noble/curves': 1.9.1
+      '@noble/hashes': 1.8.0
+      '@scure/bip32': 1.7.0
+      '@scure/bip39': 1.6.0
+      abitype: 1.2.3(typescript@5.9.3)(zod@4.4.3)
+      isows: 1.0.7(ws@8.20.1(bufferutil@4.1.0)(utf-8-validate@5.0.10))
+      ox: 0.14.27(typescript@5.9.3)(zod@4.4.3)
+      ws: 8.20.1(bufferutil@4.1.0)(utf-8-validate@5.0.10)
+    optionalDependencies:
+      typescript: 5.9.3
+    transitivePeerDependencies:
+      - bufferutil
+      - utf-8-validate
+      - zod
+
   vite-bundle-visualizer@1.2.1(rollup@4.60.1):
     dependencies:
       cac: 6.7.14
@@ -17273,6 +17390,11 @@ snapshots:
       bufferutil: 4.1.0
       utf-8-validate: 5.0.10
 
+  ws@8.20.1(bufferutil@4.1.0)(utf-8-validate@5.0.10):
+    optionalDependencies:
+      bufferutil: 4.1.0
+      utf-8-validate: 5.0.10
+
   xml-name-validator@5.0.0: {}
 
   xmlchars@2.2.0: {}
@@ -17348,6 +17470,8 @@ snapshots:
   zod@3.25.76: {}
 
   zod@4.3.6: {}
+
+  zod@4.4.3: {}
 
   zustand@5.0.0(@types/react@18.3.28)(react@18.3.1)(use-sync-external-store@1.4.0(react@18.3.1)):
     optionalDependencies:
