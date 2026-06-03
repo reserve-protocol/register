@@ -10,6 +10,10 @@ import ZapperWrapper from '../components/zapper/zapper-wrapper'
 import useTrackIndexDTFPage, {
   useTrackIndexDTFClick,
 } from '../hooks/useTrackIndexDTFPage'
+import useIsComplianceRestricted from '@/hooks/use-is-compliance-restricted'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
+import useComplianceRestrictions from '@/hooks/use-compliance-restrictions'
+import { Trans } from '@lingui/macro'
 
 const DTF_DISABLED_FOR_ZAP = [] as string[]
 export const indexDTFQuoteSourceAtom = atom<ZapperProps['defaultSource']>(
@@ -23,6 +27,36 @@ export const indexDTFQuoteSourceAtom = atom<ZapperProps['defaultSource']>(
   }
 )
 
+const ComplianceAlert = () => {
+  const { isLoading, data } = useComplianceRestrictions()
+
+  if (isLoading || !data?.restricted) return null
+
+  return (
+    <Alert
+      variant="destructive"
+      className="rounded-3xl mb-4 text-sm sm:w-[420px] mx-auto"
+    >
+      <AlertTitle>{data.title}</AlertTitle>
+      <AlertDescription>
+        {data.description}{' '}
+        <Trans>
+          For more information, see our{' '}
+          <a
+            className="underline"
+            target="_blank"
+            rel="noopener noreferrer"
+            href="https://reserve.org/terms-and-conditions"
+          >
+            Terms of Use
+          </a>
+          .
+        </Trans>
+      </AlertDescription>
+    </Alert>
+  )
+}
+
 const IndexDTFIssuance = () => {
   useTrackIndexDTFPage('mint')
   const indexDTF = useAtomValue(indexDTFAtom)
@@ -31,6 +65,7 @@ const IndexDTFIssuance = () => {
   const isDeprecated = isInactiveDTF(useAtomValue(indexDTFStatusAtom))
   const { currentTab } = useZapperModal()
   const { trackClick } = useTrackIndexDTFClick('overview', 'mint')
+  const isRestricted = useIsComplianceRestricted()
 
   if (!indexDTF) return null
 
@@ -38,6 +73,7 @@ const IndexDTFIssuance = () => {
     <div className="container">
       <div className="flex flex-col items-center justify-start sm:justify-center gap-2 lg:bg-secondary sm:min-h-[calc(100vh-136px)] lg:min-h-[calc(100vh-80px)] rounded-4xl lg:mr-2 ">
         <div className="flex flex-col w-fit rounded-4xl">
+          <ComplianceAlert />
           <div className="bg-card rounded-3xl border-2 border-secondary sm:w-[420px] p-2 m-auto">
             <ZapperWrapper
               wagmiConfig={wagmiConfig}
@@ -49,6 +85,7 @@ const IndexDTFIssuance = () => {
               debug={devMode}
               defaultSource={quoteSource}
               sellOnly={isDeprecated}
+              disabled={isRestricted}
             />
           </div>
         </div>

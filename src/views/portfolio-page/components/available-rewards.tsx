@@ -1,3 +1,4 @@
+import dtfIndexAbi from '@/abis/dtf-index-abi'
 import dtfIndexStakingVault from '@/abis/dtf-index-staking-vault'
 import TokenLogoWithChain from '@/components/token-logo/TokenLogoWithChain'
 import { Button } from '@/components/ui/button'
@@ -10,26 +11,16 @@ import { Gift } from 'lucide-react'
 import { useCallback, useEffect } from 'react'
 import { walletAtom, walletChainAtom } from '@/state/atoms'
 import { toast } from 'sonner'
-import { Address } from 'viem'
 import {
   useSwitchChain,
   useWaitForTransactionReceipt,
   useWriteContract,
 } from 'wagmi'
-import { portfolioRewardsAtom } from '../atoms'
+import { PortfolioRewardRow, portfolioRewardsAtom } from '../atoms'
 import { ExpandToggle, useExpandable } from './expand-toggle'
 import SectionHeader from './section-header'
 
-type RewardRow = {
-  address: Address
-  chainId: number
-  symbol: string
-  name: string
-  decimals: number
-  amount: string
-  value: number
-  stTokenAddress: Address
-}
+type RewardRow = PortfolioRewardRow
 
 const ClaimButton = ({ reward }: { reward: RewardRow }) => {
   const wallet = useAtomValue(walletAtom)
@@ -45,9 +36,12 @@ const ClaimButton = ({ reward }: { reward: RewardRow }) => {
 
   useEffect(() => {
     if (claimed) {
-      toast.success('Rewards claimed', { duration: 8000 })
+      toast.success(
+        reward.source === 'revenue' ? 'Fees distributed' : 'Rewards claimed',
+        { duration: 8000 }
+      )
     }
-  }, [claimed])
+  }, [claimed, reward.source])
 
   const loading = !receipt && (isPending || !!hash)
 
@@ -59,14 +53,29 @@ const ClaimButton = ({ reward }: { reward: RewardRow }) => {
     if (walletChain !== reward.chainId) {
       await switchChainAsync?.({ chainId: reward.chainId })
     }
-    writeContract({
-      abi: dtfIndexStakingVault,
-      functionName: 'claimRewards',
-      address: reward.stTokenAddress,
-      args: [[reward.address]],
-      chainId: reward.chainId,
-    })
+    if (reward.source === 'revenue' && reward.dtfAddress) {
+      writeContract({
+        abi: dtfIndexAbi,
+        functionName: 'distributeFees',
+        address: reward.dtfAddress,
+        chainId: reward.chainId,
+      })
+      return
+    }
+    if (reward.stTokenAddress) {
+      writeContract({
+        abi: dtfIndexStakingVault,
+        functionName: 'claimRewards',
+        address: reward.stTokenAddress,
+        args: [[reward.address]],
+        chainId: reward.chainId,
+      })
+    }
   }, [wallet, walletChain, reward, openConnectModal, switchChainAsync, writeContract])
+
+  const isRevenue = reward.source === 'revenue'
+  const idleLabel = isRevenue ? 'Distribute Fees' : 'Claim'
+  const doneLabel = isRevenue ? 'Distributed' : 'Claimed'
 
   return (
     <Button
@@ -75,7 +84,7 @@ const ClaimButton = ({ reward }: { reward: RewardRow }) => {
       className="rounded-full text-sm"
       size="sm"
     >
-      {claimed ? 'Claimed' : 'Claim'}
+      {claimed ? doneLabel : idleLabel}
     </Button>
   )
 }
@@ -92,7 +101,12 @@ const columns: ColumnDef<RewardRow, any>[] = [
           address={row.original.address}
           chain={row.original.chainId}
         />
-        <p className="font-bold text-sm">{row.original.symbol}</p>
+        <div className="flex flex-col">
+          <p className="font-bold text-sm">{row.original.symbol}</p>
+          <span className="text-xs text-legend">
+            {row.original.source === 'revenue' ? 'Revenue' : 'Staking'}
+          </span>
+        </div>
       </div>
     ),
   },

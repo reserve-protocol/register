@@ -1,8 +1,10 @@
 import CoverPlaceholder from '@/components/icons/cover-placeholder'
 import TokenLogo from '@/components/token-logo'
 import StackTokenLogo from '@/components/token-logo/StackTokenLogo'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
+import { Trans } from '@lingui/macro'
 import { isInactiveDTF } from '@/hooks/use-dtf-status'
 import {
   indexDTFAtom,
@@ -15,6 +17,7 @@ import { useAtomValue } from 'jotai'
 import { ArrowDown, ArrowLeftRight } from 'lucide-react'
 import React, { useEffect, useState } from 'react'
 import DTFBalance from './dtf-balance'
+import useComplianceRestrictions from '@/hooks/use-compliance-restrictions'
 
 const TokenInfo = () => {
   const dtf = useAtomValue(indexDTFAtom)
@@ -65,33 +68,60 @@ const MintBox = () => {
   const { open, setTab } = useZapperModal()
   const status = useAtomValue(indexDTFStatusAtom)
   const isDeprecated = isInactiveDTF(status)
+  const { isLoading: isComplianceLoading, data: complianceData } =
+    useComplianceRestrictions()
+  const isRestricted = !!complianceData?.restricted
 
   return (
     <div className="rounded-3xl bg-card p-2">
       <TokenInfo />
       <div className="flex flex-col gap-2">
-        <Button
-          className="rounded-xl h-12"
-          disabled={isDeprecated}
-          onClick={() => {
-            trackClick('buy')
-            setTab('buy')
-            open()
-          }}
-        >
-          Buy
-        </Button>
-        <Button
-          className="rounded-xl h-12"
-          variant="outline"
-          onClick={() => {
-            trackClick('sell')
-            setTab('sell')
-            open()
-          }}
-        >
-          Sell
-        </Button>
+        {isComplianceLoading ? (
+          <>
+            <Skeleton className="rounded-xl h-12" />
+            <Skeleton className="rounded-xl h-12" />
+          </>
+        ) : isRestricted ? (
+          <Alert variant="destructive" className="rounded-2xl">
+            <AlertTitle>{complianceData?.title}</AlertTitle>
+            <AlertDescription>
+              {complianceData?.description}{' '}
+              <a
+                className="underline"
+                target="_blank"
+                rel="noopener noreferrer"
+                href="https://reserve.org/terms-and-conditions"
+              >
+                <Trans>Learn More</Trans>
+              </a>
+            </AlertDescription>
+          </Alert>
+        ) : (
+          <>
+            <Button
+              className="rounded-xl h-12"
+              disabled={isDeprecated}
+              onClick={() => {
+                trackClick('buy')
+                setTab('buy')
+                open()
+              }}
+            >
+              Buy
+            </Button>
+            <Button
+              className="rounded-xl h-12"
+              variant="outline"
+              onClick={() => {
+                trackClick('sell')
+                setTab('sell')
+                open()
+              }}
+            >
+              Sell
+            </Button>
+          </>
+        )}
       </div>
     </div>
   )
@@ -130,7 +160,7 @@ const CoverImage = () => {
           if (brand?.dtf?.cover) {
             await tryLoadImage(brand.dtf.cover)
           }
-        } catch (error) {}
+        } catch (error) { }
         setIsLoading(false)
       }
 
