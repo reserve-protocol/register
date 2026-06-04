@@ -1,9 +1,5 @@
-import { Address, parseUnits } from 'viem'
+import { Address } from 'viem'
 import { ZAPPER_API } from '@/utils/constants'
-
-export const MIN_USD_SIZE = 1
-export const DUMMY_SIGNER =
-  '0x0000000000000000000000000000000000000001' as Address
 
 export const NATIVE_TOKEN =
   '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE' as Address
@@ -33,85 +29,12 @@ export type SwapLeg = {
   success: boolean
 }
 
-export type ZapResult = {
-  truePriceImpact: number
-  priceImpact: number
-  debug?: { priceImpactStats?: SwapLeg[] }
-}
-
-export type ZapResponse = {
-  status: 'success' | 'error'
-  result?: ZapResult
-  error?: string
-}
-
 export const isNativeToken = (address: string, chainId: number): boolean => {
   const lower = address.toLowerCase()
   return (
     lower === NATIVE_TOKEN.toLowerCase() ||
     lower === WRAPPED_NATIVE[chainId]?.toLowerCase()
   )
-}
-
-export const convertUsdToTokenUnits = (
-  usdAmount: number,
-  price: number,
-  decimals: number
-): string => {
-  if (!price || price === 0) return '0'
-  const amount = usdAmount / price
-  try {
-    return parseUnits(amount.toFixed(6), decimals).toString()
-  } catch {
-    return '0'
-  }
-}
-
-export const fetchPriceImpact = async (
-  tokenIn: Address,
-  tokenOut: Address,
-  amountIn: string,
-  chainId: number
-): Promise<{ priceImpact: number | null; error?: string; swapPath?: SwapLeg[] }> => {
-  try {
-    const params = new URLSearchParams({
-      chainId: chainId.toString(),
-      signer: DUMMY_SIGNER,
-      tokenIn,
-      amountIn,
-      tokenOut,
-      slippage: '100',
-      trade: 'true',
-      bypassCache: 'false',
-      debug: 'true',
-    })
-
-    const url = `${ZAPPER_API}api/zapper/${chainId}/swap?${params.toString()}`
-    const response = await fetch(url, {
-      method: 'GET',
-      headers: { 'Content-Type': 'application/json' },
-    })
-
-    if (!response.ok)
-      return { priceImpact: null, error: `API ${response.status}` }
-
-    const data: ZapResponse = await response.json()
-
-    if (data.status === 'success' && data.result) {
-      const impact =
-        data.result.truePriceImpact !== undefined
-          ? data.result.truePriceImpact
-          : data.result.priceImpact
-      return {
-        priceImpact: impact,
-        swapPath: data.result.debug?.priceImpactStats,
-      }
-    }
-
-    return { priceImpact: null, error: data.error }
-  } catch {
-    return { priceImpact: null, error: 'Fetch failed' }
-  }
 }
 
 export const fetchZapperTokens = async (

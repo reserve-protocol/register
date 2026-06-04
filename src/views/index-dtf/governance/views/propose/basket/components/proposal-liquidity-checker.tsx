@@ -1,5 +1,6 @@
 import { useEffect } from 'react'
 import LiquidityBadge from '@/components/liquidity-badge'
+import OndoBadge, { ondoHasProblem } from '@/components/ondo-badge'
 import TokenLogo from '@/components/token-logo'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import Help from '@/components/ui/help'
@@ -11,6 +12,7 @@ import {
   getExplorerLink,
 } from '@/utils/getExplorerLink'
 import { LiquidityLevel } from '@/utils/liquidity'
+import { OndoInfo, OndoMarket } from '@/utils/rebalance-liquidity'
 import { NATIVE_SYMBOL, WRAPPED_NATIVE, SwapLeg } from '@/utils/zapper'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { AlertTriangle, ArrowUpRight, RefreshCw } from 'lucide-react'
@@ -26,6 +28,7 @@ type EnrichedToken = TokenInfo & {
   counterpart?: string
   logoURI?: string
   swapPath?: SwapLeg[]
+  ondo?: OndoInfo
 }
 
 const LEVEL_SCORE: Record<LiquidityLevel, number> = {
@@ -65,11 +68,13 @@ const impactColor = (impact: number): string => {
 const TokenRow = ({
   token,
   isLoading,
+  market,
   symbolMap,
   onRetry,
 }: {
   token: EnrichedToken
   isLoading: boolean
+  market: OndoMarket | null
   symbolMap: Record<string, string>
   onRetry: () => void
 }) => {
@@ -97,22 +102,28 @@ const TokenRow = ({
         ${formatCurrency(token.usdSize)}
       </span>
       <div className="ml-auto flex items-center gap-2">
-        {token.priceImpact !== undefined && (
-          <span className={cn('text-sm font-medium', impactColor(token.priceImpact))}>
-            {token.priceImpact.toFixed(2)}%
-          </span>
+        {token.ondo ? (
+          <OndoBadge ondo={token.ondo} market={market} amountUsd={token.usdSize} />
+        ) : (
+          <>
+            {token.priceImpact !== undefined && (
+              <span className={cn('text-sm font-medium', impactColor(token.priceImpact))}>
+                {token.priceImpact.toFixed(2)}%
+              </span>
+            )}
+            <LiquidityBadge
+              level={token.level}
+              priceImpact={token.priceImpact}
+              isLoading={isLoading}
+              error={token.error}
+              tradeDescription={tradeDescription}
+              swapPath={token.swapPath}
+              chainId={chainId}
+              symbolMap={symbolMap}
+              onRetry={onRetry}
+            />
+          </>
         )}
-        <LiquidityBadge
-          level={token.level}
-          priceImpact={token.priceImpact}
-          isLoading={isLoading}
-          error={token.error}
-          tradeDescription={tradeDescription}
-          swapPath={token.swapPath}
-          chainId={chainId}
-          symbolMap={symbolMap}
-          onRetry={onRetry}
-        />
       </div>
     </div>
   )
@@ -122,6 +133,7 @@ const TokenSection = ({
   label,
   tokens,
   isLoading,
+  market,
   retryingTokens,
   symbolMap,
   onRetry,
@@ -129,6 +141,7 @@ const TokenSection = ({
   label: string
   tokens: EnrichedToken[]
   isLoading: boolean
+  market: OndoMarket | null
   retryingTokens: Set<string>
   symbolMap: Record<string, string>
   onRetry: (address: string) => void
@@ -143,6 +156,7 @@ const TokenSection = ({
           key={token.tokenAddress}
           token={token}
           isLoading={isLoading || retryingTokens.has(token.tokenAddress)}
+          market={market}
           symbolMap={symbolMap}
           onRetry={() => onRetry(token.tokenAddress)}
         />
@@ -202,7 +216,7 @@ const UnsupportedTokensWarning = ({
 
 const ProposalLiquidityChecker = () => {
   const chainId = useAtomValue(chainIdAtom)
-  const { tokens, liquidityMap, unsupportedTokens, isLoading, isFetching, isDebouncing, retryingTokens, refetch, retryToken } =
+  const { tokens, liquidityMap, ondoMap, market, unsupportedTokens, isLoading, isFetching, isDebouncing, retryingTokens, refetch, retryToken } =
     useProposalLiquidityCheck()
   const basket = useAtomValue(proposedIndexBasketAtom)
   const setLiquidityLoading = useSetAtom(proposalLiquidityLoadingAtom)
@@ -235,12 +249,15 @@ const ProposalLiquidityChecker = () => {
       counterpart: liq?.counterpart,
       logoURI: entry?.token.logoURI,
       swapPath: liq?.swapPath,
+      ondo: ondoMap[t.tokenAddress],
     }
   })
 
   const selling = enriched.filter((t) => t.type === 'surplus')
   const buying = enriched.filter((t) => t.type === 'deficit')
-  const worstLevel = getWeightedLevel(enriched)
+  // Ondo assets don't trade on a DEX — exclude them from the Zapper-weighted badge.
+  const worstLevel = getWeightedLevel(enriched.filter((t) => !t.ondo))
+  const ondoProblems = enriched.filter((t) => t.ondo && ondoHasProblem(t.ondo))
 
   const totalTradeValue = selling.reduce((sum, t) => sum + t.usdSize, 0)
   const totalSlippageDollars = enriched.reduce(
@@ -296,8 +313,19 @@ const ProposalLiquidityChecker = () => {
         basket={basket}
         chainId={chainId}
       />
-      <TokenSection label="Selling" tokens={selling} isLoading={isLoading} retryingTokens={retryingTokens} symbolMap={symbolMap} onRetry={retryToken} />
-      <TokenSection label="Buying" tokens={buying} isLoading={isLoading} retryingTokens={retryingTokens} symbolMap={symbolMap} onRetry={retryToken} />
+      {ondoProblems.length > 0 && !isLoading && (
+        <Alert variant="warning" className="rounded-xl bg-warning/10 border-warning/20">
+          <AlertTriangle className="h-4 w-4" />
+          <AlertTitle>Ondo limits</AlertTitle>
+          <AlertDescription>
+            {ondoProblems.map((t) => t.tokenSymbol).join(', ')} — outside trading
+            hours or larger than the max single Ondo trade. Oversized legs fill
+            as multiple sequential trades.
+          </AlertDescription>
+        </Alert>
+      )}
+      <TokenSection label="Selling" tokens={selling} isLoading={isLoading} market={market} retryingTokens={retryingTokens} symbolMap={symbolMap} onRetry={retryToken} />
+      <TokenSection label="Buying" tokens={buying} isLoading={isLoading} market={market} retryingTokens={retryingTokens} symbolMap={symbolMap} onRetry={retryToken} />
       {!isLoading && totalTradeValue > 0 && (
         <div className="flex flex-col gap-1 pt-2 border-t">
           <div className="flex items-center justify-between">
