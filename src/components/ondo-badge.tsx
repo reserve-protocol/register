@@ -17,7 +17,9 @@ export const ondoHasProblem = (ondo: OndoInfo): boolean =>
 
 const getStatus = (ondo: OndoInfo): OndoStatus => {
   if (!ondo.tradingOpen) return 'closed'
-  if (!ondo.withinCapacity || ondo.upcoming.length > 0) return 'limited'
+  if (!ondo.withinCapacity) return 'limited'
+  // Upcoming events (earnings, dividends) are informational only — they're
+  // listed in the tooltip but don't limit a trade that's open and within cap.
   return 'open'
 }
 
