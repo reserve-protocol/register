@@ -38,13 +38,14 @@ const getAllTokensWithSizes = (
 ): TokenInfo[] => {
   if (!metrics) return []
 
-  const tokens: TokenInfo[] = []
+  const surplus: TokenInfo[] = []
+  const deficit: TokenInfo[] = []
 
   for (let i = 0; i < metrics.surplusTokens.length; i++) {
     const tokenAddress = metrics.surplusTokens[i].toLowerCase()
     const token = tokenMap[tokenAddress]
     if (token && metrics.surplusTokenSizes[i] > 0) {
-      tokens.push({
+      surplus.push({
         tokenAddress,
         tokenSymbol: token.symbol,
         usdSize: metrics.surplusTokenSizes[i],
@@ -57,7 +58,7 @@ const getAllTokensWithSizes = (
     const tokenAddress = metrics.deficitTokens[i].toLowerCase()
     const token = tokenMap[tokenAddress]
     if (token && metrics.deficitTokenSizes[i] > 0) {
-      tokens.push({
+      deficit.push({
         tokenAddress,
         tokenSymbol: token.symbol,
         usdSize: metrics.deficitTokenSizes[i],
@@ -66,7 +67,20 @@ const getAllTokensWithSizes = (
     }
   }
 
-  return tokens
+  // An auction only trades min(surplus, deficit) — the larger side reports the
+  // full available amount, not what's actually sold/bought. Scale each side to
+  // the matched auction size so the checker reflects the real trade (and tracks
+  // the rebalance percent on both sides, not just the deficit).
+  const surplusTotal = surplus.reduce((s, t) => s + t.usdSize, 0)
+  const deficitTotal = deficit.reduce((s, t) => s + t.usdSize, 0)
+  const auctionSize = Math.min(surplusTotal, deficitTotal)
+  const sScale = surplusTotal > 0 ? auctionSize / surplusTotal : 0
+  const dScale = deficitTotal > 0 ? auctionSize / deficitTotal : 0
+
+  return [
+    ...surplus.map((t) => ({ ...t, usdSize: t.usdSize * sScale })),
+    ...deficit.map((t) => ({ ...t, usdSize: t.usdSize * dScale })),
+  ]
 }
 
 const buildResult = (
