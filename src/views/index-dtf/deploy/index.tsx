@@ -3,7 +3,7 @@ import { ROUTES } from '@/utils/constants'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { ArrowUpRight, Flower, Globe } from 'lucide-react'
 import { FormProvider, useForm } from 'react-hook-form'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 import DeployAccordion from './components/deploy-accordion'
 import RightPanel from './components/right-panel'
 import {
@@ -42,8 +42,13 @@ const DeployerHeader = () => {
 const IndexTokenDeploy = () => {
   useTrackPage('create', 'index_dtf')
 
+  const [searchParams] = useSearchParams()
+  const debug = searchParams.get('debug') === 'true'
+
   const form = useForm({
-    resolver: zodResolver(DeployFormSchema),
+    resolver: debug
+      ? (values: any) => ({ values, errors: {} })
+      : zodResolver(DeployFormSchema),
     defaultValues: dtfDeployDefaultValues,
     mode: 'onTouched',
   })
