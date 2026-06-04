@@ -203,8 +203,9 @@ const useProposalLiquidityCheck = () => {
           liquidityMap[asset.address] = toTokenLiquidity(asset)
           if (asset.ondo) ondoMap[asset.address] = asset.ondo
         }
-      } catch {
+      } catch (e) {
         // keep empty maps; unsupported-token info is still useful
+        console.error('Failed to fetch proposal liquidity', e)
       }
 
       return { liquidityMap, ondoMap, market, unsupportedTokens }

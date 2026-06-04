@@ -214,7 +214,9 @@ const LiquidityBadge = ({
     )
   }
 
-  const config = levelConfig[level]
+  // Fallback for any level outside the union (e.g. the backend's 'ondo' marker)
+  // so an unexpected value can't read `.className`/`.label` off undefined.
+  const config = levelConfig[level] ?? levelConfig.unknown
 
   if (swapPath?.length) {
     return (

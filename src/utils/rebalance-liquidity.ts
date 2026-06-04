@@ -77,6 +77,7 @@ export const fetchRebalanceLiquidity = async (
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ chainId, nativePrice, trades }),
+    signal: AbortSignal.timeout(30_000),
   })
 
   if (!response.ok) throw new Error(`rebalance liquidity ${response.status}`)

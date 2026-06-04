@@ -164,9 +164,9 @@ const OndoBadge = ({
 
           {ondo.upcoming.length > 0 && (
             <div className="flex flex-col gap-0.5 border-t pt-1">
-              {ondo.upcoming.map((u, i) => (
+              {ondo.upcoming.map((u) => (
                 <div
-                  key={i}
+                  key={`${u.code ?? u.message ?? ''}-${u.start ?? ''}-${u.end ?? ''}`}
                   className="flex items-start gap-1 text-muted-foreground"
                 >
                   <CalendarClock size={12} className="mt-0.5 shrink-0" />

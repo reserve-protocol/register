@@ -3,6 +3,8 @@ import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { useAtomValue } from 'jotai'
 import { chainIdAtom } from '@/state/atoms'
 import { ethPriceAtom } from '@/state/chain/atoms/chainAtoms'
+import { Token } from '@/types'
+import { AuctionMetrics } from '@reserve-protocol/dtf-rebalance-lib'
 import { TokenLiquidity } from '@/utils/liquidity'
 import {
   fetchRebalanceLiquidity,
@@ -33,8 +35,8 @@ type LiquidityData = {
 const EMPTY: LiquidityData = { liquidityMap: {}, ondoMap: {}, market: null }
 
 const getAllTokensWithSizes = (
-  metrics: any,
-  tokenMap: Record<string, any>
+  metrics: AuctionMetrics | undefined,
+  tokenMap: Record<string, Token>
 ): TokenInfo[] => {
   if (!metrics) return []
 
@@ -156,7 +158,8 @@ const useRebalanceLiquidityCheck = () => {
           buildTrades(tokens)
         )
         return buildResult(res.assets, res.market)
-      } catch {
+      } catch (e) {
+        console.error('Failed to fetch rebalance liquidity', e)
         return EMPTY
       }
     },
