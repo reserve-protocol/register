@@ -154,15 +154,15 @@ export const spellAddress: Record<number, `0x${string}`> = {
 }
 
 export const optimisticStakingVaultAddress: Record<number, Address> = {
-  [ChainId.Mainnet]: getAddress('0x0726D9d0E86Da9bE70985C8D8B2AB1Ff42eCe521'),
-  [ChainId.Base]: getAddress('0x7B9Cf042d772F1C176D31d37Be1eef29De427044'),
-  [ChainId.BSC]: getAddress('0x4D43E95D8AF20aA65695ED2A3B7eC0d2CC88908F'),
+  [ChainId.Mainnet]: getAddress('0xABbDD9AC016e43c7CA85e2258E669948f029BC0c'),
+  [ChainId.Base]: getAddress('0x2F0D6538807a77d4AdDCd4b4DAf214Ea2E818E3D'),
+  [ChainId.BSC]: getAddress('0xE744C8157c346B2931807F42552c8CBc0BB6D34f'),
 }
 
 export const newFeeRecipientAddress: Record<number, Address> = {
-  [ChainId.Mainnet]: getAddress('0x9811e38b57ad9bC498F60090Eb8d0C68436D037E'),
-  [ChainId.Base]: getAddress('0x490c31f0aC5C34cA7d6De03925e3b89A899D1ECD'),
-  [ChainId.BSC]: getAddress('0xf67454a5e8081F52768cD350A4Ac9E832c5101b6'),
+  [ChainId.Mainnet]: getAddress('0x2688c199049376eFc3aa54F395048B5430c16DE8'),
+  [ChainId.Base]: getAddress('0xEAfA84184BEb90891cb5c4942ebD59C18dda0bfE'),
+  [ChainId.BSC]: getAddress('0x0c2C5064C32800b26d3E0e8A031F366a892Ae793'),
 }
 
 const UPGRADE_FOLIO_MESSAGE = 'Reserve Optimistic Governor upgrade'
@@ -225,12 +225,12 @@ const ProposeBanner = ({ refetch, description }: SpellUpgradeProps) => {
     const oldFolioGovernor = dtf.ownerGovernance.id
     const tradingGovernor = dtf.tradingGovernance.id
     const optimisticParams = {
-      vetoDelay: 43_200, // 12h
-      vetoPeriod: 129_600, // 36h
-      vetoThreshold: 20_000_000_000_000_000n, // 2%
+      vetoDelay: 14_400, // 4h
+      vetoPeriod: 72_000, // 20h
+      vetoThreshold: 10_000_000_000_000_000n, // 1%
     } as const
     const optimisticProposers = [
-      getAddress('0x7DaAf7Bc2eE8bf4C0ac7f37E6b6cfaEB3ed9a868'),
+      getAddress('0xF770497BC14dA0E88F65A5C446484c7CEcbEA661'),
     ]
     const guardians = dtf.ownerGovernance.timelock.guardians.filter(
       (guardian) => guardian.toLowerCase() !== oldFolioGovernor.toLowerCase()
