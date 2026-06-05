@@ -46,6 +46,9 @@ export const rebalanceMetricsAtom = atom<AuctionMetrics | undefined>(undefined)
 export const rebalanceErrorAtom = atom('')
 
 export const rebalancePercentAtom = atom(98)
+// True once the user drags the dev slider, so the Ondo cap stops auto-defaulting
+// the percent and lets them move above it.
+export const rebalancePercentTouchedAtom = atom(false)
 export const rebalanceAuctionsAtom = atom<Auction[]>([])
 
 export const rebalanceTokenMapAtom = atom<Record<string, Token>>((get) => {

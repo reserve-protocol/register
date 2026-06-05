@@ -6,8 +6,8 @@ import {
 import { Slider } from '@/components/ui/slider'
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
 import { devModeAtom } from '@/state/atoms'
-import { formatPercentage } from '@/utils'
-import { useAtom, useAtomValue } from 'jotai'
+import { formatCurrency, formatPercentage } from '@/utils'
+import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { ChevronsUpDown } from 'lucide-react'
 import { JsonView } from 'react-json-view-lite'
 import {
@@ -16,16 +16,20 @@ import {
   priceVolatilityAtom,
   rebalanceMetricsAtom,
   rebalancePercentAtom,
+  rebalancePercentTouchedAtom,
 } from '../atoms'
 import useRebalanceParams from '../hooks/use-rebalance-params'
+import useOndoLimitStatus from '../hooks/use-ondo-limit-status'
 import RebalancePriceImpact from './rebalance-price-impact'
 import RebalanceBidsList from './rebalance-bids-list'
 import { Volatility } from '@/types'
 
 const RebalanceSlider = () => {
   const [rebalancePercent, setRebalancePercent] = useAtom(rebalancePercentAtom)
+  const setTouched = useSetAtom(rebalancePercentTouchedAtom)
   const rebalanceOngoing = useAtomValue(isAuctionOngoingAtom)
   const metrics = useAtomValue(rebalanceMetricsAtom)
+  const { exceeded } = useOndoLimitStatus()
 
   return (
     <div className="flex flex-col gap-1 mt-2">
@@ -40,10 +44,24 @@ const RebalanceSlider = () => {
         value={[rebalancePercent]}
         onValueChange={(value) => {
           if (value[0] > (metrics?.relativeProgression ?? 0) + 2) {
+            setTouched(true)
             setRebalancePercent(value[0])
           }
         }}
       />
+      {exceeded.length > 0 && (
+        <div className="text-sm text-yellow-600">
+          <span>Above Ondo single-trade limit:</span>
+          <ul className="list-disc pl-5">
+            {exceeded.map((leg) => (
+              <li key={leg.symbol}>
+                {leg.symbol}: ${formatCurrency(leg.sizeUsd)} (limit $
+                {formatCurrency(leg.capacityUsd)})
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
     </div>
   )
 }

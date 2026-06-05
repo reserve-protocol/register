@@ -29,8 +29,8 @@ export type OndoInfo = {
   ticker?: string
   price?: number
   tradingOpen: boolean
-  // Regular-session per-account notional cap (stable ceiling) + whether the
-  // trade fits within it. Not market liquidity — it's Ondo's per-account limit.
+  // Active-session per-account notional cap + whether the trade fits within it.
+  // Not market liquidity — it's Ondo's per-account single-trade limit.
   capacityUsd?: number
   withinCapacity: boolean
   reason?: { code: string; message: string } | null
