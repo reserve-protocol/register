@@ -28,6 +28,7 @@ export const registerRpcUrls = {
     ...(ankrKey ? [`https://rpc.ankr.com/base/${ankrKey}`] : []),
   ],
   [arbitrum.id]: [
+    'https://arbitrum-one-rpc.publicnode.com',
     ...(infuraKey
       ? [`https://arbitrum-mainnet.infura.io/v3/${infuraKey}`]
       : []),

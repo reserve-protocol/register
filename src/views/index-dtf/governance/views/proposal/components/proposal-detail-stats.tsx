@@ -46,7 +46,7 @@ const useProposalDetailStats = () => {
   const currentQuorum = Number(threshold?.currentVotes.formatted ?? 0)
   const quorumNeeded = Number(threshold?.targetVotes?.formatted ?? 0)
   const quorumReached = threshold?.reached ?? false
-  const hasQuorumTarget = threshold?.hasTarget ?? true
+  const hasQuorumTarget = threshold?.hasTarget ?? false
 
   const [majorityWeight, majoritySupport] = useMemo(() => {
     const totalVotes = +forVotes + +againstVotes

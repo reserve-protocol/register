@@ -50,11 +50,18 @@ const ProposeGatekeeper = memo(() => {
     return calldatas.map(() => dtf)
   }, [calldatas, dtf])
   const { isProposeAllowed, isLoading } = useIsProposeAllowed(govAddress)
-  const { isChecking, isOptimisticEligible } = useProposalTypeEligibility({
+  const {
+    hasSelectorError,
+    isChecking,
+    isOptimisticEligible,
+  } = useProposalTypeEligibility({
     governance: indexDTF?.tradingGovernance,
     targets,
     calldatas,
   })
+  const isOptimisticProposal = proposalType === 'optimistic'
+  const canUseOptimisticProposal =
+    isOptimisticProposal && isOptimisticEligible && !hasSelectorError
 
   if (isChecking) {
     return (
@@ -64,7 +71,11 @@ const ProposeGatekeeper = memo(() => {
     )
   }
 
-  if (isLoading && (!isOptimisticEligible || proposalType !== 'optimistic')) {
+  if (isOptimisticProposal && !canUseOptimisticProposal) {
+    return null
+  }
+
+  if (isLoading && !canUseOptimisticProposal) {
     return (
       <Button disabled className="w-full" variant="default">
         Checking voting power...
@@ -75,7 +86,7 @@ const ProposeGatekeeper = memo(() => {
   if (
     !isLoading &&
     !isProposeAllowed &&
-    (!isOptimisticEligible || proposalType !== 'optimistic')
+    !canUseOptimisticProposal
   ) {
     return (
       <Button disabled className="w-full" variant="default">
@@ -101,13 +112,21 @@ const SubmitProposalButton = () => {
   const handleRecentProposalReceipt = useRecentProposalReceipt()
 
   const { writeContract, isPending, data: hash } = useWriteContract()
-  const { data: receipt, isSuccess } = useWaitForTransactionReceipt({
+  const {
+    data: receipt,
+    isSuccess,
+    error: receiptError,
+  } = useWaitForTransactionReceipt({
     hash,
     chainId,
   })
+  const isConfirming = !!hash && !receipt && !receiptError
+  const isSubmitted = isConfirming || receipt?.status === 'success'
 
   useEffect(() => {
-    if (!isSuccess || !receipt || !govAddress) return
+    if (!isSuccess || !receipt || receipt.status !== 'success' || !govAddress) {
+      return
+    }
 
     void handleRecentProposalReceipt({
       receipt,
@@ -170,17 +189,17 @@ const SubmitProposalButton = () => {
       switchChainButtonClassName="w-full"
     >
       <Button
-        disabled={!isReady || isPending || !!hash || !govAddress}
+        disabled={!isReady || isPending || isSubmitted || !govAddress}
         onClick={handleSubmit}
         className="w-full"
         variant="default"
       >
-        {(isPending || !!hash) && (
+        {(isPending || isSubmitted) && (
           <Loader2 className="w-4 h-4 animate-spin mr-2" />
         )}
         {isPending && 'Pending, sign in wallet...'}
-        {!isPending && !!hash && 'Waiting for confirmation...'}
-        {!isPending && !hash && 'Submit proposal onchain'}
+        {!isPending && isSubmitted && 'Waiting for confirmation...'}
+        {!isPending && !isSubmitted && 'Submit proposal onchain'}
       </Button>
     </TransactionButtonContainer>
   )

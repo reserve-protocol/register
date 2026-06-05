@@ -82,18 +82,24 @@ export const useProposalTypeEligibility = ({
         sdk.index.getSelectorRegistryIsAllowed({
           chainId: chainId as SupportedChainId,
           ...check,
-        }),
+      }),
     })),
   })
+  const hasSelectorError =
+    selectorChecks.length > 0 && selectorQueries.some((query) => query.isError)
   const isChecking =
     selectorChecks.length > 0 &&
-    selectorQueries.some((query) => query.data === undefined && query.isLoading)
+    selectorQueries.some(
+      (query) => query.data === undefined && (query.isLoading || query.isFetching)
+    )
   const isOptimisticEligible =
     selectorChecks.length > 0 &&
+    !hasSelectorError &&
     selectorQueries.length === selectorChecks.length &&
     selectorQueries.every((query) => query.data === true)
 
   return {
+    hasSelectorError,
     isChecking,
     isOptimisticEligible,
   }

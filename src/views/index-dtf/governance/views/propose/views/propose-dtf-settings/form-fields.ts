@@ -75,14 +75,16 @@ export const createProposeSettingsSchema = (quorumDenominator?: number) => z
     optimisticVetoDelay: z.coerce.number().min(0).optional(),
     optimisticVetoPeriod: z.coerce.number().min(0).optional(),
     optimisticVetoThreshold: z.coerce.number().min(0).max(100).optional(),
-    optimisticProposers: z.array(
-      z
-        .string()
-        .refine((value) => !value || isAddressNotStrict(value), {
-          message: 'Invalid Address',
-        })
-        .optional()
-    ),
+    optimisticProposers: z
+      .array(
+        z
+          .string()
+          .refine((value) => !value || isAddressNotStrict(value), {
+            message: 'Invalid Address',
+          })
+          .optional()
+      )
+      .default([]),
     optimisticActions: z.array(z.string()).optional(),
     guardians: z.array(
       z
@@ -140,7 +142,7 @@ export const createProposeSettingsSchema = (quorumDenominator?: number) => z
     (data) =>
       new Set(
         data.optimisticProposers?.map((item) => item?.toLowerCase() || item)
-      ).size === data.optimisticProposers.length,
+      ).size === (data.optimisticProposers?.length ?? 0),
     {
       message: 'Duplicated optimistic proposers',
       path: ['optimistic'],

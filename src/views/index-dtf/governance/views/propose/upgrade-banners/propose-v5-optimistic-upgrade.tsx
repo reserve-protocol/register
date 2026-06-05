@@ -200,10 +200,16 @@ const ProposeBanner = ({ refetch, description }: SpellUpgradeProps) => {
 
   const { writeContract, data: hash, isPending } = useWriteContract()
 
-  const { data: receipt, isSuccess } = useWaitForTransactionReceipt({
+  const {
+    data: receipt,
+    isSuccess,
+    error: receiptError,
+  } = useWaitForTransactionReceipt({
     hash,
     chainId,
   })
+  const isConfirming = !!hash && !receipt && !receiptError
+  const isSubmitted = isConfirming || receipt?.status === 'success'
 
   const isReady =
     dtf?.id &&
@@ -276,7 +282,14 @@ const ProposeBanner = ({ refetch, description }: SpellUpgradeProps) => {
   }
 
   useEffect(() => {
-    if (!isSuccess || !receipt || !dtf?.ownerGovernance?.id) return
+    if (
+      !isSuccess ||
+      !receipt ||
+      receipt.status !== 'success' ||
+      !dtf?.ownerGovernance?.id
+    ) {
+      return
+    }
 
     void handleRecentProposalReceipt({
       receipt,
@@ -332,16 +345,16 @@ const ProposeBanner = ({ refetch, description }: SpellUpgradeProps) => {
         </div>
       </div>
       <Button
-        disabled={!isReady || isPending || !!hash}
+        disabled={!isReady || isPending || isSubmitted}
         onClick={handlePropose}
         className="w-full mt-2"
       >
-        {(isPending || !!hash) && (
+        {(isPending || isSubmitted) && (
           <Loader2 className="w-4 h-4 animate-spin mr-2" />
         )}
         {isPending && 'Pending, sign in wallet...'}
-        {!isPending && !!hash && 'Waiting for confirmation...'}
-        {!isPending && !hash && 'Propose upgrade'}
+        {!isPending && isSubmitted && 'Waiting for confirmation...'}
+        {!isPending && !isSubmitted && 'Propose upgrade'}
       </Button>
     </div>
   )
@@ -387,9 +400,9 @@ export default function ProposeV5Upgrade() {
 
   const existsFolioUpgrade = validProposalExists(proposals)
 
-  // if (existsFolioUpgrade) {
-  //   return null
-  // }
+  if (existsFolioUpgrade) {
+    return null
+  }
 
   const description = getNextUpgradeDescription(proposals)
 

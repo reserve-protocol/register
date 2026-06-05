@@ -1,8 +1,11 @@
 export const shouldBypassFormValidation = (searchParams?: URLSearchParams) => {
-  const hostname = window.location.hostname
+  const hostname =
+    typeof window !== 'undefined' ? window.location.hostname : undefined
+  const isValidationDisabled =
+    import.meta.env.VITE_DISABLE_VALIDATION === 'true'
 
   return (
-    !!import.meta.env.VITE_DISABLE_VALIDATION ||
+    isValidationDisabled ||
     searchParams?.get('debug') === 'true' ||
     import.meta.env.DEV ||
     hostname === 'localhost' ||

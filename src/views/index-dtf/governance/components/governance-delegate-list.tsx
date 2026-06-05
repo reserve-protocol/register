@@ -17,7 +17,7 @@ import { ExplorerDataType, getExplorerLink } from '@/utils/getExplorerLink'
 import { IndexDtfDelegate, useIndexDtfDelegates } from '@reserve-protocol/react-sdk'
 import { useAtomValue } from 'jotai'
 import { User2 } from 'lucide-react'
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 
 type DelegateTabs = 'normal' | 'optimistic'
@@ -105,6 +105,13 @@ const GovernanceDelegateList = () => {
     stToken: dtf.stToken.id
   })
   const [currentTab, setTab] = useState<DelegateTabs>('normal')
+  const hasOptimisticGovernance = !!dtf?.ownerGovernance?.isOptimistic
+
+  useEffect(() => {
+    if (!hasOptimisticGovernance && currentTab === 'optimistic') {
+      setTab('normal')
+    }
+  }, [currentTab, hasOptimisticGovernance])
 
   const isOptimistic = currentTab === 'optimistic'
   const delegates = useMemo(() => {
@@ -122,7 +129,7 @@ const GovernanceDelegateList = () => {
           <User2 size={14} />
         </div>
         <h2 className="font-semibold text-xl text-primary ml-1 mr-auto">Delegates</h2>
-        {!!dtf?.ownerGovernance?.isOptimistic && (
+        {hasOptimisticGovernance && (
           <DelegateListOptions />
         )}
       </div>

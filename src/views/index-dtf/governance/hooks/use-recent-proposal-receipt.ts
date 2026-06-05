@@ -28,6 +28,7 @@ export const useRecentProposalReceipt = () => {
   const navigate = useNavigate()
   const setRecentProposals = useSetAtom(recentProposalsAtom)
   const handledReceipt = useRef<string | undefined>(undefined)
+  const processingReceipt = useRef<string | undefined>(undefined)
 
   return useCallback(
     async ({
@@ -38,10 +39,13 @@ export const useRecentProposalReceipt = () => {
       isOptimistic,
     }: HandleRecentProposalReceiptParams) => {
       if (handledReceipt.current === receipt.transactionHash) return
-      handledReceipt.current = receipt.transactionHash
+      if (processingReceipt.current === receipt.transactionHash) return
+
+      processingReceipt.current = receipt.transactionHash
 
       if (!dtf) {
         onFallback()
+        processingReceipt.current = undefined
         return
       }
 
@@ -59,6 +63,7 @@ export const useRecentProposalReceipt = () => {
           ...current,
           [key]: proposal,
         }))
+        handledReceipt.current = receipt.transactionHash
         onSuccess?.(proposal)
         navigate(
           getFolioRoute(
@@ -69,6 +74,8 @@ export const useRecentProposalReceipt = () => {
         )
       } catch {
         onFallback()
+      } finally {
+        processingReceipt.current = undefined
       }
     },
     [chainId, dtf, navigate, sdk, setRecentProposals]

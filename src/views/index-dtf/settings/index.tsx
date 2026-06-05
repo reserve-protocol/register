@@ -11,7 +11,7 @@ import RolesInfo from './components/index-settings-roles'
 const IndexDTFSettings = () => {
   useTrackIndexDTFPage('settings')
   useScrollToHash()
-  
+
   return (
     <div className="grid grid-cols-1 lg:grid-cols-[1.5fr_1fr] gap-2 lg:pr-2 lg:pb-4">
       <div className="flex flex-col gap-2">

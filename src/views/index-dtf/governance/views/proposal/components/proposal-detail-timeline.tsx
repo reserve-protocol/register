@@ -42,7 +42,7 @@ const TimelineItem = ({
   progress = 0,
 }: TimelineItemProps) => {
   return (
-    <div>
+    <div className="relative">
       <div className="flex items-center gap-3 px-4 py-2">
         <div
           className={`flex items-center justify-center w-7 h-7 rounded-lg bg-muted z-0 ${enabled ? 'opacity-100' : 'opacity-80'}`}
@@ -56,7 +56,7 @@ const TimelineItem = ({
         </div>
       </div>
       {showProgress && (
-        <Progress value={progress} className="absolute w-full h-0.5 z-0" />
+        <Progress value={progress} className="absolute inset-x-0 bottom-0 h-0.5 z-0" />
       )}
     </div>
   )
@@ -190,7 +190,7 @@ const TITLE_BY_STATE = {
   [PROPOSAL_STATES.SUCCEEDED]: 'Proposal succeeded',
   [PROPOSAL_STATES.QUEUED]: 'Proposal succeeded',
   [PROPOSAL_STATES.EXECUTED]: 'Proposal succeeded',
-  [PROPOSAL_STATES.CANCELED]: 'Proposal succeeded',
+  [PROPOSAL_STATES.CANCELED]: 'Proposal canceled',
 }
 const ICON_BY_STATE = {
   [PROPOSAL_STATES.DEFEATED]: <XCircle color="red" size={18} />,
@@ -199,7 +199,7 @@ const ICON_BY_STATE = {
   [PROPOSAL_STATES.SUCCEEDED]: <CheckCircle color={colors.success} size={18} />,
   [PROPOSAL_STATES.QUEUED]: <CheckCircle size={18} />,
   [PROPOSAL_STATES.EXECUTED]: <CheckCircle size={18} />,
-  [PROPOSAL_STATES.CANCELED]: <CheckCircle size={18} />,
+  [PROPOSAL_STATES.CANCELED]: <XCircle color="red" size={18} />,
 }
 const COLOR_BY_STATE = {
   [PROPOSAL_STATES.DEFEATED]: 'red',
@@ -208,7 +208,7 @@ const COLOR_BY_STATE = {
   [PROPOSAL_STATES.SUCCEEDED]: 'success',
   [PROPOSAL_STATES.QUEUED]: 'inherit',
   [PROPOSAL_STATES.EXECUTED]: 'inherit',
-  [PROPOSAL_STATES.CANCELED]: 'inherit',
+  [PROPOSAL_STATES.CANCELED]: 'red',
 }
 export const TimelineItemVotingResult = () => {
   const proposal = useAtomValue(proposalDetailAtom)

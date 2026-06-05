@@ -735,6 +735,7 @@ export const SelectorRegistryPreview = ({
   decodedCalldata: DecodedCalldata
   targetAddress?: Address
 }) => {
+  const chainId = useAtomValue(chainIdAtom)
   const selectorData = decodedCalldata.data[0] as Array<{
     target: Address
     selectors: Hex[]
@@ -759,6 +760,20 @@ export const SelectorRegistryPreview = ({
             key={`${data.target}-${data.selectors.join('-')}`}
             className="p-3 rounded-xl bg-background/80 border"
           >
+            <div className="flex items-center gap-2 mb-3 text-sm">
+              <span className="text-legend">Target:</span>
+              <Link
+                to={getExplorerLink(data.target, chainId, ExplorerDataType.ADDRESS)}
+                target="_blank"
+                className="inline-flex items-center gap-1 text-primary hover:underline"
+              >
+                <EnsName address={data.target} />
+                <span className="text-xs text-muted-foreground">
+                  {shortenAddress(data.target)}
+                </span>
+                <ArrowUpRight size={14} />
+              </Link>
+            </div>
             <div className="flex flex-wrap gap-2">
               {data.selectors.map((selector) => (
                 <span

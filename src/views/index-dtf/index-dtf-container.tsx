@@ -39,6 +39,7 @@ import {
 } from '@/utils/constants'
 import {
   IndexDtfProvider,
+  type Amount,
   useCurrentIndexDtf,
   useIndexDtfIdentity,
   useIndexDtfVersion,
@@ -101,14 +102,14 @@ const getBasketState = (dtf: IndexDtfData) => {
   const prices: Record<string, number> = {
     [dtf.id.toLowerCase()]: dtf.market.price,
   }
-  const amounts: Record<string, number> = {}
+  const amounts: Record<string, Amount> = {}
   const shares: Record<string, string> = {}
   const basket = Object.values(dtf.basket)
     .map((asset) => {
       const address = asset.token.address.toLowerCase()
 
       prices[address] = asset.price
-      amounts[address] = Number(asset.amount.formatted) * asset.price
+      amounts[address] = asset.amount
       shares[address] = asset.weight
 
       return {
