@@ -29,6 +29,7 @@ type LegRowProps = {
   // Quote still resolving (show skeletons) / quote errored (no amounts).
   loading?: boolean
   quoteError?: string
+  fillAnimationActive?: boolean
 }
 
 // A single basket leg, rendered the same whether it's a pre-submit quote or a
@@ -43,6 +44,7 @@ const LegRow = ({
   impact,
   loading,
   quoteError,
+  fillAnimationActive,
 }: LegRowProps) => {
   const sell = leg.side === 'sell'
   const negativeImpact = impact !== undefined && impact < 0
@@ -131,7 +133,9 @@ const LegRow = ({
         '-mx-2 rounded-[18px] border px-4 py-3 transition-colors',
         loading && 'border-border/70 bg-background',
         !loading && !failed && 'border-border/70 bg-background',
-        failed && 'border-destructive/25 bg-destructive/5'
+        failed && 'border-destructive/25 bg-destructive/5',
+        fillAnimationActive &&
+          'motion-safe:animate-[async-mint-order-filled_1800ms_ease-out]'
       )}
     >
       <div className="flex flex-col gap-2">
@@ -238,15 +242,25 @@ const LegRow = ({
           <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs">
             <span
               className={cn(
-                'inline-flex items-center gap-1 rounded-full px-2 py-0.5 font-medium',
+                'inline-flex min-w-[72px] items-center justify-center gap-1 rounded-full px-2 py-0.5 font-medium transition-colors',
                 orderSettled && 'bg-primary/10 text-primary',
                 orderFailed && 'bg-destructive/10 text-destructive',
                 orderPending && 'bg-muted text-muted-foreground'
               )}
             >
-              {orderSettled && <Check size={12} />}
-              {orderFailed && <X size={12} />}
-              {orderPending && <Loader size={12} className="animate-spin" />}
+              <span className="flex size-3 shrink-0 items-center justify-center">
+                {orderSettled && (
+                  <Check
+                    size={12}
+                    className={cn(
+                      fillAnimationActive &&
+                        'motion-safe:animate-[async-mint-check-pop_360ms_cubic-bezier(0.2,0.8,0.2,1)]'
+                    )}
+                  />
+                )}
+                {orderFailed && <X size={12} />}
+                {orderPending && <Loader size={12} className="animate-spin" />}
+              </span>
               {statusLabel}
             </span>
             {cowUrl && (

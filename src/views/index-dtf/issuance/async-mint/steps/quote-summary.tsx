@@ -44,7 +44,7 @@ import {
   PenLine,
   RefreshCw,
 } from 'lucide-react'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Address, erc20Abi, formatUnits } from 'viem'
 import { readContracts } from 'wagmi/actions'
@@ -382,6 +382,16 @@ const QuoteSummary = () => {
   const filledOrderCount = orderStates.filter(
     (order) => order.phase === 'fulfilled'
   ).length
+  const previousFilledOrderCount = useRef(filledOrderCount)
+  const countPulseTimeout = useRef<ReturnType<typeof setTimeout> | undefined>(
+    undefined
+  )
+  const [countPulseActive, setCountPulseActive] = useState(false)
+  const previousOrderPhases = useRef<Record<string, string | undefined>>({})
+  const fillAnimationTimeouts = useRef<ReturnType<typeof setTimeout>[]>([])
+  const [recentlyFilledLegIds, setRecentlyFilledLegIds] = useState<Set<string>>(
+    () => new Set()
+  )
   const failedOrderCount = orderStates.filter(
     (order) => order.phase === 'failed' || order.retryable
   ).length
@@ -415,6 +425,78 @@ const QuoteSummary = () => {
     : swapCount > 0
       ? `${swapCount} order${swapCount === 1 ? '' : 's'}`
       : 'Orders'
+
+  useEffect(() => {
+    if (
+      executionStarted &&
+      orderCount > 0 &&
+      filledOrderCount > previousFilledOrderCount.current
+    ) {
+      setCountPulseActive(true)
+      if (countPulseTimeout.current) {
+        clearTimeout(countPulseTimeout.current)
+      }
+      countPulseTimeout.current = setTimeout(() => {
+        setCountPulseActive(false)
+      }, 800)
+    }
+
+    previousFilledOrderCount.current = filledOrderCount
+  }, [executionStarted, filledOrderCount, orderCount])
+
+  useEffect(() => {
+    return () => {
+      if (countPulseTimeout.current) {
+        clearTimeout(countPulseTimeout.current)
+      }
+    }
+  }, [])
+
+  useEffect(() => {
+    const newlyFilledLegIds: string[] = []
+
+    for (const order of orderStates) {
+      const previousPhase = previousOrderPhases.current[order.legId]
+
+      if (
+        executionStarted &&
+        order.phase === 'fulfilled' &&
+        previousPhase &&
+        previousPhase !== 'fulfilled'
+      ) {
+        newlyFilledLegIds.push(order.legId)
+      }
+
+      previousOrderPhases.current[order.legId] = order.phase
+    }
+
+    if (newlyFilledLegIds.length === 0) return
+
+    setRecentlyFilledLegIds((current) => {
+      const next = new Set(current)
+      for (const legId of newlyFilledLegIds) next.add(legId)
+      return next
+    })
+
+    const timeout = setTimeout(() => {
+      setRecentlyFilledLegIds((current) => {
+        const next = new Set(current)
+        for (const legId of newlyFilledLegIds) next.delete(legId)
+        return next
+      })
+    }, 1800)
+
+    fillAnimationTimeouts.current.push(timeout)
+  }, [executionStarted, orderStates])
+
+  useEffect(() => {
+    return () => {
+      for (const timeout of fillAnimationTimeouts.current) {
+        clearTimeout(timeout)
+      }
+    }
+  }, [])
+
   const collateralPanelSummaryAction = collateralExpanded
     ? executionStarted
       ? 'Hide orders'
@@ -866,7 +948,9 @@ const QuoteSummary = () => {
                   <div
                     className={cn(
                       'text-base font-medium leading-6 transition-colors group-hover:text-primary group-focus-visible:text-primary',
-                      !executionStarted && 'text-muted-foreground'
+                      !executionStarted && 'text-muted-foreground',
+                      countPulseActive &&
+                        'motion-safe:animate-[async-mint-count-pulse_800ms_ease-out]'
                     )}
                   >
                     {collateralPanelSummaryLabel}
@@ -1317,6 +1401,9 @@ const QuoteSummary = () => {
                       order={execution.ordersByLegId[ls.leg.id]}
                       impact={legImpacts[ls.leg.id]}
                       loading={ls.status === 'pending' || ls.status === 'idle'}
+                      fillAnimationActive={recentlyFilledLegIds.has(
+                        ls.leg.id
+                      )}
                       quoteError={
                         ls.status === 'error'
                           ? ls.leg.error?.message ||
