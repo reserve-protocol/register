@@ -101,7 +101,7 @@ const Account = () => {
                   <Button
                     variant="accent"
                     onClick={() => handleConnect(openConnectModal)}
-                    className="px-3.5 py-1 rounded-full font-normal"
+                    className="px-4 py-1 rounded-full font-medium dark:border border-primary/50"
                   >
                     <span className="flex md:hidden items-center py-1">
                       <Power size={16} />
