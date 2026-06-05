@@ -1,15 +1,13 @@
 import DelegateIcon from '@/components/icons/DelegateIcon'
+import { CurrentDtfVoteLock } from '@/components/vote-lock'
 import { Button } from '@/components/ui/button'
-import { cn } from '@/lib/utils'
 import { chainIdAtom } from '@/state/atoms'
 import { formatCurrency } from '@/utils'
 import { PROPOSAL_STATES } from '@/utils/constants'
 import { ExplorerDataType, getExplorerLink } from '@/utils/getExplorerLink'
 import { useAtomValue } from 'jotai'
 import { ArrowUpRight, AsteriskIcon, HandFist, Rocket } from 'lucide-react'
-import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import DelegateModal from '../../../components/delegate-modal'
 import {
   accountVotesAtom,
   proposalDetailAtom,
@@ -78,9 +76,8 @@ const ProposalActionButtons = () => {
 
 const ProposalVoteOverview = () => {
   const state = useAtomValue(proposalStateAtom) ?? ''
-  const [isDelegateVisible, setDelegateVisible] = useState(false)
   const { votePower = '0.0' } = useAtomValue(accountVotesAtom)
-  const { hasUndelegatedBalance, hasNoDelegates } = useDelegateState()
+  const { hasUndelegatedBalance } = useDelegateState()
 
   if (state !== PROPOSAL_STATES.PENDING && state !== PROPOSAL_STATES.ACTIVE) return null
 
@@ -94,27 +91,24 @@ const ProposalVoteOverview = () => {
             {formatCurrency(votePower ? +votePower : 0)}
           </span>
         </div>
-        {state === PROPOSAL_STATES.PENDING && (
-          <div
-            className={cn(
-              'flex items-center gap-1 cursor-pointer',
-              hasUndelegatedBalance ? 'text-[#2150A9]' : 'text-[#D9D9D9]',
-              !hasUndelegatedBalance && 'cursor-default'
-            )}
-            onClick={() => hasUndelegatedBalance && setDelegateVisible(true)}
-          >
+        {state === PROPOSAL_STATES.PENDING && hasUndelegatedBalance && (
+          <CurrentDtfVoteLock initialTab="delegate">
+            <button
+              type="button"
+              className="flex items-center gap-1 text-[#2150A9]"
+            >
+              <DelegateIcon />
+              <span className="font-semibold hidden xl:block">Delegate</span>
+            </button>
+          </CurrentDtfVoteLock>
+        )}
+        {state === PROPOSAL_STATES.PENDING && !hasUndelegatedBalance && (
+          <div className="flex items-center gap-1 text-[#D9D9D9]">
             <DelegateIcon />
             <span className="font-semibold hidden xl:block">Delegate</span>
           </div>
         )}
-
       </div>
-      {isDelegateVisible && (
-        <DelegateModal
-          delegated={!hasNoDelegates}
-          onClose={() => setDelegateVisible(false)}
-        />
-      )}
     </>
   )
 }

@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { Separator } from '@/components/ui/separator'
 import { Skeleton } from '@/components/ui/skeleton'
+import { CurrentDtfVoteLock } from '@/components/vote-lock'
 import { chainIdAtom, walletAtom } from '@/state/atoms'
 import { indexDTFAtom } from '@/state/dtf/atoms'
 import { getFolioRoute } from '@/utils'
@@ -16,7 +17,6 @@ import { forwardRef } from 'react'
 import { Link } from 'react-router-dom'
 import { InnerGovernanceInfo } from '../../settings/components/index-settings-governance'
 import { useVoteLockAPR } from '../hooks/use-staking-vault-apy'
-import Staking from './staking'
 import RSRBNBHelp from '../../governance/components/rsr-bnb-help'
 import SectionAnchor from '@/components/section-anchor'
 
@@ -144,9 +144,9 @@ const IndexGovernanceOverview = () => {
           governors earn a portion of the TVL fee charged by the DTF.
         </p>
         {account ? (
-          <Staking>
+          <CurrentDtfVoteLock>
             <OpenLockDrawerButton />
-          </Staking>
+          </CurrentDtfVoteLock>
         ) : (
           <OpenLockDrawerButton onClick={openConnectModal} />
         )}

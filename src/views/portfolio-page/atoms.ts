@@ -3,7 +3,9 @@ import { Address } from 'viem'
 import {
   portfolioStTokenAtom,
   stakingSidebarOpenAtom,
-} from '@/views/index-dtf/overview/components/staking/atoms'
+  type VoteLockTab,
+} from '@/components/vote-lock/atoms'
+import type { SupportedChainId } from '@reserve-protocol/react-sdk'
 import {
   PortfolioPeriod,
   PortfolioProposal,
@@ -190,6 +192,7 @@ export type PendingWithdrawalRow =
       value: number
       chainId: number
       stTokenAddress: Address
+      dtfAddress?: Address
       tokenSymbol: string
       underlyingSymbol: string
       underlyingAddress: Address
@@ -229,6 +232,7 @@ export const portfolioPendingWithdrawalsAtom = atom<PendingWithdrawalRow[]>(
           value: lock.value,
           chainId: position.chainId,
           stTokenAddress: position.stTokenAddress,
+          dtfAddress: position.dtfs[0]?.address,
           tokenSymbol: position.symbol,
           underlyingSymbol: position.underlying.symbol,
           underlyingAddress: position.underlying.address,
@@ -282,11 +286,15 @@ export const openStakingSidebarAtom = atom(
       underlyingSymbol: string
       underlyingAddress: Address
       chainId: number
+      dtfAddress?: Address
+      isOptimistic?: boolean | null
+      tab?: VoteLockTab
     }
   ) => {
     set(portfolioStTokenAtom, {
       id: params.id,
       token: {
+        address: params.id,
         name: params.tokenSymbol,
         symbol: params.tokenSymbol,
         decimals: 18,
@@ -298,14 +306,12 @@ export const openStakingSidebarAtom = atom(
         address: params.underlyingAddress,
         decimals: 18,
       },
-      legacyGovernance: [],
-      rewardTokens: [],
-      totalDelegates: 0,
-      currentDelegates: 0,
-      totalOptimisticDelegates: 0,
-      currentOptimisticDelegates: 0,
-      chainId: params.chainId,
+      chainId: params.chainId as SupportedChainId,
+      dtfAddress: params.dtfAddress,
+      governance: params.isOptimistic
+        ? { isOptimistic: params.isOptimistic }
+        : undefined,
     })
-    set(stakingSidebarOpenAtom, true)
+    set(stakingSidebarOpenAtom, { open: true, tab: params.tab ?? 'lock' })
   }
 )

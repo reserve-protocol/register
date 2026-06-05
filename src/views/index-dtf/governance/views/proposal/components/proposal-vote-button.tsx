@@ -1,32 +1,21 @@
 import { Button } from '@/components/ui/button'
+import { CurrentDtfVoteLock } from '@/components/vote-lock'
 import { walletAtom } from '@/state/atoms'
 import { PROPOSAL_STATES } from '@/utils/constants'
 import { Trans } from '@lingui/react/macro'
 import { useAtomValue } from 'jotai'
 import { useState } from 'react'
-import DelegateModal from '../../../components/delegate-modal'
 import { accountVotesAtom, proposalDetailAtom, proposalStateAtom } from '../atom'
 import useDelegateState from '../hooks/use-delegate-state'
 import VoteModal from './vote-modal'
 
-const DelegateButton = () => {
-  const [isDelegateVisible, setDelegateVisible] = useState(false)
-  const { hasNoDelegates } = useDelegateState()
-
-  return (
-    <>
-      <Button className="w-full" onClick={() => setDelegateVisible(true)}>
-        <Trans>Delegate voting power for future votes</Trans>
-      </Button>
-      {isDelegateVisible && (
-        <DelegateModal
-          delegated={!hasNoDelegates}
-          onClose={() => setDelegateVisible(false)}
-        />
-      )}
-    </>
-  )
-}
+const DelegateButton = () => (
+  <CurrentDtfVoteLock initialTab="delegate">
+    <Button className="w-full">
+      <Trans>Delegate voting power for future votes</Trans>
+    </Button>
+  </CurrentDtfVoteLock>
+)
 
 const ProposalVoteButton = () => {
   const account = useAtomValue(walletAtom)

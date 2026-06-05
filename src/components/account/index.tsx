@@ -5,7 +5,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from '@/components/ui/tooltip'
-import Staking from '@/views/index-dtf/overview/components/staking'
+import { VoteLockSidebar } from '@/components/vote-lock'
 import { Trans } from '@lingui/macro'
 import { ConnectButton } from '@rainbow-me/rainbowkit'
 import ChainLogo from 'components/icons/ChainLogo'
@@ -140,7 +140,7 @@ const Account = () => {
                       </div>
                     </div>
                   </ErrorWrapper>
-                  <Staking />
+                  <VoteLockSidebar />
                 </>
               )
             })()}

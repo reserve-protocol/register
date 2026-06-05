@@ -112,6 +112,11 @@ describe('DeployFormSchema', () => {
       expect(await hasError({ ...validFormData(), tokenName: 'Test@Token' }, 'tokenName')).toBe(true)
     })
 
+    it('rejects names without letters or numbers', async () => {
+      expect(await hasError({ ...validFormData(), tokenName: '---' }, 'tokenName')).toBe(true)
+      expect(await hasError({ ...validFormData(), tokenName: '   ' }, 'tokenName')).toBe(true)
+    })
+
     it('allows alphanumeric with spaces and dots', async () => {
       const data = { ...validFormData(), tokenName: 'My Token v2.0' }
       expect(await hasError(data, 'tokenName')).toBe(false)

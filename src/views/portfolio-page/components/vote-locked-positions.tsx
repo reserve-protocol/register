@@ -3,10 +3,7 @@ import TokenLogoWithChain from '@/components/token-logo/TokenLogoWithChain'
 import { Button } from '@/components/ui/button'
 import DataTable from '@/components/ui/data-table'
 import { formatCurrency, formatToSignificantDigits, formatUSD } from '@/utils'
-import {
-  ExplorerDataType,
-  getExplorerLink,
-} from '@/utils/getExplorerLink'
+import { ExplorerDataType, getExplorerLink } from '@/utils/getExplorerLink'
 import { ColumnDef } from '@tanstack/react-table'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { ExternalLink, Lock } from 'lucide-react'
@@ -32,6 +29,8 @@ const ModifyButton = ({ voteLock }: { voteLock: PortfolioVoteLock }) => {
           underlyingSymbol: voteLock.underlying.symbol,
           underlyingAddress: voteLock.underlying.address,
           chainId: voteLock.chainId,
+          dtfAddress: voteLock.dtfs[0]?.address,
+          isOptimistic: voteLock.activeProposals.some((p) => p.isOptimistic),
         })
       }}
     >

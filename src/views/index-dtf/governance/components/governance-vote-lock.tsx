@@ -1,10 +1,10 @@
 import TokenLogo from '@/components/token-logo'
 import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
+import { CurrentDtfVoteLock } from '@/components/vote-lock'
 import { chainIdAtom } from '@/state/atoms'
 import { indexDTFAtom } from '@/state/dtf/atoms'
 import { useAtomValue } from 'jotai'
-import Staking from '../../overview/components/staking'
 import { useVoteLockAPR } from '../../overview/hooks/use-staking-vault-apy'
 import RSRBNBHelp from './rsr-bnb-help'
 
@@ -71,7 +71,7 @@ const GovernanceVoteLock = () => {
         </p>
       </div>
 
-      <Staking>
+      <CurrentDtfVoteLock>
         <Button variant="outline" className="rounded-2xl w-full gap-1">
           <TokenLogo
             size="sm"
@@ -83,7 +83,7 @@ const GovernanceVoteLock = () => {
             Vote-lock ${indexDTF.stToken.underlying.symbol}
           </span>
         </Button>
-      </Staking>
+      </CurrentDtfVoteLock>
 
       <RSRBNBHelp className="p-4" />
     </div>

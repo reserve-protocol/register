@@ -1,5 +1,6 @@
 import CopyValue from '@/components/ui/copy-value'
 import { Skeleton } from '@/components/ui/skeleton'
+import { CurrentDtfVoteLock } from '@/components/vote-lock'
 import { useEnsName } from '@/hooks/use-ens-name'
 import { cn } from '@/lib/utils'
 import { chainIdAtom, walletAtom } from '@/state/atoms'
@@ -12,7 +13,7 @@ import {
   useIndexDtfVoterState,
 } from '@reserve-protocol/react-sdk'
 import { useAtomValue } from 'jotai'
-import { ArrowUpRight, Vote } from 'lucide-react'
+import { ArrowUpRight, Pencil, Vote } from 'lucide-react'
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { Address, zeroAddress } from 'viem'
@@ -70,11 +71,22 @@ const DelegateItem = ({
           <Link
             to={getExplorerLink(address, chainId, ExplorerDataType.ADDRESS)}
             target="_blank"
-            className="p-1 bg-muted rounded-full"
+            className="p-1 bg-muted rounded-full mr-2"
           >
             <ArrowUpRight size={14} />
           </Link>
         </>
+      )}
+      {text !== undefined && (
+        <CurrentDtfVoteLock initialTab="delegate">
+          <button
+            type="button"
+            aria-label="Change delegate"
+            className="p-1 bg-muted rounded-full hover:text-primary transition-colors"
+          >
+            <Pencil size={14} />
+          </button>
+        </CurrentDtfVoteLock>
       )}
     </div>
   )
