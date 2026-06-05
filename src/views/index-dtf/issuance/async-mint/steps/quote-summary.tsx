@@ -47,6 +47,7 @@ import {
 import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Address, erc20Abi, formatUnits } from 'viem'
+import { useWalletClient } from 'wagmi'
 import { readContracts } from 'wagmi/actions'
 import { useAsyncZap } from '../async-zap-context'
 import LegRow from '../components/leg-row'
@@ -104,6 +105,14 @@ const QuoteSummary = () => {
   const setRedeemAmount = useSetAtom(redeemAmountAtom)
   const slippage = useAtomValue(slippageAtom)
   const account = useAtomValue(walletAtom)
+  const { data: walletClient, isLoading: walletClientLoading } =
+    useWalletClient({
+      chainId,
+      account: account as Address | undefined,
+      query: {
+        enabled: !!account,
+      },
+    })
   const [useExistingBalances, setUseExistingBalances] = useAtom(
     useExistingBalancesAtom
   )
@@ -543,7 +552,10 @@ const QuoteSummary = () => {
     isMint && collateralReady && !showFinalMintAction && !isError
   const showReadyMintOutput = isMint && (collateralReady || showFinalMintAction)
   const existingCollateralToggleDisabled =
-    isExecuting || executionStarted || mintComplete || (isMint && collateralReady)
+    isExecuting ||
+    executionStarted ||
+    mintComplete ||
+    (isMint && collateralReady)
   const showExistingCollateralToggle =
     !executionStarted && (isMint ? !isConvertHeld && !collateralReady : true)
   const showEditInputButton = !executionStarted
@@ -582,6 +594,7 @@ const QuoteSummary = () => {
     executionStarted &&
     orderCount > 0 &&
     filledOrderCount === orderCount
+  const walletClientMissing = !!account && !walletClient
 
   const impactValueClassName = (impact: number | undefined) =>
     cn(
@@ -625,6 +638,8 @@ const QuoteSummary = () => {
   // Resumable: re-running after an error / rejected signature continues from
   // where it stopped without re-doing already-submitted orders.
   const handleRetry = () => {
+    if (walletClientMissing) return
+
     setCollateralExpanded(true)
     void execution.run()
   }
@@ -632,11 +647,15 @@ const QuoteSummary = () => {
   // Failed/expired orders that can be re-submitted (new CoW orders + signature).
   const retryableLegIds = execution.getRetryableLegIds()
   const handleRetryFailed = () => {
+    if (walletClientMissing) return
+
     setCollateralExpanded(true)
     void execution.retryFailedOrders()
   }
 
   const handleMint = () => {
+    if (walletClientMissing) return
+
     setFinalMintSnapshot({
       shares: postFillMintableShares,
       leftoverCollateralUsd,
@@ -645,6 +664,8 @@ const QuoteSummary = () => {
   }
 
   const handleSubmit = async () => {
+    if (walletClientMissing) return
+
     setFinalMintSnapshot(null)
     setCollateralExpanded(true)
     // Snapshot basket + quote-token balances so we can show leftover dust
@@ -1041,7 +1062,8 @@ const QuoteSummary = () => {
                         exceedsBalance ||
                         !quote?.success ||
                         quoteErrors.length > 0 ||
-                        hasFailedLegs
+                        hasFailedLegs ||
+                        walletClientMissing
                       }
                       onClick={handleSubmit}
                     >
@@ -1056,6 +1078,13 @@ const QuoteSummary = () => {
                           <Loader2 size={16} className="animate-spin" />
                           Fetching quotes...
                         </span>
+                      ) : walletClientLoading ? (
+                        <span className="flex items-center gap-2">
+                          <Loader2 size={16} className="animate-spin" />
+                          Preparing wallet...
+                        </span>
+                      ) : walletClientMissing ? (
+                        <span className="font-medium">Reconnect wallet</span>
                       ) : (
                         <span className="font-medium">
                           {isMint
@@ -1335,7 +1364,11 @@ const QuoteSummary = () => {
                     <Button
                       size="lg"
                       className="w-full h-[49px] rounded-[12px]"
-                      disabled={!canStartFinalMint || showFinalMintAction}
+                      disabled={
+                        !canStartFinalMint ||
+                        showFinalMintAction ||
+                        walletClientMissing
+                      }
                       onClick={handleMint}
                     >
                       {showFinalMintAction ? (
@@ -1344,6 +1377,13 @@ const QuoteSummary = () => {
                           {EXECUTION_BUTTON_LABELS[execution.step] ??
                             'Working…'}
                         </span>
+                      ) : walletClientLoading ? (
+                        <span className="flex items-center gap-2">
+                          <Loader2 size={16} className="animate-spin" />
+                          Preparing wallet...
+                        </span>
+                      ) : walletClientMissing ? (
+                        <span className="font-medium">Reconnect wallet</span>
                       ) : (
                         <span className="font-medium">{mintButtonLabel}</span>
                       )}
@@ -1360,72 +1400,74 @@ const QuoteSummary = () => {
               height via the grid) without inflating it, so the modal stays the
               height of the form and the orders list scrolls inside. */}
           <div className="contents lg:absolute lg:inset-2 lg:flex lg:flex-col">
-          {collateralExpanded && (
-            <div className="px-4 py-3 flex items-start justify-between gap-4">
-              <div>
-                <h3 className="font-medium text-base">
-                  {mintComplete
-                    ? 'Completed orders'
-                    : executionStarted
-                      ? 'Orders'
-                      : 'Collateral swaps'}
-                </h3>
-                <p className="text-sm text-muted-foreground font-light">
-                  {executionStarted
-                    ? 'Swaps settle via CoW Protocol solvers.'
-                    : cowLegStates.length === 0 && !quotesLoading
-                      ? 'No swaps are needed for this operation.'
-                      : isMint
-                        ? 'The basket assets bought with your input.'
-                        : 'The basket assets sold for your output.'}
-                </p>
-              </div>
-            </div>
-          )}
-
-          <ScrollArea className="h-[min(620px,calc(100vh-290px))] min-h-[360px] lg:h-auto lg:min-h-0 lg:flex-1">
-            <div className="flex min-h-full flex-col gap-1 px-2">
-              {!collateralExpanded ? null : initialLoading ? (
-                [0, 1, 2].map((item) => (
-                  <Skeleton key={item} className="h-[76px] rounded-[18px]" />
-                ))
-              ) : cowLegStates.length > 0 ? (
-                <>
-                  {cowLegStates.map((ls) => (
-                    <LegRow
-                      key={ls.leg.id}
-                      leg={ls.leg}
-                      inputToken={inputToken}
-                      chainId={chainId}
-                      executionStep={execution.step}
-                      order={execution.ordersByLegId[ls.leg.id]}
-                      impact={legImpacts[ls.leg.id]}
-                      loading={ls.status === 'pending' || ls.status === 'idle'}
-                      fillAnimationActive={recentlyFilledLegIds.has(
-                        ls.leg.id
-                      )}
-                      quoteError={
-                        ls.status === 'error'
-                          ? ls.leg.error?.message ||
-                            ls.error?.message ||
-                            'Quote unavailable'
-                          : undefined
-                      }
-                    />
-                  ))}
-                </>
-              ) : (
-                <div className="flex min-h-[320px] flex-1 items-center justify-center px-4 py-10 text-center">
-                  <div className="max-w-[320px]">
-                    <h4 className="font-medium text-base">No swaps needed</h4>
-                    <p className="mt-1 text-sm text-muted-foreground font-light">
-                      You can proceed directly.
-                    </p>
-                  </div>
+            {collateralExpanded && (
+              <div className="px-4 py-3 flex items-start justify-between gap-4">
+                <div>
+                  <h3 className="font-medium text-base">
+                    {mintComplete
+                      ? 'Completed orders'
+                      : executionStarted
+                        ? 'Orders'
+                        : 'Collateral swaps'}
+                  </h3>
+                  <p className="text-sm text-muted-foreground font-light">
+                    {executionStarted
+                      ? 'Swaps settle via CoW Protocol solvers.'
+                      : cowLegStates.length === 0 && !quotesLoading
+                        ? 'No swaps are needed for this operation.'
+                        : isMint
+                          ? 'The basket assets bought with your input.'
+                          : 'The basket assets sold for your output.'}
+                  </p>
                 </div>
-              )}
-            </div>
-          </ScrollArea>
+              </div>
+            )}
+
+            <ScrollArea className="h-[min(620px,calc(100vh-290px))] min-h-[360px] lg:h-auto lg:min-h-0 lg:flex-1">
+              <div className="flex min-h-full flex-col gap-1 px-2">
+                {!collateralExpanded ? null : initialLoading ? (
+                  [0, 1, 2].map((item) => (
+                    <Skeleton key={item} className="h-[76px] rounded-[18px]" />
+                  ))
+                ) : cowLegStates.length > 0 ? (
+                  <>
+                    {cowLegStates.map((ls) => (
+                      <LegRow
+                        key={ls.leg.id}
+                        leg={ls.leg}
+                        inputToken={inputToken}
+                        chainId={chainId}
+                        executionStep={execution.step}
+                        order={execution.ordersByLegId[ls.leg.id]}
+                        impact={legImpacts[ls.leg.id]}
+                        loading={
+                          ls.status === 'pending' || ls.status === 'idle'
+                        }
+                        fillAnimationActive={recentlyFilledLegIds.has(
+                          ls.leg.id
+                        )}
+                        quoteError={
+                          ls.status === 'error'
+                            ? ls.leg.error?.message ||
+                              ls.error?.message ||
+                              'Quote unavailable'
+                            : undefined
+                        }
+                      />
+                    ))}
+                  </>
+                ) : (
+                  <div className="flex min-h-[320px] flex-1 items-center justify-center px-4 py-10 text-center">
+                    <div className="max-w-[320px]">
+                      <h4 className="font-medium text-base">No swaps needed</h4>
+                      <p className="mt-1 text-sm text-muted-foreground font-light">
+                        You can proceed directly.
+                      </p>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </ScrollArea>
           </div>
         </div>
       </div>
