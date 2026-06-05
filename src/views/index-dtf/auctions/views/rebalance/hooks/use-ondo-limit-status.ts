@@ -76,7 +76,10 @@ const useOndoLimitStatus = (): OndoLimitStatus => {
           isHybridDTF
         )
         return legSizes(m)
-      } catch {
+      } catch (e) {
+        // Expected at some probe percents for a broken rebalance (the metrics
+        // updater surfaces that); log so an unexpected failure is still visible.
+        console.error('getRebalanceOpenAuction failed sizing Ondo legs at', percent, e)
         return null
       }
     }
