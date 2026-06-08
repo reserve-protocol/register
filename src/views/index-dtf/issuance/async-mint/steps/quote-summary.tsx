@@ -128,6 +128,8 @@ const QuoteSummary = () => {
   const { quote, quoteQuery, execution, operation, legStates } = useAsyncZap()
   const isMint = operation === 'mint'
   const mintComplete = isMint && execution.step === 'complete'
+  const redeemComplete = !isMint && execution.step === 'complete'
+  const operationComplete = mintComplete || redeemComplete
   const finalMintLocked =
     isMint &&
     (execution.step === 'finishing' ||
@@ -546,6 +548,7 @@ const QuoteSummary = () => {
   // `isMint` so redeem still gets its start CTA and existing-collateral toggle.
   const showCollateralAction =
     !showFinalMintAction &&
+    !operationComplete &&
     !noCollateralOrdersNeeded &&
     (!isMint || !collateralReady)
   const canStartFinalMint =
@@ -554,19 +557,21 @@ const QuoteSummary = () => {
   const existingCollateralToggleDisabled =
     isExecuting ||
     executionStarted ||
-    mintComplete ||
+    operationComplete ||
     (isMint && collateralReady)
   const showExistingCollateralToggle =
     !executionStarted && (isMint ? !isConvertHeld && !collateralReady : true)
   const showEditInputButton = !executionStarted
-  const mintTransactionHash =
-    execution.finishBatch?.status?.receipts?.find(
+  const completionBatch = isMint ? execution.finishBatch : execution.redeemBatch
+  const completionTransactionHash =
+    completionBatch?.status?.receipts?.find(
       (receipt) => !!receipt.transactionHash
-    )?.transactionHash ?? execution.finishBatch?.id
-  const mintTransactionExplorerLink =
-    mintTransactionHash && /^0x[a-fA-F0-9]{64}$/.test(mintTransactionHash)
+    )?.transactionHash ?? completionBatch?.id
+  const completionTransactionExplorerLink =
+    completionTransactionHash &&
+    /^0x[a-fA-F0-9]{64}$/.test(completionTransactionHash)
       ? getExplorerLink(
-          mintTransactionHash,
+          completionTransactionHash,
           chainId,
           ExplorerDataType.TRANSACTION
         )
@@ -614,20 +619,13 @@ const QuoteSummary = () => {
     return () => window.clearInterval(interval)
   }, [executionStarted, activeOrderExpiries.length])
 
-  // The whole lifecycle runs in place on this screen; only completion advances.
-  useEffect(() => {
-    if (execution.step === 'complete' && !isMint) {
-      setStep('success')
-    }
-  }, [execution.step, isMint, setStep])
-
   const handleEdit = () => {
     setFinalMintSnapshot(null)
     execution.reset()
     setStep('configure')
   }
 
-  const handleNewMint = () => {
+  const handleNewOperation = () => {
     setFinalMintSnapshot(null)
     execution.reset()
     setMintAmount('')
@@ -715,15 +713,17 @@ const QuoteSummary = () => {
             <div className="mb-1 px-4 py-3 flex items-start justify-between gap-4">
               <div>
                 <h3 className="font-medium text-base">
-                  {mintComplete
+                  {operationComplete
                     ? 'Input confirmed'
                     : isMint
                       ? 'Review input amount'
                       : 'Redeem amount'}
                 </h3>
                 <p className="mt-px text-sm text-muted-foreground font-light">
-                  {mintComplete
-                    ? 'Used to acquire the required assets.'
+                  {operationComplete
+                    ? isMint
+                      ? 'Used to acquire the required assets.'
+                      : 'Used to redeem and sell collateral.'
                     : isMint
                       ? 'Confirm the value to put toward this mint.'
                       : isConvertHeld
@@ -1160,8 +1160,12 @@ const QuoteSummary = () => {
             <div className="mb-1 flex items-start justify-between gap-4 px-4 py-3">
               <div>
                 <h3 className="font-medium text-base">
-                  {mintComplete ? (
-                    'Mint completed'
+                  {operationComplete ? (
+                    isMint ? (
+                      'Mint completed'
+                    ) : (
+                      'Redeem completed'
+                    )
                   ) : isMint ? (
                     <>Mint {receiveSymbol}</>
                   ) : (
@@ -1169,34 +1173,36 @@ const QuoteSummary = () => {
                   )}
                 </h3>
                 <p className="mt-px text-sm text-muted-foreground font-light">
-                  {mintComplete
-                    ? 'Your DTF has been minted.'
+                  {operationComplete
+                    ? isMint
+                      ? 'Your DTF has been minted.'
+                      : `Your ${indexDTF?.token.symbol} has been redeemed.`
                     : isMint
                       ? 'Use the acquired collateral to mint the DTF.'
                       : 'Inputs are locked while swap quotes are fetched.'}
                 </p>
               </div>
-              {mintComplete ? (
+              {operationComplete ? (
                 <div className="inline-flex h-8 items-center gap-1.5 text-sm text-muted-foreground">
-                  {mintTransactionExplorerLink ? (
+                  {completionTransactionExplorerLink ? (
                     <a
-                      href={mintTransactionExplorerLink}
+                      href={completionTransactionExplorerLink}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="font-medium text-primary hover:underline"
                     >
-                      {mintTransactionHash
-                        ? shortenString(mintTransactionHash)
+                      {completionTransactionHash
+                        ? shortenString(completionTransactionHash)
                         : null}
                     </a>
-                  ) : mintTransactionHash ? (
+                  ) : completionTransactionHash ? (
                     <span className="font-medium text-foreground">
-                      {shortenString(mintTransactionHash)}
+                      {shortenString(completionTransactionHash)}
                     </span>
                   ) : null}
-                  {mintTransactionHash && (
+                  {completionTransactionHash && (
                     <Copy
-                      value={mintTransactionHash}
+                      value={completionTransactionHash}
                       size={13}
                       className="text-muted-foreground hover:text-foreground"
                     />
@@ -1218,8 +1224,12 @@ const QuoteSummary = () => {
 
             <div className="rounded-xl border border-border/70 bg-transparent px-4 py-3">
               <div className="text-sm text-muted-foreground mb-3">
-                {mintComplete ? (
-                  'Minted'
+                {operationComplete ? (
+                  isMint ? (
+                    'Minted'
+                  ) : (
+                    'Received'
+                  )
                 ) : showReadyMintOutput ? (
                   'Ready to mint'
                 ) : isMint ? (
@@ -1260,7 +1270,7 @@ const QuoteSummary = () => {
                             'min-w-0 truncate text-[28px] font-light leading-7',
                             collateralReady ||
                               showFinalMintAction ||
-                              mintComplete
+                              operationComplete
                               ? 'text-primary'
                               : 'text-muted-foreground'
                           )}
@@ -1332,17 +1342,17 @@ const QuoteSummary = () => {
               </div>
             </div>
 
-            {isMint && (
+            {(operationComplete || isMint) && (
               <div className="pt-2">
-                {mintComplete ? (
+                {operationComplete ? (
                   <div className="grid grid-cols-2 gap-2">
                     <Button
                       size="lg"
                       variant="outline"
                       className="h-[49px] rounded-[12px]"
-                      onClick={handleNewMint}
+                      onClick={handleNewOperation}
                     >
-                      New mint
+                      New {isMint ? 'mint' : 'redeem'}
                     </Button>
                     <Button
                       asChild
@@ -1360,7 +1370,7 @@ const QuoteSummary = () => {
                       </Link>
                     </Button>
                   </div>
-                ) : (
+                ) : isMint ? (
                   <TransactionButtonContainer chain={chainId}>
                     <Button
                       size="lg"
@@ -1390,7 +1400,7 @@ const QuoteSummary = () => {
                       )}
                     </Button>
                   </TransactionButtonContainer>
-                )}
+                ) : null}
               </div>
             )}
           </div>
@@ -1405,7 +1415,7 @@ const QuoteSummary = () => {
               <div className="px-4 py-3 flex items-start justify-between gap-4">
                 <div>
                   <h3 className="font-medium text-base">
-                    {mintComplete
+                    {operationComplete
                       ? 'Completed orders'
                       : executionStarted
                         ? 'Orders'
