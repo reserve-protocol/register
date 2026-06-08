@@ -88,26 +88,26 @@ const ConfigureMint = () => {
   return (
     <div className="w-full">
       <div className="flex min-h-[calc(100vh-136px)] w-full items-center lg:min-h-[calc(100vh-100px)]">
-        <div className="bg-secondary rounded-3xl p-1 w-full">
-          <div className="px-3 pt-3 pb-3">
+        <div className="w-full">
+          <div className="p-3 flex justify-center">
             <Tabs
               value={operation}
               onValueChange={(v) => setOperation(v as 'mint' | 'redeem')}
             >
-              <TabsList className="h-9 px-0.5">
-                <TabsTrigger value="mint" className="px-3">
+              <TabsList className="bg-card/40 border border-card p-0.5 h-fit rounded-full">
+                <TabsTrigger value="mint" className="px-3.5 rounded-full">
                   Mint
                 </TabsTrigger>
-                <TabsTrigger value="redeem" className="px-3">
+                <TabsTrigger value="redeem" className="px-3.5 rounded-full">
                   Redeem
                 </TabsTrigger>
               </TabsList>
             </Tabs>
           </div>
 
-          <div className="flex flex-col gap-1">
+          <div className="rounded-3xl bg-card/50 overflow-hidden flex flex-col">
             <div
-              className="bg-card rounded-2xl p-2 flex flex-col gap-2"
+              className="bg-card p-2 rounded-3xl flex flex-col gap-2"
               style={{ viewTransitionName: isMint ? 'async-mint-step-1' : '' }}
             >
               <div className="px-4 py-3">
@@ -123,7 +123,7 @@ const ConfigureMint = () => {
                 </p>
               </div>
 
-              <div className="rounded-xl  bg-muted px-4 py-3">
+              <div className="rounded-xl bg-muted px-4 py-3">
                 <div className="flex items-center justify-between text-sm text-muted-foreground mb-2">
                   <span>{isMint ? 'You provide' : 'You redeem'}</span>
                   {!isMint && (
@@ -213,11 +213,11 @@ const ConfigureMint = () => {
               ].map(([title, subtitle], index) => (
                 <div
                   key={title}
-                  className="rounded-2xl bg-background px-5 py-3"
+                  className="px-6 py-4 border-b border-secondary"
                   style={{ viewTransitionName: `async-mint-step-${index + 2}` }}
                 >
                   <div className="relative flex items-center">
-                    <span className="flex size-5 shrink-0 items-center justify-center rounded-full border border-border/70 text-xs font-medium text-muted-foreground">
+                    <span className="flex size-5 shrink-0 items-center justify-center rounded-full border text-xs font-medium text-muted-foreground">
                       {index + 2}
                     </span>
                     <div className="pl-3">

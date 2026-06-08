@@ -68,13 +68,13 @@ const AsyncMintWizard = () => {
   const isWide = WIDE_STEPS.includes(step)
 
   return (
-    <div className="container flex w-full flex-col items-center justify-start gap-2 min-h-[calc(100vh-136px)] lg:min-h-[calc(100vh-100px)]">
+    <div className="container flex w-full bg-secondary rounded-4xl flex-col items-center justify-start gap-2 min-h-[calc(100vh-136px)] lg:min-h-[calc(100vh-100px)]">
       <div
         className={cn(
           'w-full mx-auto overflow-hidden rounded-3xl transition-[max-width] duration-500 ease-out',
           isWide
             ? 'max-w-[1200px] lg:max-h-[calc(100vh-100px)]'
-            : 'max-w-[480px]'
+            : 'max-w-[460px]'
         )}
       >
         <WizardRouter />
