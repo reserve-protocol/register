@@ -7,6 +7,7 @@ import { ReactNode } from 'react'
 import { useLocation } from 'react-router-dom'
 import AppNavigation from './app-navigation'
 import Brand from './Brand'
+import LanguageSelector from './language-selector'
 
 const Container = ({ children }: { children: ReactNode }) => {
   // Check if the route is a "index-dtf" route
@@ -42,6 +43,7 @@ const AppHeader = () => (
       <CommandMenu />
       <div className="flex ml-1 items-center">
         <DarkModeToggle className="flex px-2 mr-2 sm:mr-3 py-[3px] max-w-8 rounded-md ml-auto cursor-pointer hover:bg-muted" />
+        <LanguageSelector className="mr-2 sm:mr-3" />
         <Account />
       </div>
     </div>

@@ -4113,7 +4113,7 @@ msgstr "Index DTF 持仓"
 msgid "Index DTF successfully created"
 msgstr "Index DTF 创建成功"
 
-#: src/components/command-menu/index.tsx:67
+#: src/components/command-menu/index.tsx:66
 #: src/views/home/components/dtf-tabs.tsx:24
 #: src/views/portfolio-page/components/portfolio-breakdown.tsx:36
 #: src/views/portfolio-page/components/portfolio-chart.tsx:66
@@ -5225,7 +5225,7 @@ msgstr "未找到提案"
 msgid "No rebalances found"
 msgstr "未找到再平衡"
 
-#: src/components/command-menu/index.tsx:117
+#: src/components/command-menu/index.tsx:121
 msgid "No results found."
 msgstr "未找到结果。"
 
@@ -6917,6 +6917,7 @@ msgstr "保存权重 已编辑 {editedRows}/{totalRows}"
 msgid "Scheduled event"
 msgstr "预定事件"
 
+#: src/components/command-menu/index.tsx:93
 #: src/views/internal/dtf-list/components/dtf-date-chain-filters.tsx:50
 #: src/views/tokens/components/TableFilters.tsx:20
 msgid "Search"
@@ -6948,7 +6949,7 @@ msgstr "按代币名称或地址搜索"
 msgid "Search DTF name or symbol"
 msgstr "搜索 DTF 名称或符号"
 
-#: src/components/command-menu/index.tsx:100
+#: src/components/command-menu/index.tsx:104
 msgid "Search for a DTF..."
 msgstr "搜索 DTF..."
 
@@ -6969,6 +6970,10 @@ msgstr "正在搜索 DEX 流动性"
 #: src/views/index-dtf/governance/views/propose/basket/components/proposal-basket-setup/basket-csv-setup.tsx:244
 msgid "Select a CSV file to upload"
 msgstr "选择要上传的 CSV 文件"
+
+#: src/components/layout/header/components/language-selector.tsx:28
+msgid "Select language"
+msgstr "选择语言"
 
 #: src/components/ui/multiselect-dropdown.tsx:167
 msgid "Select options"
@@ -9621,7 +9626,7 @@ msgstr "Yield DTF 仓位"
 msgid "Yield DTF Staking"
 msgstr "Yield DTF Staking"
 
-#: src/components/command-menu/index.tsx:68
+#: src/components/command-menu/index.tsx:67
 #: src/views/home/components/dtf-tabs.tsx:30
 #: src/views/portfolio-page/components/portfolio-breakdown.tsx:37
 #: src/views/portfolio-page/components/portfolio-chart.tsx:65

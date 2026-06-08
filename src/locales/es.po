@@ -4113,7 +4113,7 @@ msgstr "Posiciones de Index DTF"
 msgid "Index DTF successfully created"
 msgstr "Index DTF creado con éxito"
 
-#: src/components/command-menu/index.tsx:67
+#: src/components/command-menu/index.tsx:66
 #: src/views/home/components/dtf-tabs.tsx:24
 #: src/views/portfolio-page/components/portfolio-breakdown.tsx:36
 #: src/views/portfolio-page/components/portfolio-chart.tsx:66
@@ -5225,7 +5225,7 @@ msgstr "No se encontraron propuestas"
 msgid "No rebalances found"
 msgstr "No se encontraron reequilibrios"
 
-#: src/components/command-menu/index.tsx:117
+#: src/components/command-menu/index.tsx:121
 msgid "No results found."
 msgstr "No se encontraron resultados."
 
@@ -6917,6 +6917,7 @@ msgstr "Guardar pesos: {editedRows}/{totalRows} editados"
 msgid "Scheduled event"
 msgstr "Evento programado"
 
+#: src/components/command-menu/index.tsx:93
 #: src/views/internal/dtf-list/components/dtf-date-chain-filters.tsx:50
 #: src/views/tokens/components/TableFilters.tsx:20
 msgid "Search"
@@ -6948,7 +6949,7 @@ msgstr "Buscar por nombre o dirección del token"
 msgid "Search DTF name or symbol"
 msgstr "Buscar nombre o símbolo de DTF"
 
-#: src/components/command-menu/index.tsx:100
+#: src/components/command-menu/index.tsx:104
 msgid "Search for a DTF..."
 msgstr "Buscar un DTF..."
 
@@ -6969,6 +6970,10 @@ msgstr "Buscando liquidez en DEX"
 #: src/views/index-dtf/governance/views/propose/basket/components/proposal-basket-setup/basket-csv-setup.tsx:244
 msgid "Select a CSV file to upload"
 msgstr "Selecciona un archivo CSV para subir"
+
+#: src/components/layout/header/components/language-selector.tsx:28
+msgid "Select language"
+msgstr "Seleccionar idioma"
 
 #: src/components/ui/multiselect-dropdown.tsx:167
 msgid "Select options"
@@ -9621,7 +9626,7 @@ msgstr "Posiciones en Yield DTF"
 msgid "Yield DTF Staking"
 msgstr "Staking de Yield DTF"
 
-#: src/components/command-menu/index.tsx:68
+#: src/components/command-menu/index.tsx:67
 #: src/views/home/components/dtf-tabs.tsx:30
 #: src/views/portfolio-page/components/portfolio-breakdown.tsx:37
 #: src/views/portfolio-page/components/portfolio-chart.tsx:65

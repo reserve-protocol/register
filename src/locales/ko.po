@@ -4113,7 +4113,7 @@ msgstr "Index DTF 포지션"
 msgid "Index DTF successfully created"
 msgstr "Index DTF가 성공적으로 생성되었습니다"
 
-#: src/components/command-menu/index.tsx:67
+#: src/components/command-menu/index.tsx:66
 #: src/views/home/components/dtf-tabs.tsx:24
 #: src/views/portfolio-page/components/portfolio-breakdown.tsx:36
 #: src/views/portfolio-page/components/portfolio-chart.tsx:66
@@ -5225,7 +5225,7 @@ msgstr "제안을 찾을 수 없음"
 msgid "No rebalances found"
 msgstr "리밸런싱을 찾을 수 없음"
 
-#: src/components/command-menu/index.tsx:117
+#: src/components/command-menu/index.tsx:121
 msgid "No results found."
 msgstr "결과를 찾을 수 없습니다."
 
@@ -6917,6 +6917,7 @@ msgstr "가중치 저장 {editedRows}/{totalRows} 편집됨"
 msgid "Scheduled event"
 msgstr "예정된 이벤트"
 
+#: src/components/command-menu/index.tsx:93
 #: src/views/internal/dtf-list/components/dtf-date-chain-filters.tsx:50
 #: src/views/tokens/components/TableFilters.tsx:20
 msgid "Search"
@@ -6948,7 +6949,7 @@ msgstr "토큰 이름 또는 주소로 검색"
 msgid "Search DTF name or symbol"
 msgstr "DTF 이름 또는 심볼 검색"
 
-#: src/components/command-menu/index.tsx:100
+#: src/components/command-menu/index.tsx:104
 msgid "Search for a DTF..."
 msgstr "DTF 검색..."
 
@@ -6969,6 +6970,10 @@ msgstr "DEX 유동성 검색 중"
 #: src/views/index-dtf/governance/views/propose/basket/components/proposal-basket-setup/basket-csv-setup.tsx:244
 msgid "Select a CSV file to upload"
 msgstr "업로드할 CSV 파일 선택"
+
+#: src/components/layout/header/components/language-selector.tsx:28
+msgid "Select language"
+msgstr "언어 선택"
 
 #: src/components/ui/multiselect-dropdown.tsx:167
 msgid "Select options"
@@ -9621,7 +9626,7 @@ msgstr "Yield DTF 포지션"
 msgid "Yield DTF Staking"
 msgstr "Yield DTF Staking"
 
-#: src/components/command-menu/index.tsx:68
+#: src/components/command-menu/index.tsx:67
 #: src/views/home/components/dtf-tabs.tsx:30
 #: src/views/portfolio-page/components/portfolio-breakdown.tsx:37
 #: src/views/portfolio-page/components/portfolio-chart.tsx:65
