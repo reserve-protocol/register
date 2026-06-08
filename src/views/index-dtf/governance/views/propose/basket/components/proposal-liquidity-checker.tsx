@@ -332,11 +332,15 @@ const ProposalLiquidityChecker = () => {
       {ondoProblems.length > 0 && !isLoading && (
         <Alert variant="warning" className="rounded-xl bg-warning/10 border-warning/20">
           <AlertTriangle className="h-4 w-4" />
-          <AlertTitle>Ondo limits</AlertTitle>
+          <AlertTitle>
+            <Trans>Ondo limits</Trans>
+          </AlertTitle>
           <AlertDescription>
-            {ondoProblems.map((t) => t.tokenSymbol).join(', ')} — outside trading
-            hours or larger than the max single Ondo trade. Oversized legs fill
-            as multiple sequential trades.
+            <Trans>
+              {ondoProblems.map((token) => token.tokenSymbol).join(', ')} —
+              outside trading hours or larger than the max single Ondo trade.
+              Oversized legs fill as multiple sequential trades.
+            </Trans>
           </AlertDescription>
         </Alert>
       )}

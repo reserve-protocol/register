@@ -72,7 +72,7 @@ msgid "{0, plural, one {Add # token} other {Add # tokens}}"
 msgstr ""
 
 #. placeholder {0}: highImpactTokens.length
-#: src/views/index-dtf/governance/views/propose/basket/components/proposal-liquidity-checker.tsx:298
+#: src/views/index-dtf/governance/views/propose/basket/components/proposal-liquidity-checker.tsx:315
 msgid "{0, plural, one {has >5% simulated price impact.} other {have >5% simulated price impact.}}"
 msgstr ""
 
@@ -91,9 +91,15 @@ msgstr ""
 msgid "{0}"
 msgstr ""
 
+#. placeholder {0}: ondoProblems.map((token) => token.tokenSymbol).join(', ')
+#: src/views/index-dtf/auctions/views/rebalance/components/rebalance-liquidity-checker.tsx:270
+#: src/views/index-dtf/governance/views/propose/basket/components/proposal-liquidity-checker.tsx:339
+msgid "{0} — outside trading hours or larger than the max single Ondo trade. Oversized legs fill as multiple sequential trades."
+msgstr ""
+
 #. placeholder {0}: highImpactTokens.map((token) => token.tokenSymbol).join(', ')
 #. placeholder {1}: highImpactTokens.length
-#: src/views/index-dtf/auctions/views/rebalance/components/rebalance-liquidity-checker.tsx:230
+#: src/views/index-dtf/auctions/views/rebalance/components/rebalance-liquidity-checker.tsx:247
 msgid "{0} {1, plural, one {has} other {have}} >5% simulated price impact."
 msgstr ""
 
@@ -251,7 +257,7 @@ msgstr ""
 #. placeholder {1}: formatCurrency(token.usdSize)
 #. placeholder {2}: token.tokenSymbol
 #. placeholder {3}: token.counterpart
-#: src/views/index-dtf/governance/views/propose/basket/components/proposal-liquidity-checker.tsx:85
+#: src/views/index-dtf/governance/views/propose/basket/components/proposal-liquidity-checker.tsx:90
 msgid "{0}% price impact buying ${1} of {2} with {3}"
 msgstr ""
 
@@ -259,7 +265,7 @@ msgstr ""
 #. placeholder {1}: formatCurrency(token.usdSize)
 #. placeholder {2}: token.tokenSymbol
 #. placeholder {3}: token.counterpart
-#: src/views/index-dtf/governance/views/propose/basket/components/proposal-liquidity-checker.tsx:84
+#: src/views/index-dtf/governance/views/propose/basket/components/proposal-liquidity-checker.tsx:89
 msgid "{0}% price impact selling ${1} of {2} for {3}"
 msgstr ""
 
@@ -344,13 +350,13 @@ msgstr ""
 
 #. placeholder {0}: token.tokenSymbol
 #. placeholder {1}: token.counterpart
-#: src/views/index-dtf/auctions/views/rebalance/components/rebalance-liquidity-checker.tsx:85
+#: src/views/index-dtf/auctions/views/rebalance/components/rebalance-liquidity-checker.tsx:90
 msgid "{impact}% price impact buying ${usdSize} of {0} with {1}"
 msgstr ""
 
 #. placeholder {0}: token.tokenSymbol
 #. placeholder {1}: token.counterpart
-#: src/views/index-dtf/auctions/views/rebalance/components/rebalance-liquidity-checker.tsx:84
+#: src/views/index-dtf/auctions/views/rebalance/components/rebalance-liquidity-checker.tsx:89
 msgid "{impact}% price impact selling ${usdSize} of {0} for {1}"
 msgstr ""
 
@@ -381,7 +387,7 @@ msgstr ""
 msgid "{pauseLabel} paused"
 msgstr ""
 
-#: src/components/liquidity-badge.tsx:252
+#: src/components/liquidity-badge.tsx:254
 msgid "{percent} price impact"
 msgstr ""
 
@@ -965,7 +971,7 @@ msgstr ""
 msgid "An unknown error occurred"
 msgstr ""
 
-#: src/views/index-dtf/governance/views/propose/basket/components/proposal-liquidity-checker.tsx:287
+#: src/views/index-dtf/governance/views/propose/basket/components/proposal-liquidity-checker.tsx:304
 msgid "Analyzing liquidity..."
 msgstr ""
 
@@ -1658,11 +1664,11 @@ msgid "Buy/sell tokens to move closer to proposed weights."
 msgstr ""
 
 #: src/views/index-dtf/auctions/views/rebalance/components/auction-bids-chart.tsx:385
-#: src/views/index-dtf/auctions/views/rebalance/components/rebalance-liquidity-checker.tsx:247
+#: src/views/index-dtf/auctions/views/rebalance/components/rebalance-liquidity-checker.tsx:279
 #: src/views/index-dtf/governance/components/proposal-preview/rebalance-preview/legacy-basket-proposal-preview.tsx:260
 #: src/views/index-dtf/governance/views/propose/basket/components/legacy-proposal-auction-price-ranges.tsx:261
 #: src/views/index-dtf/governance/views/propose/basket/components/proposal-basket-preview.tsx:343
-#: src/views/index-dtf/governance/views/propose/basket/components/proposal-liquidity-checker.tsx:316
+#: src/views/index-dtf/governance/views/propose/basket/components/proposal-liquidity-checker.tsx:348
 #: src/views/yield-dtf/auctions/components/useColumns.tsx:36
 msgid "Buying"
 msgstr ""
@@ -1883,6 +1889,14 @@ msgstr ""
 
 #: src/views/home/components/dtf-explainer-button.tsx:35
 msgid "Close"
+msgstr ""
+
+#: src/components/ondo-badge.tsx:135
+msgid "closed"
+msgstr ""
+
+#: src/components/ondo-badge.tsx:143
+msgid "Closes"
 msgstr ""
 
 #: src/views/index-dtf/governance/components/rsr-bnb-help.tsx:46
@@ -3325,13 +3339,13 @@ msgid "Estimated gas cost:"
 msgstr ""
 
 #. placeholder {0}: formatCurrency(totalSlippageDollars)
-#: src/views/index-dtf/auctions/views/rebalance/components/rebalance-liquidity-checker.tsx:240
-#: src/views/index-dtf/governance/views/propose/basket/components/proposal-liquidity-checker.tsx:304
+#: src/views/index-dtf/auctions/views/rebalance/components/rebalance-liquidity-checker.tsx:257
+#: src/views/index-dtf/governance/views/propose/basket/components/proposal-liquidity-checker.tsx:321
 msgid "Estimated loss: ~${0}"
 msgstr ""
 
-#: src/views/index-dtf/auctions/views/rebalance/components/rebalance-liquidity-checker.tsx:258
-#: src/views/index-dtf/governance/views/propose/basket/components/proposal-liquidity-checker.tsx:327
+#: src/views/index-dtf/auctions/views/rebalance/components/rebalance-liquidity-checker.tsx:290
+#: src/views/index-dtf/governance/views/propose/basket/components/proposal-liquidity-checker.tsx:359
 msgid "Estimated total impact"
 msgstr ""
 
@@ -3879,6 +3893,11 @@ msgstr ""
 msgid "Guardians"
 msgstr ""
 
+#. placeholder {0}: humanizeEvent(ondo.reason.message)
+#: src/components/ondo-badge.tsx:166
+msgid "Halted — {0}"
+msgstr ""
+
 #: src/components/transactions/table/index.tsx:92
 msgid "Hash"
 msgstr ""
@@ -3920,8 +3939,8 @@ msgstr ""
 msgid "High liquidity"
 msgstr ""
 
-#: src/views/index-dtf/auctions/views/rebalance/components/rebalance-liquidity-checker.tsx:227
-#: src/views/index-dtf/governance/views/propose/basket/components/proposal-liquidity-checker.tsx:294
+#: src/views/index-dtf/auctions/views/rebalance/components/rebalance-liquidity-checker.tsx:244
+#: src/views/index-dtf/governance/views/propose/basket/components/proposal-liquidity-checker.tsx:311
 msgid "High price impact"
 msgstr ""
 
@@ -4358,6 +4377,11 @@ msgstr ""
 msgid "just now"
 msgstr ""
 
+#. placeholder {0}: Math.ceil(amountUsd / ondo.capacityUsd)
+#: src/components/ondo-badge.tsx:156
+msgid "Larger than the max single trade — fills as ~{0} sequential trades."
+msgstr ""
+
 #: src/views/internal/dtf-list/components/dtf-date-chain-filters.tsx:85
 msgid "Last 15 days"
 msgstr ""
@@ -4404,8 +4428,12 @@ msgstr ""
 msgid "Limit of records per chain"
 msgstr ""
 
-#: src/views/index-dtf/auctions/views/rebalance/components/rebalance-liquidity-checker.tsx:205
-#: src/views/index-dtf/governance/views/propose/basket/components/proposal-liquidity-checker.tsx:267
+#: src/components/ondo-badge.tsx:40
+msgid "Limited"
+msgstr ""
+
+#: src/views/index-dtf/auctions/views/rebalance/components/rebalance-liquidity-checker.tsx:222
+#: src/views/index-dtf/governance/views/propose/basket/components/proposal-liquidity-checker.tsx:284
 msgid "Liquidity"
 msgstr ""
 
@@ -4609,6 +4637,10 @@ msgstr ""
 msgid "Manually estimated APY calculated from basket averaged yield."
 msgstr ""
 
+#: src/components/ondo-badge.tsx:133
+msgid "Market"
+msgstr ""
+
 #: src/views/home/components/discover-index-dtf/index-dtf-table-columns.tsx:165
 #: src/views/home/components/discover-index-dtf/index-dtf-table-placeholder.tsx:21
 #: src/views/index-dtf/overview/components/basket-overview/basket-table-header.tsx:134
@@ -4624,6 +4656,10 @@ msgstr ""
 
 #: src/views/home/components/discover-yield-dtf/token-stats.tsx:26
 msgid "Market cap:"
+msgstr ""
+
+#: src/components/ondo-badge.tsx:46
+msgid "Market closed"
 msgstr ""
 
 #: src/components/ui/swap.tsx:205
@@ -4646,6 +4682,7 @@ msgstr ""
 msgid "Max slippage"
 msgstr ""
 
+#: src/components/ondo-badge.tsx:147
 #: src/views/explorer/components/collaterals/index.tsx:139
 msgid "Max trade"
 msgstr ""
@@ -5067,6 +5104,10 @@ msgstr ""
 msgid "Next block bid amount"
 msgstr ""
 
+#: src/components/ondo-badge.tsx:140
+msgid "Next open"
+msgstr ""
+
 #: src/views/yield-dtf/deploy/components/NavigationSidebar.tsx:28
 msgid "Next steps"
 msgstr ""
@@ -5283,7 +5324,7 @@ msgstr ""
 msgid "Not available"
 msgstr ""
 
-#: src/hooks/use-compliance-restrictions.ts:36
+#: src/hooks/use-compliance-restrictions.ts:38
 msgid "Not available in your region"
 msgstr ""
 
@@ -5331,6 +5372,15 @@ msgstr ""
 msgid "Old weight / New weight"
 msgstr ""
 
+#: src/views/index-dtf/auctions/views/rebalance/components/rebalance-liquidity-checker.tsx:267
+#: src/views/index-dtf/governance/views/propose/basket/components/proposal-liquidity-checker.tsx:336
+msgid "Ondo limits"
+msgstr ""
+
+#: src/components/ondo-badge.tsx:190
+msgid "Ondo tokenized equity. Max trade is the per-account single-trade size for the session (theoretical, repeatable) — not market depth."
+msgstr ""
+
 #: src/views/index-dtf/deploy/steps/confirm-deploy/manual/components/approve-all-deploy-button.tsx:115
 #: src/views/index-dtf/issuance/manual/components/approve-all-button.tsx:102
 msgid "One or more approvals failed"
@@ -5376,6 +5426,10 @@ msgstr ""
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/form-fields.ts:9
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/form-fields.ts:20
 msgid "Only whole numbers are allowed"
+msgstr ""
+
+#: src/components/ondo-badge.tsx:135
+msgid "open"
 msgstr ""
 
 #: src/components/index-basket-setup/csv-import.tsx:204
@@ -5805,6 +5859,7 @@ msgstr ""
 msgid "Previous basket"
 msgstr ""
 
+#: src/components/ondo-badge.tsx:124
 #: src/components/tables/ListedTokensTable.tsx:38
 #: src/views/explorer/components/tokens/index.tsx:152
 #: src/views/index-dtf/auctions/views/rebalance/components/auction-bids-chart.tsx:159
@@ -6858,6 +6913,10 @@ msgstr ""
 msgid "Save Weights {editedRows}/{totalRows} edited"
 msgstr ""
 
+#: src/components/ondo-badge.tsx:180
+msgid "Scheduled event"
+msgstr ""
+
 #: src/views/internal/dtf-list/components/dtf-date-chain-filters.tsx:50
 #: src/views/tokens/components/TableFilters.tsx:20
 msgid "Search"
@@ -6963,11 +7022,11 @@ msgid "Sell ${0} onchain"
 msgstr ""
 
 #: src/views/index-dtf/auctions/views/rebalance/components/auction-bids-chart.tsx:334
-#: src/views/index-dtf/auctions/views/rebalance/components/rebalance-liquidity-checker.tsx:246
+#: src/views/index-dtf/auctions/views/rebalance/components/rebalance-liquidity-checker.tsx:278
 #: src/views/index-dtf/governance/components/proposal-preview/rebalance-preview/legacy-basket-proposal-preview.tsx:256
 #: src/views/index-dtf/governance/views/propose/basket/components/legacy-proposal-auction-price-ranges.tsx:257
 #: src/views/index-dtf/governance/views/propose/basket/components/proposal-basket-preview.tsx:339
-#: src/views/index-dtf/governance/views/propose/basket/components/proposal-liquidity-checker.tsx:315
+#: src/views/index-dtf/governance/views/propose/basket/components/proposal-liquidity-checker.tsx:347
 #: src/views/yield-dtf/auctions/components/useColumns.tsx:32
 #: src/views/yield-dtf/auctions/dutch/components/DutchAuction.tsx:28
 msgid "Selling"
@@ -7204,8 +7263,8 @@ msgstr ""
 msgid "Simulated route. Actual auction path may differ."
 msgstr ""
 
-#: src/views/index-dtf/auctions/views/rebalance/components/rebalance-liquidity-checker.tsx:219
-#: src/views/index-dtf/governance/views/propose/basket/components/proposal-liquidity-checker.tsx:281
+#: src/views/index-dtf/auctions/views/rebalance/components/rebalance-liquidity-checker.tsx:236
+#: src/views/index-dtf/governance/views/propose/basket/components/proposal-liquidity-checker.tsx:298
 msgid "Simulates swaps against the native token via the Zapper API to estimate price impact. Trades under $1 are simulated at $1 for reliable results. Summary badge is weighted by trade size."
 msgstr ""
 
@@ -8001,7 +8060,7 @@ msgstr ""
 msgid "This list is not intended to be conclusive. <0>You can read more about risk in the Reserve docs.</0>"
 msgstr ""
 
-#: src/hooks/use-compliance-restrictions.ts:37
+#: src/hooks/use-compliance-restrictions.ts:39
 msgid "This product isn't available in your region due to local restrictions."
 msgstr ""
 
@@ -8021,7 +8080,7 @@ msgstr ""
 msgid "This upgrade spell fixes the proposal-threshold on the FolioGovernor contract that administers the DAO (StakingVault) relevant to this DTF. Once this spell is approved and executed, the proposal-threshold will be the correct % that was initially intended at deployment."
 msgstr ""
 
-#: src/hooks/use-compliance-restrictions.ts:33
+#: src/hooks/use-compliance-restrictions.ts:35
 msgid "This wallet is not eligible to access this product. If you think this is an error, try connecting a different wallet or contact support."
 msgstr ""
 
@@ -8191,7 +8250,7 @@ msgstr ""
 
 #: src/views/index-dtf/auctions/views/rebalance/components/manage-weights/manage-weights-content.tsx:198
 #: src/views/index-dtf/governance/views/propose/basket/components/proposal-basket-setup/basket-csv-setup.tsx:267
-#: src/views/index-dtf/governance/views/propose/basket/components/proposal-liquidity-checker.tsx:179
+#: src/views/index-dtf/governance/views/propose/basket/components/proposal-liquidity-checker.tsx:193
 msgid "Tokens not available"
 msgstr ""
 
@@ -8250,8 +8309,8 @@ msgstr ""
 msgid "Total staked:"
 msgstr ""
 
-#: src/views/index-dtf/auctions/views/rebalance/components/rebalance-liquidity-checker.tsx:252
-#: src/views/index-dtf/governance/views/propose/basket/components/proposal-liquidity-checker.tsx:321
+#: src/views/index-dtf/auctions/views/rebalance/components/rebalance-liquidity-checker.tsx:284
+#: src/views/index-dtf/governance/views/propose/basket/components/proposal-liquidity-checker.tsx:353
 msgid "Total trade value"
 msgstr ""
 
@@ -8265,6 +8324,10 @@ msgstr ""
 
 #: src/components/track-asset/index.tsx:43
 msgid "Track token in your wallet"
+msgstr ""
+
+#: src/components/ondo-badge.tsx:34
+msgid "Tradeable"
 msgstr ""
 
 #: src/views/yield-dtf/governance/views/proposal/components/TraderImplementationProposal.tsx:24
@@ -8309,6 +8372,10 @@ msgstr ""
 
 #: src/views/internal/dtf-listed/components/listed-dtf-table.tsx:156
 msgid "Trading Gov"
+msgstr ""
+
+#: src/components/ondo-badge.tsx:167
+msgid "Trading halted"
 msgstr ""
 
 #: src/views/yield-dtf/staking/components/trading-paused-banner.tsx:21
@@ -9246,7 +9313,7 @@ msgstr ""
 msgid "Voting starts in:"
 msgstr ""
 
-#: src/hooks/use-compliance-restrictions.ts:40
+#: src/hooks/use-compliance-restrictions.ts:42
 msgid "VPN detected"
 msgstr ""
 
@@ -9300,7 +9367,7 @@ msgstr ""
 msgid "Wallet address"
 msgstr ""
 
-#: src/hooks/use-compliance-restrictions.ts:32
+#: src/hooks/use-compliance-restrictions.ts:34
 msgid "Wallet restricted"
 msgstr ""
 
@@ -9337,7 +9404,7 @@ msgstr ""
 msgid "We couldn’t retrieve the contract’s ABI from Etherscan. This usually means the contract is not verified. Without its interface, we’re unable to decode any function calls or parameters."
 msgstr ""
 
-#: src/hooks/use-compliance-restrictions.ts:41
+#: src/hooks/use-compliance-restrictions.ts:43
 msgid "We detected that you are connecting through a VPN. Please disable it and refresh the page to access this product. If you think this is an error, contact support."
 msgstr ""
 
@@ -9493,8 +9560,8 @@ msgstr ""
 msgid "Wrap/Unwrap collateral"
 msgstr ""
 
-#: src/views/index-dtf/auctions/views/rebalance/components/rebalance-liquidity-checker.tsx:81
-#: src/views/index-dtf/governance/views/propose/basket/components/proposal-liquidity-checker.tsx:81
+#: src/views/index-dtf/auctions/views/rebalance/components/rebalance-liquidity-checker.tsx:86
+#: src/views/index-dtf/governance/views/propose/basket/components/proposal-liquidity-checker.tsx:86
 msgid "Wrap/unwrap only — no swap needed"
 msgstr ""
 
