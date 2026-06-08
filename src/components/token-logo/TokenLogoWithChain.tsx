@@ -1,5 +1,6 @@
 import ChainLogo from '@/components/icons/ChainLogo'
 import TokenLogo from '@/components/token-logo'
+import { cn } from '@/lib/utils'
 
 type Size = 'sm' | 'md' | 'lg' | 'xl'
 
@@ -17,6 +18,7 @@ const TokenLogoWithChain = ({
   size = 'lg',
   width,
   height,
+  chainClassName,
 }: {
   symbol?: string
   address?: string
@@ -24,6 +26,7 @@ const TokenLogoWithChain = ({
   size?: Size
   width?: number
   height?: number
+  chainClassName?: string
 }) => {
   const logoWidth = width ?? undefined
   const logoHeight = height ?? undefined
@@ -42,12 +45,14 @@ const TokenLogoWithChain = ({
         width={logoWidth}
         height={logoHeight}
       />
-      <ChainLogo
-        chain={chain}
-        className="absolute -bottom-0.5 -right-0.5"
-        width={s}
-        height={s}
-      />
+      <span
+        className={cn(
+          'absolute -bottom-0.5 -right-0.5 flex items-center justify-center',
+          chainClassName
+        )}
+      >
+        <ChainLogo chain={chain} width={s} height={s} />
+      </span>
     </div>
   )
 }

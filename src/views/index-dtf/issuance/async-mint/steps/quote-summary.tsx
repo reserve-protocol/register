@@ -1105,8 +1105,9 @@ const QuoteSummary = () => {
                 </span>
                 <span
                   className={cn(
-                    impactValueClassName(aggregateImpact),
-                    showFilledImpactMetrics && 'line-through'
+                    showFilledImpactMetrics
+                      ? 'font-medium text-muted-foreground line-through'
+                      : impactValueClassName(aggregateImpact)
                   )}
                 >
                   {quotesLoading ? (
@@ -1395,7 +1396,7 @@ const QuoteSummary = () => {
           </div>
         </div>
 
-        <div className="bg-background rounded-2xl p-2 lg:col-start-2 lg:relative lg:min-h-0 lg:overflow-hidden animate-in fade-in duration-500">
+        <div className="bg-background rounded-2xl p-2 lg:col-start-2 lg:relative lg:min-h-0 lg:overflow-hidden animate-in fade-in duration-500 transition-none">
           {/* On desktop this fills the column (stretched to the left column's
               height via the grid) without inflating it, so the modal stays the
               height of the form and the orders list scrolls inside. */}

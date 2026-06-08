@@ -130,7 +130,7 @@ const LegRow = ({
   return (
     <div
       className={cn(
-        '-mx-2 rounded-[18px] border px-4 py-3 transition-colors',
+        '-mx-2 rounded-[18px] border px-4 py-3',
         loading && 'border-border/70 bg-background',
         !loading && !failed && 'border-border/70 bg-background',
         failed && 'border-destructive/25 bg-destructive/5',
@@ -242,7 +242,7 @@ const LegRow = ({
           <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs">
             <span
               className={cn(
-                'inline-flex min-w-[72px] items-center justify-center gap-1 rounded-full px-2 py-0.5 font-medium transition-colors',
+                'inline-flex min-w-[72px] items-center justify-center gap-1 rounded-full px-2 py-0.5 font-medium',
                 orderSettled && 'bg-primary/10 text-primary',
                 orderFailed && 'bg-destructive/10 text-destructive',
                 orderPending && 'bg-muted text-muted-foreground'

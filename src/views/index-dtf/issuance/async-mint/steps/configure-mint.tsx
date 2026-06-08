@@ -1,4 +1,4 @@
-import TokenLogo from '@/components/token-logo'
+import TokenLogoWithChain from '@/components/token-logo/TokenLogoWithChain'
 import { Button } from '@/components/ui/button'
 import { NumericalInput } from '@/components/ui/input'
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
@@ -148,7 +148,7 @@ const ConfigureMint = () => {
                     )}
                   />
                   <div className="flex shrink-0 items-center gap-2">
-                    <TokenLogo
+                    <TokenLogoWithChain
                       address={isMint ? inputToken.address : indexDTF.id}
                       symbol={
                         isMint ? inputToken.symbol : indexDTF.token.symbol
@@ -156,6 +156,7 @@ const ConfigureMint = () => {
                       chain={chainId}
                       width={28}
                       height={28}
+                      chainClassName="rounded-full border border-muted bg-muted"
                     />
                     <span className="text-[32px] font-light leading-8 text-muted-foreground">
                       {isMint ? inputToken.symbol : indexDTF.token.symbol}
