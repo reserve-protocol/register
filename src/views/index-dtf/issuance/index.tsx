@@ -1,5 +1,4 @@
 import { devModeAtom } from '@/state/atoms'
-import { wagmiConfig } from '@/state/chain'
 import { isInactiveDTF } from '@/hooks/use-dtf-status'
 import { indexDTFAtom, indexDTFStatusAtom } from '@/state/dtf/atoms'
 import { RESERVE_API, ZAPPER_API } from '@/utils/constants'
@@ -76,7 +75,6 @@ const IndexDTFIssuance = () => {
           <ComplianceAlert />
           <div className="bg-card rounded-3xl border-2 border-secondary sm:w-[420px] p-2 m-auto">
             <ZapperWrapper
-              wagmiConfig={wagmiConfig}
               chain={indexDTF.chainId}
               dtfAddress={indexDTF.id}
               mode="inline"
