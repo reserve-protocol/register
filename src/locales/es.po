@@ -95,7 +95,7 @@ msgstr "{0}"
 #: src/views/index-dtf/auctions/views/rebalance/components/rebalance-liquidity-checker.tsx:270
 #: src/views/index-dtf/governance/views/propose/basket/components/proposal-liquidity-checker.tsx:339
 msgid "{0} — outside trading hours or larger than the max single Ondo trade. Oversized legs fill as multiple sequential trades."
-msgstr ""
+msgstr "{0} — fuera del horario de negociación o mayor que la operación máxima individual de Ondo. Los tramos sobredimensionados se ejecutan como varias operaciones secuenciales."
 
 #. placeholder {0}: highImpactTokens.map((token) => token.tokenSymbol).join(', ')
 #. placeholder {1}: highImpactTokens.length
@@ -1893,11 +1893,11 @@ msgstr "Cerrar"
 
 #: src/components/ondo-badge.tsx:135
 msgid "closed"
-msgstr ""
+msgstr "cerrado"
 
 #: src/components/ondo-badge.tsx:143
 msgid "Closes"
-msgstr ""
+msgstr "Cierra"
 
 #: src/views/index-dtf/governance/components/rsr-bnb-help.tsx:46
 msgid "CMC20 is a BNB DTF and you need to bridge your RSR using Wormhole to participate in governance."
@@ -3896,7 +3896,7 @@ msgstr "Guardianes"
 #. placeholder {0}: humanizeEvent(ondo.reason.message)
 #: src/components/ondo-badge.tsx:166
 msgid "Halted — {0}"
-msgstr ""
+msgstr "Suspendido — {0}"
 
 #: src/components/transactions/table/index.tsx:92
 msgid "Hash"
@@ -4380,7 +4380,7 @@ msgstr "ahora mismo"
 #. placeholder {0}: Math.ceil(amountUsd / ondo.capacityUsd)
 #: src/components/ondo-badge.tsx:156
 msgid "Larger than the max single trade — fills as ~{0} sequential trades."
-msgstr ""
+msgstr "Mayor que la operación máxima individual — se ejecuta como ~{0} operaciones secuenciales."
 
 #: src/views/internal/dtf-list/components/dtf-date-chain-filters.tsx:85
 msgid "Last 15 days"
@@ -4430,7 +4430,7 @@ msgstr "Límite de registros por Chain"
 
 #: src/components/ondo-badge.tsx:40
 msgid "Limited"
-msgstr ""
+msgstr "Limitado"
 
 #: src/views/index-dtf/auctions/views/rebalance/components/rebalance-liquidity-checker.tsx:222
 #: src/views/index-dtf/governance/views/propose/basket/components/proposal-liquidity-checker.tsx:284
@@ -4639,7 +4639,7 @@ msgstr "APY estimado manualmente, calculado a partir del rendimiento promedio de
 
 #: src/components/ondo-badge.tsx:133
 msgid "Market"
-msgstr ""
+msgstr "Mercado"
 
 #: src/views/home/components/discover-index-dtf/index-dtf-table-columns.tsx:165
 #: src/views/home/components/discover-index-dtf/index-dtf-table-placeholder.tsx:21
@@ -4660,7 +4660,7 @@ msgstr "Capitalización de mercado:"
 
 #: src/components/ondo-badge.tsx:46
 msgid "Market closed"
-msgstr ""
+msgstr "Mercado cerrado"
 
 #: src/components/ui/swap.tsx:205
 #: src/views/yield-dtf/issuance/components/zapV2/input/ZapInputMaxButton.tsx:37
@@ -5106,7 +5106,7 @@ msgstr "Monto de la oferta en el próximo bloque"
 
 #: src/components/ondo-badge.tsx:140
 msgid "Next open"
-msgstr ""
+msgstr "Próxima apertura"
 
 #: src/views/yield-dtf/deploy/components/NavigationSidebar.tsx:28
 msgid "Next steps"
@@ -5375,11 +5375,11 @@ msgstr "Peso anterior / Peso nuevo"
 #: src/views/index-dtf/auctions/views/rebalance/components/rebalance-liquidity-checker.tsx:267
 #: src/views/index-dtf/governance/views/propose/basket/components/proposal-liquidity-checker.tsx:336
 msgid "Ondo limits"
-msgstr ""
+msgstr "Límites de Ondo"
 
 #: src/components/ondo-badge.tsx:190
 msgid "Ondo tokenized equity. Max trade is the per-account single-trade size for the session (theoretical, repeatable) — not market depth."
-msgstr ""
+msgstr "Acciones tokenizadas de Ondo. La operación máxima es el tamaño máximo por operación individual y por cuenta para la sesión (teórico, repetible), no la profundidad de mercado."
 
 #: src/views/index-dtf/deploy/steps/confirm-deploy/manual/components/approve-all-deploy-button.tsx:115
 #: src/views/index-dtf/issuance/manual/components/approve-all-button.tsx:102
@@ -5430,7 +5430,7 @@ msgstr "Solo se permiten números enteros"
 
 #: src/components/ondo-badge.tsx:135
 msgid "open"
-msgstr ""
+msgstr "abierto"
 
 #: src/components/index-basket-setup/csv-import.tsx:204
 #: src/views/index-dtf/deploy/steps/basket/basket-csv-setup.tsx:216
@@ -6915,7 +6915,7 @@ msgstr "Guardar pesos: {editedRows}/{totalRows} editados"
 
 #: src/components/ondo-badge.tsx:180
 msgid "Scheduled event"
-msgstr ""
+msgstr "Evento programado"
 
 #: src/views/internal/dtf-list/components/dtf-date-chain-filters.tsx:50
 #: src/views/tokens/components/TableFilters.tsx:20
@@ -8334,7 +8334,7 @@ msgstr "Rastrear token en tu Wallet"
 
 #: src/components/ondo-badge.tsx:34
 msgid "Tradeable"
-msgstr ""
+msgstr "Negociable"
 
 #: src/views/yield-dtf/governance/views/proposal/components/TraderImplementationProposal.tsx:24
 #: src/views/yield-dtf/governance/views/proposal/components/TraderImplementationProposal.tsx:35
@@ -8382,7 +8382,7 @@ msgstr "Gobernanza de trading"
 
 #: src/components/ondo-badge.tsx:167
 msgid "Trading halted"
-msgstr ""
+msgstr "Negociación suspendida"
 
 #: src/views/yield-dtf/staking/components/trading-paused-banner.tsx:21
 msgid "Trading has been temporarily paused due to an abundance of caution related to the Kelp DAO exploit, the protocol keeps staked RSR available as a safety measure in case recollateralization is needed — this means withdrawals are blocked until trading resumes."

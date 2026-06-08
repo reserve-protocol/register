@@ -95,7 +95,7 @@ msgstr "{0}"
 #: src/views/index-dtf/auctions/views/rebalance/components/rebalance-liquidity-checker.tsx:270
 #: src/views/index-dtf/governance/views/propose/basket/components/proposal-liquidity-checker.tsx:339
 msgid "{0} — outside trading hours or larger than the max single Ondo trade. Oversized legs fill as multiple sequential trades."
-msgstr ""
+msgstr "{0} — 处于非交易时段或超过 Ondo 单笔最大交易额。超额部分将分多笔连续交易成交。"
 
 #. placeholder {0}: highImpactTokens.map((token) => token.tokenSymbol).join(', ')
 #. placeholder {1}: highImpactTokens.length
@@ -1893,11 +1893,11 @@ msgstr "关闭"
 
 #: src/components/ondo-badge.tsx:135
 msgid "closed"
-msgstr ""
+msgstr "休市"
 
 #: src/components/ondo-badge.tsx:143
 msgid "Closes"
-msgstr ""
+msgstr "收盘"
 
 #: src/views/index-dtf/governance/components/rsr-bnb-help.tsx:46
 msgid "CMC20 is a BNB DTF and you need to bridge your RSR using Wormhole to participate in governance."
@@ -3896,7 +3896,7 @@ msgstr "守护者"
 #. placeholder {0}: humanizeEvent(ondo.reason.message)
 #: src/components/ondo-badge.tsx:166
 msgid "Halted — {0}"
-msgstr ""
+msgstr "已暂停 — {0}"
 
 #: src/components/transactions/table/index.tsx:92
 msgid "Hash"
@@ -4380,7 +4380,7 @@ msgstr "刚刚"
 #. placeholder {0}: Math.ceil(amountUsd / ondo.capacityUsd)
 #: src/components/ondo-badge.tsx:156
 msgid "Larger than the max single trade — fills as ~{0} sequential trades."
-msgstr ""
+msgstr "超过单笔最大交易额 — 将分约 {0} 笔连续交易成交。"
 
 #: src/views/internal/dtf-list/components/dtf-date-chain-filters.tsx:85
 msgid "Last 15 days"
@@ -4430,7 +4430,7 @@ msgstr "每个 chain 的记录上限"
 
 #: src/components/ondo-badge.tsx:40
 msgid "Limited"
-msgstr ""
+msgstr "受限"
 
 #: src/views/index-dtf/auctions/views/rebalance/components/rebalance-liquidity-checker.tsx:222
 #: src/views/index-dtf/governance/views/propose/basket/components/proposal-liquidity-checker.tsx:284
@@ -4639,7 +4639,7 @@ msgstr "根据篮子平均收益手动估算的 APY。"
 
 #: src/components/ondo-badge.tsx:133
 msgid "Market"
-msgstr ""
+msgstr "市场"
 
 #: src/views/home/components/discover-index-dtf/index-dtf-table-columns.tsx:165
 #: src/views/home/components/discover-index-dtf/index-dtf-table-placeholder.tsx:21
@@ -4660,7 +4660,7 @@ msgstr "市值："
 
 #: src/components/ondo-badge.tsx:46
 msgid "Market closed"
-msgstr ""
+msgstr "市场休市"
 
 #: src/components/ui/swap.tsx:205
 #: src/views/yield-dtf/issuance/components/zapV2/input/ZapInputMaxButton.tsx:37
@@ -5106,7 +5106,7 @@ msgstr "下一区块出价金额"
 
 #: src/components/ondo-badge.tsx:140
 msgid "Next open"
-msgstr ""
+msgstr "下次开盘"
 
 #: src/views/yield-dtf/deploy/components/NavigationSidebar.tsx:28
 msgid "Next steps"
@@ -5375,11 +5375,11 @@ msgstr "旧权重 / 新权重"
 #: src/views/index-dtf/auctions/views/rebalance/components/rebalance-liquidity-checker.tsx:267
 #: src/views/index-dtf/governance/views/propose/basket/components/proposal-liquidity-checker.tsx:336
 msgid "Ondo limits"
-msgstr ""
+msgstr "Ondo 限制"
 
 #: src/components/ondo-badge.tsx:190
 msgid "Ondo tokenized equity. Max trade is the per-account single-trade size for the session (theoretical, repeatable) — not market depth."
-msgstr ""
+msgstr "Ondo 代币化股票。最大交易额为该时段每个账户的单笔交易上限（理论值，可重复），而非市场深度。"
 
 #: src/views/index-dtf/deploy/steps/confirm-deploy/manual/components/approve-all-deploy-button.tsx:115
 #: src/views/index-dtf/issuance/manual/components/approve-all-button.tsx:102
@@ -5430,7 +5430,7 @@ msgstr "只允许整数"
 
 #: src/components/ondo-badge.tsx:135
 msgid "open"
-msgstr ""
+msgstr "开盘"
 
 #: src/components/index-basket-setup/csv-import.tsx:204
 #: src/views/index-dtf/deploy/steps/basket/basket-csv-setup.tsx:216
@@ -6915,7 +6915,7 @@ msgstr "保存权重 已编辑 {editedRows}/{totalRows}"
 
 #: src/components/ondo-badge.tsx:180
 msgid "Scheduled event"
-msgstr ""
+msgstr "预定事件"
 
 #: src/views/internal/dtf-list/components/dtf-date-chain-filters.tsx:50
 #: src/views/tokens/components/TableFilters.tsx:20
@@ -8334,7 +8334,7 @@ msgstr "在你的 Wallet 中追踪代币"
 
 #: src/components/ondo-badge.tsx:34
 msgid "Tradeable"
-msgstr ""
+msgstr "可交易"
 
 #: src/views/yield-dtf/governance/views/proposal/components/TraderImplementationProposal.tsx:24
 #: src/views/yield-dtf/governance/views/proposal/components/TraderImplementationProposal.tsx:35
@@ -8382,7 +8382,7 @@ msgstr "交易治理"
 
 #: src/components/ondo-badge.tsx:167
 msgid "Trading halted"
-msgstr ""
+msgstr "交易暂停"
 
 #: src/views/yield-dtf/staking/components/trading-paused-banner.tsx:21
 msgid "Trading has been temporarily paused due to an abundance of caution related to the Kelp DAO exploit, the protocol keeps staked RSR available as a safety measure in case recollateralization is needed — this means withdrawals are blocked until trading resumes."
