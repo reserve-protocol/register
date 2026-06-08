@@ -1,18 +1,18 @@
 import { useEffect, useState, useRef, useMemo } from 'react'
-import { Address } from 'viem'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { useAtomValue } from 'jotai'
 import { chainIdAtom } from '@/state/atoms'
 import { ethPriceAtom } from '@/state/chain/atoms/chainAtoms'
-import { TokenLiquidity, priceImpactToLevel, priceImpactToScore } from '@/utils/liquidity'
+import { Token } from '@/types'
+import { AuctionMetrics } from '@reserve-protocol/dtf-rebalance-lib'
+import { TokenLiquidity } from '@/utils/liquidity'
 import {
-  NATIVE_TOKEN,
-  NATIVE_SYMBOL,
-  MIN_USD_SIZE,
-  isNativeToken,
-  convertUsdToTokenUnits,
-  fetchPriceImpact,
-} from '@/utils/zapper'
+  fetchRebalanceLiquidity,
+  toTokenLiquidity,
+  LiquidityTrade,
+  OndoInfo,
+  OndoMarket,
+} from '@/utils/rebalance-liquidity'
 export { NATIVE_SYMBOL } from '@/utils/zapper'
 import { rebalanceMetricsAtom, rebalanceTokenMapAtom } from '../atoms'
 import useRebalanceParams from './use-rebalance-params'
@@ -26,19 +26,28 @@ export type TokenInfo = {
   type: 'surplus' | 'deficit'
 }
 
+type LiquidityData = {
+  liquidityMap: Record<string, TokenLiquidity>
+  ondoMap: Record<string, OndoInfo>
+  market: OndoMarket | null
+}
+
+const EMPTY: LiquidityData = { liquidityMap: {}, ondoMap: {}, market: null }
+
 const getAllTokensWithSizes = (
-  metrics: any,
-  tokenMap: Record<string, any>
+  metrics: AuctionMetrics | undefined,
+  tokenMap: Record<string, Token>
 ): TokenInfo[] => {
   if (!metrics) return []
 
-  const tokens: TokenInfo[] = []
+  const surplus: TokenInfo[] = []
+  const deficit: TokenInfo[] = []
 
   for (let i = 0; i < metrics.surplusTokens.length; i++) {
     const tokenAddress = metrics.surplusTokens[i].toLowerCase()
     const token = tokenMap[tokenAddress]
     if (token && metrics.surplusTokenSizes[i] > 0) {
-      tokens.push({
+      surplus.push({
         tokenAddress,
         tokenSymbol: token.symbol,
         usdSize: metrics.surplusTokenSizes[i],
@@ -51,7 +60,7 @@ const getAllTokensWithSizes = (
     const tokenAddress = metrics.deficitTokens[i].toLowerCase()
     const token = tokenMap[tokenAddress]
     if (token && metrics.deficitTokenSizes[i] > 0) {
-      tokens.push({
+      deficit.push({
         tokenAddress,
         tokenSymbol: token.symbol,
         usdSize: metrics.deficitTokenSizes[i],
@@ -60,7 +69,33 @@ const getAllTokensWithSizes = (
     }
   }
 
-  return tokens
+  // An auction only trades min(surplus, deficit) — the larger side reports the
+  // full available amount, not what's actually sold/bought. Scale each side to
+  // the matched auction size so the checker reflects the real trade (and tracks
+  // the rebalance percent on both sides, not just the deficit).
+  const surplusTotal = surplus.reduce((s, t) => s + t.usdSize, 0)
+  const deficitTotal = deficit.reduce((s, t) => s + t.usdSize, 0)
+  const auctionSize = Math.min(surplusTotal, deficitTotal)
+  const sScale = surplusTotal > 0 ? auctionSize / surplusTotal : 0
+  const dScale = deficitTotal > 0 ? auctionSize / deficitTotal : 0
+
+  return [
+    ...surplus.map((t) => ({ ...t, usdSize: t.usdSize * sScale })),
+    ...deficit.map((t) => ({ ...t, usdSize: t.usdSize * dScale })),
+  ]
+}
+
+const buildResult = (
+  assets: Awaited<ReturnType<typeof fetchRebalanceLiquidity>>['assets'],
+  market: OndoMarket | null
+): LiquidityData => {
+  const liquidityMap: Record<string, TokenLiquidity> = {}
+  const ondoMap: Record<string, OndoInfo> = {}
+  for (const asset of assets) {
+    liquidityMap[asset.address] = toTokenLiquidity(asset)
+    if (asset.ondo) ondoMap[asset.address] = asset.ondo
+  }
+  return { liquidityMap, ondoMap, market }
 }
 
 const useRebalanceLiquidityCheck = () => {
@@ -90,83 +125,14 @@ const useRebalanceLiquidityCheck = () => {
     [debouncedMetrics, tokenMap]
   )
 
-  const fetchTokenLiquidity = async (
-    token: TokenInfo
-  ): Promise<[string, TokenLiquidity]> => {
-    const nativeSymbol = NATIVE_SYMBOL[chainId] ?? 'WETH'
-
-    // Native/wrapped native is just wrap/unwrap, no liquidity concern
-    if (isNativeToken(token.tokenAddress, chainId)) {
-      return [
-        token.tokenAddress,
-        {
-          address: token.tokenAddress as Address,
-          priceImpact: 0,
-          liquidityLevel: 'high',
-          liquidityScore: 100,
-        },
-      ]
-    }
-
-    const simulationUsd = Math.max(token.usdSize, MIN_USD_SIZE)
-    let tokenIn: Address, tokenOut: Address, amountIn: string
-
-    if (token.type === 'surplus') {
-      tokenIn = token.tokenAddress as Address
-      tokenOut = NATIVE_TOKEN
-      const price = rebalanceParams!.prices[token.tokenAddress]?.currentPrice ?? 0
-      const decimals = tokenMap[token.tokenAddress]?.decimals ?? 18
-      amountIn = convertUsdToTokenUnits(simulationUsd, price, decimals)
-    } else {
-      tokenIn = NATIVE_TOKEN
-      tokenOut = token.tokenAddress as Address
-      amountIn = convertUsdToTokenUnits(simulationUsd, ethPrice, 18)
-    }
-
-    if (amountIn === '0') {
-      return [
-        token.tokenAddress,
-        {
-          address: token.tokenAddress as Address,
-          priceImpact: 0,
-          liquidityLevel: 'unknown',
-          liquidityScore: 50,
-        },
-      ]
-    }
-
-    const { priceImpact, error, swapPath } = await fetchPriceImpact(
-      tokenIn,
-      tokenOut,
-      amountIn,
-      chainId
-    )
-
-    if (priceImpact === null) {
-      return [
-        token.tokenAddress,
-        {
-          address: token.tokenAddress as Address,
-          priceImpact: 0,
-          liquidityLevel: 'error',
-          liquidityScore: 0,
-          error,
-        },
-      ]
-    }
-
-    return [
-      token.tokenAddress,
-      {
-        address: token.tokenAddress as Address,
-        priceImpact,
-        liquidityLevel: priceImpactToLevel(priceImpact),
-        liquidityScore: priceImpactToScore(priceImpact),
-        counterpart: nativeSymbol,
-        swapPath,
-      },
-    ]
-  }
+  const buildTrades = (tokenList: TokenInfo[]): LiquidityTrade[] =>
+    tokenList.map((t) => ({
+      address: t.tokenAddress,
+      side: t.type === 'surplus' ? 'sell' : 'buy',
+      amountUsd: t.usdSize,
+      price: rebalanceParams?.prices[t.tokenAddress]?.currentPrice ?? 0,
+      decimals: tokenMap[t.tokenAddress]?.decimals ?? 18,
+    }))
 
   const queryKey = [
     'rebalance-liquidity',
@@ -177,24 +143,32 @@ const useRebalanceLiquidityCheck = () => {
   ]
 
   const {
-    data: liquidityMap = {},
+    data = EMPTY,
     isLoading,
     isFetching,
     refetch,
-  } = useQuery({
+  } = useQuery<LiquidityData>({
     queryKey,
     queryFn: async () => {
-      if (!tokens.length || !rebalanceParams || !chainId) return {}
-      const results = await Promise.all(
-        tokens.map((t) => fetchTokenLiquidity(t))
-      )
-      return Object.fromEntries(results) as Record<string, TokenLiquidity>
+      if (!tokens.length || !rebalanceParams || !chainId) return EMPTY
+      try {
+        const res = await fetchRebalanceLiquidity(
+          chainId,
+          ethPrice,
+          buildTrades(tokens)
+        )
+        return buildResult(res.assets, res.market)
+      } catch (e) {
+        console.error('Failed to fetch rebalance liquidity', e)
+        return EMPTY
+      }
     },
-    enabled:
-      !!tokens.length && !!rebalanceParams && !!chainId && !!ethPrice,
+    enabled: !!tokens.length && !!rebalanceParams && !!chainId && !!ethPrice,
     staleTime: 30_000,
     refetchInterval: 30_000,
   })
+
+  const { liquidityMap, ondoMap, market } = data
 
   const retryToken = async (tokenAddress: string) => {
     const token = tokens.find((t) => t.tokenAddress === tokenAddress)
@@ -202,14 +176,23 @@ const useRebalanceLiquidityCheck = () => {
 
     setRetryingTokens((prev) => new Set(prev).add(tokenAddress))
     try {
-      const [, result] = await fetchTokenLiquidity(token)
-      queryClient.setQueryData(
-        queryKey,
-        (old: Record<string, TokenLiquidity> | undefined) => ({
-          ...old,
-          [tokenAddress]: result,
-        })
+      const res = await fetchRebalanceLiquidity(
+        chainId,
+        ethPrice,
+        buildTrades([token])
       )
+      const asset = res.assets[0]
+      if (!asset) return
+      queryClient.setQueryData<LiquidityData>(queryKey, (old) => ({
+        liquidityMap: {
+          ...old?.liquidityMap,
+          [tokenAddress]: toTokenLiquidity(asset),
+        },
+        ondoMap: asset.ondo
+          ? { ...old?.ondoMap, [tokenAddress]: asset.ondo }
+          : old?.ondoMap ?? {},
+        market: res.market ?? old?.market ?? null,
+      }))
     } finally {
       setRetryingTokens((prev) => {
         const next = new Set(prev)
@@ -219,7 +202,17 @@ const useRebalanceLiquidityCheck = () => {
     }
   }
 
-  return { tokens, liquidityMap, isLoading, isFetching, retryingTokens, refetch, retryToken }
+  return {
+    tokens,
+    liquidityMap,
+    ondoMap,
+    market,
+    isLoading,
+    isFetching,
+    retryingTokens,
+    refetch,
+    retryToken,
+  }
 }
 
 export default useRebalanceLiquidityCheck

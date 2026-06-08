@@ -7,8 +7,14 @@ import {
   currentRebalanceAtom,
 } from '../../atoms'
 import { useRebalanceMetrics } from '../rebalance-list/hooks/use-rebalance-metrics'
-import { rebalanceAuctionsAtom, rebalanceErrorAtom, rebalancePercentAtom } from './atoms'
+import {
+  rebalanceAuctionsAtom,
+  rebalanceErrorAtom,
+  rebalancePercentAtom,
+  rebalancePercentTouchedAtom,
+} from './atoms'
 import useRebalanceAuctions from './hooks/use-rebalance-auctions'
+import OndoCapUpdater from './updaters/ondo-cap-updater'
 import RebalanceHistoricalWeightsUpdater from './updaters/rebalance-historical-weights'
 import RebalanceMetricsUpdater from './updaters/rebalance-metrics-updater'
 
@@ -32,6 +38,7 @@ const Updater = () => {
   const { proposalId } = useParams()
   const setRebalanceAuctions = useSetAtom(rebalanceAuctionsAtom)
   const setRebalancePercent = useSetAtom(rebalancePercentAtom)
+  const setRebalancePercentTouched = useSetAtom(rebalancePercentTouchedAtom)
   const setCurrentProposalId = useSetAtom(currentProposalIdAtom)
   const setRebalanceError = useSetAtom(rebalanceErrorAtom)
 
@@ -44,6 +51,7 @@ const Updater = () => {
   useEffect(() => {
     return () => {
       setRebalancePercent(100)
+      setRebalancePercentTouched(false)
     }
   }, [])
 
@@ -68,6 +76,7 @@ const Updater = () => {
       <RebalanceMetricsUpdater />
       <RebalanceHistoricalWeightsUpdater />
       <ApiRebalanceMetricsUpdater />
+      <OndoCapUpdater />
     </>
   )
 }

@@ -1,24 +1,19 @@
 import { useEffect, useState, useRef, useMemo } from 'react'
-import { Address, formatUnits } from 'viem'
+import { formatUnits } from 'viem'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { useAtomValue } from 'jotai'
 import { chainIdAtom } from '@/state/atoms'
 import { ethPriceAtom } from '@/state/chain/atoms/chainAtoms'
 import { indexDTFPriceAtom } from '@/state/dtf/atoms'
+import { TokenLiquidity } from '@/utils/liquidity'
+import { isNativeToken, fetchZapperTokens } from '@/utils/zapper'
 import {
-  TokenLiquidity,
-  priceImpactToLevel,
-  priceImpactToScore,
-} from '@/utils/liquidity'
-import {
-  NATIVE_TOKEN,
-  NATIVE_SYMBOL,
-  MIN_USD_SIZE,
-  isNativeToken,
-  convertUsdToTokenUnits,
-  fetchPriceImpact,
-  fetchZapperTokens,
-} from '@/utils/zapper'
+  fetchRebalanceLiquidity,
+  toTokenLiquidity,
+  LiquidityTrade,
+  OndoInfo,
+  OndoMarket,
+} from '@/utils/rebalance-liquidity'
 import {
   proposedIndexBasketAtom,
   proposedSharesAtom,
@@ -35,6 +30,20 @@ export type TokenInfo = {
   decimals: number
   usdSize: number
   type: 'surplus' | 'deficit'
+}
+
+type LiquidityData = {
+  liquidityMap: Record<string, TokenLiquidity>
+  ondoMap: Record<string, OndoInfo>
+  market: OndoMarket | null
+  unsupportedTokens: Set<string>
+}
+
+const EMPTY: LiquidityData = {
+  liquidityMap: {},
+  ondoMap: {},
+  market: null,
+  unsupportedTokens: new Set<string>(),
 }
 
 const DEBOUNCE_DELAY = 2_500
@@ -143,131 +152,69 @@ const useProposalLiquidityCheck = () => {
     )
   }, [basket, debouncedShares, debouncedDerived, basketInputType, tvl])
 
-  const fetchTokenLiquidity = async (
-    token: TokenInfo
-  ): Promise<[string, TokenLiquidity]> => {
-    const nativeSymbol = NATIVE_SYMBOL[chainId] ?? 'WETH'
+  const priceOf = (address: string): number =>
+    prices[address] ?? prices[address.toLowerCase()] ?? 0
 
-    // Native/wrapped native is just wrap/unwrap, no liquidity concern
-    if (isNativeToken(token.tokenAddress, chainId)) {
-      return [
-        token.tokenAddress,
-        {
-          address: token.tokenAddress as Address,
-          priceImpact: 0,
-          liquidityLevel: 'high',
-          liquidityScore: 100,
-        },
-      ]
-    }
-
-    const simulationUsd = Math.max(token.usdSize, MIN_USD_SIZE)
-    let tokenIn: Address, tokenOut: Address, amountIn: string
-
-    if (token.type === 'surplus') {
-      tokenIn = token.tokenAddress as Address
-      tokenOut = NATIVE_TOKEN
-      const price = prices[token.tokenAddress] ?? prices[token.tokenAddress.toLowerCase()] ?? 0
-      amountIn = convertUsdToTokenUnits(simulationUsd, price, token.decimals)
-    } else {
-      tokenIn = NATIVE_TOKEN
-      tokenOut = token.tokenAddress as Address
-      amountIn = convertUsdToTokenUnits(simulationUsd, ethPrice, 18)
-    }
-
-    if (amountIn === '0') {
-      return [
-        token.tokenAddress,
-        {
-          address: token.tokenAddress as Address,
-          priceImpact: 0,
-          liquidityLevel: 'unknown',
-          liquidityScore: 50,
-        },
-      ]
-    }
-
-    const { priceImpact, error, swapPath } = await fetchPriceImpact(
-      tokenIn,
-      tokenOut,
-      amountIn,
-      chainId
-    )
-
-    if (priceImpact === null) {
-      return [
-        token.tokenAddress,
-        {
-          address: token.tokenAddress as Address,
-          priceImpact: 0,
-          liquidityLevel: 'error',
-          liquidityScore: 0,
-          error,
-        },
-      ]
-    }
-
-    return [
-      token.tokenAddress,
-      {
-        address: token.tokenAddress as Address,
-        priceImpact,
-        liquidityLevel: priceImpactToLevel(priceImpact),
-        liquidityScore: priceImpactToScore(priceImpact),
-        counterpart: nativeSymbol,
-        swapPath,
-      },
-    ]
-  }
+  const buildTrades = (tokenList: TokenInfo[]): LiquidityTrade[] =>
+    tokenList.map((t) => ({
+      address: t.tokenAddress,
+      side: t.type === 'surplus' ? 'sell' : 'buy',
+      amountUsd: t.usdSize,
+      price: priceOf(t.tokenAddress),
+      decimals: t.decimals,
+    }))
 
   const queryKey = ['proposal-liquidity', tokens, chainId, prices, ethPrice]
 
   const {
-    data: { liquidityMap, unsupportedTokens } = {
-      liquidityMap: {} as Record<string, TokenLiquidity>,
-      unsupportedTokens: new Set<string>(),
-    },
+    data = EMPTY,
     isLoading,
     isFetching,
     refetch,
-  } = useQuery({
+  } = useQuery<LiquidityData>({
     queryKey,
     queryFn: async () => {
-      if (!tokens.length || !chainId) {
-        return {
-          liquidityMap: {} as Record<string, TokenLiquidity>,
-          unsupportedTokens: new Set<string>(),
-        }
-      }
+      if (!tokens.length || !chainId) return EMPTY
 
+      // Flag tokens the aggregator can't route (unchanged client-side check).
       const supportedTokens = await fetchZapperTokens(chainId)
-
-      const unsupported = new Set<string>()
+      const unsupportedTokens = new Set<string>()
       for (const token of tokens) {
         if (
           !isNativeToken(token.tokenAddress, chainId) &&
           supportedTokens.size > 0 &&
           !supportedTokens.has(token.tokenAddress)
         ) {
-          unsupported.add(token.tokenAddress)
+          unsupportedTokens.add(token.tokenAddress)
         }
       }
 
-      const results = await Promise.all(
-        tokens.map((t) => fetchTokenLiquidity(t))
-      )
-
-      return {
-        liquidityMap: Object.fromEntries(results) as Record<
-          string,
-          TokenLiquidity
-        >,
-        unsupportedTokens: unsupported,
+      const liquidityMap: Record<string, TokenLiquidity> = {}
+      const ondoMap: Record<string, OndoInfo> = {}
+      let market: OndoMarket | null = null
+      try {
+        const res = await fetchRebalanceLiquidity(
+          chainId,
+          ethPrice,
+          buildTrades(tokens)
+        )
+        market = res.market
+        for (const asset of res.assets) {
+          liquidityMap[asset.address] = toTokenLiquidity(asset)
+          if (asset.ondo) ondoMap[asset.address] = asset.ondo
+        }
+      } catch (e) {
+        // keep empty maps; unsupported-token info is still useful
+        console.error('Failed to fetch proposal liquidity', e)
       }
+
+      return { liquidityMap, ondoMap, market, unsupportedTokens }
     },
     enabled: !!tokens.length && !!chainId && !!ethPrice,
     staleTime: 30_000,
   })
+
+  const { liquidityMap, ondoMap, market, unsupportedTokens } = data
 
   const retryToken = async (tokenAddress: string) => {
     const token = tokens.find((t) => t.tokenAddress === tokenAddress)
@@ -275,21 +222,24 @@ const useProposalLiquidityCheck = () => {
 
     setRetryingTokens((prev) => new Set(prev).add(tokenAddress))
     try {
-      const [, result] = await fetchTokenLiquidity(token)
-      queryClient.setQueryData(
-        queryKey,
-        (
-          old:
-            | {
-                liquidityMap: Record<string, TokenLiquidity>
-                unsupportedTokens: Set<string>
-              }
-            | undefined
-        ) => ({
-          unsupportedTokens: old?.unsupportedTokens ?? new Set<string>(),
-          liquidityMap: { ...old?.liquidityMap, [tokenAddress]: result },
-        })
+      const res = await fetchRebalanceLiquidity(
+        chainId,
+        ethPrice,
+        buildTrades([token])
       )
+      const asset = res.assets[0]
+      if (!asset) return
+      queryClient.setQueryData<LiquidityData>(queryKey, (old) => ({
+        unsupportedTokens: old?.unsupportedTokens ?? new Set<string>(),
+        market: res.market ?? old?.market ?? null,
+        liquidityMap: {
+          ...old?.liquidityMap,
+          [tokenAddress]: toTokenLiquidity(asset),
+        },
+        ondoMap: asset.ondo
+          ? { ...old?.ondoMap, [tokenAddress]: asset.ondo }
+          : old?.ondoMap ?? {},
+      }))
     } finally {
       setRetryingTokens((prev) => {
         const next = new Set(prev)
@@ -299,7 +249,19 @@ const useProposalLiquidityCheck = () => {
     }
   }
 
-  return { tokens, liquidityMap, unsupportedTokens, isLoading, isFetching, isDebouncing, retryingTokens, refetch, retryToken }
+  return {
+    tokens,
+    liquidityMap,
+    ondoMap,
+    market,
+    unsupportedTokens,
+    isLoading,
+    isFetching,
+    isDebouncing,
+    retryingTokens,
+    refetch,
+    retryToken,
+  }
 }
 
 export default useProposalLiquidityCheck
