@@ -127,22 +127,10 @@ const ProposalParams = () => {
   )
 }
 
-const Badges = () => {
-  const proposal = useAtomValue(proposalDetailAtom)
-
-  return (
-    <div className='ml-auto'>
-      {!!proposal?.isOptimistic && <OptimisticBadge />}
-      {!!proposal?.wasChallenged && <ContestedBadge />}
-    </div>
-  )
-}
-
 const ProposalHeader = () => (
   <div className="flex flex-col justify-between gap-3 md:gap-7 p-4 lg:p-6 pb-2 ">
     <div className='flex items-center'>
       <BackButton />
-      <Badges />
     </div>
     <div className="flex flex-col gap-2 md:gap-4">
       <ProposalTitle />

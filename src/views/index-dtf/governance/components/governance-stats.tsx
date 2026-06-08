@@ -25,7 +25,11 @@ const InfoItem = ({
         <div className="flex items-center">
           <span className="text-legend text-sm">{title}</span>
         </div>
-        {!text ? <Skeleton className="h-4 w-24" /> : <strong>{text}</strong>}
+        {text === undefined ? (
+          <Skeleton className="h-4 w-24" />
+        ) : (
+          <strong>{text}</strong>
+        )}
       </div>
     </div>
   </div>
@@ -52,11 +56,19 @@ const GovernanceStats = () => {
       />
       <InfoItem
         title={<Trans>Vote Supply</Trans>}
-        text={totalSupply ? `${formatCurrency(totalSupply, 0)} ${dtf?.stToken?.token.symbol}` : undefined}
+        text={
+          totalSupply === undefined
+            ? undefined
+            : `${formatCurrency(totalSupply, 0)} ${dtf?.stToken?.token.symbol}`
+        }
       />
       <InfoItem
         title={<Trans>Proposal Threshold</Trans>}
-        text={proposalThreshold ? formatPercentage(proposalThreshold) : undefined}
+        text={
+          proposalThreshold === undefined
+            ? undefined
+            : formatPercentage(proposalThreshold)
+        }
       />
       <InfoItem
         title={<Trans>Voting addresses</Trans>}

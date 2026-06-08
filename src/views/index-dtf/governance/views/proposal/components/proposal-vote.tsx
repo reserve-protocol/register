@@ -135,8 +135,9 @@ const ChallengedProposalHelp = () => {
         <HandFist size={16} />
       </div>
       <span className='text-xs'>
+        <h4 className='font-semibold text-warning'>Contested</h4>
         <Trans>
-          This proposal was initially challenged via a fast proposal and has been re-submitted.
+          This was originally a fast proposal that did not pass governance. Please review the details of this contested proposal closely.
         </Trans>
       </span>
     </div>
@@ -154,8 +155,10 @@ const FastProposalHelp = () => {
         <Rocket size={16} />
       </div>
       <span className='text-xs'>
+        <h4 className='font-semibold text-primary'>Fast proposal</h4>
         <Trans>
-          This fast governance proposal can be challenged only. If the threshold is reached, it becomes a contested proposal and resubmitted in a standard voting process.        </Trans>
+          This proposal will automatically pass if it is not challenged by governance. If it is challenged, it will be resubmitted as a standard proposal.
+        </Trans>
       </span>
     </div>
   )

@@ -6,11 +6,12 @@ import { Trans } from '@lingui/react/macro'
 import type {
   IndexDtfProposalSummary
 } from '@reserve-protocol/react-sdk'
-import { Ban, CheckCircle2, Clock, FileX, ThumbsDown, ThumbsUp, UserRoundCheck, UserRoundX } from 'lucide-react'
+import { Ban, CheckCircle2, Clock, FileX, HandFist, ThumbsDown, ThumbsUp, UserRoundCheck, UserRoundX } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import useProposalStages from '../hooks/use-proposal-stages'
 import ContestedBadge from './contest-badge'
 import OptimisticBadge from './optimistic-badge'
+import { useMemo } from 'react'
 
 type IProposalListItem = {
   proposal: IndexDtfProposalSummary
@@ -98,18 +99,16 @@ const ProposalVoteState = ({ proposal }: IProposalListItem) => {
   const isFinished = FINISHED_STATES.has(proposal.state)
   const success = isFinished ? 'text-legend' : 'text-success'
   const fail = isFinished ? 'text-legend' : 'text-destructive'
+  const challenge = isFinished ? 'text-primary' : 'text-warning'
 
   if (proposal.isOptimistic) {
     return <div className='flex items-center gap-2 text-xs'>
-      <ThumbsDown size={14} className={fail} /> <strong className={cn(fail, 'mr-1')}>{formatPercentage(Math.min(proposal.votingState.against, 100))}</strong>
+      <HandFist size={14} className={challenge} /> <strong className={cn(challenge, 'mr-1')}>{formatPercentage(Math.min(proposal.votingState.against, 100))}</strong>
     </div>
   }
 
   return (
     <div className="flex items-center gap-2 text-xs">
-      {proposal.state === PROPOSAL_STATES.ACTIVE && (
-        <div className='mr-1'>{proposal.votingState.participationQuorumReached ? <UserRoundCheck size={14} className='text-success' /> : <UserRoundX size={14} className='text-destructive' />}</div>
-      )}
       <ThumbsUp size={14} className={success} /> <strong className={cn(success, 'mr-1')}>{formatPercentage(proposal.votingState.for)}</strong>
       <ThumbsDown size={14} className={fail} /> <strong className={cn(fail, 'mr-1')}>{formatPercentage(proposal.votingState.against)}</strong>
       <Ban size={14} className='text-legend' /> <span className={cn(isFinished && 'text-legend')}>{formatPercentage(proposal.votingState.abstain)}</span>
@@ -117,15 +116,29 @@ const ProposalVoteState = ({ proposal }: IProposalListItem) => {
   )
 }
 
-const ProposalTitle = ({ proposal }: IProposalListItem) => (
-  <div className='flex items-start gap-3'>
-    <h2 className="font-semibold text-sm md:text-base mr-auto">
-      {getProposalTitle(proposal.description)}
-    </h2>
-    {!!proposal.isOptimistic && <OptimisticBadge />}
-    {!!proposal.wasChallenged && <ContestedBadge />}
-  </div>
-)
+const ProposalTitle = ({ proposal }: IProposalListItem) => {
+  const badge = useMemo(() => {
+    if (ACTIVE_STATES.has(proposal.state)) {
+      if (proposal.isOptimistic) {
+        return <OptimisticBadge />
+      }
+      if (proposal.wasChallenged) {
+        return <ContestedBadge />
+      }
+    }
+
+    return null
+  }, [proposal])
+
+  return (
+    <div className='flex items-start gap-3'>
+      <h2 className="font-semibold text-sm md:text-base mr-auto">
+        {getProposalTitle(proposal.description)}
+      </h2>
+      {badge}
+    </div>
+  )
+}
 
 const ProposalProgress = ({ proposal }: IProposalListItem) => {
   const stages = useProposalStages(proposal)

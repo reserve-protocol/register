@@ -400,9 +400,9 @@ export default function ProposeV5Upgrade() {
 
   const existsFolioUpgrade = validProposalExists(proposals)
 
-  if (existsFolioUpgrade) {
-    return null
-  }
+  // if (existsFolioUpgrade) {
+  //   return null
+  // }
 
   const description = getNextUpgradeDescription(proposals)
 
