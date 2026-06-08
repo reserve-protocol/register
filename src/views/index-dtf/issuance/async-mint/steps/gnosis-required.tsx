@@ -1,10 +1,13 @@
 import { Button } from '@/components/ui/button'
+import useAtomicBatch from '@/hooks/use-atomic-batch'
 import { cn } from '@/lib/utils'
 import { useAccountModal, useConnectModal } from '@rainbow-me/rainbowkit'
+import { useSetAtom } from 'jotai'
 import { ArrowLeft, ArrowUpRight, Info, OctagonAlert } from 'lucide-react'
 import { useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useAccount } from 'wagmi'
+import { wizardStepAtom } from '../atoms'
 
 const LEARN_MORE_URL = 'https://docs.safe.global/home/what-is-safe'
 
@@ -12,12 +15,14 @@ const GnosisRequired = () => {
   const { openConnectModal } = useConnectModal()
   const { openAccountModal } = useAccountModal()
   const { isConnected } = useAccount()
+  const { atomicSupported, isLoading } = useAtomicBatch()
+  const setStep = useSetAtom(wizardStepAtom)
   const [showRequirements, setShowRequirements] = useState(false)
   const [requirementsCardHeight, setRequirementsCardHeight] = useState<number>()
   const cardStackRef = useRef<HTMLDivElement>(null)
   const title = showRequirements
     ? 'Smart Account Required'
-    : 'Use Automated Minting'
+    : 'Automated Minting'
   const body = showRequirements
     ? 'Automated minting requires a wallet with smart account support. Hardware Wallets are not supported.'
     : 'Automated minting creates multiple CoW Swap orders in one transaction and then mints the DTF. Automated minting is recommend for market makers or mints over 50,000 USDC.'
@@ -64,6 +69,11 @@ const GnosisRequired = () => {
     </div>
   )
   const handleShowRequirements = () => {
+    if (isConnected && atomicSupported) {
+      setStep('configure')
+      return
+    }
+
     setRequirementsCardHeight(
       cardStackRef.current?.getBoundingClientRect().height
     )
@@ -206,8 +216,11 @@ const GnosisRequired = () => {
                       size="lg"
                       className="h-[49px] w-full rounded-2xl bg-foreground dark:bg-foreground/10 dark:text-foreground !transition-none"
                       onClick={handleShowRequirements}
+                      disabled={isConnected && isLoading}
                     >
-                      Use Automated Minting
+                      {isConnected && isLoading
+                        ? 'Checking wallet...'
+                        : 'Continue'}
                     </Button>
                   </div>
                 )}

@@ -1,5 +1,3 @@
-import useAtomicBatch from '@/hooks/use-atomic-batch'
-import { Skeleton } from '@/components/ui/skeleton'
 import { cn } from '@/lib/utils'
 import { indexDTFAtom } from '@/state/dtf/atoms'
 import { useAtomValue, useSetAtom } from 'jotai'
@@ -20,19 +18,6 @@ const WIDE_STEPS: WizardStep[] = ['quote-summary', 'success']
 
 const WizardRouter = () => {
   const step = useAtomValue(wizardStepAtom)
-  const { atomicSupported, isLoading } = useAtomicBatch()
-  const setStep = useSetAtom(wizardStepAtom)
-
-  // Auto-skip gnosis check when wallet supports atomic batch
-  useEffect(() => {
-    if (step === 'gnosis-check' && atomicSupported && !isLoading) {
-      setStep('configure')
-    }
-  }, [step, atomicSupported, isLoading, setStep])
-
-  if (isLoading) {
-    return <Skeleton className="mx-auto w-full max-w-[468px] h-[400px]" />
-  }
 
   switch (step) {
     case 'gnosis-check':
