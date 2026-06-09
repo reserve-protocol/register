@@ -63,7 +63,7 @@ const GnosisRequired = () => {
           <img
             src="/svgs/Metamask.svg"
             alt=""
-            className="size-8 rounded-[8px] border border-card shadow-md"
+            className="size-8 rounded-[8px] border border-input shadow-md"
           />
         </a>
         <a
@@ -76,7 +76,7 @@ const GnosisRequired = () => {
           <img
             src="/svgs/Ambire.svg"
             alt=""
-            className="size-8 rounded-[8px] border border-card shadow-md"
+            className="size-8 rounded-[8px] border border-input shadow-md"
           />
         </a>
         <a
@@ -89,7 +89,7 @@ const GnosisRequired = () => {
           <img
             src="/svgs/Safe.svg"
             alt=""
-            className="size-8 rounded-[8px] border border-card shadow-md"
+            className="size-8 rounded-[8px] border border-input shadow-md"
           />
         </a>
       </div>
@@ -100,7 +100,7 @@ const GnosisRequired = () => {
     </div>
   )
   const swapGuidance = (
-    <div className="flex flex-col p-2 bg-background rounded-3xl">
+    <div className="flex flex-col p-2 bg-card/40">
       <div className="flex items-center rounded-full p-2 bg-card justify-between border border-amber-700/20 dark:border-amber-300/25">
         <div className="flex w-fit items-center h-8 gap-2 text-amber-700 dark:text-amber-300">
           <div className="flex items-center rounded-full justify-center h-8 w-8 bg-amber-700/15 border border-amber-700/20 dark:bg-amber-300/10 dark:border-amber-300/25">
@@ -161,12 +161,12 @@ const GnosisRequired = () => {
       <div className="flex min-h-[calc(100vh-136px)] w-full items-center lg:min-h-[calc(100vh-100px)]">
         <div
           ref={cardStackRef}
-          className="w-full max-w-[468px] mx-auto flex flex-col gap-2"
+          className="w-full max-w-[468px] mx-auto flex flex-col rounded-4xl border-2 border-card overflow-hidden"
         >
           {!showRequirements && swapGuidance}
           <div
             className={cn(
-              'p-1 rounded-4xl overflow-hidden w-full flex flex-col transition-[min-height] duration-700 ease-out',
+              'p-1 overflow-hidden w-full flex flex-col transition-[min-height] duration-700 ease-out',
               showRequirements ? 'bg-background/70' : 'bg-card'
             )}
             style={
