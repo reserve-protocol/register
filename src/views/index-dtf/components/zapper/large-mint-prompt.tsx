@@ -95,7 +95,7 @@ const LargeMintPrompt = ({ mode, dtfAddress, chain }: LargeMintPromptProps) => {
     if (!(isLarge || errorCondition)) setDismissed(false)
   }, [isLarge])
 
-  const show = (isLarge || errorCondition) && !dismissed
+  const show = !!(isLarge || errorCondition) && !dismissed
 
   const mintRoute = getFolioRoute(
     dtfAddress,

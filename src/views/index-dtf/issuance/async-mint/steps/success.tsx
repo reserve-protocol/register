@@ -109,7 +109,9 @@ const Success = () => {
   const receiveAmount = isMint ? sharesAmount : receivedQuoteTokenAmount
   const receiveSymbol = isMint ? indexDTF.token.symbol : inputToken.symbol
   const receiveAddress = isMint ? indexDTF.id : inputToken.address
-  const receiveValueUsd = sharesAmount * (indexDTFPrice ?? 0)
+  const receiveValueUsd = isMint
+    ? sharesAmount * (indexDTFPrice ?? 0)
+    : receivedQuoteTokenAmount
 
   const unusedBuffer = isMint ? Math.max(paidAmount - spentAmount, 0) : 0
 
@@ -199,7 +201,7 @@ const Success = () => {
                     </span>
                   </div>
                 </div>
-                {isMint && receiveValueUsd > 0 && (
+                {receiveValueUsd > 0 && (
                   <div className="mt-2 text-lg font-light text-muted-foreground">
                     ≈ ${formatCurrency(receiveValueUsd)}
                   </div>

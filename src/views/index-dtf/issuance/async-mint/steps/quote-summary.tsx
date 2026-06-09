@@ -820,7 +820,7 @@ const QuoteSummary = () => {
                             ? `${formatCurrency(remainingInputTokenAmount)} ${inputToken.symbol} + $${formatCurrency(walletCollateralUsedUsd)} existing collateral`
                             : isMint
                               ? `$${formatCurrency(provideValueUsd)}`
-                              : `${formatTokenAmount(parsedPay)} ${indexDTF?.token.symbol}`}
+                              : `$${formatCurrency(provideValueUsd)}`}
                         </div>
                       </>
                     )}
@@ -1302,19 +1302,25 @@ const QuoteSummary = () => {
                     </div>
                   </div>
                 </div>
-                {isMint && !quotesLoading && (
+                {!quotesLoading && (
                   <div className="mt-2 flex items-center justify-between gap-4 text-sm font-light text-muted-foreground">
                     <div>
-                      {showReadyMintOutput ? '' : '~'}$
-                      {formatCurrency(outputUsdValue)}
-                      {showReadyMintOutput
-                        ? ` (${outputVsInputDeltaLabel} vs original input)`
-                        : null}
-                      {!showReadyMintOutput &&
-                        expectedOutputImpact !== undefined &&
-                        ` (${formatPriceImpact(expectedOutputImpact)})`}
+                      {isMint ? (
+                        <>
+                          {showReadyMintOutput ? '' : '~'}$
+                          {formatCurrency(outputUsdValue)}
+                          {showReadyMintOutput
+                            ? ` (${outputVsInputDeltaLabel} vs original input)`
+                            : null}
+                          {!showReadyMintOutput &&
+                            expectedOutputImpact !== undefined &&
+                            ` (${formatPriceImpact(expectedOutputImpact)})`}
+                        </>
+                      ) : (
+                        <>${formatCurrency(receiveUsdValue)}</>
+                      )}
                     </div>
-                    {showReadyMintOutput && (
+                    {isMint && showReadyMintOutput && (
                       <div className="flex shrink-0 items-center gap-1 text-right">
                         <span>
                           +${formatCurrency(leftoverCollateralUsd)} leftover
