@@ -139,6 +139,10 @@ const config = {
           from: { right: '0' },
           to: { right: '-395px' },
         },
+        'slide-up': {
+          '0%': { opacity: '0', transform: 'translateY(12px)' },
+          '100%': { opacity: '1', transform: 'translateY(0)' },
+        },
         'proposal-bar-sweep': {
           '0%': { transform: 'translateX(-100%)' },
           '100%': { transform: 'translateX(100%)' },
@@ -154,6 +158,7 @@ const config = {
         'spin-slow': 'spin-slow 4s linear infinite',
         'slide-left': 'slide-left 0.5s forwards',
         'slide-out-right': 'slide-out-right 0.5s forwards',
+        'slide-up': 'slide-up 0.4s ease-out forwards',
         'proposal-bar-sweep': 'proposal-bar-sweep 5s ease-in-out infinite',
       },
     },
