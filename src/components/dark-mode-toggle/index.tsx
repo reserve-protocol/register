@@ -33,7 +33,7 @@ const getInitialMode = () => {
     : MODES.LIGHT
 }
 
-const DarkModeToggle = ({ className }: { className?: string }) => {
+const DarkModeToggle = () => {
   const [mode, setMode] = useState(getInitialMode)
 
   const { r, transform, cx, cy, opacity } =
@@ -65,18 +65,22 @@ const DarkModeToggle = ({ className }: { className?: string }) => {
   }, [])
 
   return (
-    <div className={className} onClick={handleToggle}>
+    <button
+      type="button"
+      aria-label="Toggle theme"
+      onClick={handleToggle}
+      className="inline-flex items-center justify-center h-8 w-8 rounded-md cursor-pointer hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+    >
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        width="24"
-        height="24"
+        width="16"
+        height="16"
         viewBox="0 0 24 24"
         fill="none"
         strokeWidth="2"
         strokeLinecap="round"
         strokeLinejoin="round"
         style={{
-          cursor: 'pointer',
           transform,
           transition: TRANSITION,
         }}
@@ -111,7 +115,7 @@ const DarkModeToggle = ({ className }: { className?: string }) => {
           <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
         </g>
       </svg>
-    </div>
+    </button>
   )
 }
 

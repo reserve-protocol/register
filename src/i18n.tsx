@@ -19,6 +19,16 @@ export const SUPPORTED_LOCALES: SupportedLocale[] = import.meta.env.DEV
   ? ['en', 'es', 'ko', 'zh', 'pseudo']
   : ['en', 'es', 'ko', 'zh']
 
+// Each language's name written in its own language, so the switcher is legible
+// no matter which locale is currently active.
+export const LOCALE_LABELS: Record<SupportedLocale, string> = {
+  en: 'English',
+  es: 'Español',
+  ko: '한국어',
+  zh: '中文',
+  pseudo: 'Pseudo',
+}
+
 export function isSupportedLocale(value: unknown): value is SupportedLocale {
   return (
     typeof value === 'string' && SUPPORTED_LOCALES.includes(value as SupportedLocale)

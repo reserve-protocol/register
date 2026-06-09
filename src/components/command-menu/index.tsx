@@ -11,7 +11,6 @@ import Skeleton from 'react-loading-skeleton'
 import { Link, useNavigate } from 'react-router-dom'
 import ChainLogo from '../icons/ChainLogo'
 import TokenLogo from '../token-logo'
-import { Button } from '../ui/button'
 import {
   CommandDialog,
   CommandEmpty,
@@ -89,9 +88,14 @@ const CommandMenu = () => {
 
   return (
     <>
-      <Button variant="ghost" size="icon" onClick={() => setOpen(true)}>
+      <button
+        type="button"
+        aria-label={t`Search`}
+        onClick={() => setOpen(true)}
+        className="inline-flex items-center justify-center h-8 w-8 rounded-md cursor-pointer hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+      >
         <Search size={16} strokeWidth={1.5} />
-      </Button>
+      </button>
       <CommandDialog open={open} onOpenChange={setOpen}>
         <div className="text-legend absolute top-3 right-3">
           {navigator.userAgent.includes('Windows') ? 'Ctrl+K' : '⌘K'}

@@ -4113,7 +4113,7 @@ msgstr ""
 msgid "Index DTF successfully created"
 msgstr ""
 
-#: src/components/command-menu/index.tsx:67
+#: src/components/command-menu/index.tsx:66
 #: src/views/home/components/dtf-tabs.tsx:24
 #: src/views/portfolio-page/components/portfolio-breakdown.tsx:36
 #: src/views/portfolio-page/components/portfolio-chart.tsx:66
@@ -5225,7 +5225,7 @@ msgstr ""
 msgid "No rebalances found"
 msgstr ""
 
-#: src/components/command-menu/index.tsx:117
+#: src/components/command-menu/index.tsx:121
 msgid "No results found."
 msgstr ""
 
@@ -6917,6 +6917,7 @@ msgstr ""
 msgid "Scheduled event"
 msgstr ""
 
+#: src/components/command-menu/index.tsx:93
 #: src/views/internal/dtf-list/components/dtf-date-chain-filters.tsx:50
 #: src/views/tokens/components/TableFilters.tsx:20
 msgid "Search"
@@ -6948,7 +6949,7 @@ msgstr ""
 msgid "Search DTF name or symbol"
 msgstr ""
 
-#: src/components/command-menu/index.tsx:100
+#: src/components/command-menu/index.tsx:104
 msgid "Search for a DTF..."
 msgstr ""
 
@@ -6968,6 +6969,10 @@ msgstr ""
 #: src/views/index-dtf/deploy/steps/basket/basket-csv-setup.tsx:213
 #: src/views/index-dtf/governance/views/propose/basket/components/proposal-basket-setup/basket-csv-setup.tsx:244
 msgid "Select a CSV file to upload"
+msgstr ""
+
+#: src/components/layout/header/components/language-selector.tsx:28
+msgid "Select language"
 msgstr ""
 
 #: src/components/ui/multiselect-dropdown.tsx:167
@@ -9615,7 +9620,7 @@ msgstr ""
 msgid "Yield DTF Staking"
 msgstr ""
 
-#: src/components/command-menu/index.tsx:68
+#: src/components/command-menu/index.tsx:67
 #: src/views/home/components/dtf-tabs.tsx:30
 #: src/views/portfolio-page/components/portfolio-breakdown.tsx:37
 #: src/views/portfolio-page/components/portfolio-chart.tsx:65
