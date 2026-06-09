@@ -6,6 +6,7 @@ import {
   indexDTFPriceAtom,
 } from '@/state/dtf/atoms'
 import { formatCurrency } from '@/utils'
+import { Trans } from '@lingui/react/macro'
 import { useAtomValue } from 'jotai'
 import { ArrowDown, ArrowUp } from 'lucide-react'
 import { useEffect, useMemo } from 'react'
@@ -52,7 +53,9 @@ const DTFBalance = () => {
 
   return (
     <div className="flex flex-col gap-2 font-normal -mt-4">
-      <div>Balance</div>
+      <div>
+        <Trans>Balance</Trans>
+      </div>
       <div className="flex gap-2 justify-between items-center">
         <div className="font-semibold text-3xl">
           {balanceValue !== undefined ? (
@@ -80,7 +83,7 @@ const DTFBalance = () => {
         <div className="text-primary pr-0.5">
           ${formatCurrency(Math.abs(variationValue ?? 0), 2)}
         </div>{' '}
-        Past week
+        <Trans>Past week</Trans>
       </div>
     </div>
   )

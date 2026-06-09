@@ -8,8 +8,8 @@ import {
 } from '../shared'
 import { Trans } from '@lingui/react/macro'
 import { useAtom, useSetAtom } from 'jotai'
-import { Check, Circle } from 'lucide-react'
-import { useEffect, useLayoutEffect, useState } from 'react'
+import { Check } from 'lucide-react'
+import { type ReactNode, useEffect, useLayoutEffect, useState } from 'react'
 import type { Address, Hex } from 'viem'
 
 type ProposalTypeSelectorProps = {
@@ -26,8 +26,8 @@ const ProposalTypeOption = ({
   onSelect,
 }: {
   type: ProposalType
-  title: string
-  description: string
+  title: ReactNode
+  description: ReactNode
   selected: boolean
   onSelect: (type: ProposalType) => void
 }) => (
@@ -44,7 +44,9 @@ const ProposalTypeOption = ({
     <span
       className={cn(
         'mt-1 flex h-6 w-6 shrink-0 items-center justify-center rounded-full border',
-        selected ? 'border-primary text-primary' : 'border-border text-muted-foreground'
+        selected
+          ? 'border-primary text-primary'
+          : 'border-border text-muted-foreground'
       )}
     >
       {selected && <Check size={16} />}
@@ -99,22 +101,30 @@ const ProposalTypeSelector = ({
         </h3>
         <p className="mt-1 text-sm text-foreground">
           <Trans>
-            We have detected that you have permission to expedite proposals through fast governance. Choose from the following proposal types.
+            We have detected that you have permission to expedite proposals
+            through fast governance. Choose from the following proposal types.
           </Trans>
         </p>
       </div>
       <div className="divide-y border bg-card rounded-2xl m-1">
         <ProposalTypeOption
           type="standard"
-          title="Standard Governance"
-          description="Governance with an execution delay greater than 1 week unstaking delay"
+          title={<Trans>Standard Governance</Trans>}
+          description={
+            <Trans>
+              Governance with an execution delay greater than 1 week unstaking
+              delay
+            </Trans>
+          }
           selected={proposalType === 'standard'}
           onSelect={setProposalType}
         />
         <ProposalTypeOption
           type="optimistic"
-          title="Fast Governance"
-          description="For approved governors to fast-track proposals."
+          title={<Trans>Fast Governance</Trans>}
+          description={
+            <Trans>For approved governors to fast-track proposals.</Trans>
+          }
           selected={proposalType === 'optimistic'}
           onSelect={setProposalType}
         />

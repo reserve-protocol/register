@@ -1,24 +1,25 @@
 import { LockKeyhole, LockKeyholeOpen, UsersRound } from 'lucide-react'
+import { Trans } from '@lingui/react/macro'
 import type { VoteLockTab } from './atoms'
 
 export const VOTE_LOCK_TABS = [
   {
     key: 'lock',
-    label: 'Vote-lock',
+    label: <Trans>Vote-lock</Trans>,
     icon: <LockKeyhole size={16} />,
   },
   {
     key: 'unlock',
-    label: 'Unlock',
+    label: <Trans>Unlock</Trans>,
     icon: <LockKeyholeOpen size={16} />,
   },
   {
     key: 'delegate',
-    label: 'Delegate',
+    label: <Trans>Delegate</Trans>,
     icon: <UsersRound size={16} />,
   },
 ] as const satisfies readonly {
   key: VoteLockTab
-  label: string
+  label: JSX.Element
   icon: JSX.Element
 }[]

@@ -64,7 +64,9 @@ const columns: ColumnDef<PortfolioStakedRSR, any>[] = [
     id: 'apy',
     accessorKey: 'apy',
     header: ({ column }) => (
-      <SorteableButton column={column}>APY</SorteableButton>
+      <SorteableButton column={column}>
+        <Trans>APY</Trans>
+      </SorteableButton>
     ),
     cell: ({ row }) => {
       const val = row.original.apy

@@ -7,7 +7,7 @@ import { chainIdAtom, walletAtom } from '@/state/atoms'
 import { indexDTFAtom } from '@/state/dtf/atoms'
 import { formatCurrency, formatPercentage } from '@/utils'
 import { ExplorerDataType, getExplorerLink } from '@/utils/getExplorerLink'
-import { Trans } from '@lingui/react/macro'
+import { Trans, useLingui } from '@lingui/react/macro'
 import {
   type IndexDtfVoterState,
   useIndexDtfVoterState,
@@ -25,18 +25,18 @@ export interface IInfoItem {
 }
 
 // TODO: duplicated component on governance-stats.tsx.. but is alright
-const InfoItem = ({
-  title,
-  text,
-  className,
-}: IInfoItem) => (
-  <div className='flex flex-col gap-4 py-4 px-6 border-b'>
+const InfoItem = ({ title, text, className }: IInfoItem) => (
+  <div className="flex flex-col gap-4 py-4 px-6 border-b">
     <div className={cn('flex items-center', className)}>
       <div>
         <div className="flex items-center">
           <span className="text-legend text-sm">{title}</span>
         </div>
-        {text === undefined ? <Skeleton className="h-4 w-24" /> : <strong>{text}</strong>}
+        {text === undefined ? (
+          <Skeleton className="h-4 w-24" />
+        ) : (
+          <strong>{text}</strong>
+        )}
       </div>
     </div>
   </div>
@@ -51,6 +51,7 @@ const DelegateItem = ({
   address: Address | undefined
   text: string | undefined
 }) => {
+  const { t } = useLingui()
   const chainId = useAtomValue(chainIdAtom)
 
   return (
@@ -81,7 +82,7 @@ const DelegateItem = ({
         <CurrentDtfVoteLock initialTab="delegate">
           <button
             type="button"
-            aria-label="Change delegate"
+            aria-label={t`Change delegate`}
             className="p-1 bg-muted rounded-full hover:text-primary transition-colors"
           >
             <Pencil size={14} />
@@ -100,14 +101,16 @@ const VotingPower = ({
   const dtf = useAtomValue(indexDTFAtom)
   const voteLocked = voterState
     ? formatCurrency(Number(voterState.balance.formatted), 1, {
-      notation: 'compact',
-      compactDisplay: 'short',
-    })
+        notation: 'compact',
+        compactDisplay: 'short',
+      })
     : undefined
 
   return (
     <div className="flex flex-col px-6 py-4 border-b">
-      <span className="text-legend text-sm">Vote locked</span>
+      <span className="text-legend text-sm">
+        <Trans>Vote locked</Trans>
+      </span>
       {voteLocked === undefined ? (
         <Skeleton className="h-4 w-24" />
       ) : (
@@ -126,10 +129,10 @@ const useVoterState = () => {
   const params =
     account && dtf?.stToken?.id
       ? {
-        chainId: dtf.chainId,
-        stToken: dtf.stToken.id,
-        account,
-      }
+          chainId: dtf.chainId,
+          stToken: dtf.stToken.id,
+          account,
+        }
       : undefined
 
   const { data: voterState } = useIndexDtfVoterState(params)
@@ -141,44 +144,47 @@ const GovernanceAccountInfo = () => {
   const account = useAtomValue(walletAtom)
   const dtf = useAtomValue(indexDTFAtom)
   const voterState = useVoterState()
+  const { t } = useLingui()
   const normalDelegateAddress =
     voterState?.delegate && voterState.delegate !== zeroAddress
       ? voterState.delegate
       : undefined
   const optimisticDelegateAddress =
-    voterState?.optimisticDelegate && voterState.optimisticDelegate !== zeroAddress
+    voterState?.optimisticDelegate &&
+    voterState.optimisticDelegate !== zeroAddress
       ? voterState.optimisticDelegate
       : undefined
   const normalDelegateName = useEnsName(normalDelegateAddress)
   const optimisticDelegateName = useEnsName(optimisticDelegateAddress)
   const isOptimisticGovernance = !!dtf?.stToken?.governance?.isOptimistic
-  const votingWeight = voterState ? formatPercentage(voterState.votingWeight) : undefined
+  const votingWeight = voterState
+    ? formatPercentage(voterState.votingWeight)
+    : undefined
   const normalDelegate = voterState
     ? normalDelegateAddress
       ? normalDelegateName
-      : 'Not delegated'
+      : t`Not delegated`
     : undefined
   const optimisticDelegate = voterState
     ? optimisticDelegateAddress
       ? optimisticDelegateName
-      : 'Not delegated'
+      : t`Not delegated`
     : undefined
 
   if (!account) return null
 
   return (
     <div className="flex flex-col rounded-3xl bg-background">
-      <div className='flex items-center px-4 pt-4 pb-2 gap-4'>
+      <div className="flex items-center px-4 pt-4 pb-2 gap-4">
         <div className="border rounded-full border-foreground p-1">
           <Vote size={14} />
         </div>
-        <h4 className='text-xl font-semibold text-primary'><Trans>Voting Power</Trans></h4>
+        <h4 className="text-xl font-semibold text-primary">
+          <Trans>Voting Power</Trans>
+        </h4>
       </div>
       <VotingPower voterState={voterState} />
-      <InfoItem
-        title={<Trans>Voting Weight</Trans>}
-        text={votingWeight}
-      />
+      <InfoItem title={<Trans>Voting Weight</Trans>} text={votingWeight} />
       {isOptimisticGovernance && (
         <DelegateItem
           title={<Trans>Optimistic delegate</Trans>}

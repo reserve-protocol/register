@@ -1,5 +1,6 @@
 import TransactionButton from '@/components/ui/transaction-button'
 import { walletAtom } from '@/state/atoms'
+import { useLingui } from '@lingui/react/macro'
 import {
   prepareVoteLockDelegate,
   prepareVoteLockDelegateOptimistic,
@@ -31,6 +32,7 @@ const SubmitDelegateButton = ({
   isOptimisticGovernance: boolean
   onSuccess?: () => void
 }) => {
+  const { t } = useLingui()
   const account = useAtomValue(walletAtom)
   const stToken = useAtomValue(stTokenAtom)
   const voteLockState = useAtomValue(voteLockStateAtom)
@@ -102,7 +104,7 @@ const SubmitDelegateButton = ({
 
     if (hasNormalChange) {
       nextCalls.push({
-        label: 'normal delegate',
+        label: t`normal delegate`,
         call: prepareVoteLockDelegate({
           chainId: stToken.chainId,
           stToken: stToken.id,
@@ -113,7 +115,7 @@ const SubmitDelegateButton = ({
 
     if (hasOptimisticChange && normalizedOptimisticDelegate) {
       nextCalls.push({
-        label: 'fast delegate',
+        label: t`fast delegate`,
         call: prepareVoteLockDelegateOptimistic({
           chainId: stToken.chainId,
           stToken: stToken.id,
@@ -154,7 +156,7 @@ const SubmitDelegateButton = ({
     setCalls([])
     setCurrentCallIndex(0)
     onSuccess?.()
-    toast.success('Delegation updated', { duration: 8000 })
+    toast.success(t`Delegation updated`, { duration: 8000 })
   }, [
     receipt?.status,
     receipt?.transactionHash,
@@ -163,6 +165,7 @@ const SubmitDelegateButton = ({
     calls,
     currentCallIndex,
     onSuccess,
+    t,
   ])
 
   return (
@@ -172,11 +175,11 @@ const SubmitDelegateButton = ({
       loading={isLoading}
       loadingText={
         currentCall
-          ? `Updating ${currentCall.label}...`
-          : 'Pending, sign in wallet'
+          ? t`Updating ${currentCall.label}...`
+          : t`Pending, sign in wallet`
       }
       onClick={write}
-      text="Update"
+      text={t`Update`}
       className="w-full"
       error={error || txError}
     />

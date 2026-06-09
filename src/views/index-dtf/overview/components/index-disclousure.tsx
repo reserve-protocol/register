@@ -20,26 +20,28 @@ import { Button } from '@/components/ui/button'
 import { indexDTFAtom } from '@/state/dtf/atoms'
 import { useAtomValue } from 'jotai'
 import { ChainId } from '@/utils/chains'
-import { Trans } from '@lingui/react/macro'
+import type { MessageDescriptor } from '@lingui/core'
+import { msg } from '@lingui/core/macro'
+import { Trans, useLingui } from '@lingui/react/macro'
 
 // --- Whitepaper config ---
 // To add a new token: add a new entry keyed by lowercase address.
 // To add a new version: prepend to versions[] (first = current).
 
 type WhitepaperVersion = {
-  label: string
+  label: MessageDescriptor
   url: string
   date?: string
-  description: string
+  description: MessageDescriptor
   changes?: {
-    title: string
-    items: { label: string; text: string }[]
+    title: MessageDescriptor
+    items: { label: MessageDescriptor; text: MessageDescriptor }[]
   }
 }
 
 type WhitepaperConfig = {
   tokenName: string
-  description: string
+  description: MessageDescriptor
   chainId: number
   versions: WhitepaperVersion[]
 }
@@ -47,73 +49,73 @@ type WhitepaperConfig = {
 const WHITEPAPER_CONFIG: Record<string, WhitepaperConfig> = {
   '0x4da9a0f397db1397902070f93a4d6ddbc0e0e6e8': {
     tokenName: 'CFB',
-    description: 'Official documentation for the CFB LCAP token',
+    description: msg`Official documentation for the CFB LCAP token`,
     chainId: ChainId.Base,
     versions: [
       {
-        label: 'Current Version (v2)',
+        label: msg`Current Version (v2)`,
         url: 'https://storage.reserve.org/cfb-whitepaper-v2.pdf',
         date: 'October 2025',
-        description: 'Updated whitepaper documentation',
+        description: msg`Updated whitepaper documentation`,
         changes: {
-          title: 'Summary of Changes from v1',
+          title: msg`Summary of Changes from v1`,
           items: [
             {
-              label: 'Formatting Guidance',
-              text: 'Removed the column on forms and standards which had guidelines on formatting standards to the white paper.',
+              label: msg`Formatting Guidance`,
+              text: msg`Removed the column on forms and standards which had guidelines on formatting standards to the white paper.`,
             },
             {
-              label: 'Title Update',
-              text: 'Included the token abbreviation "CFB Token" in the title.',
+              label: msg`Title Update`,
+              text: msg`Included the token abbreviation "CFB Token" in the title.`,
             },
             {
-              label: 'Dates Added',
-              text: 'Inserted missing dates - notification date, admission to trading start date, and publication date (01./F.9/F.10).',
+              label: msg`Dates Added`,
+              text: msg`Inserted missing dates - notification date, admission to trading start date, and publication date (01./F.9/F.10).`,
             },
             {
-              label: 'Launch Status',
-              text: 'Updated references to reflect that the token was launched on 24 September 2025 (Section 10).',
+              label: msg`Launch Status`,
+              text: msg`Updated references to reflect that the token was launched on 24 September 2025 (Section 10).`,
             },
             {
-              label: 'Minor Text Edit',
-              text: 'Removed the word "ongoing" from Section E.18 (no material impact).',
+              label: msg`Minor Text Edit`,
+              text: msg`Removed the word "ongoing" from Section E.18 (no material impact).`,
             },
             {
-              label: 'Trading Platforms',
-              text: 'Added Kraken as an additional trading platform, including its market identifier code ("MIC") (E.33/34).',
+              label: msg`Trading Platforms`,
+              text: msg`Added Kraken as an additional trading platform, including its market identifier code ("MIC") (E.33/34).`,
             },
             {
-              label: 'Token Supply',
-              text: 'Corrected F.6 to reflect that the CFB token has a dynamic collateral-based supply mechanism, not a fixed supply.',
+              label: msg`Token Supply`,
+              text: msg`Corrected F.6 to reflect that the CFB token has a dynamic collateral-based supply mechanism, not a fixed supply.`,
             },
             {
-              label: 'Audit Status',
-              text: 'Clarified in H.8/H.9 that the LCAP token contracts are based on the Reserve Index Protocol factory smart contracts, which have been audited by Trust Security, Cantina, and Trail of Bits with no critical issues ever found.',
+              label: msg`Audit Status`,
+              text: msg`Clarified in H.8/H.9 that the LCAP token contracts are based on the Reserve Index Protocol factory smart contracts, which have been audited by Trust Security, Cantina, and Trail of Bits with no critical issues ever found.`,
             },
             {
-              label: 'Energy Consumption',
-              text: 'Expanded J.1 to include energy usage data and the sources and methodologies used for its calculation.',
+              label: msg`Energy Consumption`,
+              text: msg`Expanded J.1 to include energy usage data and the sources and methodologies used for its calculation.`,
             },
           ],
         },
       },
       {
-        label: 'Previous Version (v1)',
+        label: msg`Previous Version (v1)`,
         url: 'https://storage.reserve.org/cfb-whitepaper.pdf',
-        description: 'Original whitepaper documentation',
+        description: msg`Original whitepaper documentation`,
       },
     ],
   },
   '0x2f8a339b5889ffac4c5a956787cda593b3c36867': {
     tokenName: 'CMC20',
-    description: 'Official documentation for the CMC20 token',
+    description: msg`Official documentation for the CMC20 token`,
     chainId: ChainId.BSC,
     versions: [
       {
-        label: 'Current Version (v1)',
+        label: msg`Current Version (v1)`,
         url: 'https://storage.reserve.org/cmc20-whitepaper.pdf',
         date: 'March 2026',
-        description: 'CMC20 whitepaper documentation',
+        description: msg`CMC20 whitepaper documentation`,
       },
     ],
   },
@@ -121,10 +123,10 @@ const WHITEPAPER_CONFIG: Record<string, WhitepaperConfig> = {
 
 // Required for legal compliance
 const WhitepaperModal = () => {
+  const { t } = useLingui()
   const dtf = useAtomValue(indexDTFAtom)
 
-  const config =
-    dtf?.id ? WHITEPAPER_CONFIG[dtf.id.toLowerCase()] : undefined
+  const config = dtf?.id ? WHITEPAPER_CONFIG[dtf.id.toLowerCase()] : undefined
 
   if (!config || dtf?.chainId !== config.chainId) return null
 
@@ -149,7 +151,7 @@ const WhitepaperModal = () => {
                 )}
               </DialogTitle>
               <DialogDescription className="text-muted-foreground">
-                {config.description}
+                {t(config.description)}
               </DialogDescription>
             </DialogHeader>
 
@@ -165,7 +167,7 @@ const WhitepaperModal = () => {
                         className={`h-5 w-5 ${i === 0 ? 'text-primary' : 'text-muted-foreground'}`}
                       />
                       <h3 className="font-semibold text-lg">
-                        {version.label}
+                        {t(version.label)}
                       </h3>
                     </div>
                     <a
@@ -184,7 +186,7 @@ const WhitepaperModal = () => {
                   )}
                   {!version.date && !version.changes && (
                     <p className="text-xs text-muted-foreground mt-2">
-                      {version.description}
+                      {t(version.description)}
                     </p>
                   )}
 
@@ -192,19 +194,19 @@ const WhitepaperModal = () => {
                     <Accordion type="single" collapsible>
                       <AccordionItem value="changes" className="border-0">
                         <AccordionTrigger className="text-sm font-medium hover:no-underline py-2 px-0">
-                          {version.changes.title}
+                          {t(version.changes.title)}
                         </AccordionTrigger>
                         <AccordionContent>
                           <ul className="space-y-2 text-xs pt-2">
                             {version.changes.items.map((item) => (
                               <li
-                                key={item.label}
+                                key={item.label.id ?? item.label.message}
                                 className="leading-relaxed"
                               >
                                 <span className="font-bold">
-                                  {item.label}:
+                                  {t(item.label)}:
                                 </span>{' '}
-                                {item.text}
+                                {t(item.text)}
                               </li>
                             ))}
                           </ul>
@@ -239,7 +241,7 @@ const IndexDisclousure = () => {
       </div>
       <div className="flex flex-col gap-2">
         <p className="text-legend">
-          By using{' '}
+          <Trans>By using</Trans>{' '}
           <a
             href="https://app.reserve.org"
             target="_blank"
@@ -247,47 +249,55 @@ const IndexDisclousure = () => {
           >
             app.reserve.org
           </a>{' '}
-          (the “Website”), you expressly acknowledge that you have read and
-          understood the{' '}
+          <Trans>
+            (the “Website”), you expressly acknowledge that you have read and
+            understood the
+          </Trans>{' '}
           <a
             href="https://reserve.org/terms_and_conditions/"
             target="_blank"
             className="text-primary"
           >
-            Terms and Conditions
+            <Trans>Terms and Conditions</Trans>
           </a>{' '}
-          and agree to the terms therein. ABC Labs, LLC ("ABC Labs") created the
-          Website to help facilitate interaction with the Reserve protocol,
-          including the minting and redeeming of DTFs. However, the Website is
-          only one of several ways in which you can interact with the Reserve
-          protocol. ABC Labs has neither created nor deployed any DTF and your
-          ability to interact with specific DTFs via the Website in no way
-          suggests that a DTF is endorsed by ABC Labs. In fact, ABC Labs assumes
-          no liability for your use of the Website and interaction with the
-          Reserve protocol, as covered in the Terms and Conditions.
+          <Trans>
+            and agree to the terms therein. ABC Labs, LLC ("ABC Labs") created
+            the Website to help facilitate interaction with the Reserve
+            protocol, including the minting and redeeming of DTFs. However, the
+            Website is only one of several ways in which you can interact with
+            the Reserve protocol. ABC Labs has neither created nor deployed any
+            DTF and your ability to interact with specific DTFs via the Website
+            in no way suggests that a DTF is endorsed by ABC Labs. In fact, ABC
+            Labs assumes no liability for your use of the Website and
+            interaction with the Reserve protocol, as covered in the Terms and
+            Conditions.
+          </Trans>
         </p>
         <p className="text-legend">
-          The information provided on the Website comes from on-chain sources.
-          Past performance is not indicative of future results. Although index
-          DTFs are intended to track indexes, their ability to successfully
-          track indexes are dependent on the governance structure of the DTF and
-          the governance’s ability to make appropriate trades. There is no
-          guarantee that such trades will be successful or will track its
-          corresponding index exactly. There are many risks associated with
-          digital assets, including but not limited to security risk,
-          counterparty risk, volatility risk, conflicts of interest, and many
-          more. DTFs are no exception. By using the Website, you agree that your
-          interaction with any DTFs is solely at your own risk and the Website
-          and DTFs come as is, without any warranty or condition of any kind.
+          <Trans>
+            The information provided on the Website comes from on-chain sources.
+            Past performance is not indicative of future results. Although index
+            DTFs are intended to track indexes, their ability to successfully
+            track indexes are dependent on the governance structure of the DTF
+            and the governance’s ability to make appropriate trades. There is no
+            guarantee that such trades will be successful or will track its
+            corresponding index exactly. There are many risks associated with
+            digital assets, including but not limited to security risk,
+            counterparty risk, volatility risk, conflicts of interest, and many
+            more. DTFs are no exception. By using the Website, you agree that
+            your interaction with any DTFs is solely at your own risk and the
+            Website and DTFs come as is, without any warranty or condition of
+            any kind.
+          </Trans>
         </p>
         <p className="text-legend">
-          To learn more about the risks associated with DTFs,{' '}
+          <Trans>To learn more about the risks associated with DTFs,</Trans>{' '}
           <a
             href="https://reserve.org/additional_risks/"
             target="_blank"
             className="text-primary"
           >
-            please see here.{' '}
+            <Trans>please see here.</Trans>{' '}
           </a>
           <WhitepaperModal />
         </p>

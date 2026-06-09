@@ -1,3 +1,5 @@
+import type { MessageDescriptor } from '@lingui/core'
+import { msg } from '@lingui/core/macro'
 import { parseEther, toFunctionSelector } from 'viem'
 import type { Address, Hex } from 'viem'
 
@@ -87,72 +89,72 @@ export type OptimisticActionId =
 
 export type OptimisticAction = {
   id: OptimisticActionId
-  label: string
-  description: string
+  label: MessageDescriptor
+  description: MessageDescriptor
   selector: Hex
 }
 
 export const OPTIMISTIC_ACTIONS: OptimisticAction[] = [
   {
     id: 'startRebalance',
-    label: 'Start rebalance',
-    description: 'Allow optimistic proposals to start basket rebalances.',
+    label: msg`Start rebalance`,
+    description: msg`Allow optimistic proposals to start basket rebalances.`,
     selector: toFunctionSelector(
       'startRebalance((address,(uint256,uint256,uint256),(uint256,uint256),uint256,bool)[],(uint256,uint256,uint256),uint256,uint256)'
     ),
   },
   {
     id: 'setAuctionLength',
-    label: 'Auction length',
-    description: 'Allow optimistic proposals to change auction duration.',
+    label: msg`Auction length`,
+    description: msg`Allow optimistic proposals to change auction duration.`,
     selector: toFunctionSelector('setAuctionLength(uint256)'),
   },
   {
     id: 'setBidsEnabled',
-    label: 'Permissionless bids',
-    description: 'Allow optimistic proposals to enable or disable direct bids.',
+    label: msg`Permissionless bids`,
+    description: msg`Allow optimistic proposals to enable or disable direct bids.`,
     selector: toFunctionSelector('setBidsEnabled(bool)'),
   },
   {
     id: 'setFeeRecipients',
-    label: 'Fee recipients',
-    description: 'Allow optimistic proposals to change fee distribution.',
+    label: msg`Fee recipients`,
+    description: msg`Allow optimistic proposals to change fee distribution.`,
     selector: toFunctionSelector('setFeeRecipients((address,uint96)[])'),
   },
   {
     id: 'setMandate',
-    label: 'Mandate',
-    description: 'Allow optimistic proposals to update the DTF mandate.',
+    label: msg`Mandate`,
+    description: msg`Allow optimistic proposals to update the DTF mandate.`,
     selector: toFunctionSelector('setMandate(string)'),
   },
   {
     id: 'setMintFee',
-    label: 'Mint fee',
-    description: 'Allow optimistic proposals to update the mint fee.',
+    label: msg`Mint fee`,
+    description: msg`Allow optimistic proposals to update the mint fee.`,
     selector: toFunctionSelector('setMintFee(uint256)'),
   },
   {
     id: 'setName',
-    label: 'Token name',
-    description: 'Allow optimistic proposals to rename the DTF token.',
+    label: msg`Token name`,
+    description: msg`Allow optimistic proposals to rename the DTF token.`,
     selector: toFunctionSelector('setName(string)'),
   },
   {
     id: 'setRebalanceControl',
-    label: 'Rebalance control',
-    description: 'Allow optimistic proposals to change rebalance control mode.',
+    label: msg`Rebalance control`,
+    description: msg`Allow optimistic proposals to change rebalance control mode.`,
     selector: toFunctionSelector('setRebalanceControl((bool,uint8))'),
   },
   {
     id: 'setTVLFee',
-    label: 'TVL fee',
-    description: 'Allow optimistic proposals to update the annualized TVL fee.',
+    label: msg`TVL fee`,
+    description: msg`Allow optimistic proposals to update the annualized TVL fee.`,
     selector: toFunctionSelector('setTVLFee(uint256)'),
   },
   {
     id: 'setTrustedFillerRegistry',
-    label: 'Trusted fillers',
-    description: 'Allow optimistic proposals to update the trusted filler registry.',
+    label: msg`Trusted fillers`,
+    description: msg`Allow optimistic proposals to update the trusted filler registry.`,
     selector: toFunctionSelector('setTrustedFillerRegistry(address,bool)'),
   },
 ]

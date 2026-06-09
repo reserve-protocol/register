@@ -1,5 +1,6 @@
 import { Checkbox } from '@/components/ui/checkbox'
 import { DrawerFooter } from '@/components/ui/drawer'
+import { Trans } from '@lingui/react/macro'
 import { useAtom, useAtomValue } from 'jotai'
 import { Asterisk, OctagonAlert } from 'lucide-react'
 import {
@@ -25,12 +26,14 @@ const LockCheckbox = () => {
       <div className="flex items-end gap-2 justify-between">
         <div className="max-w-sm">
           <div className="font-bold">
-            I'm aware of the {delay}-day unlock delay
+            <Trans>I'm aware of the {delay}-day unlock delay</Trans>
           </div>
           <div className="text-sm text-legend">
-            If you decide to unlock {stToken.underlying.symbol} in the future,
-            you'll need to wait {delay} days until you can complete the
-            withdrawal
+            <Trans>
+              If you decide to unlock {stToken.underlying.symbol} in the future,
+              you'll need to wait {delay} days until you can complete the
+              withdrawal
+            </Trans>
           </div>
         </div>
         <div className="flex items-center p-[6px] border border-border rounded-lg">
@@ -55,19 +58,26 @@ const UnlockProcess = () => {
       <div className="rounded-full bg-primary p-1 w-max">
         <Asterisk size={20} className="text-white" />
       </div>
-      <div className="font-bold mt-3">Unlock process</div>
+      <div className="font-bold mt-3">
+        <Trans>Unlock process</Trans>
+      </div>
       <div className="text-primary mt-3">1.</div>
       <div className="text-md max-w-sm text-center -mt-1">
-        A {delay}-day unlock delay period begins & you stop accumulating rewards
+        <Trans>
+          A {delay}-day unlock delay period begins &amp; you stop accumulating
+          rewards
+        </Trans>
       </div>
       <div className="text-primary mt-3">2.</div>
       <div className="text-md max-w-sm text-center -mt-1">
-        Wait {delay} days
+        <Trans>Wait {delay} days</Trans>
       </div>
       <div className="text-primary mt-3">3.</div>
       <div className="text-md max-w-sm text-center -mt-1">
-        Come back to your account balance page to withdraw your unlocked{' '}
-        {stToken.underlying.symbol}
+        <Trans>
+          Come back to your account balance page to withdraw your unlocked{' '}
+          {stToken.underlying.symbol}
+        </Trans>
       </div>
     </div>
   )

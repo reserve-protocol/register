@@ -108,7 +108,7 @@ const columns: ColumnDef<PortfolioVoteLock, any>[] = [
   {
     id: 'apy',
     accessorKey: 'apy',
-    header: 'APY',
+    header: () => <Trans>APY</Trans>,
     cell: ({ row }) => {
       const val = row.original.apy
       return (

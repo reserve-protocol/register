@@ -4,6 +4,7 @@ import { indexDTFAtom } from '@/state/dtf/atoms'
 import { formatPercentage } from '@/utils'
 import InputWithTitle from '@/views/index-dtf/deploy/components/input-with-title'
 import ToggleGroupWithCustom from '@/views/index-dtf/deploy/components/toggle-group-with-custom'
+import { Trans, useLingui } from '@lingui/react/macro'
 import { useAtomValue } from 'jotai'
 import { Clock, FileLock2, ShieldHalf, Wand2 } from 'lucide-react'
 import { useFormContext } from 'react-hook-form'
@@ -13,16 +14,22 @@ import type { OptimisticActionId } from '../../optimistic'
 
 const Description = () => (
   <div className="px-6 pb-6 text-base">
-    Configure optimistic proposal parameters, trusted optimistic proposers, and
-    which DTF settings they can propose through the veto flow.
+    <Trans>
+      Configure optimistic proposal parameters, trusted optimistic proposers,
+      and which DTF settings they can propose through the veto flow.
+    </Trans>
   </div>
 )
 
 const OptimisticActions = () => {
+  const { t } = useLingui()
   const indexDTF = useAtomValue(indexDTFAtom)
-  const currentAllowedActions = useAtomValue(currentOptimisticAllowedActionsAtom)
+  const currentAllowedActions = useAtomValue(
+    currentOptimisticAllowedActionsAtom
+  )
   const { setValue, watch } = useFormContext()
-  const selectedActions = (watch('optimisticActions') ?? []) as OptimisticActionId[]
+  const selectedActions = (watch('optimisticActions') ??
+    []) as OptimisticActionId[]
   const selectorRegistry =
     indexDTF?.ownerGovernance?.optimistic?.selectorRegistry
   const isLoading = !!selectorRegistry && currentAllowedActions === undefined
@@ -41,7 +48,9 @@ const OptimisticActions = () => {
   if (!selectorRegistry) {
     return (
       <div className="rounded-xl p-4 bg-muted/70 text-sm text-muted-foreground">
-        Selector registry is not available for this optimistic governor.
+        <Trans>
+          Selector registry is not available for this optimistic governor.
+        </Trans>
       </div>
     )
   }
@@ -53,16 +62,20 @@ const OptimisticActions = () => {
           <Wand2 size={14} strokeWidth={1.5} />
         </div>
         <div className="flex flex-col">
-          <div className="text-base font-bold">Available optimistic actions</div>
+          <div className="text-base font-bold">
+            <Trans>Available optimistic actions</Trans>
+          </div>
           <div className="text-sm text-muted-foreground">
-            Current DTF settings functions optimistic proposers can propose.
+            <Trans>
+              Current DTF settings functions optimistic proposers can propose.
+            </Trans>
           </div>
         </div>
       </div>
 
       {isLoading && (
         <div className="text-sm text-muted-foreground">
-          Loading current allowed actions...
+          <Trans>Loading current allowed actions...</Trans>
         </div>
       )}
 
@@ -81,9 +94,9 @@ const OptimisticActions = () => {
                 onCheckedChange={(value) => onToggle(action.id, value === true)}
               />
               <div className="flex flex-col gap-1">
-                <span className="text-sm font-medium">{action.label}</span>
+                <span className="text-sm font-medium">{t(action.label)}</span>
                 <span className="text-xs text-muted-foreground">
-                  {action.description}
+                  {t(action.description)}
                 </span>
               </div>
             </label>
@@ -95,6 +108,7 @@ const OptimisticActions = () => {
 }
 
 const ProposeOptimisticParameters = () => {
+  const { t } = useLingui()
   const indexDTF = useAtomValue(indexDTFAtom)
   const governance = indexDTF?.ownerGovernance
 
@@ -105,51 +119,51 @@ const ProposeOptimisticParameters = () => {
       <Description />
       <div className="flex flex-col gap-2 px-2 mb-2">
         <ToggleGroupWithCustom
-          title="Veto Delay"
+          title={t`Veto Delay`}
           icon={<Clock size={14} strokeWidth={1.5} />}
           options={[0.25, 0.5, 1]}
           optionsFormatter={(option) =>
             humanizeTimeFromSeconds(daysToSeconds(option))
           }
-          customLabel="days"
-          customPlaceholder="Enter custom delay"
-          description="How long optimistic proposals wait before the veto period starts."
+          customLabel={t`days`}
+          customPlaceholder={t`Enter custom delay`}
+          description={t`How long optimistic proposals wait before the veto period starts.`}
           fieldName="optimisticVetoDelay"
           inputProps={{ step: 0.1, min: 0 }}
           decimalPlaces={4}
         />
         <ToggleGroupWithCustom
-          title="Veto Period"
+          title={t`Veto Period`}
           icon={<Clock size={14} strokeWidth={1.5} />}
           options={[1, 1.5, 2]}
           optionsFormatter={(option) =>
             humanizeTimeFromSeconds(daysToSeconds(option))
           }
-          customLabel="days"
-          customPlaceholder="Enter custom period"
-          description="How long governors have to veto an optimistic proposal."
+          customLabel={t`days`}
+          customPlaceholder={t`Enter custom period`}
+          description={t`How long governors have to veto an optimistic proposal.`}
           fieldName="optimisticVetoPeriod"
           inputProps={{ step: 0.1, min: 0 }}
           decimalPlaces={4}
         />
         <ToggleGroupWithCustom
-          title="Veto Threshold"
+          title={t`Veto Threshold`}
           icon={<FileLock2 size={14} strokeWidth={1.5} />}
           options={[0.5, 1, 2, 5]}
           optionsFormatter={(option) => formatPercentage(option)}
           customLabel="%"
-          customPlaceholder="Enter custom threshold"
-          description="The optimistic voting power percentage required to veto."
+          customPlaceholder={t`Enter custom threshold`}
+          description={t`The optimistic voting power percentage required to veto.`}
           fieldName="optimisticVetoThreshold"
           inputProps={{ step: 0.01, min: 0, max: 100 }}
         />
         <InputWithTitle
-          title="Optimistic Proposer"
-          description="A trusted actor that can create optimistic proposals."
+          title={t`Optimistic Proposer`}
+          description={t`A trusted actor that can create optimistic proposals.`}
           icon={<ShieldHalf size={14} strokeWidth={1.5} />}
           fieldName="optimisticProposers"
-          buttonLabel="Add additional optimistic proposer"
-          inputLabel="Address"
+          buttonLabel={t`Add additional optimistic proposer`}
+          inputLabel={t`Address`}
           placeholder="0x..."
         />
         <OptimisticActions />

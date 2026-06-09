@@ -7,6 +7,7 @@ import { indexDTFAtom, indexDTFVersionAtom } from '@/state/dtf/atoms'
 import { getCurrentTime } from '@/utils'
 import { ChainId } from '@/utils/chains'
 import { PROPOSAL_STATES } from '@/utils/constants'
+import { Trans, useLingui } from '@lingui/react/macro'
 import type { IndexDtfProposalSummary } from '@reserve-protocol/react-sdk'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { AlertCircle, Loader2 } from 'lucide-react'
@@ -193,6 +194,7 @@ type SpellUpgradeProps = {
 }
 
 const ProposeBanner = ({ refetch, description }: SpellUpgradeProps) => {
+  const { t } = useLingui()
   const dtf = useAtomValue(indexDTFAtom)
   const chainId = useAtomValue(chainIdAtom)
   const spell = spellAddress[chainId]
@@ -295,16 +297,16 @@ const ProposeBanner = ({ refetch, description }: SpellUpgradeProps) => {
       receipt,
       governor: dtf.ownerGovernance.id,
       onSuccess: () => {
-        toast('Proposal created!', {
-          description: 'Reserve Optimistic Governor Upgrade proposal created',
+        toast(t`Proposal created!`, {
+          description: t`Reserve Optimistic Governor Upgrade proposal created`,
           icon: '🎉',
         })
         refetch()
       },
       onFallback: () => {
         setTimeout(() => {
-          toast('Proposal created!', {
-            description: 'Reserve Optimistic Governor Upgrade proposal created',
+          toast(t`Proposal created!`, {
+            description: t`Reserve Optimistic Governor Upgrade proposal created`,
             icon: '🎉',
           })
           refetch()
@@ -317,6 +319,7 @@ const ProposeBanner = ({ refetch, description }: SpellUpgradeProps) => {
     isSuccess,
     receipt,
     refetch,
+    t,
   ])
 
   if (!proposalAvailable) {
@@ -328,19 +331,23 @@ const ProposeBanner = ({ refetch, description }: SpellUpgradeProps) => {
       <div className="flex flex-row items-center gap-2 ">
         <AlertCircle size={24} className="text-primary shrink-0" />
         <div>
-          <h4 className="font-bold text-primary">New version available</h4>
+          <h4 className="font-bold text-primary">
+            <Trans>New version available</Trans>
+          </h4>
           <p className="text-sm">
-            <strong>Reserve Optimistic Governor upgrade</strong> introduces a
-            new governor system TBD COPY HERE!. <br />
-            See the{' '}
-            <a
-              className="text-primary underline"
-              href="https://github.com/reserve-protocol/reserve-index-dtf/releases/tag/r5.0.0"
-              target="_blank"
-            >
-              changelog
-            </a>{' '}
-            for more details.
+            <Trans>
+              <strong>Reserve Optimistic Governor upgrade</strong> introduces a
+              new governor system TBD COPY HERE!. <br />
+              See the{' '}
+              <a
+                className="text-primary underline"
+                href="https://github.com/reserve-protocol/reserve-index-dtf/releases/tag/r5.0.0"
+                target="_blank"
+              >
+                changelog
+              </a>{' '}
+              for more details.
+            </Trans>
           </p>
         </div>
       </div>
@@ -352,9 +359,9 @@ const ProposeBanner = ({ refetch, description }: SpellUpgradeProps) => {
         {(isPending || isSubmitted) && (
           <Loader2 className="w-4 h-4 animate-spin mr-2" />
         )}
-        {isPending && 'Pending, sign in wallet...'}
-        {!isPending && isSubmitted && 'Waiting for confirmation...'}
-        {!isPending && !isSubmitted && 'Propose upgrade'}
+        {isPending && t`Pending, sign in wallet...`}
+        {!isPending && isSubmitted && t`Waiting for confirmation...`}
+        {!isPending && !isSubmitted && t`Propose upgrade`}
       </Button>
     </div>
   )

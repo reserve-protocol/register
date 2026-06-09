@@ -4,6 +4,7 @@ import { indexDTFAtom } from '@/state/dtf/atoms'
 import { cn } from '@/lib/utils'
 import { shortenAddress } from '@/utils'
 import { ExplorerDataType, getExplorerLink } from '@/utils/getExplorerLink'
+import { Trans, useLingui } from '@lingui/react/macro'
 import { useAtom, useAtomValue } from 'jotai'
 import {
   ArrowRight,
@@ -88,7 +89,7 @@ const ListChangeItem = ({
           type === 'add' ? 'text-success' : 'text-destructive'
         )}
       >
-        {type === 'add' ? 'Added' : 'Removed'}
+        {type === 'add' ? <Trans>Added</Trans> : <Trans>Removed</Trans>}
       </h4>
       {href ? (
         <Link
@@ -115,9 +116,12 @@ const ListChangeItem = ({
 )
 
 const OptimisticGovernanceChanges = () => {
+  const { t } = useLingui()
   const indexDTF = useAtomValue(indexDTFAtom)
   const chainId = useAtomValue(chainIdAtom)
-  const currentAllowedActions = useAtomValue(currentOptimisticAllowedActionsAtom)
+  const currentAllowedActions = useAtomValue(
+    currentOptimisticAllowedActionsAtom
+  )
   const [changes, setChanges] = useAtom(optimisticGovernanceChangesAtom)
   const hasChanges = useAtomValue(hasOptimisticGovernanceChangesAtom)
   const { setValue } = useFormContext()
@@ -126,7 +130,8 @@ const OptimisticGovernanceChanges = () => {
   if (!hasChanges || !governance?.isOptimistic) return null
 
   const optimistic = governance.optimistic
-  const currentVetoDelay = optimistic?.vetoDelay ?? DEFAULT_OPTIMISTIC_VETO_DELAY
+  const currentVetoDelay =
+    optimistic?.vetoDelay ?? DEFAULT_OPTIMISTIC_VETO_DELAY
   const currentVetoPeriod =
     optimistic?.vetoPeriod ?? DEFAULT_OPTIMISTIC_VETO_PERIOD
   const currentVetoThreshold =
@@ -215,12 +220,12 @@ const OptimisticGovernanceChanges = () => {
   )
 
   return (
-    <ChangeSection title="Optimistic Governance" icon={<Wand2 size={16} />}>
+    <ChangeSection title={t`Optimistic Governance`} icon={<Wand2 size={16} />}>
       <div className="space-y-2">
         {changes.vetoDelay !== undefined && (
           <ParamChange
             icon={<Clock size={16} />}
-            title="Veto Delay"
+            title={t`Veto Delay`}
             current={humanizeTimeFromSeconds(currentVetoDelay)}
             next={humanizeTimeFromSeconds(changes.vetoDelay)}
             onRevert={() => onRevertParam('vetoDelay')}
@@ -229,7 +234,7 @@ const OptimisticGovernanceChanges = () => {
         {changes.vetoPeriod !== undefined && (
           <ParamChange
             icon={<Clock size={16} />}
-            title="Veto Period"
+            title={t`Veto Period`}
             current={humanizeTimeFromSeconds(currentVetoPeriod)}
             next={humanizeTimeFromSeconds(changes.vetoPeriod)}
             onRevert={() => onRevertParam('vetoPeriod')}
@@ -238,7 +243,7 @@ const OptimisticGovernanceChanges = () => {
         {changes.vetoThreshold !== undefined && (
           <ParamChange
             icon={<FileLock2 size={16} />}
-            title="Veto Threshold"
+            title={t`Veto Threshold`}
             current={`${currentVetoThreshold.toFixed(2)}%`}
             next={`${changes.vetoThreshold.toFixed(2)}%`}
             onRevert={() => onRevertParam('vetoThreshold')}
@@ -250,9 +255,12 @@ const OptimisticGovernanceChanges = () => {
             <div className="flex items-center justify-between p-2 pb-0">
               <div className="flex items-center gap-2 text-sm font-medium">
                 <ShieldHalf size={14} />
-                Optimistic Proposers
+                <Trans>Optimistic Proposers</Trans>
               </div>
-              <RevertButton onClick={onRevertAllProposers} label="Revert All" />
+              <RevertButton
+                onClick={onRevertAllProposers}
+                label={t`Revert All`}
+              />
             </div>
             <div className="flex flex-col gap-2">
               {addedProposers.map((address) => (
@@ -260,7 +268,11 @@ const OptimisticGovernanceChanges = () => {
                   key={`add-${address}`}
                   label={shortenAddress(address)}
                   type="add"
-                  href={getExplorerLink(address, chainId, ExplorerDataType.ADDRESS)}
+                  href={getExplorerLink(
+                    address,
+                    chainId,
+                    ExplorerDataType.ADDRESS
+                  )}
                   onRevert={() => onRevertProposerAdd(address)}
                 />
               ))}
@@ -269,7 +281,11 @@ const OptimisticGovernanceChanges = () => {
                   key={`remove-${address}`}
                   label={shortenAddress(address)}
                   type="remove"
-                  href={getExplorerLink(address, chainId, ExplorerDataType.ADDRESS)}
+                  href={getExplorerLink(
+                    address,
+                    chainId,
+                    ExplorerDataType.ADDRESS
+                  )}
                   onRevert={() => onRevertProposerRemove(address)}
                 />
               ))}
@@ -282,27 +298,38 @@ const OptimisticGovernanceChanges = () => {
             <div className="flex items-center justify-between p-2 pb-0">
               <div className="flex items-center gap-2 text-sm font-medium">
                 <Wand2 size={14} />
-                Available Actions
+                <Trans>Available Actions</Trans>
               </div>
-              <RevertButton onClick={onRevertAllActions} label="Revert All" />
+              <RevertButton
+                onClick={onRevertAllActions}
+                label={t`Revert All`}
+              />
             </div>
             <div className="flex flex-col gap-2">
-              {addedActions.map((actionId) => (
-                <ListChangeItem
-                  key={`add-${actionId}`}
-                  label={getOptimisticActionById(actionId)?.label ?? actionId}
-                  type="add"
-                  onRevert={() => onRevertActionAdd(actionId)}
-                />
-              ))}
-              {removedActions.map((actionId) => (
-                <ListChangeItem
-                  key={`remove-${actionId}`}
-                  label={getOptimisticActionById(actionId)?.label ?? actionId}
-                  type="remove"
-                  onRevert={() => onRevertActionRemove(actionId)}
-                />
-              ))}
+              {addedActions.map((actionId) => {
+                const action = getOptimisticActionById(actionId)
+
+                return (
+                  <ListChangeItem
+                    key={`add-${actionId}`}
+                    label={action ? t(action.label) : actionId}
+                    type="add"
+                    onRevert={() => onRevertActionAdd(actionId)}
+                  />
+                )
+              })}
+              {removedActions.map((actionId) => {
+                const action = getOptimisticActionById(actionId)
+
+                return (
+                  <ListChangeItem
+                    key={`remove-${actionId}`}
+                    label={action ? t(action.label) : actionId}
+                    type="remove"
+                    onRevert={() => onRevertActionRemove(actionId)}
+                  />
+                )
+              })}
             </div>
           </div>
         )}

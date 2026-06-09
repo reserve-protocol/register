@@ -6,10 +6,15 @@ import {
 } from '@reserve-protocol/react-zapper'
 import { useConnectModal } from '@rainbow-me/rainbowkit'
 import { bsc } from 'viem/chains'
+import { wagmiConfig } from '@/state/chain'
 
 const bscProviders = PROVIDER_ENABLED[bsc.id]
 if (bscProviders) {
   bscProviders.odos = false
+}
+
+type ZapperWrapperProps = Omit<ZapperProps, 'wagmiConfig'> & {
+  wagmiConfig?: ZapperProps['wagmiConfig']
 }
 
 const ZapperWithConnect = (props: ZapperProps) => {
@@ -17,14 +22,18 @@ const ZapperWithConnect = (props: ZapperProps) => {
   return <Zapper {...props} connectWallet={openConnectModal} />
 }
 
-const ZapperWrapper = (props: ZapperProps) => {
+const ZapperWrapper = ({
+  wagmiConfig: config,
+  ...props
+}: ZapperWrapperProps) => {
   const { isConnected } = useAccount()
+  const zapperProps = { ...props, wagmiConfig: config ?? wagmiConfig }
 
   if (!isConnected) {
-    return <ZapperWithConnect {...props} />
+    return <ZapperWithConnect {...zapperProps} />
   }
 
-  return <Zapper {...props} />
+  return <Zapper {...zapperProps} />
 }
 
 export default ZapperWrapper

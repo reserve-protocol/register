@@ -4,6 +4,7 @@ import { chainIdAtom } from '@/state/atoms'
 import { indexDTFAtom } from '@/state/dtf/atoms'
 import { formatCurrency } from '@/utils'
 import { CHAIN_TAGS } from '@/utils/constants'
+import { Trans } from '@lingui/react/macro'
 import { useAtomValue } from 'jotai'
 import { BadgePercent, CalendarRange, Coins } from 'lucide-react'
 import { Link } from 'react-router-dom'
@@ -44,30 +45,40 @@ const IndexCampaignOverview = () => {
           <Coins size={14} />
         </div>
         <CalendarRange size={14} />
-        <span className="text-legend">Campaign ends:</span>
-        <span>April 1</span>
+        <span className="text-legend">
+          <Trans>Campaign ends:</Trans>
+        </span>
+        <span>
+          <Trans>April 1</Trans>
+        </span>
       </div>
 
       <h2 className="text-2xl font-semibold mb-2">
         <span className="text-[#805F23]">
           ${formatCurrency(campaignData.dailyRewards)}
         </span>{' '}
-        in Daily Payouts
+        <Trans>in Daily Payouts</Trans>
       </h2>
       <p className="text-legend">
-        Earn rewards in{' '}
-        <a
-          href={campaignData.rewardToken?.url}
-          target="_blank"
-          className="underline"
-        >
-          {campaignData.rewardToken?.name} ({campaignData.rewardToken?.symbol})
-        </a>{' '}
-        by simply holding the Base AI Index and claiming your rewards in the
-        Merkl UI.
+        <Trans>
+          Earn rewards in{' '}
+          <a
+            href={campaignData.rewardToken?.url}
+            target="_blank"
+            className="underline"
+          >
+            {campaignData.rewardToken?.name} ({campaignData.rewardToken?.symbol}
+            )
+          </a>{' '}
+          by simply holding the Base AI Index and claiming your rewards in the
+          Merkl UI.
+        </Trans>
       </p>
       <div className="flex items-center gap-1 mt-2">
-        <BadgePercent size={16} /> <span>Current APR:</span>{' '}
+        <BadgePercent size={16} />
+        <span>
+          <Trans>Current APR:</Trans>
+        </span>{' '}
         <span className="font-semibold text-[#805F23]">
           {campaignData.apr.toFixed(2)}%
         </span>
@@ -78,7 +89,9 @@ const IndexCampaignOverview = () => {
           className="gap-1 mt-4 w-full bg-[#FFBE45] hover:bg-[#FFBE45]/90  text-black"
         >
           <MerklSvg />
-          <span>View Merkl Campaign</span>
+          <span>
+            <Trans>View Merkl Campaign</Trans>
+          </span>
         </Button>
       </Link>
     </Card>

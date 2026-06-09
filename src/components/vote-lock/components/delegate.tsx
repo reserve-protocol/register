@@ -1,6 +1,7 @@
 import { Input } from '@/components/ui/input'
 import { walletAtom } from '@/state/atoms'
 import { formatCurrency } from '@/utils'
+import { Trans, useLingui } from '@lingui/react/macro'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { Rocket, Vote } from 'lucide-react'
 import type { ReactNode } from 'react'
@@ -22,14 +23,14 @@ const DelegateInput = ({
   onChange,
   disabled,
   error,
-  placeholder = 'Wallet address',
+  placeholder,
 }: {
-  label: string
+  label: ReactNode
   icon?: ReactNode
   value: string
   onChange: (value: string) => void
   disabled: boolean
-  error?: string
+  error?: ReactNode
   placeholder?: string
 }) => (
   <div className="space-y-2">
@@ -55,6 +56,7 @@ const DelegateView = ({
 }: {
   isOptimisticGovernance: boolean
 }) => {
+  const { t } = useLingui()
   const account = useAtomValue(walletAtom)
   const stToken = useAtomValue(stTokenAtom)
   const voteLockState = useAtomValue(voteLockStateAtom)
@@ -72,31 +74,50 @@ const DelegateView = ({
     !!optimisticDelegate && !isAddress(optimisticDelegate, { strict: false })
   const currentLockedAmount = voteLockState
     ? `${formatCurrency(Number(voteLockState.maxWithdraw.formatted), 4, {
-      minimumFractionDigits: 0,
-    })} ${stToken?.underlying.symbol ?? ''}`
+        minimumFractionDigits: 0,
+      })} ${stToken?.underlying.symbol ?? ''}`
     : undefined
 
   return (
     <div className="rounded-3xl border bg-background p-4 sm:p-6 space-y-6">
       <div>
-        <h2 className="text-2xl text-primary font-semibold">Delegation</h2>
+        <h2 className="text-2xl text-primary font-semibold">
+          <Trans>Delegation</Trans>
+        </h2>
         <p className="mt-3 text-sm text-foreground">
-          {isOptimisticGovernance
-            ? 'Normal and fast governance use separate delegates. Normal delegates vote on normal proposals. Fast delegates can challenge fast proposals.'
-            : 'Enter the wallet address that should vote on normal governance proposals.'}
+          {isOptimisticGovernance ? (
+            <Trans>
+              Normal and fast governance use separate delegates. Normal
+              delegates vote on normal proposals. Fast delegates can challenge
+              fast proposals.
+            </Trans>
+          ) : (
+            <Trans>
+              Enter the wallet address that should vote on normal governance
+              proposals.
+            </Trans>
+          )}
         </p>
         {disabled && (
           <p className="mt-4 rounded-2xl bg-muted px-4 py-3 text-sm text-legend">
-            {account
-              ? `Self-delegation happens automatically when you vote-lock ${stToken?.underlying.symbol ?? 'tokens'}. Come back here after vote-locking to update delegation.`
-              : 'Connect your wallet to set a delegate after vote-locking.'}
+            {account ? (
+              <Trans>
+                Self-delegation happens automatically when you vote-lock{' '}
+                {stToken?.underlying.symbol ?? t`tokens`}. Come back here after
+                vote-locking to update delegation.
+              </Trans>
+            ) : (
+              <Trans>
+                Connect your wallet to set a delegate after vote-locking.
+              </Trans>
+            )}
           </p>
         )}
       </div>
 
       <div className="space-y-4">
         <DelegateInput
-          label="Normal"
+          label={<Trans>Normal</Trans>}
           icon={<Vote size={16} />}
           value={normalDelegate}
           onChange={(value) => {
@@ -104,11 +125,16 @@ const DelegateView = ({
             setNormalDelegate(value)
           }}
           disabled={disabled}
-          error={hasInvalidNormalDelegate ? 'Invalid address' : undefined}
+          error={
+            hasInvalidNormalDelegate ? (
+              <Trans>Invalid address</Trans>
+            ) : undefined
+          }
+          placeholder={t`Wallet address`}
         />
         {isOptimisticGovernance && (
           <DelegateInput
-            label="Fast"
+            label={<Trans>Fast</Trans>}
             icon={<Rocket size={16} className="text-primary" />}
             value={optimisticDelegate}
             onChange={(value) => {
@@ -116,14 +142,20 @@ const DelegateView = ({
               setOptimisticDelegate(value)
             }}
             disabled={disabled}
-            error={hasInvalidOptimisticDelegate ? 'Invalid address' : undefined}
+            error={
+              hasInvalidOptimisticDelegate ? (
+                <Trans>Invalid address</Trans>
+              ) : undefined
+            }
+            placeholder={t`Wallet address`}
           />
         )}
       </div>
 
       {!!currentLockedAmount && (
         <p className="text-sm text-center text-legend">
-          Current locked amount: <span className='text-primary'>{currentLockedAmount}</span>
+          <Trans>Current locked amount:</Trans>{' '}
+          <span className="text-primary">{currentLockedAmount}</span>
         </p>
       )}
     </div>
