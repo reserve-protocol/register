@@ -139,6 +139,10 @@ const config = {
           from: { right: '0' },
           to: { right: '-395px' },
         },
+        'slide-up': {
+          '0%': { opacity: '0', transform: 'translateY(12px)' },
+          '100%': { opacity: '1', transform: 'translateY(0)' },
+        },
       },
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
@@ -150,6 +154,7 @@ const config = {
         'spin-slow': 'spin-slow 4s linear infinite',
         'slide-left': 'slide-left 0.5s forwards',
         'slide-out-right': 'slide-out-right 0.5s forwards',
+        'slide-up': 'slide-up 0.4s ease-out forwards',
       },
     },
   },
