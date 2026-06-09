@@ -20,7 +20,7 @@ const LEARN_MORE_URL = 'https://docs.safe.global/home/what-is-safe'
 
 const ProcessStep = ({ label }: { label: string }) => (
   <div className="flex shrink-0 items-center">
-    <span className="whitespace-nowrap text-md font-medium text-foreground">
+    <span className="whitespace-nowrap text-sm font-medium text-foreground">
       {label}
     </span>
   </div>
@@ -132,7 +132,7 @@ const GnosisRequired = () => {
 
   const processIllustration = (
     <div className="px-5 pb-3">
-      <div className="flex gap-1.5">
+      <div className="flex gap-2">
         <ProcessStep label="You fund" />
         <ProcessArrow />
         <ProcessStep label="CoW routes" />
