@@ -1,5 +1,6 @@
 import Swap from '@/components/ui/swap'
 import { formatCurrency } from '@/utils'
+import { useLingui } from '@lingui/react/macro'
 import { useAtom, useAtomValue } from 'jotai'
 import { rsrPriceAtom } from '@/state/atoms'
 import {
@@ -12,6 +13,7 @@ import {
 import { adjustMaxAmount } from '../utils/adjust-max-amount'
 
 const Stake = () => {
+  const { t } = useLingui()
   const stToken = useAtomValue(stTokenAtom)
   const [input, onChange] = useAtom(stakingInputAtom)
   const rsrPrice = useAtomValue(rsrPriceAtom)
@@ -30,7 +32,7 @@ const Stake = () => {
   return (
     <Swap
       from={{
-        title: 'You stake:',
+        title: t`You stake:`,
         address: '0x320623b8e4ff03373931769a31fc52a4e78b5d70', // RSR address (mainnet)
         symbol: 'RSR',
         value: input,

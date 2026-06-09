@@ -8,6 +8,7 @@ import { ScrollArea } from '@/components/ui/scroll-area'
 import { Skeleton } from '@/components/ui/skeleton'
 import Spinner from '@/components/ui/spinner'
 import useIsUSDT from '@/hooks/useIsUSDT'
+import { Trans } from '@lingui/react/macro'
 import { cn } from '@/lib/utils'
 import { chainIdAtom } from '@/state/atoms'
 import {
@@ -96,14 +97,18 @@ const ApproveAsset = ({ address }: { address: Address }) => {
         return (
           <div className="flex items-center gap-2 text-muted-foreground text-sm">
             <Spinner size={16} />
-            <span>Signing...</span>
+            <span>
+              <Trans>Signing...</Trans>
+            </span>
           </div>
         )
       case 'confirming':
         return (
           <div className="flex items-center gap-2 text-primary text-sm">
             <Spinner size={16} />
-            <span>Confirming...</span>
+            <span>
+              <Trans>Confirming...</Trans>
+            </span>
           </div>
         )
       case 'success':
@@ -124,13 +129,15 @@ const ApproveAsset = ({ address }: { address: Address }) => {
         disabled={isPendingRevoke}
       >
         <div className="flex items-center gap-1">
-          {isPendingRevoke ? 'Revoking...' : 'Revoke'}
+          {isPendingRevoke ? <Trans>Revoking...</Trans> : <Trans>Revoke</Trans>}
           <Help
             side="bottom"
             content={
               <span className="text-sm text-wrap font-light">
-                This is a USDT token or a fork of USDT. You need to revoke the
-                approval before you can approve it.
+                <Trans>
+                  This is a USDT token or a fork of USDT. You need to revoke the
+                  approval before you can approve it.
+                </Trans>
               </span>
             }
           />
@@ -147,7 +154,7 @@ const ApproveAsset = ({ address }: { address: Address }) => {
       size="xs"
       disabled={isPending || !amount}
     >
-      {isPending ? 'Approving...' : 'Approve'}
+      {isPending ? <Trans>Approving...</Trans> : <Trans>Approve</Trans>}
     </Button>
   )
 }
@@ -168,7 +175,9 @@ const RedeemAssetAmount = ({ token }: { token: Token }) => {
         <span className="font-semibold">${formatCurrency(usdAmount, 2)}</span>
       </div>
       <div className="flex items center gap-1">
-        <span className="text-legend">Amount:</span>
+        <span className="text-legend">
+          <Trans>Amount:</Trans>
+        </span>
         <span className="text-primary font-semibold">
           <DecimalDisplay value={amount} />
         </span>
@@ -193,7 +202,9 @@ const AssetBalance = ({ token }: { token: Token }) => {
       </div>
       <div className="flex items-center gap-1">
         <TextCursorInput size={16} />
-        <span className="font-semibold">Required:</span>{' '}
+        <span className="font-semibold">
+          <Trans>Required:</Trans>
+        </span>{' '}
         <span
           className={cn(
             'font-semibold',
@@ -293,7 +304,9 @@ const UnlimitedApproval = () => {
       onClick={() => setUnlimitedApproval(!unlimitedApproval)}
       className="flex items-center gap-2 ml-auto text-legend text-sm border rounded-3xl p-1 px-3 cursor-pointer hover:bg-primary/10 hover:text-primary"
     >
-      <span>Unlimited</span>
+      <span>
+        <Trans>Unlimited</Trans>
+      </span>
       <Checkbox className="h-4 w-4" checked={unlimitedApproval} />
     </div>
   )
@@ -307,7 +320,11 @@ const AssetList = () => {
     <div className="rounded-3xl bg-card border h-fit">
       <div className="p-4 border-b flex items-center h-16">
         <h1 className="font-bold">
-          {mode === 'buy' ? 'Required Approvals' : 'You will receive'}
+          {mode === 'buy' ? (
+            <Trans>Required Approvals</Trans>
+          ) : (
+            <Trans>You will receive</Trans>
+          )}
         </h1>
         {mode === 'buy' && <UnlimitedApproval />}
       </div>

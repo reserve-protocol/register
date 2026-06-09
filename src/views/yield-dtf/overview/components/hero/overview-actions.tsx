@@ -7,7 +7,7 @@ import {
 import DgnETHButtonAppendix from '@/components/utils/integrations/dgneth-btn-appendix'
 import { isInactiveDTF, useDTFStatus } from '@/hooks/use-dtf-status'
 import { ChainId } from '@/utils/chains'
-import { Trans } from '@lingui/macro'
+import { useLingui } from '@lingui/react/macro'
 import useRToken from 'hooks/useRToken'
 import { atom, useAtomValue } from 'jotai'
 import { MoreHorizontal } from 'lucide-react'
@@ -108,6 +108,7 @@ const TokenSocials = () => {
 }
 
 const OverviewActions = () => {
+  const { t } = useLingui()
   const rToken = useRToken()
   const navigate = useNavigate()
   const { holders, stakers, basket } = useAtomValue(estimatedApyAtom)
@@ -123,11 +124,9 @@ const OverviewActions = () => {
             className="whitespace-nowrap w-full sm:w-auto"
             onClick={() => navigate(`../${ROUTES.ISSUANCE}`)}
           >
-            <Trans>
-              {!!holders
-                ? `Mint ${formatCurrency(holders, 1)}% Est. APY`
-                : 'Mint'}
-            </Trans>
+            {!!holders
+              ? t`Mint ${formatCurrency(holders, 1)}% Est. APY`
+              : t`Mint`}
           </Button>
         </DgnETHButtonAppendix>
       )}
@@ -137,7 +136,7 @@ const OverviewActions = () => {
           className="whitespace-nowrap w-full sm:w-auto"
           onClick={() => navigate(`../${ROUTES.ISSUANCE}`)}
         >
-          Redeem
+          {t`Redeem`}
         </Button>
       )}
       <Button
@@ -147,8 +146,10 @@ const OverviewActions = () => {
         onClick={() => navigate(`../${ROUTES.STAKING}`)}
       >
         {isDeprecated
-          ? 'Unstake RSR'
-          : `Stake RSR ${!!stakers ? `- ${formatCurrency(stakers, 1)}% Est. APY` : ''}`}
+          ? t`Unstake RSR`
+          : !!stakers
+            ? t`Stake RSR - ${formatCurrency(stakers, 1)}% Est. APY`
+            : t`Stake RSR`}
       </Button>
       <TokenSocials />
     </div>

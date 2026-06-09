@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
 import { cn } from '@/lib/utils'
 import { formatCurrency, getFolioRoute } from '@/utils'
+import { Trans, useLingui } from '@lingui/react/macro'
 import { ArrowRight } from 'lucide-react'
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
@@ -14,6 +15,7 @@ import { Top100DTF } from '../types'
 const LIMIT = 10
 
 const Top100Card = ({ dtf }: { dtf: Top100DTF }) => {
+  const { t } = useLingui()
   const [imageLoaded, setImageLoaded] = useState(false)
   const [imageError, setImageError] = useState(false)
   const head = dtf.basket.slice(0, LIMIT)
@@ -34,7 +36,7 @@ const Top100Card = ({ dtf }: { dtf: Top100DTF }) => {
                 'object-cover h-[100px] w-[100px] rounded-xl',
                 imageLoaded ? 'animate-fade-in' : 'opacity-0'
               )}
-              alt="DTF cover"
+              alt={t`DTF cover`}
               src={dtf.brand.cover}
               loading="lazy"
               onLoad={() => setImageLoaded(true)}
@@ -87,7 +89,9 @@ const Top100Card = ({ dtf }: { dtf: Top100DTF }) => {
               ))}
             </div>
           )}
-          <span className="text-legend ml-auto mr-1">MCap:</span>
+          <span className="text-legend ml-auto mr-1">
+            <Trans>MCap:</Trans>
+          </span>
           <span>
             {dtf.marketCap !== null ? (
               `$${formatCurrency(dtf.marketCap, 0, {

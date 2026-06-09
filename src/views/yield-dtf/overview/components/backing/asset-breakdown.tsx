@@ -1,3 +1,4 @@
+import { useLingui } from '@lingui/react/macro'
 import CirclesIcon from 'components/icons/CirclesIcon'
 import CollaterizationIcon from 'components/icons/CollaterizationIcon'
 import LayersIcon from 'components/icons/LayersIcon'
@@ -24,22 +25,23 @@ const Menu = ({
   current: string
   onChange(key: string): void
 }) => {
+  const { t } = useLingui()
   const items = useMemo(
     () => [
       {
         key: 'collaterals',
-        label: 'Collaterals',
+        label: t`Collaterals`,
         icon: <CollaterizationIcon />,
       },
       {
         key: 'tokens',
-        label: 'Tokens',
+        label: t`Tokens`,
         icon: <CirclesIcon color="currentColor" />,
       },
-      { key: 'platforms', label: 'Platforms', icon: <LayersIcon /> },
-      { key: 'risks', label: 'Other Risks', icon: <RiskIcon /> },
+      { key: 'platforms', label: t`Platforms`, icon: <LayersIcon /> },
+      { key: 'risks', label: t`Other Risks`, icon: <RiskIcon /> },
     ],
-    []
+    [t]
   )
 
   return (

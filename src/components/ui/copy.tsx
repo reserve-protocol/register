@@ -1,4 +1,4 @@
-import { t } from '@lingui/macro'
+import { useLingui } from '@lingui/react/macro'
 import { CopyIcon } from 'lucide-react'
 import React, { useState } from 'react'
 import { isAddress } from '@/utils'
@@ -17,6 +17,7 @@ const Copy: React.FC<CopyProps> = ({
   side = 'top',
   className,
 }) => {
+  const { t } = useLingui()
   const copyText = t`Copy to clipboard`
   const confirmText = t`Copied to clipboard!`
   const [displayText, setDisplayText] = useState(copyText)

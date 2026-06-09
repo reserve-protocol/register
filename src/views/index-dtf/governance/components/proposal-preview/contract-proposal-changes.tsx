@@ -6,6 +6,7 @@ import { ExplorerDataType, getExplorerLink } from '@/utils/getExplorerLink'
 import { useAtomValue } from 'jotai'
 import { ArrowUpRightIcon } from 'lucide-react'
 import { Link } from 'react-router-dom'
+import { Trans } from '@lingui/react/macro'
 import { Address } from 'viem'
 import { dtfContractAliasAtom } from './atoms'
 import RawCallPreview from './raw-call-preview'
@@ -31,7 +32,10 @@ import {
 
 const ChangesOverviewComponentMap: Record<
   string,
-  React.ComponentType<{ decodedCalldata: DecodedCalldata; targetAddress?: Address }>
+  React.ComponentType<{
+    decodedCalldata: DecodedCalldata
+    targetAddress?: Address
+  }>
 > = {
   removeRewardToken: TokenRewardPreview,
   addRewardToken: TokenRewardPreview,
@@ -74,7 +78,8 @@ const ContractProposalChanges = ({
 }) => {
   const chainId = useAtomValue(chainIdAtom)
   const contractAliases = useAtomValue(dtfContractAliasAtom)
-  const alias = contractName ?? contractAliases?.[address.toLowerCase()] ?? 'Unknown'
+  const alias =
+    contractName ?? contractAliases?.[address.toLowerCase()] ?? 'Unknown'
 
   return (
     <Tabs
@@ -96,13 +101,13 @@ const ContractProposalChanges = ({
           </Button>
         </Link>
 
-        <TabsList >
+        <TabsList>
           <TabsTrigger value={TABS.SUMMARY}>
-            Summary
+            <Trans>Summary</Trans>
           </TabsTrigger>
 
           <TabsTrigger value={TABS.RAW}>
-            Raw
+            <Trans>Raw</Trans>
           </TabsTrigger>
         </TabsList>
       </div>
@@ -127,13 +132,16 @@ const ContractProposalChanges = ({
 
           return (
             <div
-              className='p-2'
+              className="p-2"
               key={`summary-${decodedCalldata.callData}-${index}`}
             >
               <h4 className="text-primary text-lg font-semibold mb-2 px-2 pt-2">
                 {index + 1}/{decodedCalldatas.length}
               </h4>
-              <Component decodedCalldata={decodedCalldata} targetAddress={address} />
+              <Component
+                decodedCalldata={decodedCalldata}
+                targetAddress={address}
+              />
             </div>
           )
         })}

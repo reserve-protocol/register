@@ -4,6 +4,7 @@ import TokenLogo from 'components/icons/TokenLogo'
 import Ethereum from 'components/icons/logos/Ethereum'
 import { SearchInput } from '@/components/ui/input'
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
+import { useLingui } from '@lingui/react/macro'
 import { atom, useAtom, useSetAtom } from 'jotai'
 import { useEffect, useMemo } from 'react'
 import { useSearchParams } from 'react-router-dom'
@@ -21,33 +22,38 @@ import {
 import PoolsChainFilter from './pools-chain-filter'
 
 const FilterOptions = () => {
+  const { t } = useLingui()
   const [selected, onSelect] = useAtom(filterOptionAtom)
   const setFilters = useSetAtom(poolFilterAtom)
 
   const options = useMemo(
     () => [
       {
-        text: 'All',
+        key: 'all',
+        text: t`All`,
         icon: <CirclesIcon />,
         filter: { stables: false, tokens: [] },
       },
       {
-        text: 'Stables',
+        key: 'stables',
+        text: t`Stables`,
         filter: { stables: true, tokens: [] },
         icon: <EarnNavIcon style={{ margin: '0 -3px 0 -3px' }} />,
       },
       {
+        key: 'eth',
         text: 'ETH',
         icon: <Ethereum />,
         filter: { stables: false, tokens: ETH_FILTER_ADDRESSES },
       },
       {
+        key: 'rsr',
         text: 'RSR',
         icon: <TokenLogo symbol="rsr" width="16px" />,
         filter: { stables: false, tokens: RSR_FILTER_ADDRESSES },
       },
     ],
-    []
+    [t]
   )
 
   const handleSelect = (value: string) => {
@@ -63,9 +69,9 @@ const FilterOptions = () => {
       onValueChange={handleSelect}
       className="bg-card rounded-3xl px-4 py-4 h-auto"
     >
-      {options.map(({ text, icon }, index) => (
+      {options.map(({ key, text, icon }, index) => (
         <ToggleGroupItem
-          key={text}
+          key={key}
           value={index.toString()}
           className="flex items-center gap-0 h-8 px-2 data-[state=on]:bg-muted data-[state=on]:text-primary hover:text-primary hover:bg-muted"
         >
@@ -91,6 +97,7 @@ const resetFiltersAtom = atom(null, (get, set, search: string) => {
 })
 
 const TableFilters = () => {
+  const { t } = useLingui()
   const [search, setSearch] = useAtom(poolSearchFilterAtom)
   const resetFilters = useSetAtom(resetFiltersAtom)
   const [searchParams] = useSearchParams()
@@ -111,7 +118,7 @@ const TableFilters = () => {
   return (
     <div className="flex flex-col items-stretch lg:flex-row lg:items-center gap-[2px] lg:gap-1">
       <SearchInput
-        placeholder="Search pool"
+        placeholder={t`Search pool`}
         value={search}
         onChange={(e) => setSearch(e.target.value)}
         className="flex-grow [&_input]:border-none [&_input]:rounded-none [&_input]:rounded-tl-3xl [&_input]:rounded-tr-3xl lg:[&_input]:rounded-3xl"

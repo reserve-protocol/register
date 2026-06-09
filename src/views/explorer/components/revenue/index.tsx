@@ -1,6 +1,9 @@
 import dtfIndexAbi from '@/abis/dtf-index-abi'
 import useIndexDTFList, { type IndexDTFItem } from '@/hooks/useIndexDTFList'
 import { TransactionButtonContainer } from '@/components/ui/transaction-button'
+import { msg } from '@lingui/core/macro'
+import type { MessageDescriptor } from '@lingui/core'
+import { Trans, useLingui } from '@lingui/react/macro'
 import rtokens from '@reserve-protocol/rtokens'
 import { createColumnHelper } from '@tanstack/react-table'
 import FacadeRead from 'abis/FacadeRead'
@@ -90,12 +93,17 @@ type Revenue = {
   revenue: number
 }
 
-const ChainBadge = ({ chain }: { chain: number }) => (
-  <div className="hidden md:flex items-center bg-primary/5 border border-primary/20 rounded-full py-1 px-2 gap-1">
-    <ChainLogo chain={chain} fontSize={12} />
-    <span className="text-xs text-primary">{CHAIN_TAGS[chain] + ' Native'}</span>
-  </div>
-)
+const ChainBadge = ({ chain }: { chain: number }) => {
+  const { t } = useLingui()
+  return (
+    <div className="hidden md:flex items-center bg-primary/5 border border-primary/20 rounded-full py-1 px-2 gap-1">
+      <ChainLogo chain={chain} fontSize={12} />
+      <span className="text-xs text-primary">
+        {t`${CHAIN_TAGS[chain]} Native`}
+      </span>
+    </div>
+  )
+}
 
 const parseRevenue = (trades: readonly RevenueResponse[], chain: number) => {
   const revenue = {
@@ -250,6 +258,7 @@ const TradesTable = ({
   rToken?: boolean
   pagination?: boolean
 }) => {
+  const { t } = useLingui()
   const columnHelper = createColumnHelper<RevenueCollateral>()
 
   const columns = useMemo(() => {
@@ -275,7 +284,7 @@ const TradesTable = ({
         ),
       }),
       columnHelper.accessor('buy', {
-        header: 'Buy',
+        header: t`Buy`,
         cell: (data) => (
           <a
             href={getExplorerLink(
@@ -294,7 +303,7 @@ const TradesTable = ({
         ),
       }),
       columnHelper.accessor('symbol', {
-        header: 'Sell',
+        header: t`Sell`,
         cell: (data) => (
           <a
             href={getExplorerLink(
@@ -313,7 +322,7 @@ const TradesTable = ({
         ),
       }),
       columnHelper.accessor('surplus', {
-        header: 'Surplus',
+        header: t`Surplus`,
         cell: (data) => (
           <span>
             {formatCurrency(data.getValue())} {data.row.original.symbol}
@@ -321,7 +330,7 @@ const TradesTable = ({
         ),
       }),
       columnHelper.accessor('minTrade', {
-        header: 'Min. Trade',
+        header: t`Min. Trade`,
         cell: (data) => (
           <div className="flex items-center gap-2">
             {data.row.original.surplus >= data.row.original.minTrade ? (
@@ -336,7 +345,7 @@ const TradesTable = ({
         ),
       }),
       columnHelper.accessor('value', {
-        header: 'Amount',
+        header: t`Amount`,
         cell: formatUsdCurrencyCell,
       }),
       columnHelper.accessor('address', {
@@ -357,14 +366,14 @@ const TradesTable = ({
               )
             }}
           >
-            Run
+            <Trans>Run</Trans>
           </Button>
         ),
       }),
     ]
 
     return c
-  }, [rToken])
+  }, [rToken, t])
 
   return (
     <Table
@@ -413,14 +422,18 @@ const RTokenRevenueOverview = ({ data }: { data: RevenueDetail }) => {
           </div>
           <div className="flex items-center gap-4 flex-wrap">
             <div className="flex items-center gap-1">
-              <span className="text-muted-foreground">Trades:</span>
+              <span className="text-muted-foreground">
+                <Trans>Trades:</Trans>
+              </span>
               <span className="font-medium">{data.n}</span>
               <span className="text-muted-foreground font-medium">
-                ({data.outstandingTrades} available)
+                (<Trans>{data.outstandingTrades} available</Trans>)
               </span>
             </div>
             <div className="flex items-center gap-1">
-              <span className="text-muted-foreground">Amount:</span>
+              <span className="text-muted-foreground">
+                <Trans>Amount:</Trans>
+              </span>
               <span className="font-medium">${formatCurrency(data.total)}</span>
             </div>
             <Button
@@ -432,7 +445,7 @@ const RTokenRevenueOverview = ({ data }: { data: RevenueDetail }) => {
                 handleRun()
               }}
             >
-              Run
+              <Trans>Run</Trans>
             </Button>
           </div>
         </div>
@@ -500,6 +513,7 @@ const useIndexDTFRevenue = (): IndexDTFRevenue[] | undefined => {
 }
 
 const DistributeButton = ({ dtf }: { dtf: IndexDTFItem }) => {
+  const { t } = useLingui()
   const { data: hash, writeContract, isPending } = useWriteContract()
   const { data: receipt, isLoading } = useWaitForTransactionReceipt({
     hash,
@@ -530,10 +544,10 @@ const DistributeButton = ({ dtf }: { dtf: IndexDTFItem }) => {
           <Loader2 className="mr-1 h-3 w-3 animate-spin" />
         )}
         {isPending || isLoading
-          ? 'Loading...'
+          ? t`Loading...`
           : isSuccess
-            ? 'Distributed'
-            : 'Distribute'}
+            ? t`Distributed`
+            : t`Distribute`}
       </Button>
     </TransactionButtonContainer>
   )
@@ -557,7 +571,9 @@ const IndexDTFRevenueCard = ({ data }: { data: IndexDTFRevenue }) => {
           </a>
           <div className="flex items-center gap-4 flex-wrap">
             <div className="flex items-center gap-1">
-              <span className="text-muted-foreground">Amount:</span>
+              <span className="text-muted-foreground">
+                <Trans>Amount:</Trans>
+              </span>
               <span className="font-medium">${formatCurrency(pendingUsd)}</span>
             </div>
             <DistributeButton dtf={dtf} />
@@ -581,7 +597,9 @@ const IndexRevenueOverview = () => {
     <div>
       <div className="border-2 border-secondary rounded-4xl p-2 md:p-4 flex flex-wrap gap-2 md:gap-4 justify-center">
         <div className="flex items-center gap-1">
-          <span className="text-muted-foreground">Pending Fees:</span>
+          <span className="text-muted-foreground">
+            <Trans>Pending Fees:</Trans>
+          </span>
           <span className="font-medium">${formatCurrency(totalRevenue)}</span>
         </div>
       </div>
@@ -603,6 +621,7 @@ const Menu = ({
   current: string
   onChange(key: string): void
 }) => {
+  const { t } = useLingui()
   const items = useMemo(
     () => [
       {
@@ -617,11 +636,11 @@ const Menu = ({
       },
       {
         key: 'trades',
-        label: 'Trades',
+        label: t`Trades`,
         icon: <AuctionsIcon />,
       },
     ],
-    []
+    [t]
   )
 
   return (
@@ -648,15 +667,21 @@ const YieldRevenueOverview = ({
     <div>
       <div className="border-2 border-secondary rounded-4xl p-2 md:p-4 flex flex-wrap gap-2 md:gap-4 justify-center">
         <div className="flex items-center gap-1">
-          <span className="text-muted-foreground">Trades:</span>
+          <span className="text-muted-foreground">
+            <Trans>Trades:</Trans>
+          </span>
           <span className="font-medium">{data.trades}</span>
         </div>
         <div className="flex items-center gap-1">
-          <span className="text-muted-foreground">Available Trades:</span>
+          <span className="text-muted-foreground">
+            <Trans>Available Trades:</Trans>
+          </span>
           <span className="font-medium">{data.outstandingTrades}</span>
         </div>
         <div className="flex items-center gap-1">
-          <span className="text-muted-foreground">Revenue:</span>
+          <span className="text-muted-foreground">
+            <Trans>Revenue:</Trans>
+          </span>
           <span className="font-medium">${formatCurrency(data.revenue)}</span>
         </div>
       </div>
@@ -700,7 +725,9 @@ const AvailableRevenue = () => {
     <div className="mt-4 md:mt-8 mx-2 md:mx-4">
       <div className="flex items-center mb-8 pl-5">
         <AuctionsIcon fontSize={32} />
-        <h2 className="ml-2 text-xl mr-auto font-medium">Revenue</h2>
+        <h2 className="ml-2 text-xl mr-auto font-medium">
+          <Trans>Revenue</Trans>
+        </h2>
         <Menu current={current} onChange={handleChange} />
       </div>
       {current === 'yield' && <YieldRevenueOverview data={data} />}

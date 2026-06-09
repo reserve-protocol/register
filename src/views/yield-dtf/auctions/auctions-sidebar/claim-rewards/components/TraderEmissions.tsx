@@ -1,4 +1,4 @@
-import { t } from '@lingui/macro'
+import { useLingui } from '@lingui/react/macro'
 import Help from 'components/help'
 import TokenLogo from 'components/icons/TokenLogo'
 import { useAtomValue } from 'jotai'
@@ -74,6 +74,7 @@ const TraderHeading = ({
 )
 
 const TraderEmissions = ({ trader, className }: Props) => {
+  const { t } = useLingui()
   const availableRewards = useAtomValue(traderRewardsAtom)
   const [selected, setSelected] = useState<RewardTokenWithCollaterals[]>([])
   const [isOpen, setOpen] = useState(false)

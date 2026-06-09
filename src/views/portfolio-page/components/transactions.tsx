@@ -11,6 +11,7 @@ import {
   getExplorerLink,
 } from '@/utils/getExplorerLink'
 import { ColumnDef } from '@tanstack/react-table'
+import { Trans } from '@lingui/react/macro'
 import dayjs from 'dayjs'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { ArrowUpRight, History } from 'lucide-react'
@@ -82,7 +83,7 @@ const columns: ColumnDef<PortfolioTransaction, any>[] = [
   {
     id: 'date',
     accessorKey: 'timestamp',
-    header: 'Date',
+    header: () => <Trans>Date</Trans>,
     cell: ({ row }) => (
       <span className="text-sm text-legend whitespace-nowrap min-h-10 flex items-center">
         {dayjs.unix(row.original.timestamp).format('MMM D, YYYY HH:mm')}
@@ -91,13 +92,13 @@ const columns: ColumnDef<PortfolioTransaction, any>[] = [
   },
   {
     id: 'token',
-    header: 'Token',
+    header: () => <Trans>Token</Trans>,
     cell: ({ row }) => <TokenCell tx={row.original} />,
     meta: { className: 'hidden sm:table-cell' },
   },
   {
     id: 'type',
-    header: 'Type',
+    header: () => <Trans>Type</Trans>,
     cell: ({ row }) => (
       <span className="text-sm whitespace-nowrap">{row.original.title}</span>
     ),
@@ -105,7 +106,7 @@ const columns: ColumnDef<PortfolioTransaction, any>[] = [
   },
   {
     id: 'description',
-    header: 'Description',
+    header: () => <Trans>Description</Trans>,
     cell: ({ row }) => {
       const desc = row.original.description
       return (
@@ -124,7 +125,7 @@ const columns: ColumnDef<PortfolioTransaction, any>[] = [
   },
   {
     id: 'explorer',
-    header: 'Explorer',
+    header: () => <Trans>Explorer</Trans>,
     cell: ({ row }) => (
       <a
         href={getExplorerLink(
@@ -158,8 +159,8 @@ const Transactions = () => {
     <div>
       <SectionHeader
         icon={History}
-        title="Transactions"
-        subtitle="Your recent on-chain activity."
+        title={<Trans>Transactions</Trans>}
+        subtitle={<Trans>Your recent on-chain activity.</Trans>}
       />
       <div className="bg-card rounded-[20px] border border-border overflow-hidden">
         <DataTable

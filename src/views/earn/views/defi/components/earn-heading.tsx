@@ -3,7 +3,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from '@/components/ui/tooltip'
-import { Trans, t } from '@lingui/macro'
+import { Trans, useLingui } from '@lingui/react/macro'
 import HelpIcon from 'components/icons/CustomHelpIcon'
 import { Zap } from 'lucide-react'
 
@@ -28,6 +28,7 @@ const Hero = () => (
 )
 
 const Info = () => {
+  const { t } = useLingui()
   return (
     <div className="flex justify-center mt-4 mb-7 pb-0 md:pb-2">
       <Tooltip>
@@ -35,7 +36,7 @@ const Info = () => {
           <div className="flex items-center gap-2 rounded-[50px] border-[3px] border-border w-fit bg-card-alternative py-2 px-3 cursor-pointer">
             <Zap strokeWidth={1.5} size={18} className="text-primary" />
             <span className="font-bold text-primary text-sm md:text-base">
-              How are APYs so high?
+              <Trans>How are APYs so high?</Trans>
             </span>
             <HelpIcon />
           </div>

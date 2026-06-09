@@ -7,17 +7,18 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
+import { Trans } from '@lingui/react/macro'
 
 const IndexDTFTablePlaceholder = () => (
   <div className="hidden lg:block w-full overflow-x-auto [&_table]:bg-card [&_table]:rounded-[20px] [&_table_thead_th]:px-6 [&_table_tbody_td]:px-6">
     <Table className="text-sm md:text-base">
       <TableHeader className="text-sm">
         <TableRow className="h-16 text-legend hover:bg-transparent">
-          <TableHead className="font-light">Name</TableHead>
-          <TableHead className="font-light">Backing</TableHead>
-          <TableHead className="font-light text-center">Tags</TableHead>
-          <TableHead className="font-light">Performance (Last 7 Days)</TableHead>
-          <TableHead className="font-light text-right">Market Cap</TableHead>
+          <TableHead className="font-light"><Trans>Name</Trans></TableHead>
+          <TableHead className="font-light"><Trans>Backing</Trans></TableHead>
+          <TableHead className="font-light text-center"><Trans>Tags</Trans></TableHead>
+          <TableHead className="font-light"><Trans>Performance (Last 7 Days)</Trans></TableHead>
+          <TableHead className="font-light text-right"><Trans>Market Cap</Trans></TableHead>
         </TableRow>
       </TableHeader>
       <TableBody className="bg-card">

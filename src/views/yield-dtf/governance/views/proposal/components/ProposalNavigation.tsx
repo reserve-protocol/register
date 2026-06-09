@@ -1,4 +1,4 @@
-import { t, Trans } from '@lingui/macro'
+import { Trans, useLingui } from '@lingui/react/macro'
 import { Button } from '@/components/ui/button'
 import Navigation from '@/components/section-navigation/section-navigation'
 import useRToken from 'hooks/useRToken'
@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom'
 import { ROUTES } from 'utils/constants'
 
 const ProposalNavigation = () => {
-  // TODO: Listen for lang
+  const { t } = useLingui()
   const rToken = useRToken()
   const navigate = useNavigate()
   const sections = useMemo(
@@ -20,7 +20,7 @@ const ProposalNavigation = () => {
       t`Primary basket`,
       t`Emergency basket`,
     ],
-    []
+    [t]
   )
 
   const handleBack = () => {

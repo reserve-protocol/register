@@ -6,7 +6,7 @@ import {
   TooltipTrigger,
 } from '@/components/ui/tooltip'
 import { VoteLockSidebar } from '@/components/vote-lock'
-import { Trans } from '@lingui/macro'
+import { Trans } from '@lingui/react/macro'
 import { ConnectButton } from '@rainbow-me/rainbowkit'
 import ChainLogo from 'components/icons/ChainLogo'
 import { useAtomValue } from 'jotai'
@@ -38,7 +38,9 @@ const ErrorWrapper = ({
           </span>
           <div className="flex items-center my-2">
             <AlertCircle size={18} className="text-destructive" />
-            <span className="ml-2">Chain: {chainId}</span>
+            <span className="ml-2">
+              <Trans>Chain: {chainId}</Trans>
+            </span>
             <span className="ml-auto font-medium">
               <Trans>Unsupported</Trans>
             </span>

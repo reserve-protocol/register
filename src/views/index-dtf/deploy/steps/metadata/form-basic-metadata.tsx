@@ -1,19 +1,21 @@
 import BasicInput from '../../components/basic-input'
+import { useLingui } from '@lingui/react/macro'
 
 const BasicMetadataForm = () => {
+  const { t } = useLingui()
   return (
     <div className="flex flex-col gap-2 px-2">
       <BasicInput
         fieldName="tokenName"
-        label="Name"
-        placeholder="New Index DTF"
+        label={t`Name`}
+        placeholder={t`New Index DTF`}
         autoFocus
       />
-      <BasicInput fieldName="symbol" label="Symbol" placeholder="TICKER" />
+      <BasicInput fieldName="symbol" label={t`Symbol`} placeholder={t`TICKER`} />
       <BasicInput
         fieldName="mandate"
-        label="Mandate"
-        placeholder="This Index DTF will…"
+        label={t`Mandate`}
+        placeholder={t`This Index DTF will…`}
       />
     </div>
   )

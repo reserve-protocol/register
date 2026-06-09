@@ -1,4 +1,4 @@
-import { Trans } from '@lingui/macro'
+import { Trans } from '@lingui/react/macro'
 import { Button } from '@/components/ui/button'
 import HiperlinkIcon from 'components/icons/HiperlinkIcon'
 import LayersIcon from 'components/icons/LayersIcon'
@@ -81,7 +81,9 @@ const PlatformExposure = () => {
             >
               <div className="flex items-center">
                 <HiperlinkIcon />
-                <span className="ml-2">Website</span>
+                <span className="ml-2">
+                  <Trans>Website</Trans>
+                </span>
               </div>
             </Button>
           </div>

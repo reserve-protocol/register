@@ -1,6 +1,7 @@
 import { Button } from '@/components/ui/button'
 import { formatPercentage, shortenAddress } from '@/utils'
 import { indexDTFAtom } from '@/state/dtf/atoms'
+import { Trans, useLingui } from '@lingui/react/macro'
 import { useAtom, useAtomValue } from 'jotai'
 import { useFormContext } from 'react-hook-form'
 import {
@@ -24,9 +25,10 @@ import { Link } from 'react-router-dom'
 import { ExplorerDataType, getExplorerLink } from '@/utils/getExplorerLink'
 import { chainIdAtom } from '@/state/atoms'
 import { cn } from '@/lib/utils'
+import { ReactNode } from 'react'
 
 interface FeeChangeProps {
-  title: string
+  title: ReactNode
   currentFee: number
   newFee: number
   onRevert: () => void
@@ -80,18 +82,25 @@ const RevenueDistributionChange = ({
   onRevertDeployer,
   onRevertAdditionalRecipients,
   onRevertAll,
-}: RevenueDistributionChangeProps) => (
+}: RevenueDistributionChangeProps) => {
+  const { t } = useLingui()
+
+  return (
   <div className="p-2 rounded-lg bg-muted/70 border space-y-3">
     <div className="flex items-center justify-between p-2 pb-0">
-      <div className="text-sm font-medium">Revenue Distribution</div>
-      <RevertButton onClick={onRevertAll} label="Revert All" />
+      <div className="text-sm font-medium">
+        <Trans>Revenue Distribution</Trans>
+      </div>
+      <RevertButton onClick={onRevertAll} label={t`Revert All`} />
     </div>
     <div className="space-y-2">
       {governanceShareChange && (
         <div className="flex items-center gap-2 border rounded-2xl p-2">
           <Edit2 size={16} className="text-primary" />
           <div className="flex flex-col gap-1 mr-auto">
-            <h4 className="text-sm text-primary">Governance Share</h4>
+            <h4 className="text-sm text-primary">
+              <Trans>Governance Share</Trans>
+            </h4>
             <div className="flex items-center gap-3 text-sm">
               <span className="text-muted-foreground">
                 {formatPercentage(governanceShareChange.current)}
@@ -116,7 +125,9 @@ const RevenueDistributionChange = ({
         <div className="flex items-center gap-2 border rounded-2xl p-2">
           <Edit2 size={16} className="text-primary" />
           <div className="flex flex-col gap-1 mr-auto">
-            <h4 className="text-sm text-primary">Creator Share</h4>
+            <h4 className="text-sm text-primary">
+              <Trans>Creator Share</Trans>
+            </h4>
             <div className="flex items-center gap-3 text-sm">
               <span className="text-muted-foreground">
                 {formatPercentage(deployerShareChange.current)}
@@ -140,7 +151,9 @@ const RevenueDistributionChange = ({
 
       {additionalRecipients !== undefined && (
         <div className="mt-3 space-y-2">
-          <div className="text-xs font-medium">Additional Recipients:</div>
+          <div className="text-xs font-medium">
+            <Trans>Additional Recipients:</Trans>
+          </div>
           <AdditionalRecipientsChanges
             current={currentAdditionalRecipients}
             proposed={additionalRecipients}
@@ -150,7 +163,8 @@ const RevenueDistributionChange = ({
       )}
     </div>
   </div>
-)
+  )
+}
 
 // Helper component for additional recipients changes
 const AdditionalRecipientsChanges = ({
@@ -237,7 +251,9 @@ const AdditionalRecipientsChanges = ({
         >
           <PlusCircle className="text-success" size={16} />
           <div className="flex flex-col gap-1 mr-auto">
-            <h4 className="text-sm text-success">Added</h4>
+            <h4 className="text-sm text-success">
+              <Trans>Added</Trans>
+            </h4>
             <div className="flex items-center gap-2">
               <Link
                 className="text-sm text-legend flex items-center gap-1"
@@ -274,7 +290,9 @@ const AdditionalRecipientsChanges = ({
         >
           <MinusCircle className="text-destructive" size={16} />
           <div className="flex flex-col gap-1 mr-auto">
-            <h4 className="text-sm text-destructive">Removed</h4>
+            <h4 className="text-sm text-destructive">
+              <Trans>Removed</Trans>
+            </h4>
             <div className="flex items-center gap-2">
               <Link
                 className="text-sm text-legend flex items-center gap-1"
@@ -311,7 +329,9 @@ const AdditionalRecipientsChanges = ({
         >
           <Edit2 className="text-primary" size={16} />
           <div className="flex flex-col gap-1 mr-auto">
-            <h4 className="text-sm text-primary">Modified</h4>
+            <h4 className="text-sm text-primary">
+              <Trans>Modified</Trans>
+            </h4>
             <div className="flex items-center gap-2">
               <Link
                 className="text-sm text-legend flex items-center gap-1"
@@ -421,11 +441,14 @@ const RevenueChanges = () => {
   }
 
   return (
-    <ChangeSection title="Revenue Settings" icon={<DollarSign size={16} />}>
+    <ChangeSection
+      title={<Trans>Revenue Settings</Trans>}
+      icon={<DollarSign size={16} />}
+    >
       <div className="space-y-3">
         {dtfRevenueChanges.mintFee !== undefined && (
           <FeeChange
-            title="Mint Fee"
+            title={<Trans>Mint Fee</Trans>}
             currentFee={currentMintFee}
             newFee={dtfRevenueChanges.mintFee}
             onRevert={onRevertMintFee}
@@ -434,7 +457,7 @@ const RevenueChanges = () => {
 
         {dtfRevenueChanges.tvlFee !== undefined && (
           <FeeChange
-            title="Annualized TVL Fee"
+            title={<Trans>Annualized TVL Fee</Trans>}
             currentFee={currentTvlFee}
             newFee={dtfRevenueChanges.tvlFee}
             onRevert={onRevertTvlFee}

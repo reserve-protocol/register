@@ -1,3 +1,4 @@
+import { Trans } from '@lingui/react/macro'
 import { useAtomValue } from 'jotai'
 import { Suspense, lazy } from 'react'
 import { Skeleton } from '@/components/ui/skeleton'
@@ -21,7 +22,9 @@ const StakingMetrics = () => {
       <Tabs defaultValue="exchange">
         <TabsList className="mb-4">
           <TabsTrigger value="exchange">{ticker}/RSR</TabsTrigger>
-          <TabsTrigger value="staked">Staked RSR</TabsTrigger>
+          <TabsTrigger value="staked">
+            <Trans>Staked RSR</Trans>
+          </TabsTrigger>
         </TabsList>
         <TabsContent value="exchange" className="mt-0">
           <Suspense fallback={<ChartSkeleton />}>

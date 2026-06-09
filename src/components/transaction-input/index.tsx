@@ -3,6 +3,7 @@ import Help from 'components/help'
 import { useAtom } from 'jotai'
 import { formatCurrency } from 'utils'
 import { cn } from '@/lib/utils'
+import { Trans } from '@lingui/react/macro'
 
 export interface TransactionInputProps {
   title?: string
@@ -67,7 +68,7 @@ const TransactionInput = ({
         compact ? 'text-sm' : 'text-base'
       )}
     >
-      Max: {formatCurrency(+maxAmount, 5)}
+      <Trans>Max: {formatCurrency(+maxAmount, 5)}</Trans>
     </span>
   )
 

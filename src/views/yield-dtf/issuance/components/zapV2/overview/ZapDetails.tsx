@@ -1,4 +1,5 @@
 import { cn } from '@/lib/utils'
+import { Trans } from '@lingui/react/macro'
 import Skeleton from 'react-loading-skeleton'
 import { PRICE_IMPACT_THRESHOLD } from '../constants'
 import { useZap } from '../context/ZapContext'
@@ -17,7 +18,9 @@ const ZapDetails = ({ hideGasCost, className }: Props) => {
   return (
     <div className={cn('flex flex-col gap-2 mb-2', className)}>
       <div className="flex items-center justify-between">
-        <span className="text-sm">Price Impact</span>
+        <span className="text-sm">
+          <Trans>Price Impact</Trans>
+        </span>
         {loadingZap ? (
           <Skeleton width={36} height={10} />
         ) : (
@@ -34,19 +37,25 @@ const ZapDetails = ({ hideGasCost, className }: Props) => {
         )}
       </div>
       <div className="flex items-center justify-between">
-        <span className="text-sm">Max. slippage</span>
+        <span className="text-sm">
+          <Trans>Max. slippage</Trans>
+        </span>
         <span className="text-sm font-medium">{formatSlippage(slippage)}</span>
       </div>
       {minAmountOut && (
         <div className="flex items-center justify-between">
-          <span className="text-sm">Min. amount out</span>
+          <span className="text-sm">
+            <Trans>Min. amount out</Trans>
+          </span>
           <span className="text-sm font-medium">
             {minAmountOut} {tokenOut?.symbol}
           </span>
         </div>
       )}
       <div className="flex items-center justify-between">
-        <span className="text-sm">Rate</span>
+        <span className="text-sm">
+          <Trans>Rate</Trans>
+        </span>
         <ZapRate className="text-sm font-medium" />
       </div>
       {!hideGasCost && <ZapGasCost />}

@@ -5,11 +5,13 @@ import { indexDTFBasketAtom } from '@/state/dtf/atoms'
 import { Token } from '@/types'
 import { shortenAddress } from '@/utils'
 import { ExplorerDataType, getExplorerLink } from '@/utils/getExplorerLink'
+import { Trans, useLingui } from '@lingui/react/macro'
 import { useAtom, useAtomValue } from 'jotai'
 import { ArrowUpRight, Coins, Trash } from 'lucide-react'
 import { currentBasketTokensAtom, removedBasketTokensAtom } from '../../atoms'
 
 const BasketToken = ({ token }: { token: Token }) => {
+  const { t } = useLingui()
   const chainId = useAtomValue(chainIdAtom)
   const [removedBasketTokens, setRemovedBasketTokens] = useAtom(
     removedBasketTokensAtom
@@ -34,7 +36,7 @@ const BasketToken = ({ token }: { token: Token }) => {
           target="_blank"
           href={getExplorerLink(token.address, chainId, ExplorerDataType.TOKEN)}
           tabIndex={0}
-          aria-label={`View ${token.symbol} on block explorer`}
+          aria-label={t`View ${token.symbol} on block explorer`}
           rel="noopener noreferrer"
         >
           {shortenAddress(token.address)}
@@ -45,7 +47,7 @@ const BasketToken = ({ token }: { token: Token }) => {
         variant="outline"
         size="icon-rounded"
         onClick={handleRemove}
-        aria-label={`Remove ${token.symbol} from basket`}
+        aria-label={t`Remove ${token.symbol} from basket`}
         tabIndex={0}
         className="text-destructive hover:text-destructive hover:bg-destructive/10"
       >
@@ -62,7 +64,7 @@ const BasketTokensList = () => {
   if (!basket) {
     return (
       <div className="flex items-center justify-center p-8 text-muted-foreground">
-        Loading dust tokens...
+        <Trans>Loading dust tokens...</Trans>
       </div>
     )
   }
@@ -70,7 +72,7 @@ const BasketTokensList = () => {
   if (!currentBasketTokens || currentBasketTokens.length === 0) {
     return (
       <div className="flex items-center justify-center p-8 text-muted-foreground">
-        No tokens to remove
+        <Trans>No tokens to remove</Trans>
       </div>
     )
   }
@@ -88,8 +90,10 @@ const RemoveDustTokens = () => {
   return (
     <div>
       <p className="px-6">
-        There could be the case of a dust token balance remaining in the basket,
-        you can remove it here.
+        <Trans>
+          There could be the case of a dust token balance remaining in the
+          basket, you can remove it here.
+        </Trans>
       </p>
       <BasketTokensList />
     </div>

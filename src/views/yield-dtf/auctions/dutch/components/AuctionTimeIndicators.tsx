@@ -1,4 +1,4 @@
-import { Trans } from '@lingui/macro'
+import { Trans } from '@lingui/react/macro'
 import AuctionsIcon from 'components/icons/AuctionsIcon'
 import { useAtomValue } from 'jotai'
 import { blockTimestampAtom } from 'state/atoms'
@@ -40,7 +40,9 @@ const AuctionTimeIndicators = ({
         </>
       )}
       {!isEnding && <AuctionsIcon />}
-      <span className="ml-2 mr-1">Auction ends in:</span>
+      <span className="ml-2 mr-1">
+        <Trans>Auction ends in:</Trans>
+      </span>
       <span className="hidden sm:block">
         (
         {parseDuration(timeLeft, {

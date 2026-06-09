@@ -56,7 +56,7 @@ const ProposalQueue = () => {
   )
   const { data, isMining, status } = useWatchTransaction({
     hash,
-    label: 'Queue proposal',
+    label: t`Queue proposal`,
   })
 
   useEffect(() => {

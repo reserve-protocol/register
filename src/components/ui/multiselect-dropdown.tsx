@@ -1,4 +1,5 @@
 import { useCallback, useState } from 'react'
+import { Trans } from '@lingui/react/macro'
 import { ChevronDown, ChevronUp } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
@@ -20,7 +21,7 @@ export interface MultiselectDropdownProps {
   options: SelectOption[]
   selected: string[]
   onChange: (selected: string[]) => void
-  placeholder?: string
+  placeholder?: React.ReactNode
   allOption?: boolean
   minLimit?: number
   className?: string
@@ -84,7 +85,9 @@ const OptionSelection = ({
             className="flex items-center justify-between px-3 py-2 hover:bg-accent rounded-md cursor-pointer"
             onClick={!allSelected ? handleAll : undefined}
           >
-            <span className="font-medium text-sm">All options</span>
+            <span className="font-medium text-sm">
+              <Trans>All options</Trans>
+            </span>
             <Switch
               checked={allSelected}
               disabled={allSelected}
@@ -129,7 +132,7 @@ const OptionSelection = ({
 
       <div className="p-1 border-t">
         <Button size="sm" className="w-full rounded-lg" onClick={handleApply}>
-          Apply
+          <Trans>Apply</Trans>
         </Button>
       </div>
     </div>
@@ -143,7 +146,7 @@ const MultiselectDropdown = ({
   allOption = false,
   minLimit,
   onChange,
-  placeholder = 'Select options',
+  placeholder,
   className,
 }: MultiselectDropdownProps) => {
   const [isOpen, setIsOpen] = useState(false)
@@ -161,10 +164,10 @@ const MultiselectDropdown = ({
     }
 
     if (!selected.length || (allOption && !selected.length)) {
-      return placeholder
+      return placeholder ?? <Trans>Select options</Trans>
     }
 
-    return `${selected.length} selected`
+    return <Trans>{selected.length} selected</Trans>
   }
 
   return (

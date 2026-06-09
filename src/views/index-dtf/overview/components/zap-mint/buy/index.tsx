@@ -5,6 +5,7 @@ import { chainIdAtom } from '@/state/atoms'
 import { isInactiveDTF } from '@/hooks/use-dtf-status'
 import { indexDTFAtom, indexDTFStatusAtom } from '@/state/dtf/atoms'
 import { formatCurrency } from '@/utils'
+import { Trans, useLingui } from '@lingui/react/macro'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { useCallback, useEffect } from 'react'
 import { formatEther, parseUnits } from 'viem'
@@ -27,6 +28,7 @@ import SubmitZap from '../submit-zap'
 import ZapDetails, { ZapPriceImpact } from '../zap-details'
 
 const Buy = () => {
+  const { t } = useLingui()
   const chainId = useAtomValue(chainIdAtom)
   const indexDTF = useAtomValue(indexDTFAtom)
   const isDeprecated = isInactiveDTF(useAtomValue(indexDTFStatusAtom))
@@ -131,9 +133,14 @@ const Buy = () => {
           price: priceTo ? (
             <span>
               ${formatCurrency(priceTo)}
-              {dustValue > 0.01
-                ? ` + $${formatCurrency(dustValue)} in dust `
-                : ' '}
+              {dustValue > 0.01 ? (
+                <>
+                  {` + $${formatCurrency(dustValue)} `}
+                  <Trans>in dust</Trans>{' '}
+                </>
+              ) : (
+                ' '
+              )}
               <ZapPriceImpact data={data?.result} />
             </span>
           ) : undefined,
@@ -146,7 +153,7 @@ const Buy = () => {
       <SubmitZap
         data={data?.result}
         chainId={indexDTF.chainId}
-        buttonLabel={`Buy ${indexDTF.token.symbol}`}
+        buttonLabel={t`Buy ${indexDTF.token.symbol}`}
         inputSymbol={selectedToken.symbol}
         outputSymbol={indexDTF.token.symbol}
         inputAmount={formatCurrency(Number(inputAmount))}

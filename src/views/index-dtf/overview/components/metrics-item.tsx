@@ -19,7 +19,7 @@ const MetricsItem = ({
   link,
   loading,
 }: {
-  label: string
+  label: ReactNode
   value: string
   icon: ReactNode
   valueHover?: string

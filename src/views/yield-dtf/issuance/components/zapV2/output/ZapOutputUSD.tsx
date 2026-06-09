@@ -1,9 +1,11 @@
+import { Trans, useLingui } from '@lingui/react/macro'
 import Skeleton from 'react-loading-skeleton'
 import { formatCurrency } from 'utils'
 import { useZap } from '../context/ZapContext'
 import Help from 'components/help'
 
 const ZapOutputUSD = () => {
+  const { t } = useLingui()
   const { tokenOut, amountOut, zapDustUSD, loadingZap } = useZap()
 
   if (loadingZap) {
@@ -23,11 +25,11 @@ const ZapOutputUSD = () => {
             <span className="text-legend font-semibold">
               ${formatCurrency(+zapDustUSD, 2)}
             </span>{' '}
-            in dust
+            <Trans>in dust</Trans>
           </span>
           <Help
             mt="2px"
-            content={`Dust is the leftover amount of tokens that cannot be exchanged or included in the RToken mint, due to the zapper route. It will be sent back to your wallet.`}
+            content={t`Dust is the leftover amount of tokens that cannot be exchanged or included in the RToken mint, due to the zapper route. It will be sent back to your wallet.`}
           />
         </>
       )}

@@ -25,29 +25,29 @@ const ProposalExecute = () => {
   const call = useIndexDtfExecuteProposalCall(
     proposal && canExecute
       ? {
-        chainId: proposal.chainId,
-        proposal: {
-          governance: proposal.governor,
-          timelock: proposal.timelock,
-          timelockId: proposal.timelockId,
-          targets: proposal.targets,
-          calldatas: proposal.calldatas,
-          description: proposal.description,
-        },
-      }
+          chainId: proposal.chainId,
+          proposal: {
+            governance: proposal.governor,
+            timelock: proposal.timelock,
+            timelockId: proposal.timelockId,
+            targets: proposal.targets,
+            calldatas: proposal.calldatas,
+            description: proposal.description,
+          },
+        }
       : undefined
   )
 
   const { write, isLoading, hash, isReady, validationError } = useContractWrite(
     call
       ? {
-        abi: call.contract.abi,
-        address: call.contract.address,
-        chainId: call.chainId,
-        functionName: call.contract.functionName,
-        value: call.value,
-        args: call.contract.args,
-      }
+          abi: call.contract.abi,
+          address: call.contract.address,
+          chainId: call.chainId,
+          functionName: call.contract.functionName,
+          value: call.value,
+          args: call.contract.args,
+        }
       : undefined
   )
 
@@ -62,17 +62,17 @@ const ProposalExecute = () => {
       setProposal((prev) =>
         prev
           ? {
-            ...prev,
-            votingState: {
-              ...prev.votingState,
+              ...prev,
+              votingState: {
+                ...prev.votingState,
+                state: PROPOSAL_STATES.EXECUTED,
+                deadline: null,
+              },
               state: PROPOSAL_STATES.EXECUTED,
-              deadline: null,
-            },
-            state: PROPOSAL_STATES.EXECUTED,
-            executionTime: Math.floor(Date.now() / 1000).toString(),
-            executionBlock: data?.blockNumber.toString(),
-            executionTxnHash: hash,
-          }
+              executionTime: Math.floor(Date.now() / 1000).toString(),
+              executionBlock: data?.blockNumber.toString(),
+              executionTxnHash: hash,
+            }
           : undefined
       )
     }

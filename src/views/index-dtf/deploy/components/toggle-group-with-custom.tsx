@@ -3,6 +3,7 @@ import BasicInput from './basic-input'
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
 import { useFormContext } from 'react-hook-form'
 import { Input } from '@/components/ui/input'
+import { useLingui } from '@lingui/react/macro'
 import WarningBanner from './warning-banner'
 
 type ToggleGroupWithCustomProps = {
@@ -95,7 +96,9 @@ const ToggleGroupWithCustom = ({
   warningMessage,
   inputProps,
   decimalPlaces,
-}: ToggleGroupWithCustomProps) => (
+}: ToggleGroupWithCustomProps) => {
+  const { t } = useLingui()
+  return (
   <div
     className="w-full rounded-xl flex flex-col gap-3 justify-between p-4 bg-muted/70"
     key={title}
@@ -126,10 +129,11 @@ const ToggleGroupWithCustom = ({
     </div>
     {!!warningMessage && (
       <div className="-mt-3">
-        <WarningBanner title="Caution" description={warningMessage} />
+        <WarningBanner title={t`Caution`} description={warningMessage} />
       </div>
     )}
   </div>
-)
+  )
+}
 
 export default ToggleGroupWithCustom

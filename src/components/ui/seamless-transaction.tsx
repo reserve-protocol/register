@@ -1,6 +1,7 @@
 import { chainIdAtom, walletAtom, walletChainAtom } from '@/state/atoms'
 import { cn } from '@/lib/utils'
 import { CHAIN_TAGS } from '@/utils/constants'
+import { useLingui } from '@lingui/react/macro'
 import { useConnectModal } from '@rainbow-me/rainbowkit'
 import { useAtomValue } from 'jotai'
 import { LoaderCircle } from 'lucide-react'
@@ -21,6 +22,7 @@ export const SeamlessTransactionContainer = ({
   chain,
   className,
 }: SeamlessTransactionContainerProps) => {
+  const { t } = useLingui()
   const wallet = useAtomValue(walletAtom)
   const walletChain = useAtomValue(walletChainAtom)
   const chainId = useAtomValue(chainIdAtom)
@@ -36,7 +38,7 @@ export const SeamlessTransactionContainer = ({
 
   const needsConnection = !wallet
   const needsChainSwitch = !!wallet && walletChain !== targetChain
-  const chainName = CHAIN_TAGS[targetChain] || `Chain ${targetChain}`
+  const chainName = CHAIN_TAGS[targetChain] || t`Chain ${targetChain}`
 
   const triggerChildClick = useCallback(() => {
     skipInterceptRef.current = true
@@ -55,7 +57,7 @@ export const SeamlessTransactionContainer = ({
 
   const handleChainSwitch = useCallback(async () => {
     if (!switchChainAsync) {
-      toast.error(`Please switch to ${chainName} manually in your wallet`)
+      toast.error(t`Please switch to ${chainName} manually in your wallet`)
       setStatus('idle')
       return
     }
@@ -67,9 +69,9 @@ export const SeamlessTransactionContainer = ({
       triggerChildClick()
     } catch {
       setStatus('idle')
-      toast.error(`Failed to switch to ${chainName}`)
+      toast.error(t`Failed to switch to ${chainName}`)
     }
-  }, [switchChainAsync, targetChain, chainName, triggerChildClick])
+  }, [switchChainAsync, targetChain, chainName, triggerChildClick, t])
 
   // Watch for connect modal close to determine outcome
   useEffect(() => {
@@ -87,7 +89,7 @@ export const SeamlessTransactionContainer = ({
         }
       } else {
         setStatus('idle')
-        toast.error('Failed to connect wallet')
+        toast.error(t`Failed to connect wallet`)
       }
     }
 
@@ -100,6 +102,7 @@ export const SeamlessTransactionContainer = ({
     status,
     handleChainSwitch,
     triggerChildClick,
+    t,
   ])
 
   const handleCapture = (e: React.MouseEvent) => {

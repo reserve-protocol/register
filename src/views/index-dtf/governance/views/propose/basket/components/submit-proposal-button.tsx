@@ -2,6 +2,7 @@ import { Button } from '@/components/ui/button'
 import { chainIdAtom, walletAtom } from '@/state/atoms'
 import { indexDTFAtom, iTokenAddressAtom } from '@/state/dtf/atoms'
 import { ROUTES } from '@/utils/constants'
+import { Trans, useLingui } from '@lingui/react/macro'
 import { atom, useAtomValue } from 'jotai'
 import { Loader2 } from 'lucide-react'
 import { memo, useEffect, useMemo, useRef } from 'react'
@@ -50,15 +51,12 @@ const ProposeGatekeeper = memo(() => {
     return calldatas.map(() => dtf)
   }, [calldatas, dtf])
   const { isProposeAllowed, isLoading } = useIsProposeAllowed(govAddress)
-  const {
-    hasSelectorError,
-    isChecking,
-    isOptimisticEligible,
-  } = useProposalTypeEligibility({
-    governance: indexDTF?.tradingGovernance,
-    targets,
-    calldatas,
-  })
+  const { hasSelectorError, isChecking, isOptimisticEligible } =
+    useProposalTypeEligibility({
+      governance: indexDTF?.tradingGovernance,
+      targets,
+      calldatas,
+    })
   const isOptimisticProposal = proposalType === 'optimistic'
   const canUseOptimisticProposal =
     isOptimisticProposal && isOptimisticEligible && !hasSelectorError
@@ -66,7 +64,7 @@ const ProposeGatekeeper = memo(() => {
   if (isChecking) {
     return (
       <Button disabled className="w-full" variant="default">
-        Checking proposal type...
+        <Trans>Checking proposal type...</Trans>
       </Button>
     )
   }
@@ -78,19 +76,15 @@ const ProposeGatekeeper = memo(() => {
   if (isLoading && !canUseOptimisticProposal) {
     return (
       <Button disabled className="w-full" variant="default">
-        Checking voting power...
+        <Trans>Checking voting power...</Trans>
       </Button>
     )
   }
 
-  if (
-    !isLoading &&
-    !isProposeAllowed &&
-    !canUseOptimisticProposal
-  ) {
+  if (!isLoading && !isProposeAllowed && !canUseOptimisticProposal) {
     return (
       <Button disabled className="w-full" variant="default">
-        Not enough voting power
+        <Trans>Not enough voting power</Trans>
       </Button>
     )
   }
@@ -99,6 +93,7 @@ const ProposeGatekeeper = memo(() => {
 })
 
 const SubmitProposalButton = () => {
+  const { t } = useLingui()
   const navigate = useNavigate()
   const chainId = useAtomValue(chainIdAtom)
   const isReady = useAtomValue(isProposalReady)
@@ -197,9 +192,9 @@ const SubmitProposalButton = () => {
         {(isPending || isSubmitted) && (
           <Loader2 className="w-4 h-4 animate-spin mr-2" />
         )}
-        {isPending && 'Pending, sign in wallet...'}
-        {!isPending && isSubmitted && 'Waiting for confirmation...'}
-        {!isPending && !isSubmitted && 'Submit proposal onchain'}
+        {isPending && t`Pending, sign in wallet...`}
+        {!isPending && isSubmitted && t`Waiting for confirmation...`}
+        {!isPending && !isSubmitted && t`Submit proposal onchain`}
       </Button>
     </TransactionButtonContainer>
   )

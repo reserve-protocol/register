@@ -1,4 +1,4 @@
-import { Trans } from '@lingui/macro'
+import { Trans } from '@lingui/react/macro'
 import BlockiesAvatar from '@/components/utils/blockies-avatar'
 import GoTo from '@/components/ui/go-to'
 import { useEnsAddresses } from 'hooks/useEnsAddresses'

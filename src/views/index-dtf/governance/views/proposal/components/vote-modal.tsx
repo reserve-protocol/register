@@ -2,11 +2,11 @@ import GoTo from '@/components/ui/go-to'
 import TransactionButton from '@/components/ui/transaction-button'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Separator } from '@/components/ui/separator'
-import { ModalProps } from 'components'
+import EnsName from '@/components/utils/ens-name'
 import useWatchTransaction from '@/hooks/useWatchTransaction'
-import { t, Trans } from '@lingui/macro'
+import { Trans, useLingui } from '@lingui/react/macro'
 import { useIndexDtfVoteCall } from '@reserve-protocol/react-sdk'
-import { Modal } from 'components'
+import { Modal, ModalProps } from 'components'
 import useContractWrite from 'hooks/useContractWrite'
 import { useAtomValue, useSetAtom } from 'jotai'
 import {
@@ -24,7 +24,6 @@ import {
   ExplorerDataType,
   getExplorerLink,
 } from 'utils/getExplorerLink'
-import EnsName from '@/components/utils/ens-name'
 import { accountVotesAtom, proposalDetailAtom } from '../atom'
 import useRefreshProposal from '../hooks/use-refresh-proposal'
 
@@ -42,6 +41,7 @@ const VOTE_LABEL: Record<number, string> = {
 
 // TODO: Move to tailwind
 const VoteModal = (props: ModalProps) => {
+  const { t } = useLingui()
   const chainId = useAtomValue(chainIdAtom)
   const [vote, setVote] = useState(-1)
   const proposal = useAtomValue(proposalDetailAtom)
@@ -102,7 +102,9 @@ const VoteModal = (props: ModalProps) => {
         <div className="flex flex-col items-center justify-center p-4">
           <CheckCircle size={36} />
           <br />
-          <span>Transaction successful!</span>
+          <span>
+            <Trans>Transaction successful!</Trans>
+          </span>
           <br />
           <a
             href={getExplorerLink(hash, chainId, ExplorerDataType.TRANSACTION)}
@@ -130,9 +132,11 @@ const VoteModal = (props: ModalProps) => {
           <div className="flex flex-col items-center">
             <span className="text-xl font-medium">
               "
-              {proposal?.description
-                ? getProposalTitle(proposal.description)
-                : 'Loading...'}
+              {proposal?.description ? (
+                getProposalTitle(proposal.description)
+              ) : (
+                <Trans>Loading...</Trans>
+              )}
             </span>
             <div className="flex items-center mt-2">
               <span className="text-legend">
@@ -167,9 +171,7 @@ const VoteModal = (props: ModalProps) => {
             {option.value === VOTE_TYPE.FOR && <ThumbsUp size={16} />}
             {option.value === VOTE_TYPE.AGAINST && <ThumbsDown size={16} />}
             {option.value === VOTE_TYPE.ABSTAIN && <Slash size={16} />}
-            <span className="font-semibold ml-2">
-              {option.label}
-            </span>
+            <span className="font-semibold ml-2">{option.label}</span>
             <label className="ml-auto cursor-pointer">
               <Checkbox
                 checked={vote === option.value}

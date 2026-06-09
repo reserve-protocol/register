@@ -1,7 +1,9 @@
 import TokenLogo from '@/components/token-logo'
 import { ChartContainer } from '@/components/ui/chart'
+import { dateLocale } from '@/utils/locale'
 import { chainIdAtom } from '@/state/atoms'
 import { ExplorerDataType, getExplorerLink } from '@/utils/getExplorerLink'
+import { Trans, useLingui } from '@lingui/react/macro'
 import { useAtomValue } from 'jotai'
 import { ArrowDown, ArrowUpRight } from 'lucide-react'
 import { useEffect, useMemo, useState } from 'react'
@@ -46,7 +48,10 @@ const formatUsdAmount = (amount: number): string => `$${amount.toFixed(2)}`
 
 const formatTime = (timestamp: number): string => {
   const date = new Date(timestamp * 1000)
-  return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+  return date.toLocaleTimeString(dateLocale(), {
+    hour: '2-digit',
+    minute: '2-digit',
+  })
 }
 
 interface Bid {
@@ -91,6 +96,7 @@ export default function AuctionBidsChart({
   title = 'Dutch Auction',
   description = 'Price vs Time',
 }: AuctionBidsChartProps) {
+  const { t } = useLingui()
   const [selectedBid, setSelectedBid] = useState<Bid | null>(null)
   const [tick, setTick] = useState(0)
   const chainId = useAtomValue(chainIdAtom)
@@ -150,15 +156,15 @@ export default function AuctionBidsChart({
 
   const chartConfig = {
     price: {
-      label: 'Price',
+      label: t`Price`,
       color: COLORS.FUTURE_PRICE,
     },
     pastPrice: {
-      label: 'Past Price',
+      label: t`Past Price`,
       color: COLORS.PAST_PRICE,
     },
     bids: {
-      label: 'Bids',
+      label: t`Bids`,
       color: COLORS.BID_DOT,
     },
   }
@@ -182,7 +188,7 @@ export default function AuctionBidsChart({
               tickLine={false}
               tick={false}
               label={{
-                value: 'Price',
+                value: t`Price`,
                 angle: -90,
                 position: 'insideLeft',
                 offset: 42,
@@ -204,7 +210,7 @@ export default function AuctionBidsChart({
               tick={false}
               ticks={[startTime, endTime]}
               label={{
-                value: 'Time',
+                value: t`Time`,
                 position: 'insideBottom',
                 offset: 8,
                 style: {
@@ -269,7 +275,9 @@ export default function AuctionBidsChart({
         <div className="bg-background rounded-2xl p-4">
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-base text-primary font-semibold">
-              Bid #{bids.findIndex((b) => b.id === selectedBid.id) + 1}
+              <Trans>
+                Bid #{bids.findIndex((b) => b.id === selectedBid.id) + 1}
+              </Trans>
             </h3>
             {selectedBid.transactionHash && (
               <a
@@ -292,7 +300,9 @@ export default function AuctionBidsChart({
             {/* Bidder and Time on same line */}
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-xs text-muted-foreground mb-1">Bidder</p>
+                <p className="text-xs text-muted-foreground mb-1">
+                  <Trans>Bidder</Trans>
+                </p>
                 <a
                   href={getExplorerLink(
                     selectedBid.bidder,
@@ -308,7 +318,9 @@ export default function AuctionBidsChart({
                 </a>
               </div>
               <div className="text-right">
-                <p className="text-xs text-muted-foreground mb-1">Time</p>
+                <p className="text-xs text-muted-foreground mb-1">
+                  <Trans>Time</Trans>
+                </p>
                 <p className="text-sm">{formatTime(selectedBid.timestamp)}</p>
               </div>
             </div>
@@ -318,7 +330,9 @@ export default function AuctionBidsChart({
               <div className="bg-muted/50 rounded-xl p-3 space-y-2">
                 {/* Selling */}
                 <div>
-                  <p className="text-xs text-muted-foreground mb-1">Selling</p>
+                  <p className="text-xs text-muted-foreground mb-1">
+                    <Trans>Selling</Trans>
+                  </p>
                   <div className="flex items-center gap-2">
                     <TokenLogo
                       chain={chainId}
@@ -367,7 +381,9 @@ export default function AuctionBidsChart({
 
                 {/* Buying */}
                 <div>
-                  <p className="text-xs text-muted-foreground mb-1">Buying</p>
+                  <p className="text-xs text-muted-foreground mb-1">
+                    <Trans>Buying</Trans>
+                  </p>
                   <div className="flex items-center gap-2">
                     <TokenLogo
                       chain={chainId}

@@ -20,6 +20,7 @@ import { Link } from 'react-router-dom'
 import { toast } from 'sonner'
 import { CHAIN_TAGS } from '@/utils/constants'
 import { useState } from 'react'
+import { Trans, useLingui } from '@lingui/react/macro'
 
 const getNativeChainId = (caip2: string): number | null => {
   if (caip2.startsWith('eip155:1')) return ChainId.Mainnet
@@ -53,6 +54,7 @@ const BridgeInfoDialog = ({
   tokenName,
   chainId,
 }: BridgeInfoDialogProps) => {
+  const { t } = useLingui()
   const [activeTab, setActiveTab] = useState('overview')
 
   if (!bridgeInfo) return null
@@ -61,7 +63,7 @@ const BridgeInfoDialog = ({
 
   const handleCopyAddress = () => {
     navigator.clipboard.writeText(isAddress(tokenAddress) || tokenAddress)
-    toast.success('Address copied to clipboard')
+    toast.success(t`Address copied to clipboard`)
   }
 
   const handleOpenChange = (isOpen: boolean) => {
@@ -86,14 +88,18 @@ const BridgeInfoDialog = ({
                   className="data-[state=active]:text-primary rounded-4xl"
                 >
                   <Binoculars size={16} />
-                  <span className="ml-2">Overview</span>
+                  <span className="ml-2">
+                    <Trans>Overview</Trans>
+                  </span>
                 </TabsTrigger>
                 <TabsTrigger
                   value="risks"
                   className="data-[state=active]:text-primary rounded-4xl"
                 >
                   <OctagonAlert size={16} />
-                  <span className="ml-2">Risks</span>
+                  <span className="ml-2">
+                    <Trans>Risks</Trans>
+                  </span>
                 </TabsTrigger>
               </TabsList>
             </div>
@@ -110,7 +116,7 @@ const BridgeInfoDialog = ({
             <div className="bg-card rounded-4xl mx-1">
               <div className="border-b border-secondary p-5 flex items-center justify-between">
                 <h4 className="font-semibold text-sm">
-                  Native asset (reference)
+                  <Trans>Native asset (reference)</Trans>
                 </h4>
                 <div className="flex items-center gap-1">
                   {(() => {
@@ -152,7 +158,7 @@ const BridgeInfoDialog = ({
                   <span className="text-sm text-legend">
                     {native.address
                       ? shortenAddress(native.address)
-                      : 'Native L1 Asset'}
+                      : t`Native L1 Asset`}
                   </span>
                 </div>
                 {native.url && (
@@ -167,7 +173,7 @@ const BridgeInfoDialog = ({
             <div className="bg-card rounded-4xl m-1">
               <div className="border-b border-secondary p-5 flex items-center justify-between">
                 <h4 className="font-semibold text-sm">
-                  Bridged asset (held in basket)
+                  <Trans>Bridged asset (held in basket)</Trans>
                 </h4>
                 <div className="flex items-center gap-1">
                   <ChainLogo chain={chainId} className="w-4 h-4" />
@@ -223,7 +229,7 @@ const BridgeInfoDialog = ({
                       variant="ghost"
                       className="text-primary hover:text-primary gap-2"
                     >
-                      <FileSpreadsheet size={16} /> Read docs
+                      <FileSpreadsheet size={16} /> <Trans>Read docs</Trans>
                     </Button>
                   </Link>
                   <Button
@@ -231,7 +237,7 @@ const BridgeInfoDialog = ({
                     className="text-legend gap-2"
                     onClick={() => setActiveTab('risks')}
                   >
-                    <OctagonAlert size={16} /> Read about risks{' '}
+                    <OctagonAlert size={16} /> <Trans>Read about risks</Trans>{' '}
                     <ChevronDown size={16} />
                   </Button>
                 </div>
@@ -242,7 +248,7 @@ const BridgeInfoDialog = ({
             <div className="text-sm bg-card rounded-4xl m-1">
               <div className="p-5 border-b border-secondary">
                 <h4 className="text-primary font-semibold">
-                  Potential Risks Using {bridge.name}
+                  <Trans>Potential Risks Using {bridge.name}</Trans>
                 </h4>
               </div>
               <div className="p-5 space-y-2">

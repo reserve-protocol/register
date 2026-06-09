@@ -1,3 +1,4 @@
+import { Trans } from '@lingui/react/macro'
 import { useAtomValue } from 'jotai'
 import { hasBasketGovernanceChangesAtom, hasRolesChangesAtom } from '../atoms'
 import BasketGovernanceChanges from './changes/basket-governance-changes'
@@ -10,7 +11,11 @@ const BasketSettingsProposalChanges = () => {
   const hasAnyChanges = hasGovernanceChanges || hasRolesChanges
 
   if (!hasAnyChanges) {
-    return <div className="p-6 text-center text-legend">No changes</div>
+    return (
+      <div className="p-6 text-center text-legend">
+        <Trans>No changes</Trans>
+      </div>
+    )
   }
 
   return (

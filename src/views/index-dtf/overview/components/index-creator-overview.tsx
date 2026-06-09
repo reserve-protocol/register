@@ -6,6 +6,7 @@ import { ExplorerDataType, getExplorerLink } from '@/utils/getExplorerLink'
 import { useAtomValue } from 'jotai'
 import { ArrowUpRight, Crown } from 'lucide-react'
 import { Link } from 'react-router-dom'
+import { Trans } from '@lingui/react/macro'
 
 const IndexCreatorOverview = () => {
   const dtf = useAtomValue(indexDTFAtom)
@@ -33,7 +34,9 @@ const IndexCreatorOverview = () => {
       className="flex items-center gap-2 px-2.5 py-1.5 text-sm border border-white/20 rounded-full"
     >
       {icon}
-      <span>Created by:</span>
+      <span>
+        <Trans>Created by:</Trans>
+      </span>
       <div className="flex items-center gap-1 text-white/60">
         <span>{creator}</span>
         <ArrowUpRight size={16} />

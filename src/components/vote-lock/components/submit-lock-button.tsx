@@ -2,6 +2,7 @@ import dtfIndexStakingVault from '@/abis/dtf-index-staking-vault'
 import TransactionButton from '@/components/ui/transaction-button'
 import useIsComplianceRestricted from '@/hooks/use-is-compliance-restricted'
 import { walletAtom } from '@/state/atoms'
+import { useLingui } from '@lingui/react/macro'
 import {
   prepareVoteLockDepositPlan,
   type ContractCall,
@@ -30,6 +31,7 @@ import { getWriteContractParams, isSameAddress } from '../utils'
 const PROCESSING_DELAY = 10_000
 
 const SubmitLockButton = ({ onSuccess }: { onSuccess?: () => void }) => {
+  const { t } = useLingui()
   const account = useAtomValue(walletAtom)
   const stToken = useAtomValue(stTokenAtom)
   const voteLockState = useAtomValue(voteLockStateAtom)
@@ -174,7 +176,7 @@ const SubmitLockButton = ({ onSuccess }: { onSuccess?: () => void }) => {
     processingTimer.current = setTimeout(() => {
       resetInput()
       setShouldClose(true)
-      toast.success('Vote lock successful', { duration: 8000 })
+      toast.success(t`Vote lock successful`, { duration: 8000 })
       setIsProcessing(false)
       processingTimer.current = undefined
     }, PROCESSING_DELAY)
@@ -184,6 +186,7 @@ const SubmitLockButton = ({ onSuccess }: { onSuccess?: () => void }) => {
     resetInput,
     setShouldClose,
     stToken,
+    t,
     updateCurrentDtfStTokenSupply,
     onSuccess,
   ])
@@ -209,18 +212,18 @@ const SubmitLockButton = ({ onSuccess }: { onSuccess?: () => void }) => {
       }
       loadingText={
         isProcessing
-          ? 'Processing transaction...'
+          ? t`Processing transaction...`
           : !!hash
-            ? 'Confirming tx...'
-            : 'Pending, sign in wallet'
+            ? t`Confirming tx...`
+            : t`Pending, sign in wallet`
       }
       onClick={readyToSubmit ? () => write(lockCall) : approve}
       text={
         receipt?.status === 'success'
-          ? 'Transaction confirmed'
+          ? t`Transaction confirmed`
           : readyToSubmit
-            ? `Vote lock ${stToken.underlying.symbol}`
-            : `Approve use of ${stToken.underlying.symbol}`
+            ? t`Vote lock ${stToken.underlying.symbol}`
+            : t`Approve use of ${stToken.underlying.symbol}`
       }
       className="w-full"
       error={

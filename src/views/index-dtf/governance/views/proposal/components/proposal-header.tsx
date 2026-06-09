@@ -1,9 +1,11 @@
-import CopyValue from '@/components/ui/copy-value'
 import { Button } from '@/components/ui/button'
+import CopyValue from '@/components/ui/copy-value'
 import ExplorerAddress from '@/components/utils/explorer-address'
+import { cn } from '@/lib/utils'
 import { chainIdAtom } from '@/state/atoms'
 import { shortenString } from '@/utils'
 import { ROUTES } from '@/utils/constants'
+import { useLingui } from '@lingui/react/macro'
 import dayjs from 'dayjs'
 import { useAtomValue } from 'jotai'
 import {
@@ -16,9 +18,6 @@ import {
 import { ReactNode } from 'react'
 import { Link } from 'react-router-dom'
 import { proposalDetailAtom } from '../atom'
-import { cn } from '@/lib/utils'
-import ContestedBadge from '../../../components/contest-badge'
-import OptimisticBadge from '../../../components/optimistic-badge'
 
 const BackButton = () => {
   return (
@@ -41,21 +40,22 @@ const StatItem = ({
   icon: ReactNode
   children: ReactNode
 }) => (
-  <div className={cn("flex items-center gap-3", className)}>
+  <div className={cn('flex items-center gap-3', className)}>
     <div className="flex items-center justify-center w-6 h-6 bg-foreground/10 rounded-full text-foreground/90">
       {icon}
     </div>
     <div className="flex flex-col">
       <span className="text-xs md:text-sm text-legend">{label}</span>
-      <span className='text-sm md:text-base'>{children}</span>
+      <span className="text-sm md:text-base">{children}</span>
     </div>
-  </div >
+  </div>
 )
 
 const ProposalTitle = () => {
+  const { t } = useLingui()
   const proposal = useAtomValue(proposalDetailAtom)
 
-  let title = 'Loading...'
+  let title = t`Loading...`
   let rfcLink = ''
 
   if (proposal?.description) {
@@ -82,6 +82,7 @@ const ProposalTitle = () => {
 }
 
 const ProposalParams = () => {
+  const { t } = useLingui()
   const proposal = useAtomValue(proposalDetailAtom)
   const chainId = useAtomValue(chainIdAtom)
 
@@ -89,17 +90,17 @@ const ProposalParams = () => {
     <div className="flex flex-col gap-5">
       <div className="flex items-center gap-4 md:gap-5">
         <StatItem
-          label="Proposed on"
+          label={t`Proposed on`}
           icon={<ScrollText size={16} strokeWidth={1.5} />}
         >
           <span>
             {proposal?.creationTime
               ? dayjs.unix(+proposal.creationTime).format('MMM D, YYYY')
-              : 'Loading...'}
+              : t`Loading...`}
           </span>
         </StatItem>
         <StatItem
-          label="Proposed by"
+          label={t`Proposed by`}
           icon={<Wallet size={16} strokeWidth={1.5} />}
         >
           <div>
@@ -112,11 +113,13 @@ const ProposalParams = () => {
             )}
           </div>
         </StatItem>
-        <StatItem label="ID" className='hidden sm:flex' icon={<Fingerprint size={16} strokeWidth={1.5} />}>
+        <StatItem
+          label={t`ID`}
+          className="hidden sm:flex"
+          icon={<Fingerprint size={16} strokeWidth={1.5} />}
+        >
           <div className="flex items-center gap-1">
-            <span>
-              {proposal?.id ? shortenString(proposal.id) : 'Loading...'}
-            </span>
+            <span>{proposal?.id ? shortenString(proposal.id) : t`Loading...`}</span>
             {!!proposal?.id && (
               <CopyValue text={proposal.id} value={proposal.id} />
             )}
@@ -129,7 +132,7 @@ const ProposalParams = () => {
 
 const ProposalHeader = () => (
   <div className="flex flex-col justify-between gap-3 md:gap-7 p-4 lg:p-6 pb-2 ">
-    <div className='flex items-center'>
+    <div className="flex items-center">
       <BackButton />
     </div>
     <div className="flex flex-col gap-2 md:gap-4">

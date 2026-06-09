@@ -20,6 +20,9 @@ import {
   getExplorerLink,
 } from '@/utils/getExplorerLink'
 import { ArrowRight, ArrowUpRight, Droplet } from 'lucide-react'
+import { msg } from '@lingui/core/macro'
+import { Trans, useLingui } from '@lingui/react/macro'
+import type { MessageDescriptor } from '@lingui/core'
 
 interface LiquidityBadgeProps {
   level: LiquidityLevel
@@ -35,36 +38,36 @@ interface LiquidityBadgeProps {
 
 const levelConfig: Record<
   LiquidityLevel,
-  { label: string; description?: string; className: string }
+  { label: MessageDescriptor; description?: MessageDescriptor; className: string }
 > = {
   high: {
-    label: 'High liquidity',
+    label: msg`High liquidity`,
     className: 'bg-green-500/10 text-green-600',
   },
   medium: {
-    label: 'Medium liquidity',
+    label: msg`Medium liquidity`,
     className: 'bg-yellow-500/10 text-yellow-600',
   },
   low: {
-    label: 'Low liquidity',
+    label: msg`Low liquidity`,
     className: 'bg-red-500/10 text-red-600',
   },
   insufficient: {
-    label: 'Insufficient liquidity',
-    description: 'No swap path found. Consider removing this token.',
+    label: msg`Insufficient liquidity`,
+    description: msg`No swap path found. Consider removing this token.`,
     className: 'bg-red-500/10 text-red-600',
   },
   error: {
-    label: 'Zapper error',
+    label: msg`Zapper error`,
     className: 'bg-red-500/10 text-red-600',
   },
   unknown: {
-    label: 'Unknown liquidity',
+    label: msg`Unknown liquidity`,
     className: 'bg-muted-foreground/10 text-muted-foreground',
   },
   failed: {
-    label: 'Unknown liquidity',
-    description: 'Simulation failed',
+    label: msg`Unknown liquidity`,
+    description: msg`Simulation failed`,
     className: 'bg-muted-foreground/10 text-muted-foreground',
   },
 }
@@ -109,7 +112,9 @@ const SwapPathContent = ({
     {tradeDescription && (
       <p className="text-xs text-muted-foreground">{tradeDescription}</p>
     )}
-    <p className="text-xs font-medium">Potential swap route</p>
+    <p className="text-xs font-medium">
+      <Trans>Potential swap route</Trans>
+    </p>
     <div className="flex flex-col gap-1.5">
       {swapPath.map((leg, i) => {
         const poolAddress = leg.address?.[0]
@@ -157,7 +162,9 @@ const SwapPathContent = ({
       <>
         <hr className="border-border" />
         <div className="flex items-center justify-between text-xs">
-          <span className="text-muted-foreground">Total impact</span>
+          <span className="text-muted-foreground">
+            <Trans>Total impact</Trans>
+          </span>
           <span className={cn('font-medium', totalImpactColor(priceImpact))}>
             {formatPercent(priceImpact)}
           </span>
@@ -165,7 +172,7 @@ const SwapPathContent = ({
       </>
     )}
     <p className="text-[10px] text-muted-foreground leading-tight">
-      Simulated route. Actual auction path may differ.
+      <Trans>Simulated route. Actual auction path may differ.</Trans>
     </p>
   </div>
 )
@@ -197,6 +204,7 @@ const LiquidityBadge = ({
   symbolMap,
   onRetry,
 }: LiquidityBadgeProps) => {
+  const { t } = useLingui()
   if (isLoading) {
     return (
       <TooltipProvider>
@@ -207,7 +215,9 @@ const LiquidityBadge = ({
             </span>
           </TooltipTrigger>
           <TooltipContent>
-            <p>Checking liquidity...</p>
+            <p>
+              <Trans>Checking liquidity...</Trans>
+            </p>
           </TooltipContent>
         </Tooltip>
       </TooltipProvider>
@@ -237,10 +247,11 @@ const LiquidityBadge = ({
 
   const getTooltipDescription = () => {
     if (error) return error
-    if (config.description) return config.description
+    if (config.description) return t(config.description)
     if (tradeDescription) return tradeDescription
     if (priceImpact !== undefined) {
-      return `${priceImpact.toFixed(2)}% price impact`
+      const percent = `${priceImpact.toFixed(2)}%`
+      return t`${percent} price impact`
     }
     return null
   }
@@ -258,7 +269,7 @@ const LiquidityBadge = ({
           />
         </TooltipTrigger>
         <TooltipContent>
-          <p className="font-medium">{config.label}</p>
+          <p className="font-medium">{t(config.label)}</p>
           {description && (
             <p className="text-xs text-muted-foreground">{description}</p>
           )}

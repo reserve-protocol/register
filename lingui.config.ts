@@ -1,7 +1,11 @@
 import type { LinguiConfig } from '@lingui/conf'
 
 const config: LinguiConfig = {
-  locales: ['en', 'es'],
+  locales: ['en', 'es', 'ko', 'zh', 'pseudo'],
+  pseudoLocale: 'pseudo',
+  fallbackLocales: {
+    default: 'en',
+  },
   catalogs: [
     {
       path: 'src/locales/{locale}',

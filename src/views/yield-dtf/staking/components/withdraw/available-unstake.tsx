@@ -1,4 +1,4 @@
-import { Trans, t } from '@lingui/macro'
+import { Trans } from '@lingui/react/macro'
 import StRSR from 'abis/StRSR'
 import TokenLogo from 'components/icons/TokenLogo'
 import useContractWrite from 'hooks/useContractWrite'

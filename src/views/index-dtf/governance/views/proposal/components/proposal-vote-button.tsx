@@ -46,11 +46,11 @@ const ProposalVoteButton = () => {
         onClick={() => setVoteVisible(true)}
       >
         {!account ? (
-          'Please connect your wallet'
+          <Trans>Please connect your wallet</Trans>
         ) : vote && isOptimistic ? (
           <Trans>Challenged</Trans>
         ) : vote ? (
-          `You voted "${vote}"`
+          <Trans>You voted "{vote}"</Trans>
         ) : noVotingPower && !isOptimistic ? (
           <Trans>No voting power</Trans>
         ) : isOptimistic ? (
@@ -58,9 +58,8 @@ const ProposalVoteButton = () => {
         ) : (
           <Trans>Vote on-chain</Trans>
         )}
-      </Button >
-      {isVoteVisible && <VoteModal onClose={() => setVoteVisible(false)} />
-      }
+      </Button>
+      {isVoteVisible && <VoteModal onClose={() => setVoteVisible(false)} />}
     </>
   )
 }

@@ -1,6 +1,8 @@
 import { Table, TableProps } from '@/components/ui/legacy-table'
 import { cn } from '@/lib/utils'
-import { Trans, t } from '@lingui/macro'
+import { msg } from '@lingui/core/macro'
+import type { MessageDescriptor } from '@lingui/core'
+import { Trans, useLingui } from '@lingui/react/macro'
 import { Row, createColumnHelper } from '@tanstack/react-table'
 import BasketCubeIcon from 'components/icons/BasketCubeIcon'
 import ChainLogo from 'components/icons/ChainLogo'
@@ -32,13 +34,14 @@ const renderSubComponent = ({ row }: { row: Row<ListedToken> }) => {
 }
 
 const TargetFilter = () => {
+  const { t } = useLingui()
   const [selected, setSelected] = useState(0)
   const setFilters = useSetAtom(filtersAtom)
 
   const options = useMemo(
     () => [
       {
-        text: 'All',
+        text: t`All`,
         icon: <CirclesIcon />,
         filter: [TARGET_UNITS.ETH, TARGET_UNITS.USD],
       },
@@ -53,7 +56,7 @@ const TargetFilter = () => {
         filter: [TARGET_UNITS.ETH],
       },
     ],
-    []
+    [t]
   )
 
   const handleSelect = (option: number) => {
@@ -123,6 +126,7 @@ const useData = () => {
 }
 
 const ExploreTokens = (props: Partial<TableProps>) => {
+  const { t } = useLingui()
   const { list, isLoading } = useData()
   const columnHelper = createColumnHelper<ListedToken>()
 
@@ -175,7 +179,7 @@ const ExploreTokens = (props: Partial<TableProps>) => {
         },
       }),
     ],
-    []
+    [t]
   )
 
   const handleClick = (data: any, row: any) => {

@@ -1,3 +1,4 @@
+import { useLingui } from '@lingui/react/macro'
 import { useAtomValue } from 'jotai'
 import { cn } from '@/lib/utils'
 import { parametersChangesAtom } from '../atoms'
@@ -9,6 +10,7 @@ interface Props {
 }
 
 const ProposedParametersPreview = ({ className }: Props) => {
+  const { t } = useLingui()
   const changes = useAtomValue(parametersChangesAtom)
 
   if (!changes.length) {
@@ -19,7 +21,7 @@ const ProposedParametersPreview = ({ className }: Props) => {
   return (
     <PreviewBox
       count={changes.length}
-      title="Parameters"
+      title={t`Parameters`}
       className={cn('border border-border rounded-xl p-6', className)}
     >
       {changes.map((change) => (

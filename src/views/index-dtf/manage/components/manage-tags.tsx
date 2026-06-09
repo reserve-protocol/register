@@ -1,4 +1,5 @@
 import { MultiSelect } from '@/components/ui/multiselect'
+import { Trans, useLingui } from '@lingui/react/macro'
 import { Controller, useFormContext } from 'react-hook-form'
 
 const options = [
@@ -29,12 +30,13 @@ const options = [
 ]
 
 export default function MultiSelectTags() {
+  const { t } = useLingui()
   const { control, watch } = useFormContext()
 
   return (
     <div className="w-full">
       <label htmlFor="dtf.tags" className="ml-3 mb-1 block">
-        DTF Category Tags
+        <Trans>DTF Category Tags</Trans>
       </label>
       <Controller
         name="dtf.tags"
@@ -46,7 +48,7 @@ export default function MultiSelectTags() {
             options={options}
             className="w-full"
             classNamePrefix="select"
-            placeholder="Choose tags..."
+            placeholder={t`Choose tags...`}
           />
         )}
       />

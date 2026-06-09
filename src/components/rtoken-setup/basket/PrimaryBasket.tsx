@@ -3,7 +3,7 @@ import { Separator } from '@/components/ui/separator'
 import DocsLink from '@/components/utils/docs-link'
 import { useWatchReadContracts } from '@/hooks/useWatchReadContract'
 import { YIELD_PROTOCOL_DOCS } from '@/utils/constants'
-import { t, Trans } from '@lingui/macro'
+import { Trans, useLingui } from '@lingui/react/macro'
 import NewCollateralAbi from 'abis/NewCollateralAbi'
 import Help from 'components/help'
 import EmptyBoxIcon from 'components/icons/EmptyBoxIcon'
@@ -132,6 +132,7 @@ const TargetPriceUpdater = () => {
 }
 
 const BasketEstimatedApy = () => {
+  const { t } = useLingui()
   const basket = useAtomValue(basketAtom)
   const chainId = useAtomValue(chainIdAtom)
   const collateralYields = useAtomValue(collateralYieldAtom)
@@ -158,7 +159,9 @@ const BasketEstimatedApy = () => {
   return (
     <div className="flex justify-between items-center">
       <div className="mr-auto flex flex-col">
-        <span className="text-legend">1 Token =</span>
+        <span className="text-legend">
+          <Trans>1 Token =</Trans>
+        </span>
         <span className="text-xl font-medium">
           {!!units.length
             ? getBasketComposition(basket, targetUnitPrice)

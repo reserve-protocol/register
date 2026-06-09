@@ -1,4 +1,4 @@
-import { Trans } from '@lingui/macro'
+import { Trans } from '@lingui/react/macro'
 import { Button } from '@/components/ui/button'
 import CopyValue from '@/components/ui/copy-value'
 import GoTo from '@/components/ui/go-to'
@@ -113,7 +113,9 @@ const TokenExposure = () => {
             >
               <div className="flex items-center">
                 <HiperlinkIcon />
-                <span className="ml-2">Website</span>
+                <span className="ml-2">
+                  <Trans>Website</Trans>
+                </span>
               </div>
             </Button>
             {!!item.rating && (
@@ -125,7 +127,9 @@ const TokenExposure = () => {
               >
                 <div className="flex items-center">
                   <BluechipLogo />
-                  <span className="font-bold ml-2">Rating:</span>
+                  <span className="font-bold ml-2">
+                    <Trans>Rating:</Trans>
+                  </span>
                   <span className="ml-1 text-primary font-bold">
                     {item.rating}
                   </span>

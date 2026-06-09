@@ -1,4 +1,4 @@
-import { t } from '@lingui/macro'
+import { Plural, Trans, useLingui } from '@lingui/react/macro'
 import Help from 'components/help'
 import GlobalMaxMintIcon from 'components/icons/GlobalMaxMintIcon'
 import GlobalMaxRedeemIcon from 'components/icons/GlobalMaxRedeemIcon'
@@ -46,23 +46,35 @@ const IssuanceInfoStat = ({
           </div>
         </div>
         <div className="flex items-center justify-between">
-          <span>Time until fully charged</span>
+          <span>
+            <Trans>Time until fully charged</Trans>
+          </span>
           {timeUntilCharged > 0 ? (
             <span className="font-bold">
-              {timeUntilCharged < 1 ? '<1' : timeUntilCharged.toFixed(0)} minute
-              {timeUntilCharged >= 1.5 ? 's' : ''}
+              {timeUntilCharged < 1 ? '<1' : timeUntilCharged.toFixed(0)}{' '}
+              <Plural
+                value={timeUntilCharged >= 1.5 ? 2 : 1}
+                one="minute"
+                other="minutes"
+              />
             </span>
           ) : (
-            <span className="font-bold">Fully Charged</span>
+            <span className="font-bold">
+              <Trans>Fully Charged</Trans>
+            </span>
           )}
         </div>
         <div className="flex items-center justify-between">
-          <span>0-100% Recharge time</span>
+          <span>
+            <Trans>0-100% Recharge time</Trans>
+          </span>
           <span className="font-bold">1h</span>
         </div>
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-1">
-            <span>Current max charge</span>
+            <span>
+              <Trans>Current max charge</Trans>
+            </span>
             <Help content={tooltipContent} placement="bottom" />
           </div>
           <div className="flex items-center gap-1">
@@ -78,6 +90,7 @@ const IssuanceInfoStat = ({
 }
 
 const IssuanceInfo = ({ className }: { className?: string }) => {
+  const { t } = useLingui()
   const rToken = useRToken()
   const {
     tokenSupply,
@@ -148,13 +161,15 @@ const IssuanceInfo = ({ className }: { className?: string }) => {
         timeUntilCharged={timeUntilFullyChargedMint}
         tooltipContent={
           <span className="text-sm">
-            The mint max charge is either{' '}
-            {(issuanceThrottleRate * 100).toFixed(1)}% of {rToken?.symbol}{' '}
-            supply or a lower bound of{' '}
-            <span className="font-bold">
-              {formatCurrency(issuanceThrottleAmount, 0)}
-            </span>{' '}
-            {rToken?.symbol}, whichever is the higher amount.
+            <Trans>
+              The mint max charge is either{' '}
+              {(issuanceThrottleRate * 100).toFixed(1)}% of {rToken?.symbol}{' '}
+              supply or a lower bound of{' '}
+              <span className="font-bold">
+                {formatCurrency(issuanceThrottleAmount, 0)}
+              </span>{' '}
+              {rToken?.symbol}, whichever is the higher amount.
+            </Trans>
           </span>
         }
       />
@@ -168,15 +183,17 @@ const IssuanceInfo = ({ className }: { className?: string }) => {
         timeUntilCharged={timeUntilFullyChargedRedeem}
         tooltipContent={
           <span className="text-sm">
-            The redeem max charge is either{' '}
-            {(redemptionThrottleRate * 100).toFixed(1)}% of {rToken?.symbol}{' '}
-            supply or a lower bound of{' '}
-            <span className="font-bold">
-              {formatCurrency(redemptionThrottleAmount, 0)}
-            </span>{' '}
-            {rToken?.symbol}, whichever is the higher amount. If that exceeds
-            the total supply, the limit is set to the total supply of{' '}
-            {rToken?.symbol}.
+            <Trans>
+              The redeem max charge is either{' '}
+              {(redemptionThrottleRate * 100).toFixed(1)}% of {rToken?.symbol}{' '}
+              supply or a lower bound of{' '}
+              <span className="font-bold">
+                {formatCurrency(redemptionThrottleAmount, 0)}
+              </span>{' '}
+              {rToken?.symbol}, whichever is the higher amount. If that exceeds
+              the total supply, the limit is set to the total supply of{' '}
+              {rToken?.symbol}.
+            </Trans>
           </span>
         }
       />

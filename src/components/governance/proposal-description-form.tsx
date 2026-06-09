@@ -1,3 +1,4 @@
+import { Trans, useLingui } from '@lingui/react/macro'
 import { ArrowLeftIcon } from 'lucide-react'
 import { lazy, Suspense, useEffect, useState } from 'react'
 import { Button } from '../ui/button'
@@ -15,6 +16,7 @@ const ProposalDescriptionForm = ({
   onChange,
   onBack,
 }: IProposalDescriptionForm) => {
+  const { t } = useLingui()
   const [title, setTitle] = useState('')
   const [rfc, setRFC] = useState('')
   const [description, setDescription] = useState<string | undefined>('')
@@ -37,12 +39,12 @@ const ProposalDescriptionForm = ({
       </Button>
       <div>
         <label className="font-semibold ml-3 mb-2 block" htmlFor="title">
-          Proposal title
+          <Trans>Proposal title</Trans>
         </label>
         <Input
           id="title"
           value={title}
-          placeholder="Input proposal title"
+          placeholder={t`Input proposal title`}
           onChange={(e) => setTitle(e.target.value)}
         />
       </div>
@@ -53,13 +55,13 @@ const ProposalDescriptionForm = ({
         <Input
           id="rfc"
           value={rfc}
-          placeholder="Input RFC link"
+          placeholder={t`Input RFC link`}
           onChange={(e) => setRFC(e.target.value)}
         />
       </div>
       <div>
         <label className="font-semibold ml-3 mb-2 block" htmlFor="description">
-          Description
+          <Trans>Description</Trans>
         </label>
         <Suspense fallback={<Skeleton className="h-[596.72px]" />}>
           <MDEditor

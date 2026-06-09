@@ -1,5 +1,6 @@
 import { Button } from '@/components/ui/button'
 import { TransactionButtonContainer } from '@/components/ui/transaction-button'
+import { useLingui } from '@lingui/react/macro'
 import { Loader2 } from 'lucide-react'
 import mixpanel from 'mixpanel-browser/src/loaders/loader-module-core'
 import { useCallback, useMemo } from 'react'
@@ -7,6 +8,7 @@ import DisabledByGeolocationMessage from 'state/geolocation/DisabledByGeolocatio
 import { useZap } from '../context/ZapContext'
 
 const ZapSubmitButton = () => {
+  const { t } = useLingui()
   const {
     setOpenSubmitModal,
     loadingZap,
@@ -20,8 +22,8 @@ const ZapSubmitButton = () => {
 
   const title = useMemo(() => {
     if (error && error.submitButtonTitle) return error.submitButtonTitle
-    return operation === 'mint' ? 'Zap Mint' : 'Zap Redeem'
-  }, [error, operation])
+    return operation === 'mint' ? t`Zap Mint` : t`Zap Redeem`
+  }, [error, operation, t])
 
   const disabled = useMemo(
     () =>
@@ -53,7 +55,7 @@ const ZapSubmitButton = () => {
           className="w-full"
         >
           {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-          {isLoading ? 'Finding route...' : title}
+          {isLoading ? t`Finding route...` : title}
         </Button>
       </TransactionButtonContainer>
       <DisabledByGeolocationMessage />

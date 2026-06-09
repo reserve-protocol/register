@@ -1,15 +1,17 @@
 import { Skeleton } from '@/components/ui/skeleton'
+import { Trans } from '@lingui/react/macro'
 import { useAtomValue } from 'jotai'
 import { lazy, Suspense } from 'react'
 import GovernanceProposalPreview from '../../../components/governance-proposal-preview'
 import { proposalDetailAtom } from '../atom'
-import { Trans } from '@lingui/react/macro'
 
 const DescriptionMarkdown = lazy(() => import('./proposal-md-description'))
 
 const ProposalDescriptionSkeleton = () => (
   <div className="px-6 pt-4 pb-2">
-    <h1 className="text-primary text-xl font-bold mb-2">Description</h1>
+    <h1 className="text-primary text-xl font-bold mb-2">
+      <Trans>Description</Trans>
+    </h1>
     <Skeleton className="h-6" />
     <Skeleton className="h-6 mt-1" />
     <Skeleton className="h-6 mt-1" />
@@ -30,13 +32,16 @@ const ProposalDescription = () => {
     description = content.join('\n')
   }
 
-
   return (
     <Suspense fallback={<ProposalDescriptionSkeleton />}>
       <div className="px-5 pt-6 pb-8">
-        <h1 className="text-primary text-xl font-semibold mb-2">Description</h1>
+        <h1 className="text-primary text-xl font-semibold mb-2">
+          <Trans>Description</Trans>
+        </h1>
         {description.length < 9 ? (
-          <span className='text-legend'><Trans>No description provided for this proposal.</Trans></span>
+          <span className="text-legend">
+            <Trans>No description provided for this proposal.</Trans>
+          </span>
         ) : (
           <DescriptionMarkdown description={description} />
         )}
@@ -57,11 +62,11 @@ const ProposalChanges = () => {
         proposalGovernance={
           proposal
             ? {
-              address: proposal.governor,
-              timelock: {
-                address: proposal.timelock,
-              },
-            }
+                address: proposal.governor,
+                timelock: {
+                  address: proposal.timelock,
+                },
+              }
             : undefined
         }
         timestamp={proposal?.creationTime}

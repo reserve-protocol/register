@@ -14,6 +14,7 @@ import {
 } from '@/utils'
 import { useConnectModal } from '@rainbow-me/rainbowkit'
 import { ColumnDef } from '@tanstack/react-table'
+import { Trans, useLingui } from '@lingui/react/macro'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { Clock } from 'lucide-react'
 import { useCallback, useEffect, useRef } from 'react'
@@ -46,6 +47,7 @@ const WithdrawButton = ({
     | Parameters<ReturnType<typeof useWriteContract>['writeContract']>[0]
     | null
 }) => {
+  const { t } = useLingui()
   const wallet = useAtomValue(walletAtom)
   const walletChain = useAtomValue(walletChainAtom)
   const { openConnectModal } = useConnectModal()
@@ -59,7 +61,7 @@ const WithdrawButton = ({
   useEffect(() => {
     if (withdrawn && !toastedRef.current) {
       toastedRef.current = true
-      toast.success('Withdrawal successful', { duration: 8000 })
+      toast.success(t`Withdrawal successful`, { duration: 8000 })
     }
   }, [withdrawn])
 
@@ -96,7 +98,7 @@ const WithdrawButton = ({
       className="rounded-full text-sm hover:text-primary text-primary disabled:border-border border-primary"
       size="sm"
     >
-      {withdrawn ? 'Withdrawn' : 'Withdraw'}
+      {withdrawn ? <Trans>Withdrawn</Trans> : <Trans>Withdraw</Trans>}
     </Button>
   )
 }
@@ -215,7 +217,11 @@ const ProgressCell = ({ row }: { row: PendingWithdrawalRow }) => {
   const isReady = deadline <= currentTime
 
   if (isReady) {
-    return <span className="text-sm font-light text-success">Ready</span>
+    return (
+      <span className="text-sm font-light text-success">
+        <Trans>Ready</Trans>
+      </span>
+    )
   }
 
   const timeLeft = deadline - currentTime
@@ -298,7 +304,7 @@ const ActionCell = ({ row }: { row: PendingWithdrawalRow }) => {
 const columns: ColumnDef<PendingWithdrawalRow, any>[] = [
   {
     id: 'token',
-    header: 'Token',
+    header: () => <Trans>Token</Trans>,
     cell: ({ row }) => {
       const d = row.original
       if (d.source === 'stakedRSR') {
@@ -323,13 +329,13 @@ const columns: ColumnDef<PendingWithdrawalRow, any>[] = [
   },
   {
     id: 'source',
-    header: 'Source',
+    header: () => <Trans>Source</Trans>,
     cell: ({ row }) => <SourceCell row={row.original} />,
     meta: { className: 'hidden sm:table-cell' },
   },
   {
     id: 'balance',
-    header: 'Balance',
+    header: () => <Trans>Balance</Trans>,
     cell: ({ row }) => {
       const val = Number(row.original.amount)
       return (
@@ -342,7 +348,7 @@ const columns: ColumnDef<PendingWithdrawalRow, any>[] = [
   {
     id: 'value',
     accessorKey: 'value',
-    header: 'Value',
+    header: () => <Trans>Value</Trans>,
     cell: ({ row }) => {
       const val = row.original.value
       return (
@@ -354,12 +360,16 @@ const columns: ColumnDef<PendingWithdrawalRow, any>[] = [
   },
   {
     id: 'progress',
-    header: 'Progress',
+    header: () => <Trans>Progress</Trans>,
     cell: ({ row }) => <ProgressCell row={row.original} />,
   },
   {
     id: 'action',
-    header: () => <span className="flex justify-end">Action</span>,
+    header: () => (
+      <span className="flex justify-end">
+        <Trans>Action</Trans>
+      </span>
+    ),
     cell: ({ row }) => (
       <div className="flex justify-end">
         <ActionCell row={row.original} />
@@ -378,8 +388,8 @@ const PendingWithdrawals = () => {
     <div>
       <SectionHeader
         icon={Clock}
-        title="Pending Withdrawals"
-        subtitle="Unstaking and unlock cooldown periods."
+        title={<Trans>Pending Withdrawals</Trans>}
+        subtitle={<Trans>Unstaking and unlock cooldown periods.</Trans>}
       />
       <div className="bg-card rounded-[20px] border border-border overflow-hidden">
         <DataTable

@@ -9,6 +9,9 @@ import {
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
+import { msg } from '@lingui/core/macro'
+import { Trans, useLingui } from '@lingui/react/macro'
+import type { MessageDescriptor } from '@lingui/core'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import React from 'react'
 import {
@@ -53,18 +56,18 @@ const defaultColumns: ColumnType[] = [
 const getColumnLabel = (
   column: ColumnType,
   inputType: 'shares' | 'units'
-): string => {
+): MessageDescriptor | '' => {
   switch (column) {
     case 'token':
-      return 'Token'
+      return msg`Token`
     case 'current':
-      return inputType === 'units' ? 'Current units' : 'Current %'
+      return inputType === 'units' ? msg`Current units` : msg`Current %`
     case 'input':
-      return inputType === 'units' ? 'New units' : 'New %'
+      return inputType === 'units' ? msg`New units` : msg`New %`
     case 'delta':
-      return 'Delta'
+      return msg`Delta`
     case 'allocation':
-      return '% of Basket'
+      return msg`% of Basket`
     case 'remove':
       return ''
     default:
@@ -79,7 +82,7 @@ const InputToggle = () => {
   if (basketMode === 'shares' || basketMode === 'units') {
     return (
       <span className="font-bold">
-        {basketMode === 'shares' ? 'Share %' : 'Units'}
+        {basketMode === 'shares' ? <Trans>Share %</Trans> : <Trans>Units</Trans>}
       </span>
     )
   }
@@ -97,13 +100,13 @@ const InputToggle = () => {
         className="px-3 h-8 rounded-md data-[state=on]:bg-card text-secondary-foreground/80 data-[state=on]:text-primary"
         value="units"
       >
-        Unit
+        <Trans>Unit</Trans>
       </ToggleGroupItem>
       <ToggleGroupItem
         className="px-3 h-8 rounded-md data-[state=on]:bg-card text-secondary-foreground/80 data-[state=on]:text-primary"
         value="shares"
       >
-        Share
+        <Trans>Share</Trans>
       </ToggleGroupItem>
     </ToggleGroup>
   )
@@ -131,7 +134,7 @@ const EvenDistributionButton = () => {
 
   return (
     <Button variant="outline" size="sm" onClick={handleEvenDistribution}>
-      Even distribution
+      <Trans>Even distribution</Trans>
     </Button>
   )
 }
@@ -142,7 +145,9 @@ const RemainingAllocation = () => {
 
   return (
     <div>
-      <span className="text-legend">Remaining allocation:</span>{' '}
+      <span className="text-legend">
+        <Trans>Remaining allocation:</Trans>
+      </span>{' '}
       <span
         className={cn(
           '',
@@ -163,6 +168,7 @@ export const BasketTable = ({
   showAddToken = true,
   className,
 }: BasketTableProps) => {
+  const { t } = useLingui()
   const basketItems = useAtomValue(basketItemsAtom)
   const basketMode = useAtomValue(basketModeAtom)
   const currentInputType = useAtomValue(currentInputTypeAtom)
@@ -182,9 +188,13 @@ export const BasketTable = ({
   if (items.length === 0) {
     return (
       <div className="border rounded-xl p-8 text-center text-muted-foreground">
-        <p>No tokens in basket</p>
+        <p>
+          <Trans>No tokens in basket</Trans>
+        </p>
         {showAddToken && (
-          <p className="text-sm mt-2">Add tokens to get started</p>
+          <p className="text-sm mt-2">
+            <Trans>Add tokens to get started</Trans>
+          </p>
         )}
       </div>
     )
@@ -223,7 +233,10 @@ export const BasketTable = ({
                 effectiveMode === 'both' ? (
                   <InputToggle />
                 ) : (
-                  getColumnLabel(column, effectiveInputType)
+                  (() => {
+                    const label = getColumnLabel(column, effectiveInputType)
+                    return label ? t(label) : ''
+                  })()
                 )}
               </TableHead>
             ))}

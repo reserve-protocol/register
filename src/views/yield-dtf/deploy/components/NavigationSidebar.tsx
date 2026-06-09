@@ -1,4 +1,4 @@
-import { t, Trans } from '@lingui/macro'
+import { Trans, useLingui } from '@lingui/react/macro'
 import { Button } from '@/components/ui/button'
 import Navigation from '@/components/section-navigation/section-navigation'
 import { useAtomValue } from 'jotai'
@@ -9,7 +9,7 @@ import { getTokenRoute } from 'utils'
 import { ROUTES } from 'utils/constants'
 
 const NavigationSidebar = ({ governance = false }) => {
-  // TODO: Listen for lang
+  const { t } = useLingui()
   const rToken = useAtomValue(selectedRTokenAtom)
   const chainId = useAtomValue(chainIdAtom)
   const navigate = useNavigate()
@@ -23,9 +23,9 @@ const NavigationSidebar = ({ governance = false }) => {
       t`Backing Manager`,
       t`Other`,
     ],
-    []
+    [t]
   )
-  const step2Navigation = useMemo(() => [t`Governance`, t`Next steps`], [])
+  const step2Navigation = useMemo(() => [t`Governance`, t`Next steps`], [t])
 
   const handleBack = () => {
     if (governance && rToken) {

@@ -1,4 +1,4 @@
-import { t, Trans } from '@lingui/macro'
+import { Trans, useLingui } from '@lingui/react/macro'
 import GoTo from '@/components/go-to'
 import TokenItem from '@/components/token-item'
 import { useAtomValue } from 'jotai'
@@ -7,6 +7,7 @@ import { ExplorerDataType, getExplorerLink } from '@/utils/getExplorerLink'
 import { InfoCard } from './settings-info-card'
 
 const BasketInfo = () => {
+  const { t } = useLingui()
   const basket = useAtomValue(rTokenBasketAtom)
   const units = Object.keys(basket)
   const chainId = useAtomValue(chainIdAtom)

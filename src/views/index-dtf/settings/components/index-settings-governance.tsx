@@ -1,6 +1,6 @@
 import { indexDTFAtom } from '@/state/dtf/atoms'
 import { formatPercentage, parseDuration, shortenAddress } from '@/utils'
-import { t } from '@lingui/macro'
+import { useLingui } from '@lingui/react/macro'
 import { useAtomValue } from 'jotai'
 import {
   Calendar1,
@@ -21,6 +21,7 @@ export const InnerGovernanceInfo = ({
   kind?: 'trading' | 'owner' | 'dao'
   className?: string
 }) => {
+  const { t } = useLingui()
   const indexDTF = useAtomValue(indexDTFAtom)
 
   if (!indexDTF) return null
@@ -88,6 +89,7 @@ const GovernanceInfo = ({
 }: {
   kind?: 'trading' | 'owner' | 'dao'
 }) => {
+  const { t } = useLingui()
   const indexDTF = useAtomValue(indexDTFAtom)
 
   if (!indexDTF) return null

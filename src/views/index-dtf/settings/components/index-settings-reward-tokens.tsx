@@ -1,5 +1,6 @@
 import TokenLogo from '@/components/token-logo'
 import { indexDTFAtom } from '@/state/dtf/atoms'
+import { useLingui } from '@lingui/react/macro'
 import { useAtomValue } from 'jotai'
 import { InfoCard, InfoCardItem } from './settings-info-card'
 import { useReadContract, useReadContracts } from 'wagmi'
@@ -8,6 +9,7 @@ import { Address, erc20Abi } from 'viem'
 import { Filter } from 'bad-words'
 
 const ApprovedRevenueTokens = () => {
+  const { t } = useLingui()
   const indexDTF = useAtomValue(indexDTFAtom)
   const stToken = indexDTF && indexDTF.stToken
 
@@ -59,11 +61,11 @@ const ApprovedRevenueTokens = () => {
   }
 
   return (
-    <InfoCard title="Approved Revenue Tokens" id="revenue-tokens">
+    <InfoCard title={t`Approved Revenue Tokens`} id="revenue-tokens">
       {tokens.map((token, i) => (
         <InfoCardItem
           key={token.address}
-          label={`Reward #${i + 1}`}
+          label={t`Reward #${i + 1}`}
           icon={
             <TokenLogo
               chain={indexDTF?.chainId}

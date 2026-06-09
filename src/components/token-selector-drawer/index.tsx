@@ -17,6 +17,7 @@ import { chainIdAtom } from '@/state/atoms'
 import { Token } from '@/types'
 import { shortenAddress } from '@/utils'
 import { ExplorerDataType, getExplorerLink } from '@/utils/getExplorerLink'
+import { Plural, Trans, useLingui } from '@lingui/react/macro'
 import { atom, useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { ArrowUpRightIcon, PlusIcon } from 'lucide-react'
 import { useCallback, useEffect, useMemo } from 'react'
@@ -39,13 +40,14 @@ export const TokenDrawerTrigger = ({ className }: { className?: string }) => {
         <div className="flex items-center justify-center h-8 w-8 bg-primary/10 rounded-full group-hover:bg-transparent transition-colors">
           <PlusIcon size={16} />
         </div>
-        Add new token
+        <Trans>Add new token</Trans>
       </Button>
     </DrawerTrigger>
   )
 }
 
 const SearchToken = () => {
+  const { t } = useLingui()
   const [search, setSearch] = useAtom(searchTokenAtom)
   const handleSearch = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => setSearch(e.target.value),
@@ -55,7 +57,7 @@ const SearchToken = () => {
   return (
     <SearchInput
       className="mx-2"
-      placeholder="Search by token name or address"
+      placeholder={t`Search by token name or address`}
       value={search}
       onChange={handleSearch}
     />
@@ -137,10 +139,10 @@ const TokenSelectorHeader = () => {
     <DrawerTitle className="flex gap-2 mt-2 px-2 mb-2">
       <TabsList className="h-9">
         <TabsTrigger value="all" className="w-max h-7">
-          All
+          <Trans>All</Trans>
         </TabsTrigger>
         <TabsTrigger value="selected" className="w-max h-7">
-          Selected ({selectedTokens.length})
+          <Trans>Selected ({selectedTokens.length})</Trans>
         </TabsTrigger>
       </TabsList>
     </DrawerTitle>
@@ -203,8 +205,12 @@ const TokenList = ({ showSelected = false }: TokenListProps) => {
   if (error) {
     return (
       <div className="flex flex-col items-center justify-center h-full p-4 text-center text-muted-foreground">
-        <p>Failed to load tokens</p>
-        <p className="text-sm">Please try again later</p>
+        <p>
+          <Trans>Failed to load tokens</Trans>
+        </p>
+        <p className="text-sm">
+          <Trans>Please try again later</Trans>
+        </p>
       </div>
     )
   }
@@ -215,7 +221,7 @@ const TokenList = ({ showSelected = false }: TokenListProps) => {
         <LoadingSkeletons />
       ) : filteredTokens.length === 0 ? (
         <div className="flex items-center justify-center h-full text-muted-foreground">
-          No tokens found
+          <Trans>No tokens found</Trans>
         </div>
       ) : (
         <AutoSizer>
@@ -270,9 +276,15 @@ const SubmitSelectedTokens = ({
         disabled={disabled}
         onClick={handleSubmit}
       >
-        {disabled
-          ? 'Select tokens'
-          : `Add ${selectedTokens.length} token${selectedTokens.length > 1 ? 's' : ''}`}
+        {disabled ? (
+          <Trans>Select tokens</Trans>
+        ) : (
+          <Plural
+            value={selectedTokens.length}
+            one="Add # token"
+            other="Add # tokens"
+          />
+        )}
       </Button>
     </DrawerTrigger>
   )

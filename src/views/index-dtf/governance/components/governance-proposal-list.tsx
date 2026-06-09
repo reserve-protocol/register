@@ -58,17 +58,21 @@ const ProposalsSkeleton = () => (
 
 const ProposalsPlaceholder = () => (
   <div className="flex items-center justify-center h-96">
-    <p className="text-muted-foreground"><Trans>No proposals found</Trans></p>
+    <p className="text-muted-foreground">
+      <Trans>No proposals found</Trans>
+    </p>
   </div>
 )
 
-const ProposalShowMoreButton = ({ showAll, onClick }: { showAll: boolean, onClick: () => void }) => (
+const ProposalShowMoreButton = ({
+  showAll,
+  onClick,
+}: {
+  showAll: boolean
+  onClick: () => void
+}) => (
   <div className="flex justify-center p-4 border-t">
-    <Button
-      variant="outline-primary"
-      onClick={onClick}
-      className="gap-2"
-    >
+    <Button variant="outline-primary" onClick={onClick} className="gap-2">
       {showAll ? <Trans>Show less</Trans> : <Trans>Show all</Trans>}
     </Button>
   </div>
@@ -93,15 +97,16 @@ const ProposalList = () => {
   return (
     <div className="bg-card rounded-3xl m-1 mt-0">
       <ScrollArea className="overflow-y-auto">
-        {sortedProposals.length === 0 && (
-          <ProposalsPlaceholder />
-        )}
+        {sortedProposals.length === 0 && <ProposalsPlaceholder />}
         {displayedProposals.map((proposal) => (
           <ProposalListItem key={proposal.id} proposal={proposal} />
         ))}
       </ScrollArea>
       {hasMoreProposals && (
-        <ProposalShowMoreButton showAll={showAll} onClick={() => setShowAll(!showAll)} />
+        <ProposalShowMoreButton
+          showAll={showAll}
+          onClick={() => setShowAll(!showAll)}
+        />
       )}
     </div>
   )

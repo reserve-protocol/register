@@ -1,4 +1,4 @@
-import { t } from '@lingui/macro'
+import { Trans, useLingui } from '@lingui/react/macro'
 import { createColumnHelper } from '@tanstack/react-table'
 import Help from 'components/help'
 import Beefy from 'components/icons/Beefy'
@@ -61,6 +61,7 @@ export const PROJECT_ICONS: Record<string, React.ReactElement> = {
 }
 
 const useEarnTableColumns = (compact: boolean) => {
+  const { t } = useLingui()
   const columnHelper = createColumnHelper<Pool>()
   return useMemo(() => {
     return [
@@ -146,7 +147,9 @@ const useEarnTableColumns = (compact: boolean) => {
           return (
             <div className="flex items-center min-w-[80px]">
               <span className="mr-1">APY</span>
-              <Help content="APY = Base APY + Reward APY. For non-autocompounding pools reinvesting is not accounted, in which case APY = APR." />
+              <Help
+                content={t`APY = Base APY + Reward APY. For non-autocompounding pools reinvesting is not accounted, in which case APY = APR.`}
+              />
             </div>
           )
         },
@@ -160,8 +163,12 @@ const useEarnTableColumns = (compact: boolean) => {
         header: () => {
           return (
             <div className="flex items-center min-w-[110px]">
-              <span className="mr-1">Base APY</span>
-              <Help content="Annualised percentage yield from trading fees/supplying. For dexes 24h fees are used and scaled those to a year." />
+              <span className="mr-1">
+                <Trans>Base APY</Trans>
+              </span>
+              <Help
+                content={t`Annualised percentage yield from trading fees/supplying. For dexes 24h fees are used and scaled those to a year.`}
+              />
             </div>
           )
         },
@@ -176,8 +183,10 @@ const useEarnTableColumns = (compact: boolean) => {
         header: () => {
           return (
             <div className="flex items-center min-w-[130px]">
-              <span className="mr-1">Reward APY</span>
-              <Help content="Annualised percentage yield from incentives" />
+              <span className="mr-1">
+                <Trans>Reward APY</Trans>
+              </span>
+              <Help content={t`Annualised percentage yield from incentives`} />
             </div>
           )
         },
@@ -197,7 +206,7 @@ const useEarnTableColumns = (compact: boolean) => {
         ),
       }),
     ]
-  }, [compact])
+  }, [compact, t])
 }
 
 export default useEarnTableColumns

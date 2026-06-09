@@ -1,4 +1,4 @@
-import { t } from '@lingui/macro'
+import { useLingui } from '@lingui/react/macro'
 import Timelock from 'abis/Timelock'
 import TransactionButton from '@/components/ui/transaction-button'
 import useContractWrite from 'hooks/useContractWrite'
@@ -10,6 +10,7 @@ import { keccak256, toBytes } from 'viem'
 import { useReadContract } from 'wagmi'
 
 const ProposalCancel = () => {
+  const { t } = useLingui()
   const governance = useAtomValue(rTokenGovernanceAtom)
   const timelockId = useAtomValue(timelockIdAtom)
   const account = useAtomValue(walletAtom)

@@ -6,6 +6,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
+import { Trans, useLingui } from '@lingui/react/macro'
 import useWatchTransaction from 'hooks/useWatchTransaction'
 import { atom, useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { useEffect } from 'react'
@@ -20,38 +21,44 @@ import {
 import useAuctions from './useAuctions'
 import { isModuleLegacyAtom } from 'state/atoms'
 
-const confirmButtonLabelAtom = atom((get) => {
+const confirmButtonStateAtom = atom((get) => {
   const settleable = get(auctionsToSettleAtom) || []
   const selectedAuctions = get(selectedAuctionsAtom)
   const { recollaterization } = get(auctionsOverviewAtom) || {}
 
-  let label = ''
-
-  if (settleable?.length) {
-    label += `Settle ${settleable.length} previous & `
+  return {
+    settleableCount: settleable?.length ?? 0,
+    selectedCount: selectedAuctions.length,
+    recollaterization: !!recollaterization,
   }
-
-  if (recollaterization) {
-    if (label) {
-      label = `Settle ${settleable.length} previous to start recollaterization`
-    } else {
-      label += 'Start next recollaterization auction'
-    }
-  } else {
-    label += `Start ${selectedAuctions.length} new auctions`
-  }
-
-  return label
 })
 
 const ConfirmAuction = () => {
+  const { t } = useLingui()
   const { isReady, write, hash, gas, isLoading } = useAuctions()
   const { status } = useWatchTransaction({ hash, label: 'Run auctions' })
   const closeSidebar = useSetAtom(auctionSidebarAtom)
   const { auctions: isLegacy } = useAtomValue(isModuleLegacyAtom)
   const [tradeKind, setTradeKind] = useAtom(auctionPlatformAtom)
 
-  const btnLabel = useAtomValue(confirmButtonLabelAtom)
+  const { settleableCount, selectedCount, recollaterization } =
+    useAtomValue(confirmButtonStateAtom)
+
+  let btnLabel = ''
+
+  if (settleableCount) {
+    btnLabel += t`Settle ${settleableCount} previous & `
+  }
+
+  if (recollaterization) {
+    if (btnLabel) {
+      btnLabel = t`Settle ${settleableCount} previous to start recollaterization`
+    } else {
+      btnLabel += t`Start next recollaterization auction`
+    }
+  } else {
+    btnLabel += t`Start ${selectedCount} new auctions`
+  }
 
   useEffect(() => {
     if (status === 'success') {
@@ -67,7 +74,9 @@ const ConfirmAuction = () => {
     <div>
       {!isLegacy && (
         <div className="mb-4 flex items-center">
-          <label className="ml-4 mr-6">Run auctions as:</label>
+          <label className="ml-4 mr-6">
+            <Trans>Run auctions as:</Trans>
+          </label>
           <div className="flex-grow">
             <Select
               value={String(tradeKind)}
@@ -78,10 +87,10 @@ const ConfirmAuction = () => {
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value={String(TradeKind.BatchTrade)}>
-                  Batch auction
+                  <Trans>Batch auction</Trans>
                 </SelectItem>
                 <SelectItem value={String(TradeKind.DutchTrade)}>
-                  Dutch auction
+                  <Trans>Dutch auction</Trans>
                 </SelectItem>
               </SelectContent>
             </Select>

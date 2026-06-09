@@ -2,7 +2,7 @@ import { Button } from '@/components/ui/button'
 import DgnETHButtonAppendix from '@/components/utils/integrations/dgneth-btn-appendix'
 import { trackClick } from '@/hooks/useTrackPage'
 import { ChainId } from '@/utils/chains'
-import { t } from '@lingui/macro'
+import { Trans, useLingui } from '@lingui/react/macro'
 import { ListedToken } from 'hooks/useTokenList'
 import { ROUTES } from 'utils/constants'
 import EarnButton from './earn-button'
@@ -13,6 +13,7 @@ interface TokenActionsProps {
 }
 
 const TokenActions = ({ token, onNavigate }: TokenActionsProps) => {
+  const { t } = useLingui()
   return (
     <div className="flex items-center flex-wrap gap-2 md:gap-3 mt-0 md:mt-1">
       {token.chain !== ChainId.Arbitrum && (
@@ -37,8 +38,8 @@ const TokenActions = ({ token, onNavigate }: TokenActionsProps) => {
             className="whitespace-nowrap"
           >
             {token.tokenApy
-              ? `Mint ${token.tokenApy.toFixed(1)}% Est. APY`
-              : 'Mint'}
+              ? t`Mint ${token.tokenApy.toFixed(1)}% Est. APY`
+              : t`Mint`}
           </Button>
         </DgnETHButtonAppendix>
       )}
@@ -60,7 +61,7 @@ const TokenActions = ({ token, onNavigate }: TokenActionsProps) => {
       >
         <div className="flex items-center gap-2">
           <span>
-            Stake RSR{' '}
+            <Trans>Stake RSR</Trans>{' '}
             {!!token.stakingApy &&
               `- ${token.stakingApy.toFixed(1)}%`}
           </span>

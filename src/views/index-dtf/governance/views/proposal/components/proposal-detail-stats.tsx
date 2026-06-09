@@ -1,12 +1,10 @@
-import { cn } from '@/lib/utils'
-import { useAtomValue } from 'jotai'
-import { CircleSlash, ThumbsDown, ThumbsUp, X } from 'lucide-react'
-
 import { Separator } from '@/components/ui/separator'
+import { cn } from '@/lib/utils'
 import { formatCurrency, formatPercentage, formatTokenAmount } from '@/utils'
 import { PROPOSAL_STATES } from '@/utils/constants'
 import { Trans } from '@lingui/react/macro'
-import { Check } from 'lucide-react'
+import { useAtomValue } from 'jotai'
+import { Check, CircleSlash, ThumbsDown, ThumbsUp, X } from 'lucide-react'
 import { useMemo } from 'react'
 import { proposalDetailAtom, proposalStateAtom } from '../atom'
 
@@ -100,7 +98,9 @@ const QuorumStat = ({
             colorSuccess="green-500"
             colorFailure="red-500"
           />
-          <span>{isOptimistic ? <Trans>Challenge</Trans> : <Trans>Quorum</Trans>}</span>
+          <span>
+            {isOptimistic ? <Trans>Challenge</Trans> : <Trans>Quorum</Trans>}
+          </span>
         </div>
         <div className="flex items-center gap-2 text-base sm:text-lg">
           <span
@@ -110,8 +110,12 @@ const QuorumStat = ({
           </span>
 
           <span className="text-legend whitespace-nowrap">
-            {formatTokenAmount(currentQuorum)} of{' '}
-            {hasQuorumTarget ? formatTokenAmount(quorumNeeded) : <Trans>Unavailable</Trans>}
+            {formatTokenAmount(currentQuorum)} <Trans>of</Trans>{' '}
+            {hasQuorumTarget ? (
+              formatTokenAmount(quorumNeeded)
+            ) : (
+              <Trans>Unavailable</Trans>
+            )}
           </span>
         </div>
       </div>
@@ -142,6 +146,7 @@ const MajoritySupportStat = ({
       100
     )
   )
+
   return (
     <div className="flex flex-col gap-3 p-4">
       <div className="flex items-center justify-between gap-2">
@@ -151,13 +156,15 @@ const MajoritySupportStat = ({
             colorSuccess="text-accent-inverted"
             colorFailure="text-red-500"
           />
-          <span>Majority support</span>
+          <span>
+            <Trans>Majority support</Trans>
+          </span>
         </div>
         <div className="flex items-center gap-2 text-base sm:text-lg">
           <span
             className={`font-bold ${majoritySupport ? 'text-green-500' : 'text-red-500'}`}
           >
-            {majoritySupport ? 'Yes' : 'No'}
+            {majoritySupport ? <Trans>Yes</Trans> : <Trans>No</Trans>}
           </span>
           {percentage !== '100%' && (
             <span className="text-legend">{percentage}</span>
@@ -166,8 +173,9 @@ const MajoritySupportStat = ({
       </div>
       <div className="w-full h-1 rounded-full bg-gray-200">
         <div
-          className={`h-full rounded-full ${majoritySupport ? 'bg-accent-inverted' : 'bg-red-500'
-            } ${!majorityWeight ? 'bg-gray-200' : ''}`}
+          className={`h-full rounded-full ${
+            majoritySupport ? 'bg-accent-inverted' : 'bg-red-500'
+          } ${!majorityWeight ? 'bg-gray-200' : ''}`}
           style={{
             width: `${Math.min(
               (majoritySupport || !majorityWeight
@@ -202,11 +210,17 @@ const ChallengeStat = ({
           <div className="flex items-center justify-center w-7 h-7 bg-muted rounded text-muted-foreground">
             <Check size={18} strokeWidth={1.5} />
           </div>
-          <span className="text-lg"><Trans>Challenge</Trans></span>
+          <span className="text-lg">
+            <Trans>Challenge</Trans>
+          </span>
         </div>
         <span className="text-base text-legend sm:text-lg">
-          {formatTokenAmount(currentQuorum)} of{' '}
-          {hasQuorumTarget ? formatTokenAmount(quorumNeeded) : <Trans>Unavailable</Trans>}
+          {formatTokenAmount(currentQuorum)} <Trans>of</Trans>{' '}
+          {hasQuorumTarget ? (
+            formatTokenAmount(quorumNeeded)
+          ) : (
+            <Trans>Unavailable</Trans>
+          )}
           {hasQuorumTarget && ` (${formatPercentage(challengeProgress)})`}
         </span>
       </div>
@@ -237,7 +251,9 @@ const VoteDistributionStat = ({
             <ThumbsUp size={18} className="text-primary" />
           </div>
           <div className="flex flex-col">
-            <span className="min-w-[60px]">For</span>
+            <span className="min-w-[60px]">
+              <Trans>For</Trans>
+            </span>
             <span className="font-bold text-accent-inverted">
               {formatCurrency(+forVotes, 0, {
                 notation: 'compact',
@@ -248,7 +264,9 @@ const VoteDistributionStat = ({
         </div>
         <div className="flex items-center gap-3 flex-grow p-4 justify-end text-right">
           <div className="flex flex-col">
-            <span className="min-w-[60px]">Against</span>
+            <span className="min-w-[60px]">
+              <Trans>Against</Trans>
+            </span>
             <span className="font-bold text-destructive">
               {formatCurrency(+againstVotes, 0, {
                 notation: 'compact',
@@ -267,7 +285,9 @@ const VoteDistributionStat = ({
           <div className="flex items-center justify-center w-7 h-7 bg-muted rounded">
             <CircleSlash size={18} />
           </div>
-          <span className="min-w-[60px]">Abstain</span>
+          <span className="min-w-[60px]">
+            <Trans>Abstain</Trans>
+          </span>
         </div>
         <span className="font-bold text-gray-500">
           {formatCurrency(+abstainVotes, 0, {

@@ -26,6 +26,9 @@ import React, {
   useRef,
   useState,
 } from 'react'
+import { Trans, useLingui } from '@lingui/react/macro'
+import { msg } from '@lingui/core/macro'
+import type { MessageDescriptor } from '@lingui/core'
 import GaugeIcon from '../icons/GaugeIcon'
 import { ToggleGroup, ToggleGroupItem } from './toggle-group'
 import { Skeleton } from './skeleton'
@@ -43,7 +46,7 @@ import useMediaQuery from '@/hooks/useMediaQuery'
 type TokenWithBalance = Token & { balance?: string }
 
 type SwapItem = {
-  title?: string
+  title?: ReactNode
   price?: ReactNode
   address?: string
   symbol?: string
@@ -189,7 +192,9 @@ const PriceValue = ({ price }: Pick<SwapItem, 'price'>) => (
 
 const MaxButton = ({ balance, onMax }: Pick<SwapItem, 'balance' | 'onMax'>) => (
   <div className="flex items-center gap-1 text-base">
-    <span className="text-legend">Balance</span>
+    <span className="text-legend">
+      <Trans>Balance</Trans>
+    </span>
     <span className="font-bold">{balance}</span>
     <Button
       variant="ghost"
@@ -197,7 +202,7 @@ const MaxButton = ({ balance, onMax }: Pick<SwapItem, 'balance' | 'onMax'>) => (
       size="xs"
       onClick={onMax}
     >
-      Max
+      <Trans>Max</Trans>
     </Button>
   </div>
 )
@@ -206,7 +211,9 @@ const TokenInputBox = ({ from }: Pick<SwapProps, 'from'>) => {
   return (
     <div className="flex flex-col gap-1 p-4 bg-muted rounded-xl">
       <div>
-        <h3 className="text-primary">{from?.title || 'You use:'}</h3>
+        <h3 className="text-primary">
+          {from?.title || <Trans>You use:</Trans>}
+        </h3>
         <div className="flex gap-1">
           <TokenInput {...from} />
           <TokenSelector {...from} />
@@ -224,15 +231,16 @@ const TokenInputBox = ({ from }: Pick<SwapProps, 'from'>) => {
   )
 }
 
-const SLOW_LOADING_TEXTS = [
-  'Searching DEX Liquidity',
-  'Assembling different routes',
-  'Evaluating slippage',
-  'Reducing potential dust',
-  'Loading DTF',
+const SLOW_LOADING_TEXTS: MessageDescriptor[] = [
+  msg`Searching DEX Liquidity`,
+  msg`Assembling different routes`,
+  msg`Evaluating slippage`,
+  msg`Reducing potential dust`,
+  msg`Loading DTF`,
 ]
 
 const SlowLoading = ({ enabled }: { enabled: boolean }) => {
+  const { t } = useLingui()
   const [countdown, setCountdown] = useState(60)
   const [textIndex, setTextIndex] = useState(0)
 
@@ -267,7 +275,7 @@ const SlowLoading = ({ enabled }: { enabled: boolean }) => {
       <div className="flex items-center gap-1 justify-between bg-card rounded-full px-3 py-2 text-sm text-primary border border-primary">
         <div className="flex items-center gap-1">
           <Loader size={16} className="animate-spin-slow" />
-          {SLOW_LOADING_TEXTS[textIndex]}
+          {t(SLOW_LOADING_TEXTS[textIndex])}
         </div>
         <div
           className={cn(
@@ -314,7 +322,7 @@ const TokenOutputBox = ({ to, loading }: Pick<SwapProps, 'to' | 'loading'>) => {
     <div className="relative flex flex-col gap-1 p-4 bg-card rounded-xl border-border border">
       <SlowLoading enabled={slowLoading} />
       <div>
-        <h3>{to.title || 'You receive:'}</h3>
+        <h3>{to.title || <Trans>You receive:</Trans>}</h3>
         <div className="flex items-center gap-2 justify-between">
           {loading ? (
             <Skeleton className="w-full h-[40px]" />
@@ -374,6 +382,7 @@ export const SlippageSelector = ({
   formatOption?: (option: string) => string
   hideTitle?: boolean
 }) => {
+  const { t } = useLingui()
   const [customValue, setCustomValue] = useState(
     (1 / (Number(value) / 100)).toFixed(3)
   )
@@ -405,8 +414,12 @@ export const SlippageSelector = ({
         <div className="flex items-center gap-1">
           <GaugeIcon height={16} width={16} />
           <div className="text-sm font-semibold">
-            <span className="inline-block sm:hidden">Slippage</span>
-            <span className="hidden sm:inline-block">Max slippage</span>
+            <span className="inline-block sm:hidden">
+              <Trans>Slippage</Trans>
+            </span>
+            <span className="hidden sm:inline-block">
+              <Trans>Max slippage</Trans>
+            </span>
           </div>
         </div>
       )}
@@ -421,7 +434,7 @@ export const SlippageSelector = ({
             <ToggleGroupItem
               key={option}
               value={option.toString()}
-              aria-label={`Toggle ${option}`}
+              aria-label={t`Toggle ${option}`}
               className="px-3 rounded-md data-[state=on]:bg-card text-secondary-foreground/80 data-[state=on]:text-primary"
               size="xs"
             >
@@ -432,7 +445,7 @@ export const SlippageSelector = ({
         <div className="w-20 hidden sm:block" role="button">
           <div className="relative">
             <Input
-              placeholder="Custom"
+              placeholder={t`Custom`}
               className={cn(
                 'h-9 px-[10px] rounded-lg text-base [&:focus::placeholder]:opacity-0 [&:focus::placeholder]:transition-opacity focus-visible:ring-0 focus-visible:ring-offset-0 ',
                 customValue && 'pl-2 pr-6'

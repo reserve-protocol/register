@@ -4,6 +4,7 @@ import { indexDTFAtom, performanceTimeRangeAtom } from '@/state/dtf/atoms'
 import { TimeRange } from '@/types'
 import { useAtom, useAtomValue } from 'jotai'
 import { useEffect, useMemo } from 'react'
+import { Trans } from '@lingui/react/macro'
 import { dataTypeAtom } from './price-chart'
 
 export type Range = TimeRange
@@ -63,7 +64,7 @@ const TimeRangeSelector = ({
             className={`text-xs sm:text-sm ${tr.value === range ? 'text-white font-bold' : 'text-white/50'}`}
             onClick={() => setRange(tr.value as Range)}
           >
-            {tr.label}
+            {tr.value === 'all' ? <Trans>All</Trans> : tr.label}
           </button>
         ))}
       </div>
@@ -79,7 +80,7 @@ const TimeRangeSelector = ({
           className={`h-6 px-2 mr-1 sm:px-2 text-xs sm:text-sm text-white/80 rounded-[60px] hover:bg-white hover:text-black ${tr.value === range ? 'bg-white text-black' : ''}`}
           onClick={() => setRange(tr.value as Range)}
         >
-          {tr.label}
+          {tr.value === 'all' ? <Trans>All</Trans> : tr.label}
         </Button>
       ))}
     </div>

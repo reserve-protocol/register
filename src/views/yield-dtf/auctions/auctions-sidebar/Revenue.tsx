@@ -1,4 +1,4 @@
-import { Trans, t } from '@lingui/macro'
+import { Trans, useLingui } from '@lingui/react/macro'
 import EmptyBoxIcon from 'components/icons/EmptyBoxIcon'
 import { atom, useAtomValue } from 'jotai'
 import { JSXElementConstructor } from 'react'
@@ -90,6 +90,7 @@ const RevenueOverviewAtom = atom((get) => {
 })
 
 const ActionableRevenue = () => {
+  const { t } = useLingui()
   const { isLoading, available, availableAmount, emissions } =
     useAtomValue(RevenueOverviewAtom)
 
@@ -98,7 +99,7 @@ const ActionableRevenue = () => {
       <RevenueOverviewHeader
         text={t`Above minimum trade volume`}
         amount={availableAmount + emissions}
-        help="Run and settle auctions."
+        help={t`Run and settle auctions.`}
         className="mt-4"
         loading={isLoading}
       />
@@ -113,6 +114,7 @@ const ActionableRevenue = () => {
 }
 
 const UnavailableRevenue = () => {
+  const { t } = useLingui()
   const { isLoading, unavailable, unavailableAmount } =
     useAtomValue(RevenueOverviewAtom)
 
@@ -122,7 +124,7 @@ const UnavailableRevenue = () => {
         text={t`Below minimum trade volume`}
         amount={unavailableAmount}
         muted
-        help="Revenue auctions that are below the minimum trade or unavailable."
+        help={t`Revenue auctions that are below the minimum trade or unavailable.`}
         className="mt-4"
         loading={isLoading}
       />

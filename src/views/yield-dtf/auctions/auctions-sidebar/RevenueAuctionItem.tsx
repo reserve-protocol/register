@@ -1,4 +1,4 @@
-import { Trans, t } from '@lingui/macro'
+import { Trans, useLingui } from '@lingui/react/macro'
 import GaugeIcon from 'components/icons/GaugeIcon'
 import TokenLogo from 'components/icons/TokenLogo'
 import useRToken from 'hooks/useRToken'
@@ -56,6 +56,7 @@ const RevenueAuctionItem = ({
   onSelect(): void
   selected?: boolean
 }) => {
+  const { t } = useLingui()
   const [isOpen, setOpen] = useState(false)
   const isBelowMinTrade = +data.minAmount > +data.amount
   const rToken = useRToken()
@@ -71,7 +72,7 @@ const RevenueAuctionItem = ({
         {/* SelectableBox content */}
         <div className="flex items-center w-full">
           <Info
-            title="Surplus"
+            title={t`Surplus`}
             icon={<SwapIcon buy={data.buy.symbol} sell={data.sell.symbol} />}
             subtitle={`${formatCurrency(+data.amount)} ${
               data.sell.symbol

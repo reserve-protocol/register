@@ -11,6 +11,7 @@ import {
   getFolioRoute,
   humanizeDateToNow,
 } from '@/utils'
+import { Trans } from '@lingui/react/macro'
 import { ColumnDef } from '@tanstack/react-table'
 import { useNavigate } from 'react-router-dom'
 import { Line, LineChart, YAxis } from 'recharts'
@@ -28,10 +29,20 @@ const chartConfig = {
 } satisfies ChartConfig
 
 const formatPercentageChange = (performance: Performance[]) => {
-  if (performance.length < 2) return <span className="text-legend">No data</span>
+  if (performance.length < 2)
+    return (
+      <span className="text-legend">
+        <Trans>No data</Trans>
+      </span>
+    )
   const first = performance[0].value
   const last = performance[performance.length - 1].value
-  if (first <= 0) return <span className="text-legend">No data</span>
+  if (first <= 0)
+    return (
+      <span className="text-legend">
+        <Trans>No data</Trans>
+      </span>
+    )
   const change = ((last - first) / first) * 100
   if (Math.abs(change) < 0.005) return '0.00%'
   return `${change > 0 ? '+' : ''}${change.toFixed(2)}%`
@@ -40,7 +51,9 @@ const formatPercentageChange = (performance: Performance[]) => {
 const columns: ColumnDef<Top100DTF>[] = [
   {
     header: ({ column }) => (
-      <SorteableButton column={column}>Name</SorteableButton>
+      <SorteableButton column={column}>
+        <Trans>Name</Trans>
+      </SorteableButton>
     ),
     accessorKey: 'name',
     cell: ({ row }) => (
@@ -60,7 +73,11 @@ const columns: ColumnDef<Top100DTF>[] = [
     ),
   },
   {
-    header: () => <span className="text-legend">Backing</span>,
+    header: () => (
+      <span className="text-legend">
+        <Trans>Backing</Trans>
+      </span>
+    ),
     accessorKey: 'basket',
     enableSorting: false,
     cell: ({ row }) => {
@@ -99,7 +116,9 @@ const columns: ColumnDef<Top100DTF>[] = [
   {
     header: ({ column }) => (
       <div className="text-right">
-        <SorteableButton column={column}>Price</SorteableButton>
+        <SorteableButton column={column}>
+          <Trans>Price</Trans>
+        </SorteableButton>
       </div>
     ),
     accessorKey: 'price',
@@ -116,7 +135,9 @@ const columns: ColumnDef<Top100DTF>[] = [
   {
     header: ({ column }) => (
       <div className="text-right">
-        <SorteableButton column={column}>Market Cap</SorteableButton>
+        <SorteableButton column={column}>
+          <Trans>Market Cap</Trans>
+        </SorteableButton>
       </div>
     ),
     accessorKey: 'marketCap',
@@ -133,7 +154,7 @@ const columns: ColumnDef<Top100DTF>[] = [
   {
     header: ({ column }) => (
       <SorteableButton column={column}>
-        Performance (7d)
+        <Trans>Performance (7d)</Trans>
       </SorteableButton>
     ),
     accessorKey: 'performancePercent',
@@ -179,7 +200,9 @@ const columns: ColumnDef<Top100DTF>[] = [
   {
     header: ({ column }) => (
       <div className="text-right">
-        <SorteableButton column={column}>Holders</SorteableButton>
+        <SorteableButton column={column}>
+          <Trans>Holders</Trans>
+        </SorteableButton>
       </div>
     ),
     accessorKey: 'currentHolderCount',
@@ -192,7 +215,9 @@ const columns: ColumnDef<Top100DTF>[] = [
   {
     header: ({ column }) => (
       <div className="text-right">
-        <SorteableButton column={column}>Created</SorteableButton>
+        <SorteableButton column={column}>
+          <Trans>Created</Trans>
+        </SorteableButton>
       </div>
     ),
     accessorKey: 'timestamp',
@@ -218,7 +243,9 @@ const Top100Table = ({
   if (!data.length) {
     return (
       <div className="flex items-center justify-center h-48 bg-card rounded-[20px]">
-        <p className="text-muted-foreground">No DTFs found</p>
+        <p className="text-muted-foreground">
+          <Trans>No DTFs found</Trans>
+        </p>
       </div>
     )
   }

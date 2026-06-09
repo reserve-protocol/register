@@ -5,7 +5,7 @@ import { isInactiveDTF } from '@/hooks/use-dtf-status'
 import { cn } from '@/lib/utils'
 import { indexDTFAtom, indexDTFBrandAtom, indexDTFStatusAtom } from '@/state/dtf/atoms'
 import { ROUTES } from '@/utils/constants'
-import { t } from '@lingui/macro'
+import { useLingui } from '@lingui/react/macro'
 import { useAtomValue } from 'jotai'
 import {
   ArrowLeftRight,
@@ -59,6 +59,7 @@ const NavigationItem = ({
 }
 
 const NavigationHeader = () => {
+  const { t } = useLingui()
   const indexDTF = useAtomValue(indexDTFAtom)
   const brand = useAtomValue(indexDTFBrandAtom)
   const { address: walletAddress, chainId } = useAccount()
@@ -81,7 +82,7 @@ const NavigationHeader = () => {
     <div className="items-center gap-2 hidden lg:flex">
       <TokenLogo
         src={brand?.dtf?.icon || undefined}
-        alt={indexDTF?.token.symbol ?? 'dtf token logo'}
+        alt={indexDTF?.token.symbol ?? t`dtf token logo`}
         size="lg"
       />
       <div className="text-base font-semibold truncate">
@@ -126,6 +127,7 @@ const DisabledNavigationItem = ({
 const DISABLED_ROUTES_WHEN_DEPRECATED: string[] = [ROUTES.AUCTIONS]
 
 const NavigationItems = () => {
+  const { t } = useLingui()
   const dtf = useAtomValue(indexDTFAtom)
   const status = useAtomValue(indexDTFStatusAtom)
   const isDeprecated = isInactiveDTF(status)
@@ -158,7 +160,7 @@ const NavigationItems = () => {
         route: ROUTES.SETTINGS,
       },
     ],
-    [dtf?.token.symbol]
+    [dtf?.token.symbol, t]
   )
 
   return (

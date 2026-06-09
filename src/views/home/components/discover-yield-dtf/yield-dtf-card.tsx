@@ -4,6 +4,7 @@ import RTokenAddresses from '@/views/yield-dtf/overview/components/rtoken-addres
 import { trackClick } from '@/hooks/useTrackPage'
 import { ChainId } from '@/utils/chains'
 import Help from '@/components/ui/help'
+import { Trans, useLingui } from '@lingui/react/macro'
 import ChainLogo from 'components/icons/ChainLogo'
 import ChevronRight from 'components/icons/ChevronRight'
 import TokenLogo from 'components/icons/TokenLogo'
@@ -24,7 +25,9 @@ interface Props {
   deprecated?: boolean
 }
 
-const ChainBadge = ({ chain }: { chain: number }) => (
+const ChainBadge = ({ chain }: { chain: number }) => {
+  const { t } = useLingui()
+  return (
   <div
     className={`hidden md:flex items-center rounded-[50px] px-2 py-1 gap-1 ${chain === ChainId.Arbitrum
       ? 'bg-[rgba(255,171,0,0.06)] border border-[rgba(255,171,0,0.20)]'
@@ -35,17 +38,16 @@ const ChainBadge = ({ chain }: { chain: number }) => (
     <span
       className={`text-xs ${chain === ChainId.Arbitrum ? 'text-[#FFAB00]' : 'text-primary'}`}
     >
-      {CHAIN_TAGS[chain] + ' Native'}
+      {t`${CHAIN_TAGS[chain]} Native`}
     </span>
     {chain === ChainId.Arbitrum && (
       <Help
-        content={
-          'Due to low usage, the Reserve DApp is discontinuing mints on Arbitrum. You can still redeem your tokens at any time, as they remain fully backed by their underlying assets.'
-        }
+        content={t`Due to low usage, the Reserve DApp is discontinuing mints on Arbitrum. You can still redeem your tokens at any time, as they remain fully backed by their underlying assets.`}
       />
     )}
   </div>
-)
+  )
+}
 
 // TODO: Component should be splitted
 const YieldDTFCard = ({ token, deprecated }: Props) => {
@@ -90,7 +92,7 @@ const YieldDTFCard = ({ token, deprecated }: Props) => {
               <ChainBadge chain={token.chain} />
               {deprecated && (
                 <span className="text-xs font-medium px-2 py-0.5 rounded-full bg-yellow-500/15 text-yellow-600 dark:text-yellow-400">
-                  Inactive
+                  <Trans>Inactive</Trans>
                 </span>
               )}
               <div className="block md:hidden">

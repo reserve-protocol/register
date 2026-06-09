@@ -1,5 +1,6 @@
 import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
+import { Trans } from '@lingui/react/macro'
 import ChainLogo from 'components/icons/ChainLogo'
 import StackTokenLogo from 'components/token-logo/StackTokenLogo'
 import mixpanel from 'mixpanel-browser/src/loaders/loader-module-core'
@@ -12,6 +13,12 @@ const FeaturedPoolItem = ({ pool }: { pool?: Pool }) => {
     () => (pool?.underlyingTokens || []).filter((u) => u.symbol !== 'Unknown'),
     [pool?.underlyingTokens]
   )
+
+  const tokensLabel = underlyingTokens.map((u) => u.symbol).join(' & ')
+  const projectLabel = pool
+    ? pool.project.split('-')[0].substring(0, 1).toUpperCase() +
+      pool.project.split('-')[0].substring(1)
+    : ''
 
   if (!pool)
     return (
@@ -32,20 +39,17 @@ const FeaturedPoolItem = ({ pool }: { pool?: Pool }) => {
       </div>
       <div className="flex flex-col justify-between gap-1 md:gap-2 flex-1 min-w-0 mr-2 md:mr-0">
         <div className="flex flex-col gap-0.5 md:gap-1">
-          <p className="text-xs md:text-sm text-foreground">Earn up to</p>
+          <p className="text-xs md:text-sm text-foreground">
+            <Trans>Earn up to</Trans>
+          </p>
           <p className="text-lg md:text-2xl lg:text-3xl font-bold leading-5 md:leading-8">
             {pool.apy.toFixed(2)}%{' '}
             <span className="text-grey text-xs md:text-base">APY</span>
           </p>
           <p className="text-xs md:text-sm text-foreground truncate">
-            w.{' '}
-            {underlyingTokens.map(
-              (u, i) =>
-                `${u.symbol}${i !== underlyingTokens.length - 1 ? ' & ' : ''}`
-            )}
-            {' in '}
-            {pool.project.split('-')[0].substring(0, 1).toUpperCase() +
-              pool.project.split('-')[0].substring(1)}
+            <Trans>
+              w. {tokensLabel} in {projectLabel}
+            </Trans>
           </p>
         </div>
         <div className="flex items-center gap-2">
@@ -60,7 +64,7 @@ const FeaturedPoolItem = ({ pool }: { pool?: Pool }) => {
               })
             }}
           >
-            View
+            <Trans>View</Trans>
           </Button>
           <ChainLogo chain={pool.chain} fontSize={12} />
         </div>

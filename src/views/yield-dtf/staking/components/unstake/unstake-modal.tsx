@@ -1,4 +1,4 @@
-import { Trans, t } from '@lingui/macro'
+import { Trans, useLingui } from '@lingui/react/macro'
 import { Modal } from 'components'
 import ShowMore from 'components/transaction-modal/ShowMore'
 import { useAtomValue, useSetAtom } from 'jotai'
@@ -11,6 +11,7 @@ import { unStakeAmountAtom } from './atoms'
 import { rsrPriceAtom } from 'state/atoms'
 
 const UnstakePreview = () => {
+  const { t } = useLingui()
   const amount = useAtomValue(unStakeAmountAtom)
   const rate = useAtomValue(rateAtom)
   const price = useAtomValue(rsrPriceAtom)
@@ -53,6 +54,7 @@ const UnstakeExtra = () => (
 )
 
 const UnstakeModal = ({ onClose }: { onClose(): void }) => {
+  const { t } = useLingui()
   const setAmount = useSetAtom(unStakeAmountAtom)
   const handleClose = useCallback(() => {
     setAmount('')

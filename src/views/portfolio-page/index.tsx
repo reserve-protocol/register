@@ -1,6 +1,7 @@
 import Copy from '@/components/ui/copy'
 import { ConnectWalletButton } from '@/components/ui/transaction'
 import { shortenAddress } from '@/utils'
+import { Trans } from '@lingui/react/macro'
 import { useSetAtom } from 'jotai'
 import { Eye, X } from 'lucide-react'
 import { useEffect } from 'react'
@@ -32,8 +33,12 @@ import { usePortfolio } from './hooks/use-portfolio'
 
 const ConnectPrompt = () => (
   <div className="flex flex-col items-center justify-center min-h-[60vh] gap-4">
-    <h1 className="text-2xl font-bold">Portfolio</h1>
-    <p className="text-legend">Connect your wallet to view your portfolio</p>
+    <h1 className="text-2xl font-bold">
+      <Trans>Portfolio</Trans>
+    </h1>
+    <p className="text-legend">
+      <Trans>Connect your wallet to view your portfolio</Trans>
+    </p>
     <ConnectWalletButton />
   </div>
 )
@@ -49,7 +54,9 @@ const ImpersonationBanner = ({
     <div className="flex items-center gap-2 min-w-0">
       <Eye size={16} className="text-primary flex-shrink-0" />
       <div className="min-w-0 sm:flex sm:items-center sm:gap-2">
-        <p className="text-sm font-medium text-primary">Viewing portfolio of</p>
+        <p className="text-sm font-medium text-primary">
+          <Trans>Viewing portfolio of</Trans>
+        </p>
         <div className="flex items-center gap-1">
           <span className="text-sm font-mono truncate">
             {shortenAddress(address)}
@@ -63,7 +70,7 @@ const ImpersonationBanner = ({
       className="flex items-center gap-1 text-sm text-legend hover:text-primary flex-shrink-0"
     >
       <X size={14} />
-      Clear
+      <Trans>Clear</Trans>
     </button>
   </div>
 )
@@ -110,13 +117,17 @@ const PortfolioPage = () => {
   if (isError)
     return (
       <div className="flex flex-col items-center justify-center min-h-[60vh] gap-4">
-        <h1 className="text-2xl font-bold">Portfolio</h1>
-        <p className="text-legend">Failed to load portfolio data</p>
+        <h1 className="text-2xl font-bold">
+          <Trans>Portfolio</Trans>
+        </h1>
+        <p className="text-legend">
+          <Trans>Failed to load portfolio data</Trans>
+        </p>
         <button
           onClick={() => refetch()}
           className="bg-primary text-white text-sm font-medium px-6 py-2 rounded-2xl"
         >
-          Try again
+          <Trans>Try again</Trans>
         </button>
       </div>
     )

@@ -7,6 +7,7 @@ import {
 import { Separator } from '@/components/ui/separator'
 import { Switch } from '@/components/ui/switch'
 import { cn } from '@/lib/utils'
+import { Trans } from '@lingui/react/macro'
 import { useCallback, useState } from 'react'
 import { ChevronDown, ChevronUp } from 'lucide-react'
 
@@ -77,7 +78,9 @@ const OptionSelection = ({
       <div className="max-h-[260px] overflow-auto hidden-scrollbar">
         {allOption && (
           <div className="flex items-center px-4 py-2">
-            <span className="mr-4 font-semibold">All options</span>
+            <span className="mr-4 font-semibold">
+              <Trans>All options</Trans>
+            </span>
             <div className="ml-auto">
               <Switch
                 variant="small"
@@ -112,7 +115,7 @@ const OptionSelection = ({
       <Separator className="mt-2 mb-4" />
       <div className="px-4 pb-4">
         <Button size="sm" className="w-full" onClick={handleApply}>
-          Apply
+          <Trans>Apply</Trans>
         </Button>
       </div>
     </div>

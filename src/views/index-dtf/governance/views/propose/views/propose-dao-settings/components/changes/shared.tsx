@@ -1,12 +1,14 @@
 import { Button } from '@/components/ui/button'
+import { Trans } from '@lingui/react/macro'
 import { Undo } from 'lucide-react'
+import { ReactNode } from 'react'
 
 export const ChangeSection = ({
   title,
   icon,
   children,
 }: {
-  title: string
+  title: ReactNode
   icon: React.ReactNode
   children: React.ReactNode
 }) => (
@@ -22,11 +24,11 @@ export const ChangeSection = ({
 export const RevertButton = ({
   onClick,
   size = 'sm',
-  label = 'Revert',
+  label = <Trans>Revert</Trans>,
 }: {
   onClick: () => void
   size?: 'sm' | 'icon-rounded'
-  label?: string
+  label?: ReactNode
 }) => (
   <Button variant="outline" className="text-xs" size={size} onClick={onClick}>
     <Undo size={14} className={size === 'sm' ? 'mr-1' : ''} />

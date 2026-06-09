@@ -1,6 +1,7 @@
 import dtfIndexStakingVault from '@/abis/dtf-index-staking-vault'
 import TransactionButton from '@/components/ui/transaction-button'
 import { walletAtom } from '@/state/atoms'
+import { useLingui } from '@lingui/react/macro'
 import { prepareVoteLockWithdraw } from '@reserve-protocol/react-sdk'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { useResetAtom } from 'jotai/utils'
@@ -25,6 +26,7 @@ import { getWriteContractParams } from '../utils'
 const PROCESSING_DELAY = 10_000
 
 const SubmitUnlockButton = ({ onSuccess }: { onSuccess?: () => void }) => {
+  const { t } = useLingui()
   const account = useAtomValue(walletAtom)
   const stToken = useAtomValue(stTokenAtom)
   const input = useAtomValue(stakingInputAtom)
@@ -103,7 +105,7 @@ const SubmitUnlockButton = ({ onSuccess }: { onSuccess?: () => void }) => {
     processingTimer.current = setTimeout(() => {
       resetInput()
       setShouldClose(true)
-      toast.success('Unlock initiated successfully', { duration: 8000 })
+      toast.success(t`Unlock initiated successfully`, { duration: 8000 })
       setIsProcessing(false)
       processingTimer.current = undefined
     }, PROCESSING_DELAY)
@@ -113,6 +115,7 @@ const SubmitUnlockButton = ({ onSuccess }: { onSuccess?: () => void }) => {
     resetInput,
     setShouldClose,
     stToken,
+    t,
     updateCurrentDtfStTokenSupply,
     onSuccess,
   ])
@@ -129,16 +132,18 @@ const SubmitUnlockButton = ({ onSuccess }: { onSuccess?: () => void }) => {
       }
       loadingText={
         isProcessing
-          ? 'Processing transaction...'
+          ? t`Processing transaction...`
           : !!hash
-            ? 'Confirming tx...'
-            : 'Pending, sign in wallet'
+            ? t`Confirming tx...`
+            : t`Pending, sign in wallet`
       }
       onClick={write}
       text={
         receipt?.status === 'success'
-          ? 'Transaction confirmed'
-          : `Begin ${unlockDelay ? `${unlockDelay}-day` : ''} unlock delay`
+          ? t`Transaction confirmed`
+          : unlockDelay
+            ? t`Begin ${unlockDelay}-day unlock delay`
+            : t`Begin unlock delay`
       }
       className="w-full"
       error={error || txError}

@@ -1,4 +1,4 @@
-import { t } from '@lingui/macro'
+import { Trans, useLingui } from '@lingui/react/macro'
 import CollateralWrap from 'abis/CollateralWrap'
 import ERC20 from 'abis/ERC20'
 import USDT from 'abis/USDT'
@@ -26,6 +26,7 @@ interface Props {
 }
 
 const CollateralItem = ({ collateral, wrapping, className }: Props) => {
+  const { t } = useLingui()
   const wallet = useAtomValue(walletAtom)
   const chainId = useAtomValue(chainIdAtom)
   const fromToken = wrapping ? collateral.underlyingToken : collateral.symbol
@@ -319,14 +320,18 @@ const CollateralItem = ({ collateral, wrapping, className }: Props) => {
         <div className="flex-grow flex items-center">
           <div className="max-w-[200px]">
             <label>
-              {fromToken} to {toToken}
+              <Trans>
+                {fromToken} to {toToken}
+              </Trans>
             </label>
             <a
               onClick={() => setAmount(data?.formatted ?? '')}
               className="block text-xs mt-1 mr-2 ml-auto text-primary hover:underline cursor-pointer"
             >
-              Max:{' '}
-              {data ? formatCurrency(Number(data.formatted), 5) : 'Fetching...'}
+              <Trans>Max:</Trans>{' '}
+              {data
+                ? formatCurrency(Number(data.formatted), 5)
+                : t`Fetching...`}
             </a>
           </div>
           <div className="ml-auto mr-4 w-40">
@@ -344,7 +349,7 @@ const CollateralItem = ({ collateral, wrapping, className }: Props) => {
             <ExecuteButton
               className="shrink-0"
               call={approveCall}
-              text="Approve"
+              text={t`Approve`}
               size="sm"
             />
           )}
@@ -353,7 +358,7 @@ const CollateralItem = ({ collateral, wrapping, className }: Props) => {
               call={executeCall}
               className="shrink-0"
               disabled={!isValid}
-              text={wrapping ? 'Wrap' : 'Unwrap'}
+              text={wrapping ? t`Wrap` : t`Unwrap`}
               size="sm"
               onSuccess={handleSuccess}
             />

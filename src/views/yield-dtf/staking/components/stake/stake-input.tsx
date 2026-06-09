@@ -1,4 +1,5 @@
 import { Button } from '@/components/ui/button'
+import { Trans } from '@lingui/react/macro'
 import { NumericalInput } from 'components'
 import TokenLogo from 'components/icons/TokenLogo'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
@@ -52,7 +53,9 @@ const StakeBalance = () => {
   return (
     <div className="ml-auto flex items-center flex-shrink-0">
       <TokenLogo width={16} symbol={'rsr'} />
-      <span className="ml-2 text-legend">Balance</span>
+      <span className="ml-2 text-legend">
+        <Trans>Balance</Trans>
+      </span>
       <span className="mx-1 font-semibold">
         {formatCurrency(+balance.balance, 2, {
           notation: 'compact',
@@ -60,7 +63,7 @@ const StakeBalance = () => {
         })}
       </span>
       <Button size="sm" variant="muted" onClick={() => setAmount(balance.balance)}>
-        Max
+        <Trans>Max</Trans>
       </Button>
     </div>
   )
@@ -68,7 +71,9 @@ const StakeBalance = () => {
 
 const StakeInput = () => (
   <div className="overflow-hidden bg-muted rounded-3xl p-3">
-    <span>You stake:</span>
+    <span>
+      <Trans>You stake:</Trans>
+    </span>
     <StakeInputField />
     <div className="flex items-center">
       <StakeUsdAmount />

@@ -1,4 +1,4 @@
-import { t, Trans } from '@lingui/macro'
+import { Trans, useLingui } from '@lingui/react/macro'
 import StRSRVotes from 'abis/StRSRVotes'
 import { Input } from '@/components/ui/input'
 import TransactionModal from 'components/transaction-modal'
@@ -15,6 +15,7 @@ const DelegateModal = ({
   onClose: () => void
   delegated: boolean
 }) => {
+  const { t } = useLingui()
   const account = useAtomValue(walletAtom)
   const rToken = useRToken()
   const [address, setAddress] = useState(!delegated && account ? account : '')

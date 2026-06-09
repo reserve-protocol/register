@@ -3,6 +3,7 @@ import { Checkbox } from '@/components/ui/checkbox'
 import { NumericalInput } from '@/components/ui/input'
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
 import { cn } from '@/lib/utils'
+import { Trans, useLingui } from '@lingui/react/macro'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { Check, Crown, UsersRound, X } from 'lucide-react'
 import { ReactNode, useMemo } from 'react'
@@ -91,7 +92,7 @@ const NextButton = () => {
       disabled={permissionlessLaunching === undefined}
       onClick={handleClick}
     >
-      Confirm Changes
+      <Trans>Confirm Changes</Trans>
     </Button>
   )
 }
@@ -99,6 +100,7 @@ const NextButton = () => {
 const WINDOW_OPTIONS = ['12', '24', '36', '48']
 
 const PermissionlessWindow = () => {
+  const { t } = useLingui()
   const selectedPermission = useAtomValue(permissionlessLaunchingAtom)
   const [permissionlessLaunching, setPermissionlessLaunching] = useAtom(
     permissionlessLaunchingWindowAtom
@@ -115,10 +117,14 @@ const PermissionlessWindow = () => {
   return (
     <div className="flex flex-col justify-center gap-3 rounded-xl bg-foreground/5 p-4">
       <div>
-        <h4 className="font-semibold text-primary">Community Launch Window</h4>
+        <h4 className="font-semibold text-primary">
+          <Trans>Community Launch Window</Trans>
+        </h4>
         <div className="">
-          Specify how long community members should be allow to start auctions
-          after the Exclusive Launch Window.
+          <Trans>
+            Specify how long community members should be allow to start auctions
+            after the Exclusive Launch Window.
+          </Trans>
         </div>
       </div>
       <div className="flex items-center gap-2">
@@ -143,13 +149,13 @@ const PermissionlessWindow = () => {
               value={option.toString()}
               className="px-5 h-8 whitespace-nowrap rounded-lg data-[state=on]:bg-card text-secondary-foreground/80 data-[state=on]:text-primary flex-grow"
             >
-              {option} hours
+              <Trans>{option} hours</Trans>
             </ToggleGroupItem>
           ))}
         </ToggleGroup>
         <NumericalInput
           className="hidden sm:block w-40"
-          placeholder="Enter custom hours"
+          placeholder={t`Enter custom hours`}
           value={customPermissionlessLaunchingWindow}
           onChange={(value) => setCustomPermissionlessLaunchingWindow(value)}
         />
@@ -159,6 +165,7 @@ const PermissionlessWindow = () => {
 }
 
 const AuctionLauncherWindow = () => {
+  const { t } = useLingui()
   const isSingletonRebalance = useAtomValue(isSingletonRebalanceAtom)
   const [auctionLauncherWindow, setAuctionLauncherWindow] = useAtom(
     auctionLauncherWindowAtom
@@ -173,11 +180,13 @@ const AuctionLauncherWindow = () => {
     <div className="flex flex-col justify-center gap-3 rounded-xl bg-foreground/5 p-4">
       <div>
         <h4 className="font-semibold text-primary">
-          Exclusive Auction Launcher Window
+          <Trans>Exclusive Auction Launcher Window</Trans>
         </h4>
         <div className="">
-          Specify how long only the Auction Launchers should be allow to start
-          auctions.
+          <Trans>
+            Specify how long only the Auction Launchers should be allow to start
+            auctions.
+          </Trans>
         </div>
       </div>
       <div className="flex items-center gap-2">
@@ -198,13 +207,13 @@ const AuctionLauncherWindow = () => {
               value={option.toString()}
               className="px-5 h-8 whitespace-nowrap rounded-lg data-[state=on]:bg-card text-secondary-foreground/80 data-[state=on]:text-primary flex-grow"
             >
-              {option} hours
+              <Trans>{option} hours</Trans>
             </ToggleGroupItem>
           ))}
         </ToggleGroup>
         <NumericalInput
           className="hidden sm:block w-40"
-          placeholder="Enter custom hours"
+          placeholder={t`Enter custom hours`}
           value={customAuctionLauncherWindow}
           onChange={(value) => setCustomAuctionLauncherWindow(value)}
         />
@@ -214,6 +223,7 @@ const AuctionLauncherWindow = () => {
 }
 
 export const TradingExpirationTriggerLabel = () => {
+  const { t } = useLingui()
   const option = useAtomValue(permissionlessLaunchingAtom)
 
   if (option === undefined) return null
@@ -227,14 +237,15 @@ export const TradingExpirationTriggerLabel = () => {
       )}
       <div>
         {option === PermissionOptionId.NO_PERMISSIONLESS_LAUNCHING
-          ? 'No Permissionless Launching Allowed'
-          : 'Permissionless Launching Allowed'}
+          ? t`No Permissionless Launching Allowed`
+          : t`Permissionless Launching Allowed`}
       </div>
     </div>
   )
 }
 
 const ProposalRebalanceLaunchSettings = () => {
+  const { t } = useLingui()
   const priceRangeOption = useAtomValue(tradeRangeOptionAtom)
   const isDeferAvailable = useAtomValue(isDeferAvailableAtom)
 
@@ -242,9 +253,8 @@ const ProposalRebalanceLaunchSettings = () => {
     () => [
       {
         id: PermissionOptionId.NO_PERMISSIONLESS_LAUNCHING,
-        title: 'Auction Launchers',
-        description:
-          'Only Auction Launchers will be able to start auctions. After the exclusive launch window for Auction Launcher, any remaining auctions to started will expire.',
+        title: t`Auction Launchers`,
+        description: t`Only Auction Launchers will be able to start auctions. After the exclusive launch window for Auction Launcher, any remaining auctions to started will expire.`,
         icon: ({ active }) => (
           <div
             className={cn(
@@ -261,9 +271,8 @@ const ProposalRebalanceLaunchSettings = () => {
       },
       {
         id: PermissionOptionId.PERMISSIONLESS_LAUNCHING,
-        title: 'Auction Launcher + Community',
-        description:
-          'Both Auction Launchers AND community members can start auctions. Auction Launchers will still have an Exclusive Launch Window, but afterward anyone in the community can start an auction. Please specify how long community members should be allow to start auctions after the Exclusive Launch Window.',
+        title: t`Auction Launcher + Community`,
+        description: t`Both Auction Launchers AND community members can start auctions. Auction Launchers will still have an Exclusive Launch Window, but afterward anyone in the community can start an auction. Please specify how long community members should be allow to start auctions after the Exclusive Launch Window.`,
         icon: ({ active, disabled }) => (
           <div className="flex flex-col space-y-[-16px] flex-shrink-0">
             <div
@@ -293,14 +302,16 @@ const ProposalRebalanceLaunchSettings = () => {
         disabled: priceRangeOption === 'defer',
       },
     ],
-    [isDeferAvailable, priceRangeOption]
+    [isDeferAvailable, priceRangeOption, t]
   )
 
   return (
     <>
       <p className="text-sm sm:text-base mx-4 sm:mx-6 mb-6">
-        Who will be able to launch auctions and how long will they have before
-        the auctions expire.
+        <Trans>
+          Who will be able to launch auctions and how long will they have before
+          the auctions expire.
+        </Trans>
       </p>
       <div className="flex flex-col gap-2 mx-2">
         {permissionOptions.map((option) => (

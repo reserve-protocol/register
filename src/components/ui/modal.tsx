@@ -6,6 +6,7 @@ import {
   DialogDescription,
 } from './dialog'
 import { cn } from '@/lib/utils'
+import { Trans } from '@lingui/react/macro'
 
 // Legacy theme-ui spacing to Tailwind mapping
 // theme-ui: [0, 4, 8, 16, 24, 32, 40, 48, 80, 256]
@@ -114,7 +115,7 @@ const Modal = ({
         )}
         {/* Hidden description for accessibility */}
         <DialogDescription className="sr-only">
-          {title || 'Modal dialog'}
+          {title || <Trans>Modal dialog</Trans>}
         </DialogDescription>
         {children}
       </DialogContent>

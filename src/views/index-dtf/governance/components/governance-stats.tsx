@@ -14,12 +14,8 @@ export interface IInfoItem {
   className?: string
 }
 
-const InfoItem = ({
-  title,
-  text,
-  className,
-}: IInfoItem) => (
-  <div className='flex flex-col gap-4 px-6 py-4 border-b'>
+const InfoItem = ({ title, text, className }: IInfoItem) => (
+  <div className="flex flex-col gap-4 px-6 py-4 border-b">
     <div className={cn('flex items-center', className)}>
       <div>
         <div className="flex items-center">
@@ -38,22 +34,27 @@ const InfoItem = ({
 const GovernanceStats = () => {
   const dtf = useAtomValue(indexDTFAtom)
   const proposalCount = useAtomValue(proposalCountAtom)
-  const totalDelegates = !dtf?.stToken ? undefined : dtf.stToken.currentDelegates + dtf.stToken.currentOptimisticDelegates
-  const totalSupply = !dtf?.stToken?.token ? undefined : Number(dtf.stToken.token.totalSupply.formatted)
-  const proposalThreshold = !dtf?.ownerGovernance ? undefined : dtf.ownerGovernance.proposalThreshold
+  const totalDelegates = !dtf?.stToken
+    ? undefined
+    : dtf.stToken.currentDelegates + dtf.stToken.currentOptimisticDelegates
+  const totalSupply = !dtf?.stToken?.token
+    ? undefined
+    : Number(dtf.stToken.token.totalSupply.formatted)
+  const proposalThreshold = !dtf?.ownerGovernance
+    ? undefined
+    : dtf.ownerGovernance.proposalThreshold
 
   return (
     <div className="flex flex-col rounded-3xl bg-background">
-      <div className='flex items-center px-4 pt-4 pb-2 gap-4'>
+      <div className="flex items-center px-4 pt-4 pb-2 gap-4">
         <div className="border rounded-full border-foreground p-1">
           <NotebookTabs size={14} />
         </div>
-        <h4 className='text-xl font-semibold text-primary'><Trans>Information</Trans></h4>
+        <h4 className="text-xl font-semibold text-primary">
+          <Trans>Information</Trans>
+        </h4>
       </div>
-      <InfoItem
-        title={<Trans>Proposals</Trans>}
-        text={proposalCount}
-      />
+      <InfoItem title={<Trans>Proposals</Trans>} text={proposalCount} />
       <InfoItem
         title={<Trans>Vote Supply</Trans>}
         text={
@@ -70,10 +71,7 @@ const GovernanceStats = () => {
             : formatPercentage(proposalThreshold)
         }
       />
-      <InfoItem
-        title={<Trans>Voting addresses</Trans>}
-        text={totalDelegates}
-      />
+      <InfoItem title={<Trans>Voting addresses</Trans>} text={totalDelegates} />
     </div>
   )
 }

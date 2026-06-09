@@ -8,6 +8,7 @@ import {
 } from '@/components/vote-lock'
 import { formatCurrency, formatPercentage } from '@/utils'
 import PositionBalance from '@/views/earn/components/position-balance'
+import { Trans, useLingui } from '@lingui/react/macro'
 import { createColumnHelper } from '@tanstack/react-table'
 import { useAtomValue } from 'jotai'
 import { ArrowRight } from 'lucide-react'
@@ -20,12 +21,15 @@ import { TableRow, TableCell } from '@/components/ui/table'
 import { Skeleton } from '@/components/ui/skeleton'
 
 const useColumns = () => {
+  const { t } = useLingui()
   const columnHelper = createColumnHelper<VoteLockPosition>()
   return useMemo(() => {
     return [
       columnHelper.accessor('underlying.token.symbol', {
         header: ({ column }) => (
-          <SorteableButton column={column}>Gov. Token</SorteableButton>
+          <SorteableButton column={column}>
+            <Trans>Gov. Token</Trans>
+          </SorteableButton>
         ),
         cell: (data) => (
           <div className="flex items-center gap-3">
@@ -79,7 +83,7 @@ const useColumns = () => {
         ),
       }),
       columnHelper.accessor('lockedAmount', {
-        header: 'Vote locked',
+        header: t`Vote locked`,
         meta: {
           className: 'hidden lg:table-cell',
         },
@@ -94,7 +98,7 @@ const useColumns = () => {
         ),
       }),
       columnHelper.accessor('dtfs', {
-        header: 'Governs',
+        header: t`Governs`,
         meta: {
           className: 'text-center',
         },
@@ -113,7 +117,9 @@ const useColumns = () => {
       }),
       columnHelper.accessor('apr', {
         header: ({ column }) => (
-          <SorteableButton column={column}>Avg. 30d%</SorteableButton>
+          <SorteableButton column={column}>
+            <Trans>Avg. 30d%</Trans>
+          </SorteableButton>
         ),
         meta: {
           className: 'text-right',
@@ -129,7 +135,7 @@ const useColumns = () => {
         },
       }),
     ]
-  }, [])
+  }, [t])
 }
 
 // Custom loading skeleton that matches the exact structure

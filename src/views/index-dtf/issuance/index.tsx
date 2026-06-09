@@ -3,6 +3,7 @@ import { isInactiveDTF } from '@/hooks/use-dtf-status'
 import { indexDTFAtom, indexDTFStatusAtom } from '@/state/dtf/atoms'
 import { RESERVE_API, ZAPPER_API } from '@/utils/constants'
 import { useZapperModal, ZapperProps } from '@reserve-protocol/react-zapper'
+import { Trans } from '@lingui/react/macro'
 import { atom, useAtomValue } from 'jotai'
 import { Link } from 'react-router-dom'
 import ZapperWrapper from '../components/zapper/zapper-wrapper'
@@ -12,7 +13,6 @@ import useTrackIndexDTFPage, {
 import useIsComplianceRestricted from '@/hooks/use-is-compliance-restricted'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import useComplianceRestrictions from '@/hooks/use-compliance-restrictions'
-import { Trans } from '@lingui/macro'
 
 const DTF_DISABLED_FOR_ZAP = [] as string[]
 export const indexDTFQuoteSourceAtom = atom<ZapperProps['defaultSource']>(
@@ -94,8 +94,11 @@ const IndexDTFIssuance = () => {
             onClick={() => trackClick('switch_to_manual')}
           >
             <span className="text-legend underline text-md ">
-              Having issues? Switch to manual{' '}
-              {currentTab === 'buy' ? 'minting' : 'redeeming'}
+              {currentTab === 'buy' ? (
+                <Trans>Having issues? Switch to manual minting</Trans>
+              ) : (
+                <Trans>Having issues? Switch to manual redeeming</Trans>
+              )}
             </span>
           </Link>
         </div>

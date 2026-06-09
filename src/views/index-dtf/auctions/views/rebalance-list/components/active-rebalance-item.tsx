@@ -1,5 +1,6 @@
 import useTimeRemaining from '@/hooks/use-time-remaining'
 import { getCurrentTime, getProposalTitle } from '@/utils'
+import { Trans } from '@lingui/react/macro'
 import { ArrowRight, MousePointerBan, MousePointerClick } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 import { RebalanceByProposal } from '../../../atoms'
@@ -32,14 +33,18 @@ const Header = ({
       {!isPermissionless && (
         <div className="sm:flex items-center gap-1 text-sm  border-r pr-4 hidden">
           <MousePointerClick className="h-4 w-4 text-base" strokeWidth={1.5} />
-          <span className="text-legend">Permissionless in:</span>
+          <span className="text-legend">
+            <Trans>Permissionless in:</Trans>
+          </span>
           <span>{permissionlessTimeRemaining}</span>
         </div>
       )}
 
       <div className="flex items-center gap-1 text-sm">
         <MousePointerBan className="h-4 w-4 text-base" strokeWidth={1.5} />
-        <span className="text-legend">Expires in:</span>
+        <span className="text-legend">
+          <Trans>Expires in:</Trans>
+        </span>
         <span>{expiryTimeRemaining}</span>
       </div>
     </div>

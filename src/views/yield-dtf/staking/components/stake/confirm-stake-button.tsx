@@ -1,7 +1,7 @@
 import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
 import Spinner from '@/components/ui/spinner'
-import { Trans, t } from '@lingui/macro'
+import { Trans, useLingui } from '@lingui/react/macro'
 import CheckCircleIcon from 'components/icons/CheckCircleIcon'
 import TransactionsIcon from 'components/icons/TransactionsIcon'
 import ApprovalStatus from 'components/transaction-modal/ApprovalStatus'
@@ -15,6 +15,7 @@ const APPROVE_GAS_ESTIMATE = 400000
 
 
 const ConfirmStakeButton = () => {
+  const { t } = useLingui()
   const call = useAtomValue(stakeTransactionAtom)
   const allowance = useAtomValue(stakeAllowanceAtom)
   const chain = useAtomValue(chainIdAtom)
@@ -53,7 +54,7 @@ const ConfirmStakeButton = () => {
     return (
       <div>
         <Button className="w-full" onClick={execute} disabled={!isReady}>
-          {!isReady ? 'Preparing approval' : 'Approve use of RSR'}
+          {!isReady ? t`Preparing approval` : t`Approve use of RSR`}
         </Button>
         {errorMsg}
       </div>
@@ -71,7 +72,7 @@ const ConfirmStakeButton = () => {
           return t`Proceed in wallet`
         }
 
-        return 'Submitted!'
+        return t`Submitted!`
       }
 
       return ''
@@ -92,7 +93,7 @@ const ConfirmStakeButton = () => {
           <TransactionsIcon />
           <div className="ml-2 mr-auto">
             <span className="font-semibold block">
-              {!executeHash ? 'Confirm Stake' : 'Transaction submitted'}
+              {!executeHash ? t`Confirm Stake` : t`Transaction submitted`}
             </span>
             {executeHash ? (
               <a
@@ -122,7 +123,7 @@ const ConfirmStakeButton = () => {
   return (
     <div>
       <Button disabled={!isReady} onClick={execute} className="w-full">
-        {!isReady ? 'Preparing transaction' : 'Confirm Stake'}
+        {!isReady ? t`Preparing transaction` : t`Confirm Stake`}
       </Button>
       {errorMsg}
     </div>

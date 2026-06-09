@@ -7,8 +7,9 @@ import { INDEX_DEPLOYER_ADDRESS } from '@/utils/addresses'
 import { basketAtom } from '@/views/index-dtf/deploy/atoms'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { AlertCircle } from 'lucide-react'
-import { useEffect, useMemo } from 'react'
+import { ReactNode, useEffect, useMemo } from 'react'
 import { useFormContext } from 'react-hook-form'
+import { Plural, Trans } from '@lingui/react/macro'
 import { parseUnits } from 'viem'
 import {
   basketRequiredAmountsAtom,
@@ -64,22 +65,32 @@ const ApproveAllDeployButton = () => {
   const totalCount =
     isProcessing || hasFailures ? batchSize : tokensNeedingApproval.length
 
-  let label: string
+  let label: ReactNode
   let onClick: () => void
   let disabled = false
 
   if (isProcessing) {
-    label = `Awaiting approvals... (${completedCount}/${totalCount})`
+    label = (
+      <Trans>
+        Awaiting approvals... ({completedCount}/{totalCount})
+      </Trans>
+    )
     onClick = () => {}
     disabled = true
   } else if (hasFailures) {
     const failedCount = Object.values(states).filter(
       (s) => s.status === 'error'
     ).length
-    label = `${failedCount} approval${failedCount > 1 ? 's' : ''} failed - Retry`
+    label = (
+      <Plural
+        value={failedCount}
+        one="# approval failed - Retry"
+        other="# approvals failed - Retry"
+      />
+    )
     onClick = retryFailed
   } else {
-    label = `Approve All (${totalCount})`
+    label = <Trans>Approve All ({totalCount})</Trans>
     onClick = approveAll
   }
 
@@ -101,10 +112,10 @@ const ApproveAllDeployButton = () => {
         <Alert variant="destructive">
           <AlertTitle className="flex items-center gap-2">
             <AlertCircle className="w-4 h-4" />
-            One or more approvals failed
+            <Trans>One or more approvals failed</Trans>
           </AlertTitle>
           <AlertDescription className="ml-6">
-            Click retry or use individual approve buttons below.
+            <Trans>Click retry or use individual approve buttons below.</Trans>
           </AlertDescription>
         </Alert>
       )}

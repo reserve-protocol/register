@@ -10,6 +10,7 @@ import {
 } from '@/components/ui/collapsible'
 import { cn } from '@/lib/utils'
 import { shortenAddress } from '@/utils'
+import { Trans } from '@lingui/react/macro'
 import {
   EUSD_ADDRESS,
   RGUSD_ADDRESS,
@@ -79,12 +80,15 @@ const SUPERBRIDGE_TOKEN_LIST: BridgeTokenList = {
 const Hero = () => (
   <div className="text-center max-w-4xl">
     <h1 className="font-semibold text-4xl sm:text-5xl lg:text-6xl mb-6">
-      Bridge DTFs and RSR
+      <Trans>Bridge DTFs and RSR</Trans>
     </h1>
     <p className="md:text-base lg:text-xl">
-      Transfer your DTFs and RSR across Ethereum, Base, and Binance Smart Chain.
-      Bridging lets you move tokens between networks so you can trade, stake, or
-      use them wherever you need. Select a trusted provider below to get started.
+      <Trans>
+        Transfer your DTFs and RSR across Ethereum, Base, and Binance Smart
+        Chain. Bridging lets you move tokens between networks so you can trade,
+        stake, or use them wherever you need. Select a trusted provider below to
+        get started.
+      </Trans>
     </p>
   </div>
 )
@@ -144,7 +148,9 @@ const BridgeCard = ({
       <ChainLogo chain={targetChain} height={20} width={20} />
     </div>
     <div className="flex items-center gap-2 justify-end">
-      <span className="text-sm text-legend hidden sm:block">Visit {name}</span>
+      <span className="text-sm text-legend hidden sm:block">
+        <Trans>Visit {name}</Trans>
+      </span>
       <a href={url} target="_blank" rel="noopener noreferrer">
         <div className="bg-muted rounded-full p-2">
           <ArrowUpRightIcon className="w-4 h-4" strokeWidth={1.5} />
@@ -161,9 +167,11 @@ const Disclaimer = () => {
         <OctagonAlert size={16} strokeWidth={1.5} />
       </div>
       <p>
-        Bridging involves external providers. Reserve does not control these
-        services and cannot guarantee their security or availability. Use at
-        your own discretion.
+        <Trans>
+          Bridging involves external providers. Reserve does not control these
+          services and cannot guarantee their security or availability. Use at
+          your own discretion.
+        </Trans>
       </p>
     </div>
   )
@@ -212,7 +220,9 @@ const TokenListHelper = ({ tokens, targetChain = ChainId.Base, fromChain = Chain
             rel="noopener noreferrer"
             className="flex items-center gap-2 justify-end text-legend hover:text-primary"
           >
-            <span className="text-sm">Bridge {token.symbol}</span>
+            <span className="text-sm">
+              <Trans>Bridge {token.symbol}</Trans>
+            </span>
 
             <Button variant="muted" size="icon-rounded">
               <ArrowUpRight className="w-4 h-4" />
@@ -224,13 +234,17 @@ const TokenListHelper = ({ tokens, targetChain = ChainId.Base, fromChain = Chain
     <CollapsibleTrigger className="p-4 pl-0 sm:pl-8 pr-6 flex  items-center gap-2 text-sm w-full">
       <Info size={16} strokeWidth={1.5} className="hidden sm:block" />
       <div className="ml-3 mr-auto">
-        <span className="font-semibold">Don’t see your token?</span>{' '}
+        <span className="font-semibold">
+          <Trans>Don’t see your token?</Trans>
+        </span>{' '}
         <span className="text-legend">
-          You may need to import it with the L2 contract address.
+          <Trans>You may need to import it with the L2 contract address.</Trans>
         </span>
       </div>
       <div className="flex items-center text-primary gap-1">
-        <span className="hidden md:block">View list</span>
+        <span className="hidden md:block">
+          <Trans>View list</Trans>
+        </span>
         <ChevronsUpDown size={16} strokeWidth={1.5} />
       </div>
     </CollapsibleTrigger>

@@ -2,6 +2,7 @@ import dtfIndexAbi from '@/abis/dtf-index-abi'
 import { Button } from '@/components/ui/button'
 import { indexDTFAtom, isHybridDTFAtom } from '@/state/dtf/atoms'
 import { parseDuration } from '@/utils'
+import { Trans, useLingui } from '@lingui/react/macro'
 import { atom, useAtom, useAtomValue } from 'jotai'
 import { LoaderCircle } from 'lucide-react'
 import { useEffect, useState } from 'react'
@@ -28,6 +29,7 @@ const auctionNumberAtom = atom((get) => {
 })
 
 const LaunchAuctionsButton = () => {
+  const { t } = useLingui()
   const dtf = useAtomValue(indexDTFAtom)
   const rebalance = useAtomValue(currentRebalanceAtom)
   const rebalancePercent = useAtomValue(rebalancePercentAtom)
@@ -49,7 +51,7 @@ const LaunchAuctionsButton = () => {
 
   useEffect(() => {
     if (isSuccess) {
-      toast.success('Auction launched successfully')
+      toast.success(t`Auction launched successfully`)
       // Refresh nonce after 10s
       let timeout = setTimeout(() => {
         setRefreshNonce(refreshNonce + 1)
@@ -69,7 +71,7 @@ const LaunchAuctionsButton = () => {
   useEffect(() => {
     if (isError) {
       setIsLaunching(false)
-      toast.error('Transaction rejected or failed')
+      toast.error(t`Transaction rejected or failed`)
     }
   }, [isError])
 
@@ -117,7 +119,7 @@ const LaunchAuctionsButton = () => {
     } catch (e) {
       console.error('Error opening auction', e)
       setIsLaunching(false)
-      toast.error('Error opening auctions')
+      toast.error(t`Error opening auctions`)
     }
   }
 
@@ -137,12 +139,18 @@ const LaunchAuctionsButton = () => {
           <>
             <LoaderCircle size={16} className="animate-spin" />
             <span>
-              {isAuctionOngoing ? 'Rebalance ongoing' : 'Launching...'}
+              {isAuctionOngoing ? (
+                <Trans>Rebalance ongoing</Trans>
+              ) : (
+                <Trans>Launching...</Trans>
+              )}
             </span>
           </>
         ) : (
           <>
-            <span>Start auction {auctionNumber}</span>
+            <span>
+              <Trans>Start auction {auctionNumber}</Trans>
+            </span>
             <span className="font-light">
               ({parseDuration(dtf?.auctionLength ?? 0, { round: true })})
             </span>

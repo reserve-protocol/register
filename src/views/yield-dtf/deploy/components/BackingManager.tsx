@@ -1,4 +1,4 @@
-import { Trans } from '@lingui/macro'
+import { Trans } from '@lingui/react/macro'
 import BackingForm from 'components/rtoken-setup/token/BackingForm'
 import { Card } from '@/components/ui/card'
 import { Separator } from '@/components/ui/separator'

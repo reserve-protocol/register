@@ -1,4 +1,4 @@
-import { Trans } from '@lingui/macro'
+import { Trans } from '@lingui/react/macro'
 import StRSRVotes from 'abis/StRSRVotes'
 import { Button } from '@/components/ui/button'
 import GoTo from '@/components/ui/go-to'

@@ -6,6 +6,7 @@ import { capitalize } from '@/utils/constants'
 import { ETHERSCAN_NAMES } from '@/utils/getExplorerLink'
 import { useAtomValue } from 'jotai'
 import { ArrowDown, ArrowUp, ArrowUpDown, PackageOpen, Target } from 'lucide-react'
+import { Trans } from '@lingui/react/macro'
 
 export type SortField = 'weight' | 'performance'
 export type SortDirection = 'asc' | 'desc'
@@ -92,7 +93,9 @@ export const BasketTableHeader = ({
               onClick={() => setActiveTab('exposure')}
             >
               <Target className="w-4 h-4 mr-0 sm:mr-1" />{' '}
-              <span className="hidden sm:block">Exposure</span>
+              <span className="hidden sm:block">
+                <Trans>Exposure</Trans>
+              </span>
             </TabsTrigger>
             <TabsTrigger
               value="collateral"
@@ -100,7 +103,9 @@ export const BasketTableHeader = ({
               onClick={() => setActiveTab('collateral')}
             >
               <PackageOpen className="w-4 h-4 mr-0 sm:mr-1" />{' '}
-              <span className="hidden sm:block">Collateral</span>
+              <span className="hidden sm:block">
+                <Trans>Collateral</Trans>
+              </span>
             </TabsTrigger>
           </TabsList>
         </TableHead>
@@ -111,7 +116,7 @@ export const BasketTableHeader = ({
           onSort={onSort}
           className="text-center px-1 sm:px-3"
         >
-          Weight
+          <Trans>Weight</Trans>
         </TableHeaderWithSort>
 
         <TableHeaderWithSort
@@ -120,18 +125,22 @@ export const BasketTableHeader = ({
           onSort={onSort}
           className="text-center px-1 sm:px-3"
         >
-          Price Change ({periodLabel[timeRange]})
+          <Trans>Price Change ({periodLabel[timeRange]})</Trans>
         </TableHeaderWithSort>
 
         {isExposure ? (
           <TableHead className="text-center hidden sm:table-cell">
-            <span className="text-xs sm:text-base">Market Cap</span>
+            <span className="text-xs sm:text-base">
+              <Trans>Market Cap</Trans>
+            </span>
           </TableHead>
         ) : (
           <TableHead className="text-right text-xs sm:text-base px-1 sm:px-3">
-            {`${hasBridgedAssets ? 'Bridge / ' : ''}${capitalize(
-              ETHERSCAN_NAMES[chainId]
-            )}`}
+            {hasBridgedAssets ? (
+              <Trans>Bridge / {capitalize(ETHERSCAN_NAMES[chainId])}</Trans>
+            ) : (
+              capitalize(ETHERSCAN_NAMES[chainId])
+            )}
           </TableHead>
         )}
       </TableRow>

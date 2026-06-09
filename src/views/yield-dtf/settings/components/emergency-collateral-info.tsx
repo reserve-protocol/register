@@ -1,4 +1,4 @@
-import { t, Trans } from '@lingui/macro'
+import { Trans, useLingui } from '@lingui/react/macro'
 import GoTo from '@/components/go-to'
 import DiversityFactorIcon from '@/components/icons/DiversityFactorIcon'
 import TokenItem from '@/components/token-item'
@@ -8,6 +8,7 @@ import { ExplorerDataType, getExplorerLink } from '@/utils/getExplorerLink'
 import { InfoCard } from './settings-info-card'
 
 const EmergencyCollateralInfo = () => {
+  const { t } = useLingui()
   const units = Object.keys(useAtomValue(rTokenBasketAtom))
   const backupBasket = useAtomValue(rTokenBackupAtom)
   const chainId = useAtomValue(chainIdAtom)

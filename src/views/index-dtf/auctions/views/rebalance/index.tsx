@@ -1,5 +1,6 @@
 import { chainIdAtom } from '@/state/atoms'
 import { indexDTFAtom } from '@/state/dtf/atoms'
+import { Trans } from '@lingui/react/macro'
 import { useAtomValue } from 'jotai'
 import {
   isAuctionOngoingAtom,
@@ -31,7 +32,9 @@ const RebalanceError = () => {
 
   return (
     <div className="rounded-3xl p-3 border border-red-500 bg-red-500/10">
-      <h1 className="font-semibold text-red-500">Rebalance error</h1>
+      <h1 className="font-semibold text-red-500">
+        <Trans>Rebalance error</Trans>
+      </h1>
       <p>{rebalanceError}</p>
     </div>
   )

@@ -7,6 +7,7 @@ import { rsrPriceAtom } from '@/state/atoms'
 import { Token } from '@/types'
 import { formatCurrency, formatPercentage } from '@/utils'
 import PositionBalance from '@/views/earn/components/position-balance'
+import { Trans, useLingui } from '@lingui/react/macro'
 import { createColumnHelper } from '@tanstack/react-table'
 import { useAtomValue } from 'jotai'
 import { ArrowRight } from 'lucide-react'
@@ -19,13 +20,14 @@ import { TableRow, TableCell } from '@/components/ui/table'
 import { Skeleton } from '@/components/ui/skeleton'
 
 const useColumns = () => {
+  const { t } = useLingui()
   const columnHelper = createColumnHelper<ListedToken>()
   const rsrPrice = useAtomValue(rsrPriceAtom)
 
   return useMemo(() => {
     return [
       columnHelper.accessor('id', {
-        header: 'Gov. Token',
+        header: t`Gov. Token`,
         cell: (data) => (
           <div className="flex items-center gap-3">
             <div className="relative flex-shrink-0">
@@ -71,7 +73,7 @@ const useColumns = () => {
         ),
       }),
       columnHelper.accessor('rsrStaked', {
-        header: 'Staked',
+        header: t`Staked`,
         meta: {
           className: 'hidden lg:table-cell',
         },
@@ -87,7 +89,9 @@ const useColumns = () => {
       }),
       columnHelper.accessor('symbol', {
         header: ({ column }) => (
-          <SorteableButton column={column}>Governs</SorteableButton>
+          <SorteableButton column={column}>
+            <Trans>Governs</Trans>
+          </SorteableButton>
         ),
         cell: (data) => (
           <div className="flex items-center gap-1">
@@ -100,7 +104,9 @@ const useColumns = () => {
       }),
       columnHelper.accessor('stakingApy', {
         header: ({ column }) => (
-          <SorteableButton column={column}>Avg. 30d%</SorteableButton>
+          <SorteableButton column={column}>
+            <Trans>Avg. 30d%</Trans>
+          </SorteableButton>
         ),
         meta: {
           className: 'text-right',
@@ -116,7 +122,7 @@ const useColumns = () => {
         },
       }),
     ]
-  }, [rsrPrice])
+  }, [rsrPrice, t])
 }
 
 // Custom loading skeleton that matches the exact structure

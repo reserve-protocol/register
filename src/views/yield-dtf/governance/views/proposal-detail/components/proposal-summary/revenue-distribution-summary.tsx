@@ -1,4 +1,4 @@
-import { Trans } from '@lingui/macro'
+import { Trans, useLingui } from '@lingui/react/macro'
 import { cn } from '@/lib/utils'
 import AsteriskIcon from 'components/icons/AsteriskIcon'
 import TokenLogo, { CurrentRTokenLogo } from 'components/icons/TokenLogo'
@@ -130,6 +130,7 @@ const RevenueDistributionSummary = ({
   calls: ProposalCall[]
   snapshotBlock?: number
 }) => {
+  const { t } = useLingui()
   const { data, isLoading } = useRevenueDistributionSummary(
     calls,
     snapshotBlock
@@ -139,7 +140,9 @@ const RevenueDistributionSummary = ({
     return (
       <div className="flex flex-col gap-2 items-center my-6">
         <Spinner size={20} />
-        <span className="text-legend">Loading summary...</span>
+        <span className="text-legend">
+          <Trans>Loading summary...</Trans>
+        </span>
       </div>
     )
   }
@@ -148,9 +151,9 @@ const RevenueDistributionSummary = ({
 
   return (
     <div className="flex flex-col gap-4 mt-2">
-      <RevenueSection label="Current" split={data.current} />
+      <RevenueSection label={t`Current`} split={data.current} />
       <RevenueSection
-        label="Proposed"
+        label={t`Proposed`}
         split={data.proposed}
         changedAddresses={data.changedAddresses}
       />

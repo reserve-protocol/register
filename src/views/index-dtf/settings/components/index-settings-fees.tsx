@@ -1,6 +1,8 @@
 import { indexDTFAtom, indexDTFFeeAtom } from '@/state/dtf/atoms'
 import { formatPercentage } from '@/utils'
-import { t } from '@lingui/macro'
+import { msg } from '@lingui/core/macro'
+import type { MessageDescriptor } from '@lingui/core'
+import { useLingui } from '@lingui/react/macro'
 import { atom, useAtomValue } from 'jotai'
 import {
   ChartPie,
@@ -13,7 +15,7 @@ import {
 import { IconWrapper, InfoCard, InfoCardItem } from './settings-info-card'
 
 type Recipient = {
-  label: string
+  label: MessageDescriptor
   value: string
   address?: string
   icon: React.ReactNode
@@ -25,18 +27,18 @@ const feeRecipientsAtom = atom((get) => {
 
   if (!indexDTF || platformFee === undefined) return undefined
   const platformShare = {
-    label: t`Fixed Platform Share`,
+    label: msg`Fixed Platform Share`,
     value: `${platformFee}%`,
     icon: <IconWrapper Component={TrainTrack} />,
   }
   const deployerShare = {
-    label: t`Deployer Share`,
+    label: msg`Deployer Share`,
     value: '0%',
     address: indexDTF.deployer,
     icon: <IconWrapper Component={LandPlot} />,
   }
   const governanceShare = {
-    label: t`Governance Share`,
+    label: msg`Governance Share`,
     value: '0%',
     icon: <IconWrapper Component={Landmark} />,
   }
@@ -57,7 +59,7 @@ const feeRecipientsAtom = atom((get) => {
       )
     } else {
       externalRecipients.push({
-        label: `Other recipient ${externalRecipients.length + 1}`,
+        label: msg`Other recipient ${externalRecipients.length + 1}`,
         value: formatPercentage(Number(recipient.percentage) / PERCENT_ADJUST),
         address: recipient.address,
         icon: <IconWrapper Component={Hash} />,
@@ -75,6 +77,7 @@ const feeRecipientsAtom = atom((get) => {
 
 // TODO: Share distribution pending subgraph work!
 const FeesInfo = () => {
+  const { t } = useLingui()
   const indexDTF = useAtomValue(indexDTFAtom)
   const feeRecipients = useAtomValue(feeRecipientsAtom)
 
@@ -105,8 +108,8 @@ const FeesInfo = () => {
       <div className="bg-card rounded-3xl mt-1">
         {feeRecipients?.map((recipient, index) => (
           <InfoCardItem
-            key={recipient.label}
-            label={recipient.label}
+            key={recipient.address ?? index}
+            label={t(recipient.label)}
             value={recipient.value}
             icon={recipient.icon}
             address={recipient.address}

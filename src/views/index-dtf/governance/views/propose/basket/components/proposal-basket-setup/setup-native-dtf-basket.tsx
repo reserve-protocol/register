@@ -3,6 +3,7 @@ import { NumericalInput } from '@/components/ui/input'
 import { TableBody, TableCell, TableRow } from '@/components/ui/table'
 import { cn } from '@/lib/utils'
 import { formatPercentage } from '@/utils'
+import { Trans } from '@lingui/react/macro'
 import { useAtom, useAtomValue } from 'jotai'
 import {
   IndexAssetShares,
@@ -77,7 +78,9 @@ const Allocation = () => {
 
   return (
     <div>
-      <span className="text-legend">Remaining allocation:</span>{' '}
+      <span className="text-legend">
+        <Trans>Remaining allocation:</Trans>
+      </span>{' '}
       <span
         className={cn(
           '',
@@ -112,7 +115,7 @@ const EvenDistribution = () => {
 
   return (
     <Button variant="outline" size="sm" onClick={handleEvenDistribution}>
-      Even distribution
+      <Trans>Even distribution</Trans>
     </Button>
   )
 }

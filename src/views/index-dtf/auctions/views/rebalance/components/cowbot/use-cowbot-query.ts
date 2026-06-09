@@ -4,6 +4,7 @@ import {
   SubmittedOrder,
   SupportedChainId,
 } from '@reserve-protocol/trusted-fillers-sdk'
+import { useLingui } from '@lingui/react/macro'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { useCallback, useRef, useState } from 'react'
 import { toast } from 'sonner'
@@ -41,6 +42,7 @@ interface UseCowbotQueryProps {
  * Uses React Query for polling, retries, and state management.
  */
 export const useCowbotQuery = ({ config, client }: UseCowbotQueryProps) => {
+  const { t } = useLingui()
   const [enabled, setEnabled] = useState(true)
   const submittedOrdersRef = useRef<Set<string>>(new Set())
   const [totalOrders, setTotalOrders] = useState(0)
@@ -85,7 +87,7 @@ export const useCowbotQuery = ({ config, client }: UseCowbotQueryProps) => {
       // Handle SDK-level errors (per-order errors, not fatal)
       if (result.errors.length > 0) {
         console.error('CowBot errors:', result.errors)
-        toast.error('CowBot encountered errors', {
+        toast.error(t`CowBot encountered errors`, {
           description: result.errors[0].message,
         })
       }
@@ -105,7 +107,11 @@ export const useCowbotQuery = ({ config, client }: UseCowbotQueryProps) => {
 
         if (newOrdersCount > 0) {
           setTotalOrders(submittedOrdersRef.current.size)
-          toast.success(`CowBot submitted ${newOrdersCount} new order(s)`)
+          toast.success(
+            newOrdersCount === 1
+              ? t`CowBot submitted ${newOrdersCount} new order`
+              : t`CowBot submitted ${newOrdersCount} new orders`
+          )
         }
       }
 

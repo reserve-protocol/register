@@ -3,6 +3,9 @@ import { Checkbox } from '@/components/ui/checkbox'
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
 import { cn } from '@/lib/utils'
 import { isSingletonRebalanceAtom } from '@/state/dtf/atoms'
+import type { MessageDescriptor } from '@lingui/core'
+import { msg } from '@lingui/core/macro'
+import { Trans, useLingui } from '@lingui/react/macro'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { AlignCenterVertical, Crown } from 'lucide-react'
 import { ReactNode } from 'react'
@@ -71,12 +74,13 @@ const NextButton = () => {
       disabled={!isValid}
       onClick={() => setStep('confirmation')}
     >
-      Confirm Changes
+      <Trans>Confirm Changes</Trans>
     </Button>
   )
 }
 
 export const TradeRangeTriggerLabel = () => {
+  const { t } = useLingui()
   const option = useAtomValue(tradeRangeOptionAtom)
 
   if (!option) return null
@@ -90,25 +94,34 @@ export const TradeRangeTriggerLabel = () => {
       )}
       <div>
         {option === 'defer'
-          ? 'Defer to Auction Launcher'
-          : 'Include Price Ranges'}
+          ? t`Defer to Auction Launcher`
+          : t`Include Price Ranges`}
       </div>
     </div>
   )
 }
 
-const VOLATILITY_OPTIONS = ['Low', 'Medium', 'High']
+const VOLATILITY_OPTIONS: { value: string; label: MessageDescriptor }[] = [
+  { value: 'Low', label: msg`Low` },
+  { value: 'Medium', label: msg`Medium` },
+  { value: 'High', label: msg`High` },
+]
 
 const RebalancePriceVolatility = () => {
+  const { t } = useLingui()
   const [priceVolatility, setPriceVolatility] = useAtom(priceVolatilityAtom)
 
   return (
     <div className="flex flex-col justify-center gap-3 rounded-xl bg-foreground/5 p-4">
       <div>
-        <h4 className="font-semibold text-primary">Auction Price Volatility</h4>
+        <h4 className="font-semibold text-primary">
+          <Trans>Auction Price Volatility</Trans>
+        </h4>
         <div className="">
-          Specify the expected price volatility for the auction. This will be
-          used to set the price range for the auction.
+          <Trans>
+            Specify the expected price volatility for the auction. This will be
+            used to set the price range for the auction.
+          </Trans>
         </div>
       </div>
       <div className="flex items-center gap-2">
@@ -124,11 +137,11 @@ const RebalancePriceVolatility = () => {
         >
           {VOLATILITY_OPTIONS.map((option) => (
             <ToggleGroupItem
-              key={option}
-              value={option}
+              key={option.value}
+              value={option.value}
               className="px-5 h-8 whitespace-nowrap rounded-lg data-[state=on]:bg-card text-secondary-foreground/80 data-[state=on]:text-primary flex-grow"
             >
-              {option}
+              {t(option.label)}
             </ToggleGroupItem>
           ))}
         </ToggleGroup>
@@ -148,20 +161,23 @@ const RebalancePriceSettings = () => {
 }
 
 const ProposalPriceRanges = () => {
+  const { t } = useLingui()
   const isDeferAvailable = useAtomValue(isDeferAvailableAtom)
   const [option, setOption] = useAtom(tradeRangeOptionAtom)
 
   return (
     <>
       <p className="text-sm sm:text-base mx-4 sm:mx-6 mb-6">
-        Set expected pricing volatility for each token pair. The auction
-        launcher can modify the pricing information within these volatility
-        bounds.
+        <Trans>
+          Set expected pricing volatility for each token pair. The auction
+          launcher can modify the pricing information within these volatility
+          bounds.
+        </Trans>
       </p>
       <div className="flex flex-col gap-2 mx-2">
         <PriceSettingsOption
-          title="Defer to Auction Launcher"
-          description="Rely solely on the Auction Launcher to provide accurate pricing information when swapping assets. This option increases the amount of damage from mistakes or a rogue Auction Launcher."
+          title={t`Defer to Auction Launcher`}
+          description={t`Rely solely on the Auction Launcher to provide accurate pricing information when swapping assets. This option increases the amount of damage from mistakes or a rogue Auction Launcher.`}
           icon={<Crown size={16} strokeWidth={1.5} />}
           value="defer"
           disabled={!isDeferAvailable}
@@ -169,8 +185,8 @@ const ProposalPriceRanges = () => {
           checked={option === 'defer'}
         />
         <PriceSettingsOption
-          title="Set Price Range(s)"
-          description="Set guardrails for the auction launcher by specifying the expected price volatility (low, medium, or high)"
+          title={t`Set Price Range(s)`}
+          description={t`Set guardrails for the auction launcher by specifying the expected price volatility (low, medium, or high)`}
           icon={<AlignCenterVertical size={16} strokeWidth={1.5} />}
           value="include"
           onClick={() => setOption('include')}

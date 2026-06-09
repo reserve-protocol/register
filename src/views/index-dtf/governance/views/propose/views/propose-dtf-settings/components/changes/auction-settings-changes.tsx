@@ -4,6 +4,7 @@ import {
   indexDTFRebalanceControlAtom,
   indexDTFVersionAtom,
 } from '@/state/dtf/atoms'
+import { Plural, Trans, useLingui } from '@lingui/react/macro'
 import { useAtom, useAtomValue } from 'jotai'
 import { useFormContext } from 'react-hook-form'
 import { ArrowRight, Clock, ScrollText, LandPlot, HandCoins } from 'lucide-react'
@@ -19,6 +20,7 @@ import { ChangeSection, RevertButton } from './shared'
 import { useReadContract } from 'wagmi'
 
 const AuctionSettingsChanges = () => {
+  const { t } = useLingui()
   const indexDTF = useAtomValue(indexDTFAtom)
   const rebalanceControl = useAtomValue(indexDTFRebalanceControlAtom)
   const version = useAtomValue(indexDTFVersionAtom)
@@ -55,7 +57,6 @@ const AuctionSettingsChanges = () => {
   if (!indexDTF || !hasAnyChange) return null
 
   const currentAuctionLength = indexDTF.auctionLength
-  const newAuctionLength = auctionLengthChange
 
   const onRevertAuctionLength = () => {
     setAuctionLengthChange(undefined)
@@ -73,19 +74,32 @@ const AuctionSettingsChanges = () => {
   }
 
   return (
-    <ChangeSection title="Auction Settings" icon={<ScrollText size={16} />}>
+    <ChangeSection
+      title={<Trans>Auction Settings</Trans>}
+      icon={<ScrollText size={16} />}
+    >
       {hasAuctionLengthChange && auctionLengthChange && (
         <div className="flex items-center gap-2 p-4 rounded-2xl bg-muted/70 border ">
           <Clock size={16} />
           <div className="mr-auto">
-            <div className="text-sm font-medium">Auction Length</div>
+            <div className="text-sm font-medium">
+              <Trans>Auction Length</Trans>
+            </div>
             <div className="flex items-center gap-3 text-sm">
               <span className="text-muted-foreground">
-                {currentAuctionLength / 60} minutes
+                <Plural
+                  value={currentAuctionLength / 60}
+                  one="# minute"
+                  other="# minutes"
+                />
               </span>
               <ArrowRight size={16} className="text-primary" />
               <span className="text-primary font-medium">
-                {newAuctionLength} minutes
+                <Plural
+                  value={auctionLengthChange}
+                  one="# minute"
+                  other="# minutes"
+                />
               </span>
             </div>
           </div>
@@ -101,14 +115,16 @@ const AuctionSettingsChanges = () => {
           <div className="flex items-center gap-2 p-4 rounded-2xl bg-muted/70 border ">
             <HandCoins size={16} />
             <div className="mr-auto">
-              <div className="text-sm font-medium">Permissionless Bids</div>
+              <div className="text-sm font-medium">
+                <Trans>Permissionless Bids</Trans>
+              </div>
               <div className="flex items-center gap-3 text-sm">
                 <span className="text-muted-foreground">
-                  {currentBidsEnabled ? 'Enabled' : 'Disabled'}
+                  {currentBidsEnabled ? t`Enabled` : t`Disabled`}
                 </span>
                 <ArrowRight size={16} className="text-primary" />
                 <span className="text-primary font-medium">
-                  {bidsEnabledChange ? 'Enabled' : 'Disabled'}
+                  {bidsEnabledChange ? t`Enabled` : t`Disabled`}
                 </span>
               </div>
             </div>
@@ -123,14 +139,16 @@ const AuctionSettingsChanges = () => {
           <div className="flex items-center gap-2 p-4 rounded-2xl bg-muted/70 border ">
             <LandPlot size={16} />
             <div className="mr-auto">
-              <div className="text-sm font-medium">Weight Control</div>
+              <div className="text-sm font-medium">
+                <Trans>Weight Control</Trans>
+              </div>
               <div className="flex items-center gap-3 text-sm">
                 <span className="text-muted-foreground">
-                  {rebalanceControl.weightControl ? 'Enabled' : 'Disabled'}
+                  {rebalanceControl.weightControl ? t`Enabled` : t`Disabled`}
                 </span>
                 <ArrowRight size={16} className="text-primary" />
                 <span className="text-primary font-medium">
-                  {weightControlChange ? 'Enabled' : 'Disabled'}
+                  {weightControlChange ? t`Enabled` : t`Disabled`}
                 </span>
               </div>
             </div>

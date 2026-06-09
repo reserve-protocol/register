@@ -1,4 +1,4 @@
-import { t } from '@lingui/macro'
+import { useLingui } from '@lingui/react/macro'
 import { Button } from '@/components/ui/button'
 import TokenItem from 'components/token-item'
 import dayjs from 'dayjs'
@@ -22,6 +22,7 @@ const getGnosisAuction = (auctionId: string, chainId: number): string => {
 }
 
 const useColumns = (ended = false) => {
+  const { t } = useLingui()
   const chainId = useAtomValue(chainIdAtom)
   const columnHelper = createColumnHelper<DutchTrade>()
 
@@ -60,13 +61,13 @@ const useColumns = (ended = false) => {
           const setSidebar = useSetAtom(auctionSidebarAtom)
           const chainId = useAtomValue(chainIdAtom)
           const isDutch = data.row.original.kind === TradeKind.DutchTrade
-          let text = 'Auction'
+          let text = t`Auction`
 
           if (isDutch) {
             if (data.row.original.isSettled) {
-              text = 'View settle tx'
+              text = t`View settle tx`
             } else {
-              text = 'Settle'
+              text = t`Settle`
             }
           }
 
@@ -109,7 +110,7 @@ const useColumns = (ended = false) => {
         },
       }),
     ],
-    [chainId]
+    [chainId, t]
   )
 }
 

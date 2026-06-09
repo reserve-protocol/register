@@ -1,4 +1,4 @@
-import { t, Trans } from '@lingui/macro'
+import { Trans, useLingui } from '@lingui/react/macro'
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
 import { Modal, ModalProps } from 'components'
@@ -58,6 +58,7 @@ const CollateralModal = ({
   onClose = () => { },
   ...props
 }: Props) => {
+  const { t } = useLingui()
   // Get already added collaterals for basket
   const addedCollaterals = useAtomValue(
     basket === 'primary'
@@ -119,7 +120,7 @@ const CollateralModal = ({
       {...props}
     >
       <SearchInput
-        placeholder="Search by collateral symbol or target name"
+        placeholder={t`Search by collateral symbol or target name`}
         autoFocus
         value={search}
         onChange={(e) => setSearch(e.target.value)}

@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/button'
 import { chainIdAtom } from '@/state/atoms'
 import { Token } from '@/types'
 import { ExplorerDataType, getExplorerLink } from '@/utils/getExplorerLink'
+import { Trans, useLingui } from '@lingui/react/macro'
 import { useAtom, useAtomValue } from 'jotai'
 import { Undo } from 'lucide-react'
 import {
@@ -22,6 +23,7 @@ const RewardTokenItem = ({
   onRevert: () => void
   id?: string
 }) => {
+  const { t } = useLingui()
   const chainId = useAtomValue(chainIdAtom)
 
   return (
@@ -31,14 +33,14 @@ const RewardTokenItem = ({
         <h4
           className={`text-xs ${type === 'added' ? 'text-success' : 'text-destructive'}`}
         >
-          {type === 'added' ? 'Added reward' : 'Removed reward'}
+          {type === 'added' ? <Trans>Added reward</Trans> : <Trans>Removed reward</Trans>}
         </h4>
         <a
           className="text-sm text-legend flex items-center gap-1"
           target="_blank"
           href={getExplorerLink(token.address, chainId, ExplorerDataType.TOKEN)}
           tabIndex={0}
-          aria-label={`View ${token.symbol} on block explorer`}
+          aria-label={t`View ${token.symbol} on block explorer`}
         >
           {token.name} (${token.symbol})
         </a>
@@ -47,7 +49,7 @@ const RewardTokenItem = ({
         variant="outline"
         size="icon-rounded"
         onClick={onRevert}
-        aria-label={`Revert ${token.symbol}`}
+        aria-label={t`Revert ${token.symbol}`}
         tabIndex={0}
       >
         <Undo size={16} />
@@ -118,7 +120,9 @@ const VaultProposalChanges = () => {
   if (!removed.length && !added.length)
     return (
       <div className="flex flex-col gap-1">
-        <p className="text-sm text-center text-legend">No changes</p>
+        <p className="text-sm text-center text-legend">
+          <Trans>No changes</Trans>
+        </p>
       </div>
     )
 

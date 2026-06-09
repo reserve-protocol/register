@@ -1,4 +1,4 @@
-import { t, Trans } from '@lingui/macro'
+import { Trans, useLingui } from '@lingui/react/macro'
 import { Button } from '@/components/ui/button'
 import Field, { FieldInput, getErrorMessage } from 'components/field'
 import { useAtomValue } from 'jotai'
@@ -26,6 +26,7 @@ const ExternalRevenueSpit = ({
   defaultValues = {},
   className,
 }: ExternalRevenueSplitProps) => {
+  const { t } = useLingui()
   const {
     register,
     watch,
@@ -106,7 +107,9 @@ const ExternalRevenueSpit = ({
             className="flex-1 rounded-tl-none rounded-tr-none rounded-br-md rounded-bl-md border-t-0"
             {...register('address', inputValidation)}
             placeholder={t`Receiving eth address`}
-            error={errors['holders'] ? getErrorMessage(errors['holders']) : ''}
+            error={
+              errors['holders'] ? t(getErrorMessage(errors['holders'])) : ''
+            }
           />
         </div>
       </div>

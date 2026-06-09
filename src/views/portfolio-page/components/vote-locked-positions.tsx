@@ -5,6 +5,7 @@ import DataTable from '@/components/ui/data-table'
 import { formatCurrency, formatToSignificantDigits, formatUSD } from '@/utils'
 import { ExplorerDataType, getExplorerLink } from '@/utils/getExplorerLink'
 import { ColumnDef } from '@tanstack/react-table'
+import { Trans } from '@lingui/react/macro'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { ExternalLink, Lock } from 'lucide-react'
 import { openStakingSidebarAtom, portfolioVoteLocksAtom } from '../atoms'
@@ -34,7 +35,7 @@ const ModifyButton = ({ voteLock }: { voteLock: PortfolioVoteLock }) => {
         })
       }}
     >
-      Modify
+      <Trans>Modify</Trans>
     </Button>
   )
 }
@@ -43,7 +44,7 @@ const columns: ColumnDef<PortfolioVoteLock, any>[] = [
   {
     id: 'stTokenName',
     accessorKey: 'stTokenName',
-    header: 'Governance Token',
+    header: () => <Trans>Governance Token</Trans>,
     cell: ({ row }) => (
       <div className="flex items-center gap-2 min-h-10">
         <TokenLogoWithChain
@@ -62,7 +63,7 @@ const columns: ColumnDef<PortfolioVoteLock, any>[] = [
   },
   {
     id: 'underlying',
-    header: 'Underlying',
+    header: () => <Trans>Underlying</Trans>,
     cell: ({ row }) => {
       const u = row.original.underlying
       if (!u) return <span className="text-sm text-legend">—</span>
@@ -98,7 +99,7 @@ const columns: ColumnDef<PortfolioVoteLock, any>[] = [
   },
   {
     id: 'governs',
-    header: 'Governs',
+    header: () => <Trans>Governs</Trans>,
     cell: ({ row }) => (
       <GovernsCell dtfs={row.original.dtfs} chainId={row.original.chainId} />
     ),
@@ -120,7 +121,7 @@ const columns: ColumnDef<PortfolioVoteLock, any>[] = [
   {
     id: 'balance',
     accessorKey: 'amount',
-    header: 'Balance',
+    header: () => <Trans>Balance</Trans>,
     cell: ({ row }) => {
       const val = Number(row.original.amount)
       return (
@@ -133,7 +134,7 @@ const columns: ColumnDef<PortfolioVoteLock, any>[] = [
   {
     id: 'value',
     accessorKey: 'value',
-    header: 'Value',
+    header: () => <Trans>Value</Trans>,
     cell: ({ row }) => {
       const val = row.original.value
       return (
@@ -145,7 +146,11 @@ const columns: ColumnDef<PortfolioVoteLock, any>[] = [
   },
   {
     id: 'action',
-    header: () => <span className="flex justify-end">Action</span>,
+    header: () => (
+      <span className="flex justify-end">
+        <Trans>Action</Trans>
+      </span>
+    ),
     cell: ({ row }) => (
       <div className="flex justify-end">
         <ModifyButton voteLock={row.original} />
@@ -166,9 +171,9 @@ const VoteLockedPositions = () => {
     <div>
       <SectionHeader
         icon={Lock}
-        title="Vote-locked positions"
+        title={<Trans>Vote-locked positions</Trans>}
         subtitle={
-          <>
+          <Trans>
             Participate in governance with any ERC-20 token and earn APY
             rewards.{' '}
             <a
@@ -180,7 +185,7 @@ const VoteLockedPositions = () => {
               Learn more
             </a>
             .
-          </>
+          </Trans>
         }
       />
       <div className="bg-card rounded-[20px] border border-border overflow-hidden">

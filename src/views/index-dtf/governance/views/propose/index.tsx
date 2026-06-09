@@ -1,7 +1,9 @@
 import { cn } from '@/lib/utils'
 import { indexDTFAtom } from '@/state/dtf/atoms'
 import { GOVERNANCE_PROPOSAL_TYPES, ROUTES } from '@/utils/constants'
-import { Trans } from '@lingui/react/macro'
+import type { MessageDescriptor } from '@lingui/core'
+import { msg } from '@lingui/core/macro'
+import { Trans, useLingui } from '@lingui/react/macro'
 import { useAtomValue } from 'jotai'
 import {
   ArrowLeft,
@@ -11,9 +13,16 @@ import {
   LayoutGrid,
   Settings,
 } from 'lucide-react'
+import type { ReactNode } from 'react'
 import { useMemo } from 'react'
 import { Link } from 'react-router-dom'
 import UpgradeBanners from './upgrade-banners'
+
+type ProposalType = {
+  icon: ReactNode
+  title: MessageDescriptor
+  route: string
+}
 
 const Header = () => (
   <div className="flex flex-row items-center border-none p-4 pl-7 pb-3">
@@ -30,31 +39,33 @@ const Header = () => (
 )
 
 const TypeList = () => {
+  const { t } = useLingui()
   const dtf = useAtomValue(indexDTFAtom)
-  const proposalTypes = useMemo(() => {
+  const proposalTypes = useMemo<ProposalType[]>(() => {
     const ownerGovernor = dtf?.ownerGovernance?.id.toLowerCase()
     const basketGovernor = dtf?.tradingGovernance?.id.toLowerCase()
-    const hasSharedGovernor = !!ownerGovernor && ownerGovernor === basketGovernor
+    const hasSharedGovernor =
+      !!ownerGovernor && ownerGovernor === basketGovernor
 
-    const types = [
+    const types: ProposalType[] = [
       {
         icon: <Boxes strokeWidth={1.5} size={16} />,
-        title: <Trans>DTF Basket</Trans>,
+        title: msg`DTF Basket`,
         route: GOVERNANCE_PROPOSAL_TYPES.BASKET,
       },
       {
         icon: <Settings size={16} strokeWidth={1.5} />,
-        title: <Trans>DTF Settings</Trans>,
+        title: msg`DTF Settings`,
         route: GOVERNANCE_PROPOSAL_TYPES.DTF,
       },
       {
         icon: <Crown size={16} strokeWidth={1.5} />,
-        title: <Trans>Basket settings</Trans>,
+        title: msg`Basket settings`,
         route: GOVERNANCE_PROPOSAL_TYPES.BASKET_SETTINGS,
       },
       {
         icon: <LayoutGrid size={16} strokeWidth={1.5} />,
-        title: <Trans>DAO</Trans>,
+        title: msg`DAO`,
         route: GOVERNANCE_PROPOSAL_TYPES.OTHER,
       },
     ]
@@ -73,15 +84,13 @@ const TypeList = () => {
           to={route}
           className={cn(
             'flex flex-row items-center p-6 gap-4 hover:text-primary group',
-            index !== proposalTypes.length - 1
-              ? 'border-b border-border'
-              : '',
+            index !== proposalTypes.length - 1 ? 'border-b border-border' : ''
           )}
         >
           <div className="rounded-full h-8 w-8 border border-foreground flex items-center justify-center group-hover:border-primary">
             {icon}
           </div>
-          <h4 className="bg-card m-1 mr-auto font-semibold">{title}</h4>
+          <h4 className="bg-card m-1 mr-auto font-semibold">{t(title)}</h4>
           <div className="rounded-full h-8 w-8 bg-muted flex items-center justify-center">
             <ArrowRight size={16} />
           </div>

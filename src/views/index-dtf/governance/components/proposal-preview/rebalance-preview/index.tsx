@@ -15,13 +15,13 @@ import { ArrowUpRightIcon } from 'lucide-react'
 import { useMemo } from 'react'
 import { Link } from 'react-router-dom'
 import { Address, Hex } from 'viem'
+import { Trans } from '@lingui/react/macro'
 import GovernanceProposalPreviewSkeleton from '../governance-proposal-preview-skeleton'
 import { RawCallsPreview } from '../raw-call-preview'
 import BasketProposalPreview from './legacy-basket-proposal-preview'
 import RebalanceBasketPreview, {
   EstimatedBasket,
 } from './rebalance-basket-preview'
-import { Trans } from '@lingui/react/macro'
 
 const TABS = {
   SUMMARY: 'summary',
@@ -33,7 +33,9 @@ const Header = ({ address }: { address: Address }) => {
 
   return (
     <div className="mx-4 py-4 flex items-center flex-wrap gap-2 border-b">
-      <h1 className="text-xl font-semibold text-primary"><Trans>Basket Change</Trans></h1>
+      <h1 className="text-xl font-semibold text-primary">
+        <Trans>Basket Change</Trans>
+      </h1>
       <Link
         target="_blank"
         className="mr-auto"
@@ -48,12 +50,12 @@ const Header = ({ address }: { address: Address }) => {
       </Link>
 
       <TabsList>
-        <TabsTrigger value={TABS.SUMMARY} >
-          Summary
+        <TabsTrigger value={TABS.SUMMARY}>
+          <Trans>Summary</Trans>
         </TabsTrigger>
 
-        <TabsTrigger value={TABS.RAW} >
-          Raw
+        <TabsTrigger value={TABS.RAW}>
+          <Trans>Raw</Trans>
         </TabsTrigger>
       </TabsList>
     </div>

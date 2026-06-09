@@ -1,4 +1,4 @@
-import { t } from '@lingui/macro'
+import { useLingui } from '@lingui/react/macro'
 import RSVManager from 'abis/RSVManager'
 import RToken from 'abis/RToken'
 import RTokenLegacy from 'abis/RTokenLegacy'
@@ -59,6 +59,7 @@ const callAtom = atom((get) => {
 })
 
 const ConfirmRedemption = ({ onClose }: { onClose: () => void }) => {
+  const { t } = useLingui()
   const [signing, setSigning] = useState(false)
   const rToken = useAtomValue(rTokenAtom)
   const [amount, setAmount] = useAtom(redeemAmountAtom)

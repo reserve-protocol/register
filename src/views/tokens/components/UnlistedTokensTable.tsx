@@ -1,4 +1,4 @@
-import { t } from '@lingui/macro'
+import { Trans, useLingui } from '@lingui/react/macro'
 import { createColumnHelper } from '@tanstack/react-table'
 import ChainLogo from 'components/icons/ChainLogo'
 import { Table } from '@/components/ui/legacy-table'
@@ -55,6 +55,7 @@ const useRTokenCount = () => {
 }
 
 const UnlistedTokensTable = () => {
+  const { t } = useLingui()
   const navigate = useNavigate()
   const data = useUnlistedTokens()
   const rTokenCount = useRTokenCount()
@@ -112,7 +113,7 @@ const UnlistedTokensTable = () => {
         },
       }),
     ],
-    []
+    [t]
   )
 
   const handleClick = useCallback(
@@ -143,7 +144,9 @@ const UnlistedTokensTable = () => {
         data={data}
       />
       <div className="flex mt-4 justify-center">
-        <span className="text-legend">Total RTokens unlisted: </span>
+        <span className="text-legend">
+          <Trans>Total RTokens unlisted:</Trans>&nbsp;
+        </span>
         <span className="ml-2 font-semibold">
           {formatCurrency(rTokenCount, 0)}
         </span>

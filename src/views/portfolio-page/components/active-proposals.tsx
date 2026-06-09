@@ -10,6 +10,7 @@ import {
 } from '@/utils'
 import { formatConstant, PROPOSAL_STATES, ROUTES } from '@/utils/constants'
 import { ColumnDef } from '@tanstack/react-table'
+import { Trans } from '@lingui/react/macro'
 import dayjs from 'dayjs'
 import { useAtomValue } from 'jotai'
 import { ScrollText } from 'lucide-react'
@@ -32,7 +33,7 @@ const STATUS_COLOR: Record<string, string> = {
 const columns: ColumnDef<ActiveProposalRow, any>[] = [
   {
     id: 'dtf',
-    header: 'DTF Governed',
+    header: () => <Trans>DTF Governed</Trans>,
     cell: ({ row }) => (
       <div className="flex items-center gap-2">
         <TokenLogoWithChain
@@ -46,7 +47,7 @@ const columns: ColumnDef<ActiveProposalRow, any>[] = [
   },
   {
     id: 'title',
-    header: 'Title',
+    header: () => <Trans>Title</Trans>,
     cell: ({ row }) => {
       const title = getProposalTitle(row.original.description)
       const voting = row.original.voting
@@ -56,7 +57,9 @@ const columns: ColumnDef<ActiveProposalRow, any>[] = [
           <div>
             <p className="font-bold text-sm text-primary">{title}</p>
             <div className="flex items-center gap-1 mt-0.5 text-xs text-legend">
-              <span>Voting starts in:</span>
+              <span>
+                <Trans>Voting starts in:</Trans>
+              </span>
               <span className="font-semibold text-foreground">
                 {parseDuration(voting.deadline, {
                   units: ['d', 'h', 'm'],
@@ -78,7 +81,7 @@ const columns: ColumnDef<ActiveProposalRow, any>[] = [
           <p className="font-bold text-sm text-primary">{title}</p>
           <div className="flex flex-col sm:flex-row sm:items-center gap-0.5 sm:gap-2 mt-0.5 text-xs text-legend">
             <span>
-              {isOptimistic ? 'Veto?' : 'Quorum?'}{' '}
+              {isOptimistic ? <Trans>Veto?</Trans> : <Trans>Quorum?</Trans>}{' '}
               <span
                 className={cn(
                   'font-medium',
@@ -91,12 +94,12 @@ const columns: ColumnDef<ActiveProposalRow, any>[] = [
                       : 'text-destructive'
                 )}
               >
-                {thresholdReached ? 'Yes' : 'No'}
+                {thresholdReached ? <Trans>Yes</Trans> : <Trans>No</Trans>}
               </span>
             </span>
             {(voting.for > 0 || voting.against > 0 || voting.abstain > 0) && (
               <span>
-                Votes:{' '}
+                <Trans>Votes:</Trans>{' '}
                 <span className="text-primary font-medium">
                   {formatCurrency(voting.for, 0)}%
                 </span>
@@ -115,7 +118,7 @@ const columns: ColumnDef<ActiveProposalRow, any>[] = [
   },
   {
     id: 'date',
-    header: 'Date Proposed',
+    header: () => <Trans>Date Proposed</Trans>,
     cell: ({ row }) => {
       const ts = Number(row.original.creationTime)
       if (!ts || isNaN(ts))
@@ -130,7 +133,7 @@ const columns: ColumnDef<ActiveProposalRow, any>[] = [
   },
   {
     id: 'state',
-    header: 'Status',
+    header: () => <Trans>Status</Trans>,
     cell: ({ row }) => {
       const { state } = row.original.voting
       const stateText = formatConstant(state)
@@ -160,8 +163,12 @@ const ActiveProposals = () => {
     <div>
       <SectionHeader
         icon={ScrollText}
-        title="Active Proposals"
-        subtitle="View proposals from different DTFs you have vote-locked."
+        title={<Trans>Active Proposals</Trans>}
+        subtitle={
+          <Trans>
+            View proposals from different DTFs you have vote-locked.
+          </Trans>
+        }
       />
       <div className="bg-card rounded-[20px] border border-border overflow-hidden">
         <DataTable

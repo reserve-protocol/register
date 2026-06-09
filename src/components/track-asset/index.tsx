@@ -6,6 +6,7 @@ import {
 import { Bookmark } from 'lucide-react'
 import { Token } from 'types'
 import { useWalletClient } from 'wagmi'
+import { Trans } from '@lingui/react/macro'
 
 const TrackAsset = ({ token }: { token: Token }) => {
   const { data: client } = useWalletClient()
@@ -38,7 +39,9 @@ const TrackAsset = ({ token }: { token: Token }) => {
           <Bookmark size={12} />
         </button>
       </TooltipTrigger>
-      <TooltipContent>Track token in your wallet</TooltipContent>
+      <TooltipContent>
+        <Trans>Track token in your wallet</Trans>
+      </TooltipContent>
     </Tooltip>
   )
 }

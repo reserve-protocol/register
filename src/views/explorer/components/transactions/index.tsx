@@ -1,4 +1,4 @@
-import { Trans } from '@lingui/macro'
+import { Trans } from '@lingui/react/macro'
 import TransactionsIcon from 'components/icons/TransactionsIcon'
 import { Table } from '@/components/ui/legacy-table'
 import useTransactionColumns from './useTransactionColumns'

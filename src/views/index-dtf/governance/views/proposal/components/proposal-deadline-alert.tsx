@@ -1,61 +1,75 @@
+import { cn } from '@/lib/utils'
+import type { MessageDescriptor } from '@lingui/core'
+import { msg } from '@lingui/core/macro'
+import { useLingui } from '@lingui/react/macro'
 import { useAtomValue } from 'jotai'
+import { Check, Loader2, Slash, X } from 'lucide-react'
 import { ReactNode } from 'react'
-import { Check, Slash, X, Loader2 } from 'lucide-react'
 import { parseDurationShort } from 'utils'
 import { PROPOSAL_STATES } from 'utils/constants'
 import { proposalDetailAtom } from '../atom'
-import { cn } from '@/lib/utils'
 
-const FINAL_STATES = {
+const FINAL_STATES: Record<
+  string,
+  {
+    label: MessageDescriptor
+    color: string
+    bgColor: string
+    icon: ReactNode
+  }
+> = {
   [PROPOSAL_STATES.EXECUTED]: {
-    label: 'Executed',
+    label: msg`Executed`,
     color: 'text-primary',
     bgColor: 'rgba(9, 85, 172, 0.10)',
     icon: <Check size={20} />,
   },
   [PROPOSAL_STATES.DEFEATED]: {
-    label: 'Defeated',
+    label: msg`Defeated`,
     color: 'text-destructive',
     bgColor: 'rgba(208, 90, 103, 0.10)',
     icon: <X size={20} />,
   },
   [PROPOSAL_STATES.EXPIRED]: {
-    label: 'Expired',
+    label: msg`Expired`,
     color: 'text-legend',
     bgColor: 'rgba(0, 0, 0, 0.10)',
     icon: <Slash size={20} />,
   },
   [PROPOSAL_STATES.CANCELED]: {
-    label: 'Canceled',
+    label: msg`Canceled`,
     color: 'text-destructive',
     bgColor: 'rgba(208, 90, 103, 0.10)',
     icon: <X size={20} />,
   },
   [PROPOSAL_STATES.QUORUM_NOT_REACHED]: {
-    label: 'Quorum not reached',
+    label: msg`Quorum not reached`,
     color: 'text-warning',
     bgColor: 'rgba(255, 152, 0, 0.10)',
     icon: <X size={20} />,
   },
   [PROPOSAL_STATES.SUCCEEDED]: {
-    label: 'Succeeded',
+    label: msg`Succeeded`,
     color: 'text-success',
     bgColor: 'rgba(0, 255, 152, 0.10)',
     icon: <Check size={20} />,
   },
 }
 
-const DEADLINE_STATES = {
+const DEADLINE_STATES: Record<
+  string,
+  { text: MessageDescriptor; color: string }
+> = {
   [PROPOSAL_STATES.ACTIVE]: {
-    text: 'Voting period ends in',
+    text: msg`Voting period ends in`,
     color: 'text-primary',
   },
   [PROPOSAL_STATES.PENDING]: {
-    text: 'Voting begins in',
+    text: msg`Voting begins in`,
     color: 'text-primary',
   },
   [PROPOSAL_STATES.QUEUED]: {
-    text: 'Execution delay ends in',
+    text: msg`Execution delay ends in`,
     color: 'text-warning',
   },
 }
@@ -73,7 +87,10 @@ const FinalState = ({
 }) => {
   return (
     <div
-      className={cn("flex flex-col items-center justify-center gap-2 h-full", className)}
+      className={cn(
+        'flex flex-col items-center justify-center gap-2 h-full',
+        className
+      )}
     >
       <div
         className="flex items-center justify-center rounded-full p-2"
@@ -87,6 +104,7 @@ const FinalState = ({
 }
 
 const ProposalAlert = () => {
+  const { t } = useLingui()
   const state = useAtomValue(proposalDetailAtom)?.votingState
 
   if (!state) return null
@@ -94,7 +112,7 @@ const ProposalAlert = () => {
   if (Object.keys(FINAL_STATES).includes(state.state)) {
     return (
       <FinalState
-        label={FINAL_STATES[state.state].label}
+        label={t(FINAL_STATES[state.state].label)}
         className={FINAL_STATES[state.state].color}
         bgColor={FINAL_STATES[state.state].bgColor}
         icon={FINAL_STATES[state.state].icon}
@@ -117,7 +135,7 @@ const ProposalAlert = () => {
   ) {
     return (
       <FinalState
-        label="Passed"
+        label={t`Passed`}
         className="text-primary"
         bgColor="rgba(9, 85, 172, 0.10)"
         icon={<Check size={20} />}
@@ -126,9 +144,14 @@ const ProposalAlert = () => {
   }
 
   return (
-    <div className={cn("flex flex-col items-center justify-center h-full py-4", DEADLINE_STATES[state.state].color)}>
+    <div
+      className={cn(
+        'flex flex-col items-center justify-center h-full py-4',
+        DEADLINE_STATES[state.state].color
+      )}
+    >
       <Loader2 size={18} className="animate-spin" />
-      <p className="text-sm mt-1">{DEADLINE_STATES[state.state].text}</p>
+      <p className="text-sm mt-1">{t(DEADLINE_STATES[state.state].text)}</p>
       <p className="font-bold">{deadline}</p>
     </div>
   )

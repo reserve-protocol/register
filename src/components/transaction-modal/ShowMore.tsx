@@ -1,6 +1,7 @@
 import { Button } from '@/components/ui/button'
 import AsteriskIcon from 'components/icons/AsteriskIcon'
 import { useState } from 'react'
+import { Trans } from '@lingui/react/macro'
 
 interface Props {
   children: React.ReactNode
@@ -16,7 +17,9 @@ const ShowMore = ({ children, className }: Props) => {
         <div className="flex-grow border-t border-dashed border-border" />
         <Button size="sm" variant="ghost" onClick={() => setVisible(!isVisible)}>
           <span className="flex items-center text-muted-foreground">
-            <span className="mr-2">Show more</span>
+            <span className="mr-2">
+              <Trans>Show more</Trans>
+            </span>
             <AsteriskIcon />
           </span>
         </Button>

@@ -1,3 +1,4 @@
+import { useLingui } from '@lingui/react/macro'
 import useWatchTransaction from 'hooks/useWatchTransaction'
 import mixpanel from 'mixpanel-browser/src/loaders/loader-module-core'
 import {
@@ -62,6 +63,7 @@ export const useZapTx = () => {
 }
 
 export const ZapTxProvider: FC<PropsWithChildren<any>> = ({ children }) => {
+  const { t } = useLingui()
   const [error, setError] = useState<ZapErrorType>()
   const {
     chainId,
@@ -174,8 +176,8 @@ export const ZapTxProvider: FC<PropsWithChildren<any>> = ({ children }) => {
       !(loadingApproval || validatingApproval || approvalSuccess)
     ) {
       setError({
-        title: 'Transaction rejected: Approval failed',
-        message: 'Please try again',
+        title: t`Transaction rejected: Approval failed`,
+        message: t`Please try again`,
         color: 'danger',
         secondaryColor: 'rgba(255, 0, 0, 0.20)',
       })
@@ -209,6 +211,7 @@ export const ZapTxProvider: FC<PropsWithChildren<any>> = ({ children }) => {
     account,
     tokenIn,
     tokenOut,
+    t,
   ])
 
   const {
@@ -227,8 +230,8 @@ export const ZapTxProvider: FC<PropsWithChildren<any>> = ({ children }) => {
     hash: data,
     label:
       operation === 'mint'
-        ? `Mint ${tokenOut.symbol}`
-        : `Redeem ${tokenIn.symbol}`,
+        ? t`Mint ${tokenOut.symbol}`
+        : t`Redeem ${tokenIn.symbol}`,
   })
 
   const gasLimit = useMemo(() => {
@@ -278,8 +281,8 @@ export const ZapTxProvider: FC<PropsWithChildren<any>> = ({ children }) => {
   useEffect(() => {
     if (sendError && !(loadingTx || validatingTx || receipt)) {
       setError({
-        title: 'Transaction rejected',
-        message: 'Please try again',
+        title: t`Transaction rejected`,
+        message: t`Please try again`,
         color: 'danger',
         secondaryColor: 'rgba(255, 0, 0, 0.20)',
       })
@@ -313,6 +316,7 @@ export const ZapTxProvider: FC<PropsWithChildren<any>> = ({ children }) => {
     account,
     tokenIn,
     tokenOut,
+    t,
   ])
 
   useEffect(() => {

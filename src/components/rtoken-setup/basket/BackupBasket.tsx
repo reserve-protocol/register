@@ -1,6 +1,6 @@
 import DocsLink from '@/components/utils/docs-link'
 import { YIELD_PROTOCOL_DOCS } from '@/utils/constants'
-import { Trans } from '@lingui/macro'
+import { Trans } from '@lingui/react/macro'
 import EmptyBoxIcon from 'components/icons/EmptyBoxIcon'
 import { useAtomValue } from 'jotai'
 import { useCallback } from 'react'
@@ -73,7 +73,9 @@ const BackupBasket = ({
   return (
     <div className={className}>
       <div className="flex items-center">
-        <span className="text-xl font-medium">Emergency Collateral</span>
+        <span className="text-xl font-medium">
+          <Trans>Emergency Collateral</Trans>
+        </span>
         <DocsLink
           link={`${YIELD_PROTOCOL_DOCS}/deployment-guide`}
         />

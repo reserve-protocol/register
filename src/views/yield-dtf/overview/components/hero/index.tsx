@@ -1,3 +1,4 @@
+import { Trans } from '@lingui/react/macro'
 import AlertIcon from 'components/icons/AlertIcon'
 import { isInactiveDTF, useDTFStatus } from '@/hooks/use-dtf-status'
 import useRToken from 'hooks/useRToken'
@@ -17,11 +18,15 @@ const DeprecatedBanner = () => {
         <AlertIcon width={32} height={32} />
         <div className="ml-4">
           <span className="font-bold text-warning">
-            DTF Inactive
+            <Trans>DTF Inactive</Trans>
           </span>
           <br />
           <span className="block mt-1 text-warning">
-            This DTF is no longer actively governed and can only be sold. This DTF cannot rebalance its basket nor can it new ${rToken?.symbol} tokens be created.
+            <Trans>
+              This DTF is no longer actively governed and can only be sold. This
+              DTF cannot rebalance its basket nor can it new ${rToken?.symbol}{' '}
+              tokens be created.
+            </Trans>
           </span>
         </div>
       </div>

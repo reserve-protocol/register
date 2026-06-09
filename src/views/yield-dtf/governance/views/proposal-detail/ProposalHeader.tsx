@@ -1,3 +1,4 @@
+import { useLingui } from '@lingui/react/macro'
 import Address from '@/components/utils/explorer-address'
 import { Button } from '@/components/ui/button'
 import CopyValue from '@/components/ui/copy-value'
@@ -56,10 +57,11 @@ const StatItem = ({
 )
 
 const ProposalHeader = () => {
+  const { t } = useLingui()
   const rToken = useRToken()
   const proposal = useAtomValue(proposalDetailAtom)
 
-  let title = 'Loading...'
+  let title = t`Loading...`
   let rfcLink = ''
 
   if (proposal?.description) {
@@ -95,14 +97,14 @@ const ProposalHeader = () => {
         </div>
         <div className="flex flex-col gap-8">
           <div className="flex flex-col flex-wrap items-start gap-2 sm:flex-row sm:items-center sm:gap-8">
-            <StatItem label="Proposed on" icon={<FilesIcon />}>
+            <StatItem label={t`Proposed on`} icon={<FilesIcon />}>
               <span>
                 {proposal?.creationTime
                   ? dayjs.unix(+proposal.creationTime).format('MMM D, YYYY')
-                  : 'Loading...'}
+                  : t`Loading...`}
               </span>
             </StatItem>
-            <StatItem label="Proposed by" icon={<WalletOutlineIcon />}>
+            <StatItem label={t`Proposed by`} icon={<WalletOutlineIcon />}>
               <div>
                 {proposal?.proposer && rToken?.chainId && (
                   <Address
@@ -113,10 +115,10 @@ const ProposalHeader = () => {
                 )}
               </div>
             </StatItem>
-            <StatItem label="ID" icon={<FingerprintIcon />}>
+            <StatItem label={t`ID`} icon={<FingerprintIcon />}>
               <div className="flex items-center gap-1">
                 <span>
-                  {proposal?.id ? shortenString(proposal.id) : 'Loading...'}
+                  {proposal?.id ? shortenString(proposal.id) : t`Loading...`}
                 </span>
                 {!!proposal?.id && (
                   <CopyValue text={proposal.id} value={proposal.id} />

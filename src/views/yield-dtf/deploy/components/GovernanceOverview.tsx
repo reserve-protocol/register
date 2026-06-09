@@ -1,4 +1,4 @@
-import { Trans, t } from '@lingui/macro'
+import { Trans, useLingui } from '@lingui/react/macro'
 import CopyValue from '@/components/ui/copy-value'
 import GoTo from '@/components/ui/go-to'
 import TransactionButton from '@/components/ui/transaction-button'
@@ -60,6 +60,7 @@ const Mining = ({ hash }: { hash: Hex }) => {
 }
 
 const GovernanceStatus = () => {
+  const { t } = useLingui()
   const navigate = useNavigate()
   const rToken = useRToken()
   const chainId = useAtomValue(chainIdAtom)

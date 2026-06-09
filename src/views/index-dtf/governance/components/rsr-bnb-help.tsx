@@ -4,6 +4,7 @@ import { Link } from '@/components/ui/link'
 import { cn } from '@/lib/utils'
 import { chainIdAtom } from '@/state/atoms'
 import { ChainId } from '@/utils/chains'
+import { Trans } from '@lingui/react/macro'
 import { useAtomValue } from 'jotai'
 import { ArrowUpRightIcon } from 'lucide-react'
 
@@ -38,10 +39,14 @@ const RSRBNBHelp = ({ className }: { className?: string }) => {
       />
       <div className="flex items-center gap-2 text-sm w-full">
         <div className="flex flex-col gap-1 mr-auto">
-          <h2 className="font-semibold text-sm">Need to bridge your RSR?</h2>
+          <h2 className="font-semibold text-sm">
+            <Trans>Need to bridge your RSR?</Trans>
+          </h2>
           <p className="text-xs text-legend">
-            CMC20 is a BNB DTF and you need to bridge your RSR using Wormhole to
-            participate in governance.
+            <Trans>
+              CMC20 is a BNB DTF and you need to bridge your RSR using Wormhole
+              to participate in governance.
+            </Trans>
           </p>
         </div>
         <Button variant="muted" size="icon-rounded">

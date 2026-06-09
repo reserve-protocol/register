@@ -7,6 +7,7 @@ import { LayoutGrid } from "lucide-react"
 import { ChainId } from "@/utils/chains"
 import ChainLogo from "@/components/icons/ChainLogo"
 import { cn } from "@/lib/utils"
+import { useLingui } from "@lingui/react/macro"
 
 const SingleToggleFilter = ({
   options,
@@ -50,6 +51,7 @@ const SingleToggleFilter = ({
 
 
 const ChainFilter = () => {
+  const { t } = useLingui()
   const currentFilter = useAtomValue(chainFilterAtom)
   const [selected, setSelected] = useState(
     currentFilter.length > 1 ? '0' : currentFilter[0] === 1 ? '1' : '2'
@@ -59,7 +61,7 @@ const ChainFilter = () => {
   const chains = [
     {
       icon: <LayoutGrid />,
-      text: 'All chains',
+      text: t`All chains`,
       filter: [ChainId.Base, ChainId.Mainnet, ChainId.BSC],
     },
     {
@@ -94,11 +96,12 @@ const ChainFilter = () => {
 }
 
 export const SearchFilter = () => {
+  const { t } = useLingui()
   const [search, setSearch] = useAtom(searchFilterAtom)
 
   return (
     <SearchInput
-      placeholder="Search by name, ticker, tag or collateral"
+      placeholder={t`Search by name, ticker, tag or collateral`}
       value={search}
       onChange={(e) => setSearch(e.target.value)}
       className="flex-grow [&_input]:border-none [&_input]:rounded-none [&_input]:rounded-tl-3xl [&_input]:rounded-tr-3xl sm:[&_input]:rounded-3xl"
