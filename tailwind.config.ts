@@ -139,6 +139,10 @@ const config = {
           from: { right: '0' },
           to: { right: '-395px' },
         },
+        'proposal-bar-sweep': {
+          '0%': { transform: 'translateX(-100%)' },
+          '100%': { transform: 'translateX(100%)' },
+        },
       },
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
@@ -150,6 +154,7 @@ const config = {
         'spin-slow': 'spin-slow 4s linear infinite',
         'slide-left': 'slide-left 0.5s forwards',
         'slide-out-right': 'slide-out-right 0.5s forwards',
+        'proposal-bar-sweep': 'proposal-bar-sweep 5s ease-in-out infinite',
       },
     },
   },

@@ -10,6 +10,7 @@ type ExplorerAddressProps = {
   type?: ExplorerDataType
   className?: string
   ens?: boolean
+  showIcon?: boolean
 }
 
 const ExplorerAddress = ({
@@ -18,6 +19,7 @@ const ExplorerAddress = ({
   type = ExplorerDataType.ADDRESS,
   className,
   ens,
+  showIcon = true,
 }: ExplorerAddressProps) => {
   const ensName = useEnsName(ens ? address : undefined)
   const displayName = ens ? ensName : shortenAddress(address)
@@ -36,9 +38,11 @@ const ExplorerAddress = ({
       )}
     >
       {displayName}
-      <div className="flex items-center">
-        <ArrowUpRight size={14} />
-      </div>
+      {showIcon && (
+        <div className="flex items-center">
+          <ArrowUpRight size={14} />
+        </div>
+      )}
     </div>
   )
 }

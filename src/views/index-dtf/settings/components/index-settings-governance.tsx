@@ -10,7 +10,6 @@ import {
   Pause,
   ShieldCheck,
 } from 'lucide-react'
-import { formatEther } from 'viem'
 import { IconWrapper, InfoCard, InfoCardItem } from './settings-info-card'
 import { cn } from '@/lib/utils'
 import Help from '@/components/ui/help'
@@ -68,13 +67,7 @@ export const InnerGovernanceInfo = ({
       <InfoCardItem
         icon={<IconWrapper Component={FileLock2} />}
         label={t`Proposal Threshold`}
-        value={
-          data
-            ? formatPercentage(
-                Number(formatEther(BigInt(data.proposalThreshold)))
-              )
-            : undefined
-      }
+        value={data ? formatPercentage(data.proposalThreshold) : undefined}
       />
       <InfoCardItem
         icon={<IconWrapper Component={ShieldCheck} />}
@@ -102,7 +95,8 @@ const GovernanceInfo = ({
   if (
     (kind === 'trading' && !indexDTF.tradingGovernance) ||
     (kind === 'owner' && !indexDTF.ownerGovernance) ||
-    (kind === 'dao' && !indexDTF.stToken?.governance)
+    (kind === 'dao' && !indexDTF.stToken?.governance) ||
+    (kind === 'trading' && indexDTF.tradingGovernance?.id === indexDTF.ownerGovernance?.id)
   )
     return null
 
@@ -119,7 +113,7 @@ const GovernanceInfo = ({
         kind === 'trading'
           ? t`Basket Governance`
           : kind === 'owner'
-            ? t`Non-Basket Governance`
+            ? t`DTF Governance`
             : t`DAO Governance`
       }
       id={

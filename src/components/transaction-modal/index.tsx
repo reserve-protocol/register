@@ -130,7 +130,7 @@ const TransactionModal = ({
     return <TransactionConfirmedModal hash={hash} onClose={onClose} />
   }
 
-  const isPreparing = hasAllowance && call && !gas
+  const isPreparing = hasAllowance && call && !isReady
   !isReady && !validationError && !isIdle && !disabled
 
   return (

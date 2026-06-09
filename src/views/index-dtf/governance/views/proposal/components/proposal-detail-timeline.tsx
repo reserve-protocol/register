@@ -4,6 +4,7 @@ import {
   CheckCircle,
   Circle,
   Clock,
+  ArrowUpRight,
   MoreHorizontal,
   PlayCircle,
   StopCircle,
@@ -12,11 +13,13 @@ import {
   XSquare,
 } from 'lucide-react'
 import { ReactNode } from 'react'
+import { Link } from 'react-router-dom'
 import { blockTimestampAtom, chainIdAtom } from 'state/atoms'
 import { colors } from 'theme'
 import { Progress } from '@/components/ui/progress'
 import { formatDate, getCurrentTime, parseDuration } from 'utils'
 import { PROPOSAL_STATES } from 'utils/constants'
+import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
 import { proposalDetailAtom } from '../atom'
 
 type TimelineItemProps = {
@@ -39,7 +42,7 @@ const TimelineItem = ({
   progress = 0,
 }: TimelineItemProps) => {
   return (
-    <div>
+    <div className="relative">
       <div className="flex items-center gap-3 px-4 py-2">
         <div
           className={`flex items-center justify-center w-7 h-7 rounded-lg bg-muted z-0 ${enabled ? 'opacity-100' : 'opacity-80'}`}
@@ -53,12 +56,33 @@ const TimelineItem = ({
         </div>
       </div>
       {showProgress && (
-        <Progress
-          value={progress}
-          className="absolute w-full h-0.5 z-0"
-        />
+        <Progress value={progress} className="absolute inset-x-0 bottom-0 h-0.5 z-0" />
       )}
     </div>
+  )
+}
+
+const TimelineTitleLink = ({
+  hash,
+  title,
+}: {
+  hash?: string
+  title: string
+}) => {
+  const chainId = useAtomValue(chainIdAtom)
+
+  if (!hash) return title
+
+  return (
+    <Link
+      to={getExplorerLink(hash, chainId, ExplorerDataType.TRANSACTION)}
+      target="_blank"
+      rel="noreferrer"
+      className="inline-flex items-center gap-1 hover:text-primary"
+    >
+      <span>{title}</span>
+      <ArrowUpRight size={14} strokeWidth={1.5} />
+    </Link>
   )
 }
 
@@ -69,7 +93,9 @@ export const TimelineItemCreated = () => {
   return (
     <TimelineItem
       icon={<Circle size={18} />}
-      title="Proposal created"
+      title={
+        <TimelineTitleLink title="Proposal created" hash={proposal?.txnHash} />
+      }
       surtitle={formatDate(+(proposal?.creationTime || 0) * 1000)}
       subtitle={
         <div className="flex items-center gap-1">
@@ -78,6 +104,7 @@ export const TimelineItemCreated = () => {
             address={proposal?.proposer?.address || ''}
             chain={chainId}
             ens
+            showIcon={false}
           />
         </div>
       }
@@ -163,25 +190,25 @@ const TITLE_BY_STATE = {
   [PROPOSAL_STATES.SUCCEEDED]: 'Proposal succeeded',
   [PROPOSAL_STATES.QUEUED]: 'Proposal succeeded',
   [PROPOSAL_STATES.EXECUTED]: 'Proposal succeeded',
-  [PROPOSAL_STATES.CANCELED]: 'Proposal succeeded',
+  [PROPOSAL_STATES.CANCELED]: 'Proposal canceled',
 }
 const ICON_BY_STATE = {
   [PROPOSAL_STATES.DEFEATED]: <XCircle color="red" size={18} />,
   [PROPOSAL_STATES.QUORUM_NOT_REACHED]: <XSquare color="orange" size={18} />,
   [PROPOSAL_STATES.EXPIRED]: <XOctagon color="gray" size={18} />,
   [PROPOSAL_STATES.SUCCEEDED]: <CheckCircle color={colors.success} size={18} />,
-  [PROPOSAL_STATES.QUEUED]: <CheckCircle color={colors.success} size={18} />,
-  [PROPOSAL_STATES.EXECUTED]: <CheckCircle color={colors.success} size={18} />,
-  [PROPOSAL_STATES.CANCELED]: <CheckCircle color={colors.success} size={18} />,
+  [PROPOSAL_STATES.QUEUED]: <CheckCircle size={18} />,
+  [PROPOSAL_STATES.EXECUTED]: <CheckCircle size={18} />,
+  [PROPOSAL_STATES.CANCELED]: <XCircle color="red" size={18} />,
 }
 const COLOR_BY_STATE = {
   [PROPOSAL_STATES.DEFEATED]: 'red',
   [PROPOSAL_STATES.QUORUM_NOT_REACHED]: 'orange',
   [PROPOSAL_STATES.EXPIRED]: 'gray',
   [PROPOSAL_STATES.SUCCEEDED]: 'success',
-  [PROPOSAL_STATES.QUEUED]: 'success',
-  [PROPOSAL_STATES.EXECUTED]: 'success',
-  [PROPOSAL_STATES.CANCELED]: 'success',
+  [PROPOSAL_STATES.QUEUED]: 'inherit',
+  [PROPOSAL_STATES.EXECUTED]: 'inherit',
+  [PROPOSAL_STATES.CANCELED]: 'red',
 }
 export const TimelineItemVotingResult = () => {
   const proposal = useAtomValue(proposalDetailAtom)
@@ -193,7 +220,9 @@ export const TimelineItemVotingResult = () => {
     <TimelineItem
       icon={ICON_BY_STATE[proposal?.votingState.state ?? '']}
       title={
-        <span style={{ color: COLOR_BY_STATE[proposal?.votingState.state ?? ''] }}>
+        <span
+          style={{ color: COLOR_BY_STATE[proposal?.votingState.state ?? ''] }}
+        >
           {TITLE_BY_STATE[proposal?.votingState.state ?? '']}
         </span>
       }
@@ -222,7 +251,7 @@ export const TimelineItemQueued = () => {
   return (
     <TimelineItem
       icon={<MoreHorizontal size={18} />}
-      title="Queued"
+      title={<TimelineTitleLink title="Queued" hash={proposal?.queueTxnHash} />}
       surtitle={formatDate(queueTime * 1000)}
       subtitle={parseDuration(duration)}
       showProgress={showProgress}
@@ -241,25 +270,40 @@ const TITLE_BY_STATE_END = {
   [PROPOSAL_STATES.EXECUTED]: 'Executed',
   [PROPOSAL_STATES.CANCELED]: 'Canceled',
 }
+
+const ICON_BY_STATE_END = {
+  [PROPOSAL_STATES.QUEUED]: <Circle size={18} />,
+  [PROPOSAL_STATES.EXECUTED]: <CheckCircle color={colors.success} size={18} />,
+  [PROPOSAL_STATES.CANCELED]: <XCircle color="red" size={18} />,
+}
+
 export const TimelineItemEnd = () => {
   const proposal = useAtomValue(proposalDetailAtom)
+  const state = proposal?.votingState.state ?? ''
 
-  const show = VALID_STATES_END.includes(proposal?.votingState.state ?? '')
-  const enabled = proposal?.votingState.state !== PROPOSAL_STATES.QUEUED
+  const show = VALID_STATES_END.includes(state)
+  const enabled = state !== PROPOSAL_STATES.QUEUED
   const executionTime = +(proposal?.executionTime || 0)
   const executionETA = +(proposal?.executionETA || 0)
   const cancellationTime = +(proposal?.cancellationTime || 0)
+  const transactionHash =
+    state === PROPOSAL_STATES.EXECUTED ? proposal?.executionTxnHash : undefined
 
   if (!show) return null
 
   return (
     <TimelineItem
-      icon={<Circle size={18} />}
-      title={TITLE_BY_STATE_END[proposal?.votingState.state ?? '']}
+      icon={ICON_BY_STATE_END[state]}
+      title={
+        <TimelineTitleLink
+          title={TITLE_BY_STATE_END[state]}
+          hash={transactionHash}
+        />
+      }
       surtitle={formatDate(
-        (proposal?.votingState.state === PROPOSAL_STATES.QUEUED
+        (state === PROPOSAL_STATES.QUEUED
           ? executionETA
-          : proposal?.votingState.state === PROPOSAL_STATES.EXECUTED
+          : state === PROPOSAL_STATES.EXECUTED
             ? executionTime
             : cancellationTime) * 1000
       )}

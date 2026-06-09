@@ -91,7 +91,7 @@ const InfoCardItem = ({
         {!value ? (
           <Skeleton className="h-4 w-24" />
         ) : (
-          <span className={cn(bold && 'font-bold')}>{value}</span>
+          <span className={cn(bold && 'font-semibold')}>{value}</span>
         )}
       </div>
       {!!address && (

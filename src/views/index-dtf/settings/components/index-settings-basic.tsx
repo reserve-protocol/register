@@ -1,34 +1,28 @@
-import dtfIndexAbiV5 from '@/abis/dtf-index-abi'
-import { chainIdAtom } from '@/state/atoms'
+import EnsName from '@/components/utils/ens-name'
 import {
   indexDTFAtom,
   indexDTFRebalanceControlAtom,
   indexDTFVersionAtom,
 } from '@/state/dtf/atoms'
-import EnsName from '@/components/utils/ens-name'
 import { shortenAddress } from '@/utils'
 import { t } from '@lingui/macro'
 import { useAtomValue } from 'jotai'
 import { Braces, DollarSign, Hash, Signature, ToggleRight } from 'lucide-react'
-import { useReadContract } from 'wagmi'
 import { IconWrapper, InfoCard, InfoCardItem } from './settings-info-card'
 
 const BasicInfo = () => {
   const indexDTF = useAtomValue(indexDTFAtom)
   const version = useAtomValue(indexDTFVersionAtom)
   const rebalanceControl = useAtomValue(indexDTFRebalanceControlAtom)
-  const chainId = useAtomValue(chainIdAtom)
   const isV5 = version.startsWith('5')
 
-  const { data: bidsEnabled } = useReadContract({
-    abi: dtfIndexAbiV5,
-    address: indexDTF?.id,
-    functionName: 'bidsEnabled',
-    chainId,
-    query: {
-      enabled: !!indexDTF?.id && isV5,
-    },
-  })
+  let mandate = indexDTF?.mandate
+
+  if (mandate) {
+    if (mandate === '') mandate = 'Unknown'
+
+    if (mandate.length > 500) mandate = mandate.substring(0, 500) + '...'
+  }
 
   return (
     <InfoCard title="Basics" id="basics">
@@ -53,7 +47,7 @@ const BasicInfo = () => {
         label={t`Mandate`}
         icon={<IconWrapper Component={Signature} />}
         bold={false}
-        value={indexDTF?.mandate === '' ? 'Unknown' : indexDTF?.mandate}
+        value={mandate}
       />
       <InfoCardItem
         label={t`Deployer`}
@@ -75,11 +69,11 @@ const BasicInfo = () => {
           value={rebalanceControl.weightControl ? 'Enabled' : 'Disabled'}
         />
       )}
-      {isV5 && bidsEnabled !== undefined && (
+      {isV5 && (
         <InfoCardItem
           label={t`Permissionless Bids`}
           icon={<IconWrapper Component={ToggleRight} />}
-          value={bidsEnabled ? 'Enabled' : 'Disabled'}
+          value={indexDTF?.rebalance.bidsEnabled ? 'Enabled' : 'Disabled'}
         />
       )}
     </InfoCard>

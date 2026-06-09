@@ -2,7 +2,10 @@ import DecimalDisplay from '@/components/decimal-display'
 import ChainLogo from '@/components/icons/ChainLogo'
 import TokenLogo from '@/components/token-logo'
 import DataTable, { SorteableButton } from '@/components/ui/data-table'
-import VoteLockDrawer, { type StTokenExtended } from '@/components/vote-lock'
+import {
+  ExternalVoteLockDrawer,
+  type StTokenExtended,
+} from '@/components/vote-lock'
 import { formatCurrency, formatPercentage } from '@/utils'
 import PositionBalance from '@/views/earn/components/position-balance'
 import { createColumnHelper } from '@tanstack/react-table'
@@ -137,19 +140,25 @@ const VoteLockPositionsSkeleton = () => {
   return (
     <>
       {skeletonRows.map((rowIndex) => (
-        <TableRow key={`skeleton-${rowIndex}`} className="border-none hover:bg-transparent">
+        <TableRow
+          key={`skeleton-${rowIndex}`}
+          className="border-none hover:bg-transparent"
+        >
           {/* Gov. Token - Always visible */}
           <TableCell>
             <div className="flex items-center gap-3">
               <div className="relative flex-shrink-0">
-                <Skeleton className="h-10 w-10 rounded-full" /> {/* Token logo */}
-                <Skeleton className="absolute -bottom-1 -right-1 h-4 w-4 rounded-full" /> {/* Chain logo */}
+                <Skeleton className="h-10 w-10 rounded-full" />{' '}
+                {/* Token logo */}
+                <Skeleton className="absolute -bottom-1 -right-1 h-4 w-4 rounded-full" />{' '}
+                {/* Chain logo */}
               </div>
               <div className="flex flex-col gap-1">
                 <Skeleton className="h-4 w-16" /> {/* Symbol */}
                 <div className="flex items-center gap-1">
                   <Skeleton className="hidden sm:block h-3 w-3" /> {/* Arrow */}
-                  <Skeleton className="h-3 w-20 sm:w-24" /> {/* stToken symbol */}
+                  <Skeleton className="h-3 w-20 sm:w-24" />{' '}
+                  {/* stToken symbol */}
                 </div>
               </div>
             </div>
@@ -182,7 +191,8 @@ const VoteLockPositionsSkeleton = () => {
           <TableCell className="text-right">
             <div className="flex items-center justify-end gap-1">
               <Skeleton className="h-4 w-12" /> {/* Percentage */}
-              <Skeleton className="hidden md:inline h-4 w-8" /> {/* APR label */}
+              <Skeleton className="hidden md:inline h-4 w-8" />{' '}
+              {/* APR label */}
               <Skeleton className="h-4 w-4" /> {/* Arrow */}
             </div>
           </TableCell>
@@ -201,16 +211,17 @@ const VoteLockPositions = () => {
   const handleRowClick = (position: VoteLockPosition) => {
     // Convert VoteLockPosition to StTokenExtended format
     const stToken: StTokenExtended = {
-      id: position.token.address, // Using the vote-locked token address as the staking vault address
-      chainId: position.chainId,
+      id: position.token.address as Address, // Using the vote-locked token address as the staking vault address
+      chainId: position.chainId as StTokenExtended['chainId'],
+      dtfAddress: position.dtfs[0]?.address as Address | undefined,
       token: {
-        address: position.token.address,
+        address: position.token.address as Address,
         name: position.token.name,
         symbol: position.token.symbol,
         decimals: position.token.decimals,
       },
       underlying: {
-        address: position.underlying.token.address,
+        address: position.underlying.token.address as Address,
         name: position.underlying.token.name,
         symbol: position.underlying.token.symbol,
         decimals: position.underlying.token.decimals,
@@ -235,9 +246,9 @@ const VoteLockPositions = () => {
         </div>
       </div>
       {currentVoteLock && (
-        <VoteLockDrawer
+        <ExternalVoteLockDrawer
           stToken={currentVoteLock}
-          unlockDelay={604800} // 7 days in seconds @TODO: add data to daos endpoint
+          dtfAddress={currentVoteLock.dtfAddress}
           open={!!currentVoteLock}
           onOpenChange={(open) => !open && setCurrentVoteLock(null)}
           onClose={() => setCurrentVoteLock(null)}

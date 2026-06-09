@@ -9,6 +9,7 @@ import { useFormContext, useFormState, useWatch } from 'react-hook-form'
 import { useSearchParams } from 'react-router-dom'
 import { chainIdAtom } from 'state/atoms'
 import { FACADE_WRITE_ADDRESS } from 'utils/addresses'
+import { shouldBypassFormValidation } from '@/utils/form-validation'
 import { Address, zeroAddress } from 'viem'
 
 export const useGovernanceTx = () => {
@@ -16,11 +17,8 @@ export const useGovernanceTx = () => {
   const [searchParams] = useSearchParams()
   const formFields = useDebounce(useWatch(), 500)
   const { isValid, isValidating } = useFormState()
-  const debugBypass = searchParams.get('debug') === 'true'
   const validForm =
-    !!import.meta.env.VITE_DISABLE_VALIDATION ||
-    debugBypass ||
-    (isValid && !isValidating)
+    shouldBypassFormValidation(searchParams) || (isValid && !isValidating)
 
   const roles = useAtomValue(setupRolesAtom)
   const rToken = useRToken()

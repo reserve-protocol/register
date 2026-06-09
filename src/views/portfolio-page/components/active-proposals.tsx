@@ -68,22 +68,30 @@ const columns: ColumnDef<ActiveProposalRow, any>[] = [
         )
       }
 
-      const forV = +row.original.forWeightedVotes || 0
-      const abstainV = +row.original.abstainWeightedVotes || 0
-      const quorumMet = forV + abstainV >= (+row.original.quorumVotes || 0)
+      const isOptimistic = row.original.isOptimistic === true
+      const thresholdReached = isOptimistic
+        ? !!row.original.voting.vetoReached
+        : (row.original.voting.participationQuorumReached ??
+          row.original.voting.quorum)
       return (
         <div>
           <p className="font-bold text-sm text-primary">{title}</p>
           <div className="flex flex-col sm:flex-row sm:items-center gap-0.5 sm:gap-2 mt-0.5 text-xs text-legend">
             <span>
-              Quorum?{' '}
+              {isOptimistic ? 'Veto?' : 'Quorum?'}{' '}
               <span
                 className={cn(
                   'font-medium',
-                  quorumMet ? 'text-success' : 'text-destructive'
+                  isOptimistic
+                    ? thresholdReached
+                      ? 'text-destructive'
+                      : 'text-success'
+                    : thresholdReached
+                      ? 'text-success'
+                      : 'text-destructive'
                 )}
               >
-                {quorumMet ? 'Yes' : 'No'}
+                {thresholdReached ? 'Yes' : 'No'}
               </span>
             </span>
             {(voting.for > 0 || voting.against > 0 || voting.abstain > 0) && (

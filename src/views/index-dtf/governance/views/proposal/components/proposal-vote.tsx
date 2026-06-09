@@ -1,15 +1,13 @@
 import DelegateIcon from '@/components/icons/DelegateIcon'
+import { CurrentDtfVoteLock } from '@/components/vote-lock'
 import { Button } from '@/components/ui/button'
-import { cn } from '@/lib/utils'
 import { chainIdAtom } from '@/state/atoms'
 import { formatCurrency } from '@/utils'
 import { PROPOSAL_STATES } from '@/utils/constants'
 import { ExplorerDataType, getExplorerLink } from '@/utils/getExplorerLink'
 import { useAtomValue } from 'jotai'
-import { ArrowUpRight, AsteriskIcon } from 'lucide-react'
-import { useState } from 'react'
+import { ArrowUpRight, AsteriskIcon, HandFist, Rocket } from 'lucide-react'
 import { Link } from 'react-router-dom'
-import DelegateModal from '../../../components/delegate-modal'
 import {
   accountVotesAtom,
   proposalDetailAtom,
@@ -21,20 +19,7 @@ import ProposalDeadlineAlert from './proposal-deadline-alert'
 import ProposalExecute from './proposal-execute-button'
 import ProposalQueue from './proposal-queue-button'
 import ProposalVoteButton from './proposal-vote-button'
-
-const FINAL_STATES = [
-  PROPOSAL_STATES.EXECUTED,
-  PROPOSAL_STATES.DEFEATED,
-  PROPOSAL_STATES.EXPIRED,
-  PROPOSAL_STATES.CANCELED,
-  PROPOSAL_STATES.QUORUM_NOT_REACHED,
-  PROPOSAL_STATES.SUCCEEDED,
-]
-
-const STATES_WITH_ACTIONS = [
-  PROPOSAL_STATES.SUCCEEDED,
-  PROPOSAL_STATES.EXECUTED,
-]
+import { Trans } from '@lingui/react/macro'
 
 const ViewExecuteTxButton = () => {
   const proposal = useAtomValue(proposalDetailAtom)
@@ -52,8 +37,8 @@ const ViewExecuteTxButton = () => {
       target="_blank"
     >
       <Button
-        variant="outline-primary"
-        className="flex items-center gap-2 justify-center w-full"
+        variant="outline"
+        className="flex items-center gap-2  justify-center w-full"
       >
         <span>View execute tx</span>
         <ArrowUpRight size={16} strokeWidth={1.5} />
@@ -91,69 +76,100 @@ const ProposalActionButtons = () => {
 
 const ProposalVoteOverview = () => {
   const state = useAtomValue(proposalStateAtom) ?? ''
-  const [isDelegateVisible, setDelegateVisible] = useState(false)
   const { votePower = '0.0' } = useAtomValue(accountVotesAtom)
-  const { hasUndelegatedBalance, hasNoDelegates } = useDelegateState()
+  const { hasUndelegatedBalance } = useDelegateState()
 
-  if (FINAL_STATES.includes(state)) return null
+  if (state !== PROPOSAL_STATES.PENDING && state !== PROPOSAL_STATES.ACTIVE) return null
 
   return (
     <>
-      <div className="flex items-center justify-between gap-2 p-3 flex-wrap text-sm border-b">
+      <div className="flex items-center justify-between gap-2 p-3 flex-wrap text-sm border-b xl:min-w-80">
         <div className="flex items-center gap-1">
-          <AsteriskIcon />
+          <AsteriskIcon size={16} />
           <span>Your voting power:</span>
           <span className="font-bold">
             {formatCurrency(votePower ? +votePower : 0)}
           </span>
         </div>
-        <div
-          className={cn(
-            'flex items-center gap-1 cursor-pointer',
-            hasUndelegatedBalance ? 'text-[#2150A9]' : 'text-[#D9D9D9]',
-            !hasUndelegatedBalance && 'cursor-default'
-          )}
-          onClick={() => hasUndelegatedBalance && setDelegateVisible(true)}
-        >
-          <DelegateIcon />
-          <span className="font-bold">Delegate</span>
-        </div>
+        {state === PROPOSAL_STATES.PENDING && hasUndelegatedBalance && (
+          <CurrentDtfVoteLock initialTab="delegate">
+            <button
+              type="button"
+              className="flex items-center gap-1 text-[#2150A9]"
+            >
+              <DelegateIcon />
+              <span className="font-semibold hidden xl:block">Delegate</span>
+            </button>
+          </CurrentDtfVoteLock>
+        )}
+        {state === PROPOSAL_STATES.PENDING && !hasUndelegatedBalance && (
+          <div className="flex items-center gap-1 text-[#D9D9D9]">
+            <DelegateIcon />
+            <span className="font-semibold hidden xl:block">Delegate</span>
+          </div>
+        )}
       </div>
-      {isDelegateVisible && (
-        <DelegateModal
-          delegated={!hasNoDelegates}
-          onClose={() => setDelegateVisible(false)}
-        />
-      )}
     </>
   )
 }
 
-const ProposalSummary = () => {
-  const state = useAtomValue(proposalStateAtom) ?? ''
+const ProposalSummary = () => (
+  <div
+    className="flex flex-col h-full rounded-xl bg-[#f2f2f2] dark:bg-input"
+  >
+    <ProposalVoteOverview />
+    <div className="flex-grow min-h-36 p-3">
+      <ProposalDeadlineAlert />
+    </div>
+  </div>
+)
+
+const ChallengedProposalHelp = () => {
+  const proposal = useAtomValue(proposalDetailAtom)
+
+  if (!proposal || !proposal.wasChallenged) return null
 
   return (
-    <div
-      className={cn(
-        'flex flex-col h-full rounded-lg ',
-        STATES_WITH_ACTIONS.includes(state) && 'border',
-        !FINAL_STATES.includes(state) && 'bg-[#f2f2f2] dark:bg-input'
-      )}
-    >
-      <ProposalVoteOverview />
-      <div className="flex-grow p-3">
-        <ProposalDeadlineAlert />
+    <div className='flex items-center rounded-xl bg-warning/10 p-2 gap-2'>
+      <div className='flex items-center justify-center p-2 text-warning bg-warning/10 rounded-full'>
+        <HandFist size={16} />
       </div>
+      <span className='text-xs'>
+        <h4 className='font-semibold text-warning'>Contested</h4>
+        <Trans>
+          This was originally a fast proposal that did not pass governance. Please review the details of this contested proposal closely.
+        </Trans>
+      </span>
+    </div>
+  )
+}
+
+const FastProposalHelp = () => {
+  const proposal = useAtomValue(proposalDetailAtom)
+
+  if (!proposal || !proposal.isOptimistic) return null
+
+  return (
+    <div className='flex items-center rounded-xl bg-primary/10 p-2 gap-2'>
+      <div className='flex items-center justify-center p-2 text-primary bg-primary/10 rounded-full'>
+        <Rocket size={16} />
+      </div>
+      <span className='text-xs'>
+        <h4 className='font-semibold text-primary'>Fast proposal</h4>
+        <Trans>
+          This proposal will automatically pass if it is not challenged by governance. If it is challenged, it will be resubmitted as a standard proposal.
+        </Trans>
+      </span>
     </div>
   )
 }
 
 const ProposalVote = () => (
   <>
-    <div className="py-1 md:py-2 flex flex-col gap-2 m-2 border rounded-3xl p-2">
-      <div className="flex flex-col text-center justify-between p-2 flex-grow gap-2 border rounded-3xl">
-        <ProposalSummary />
-      </div>
+    <div className="flex flex-col gap-2 m-1 lg:m-2 p-2 border border-secondary rounded-2xl ">
+      <ProposalSummary />
+      <FastProposalHelp />
+      <ChallengedProposalHelp />
       <ProposalActionButtons />
     </div>
   </>

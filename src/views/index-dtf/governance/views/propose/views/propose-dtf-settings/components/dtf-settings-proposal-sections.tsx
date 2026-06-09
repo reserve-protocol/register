@@ -18,18 +18,28 @@ import {
   Crown,
   Scale,
   Landmark,
+  Wand2,
 } from 'lucide-react'
-import { ReactNode, useEffect } from 'react'
+import { ReactNode } from 'react'
 import { Link } from 'react-router-dom'
 import { selectedSectionAtom } from '../atoms'
+import { indexDTFAtom } from '@/state/dtf/atoms'
 import ProposeAuctionSettings from './sections/propose-auction-settings'
 import ProposeDTFRevenue from './sections/propose-dtf-revenue'
 import ProposeDTFRoles from './sections/propose-dtf-roles'
 import ProposeMetadata from './sections/propose-metadata'
 import RemoveDustTokens from './sections/remove-dust-tokens'
 import ProposeGovernanceSettings from './sections/propose-governance-settings'
+import ProposeOptimisticParameters from './sections/propose-optimistic-parameters'
 
-type DTF_SETTINGS_ID = 'mandate' | 'fees' | 'auction' | 'tokens' | 'roles' | 'governance'
+type DTF_SETTINGS_ID =
+  | 'mandate'
+  | 'fees'
+  | 'auction'
+  | 'tokens'
+  | 'roles'
+  | 'governance'
+  | 'optimistic'
 
 // Scroll utility function adapted from deploy
 const scrollToSection = (sectionId: string) => {
@@ -98,6 +108,14 @@ const DTF_SETTINGS: DTF_SETTING[] = [
   },
 ]
 
+const OPTIMISTIC_SETTINGS: DTF_SETTING = {
+  id: 'optimistic',
+  icon: <Wand2 size={14} strokeWidth={1.5} />,
+  title: 'Optimistic Governance',
+  titleSecondary: 'Optimistic Parameters',
+  content: <ProposeOptimisticParameters />,
+}
+
 const ProposeSectionTrigger = ({
   id,
   icon,
@@ -161,6 +179,10 @@ const Header = () => (
 
 const DTFSettingsProposalSections = () => {
   const [section, setSection] = useAtom(selectedSectionAtom)
+  const indexDTF = useAtomValue(indexDTFAtom)
+  const settings = indexDTF?.ownerGovernance?.isOptimistic
+    ? [...DTF_SETTINGS, OPTIMISTIC_SETTINGS]
+    : DTF_SETTINGS
 
   return (
     <div className="w-full bg-secondary rounded-4xl h-fit">
@@ -177,7 +199,7 @@ const DTFSettingsProposalSections = () => {
           }
         }}
       >
-        {DTF_SETTINGS.map(({ id, icon, title, titleSecondary, content }) => (
+        {settings.map(({ id, icon, title, titleSecondary, content }) => (
           <AccordionItem
             key={id}
             value={id}

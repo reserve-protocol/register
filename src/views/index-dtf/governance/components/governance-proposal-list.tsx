@@ -2,23 +2,18 @@ import { Button } from '@/components/ui/button'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { Skeleton } from '@/components/ui/skeleton'
 import { isInactiveDTF } from '@/hooks/use-dtf-status'
-import {
-  getProposalState,
-  PartialProposal,
-  VotingState,
-} from '@/lib/governance'
-import { cn } from '@/lib/utils'
 import { indexDTFStatusAtom } from '@/state/dtf/atoms'
-import { formatPercentage, getProposalTitle, parseDuration } from '@/utils'
-import { formatConstant, PROPOSAL_STATES, ROUTES } from '@/utils/constants'
+import { ROUTES } from '@/utils/constants'
+import { Trans } from '@lingui/react/macro'
 import { useAtomValue } from 'jotai'
-import { Circle, PlusSquare } from 'lucide-react'
-import { useEffect, useState } from 'react'
+import { PlusSquare } from 'lucide-react'
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useTrackIndexDTFClick } from '../../hooks/useTrackIndexDTFPage'
 import { governanceProposalsAtom } from '../atoms'
+import ProposalListItem from './proposal-list-item'
 
-const ProposalButton = () => {
+const CreateProposalButton = () => {
   const { trackClick } = useTrackIndexDTFClick('overview', 'governance')
   const status = useAtomValue(indexDTFStatusAtom)
   const isDeprecated = isInactiveDTF(status)
@@ -31,7 +26,7 @@ const ProposalButton = () => {
       disabled={isDeprecated}
     >
       <PlusSquare size={16} />
-      Create proposal
+      <Trans>Create proposal</Trans>
     </Button>
   )
 
@@ -50,147 +45,42 @@ const ProposalButton = () => {
 const Header = () => (
   <div className="py-4 px-5 flex items-center gap-2">
     <h1 className="font-semibold text-xl text-primary dark:text-muted-foreground mr-auto">
-      Recent proposals
+      <Trans>Recent proposals</Trans>
     </h1>
-    <ProposalButton />
+    <CreateProposalButton />
   </div>
 )
-const VoteStateHeader = ({ data }: { data: VotingState }) => {
-  if (
-    (data.state === PROPOSAL_STATES.ACTIVE ||
-      data.state === PROPOSAL_STATES.QUEUED) &&
-    data.deadline &&
-    data.deadline > 0
-  ) {
-    return (
-      <div className="flex items-center text-sm gap-1 mt-0.5">
-        <span className="text-legend">
-          {data.state === PROPOSAL_STATES.ACTIVE
-            ? 'Voting ends in:'
-            : 'Execution available in:'}
-        </span>
-        <span className="font-semibold">
-          {parseDuration(data.deadline, {
-            units: ['d', 'h'],
-            round: true,
-          })}
-        </span>
-      </div>
-    )
-  }
 
-  return null
-}
+// TODO: Replace for a more accurate proposal list skeleton
+const ProposalsSkeleton = () => (
+  <Skeleton className="h-[520px] m-1 rounded-3xl" />
+)
 
-export const ProposalVotingState = ({ data }: { data: VotingState }) => {
-  if (data.state === PROPOSAL_STATES.PENDING && data.deadline) {
-    return (
-      <div className="flex items-center mt-2 text-xs sm:text-sm">
-        <span className="text-legend block mr-1">Voting starts in:</span>
-        <span className="font-semibold">
-          {parseDuration(data.deadline, {
-            units: ['d', 'h', 'm'],
-            round: true,
-          })}
-        </span>
-      </div>
-    )
-  }
+const ProposalsPlaceholder = () => (
+  <div className="flex items-center justify-center h-96">
+    <p className="text-muted-foreground"><Trans>No proposals found</Trans></p>
+  </div>
+)
 
-  return (
-    <>
-      <VoteStateHeader data={data} />
-      <div className="flex items-center mt-2 gap-2 text-xs sm:text-sm">
-        <div>
-          <span className="text-legend">Quorum?:</span>{' '}
-          <span
-            className={cn(
-              'font-semibold',
-              data.quorum ? 'text-success' : 'text-warning'
-            )}
-          >
-            {data.quorum ? 'Yes' : 'No'}
-          </span>
-        </div>
-        <Circle size={4} />
-        <div className="flex items-center gap-1">
-          <span className="text-legend">Votes:</span>
-          <span className="font-semibold text-primary">
-            {formatPercentage(data.for)}
-          </span>
-          /
-          <span className="font-semibold text-destructive">
-            {formatPercentage(data.against)}
-          </span>
-          /<span className="text-legend">{formatPercentage(data.abstain)}</span>
-        </div>
-      </div>
-    </>
-  )
-}
-
-const BADGE_VARIANT = {
-  [PROPOSAL_STATES.DEFEATED]: 'destructive',
-  [PROPOSAL_STATES.QUORUM_NOT_REACHED]: 'destructive',
-  [PROPOSAL_STATES.ACTIVE]: 'primary',
-  [PROPOSAL_STATES.QUEUED]: 'primary',
-  [PROPOSAL_STATES.EXECUTED]: 'success',
-  [PROPOSAL_STATES.SUCCEEDED]: 'primary',
-  [PROPOSAL_STATES.CANCELED]: 'destructive',
-  [PROPOSAL_STATES.PENDING]: 'warning',
-  [PROPOSAL_STATES.EXPIRED]: 'legend',
-}
-
-const ProposalListItem = ({ proposal }: { proposal: PartialProposal }) => {
-  const proposalState = getProposalState(proposal)
-  const [, forceUpdate] = useState({})
-
-  // Re-render component every minute
-  useEffect(() => {
-    if (
-      proposalState.state === PROPOSAL_STATES.ACTIVE ||
-      proposalState.state === PROPOSAL_STATES.PENDING
-    ) {
-      const interval = setInterval(() => {
-        forceUpdate({})
-      }, 60 * 1000)
-
-      return () => clearInterval(interval)
-    }
-  }, [proposalState.state])
-
-  const stateText = formatConstant(proposalState.state)
-
-  return (
-    <Link
-      to={`proposal/${proposal.id}`}
-      className="flex items-center gap-2 p-4 [&:not(:last-child)]:border-b cursor-pointer transition-all hover:bg-border/50"
+const ProposalShowMoreButton = ({ showAll, onClick }: { showAll: boolean, onClick: () => void }) => (
+  <div className="flex justify-center p-4 border-t">
+    <Button
+      variant="outline-primary"
+      onClick={onClick}
+      className="gap-2"
     >
-      <div className="mr-auto">
-        <h2 className="font-semibold text-sm sm:text-base">
-          {getProposalTitle(proposal.description)}
-        </h2>
-        <ProposalVotingState data={proposalState} />
-      </div>
-      <div
-        className={cn(
-          'rounded-full text-xs sm:text-sm font-semibold py-2 border px-3',
-          `text-${BADGE_VARIANT[proposalState.state]}`
-        )}
-      >
-        {stateText.includes('reached') ? 'Quorum' : stateText}
-      </div>
-    </Link>
-  )
-}
+      {showAll ? <Trans>Show less</Trans> : <Trans>Show all</Trans>}
+    </Button>
+  </div>
+)
 
 const ProposalList = () => {
   const [showAll, setShowAll] = useState(false)
   const allProposals = useAtomValue(governanceProposalsAtom)
 
-  if (!allProposals) return <Skeleton className="h-[520px] m-1 rounded-3xl" />
+  if (!allProposals) return <ProposalsSkeleton />
 
-  const sortedProposals = allProposals.sort(
+  const sortedProposals = [...allProposals].sort(
     (a, b) => b.creationTime - a.creationTime
   )
 
@@ -204,24 +94,14 @@ const ProposalList = () => {
     <div className="bg-card rounded-3xl m-1 mt-0">
       <ScrollArea className="overflow-y-auto">
         {sortedProposals.length === 0 && (
-          <div className="flex items-center justify-center h-96">
-            <p className="text-muted-foreground">No proposals found</p>
-          </div>
+          <ProposalsPlaceholder />
         )}
         {displayedProposals.map((proposal) => (
           <ProposalListItem key={proposal.id} proposal={proposal} />
         ))}
       </ScrollArea>
       {hasMoreProposals && (
-        <div className="flex justify-center p-4 border-t">
-          <Button
-            variant="outline-primary"
-            onClick={() => setShowAll(!showAll)}
-            className="gap-2"
-          >
-            {showAll ? 'Show less' : `Show all `}
-          </Button>
-        </div>
+        <ProposalShowMoreButton showAll={showAll} onClick={() => setShowAll(!showAll)} />
       )}
     </div>
   )

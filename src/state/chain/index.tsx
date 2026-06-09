@@ -15,10 +15,13 @@ import {
   safeWallet,
   walletConnectWallet,
 } from '@rainbow-me/rainbowkit/wallets'
+import { DtfSdkProvider } from '@reserve-protocol/react-sdk'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import type { ReactNode } from 'react'
 import { WagmiProvider, createConfig, fallback, http } from 'wagmi'
 import { arbitrum, base, bsc, mainnet } from 'wagmi/chains'
 import { hashFn, structuralSharing } from 'wagmi/query'
+import { dtfSdkChains, registerRpcUrls } from '@/utils/rpc-urls'
 import AtomUpdater from './updaters/AtomUpdater'
 
 const connectors = connectorsForWallets(
@@ -47,42 +50,12 @@ export const wagmiConfig = createConfig({
   chains: [mainnet, base, arbitrum, bsc],
   connectors,
   transports: {
-    [mainnet.id]: import.meta.env.VITE_MAINNET_URL
-      ? http(import.meta.env.VITE_MAINNET_URL)
-      : fallback([
-          http(`https://ethereum-rpc.publicnode.com/`),
-          http(`https://mainnet.gateway.tenderly.co/`),
-          http(`https://mainnet.infura.io/v3/${import.meta.env.VITE_INFURA}`),
-          http(
-            `https://eth-mainnet.alchemyapi.io/v2/${import.meta.env.VITE_ALCHEMY}`
-          ),
-          http(`https://rpc.ankr.com/mainnet/${import.meta.env.VITE_ANKR}`),
-        ]),
-    [base.id]: fallback([
-      http(`https://base.gateway.tenderly.co`),
-      http(`https://base-mainnet.infura.io/v3/${import.meta.env.VITE_INFURA}`),
-      http(
-        `https://base-mainnet.g.alchemy.com/v2/${import.meta.env.VITE_ALCHEMY}`
-      ),
-      http(`https://rpc.ankr.com/base/${import.meta.env.VITE_ANKR}`),
-    ]),
-    [arbitrum.id]: fallback([
-      http(
-        `https://arbitrum-mainnet.infura.io/v3/${import.meta.env.VITE_INFURA}`
-      ),
-      http(`https://rpc.ankr.com/arbitrum/${import.meta.env.VITE_ANKR}`),
-    ]),
-    [bsc.id]: fallback([
-      http(`https://bsc-dataseed2.binance.org`),
-      http(`https://bsc-dataseed3.ninicoin.io`),
-      http(`https://bsc-dataseed4.defibit.io`),
-      http(`https://bsc-rpc.publicnode.com`),
-      http(`https://bsc-mainnet.infura.io/v3/${import.meta.env.VITE_INFURA}`),
-      http(`https://rpc.ankr.com/bsc/${import.meta.env.VITE_ANKR}`),
-      http(
-        `https://bsc-mainnet.g.alchemy.com/v2/${import.meta.env.VITE_ALCHEMY}`
-      ),
-    ]),
+    [mainnet.id]: fallback(registerRpcUrls[mainnet.id].map((url) => http(url))),
+    [base.id]: fallback(registerRpcUrls[base.id].map((url) => http(url))),
+    [arbitrum.id]: registerRpcUrls[arbitrum.id].length
+      ? fallback(registerRpcUrls[arbitrum.id].map((url) => http(url)))
+      : http(),
+    [bsc.id]: fallback(registerRpcUrls[bsc.id].map((url) => http(url))),
   },
 })
 
@@ -104,8 +77,7 @@ const Disclaimer: DisclaimerComponent = ({ Text, Link }) => (
   </div>
 )
 
-// TODO: Fix types, react version mismatch
-const ChainProvider = ({ children }: { children: any }) => {
+const ChainProvider = ({ children }: { children: ReactNode }) => {
   return (
     <WagmiProvider config={wagmiConfig}>
       <QueryClientProvider client={queryClient}>
@@ -116,7 +88,12 @@ const ChainProvider = ({ children }: { children: any }) => {
           appInfo={{ appName: 'Reserve Register', disclaimer: Disclaimer }}
         >
           <AtomUpdater />
-          {children}
+          <DtfSdkProvider
+            chains={dtfSdkChains}
+            etherscanApiKey={import.meta.env.VITE_ETHERSCAN_API_KEY}
+          >
+            {children}
+          </DtfSdkProvider>
         </RainbowKitProvider>
       </QueryClientProvider>
     </WagmiProvider>

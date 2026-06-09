@@ -19,7 +19,7 @@ export const indexDTFQuoteSourceAtom = atom<ZapperProps['defaultSource']>(
   (get) => {
     // const dtf = get(indexDTFAtom)
     // if (dtf?.id && DTF_DISABLED_FOR_ZAP.includes(dtf?.id.toLowerCase())) {
-    //   return 'odos'
+    //   return 'odos'†
     // }
     // return 'best'
     return 'best'
@@ -100,7 +100,7 @@ const IndexDTFIssuance = () => {
           </Link>
         </div>
       </div>
-    </div>
+    </div >
   )
 }
 

@@ -1,7 +1,10 @@
 import useIndexDTFList from '@/hooks/useIndexDTFList'
-import { getProposalState as getIndexProposalState } from '@/lib/governance'
 import { INDEX_GRAPH_CLIENTS } from '@/state/chain/atoms/chainAtoms'
 import { getProposalState as getYieldProposalState } from '@/views/yield-dtf/governance/views/proposal-detail/atom'
+import {
+  getProposalState as getIndexProposalState,
+  type Amount,
+} from '@reserve-protocol/react-sdk'
 import { useQuery } from '@tanstack/react-query'
 import { gql } from 'graphql-request'
 import { useMultichainQuery } from 'hooks/use-query'
@@ -60,6 +63,7 @@ const indexProposalsQuery = gql`
       description
       creationTime
       state
+      isOptimistic
       forWeightedVotes
       againstWeightedVotes
       abstainWeightedVotes
@@ -106,6 +110,7 @@ type IndexProposalsResponse = {
     description: string
     creationTime: string
     state: string
+    isOptimistic?: boolean
     forWeightedVotes: string
     againstWeightedVotes: string
     abstainWeightedVotes: string
@@ -119,6 +124,12 @@ type IndexProposalsResponse = {
 }
 
 const INDEX_DTF_CHAINS = [ChainId.Mainnet, ChainId.Base, ChainId.BSC] as const
+
+const amountFromRaw = (value: string): Amount => {
+  const raw = BigInt(value)
+
+  return { raw, formatted: formatEther(raw) }
+}
 
 const useBlockChains = () => {
   const { data: mainnet } = useBlockNumber({ chainId: ChainId.Mainnet })
@@ -180,7 +191,11 @@ const useIndexDTFProposals = () => {
           const client = INDEX_GRAPH_CLIENTS[chainId]
           const addresses = dtfsByChain[chainId]
           if (!client || !addresses?.length) {
-            return { chainId, proposals: [], governanceToDTF: new Map<string, DTFInfo>() }
+            return {
+              chainId,
+              proposals: [],
+              governanceToDTF: new Map<string, DTFInfo>(),
+            }
           }
 
           // Fetch proposals + governance IDs for whitelisted DTFs in parallel
@@ -188,9 +203,12 @@ const useIndexDTFProposals = () => {
             client.request<IndexProposalsResponse>(indexProposalsQuery, {
               voter: account?.toLowerCase() ?? zeroAddress,
             }),
-            client.request<IndexDTFGovernanceResponse>(indexDtfGovernanceQuery, {
-              ids: addresses,
-            }),
+            client.request<IndexDTFGovernanceResponse>(
+              indexDtfGovernanceQuery,
+              {
+                ids: addresses,
+              }
+            ),
           ])
 
           // Build governance ID → DTF info lookup
@@ -289,24 +307,21 @@ const useProposalsData = () => {
             timelockId: '',
             description: entry.description,
             state: entry.state,
+            isOptimistic: entry.isOptimistic,
             creationTime: +entry.creationTime,
             creationBlock: 0,
             voteStart: +entry.voteStart,
             voteEnd: +entry.voteEnd,
-            forWeightedVotes: +formatEther(BigInt(entry.forWeightedVotes)),
-            againstWeightedVotes: +formatEther(
-              BigInt(entry.againstWeightedVotes)
-            ),
-            abstainWeightedVotes: +formatEther(
-              BigInt(entry.abstainWeightedVotes)
-            ),
-            quorumVotes: +formatEther(BigInt(entry.quorumVotes)),
-            executionETA: entry.executionETA
-              ? +entry.executionETA
-              : undefined,
+            forWeightedVotes: amountFromRaw(entry.forWeightedVotes),
+            againstWeightedVotes: amountFromRaw(entry.againstWeightedVotes),
+            abstainWeightedVotes: amountFromRaw(entry.abstainWeightedVotes),
+            quorumVotes: amountFromRaw(entry.quorumVotes),
+            executionETA: entry.executionETA ? +entry.executionETA : undefined,
             proposer: { address: zeroAddress },
           }
 
+          // WHY: Explorer is an aggregate list. Do not hydrate per-row
+          // optimistic RPC context here; exact optimistic state lives on detail.
           const state = getIndexProposalState(normalized)
 
           proposals.push({
@@ -338,10 +353,7 @@ const useProposalsData = () => {
       ) {
         return false
       }
-      if (
-        filters.status.length &&
-        !filters.status.includes(proposal.status)
-      ) {
+      if (filters.status.length && !filters.status.includes(proposal.status)) {
         return false
       }
       return true

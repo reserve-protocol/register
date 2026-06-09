@@ -42,7 +42,9 @@ const WithdrawButton = ({
 }: {
   chainId: number
   isReady: boolean
-  getWriteConfig: () => Parameters<ReturnType<typeof useWriteContract>['writeContract']>[0] | null
+  getWriteConfig: () =>
+    | Parameters<ReturnType<typeof useWriteContract>['writeContract']>[0]
+    | null
 }) => {
   const wallet = useAtomValue(walletAtom)
   const walletChain = useAtomValue(walletChainAtom)
@@ -75,7 +77,15 @@ const WithdrawButton = ({
       if (!config) return
       writeContract(config)
     },
-    [wallet, walletChain, chainId, openConnectModal, switchChainAsync, writeContract, getWriteConfig]
+    [
+      wallet,
+      walletChain,
+      chainId,
+      openConnectModal,
+      switchChainAsync,
+      writeContract,
+      getWriteConfig,
+    ]
   )
 
   return (
@@ -211,14 +221,19 @@ const ProgressCell = ({ row }: { row: PendingWithdrawalRow }) => {
   const timeLeft = deadline - currentTime
   const elapsed = row.delay - timeLeft
   const progress = Math.min(100, Math.max(0, (elapsed / row.delay) * 100))
-  const timeLeftStr = parseDurationShort(timeLeft, { units: ['d', 'h', 'm'], round: true })
+  const timeLeftStr = parseDurationShort(timeLeft, {
+    units: ['d', 'h', 'm'],
+    round: true,
+  })
     .replaceAll(' ', '')
     .replaceAll(',', ' ')
 
   return (
     <div className="flex items-center gap-1.5 min-w-[120px]">
       <CircularProgress value={progress} />
-      <span className="text-sm text-legend whitespace-nowrap">{timeLeftStr}</span>
+      <span className="text-sm text-legend whitespace-nowrap">
+        {timeLeftStr}
+      </span>
     </div>
   )
 }
@@ -250,6 +265,7 @@ const SourceCell = ({ row }: { row: PendingWithdrawalRow }) => {
           underlyingSymbol: row.underlyingSymbol,
           underlyingAddress: row.underlyingAddress,
           chainId: row.chainId,
+          dtfAddress: row.dtfAddress,
         })
       }}
     >

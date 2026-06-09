@@ -25,6 +25,8 @@ import {
   SetProposalThresholdPreview,
   UpdateQuorumNumeratorPreview,
   UpdateDelayPreview,
+  SetOptimisticParamsPreview,
+  SelectorRegistryPreview,
 } from './dtf-settings-preview'
 
 const ChangesOverviewComponentMap: Record<
@@ -48,8 +50,12 @@ const ChangesOverviewComponentMap: Record<
   setVotingPeriod: SetVotingPeriodPreview,
   setProposalThreshold: SetProposalThresholdPreview,
   updateQuorumNumerator: UpdateQuorumNumeratorPreview,
+  setOptimisticParams: SetOptimisticParamsPreview,
   // Timelock functions
   updateDelay: UpdateDelayPreview,
+  // Optimistic selector registry functions
+  registerSelectors: SelectorRegistryPreview,
+  unregisterSelectors: SelectorRegistryPreview,
 }
 
 const TABS = {
@@ -60,21 +66,23 @@ const TABS = {
 const ContractProposalChanges = ({
   decodedCalldatas,
   address,
+  contractName,
 }: {
   decodedCalldatas: DecodedCalldata[]
   address: Address
+  contractName?: string
 }) => {
   const chainId = useAtomValue(chainIdAtom)
-  const alias =
-    useAtomValue(dtfContractAliasAtom)?.[address.toLowerCase()] ?? 'Unknown'
+  const contractAliases = useAtomValue(dtfContractAliasAtom)
+  const alias = contractName ?? contractAliases?.[address.toLowerCase()] ?? 'Unknown'
 
   return (
     <Tabs
       defaultValue={TABS.SUMMARY}
-      className="flex flex-col gap-4 p-2  rounded-3xl bg-background"
+      className="flex flex-col rounded-3xl bg-background m-1"
     >
       <div className="mx-4 py-4 flex items-center flex-wrap gap-2 border-b">
-        <h1 className="text-xl font-bold text-primary">{alias}</h1>
+        <h1 className="text-xl font-semibold text-primary">{alias}</h1>
         <Link
           target="_blank"
           className="mr-auto"
@@ -88,12 +96,12 @@ const ContractProposalChanges = ({
           </Button>
         </Link>
 
-        <TabsList className="h-9">
-          <TabsTrigger value={TABS.SUMMARY} className="w-max h-7">
+        <TabsList >
+          <TabsTrigger value={TABS.SUMMARY}>
             Summary
           </TabsTrigger>
 
-          <TabsTrigger value={TABS.RAW} className="w-max h-7">
+          <TabsTrigger value={TABS.RAW}>
             Raw
           </TabsTrigger>
         </TabsList>
@@ -119,10 +127,10 @@ const ContractProposalChanges = ({
 
           return (
             <div
-              className="p-4"
+              className='p-2'
               key={`summary-${decodedCalldata.callData}-${index}`}
             >
-              <h4 className="text-primary text-lg font-semibold mb-2">
+              <h4 className="text-primary text-lg font-semibold mb-2 px-2 pt-2">
                 {index + 1}/{decodedCalldatas.length}
               </h4>
               <Component decodedCalldata={decodedCalldata} targetAddress={address} />

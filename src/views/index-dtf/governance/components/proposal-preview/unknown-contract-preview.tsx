@@ -23,7 +23,7 @@ const UnknownContractPreview = ({
   return (
     <div className="flex flex-col gap-4 p-2 rounded-3xl bg-background">
       <div className="mx-4 py-4 flex items-center flex-wrap gap-2 border-b">
-        <h1 className="text-xl font-bold text-primary">Unknown Contract</h1>
+        <h1 className="text-xl font-semibold text-primary">Unknown Contract</h1>
         <Link
           target="_blank"
           className="mr-auto"

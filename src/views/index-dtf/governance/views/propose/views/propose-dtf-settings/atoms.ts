@@ -14,7 +14,8 @@ import {
 import { Token } from '@/types'
 import { BIGINT_MAX } from '@/utils/constants'
 import { atom } from 'jotai'
-import { Address, encodeFunctionData, Hex, parseEther } from 'viem'
+import { encodeFunctionData, parseEther } from 'viem'
+import type { Address, Hex } from 'viem'
 import {
   GovernanceChanges,
   ProposalData,
@@ -27,6 +28,20 @@ import {
   humanizeTimeFromSeconds,
   proposalThresholdToPercentage,
 } from '../../shared'
+import {
+  DEFAULT_OPTIMISTIC_VETO_DELAY,
+  DEFAULT_OPTIMISTIC_VETO_PERIOD,
+  DEFAULT_OPTIMISTIC_VETO_THRESHOLD,
+  OPTIMISTIC_ACTIONS,
+  OPTIMISTIC_PROPOSER_ROLE,
+  dtfIndexGovernanceOptimisticAbi,
+  percentageToD18,
+  selectorRegistryAbi,
+} from './optimistic'
+import type {
+  OptimisticActionId,
+  OptimisticGovernanceChanges,
+} from './optimistic'
 
 // UI
 export const selectedSectionAtom = atom<string | undefined>(undefined)
@@ -59,6 +74,13 @@ export const weightControlChangeAtom = atom<boolean | undefined>(undefined)
 export const bidsEnabledChangeAtom = atom<boolean | undefined>(undefined)
 
 export const governanceChangesAtom = atom<GovernanceChanges>({})
+
+export const optimisticGovernanceChangesAtom =
+  atom<OptimisticGovernanceChanges>({})
+
+export const currentOptimisticAllowedActionsAtom = atom<
+  OptimisticActionId[] | undefined
+>(undefined)
 
 // Has changes atoms for easy checking
 export const hasTokenNameChangeAtom = atom((get) => {
@@ -120,6 +142,17 @@ export const hasGovernanceChangesAtom = atom((get) => {
   )
 })
 
+export const hasOptimisticGovernanceChangesAtom = atom((get) => {
+  const changes = get(optimisticGovernanceChangesAtom)
+  return !!(
+    changes.vetoDelay !== undefined ||
+    changes.vetoPeriod !== undefined ||
+    changes.vetoThreshold !== undefined ||
+    changes.optimisticProposers !== undefined ||
+    changes.allowedActions !== undefined
+  )
+})
+
 // remove-dust-tokens
 export const removedBasketTokensAtom = atom<Token[]>([])
 export const currentBasketTokensAtom = atom((get) => {
@@ -158,9 +191,12 @@ export const isProposalValidAtom = atom((get) => {
   const hasDtfRevenueChanges = get(hasDtfRevenueChangesAtom)
   const hasAuctionLengthChange = get(hasAuctionLengthChangeAtom)
   const hasWeightControlChange = get(hasWeightControlChangeAtom)
-  const hasBidsEnabledChange = get(hasBidsEnabledChangeAtom)
-  const hasGovernanceChanges = get(hasGovernanceChangesAtom)
-  const isFormValid = get(isFormValidAtom)
+    const hasBidsEnabledChange = get(hasBidsEnabledChangeAtom)
+    const hasGovernanceChanges = get(hasGovernanceChangesAtom)
+    const hasOptimisticGovernanceChanges = get(
+      hasOptimisticGovernanceChangesAtom
+    )
+    const isFormValid = get(isFormValidAtom)
 
   const hasChanges =
     removedBasketTokens.length > 0 ||
@@ -172,7 +208,8 @@ export const isProposalValidAtom = atom((get) => {
     hasAuctionLengthChange ||
     hasWeightControlChange ||
     hasBidsEnabledChange ||
-    hasGovernanceChanges
+    hasGovernanceChanges ||
+    hasOptimisticGovernanceChanges
 
   return hasChanges
 })
@@ -214,6 +251,9 @@ export const dtfSettingsProposalDataAtom = atom<ProposalData | undefined>(
     const bidsEnabledChange = get(bidsEnabledChangeAtom)
     const rebalanceControl = get(indexDTFRebalanceControlAtom)
     const governanceChanges = get(governanceChangesAtom)
+    const optimisticGovernanceChanges = get(optimisticGovernanceChangesAtom)
+    const currentOptimisticAllowedActions =
+      get(currentOptimisticAllowedActionsAtom) ?? []
     const feeRecipients = get(feeRecipientsAtom)
 
     if (!isConfirmed || !indexDTF) return undefined
@@ -642,6 +682,136 @@ export const dtfSettingsProposalDataAtom = atom<ProposalData | undefined>(
       if (governanceChanges.executionDelay !== undefined && timelockAddress) {
         calldatas.push(encodeExecutionDelay(governanceChanges.executionDelay))
         targets.push(timelockAddress)
+      }
+    }
+
+    // 8. Handle optimistic governance settings
+    if (
+      indexDTF.ownerGovernance?.isOptimistic &&
+      Object.keys(optimisticGovernanceChanges).length > 0
+    ) {
+      const governance = indexDTF.ownerGovernance
+      const optimistic = governance.optimistic
+      const governanceAddress = governance.id as Address
+      const timelockAddress = governance.timelock?.id as Address | undefined
+      const selectorRegistry = optimistic?.selectorRegistry as Address | undefined
+
+      if (
+        optimisticGovernanceChanges.vetoDelay !== undefined ||
+        optimisticGovernanceChanges.vetoPeriod !== undefined ||
+        optimisticGovernanceChanges.vetoThreshold !== undefined
+      ) {
+        calldatas.push(
+          encodeFunctionData({
+            abi: dtfIndexGovernanceOptimisticAbi,
+            functionName: 'setOptimisticParams',
+            args: [
+              {
+                vetoDelay:
+                  optimisticGovernanceChanges.vetoDelay ??
+                  optimistic?.vetoDelay ??
+                  DEFAULT_OPTIMISTIC_VETO_DELAY,
+                vetoPeriod:
+                  optimisticGovernanceChanges.vetoPeriod ??
+                  optimistic?.vetoPeriod ??
+                  DEFAULT_OPTIMISTIC_VETO_PERIOD,
+                vetoThreshold: percentageToD18(
+                  optimisticGovernanceChanges.vetoThreshold ??
+                    optimistic?.vetoThreshold ??
+                    DEFAULT_OPTIMISTIC_VETO_THRESHOLD
+                ),
+              },
+            ],
+          })
+        )
+        targets.push(governanceAddress)
+      }
+
+      if (optimisticGovernanceChanges.optimisticProposers && timelockAddress) {
+        const currentProposers = optimistic?.proposers ?? []
+        const newProposers = optimisticGovernanceChanges.optimisticProposers
+
+        const removedProposers = currentProposers.filter(
+          (addr) =>
+            !newProposers.some(
+              (newAddr) => newAddr.toLowerCase() === addr.toLowerCase()
+            )
+        )
+        for (const proposer of removedProposers) {
+          calldatas.push(
+            encodeFunctionData({
+              abi: timelockAbi,
+              functionName: 'revokeRole',
+              args: [OPTIMISTIC_PROPOSER_ROLE, proposer],
+            })
+          )
+          targets.push(timelockAddress)
+        }
+
+        const addedProposers = newProposers.filter(
+          (addr) =>
+            !currentProposers.some(
+              (currentAddr) => currentAddr.toLowerCase() === addr.toLowerCase()
+            )
+        )
+        for (const proposer of addedProposers) {
+          calldatas.push(
+            encodeFunctionData({
+              abi: timelockAbi,
+              functionName: 'grantRole',
+              args: [OPTIMISTIC_PROPOSER_ROLE, proposer],
+            })
+          )
+          targets.push(timelockAddress)
+        }
+      }
+
+      if (optimisticGovernanceChanges.allowedActions && selectorRegistry) {
+        const newActions = optimisticGovernanceChanges.allowedActions
+        const addedSelectors = newActions
+          .filter((actionId) => !currentOptimisticAllowedActions.includes(actionId))
+          .map((actionId) => OPTIMISTIC_ACTIONS.find((action) => action.id === actionId)?.selector)
+          .filter((selector): selector is Hex => !!selector)
+        const removedSelectors = currentOptimisticAllowedActions
+          .filter((actionId) => !newActions.includes(actionId))
+          .map((actionId) => OPTIMISTIC_ACTIONS.find((action) => action.id === actionId)?.selector)
+          .filter((selector): selector is Hex => !!selector)
+
+        if (addedSelectors.length > 0) {
+          calldatas.push(
+            encodeFunctionData({
+              abi: selectorRegistryAbi,
+              functionName: 'registerSelectors',
+              args: [
+                [
+                  {
+                    target: indexDTF.id as Address,
+                    selectors: addedSelectors,
+                  },
+                ],
+              ],
+            })
+          )
+          targets.push(selectorRegistry)
+        }
+
+        if (removedSelectors.length > 0) {
+          calldatas.push(
+            encodeFunctionData({
+              abi: selectorRegistryAbi,
+              functionName: 'unregisterSelectors',
+              args: [
+                [
+                  {
+                    target: indexDTF.id as Address,
+                    selectors: removedSelectors,
+                  },
+                ],
+              ],
+            })
+          )
+          targets.push(selectorRegistry)
+        }
       }
     }
 

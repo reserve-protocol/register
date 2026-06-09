@@ -4,6 +4,8 @@ cleanupUnusedCatalogs: true
 minimumReleaseAge: 1440
 minimumReleaseAgeExclude:
   - '@reserve-protocol/react-zapper'
+  - '@reserve-protocol/react-sdk'
+  - '@reserve-protocol/sdk'
 catalog:
   react: ^18.3.1
   react-dom: ^18.3.1

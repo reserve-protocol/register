@@ -6,6 +6,7 @@ import { walletAtom } from '../atoms'
 import { UNIVERSAL_ASSETS, WORMHOLE_ASSETS } from '@/utils/constants'
 import { checkVersion } from '@/utils'
 import { Bridge, MarketCapData, NativeToken } from '@/types/token-mappings'
+import type { Amount } from '@reserve-protocol/react-sdk'
 
 // TODO: placeholders
 export interface IToken extends Token {
@@ -118,7 +119,7 @@ export const indexDTFBasketAtom = atom<Token[] | undefined>(undefined)
 
 export const indexDTFBasketPricesAtom = atom<Record<string, number>>({})
 
-export const indexDTFBasketAmountsAtom = atom<Record<string, number>>({})
+export const indexDTFBasketAmountsAtom = atom<Record<string, Amount>>({})
 
 export const indexDTFBasketSharesAtom = atom<Record<string, string>>({})
 
@@ -256,4 +257,3 @@ export const isHybridDTFAtom = atom((get) => {
     dtf?.id.toLowerCase() === '0x92d7e020ab1cc45eaf744a5fe5954734fcd07119'
   )
 })
-

@@ -16,6 +16,9 @@ import {
 import { ReactNode } from 'react'
 import { Link } from 'react-router-dom'
 import { proposalDetailAtom } from '../atom'
+import { cn } from '@/lib/utils'
+import ContestedBadge from '../../../components/contest-badge'
+import OptimisticBadge from '../../../components/optimistic-badge'
 
 const BackButton = () => {
   return (
@@ -31,20 +34,22 @@ const StatItem = ({
   label,
   icon,
   children,
+  className,
 }: {
+  className?: string
   label: string
   icon: ReactNode
   children: ReactNode
 }) => (
-  <div className="flex items-center gap-3">
+  <div className={cn("flex items-center gap-3", className)}>
     <div className="flex items-center justify-center w-6 h-6 bg-foreground/10 rounded-full text-foreground/90">
       {icon}
     </div>
     <div className="flex flex-col">
-      <span className="text-sm text-legend">{label}</span>
-      {children}
+      <span className="text-xs md:text-sm text-legend">{label}</span>
+      <span className='text-sm md:text-base'>{children}</span>
     </div>
-  </div>
+  </div >
 )
 
 const ProposalTitle = () => {
@@ -62,8 +67,8 @@ const ProposalTitle = () => {
   }
 
   return (
-    <div className="flex flex-col border-b border-border pb-3 md:pb-4 gap-2">
-      <h2 className="text-2xl font-bold">{title}</h2>
+    <div className="flex flex-col border-b border-border pb-2 md:pb-4 gap-2">
+      <h2 className="text-lg md:text-2xl font-semibold">{title}</h2>
       {!!rfcLink && (
         <Link to={rfcLink} target="_blank" className="flex items-center gap-1">
           <span className="text-foreground overflow-ellipsis underline font-semibold">
@@ -82,7 +87,7 @@ const ProposalParams = () => {
 
   return (
     <div className="flex flex-col gap-5">
-      <div className="flex flex-col md:flex-row md:items-center gap-2 md:gap-5 flex-wrap">
+      <div className="flex items-center gap-4 md:gap-5">
         <StatItem
           label="Proposed on"
           icon={<ScrollText size={16} strokeWidth={1.5} />}
@@ -107,7 +112,7 @@ const ProposalParams = () => {
             )}
           </div>
         </StatItem>
-        <StatItem label="ID" icon={<Fingerprint size={16} strokeWidth={1.5} />}>
+        <StatItem label="ID" className='hidden sm:flex' icon={<Fingerprint size={16} strokeWidth={1.5} />}>
           <div className="flex items-center gap-1">
             <span>
               {proposal?.id ? shortenString(proposal.id) : 'Loading...'}
@@ -122,20 +127,16 @@ const ProposalParams = () => {
   )
 }
 
-// TODO: Proposal snapshot
-const ProposalHeader = () => {
-  return (
-    <div className="flex flex-col justify-between gap-3 md:gap-7 p-4 md:p-6">
-      <div className="flex items-center justify-between gap-3 md:gap-2 flex-wrap">
-        <BackButton />
-        {/* <ProposalSnapshot /> */}
-      </div>
-      <div className="flex flex-col gap-3 md:gap-4">
-        <ProposalTitle />
-        <ProposalParams />
-      </div>
+const ProposalHeader = () => (
+  <div className="flex flex-col justify-between gap-3 md:gap-7 p-4 lg:p-6 pb-2 ">
+    <div className='flex items-center'>
+      <BackButton />
     </div>
-  )
-}
+    <div className="flex flex-col gap-2 md:gap-4">
+      <ProposalTitle />
+      <ProposalParams />
+    </div>
+  </div>
+)
 
 export default ProposalHeader

@@ -142,14 +142,14 @@ const ProposalTradeHeader = ({ data }: { data: TradesByProposal }) => {
         <span className="block">Proposed by:</span>
         <Link
           to={getExplorerLink(
-            data.proposal.proposer.address,
+            data.proposal.proposer,
             chainId,
             ExplorerDataType.ADDRESS
           )}
           target="_blank"
           className="flex items-center gap-2 text-primary"
         >
-          {shortenAddress(data.proposal.proposer.address)}
+          {shortenAddress(data.proposal.proposer)}
           <div className="bg-primary/10 rounded-full p-1">
             <ArrowUpRightIcon size={14} />
           </div>
