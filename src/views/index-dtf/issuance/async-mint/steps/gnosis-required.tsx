@@ -49,11 +49,51 @@ const GnosisRequired = () => {
     : 'Automated minting creates multiple CoW Swap orders in one transaction, then mints the DTF. Recommended for market makers or mints over 50,000 USDC.'
   const verifiedWallets = (
     <div>
-      <p className="text-md text-primary font-medium mb-0.5">
+      <p className="text-md text-primary dark:text-foreground font-medium mb-4">
         Known supported wallets
       </p>
-      <p>Metamask · Safe · Ambire · Coinbase Smart Wallet</p>
-      <p className="mt-2 text-sm text-muted-foreground">
+      <div className="flex items-center gap-2">
+        <a
+          href="https://metamask.io/"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Open MetaMask website"
+          className="rounded-[8px]"
+        >
+          <img
+            src="/svgs/Metamask.svg"
+            alt=""
+            className="size-8 rounded-[8px] border border-card shadow-md"
+          />
+        </a>
+        <a
+          href="https://www.ambire.com/"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Open Ambire website"
+          className="rounded-[8px]"
+        >
+          <img
+            src="/svgs/Ambire.svg"
+            alt=""
+            className="size-8 rounded-[8px] border border-card shadow-md"
+          />
+        </a>
+        <a
+          href="https://safe.global/"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Open Safe website"
+          className="rounded-[8px]"
+        >
+          <img
+            src="/svgs/Safe.svg"
+            alt=""
+            className="size-8 rounded-[8px] border border-card shadow-md"
+          />
+        </a>
+      </div>
+      <p className="mt-4 text-sm text-muted-foreground">
         <span className="font-medium text-foreground">Note:</span> Some wallets,
         like MetaMask, need smart accounts enabled.
       </p>
