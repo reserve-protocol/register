@@ -65,8 +65,12 @@ export default defineConfig({
     },
   },
 
-  // Aliases handled by viteTsconfigPaths - no need to duplicate here
+  // tsconfig paths are handled by viteTsconfigPaths; keep runtime-only aliases here.
   resolve: {
+    alias: {
+      // Polyfill for @cowprotocol/cow-sdk
+      'node-fetch': 'cross-fetch',
+    },
     dedupe: ['react', 'react-dom', '@tanstack/react-query'],
   },
 
