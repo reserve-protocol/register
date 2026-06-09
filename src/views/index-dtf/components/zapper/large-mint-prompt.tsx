@@ -12,6 +12,7 @@ import { useTrackIndexDTFClick } from '../../hooks/useTrackIndexDTFPage'
 
 // Show the "Automated Mint" suggestion once the user's buy input is this large.
 export const LARGE_MINT_MIN_INPUT = 50_000
+export const ERROR_MINT_MIN_INPUT = 100
 const MIN_INPUT_LABEL = '$50K'
 
 type CardBodyProps = {
@@ -70,7 +71,7 @@ type LargeMintPromptProps = {
 }
 
 const LargeMintPrompt = ({ mode, dtfAddress, chain }: LargeMintPromptProps) => {
-  const { data } = useQuote()
+  const { data, error } = useQuote()
   const { currentTab, isOpen } = useZapperModal()
   const isDesktop = useIsDesktop()
   const { trackClick } = useTrackIndexDTFClick('overview', 'mint')
@@ -88,11 +89,13 @@ const LargeMintPrompt = ({ mode, dtfAddress, chain }: LargeMintPromptProps) => {
     inputValue >= LARGE_MINT_MIN_INPUT &&
     (isInline || isOpen)
 
+  const errorCondition = error && inputValue >= ERROR_MINT_MIN_INPUT
+
   useEffect(() => {
-    if (!isLarge) setDismissed(false)
+    if (!(isLarge || errorCondition)) setDismissed(false)
   }, [isLarge])
 
-  const show = isLarge && !dismissed
+  const show = (isLarge || errorCondition) && !dismissed
 
   const mintRoute = getFolioRoute(
     dtfAddress,
