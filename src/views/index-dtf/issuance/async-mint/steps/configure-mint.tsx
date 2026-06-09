@@ -131,7 +131,7 @@ const ConfigureMint = () => {
             </Tabs>
           </div>
 
-          <div className="rounded-3xl bg-card/50 overflow-hidden flex flex-col">
+          <div className="rounded-3xl bg-card/50 border-2 border-card overflow-hidden flex flex-col">
             <div
               className="bg-card p-2 rounded-3xl flex flex-col gap-2"
               style={{ viewTransitionName: isMint ? 'async-mint-step-1' : '' }}

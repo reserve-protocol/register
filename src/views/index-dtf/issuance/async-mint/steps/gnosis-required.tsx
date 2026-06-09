@@ -43,10 +43,10 @@ const GnosisRequired = () => {
   const cardStackRef = useRef<HTMLDivElement>(null)
   const title = showRequirements
     ? 'Smart Account Required'
-    : 'Automated Minting'
+    : 'Automated Mint / Redeem'
   const body = showRequirements
-    ? 'Automated minting requires a wallet with smart account support. Hardware Wallets are not supported.'
-    : 'Automated minting creates multiple CoW Swap orders in one transaction, then mints the DTF. Recommended for market makers or mints over 50,000 USDC.'
+    ? 'Automated minting and redemption require a wallet with smart account support. Hardware Wallets are not supported.'
+    : 'Mint large USDC amounts through batched CoW Swap orders, or redeem DTFs into the underlying assets. Recommended for market makers or transactions over 50,000 USDC.'
   const verifiedWallets = (
     <div>
       <p className="text-md text-primary dark:text-foreground font-medium mb-4">
@@ -100,7 +100,7 @@ const GnosisRequired = () => {
     </div>
   )
   const swapGuidance = (
-    <div className="flex flex-col p-2 bg-card/40">
+    <div className="flex flex-col p-2 bg-card/50">
       <div className="flex items-center rounded-full p-2 bg-card justify-between border border-amber-700/20 dark:border-amber-300/25">
         <div className="flex w-fit items-center h-8 gap-2 text-amber-700 dark:text-amber-300">
           <div className="flex items-center rounded-full justify-center h-8 w-8 bg-amber-700/15 border border-amber-700/20 dark:bg-amber-300/10 dark:border-amber-300/25">
@@ -131,7 +131,7 @@ const GnosisRequired = () => {
   )
 
   const processIllustration = (
-    <div className="px-5 pb-3">
+    <div className="px-5 pb-3 mt-1">
       <div className="flex gap-2">
         <ProcessStep label="You fund" />
         <ProcessArrow />
@@ -213,7 +213,6 @@ const GnosisRequired = () => {
                       <Combine size={16} strokeWidth={1.5} />
                       <p className="text-md">Advanced</p>
                     </div>
-
                     <h2 className="text-xl font-semibold px-5 mb-1 text-foreground">
                       {title}
                     </h2>
