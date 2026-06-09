@@ -3,13 +3,34 @@ import useAtomicBatch from '@/hooks/use-atomic-batch'
 import { cn } from '@/lib/utils'
 import { useAccountModal, useConnectModal } from '@rainbow-me/rainbowkit'
 import { useSetAtom } from 'jotai'
-import { ArrowLeft, ArrowUpRight, Info, OctagonAlert } from 'lucide-react'
+import {
+  ArrowLeft,
+  ArrowUpRight,
+  Info,
+  MoveRight,
+  OctagonAlert,
+  Combine,
+} from 'lucide-react'
 import { useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useAccount } from 'wagmi'
 import { wizardStepAtom } from '../atoms'
 
 const LEARN_MORE_URL = 'https://docs.safe.global/home/what-is-safe'
+
+const ProcessStep = ({ label }: { label: string }) => (
+  <div className="flex shrink-0 items-center">
+    <span className="whitespace-nowrap text-md font-medium text-foreground">
+      {label}
+    </span>
+  </div>
+)
+
+const ProcessArrow = () => (
+  <div className="flex shrink-0 items-center justify-center">
+    <MoveRight size={16} className="text-muted-foreground" />
+  </div>
+)
 
 const GnosisRequired = () => {
   const { openConnectModal } = useConnectModal()
@@ -25,7 +46,7 @@ const GnosisRequired = () => {
     : 'Automated Minting'
   const body = showRequirements
     ? 'Automated minting requires a wallet with smart account support. Hardware Wallets are not supported.'
-    : 'Automated minting creates multiple CoW Swap orders in one transaction and then mints the DTF. Automated minting is recommend for market makers or mints over 50,000 USDC.'
+    : 'Automated minting creates multiple CoW Swap orders in one transaction, then mints the DTF. Recommended for market makers or mints over 50,000 USDC.'
   const verifiedWallets = (
     <div>
       <p className="text-md text-primary font-medium mb-0.5">
@@ -39,7 +60,7 @@ const GnosisRequired = () => {
     </div>
   )
   const swapGuidance = (
-    <div className="flex flex-col p-2 bg-card rounded-3xl">
+    <div className="flex flex-col p-2 bg-background rounded-3xl">
       <div className="flex items-center rounded-full p-2 bg-card justify-between border border-amber-700/20 dark:border-amber-300/25">
         <div className="flex w-fit items-center h-8 gap-2 text-amber-700 dark:text-amber-300">
           <div className="flex items-center rounded-full justify-center h-8 w-8 bg-amber-700/15 border border-amber-700/20 dark:bg-amber-300/10 dark:border-amber-300/25">
@@ -57,7 +78,7 @@ const GnosisRequired = () => {
           </Link>
         </Button>
       </div>
-      <div className="flex flex-col px-4 py-3 gap-2">
+      <div className="flex flex-col px-4 pb-3 pt-4 gap-2">
         <div className="flex flex-col gap-0.5">
           <p className="text-sm font-medium">Before using automated minting</p>
           <p className="text-sm text-muted-foreground">
@@ -68,6 +89,21 @@ const GnosisRequired = () => {
       </div>
     </div>
   )
+
+  const processIllustration = (
+    <div className="px-5 pb-3">
+      <div className="flex gap-1.5">
+        <ProcessStep label="You fund" />
+        <ProcessArrow />
+        <ProcessStep label="CoW routes" />
+        <ProcessArrow />
+        <ProcessStep label="Assets arrive" />
+        <ProcessArrow />
+        <ProcessStep label="You mint" />
+      </div>
+    </div>
+  )
+
   const handleShowRequirements = () => {
     if (isConnected && atomicSupported) {
       setStep('configure')
@@ -132,21 +168,31 @@ const GnosisRequired = () => {
                     )}
                   </div>
                 ) : (
-                  <p className="text-md font-medium mb-10 px-5">Advanced</p>
+                  <>
+                    <div className="flex items-center gap-2 px-5 mb-[64px]">
+                      <Combine size={16} strokeWidth={1.5} />
+                      <p className="text-md">Advanced</p>
+                    </div>
+
+                    <h2 className="text-xl font-semibold px-5 mb-1 text-foreground">
+                      {title}
+                    </h2>
+                    <p className="text-muted-foreground font-light px-5 mb-1 max-w-[435px]">
+                      {body}
+                    </p>
+                    {processIllustration}
+                  </>
                 )}
-                <h2
-                  className={cn(
-                    'text-xl font-semibold px-5',
-                    showRequirements
-                      ? 'text-amber-700 dark:text-amber-300'
-                      : 'text-foreground'
-                  )}
-                >
-                  {title}
-                </h2>
-                <p className="text-muted-foreground font-light px-5 mb-2 max-w-[435px]">
-                  {body}
-                </p>
+                {showRequirements && (
+                  <>
+                    <h2 className="text-xl font-semibold px-5 mb-1 mt-8 text-amber-700 dark:text-amber-300">
+                      {title}
+                    </h2>
+                    <p className="text-muted-foreground font-light px-5 mb-2 max-w-[435px]">
+                      {body}
+                    </p>
+                  </>
+                )}
                 {showRequirements ? (
                   <div className="text-base bg-card rounded-3xl overflow-hidden mt-1">
                     {isConnected ? (
