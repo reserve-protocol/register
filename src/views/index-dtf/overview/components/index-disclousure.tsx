@@ -293,7 +293,7 @@ const IndexDisclousure = () => {
         <p className="text-legend">
           <Trans>To learn more about the risks associated with DTFs,</Trans>{' '}
           <a
-            href="https://reserve.org/additional_risks/"
+            href="https://docs.reserve.org/risks"
             target="_blank"
             className="text-primary"
           >
