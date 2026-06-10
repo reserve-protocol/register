@@ -85,7 +85,7 @@ const Account = () => {
                   <Button
                     variant="accent"
                     onClick={openConnectModal}
-                    className="px-3.5 py-1 rounded-full font-normal"
+                    className="px-4 py-1 rounded-full font-medium dark:border border-primary/50"
                   >
                     <span className="flex md:hidden items-center py-1">
                       <Power size={16} />
@@ -108,7 +108,6 @@ const Account = () => {
                       className="flex items-center cursor-pointer text-base"
                       onClick={openAccountModal}
                     >
-                      {/* Small screens: wallet icon with chain logo overlay */}
                       <div className="lg:hidden relative">
                         <div className="p-2 border border-border rounded-xl">
                           <Wallet size={16} />
@@ -125,7 +124,6 @@ const Account = () => {
                           )}
                         </div>
                       </div>
-                      {/* Large screens: bordered pill with chain + address */}
                       <div className="hidden lg:flex items-center gap-2 px-3 py-2 border border-border rounded-4xl whitespace-nowrap">
                         {!invalidChain ? (
                           <ChainLogo chain={chain.id} className="w-4 h-4" />
