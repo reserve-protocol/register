@@ -1,4 +1,3 @@
-// import HeaderMenu from './HeaderMenu'
 import ReserveSquare from '@/components/icons/ReserveSquare'
 import TelegramIcon from '@/components/icons/TelegramIcon'
 import {
@@ -45,7 +44,7 @@ const DiscoverItem = () => {
   return (
     <NavigationMenuItem>
       <NavigationMenuLink asChild>
-        <NavLink to={ROUTES.HOME}>
+        <NavLink to={ROUTES.DISCOVER}>
           {({ isActive }: { isActive: boolean }) => (
             <div
               className={cn(

@@ -49,11 +49,13 @@ import EarnIndexDTF from './views/earn/views/index-dtf'
 import EarnYieldDTF from './views/earn/views/yield-dtf'
 import EarnDefi from './views/earn/views/defi'
 import Home from './views/home'
+import Discover from './views/home/discover'
 
 // TODO: Fix recoll call on yield dtf auction page
 const AppRoutes = () => (
   <Routes>
     <Route path={ROUTES.HOME} element={<Home />} />
+    <Route path={ROUTES.DISCOVER} element={<Discover />} />
     {/* Internal routes */}
     <Route path="/internal/dtf-list" element={<InternalDTFList />} />
     <Route path="/internal/dtf-listed" element={<InternalDTFListed />} />
