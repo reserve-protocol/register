@@ -2,6 +2,7 @@ import ProposalStatusBar from '@/components/proposal-status-bar'
 import { cn } from '@/lib/utils'
 import { formatPercentage, getProposalTitle, parseDuration } from '@/utils'
 import { PROPOSAL_STATES } from '@/utils/constants'
+import { isOptimisticReadyToExecute } from '@/views/index-dtf/governance/utils/proposal-flow'
 import { Trans } from '@lingui/react/macro'
 import type {
   IndexDtfProposalSummary
@@ -63,7 +64,11 @@ const ProposalState = ({ proposal }: IProposalListItem) => {
   }
 
   const STATE_LABEL = {
-    [PROPOSAL_STATES.SUCCEEDED]: <Trans>Pending queue</Trans>,
+    [PROPOSAL_STATES.SUCCEEDED]: isOptimisticReadyToExecute(proposal) ? (
+      <Trans>Ready to execute</Trans>
+    ) : (
+      <Trans>Pending queue</Trans>
+    ),
     [PROPOSAL_STATES.QUEUED]: <Trans>Pending execution</Trans>,
     [PROPOSAL_STATES.EXECUTED]: <Trans>Executed</Trans>,
     [PROPOSAL_STATES.CANCELED]: <Trans>Proposal was canceled</Trans>,

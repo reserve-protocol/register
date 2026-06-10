@@ -3,10 +3,11 @@ import type { MessageDescriptor } from '@lingui/core'
 import { msg } from '@lingui/core/macro'
 import { useLingui } from '@lingui/react/macro'
 import { useAtomValue } from 'jotai'
-import { Check, Loader2, Slash, X } from 'lucide-react'
+import { Check, Clock, Loader2, Slash, X } from 'lucide-react'
 import { ReactNode } from 'react'
 import { parseDurationShort } from 'utils'
 import { PROPOSAL_STATES } from 'utils/constants'
+import { isOptimisticReadyToExecute } from '@/views/index-dtf/governance/utils/proposal-flow'
 import { proposalDetailAtom } from '../atom'
 
 const FINAL_STATES: Record<
@@ -105,9 +106,32 @@ const FinalState = ({
 
 const ProposalAlert = () => {
   const { t } = useLingui()
-  const state = useAtomValue(proposalDetailAtom)?.votingState
+  const proposal = useAtomValue(proposalDetailAtom)
+  const state = proposal?.votingState
 
   if (!state) return null
+
+  if (isOptimisticReadyToExecute(proposal)) {
+    return (
+      <FinalState
+        label={t`Ready to execute`}
+        className="text-primary"
+        bgColor="rgba(9, 85, 172, 0.10)"
+        icon={<Check size={20} />}
+      />
+    )
+  }
+
+  if (state.state === PROPOSAL_STATES.SUCCEEDED) {
+    return (
+      <FinalState
+        label={t`Pending queue`}
+        className="text-success"
+        bgColor="rgba(0, 255, 152, 0.10)"
+        icon={<Clock size={20} />}
+      />
+    )
+  }
 
   if (Object.keys(FINAL_STATES).includes(state.state)) {
     return (

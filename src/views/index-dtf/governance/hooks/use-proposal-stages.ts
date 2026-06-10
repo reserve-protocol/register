@@ -59,20 +59,22 @@ export const useProposalStages = (
           : undefined,
     })
 
-    stages.push({
-      key: 'execution-delay',
-      duration: executionDelay,
-      status:
-        state === PROPOSAL_STATES.EXECUTED
-          ? 'completed'
-          : state === PROPOSAL_STATES.QUEUED
-            ? 'in-progress'
-            : 'pending',
-      progress:
-        state === PROPOSAL_STATES.QUEUED
-          ? progressFromDeadline(deadline, executionDelay)
-          : undefined,
-    })
+    if (!isOptimistic) {
+      stages.push({
+        key: 'execution-delay',
+        duration: executionDelay,
+        status:
+          state === PROPOSAL_STATES.EXECUTED
+            ? 'completed'
+            : state === PROPOSAL_STATES.QUEUED
+              ? 'in-progress'
+              : 'pending',
+        progress:
+          state === PROPOSAL_STATES.QUEUED
+            ? progressFromDeadline(deadline, executionDelay)
+            : undefined,
+      })
+    }
 
     return stages
   }, [

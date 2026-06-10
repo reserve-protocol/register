@@ -23,6 +23,11 @@ import { colors } from 'theme'
 import { formatDate, getCurrentTime, parseDuration } from 'utils'
 import { PROPOSAL_STATES } from 'utils/constants'
 import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
+import {
+  canExecuteProposal,
+  shouldShowEndStep,
+  shouldShowQueueStep,
+} from '@/views/index-dtf/governance/utils/proposal-flow'
 import { proposalDetailAtom } from '../atom'
 
 type TimelineItemProps = {
@@ -240,11 +245,6 @@ export const TimelineItemVotingResult = () => {
   )
 }
 
-const VALID_STATES_QUEUED = [
-  PROPOSAL_STATES.QUEUED,
-  PROPOSAL_STATES.EXECUTED,
-  PROPOSAL_STATES.CANCELED,
-]
 export const TimelineItemQueued = () => {
   const proposal = useAtomValue(proposalDetailAtom)
 
@@ -253,7 +253,7 @@ export const TimelineItemQueued = () => {
   const currentTime = useAtomValue(blockTimestampAtom)
   const duration = executionTime - queueTime
   const elapsed = currentTime - queueTime
-  const show = VALID_STATES_QUEUED.includes(proposal?.votingState.state ?? '')
+  const show = shouldShowQueueStep(proposal)
   const showProgress = proposal?.votingState.state === PROPOSAL_STATES.QUEUED
 
   if (!show) return null
@@ -276,17 +276,20 @@ export const TimelineItemQueued = () => {
 }
 
 const VALID_STATES_END = [
+  PROPOSAL_STATES.SUCCEEDED,
   PROPOSAL_STATES.QUEUED,
   PROPOSAL_STATES.EXECUTED,
   PROPOSAL_STATES.CANCELED,
 ]
 const TITLE_BY_STATE_END: Record<string, MessageDescriptor> = {
+  [PROPOSAL_STATES.SUCCEEDED]: msg`Execute proposal`,
   [PROPOSAL_STATES.QUEUED]: msg`Execute proposal`,
   [PROPOSAL_STATES.EXECUTED]: msg`Executed`,
   [PROPOSAL_STATES.CANCELED]: msg`Canceled`,
 }
 
 const ICON_BY_STATE_END: Record<string, ReactNode> = {
+  [PROPOSAL_STATES.SUCCEEDED]: <Circle size={18} />,
   [PROPOSAL_STATES.QUEUED]: <Circle size={18} />,
   [PROPOSAL_STATES.EXECUTED]: <CheckCircle color={colors.success} size={18} />,
   [PROPOSAL_STATES.CANCELED]: <XCircle color="red" size={18} />,
@@ -296,12 +299,22 @@ export const TimelineItemEnd = () => {
   const { t } = useLingui()
   const proposal = useAtomValue(proposalDetailAtom)
   const state = proposal?.votingState.state ?? ''
+  const currentTime = Math.max(useAtomValue(blockTimestampAtom), getCurrentTime())
 
-  const show = VALID_STATES_END.includes(state)
-  const enabled = state !== PROPOSAL_STATES.QUEUED
+  const show = VALID_STATES_END.includes(state) && shouldShowEndStep(proposal)
+  const enabled =
+    state !== PROPOSAL_STATES.QUEUED || canExecuteProposal(proposal, currentTime)
   const executionTime = +(proposal?.executionTime || 0)
   const executionETA = +(proposal?.executionETA || 0)
   const cancellationTime = +(proposal?.cancellationTime || 0)
+  const eventTime =
+    state === PROPOSAL_STATES.QUEUED
+      ? executionETA
+      : state === PROPOSAL_STATES.EXECUTED
+        ? executionTime
+        : state === PROPOSAL_STATES.CANCELED
+          ? cancellationTime
+          : undefined
   const transactionHash =
     state === PROPOSAL_STATES.EXECUTED ? proposal?.executionTxnHash : undefined
 
@@ -316,13 +329,7 @@ export const TimelineItemEnd = () => {
           hash={transactionHash}
         />
       }
-      surtitle={formatDate(
-        (state === PROPOSAL_STATES.QUEUED
-          ? executionETA
-          : state === PROPOSAL_STATES.EXECUTED
-            ? executionTime
-            : cancellationTime) * 1000
-      )}
+      surtitle={eventTime ? formatDate(eventTime * 1000) : undefined}
       enabled={enabled}
     />
   )

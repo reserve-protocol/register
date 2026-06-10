@@ -5,6 +5,10 @@ import { chainIdAtom } from '@/state/atoms'
 import { formatCurrency } from '@/utils'
 import { PROPOSAL_STATES } from '@/utils/constants'
 import { ExplorerDataType, getExplorerLink } from '@/utils/getExplorerLink'
+import {
+  isOptimisticReadyToExecute,
+  shouldQueueProposal,
+} from '@/views/index-dtf/governance/utils/proposal-flow'
 import { Trans } from '@lingui/react/macro'
 import { useAtomValue } from 'jotai'
 import { ArrowUpRight, AsteriskIcon, HandFist, Rocket } from 'lucide-react'
@@ -50,7 +54,10 @@ const ViewExecuteTxButton = () => {
 }
 
 const ProposalActionButtons = () => {
-  const state = useAtomValue(proposalStateAtom)
+  const proposal = useAtomValue(proposalDetailAtom)
+  const state = proposal?.votingState.state
+
+  if (!proposal) return null
 
   if (state === PROPOSAL_STATES.QUEUED) {
     return (
@@ -61,8 +68,12 @@ const ProposalActionButtons = () => {
     )
   }
 
-  if (state === PROPOSAL_STATES.SUCCEEDED) {
+  if (shouldQueueProposal(proposal)) {
     return <ProposalQueue />
+  }
+
+  if (isOptimisticReadyToExecute(proposal)) {
+    return <ProposalExecute />
   }
 
   if (state === PROPOSAL_STATES.EXECUTED) {

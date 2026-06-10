@@ -1,6 +1,8 @@
 import TransactionButton from '@/components/ui/transaction-button'
+import { blockTimestampAtom } from '@/state/atoms'
 import { getCurrentTime } from '@/utils'
 import { PROPOSAL_STATES } from '@/utils/constants'
+import { canExecuteProposal } from '@/views/index-dtf/governance/utils/proposal-flow'
 import { t } from '@lingui/macro'
 import { useIndexDtfExecuteProposalCall } from '@reserve-protocol/react-sdk'
 import useContractWrite from 'hooks/useContractWrite'
@@ -11,16 +13,15 @@ import { proposalDetailAtom } from '../atom'
 import useRefreshProposal from '../hooks/use-refresh-proposal'
 
 const canExecuteAtom = atom((get) => {
-  const timestamp = getCurrentTime()
+  const timestamp = Math.max(get(blockTimestampAtom), getCurrentTime())
   const proposal = get(proposalDetailAtom)
 
-  return proposal?.executionETA && proposal.executionETA <= timestamp
+  return canExecuteProposal(proposal, timestamp)
 })
 
 const ProposalExecute = () => {
   const [proposal, setProposal] = useAtom(proposalDetailAtom)
   const canExecute = useAtomValue(canExecuteAtom)
-  const deadline = proposal?.votingState.deadline
   const refreshProposal = useRefreshProposal()
   const call = useIndexDtfExecuteProposalCall(
     proposal && canExecute
@@ -78,17 +79,17 @@ const ProposalExecute = () => {
     }
   }, [data, hash, refreshProposal, setProposal, status])
 
-  if (!deadline || deadline > 0) return null
+  if (!canExecute) return null
 
   return (
     <TransactionButton
       size="sm"
       loading={isMining || isLoading}
       mining={isMining}
-      disabled={!isReady || !canExecute || status === 'success'}
+      disabled={!isReady || status === 'success'}
       onClick={write}
       text={t`Execute proposal`}
-      className="h-11"
+      className="h-11 shrink-0"
       error={validationError}
       errorWithName={false}
     />
