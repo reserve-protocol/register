@@ -1,34 +1,54 @@
-import { cn } from "@/lib/utils";
-import ProtocolMetrics from "./protocol-metrics";
-import useIsDarkMode from "@/hooks/use-is-dark-mode";
-import DTFExplainerButton from "./dtf-explainer-button";
-import { useEffect } from "react";
-
-const SPLASH_LIGHT_1X = '/imgs/home-splash@1x.webp'
-const SPLASH_LIGHT_2X = '/imgs/home-splash.webp'
-const SPLASH_DARK_1X = '/imgs/home-splash-dark@1x.webp'
-const SPLASH_DARK_2X = '/imgs/home-splash-dark.webp'
+import { cn } from '@/lib/utils'
+import { Play } from 'lucide-react'
+import {
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+  type CSSProperties,
+} from 'react'
+import DTFPackingAnimation from './dtf-packing-animation'
+import DTFExplainerButton from './dtf-explainer-button'
+import HighlightedDTFs from './highlighted-dtfs'
+import ProtocolMetrics from './protocol-metrics'
 
 const Header = ({ className }: { className?: string }) => (
-  <h1 className={cn("text-5xl leading-[1.10] text-primary dark:text-foreground", className)}>Reserve lets you buy entire portfolios<br /> as a single token</h1>
+  <h1
+    className={cn(
+      'text-[36px] font-normal max-w-[400px] leading-[1.25] text-primary dark:text-foreground',
+      className
+    )}
+  >
+    Reserve lets you buy entire portfolios as a single token
+  </h1>
 )
 
 const SubHeader = ({ className }: { className?: string }) => (
-  <h4 className={cn("text-xl dark:text-legend", className)}>
-    These tokenized portfolios are called DTFs: <br />
-    <strong className="dark:text-foreground">Decentralized Token Folios</strong>
-  </h4>
+  <p
+    className={cn(
+      'leading-[1.25] flex flex-col items-center gap-1 text-foreground dark:text-foreground',
+      className
+    )}
+  >
+    <span className="text-xl">We call these tokenized portfolios DTFs:</span>
+    <span className="text-xl font-medium">Decentralized Token Folios</span>
+    <DTFExplainerButton className="mt-6 h-9 w-fit rounded-full border-0 bg-transparent px-4 py-0 text-base text-primary hover:bg-primary hover:text-background dark:bg-transparent dark:text-primary dark:hover:bg-card dark:hover:text-primary/80">
+      <Play className="mr-1 h-4 w-4 fill-current" />
+      Watch explainer
+    </DTFExplainerButton>
+  </p>
 )
 
 const MetricsContainer = () => {
   return (
     <div
       className={cn(
-        "flex gap-1 min-w-0 overflow-hidden",
-        "lg:overflow-visible",
-        "lg:rounded-full lg:px-10 lg:py-6",
-        "lg:border lg:border-[#f9eddd] dark:lg:border-white/10",
-        "lg:backdrop-blur-[7px]"
+        'flex gap-1 min-w-0 overflow-hidden bg-card/20',
+        'lg:overflow-visible',
+        'lg:rounded-full lg:px-[64px] lg:py-6',
+        'lg:border-2 lg:border-card',
+        'lg:backdrop-blur-[7px]',
+        'lg:shadow-[0_20px_70px_rgba(0,0,0,0.06)]'
       )}
     >
       <ProtocolMetrics />
@@ -36,65 +56,100 @@ const MetricsContainer = () => {
   )
 }
 
-const SplashImage = () => {
-  const isDark = useIsDarkMode()
-  const splash1x = isDark ? SPLASH_DARK_1X : SPLASH_LIGHT_1X
-  const splash2x = isDark ? SPLASH_DARK_2X : SPLASH_LIGHT_2X
+export const DTFSubHeader = () => (
+  <div className="mt-12 mb-0 text-center">
+    <SubHeader className="text-5xl font-normal" />
+  </div>
+)
 
-  // Warm the opposite-theme variant so toggling dark mode is an instant swap.
-  // Deferred so the preload doesn't count toward window.onload.
+const Hero = () => {
+  const stageRef = useRef<HTMLDivElement>(null)
+  const [scrollDistance, setScrollDistance] = useState(0)
+  const [scrollOffset, setScrollOffset] = useState(0)
+
+  const updateScrollOffset = useCallback(() => {
+    const scroller = document.getElementById('app-container')
+    const stage = stageRef.current
+    if (!scroller || !stage) return
+
+    const scrollerTop = scroller.getBoundingClientRect().top
+    const stageTop = stage.getBoundingClientRect().top
+    const progress = scrollerTop - stageTop
+    const nextOffset = Math.max(0, Math.min(scrollDistance, progress))
+
+    setScrollOffset((currentOffset) =>
+      currentOffset === nextOffset ? currentOffset : nextOffset
+    )
+  }, [scrollDistance])
+
   useEffect(() => {
-    const other1x = isDark ? SPLASH_LIGHT_1X : SPLASH_DARK_1X
-    const other2x = isDark ? SPLASH_LIGHT_2X : SPLASH_DARK_2X
-    const id = setTimeout(() => {
-      new Image().src = other1x
-      new Image().src = other2x
-    }, 1500)
-    return () => clearTimeout(id)
-  }, [isDark])
+    const scroller = document.getElementById('app-container')
+    if (!scroller) return
+
+    let rafId = 0
+    const scheduleUpdate = () => {
+      window.cancelAnimationFrame(rafId)
+      rafId = window.requestAnimationFrame(updateScrollOffset)
+    }
+
+    scheduleUpdate()
+    scroller.addEventListener('scroll', scheduleUpdate, { passive: true })
+    window.addEventListener('resize', scheduleUpdate)
+
+    return () => {
+      window.cancelAnimationFrame(rafId)
+      scroller.removeEventListener('scroll', scheduleUpdate)
+      window.removeEventListener('resize', scheduleUpdate)
+    }
+  }, [updateScrollOffset])
+
+  const handleScrollDistanceChange = useCallback((distance: number) => {
+    setScrollDistance((currentDistance) =>
+      currentDistance === distance ? currentDistance : distance
+    )
+  }, [])
+
+  const stageStyle = {
+    '--highlighted-scroll-distance': `${scrollDistance}px`,
+  } as CSSProperties
+  const isStatsHidden = scrollOffset > 8
 
   return (
-    <div className="relative">
-      <img
-        className="lg:mb-6 lg:mt-10 w-full h-auto min-h-48 px-2 2xl:px-0 object-cover"
-        src={splash1x}
-        srcSet={`${splash1x} 1x, ${splash2x} 2x`}
-        width={2800}
-        height={950}
-        alt="Decentralized Token Folios illustration"
-        fetchPriority="high"
-        decoding="async"
-      />
-      <DTFExplainerButton className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 dark:border-legend dark:border-[1px] dark:hover:text-primary dark:hover:border-primary dark:text-legend dark:bg-muted text-primary bg-[#DBE5F2] rounded-full border-background border-4 py-5" />
+    <div
+      ref={stageRef}
+      style={stageStyle}
+      className="relative rounded-t-4xl h-[calc(100svh-56px+var(--highlighted-scroll-distance))] md:h-[calc(100svh-72px+var(--highlighted-scroll-distance))]"
+    >
+      <div className="sticky top-0 flex h-[calc(100svh-56px)] min-h-0 flex-col overflow-hidden md:h-[calc(100svh-72px)]">
+        <div className="grid gap-1 min-h-0 bg-secondary rounded-t-4xl border-[4px] border-b-0 border-secondary overflow-hidden flex-1 grid-cols-[minmax(0,1fr)_minmax(420px,1fr)]">
+          <div className="flex min-h-0 flex-col items-center bg-background justify-center gap-4 rounded-3xl rounded-bl-none p-4 pb-[156px]">
+            <div className="flex w-full max-w-[520px] flex-col items-center">
+              <DTFPackingAnimation />
+              <Header className="text-center mb-3" />
+              <SubHeader className="text-center" />
+            </div>
+          </div>
+          <HighlightedDTFs
+            className="min-h-0"
+            onScrollDistanceChange={handleScrollDistanceChange}
+            scrollOffset={scrollOffset}
+          />
+        </div>
+        <div
+          className={cn(
+            'pointer-events-none absolute inset-x-0 bottom-5 z-20 flex flex-col gap-2 px-0 transition-all duration-300 ease-out lg:bottom-10 lg:flex-row lg:justify-center lg:px-6',
+            isStatsHidden
+              ? 'translate-y-4 opacity-0'
+              : 'translate-y-0 opacity-100'
+          )}
+        >
+          <div className="pointer-events-auto">
+            <MetricsContainer />
+          </div>
+        </div>
+      </div>
     </div>
   )
 }
-
-const MobileHeading = () => (
-  <div className="flex flex-col items-center text-center gap-4 lg:hidden mt-5 mb-6">
-    <Header className="text-2xl sm:text-4xl font-semibold mx-6" />
-    <SubHeader className="text-base" />
-  </div>
-)
-
-const DesktopSubHeader = () => (
-  <SubHeader className="hidden lg:block text-center mx-auto mt-24" />
-)
-
-const Hero = () => (
-  <div className="lg:mt-10 mb-12">
-    <div className="hidden lg:block mx-6 text-center">
-      <Header className="mx-auto" />
-    </div>
-    <div className="relative">
-      <SplashImage />
-      <MobileHeading />
-      <div className="lg:absolute lg:inset-x-0 lg:bottom-0 lg:translate-y-1/2 lg:flex lg:justify-center lg:px-10">
-        <MetricsContainer />
-      </div>
-    </div>
-    <DesktopSubHeader />
-  </div>
-)
 
 export default Hero

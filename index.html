@@ -70,25 +70,6 @@
     <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
     <link rel="dns-prefetch" href="https://connect.facebook.net" />
 
-    <!-- Preload hero splash — ONLY on home. The image is React-rendered,
-         so the parser can't discover it; injecting via JS runs before the
-         main bundle downloads, which is the real bottleneck anyway. -->
-    <script>
-      (function () {
-        if (location.pathname !== '/') return
-        var base = matchMedia('(prefers-color-scheme: dark)').matches
-          ? '/imgs/home-splash-dark'
-          : '/imgs/home-splash'
-        var link = document.createElement('link')
-        link.rel = 'preload'
-        link.as = 'image'
-        link.fetchPriority = 'high'
-        link.href = base + '@1x.webp'
-        link.imageSrcset = base + '@1x.webp 1x, ' + base + '.webp 2x'
-        document.head.appendChild(link)
-      })()
-    </script>
-
     <!-- Agent discovery -->
     <link rel="alternate" type="text/plain" href="/llms.txt" title="llms.txt" />
     <link rel="describedby" href="/llms.txt" />

@@ -1,22 +1,31 @@
-import { Button } from "@/components";
+import { Button } from '@/components/ui/button'
 import {
   Dialog,
   DialogClose,
   DialogContent,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog";
-import { cn } from "@/lib/utils";
-import { Play, X } from "lucide-react";
+} from '@/components/ui/dialog'
+import { cn } from '@/lib/utils'
+import { X } from 'lucide-react'
+import { type ReactNode } from 'react'
 
-const DTF_VIDEO_ID = "EL9OHjIab_w";
+const DTF_VIDEO_ID = 'EL9OHjIab_w'
 
-const DTFExplainerButton = ({ className }: { className?: string }) => (
+const DTFExplainerButton = ({
+  className,
+  children = 'Watch Explainer',
+}: {
+  className?: string
+  children?: ReactNode
+}) => (
   <Dialog>
     <DialogTrigger asChild>
-      <Button variant="outline" className={cn("gap-1 text-legend px-6", className)}>
-        <Play className="h-4 w-4" />
-        Watch DTF Explainer
+      <Button
+        variant="outline"
+        className={cn('gap-1 text-legend p-6', className)}
+      >
+        {children}
       </Button>
     </DialogTrigger>
     <DialogContent
