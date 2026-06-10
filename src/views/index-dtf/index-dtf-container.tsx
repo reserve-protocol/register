@@ -55,6 +55,7 @@ import { Outlet, useNavigate, useParams, useLocation } from 'react-router-dom'
 import { Address } from 'viem'
 import { useReadContract, useSwitchChain } from 'wagmi'
 import IndexDTFNavigation from './components/navigation'
+import ConfirmEligibilityModal from './components/confirm-eligibility-modal'
 import GovernanceUpdater from './governance/updater'
 import YieldIndexUpdater from '@/state/updaters/yield-index-updater'
 
@@ -391,6 +392,7 @@ const IndexDTFContainer = () => {
         <IndexDTFSEO />
         <FeedbackButton />
         <Updater />
+        <ConfirmEligibilityModal />
         <IndexDTFNavigation />
         <div className="flex-grow">
           <Outlet />
