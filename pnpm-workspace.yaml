@@ -19,6 +19,7 @@ minimumReleaseAgeExclude:
   - '@reserve-protocol/react-sdk'
   - '@reserve-protocol/sdk'
   - '@reserve-protocol/async-zap-sdk'
+  - '@reserve-protocol/dtf-chat'
 overrides:
   axios: ^1.15.0
   react: 'catalog:'

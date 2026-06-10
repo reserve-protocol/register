@@ -1,6 +1,5 @@
 import daoFeeRegistryAbi from '@/abis/dao-fee-registry-abi'
 import dtfIndexAbi from '@/abis/dtf-index-abi-v1'
-import FeedbackButton from '@/components/feedback-button'
 import SEO from '@/components/seo'
 import useFavicon from '@/hooks/useFavicon'
 import useIndexDTFTransactions from '@/hooks/useIndexDTFTransactions'
@@ -390,7 +389,6 @@ const IndexDTFContainer = () => {
     <IndexDtfProvider address={tokenAddress} chainId={chainId}>
       <div className="container flex flex-col-reverse md:flex-row mb-16 lg:mb-0">
         <IndexDTFSEO />
-        <FeedbackButton />
         <Updater />
         <ConfirmEligibilityModal />
         <IndexDTFNavigation />

@@ -75,11 +75,16 @@ export default defineConfig({
   },
 
   optimizeDeps: {
-    exclude: ['ts-node'],
+    // Linked local package — serve its TSX source directly (don't pre-bundle a
+    // symlinked workspace dep). React is deduped above so the widget's hooks
+    // resolve to Register's single React instance.
+    exclude: ['ts-node', '@reserve-protocol/dtf-chat'],
     include: [
       'react',
       'react-dom',
       'react-router-dom',
+      'ai',
+      '@ai-sdk/react',
       '@radix-ui/react-accordion',
       '@radix-ui/react-dialog',
       '@radix-ui/react-select',
