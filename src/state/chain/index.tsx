@@ -68,12 +68,12 @@ const queryClient = new QueryClient({
     },
   },
 })
-const Disclaimer: DisclaimerComponent = ({ Text, Link }) => (
-  <div>
+const Disclaimer: DisclaimerComponent = () => (
+  <div className='text-primary-foreground'>
     By connecting a wallet, you agree to ABC Labs{' '}
-    <a href="https://reserve.org/terms_and_conditions/">
-      Terms of Service and consent to its Privacy Policy
-    </a>
+    <a className='text-primary underline' target='blank' href="https://reserve.org/terms_and_conditions/">
+      Terms of Service
+    </a> and consent to its <a className='text-primary underline' target='blank' href="https://reserve.org/terms-and-conditions#privacy">Privacy Policy</a>
   </div>
 )
 
