@@ -14,14 +14,14 @@ export const TOKEN_LOGO_MAPPINGS: Record<string, string> = {
   "ldo": "https://raw.githubusercontent.com/SmolDapp/tokenAssets/main/tokens/1/0x5a98fcbea516cf06857215779fd812ca3bef1b32/logo-128.png",
   "uni": "https://raw.githubusercontent.com/SmolDapp/tokenAssets/main/tokens/1/0x1f9840a85d5af5bf1d1762f925bdaddc4201f984/logo-128.png",
   "ondo": "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xfAbA6f8e4a5E8Ab82F62fe7C39859FA577269BE3/logo.png",
-  "zchf": "https://raw.githubusercontent.com/SmolDapp/tokenAssets/main/tokens/1/0xb58e61c3098d85632df34eecfb899a1ed80921cb/logo-128.png",
-  "steakusdc": "https://token-icons.llamao.fi/icons/tokens/1/0xbeef01735c132ada46aa9aa4c54623caa92a64cb",
-  "xaut": "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0x68749665FF8D2d112Fa859AA293F07A622782F38/logo.png",
   "cow": "https://raw.githubusercontent.com/SmolDapp/tokenAssets/main/tokens/1/0xdef1ca1fb7fbcdc777520aa7f396b4e015f497ab/logo-128.png",
   "yb": "https://token-icons.llamao.fi/icons/tokens/1/0x01791f726b4103694969820be083196cc7c045ff",
   "resolv": "https://token-icons.llamao.fi/icons/tokens/1/0x259338656198ec7a76c729514d3cb45dfbf768a1",
   "fluid": "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0x6f40d4A6237C257fff2dB00FA0510DeEECd303eb/logo.png",
   "syrup": "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0x643C4E15d7d62Ad0aBeC4a9BD4b001aA3Ef52d66/logo.png",
+  "zchf": "https://raw.githubusercontent.com/SmolDapp/tokenAssets/main/tokens/1/0xb58e61c3098d85632df34eecfb899a1ed80921cb/logo-128.png",
+  "steakusdc": "https://token-icons.llamao.fi/icons/tokens/1/0xbeef01735c132ada46aa9aa4c54623caa92a64cb",
+  "xaut": "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0x68749665FF8D2d112Fa859AA293F07A622782F38/logo.png",
   "mkr": "https://raw.githubusercontent.com/SmolDapp/tokenAssets/main/tokens/1/0x9f8f72aa9304c8b593d555f12ef6589cc3a579a2/logo-128.png",
   "plume": "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0x4C1746A800D224393fE2470C70A35717eD4eA5F1/logo.png",
   "cfg": "https://token-icons.llamao.fi/icons/tokens/1/0xcccccccccc33d538dbc2ee4feab0a7a1ff4e8a94",
@@ -46,6 +46,7 @@ export const TOKEN_LOGO_MAPPINGS: Record<string, string> = {
   "lfi": "https://raw.githubusercontent.com/SmolDapp/tokenAssets/main/tokens/8453/0x3722264ab15a1dfce5a5af89e6547f7949a8aba3/logo-128.png",
   "tibbir": "https://raw.githubusercontent.com/SmolDapp/tokenAssets/main/tokens/8453/0xa4a2e2ca3fbfe21aed83471d28b6f65a233c6e00/logo-128.png",
   "odai": "https://token-icons.llamao.fi/icons/tokens/8453/0x0086cff0c1e5d17b19f5bcd4c8840a5b4251d959",
+  "blocktronics": "https://token-icons.llamao.fi/icons/tokens/8453/0x7afe438411ee3959c7de6f7fb76bf9c769320ba3",
   "clanker": "https://raw.githubusercontent.com/SmolDapp/tokenAssets/main/tokens/8453/0x1bc0c42215582d5a085795f4badbac3ff36d1bcb/logo-128.png",
   "bnkr": "https://raw.githubusercontent.com/SmolDapp/tokenAssets/main/tokens/8453/0x22af33fe49fd1fa80c7149773dde5890d3c76f3b/logo-128.png",
   "felix": "https://raw.githubusercontent.com/SmolDapp/tokenAssets/main/tokens/8453/0xf30bf00edd0c22db54c9274b90d2a4c21fc09b07/logo-128.png",
@@ -113,8 +114,7 @@ export const TOKEN_LOGO_MAPPINGS: Record<string, string> = {
   "bch": "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/smartchain/assets/0x8fF795a6F4D97E7887C79beA79aba5cc76444aDf/logo.png",
   "avax": "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/smartchain/assets/0x1CE0c2827e2eF14D5C4f29a091d735A204794041/logo.png",
   "ltc": "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/smartchain/assets/0x4338665CBB7B2485A8855A139b75D5e34AB0DB94/logo.png",
-  "shib": "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/smartchain/assets/0x2859e4544C4bB03966803b044A93563Bd2D0DD4D/logo.png",
   "zec": "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/smartchain/assets/0x1Ba42e5193dfA8B03D15dd1B86a3113bbBEF8Eeb/logo.png"
 }
 
-export const LAST_UPDATED = 1779835748572
+export const LAST_UPDATED = 1781211818171

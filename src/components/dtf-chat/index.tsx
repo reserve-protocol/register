@@ -9,6 +9,7 @@ import {
   indexDTFBasketAtom,
   indexDTFStatusAtom,
 } from '@/state/dtf/atoms'
+import { useIsDesktop } from '@/hooks/use-media-query'
 import { useAtomValue } from 'jotai'
 import { useLocation } from 'react-router-dom'
 
@@ -67,6 +68,14 @@ const DtfChat = () => {
   // On a DTF page with a loaded address → DTF mode (tools fetch live fees/price/
   // weights, so we keep the static context to identity + mandate + holdings).
   const onDtf = !!address && pathname.includes('index-dtf')
+
+  // 24px gap on desktop, 12px on mobile. On mobile DTF pages also clear the
+  // fixed bottom nav bar (h-16 = 64px); `lg` is where that bar becomes a sidebar.
+  const isDesktop = useIsDesktop()
+  const gap = isDesktop ? 24 : 12
+  const bottomOffset = gap + (onDtf && !isDesktop ? 64 : 0)
+  const rightOffset = gap
+
   const dtfContext: DtfContext | undefined = onDtf
     ? {
         address,
@@ -86,7 +95,7 @@ const DtfChat = () => {
       turnstileSiteKey={local ? undefined : TURNSTILE_SITE_KEY}
       dtfContext={dtfContext}
       view={dtfContext ? undefined : viewForPath(pathname)}
-      offset={{ bottom: 24, right: 24 }}
+      offset={{ bottom: bottomOffset, right: rightOffset }}
       zIndex={50}
     />
   )
