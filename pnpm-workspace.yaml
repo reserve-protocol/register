@@ -18,6 +18,7 @@ minimumReleaseAgeExclude:
   - '@reserve-protocol/react-zapper'
   - '@reserve-protocol/react-sdk'
   - '@reserve-protocol/sdk'
+  - '@reserve-protocol/dtf-catalog'
   - '@reserve-protocol/async-zap-sdk'
   - '@reserve-protocol/dtf-chat'
 overrides:

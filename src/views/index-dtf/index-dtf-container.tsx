@@ -40,7 +40,7 @@ import {
   IndexDtfProvider,
   type Amount,
   useCurrentIndexDtf,
-  useIndexDtfList,
+  useIndexCatalog,
   useIndexDtfIdentity,
   useIndexDtfVersion,
   supportedChainIds,
@@ -387,7 +387,7 @@ const IndexDTFContainer = () => {
   const catalogParams = shouldResolveAlias
     ? { chainId: indexDtfChainId, status: 'active' as const }
     : undefined
-  const { data: catalog = [], isLoading } = useIndexDtfList(catalogParams, {
+  const { data: catalog = [], isLoading } = useIndexCatalog(catalogParams, {
     enabled: shouldResolveAlias,
   })
 
