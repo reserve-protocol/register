@@ -223,7 +223,7 @@ const HighlightedDTFCard = ({ dtf }: { dtf: IndexDTFItem }) => {
         isInactiveDTF(dtf.status) && 'opacity-60'
       )}
     >
-      <div className="flex flex-col overflow-hidden rounded-t-2xl bg-gradient-to-b from-secondary to-card transition-colors duration-200 lg:from-secondary/80 lg:group-hover:from-secondary lg:group-focus-within:from-muted">
+      <div className="flex flex-col overflow-hidden rounded-t-2xl bg-gradient-to-b from-secondary to-card transition-colors duration-200 lg:from-secondary/80 lg:group-hover:from-card">
         <div className="flex min-w-0 items-start justify-between p-5 pb-2">
           <div className="flex min-w-0 flex-col items-start gap-3">
             <div className="relative w-fit flex-shrink-0">
