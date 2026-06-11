@@ -44,6 +44,7 @@ const useWatchTransaction = ({
     isLoading: isMining,
   } = useWaitForTransactionReceipt({
     hash,
+    chainId,
     confirmations: chainId === ChainId.Mainnet ? 1 : 3,
   })
 

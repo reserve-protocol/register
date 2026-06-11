@@ -49,6 +49,17 @@ const connectors = connectorsForWallets(
 export const wagmiConfig = createConfig({
   chains: [mainnet, base, arbitrum, bsc],
   connectors,
+  // WHY: viem defaults pollingInterval to clamp(chain.blockTime / 2, 500ms, 4s),
+  // so BSC (750ms blocks) polls every ~500ms and Base every ~1s. Set explicit
+  // intervals to stop hammering RPC on fast chains. Mainnet stays at its 4s
+  // default — slowing it further would also lag tx-receipt confirmations, which
+  // share this interval.
+  pollingInterval: {
+    [mainnet.id]: 4_000,
+    [base.id]: 3_000,
+    [arbitrum.id]: 3_000,
+    [bsc.id]: 3_000,
+  },
   transports: {
     [mainnet.id]: fallback(registerRpcUrls[mainnet.id].map((url) => http(url))),
     [base.id]: fallback(registerRpcUrls[base.id].map((url) => http(url))),

@@ -40,6 +40,7 @@ import {
   IndexDtfProvider,
   type Amount,
   useCurrentIndexDtf,
+  useIndexDtfList,
   useIndexDtfIdentity,
   useIndexDtfVersion,
   supportedChainIds,
@@ -57,6 +58,7 @@ import IndexDTFNavigation from './components/navigation'
 import ConfirmEligibilityModal from './components/confirm-eligibility-modal'
 import GovernanceUpdater from './governance/updater'
 import YieldIndexUpdater from '@/state/updaters/yield-index-updater'
+import { resolveIndexDtfRouteToken } from './utils/resolve-index-dtf-route-token'
 
 const DEFAULT_DESCRIPTION =
   'Reserve is the leading platform for permissionless DTFs and asset-backed currencies. Create, manage & trade tokenized indexes with 24/7 transparency.'
@@ -379,14 +381,36 @@ const InvalidIndexDTFRoute = () => {
 const IndexDTFContainer = () => {
   const { chain, tokenId } = useParams()
   const chainId = NETWORKS[chain ?? '']
-  const tokenAddress = isAddress(tokenId ?? '')
+  const indexDtfChainId = isIndexDtfChain(chainId) ? chainId : undefined
+  const routeAddress = isAddress(tokenId ?? '')
+  const shouldResolveAlias = !!indexDtfChainId && !!tokenId && !routeAddress
+  const catalogParams = shouldResolveAlias
+    ? { chainId: indexDtfChainId, status: 'active' as const }
+    : undefined
+  const { data: catalog = [], isLoading } = useIndexDtfList(catalogParams, {
+    enabled: shouldResolveAlias,
+  })
 
-  if (!isIndexDtfChain(chainId) || !tokenAddress) {
+  if (!indexDtfChainId) {
+    return <InvalidIndexDTFRoute />
+  }
+
+  const tokenAddress =
+    routeAddress ??
+    resolveIndexDtfRouteToken({
+      catalog,
+      chainId: indexDtfChainId,
+      tokenId,
+    })
+
+  if (!tokenAddress) {
+    if (shouldResolveAlias && isLoading) return null
+
     return <InvalidIndexDTFRoute />
   }
 
   return (
-    <IndexDtfProvider address={tokenAddress} chainId={chainId}>
+    <IndexDtfProvider address={tokenAddress} chainId={indexDtfChainId}>
       <div className="container flex flex-col-reverse md:flex-row mb-16 lg:mb-0">
         <IndexDTFSEO />
         <Updater />

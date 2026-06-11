@@ -244,6 +244,7 @@ const ProposeBanner = ({ refetch, description }: SpellUpgradeProps) => {
       .join('')}` as Hex
 
     writeContract({
+      chainId,
       address: dtf.ownerGovernance.id,
       abi: DTFIndexGovernance,
       functionName: 'propose',

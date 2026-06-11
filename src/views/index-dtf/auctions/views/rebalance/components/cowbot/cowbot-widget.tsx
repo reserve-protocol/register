@@ -42,7 +42,7 @@ const CowbotProvider = ({
   children,
 }: CowbotProviderProps) => {
   const { t } = useLingui()
-  const wagmiClient = usePublicClient()
+  const wagmiClient = usePublicClient({ chainId: config.chainId })
   const client = publicClient ?? wagmiClient
 
   const { status, totalOrders, error, isSupportedChain, start, stop, reset } =

@@ -88,6 +88,7 @@ const ProposeBanner = ({ refetch }: SpellUpgradeProps) => {
     if (!dtf || !spell || !dtf.ownerGovernance) return
 
     writeContract({
+      chainId,
       address: dtf.ownerGovernance.id,
       abi: DTFIndexGovernance,
       functionName: 'propose',

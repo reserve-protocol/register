@@ -147,6 +147,7 @@ export const accountDelegateAtom = atomWithLoadable(async (get) => {
     abi: StRSRVotes,
     functionName: 'delegates',
     args: [account],
+    chainId: get(chainIdAtom),
   })
 
   return delegate !== zeroAddress ? delegate : null

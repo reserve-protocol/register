@@ -1,5 +1,5 @@
 import { cn } from '@/lib/utils'
-import { chainIdAtom } from '@/state/chain/atoms/chainAtoms'
+import { blockAtom, chainIdAtom } from '@/state/chain/atoms/chainAtoms'
 import {
   indexDTF7dChangeAtom,
   indexDTFAtom,
@@ -11,7 +11,7 @@ import { useAtomValue } from 'jotai'
 import { ArrowDown, ArrowUp } from 'lucide-react'
 import { useEffect, useMemo } from 'react'
 import { formatEther } from 'viem'
-import { useAccount, useBalance, useBlockNumber } from 'wagmi'
+import { useAccount, useBalance } from 'wagmi'
 
 const DTFBalance = () => {
   const dtf = useAtomValue(indexDTFAtom)
@@ -19,9 +19,9 @@ const DTFBalance = () => {
   const chainId = useAtomValue(chainIdAtom)
   const account = useAccount()
   const dtf7dChange = useAtomValue(indexDTF7dChangeAtom)
-  const block = useBlockNumber({
-    watch: true,
-  })
+  // Reuse the globally-polled block for the current chain (AtomUpdater) instead
+  // of opening a second eth_blockNumber poll just for this balance.
+  const block = useAtomValue(blockAtom)
 
   const { data: userBalanceData, refetch: refetchBalance } = useBalance({
     address: account.address,
@@ -48,7 +48,9 @@ const DTFBalance = () => {
   }, [dtf7dChange, balanceValue])
 
   useEffect(() => {
-    refetchBalance()
+    if (block && account.address) {
+      refetchBalance()
+    }
   }, [block])
 
   return (

@@ -4,7 +4,7 @@ import TransactionButton from '@/components/ui/transaction-button'
 import useContractWrite from 'hooks/useContractWrite'
 import useWatchTransaction from 'hooks/useWatchTransaction'
 import { useAtomValue } from 'jotai'
-import { rTokenGovernanceAtom, walletAtom } from 'state/atoms'
+import { chainIdAtom, rTokenGovernanceAtom, walletAtom } from 'state/atoms'
 import { getProposalStateAtom, timelockIdAtom } from '../atom'
 import { keccak256, toBytes } from 'viem'
 import { useReadContract } from 'wagmi'
@@ -14,6 +14,7 @@ const ProposalCancel = () => {
   const governance = useAtomValue(rTokenGovernanceAtom)
   const timelockId = useAtomValue(timelockIdAtom)
   const account = useAtomValue(walletAtom)
+  const chainId = useAtomValue(chainIdAtom)
   const { deadline } = useAtomValue(getProposalStateAtom)
 
   const { data: canCancel } = useReadContract({
@@ -21,6 +22,7 @@ const ProposalCancel = () => {
     abi: Timelock,
     functionName: 'hasRole',
     args: account ? [keccak256(toBytes('CANCELLER_ROLE')), account] : undefined,
+    chainId,
   })
 
   const { write, isLoading, hash, isReady } = useContractWrite({

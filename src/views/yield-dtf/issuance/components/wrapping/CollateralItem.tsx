@@ -7,7 +7,7 @@ import { ExecuteButton } from '@/components/ui/transaction-button'
 import TokenLogo from 'components/icons/TokenLogo'
 import useDebounce from 'hooks/useDebounce'
 import useHasAllowance from 'hooks/useHasAllowance'
-import { useShouldRefresh } from 'hooks/useWatchReadContract'
+import { useRefreshSignal } from 'hooks/useWatchReadContract'
 import { useAtomValue } from 'jotai'
 import { useEffect, useMemo, useState } from 'react'
 import { chainIdAtom, walletAtom } from 'state/atoms'
@@ -32,7 +32,7 @@ const CollateralItem = ({ collateral, wrapping, className }: Props) => {
   const fromToken = wrapping ? collateral.underlyingToken : collateral.symbol
   const toToken = wrapping ? collateral.symbol : collateral.underlyingToken
   const [amount, setAmount] = useState('')
-  const shouldRefetch = useShouldRefresh(chainId)
+  const refreshSignal = useRefreshSignal(chainId)
 
   const { data, refetch } = useBalance({
     address: wallet ? wallet : undefined,
@@ -43,10 +43,10 @@ const CollateralItem = ({ collateral, wrapping, className }: Props) => {
   })
 
   useEffect(() => {
-    if (shouldRefetch) {
+    if (refreshSignal) {
       refetch()
     }
-  }, [refetch, shouldRefetch])
+  }, [refetch, refreshSignal])
 
   const debouncedAmount = useDebounce(amount, 500)
 

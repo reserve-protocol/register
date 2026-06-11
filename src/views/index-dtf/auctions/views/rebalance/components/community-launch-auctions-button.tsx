@@ -34,6 +34,7 @@ const CommunityLaunchAuctionsButton = () => {
   const { writeContract, isError, isPending, data } = useWriteContract()
   const { isSuccess } = useWaitForTransactionReceipt({
     hash: data,
+    chainId: dtf?.chainId,
   })
   const [error, setError] = useState<string | null>(null)
   const [countdown, setCountdown] = useState<number>(0)
@@ -98,6 +99,7 @@ const CommunityLaunchAuctionsButton = () => {
         abi: dtfIndexAbi,
         functionName: 'openAuctionUnrestricted',
         args: [BigInt(rebalance.rebalance.nonce)],
+        chainId: dtf?.chainId,
       })
     } catch (e) {
       console.error('Error opening auction', e)

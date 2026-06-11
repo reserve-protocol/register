@@ -273,6 +273,7 @@ export const blockDuration = {
   [ChainId.Mainnet]: 12,
   [ChainId.Base]: 2,
   [ChainId.Arbitrum]: 1,
+  [ChainId.BSC]: 1,
 }
 export const supportedChainList = [
   ChainId.Mainnet,

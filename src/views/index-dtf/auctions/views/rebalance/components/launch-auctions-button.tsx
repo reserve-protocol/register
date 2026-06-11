@@ -41,6 +41,7 @@ const LaunchAuctionsButton = () => {
   const { writeContract, isError, isPending, data } = useWriteContract()
   const { isSuccess } = useWaitForTransactionReceipt({
     hash: data,
+    chainId: dtf?.chainId,
   })
   const isAuctionOngoing = useAtomValue(isAuctionOngoingAtom)
   const isHybridDTF = useAtomValue(isHybridDTFAtom)
@@ -115,6 +116,7 @@ const LaunchAuctionsButton = () => {
           openAuctionArgs.newPrices as any,
           openAuctionArgs.newLimits as any,
         ],
+        chainId: dtf?.chainId,
       })
     } catch (e) {
       console.error('Error opening auction', e)

@@ -1,7 +1,6 @@
 import { useAtomValue } from 'jotai'
 import { useEffect } from 'react'
-import { chainIdAtom } from 'state/atoms'
-import { ChainId } from 'utils/chains'
+import { blockAtom, chainIdAtom } from 'state/atoms'
 import { Abi, ContractFunctionArgs, ContractFunctionName } from 'viem'
 import {
   useBlockNumber,
@@ -16,21 +15,27 @@ import {
 } from 'wagmi'
 import { type ReadContractData, type ReadContractsData } from 'wagmi/query'
 
-const REFRESH_BLOCKS = {
-  [ChainId.Mainnet]: 1n,
-  [ChainId.Base]: 3n,
-  [ChainId.Arbitrum]: 5n,
-  [ChainId.BSC]: 1n,
-}
+// Returns the latest observed block number — used as a changing dependency to
+// trigger watch-style refetches.
+//
+// WHY: AtomUpdater already polls the current chain's block into blockAtom, so
+// same-chain consumers reuse it instead of spinning up a second eth_blockNumber
+// poll loop. Cross-chain consumers (e.g. the multi-chain yield token list) still
+// get a dedicated watcher so they refresh on their own chain's cadence.
+export const useRefreshSignal = (chain?: number) => {
+  const currentChain = useAtomValue(chainIdAtom)
+  const chainId = chain || currentChain
+  const currentBlock = useAtomValue(blockAtom)
+  const isCrossChain = chainId !== currentChain
 
-export const useShouldRefresh = (chain?: number) => {
-  const rTokenChain = useAtomValue(chainIdAtom)
-  const chainId = chain || rTokenChain
-  const { data: blockNumber } = useBlockNumber({ watch: true, chainId })
+  const { data: crossChainBlock } = useBlockNumber({
+    chainId,
+    watch: isCrossChain,
+    query: { enabled: isCrossChain },
+  })
 
-  return Boolean(
-    blockNumber && blockNumber % (REFRESH_BLOCKS[chainId] || 5n) === 0n
-  )
+  const signal = isCrossChain ? crossChainBlock : currentBlock
+  return signal === undefined ? undefined : Number(signal)
 }
 
 export function useWatchReadContract<
@@ -51,14 +56,14 @@ export function useWatchReadContract<
   const result = useReadContract(
     parameters as UseReadContractParameters
   ) as UseReadContractReturnType<abi, functionName, args, selectData>
-  const shouldRefresh = useShouldRefresh(parameters?.chainId)
+  const refreshSignal = useRefreshSignal(parameters?.chainId)
   const { refetch } = result
 
   useEffect(() => {
-    if (shouldRefresh) {
+    if (refreshSignal) {
       refetch()
     }
-  }, [shouldRefresh])
+  }, [refreshSignal])
 
   return result
 }
@@ -77,16 +82,16 @@ export function useWatchReadContracts<
   > = {}
 ): UseReadContractsReturnType<contracts, allowFailure, selectData> {
   const result = useReadContracts(parameters)
-  const shouldRefresh = useShouldRefresh(
+  const refreshSignal = useRefreshSignal(
     (parameters.contracts?.[0] as { chainId?: number } | undefined)?.chainId
   )
   const { refetch } = result
 
   useEffect(() => {
-    if (shouldRefresh) {
+    if (refreshSignal) {
       refetch()
     }
-  }, [shouldRefresh])
+  }, [refreshSignal])
 
   return result
 }

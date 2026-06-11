@@ -213,6 +213,7 @@ const ProposeGovernanceSpell31032025Folio = ({
     )
 
     writeContract({
+      chainId,
       address: dtf.ownerGovernance.id,
       abi: DTFIndexGovernance,
       functionName: 'propose',
@@ -345,6 +346,7 @@ const ProposeGovernanceSpell31032025StakingVault = ({
     )
 
     writeContract({
+      chainId,
       address: dtf.stToken.governance.id,
       abi: DTFIndexGovernance,
       functionName: 'propose',

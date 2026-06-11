@@ -46,6 +46,7 @@ const CreateDAO = () => {
     abi: erc20Abi,
     functionName: 'symbol',
     address: governanceERC20address,
+    chainId,
     query: { enabled: isAddress(governanceERC20address) },
   })
 
