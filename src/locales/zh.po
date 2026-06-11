@@ -344,7 +344,7 @@ msgstr "{fromToken} 至 {toToken}"
 msgid "{hours}h"
 msgstr "{hours}时"
 
-#: src/utils/index.ts:387
+#: src/utils/index.ts:394
 msgid "{humanized} ago"
 msgstr "{humanized}前"
 
@@ -1178,7 +1178,7 @@ msgstr "以 RSR 形式"
 msgid "As RToken"
 msgstr "以 RToken 形式"
 
-#: src/components/ui/swap.tsx:236
+#: src/components/ui/swap.tsx:255
 msgid "Assembling different routes"
 msgstr "正在组合不同路由"
 
@@ -1300,7 +1300,7 @@ msgstr "可拍卖收入"
 
 #: src/components/layout/navigation/index.tsx:80
 #: src/components/layout/navigation/TokenNavigation.tsx:198
-#: src/views/index-dtf/components/navigation/index.tsx:154
+#: src/views/index-dtf/components/navigation/index.tsx:207
 #: src/views/index-dtf/deploy/components/deploy-accordion.tsx:102
 #: src/views/index-dtf/deploy/components/deploy-accordion.tsx:103
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/dtf-settings-proposal-sections.tsx:160
@@ -1442,7 +1442,7 @@ msgstr "备用配置会跟踪主篮子的变化以更新其数值。这在某个
 msgid "Backups"
 msgstr "备用项"
 
-#: src/components/ui/swap.tsx:196
+#: src/components/ui/swap.tsx:205
 #: src/views/index-dtf/overview/components/landing-mint/dtf-balance.tsx:57
 #: src/views/portfolio-page/components/available-rewards.tsx:122
 #: src/views/portfolio-page/components/dtf-positions.tsx:134
@@ -1689,7 +1689,7 @@ msgstr "Bridge / {0}"
 msgid "Bridge DTFs and RSR"
 msgstr "桥接 DTFs 和 RSR"
 
-#: src/views/index-dtf/overview/components/basket-overview/bridge-info-dialog.tsx:176
+#: src/views/index-dtf/overview/components/basket-overview/bridge-info-dialog.tsx:178
 msgid "Bridged asset (held in basket)"
 msgstr "已桥接的资产（持有于篮子中）"
 
@@ -1781,7 +1781,7 @@ msgstr "启用此选项后，zapper 将仅尝试 Mint RToken，而不会进行�
 msgid "By using"
 msgstr ""
 
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:112
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:117
 #: src/views/yield-dtf/governance/views/proposal-detail/components/proposal-timeline/TimelineItem.tsx:82
 msgid "By:"
 msgstr "由："
@@ -1834,8 +1834,8 @@ msgid "Cancel unstake"
 msgstr "取消 Unstake"
 
 #: src/views/explorer/components/governance/filters.tsx:21
-#: src/views/index-dtf/governance/views/proposal/components/proposal-deadline-alert.tsx:40
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:286
+#: src/views/index-dtf/governance/views/proposal/components/proposal-deadline-alert.tsx:41
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:288
 #: src/views/yield-dtf/governance/views/proposal-detail/components/proposal-timeline/TimelineItem.tsx:258
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalAlert.tsx:62
 msgid "Canceled"
@@ -1886,7 +1886,7 @@ msgstr "Chain {targetChain}"
 msgid "Chain must be either Mainnet, Base or Binance Smart Chain"
 msgstr "Chain 必须是 Mainnet、Base 或 Binance Smart Chain"
 
-#: src/components/account/index.tsx:42
+#: src/components/account/index.tsx:43
 msgid "Chain: {chainId}"
 msgstr "Chain: {chainId}"
 
@@ -2273,7 +2273,7 @@ msgstr "恭喜，{0} 现已上线"
 msgid "Congratulations 🎉"
 msgstr "恭喜 🎉"
 
-#: src/components/account/index.tsx:96
+#: src/components/account/index.tsx:112
 msgid "Connect"
 msgstr "连接"
 
@@ -2305,7 +2305,7 @@ msgid "Contact me"
 msgstr "联系我"
 
 #: src/views/index-dtf/governance/components/contest-badge.tsx:6
-#: src/views/index-dtf/governance/views/proposal/components/proposal-vote.tsx:147
+#: src/views/index-dtf/governance/views/proposal/components/proposal-vote.tsx:158
 msgid "Contested"
 msgstr ""
 
@@ -2656,7 +2656,7 @@ msgstr ""
 msgid "Current votes"
 msgstr "当前投票"
 
-#: src/components/ui/swap.tsx:448
+#: src/components/ui/swap.tsx:486
 #: src/views/index-dtf/deploy/components/toggle-group-preset.tsx:31
 #: src/views/yield-dtf/issuance/components/zapV2/settings/ZapSettingsCustomSlippage.tsx:24
 msgid "Custom"
@@ -2741,7 +2741,7 @@ msgid "Default delay"
 msgstr "默认延迟"
 
 #: src/views/explorer/components/governance/filters.tsx:18
-#: src/views/index-dtf/governance/views/proposal/components/proposal-deadline-alert.tsx:28
+#: src/views/index-dtf/governance/views/proposal/components/proposal-deadline-alert.tsx:29
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalAlert.tsx:50
 msgid "Defeated"
 msgstr "已否决"
@@ -2797,8 +2797,8 @@ msgid "Delay in Seconds"
 msgstr "延迟（秒）"
 
 #: src/components/vote-lock/constants.tsx:18
-#: src/views/index-dtf/governance/views/proposal/components/proposal-vote.tsx:108
-#: src/views/index-dtf/governance/views/proposal/components/proposal-vote.tsx:117
+#: src/views/index-dtf/governance/views/proposal/components/proposal-vote.tsx:119
+#: src/views/index-dtf/governance/views/proposal/components/proposal-vote.tsx:128
 #: src/views/yield-dtf/governance/components/AccountVotes.tsx:71
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalVote.tsx:141
 msgid "Delegate"
@@ -2929,7 +2929,7 @@ msgstr "详情"
 
 #: src/components/layout/navigation/index.tsx:84
 #: src/components/layout/navigation/TokenNavigation.tsx:210
-#: src/views/index-dtf/components/navigation/index.tsx:159
+#: src/views/index-dtf/components/navigation/index.tsx:212
 msgid "Details + Roles"
 msgstr "详情 + 角色"
 
@@ -3131,7 +3131,7 @@ msgstr "DTF 设置"
 msgid "DTF settings proposal"
 msgstr "DTF 设置提案"
 
-#: src/views/index-dtf/components/navigation/index.tsx:85
+#: src/views/index-dtf/components/navigation/index.tsx:133
 #: src/views/index-dtf/overview/components/index-token-logo.tsx:20
 msgid "dtf token logo"
 msgstr "DTF 代币标识"
@@ -3547,7 +3547,7 @@ msgstr "预计总影响"
 msgid "ETH address"
 msgstr "ETH 地址"
 
-#: src/components/ui/swap.tsx:237
+#: src/components/ui/swap.tsx:256
 msgid "Evaluating slippage"
 msgstr "正在评估滑点"
 
@@ -3584,9 +3584,10 @@ msgstr "专属拍卖发起者窗口"
 msgid "Executable code"
 msgstr "可执行代码"
 
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:284
-#: src/views/index-dtf/governance/views/proposal/components/proposal-execute-button.tsx:56
-#: src/views/index-dtf/governance/views/proposal/components/proposal-execute-button.tsx:90
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:285
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:286
+#: src/views/index-dtf/governance/views/proposal/components/proposal-execute-button.tsx:57
+#: src/views/index-dtf/governance/views/proposal/components/proposal-execute-button.tsx:91
 #: src/views/yield-dtf/governance/views/proposal-detail/components/proposal-timeline/TimelineItem.tsx:256
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalExecute.tsx:31
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalExecute.tsx:43
@@ -3594,15 +3595,15 @@ msgid "Execute proposal"
 msgstr "执行提案"
 
 #: src/views/explorer/components/governance/filters.tsx:19
-#: src/views/index-dtf/governance/components/proposal-list-item.tsx:68
-#: src/views/index-dtf/governance/views/proposal/components/proposal-deadline-alert.tsx:22
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:285
+#: src/views/index-dtf/governance/components/proposal-list-item.tsx:73
+#: src/views/index-dtf/governance/views/proposal/components/proposal-deadline-alert.tsx:23
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:287
 #: src/views/yield-dtf/governance/views/proposal-detail/components/proposal-timeline/TimelineItem.tsx:257
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalAlert.tsx:44
 msgid "Executed"
 msgstr "已执行"
 
-#: src/views/index-dtf/governance/components/proposal-list-item.tsx:27
+#: src/views/index-dtf/governance/components/proposal-list-item.tsx:28
 #: src/views/yield-dtf/governance/components/ProposalList.tsx:90
 msgid "Execution available in:"
 msgstr "可执行时间："
@@ -3619,7 +3620,7 @@ msgstr "可执行时间："
 msgid "Execution Delay"
 msgstr "执行延迟"
 
-#: src/views/index-dtf/governance/views/proposal/components/proposal-deadline-alert.tsx:72
+#: src/views/index-dtf/governance/views/proposal/components/proposal-deadline-alert.tsx:73
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalAlert.tsx:94
 msgid "Execution delay ends in"
 msgstr "执行延迟结束于"
@@ -3660,7 +3661,7 @@ msgid "Expected volatility"
 msgstr "预期波动率"
 
 #: src/views/explorer/components/governance/filters.tsx:23
-#: src/views/index-dtf/governance/views/proposal/components/proposal-deadline-alert.tsx:34
+#: src/views/index-dtf/governance/views/proposal/components/proposal-deadline-alert.tsx:35
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalAlert.tsx:56
 msgid "Expired"
 msgstr "已过期"
@@ -3756,7 +3757,7 @@ msgstr ""
 msgid "Fast Governance"
 msgstr ""
 
-#: src/views/index-dtf/governance/views/proposal/components/proposal-vote.tsx:169
+#: src/views/index-dtf/governance/views/proposal/components/proposal-vote.tsx:180
 msgid "Fast proposal"
 msgstr ""
 
@@ -3885,7 +3886,7 @@ msgstr "赞成"
 msgid "For approved governors to fast-track proposals."
 msgstr ""
 
-#: src/views/index-dtf/issuance/index.tsx:42
+#: src/views/index-dtf/issuance/index.tsx:40
 msgid "For more information, see our <0>Terms of Use</0>."
 msgstr "如需了解更多信息，请参阅我们的<0>使用条款</0>。"
 
@@ -3996,7 +3997,7 @@ msgstr "治理代币"
 #: src/components/layout/navigation/TokenNavigation.tsx:220
 #: src/components/rtoken-setup/governance/GovernanceSetup.tsx:39
 #: src/views/explorer/index.tsx:43
-#: src/views/index-dtf/components/navigation/index.tsx:149
+#: src/views/index-dtf/components/navigation/index.tsx:202
 #: src/views/index-dtf/deploy/steps/revenue/revenue-distribution-settings.tsx:40
 #: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:297
 #: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/basket-settings-proposal-sections.tsx:55
@@ -4142,12 +4143,12 @@ msgid "Having issues minting? Zaps are in beta"
 msgstr "Mint 遇到问题？Zaps 处于 beta 阶段"
 
 #: src/views/index-dtf/issuance/index.tsx:98
-msgid "Having issues? Switch to manual minting"
-msgstr "遇到问题？切换到手动 Mint"
+#~ msgid "Having issues? Switch to manual minting"
+#~ msgstr "遇到问题？切换到手动 Mint"
 
 #: src/views/index-dtf/issuance/index.tsx:100
-msgid "Having issues? Switch to manual redeeming"
-msgstr "遇到问题？切换到手动 Redeem"
+#~ msgid "Having issues? Switch to manual redeeming"
+#~ msgstr "遇到问题？切换到手动 Redeem"
 
 #: src/views/index-dtf/deploy/steps/governance/form-existing-erc20.tsx:37
 msgid "hero-splash"
@@ -4287,7 +4288,7 @@ msgid "Immediate"
 msgstr "立即"
 
 #. placeholder {0}: parseDuration(elapsed)
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:182
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:187
 #: src/views/yield-dtf/governance/views/proposal-detail/components/proposal-timeline/TimelineItem.tsx:158
 msgid "in {0}"
 msgstr "{0} 后"
@@ -4622,7 +4623,7 @@ msgstr "每页条数:"
 msgid "Join the conversation or ask questions"
 msgstr "加入讨论或提出问题"
 
-#: src/utils/index.ts:379
+#: src/utils/index.ts:386
 msgid "just now"
 msgstr "刚刚"
 
@@ -4706,7 +4707,7 @@ msgstr "实时再平衡拍卖"
 msgid "Loading current allowed actions..."
 msgstr ""
 
-#: src/components/ui/swap.tsx:239
+#: src/components/ui/swap.tsx:258
 msgid "Loading DTF"
 msgstr "正在加载 DTF"
 
@@ -4921,7 +4922,7 @@ msgstr "市值："
 msgid "Market closed"
 msgstr "市场休市"
 
-#: src/components/ui/swap.tsx:205
+#: src/components/ui/swap.tsx:215
 #: src/views/yield-dtf/issuance/components/zapV2/input/ZapInputMaxButton.tsx:37
 #: src/views/yield-dtf/staking/components/stake/stake-input.tsx:66
 #: src/views/yield-dtf/staking/components/unstake/unstake-input.tsx:69
@@ -4937,7 +4938,7 @@ msgstr "每个代币的最大拍卖规模"
 msgid "Max precision is 0.01%"
 msgstr "最大精度为 0.01%"
 
-#: src/components/ui/swap.tsx:421
+#: src/components/ui/swap.tsx:459
 msgid "Max slippage"
 msgstr "最大滑点"
 
@@ -5068,6 +5069,7 @@ msgstr ""
 #: src/views/explorer/components/filters/TransactionTypeFilter.tsx:11
 #: src/views/explorer/components/transactions/useTransactionColumns.tsx:26
 #: src/views/home/components/discover-yield-dtf/token-actions.tsx:42
+#: src/views/index-dtf/components/navigation/index.tsx:197
 #: src/views/index-dtf/issuance/manual/components/index-manual-issuance.tsx:195
 #: src/views/index-dtf/overview/components/index-transaction-table.tsx:22
 #: src/views/yield-dtf/issuance/components/issue/Issue.tsx:97
@@ -5096,7 +5098,6 @@ msgid "Mint {0}% Est. APY"
 msgstr "Mint {0}% 预计 APY"
 
 #: src/components/layout/navigation/index.tsx:78
-#: src/views/index-dtf/components/navigation/index.tsx:144
 msgid "Mint + Redeem"
 msgstr "Mint + Redeem"
 
@@ -5251,7 +5252,7 @@ msgstr "名称 / 符号"
 msgid "Native asset (reference)"
 msgstr "原生资产（参考）"
 
-#: src/views/index-dtf/overview/components/basket-overview/bridge-info-dialog.tsx:161
+#: src/views/index-dtf/overview/components/basket-overview/bridge-info-dialog.tsx:163
 msgid "Native L1 Asset"
 msgstr "原生 L1 资产"
 
@@ -5280,7 +5281,7 @@ msgstr "需要桥接你的 RSR 吗？"
 msgid "Net Performance Summary"
 msgstr "净表现摘要"
 
-#: src/components/account/index.tsx:37
+#: src/components/account/index.tsx:38
 #: src/components/tables/ListedTokensTable.tsx:60
 #: src/views/explorer/components/collaterals/index.tsx:71
 #: src/views/explorer/components/tokens/index.tsx:136
@@ -5672,7 +5673,7 @@ msgid "Old weight / New weight"
 msgstr "旧权重 / 新权重"
 
 #. placeholder {0}: new Date(Number(proposal.executionTime) * 1000).toLocaleString(undefined, { month: '2-digit', day: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit', hour12: true }).replace(',', '').replace(/(\d{2})\/(\d{2})\/(\d{2})/, '$1/$2/$3 at')
-#: src/views/index-dtf/governance/components/proposal-list-item.tsx:81
+#: src/views/index-dtf/governance/components/proposal-list-item.tsx:86
 msgid "on {0}"
 msgstr ""
 
@@ -5812,7 +5813,7 @@ msgstr "我们的 Zap-swap 支持 {tokensText} 等常见资产，让进出 DTF �
 
 #: src/components/layout/navigation/index.tsx:77
 #: src/components/layout/navigation/TokenNavigation.tsx:176
-#: src/views/index-dtf/components/navigation/index.tsx:139
+#: src/views/index-dtf/components/navigation/index.tsx:187
 #: src/views/index-dtf/overview/components/basket-overview/bridge-info-dialog.tsx:92
 msgid "Overview"
 msgstr "概览"
@@ -5849,7 +5850,7 @@ msgstr "参与并赚取"
 msgid "Participate in governance with any ERC-20 token and earn APY rewards. <0>Learn more</0>."
 msgstr "使用任意 ERC-20 代币参与治理并赚取 APY 奖励。<0>了解更多</0>。"
 
-#: src/views/index-dtf/governance/views/proposal/components/proposal-deadline-alert.tsx:138
+#: src/views/index-dtf/governance/views/proposal/components/proposal-deadline-alert.tsx:162
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalAlert.tsx:129
 msgid "Passed"
 msgstr "已通过"
@@ -5907,7 +5908,7 @@ msgstr "待结算的拍卖"
 msgid "Pending distribution"
 msgstr "待分配"
 
-#: src/views/index-dtf/governance/components/proposal-list-item.tsx:67
+#: src/views/index-dtf/governance/components/proposal-list-item.tsx:72
 msgid "Pending execution"
 msgstr ""
 
@@ -5915,7 +5916,8 @@ msgstr ""
 msgid "Pending Fees:"
 msgstr "待处理费用："
 
-#: src/views/index-dtf/governance/components/proposal-list-item.tsx:66
+#: src/views/index-dtf/governance/components/proposal-list-item.tsx:70
+#: src/views/index-dtf/governance/views/proposal/components/proposal-deadline-alert.tsx:128
 msgid "Pending queue"
 msgstr ""
 
@@ -6165,7 +6167,7 @@ msgid "Position"
 msgstr "持仓"
 
 #. placeholder {0}: bridge.name
-#: src/views/index-dtf/overview/components/basket-overview/bridge-info-dialog.tsx:251
+#: src/views/index-dtf/overview/components/basket-overview/bridge-info-dialog.tsx:253
 msgid "Potential Risks Using {0}"
 msgstr "使用 {0} 的潜在风险"
 
@@ -6311,7 +6313,7 @@ msgid "Project"
 msgstr "项目"
 
 #: src/views/index-dtf/governance/views/proposal/components/proposal-cancel-button.tsx:63
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:204
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:209
 msgid "Proposal canceled"
 msgstr "提案已取消"
 
@@ -6319,7 +6321,7 @@ msgstr "提案已取消"
 msgid "Proposal cannot be executed while another auction is currently running"
 msgstr "在另一场拍卖进行期间，提案无法执行"
 
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:104
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:109
 #: src/views/yield-dtf/governance/views/proposal-detail/components/proposal-timeline/TimelineItem.tsx:77
 msgid "Proposal created"
 msgstr "提案已创建"
@@ -6333,7 +6335,7 @@ msgstr "提案已创建"
 msgid "Proposal created!"
 msgstr "提案已创建！"
 
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:198
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:203
 #: src/views/yield-dtf/governance/views/proposal-detail/components/proposal-timeline/TimelineItem.tsx:174
 msgid "Proposal defeated"
 msgstr "提案被否决"
@@ -6342,8 +6344,8 @@ msgstr "提案被否决"
 msgid "Proposal execution delay (hours)"
 msgstr "提案执行延迟（小时）"
 
-#: src/views/index-dtf/governance/components/proposal-list-item.tsx:71
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:200
+#: src/views/index-dtf/governance/components/proposal-list-item.tsx:76
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:205
 #: src/views/yield-dtf/governance/views/proposal-detail/components/proposal-timeline/TimelineItem.tsx:176
 msgid "Proposal expired"
 msgstr "提案已过期"
@@ -6356,9 +6358,9 @@ msgstr "提案已模拟"
 msgid "Proposal Simulation"
 msgstr "提案模拟"
 
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:201
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:202
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:203
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:206
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:207
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:208
 #: src/views/yield-dtf/governance/views/proposal-detail/components/proposal-timeline/TimelineItem.tsx:177
 #: src/views/yield-dtf/governance/views/proposal-detail/components/proposal-timeline/TimelineItem.tsx:178
 #: src/views/yield-dtf/governance/views/proposal-detail/components/proposal-timeline/TimelineItem.tsx:179
@@ -6395,11 +6397,11 @@ msgstr "提案标题"
 msgid "Proposal Title"
 msgstr "提案标题"
 
-#: src/views/index-dtf/governance/components/proposal-list-item.tsx:69
+#: src/views/index-dtf/governance/components/proposal-list-item.tsx:74
 msgid "Proposal was canceled"
 msgstr ""
 
-#: src/views/index-dtf/governance/components/proposal-list-item.tsx:70
+#: src/views/index-dtf/governance/components/proposal-list-item.tsx:75
 msgid "Proposal was defeated"
 msgstr ""
 
@@ -6499,6 +6501,10 @@ msgstr "在 DeFi 中提供流动性，用你的 DTFs 赚取更多收益"
 msgid "Provider"
 msgstr "提供方"
 
+#: src/views/index-dtf/overview/components/basket-overview/bridge-info-dialog.tsx:162
+msgid "Publicly Listed U.S. Security"
+msgstr "美国上市证券"
+
 #. placeholder {0}: version.date
 #: src/views/index-dtf/overview/components/index-disclousure.tsx:184
 msgid "Published: {0}"
@@ -6526,9 +6532,9 @@ msgid "Quorum (%)"
 msgstr "法定人数 (%)"
 
 #: src/views/explorer/components/governance/filters.tsx:20
-#: src/views/index-dtf/governance/components/proposal-list-item.tsx:72
-#: src/views/index-dtf/governance/views/proposal/components/proposal-deadline-alert.tsx:46
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:199
+#: src/views/index-dtf/governance/components/proposal-list-item.tsx:77
+#: src/views/index-dtf/governance/views/proposal/components/proposal-deadline-alert.tsx:47
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:204
 #: src/views/yield-dtf/governance/views/proposal-detail/components/proposal-timeline/TimelineItem.tsx:175
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalAlert.tsx:68
 msgid "Quorum not reached"
@@ -6568,11 +6574,11 @@ msgstr "评级："
 msgid "Raw"
 msgstr "原始数据"
 
-#: src/views/index-dtf/overview/components/basket-overview/bridge-info-dialog.tsx:240
+#: src/views/index-dtf/overview/components/basket-overview/bridge-info-dialog.tsx:242
 msgid "Read about risks"
 msgstr "阅读风险说明"
 
-#: src/views/index-dtf/overview/components/basket-overview/bridge-info-dialog.tsx:232
+#: src/views/index-dtf/overview/components/basket-overview/bridge-info-dialog.tsx:234
 msgid "Read docs"
 msgstr "阅读文档"
 
@@ -6589,6 +6595,11 @@ msgstr "了解更多关于收入分配的信息"
 #: src/views/portfolio-page/components/pending-withdrawals.tsx:222
 msgid "Ready"
 msgstr "就绪"
+
+#: src/views/index-dtf/governance/components/proposal-list-item.tsx:68
+#: src/views/index-dtf/governance/views/proposal/components/proposal-deadline-alert.tsx:117
+msgid "Ready to execute"
+msgstr ""
 
 #: src/views/index-dtf/auctions/views/rebalance/components/rebalance-completed.tsx:67
 msgid "Rebalance"
@@ -6730,7 +6741,7 @@ msgstr "Redemption 限流比率 (%)"
 msgid "Reduce"
 msgstr "减少"
 
-#: src/components/ui/swap.tsx:238
+#: src/components/ui/swap.tsx:257
 msgid "Reducing potential dust"
 msgstr "正在减少潜在尘埃"
 
@@ -7362,7 +7373,7 @@ msgstr "搜索治理代币或 DTF"
 msgid "Search pool"
 msgstr "搜索 pool"
 
-#: src/components/ui/swap.tsx:235
+#: src/components/ui/swap.tsx:254
 msgid "Searching DEX Liquidity"
 msgstr "正在搜索 DEX 流动性"
 
@@ -7724,7 +7735,7 @@ msgstr "模拟失败 ✘"
 msgid "Slashing Risk"
 msgstr "Slashing 风险"
 
-#: src/components/ui/swap.tsx:418
+#: src/components/ui/swap.tsx:456
 msgid "Slippage"
 msgstr "滑点"
 
@@ -7962,7 +7973,7 @@ msgstr "在当前周期结束后启动下一个 {0} 奖励周期。在此之前�
 
 #: src/views/explorer/components/governance/filters.tsx:40
 #: src/views/explorer/components/governance/index.tsx:99
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:335
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:342
 #: src/views/portfolio-page/components/active-proposals.tsx:136
 #: src/views/yield-dtf/governance/views/proposal-detail/components/proposal-timeline/index.tsx:16
 msgid "Status"
@@ -8042,7 +8053,7 @@ msgid "Submitting..."
 msgstr "提交中…"
 
 #: src/views/explorer/components/governance/filters.tsx:22
-#: src/views/index-dtf/governance/views/proposal/components/proposal-deadline-alert.tsx:52
+#: src/views/index-dtf/governance/views/proposal/components/proposal-deadline-alert.tsx:53
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalAlert.tsx:74
 msgid "Succeeded"
 msgstr "已通过"
@@ -8093,6 +8104,10 @@ msgstr "盈余"
 #: src/views/yield-dtf/auctions/auctions-sidebar/RevenueAuctionItem.tsx:20
 msgid "Surplus below minimum trade"
 msgstr "盈余低于最小交易规模"
+
+#: src/views/index-dtf/components/navigation/index.tsx:192
+msgid "Swap"
+msgstr ""
 
 #: src/views/index-dtf/overview/components/zap-mint/submit-zap.tsx:143
 msgid "Swapped"
@@ -8187,7 +8202,7 @@ msgstr "支撑缓冲是为防止因交易滑点而扣押 RSR 所持有的额外�
 msgid "The basket governance provides a Guardian role that can improve the safety of DTF holders and governors. Guardians have the ability to veto any basket proposal prior to execution. This role is mutable and can be changed by governance in the future."
 msgstr "篮子治理设有守护者角色,可提升 DTF 持有者和治理者的安全性。守护者有权在执行前否决任何篮子提案。该角色可变,未来可由治理进行变更。"
 
-#: src/components/account/index.tsx:49
+#: src/components/account/index.tsx:50
 msgid "The configured network \"{currentChain}\" is different from the wallet selected network \"{chainId}\"\". Change your network in the connected wallet."
 msgstr "配置的 Network \"{currentChain}\" 与 Wallet 中所选的 Network \"{chainId}\"\" 不一致。请在已连接的 Wallet 中更改 Network。"
 
@@ -8518,7 +8533,7 @@ msgstr "由于当地限制，本产品在你所在的地区不可用。"
 msgid "This product isn't available in your region due to local restrictions. <0>Learn More</0>"
 msgstr "由于当地的限制，本产品在你所在的地区不可用。<0>了解更多</0>"
 
-#: src/views/index-dtf/governance/views/proposal/components/proposal-vote.tsx:171
+#: src/views/index-dtf/governance/views/proposal/components/proposal-vote.tsx:182
 msgid "This proposal will automatically pass if it is not challenged by governance. If it is challenged, it will be resubmitted as a standard proposal."
 msgstr ""
 
@@ -8538,7 +8553,7 @@ msgstr "此升级 spell 将修复管理与此 DTF 相关的 DAO(StakingVault)的
 msgid "This wallet is not eligible to access this product. If you think this is an error, try connecting a different wallet or contact support."
 msgstr "此 Wallet 无权访问本产品。如果你认为这是错误，请尝试连接其他 Wallet 或联系支持团队。"
 
-#: src/views/index-dtf/governance/views/proposal/components/proposal-vote.tsx:149
+#: src/views/index-dtf/governance/views/proposal/components/proposal-vote.tsx:160
 msgid "This was originally a fast proposal that did not pass governance. Please review the details of this contested proposal closely."
 msgstr ""
 
@@ -8593,7 +8608,7 @@ msgstr ""
 msgid "To learn more about the risks associated with DTFs,"
 msgstr ""
 
-#: src/components/ui/swap.tsx:437
+#: src/components/ui/swap.tsx:475
 msgid "Toggle {option}"
 msgstr "切换 {option}"
 
@@ -9247,7 +9262,7 @@ msgstr "已发起 Unstaking！延迟期结束后即可 Withdraw 你的 RSR。"
 msgid "Unstaking RSR"
 msgstr "Unstaking RSR"
 
-#: src/components/account/index.tsx:45
+#: src/components/account/index.tsx:46
 msgid "Unsupported"
 msgstr "不支持"
 
@@ -9535,7 +9550,7 @@ msgstr "查看各 Network 上的所有 Index DTF,用于内部测试"
 msgid "View entire basket"
 msgstr "查看完整篮子"
 
-#: src/views/index-dtf/governance/views/proposal/components/proposal-vote.tsx:44
+#: src/views/index-dtf/governance/views/proposal/components/proposal-vote.tsx:48
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalVote.tsx:50
 msgid "View execute tx"
 msgstr "查看执行交易"
@@ -9756,12 +9771,12 @@ msgstr ""
 msgid "Voting Addresses"
 msgstr "投票地址"
 
-#: src/views/index-dtf/governance/views/proposal/components/proposal-deadline-alert.tsx:68
+#: src/views/index-dtf/governance/views/proposal/components/proposal-deadline-alert.tsx:69
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalAlert.tsx:90
 msgid "Voting begins in"
 msgstr "投票开始于"
 
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:139
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:144
 #: src/views/yield-dtf/governance/views/proposal-detail/components/proposal-timeline/TimelineItem.tsx:106
 msgid "Voting delay"
 msgstr "投票延迟"
@@ -9788,7 +9803,7 @@ msgstr "投票延迟开始"
 msgid "Voting delay is required"
 msgstr "投票延迟为必填项"
 
-#: src/views/index-dtf/governance/components/proposal-list-item.tsx:26
+#: src/views/index-dtf/governance/components/proposal-list-item.tsx:27
 #: src/views/yield-dtf/governance/components/ProposalList.tsx:89
 msgid "Voting ends in:"
 msgstr "投票结束于："
@@ -9797,7 +9812,7 @@ msgstr "投票结束于："
 msgid "Voting on the RToken you are staked on requires you to delegate your vote to yourself or another Eth address."
 msgstr "在你所 Stake 的 RToken 上投票，需要你将投票权委托给自己或其他 Eth 地址。"
 
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:160
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:165
 #: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/atoms.ts:192
 #: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/basket-settings-proposal-section.tsx:46
 #: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/sections/propose-basket-governance.tsx:35
@@ -9819,12 +9834,12 @@ msgstr "投票周期（区块）"
 msgid "Voting period (hours)"
 msgstr "投票周期（小时）"
 
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:180
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:185
 #: src/views/yield-dtf/governance/views/proposal-detail/components/proposal-timeline/TimelineItem.tsx:156
 msgid "Voting Period Ends"
 msgstr "投票期结束"
 
-#: src/views/index-dtf/governance/views/proposal/components/proposal-deadline-alert.tsx:64
+#: src/views/index-dtf/governance/views/proposal/components/proposal-deadline-alert.tsx:65
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalAlert.tsx:86
 msgid "Voting period ends in"
 msgstr "投票期结束于"
@@ -9866,7 +9881,7 @@ msgstr "投票法定人数"
 msgid "Voting quorum is required"
 msgstr "投票法定人数为必填项"
 
-#: src/views/index-dtf/governance/components/proposal-list-item.tsx:25
+#: src/views/index-dtf/governance/components/proposal-list-item.tsx:26
 #: src/views/portfolio-page/components/active-proposals.tsx:61
 #: src/views/yield-dtf/governance/components/ProposalList.tsx:102
 msgid "Voting starts in:"
@@ -10244,7 +10259,7 @@ msgstr "在运行再平衡拍卖前，你需要确认期望的权重。"
 msgid "You need to mint at least $1 worth of {0} in order to create your new Index DTF."
 msgstr "你需要 Mint 价值至少 $1 的 {0}，才能创建你的新 Index DTF。"
 
-#: src/components/ui/swap.tsx:325
+#: src/components/ui/swap.tsx:352
 #: src/views/yield-dtf/issuance/components/zapV2/output/ZapOutputContainer.tsx:15
 #: src/views/yield-dtf/issuance/components/zapV2/submit/ZapSubmitModal.tsx:41
 #: src/views/yield-dtf/staking/components/stake/stake-output.tsx:36
@@ -10271,7 +10286,7 @@ msgstr "你解锁："
 msgid "You unstake:"
 msgstr "你 Unstake："
 
-#: src/components/ui/swap.tsx:215
+#: src/components/ui/swap.tsx:230
 #: src/views/yield-dtf/issuance/components/zapV2/input/ZapInputContainer.tsx:21
 #: src/views/yield-dtf/issuance/components/zapV2/submit/ZapSubmitModal.tsx:29
 #: src/views/yield-dtf/staking/components/stake/stake-modal.tsx:35
@@ -10324,7 +10339,7 @@ msgstr "你在所有 chains 上可领取的参与奖励总额"
 msgid "Your Vote"
 msgstr "你的投票"
 
-#: src/views/index-dtf/governance/views/proposal/components/proposal-vote.tsx:94
+#: src/views/index-dtf/governance/views/proposal/components/proposal-vote.tsx:105
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalVote.tsx:124
 msgid "Your voting power:"
 msgstr "你的投票权："

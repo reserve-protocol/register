@@ -158,7 +158,9 @@ const BridgeInfoDialog = ({
                   <span className="text-sm text-legend">
                     {native.address
                       ? shortenAddress(native.address)
-                      : t`Native L1 Asset`}
+                      : ['nasdaq', 'nyse'].includes(native.caip2)
+                        ? t`Publicly Listed U.S. Security`
+                        : t`Native L1 Asset`}
                   </span>
                 </div>
                 {native.url && (
