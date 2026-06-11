@@ -5,7 +5,13 @@ import { performanceTimeRangeAtom } from '@/state/dtf/atoms'
 import { capitalize } from '@/utils/constants'
 import { ETHERSCAN_NAMES } from '@/utils/getExplorerLink'
 import { useAtomValue } from 'jotai'
-import { ArrowDown, ArrowUp, ArrowUpDown, PackageOpen, Target } from 'lucide-react'
+import {
+  ArrowDown,
+  ArrowUp,
+  ArrowUpDown,
+  PackageOpen,
+  Target,
+} from 'lucide-react'
 import { Trans } from '@lingui/react/macro'
 
 export type SortField = 'weight' | 'performance'
@@ -86,7 +92,7 @@ export const BasketTableHeader = ({
     <TableHeader>
       <TableRow className="border-none text-legend bg-card sticky -top-[1px]">
         <TableHead className="text-left text-xs sm:text-base py-1">
-          <TabsList className="h-9 rounded-[70px] p-0.5">
+          <TabsList className="h-7 sm:h-8 rounded-[70px] py-0 px-0.5">
             <TabsTrigger
               value="exposure"
               className="rounded-[60px] px-2 data-[state=active]:text-primary"
@@ -123,7 +129,7 @@ export const BasketTableHeader = ({
           field="performance"
           sortConfig={sortConfig}
           onSort={onSort}
-          className="text-center px-1 sm:px-3"
+          className="text-center px-1 sm:px-3 text-wrap sm:text-nowrap"
         >
           <Trans>Price Change ({periodLabel[timeRange]})</Trans>
         </TableHeaderWithSort>
