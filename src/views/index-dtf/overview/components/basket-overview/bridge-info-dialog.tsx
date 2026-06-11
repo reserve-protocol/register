@@ -82,7 +82,7 @@ const BridgeInfoDialog = ({
         <Tabs value={activeTab} onValueChange={setActiveTab}>
           <DialogHeader className="flex flex-row items-start p-4 m-0">
             <div className="p-0.5 bg-card rounded-4xl mt-1 mr-auto">
-              <TabsList className="flex flex-row  rounded-4xl p-0 h-8">
+              <TabsList className="flex flex-row  rounded-4xl p-0 px-0.5 h-8">
                 <TabsTrigger
                   value="overview"
                   className="data-[state=active]:text-primary rounded-4xl"
@@ -158,7 +158,9 @@ const BridgeInfoDialog = ({
                   <span className="text-sm text-legend">
                     {native.address
                       ? shortenAddress(native.address)
-                      : t`Native L1 Asset`}
+                      : ['nasdaq', 'nyse'].includes(native.caip2)
+                        ? t`Publicly Listed U.S. Security`
+                        : t`Native L1 Asset`}
                   </span>
                 </div>
                 {native.url && (

@@ -17,7 +17,7 @@ import { ScrollArea } from '@/components/ui/scroll-area'
 import { Signature, FileText } from 'lucide-react'
 import SectionAnchor from '@/components/section-anchor'
 import { Button } from '@/components/ui/button'
-import { indexDTFAtom } from '@/state/dtf/atoms'
+import { indexDTFAtom, indexDTFExposureDataAtom } from '@/state/dtf/atoms'
 import { useAtomValue } from 'jotai'
 import { ChainId } from '@/utils/chains'
 import type { MessageDescriptor } from '@lingui/core'
@@ -224,9 +224,96 @@ const WhitepaperModal = () => {
   )
 }
 
+const OndoRisksDisclosure = () => {
+  const exposureData = useAtomValue(indexDTFExposureDataAtom)
+
+  const hasOndoAssets = !!exposureData?.some((group) =>
+    group.tokens.some((token) => token.bridge?.id === 'ondo')
+  )
+
+  if (!hasOndoAssets) return null
+
+  return (
+    <>
+      <p className="text-legend">
+        <Trans>
+          There are potential risks associated with Ondo Tokenized Stocks,
+          including but not limited to:
+        </Trans>
+      </p>
+      <ol className="text-legend list-decimal pl-6 flex flex-col gap-2">
+        <li>
+          <Trans>
+            Custodial Risks: Ondo Tokenized Stocks represent claims on SPVs and
+            other structures that hold underlying equity positions through
+            custodians. DTF exposure therefore depends on the operational
+            integrity and solvency of third parties. Any failure, suspension,
+            error, insolvency, fraud, cyber incident, or transfer restriction
+            affecting these parties could result in delayed settlement, blocked
+            transfers, impaired redemptions, forced liquidation, or partial or
+            total loss of value for the DTF’s holdings.
+          </Trans>
+        </li>
+        <li>
+          <Trans>
+            Regulatory and Compliance Risk: Tokenized equities and related
+            on-chain transfer mechanisms may be subject to evolving regulatory
+            interpretations and enforcement actions. Ondo Tokenized Stocks may
+            also be subject to contractual eligibility requirements,
+            permissioning, whitelisting, jurisdictional limitations, sanctions
+            screening, or other compliance gating that can be changed or applied
+            with little notice. If regulations or compliance requirements
+            change, the DTF may be forced to restrict access, halt
+            mints/redemptions, rebalance away from affected components, or wind
+            down positions under adverse market conditions, potentially causing
+            tracking error, reduced liquidity, and losses.
+          </Trans>
+        </li>
+        <li>
+          <Trans>
+            Liquidity Risk: Although on-chain trading is 24/7, primary
+            minting/redeeming of Ondo Tokenized Stocks may be limited,
+            permissioned, delayed, or available only during specific windows. In
+            stressed markets, secondary market liquidity may deteriorate,
+            spreads may widen, and token prices may deviate materially from the
+            value of the referenced underlying equities. As a result, the DTF
+            may experience tracking error versus its intended index composition
+            and may be unable to dispose of or rebalance positions at or near
+            observable net asset value.
+          </Trans>
+        </li>
+        <li>
+          <Trans>
+            Market Access and Redemption Risk: Minting and redemption for Ondo
+            Tokenized Stocks may be permissioned, capacity-limited, subject to
+            eligibility/whitelisting, and available only during defined windows
+            or business-hour cutoffs tied to traditional market operations.
+            These frictions can prevent arbitrage, impair exits at or near NAV,
+            and amplify secondary-market dislocations, thereby resulting in a
+            partial or total loss of the DTFs' holdings.
+          </Trans>
+        </li>
+        <li>
+          <Trans>
+            Valuation & NAV Calculation Risk – The DTF’s NAV depends on
+            accurate, timely marks for tokenized equities and any associated
+            components. Pricing inputs may be derived from thinly traded
+            on-chain markets, off-chain reference feeds, or oracle mechanisms
+            that can be stale, interrupted, manipulated, or subject to
+            methodology changes. Market-hour mismatches, delayed corporate
+            action processing, and settlement lags can further distort marks.
+            Misvaluation may cause incorrect mint/redeem pricing, unfair
+            dilution among holders, and adverse or mistimed rebalances.
+          </Trans>
+        </li>
+      </ol>
+    </>
+  )
+}
+
 const IndexDisclousure = () => {
   return (
-    <Card className="p-6 group/section" id="disclosures">
+    <Card className="p-6 group/section text-sm" id="disclosures">
       <div className="flex items-center gap-1">
         <div className="rounded-full border border-foreground p-2 mr-auto">
           <Signature size={14} />
@@ -290,6 +377,7 @@ const IndexDisclousure = () => {
             any kind.
           </Trans>
         </p>
+        <OndoRisksDisclosure />
         <p className="text-legend">
           <Trans>To learn more about the risks associated with DTFs,</Trans>{' '}
           <a

@@ -1,13 +1,25 @@
 import TokenLogo from '@/components/token-logo'
 import { Button } from '@/components/ui/button'
 import { TableCell, TableRow } from '@/components/ui/table'
+import { indexDTFExposureDataAtom } from '@/state/dtf/atoms'
 import { Token, TimeRange } from '@/types'
 import { getTokenName } from '@/utils'
 import { ExplorerDataType, getExplorerLink } from '@/utils/getExplorerLink'
+import { useAtomValue } from 'jotai'
 import { ArrowUpRight, Copy } from 'lucide-react'
+import { useMemo } from 'react'
 import { Link } from 'react-router-dom'
 import BridgeLabel from './bridge-label'
 import { PerformanceCell } from './performance-cell'
+
+const EXCHANGE_LABELS: Record<string, string> = {
+  nasdaq: 'NASDAQ',
+  nyse: 'NYSE',
+}
+
+// Ondo tokenized stocks always carry an "on" suffix (e.g. MRVLon)
+const formatTokenSymbol = (symbol: string, exchange?: string) =>
+  exchange ? `${exchange}: $${symbol.replace(/on$/, '')}` : `$${symbol}`
 
 interface CollateralTableRowsProps {
   filtered: Token[]
@@ -34,6 +46,20 @@ export const CollateralTableRows = ({
   maxTokens,
   onCopyAddress,
 }: CollateralTableRowsProps) => {
+  const exposureData = useAtomValue(indexDTFExposureDataAtom)
+
+  const exchangeByAddress = useMemo(() => {
+    const map: Record<string, string> = {}
+    for (const group of exposureData ?? []) {
+      const exchange = EXCHANGE_LABELS[group.native?.caip2 ?? '']
+      if (!exchange) continue
+      for (const groupToken of group.tokens) {
+        map[groupToken.address.toLowerCase()] = exchange
+      }
+    }
+    return map
+  }, [exposureData])
+
   return (
     <>
       {filtered.slice(0, viewAll ? filtered.length : maxTokens).map((token) => (
@@ -51,7 +77,10 @@ export const CollateralTableRows = ({
                   {getTokenName(token.name)}
                 </span>
                 <span className="block text-[10px] sm:text-xs text-legend font-normal max-w-32 md:max-w-72 lg:max-w-52 break-words">
-                  ${token.symbol}
+                  {formatTokenSymbol(
+                    token.symbol,
+                    exchangeByAddress[token.address.toLowerCase()]
+                  )}
                 </span>
               </div>
             </div>
@@ -68,7 +97,7 @@ export const CollateralTableRows = ({
             />
           </TableCell>
           <TableCell className="text-right px-1 sm:px-3">
-            <div className="flex items-center justify-end gap-2 flex-wrap-reverse">
+            <div className="flex items-center justify-end gap-2 flex-wrap-reverse sm:flex-nowrap">
               <BridgeLabel
                 address={token.address}
                 tokenSymbol={token.symbol}

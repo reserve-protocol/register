@@ -3,7 +3,7 @@ import EmptyBoxIcon from 'components/icons/EmptyBoxIcon'
 import { atom, useAtomValue } from 'jotai'
 import { JSXElementConstructor } from 'react'
 import Skeleton from 'react-loading-skeleton'
-import { useTheme } from 'next-themes'
+import useIsDarkMode from '@/hooks/use-is-dark-mode'
 import { auctionsOverviewAtom, auctionsToSettleAtom } from '../atoms'
 import AvailableRevenueAuctions from './AvailableRevenueAuctions'
 import MeltingBox from './MeltingBox'
@@ -15,8 +15,7 @@ import ClaimRewards from './claim-rewards'
 import StakingVaultRevenue from './StakingVaultRevenue'
 
 const Placeholder = () => {
-  const { resolvedTheme } = useTheme()
-  const isDarkMode = resolvedTheme === 'dark'
+  const isDarkMode = useIsDarkMode()
 
   return (
     <Skeleton

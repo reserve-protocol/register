@@ -8,7 +8,7 @@ import { useAtomValue } from 'jotai'
 import { Combine, Globe, Palette, Zap } from 'lucide-react'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { useTheme } from 'next-themes'
+import useIsDarkMode from '@/hooks/use-is-dark-mode'
 import { z } from 'zod'
 import { msg } from '@lingui/core/macro'
 import { Trans, useLingui } from '@lingui/react/macro'
@@ -37,8 +37,7 @@ type FormData = z.infer<ReturnType<typeof buildFormSchema>>
 
 const DeployComingSoon = () => {
   const { t } = useLingui()
-  const { resolvedTheme } = useTheme()
-  const isDarkMode = resolvedTheme === 'dark'
+  const isDarkMode = useIsDarkMode()
   const account = useAtomValue(walletAtom)
   const [submitted, setSubmitted] = useState(false)
   const [submitting, setSubmitting] = useState(false)

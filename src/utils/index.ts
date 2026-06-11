@@ -420,7 +420,7 @@ export const getTokenName = (name: string) => {
     return name.replace('Moo ', 'Beefy ')
   }
 
-  return name
+  return name.replace(' (Ondo Tokenized)', '')
 }
 
 export const max = (...args: bigint[]): bigint => {
