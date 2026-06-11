@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/button'
 import { ChartConfig, ChartContainer } from '@/components/ui/chart'
 import { Skeleton } from '@/components/ui/skeleton'
 import { isInactiveDTF } from '@/hooks/use-dtf-status'
+import { useIsDesktop } from '@/hooks/use-media-query'
 import useIndexDTFList, { type IndexDTFItem } from '@/hooks/useIndexDTFList'
 import { cn } from '@/lib/utils'
 import { formatCurrency, getFolioRoute } from '@/utils'
@@ -155,9 +156,11 @@ const HighlightedDTFCard = ({ dtf }: { dtf: IndexDTFItem }) => {
   const [isTranscriptActive, setIsTranscriptActive] = useState(false)
   const [highlightedWords, setHighlightedWords] = useState(0)
   const [transcriptScrollOffset, setTranscriptScrollOffset] = useState(0)
+  const isDesktop = useIsDesktop()
+  const isActive = !isDesktop || isTranscriptActive
 
   useEffect(() => {
-    if (!isTranscriptActive) {
+    if (!isActive) {
       setHighlightedWords(0)
       setTranscriptScrollOffset(0)
       return
@@ -171,10 +174,10 @@ const HighlightedDTFCard = ({ dtf }: { dtf: IndexDTFItem }) => {
     }, TRANSCRIPT_WORD_DELAY_MS)
 
     return () => window.clearInterval(interval)
-  }, [isTranscriptActive])
+  }, [isActive])
 
   useEffect(() => {
-    if (!isTranscriptActive || highlightedWords === 0) {
+    if (!isActive || highlightedWords === 0) {
       setTranscriptScrollOffset(0)
       return
     }
@@ -202,13 +205,13 @@ const HighlightedDTFCard = ({ dtf }: { dtf: IndexDTFItem }) => {
     }
 
     setTranscriptScrollOffset(rowTops[activeRowIndex - 1] ?? 0)
-  }, [highlightedWords, isTranscriptActive])
+  }, [highlightedWords, isActive])
 
   return (
     <Link
       to={getFolioRoute(dtf.address, dtf.chainId)}
-      onMouseEnter={() => setIsTranscriptActive(true)}
-      onMouseLeave={() => setIsTranscriptActive(false)}
+      onMouseEnter={() => isDesktop && setIsTranscriptActive(true)}
+      onMouseLeave={() => isDesktop && setIsTranscriptActive(false)}
       onFocus={() => setIsTranscriptActive(true)}
       onBlur={(event) => {
         if (!event.currentTarget.contains(event.relatedTarget as Node | null)) {
@@ -216,11 +219,11 @@ const HighlightedDTFCard = ({ dtf }: { dtf: IndexDTFItem }) => {
         }
       }}
       className={cn(
-        'group flex w-full shrink-0 flex-col gap-1 rounded-3xl bg-background p-1 transition-colors hover:bg-card',
+        'group flex w-full shrink-0 flex-col gap-1 rounded-3xl bg-card p-1 transition-colors lg:bg-background lg:hover:bg-card',
         isInactiveDTF(dtf.status) && 'opacity-60'
       )}
     >
-      <div className="flex flex-col overflow-hidden rounded-t-2xl bg-gradient-to-b from-secondary/80 to-card transition-colors duration-200 group-hover:from-secondary group-focus-within:from-muted">
+      <div className="flex flex-col overflow-hidden rounded-t-2xl bg-gradient-to-b from-secondary to-card transition-colors duration-200 lg:from-secondary/80 lg:group-hover:from-secondary lg:group-focus-within:from-muted">
         <div className="flex min-w-0 items-start justify-between p-5 pb-2">
           <div className="flex min-w-0 flex-col items-start gap-3">
             <div className="relative w-fit flex-shrink-0">
@@ -232,7 +235,7 @@ const HighlightedDTFCard = ({ dtf }: { dtf: IndexDTFItem }) => {
             </div>
             <div className="min-w-0">
               <div className="flex min-w-0 items-center gap-2">
-                <h3 className="truncate text-lg leading-tight transition-colors group-hover:text-primary">
+                <h3 className="truncate text-lg leading-tight text-primary transition-colors lg:text-foreground lg:group-hover:text-primary">
                   {dtf.name}
                 </h3>
                 {isInactiveDTF(dtf.status) && (
@@ -241,8 +244,8 @@ const HighlightedDTFCard = ({ dtf }: { dtf: IndexDTFItem }) => {
                   </span>
                 )}
               </div>
-              <div className="truncate text-lg leading-tight tabular-nums transition-colors group-hover:text-primary">
-                <span className="text-legend transition-colors group-hover:text-primary/60">
+              <div className="truncate text-lg leading-tight text-primary tabular-nums transition-colors lg:text-foreground lg:group-hover:text-primary">
+                <span className="text-primary/60 transition-colors lg:text-legend lg:group-hover:text-primary/60">
                   $
                 </span>
                 {formatCurrency(dtf.price, dtf.price >= 1 ? 2 : 5)}
@@ -263,7 +266,7 @@ const HighlightedDTFCard = ({ dtf }: { dtf: IndexDTFItem }) => {
           </div>
 
           <div className="flex shrink-0 items-center">
-            <span className="inline-flex h-8 items-center rounded-full bg-primary px-3.5 text-sm font-medium text-primary-foreground opacity-0 transition-opacity duration-150 ease-out group-hover:opacity-100 group-focus-within:opacity-100">
+            <span className="inline-flex h-8 items-center rounded-full bg-primary px-3.5 text-sm font-medium text-primary-foreground opacity-100 transition-opacity duration-150 ease-out lg:opacity-0 lg:group-hover:opacity-100 lg:group-focus-within:opacity-100">
               Buy
             </span>
           </div>
@@ -371,14 +374,14 @@ const HighlightedDTFCard = ({ dtf }: { dtf: IndexDTFItem }) => {
                 />
               </AreaChart>
             </ChartContainer>
-            <div className="pointer-events-none absolute inset-x-0 bottom-0 h-12 bg-gradient-to-b from-background/0 to-background transition-colors duration-200 group-hover:from-card/0 group-hover:to-card group-focus-within:from-card/0 group-focus-within:to-card" />
+            <div className="pointer-events-none absolute inset-x-0 bottom-0 h-12 bg-gradient-to-b from-card/0 to-card transition-colors duration-200 lg:from-background/0 lg:to-background lg:group-hover:from-card/0 lg:group-hover:to-card lg:group-focus-within:from-card/0 lg:group-focus-within:to-card" />
           </div>
         )}
       </div>
-      <div className="relative overflow-hidden rounded-full bg-card border border-secondary p-2 pr-0.5 pl-0 group-hover:border-card">
-        <div className="pointer-events-none absolute inset-y-0 -right-px z-10 w-20 bg-gradient-to-l from-card via-card to-transparent opacity-65 transition-opacity duration-150 group-hover:opacity-100 group-focus-within:opacity-100" />
+      <div className="relative overflow-hidden rounded-full bg-card border border-card p-2 pr-0.5 pl-0 lg:border-secondary lg:group-hover:border-card">
+        <div className="pointer-events-none absolute inset-y-0 -right-px z-10 w-20 bg-gradient-to-l from-card via-card to-transparent opacity-100 transition-opacity duration-150 lg:opacity-65 lg:group-hover:opacity-100 lg:group-focus-within:opacity-100" />
         <div className="flex pr-12 pl-2 overflow-hidden">
-          <div className="flex w-max gap-0 group-hover:[animation:collateral-assets-scroll_18s_linear_infinite] group-focus-within:[animation:collateral-assets-scroll_18s_linear_infinite] motion-reduce:animate-none">
+          <div className="flex w-max gap-0 [animation:collateral-assets-scroll_18s_linear_infinite] motion-reduce:animate-none lg:[animation:none] lg:group-hover:[animation:collateral-assets-scroll_18s_linear_infinite] lg:group-focus-within:[animation:collateral-assets-scroll_18s_linear_infinite]">
             {[...backing, ...backing].map((token, index) => (
               <CollateralAssetItem
                 key={`${token.address}-${index}`}
@@ -390,7 +393,7 @@ const HighlightedDTFCard = ({ dtf }: { dtf: IndexDTFItem }) => {
         <Button
           variant="none"
           size="icon-rounded"
-          className="absolute right-2 top-1/2 z-20 h-8 w-8 -translate-y-1/2 shrink-0 bg-card text-foreground opacity-0 transition-colors duration-150 group-hover:bg-muted group-hover:opacity-100 group-focus-within:opacity-100 hover:!bg-primary hover:!text-primary-foreground"
+          className="absolute right-2 top-1/2 z-20 h-8 w-8 -translate-y-1/2 shrink-0 bg-muted text-foreground opacity-100 transition-colors duration-150 lg:bg-card lg:opacity-0 lg:group-hover:bg-muted lg:group-hover:opacity-100 lg:group-focus-within:opacity-100 hover:!bg-primary hover:!text-primary-foreground"
           aria-label={`Open ${dtf.name}`}
         >
           <ArrowRight size={16} />
@@ -487,7 +490,7 @@ const HighlightedDTFEndCard = ({ fullWidth }: { fullWidth: boolean }) => (
     to={ROUTES.DISCOVER}
     className={cn(
       'group flex h-full min-h-[460px] w-full flex-col items-center justify-center gap-4 rounded-3xl bg-background p-6 text-center transition-colors hover:bg-card',
-      fullWidth && 'col-span-2'
+      fullWidth && 'lg:col-span-2'
     )}
   >
     <span className="max-w-56 text-xl leading-tight text-foreground transition-colors group-hover:text-primary">
@@ -504,10 +507,12 @@ const HighlightedDTFEndCard = ({ fullWidth }: { fullWidth: boolean }) => (
 
 const HighlightedDTFs = ({
   className,
+  enableScrollAnimation = true,
   onScrollDistanceChange,
   scrollOffset = 0,
 }: {
   className?: string
+  enableScrollAnimation?: boolean
   onScrollDistanceChange?: (distance: number) => void
   scrollOffset?: number
 }) => {
@@ -550,10 +555,12 @@ const HighlightedDTFs = ({
   }
 
   const trackStyle = {
-    transform: `translate3d(0, -${scrollOffset}px, 0)`,
+    transform: enableScrollAnimation
+      ? `translate3d(0, -${scrollOffset}px, 0)`
+      : undefined,
   } satisfies CSSProperties
   const fadeOpacity =
-    scrollDistance > 0
+    enableScrollAnimation && scrollDistance > 0
       ? Math.max(
           0,
           Math.min(1, (scrollDistance - scrollOffset) / END_FADE_DISTANCE)
@@ -567,7 +574,7 @@ const HighlightedDTFs = ({
     <section
       ref={viewportRef}
       className={cn(
-        'relative min-h-0 overflow-hidden mb-1',
+        'relative mb-1 min-h-0 overflow-visible lg:overflow-hidden',
         className ?? 'mb-16'
       )}
     >
@@ -592,7 +599,7 @@ const HighlightedDTFs = ({
           <div
             ref={trackRef}
             style={trackStyle}
-            className="grid auto-rows-fr grid-cols-2 gap-1 pb-0 will-change-transform"
+            className="grid auto-rows-fr grid-cols-1 gap-1 pb-0 will-change-transform lg:grid-cols-2"
           >
             {highlighted.map((dtf) => (
               <HighlightedDTFCard

@@ -1,4 +1,5 @@
 import TokenLogo from '@/components/token-logo'
+import { useIsDesktop } from '@/hooks/use-media-query'
 import { cn } from '@/lib/utils'
 import { formatCurrency } from '@/utils'
 import useIndexDTFList, { type IndexDTFItem } from '@/hooks/useIndexDTFList'
@@ -11,13 +12,10 @@ import {
   type CSSProperties,
 } from 'react'
 
-const LOGO_RADIUS = 24
-const TRAJECTORY_RADIUS = 42
-const TEXT_PATH_RADIUS = TRAJECTORY_RADIUS + 10
-const CARD_PADDING = TRAJECTORY_RADIUS - LOGO_RADIUS
-const CARD_RIGHT_PADDING = CARD_PADDING + 12
+const LOGO_RING_STROKE_WIDTH = 2
 const PATH_START_X = 0
-const PATH_CENTER_Y = 150
+const DESKTOP_PATH_CENTER_Y = 150
+const MOBILE_PATH_CENTER_Y = 78
 const FADE_IN_PROGRESS = 0.08
 const FADE_OUT_START_PROGRESS = 0.58
 const FADE_OUT_END_PROGRESS = 0.7
@@ -30,8 +28,27 @@ const FINAL_HOLD_MS = 2000
 const COLLAPSE_TEXT_MS = 350
 const COLLAPSE_MS = 850
 const RESET_MS = 250
-const ANIMATION_HEIGHT = 224
-const CARD_WIDTH = 170
+const DESKTOP_ANIMATION_HEIGHT = 224
+const MOBILE_ANIMATION_HEIGHT = 152
+const DESKTOP_VISUAL_GEOMETRY = {
+  logoRadius: 24,
+  trajectoryRadius: 42,
+  cardWidth: 170,
+}
+const MOBILE_VISUAL_GEOMETRY = {
+  logoRadius: 21,
+  trajectoryRadius: 37,
+  cardWidth: 150,
+}
+const TEXT_PATH_GAP = 10
+const CARD_DETAIL_GAP = 12
+const CARD_RIGHT_EXTRA_PADDING = 12
+
+type VisualGeometry = {
+  logoRadius: number
+  trajectoryRadius: number
+  cardWidth: number
+}
 
 type Geometry = {
   width: number
@@ -111,28 +128,33 @@ const useAnimationTime = () => {
 const getCMC20 = (dtfs?: IndexDTFItem[]) =>
   dtfs?.find((dtf) => dtf.symbol.toUpperCase() === 'CMC20')
 
-const getGeometry = (width: number): Geometry => {
+const getGeometry = (
+  width: number,
+  centerY: number,
+  visual: VisualGeometry
+): Geometry => {
   const safeWidth = Math.max(width, 320)
   const centerX = safeWidth / 2
-  const centerY = PATH_CENTER_Y
+  const textPathRadius = visual.trajectoryRadius + TEXT_PATH_GAP
+  const cardPadding = visual.trajectoryRadius - visual.logoRadius
 
-  const orbitBottomY = centerY + TRAJECTORY_RADIUS
-  const textOrbitBottomY = centerY + TEXT_PATH_RADIUS
-  const textOrbitTopY = centerY - TEXT_PATH_RADIUS
-  const textOrbitRightX = centerX + TEXT_PATH_RADIUS
-  const textOrbitLeftX = centerX - TEXT_PATH_RADIUS
+  const orbitBottomY = centerY + visual.trajectoryRadius
+  const textOrbitBottomY = centerY + textPathRadius
+  const textOrbitTopY = centerY - textPathRadius
+  const textOrbitRightX = centerX + textPathRadius
+  const textOrbitLeftX = centerX - textPathRadius
 
   const pathLength =
-    Math.max(0, centerX - PATH_START_X) + Math.PI * 2 * TEXT_PATH_RADIUS
+    Math.max(0, centerX - PATH_START_X) + Math.PI * 2 * textPathRadius
 
-  const cardHeight = TRAJECTORY_RADIUS * 2
+  const cardHeight = visual.trajectoryRadius * 2
   const cardWidth = Math.min(
-    CARD_WIDTH,
-    Math.max(TRAJECTORY_RADIUS * 2, safeWidth - 16)
+    visual.cardWidth,
+    Math.max(visual.trajectoryRadius * 2, safeWidth - 16)
   )
   const cardX = centerX - cardWidth / 2
   const cardY = centerY - cardHeight / 2
-  const finalLogoX = cardX + CARD_PADDING + LOGO_RADIUS
+  const finalLogoX = cardX + cardPadding + visual.logoRadius
 
   return {
     width: safeWidth,
@@ -216,7 +238,6 @@ const getCycleState = (time: number, itemCount: number, pathLength: number) => {
     textOpacity,
     trajectoryOpacity: isReveal ? 1 - clamp(revealTime / REVEAL_HOLD_MS) : 1,
     placeholderOpacity: 1 - crossfadeProgress,
-    logoOpacity: crossfadeProgress,
     gradientRotation: (time / 80) % 360,
   }
 }
@@ -292,56 +313,68 @@ const DTFPackingAnimation = ({ className }: { className?: string }) => {
   const cmc20 = getCMC20(data)
   const { ref, width } = useElementWidth()
   const time = useAnimationTime()
+  const isDesktop = useIsDesktop()
   const id = useId().replace(/:/g, '')
   const pathId = `${id}-packing-path`
   const gradientId = `${id}-packing-gradient`
+  const tickerLineGradientId = `${id}-ticker-line-gradient`
 
   const basket = useMemo(() => cmc20?.basket ?? [], [cmc20?.basket])
-  const geometry = useMemo(() => getGeometry(width), [width])
+  const animationHeight = isDesktop
+    ? DESKTOP_ANIMATION_HEIGHT
+    : MOBILE_ANIMATION_HEIGHT
+  const pathCenterY = isDesktop ? DESKTOP_PATH_CENTER_Y : MOBILE_PATH_CENTER_Y
+  const visual = isDesktop ? DESKTOP_VISUAL_GEOMETRY : MOBILE_VISUAL_GEOMETRY
+  const textPathRadius = visual.trajectoryRadius + TEXT_PATH_GAP
+  const cardPadding = visual.trajectoryRadius - visual.logoRadius
+  const cardRightPadding = cardPadding + CARD_RIGHT_EXTRA_PADDING
+  const geometry = useMemo(
+    () => getGeometry(width, pathCenterY, visual),
+    [pathCenterY, visual, width]
+  )
   const cycle = getCycleState(time, basket.length, geometry.pathLength)
 
   const borderX =
     geometry.centerX -
-    TRAJECTORY_RADIUS +
-    (geometry.cardX - (geometry.centerX - TRAJECTORY_RADIUS)) *
+    visual.trajectoryRadius +
+    (geometry.cardX - (geometry.centerX - visual.trajectoryRadius)) *
       cycle.morphProgress
 
   const borderWidth =
-    TRAJECTORY_RADIUS * 2 +
-    (geometry.cardWidth - TRAJECTORY_RADIUS * 2) * cycle.morphProgress
+    visual.trajectoryRadius * 2 +
+    (geometry.cardWidth - visual.trajectoryRadius * 2) * cycle.morphProgress
 
   const logoX =
     geometry.centerX +
     (geometry.finalLogoX - geometry.centerX) * cycle.morphProgress
 
   const logoStyle = {
-    left: logoX - LOGO_RADIUS,
-    top: geometry.centerY - LOGO_RADIUS,
-    width: LOGO_RADIUS * 2,
-    height: LOGO_RADIUS * 2,
-    opacity: cycle.logoOpacity,
+    left: logoX - visual.logoRadius,
+    top: geometry.centerY - visual.logoRadius,
+    width: visual.logoRadius * 2,
+    height: visual.logoRadius * 2,
   } satisfies CSSProperties
 
   const detailStyle = {
-    left: logoX + LOGO_RADIUS + 12,
+    left: logoX + visual.logoRadius + CARD_DETAIL_GAP,
     top: geometry.centerY - 22,
     maxWidth:
       geometry.cardX +
       geometry.cardWidth -
-      CARD_RIGHT_PADDING -
+      cardRightPadding -
       logoX -
-      LOGO_RADIUS -
-      12,
+      visual.logoRadius -
+      CARD_DETAIL_GAP,
     opacity: cycle.textOpacity,
   } satisfies CSSProperties
 
   const pathD = [
     `M ${PATH_START_X} ${geometry.textOrbitBottomY}`,
     `L ${geometry.centerX} ${geometry.textOrbitBottomY}`,
-    `A ${TEXT_PATH_RADIUS} ${TEXT_PATH_RADIUS} 0 0 0 ${geometry.textOrbitRightX} ${geometry.centerY}`,
-    `A ${TEXT_PATH_RADIUS} ${TEXT_PATH_RADIUS} 0 0 0 ${geometry.centerX} ${geometry.textOrbitTopY}`,
-    `A ${TEXT_PATH_RADIUS} ${TEXT_PATH_RADIUS} 0 0 0 ${geometry.textOrbitLeftX} ${geometry.centerY}`,
-    `A ${TEXT_PATH_RADIUS} ${TEXT_PATH_RADIUS} 0 0 0 ${geometry.centerX} ${geometry.textOrbitBottomY}`,
+    `A ${textPathRadius} ${textPathRadius} 0 0 0 ${geometry.textOrbitRightX} ${geometry.centerY}`,
+    `A ${textPathRadius} ${textPathRadius} 0 0 0 ${geometry.centerX} ${geometry.textOrbitTopY}`,
+    `A ${textPathRadius} ${textPathRadius} 0 0 0 ${geometry.textOrbitLeftX} ${geometry.centerY}`,
+    `A ${textPathRadius} ${textPathRadius} 0 0 0 ${geometry.centerX} ${geometry.textOrbitBottomY}`,
   ].join(' ')
 
   const price = cmc20
@@ -352,7 +385,7 @@ const DTFPackingAnimation = ({ className }: { className?: string }) => {
     <div
       ref={ref}
       className={cn(
-        'relative h-56 w-full overflow-hidden text-foreground',
+        'relative h-[152px] w-full overflow-hidden text-foreground lg:h-56',
         className
       )}
       aria-label="CMC20 packs multiple collateral assets into one DTF token"
@@ -362,8 +395,8 @@ const DTFPackingAnimation = ({ className }: { className?: string }) => {
           <svg
             className="absolute inset-0 h-full w-full overflow-visible"
             width={geometry.width}
-            height={ANIMATION_HEIGHT}
-            viewBox={`0 0 ${geometry.width} ${ANIMATION_HEIGHT}`}
+            height={animationHeight}
+            viewBox={`0 0 ${geometry.width} ${animationHeight}`}
             role="img"
             aria-hidden="true"
           >
@@ -373,6 +406,25 @@ const DTFPackingAnimation = ({ className }: { className?: string }) => {
                 id={gradientId}
                 rotation={cycle.gradientRotation}
               />
+              <linearGradient
+                id={tickerLineGradientId}
+                gradientUnits="userSpaceOnUse"
+                x1={PATH_START_X}
+                y1={geometry.orbitBottomY}
+                x2={geometry.centerX}
+                y2={geometry.orbitBottomY}
+              >
+                <stop
+                  offset="0%"
+                  stopColor="hsl(var(--primary))"
+                  stopOpacity="0"
+                />
+                <stop
+                  offset="100%"
+                  stopColor="hsl(var(--primary))"
+                  stopOpacity="1"
+                />
+              </linearGradient>
             </defs>
 
             <g opacity={cycle.trajectoryOpacity}>
@@ -381,29 +433,16 @@ const DTFPackingAnimation = ({ className }: { className?: string }) => {
                 y1={geometry.orbitBottomY}
                 x2={geometry.centerX}
                 y2={geometry.orbitBottomY}
-                className="stroke-primary/40"
+                stroke={`url(#${tickerLineGradientId})`}
                 strokeWidth="1.5"
-                strokeDasharray="2 7"
-                strokeLinecap="round"
               />
               <circle
                 cx={geometry.centerX}
                 cy={geometry.centerY}
-                r={TRAJECTORY_RADIUS}
-                className="stroke-primary/40"
+                r={visual.trajectoryRadius}
+                className="fill-primary/10 stroke-primary"
                 fill="none"
                 strokeWidth="1.5"
-                strokeDasharray="2 7"
-                strokeLinecap="round"
-              />
-            </g>
-
-            <g opacity={cycle.placeholderOpacity}>
-              <circle
-                cx={geometry.centerX}
-                cy={geometry.centerY}
-                r={LOGO_RADIUS}
-                fill={`url(#${gradientId})`}
               />
             </g>
 
@@ -413,9 +452,19 @@ const DTFPackingAnimation = ({ className }: { className?: string }) => {
               width={borderWidth}
               height={geometry.cardHeight}
               rx={geometry.cardHeight / 2}
-              className="fill-card/50 stroke-card"
+              className="fill-primary/10 stroke-primary"
               strokeWidth="1.5"
               opacity={cycle.isReveal ? 1 : 0}
+            />
+
+            <circle
+              cx={logoX}
+              cy={geometry.centerY}
+              r={visual.logoRadius + LOGO_RING_STROKE_WIDTH / 2}
+              fill="none"
+              stroke={`url(#${gradientId})`}
+              strokeWidth={LOGO_RING_STROKE_WIDTH}
+              opacity={cycle.placeholderOpacity}
             />
 
             {!cycle.isReveal && (
@@ -436,14 +485,14 @@ const DTFPackingAnimation = ({ className }: { className?: string }) => {
           </svg>
 
           <div
-            className="pointer-events-none absolute rounded-full transition-opacity"
+            className="pointer-events-none absolute rounded-full"
             style={logoStyle}
           >
             <TokenLogo
               src={cmc20.brand?.icon || undefined}
               symbol={cmc20.symbol}
-              width={LOGO_RADIUS * 2}
-              height={LOGO_RADIUS * 2}
+              width={visual.logoRadius * 2}
+              height={visual.logoRadius * 2}
               loading="eager"
               fetchPriority="high"
             />
