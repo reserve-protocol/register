@@ -30,7 +30,7 @@ msgstr "- {0} Redeem"
 msgid "(in their Github repository)"
 msgstr "(해당 Github 저장소에서)"
 
-#: src/views/index-dtf/overview/components/index-disclousure.tsx:252
+#: src/views/index-dtf/overview/components/index-disclousure.tsx:339
 msgid "(the “Website”), you expressly acknowledge that you have read and understood the"
 msgstr ""
 
@@ -685,7 +685,7 @@ msgstr "{0} 정보"
 msgid "About this DTF"
 msgstr "이 DTF 소개"
 
-#: src/views/yield-dtf/auctions/auctions-sidebar/Revenue.tsx:100
+#: src/views/yield-dtf/auctions/auctions-sidebar/Revenue.tsx:99
 msgid "Above minimum trade volume"
 msgstr "최소 거래량 이상"
 
@@ -1032,7 +1032,7 @@ msgstr "알 수 없는 오류가 발생했습니다"
 msgid "Analyzing liquidity..."
 msgstr "유동성 분석 중..."
 
-#: src/views/index-dtf/overview/components/index-disclousure.tsx:263
+#: src/views/index-dtf/overview/components/index-disclousure.tsx:350
 msgid "and agree to the terms therein. ABC Labs, LLC (\"ABC Labs\") created the Website to help facilitate interaction with the Reserve protocol, including the minting and redeeming of DTFs. However, the Website is only one of several ways in which you can interact with the Reserve protocol. ABC Labs has neither created nor deployed any DTF and your ability to interact with specific DTFs via the Website in no way suggests that a DTF is endorsed by ABC Labs. In fact, ABC Labs assumes no liability for your use of the Website and interaction with the Reserve protocol, as covered in the Terms and Conditions."
 msgstr ""
 
@@ -1605,7 +1605,7 @@ msgstr "잠금 해제 지연 시작"
 msgid "Begin unstaking process"
 msgstr "Unstaking 프로세스 시작"
 
-#: src/views/yield-dtf/auctions/auctions-sidebar/Revenue.tsx:124
+#: src/views/yield-dtf/auctions/auctions-sidebar/Revenue.tsx:123
 msgid "Below minimum trade volume"
 msgstr "최소 거래량 미만"
 
@@ -1681,7 +1681,7 @@ msgid "Bridge {0}"
 msgstr "{0} 브리지"
 
 #. placeholder {0}: capitalize(ETHERSCAN_NAMES[chainId])
-#: src/views/index-dtf/overview/components/basket-overview/basket-table-header.tsx:140
+#: src/views/index-dtf/overview/components/basket-overview/basket-table-header.tsx:146
 msgid "Bridge / {0}"
 msgstr "Bridge / {0}"
 
@@ -1777,7 +1777,7 @@ msgstr "제공: {0}"
 msgid "By enabling this option, the zapper will only attempt to mint RTokens instead of trading for them. This can help you avoid trading fees and slippage."
 msgstr "이 옵션을 활성화하면 zapper가 RToken을 거래하는 대신 Mint만 시도합니다. 이를 통해 거래 수수료와 슬리피지를 피할 수 있습니다."
 
-#: src/views/index-dtf/overview/components/index-disclousure.tsx:244
+#: src/views/index-dtf/overview/components/index-disclousure.tsx:331
 msgid "By using"
 msgstr ""
 
@@ -1806,7 +1806,7 @@ msgstr "토큰을 언제든지 잠금 해제할 수 있나요?"
 msgid "Can I unstake my RSR anytime?"
 msgstr "RSR을 언제든지 Unstake할 수 있나요?"
 
-#: src/views/index-dtf/deploy/components/deploy-coming-soon.tsx:138
+#: src/views/index-dtf/deploy/components/deploy-coming-soon.tsx:137
 msgid "Can you describe the DTF you want to create? *"
 msgstr "생성하려는 DTF를 설명해 주세요. *"
 
@@ -2042,7 +2042,7 @@ msgid "CMC20 whitepaper documentation"
 msgstr ""
 
 #: src/views/explorer/components/collaterals/index.tsx:80
-#: src/views/index-dtf/overview/components/basket-overview/basket-table-header.tsx:107
+#: src/views/index-dtf/overview/components/basket-overview/basket-table-header.tsx:113
 msgid "Collateral"
 msgstr "담보"
 
@@ -2300,7 +2300,7 @@ msgstr ""
 msgid "Connect your wallet to view your portfolio"
 msgstr "포트폴리오를 보려면 Wallet을 연결하세요"
 
-#: src/views/index-dtf/deploy/components/deploy-coming-soon.tsx:183
+#: src/views/index-dtf/deploy/components/deploy-coming-soon.tsx:182
 msgid "Contact me"
 msgstr "문의하기"
 
@@ -2656,6 +2656,10 @@ msgstr ""
 msgid "Current votes"
 msgstr "현재 투표"
 
+#: src/views/index-dtf/overview/components/index-disclousure.tsx:246
+msgid "Custodial Risks: Ondo Tokenized Stocks represent claims on SPVs and other structures that hold underlying equity positions through custodians. DTF exposure therefore depends on the operational integrity and solvency of third parties. Any failure, suspension, error, insolvency, fraud, cyber incident, or transfer restriction affecting these parties could result in delayed settlement, blocked transfers, impaired redemptions, forced liquidation, or partial or total loss of value for the DTF’s holdings."
+msgstr ""
+
 #: src/components/ui/swap.tsx:486
 #: src/views/index-dtf/deploy/components/toggle-group-preset.tsx:31
 #: src/views/yield-dtf/issuance/components/zapV2/settings/ZapSettingsCustomSlippage.tsx:24
@@ -2949,7 +2953,7 @@ msgstr "비활성화됨"
 msgid "Discard"
 msgstr "취소"
 
-#: src/views/index-dtf/overview/components/index-disclousure.tsx:238
+#: src/views/index-dtf/overview/components/index-disclousure.tsx:325
 msgid "Disclosures"
 msgstr "공시"
 
@@ -3247,7 +3251,7 @@ msgstr "더치 경매 기간 (초)"
 msgid "Dutch trade"
 msgstr "더치 트레이드"
 
-#: src/views/index-dtf/deploy/components/deploy-coming-soon.tsx:142
+#: src/views/index-dtf/deploy/components/deploy-coming-soon.tsx:141
 msgid "e.g. tokens to be included, strategy, methodology"
 msgstr "예: 포함될 토큰, 전략, 방법론"
 
@@ -3580,7 +3584,7 @@ msgstr "독점 경매 실행자 윈도우"
 #: src/views/index-dtf/governance/components/proposal-preview/rebalance-preview/legacy-basket-proposal-preview.tsx:317
 #: src/views/index-dtf/governance/components/proposal-preview/unknown-contract-preview.tsx:72
 #: src/views/index-dtf/governance/views/propose/basket/components/proposal-basket-preview.tsx:400
-#: src/views/yield-dtf/governance/views/proposal-detail/components/ContractProposalDetails.tsx:49
+#: src/views/yield-dtf/governance/views/proposal-detail/components/ContractProposalDetails.tsx:48
 msgid "Executable code"
 msgstr "실행 가능한 코드"
 
@@ -3691,7 +3695,7 @@ msgstr "{0}의 수익 기회 살펴보기"
 msgid "Explorer"
 msgstr "Explorer"
 
-#: src/views/index-dtf/overview/components/basket-overview/basket-table-header.tsx:97
+#: src/views/index-dtf/overview/components/basket-overview/basket-table-header.tsx:103
 msgid "Exposure"
 msgstr "노출"
 
@@ -3820,7 +3824,7 @@ msgstr "이슈 등록 또는 기존 이슈 추천"
 msgid "File size exceeds 1MB limit. Please choose a smaller file."
 msgstr "파일 크기가 1MB 제한을 초과합니다. 더 작은 파일을 선택해 주세요."
 
-#: src/views/index-dtf/deploy/components/deploy-coming-soon.tsx:104
+#: src/views/index-dtf/deploy/components/deploy-coming-soon.tsx:103
 msgid "Fill out the information below and ABC Labs will reach out!"
 msgstr "아래 정보를 입력해 주시면 ABC Labs에서 연락드리겠습니다!"
 
@@ -4199,11 +4203,11 @@ msgstr "보유자 APY"
 msgid "How are APYs so high?"
 msgstr "APY가 왜 이렇게 높은가요?"
 
-#: src/views/index-dtf/deploy/components/deploy-coming-soon.tsx:117
+#: src/views/index-dtf/deploy/components/deploy-coming-soon.tsx:116
 msgid "How can we reach you? *"
 msgstr "어떻게 연락드리면 될까요? *"
 
-#: src/views/index-dtf/deploy/components/deploy-coming-soon.tsx:156
+#: src/views/index-dtf/deploy/components/deploy-coming-soon.tsx:155
 msgid "How do you plan to get people to invest in your DTF?"
 msgstr "사람들이 귀하의 DTF에 투자하도록 어떻게 유도할 계획인가요?"
 
@@ -4691,6 +4695,10 @@ msgstr "제한됨"
 msgid "Liquidity"
 msgstr "유동성"
 
+#: src/views/index-dtf/overview/components/index-disclousure.tsx:273
+msgid "Liquidity Risk: Although on-chain trading is 24/7, primary minting/redeeming of Ondo Tokenized Stocks may be limited, permissioned, delayed, or available only during specific windows. In stressed markets, secondary market liquidity may deteriorate, spreads may widen, and token prices may deviate materially from the value of the referenced underlying equities. As a result, the DTF may experience tracking error versus its intended index composition and may be unable to dispose of or rebalance positions at or near observable net asset value."
+msgstr ""
+
 #: src/views/index-dtf/deploy/steps/basket/components/liquidity-config-modal.tsx:97
 msgid "Liquidity simulation amount"
 msgstr "유동성 시뮬레이션 금액"
@@ -4810,7 +4818,7 @@ msgstr "Long Freezers"
 msgid "Looking for Yield DTFs?"
 msgstr "Yield DTFs를 찾고 계신가요?"
 
-#: src/views/index-dtf/deploy/components/deploy-coming-soon.tsx:201
+#: src/views/index-dtf/deploy/components/deploy-coming-soon.tsx:200
 msgid "Looking to create a Yield DTF?"
 msgstr "Yield DTF를 생성하려고 하시나요?"
 
@@ -4901,9 +4909,13 @@ msgstr "바스켓 평균 수익을 바탕으로 수동 산정한 예상 APY입�
 msgid "Market"
 msgstr "시장"
 
+#: src/views/index-dtf/overview/components/index-disclousure.tsx:286
+msgid "Market Access and Redemption Risk: Minting and redemption for Ondo Tokenized Stocks may be permissioned, capacity-limited, subject to eligibility/whitelisting, and available only during defined windows or business-hour cutoffs tied to traditional market operations. These frictions can prevent arbitrage, impair exits at or near NAV, and amplify secondary-market dislocations, thereby resulting in a partial or total loss of the DTFs' holdings."
+msgstr ""
+
 #: src/views/home/components/discover-index-dtf/index-dtf-table-columns.tsx:165
 #: src/views/home/components/discover-index-dtf/index-dtf-table-placeholder.tsx:21
-#: src/views/index-dtf/overview/components/basket-overview/basket-table-header.tsx:134
+#: src/views/index-dtf/overview/components/basket-overview/basket-table-header.tsx:140
 #: src/views/index-dtf/overview/components/charts/data-type-selector.tsx:11
 #: src/views/index-dtf/overview/components/fees-stats.tsx:55
 #: src/views/index-dtf/overview/components/index-metrics-overview.tsx:76
@@ -5387,7 +5399,7 @@ msgstr "다음 단계"
 msgid "No"
 msgstr "아니요"
 
-#: src/views/yield-dtf/auctions/auctions-sidebar/Revenue.tsx:37
+#: src/views/yield-dtf/auctions/auctions-sidebar/Revenue.tsx:36
 msgid "No actionable revenue available"
 msgstr "실행 가능한 수익이 없습니다"
 
@@ -5578,7 +5590,7 @@ msgid "Non-Basket Governance Settings"
 msgstr "바스켓 외 거버넌스 설정"
 
 #: src/views/home/components/discover-index-dtf/index-dtf-table-columns.tsx:111
-#: src/views/yield-dtf/governance/views/proposal-detail/components/ContractProposalDetails.tsx:104
+#: src/views/yield-dtf/governance/views/proposal-detail/components/ContractProposalDetails.tsx:103
 #: src/views/yield-dtf/governance/views/proposal/components/SpellUpgrade3_4_0.tsx:66
 #: src/views/yield-dtf/governance/views/proposal/components/SpellUpgrade4_2_0.tsx:67
 #: src/views/yield-dtf/settings/components/roles-view.tsx:42
@@ -5837,7 +5849,7 @@ msgstr "Owners"
 #: src/views/index-dtf/governance/components/proposal-preview/raw-call-preview.tsx:28
 #: src/views/index-dtf/governance/components/proposal-preview/rebalance-preview/legacy-basket-proposal-preview.tsx:305
 #: src/views/index-dtf/governance/views/propose/basket/components/proposal-basket-preview.tsx:388
-#: src/views/yield-dtf/governance/views/proposal-detail/components/ContractProposalDetails.tsx:121
+#: src/views/yield-dtf/governance/views/proposal-detail/components/ContractProposalDetails.tsx:120
 #: src/views/yield-dtf/governance/views/proposal/components/ProposedParametersPreview.tsx:24
 msgid "Parameters"
 msgstr "매개변수"
@@ -6083,7 +6095,7 @@ msgstr "Register가 토큰을 관리하는 방식에 대한 자세한 내용은 
 msgid "Please read more about the different roles in Alexios and the Reserve protocol in the documentation."
 msgstr "Alexios 및 Reserve 프로토콜의 다양한 역할에 대한 자세한 내용은 문서를 참고하세요."
 
-#: src/views/index-dtf/overview/components/index-disclousure.tsx:300
+#: src/views/index-dtf/overview/components/index-disclousure.tsx:388
 msgid "please see here."
 msgstr ""
 
@@ -6242,7 +6254,7 @@ msgid "Price at launch"
 msgstr "출시 시점 가격"
 
 #. placeholder {0}: periodLabel[timeRange]
-#: src/views/index-dtf/overview/components/basket-overview/basket-table-header.tsx:128
+#: src/views/index-dtf/overview/components/basket-overview/basket-table-header.tsx:134
 msgid "Price Change ({0})"
 msgstr "가격 변동 ({0})"
 
@@ -6570,7 +6582,7 @@ msgstr "등급:"
 #: src/views/index-dtf/governance/components/proposal-preview/rebalance-preview/legacy-basket-proposal-preview.tsx:137
 #: src/views/index-dtf/governance/views/propose/basket/components/proposal-basket-preview.tsx:142
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/dtf-settings-proposal-preview.tsx:64
-#: src/views/yield-dtf/governance/views/proposal-detail/components/ContractProposalDetails.tsx:142
+#: src/views/yield-dtf/governance/views/proposal-detail/components/ContractProposalDetails.tsx:141
 msgid "Raw"
 msgstr "원본"
 
@@ -6785,6 +6797,10 @@ msgstr "자산 플러그인을 등록하면 RToken이 기초 ERC20 토큰의 가
 msgid "Regular minting "
 msgstr "일반 Mint "
 
+#: src/views/index-dtf/overview/components/index-disclousure.tsx:258
+msgid "Regulatory and Compliance Risk: Tokenized equities and related on-chain transfer mechanisms may be subject to evolving regulatory interpretations and enforcement actions. Ondo Tokenized Stocks may also be subject to contractual eligibility requirements, permissioning, whitelisting, jurisdictional limitations, sanctions screening, or other compliance gating that can be changed or applied with little notice. If regulations or compliance requirements change, the DTF may be forced to restrict access, halt mints/redemptions, rebalance away from affected components, or wind down positions under adverse market conditions, potentially causing tracking error, reduced liquidity, and losses."
+msgstr ""
+
 #: src/views/yield-dtf/settings/components/contracts-info.tsx:30
 msgid "Related Contracts"
 msgstr "관련 컨트랙트"
@@ -6951,7 +6967,7 @@ msgstr "Reserve Protocol 스마트 컨트랙트 리스크"
 msgid "Reserve Rights (RSR) is an ERC-20 token that unifies governance, risk management, and value accrual across the Reserve ecosystem."
 msgstr "Reserve Rights(RSR)는 Reserve 생태계 전반에서 거버넌스, 리스크 관리, 가치 적립을 통합하는 ERC-20 토큰입니다."
 
-#: src/views/index-dtf/deploy/components/deploy-coming-soon.tsx:192
+#: src/views/index-dtf/deploy/components/deploy-coming-soon.tsx:191
 msgid "reserve splash"
 msgstr "Reserve splash"
 
@@ -6973,7 +6989,7 @@ msgstr "과거 가격을 가져오는 중..."
 msgid "Revenue"
 msgstr "수익"
 
-#: src/views/yield-dtf/auctions/auctions-sidebar/Revenue.tsx:127
+#: src/views/yield-dtf/auctions/auctions-sidebar/Revenue.tsx:126
 msgid "Revenue auctions that are below the minimum trade or unavailable."
 msgstr "최소 거래 규모 미만이거나 이용할 수 없는 수익 경매입니다."
 
@@ -7301,7 +7317,7 @@ msgstr "이 목록의 RTokens는 당사의 보증이나 감사를 받은 것이 
 msgid "Run"
 msgstr "실행"
 
-#: src/views/yield-dtf/auctions/auctions-sidebar/Revenue.tsx:102
+#: src/views/yield-dtf/auctions/auctions-sidebar/Revenue.tsx:101
 msgid "Run and settle auctions."
 msgstr "경매를 실행하고 정산합니다."
 
@@ -7495,11 +7511,11 @@ msgstr "예상 가격 변동성(낮음, 중간, 높음)을 지정하여 경매 �
 msgid "Set Price Range(s)"
 msgstr "가격 범위 설정"
 
-#: src/views/yield-dtf/governance/views/proposal-detail/components/ContractProposalDetails.tsx:172
+#: src/views/yield-dtf/governance/views/proposal-detail/components/ContractProposalDetails.tsx:171
 msgid "Set Primary basket"
 msgstr "기본 바스켓 설정"
 
-#: src/views/yield-dtf/governance/views/proposal-detail/components/ContractProposalDetails.tsx:221
+#: src/views/yield-dtf/governance/views/proposal-detail/components/ContractProposalDetails.tsx:220
 msgid "Set Revenue Distribution"
 msgstr "수익 분배 설정"
 
@@ -7643,7 +7659,7 @@ msgstr "거버넌스 DAO를 생성하려면 tx에 서명하세요"
 #: src/views/index-dtf/governance/components/proposal-preview/raw-call-preview.tsx:20
 #: src/views/index-dtf/governance/components/proposal-preview/rebalance-preview/legacy-basket-proposal-preview.tsx:295
 #: src/views/index-dtf/governance/views/propose/basket/components/proposal-basket-preview.tsx:378
-#: src/views/yield-dtf/governance/views/proposal-detail/components/ContractProposalDetails.tsx:113
+#: src/views/yield-dtf/governance/views/proposal-detail/components/ContractProposalDetails.tsx:112
 msgid "Signature"
 msgstr "서명"
 
@@ -8047,7 +8063,7 @@ msgstr "[stRSR] 보유자가 투표할 수 있도록 제안을 제출합니다. 
 msgid "Submitted!"
 msgstr "제출됨!"
 
-#: src/views/index-dtf/deploy/components/deploy-coming-soon.tsx:183
+#: src/views/index-dtf/deploy/components/deploy-coming-soon.tsx:182
 #: src/views/index-dtf/manage/components/submit-button.tsx:241
 msgid "Submitting..."
 msgstr "제출 중..."
@@ -8081,7 +8097,7 @@ msgstr "출시 이후 Index 및 Yield DTF의 모든 Mint 합계입니다."
 #: src/views/index-dtf/governance/components/proposal-preview/rebalance-preview/legacy-basket-proposal-preview.tsx:131
 #: src/views/index-dtf/governance/views/propose/basket/components/proposal-basket-preview.tsx:136
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/dtf-settings-proposal-preview.tsx:60
-#: src/views/yield-dtf/governance/views/proposal-detail/components/ContractProposalDetails.tsx:141
+#: src/views/yield-dtf/governance/views/proposal-detail/components/ContractProposalDetails.tsx:140
 msgid "Summary"
 msgstr "요약"
 
@@ -8178,11 +8194,11 @@ msgstr "Telegram 링크"
 msgid "Telegram username"
 msgstr "Telegram 사용자명"
 
-#: src/views/index-dtf/overview/components/index-disclousure.tsx:261
+#: src/views/index-dtf/overview/components/index-disclousure.tsx:348
 msgid "Terms and Conditions"
 msgstr ""
 
-#: src/views/index-dtf/deploy/components/deploy-coming-soon.tsx:110
+#: src/views/index-dtf/deploy/components/deploy-coming-soon.tsx:109
 msgid "Thank you! We'll be in touch soon."
 msgstr "감사합니다! 곧 연락드리겠습니다."
 
@@ -8234,7 +8250,7 @@ msgstr "가디언은 제안이 통과되더라도 이를 거부할 수 있는 �
 msgid "The impact your trade has on the market price."
 msgstr "거래가 시장 가격에 미치는 영향입니다."
 
-#: src/views/index-dtf/overview/components/index-disclousure.tsx:277
+#: src/views/index-dtf/overview/components/index-disclousure.tsx:364
 msgid "The information provided on the Website comes from on-chain sources. Past performance is not indicative of future results. Although index DTFs are intended to track indexes, their ability to successfully track indexes are dependent on the governance structure of the DTF and the governance’s ability to make appropriate trades. There is no guarantee that such trades will be successful or will track its corresponding index exactly. There are many risks associated with digital assets, including but not limited to security risk, counterparty risk, volatility risk, conflicts of interest, and many more. DTFs are no exception. By using the Website, you agree that your interaction with any DTFs is solely at your own risk and the Website and DTFs come as is, without any warranty or condition of any kind."
 msgstr ""
 
@@ -8422,6 +8438,10 @@ msgstr "워밍업 기간은 바스켓이 SOUND 상태를 회복한 후 RToken을
 msgid "There are a <0>handful of risks</0> associated with any given RToken's collateral assets, including assets' redeemability, the health of their reserves, price volatility, etc. Likewise, because many RTokens leverage assets from external protocols, RToken holders assume all of the risks of its underlying protocols (smart contract, governance, or otherwise)."
 msgstr "특정 RToken의 담보 자산에는 자산의 Redeem 가능성, 준비금 건전성, 가격 변동성 등 <0>여러 리스크</0>가 따릅니다. 마찬가지로 많은 RTokens가 외부 프로토콜의 자산을 활용하기 때문에, RToken 보유자는 기초 프로토콜의 모든 리스크(스마트 컨트랙트, 거버넌스 등)를 부담합니다."
 
+#: src/views/index-dtf/overview/components/index-disclousure.tsx:239
+msgid "There are potential risks associated with Ondo Tokenized Stocks, including but not limited to:"
+msgstr ""
+
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/remove-dust-tokens.tsx:93
 msgid "There could be the case of a dust token balance remaining in the basket, you can remove it here."
 msgstr "바스켓에 dust 토큰 잔액이 남아 있는 경우가 있을 수 있으며, 여기에서 제거할 수 있습니다."
@@ -8604,7 +8624,7 @@ msgstr "제목"
 msgid "Title Update"
 msgstr ""
 
-#: src/views/index-dtf/overview/components/index-disclousure.tsx:294
+#: src/views/index-dtf/overview/components/index-disclousure.tsx:382
 msgid "To learn more about the risks associated with DTFs,"
 msgstr ""
 
@@ -9431,6 +9451,10 @@ msgstr "트랜잭션 검증 중"
 msgid "Validating..."
 msgstr "검증 중..."
 
+#: src/views/index-dtf/overview/components/index-disclousure.tsx:297
+msgid "Valuation & NAV Calculation Risk – The DTF’s NAV depends on accurate, timely marks for tokenized equities and any associated components. Pricing inputs may be derived from thinly traded on-chain markets, off-chain reference feeds, or oracle mechanisms that can be stale, interrupted, manipulated, or subject to methodology changes. Market-hour mismatches, delayed corporate action processing, and settlement lags can further distort marks. Misvaluation may cause incorrect mint/redeem pricing, unfair dilution among holders, and adverse or mistimed rebalances."
+msgstr ""
+
 #: src/views/portfolio-page/components/available-rewards.tsx:135
 #: src/views/portfolio-page/components/dtf-positions.tsx:151
 #: src/views/portfolio-page/components/pending-withdrawals.tsx:351
@@ -9951,7 +9975,7 @@ msgstr "Wallet 주소"
 msgid "Wallet restricted"
 msgstr "제한된 Wallet"
 
-#: src/views/index-dtf/deploy/components/deploy-coming-soon.tsx:101
+#: src/views/index-dtf/deploy/components/deploy-coming-soon.tsx:100
 msgid "Want to create an Index DTF?"
 msgstr "Index DTF를 생성하시겠습니까?"
 
@@ -10009,7 +10033,7 @@ msgstr "웹사이트"
 msgid "Website Link"
 msgstr "웹사이트 링크"
 
-#: src/views/index-dtf/overview/components/basket-overview/basket-table-header.tsx:119
+#: src/views/index-dtf/overview/components/basket-overview/basket-table-header.tsx:125
 #: src/views/index-dtf/overview/components/yield-index/yield-index-composition-tabs.tsx:13
 msgid "Weight"
 msgstr "비중"
@@ -10076,7 +10100,7 @@ msgstr "거버넌스 주소와 함께 discover 페이지에 표시되는 화이�
 msgid "Who will be able to launch auctions and how long will they have before the auctions expire."
 msgstr "누가 경매를 실행할 수 있는지, 그리고 경매가 만료되기까지 얼마의 시간이 주어지는지."
 
-#: src/views/index-dtf/deploy/components/deploy-coming-soon.tsx:168
+#: src/views/index-dtf/deploy/components/deploy-coming-soon.tsx:167
 msgid "Why do you think people want this DTF?"
 msgstr "사람들이 이 DTF를 원할 거라고 생각하는 이유는 무엇인가요?"
 

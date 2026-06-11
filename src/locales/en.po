@@ -30,7 +30,7 @@ msgstr ""
 msgid "(in their Github repository)"
 msgstr ""
 
-#: src/views/index-dtf/overview/components/index-disclousure.tsx:252
+#: src/views/index-dtf/overview/components/index-disclousure.tsx:339
 msgid "(the “Website”), you expressly acknowledge that you have read and understood the"
 msgstr ""
 
@@ -685,7 +685,7 @@ msgstr ""
 msgid "About this DTF"
 msgstr ""
 
-#: src/views/yield-dtf/auctions/auctions-sidebar/Revenue.tsx:100
+#: src/views/yield-dtf/auctions/auctions-sidebar/Revenue.tsx:99
 msgid "Above minimum trade volume"
 msgstr ""
 
@@ -1032,7 +1032,7 @@ msgstr ""
 msgid "Analyzing liquidity..."
 msgstr ""
 
-#: src/views/index-dtf/overview/components/index-disclousure.tsx:263
+#: src/views/index-dtf/overview/components/index-disclousure.tsx:350
 msgid "and agree to the terms therein. ABC Labs, LLC (\"ABC Labs\") created the Website to help facilitate interaction with the Reserve protocol, including the minting and redeeming of DTFs. However, the Website is only one of several ways in which you can interact with the Reserve protocol. ABC Labs has neither created nor deployed any DTF and your ability to interact with specific DTFs via the Website in no way suggests that a DTF is endorsed by ABC Labs. In fact, ABC Labs assumes no liability for your use of the Website and interaction with the Reserve protocol, as covered in the Terms and Conditions."
 msgstr ""
 
@@ -1605,7 +1605,7 @@ msgstr ""
 msgid "Begin unstaking process"
 msgstr ""
 
-#: src/views/yield-dtf/auctions/auctions-sidebar/Revenue.tsx:124
+#: src/views/yield-dtf/auctions/auctions-sidebar/Revenue.tsx:123
 msgid "Below minimum trade volume"
 msgstr ""
 
@@ -1681,7 +1681,7 @@ msgid "Bridge {0}"
 msgstr ""
 
 #. placeholder {0}: capitalize(ETHERSCAN_NAMES[chainId])
-#: src/views/index-dtf/overview/components/basket-overview/basket-table-header.tsx:140
+#: src/views/index-dtf/overview/components/basket-overview/basket-table-header.tsx:146
 msgid "Bridge / {0}"
 msgstr ""
 
@@ -1777,7 +1777,7 @@ msgstr ""
 msgid "By enabling this option, the zapper will only attempt to mint RTokens instead of trading for them. This can help you avoid trading fees and slippage."
 msgstr ""
 
-#: src/views/index-dtf/overview/components/index-disclousure.tsx:244
+#: src/views/index-dtf/overview/components/index-disclousure.tsx:331
 msgid "By using"
 msgstr ""
 
@@ -1806,7 +1806,7 @@ msgstr ""
 msgid "Can I unstake my RSR anytime?"
 msgstr ""
 
-#: src/views/index-dtf/deploy/components/deploy-coming-soon.tsx:138
+#: src/views/index-dtf/deploy/components/deploy-coming-soon.tsx:137
 msgid "Can you describe the DTF you want to create? *"
 msgstr ""
 
@@ -2042,7 +2042,7 @@ msgid "CMC20 whitepaper documentation"
 msgstr ""
 
 #: src/views/explorer/components/collaterals/index.tsx:80
-#: src/views/index-dtf/overview/components/basket-overview/basket-table-header.tsx:107
+#: src/views/index-dtf/overview/components/basket-overview/basket-table-header.tsx:113
 msgid "Collateral"
 msgstr ""
 
@@ -2300,7 +2300,7 @@ msgstr ""
 msgid "Connect your wallet to view your portfolio"
 msgstr ""
 
-#: src/views/index-dtf/deploy/components/deploy-coming-soon.tsx:183
+#: src/views/index-dtf/deploy/components/deploy-coming-soon.tsx:182
 msgid "Contact me"
 msgstr ""
 
@@ -2656,6 +2656,10 @@ msgstr ""
 msgid "Current votes"
 msgstr ""
 
+#: src/views/index-dtf/overview/components/index-disclousure.tsx:246
+msgid "Custodial Risks: Ondo Tokenized Stocks represent claims on SPVs and other structures that hold underlying equity positions through custodians. DTF exposure therefore depends on the operational integrity and solvency of third parties. Any failure, suspension, error, insolvency, fraud, cyber incident, or transfer restriction affecting these parties could result in delayed settlement, blocked transfers, impaired redemptions, forced liquidation, or partial or total loss of value for the DTF’s holdings."
+msgstr ""
+
 #: src/components/ui/swap.tsx:486
 #: src/views/index-dtf/deploy/components/toggle-group-preset.tsx:31
 #: src/views/yield-dtf/issuance/components/zapV2/settings/ZapSettingsCustomSlippage.tsx:24
@@ -2949,7 +2953,7 @@ msgstr ""
 msgid "Discard"
 msgstr ""
 
-#: src/views/index-dtf/overview/components/index-disclousure.tsx:238
+#: src/views/index-dtf/overview/components/index-disclousure.tsx:325
 msgid "Disclosures"
 msgstr ""
 
@@ -3247,7 +3251,7 @@ msgstr ""
 msgid "Dutch trade"
 msgstr ""
 
-#: src/views/index-dtf/deploy/components/deploy-coming-soon.tsx:142
+#: src/views/index-dtf/deploy/components/deploy-coming-soon.tsx:141
 msgid "e.g. tokens to be included, strategy, methodology"
 msgstr ""
 
@@ -3580,7 +3584,7 @@ msgstr ""
 #: src/views/index-dtf/governance/components/proposal-preview/rebalance-preview/legacy-basket-proposal-preview.tsx:317
 #: src/views/index-dtf/governance/components/proposal-preview/unknown-contract-preview.tsx:72
 #: src/views/index-dtf/governance/views/propose/basket/components/proposal-basket-preview.tsx:400
-#: src/views/yield-dtf/governance/views/proposal-detail/components/ContractProposalDetails.tsx:49
+#: src/views/yield-dtf/governance/views/proposal-detail/components/ContractProposalDetails.tsx:48
 msgid "Executable code"
 msgstr ""
 
@@ -3691,7 +3695,7 @@ msgstr ""
 msgid "Explorer"
 msgstr ""
 
-#: src/views/index-dtf/overview/components/basket-overview/basket-table-header.tsx:97
+#: src/views/index-dtf/overview/components/basket-overview/basket-table-header.tsx:103
 msgid "Exposure"
 msgstr ""
 
@@ -3820,7 +3824,7 @@ msgstr ""
 msgid "File size exceeds 1MB limit. Please choose a smaller file."
 msgstr ""
 
-#: src/views/index-dtf/deploy/components/deploy-coming-soon.tsx:104
+#: src/views/index-dtf/deploy/components/deploy-coming-soon.tsx:103
 msgid "Fill out the information below and ABC Labs will reach out!"
 msgstr ""
 
@@ -4199,11 +4203,11 @@ msgstr ""
 msgid "How are APYs so high?"
 msgstr ""
 
-#: src/views/index-dtf/deploy/components/deploy-coming-soon.tsx:117
+#: src/views/index-dtf/deploy/components/deploy-coming-soon.tsx:116
 msgid "How can we reach you? *"
 msgstr ""
 
-#: src/views/index-dtf/deploy/components/deploy-coming-soon.tsx:156
+#: src/views/index-dtf/deploy/components/deploy-coming-soon.tsx:155
 msgid "How do you plan to get people to invest in your DTF?"
 msgstr ""
 
@@ -4691,6 +4695,10 @@ msgstr ""
 msgid "Liquidity"
 msgstr ""
 
+#: src/views/index-dtf/overview/components/index-disclousure.tsx:273
+msgid "Liquidity Risk: Although on-chain trading is 24/7, primary minting/redeeming of Ondo Tokenized Stocks may be limited, permissioned, delayed, or available only during specific windows. In stressed markets, secondary market liquidity may deteriorate, spreads may widen, and token prices may deviate materially from the value of the referenced underlying equities. As a result, the DTF may experience tracking error versus its intended index composition and may be unable to dispose of or rebalance positions at or near observable net asset value."
+msgstr ""
+
 #: src/views/index-dtf/deploy/steps/basket/components/liquidity-config-modal.tsx:97
 msgid "Liquidity simulation amount"
 msgstr ""
@@ -4810,7 +4818,7 @@ msgstr ""
 msgid "Looking for Yield DTFs?"
 msgstr ""
 
-#: src/views/index-dtf/deploy/components/deploy-coming-soon.tsx:201
+#: src/views/index-dtf/deploy/components/deploy-coming-soon.tsx:200
 msgid "Looking to create a Yield DTF?"
 msgstr ""
 
@@ -4901,9 +4909,13 @@ msgstr ""
 msgid "Market"
 msgstr ""
 
+#: src/views/index-dtf/overview/components/index-disclousure.tsx:286
+msgid "Market Access and Redemption Risk: Minting and redemption for Ondo Tokenized Stocks may be permissioned, capacity-limited, subject to eligibility/whitelisting, and available only during defined windows or business-hour cutoffs tied to traditional market operations. These frictions can prevent arbitrage, impair exits at or near NAV, and amplify secondary-market dislocations, thereby resulting in a partial or total loss of the DTFs' holdings."
+msgstr ""
+
 #: src/views/home/components/discover-index-dtf/index-dtf-table-columns.tsx:165
 #: src/views/home/components/discover-index-dtf/index-dtf-table-placeholder.tsx:21
-#: src/views/index-dtf/overview/components/basket-overview/basket-table-header.tsx:134
+#: src/views/index-dtf/overview/components/basket-overview/basket-table-header.tsx:140
 #: src/views/index-dtf/overview/components/charts/data-type-selector.tsx:11
 #: src/views/index-dtf/overview/components/fees-stats.tsx:55
 #: src/views/index-dtf/overview/components/index-metrics-overview.tsx:76
@@ -5387,7 +5399,7 @@ msgstr ""
 msgid "No"
 msgstr ""
 
-#: src/views/yield-dtf/auctions/auctions-sidebar/Revenue.tsx:37
+#: src/views/yield-dtf/auctions/auctions-sidebar/Revenue.tsx:36
 msgid "No actionable revenue available"
 msgstr ""
 
@@ -5578,7 +5590,7 @@ msgid "Non-Basket Governance Settings"
 msgstr ""
 
 #: src/views/home/components/discover-index-dtf/index-dtf-table-columns.tsx:111
-#: src/views/yield-dtf/governance/views/proposal-detail/components/ContractProposalDetails.tsx:104
+#: src/views/yield-dtf/governance/views/proposal-detail/components/ContractProposalDetails.tsx:103
 #: src/views/yield-dtf/governance/views/proposal/components/SpellUpgrade3_4_0.tsx:66
 #: src/views/yield-dtf/governance/views/proposal/components/SpellUpgrade4_2_0.tsx:67
 #: src/views/yield-dtf/settings/components/roles-view.tsx:42
@@ -5837,7 +5849,7 @@ msgstr ""
 #: src/views/index-dtf/governance/components/proposal-preview/raw-call-preview.tsx:28
 #: src/views/index-dtf/governance/components/proposal-preview/rebalance-preview/legacy-basket-proposal-preview.tsx:305
 #: src/views/index-dtf/governance/views/propose/basket/components/proposal-basket-preview.tsx:388
-#: src/views/yield-dtf/governance/views/proposal-detail/components/ContractProposalDetails.tsx:121
+#: src/views/yield-dtf/governance/views/proposal-detail/components/ContractProposalDetails.tsx:120
 #: src/views/yield-dtf/governance/views/proposal/components/ProposedParametersPreview.tsx:24
 msgid "Parameters"
 msgstr ""
@@ -6083,7 +6095,7 @@ msgstr ""
 msgid "Please read more about the different roles in Alexios and the Reserve protocol in the documentation."
 msgstr ""
 
-#: src/views/index-dtf/overview/components/index-disclousure.tsx:300
+#: src/views/index-dtf/overview/components/index-disclousure.tsx:388
 msgid "please see here."
 msgstr ""
 
@@ -6242,7 +6254,7 @@ msgid "Price at launch"
 msgstr ""
 
 #. placeholder {0}: periodLabel[timeRange]
-#: src/views/index-dtf/overview/components/basket-overview/basket-table-header.tsx:128
+#: src/views/index-dtf/overview/components/basket-overview/basket-table-header.tsx:134
 msgid "Price Change ({0})"
 msgstr ""
 
@@ -6570,7 +6582,7 @@ msgstr ""
 #: src/views/index-dtf/governance/components/proposal-preview/rebalance-preview/legacy-basket-proposal-preview.tsx:137
 #: src/views/index-dtf/governance/views/propose/basket/components/proposal-basket-preview.tsx:142
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/dtf-settings-proposal-preview.tsx:64
-#: src/views/yield-dtf/governance/views/proposal-detail/components/ContractProposalDetails.tsx:142
+#: src/views/yield-dtf/governance/views/proposal-detail/components/ContractProposalDetails.tsx:141
 msgid "Raw"
 msgstr ""
 
@@ -6785,6 +6797,10 @@ msgstr ""
 msgid "Regular minting "
 msgstr ""
 
+#: src/views/index-dtf/overview/components/index-disclousure.tsx:258
+msgid "Regulatory and Compliance Risk: Tokenized equities and related on-chain transfer mechanisms may be subject to evolving regulatory interpretations and enforcement actions. Ondo Tokenized Stocks may also be subject to contractual eligibility requirements, permissioning, whitelisting, jurisdictional limitations, sanctions screening, or other compliance gating that can be changed or applied with little notice. If regulations or compliance requirements change, the DTF may be forced to restrict access, halt mints/redemptions, rebalance away from affected components, or wind down positions under adverse market conditions, potentially causing tracking error, reduced liquidity, and losses."
+msgstr ""
+
 #: src/views/yield-dtf/settings/components/contracts-info.tsx:30
 msgid "Related Contracts"
 msgstr ""
@@ -6951,7 +6967,7 @@ msgstr ""
 msgid "Reserve Rights (RSR) is an ERC-20 token that unifies governance, risk management, and value accrual across the Reserve ecosystem."
 msgstr ""
 
-#: src/views/index-dtf/deploy/components/deploy-coming-soon.tsx:192
+#: src/views/index-dtf/deploy/components/deploy-coming-soon.tsx:191
 msgid "reserve splash"
 msgstr ""
 
@@ -6973,7 +6989,7 @@ msgstr ""
 msgid "Revenue"
 msgstr ""
 
-#: src/views/yield-dtf/auctions/auctions-sidebar/Revenue.tsx:127
+#: src/views/yield-dtf/auctions/auctions-sidebar/Revenue.tsx:126
 msgid "Revenue auctions that are below the minimum trade or unavailable."
 msgstr ""
 
@@ -7301,7 +7317,7 @@ msgstr ""
 msgid "Run"
 msgstr ""
 
-#: src/views/yield-dtf/auctions/auctions-sidebar/Revenue.tsx:102
+#: src/views/yield-dtf/auctions/auctions-sidebar/Revenue.tsx:101
 msgid "Run and settle auctions."
 msgstr ""
 
@@ -7495,11 +7511,11 @@ msgstr ""
 msgid "Set Price Range(s)"
 msgstr ""
 
-#: src/views/yield-dtf/governance/views/proposal-detail/components/ContractProposalDetails.tsx:172
+#: src/views/yield-dtf/governance/views/proposal-detail/components/ContractProposalDetails.tsx:171
 msgid "Set Primary basket"
 msgstr ""
 
-#: src/views/yield-dtf/governance/views/proposal-detail/components/ContractProposalDetails.tsx:221
+#: src/views/yield-dtf/governance/views/proposal-detail/components/ContractProposalDetails.tsx:220
 msgid "Set Revenue Distribution"
 msgstr ""
 
@@ -7643,7 +7659,7 @@ msgstr ""
 #: src/views/index-dtf/governance/components/proposal-preview/raw-call-preview.tsx:20
 #: src/views/index-dtf/governance/components/proposal-preview/rebalance-preview/legacy-basket-proposal-preview.tsx:295
 #: src/views/index-dtf/governance/views/propose/basket/components/proposal-basket-preview.tsx:378
-#: src/views/yield-dtf/governance/views/proposal-detail/components/ContractProposalDetails.tsx:113
+#: src/views/yield-dtf/governance/views/proposal-detail/components/ContractProposalDetails.tsx:112
 msgid "Signature"
 msgstr ""
 
@@ -8047,7 +8063,7 @@ msgstr ""
 msgid "Submitted!"
 msgstr ""
 
-#: src/views/index-dtf/deploy/components/deploy-coming-soon.tsx:183
+#: src/views/index-dtf/deploy/components/deploy-coming-soon.tsx:182
 #: src/views/index-dtf/manage/components/submit-button.tsx:241
 msgid "Submitting..."
 msgstr ""
@@ -8081,7 +8097,7 @@ msgstr ""
 #: src/views/index-dtf/governance/components/proposal-preview/rebalance-preview/legacy-basket-proposal-preview.tsx:131
 #: src/views/index-dtf/governance/views/propose/basket/components/proposal-basket-preview.tsx:136
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/dtf-settings-proposal-preview.tsx:60
-#: src/views/yield-dtf/governance/views/proposal-detail/components/ContractProposalDetails.tsx:141
+#: src/views/yield-dtf/governance/views/proposal-detail/components/ContractProposalDetails.tsx:140
 msgid "Summary"
 msgstr ""
 
@@ -8178,11 +8194,11 @@ msgstr ""
 msgid "Telegram username"
 msgstr ""
 
-#: src/views/index-dtf/overview/components/index-disclousure.tsx:261
+#: src/views/index-dtf/overview/components/index-disclousure.tsx:348
 msgid "Terms and Conditions"
 msgstr ""
 
-#: src/views/index-dtf/deploy/components/deploy-coming-soon.tsx:110
+#: src/views/index-dtf/deploy/components/deploy-coming-soon.tsx:109
 msgid "Thank you! We'll be in touch soon."
 msgstr ""
 
@@ -8234,7 +8250,7 @@ msgstr ""
 msgid "The impact your trade has on the market price."
 msgstr ""
 
-#: src/views/index-dtf/overview/components/index-disclousure.tsx:277
+#: src/views/index-dtf/overview/components/index-disclousure.tsx:364
 msgid "The information provided on the Website comes from on-chain sources. Past performance is not indicative of future results. Although index DTFs are intended to track indexes, their ability to successfully track indexes are dependent on the governance structure of the DTF and the governance’s ability to make appropriate trades. There is no guarantee that such trades will be successful or will track its corresponding index exactly. There are many risks associated with digital assets, including but not limited to security risk, counterparty risk, volatility risk, conflicts of interest, and many more. DTFs are no exception. By using the Website, you agree that your interaction with any DTFs is solely at your own risk and the Website and DTFs come as is, without any warranty or condition of any kind."
 msgstr ""
 
@@ -8414,6 +8430,10 @@ msgstr ""
 
 #: src/views/yield-dtf/overview/components/backing/risks.tsx:63
 msgid "There are a <0>handful of risks</0> associated with any given RToken's collateral assets, including assets' redeemability, the health of their reserves, price volatility, etc. Likewise, because many RTokens leverage assets from external protocols, RToken holders assume all of the risks of its underlying protocols (smart contract, governance, or otherwise)."
+msgstr ""
+
+#: src/views/index-dtf/overview/components/index-disclousure.tsx:239
+msgid "There are potential risks associated with Ondo Tokenized Stocks, including but not limited to:"
 msgstr ""
 
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/remove-dust-tokens.tsx:93
@@ -8598,7 +8618,7 @@ msgstr ""
 msgid "Title Update"
 msgstr ""
 
-#: src/views/index-dtf/overview/components/index-disclousure.tsx:294
+#: src/views/index-dtf/overview/components/index-disclousure.tsx:382
 msgid "To learn more about the risks associated with DTFs,"
 msgstr ""
 
@@ -9425,6 +9445,10 @@ msgstr ""
 msgid "Validating..."
 msgstr ""
 
+#: src/views/index-dtf/overview/components/index-disclousure.tsx:297
+msgid "Valuation & NAV Calculation Risk – The DTF’s NAV depends on accurate, timely marks for tokenized equities and any associated components. Pricing inputs may be derived from thinly traded on-chain markets, off-chain reference feeds, or oracle mechanisms that can be stale, interrupted, manipulated, or subject to methodology changes. Market-hour mismatches, delayed corporate action processing, and settlement lags can further distort marks. Misvaluation may cause incorrect mint/redeem pricing, unfair dilution among holders, and adverse or mistimed rebalances."
+msgstr ""
+
 #: src/views/portfolio-page/components/available-rewards.tsx:135
 #: src/views/portfolio-page/components/dtf-positions.tsx:151
 #: src/views/portfolio-page/components/pending-withdrawals.tsx:351
@@ -9945,7 +9969,7 @@ msgstr ""
 msgid "Wallet restricted"
 msgstr ""
 
-#: src/views/index-dtf/deploy/components/deploy-coming-soon.tsx:101
+#: src/views/index-dtf/deploy/components/deploy-coming-soon.tsx:100
 msgid "Want to create an Index DTF?"
 msgstr ""
 
@@ -10003,7 +10027,7 @@ msgstr ""
 msgid "Website Link"
 msgstr ""
 
-#: src/views/index-dtf/overview/components/basket-overview/basket-table-header.tsx:119
+#: src/views/index-dtf/overview/components/basket-overview/basket-table-header.tsx:125
 #: src/views/index-dtf/overview/components/yield-index/yield-index-composition-tabs.tsx:13
 msgid "Weight"
 msgstr ""
@@ -10070,7 +10094,7 @@ msgstr ""
 msgid "Who will be able to launch auctions and how long will they have before the auctions expire."
 msgstr ""
 
-#: src/views/index-dtf/deploy/components/deploy-coming-soon.tsx:168
+#: src/views/index-dtf/deploy/components/deploy-coming-soon.tsx:167
 msgid "Why do you think people want this DTF?"
 msgstr ""
 
