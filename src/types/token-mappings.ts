@@ -17,6 +17,7 @@ export type Bridge = {
   url: string
   description: string
   logo: string
+  logoDark?: string | null
   risks: string[]
   wrappedVersion: boolean
 }

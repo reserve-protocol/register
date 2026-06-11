@@ -3,6 +3,7 @@ import { chainIdAtom } from '@/state/atoms'
 import { indexDTFExposureDataAtom } from '@/state/dtf/atoms'
 import { useState, useMemo } from 'react'
 import { useAtomValue } from 'jotai'
+import useIsDarkMode from '@/hooks/use-is-dark-mode'
 import BridgeInfoDialog from './bridge-info-dialog'
 
 interface BridgeLabelProps {
@@ -15,6 +16,7 @@ const BridgeLabel = ({ address, tokenSymbol, tokenName }: BridgeLabelProps) => {
   const [open, setOpen] = useState(false)
   const chainId = useAtomValue(chainIdAtom)
   const exposureData = useAtomValue(indexDTFExposureDataAtom)
+  const isDarkMode = useIsDarkMode()
 
   const bridgeInfo = useMemo(() => {
     if (!exposureData) return null
@@ -42,6 +44,7 @@ const BridgeLabel = ({ address, tokenSymbol, tokenName }: BridgeLabelProps) => {
   if (bridgeInfo.mapping.wrappedVersion) return null
 
   const { bridge } = bridgeInfo
+  const bridgeLogo = (isDarkMode && bridge.logoDark) || bridge.logo
 
   return (
     <>
@@ -50,8 +53,8 @@ const BridgeLabel = ({ address, tokenSymbol, tokenName }: BridgeLabelProps) => {
         role="button"
         onClick={() => setOpen(true)}
       >
-        {bridge.logo && (
-          <img src={bridge.logo} alt={bridge.name} className="h-4 w-4" />
+        {bridgeLogo && (
+          <img src={bridgeLogo} alt={bridge.name} className="h-4 w-4" />
         )}
         <BridgeNavIcon className="h-4 w-4" />
       </div>

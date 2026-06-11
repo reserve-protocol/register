@@ -1,11 +1,11 @@
 import useMediaQuery from '@/hooks/useMediaQuery'
-import { useTheme } from 'next-themes'
+import useIsDarkMode from '@/hooks/use-is-dark-mode'
 import { Toaster as Sonner } from 'sonner'
 
 type ToasterProps = React.ComponentProps<typeof Sonner>
 
 const Toaster = ({ ...props }: ToasterProps) => {
-  const { theme = 'system' } = useTheme()
+  const isDarkMode = useIsDarkMode()
   const isDesktop = useMediaQuery('(min-width: 1400px)')
 
   return (
@@ -23,7 +23,7 @@ const Toaster = ({ ...props }: ToasterProps) => {
             }
           : {}),
       }}
-      theme={theme as ToasterProps['theme']}
+      theme={isDarkMode ? 'dark' : 'light'}
       className="toaster group"
       toastOptions={{
         classNames: {

@@ -1,6 +1,5 @@
 import { Trans, useLingui } from '@lingui/react/macro'
 import GoTo from '@/components/ui/go-to'
-import { MODES } from 'components/dark-mode-toggle'
 import TabMenu from 'components/tab-menu'
 import { useAtomValue } from 'jotai'
 import React, { useState } from 'react'
@@ -23,7 +22,7 @@ import BasketChangeSummary from './proposal-summary/BasketChangeSummary'
 import RevenueDistributionSummary from './proposal-summary/revenue-distribution-summary'
 import { Card } from '@/components/ui/card'
 import { Separator } from '@/components/ui/separator'
-import { useTheme } from 'next-themes'
+import useIsDarkMode from '@/hooks/use-is-dark-mode'
 import { cn } from '@/lib/utils'
 
 interface Props {
@@ -77,13 +76,13 @@ const Header = ({ label, address }: { label: string; address: string }) => {
 
 const JSONPreview = ({ data }: { data: any }) => {
   const { t } = useLingui()
-  const { theme } = useTheme()
+  const isDarkMode = useIsDarkMode()
 
   if (data.length === 1 && typeof data[0] === 'object') {
     return (
       <JsonView
         shouldExpandNode={collapseAllNested}
-        style={theme === MODES.LIGHT ? defaultStyles : darkStyles}
+        style={isDarkMode ? darkStyles : defaultStyles}
         data={data[0]}
       />
     )
@@ -93,7 +92,7 @@ const JSONPreview = ({ data }: { data: any }) => {
     return (
       <JsonView
         shouldExpandNode={collapseAllNested}
-        style={theme === MODES.LIGHT ? defaultStyles : darkStyles}
+        style={isDarkMode ? darkStyles : defaultStyles}
         data={data}
       />
     )
