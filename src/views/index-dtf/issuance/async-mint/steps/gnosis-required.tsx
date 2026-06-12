@@ -1,5 +1,6 @@
 import { Button } from '@/components/ui/button'
 import useAtomicBatch from '@/hooks/use-atomic-batch'
+import useIsComplianceRestricted from '@/hooks/use-is-compliance-restricted'
 import { cn } from '@/lib/utils'
 import { useAccountModal, useConnectModal } from '@rainbow-me/rainbowkit'
 import { useSetAtom } from 'jotai'
@@ -16,6 +17,7 @@ import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useAccount, useDisconnect } from 'wagmi'
 import { wizardStepAtom } from '../atoms'
+import ComplianceAlert from '../../../components/compliance-alert'
 
 const LEARN_MORE_URL = 'https://docs.safe.global/home/what-is-safe'
 
@@ -43,6 +45,7 @@ const GnosisRequired = () => {
   const [showRequirements, setShowRequirements] = useState(false)
   const [requirementsCardHeight, setRequirementsCardHeight] = useState<number>()
   const cardStackRef = useRef<HTMLDivElement>(null)
+  const isRestricted = useIsComplianceRestricted()
 
   // The requirements screen prompts to connect (or switch wallet). Once a
   // connection lands and the capability probe confirms support, advance on its
@@ -182,10 +185,15 @@ const GnosisRequired = () => {
 
   return (
     <div className="w-full">
-      <div className="flex min-h-[calc(100vh-136px)] w-full items-center lg:min-h-[calc(100vh-100px)]">
+      <div className="flex flex-col justify-center min-h-[calc(100vh-136px)] w-full lg:min-h-[calc(100vh-100px)]">
+        <ComplianceAlert className="sm:w-full max-w-[468px] mb-2" />
         <div
           ref={cardStackRef}
-          className="w-full max-w-[468px] mx-auto flex flex-col rounded-4xl border-2 border-card overflow-hidden"
+          className={cn(
+            'w-full max-w-[468px] mx-auto flex flex-col rounded-4xl border-2 border-card overflow-hidden',
+            isRestricted && 'pointer-events-none select-none opacity-50'
+          )}
+          aria-disabled={isRestricted || undefined}
         >
           {!showRequirements && swapGuidance}
           <div

@@ -2,6 +2,7 @@ import TokenLogoWithChain from '@/components/token-logo/TokenLogoWithChain'
 import { Button } from '@/components/ui/button'
 import { NumericalInput } from '@/components/ui/input'
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import useIsComplianceRestricted from '@/hooks/use-is-compliance-restricted'
 import { cn } from '@/lib/utils'
 import { chainIdAtom } from '@/state/atoms'
 import { indexDTFAtom, indexDTFPriceAtom } from '@/state/dtf/atoms'
@@ -17,6 +18,7 @@ import {
   useExistingBalancesAtom,
   wizardStepAtom,
 } from '../atoms'
+import ComplianceAlert from '../../../components/compliance-alert'
 import { useWizardBalances } from '../hooks/use-wizard-balances'
 
 const upcomingStepRowClass = 'px-6 py-4 border-b border-secondary'
@@ -32,6 +34,7 @@ const ConfigureMint = () => {
   const [mintAmount, setMintAmount] = useAtom(mintAmountAtom)
   const [redeemAmount, setRedeemAmount] = useAtom(redeemAmountAtom)
   const setUseExistingBalances = useSetAtom(useExistingBalancesAtom)
+  const isRestricted = useIsComplianceRestricted()
 
   if (!indexDTF) return null
 
@@ -113,8 +116,15 @@ const ConfigureMint = () => {
 
   return (
     <div className="w-full">
-      <div className="flex min-h-[calc(100vh-136px)] w-full items-center lg:min-h-[calc(100vh-100px)]">
-        <div className="w-full">
+      <div className="flex flex-col justify-center min-h-[calc(100vh-136px)] w-full lg:min-h-[calc(100vh-100px)]">
+        <ComplianceAlert className="sm:w-full mb-2" />
+        <div
+          className={cn(
+            'w-full',
+            isRestricted && 'pointer-events-none select-none opacity-50'
+          )}
+          aria-disabled={isRestricted || undefined}
+        >
           <div className="p-3 flex justify-center">
             <Tabs
               value={operation}

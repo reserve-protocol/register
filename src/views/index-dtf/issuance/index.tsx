@@ -2,14 +2,12 @@ import { devModeAtom } from '@/state/atoms'
 import { isInactiveDTF } from '@/hooks/use-dtf-status'
 import { indexDTFAtom, indexDTFStatusAtom } from '@/state/dtf/atoms'
 import { RESERVE_API, ZAPPER_API } from '@/utils/constants'
-import { Trans } from '@lingui/react/macro'
 import { ZapperProps } from '@reserve-protocol/react-zapper'
 import { atom, useAtomValue } from 'jotai'
+import ComplianceAlert from '../components/compliance-alert'
 import ZapperWrapper from '../components/zapper/zapper-wrapper'
 import useTrackIndexDTFPage from '../hooks/useTrackIndexDTFPage'
 import useIsComplianceRestricted from '@/hooks/use-is-compliance-restricted'
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
-import useComplianceRestrictions from '@/hooks/use-compliance-restrictions'
 
 const DTF_DISABLED_FOR_ZAP = [] as string[]
 
@@ -23,36 +21,6 @@ export const indexDTFQuoteSourceAtom = atom<ZapperProps['defaultSource']>(
     return 'best'
   }
 )
-
-const ComplianceAlert = () => {
-  const { isLoading, data } = useComplianceRestrictions()
-
-  if (isLoading || !data?.restricted) return null
-
-  return (
-    <Alert
-      variant="destructive"
-      className="rounded-3xl mb-4 text-sm sm:w-[420px] mx-auto"
-    >
-      <AlertTitle>{data.title}</AlertTitle>
-      <AlertDescription>
-        {data.description}{' '}
-        <Trans>
-          For more information, see our{' '}
-          <a
-            className="underline"
-            target="_blank"
-            rel="noopener noreferrer"
-            href="https://reserve.org/terms-and-conditions"
-          >
-            Terms of Use
-          </a>
-          .
-        </Trans>
-      </AlertDescription>
-    </Alert>
-  )
-}
 
 const IndexDTFIssuance = () => {
   useTrackIndexDTFPage('mint')
