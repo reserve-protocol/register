@@ -7,13 +7,14 @@ import {
   ArrowLeft,
   ArrowUpRight,
   Info,
+  Loader2,
   MoveRight,
   OctagonAlert,
   Combine,
 } from 'lucide-react'
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { useAccount } from 'wagmi'
+import { useAccount, useDisconnect } from 'wagmi'
 import { wizardStepAtom } from '../atoms'
 
 const LEARN_MORE_URL = 'https://docs.safe.global/home/what-is-safe'
@@ -36,11 +37,34 @@ const GnosisRequired = () => {
   const { openConnectModal } = useConnectModal()
   const { openAccountModal } = useAccountModal()
   const { isConnected } = useAccount()
+  const { disconnectAsync } = useDisconnect()
   const { atomicSupported, isLoading } = useAtomicBatch()
   const setStep = useSetAtom(wizardStepAtom)
   const [showRequirements, setShowRequirements] = useState(false)
   const [requirementsCardHeight, setRequirementsCardHeight] = useState<number>()
   const cardStackRef = useRef<HTMLDivElement>(null)
+
+  // The requirements screen prompts to connect (or switch wallet). Once a
+  // connection lands and the capability probe confirms support, advance on its
+  // own — otherwise the screen would keep showing the connect/incompatible
+  // card after a successful connection until a manual refresh.
+  useEffect(() => {
+    if (showRequirements && isConnected && !isLoading && atomicSupported) {
+      setStep('configure')
+    }
+  }, [showRequirements, isConnected, isLoading, atomicSupported, setStep])
+
+  // Tear down any lingering connector state before opening the modal. Without
+  // this, a fresh Safe-over-WalletConnect connect can hang in "connecting" and
+  // never resolve until a manual refresh (same fix as the navbar connect).
+  const handleConnect = async () => {
+    try {
+      await disconnectAsync()
+    } catch {
+      // ignore — nothing to disconnect
+    }
+    openConnectModal?.()
+  }
   const title = showRequirements
     ? 'Smart Account Required'
     : 'Automated Mint / Redeem'
@@ -202,8 +226,21 @@ const GnosisRequired = () => {
                           'border border-amber-500/25 bg-amber-500/10 text-amber-700 dark:border-amber-300/25 dark:bg-amber-300/10 dark:text-amber-300'
                         )}
                       >
-                        <OctagonAlert size={16} strokeWidth={1.5} />
-                        <span>Incompatible wallet</span>
+                        {isLoading ? (
+                          <>
+                            <Loader2
+                              size={16}
+                              strokeWidth={1.5}
+                              className="animate-spin"
+                            />
+                            <span>Checking wallet...</span>
+                          </>
+                        ) : (
+                          <>
+                            <OctagonAlert size={16} strokeWidth={1.5} />
+                            <span>Incompatible wallet</span>
+                          </>
+                        )}
                       </div>
                     )}
                   </div>
@@ -272,7 +309,7 @@ const GnosisRequired = () => {
                           <Button
                             size="lg"
                             className="h-[49px] rounded-xl sm:flex-[2] !transition-none"
-                            onClick={openConnectModal}
+                            onClick={handleConnect}
                           >
                             Connect Wallet
                           </Button>

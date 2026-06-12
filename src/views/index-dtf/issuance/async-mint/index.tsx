@@ -1,4 +1,5 @@
 import { cn } from '@/lib/utils'
+import { walletAtom } from '@/state/atoms'
 import { indexDTFAtom } from '@/state/dtf/atoms'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { useEffect } from 'react'
@@ -39,6 +40,7 @@ const WizardRouter = () => {
 const AsyncMintWizard = () => {
   useTrackIndexDTFPage('mint-async-wizard')
   const indexDTF = useAtomValue(indexDTFAtom)
+  const account = useAtomValue(walletAtom)
   const step = useAtomValue(wizardStepAtom)
   const resetWizard = useSetAtom(resetWizardAtom)
 
@@ -47,6 +49,13 @@ const AsyncMintWizard = () => {
   // next visit everything starts fresh instead of showing the old input / a
   // completed mint.
   useEffect(() => () => resetWizard(), [resetWizard])
+
+  // Every step past the intro depends on a connected wallet (balances, quotes,
+  // execution). If it disconnects mid-flow the wizard would sit on a dead
+  // screen, so send it back to the intro instead.
+  useEffect(() => {
+    if (!account) resetWizard()
+  }, [account, resetWizard])
 
   if (!indexDTF) return null
 
