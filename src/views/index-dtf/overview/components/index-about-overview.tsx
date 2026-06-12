@@ -5,9 +5,10 @@ import {
   indexDTFBrandAtom,
   isBrandManagerAtom,
 } from '@/state/dtf/atoms'
+import { getFileNameFromUrl } from '@/utils'
 import { ROUTES } from '@/utils/constants'
 import { useAtomValue } from 'jotai'
-import { BrickWall, ImagePlus } from 'lucide-react'
+import { BrickWall, Download, ImagePlus } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { useTrackIndexDTFClick } from '../../hooks/useTrackIndexDTFPage'
 import SectionAnchor from '@/components/section-anchor'
@@ -75,6 +76,46 @@ const Mandate = () => {
   )
 }
 
+const DownloadableResources = () => {
+  const data = useAtomValue(indexDTFAtom)
+  const brandData = useAtomValue(indexDTFBrandAtom)
+  const files = brandData?.dtf?.files?.filter((file) => file.url) ?? []
+
+  if (!files.length) return null
+
+  const dtfName = data?.token.name ?? 'this DTF'
+
+  return (
+    <div className="border-y mt-4 py-4">
+      <h3 className="font-medium">
+        <Trans>Downloadable resources</Trans>
+      </h3>
+      <p className="text-legend mb-1">
+        <Trans>
+          More information on what {dtfName} is, what it’s all about,
+          methodology and thesis.
+        </Trans>
+      </p>
+      <div className="flex flex-wrap items-center gap-x-7 gap-y-2 py-2">
+        {files.map((file) => (
+          <a
+            key={file.url}
+            href={file.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-2 text-primary hover:underline"
+          >
+            <div className="flex size-8 shrink-0 items-center justify-center rounded-full bg-muted">
+              <Download size={16} strokeWidth={1.5} />
+            </div>
+            {file.name || getFileNameFromUrl(file.url)}
+          </a>
+        ))}
+      </div>
+    </div>
+  )
+}
+
 const AboutLinks = () => {
   const brandData = useAtomValue(indexDTFBrandAtom)
 
@@ -114,6 +155,7 @@ const IndexAboutOverview = () => (
       <Header />
       <Mandate />
       <AboutLinks />
+      <DownloadableResources />
     </div>
   </div>
 )

@@ -423,6 +423,14 @@ export const getTokenName = (name: string) => {
   return name.replace(' (Ondo Tokenized)', '')
 }
 
+export const getFileNameFromUrl = (url: string) => {
+  try {
+    return decodeURIComponent(new URL(url).pathname.split('/').pop() || url)
+  } catch {
+    return url
+  }
+}
+
 export const max = (...args: bigint[]): bigint => {
   if (args.length === 0) {
     throw new Error('empty arguments')
