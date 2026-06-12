@@ -103,24 +103,25 @@ describe('getScaledLegSizes', () => {
       deficitTokenSizes: Object.values(deficit),
     }) as AuctionMetrics
 
-  it('scales eject surpluses (full position) down to the deficit side', () => {
-    // Ejected tokens report their whole position as surplus at any percent;
-    // only min(surplus, deficit) actually trades.
+  it('sizes each surplus leg at min(leg, full deficit) — the deficit is not split', () => {
+    // getBid offers every leg the entire remaining deficit, so a single trade
+    // can be as large as min(legSurplus, deficitTotal). A 3-leg ejection into
+    // one cash deficit must NOT report deficit/3 per leg.
     const sizes = getScaledLegSizes(
       metrics({ [A]: 300_000, [B]: 100_000 }, { [C]: 200_000 })
     )
-    expect(sizes[A]).toBeCloseTo(150_000)
-    expect(sizes[B]).toBeCloseTo(50_000)
+    expect(sizes[A]).toBeCloseTo(200_000)
+    expect(sizes[B]).toBeCloseTo(100_000)
     expect(sizes[C]).toBeCloseTo(200_000)
   })
 
-  it('scales the deficit side when the surplus side is smaller', () => {
+  it('sizes each deficit leg at min(leg, full surplus)', () => {
     const sizes = getScaledLegSizes(
       metrics({ [A]: 100_000 }, { [B]: 150_000, [C]: 50_000 })
     )
     expect(sizes[A]).toBeCloseTo(100_000)
-    expect(sizes[B]).toBeCloseTo(75_000)
-    expect(sizes[C]).toBeCloseTo(25_000)
+    expect(sizes[B]).toBeCloseTo(100_000)
+    expect(sizes[C]).toBeCloseTo(50_000)
   })
 
   it('leaves balanced sides untouched', () => {
