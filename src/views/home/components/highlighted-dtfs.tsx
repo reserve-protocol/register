@@ -142,13 +142,13 @@ const HighlightedDTFCard = ({ dtf }: { dtf: IndexDTFItem }) => {
   const dotsMaskId = `${dotsPatternId}-mask`
   const performanceColor =
     performanceDirection === 'positive'
-      ? '#2563EB'
+      ? `url(#${strokeGradientId})`
       : performanceDirection === 'negative'
         ? `url(#${strokeGradientId})`
         : 'hsl(var(--primary))'
   const performanceDotColor =
     performanceDirection === 'positive'
-      ? '#60A5FA'
+      ? '#819D44'
       : performanceDirection === 'negative'
         ? '#F87171'
         : '#6F6456'
@@ -250,12 +250,12 @@ const HighlightedDTFCard = ({ dtf }: { dtf: IndexDTFItem }) => {
                 </span>
                 {formatCurrency(dtf.price, dtf.price >= 1 ? 2 : 5)}
               </div>
-              <div className="mt-1.5 flex min-w-0 items-center gap-1 text-sm text-legend">
+              <div className="mt-1.5 flex min-w-0 items-center gap-1 text-base text-legend">
                 <span className="truncate">${dtf.symbol}</span>
                 <span
                   className={cn(
                     'shrink-0 tabular-nums',
-                    performanceDirection === 'positive' && 'text-blue-600',
+                    performanceDirection === 'positive' && 'text-[#657D32]',
                     performanceDirection === 'negative' && 'text-red-600'
                   )}
                 >
@@ -284,7 +284,7 @@ const HighlightedDTFCard = ({ dtf }: { dtf: IndexDTFItem }) => {
                 {...{ overflow: 'visible' }}
               >
                 <defs>
-                  {performanceDirection === 'negative' && (
+                  {performanceDirection !== 'neutral' && (
                     <linearGradient
                       id={strokeGradientId}
                       x1="0"
@@ -292,9 +292,18 @@ const HighlightedDTFCard = ({ dtf }: { dtf: IndexDTFItem }) => {
                       x2="1"
                       y2="0"
                     >
-                      <stop offset="0%" stopColor="#78716C" />
-                      <stop offset="55%" stopColor="#B45309" />
-                      <stop offset="100%" stopColor="#DC2626" />
+                      {performanceDirection === 'positive' ? (
+                        <>
+                          <stop offset="0%" stopColor="#A2BB6E" />
+                          <stop offset="100%" stopColor="#657D32" />
+                        </>
+                      ) : (
+                        <>
+                          <stop offset="0%" stopColor="#78716C" />
+                          <stop offset="55%" stopColor="#B45309" />
+                          <stop offset="100%" stopColor="#DC2626" />
+                        </>
+                      )}
                     </linearGradient>
                   )}
                   <pattern

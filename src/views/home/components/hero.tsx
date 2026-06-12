@@ -153,11 +153,11 @@ const Hero = () => {
     <div
       ref={stageRef}
       style={stageStyle}
-      className="relative h-auto rounded-t-4xl lg:h-[calc(100svh-72px+var(--highlighted-scroll-distance))]"
+      className="relative h-auto rounded-t-4xl lg:h-[calc(100svh-72px+var(--highlighted-scroll-distance))] mx-2 2xl:mx-0"
     >
       <div className="flex min-h-0 flex-col overflow-visible lg:sticky lg:top-0 lg:h-[calc(100svh-72px)] lg:overflow-hidden">
         <div className="grid min-h-0 flex-1 grid-rows-[auto_minmax(0,1fr)] gap-1 overflow-hidden lg:rounded-t-4xl border-[4px] border-b-0 border-secondary bg-secondary lg:grid-cols-[minmax(0,1fr)_minmax(420px,1fr)] lg:grid-rows-1">
-          <div className="flex min-h-0 flex-col items-center p-4 pb-10 justify-center gap-4 rounded-3xl rounded-t-none lg:rounded-3xl lg:rounded-b-none bg-background lg:rounded-b-3xl lg:rounded-bl-none lg:pb-[156px]">
+          <div className="flex min-h-0 flex-col items-center p-4 pb-10 justify-center gap-4 rounded-3xl rounded-t-none lg:rounded-3xl lg:rounded-b-none bg-background lg:rounded-b-3xl lg:rounded-bl-none lg:pb-[184px]">
             <div className="flex w-full max-w-[520px] flex-col items-center">
               <DTFPackingAnimation />
               <Header className="text-center mb-3" />

@@ -10,6 +10,7 @@ import { formatCurrency, getFolioRoute } from '@/utils'
 import { RESERVE_API } from '@/utils/constants'
 import { ColumnDef } from '@tanstack/react-table'
 import { useQuery } from '@tanstack/react-query'
+import { useId } from 'react'
 import { Link } from 'react-router-dom'
 import { Line, LineChart, YAxis } from 'recharts'
 import { BasketHoverCard } from './basket-hover-card'
@@ -114,9 +115,14 @@ const PerformanceCell = ({ dtf }: { dtf: IndexDTFItem }) => {
   const percentageChange = calculatePercentageChange(performance)
   const performanceDirection = getPerformanceDirection(performance)
   const performanceColorClassName = cn(
-    performanceDirection === 'positive' && 'text-blue-600',
+    performanceDirection === 'positive' && 'text-[#657D32]',
     performanceDirection === 'negative' && 'text-red-600'
   )
+  const strokeGradientId = `${useId().replace(/:/g, '')}-performance-stroke`
+  const lineStroke =
+    performanceDirection === 'positive'
+      ? `url(#${strokeGradientId})`
+      : 'currentColor'
 
   return (
     <div className="flex items-center justify-end gap-4">
@@ -136,11 +142,25 @@ const PerformanceCell = ({ dtf }: { dtf: IndexDTFItem }) => {
             data={performance}
             margin={{ top: 3, right: 2, bottom: 3, left: 2 }}
           >
+            {performanceDirection === 'positive' && (
+              <defs>
+                <linearGradient
+                  id={strokeGradientId}
+                  x1="0"
+                  y1="0"
+                  x2="1"
+                  y2="0"
+                >
+                  <stop offset="0%" stopColor="#A2BB6E" />
+                  <stop offset="100%" stopColor="#657D32" />
+                </linearGradient>
+              </defs>
+            )}
             <YAxis hide visibility="0" domain={getSparklineValueDomain} />
             <Line
               type="linear"
               dataKey="value"
-              stroke="currentColor"
+              stroke={lineStroke}
               strokeWidth={1.5}
               strokeLinecap="round"
               strokeLinejoin="round"
@@ -173,7 +193,7 @@ export const indexDTFColumns: ColumnDef<IndexDTFItem>[] = [
           <TokenLogo src={row.original.brand?.icon || undefined} size="xl" />
           <ChainLogo
             chain={row.original.chainId}
-            className="absolute -bottom-1 -right-1 rounded-full border border-card"
+            className="absolute -bottom-1 -right-1 rounded-full border-2 border-card"
           />
         </div>
         <div className="flex min-w-0 flex-col justify-center gap-1 break-words pt-0.5">
