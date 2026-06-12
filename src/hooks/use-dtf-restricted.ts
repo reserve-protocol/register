@@ -5,7 +5,14 @@ import { useAtomValue } from 'jotai'
 import { useMemo } from 'react'
 import { Address } from 'viem'
 
-export type DTFRestrictionReason = 'none' | 'geolocation' | 'vpn'
+// 'geolocation' is legacy, kept while the backend migrates to the granular
+// geolocation-* values.
+export type DTFRestrictionReason =
+  | 'none'
+  | 'geolocation'
+  | 'geolocation-restricted' // qualified-investor jurisdiction
+  | 'geolocation-prohibited' // absolute bar
+  | 'vpn'
 
 type DTFRestrictedData = {
   restricted: boolean
@@ -28,7 +35,11 @@ type DTFGeolocationStatus = {
 const isDTFRestrictionReason = (
   value: unknown
 ): value is DTFRestrictionReason =>
-  value === 'none' || value === 'geolocation' || value === 'vpn'
+  value === 'none' ||
+  value === 'geolocation' ||
+  value === 'geolocation-restricted' ||
+  value === 'geolocation-prohibited' ||
+  value === 'vpn'
 
 const isDTFGeolocationStatus = (
   value: unknown
