@@ -14,6 +14,7 @@ import {
   ExceededOndoLeg,
   getExceededOndoLegs,
   getMaxSafeRebalancePercent,
+  getScaledLegSizes,
   SizesByAddress,
 } from '../utils/get-max-safe-percent'
 import useRebalanceParams from './use-rebalance-params'
@@ -25,17 +26,6 @@ type OndoLimitStatus = {
   maxSafePercent: number
   // Open Ondo legs over their soft cap at the current percent.
   exceeded: ExceededOndoLeg[]
-}
-
-const legSizes = (metrics: AuctionMetrics): SizesByAddress => {
-  const sizes: SizesByAddress = {}
-  metrics.surplusTokens.forEach((token, i) => {
-    sizes[token.toLowerCase()] = metrics.surplusTokenSizes[i]
-  })
-  metrics.deficitTokens.forEach((token, i) => {
-    sizes[token.toLowerCase()] = metrics.deficitTokenSizes[i]
-  })
-  return sizes
 }
 
 const useOndoLimitStatus = (): OndoLimitStatus => {
@@ -57,7 +47,7 @@ const useOndoLimitStatus = (): OndoLimitStatus => {
         ? savedWeights
         : params.initialWeights
 
-    const computeSizes = (percent: number): SizesByAddress | null => {
+    const computeMetrics = (percent: number): AuctionMetrics | null => {
       try {
         const [, m] = getRebalanceOpenAuction(
           params.folioVersion,
@@ -75,7 +65,7 @@ const useOndoLimitStatus = (): OndoLimitStatus => {
           percent,
           isHybridDTF
         )
-        return legSizes(m)
+        return m
       } catch (e) {
         // Expected at some probe percents for a broken rebalance (the metrics
         // updater surfaces that); log so an unexpected failure is still visible.
@@ -84,7 +74,21 @@ const useOndoLimitStatus = (): OndoLimitStatus => {
       }
     }
 
-    return getMaxSafeRebalancePercent(computeSizes, ondoLimits)
+    const computeSizes = (percent: number): SizesByAddress | null => {
+      const m = computeMetrics(percent)
+      return m && getScaledLegSizes(m)
+    }
+
+    // At or below relativeProgression + 1 the SDK flips to a FINAL round that
+    // trades everything — keep the cap out of that zone (same +2 margin the
+    // dev slider guard uses). Progression doesn't depend on the percent, so
+    // probing at 100 is fine.
+    const probe = computeMetrics(100)
+    const minPercent = probe
+      ? Math.min(100, Math.ceil(probe.relativeProgression * 100) + 2)
+      : undefined
+
+    return getMaxSafeRebalancePercent(computeSizes, ondoLimits, minPercent)
   }, [
     params,
     currentRebalance,
@@ -97,7 +101,7 @@ const useOndoLimitStatus = (): OndoLimitStatus => {
 
   const exceeded = useMemo(() => {
     if (!metrics || Object.keys(ondoLimits).length === 0) return []
-    return getExceededOndoLegs(legSizes(metrics), ondoLimits)
+    return getExceededOndoLegs(getScaledLegSizes(metrics), ondoLimits)
   }, [metrics, ondoLimits])
 
   return { maxSafePercent, exceeded }
