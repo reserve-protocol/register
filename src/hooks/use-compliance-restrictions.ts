@@ -8,7 +8,14 @@ import useWalletCompliance, {
   type WalletCompliance,
 } from './use-wallet-compliance'
 
-export type ComplianceRestrictionReason = 'wallet' | 'geolocation' | 'vpn'
+// 'geolocation' is legacy, kept while the backend migrates to the granular
+// geolocation-* values.
+export type ComplianceRestrictionReason =
+  | 'wallet'
+  | 'geolocation'
+  | 'geolocation-restricted' // qualified-investor jurisdiction
+  | 'geolocation-prohibited' // absolute bar
+  | 'vpn'
 
 export type ComplianceRestrictionsData = {
   restricted: boolean
@@ -33,7 +40,13 @@ const getRestrictionMessage = (
         title: t`Wallet restricted`,
         description: t`This wallet is not eligible to access this product. If you think this is an error, try connecting a different wallet or contact support.`,
       }
+    case 'geolocation-restricted':
+      return {
+        title: t`Restricted in your region`,
+        description: t`This product is only available to qualified investors in your region due to local regulations.`,
+      }
     case 'geolocation':
+    case 'geolocation-prohibited':
       return {
         title: t`Not available in your region`,
         description: t`This product isn't available in your region due to local restrictions.`,
