@@ -1736,11 +1736,11 @@ msgstr ""
 #: src/views/explorer/components/revenue/index.tsx:287
 #: src/views/index-dtf/auctions/legacy/components/auction-item.tsx:132
 #: src/views/index-dtf/issuance/manual/components/mode-selector.tsx:12
-#: src/views/index-dtf/overview/components/landing-mint/index.tsx:121
+#: src/views/index-dtf/overview/components/landing-mint/index.tsx:122
 msgid "Buy"
 msgstr ""
 
-#: src/views/index-dtf/overview/components/index-ctas-overview-mobile.tsx:80
+#: src/views/index-dtf/overview/components/index-ctas-overview-mobile.tsx:116
 msgid "BUY"
 msgstr ""
 
@@ -1754,7 +1754,7 @@ msgid "Buy {0}"
 msgstr ""
 
 #. placeholder {0}: dtf?.token.symbol
-#: src/views/index-dtf/overview/components/landing-mint/index.tsx:54
+#: src/views/index-dtf/overview/components/landing-mint/index.tsx:55
 msgid "Buy/Sell ${0} onchain"
 msgstr ""
 
@@ -2315,6 +2315,10 @@ msgstr ""
 
 #: src/views/index-dtf/deploy/components/deploy-coming-soon.tsx:182
 msgid "Contact me"
+msgstr ""
+
+#: src/views/index-dtf/overview/components/eligibility-card.tsx:178
+msgid "Contact us for eligibility"
 msgstr ""
 
 #: src/views/index-dtf/governance/components/contest-badge.tsx:6
@@ -3149,7 +3153,7 @@ msgstr ""
 msgid "DTF Inactive"
 msgstr ""
 
-#: src/views/index-dtf/overview/components/landing-mint/index.tsx:193
+#: src/views/index-dtf/overview/components/landing-mint/index.tsx:194
 msgid "DTF meme"
 msgstr ""
 
@@ -3339,6 +3343,7 @@ msgstr ""
 msgid "Edit proposal"
 msgstr ""
 
+#: src/views/index-dtf/overview/components/eligibility-card.tsx:118
 #: src/views/yield-dtf/issuance/components/zapV2/minters-modal/SocialMediaInput.tsx:111
 msgid "Email"
 msgstr ""
@@ -4176,14 +4181,6 @@ msgstr ""
 msgid "Having issues minting? Zaps are in beta"
 msgstr ""
 
-#: src/views/index-dtf/issuance/index.tsx:98
-#~ msgid "Having issues? Switch to manual minting"
-#~ msgstr ""
-
-#: src/views/index-dtf/issuance/index.tsx:100
-#~ msgid "Having issues? Switch to manual redeeming"
-#~ msgstr ""
-
 #: src/views/index-dtf/deploy/steps/governance/form-existing-erc20.tsx:37
 msgid "hero-splash"
 msgstr ""
@@ -4578,6 +4575,10 @@ msgstr ""
 msgid "Invalid destination address"
 msgstr ""
 
+#: src/views/index-dtf/overview/components/eligibility-card.tsx:24
+msgid "Invalid email"
+msgstr ""
+
 #: src/views/index-dtf/deploy/form-fields.ts:96
 msgid "Invalid ERC20 address"
 msgstr ""
@@ -4712,8 +4713,12 @@ msgstr ""
 msgid "Launching..."
 msgstr ""
 
-#: src/views/index-dtf/overview/components/landing-mint/index.tsx:106
+#: src/views/index-dtf/overview/components/landing-mint/index.tsx:107
 msgid "Learn More"
+msgstr ""
+
+#: src/views/index-dtf/overview/components/eligibility-card.tsx:194
+msgid "Learn more about eligibility requirements."
 msgstr ""
 
 #: src/views/portfolio-page/components/rewards-available.tsx:44
@@ -4835,6 +4840,10 @@ msgstr ""
 #: src/views/yield-dtf/governance/views/proposal-detail/ProposalHeader.tsx:121
 #: src/views/yield-dtf/settings/components/setting-item.tsx:62
 msgid "Loading..."
+msgstr ""
+
+#: src/views/index-dtf/overview/components/eligibility-card.tsx:157
+msgid "Location restricted"
 msgstr ""
 
 #. placeholder {0}: dtf.stToken?.underlying.symbol ?? 'Unknown'
@@ -5303,6 +5312,7 @@ msgstr ""
 #: src/views/home/components/discover-index-dtf/index-dtf-table-columns.tsx:38
 #: src/views/home/components/discover-index-dtf/index-dtf-table-placeholder.tsx:17
 #: src/views/index-dtf/deploy/steps/metadata/form-basic-metadata.tsx:10
+#: src/views/index-dtf/overview/components/eligibility-card.tsx:106
 #: src/views/index-dtf/settings/components/index-settings-basic.tsx:31
 #: src/views/portfolio-page/components/dtf-positions.tsx:31
 #: src/views/portfolio-page/components/rsr-section.tsx:18
@@ -5676,7 +5686,8 @@ msgstr ""
 msgid "Not available"
 msgstr ""
 
-#: src/hooks/use-compliance-restrictions.ts:38
+#: src/hooks/use-compliance-restrictions.ts:45
+#: src/hooks/use-compliance-restrictions.ts:53
 msgid "Not available in your region"
 msgstr ""
 
@@ -5877,7 +5888,7 @@ msgstr ""
 msgid "Other Risks"
 msgstr ""
 
-#: src/views/index-dtf/overview/components/landing-mint/index.tsx:65
+#: src/views/index-dtf/overview/components/landing-mint/index.tsx:66
 msgid "Our Zap-swaps support common assets like {tokensText} which makes DTFs easy to enter and exit."
 msgstr ""
 
@@ -6960,6 +6971,10 @@ msgstr ""
 msgid "Replace Basket with CSV"
 msgstr ""
 
+#: src/views/index-dtf/overview/components/index-ctas-overview-mobile.tsx:79
+msgid "Request access to this product"
+msgstr ""
+
 #: src/views/index-dtf/deploy/steps/basket/token-selector.tsx:387
 msgid "Request on Canny"
 msgstr ""
@@ -6969,6 +6984,7 @@ msgid "Request plugin"
 msgstr ""
 
 #: src/views/index-dtf/deploy/components/deploy-coming-soon.tsx:25
+#: src/views/index-dtf/overview/components/eligibility-card.tsx:23
 msgid "Required"
 msgstr ""
 
@@ -7037,6 +7053,10 @@ msgstr ""
 
 #: src/views/internal/dtf-list/components/dtf-filters.tsx:58
 msgid "Reset"
+msgstr ""
+
+#: src/hooks/use-compliance-restrictions.ts:49
+msgid "Restricted in your region"
 msgstr ""
 
 #: src/views/portfolio-page/components/portfolio-chart.tsx:154
@@ -7507,11 +7527,11 @@ msgstr ""
 #: src/views/explorer/components/revenue/index.tsx:306
 #: src/views/index-dtf/auctions/legacy/components/auction-item.tsx:90
 #: src/views/index-dtf/issuance/manual/components/mode-selector.tsx:13
-#: src/views/index-dtf/overview/components/landing-mint/index.tsx:132
+#: src/views/index-dtf/overview/components/landing-mint/index.tsx:133
 msgid "Sell"
 msgstr ""
 
-#: src/views/index-dtf/overview/components/index-ctas-overview-mobile.tsx:66
+#: src/views/index-dtf/overview/components/index-ctas-overview-mobile.tsx:102
 msgid "SELL"
 msgstr ""
 
@@ -7528,7 +7548,7 @@ msgid "Sell ${0}"
 msgstr ""
 
 #. placeholder {0}: dtf?.token.symbol
-#: src/views/index-dtf/overview/components/landing-mint/index.tsx:52
+#: src/views/index-dtf/overview/components/landing-mint/index.tsx:53
 msgid "Sell ${0} onchain"
 msgstr ""
 
@@ -7853,6 +7873,10 @@ msgstr ""
 msgid "Some collateral tokens from protocols like Aave and Convex differ technically from other collateral tokens. To ensure proper handling, they must be wrapped in a contract for effective monitoring. Once wrapped, the collateral remains the same but has a new interface for price and appreciation tracking."
 msgstr ""
 
+#: src/views/index-dtf/overview/components/eligibility-card.tsx:137
+msgid "Something went wrong. Please try again."
+msgstr ""
+
 #: src/views/index-dtf/overview/components/zap-mint/zap-error-msg.tsx:19
 msgid "Sorry, the market is volatile right now. Please increase slippage in your settings."
 msgstr ""
@@ -8105,6 +8129,10 @@ msgstr ""
 msgid "stRSR Token"
 msgstr ""
 
+#: src/views/index-dtf/overview/components/eligibility-card.tsx:133
+msgid "Submit"
+msgstr ""
+
 #: src/views/index-dtf/manage/components/submit-button.tsx:247
 msgid "Submit all changes"
 msgstr ""
@@ -8130,6 +8158,7 @@ msgstr ""
 
 #: src/views/index-dtf/deploy/components/deploy-coming-soon.tsx:182
 #: src/views/index-dtf/manage/components/submit-button.tsx:250
+#: src/views/index-dtf/overview/components/eligibility-card.tsx:133
 msgid "Submitting..."
 msgstr ""
 
@@ -8268,6 +8297,7 @@ msgid "Terms and Conditions"
 msgstr ""
 
 #: src/views/index-dtf/deploy/components/deploy-coming-soon.tsx:109
+#: src/views/index-dtf/overview/components/eligibility-card.tsx:91
 msgid "Thank you! We'll be in touch soon."
 msgstr ""
 
@@ -8578,7 +8608,7 @@ msgid "This DTF is no longer actively governed and can only be sold. This DTF ca
 msgstr ""
 
 #. placeholder {0}: dtf?.token.symbol
-#: src/views/index-dtf/overview/components/landing-mint/index.tsx:59
+#: src/views/index-dtf/overview/components/landing-mint/index.tsx:60
 msgid "This DTF is no longer actively governed and can only be sold. This DTF cannot rebalance its basket nor can new ${0} tokens be created."
 msgstr ""
 
@@ -8612,11 +8642,16 @@ msgstr ""
 msgid "This list is not intended to be conclusive. <0>You can read more about risk in the Reserve docs.</0>"
 msgstr ""
 
-#: src/hooks/use-compliance-restrictions.ts:39
+#: src/hooks/use-compliance-restrictions.ts:50
+msgid "This product is only available to qualified investors in your region due to local regulations."
+msgstr ""
+
+#: src/hooks/use-compliance-restrictions.ts:46
+#: src/hooks/use-compliance-restrictions.ts:54
 msgid "This product isn't available in your region due to local restrictions."
 msgstr ""
 
-#: src/views/index-dtf/overview/components/index-ctas-overview-mobile.tsx:28
+#: src/views/index-dtf/overview/components/index-ctas-overview-mobile.tsx:36
 msgid "This product isn't available in your region due to local restrictions. <0>Learn More</0>"
 msgstr ""
 
@@ -8636,7 +8671,7 @@ msgstr ""
 msgid "This upgrade spell fixes the proposal-threshold on the FolioGovernor contract that administers the DAO (StakingVault) relevant to this DTF. Once this spell is approved and executed, the proposal-threshold will be the correct % that was initially intended at deployment."
 msgstr ""
 
-#: src/hooks/use-compliance-restrictions.ts:35
+#: src/hooks/use-compliance-restrictions.ts:42
 msgid "This wallet is not eligible to access this product. If you think this is an error, try connecting a different wallet or contact support."
 msgstr ""
 
@@ -8693,6 +8728,10 @@ msgstr ""
 
 #: src/views/index-dtf/overview/components/index-disclousure.tsx:382
 msgid "To learn more about the risks associated with DTFs,"
+msgstr ""
+
+#: src/views/index-dtf/overview/components/eligibility-card.tsx:181
+msgid "To verify eligibility, please leave us your name and email, and we will reach out to you personally."
 msgstr ""
 
 #: src/components/ui/swap.tsx:475
@@ -9544,6 +9583,11 @@ msgstr ""
 msgid "Vault change proposal"
 msgstr ""
 
+#: src/views/index-dtf/overview/components/index-ctas-overview-mobile.tsx:67
+#: src/views/index-dtf/overview/components/index-ctas-overview-mobile.tsx:76
+msgid "Verify eligibility"
+msgstr ""
+
 #: src/views/index-dtf/manage/components/submit-button.tsx:99
 msgid "Verify wallet"
 msgstr ""
@@ -9998,7 +10042,7 @@ msgstr ""
 msgid "Voting Weight"
 msgstr ""
 
-#: src/hooks/use-compliance-restrictions.ts:42
+#: src/hooks/use-compliance-restrictions.ts:57
 msgid "VPN detected"
 msgstr ""
 
@@ -10054,7 +10098,7 @@ msgstr ""
 msgid "Wallet address"
 msgstr ""
 
-#: src/hooks/use-compliance-restrictions.ts:34
+#: src/hooks/use-compliance-restrictions.ts:41
 msgid "Wallet restricted"
 msgstr ""
 
@@ -10091,7 +10135,7 @@ msgstr ""
 msgid "We couldn’t retrieve the contract’s ABI from Etherscan. This usually means the contract is not verified. Without its interface, we’re unable to decode any function calls or parameters."
 msgstr ""
 
-#: src/hooks/use-compliance-restrictions.ts:43
+#: src/hooks/use-compliance-restrictions.ts:58
 msgid "We detected that you are connecting through a VPN. Please disable it and refresh the page to access this product. If you think this is an error, contact support."
 msgstr ""
 
@@ -10101,6 +10145,10 @@ msgstr ""
 
 #: src/views/index-dtf/deploy/steps/governance/form-existing-erc20.tsx:46
 msgid "We recommend launching your new ERC20 token on <0>CreateMyToken</0>"
+msgstr ""
+
+#: src/views/index-dtf/overview/components/eligibility-card.tsx:160
+msgid "We're sorry, this product isn't available to customers in your region. In order to access this DTF, you may need to qualify as a <0>qualified investor</0>."
 msgstr ""
 
 #: src/views/index-dtf/overview/components/index-about-overview.tsx:130

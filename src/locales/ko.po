@@ -1736,11 +1736,11 @@ msgstr "BTC"
 #: src/views/explorer/components/revenue/index.tsx:287
 #: src/views/index-dtf/auctions/legacy/components/auction-item.tsx:132
 #: src/views/index-dtf/issuance/manual/components/mode-selector.tsx:12
-#: src/views/index-dtf/overview/components/landing-mint/index.tsx:121
+#: src/views/index-dtf/overview/components/landing-mint/index.tsx:122
 msgid "Buy"
 msgstr "매수"
 
-#: src/views/index-dtf/overview/components/index-ctas-overview-mobile.tsx:80
+#: src/views/index-dtf/overview/components/index-ctas-overview-mobile.tsx:116
 msgid "BUY"
 msgstr "매수"
 
@@ -1754,7 +1754,7 @@ msgid "Buy {0}"
 msgstr "{0} 매수"
 
 #. placeholder {0}: dtf?.token.symbol
-#: src/views/index-dtf/overview/components/landing-mint/index.tsx:54
+#: src/views/index-dtf/overview/components/landing-mint/index.tsx:55
 msgid "Buy/Sell ${0} onchain"
 msgstr "${0} 온체인 매수/매도"
 
@@ -2316,6 +2316,10 @@ msgstr "포트폴리오를 보려면 Wallet을 연결하세요"
 #: src/views/index-dtf/deploy/components/deploy-coming-soon.tsx:182
 msgid "Contact me"
 msgstr "문의하기"
+
+#: src/views/index-dtf/overview/components/eligibility-card.tsx:178
+msgid "Contact us for eligibility"
+msgstr "자격 확인 문의"
 
 #: src/views/index-dtf/governance/components/contest-badge.tsx:6
 #: src/views/index-dtf/governance/views/proposal/components/proposal-vote.tsx:158
@@ -3149,7 +3153,7 @@ msgstr "DTF 아이콘"
 msgid "DTF Inactive"
 msgstr "DTF 비활성"
 
-#: src/views/index-dtf/overview/components/landing-mint/index.tsx:193
+#: src/views/index-dtf/overview/components/landing-mint/index.tsx:194
 msgid "DTF meme"
 msgstr "DTF 밈"
 
@@ -3339,6 +3343,7 @@ msgstr "페이지 편집"
 msgid "Edit proposal"
 msgstr "제안 편집"
 
+#: src/views/index-dtf/overview/components/eligibility-card.tsx:118
 #: src/views/yield-dtf/issuance/components/zapV2/minters-modal/SocialMediaInput.tsx:111
 msgid "Email"
 msgstr "Email"
@@ -4176,14 +4181,6 @@ msgstr "Mint에 문제가 있나요? (Zap은 베타 단계입니다)"
 msgid "Having issues minting? Zaps are in beta"
 msgstr "Mint에 문제가 있나요? Zap은 베타 버전입니다"
 
-#: src/views/index-dtf/issuance/index.tsx:98
-#~ msgid "Having issues? Switch to manual minting"
-#~ msgstr "문제가 있나요? 수동 Mint로 전환하기"
-
-#: src/views/index-dtf/issuance/index.tsx:100
-#~ msgid "Having issues? Switch to manual redeeming"
-#~ msgstr "문제가 있나요? 수동 Redeem으로 전환하기"
-
 #: src/views/index-dtf/deploy/steps/governance/form-existing-erc20.tsx:37
 msgid "hero-splash"
 msgstr "hero-splash"
@@ -4578,6 +4575,10 @@ msgstr "유효하지 않은 위임 주소"
 msgid "Invalid destination address"
 msgstr "유효하지 않은 대상 주소"
 
+#: src/views/index-dtf/overview/components/eligibility-card.tsx:24
+msgid "Invalid email"
+msgstr "유효하지 않은 이메일"
+
 #: src/views/index-dtf/deploy/form-fields.ts:96
 msgid "Invalid ERC20 address"
 msgstr "잘못된 ERC20 주소"
@@ -4712,9 +4713,13 @@ msgstr "나만의 Index DTF 출시"
 msgid "Launching..."
 msgstr "시작 중..."
 
-#: src/views/index-dtf/overview/components/landing-mint/index.tsx:106
+#: src/views/index-dtf/overview/components/landing-mint/index.tsx:107
 msgid "Learn More"
 msgstr "자세히 보기"
+
+#: src/views/index-dtf/overview/components/eligibility-card.tsx:194
+msgid "Learn more about eligibility requirements."
+msgstr "자격 요건에 대해 자세히 알아보기."
 
 #: src/views/portfolio-page/components/rewards-available.tsx:44
 msgid "Learn more about how to earn APY"
@@ -4836,6 +4841,10 @@ msgstr "포트폴리오 데이터를 불러오는 중..."
 #: src/views/yield-dtf/settings/components/setting-item.tsx:62
 msgid "Loading..."
 msgstr "로딩 중..."
+
+#: src/views/index-dtf/overview/components/eligibility-card.tsx:157
+msgid "Location restricted"
+msgstr "위치 제한"
 
 #. placeholder {0}: dtf.stToken?.underlying.symbol ?? 'Unknown'
 #: src/views/index-dtf/overview/components/index-governance-overview.tsx:99
@@ -5303,6 +5312,7 @@ msgstr "0에서 100 사이여야 합니다"
 #: src/views/home/components/discover-index-dtf/index-dtf-table-columns.tsx:38
 #: src/views/home/components/discover-index-dtf/index-dtf-table-placeholder.tsx:17
 #: src/views/index-dtf/deploy/steps/metadata/form-basic-metadata.tsx:10
+#: src/views/index-dtf/overview/components/eligibility-card.tsx:106
 #: src/views/index-dtf/settings/components/index-settings-basic.tsx:31
 #: src/views/portfolio-page/components/dtf-positions.tsx:31
 #: src/views/portfolio-page/components/rsr-section.tsx:18
@@ -5676,7 +5686,8 @@ msgstr ""
 msgid "Not available"
 msgstr "이용 불가"
 
-#: src/hooks/use-compliance-restrictions.ts:38
+#: src/hooks/use-compliance-restrictions.ts:45
+#: src/hooks/use-compliance-restrictions.ts:53
 msgid "Not available in your region"
 msgstr "해당 지역에서 이용할 수 없음"
 
@@ -5877,7 +5888,7 @@ msgstr "기타 수령인 {0}"
 msgid "Other Risks"
 msgstr "기타 리스크"
 
-#: src/views/index-dtf/overview/components/landing-mint/index.tsx:65
+#: src/views/index-dtf/overview/components/landing-mint/index.tsx:66
 msgid "Our Zap-swaps support common assets like {tokensText} which makes DTFs easy to enter and exit."
 msgstr "Zap-스왑은 {tokensText}와 같은 일반 자산을 지원하여 DTF의 진입과 종료를 손쉽게 합니다."
 
@@ -6960,6 +6971,10 @@ msgstr ""
 msgid "Replace Basket with CSV"
 msgstr "CSV로 바스켓 교체"
 
+#: src/views/index-dtf/overview/components/index-ctas-overview-mobile.tsx:79
+msgid "Request access to this product"
+msgstr "이 상품에 대한 접근 요청"
+
 #: src/views/index-dtf/deploy/steps/basket/token-selector.tsx:387
 msgid "Request on Canny"
 msgstr "Canny에 요청하기"
@@ -6969,6 +6984,7 @@ msgid "Request plugin"
 msgstr "플러그인 요청"
 
 #: src/views/index-dtf/deploy/components/deploy-coming-soon.tsx:25
+#: src/views/index-dtf/overview/components/eligibility-card.tsx:23
 msgid "Required"
 msgstr "필수"
 
@@ -7038,6 +7054,10 @@ msgstr "Reserve Telegram"
 #: src/views/internal/dtf-list/components/dtf-filters.tsx:58
 msgid "Reset"
 msgstr "초기화"
+
+#: src/hooks/use-compliance-restrictions.ts:49
+msgid "Restricted in your region"
+msgstr "거주 지역에서 제한됨"
 
 #: src/views/portfolio-page/components/portfolio-chart.tsx:154
 msgid "Retrieving historical prices..."
@@ -7507,11 +7527,11 @@ msgstr ""
 #: src/views/explorer/components/revenue/index.tsx:306
 #: src/views/index-dtf/auctions/legacy/components/auction-item.tsx:90
 #: src/views/index-dtf/issuance/manual/components/mode-selector.tsx:13
-#: src/views/index-dtf/overview/components/landing-mint/index.tsx:132
+#: src/views/index-dtf/overview/components/landing-mint/index.tsx:133
 msgid "Sell"
 msgstr "매도"
 
-#: src/views/index-dtf/overview/components/index-ctas-overview-mobile.tsx:66
+#: src/views/index-dtf/overview/components/index-ctas-overview-mobile.tsx:102
 msgid "SELL"
 msgstr "매도"
 
@@ -7528,7 +7548,7 @@ msgid "Sell ${0}"
 msgstr "${0} 판매"
 
 #. placeholder {0}: dtf?.token.symbol
-#: src/views/index-dtf/overview/components/landing-mint/index.tsx:52
+#: src/views/index-dtf/overview/components/landing-mint/index.tsx:53
 msgid "Sell ${0} onchain"
 msgstr "${0} 온체인 매도"
 
@@ -7853,6 +7873,10 @@ msgstr "판매됨"
 msgid "Some collateral tokens from protocols like Aave and Convex differ technically from other collateral tokens. To ensure proper handling, they must be wrapped in a contract for effective monitoring. Once wrapped, the collateral remains the same but has a new interface for price and appreciation tracking."
 msgstr "Aave 및 Convex와 같은 프로토콜의 일부 담보 토큰은 기술적으로 다른 담보 토큰과 다릅니다. 적절한 처리와 효과적인 모니터링을 위해 컨트랙트로 래핑되어야 합니다. 래핑된 후에도 담보는 동일하게 유지되지만 가격 및 가치 상승 추적을 위한 새로운 인터페이스를 갖게 됩니다."
 
+#: src/views/index-dtf/overview/components/eligibility-card.tsx:137
+msgid "Something went wrong. Please try again."
+msgstr "문제가 발생했습니다. 다시 시도해 주세요."
+
 #: src/views/index-dtf/overview/components/zap-mint/zap-error-msg.tsx:19
 msgid "Sorry, the market is volatile right now. Please increase slippage in your settings."
 msgstr "죄송합니다. 현재 시장 변동성이 큽니다. 설정에서 슬리피지를 높여 주세요."
@@ -8105,6 +8129,10 @@ msgstr "stRSR 지급 비율 0.0"
 msgid "stRSR Token"
 msgstr "stRSR 토큰"
 
+#: src/views/index-dtf/overview/components/eligibility-card.tsx:133
+msgid "Submit"
+msgstr "제출"
+
 #: src/views/index-dtf/manage/components/submit-button.tsx:247
 msgid "Submit all changes"
 msgstr "모든 변경사항 제출"
@@ -8130,6 +8158,7 @@ msgstr "제출됨!"
 
 #: src/views/index-dtf/deploy/components/deploy-coming-soon.tsx:182
 #: src/views/index-dtf/manage/components/submit-button.tsx:250
+#: src/views/index-dtf/overview/components/eligibility-card.tsx:133
 msgid "Submitting..."
 msgstr "제출 중..."
 
@@ -8268,6 +8297,7 @@ msgid "Terms and Conditions"
 msgstr ""
 
 #: src/views/index-dtf/deploy/components/deploy-coming-soon.tsx:109
+#: src/views/index-dtf/overview/components/eligibility-card.tsx:91
 msgid "Thank you! We'll be in touch soon."
 msgstr "감사합니다! 곧 연락드리겠습니다."
 
@@ -8589,7 +8619,7 @@ msgid "This DTF is no longer actively governed and can only be sold. This DTF ca
 msgstr "이 DTF는 더 이상 적극적으로 거버넌스되지 않으며 매각만 가능합니다. 이 DTF는 바스켓을 리밸런싱할 수 없으며 새로운 ${0} 토큰도 Mint할 수 없습니다."
 
 #. placeholder {0}: dtf?.token.symbol
-#: src/views/index-dtf/overview/components/landing-mint/index.tsx:59
+#: src/views/index-dtf/overview/components/landing-mint/index.tsx:60
 msgid "This DTF is no longer actively governed and can only be sold. This DTF cannot rebalance its basket nor can new ${0} tokens be created."
 msgstr "이 DTF는 더 이상 활발하게 거버넌스되지 않으며 매도만 가능합니다. 이 DTF는 바스켓을 리밸런싱할 수 없으며 새로운 ${0} 토큰도 생성할 수 없습니다."
 
@@ -8623,11 +8653,16 @@ msgstr "거래 없이 DTF를 Mint하려는 경우에 유용합니다."
 msgid "This list is not intended to be conclusive. <0>You can read more about risk in the Reserve docs.</0>"
 msgstr "이 목록이 전부는 아닙니다. <0>Reserve 문서에서 리스크에 대해 더 자세히 확인할 수 있습니다.</0>"
 
-#: src/hooks/use-compliance-restrictions.ts:39
+#: src/hooks/use-compliance-restrictions.ts:50
+msgid "This product is only available to qualified investors in your region due to local regulations."
+msgstr "현지 규정에 따라 이 상품은 고객님의 지역에서 적격 투자자만 이용할 수 있습니다."
+
+#: src/hooks/use-compliance-restrictions.ts:46
+#: src/hooks/use-compliance-restrictions.ts:54
 msgid "This product isn't available in your region due to local restrictions."
 msgstr "이 제품은 현지 규제로 인해 해당 지역에서 이용할 수 없습니다."
 
-#: src/views/index-dtf/overview/components/index-ctas-overview-mobile.tsx:28
+#: src/views/index-dtf/overview/components/index-ctas-overview-mobile.tsx:36
 msgid "This product isn't available in your region due to local restrictions. <0>Learn More</0>"
 msgstr "현지 규제로 인해 이 상품은 귀하의 지역에서 이용할 수 없습니다. <0>자세히 보기</0>"
 
@@ -8647,7 +8682,7 @@ msgstr "이 업그레이드 spell은 이 DTF를 관리하는 Admin 및 Basket Fo
 msgid "This upgrade spell fixes the proposal-threshold on the FolioGovernor contract that administers the DAO (StakingVault) relevant to this DTF. Once this spell is approved and executed, the proposal-threshold will be the correct % that was initially intended at deployment."
 msgstr "이 업그레이드 spell은 이 DTF와 관련된 DAO(StakingVault)를 관리하는 FolioGovernor 컨트랙트의 proposal-threshold를 수정합니다. 이 spell이 승인되고 실행되면 proposal-threshold는 배포 시 처음 의도했던 올바른 %가 됩니다."
 
-#: src/hooks/use-compliance-restrictions.ts:35
+#: src/hooks/use-compliance-restrictions.ts:42
 msgid "This wallet is not eligible to access this product. If you think this is an error, try connecting a different wallet or contact support."
 msgstr "이 Wallet은 본 제품에 접근할 수 없습니다. 오류라고 생각되면 다른 Wallet으로 연결하거나 고객 지원에 문의하세요."
 
@@ -8705,6 +8740,10 @@ msgstr ""
 #: src/views/index-dtf/overview/components/index-disclousure.tsx:382
 msgid "To learn more about the risks associated with DTFs,"
 msgstr ""
+
+#: src/views/index-dtf/overview/components/eligibility-card.tsx:181
+msgid "To verify eligibility, please leave us your name and email, and we will reach out to you personally."
+msgstr "자격 확인을 위해 이름과 이메일을 남겨 주시면 직접 연락드리겠습니다."
 
 #: src/components/ui/swap.tsx:475
 msgid "Toggle {option}"
@@ -9555,6 +9594,11 @@ msgstr "가치:"
 msgid "Vault change proposal"
 msgstr "Vault 변경 제안"
 
+#: src/views/index-dtf/overview/components/index-ctas-overview-mobile.tsx:67
+#: src/views/index-dtf/overview/components/index-ctas-overview-mobile.tsx:76
+msgid "Verify eligibility"
+msgstr "자격 확인"
+
 #: src/views/index-dtf/manage/components/submit-button.tsx:99
 msgid "Verify wallet"
 msgstr "Wallet 인증"
@@ -9562,7 +9606,7 @@ msgstr "Wallet 인증"
 #: src/views/index-dtf/components/confirm-eligibility-modal.tsx:70
 #: src/views/index-dtf/components/confirm-eligibility-modal.tsx:82
 msgid "Verify your eligibility"
-msgstr ""
+msgstr "자격을 확인하세요"
 
 #: src/components/transaction-modal/index.tsx:53
 #: src/views/yield-dtf/staking/components/stake/confirm-stake-button.tsx:47
@@ -10009,7 +10053,7 @@ msgstr "투표 시작까지:"
 msgid "Voting Weight"
 msgstr ""
 
-#: src/hooks/use-compliance-restrictions.ts:42
+#: src/hooks/use-compliance-restrictions.ts:57
 msgid "VPN detected"
 msgstr "VPN 감지됨"
 
@@ -10065,7 +10109,7 @@ msgstr "Wallet"
 msgid "Wallet address"
 msgstr "Wallet 주소"
 
-#: src/hooks/use-compliance-restrictions.ts:34
+#: src/hooks/use-compliance-restrictions.ts:41
 msgid "Wallet restricted"
 msgstr "제한된 Wallet"
 
@@ -10102,7 +10146,7 @@ msgstr "DTF 설명 영상 보기"
 msgid "We couldn’t retrieve the contract’s ABI from Etherscan. This usually means the contract is not verified. Without its interface, we’re unable to decode any function calls or parameters."
 msgstr "Etherscan에서 컨트랙트의 ABI를 가져올 수 없습니다. 일반적으로 이는 컨트랙트가 검증되지 않았음을 의미합니다. 인터페이스가 없으면 함수 호출이나 매개변수를 디코딩할 수 없습니다."
 
-#: src/hooks/use-compliance-restrictions.ts:43
+#: src/hooks/use-compliance-restrictions.ts:58
 msgid "We detected that you are connecting through a VPN. Please disable it and refresh the page to access this product. If you think this is an error, contact support."
 msgstr "VPN을 통해 연결하고 있는 것이 감지되었습니다. VPN을 비활성화하고 페이지를 새로고침하여 본 제품에 접근하세요. 오류라고 생각되면 고객 지원에 문의하세요."
 
@@ -10113,6 +10157,10 @@ msgstr ""
 #: src/views/index-dtf/deploy/steps/governance/form-existing-erc20.tsx:46
 msgid "We recommend launching your new ERC20 token on <0>CreateMyToken</0>"
 msgstr "새 ERC20 토큰은 <0>CreateMyToken</0>에서 출시하는 것을 권장합니다"
+
+#: src/views/index-dtf/overview/components/eligibility-card.tsx:160
+msgid "We're sorry, this product isn't available to customers in your region. In order to access this DTF, you may need to qualify as a <0>qualified investor</0>."
+msgstr "죄송합니다. 이 상품은 고객님의 지역에서 이용하실 수 없습니다. 이 DTF에 접근하려면 <0>적격 투자자</0> 자격이 필요할 수 있습니다."
 
 #: src/views/index-dtf/overview/components/index-about-overview.tsx:130
 #: src/views/index-dtf/overview/components/index-metrics-overview.tsx:101

@@ -17,6 +17,7 @@ import { useAtomValue } from 'jotai'
 import { ArrowDown, ArrowLeftRight } from 'lucide-react'
 import React, { useEffect, useState } from 'react'
 import DTFBalance from './dtf-balance'
+import EligibilityCard from '../eligibility-card'
 import useComplianceRestrictions from '@/hooks/use-compliance-restrictions'
 
 const TokenInfo = () => {
@@ -200,12 +201,18 @@ const CoverImage = () => {
 }
 
 const LandingMint = (props: React.HTMLAttributes<HTMLDivElement>) => {
+  const { data: complianceData } = useComplianceRestrictions()
+
   return (
     <div className="hidden xl:flex xl:flex-col xl:gap-2 relative" {...props}>
       <CoverImage />
-      <div className="w-[450px] sticky top-0 rounded-4xl bg-muted p-1">
-        <MintBox />
-      </div>
+      {complianceData?.reason === 'geolocation-restricted' ? (
+        <EligibilityCard className="w-[450px] sticky top-0" />
+      ) : (
+        <div className="w-[450px] sticky top-0 rounded-4xl bg-muted p-1">
+          <MintBox />
+        </div>
+      )}
     </div>
   )
 }

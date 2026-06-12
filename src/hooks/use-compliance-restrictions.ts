@@ -95,31 +95,30 @@ const useComplianceRestrictions = () => {
   const dtfRestriction = useDTFRestricted()
 
   return useMemo<ComplianceRestrictionsResult>(() => {
-    // No wallet connected: nothing to restrict yet (enforced at transaction time)
-    if (!wallet) {
-      return { data: allowed(geolocation.data), isLoading: false }
-    }
-
-    if (walletCompliance.isLoading) {
-      return { data: undefined, isLoading: true }
-    }
-
-    if (walletCompliance.data?.shouldSkipRestrictions) {
-      return {
-        data: allowed(geolocation.data, walletCompliance.data),
-        isLoading: false,
+    // Wallet compliance only applies once a wallet is connected; geolocation
+    // and DTF checks are IP-based and run regardless.
+    if (wallet) {
+      if (walletCompliance.isLoading) {
+        return { data: undefined, isLoading: true }
       }
-    }
 
-    if (walletCompliance.isError || walletCompliance.data?.isRestricted) {
-      return {
-        data: restricted({
-          reason: 'wallet',
-          geolocation: geolocation.data,
-          wallet: walletCompliance.data,
-          t,
-        }),
-        isLoading: false,
+      if (walletCompliance.data?.shouldSkipRestrictions) {
+        return {
+          data: allowed(geolocation.data, walletCompliance.data),
+          isLoading: false,
+        }
+      }
+
+      if (walletCompliance.isError || walletCompliance.data?.isRestricted) {
+        return {
+          data: restricted({
+            reason: 'wallet',
+            geolocation: geolocation.data,
+            wallet: walletCompliance.data,
+            t,
+          }),
+          isLoading: false,
+        }
       }
     }
 
