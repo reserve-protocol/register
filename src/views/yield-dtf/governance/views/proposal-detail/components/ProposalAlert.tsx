@@ -1,3 +1,6 @@
+import type { MessageDescriptor } from '@lingui/core'
+import { msg } from '@lingui/core/macro'
+import { useLingui } from '@lingui/react/macro'
 import { useAtomValue } from 'jotai'
 import { ReactNode } from 'react'
 import { Check, Slash, X } from 'lucide-react'
@@ -35,68 +38,72 @@ const FinalState = ({
 
 const FINAL_STATES: Record<
   string,
-  { label: string; color: string; bgColor: string; icon: ReactNode }
+  { label: MessageDescriptor; color: string; bgColor: string; icon: ReactNode }
 > = {
   [PROPOSAL_STATES.EXECUTED]: {
-    label: 'Executed',
+    label: msg`Executed`,
     color: 'var(--primary)',
     bgColor: 'rgba(9, 85, 172, 0.10)',
     icon: <Check size={20} />,
   },
   [PROPOSAL_STATES.DEFEATED]: {
-    label: 'Defeated',
+    label: msg`Defeated`,
     color: 'red',
     bgColor: 'rgba(208, 90, 103, 0.10)',
     icon: <X size={20} />,
   },
   [PROPOSAL_STATES.EXPIRED]: {
-    label: 'Expired',
+    label: msg`Expired`,
     color: 'gray',
     bgColor: 'rgba(0, 0, 0, 0.10)',
     icon: <Slash size={20} />,
   },
   [PROPOSAL_STATES.CANCELED]: {
-    label: 'Canceled',
+    label: msg`Canceled`,
     color: 'red',
     bgColor: 'rgba(208, 90, 103, 0.10)',
     icon: <X size={20} />,
   },
   [PROPOSAL_STATES.QUORUM_NOT_REACHED]: {
-    label: 'Quorum not reached',
+    label: msg`Quorum not reached`,
     color: 'orange',
     bgColor: 'rgba(255, 152, 0, 0.10)',
     icon: <X size={20} />,
   },
   [PROPOSAL_STATES.SUCCEEDED]: {
-    label: 'Succeeded',
+    label: msg`Succeeded`,
     color: 'green',
     bgColor: 'rgba(0, 255, 152, 0.10)',
     icon: <Check size={20} />,
   },
 }
 
-const DEADLINE_STATES: Record<string, { text: string; color: string }> = {
+const DEADLINE_STATES: Record<
+  string,
+  { text: MessageDescriptor; color: string }
+> = {
   [PROPOSAL_STATES.ACTIVE]: {
-    text: 'Voting period ends in',
+    text: msg`Voting period ends in`,
     color: 'var(--accent-inverted)',
   },
   [PROPOSAL_STATES.PENDING]: {
-    text: 'Voting begins in',
+    text: msg`Voting begins in`,
     color: 'var(--accent-inverted)',
   },
   [PROPOSAL_STATES.QUEUED]: {
-    text: 'Execution delay ends in',
+    text: msg`Execution delay ends in`,
     color: 'orange',
   },
 }
 
 const ProposalAlert = () => {
+  const { t } = useLingui()
   const state = useAtomValue(getProposalStateAtom)
 
   if (Object.keys(FINAL_STATES).includes(state.state)) {
     return (
       <FinalState
-        label={FINAL_STATES[state.state].label}
+        label={t(FINAL_STATES[state.state].label)}
         color={FINAL_STATES[state.state].color}
         bgColor={FINAL_STATES[state.state].bgColor}
         icon={FINAL_STATES[state.state].icon}
@@ -119,7 +126,7 @@ const ProposalAlert = () => {
   ) {
     return (
       <FinalState
-        label="Passed"
+        label={t`Passed`}
         color="var(--primary)"
         bgColor="rgba(9, 85, 172, 0.10)"
         icon={<Check size={20} />}
@@ -133,7 +140,9 @@ const ProposalAlert = () => {
       style={{ color: DEADLINE_STATES[state.state].color }}
     >
       <Spinner size={18} />
-      <span className="mt-1 text-xs">{DEADLINE_STATES[state.state].text}</span>
+      <span className="mt-1 text-xs">
+        {t(DEADLINE_STATES[state.state].text)}
+      </span>
       <span className="text-xl font-bold">{deadline}</span>
     </div>
   )

@@ -1,4 +1,5 @@
 import { Button } from '@/components/ui/button'
+import { Plural, Trans } from '@lingui/react/macro'
 import { Play, Square } from 'lucide-react'
 import Spinner from '@/components/ui/spinner'
 import { CowbotStatus } from './types'
@@ -45,17 +46,21 @@ const CowbotCard = ({
           {/* Center: Status text */}
           <div className="flex-1 min-w-0">
             <h4 className="font-semibold text-foreground">
-              CowSwap Auction Filler stopped
+              <Trans>CowSwap Auction Filler stopped</Trans>
             </h4>
             <p className="text-sm text-muted-foreground">
-              {totalOrders} order{totalOrders !== 1 ? 's' : ''} submitted
+              <Plural
+                value={totalOrders}
+                one="# order submitted"
+                other="# orders submitted"
+              />
             </p>
           </div>
 
           {/* Right side: Start action */}
           <Button size="sm" variant="outline" className="shrink-0" onClick={onStart}>
             <Play className="w-3 h-3 mr-1.5 fill-current" />
-            Start
+            <Trans>Start</Trans>
           </Button>
         </div>
       </div>
@@ -73,12 +78,18 @@ const CowbotCard = ({
         <div className="flex-1 min-w-0">
           <h4 className="font-semibold text-foreground flex items-center gap-2">
             {isInitializing && <Spinner size={14} />}
-            {isInitializing
-              ? 'CowSwap Auction Filler starting...'
-              : 'CowSwap Auction Filler running...'}
+            {isInitializing ? (
+              <Trans>CowSwap Auction Filler starting...</Trans>
+            ) : (
+              <Trans>CowSwap Auction Filler running...</Trans>
+            )}
           </h4>
           <p className="text-sm text-muted-foreground">
-            {totalOrders} order{totalOrders !== 1 ? 's' : ''} submitted
+            <Plural
+              value={totalOrders}
+              one="# order submitted"
+              other="# orders submitted"
+            />
           </p>
         </div>
 
@@ -91,7 +102,7 @@ const CowbotCard = ({
           disabled={isInitializing}
         >
           <Square className="w-3 h-3 mr-1.5 fill-current" />
-          Stop
+          <Trans>Stop</Trans>
         </Button>
       </div>
     </div>

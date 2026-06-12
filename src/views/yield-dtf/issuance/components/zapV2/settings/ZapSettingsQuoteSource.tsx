@@ -6,18 +6,21 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
+import { useLingui } from '@lingui/react/macro'
 import { Route, Zap } from 'lucide-react'
 import { ZapQuoteSource } from '../api/quote-providers'
 import { useZap } from '../context/ZapContext'
 
-const OPTIONS: { value: ZapQuoteSource; label: string; icon: JSX.Element }[] = [
-  { value: 'best', label: 'Best Quote', icon: <Route size={14} /> },
-  { value: 'zap', label: 'Zap', icon: <Zap size={14} /> },
-  { value: 'enso', label: 'Enso', icon: <Enso width={14} /> },
-]
-
 const ZapSettingsQuoteSource = () => {
+  const { t } = useLingui()
   const { quoteSource, setQuoteSource } = useZap()
+
+  const options: { value: ZapQuoteSource; label: string; icon: JSX.Element }[] =
+    [
+      { value: 'best', label: t`Best Quote`, icon: <Route size={14} /> },
+      { value: 'zap', label: 'Zap', icon: <Zap size={14} /> },
+      { value: 'enso', label: 'Enso', icon: <Enso width={14} /> },
+    ]
 
   return (
     <Select
@@ -28,7 +31,7 @@ const ZapSettingsQuoteSource = () => {
         <SelectValue />
       </SelectTrigger>
       <SelectContent>
-        {OPTIONS.map(({ value, label, icon }) => (
+        {options.map(({ value, label, icon }) => (
           <SelectItem key={value} value={value}>
             <div className="flex items-center gap-2">
               {icon}

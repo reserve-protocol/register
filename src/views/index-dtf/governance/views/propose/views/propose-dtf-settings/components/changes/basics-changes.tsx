@@ -1,4 +1,5 @@
 import { indexDTFAtom, indexDTFVersionAtom } from '@/state/dtf/atoms'
+import { Trans, useLingui } from '@lingui/react/macro'
 import { useAtom, useAtomValue } from 'jotai'
 import { useFormContext } from 'react-hook-form'
 import { ArrowRight, FileText, Type } from 'lucide-react'
@@ -11,6 +12,7 @@ import {
 import { ChangeSection, RevertButton } from './shared'
 
 const BasicsChanges = () => {
+  const { t } = useLingui()
   const indexDTF = useAtomValue(indexDTFAtom)
   const version = useAtomValue(indexDTFVersionAtom)
   const isV5 = version.startsWith('5')
@@ -35,12 +37,17 @@ const BasicsChanges = () => {
   }
 
   return (
-    <ChangeSection title="Basics Update" icon={<FileText size={16} />}>
+    <ChangeSection
+      title={<Trans>Basics Update</Trans>}
+      icon={<FileText size={16} />}
+    >
       {hasTokenNameChange && isV5 && tokenNameChange && (
         <div className="flex items-center gap-2 p-4 rounded-2xl bg-muted/70 border">
           <Type size={16} />
           <div className="mr-auto">
-            <div className="text-sm font-medium">Token Name</div>
+            <div className="text-sm font-medium">
+              <Trans>Token Name</Trans>
+            </div>
             <div className="flex items-center gap-3 text-sm">
               <span className="text-muted-foreground">
                 {indexDTF.token.name}
@@ -56,14 +63,18 @@ const BasicsChanges = () => {
       {hasMandateChange && mandateChange && (
         <div className="p-4 rounded-lg bg-muted/70 border space-y-3">
           <div className="space-y-2">
-            <div className="text-xs text-muted-foreground">Current mandate:</div>
+            <div className="text-xs text-muted-foreground">
+              <Trans>Current mandate:</Trans>
+            </div>
             <p className="text-sm text-muted-foreground">
-              {indexDTF.mandate || 'No mandate set'}
+              {indexDTF.mandate || t`No mandate set`}
             </p>
           </div>
           <ArrowRight size={16} className="text-primary" />
           <div className="space-y-2">
-            <div className="text-xs text-primary">New mandate:</div>
+            <div className="text-xs text-primary">
+              <Trans>New mandate:</Trans>
+            </div>
             <p className="text-sm">{mandateChange}</p>
           </div>
           <RevertButton onClick={handleRevertMandate} />

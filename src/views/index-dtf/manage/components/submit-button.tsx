@@ -10,7 +10,8 @@ import {
   isBrandManagerAtom,
 } from '@/state/dtf/atoms'
 import { RESERVE_API } from '@/utils/constants'
-import { useQuery } from '@tanstack/react-query'
+import { Trans, useLingui } from '@lingui/react/macro'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { atom, useAtomValue, useSetAtom } from 'jotai'
 import { useEffect, useState } from 'react'
 import { FieldValues, SubmitHandler, useFormContext } from 'react-hook-form'
@@ -95,7 +96,7 @@ const AuthenticateButton = () => {
           disabled={!nonce}
           onClick={handleSignMessage}
         >
-          Verify wallet
+          <Trans>Verify wallet</Trans>
         </Button>
       </TransactionButtonContainer>
     </div>
@@ -127,6 +128,7 @@ const fileToPath: Record<string, string> = {
 }
 
 const SubmitButton = () => {
+  const { t } = useLingui()
   const dtf = useAtomValue(indexDTFAtom)
   const chainId = useAtomValue(chainIdAtom)
   const signature = useAtomValue(currentSignatureAtom)
@@ -137,6 +139,7 @@ const SubmitButton = () => {
   const [error, setError] = useState<string | null>(null)
   const updateBrandData = useSetAtom(indexDTFBrandAtom)
   const isBrandManager = useAtomValue(isBrandManagerAtom)
+  const queryClient = useQueryClient()
 
   const { trackClick } = useTrackIndexDTFClick('overview', 'brand_manager')
   const { track } = useTrackIndexDTF(
@@ -160,7 +163,7 @@ const SubmitButton = () => {
         setState('uploading')
         const fileContents = await processFiles(pendingToUpload)
 
-        if (!signature) throw new Error('Missing signature')
+        if (!signature) throw new Error(t`Missing signature`)
 
         const uploadedFiles = await Promise.all(
           fileContents.map((file) =>
@@ -191,6 +194,11 @@ const SubmitButton = () => {
         }
       }
 
+      // Downloadable resources: drop rows without a URL
+      payload.dtf.files = (
+        (payload.dtf.files ?? []) as { url?: string; name?: string }[]
+      ).filter((resource) => resource.url)
+
       setState('submitting')
 
       if (payload.dtf.tags.length) {
@@ -218,13 +226,16 @@ const SubmitButton = () => {
         throw new Error(body.message)
       }
       track('submit_successful')
-      toast.success('DTF updated successfully', { position: 'bottom-right' })
+      toast.success(t`DTF updated successfully`, { position: 'bottom-right' })
       updateBrandData(payload as IndexDTFBrand)
+      // BrandFilesUpdater merges dtf.files from its own query — refresh it so
+      // a stale cache doesn't clobber the data we just saved.
+      queryClient.invalidateQueries({ queryKey: ['brand-files'] })
       setState('idle')
     } catch (e: any) {
       console.error('Error submitting form:', e)
-      toast.error('Failed to update DTF', { position: 'bottom-right' })
-      setError(e?.message ?? 'Unexpected error')
+      toast.error(t`Failed to update DTF`, { position: 'bottom-right' })
+      setError(e?.message ?? t`Unexpected error`)
       setState('idle')
     }
   }
@@ -233,16 +244,16 @@ const SubmitButton = () => {
     handleSubmit(onSubmit as SubmitHandler<FieldValues>)()
   }
 
-  let label = 'Submit all changes'
+  let label = t`Submit all changes`
 
-  if (state === 'uploading') label = 'Uploading files...'
-  if (state === 'submitting') label = 'Submitting...'
+  if (state === 'uploading') label = t`Uploading files...`
+  if (state === 'submitting') label = t`Submitting...`
 
   if (!isBrandManager)
     return (
       <div className="rounded-3xl p-2 shadow-md bg-card">
         <Button disabled className="w-full rounded-xl gap-1">
-          Only Brand Manager
+          <Trans>Only Brand Manager</Trans>
         </Button>
       </div>
     )

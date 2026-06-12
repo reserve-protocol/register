@@ -1,4 +1,4 @@
-import { t, Trans } from '@lingui/macro'
+import { Trans, useLingui } from '@lingui/react/macro'
 import Governance from 'abis/Governance'
 import { Button } from '@/components/ui/button'
 import { gql } from 'graphql-request'
@@ -74,6 +74,7 @@ const useStats = () => {
 }
 
 const VotingPower = () => {
+  const { t } = useLingui()
   const account = useAtomValue(walletAtom)
   const blockNumber = useAtomValue(debouncedBlockAtom)
   const governance = useAtomValue(rTokenGovernanceAtom)
@@ -112,6 +113,7 @@ const VotingPower = () => {
 }
 
 const GovernanceStats = () => {
+  const { t } = useLingui()
   const stats = useStats()
 
   return (
@@ -154,6 +156,7 @@ const GovernanceStats = () => {
 }
 
 const GovernanceFormat = () => {
+  const { t } = useLingui()
   const governance = useAtomValue(rTokenGovernanceAtom)
 
   return (
@@ -163,7 +166,7 @@ const GovernanceFormat = () => {
       </span>
       <div className="flex items-center">
         <span className="text-xl font-medium">
-          {governance ? governance.name : 'Loading...'}
+          {governance ? governance.name : t`Loading...`}
         </span>
       </div>
 

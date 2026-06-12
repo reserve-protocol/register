@@ -1,4 +1,4 @@
-import { Trans } from '@lingui/macro'
+import { Trans } from '@lingui/react/macro'
 import { cn } from '@/lib/utils'
 import AsteriskIcon from 'components/icons/AsteriskIcon'
 import RevenueSplitIcon from 'components/icons/RevenueSplitIcon'

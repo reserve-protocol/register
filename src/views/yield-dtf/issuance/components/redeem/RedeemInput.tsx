@@ -1,4 +1,4 @@
-import { t } from '@lingui/macro'
+import { useLingui } from '@lingui/react/macro'
 import TransactionInput, {
   TransactionInputProps,
 } from 'components/transaction-input'
@@ -7,6 +7,7 @@ import { rTokenBalanceAtom, rTokenStateAtom } from 'state/atoms'
 import { redeemAmountAtom } from '@/views/yield-dtf/issuance/atoms'
 
 const RedeemInput = (props: Partial<TransactionInputProps>) => {
+  const { t } = useLingui()
   const max = useAtomValue(rTokenBalanceAtom)
   const { frozen } = useAtomValue(rTokenStateAtom)
 

@@ -1,7 +1,8 @@
-import { t } from '@lingui/macro'
+import { t } from '@lingui/core/macro'
 import { CellContext } from '@tanstack/react-table'
 import ERC20 from 'abis/ERC20'
 import humanizeDuration from 'humanize-duration'
+import { durationLocale } from './locale'
 import { BigNumberMap } from 'types'
 import {
   Address,
@@ -116,6 +117,9 @@ const timeUnits = {
   second: 0,
 }
 
+// Compact relative time ("4h", "1d", "2mth"). `from`/`to` are unix seconds.
+// Each unit token is a catalog message so locales can localize the abbreviation
+// (and reorder the count if needed).
 export const relativeTime = (from: number, to: number) => {
   let delta = Math.abs(to - from)
 
@@ -124,17 +128,23 @@ export const relativeTime = (from: number, to: number) => {
   }
 
   if (delta >= timeUnits.year) {
-    return t`A year ago`
+    const count = Math.floor(delta / timeUnits.year)
+    return t`${count}y`
   } else if (delta >= timeUnits.month) {
-    return `${Math.floor(delta / timeUnits.month)}` + t`mth`
+    const count = Math.floor(delta / timeUnits.month)
+    return t`${count}mth`
   } else if (delta >= timeUnits.day) {
-    return `${Math.floor(delta / timeUnits.day)}d`
+    const count = Math.floor(delta / timeUnits.day)
+    return t`${count}d`
   } else if (delta >= timeUnits.hour) {
-    return `${Math.floor(delta / timeUnits.hour)}h`
+    const count = Math.floor(delta / timeUnits.hour)
+    return t`${count}h`
   } else if (delta >= timeUnits.minute) {
-    return `${Math.floor(delta / timeUnits.minute)}m`
+    const count = Math.floor(delta / timeUnits.minute)
+    return t`${count}m`
   } else {
-    return `${delta}s`
+    const count = Math.floor(delta)
+    return t`${count}s`
   }
 }
 
@@ -198,6 +208,13 @@ export function formatCurrency(
     minimumFractionDigits: Math.min(2, decimals),
     ...options,
   }).format(value)
+}
+
+export function formatCurrencyCompact(value: number, decimals = 2) {
+  return formatCurrency(value, decimals, {
+    notation: 'compact',
+    compactDisplay: 'short',
+  })
 }
 
 export function formatTokenAmount(value: number) {
@@ -326,7 +343,10 @@ export const parseDuration = (
   duration: number,
   options?: humanizeDuration.Options
 ) => {
-  return humanizeDuration(duration * 1000, options)
+  return humanizeDuration(duration * 1000, {
+    language: durationLocale(),
+    ...options,
+  })
 }
 
 export const parseDurationShort = (
@@ -363,15 +383,15 @@ export const humanizeDateToNow = (timestamp?: string | number) => {
   const date = dayjs(ts)
   const diffMs = Math.abs(dayjs().diff(date))
 
-  if (diffMs < 45 * 1000) return 'just now'
+  if (diffMs < 45 * 1000) return t`just now`
 
   const humanized = humanizeDuration(diffMs, {
     largest: 1,
     round: true,
-    language: 'en',
+    language: durationLocale(),
   })
 
-  return `${humanized} ago`
+  return t`${humanized} ago`
 }
 
 export const humanizeMinutes = (minutes: number) => {
@@ -379,19 +399,19 @@ export const humanizeMinutes = (minutes: number) => {
     return `${minutes}m`
   }
   return humanizeDuration(minutes * 60 * 1000, {
-    language: 'en',
+    language: durationLocale(),
   })
 }
 
 export const humanizeTimeFromHours = (hours: number) => {
   return humanizeDuration(hours * 60 * 60 * 1000, {
-    language: 'en',
+    language: durationLocale(),
   })
 }
 
 export const humanizeTimeFromDays = (days: number) => {
   return humanizeDuration(days * 24 * 60 * 60 * 1000, {
-    language: 'en',
+    language: durationLocale(),
   })
 }
 
@@ -400,7 +420,15 @@ export const getTokenName = (name: string) => {
     return name.replace('Moo ', 'Beefy ')
   }
 
-  return name
+  return name.replace(' (Ondo Tokenized)', '')
+}
+
+export const getFileNameFromUrl = (url: string) => {
+  try {
+    return decodeURIComponent(new URL(url).pathname.split('/').pop() || url)
+  } catch {
+    return url
+  }
 }
 
 export const max = (...args: bigint[]): bigint => {
@@ -409,6 +437,46 @@ export const max = (...args: bigint[]): bigint => {
   }
 
   return args.reduce((max, curr) => (curr > max ? curr : max), 0n)
+}
+
+export function getTimerFormat(seconds: number) {
+  const timeUnits = {
+    days: 'd',
+    day: 'd',
+    hours: 'h',
+    hour: 'h',
+    minutes: 'm',
+    minute: 'm',
+    seconds: 's',
+    second: 's',
+  }
+
+  let str = humanizeDuration(seconds * 1000, {
+    units: ['h', 'm', 's'],
+    round: true,
+    spacer: '',
+    delimiter: ' ',
+  })
+
+  // Replace all time unit words with their shortened versions
+  for (const [word, short] of Object.entries(timeUnits)) {
+    str = str.replace(word, short)
+  }
+
+  // Ensure seconds are always shown
+  if (!str.includes('s')) {
+    str += ' 0s'
+  }
+
+  return str
+}
+
+export const uuidv4 = () => {
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+    const r = (Math.random() * 16) | 0,
+      v = c == 'x' ? r : (r & 0x3) | 0x8
+    return v.toString(16)
+  })
 }
 
 // Check if the current version is greater than or equal to the required version

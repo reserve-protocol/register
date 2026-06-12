@@ -3,6 +3,7 @@ import { indexDTFAtom } from '@/state/dtf/atoms'
 import { formatCurrency, formatPercentage, formatTokenAmount } from '@/utils'
 import { ZapResult } from '@/views/yield-dtf/issuance/components/zapV2/api'
 import Decimal from 'decimal.js-light'
+import { Trans, useLingui } from '@lingui/react/macro'
 import { useAtomValue } from 'jotai'
 import { formatUnits } from 'viem'
 import { selectedTokenOrDefaultAtom } from './atom'
@@ -37,6 +38,7 @@ export const ZapPriceImpact = ({
 }
 
 const ZapDetails = ({ data }: { data: ZapResult }) => {
+  const { t } = useLingui()
   const indexDTF = useAtomValue(indexDTFAtom)
   const selectedToken = useAtomValue(selectedTokenOrDefaultAtom)
   const dtfAsTokenIn =
@@ -85,7 +87,9 @@ const ZapDetails = ({ data }: { data: ZapResult }) => {
         left: ratioText,
         right: !dtfAsTokenIn ? (
           <span>
-            <span className="text-muted-foreground">Fee</span>{' '}
+            <span className="text-muted-foreground">
+              <Trans>Fee</Trans>
+            </span>{' '}
             {formatPercentage(indexDTF.mintingFee * 100)}
           </span>
         ) : undefined,
@@ -94,7 +98,11 @@ const ZapDetails = ({ data }: { data: ZapResult }) => {
         ...(!dtfAsTokenIn
           ? [
               {
-                left: <span className="text-muted-foreground">Mint Fee</span>,
+                left: (
+                  <span className="text-muted-foreground">
+                    <Trans>Mint Fee</Trans>
+                  </span>
+                ),
                 right: (
                   <span>
                     ${formatCurrency(mintFeeValue)}{' '}
@@ -103,27 +111,33 @@ const ZapDetails = ({ data }: { data: ZapResult }) => {
                     </span>
                   </span>
                 ),
-                help: 'A one-time fee deduction from the tokens you are using to create a share of the DTF. This fee is set by the Governors of the DTF.',
+                help: t`A one-time fee deduction from the tokens you are using to create a share of the DTF. This fee is set by the Governors of the DTF.`,
               },
             ]
           : []),
         {
-          left: <span className="text-muted-foreground">Price Impact</span>,
+          left: (
+            <span className="text-muted-foreground">
+              <Trans>Price Impact</Trans>
+            </span>
+          ),
           right: <ZapPriceImpact data={data} isDetail />,
-          help: 'The impact your trade has on the market price.',
+          help: t`The impact your trade has on the market price.`,
         },
         ...(minAmountOut
           ? [
               {
                 left: (
-                  <span className="text-muted-foreground">Min Amount Out</span>
+                  <span className="text-muted-foreground">
+                    <Trans>Min Amount Out</Trans>
+                  </span>
                 ),
                 right: (
                   <span>
                     {formatTokenAmount(Number(minAmountOut))} {tokenOutSymbol}
                   </span>
                 ),
-                help: 'The minimum amount of tokens you will receive.',
+                help: t`The minimum amount of tokens you will receive.`,
               },
             ]
           : []),

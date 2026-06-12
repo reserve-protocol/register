@@ -1,5 +1,5 @@
 import { isInactiveDTF, useDTFStatus } from '@/hooks/use-dtf-status'
-import { t } from '@lingui/macro'
+import { useLingui } from '@lingui/react/macro'
 import AuctionsIcon from 'components/icons/AuctionsIcon'
 import GovernanceIcon from 'components/icons/GovernanceIcon'
 import IssuanceIcon from 'components/icons/IssuanceIcon'
@@ -164,6 +164,7 @@ const NavItem = (props: NavigationItem) => {
 }
 
 const TokenNavigation = () => {
+  const { t } = useLingui()
   const rToken = useRToken()
   const status = useDTFStatus(rToken?.address, rToken?.chainId)
   const isDeprecated = isInactiveDTF(status)
@@ -221,7 +222,7 @@ const TokenNavigation = () => {
         ],
       },
     ],
-    [isDeprecated]
+    [isDeprecated, t]
   )
 
   return (

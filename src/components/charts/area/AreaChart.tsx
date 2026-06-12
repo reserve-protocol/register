@@ -1,4 +1,4 @@
-import { Trans } from '@lingui/macro'
+import { Trans } from '@lingui/react/macro'
 import TabMenu from 'components/tab-menu'
 import { useMemo } from 'react'
 import { ArrowDown, ArrowUp } from 'lucide-react'

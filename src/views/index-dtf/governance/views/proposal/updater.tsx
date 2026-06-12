@@ -1,86 +1,67 @@
-import { atom, useAtom, useSetAtom } from 'jotai'
-import { useEffect, useState } from 'react'
+import { useSetAtom } from 'jotai'
+import { useEffect } from 'react'
 import { useParams } from 'react-router-dom'
+import { PROPOSAL_STATES } from '@/utils/constants'
+import type { ProposalDetail } from '@/lib/governance'
 import { accountVotesAtom, proposalDetailAtom } from './atom'
 import useProposalDetail from './hooks/use-proposal-detail'
 import useVoterState from './hooks/use-voter-state'
-import { PROPOSAL_STATES } from '@/utils/constants'
-import { getProposalState } from '@/lib/governance'
-
-const FINALIZED_PROPOSAL_STATES = [
-  PROPOSAL_STATES.EXECUTED,
-  PROPOSAL_STATES.CANCELED,
-  PROPOSAL_STATES.EXPIRED,
-  PROPOSAL_STATES.DEFEATED,
-  PROPOSAL_STATES.QUORUM_NOT_REACHED,
-]
-
-export const proposalRefreshFnAtom = atom<(() => void) | null>(null)
 
 const ProposalUpdater = () => {
   const { proposalId } = useParams()
-  const { data: proposalDetail, error } = useProposalDetail(proposalId)
+  const { data: proposalDetail } = useProposalDetail(proposalId)
   const accountVotes = useVoterState()
-  const [proposal, setProposalDetail] = useAtom(proposalDetailAtom)
+  const setProposalDetail = useSetAtom(proposalDetailAtom)
   const setAccountVotes = useSetAtom(accountVotesAtom)
 
   useEffect(() => {
-    if (proposalDetail) {
-      setProposalDetail(proposalDetail)
-    }
-  }, [proposalDetail])
+    setProposalDetail((current) =>
+      shouldKeepLocalProposalState(current, proposalDetail)
+        ? current
+        : proposalDetail
+    )
+  }, [proposalDetail, setProposalDetail])
 
   useEffect(() => {
-    if (accountVotes) {
-      setAccountVotes(accountVotes)
-    }
-  }, [accountVotes])
+    setAccountVotes(accountVotes ?? { vote: null, votePower: null })
+  }, [accountVotes, setAccountVotes])
 
   useEffect(() => {
     return () => {
       setProposalDetail(undefined)
       setAccountVotes({ vote: null, votePower: null })
     }
-  }, [])
-
-  useEffect(() => {
-    if (proposal) {
-      // Refresh proposal voting state every minute
-      if (!FINALIZED_PROPOSAL_STATES.includes(proposal.state)) {
-        const interval = setInterval(() => {
-          const votingState = getProposalState(proposal)
-          setProposalDetail({
-            ...proposal,
-            votingState,
-            state: votingState.state,
-          })
-        }, 1000 * 60)
-
-        return () => clearInterval(interval)
-      }
-    }
-  }, [proposal?.state])
+  }, [setAccountVotes, setProposalDetail])
 
   return null
 }
 
-const Updater = () => {
-  const [key, setKey] = useState(0)
-  const setRefreshFn = useSetAtom(proposalRefreshFnAtom)
+function shouldKeepLocalProposalState(
+  current: ProposalDetail | undefined,
+  next: ProposalDetail | undefined
+) {
+  if (!current || !next || current.id !== next.id) return false
 
-  const refreshProposal = () => {
-    setKey((k) => k + 1)
+  const currentState = current.votingState.state
+  const nextState = next.votingState.state
+
+  if (currentState === PROPOSAL_STATES.EXECUTED) {
+    return nextState !== PROPOSAL_STATES.EXECUTED
   }
 
-  useEffect(() => {
-    setRefreshFn(() => refreshProposal)
-  }, [])
+  if (currentState === PROPOSAL_STATES.CANCELED) {
+    return nextState !== PROPOSAL_STATES.CANCELED
+  }
 
-  return (
-    <div key={key}>
-      <ProposalUpdater />
-    </div>
-  )
+  if (currentState === PROPOSAL_STATES.QUEUED) {
+    return [
+      PROPOSAL_STATES.PENDING,
+      PROPOSAL_STATES.ACTIVE,
+      PROPOSAL_STATES.SUCCEEDED,
+    ].includes(nextState)
+  }
+
+  return false
 }
 
-export default Updater
+export default ProposalUpdater

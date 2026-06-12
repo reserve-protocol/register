@@ -6,7 +6,9 @@ import {
 import TokenLogo from '@/components/token-logo'
 import { chainIdAtom } from '@/state/atoms'
 import { formatCurrency } from '@/utils'
+import { dateLocale } from '@/utils/locale'
 import { ExplorerDataType, getExplorerLink } from '@/utils/getExplorerLink'
+import { Trans } from '@lingui/react/macro'
 import { useAtomValue } from 'jotai'
 import { ArrowDown, ArrowUpRight, ChevronsUpDown } from 'lucide-react'
 import { useMemo, useState } from 'react'
@@ -25,11 +27,11 @@ const formatAddress = (address: string): string =>
 
 const formatTime = (timestamp: number): string => {
   const date = new Date(timestamp * 1000)
-  return date.toLocaleTimeString([], { 
-    hour: '2-digit', 
+  return date.toLocaleTimeString(dateLocale(), {
+    hour: '2-digit',
     minute: '2-digit',
     month: 'short',
-    day: 'numeric'
+    day: 'numeric',
   })
 }
 
@@ -123,7 +125,7 @@ const RebalanceBidsList = () => {
         <CollapsibleTrigger asChild>
           <div className="flex items-center gap-2 cursor-pointer hover:text-primary/80 transition-colors">
             <h4 className="text-primary text-xl">
-              Bids ({totalBids})
+              <Trans>Bids ({totalBids})</Trans>
             </h4>
             <ChevronsUpDown className="h-4 w-4 text-primary transition-transform duration-200 data-[state=open]:rotate-180" />
           </div>
@@ -139,10 +141,10 @@ const RebalanceBidsList = () => {
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <h5 className="text-sm font-semibold">
-                      Bid #{totalBids - index}
+                      <Trans>Bid #{totalBids - index}</Trans>
                     </h5>
                     <span className="text-xs text-muted-foreground">
-                      Round {bid.auctionRound}
+                      <Trans>Round {bid.auctionRound}</Trans>
                     </span>
                   </div>
                   <a
@@ -163,7 +165,9 @@ const RebalanceBidsList = () => {
                 {/* Bidder and Time */}
                 <div className="flex items-center justify-between text-xs">
                   <div>
-                    <span className="text-muted-foreground">Bidder: </span>
+                    <span className="text-muted-foreground">
+                      <Trans>Bidder:</Trans>{' '}
+                    </span>
                     <a
                       href={getExplorerLink(
                         bid.bidder,

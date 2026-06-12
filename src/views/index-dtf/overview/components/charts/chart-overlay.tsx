@@ -14,6 +14,7 @@ import {
   isYieldIndexDTFAtom,
 } from '@/state/dtf/yield-index-atoms'
 import { formatPercentage, formatToSignificantDigits } from '@/utils'
+import { Trans } from '@lingui/react/macro'
 import { useAtomValue } from 'jotai'
 import { IndexDTFPerformance } from '../../hooks/use-dtf-price-history'
 import IndexCreatorOverview from '../index-creator-overview'
@@ -79,16 +80,18 @@ const YieldOverlayInfo = () => {
     <>
       <div className="flex items-center gap-2 text-xl sm:text-2xl font-light">
         {apyData ? (
-          <>{formatPercentage(apyData.totalAPY)} Est. APY</>
+          <Trans>{formatPercentage(apyData.totalAPY)} Est. APY</Trans>
         ) : (
           <Skeleton className="w-[200px] h-7 sm:h-8" />
         )}
       </div>
       {stats && (
         <span className="text-sm text-white/60">
-          Avg {formatPercentage(stats.avg)} · range{' '}
-          {formatPercentage(stats.min)}–{formatPercentage(stats.max)} (
-          {range === 'all' ? 'All' : range})
+          <Trans>
+            Avg {formatPercentage(stats.avg)} · range{' '}
+            {formatPercentage(stats.min)}–{formatPercentage(stats.max)} (
+            {range === 'all' ? 'All' : range})
+          </Trans>
         </span>
       )}
     </>

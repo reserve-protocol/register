@@ -5,6 +5,7 @@ import { AlertTriangle } from 'lucide-react'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import Help from '@/components/ui/help'
 import { cn } from '@/lib/utils'
+import { Trans } from '@lingui/react/macro'
 
 const WARNING_PER_DTF: Record<number, Record<string, boolean>> = {
   [ChainId.Mainnet]: {
@@ -33,8 +34,17 @@ const LowLiquidityWarning = ({ className }: { className?: string }) => {
       <div className="flex items-center gap-2">
         <AlertTriangle className="h-4 w-4 text-warning" />
         <AlertDescription className="text-warning flex items-center gap-2">
-          This DTF contains assets with relatively low DEX liquidity
-          <Help content="During periods of high volatility it can take multiple attempts to find a route with good pricing." />
+          <Trans>
+            This DTF contains assets with relatively low DEX liquidity
+          </Trans>
+          <Help
+            content={
+              <Trans>
+                During periods of high volatility it can take multiple attempts
+                to find a route with good pricing.
+              </Trans>
+            }
+          />
         </AlertDescription>
       </div>
     </Alert>

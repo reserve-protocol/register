@@ -1,4 +1,4 @@
-import { Trans, t } from '@lingui/macro'
+import { Trans, useLingui } from '@lingui/react/macro'
 import Deployer from 'abis/Deployer'
 import CopyValue from '@/components/ui/copy-value'
 import GoTo from '@/components/ui/go-to'
@@ -71,6 +71,7 @@ interface Props {
 }
 
 const DeployOverview = ({ onDeploy, className }: Props) => {
+  const { t } = useLingui()
   const navigate = useNavigate()
   const chainId = useAtomValue(chainIdAtom)
   const { gas, write, isReady, hash, validationError, error, isLoading } =

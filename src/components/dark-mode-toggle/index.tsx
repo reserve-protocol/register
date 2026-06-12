@@ -1,9 +1,5 @@
-import { useEffect, useState } from 'react'
-
-export const MODES = {
-  LIGHT: 'light',
-  DARK: 'dark',
-}
+import { useAtomValue, useSetAtom } from 'jotai'
+import { themeModeAtom, toggleThemeAtom } from './atoms'
 
 const properties = {
   light: {
@@ -24,59 +20,29 @@ const properties = {
 
 const TRANSITION = 'all 400ms cubic-bezier(0.5, 0, 0.2, 1)'
 
-const getInitialMode = () => {
-  if (typeof window === 'undefined') return MODES.LIGHT
-  const stored = localStorage.getItem('theme-ui-color-mode')
-  if (stored === MODES.DARK || stored === MODES.LIGHT) return stored
-  return window.matchMedia('(prefers-color-scheme: dark)').matches
-    ? MODES.DARK
-    : MODES.LIGHT
-}
+const DarkModeToggle = () => {
+  const mode = useAtomValue(themeModeAtom)
+  const toggleTheme = useSetAtom(toggleThemeAtom)
 
-const DarkModeToggle = ({ className }: { className?: string }) => {
-  const [mode, setMode] = useState(getInitialMode)
-
-  const { r, transform, cx, cy, opacity } =
-    properties[mode as keyof typeof properties]
-
-  const handleToggle = () => {
-    const newMode = mode === MODES.LIGHT ? MODES.DARK : MODES.LIGHT
-    setMode(newMode)
-    localStorage.setItem('theme-ui-color-mode', newMode)
-
-    // Update theme-ui theme
-    document.documentElement.setAttribute('data-color-mode', newMode)
-    // Update Tailwind theme
-    if (newMode === MODES.DARK) {
-      document.documentElement.classList.add('dark')
-    } else {
-      document.documentElement.classList.remove('dark')
-    }
-  }
-
-  useEffect(() => {
-    // Sync on mount
-    document.documentElement.setAttribute('data-color-mode', mode)
-    if (mode === MODES.DARK) {
-      document.documentElement.classList.add('dark')
-    } else {
-      document.documentElement.classList.remove('dark')
-    }
-  }, [])
+  const { r, transform, cx, cy, opacity } = properties[mode]
 
   return (
-    <div className={className} onClick={handleToggle}>
+    <button
+      type="button"
+      aria-label="Toggle theme"
+      onClick={toggleTheme}
+      className="inline-flex items-center justify-center h-8 w-8 rounded-md cursor-pointer hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+    >
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        width="24"
-        height="24"
+        width="16"
+        height="16"
         viewBox="0 0 24 24"
         fill="none"
         strokeWidth="2"
         strokeLinecap="round"
         strokeLinejoin="round"
         style={{
-          cursor: 'pointer',
           transform,
           transition: TRANSITION,
         }}
@@ -111,7 +77,7 @@ const DarkModeToggle = ({ className }: { className?: string }) => {
           <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
         </g>
       </svg>
-    </div>
+    </button>
   )
 }
 

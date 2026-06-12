@@ -5,6 +5,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@/components/ui/tooltip'
+import { Trans } from '@lingui/react/macro'
 import useExportCSV, { UseExportCSVProps } from './useExportCSV'
 import { FileDown } from 'lucide-react'
 
@@ -27,7 +28,9 @@ const ExportCSVButton = ({ headers, rows, filename }: ExportCSVButtonProps) => {
           </Button>
         </TooltipTrigger>
         <TooltipContent>
-          <p>Download CSV</p>
+          <p>
+            <Trans>Download CSV</Trans>
+          </p>
         </TooltipContent>
       </Tooltip>
     </TooltipProvider>

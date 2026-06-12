@@ -1,6 +1,6 @@
 import { cn } from '@/lib/utils'
 import { ProposalVotingState } from '@/views/yield-dtf/governance/components/ProposalList'
-import { Trans, t } from '@lingui/macro'
+import { Trans, useLingui } from '@lingui/react/macro'
 import { createColumnHelper } from '@tanstack/react-table'
 import GovernanceIcon from 'components/icons/GovernanceIcon'
 import { Table } from '@/components/ui/legacy-table'
@@ -53,6 +53,7 @@ const formatVoteChoice = (choice: string | null) => {
 }
 
 const ExploreGovernance = () => {
+  const { t } = useLingui()
   const data = useProposalsData()
   const wallet = useAtomValue(walletAtom)
 
@@ -111,13 +112,16 @@ const ExploreGovernance = () => {
         header: t`Your Vote`,
         cell: (data) => {
           const choice = formatVoteChoice(data.getValue())
-          if (!wallet) return <span className="text-muted-foreground">Connect wallet</span>
+          if (!wallet)
+            return (
+              <span className="text-muted-foreground">{t`Connect wallet`}</span>
+            )
 
-          return <span>{choice || 'Not voted'}</span>
+          return <span>{choice || t`Not voted`}</span>
         },
       }),
     ],
-    [wallet]
+    [wallet, t]
   )
 
   return (

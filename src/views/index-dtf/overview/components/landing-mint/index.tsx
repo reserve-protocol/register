@@ -4,7 +4,7 @@ import StackTokenLogo from '@/components/token-logo/StackTokenLogo'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
-import { Trans } from '@lingui/macro'
+import { Trans, useLingui } from '@lingui/react/macro'
 import { isInactiveDTF } from '@/hooks/use-dtf-status'
 import {
   indexDTFAtom,
@@ -17,6 +17,7 @@ import { useAtomValue } from 'jotai'
 import { ArrowDown, ArrowLeftRight } from 'lucide-react'
 import React, { useEffect, useState } from 'react'
 import DTFBalance from './dtf-balance'
+import EligibilityCard from '../eligibility-card'
 import useComplianceRestrictions from '@/hooks/use-compliance-restrictions'
 
 const TokenInfo = () => {
@@ -48,14 +49,25 @@ const TokenInfo = () => {
       </div>
       <div className="flex flex-col gap-1">
         <div className="text-2xl font-light text-primary">
-          {isDeprecated
-            ? `Sell $${dtf?.token.symbol} onchain`
-            : `Buy/Sell $${dtf?.token.symbol} onchain`}
+          {isDeprecated ? (
+            <Trans>Sell ${dtf?.token.symbol} onchain</Trans>
+          ) : (
+            <Trans>Buy/Sell ${dtf?.token.symbol} onchain</Trans>
+          )}
         </div>
         <div className="text-legend text-sm">
-          {isDeprecated
-            ? `This DTF is no longer actively governed and can only be sold. This DTF cannot rebalance its basket nor can new $${dtf?.token.symbol} tokens be created.`
-            : `Our Zap-swaps support common assets like ${tokensText} which makes DTFs easy to enter and exit.`}
+          {isDeprecated ? (
+            <Trans>
+              This DTF is no longer actively governed and can only be sold. This
+              DTF cannot rebalance its basket nor can new ${dtf?.token.symbol}{' '}
+              tokens be created.
+            </Trans>
+          ) : (
+            <Trans>
+              Our Zap-swaps support common assets like {tokensText} which makes
+              DTFs easy to enter and exit.
+            </Trans>
+          )}
         </div>
       </div>
       <DTFBalance />
@@ -107,7 +119,7 @@ const MintBox = () => {
                 open()
               }}
             >
-              Buy
+              <Trans>Buy</Trans>
             </Button>
             <Button
               className="rounded-xl h-12"
@@ -118,7 +130,7 @@ const MintBox = () => {
                 open()
               }}
             >
-              Sell
+              <Trans>Sell</Trans>
             </Button>
           </>
         )}
@@ -128,6 +140,7 @@ const MintBox = () => {
 }
 
 const CoverImage = () => {
+  const { t } = useLingui()
   const brand = useAtomValue(indexDTFBrandAtom)
   const [isLoading, setIsLoading] = useState(true)
 
@@ -178,7 +191,7 @@ const CoverImage = () => {
         width={450}
         height={450}
         className="object-cover h-[450px] w-[450px] rounded-4xl"
-        alt="DTF meme"
+        alt={t`DTF meme`}
         src={brand.dtf.cover}
       />
     )
@@ -188,12 +201,18 @@ const CoverImage = () => {
 }
 
 const LandingMint = (props: React.HTMLAttributes<HTMLDivElement>) => {
+  const { data: complianceData } = useComplianceRestrictions()
+
   return (
     <div className="hidden xl:flex xl:flex-col xl:gap-2 relative" {...props}>
       <CoverImage />
-      <div className="w-[450px] sticky top-0 rounded-4xl bg-muted p-1">
-        <MintBox />
-      </div>
+      {complianceData?.reason === 'geolocation-restricted' ? (
+        <EligibilityCard className="w-[450px] sticky top-0" />
+      ) : (
+        <div className="w-[450px] sticky top-0 rounded-4xl bg-muted p-1">
+          <MintBox />
+        </div>
+      )}
     </div>
   )
 }

@@ -15,6 +15,7 @@ import { ArrowUpRightIcon } from 'lucide-react'
 import { useMemo } from 'react'
 import { Link } from 'react-router-dom'
 import { Address, Hex } from 'viem'
+import { Trans } from '@lingui/react/macro'
 import GovernanceProposalPreviewSkeleton from '../governance-proposal-preview-skeleton'
 import { RawCallsPreview } from '../raw-call-preview'
 import BasketProposalPreview from './legacy-basket-proposal-preview'
@@ -32,7 +33,9 @@ const Header = ({ address }: { address: Address }) => {
 
   return (
     <div className="mx-4 py-4 flex items-center flex-wrap gap-2 border-b">
-      <h1 className="text-xl font-bold text-primary">Basket Change</h1>
+      <h1 className="text-xl font-semibold text-primary">
+        <Trans>Basket Change</Trans>
+      </h1>
       <Link
         target="_blank"
         className="mr-auto"
@@ -46,13 +49,13 @@ const Header = ({ address }: { address: Address }) => {
         </Button>
       </Link>
 
-      <TabsList className="h-9">
-        <TabsTrigger value={TABS.SUMMARY} className="w-max h-7">
-          Summary
+      <TabsList>
+        <TabsTrigger value={TABS.SUMMARY}>
+          <Trans>Summary</Trans>
         </TabsTrigger>
 
-        <TabsTrigger value={TABS.RAW} className="w-max h-7">
-          Raw
+        <TabsTrigger value={TABS.RAW}>
+          <Trans>Raw</Trans>
         </TabsTrigger>
       </TabsList>
     </div>
@@ -90,7 +93,7 @@ const RebalancePreview = ({
   return (
     <Tabs
       defaultValue={TABS.SUMMARY}
-      className="flex flex-col gap-4 p-2 pt-4 rounded-3xl bg-background"
+      className="flex flex-col gap-4 rounded-3xl m-1 bg-background"
     >
       <Header address={dtf.id.toLowerCase() as Address} />
       <TabsContent className="m-0" value={TABS.SUMMARY}>

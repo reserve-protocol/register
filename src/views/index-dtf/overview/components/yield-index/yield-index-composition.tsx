@@ -9,6 +9,7 @@ import CompositionMobile from './yield-index-composition-mobile'
 import TabSelector, {
   CompositionTab,
 } from './yield-index-composition-tabs'
+import { Trans } from '@lingui/react/macro'
 
 const CompositionBody = () => {
   const [activeTab, setActiveTab] = useState<CompositionTab>('strategies')
@@ -38,7 +39,9 @@ const YieldIndexComposition = () => {
     <Card className="group/section" id="composition">
       <div className="p-4 sm:p-6">
         <div className="flex items-center gap-1 mb-4">
-          <h2 className="text-2xl font-light">Composition</h2>
+          <h2 className="text-2xl font-light">
+            <Trans>Composition</Trans>
+          </h2>
           <SectionAnchor id="composition" />
         </div>
         {strategies ? (

@@ -6,15 +6,19 @@ import {
   FormMessage,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
+import { Trans, useLingui } from '@lingui/react/macro'
 import { useFormContext } from 'react-hook-form'
 import { ImageUploader } from './logo-upload'
 
 const ManageCreator = () => {
+  const { t } = useLingui()
   const form = useFormContext()
 
   return (
     <div className="flex flex-col gap-2 p-2">
-      <label className="ml-3">Creator Image</label>
+      <label className="ml-3">
+        <Trans>Creator Image</Trans>
+      </label>
       <ImageUploader
         onChange={(file) => form.setValue('files.creatorLogo', file)}
         defaultImage={form.watch('creator.icon')}
@@ -24,9 +28,11 @@ const ManageCreator = () => {
         name="creator.name"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>Creator Name</FormLabel>
+            <FormLabel>
+              <Trans>Creator Name</Trans>
+            </FormLabel>
             <FormControl>
-              <Input placeholder="Creator Name" {...field} />
+              <Input placeholder={t`Creator Name`} {...field} />
             </FormControl>
             <FormMessage />
           </FormItem>
@@ -37,7 +43,9 @@ const ManageCreator = () => {
         name="creator.link"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>Creator Link</FormLabel>
+            <FormLabel>
+              <Trans>Creator Link</Trans>
+            </FormLabel>
             <FormControl>
               <Input placeholder="https://example.com" {...field} />
             </FormControl>

@@ -2,13 +2,16 @@ import useIndexDTFList from '@/hooks/useIndexDTFList'
 import useTokenList from '@/hooks/useTokenList'
 import { getFolioRoute, getTokenRoute } from '@/utils'
 import { CHAIN_TAGS } from '@/utils/constants'
+import { msg } from '@lingui/core/macro'
+import { Trans, useLingui } from '@lingui/react/macro'
+import type { MessageDescriptor } from '@lingui/core'
+import { atom, useAtom } from 'jotai'
 import { Search } from 'lucide-react'
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef } from 'react'
 import Skeleton from 'react-loading-skeleton'
 import { Link, useNavigate } from 'react-router-dom'
 import ChainLogo from '../icons/ChainLogo'
 import TokenLogo from '../token-logo'
-import { Button } from '../ui/button'
 import {
   CommandDialog,
   CommandEmpty,
@@ -60,15 +63,23 @@ const useAllDTFs = () => {
   }, [indexDTFs, yieldDTFs])
 }
 
-const SECTION_TITLES: Record<string, string> = {
-  index: 'Index DTFs',
-  yield: 'Yield DTFs',
+const SECTION_TITLES: Record<string, MessageDescriptor> = {
+  index: msg`Index DTFs`,
+  yield: msg`Yield DTFs`,
 }
 const SECTIONS = ['index', 'yield']
 
+export const searchMenuOpenAtom = atom(false)
+
+export const SEARCH_SHORTCUT =
+  typeof navigator !== 'undefined' && navigator.userAgent.includes('Windows')
+    ? 'Ctrl+K'
+    : '⌘K'
+
 const CommandMenu = () => {
+  const { t } = useLingui()
   const dtfs = useAllDTFs()
-  const [open, setOpen] = useState(false)
+  const [open, setOpen] = useAtom(searchMenuOpenAtom)
   const listRef = useRef<HTMLDivElement | null>(null)
   const navigate = useNavigate()
 
@@ -85,15 +96,20 @@ const CommandMenu = () => {
 
   return (
     <>
-      <Button variant="ghost" size="icon" onClick={() => setOpen(true)}>
+      <button
+        type="button"
+        aria-label={t`Search`}
+        onClick={() => setOpen(true)}
+        className="inline-flex items-center justify-center h-8 w-8 rounded-md cursor-pointer hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+      >
         <Search size={16} strokeWidth={1.5} />
-      </Button>
+      </button>
       <CommandDialog open={open} onOpenChange={setOpen}>
         <div className="text-legend absolute top-3 right-3">
-          {navigator.userAgent.includes('Windows') ? 'Ctrl+K' : '⌘K'}
+          {SEARCH_SHORTCUT}
         </div>
         <CommandInput
-          placeholder="Search for a DTF..."
+          placeholder={t`Search for a DTF...`}
           onInput={() => {
             setTimeout(() => {
               listRef.current?.scrollTo({ top: 0 })
@@ -109,9 +125,11 @@ const CommandMenu = () => {
           </div>
         ) : (
           <CommandList ref={listRef} className="h-[420px]">
-            <CommandEmpty>No results found.</CommandEmpty>
+            <CommandEmpty>
+              <Trans>No results found.</Trans>
+            </CommandEmpty>
             {SECTIONS.map((section) => (
-              <CommandGroup key={section} heading={SECTION_TITLES[section]}>
+              <CommandGroup key={section} heading={t(SECTION_TITLES[section])}>
                 {dtfs[section].map((dtf) => (
                   <Link
                     key={dtf.address}

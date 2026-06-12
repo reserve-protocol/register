@@ -9,6 +9,7 @@ import {
 } from '@/utils'
 import { ROUTES } from '@/utils/constants'
 import { ColumnDef } from '@tanstack/react-table'
+import { Trans } from '@lingui/react/macro'
 import { useAtomValue } from 'jotai'
 import { ArrowRight, Globe, Flower } from 'lucide-react'
 import { Link } from 'react-router-dom'
@@ -27,7 +28,7 @@ const columns: ColumnDef<DTFRow, any>[] = [
   {
     id: 'name',
     accessorKey: 'name',
-    header: 'Name',
+    header: () => <Trans>Name</Trans>,
     cell: ({ row }) => (
       <div className="flex items-center gap-2 min-h-10">
         <TokenLogoWithChain
@@ -49,7 +50,7 @@ const columns: ColumnDef<DTFRow, any>[] = [
     accessorKey: 'performance7d',
     header: ({ column }) => (
       <SorteableButton column={column}>
-        Performance <span className="text-legend">(7D)</span>
+        <Trans>Performance</Trans> <span className="text-legend">(7D)</span>
       </SorteableButton>
     ),
     cell: ({ row }) => (
@@ -62,7 +63,7 @@ const columns: ColumnDef<DTFRow, any>[] = [
     accessorKey: 'unrealizedPnL',
     header: ({ column }) => (
       <SorteableButton column={column}>
-        Unrealized P/L
+        <Trans>Unrealized P/L</Trans>
       </SorteableButton>
     ),
     cell: ({ row }) => {
@@ -98,7 +99,9 @@ const columns: ColumnDef<DTFRow, any>[] = [
     id: 'averageCost',
     accessorKey: 'averageCost',
     header: ({ column }) => (
-      <SorteableButton column={column}>Avg Cost</SorteableButton>
+      <SorteableButton column={column}>
+        <Trans>Avg Cost</Trans>
+      </SorteableButton>
     ),
     cell: ({ row }) => {
       const val = row.original.averageCost
@@ -114,7 +117,9 @@ const columns: ColumnDef<DTFRow, any>[] = [
     id: 'marketCap',
     accessorKey: 'marketCap',
     header: ({ column }) => (
-      <SorteableButton column={column}>Market Cap</SorteableButton>
+      <SorteableButton column={column}>
+        <Trans>Market Cap</Trans>
+      </SorteableButton>
     ),
     cell: ({ row }) => (
       <span className="text-sm whitespace-nowrap">{formatUSD(row.original.marketCap)}</span>
@@ -125,7 +130,9 @@ const columns: ColumnDef<DTFRow, any>[] = [
     id: 'balance',
     accessorKey: 'amount',
     header: ({ column }) => (
-      <SorteableButton column={column}>Balance</SorteableButton>
+      <SorteableButton column={column}>
+        <Trans>Balance</Trans>
+      </SorteableButton>
     ),
     cell: ({ row }) => {
       const val = Number(row.original.amount)
@@ -140,7 +147,9 @@ const columns: ColumnDef<DTFRow, any>[] = [
     id: 'value',
     accessorKey: 'value',
     header: ({ column }) => (
-      <SorteableButton column={column}>Value</SorteableButton>
+      <SorteableButton column={column}>
+        <Trans>Value</Trans>
+      </SorteableButton>
     ),
     cell: ({ row }) => {
       const val = row.original.value
@@ -164,15 +173,15 @@ const IndexDTFPositions = () => {
     <div>
       <SectionHeader
         icon={Globe}
-        title="Index DTF Positions"
-        subtitle="Your Decentralized Token Folio investments."
+        title={<Trans>Index DTF Positions</Trans>}
+        subtitle={<Trans>Your Decentralized Token Folio investments.</Trans>}
         right={
           <Link
             to={`${ROUTES.HOME}?tab=index`}
             target="_blank"
             className="flex items-center gap-1 text-sm text-primary font-medium hover:underline"
           >
-            Browse all Index DTFs
+            <Trans>Browse all Index DTFs</Trans>
             <ArrowRight size={16} />
           </Link>
         }
@@ -205,15 +214,15 @@ const YieldDTFPositions = () => {
     <div>
       <SectionHeader
         icon={Flower}
-        title="Yield DTF Positions"
-        subtitle="Your yield-bearing stablecoin holdings."
+        title={<Trans>Yield DTF Positions</Trans>}
+        subtitle={<Trans>Your yield-bearing stablecoin holdings.</Trans>}
         right={
           <Link
             to={`${ROUTES.HOME}?tab=yield`}
             target="_blank"
             className="flex items-center gap-1 text-sm text-primary font-medium hover:underline"
           >
-            Browse all Yield DTFs
+            <Trans>Browse all Yield DTFs</Trans>
             <ArrowRight size={16} />
           </Link>
         }

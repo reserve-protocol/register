@@ -19,7 +19,7 @@ import {
   ROUTES,
   TELEGRAM_INVITE,
 } from '@/utils/constants'
-import { t, Trans } from '@lingui/macro'
+import { Trans, useLingui } from '@lingui/react/macro'
 import {
   ArrowRight,
   ArrowUpRight,
@@ -70,6 +70,7 @@ const IconContainer = ({ children }: { children: ReactNode }) => (
 )
 
 const AppNavigation = () => {
+  const { t } = useLingui()
   const [menuItems, moreLinks, externalLinks] = useMemo(
     () => [
       [
@@ -165,13 +166,13 @@ const AppNavigation = () => {
         },
       ],
     ],
-    []
+    [t]
   )
 
   return (
     <NavigationMenu
       className="mr-auto border min-[850px]:border-none rounded-3xl"
-      vClassName="-left-10 md:left-40"
+      vClassName="-left-10 min-[850px]:left-auto min-[850px]:right-0"
     >
       <NavigationMenuList>
         <DiscoverItem />
@@ -204,7 +205,9 @@ const AppNavigation = () => {
         <NavigationMenuItem>
           <NavigationMenuTrigger>
             <LayoutGrid strokeWidth={1.5} size={16} />
-            <span className="hidden min-[850px]:block text-base">More</span>
+            <span className="hidden min-[850px]:block text-base">
+              <Trans>More</Trans>
+            </span>
           </NavigationMenuTrigger>
           <NavigationMenuContent className="rounded-4xl">
             <div className="bg-secondary w-72 sm:w-96 flex p-1 flex-col gap-1">

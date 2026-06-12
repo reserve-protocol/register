@@ -65,14 +65,26 @@ export default defineConfig({
     },
   },
 
-  // Aliases handled by viteTsconfigPaths - no need to duplicate here
+  // tsconfig paths are handled by viteTsconfigPaths; keep runtime-only aliases here.
+  resolve: {
+    alias: {
+      // Polyfill for @cowprotocol/cow-sdk
+      'node-fetch': 'cross-fetch',
+    },
+    dedupe: ['react', 'react-dom', '@tanstack/react-query'],
+  },
 
   optimizeDeps: {
-    exclude: ['ts-node'],
+    // Linked local package — serve its TSX source directly (don't pre-bundle a
+    // symlinked workspace dep). React is deduped above so the widget's hooks
+    // resolve to Register's single React instance.
+    exclude: ['ts-node', '@reserve-protocol/dtf-chat'],
     include: [
       'react',
       'react-dom',
       'react-router-dom',
+      'ai',
+      '@ai-sdk/react',
       '@radix-ui/react-accordion',
       '@radix-ui/react-dialog',
       '@radix-ui/react-select',

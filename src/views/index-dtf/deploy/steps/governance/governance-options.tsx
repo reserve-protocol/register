@@ -1,4 +1,7 @@
 import { cn } from '@/lib/utils'
+import { msg } from '@lingui/core/macro'
+import { Trans, useLingui } from '@lingui/react/macro'
+import type { MessageDescriptor } from '@lingui/core'
 import { useAtom, useSetAtom } from 'jotai'
 import { Asterisk, GlobeLock, Landmark, SearchCode, Wallet } from 'lucide-react'
 import { ReactNode } from 'react'
@@ -20,11 +23,13 @@ export type GovernanceTypes =
 const GOVERNANCE_OPTIONS = [
   {
     type: 'governanceERC20address',
-    title: 'Create a New DAO',
+    title: msg`Create a New DAO`,
     description: (
       <span>
-        Enter the contract address of an ERC-20 that can be vote-locked to
-        govern <Ticker />.
+        <Trans>
+          Enter the contract address of an ERC-20 that can be vote-locked to
+          govern <Ticker />.
+        </Trans>
       </span>
     ),
     icon: <Landmark size={14} strokeWidth={1.5} />,
@@ -33,21 +38,23 @@ const GOVERNANCE_OPTIONS = [
   },
   {
     type: 'governanceVoteLock',
-    title: 'Use an Existing DAO',
+    title: msg`Use an Existing DAO`,
     description: (
       <span>
-        Enter the contract address of an existing vote-lock DAO to govern{' '}
-        <Ticker />. This DAO must have been created by the Reserve Index
-        Protocol, and the contract must implement{' '}
-        <a
-          href="https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/governance/utils/IVotes.sol"
-          target="_blank"
-          rel="noreferrer"
-          className="text-primary"
-        >
-          IVotes.sol
-        </a>
-        .
+        <Trans>
+          Enter the contract address of an existing vote-lock DAO to govern{' '}
+          <Ticker />. This DAO must have been created by the Reserve Index
+          Protocol, and the contract must implement{' '}
+          <a
+            href="https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/governance/utils/IVotes.sol"
+            target="_blank"
+            rel="noreferrer"
+            className="text-primary"
+          >
+            IVotes.sol
+          </a>
+          .
+        </Trans>
       </span>
     ),
     icon: <SearchCode size={14} strokeWidth={1.5} />,
@@ -56,12 +63,14 @@ const GOVERNANCE_OPTIONS = [
   },
   {
     type: 'governanceWalletAddress',
-    title: 'Use an External Wallet',
+    title: msg`Use an External Wallet`,
     description: (
       <span>
-        Enter the wallet address that will have centralized control of{' '}
-        <Ticker />. Be aware, that having centralized control limits who can
-        interact with <Ticker /> on Register.
+        <Trans>
+          Enter the wallet address that will have centralized control of{' '}
+          <Ticker />. Be aware, that having centralized control limits who can
+          interact with <Ticker /> on Register.
+        </Trans>
       </span>
     ),
     icon: <Wallet size={14} strokeWidth={1.5} />,
@@ -75,7 +84,7 @@ const GOVERNANCE_OPTIONS = [
 ]
 
 type GovernanceOptionProps = {
-  title: string
+  title: MessageDescriptor
   description: ReactNode
   icon: ReactNode
   form: ReactNode
@@ -90,7 +99,9 @@ const GovernanceOption = ({
   form,
   selected,
   setSelected,
-}: GovernanceOptionProps) => (
+}: GovernanceOptionProps) => {
+  const { t } = useLingui()
+  return (
   <div
     role="button"
     onClick={setSelected}
@@ -112,7 +123,7 @@ const GovernanceOption = ({
         <div
           className={cn('text-base font-bold', selected ? 'text-primary' : '')}
         >
-          {title}
+          {t(title)}
         </div>
         <div className="text-sm text-secondary-foreground/60">
           {description}
@@ -121,7 +132,8 @@ const GovernanceOption = ({
     </div>
     {selected && <div className="pb-4">{form}</div>}
   </div>
-)
+  )
+}
 
 const GovernanceOptions = () => {
   const [selected, setSelected] = useAtom(selectedGovernanceOptionAtom)
@@ -144,7 +156,7 @@ const GovernanceOptions = () => {
     <div className="mx-2 mb-2 flex flex-col gap-1">
       {GOVERNANCE_OPTIONS.map((option) => (
         <GovernanceOption
-          key={option.title}
+          key={option.type}
           {...option}
           selected={selected === option.type}
           setSelected={() => onSelected(option.type as GovernanceTypes)}

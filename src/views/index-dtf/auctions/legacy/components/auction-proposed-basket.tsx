@@ -10,6 +10,7 @@ import {
 } from '@/components/ui/table'
 import { chainIdAtom } from '@/state/atoms'
 import { indexDTFBasketAtom } from '@/state/dtf/atoms'
+import { Trans } from '@lingui/react/macro'
 import { useAtomValue } from 'jotai'
 import {
   expectedBasketAtom,
@@ -23,8 +24,12 @@ const TableContainer = ({ children }: { children: React.ReactNode }) => {
       <TableHeader>
         <TableRow>
           <TableHead className="border-r"></TableHead>
-          <TableHead>Current</TableHead>
-          <TableHead className="bg-primary/10">Expected</TableHead>
+          <TableHead>
+            <Trans>Current</Trans>
+          </TableHead>
+          <TableHead className="bg-primary/10">
+            <Trans>Expected</Trans>
+          </TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>{children}</TableBody>
@@ -105,9 +110,11 @@ const ProposalBasketTable = () => {
       <TableHeader>
         <TableRow>
           <TableHead className="border-r"></TableHead>
-          <TableHead>Proposed</TableHead>
+          <TableHead>
+            <Trans>Proposed</Trans>
+          </TableHead>
           <TableHead className="bg-primary/10 text-primary font-semibold">
-            Expected
+            <Trans>Expected</Trans>
           </TableHead>
         </TableRow>
       </TableHeader>
@@ -148,7 +155,9 @@ const AuctionProposedBasket = () => {
       <div className="p-1 bg-secondary rounded-3xl h-fit">
         <div className="rounded-3xl bg-background">
           <div className="p-4">
-            <span className="font-bold text-primary">Simulated Basket</span>
+            <span className="font-bold text-primary">
+              <Trans>Simulated Basket</Trans>
+            </span>
           </div>
           <div className="bg-card p-1 rounded-3xl">
             <ProposalBasketTable />

@@ -1,4 +1,5 @@
 import { cn } from '@/lib/utils'
+import { Trans } from '@lingui/react/macro'
 import GasIcon from 'components/icons/GasIcon'
 import { formatCurrency } from 'utils'
 import { useZap } from '../context/ZapContext'
@@ -13,7 +14,9 @@ const ZapGasCost = ({ className }: Props) => {
 
   return (
     <div className={cn('flex items-center justify-between', className)}>
-      <span className="text-sm">Estimated gas cost</span>
+      <span className="text-sm">
+        <Trans>Estimated gas cost</Trans>
+      </span>
       <div className="flex items-center gap-1 text-primary">
         <GasIcon />
         {loadingZap ? (

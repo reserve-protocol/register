@@ -11,6 +11,7 @@ import {
 import { Skeleton } from '@/components/ui/skeleton'
 import { ChainId } from '@/utils/chains'
 import Copy from '@/components/ui/copy'
+import { Trans } from '@lingui/react/macro'
 import { Address } from 'viem'
 import TokenLogo from '@/components/token-logo'
 import ChainLogo from '@/components/icons/ChainLogo'
@@ -142,13 +143,27 @@ const DTFTableSkeleton = () => (
 const TableHeaders = () => (
   <TableHeader>
     <TableRow>
-      <TableHead>Name / Symbol</TableHead>
-      <TableHead>Chain</TableHead>
-      <TableHead>Address</TableHead>
-      <TableHead>Trading Gov</TableHead>
-      <TableHead>Trading Timelock</TableHead>
-      <TableHead>Admin Gov</TableHead>
-      <TableHead>Admin Timelock</TableHead>
+      <TableHead>
+        <Trans>Name / Symbol</Trans>
+      </TableHead>
+      <TableHead>
+        <Trans>Chain</Trans>
+      </TableHead>
+      <TableHead>
+        <Trans>Address</Trans>
+      </TableHead>
+      <TableHead>
+        <Trans>Trading Gov</Trans>
+      </TableHead>
+      <TableHead>
+        <Trans>Trading Timelock</Trans>
+      </TableHead>
+      <TableHead>
+        <Trans>Admin Gov</Trans>
+      </TableHead>
+      <TableHead>
+        <Trans>Admin Timelock</Trans>
+      </TableHead>
     </TableRow>
   </TableHeader>
 )
@@ -174,9 +189,11 @@ const ListedDTFTable = () => {
     return (
       <div className="rounded-lg border p-8">
         <div className="text-center">
-          <p className="text-muted-foreground">No listed DTFs found</p>
+          <p className="text-muted-foreground">
+            <Trans>No listed DTFs found</Trans>
+          </p>
           <p className="text-sm text-muted-foreground mt-1">
-            Check back later or verify the API is accessible
+            <Trans>Check back later or verify the API is accessible</Trans>
           </p>
         </div>
       </div>

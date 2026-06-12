@@ -15,13 +15,22 @@ import {
   safeWallet,
   walletConnectWallet,
 } from '@rainbow-me/rainbowkit/wallets'
+import { DtfSdkProvider } from '@reserve-protocol/react-sdk'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { WagmiProvider, createConfig, fallback, http } from 'wagmi'
+import type { ReactNode } from 'react'
+import {
+  WagmiProvider,
+  createConfig,
+  fallback,
+  http,
+  type CreateConnectorFn,
+} from 'wagmi'
 import { arbitrum, base, bsc, mainnet } from 'wagmi/chains'
 import { hashFn, structuralSharing } from 'wagmi/query'
+import { dtfSdkChains, registerRpcUrls } from '@/utils/rpc-urls'
 import AtomUpdater from './updaters/AtomUpdater'
 
-const connectors = connectorsForWallets(
+const rainbowConnectors = connectorsForWallets(
   [
     {
       groupName: 'Recommended',
@@ -43,46 +52,54 @@ const connectors = connectorsForWallets(
   }
 )
 
+// The WalletConnect connector follows session approval with a
+// `wallet_switchEthereumChain` to the requested chain (RainbowKit always
+// requests one — it falls back to the first configured chain) whenever the
+// session lands on a different chain. Chain-bound wallets like Safe can't
+// switch chains, so that request fails/hangs and the whole connect() dies
+// before wagmi ever reports connected (the WC session itself persists, which
+// is why a refresh "fixes" it). Strip the requested chain for WalletConnect
+// connects: connect to whatever chain the wallet is on and let the app's
+// existing wrong-network UX handle mismatches after the fact.
+const connectors: CreateConnectorFn[] = rainbowConnectors.map(
+  (createConnectorFn) => {
+    const wrapped: CreateConnectorFn = (config) => {
+      const connector = createConnectorFn(config)
+      if (connector.type !== 'walletConnect') return connector
+      return {
+        ...connector,
+        connect: ((parameters = {}) =>
+          connector.connect({
+            ...parameters,
+            chainId: undefined,
+          })) as typeof connector.connect,
+      }
+    }
+    return wrapped
+  }
+)
+
 export const wagmiConfig = createConfig({
   chains: [mainnet, base, arbitrum, bsc],
   connectors,
+  // WHY: viem defaults pollingInterval to clamp(chain.blockTime / 2, 500ms, 4s),
+  // so BSC (750ms blocks) polls every ~500ms and Base every ~1s. Set explicit
+  // intervals to stop hammering RPC on fast chains. Mainnet stays at its 4s
+  // default — slowing it further would also lag tx-receipt confirmations, which
+  // share this interval.
+  pollingInterval: {
+    [mainnet.id]: 4_000,
+    [base.id]: 3_000,
+    [arbitrum.id]: 3_000,
+    [bsc.id]: 3_000,
+  },
   transports: {
-    [mainnet.id]: import.meta.env.VITE_MAINNET_URL
-      ? http(import.meta.env.VITE_MAINNET_URL)
-      : fallback([
-          http(`https://ethereum-rpc.publicnode.com/`),
-          http(`https://mainnet.gateway.tenderly.co/`),
-          http(`https://mainnet.infura.io/v3/${import.meta.env.VITE_INFURA}`),
-          http(
-            `https://eth-mainnet.alchemyapi.io/v2/${import.meta.env.VITE_ALCHEMY}`
-          ),
-          http(`https://rpc.ankr.com/mainnet/${import.meta.env.VITE_ANKR}`),
-        ]),
-    [base.id]: fallback([
-      http(`https://base.gateway.tenderly.co`),
-      http(`https://base-mainnet.infura.io/v3/${import.meta.env.VITE_INFURA}`),
-      http(
-        `https://base-mainnet.g.alchemy.com/v2/${import.meta.env.VITE_ALCHEMY}`
-      ),
-      http(`https://rpc.ankr.com/base/${import.meta.env.VITE_ANKR}`),
-    ]),
-    [arbitrum.id]: fallback([
-      http(
-        `https://arbitrum-mainnet.infura.io/v3/${import.meta.env.VITE_INFURA}`
-      ),
-      http(`https://rpc.ankr.com/arbitrum/${import.meta.env.VITE_ANKR}`),
-    ]),
-    [bsc.id]: fallback([
-      http(`https://bsc-dataseed2.binance.org`),
-      http(`https://bsc-dataseed3.ninicoin.io`),
-      http(`https://bsc-dataseed4.defibit.io`),
-      http(`https://bsc-rpc.publicnode.com`),
-      http(`https://bsc-mainnet.infura.io/v3/${import.meta.env.VITE_INFURA}`),
-      http(`https://rpc.ankr.com/bsc/${import.meta.env.VITE_ANKR}`),
-      http(
-        `https://bsc-mainnet.g.alchemy.com/v2/${import.meta.env.VITE_ALCHEMY}`
-      ),
-    ]),
+    [mainnet.id]: fallback(registerRpcUrls[mainnet.id].map((url) => http(url))),
+    [base.id]: fallback(registerRpcUrls[base.id].map((url) => http(url))),
+    [arbitrum.id]: registerRpcUrls[arbitrum.id].length
+      ? fallback(registerRpcUrls[arbitrum.id].map((url) => http(url)))
+      : http(),
+    [bsc.id]: fallback(registerRpcUrls[bsc.id].map((url) => http(url))),
   },
 })
 
@@ -95,17 +112,16 @@ const queryClient = new QueryClient({
     },
   },
 })
-const Disclaimer: DisclaimerComponent = ({ Text, Link }) => (
-  <div>
+const Disclaimer: DisclaimerComponent = () => (
+  <div className='text-primary-foreground'>
     By connecting a wallet, you agree to ABC Labs{' '}
-    <a href="https://reserve.org/terms_and_conditions/">
-      Terms of Service and consent to its Privacy Policy
-    </a>
+    <a className='text-primary underline' target='blank' href="https://reserve.org/terms_and_conditions/">
+      Terms of Service
+    </a> and consent to its <a className='text-primary underline' target='blank' href="https://reserve.org/terms-and-conditions#privacy">Privacy Policy</a>
   </div>
 )
 
-// TODO: Fix types, react version mismatch
-const ChainProvider = ({ children }: { children: any }) => {
+const ChainProvider = ({ children }: { children: ReactNode }) => {
   return (
     <WagmiProvider config={wagmiConfig}>
       <QueryClientProvider client={queryClient}>
@@ -116,7 +132,12 @@ const ChainProvider = ({ children }: { children: any }) => {
           appInfo={{ appName: 'Reserve Register', disclaimer: Disclaimer }}
         >
           <AtomUpdater />
-          {children}
+          <DtfSdkProvider
+            chains={dtfSdkChains}
+            etherscanApiKey={import.meta.env.VITE_ETHERSCAN_API_KEY}
+          >
+            {children}
+          </DtfSdkProvider>
         </RainbowKitProvider>
       </QueryClientProvider>
     </WagmiProvider>

@@ -39,7 +39,7 @@ const PricesUpdater = () => {
   const setGasPrice = useSetAtom(gasFeeAtom)
   const setRTokenPrice = useSetAtom(rTokenPriceAtom)
 
-  const { data: gasQuote } = useEstimateFeesPerGas()
+  const { data: gasQuote } = useEstimateFeesPerGas({ chainId })
 
   // Price for RSR and ETH pull from chainlink
   const multicallResult = useReadContracts({

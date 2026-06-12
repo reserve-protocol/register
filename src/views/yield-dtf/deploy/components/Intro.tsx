@@ -1,4 +1,4 @@
-import { Trans } from '@lingui/macro'
+import { Trans } from '@lingui/react/macro'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import DeployIntroIcon from 'components/icons/DeployIntroIcon'

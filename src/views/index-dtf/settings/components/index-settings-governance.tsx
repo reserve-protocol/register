@@ -1,16 +1,17 @@
 import { indexDTFAtom } from '@/state/dtf/atoms'
 import { formatPercentage, parseDuration, shortenAddress } from '@/utils'
-import { t } from '@lingui/macro'
+import { useLingui } from '@lingui/react/macro'
 import { useAtomValue } from 'jotai'
 import {
   Calendar1,
+  Clock,
   FileLock2,
   Hash,
+  Hourglass,
   MousePointerBan,
   Pause,
   ShieldCheck,
 } from 'lucide-react'
-import { formatEther } from 'viem'
 import { IconWrapper, InfoCard, InfoCardItem } from './settings-info-card'
 import { cn } from '@/lib/utils'
 import Help from '@/components/ui/help'
@@ -22,6 +23,7 @@ export const InnerGovernanceInfo = ({
   kind?: 'trading' | 'owner' | 'dao'
   className?: string
 }) => {
+  const { t } = useLingui()
   const indexDTF = useAtomValue(indexDTFAtom)
 
   if (!indexDTF) return null
@@ -68,19 +70,32 @@ export const InnerGovernanceInfo = ({
       <InfoCardItem
         icon={<IconWrapper Component={FileLock2} />}
         label={t`Proposal Threshold`}
-        value={
-          data
-            ? formatPercentage(
-                Number(formatEther(BigInt(data.proposalThreshold)))
-              )
-            : undefined
-      }
+        value={data ? formatPercentage(data.proposalThreshold) : undefined}
       />
       <InfoCardItem
         icon={<IconWrapper Component={ShieldCheck} />}
         label={t`Voting Quorum`}
         value={data ? formatPercentage(data.quorum) : undefined}
       />
+      {data?.isOptimistic && data.optimistic && (
+        <>
+          <InfoCardItem
+            icon={<IconWrapper Component={Clock} />}
+            label={t`Veto Delay`}
+            value={parseDuration(data.optimistic.vetoDelay)}
+          />
+          <InfoCardItem
+            icon={<IconWrapper Component={Hourglass} />}
+            label={t`Veto Window`}
+            value={parseDuration(data.optimistic.vetoPeriod)}
+          />
+          <InfoCardItem
+            icon={<IconWrapper Component={FileLock2} />}
+            label={t`Veto Threshold`}
+            value={formatPercentage(data.optimistic.vetoThreshold)}
+          />
+        </>
+      )}
       <InfoCardItem
         icon={<IconWrapper Component={MousePointerBan} />}
         label={t`Execution Delay`}
@@ -95,6 +110,7 @@ const GovernanceInfo = ({
 }: {
   kind?: 'trading' | 'owner' | 'dao'
 }) => {
+  const { t } = useLingui()
   const indexDTF = useAtomValue(indexDTFAtom)
 
   if (!indexDTF) return null
@@ -102,15 +118,20 @@ const GovernanceInfo = ({
   if (
     (kind === 'trading' && !indexDTF.tradingGovernance) ||
     (kind === 'owner' && !indexDTF.ownerGovernance) ||
-    (kind === 'dao' && !indexDTF.stToken?.governance)
+    (kind === 'dao' && !indexDTF.stToken?.governance) ||
+    (kind === 'trading' && indexDTF.tradingGovernance?.id === indexDTF.ownerGovernance?.id)
   )
     return null
+
+  const isOptimistic = !!indexDTF.ownerGovernance?.isOptimistic
 
   const help =
     kind === 'trading'
       ? t`Controls changes to the basket of an Index DTF`
       : kind === 'owner'
-        ? t`Controls fees, voting parameters, and anything other than basket changes for an Index DTF`
+        ? isOptimistic
+          ? t`Controls fees, voting parameters, and basket changes for an Index DTF`
+          : t`Controls fees, voting parameters, and anything other than basket changes for an Index DTF`
         : t`Controls settings of the vlDAO including vote lock duration and approving revenue tokens`
 
   return (
@@ -119,7 +140,7 @@ const GovernanceInfo = ({
         kind === 'trading'
           ? t`Basket Governance`
           : kind === 'owner'
-            ? t`Non-Basket Governance`
+            ? t`DTF Governance`
             : t`DAO Governance`
       }
       id={

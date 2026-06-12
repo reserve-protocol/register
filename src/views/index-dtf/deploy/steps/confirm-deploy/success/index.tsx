@@ -5,6 +5,7 @@ import { chainIdAtom } from '@/state/atoms'
 import { useAtomValue } from 'jotai'
 import { Asterisk, Bookmark, Check } from 'lucide-react'
 import { ReactNode } from 'react'
+import { Trans, useLingui } from '@lingui/react/macro'
 import { useNavigate } from 'react-router-dom'
 import {
   daoCreatedAtom,
@@ -32,6 +33,7 @@ const Item = ({ title, children }: { title: string; children: ReactNode }) => {
 }
 
 const SuccessView = () => {
+  const { t } = useLingui()
   const chainId = useAtomValue(chainIdAtom)
   const deployedDTF = useAtomValue(deployedDTFAtom)
   const navigate = useNavigate()
@@ -71,21 +73,21 @@ const SuccessView = () => {
               <Asterisk size={32} />
             </div>
             <div className="text-xl font-bold">
-              {`Congratulations ${form!.tokenName} is now live`}
+              {t`Congratulations ${form!.tokenName} is now live`}
             </div>
           </div>
           <div className="flex flex-col gap-3">
             {!!(daoCreated && stToken && stTokenSymbol) && (
-              <Item title={`You created ${stTokenSymbol} DAO`}>
+              <Item title={t`You created ${stTokenSymbol} DAO`}>
                 <ExplorerAddress address={stToken} chain={chainId} />
               </Item>
             )}
             {!!deployedDTF && (
-              <Item title={`You created the ${form!.tokenName} DTF`}>
+              <Item title={t`You created the ${form!.tokenName} DTF`}>
                 <ExplorerAddress address={deployedDTF} chain={chainId} />
               </Item>
             )}
-            <Item title={`You minted the ${initialTokens} genesis tokens`}>
+            <Item title={t`You minted the ${initialTokens} genesis tokens`}>
               <div
                 className="flex items-center gap-1 py-1 px-2 bg-muted rounded-3xl cursor-pointer"
                 role="button"
@@ -100,7 +102,7 @@ const SuccessView = () => {
         <div className="p-2 pt-0">
           <Button className="w-full" onClick={onClick}>
             {' '}
-            Go to DTF overview
+            <Trans>Go to DTF overview</Trans>
           </Button>
         </div>
       </div>

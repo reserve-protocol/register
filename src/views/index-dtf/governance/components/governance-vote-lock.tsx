@@ -1,12 +1,13 @@
 import TokenLogo from '@/components/token-logo'
 import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
+import { CurrentDtfVoteLock } from '@/components/vote-lock'
 import { chainIdAtom } from '@/state/atoms'
 import { indexDTFAtom } from '@/state/dtf/atoms'
 import { useAtomValue } from 'jotai'
-import Staking from '../../overview/components/staking'
 import { useVoteLockAPR } from '../../overview/hooks/use-staking-vault-apy'
 import RSRBNBHelp from './rsr-bnb-help'
+import { Trans } from '@lingui/react/macro'
 
 const Placeholder = () => (
   <div className="rouend-3xl bg-background space-y-6 p-2 rounded-3xl">
@@ -40,11 +41,9 @@ const GovernanceVoteLock = () => {
   const chainId = useAtomValue(chainIdAtom)
   const apr = useVoteLockAPR()
 
-  if (!indexDTF) {
+  if (!indexDTF?.stToken) {
     return <Placeholder />
   }
-
-  if (!indexDTF.stToken) return null
 
   return (
     <div className="rounded-3xl bg-background p-2">
@@ -56,24 +55,26 @@ const GovernanceVoteLock = () => {
             address={indexDTF.stToken.underlying.address}
             chain={chainId}
           />
-          {apr && (
+          {!!apr && (
             <div className="rounded-full bg-primary/10 border border-primary px-2 py-1 text-primary text-sm font-semibold ml-auto">
               {Number(apr?.toFixed(2)) > 0 && `${apr?.toFixed(2)}% APR`}
             </div>
           )}
         </div>
         <h4 className="text-lg font-bold break-words mb-1">
-          Governed by ${indexDTF.stToken.token.symbol}
+          <Trans>Governed by ${indexDTF.stToken.token.symbol}</Trans>
         </h4>
         <p className="text-sm text-legend">
-          ${indexDTF.stToken.underlying.symbol} holders must vote-lock their
-          tokens to become a governor. In exchange for locking their tokens and
-          participating in governance, governors earn a portion of the TVL fee
-          charged by the DTF.
+          <Trans>
+            ${indexDTF.stToken.underlying.symbol} holders must vote-lock their
+            tokens to become a governor. In exchange for locking their tokens
+            and participating in governance, governors earn a portion of the TVL
+            fee charged by the DTF.
+          </Trans>
         </p>
       </div>
 
-      <Staking>
+      <CurrentDtfVoteLock>
         <Button variant="outline" className="rounded-2xl w-full gap-1">
           <TokenLogo
             size="sm"
@@ -82,10 +83,10 @@ const GovernanceVoteLock = () => {
             chain={chainId}
           />
           <span className="text-primary">
-            Vote-lock ${indexDTF.stToken.underlying.symbol}
+            <Trans>Vote-lock ${indexDTF.stToken.underlying.symbol}</Trans>
           </span>
         </Button>
-      </Staking>
+      </CurrentDtfVoteLock>
 
       <RSRBNBHelp className="p-4" />
     </div>

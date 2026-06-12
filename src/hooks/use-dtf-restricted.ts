@@ -22,6 +22,7 @@ type DTFRestrictedData = {
 type DTFRestrictedResult = {
   data?: DTFRestrictedData
   isLoading: boolean
+  isError: boolean
 }
 
 type DTFGeolocationStatus = {
@@ -86,7 +87,7 @@ const useDTFRestricted = () => {
 
   return useMemo<DTFRestrictedResult>(() => {
     if (!dtf || dtfGeolocation.isLoading) {
-      return { data: undefined, isLoading: true }
+      return { data: undefined, isLoading: true, isError: false }
     }
 
     // Fail-closed on error: restricted with unknown reason
@@ -94,6 +95,7 @@ const useDTFRestricted = () => {
       return {
         data: { restricted: true },
         isLoading: false,
+        isError: true,
       }
     }
 
@@ -101,6 +103,7 @@ const useDTFRestricted = () => {
       return {
         data: { restricted: false },
         isLoading: false,
+        isError: false,
       }
     }
 
@@ -112,6 +115,7 @@ const useDTFRestricted = () => {
     return {
       data: { restricted: true, reason },
       isLoading: false,
+      isError: false,
     }
   }, [
     dtf,

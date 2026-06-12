@@ -144,7 +144,7 @@ export const useBasketChangesSummary = (
   chainId?: number,
   snapshotBlock?: number
 ) => {
-  const { data: currentBlock } = useBlockNumber()
+  const { data: currentBlock } = useBlockNumber({ chainId })
   const data = useQuery({
     queryKey: ['basketDiff', !!currentBlock, proposal, rTokenAddress],
     queryFn: async () => {

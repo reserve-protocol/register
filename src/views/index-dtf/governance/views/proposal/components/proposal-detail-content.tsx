@@ -1,4 +1,5 @@
 import { Skeleton } from '@/components/ui/skeleton'
+import { Trans } from '@lingui/react/macro'
 import { useAtomValue } from 'jotai'
 import { lazy, Suspense } from 'react'
 import GovernanceProposalPreview from '../../../components/governance-proposal-preview'
@@ -8,7 +9,9 @@ const DescriptionMarkdown = lazy(() => import('./proposal-md-description'))
 
 const ProposalDescriptionSkeleton = () => (
   <div className="px-6 pt-4 pb-2">
-    <h1 className="text-primary text-xl font-bold mb-2">Description</h1>
+    <h1 className="text-primary text-xl font-bold mb-2">
+      <Trans>Description</Trans>
+    </h1>
     <Skeleton className="h-6" />
     <Skeleton className="h-6 mt-1" />
     <Skeleton className="h-6 mt-1" />
@@ -29,19 +32,19 @@ const ProposalDescription = () => {
     description = content.join('\n')
   }
 
-  if (description.length < 9) {
-    return (
-      <div className="text-legend text-center py-8">
-        No description provided
-      </div>
-    )
-  }
-
   return (
     <Suspense fallback={<ProposalDescriptionSkeleton />}>
-      <div className="px-6 pt-4 pb-2">
-        <h1 className="text-primary text-xl font-bold mb-2">Description</h1>
-        <DescriptionMarkdown description={description} />
+      <div className="px-5 pt-6 pb-8">
+        <h1 className="text-primary text-xl font-semibold mb-2">
+          <Trans>Description</Trans>
+        </h1>
+        {description.length < 9 ? (
+          <span className="text-legend">
+            <Trans>No description provided for this proposal.</Trans>
+          </span>
+        ) : (
+          <DescriptionMarkdown description={description} />
+        )}
       </div>
     </Suspense>
   )
@@ -55,6 +58,17 @@ const ProposalChanges = () => {
       <GovernanceProposalPreview
         targets={proposal?.targets}
         calldatas={proposal?.calldatas}
+        decoded={proposal?.decoded}
+        proposalGovernance={
+          proposal
+            ? {
+                address: proposal.governor,
+                timelock: {
+                  address: proposal.timelock,
+                },
+              }
+            : undefined
+        }
         timestamp={proposal?.creationTime}
       />
     </div>

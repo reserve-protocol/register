@@ -1,4 +1,4 @@
-import { Trans } from '@lingui/macro'
+import { Trans } from '@lingui/react/macro'
 import { useAtomValue } from 'jotai'
 import { ArrowRight, ChevronDown, ChevronUp } from 'lucide-react'
 import { useState } from 'react'
@@ -15,15 +15,19 @@ export const UnstakeFlow = () => {
         <span className="block font-semibold">
           <Trans>Trigger Unstake</Trans>
         </span>
-        <span>1 Transaction</span>
+        <span>
+          <Trans>1 Transaction</Trans>
+        </span>
       </div>
       <ArrowRight size={16} />
       <div>
         <div className="mb-1 h-1 w-full bg-warning" />
         <span className="block font-semibold text-warning">
-          {delay} Delay
+          <Trans>{delay} Delay</Trans>
         </span>
-        <span>Wait entire period</span>
+        <span>
+          <Trans>Wait entire period</Trans>
+        </span>
       </div>
       <ArrowRight size={16} />
       <div>
@@ -31,7 +35,9 @@ export const UnstakeFlow = () => {
         <span className="block font-semibold">
           <Trans>Withdraw RSR</Trans>
         </span>
-        <span>1 Transaction</span>
+        <span>
+          <Trans>1 Transaction</Trans>
+        </span>
       </div>
     </div>
   )

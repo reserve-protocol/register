@@ -1,6 +1,7 @@
 import TokenLogo from '@/components/token-logo'
 import { Button } from '@/components/ui/button'
 import { chainIdAtom } from '@/state/atoms'
+import { Trans } from '@lingui/react/macro'
 import { useAtom, useAtomValue } from 'jotai'
 import { Trash, Undo } from 'lucide-react'
 import { removedBasketTokensAtom } from '../../atoms'
@@ -21,7 +22,10 @@ const RemovedTokensChanges = () => {
   }
 
   return (
-    <ChangeSection title="Remove Dust Tokens" icon={<Trash size={16} />}>
+    <ChangeSection
+      title={<Trans>Remove Dust Tokens</Trans>}
+      icon={<Trash size={16} />}
+    >
       <div className="space-y-2">
         {removedBasketTokens.map((token, index) => (
           <div

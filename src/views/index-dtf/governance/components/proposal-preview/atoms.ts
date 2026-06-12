@@ -1,83 +1,24 @@
-import dtfAdminAbi from '@/abis/dtf-admin-abi'
-import dtfIndexAbiV2 from '@/abis/dtf-index-abi-v2'
-import dtfIndexAbiV4 from '@/abis/dtf-index-abi-v4'
-import dtfIndexGovernance from '@/abis/dtf-index-governance'
-import dtfIndexStakingVault from '@/abis/dtf-index-staking-vault'
-import Timelock from '@/abis/Timelock'
 import { indexDTFAtom } from '@/state/dtf/atoms'
 import { atom } from 'jotai'
-import { Abi } from 'viem'
 import {
-  spellAbi as governanceSpell_31_03_2025Abi,
   spellAddress as governanceSpell_31_03_2025Address,
 } from '../../views/propose/upgrade-banners/propose-governance-spell-31-03-2025'
 import {
-  spellAbi as v4SpellAbi,
   spellAddress as v4SpellAddress,
 } from '../../views/propose/upgrade-banners/propose-v4-upgrade'
 import {
-  spellAbi as v5SpellAbi,
   spellAddress as v5SpellAddress,
 } from '../../views/propose/upgrade-banners/propose-v5-upgrade'
-import dtfIndexAbi from '@/abis/dtf-index-abi'
-import dtfIndexAbiV1 from '@/abis/dtf-index-abi-v1'
+import {
+  spellAddress as v5OptimisticSpellAddress,
+} from '../../views/propose/upgrade-banners/propose-v5-optimistic-upgrade'
 
-export const dtfAbiMapppingAtom = atom((get) => {
-  const dtf = get(indexDTFAtom)
-
-  const dtfAbi = [...dtfIndexAbiV4, ...dtfIndexAbiV2, ...dtfIndexAbi, ...dtfIndexAbiV1]
-
-  if (!dtf) return undefined
-
-  const abiMapping: Record<string, Abi> = {
-    [dtf.id.toLowerCase()]: dtfAbi,
-    [dtf.proxyAdmin.toLowerCase()]: dtfAdminAbi,
-  }
-
-  if (dtf.ownerGovernance) {
-    abiMapping[dtf.ownerGovernance.id.toLowerCase()] = dtfIndexGovernance
-    abiMapping[dtf.ownerGovernance.timelock.id.toLowerCase()] = Timelock
-  }
-
-  if (dtf.tradingGovernance) {
-    abiMapping[dtf.tradingGovernance.id.toLowerCase()] = dtfIndexGovernance
-    abiMapping[dtf.tradingGovernance.timelock.id.toLowerCase()] = Timelock
-  }
-
-  if (dtf.stToken) {
-    abiMapping[dtf.stToken.id.toLowerCase()] = dtfIndexStakingVault
-
-    if (dtf.stToken.governance) {
-      abiMapping[dtf.stToken.governance.id.toLowerCase()] = dtfIndexGovernance
-      abiMapping[dtf.stToken.governance.timelock.id.toLowerCase()] = Timelock
-    }
-  }
-
-  if (governanceSpell_31_03_2025Address[dtf.chainId]) {
-    abiMapping[governanceSpell_31_03_2025Address[dtf.chainId].toLowerCase()] =
-      governanceSpell_31_03_2025Abi
-  }
-
-  if (v4SpellAddress[dtf.chainId]) {
-    abiMapping[v4SpellAddress[dtf.chainId].toLowerCase()] = v4SpellAbi
-  }
-
-  if (v5SpellAddress[dtf.chainId]) {
-    abiMapping[v5SpellAddress[dtf.chainId].toLowerCase()] = v5SpellAbi
-  }
-
-  return abiMapping
-})
-
-export const explorerContractAliasAtom = atom<Record<string, string>>({})
 export const dtfContractAliasAtom = atom((get) => {
   const dtf = get(indexDTFAtom)
-  const explorerContractAlias = get(explorerContractAliasAtom)
 
   if (!dtf) return undefined
 
   const aliasMapping: Record<string, string> = {
-    ...explorerContractAlias,
     [dtf.id.toLowerCase()]: 'Folio',
     [dtf.proxyAdmin.toLowerCase()]: 'ProxyAdmin',
   }
@@ -115,6 +56,11 @@ export const dtfContractAliasAtom = atom((get) => {
 
   if (v5SpellAddress[dtf.chainId]) {
     aliasMapping[v5SpellAddress[dtf.chainId].toLowerCase()] = 'V5 Upgrade Spell'
+  }
+
+  if (v5OptimisticSpellAddress[dtf.chainId]) {
+    aliasMapping[v5OptimisticSpellAddress[dtf.chainId].toLowerCase()] =
+      'Reserve Optimistic Governance Spell'
   }
 
   return aliasMapping

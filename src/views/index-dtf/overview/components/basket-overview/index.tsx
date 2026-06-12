@@ -4,6 +4,7 @@ import { Table } from '@/components/ui/table'
 import { Tabs } from '@/components/ui/tabs'
 import { useMemo, useState } from 'react'
 import { isAddress } from '@/utils'
+import { useLingui } from '@lingui/react/macro'
 import { toast } from 'sonner'
 import { BasketTableBody } from './basket-table-body'
 import { BasketTableHeader, SortConfig, SortDirection, SortField } from './basket-table-header'
@@ -14,6 +15,7 @@ const MAX_TOKENS = 10
 const DEFAULT_SORT: SortConfig = { field: 'weight', direction: 'desc' }
 
 const IndexBasketOverview = () => {
+  const { t } = useLingui()
   const [viewAll, setViewAll] = useState(false)
   const [activeTab, setActiveTab] = useState<'exposure' | 'collateral'>(
     'exposure'
@@ -43,7 +45,7 @@ const IndexBasketOverview = () => {
 
   const handleCopyAddress = (address: string) => {
     navigator.clipboard.writeText(isAddress(address) || address)
-    toast.success('Copied to clipboard')
+    toast.success(t`Copied to clipboard`)
   }
 
   const handleSort = (field: SortField) => {
@@ -138,8 +140,10 @@ const IndexBasketOverview = () => {
           onClick={() => setViewAll(!viewAll)}
         >
           {viewAll
-            ? 'View less'
-            : `View all ${activeCount} ${isExposure ? 'assets' : 'tokens'}`}
+            ? t`View less`
+            : isExposure
+              ? t`View all ${activeCount} assets`
+              : t`View all ${activeCount} tokens`}
         </Button>
       )}
     </div>

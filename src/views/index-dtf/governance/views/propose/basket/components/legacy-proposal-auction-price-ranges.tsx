@@ -6,6 +6,9 @@ import { cn } from '@/lib/utils'
 import { chainIdAtom } from '@/state/atoms'
 import { Token } from '@/types'
 import { formatPercentage } from '@/utils'
+import type { MessageDescriptor } from '@lingui/core'
+import { msg } from '@lingui/core/macro'
+import { Trans, useLingui } from '@lingui/react/macro'
 import { atom, useAtom, useAtomValue } from 'jotai'
 import {
   priceMapAtom,
@@ -99,9 +102,14 @@ const Row = ({
   )
 }
 
-const VOLATILITY_OPTIONS = ['Low', 'Medium', 'High']
+const VOLATILITY_OPTIONS: MessageDescriptor[] = [
+  msg`Low`,
+  msg`Medium`,
+  msg`High`,
+]
 
 const ProposedTradeVolatility = ({ index }: { index: number }) => {
+  const { t } = useLingui()
   const [volatility, setVolatility] = useAtom(tradeVolatilityAtom)
 
   return (
@@ -119,11 +127,11 @@ const ProposedTradeVolatility = ({ index }: { index: number }) => {
     >
       {VOLATILITY_OPTIONS.map((option, index) => (
         <ToggleGroupItem
-          key={option}
+          key={index}
           value={index.toString()}
           className="px-2 h-8 whitespace-nowrap rounded-lg data-[state=on]:bg-card text-secondary-foreground/80 data-[state=on]:text-primary"
         >
-          {option}
+          {t(option)}
         </ToggleGroupItem>
       ))}
     </ToggleGroup>
@@ -149,7 +157,9 @@ const ProposedTradeItem = ({
         address={trade.token.address}
       />
       <div className="mr-auto text-primary">
-        <span>Buy {trade.token.symbol}</span>
+        <span>
+          <Trans>Buy {trade.token.symbol}</Trans>
+        </span>
         <h4 className="text-xl font-bold">+{formatPercentage(trade.shares)}</h4>
       </div>
       <ProposedTradeVolatility index={trade.index} />
@@ -182,7 +192,9 @@ const ProposedTradeSold = ({
         />
       </div>
       <div className="flex flex-col justify-end flex-grow">
-        <h3 className="text-sm">Sell ${sell.token.symbol}</h3>
+        <h3 className="text-sm">
+          <Trans>Sell ${sell.token.symbol}</Trans>
+        </h3>
         <div className="flex items-center gap-2">
           <h4 className="text-xl font-bold mr-auto">
             {formatPercentage(Number(sell.shares) - sell.percent).replace(
@@ -191,8 +203,10 @@ const ProposedTradeSold = ({
             )}
           </h4>
           <span className="text-sm text-right">
-            From {formatPercentage(Number(sell.shares))} to{' '}
-            {formatPercentage(sell.percent)}
+            <Trans>
+              From {formatPercentage(Number(sell.shares))} to{' '}
+              {formatPercentage(sell.percent)}
+            </Trans>
           </span>
         </div>
       </div>
@@ -220,7 +234,9 @@ const OrganizedTrades = () => {
 
   if (!organizedTrades) {
     return (
-      <div className="p-4 text-legend text-center">No trades available</div>
+      <div className="p-4 text-legend text-center">
+        <Trans>No trades available</Trans>
+      </div>
     )
   }
 
@@ -237,10 +253,16 @@ const LegacyProposalAuctionPriceRanges = () => {
   return (
     <div className="flex flex-col gap-2 overflow-auto">
       <Row>
-        <div className="p-4 text-legend">Selling</div>
+        <div className="p-4 text-legend">
+          <Trans>Selling</Trans>
+        </div>
         <div className="flex items-center gap-2 flex-wrap p-4 flex-grow border-b text-legend">
-          <span className="mr-auto">Buying</span>
-          <span className="hidden sm:block">Expected volatility</span>
+          <span className="mr-auto">
+            <Trans>Buying</Trans>
+          </span>
+          <span className="hidden sm:block">
+            <Trans>Expected volatility</Trans>
+          </span>
         </div>
       </Row>
       <OrganizedTrades />

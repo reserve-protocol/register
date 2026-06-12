@@ -1,4 +1,4 @@
-import { t } from '@lingui/macro'
+import { useLingui } from '@lingui/react/macro'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { cn } from '@/lib/utils'
 import { proposedRolesAtom, spell3_4_0UpgradeAtom } from '../atoms'
@@ -11,6 +11,7 @@ interface Props {
 }
 
 const SpellUpgradePreview3_4_0 = ({ className }: Props) => {
+  const { t } = useLingui()
   const [spell, setSpell] = useAtom(spell3_4_0UpgradeAtom)
   const spellContract = useAtomValue(spell3_4_0AddressAtom)
   const setProposedRoles = useSetAtom(proposedRolesAtom)

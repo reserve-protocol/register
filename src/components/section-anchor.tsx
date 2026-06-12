@@ -1,4 +1,4 @@
-import { t } from '@lingui/macro'
+import { useLingui } from '@lingui/react/macro'
 import {
   Tooltip,
   TooltipContent,
@@ -8,19 +8,19 @@ import { Link2 } from 'lucide-react'
 import { useState } from 'react'
 
 const SectionAnchor = ({ id }: { id: string }) => {
-  const copyText = t`Copy link`
-  const confirmText = t`Copied!`
-  const [displayText, setDisplayText] = useState(copyText)
+  const { t } = useLingui()
+  const [isCopied, setIsCopied] = useState(false)
   const [isOpen, setIsOpen] = useState(false)
+  const displayText = isCopied ? t`Copied!` : t`Copy link`
 
   const handleCopy = () => {
     const url = `${window.location.origin}${window.location.pathname}#${id}`
     navigator.clipboard.writeText(url)
     window.history.replaceState(null, '', `#${id}`)
-    setDisplayText(confirmText)
+    setIsCopied(true)
     setIsOpen(true)
     setTimeout(() => {
-      setDisplayText(copyText)
+      setIsCopied(false)
       setIsOpen(false)
     }, 2000)
   }

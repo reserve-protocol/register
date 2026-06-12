@@ -1,4 +1,5 @@
 import useTrackPage from '@/hooks/useTrackPage'
+import { Trans } from '@lingui/react/macro'
 import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
 import { Globe } from 'lucide-react'
@@ -18,12 +19,16 @@ const Top100 = () => {
     <div className="container flex flex-col gap-4 py-4">
       <div className="flex items-center justify-between ml-5 mr-2">
         <div>
-          <h1 className="text-2xl font-bold">Top 100 DTFs</h1>
-          <p className="text-legend text-sm mt-1">Community created DTFs</p>
+          <h1 className="text-2xl font-bold">
+            <Trans>Top 100 DTFs</Trans>
+          </h1>
+          <p className="text-legend text-sm mt-1">
+            <Trans>Community created DTFs</Trans>
+          </p>
         </div>
         <Button asChild variant="outline-primary" className="rounded-xl">
           <Link to="/deploy-index">
-            Create yours <Globe className="ml-1 h-4 w-4" />
+            <Trans>Create yours</Trans> <Globe className="ml-1 h-4 w-4" />
           </Link>
         </Button>
       </div>
@@ -43,7 +48,9 @@ const Top100 = () => {
                 ))
               : (
                 <div className="flex items-center justify-center h-48 bg-card rounded-3xl">
-                  <p className="text-muted-foreground">No DTFs found</p>
+                  <p className="text-muted-foreground">
+                    <Trans>No DTFs found</Trans>
+                  </p>
                 </div>
               )}
         </div>

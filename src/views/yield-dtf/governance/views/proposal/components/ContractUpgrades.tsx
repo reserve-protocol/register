@@ -1,4 +1,5 @@
-import { Trans } from '@lingui/macro'
+import { Trans } from '@lingui/react/macro'
+import { useLingui } from '@lingui/react/macro'
 import { Button } from '@/components/ui/button'
 import { Input } from 'components'
 import { useAtom, useAtomValue } from 'jotai'
@@ -28,13 +29,14 @@ const EditContract = ({
   onSave(value: Address): void
   onDiscard(): void
 }) => {
+  const { t } = useLingui()
   const [newContract, setContract] = useState(value)
   const formattedAddress = isAddress(newContract)
 
   return (
     <div className="mt-2">
       <Input
-        placeholder="Upgrade to"
+        placeholder={t`Upgrade to`}
         value={newContract}
         onChange={(e) => setContract(e.target.value)}
       />
@@ -44,10 +46,10 @@ const EditContract = ({
         disabled={!formattedAddress}
         onClick={() => formattedAddress && onSave(formattedAddress)}
       >
-        Save
+        <Trans>Save</Trans>
       </Button>
       <Button variant="destructive" size="sm" className="mt-2" onClick={onDiscard}>
-        Discard
+        <Trans>Discard</Trans>
       </Button>
     </div>
   )
@@ -90,7 +92,7 @@ const UpgradeContract = ({ contract, version, className }: IUpgradeContract) => 
               className="mt-2"
               onClick={() => setUpgrade(true)}
             >
-              {currentUpgrade ? 'Edit' : 'Upgrade'}
+              {currentUpgrade ? <Trans>Edit</Trans> : <Trans>Upgrade</Trans>}
             </Button>
             {currentUpgrade && (
               <Button
@@ -99,7 +101,7 @@ const UpgradeContract = ({ contract, version, className }: IUpgradeContract) => 
                 className="ml-2 mt-2"
                 onClick={handleDiscard}
               >
-                Discard
+                <Trans>Discard</Trans>
               </Button>
             )}
           </div>

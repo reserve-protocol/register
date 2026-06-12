@@ -1,6 +1,8 @@
 import { Skeleton } from '@/components/ui/skeleton'
 import Help from '@/components/ui/help'
 import { TimeRange } from '@/types'
+import { msg } from '@lingui/core/macro'
+import { useLingui } from '@lingui/react/macro'
 
 interface PerformanceCellProps {
   change: number | null
@@ -10,12 +12,12 @@ interface PerformanceCellProps {
 }
 
 const PERIOD_LABELS = {
-  '24h': '24 hour',
-  '7d': '7 day',
-  '1m': '30 day',
-  '3m': '90 day',
-  '1y': '1 year',
-  all: 'all time',
+  '24h': msg`24 hour`,
+  '7d': msg`7 day`,
+  '1m': msg`30 day`,
+  '3m': msg`90 day`,
+  '1y': msg`1 year`,
+  all: msg`all time`,
 } as const
 
 export const PerformanceCell = ({
@@ -24,6 +26,7 @@ export const PerformanceCell = ({
   isNewlyAdded,
   timeRange,
 }: PerformanceCellProps) => {
+  const { t } = useLingui()
   // Show skeleton while loading
   if (isLoading) {
     return <Skeleton className="h-4 w-[60px] mx-auto" />
@@ -49,7 +52,7 @@ export const PerformanceCell = ({
       </span>
       {isNewlyAdded && (
         <Help
-          content={`This asset was added to the basket during this ${PERIOD_LABELS[timeRange]} period`}
+          content={t`This asset was added to the basket during this ${t(PERIOD_LABELS[timeRange])} period`}
           size={14}
           className="text-muted-foreground"
         />

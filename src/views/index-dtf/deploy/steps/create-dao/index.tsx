@@ -6,6 +6,7 @@ import { getCurrentTime } from '@/utils'
 import { INDEX_GOVERNANCE_DEPLOYER_ADDRESS } from '@/utils/addresses'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { useEffect, useState } from 'react'
+import { Trans, useLingui } from '@lingui/react/macro'
 import { useFormContext } from 'react-hook-form'
 import {
   erc20Abi,
@@ -29,6 +30,7 @@ import {
 import { TransactionButtonContainer } from '@/components/ui/transaction-button'
 
 const CreateDAO = () => {
+  const { t } = useLingui()
   const chainId = useAtomValue(chainIdAtom)
   const [name, setName] = useState('')
   const formReadyForSubmit = useAtomValue(formReadyForSubmitAtom)
@@ -44,6 +46,7 @@ const CreateDAO = () => {
     abi: erc20Abi,
     functionName: 'symbol',
     address: governanceERC20address,
+    chainId,
     query: { enabled: isAddress(governanceERC20address) },
   })
 
@@ -119,7 +122,7 @@ const CreateDAO = () => {
       {!!formReadyForSubmit && (
         <Input
           className="[&:focus::placeholder]:opacity-0 [&:focus::placeholder]:transition-opacity"
-          placeholder="suffix"
+          placeholder={t`suffix`}
           startAdornment={
             <span className="text-sm text-muted-foreground">{`vl${symbol}-`}</span>
           }
@@ -143,15 +146,15 @@ const CreateDAO = () => {
           onClick={submit}
         >
           {isPending || (data && !receipt)
-            ? 'Creating...'
+            ? t`Creating...`
             : symbol
-              ? `Create ${vlSymbol} DAO`
-              : 'Create DAO'}
+              ? t`Create ${vlSymbol} DAO`
+              : t`Create DAO`}
         </Button>
       </TransactionButtonContainer>
       {(prepareWriteError || txError) && (
         <div className="px-4 py-2 text-sm font-medium text-red-800 bg-red-100 rounded-md break-words">
-          Error creating DAO token.
+          <Trans>Error creating DAO token.</Trans>
           {prepareWriteError?.message || txError?.message}
         </div>
       )}

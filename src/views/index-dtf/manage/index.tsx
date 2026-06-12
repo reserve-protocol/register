@@ -5,7 +5,7 @@ import { useEffect } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import CoverImages from './components/cover-images'
 import ManageForm from './components/manage-form'
-import { manageFormSchema, ManageFormValues } from './components/schema'
+import { ManageFormValues, useManageFormSchema } from './components/schema'
 import SubmitButton from './components/submit-button'
 
 const defaultValues: ManageFormValues = {
@@ -16,6 +16,7 @@ const defaultValues: ManageFormValues = {
     mobileCover: '',
     description: '',
     notesFromCreator: '',
+    files: [],
     tags: [],
     basketType: 'percentage-based',
   },
@@ -45,6 +46,7 @@ const defaultValues: ManageFormValues = {
 }
 
 const IndexDTFManage = () => {
+  const manageFormSchema = useManageFormSchema()
   const form = useForm({
     resolver: zodResolver(manageFormSchema),
     defaultValues,

@@ -1,6 +1,6 @@
 import SectionAnchor from '@/components/section-anchor'
 import DataTable from '@/components/ui/data-table'
-import { Trans, t } from '@lingui/macro'
+import { Trans, useLingui } from '@lingui/react/macro'
 import { ColumnDef } from '@tanstack/react-table'
 import ChainLogo from 'components/icons/ChainLogo'
 import DebankIcon from 'components/icons/DebankIcon'
@@ -68,6 +68,7 @@ const rTokenTransactionsQuery = gql`
 `
 
 const useTransactionColumns = (): ColumnDef<TransactionRecord>[] => {
+  const { t } = useLingui()
   const chainId = useAtomValue(chainIdAtom)
   const transactionTypes: Record<string, string> = useMemo(
     () => ({
@@ -86,7 +87,7 @@ const useTransactionColumns = (): ColumnDef<TransactionRecord>[] => {
       WITHDRAWAL: t`Withdraw`,
       UNSTAKE_CANCELLED: t`Unstake Cancelled`,
     }),
-    []
+    [t]
   )
 
   return useMemo(
@@ -190,7 +191,7 @@ const useTransactionColumns = (): ColumnDef<TransactionRecord>[] => {
         ),
       },
     ],
-    [chainId, transactionTypes]
+    [chainId, transactionTypes, t]
   )
 }
 

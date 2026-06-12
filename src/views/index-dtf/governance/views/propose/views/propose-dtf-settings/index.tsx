@@ -4,11 +4,10 @@ import Updater from './updater'
 import DTFSettingsProposalOverview from './components/dtf-settings-proposal-overview'
 import ConfirmDTFSettingsProposal from './components/confirm-dtf-settings-proposal'
 import { FormProvider, useForm } from 'react-hook-form'
-import { createProposeSettingsSchema } from './form-fields'
+import { useProposeSettingsSchema } from './form-fields'
 import { zodResolver } from '@hookform/resolvers/zod'
 import DTFSettingsProposalSections from './components/dtf-settings-proposal-sections'
 import { indexDTFAtom } from '@/state/dtf/atoms'
-import { useMemo } from 'react'
 
 const ProposalStage = () => {
   const isConfirmed = useAtomValue(isProposalConfirmedAtom)
@@ -22,9 +21,7 @@ const ProposeDTFSettings = () => {
   const indexDTF = useAtomValue(indexDTFAtom)
   const quorumDenominator = indexDTF?.ownerGovernance?.quorumDenominator
 
-  const schema = useMemo(() => {
-    return createProposeSettingsSchema(Number(quorumDenominator))
-  }, [quorumDenominator])
+  const schema = useProposeSettingsSchema(Number(quorumDenominator))
 
   const form = useForm({
     resolver: zodResolver(schema),

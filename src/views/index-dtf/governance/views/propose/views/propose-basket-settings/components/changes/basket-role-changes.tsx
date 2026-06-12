@@ -1,6 +1,7 @@
 import { Button } from '@/components/ui/button'
 import { indexDTFAtom } from '@/state/dtf/atoms'
 import { shortenAddress } from '@/utils'
+import { Trans } from '@lingui/react/macro'
 import { useAtom, useAtomValue } from 'jotai'
 import { useFormContext } from 'react-hook-form'
 import {
@@ -45,7 +46,7 @@ const RoleChangeItem = ({
             type === 'add' ? 'text-success' : 'text-destructive'
           )}
         >
-          {type === 'add' ? 'Added' : 'Removed'}
+          {type === 'add' ? <Trans>Added</Trans> : <Trans>Removed</Trans>}
         </h4>
         <Link
           className={cn('text-sm text-legend flex items-center gap-1')}
@@ -155,16 +156,16 @@ const BasketRoleChanges = () => {
   }
 
   return (
-    <ChangeSection title="Role Updates" icon={<Shield size={16} />}>
+    <ChangeSection title={<Trans>Role Updates</Trans>} icon={<Shield size={16} />}>
       <div className="space-y-3">
         {rolesChanges.guardians && (
           <div className="p-2 rounded-lg bg-muted/70 border space-y-3">
             <div className="flex items-center justify-between p-2 pb-0">
               <div className="flex items-center gap-2 text-sm font-medium">
                 <ShieldHalf size={14} />
-                Guardians
+                <Trans>Guardians</Trans>
               </div>
-              <RevertButton onClick={onRevertAllGuardians} label="Revert All" />
+              <RevertButton onClick={onRevertAllGuardians} label={<Trans>Revert All</Trans>} />
             </div>
 
             <RoleChangesList

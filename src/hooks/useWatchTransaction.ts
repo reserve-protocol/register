@@ -1,4 +1,4 @@
-import { t } from '@lingui/macro'
+import { useLingui } from '@lingui/react/macro'
 import { useAtomValue } from 'jotai'
 import mixpanel from 'mixpanel-browser/src/loaders/loader-module-core'
 import { ReactNode, useEffect } from 'react'
@@ -33,6 +33,7 @@ const useWatchTransaction = ({
   label,
   successMessage,
 }: WatchOptions): WatchResult => {
+  const { t } = useLingui()
   const notify = useNotification()
   const chainId = useAtomValue(chainIdAtom)
 
@@ -43,6 +44,7 @@ const useWatchTransaction = ({
     isLoading: isMining,
   } = useWaitForTransactionReceipt({
     hash,
+    chainId,
     confirmations: chainId === ChainId.Mainnet ? 1 : 3,
   })
 
@@ -83,7 +85,7 @@ const useWatchTransaction = ({
         },
       })
     }
-  }, [hash, data, status, error, notify])
+  }, [hash, data, status, error, notify, t])
 
   return {
     data,

@@ -1,4 +1,4 @@
-import { Trans, t } from '@lingui/macro'
+import { Trans, useLingui } from '@lingui/react/macro'
 import { FormField } from 'components/field'
 import { Card } from '@/components/ui/card'
 import { Separator } from '@/components/ui/separator'
@@ -12,6 +12,7 @@ interface TraderImplementationProposalProps {
 const TraderImplementationProposal = ({
   className,
 }: TraderImplementationProposalProps) => {
+  const { t } = useLingui()
   return (
     <Card className={cn('p-6 bg-secondary', className)}>
       <span className="text-xl font-medium">

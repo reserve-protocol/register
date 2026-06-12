@@ -57,11 +57,3 @@ export const TIME_CONSTANTS = {
   SECONDS_PER_HOUR: 3600,
   SECONDS_PER_MINUTE: 60,
 } as const
-
-/**
- * Percentage encoding constants
- */
-export const PERCENTAGE_CONSTANTS = {
-  PROPOSAL_THRESHOLD_MULTIPLIER: 1e18, // 1% = 1e18
-  PROPOSAL_THRESHOLD_DIVISOR: 1e16,    // For some contracts, 1% = 1e16
-} as const

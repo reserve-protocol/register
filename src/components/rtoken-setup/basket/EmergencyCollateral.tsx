@@ -13,7 +13,7 @@ import {
   sortableKeyboardCoordinates,
   verticalListSortingStrategy,
 } from '@dnd-kit/sortable'
-import { t, Trans } from '@lingui/macro'
+import { Trans, useLingui } from '@lingui/react/macro'
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
 import {
@@ -52,6 +52,7 @@ const EmergencyCollateral = ({
   onAdd,
   className,
 }: EmergencyCollateralProps) => {
+  const { t } = useLingui()
   const updateBasket = useSetAtom(updateBackupBasketUnitAtom)
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -112,7 +113,9 @@ const EmergencyCollateral = ({
     <div className={className}>
       <Separator className="my-4 -mx-4 border-muted" />
       <div className="flex items-center mb-4">
-        <span className="text-xl font-medium">{targetUnit} Backups</span>
+        <span className="text-xl font-medium">
+          <Trans>{targetUnit} Backups</Trans>
+        </span>
         {!readOnly && (
           <Button
             size="sm"

@@ -3,6 +3,7 @@ import Tenderly from '@/components/icons/logos/Tenderly'
 import { Button } from '@/components/ui/button'
 import { TenderlySimulation } from '@/types'
 import { TENDERLY_SHARING_URL } from '@/utils/constants'
+import { Trans, useLingui } from '@lingui/react/macro'
 import { CheckCircle2, Loader2, XCircle } from 'lucide-react'
 
 interface SimulateProposalProps {
@@ -20,15 +21,16 @@ const SimulateProposal = ({
   onSimulate,
   isReady,
 }: SimulateProposalProps) => {
+  const { t } = useLingui()
   const hasSimulation = !!simulation
   const isSuccess = simulation?.transaction?.status
 
   const getButtonLabel = () => {
-    if (isLoading) return 'Simulating...'
+    if (isLoading) return t`Simulating...`
     if (hasSimulation) {
-      return isSuccess ? 'Simulation successful' : 'Simulation unsuccessful'
+      return isSuccess ? t`Simulation successful` : t`Simulation unsuccessful`
     }
-    return 'Simulate again'
+    return t`Simulate again`
   }
 
   const getButtonVariant = () => {
@@ -56,14 +58,20 @@ const SimulateProposal = ({
         </div>
         {/* Tenderly branding */}
         <div className="flex items-center gap-2 text-sm">
-          <span className="text-legend">Powered by</span>
+          <span className="text-legend">
+            <Trans>Powered by</Trans>
+          </span>
           <Tenderly height={24} className="mt-1" width={80} />
         </div>
       </div>
 
       {/* Title */}
       <h3 className="text-xl font-semibold text-primary">
-        {hasSimulation ? 'Proposal Simulated' : 'Proposal Simulation'}
+        {hasSimulation ? (
+          <Trans>Proposal Simulated</Trans>
+        ) : (
+          <Trans>Proposal Simulation</Trans>
+        )}
       </h3>
 
       {/* Simulate button */}
@@ -86,7 +94,7 @@ const SimulateProposal = ({
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2"
           >
-            View on Tenderly
+            <Trans>View on Tenderly</Trans>
             <ExternalArrowIcon />
           </a>
         </Button>

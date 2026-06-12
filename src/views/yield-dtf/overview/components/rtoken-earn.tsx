@@ -1,5 +1,5 @@
 import SectionAnchor from '@/components/section-anchor'
-import { Trans } from '@lingui/macro'
+import { Trans } from '@lingui/react/macro'
 import EarnIcon from 'components/icons/EarnIcon'
 import useRToken from 'hooks/useRToken'
 import { atom, useAtomValue } from 'jotai'

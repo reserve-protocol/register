@@ -1,4 +1,4 @@
-import { Trans } from '@lingui/macro'
+import { Trans } from '@lingui/react/macro'
 import { Separator } from '@/components/ui/separator'
 import { useAtomValue } from 'jotai'
 import { auctionsOverviewAtom } from '../atoms'

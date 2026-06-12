@@ -3,12 +3,13 @@ import dtfIndexAbi from '@/abis/dtf-index-abi-v1'
 import DTFIndexGovernance from '@/abis/dtf-index-governance'
 import stakingVaultAbi from '@/abis/dtf-index-staking-vault'
 import { Button } from '@/components/ui/button'
-import { getProposalState, PartialProposal } from '@/lib/governance'
 import { chainIdAtom } from '@/state/atoms'
 import { indexDTFAtom } from '@/state/dtf/atoms'
 import { getCurrentTime } from '@/utils'
 import { ChainId } from '@/utils/chains'
 import { PROPOSAL_STATES } from '@/utils/constants'
+import type { IndexDtfProposalSummary } from '@reserve-protocol/react-sdk'
+import { Trans, useLingui } from '@lingui/react/macro'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { AlertCircle, Loader2 } from 'lucide-react'
 import { useCallback, useEffect } from 'react'
@@ -27,6 +28,7 @@ import {
 } from 'wagmi'
 import { governanceProposalsAtom, refetchTokenAtom } from '../../../atoms'
 import { useIsProposeAllowed } from '../../../hooks/use-is-propose-allowed'
+import useRecentProposalReceipt from '../../../hooks/use-recent-proposal-receipt'
 
 export const spellAbi = [
   {
@@ -167,9 +169,11 @@ type SpellUpgradeProps = {
 const ProposeGovernanceSpell31032025Folio = ({
   refetch,
 }: SpellUpgradeProps) => {
+  const { t } = useLingui()
   const dtf = useAtomValue(indexDTFAtom)
   const chainId = useAtomValue(chainIdAtom)
   const spell = spellAddress[chainId]
+  const handleRecentProposalReceipt = useRecentProposalReceipt()
 
   const { data: qdOwnerGov } = useReadContract({
     abi: DTFIndexGovernance,
@@ -179,10 +183,10 @@ const ProposeGovernanceSpell31032025Folio = ({
     query: queryParams,
   })
 
-  const { writeContract, data, isPending } = useWriteContract()
+  const { writeContract, data: hash, isPending } = useWriteContract()
 
-  const { isSuccess } = useWaitForTransactionReceipt({
-    hash: data,
+  const { data: receipt, isSuccess } = useWaitForTransactionReceipt({
+    hash,
     chainId,
   })
 
@@ -209,6 +213,7 @@ const ProposeGovernanceSpell31032025Folio = ({
     )
 
     writeContract({
+      chainId,
       address: dtf.ownerGovernance.id,
       abi: DTFIndexGovernance,
       functionName: 'propose',
@@ -246,13 +251,25 @@ const ProposeGovernanceSpell31032025Folio = ({
   }
 
   useEffect(() => {
-    if (isSuccess) {
-      // Give some time for the proposal to be created on the subgraph
-      setTimeout(() => {
-        refetch()
-      }, 10000)
-    }
-  }, [isSuccess])
+    if (!isSuccess || !receipt || !dtf?.ownerGovernance?.id) return
+
+    void handleRecentProposalReceipt({
+      receipt,
+      governor: dtf.ownerGovernance.id,
+      onSuccess: refetch,
+      onFallback: () => {
+        setTimeout(() => {
+          refetch()
+        }, 10000)
+      },
+    })
+  }, [
+    dtf?.ownerGovernance?.id,
+    handleRecentProposalReceipt,
+    isSuccess,
+    receipt,
+    refetch,
+  ])
 
   if (!proposalAvailable) {
     return null
@@ -264,27 +281,29 @@ const ProposeGovernanceSpell31032025Folio = ({
         <AlertCircle size={24} className="text-primary" />
         <div>
           <h4 className="font-bold text-primary">
-            Upgrade Folio Governance (1/2):
+            <Trans>Upgrade Folio Governance (1/2):</Trans>
           </h4>
           <p className="text-sm">
-            This upgrade spell fixes the proposal-threshold on the Admin and
-            Basket FolioGovernor contracts that manage this DTF. Once this spell
-            is approved and executed, the proposal-threshold will be the correct
-            % that was initially intended at deployment.
+            <Trans>
+              This upgrade spell fixes the proposal-threshold on the Admin and
+              Basket FolioGovernor contracts that manage this DTF. Once this
+              spell is approved and executed, the proposal-threshold will be the
+              correct % that was initially intended at deployment.
+            </Trans>
           </p>
         </div>
       </div>
       <Button
-        disabled={!isReady || isPending || !!data}
+        disabled={!isReady || isPending || !!hash}
         onClick={handlePropose}
         className="w-full mt-2"
       >
-        {(isPending || !!data) && (
+        {(isPending || !!hash) && (
           <Loader2 className="w-4 h-4 animate-spin mr-2" />
         )}
-        {isPending && 'Pending, sign in wallet...'}
-        {!isPending && !!data && 'Waiting for confirmation...'}
-        {!isPending && !data && 'Create Spell Proposal'}
+        {isPending && t`Pending, sign in wallet...`}
+        {!isPending && !!hash && t`Waiting for confirmation...`}
+        {!isPending && !hash && t`Create Spell Proposal`}
       </Button>
     </div>
   )
@@ -293,9 +312,11 @@ const ProposeGovernanceSpell31032025Folio = ({
 const ProposeGovernanceSpell31032025StakingVault = ({
   refetch,
 }: SpellUpgradeProps) => {
+  const { t } = useLingui()
   const dtf = useAtomValue(indexDTFAtom)
   const chainId = useAtomValue(chainIdAtom)
   const spell = spellAddress[chainId]
+  const handleRecentProposalReceipt = useRecentProposalReceipt()
 
   const { data: qdStakingVaultGov } = useReadContract({
     abi: DTFIndexGovernance,
@@ -305,10 +326,10 @@ const ProposeGovernanceSpell31032025StakingVault = ({
     query: queryParams,
   })
 
-  const { writeContract, data, isPending } = useWriteContract()
+  const { writeContract, data: hash, isPending } = useWriteContract()
 
-  const { isSuccess } = useWaitForTransactionReceipt({
-    hash: data,
+  const { data: receipt, isSuccess } = useWaitForTransactionReceipt({
+    hash,
     chainId,
   })
 
@@ -325,6 +346,7 @@ const ProposeGovernanceSpell31032025StakingVault = ({
     )
 
     writeContract({
+      chainId,
       address: dtf.stToken.governance.id,
       abi: DTFIndexGovernance,
       functionName: 'propose',
@@ -354,13 +376,25 @@ const ProposeGovernanceSpell31032025StakingVault = ({
   }
 
   useEffect(() => {
-    if (isSuccess) {
-      // Give some time for the proposal to be created on the subgraph
-      setTimeout(() => {
-        refetch()
-      }, 10000)
-    }
-  }, [isSuccess])
+    if (!isSuccess || !receipt || !dtf?.stToken?.governance?.id) return
+
+    void handleRecentProposalReceipt({
+      receipt,
+      governor: dtf.stToken.governance.id,
+      onSuccess: refetch,
+      onFallback: () => {
+        setTimeout(() => {
+          refetch()
+        }, 10000)
+      },
+    })
+  }, [
+    dtf?.stToken?.governance?.id,
+    handleRecentProposalReceipt,
+    isSuccess,
+    receipt,
+    refetch,
+  ])
 
   if (!proposalAvailable) {
     return null
@@ -372,35 +406,37 @@ const ProposeGovernanceSpell31032025StakingVault = ({
         <AlertCircle size={24} className="text-primary" />
         <div>
           <h4 className="font-bold text-primary">
-            Upgrade Folio DAO Governor (2/2):
+            <Trans>Upgrade Folio DAO Governor (2/2):</Trans>
           </h4>
           <p className="text-sm">
-            This upgrade spell fixes the proposal-threshold on the FolioGovernor
-            contract that administers the DAO (StakingVault) relevant to this
-            DTF. Once this spell is approved and executed, the
-            proposal-threshold will be the correct % that was initially intended
-            at deployment.
+            <Trans>
+              This upgrade spell fixes the proposal-threshold on the
+              FolioGovernor contract that administers the DAO (StakingVault)
+              relevant to this DTF. Once this spell is approved and executed,
+              the proposal-threshold will be the correct % that was initially
+              intended at deployment.
+            </Trans>
           </p>
         </div>
       </div>
       <Button
-        disabled={!isReady || isPending || !!data}
+        disabled={!isReady || isPending || !!hash}
         onClick={handlePropose}
         className="w-full mt-2"
       >
-        {(isPending || !!data) && (
+        {(isPending || !!hash) && (
           <Loader2 className="w-4 h-4 animate-spin mr-2" />
         )}
-        {isPending && 'Pending, sign in wallet...'}
-        {!isPending && !!data && 'Waiting for confirmation...'}
-        {!isPending && !data && 'Create Spell Proposal'}
+        {isPending && t`Pending, sign in wallet...`}
+        {!isPending && !!hash && t`Waiting for confirmation...`}
+        {!isPending && !hash && t`Create Spell Proposal`}
       </Button>
     </div>
   )
 }
 
 const validProposalExists = (
-  proposals: PartialProposal[],
+  proposals: readonly IndexDtfProposalSummary[],
   description: string
 ): boolean => {
   const states = [
@@ -415,13 +451,11 @@ const validProposalExists = (
       return false
     }
 
-    const pState = getProposalState(p)
-
-    if (pState.state === PROPOSAL_STATES.EXPIRED) {
+    if (p.votingState.state === PROPOSAL_STATES.EXPIRED) {
       return false
     }
 
-    return states.includes(pState.state)
+    return states.includes(p.votingState.state)
   })
 }
 

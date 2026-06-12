@@ -4,19 +4,54 @@ import { DecodedCalldata } from '@/types'
 import EnsName from '@/components/utils/ens-name'
 import { shortenAddress } from '@/utils'
 import { ExplorerDataType, getExplorerLink } from '@/utils/getExplorerLink'
+import type { MessageDescriptor } from '@lingui/core'
+import { msg } from '@lingui/core/macro'
+import { Plural, Trans, useLingui } from '@lingui/react/macro'
 import { useAtomValue } from 'jotai'
 import {
   ArrowUpRight,
   Clock,
   Edit2,
+  FileLock2,
   MinusCircle,
   PlusCircle,
   Shield,
   Trash,
-  Users
+  Users,
+  Wand2,
 } from 'lucide-react'
 import { Link } from 'react-router-dom'
-import { Address, zeroHash } from 'viem'
+import { formatEther, toFunctionSelector, zeroHash } from 'viem'
+import type { Address, Hex } from 'viem'
+
+const OPTIMISTIC_PROPOSER_ROLE =
+  '0x26f49d08685d9cdd4951a7470bc8fbe9dd0f00419c1a44c1b89f845867ae12e0'
+
+const OPTIMISTIC_SELECTOR_LABELS: Record<string, MessageDescriptor> = {
+  [toFunctionSelector(
+    'startRebalance((address,(uint256,uint256,uint256),(uint256,uint256),uint256,bool)[],(uint256,uint256,uint256),uint256,uint256)'
+  )]: msg`Start rebalance`,
+  [toFunctionSelector('setAuctionLength(uint256)')]: msg`Auction length`,
+  [toFunctionSelector('setBidsEnabled(bool)')]: msg`Permissionless bids`,
+  [toFunctionSelector('setFeeRecipients((address,uint96)[])')]:
+    msg`Fee recipients`,
+  [toFunctionSelector('setMandate(string)')]: msg`Mandate`,
+  [toFunctionSelector('setMintFee(uint256)')]: msg`Mint fee`,
+  [toFunctionSelector('setName(string)')]: msg`Token name`,
+  [toFunctionSelector('setRebalanceControl((bool,uint8))')]:
+    msg`Rebalance control`,
+  [toFunctionSelector('setTVLFee(uint256)')]: msg`TVL fee`,
+  [toFunctionSelector('setTrustedFillerRegistry(address,bool)')]:
+    msg`Trusted fillers`,
+}
+
+type Translate = (descriptor: MessageDescriptor) => string
+
+const formatSelectorLabel = (selector: Hex, t: Translate) => {
+  const label = OPTIMISTIC_SELECTOR_LABELS[selector.toLowerCase()]
+
+  return label ? t(label) : selector
+}
 
 // Preview component for setMandate function
 export const SetMandatePreview = ({
@@ -28,10 +63,12 @@ export const SetMandatePreview = ({
   const newMandate = decodedCalldata.data[0] as string
 
   return (
-    <div className="rounded-2xl border bg-muted/70 p-4 space-y-3">
-      <div className="flex items-center gap-2">
+    <div className="rounded-2xl border bg-muted/70 p-2 space-y-3">
+      <div className="flex items-center gap-2 ml-2 pt-2">
         <Edit2 size={16} className="text-primary" />
-        <div className="text-sm font-medium">Update Mandate</div>
+        <div className="text-sm font-medium">
+          <Trans>Update Mandate</Trans>
+        </div>
       </div>
       <div className="p-3 rounded-xl bg-background/80 text-sm">
         <div className="break-words text-muted-foreground">{newMandate}</div>
@@ -51,14 +88,18 @@ export const RemoveFromBasketPreview = ({
   const tokenAddress = decodedCalldata.data[0] as string
 
   return (
-    <div className="rounded-2xl border bg-muted/70 p-4 space-y-3">
-      <div className="flex items-center gap-2">
+    <div className="rounded-2xl border bg-muted/70 p-2 space-y-3">
+      <div className="flex items-center gap-2 ml-2 pt-2">
         <MinusCircle size={16} className="text-destructive" />
-        <div className="text-sm font-medium">Remove Token from Basket</div>
+        <div className="text-sm font-medium">
+          <Trans>Remove Token from Basket</Trans>
+        </div>
       </div>
       <div className="p-3 rounded-xl bg-destructive/5 border border-destructive/20">
         <div className="flex items-center gap-2">
-          <span className="text-sm text-muted-foreground">Token:</span>
+          <span className="text-sm text-muted-foreground">
+            <Trans>Token:</Trans>
+          </span>
           <Link
             to={getExplorerLink(
               tokenAddress,
@@ -85,34 +126,34 @@ export const GrantRolePreview = ({
   decodedCalldata: DecodedCalldata
   targetAddress?: Address
 }) => {
+  const { t } = useLingui()
   const chainId = useAtomValue(chainIdAtom)
   const [roleHash, account] = decodedCalldata.data as [string, string]
 
   // Map role hashes to readable names
   const roleNames: Record<string, string> = {
-    [zeroHash]: 'Default Admin',
-    '0xfd643c72710c63c0180259aba6b2d05451e3591a24e58b62239378085726f783':
-      'Guardian',
-    '0x2d8e650da9bd8c373ab2450d770f2ed39549bfc28d3630025cecc51511bcd374':
-      'Brand Manager',
-    '0x13ff1b2625181b311f257c723b5e6d366eb318b212d9dd694c48fcf227659df5':
-      'Auction Launcher',
-    '0x4ff6ae4d6a29e79ca45c6441bdc89b93878ac6118485b33c8baa3749fc3cb130':
-      'Rebalance Manager',
+    [zeroHash]: t`Default Admin`,
+    '0xfd643c72710c63c0180259aba6b2d05451e3591a24e58b62239378085726f783': t`Guardian`,
+    '0x2d8e650da9bd8c373ab2450d770f2ed39549bfc28d3630025cecc51511bcd374': t`Brand Manager`,
+    '0x13ff1b2625181b311f257c723b5e6d366eb318b212d9dd694c48fcf227659df5': t`Auction Launcher`,
+    '0x4ff6ae4d6a29e79ca45c6441bdc89b93878ac6118485b33c8baa3749fc3cb130': t`Rebalance Manager`,
+    [OPTIMISTIC_PROPOSER_ROLE]: t`Optimistic Proposer`,
   }
 
-  const roleName = roleNames[roleHash] || 'Unknown Role'
+  const roleName = roleNames[roleHash] || t`Unknown Role`
 
   return (
-    <div className="rounded-2xl border bg-muted/70 p-4 space-y-3">
-      <div className="flex items-center gap-2">
+    <div className="rounded-2xl border bg-muted/70 p-2 space-y-3">
+      <div className="flex items-center gap-2 ml-2 pt-2">
         <PlusCircle size={16} className="text-success" />
-        <div className="text-sm font-medium">Grant Role</div>
+        <div className="text-sm font-medium">
+          <Trans>Grant Role</Trans>
+        </div>
       </div>
       <div className="p-3 rounded-xl bg-success/5 border border-success/20">
         <div className="flex items-center gap-2 mb-1">
           <Shield size={14} className="text-success" />
-          <span className="text-sm font-medium text-success">{roleName}</span>
+          <span className="text-sm text-success">{roleName}</span>
         </div>
         <Link
           to={getExplorerLink(account, chainId, ExplorerDataType.ADDRESS)}
@@ -135,35 +176,33 @@ export const RevokeRolePreview = ({
   decodedCalldata: DecodedCalldata
   targetAddress?: Address
 }) => {
+  const { t } = useLingui()
   const chainId = useAtomValue(chainIdAtom)
   const [roleHash, account] = decodedCalldata.data as [string, string]
 
   const roleNames: Record<string, string> = {
-    [zeroHash]: 'Default Admin',
-    '0xfd643c72710c63c0180259aba6b2d05451e3591a24e58b62239378085726f783':
-      'Guardian',
-    '0x2d8e650da9bd8c373ab2450d770f2ed39549bfc28d3630025cecc51511bcd374':
-      'Brand Manager',
-    '0x13ff1b2625181b311f257c723b5e6d366eb318b212d9dd694c48fcf227659df5':
-      'Auction Launcher',
-    '0x4ff6ae4d6a29e79ca45c6441bdc89b93878ac6118485b33c8baa3749fc3cb130':
-      'Rebalance Manager',
+    [zeroHash]: t`Default Admin`,
+    '0xfd643c72710c63c0180259aba6b2d05451e3591a24e58b62239378085726f783': t`Guardian`,
+    '0x2d8e650da9bd8c373ab2450d770f2ed39549bfc28d3630025cecc51511bcd374': t`Brand Manager`,
+    '0x13ff1b2625181b311f257c723b5e6d366eb318b212d9dd694c48fcf227659df5': t`Auction Launcher`,
+    '0x4ff6ae4d6a29e79ca45c6441bdc89b93878ac6118485b33c8baa3749fc3cb130': t`Rebalance Manager`,
+    [OPTIMISTIC_PROPOSER_ROLE]: t`Optimistic Proposer`,
   }
 
-  const roleName = roleNames[roleHash] || 'Unknown Role'
+  const roleName = roleNames[roleHash] || t`Unknown Role`
 
   return (
-    <div className="rounded-2xl border bg-muted/70 p-4 space-y-3">
-      <div className="flex items-center gap-2">
+    <div className="rounded-2xl border bg-muted/70 p-2 space-y-3">
+      <div className="flex items-center gap-2 ml-2 pt-2">
         <MinusCircle size={16} className="text-destructive" />
-        <div className="text-sm font-medium">Revoke Role</div>
+        <div className="text-sm font-medium">
+          <Trans>Revoke Role</Trans>
+        </div>
       </div>
       <div className="p-3 rounded-xl bg-destructive/5 border border-destructive/20">
         <div className="flex items-center gap-2 mb-1">
           <Shield size={14} className="text-destructive" />
-          <span className="text-sm font-medium text-destructive">
-            {roleName}
-          </span>
+          <span className="text-sm text-destructive">{roleName}</span>
         </div>
         <Link
           to={getExplorerLink(account, chainId, ExplorerDataType.ADDRESS)}
@@ -230,20 +269,22 @@ export const SetFeeRecipientsPreview = ({
   }))
 
   return (
-    <div className="rounded-2xl border bg-muted/70 p-4 space-y-3">
-      <div className="flex items-center gap-2">
+    <div className="rounded-2xl border bg-muted/70 p-2 space-y-3">
+      <div className="flex items-center gap-2 ml-2 pt-2">
         <Users size={16} className="text-primary" />
-        <div className="text-sm font-medium">Update Revenue Distribution</div>
+        <div className="text-sm font-medium">
+          <Trans>Update Revenue Distribution</Trans>
+        </div>
       </div>
       <div className="space-y-2">
         {/* Platform Fee (Fixed) */}
         <div className="p-3 rounded-xl bg-background/80 border opacity-60">
           <div className="flex items-center justify-between">
             <span className="text-sm text-muted-foreground">
-              Platform (Fixed)
+              <Trans>Platform (Fixed)</Trans>
             </span>
             <div className="flex items-center gap-2">
-              <span className="text-sm font-medium">{platformFee}%</span>
+              <span className="text-sm">{platformFee}%</span>
             </div>
           </div>
         </div>
@@ -252,9 +293,11 @@ export const SetFeeRecipientsPreview = ({
         {adjustedGovernanceShare > 0 && (
           <div className="p-3 rounded-xl bg-background/80 border">
             <div className="flex items-center justify-between">
-              <span className="text-sm text-muted-foreground">Governance</span>
+              <span className="text-sm text-muted-foreground">
+                <Trans>Governance</Trans>
+              </span>
               <div className="flex items-center gap-2">
-                <span className="text-sm font-medium text-primary">
+                <span className="text-sm text-primary">
                   {adjustedGovernanceShare.toFixed(2)}%
                 </span>
               </div>
@@ -266,9 +309,11 @@ export const SetFeeRecipientsPreview = ({
         {adjustedDeployerShare > 0 && (
           <div className="p-3 rounded-xl bg-background/80 border">
             <div className="flex items-center justify-between">
-              <span className="text-sm text-muted-foreground">Creator</span>
+              <span className="text-sm text-muted-foreground">
+                <Trans>Creator</Trans>
+              </span>
               <div className="flex items-center gap-2">
-                <span className="text-sm font-medium text-primary">
+                <span className="text-sm text-primary">
                   {adjustedDeployerShare.toFixed(2)}%
                 </span>
               </div>
@@ -294,7 +339,7 @@ export const SetFeeRecipientsPreview = ({
                 <ArrowUpRight size={12} />
               </Link>
               <div className="flex items-center gap-2">
-                <span className="text-sm font-medium text-primary">
+                <span className="text-sm text-primary">
                   {recipient.percentage.toFixed(2)}%
                 </span>
               </div>
@@ -319,16 +364,20 @@ export const SetMintFeePreview = ({
   const percentage = (Number(fee) / 1e18) * 100
 
   return (
-    <div className="rounded-2xl border bg-muted/70 p-4 space-y-3">
-      <div className="flex items-center gap-2">
+    <div className="rounded-2xl border bg-muted/70 p-2 space-y-3">
+      <div className="flex items-center gap-2 ml-2 pt-2">
         <Edit2 size={16} className="text-primary" />
-        <div className="text-sm font-medium">Update Mint Fee</div>
+        <div className="text-sm font-medium">
+          <Trans>Update Mint Fee</Trans>
+        </div>
       </div>
       <div className="p-3 rounded-xl bg-primary/5 border border-primary/20">
         <div className="flex items-center justify-between">
-          <span className="text-sm text-muted-foreground">New mint fee:</span>
+          <span className="text-sm text-muted-foreground">
+            <Trans>New mint fee:</Trans>
+          </span>
           <div className="flex items-center gap-2">
-            <span className="text-sm font-medium text-primary">
+            <span className="text-sm text-primary">
               {percentage.toFixed(2)}%
             </span>
           </div>
@@ -350,16 +399,20 @@ export const SetTVLFeePreview = ({
   const percentage = Number(fee) / 1e16 // divide by 1e16 to get percentage
 
   return (
-    <div className="rounded-2xl border bg-muted/70 p-4 space-y-3">
-      <div className="flex items-center gap-2">
+    <div className="rounded-2xl border bg-muted/70 p-2 space-y-3">
+      <div className="flex items-center gap-2 ml-2 pt-2">
         <Edit2 size={16} className="text-primary" />
-        <div className="text-sm font-medium">Update Annualized TVL Fee</div>
+        <div className="text-sm font-medium">
+          <Trans>Update Annualized TVL Fee</Trans>
+        </div>
       </div>
       <div className="p-3 rounded-xl bg-primary/5 border border-primary/20">
         <div className="flex items-center justify-between">
-          <span className="text-sm text-muted-foreground">New TVL fee:</span>
+          <span className="text-sm text-muted-foreground">
+            <Trans>New TVL fee:</Trans>
+          </span>
           <div className="flex items-center gap-2">
-            <span className="text-sm font-medium text-primary">
+            <span className="text-sm text-primary">
               {percentage.toFixed(2)}%
             </span>
           </div>
@@ -380,20 +433,26 @@ export const SetAuctionLengthPreview = ({
   const lengthInMinutes = lengthInSeconds / 60
 
   return (
-    <div className="rounded-2xl border bg-muted/70 p-4 space-y-3">
-      <div className="flex items-center gap-2">
+    <div className="rounded-2xl border bg-muted/70 p-2 space-y-3">
+      <div className="flex items-center gap-2 ml-2 pt-2">
         <Edit2 size={16} className="text-primary" />
-        <div className="text-sm font-medium">Update Auction Length</div>
+        <div className="text-sm font-medium">
+          <Trans>Update Auction Length</Trans>
+        </div>
       </div>
       <div className="p-3 rounded-xl bg-primary/5 border border-primary/20">
         <div className="flex items-center justify-between">
           <span className="text-sm text-muted-foreground">
-            New auction duration:
+            <Trans>New auction duration:</Trans>
           </span>
           <div className="flex items-center gap-2">
             <Clock size={14} className="text-primary" />
             <span className="text-sm font-medium text-primary">
-              {lengthInMinutes} minutes
+              <Plural
+                value={lengthInMinutes}
+                one="# minute"
+                other="# minutes"
+              />
             </span>
           </div>
         </div>
@@ -413,16 +472,16 @@ export const SetDustAmountPreview = ({
   const [tokenAddress, amount] = decodedCalldata.data as [string, bigint]
 
   return (
-    <div className="rounded-2xl border bg-muted/70 p-4 space-y-3">
-      <div className="flex items-center gap-2">
+    <div className="rounded-2xl border bg-muted/70 p-2 space-y-3">
+      <div className="flex items-center gap-2 ml-2 pt-2">
         <Trash size={16} className="text-muted-foreground" />
         <div className="text-sm font-medium">
-          Set Dust Amount (Pre-requisite)
+          <Trans>Set Dust Amount (Pre-requisite)</Trans>
         </div>
       </div>
       <div className="p-3 rounded-xl bg-background/80 border">
         <div className="text-sm text-muted-foreground mb-2">
-          Setting dust amount for token removal
+          <Trans>Setting dust amount for token removal</Trans>
         </div>
         <Link
           to={getExplorerLink(tokenAddress, chainId, ExplorerDataType.ADDRESS)}
@@ -447,26 +506,29 @@ export const SetVotingDelayPreview = ({
 }) => {
   const delayInSeconds = Number(decodedCalldata.data[0])
   const delayInDays = delayInSeconds / 86400
-  const displayValue =
-    delayInDays < 1
-      ? `${delayInSeconds / 3600} hour${delayInSeconds / 3600 !== 1 ? 's' : ''}`
-      : `${delayInDays} day${delayInDays !== 1 ? 's' : ''}`
+  const delayInHours = delayInSeconds / 3600
 
   return (
-    <div className="rounded-2xl border bg-muted/70 p-4 space-y-3">
-      <div className="flex items-center gap-2">
+    <div className="rounded-2xl border bg-muted/70 p-2 space-y-3">
+      <div className="flex items-center gap-2 ml-2 pt-2">
         <Edit2 size={16} className="text-primary" />
-        <div className="text-sm font-medium">Update Voting Delay</div>
+        <div className="text-sm font-medium">
+          <Trans>Update Voting Delay</Trans>
+        </div>
       </div>
       <div className="p-3 rounded-xl bg-primary/5 border border-primary/20">
         <div className="flex items-center justify-between">
           <span className="text-sm text-muted-foreground">
-            New voting delay:
+            <Trans>New voting delay:</Trans>
           </span>
           <div className="flex items-center gap-2">
             <Clock size={14} className="text-primary" />
             <span className="text-sm font-medium text-primary">
-              {displayValue}
+              {delayInDays < 1 ? (
+                <Plural value={delayInHours} one="# hour" other="# hours" />
+              ) : (
+                <Plural value={delayInDays} one="# day" other="# days" />
+              )}
             </span>
           </div>
         </div>
@@ -484,26 +546,29 @@ export const SetVotingPeriodPreview = ({
 }) => {
   const periodInSeconds = Number(decodedCalldata.data[0])
   const periodInDays = periodInSeconds / 86400
-  const displayValue =
-    periodInDays < 1
-      ? `${periodInSeconds / 3600} hour${periodInSeconds / 3600 !== 1 ? 's' : ''}`
-      : `${periodInDays} day${periodInDays !== 1 ? 's' : ''}`
+  const periodInHours = periodInSeconds / 3600
 
   return (
-    <div className="rounded-2xl border bg-muted/70 p-4 space-y-3">
-      <div className="flex items-center gap-2">
+    <div className="rounded-2xl border bg-muted/70 p-2 space-y-3">
+      <div className="flex items-center gap-2 ml-2 pt-2">
         <Edit2 size={16} className="text-primary" />
-        <div className="text-sm font-medium">Update Voting Period</div>
+        <div className="text-sm font-medium">
+          <Trans>Update Voting Period</Trans>
+        </div>
       </div>
       <div className="p-3 rounded-xl bg-primary/5 border border-primary/20">
         <div className="flex items-center justify-between">
           <span className="text-sm text-muted-foreground">
-            New voting period:
+            <Trans>New voting period:</Trans>
           </span>
           <div className="flex items-center gap-2">
             <Clock size={14} className="text-primary" />
             <span className="text-sm font-medium text-primary">
-              {displayValue}
+              {periodInDays < 1 ? (
+                <Plural value={periodInHours} one="# hour" other="# hours" />
+              ) : (
+                <Plural value={periodInDays} one="# day" other="# days" />
+              )}
             </span>
           </div>
         </div>
@@ -524,19 +589,21 @@ export const SetProposalThresholdPreview = ({
   const percentage = (Number(threshold) / 1e18) * 100
 
   return (
-    <div className="rounded-2xl border bg-muted/70 p-4 space-y-3">
-      <div className="flex items-center gap-2">
+    <div className="rounded-2xl border bg-muted/70 p-2 space-y-3">
+      <div className="flex items-center gap-2 ml-2 pt-2">
         <Edit2 size={16} className="text-primary" />
-        <div className="text-sm font-medium">Update Proposal Threshold</div>
+        <div className="text-sm font-medium">
+          <Trans>Update Proposal Threshold</Trans>
+        </div>
       </div>
       <div className="p-3 rounded-xl bg-primary/5 border border-primary/20">
         <div className="flex items-center justify-between">
           <span className="text-sm text-muted-foreground">
-            New proposal threshold:
+            <Trans>New proposal threshold:</Trans>
           </span>
           <div className="flex items-center gap-2">
             <Shield size={14} className="text-primary" />
-            <span className="text-sm font-medium text-primary">
+            <span className="text-sm text-primary">
               {percentage.toFixed(2)}%
             </span>
           </div>
@@ -579,19 +646,21 @@ export const UpdateQuorumNumeratorPreview = ({
       : 0
 
   return (
-    <div className="rounded-2xl border bg-muted/70 p-4 space-y-3">
-      <div className="flex items-center gap-2">
+    <div className="rounded-2xl border bg-muted/70 p-2 space-y-3">
+      <div className="flex items-center gap-2 ml-2 pt-2">
         <Edit2 size={16} className="text-primary" />
-        <div className="text-sm font-medium">Update Voting Quorum</div>
+        <div className="text-sm font-medium">
+          <Trans>Update Voting Quorum</Trans>
+        </div>
       </div>
       <div className="p-3 rounded-xl bg-primary/5 border border-primary/20">
         <div className="flex items-center justify-between">
           <span className="text-sm text-muted-foreground">
-            New voting quorum:
+            <Trans>New voting quorum:</Trans>
           </span>
           <div className="flex items-center gap-2">
             <Shield size={14} className="text-primary" />
-            <span className="text-sm font-medium text-primary">
+            <span className="text-sm text-primary">
               {percentage.toFixed(2)}%
             </span>
           </div>
@@ -610,29 +679,190 @@ export const UpdateDelayPreview = ({
 }) => {
   const delayInSeconds = Number(decodedCalldata.data[0])
   const delayInDays = delayInSeconds / 86400
-  const displayValue =
-    delayInDays < 1
-      ? `${delayInSeconds / 3600} hour${delayInSeconds / 3600 !== 1 ? 's' : ''}`
-      : `${delayInDays} day${delayInDays !== 1 ? 's' : ''}`
+  const delayInHours = delayInSeconds / 3600
 
   return (
-    <div className="rounded-2xl border bg-muted/70 p-4 space-y-3">
-      <div className="flex items-center gap-2">
+    <div className="rounded-2xl border bg-muted/70 p-2 space-y-3">
+      <div className="flex items-center ml-2 pt-2 gap-2">
         <Edit2 size={16} className="text-primary" />
-        <div className="text-sm font-medium">Update Execution Delay</div>
+        <div className="text-sm font-medium">
+          <Trans>Update Execution Delay</Trans>
+        </div>
       </div>
       <div className="p-3 rounded-xl bg-primary/5 border border-primary/20">
         <div className="flex items-center justify-between">
           <span className="text-sm text-muted-foreground">
-            New execution delay:
+            <Trans>New execution delay:</Trans>
           </span>
           <div className="flex items-center gap-2">
             <Clock size={14} className="text-primary" />
             <span className="text-sm font-medium text-primary">
-              {displayValue}
+              {delayInDays < 1 ? (
+                <Plural value={delayInHours} one="# hour" other="# hours" />
+              ) : (
+                <Plural value={delayInDays} one="# day" other="# days" />
+              )}
             </span>
           </div>
         </div>
+      </div>
+    </div>
+  )
+}
+
+export const SetOptimisticParamsPreview = ({
+  decodedCalldata,
+}: {
+  decodedCalldata: DecodedCalldata
+  targetAddress?: Address
+}) => {
+  const params = decodedCalldata.data[0] as {
+    vetoDelay?: bigint | number
+    vetoPeriod?: bigint | number
+    vetoThreshold?: bigint
+  }
+  const vetoDelay = Number(params.vetoDelay ?? 0)
+  const vetoPeriod = Number(params.vetoPeriod ?? 0)
+  const vetoThreshold = params.vetoThreshold ?? 0n
+  const vetoThresholdPercent = Number(formatEther(vetoThreshold)) * 100
+
+  return (
+    <div className="rounded-2xl border bg-muted/70 p-2 space-y-3">
+      <div className="flex items-center gap-2 ml-2 mt-2">
+        <Wand2 size={16} className="text-primary" />
+        <div className="text-sm font-medium">
+          <Trans>Update Optimistic Parameters</Trans>
+        </div>
+      </div>
+      <div className="space-y-2">
+        <div className="p-3 rounded-xl bg-primary/5 border border-primary/20">
+          <div className="flex items-center justify-between gap-4">
+            <span className="text-sm text-muted-foreground">
+              <Trans>Veto delay</Trans>
+            </span>
+            <div className="flex items-center gap-2">
+              <Clock size={14} className="text-primary" />
+              <span className="text-sm text-primary">
+                {vetoDelay ? (
+                  <Plural
+                    value={vetoDelay / 3600}
+                    one="# hour"
+                    other="# hours"
+                  />
+                ) : (
+                  <Trans>0 seconds</Trans>
+                )}
+              </span>
+            </div>
+          </div>
+        </div>
+        <div className="p-3 rounded-xl bg-primary/5 border border-primary/20">
+          <div className="flex items-center justify-between gap-4">
+            <span className="text-sm text-muted-foreground">
+              <Trans>Veto period</Trans>
+            </span>
+            <div className="flex items-center gap-2">
+              <Clock size={14} className="text-primary" />
+              <span className="text-sm text-primary">
+                {vetoPeriod ? (
+                  <Plural
+                    value={vetoPeriod / 3600}
+                    one="# hour"
+                    other="# hours"
+                  />
+                ) : (
+                  <Trans>0 seconds</Trans>
+                )}
+              </span>
+            </div>
+          </div>
+        </div>
+        <div className="p-3 rounded-xl bg-primary/5 border border-primary/20">
+          <div className="flex items-center justify-between gap-4">
+            <span className="text-sm text-muted-foreground">
+              <Trans>Veto threshold</Trans>
+            </span>
+            <div className="flex items-center gap-2">
+              <FileLock2 size={14} className="text-primary" />
+              <span className="text-sm text-primary">
+                {vetoThresholdPercent.toFixed(2)}%
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+export const SelectorRegistryPreview = ({
+  decodedCalldata,
+}: {
+  decodedCalldata: DecodedCalldata
+  targetAddress?: Address
+}) => {
+  const { t } = useLingui()
+  const chainId = useAtomValue(chainIdAtom)
+  const selectorData = decodedCalldata.data[0] as Array<{
+    target: Address
+    selectors: Hex[]
+  }>
+  const isRegister = decodedCalldata.signature === 'registerSelectors'
+
+  return (
+    <div className="rounded-2xl border bg-muted/70 p-2 space-y-3">
+      <div className="flex items-center gap-2 ml-2 mt-2">
+        {isRegister ? (
+          <PlusCircle size={16} className="text-success" />
+        ) : (
+          <MinusCircle size={16} className="text-destructive" />
+        )}
+        <div className="text-sm font-medium">
+          {isRegister ? (
+            <Trans>Register Optimistic Actions</Trans>
+          ) : (
+            <Trans>Unregister Optimistic Actions</Trans>
+          )}
+        </div>
+      </div>
+      <div className="space-y-2">
+        {selectorData.map((data) => (
+          <div
+            key={`${data.target}-${data.selectors.join('-')}`}
+            className="p-3 rounded-xl bg-background/80 border"
+          >
+            <div className="flex items-center gap-2 mb-3 text-sm">
+              <span className="text-legend">
+                <Trans>Target:</Trans>
+              </span>
+              <Link
+                to={getExplorerLink(
+                  data.target,
+                  chainId,
+                  ExplorerDataType.ADDRESS
+                )}
+                target="_blank"
+                className="inline-flex items-center gap-1 text-primary hover:underline"
+              >
+                <EnsName address={data.target} />
+                <span className="text-xs text-muted-foreground">
+                  {shortenAddress(data.target)}
+                </span>
+                <ArrowUpRight size={14} />
+              </Link>
+            </div>
+            <div className="flex flex-wrap gap-2">
+              {data.selectors.map((selector) => (
+                <span
+                  key={selector}
+                  className="rounded-full bg-primary/10 text-primary px-2 py-1 text-xs"
+                >
+                  {formatSelectorLabel(selector, t)}
+                </span>
+              ))}
+            </div>
+          </div>
+        ))}
       </div>
     </div>
   )

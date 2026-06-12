@@ -4,6 +4,7 @@ import BasicInput from '../../components/basic-input'
 import { useFormContext } from 'react-hook-form'
 import { Address } from 'viem'
 import { ReactNode } from 'react'
+import { Trans, useLingui } from '@lingui/react/macro'
 
 type Recipient = {
   address: Address
@@ -27,7 +28,7 @@ const AddRecipientButton = () => {
       onClick={onAdd}
     >
       <PlusIcon size={16} />
-      Add additional recipients
+      <Trans>Add additional recipients</Trans>
     </Button>
   )
 }
@@ -52,13 +53,14 @@ const RemoveRecipientButton = ({ index }: { index: number }) => {
 }
 
 const AdditionalRevenueRecipient = ({ index }: { index: number }) => {
+  const { t } = useLingui()
   return (
     <div className="w-full rounded-xl flex items-center gap-2 justify-between px-4 py-3 bg-muted/70">
       <div className="w-full flex items-top gap-2">
         <BasicInput
           className="w-full"
           fieldName={`additionalRevenueRecipients[${index}].address`}
-          label={`Recipient ${index + 1} address`}
+          label={t`Recipient ${index + 1} address`}
           placeholder="0x..."
         />
         <BasicInput

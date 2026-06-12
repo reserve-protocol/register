@@ -1,4 +1,5 @@
 import { Button } from '@/components/ui/button'
+import { Trans } from '@lingui/react/macro'
 import { ReactNode, useEffect, useState } from 'react'
 import { useZap } from '../context/ZapContext'
 import { Clock } from 'lucide-react'
@@ -48,13 +49,15 @@ const ZapRefreshQuote = ({ children }: { children: ReactNode }) => {
     <div>
       {showRefresh && !(loadingZap || validatingZap) ? (
         <Button onClick={handleRefreshClick} className="w-full">
-          Refresh Quote
+          <Trans>Refresh Quote</Trans>
         </Button>
       ) : (
         <div>
           {children}
           <div className="flex items-center gap-2 justify-between text-sm">
-            <span>Quote expiration</span>
+            <span>
+              <Trans>Quote expiration</Trans>
+            </span>
             <div className="flex items-center gap-1 text-primary">
               <Clock size={16} />
               <span className="text-sm font-medium w-10 text-right">

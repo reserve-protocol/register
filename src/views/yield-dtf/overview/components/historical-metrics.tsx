@@ -1,5 +1,5 @@
 import SectionAnchor from '@/components/section-anchor'
-import { Trans } from '@lingui/macro'
+import { Trans } from '@lingui/react/macro'
 import { TrendingUp } from 'lucide-react'
 import { Suspense, lazy } from 'react'
 import Skeleton from 'react-loading-skeleton'

@@ -1,4 +1,4 @@
-import { t } from '@lingui/macro'
+import { useLingui } from '@lingui/react/macro'
 import AuctionsIcon from 'components/icons/AuctionsIcon'
 import GovernanceIcon from 'components/icons/GovernanceIcon'
 import IssuanceIcon from 'components/icons/IssuanceIcon'
@@ -62,6 +62,7 @@ const NavItem = ({ path, title, Icon, rTokenAddress }: NavItemProps) => {
 
 // Sidebar Navigation
 const Navigation = () => {
+  const { t } = useLingui()
   const rTokenAddress = useAtomValue(selectedRTokenAtom)
   const rToken = useRToken()
 
@@ -86,7 +87,7 @@ const Navigation = () => {
     ]
 
     return items
-  }, [])
+  }, [t])
 
   const pages = useMemo(() => {
     if (rTokenAddress === RSV.address) {

@@ -2,12 +2,12 @@ import dtfAdminAbi from '@/abis/dtf-admin-abi'
 import dtfIndexAbi from '@/abis/dtf-index-abi-v1'
 import DTFIndexGovernance from '@/abis/dtf-index-governance'
 import { Button } from '@/components/ui/button'
-import { getProposalState, PartialProposal } from '@/lib/governance'
 import { chainIdAtom } from '@/state/atoms'
 import { indexDTFAtom, indexDTFVersionAtom } from '@/state/dtf/atoms'
 import { getCurrentTime } from '@/utils'
 import { ChainId } from '@/utils/chains'
 import { PROPOSAL_STATES } from '@/utils/constants'
+import type { IndexDtfProposalSummary } from '@reserve-protocol/react-sdk'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { AlertCircle, Loader2 } from 'lucide-react'
 import { useCallback, useEffect } from 'react'
@@ -19,8 +19,10 @@ import {
 } from 'wagmi'
 import { governanceProposalsAtom, refetchTokenAtom } from '../../../atoms'
 import { useIsProposeAllowed } from '../../../hooks/use-is-propose-allowed'
+import useRecentProposalReceipt from '../../../hooks/use-recent-proposal-receipt'
 import { toast } from 'sonner'
 import dtfIndexAbiV4 from '@/abis/dtf-index-abi-v4'
+import { Trans, useLingui } from '@lingui/react/macro'
 
 export const spellAbi = [
   { inputs: [], stateMutability: 'nonpayable', type: 'constructor' },
@@ -62,14 +64,16 @@ type SpellUpgradeProps = {
 }
 
 const ProposeBanner = ({ refetch }: SpellUpgradeProps) => {
+  const { t } = useLingui()
   const dtf = useAtomValue(indexDTFAtom)
   const chainId = useAtomValue(chainIdAtom)
   const spell = spellAddress[chainId]
+  const handleRecentProposalReceipt = useRecentProposalReceipt()
 
-  const { writeContract, data, isPending } = useWriteContract()
+  const { writeContract, data: hash, isPending } = useWriteContract()
 
-  const { isSuccess } = useWaitForTransactionReceipt({
-    hash: data,
+  const { data: receipt, isSuccess } = useWaitForTransactionReceipt({
+    hash,
     chainId,
   })
 
@@ -84,6 +88,7 @@ const ProposeBanner = ({ refetch }: SpellUpgradeProps) => {
     if (!dtf || !spell || !dtf.ownerGovernance) return
 
     writeContract({
+      chainId,
       address: dtf.ownerGovernance.id,
       abi: DTFIndexGovernance,
       functionName: 'propose',
@@ -118,17 +123,36 @@ const ProposeBanner = ({ refetch }: SpellUpgradeProps) => {
   }
 
   useEffect(() => {
-    if (isSuccess) {
-      // Give some time for the proposal to be created on the subgraph
-      setTimeout(() => {
-        toast('Proposal created!', {
-          description: 'DTF V4.0.0 upgrade proposal created',
+    if (!isSuccess || !receipt || !dtf?.ownerGovernance?.id) return
+
+    void handleRecentProposalReceipt({
+      receipt,
+      governor: dtf.ownerGovernance.id,
+      onSuccess: () => {
+        toast(t`Proposal created!`, {
+          description: t`DTF V4.0.0 upgrade proposal created`,
           icon: '🎉',
         })
         refetch()
-      }, 10000)
-    }
-  }, [isSuccess])
+      },
+      onFallback: () => {
+        setTimeout(() => {
+          toast(t`Proposal created!`, {
+            description: t`DTF V4.0.0 upgrade proposal created`,
+            icon: '🎉',
+          })
+          refetch()
+        }, 10000)
+      },
+    })
+  }, [
+    dtf?.ownerGovernance?.id,
+    handleRecentProposalReceipt,
+    isSuccess,
+    receipt,
+    refetch,
+    t,
+  ])
 
   if (!proposalAvailable) {
     return null
@@ -139,34 +163,38 @@ const ProposeBanner = ({ refetch }: SpellUpgradeProps) => {
       <div className="flex flex-row items-center gap-2 ">
         <AlertCircle size={24} className="text-primary shrink-0" />
         <div>
-          <h4 className="font-bold text-primary">New version available</h4>
+          <h4 className="font-bold text-primary">
+            <Trans>New version available</Trans>
+          </h4>
           <p className="text-sm">
-            Release 4.0.0 improves the the way in which DTFs are rebalanced. At
-            a high level, the new rebalance mechanism is able to consider the
-            entire basket at once instead of requiring individual 2-token
-            auctions to be proposed in advance and performed in isolation. See
-            docs.reserve.org for more details.
+            <Trans>
+              Release 4.0.0 improves the the way in which DTFs are rebalanced.
+              At a high level, the new rebalance mechanism is able to consider
+              the entire basket at once instead of requiring individual 2-token
+              auctions to be proposed in advance and performed in isolation. See
+              docs.reserve.org for more details.
+            </Trans>
           </p>
         </div>
       </div>
       <Button
-        disabled={!isReady || isPending || !!data}
+        disabled={!isReady || isPending || !!hash}
         onClick={handlePropose}
         className="w-full mt-2"
       >
-        {(isPending || !!data) && (
+        {(isPending || !!hash) && (
           <Loader2 className="w-4 h-4 animate-spin mr-2" />
         )}
-        {isPending && 'Pending, sign in wallet...'}
-        {!isPending && !!data && 'Waiting for confirmation...'}
-        {!isPending && !data && 'Propose upgrade'}
+        {isPending && t`Pending, sign in wallet...`}
+        {!isPending && !!hash && t`Waiting for confirmation...`}
+        {!isPending && !hash && t`Propose upgrade`}
       </Button>
     </div>
   )
 }
 
 const validProposalExists = (
-  proposals: PartialProposal[],
+  proposals: readonly IndexDtfProposalSummary[],
   description: string
 ): boolean => {
   const states = [
@@ -181,13 +209,11 @@ const validProposalExists = (
       return false
     }
 
-    const pState = getProposalState(p)
-
-    if (pState.state === PROPOSAL_STATES.EXPIRED) {
+    if (p.votingState.state === PROPOSAL_STATES.EXPIRED) {
       return false
     }
 
-    return states.includes(pState.state)
+    return states.includes(p.votingState.state)
   })
 }
 

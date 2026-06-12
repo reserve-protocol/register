@@ -1,6 +1,7 @@
 import SectionAnchor from '@/components/section-anchor'
-import { Trans } from '@lingui/macro'
+import { Plural, Trans } from '@lingui/react/macro'
 import BasketCubeIcon from 'components/icons/BasketCubeIcon'
+import { Fragment } from 'react'
 import { atom, useAtomValue } from 'jotai'
 import Skeleton from 'react-loading-skeleton'
 import { rTokenAtom, rTokenBackingDistributionAtom } from 'state/atoms'
@@ -8,7 +9,6 @@ import AssetBreakdown from './asset-breakdown'
 import RevenueSplitOverview from './revenue-split-overview'
 import BuckingBuffer from './backing-buffer'
 
-// TODO: Localization?
 const pegsAtom = atom((get) => {
   const rToken = get(rTokenAtom)
   const distribution = get(
@@ -28,19 +28,10 @@ const pegsAtom = atom((get) => {
     {} as { [x: string]: number }
   )
 
-  const totalUnits = Object.keys(unitCount).length
-
-  return Object.entries(unitCount).reduce((acc, [unit, count], index) => {
-    if (index && index === totalUnits - 1) {
-      acc += ' and '
-    } else if (index) {
-      acc += ', '
-    }
-
-    acc += `${count} Collateral${count > 1 ? 's' : ''} pegged to ${unit}`
-
-    return acc
-  }, `${rToken.symbol} has `)
+  return {
+    symbol: rToken.symbol,
+    units: Object.entries(unitCount).map(([unit, count]) => ({ unit, count })),
+  }
 })
 
 const unitCountAtom = atom((get) => {
@@ -67,13 +58,35 @@ const unitCountAtom = atom((get) => {
 
 const BackingResume = () => {
   const unitCount = useAtomValue(unitCountAtom)
-  const legend = useAtomValue(pegsAtom)
+  const pegs = useAtomValue(pegsAtom)
 
   if (unitCount > 2) return <div className="mb-8" />
 
   return (
     <h2 className="ml-6 mt-2 mb-8 text-xl font-semibold">
-      {legend ? legend : <Skeleton />}
+      {pegs ? (
+        <>
+          <Trans>{pegs.symbol} has</Trans>{' '}
+          {pegs.units.map(({ unit, count }, index) => (
+            <Fragment key={unit}>
+              {index > 0 &&
+                (index === pegs.units.length - 1 ? (
+                  <Trans> and </Trans>
+                ) : (
+                  ', '
+                ))}
+              <Plural
+                value={count}
+                one="# Collateral pegged to"
+                other="# Collaterals pegged to"
+              />{' '}
+              {unit}
+            </Fragment>
+          ))}
+        </>
+      ) : (
+        <Skeleton />
+      )}
     </h2>
   )
 }

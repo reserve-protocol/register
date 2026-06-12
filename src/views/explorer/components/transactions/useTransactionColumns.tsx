@@ -1,4 +1,4 @@
-import { t } from '@lingui/macro'
+import { useLingui } from '@lingui/react/macro'
 import { createColumnHelper } from '@tanstack/react-table'
 import ChainLogo from 'components/icons/ChainLogo'
 import DebankIcon from 'components/icons/DebankIcon'
@@ -19,6 +19,7 @@ import { formatEther } from 'viem'
 import { TransactionRecord } from './useTransactionData'
 
 const useTransactionColumns = () => {
+  const { t } = useLingui()
   const columnHelper = createColumnHelper<TransactionRecord>()
   const transactionTypes: StringMap = useMemo(
     () => ({
@@ -37,7 +38,7 @@ const useTransactionColumns = () => {
       WITHDRAWAL: t`Withdraw`,
       UNSTAKE_CANCELLED: t`Unstake Cancelled`,
     }),
-    []
+    [t]
   )
 
   return useMemo(
@@ -148,7 +149,7 @@ const useTransactionColumns = () => {
         },
       }),
     ],
-    []
+    [t, transactionTypes]
   )
 }
 

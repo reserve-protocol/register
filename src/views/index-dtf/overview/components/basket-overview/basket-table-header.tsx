@@ -5,7 +5,14 @@ import { performanceTimeRangeAtom } from '@/state/dtf/atoms'
 import { capitalize } from '@/utils/constants'
 import { ETHERSCAN_NAMES } from '@/utils/getExplorerLink'
 import { useAtomValue } from 'jotai'
-import { ArrowDown, ArrowUp, ArrowUpDown, PackageOpen, Target } from 'lucide-react'
+import {
+  ArrowDown,
+  ArrowUp,
+  ArrowUpDown,
+  PackageOpen,
+  Target,
+} from 'lucide-react'
+import { Trans } from '@lingui/react/macro'
 
 export type SortField = 'weight' | 'performance'
 export type SortDirection = 'asc' | 'desc'
@@ -85,14 +92,16 @@ export const BasketTableHeader = ({
     <TableHeader>
       <TableRow className="border-none text-legend bg-card sticky -top-[1px]">
         <TableHead className="text-left text-xs sm:text-base py-1">
-          <TabsList className="h-9 rounded-[70px] p-0.5">
+          <TabsList className="h-7 sm:h-8 rounded-[70px] py-0 px-0.5">
             <TabsTrigger
               value="exposure"
               className="rounded-[60px] px-2 data-[state=active]:text-primary"
               onClick={() => setActiveTab('exposure')}
             >
               <Target className="w-4 h-4 mr-0 sm:mr-1" />{' '}
-              <span className="hidden sm:block">Exposure</span>
+              <span className="hidden sm:block">
+                <Trans>Exposure</Trans>
+              </span>
             </TabsTrigger>
             <TabsTrigger
               value="collateral"
@@ -100,7 +109,9 @@ export const BasketTableHeader = ({
               onClick={() => setActiveTab('collateral')}
             >
               <PackageOpen className="w-4 h-4 mr-0 sm:mr-1" />{' '}
-              <span className="hidden sm:block">Collateral</span>
+              <span className="hidden sm:block">
+                <Trans>Collateral</Trans>
+              </span>
             </TabsTrigger>
           </TabsList>
         </TableHead>
@@ -111,27 +122,31 @@ export const BasketTableHeader = ({
           onSort={onSort}
           className="text-center px-1 sm:px-3"
         >
-          Weight
+          <Trans>Weight</Trans>
         </TableHeaderWithSort>
 
         <TableHeaderWithSort
           field="performance"
           sortConfig={sortConfig}
           onSort={onSort}
-          className="text-center px-1 sm:px-3"
+          className="text-center px-1 sm:px-3 text-wrap sm:text-nowrap"
         >
-          Price Change ({periodLabel[timeRange]})
+          <Trans>Price Change ({periodLabel[timeRange]})</Trans>
         </TableHeaderWithSort>
 
         {isExposure ? (
           <TableHead className="text-center hidden sm:table-cell">
-            <span className="text-xs sm:text-base">Market Cap</span>
+            <span className="text-xs sm:text-base">
+              <Trans>Market Cap</Trans>
+            </span>
           </TableHead>
         ) : (
           <TableHead className="text-right text-xs sm:text-base px-1 sm:px-3">
-            {`${hasBridgedAssets ? 'Bridge / ' : ''}${capitalize(
-              ETHERSCAN_NAMES[chainId]
-            )}`}
+            {hasBridgedAssets ? (
+              <Trans>Bridge / {capitalize(ETHERSCAN_NAMES[chainId])}</Trans>
+            ) : (
+              capitalize(ETHERSCAN_NAMES[chainId])
+            )}
           </TableHead>
         )}
       </TableRow>

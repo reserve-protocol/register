@@ -1,3 +1,4 @@
+import { Trans, useLingui } from '@lingui/react/macro'
 import ERC20 from 'abis/ERC20'
 import USDT from 'abis/USDT'
 import TransactionButton from '@/components/ui/transaction-button'
@@ -34,6 +35,7 @@ const CollateralApproval = ({
   loading,
   className,
 }: CollateralApprovalProps) => {
+  const { t } = useLingui()
   const chainId = useAtomValue(chainIdAtom)
   const rToken = useRToken()
 
@@ -98,17 +100,23 @@ const CollateralApproval = ({
       {!!amount && (
         <div className="ml-auto text-xs">
           {isLoading && !hash && (
-            <span className="text-warning">Sign in wallet</span>
+            <span className="text-warning">
+              <Trans>Sign in wallet</Trans>
+            </span>
           )}
           {hash && status !== 'success' && (
-            <span className="text-legend">Pending</span>
+            <span className="text-legend">
+              <Trans>Pending</Trans>
+            </span>
           )}
           {(status === 'success' || allowance) && (
-            <span className="text-success">Confirmed</span>
+            <span className="text-success">
+              <Trans>Confirmed</Trans>
+            </span>
           )}
           {!hash && !isLoading && !allowance && (
             <TransactionButton
-              text="Approve"
+              text={t`Approve`}
               onClick={write}
               disabled={!write}
               size="sm"
@@ -139,7 +147,9 @@ const CollateralApprovals = ({
         onClick={() => setVisible(!isVisible)}
       >
         <OverviewIcon />
-        <span className="ml-2">Collateral approvals</span>
+        <span className="ml-2">
+          <Trans>Collateral approvals</Trans>
+        </span>
         <div className="ml-2">
           {hasAllowance && !!quantities && (
             <CheckCircle color="#75FBC3" size={16} />

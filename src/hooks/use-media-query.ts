@@ -6,7 +6,11 @@ import { useEffect, useState } from 'react'
  * @returns boolean indicating if the media query matches
  */
 export function useMediaQuery(query: string): boolean {
-  const [matches, setMatches] = useState(false)
+  // Resolve synchronously on first render so consumers don't flash the
+  // mobile/false branch before the effect runs.
+  const [matches, setMatches] = useState(() =>
+    typeof window !== 'undefined' ? window.matchMedia(query).matches : false
+  )
 
   useEffect(() => {
     const media = window.matchMedia(query)

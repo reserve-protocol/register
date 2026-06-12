@@ -3,7 +3,7 @@ import { Card } from '@/components/ui/card'
 import { Separator } from '@/components/ui/separator'
 import DocsLink from '@/components/utils/docs-link'
 import { YIELD_PROTOCOL_DOCS } from '@/utils/constants'
-import { t, Trans } from '@lingui/macro'
+import { Trans, useLingui } from '@lingui/react/macro'
 import Field, { FieldInput, getErrorMessage } from 'components/field'
 import { atom, useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { Plus } from 'lucide-react'
@@ -44,6 +44,7 @@ interface RevenueSplitProps {
 }
 
 const RevenueSplit = ({ className }: RevenueSplitProps) => {
+  const { t } = useLingui()
   const [revenueSplit, setRevenueSplit] = useAtom(revenueSplitAtom)
   const updateExternalShare = useSetAtom(updateExternalShareAtom)
   const isValid = useAtomValue(isRevenueValidAtom)
@@ -117,7 +118,9 @@ const RevenueSplit = ({ className }: RevenueSplitProps) => {
           placeholder={t`Input token holders revenue distribution`}
           {...register('holders', inputValidation)}
           error={
-            errors['holders'] ? getErrorMessage(errors['holders']) : !isValid
+            errors['holders']
+              ? t(getErrorMessage(errors['holders']))
+              : !isValid
           }
         />
       </Field>
@@ -126,7 +129,9 @@ const RevenueSplit = ({ className }: RevenueSplitProps) => {
           placeholder={t`Input RSR stakers revenue distribution`}
           {...register('stakers', inputValidation)}
           error={
-            errors['stakers'] ? getErrorMessage(errors['stakers']) : !isValid
+            errors['stakers']
+              ? t(getErrorMessage(errors['stakers']))
+              : !isValid
           }
         />
       </Field>

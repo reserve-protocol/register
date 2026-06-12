@@ -3,13 +3,15 @@ import { DollarSign } from 'lucide-react'
 import { basketAtom } from '../../atoms'
 import BasicInput from '../../components/basic-input'
 import Ticker from '../../utils/ticker'
+import { Trans, useLingui } from '@lingui/react/macro'
 
 const FTokenValueInput = () => {
+  const { t } = useLingui()
   return (
     <BasicInput
       fieldName="initialValue"
       label="USD"
-      placeholder="Initial value"
+      placeholder={t`Initial value`}
       type="number"
     />
   )
@@ -27,11 +29,15 @@ const BasketValue = () => {
           <DollarSign size={24} strokeWidth={1.5} />
         </div>
         <div className="flex flex-col max-w-md">
-          <span className="text-base font-bold">Price at launch</span>
+          <span className="text-base font-bold">
+            <Trans>Price at launch</Trans>
+          </span>
           <span className="text-sm text-secondary-foreground">
-            The approximate value of 1 unit of <Ticker /> when the DTF is
-            created. The exact price may be different due to market volatility
-            and errors in oracle pricing.
+            <Trans>
+              The approximate value of 1 unit of <Ticker /> when the DTF is
+              created. The exact price may be different due to market volatility
+              and errors in oracle pricing.
+            </Trans>
           </span>
         </div>
       </div>

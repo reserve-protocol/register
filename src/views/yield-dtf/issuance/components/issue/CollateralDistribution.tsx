@@ -1,4 +1,4 @@
-import { Trans } from '@lingui/macro'
+import { Trans } from '@lingui/react/macro'
 import OverviewIcon from 'components/icons/OverviewIcon'
 import TokenItem from 'components/token-item'
 import { ChevronDown, ChevronUp, Loader2 } from 'lucide-react'

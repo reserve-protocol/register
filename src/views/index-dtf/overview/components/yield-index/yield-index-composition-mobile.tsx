@@ -13,6 +13,7 @@ import { useAtomValue } from 'jotai'
 import { ArrowUpRight } from 'lucide-react'
 import React from 'react'
 import { Link } from 'react-router-dom'
+import { Plural, Trans } from '@lingui/react/macro'
 import { CompositionTab } from './yield-index-composition-tabs'
 
 const MobileStrategies = () => {
@@ -53,9 +54,13 @@ const MobileStrategies = () => {
           </div>
           <span className="text-sm text-muted-foreground">{s.protocols}</span>
           <span className="text-sm">
-            {formatPercentage(s.weight)} allocation ·{' '}
-            <span className="text-primary">{formatPercentage(s.estApy)}</span>{' '}
-            Est. APY
+            <Trans>
+              {formatPercentage(s.weight)} allocation ·{' '}
+              <span className="text-primary">
+                {formatPercentage(s.estApy)}
+              </span>{' '}
+              Est. APY
+            </Trans>
           </span>
         </div>
       ))}
@@ -88,8 +93,13 @@ const MobileAssets = () => {
             </div>
           </div>
           <span className="text-sm">
-            {formatPercentage(a.weight)} exposure · {a.type}
-            {a.provider !== '-' && ` by ${a.provider}`}
+            <Trans>{formatPercentage(a.weight)} exposure</Trans> · {a.type}
+            {a.provider !== '-' && (
+              <>
+                {' '}
+                <Trans>by {a.provider}</Trans>
+              </>
+            )}
           </span>
         </div>
       ))}
@@ -119,8 +129,12 @@ const MobileProtocols = () => {
           </div>
           <span className="text-sm text-muted-foreground">{p.role}</span>
           <span className="text-sm">
-            {formatPercentage(p.exposureShare)} exposure · Used in {p.usedIn}{' '}
-            Strateg{p.usedIn === 1 ? 'y' : 'ies'}
+            <Trans>{formatPercentage(p.exposureShare)} exposure</Trans> ·{' '}
+            <Plural
+              value={p.usedIn}
+              one="Used in # Strategy"
+              other="Used in # Strategies"
+            />
           </span>
         </div>
       ))}

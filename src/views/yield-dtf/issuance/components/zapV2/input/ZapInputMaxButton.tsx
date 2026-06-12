@@ -1,4 +1,5 @@
 import { Button } from '@/components/ui/button'
+import { Trans } from '@lingui/react/macro'
 import { formatCurrency } from 'utils'
 import { useZap } from '../context/ZapContext'
 import TokenLogo from 'components/icons/TokenLogo'
@@ -17,7 +18,9 @@ const ZapInputMaxButton = () => {
       {operation === 'redeem' && <TokenLogo symbol={tokenIn.symbol} />}
       <div className="flex items-center gap-2">
         <div>
-          <span>Balance </span>
+          <span>
+            <Trans>Balance</Trans>{' '}
+          </span>
           <span className="font-bold">
             {formatCurrency(+(tokenIn.balance ?? '0'), decimalsFormat, {
               notation: 'compact',
@@ -31,7 +34,7 @@ const ZapInputMaxButton = () => {
           className="rounded"
           onClick={onClickMax}
         >
-          Max
+          <Trans>Max</Trans>
         </Button>
       </div>
     </div>

@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button'
 import { chainIdAtom } from '@/state/atoms'
 import { indexDTFAtom, indexDTFVersionAtom } from '@/state/dtf/atoms'
 import { ROUTES } from '@/utils/constants'
+import { Trans, useLingui } from '@lingui/react/macro'
 import { useAtomValue } from 'jotai'
 import { AlertCircle, Loader2 } from 'lucide-react'
 import { useEffect } from 'react'
@@ -11,24 +12,27 @@ import { useNavigate } from 'react-router-dom'
 import { encodeFunctionData, keccak256, toHex } from 'viem'
 import { useWaitForTransactionReceipt, useWriteContract } from 'wagmi'
 import { useIsProposeAllowed } from '../../../hooks/use-is-propose-allowed'
+import useRecentProposalReceipt from '../../../hooks/use-recent-proposal-receipt'
 
 function compareVersion(x: string, y: string): number {
   return x.localeCompare(y, undefined, { numeric: true, sensitivity: 'base' })
 }
 
 const ProposeIndexUpgrade = () => {
+  const { t } = useLingui()
   const navigate = useNavigate()
   const dtf = useAtomValue(indexDTFAtom)
   const chainId = useAtomValue(chainIdAtom)
   const { isProposeAllowed, isLoading } = useIsProposeAllowed()
   const version = useAtomValue(indexDTFVersionAtom)
+  const handleRecentProposalReceipt = useRecentProposalReceipt()
 
   const upgrade =
     !isLoading && isProposeAllowed && compareVersion(version, '2.0.0') < 0
 
-  const { writeContract, data, isPending } = useWriteContract()
-  const { isSuccess } = useWaitForTransactionReceipt({
-    hash: data,
+  const { writeContract, data: hash, isPending } = useWriteContract()
+  const { data: receipt, isSuccess } = useWaitForTransactionReceipt({
+    hash,
     chainId,
   })
   const isReady = dtf?.proxyAdmin && dtf?.ownerGovernance?.id
@@ -57,13 +61,24 @@ const ProposeIndexUpgrade = () => {
   }
 
   useEffect(() => {
-    if (isSuccess) {
-      // Give some time for the proposal to be created on the subgraph
-      setTimeout(() => {
-        navigate(`../${ROUTES.GOVERNANCE}`)
-      }, 20000) // TODO: who knows if this works well!!! they can just refresh the page
-    }
-  }, [isSuccess])
+    if (!isSuccess || !receipt || !dtf?.ownerGovernance?.id) return
+
+    void handleRecentProposalReceipt({
+      receipt,
+      governor: dtf.ownerGovernance.id,
+      onFallback: () => {
+        setTimeout(() => {
+          navigate(`../${ROUTES.GOVERNANCE}`)
+        }, 20000)
+      },
+    })
+  }, [
+    dtf?.ownerGovernance?.id,
+    handleRecentProposalReceipt,
+    isSuccess,
+    navigate,
+    receipt,
+  ])
 
   if (!upgrade) {
     return null
@@ -74,30 +89,34 @@ const ProposeIndexUpgrade = () => {
       <div className="flex flex-row items-center gap-2 ">
         <AlertCircle size={24} className="text-primary" />
         <div>
-          <h4 className="font-bold text-primary">Update available</h4>
+          <h4 className="font-bold text-primary">
+            <Trans>Update available</Trans>
+          </h4>
           <p className="text-sm">
-            Version 2.0.0 is now available.{' '}
-            <a
-              href="https://github.com/reserve-protocol/reserve-index-dtf/blob/main/CHANGELOG.md#release-200"
-              className="text-primary"
-              target="_blank"
-            >
-              View changelog
-            </a>
+            <Trans>
+              Version 2.0.0 is now available.{' '}
+              <a
+                href="https://github.com/reserve-protocol/reserve-index-dtf/blob/main/CHANGELOG.md#release-200"
+                className="text-primary"
+                target="_blank"
+              >
+                View changelog
+              </a>
+            </Trans>
           </p>
         </div>
       </div>
       <Button
-        disabled={!isReady || isPending || !!data}
+        disabled={!isReady || isPending || !!hash}
         onClick={handleUpgrade}
         className="w-full mt-2"
       >
-        {(isPending || !!data) && (
+        {(isPending || !!hash) && (
           <Loader2 className="w-4 h-4 animate-spin mr-2" />
         )}
-        {isPending && 'Pending, sign in wallet...'}
-        {!isPending && !!data && 'Waiting for confirmation...'}
-        {!isPending && !data && 'Create update proposal'}
+        {isPending && t`Pending, sign in wallet...`}
+        {!isPending && !!hash && t`Waiting for confirmation...`}
+        {!isPending && !hash && t`Create update proposal`}
       </Button>
     </div>
   )

@@ -8,7 +8,7 @@ import { getBlock } from 'wagmi/actions'
 function useBlockTimestamp(blockNumber?: number) {
   const chainId = useAtomValue(chainIdAtom)
   const [timestamp, setTimestamp] = useState<number | undefined>(undefined)
-  const { data: currentBlockNumber } = useBlockNumber()
+  const { data: currentBlockNumber } = useBlockNumber({ chainId })
 
   const getBlockTimestampOrUndefined = async (_blockNumber: bigint) => {
     try {

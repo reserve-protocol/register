@@ -3,6 +3,7 @@ import DataTable from '@/components/ui/data-table'
 import { formatToSignificantDigits, formatUSD } from '@/utils'
 import { CHAIN_TAGS } from '@/utils/constants'
 import { ColumnDef } from '@tanstack/react-table'
+import { Trans } from '@lingui/react/macro'
 import { useAtomValue } from 'jotai'
 import RsrIcon from '@/components/icons/RsrIcon'
 import { portfolioRSRBalancesAtom } from '../atoms'
@@ -14,14 +15,14 @@ import SectionHeader from './section-header'
 const columns: ColumnDef<PortfolioRSRBalance, any>[] = [
   {
     id: 'name',
-    header: 'Name',
+    header: () => <Trans>Name</Trans>,
     cell: ({ row }) => (
       <div className="flex items-center gap-2 min-h-10">
         <TokenLogoWithChain symbol="RSR" chain={row.original.chainId} />
         <div>
           <p className="font-bold text-sm">RSR</p>
           <p className="text-xs text-legend hidden sm:block">
-            {CHAIN_TAGS[row.original.chainId] || 'Unknown'}
+            {CHAIN_TAGS[row.original.chainId] || <Trans>Unknown</Trans>}
           </p>
         </div>
       </div>
@@ -30,7 +31,11 @@ const columns: ColumnDef<PortfolioRSRBalance, any>[] = [
   {
     id: 'performance7d',
     accessorKey: 'performance7d',
-    header: 'Performance (7D)',
+    header: () => (
+      <>
+        <Trans>Performance</Trans> (7D)
+      </>
+    ),
     cell: ({ row }) => (
       <PerformanceCell value={row.original.performance7d} />
     ),
@@ -39,7 +44,7 @@ const columns: ColumnDef<PortfolioRSRBalance, any>[] = [
   {
     id: 'balance',
     accessorKey: 'amount',
-    header: 'Balance',
+    header: () => <Trans>Balance</Trans>,
     cell: ({ row }) => {
       const val = Number(row.original.amount)
       return (
@@ -52,7 +57,7 @@ const columns: ColumnDef<PortfolioRSRBalance, any>[] = [
   {
     id: 'value',
     accessorKey: 'value',
-    header: 'Value',
+    header: () => <Trans>Value</Trans>,
     cell: ({ row }) => {
       const val = row.original.value
       return (
@@ -77,7 +82,12 @@ const RSRSection = () => {
       <SectionHeader
         icon={RsrIcon}
         title="RSR"
-        subtitle="Reserve Rights (RSR) is an ERC-20 token that unifies governance, risk management, and value accrual across the Reserve ecosystem."
+        subtitle={
+          <Trans>
+            Reserve Rights (RSR) is an ERC-20 token that unifies governance,
+            risk management, and value accrual across the Reserve ecosystem.
+          </Trans>
+        }
       />
       <div className="bg-card rounded-[20px] border border-border overflow-hidden">
         <DataTable columns={columns} data={displayData} />

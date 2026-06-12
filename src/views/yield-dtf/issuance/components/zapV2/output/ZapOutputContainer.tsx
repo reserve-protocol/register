@@ -1,4 +1,5 @@
 import { cn } from '@/lib/utils'
+import { Trans } from '@lingui/react/macro'
 import { useZap } from '../context/ZapContext'
 import ZapTokenSelector from '../token-selector/ZapTokenSelector'
 import ZapOutput from './ZapOutput'
@@ -10,7 +11,9 @@ const ZapOutputContainer = () => {
 
   return (
     <div className="flex flex-col relative border border-border rounded-3xl overflow-hidden gap-2 items-start p-3">
-      <span className="block">You receive:</span>
+      <span className="block">
+        <Trans>You receive:</Trans>
+      </span>
       <div className="flex items-center text-2xl font-bold overflow-hidden">
         <ZapOutput />
         {!loadingZap && (

@@ -68,7 +68,7 @@ export const CollateralTableRows = ({
             />
           </TableCell>
           <TableCell className="text-right px-1 sm:px-3">
-            <div className="flex items-center justify-end gap-2 flex-wrap-reverse">
+            <div className="flex items-center justify-end gap-2 flex-wrap-reverse sm:flex-nowrap">
               <BridgeLabel
                 address={token.address}
                 tokenSymbol={token.symbol}

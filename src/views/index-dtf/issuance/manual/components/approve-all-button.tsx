@@ -6,9 +6,10 @@ import { useBatchApproval } from '@/hooks/use-batch-approval'
 import { chainIdAtom } from '@/state/atoms'
 import { indexDTFAtom } from '@/state/dtf/atoms'
 import { BIGINT_MAX } from '@/utils/constants'
+import { Plural, Trans, useLingui } from '@lingui/react/macro'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { AlertCircle } from 'lucide-react'
-import { useEffect, useMemo } from 'react'
+import { useEffect, useMemo, type ReactNode } from 'react'
 import {
   assetAmountsMapAtom,
   batchApprovalStateAtom,
@@ -17,6 +18,7 @@ import {
 } from '../atoms'
 
 const ApproveAllButton = () => {
+  const { t } = useLingui()
   const chainId = useAtomValue(chainIdAtom)
   const indexDTF = useAtomValue(indexDTFAtom)
   const tokensNeedingApproval = useAtomValue(tokensNeedingApprovalAtom)
@@ -59,22 +61,28 @@ const ApproveAllButton = () => {
   const batchSize = Object.keys(states).length
   const totalCount = isProcessing || hasFailures ? batchSize : tokensNeedingApproval.length
 
-  let label: string
+  let label: ReactNode
   let onClick: () => void
   let disabled = false
 
   if (isProcessing) {
-    label = `Awaiting approvals... (${completedCount}/${totalCount})`
+    label = t`Awaiting approvals... (${completedCount}/${totalCount})`
     onClick = () => {}
     disabled = true
   } else if (hasFailures) {
     const failedCount = Object.values(states).filter(
       (s) => s.status === 'error'
     ).length
-    label = `${failedCount} approval${failedCount > 1 ? 's' : ''} failed - Retry`
+    label = (
+      <Plural
+        value={failedCount}
+        one="# approval failed - Retry"
+        other="# approvals failed - Retry"
+      />
+    )
     onClick = retryFailed
   } else {
-    label = `Approve All (${totalCount})`
+    label = t`Approve All (${totalCount})`
     onClick = approveAll
   }
 
@@ -91,10 +99,10 @@ const ApproveAllButton = () => {
         <Alert variant="destructive">
           <AlertTitle className="flex items-center gap-2">
             <AlertCircle className="w-4 h-4" />
-            One or more approvals failed
+            <Trans>One or more approvals failed</Trans>
           </AlertTitle>
           <AlertDescription className="ml-6">
-            Click retry or use individual approve buttons below.
+            <Trans>Click retry or use individual approve buttons below.</Trans>
           </AlertDescription>
         </Alert>
       )}

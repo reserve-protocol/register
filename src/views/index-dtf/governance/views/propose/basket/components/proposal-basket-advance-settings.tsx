@@ -3,6 +3,7 @@ import MaxAuctionSizeEditor from '@/components/max-auction-size-editor'
 import { NumericalInput } from '@/components/ui/input'
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
 import { isAuctionLauncherAtom, isSingletonRebalanceAtom } from '@/state/dtf/atoms'
+import { Trans, useLingui } from '@lingui/react/macro'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { useMemo } from 'react'
 import { Sunrise } from 'lucide-react'
@@ -22,6 +23,7 @@ const LAUNCHER_WINDOW_OPTIONS = ['12', '24', '48', '72']
 const COMMUNITY_WINDOW_OPTIONS = ['0', '12', '24', '48']
 
 const AuctionLauncherWindow = () => {
+  const { t } = useLingui()
   const isSingletonRebalance = useAtomValue(isSingletonRebalanceAtom)
   const [auctionLauncherWindow, setAuctionLauncherWindow] = useAtom(
     auctionLauncherWindowAtom
@@ -36,11 +38,13 @@ const AuctionLauncherWindow = () => {
     <div className="flex flex-col justify-center gap-3 rounded-xl bg-foreground/5 p-4">
       <div>
         <h4 className="font-semibold text-primary text-base">
-          Exclusive Auction Launcher Window
+          <Trans>Exclusive Auction Launcher Window</Trans>
         </h4>
         <div className="">
-          Specify how long only the Auction Launchers should be allow to start
-          auctions.
+          <Trans>
+            Specify how long only the Auction Launchers should be allow to start
+            auctions.
+          </Trans>
         </div>
       </div>
       <div className="flex items-center gap-2">
@@ -61,13 +65,13 @@ const AuctionLauncherWindow = () => {
               value={option.toString()}
               className="px-5 h-8 whitespace-nowrap rounded-lg data-[state=on]:bg-card text-secondary-foreground/80 data-[state=on]:text-primary flex-grow"
             >
-              {option} hours
+              <Trans>{option} hours</Trans>
             </ToggleGroupItem>
           ))}
         </ToggleGroup>
         <NumericalInput
           className="hidden sm:block w-40"
-          placeholder="Enter custom hours"
+          placeholder={t`Enter custom hours`}
           value={customAuctionLauncherWindow}
           onChange={(value) => setCustomAuctionLauncherWindow(value)}
         />
@@ -77,6 +81,7 @@ const AuctionLauncherWindow = () => {
 }
 
 const PermissionlessWindow = () => {
+  const { t } = useLingui()
   const [permissionlessLaunching, setPermissionlessLaunching] = useAtom(
     permissionlessLaunchingWindowAtom
   )
@@ -89,11 +94,13 @@ const PermissionlessWindow = () => {
     <div className="flex flex-col justify-center gap-3 rounded-xl bg-foreground/5 p-4">
       <div>
         <h4 className="font-semibold text-primary text-base">
-          Community Launch Window
+          <Trans>Community Launch Window</Trans>
         </h4>
         <div className="">
-          Specify how long community members should be allow to start auctions
-          after the Exclusive Launch Window.
+          <Trans>
+            Specify how long community members should be allow to start auctions
+            after the Exclusive Launch Window.
+          </Trans>
         </div>
       </div>
       <div className="flex items-center gap-2">
@@ -118,13 +125,13 @@ const PermissionlessWindow = () => {
               value={option.toString()}
               className="px-5 h-8 whitespace-nowrap rounded-lg data-[state=on]:bg-card text-secondary-foreground/80 data-[state=on]:text-primary flex-grow"
             >
-              {option} hours
+              <Trans>{option} hours</Trans>
             </ToggleGroupItem>
           ))}
         </ToggleGroup>
         <NumericalInput
           className="hidden sm:block w-40"
-          placeholder="Enter custom hours"
+          placeholder={t`Enter custom hours`}
           value={customPermissionlessLaunchingWindow}
           onChange={(value) => setCustomPermissionlessLaunchingWindow(value)}
         />
@@ -142,7 +149,7 @@ const ConfirmButton = () => {
 
   return (
     <Button size="lg" className="m-2 rounded-xl" onClick={handleConfirm}>
-      Confirm
+      <Trans>Confirm</Trans>
     </Button>
   )
 }
@@ -163,6 +170,7 @@ const MaxAuctionSizeSection = () => {
 
 // TODO: Handle error case (0 ttl)
 const ProposalBasketAuctionWindow = () => {
+  const { t } = useLingui()
   const isSingletonRebalance = useAtomValue(isSingletonRebalanceAtom)
 
   if (!isSingletonRebalance) return <LegacyAdvancedControls />
@@ -175,14 +183,14 @@ const ProposalBasketAuctionWindow = () => {
       <ProposalStepTrigger
         id="advance"
         icon={<Sunrise size={16} strokeWidth={1.5} />}
-        title="Auction window"
+        title={t`Auction window`}
       />
       <AccordionContent className="flex flex-col animate-fade-in">
         <h2 className="text-xl sm:text-2xl font-bold text-primary mx-4 sm:mx-6 mb-2">
-          Auction window
+          <Trans>Auction window</Trans>
         </h2>
         <p className="text-sm sm:text-base mx-4 sm:mx-6 mb-2">
-          Set the auction window for the rebalance.
+          <Trans>Set the auction window for the rebalance.</Trans>
         </p>
         <div className="flex flex-col px-2 pt-2 gap-2">
           <AuctionLauncherWindow />

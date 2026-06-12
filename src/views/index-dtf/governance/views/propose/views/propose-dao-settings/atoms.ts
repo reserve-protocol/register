@@ -2,6 +2,8 @@ import dtfIndexStakingVaultAbi from '@/abis/dtf-index-staking-vault'
 import timelockAbi from '@/abis/Timelock'
 import { indexDTFAtom } from '@/state/dtf/atoms'
 import { Token } from '@/types'
+import type { MessageDescriptor } from '@lingui/core'
+import { msg } from '@lingui/core/macro'
 import { atom } from 'jotai'
 import { Address, encodeFunctionData, Hex, keccak256, toBytes } from 'viem'
 import {
@@ -16,6 +18,10 @@ import {
   humanizeTimeFromSeconds,
   proposalThresholdToPercentage,
 } from '../../shared'
+
+type GovernanceChangeDisplayLocalized = Omit<GovernanceChangeDisplay, 'title'> & {
+  title: MessageDescriptor
+}
 
 export const removedRewardTokensAtom = atom<Token[]>([])
 export const currentRewardTokensAtom = atom((get) => {
@@ -127,7 +133,7 @@ export const hasRolesChangesAtom = atom((get) => {
 })
 
 // Atom for formatted governance changes for display
-export const daoGovernanceChangesDisplayAtom = atom<GovernanceChangeDisplay[]>((get) => {
+export const daoGovernanceChangesDisplayAtom = atom<GovernanceChangeDisplayLocalized[]>((get) => {
   const governanceChanges = get(daoGovernanceChangesAtom)
   const dtf = get(indexDTFAtom)
 
@@ -139,7 +145,7 @@ export const daoGovernanceChangesDisplayAtom = atom<GovernanceChangeDisplay[]>((
   if (governanceChanges.votingDelay !== undefined) {
     changes.push({
       key: 'votingDelay' as keyof GovernanceChanges,
-      title: 'Voting Delay',
+      title: msg`Voting Delay`,
       current: humanizeTimeFromSeconds(Number(governance.votingDelay)),
       new: humanizeTimeFromSeconds(governanceChanges.votingDelay),
     })
@@ -148,7 +154,7 @@ export const daoGovernanceChangesDisplayAtom = atom<GovernanceChangeDisplay[]>((
   if (governanceChanges.votingPeriod !== undefined) {
     changes.push({
       key: 'votingPeriod' as keyof GovernanceChanges,
-      title: 'Voting Period',
+      title: msg`Voting Period`,
       current: humanizeTimeFromSeconds(Number(governance.votingPeriod)),
       new: humanizeTimeFromSeconds(governanceChanges.votingPeriod),
     })
@@ -157,7 +163,7 @@ export const daoGovernanceChangesDisplayAtom = atom<GovernanceChangeDisplay[]>((
   if (governanceChanges.proposalThreshold !== undefined) {
     changes.push({
       key: 'proposalThreshold' as keyof GovernanceChanges,
-      title: 'Proposal Threshold',
+      title: msg`Proposal Threshold`,
       current: `${proposalThresholdToPercentage(governance.proposalThreshold).toFixed(2)}%`,
       new: `${Number(governanceChanges.proposalThreshold).toFixed(2)}%`,
     })
@@ -167,7 +173,7 @@ export const daoGovernanceChangesDisplayAtom = atom<GovernanceChangeDisplay[]>((
     const currentQuorum = get(currentQuorumPercentageAtom)
     changes.push({
       key: 'quorumPercent' as keyof GovernanceChanges,
-      title: 'Voting Quorum',
+      title: msg`Voting Quorum`,
       current: `${currentQuorum.toFixed(2)}%`,
       new: `${governanceChanges.quorumPercent}%`,
     })
@@ -176,7 +182,7 @@ export const daoGovernanceChangesDisplayAtom = atom<GovernanceChangeDisplay[]>((
   if (governanceChanges.executionDelay !== undefined) {
     changes.push({
       key: 'executionDelay' as keyof GovernanceChanges,
-      title: 'Execution Delay',
+      title: msg`Execution Delay`,
       current: humanizeTimeFromSeconds(
         Number(governance.timelock?.executionDelay || 0)
       ),

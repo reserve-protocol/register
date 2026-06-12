@@ -1,6 +1,7 @@
 import { Button } from '@/components/ui/button'
 import { useAtom } from 'jotai'
 import { factsheetChartTypeAtom } from '../atoms'
+import { Trans } from '@lingui/react/macro'
 
 const ChartTypeSelector = () => {
   const [chartType, setChartType] = useAtom(factsheetChartTypeAtom)
@@ -17,7 +18,7 @@ const ChartTypeSelector = () => {
             : 'text-white/70 hover:bg-white/20 hover:text-white'
         }`}
       >
-        NAV Growth
+        <Trans>NAV Growth</Trans>
       </Button>
       <Button
         variant="ghost"
@@ -29,7 +30,7 @@ const ChartTypeSelector = () => {
             : 'text-white/70 hover:bg-white/20 hover:text-white'
         }`}
       >
-        Monthly P&L
+        <Trans>Monthly P&L</Trans>
       </Button>
     </div>
   )

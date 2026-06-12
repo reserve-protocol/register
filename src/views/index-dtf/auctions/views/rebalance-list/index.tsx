@@ -1,5 +1,6 @@
 import { Skeleton } from '@/components/ui/skeleton'
 import { getCurrentTime } from '@/utils'
+import { Trans } from '@lingui/react/macro'
 import { atom, useAtomValue } from 'jotai'
 import { rebalancesByProposalListAtom } from '../../atoms'
 import {
@@ -32,7 +33,9 @@ const EmptyState = () => {
   return (
     <div className="h-52 bg-background rounded-3xl p-1">
       <div className="bg-secondary/70 w-full h-full flex flex-col items-center justify-center rounded-3xl">
-        <h1 className="text-xl text-legend">No rebalances found</h1>
+        <h1 className="text-xl text-legend">
+          <Trans>No rebalances found</Trans>
+        </h1>
       </div>
     </div>
   )
@@ -51,7 +54,7 @@ const LegacyTradesButton = () => {
     <div className="flex justify-center my-6">
       <Link to="./legacy">
         <Button variant="outline-primary" className="rounded-full">
-          View older auctions
+          <Trans>View older auctions</Trans>
         </Button>
       </Link>
     </div>
@@ -67,7 +70,7 @@ const RebalanceList = () => {
       <section className="pt-6">
         <SectionHeader
           color="primary"
-          title="Active Rebalances"
+          title={<Trans>Active Rebalances</Trans>}
           count={activeRebalances.length}
           isLoading={isLoading}
         />
@@ -87,7 +90,7 @@ const RebalanceList = () => {
 
       <section>
         <SectionHeader
-          title="Historical Rebalances"
+          title={<Trans>Historical Rebalances</Trans>}
           count={historicalRebalances.length}
           isLoading={isLoading}
         />

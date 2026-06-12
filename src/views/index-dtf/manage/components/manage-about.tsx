@@ -1,5 +1,6 @@
 import { FormMessage } from '@/components/ui/form'
 
+import { Button } from '@/components/ui/button'
 import {
   FormControl,
   FormField,
@@ -9,7 +10,9 @@ import {
 import { Input } from '@/components/ui/input'
 import { Switch } from '@/components/ui/switch'
 import { Textarea } from '@/components/ui/textarea'
-import { useFormContext } from 'react-hook-form'
+import { Trans, useLingui } from '@lingui/react/macro'
+import { Plus, Trash2 } from 'lucide-react'
+import { useFieldArray, useFormContext } from 'react-hook-form'
 import { ImageUploader } from './logo-upload'
 import MultiSelectTags from './manage-tags'
 import {
@@ -20,12 +23,89 @@ import {
   SelectContent,
 } from '@/components/ui/select'
 
+const DownloadableResources = () => {
+  const { t } = useLingui()
+  const form = useFormContext()
+  const { fields, append, remove } = useFieldArray({
+    control: form.control,
+    name: 'dtf.files',
+  })
+
+  return (
+    <div className="flex flex-col gap-2 border rounded-3xl p-3 mt-1">
+      <div>
+        <h4 className="font-bold">
+          <Trans>Downloadable resources</Trans>
+        </h4>
+        <p className="text-legend">
+          <Trans>
+            Links to files holders can download from the DTF overview page,
+            like a tear sheet or methodology document.
+          </Trans>
+        </p>
+      </div>
+      {fields.map((field, index) => (
+        <div key={field.id} className="flex items-start gap-2">
+          <FormField
+            control={form.control}
+            name={`dtf.files.${index}.name`}
+            render={({ field: nameField }) => (
+              <FormItem className="flex-1">
+                <FormControl>
+                  <Input placeholder={t`File name`} {...nameField} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name={`dtf.files.${index}.url`}
+            render={({ field: urlField }) => (
+              <FormItem className="flex-[2]">
+                <FormControl>
+                  <Input placeholder="https://..." {...urlField} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <Button
+            type="button"
+            variant="ghost"
+            size="icon"
+            onClick={() => remove(index)}
+            className="shrink-0 hover:bg-destructive/10 hover:text-destructive"
+          >
+            <Trash2 className="size-4" />
+            <span className="sr-only">
+              <Trans>Remove resource</Trans>
+            </span>
+          </Button>
+        </div>
+      ))}
+      <Button
+        type="button"
+        variant="outline"
+        className="rounded-xl gap-1"
+        onClick={() => append({ url: '', name: '' })}
+      >
+        <Plus size={16} />
+        <Trans>Add file</Trans>
+      </Button>
+    </div>
+  )
+}
+
 const ManageAbout = () => {
+  const { t } = useLingui()
   const form = useFormContext()
 
   return (
     <div className="flex flex-col gap-2 p-2">
-      <label className="ml-3">DTF Icon</label>
+      <label className="ml-3">
+        <Trans>DTF Icon</Trans>
+      </label>
       <ImageUploader
         onChange={(file) => form.setValue('files.logo', file)}
         defaultImage={form.watch('dtf.icon')}
@@ -36,9 +116,11 @@ const ManageAbout = () => {
         name="dtf.description"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>About this DTF</FormLabel>
+            <FormLabel>
+              <Trans>About this DTF</Trans>
+            </FormLabel>
             <FormControl>
-              <Textarea placeholder="About this DTF" {...field} />
+              <Textarea placeholder={t`About this DTF`} {...field} />
             </FormControl>
             <FormMessage />
           </FormItem>
@@ -49,9 +131,11 @@ const ManageAbout = () => {
         name="dtf.notesFromCreator"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>Notes from Creator</FormLabel>
+            <FormLabel>
+              <Trans>Notes from Creator</Trans>
+            </FormLabel>
             <FormControl>
-              <Textarea placeholder="Notes from Creator" {...field} />
+              <Textarea placeholder={t`Notes from Creator`} {...field} />
             </FormControl>
             <FormMessage />
           </FormItem>
@@ -62,7 +146,9 @@ const ManageAbout = () => {
         name="dtf.prospectus"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>DTF Fact sheet</FormLabel>
+            <FormLabel>
+              <Trans>DTF Fact sheet</Trans>
+            </FormLabel>
             <FormControl>
               <Input placeholder="https://..." {...field} />
             </FormControl>
@@ -70,12 +156,18 @@ const ManageAbout = () => {
         )}
       />
 
+      <DownloadableResources />
+
       <div className="flex items-center gap-6 border rounded-3xl p-3 mt-1">
         <div>
-          <h4 className="font-bold">Hide DTF</h4>
+          <h4 className="font-bold">
+            <Trans>Hide DTF</Trans>
+          </h4>
           <p className="text-legend">
-            This will prevent the DTF from appearing in the DTF list. You can
-            still access it on the UI using the direct link.
+            <Trans>
+              This will prevent the DTF from appearing in the DTF list. You can
+              still access it on the UI using the direct link.
+            </Trans>
           </p>
         </div>
         <Switch

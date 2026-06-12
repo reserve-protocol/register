@@ -13,6 +13,7 @@ import { basketAtom } from '@/views/index-dtf/deploy/atoms'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { CheckCircle2, TextCursorInput, Wallet } from 'lucide-react'
 import { useEffect } from 'react'
+import { Trans, useLingui } from '@lingui/react/macro'
 import { Address, erc20Abi, formatUnits, parseUnits } from 'viem'
 import { useReadContract, useWriteContract } from 'wagmi'
 import {
@@ -64,7 +65,9 @@ const TokenBalance = ({
       </div>
       <div className="flex items-center gap-1">
         <TextCursorInput size={16} />
-        <span className="font-semibold">Required:</span>{' '}
+        <span className="font-semibold">
+          <Trans>Required:</Trans>
+        </span>{' '}
         <span
           className={cn(
             'font-semibold',
@@ -91,6 +94,7 @@ const ApproveAsset = ({
   decimals: number
   amount: number
 }) => {
+  const { t } = useLingui()
   const { writeContract, isPending, isSuccess } = useWriteContract()
   const {
     writeContract: writeContractRevoke,
@@ -148,14 +152,18 @@ const ApproveAsset = ({
         return (
           <div className="flex items-center gap-2 text-muted-foreground text-sm">
             <Spinner size={16} />
-            <span>Signing...</span>
+            <span>
+              <Trans>Signing...</Trans>
+            </span>
           </div>
         )
       case 'confirming':
         return (
           <div className="flex items-center gap-2 text-primary text-sm">
             <Spinner size={16} />
-            <span>Confirming...</span>
+            <span>
+              <Trans>Confirming...</Trans>
+            </span>
           </div>
         )
       case 'success':
@@ -176,13 +184,15 @@ const ApproveAsset = ({
         disabled={isPendingRevoke}
       >
         <div className="flex items-center gap-1">
-          {isPendingRevoke ? 'Revoking...' : 'Revoke'}
+          {isPendingRevoke ? t`Revoking...` : t`Revoke`}
           <Help
             side="bottom"
             content={
               <span className="text-sm text-wrap font-light">
-                This is a USDT token or a fork of USDT. You need to revoke the
-                approval before you can approve it.
+                <Trans>
+                  This is a USDT token or a fork of USDT. You need to revoke the
+                  approval before you can approve it.
+                </Trans>
               </span>
             }
           />
@@ -199,7 +209,7 @@ const ApproveAsset = ({
       size="xs"
       disabled={isPending || !amount}
     >
-      {isPending ? 'Approving...' : 'Approve'}
+      {isPending ? t`Approving...` : t`Approve`}
     </Button>
   )
 }
@@ -212,7 +222,9 @@ const DeployAssetsApproval = () => {
   return (
     <div className="flex flex-col mt-2 gap-2">
       <div className="flex items-center justify-between my-2 ml-2">
-        <h4 className="font-bold">Required approvals</h4>
+        <h4 className="font-bold">
+          <Trans>Required approvals</Trans>
+        </h4>
       </div>
 
       {tokensNeedingApproval.length > 1 && <ApproveAllDeployButton />}
@@ -234,7 +246,9 @@ const DeployAssetsApproval = () => {
             </div>
           </div>
           {!token.price ? (
-            <div className="text-destructive text-sm pb-1">Error fetching price</div>
+            <div className="text-destructive text-sm pb-1">
+              <Trans>Error fetching price</Trans>
+            </div>
           ) : (
             <div className="flex items-center justify-between gap-2 min-h-[32px]">
               <TokenBalance

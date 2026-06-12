@@ -2,7 +2,7 @@
  * CopyValue - Copy to clipboard button with tooltip
  * Maintains backward compatibility with old CopyValue API
  */
-import { t } from '@lingui/macro'
+import { useLingui } from '@lingui/react/macro'
 import {
   Tooltip,
   TooltipContent,
@@ -53,15 +53,17 @@ const CopyValue = ({
   mx,
   my,
 }: CopyValueProps) => {
-  const copyText = text || t`Copy to clipboard`
-  const confirmText = t`Copied to clipboard!`
-  const [displayText, setDisplayText] = useState(copyText)
+  const { t } = useLingui()
+  const [isCopied, setIsCopied] = useState(false)
+  const displayText = isCopied
+    ? t`Copied to clipboard!`
+    : text || t`Copy to clipboard`
 
   const handleCopy = (e: React.MouseEvent) => {
     e.stopPropagation()
     navigator.clipboard.writeText(isAddress(value) || value)
-    setDisplayText(confirmText)
-    setTimeout(() => setDisplayText(copyText), 2000)
+    setIsCopied(true)
+    setTimeout(() => setIsCopied(false), 2000)
   }
 
   // Build spacing classes from legacy props

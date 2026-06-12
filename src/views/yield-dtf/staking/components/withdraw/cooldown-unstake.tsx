@@ -1,4 +1,4 @@
-import { t } from '@lingui/macro'
+import { Trans, useLingui } from '@lingui/react/macro'
 import StRSR from 'abis/StRSR'
 import SpinnerIcon from 'components/icons/SpinnerIcon'
 import TokenLogo from 'components/icons/TokenLogo'
@@ -21,7 +21,9 @@ const Header = () => {
   return (
     <div className="flex items-center border-b border-secondary pb-3">
       <SpinnerIcon />
-      <span className="ml-2 font-semibold">RSR in {delay} Cooldown</span>
+      <span className="ml-2 font-semibold">
+        <Trans>RSR in {delay} Cooldown</Trans>
+      </span>
     </div>
   )
 }
@@ -44,6 +46,7 @@ const AvailableBalance = () => {
 }
 
 const ConfirmWithdraw = () => {
+  const { t } = useLingui()
   const rToken = useRToken()
   const { index, pendingAmount } = useAtomValue(pendingRSRSummaryAtom)
   const { frozen } = useAtomValue(rTokenStateAtom)
@@ -67,7 +70,7 @@ const ConfirmWithdraw = () => {
       onClick={write}
       disabled={!isReady || isLoading || isMining}
     >
-      {isLoading || isMining ? 'Processing...' : t`Cancel unstake`}
+      {isLoading || isMining ? t`Processing...` : t`Cancel unstake`}
     </Button>
   )
 }
@@ -83,7 +86,9 @@ const CooldownUnstake = ({ className }: CooldownUnstakeProps) => {
     <div className={cn('rounded-3xl border border-border p-6', className)}>
       <Header />
       {!pendingAmount ? (
-        <span className="mt-3 block text-legend">No RSR in cooldown</span>
+        <span className="mt-3 block text-legend">
+          <Trans>No RSR in cooldown</Trans>
+        </span>
       ) : (
         <div className="flex items-center">
           <AvailableBalance />

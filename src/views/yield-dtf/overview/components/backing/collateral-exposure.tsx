@@ -1,4 +1,4 @@
-import { Trans } from '@lingui/macro'
+import { Trans, useLingui } from '@lingui/react/macro'
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import CopyValue from '@/components/ui/copy-value'
@@ -85,12 +85,16 @@ const CollateralDetails = ({
           <span className="ml-2">{collateral.displayName}</span>
         </div>
         <div>
-          <span className="font-semibold sm:hidden">Yield: </span>
+          <span className="font-semibold sm:hidden">
+            <Trans>Yield:</Trans>{' '}
+          </span>
           <span>{collateral.yield.toFixed(2)}%</span>
         </div>
 
         <div className="flex flex-wrap">
-          <span className="mr-1 font-semibold sm:hidden">Value:</span>
+          <span className="mr-1 font-semibold sm:hidden">
+            <Trans>Value:</Trans>
+          </span>
           {!!collateral.valueTarget && !!collateral.valueSingleTarget && (
             <span className="mr-2 whitespace-nowrap">
               {formatCurrency(
@@ -135,7 +139,9 @@ const CollateralDetails = ({
             >
               <div className="flex items-center">
                 <HiperlinkIcon />
-                <span className="ml-2">Docs</span>
+                <span className="ml-2">
+                  <Trans>Docs</Trans>
+                </span>
               </div>
             </Button>
             {!!collateral.website && (
@@ -147,7 +153,9 @@ const CollateralDetails = ({
               >
                 <div className="flex items-center">
                   <HiperlinkIcon />
-                  <span className="ml-2">Website</span>
+                  <span className="ml-2">
+                    <Trans>Website</Trans>
+                  </span>
                 </div>
               </Button>
             )}
@@ -198,15 +206,16 @@ const CollateralList = () => {
 }
 
 const Header = () => {
+  const { t } = useLingui()
   const [backingType, setBackingType] = useAtom(backingTypeAtom)
   const rToken = useRToken()
 
   const backingOptions = useMemo(
     () => [
-      { key: 'total', label: 'Total backing' },
+      { key: 'total', label: t`Total backing` },
       { key: 'unit', label: `1 ${rToken?.symbol}` },
     ],
-    [rToken]
+    [rToken, t]
   )
 
   return (
@@ -232,10 +241,18 @@ const CollateralExposure = () => {
     <div className="h-fit bg-card w-full rounded-2xl overflow-hidden">
       <Header />
       <div className="hidden sm:grid grid-cols-[3fr_1fr_1fr_1fr] py-2.5 px-4 text-legend text-sm">
-        <span>Token</span>
-        <span>Yield</span>
-        <span>Value</span>
-        <span className="text-right">Detail</span>
+        <span>
+          <Trans>Token</Trans>
+        </span>
+        <span>
+          <Trans>Yield</Trans>
+        </span>
+        <span>
+          <Trans>Value</Trans>
+        </span>
+        <span className="text-right">
+          <Trans>Detail</Trans>
+        </span>
       </div>
       <CollateralList />
     </div>

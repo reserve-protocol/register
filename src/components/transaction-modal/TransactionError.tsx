@@ -1,4 +1,5 @@
 import { Button } from '@/components/ui/button'
+import { Trans } from '@lingui/react/macro'
 
 const TransactionError = ({
   onClose,
@@ -19,7 +20,7 @@ const TransactionError = ({
         <code className="text-muted-foreground mb-4 block">{subtitle}</code>
       </div>
       <Button onClick={onClose} className="px-6">
-        Dismiss
+        <Trans>Dismiss</Trans>
       </Button>
     </div>
   </>

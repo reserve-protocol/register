@@ -3,6 +3,7 @@ import Copy from '@/components/ui/copy'
 import DataTable from '@/components/ui/data-table'
 import { formatCurrency, formatToSignificantDigits, getTokenRoute, shortenAddress } from '@/utils'
 import { ColumnDef } from '@tanstack/react-table'
+import { Trans } from '@lingui/react/macro'
 import { useAtomValue } from 'jotai'
 import { Vote } from 'lucide-react'
 import { Link } from 'react-router-dom'
@@ -19,7 +20,7 @@ type VotingPowerRow =
 const columns: ColumnDef<VotingPowerRow, any>[] = [
   {
     id: 'dtf',
-    header: 'DTF Governed',
+    header: () => <Trans>DTF Governed</Trans>,
     cell: ({ row }) => {
       const d = row.original
       if (d.source === 'voteLock') {
@@ -43,7 +44,7 @@ const columns: ColumnDef<VotingPowerRow, any>[] = [
   },
   {
     id: 'govToken',
-    header: 'Governance Token',
+    header: () => <Trans>Governance Token</Trans>,
     cell: ({ row }) => {
       const d = row.original
       if (d.source === 'voteLock') {
@@ -70,7 +71,7 @@ const columns: ColumnDef<VotingPowerRow, any>[] = [
   {
     id: 'votingPower',
     accessorKey: 'votingPower',
-    header: 'Vote Power',
+    header: () => <Trans>Vote Power</Trans>,
     cell: ({ row }) => {
       const val = Number(row.original.votingPower)
       return (
@@ -82,7 +83,7 @@ const columns: ColumnDef<VotingPowerRow, any>[] = [
   },
   {
     id: 'votingWeight',
-    header: 'Vote Weight',
+    header: () => <Trans>Vote Weight</Trans>,
     cell: ({ row }) => {
       const d = row.original
       const weight = d.votingWeight
@@ -95,7 +96,7 @@ const columns: ColumnDef<VotingPowerRow, any>[] = [
   },
   {
     id: 'voterAddress',
-    header: 'Vote-locker Address',
+    header: () => <Trans>Vote-locker Address</Trans>,
     cell: ({ row }) => {
       const d = row.original
       const addr = d.source === 'voteLock' ? d.stTokenAddress : d.stRSRAddress
@@ -111,7 +112,7 @@ const columns: ColumnDef<VotingPowerRow, any>[] = [
   },
   {
     id: 'delegation',
-    header: 'Delegate Address',
+    header: () => <Trans>Delegate Address</Trans>,
     cell: ({ row }) => {
       const d = row.original
       const delegation = d.source === 'voteLock' ? d.delegation : d.delegate
@@ -144,8 +145,8 @@ const VotingPower = () => {
     <div>
       <SectionHeader
         icon={Vote}
-        title="Voting Power"
-        subtitle="Including any power delegated to me."
+        title={<Trans>Voting Power</Trans>}
+        subtitle={<Trans>Including any power delegated to me.</Trans>}
       />
       <div className="bg-card rounded-[20px] border border-border overflow-hidden">
         <DataTable columns={columns} data={displayData} />

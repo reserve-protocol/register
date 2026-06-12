@@ -1,4 +1,4 @@
-import { t } from '@lingui/macro'
+import { useLingui } from '@lingui/react/macro'
 import Governance from 'abis/Governance'
 import TransactionButton from '@/components/ui/transaction-button'
 import useContractWrite from 'hooks/useContractWrite'
@@ -8,6 +8,7 @@ import { rTokenGovernanceAtom } from 'state/atoms'
 import { proposalTxArgsAtom } from '../atom'
 
 const ProposalQueue = () => {
+  const { t } = useLingui()
   const governance = useAtomValue(rTokenGovernanceAtom)
 
   const { write, isLoading, hash, isReady } = useContractWrite({

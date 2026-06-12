@@ -1,4 +1,4 @@
-import { t } from '@lingui/macro'
+import { useLingui } from '@lingui/react/macro'
 import AreaChart from 'components/charts/area/AreaChart'
 import dayjs from 'dayjs'
 import { gql } from 'graphql-request'
@@ -39,6 +39,7 @@ const dailyPriceQuery = gql`
 `
 
 const SupplyChart = ({ className }: { className?: string }) => {
+  const { t } = useLingui()
   const rToken = useRToken()
   const { tokenSupply: supply } = useAtomValue(rTokenStateAtom)
   const [current, setCurrent] = useState(TIME_RANGES.MONTH)

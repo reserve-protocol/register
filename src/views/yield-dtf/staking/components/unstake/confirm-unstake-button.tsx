@@ -1,7 +1,7 @@
 import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
 import { unstakeDelayAtom } from '@/views/yield-dtf/staking/atoms'
-import { Trans } from '@lingui/macro'
+import { Trans, useLingui } from '@lingui/react/macro'
 import CheckCircleIcon from 'components/icons/CheckCircleIcon'
 import TransactionsIcon from 'components/icons/TransactionsIcon'
 import useContractWrite from 'hooks/useContractWrite'
@@ -15,6 +15,7 @@ import { unstakeTransactionAtom } from './atoms'
 
 
 const ConfirmUnstakeButton = () => {
+  const { t } = useLingui()
   const chain = useAtomValue(chainIdAtom)
   const tx: UseSimulateContractParameters | undefined = useAtomValue(
     unstakeTransactionAtom
@@ -35,19 +36,19 @@ const ConfirmUnstakeButton = () => {
       errorText =
         (validationError.cause as any)?.shortMessage ||
         validationError.message ||
-        'Simulation failed'
+        t`Simulation failed`
     }
 
     if (error?.message.includes('User rejected the request')) {
-      errorText = 'Transaction rejected'
+      errorText = t`Transaction rejected`
     }
 
     if (error || status === 'error') {
-      errorText = 'Execution failed'
+      errorText = t`Execution failed`
     }
 
     return errorText
-  }, [error, status, validationError])
+  }, [error, status, validationError, t])
 
   if (!errorMsg && (isLoading || hash)) {
     return (
@@ -55,9 +56,9 @@ const ConfirmUnstakeButton = () => {
         <TransactionsIcon />
         <div className="ml-2 mr-auto">
           <span className="font-semibold block">
-            {status === 'success' && `${delay} cooldown started`}
-            {hash && status !== 'success' && 'Transaction submitted'}
-            {!hash && 'Confirm Unstake'}
+            {status === 'success' && t`${delay} cooldown started`}
+            {hash && status !== 'success' && t`Transaction submitted`}
+            {!hash && t`Confirm Unstake`}
           </span>
           {hash ? (
             <a
@@ -68,7 +69,9 @@ const ConfirmUnstakeButton = () => {
               <Trans>View in explorer</Trans>
             </a>
           ) : (
-            <span>Proceed in wallet</span>
+            <span>
+              <Trans>Proceed in wallet</Trans>
+            </span>
           )}
         </div>
         {status !== 'success' ? (
@@ -83,7 +86,7 @@ const ConfirmUnstakeButton = () => {
   return (
     <div>
       <Button disabled={!isReady} onClick={write} className="w-full">
-        {!isReady ? 'Preparing transaction' : 'Begin unstaking process'}
+        {!isReady ? t`Preparing transaction` : t`Begin unstaking process`}
       </Button>
       {!!errorMsg && (
         <div className="mt-2 text-center">

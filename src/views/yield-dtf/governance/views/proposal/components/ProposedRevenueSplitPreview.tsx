@@ -1,4 +1,4 @@
-import { t, Trans } from '@lingui/macro'
+import { Trans, useLingui } from '@lingui/react/macro'
 import { Button } from '@/components/ui/button'
 import {
   ExternalAddressSplit,
@@ -33,6 +33,7 @@ interface Props {
 }
 
 const ProposedRevenueSplitPreview = ({ className }: Props) => {
+  const { t } = useLingui()
   const { distributions, externals, count } = useAtomValue(
     revenueSplitChangesAtom
   )

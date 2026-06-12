@@ -1,4 +1,4 @@
-import { Trans } from '@lingui/macro'
+import { Trans } from '@lingui/react/macro'
 import CircleIcon from 'components/icons/CircleIcon'
 import CollaterizationIcon from 'components/icons/CollaterizationIcon'
 import EarnIcon from 'components/icons/EarnIcon'
@@ -65,7 +65,9 @@ const BackingOverview = ({ current }: { current: string }) => {
       </div>
       <div className="mt-2 flex items-center">
         <EarnIcon color="currentColor" />
-        <span className="ml-2">Blended Yield</span>
+        <span className="ml-2">
+          <Trans>Blended Yield</Trans>
+        </span>
         <span className="ml-auto font-semibold">{data.yield.toFixed(2)}%</span>
       </div>
       <div className="hidden xl:block">
@@ -88,7 +90,9 @@ const BackingOverview = ({ current }: { current: string }) => {
       </div>
       <div className="mt-2 flex items-center">
         <CollaterizationIcon fontSize={16} />
-        <span className="ml-2">Staked RSR</span>
+        <span className="ml-2">
+          <Trans>Staked RSR</Trans>
+        </span>
         <span className="ml-auto font-semibold">{data.staked.toFixed(0)}%</span>
       </div>
     </div>

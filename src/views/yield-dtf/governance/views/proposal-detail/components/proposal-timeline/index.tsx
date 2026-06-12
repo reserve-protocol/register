@@ -1,3 +1,4 @@
+import { Trans } from '@lingui/react/macro'
 import {
   TimelineItemCreated,
   TimelineItemVotingPeriod,
@@ -12,7 +13,7 @@ const ProposalTimeline = () => {
   return (
     <div className="bg-background rounded-3xl p-2 mt-2">
       <span className="text-xl font-semibold leading-5 p-4 block">
-        Status
+        <Trans>Status</Trans>
       </span>
       <div
         className="relative bg-card rounded-2xl overflow-hidden border border-border shadow-[0px_10px_38px_6px_rgba(0,0,0,0.05)]"

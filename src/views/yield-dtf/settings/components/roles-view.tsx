@@ -1,4 +1,4 @@
-import { Trans } from '@lingui/macro'
+import { Trans, useLingui } from '@lingui/react/macro'
 import GoTo from '@/components/go-to'
 import {
   Popover,
@@ -31,6 +31,7 @@ const RoleList = ({ roles }: { roles: string[] }) => {
 }
 
 const RolesView = ({ roles }: { roles: string[] }) => {
+  const { t } = useLingui()
   const [isOpen, setIsOpen] = useState(false)
   const chainId = useAtomValue(chainIdAtom)
 
@@ -38,7 +39,7 @@ const RolesView = ({ roles }: { roles: string[] }) => {
     return (
       <div className="flex items-center">
         <span className="text-xs">
-          {roles[0] ? shortenAddress(roles[0]) : 'None'}
+          {roles[0] ? shortenAddress(roles[0]) : t`None`}
         </span>
         {!!roles[0] && (
           <GoTo

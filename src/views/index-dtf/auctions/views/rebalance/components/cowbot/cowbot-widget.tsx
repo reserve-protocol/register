@@ -1,3 +1,4 @@
+import { useLingui } from '@lingui/react/macro'
 import { createContext, ReactNode, useContext, useEffect } from 'react'
 import { PublicClient } from 'viem'
 import { usePublicClient } from 'wagmi'
@@ -40,7 +41,8 @@ const CowbotProvider = ({
   publicClient,
   children,
 }: CowbotProviderProps) => {
-  const wagmiClient = usePublicClient()
+  const { t } = useLingui()
+  const wagmiClient = usePublicClient({ chainId: config.chainId })
   const client = publicClient ?? wagmiClient
 
   const { status, totalOrders, error, isSupportedChain, start, stop, reset } =
@@ -59,21 +61,19 @@ const CowbotProvider = ({
 
     const handleBeforeUnload = (event: BeforeUnloadEvent) => {
       event.preventDefault()
-      event.returnValue =
-        'Are you sure you want to close this tab? This may cause the auction to fail and value to be lost.'
+      event.returnValue = t`Are you sure you want to close this tab? This may cause the auction to fail and value to be lost.`
       return event.returnValue
     }
 
     window.addEventListener('beforeunload', handleBeforeUnload)
     return () => window.removeEventListener('beforeunload', handleBeforeUnload)
-  }, [isActive])
+  }, [isActive, t])
 
   // SPA navigation warning (intercepts link clicks + back/forward)
   useEffect(() => {
     if (!isActive) return
 
-    const message =
-      'Are you sure you want to leave? This may cause the auction to fail and value to be lost.'
+    const message = t`Are you sure you want to leave? This may cause the auction to fail and value to be lost.`
 
     // Intercept pushState/replaceState (react-router SPA navigation)
     const originalPushState = history.pushState.bind(history)
@@ -106,7 +106,7 @@ const CowbotProvider = ({
       history.replaceState = originalReplaceState
       window.removeEventListener('popstate', handlePopState)
     }
-  }, [isActive])
+  }, [isActive, t])
 
   return (
     <CowbotContext.Provider

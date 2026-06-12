@@ -1,5 +1,5 @@
 import { wrapSidebarAtom } from '@/views/yield-dtf/issuance/atoms'
-import { Trans } from '@lingui/macro'
+import { Trans } from '@lingui/react/macro'
 import { useSetAtom } from 'jotai'
 import { X } from 'lucide-react'
 import { Button } from '@/components/ui/button'

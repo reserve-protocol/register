@@ -1,6 +1,7 @@
 import { chainIdAtom, devModeAtom } from '@/state/atoms'
 import { isHybridDTFAtom } from '@/state/dtf/atoms'
 import { ChainId } from '@/utils/chains'
+import { useLingui } from '@lingui/react/macro'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { useCallback, useEffect } from 'react'
 import { currentRebalanceAtom, RebalanceByProposal } from '../../../atoms'
@@ -19,6 +20,7 @@ import useRebalanceParams, {
 import getRebalanceOpenAuction from '../utils/get-rebalance-open-auction'
 
 const RebalanceMetricsUpdater = () => {
+  const { t } = useLingui()
   const setRebalanceMetrics = useSetAtom(rebalanceMetricsAtom)
   const setRebalanceError = useSetAtom(rebalanceErrorAtom)
   const rebalancePercent = useAtomValue(rebalancePercentAtom)
@@ -128,13 +130,18 @@ const RebalanceMetricsUpdater = () => {
           const tokenAddr = e.message.split(' ')[1]?.toLowerCase().replace(':', '')
           console.log('words', tokenAddr)
           if (!tokenMap[tokenAddr]) {
-            setRebalanceError('One or more tokens in the rebalance is out of bounds. Rebalance must be closed.')
+            setRebalanceError(
+              t`One or more tokens in the rebalance is out of bounds. Rebalance must be closed.`
+            )
           } else {
-            setRebalanceError(`Token "${tokenMap[tokenAddr].symbol}" is out of bounds. Rebalance must be closed.`)
+            const symbol = tokenMap[tokenAddr].symbol
+            setRebalanceError(
+              t`Token "${symbol}" is out of bounds. Rebalance must be closed.`
+            )
           }
 
         } else {
-          setRebalanceError('Unexpected error getting Rebalance data.')
+          setRebalanceError(t`Unexpected error getting Rebalance data.`)
         }
       }
     },
@@ -147,7 +154,8 @@ const RebalanceMetricsUpdater = () => {
       chainId,
       isDevMode,
       setRebalanceError,
-      tokenMap
+      tokenMap,
+      t,
     ]
   )
 

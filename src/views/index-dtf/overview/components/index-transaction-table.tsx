@@ -14,24 +14,37 @@ import { ColumnDef } from '@tanstack/react-table'
 import { useAtomValue } from 'jotai'
 import { ArrowDownUp, ArrowUpRight } from 'lucide-react'
 import SectionAnchor from '@/components/section-anchor'
+import { msg } from '@lingui/core/macro'
+import type { MessageDescriptor } from '@lingui/core'
+import { Trans, useLingui } from '@lingui/react/macro'
+
+const TRANSACTION_TYPE_LABELS: Record<Transaction['type'], MessageDescriptor> = {
+  Mint: msg`Mint`,
+  Redeem: msg`Redeem`,
+  Transfer: msg`Transfer`,
+}
+
+const TransactionTypeCell = ({ type }: { type: Transaction['type'] }) => {
+  const { t } = useLingui()
+  const label = TRANSACTION_TYPE_LABELS[type]
+  return <div className="font-semibold">{label ? t(label) : type}</div>
+}
 
 // Columns type/amount/usdAmount/Time/From/Hash
 const columns: ColumnDef<Transaction>[] = [
   {
     header: ({ column }) => (
       <SorteableButton className="text-sm" column={column}>
-        Type
+        <Trans>Type</Trans>
       </SorteableButton>
     ),
     accessorKey: 'type',
-    cell: ({ row }) => {
-      return <div className="font-semibold">{row.original.type}</div>
-    },
+    cell: ({ row }) => <TransactionTypeCell type={row.original.type} />,
   },
   {
     header: ({ column }) => (
       <SorteableButton className="text-sm" column={column}>
-        Amount
+        <Trans>Amount</Trans>
       </SorteableButton>
     ),
     accessorKey: 'amount',
@@ -60,7 +73,7 @@ const columns: ColumnDef<Transaction>[] = [
   {
     header: ({ column }) => (
       <SorteableButton className="text-sm" column={column}>
-        Time
+        <Trans>Time</Trans>
       </SorteableButton>
     ),
     accessorKey: 'timestamp',
@@ -69,7 +82,11 @@ const columns: ColumnDef<Transaction>[] = [
     },
   },
   {
-    header: () => <span className="hidden md:block">Explore</span>,
+    header: () => (
+      <span className="hidden md:block">
+        <Trans>Explore</Trans>
+      </span>
+    ),
     accessorKey: 'hash',
     cell: ({ row }) => {
       return (
@@ -119,7 +136,9 @@ const IndexTransactionTable = () => {
       </div>
       <div className="flex items-center gap-2 mb-4"></div>
       <div className="flex items-center gap-1">
-        <h2 className="text-2xl font-light">Transactions</h2>
+        <h2 className="text-2xl font-light">
+          <Trans>Transactions</Trans>
+        </h2>
         <SectionAnchor id="transactions" />
       </div>
       <div className="flex flex-col gap-2 -mx-6 sm:-mx-4 overflow-x-auto max-w-[calc(100vw-10px)]">

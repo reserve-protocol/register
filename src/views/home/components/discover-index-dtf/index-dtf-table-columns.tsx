@@ -8,6 +8,7 @@ import { type IndexDTFItem } from '@/hooks/useIndexDTFList'
 import { cn } from '@/lib/utils'
 import { formatCurrency, getFolioRoute } from '@/utils'
 import { ColumnDef } from '@tanstack/react-table'
+import { Trans } from '@lingui/react/macro'
 import { Link } from 'react-router-dom'
 import { Line, LineChart, YAxis } from 'recharts'
 import { BasketHoverCard } from './basket-hover-card'
@@ -33,7 +34,9 @@ const TableHeader = ({
 export const indexDTFColumns: ColumnDef<IndexDTFItem>[] = [
   {
     header: ({ column }) => (
-      <SorteableButton column={column}>Name</SorteableButton>
+      <SorteableButton column={column}>
+        <Trans>Name</Trans>
+      </SorteableButton>
     ),
     accessorKey: 'name',
     cell: ({ row }) => (
@@ -54,7 +57,7 @@ export const indexDTFColumns: ColumnDef<IndexDTFItem>[] = [
             <h4 className="font-semibold ">{row.original.name}</h4>
             {isInactiveDTF(row.original.status) && (
               <span className="text-xs font-medium px-2 py-0.5 rounded-full bg-yellow-500/15 text-yellow-600 dark:text-yellow-400">
-                Inactive
+                <Trans>Inactive</Trans>
               </span>
             )}
           </div>
@@ -64,7 +67,11 @@ export const indexDTFColumns: ColumnDef<IndexDTFItem>[] = [
     ),
   },
   {
-    header: () => <TableHeader>Backing</TableHeader>,
+    header: () => (
+      <TableHeader>
+        <Trans>Backing</Trans>
+      </TableHeader>
+    ),
     accessorKey: 'basket',
     cell: ({ row }) => {
       const head = row.original.basket.slice(0, LIMIT_ASSETS)
@@ -90,13 +97,19 @@ export const indexDTFColumns: ColumnDef<IndexDTFItem>[] = [
   },
   {
     accessorKey: 'chainId',
-    header: () => <div className="text-center text-legend">Tags</div>,
+    header: () => (
+      <div className="text-center text-legend">
+        <Trans>Tags</Trans>
+      </div>
+    ),
     cell: ({ row }) => (
       <div className="text-center">
         {row.original.brand?.tags?.length ? (
           row.original.brand.tags.join(', ')
         ) : (
-          <div className="text-legend">None</div>
+          <div className="text-legend">
+            <Trans>None</Trans>
+          </div>
         )}
       </div>
     ),
@@ -104,7 +117,7 @@ export const indexDTFColumns: ColumnDef<IndexDTFItem>[] = [
   {
     header: ({ column }) => (
       <SorteableButton column={column}>
-        Performance (Last 7 Days)
+        <Trans>Performance (Last 7 Days)</Trans>
       </SorteableButton>
     ),
     accessorKey: 'performancePercent',
@@ -118,7 +131,9 @@ export const indexDTFColumns: ColumnDef<IndexDTFItem>[] = [
             {percentageChange ? (
               <span>{percentageChange}</span>
             ) : (
-              <span className="text-legend">No data</span>
+              <span className="text-legend">
+                <Trans>No data</Trans>
+              </span>
             )}
             <span className="block text-legend text-xs mt-0.5">
               (${formatCurrency(row.original.price, 5)})
@@ -146,7 +161,9 @@ export const indexDTFColumns: ColumnDef<IndexDTFItem>[] = [
   {
     header: ({ column }) => (
       <TableHeader className="text-right">
-        <SorteableButton column={column}>Market Cap</SorteableButton>
+        <SorteableButton column={column}>
+          <Trans>Market Cap</Trans>
+        </SorteableButton>
       </TableHeader>
     ),
     accessorKey: 'marketCap',

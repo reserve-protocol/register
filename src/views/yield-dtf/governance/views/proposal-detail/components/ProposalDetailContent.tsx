@@ -1,3 +1,4 @@
+import { Trans } from '@lingui/react/macro'
 import { useAtomValue } from 'jotai'
 import { lazy, Suspense, useState } from 'react'
 import ProposalDetail from '@/views/yield-dtf/governance/components/ProposalDetailPreview'
@@ -39,7 +40,7 @@ const ProposalDetailContent = () => {
             )}
             onClick={() => setTab(TABS.DESCRIPTION)}
           >
-            Description
+            <Trans>Description</Trans>
           </div>
           <div
             className={cn(
@@ -50,7 +51,7 @@ const ProposalDetailContent = () => {
             )}
             onClick={() => setTab(TABS.CHANGES)}
           >
-            Proposed changes
+            <Trans>Proposed changes</Trans>
           </div>
         </div>
       </div>

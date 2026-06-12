@@ -1,4 +1,6 @@
-import { t } from '@lingui/macro'
+import type { MessageDescriptor } from '@lingui/core'
+import { msg } from '@lingui/core/macro'
+import { useLingui } from '@lingui/react/macro'
 import { useAtomValue } from 'jotai'
 import { rTokenGovernanceAtom, secondsPerBlockAtom } from '@/state/atoms'
 import { formatPercentage, parseDuration, shortenAddress } from '@/utils'
@@ -8,7 +10,8 @@ import { InfoCard, InfoCardItem } from './settings-info-card'
 const getLegend = (
   isTimepoint: boolean,
   secondsPerBlock: number,
-  duration?: string
+  duration: string | undefined,
+  t: (descriptor: MessageDescriptor) => string
 ) => {
   const multiplier = isTimepoint ? 1 : secondsPerBlock
   const period = parseDuration((Number(duration) || 0) * multiplier)
@@ -17,10 +20,12 @@ const getLegend = (
     return period
   }
 
-  return period + ` (${duration} blocks)`
+  const blocks = duration ?? ''
+  return period + ` (${t(msg`${blocks} blocks`)})`
 }
 
 const GovernanceInfo = () => {
+  const { t } = useLingui()
   const governance = useAtomValue(rTokenGovernanceAtom)
   const secondsPerBlock = useAtomValue(secondsPerBlockAtom)
   const isTimeunit = isTimeunitGovernance(governance.name)
@@ -35,7 +40,8 @@ const GovernanceInfo = () => {
             value={getLegend(
               isTimeunit,
               secondsPerBlock,
-              governance.votingDelay
+              governance.votingDelay,
+              t
             )}
           />
           <InfoCardItem
@@ -43,7 +49,8 @@ const GovernanceInfo = () => {
             value={getLegend(
               isTimeunit,
               secondsPerBlock,
-              governance.votingPeriod
+              governance.votingPeriod,
+              t
             )}
           />
           <InfoCardItem

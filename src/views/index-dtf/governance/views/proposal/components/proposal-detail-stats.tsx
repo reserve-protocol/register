@@ -1,16 +1,11 @@
-import { cn } from '@/lib/utils'
-import { useAtomValue } from 'jotai'
-import { CircleSlash, ThumbsDown, ThumbsUp, X } from 'lucide-react'
-
-import dtfIndexGovernance from '@/abis/dtf-index-governance'
 import { Separator } from '@/components/ui/separator'
-import { chainIdAtom } from '@/state/atoms'
-import { formatCurrency, formatPercentage } from '@/utils'
+import { cn } from '@/lib/utils'
+import { formatCurrency, formatPercentage, formatTokenAmount } from '@/utils'
 import { PROPOSAL_STATES } from '@/utils/constants'
-import { Check } from 'lucide-react'
+import { Trans } from '@lingui/react/macro'
+import { useAtomValue } from 'jotai'
+import { Check, CircleSlash, ThumbsDown, ThumbsUp, X } from 'lucide-react'
 import { useMemo } from 'react'
-import { formatEther } from 'viem'
-import { useReadContracts } from 'wagmi'
 import { proposalDetailAtom, proposalStateAtom } from '../atom'
 
 const BooleanIcon = ({
@@ -41,46 +36,15 @@ const BooleanIcon = ({
 // TODO: Abstract atoms from these components!
 const useProposalDetailStats = () => {
   const proposal = useAtomValue(proposalDetailAtom)
-  const chainId = useAtomValue(chainIdAtom)
-  const { data } = useReadContracts({
-    contracts: [
-      {
-        address: proposal?.governor ?? '0x1',
-        abi: dtfIndexGovernance,
-        functionName: 'proposalVotes',
-        args: [BigInt(proposal?.id || '0')],
-        chainId,
-      },
-    ],
-    allowFailure: false,
-    query: { enabled: !!proposal },
-  })
-
-  const [votes] = data ?? [[0n, 0n, 0n]]
-  const [againstVotes, forVotes, abstainVotes] = useMemo(
-    () => votes.map((v) => +formatEther(v)),
-    [votes]
-  )
-
-  const [quorumWeight, currentQuorum, quorumNeeded, quorumReached] =
-    useMemo(() => {
-      if (!proposal) return [0, 0, 0, false]
-      const _quorumNeeded = proposal.quorumVotes
-      const _currentQuorum = +forVotes + +abstainVotes
-
-      if (!_quorumNeeded)
-        return [
-          _currentQuorum > _quorumNeeded ? 1 : 0,
-          _currentQuorum,
-          _quorumNeeded,
-          _currentQuorum > _quorumNeeded,
-        ]
-
-      const _quorumWeight = _currentQuorum / _quorumNeeded
-      const _quorumReached = _quorumWeight > 1
-
-      return [_quorumWeight, _currentQuorum, _quorumNeeded, _quorumReached]
-    }, [proposal, againstVotes, forVotes, abstainVotes])
+  const againstVotes = Number(proposal?.againstWeightedVotes.formatted ?? 0)
+  const forVotes = Number(proposal?.forWeightedVotes.formatted ?? 0)
+  const abstainVotes = Number(proposal?.abstainWeightedVotes.formatted ?? 0)
+  const threshold = proposal?.votingState.threshold
+  const quorumWeight = (threshold?.progress ?? 0) / 100
+  const currentQuorum = Number(threshold?.currentVotes.formatted ?? 0)
+  const quorumNeeded = Number(threshold?.targetVotes?.formatted ?? 0)
+  const quorumReached = threshold?.reached ?? false
+  const hasQuorumTarget = threshold?.hasTarget ?? false
 
   const [majorityWeight, majoritySupport] = useMemo(() => {
     const totalVotes = +forVotes + +againstVotes
@@ -97,57 +61,70 @@ const useProposalDetailStats = () => {
     againstVotes,
     forVotes,
     abstainVotes,
+    isOptimistic: proposal?.isOptimistic,
     quorumWeight,
     currentQuorum,
     quorumNeeded,
     quorumReached,
+    hasQuorumTarget,
     majorityWeight,
     majoritySupport,
   }
 }
 
 const QuorumStat = ({
+  isOptimistic,
   quorumWeight,
   currentQuorum,
   quorumNeeded,
   quorumReached,
+  hasQuorumTarget,
 }: {
+  isOptimistic?: boolean
   quorumWeight: number
   currentQuorum: number
   quorumNeeded: number
   quorumReached: boolean
+  hasQuorumTarget: boolean
 }) => {
+  const isGood = hasQuorumTarget && (isOptimistic ? !quorumReached : quorumReached)
+
   return (
     <div className="flex flex-col gap-3 p-4">
-      <div className="flex items-center justify-between gap-2">
+      <div className="flex flex-wrap items-center justify-between gap-2">
         <div className="flex items-center gap-3">
-          <BooleanIcon value={quorumReached} />
-          <span>Quorum</span>
+          <BooleanIcon
+            value={isGood}
+            colorSuccess="green-500"
+            colorFailure="red-500"
+          />
+          <span>
+            {isOptimistic ? <Trans>Challenge</Trans> : <Trans>Quorum</Trans>}
+          </span>
         </div>
         <div className="flex items-center gap-2 text-base sm:text-lg">
           <span
-            className={`font-bold ${quorumReached ? 'text-green-500' : 'text-orange-500'}`}
+            className={`font-bold ${isGood ? 'text-green-500' : 'text-red-500'}`}
           >
-            {formatPercentage(quorumWeight * 100)}
+            {formatPercentage(Math.min(quorumWeight * 100, 100))}
           </span>
 
           <span className="text-legend whitespace-nowrap">
-            {formatCurrency(currentQuorum, 0, {
-              notation: 'compact',
-              compactDisplay: 'short',
-            })}{' '}
-            of{' '}
-            {formatCurrency(quorumNeeded, 0, {
-              notation: 'compact',
-              compactDisplay: 'short',
-            })}
+            {formatTokenAmount(currentQuorum)} <Trans>of</Trans>{' '}
+            {hasQuorumTarget ? (
+              formatTokenAmount(quorumNeeded)
+            ) : (
+              <Trans>Unavailable</Trans>
+            )}
           </span>
         </div>
       </div>
       <div className=" relative h-1 bg-gray-200 rounded-full">
         <div
-          className={`h-full rounded-full ${quorumReached ? 'bg-green-500' : 'bg-orange-500'}`}
-          style={{ width: `${Math.min(quorumWeight * 100, 100)}%` }}
+          className={`h-full rounded-full ${isGood ? 'bg-green-500' : 'bg-red-500'}`}
+          style={{
+            width: `${Math.min(quorumWeight * 100, 100)}%`,
+          }}
         />
       </div>
     </div>
@@ -169,6 +146,7 @@ const MajoritySupportStat = ({
       100
     )
   )
+
   return (
     <div className="flex flex-col gap-3 p-4">
       <div className="flex items-center justify-between gap-2">
@@ -178,13 +156,15 @@ const MajoritySupportStat = ({
             colorSuccess="text-accent-inverted"
             colorFailure="text-red-500"
           />
-          <span>Majority support</span>
+          <span>
+            <Trans>Majority support</Trans>
+          </span>
         </div>
         <div className="flex items-center gap-2 text-base sm:text-lg">
           <span
             className={`font-bold ${majoritySupport ? 'text-green-500' : 'text-red-500'}`}
           >
-            {majoritySupport ? 'Yes' : 'No'}
+            {majoritySupport ? <Trans>Yes</Trans> : <Trans>No</Trans>}
           </span>
           {percentage !== '100%' && (
             <span className="text-legend">{percentage}</span>
@@ -210,6 +190,50 @@ const MajoritySupportStat = ({
   )
 }
 
+const ChallengeStat = ({
+  quorumWeight,
+  currentQuorum,
+  quorumNeeded,
+  hasQuorumTarget,
+}: {
+  quorumWeight: number
+  currentQuorum: number
+  quorumNeeded: number
+  hasQuorumTarget: boolean
+}) => {
+  const challengeProgress = Math.min(quorumWeight * 100, 100)
+
+  return (
+    <div className="flex flex-col gap-6 p-4">
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <div className="flex items-center gap-3">
+          <div className="flex items-center justify-center w-7 h-7 bg-muted rounded text-muted-foreground">
+            <Check size={18} strokeWidth={1.5} />
+          </div>
+          <span className="text-lg">
+            <Trans>Challenge</Trans>
+          </span>
+        </div>
+        <span className="text-base text-legend sm:text-lg">
+          {formatTokenAmount(currentQuorum)} <Trans>of</Trans>{' '}
+          {hasQuorumTarget ? (
+            formatTokenAmount(quorumNeeded)
+          ) : (
+            <Trans>Unavailable</Trans>
+          )}
+          {hasQuorumTarget && ` (${formatPercentage(challengeProgress)})`}
+        </span>
+      </div>
+      <div className="h-2 rounded-full bg-gray-100">
+        <div
+          className="h-full rounded-full bg-destructive"
+          style={{ width: `${challengeProgress}%` }}
+        />
+      </div>
+    </div>
+  )
+}
+
 const VoteDistributionStat = ({
   forVotes,
   againstVotes,
@@ -227,7 +251,9 @@ const VoteDistributionStat = ({
             <ThumbsUp size={18} className="text-primary" />
           </div>
           <div className="flex flex-col">
-            <span className="min-w-[60px]">For</span>
+            <span className="min-w-[60px]">
+              <Trans>For</Trans>
+            </span>
             <span className="font-bold text-accent-inverted">
               {formatCurrency(+forVotes, 0, {
                 notation: 'compact',
@@ -238,7 +264,9 @@ const VoteDistributionStat = ({
         </div>
         <div className="flex items-center gap-3 flex-grow p-4 justify-end text-right">
           <div className="flex flex-col">
-            <span className="min-w-[60px]">Against</span>
+            <span className="min-w-[60px]">
+              <Trans>Against</Trans>
+            </span>
             <span className="font-bold text-destructive">
               {formatCurrency(+againstVotes, 0, {
                 notation: 'compact',
@@ -257,7 +285,9 @@ const VoteDistributionStat = ({
           <div className="flex items-center justify-center w-7 h-7 bg-muted rounded">
             <CircleSlash size={18} />
           </div>
-          <span className="min-w-[60px]">Abstain</span>
+          <span className="min-w-[60px]">
+            <Trans>Abstain</Trans>
+          </span>
         </div>
         <span className="font-bold text-gray-500">
           {formatCurrency(+abstainVotes, 0, {
@@ -277,39 +307,58 @@ const ProposalDetailStats = () => {
     currentQuorum,
     quorumNeeded,
     quorumReached,
+    hasQuorumTarget,
+    isOptimistic,
     majorityWeight,
     majoritySupport,
     againstVotes,
     forVotes,
     abstainVotes,
   } = useProposalDetailStats()
+  const isVotingLive = [PROPOSAL_STATES.ACTIVE, PROPOSAL_STATES.PENDING].includes(
+    state
+  )
 
   return (
     <div className="bg-background rounded-3xl p-2">
       <h4 className="font-bold text-xl p-4">
-        {[PROPOSAL_STATES.ACTIVE, PROPOSAL_STATES.PENDING].includes(state)
-          ? 'Current'
-          : 'Final'}{' '}
-        votes
+        {isVotingLive ? (
+          <Trans>Current votes</Trans>
+        ) : (
+          <Trans>Final votes</Trans>
+        )}
       </h4>
       <div className="flex flex-col bg-card rounded-3xl border">
-        <QuorumStat
-          quorumWeight={quorumWeight}
-          currentQuorum={currentQuorum}
-          quorumNeeded={quorumNeeded}
-          quorumReached={quorumReached}
-        />
-        <Separator />
-        <MajoritySupportStat
-          majorityWeight={majorityWeight}
-          majoritySupport={majoritySupport}
-        />
-        <Separator />
-        <VoteDistributionStat
-          forVotes={forVotes}
-          againstVotes={againstVotes}
-          abstainVotes={abstainVotes}
-        />
+        {isOptimistic ? (
+          <ChallengeStat
+            quorumWeight={quorumWeight}
+            currentQuorum={currentQuorum}
+            quorumNeeded={quorumNeeded}
+            hasQuorumTarget={hasQuorumTarget}
+          />
+        ) : (
+          <>
+            <QuorumStat
+              isOptimistic={isOptimistic}
+              quorumWeight={quorumWeight}
+              currentQuorum={currentQuorum}
+              quorumNeeded={quorumNeeded}
+              quorumReached={quorumReached}
+              hasQuorumTarget={hasQuorumTarget}
+            />
+            <Separator />
+            <MajoritySupportStat
+              majorityWeight={majorityWeight}
+              majoritySupport={majoritySupport}
+            />
+            <Separator />
+            <VoteDistributionStat
+              forVotes={forVotes}
+              againstVotes={againstVotes}
+              abstainVotes={abstainVotes}
+            />
+          </>
+        )}
       </div>
     </div>
   )

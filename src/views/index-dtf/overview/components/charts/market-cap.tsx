@@ -1,4 +1,5 @@
 import { formatCurrency } from '@/utils'
+import { Trans } from '@lingui/react/macro'
 import { BadgeDollarSign } from 'lucide-react'
 import { IndexDTFPerformance } from '../../hooks/use-dtf-price-history'
 
@@ -10,7 +11,9 @@ const MarketCap = ({
   return (
     <div className="flex items-center gap-1 justify-end sm:text-base text-sm">
       <BadgeDollarSign size={16} className="text-white/80" />
-      <div className="text-white/80">MCap:</div>
+      <div className="text-white/80">
+        <Trans>MCap:</Trans>
+      </div>
       <div className="text-white">
         $
         {formatCurrency(timeseries[timeseries.length - 1]?.marketCap || 0, 1, {

@@ -1,4 +1,4 @@
-import { t } from '@lingui/macro'
+import { useLingui } from '@lingui/react/macro'
 import TransactionInput, {
   TransactionInputProps,
 } from 'components/transaction-input'
@@ -8,6 +8,7 @@ import { formatEther } from 'viem'
 import { issueAmountAtom, maxIssuableAtom } from '../../atoms'
 
 const IssueInput = (props: Partial<TransactionInputProps>) => {
+  const { t } = useLingui()
   const issuableAmount = useAtomValue(maxIssuableAtom)
   const { issuancePaused, frozen } = useAtomValue(rTokenStateAtom)
 

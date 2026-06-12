@@ -5,6 +5,7 @@ import { indexDTFAtom } from '@/state/dtf/atoms'
 import { useAtomValue } from 'jotai'
 import type { NetPerformanceYear } from '../types/factsheet-data'
 import React from 'react'
+import { Trans } from '@lingui/react/macro'
 
 interface NetPerformanceSummaryProps {
   data: NetPerformanceYear[] | null
@@ -54,10 +55,11 @@ const NetPerformanceSummary = ({ data }: NetPerformanceSummaryProps) => {
       <Card className="bg-background border-secondary rounded-none sm:rounded-3xl mx-1 mb-1">
         <div className="p-6">
           <h3 className="text-xl sm:text-2xl font-light mb-4">
-            Net Performance Summary - {dtf?.token?.name || 'Index'}
+            <Trans>Net Performance Summary</Trans> -{' '}
+            {dtf?.token?.name || 'Index'}
           </h3>
           <div className="text-center py-8 text-muted-foreground">
-            Loading performance data...
+            <Trans>Loading performance data...</Trans>
           </div>
         </div>
       </Card>
@@ -100,8 +102,8 @@ const NetPerformanceSummary = ({ data }: NetPerformanceSummaryProps) => {
     <Card className="bg-background border-secondary rounded-none sm:rounded-3xl mx-1 mb-1">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-3 p-6">
         <h3 className="text-xl sm:text-2xl font-light">
-          Net Performance Summary - <br className="sm:hidden" />{' '}
-          {dtf?.token?.name || 'Index'}
+          <Trans>Net Performance Summary</Trans> -{' '}
+          <br className="sm:hidden" /> {dtf?.token?.name || 'Index'}
         </h3>
         <Button
           variant="outline"
@@ -110,8 +112,12 @@ const NetPerformanceSummary = ({ data }: NetPerformanceSummaryProps) => {
           className="flex items-center font-light h-8 gap-2 rounded-full"
         >
           <DownloadIcon className="h-4 w-4" />
-          <span className="hidden md:inline">Download CSV</span>
-          <span className="md:hidden">Download as CSV</span>
+          <span className="hidden md:inline">
+            <Trans>Download CSV</Trans>
+          </span>
+          <span className="md:hidden">
+            <Trans>Download as CSV</Trans>
+          </span>
         </Button>
       </div>
 
@@ -236,13 +242,17 @@ const NetPerformanceSummary = ({ data }: NetPerformanceSummaryProps) => {
                           </span>
                           {monthData.isBest && (
                             <div className="text-[10px] text-green-600 -mt-1">
-                              <span>best</span>
+                              <span>
+                                <Trans>best</Trans>
+                              </span>
                               <ArrowUpIcon className="h-2 w-2 inline ml-0.5" />
                             </div>
                           )}
                           {monthData.isWorst && (
                             <div className="text-[10px] text-red-600 -mt-1">
-                              <span>worst</span>
+                              <span>
+                                <Trans>worst</Trans>
+                              </span>
                               <ArrowDownIcon className="h-2 w-2 inline ml-0.5" />
                             </div>
                           )}

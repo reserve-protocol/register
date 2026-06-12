@@ -6,7 +6,7 @@ const SectionHeader = ({
   right,
   icon: Icon,
 }: {
-  title: string
+  title: ReactNode
   subtitle?: ReactNode
   right?: ReactNode
   icon?: ComponentType<{ size?: string | number; className?: string }>

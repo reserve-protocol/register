@@ -1,4 +1,5 @@
 import { ROUTES } from '@/utils/constants'
+import { Trans } from '@lingui/react/macro'
 import { ArrowUpRightIcon, ScrollText } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { AssetTrade } from '../atoms'
@@ -8,7 +9,10 @@ const TradesHeader = ({ proposalId }: { proposalId: string }) => {
   return (
     <div className="flex items-center">
       <h2 className="font-bold text-base  ml-3 ">
-        All Auctions <span className="hidden md:inline-block">in proposal</span>
+        <Trans>
+          All Auctions{' '}
+          <span className="hidden md:inline-block">in proposal</span>
+        </Trans>
       </h2>
       <Link
         target="_blank"
@@ -18,7 +22,9 @@ const TradesHeader = ({ proposalId }: { proposalId: string }) => {
         <div className="rounded-full p-1 border border-foreground">
           <ScrollText size={14} />
         </div>
-        <span className="font-bold">View proposal</span>
+        <span className="font-bold">
+          <Trans>View proposal</Trans>
+        </span>
         <div className="rounded-full p-1 bg-muted">
           <ArrowUpRightIcon size={14} />
         </div>

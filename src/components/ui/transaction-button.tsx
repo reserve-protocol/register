@@ -2,7 +2,7 @@
  * TransactionButton - Blockchain transaction button with wallet/chain validation
  * Uses shadcn Button with transaction-specific functionality
  */
-import { t, Trans } from '@lingui/macro'
+import { Trans, useLingui } from '@lingui/react/macro'
 import { useConnectModal } from '@rainbow-me/rainbowkit'
 import TransactionError from 'components/transaction-error/TransactionError'
 import useContractWrite from 'hooks/useContractWrite'
@@ -89,7 +89,9 @@ export const TransactionButtonContainer = ({
           switchChain({ chainId: chain || chainId })
         }}
       >
-        <span>Switch to {CHAIN_TAGS[chain || chainId]}</span>
+        <span>
+          <Trans>Switch to {CHAIN_TAGS[chain || chainId]}</Trans>
+        </span>
       </Button>
     )
   }
@@ -110,6 +112,7 @@ const TransactionButton = ({
   disabled,
   ...props
 }: TransactionButtonProps) => {
+  const { t } = useLingui()
   const address = useAtomValue(walletAtom)
   const walletChain = useAtomValue(walletChainAtom)
   const chainId = useAtomValue(chainIdAtom)
@@ -131,13 +134,19 @@ const TransactionButton = ({
           switchChain({ chainId: chain || chainId })
         }}
       >
-        <span>Switch to {CHAIN_TAGS[chain || chainId]}</span>
+        <span>
+          <Trans>Switch to {CHAIN_TAGS[chain || chainId]}</Trans>
+        </span>
       </Button>
     )
   }
 
   const isLoading = loading || mining
-  const displayText = mining ? t`Tx in process...` : isLoading ? loadingText : text
+  const displayText = mining
+    ? t`Tx in process...`
+    : isLoading
+      ? loadingText
+      : text
 
   return (
     <>
@@ -152,7 +161,7 @@ const TransactionButton = ({
       {!!gas && <GasEstimateLabel gas={gas} />}
       {!!error && (
         <TransactionError
-          className="text-center mt-4"
+          className="text-center mt-2"
           error={error}
           withName={errorWithName}
         />
@@ -184,6 +193,7 @@ export const ExecuteButton = ({
   loading: externalLoading,
   ...props
 }: ExecuteButtonProps) => {
+  const { t } = useLingui()
   const { write, hash, isLoading, validationError, reset, isReady } =
     useContractWrite(call)
   const notify = useNotification()
@@ -212,9 +222,9 @@ export const ExecuteButton = ({
 
   useEffect(() => {
     if (validationError) {
-      notify('Transaction not valid', validationError.message, 'error')
+      notify(t`Transaction not valid`, validationError.message, 'error')
     }
-  }, [validationError])
+  }, [validationError, t])
 
   if (status === 'success') {
     if (!successLabel) {

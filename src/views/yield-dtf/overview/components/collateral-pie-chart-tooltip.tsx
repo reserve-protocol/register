@@ -1,4 +1,4 @@
-import { t } from '@lingui/macro'
+import { useLingui } from '@lingui/react/macro'
 import BasketCubeIcon from 'components/icons/BasketCubeIcon'
 import CirclesIcon from 'components/icons/CirclesIcon'
 import PlatformExposureIcon from 'components/icons/PlatformExposureIcon'
@@ -37,6 +37,7 @@ const Item: FC<ItemProps> = ({ logo, name, value }) => {
 const CollateralPieChartTooltip: FC<CollateralPieChartTooltipProps> = ({
   token,
 }) => {
+  const { t } = useLingui()
   const rsrPrice = useAtomValue(rsrPriceAtom)
   const metadata = useAtomValue(collateralsMetadataAtom)
 

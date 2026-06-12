@@ -2,9 +2,11 @@ import ChainLogo from '@/components/icons/ChainLogo'
 import TokenLogo from '@/components/token-logo'
 import { Skeleton } from '@/components/ui/skeleton'
 import { indexDTFAtom, indexDTFBrandAtom } from '@/state/dtf/atoms'
+import { useLingui } from '@lingui/react/macro'
 import { useAtomValue } from 'jotai'
 
 const IndexTokenLogo = () => {
+  const { t } = useLingui()
   const dtf = useAtomValue(indexDTFAtom)
   const brand = useAtomValue(indexDTFBrandAtom)
 
@@ -15,7 +17,7 @@ const IndexTokenLogo = () => {
     <div className="relative">
       <TokenLogo
         src={brand?.dtf?.icon || undefined}
-        alt={dtf?.token.symbol ?? 'dtf token logo'}
+        alt={dtf?.token.symbol ?? t`dtf token logo`}
         size="xl"
       />
       {dtf?.chainId && (

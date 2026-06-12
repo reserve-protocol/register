@@ -1,6 +1,9 @@
 import ChainLogo from '@/components/icons/ChainLogo'
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
 import { ChainId } from '@/utils/chains'
+import type { MessageDescriptor } from '@lingui/core'
+import { msg } from '@lingui/core/macro'
+import { useLingui } from '@lingui/react/macro'
 import { LayoutGrid } from 'lucide-react'
 import { useEffect, useState } from 'react'
 
@@ -11,10 +14,16 @@ interface YieldChainFilterProps {
 }
 
 // Yield DTFs only support Ethereum and Base
-const chains = [
+const chains: {
+  icon: React.ReactElement
+  text: string
+  label?: MessageDescriptor
+  filter: string[]
+}[] = [
   {
     icon: <LayoutGrid />,
     text: 'All chains',
+    label: msg`All chains`,
     filter: [
       ChainId.Mainnet.toString(),
       ChainId.Base.toString(),
@@ -40,6 +49,7 @@ const getSelectedIndex = (currentFilter: string[]) => {
 }
 
 const YieldChainFilter = (props: YieldChainFilterProps) => {
+  const { t } = useLingui()
   const { value: currentFilter, onChange: setFilters, className } = props
   const [selected, setSelected] = useState(getSelectedIndex(currentFilter))
 
@@ -62,14 +72,16 @@ const YieldChainFilter = (props: YieldChainFilterProps) => {
       onValueChange={handleSelect}
       className={displayClassName}
     >
-      {chains.map(({ text, icon }, index) => (
+      {chains.map(({ text, label, icon }, index) => (
         <ToggleGroupItem
           key={text}
           value={index.toString()}
           className="flex items-center gap-0 h-8 px-2 data-[state=on]:bg-muted data-[state=on]:text-primary hover:text-primary hover:bg-muted"
         >
           {icon}
-          <span className="hidden md:block ml-[6px]">{text}</span>
+          <span className="hidden md:block ml-[6px]">
+            {label ? t(label) : text}
+          </span>
         </ToggleGroupItem>
       ))}
     </ToggleGroup>

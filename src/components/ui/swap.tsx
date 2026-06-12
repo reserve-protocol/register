@@ -7,8 +7,10 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { Input, NumericalInput } from '@/components/ui/input'
+import useMediaQuery from '@/hooks/useMediaQuery'
 import { cn } from '@/lib/utils'
 import { chainIdAtom } from '@/state/atoms'
+import { indexDTFAtom, indexDTFBrandAtom } from '@/state/dtf/atoms'
 import { Token } from '@/types'
 import { formatCurrency } from '@/utils'
 import { useAtomValue } from 'jotai'
@@ -26,24 +28,25 @@ import React, {
   useRef,
   useState,
 } from 'react'
+import { Trans, useLingui } from '@lingui/react/macro'
+import { msg } from '@lingui/core/macro'
+import type { MessageDescriptor } from '@lingui/core'
 import GaugeIcon from '../icons/GaugeIcon'
-import { ToggleGroup, ToggleGroupItem } from './toggle-group'
-import { Skeleton } from './skeleton'
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from './accordion'
-import { Separator } from './separator'
 import Help from './help'
-import { indexDTFAtom, indexDTFBrandAtom } from '@/state/dtf/atoms'
-import useMediaQuery from '@/hooks/useMediaQuery'
+import { Separator } from './separator'
+import { Skeleton } from './skeleton'
+import { ToggleGroup, ToggleGroupItem } from './toggle-group'
 
 type TokenWithBalance = Token & { balance?: string }
 
 type SwapItem = {
-  title?: string
+  title?: ReactNode
   price?: ReactNode
   address?: string
   symbol?: string
@@ -53,6 +56,8 @@ type SwapItem = {
   onChange?: (value: string) => void
   tokens?: TokenWithBalance[]
   onTokenSelect?: (token: Token) => void
+  disabled?: boolean
+  className?: string
 }
 
 type SwapProps = {
@@ -61,10 +66,12 @@ type SwapProps = {
   onSwap?: () => void
   loading?: boolean
 }
+
 const TokenInput = ({
   value = '',
   onChange = () => {},
-}: Pick<SwapItem, 'value' | 'onChange'>) => {
+  disabled = false,
+}: Pick<SwapItem, 'value' | 'onChange'> & { disabled?: boolean }) => {
   const ref = useRef<HTMLInputElement>(null)
   const isDesktop = useMediaQuery('(min-width: 768px)')
 
@@ -86,6 +93,7 @@ const TokenInput = ({
       className="placeholder:text-primary/70 text-primary"
       ref={ref}
       autoFocus={isDesktop}
+      disabled={disabled}
     />
   )
 }
@@ -187,28 +195,42 @@ const PriceValue = ({ price }: Pick<SwapItem, 'price'>) => (
   </div>
 )
 
-const MaxButton = ({ balance, onMax }: Pick<SwapItem, 'balance' | 'onMax'>) => (
+const MaxButton = ({
+  balance,
+  onMax,
+  disabled,
+}: Pick<SwapItem, 'balance' | 'onMax'> & { disabled?: boolean }) => (
   <div className="flex items-center gap-1 text-base">
-    <span className="text-legend">Balance</span>
+    <span className="text-legend">
+      <Trans>Balance</Trans>
+    </span>
     <span className="font-bold">{balance}</span>
     <Button
       variant="ghost"
       className="h-6 rounded-full ml-1 bg-primary/15 text-primary/80 hover:bg-primary/15 hover:text-primary/80 font-semibold"
       size="xs"
       onClick={onMax}
+      disabled={disabled}
     >
-      Max
+      <Trans>Max</Trans>
     </Button>
   </div>
 )
 
-const TokenInputBox = ({ from }: Pick<SwapProps, 'from'>) => {
+export const TokenInputBox = ({ from }: Pick<SwapProps, 'from'>) => {
   return (
-    <div className="flex flex-col gap-1 p-4 bg-muted rounded-xl">
+    <div
+      className={cn(
+        'flex flex-col gap-1 p-4 bg-muted rounded-xl',
+        from.className
+      )}
+    >
       <div>
-        <h3 className="text-primary">{from?.title || 'You use:'}</h3>
+        <h3 className="text-primary">
+          {from?.title || <Trans>You use:</Trans>}
+        </h3>
         <div className="flex gap-1">
-          <TokenInput {...from} />
+          <TokenInput {...from} disabled={from.disabled} />
           <TokenSelector {...from} />
         </div>
       </div>
@@ -217,22 +239,27 @@ const TokenInputBox = ({ from }: Pick<SwapProps, 'from'>) => {
           <div className="max-w-[220px]">
             <PriceValue price={from.price} />
           </div>
-          <MaxButton balance={from.balance} onMax={from.onMax} />
+          <MaxButton
+            balance={from.balance}
+            onMax={from.onMax}
+            disabled={from.disabled}
+          />
         </div>
       </div>
     </div>
   )
 }
 
-const SLOW_LOADING_TEXTS = [
-  'Searching DEX Liquidity',
-  'Assembling different routes',
-  'Evaluating slippage',
-  'Reducing potential dust',
-  'Loading DTF',
+const SLOW_LOADING_TEXTS: MessageDescriptor[] = [
+  msg`Searching DEX Liquidity`,
+  msg`Assembling different routes`,
+  msg`Evaluating slippage`,
+  msg`Reducing potential dust`,
+  msg`Loading DTF`,
 ]
 
 const SlowLoading = ({ enabled }: { enabled: boolean }) => {
+  const { t } = useLingui()
   const [countdown, setCountdown] = useState(60)
   const [textIndex, setTextIndex] = useState(0)
 
@@ -267,7 +294,7 @@ const SlowLoading = ({ enabled }: { enabled: boolean }) => {
       <div className="flex items-center gap-1 justify-between bg-card rounded-full px-3 py-2 text-sm text-primary border border-primary">
         <div className="flex items-center gap-1">
           <Loader size={16} className="animate-spin-slow" />
-          {SLOW_LOADING_TEXTS[textIndex]}
+          {t(SLOW_LOADING_TEXTS[textIndex])}
         </div>
         <div
           className={cn(
@@ -282,7 +309,10 @@ const SlowLoading = ({ enabled }: { enabled: boolean }) => {
   )
 }
 
-const TokenOutputBox = ({ to, loading }: Pick<SwapProps, 'to' | 'loading'>) => {
+export const TokenOutputBox = ({
+  to,
+  loading,
+}: Pick<SwapProps, 'to' | 'loading'>) => {
   const [slowLoading, setSlowLoading] = useState(false)
 
   useEffect(() => {
@@ -311,10 +341,15 @@ const TokenOutputBox = ({ to, loading }: Pick<SwapProps, 'to' | 'loading'>) => {
   }, [loading])
 
   return (
-    <div className="relative flex flex-col gap-1 p-4 bg-card rounded-xl border-border border">
+    <div
+      className={cn(
+        'relative flex flex-col gap-1 p-4 bg-card rounded-xl border-border border',
+        to.className
+      )}
+    >
       <SlowLoading enabled={slowLoading} />
       <div>
-        <h3>{to.title || 'You receive:'}</h3>
+        <h3>{to.title || <Trans>You receive:</Trans>}</h3>
         <div className="flex items-center gap-2 justify-between">
           {loading ? (
             <Skeleton className="w-full h-[40px]" />
@@ -343,11 +378,17 @@ const TokenOutputBox = ({ to, loading }: Pick<SwapProps, 'to' | 'loading'>) => {
   )
 }
 
-const ArrowSeparator = ({ onSwap }: Pick<SwapProps, 'onSwap'>) => {
+export const ArrowSeparator = ({
+  onSwap,
+  className,
+}: Pick<SwapProps, 'onSwap'> & { className?: string }) => {
   if (onSwap) {
     return (
       <Button
-        className="h-8 px-[6px] rounded-xl w-max mx-auto border-card border-2 -mt-4 -mb-4 z-20 text-foreground bg-muted hover:bg-border"
+        className={cn(
+          'h-8 px-[6px] rounded-xl w-max mx-auto border-card border-2 -mt-4 -mb-4 z-20 text-foreground bg-muted hover:bg-border',
+          className
+        )}
         onClick={onSwap}
       >
         <ArrowUpDown size={16} />
@@ -355,7 +396,12 @@ const ArrowSeparator = ({ onSwap }: Pick<SwapProps, 'onSwap'>) => {
     )
   }
   return (
-    <div className="rounded-xl bg-muted w-max p-2 mx-auto border-white border-2 -mt-4 -mb-4 z-20">
+    <div
+      className={cn(
+        'rounded-xl bg-muted w-max p-2 mx-auto border-white border-2 -mt-4 -mb-4 z-20 flex items-center justify-center',
+        className
+      )}
+    >
       <ArrowDown size={16} />
     </div>
   )
@@ -374,6 +420,7 @@ export const SlippageSelector = ({
   formatOption?: (option: string) => string
   hideTitle?: boolean
 }) => {
+  const { t } = useLingui()
   const [customValue, setCustomValue] = useState(
     (1 / (Number(value) / 100)).toFixed(3)
   )
@@ -405,8 +452,12 @@ export const SlippageSelector = ({
         <div className="flex items-center gap-1">
           <GaugeIcon height={16} width={16} />
           <div className="text-sm font-semibold">
-            <span className="inline-block sm:hidden">Slippage</span>
-            <span className="hidden sm:inline-block">Max slippage</span>
+            <span className="inline-block sm:hidden">
+              <Trans>Slippage</Trans>
+            </span>
+            <span className="hidden sm:inline-block">
+              <Trans>Max slippage</Trans>
+            </span>
           </div>
         </div>
       )}
@@ -421,7 +472,7 @@ export const SlippageSelector = ({
             <ToggleGroupItem
               key={option}
               value={option.toString()}
-              aria-label={`Toggle ${option}`}
+              aria-label={t`Toggle ${option}`}
               className="px-3 rounded-md data-[state=on]:bg-card text-secondary-foreground/80 data-[state=on]:text-primary"
               size="xs"
             >
@@ -432,7 +483,7 @@ export const SlippageSelector = ({
         <div className="w-20 hidden sm:block" role="button">
           <div className="relative">
             <Input
-              placeholder="Custom"
+              placeholder={t`Custom`}
               className={cn(
                 'h-9 px-[10px] rounded-lg text-base [&:focus::placeholder]:opacity-0 [&:focus::placeholder]:transition-opacity focus-visible:ring-0 focus-visible:ring-offset-0 ',
                 customValue && 'pl-2 pr-6'

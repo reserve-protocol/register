@@ -1,3 +1,4 @@
+import { Trans } from '@lingui/react/macro'
 import { useAtomValue } from 'jotai'
 import { PencilRuler } from 'lucide-react'
 import { savedWeightsAtom } from '../../atoms'
@@ -13,10 +14,12 @@ const ManageWeightsHero = () => {
         <PencilRuler className="w-4 h-4" />
       </div>
       <h1 className="text-xl font-semibold text-primary mt-1">
-        Manage weights before proceeding
+        <Trans>Manage weights before proceeding</Trans>
       </h1>
       <p className="text-legend">
-        You need to confirm desired weights before running rebalance auctions.
+        <Trans>
+          You need to confirm desired weights before running rebalance auctions.
+        </Trans>
       </p>
     </div>
   )

@@ -1,4 +1,4 @@
-import { t } from '@lingui/macro'
+import { useLingui } from '@lingui/react/macro'
 import AreaChart from 'components/charts/area/AreaChart'
 import TabMenu from 'components/tab-menu'
 import dayjs from 'dayjs'
@@ -52,6 +52,7 @@ const PRICE_OPTIONS = [
 ]
 
 const PriceChart = ({ className }: { className?: string }) => {
+  const { t } = useLingui()
   const rToken = useRToken()
   const [current, setCurrent] = useState(TIME_RANGES.MONTH)
   const [currentPrice, setCurrentPrice] = useState<'ETH' | 'USD'>('USD')
@@ -129,7 +130,7 @@ const PriceChart = ({ className }: { className?: string }) => {
 
   return (
     <AreaChart
-      heading={t`${rToken?.symbol ?? ''} ${currentPrice === 'USD' ? 'Price' : 'Exchange Rate'}`}
+      heading={`${rToken?.symbol ?? ''} ${currentPrice === 'USD' ? t`Price` : t`Exchange Rate`}`}
       title={priceTitle}
       data={rows}
       timeRange={TIME_RANGES}

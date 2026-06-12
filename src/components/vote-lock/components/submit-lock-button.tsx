@@ -1,107 +1,104 @@
 import dtfIndexStakingVault from '@/abis/dtf-index-staking-vault'
 import TransactionButton from '@/components/ui/transaction-button'
+import useIsComplianceRestricted from '@/hooks/use-is-compliance-restricted'
 import { walletAtom } from '@/state/atoms'
+import { useLingui } from '@lingui/react/macro'
+import {
+  prepareVoteLockDepositPlan,
+  type ContractCall,
+} from '@reserve-protocol/react-sdk'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { useResetAtom } from 'jotai/utils'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { toast } from 'sonner'
-import { Address, erc20Abi, getAddress, isAddress, parseUnits } from 'viem'
+import { parseUnits, zeroAddress } from 'viem'
 import {
   useReadContract,
   useWaitForTransactionReceipt,
   useWriteContract,
 } from 'wagmi'
 import {
-  currentDelegateAtom,
-  delegateAtom,
+  closeDrawerAtom,
   lockCheckboxAtom,
   stakingInputAtom,
   stTokenAtom,
-  underlyingBalanceAtom,
-  closeDrawerAtom,
+  underlyingBalanceRawAtom,
+  updateCurrentDtfStTokenSupplyAtom,
+  voteLockStateAtom,
 } from '../atoms'
-import useIsComplianceRestricted from '@/hooks/use-is-compliance-restricted'
+import { getWriteContractParams, isSameAddress } from '../utils'
 
-export const DelegateButton = () => {
+const PROCESSING_DELAY = 10_000
+
+const SubmitLockButton = ({ onSuccess }: { onSuccess?: () => void }) => {
+  const { t } = useLingui()
   const account = useAtomValue(walletAtom)
-  const stToken = useAtomValue(stTokenAtom)!
-  const delegate = useAtomValue(delegateAtom)
-  const chainId = stToken?.chainId
-  const isValidDelegate = isAddress(delegate, { strict: false })
-  const setCurrentDelegate = useSetAtom(currentDelegateAtom)
-
-  const { writeContract, data: hash, isPending, error } = useWriteContract()
-
-  const write = () => {
-    if (!account || !isValidDelegate || !stToken?.id) return
-
-    writeContract({
-      abi: dtfIndexStakingVault,
-      functionName: 'delegate',
-      address: stToken?.id as `0x${string}`,
-      args: [isValidDelegate ? getAddress(delegate) : account],
-      chainId,
-    })
-  }
-
-  const { data: receipt, error: txError } = useWaitForTransactionReceipt({
-    hash,
-    chainId,
-  })
-
-  useEffect(() => {
-    if (receipt?.status === 'success') {
-      setCurrentDelegate(delegate)
-    }
-  }, [receipt, delegate, setCurrentDelegate])
-
-  return (
-    <div>
-      <TransactionButton
-        chain={chainId}
-        disabled={!account || !isValidDelegate}
-        loading={isPending || !!hash || (hash && !receipt)}
-        loadingText={!!hash ? 'Confirming tx...' : 'Pending, sign in wallet'}
-        onClick={write}
-        text={`Delegate ${stToken?.underlying.symbol}`}
-        className="w-full"
-        error={error || txError}
-      />
-    </div>
-  )
-}
-
-const SubmitLockButton = () => {
-  const account = useAtomValue(walletAtom)
-  const stToken = useAtomValue(stTokenAtom)!
+  const stToken = useAtomValue(stTokenAtom)
+  const voteLockState = useAtomValue(voteLockStateAtom)
   const input = useAtomValue(stakingInputAtom)
-  const balance = useAtomValue(underlyingBalanceAtom)
-  const amountToLock = parseUnits(input, stToken?.underlying.decimals)
+  const balance = useAtomValue(underlyingBalanceRawAtom)
   const checkbox = useAtomValue(lockCheckboxAtom)
-  const delegate = useAtomValue(delegateAtom)
   const resetInput = useResetAtom(stakingInputAtom)
   const setShouldClose = useSetAtom(closeDrawerAtom)
-  const chainId = stToken?.chainId
+  const updateCurrentDtfStTokenSupply = useSetAtom(
+    updateCurrentDtfStTokenSupplyAtom
+  )
   const [isProcessing, setIsProcessing] = useState(false)
+  const [approvedAmount, setApprovedAmount] = useState<bigint | undefined>()
+  const pendingApprovalAmount = useRef(0n)
+  const pendingSupplyDelta = useRef(0n)
+  const processedApprovalHash = useRef<string>()
+  const processedReceiptHash = useRef<string>()
+  const processingTimer = useRef<ReturnType<typeof setTimeout>>()
   const isRestricted = useIsComplianceRestricted()
 
-  const isValidDelegate = isAddress(delegate, { strict: false })
-  const isSelfDelegate = delegate === account
+  useEffect(() => {
+    return () => {
+      if (processingTimer.current) clearTimeout(processingTimer.current)
+    }
+  }, [])
 
-  const {
-    data: allowance,
-    isLoading: validatingAllowance,
-    error: allowanceError,
-  } = useReadContract({
-    abi: erc20Abi,
-    functionName: 'allowance',
-    address: stToken?.underlying.address as `0x${string}`,
-    args: [account!, stToken?.id as `0x${string}`],
-    chainId,
-    query: { enabled: !!account && isValidDelegate },
+  const amountToLock = stToken
+    ? parseUnits(input || '0', stToken.underlying.decimals)
+    : 0n
+  const allowance = voteLockState?.underlyingAllowance.raw ?? 0n
+  const needsApproval = allowance < amountToLock
+  const hasBalance = balance !== undefined && balance >= amountToLock
+  const currentDelegate = voteLockState?.delegate
+  const shouldDelegateToSelf =
+    !currentDelegate ||
+    currentDelegate === zeroAddress ||
+    isSameAddress(currentDelegate, account)
+  const plan =
+    stToken && (shouldDelegateToSelf || account)
+      ? prepareVoteLockDepositPlan({
+          chainId: stToken.chainId,
+          stToken: stToken.id,
+          amount: amountToLock,
+          ...(shouldDelegateToSelf
+            ? { delegateToSelf: true }
+            : { receiver: account! }),
+          ...(needsApproval
+            ? {
+                approval: {
+                  underlying: stToken.underlying.address,
+                  amount: amountToLock,
+                },
+              }
+            : {}),
+        })
+      : undefined
+  const approvalCall =
+    plan?.type === 'approval-required' ? plan.approvals[0] : undefined
+  const lockCall = plan?.call
+  const { data: sharesToMint } = useReadContract({
+    abi: dtfIndexStakingVault,
+    functionName: 'previewDeposit',
+    address: stToken?.id,
+    args: [amountToLock],
+    chainId: stToken?.chainId,
+    query: { enabled: amountToLock > 0n && !!stToken?.id },
   })
-
-  const hasAllowance = (allowance || 0n) >= amountToLock
 
   const {
     writeContract: writeApprove,
@@ -109,32 +106,17 @@ const SubmitLockButton = () => {
     isPending: approving,
     error: approvalError,
   } = useWriteContract()
-
-  const approve = () => {
-    if (
-      !stToken?.underlying.address ||
-      !stToken?.id ||
-      hasAllowance ||
-      !balance
-    )
-      return
-
-    writeApprove({
-      abi: erc20Abi,
-      address: stToken?.underlying.address as `0x${string}`,
-      functionName: 'approve',
-      args: [stToken?.id as `0x${string}`, amountToLock],
-      chainId,
-    })
-  }
-
   const { data: approvalReceipt, error: approvalTxError } =
     useWaitForTransactionReceipt({
       hash: approvalHash,
-      chainId,
+      chainId: stToken?.chainId,
     })
 
-  const readyToSubmit = hasAllowance || approvalReceipt?.status === 'success'
+  const readyToSubmit =
+    !approvalCall ||
+    (approvalReceipt?.status === 'success' &&
+      approvedAmount !== undefined &&
+      approvedAmount >= amountToLock)
 
   const {
     writeContract,
@@ -142,84 +124,112 @@ const SubmitLockButton = () => {
     isPending: isLoading,
     error,
   } = useWriteContract()
-
-  const write = () => {
-    if (!account || !readyToSubmit || !isValidDelegate || !stToken?.id) return
-
-    writeContract({
-      abi: dtfIndexStakingVault,
-      functionName: isSelfDelegate ? 'depositAndDelegate' : 'deposit',
-      address: stToken?.id as `0x${string}`,
-      args: isSelfDelegate
-        ? [amountToLock]
-        : [amountToLock, account as Address],
-      chainId,
-    })
-  }
-
   const { data: receipt, error: txError } = useWaitForTransactionReceipt({
     hash,
-    chainId,
+    chainId: stToken?.chainId,
   })
 
-  useEffect(() => {
-    if (receipt?.status === 'success') {
-      setIsProcessing(true)
-      const timer = setTimeout(() => {
-        resetInput()
-        setShouldClose(true)
-        toast.success('Vote lock successful', { duration: 8000 })
-        setIsProcessing(false)
-      }, 10000)
+  const write = (call: ContractCall | undefined) => {
+    if (!account || !call) return
 
-      return () => clearTimeout(timer)
+    pendingSupplyDelta.current = sharesToMint ?? 0n
+    writeContract(getWriteContractParams(call))
+  }
+
+  const approve = () => {
+    if (!account || !approvalCall) return
+
+    pendingApprovalAmount.current = amountToLock
+    writeApprove(getWriteContractParams(approvalCall))
+  }
+
+  useEffect(() => {
+    if (
+      approvalReceipt?.status !== 'success' ||
+      !approvalReceipt.transactionHash
+    ) {
+      return
     }
-  }, [receipt, resetInput, setShouldClose])
+    if (processedApprovalHash.current === approvalReceipt.transactionHash)
+      return
+
+    processedApprovalHash.current = approvalReceipt.transactionHash
+    setApprovedAmount(pendingApprovalAmount.current)
+    onSuccess?.()
+  }, [approvalReceipt?.status, approvalReceipt?.transactionHash, onSuccess])
+
+  useEffect(() => {
+    if (receipt?.status !== 'success' || !receipt.transactionHash || !stToken) {
+      return
+    }
+    if (processedReceiptHash.current === receipt.transactionHash) return
+
+    processedReceiptHash.current = receipt.transactionHash
+    if (pendingSupplyDelta.current !== 0n) {
+      updateCurrentDtfStTokenSupply({
+        stToken: stToken.id,
+        delta: pendingSupplyDelta.current,
+      })
+    }
+    onSuccess?.()
+    setIsProcessing(true)
+    processingTimer.current = setTimeout(() => {
+      resetInput()
+      setShouldClose(true)
+      toast.success(t`Vote lock successful`, { duration: 8000 })
+      setIsProcessing(false)
+      processingTimer.current = undefined
+    }, PROCESSING_DELAY)
+  }, [
+    receipt?.status,
+    receipt?.transactionHash,
+    resetInput,
+    setShouldClose,
+    stToken,
+    t,
+    updateCurrentDtfStTokenSupply,
+    onSuccess,
+  ])
+
+  if (!stToken) return null
 
   return (
-    <div>
-      <TransactionButton
-        chain={chainId}
-        disabled={
-          !isValidDelegate ||
-          !checkbox ||
-          receipt?.status === 'success' ||
-          amountToLock === 0n ||
-          isRestricted
-        }
-        loading={
-          isProcessing ||
-          (!receipt &&
-            (readyToSubmit
-              ? isLoading || !!hash || (hash && !receipt)
-              : approving ||
-              !!approvalHash ||
-              validatingAllowance ||
-              (approvalHash && !approvalReceipt)))
-        }
-        loadingText={
-          isProcessing
-            ? 'Processing transaction...'
-            : !!hash
-              ? 'Confirming tx...'
-              : 'Pending, sign in wallet'
-        }
-        onClick={readyToSubmit ? write : approve}
-        text={
-          receipt?.status === 'success'
-            ? 'Transaction confirmed'
-            : readyToSubmit
-              ? `Vote lock ${stToken?.underlying.symbol}`
-              : `Approve use of ${stToken?.underlying.symbol}`
-        }
-        className="w-full"
-        error={
-          readyToSubmit
-            ? error || txError
-            : approvalError || approvalTxError || allowanceError
-        }
-      />
-    </div>
+    <TransactionButton
+      chain={stToken.chainId}
+      disabled={
+        !checkbox ||
+        receipt?.status === 'success' ||
+        amountToLock === 0n ||
+        !hasBalance ||
+        isRestricted
+      }
+      loading={
+        isProcessing ||
+        (!receipt &&
+          (readyToSubmit
+            ? isLoading || (!!hash && !receipt)
+            : approving || (!!approvalHash && !approvalReceipt)))
+      }
+      loadingText={
+        isProcessing
+          ? t`Processing transaction...`
+          : !!hash
+            ? t`Confirming tx...`
+            : t`Pending, sign in wallet`
+      }
+      onClick={readyToSubmit ? () => write(lockCall) : approve}
+      text={
+        receipt?.status === 'success'
+          ? t`Transaction confirmed`
+          : readyToSubmit
+            ? t`Vote lock ${stToken.underlying.symbol}`
+            : t`Approve use of ${stToken.underlying.symbol}`
+      }
+      className="w-full"
+      error={
+        readyToSubmit ? error || txError : approvalError || approvalTxError
+      }
+    />
   )
 }
 

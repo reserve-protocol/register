@@ -1,4 +1,4 @@
-import { t } from '@lingui/macro'
+import { Trans, useLingui } from '@lingui/react/macro'
 import { createColumnHelper } from '@tanstack/react-table'
 import ChainLogo from 'components/icons/ChainLogo'
 import { Table, TableProps } from '@/components/ui/legacy-table'
@@ -17,6 +17,7 @@ import {
 } from 'utils'
 
 const ListedTokensTable = (props: Partial<TableProps>) => {
+  const { t } = useLingui()
   const { list, isLoading } = useTokenList()
   const columnHelper = createColumnHelper<ListedToken>()
   const navigate = useNavigate()
@@ -62,7 +63,7 @@ const ListedTokensTable = (props: Partial<TableProps>) => {
         },
       }),
     ],
-    []
+    [t]
   )
 
   const handleClick = (data: any) => {
@@ -90,7 +91,9 @@ const ListedTokensTable = (props: Partial<TableProps>) => {
       )}
       {!isLoading && !list.length && (
         <div className="text-center mt-6">
-          <span className="text-legend">No RTokens listed for this chain</span>
+          <span className="text-legend">
+            <Trans>No RTokens listed for this chain</Trans>
+          </span>
         </div>
       )}
     </>

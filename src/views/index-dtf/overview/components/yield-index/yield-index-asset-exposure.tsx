@@ -10,6 +10,7 @@ import { indexDTFApyAtom } from '@/state/dtf/yield-index-atoms'
 import { formatPercentage } from '@/utils'
 import { useAtomValue } from 'jotai'
 import { Info } from 'lucide-react'
+import { Trans } from '@lingui/react/macro'
 import ExposureSummary from './yield-index-exposure-summary'
 import { MOCK_YIELD_DESCRIPTION } from './yield-index-mock-data'
 
@@ -26,12 +27,16 @@ const ApyBreakdown = () => {
         <span className="font-bold text-foreground">
           {formatPercentage(apyData.collateralAPY)}
         </span>
-        <span>Base APY</span>
+        <span>
+          <Trans>Base APY</Trans>
+        </span>
         <span>+</span>
         <span className="text-primary">
           {formatPercentage(apyData.redirectAPY)}
         </span>
-        <span>Revenue Boost</span>
+        <span>
+          <Trans>Revenue Boost</Trans>
+        </span>
       </div>
       <TooltipProvider>
         <Tooltip delayDuration={0}>
@@ -39,8 +44,10 @@ const ApyBreakdown = () => {
             <Info size={16} className="text-muted-foreground" />
           </TooltipTrigger>
           <TooltipContent side="top">
-            Revenue Boost is the yield redirected from protocol fees back to
-            token holders.
+            <Trans>
+              Revenue Boost is the yield redirected from protocol fees back to
+              token holders.
+            </Trans>
           </TooltipContent>
         </Tooltip>
       </TooltipProvider>
@@ -54,7 +61,9 @@ const AssetExposureColumn = () => {
 
   return (
     <div className="flex-1 sm:pr-6">
-      <span className="text-base text-legend">Asset Exposure</span>
+      <span className="text-base text-legend">
+        <Trans>Asset Exposure</Trans>
+      </span>
       <div className="mt-6">
         {primary ? (
           <div className="flex items-center gap-2 mb-2">
@@ -88,7 +97,9 @@ const EstApyColumn = () => {
 
   return (
     <div className="flex-1 sm:pl-6">
-      <span className="text-base text-primary">Est. APY</span>
+      <span className="text-base text-primary">
+        <Trans>Est. APY</Trans>
+      </span>
       <div className="mt-3 sm:mt-6">
         {apyData ? (
           <span className="text-2xl font-medium text-primary">

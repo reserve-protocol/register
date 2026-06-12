@@ -1,15 +1,28 @@
 import { Skeleton } from '@/components/ui/skeleton'
 import { cn } from '@/lib/utils'
+import { Trans } from '@lingui/react/macro'
 
 const Top100TablePlaceholder = () => (
   <div className="p-2 bg-card rounded-[20px]">
     <div className="grid grid-cols-[1fr_1fr_100px_120px_80px_100px] text-legend gap-4 px-6 py-4 border-b">
-      <div>Name</div>
-      <div>Backing</div>
-      <div className="text-right">Price</div>
-      <div className="text-right">Market Cap</div>
-      <div className="text-right">Holders</div>
-      <div className="text-right">Created</div>
+      <div>
+        <Trans>Name</Trans>
+      </div>
+      <div>
+        <Trans>Backing</Trans>
+      </div>
+      <div className="text-right">
+        <Trans>Price</Trans>
+      </div>
+      <div className="text-right">
+        <Trans>Market Cap</Trans>
+      </div>
+      <div className="text-right">
+        <Trans>Holders</Trans>
+      </div>
+      <div className="text-right">
+        <Trans>Created</Trans>
+      </div>
     </div>
     {Array.from({ length: 10 }).map((_, index) => (
       <div

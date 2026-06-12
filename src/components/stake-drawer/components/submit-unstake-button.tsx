@@ -1,5 +1,6 @@
 import TransactionButton from '@/components/ui/transaction-button'
 import { walletAtom } from '@/state/atoms'
+import { useLingui } from '@lingui/react/macro'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { useEffect, useState } from 'react'
 import { useWaitForTransactionReceipt, useWriteContract } from 'wagmi'
@@ -15,6 +16,7 @@ import {
 import StRSR from 'abis/StRSR'
 
 const SubmitUnstakeButton = () => {
+  const { t } = useLingui()
   const wallet = useAtomValue(walletAtom)
   const stToken = useAtomValue(stTokenAtom)
   const stakingInput = useAtomValue(stakingInputAtom)
@@ -52,7 +54,9 @@ const SubmitUnstakeButton = () => {
   useEffect(() => {
     if (receipt?.status === 'success') {
       setIsProcessing(true)
-      toast.success('Unstaking initiated! You can withdraw your RSR after the delay period.')
+      toast.success(
+        t`Unstaking initiated! You can withdraw your RSR after the delay period.`
+      )
       const timer = setTimeout(() => {
         setCloseDrawer(true)
         setIsProcessing(false)
@@ -65,18 +69,18 @@ const SubmitUnstakeButton = () => {
   // Button text logic
   const getButtonText = () => {
     if (!wallet) {
-      return 'Connect wallet'
+      return t`Connect wallet`
     }
 
     if (!isValid) {
-      return 'Enter valid amount'
+      return t`Enter valid amount`
     }
 
     if (receipt?.status === 'success') {
-      return 'Transaction confirmed'
+      return t`Transaction confirmed`
     }
 
-    return 'Unstake'
+    return t`Unstake`
   }
 
   return (
@@ -95,10 +99,10 @@ const SubmitUnstakeButton = () => {
         }
         loadingText={
           isProcessing
-            ? 'Processing transaction...'
+            ? t`Processing transaction...`
             : !!hash
-              ? 'Confirming tx...'
-              : 'Pending, sign in wallet'
+              ? t`Confirming tx...`
+              : t`Pending, sign in wallet`
         }
         onClick={write}
         text={getButtonText()}

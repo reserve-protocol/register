@@ -1,4 +1,4 @@
-import { t } from '@lingui/macro'
+import { useLingui } from '@lingui/react/macro'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 import { Loader2 } from 'lucide-react'
@@ -26,6 +26,8 @@ const SettingItem = ({
   onAction,
   className,
 }: SettingItemProps) => {
+  const { t } = useLingui()
+
   return (
     <div className={cn('flex items-center justify-between', className)}>
       <div className="flex items-center">

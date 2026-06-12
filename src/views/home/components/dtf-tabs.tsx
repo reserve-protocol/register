@@ -1,6 +1,9 @@
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { trackClick } from '@/hooks/useTrackPage'
 import { cn } from '@/lib/utils'
+import type { MessageDescriptor } from '@lingui/core'
+import { msg } from '@lingui/core/macro'
+import { useLingui } from '@lingui/react/macro'
 import { useAtom } from 'jotai'
 import { Flower, Globe } from 'lucide-react'
 import { dtfTypeFilterAtom } from '../atoms'
@@ -10,26 +13,28 @@ type DTFType = 'index' | 'yield'
 type Tab = {
   value: DTFType
   icon: React.ReactNode
-  title: string
-  subtitle: string
+  title: MessageDescriptor
+  subtitle: MessageDescriptor
 }
 
 const tabs: Tab[] = [
   {
     value: 'index',
     icon: <Globe className='h-4 lg:h-6' />,
-    title: 'Index DTFs',
-    subtitle: 'Get easy exposure to narratives, indexes, and ecosystems',
+    title: msg`Index DTFs`,
+    subtitle: msg`Get easy exposure to narratives, indexes, and ecosystems`,
   },
   {
     value: 'yield',
     icon: <Flower className='h-4 lg:h-6' />,
-    title: 'Yield DTFs',
-    subtitle: 'Earn yield safely with over-collateralized and diversified DeFi positions',
+    title: msg`Yield DTFs`,
+    subtitle: msg`Earn yield safely with over-collateralized and diversified DeFi positions`,
   },
 ]
 
-const DtfTabTrigger = ({ value, icon, title, subtitle }: Tab) => (
+const DtfTabTrigger = ({ value, icon, title, subtitle }: Tab) => {
+  const { t } = useLingui()
+  return (
   <TabsTrigger
     value={value}
     className={cn(
@@ -39,13 +44,14 @@ const DtfTabTrigger = ({ value, icon, title, subtitle }: Tab) => (
   >
     <div>{icon}</div>
     <div className="text-left lg:ml-3">
-      <h4 className="text-base lg:font-bold">{title}</h4>
+      <h4 className="text-base lg:font-bold">{t(title)}</h4>
       <div className="hidden lg:block font-light text-wrap">
-        {subtitle}
+        {t(subtitle)}
       </div>
     </div>
   </TabsTrigger>
-)
+  )
+}
 
 const DtfTabs = () => {
   const [type, setType] = useAtom(dtfTypeFilterAtom)

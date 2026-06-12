@@ -1,4 +1,5 @@
 import { Button } from '@/components/ui/button'
+import { Trans } from '@lingui/react/macro'
 import BankIcon from 'components/icons/BankIcon'
 import { ChevronLeft } from 'lucide-react'
 import { useZap } from '../context/ZapContext'
@@ -26,22 +27,32 @@ const MintersModal = () => {
               width={16}
               style={{ marginLeft: '-4px' }}
             />
-            <span>Dismiss invitation</span>
+            <span>
+              <Trans>Dismiss invitation</Trans>
+            </span>
           </div>
         </Button>
       </div>
       <div className="flex flex-col gap-4 max-w-[330px] leading-5">
         <span className="text-[28px] leading-7 font-bold text-primary">
-          Congratulations 🎉
+          <Trans>Congratulations 🎉</Trans>
         </span>
         <span className="text-base">
-          You've unlocked an invitation to Reserve Institutional's elite program
-          for large RToken holders. Participants enjoy access to:
+          <Trans>
+            You've unlocked an invitation to Reserve Institutional's elite
+            program for large RToken holders. Participants enjoy access to:
+          </Trans>
         </span>
         <ul className="flex flex-col gap-1 px-4 py-0 text-base mb-2">
-          <li>1:1 support from Reserve Institutional</li>
-          <li>Online & IRL invite-only events</li>
-          <li>Exclusive alpha and insights</li>
+          <li>
+            <Trans>1:1 support from Reserve Institutional</Trans>
+          </li>
+          <li>
+            <Trans>Online & IRL invite-only events</Trans>
+          </li>
+          <li>
+            <Trans>Exclusive alpha and insights</Trans>
+          </li>
         </ul>
         <SocialMediaInput />
       </div>

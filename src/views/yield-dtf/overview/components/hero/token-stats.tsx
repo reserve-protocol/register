@@ -1,5 +1,5 @@
 import { rTokenTargetPriceAtom } from '@/views/yield-dtf/overview/atoms'
-import { Trans } from '@lingui/macro'
+import { Trans } from '@lingui/react/macro'
 import StakedIcon from 'components/icons/StakedIcon'
 import { atom, useAtomValue } from 'jotai'
 import { rTokenPriceAtom, rTokenStateAtom, rsrPriceAtom } from 'state/atoms'

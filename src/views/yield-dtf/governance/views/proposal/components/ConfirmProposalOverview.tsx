@@ -1,4 +1,5 @@
-import { Trans, t } from '@lingui/macro'
+import { Trans } from '@lingui/react/macro'
+import { useLingui } from '@lingui/react/macro'
 import { Button } from '@/components/ui/button'
 import CopyValue from '@/components/ui/copy-value'
 import GoTo from '@/components/ui/go-to'
@@ -29,6 +30,7 @@ const ProposalStatus = ({
 }: {
   transactionState: UseSimulateContractParameters | undefined
 }) => {
+  const { t } = useLingui()
   const navigate = useNavigate()
   const { gas, write, isReady, isLoading, hash } =
     useContractWrite(transactionState)
@@ -121,8 +123,10 @@ const ConfirmProposalOverview = ({ tx, className }: Props) => {
             <Trans>Confirm & Submit</Trans>
           </span>
           <p className="text-legend">
-            Submit the proposal to be voted on by [stRSR] holders. Note this is
-            an on-chain action and will require gas to propose.
+            <Trans>
+              Submit the proposal to be voted on by [stRSR] holders. Note this
+              is an on-chain action and will require gas to propose.
+            </Trans>
           </p>
           <ProposalStatus transactionState={tx} />
         </div>

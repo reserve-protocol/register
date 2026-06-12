@@ -5,9 +5,10 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from '@/components/ui/tooltip'
-import Staking from '@/views/index-dtf/overview/components/staking'
-import { Trans } from '@lingui/macro'
+import { VoteLockSidebar } from '@/components/vote-lock'
+import { Trans } from '@lingui/react/macro'
 import { ConnectButton } from '@rainbow-me/rainbowkit'
+import { useDisconnect } from 'wagmi'
 import ChainLogo from 'components/icons/ChainLogo'
 import { useAtomValue } from 'jotai'
 import { AlertCircle, Wallet, Power } from 'lucide-react'
@@ -38,7 +39,9 @@ const ErrorWrapper = ({
           </span>
           <div className="flex items-center my-2">
             <AlertCircle size={18} className="text-destructive" />
-            <span className="ml-2">Chain: {chainId}</span>
+            <span className="ml-2">
+              <Trans>Chain: {chainId}</Trans>
+            </span>
             <span className="ml-auto font-medium">
               <Trans>Unsupported</Trans>
             </span>
@@ -63,6 +66,21 @@ const ErrorWrapper = ({
 const Account = () => {
   const chainId = useAtomValue(chainIdAtom)
   const isTokenSelected = !!useAtomValue(selectedRTokenAtom)
+  const { disconnectAsync } = useDisconnect()
+
+  // Tear down any lingering connector state before opening the modal. Without
+  // this, a fresh Safe-over-WalletConnect connect can hang in "connecting" and
+  // never resolve, leaving the app showing disconnected until a manual refresh
+  // (the Gnosis-required flow already does this and connects reliably). A no-op
+  // for the common disconnected case, so other wallets are unaffected.
+  const handleConnect = async (openConnectModal: () => void) => {
+    try {
+      await disconnectAsync()
+    } catch {
+      // ignore — nothing to disconnect
+    }
+    openConnectModal()
+  }
 
   return (
     <ConnectButton.Custom>
@@ -84,8 +102,8 @@ const Account = () => {
                 return (
                   <Button
                     variant="accent"
-                    onClick={openConnectModal}
-                    className="px-3.5 py-1 rounded-full font-normal"
+                    onClick={() => handleConnect(openConnectModal)}
+                    className="px-4 py-1 rounded-full font-medium dark:border border-primary/50"
                   >
                     <span className="flex md:hidden items-center py-1">
                       <Power size={16} />
@@ -140,7 +158,7 @@ const Account = () => {
                       </div>
                     </div>
                   </ErrorWrapper>
-                  <Staking />
+                  <VoteLockSidebar />
                 </>
               )
             })()}

@@ -8,6 +8,7 @@ import { Token } from '@/types'
 import { shortenAddress } from '@/utils'
 import { ROUTES } from '@/utils/constants'
 import { ExplorerDataType, getExplorerLink } from '@/utils/getExplorerLink'
+import { Trans, useLingui } from '@lingui/react/macro'
 import { useAtom, useAtomValue } from 'jotai'
 import { useEffect, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
@@ -37,26 +38,37 @@ const TokenValidationMessage = ({
 
   if (isTokenAlreadyExists) {
     return (
-      <span className="text-destructive">Token already exists in the list</span>
+      <span className="text-destructive">
+        <Trans>Token already exists in the list</Trans>
+      </span>
     )
   }
 
   if (isError) {
-    return <span className="text-destructive">Invalid token address</span>
+    return (
+      <span className="text-destructive">
+        <Trans>Invalid token address</Trans>
+      </span>
+    )
   }
 
   if (!tokenData) {
-    return <span className="text-muted-foreground">Loading token data...</span>
+    return (
+      <span className="text-muted-foreground">
+        <Trans>Loading token data...</Trans>
+      </span>
+    )
   }
 
   return (
     <span className="text-primary">
-      {tokenData[1] ? `${tokenData[1]} (${tokenData[0]})` : 'Loading...'}
+      {tokenData[1] ? `${tokenData[1]} (${tokenData[0]})` : <Trans>Loading...</Trans>}
     </span>
   )
 }
 
 const NewRewardToken = ({ id }: { id: string }) => {
+  const { t } = useLingui()
   const chainId = useAtomValue(chainIdAtom)
   const [value, setValue] = useState('')
   const debouncedValue = useDebounce(value, 500)
@@ -123,7 +135,7 @@ const NewRewardToken = ({ id }: { id: string }) => {
     <div className="flex flex-col gap-2">
       <div className="flex items-center gap-2">
         <Input
-          placeholder="Token address"
+          placeholder={t`Token address`}
           value={value}
           onChange={handleChange}
           className="flex-1"
@@ -132,7 +144,7 @@ const NewRewardToken = ({ id }: { id: string }) => {
           variant="outline"
           size="icon-rounded"
           onClick={handleRemove}
-          aria-label="Remove token"
+          aria-label={t`Remove token`}
           tabIndex={0}
         >
           <Trash size={16} />
@@ -154,6 +166,7 @@ const NewRewardToken = ({ id }: { id: string }) => {
 
 // Existing token with details from the vault
 const ExistingRewardToken = ({ token }: { token: Token }) => {
+  const { t } = useLingui()
   const chainId = useAtomValue(chainIdAtom)
   const [removedRewardTokens, setRemovedRewardTokens] = useAtom(
     removedRewardTokensAtom
@@ -174,7 +187,7 @@ const ExistingRewardToken = ({ token }: { token: Token }) => {
           target="_blank"
           href={getExplorerLink(token.address, chainId, ExplorerDataType.TOKEN)}
           tabIndex={0}
-          aria-label={`View ${token.symbol} on block explorer`}
+          aria-label={t`View ${token.symbol} on block explorer`}
         >
           {shortenAddress(token.address)}
           <ArrowUpRight size={12} />
@@ -184,7 +197,7 @@ const ExistingRewardToken = ({ token }: { token: Token }) => {
         variant="outline"
         size="icon-rounded"
         onClick={handleRemove}
-        aria-label={`Remove ${token.symbol}`}
+        aria-label={t`Remove ${token.symbol}`}
         tabIndex={0}
       >
         <Trash size={16} />
@@ -194,6 +207,7 @@ const ExistingRewardToken = ({ token }: { token: Token }) => {
 }
 
 const VaultRewardTokens = () => {
+  const { t } = useLingui()
   const currentRewardTokens = useAtomValue(currentRewardTokensAtom)
   const [addedRewardTokens, setAddedRewardTokens] = useAtom(
     addedRewardTokensAtom
@@ -208,7 +222,11 @@ const VaultRewardTokens = () => {
   }
 
   if (!currentRewardTokens)
-    return <div className="mt-6 text-center">Loading reward tokens...</div>
+    return (
+      <div className="mt-6 text-center">
+        <Trans>Loading reward tokens...</Trans>
+      </div>
+    )
 
   return (
     <div className="flex flex-col gap-2 mt-6">
@@ -225,9 +243,9 @@ const VaultRewardTokens = () => {
         className="mt-2"
         onClick={handleAddRewardToken}
         tabIndex={0}
-        aria-label="Add new reward token"
+        aria-label={t`Add new reward token`}
       >
-        Add reward token
+        <Trans>Add reward token</Trans>
       </Button>
     </div>
   )
@@ -247,7 +265,9 @@ const VaultProposalForm = () => {
             <ArrowLeftIcon size={24} strokeWidth={1.5} />
           </Button>
         </Link>
-        <h1 className="font-bold text-xl">Vault change proposal</h1>
+        <h1 className="font-bold text-xl">
+          <Trans>Vault change proposal</Trans>
+        </h1>
       </div>
       <div className="rounded-3xl bg-card m-1 border-none">
         <div className="p-4 sm:p-6 pb-3">
@@ -255,13 +275,15 @@ const VaultProposalForm = () => {
             <Coins size={16} />
           </div>
           <h2 className="text-xl sm:text-2xl font-bold text-primary mt-6 mb-2">
-            Revenue Tokens
+            <Trans>Revenue Tokens</Trans>
           </h2>
           <p>
-            Enter the contract address of the token(s) the{' '}
-            <span className="font-semibold">{vlToken} DAO</span> will accept as
-            revenue. A token must be added to this list before it can be
-            distributed to and claimed by vote-lockers.
+            <Trans>
+              Enter the contract address of the token(s) the{' '}
+              <span className="font-semibold">{vlToken} DAO</span> will accept
+              as revenue. A token must be added to this list before it can be
+              distributed to and claimed by vote-lockers.
+            </Trans>
           </p>
           <VaultRewardTokens />
         </div>

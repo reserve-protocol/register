@@ -11,6 +11,7 @@ import {
   useTrackIndexDTFZapClick,
 } from '@/views/index-dtf/hooks/useTrackIndexDTFPage'
 import { ZapResult } from '@/views/yield-dtf/issuance/components/zapV2/api'
+import { Trans, useLingui } from '@lingui/react/macro'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
@@ -39,11 +40,13 @@ const LoadingButton = ({
   return (
     <>
       <Button size="lg" className="w-full rounded-xl" disabled>
-        {fetchingZapper
-          ? 'Loading...'
-          : insufficientBalance
-            ? 'Insufficient balance'
-            : buttonLabel}
+        {fetchingZapper ? (
+          <Trans>Loading...</Trans>
+        ) : insufficientBalance ? (
+          <Trans>Insufficient balance</Trans>
+        ) : (
+          buttonLabel
+        )}
       </Button>
       <ZapErrorMsg error={zapperErrorMessage} />
     </>
@@ -78,6 +81,7 @@ const SubmitZapButton = ({
   outputAmount: string
   onSuccess?: () => void
 }) => {
+  const { t } = useLingui()
   const warningAccepted = useAtomValue(zapPriceImpactWarningCheckboxAtom)
   const highPriceImpact = useAtomValue(zapHighPriceImpactAtom)
   const { pathname } = useLocation()
@@ -134,10 +138,10 @@ const SubmitZapButton = ({
     error: txError,
   } = useWatchTransaction({
     hash: data,
-    label: `Swapped ${inputSymbol} for ${outputSymbol}`,
+    label: t`Swapped ${inputSymbol} for ${outputSymbol}`,
     successMessage: {
-      title: `Swapped`,
-      subtitle: `${inputAmount} ${inputSymbol} for ${outputAmount} ${outputSymbol}`,
+      title: t`Swapped`,
+      subtitle: t`${inputAmount} ${inputSymbol} for ${outputAmount} ${outputSymbol}`,
       type: 'success',
       icon: (
         <FusionTokenLogo
@@ -208,8 +212,8 @@ const SubmitZapButton = ({
         loading={approving || loadingTx || validatingTx || confirmingApproval}
         loadingText={
           validatingTx || confirmingApproval
-            ? 'Confirming tx...'
-            : 'Pending, sign in wallet'
+            ? t`Confirming tx...`
+            : t`Pending, sign in wallet`
         }
         // gas={readyToSubmit ? (gas ? BigInt(gas) : undefined) : approvalGas}
         onClick={() => {
@@ -224,8 +228,12 @@ const SubmitZapButton = ({
         }}
         text={
           readyToSubmit
-            ? `${addStepTwoLabel ? 'Step 2. ' : ''}${buttonLabel}`
-            : `${addStepOneLabel ? 'Step 1. ' : ''}Approve use of ${inputSymbol}`
+            ? addStepTwoLabel
+              ? t`Step 2. ${buttonLabel}`
+              : buttonLabel
+            : addStepOneLabel
+              ? t`Step 1. Approve use of ${inputSymbol}`
+              : t`Approve use of ${inputSymbol}`
         }
         className="w-full rounded-xl"
       />

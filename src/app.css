@@ -38,6 +38,72 @@ body {
   z-index: 0;
 }
 
+@keyframes large-order-card-in {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes large-order-card-slide-out {
+  from {
+    opacity: 0;
+    transform: translateX(-18px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes async-mint-order-filled {
+  0% {
+    background-color: hsl(var(--primary) / 0.14);
+    border-color: hsl(var(--primary) / 0.42);
+    box-shadow: 0 0 0 1px hsl(var(--primary) / 0.16);
+  }
+
+  100% {
+    background-color: hsl(var(--background));
+    border-color: hsl(var(--border) / 0.7);
+    box-shadow: 0 0 0 0 hsl(var(--primary) / 0);
+  }
+}
+
+@keyframes async-mint-check-pop {
+  0% {
+    transform: scale(0.72);
+    opacity: 0.35;
+  }
+
+  58% {
+    transform: scale(1.18);
+    opacity: 1;
+  }
+
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes async-mint-count-pulse {
+  0%,
+  100% {
+    color: inherit;
+  }
+
+  30% {
+    color: hsl(var(--primary));
+  }
+}
+
 @layer base {
   :root {
     --background: 24 71% 99%;
@@ -54,7 +120,7 @@ body {
     --muted: 30 12% 94%;
     --muted-foreground: 215.4 16.3% 46.9%;
     --muted-secondary: 0 0 80%;
-    --accent: 0 0% 90%;
+    --accent: 212 90% 92%;
     --accent-foreground: 222.2 47.4% 11.2%;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
@@ -92,7 +158,7 @@ body {
     /* Accent & Primary */
     --primary: 212 99% 40%;
     --primary-foreground: 0 0% 100%;
-    --accent: 215 45% 22%;
+    --accent: 212 99% 7.5%;
     --accent-foreground: 0 0% 95%;
 
     /* Muted & Secondary Foregrounds */
@@ -157,4 +223,12 @@ body {
   body {
     @apply bg-background text-foreground font-normal;
   }
+}
+
+/* Keep the chat widget aligned to the centered app container (max-width 1400px):
+   the JS prop sets the gap (--rc-offset-right), this adds the side gutter on
+   screens wider than the container. */
+.rc-root .rc-launcher,
+.rc-root .rc-panel {
+  right: calc(var(--rc-offset-right, 24px) + max(0px, (100vw - 1400px) / 2));
 }

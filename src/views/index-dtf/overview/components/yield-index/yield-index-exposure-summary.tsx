@@ -3,6 +3,7 @@ import { indexDTFExposureDataAtom } from '@/state/dtf/atoms'
 import { PROJECT_ICONS } from '@/views/earn/hooks/useEarnTableColumns'
 import { useAtomValue } from 'jotai'
 import { ChevronRight } from 'lucide-react'
+import { Plural } from '@lingui/react/macro'
 import {
   protocolSlugsAtom,
   underlyingTokensAtom,
@@ -27,7 +28,13 @@ const AssetsSummary = () => {
           reverseStack
         />
       )}
-      <span className="font-semibold">{underlyingTokens.length} Assets</span>
+      <span className="font-semibold">
+        <Plural
+          value={underlyingTokens.length}
+          one="# Asset"
+          other="# Assets"
+        />
+      </span>
     </div>
   )
 }
@@ -52,7 +59,9 @@ const ProtocolsSummary = () => {
           ))}
         </div>
       )}
-      <span className="font-semibold">{uniqueProjects} Protocols</span>
+      <span className="font-semibold">
+        <Plural value={uniqueProjects} one="# Protocol" other="# Protocols" />
+      </span>
     </div>
   )
 }
@@ -67,7 +76,9 @@ const ExposureSummary = () => {
       className="flex items-center justify-between w-full text-xs sm:text-base pt-4 border-t border-secondary mt-4 text-left hover:opacity-80 transition-opacity"
     >
       <div className="flex items-center gap-4">
-        <span className="font-semibold">{strategyCount} Strategies</span>
+        <span className="font-semibold">
+          <Plural value={strategyCount} one="# Strategy" other="# Strategies" />
+        </span>
         <AssetsSummary />
         <ProtocolsSummary />
       </div>

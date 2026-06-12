@@ -1,4 +1,5 @@
 import { indexDTFAtom } from '@/state/dtf/atoms'
+import { Trans, useLingui } from '@lingui/react/macro'
 import { useAtom, useAtomValue } from 'jotai'
 import { useFormContext } from 'react-hook-form'
 import { ArrowRight, Landmark, Pause, CalendarRange, FileLock2, ShieldCheck, Clock } from 'lucide-react'
@@ -19,6 +20,7 @@ const iconMap = {
 }
 
 const GovernanceChanges = () => {
+  const { t } = useLingui()
   const indexDTF = useAtomValue(indexDTFAtom)
   const [governanceChanges, setGovernanceChanges] = useAtom(governanceChangesAtom)
   const hasGovernanceChanges = useAtomValue(hasGovernanceChangesAtom)
@@ -55,13 +57,16 @@ const GovernanceChanges = () => {
   }
 
   return (
-    <ChangeSection title="Governance Parameters" icon={<Landmark size={16} />}>
+    <ChangeSection
+      title={<Trans>Governance Parameters</Trans>}
+      icon={<Landmark size={16} />}
+    >
       <div className="space-y-2">
         {displayChanges.map((change) => (
           <div key={change.key} className="flex items-center gap-2 p-4 rounded-2xl bg-muted/70 border">
             {iconMap[change.key as keyof typeof iconMap]}
             <div className="mr-auto">
-              <div className="text-sm font-medium">{change.title}</div>
+              <div className="text-sm font-medium">{t(change.title)}</div>
               <div className="flex items-center gap-3 text-sm">
                 <span className="text-muted-foreground">{change.current}</span>
                 <ArrowRight size={16} className="text-primary" />

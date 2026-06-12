@@ -1,13 +1,27 @@
-catalogMode: manual
+allowBuilds:
+  '@sentry/cli': true
+  bufferutil: true
+  esbuild: true
+  keccak: true
+  protobufjs: true
+  sharp: true
+  utf-8-validate: true
+  workerd: true
 blockExoticSubdeps: true
+catalog:
+  react: ^18.3.1
+  react-dom: ^18.3.1
+catalogMode: manual
 cleanupUnusedCatalogs: true
 minimumReleaseAge: 1440
 minimumReleaseAgeExclude:
   - '@reserve-protocol/react-zapper'
-catalog:
-  react: ^18.3.1
-  react-dom: ^18.3.1
+  - '@reserve-protocol/react-sdk'
+  - '@reserve-protocol/sdk'
+  - '@reserve-protocol/dtf-catalog'
+  - '@reserve-protocol/async-zap-sdk'
+  - '@reserve-protocol/dtf-chat'
 overrides:
+  axios: ^1.15.0
   react: 'catalog:'
   react-dom: 'catalog:'
-  axios: ^1.15.0

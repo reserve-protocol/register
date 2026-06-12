@@ -19,6 +19,7 @@ import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
 import { cn } from '@/lib/utils'
 import LiquidityBadge from './components/liquidity-badge'
 import { isCheckingLiquidityAtom, tokenLiquidityMapAtom } from './atoms'
+import { Trans, useLingui } from '@lingui/react/macro'
 
 const RemoveTokenButton = ({
   tokenIndex,
@@ -49,6 +50,7 @@ const RemoveTokenButton = ({
 }
 
 const TokenDistribution = ({ tokenIndex }: { tokenIndex: number }) => {
+  const { t } = useLingui()
   const basketInputType = useAtomValue(basketInputTypeAtom)
 
   return (
@@ -56,7 +58,7 @@ const TokenDistribution = ({ tokenIndex }: { tokenIndex: number }) => {
       type="number"
       className={cn('max-w-32', basketInputType === 'unit' && 'max-w-40')}
       fieldName={`tokensDistribution.${tokenIndex}.percentage`}
-      label={basketInputType === 'unit' ? 'Units' : '%'}
+      label={basketInputType === 'unit' ? t`Units` : '%'}
       placeholder="0"
       defaultValue={0}
       decimalPlaces={basketInputType === 'unit' ? 18 : 2}
@@ -142,7 +144,9 @@ const TokenPreview = ({
             ) : (
               <div className="flex items-center gap-1 text-red-500 bg-red-500/10 rounded-full px-2 py-0.5">
                 <CircleAlert size={14} />
-                <span>Price not available</span>
+                <span>
+                  <Trans>Price not available</Trans>
+                </span>
               </div>
             )}
             <span className="text-foreground text-[8px]">•</span>
@@ -192,7 +196,9 @@ const RemainingAllocation = () => {
 
   return (
     <div className="text-base ml-auto px-6">
-      <span className="text-muted-foreground">Remaining allocation:</span>{' '}
+      <span className="text-muted-foreground">
+        <Trans>Remaining allocation:</Trans>
+      </span>{' '}
       <span className={isNegative ? 'text-red-500' : ''}>
         {isNegative ? `-${displayValue}` : displayValue}%
       </span>
@@ -219,13 +225,13 @@ const BasketSetting = () => {
           className="px-3 rounded-md data-[state=on]:bg-card text-secondary-foreground/80 data-[state=on]:text-primary"
           value="unit"
         >
-          Unit
+          <Trans>Unit</Trans>
         </ToggleGroupItem>
         <ToggleGroupItem
           className="px-3 rounded-md data-[state=on]:bg-card text-secondary-foreground/80 data-[state=on]:text-primary"
           value="share"
         >
-          Share
+          <Trans>Share</Trans>
         </ToggleGroupItem>
       </ToggleGroup>
       <RemainingAllocation />

@@ -1,37 +1,32 @@
-import dtfIndexAbiV5 from '@/abis/dtf-index-abi'
-import { chainIdAtom } from '@/state/atoms'
+import EnsName from '@/components/utils/ens-name'
 import {
   indexDTFAtom,
   indexDTFRebalanceControlAtom,
   indexDTFVersionAtom,
 } from '@/state/dtf/atoms'
-import EnsName from '@/components/utils/ens-name'
 import { shortenAddress } from '@/utils'
-import { t } from '@lingui/macro'
+import { useLingui } from '@lingui/react/macro'
 import { useAtomValue } from 'jotai'
 import { Braces, DollarSign, Hash, Signature, ToggleRight } from 'lucide-react'
-import { useReadContract } from 'wagmi'
 import { IconWrapper, InfoCard, InfoCardItem } from './settings-info-card'
 
 const BasicInfo = () => {
+  const { t } = useLingui()
   const indexDTF = useAtomValue(indexDTFAtom)
   const version = useAtomValue(indexDTFVersionAtom)
   const rebalanceControl = useAtomValue(indexDTFRebalanceControlAtom)
-  const chainId = useAtomValue(chainIdAtom)
   const isV5 = version.startsWith('5')
 
-  const { data: bidsEnabled } = useReadContract({
-    abi: dtfIndexAbiV5,
-    address: indexDTF?.id,
-    functionName: 'bidsEnabled',
-    chainId,
-    query: {
-      enabled: !!indexDTF?.id && isV5,
-    },
-  })
+  let mandate = indexDTF?.mandate
+
+  if (mandate === '') mandate = t`Unknown`
+
+  if (mandate) {
+    if (mandate.length > 500) mandate = mandate.substring(0, 500) + '...'
+  }
 
   return (
-    <InfoCard title="Basics" id="basics">
+    <InfoCard title={t`Basics`} id="basics">
       <InfoCardItem
         label={t`Name`}
         icon={<IconWrapper Component={Braces} />}
@@ -53,14 +48,16 @@ const BasicInfo = () => {
         label={t`Mandate`}
         icon={<IconWrapper Component={Signature} />}
         bold={false}
-        value={indexDTF?.mandate === '' ? 'Unknown' : indexDTF?.mandate}
+        value={mandate}
       />
       <InfoCardItem
         label={t`Deployer`}
         icon={<IconWrapper Component={Hash} />}
         address={indexDTF?.deployer}
         value={
-          indexDTF?.deployer ? <EnsName address={indexDTF.deployer} /> : undefined
+          indexDTF?.deployer ? (
+            <EnsName address={indexDTF.deployer} />
+          ) : undefined
         }
       />
       <InfoCardItem
@@ -72,14 +69,14 @@ const BasicInfo = () => {
         <InfoCardItem
           label={t`Weight Control`}
           icon={<IconWrapper Component={ToggleRight} />}
-          value={rebalanceControl.weightControl ? 'Enabled' : 'Disabled'}
+          value={rebalanceControl.weightControl ? t`Enabled` : t`Disabled`}
         />
       )}
-      {isV5 && bidsEnabled !== undefined && (
+      {isV5 && (
         <InfoCardItem
           label={t`Permissionless Bids`}
           icon={<IconWrapper Component={ToggleRight} />}
-          value={bidsEnabled ? 'Enabled' : 'Disabled'}
+          value={indexDTF?.rebalance.bidsEnabled ? t`Enabled` : t`Disabled`}
         />
       )}
     </InfoCard>

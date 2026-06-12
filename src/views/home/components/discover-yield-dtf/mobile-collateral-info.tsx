@@ -1,4 +1,4 @@
-import { Trans } from '@lingui/macro'
+import { Trans } from '@lingui/react/macro'
 import CollaterizationIcon from 'components/icons/CollaterizationIcon'
 import { ListedToken } from 'hooks/useTokenList'
 import { memo, useState } from 'react'
