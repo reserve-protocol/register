@@ -16,24 +16,29 @@ export type OndoLimit = {
 
 export type SizesByAddress = Record<string, number>
 
-// An auction only trades min(surplus, deficit) — the larger side reports the
-// full available amount (an ejected token's surplus is its whole position at
-// any percent), so scale each side to the matched auction size to get the USD
-// actually traded per token. Mirrors getAllTokensWithSizes in the liquidity
-// checker.
+// The deficit is NOT split across legs: getBid offers every surplus leg
+// min(legSurplus, remaining deficit), and the trusted-fillers bot sizes each
+// CoW order at exactly that — so a single trade can consume the entire
+// opposite side. Size each leg at that worst case; a proportional split
+// underestimates per-trade size by ~Nx with N concurrent legs and produces
+// orders over the Ondo cap (which the MM skips entirely, it never partial
+// fills).
 export const getScaledLegSizes = (metrics: AuctionMetrics): SizesByAddress => {
   const surplusTotal = metrics.surplusTokenSizes.reduce((a, b) => a + b, 0)
   const deficitTotal = metrics.deficitTokenSizes.reduce((a, b) => a + b, 0)
-  const auctionSize = Math.min(surplusTotal, deficitTotal)
-  const sScale = surplusTotal > 0 ? auctionSize / surplusTotal : 0
-  const dScale = deficitTotal > 0 ? auctionSize / deficitTotal : 0
 
   const sizes: SizesByAddress = {}
   metrics.surplusTokens.forEach((token, i) => {
-    sizes[token.toLowerCase()] = metrics.surplusTokenSizes[i] * sScale
+    sizes[token.toLowerCase()] = Math.min(
+      metrics.surplusTokenSizes[i],
+      deficitTotal
+    )
   })
   metrics.deficitTokens.forEach((token, i) => {
-    sizes[token.toLowerCase()] = metrics.deficitTokenSizes[i] * dScale
+    sizes[token.toLowerCase()] = Math.min(
+      metrics.deficitTokenSizes[i],
+      surplusTotal
+    )
   })
   return sizes
 }
