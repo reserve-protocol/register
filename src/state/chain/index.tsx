@@ -18,13 +18,19 @@ import {
 import { DtfSdkProvider } from '@reserve-protocol/react-sdk'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import type { ReactNode } from 'react'
-import { WagmiProvider, createConfig, fallback, http } from 'wagmi'
+import {
+  WagmiProvider,
+  createConfig,
+  fallback,
+  http,
+  type CreateConnectorFn,
+} from 'wagmi'
 import { arbitrum, base, bsc, mainnet } from 'wagmi/chains'
 import { hashFn, structuralSharing } from 'wagmi/query'
 import { dtfSdkChains, registerRpcUrls } from '@/utils/rpc-urls'
 import AtomUpdater from './updaters/AtomUpdater'
 
-const connectors = connectorsForWallets(
+const rainbowConnectors = connectorsForWallets(
   [
     {
       groupName: 'Recommended',
@@ -43,6 +49,33 @@ const connectors = connectorsForWallets(
   {
     appName: 'Reserve Register',
     projectId: import.meta.env.VITE_WALLETCONNECT_ID || 'test-project',
+  }
+)
+
+// The WalletConnect connector follows session approval with a
+// `wallet_switchEthereumChain` to the requested chain (RainbowKit always
+// requests one — it falls back to the first configured chain) whenever the
+// session lands on a different chain. Chain-bound wallets like Safe can't
+// switch chains, so that request fails/hangs and the whole connect() dies
+// before wagmi ever reports connected (the WC session itself persists, which
+// is why a refresh "fixes" it). Strip the requested chain for WalletConnect
+// connects: connect to whatever chain the wallet is on and let the app's
+// existing wrong-network UX handle mismatches after the fact.
+const connectors: CreateConnectorFn[] = rainbowConnectors.map(
+  (createConnectorFn) => {
+    const wrapped: CreateConnectorFn = (config) => {
+      const connector = createConnectorFn(config)
+      if (connector.type !== 'walletConnect') return connector
+      return {
+        ...connector,
+        connect: ((parameters = {}) =>
+          connector.connect({
+            ...parameters,
+            chainId: undefined,
+          })) as typeof connector.connect,
+      }
+    }
+    return wrapped
   }
 )
 
