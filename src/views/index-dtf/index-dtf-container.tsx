@@ -108,7 +108,11 @@ const getBasketState = (dtf: IndexDtfData) => {
   const shares: Record<string, string> = {}
   const basket = Object.values(dtf.basket)
     .map((asset) => {
-      const address = asset.token.address.toLowerCase()
+      // The SDK returns checksummed addresses; the app-wide convention (since
+      // the pre-SDK API) is lowercase for basket token addresses and every
+      // basket map key, and consumers index these maps with `token.address`
+      // directly — keep both sides lowercase so they always match.
+      const address = asset.token.address.toLowerCase() as Address
 
       prices[address] = asset.price
       amounts[address] = asset.amount
@@ -116,10 +120,11 @@ const getBasketState = (dtf: IndexDtfData) => {
 
       return {
         ...asset.token,
+        address,
         price: asset.price,
       }
     })
-    .sort((a, b) => Number(shares[b.address.toLowerCase()]) - Number(shares[a.address.toLowerCase()]))
+    .sort((a, b) => Number(shares[b.address]) - Number(shares[a.address]))
 
   return { basket, prices, amounts, shares }
 }
