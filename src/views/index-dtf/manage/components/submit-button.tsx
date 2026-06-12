@@ -11,7 +11,7 @@ import {
 } from '@/state/dtf/atoms'
 import { RESERVE_API } from '@/utils/constants'
 import { Trans, useLingui } from '@lingui/react/macro'
-import { useQuery } from '@tanstack/react-query'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { atom, useAtomValue, useSetAtom } from 'jotai'
 import { useEffect, useState } from 'react'
 import { FieldValues, SubmitHandler, useFormContext } from 'react-hook-form'
@@ -139,6 +139,7 @@ const SubmitButton = () => {
   const [error, setError] = useState<string | null>(null)
   const updateBrandData = useSetAtom(indexDTFBrandAtom)
   const isBrandManager = useAtomValue(isBrandManagerAtom)
+  const queryClient = useQueryClient()
 
   const { trackClick } = useTrackIndexDTFClick('overview', 'brand_manager')
   const { track } = useTrackIndexDTF(
@@ -193,6 +194,11 @@ const SubmitButton = () => {
         }
       }
 
+      // Downloadable resources: drop rows without a URL
+      payload.dtf.files = (
+        (payload.dtf.files ?? []) as { url?: string; name?: string }[]
+      ).filter((resource) => resource.url)
+
       setState('submitting')
 
       if (payload.dtf.tags.length) {
@@ -222,6 +228,9 @@ const SubmitButton = () => {
       track('submit_successful')
       toast.success(t`DTF updated successfully`, { position: 'bottom-right' })
       updateBrandData(payload as IndexDTFBrand)
+      // BrandFilesUpdater merges dtf.files from its own query — refresh it so
+      // a stale cache doesn't clobber the data we just saved.
+      queryClient.invalidateQueries({ queryKey: ['brand-files'] })
       setState('idle')
     } catch (e: any) {
       console.error('Error submitting form:', e)

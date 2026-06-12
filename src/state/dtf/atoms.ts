@@ -48,6 +48,7 @@ export interface IndexDTFBrand {
     description: string
     notesFromCreator: string
     prospectus: string
+    files: { url: string; name: string }[]
     tags: string[]
     basketType: 'percentage-based' | 'unit-based'
   }

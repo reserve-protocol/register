@@ -69,6 +69,11 @@ const isIndexDtfChain = (chainId: number): chainId is SupportedChainId =>
 const mapSdkBrand = (brand: SdkIndexDtfBrand | undefined) => {
   if (!brand) return undefined
 
+  // `files` is not typed on the SDK brand yet (0.1.5) but the API returns it.
+  const files =
+    (brand as SdkIndexDtfBrand & { files?: { url?: string; name?: string }[] })
+      .files ?? []
+
   return {
     dtf: {
       icon: brand.icon ?? '',
@@ -77,6 +82,10 @@ const mapSdkBrand = (brand: SdkIndexDtfBrand | undefined) => {
       description: brand.description ?? '',
       notesFromCreator: brand.notesFromCreator ?? '',
       prospectus: brand.prospectus ?? '',
+      files: files.map((file) => ({
+        url: file.url ?? '',
+        name: file.name ?? '',
+      })),
       tags: [...brand.tags],
       basketType:
         brand.basketType === 'unit-based' ? 'unit-based' : 'percentage-based',
@@ -189,6 +198,61 @@ const IndexDTFDataUpdater = () => {
       priceControl: data.rebalance.priceControl,
     })
   }, [data])
+
+  return null
+}
+
+// The SDK's brand mapping whitelists fields and drops `dtf.files`
+// (downloadable resources), so read them straight from the folio-manager API
+// and merge them into the brand atom. Remove once the SDK maps `files`.
+const BrandFilesUpdater = () => {
+  const dtf = useAtomValue(indexDTFAtom)
+  const setIndexDTFBrand = useSetAtom(indexDTFBrandAtom)
+  const brand = useAtomValue(indexDTFBrandAtom)
+
+  const { data: files } = useQuery({
+    queryKey: ['brand-files', dtf?.id, dtf?.chainId],
+    queryFn: async () => {
+      const response = await fetch(
+        `${RESERVE_API}folio-manager/read?folio=${dtf!.id.toLowerCase()}&chainId=${dtf!.chainId}`
+      )
+
+      if (!response.ok) {
+        throw new Error(`Failed to fetch brand files: ${response.statusText}`)
+      }
+
+      const body = await response.json()
+      const brandFiles = (body?.parsedData?.dtf?.files ?? []) as {
+        url?: string
+        name?: string
+      }[]
+
+      return brandFiles.map((file) => ({
+        url: file.url ?? '',
+        name: file.name ?? '',
+      }))
+    },
+    enabled: !!dtf?.id,
+  })
+
+  useEffect(() => {
+    if (!files) return
+
+    setIndexDTFBrand((prev) => {
+      if (!prev) return prev
+
+      const current = prev.dtf.files ?? []
+      const unchanged =
+        current.length === files.length &&
+        current.every(
+          (file, i) => file.url === files[i].url && file.name === files[i].name
+        )
+      if (unchanged) return prev
+
+      return { ...prev, dtf: { ...prev.dtf, files } }
+    })
+    // re-merge when the SDK brand lands/refreshes (it resets files to [])
+  }, [files, brand, setIndexDTFBrand])
 
   return null
 }
@@ -363,6 +427,7 @@ const Updater = () => {
   return (
     <div key={key}>
       <IndexDTFDataUpdater />
+      <BrandFilesUpdater />
       <IndexDTFVersionUpdater />
       <PlatformFeeUpdater tokenAddress={tokenAddress} chainId={chainId} />
       <IndexDTFExposureUpdater chainId={chainId} />

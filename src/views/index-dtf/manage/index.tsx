@@ -16,6 +16,7 @@ const defaultValues: ManageFormValues = {
     mobileCover: '',
     description: '',
     notesFromCreator: '',
+    files: [],
     tags: [],
     basketType: 'percentage-based',
   },

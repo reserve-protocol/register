@@ -22,6 +22,16 @@ export const buildManageFormSchema = (
       description: z.string().optional(),
       notesFromCreator: z.string().optional(),
       prospectus: z.url().optional().or(z.literal('')),
+      // Downloadable resources shown on the overview page
+      files: z
+        .array(
+          z.object({
+            url: z.url().optional().or(z.literal('')),
+            name: z.string().optional().or(z.literal('')),
+          })
+        )
+        .optional()
+        .default([]),
       tags: z
         .array(z.object({ value: z.string(), label: z.string() }))
         .optional(),

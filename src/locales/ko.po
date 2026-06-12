@@ -679,9 +679,9 @@ msgstr "소개"
 msgid "About {0}"
 msgstr "{0} 정보"
 
-#: src/views/index-dtf/manage/components/manage-about.tsx:44
-#: src/views/index-dtf/manage/components/manage-about.tsx:47
-#: src/views/index-dtf/overview/components/index-about-overview.tsx:67
+#: src/views/index-dtf/manage/components/manage-about.tsx:120
+#: src/views/index-dtf/manage/components/manage-about.tsx:123
+#: src/views/index-dtf/overview/components/index-about-overview.tsx:68
 msgid "About this DTF"
 msgstr "이 DTF 소개"
 
@@ -754,6 +754,10 @@ msgstr ""
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-revenue-distribution.tsx:33
 msgid "Add additional recipients"
 msgstr "수령인 추가"
+
+#: src/views/index-dtf/manage/components/manage-about.tsx:94
+msgid "Add file"
+msgstr "파일 추가"
 
 #: src/views/index-dtf/manage/components/manage-form.tsx:93
 msgid "Add links to your social media accounts and website."
@@ -2703,7 +2707,7 @@ msgstr "DAO 거버넌스"
 msgid "DAO settings proposal"
 msgstr "DAO 설정 제안"
 
-#: src/components/layout/header/components/header-actions-menu.tsx:95
+#: src/components/layout/header/components/header-actions-menu.tsx:99
 msgid "Dark"
 msgstr ""
 
@@ -3076,6 +3080,11 @@ msgstr "CSV 다운로드"
 msgid "Download snapshot"
 msgstr "스냅샷 다운로드"
 
+#: src/views/index-dtf/manage/components/manage-about.tsx:38
+#: src/views/index-dtf/overview/components/index-about-overview.tsx:91
+msgid "Downloadable resources"
+msgstr "다운로드 가능한 자료"
+
 #: src/views/index-dtf/manage/components/cover-image-upload.tsx:134
 #: src/views/index-dtf/manage/components/logo-upload.tsx:162
 msgid "Drag & drop to upload (max 1MB)"
@@ -3111,7 +3120,7 @@ msgstr "DTF 설명"
 msgid "DTF Explorer"
 msgstr "DTF Explorer"
 
-#: src/views/index-dtf/manage/components/manage-about.tsx:74
+#: src/views/index-dtf/manage/components/manage-about.tsx:150
 msgid "DTF Fact sheet"
 msgstr "DTF 팩트시트"
 
@@ -3128,7 +3137,7 @@ msgstr ""
 msgid "DTF Governed"
 msgstr "거버넌스 대상 DTF"
 
-#: src/views/index-dtf/manage/components/manage-about.tsx:31
+#: src/views/index-dtf/manage/components/manage-about.tsx:107
 msgid "DTF Icon"
 msgstr "DTF 아이콘"
 
@@ -3153,7 +3162,7 @@ msgstr "DTF 설정 제안"
 msgid "dtf token logo"
 msgstr "DTF 토큰 로고"
 
-#: src/views/index-dtf/manage/components/submit-button.tsx:223
+#: src/views/index-dtf/manage/components/submit-button.tsx:229
 msgid "DTF updated successfully"
 msgstr "DTF가 성공적으로 업데이트되었습니다"
 
@@ -3315,7 +3324,7 @@ msgstr "{variant} 커버 이미지 편집"
 msgid "Edit Overview Content"
 msgstr "개요 콘텐츠 편집"
 
-#: src/views/index-dtf/overview/components/index-about-overview.tsx:31
+#: src/views/index-dtf/overview/components/index-about-overview.tsx:32
 msgid "Edit page"
 msgstr "페이지 편집"
 
@@ -3756,7 +3765,7 @@ msgstr "CSV 파일 읽기에 실패했습니다"
 msgid "Failed to switch to {chainName}"
 msgstr "{chainName}(으)로 전환하지 못했습니다"
 
-#: src/views/index-dtf/manage/components/submit-button.tsx:228
+#: src/views/index-dtf/manage/components/submit-button.tsx:237
 msgid "Failed to update DTF"
 msgstr "DTF 업데이트 실패"
 
@@ -3831,6 +3840,10 @@ msgstr "불러오는 중..."
 #: src/components/layout/header/components/app-navigation.tsx:140
 msgid "File issues or upvote existing ones"
 msgstr "이슈 등록 또는 기존 이슈 추천"
+
+#: src/views/index-dtf/manage/components/manage-about.tsx:55
+msgid "File name"
+msgstr "파일 이름"
 
 #: src/views/index-dtf/manage/components/cover-image-upload.tsx:84
 #: src/views/index-dtf/manage/components/logo-upload.tsx:77
@@ -4171,7 +4184,7 @@ msgstr "Mint에 문제가 있나요? Zap은 베타 버전입니다"
 msgid "hero-splash"
 msgstr "hero-splash"
 
-#: src/views/index-dtf/manage/components/manage-about.tsx:86
+#: src/views/index-dtf/manage/components/manage-about.tsx:164
 msgid "Hide DTF"
 msgstr "DTF 숨기기"
 
@@ -4652,7 +4665,7 @@ msgstr "대화에 참여하거나 질문하기"
 msgid "just now"
 msgstr "방금 전"
 
-#: src/components/layout/header/components/header-actions-menu.tsx:111
+#: src/components/layout/header/components/header-actions-menu.tsx:115
 msgid "Language"
 msgstr ""
 
@@ -4707,7 +4720,7 @@ msgstr "APY를 얻는 방법 자세히 보기"
 msgid "Learn more about Reserve on their website."
 msgstr "Reserve에 대한 자세한 내용은 웹사이트에서 확인하세요."
 
-#: src/components/layout/header/components/header-actions-menu.tsx:95
+#: src/components/layout/header/components/header-actions-menu.tsx:99
 msgid "Light"
 msgstr ""
 
@@ -4718,6 +4731,10 @@ msgstr "Chain당 레코드 수 제한"
 #: src/components/ondo-badge.tsx:40
 msgid "Limited"
 msgstr "제한됨"
+
+#: src/views/index-dtf/manage/components/manage-about.tsx:41
+msgid "Links to files holders can download from the DTF overview page, like a tear sheet or methodology document."
+msgstr "보유자가 DTF 개요 페이지에서 다운로드할 수 있는 파일 링크입니다. 예: 티어 시트, 방법론 문서."
 
 #: src/views/index-dtf/auctions/views/rebalance/components/rebalance-liquidity-checker.tsx:222
 #: src/views/index-dtf/governance/views/propose/basket/components/proposal-liquidity-checker.tsx:284
@@ -5220,7 +5237,7 @@ msgstr "분"
 msgid "Missing collateral"
 msgstr "담보 누락"
 
-#: src/views/index-dtf/manage/components/submit-button.tsx:165
+#: src/views/index-dtf/manage/components/submit-button.tsx:166
 msgid "Missing signature"
 msgstr "서명 누락"
 
@@ -5250,6 +5267,10 @@ msgstr "월간 P&L"
 #: src/components/layout/header/components/app-navigation.tsx:209
 msgid "More"
 msgstr "더 보기"
+
+#: src/views/index-dtf/overview/components/index-about-overview.tsx:94
+msgid "More information on what {dtfName} is, what it’s all about, methodology and thesis."
+msgstr "{dtfName}이(가) 무엇인지, 어떤 프로젝트인지, 방법론과 투자 논리에 대한 자세한 정보입니다."
 
 #: src/components/layout/header/components/header-actions-menu.tsx:52
 msgid "More options"
@@ -5683,8 +5704,8 @@ msgstr "거버넌스를 설정할 준비가 되지 않으셨나요?"
 msgid "Not voted"
 msgstr "미투표"
 
-#: src/views/index-dtf/manage/components/manage-about.tsx:59
-#: src/views/index-dtf/manage/components/manage-about.tsx:62
+#: src/views/index-dtf/manage/components/manage-about.tsx:135
+#: src/views/index-dtf/manage/components/manage-about.tsx:138
 msgid "Notes from Creator"
 msgstr "제작자의 노트"
 
@@ -5760,7 +5781,7 @@ msgstr "온라인 및 오프라인 초대 전용 이벤트"
 msgid "Only Auction Launchers will be able to start auctions. After the exclusive launch window for Auction Launcher, any remaining auctions to started will expire."
 msgstr "경매 실행자만 경매를 시작할 수 있습니다. 경매 실행자 전용 실행 기간이 지나면, 시작되지 않은 나머지 경매는 만료됩니다."
 
-#: src/views/index-dtf/manage/components/submit-button.tsx:247
+#: src/views/index-dtf/manage/components/submit-button.tsx:256
 msgid "Only Brand Manager"
 msgstr "Brand Manager 전용"
 
@@ -6031,7 +6052,7 @@ msgstr "성과 (지난 7일)"
 msgid "Performance from inception*"
 msgstr "설정 이후 성과*"
 
-#: src/views/index-dtf/overview/components/index-about-overview.tsx:96
+#: src/views/index-dtf/overview/components/index-about-overview.tsx:137
 #: src/views/index-dtf/overview/components/yield-index/yield-index-about.tsx:46
 msgid "Performance Sheet"
 msgstr "성과 시트"
@@ -6886,6 +6907,10 @@ msgstr "더스트 토큰 제거"
 msgid "Remove image"
 msgstr "이미지 제거"
 
+#: src/views/index-dtf/manage/components/manage-about.tsx:82
+msgid "Remove resource"
+msgstr "리소스 제거"
+
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/sections/propose-revenue-tokens.tsx:146
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/vault-proposal-form.tsx:147
 msgid "Remove token"
@@ -7379,7 +7404,7 @@ msgid "Scheduled event"
 msgstr "예정된 이벤트"
 
 #: src/components/command-menu/index.tsx:101
-#: src/components/layout/header/components/header-actions-menu.tsx:71
+#: src/components/layout/header/components/header-actions-menu.tsx:73
 #: src/views/internal/dtf-list/components/dtf-date-chain-filters.tsx:50
 #: src/views/tokens/components/TableFilters.tsx:20
 msgid "Search"
@@ -7415,7 +7440,7 @@ msgstr "DTF 이름 또는 심볼 검색"
 msgid "Search for a DTF..."
 msgstr "DTF 검색..."
 
-#: src/components/layout/header/components/header-actions-menu.tsx:74
+#: src/components/layout/header/components/header-actions-menu.tsx:76
 msgid "Search for DTFs"
 msgstr ""
 
@@ -8078,7 +8103,7 @@ msgstr "stRSR 지급 비율 0.0"
 msgid "stRSR Token"
 msgstr "stRSR 토큰"
 
-#: src/views/index-dtf/manage/components/submit-button.tsx:238
+#: src/views/index-dtf/manage/components/submit-button.tsx:247
 msgid "Submit all changes"
 msgstr "모든 변경사항 제출"
 
@@ -8102,7 +8127,7 @@ msgid "Submitted!"
 msgstr "제출됨!"
 
 #: src/views/index-dtf/deploy/components/deploy-coming-soon.tsx:182
-#: src/views/index-dtf/manage/components/submit-button.tsx:241
+#: src/views/index-dtf/manage/components/submit-button.tsx:250
 msgid "Submitting..."
 msgstr "제출 중..."
 
@@ -8466,13 +8491,18 @@ msgstr ""
 "          시스템 일시중지 및 재개\n"
 "          시스템 동결 및 동결 해제\n"
 "          거버넌스 파라미터 설정\n"
+"          시스템 컨트랙트 업그레이드일반적으로 탈중앙화 거버넌스 스마트 컨트랙트인 최상위 의사결정권자로, 모든 RToken 파라미터 값, RToken 바스켓 등을 설정하거나 업데이트하는 책임을 집니다. - RToken OWNER는 다음 권한을 가집니다:\n"
+"          모든 Ethereum 계정에 대한 역할 부여 및 회수\n"
+"          시스템 일시중지 및 재개\n"
+"          시스템 동결 및 동결 해제\n"
+"          거버넌스 파라미터 설정\n"
 "          시스템 컨트랙트 업그레이드"
 
 #: src/components/rtoken-setup/token/BackingForm.tsx:48
 msgid "The warmup period is how many seconds should pass after the basket regained the SOUND status before an RToken can be issued and/or a trade can be opened."
 msgstr "워밍업 기간은 바스켓이 SOUND 상태를 회복한 후 RToken을 발행하거나 거래를 개시할 수 있을 때까지 경과해야 하는 시간(초)입니다."
 
-#: src/components/layout/header/components/header-actions-menu.tsx:92
+#: src/components/layout/header/components/header-actions-menu.tsx:96
 msgid "Theme"
 msgstr ""
 
@@ -8619,7 +8649,7 @@ msgstr "이 Wallet은 본 제품에 접근할 수 없습니다. 오류라고 생
 msgid "This was originally a fast proposal that did not pass governance. Please review the details of this contested proposal closely."
 msgstr ""
 
-#: src/views/index-dtf/manage/components/manage-about.tsx:89
+#: src/views/index-dtf/manage/components/manage-about.tsx:167
 msgid "This will prevent the DTF from appearing in the DTF list. You can still access it on the UI using the direct link."
 msgstr "이 설정은 DTF가 DTF 목록에 표시되지 않도록 합니다. 직접 링크를 사용하면 UI에서 계속 접근할 수 있습니다."
 
@@ -9170,7 +9200,7 @@ msgstr "기초 토큰 노출"
 msgid "Understand the project and protocols"
 msgstr "프로젝트 및 프로토콜 이해하기"
 
-#: src/views/index-dtf/manage/components/submit-button.tsx:229
+#: src/views/index-dtf/manage/components/submit-button.tsx:238
 msgid "Unexpected error"
 msgstr "예기치 않은 오류"
 
@@ -9437,7 +9467,7 @@ msgstr "Folio Governance 업그레이드 (1/2):"
 msgid "Upgrade to"
 msgstr "업그레이드 대상"
 
-#: src/views/index-dtf/manage/components/submit-button.tsx:240
+#: src/views/index-dtf/manage/components/submit-button.tsx:249
 msgid "Uploading files..."
 msgstr "파일 업로드 중..."
 
@@ -10067,7 +10097,7 @@ msgstr ""
 msgid "We recommend launching your new ERC20 token on <0>CreateMyToken</0>"
 msgstr "새 ERC20 토큰은 <0>CreateMyToken</0>에서 출시하는 것을 권장합니다"
 
-#: src/views/index-dtf/overview/components/index-about-overview.tsx:89
+#: src/views/index-dtf/overview/components/index-about-overview.tsx:130
 #: src/views/index-dtf/overview/components/index-metrics-overview.tsx:101
 #: src/views/index-dtf/overview/components/yield-index/yield-index-about.tsx:39
 #: src/views/yield-dtf/overview/components/backing/collateral-exposure.tsx:157
@@ -10232,7 +10262,7 @@ msgstr "담보 토큰 Wrapping"
 msgid "X"
 msgstr "X"
 
-#: src/views/index-dtf/overview/components/index-about-overview.tsx:104
+#: src/views/index-dtf/overview/components/index-about-overview.tsx:145
 #: src/views/index-dtf/overview/components/yield-index/yield-index-about.tsx:54
 msgid "X Account"
 msgstr "X 계정"

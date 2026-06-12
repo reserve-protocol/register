@@ -679,9 +679,9 @@ msgstr "Acerca de"
 msgid "About {0}"
 msgstr "Acerca de {0}"
 
-#: src/views/index-dtf/manage/components/manage-about.tsx:44
-#: src/views/index-dtf/manage/components/manage-about.tsx:47
-#: src/views/index-dtf/overview/components/index-about-overview.tsx:67
+#: src/views/index-dtf/manage/components/manage-about.tsx:120
+#: src/views/index-dtf/manage/components/manage-about.tsx:123
+#: src/views/index-dtf/overview/components/index-about-overview.tsx:68
 msgid "About this DTF"
 msgstr "Acerca de este DTF"
 
@@ -754,6 +754,10 @@ msgstr ""
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-revenue-distribution.tsx:33
 msgid "Add additional recipients"
 msgstr "Agregar destinatarios adicionales"
+
+#: src/views/index-dtf/manage/components/manage-about.tsx:94
+msgid "Add file"
+msgstr "Agregar archivo"
 
 #: src/views/index-dtf/manage/components/manage-form.tsx:93
 msgid "Add links to your social media accounts and website."
@@ -2703,7 +2707,7 @@ msgstr "Gobernanza del DAO"
 msgid "DAO settings proposal"
 msgstr "Propuesta de configuración del DAO"
 
-#: src/components/layout/header/components/header-actions-menu.tsx:95
+#: src/components/layout/header/components/header-actions-menu.tsx:99
 msgid "Dark"
 msgstr ""
 
@@ -3076,6 +3080,11 @@ msgstr "Descargar CSV"
 msgid "Download snapshot"
 msgstr "Descargar snapshot"
 
+#: src/views/index-dtf/manage/components/manage-about.tsx:38
+#: src/views/index-dtf/overview/components/index-about-overview.tsx:91
+msgid "Downloadable resources"
+msgstr "Recursos descargables"
+
 #: src/views/index-dtf/manage/components/cover-image-upload.tsx:134
 #: src/views/index-dtf/manage/components/logo-upload.tsx:162
 msgid "Drag & drop to upload (max 1MB)"
@@ -3111,7 +3120,7 @@ msgstr "Explicación de los DTF"
 msgid "DTF Explorer"
 msgstr "DTF Explorer"
 
-#: src/views/index-dtf/manage/components/manage-about.tsx:74
+#: src/views/index-dtf/manage/components/manage-about.tsx:150
 msgid "DTF Fact sheet"
 msgstr "Ficha técnica del DTF"
 
@@ -3128,7 +3137,7 @@ msgstr ""
 msgid "DTF Governed"
 msgstr "DTF gobernado"
 
-#: src/views/index-dtf/manage/components/manage-about.tsx:31
+#: src/views/index-dtf/manage/components/manage-about.tsx:107
 msgid "DTF Icon"
 msgstr "Icono del DTF"
 
@@ -3153,7 +3162,7 @@ msgstr "Propuesta de configuración del DTF"
 msgid "dtf token logo"
 msgstr "logo del token dtf"
 
-#: src/views/index-dtf/manage/components/submit-button.tsx:223
+#: src/views/index-dtf/manage/components/submit-button.tsx:229
 msgid "DTF updated successfully"
 msgstr "DTF actualizado correctamente"
 
@@ -3315,7 +3324,7 @@ msgstr "Editar imagen de portada de {variant}"
 msgid "Edit Overview Content"
 msgstr "Editar contenido del resumen"
 
-#: src/views/index-dtf/overview/components/index-about-overview.tsx:31
+#: src/views/index-dtf/overview/components/index-about-overview.tsx:32
 msgid "Edit page"
 msgstr "Editar página"
 
@@ -3756,7 +3765,7 @@ msgstr "No se pudo leer el archivo CSV"
 msgid "Failed to switch to {chainName}"
 msgstr "Error al cambiar a {chainName}"
 
-#: src/views/index-dtf/manage/components/submit-button.tsx:228
+#: src/views/index-dtf/manage/components/submit-button.tsx:237
 msgid "Failed to update DTF"
 msgstr "No se pudo actualizar el DTF"
 
@@ -3831,6 +3840,10 @@ msgstr "Obteniendo..."
 #: src/components/layout/header/components/app-navigation.tsx:140
 msgid "File issues or upvote existing ones"
 msgstr "Reporta problemas o vota por los existentes"
+
+#: src/views/index-dtf/manage/components/manage-about.tsx:55
+msgid "File name"
+msgstr "Nombre del archivo"
 
 #: src/views/index-dtf/manage/components/cover-image-upload.tsx:84
 #: src/views/index-dtf/manage/components/logo-upload.tsx:77
@@ -4171,7 +4184,7 @@ msgstr "¿Problemas para hacer Mint? Los Zaps están en beta"
 msgid "hero-splash"
 msgstr "hero-splash"
 
-#: src/views/index-dtf/manage/components/manage-about.tsx:86
+#: src/views/index-dtf/manage/components/manage-about.tsx:164
 msgid "Hide DTF"
 msgstr "Ocultar DTF"
 
@@ -4652,7 +4665,7 @@ msgstr "Únete a la conversación o haz preguntas"
 msgid "just now"
 msgstr "ahora mismo"
 
-#: src/components/layout/header/components/header-actions-menu.tsx:111
+#: src/components/layout/header/components/header-actions-menu.tsx:115
 msgid "Language"
 msgstr ""
 
@@ -4707,7 +4720,7 @@ msgstr "Más información sobre cómo ganar APY"
 msgid "Learn more about Reserve on their website."
 msgstr "Conoce más sobre Reserve en su sitio web."
 
-#: src/components/layout/header/components/header-actions-menu.tsx:95
+#: src/components/layout/header/components/header-actions-menu.tsx:99
 msgid "Light"
 msgstr ""
 
@@ -4718,6 +4731,10 @@ msgstr "Límite de registros por Chain"
 #: src/components/ondo-badge.tsx:40
 msgid "Limited"
 msgstr "Limitado"
+
+#: src/views/index-dtf/manage/components/manage-about.tsx:41
+msgid "Links to files holders can download from the DTF overview page, like a tear sheet or methodology document."
+msgstr "Links a archivos que los holders pueden descargar desde la página de overview del DTF, como un tear sheet o un documento de metodología."
 
 #: src/views/index-dtf/auctions/views/rebalance/components/rebalance-liquidity-checker.tsx:222
 #: src/views/index-dtf/governance/views/propose/basket/components/proposal-liquidity-checker.tsx:284
@@ -5220,7 +5237,7 @@ msgstr "minutos"
 msgid "Missing collateral"
 msgstr "Colateral faltante"
 
-#: src/views/index-dtf/manage/components/submit-button.tsx:165
+#: src/views/index-dtf/manage/components/submit-button.tsx:166
 msgid "Missing signature"
 msgstr "Falta la firma"
 
@@ -5250,6 +5267,10 @@ msgstr "P&L mensual"
 #: src/components/layout/header/components/app-navigation.tsx:209
 msgid "More"
 msgstr "Más"
+
+#: src/views/index-dtf/overview/components/index-about-overview.tsx:94
+msgid "More information on what {dtfName} is, what it’s all about, methodology and thesis."
+msgstr "Más información sobre qué es {dtfName}, de qué se trata, su metodología y tesis."
 
 #: src/components/layout/header/components/header-actions-menu.tsx:52
 msgid "More options"
@@ -5683,8 +5704,8 @@ msgstr "¿No estás listo para configurar la gobernanza?"
 msgid "Not voted"
 msgstr "Sin votar"
 
-#: src/views/index-dtf/manage/components/manage-about.tsx:59
-#: src/views/index-dtf/manage/components/manage-about.tsx:62
+#: src/views/index-dtf/manage/components/manage-about.tsx:135
+#: src/views/index-dtf/manage/components/manage-about.tsx:138
 msgid "Notes from Creator"
 msgstr "Notas del creador"
 
@@ -5760,7 +5781,7 @@ msgstr "Eventos online y presenciales solo por invitación"
 msgid "Only Auction Launchers will be able to start auctions. After the exclusive launch window for Auction Launcher, any remaining auctions to started will expire."
 msgstr "Solo los lanzadores de subastas podrán iniciar subastas. Después de la ventana de lanzamiento exclusiva del lanzador de subastas, cualquier subasta pendiente de iniciar expirará."
 
-#: src/views/index-dtf/manage/components/submit-button.tsx:247
+#: src/views/index-dtf/manage/components/submit-button.tsx:256
 msgid "Only Brand Manager"
 msgstr "Solo Brand Manager"
 
@@ -6031,7 +6052,7 @@ msgstr "Rendimiento (últimos 7 días)"
 msgid "Performance from inception*"
 msgstr "Rendimiento desde el inicio*"
 
-#: src/views/index-dtf/overview/components/index-about-overview.tsx:96
+#: src/views/index-dtf/overview/components/index-about-overview.tsx:137
 #: src/views/index-dtf/overview/components/yield-index/yield-index-about.tsx:46
 msgid "Performance Sheet"
 msgstr "Hoja de rendimiento"
@@ -6886,6 +6907,10 @@ msgstr "Eliminar tokens residuales"
 msgid "Remove image"
 msgstr "Eliminar imagen"
 
+#: src/views/index-dtf/manage/components/manage-about.tsx:82
+msgid "Remove resource"
+msgstr "Eliminar recurso"
+
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/sections/propose-revenue-tokens.tsx:146
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/vault-proposal-form.tsx:147
 msgid "Remove token"
@@ -7379,7 +7404,7 @@ msgid "Scheduled event"
 msgstr "Evento programado"
 
 #: src/components/command-menu/index.tsx:101
-#: src/components/layout/header/components/header-actions-menu.tsx:71
+#: src/components/layout/header/components/header-actions-menu.tsx:73
 #: src/views/internal/dtf-list/components/dtf-date-chain-filters.tsx:50
 #: src/views/tokens/components/TableFilters.tsx:20
 msgid "Search"
@@ -7415,7 +7440,7 @@ msgstr "Buscar nombre o símbolo de DTF"
 msgid "Search for a DTF..."
 msgstr "Buscar un DTF..."
 
-#: src/components/layout/header/components/header-actions-menu.tsx:74
+#: src/components/layout/header/components/header-actions-menu.tsx:76
 msgid "Search for DTFs"
 msgstr ""
 
@@ -8078,7 +8103,7 @@ msgstr "Fracción de pago a stRSR 0.0"
 msgid "stRSR Token"
 msgstr "Token stRSR"
 
-#: src/views/index-dtf/manage/components/submit-button.tsx:238
+#: src/views/index-dtf/manage/components/submit-button.tsx:247
 msgid "Submit all changes"
 msgstr "Enviar todos los cambios"
 
@@ -8102,7 +8127,7 @@ msgid "Submitted!"
 msgstr "¡Enviada!"
 
 #: src/views/index-dtf/deploy/components/deploy-coming-soon.tsx:182
-#: src/views/index-dtf/manage/components/submit-button.tsx:241
+#: src/views/index-dtf/manage/components/submit-button.tsx:250
 msgid "Submitting..."
 msgstr "Enviando..."
 
@@ -8466,13 +8491,18 @@ msgstr ""
 "          pausar y reanudar el sistema\n"
 "          congelar y descongelar el sistema\n"
 "          establecer los parámetros de gobernanza\n"
+"          actualizar los contratos del sistemaEl máximo responsable de las decisiones, normalmente un contrato inteligente de gobernanza descentralizada, encargado de establecer o actualizar todos los valores de los parámetros del RToken, las cestas del RToken, etc. - El OWNER del RToken tiene el poder de:\n"
+"          otorgar y revocar roles a cualquier cuenta de Ethereum\n"
+"          pausar y reanudar el sistema\n"
+"          congelar y descongelar el sistema\n"
+"          establecer los parámetros de gobernanza\n"
 "          actualizar los contratos del sistema"
 
 #: src/components/rtoken-setup/token/BackingForm.tsx:48
 msgid "The warmup period is how many seconds should pass after the basket regained the SOUND status before an RToken can be issued and/or a trade can be opened."
 msgstr "El período de calentamiento es la cantidad de segundos que deben transcurrir después de que la cesta recupere el estado SOUND antes de que un RToken pueda hacerse Mint y/o se pueda abrir una operación."
 
-#: src/components/layout/header/components/header-actions-menu.tsx:92
+#: src/components/layout/header/components/header-actions-menu.tsx:96
 msgid "Theme"
 msgstr ""
 
@@ -8619,7 +8649,7 @@ msgstr "Este wallet no es elegible para acceder a este producto. Si crees que se
 msgid "This was originally a fast proposal that did not pass governance. Please review the details of this contested proposal closely."
 msgstr ""
 
-#: src/views/index-dtf/manage/components/manage-about.tsx:89
+#: src/views/index-dtf/manage/components/manage-about.tsx:167
 msgid "This will prevent the DTF from appearing in the DTF list. You can still access it on the UI using the direct link."
 msgstr "Esto evitará que el DTF aparezca en la lista de DTFs. Aún podrás acceder a él en la UI mediante el enlace directo."
 
@@ -9170,7 +9200,7 @@ msgstr "Exposición a tokens subyacentes"
 msgid "Understand the project and protocols"
 msgstr "Conoce el proyecto y los protocolos"
 
-#: src/views/index-dtf/manage/components/submit-button.tsx:229
+#: src/views/index-dtf/manage/components/submit-button.tsx:238
 msgid "Unexpected error"
 msgstr "Error inesperado"
 
@@ -9437,7 +9467,7 @@ msgstr "Actualizar Folio Governance (1/2):"
 msgid "Upgrade to"
 msgstr "Actualizar a"
 
-#: src/views/index-dtf/manage/components/submit-button.tsx:240
+#: src/views/index-dtf/manage/components/submit-button.tsx:249
 msgid "Uploading files..."
 msgstr "Subiendo archivos..."
 
@@ -10067,7 +10097,7 @@ msgstr ""
 msgid "We recommend launching your new ERC20 token on <0>CreateMyToken</0>"
 msgstr "Recomendamos lanzar tu nuevo token ERC20 en <0>CreateMyToken</0>"
 
-#: src/views/index-dtf/overview/components/index-about-overview.tsx:89
+#: src/views/index-dtf/overview/components/index-about-overview.tsx:130
 #: src/views/index-dtf/overview/components/index-metrics-overview.tsx:101
 #: src/views/index-dtf/overview/components/yield-index/yield-index-about.tsx:39
 #: src/views/yield-dtf/overview/components/backing/collateral-exposure.tsx:157
@@ -10232,7 +10262,7 @@ msgstr "Hacer Wrap de tokens de colateral"
 msgid "X"
 msgstr "X"
 
-#: src/views/index-dtf/overview/components/index-about-overview.tsx:104
+#: src/views/index-dtf/overview/components/index-about-overview.tsx:145
 #: src/views/index-dtf/overview/components/yield-index/yield-index-about.tsx:54
 msgid "X Account"
 msgstr "Cuenta de X"
