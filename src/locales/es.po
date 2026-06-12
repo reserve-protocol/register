@@ -429,7 +429,7 @@ msgid "{unit} Token distribution"
 msgstr "Distribución de tokens de {unit}"
 
 #. placeholder {0}: apr?.toFixed(2)
-#: src/views/index-dtf/overview/components/index-governance-overview.tsx:93
+#: src/views/index-dtf/overview/components/index-governance-overview.tsx:103
 msgid "& Earn {0}% APR"
 msgstr "y gana {0}% de APR"
 
@@ -489,7 +489,7 @@ msgstr "Los titulares de ${0} deben bloquear sus tokens (vote-lock) para convert
 #. placeholder {1}: dtf.stToken?.underlying?.symbol
 #. placeholder {2}: dtf.stToken?.underlying?.symbol
 #. placeholder {3}: dtf.token.symbol
-#: src/views/index-dtf/overview/components/index-governance-overview.tsx:149
+#: src/views/index-dtf/overview/components/index-governance-overview.tsx:163
 msgid "${0} is governed by the ${1} token. {2} holders must vote-lock their tokens to become a governor of the ${3}. Governors can propose changes to the basket and vote on proposal by other governors. In exchange for locking their tokens and participating in governance, governors earn a portion of the TVL fee charged by the DTF."
 msgstr "${0} se gobierna mediante el token ${1}. Los titulares de ${2} deben hacer vote-lock de sus tokens para convertirse en gobernadores del ${3}. Los gobernadores pueden proponer cambios a la cesta y votar las propuestas de otros gobernadores. A cambio de bloquear sus tokens y participar en la gobernanza, los gobernadores ganan una parte de la comisión de TVL que cobra el DTF."
 
@@ -1511,8 +1511,8 @@ msgstr "Propuesta de cambio de cesta"
 msgid "Basket composition"
 msgstr "Composición de la cesta"
 
-#: src/views/index-dtf/overview/components/index-governance-overview.tsx:55
-#: src/views/index-dtf/settings/components/index-settings-governance.tsx:116
+#: src/views/index-dtf/overview/components/index-governance-overview.tsx:64
+#: src/views/index-dtf/settings/components/index-settings-governance.tsx:141
 msgid "Basket Governance"
 msgstr "Gobernanza de la cesta"
 
@@ -1836,7 +1836,7 @@ msgstr "Cancelar"
 msgid "Cancel Issue"
 msgstr "Cancelar emisión"
 
-#: src/views/index-dtf/governance/views/proposal/components/proposal-cancel-button.tsx:95
+#: src/views/index-dtf/governance/views/proposal/components/proposal-cancel-button.tsx:97
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalCancel.tsx:51
 msgid "Cancel proposal"
 msgstr "Cancelar propuesta"
@@ -2335,15 +2335,19 @@ msgstr "Actualizaciones de contratos"
 msgid "Contracts"
 msgstr "Contratos"
 
-#: src/views/index-dtf/settings/components/index-settings-governance.tsx:107
+#: src/views/index-dtf/settings/components/index-settings-governance.tsx:130
 msgid "Controls changes to the basket of an Index DTF"
 msgstr "Controla los cambios en la cesta de un Index DTF"
 
-#: src/views/index-dtf/settings/components/index-settings-governance.tsx:109
+#: src/views/index-dtf/settings/components/index-settings-governance.tsx:134
 msgid "Controls fees, voting parameters, and anything other than basket changes for an Index DTF"
 msgstr "Controla las comisiones, los parámetros de votación y todo lo que no sean cambios en la cesta de un Index DTF"
 
-#: src/views/index-dtf/settings/components/index-settings-governance.tsx:110
+#: src/views/index-dtf/settings/components/index-settings-governance.tsx:133
+msgid "Controls fees, voting parameters, and basket changes for an Index DTF"
+msgstr ""
+
+#: src/views/index-dtf/settings/components/index-settings-governance.tsx:135
 msgid "Controls settings of the vlDAO including vote lock duration and approving revenue tokens"
 msgstr "Controla la configuración del vlDAO, incluida la duración del bloqueo de votos y la aprobación de tokens de ingresos"
 
@@ -2351,12 +2355,12 @@ msgstr "Controla la configuración del vlDAO, incluida la duración del bloqueo 
 msgid "Copied to clipboard"
 msgstr "Copiado al portapapeles"
 
-#: src/components/ui/copy-value.tsx:58
-#: src/components/ui/copy.tsx:22
+#: src/components/ui/copy-value.tsx:59
+#: src/components/ui/copy.tsx:23
 msgid "Copied to clipboard!"
 msgstr "¡Copiado al portapapeles!"
 
-#: src/components/section-anchor.tsx:13
+#: src/components/section-anchor.tsx:14
 #: src/views/yield-dtf/issuance/components/zapV2/minters-modal/SocialMediaInput.tsx:194
 msgid "Copied!"
 msgstr "¡Copiado!"
@@ -2370,7 +2374,7 @@ msgstr "Copiar"
 msgid "Copy address"
 msgstr "Copiar dirección"
 
-#: src/components/section-anchor.tsx:12
+#: src/components/section-anchor.tsx:14
 msgid "Copy link"
 msgstr "Copiar enlace"
 
@@ -2382,8 +2386,8 @@ msgstr "Copiar el payload para compartirlo con el equipo de ingeniería"
 msgid "Copy swap params to share with engineering team"
 msgstr "Copiar parámetros del swap para compartir con el equipo de ingeniería"
 
-#: src/components/ui/copy-value.tsx:57
-#: src/components/ui/copy.tsx:21
+#: src/components/ui/copy-value.tsx:60
+#: src/components/ui/copy.tsx:23
 msgid "Copy to clipboard"
 msgstr "Copiar al portapapeles"
 
@@ -2699,7 +2703,7 @@ msgstr "Personaliza la sección del curador debajo del nombre del DTF. Puedes el
 msgid "DAO"
 msgstr "DAO"
 
-#: src/views/index-dtf/settings/components/index-settings-governance.tsx:119
+#: src/views/index-dtf/settings/components/index-settings-governance.tsx:144
 msgid "DAO Governance"
 msgstr "Gobernanza del DAO"
 
@@ -3128,7 +3132,7 @@ msgstr "Ficha técnica del DTF"
 msgid "DTF Factsheet"
 msgstr "Ficha técnica del DTF"
 
-#: src/views/index-dtf/settings/components/index-settings-governance.tsx:118
+#: src/views/index-dtf/settings/components/index-settings-governance.tsx:143
 msgid "DTF Governance"
 msgstr ""
 
@@ -3612,8 +3616,7 @@ msgstr "Código ejecutable"
 
 #: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:285
 #: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:286
-#: src/views/index-dtf/governance/views/proposal/components/proposal-execute-button.tsx:57
-#: src/views/index-dtf/governance/views/proposal/components/proposal-execute-button.tsx:91
+#: src/views/index-dtf/governance/views/proposal/components/proposal-execute-button.tsx:93
 #: src/views/yield-dtf/governance/views/proposal-detail/components/proposal-timeline/TimelineItem.tsx:256
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalExecute.tsx:31
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalExecute.tsx:43
@@ -3641,7 +3644,7 @@ msgstr "Ejecución disponible en:"
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/sections/propose-dao-governance.tsx:93
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/atoms.ts:883
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-governance-settings.tsx:91
-#: src/views/index-dtf/settings/components/index-settings-governance.tsx:80
+#: src/views/index-dtf/settings/components/index-settings-governance.tsx:101
 #: src/views/yield-dtf/settings/components/governance-info.tsx:57
 msgid "Execution Delay"
 msgstr "Retraso de ejecución"
@@ -4034,6 +4037,7 @@ msgstr "Token de gob."
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/dao-settings-proposal-sections.tsx:64
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/dtf-settings-proposal-sections.tsx:174
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-revenue-distribution.tsx:247
+#: src/views/index-dtf/overview/components/index-governance-overview.tsx:62
 #: src/views/yield-dtf/deploy/components/NavigationSidebar.tsx:28
 #: src/views/yield-dtf/governance/views/proposal/components/ProposalNavigation.tsx:18
 #: src/views/yield-dtf/overview/components/backing/risks.tsx:84
@@ -4109,7 +4113,7 @@ msgstr "Gobernado por ${0}"
 msgid "Governor address"
 msgstr "Dirección del Governor"
 
-#: src/views/index-dtf/settings/components/index-settings-governance.tsx:46
+#: src/views/index-dtf/settings/components/index-settings-governance.tsx:48
 msgid "Governor Address"
 msgstr "Dirección del Governor"
 
@@ -4834,7 +4838,7 @@ msgid "Loading..."
 msgstr "Cargando..."
 
 #. placeholder {0}: dtf.stToken?.underlying.symbol ?? 'Unknown'
-#: src/views/index-dtf/overview/components/index-governance-overview.tsx:89
+#: src/views/index-dtf/overview/components/index-governance-overview.tsx:99
 msgid "Lock ${0} to Govern"
 msgstr "Bloquea ${0} para gobernar"
 
@@ -6378,7 +6382,6 @@ msgstr "En progreso"
 msgid "Project"
 msgstr "Proyecto"
 
-#: src/views/index-dtf/governance/views/proposal/components/proposal-cancel-button.tsx:63
 #: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:209
 msgid "Proposal canceled"
 msgstr "Propuesta cancelada"
@@ -6442,7 +6445,7 @@ msgstr "Propuesta aprobada"
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/sections/propose-dao-governance.tsx:60
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/atoms.ts:864
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-governance-settings.tsx:58
-#: src/views/index-dtf/settings/components/index-settings-governance.tsx:70
+#: src/views/index-dtf/settings/components/index-settings-governance.tsx:72
 #: src/views/yield-dtf/settings/components/governance-info.tsx:61
 msgid "Proposal Threshold"
 msgstr "Umbral de propuesta"
@@ -6576,8 +6579,7 @@ msgstr "Valor cotizado en bolsa de EE. UU."
 msgid "Published: {0}"
 msgstr "Publicado: {0}"
 
-#: src/views/index-dtf/governance/views/proposal/components/proposal-queue-button.tsx:59
-#: src/views/index-dtf/governance/views/proposal/components/proposal-queue-button.tsx:94
+#: src/views/index-dtf/governance/views/proposal/components/proposal-queue-button.tsx:96
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalQueue.tsx:32
 msgid "Queue proposal"
 msgstr "Encolar propuesta"
@@ -8248,6 +8250,10 @@ msgstr "Target:"
 msgid "Target(s)"
 msgstr "Objetivo(s)"
 
+#: src/views/index-dtf/deploy/components/right-panel.tsx:132
+msgid "Telegram"
+msgstr ""
+
 #: src/views/index-dtf/manage/components/manage-socials.tsx:36
 msgid "Telegram Link"
 msgstr "Enlace de Telegram"
@@ -8684,7 +8690,7 @@ msgstr "Tiempo hasta la recarga completa"
 msgid "Timelock address"
 msgstr "Dirección del Timelock"
 
-#: src/views/index-dtf/settings/components/index-settings-governance.tsx:53
+#: src/views/index-dtf/settings/components/index-settings-governance.tsx:55
 msgid "Timelock Address"
 msgstr "Dirección del Timelock"
 
@@ -9592,6 +9598,7 @@ msgstr ""
 
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/changes/optimistic-governance-changes.tsx:228
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-optimistic-parameters.tsx:122
+#: src/views/index-dtf/settings/components/index-settings-governance.tsx:84
 msgid "Veto Delay"
 msgstr ""
 
@@ -9610,7 +9617,12 @@ msgstr ""
 
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/changes/optimistic-governance-changes.tsx:246
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-optimistic-parameters.tsx:150
+#: src/views/index-dtf/settings/components/index-settings-governance.tsx:94
 msgid "Veto Threshold"
+msgstr ""
+
+#: src/views/index-dtf/settings/components/index-settings-governance.tsx:89
+msgid "Veto Window"
 msgstr ""
 
 #: src/views/portfolio-page/components/active-proposals.tsx:84
@@ -9656,6 +9668,11 @@ msgstr "Ver cesta completa"
 msgid "View execute tx"
 msgstr "Ver tx de ejecución"
 
+#: src/views/index-dtf/overview/components/index-governance-overview.tsx:41
+#: src/views/index-dtf/overview/components/index-governance-overview.tsx:134
+msgid "View governance settings"
+msgstr ""
+
 #: src/views/yield-dtf/staking/components/stake/confirm-stake-button.tsx:108
 #: src/views/yield-dtf/staking/components/unstake/confirm-unstake-button.tsx:69
 msgid "View in explorer"
@@ -9673,8 +9690,8 @@ msgstr "Ver lista"
 msgid "View Merkl Campaign"
 msgstr ""
 
-#: src/views/index-dtf/overview/components/index-governance-overview.tsx:38
-#: src/views/index-dtf/overview/components/index-governance-overview.tsx:123
+#: src/views/index-dtf/overview/components/index-governance-overview.tsx:43
+#: src/views/index-dtf/overview/components/index-governance-overview.tsx:136
 msgid "View non-basket governance settings"
 msgstr "Ver la configuración de gobernanza ajena a la cesta"
 
@@ -9889,7 +9906,7 @@ msgstr "Retraso de votación"
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/sections/propose-dao-governance.tsx:34
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/atoms.ts:846
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-governance-settings.tsx:32
-#: src/views/index-dtf/settings/components/index-settings-governance.tsx:60
+#: src/views/index-dtf/settings/components/index-settings-governance.tsx:62
 msgid "Voting Delay"
 msgstr "Retraso de votación"
 
@@ -9921,7 +9938,7 @@ msgstr "Votar en el RToken en el que tienes Stake requiere que delegues tu voto 
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/sections/propose-dao-governance.tsx:47
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/atoms.ts:855
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-governance-settings.tsx:45
-#: src/views/index-dtf/settings/components/index-settings-governance.tsx:65
+#: src/views/index-dtf/settings/components/index-settings-governance.tsx:67
 #: src/views/yield-dtf/governance/views/proposal-detail/components/proposal-timeline/TimelineItem.tsx:131
 #: src/views/yield-dtf/settings/components/governance-info.tsx:48
 msgid "Voting Period"
@@ -9974,7 +9991,7 @@ msgstr "Delegación de poder de voto"
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/sections/propose-dao-governance.tsx:71
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/atoms.ts:874
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-governance-settings.tsx:69
-#: src/views/index-dtf/settings/components/index-settings-governance.tsx:75
+#: src/views/index-dtf/settings/components/index-settings-governance.tsx:77
 msgid "Voting Quorum"
 msgstr "Quórum de votación"
 

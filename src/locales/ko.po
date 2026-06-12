@@ -429,7 +429,7 @@ msgid "{unit} Token distribution"
 msgstr "{unit} 토큰 분배"
 
 #. placeholder {0}: apr?.toFixed(2)
-#: src/views/index-dtf/overview/components/index-governance-overview.tsx:93
+#: src/views/index-dtf/overview/components/index-governance-overview.tsx:103
 msgid "& Earn {0}% APR"
 msgstr "& {0}% APR 수익 획득"
 
@@ -489,7 +489,7 @@ msgstr "${0} 보유자는 거버너가 되기 위해 토큰을 투표 잠금해�
 #. placeholder {1}: dtf.stToken?.underlying?.symbol
 #. placeholder {2}: dtf.stToken?.underlying?.symbol
 #. placeholder {3}: dtf.token.symbol
-#: src/views/index-dtf/overview/components/index-governance-overview.tsx:149
+#: src/views/index-dtf/overview/components/index-governance-overview.tsx:163
 msgid "${0} is governed by the ${1} token. {2} holders must vote-lock their tokens to become a governor of the ${3}. Governors can propose changes to the basket and vote on proposal by other governors. In exchange for locking their tokens and participating in governance, governors earn a portion of the TVL fee charged by the DTF."
 msgstr "${0}은(는) ${1} 토큰으로 거버넌스가 이루어집니다. ${3}의 거버너가 되려면 {2} 보유자는 토큰을 투표 잠금해야 합니다. 거버너는 바스켓 변경을 제안하고 다른 거버너의 제안에 투표할 수 있습니다. 토큰을 잠그고 거버넌스에 참여하는 대가로, 거버너는 DTF가 부과하는 TVL 수수료의 일부를 획득합니다."
 
@@ -1511,8 +1511,8 @@ msgstr "바스켓 변경 제안"
 msgid "Basket composition"
 msgstr "바스켓 구성"
 
-#: src/views/index-dtf/overview/components/index-governance-overview.tsx:55
-#: src/views/index-dtf/settings/components/index-settings-governance.tsx:116
+#: src/views/index-dtf/overview/components/index-governance-overview.tsx:64
+#: src/views/index-dtf/settings/components/index-settings-governance.tsx:141
 msgid "Basket Governance"
 msgstr "바스켓 거버넌스"
 
@@ -1836,7 +1836,7 @@ msgstr "취소"
 msgid "Cancel Issue"
 msgstr "Issue 취소"
 
-#: src/views/index-dtf/governance/views/proposal/components/proposal-cancel-button.tsx:95
+#: src/views/index-dtf/governance/views/proposal/components/proposal-cancel-button.tsx:97
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalCancel.tsx:51
 msgid "Cancel proposal"
 msgstr "제안 취소"
@@ -2335,15 +2335,19 @@ msgstr "컨트랙트 업그레이드"
 msgid "Contracts"
 msgstr "컨트랙트"
 
-#: src/views/index-dtf/settings/components/index-settings-governance.tsx:107
+#: src/views/index-dtf/settings/components/index-settings-governance.tsx:130
 msgid "Controls changes to the basket of an Index DTF"
 msgstr "Index DTF의 바스켓 변경을 제어합니다"
 
-#: src/views/index-dtf/settings/components/index-settings-governance.tsx:109
+#: src/views/index-dtf/settings/components/index-settings-governance.tsx:134
 msgid "Controls fees, voting parameters, and anything other than basket changes for an Index DTF"
 msgstr "Index DTF의 수수료, 투표 파라미터 및 바스켓 변경 외 모든 사항을 제어합니다"
 
-#: src/views/index-dtf/settings/components/index-settings-governance.tsx:110
+#: src/views/index-dtf/settings/components/index-settings-governance.tsx:133
+msgid "Controls fees, voting parameters, and basket changes for an Index DTF"
+msgstr ""
+
+#: src/views/index-dtf/settings/components/index-settings-governance.tsx:135
 msgid "Controls settings of the vlDAO including vote lock duration and approving revenue tokens"
 msgstr "투표 잠금 기간 및 수익 토큰 승인을 포함한 vlDAO 설정을 제어합니다"
 
@@ -2351,12 +2355,12 @@ msgstr "투표 잠금 기간 및 수익 토큰 승인을 포함한 vlDAO 설정�
 msgid "Copied to clipboard"
 msgstr "클립보드에 복사됨"
 
-#: src/components/ui/copy-value.tsx:58
-#: src/components/ui/copy.tsx:22
+#: src/components/ui/copy-value.tsx:59
+#: src/components/ui/copy.tsx:23
 msgid "Copied to clipboard!"
 msgstr "클립보드에 복사되었습니다!"
 
-#: src/components/section-anchor.tsx:13
+#: src/components/section-anchor.tsx:14
 #: src/views/yield-dtf/issuance/components/zapV2/minters-modal/SocialMediaInput.tsx:194
 msgid "Copied!"
 msgstr "복사됨!"
@@ -2370,7 +2374,7 @@ msgstr "복사"
 msgid "Copy address"
 msgstr "주소 복사"
 
-#: src/components/section-anchor.tsx:12
+#: src/components/section-anchor.tsx:14
 msgid "Copy link"
 msgstr "링크 복사"
 
@@ -2382,8 +2386,8 @@ msgstr "엔지니어링 팀과 공유할 페이로드 복사"
 msgid "Copy swap params to share with engineering team"
 msgstr "엔지니어링 팀과 공유할 스왑 파라미터 복사"
 
-#: src/components/ui/copy-value.tsx:57
-#: src/components/ui/copy.tsx:21
+#: src/components/ui/copy-value.tsx:60
+#: src/components/ui/copy.tsx:23
 msgid "Copy to clipboard"
 msgstr "클립보드에 복사"
 
@@ -2699,7 +2703,7 @@ msgstr "DTF 이름 아래의 큐레이터 섹션을 사용자 지정하세요. �
 msgid "DAO"
 msgstr "DAO"
 
-#: src/views/index-dtf/settings/components/index-settings-governance.tsx:119
+#: src/views/index-dtf/settings/components/index-settings-governance.tsx:144
 msgid "DAO Governance"
 msgstr "DAO 거버넌스"
 
@@ -3128,7 +3132,7 @@ msgstr "DTF 팩트시트"
 msgid "DTF Factsheet"
 msgstr "DTF 팩트시트"
 
-#: src/views/index-dtf/settings/components/index-settings-governance.tsx:118
+#: src/views/index-dtf/settings/components/index-settings-governance.tsx:143
 msgid "DTF Governance"
 msgstr ""
 
@@ -3612,8 +3616,7 @@ msgstr "실행 가능한 코드"
 
 #: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:285
 #: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:286
-#: src/views/index-dtf/governance/views/proposal/components/proposal-execute-button.tsx:57
-#: src/views/index-dtf/governance/views/proposal/components/proposal-execute-button.tsx:91
+#: src/views/index-dtf/governance/views/proposal/components/proposal-execute-button.tsx:93
 #: src/views/yield-dtf/governance/views/proposal-detail/components/proposal-timeline/TimelineItem.tsx:256
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalExecute.tsx:31
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalExecute.tsx:43
@@ -3641,7 +3644,7 @@ msgstr "실행 가능 시점:"
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/sections/propose-dao-governance.tsx:93
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/atoms.ts:883
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-governance-settings.tsx:91
-#: src/views/index-dtf/settings/components/index-settings-governance.tsx:80
+#: src/views/index-dtf/settings/components/index-settings-governance.tsx:101
 #: src/views/yield-dtf/settings/components/governance-info.tsx:57
 msgid "Execution Delay"
 msgstr "실행 지연"
@@ -4034,6 +4037,7 @@ msgstr "거버넌스 토큰"
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/dao-settings-proposal-sections.tsx:64
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/dtf-settings-proposal-sections.tsx:174
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-revenue-distribution.tsx:247
+#: src/views/index-dtf/overview/components/index-governance-overview.tsx:62
 #: src/views/yield-dtf/deploy/components/NavigationSidebar.tsx:28
 #: src/views/yield-dtf/governance/views/proposal/components/ProposalNavigation.tsx:18
 #: src/views/yield-dtf/overview/components/backing/risks.tsx:84
@@ -4109,7 +4113,7 @@ msgstr "${0}에 의해 거버넌스 관리됨"
 msgid "Governor address"
 msgstr "Governor 주소"
 
-#: src/views/index-dtf/settings/components/index-settings-governance.tsx:46
+#: src/views/index-dtf/settings/components/index-settings-governance.tsx:48
 msgid "Governor Address"
 msgstr "Governor 주소"
 
@@ -4834,7 +4838,7 @@ msgid "Loading..."
 msgstr "로딩 중..."
 
 #. placeholder {0}: dtf.stToken?.underlying.symbol ?? 'Unknown'
-#: src/views/index-dtf/overview/components/index-governance-overview.tsx:89
+#: src/views/index-dtf/overview/components/index-governance-overview.tsx:99
 msgid "Lock ${0} to Govern"
 msgstr "거버넌스 참여를 위해 ${0} 잠금"
 
@@ -6378,7 +6382,6 @@ msgstr "진행 중"
 msgid "Project"
 msgstr "프로젝트"
 
-#: src/views/index-dtf/governance/views/proposal/components/proposal-cancel-button.tsx:63
 #: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:209
 msgid "Proposal canceled"
 msgstr "제안이 취소됨"
@@ -6442,7 +6445,7 @@ msgstr "제안이 통과됨"
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/sections/propose-dao-governance.tsx:60
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/atoms.ts:864
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-governance-settings.tsx:58
-#: src/views/index-dtf/settings/components/index-settings-governance.tsx:70
+#: src/views/index-dtf/settings/components/index-settings-governance.tsx:72
 #: src/views/yield-dtf/settings/components/governance-info.tsx:61
 msgid "Proposal Threshold"
 msgstr "제안 임계값"
@@ -6576,8 +6579,7 @@ msgstr "미국 상장 증권"
 msgid "Published: {0}"
 msgstr "게시일: {0}"
 
-#: src/views/index-dtf/governance/views/proposal/components/proposal-queue-button.tsx:59
-#: src/views/index-dtf/governance/views/proposal/components/proposal-queue-button.tsx:94
+#: src/views/index-dtf/governance/views/proposal/components/proposal-queue-button.tsx:96
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalQueue.tsx:32
 msgid "Queue proposal"
 msgstr "제안 큐에 등록"
@@ -8248,6 +8250,10 @@ msgstr "타깃:"
 msgid "Target(s)"
 msgstr "타깃"
 
+#: src/views/index-dtf/deploy/components/right-panel.tsx:132
+msgid "Telegram"
+msgstr ""
+
 #: src/views/index-dtf/manage/components/manage-socials.tsx:36
 msgid "Telegram Link"
 msgstr "Telegram 링크"
@@ -8684,7 +8690,7 @@ msgstr "완전히 충전될 때까지 남은 시간"
 msgid "Timelock address"
 msgstr "Timelock 주소"
 
-#: src/views/index-dtf/settings/components/index-settings-governance.tsx:53
+#: src/views/index-dtf/settings/components/index-settings-governance.tsx:55
 msgid "Timelock Address"
 msgstr "Timelock 주소"
 
@@ -9592,6 +9598,7 @@ msgstr ""
 
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/changes/optimistic-governance-changes.tsx:228
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-optimistic-parameters.tsx:122
+#: src/views/index-dtf/settings/components/index-settings-governance.tsx:84
 msgid "Veto Delay"
 msgstr ""
 
@@ -9610,7 +9617,12 @@ msgstr ""
 
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/changes/optimistic-governance-changes.tsx:246
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-optimistic-parameters.tsx:150
+#: src/views/index-dtf/settings/components/index-settings-governance.tsx:94
 msgid "Veto Threshold"
+msgstr ""
+
+#: src/views/index-dtf/settings/components/index-settings-governance.tsx:89
+msgid "Veto Window"
 msgstr ""
 
 #: src/views/portfolio-page/components/active-proposals.tsx:84
@@ -9656,6 +9668,11 @@ msgstr "전체 바스켓 보기"
 msgid "View execute tx"
 msgstr "실행 트랜잭션 보기"
 
+#: src/views/index-dtf/overview/components/index-governance-overview.tsx:41
+#: src/views/index-dtf/overview/components/index-governance-overview.tsx:134
+msgid "View governance settings"
+msgstr ""
+
 #: src/views/yield-dtf/staking/components/stake/confirm-stake-button.tsx:108
 #: src/views/yield-dtf/staking/components/unstake/confirm-unstake-button.tsx:69
 msgid "View in explorer"
@@ -9673,8 +9690,8 @@ msgstr "목록 보기"
 msgid "View Merkl Campaign"
 msgstr ""
 
-#: src/views/index-dtf/overview/components/index-governance-overview.tsx:38
-#: src/views/index-dtf/overview/components/index-governance-overview.tsx:123
+#: src/views/index-dtf/overview/components/index-governance-overview.tsx:43
+#: src/views/index-dtf/overview/components/index-governance-overview.tsx:136
 msgid "View non-basket governance settings"
 msgstr "바스켓 외 거버넌스 설정 보기"
 
@@ -9889,7 +9906,7 @@ msgstr "투표 지연"
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/sections/propose-dao-governance.tsx:34
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/atoms.ts:846
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-governance-settings.tsx:32
-#: src/views/index-dtf/settings/components/index-settings-governance.tsx:60
+#: src/views/index-dtf/settings/components/index-settings-governance.tsx:62
 msgid "Voting Delay"
 msgstr "투표 지연"
 
@@ -9921,7 +9938,7 @@ msgstr "Stake한 RToken에 대해 투표하려면 자신 또는 다른 Eth 주�
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/sections/propose-dao-governance.tsx:47
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/atoms.ts:855
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-governance-settings.tsx:45
-#: src/views/index-dtf/settings/components/index-settings-governance.tsx:65
+#: src/views/index-dtf/settings/components/index-settings-governance.tsx:67
 #: src/views/yield-dtf/governance/views/proposal-detail/components/proposal-timeline/TimelineItem.tsx:131
 #: src/views/yield-dtf/settings/components/governance-info.tsx:48
 msgid "Voting Period"
@@ -9974,7 +9991,7 @@ msgstr "투표권 위임"
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/sections/propose-dao-governance.tsx:71
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/atoms.ts:874
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-governance-settings.tsx:69
-#: src/views/index-dtf/settings/components/index-settings-governance.tsx:75
+#: src/views/index-dtf/settings/components/index-settings-governance.tsx:77
 msgid "Voting Quorum"
 msgstr "투표 정족수"
 

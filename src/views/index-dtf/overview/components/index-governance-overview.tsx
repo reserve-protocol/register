@@ -27,6 +27,8 @@ const Container = ({ children }: { children: React.ReactNode }) => {
 
   if (!dtf) return null
 
+  const isOptimistic = !!dtf.ownerGovernance?.isOptimistic
+
   return (
     <Card className="p-2 sm:p-4 group/section" id="governance">
       <div className="flex items-center gap-2 mb-4 px-2 pt-2 justify-between">
@@ -35,7 +37,11 @@ const Container = ({ children }: { children: React.ReactNode }) => {
         </div>
         <div className="flex items-center gap-2 text-sm text-muted-foreground">
           <span>
-            <Trans>View non-basket governance settings</Trans>
+            {isOptimistic ? (
+              <Trans>View governance settings</Trans>
+            ) : (
+              <Trans>View non-basket governance settings</Trans>
+            )}
           </span>
           <Link
             to={getFolioRoute(
@@ -52,7 +58,11 @@ const Container = ({ children }: { children: React.ReactNode }) => {
       <div>
         <div className="flex items-center gap-1 px-2">
           <h2 className="text-2xl font-light">
-            <Trans>Basket Governance</Trans>
+            {isOptimistic ? (
+              <Trans>Governance</Trans>
+            ) : (
+              <Trans>Basket Governance</Trans>
+            )}
           </h2>
           <SectionAnchor id="governance" />
         </div>
@@ -120,7 +130,11 @@ const ViewNonBasketGovernanceButton = () => {
       <Button variant="outline" asChild className="w-full rounded-lg">
         <div className="flex items-center gap-1.5">
           <span>
-            <Trans>View non-basket governance settings</Trans>
+            {dtf.ownerGovernance?.isOptimistic ? (
+              <Trans>View governance settings</Trans>
+            ) : (
+              <Trans>View non-basket governance settings</Trans>
+            )}
           </span>
           <ArrowRight size={14} />
         </div>

@@ -3,7 +3,7 @@ import { blockTimestampAtom } from '@/state/atoms'
 import { getCurrentTime } from '@/utils'
 import { PROPOSAL_STATES } from '@/utils/constants'
 import { canExecuteProposal } from '@/views/index-dtf/governance/utils/proposal-flow'
-import { t } from '@lingui/macro'
+import { useLingui } from '@lingui/react/macro'
 import { useIndexDtfExecuteProposalCall } from '@reserve-protocol/react-sdk'
 import useContractWrite from 'hooks/useContractWrite'
 import useWatchTransaction from 'hooks/useWatchTransaction'
@@ -20,6 +20,7 @@ const canExecuteAtom = atom((get) => {
 })
 
 const ProposalExecute = () => {
+  const { t } = useLingui()
   const [proposal, setProposal] = useAtom(proposalDetailAtom)
   const canExecute = useAtomValue(canExecuteAtom)
   const refreshProposal = useRefreshProposal()
@@ -54,7 +55,8 @@ const ProposalExecute = () => {
 
   const { data, isMining, status } = useWatchTransaction({
     hash,
-    label: t`Execute proposal`,
+    // Mixpanel label, keep in English
+    label: 'Execute proposal',
   })
 
   useEffect(() => {

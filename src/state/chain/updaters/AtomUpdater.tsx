@@ -51,9 +51,8 @@ const AtomUpdater = () => {
           const isSafe =
             typeof code === 'string' && code !== '0x' && code.length > 2
           setIsSafeMultisig(isSafe)
-          console.log('Is Safe Multisig:', isSafe)
         } catch (e) {
-          console.log('Error checking if wallet is Safe:', e)
+          console.error('Error checking if wallet is Safe:', e)
           setIsSafeMultisig(false)
         }
       }

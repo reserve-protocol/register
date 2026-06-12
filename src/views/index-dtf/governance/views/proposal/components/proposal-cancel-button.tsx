@@ -1,6 +1,6 @@
 import TransactionButton from '@/components/ui/transaction-button'
 import { PROPOSAL_STATES } from '@/utils/constants'
-import { t } from '@lingui/macro'
+import { useLingui } from '@lingui/react/macro'
 import { useIndexDtfCancelProposalCall } from '@reserve-protocol/react-sdk'
 import Timelock from 'abis/Timelock'
 import useContractWrite from 'hooks/useContractWrite'
@@ -14,6 +14,7 @@ import { proposalDetailAtom } from '../atom'
 import useRefreshProposal from '../hooks/use-refresh-proposal'
 
 const ProposalCancel = () => {
+  const { t } = useLingui()
   const account = useAtomValue(walletAtom)
   const [proposal, setProposal] = useAtom(proposalDetailAtom)
   const refreshProposal = useRefreshProposal()
@@ -60,7 +61,8 @@ const ProposalCancel = () => {
 
   const { isMining, status } = useWatchTransaction({
     hash,
-    label: t`Proposal canceled`,
+    // Mixpanel label, keep in English
+    label: 'Proposal canceled',
   })
 
   useEffect(() => {

@@ -54,15 +54,16 @@ const CopyValue = ({
   my,
 }: CopyValueProps) => {
   const { t } = useLingui()
-  const copyText = text || t`Copy to clipboard`
-  const confirmText = t`Copied to clipboard!`
-  const [displayText, setDisplayText] = useState(copyText)
+  const [isCopied, setIsCopied] = useState(false)
+  const displayText = isCopied
+    ? t`Copied to clipboard!`
+    : text || t`Copy to clipboard`
 
   const handleCopy = (e: React.MouseEvent) => {
     e.stopPropagation()
     navigator.clipboard.writeText(isAddress(value) || value)
-    setDisplayText(confirmText)
-    setTimeout(() => setDisplayText(copyText), 2000)
+    setIsCopied(true)
+    setTimeout(() => setIsCopied(false), 2000)
   }
 
   // Build spacing classes from legacy props

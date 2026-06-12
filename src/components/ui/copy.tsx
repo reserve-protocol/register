@@ -18,17 +18,16 @@ const Copy: React.FC<CopyProps> = ({
   className,
 }) => {
   const { t } = useLingui()
-  const copyText = t`Copy to clipboard`
-  const confirmText = t`Copied to clipboard!`
-  const [displayText, setDisplayText] = useState(copyText)
+  const [isCopied, setIsCopied] = useState(false)
   const [isOpen, setIsOpen] = useState(false)
+  const displayText = isCopied ? t`Copied to clipboard!` : t`Copy to clipboard`
 
   const handleCopy = () => {
     navigator.clipboard.writeText(isAddress(value) || value)
-    setDisplayText(confirmText)
+    setIsCopied(true)
     setIsOpen(true)
     setTimeout(() => {
-      setDisplayText(copyText)
+      setIsCopied(false)
       setIsOpen(false)
     }, 2000) // Reset after 2 seconds
   }

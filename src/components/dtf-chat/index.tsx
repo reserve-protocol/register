@@ -11,7 +11,7 @@ import {
 } from '@/state/dtf/atoms'
 import { useIsDesktop } from '@/hooks/use-media-query'
 import { useAtomValue } from 'jotai'
-import { useLocation } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 
 // Public Turnstile site key for the chat.reserve.org deployment (paired with
 // app.reserve.org). Not secret. Dropped automatically when pointing at a local
@@ -54,6 +54,7 @@ function viewForPath(pathname: string): ReserveView | undefined {
 
 const DtfChat = () => {
   const { pathname } = useLocation()
+  const navigate = useNavigate()
   const address = useAtomValue(iTokenAddressAtom)
   const dtf = useAtomValue(indexDTFAtom)
   const chainId = useAtomValue(chainIdAtom)
@@ -97,6 +98,8 @@ const DtfChat = () => {
       view={dtfContext ? undefined : viewForPath(pathname)}
       offset={{ bottom: bottomOffset, right: rightOffset }}
       zIndex={50}
+      // Assistant links to app pages route through react-router — no full reload.
+      onNavigate={navigate}
     />
   )
 }

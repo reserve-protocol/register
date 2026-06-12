@@ -4,8 +4,10 @@ import { useLingui } from '@lingui/react/macro'
 import { useAtomValue } from 'jotai'
 import {
   Calendar1,
+  Clock,
   FileLock2,
   Hash,
+  Hourglass,
   MousePointerBan,
   Pause,
   ShieldCheck,
@@ -75,6 +77,25 @@ export const InnerGovernanceInfo = ({
         label={t`Voting Quorum`}
         value={data ? formatPercentage(data.quorum) : undefined}
       />
+      {data?.isOptimistic && data.optimistic && (
+        <>
+          <InfoCardItem
+            icon={<IconWrapper Component={Clock} />}
+            label={t`Veto Delay`}
+            value={parseDuration(data.optimistic.vetoDelay)}
+          />
+          <InfoCardItem
+            icon={<IconWrapper Component={Hourglass} />}
+            label={t`Veto Window`}
+            value={parseDuration(data.optimistic.vetoPeriod)}
+          />
+          <InfoCardItem
+            icon={<IconWrapper Component={FileLock2} />}
+            label={t`Veto Threshold`}
+            value={formatPercentage(data.optimistic.vetoThreshold)}
+          />
+        </>
+      )}
       <InfoCardItem
         icon={<IconWrapper Component={MousePointerBan} />}
         label={t`Execution Delay`}
@@ -102,11 +123,15 @@ const GovernanceInfo = ({
   )
     return null
 
+  const isOptimistic = !!indexDTF.ownerGovernance?.isOptimistic
+
   const help =
     kind === 'trading'
       ? t`Controls changes to the basket of an Index DTF`
       : kind === 'owner'
-        ? t`Controls fees, voting parameters, and anything other than basket changes for an Index DTF`
+        ? isOptimistic
+          ? t`Controls fees, voting parameters, and basket changes for an Index DTF`
+          : t`Controls fees, voting parameters, and anything other than basket changes for an Index DTF`
         : t`Controls settings of the vlDAO including vote lock duration and approving revenue tokens`
 
   return (

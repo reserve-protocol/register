@@ -1,7 +1,7 @@
 import TransactionButton from '@/components/ui/transaction-button'
 import { indexDTFAtom } from '@/state/dtf/atoms'
 import { PROPOSAL_STATES } from '@/utils/constants'
-import { t } from '@lingui/macro'
+import { useLingui } from '@lingui/react/macro'
 import { useIndexDtfQueueProposalCall } from '@reserve-protocol/react-sdk'
 import useContractWrite from 'hooks/useContractWrite'
 import useWatchTransaction from 'hooks/useWatchTransaction'
@@ -24,6 +24,7 @@ const executionDelayAtom = atom((get) => {
 })
 
 const ProposalQueue = () => {
+  const { t } = useLingui()
   const executionDelay = useAtomValue(executionDelayAtom)
   const [proposal, setProposal] = useAtom(proposalDetailAtom)
   const refreshProposal = useRefreshProposal()
@@ -56,7 +57,8 @@ const ProposalQueue = () => {
   )
   const { data, isMining, status } = useWatchTransaction({
     hash,
-    label: t`Queue proposal`,
+    // Mixpanel label, keep in English
+    label: 'Queue proposal',
   })
 
   useEffect(() => {

@@ -129,7 +129,7 @@ const HelpText = () => {
         <SocialMediaLink
           href={TELEGRAM_INVITE}
           icon={<TelegramIcon />}
-          title="Telegram"
+          title={t`Telegram`}
         />
         <SocialMediaLink
           href={INDEX_PROTOCOL_DOCS}
