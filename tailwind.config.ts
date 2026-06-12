@@ -166,7 +166,7 @@ const config = {
         'slide-left': 'slide-left 0.5s forwards',
         'slide-out-right': 'slide-out-right 0.5s forwards',
         'slide-up': 'slide-up 0.4s ease-out forwards',
-        'proposal-bar-sweep': 'proposal-bar-sweep 5s ease-in-out infinite',
+        'proposal-bar-sweep': 'proposal-bar-sweep 2s linear infinite',
       },
     },
   },

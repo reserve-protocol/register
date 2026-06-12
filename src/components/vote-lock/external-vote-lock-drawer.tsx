@@ -2,11 +2,11 @@ import { walletAtom } from '@/state/atoms'
 import {
   useIndexDtf,
   useIndexDtfVoteLockState,
+  useIndexDtfVoteLockVaultState,
 } from '@reserve-protocol/react-sdk'
 import { useAtomValue } from 'jotai'
 import type { Address } from 'viem'
 import { VoteLockDrawer, type VoteLockDrawerProps } from './drawer'
-import { useFallbackVoteLockState } from './hooks/use-fallback-vote-lock-state'
 import { useExternalVoteLockRefresh } from './hooks/use-vote-lock-refresh'
 
 export const ExternalVoteLockDrawer = ({
@@ -32,11 +32,11 @@ export const ExternalVoteLockDrawer = ({
     refetch,
   } = useIndexDtfVoteLockState(dtfParams)
   const isFallbackStateEnabled = !dtfAddress || isDtfVoteLockStateError
-  const fallbackState = useFallbackVoteLockState({
-    stToken,
-    account,
-    enabled: isFallbackStateEnabled,
-  })
+  const fallbackState = useIndexDtfVoteLockVaultState(
+    isFallbackStateEnabled && account
+      ? { chainId: stToken.chainId, stToken: stToken.id, account }
+      : undefined
+  )
   const voteLockState = dtfVoteLockState ?? fallbackState.data
   const isOptimisticGovernance =
     !!dtf?.voteLockVault?.governance?.isOptimistic ||

@@ -1,5 +1,9 @@
 import { chainIdAtom, walletAtom } from '@/state/atoms'
-import { useDtfSdk, type SupportedChainId } from '@reserve-protocol/react-sdk'
+import {
+  dtfQueryKeys,
+  useDtfSdk,
+  type SupportedChainId,
+} from '@reserve-protocol/react-sdk'
 import { useQueries } from '@tanstack/react-query'
 import { useAtomValue } from 'jotai'
 import { useMemo } from 'react'
@@ -71,18 +75,15 @@ export const useProposalTypeEligibility = ({
 
   const selectorQueries = useQueries({
     queries: selectorChecks.map((check) => ({
-      queryKey: [
-        'index-dtf-selector-registry-is-allowed',
-        chainId,
-        check.registry,
-        check.target,
-        check.selector,
-      ],
+      queryKey: dtfQueryKeys.index.governance.selectorRegistryIsAllowed({
+        chainId: chainId as SupportedChainId,
+        ...check,
+      }),
       queryFn: () =>
         sdk.index.getSelectorRegistryIsAllowed({
           chainId: chainId as SupportedChainId,
           ...check,
-      }),
+        }),
     })),
   })
   const hasSelectorError =

@@ -35,7 +35,7 @@ msgid "(the “Website”), you expressly acknowledge that you have read and und
 msgstr ""
 
 #. placeholder {0}: group.tokens.length
-#: src/views/index-dtf/overview/components/basket-overview/exposure-table-rows.tsx:62
+#: src/views/index-dtf/overview/components/basket-overview/exposure-table-rows.tsx:130
 msgid "{0, plural, one {(# source)} other {(# sources)}}"
 msgstr ""
 
@@ -472,11 +472,11 @@ msgstr ""
 msgid "+{remaining} more"
 msgstr ""
 
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v5-upgrade.tsx:191
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v5-upgrade.tsx:192
 msgid "<0>Release 5.0.0</0> introduces improved rebalancing with per-token auction size limits and the ability to disable bids for individual tokens. <1/>See the <2>changelog</2> for more details."
 msgstr ""
 
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v5-optimistic-upgrade.tsx:338
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v5-optimistic-upgrade.tsx:339
 msgid "<0>Reserve Optimistic Governor upgrade</0> introduces a new governor system TBD COPY HERE!. <1/>See the <2>changelog</2> for more details."
 msgstr ""
 
@@ -1230,7 +1230,7 @@ msgstr ""
 msgid "Auction expires in: <0>{0}</0>"
 msgstr ""
 
-#: src/views/index-dtf/auctions/views/rebalance/components/launch-auctions-button.tsx:54
+#: src/views/index-dtf/auctions/views/rebalance/components/launch-auctions-button.tsx:55
 msgid "Auction launched successfully"
 msgstr ""
 
@@ -1443,7 +1443,7 @@ msgid "Backups"
 msgstr ""
 
 #: src/components/ui/swap.tsx:205
-#: src/views/index-dtf/overview/components/landing-mint/dtf-balance.tsx:57
+#: src/views/index-dtf/overview/components/landing-mint/dtf-balance.tsx:59
 #: src/views/portfolio-page/components/available-rewards.tsx:122
 #: src/views/portfolio-page/components/dtf-positions.tsx:134
 #: src/views/portfolio-page/components/pending-withdrawals.tsx:338
@@ -1575,6 +1575,14 @@ msgstr ""
 
 #: src/views/yield-dtf/overview/components/backing/risks.tsx:42
 msgid "Because the Reserve protocol is built using smart contracts, it's possible that undiscovered bugs or vulnerabilities in these contracts could be exploited, resulting in loss of user funds. Accordingly, the protocol's contracts undergo <0>regular and rigorous security audits.</0>"
+msgstr ""
+
+#: src/views/index-dtf/components/confirm-eligibility-modal.tsx:85
+msgid "Before continuing, please confirm the following"
+msgstr ""
+
+#: src/views/index-dtf/components/confirm-eligibility-modal.tsx:73
+msgid "Before continuing, please confirm the following."
 msgstr ""
 
 #: src/components/vote-lock/components/submit-unlock-button.tsx:145
@@ -1825,7 +1833,7 @@ msgid "Cancel Issue"
 msgstr ""
 
 #: src/views/index-dtf/governance/views/proposal/components/proposal-cancel-button.tsx:95
-#: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalCancel.tsx:49
+#: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalCancel.tsx:51
 msgid "Cancel proposal"
 msgstr ""
 
@@ -2119,7 +2127,7 @@ msgstr ""
 msgid "Community Discord"
 msgstr ""
 
-#: src/views/index-dtf/auctions/views/rebalance/components/community-launch-auctions-button.tsx:113
+#: src/views/index-dtf/auctions/views/rebalance/components/community-launch-auctions-button.tsx:115
 msgid "Community launch is not available for this rebalance"
 msgstr ""
 
@@ -2176,6 +2184,7 @@ msgstr ""
 msgid "Configure your vote"
 msgstr ""
 
+#: src/views/index-dtf/components/confirm-eligibility-modal.tsx:157
 #: src/views/index-dtf/deploy/components/next-button.tsx:90
 #: src/views/index-dtf/governance/views/propose/basket/components/proposal-basket-advance-settings.tsx:152
 msgid "Confirm"
@@ -2420,7 +2429,7 @@ msgstr ""
 msgid "Create {0}"
 msgstr ""
 
-#: src/views/index-dtf/deploy/steps/create-dao/index.tsx:150
+#: src/views/index-dtf/deploy/steps/create-dao/index.tsx:151
 msgid "Create {vlSymbol} DAO"
 msgstr ""
 
@@ -2440,7 +2449,7 @@ msgstr ""
 msgid "Create a new Yield DTF"
 msgstr ""
 
-#: src/views/index-dtf/deploy/steps/create-dao/index.tsx:151
+#: src/views/index-dtf/deploy/steps/create-dao/index.tsx:152
 msgid "Create DAO"
 msgstr ""
 
@@ -2467,8 +2476,8 @@ msgstr ""
 msgid "Create proposal"
 msgstr ""
 
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-governance-spell-31-03-2025.tsx:305
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-governance-spell-31-03-2025.tsx:430
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-governance-spell-31-03-2025.tsx:306
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-governance-spell-31-03-2025.tsx:432
 msgid "Create Spell Proposal"
 msgstr ""
 
@@ -2505,7 +2514,7 @@ msgstr ""
 msgid "Created by:"
 msgstr ""
 
-#: src/views/index-dtf/deploy/steps/create-dao/index.tsx:148
+#: src/views/index-dtf/deploy/steps/create-dao/index.tsx:149
 msgid "Creating..."
 msgstr ""
 
@@ -2692,6 +2701,10 @@ msgstr ""
 
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/dao-settings-proposal-sections.tsx:136
 msgid "DAO settings proposal"
+msgstr ""
+
+#: src/components/layout/header/components/header-actions-menu.tsx:95
+msgid "Dark"
 msgstr ""
 
 #: src/views/portfolio-page/components/transactions.tsx:86
@@ -3144,13 +3157,13 @@ msgstr ""
 msgid "DTF updated successfully"
 msgstr ""
 
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v4-upgrade.tsx:132
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v4-upgrade.tsx:140
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v4-upgrade.tsx:133
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v4-upgrade.tsx:141
 msgid "DTF V4.0.0 upgrade proposal created"
 msgstr ""
 
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v5-upgrade.tsx:154
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v5-upgrade.tsx:162
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v5-upgrade.tsx:155
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v5-upgrade.tsx:163
 msgid "DTF V5.0.0 upgrade proposal created"
 msgstr ""
 
@@ -3466,7 +3479,7 @@ msgstr ""
 msgid "ERC20 address"
 msgstr ""
 
-#: src/views/index-dtf/deploy/steps/create-dao/index.tsx:156
+#: src/views/index-dtf/deploy/steps/create-dao/index.tsx:157
 msgid "Error creating DAO token."
 msgstr ""
 
@@ -3478,8 +3491,8 @@ msgstr ""
 msgid "Error occurred, try again"
 msgstr ""
 
-#: src/views/index-dtf/auctions/views/rebalance/components/community-launch-auctions-button.tsx:105
-#: src/views/index-dtf/auctions/views/rebalance/components/launch-auctions-button.tsx:122
+#: src/views/index-dtf/auctions/views/rebalance/components/community-launch-auctions-button.tsx:107
+#: src/views/index-dtf/auctions/views/rebalance/components/launch-auctions-button.tsx:124
 msgid "Error opening auctions"
 msgstr ""
 
@@ -4257,6 +4270,14 @@ msgstr ""
 msgid "How much the value of the DTF basket changed due to the latest rebalance"
 msgstr ""
 
+#: src/views/index-dtf/components/confirm-eligibility-modal.tsx:134
+msgid "I confirm I am not located in, a resident of, or a citizen of a <0>restricted jurisdiction</0>."
+msgstr ""
+
+#: src/views/index-dtf/components/confirm-eligibility-modal.tsx:103
+msgid "I have read and agree to the <0>Terms of Use</0>."
+msgstr ""
+
 #: src/components/vote-lock/components/drawer-footer.tsx:29
 msgid "I'm aware of the {delay}-day unlock delay"
 msgstr ""
@@ -4359,7 +4380,7 @@ msgstr ""
 msgid "Index DTF successfully created"
 msgstr ""
 
-#: src/components/command-menu/index.tsx:66
+#: src/components/command-menu/index.tsx:67
 #: src/views/home/components/dtf-tabs.tsx:24
 #: src/views/portfolio-page/components/portfolio-breakdown.tsx:36
 #: src/views/portfolio-page/components/portfolio-chart.tsx:66
@@ -4631,6 +4652,10 @@ msgstr ""
 msgid "just now"
 msgstr ""
 
+#: src/components/layout/header/components/header-actions-menu.tsx:111
+msgid "Language"
+msgstr ""
+
 #. placeholder {0}: Math.ceil(amountUsd / ondo.capacityUsd)
 #: src/components/ondo-badge.tsx:156
 msgid "Larger than the max single trade — fills as ~{0} sequential trades."
@@ -4665,8 +4690,8 @@ msgstr ""
 msgid "Launch your own Index DTF"
 msgstr ""
 
-#: src/views/index-dtf/auctions/views/rebalance/components/community-launch-auctions-button.tsx:160
-#: src/views/index-dtf/auctions/views/rebalance/components/launch-auctions-button.tsx:145
+#: src/views/index-dtf/auctions/views/rebalance/components/community-launch-auctions-button.tsx:162
+#: src/views/index-dtf/auctions/views/rebalance/components/launch-auctions-button.tsx:147
 msgid "Launching..."
 msgstr ""
 
@@ -4680,6 +4705,10 @@ msgstr ""
 
 #: src/views/home/components/register-about.tsx:108
 msgid "Learn more about Reserve on their website."
+msgstr ""
+
+#: src/components/layout/header/components/header-actions-menu.tsx:95
+msgid "Light"
 msgstr ""
 
 #: src/views/tokens/components/TableFilters.tsx:75
@@ -5222,6 +5251,10 @@ msgstr ""
 msgid "More"
 msgstr ""
 
+#: src/components/layout/header/components/header-actions-menu.tsx:52
+msgid "More options"
+msgstr ""
+
 #: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/form-fields.ts:14
 msgid "Must be 0 or greater"
 msgstr ""
@@ -5356,9 +5389,9 @@ msgstr ""
 msgid "New units"
 msgstr ""
 
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v4-upgrade.tsx:166
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v5-optimistic-upgrade.tsx:335
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v5-upgrade.tsx:188
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v4-upgrade.tsx:167
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v5-optimistic-upgrade.tsx:336
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v5-upgrade.tsx:189
 msgid "New version available"
 msgstr ""
 
@@ -5502,7 +5535,7 @@ msgstr ""
 msgid "No rebalances found"
 msgstr ""
 
-#: src/components/command-menu/index.tsx:121
+#: src/components/command-menu/index.tsx:129
 msgid "No results found."
 msgstr ""
 
@@ -5731,7 +5764,7 @@ msgstr ""
 msgid "Only Brand Manager"
 msgstr ""
 
-#: src/views/index-dtf/auctions/views/rebalance/components/community-launch-auctions-button.tsx:115
+#: src/views/index-dtf/auctions/views/rebalance/components/community-launch-auctions-button.tsx:117
 msgid "Only the auction launcher can start auctions"
 msgstr ""
 
@@ -5871,7 +5904,7 @@ msgstr ""
 msgid "Past Price"
 msgstr ""
 
-#: src/views/index-dtf/overview/components/landing-mint/dtf-balance.tsx:86
+#: src/views/index-dtf/overview/components/landing-mint/dtf-balance.tsx:88
 msgid "Past week"
 msgstr ""
 
@@ -5954,11 +5987,11 @@ msgstr ""
 
 #: src/views/index-dtf/governance/views/propose/basket/components/submit-proposal-button.tsx:195
 #: src/views/index-dtf/governance/views/propose/components/propose-index-upgrade.tsx:117
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-governance-spell-31-03-2025.tsx:303
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-governance-spell-31-03-2025.tsx:428
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v4-upgrade.tsx:187
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v5-optimistic-upgrade.tsx:362
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v5-upgrade.tsx:216
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-governance-spell-31-03-2025.tsx:304
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-governance-spell-31-03-2025.tsx:430
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v4-upgrade.tsx:188
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v5-optimistic-upgrade.tsx:363
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v5-upgrade.tsx:217
 #: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/submit-proposal-button.tsx:186
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/submit-proposal-button.tsx:183
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/submit-proposal-button.tsx:181
@@ -6026,7 +6059,7 @@ msgstr ""
 #. placeholder {0}: getTimerFormat(availableAt)
 #. placeholder {0}: parseDurationShort(countdown, { round: true }) .replaceAll(' ', '') .replaceAll(',', ' ')
 #: src/views/index-dtf/auctions/legacy/components/proposal-trades.tsx:103
-#: src/views/index-dtf/auctions/views/rebalance/components/community-launch-auctions-button.tsx:126
+#: src/views/index-dtf/auctions/views/rebalance/components/community-launch-auctions-button.tsx:128
 msgid "Permissionless in: <0>{0}</0>"
 msgstr ""
 
@@ -6338,12 +6371,12 @@ msgstr ""
 msgid "Proposal created"
 msgstr ""
 
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v4-upgrade.tsx:131
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v4-upgrade.tsx:139
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v5-optimistic-upgrade.tsx:300
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v5-optimistic-upgrade.tsx:308
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v5-upgrade.tsx:153
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v5-upgrade.tsx:161
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v4-upgrade.tsx:132
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v4-upgrade.tsx:140
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v5-optimistic-upgrade.tsx:301
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v5-optimistic-upgrade.tsx:309
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v5-upgrade.tsx:154
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v5-upgrade.tsx:162
 msgid "Proposal created!"
 msgstr ""
 
@@ -6448,9 +6481,9 @@ msgstr ""
 msgid "Propose new basket"
 msgstr ""
 
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v4-upgrade.tsx:189
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v5-optimistic-upgrade.tsx:364
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v5-upgrade.tsx:218
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v4-upgrade.tsx:190
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v5-optimistic-upgrade.tsx:365
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v5-upgrade.tsx:219
 msgid "Propose upgrade"
 msgstr ""
 
@@ -6644,8 +6677,8 @@ msgstr ""
 msgid "Rebalance Manager"
 msgstr ""
 
-#: src/views/index-dtf/auctions/views/rebalance/components/community-launch-auctions-button.tsx:158
-#: src/views/index-dtf/auctions/views/rebalance/components/launch-auctions-button.tsx:143
+#: src/views/index-dtf/auctions/views/rebalance/components/community-launch-auctions-button.tsx:160
+#: src/views/index-dtf/auctions/views/rebalance/components/launch-auctions-button.tsx:145
 msgid "Rebalance ongoing"
 msgstr ""
 
@@ -6805,7 +6838,7 @@ msgstr ""
 msgid "Related Contracts"
 msgstr ""
 
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v4-upgrade.tsx:169
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v4-upgrade.tsx:170
 msgid "Release 4.0.0 improves the the way in which DTFs are rebalanced. At a high level, the new rebalance mechanism is able to consider the entire basket at once instead of requiring individual 2-token auctions to be proposed in advance and performed in isolation. See docs.reserve.org for more details."
 msgstr ""
 
@@ -6954,8 +6987,8 @@ msgstr ""
 msgid "Reserve lets you buy entire portfolios<0/> as a single token"
 msgstr ""
 
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v5-optimistic-upgrade.tsx:301
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v5-optimistic-upgrade.tsx:309
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v5-optimistic-upgrade.tsx:302
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v5-optimistic-upgrade.tsx:310
 msgid "Reserve Optimistic Governor Upgrade proposal created"
 msgstr ""
 
@@ -7345,7 +7378,8 @@ msgstr ""
 msgid "Scheduled event"
 msgstr ""
 
-#: src/components/command-menu/index.tsx:93
+#: src/components/command-menu/index.tsx:101
+#: src/components/layout/header/components/header-actions-menu.tsx:71
 #: src/views/internal/dtf-list/components/dtf-date-chain-filters.tsx:50
 #: src/views/tokens/components/TableFilters.tsx:20
 msgid "Search"
@@ -7377,8 +7411,12 @@ msgstr ""
 msgid "Search DTF name or symbol"
 msgstr ""
 
-#: src/components/command-menu/index.tsx:104
+#: src/components/command-menu/index.tsx:112
 msgid "Search for a DTF..."
+msgstr ""
+
+#: src/components/layout/header/components/header-actions-menu.tsx:74
+msgid "Search for DTFs"
 msgstr ""
 
 #: src/views/earn/views/index-dtf/components/table-filters.tsx:105
@@ -7962,8 +8000,8 @@ msgstr ""
 msgid "Start {selectedCount} new auctions"
 msgstr ""
 
-#: src/views/index-dtf/auctions/views/rebalance/components/community-launch-auctions-button.tsx:167
-#: src/views/index-dtf/auctions/views/rebalance/components/launch-auctions-button.tsx:152
+#: src/views/index-dtf/auctions/views/rebalance/components/community-launch-auctions-button.tsx:169
+#: src/views/index-dtf/auctions/views/rebalance/components/launch-auctions-button.tsx:154
 msgid "Start auction {auctionNumber}"
 msgstr ""
 
@@ -8080,7 +8118,7 @@ msgstr ""
 msgid "Success!"
 msgstr ""
 
-#: src/views/index-dtf/deploy/steps/create-dao/index.tsx:124
+#: src/views/index-dtf/deploy/steps/create-dao/index.tsx:125
 msgid "suffix"
 msgstr ""
 
@@ -8428,6 +8466,10 @@ msgstr ""
 msgid "The warmup period is how many seconds should pass after the basket regained the SOUND status before an RToken can be issued and/or a trade can be opened."
 msgstr ""
 
+#: src/components/layout/header/components/header-actions-menu.tsx:92
+msgid "Theme"
+msgstr ""
+
 #: src/views/yield-dtf/overview/components/backing/risks.tsx:63
 msgid "There are a <0>handful of risks</0> associated with any given RToken's collateral assets, including assets' redeemability, the health of their reserves, price volatility, etc. Likewise, because many RTokens leverage assets from external protocols, RToken holders assume all of the risks of its underlying protocols (smart contract, governance, or otherwise)."
 msgstr ""
@@ -8555,11 +8597,11 @@ msgstr ""
 msgid "This should last for a few hours, manual minting/redemption is available."
 msgstr ""
 
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-governance-spell-31-03-2025.tsx:286
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-governance-spell-31-03-2025.tsx:287
 msgid "This upgrade spell fixes the proposal-threshold on the Admin and Basket FolioGovernor contracts that manage this DTF. Once this spell is approved and executed, the proposal-threshold will be the correct % that was initially intended at deployment."
 msgstr ""
 
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-governance-spell-31-03-2025.tsx:410
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-governance-spell-31-03-2025.tsx:412
 msgid "This upgrade spell fixes the proposal-threshold on the FolioGovernor contract that administers the DAO (StakingVault) relevant to this DTF. Once this spell is approved and executed, the proposal-threshold will be the correct % that was initially intended at deployment."
 msgstr ""
 
@@ -8915,7 +8957,7 @@ msgstr ""
 #: src/components/stake-drawer/components/submit-unstake-button.tsx:80
 #: src/components/vote-lock/components/submit-lock-button.tsx:223
 #: src/components/vote-lock/components/submit-unlock-button.tsx:143
-#: src/hooks/useWatchTransaction.ts:55
+#: src/hooks/useWatchTransaction.ts:56
 msgid "Transaction confirmed"
 msgstr ""
 
@@ -8937,7 +8979,7 @@ msgstr ""
 msgid "Transaction rejected"
 msgstr ""
 
-#: src/views/index-dtf/auctions/views/rebalance/components/launch-auctions-button.tsx:74
+#: src/views/index-dtf/auctions/views/rebalance/components/launch-auctions-button.tsx:75
 msgid "Transaction rejected or failed"
 msgstr ""
 
@@ -8945,7 +8987,7 @@ msgstr ""
 msgid "Transaction rejected: Approval failed"
 msgstr ""
 
-#: src/hooks/useWatchTransaction.ts:72
+#: src/hooks/useWatchTransaction.ts:73
 msgid "Transaction reverted"
 msgstr ""
 
@@ -9377,11 +9419,11 @@ msgstr ""
 msgid "Upgrade contracts"
 msgstr ""
 
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-governance-spell-31-03-2025.tsx:407
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-governance-spell-31-03-2025.tsx:409
 msgid "Upgrade Folio DAO Governor (2/2):"
 msgstr ""
 
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-governance-spell-31-03-2025.tsx:283
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-governance-spell-31-03-2025.tsx:284
 msgid "Upgrade Folio Governance (1/2):"
 msgstr ""
 
@@ -9473,6 +9515,11 @@ msgstr ""
 
 #: src/views/index-dtf/manage/components/submit-button.tsx:99
 msgid "Verify wallet"
+msgstr ""
+
+#: src/views/index-dtf/components/confirm-eligibility-modal.tsx:70
+#: src/views/index-dtf/components/confirm-eligibility-modal.tsx:82
+msgid "Verify your eligibility"
 msgstr ""
 
 #: src/components/transaction-modal/index.tsx:53
@@ -9944,11 +9991,11 @@ msgstr ""
 
 #: src/views/index-dtf/governance/views/propose/basket/components/submit-proposal-button.tsx:196
 #: src/views/index-dtf/governance/views/propose/components/propose-index-upgrade.tsx:118
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-governance-spell-31-03-2025.tsx:304
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-governance-spell-31-03-2025.tsx:429
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v4-upgrade.tsx:188
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v5-optimistic-upgrade.tsx:363
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v5-upgrade.tsx:217
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-governance-spell-31-03-2025.tsx:305
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-governance-spell-31-03-2025.tsx:431
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v4-upgrade.tsx:189
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v5-optimistic-upgrade.tsx:364
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v5-upgrade.tsx:218
 #: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/submit-proposal-button.tsx:188
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/submit-proposal-button.tsx:185
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/submit-proposal-button.tsx:182
@@ -10216,7 +10263,7 @@ msgstr ""
 msgid "Yield DTF Staking"
 msgstr ""
 
-#: src/components/command-menu/index.tsx:67
+#: src/components/command-menu/index.tsx:68
 #: src/views/home/components/dtf-tabs.tsx:30
 #: src/views/portfolio-page/components/portfolio-breakdown.tsx:37
 #: src/views/portfolio-page/components/portfolio-chart.tsx:65
@@ -10339,6 +10386,10 @@ msgstr ""
 
 #: src/views/portfolio-page/components/dtf-positions.tsx:177
 msgid "Your Decentralized Token Folio investments."
+msgstr ""
+
+#: src/views/index-dtf/components/confirm-eligibility-modal.tsx:161
+msgid "Your privacy is protected. This confirmation is stored only in this browser - never personal financial information. <0>Privacy Policy</0>"
 msgstr ""
 
 #: src/views/portfolio-page/components/transactions.tsx:163

@@ -7,6 +7,7 @@ import { ReactNode } from 'react'
 import { useLocation } from 'react-router-dom'
 import AppNavigation from './app-navigation'
 import Brand from './Brand'
+import HeaderActionsMenu from './header-actions-menu'
 import LanguageSelector from './language-selector'
 
 const Container = ({ children }: { children: ReactNode }) => {
@@ -41,9 +42,13 @@ const AppHeader = () => (
       <AppNavigation />
       <div className="flex items-center gap-1 sm:gap-2">
         <ContactBellButton />
-        <CommandMenu />
-        <DarkModeToggle />
-        <LanguageSelector />
+        {/* CommandMenu stays mounted below xl for the ⌘K dialog, only its button is hidden */}
+        <div className="hidden xl:flex items-center gap-2">
+          <CommandMenu />
+          <DarkModeToggle />
+          <LanguageSelector />
+        </div>
+        <HeaderActionsMenu />
         <Account />
       </div>
     </div>

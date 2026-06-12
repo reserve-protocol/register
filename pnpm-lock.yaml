@@ -116,8 +116,8 @@ importers:
         specifier: ^0.6.0
         version: 0.6.0(@tanstack/react-query@5.99.0(react@18.3.1))(ajv@8.18.0)(cross-fetch@4.1.0)(multiformats@14.0.0)(react@18.3.1)(viem@2.52.0(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@5.0.10)(zod@4.3.6))(wagmi@2.19.5(@tanstack/query-core@5.99.0)(@tanstack/react-query@5.99.0(react@18.3.1))(@types/react@18.3.28)(bufferutil@4.1.0)(react@18.3.1)(typescript@5.9.3)(utf-8-validate@5.0.10)(viem@2.52.0(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@5.0.10)(zod@4.3.6))(zod@4.3.6))
       '@reserve-protocol/dtf-chat':
-        specifier: ^0.0.2
-        version: 0.0.2(@ai-sdk/react@2.0.199(react@18.3.1)(zod@4.3.6))(ai@5.0.197(zod@4.3.6))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: ^0.0.3
+        version: 0.0.3(@ai-sdk/react@2.0.199(react@18.3.1)(zod@4.3.6))(ai@5.0.197(zod@4.3.6))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@reserve-protocol/dtf-rebalance-lib':
         specifier: ^3.2.1
         version: 3.2.1(decimal.js-light@2.5.1)
@@ -3103,8 +3103,8 @@ packages:
     resolution: {integrity: sha512-CcfAW7NZNZPtH4aSNjgRH11a4zpgBTdGXZjVNhqWRfonotMYNGunJoxH8x3tifBo37lIXOpyuL4o94vWA06lOw==}
     engines: {node: '>=24'}
 
-  '@reserve-protocol/dtf-chat@0.0.2':
-    resolution: {integrity: sha512-/bniQPjgu1D6HqUjPIipt5Q8nqF7tj2xvJC3eaVmYXjOeRpH9S0Ahb/6mvjeKT6AtTTQqUsHXeORI1dtpr0z5Q==}
+  '@reserve-protocol/dtf-chat@0.0.3':
+    resolution: {integrity: sha512-ni8Iijo/hMiw6rkxt5kjgEOyh1Zo+KEeTjX460ANDE/CLM1Ha6ocXJWZ7QURb+o0ZBsl2No+CT1jWmVuQN/KRQ==}
     peerDependencies:
       '@ai-sdk/react': ^2.0.0
       ai: ^5.0.0
@@ -11723,7 +11723,7 @@ snapshots:
 
   '@reserve-protocol/dtf-catalog@0.0.2': {}
 
-  '@reserve-protocol/dtf-chat@0.0.2(@ai-sdk/react@2.0.199(react@18.3.1)(zod@4.3.6))(ai@5.0.197(zod@4.3.6))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
+  '@reserve-protocol/dtf-chat@0.0.3(@ai-sdk/react@2.0.199(react@18.3.1)(zod@4.3.6))(ai@5.0.197(zod@4.3.6))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
       '@ai-sdk/react': 2.0.199(react@18.3.1)(zod@4.3.6)
       '@thumbmarkjs/thumbmarkjs': 0.16.1

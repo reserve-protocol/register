@@ -1,9 +1,5 @@
-import { useEffect, useState } from 'react'
-
-export const MODES = {
-  LIGHT: 'light',
-  DARK: 'dark',
-}
+import { useAtomValue, useSetAtom } from 'jotai'
+import { themeModeAtom, toggleThemeAtom } from './atoms'
 
 const properties = {
   light: {
@@ -24,51 +20,17 @@ const properties = {
 
 const TRANSITION = 'all 400ms cubic-bezier(0.5, 0, 0.2, 1)'
 
-const getInitialMode = () => {
-  if (typeof window === 'undefined') return MODES.LIGHT
-  const stored = localStorage.getItem('theme-ui-color-mode')
-  if (stored === MODES.DARK || stored === MODES.LIGHT) return stored
-  return window.matchMedia('(prefers-color-scheme: dark)').matches
-    ? MODES.DARK
-    : MODES.LIGHT
-}
-
 const DarkModeToggle = () => {
-  const [mode, setMode] = useState(getInitialMode)
+  const mode = useAtomValue(themeModeAtom)
+  const toggleTheme = useSetAtom(toggleThemeAtom)
 
-  const { r, transform, cx, cy, opacity } =
-    properties[mode as keyof typeof properties]
-
-  const handleToggle = () => {
-    const newMode = mode === MODES.LIGHT ? MODES.DARK : MODES.LIGHT
-    setMode(newMode)
-    localStorage.setItem('theme-ui-color-mode', newMode)
-
-    // Update theme-ui theme
-    document.documentElement.setAttribute('data-color-mode', newMode)
-    // Update Tailwind theme
-    if (newMode === MODES.DARK) {
-      document.documentElement.classList.add('dark')
-    } else {
-      document.documentElement.classList.remove('dark')
-    }
-  }
-
-  useEffect(() => {
-    // Sync on mount
-    document.documentElement.setAttribute('data-color-mode', mode)
-    if (mode === MODES.DARK) {
-      document.documentElement.classList.add('dark')
-    } else {
-      document.documentElement.classList.remove('dark')
-    }
-  }, [])
+  const { r, transform, cx, cy, opacity } = properties[mode]
 
   return (
     <button
       type="button"
       aria-label="Toggle theme"
-      onClick={handleToggle}
+      onClick={toggleTheme}
       className="inline-flex items-center justify-center h-8 w-8 rounded-md cursor-pointer hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
     >
       <svg

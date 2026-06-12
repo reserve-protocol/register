@@ -7,6 +7,7 @@ import {
 } from '@/views/index-dtf/governance/utils/recent-proposals'
 import {
   isSdkError,
+  mergeIndexDtfProposalVotingSnapshot,
   useIndexDtfIdentity,
   useIndexDtfProposal,
   type IndexDtfProposalDetail,
@@ -29,51 +30,6 @@ export enum ProposalStatus {
   Queued,
   Expired,
   Executed,
-}
-
-const withVotingSnapshot = (
-  proposal: IndexDtfProposalDetail,
-  votingSnapshot: IndexDtfProposalVotingSnapshot | undefined
-): IndexDtfProposalDetail => {
-  if (!votingSnapshot) return proposal
-
-  const shouldKeepDetailThreshold =
-    proposal.isOptimistic &&
-    !!proposal.optimistic &&
-    votingSnapshot.votes.length === 0
-
-  return {
-    ...proposal,
-    state: votingSnapshot.state,
-    voteStart: votingSnapshot.voteStart,
-    voteEnd: votingSnapshot.voteEnd,
-    quorumVotes: shouldKeepDetailThreshold
-      ? proposal.quorumVotes
-      : votingSnapshot.quorumVotes,
-    forWeightedVotes: votingSnapshot.forWeightedVotes,
-    againstWeightedVotes: votingSnapshot.againstWeightedVotes,
-    abstainWeightedVotes: votingSnapshot.abstainWeightedVotes,
-    votes: votingSnapshot.votes,
-    votingState: shouldKeepDetailThreshold
-      ? {
-          ...votingSnapshot.votingState,
-          threshold: proposal.votingState.threshold,
-        }
-      : votingSnapshot.votingState,
-    ...(votingSnapshot.isOptimistic === undefined
-      ? {}
-      : { isOptimistic: votingSnapshot.isOptimistic }),
-    ...(shouldKeepDetailThreshold
-      ? { vetoThreshold: proposal.vetoThreshold }
-      : votingSnapshot.vetoThreshold === undefined
-        ? {}
-        : { vetoThreshold: votingSnapshot.vetoThreshold }),
-    ...(shouldKeepDetailThreshold
-      ? { optimistic: proposal.optimistic }
-      : votingSnapshot.optimistic
-        ? { optimistic: votingSnapshot.optimistic }
-        : {}),
-  }
 }
 
 const mapProposalDetail = (
@@ -182,7 +138,7 @@ const useProposalDetail = (proposalId: string | undefined) => {
     }
 
     return mapProposalDetail(
-      withVotingSnapshot(proposal, votingSnapshotQuery.data)
+      mergeIndexDtfProposalVotingSnapshot(proposal, votingSnapshotQuery.data)
     )
   }, [proposal, votingSnapshotQuery.data])
 

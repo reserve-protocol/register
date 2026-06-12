@@ -5,8 +5,9 @@ import { CHAIN_TAGS } from '@/utils/constants'
 import { msg } from '@lingui/core/macro'
 import { Trans, useLingui } from '@lingui/react/macro'
 import type { MessageDescriptor } from '@lingui/core'
+import { atom, useAtom } from 'jotai'
 import { Search } from 'lucide-react'
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef } from 'react'
 import Skeleton from 'react-loading-skeleton'
 import { Link, useNavigate } from 'react-router-dom'
 import ChainLogo from '../icons/ChainLogo'
@@ -68,10 +69,17 @@ const SECTION_TITLES: Record<string, MessageDescriptor> = {
 }
 const SECTIONS = ['index', 'yield']
 
+export const searchMenuOpenAtom = atom(false)
+
+export const SEARCH_SHORTCUT =
+  typeof navigator !== 'undefined' && navigator.userAgent.includes('Windows')
+    ? 'Ctrl+K'
+    : '⌘K'
+
 const CommandMenu = () => {
   const { t } = useLingui()
   const dtfs = useAllDTFs()
-  const [open, setOpen] = useState(false)
+  const [open, setOpen] = useAtom(searchMenuOpenAtom)
   const listRef = useRef<HTMLDivElement | null>(null)
   const navigate = useNavigate()
 
@@ -98,7 +106,7 @@ const CommandMenu = () => {
       </button>
       <CommandDialog open={open} onOpenChange={setOpen}>
         <div className="text-legend absolute top-3 right-3">
-          {navigator.userAgent.includes('Windows') ? 'Ctrl+K' : '⌘K'}
+          {SEARCH_SHORTCUT}
         </div>
         <CommandInput
           placeholder={t`Search for a DTF...`}

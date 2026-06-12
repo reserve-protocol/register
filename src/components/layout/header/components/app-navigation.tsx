@@ -172,7 +172,7 @@ const AppNavigation = () => {
   return (
     <NavigationMenu
       className="mr-auto border min-[850px]:border-none rounded-3xl"
-      vClassName="-left-10 md:left-40"
+      vClassName="-left-10 min-[850px]:left-auto min-[850px]:right-0"
     >
       <NavigationMenuList>
         <DiscoverItem />

@@ -22,7 +22,7 @@ export interface ProposalStatusBarProps {
   className?: string
 }
 
-const HEIGHT = 6
+const HEIGHT = 10
 const RADIUS = 3
 const SLANT = 8
 const VISUAL_GAP = 4
@@ -95,33 +95,12 @@ const buildPath = (
   return `M${s} 0 H${w} L${w - s} ${HEIGHT} L0 ${HEIGHT} Z`
 }
 
-const buildFillPath = (
-  w: number,
-  progress: number,
-  isFirst: boolean
-): string => {
-  const r = Math.min(RADIUS, w / 2)
-  const s = Math.min(SLANT, w)
+const buildProgressPath = (w: number, progress: number): string | null => {
   const fillW = progress * w
+  if (fillW <= 0) return null
 
-  if (isFirst) {
-    return [
-      `M${r} 0`,
-      `H${fillW}`,
-      `L${fillW - s} ${HEIGHT}`,
-      `H${r}`,
-      `A${r} ${r} 0 0 1 ${r} 0`,
-      'Z',
-    ].join(' ')
-  }
-
-  return [
-    `M${s} 0`,
-    `H${fillW}`,
-    `L${fillW - s} ${HEIGHT}`,
-    `L0 ${HEIGHT}`,
-    'Z',
-  ].join(' ')
+  const s = Math.min(SLANT, fillW)
+  return `M0 0 H${fillW} L${Math.max(0, fillW - s)} ${HEIGHT} H0 Z`
 }
 
 const allocateWidths = (durations: number[], drawable: number): number[] => {
@@ -178,10 +157,8 @@ const ProposalStatusBar = ({ stages, className }: ProposalStatusBarProps) => {
       const isFirst = index === 0
       const isLast = index === visible.length - 1
       const progress = clamp01(stage.progress ?? 0)
-      const fillPath =
-        stage.status === 'in-progress' && progress > 0
-          ? buildFillPath(width, progress, isFirst)
-          : null
+      const path = buildPath(width, isFirst, isLast)
+      const isActive = stage.status === 'in-progress'
       const segment = {
         ...stage,
         x,
@@ -189,9 +166,9 @@ const ProposalStatusBar = ({ stages, className }: ProposalStatusBarProps) => {
         progress,
         isFirst,
         isLast,
-        path: buildPath(width, isFirst, isLast),
-        fillPath,
-        fillClipId: fillPath ? `${filterId}-fill-${stage.key}` : null,
+        path,
+        progressPath: isActive ? buildProgressPath(width, progress) : null,
+        activeClipId: isActive ? `${filterId}-active-${stage.key}` : null,
       }
       x += width + FRAME_OFFSET
       return segment
@@ -199,14 +176,16 @@ const ProposalStatusBar = ({ stages, className }: ProposalStatusBarProps) => {
   }, [stages, containerWidth, filterId])
 
   return (
-    <div ref={containerRef} className={cn('h-1.5 w-full', className)}>
+    <div ref={containerRef} className={cn('h-2.5 w-full', className)}>
       {containerWidth > 0 && (
         <svg
+          aria-hidden="true"
           width="100%"
           height={HEIGHT}
           viewBox={`0 0 ${containerWidth} ${HEIGHT}`}
           preserveAspectRatio="none"
           fill="none"
+          focusable="false"
           shapeRendering="geometricPrecision"
           xmlns="http://www.w3.org/2000/svg"
           style={{ display: 'block' }}
@@ -233,10 +212,9 @@ const ProposalStatusBar = ({ stages, className }: ProposalStatusBarProps) => {
             </linearGradient>
             {segments.map(
               (seg) =>
-                seg.fillPath &&
-                seg.fillClipId && (
-                  <clipPath key={seg.key} id={seg.fillClipId}>
-                    <path d={seg.fillPath} />
+                seg.activeClipId && (
+                  <clipPath key={seg.key} id={seg.activeClipId}>
+                    <path d={seg.path} />
                   </clipPath>
                 )
             )}
@@ -250,17 +228,24 @@ const ProposalStatusBar = ({ stages, className }: ProposalStatusBarProps) => {
             return (
               <g key={seg.key} transform={`translate(${seg.x} 0)`}>
                 <path d={seg.path} fill={bgFill} filter={`url(#${filterId})`} />
-                {seg.fillPath && seg.fillClipId && (
+                {seg.activeClipId && (
                   <>
-                    <path d={seg.fillPath} fill="hsl(var(--primary) / 0.3)" />
-                    <g clipPath={`url(#${seg.fillClipId})`}>
+                    {seg.progressPath && (
+                      <g clipPath={`url(#${seg.activeClipId})`}>
+                        <path
+                          d={seg.progressPath}
+                          fill="hsl(var(--primary) / 0.3)"
+                        />
+                      </g>
+                    )}
+                    <g clipPath={`url(#${seg.activeClipId})`}>
                       <rect
                         x={0}
                         y={0}
-                        width={seg.progress * seg.width}
+                        width={seg.width}
                         height={HEIGHT}
                         fill={`url(#${filterId}-shimmer)`}
-                        className="motion-safe:animate-proposal-bar-sweep"
+                        className="motion-safe:animate-proposal-bar-sweep [transform-box:fill-box]"
                       />
                     </g>
                   </>
