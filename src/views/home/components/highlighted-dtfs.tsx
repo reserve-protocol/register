@@ -1,4 +1,5 @@
 import TokenLogo from '@/components/token-logo'
+import ChainLogo from '@/components/icons/ChainLogo'
 import { Button } from '@/components/ui/button'
 import { ChartConfig, ChartContainer } from '@/components/ui/chart'
 import { Skeleton } from '@/components/ui/skeleton'
@@ -22,17 +23,33 @@ import { Link } from 'react-router-dom'
 import { Area, AreaChart, Tooltip, XAxis, YAxis } from 'recharts'
 import { calculatePercentageChange } from './discover-index-dtf/utils'
 
-const HIGHLIGHTED_LIMIT = 5
+const HIGHLIGHTED_LIMIT = 8
 const BACKING_LIMIT = 7
 const SEVEN_DAYS_SECONDS = 7 * 24 * 60 * 60
 const COLLATERAL_GAP = 8
 const REFRESH_INTERVAL = 1000 * 60 * 30
+const ASSET_CHAIN_EXIT_MS = 180
+const ASSET_CHAIN_ENTER_MS = 220
 const TRANSCRIPT_PREVIEW =
   'A short walkthrough of this portfolio, the assets it tracks, how the basket is weighted, and why investors may use it for broad tokenized market exposure. The explainer will cover the core thesis, recent performance drivers, liquidity considerations, and the role each major component plays inside the DTF.'
 const TRANSCRIPT_WORDS = TRANSCRIPT_PREVIEW.split(' ')
 const TRANSCRIPT_WORD_DELAY_MS = 280
 const TRANSCRIPT_LINE_HEIGHT = 18
 const END_FADE_DISTANCE = 160
+const BSC_CHAIN_ID = 56
+const ETHEREUM_CHAIN_ID = 1
+
+type ChainVersion = IndexDTFItem & {
+  versionLabel: string
+  performanceSource?: Pick<IndexDTFItem, 'chainId' | 'address'>
+}
+
+type HighlightedDTFItem = IndexDTFItem & {
+  prototypeKey?: string
+  versionLabel?: string
+  performanceSource?: Pick<IndexDTFItem, 'chainId' | 'address'>
+  chainVersions?: ChainVersion[]
+}
 
 const chartConfig = {
   performance: {
@@ -40,6 +57,71 @@ const chartConfig = {
     color: 'currentColor',
   },
 } satisfies ChartConfig
+
+const createDummyEthereumVersion = (
+  dtf: IndexDTFItem,
+  performanceSource = dtf
+): ChainVersion => ({
+  ...dtf,
+  chainId: ETHEREUM_CHAIN_ID,
+  // TODO: Replace this dummy address with the real deployed DTF address when
+  // chain versions are sourced from actual product data.
+  address: '0x000000000000000000000000000000000000c020',
+  name: `${dtf.name} (ETH)`,
+  versionLabel: 'ETH L1',
+  performanceSource: {
+    chainId: performanceSource.chainId,
+    address: performanceSource.address,
+  },
+  price: dtf.price * 1.018,
+  marketCap: dtf.marketCap * 0.42,
+  symbol: dtf.symbol,
+  basket: dtf.basket.slice(0, BACKING_LIMIT).map((token, index) => ({
+    ...token,
+    weight:
+      index === 0
+        ? '48.50'
+        : index === 1
+          ? '24.25'
+          : token.weight
+            ? (Number(token.weight) * 0.92).toFixed(2)
+            : token.weight,
+  })),
+  performance: dtf.performance.map((point, index) => ({
+    ...point,
+    value: point.value * (1 + 0.006 + index * 0.0004),
+  })),
+})
+
+const withHighlightedChainVersions = (
+  dtf: IndexDTFItem,
+  alternatePerformanceSource?: IndexDTFItem
+): HighlightedDTFItem[] => {
+  const isCmc20Fixture =
+    dtf.chainId === BSC_CHAIN_ID && dtf.symbol.toUpperCase() === 'CMC20'
+
+  if (!isCmc20Fixture) return [dtf]
+
+  const chainVersionFixture = {
+    ...dtf,
+    versionLabel: 'BSC',
+    chainVersions: [
+      {
+        ...dtf,
+        name: `${dtf.name} (BSC)`,
+        versionLabel: 'BSC',
+      },
+      createDummyEthereumVersion(dtf, alternatePerformanceSource),
+    ],
+  }
+
+  return [
+    {
+      ...chainVersionFixture,
+      prototypeKey: 'chain-tabs',
+    },
+  ]
+}
 
 const getSevenDayPerformance = (performance: IndexDTFItem['performance']) => {
   if (performance.length === 0) return performance
@@ -83,7 +165,9 @@ const getPerformanceDirection = (
   return 'neutral'
 }
 
-const useDetailedSevenDayPerformance = (dtf: IndexDTFItem) => {
+const useDetailedSevenDayPerformance = (
+  dtf: Pick<IndexDTFItem, 'chainId' | 'address'>
+) => {
   return useQuery({
     queryKey: ['highlighted-dtf-7d-performance', dtf.chainId, dtf.address],
     queryFn: async (): Promise<IndexDTFItem['performance']> => {
@@ -126,11 +210,29 @@ const CollateralAssetItem = ({
   </div>
 )
 
-const HighlightedDTFCard = ({ dtf }: { dtf: IndexDTFItem }) => {
-  const backing = dtf.basket.slice(0, BACKING_LIMIT)
-  const fallbackSevenDayPerformance = getSevenDayPerformance(dtf.performance)
+const HighlightedDTFCard = ({ dtf }: { dtf: HighlightedDTFItem }) => {
+  const chainVersions = dtf.chainVersions
+  const [selectedVersionIndex, setSelectedVersionIndex] = useState(0)
+  const selectedVersion = chainVersions?.[selectedVersionIndex] ?? dtf
+  const assetVersionKey = `${selectedVersion.chainId}-${selectedVersion.address}`
+  const performanceSource = selectedVersion.performanceSource ?? selectedVersion
+  const chartKey = `${selectedVersion.chainId}-${selectedVersion.address}-${performanceSource.chainId}-${performanceSource.address}`
+  const backing = useMemo(
+    () => selectedVersion.basket.slice(0, BACKING_LIMIT),
+    [selectedVersion]
+  )
+  const [displayedBacking, setDisplayedBacking] = useState(backing)
+  const [displayedAssetVersionKey, setDisplayedAssetVersionKey] =
+    useState(assetVersionKey)
+  const [assetTransitionState, setAssetTransitionState] = useState<
+    'idle' | 'exiting' | 'entering'
+  >('idle')
+  const previousAssetVersionKeyRef = useRef(assetVersionKey)
+  const fallbackSevenDayPerformance = getSevenDayPerformance(
+    selectedVersion.performance
+  )
   const { data: detailedSevenDayPerformance } =
-    useDetailedSevenDayPerformance(dtf)
+    useDetailedSevenDayPerformance(performanceSource)
   const sevenDayPerformance = detailedSevenDayPerformance?.length
     ? detailedSevenDayPerformance
     : fallbackSevenDayPerformance
@@ -150,7 +252,7 @@ const HighlightedDTFCard = ({ dtf }: { dtf: IndexDTFItem }) => {
     performanceDirection === 'positive'
       ? '#819D44'
       : performanceDirection === 'negative'
-        ? '#F87171'
+        ? '#B85F50'
         : '#6F6456'
   const transcriptWordRefs = useRef<(HTMLSpanElement | null)[]>([])
   const [isTranscriptActive, setIsTranscriptActive] = useState(false)
@@ -158,6 +260,30 @@ const HighlightedDTFCard = ({ dtf }: { dtf: IndexDTFItem }) => {
   const [transcriptScrollOffset, setTranscriptScrollOffset] = useState(0)
   const isDesktop = useIsDesktop()
   const isActive = !isDesktop || isTranscriptActive
+  const hasChainVersions = !!chainVersions && chainVersions.length > 1
+  const selectedVersionLabel = selectedVersion.versionLabel ?? 'Chain'
+
+  useEffect(() => {
+    if (previousAssetVersionKeyRef.current === assetVersionKey) return
+
+    previousAssetVersionKeyRef.current = assetVersionKey
+    setAssetTransitionState('exiting')
+
+    const swapTimeout = window.setTimeout(() => {
+      setDisplayedBacking(backing)
+      setDisplayedAssetVersionKey(assetVersionKey)
+      setAssetTransitionState('entering')
+    }, ASSET_CHAIN_EXIT_MS)
+
+    const settleTimeout = window.setTimeout(() => {
+      setAssetTransitionState('idle')
+    }, ASSET_CHAIN_EXIT_MS + ASSET_CHAIN_ENTER_MS)
+
+    return () => {
+      window.clearTimeout(swapTimeout)
+      window.clearTimeout(settleTimeout)
+    }
+  }, [assetVersionKey, backing])
 
   useEffect(() => {
     if (!isActive) {
@@ -209,7 +335,7 @@ const HighlightedDTFCard = ({ dtf }: { dtf: IndexDTFItem }) => {
 
   return (
     <Link
-      to={getFolioRoute(dtf.address, dtf.chainId)}
+      to={getFolioRoute(selectedVersion.address, selectedVersion.chainId)}
       onMouseEnter={() => isDesktop && setIsTranscriptActive(true)}
       onMouseLeave={() => isDesktop && setIsTranscriptActive(false)}
       onFocus={() => setIsTranscriptActive(true)}
@@ -220,61 +346,122 @@ const HighlightedDTFCard = ({ dtf }: { dtf: IndexDTFItem }) => {
       }}
       className={cn(
         'group flex w-full shrink-0 flex-col gap-1 rounded-3xl bg-card p-1 transition-colors lg:bg-background lg:hover:bg-card',
-        isInactiveDTF(dtf.status) && 'opacity-60'
+        isInactiveDTF(selectedVersion.status) && 'opacity-60'
       )}
     >
       <div className="flex flex-col overflow-hidden rounded-t-2xl bg-gradient-to-b from-secondary to-card transition-colors duration-200 lg:from-secondary/80 lg:group-hover:from-card">
-        <div className="flex min-w-0 items-start justify-between p-5 pb-2">
-          <div className="flex min-w-0 flex-col items-start gap-3">
+        <div className="flex min-w-0 flex-col gap-3 p-5 pb-2">
+          <div className="flex min-w-0 items-start justify-between">
             <div className="relative w-fit flex-shrink-0">
               <TokenLogo src={dtf.brand?.icon || undefined} size="xl" />
-              {/* <ChainLogo
-                chain={dtf.chainId}
-                className="absolute -bottom-1 -right-1"
-              /> */}
+              <ChainLogo
+                chain={selectedVersion.chainId}
+                width={16}
+                height={16}
+                className="absolute -bottom-0.5 -right-1 rounded-md border-2 border-secondary group-hover:border-card bg-card"
+              />
             </div>
-            <div className="min-w-0">
-              <div className="flex min-w-0 items-center gap-2">
-                <h3 className="truncate text-lg leading-tight text-primary transition-colors lg:text-foreground lg:group-hover:text-primary">
-                  {dtf.name}
+
+            <div
+              className={cn(
+                'relative flex h-8 shrink-0 items-center justify-end',
+                hasChainVersions && 'w-[154px]'
+              )}
+            >
+              {hasChainVersions && (
+                <div
+                  className="absolute right-0 top-0 z-20"
+                  onClick={(event) => {
+                    event.preventDefault()
+                    event.stopPropagation()
+                  }}
+                >
+                  <div className="inline-flex items-center gap-2">
+                    <span className="text-xs font-medium text-legend">
+                      Version:
+                    </span>
+                    <div className="inline-flex items-center rounded-full bg-primary/10 px-[2px] gap-0.5 py-0.5 transition-colors dark:border dark:border-foreground dark:bg-secondary dark:group-hover:border-secondary lg:group-hover lg:group-hover:bg-muted">
+                      {chainVersions.map((version, index) => (
+                        <button
+                          key={`${version.chainId}-${version.address}-tab`}
+                          type="button"
+                          className={cn(
+                            'inline-flex h-7 items-center justify-center gap-0 whitespace-nowrap rounded-full px-3 text-xs font-medium text-legend transition-[background-color,color,gap,padding] hover:text-foreground lg:group-hover:px-2 lg:group-hover:pr-3 lg:group-hover:gap-1',
+                            index === selectedVersionIndex &&
+                              'bg-background dark:bg-foreground text-foreground lg:group-hover:bg-card dark:group-hover:bg-foreground dark:group-hover:text-background',
+                            index !== selectedVersionIndex &&
+                              'hover:bg-background'
+                          )}
+                          onClick={() => {
+                            setSelectedVersionIndex(index)
+                          }}
+                        >
+                          <ChainLogo
+                            chain={version.chainId}
+                            width={16}
+                            height={16}
+                            className="shrink-0 border-2 border-card rounded-md dark:border-none"
+                          />
+                          <span className="max-w-0 overflow-hidden opacity-0 transition-[max-width,opacity] duration-150 ease-out lg:group-hover:max-w-12 lg:group-hover:opacity-100">
+                            {version.versionLabel}
+                          </span>
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              )}
+              {!hasChainVersions && (
+                <span className="inline-flex h-8 items-center rounded-full bg-primary px-3.5 text-sm font-medium text-primary-foreground opacity-100 transition-opacity duration-150 ease-out lg:opacity-0 lg:group-hover:opacity-100 lg:group-focus-within:opacity-100">
+                  Buy
+                </span>
+              )}
+            </div>
+          </div>
+
+          <div className="w-full min-w-0">
+            <div className="flex min-h-[48px] min-w-0 items-end">
+              <div className="flex min-w-0 items-end gap-2">
+                <h3 className="min-w-0 text-xl text-medium leading-tight text-foreground [text-wrap:pretty] transition-colors lg:group-hover:text-primary dark:lg:group-hover:text-foreground">
+                  {selectedVersion.name}
                 </h3>
-                {isInactiveDTF(dtf.status) && (
-                  <span className="hidden rounded-full bg-yellow-500/15 px-2 py-0.5 text-xs font-medium text-yellow-600 dark:text-yellow-400 sm:inline">
+                {isInactiveDTF(selectedVersion.status) && (
+                  <span className="hidden shrink-0 rounded-full bg-yellow-500/15 px-2 py-0.5 text-xs font-medium text-yellow-600 dark:text-yellow-400 sm:inline">
                     Inactive
                   </span>
                 )}
               </div>
-              <div className="truncate text-lg leading-tight text-primary tabular-nums transition-colors lg:text-foreground lg:group-hover:text-primary">
-                <span className="text-primary/60 transition-colors lg:text-legend lg:group-hover:text-primary/60">
-                  $
-                </span>
-                {formatCurrency(dtf.price, dtf.price >= 1 ? 2 : 5)}
-              </div>
-              <div className="mt-1.5 flex min-w-0 items-center gap-1 text-base text-legend">
-                <span className="truncate">${dtf.symbol}</span>
-                <span
-                  className={cn(
-                    'shrink-0 tabular-nums',
-                    performanceDirection === 'positive' && 'text-[#657D32]',
-                    performanceDirection === 'negative' && 'text-red-600'
-                  )}
-                >
-                  {percentageChange ? `${percentageChange} (7d)` : 'No data'}
-                </span>
-              </div>
             </div>
-          </div>
-
-          <div className="flex shrink-0 items-center">
-            <span className="inline-flex h-8 items-center rounded-full bg-primary px-3.5 text-sm font-medium text-primary-foreground opacity-100 transition-opacity duration-150 ease-out lg:opacity-0 lg:group-hover:opacity-100 lg:group-focus-within:opacity-100">
-              Buy
-            </span>
+            <div className="mt-1.5 flex w-full min-w-0 items-center justify-between gap-3 text-base text-legend">
+              <span className="truncate">
+                <span className="text-primary tabular-nums transition-colors lg:text-foreground lg:group-hover:text-primary">
+                  <span className="text-primary/60 transition-colors lg:text-legend lg:group-hover:text-primary/60">
+                    $
+                  </span>
+                  {formatCurrency(
+                    selectedVersion.price,
+                    selectedVersion.price >= 1 ? 2 : 5
+                  )}
+                </span>
+                <span> · ${selectedVersion.symbol}</span>
+              </span>
+              <span
+                className={cn(
+                  'shrink-0 tabular-nums',
+                  performanceDirection === 'positive' && 'text-[#657D32]',
+                  performanceDirection === 'negative' && 'text-[#9F4A3D]'
+                )}
+              >
+                {percentageChange ? `${percentageChange} (7d)` : 'No data'}
+              </span>
+            </div>
           </div>
         </div>
 
         {sevenDayPerformance.length > 0 && (
           <div className="relative">
             <ChartContainer
+              key={chartKey}
               config={chartConfig}
               className="pointer-events-none h-52 w-full"
             >
@@ -299,9 +486,8 @@ const HighlightedDTFCard = ({ dtf }: { dtf: IndexDTFItem }) => {
                         </>
                       ) : (
                         <>
-                          <stop offset="0%" stopColor="#78716C" />
-                          <stop offset="55%" stopColor="#B45309" />
-                          <stop offset="100%" stopColor="#DC2626" />
+                          <stop offset="0%" stopColor="#D69A8F" />
+                          <stop offset="100%" stopColor="#9F4A3D" />
                         </>
                       )}
                     </linearGradient>
@@ -390,20 +576,35 @@ const HighlightedDTFCard = ({ dtf }: { dtf: IndexDTFItem }) => {
       <div className="relative overflow-hidden rounded-full bg-card border border-card p-2 pr-0.5 pl-0 lg:border-secondary lg:group-hover:border-card">
         <div className="pointer-events-none absolute inset-y-0 -right-px z-10 w-20 bg-gradient-to-l from-card via-card to-transparent opacity-100 transition-opacity duration-150 lg:opacity-65 lg:group-hover:opacity-100 lg:group-focus-within:opacity-100" />
         <div className="flex pr-12 pl-2 overflow-hidden">
-          <div className="flex w-max gap-0 [animation:collateral-assets-scroll_18s_linear_infinite] motion-reduce:animate-none lg:[animation:none] lg:group-hover:[animation:collateral-assets-scroll_18s_linear_infinite] lg:group-focus-within:[animation:collateral-assets-scroll_18s_linear_infinite]">
-            {[...backing, ...backing].map((token, index) => (
-              <CollateralAssetItem
-                key={`${token.address}-${index}`}
-                token={token}
-              />
-            ))}
+          <div
+            className={cn(
+              'will-change-transform',
+              assetTransitionState === 'exiting' &&
+                '[animation:collateral-assets-chain-exit_180ms_ease-in_forwards]',
+              assetTransitionState === 'entering' &&
+                '[animation:collateral-assets-chain-enter_220ms_ease-out_forwards]'
+            )}
+          >
+            <div
+              key={displayedAssetVersionKey}
+              className="flex w-max gap-0 [animation:collateral-assets-scroll_18s_cubic-bezier(0.32,0,0.08,1)_infinite] motion-reduce:animate-none lg:[animation:none] lg:group-hover:[animation:collateral-assets-scroll_18s_cubic-bezier(0.32,0,0.08,1)_infinite]"
+            >
+              {[...displayedBacking, ...displayedBacking].map(
+                (token, index) => (
+                  <CollateralAssetItem
+                    key={`${token.address}-${index}`}
+                    token={token}
+                  />
+                )
+              )}
+            </div>
           </div>
         </div>
         <Button
           variant="none"
           size="icon-rounded"
           className="absolute right-2 top-1/2 z-20 h-8 w-8 -translate-y-1/2 shrink-0 bg-muted text-foreground opacity-100 transition-colors duration-150 lg:bg-card lg:opacity-0 lg:group-hover:bg-muted lg:group-hover:opacity-100 lg:group-focus-within:opacity-100 hover:!bg-primary hover:!text-primary-foreground"
-          aria-label={`Open ${dtf.name}`}
+          aria-label={`Open ${selectedVersion.name}`}
         >
           <ArrowRight size={16} />
         </Button>
@@ -533,10 +734,17 @@ const HighlightedDTFs = ({
   const highlighted = useMemo(() => {
     if (!data) return []
 
-    return data
+    const highlightedDtfs = data
       .filter((dtf) => !isInactiveDTF(dtf.status))
       .sort((a, b) => b.marketCap - a.marketCap)
       .slice(0, HIGHLIGHTED_LIMIT)
+    const alternatePerformanceSource = highlightedDtfs.find(
+      (dtf) => dtf.symbol.toUpperCase() !== 'CMC20'
+    )
+
+    return highlightedDtfs.flatMap((dtf) =>
+      withHighlightedChainVersions(dtf, alternatePerformanceSource)
+    )
   }, [data])
 
   useEffect(() => {
@@ -603,6 +811,14 @@ const HighlightedDTFs = ({
                 from { transform: translate3d(0, 0, 0); }
                 to { transform: translate3d(calc(-50% - ${COLLATERAL_GAP / 2}px), 0, 0); }
               }
+              @keyframes collateral-assets-chain-exit {
+                from { opacity: 1; transform: translate3d(0, 0, 0); }
+                to { opacity: 0; transform: translate3d(-48px, 0, 0); }
+              }
+              @keyframes collateral-assets-chain-enter {
+                from { opacity: 0; transform: translate3d(18px, 0, 0); }
+                to { opacity: 1; transform: translate3d(0, 0, 0); }
+              }
             `}
           </style>
           <div
@@ -612,7 +828,7 @@ const HighlightedDTFs = ({
           >
             {highlighted.map((dtf) => (
               <HighlightedDTFCard
-                key={`${dtf.chainId}-${dtf.address}`}
+                key={`${dtf.chainId}-${dtf.address}-${dtf.prototypeKey ?? 'default'}`}
                 dtf={dtf}
               />
             ))}

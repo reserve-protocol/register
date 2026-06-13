@@ -14,13 +14,8 @@ const Ethereum = (props: SVGProps<SVGSVGElement>) => (
     height="1em"
     {...props}
   >
-    <g clipPath="url(#clip0_7718_4308)">
-      <path
-        fillRule="evenodd"
-        clipRule="evenodd"
-        d="M10 20C15.508 20 20 15.508 20 10C20 4.493 15.508 0 10 0C4.493 0 1.66894e-07 4.493 1.66894e-07 10C-0.000999833 15.508 4.492 20 10 20Z"
-        fill="#627EEA"
-      />
+    <g>
+      <rect width="20" height="20" rx="4.5" fill="#627EEA" />
       <path
         d="M9.99907 2.5L9.89844 2.84184V12.7602L9.99907 12.8606L14.603 10.1392L9.99907 2.5Z"
         fill="#C1CCF6"
