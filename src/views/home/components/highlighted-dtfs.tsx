@@ -27,6 +27,10 @@ const HIGHLIGHTED_LIMIT = 8
 const BACKING_LIMIT = 7
 const SEVEN_DAYS_SECONDS = 7 * 24 * 60 * 60
 const COLLATERAL_GAP = 8
+const COLLATERAL_SCROLL_RAMP_PERCENT = 12
+const COLLATERAL_SCROLL_RAMP_DISTANCE_PERCENT = 4
+const COLLATERAL_SCROLL_RAMP_GAP_OFFSET =
+  (COLLATERAL_GAP / 2) * (COLLATERAL_SCROLL_RAMP_DISTANCE_PERCENT / 50)
 const REFRESH_INTERVAL = 1000 * 60 * 30
 const ASSET_CHAIN_EXIT_MS = 180
 const ASSET_CHAIN_ENTER_MS = 220
@@ -587,7 +591,7 @@ const HighlightedDTFCard = ({ dtf }: { dtf: HighlightedDTFItem }) => {
           >
             <div
               key={displayedAssetVersionKey}
-              className="flex w-max gap-0 [animation:collateral-assets-scroll_18s_cubic-bezier(0.32,0,0.08,1)_infinite] motion-reduce:animate-none lg:[animation:none] lg:group-hover:[animation:collateral-assets-scroll_18s_cubic-bezier(0.32,0,0.08,1)_infinite]"
+              className="flex w-max gap-0 [animation:collateral-assets-scroll_18s_linear_infinite] motion-reduce:animate-none lg:[animation:none] lg:group-hover:[animation:collateral-assets-scroll_18s_linear_infinite]"
             >
               {[...displayedBacking, ...displayedBacking].map(
                 (token, index) => (
@@ -808,8 +812,17 @@ const HighlightedDTFs = ({
           <style>
             {`
               @keyframes collateral-assets-scroll {
-                from { transform: translate3d(0, 0, 0); }
-                to { transform: translate3d(calc(-50% - ${COLLATERAL_GAP / 2}px), 0, 0); }
+                0% {
+                  animation-timing-function: cubic-bezier(0.5, 0, 1, 1);
+                  transform: translate3d(0, 0, 0);
+                }
+                ${COLLATERAL_SCROLL_RAMP_PERCENT}% {
+                  animation-timing-function: linear;
+                  transform: translate3d(calc(-${COLLATERAL_SCROLL_RAMP_DISTANCE_PERCENT}% - ${COLLATERAL_SCROLL_RAMP_GAP_OFFSET}px), 0, 0);
+                }
+                100% {
+                  transform: translate3d(calc(-50% - ${COLLATERAL_GAP / 2}px), 0, 0);
+                }
               }
               @keyframes collateral-assets-chain-exit {
                 from { opacity: 1; transform: translate3d(0, 0, 0); }
