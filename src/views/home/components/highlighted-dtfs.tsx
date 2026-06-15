@@ -345,11 +345,11 @@ const HighlightedDTFCard = ({ dtf }: { dtf: HighlightedDTFItem }) => {
         }
       }}
       className={cn(
-        'group flex w-full shrink-0 flex-col gap-1 rounded-3xl bg-card p-1 transition-colors lg:bg-background lg:hover:bg-card',
+        'group flex w-full shrink-0 flex-col gap-1 rounded-3xl bg-card p-1 lg:bg-background lg:hover:bg-card',
         isInactiveDTF(selectedVersion.status) && 'opacity-60'
       )}
     >
-      <div className="flex flex-col overflow-hidden rounded-t-2xl bg-gradient-to-b from-secondary to-card transition-colors duration-200 lg:from-secondary/80 lg:group-hover:from-card">
+      <div className="flex flex-col overflow-hidden rounded-t-2xl bg-gradient-to-b from-secondary to-card lg:from-secondary/80 lg:group-hover:from-card">
         <div className="flex min-w-0 flex-col gap-3 p-5 pb-2">
           <div className="flex min-w-0 items-start justify-between">
             <div className="relative w-fit flex-shrink-0">
@@ -572,7 +572,7 @@ const HighlightedDTFCard = ({ dtf }: { dtf: HighlightedDTFItem }) => {
                 />
               </AreaChart>
             </ChartContainer>
-            <div className="pointer-events-none absolute inset-x-0 bottom-0 h-12 bg-gradient-to-b from-card/0 to-card transition-colors duration-200 lg:from-background/0 lg:to-background lg:group-hover:from-card/0 lg:group-hover:to-card lg:group-focus-within:from-card/0 lg:group-focus-within:to-card" />
+            <div className="pointer-events-none absolute inset-x-0 bottom-0 h-12 bg-gradient-to-b from-card/0 to-card lg:from-background/0 lg:to-background lg:group-hover:from-card/0 lg:group-hover:to-card lg:group-focus-within:from-card/0 lg:group-focus-within:to-card" />
           </div>
         )}
       </div>
@@ -612,7 +612,7 @@ const HighlightedDTFCard = ({ dtf }: { dtf: HighlightedDTFItem }) => {
           <ArrowRight size={16} />
         </Button>
       </div>
-      <div className="flex flex-col items-start gap-2 px-5 py-4 pt-3 transition-colors">
+      <div className="flex flex-col items-start gap-2 px-5 py-4 pt-3">
         <div
           className="w-full min-w-0 shrink-0 overflow-hidden"
           style={{ height: TRANSCRIPT_LINE_HEIGHT * 2 }}
@@ -702,7 +702,7 @@ const HighlightedDTFEndCard = ({ fullWidth }: { fullWidth: boolean }) => (
   <Link
     to={ROUTES.DISCOVER}
     className={cn(
-      'group flex h-full min-h-[460px] w-full flex-col items-center justify-center gap-4 rounded-3xl bg-background p-6 text-center transition-colors hover:bg-card',
+      'group flex h-full min-h-[460px] w-full flex-col items-center justify-center gap-4 rounded-3xl bg-background p-6 text-center hover:bg-card',
       fullWidth && 'lg:col-span-2'
     )}
   >
