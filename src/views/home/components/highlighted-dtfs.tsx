@@ -49,8 +49,6 @@ type ChainVersion = IndexDTFItem & {
 }
 
 type HighlightedDTFItem = IndexDTFItem & {
-  prototypeKey?: string
-  versionLabel?: string
   performanceSource?: Pick<IndexDTFItem, 'chainId' | 'address'>
   chainVersions?: ChainVersion[]
 }
@@ -108,7 +106,6 @@ const withHighlightedChainVersions = (
 
   const chainVersionFixture = {
     ...dtf,
-    versionLabel: 'BSC',
     chainVersions: [
       {
         ...dtf,
@@ -122,7 +119,6 @@ const withHighlightedChainVersions = (
   return [
     {
       ...chainVersionFixture,
-      prototypeKey: 'chain-tabs',
     },
   ]
 }
@@ -264,8 +260,8 @@ const HighlightedDTFCard = ({ dtf }: { dtf: HighlightedDTFItem }) => {
   const [transcriptScrollOffset, setTranscriptScrollOffset] = useState(0)
   const isDesktop = useIsDesktop()
   const isActive = !isDesktop || isTranscriptActive
-  const hasChainVersions = !!chainVersions && chainVersions.length > 1
-  const selectedVersionLabel = selectedVersion.versionLabel ?? 'Chain'
+  const hasChainTabs = (chainVersions?.length ?? 0) > 1
+  const chainTabs = chainVersions ?? []
 
   useEffect(() => {
     if (previousAssetVersionKeyRef.current === assetVersionKey) return
@@ -369,10 +365,10 @@ const HighlightedDTFCard = ({ dtf }: { dtf: HighlightedDTFItem }) => {
             <div
               className={cn(
                 'relative flex h-8 shrink-0 items-center justify-end',
-                hasChainVersions && 'w-[154px]'
+                hasChainTabs && 'w-[154px]'
               )}
             >
-              {hasChainVersions && (
+              {hasChainTabs && (
                 <div
                   className="absolute right-0 top-0 z-20"
                   onClick={(event) => {
@@ -381,14 +377,17 @@ const HighlightedDTFCard = ({ dtf }: { dtf: HighlightedDTFItem }) => {
                   }}
                 >
                   <div className="inline-flex items-center gap-2">
-                    <span className="text-xs font-medium text-legend">
-                      Version:
-                    </span>
-                    <div className="inline-flex items-center rounded-full bg-primary/10 px-[2px] gap-0.5 py-0.5 transition-colors dark:border dark:border-foreground dark:bg-secondary dark:group-hover:border-secondary lg:group-hover lg:group-hover:bg-muted">
-                      {chainVersions.map((version, index) => (
+                    <div
+                      role="tablist"
+                      aria-label="Highlighted card chain"
+                      className="inline-flex items-center rounded-full bg-primary/10 px-[2px] gap-0.5 py-0.5 transition-colors dark:border dark:border-foreground dark:bg-secondary dark:group-hover:border-secondary lg:group-hover lg:group-hover:bg-muted"
+                    >
+                      {chainTabs.map((version, index) => (
                         <button
                           key={`${version.chainId}-${version.address}-tab`}
                           type="button"
+                          role="tab"
+                          aria-selected={index === selectedVersionIndex}
                           className={cn(
                             'inline-flex h-7 items-center justify-center gap-0 whitespace-nowrap rounded-full px-3 text-xs font-medium text-legend transition-[background-color,color,gap,padding] hover:text-foreground lg:group-hover:px-2 lg:group-hover:pr-3 lg:group-hover:gap-1',
                             index === selectedVersionIndex &&
@@ -415,7 +414,7 @@ const HighlightedDTFCard = ({ dtf }: { dtf: HighlightedDTFItem }) => {
                   </div>
                 </div>
               )}
-              {!hasChainVersions && (
+              {!hasChainTabs && (
                 <span className="inline-flex h-8 items-center rounded-full bg-primary px-3.5 text-sm font-medium text-primary-foreground opacity-100 transition-opacity duration-150 ease-out lg:opacity-0 lg:group-hover:opacity-100 lg:group-focus-within:opacity-100">
                   Buy
                 </span>
@@ -841,7 +840,7 @@ const HighlightedDTFs = ({
           >
             {highlighted.map((dtf) => (
               <HighlightedDTFCard
-                key={`${dtf.chainId}-${dtf.address}-${dtf.prototypeKey ?? 'default'}`}
+                key={`${dtf.chainId}-${dtf.address}`}
                 dtf={dtf}
               />
             ))}

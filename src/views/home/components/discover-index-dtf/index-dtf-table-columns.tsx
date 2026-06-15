@@ -109,9 +109,11 @@ const useDetailedSevenDayPerformance = (dtf: IndexDTFItem) => {
 const PerformanceCell = ({ dtf }: { dtf: IndexDTFItem }) => {
   const fallbackPerformance = dtf.performance
   const { data: detailedPerformance } = useDetailedSevenDayPerformance(dtf)
-  const performance = detailedPerformance?.length
+  const hasDetailedPerformance = !!detailedPerformance?.length
+  const performance = hasDetailedPerformance
     ? detailedPerformance
     : fallbackPerformance
+  const chartPerformance = detailedPerformance ?? []
   const percentageChange = calculatePercentageChange(performance)
   const performanceDirection = getPerformanceDirection(performance)
   const performanceColorClassName = cn(
@@ -133,43 +135,45 @@ const PerformanceCell = ({ dtf }: { dtf: IndexDTFItem }) => {
           <span className="text-legend">No data</span>
         )}
       </div>
-      {performance.length > 1 && (
-        <ChartContainer
-          config={chartConfig}
-          className={cn('h-10 w-[90px]', performanceColorClassName)}
-        >
-          <LineChart
-            data={performance}
-            margin={{ top: 3, right: 2, bottom: 3, left: 2 }}
+      <div className="h-10 w-[90px]">
+        {chartPerformance.length > 1 && (
+          <ChartContainer
+            config={chartConfig}
+            className={cn('h-10 w-[90px]', performanceColorClassName)}
           >
-            {performanceDirection === 'positive' && (
-              <defs>
-                <linearGradient
-                  id={strokeGradientId}
-                  x1="0"
-                  y1="0"
-                  x2="1"
-                  y2="0"
-                >
-                  <stop offset="0%" stopColor="#A2BB6E" />
-                  <stop offset="100%" stopColor="#657D32" />
-                </linearGradient>
-              </defs>
-            )}
-            <YAxis hide visibility="0" domain={getSparklineValueDomain} />
-            <Line
-              type="linear"
-              dataKey="value"
-              stroke={lineStroke}
-              strokeWidth={1.5}
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              dot={false}
-              isAnimationActive={false}
-            />
-          </LineChart>
-        </ChartContainer>
-      )}
+            <LineChart
+              data={chartPerformance}
+              margin={{ top: 3, right: 2, bottom: 3, left: 2 }}
+            >
+              {performanceDirection === 'positive' && (
+                <defs>
+                  <linearGradient
+                    id={strokeGradientId}
+                    x1="0"
+                    y1="0"
+                    x2="1"
+                    y2="0"
+                  >
+                    <stop offset="0%" stopColor="#A2BB6E" />
+                    <stop offset="100%" stopColor="#657D32" />
+                  </linearGradient>
+                </defs>
+              )}
+              <YAxis hide visibility="0" domain={getSparklineValueDomain} />
+              <Line
+                type="linear"
+                dataKey="value"
+                stroke={lineStroke}
+                strokeWidth={1.5}
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                dot={false}
+                isAnimationActive={false}
+              />
+            </LineChart>
+          </ChartContainer>
+        )}
+      </div>
     </div>
   )
 }

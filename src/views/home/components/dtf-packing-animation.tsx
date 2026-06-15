@@ -12,7 +12,6 @@ import {
   type CSSProperties,
 } from 'react'
 
-const LOGO_RING_STROKE_WIDTH = 2
 const PATH_START_X = 0
 const DESKTOP_PATH_CENTER_Y = 150
 const MOBILE_PATH_CENTER_Y = 78
@@ -224,10 +223,6 @@ const getCycleState = (time: number, itemCount: number, pathLength: number) => {
 
   const morphProgress = expandingProgress * (1 - collapseProgress)
   const textOpacity = isReveal ? textProgress * (1 - collapseTextProgress) : 0
-  const crossfadeProgress = isReveal
-    ? easeOut(clamp(revealTime / REVEAL_HOLD_MS))
-    : 0
-
   return {
     cycleTime,
     tickerMs,
@@ -237,30 +232,8 @@ const getCycleState = (time: number, itemCount: number, pathLength: number) => {
     morphProgress,
     textOpacity,
     trajectoryOpacity: isReveal ? 1 - clamp(revealTime / REVEAL_HOLD_MS) : 1,
-    placeholderOpacity: 1 - crossfadeProgress,
-    gradientRotation: (time / 80) % 360,
   }
 }
-
-const AnimatedGradient = ({
-  id,
-  rotation,
-}: {
-  id: string
-  rotation: number
-}) => (
-  <linearGradient
-    id={id}
-    x1="0"
-    y1="0"
-    x2="1"
-    y2="1"
-    gradientTransform={`rotate(${rotation} 0.5 0.5)`}
-  >
-    <stop offset="0%" stopColor="hsl(var(--primary))" />
-    <stop offset="100%" stopColor="hsl(var(--primary-foreground))" />
-  </linearGradient>
-)
 
 const PackingTickerText = ({
   asset,
@@ -316,7 +289,6 @@ const DTFPackingAnimation = ({ className }: { className?: string }) => {
   const isDesktop = useIsDesktop()
   const id = useId().replace(/:/g, '')
   const pathId = `${id}-packing-path`
-  const gradientId = `${id}-packing-gradient`
   const tickerLineGradientId = `${id}-ticker-line-gradient`
 
   const basket = useMemo(() => cmc20?.basket ?? [], [cmc20?.basket])
@@ -402,10 +374,6 @@ const DTFPackingAnimation = ({ className }: { className?: string }) => {
           >
             <defs>
               <path id={pathId} d={pathD} pathLength={100} />
-              <AnimatedGradient
-                id={gradientId}
-                rotation={cycle.gradientRotation}
-              />
               <linearGradient
                 id={tickerLineGradientId}
                 gradientUnits="userSpaceOnUse"
@@ -455,16 +423,6 @@ const DTFPackingAnimation = ({ className }: { className?: string }) => {
               className="fill-primary/10 stroke-primary"
               strokeWidth="1.5"
               opacity={cycle.isReveal ? 1 : 0}
-            />
-
-            <circle
-              cx={logoX}
-              cy={geometry.centerY}
-              r={visual.logoRadius + LOGO_RING_STROKE_WIDTH / 2}
-              fill="none"
-              stroke={`url(#${gradientId})`}
-              strokeWidth={LOGO_RING_STROKE_WIDTH}
-              opacity={cycle.placeholderOpacity}
             />
 
             {!cycle.isReveal && (

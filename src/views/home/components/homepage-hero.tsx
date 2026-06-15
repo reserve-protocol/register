@@ -1,5 +1,5 @@
 import { cn } from '@/lib/utils'
-import { useIsDesktop } from '@/hooks/use-media-query'
+import { useIsLargeDesktop } from '@/hooks/use-media-query'
 import { Play } from 'lucide-react'
 import {
   useCallback,
@@ -31,9 +31,11 @@ const SubHeader = ({ className }: { className?: string }) => (
       className
     )}
   >
-    <span className="text-xl">We call these tokenized portfolios DTFs:</span>
+    <span className="text-xl dark:text-legend">
+      We call these tokenized portfolios DTFs:
+    </span>
     <span className="text-xl font-medium">Decentralized Token Folios</span>
-    <DTFExplainerButton className="mt-6 h-9 w-fit rounded-full border-0 bg-transparent px-4 py-0 text-base text-primary hover:bg-primary hover:text-background dark:bg-transparent dark:text-primary dark:hover:bg-card dark:hover:text-primary/80">
+    <DTFExplainerButton className="mt-6 h-9 w-fit rounded-full border-0 bg-transparent px-4 py-0 text-base text-primary hover:bg-primary hover:text-background dark:bg-transparent dark:text-legend dark:hover:bg-primary dark:hover:text-white">
       <Play className="mr-1 h-4 w-4 fill-current" />
       Watch explainer
     </DTFExplainerButton>
@@ -59,15 +61,15 @@ export const DTFSubHeader = () => (
   </div>
 )
 
-const Hero = () => {
+const HomepageHero = () => {
   const stageRef = useRef<HTMLDivElement>(null)
   const [scrollDistance, setScrollDistance] = useState(0)
   const [scrollOffset, setScrollOffset] = useState(0)
   const [mobileScrollOffset, setMobileScrollOffset] = useState(0)
-  const isDesktop = useIsDesktop()
+  const isWideDesktop = useIsLargeDesktop()
 
   const updateScrollOffset = useCallback(() => {
-    if (!isDesktop) {
+    if (!isWideDesktop) {
       setScrollOffset(0)
       return
     }
@@ -84,10 +86,10 @@ const Hero = () => {
     setScrollOffset((currentOffset) =>
       currentOffset === nextOffset ? currentOffset : nextOffset
     )
-  }, [isDesktop, scrollDistance])
+  }, [isWideDesktop, scrollDistance])
 
   useEffect(() => {
-    if (!isDesktop) {
+    if (!isWideDesktop) {
       setScrollOffset(0)
       return
     }
@@ -110,10 +112,10 @@ const Hero = () => {
       scroller.removeEventListener('scroll', scheduleUpdate)
       window.removeEventListener('resize', scheduleUpdate)
     }
-  }, [isDesktop, updateScrollOffset])
+  }, [isWideDesktop, updateScrollOffset])
 
   useEffect(() => {
-    if (isDesktop) {
+    if (isWideDesktop) {
       setMobileScrollOffset(0)
       return
     }
@@ -136,7 +138,7 @@ const Hero = () => {
       window.cancelAnimationFrame(rafId)
       scroller.removeEventListener('scroll', update)
     }
-  }, [isDesktop])
+  }, [isWideDesktop])
 
   const handleScrollDistanceChange = useCallback((distance: number) => {
     setScrollDistance((currentDistance) =>
@@ -147,17 +149,19 @@ const Hero = () => {
   const stageStyle = {
     '--highlighted-scroll-distance': `${scrollDistance}px`,
   } as CSSProperties
-  const isStatsHidden = isDesktop ? scrollOffset > 8 : mobileScrollOffset > 8
+  const isStatsHidden = isWideDesktop
+    ? scrollOffset > 48
+    : mobileScrollOffset > 48
 
   return (
     <div
       ref={stageRef}
       style={stageStyle}
-      className="relative h-auto rounded-t-4xl lg:h-[calc(100svh-72px+var(--highlighted-scroll-distance))] mx-2 2xl:mx-0"
+      className="relative h-auto rounded-t-4xl xl:h-[calc(100svh-72px+var(--highlighted-scroll-distance))] lg:mx-2 2xl:mx-0"
     >
-      <div className="flex min-h-0 flex-col overflow-visible lg:sticky lg:top-0 lg:h-[calc(100svh-72px)] lg:overflow-hidden">
-        <div className="grid min-h-0 flex-1 grid-rows-[auto_minmax(0,1fr)] gap-1 overflow-hidden lg:rounded-t-4xl border-[4px] border-b-0 border-secondary bg-secondary lg:grid-cols-[minmax(0,1fr)_minmax(420px,1fr)] lg:grid-rows-1">
-          <div className="flex min-h-0 flex-col items-center p-4 pb-10 justify-center gap-4 rounded-3xl rounded-t-none lg:rounded-3xl lg:rounded-b-none bg-background lg:rounded-b-3xl lg:rounded-bl-none lg:pb-[184px]">
+      <div className="flex min-h-0 flex-col overflow-visible xl:sticky xl:top-0 xl:h-[calc(100svh-72px)] xl:overflow-hidden">
+        <div className="grid min-h-0 flex-1 grid-rows-[auto_minmax(0,1fr)] gap-1 overflow-hidden border-[4px] border-b-0 border-secondary bg-secondary lg:rounded-t-4xl xl:grid-cols-[minmax(0,1fr)_minmax(420px,1fr)] xl:grid-rows-1">
+          <div className="flex min-h-0 flex-col items-center justify-center gap-4 rounded-3xl rounded-t-none bg-background dark:bg-secondary p-4 pb-10 lg:rounded-3xl lg:rounded-b-3xl lg:pb-[132px] xl:pb-[184px] xl:rounded-bl-none">
             <div className="flex w-full max-w-[520px] flex-col items-center">
               <DTFPackingAnimation />
               <Header className="text-center mb-3" />
@@ -166,14 +170,14 @@ const Hero = () => {
           </div>
           <HighlightedDTFs
             className="min-h-0"
-            enableScrollAnimation={isDesktop}
+            enableScrollAnimation={isWideDesktop}
             onScrollDistanceChange={handleScrollDistanceChange}
             scrollOffset={scrollOffset}
           />
         </div>
         <div
           className={cn(
-            'pointer-events-none fixed inset-x-1 bottom-1 z-20 flex flex-col gap-2 transition-all duration-300 ease-out lg:absolute lg:inset-x-0 lg:bottom-10 lg:flex-row lg:justify-center lg:px-6',
+            'pointer-events-none fixed inset-x-1 bottom-1 z-20 flex flex-col gap-2 transition-all duration-300 ease-out lg:bottom-10 lg:items-center lg:px-6 xl:absolute xl:inset-x-0 xl:flex-row xl:justify-center',
             isStatsHidden
               ? 'translate-y-4 opacity-0'
               : 'translate-y-0 opacity-100'
@@ -188,4 +192,4 @@ const Hero = () => {
   )
 }
 
-export default Hero
+export default HomepageHero
