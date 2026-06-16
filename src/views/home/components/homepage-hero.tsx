@@ -216,7 +216,12 @@ const HomepageHero = () => {
               : 'translate-y-0 opacity-100'
           )}
         >
-          <div className="pointer-events-auto min-w-0 lg:w-auto">
+          <div
+            className={cn(
+              'min-w-0 lg:w-auto',
+              isStatsHidden ? 'pointer-events-none' : 'pointer-events-auto'
+            )}
+          >
             <MetricsContainer />
           </div>
         </div>

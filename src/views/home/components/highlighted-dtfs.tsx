@@ -25,7 +25,7 @@ import { Link } from 'react-router-dom'
 import { Area, AreaChart, Tooltip, XAxis, YAxis } from 'recharts'
 import { calculatePercentageChange } from './discover-index-dtf/utils'
 
-const HIGHLIGHTED_LIMIT = 8
+const HIGHLIGHTED_LIMIT = 5
 const BACKING_LIMIT = 7
 const SEVEN_DAYS_SECONDS = 7 * 24 * 60 * 60
 const COLLATERAL_GAP = 8
@@ -640,7 +640,7 @@ export const IndexDTFFeatureCard = ({
           <div className="w-full min-w-0">
             <div className="flex min-h-[48px] min-w-0 items-end">
               <div className="flex min-w-0 items-end gap-2">
-                <h3 className="min-w-0 text-xl text-medium leading-tight text-foreground [text-wrap:pretty] transition-colors lg:group-hover:text-primary dark:lg:group-hover:text-foreground">
+                <h3 className="min-w-0 text-xl font-normal leading-tight text-foreground [text-wrap:pretty] transition-colors lg:group-hover:text-primary dark:lg:group-hover:text-foreground">
                   {selectedVersion.name}
                 </h3>
                 {isInactiveDTF(selectedVersion.status) && (
@@ -827,23 +827,64 @@ export const IndexDTFFeatureCardPlaceholder = () => (
   </div>
 )
 
-const HighlightedDTFEndCard = ({ fullWidth }: { fullWidth: boolean }) => (
+const HighlightedDTFEndCard = ({
+  dtfs,
+  fullWidth,
+}: {
+  dtfs: HighlightedDTFItem[]
+  fullWidth: boolean
+}) => (
   <Link
     to={ROUTES.DISCOVER}
     className={cn(
-      'group flex h-full min-h-[460px] w-full flex-col items-center justify-center gap-4 rounded-3xl bg-background p-6 text-center hover:bg-card',
+      'group flex h-full w-full rounded-3xl border-[4px] border-card bg-secondary transition-shadow',
+      'min-h-[300px] hover:bg-card hover:shadow-sm md:min-h-[460px]',
       fullWidth && 'lg:col-span-2'
     )}
   >
-    <span className="max-w-56 text-xl leading-tight text-foreground transition-colors group-hover:text-primary">
-      Discover all our products
-    </span>
-    <span className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-muted text-foreground transition-colors group-hover:bg-primary">
-      <ArrowRight
-        size={18}
-        className="text-foreground group-hover:text-white"
-      />
-    </span>
+    <div
+      className={cn(
+        'flex h-full w-full flex-col justify-between rounded-2xl bg-secondary p-5 text-left',
+        'group-hover:bg-card dark:bg-card dark:group-hover:bg-secondary'
+      )}
+    >
+      <div className="flex items-start justify-between gap-4">
+        <div
+          className={cn(
+            'flex -space-x-2 rounded-full border border-card bg-card p-1.5',
+            'group-hover:border-primary dark:bg-secondary'
+          )}
+        >
+          {dtfs.slice(0, 5).map((dtf, index) => (
+            <TokenLogo
+              key={`${dtf.chainId}-${dtf.address}`}
+              src={dtf.brand?.icon || undefined}
+              size="md"
+              className="rounded-full border-2 border-card bg-card dark:border-secondary"
+              style={{ zIndex: 5 - index }}
+            />
+          ))}
+        </div>
+        <span
+          className={cn(
+            'inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-card bg-card text-primary',
+            'transition-[background-color,color] group-hover:border-primary group-hover:bg-primary group-hover:text-primary-foreground',
+            'dark:bg-secondary dark:text-foreground'
+          )}
+        >
+          <ArrowRight size={18} />
+        </span>
+      </div>
+      <div className="max-w-64">
+        <span className="block text-xl font-normal leading-tight text-primary transition-colors dark:text-foreground dark:group-hover:text-primary">
+          Discover all our products
+        </span>
+        <span className="mt-2 block text-sm leading-5 text-legend">
+          Explore DTFs across broad crypto, ecosystems, yield strategies and
+          more.
+        </span>
+      </div>
+    </div>
   </Link>
 )
 
@@ -941,7 +982,7 @@ const HighlightedDTFs = ({
           <div
             ref={trackRef}
             style={trackStyle}
-            className="grid auto-rows-fr grid-cols-1 gap-1 pb-0 will-change-transform md:grid-cols-2"
+            className="grid grid-cols-1 gap-1 pb-0 will-change-transform md:auto-rows-fr md:grid-cols-2"
           >
             {highlighted.map((dtf) => (
               <IndexDTFFeatureCard
@@ -949,7 +990,10 @@ const HighlightedDTFs = ({
                 dtf={dtf}
               />
             ))}
-            <HighlightedDTFEndCard fullWidth={highlighted.length % 2 === 0} />
+            <HighlightedDTFEndCard
+              dtfs={highlighted}
+              fullWidth={highlighted.length % 2 === 0}
+            />
           </div>
           <div
             className="pointer-events-none absolute inset-x-0 bottom-0 h-28 bg-gradient-to-b from-secondary/0 to-secondary transition-opacity duration-200"
