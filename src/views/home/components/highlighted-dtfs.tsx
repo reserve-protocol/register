@@ -304,10 +304,12 @@ export const IndexDTFFeatureCard = ({
   const transcriptWordRefs = useRef<(HTMLSpanElement | null)[]>([])
   const [isTranscriptActive, setIsTranscriptActive] = useState(false)
   const [isAssetTickerVisible, setIsAssetTickerVisible] = useState(false)
+  const [isCardInView, setIsCardInView] = useState(false)
   const [highlightedWords, setHighlightedWords] = useState(0)
   const [transcriptScrollOffset, setTranscriptScrollOffset] = useState(0)
   const isDesktop = useIsDesktop()
-  const isActive = showTranscript && (!isDesktop || isTranscriptActive)
+  const isActive =
+    showTranscript && (isDesktop ? isTranscriptActive : isCardInView)
   const hasChainTabs = (chainVersions?.length ?? 0) > 1
   const chainTabs = chainVersions ?? []
   const hasPerformanceChart = sevenDayPerformance.length > 0
@@ -423,6 +425,7 @@ export const IndexDTFFeatureCard = ({
   useEffect(() => {
     if (isDesktop) {
       setIsAssetTickerVisible(false)
+      setIsCardInView(false)
       return
     }
 
@@ -431,7 +434,9 @@ export const IndexDTFFeatureCard = ({
 
     const observer = new IntersectionObserver(
       ([entry]) => {
-        setIsAssetTickerVisible(entry.intersectionRatio >= 0.85)
+        const isMostlyInView = entry.intersectionRatio >= 0.85
+        setIsAssetTickerVisible(isMostlyInView)
+        setIsCardInView(isMostlyInView)
       },
       { threshold: [0, 0.85] }
     )
