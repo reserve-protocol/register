@@ -177,7 +177,7 @@ const IndexDTFPositions = () => {
         subtitle={<Trans>Your Decentralized Token Folio investments.</Trans>}
         right={
           <Link
-            to={`${ROUTES.HOME}?tab=index`}
+            to={`${ROUTES.DISCOVER}?tab=index`}
             target="_blank"
             className="flex items-center gap-1 text-sm text-primary font-medium hover:underline"
           >
@@ -218,7 +218,7 @@ const YieldDTFPositions = () => {
         subtitle={<Trans>Your yield-bearing stablecoin holdings.</Trans>}
         right={
           <Link
-            to={`${ROUTES.HOME}?tab=yield`}
+            to={`${ROUTES.DISCOVER}?tab=yield`}
             target="_blank"
             className="flex items-center gap-1 text-sm text-primary font-medium hover:underline"
           >

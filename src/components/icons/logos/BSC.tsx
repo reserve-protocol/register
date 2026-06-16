@@ -14,13 +14,7 @@ const BSC = (props: SVGProps<SVGSVGElement>) => (
     {...props}
   >
     <g>
-      <path
-        fillRule="evenodd"
-        clipRule="evenodd"
-        fill="#F0B90B"
-        d="M1248,0c689.3,0,1248,558.7,1248,1248s-558.7,1248-1248,1248
-		S0,1937.3,0,1248S558.7,0,1248,0L1248,0z"
-      />
+      <rect width="2496" height="2496" rx="560" fill="#F0B90B" />
       <path
         fill="#FFFFFF"
         d="M685.9,1248l0.9,330l280.4,165v193.2l-444.5-260.7v-524L685.9,1248L685.9,1248z M685.9,918v192.3

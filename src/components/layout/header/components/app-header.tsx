@@ -22,10 +22,7 @@ const Container = ({ children }: { children: ReactNode }) => {
 
   return (
     <div
-      className={cn(
-        'w-full flex-shrink-0',
-        border && (isHome ? 'lg:border-b' : 'border-b')
-      )}
+      className={cn('w-full flex-shrink-0', border && !isHome && 'border-b')}
     >
       {children}
     </div>

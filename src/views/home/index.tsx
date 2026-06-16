@@ -1,18 +1,12 @@
-import useTrackPage from "@/hooks/useTrackPage"
-import Hero from "./components/hero"
-import DiscoverDTFS from "./components/discover-dtfs"
-import DtfTabs from "./components/dtf-tabs"
-import RegisterAbout from "./components/register-about"
+import useTrackPage from '@/hooks/useTrackPage'
+import HomepageHero from './components/homepage-hero'
 
 const Home = () => {
-  useTrackPage('discover')
+  useTrackPage('home')
 
   return (
     <div className="container">
-      <Hero />
-      <DtfTabs />
-      <DiscoverDTFS />
-      <RegisterAbout />
+      <HomepageHero />
     </div>
   )
 }

@@ -35,7 +35,7 @@ msgid "(the “Website”), you expressly acknowledge that you have read and und
 msgstr ""
 
 #. placeholder {0}: group.tokens.length
-#: src/views/index-dtf/overview/components/basket-overview/exposure-table-rows.tsx:130
+#: src/views/index-dtf/overview/components/basket-overview/exposure-table-rows.tsx:125
 msgid "{0, plural, one {(# source)} other {(# sources)}}"
 msgstr ""
 
@@ -899,9 +899,9 @@ msgstr ""
 msgid "All Auctions <0>in proposal</0>"
 msgstr ""
 
-#: src/components/chain-filter/index.tsx:25
-#: src/views/earn/views/yield-dtf/components/yield-chain-filter.tsx:26
-#: src/views/home/components/discover-filters.tsx:64
+#: src/components/chain-filter/index.tsx:30
+#: src/views/earn/views/yield-dtf/components/yield-chain-filter.tsx:27
+#: src/views/home/components/discover-filters.tsx:70
 #: src/views/internal/dtf-list/components/dtf-date-chain-filters.tsx:110
 #: src/views/top100/components/top100-filters.tsx:26
 msgid "All chains"
@@ -1383,7 +1383,6 @@ msgstr ""
 msgid "Back to settings"
 msgstr ""
 
-#: src/views/home/components/discover-index-dtf/index-dtf-table-columns.tsx:72
 #: src/views/home/components/discover-index-dtf/index-dtf-table-placeholder.tsx:18
 #: src/views/top100/components/top100-table-placeholder.tsx:12
 #: src/views/top100/components/top100-table.tsx:78
@@ -1734,13 +1733,14 @@ msgid "BTC"
 msgstr ""
 
 #: src/views/explorer/components/revenue/index.tsx:287
+#: src/views/home/components/highlighted-dtfs.tsx:636
 #: src/views/index-dtf/auctions/legacy/components/auction-item.tsx:132
 #: src/views/index-dtf/issuance/manual/components/mode-selector.tsx:12
 #: src/views/index-dtf/overview/components/landing-mint/index.tsx:122
 msgid "Buy"
 msgstr ""
 
-#: src/views/index-dtf/overview/components/index-ctas-overview-mobile.tsx:116
+#: src/views/index-dtf/overview/components/index-ctas-overview-mobile.tsx:112
 msgid "BUY"
 msgstr ""
 
@@ -2033,7 +2033,7 @@ msgstr ""
 msgid "Click retry or use individual approve buttons below."
 msgstr ""
 
-#: src/views/home/components/dtf-explainer-button.tsx:35
+#: src/views/home/components/dtf-explainer-button.tsx:48
 msgid "Close"
 msgstr ""
 
@@ -2047,6 +2047,10 @@ msgstr ""
 
 #: src/views/index-dtf/governance/components/rsr-bnb-help.tsx:46
 msgid "CMC20 is a BNB DTF and you need to bridge your RSR using Wormhole to participate in governance."
+msgstr ""
+
+#: src/views/home/components/dtf-packing-animation.tsx:365
+msgid "CMC20 packs multiple collateral assets into one DTF token"
 msgstr ""
 
 #: src/views/index-dtf/overview/components/index-disclousure.tsx:118
@@ -2355,7 +2359,7 @@ msgstr ""
 msgid "Controls settings of the vlDAO including vote lock duration and approving revenue tokens"
 msgstr ""
 
-#: src/views/index-dtf/overview/components/basket-overview/index.tsx:48
+#: src/views/index-dtf/overview/components/basket-overview/index.tsx:49
 msgid "Copied to clipboard"
 msgstr ""
 
@@ -2453,7 +2457,7 @@ msgstr ""
 msgid "Create a New DAO"
 msgstr ""
 
-#: src/components/layout/header/components/app-navigation.tsx:132
+#: src/components/layout/header/components/app-navigation.tsx:131
 msgid "Create a new overcollateralized Yield DTF"
 msgstr ""
 
@@ -2473,8 +2477,8 @@ msgstr ""
 msgid "Create Index DTF"
 msgstr ""
 
-#: src/components/layout/header/components/app-navigation.tsx:88
-#: src/components/layout/header/components/app-navigation.tsx:95
+#: src/components/layout/header/components/app-navigation.tsx:87
+#: src/components/layout/header/components/app-navigation.tsx:94
 msgid "Create New DTF"
 msgstr ""
 
@@ -2751,9 +2755,13 @@ msgstr ""
 msgid "days"
 msgstr ""
 
-#: src/views/home/components/hero.tsx:68
-msgid "Decentralized Token Folios illustration"
+#: src/views/home/components/homepage-hero.tsx:42
+msgid "Decentralized Token Folios"
 msgstr ""
+
+#: src/views/home/components/hero.tsx:68
+#~ msgid "Decentralized Token Folios illustration"
+#~ msgstr ""
 
 #: src/components/rtoken-setup/basket/PluginItem.tsx:50
 msgid "Decimals"
@@ -2990,11 +2998,15 @@ msgstr ""
 msgid "Discord username"
 msgstr ""
 
-#: src/components/layout/header/components/app-navigation.tsx:58
+#: src/views/home/components/highlighted-dtfs.tsx:888
+msgid "Discover all our products"
+msgstr ""
+
+#: src/components/layout/header/components/app-navigation.tsx:57
 msgid "Discover DTFs"
 msgstr ""
 
-#: src/components/layout/header/components/app-navigation.tsx:158
+#: src/components/layout/header/components/app-navigation.tsx:157
 msgid "Discussions of ecosystem ideas"
 msgstr ""
 
@@ -3115,16 +3127,15 @@ msgstr ""
 msgid "DTF Category Tags"
 msgstr ""
 
-#: src/views/home/components/discover-index-dtf/index-dtf-card.tsx:46
 #: src/views/top100/components/top100-card.tsx:39
 msgid "DTF cover"
 msgstr ""
 
-#: src/views/home/components/dtf-explainer-button.tsx:41
+#: src/views/home/components/dtf-explainer-button.tsx:55
 msgid "DTF Explainer"
 msgstr ""
 
-#: src/components/layout/header/components/app-navigation.tsx:106
+#: src/components/layout/header/components/app-navigation.tsx:105
 msgid "DTF Explorer"
 msgstr ""
 
@@ -3712,6 +3723,10 @@ msgstr ""
 msgid "Explore"
 msgstr ""
 
+#: src/views/home/components/highlighted-dtfs.tsx:891
+msgid "Explore DTFs across broad crypto, ecosystems, yield strategies and more."
+msgstr ""
+
 #: src/views/home/components/register-about.tsx:86
 msgid "explore the Reserve Documentation for more details."
 msgstr ""
@@ -3725,6 +3740,7 @@ msgstr ""
 msgid "Explorer"
 msgstr ""
 
+#: src/views/home/components/discover-index-dtf/index-dtf-table-columns.tsx:236
 #: src/views/index-dtf/overview/components/basket-overview/basket-table-header.tsx:103
 msgid "Exposure"
 msgstr ""
@@ -3732,6 +3748,10 @@ msgstr ""
 #: src/views/index-dtf/overview/components/yield-index/yield-index-composition-tabs.tsx:14
 #: src/views/index-dtf/overview/components/yield-index/yield-index-composition-tabs.tsx:15
 msgid "Exposure Share"
+msgstr ""
+
+#: src/views/home/components/discover-index-dtf/basket-hover-card.tsx:39
+msgid "Exposure:"
 msgstr ""
 
 #: src/views/yield-dtf/governance/views/proposal-detail/components/proposal-summary/revenue-distribution-summary.tsx:39
@@ -3814,7 +3834,7 @@ msgid "Fee recipients"
 msgstr ""
 
 #: src/components/feedback-button/index.tsx:26
-#: src/components/layout/header/components/app-navigation.tsx:138
+#: src/components/layout/header/components/app-navigation.tsx:137
 msgid "Feedback"
 msgstr ""
 
@@ -3845,7 +3865,7 @@ msgstr ""
 msgid "Fetching..."
 msgstr ""
 
-#: src/components/layout/header/components/app-navigation.tsx:140
+#: src/components/layout/header/components/app-navigation.tsx:139
 msgid "File issues or upvote existing ones"
 msgstr ""
 
@@ -3924,7 +3944,7 @@ msgstr ""
 msgid "For approved governors to fast-track proposals."
 msgstr ""
 
-#: src/views/index-dtf/issuance/index.tsx:40
+#: src/views/index-dtf/components/compliance-alert.tsx:19
 msgid "For more information, see our <0>Terms of Use</0>."
 msgstr ""
 
@@ -4005,7 +4025,7 @@ msgstr ""
 msgid "Generate Asset Registry calls"
 msgstr ""
 
-#: src/components/layout/header/components/app-navigation.tsx:112
+#: src/components/layout/header/components/app-navigation.tsx:111
 msgid "Get an overview of everything going on"
 msgstr ""
 
@@ -4208,6 +4228,10 @@ msgstr ""
 msgid "High price impact: {0}"
 msgstr ""
 
+#: src/views/home/components/highlighted-dtfs.tsx:582
+msgid "Highlighted card chain"
+msgstr ""
+
 #: src/components/layout/navigation/TokenNavigation.tsx:182
 #: src/views/yield-dtf/overview/components/historical-metrics.tsx:14
 msgid "Historical metrics"
@@ -4347,9 +4371,9 @@ msgid "In Withdraw Process"
 msgstr ""
 
 #: src/components/inactive-badge.tsx:18
-#: src/views/home/components/discover-index-dtf/index-dtf-card.tsx:84
-#: src/views/home/components/discover-index-dtf/index-dtf-table-columns.tsx:60
+#: src/views/home/components/discover-index-dtf/index-dtf-table-columns.tsx:218
 #: src/views/home/components/discover-yield-dtf/yield-dtf-card.tsx:95
+#: src/views/home/components/highlighted-dtfs.tsx:650
 msgid "Inactive"
 msgstr ""
 
@@ -4662,7 +4686,7 @@ msgstr ""
 msgid "Items per page:"
 msgstr ""
 
-#: src/components/layout/header/components/app-navigation.tsx:164
+#: src/components/layout/header/components/app-navigation.tsx:163
 msgid "Join the conversation or ask questions"
 msgstr ""
 
@@ -4704,7 +4728,7 @@ msgstr ""
 msgid "Launch Status"
 msgstr ""
 
-#: src/components/layout/header/components/app-navigation.tsx:101
+#: src/components/layout/header/components/app-navigation.tsx:100
 msgid "Launch your own Index DTF"
 msgstr ""
 
@@ -4972,7 +4996,7 @@ msgstr ""
 msgid "Market Access and Redemption Risk: Minting and redemption for Ondo Tokenized Stocks may be permissioned, capacity-limited, subject to eligibility/whitelisting, and available only during defined windows or business-hour cutoffs tied to traditional market operations. These frictions can prevent arbitrage, impair exits at or near NAV, and amplify secondary-market dislocations, thereby resulting in a partial or total loss of the DTFs' holdings."
 msgstr ""
 
-#: src/views/home/components/discover-index-dtf/index-dtf-table-columns.tsx:165
+#: src/views/home/components/discover-index-dtf/index-dtf-table-columns.tsx:315
 #: src/views/home/components/discover-index-dtf/index-dtf-table-placeholder.tsx:21
 #: src/views/index-dtf/overview/components/basket-overview/basket-table-header.tsx:140
 #: src/views/index-dtf/overview/components/charts/data-type-selector.tsx:11
@@ -4987,6 +5011,10 @@ msgstr ""
 
 #: src/views/home/components/discover-yield-dtf/token-stats.tsx:26
 msgid "Market cap:"
+msgstr ""
+
+#: src/views/home/components/discover-index-dtf/index.tsx:16
+msgid "Market Cap:"
 msgstr ""
 
 #: src/components/ondo-badge.tsx:46
@@ -5277,7 +5305,7 @@ msgstr ""
 msgid "Monthly P&L"
 msgstr ""
 
-#: src/components/layout/header/components/app-navigation.tsx:209
+#: src/components/layout/header/components/app-navigation.tsx:208
 msgid "More"
 msgstr ""
 
@@ -5309,7 +5337,7 @@ msgstr ""
 msgid "Must be between 0 and 100"
 msgstr ""
 
-#: src/views/home/components/discover-index-dtf/index-dtf-table-columns.tsx:38
+#: src/views/home/components/discover-index-dtf/index-dtf-table-columns.tsx:188
 #: src/views/home/components/discover-index-dtf/index-dtf-table-placeholder.tsx:17
 #: src/views/index-dtf/deploy/steps/metadata/form-basic-metadata.tsx:10
 #: src/views/index-dtf/overview/components/eligibility-card.tsx:106
@@ -5491,7 +5519,8 @@ msgid "No changes"
 msgstr ""
 
 #: src/components/charts/area/AreaChart.tsx:132
-#: src/views/home/components/discover-index-dtf/index-dtf-table-columns.tsx:135
+#: src/views/home/components/discover-index-dtf/index-dtf-table-columns.tsx:137
+#: src/views/home/components/highlighted-dtfs.tsx:678
 #: src/views/index-dtf/overview/components/charts/percentage-change.tsx:27
 #: src/views/top100/components/top100-table.tsx:35
 #: src/views/top100/components/top100-table.tsx:43
@@ -5594,6 +5623,10 @@ msgstr ""
 msgid "No swap path found. Consider removing this token."
 msgstr ""
 
+#: src/views/home/components/discover-index-dtf/index-dtf-table-columns.tsx:226
+msgid "No tags"
+msgstr ""
+
 #: src/components/token-selector-drawer/index.tsx:224
 #: src/views/index-dtf/deploy/steps/basket/token-selector.tsx:374
 msgid "No tokens found"
@@ -5657,7 +5690,6 @@ msgstr ""
 msgid "Non-Basket Governance Settings"
 msgstr ""
 
-#: src/views/home/components/discover-index-dtf/index-dtf-table-columns.tsx:111
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ContractProposalDetails.tsx:103
 #: src/views/yield-dtf/governance/views/proposal/components/SpellUpgrade3_4_0.tsx:66
 #: src/views/yield-dtf/governance/views/proposal/components/SpellUpgrade4_2_0.tsx:67
@@ -5818,6 +5850,11 @@ msgstr ""
 msgid "open"
 msgstr ""
 
+#. placeholder {0}: selectedVersion.name
+#: src/views/home/components/highlighted-dtfs.tsx:739
+msgid "Open {0}"
+msgstr ""
+
 #: src/views/index-dtf/governance/components/governance-delegate-list.tsx:121
 msgid "Optimistic"
 msgstr ""
@@ -5923,7 +5960,7 @@ msgstr ""
 msgid "Parameters"
 msgstr ""
 
-#: src/components/layout/header/components/app-navigation.tsx:78
+#: src/components/layout/header/components/app-navigation.tsx:77
 msgid "Participate & Earn"
 msgstr ""
 
@@ -6058,7 +6095,7 @@ msgstr ""
 msgid "Performance (7d)"
 msgstr ""
 
-#: src/views/home/components/discover-index-dtf/index-dtf-table-columns.tsx:120
+#: src/views/home/components/discover-index-dtf/index-dtf-table-columns.tsx:355
 #: src/views/home/components/discover-index-dtf/index-dtf-table-placeholder.tsx:20
 msgid "Performance (Last 7 Days)"
 msgstr ""
@@ -6233,7 +6270,7 @@ msgstr ""
 msgid "Pool"
 msgstr ""
 
-#: src/components/layout/header/components/app-navigation.tsx:83
+#: src/components/layout/header/components/app-navigation.tsx:82
 #: src/views/portfolio-page/index.tsx:37
 #: src/views/portfolio-page/index.tsx:121
 msgid "Portfolio"
@@ -6307,6 +6344,7 @@ msgstr ""
 #: src/components/ondo-badge.tsx:124
 #: src/components/tables/ListedTokensTable.tsx:38
 #: src/views/explorer/components/tokens/index.tsx:152
+#: src/views/home/components/discover-index-dtf/index-dtf-table-columns.tsx:337
 #: src/views/index-dtf/auctions/views/rebalance/components/auction-bids-chart.tsx:159
 #: src/views/index-dtf/auctions/views/rebalance/components/auction-bids-chart.tsx:191
 #: src/views/index-dtf/overview/components/charts/data-type-selector.tsx:10
@@ -6971,7 +7009,7 @@ msgstr ""
 msgid "Replace Basket with CSV"
 msgstr ""
 
-#: src/views/index-dtf/overview/components/index-ctas-overview-mobile.tsx:79
+#: src/views/index-dtf/overview/components/index-ctas-overview-mobile.tsx:75
 msgid "Request access to this product"
 msgstr ""
 
@@ -7010,25 +7048,29 @@ msgstr ""
 msgid "Reserve aims to help people around the world maintain their spending power by allowing anyone to create asset-backed currencies with tokenized assets on the Ethereum blockchain in customizable and novel ways."
 msgstr ""
 
-#: src/components/layout/header/components/app-navigation.tsx:144
+#: src/components/layout/header/components/app-navigation.tsx:143
 msgid "Reserve Blog"
 msgstr ""
 
-#: src/components/layout/header/components/app-navigation.tsx:116
+#: src/components/layout/header/components/app-navigation.tsx:115
 msgid "Reserve Bridge"
 msgstr ""
 
-#: src/components/layout/header/components/app-navigation.tsx:150
+#: src/components/layout/header/components/app-navigation.tsx:149
 msgid "Reserve Docs"
 msgstr ""
 
-#: src/components/layout/header/components/app-navigation.tsx:156
+#: src/components/layout/header/components/app-navigation.tsx:155
 msgid "Reserve Forum"
 msgstr ""
 
-#: src/views/home/components/hero.tsx:14
-msgid "Reserve lets you buy entire portfolios<0/> as a single token"
+#: src/views/home/components/homepage-hero.tsx:26
+msgid "Reserve lets you buy entire portfolios as a single token"
 msgstr ""
+
+#: src/views/home/components/hero.tsx:14
+#~ msgid "Reserve lets you buy entire portfolios<0/> as a single token"
+#~ msgstr ""
 
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v5-optimistic-upgrade.tsx:302
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v5-optimistic-upgrade.tsx:310
@@ -7047,7 +7089,7 @@ msgstr ""
 msgid "reserve splash"
 msgstr ""
 
-#: src/components/layout/header/components/app-navigation.tsx:162
+#: src/components/layout/header/components/app-navigation.tsx:161
 msgid "Reserve Telegram"
 msgstr ""
 
@@ -7444,7 +7486,7 @@ msgstr ""
 msgid "Search by name, ticker or collateral"
 msgstr ""
 
-#: src/views/home/components/discover-filters.tsx:104
+#: src/views/home/components/discover-filters.tsx:117
 msgid "Search by name, ticker, tag or collateral"
 msgstr ""
 
@@ -7454,7 +7496,7 @@ msgstr ""
 msgid "Search by token name or address"
 msgstr ""
 
-#: src/views/earn/views/yield-dtf/components/table-filters.tsx:104
+#: src/views/earn/views/yield-dtf/components/table-filters.tsx:109
 msgid "Search DTF name or symbol"
 msgstr ""
 
@@ -7466,7 +7508,7 @@ msgstr ""
 msgid "Search for DTFs"
 msgstr ""
 
-#: src/views/earn/views/index-dtf/components/table-filters.tsx:105
+#: src/views/earn/views/index-dtf/components/table-filters.tsx:110
 msgid "Search gov token or DTF"
 msgstr ""
 
@@ -7531,7 +7573,7 @@ msgstr ""
 msgid "Sell"
 msgstr ""
 
-#: src/views/index-dtf/overview/components/index-ctas-overview-mobile.tsx:102
+#: src/views/index-dtf/overview/components/index-ctas-overview-mobile.tsx:98
 msgid "SELL"
 msgstr ""
 
@@ -8093,7 +8135,7 @@ msgstr ""
 msgid "Stay patient while the transaction is in progress & don't close this window to avoid issues finding your way back here."
 msgstr ""
 
-#: src/components/layout/header/components/app-navigation.tsx:146
+#: src/components/layout/header/components/app-navigation.tsx:145
 msgid "Stay up to date in long form"
 msgstr ""
 
@@ -8259,7 +8301,6 @@ msgstr ""
 msgid "Symbol"
 msgstr ""
 
-#: src/views/home/components/discover-index-dtf/index-dtf-table-columns.tsx:102
 #: src/views/home/components/discover-index-dtf/index-dtf-table-placeholder.tsx:19
 msgid "Tags"
 msgstr ""
@@ -8553,8 +8594,8 @@ msgid "There's two freezing roles that put the system in the same state for diff
 msgstr ""
 
 #: src/views/home/components/hero.tsx:19
-msgid "These tokenized portfolios are called DTFs: <0/><1>Decentralized Token Folios</1>"
-msgstr ""
+#~ msgid "These tokenized portfolios are called DTFs: <0/><1>Decentralized Token Folios</1>"
+#~ msgstr ""
 
 #: src/components/rtoken-setup/components/RolesEdit.tsx:37
 msgid "This address already holds this role"
@@ -8810,10 +8851,11 @@ msgid "Token name is required"
 msgstr ""
 
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/form-fields.ts:11
-msgid "Token name must be 32 characters or less"
-msgstr ""
+#~ msgid "Token name must be 32 characters or less"
+#~ msgstr ""
 
 #: src/views/index-dtf/deploy/form-fields.ts:79
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/form-fields.ts:11
 msgid "Token name must be 80 characters or less"
 msgstr ""
 
@@ -9106,7 +9148,7 @@ msgstr ""
 msgid "Transfer"
 msgstr ""
 
-#: src/components/layout/header/components/app-navigation.tsx:122
+#: src/components/layout/header/components/app-navigation.tsx:121
 msgid "Transfer DTFs across chains"
 msgstr ""
 
@@ -9230,7 +9272,7 @@ msgstr ""
 msgid "Underlying Token Exposure"
 msgstr ""
 
-#: src/components/layout/header/components/app-navigation.tsx:152
+#: src/components/layout/header/components/app-navigation.tsx:151
 msgid "Understand the project and protocols"
 msgstr ""
 
@@ -9584,7 +9626,7 @@ msgid "Vault change proposal"
 msgstr ""
 
 #: src/views/index-dtf/overview/components/index-ctas-overview-mobile.tsx:67
-#: src/views/index-dtf/overview/components/index-ctas-overview-mobile.tsx:76
+#: src/views/index-dtf/overview/components/index-ctas-overview-mobile.tsx:72
 msgid "Verify eligibility"
 msgstr ""
 
@@ -9679,11 +9721,11 @@ msgstr ""
 msgid "View {0} on block explorer"
 msgstr ""
 
-#: src/views/index-dtf/overview/components/basket-overview/index.tsx:145
+#: src/views/index-dtf/overview/components/basket-overview/index.tsx:142
 msgid "View all {activeCount} assets"
 msgstr ""
 
-#: src/views/index-dtf/overview/components/basket-overview/index.tsx:146
+#: src/views/index-dtf/overview/components/basket-overview/index.tsx:143
 msgid "View all {activeCount} tokens"
 msgstr ""
 
@@ -9691,7 +9733,6 @@ msgstr ""
 msgid "View all Index DTFs across networks for internal testing purposes"
 msgstr ""
 
-#: src/views/home/components/discover-index-dtf/basket-hover-card.tsx:94
 #: src/views/top100/components/top100-basket-hover-card.tsx:148
 msgid "View entire basket"
 msgstr ""
@@ -9711,7 +9752,7 @@ msgstr ""
 msgid "View in explorer"
 msgstr ""
 
-#: src/views/index-dtf/overview/components/basket-overview/index.tsx:143
+#: src/views/index-dtf/overview/components/basket-overview/index.tsx:140
 msgid "View less"
 msgstr ""
 
@@ -10123,12 +10164,33 @@ msgstr ""
 msgid "Warning: High price impact"
 msgstr ""
 
+#. placeholder {0}: dtf.name
+#: src/views/home/components/highlighted-dtfs.tsx:782
+msgid "Watch {0} explainer"
+msgstr ""
+
 #: src/components/yield-dtf-deploy-hero.tsx:63
 msgid "Watch an intro to RTokens"
 msgstr ""
 
 #: src/views/home/components/dtf-explainer-button.tsx:22
-msgid "Watch DTF Explainer"
+#~ msgid "Watch DTF Explainer"
+#~ msgstr ""
+
+#: src/views/home/components/homepage-hero.tsx:52
+msgid "Watch explainer"
+msgstr ""
+
+#: src/views/home/components/dtf-explainer-button.tsx:32
+msgid "Watch Explainer"
+msgstr ""
+
+#: src/views/home/components/highlighted-dtfs.tsx:786
+msgid "Watch Video"
+msgstr ""
+
+#: src/views/home/components/homepage-hero.tsx:39
+msgid "We call these tokenized portfolios DTFs:"
 msgstr ""
 
 #: src/views/index-dtf/governance/components/proposal-preview/unknown-contract-preview.tsx:52
@@ -10187,7 +10249,7 @@ msgstr ""
 msgid "Welcome to Reserve — a platform for creating, exploring, and interacting with Decentralized Token Folios (“DTFs”). A DTF is the generic name given to any onchain asset-backed index. DTFs can be created on Reserve’s Yield Protocol or Index Protocol permissionlessly, by any person or entity."
 msgstr ""
 
-#: src/views/home/components/dtf-explainer-button.tsx:31
+#: src/views/home/components/dtf-explainer-button.tsx:41
 msgid "What is a <0>DTF</0>?"
 msgstr ""
 
@@ -10341,7 +10403,7 @@ msgstr ""
 msgid "Yield"
 msgstr ""
 
-#: src/components/layout/header/components/app-navigation.tsx:126
+#: src/components/layout/header/components/app-navigation.tsx:125
 msgid "Yield DTF Creator"
 msgstr ""
 

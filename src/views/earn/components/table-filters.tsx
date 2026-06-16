@@ -67,7 +67,7 @@ const FilterOptions = () => {
       type="single"
       value={selected.toString()}
       onValueChange={handleSelect}
-      className="bg-card rounded-3xl px-4 py-4 h-auto"
+      className="h-[68px] rounded-3xl bg-card px-4"
     >
       {options.map(({ key, text, icon }, index) => (
         <ToggleGroupItem
@@ -122,6 +122,7 @@ const TableFilters = () => {
         value={search}
         onChange={(e) => setSearch(e.target.value)}
         className="flex-grow [&_input]:border-none [&_input]:rounded-none [&_input]:rounded-tl-3xl [&_input]:rounded-tr-3xl lg:[&_input]:rounded-3xl"
+        inputClassName="h-[68px]"
       />
       <div className="hidden lg:flex">
         <FilterOptions />

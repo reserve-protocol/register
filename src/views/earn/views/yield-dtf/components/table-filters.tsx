@@ -23,7 +23,7 @@ const DtfFilterDropdown = () => {
 
   const options = useMemo(() => {
     return availableDtfs.map((dtfSymbol) => {
-      const dtfData = yieldDTFList?.find(dtf => dtf.symbol === dtfSymbol)
+      const dtfData = yieldDTFList?.find((dtf) => dtf.symbol === dtfSymbol)
       return {
         value: dtfSymbol,
         label: dtfSymbol,
@@ -60,7 +60,7 @@ const DtfFilterDropdown = () => {
     const limitedDtfs = dtfsToShow.slice(0, 5)
 
     return limitedDtfs.map((dtfSymbol) => {
-      const dtfData = yieldDTFList?.find(dtf => dtf.symbol === dtfSymbol)
+      const dtfData = yieldDTFList?.find((dtf) => dtf.symbol === dtfSymbol)
       return {
         symbol: dtfSymbol,
         address: dtfData?.id || dtfSymbol,
@@ -78,11 +78,16 @@ const DtfFilterDropdown = () => {
         onChange={handleChange}
         placeholder={t`Filter by DTFs`}
         allOption={true}
-        className="w-full min-w-[200px] h-16 px-4 justify-between bg-transparent hover:bg-transparent text-foreground rounded-3xl"
+        className="h-[68px] w-full min-w-[200px] justify-between rounded-3xl bg-transparent px-4 text-foreground hover:bg-transparent"
       >
         <div className="flex items-center gap-2">
           {getStackedTokens.length > 0 ? (
-            <StackTokenLogo tokens={getStackedTokens} size={16} overlap={4} outsource={false} />
+            <StackTokenLogo
+              tokens={getStackedTokens}
+              size={16}
+              overlap={4}
+              outsource={false}
+            />
           ) : (
             <CircleIcon className="h-4 w-4" />
           )}
@@ -105,6 +110,7 @@ const TableFilters = () => {
         value={search}
         onChange={(e) => setSearch(e.target.value)}
         className="flex-grow [&_input]:border-none [&_input]:rounded-none [&_input]:rounded-tl-3xl [&_input]:rounded-tr-3xl lg:[&_input]:rounded-3xl"
+        inputClassName="h-[68px]"
       />
       <DtfFilterDropdown />
       <YieldChainFilter value={chains} onChange={setChains} />

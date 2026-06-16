@@ -1,10 +1,11 @@
 import ChainLogo from '@/components/icons/ChainLogo'
+import SquareStackedChainLogo from '@/components/icons/SquareStackedChainLogo'
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
+import { cn } from '@/lib/utils'
 import { ChainId } from '@/utils/chains'
 import type { MessageDescriptor } from '@lingui/core'
 import { msg } from '@lingui/core/macro'
 import { useLingui } from '@lingui/react/macro'
-import { LayoutGrid } from 'lucide-react'
 import { useEffect, useState } from 'react'
 
 interface YieldChainFilterProps {
@@ -21,21 +22,18 @@ const chains: {
   filter: string[]
 }[] = [
   {
-    icon: <LayoutGrid />,
+    icon: <SquareStackedChainLogo chains={[ChainId.Mainnet, ChainId.Base]} />,
     text: 'All chains',
     label: msg`All chains`,
-    filter: [
-      ChainId.Mainnet.toString(),
-      ChainId.Base.toString(),
-    ],
+    filter: [ChainId.Mainnet.toString(), ChainId.Base.toString()],
   },
   {
-    icon: <ChainLogo chain={ChainId.Mainnet} />,
+    icon: <ChainLogo chain={ChainId.Mainnet} className="h-5 w-5 rounded-md" />,
     text: 'Ethereum',
     filter: [ChainId.Mainnet.toString()],
   },
   {
-    icon: <ChainLogo chain={ChainId.Base} />,
+    icon: <ChainLogo chain={ChainId.Base} className="h-5 w-5 rounded-md" />,
     text: 'Base',
     filter: [ChainId.Base.toString()],
   },
@@ -63,28 +61,38 @@ const YieldChainFilter = (props: YieldChainFilterProps) => {
     setFilters(chains[Number(value)]?.filter ?? [])
   }
 
-  const displayClassName = className || "bg-card rounded-bl-3xl rounded-br-3xl lg:rounded-3xl px-4 py-4 h-auto"
-
   return (
-    <ToggleGroup
-      type="single"
-      value={selected}
-      onValueChange={handleSelect}
-      className={displayClassName}
+    <div
+      className={cn(
+        'rounded-bl-3xl rounded-br-3xl bg-card px-4 py-4 lg:rounded-3xl',
+        className
+      )}
     >
-      {chains.map(({ text, label, icon }, index) => (
-        <ToggleGroupItem
-          key={text}
-          value={index.toString()}
-          className="flex items-center gap-0 h-8 px-2 data-[state=on]:bg-muted data-[state=on]:text-primary hover:text-primary hover:bg-muted"
-        >
-          {icon}
-          <span className="hidden md:block ml-[6px]">
-            {label ? t(label) : text}
-          </span>
-        </ToggleGroupItem>
-      ))}
-    </ToggleGroup>
+      <ToggleGroup
+        type="single"
+        value={selected}
+        onValueChange={handleSelect}
+        className="w-full justify-start gap-0.5 overflow-x-auto rounded-full bg-muted p-0.5 sm:w-auto lg:justify-center"
+      >
+        {chains.map(({ text, label, icon }, index) => (
+          <ToggleGroupItem
+            key={text}
+            value={index.toString()}
+            className={cn(
+              'h-8 min-w-0 flex-1 gap-1.5 rounded-full px-3 text-sm font-medium text-legend transition-[background-color,color] sm:flex-none',
+              'data-[state=off]:hover:bg-foreground/5 data-[state=off]:hover:text-foreground',
+              'data-[state=on]:bg-card data-[state=on]:text-foreground',
+              'dark:data-[state=on]:bg-card dark:data-[state=on]:text-foreground'
+            )}
+          >
+            {icon}
+            <span className="hidden sm:inline">
+              {label ? t(label) : text}
+            </span>
+          </ToggleGroupItem>
+        ))}
+      </ToggleGroup>
+    </div>
   )
 }
 
