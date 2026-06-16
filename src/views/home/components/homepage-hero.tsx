@@ -16,7 +16,9 @@ import ProtocolMetrics from './protocol-metrics'
 const Header = ({ className }: { className?: string }) => (
   <h1
     className={cn(
-      'text-[32px] font-normal max-w-[400px] leading-[1.25] text-primary dark:text-foreground md:text-[36px]',
+      'max-w-[400px] text-[32px] font-normal leading-[1.25] text-primary',
+      'dark:text-foreground',
+      'md:text-[36px]',
       className
     )}
   >
@@ -27,7 +29,8 @@ const Header = ({ className }: { className?: string }) => (
 const SubHeader = ({ className }: { className?: string }) => (
   <p
     className={cn(
-      'leading-[1.25] flex flex-col items-center gap-1 text-foreground dark:text-foreground',
+      'flex flex-col items-center gap-1 leading-[1.25] text-foreground',
+      'dark:text-foreground',
       className
     )}
   >
@@ -35,7 +38,13 @@ const SubHeader = ({ className }: { className?: string }) => (
       We call these tokenized portfolios DTFs:
     </span>
     <span className="text-xl font-medium">Decentralized Token Folios</span>
-    <DTFExplainerButton className="mt-6 h-9 w-fit rounded-full border-0 bg-transparent px-4 py-0 text-base text-primary hover:bg-primary hover:text-background dark:bg-transparent dark:text-legend dark:hover:bg-primary dark:hover:text-white">
+    <DTFExplainerButton
+      className={cn(
+        'mt-6 h-9 w-fit rounded-full border-0 bg-transparent px-4 py-0 text-base text-primary',
+        'hover:bg-primary hover:text-background',
+        'dark:bg-transparent dark:text-legend dark:hover:bg-primary dark:hover:text-white'
+      )}
+    >
       <Play className="mr-1 h-4 w-4 fill-current" />
       Watch explainer
     </DTFExplainerButton>
@@ -47,7 +56,7 @@ const MetricsContainer = () => {
     <div
       className={cn(
         'flex w-full min-w-0 gap-1 overflow-hidden rounded-none border-t-2 border-card bg-card/20 px-6 py-4 backdrop-blur-[7px] shadow-[0_-20px_70px_rgba(0,0,0,0.1)]',
-        'lg:w-auto lg:rounded-full lg:border-2 lg:overflow-visible lg:px-[64px] lg:py-6 lg:shadow-[0_20px_70px_rgba(0,0,0,0.1)]'
+        'lg:w-auto lg:overflow-visible lg:rounded-full lg:border-2 lg:px-[64px] lg:py-6 lg:shadow-[0_20px_70px_rgba(0,0,0,0.1)]'
       )}
     >
       <ProtocolMetrics />
@@ -157,11 +166,33 @@ const HomepageHero = () => {
     <div
       ref={stageRef}
       style={stageStyle}
-      className="relative h-auto rounded-t-4xl xl:h-[calc(100svh-72px+var(--highlighted-scroll-distance))] lg:mx-2 2xl:mx-0"
+      className={cn(
+        'relative h-auto rounded-t-4xl',
+        'lg:mx-2',
+        'xl:h-[calc(100svh-72px+var(--highlighted-scroll-distance))]',
+        '2xl:mx-0'
+      )}
     >
-      <div className="flex min-h-0 flex-col overflow-visible xl:sticky xl:top-0 xl:h-[calc(100svh-72px)] xl:overflow-hidden">
-        <div className="grid min-h-0 flex-1 grid-rows-[auto_minmax(0,1fr)] gap-1 overflow-hidden border-[4px] border-b-0 border-secondary bg-secondary lg:rounded-t-4xl xl:grid-cols-[minmax(0,1fr)_minmax(420px,1fr)] xl:grid-rows-1">
-          <div className="flex min-h-0 flex-col items-center justify-center gap-4 rounded-3xl rounded-t-none bg-background p-4 pb-10 lg:rounded-3xl lg:rounded-b-3xl lg:pb-[132px] xl:pb-[184px] xl:rounded-bl-none">
+      <div
+        className={cn(
+          'flex min-h-0 flex-col overflow-visible',
+          'xl:sticky xl:top-0 xl:h-[calc(100svh-72px)] xl:overflow-hidden'
+        )}
+      >
+        <div
+          className={cn(
+            'grid min-h-0 flex-1 grid-rows-[auto_minmax(0,1fr)] gap-1 overflow-hidden border-[4px] border-b-0 border-secondary bg-secondary',
+            'lg:rounded-t-4xl',
+            'xl:grid-cols-[minmax(0,1fr)_minmax(420px,1fr)] xl:grid-rows-1'
+          )}
+        >
+          <div
+            className={cn(
+              'flex min-h-0 flex-col items-center justify-center gap-4 rounded-3xl rounded-t-none bg-background p-4 pb-10',
+              'lg:rounded-3xl lg:rounded-b-3xl lg:pb-[132px]',
+              'xl:rounded-bl-none xl:pb-[184px]'
+            )}
+          >
             <div className="flex w-full max-w-[520px] flex-col items-center">
               <DTFPackingAnimation />
               <Header className="text-center mb-3" />
@@ -177,7 +208,9 @@ const HomepageHero = () => {
         </div>
         <div
           className={cn(
-            'pointer-events-none fixed inset-x-0 bottom-0 z-20 flex flex-col gap-2 transition-all duration-300 ease-out lg:bottom-10 lg:items-center lg:px-6 xl:absolute xl:inset-x-0 xl:flex-row xl:justify-center',
+            'pointer-events-none fixed inset-x-0 bottom-0 z-20 flex flex-col gap-2 transition-all duration-300 ease-out',
+            'lg:bottom-10 lg:items-center lg:px-6',
+            'xl:absolute xl:inset-x-0 xl:flex-row xl:justify-center',
             isStatsHidden
               ? 'translate-y-4 opacity-0'
               : 'translate-y-0 opacity-100'

@@ -345,11 +345,17 @@ const HighlightedDTFCard = ({ dtf }: { dtf: HighlightedDTFItem }) => {
         }
       }}
       className={cn(
-        'group flex w-full shrink-0 flex-col gap-1 rounded-3xl bg-card p-1 lg:bg-background lg:hover:bg-card',
+        'group flex w-full shrink-0 flex-col gap-1 rounded-3xl bg-card p-1',
+        'lg:bg-background lg:hover:bg-card',
         isInactiveDTF(selectedVersion.status) && 'opacity-60'
       )}
     >
-      <div className="flex flex-col overflow-hidden rounded-t-2xl bg-gradient-to-b from-secondary to-card lg:from-secondary/80 lg:group-hover:from-card">
+      <div
+        className={cn(
+          'flex flex-col overflow-hidden rounded-t-2xl bg-gradient-to-b from-secondary to-card',
+          'lg:from-secondary/80 lg:group-hover:from-card'
+        )}
+      >
         <div className="flex min-w-0 flex-col gap-3 p-5 pb-2">
           <div className="flex min-w-0 items-start justify-between">
             <div className="relative w-fit flex-shrink-0">
@@ -358,7 +364,7 @@ const HighlightedDTFCard = ({ dtf }: { dtf: HighlightedDTFItem }) => {
                 chain={selectedVersion.chainId}
                 width={16}
                 height={16}
-                className="absolute -bottom-0.5 -right-1 rounded-md border-2 border-secondary group-hover:border-card bg-card"
+                className="absolute -bottom-0.5 -right-1 rounded-md border-2 border-secondary bg-card group-hover:border-card"
               />
             </div>
 
@@ -380,7 +386,11 @@ const HighlightedDTFCard = ({ dtf }: { dtf: HighlightedDTFItem }) => {
                     <div
                       role="tablist"
                       aria-label="Highlighted card chain"
-                      className="inline-flex items-center rounded-full bg-primary/10 px-[2px] gap-0.5 py-0.5 transition-colors dark:border dark:border-foreground dark:bg-secondary dark:group-hover:border-secondary lg:group-hover lg:group-hover:bg-muted"
+                      className={cn(
+                        'inline-flex items-center gap-0.5 rounded-full bg-primary/10 px-[2px] py-0.5 transition-colors',
+                        'dark:border dark:border-foreground dark:bg-secondary dark:group-hover:border-secondary',
+                        'lg:group-hover lg:group-hover:bg-muted'
+                      )}
                     >
                       {chainTabs.map((version, index) => (
                         <button
@@ -389,9 +399,11 @@ const HighlightedDTFCard = ({ dtf }: { dtf: HighlightedDTFItem }) => {
                           role="tab"
                           aria-selected={index === selectedVersionIndex}
                           className={cn(
-                            'inline-flex h-7 items-center justify-center gap-0 whitespace-nowrap rounded-full px-3 text-xs font-medium text-legend transition-[background-color,color,gap,padding] hover:text-foreground lg:group-hover:px-2 lg:group-hover:pr-3 lg:group-hover:gap-1',
+                            'inline-flex h-7 items-center justify-center gap-0 whitespace-nowrap rounded-full px-3 text-xs font-medium text-legend transition-[background-color,color,gap,padding]',
+                            'hover:text-foreground',
+                            'lg:group-hover:gap-1 lg:group-hover:px-2 lg:group-hover:pr-3',
                             index === selectedVersionIndex &&
-                              'bg-background dark:bg-foreground text-foreground lg:group-hover:bg-card dark:group-hover:bg-foreground dark:group-hover:text-background',
+                              'bg-background text-foreground dark:bg-foreground lg:group-hover:bg-card dark:group-hover:bg-foreground dark:group-hover:text-background',
                             index !== selectedVersionIndex &&
                               'hover:bg-background'
                           )}
@@ -403,7 +415,7 @@ const HighlightedDTFCard = ({ dtf }: { dtf: HighlightedDTFItem }) => {
                             chain={version.chainId}
                             width={16}
                             height={16}
-                            className="shrink-0 border-2 border-card rounded-md dark:border-none"
+                            className="shrink-0 rounded-md border-2 border-card dark:border-none"
                           />
                           <span className="max-w-0 overflow-hidden opacity-0 transition-[max-width,opacity] duration-150 ease-out lg:group-hover:max-w-12 lg:group-hover:opacity-100">
                             {version.versionLabel}
@@ -572,13 +584,30 @@ const HighlightedDTFCard = ({ dtf }: { dtf: HighlightedDTFItem }) => {
                 />
               </AreaChart>
             </ChartContainer>
-            <div className="pointer-events-none absolute inset-x-0 bottom-0 h-12 bg-gradient-to-b from-card/0 to-card lg:from-background/0 lg:to-background lg:group-hover:from-card/0 lg:group-hover:to-card lg:group-focus-within:from-card/0 lg:group-focus-within:to-card" />
+            <div
+              className={cn(
+                'pointer-events-none absolute inset-x-0 bottom-0 h-12 bg-gradient-to-b from-card/0 to-card',
+                'lg:from-background/0 lg:to-background',
+                'lg:group-hover:from-card/0 lg:group-hover:to-card',
+                'lg:group-focus-within:from-card/0 lg:group-focus-within:to-card'
+              )}
+            />
           </div>
         )}
       </div>
-      <div className="relative overflow-hidden rounded-full bg-card border border-card p-2 pr-0.5 pl-0 lg:border-secondary lg:group-hover:border-card">
-        <div className="pointer-events-none absolute inset-y-0 -right-px z-10 w-20 bg-gradient-to-l from-card via-card to-transparent opacity-100 transition-opacity duration-150 lg:opacity-65 lg:group-hover:opacity-100 lg:group-focus-within:opacity-100" />
-        <div className="flex pr-12 pl-2 overflow-hidden">
+      <div
+        className={cn(
+          'relative overflow-hidden rounded-full border border-card bg-card p-2 pl-0 pr-0.5',
+          'lg:border-secondary lg:group-hover:border-card'
+        )}
+      >
+        <div
+          className={cn(
+            'pointer-events-none absolute inset-y-0 -right-px z-10 w-20 bg-gradient-to-l from-card via-card to-transparent opacity-100 transition-opacity duration-150',
+            'lg:opacity-65 lg:group-hover:opacity-100 lg:group-focus-within:opacity-100'
+          )}
+        />
+        <div className="flex overflow-hidden pl-2 pr-12">
           <div
             className={cn(
               'will-change-transform',
@@ -590,7 +619,10 @@ const HighlightedDTFCard = ({ dtf }: { dtf: HighlightedDTFItem }) => {
           >
             <div
               key={displayedAssetVersionKey}
-              className="flex w-max gap-0 [animation:collateral-assets-scroll_18s_linear_infinite] motion-reduce:animate-none lg:[animation:none] lg:group-hover:[animation:collateral-assets-scroll_18s_linear_infinite]"
+              className={cn(
+                'flex w-max gap-0 [animation:collateral-assets-scroll_18s_linear_infinite] motion-reduce:animate-none',
+                'lg:[animation:none] lg:group-hover:[animation:collateral-assets-scroll_18s_linear_infinite]'
+              )}
             >
               {[...displayedBacking, ...displayedBacking].map(
                 (token, index) => (
@@ -606,7 +638,11 @@ const HighlightedDTFCard = ({ dtf }: { dtf: HighlightedDTFItem }) => {
         <Button
           variant="none"
           size="icon-rounded"
-          className="absolute right-2 top-1/2 z-20 h-8 w-8 -translate-y-1/2 shrink-0 bg-muted text-foreground opacity-100 transition-colors duration-150 lg:bg-card lg:opacity-0 lg:group-hover:bg-muted lg:group-hover:opacity-100 lg:group-focus-within:opacity-100 hover:!bg-primary hover:!text-primary-foreground"
+          className={cn(
+            'absolute right-2 top-1/2 z-20 h-8 w-8 -translate-y-1/2 shrink-0 bg-muted text-foreground opacity-100 transition-colors duration-150',
+            'hover:!bg-primary hover:!text-primary-foreground',
+            'lg:bg-card lg:opacity-0 lg:group-hover:bg-muted lg:group-hover:opacity-100 lg:group-focus-within:opacity-100'
+          )}
           aria-label={`Open ${selectedVersion.name}`}
         >
           <ArrowRight size={16} />
