@@ -32,7 +32,7 @@ const ProposeMetadata = () => {
               <FormControl>
                 <Input
                   placeholder={t`Enter token name`}
-                  maxLength={32}
+                  maxLength={80}
                   className="text-base"
                   {...field}
                 />

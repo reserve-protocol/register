@@ -8,7 +8,7 @@ import { z } from 'zod'
 
 const messages = {
   tokenNameRequired: msg`Token name is required`,
-  tokenNameMax: msg`Token name must be 32 characters or less`,
+  tokenNameMax: msg`Token name must be 80 characters or less`,
   invalidAddress: msg`Invalid Address`,
   tvlFeeMin: msg`Annualized TVL Fee must be 0.15% or greater`,
   tvlFeeMax: msg`Annualized TVL Fee must be 10% or less`,
@@ -47,7 +47,7 @@ export const buildProposeSettingsSchema = (
       tokenName: z
         .string()
         .min(1, t(messages.tokenNameRequired))
-        .max(32, t(messages.tokenNameMax)),
+        .max(80, t(messages.tokenNameMax)),
       mandate: z.string(),
       governanceVoteLock: z
         .string()
