@@ -51,6 +51,7 @@ import { useWalletClient } from 'wagmi'
 import { readContracts } from 'wagmi/actions'
 import { useAsyncZap } from '../async-zap-context'
 import LegRow from '../components/leg-row'
+import OndoLimitsBanner from '../components/ondo-limits-banner'
 import { usePriceImpact } from '../hooks/use-price-impact'
 import { useTrackAsyncZap } from '../hooks/use-track-async-zap'
 import { useWizardBalances } from '../hooks/use-wizard-balances'
@@ -366,6 +367,8 @@ const QuoteSummary = () => {
     (ls) => ls.status === 'error' || !!ls.leg.error
   )
   const quoteErrors = quote?.errors ?? []
+  // One message per line, deduped — order-size errors arrive one per asset.
+  const uniqueQuoteErrors = [...new Set(quoteErrors.map((e) => e.message))]
   const readySwapCount = cowLegStates.filter(
     (ls) => ls.status === 'success'
   ).length
@@ -1017,9 +1020,12 @@ const QuoteSummary = () => {
               </div>
             </button>
 
-            {quoteErrors.length > 0 && (
-              <div className="mx-4 mb-3 rounded-xl border border-destructive/25 bg-destructive/10 text-destructive px-4 py-2 text-sm">
-                {quoteErrors.map((e) => e.message).join(' ')}
+            <OndoLimitsBanner className="mx-4 mb-3 w-auto" />
+            {uniqueQuoteErrors.length > 0 && (
+              <div className="mx-4 mb-3 space-y-1 rounded-xl border border-destructive/25 bg-destructive/10 text-destructive px-4 py-2 text-sm">
+                {uniqueQuoteErrors.map((message) => (
+                  <div key={message}>{message}</div>
+                ))}
               </div>
             )}
 
