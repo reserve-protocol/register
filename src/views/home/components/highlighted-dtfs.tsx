@@ -211,6 +211,7 @@ const CollateralAssetItem = ({
 )
 
 const HighlightedDTFCard = ({ dtf }: { dtf: HighlightedDTFItem }) => {
+  const cardRef = useRef<HTMLAnchorElement>(null)
   const chainVersions = dtf.chainVersions
   const [selectedVersionIndex, setSelectedVersionIndex] = useState(0)
   const selectedVersion = chainVersions?.[selectedVersionIndex] ?? dtf
@@ -256,12 +257,34 @@ const HighlightedDTFCard = ({ dtf }: { dtf: HighlightedDTFItem }) => {
         : '#6F6456'
   const transcriptWordRefs = useRef<(HTMLSpanElement | null)[]>([])
   const [isTranscriptActive, setIsTranscriptActive] = useState(false)
+  const [isAssetTickerVisible, setIsAssetTickerVisible] = useState(false)
   const [highlightedWords, setHighlightedWords] = useState(0)
   const [transcriptScrollOffset, setTranscriptScrollOffset] = useState(0)
   const isDesktop = useIsDesktop()
   const isActive = !isDesktop || isTranscriptActive
   const hasChainTabs = (chainVersions?.length ?? 0) > 1
   const chainTabs = chainVersions ?? []
+
+  useEffect(() => {
+    if (isDesktop) {
+      setIsAssetTickerVisible(false)
+      return
+    }
+
+    const card = cardRef.current
+    if (!card) return
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsAssetTickerVisible(entry.intersectionRatio >= 0.85)
+      },
+      { threshold: [0, 0.85] }
+    )
+
+    observer.observe(card)
+
+    return () => observer.disconnect()
+  }, [isDesktop])
 
   useEffect(() => {
     if (previousAssetVersionKeyRef.current === assetVersionKey) return
@@ -335,6 +358,7 @@ const HighlightedDTFCard = ({ dtf }: { dtf: HighlightedDTFItem }) => {
 
   return (
     <Link
+      ref={cardRef}
       to={getFolioRoute(selectedVersion.address, selectedVersion.chainId)}
       onMouseEnter={() => isDesktop && setIsTranscriptActive(true)}
       onMouseLeave={() => isDesktop && setIsTranscriptActive(false)}
@@ -620,7 +644,9 @@ const HighlightedDTFCard = ({ dtf }: { dtf: HighlightedDTFItem }) => {
             <div
               key={displayedAssetVersionKey}
               className={cn(
-                'flex w-max gap-0 [animation:collateral-assets-scroll_18s_linear_infinite] motion-reduce:animate-none',
+                'flex w-max gap-0 motion-reduce:animate-none',
+                isAssetTickerVisible &&
+                  '[animation:collateral-assets-scroll_18s_linear_infinite]',
                 'lg:[animation:none] lg:group-hover:[animation:collateral-assets-scroll_18s_linear_infinite]'
               )}
             >
