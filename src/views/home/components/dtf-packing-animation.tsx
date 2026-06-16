@@ -132,7 +132,7 @@ const getGeometry = (
   centerY: number,
   visual: VisualGeometry
 ): Geometry => {
-  const safeWidth = Math.max(width, 320)
+  const safeWidth = width
   const centerX = safeWidth / 2
   const textPathRadius = visual.trajectoryRadius + TEXT_PATH_GAP
   const cardPadding = visual.trajectoryRadius - visual.logoRadius
