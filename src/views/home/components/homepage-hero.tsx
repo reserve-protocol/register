@@ -46,8 +46,8 @@ const MetricsContainer = () => {
   return (
     <div
       className={cn(
-        'flex w-full min-w-0 gap-1 overflow-hidden rounded-full border-2 border-card bg-card/20 px-6 py-4 backdrop-blur-[7px] shadow-[0_20px_70px_rgba(0,0,0,0.06)]',
-        'lg:w-auto lg:overflow-visible lg:px-[64px] lg:py-6'
+        'flex w-full min-w-0 gap-1 overflow-hidden rounded-none border-t-2 border-card bg-card/20 px-6 py-4 backdrop-blur-[7px] shadow-[0_-20px_70px_rgba(0,0,0,0.1)]',
+        'lg:w-auto lg:rounded-full lg:border-2 lg:overflow-visible lg:px-[64px] lg:py-6 lg:shadow-[0_20px_70px_rgba(0,0,0,0.1)]'
       )}
     >
       <ProtocolMetrics />
@@ -161,7 +161,7 @@ const HomepageHero = () => {
     >
       <div className="flex min-h-0 flex-col overflow-visible xl:sticky xl:top-0 xl:h-[calc(100svh-72px)] xl:overflow-hidden">
         <div className="grid min-h-0 flex-1 grid-rows-[auto_minmax(0,1fr)] gap-1 overflow-hidden border-[4px] border-b-0 border-secondary bg-secondary lg:rounded-t-4xl xl:grid-cols-[minmax(0,1fr)_minmax(420px,1fr)] xl:grid-rows-1">
-          <div className="flex min-h-0 flex-col items-center justify-center gap-4 rounded-3xl rounded-t-none bg-background dark:bg-secondary p-4 pb-10 lg:rounded-3xl lg:rounded-b-3xl lg:pb-[132px] xl:pb-[184px] xl:rounded-bl-none">
+          <div className="flex min-h-0 flex-col items-center justify-center gap-4 rounded-3xl rounded-t-none bg-background p-4 pb-10 lg:rounded-3xl lg:rounded-b-3xl lg:pb-[132px] xl:pb-[184px] xl:rounded-bl-none">
             <div className="flex w-full max-w-[520px] flex-col items-center">
               <DTFPackingAnimation />
               <Header className="text-center mb-3" />
@@ -177,7 +177,7 @@ const HomepageHero = () => {
         </div>
         <div
           className={cn(
-            'pointer-events-none fixed inset-x-1 bottom-1 z-20 flex flex-col gap-2 transition-all duration-300 ease-out lg:bottom-10 lg:items-center lg:px-6 xl:absolute xl:inset-x-0 xl:flex-row xl:justify-center',
+            'pointer-events-none fixed inset-x-0 bottom-0 z-20 flex flex-col gap-2 transition-all duration-300 ease-out lg:bottom-10 lg:items-center lg:px-6 xl:absolute xl:inset-x-0 xl:flex-row xl:justify-center',
             isStatsHidden
               ? 'translate-y-4 opacity-0'
               : 'translate-y-0 opacity-100'

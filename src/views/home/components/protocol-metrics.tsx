@@ -23,7 +23,7 @@ const MetricBox = ({
     <TooltipTrigger asChild>
       <div
         aria-hidden={ariaHidden || undefined}
-        className="flex min-w-max flex-shrink-0 flex-col items-center justify-center gap-1"
+        className="flex min-w-max flex-shrink-0 flex-row lg:flex-col items-center justify-center gap-1"
       >
         <span className="whitespace-nowrap dark:text-legend">{label}</span>
         {value !== undefined ? (
@@ -96,7 +96,7 @@ const ProtocolMetrics = () => {
     <div className="w-full min-w-0 overflow-visible lg:w-auto">
       <div
         ref={ref}
-        className="flex items-center gap-10 will-change-transform touch-pan-y select-none lg:touch-auto"
+        className="flex items-center gap-6 will-change-transform touch-pan-y select-none lg:gap-10 lg:touch-auto"
       >
         {renderBoxes(0)}
         {!disabled && renderBoxes(1)}
