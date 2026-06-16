@@ -1,4 +1,5 @@
 import TokenLogo from '@/components/token-logo'
+import AudioEqualizerIcon from '@/components/icons/AudioEqualizerIcon'
 import ChainLogo from '@/components/icons/ChainLogo'
 import { Button } from '@/components/ui/button'
 import { ChartConfig, ChartContainer } from '@/components/ui/chart'
@@ -709,11 +710,12 @@ const HighlightedDTFCard = ({ dtf }: { dtf: HighlightedDTFItem }) => {
         <Button
           variant="none"
           size="inline"
-          className="shrink-0 bg-transparent p-0 text-xs text-primary hover:bg-transparent hover:text-primary/80"
+          className="inline-flex shrink-0 items-center gap-1 bg-transparent p-0 text-xs text-primary hover:bg-transparent hover:text-primary/80"
           aria-label={`Watch ${dtf.name} explainer`}
           onClick={(event) => event.preventDefault()}
         >
-          Watch Video
+          <span>Watch Video</span>
+          <AudioEqualizerIcon className="h-3 w-0 shrink-0 opacity-0 transition-[width,opacity] duration-150 lg:group-hover:w-3 lg:group-hover:opacity-100" />
         </Button>
       </div>
     </Link>
