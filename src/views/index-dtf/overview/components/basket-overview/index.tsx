@@ -8,6 +8,7 @@ import { useLingui } from '@lingui/react/macro'
 import { toast } from 'sonner'
 import { BasketTableBody } from './basket-table-body'
 import { BasketTableHeader, SortConfig, SortDirection, SortField } from './basket-table-header'
+import { buildExposureRows } from './exposure-rows'
 import { useBasketOverviewData } from './use-basket-overview-data'
 
 const MAX_TOKENS = 10
@@ -84,23 +85,19 @@ const IndexBasketOverview = () => {
     })
   }, [filtered, isExposure, sortConfig, basketShares, basketPerformanceChanges])
 
-  const sortedExposureGroups = useMemo(() => {
-    if (!exposureGroups || !isExposure) return exposureGroups
+  const sortedExposureRows = useMemo(() => {
+    if (!exposureGroups || !isExposure) return null
 
-    return [...exposureGroups].sort(([, aGroup], [, bGroup]) => {
+    return buildExposureRows(exposureGroups).sort((a, b) => {
       if (sortConfig.field === 'weight') {
-        return compareValues(
-          aGroup.totalWeight || 0,
-          bGroup.totalWeight || 0,
-          sortConfig.direction
-        )
+        return compareValues(a.weight, b.weight, sortConfig.direction)
       }
-      return compareValues(aGroup.change, bGroup.change, sortConfig.direction)
+      return compareValues(a.change, b.change, sortConfig.direction)
     })
   }, [exposureGroups, isExposure, sortConfig])
 
   const activeCount = isExposure
-    ? (sortedExposureGroups?.length ?? 0)
+    ? (sortedExposureRows?.length ?? 0)
     : (sortedFiltered?.length ?? 0)
   const showViewAll = activeCount > MAX_TOKENS
 
@@ -119,7 +116,7 @@ const IndexBasketOverview = () => {
           <BasketTableBody
             filtered={sortedFiltered}
             isExposure={isExposure}
-            exposureGroups={sortedExposureGroups}
+            exposureRows={sortedExposureRows}
             basketShares={basketShares}
             basketPerformanceChanges={basketPerformanceChanges}
             performanceLoading={performanceLoading}

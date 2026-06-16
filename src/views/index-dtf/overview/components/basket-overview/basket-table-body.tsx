@@ -3,12 +3,12 @@ import { Token, TimeRange } from '@/types'
 import { BasketSkeleton } from './basket-skeleton'
 import { ExposureTableRows } from './exposure-table-rows'
 import { CollateralTableRows } from './collateral-table-rows'
-import { ExposureGroup } from '@/state/dtf/atoms'
+import { ExposureRow } from './exposure-rows'
 
 interface BasketTableBodyProps {
   filtered: Token[] | undefined
   isExposure: boolean
-  exposureGroups: [string, ExposureGroup][] | null
+  exposureRows: ExposureRow[] | null
   basketShares: Record<string, string>
   basketPerformanceChanges: Record<string, number | null>
   performanceLoading: boolean
@@ -24,7 +24,7 @@ interface BasketTableBodyProps {
 export const BasketTableBody = ({
   filtered,
   isExposure,
-  exposureGroups,
+  exposureRows,
   basketShares,
   basketPerformanceChanges,
   performanceLoading,
@@ -36,7 +36,7 @@ export const BasketTableBody = ({
   maxTokens,
   onCopyAddress,
 }: BasketTableBodyProps) => {
-  if (isExposure && !exposureGroups?.length) {
+  if (isExposure && !exposureRows?.length) {
     return (
       <TableBody>
         <BasketSkeleton isExposure={isExposure} />
@@ -52,11 +52,11 @@ export const BasketTableBody = ({
     )
   }
 
-  if (isExposure && exposureGroups) {
+  if (isExposure && exposureRows) {
     return (
       <TableBody>
         <ExposureTableRows
-          exposureGroups={exposureGroups}
+          rows={exposureRows}
           performanceLoading={performanceLoading}
           timeRange={timeRange}
           marketCaps={marketCaps}
