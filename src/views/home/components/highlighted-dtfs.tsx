@@ -696,7 +696,8 @@ const HighlightedDTFCard = ({ dtf }: { dtf: HighlightedDTFItem }) => {
                   }}
                   className={cn(
                     'transition-colors',
-                    index < highlightedWords && 'text-foreground'
+                    index < highlightedWords &&
+                      'text-primary dark:text-foreground'
                   )}
                 >
                   {word}

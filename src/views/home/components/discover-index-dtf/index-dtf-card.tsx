@@ -33,13 +33,18 @@ const IndexDTFCard = ({ dtf }: { dtf: IndexDTFItem }) => {
         {/* Show skeleton while loading */}
         {dtf?.brand?.cover && !imageError && (
           <>
-            <Skeleton className={cn("absolute inset-0 h-full w-full", imageLoaded && "hidden")} />
+            <Skeleton
+              className={cn(
+                'absolute inset-0 h-full w-full',
+                imageLoaded && 'hidden'
+              )}
+            />
             <img
               width={100}
               height={100}
               className={cn(
-                "object-cover h-[100px] w-[100px] rounded-xl",
-                imageLoaded ? "animate-fade-in" : "opacity-0"
+                'object-cover h-[100px] w-[100px] rounded-xl',
+                imageLoaded ? 'animate-fade-in' : 'opacity-0'
               )}
               alt="DTF cover"
               src={dtf.brand.cover}
@@ -64,7 +69,7 @@ const IndexDTFCard = ({ dtf }: { dtf: IndexDTFItem }) => {
             <ChainLogo
               fontSize={10}
               chain={dtf.chainId}
-              className="absolute -bottom-0.5 -right-0.5"
+              className="absolute -bottom-0.5 -right-0.5 rounded-md border-2 border-card bg-card"
             />
           </div>
           <Button

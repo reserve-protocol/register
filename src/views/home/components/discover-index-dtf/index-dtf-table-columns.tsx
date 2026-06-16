@@ -197,7 +197,7 @@ export const indexDTFColumns: ColumnDef<IndexDTFItem>[] = [
           <TokenLogo src={row.original.brand?.icon || undefined} size="xl" />
           <ChainLogo
             chain={row.original.chainId}
-            className="absolute -bottom-1 -right-1 rounded-full border-2 border-card"
+            className="absolute -bottom-1 -right-1 rounded-md border-2 border-card bg-card"
           />
         </div>
         <div className="flex min-w-0 flex-col justify-center gap-1 break-words pt-0.5">
