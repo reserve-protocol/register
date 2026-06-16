@@ -6,6 +6,8 @@ import {
   IndexDTFFeatureCardPlaceholder,
 } from '../highlighted-dtfs'
 import { formatCurrency } from '@/utils'
+import { IndexDTFItem } from '@/hooks/useIndexDTFList'
+import { useInView } from 'react-intersection-observer'
 
 const MarketCapRow = ({ marketCap }: { marketCap: number }) => (
   <div className="flex w-full items-center justify-between px-5 py-4 pt-3 text-sm">
@@ -19,6 +21,25 @@ const MarketCapRow = ({ marketCap }: { marketCap: number }) => (
     </span>
   </div>
 )
+
+const DiscoverIndexDTFCard = ({ dtf }: { dtf: IndexDTFItem }) => {
+  const { ref, inView } = useInView({
+    rootMargin: '480px',
+    triggerOnce: true,
+  })
+
+  return (
+    <div ref={ref}>
+      <IndexDTFFeatureCard
+        dtf={dtf}
+        chartPlacement="header"
+        enableDetailedPerformance={inView}
+        showTranscript={false}
+        bottomSlot={<MarketCapRow marketCap={dtf.marketCap} />}
+      />
+    </div>
+  )
+}
 
 const DiscoverIndexDTF = () => {
   const { data, isLoading } = useFilteredDTFIndex()
@@ -35,13 +56,9 @@ const DiscoverIndexDTF = () => {
           <IndexDTFFeatureCardPlaceholder />
         ) : (
           data.map((dtf) => (
-            <IndexDTFFeatureCard
+            <DiscoverIndexDTFCard
               key={`${dtf.chainId}-${dtf.address}`}
               dtf={dtf}
-              chartPlacement="header"
-              enableDetailedPerformance={false}
-              showTranscript={false}
-              bottomSlot={<MarketCapRow marketCap={dtf.marketCap} />}
             />
           ))
         )}
