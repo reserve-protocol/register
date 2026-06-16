@@ -25,7 +25,7 @@ const MetricBox = ({
         aria-hidden={ariaHidden || undefined}
         className="flex min-w-max flex-shrink-0 flex-row lg:flex-col items-center justify-center gap-1"
       >
-        <span className="whitespace-nowrap dark:text-legend">{label}</span>
+        <span className="whitespace-nowrap text-legend">{label}</span>
         {value !== undefined ? (
           <span className="flex items-center font-semibold text-primary dark:text-foreground">
             <span className="opacity-70">$</span>
