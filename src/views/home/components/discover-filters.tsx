@@ -48,7 +48,7 @@ const SingleToggleFilter = ({
             )}
           >
             {icon}
-            <span className="hidden sm:inline">{text}</span>
+            <span className="hidden lg:inline">{text}</span>
           </ToggleGroupItem>
         ))}
       </ToggleGroup>
@@ -121,7 +121,7 @@ export const SearchFilter = () => {
 }
 
 const DiscoverFilters = () => (
-  <div className="flex flex-col items-stretch sm:flex-row sm:items-center gap-[2px] sm:gap-1">
+  <div className="flex flex-col items-stretch gap-[2px] sm:flex-row sm:items-center sm:gap-1">
     <SearchFilter />
     <ChainFilter />
   </div>

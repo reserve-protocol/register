@@ -1,37 +1,24 @@
-import { Skeleton } from '@/components/ui/skeleton'
-import IndexDTFCard from './index-dtf-card'
 import IndexDTFTable from './index-dtf-table'
 import useFilteredDTFIndex from '../../hooks/use-filtered-index-dtf'
+import {
+  CollateralAssetAnimationStyles,
+  IndexDTFFeatureCard,
+  IndexDTFFeatureCardPlaceholder,
+} from '../highlighted-dtfs'
+import { formatCurrency } from '@/utils'
 
-const MobilePlaceholder = () => {
-  return (
-    <div className="flex flex-col gap-1">
-      {Array.from({ length: 10 }).map((_, index) => (
-        <div key={index} className="bg-background flex rounded-3xl gap-3 p-3">
-          <Skeleton className="h-[100px] w-[100px] rounded-xl flex-shrink-0" />
-          <div className="border-l pl-3 flex flex-grow flex-col gap-2">
-            <div className="flex items-center">
-              <Skeleton className="h-8 w-8 rounded-full" />
-              <Skeleton className="ml-auto h-5 w-5 rounded-full" />
-            </div>
-            <Skeleton className="h-5 w-[150px] mt-auto pt-2" />
-            <div className="flex items-end text-xs">
-              <div className="flex -space-x-2">
-                {Array.from({ length: 4 }).map((_, i) => (
-                  <Skeleton
-                    key={i}
-                    className="h-5 w-5 rounded-full border-2 border-background"
-                  />
-                ))}
-              </div>
-              <Skeleton className="ml-auto h-4 w-[80px]" />
-            </div>
-          </div>
-        </div>
-      ))}
-    </div>
-  )
-}
+const MarketCapRow = ({ marketCap }: { marketCap: number }) => (
+  <div className="flex w-full items-center justify-between px-5 py-4 pt-3 text-sm">
+    <span className="text-legend">Market Cap:</span>
+    <span className="tabular-nums text-foreground">
+      $
+      {formatCurrency(marketCap, 0, {
+        notation: 'compact',
+        compactDisplay: 'short',
+      })}
+    </span>
+  </div>
+)
 
 const DiscoverIndexDTF = () => {
   const { data, isLoading } = useFilteredDTFIndex()
@@ -42,11 +29,21 @@ const DiscoverIndexDTF = () => {
         <IndexDTFTable data={data} isLoading={isLoading} />
       </div>
 
-      <div className="lg:hidden flex flex-col gap-1">
+      <div className="grid grid-cols-1 gap-1 md:grid-cols-2 lg:hidden">
+        <CollateralAssetAnimationStyles />
         {isLoading ? (
-          <MobilePlaceholder />
+          <IndexDTFFeatureCardPlaceholder />
         ) : (
-          data.map((dtf) => <IndexDTFCard key={dtf.address} dtf={dtf} />)
+          data.map((dtf) => (
+            <IndexDTFFeatureCard
+              key={`${dtf.chainId}-${dtf.address}`}
+              dtf={dtf}
+              chartPlacement="header"
+              enableDetailedPerformance={false}
+              showTranscript={false}
+              bottomSlot={<MarketCapRow marketCap={dtf.marketCap} />}
+            />
+          ))
         )}
       </div>
     </>

@@ -19,6 +19,7 @@ import {
   useRef,
   useState,
   type CSSProperties,
+  type ReactNode,
 } from 'react'
 import { Link } from 'react-router-dom'
 import { Area, AreaChart, Tooltip, XAxis, YAxis } from 'recharts'
@@ -167,7 +168,8 @@ const getPerformanceDirection = (
 }
 
 const useDetailedSevenDayPerformance = (
-  dtf: Pick<IndexDTFItem, 'chainId' | 'address'>
+  dtf: Pick<IndexDTFItem, 'chainId' | 'address'>,
+  enabled = true
 ) => {
   return useQuery({
     queryKey: ['highlighted-dtf-7d-performance', dtf.chainId, dtf.address],
@@ -195,6 +197,7 @@ const useDetailedSevenDayPerformance = (
         .filter(({ price }) => Boolean(price))
         .map(({ timestamp, price }) => ({ timestamp, value: price }))
     },
+    enabled,
     staleTime: REFRESH_INTERVAL,
     refetchInterval: REFRESH_INTERVAL,
   })
@@ -211,7 +214,47 @@ const CollateralAssetItem = ({
   </div>
 )
 
-const HighlightedDTFCard = ({ dtf }: { dtf: HighlightedDTFItem }) => {
+export const CollateralAssetAnimationStyles = () => (
+  <style>
+    {`
+      @keyframes collateral-assets-scroll {
+        0% {
+          animation-timing-function: cubic-bezier(0.5, 0, 1, 1);
+          transform: translate3d(0, 0, 0);
+        }
+        ${COLLATERAL_SCROLL_RAMP_PERCENT}% {
+          animation-timing-function: linear;
+          transform: translate3d(calc(-${COLLATERAL_SCROLL_RAMP_DISTANCE_PERCENT}% - ${COLLATERAL_SCROLL_RAMP_GAP_OFFSET}px), 0, 0);
+        }
+        100% {
+          transform: translate3d(calc(-50% - ${COLLATERAL_GAP / 2}px), 0, 0);
+        }
+      }
+      @keyframes collateral-assets-chain-exit {
+        from { opacity: 1; transform: translate3d(0, 0, 0); }
+        to { opacity: 0; transform: translate3d(-48px, 0, 0); }
+      }
+      @keyframes collateral-assets-chain-enter {
+        from { opacity: 0; transform: translate3d(18px, 0, 0); }
+        to { opacity: 1; transform: translate3d(0, 0, 0); }
+      }
+    `}
+  </style>
+)
+
+export const IndexDTFFeatureCard = ({
+  dtf,
+  bottomSlot,
+  chartPlacement = 'body',
+  enableDetailedPerformance = true,
+  showTranscript = true,
+}: {
+  dtf: HighlightedDTFItem
+  bottomSlot?: ReactNode
+  chartPlacement?: 'body' | 'header'
+  enableDetailedPerformance?: boolean
+  showTranscript?: boolean
+}) => {
   const cardRef = useRef<HTMLAnchorElement>(null)
   const chainVersions = dtf.chainVersions
   const [selectedVersionIndex, setSelectedVersionIndex] = useState(0)
@@ -233,8 +276,10 @@ const HighlightedDTFCard = ({ dtf }: { dtf: HighlightedDTFItem }) => {
   const fallbackSevenDayPerformance = getSevenDayPerformance(
     selectedVersion.performance
   )
-  const { data: detailedSevenDayPerformance } =
-    useDetailedSevenDayPerformance(performanceSource)
+  const { data: detailedSevenDayPerformance } = useDetailedSevenDayPerformance(
+    performanceSource,
+    enableDetailedPerformance
+  )
   const sevenDayPerformance = detailedSevenDayPerformance?.length
     ? detailedSevenDayPerformance
     : fallbackSevenDayPerformance
@@ -262,9 +307,118 @@ const HighlightedDTFCard = ({ dtf }: { dtf: HighlightedDTFItem }) => {
   const [highlightedWords, setHighlightedWords] = useState(0)
   const [transcriptScrollOffset, setTranscriptScrollOffset] = useState(0)
   const isDesktop = useIsDesktop()
-  const isActive = !isDesktop || isTranscriptActive
+  const isActive = showTranscript && (!isDesktop || isTranscriptActive)
   const hasChainTabs = (chainVersions?.length ?? 0) > 1
   const chainTabs = chainVersions ?? []
+  const hasPerformanceChart = sevenDayPerformance.length > 0
+
+  const performanceChart = ({
+    className,
+    fadeClassName = 'pointer-events-none absolute inset-x-0 bottom-0 h-12 bg-gradient-to-b from-card/0 to-card lg:from-background/0 lg:to-background lg:group-hover:from-card/0 lg:group-hover:to-card lg:group-focus-within:from-card/0 lg:group-focus-within:to-card',
+    showPattern = true,
+  }: {
+    className: string
+    fadeClassName?: string
+    showPattern?: boolean
+  }) => (
+    <div className="relative">
+      <ChartContainer
+        key={chartKey}
+        config={chartConfig}
+        className={cn('pointer-events-none w-full', className)}
+      >
+        <AreaChart
+          data={sevenDayPerformance}
+          margin={{ left: 0, right: 0, top: 6, bottom: 0 }}
+          {...{ overflow: 'visible' }}
+        >
+          <defs>
+            {performanceDirection !== 'neutral' && (
+              <linearGradient id={strokeGradientId} x1="0" y1="0" x2="1" y2="0">
+                {performanceDirection === 'positive' ? (
+                  <>
+                    <stop offset="0%" stopColor="#A2BB6E" />
+                    <stop offset="100%" stopColor="#657D32" />
+                  </>
+                ) : (
+                  <>
+                    <stop offset="0%" stopColor="#D69A8F" />
+                    <stop offset="100%" stopColor="#9F4A3D" />
+                  </>
+                )}
+              </linearGradient>
+            )}
+            <pattern
+              id={dotsPatternId}
+              x="0"
+              y="0"
+              width="3"
+              height="3"
+              patternUnits="userSpaceOnUse"
+            >
+              <circle
+                cx="1"
+                cy="1"
+                r="0.45"
+                fill={performanceDotColor}
+                opacity="1"
+              />
+            </pattern>
+            <linearGradient id={dotsFadeGradientId} x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stopColor="white" stopOpacity="1" />
+              <stop offset="72%" stopColor="white" stopOpacity="0.75" />
+              <stop offset="100%" stopColor="white" stopOpacity="0" />
+            </linearGradient>
+            <mask
+              id={dotsMaskId}
+              maskUnits="objectBoundingBox"
+              maskContentUnits="objectBoundingBox"
+            >
+              <rect
+                x="0"
+                y="0"
+                width="1"
+                height="1"
+                fill={`url(#${dotsFadeGradientId})`}
+              />
+            </mask>
+          </defs>
+          <XAxis dataKey="timestamp" hide axisLine={false} tickLine={false} />
+          <YAxis
+            dataKey="value"
+            hide
+            axisLine={false}
+            tickLine={false}
+            domain={getPaddedValueDomain}
+          />
+          <Tooltip content={() => null} cursor={false} />
+          {showPattern && (
+            <Area
+              type="monotone"
+              dataKey="value"
+              stroke="none"
+              fill={`url(#${dotsPatternId})`}
+              mask={`url(#${dotsMaskId})`}
+              isAnimationActive={true}
+              animationDuration={500}
+              animationEasing="ease-in-out"
+            />
+          )}
+          <Area
+            type="monotone"
+            dataKey="value"
+            stroke={performanceColor}
+            strokeWidth={2}
+            fill="transparent"
+            isAnimationActive={true}
+            animationDuration={500}
+            animationEasing="ease-in-out"
+          />
+        </AreaChart>
+      </ChartContainer>
+      {fadeClassName && <div className={cn(fadeClassName)} />}
+    </div>
+  )
 
   useEffect(() => {
     if (isDesktop) {
@@ -310,7 +464,7 @@ const HighlightedDTFCard = ({ dtf }: { dtf: HighlightedDTFItem }) => {
   }, [assetVersionKey, backing])
 
   useEffect(() => {
-    if (!isActive) {
+    if (!showTranscript || !isActive) {
       setHighlightedWords(0)
       setTranscriptScrollOffset(0)
       return
@@ -324,10 +478,10 @@ const HighlightedDTFCard = ({ dtf }: { dtf: HighlightedDTFItem }) => {
     }, TRANSCRIPT_WORD_DELAY_MS)
 
     return () => window.clearInterval(interval)
-  }, [isActive])
+  }, [isActive, showTranscript])
 
   useEffect(() => {
-    if (!isActive || highlightedWords === 0) {
+    if (!showTranscript || !isActive || highlightedWords === 0) {
       setTranscriptScrollOffset(0)
       return
     }
@@ -355,17 +509,24 @@ const HighlightedDTFCard = ({ dtf }: { dtf: HighlightedDTFItem }) => {
     }
 
     setTranscriptScrollOffset(rowTops[activeRowIndex - 1] ?? 0)
-  }, [highlightedWords, isActive])
+  }, [highlightedWords, isActive, showTranscript])
 
   return (
     <Link
       ref={cardRef}
       to={getFolioRoute(selectedVersion.address, selectedVersion.chainId)}
-      onMouseEnter={() => isDesktop && setIsTranscriptActive(true)}
-      onMouseLeave={() => isDesktop && setIsTranscriptActive(false)}
-      onFocus={() => setIsTranscriptActive(true)}
+      onMouseEnter={() =>
+        showTranscript && isDesktop && setIsTranscriptActive(true)
+      }
+      onMouseLeave={() =>
+        showTranscript && isDesktop && setIsTranscriptActive(false)
+      }
+      onFocus={() => showTranscript && setIsTranscriptActive(true)}
       onBlur={(event) => {
-        if (!event.currentTarget.contains(event.relatedTarget as Node | null)) {
+        if (
+          showTranscript &&
+          !event.currentTarget.contains(event.relatedTarget as Node | null)
+        ) {
           setIsTranscriptActive(false)
         }
       }}
@@ -396,7 +557,8 @@ const HighlightedDTFCard = ({ dtf }: { dtf: HighlightedDTFItem }) => {
             <div
               className={cn(
                 'relative flex h-8 shrink-0 items-center justify-end',
-                hasChainTabs && 'w-[154px]'
+                hasChainTabs && 'w-[154px]',
+                chartPlacement === 'header' && !hasChainTabs && 'h-12 w-28'
               )}
             >
               {hasChainTabs && (
@@ -451,7 +613,18 @@ const HighlightedDTFCard = ({ dtf }: { dtf: HighlightedDTFItem }) => {
                   </div>
                 </div>
               )}
-              {!hasChainTabs && (
+              {!hasChainTabs &&
+                chartPlacement === 'header' &&
+                hasPerformanceChart && (
+                  <div className="w-28">
+                    {performanceChart({
+                      className: 'h-12',
+                      fadeClassName: '',
+                      showPattern: false,
+                    })}
+                  </div>
+                )}
+              {!hasChainTabs && chartPlacement === 'body' && (
                 <span className="inline-flex h-8 items-center rounded-full bg-primary px-3.5 text-sm font-medium text-primary-foreground opacity-100 transition-opacity duration-150 ease-out lg:opacity-0 lg:group-hover:opacity-100 lg:group-focus-within:opacity-100">
                   Buy
                 </span>
@@ -498,127 +671,9 @@ const HighlightedDTFCard = ({ dtf }: { dtf: HighlightedDTFItem }) => {
           </div>
         </div>
 
-        {sevenDayPerformance.length > 0 && (
-          <div className="relative">
-            <ChartContainer
-              key={chartKey}
-              config={chartConfig}
-              className="pointer-events-none h-52 w-full"
-            >
-              <AreaChart
-                data={sevenDayPerformance}
-                margin={{ left: 0, right: 0, top: 6, bottom: 0 }}
-                {...{ overflow: 'visible' }}
-              >
-                <defs>
-                  {performanceDirection !== 'neutral' && (
-                    <linearGradient
-                      id={strokeGradientId}
-                      x1="0"
-                      y1="0"
-                      x2="1"
-                      y2="0"
-                    >
-                      {performanceDirection === 'positive' ? (
-                        <>
-                          <stop offset="0%" stopColor="#A2BB6E" />
-                          <stop offset="100%" stopColor="#657D32" />
-                        </>
-                      ) : (
-                        <>
-                          <stop offset="0%" stopColor="#D69A8F" />
-                          <stop offset="100%" stopColor="#9F4A3D" />
-                        </>
-                      )}
-                    </linearGradient>
-                  )}
-                  <pattern
-                    id={dotsPatternId}
-                    x="0"
-                    y="0"
-                    width="3"
-                    height="3"
-                    patternUnits="userSpaceOnUse"
-                  >
-                    <circle
-                      cx="1"
-                      cy="1"
-                      r="0.45"
-                      fill={performanceDotColor}
-                      opacity="1"
-                    />
-                  </pattern>
-                  <linearGradient
-                    id={dotsFadeGradientId}
-                    x1="0"
-                    y1="0"
-                    x2="0"
-                    y2="1"
-                  >
-                    <stop offset="0%" stopColor="white" stopOpacity="1" />
-                    <stop offset="72%" stopColor="white" stopOpacity="0.75" />
-                    <stop offset="100%" stopColor="white" stopOpacity="0" />
-                  </linearGradient>
-                  <mask
-                    id={dotsMaskId}
-                    maskUnits="objectBoundingBox"
-                    maskContentUnits="objectBoundingBox"
-                  >
-                    <rect
-                      x="0"
-                      y="0"
-                      width="1"
-                      height="1"
-                      fill={`url(#${dotsFadeGradientId})`}
-                    />
-                  </mask>
-                </defs>
-                <XAxis
-                  dataKey="timestamp"
-                  hide
-                  axisLine={false}
-                  tickLine={false}
-                />
-                <YAxis
-                  dataKey="value"
-                  hide
-                  axisLine={false}
-                  tickLine={false}
-                  domain={getPaddedValueDomain}
-                />
-                <Tooltip content={() => null} cursor={false} />
-                <Area
-                  type="monotone"
-                  dataKey="value"
-                  stroke="none"
-                  fill={`url(#${dotsPatternId})`}
-                  mask={`url(#${dotsMaskId})`}
-                  isAnimationActive={true}
-                  animationDuration={500}
-                  animationEasing="ease-in-out"
-                />
-                <Area
-                  type="monotone"
-                  dataKey="value"
-                  stroke={performanceColor}
-                  strokeWidth={2}
-                  fill="transparent"
-                  isAnimationActive={true}
-                  animationDuration={500}
-                  animationEasing="ease-in-out"
-                />
-              </AreaChart>
-            </ChartContainer>
-            <div
-              className={cn(
-                'pointer-events-none absolute inset-x-0 bottom-0 h-12 bg-gradient-to-b from-card/0 to-card',
-                'lg:from-background/0 lg:to-background',
-                'lg:group-hover:from-card/0 lg:group-hover:to-card',
-                'lg:group-focus-within:from-card/0 lg:group-focus-within:to-card'
-              )}
-            />
-          </div>
-        )}
+        {chartPlacement === 'body' &&
+          hasPerformanceChart &&
+          performanceChart({ className: 'h-52' })}
       </div>
       <div
         className={cn(
@@ -675,55 +730,59 @@ const HighlightedDTFCard = ({ dtf }: { dtf: HighlightedDTFItem }) => {
           <ArrowRight size={16} />
         </Button>
       </div>
-      <div className="flex flex-col items-start gap-2 px-5 py-4 pt-3">
-        <div
-          className="w-full min-w-0 shrink-0 overflow-hidden"
-          style={{ height: TRANSCRIPT_LINE_HEIGHT * 2 }}
-        >
+      {showTranscript ? (
+        <div className="flex flex-col items-start gap-2 px-5 py-4 pt-3">
           <div
-            className="min-w-full transition-transform duration-500 ease-out"
-            style={{
-              transform: `translate3d(0, -${transcriptScrollOffset}px, 0)`,
-            }}
+            className="w-full min-w-0 shrink-0 overflow-hidden"
+            style={{ height: TRANSCRIPT_LINE_HEIGHT * 2 }}
           >
-            <p className="text-xs leading-[18px] text-legend">
-              <span>&ldquo;</span>
-              {TRANSCRIPT_WORDS.map((word, index) => (
-                <span
-                  key={`${word}-${index}`}
-                  ref={(node) => {
-                    transcriptWordRefs.current[index] = node
-                  }}
-                  className={cn(
-                    'transition-colors',
-                    index < highlightedWords &&
-                      'text-primary dark:text-foreground'
-                  )}
-                >
-                  {word}
-                  {index === TRANSCRIPT_WORDS.length - 1 ? '' : ' '}
-                </span>
-              ))}
-              <span>&rdquo;</span>
-            </p>
+            <div
+              className="min-w-full transition-transform duration-500 ease-out"
+              style={{
+                transform: `translate3d(0, -${transcriptScrollOffset}px, 0)`,
+              }}
+            >
+              <p className="text-xs leading-[18px] text-legend">
+                <span>&ldquo;</span>
+                {TRANSCRIPT_WORDS.map((word, index) => (
+                  <span
+                    key={`${word}-${index}`}
+                    ref={(node) => {
+                      transcriptWordRefs.current[index] = node
+                    }}
+                    className={cn(
+                      'transition-colors',
+                      index < highlightedWords &&
+                        'text-primary dark:text-foreground'
+                    )}
+                  >
+                    {word}
+                    {index === TRANSCRIPT_WORDS.length - 1 ? '' : ' '}
+                  </span>
+                ))}
+                <span>&rdquo;</span>
+              </p>
+            </div>
           </div>
+          <Button
+            variant="none"
+            size="inline"
+            className="inline-flex shrink-0 items-center gap-1 bg-transparent p-0 text-xs text-primary hover:bg-transparent hover:text-primary/80"
+            aria-label={`Watch ${dtf.name} explainer`}
+            onClick={(event) => event.preventDefault()}
+          >
+            <span>Watch Video</span>
+            <AudioEqualizerIcon className="h-3 w-0 shrink-0 opacity-0 transition-[width,opacity] duration-150 lg:group-hover:w-3 lg:group-hover:opacity-100" />
+          </Button>
         </div>
-        <Button
-          variant="none"
-          size="inline"
-          className="inline-flex shrink-0 items-center gap-1 bg-transparent p-0 text-xs text-primary hover:bg-transparent hover:text-primary/80"
-          aria-label={`Watch ${dtf.name} explainer`}
-          onClick={(event) => event.preventDefault()}
-        >
-          <span>Watch Video</span>
-          <AudioEqualizerIcon className="h-3 w-0 shrink-0 opacity-0 transition-[width,opacity] duration-150 lg:group-hover:w-3 lg:group-hover:opacity-100" />
-        </Button>
-      </div>
+      ) : (
+        bottomSlot
+      )}
     </Link>
   )
 }
 
-const HighlightedDTFPlaceholder = () => (
+export const IndexDTFFeatureCardPlaceholder = () => (
   <div className="flex flex-col gap-2">
     {Array.from({ length: HIGHLIGHTED_LIMIT }).map((_, index) => (
       <div
@@ -869,42 +928,18 @@ const HighlightedDTFs = ({
           style={trackStyle}
           className="will-change-transform"
         >
-          <HighlightedDTFPlaceholder />
+          <IndexDTFFeatureCardPlaceholder />
         </div>
       ) : (
         <div className="h-full">
-          <style>
-            {`
-              @keyframes collateral-assets-scroll {
-                0% {
-                  animation-timing-function: cubic-bezier(0.5, 0, 1, 1);
-                  transform: translate3d(0, 0, 0);
-                }
-                ${COLLATERAL_SCROLL_RAMP_PERCENT}% {
-                  animation-timing-function: linear;
-                  transform: translate3d(calc(-${COLLATERAL_SCROLL_RAMP_DISTANCE_PERCENT}% - ${COLLATERAL_SCROLL_RAMP_GAP_OFFSET}px), 0, 0);
-                }
-                100% {
-                  transform: translate3d(calc(-50% - ${COLLATERAL_GAP / 2}px), 0, 0);
-                }
-              }
-              @keyframes collateral-assets-chain-exit {
-                from { opacity: 1; transform: translate3d(0, 0, 0); }
-                to { opacity: 0; transform: translate3d(-48px, 0, 0); }
-              }
-              @keyframes collateral-assets-chain-enter {
-                from { opacity: 0; transform: translate3d(18px, 0, 0); }
-                to { opacity: 1; transform: translate3d(0, 0, 0); }
-              }
-            `}
-          </style>
+          <CollateralAssetAnimationStyles />
           <div
             ref={trackRef}
             style={trackStyle}
-            className="grid auto-rows-fr grid-cols-1 gap-1 pb-0 will-change-transform lg:grid-cols-2"
+            className="grid auto-rows-fr grid-cols-1 gap-1 pb-0 will-change-transform md:grid-cols-2"
           >
             {highlighted.map((dtf) => (
-              <HighlightedDTFCard
+              <IndexDTFFeatureCard
                 key={`${dtf.chainId}-${dtf.address}`}
                 dtf={dtf}
               />
