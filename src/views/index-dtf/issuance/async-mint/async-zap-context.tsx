@@ -23,6 +23,7 @@ import {
   slippageAtom,
   useExistingBalancesAtom,
 } from './atoms'
+import { useTrackAsyncZap } from './hooks/use-track-async-zap'
 
 // MetaMask caps EIP-5792 `wallet_sendCalls` at 10 calls per batch.
 const METAMASK_MAX_CALLS_PER_BATCH = 10
@@ -145,6 +146,27 @@ export const AsyncZapProvider = ({ children }: { children: ReactNode }) => {
   // freezes the submitted amount instead of following the dropping balance.
   useEffect(() => {
     executingRef.current = active.execution.step !== 'idle'
+  }, [active.execution.step])
+
+  // Lifecycle analytics: fire once per error/completion transition.
+  const { track } = useTrackAsyncZap()
+  useEffect(() => {
+    const ex = active.execution
+    if (ex.step === 'error') {
+      track('error', {
+        errorType: ex.error?.type,
+        errorAction: ex.error?.action,
+        message: ex.error?.message,
+        legId: ex.error?.legId,
+        asset: ex.error?.asset,
+      })
+    } else if (ex.step === 'complete') {
+      track('complete', {
+        mintedShares: ex.mintedShares?.toString(),
+        shares: active.quote?.shares?.toString(),
+      })
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [active.execution.step])
 
   return (

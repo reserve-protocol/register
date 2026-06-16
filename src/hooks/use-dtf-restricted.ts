@@ -1,3 +1,4 @@
+import { trackCompliance } from '@/hooks/useTrackPage'
 import { indexDTFAtom } from '@/state/dtf/atoms'
 import { RESERVE_API } from '@/utils/constants'
 import { useQuery } from '@tanstack/react-query'
@@ -67,13 +68,36 @@ const useDTFGeolocation = (dtfAddress?: Address, chainId?: number) => {
       )
 
       if (!response.ok) {
+        trackCompliance({
+          endpoint: 'dtf',
+          status: 'error',
+          ca: dtfAddress,
+          chain: chainId,
+        })
         throw new Error('Failed to fetch DTF geolocation')
       }
 
       const payload: unknown = await response.json()
       if (!isDTFGeolocationStatus(payload)) {
+        trackCompliance({
+          endpoint: 'dtf',
+          status: 'error',
+          ca: dtfAddress,
+          chain: chainId,
+        })
         throw new Error('Invalid DTF geolocation payload')
       }
+
+      trackCompliance({
+        endpoint: 'dtf',
+        status: 'success',
+        restricted: payload.restricted,
+        reason: payload.restriction,
+        country: payload.country,
+        countryCode: payload.countryCode,
+        ca: dtfAddress,
+        chain: chainId,
+      })
 
       return payload
     },

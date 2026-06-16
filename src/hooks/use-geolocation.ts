@@ -1,3 +1,4 @@
+import { trackCompliance } from '@/hooks/useTrackPage'
 import { RESERVE_API } from '@/utils/constants'
 import { useQuery } from '@tanstack/react-query'
 
@@ -28,13 +29,24 @@ const useGeolocation = () => {
       const response = await fetch(`${RESERVE_API}v2/compliance/geolocation`)
 
       if (!response.ok) {
+        trackCompliance({ endpoint: 'geolocation', status: 'error' })
         throw new Error('Failed to fetch geolocation')
       }
 
       const payload: unknown = await response.json()
       if (!isGeolocationStatus(payload)) {
+        trackCompliance({ endpoint: 'geolocation', status: 'error' })
         throw new Error('Invalid geolocation payload')
       }
+
+      trackCompliance({
+        endpoint: 'geolocation',
+        status: 'success',
+        restricted: payload.restricted,
+        isVPN: payload.isVPN,
+        country: payload.country,
+        countryCode: payload.countryCode,
+      })
 
       return payload
     },

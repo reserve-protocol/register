@@ -17,6 +17,23 @@ export const trackClick = (
   })
 }
 
+export type ComplianceEndpoint = 'geolocation' | 'wallet' | 'dtf'
+
+export const trackCompliance = (props: {
+  endpoint: ComplianceEndpoint
+  status: 'success' | 'error'
+  restricted?: boolean
+  isVPN?: boolean
+  reason?: string
+  country?: string
+  countryCode?: string
+  shouldSkipRestrictions?: boolean
+  ca?: string
+  chain?: number
+}) => {
+  mixpanel.track('compliance_check', props)
+}
+
 const useTrackPage = (page: string, subpage?: string) => {
   useEffect(() => {
     mixpanel.track_pageview({

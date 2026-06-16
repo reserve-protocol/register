@@ -20,6 +20,7 @@ import {
 } from '../atoms'
 import ComplianceAlert from '../../../components/compliance-alert'
 import { useWizardBalances } from '../hooks/use-wizard-balances'
+import { useTrackAsyncZap } from '../hooks/use-track-async-zap'
 
 const upcomingStepRowClass = 'px-6 py-4 border-b border-secondary'
 
@@ -35,6 +36,7 @@ const ConfigureMint = () => {
   const [redeemAmount, setRedeemAmount] = useAtom(redeemAmountAtom)
   const setUseExistingBalances = useSetAtom(useExistingBalancesAtom)
   const isRestricted = useIsComplianceRestricted()
+  const { track } = useTrackAsyncZap()
 
   if (!indexDTF) return null
 
@@ -71,9 +73,11 @@ const ConfigureMint = () => {
       : balanceOf(indexDTF.id)
     const decimals = isMint ? inputToken.decimals : 18
     if (balance > 0n) setAmount(formatUnits(balance, decimals))
+    track('max')
   }
 
   const handleGetQuote = () => {
+    track('get_quote', { amount })
     const goToQuoteSummary = () => {
       setUseExistingBalances(false)
       setStep('quote-summary')
@@ -128,7 +132,11 @@ const ConfigureMint = () => {
           <div className="p-3 flex justify-center">
             <Tabs
               value={operation}
-              onValueChange={(v) => setOperation(v as 'mint' | 'redeem')}
+              onValueChange={(v) => {
+                const next = v as 'mint' | 'redeem'
+                setOperation(next)
+                track('toggle_operation', { to: next })
+              }}
             >
               <TabsList className="bg-card/40 border border-card p-0.5 h-fit rounded-full">
                 <TabsTrigger value="mint" className="px-3.5 rounded-full">

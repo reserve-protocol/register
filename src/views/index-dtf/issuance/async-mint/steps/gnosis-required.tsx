@@ -18,6 +18,7 @@ import { Link } from 'react-router-dom'
 import { useAccount, useDisconnect } from 'wagmi'
 import { wizardStepAtom } from '../atoms'
 import ComplianceAlert from '../../../components/compliance-alert'
+import { useTrackAsyncZap } from '../hooks/use-track-async-zap'
 
 const LEARN_MORE_URL = 'https://docs.safe.global/home/what-is-safe'
 
@@ -46,6 +47,7 @@ const GnosisRequired = () => {
   const [requirementsCardHeight, setRequirementsCardHeight] = useState<number>()
   const cardStackRef = useRef<HTMLDivElement>(null)
   const isRestricted = useIsComplianceRestricted()
+  const { track } = useTrackAsyncZap()
 
   // The requirements screen prompts to connect (or switch wallet). Once a
   // connection lands and the capability probe confirms support, advance on its
@@ -172,6 +174,7 @@ const GnosisRequired = () => {
   )
 
   const handleShowRequirements = () => {
+    track('gnosis_continue')
     if (isConnected && atomicSupported) {
       setStep('configure')
       return

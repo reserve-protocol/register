@@ -52,6 +52,7 @@ import { readContracts } from 'wagmi/actions'
 import { useAsyncZap } from '../async-zap-context'
 import LegRow from '../components/leg-row'
 import { usePriceImpact } from '../hooks/use-price-impact'
+import { useTrackAsyncZap } from '../hooks/use-track-async-zap'
 import { useWizardBalances } from '../hooks/use-wizard-balances'
 import { formatPriceImpact, HIGH_PRICE_IMPACT } from '../quote-utils'
 import {
@@ -127,6 +128,7 @@ const QuoteSummary = () => {
 
   const { quote, quoteQuery, execution, operation, legStates } = useAsyncZap()
   const isMint = operation === 'mint'
+  const { track } = useTrackAsyncZap()
   const mintComplete = isMint && execution.step === 'complete'
   const redeemComplete = !isMint && execution.step === 'complete'
   const operationComplete = mintComplete || redeemComplete
@@ -638,6 +640,7 @@ const QuoteSummary = () => {
   const handleRetry = () => {
     if (walletClientMissing) return
 
+    track('retry')
     setCollateralExpanded(true)
     void execution.run()
   }
@@ -647,6 +650,7 @@ const QuoteSummary = () => {
   const handleRetryFailed = () => {
     if (walletClientMissing) return
 
+    track('retry_failed', { count: retryableLegIds.length })
     setCollateralExpanded(true)
     void execution.retryFailedOrders()
   }
@@ -654,6 +658,7 @@ const QuoteSummary = () => {
   const handleMint = () => {
     if (walletClientMissing) return
 
+    track('finish_mint')
     setFinalMintSnapshot({
       shares: postFillMintableShares,
       leftoverCollateralUsd,
@@ -664,6 +669,7 @@ const QuoteSummary = () => {
   const handleSubmit = async () => {
     if (walletClientMissing) return
 
+    track('submit', { amount: isMint ? mintAmount : redeemAmount })
     setFinalMintSnapshot(null)
     setCollateralExpanded(true)
     // Snapshot basket + quote-token balances so we can show leftover dust
@@ -1045,7 +1051,10 @@ const QuoteSummary = () => {
                       size="lg"
                       variant="outline"
                       className="w-full h-[49px] rounded-[12px]"
-                      onClick={handleEdit}
+                      onClick={() => {
+                        track('start_over')
+                        handleEdit()
+                      }}
                     >
                       Start over
                     </Button>
