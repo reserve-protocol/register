@@ -6,6 +6,8 @@ import {
 } from '@reserve-protocol/react-zapper'
 import { bsc } from 'viem/chains'
 import { useAccount } from 'wagmi'
+import { useAtomValue } from 'jotai'
+import { localeAtom } from '@/i18n'
 import LargeMintPrompt from './large-mint-prompt'
 
 const bscProviders = PROVIDER_ENABLED[bsc.id]
@@ -28,6 +30,10 @@ const ZapperWrapper = ({
   ...props
 }: ZapperWrapperProps) => {
   const { isConnected } = useAccount()
+  // Drive the widget's language from the app locale. The zapper only ships
+  // en/es/ko/zh, so the dev-only `pseudo` locale falls back to English.
+  const appLocale = useAtomValue(localeAtom)
+  const locale = appLocale === 'pseudo' ? 'en' : appLocale
 
   // The inline prompt is positioned `absolute` and anchors to the consumer's
   // nearest positioned ancestor (the issuance page wraps the zapper card in a
@@ -36,7 +42,11 @@ const ZapperWrapper = ({
   // and overlap the card.
   return (
     <>
-      {!isConnected ? <ZapperWithConnect {...props} /> : <Zapper {...props} />}
+      {!isConnected ? (
+        <ZapperWithConnect {...props} locale={locale} />
+      ) : (
+        <Zapper {...props} locale={locale} />
+      )}
       {!hideLargeMintPrompt && (
         <LargeMintPrompt
           mode={props.mode ?? 'modal'}
