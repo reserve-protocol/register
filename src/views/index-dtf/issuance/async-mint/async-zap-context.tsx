@@ -13,7 +13,14 @@ import {
 } from '@reserve-protocol/async-zap-sdk'
 import { UseQueryResult } from '@tanstack/react-query'
 import { useAtomValue } from 'jotai'
-import { createContext, ReactNode, useContext, useEffect, useRef } from 'react'
+import {
+  createContext,
+  ReactNode,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+} from 'react'
 import { Address, erc20Abi, parseUnits, zeroAddress } from 'viem'
 import {
   inputTokenAtom,
@@ -23,10 +30,16 @@ import {
   slippageAtom,
   useExistingBalancesAtom,
 } from './atoms'
+import { useOndoLimits } from './hooks/use-ondo-limits'
 import { useTrackAsyncZap } from './hooks/use-track-async-zap'
 
 // MetaMask caps EIP-5792 `wallet_sendCalls` at 10 calls per batch.
 const METAMASK_MAX_CALLS_PER_BATCH = 10
+
+// Safety buffer on the Ondo per-order cap. Order sizing uses our quote-time
+// price; the order fills at CoW's price, so we keep each order a little under
+// the real cap to absorb the drift between the two.
+const ONDO_ORDER_BUFFER = 0.05
 
 // Unified shape consumed by the wizard steps, independent of mint/redeem.
 type AsyncZapContextValue = {
@@ -66,6 +79,22 @@ export const AsyncZapProvider = ({ children }: { children: ReactNode }) => {
   // keep a single atomic batch.
   const isMetaMask = useIsMetaMask()
 
+  // Per-asset cap on the USD value of a single CoW order, from Ondo's session
+  // limits. The SDK uses this to split oversized legs into multiple orders.
+  // Assets that can't trade (capacity 0 / market closed) are handled by the
+  // configure step's banner, so we only pass tradable caps here.
+  const ondoLimits = useOndoLimits()
+  const maxOrderValueUsd = useMemo(() => {
+    const map: Record<string, number> = {}
+    for (const asset of ondoLimits.assets) {
+      if (asset.capacityUsd && asset.capacityUsd > 0) {
+        map[asset.address.toLowerCase()] =
+          asset.capacityUsd * (1 - ONDO_ORDER_BUFFER)
+      }
+    }
+    return Object.keys(map).length > 0 ? map : undefined
+  }, [ondoLimits])
+
   // Debounce typed amounts so we don't re-quote on every keystroke.
   const debouncedMint = useDebounce(mintAmount, 500)
   const debouncedRedeem = useDebounce(redeemAmount, 500)
@@ -96,6 +125,7 @@ export const AsyncZapProvider = ({ children }: { children: ReactNode }) => {
     slippageBps: Number(slippage) || undefined,
     useExistingBalances,
     maxCallsPerBatch: isMetaMask ? METAMASK_MAX_CALLS_PER_BATCH : undefined,
+    maxOrderValueUsd,
   }
 
   const ready = !!indexDTF?.id && !!account
