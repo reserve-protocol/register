@@ -1019,7 +1019,11 @@ const QuoteSummary = () => {
 
             {quoteErrors.length > 0 && (
               <div className="mx-4 mb-3 rounded-xl border border-destructive/25 bg-destructive/10 text-destructive px-4 py-2 text-sm">
-                {quoteErrors.map((e) => e.message).join(' ')}
+                {quoteErrors
+                  .map((e) => e.message)
+                  .filter(Boolean)
+                  .join(' ') ||
+                  'Swap quote unavailable. The amount may be too small to cover fees.'}
               </div>
             )}
 
@@ -1027,7 +1031,7 @@ const QuoteSummary = () => {
               <div className="pb-2">
                 {isError && execution.error && (
                   <div className="mb-2 rounded-xl border border-destructive/25 bg-destructive/10 text-destructive px-4 py-2 text-sm">
-                    {execution.error.message}
+                    {execution.error.message || 'An error occurred. Please try again.'}
                   </div>
                 )}
                 {isError ? (
@@ -1092,7 +1096,9 @@ const QuoteSummary = () => {
                           <Loader2 size={16} className="animate-spin" />
                           Preparing wallet...
                         </span>
-                      ) : walletClientMissing ? (
+                      ) : walletClientMissing &&
+                        !hasFailedLegs &&
+                        quoteErrors.length === 0 ? (
                         <span className="font-medium">Reconnect wallet</span>
                       ) : (
                         <span className="font-medium">
