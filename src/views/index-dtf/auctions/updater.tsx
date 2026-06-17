@@ -48,7 +48,7 @@ const useRebalances = () => {
         INDEX_DTF_SUBGRAPH_URL[dtf.chainId],
         query,
         {
-          dtf: dtf?.id ?? '',
+          dtf: dtf?.id?.toLowerCase() ?? '',
         }
       )
 

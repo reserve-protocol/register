@@ -130,7 +130,7 @@ const useTrades = () => {
         INDEX_DTF_SUBGRAPH_URL[chainId],
         query,
         {
-          dtf: dtf?.id ?? '',
+          dtf: dtf?.id?.toLowerCase() ?? '',
         }
       )
 
