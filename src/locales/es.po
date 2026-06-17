@@ -189,6 +189,12 @@ msgstr "{0} DTFs"
 msgid "{0} Est. APY"
 msgstr "{0} APY est."
 
+#. placeholder {0}: dtf.token.symbol
+#: src/views/index-dtf/overview/components/landing-mint/dtf-cover.tsx:53
+#: src/views/index-dtf/overview/components/landing-mint/dtf-cover.tsx:58
+msgid "{0} explainer"
+msgstr ""
+
 #. placeholder {0}: formatPercentage(a.weight)
 #. placeholder {0}: formatPercentage(p.exposureShare)
 #: src/views/index-dtf/overview/components/yield-index/yield-index-composition-mobile.tsx:96
@@ -679,8 +685,8 @@ msgstr "Acerca de"
 msgid "About {0}"
 msgstr "Acerca de {0}"
 
-#: src/views/index-dtf/manage/components/manage-about.tsx:120
-#: src/views/index-dtf/manage/components/manage-about.tsx:123
+#: src/views/index-dtf/manage/components/manage-about.tsx:119
+#: src/views/index-dtf/manage/components/manage-about.tsx:122
 #: src/views/index-dtf/overview/components/index-about-overview.tsx:68
 msgid "About this DTF"
 msgstr "Acerca de este DTF"
@@ -755,7 +761,7 @@ msgstr ""
 msgid "Add additional recipients"
 msgstr "Agregar destinatarios adicionales"
 
-#: src/views/index-dtf/manage/components/manage-about.tsx:94
+#: src/views/index-dtf/manage/components/manage-about.tsx:93
 msgid "Add file"
 msgstr "Agregar archivo"
 
@@ -1181,6 +1187,10 @@ msgstr "Como RSR"
 #: src/components/rtoken-setup/token/ExternalRevenueSplit.tsx:90
 msgid "As RToken"
 msgstr "Como RToken"
+
+#: src/components/dtf-chat/index.tsx:97
+msgid "Ask Reserve AI"
+msgstr ""
 
 #: src/components/ui/swap.tsx:255
 msgid "Assembling different routes"
@@ -1686,6 +1696,10 @@ msgstr "Brand Manager"
 msgid "Brand Managers"
 msgstr "Brand Managers"
 
+#: src/views/index-dtf/manage/components/manage-about.tsx:164
+msgid "Brand video"
+msgstr ""
+
 #. placeholder {0}: token.symbol
 #: src/views/bridge/index.tsx:224
 msgid "Bridge {0}"
@@ -1733,7 +1747,7 @@ msgid "BTC"
 msgstr "BTC"
 
 #: src/views/explorer/components/revenue/index.tsx:287
-#: src/views/home/components/highlighted-dtfs.tsx:636
+#: src/views/home/components/highlighted-dtfs.tsx:555
 #: src/views/index-dtf/auctions/legacy/components/auction-item.tsx:132
 #: src/views/index-dtf/issuance/manual/components/mode-selector.tsx:12
 #: src/views/index-dtf/overview/components/landing-mint/index.tsx:122
@@ -2033,7 +2047,7 @@ msgstr "Limpiar"
 msgid "Click retry or use individual approve buttons below."
 msgstr "Haz clic en reintentar o usa los botones de aprobación individuales que aparecen abajo."
 
-#: src/views/home/components/dtf-explainer-button.tsx:48
+#: src/components/video-modal/index.tsx:51
 msgid "Close"
 msgstr "Cerrar"
 
@@ -2049,7 +2063,7 @@ msgstr "Cierra"
 msgid "CMC20 is a BNB DTF and you need to bridge your RSR using Wormhole to participate in governance."
 msgstr "CMC20 es un DTF de BNB y necesitas hacer bridge de tu RSR usando Wormhole para participar en la gobernanza."
 
-#: src/views/home/components/dtf-packing-animation.tsx:365
+#: src/views/home/components/dtf-packing-animation.tsx:320
 msgid "CMC20 packs multiple collateral assets into one DTF token"
 msgstr ""
 
@@ -2755,7 +2769,7 @@ msgstr ""
 msgid "days"
 msgstr "días"
 
-#: src/views/home/components/homepage-hero.tsx:42
+#: src/views/home/components/homepage-hero.tsx:36
 msgid "Decentralized Token Folios"
 msgstr ""
 
@@ -2998,7 +3012,7 @@ msgstr "Enlace de Discord"
 msgid "Discord username"
 msgstr "Nombre de usuario de Discord"
 
-#: src/views/home/components/highlighted-dtfs.tsx:888
+#: src/views/home/components/highlighted-dtfs.tsx:902
 msgid "Discover all our products"
 msgstr ""
 
@@ -3100,7 +3114,7 @@ msgstr "Descargar CSV"
 msgid "Download snapshot"
 msgstr "Descargar snapshot"
 
-#: src/views/index-dtf/manage/components/manage-about.tsx:38
+#: src/views/index-dtf/manage/components/manage-about.tsx:37
 #: src/views/index-dtf/overview/components/index-about-overview.tsx:91
 msgid "Downloadable resources"
 msgstr "Recursos descargables"
@@ -3131,7 +3145,8 @@ msgstr "Etiquetas de categoría del DTF"
 msgid "DTF cover"
 msgstr "Portada del DTF"
 
-#: src/views/home/components/dtf-explainer-button.tsx:55
+#: src/views/home/components/dtf-explainer-button.tsx:26
+#: src/views/index-dtf/overview/components/landing-mint/dtf-cover.tsx:59
 msgid "DTF Explainer"
 msgstr "Explicación de los DTF"
 
@@ -3139,7 +3154,7 @@ msgstr "Explicación de los DTF"
 msgid "DTF Explorer"
 msgstr "DTF Explorer"
 
-#: src/views/index-dtf/manage/components/manage-about.tsx:150
+#: src/views/index-dtf/manage/components/manage-about.tsx:149
 msgid "DTF Fact sheet"
 msgstr "Ficha técnica del DTF"
 
@@ -3156,7 +3171,7 @@ msgstr ""
 msgid "DTF Governed"
 msgstr "DTF gobernado"
 
-#: src/views/index-dtf/manage/components/manage-about.tsx:107
+#: src/views/index-dtf/manage/components/manage-about.tsx:106
 msgid "DTF Icon"
 msgstr "Icono del DTF"
 
@@ -3165,8 +3180,8 @@ msgid "DTF Inactive"
 msgstr "DTF inactivo"
 
 #: src/views/index-dtf/overview/components/landing-mint/index.tsx:194
-msgid "DTF meme"
-msgstr "Meme del DTF"
+#~ msgid "DTF meme"
+#~ msgstr "Meme del DTF"
 
 #: src/views/index-dtf/governance/views/propose/index.tsx:58
 msgid "DTF Settings"
@@ -3181,7 +3196,7 @@ msgstr "Propuesta de configuración del DTF"
 msgid "dtf token logo"
 msgstr "logo del token dtf"
 
-#: src/views/index-dtf/manage/components/submit-button.tsx:229
+#: src/views/index-dtf/manage/components/submit-button.tsx:291
 msgid "DTF updated successfully"
 msgstr "DTF actualizado correctamente"
 
@@ -3723,7 +3738,7 @@ msgstr "Expira en:"
 msgid "Explore"
 msgstr "Explorar"
 
-#: src/views/home/components/highlighted-dtfs.tsx:891
+#: src/views/home/components/highlighted-dtfs.tsx:905
 msgid "Explore DTFs across broad crypto, ecosystems, yield strategies and more."
 msgstr ""
 
@@ -3750,7 +3765,7 @@ msgstr "Exposición"
 msgid "Exposure Share"
 msgstr "Porcentaje de exposición"
 
-#: src/views/home/components/discover-index-dtf/basket-hover-card.tsx:39
+#: src/views/home/components/discover-index-dtf/basket-hover-card.tsx:40
 msgid "Exposure:"
 msgstr ""
 
@@ -3793,7 +3808,7 @@ msgstr "No se pudo leer el archivo CSV"
 msgid "Failed to switch to {chainName}"
 msgstr "Error al cambiar a {chainName}"
 
-#: src/views/index-dtf/manage/components/submit-button.tsx:237
+#: src/views/index-dtf/manage/components/submit-button.tsx:299
 msgid "Failed to update DTF"
 msgstr "No se pudo actualizar el DTF"
 
@@ -3869,7 +3884,7 @@ msgstr "Obteniendo..."
 msgid "File issues or upvote existing ones"
 msgstr "Reporta problemas o vota por los existentes"
 
-#: src/views/index-dtf/manage/components/manage-about.tsx:55
+#: src/views/index-dtf/manage/components/manage-about.tsx:54
 msgid "File name"
 msgstr "Nombre del archivo"
 
@@ -4206,8 +4221,8 @@ msgid "hero-splash"
 msgstr "hero-splash"
 
 #: src/views/index-dtf/manage/components/manage-about.tsx:164
-msgid "Hide DTF"
-msgstr "Ocultar DTF"
+#~ msgid "Hide DTF"
+#~ msgstr "Ocultar DTF"
 
 #: src/views/index-dtf/governance/views/propose/basket/components/legacy-proposal-auction-price-ranges.tsx:108
 #: src/views/index-dtf/governance/views/propose/basket/components/proposal-basket-price-settings.tsx:107
@@ -4228,7 +4243,7 @@ msgstr "Alto impacto en el precio"
 msgid "High price impact: {0}"
 msgstr "Alto impacto en el precio: {0}"
 
-#: src/views/home/components/highlighted-dtfs.tsx:582
+#: src/views/home/components/highlighted-dtfs.tsx:501
 msgid "Highlighted card chain"
 msgstr ""
 
@@ -4373,7 +4388,7 @@ msgstr "En proceso de retiro"
 #: src/components/inactive-badge.tsx:18
 #: src/views/home/components/discover-index-dtf/index-dtf-table-columns.tsx:218
 #: src/views/home/components/discover-yield-dtf/yield-dtf-card.tsx:95
-#: src/views/home/components/highlighted-dtfs.tsx:650
+#: src/views/home/components/highlighted-dtfs.tsx:569
 msgid "Inactive"
 msgstr "Inactivo"
 
@@ -4765,7 +4780,7 @@ msgstr "Límite de registros por Chain"
 msgid "Limited"
 msgstr "Limitado"
 
-#: src/views/index-dtf/manage/components/manage-about.tsx:41
+#: src/views/index-dtf/manage/components/manage-about.tsx:40
 msgid "Links to files holders can download from the DTF overview page, like a tear sheet or methodology document."
 msgstr "Links a archivos que los holders pueden descargar desde la página de overview del DTF, como un tear sheet o un documento de metodología."
 
@@ -5278,7 +5293,7 @@ msgstr "minutos"
 msgid "Missing collateral"
 msgstr "Colateral faltante"
 
-#: src/views/index-dtf/manage/components/submit-button.tsx:166
+#: src/views/index-dtf/manage/components/submit-button.tsx:208
 msgid "Missing signature"
 msgstr "Falta la firma"
 
@@ -5321,17 +5336,21 @@ msgstr ""
 msgid "Must be 0 or greater"
 msgstr "Debe ser 0 o mayor"
 
-#: src/views/index-dtf/manage/components/schema.ts:10
+#: src/views/index-dtf/manage/components/schema.ts:11
 msgid "Must be a valid Discord URL"
 msgstr "Debe ser una URL de Discord válida"
 
-#: src/views/index-dtf/manage/components/schema.ts:9
+#: src/views/index-dtf/manage/components/schema.ts:10
 msgid "Must be a valid Telegram URL"
 msgstr "Debe ser una URL de Telegram válida"
 
-#: src/views/index-dtf/manage/components/schema.ts:8
+#: src/views/index-dtf/manage/components/schema.ts:9
 msgid "Must be a valid Twitter/X URL"
 msgstr "Debe ser una URL de Twitter/X válida"
+
+#: src/views/index-dtf/manage/components/schema.ts:12
+msgid "Must be a valid YouTube URL"
+msgstr ""
 
 #: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/form-fields.ts:15
 msgid "Must be between 0 and 100"
@@ -5520,7 +5539,7 @@ msgstr "Sin cambios"
 
 #: src/components/charts/area/AreaChart.tsx:132
 #: src/views/home/components/discover-index-dtf/index-dtf-table-columns.tsx:137
-#: src/views/home/components/highlighted-dtfs.tsx:678
+#: src/views/home/components/highlighted-dtfs.tsx:597
 #: src/views/index-dtf/overview/components/charts/percentage-change.tsx:27
 #: src/views/top100/components/top100-table.tsx:35
 #: src/views/top100/components/top100-table.tsx:43
@@ -5751,8 +5770,8 @@ msgstr "¿No estás listo para configurar la gobernanza?"
 msgid "Not voted"
 msgstr "Sin votar"
 
-#: src/views/index-dtf/manage/components/manage-about.tsx:135
-#: src/views/index-dtf/manage/components/manage-about.tsx:138
+#: src/views/index-dtf/manage/components/manage-about.tsx:134
+#: src/views/index-dtf/manage/components/manage-about.tsx:137
 msgid "Notes from Creator"
 msgstr "Notas del creador"
 
@@ -5828,7 +5847,7 @@ msgstr "Eventos online y presenciales solo por invitación"
 msgid "Only Auction Launchers will be able to start auctions. After the exclusive launch window for Auction Launcher, any remaining auctions to started will expire."
 msgstr "Solo los lanzadores de subastas podrán iniciar subastas. Después de la ventana de lanzamiento exclusiva del lanzador de subastas, cualquier subasta pendiente de iniciar expirará."
 
-#: src/views/index-dtf/manage/components/submit-button.tsx:256
+#: src/views/index-dtf/manage/components/submit-button.tsx:318
 msgid "Only Brand Manager"
 msgstr "Solo Brand Manager"
 
@@ -5851,7 +5870,7 @@ msgid "open"
 msgstr "abierto"
 
 #. placeholder {0}: selectedVersion.name
-#: src/views/home/components/highlighted-dtfs.tsx:739
+#: src/views/home/components/highlighted-dtfs.tsx:653
 msgid "Open {0}"
 msgstr ""
 
@@ -6958,7 +6977,7 @@ msgstr "Eliminar tokens residuales"
 msgid "Remove image"
 msgstr "Eliminar imagen"
 
-#: src/views/index-dtf/manage/components/manage-about.tsx:82
+#: src/views/index-dtf/manage/components/manage-about.tsx:81
 msgid "Remove resource"
 msgstr "Eliminar recurso"
 
@@ -7064,7 +7083,7 @@ msgstr "Reserve Docs"
 msgid "Reserve Forum"
 msgstr "Reserve Forum"
 
-#: src/views/home/components/homepage-hero.tsx:26
+#: src/views/home/components/homepage-hero.tsx:20
 msgid "Reserve lets you buy entire portfolios as a single token"
 msgstr ""
 
@@ -8175,7 +8194,7 @@ msgstr "Token stRSR"
 msgid "Submit"
 msgstr "Enviar"
 
-#: src/views/index-dtf/manage/components/submit-button.tsx:247
+#: src/views/index-dtf/manage/components/submit-button.tsx:309
 msgid "Submit all changes"
 msgstr "Enviar todos los cambios"
 
@@ -8199,7 +8218,7 @@ msgid "Submitted!"
 msgstr "¡Enviada!"
 
 #: src/views/index-dtf/deploy/components/deploy-coming-soon.tsx:182
-#: src/views/index-dtf/manage/components/submit-button.tsx:250
+#: src/views/index-dtf/manage/components/submit-button.tsx:312
 #: src/views/index-dtf/overview/components/eligibility-card.tsx:133
 msgid "Submitting..."
 msgstr "Enviando..."
@@ -8732,8 +8751,8 @@ msgid "This was originally a fast proposal that did not pass governance. Please 
 msgstr ""
 
 #: src/views/index-dtf/manage/components/manage-about.tsx:167
-msgid "This will prevent the DTF from appearing in the DTF list. You can still access it on the UI using the direct link."
-msgstr "Esto evitará que el DTF aparezca en la lista de DTFs. Aún podrás acceder a él en la UI mediante el enlace directo."
+#~ msgid "This will prevent the DTF from appearing in the DTF list. You can still access it on the UI using the direct link."
+#~ msgstr "Esto evitará que el DTF aparezca en la lista de DTFs. Aún podrás acceder a él en la UI mediante el enlace directo."
 
 #: src/components/rtoken-setup/token/TokenForm.tsx:30
 #: src/views/index-dtf/settings/components/index-settings-basic.tsx:37
@@ -9295,7 +9314,7 @@ msgstr "Exposición a tokens subyacentes"
 msgid "Understand the project and protocols"
 msgstr "Conoce el proyecto y los protocolos"
 
-#: src/views/index-dtf/manage/components/submit-button.tsx:238
+#: src/views/index-dtf/manage/components/submit-button.tsx:300
 msgid "Unexpected error"
 msgstr "Error inesperado"
 
@@ -9562,7 +9581,7 @@ msgstr "Actualizar Folio Governance (1/2):"
 msgid "Upgrade to"
 msgstr "Actualizar a"
 
-#: src/views/index-dtf/manage/components/submit-button.tsx:249
+#: src/views/index-dtf/manage/components/submit-button.tsx:311
 msgid "Uploading files..."
 msgstr "Subiendo archivos..."
 
@@ -9649,7 +9668,7 @@ msgstr "Propuesta de cambio de Vault"
 msgid "Verify eligibility"
 msgstr "Verificar elegibilidad"
 
-#: src/views/index-dtf/manage/components/submit-button.tsx:99
+#: src/views/index-dtf/manage/components/submit-button.tsx:126
 msgid "Verify wallet"
 msgstr "Verificar Wallet"
 
@@ -9721,6 +9740,11 @@ msgstr ""
 
 #: src/views/portfolio-page/components/active-proposals.tsx:84
 msgid "Veto?"
+msgstr ""
+
+#: src/components/video-modal/index.tsx:46
+#: src/components/video-modal/index.tsx:58
+msgid "Video"
 msgstr ""
 
 #: src/views/earn/views/defi/components/featured-pool-item.tsx:67
@@ -10184,7 +10208,7 @@ msgid "Warning: High price impact"
 msgstr "Advertencia: alto impacto en el precio"
 
 #. placeholder {0}: dtf.name
-#: src/views/home/components/highlighted-dtfs.tsx:782
+#: src/views/home/components/highlighted-dtfs.tsx:696
 msgid "Watch {0} explainer"
 msgstr ""
 
@@ -10196,7 +10220,9 @@ msgstr "Mira una introducción a los RTokens"
 #~ msgid "Watch DTF Explainer"
 #~ msgstr "Ver la explicación de los DTF"
 
-#: src/views/home/components/homepage-hero.tsx:52
+#: src/views/home/components/homepage-hero.tsx:46
+#: src/views/index-dtf/overview/components/landing-mint/dtf-cover.tsx:55
+#: src/views/index-dtf/overview/components/landing-mint/dtf-cover.tsx:140
 msgid "Watch explainer"
 msgstr ""
 
@@ -10204,11 +10230,11 @@ msgstr ""
 msgid "Watch Explainer"
 msgstr ""
 
-#: src/views/home/components/highlighted-dtfs.tsx:786
+#: src/views/home/components/highlighted-dtfs.tsx:700
 msgid "Watch Video"
 msgstr ""
 
-#: src/views/home/components/homepage-hero.tsx:39
+#: src/views/home/components/homepage-hero.tsx:33
 msgid "We call these tokenized portfolios DTFs:"
 msgstr ""
 
@@ -10268,7 +10294,7 @@ msgstr "Pesos guardados:"
 msgid "Welcome to Reserve — a platform for creating, exploring, and interacting with Decentralized Token Folios (“DTFs”). A DTF is the generic name given to any onchain asset-backed index. DTFs can be created on Reserve’s Yield Protocol or Index Protocol permissionlessly, by any person or entity."
 msgstr "Te damos la bienvenida a Reserve — una plataforma para crear, explorar e interactuar con Decentralized Token Folios (“DTFs”). Un DTF es el nombre genérico que se le da a cualquier índice onchain respaldado por activos. Los DTF pueden crearse en el Yield Protocol o el Index Protocol de Reserve sin permisos, por cualquier persona o entidad."
 
-#: src/views/home/components/dtf-explainer-button.tsx:41
+#: src/views/home/components/dtf-explainer-button.tsx:22
 msgid "What is a <0>DTF</0>?"
 msgstr "¿Qué es un <0>DTF</0>?"
 

@@ -1,4 +1,4 @@
-import { useForm, useFormContext } from 'react-hook-form'
+import { useFormContext } from 'react-hook-form'
 import CoverImageUploader from './cover-image-upload'
 
 const CoverImages = () => {
@@ -11,13 +11,6 @@ const CoverImages = () => {
         value={watch('files.desktopCover')}
         onChange={(file) => setValue('files.desktopCover', file)}
         defaultImage={watch('dtf.cover')}
-      />
-
-      <CoverImageUploader
-        variant="mobile"
-        value={watch('files.mobileCover')}
-        onChange={(file) => setValue('files.mobileCover', file)}
-        defaultImage={watch('dtf.mobileCover')}
       />
     </div>
   )

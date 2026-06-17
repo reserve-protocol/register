@@ -343,6 +343,22 @@ export const WEBP = new Set([
   'fnon',
   'liteon',
   'mtsion',
+  'huton',
+  'corzon',
+  'pwron',
+  'beon',
+  'nvton',
+  'hubbon',
+  'powlon',
+  'dellon',
+  'rokon',
+  'symon',
+  'lsccon',
+  'auron',
+  'mblyon',
+  'himxon',
+  'hsaion',
+  'ouston'
 ])
 
 export const EXTERNAL_ASSETS: Record<string, string> = {

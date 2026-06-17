@@ -20,6 +20,7 @@ export type IndexDTFItem = {
   brand?: {
     icon?: string
     cover?: string
+    video?: string
     tags?: string[]
   }
 }
@@ -30,7 +31,9 @@ const useIndexDTFList = () => {
   return useQuery({
     queryKey: ['index-dtf-list'],
     queryFn: async (): Promise<IndexDTFItem[]> => {
-      const response = await fetch(`${RESERVE_API}discover/dtfs?performance=true&brand=true`)
+      const response = await fetch(
+        `${RESERVE_API}discover/dtfs?performance=true&brand=true`
+      )
 
       if (!response.ok) {
         throw new Error('Failed to fetch dtf list')

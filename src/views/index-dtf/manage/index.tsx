@@ -9,11 +9,10 @@ import { ManageFormValues, useManageFormSchema } from './components/schema'
 import SubmitButton from './components/submit-button'
 
 const defaultValues: ManageFormValues = {
-  hidden: false,
   dtf: {
     icon: '',
     cover: '',
-    mobileCover: '',
+    video: '',
     description: '',
     notesFromCreator: '',
     files: [],
@@ -41,7 +40,6 @@ const defaultValues: ManageFormValues = {
     creatorLogo: undefined,
     curatorLogo: undefined,
     desktopCover: undefined,
-    mobileCover: undefined,
   },
 }
 
@@ -53,6 +51,7 @@ const IndexDTFManage = () => {
     mode: 'onChange',
   })
   const data = useAtomValue(indexDTFBrandAtom)
+  const { reset } = form
 
   useEffect(() => {
     if (data) {
@@ -71,9 +70,9 @@ const IndexDTFManage = () => {
         }
       }
 
-      form.reset(formData)
+      reset(formData, { keepDirtyValues: true })
     }
-  }, [!!data])
+  }, [data, reset])
 
   return (
     <FormProvider {...form}>

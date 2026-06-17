@@ -25,13 +25,40 @@ import {
 import { signatureAtom } from '../atoms'
 
 const NONCE_ENDPOINT = `${RESERVE_API}folio-manager/nonce`
+const READ_DTF_DATA = `${RESERVE_API}folio-manager/read`
 const SAVE_DTF_DATA = `${RESERVE_API}folio-manager/save`
+
+type CurrentBrandData = {
+  hidden?: boolean
+  dtf?: {
+    video?: string
+    files?: { url?: string; name?: string }[]
+  }
+}
 
 const api = {
   getNonce: async (): Promise<{ nonce: string }> => {
     const response = await fetch(NONCE_ENDPOINT)
     if (!response.ok) throw new Error('Failed to get nonce')
     return response.json() as Promise<{ nonce: string }>
+  },
+  getBrandData: async ({
+    folio,
+    chainId,
+  }: {
+    folio: string
+    chainId: number
+  }): Promise<CurrentBrandData> => {
+    const response = await fetch(
+      `${READ_DTF_DATA}?folio=${folio.toLowerCase()}&chainId=${chainId}`
+    )
+
+    if (!response.ok) {
+      throw new Error('Failed to get current brand data')
+    }
+
+    const body = await response.json()
+    return body?.parsedData ?? {}
   },
 }
 
@@ -124,7 +151,6 @@ const fileToPath: Record<string, string> = {
   creatorLogo: 'creator.icon',
   curatorLogo: 'curator.icon',
   desktopCover: 'dtf.cover',
-  mobileCover: 'dtf.mobileCover',
 }
 
 const SubmitButton = () => {
@@ -132,6 +158,7 @@ const SubmitButton = () => {
   const dtf = useAtomValue(indexDTFAtom)
   const chainId = useAtomValue(chainIdAtom)
   const signature = useAtomValue(currentSignatureAtom)
+  const brand = useAtomValue(indexDTFBrandAtom)
   const { handleSubmit, formState } = useFormContext()
   const [state, setState] = useState<
     'idle' | 'uploading' | 'submitting' | 'success'
@@ -154,6 +181,21 @@ const SubmitButton = () => {
 
     try {
       const { files, ...payload } = data
+      const isVideoDirty = Boolean(
+        (
+          formState.dirtyFields as {
+            dtf?: { video?: unknown }
+          }
+        )?.dtf?.video
+      )
+      const areResourcesDirty = Boolean(
+        (
+          formState.dirtyFields as {
+            dtf?: { files?: unknown }
+          }
+        )?.dtf?.files
+      )
+
       const pendingFilesKeys = Object.keys(files).filter(
         (key) => files[key] instanceof File
       )
@@ -200,6 +242,26 @@ const SubmitButton = () => {
       ).filter((resource) => resource.url)
 
       setState('submitting')
+
+      const currentBrandData = await api.getBrandData({
+        folio: dtf.id,
+        chainId,
+      })
+      const currentDtfData = currentBrandData.dtf ?? {}
+
+      payload.hidden = currentBrandData.hidden ?? true
+
+      if (!isVideoDirty && !payload.dtf.video) {
+        payload.dtf.video = currentDtfData.video ?? brand?.dtf.video ?? ''
+      }
+
+      if (
+        !areResourcesDirty &&
+        !payload.dtf.files.length &&
+        currentDtfData.files?.length
+      ) {
+        payload.dtf.files = currentDtfData.files
+      }
 
       if (payload.dtf.tags.length) {
         payload.dtf.tags = payload.dtf.tags.map(
