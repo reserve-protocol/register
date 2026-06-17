@@ -1,4 +1,3 @@
-import CoverPlaceholder from '@/components/icons/cover-placeholder'
 import TokenLogo from '@/components/token-logo'
 import StackTokenLogo from '@/components/token-logo/StackTokenLogo'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
@@ -186,18 +185,10 @@ const CoverImage = () => {
   }
 
   if (brand?.dtf?.cover) {
-    return (
-      <img
-        width={450}
-        height={450}
-        className="object-cover h-[450px] w-[450px] rounded-4xl"
-        alt={t`DTF meme`}
-        src={brand.dtf.cover}
-      />
-    )
+    return null
   }
 
-  return <CoverPlaceholder className="text-legend" />
+  return null
 }
 
 const LandingMint = (props: React.HTMLAttributes<HTMLDivElement>) => {
