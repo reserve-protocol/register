@@ -8,7 +8,7 @@ import { INDEX_DTF_SUBGRAPH_URL } from '@/state/atoms'
 import { useEffect } from 'react'
 
 const query = gql`
-  query getGovernanceStats($dtf: String!) {
+  query getRebalances($dtf: String!) {
     rebalances(where: { dtf: $dtf }, orderBy: timestamp, orderDirection: desc) {
       id
       nonce
@@ -51,6 +51,8 @@ const useRebalances = () => {
           dtf: dtf?.id?.toLowerCase() ?? '',
         }
       )
+
+      console.log('response', response)
 
       return response.rebalances ?? []
     },
