@@ -56,7 +56,10 @@ const DiscoverIndexDTF = () => {
       <div className="grid grid-cols-1 gap-1 md:grid-cols-2 lg:hidden">
         <CollateralAssetAnimationStyles />
         {isLoading ? (
-          <IndexDTFFeatureCardPlaceholder />
+          <IndexDTFFeatureCardPlaceholder
+            chartPlacement="header"
+            showTranscript={false}
+          />
         ) : (
           data.map((dtf) => (
             <DiscoverIndexDTFCard

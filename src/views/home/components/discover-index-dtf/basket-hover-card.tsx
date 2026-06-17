@@ -5,7 +5,8 @@ import {
 } from '@/components/ui/hover-card'
 import { type IndexDTFItem } from '@/hooks/useIndexDTFList'
 import { Trans } from '@lingui/react/macro'
-import { forwardRef, useEffect, useRef, useState } from 'react'
+import { forwardRef, useState } from 'react'
+import { useMeasuredMarquee } from '../../hooks/use-measured-marquee'
 
 const SCROLL_PIXELS_PER_SECOND = 72
 const EASE_IN_SECONDS = 1.2
@@ -48,84 +49,13 @@ SequenceItems.displayName = 'SequenceItems'
 
 export function BasketHoverCard({ indexDTF, children }: BasketHoverCardProps) {
   const [open, setOpen] = useState(false)
-  const viewportRef = useRef<HTMLDivElement>(null)
-  const sequenceRef = useRef<HTMLDivElement>(null)
-  const [repeatCount, setRepeatCount] = useState(2)
   const exposureAssets = indexDTF.basket
-
-  useEffect(() => {
-    if (!open) return
-
-    let frame = 0
-    let startTime = 0
-    let sequenceWidth = 0
-    let ro: ResizeObserver | undefined
-
-    const measure = () => {
-      const viewport = viewportRef.current
-      const sequence = sequenceRef.current
-      if (!viewport || !sequence) return false
-
-      sequenceWidth = sequence.scrollWidth
-      const viewportWidth = viewport.clientWidth
-
-      if (!sequenceWidth || !viewportWidth) return false
-
-      const nextRepeatCount = Math.max(
-        2,
-        Math.ceil(viewportWidth / sequenceWidth) + 2
-      )
-
-      setRepeatCount((current) =>
-        current === nextRepeatCount ? current : nextRepeatCount
-      )
-      viewport.scrollLeft = 0
-
-      if (!ro) {
-        ro = new ResizeObserver(() => {
-          measure()
-          startTime = performance.now()
-        })
-        ro.observe(viewport)
-        ro.observe(sequence)
-      }
-
-      return true
-    }
-
-    const tick = (time: number) => {
-      const viewport = viewportRef.current
-
-      if (!viewport || (!sequenceWidth && !measure())) {
-        frame = window.requestAnimationFrame(tick)
-        return
-      }
-
-      if (!startTime) startTime = time
-
-      const elapsedSeconds = (time - startTime) / 1000
-
-      const easeSeconds = Math.min(elapsedSeconds, EASE_IN_SECONDS)
-      const fullSpeedSeconds = Math.max(0, elapsedSeconds - EASE_IN_SECONDS)
-      const easeProgress = easeSeconds / EASE_IN_SECONDS
-      const easedDistance =
-        SCROLL_PIXELS_PER_SECOND *
-        EASE_IN_SECONDS *
-        ((easeProgress * easeProgress * easeProgress) / 3)
-      const fullSpeedDistance = fullSpeedSeconds * SCROLL_PIXELS_PER_SECOND
-
-      viewport.scrollLeft = (easedDistance + fullSpeedDistance) % sequenceWidth
-
-      frame = window.requestAnimationFrame(tick)
-    }
-
-    frame = window.requestAnimationFrame(tick)
-
-    return () => {
-      window.cancelAnimationFrame(frame)
-      ro?.disconnect()
-    }
-  }, [exposureAssets.length, open])
+  const { repeatCount, sequenceRef, viewportRef } = useMeasuredMarquee({
+    active: open,
+    easeInSeconds: EASE_IN_SECONDS,
+    itemCount: exposureAssets.length,
+    pixelsPerSecond: SCROLL_PIXELS_PER_SECOND,
+  })
 
   return (
     <HoverCard open={open} onOpenChange={setOpen} openDelay={0} closeDelay={0}>

@@ -14,16 +14,20 @@ import { Trans, useLingui } from '@lingui/react/macro'
 import { useQuery } from '@tanstack/react-query'
 import { ArrowRight } from 'lucide-react'
 import {
-  useEffect,
   useId,
   useMemo,
-  useRef,
   useState,
   type CSSProperties,
   type ReactNode,
 } from 'react'
 import { Link } from 'react-router-dom'
 import { Area, AreaChart, Tooltip, XAxis, YAxis } from 'recharts'
+import {
+  useAssetTickerTransition,
+  useHighlightedCardVisibility,
+  useHighlightedScrollMetrics,
+  useTranscriptPlayback,
+} from '../hooks/use-highlighted-dtf-animation'
 import { calculatePercentageChange } from './discover-index-dtf/utils'
 
 const HIGHLIGHTED_LIMIT = 5
@@ -45,6 +49,15 @@ const TRANSCRIPT_LINE_HEIGHT = 18
 const END_FADE_DISTANCE = 160
 const BSC_CHAIN_ID = 56
 const ETHEREUM_CHAIN_ID = 1
+const FEATURE_CARD_CLASS_NAME =
+  'group flex w-full shrink-0 flex-col gap-1 rounded-3xl bg-card p-1 lg:bg-background lg:hover:bg-card'
+const FEATURE_CARD_MEDIA_CLASS_NAME =
+  'flex flex-col overflow-hidden rounded-t-2xl bg-gradient-to-b from-secondary to-card lg:from-secondary/80 lg:group-hover:from-card'
+const FEATURE_CARD_HEADER_CLASS_NAME = 'flex min-w-0 flex-col gap-3 p-5 pb-2'
+const FEATURE_CARD_ASSET_TICKER_CLASS_NAME =
+  'relative overflow-hidden rounded-full border border-card bg-card p-2 pl-0 pr-0.5 lg:border-secondary lg:group-hover:border-card'
+const FEATURE_CARD_GRID_CLASS_NAME =
+  'grid grid-cols-1 gap-1 pb-0 will-change-transform md:auto-rows-fr md:grid-cols-2'
 
 type ChainVersion = IndexDTFItem & {
   versionLabel: string
@@ -257,7 +270,6 @@ export const IndexDTFFeatureCard = ({
   showTranscript?: boolean
 }) => {
   const { t } = useLingui()
-  const cardRef = useRef<HTMLAnchorElement>(null)
   const chainVersions = dtf.chainVersions
   const [selectedVersionIndex, setSelectedVersionIndex] = useState(0)
   const selectedVersion = chainVersions?.[selectedVersionIndex] ?? dtf
@@ -268,13 +280,6 @@ export const IndexDTFFeatureCard = ({
     () => selectedVersion.basket.slice(0, BACKING_LIMIT),
     [selectedVersion]
   )
-  const [displayedBacking, setDisplayedBacking] = useState(backing)
-  const [displayedAssetVersionKey, setDisplayedAssetVersionKey] =
-    useState(assetVersionKey)
-  const [assetTransitionState, setAssetTransitionState] = useState<
-    'idle' | 'exiting' | 'entering'
-  >('idle')
-  const previousAssetVersionKeyRef = useRef(assetVersionKey)
   const fallbackSevenDayPerformance = getSevenDayPerformance(
     selectedVersion.performance
   )
@@ -303,15 +308,29 @@ export const IndexDTFFeatureCard = ({
       : performanceDirection === 'negative'
         ? '#B85F50'
         : '#6F6456'
-  const transcriptWordRefs = useRef<(HTMLSpanElement | null)[]>([])
   const [isTranscriptActive, setIsTranscriptActive] = useState(false)
-  const [isAssetTickerVisible, setIsAssetTickerVisible] = useState(false)
-  const [isCardInView, setIsCardInView] = useState(false)
-  const [highlightedWords, setHighlightedWords] = useState(0)
-  const [transcriptScrollOffset, setTranscriptScrollOffset] = useState(0)
   const isDesktop = useIsDesktop()
+  const { cardRef, isAssetTickerVisible, isCardInView } =
+    useHighlightedCardVisibility<HTMLAnchorElement>(isDesktop)
   const isActive =
     showTranscript && (isDesktop ? isTranscriptActive : isCardInView)
+  const {
+    displayedValue: displayedBacking,
+    displayedVersionKey: displayedAssetVersionKey,
+    transitionState: assetTransitionState,
+  } = useAssetTickerTransition({
+    enterMs: ASSET_CHAIN_ENTER_MS,
+    exitMs: ASSET_CHAIN_EXIT_MS,
+    value: backing,
+    versionKey: assetVersionKey,
+  })
+  const { highlightedWords, transcriptScrollOffset, transcriptWordRefs } =
+    useTranscriptPlayback({
+      active: isActive,
+      enabled: showTranscript,
+      wordCount: TRANSCRIPT_WORDS.length,
+      wordDelayMs: TRANSCRIPT_WORD_DELAY_MS,
+    })
   const hasChainTabs = (chainVersions?.length ?? 0) > 1
   const chainTabs = chainVersions ?? []
   const hasPerformanceChart = sevenDayPerformance.length > 0
@@ -424,100 +443,6 @@ export const IndexDTFFeatureCard = ({
     </div>
   )
 
-  useEffect(() => {
-    if (isDesktop) {
-      setIsAssetTickerVisible(false)
-      setIsCardInView(false)
-      return
-    }
-
-    const card = cardRef.current
-    if (!card) return
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        const isMostlyInView = entry.intersectionRatio >= 0.85
-        setIsAssetTickerVisible(isMostlyInView)
-        setIsCardInView(isMostlyInView)
-      },
-      { threshold: [0, 0.85] }
-    )
-
-    observer.observe(card)
-
-    return () => observer.disconnect()
-  }, [isDesktop])
-
-  useEffect(() => {
-    if (previousAssetVersionKeyRef.current === assetVersionKey) return
-
-    previousAssetVersionKeyRef.current = assetVersionKey
-    setAssetTransitionState('exiting')
-
-    const swapTimeout = window.setTimeout(() => {
-      setDisplayedBacking(backing)
-      setDisplayedAssetVersionKey(assetVersionKey)
-      setAssetTransitionState('entering')
-    }, ASSET_CHAIN_EXIT_MS)
-
-    const settleTimeout = window.setTimeout(() => {
-      setAssetTransitionState('idle')
-    }, ASSET_CHAIN_EXIT_MS + ASSET_CHAIN_ENTER_MS)
-
-    return () => {
-      window.clearTimeout(swapTimeout)
-      window.clearTimeout(settleTimeout)
-    }
-  }, [assetVersionKey, backing])
-
-  useEffect(() => {
-    if (!showTranscript || !isActive) {
-      setHighlightedWords(0)
-      setTranscriptScrollOffset(0)
-      return
-    }
-
-    setHighlightedWords(0)
-    const interval = window.setInterval(() => {
-      setHighlightedWords((count) =>
-        Math.min(count + 1, TRANSCRIPT_WORDS.length)
-      )
-    }, TRANSCRIPT_WORD_DELAY_MS)
-
-    return () => window.clearInterval(interval)
-  }, [isActive, showTranscript])
-
-  useEffect(() => {
-    if (!showTranscript || !isActive || highlightedWords === 0) {
-      setTranscriptScrollOffset(0)
-      return
-    }
-
-    const activeWord =
-      transcriptWordRefs.current[
-        Math.min(highlightedWords - 1, TRANSCRIPT_WORDS.length - 1)
-      ]
-
-    if (!activeWord) return
-
-    const rowTops = Array.from(
-      new Set(
-        transcriptWordRefs.current
-          .filter(Boolean)
-          .map((node) => Math.round(node!.offsetTop))
-      )
-    ).sort((a, b) => a - b)
-    const activeTop = Math.round(activeWord.offsetTop)
-    const activeRowIndex = rowTops.findIndex((top) => top === activeTop)
-
-    if (activeRowIndex < 2) {
-      setTranscriptScrollOffset(0)
-      return
-    }
-
-    setTranscriptScrollOffset(rowTops[activeRowIndex - 1] ?? 0)
-  }, [highlightedWords, isActive, showTranscript])
-
   return (
     <Link
       ref={cardRef}
@@ -538,18 +463,12 @@ export const IndexDTFFeatureCard = ({
         }
       }}
       className={cn(
-        'group flex w-full shrink-0 flex-col gap-1 rounded-3xl bg-card p-1',
-        'lg:bg-background lg:hover:bg-card',
+        FEATURE_CARD_CLASS_NAME,
         isInactiveDTF(selectedVersion.status) && 'opacity-60'
       )}
     >
-      <div
-        className={cn(
-          'flex flex-col overflow-hidden rounded-t-2xl bg-gradient-to-b from-secondary to-card',
-          'lg:from-secondary/80 lg:group-hover:from-card'
-        )}
-      >
-        <div className="flex min-w-0 flex-col gap-3 p-5 pb-2">
+      <div className={FEATURE_CARD_MEDIA_CLASS_NAME}>
+        <div className={FEATURE_CARD_HEADER_CLASS_NAME}>
           <div className="flex min-w-0 items-start justify-between">
             <div className="relative w-fit flex-shrink-0">
               <TokenLogo src={dtf.brand?.icon || undefined} size="xl" />
@@ -686,12 +605,7 @@ export const IndexDTFFeatureCard = ({
           hasPerformanceChart &&
           performanceChart({ className: 'h-52' })}
       </div>
-      <div
-        className={cn(
-          'relative overflow-hidden rounded-full border border-card bg-card p-2 pl-0 pr-0.5',
-          'lg:border-secondary lg:group-hover:border-card'
-        )}
-      >
+      <div className={FEATURE_CARD_ASSET_TICKER_CLASS_NAME}>
         <div
           className={cn(
             'pointer-events-none absolute inset-y-0 -right-px z-10 w-20 bg-gradient-to-l from-card via-card to-transparent opacity-100 transition-opacity duration-150',
@@ -795,44 +709,144 @@ export const IndexDTFFeatureCard = ({
   )
 }
 
-export const IndexDTFFeatureCardPlaceholder = () => (
-  <div className="flex flex-col gap-2">
-    {Array.from({ length: HIGHLIGHTED_LIMIT }).map((_, index) => (
-      <div
-        key={index}
-        className="flex w-full shrink-0 flex-col gap-5 rounded-xl bg-card px-5 py-5"
-      >
-        <div className="flex flex-col rounded-xl bg-secondary p-5">
-          <div className="flex items-start justify-between gap-4">
-            <div className="space-y-3">
-              <Skeleton className="h-10 w-10 rounded-full" />
-              <div className="space-y-2">
-                <Skeleton className="h-4 w-36" />
-                <Skeleton className="h-3 w-16" />
+const PerformanceChartSkeleton = ({
+  className,
+  fadeClassName = 'pointer-events-none absolute inset-x-0 bottom-0 h-12 bg-gradient-to-b from-card/0 to-card lg:from-background/0 lg:to-background lg:group-hover:from-card/0 lg:group-hover:to-card lg:group-focus-within:from-card/0 lg:group-focus-within:to-card',
+}: {
+  className: string
+  fadeClassName?: string
+}) => (
+  <div className="relative">
+    <div className={cn('pointer-events-none w-full', className)}>
+      <Skeleton className="h-full w-full rounded-none bg-primary/10" />
+    </div>
+    {fadeClassName && <div className={cn(fadeClassName)} />}
+  </div>
+)
+
+const FeatureCardAssetTickerSkeleton = () => (
+  <div className={FEATURE_CARD_ASSET_TICKER_CLASS_NAME}>
+    <div
+      className={cn(
+        'pointer-events-none absolute inset-y-0 -right-px z-10 w-20 bg-gradient-to-l from-card via-card to-transparent opacity-100 transition-opacity duration-150',
+        'lg:opacity-65 lg:group-hover:opacity-100 lg:group-focus-within:opacity-100'
+      )}
+    />
+    <div className="flex overflow-hidden pl-2 pr-12">
+      <div className="flex w-max gap-0">
+        {Array.from({ length: BACKING_LIMIT }).map((_, index) => (
+          <div
+            key={index}
+            className="flex shrink-0 items-center gap-1 rounded-full px-1.5 py-1"
+          >
+            <Skeleton className="ml-1 h-5 w-12 rounded-full" />
+            <Skeleton className="h-5 w-9 rounded-full" />
+          </div>
+        ))}
+      </div>
+    </div>
+    <Skeleton className="absolute right-2 top-1/2 z-20 h-8 w-8 -translate-y-1/2 rounded-full bg-muted" />
+  </div>
+)
+
+const FeatureCardTranscriptSkeleton = () => (
+  <div className="flex flex-col items-start gap-2 px-5 py-4 pt-3">
+    <div
+      className="w-full min-w-0 shrink-0 overflow-hidden"
+      style={{ height: TRANSCRIPT_LINE_HEIGHT * 2 }}
+    >
+      <div className="space-y-1.5">
+        <Skeleton className="h-3 w-full" />
+        <Skeleton className="h-3 w-4/5" />
+      </div>
+    </div>
+    <Skeleton className="h-4 w-24" />
+  </div>
+)
+
+const FeatureCardMarketCapSkeleton = () => (
+  <div className="flex w-full items-center justify-between px-5 py-4 pt-3 text-sm">
+    <Skeleton className="h-5 w-24" />
+    <Skeleton className="h-5 w-16" />
+  </div>
+)
+
+const IndexDTFFeatureCardSkeleton = ({
+  chartPlacement = 'body',
+  showTranscript = true,
+}: {
+  chartPlacement?: 'body' | 'header'
+  showTranscript?: boolean
+}) => (
+  <div className={FEATURE_CARD_CLASS_NAME} aria-hidden="true">
+    <div className={FEATURE_CARD_MEDIA_CLASS_NAME}>
+      <div className={FEATURE_CARD_HEADER_CLASS_NAME}>
+        <div className="flex min-w-0 items-start justify-between">
+          <div className="relative w-fit flex-shrink-0">
+            <Skeleton className="h-8 w-8 rounded-full" />
+            <Skeleton className="absolute -bottom-0.5 -right-1 h-4 w-4 rounded-md border-2 border-secondary bg-card" />
+          </div>
+
+          <div
+            className={cn(
+              'relative flex h-8 shrink-0 items-center justify-end',
+              chartPlacement === 'header' && 'h-12 w-28'
+            )}
+          >
+            {chartPlacement === 'header' ? (
+              <div className="w-28">
+                <PerformanceChartSkeleton className="h-12" fadeClassName="" />
               </div>
+            ) : (
+              <Skeleton className="inline-flex h-8 w-[67px] rounded-full opacity-100 lg:opacity-0" />
+            )}
+          </div>
+        </div>
+
+        <div className="w-full min-w-0">
+          <div className="flex min-h-[48px] min-w-0 items-end">
+            <div className="flex min-w-0 items-end gap-2">
+              <Skeleton className="h-6 w-48 max-w-[70%]" />
             </div>
-            <Skeleton className="h-6 w-32 rounded-full" />
           </div>
-          <Skeleton className="mt-5 h-64 w-full" />
-        </div>
-        <div className="relative overflow-hidden rounded-full bg-card p-2">
-          <div className="flex gap-2 pr-12">
-            <Skeleton className="h-9 w-28 rounded-full" />
-            <Skeleton className="h-9 w-28 rounded-full" />
+          <div className="mt-1.5 flex w-full min-w-0 items-center justify-between gap-3 text-base text-legend">
+            <Skeleton className="h-6 w-28" />
+            <Skeleton className="h-6 w-20 shrink-0" />
           </div>
-          <Skeleton className="absolute right-2 top-1/2 h-8 w-8 -translate-y-1/2 rounded-full" />
-        </div>
-        <div className="flex items-center gap-4 rounded-2xl bg-card p-4">
-          <div className="min-w-0 flex-1 space-y-2">
-            <Skeleton className="h-3 w-28" />
-            <Skeleton className="h-3 w-full" />
-            <Skeleton className="h-3 w-3/4" />
-          </div>
-          <Skeleton className="h-9 w-9 rounded-full" />
         </div>
       </div>
-    ))}
+
+      {chartPlacement === 'body' && (
+        <PerformanceChartSkeleton className="h-52" />
+      )}
+    </div>
+    <FeatureCardAssetTickerSkeleton />
+    {showTranscript ? (
+      <FeatureCardTranscriptSkeleton />
+    ) : (
+      <FeatureCardMarketCapSkeleton />
+    )}
   </div>
+)
+
+export const IndexDTFFeatureCardPlaceholder = ({
+  chartPlacement = 'body',
+  count = HIGHLIGHTED_LIMIT,
+  showTranscript = true,
+}: {
+  chartPlacement?: 'body' | 'header'
+  count?: number
+  showTranscript?: boolean
+}) => (
+  <>
+    {Array.from({ length: count }).map((_, index) => (
+      <IndexDTFFeatureCardSkeleton
+        key={index}
+        chartPlacement={chartPlacement}
+        showTranscript={showTranscript}
+      />
+    ))}
+  </>
 )
 
 const HighlightedDTFEndCard = ({
@@ -898,6 +912,43 @@ const HighlightedDTFEndCard = ({
   </Link>
 )
 
+const HighlightedDTFEndCardPlaceholder = ({
+  fullWidth,
+}: {
+  fullWidth: boolean
+}) => (
+  <div
+    className={cn(
+      'group flex h-full w-full rounded-3xl border-[4px] border-card bg-secondary transition-shadow',
+      'min-h-[300px] md:min-h-[460px]',
+      fullWidth && 'lg:col-span-2'
+    )}
+    aria-hidden="true"
+  >
+    <div className="flex h-full w-full flex-col justify-between rounded-2xl bg-secondary p-5 text-left dark:bg-card">
+      <div className="flex items-start justify-between gap-4">
+        <div className="flex -space-x-2 rounded-full border border-card bg-card p-1.5 dark:bg-secondary">
+          {Array.from({ length: HIGHLIGHTED_LIMIT }).map((_, index) => (
+            <Skeleton
+              key={index}
+              className="h-5 w-5 rounded-full border-2 border-card bg-card dark:border-secondary"
+              style={{ zIndex: HIGHLIGHTED_LIMIT - index }}
+            />
+          ))}
+        </div>
+        <Skeleton className="h-9 w-9 shrink-0 rounded-full border border-card bg-card" />
+      </div>
+      <div className="max-w-64">
+        <Skeleton className="h-6 w-52 max-w-full" />
+        <div className="mt-2 space-y-1.5">
+          <Skeleton className="h-4 w-64 max-w-full" />
+          <Skeleton className="h-4 w-48 max-w-full" />
+        </div>
+      </div>
+    </div>
+  </div>
+)
+
 const HighlightedDTFs = ({
   className,
   enableScrollAnimation = true,
@@ -910,9 +961,6 @@ const HighlightedDTFs = ({
   scrollOffset?: number
 }) => {
   const { data, isLoading } = useIndexDTFList()
-  const viewportRef = useRef<HTMLElement>(null)
-  const trackRef = useRef<HTMLDivElement>(null)
-  const [scrollDistance, setScrollDistance] = useState(0)
 
   const highlighted = useMemo(() => {
     if (!data) return []
@@ -930,25 +978,14 @@ const HighlightedDTFs = ({
     )
   }, [data])
 
-  useEffect(() => {
-    const viewport = viewportRef.current
-    const track = trackRef.current
-    if (!viewport || !track || !onScrollDistanceChange) return
-
-    const update = () => {
-      const distance = Math.max(0, track.scrollHeight - viewport.clientHeight)
-      setScrollDistance(distance)
-      onScrollDistanceChange(distance)
-    }
-
-    update()
-
-    const ro = new ResizeObserver(update)
-    ro.observe(viewport)
-    ro.observe(track)
-
-    return () => ro.disconnect()
-  }, [highlighted.length, isLoading, onScrollDistanceChange])
+  const { scrollDistance, trackRef, viewportRef } = useHighlightedScrollMetrics<
+    HTMLElement,
+    HTMLDivElement
+  >({
+    isLoading,
+    itemCount: highlighted.length,
+    onScrollDistanceChange,
+  })
 
   if (!isLoading && highlighted.length === 0) {
     return null
@@ -979,12 +1016,21 @@ const HighlightedDTFs = ({
       )}
     >
       {isLoading ? (
-        <div
-          ref={trackRef}
-          style={trackStyle}
-          className="will-change-transform"
-        >
-          <IndexDTFFeatureCardPlaceholder />
+        <div className="h-full">
+          <div
+            ref={trackRef}
+            style={trackStyle}
+            className={FEATURE_CARD_GRID_CLASS_NAME}
+          >
+            <IndexDTFFeatureCardPlaceholder count={HIGHLIGHTED_LIMIT} />
+            <HighlightedDTFEndCardPlaceholder
+              fullWidth={HIGHLIGHTED_LIMIT % 2 === 0}
+            />
+          </div>
+          <div
+            className="pointer-events-none absolute inset-x-0 bottom-0 h-28 bg-gradient-to-b from-secondary/0 to-secondary transition-opacity duration-200"
+            style={fadeStyle}
+          />
         </div>
       ) : (
         <div className="h-full">
@@ -992,7 +1038,7 @@ const HighlightedDTFs = ({
           <div
             ref={trackRef}
             style={trackStyle}
-            className="grid grid-cols-1 gap-1 pb-0 will-change-transform md:auto-rows-fr md:grid-cols-2"
+            className={FEATURE_CARD_GRID_CLASS_NAME}
           >
             {highlighted.map((dtf) => (
               <IndexDTFFeatureCard

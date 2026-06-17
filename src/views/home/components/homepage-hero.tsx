@@ -1,18 +1,12 @@
 import { cn } from '@/lib/utils'
 import { useIsLargeDesktop } from '@/hooks/use-media-query'
 import { Play } from 'lucide-react'
-import {
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-  type CSSProperties,
-} from 'react'
 import DTFPackingAnimation from './dtf-packing-animation'
 import DTFExplainerButton from './dtf-explainer-button'
 import HighlightedDTFs from './highlighted-dtfs'
 import ProtocolMetrics from './protocol-metrics'
 import { Trans } from '@lingui/react/macro'
+import { useHomepageHeroScroll } from '../hooks/use-homepage-hero-scroll'
 
 const Header = ({ className }: { className?: string }) => (
   <h1
@@ -54,15 +48,39 @@ const SubHeader = ({ className }: { className?: string }) => (
   </p>
 )
 
-const MetricsContainer = () => {
+const MetricsContainer = ({ isVisible }: { isVisible: boolean }) => {
   return (
     <div
       className={cn(
-        'flex w-full min-w-0 gap-1 overflow-hidden rounded-none border-t-2 border-card bg-card/20 px-6 py-4 backdrop-blur-[7px] shadow-[0_-20px_70px_rgba(0,0,0,0.1)]',
-        'lg:w-auto lg:overflow-visible lg:rounded-full lg:border-2 lg:px-[64px] lg:py-6 lg:shadow-[0_20px_70px_rgba(0,0,0,0.1)]'
+        'relative flex w-full min-w-0 gap-1 overflow-hidden rounded-none border-t-2 border-transparent px-6 py-4',
+        'lg:w-auto lg:overflow-visible lg:rounded-full lg:border-2 lg:px-[64px] lg:py-6'
       )}
     >
-      <ProtocolMetrics />
+      <div
+        aria-hidden="true"
+        className={cn(
+          'pointer-events-none absolute inset-0 rounded-[inherit] backdrop-blur-[7px]',
+          isVisible
+            ? 'opacity-100 transition-none'
+            : 'opacity-0 transition-opacity duration-300 ease-out'
+        )}
+      />
+      <div
+        aria-hidden="true"
+        className={cn(
+          'pointer-events-none absolute inset-0 rounded-[inherit] border-t-2 border-card bg-card/20 shadow-[0_-20px_70px_rgba(0,0,0,0.1)] transition-opacity duration-300 ease-out',
+          'lg:border-2 lg:shadow-[0_20px_70px_rgba(0,0,0,0.1)]',
+          isVisible ? 'opacity-100' : 'opacity-0'
+        )}
+      />
+      <div
+        className={cn(
+          'relative z-10 w-full min-w-0 transition-opacity duration-300 ease-out lg:w-auto',
+          isVisible ? 'opacity-100' : 'opacity-0'
+        )}
+      >
+        <ProtocolMetrics />
+      </div>
     </div>
   )
 }
@@ -74,96 +92,14 @@ export const DTFSubHeader = () => (
 )
 
 const HomepageHero = () => {
-  const stageRef = useRef<HTMLDivElement>(null)
-  const [scrollDistance, setScrollDistance] = useState(0)
-  const [scrollOffset, setScrollOffset] = useState(0)
-  const [mobileScrollOffset, setMobileScrollOffset] = useState(0)
   const isWideDesktop = useIsLargeDesktop()
-
-  const updateScrollOffset = useCallback(() => {
-    if (!isWideDesktop) {
-      setScrollOffset(0)
-      return
-    }
-
-    const scroller = document.getElementById('app-container')
-    const stage = stageRef.current
-    if (!scroller || !stage) return
-
-    const scrollerTop = scroller.getBoundingClientRect().top
-    const stageTop = stage.getBoundingClientRect().top
-    const progress = scrollerTop - stageTop
-    const nextOffset = Math.max(0, Math.min(scrollDistance, progress))
-
-    setScrollOffset((currentOffset) =>
-      currentOffset === nextOffset ? currentOffset : nextOffset
-    )
-  }, [isWideDesktop, scrollDistance])
-
-  useEffect(() => {
-    if (!isWideDesktop) {
-      setScrollOffset(0)
-      return
-    }
-
-    const scroller = document.getElementById('app-container')
-    if (!scroller) return
-
-    let rafId = 0
-    const scheduleUpdate = () => {
-      window.cancelAnimationFrame(rafId)
-      rafId = window.requestAnimationFrame(updateScrollOffset)
-    }
-
-    scheduleUpdate()
-    scroller.addEventListener('scroll', scheduleUpdate, { passive: true })
-    window.addEventListener('resize', scheduleUpdate)
-
-    return () => {
-      window.cancelAnimationFrame(rafId)
-      scroller.removeEventListener('scroll', scheduleUpdate)
-      window.removeEventListener('resize', scheduleUpdate)
-    }
-  }, [isWideDesktop, updateScrollOffset])
-
-  useEffect(() => {
-    if (isWideDesktop) {
-      setMobileScrollOffset(0)
-      return
-    }
-
-    const scroller = document.getElementById('app-container')
-    if (!scroller) return
-
-    let rafId = 0
-    const update = () => {
-      window.cancelAnimationFrame(rafId)
-      rafId = window.requestAnimationFrame(() => {
-        setMobileScrollOffset(scroller.scrollTop)
-      })
-    }
-
-    update()
-    scroller.addEventListener('scroll', update, { passive: true })
-
-    return () => {
-      window.cancelAnimationFrame(rafId)
-      scroller.removeEventListener('scroll', update)
-    }
-  }, [isWideDesktop])
-
-  const handleScrollDistanceChange = useCallback((distance: number) => {
-    setScrollDistance((currentDistance) =>
-      currentDistance === distance ? currentDistance : distance
-    )
-  }, [])
-
-  const stageStyle = {
-    '--highlighted-scroll-distance': `${scrollDistance}px`,
-  } as CSSProperties
-  const isStatsHidden = isWideDesktop
-    ? scrollOffset > 48
-    : mobileScrollOffset > 48
+  const {
+    handleScrollDistanceChange,
+    isStatsHidden,
+    scrollOffset,
+    stageRef,
+    stageStyle,
+  } = useHomepageHeroScroll(isWideDesktop)
 
   return (
     <div
@@ -211,12 +147,10 @@ const HomepageHero = () => {
         </div>
         <div
           className={cn(
-            'pointer-events-none fixed inset-x-0 bottom-0 z-20 flex flex-col gap-2 transition-all duration-300 ease-out',
+            'pointer-events-none fixed inset-x-0 bottom-0 z-20 flex flex-col gap-2 transition-transform duration-300 ease-out',
             'lg:bottom-10 lg:items-center lg:px-6',
             'xl:absolute xl:inset-x-0 xl:flex-row xl:justify-center',
-            isStatsHidden
-              ? 'translate-y-4 opacity-0'
-              : 'translate-y-0 opacity-100'
+            isStatsHidden ? 'translate-y-4' : 'translate-y-0'
           )}
         >
           <div
@@ -225,7 +159,7 @@ const HomepageHero = () => {
               isStatsHidden ? 'pointer-events-none' : 'pointer-events-auto'
             )}
           >
-            <MetricsContainer />
+            <MetricsContainer isVisible={!isStatsHidden} />
           </div>
         </div>
       </div>

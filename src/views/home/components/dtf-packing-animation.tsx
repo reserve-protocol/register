@@ -5,13 +5,10 @@ import { formatCurrency } from '@/utils'
 import useIndexDTFList, { type IndexDTFItem } from '@/hooks/useIndexDTFList'
 import { useLingui } from '@lingui/react/macro'
 import {
-  useEffect,
-  useId,
-  useMemo,
-  useRef,
-  useState,
-  type CSSProperties,
-} from 'react'
+  useMeasuredElementWidth,
+  useRafElapsedTime,
+} from '../hooks/use-packing-animation-state'
+import { useId, useMemo, type CSSProperties } from 'react'
 
 const PATH_START_X = 0
 const DESKTOP_PATH_CENTER_Y = 150
@@ -81,48 +78,6 @@ const formatWeight = (weight?: string) => {
   return `${formatCurrency(value, value < 1 ? 2 : 1, {
     minimumFractionDigits: 0,
   })}%`
-}
-
-const useElementWidth = () => {
-  const ref = useRef<HTMLDivElement>(null)
-  const [width, setWidth] = useState(0)
-
-  useEffect(() => {
-    const el = ref.current
-    if (!el) return
-
-    const update = () => setWidth(el.getBoundingClientRect().width)
-    update()
-
-    const ro = new ResizeObserver(update)
-    ro.observe(el)
-    return () => ro.disconnect()
-  }, [])
-
-  return { ref, width }
-}
-
-const useAnimationTime = () => {
-  const [time, setTime] = useState(0)
-
-  useEffect(() => {
-    const motion = window.matchMedia('(prefers-reduced-motion: reduce)')
-    if (motion.matches) return
-
-    let raf = 0
-    let start = 0
-
-    const tick = (timestamp: number) => {
-      if (!start) start = timestamp
-      setTime(timestamp - start)
-      raf = window.requestAnimationFrame(tick)
-    }
-
-    raf = window.requestAnimationFrame(tick)
-    return () => window.cancelAnimationFrame(raf)
-  }, [])
-
-  return time
 }
 
 const getCMC20 = (dtfs?: IndexDTFItem[]) =>
@@ -286,8 +241,8 @@ const DTFPackingAnimation = ({ className }: { className?: string }) => {
   const { t } = useLingui()
   const { data } = useIndexDTFList()
   const cmc20 = getCMC20(data)
-  const { ref, width } = useElementWidth()
-  const time = useAnimationTime()
+  const { ref, width } = useMeasuredElementWidth<HTMLDivElement>()
+  const time = useRafElapsedTime()
   const isDesktop = useIsDesktop()
   const id = useId().replace(/:/g, '')
   const pathId = `${id}-packing-path`
