@@ -35,7 +35,7 @@ msgid "(the “Website”), you expressly acknowledge that you have read and und
 msgstr ""
 
 #. placeholder {0}: group.tokens.length
-#: src/views/index-dtf/overview/components/basket-overview/exposure-table-rows.tsx:125
+#: src/views/index-dtf/overview/components/basket-overview/exposure-table-rows.tsx:121
 msgid "{0, plural, one {(# source)} other {(# sources)}}"
 msgstr "{0, plural, one {（# 个来源）} other {（# 个来源）}}"
 
@@ -849,7 +849,7 @@ msgstr "额外接收方："
 msgid "Address"
 msgstr "地址"
 
-#: src/views/index-dtf/overview/components/basket-overview/bridge-info-dialog.tsx:66
+#: src/views/index-dtf/overview/components/basket-overview/bridge-info-dialog.tsx:74
 #: src/views/index-dtf/overview/components/index-token-address.tsx:36
 msgid "Address copied to clipboard"
 msgstr "地址已复制到剪贴板"
@@ -1700,7 +1700,7 @@ msgstr "Bridge / {0}"
 msgid "Bridge DTFs and RSR"
 msgstr "桥接 DTFs 和 RSR"
 
-#: src/views/index-dtf/overview/components/basket-overview/bridge-info-dialog.tsx:178
+#: src/views/index-dtf/overview/components/basket-overview/bridge-info-dialog.tsx:205
 msgid "Bridged asset (held in basket)"
 msgstr "已桥接的资产（持有于篮子中）"
 
@@ -5356,11 +5356,11 @@ msgstr "名称"
 msgid "Name / Symbol"
 msgstr "名称 / 符号"
 
-#: src/views/index-dtf/overview/components/basket-overview/bridge-info-dialog.tsx:119
+#: src/views/index-dtf/overview/components/basket-overview/bridge-info-dialog.tsx:127
 msgid "Native asset (reference)"
 msgstr "原生资产（参考）"
 
-#: src/views/index-dtf/overview/components/basket-overview/bridge-info-dialog.tsx:163
+#: src/views/index-dtf/overview/components/basket-overview/bridge-info-dialog.tsx:182
 msgid "Native L1 Asset"
 msgstr "原生 L1 资产"
 
@@ -5932,7 +5932,7 @@ msgstr "我们的 Zap-swap 支持 {tokensText} 等常见资产，让进出 DTF �
 #: src/components/layout/navigation/index.tsx:77
 #: src/components/layout/navigation/TokenNavigation.tsx:176
 #: src/views/index-dtf/components/navigation/index.tsx:187
-#: src/views/index-dtf/overview/components/basket-overview/bridge-info-dialog.tsx:92
+#: src/views/index-dtf/overview/components/basket-overview/bridge-info-dialog.tsx:100
 msgid "Overview"
 msgstr "概览"
 
@@ -6285,7 +6285,7 @@ msgid "Position"
 msgstr "持仓"
 
 #. placeholder {0}: bridge.name
-#: src/views/index-dtf/overview/components/basket-overview/bridge-info-dialog.tsx:253
+#: src/views/index-dtf/overview/components/basket-overview/bridge-info-dialog.tsx:281
 msgid "Potential Risks Using {0}"
 msgstr "使用 {0} 的潜在风险"
 
@@ -6620,8 +6620,8 @@ msgid "Provider"
 msgstr "提供方"
 
 #: src/views/index-dtf/overview/components/basket-overview/bridge-info-dialog.tsx:162
-msgid "Publicly Listed U.S. Security"
-msgstr "美国上市证券"
+#~ msgid "Publicly Listed U.S. Security"
+#~ msgstr "美国上市证券"
 
 #. placeholder {0}: version.date
 #: src/views/index-dtf/overview/components/index-disclousure.tsx:184
@@ -6691,11 +6691,11 @@ msgstr "评级："
 msgid "Raw"
 msgstr "原始数据"
 
-#: src/views/index-dtf/overview/components/basket-overview/bridge-info-dialog.tsx:242
+#: src/views/index-dtf/overview/components/basket-overview/bridge-info-dialog.tsx:270
 msgid "Read about risks"
 msgstr "阅读风险说明"
 
-#: src/views/index-dtf/overview/components/basket-overview/bridge-info-dialog.tsx:234
+#: src/views/index-dtf/overview/components/basket-overview/bridge-info-dialog.tsx:262
 msgid "Read docs"
 msgstr "阅读文档"
 
@@ -7285,7 +7285,7 @@ msgstr "RFC"
 msgid "Risk evaluation"
 msgstr "风险评估"
 
-#: src/views/index-dtf/overview/components/basket-overview/bridge-info-dialog.tsx:101
+#: src/views/index-dtf/overview/components/basket-overview/bridge-info-dialog.tsx:109
 msgid "Risks"
 msgstr "风险"
 
@@ -8911,6 +8911,14 @@ msgstr "代币代码为必填项"
 #: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:101
 msgid "Token:"
 msgstr "代币:"
+
+#: src/views/index-dtf/overview/components/basket-overview/bridge-info-dialog.tsx:203
+#~ msgid "Tokenized Asset"
+#~ msgstr ""
+
+#: src/views/index-dtf/overview/components/basket-overview/bridge-info-dialog.tsx:203
+msgid "Tokenized Asset (held in basket)"
+msgstr "代币化资产（持有于篮子中）"
 
 #: src/components/vote-lock/components/delegate.tsx:106
 msgid "tokens"

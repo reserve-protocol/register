@@ -35,7 +35,7 @@ msgid "(the “Website”), you expressly acknowledge that you have read and und
 msgstr ""
 
 #. placeholder {0}: group.tokens.length
-#: src/views/index-dtf/overview/components/basket-overview/exposure-table-rows.tsx:125
+#: src/views/index-dtf/overview/components/basket-overview/exposure-table-rows.tsx:121
 msgid "{0, plural, one {(# source)} other {(# sources)}}"
 msgstr ""
 
@@ -849,7 +849,7 @@ msgstr ""
 msgid "Address"
 msgstr ""
 
-#: src/views/index-dtf/overview/components/basket-overview/bridge-info-dialog.tsx:66
+#: src/views/index-dtf/overview/components/basket-overview/bridge-info-dialog.tsx:74
 #: src/views/index-dtf/overview/components/index-token-address.tsx:36
 msgid "Address copied to clipboard"
 msgstr ""
@@ -1700,7 +1700,7 @@ msgstr ""
 msgid "Bridge DTFs and RSR"
 msgstr ""
 
-#: src/views/index-dtf/overview/components/basket-overview/bridge-info-dialog.tsx:178
+#: src/views/index-dtf/overview/components/basket-overview/bridge-info-dialog.tsx:205
 msgid "Bridged asset (held in basket)"
 msgstr ""
 
@@ -5356,11 +5356,11 @@ msgstr ""
 msgid "Name / Symbol"
 msgstr ""
 
-#: src/views/index-dtf/overview/components/basket-overview/bridge-info-dialog.tsx:119
+#: src/views/index-dtf/overview/components/basket-overview/bridge-info-dialog.tsx:127
 msgid "Native asset (reference)"
 msgstr ""
 
-#: src/views/index-dtf/overview/components/basket-overview/bridge-info-dialog.tsx:163
+#: src/views/index-dtf/overview/components/basket-overview/bridge-info-dialog.tsx:182
 msgid "Native L1 Asset"
 msgstr ""
 
@@ -5932,7 +5932,7 @@ msgstr ""
 #: src/components/layout/navigation/index.tsx:77
 #: src/components/layout/navigation/TokenNavigation.tsx:176
 #: src/views/index-dtf/components/navigation/index.tsx:187
-#: src/views/index-dtf/overview/components/basket-overview/bridge-info-dialog.tsx:92
+#: src/views/index-dtf/overview/components/basket-overview/bridge-info-dialog.tsx:100
 msgid "Overview"
 msgstr ""
 
@@ -6285,7 +6285,7 @@ msgid "Position"
 msgstr ""
 
 #. placeholder {0}: bridge.name
-#: src/views/index-dtf/overview/components/basket-overview/bridge-info-dialog.tsx:253
+#: src/views/index-dtf/overview/components/basket-overview/bridge-info-dialog.tsx:281
 msgid "Potential Risks Using {0}"
 msgstr ""
 
@@ -6620,8 +6620,8 @@ msgid "Provider"
 msgstr ""
 
 #: src/views/index-dtf/overview/components/basket-overview/bridge-info-dialog.tsx:162
-msgid "Publicly Listed U.S. Security"
-msgstr ""
+#~ msgid "Publicly Listed U.S. Security"
+#~ msgstr ""
 
 #. placeholder {0}: version.date
 #: src/views/index-dtf/overview/components/index-disclousure.tsx:184
@@ -6691,11 +6691,11 @@ msgstr ""
 msgid "Raw"
 msgstr ""
 
-#: src/views/index-dtf/overview/components/basket-overview/bridge-info-dialog.tsx:242
+#: src/views/index-dtf/overview/components/basket-overview/bridge-info-dialog.tsx:270
 msgid "Read about risks"
 msgstr ""
 
-#: src/views/index-dtf/overview/components/basket-overview/bridge-info-dialog.tsx:234
+#: src/views/index-dtf/overview/components/basket-overview/bridge-info-dialog.tsx:262
 msgid "Read docs"
 msgstr ""
 
@@ -7285,7 +7285,7 @@ msgstr ""
 msgid "Risk evaluation"
 msgstr ""
 
-#: src/views/index-dtf/overview/components/basket-overview/bridge-info-dialog.tsx:101
+#: src/views/index-dtf/overview/components/basket-overview/bridge-info-dialog.tsx:109
 msgid "Risks"
 msgstr ""
 
@@ -8899,6 +8899,14 @@ msgstr ""
 
 #: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:101
 msgid "Token:"
+msgstr ""
+
+#: src/views/index-dtf/overview/components/basket-overview/bridge-info-dialog.tsx:203
+#~ msgid "Tokenized Asset"
+#~ msgstr ""
+
+#: src/views/index-dtf/overview/components/basket-overview/bridge-info-dialog.tsx:203
+msgid "Tokenized Asset (held in basket)"
 msgstr ""
 
 #: src/components/vote-lock/components/delegate.tsx:106

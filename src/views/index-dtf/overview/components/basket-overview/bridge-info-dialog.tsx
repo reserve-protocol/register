@@ -6,7 +6,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { ChainId } from '@/utils/chains'
 import { ExplorerDataType, getExplorerLink } from '@/utils/getExplorerLink'
 import { NativeToken, Bridge } from '@/types/token-mappings'
-import { isAddress, shortenAddress } from '@/utils'
+import { getTokenName, isAddress, shortenAddress } from '@/utils'
+import { EXCHANGE_LABELS, formatExchangeSymbol } from './exposure-rows'
 import {
   ArrowUpRight,
   Binoculars,
@@ -60,6 +61,13 @@ const BridgeInfoDialog = ({
   if (!bridgeInfo) return null
 
   const { native, bridge, mapping } = bridgeInfo
+
+  // nasdaq/nyse "natives" are the exchange itself (shared across every stock in
+  // the group), so show the individual stock's name/logo and a "NASDAQ: $AMZN"
+  // reference label instead of the generic exchange identity.
+  const exchangeLabel = EXCHANGE_LABELS[native.caip2]
+  const isExchange = !!exchangeLabel
+  const exchangeTokenSymbol = mapping.symbol || tokenSymbol || native.symbol
 
   const handleCopyAddress = () => {
     navigator.clipboard.writeText(isAddress(tokenAddress) || tokenAddress)
@@ -150,21 +158,37 @@ const BridgeInfoDialog = ({
                 </div>
               </div>
               <div className="p-5 flex items-center gap-3">
-                <TokenLogo size="xl" src={native.logo} />
+                {isExchange ? (
+                  <TokenLogo
+                    size="xl"
+                    symbol={mapping.symbol || tokenSymbol}
+                    address={tokenAddress}
+                    chain={chainId}
+                  />
+                ) : (
+                  <TokenLogo size="xl" src={native.logo} />
+                )}
                 <div className="flex-1">
                   <span className="font-semibold block">
-                    {native.name} ({native.symbol})
+                    {isExchange
+                      ? getTokenName(tokenName || exchangeTokenSymbol)
+                      : `${native.name} (${native.symbol})`}
                   </span>
                   <span className="text-sm text-legend">
                     {native.address
                       ? shortenAddress(native.address)
-                      : ['nasdaq', 'nyse'].includes(native.caip2)
-                        ? t`Publicly Listed U.S. Security`
+                      : isExchange
+                        ? formatExchangeSymbol(exchangeTokenSymbol, exchangeLabel)
                         : t`Native L1 Asset`}
                   </span>
                 </div>
-                {native.url && (
-                  <Link to={native.url} target="_blank">
+                {(isExchange || native.url) && (
+                  <Link
+                    to={
+                      isExchange ? 'https://docs.ondo.finance/' : native.url!
+                    }
+                    target="_blank"
+                  >
                     <Button variant="muted" size="icon-rounded">
                       <ArrowUpRight className="w-4 h-4" />
                     </Button>
@@ -175,7 +199,11 @@ const BridgeInfoDialog = ({
             <div className="bg-card rounded-4xl m-1">
               <div className="border-b border-secondary p-5 flex items-center justify-between">
                 <h4 className="font-semibold text-sm">
-                  <Trans>Bridged asset (held in basket)</Trans>
+                  {isExchange ? (
+                    <Trans>Tokenized Asset (held in basket)</Trans>
+                  ) : (
+                    <Trans>Bridged asset (held in basket)</Trans>
+                  )}
                 </h4>
                 <div className="flex items-center gap-1">
                   <ChainLogo chain={chainId} className="w-4 h-4" />

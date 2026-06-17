@@ -5,6 +5,10 @@ export const EXCHANGE_LABELS: Record<string, string> = {
   nyse: 'NYSE',
 }
 
+// Ondo tokenized stocks always carry an "on" suffix (e.g. MRVLon)
+export const formatExchangeSymbol = (symbol: string, exchange: string) =>
+  `${exchange}: $${symbol.replace(/on$/, '')}`
+
 export type ExposureRow =
   | {
       kind: 'group'
