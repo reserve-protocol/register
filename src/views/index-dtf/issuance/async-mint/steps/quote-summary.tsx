@@ -59,11 +59,15 @@ import {
   dustStartBalancesAtom,
   inputTokenAtom,
   mintAmountAtom,
+  quoteCanceledAtom,
   redeemAmountAtom,
   slippageAtom,
   useExistingBalancesAtom,
   wizardStepAtom,
 } from '../atoms'
+
+// How long the quote fetch may run before we surface the cancel escape hatch.
+const SLOW_QUOTE_MS = 20_000
 
 // Submit-button label while the execution lifecycle is running (signing happens
 // at the button level; the per-leg orders carry their own status pills).
@@ -118,6 +122,10 @@ const QuoteSummary = () => {
     useExistingBalancesAtom
   )
   const [dustStartBalances, setDustStart] = useAtom(dustStartBalancesAtom)
+  const [quoteCanceled, setQuoteCanceled] = useAtom(quoteCanceledAtom)
+  // Revealed only after the fetch has run a while, so the escape hatch doesn't
+  // signal "this is slow" up front.
+  const [showSlowQuote, setShowSlowQuote] = useState(false)
   const { balanceOf } = useWizardBalances()
   const [collateralExpanded, setCollateralExpanded] = useState(false)
   const [nowSec, setNowSec] = useState(() => Math.floor(Date.now() / 1000))
@@ -392,6 +400,23 @@ const QuoteSummary = () => {
   // Once submitted, the right-hand "quotes" panel reads as live orders.
   const executionStarted =
     isExecuting || isError || Object.keys(execution.ordersByLegId).length > 0
+
+  // "Still fetching quotes" — covers both the base quote and the per-leg CoW
+  // quotes resolving (the slow part: `quote.success` is already true while the
+  // 17 legs are still loading). Stays true until execution starts or the user
+  // cancels, so the slow-quote timer runs uninterrupted to the threshold.
+  const waitingForQuote =
+    quotesLoading && !executionStarted && !quoteCanceled
+
+  // Reveal the cancel escape hatch only after the fetch has run a while.
+  useEffect(() => {
+    if (!waitingForQuote) {
+      setShowSlowQuote(false)
+      return
+    }
+    const timeout = setTimeout(() => setShowSlowQuote(true), SLOW_QUOTE_MS)
+    return () => clearTimeout(timeout)
+  }, [waitingForQuote])
   const filledOrderCount = orderStates.filter(
     (order) => order.phase === 'fulfilled'
   ).length
@@ -624,15 +649,32 @@ const QuoteSummary = () => {
   const handleEdit = () => {
     setFinalMintSnapshot(null)
     execution.reset()
+    setQuoteCanceled(false)
     setStep('configure')
   }
 
   const handleNewOperation = () => {
     setFinalMintSnapshot(null)
     execution.reset()
+    setQuoteCanceled(false)
     setMintAmount('')
     setRedeemAmount('')
     setStep('configure')
+  }
+
+  // Escape hatch: stop the (un-abortable) quote polling but keep every input,
+  // so the user stays exactly where they were.
+  const handleCancelQuote = () => {
+    track('cancel_quote')
+    setShowSlowQuote(false)
+    setQuoteCanceled(true)
+  }
+
+  // Re-enable the quote hooks; the fetch resumes with the same inputs.
+  const handleResumeQuote = () => {
+    track('resume_quote')
+    setShowSlowQuote(false)
+    setQuoteCanceled(false)
   }
 
   // Resumable: re-running after an error / rejected signature continues from
@@ -1063,52 +1105,99 @@ const QuoteSummary = () => {
                       Start over
                     </Button>
                   </div>
-                ) : (
-                  <TransactionButtonContainer chain={chainId}>
+                ) : quoteCanceled ? (
+                  <div className="flex flex-col gap-2">
+                    <div className="rounded-xl border border-border/70 bg-muted/40 px-4 py-2 text-sm text-muted-foreground">
+                      Quote fetch canceled. Your amount is saved — fetch again
+                      when you're ready.
+                    </div>
                     <Button
                       size="lg"
                       className="w-full h-[49px] rounded-[12px]"
-                      disabled={
-                        isExecuting ||
-                        quotesLoading ||
-                        !isValidAmount ||
-                        exceedsBalance ||
-                        !quote?.success ||
-                        quoteErrors.length > 0 ||
-                        hasFailedLegs ||
-                        walletClientMissing
-                      }
-                      onClick={handleSubmit}
+                      onClick={handleResumeQuote}
                     >
-                      {isExecuting ? (
-                        <span className="flex items-center gap-2">
-                          <Loader2 size={16} className="animate-spin" />
-                          {EXECUTION_BUTTON_LABELS[execution.step] ??
-                            'Working…'}
-                        </span>
-                      ) : quotesLoading ? (
-                        <span className="flex items-center gap-2">
-                          <Loader2 size={16} className="animate-spin" />
-                          Fetching quotes...
-                        </span>
-                      ) : walletClientLoading ? (
-                        <span className="flex items-center gap-2">
-                          <Loader2 size={16} className="animate-spin" />
-                          Preparing wallet...
-                        </span>
-                      ) : walletClientMissing &&
-                        !hasFailedLegs &&
-                        quoteErrors.length === 0 ? (
-                        <span className="font-medium">Reconnect wallet</span>
-                      ) : (
-                        <span className="font-medium">
-                          {isMint
-                            ? 'Start collateral trades'
-                            : 'Prepare redeem'}
-                        </span>
-                      )}
+                      Fetch quotes again
                     </Button>
-                  </TransactionButtonContainer>
+                    <Button
+                      size="lg"
+                      variant="outline"
+                      className="w-full h-[49px] rounded-[12px]"
+                      onClick={handleEdit}
+                    >
+                      Edit amount
+                    </Button>
+                  </div>
+                ) : (
+                  <>
+                    <TransactionButtonContainer chain={chainId}>
+                      <Button
+                        size="lg"
+                        className="w-full h-[49px] rounded-[12px]"
+                        disabled={
+                          isExecuting ||
+                          quotesLoading ||
+                          !isValidAmount ||
+                          exceedsBalance ||
+                          !quote?.success ||
+                          quoteErrors.length > 0 ||
+                          hasFailedLegs ||
+                          walletClientMissing
+                        }
+                        onClick={handleSubmit}
+                      >
+                        {isExecuting ? (
+                          <span className="flex items-center gap-2">
+                            <Loader2 size={16} className="animate-spin" />
+                            {EXECUTION_BUTTON_LABELS[execution.step] ??
+                              'Working…'}
+                          </span>
+                        ) : quotesLoading ? (
+                          <span className="flex items-center gap-2">
+                            <Loader2 size={16} className="animate-spin" />
+                            Fetching quotes...
+                          </span>
+                        ) : walletClientLoading ? (
+                          <span className="flex items-center gap-2">
+                            <Loader2 size={16} className="animate-spin" />
+                            Preparing wallet...
+                          </span>
+                        ) : walletClientMissing &&
+                          !hasFailedLegs &&
+                          quoteErrors.length === 0 ? (
+                          <span className="font-medium">Reconnect wallet</span>
+                        ) : (
+                          <span className="font-medium">
+                            {isMint
+                              ? 'Start collateral trades'
+                              : 'Prepare redeem'}
+                          </span>
+                        )}
+                      </Button>
+                    </TransactionButtonContainer>
+                    {showSlowQuote && (
+                      <div className="mt-2 flex flex-col gap-2 rounded-xl border border-border/70 bg-muted/40 px-4 py-3 text-sm sm:flex-row sm:items-center sm:justify-between">
+                        <span className="text-muted-foreground">
+                          Fetching quotes from CoW is taking longer than usual.
+                        </span>
+                        <div className="flex shrink-0 items-center gap-3">
+                          <button
+                            type="button"
+                            className="font-medium text-muted-foreground hover:text-foreground"
+                            onClick={() => setShowSlowQuote(false)}
+                          >
+                            Keep waiting
+                          </button>
+                          <button
+                            type="button"
+                            className="font-medium text-primary hover:underline"
+                            onClick={handleCancelQuote}
+                          >
+                            Cancel
+                          </button>
+                        </div>
+                      </div>
+                    )}
+                  </>
                 )}
               </div>
             )}

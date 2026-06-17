@@ -19,6 +19,7 @@ import {
   inputTokenAtom,
   mintAmountAtom,
   operationAtom,
+  quoteCanceledAtom,
   redeemAmountAtom,
   slippageAtom,
   useExistingBalancesAtom,
@@ -61,6 +62,9 @@ export const AsyncZapProvider = ({ children }: { children: ReactNode }) => {
   const redeemAmount = useAtomValue(redeemAmountAtom)
   const slippage = useAtomValue(slippageAtom)
   const useExistingBalances = useAtomValue(useExistingBalancesAtom)
+  // Escape hatch: when the user cancels a slow quote, stop the SDK from
+  // (re)fetching. Inputs stay put so they keep their place.
+  const quoteCanceled = useAtomValue(quoteCanceledAtom)
   // MetaMask rejects EIP-5792 batches with more than 10 calls; cap the batch size
   // so the SDK splits larger batches into sequential signatures. Other wallets
   // keep a single atomic batch.
@@ -126,7 +130,7 @@ export const AsyncZapProvider = ({ children }: { children: ReactNode }) => {
     ...baseParams,
     mode: 'maxInput',
     inputAmount,
-    enabled: ready && operation === 'mint' && inputAmount > 0n,
+    enabled: ready && operation === 'mint' && inputAmount > 0n && !quoteCanceled,
   })
 
   const redeemResult = useFolioRedeemZap({
@@ -137,7 +141,8 @@ export const AsyncZapProvider = ({ children }: { children: ReactNode }) => {
     enabled:
       ready &&
       operation === 'redeem' &&
-      (redeemShares > 0n || useExistingBalances),
+      (redeemShares > 0n || useExistingBalances) &&
+      !quoteCanceled,
   })
 
   const active = operation === 'mint' ? mintResult : redeemResult

@@ -31,6 +31,11 @@ export const MINT_INPUT_TOKENS: Record<number, Token> = {
 export const wizardStepAtom = atom<WizardStep>('gnosis-check')
 export const slippageAtom = atom<string>('100') // basis points
 
+// User-initiated escape hatch out of a slow quote fetch. Gates the SDK quote
+// hooks' `enabled` so polling stops, while leaving every input atom intact so
+// the user keeps their place. Cleared on retry / edit / reset.
+export const quoteCanceledAtom = atom<boolean>(false)
+
 // ─── Operation (mint | redeem) ───────────────────────────────────────
 export const operationAtom = atom<'mint' | 'redeem'>('mint')
 // Whether to use the user's existing basket-token balances to reduce swaps.
@@ -59,4 +64,5 @@ export const resetWizardAtom = atom(null, (_, set) => {
   set(mintAmountAtom, '')
   set(redeemAmountAtom, '')
   set(dustStartBalancesAtom, {})
+  set(quoteCanceledAtom, false)
 })
