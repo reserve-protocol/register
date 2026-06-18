@@ -41,6 +41,7 @@ import {
   ChevronRight,
   Info,
   Loader2,
+  PauseCircle,
   PenLine,
   RefreshCw,
 } from 'lucide-react'
@@ -380,10 +381,11 @@ const QuoteSummary = () => {
   // keep the orders panel visible so the user can see which legs failed,
   // instead of the whole list disappearing once fetching stops.
   const quoteFailed = !quotesLoading && (quoteErrors.length > 0 || hasFailedLegs)
-  // Show the orders panel while expanded, while fetching, or when a fetch
-  // failed (so failures stay on screen). Success still collapses unless the
-  // user expanded it.
-  const showOrdersPanel = collateralExpanded || quotesLoading || quoteFailed
+  // Show the orders panel while expanded, while fetching, when a fetch failed,
+  // or when canceled (so the panel can explain the state instead of showing a
+  // skeleton). Success still collapses unless the user expanded it.
+  const showOrdersPanel =
+    collateralExpanded || quotesLoading || quoteFailed || quoteCanceled
 
   // Stop re-fetching once a quote settles with an error (retrying the same
   // amount won't help); re-enable on success. setAtom to the same value is a
@@ -1100,7 +1102,7 @@ const QuoteSummary = () => {
                   <div className="flex flex-col gap-2">
                     <Button
                       size="lg"
-                      className="w-full h-[49px] rounded-[12px]"
+                      className="w-full h-[49px] rounded-[12px] bg-foreground text-background hover:bg-foreground/90"
                       onClick={
                         retryableLegIds.length > 0
                           ? handleRetryFailed
@@ -1150,7 +1152,7 @@ const QuoteSummary = () => {
                     </div>
                     <Button
                       size="lg"
-                      className="w-full h-[49px] rounded-[12px]"
+                      className="w-full h-[49px] rounded-[12px] bg-foreground text-background hover:bg-foreground/90"
                       onClick={handleRetryQuote}
                       disabled={quoteQuery.isFetching}
                     >
@@ -1166,24 +1168,31 @@ const QuoteSummary = () => {
                   </div>
                 ) : quoteCanceled ? (
                   <div className="flex flex-col gap-2">
-                    <div className="rounded-xl border border-border/70 bg-muted/40 px-4 py-2 text-sm text-muted-foreground">
-                      Quote fetch canceled. Your amount is saved — fetch again
-                      when you're ready.
+                    <div className="rounded-xl border border-destructive/25 bg-destructive/10 text-destructive px-4 py-2 text-sm">
+                      Quote fetch canceled. Your amount is saved. You may{' '}
+                      <button
+                        type="button"
+                        className="font-medium underline underline-offset-2 hover:opacity-80"
+                        onClick={handleResumeQuote}
+                      >
+                        fetch quotes again
+                      </button>
+                      , or{' '}
+                      <button
+                        type="button"
+                        className="font-medium underline underline-offset-2 hover:opacity-80"
+                        onClick={handleEdit}
+                      >
+                        edit the amount
+                      </button>{' '}
+                      and try again.
                     </div>
                     <Button
                       size="lg"
-                      className="w-full h-[49px] rounded-[12px]"
+                      className="w-full h-[49px] rounded-[12px] bg-foreground text-background hover:bg-foreground/90"
                       onClick={handleResumeQuote}
                     >
                       Fetch quotes again
-                    </Button>
-                    <Button
-                      size="lg"
-                      variant="outline"
-                      className="w-full h-[49px] rounded-[12px]"
-                      onClick={handleEdit}
-                    >
-                      Edit amount
                     </Button>
                   </div>
                 ) : (
@@ -1593,13 +1602,15 @@ const QuoteSummary = () => {
                   <p className="text-sm text-muted-foreground font-light">
                     {executionStarted
                       ? 'Swaps settle via CoW Protocol solvers.'
-                      : quoteFailed
-                        ? "Some quotes couldn't be fetched."
-                        : cowLegStates.length === 0 && !quotesLoading
-                          ? 'No swaps are needed for this operation.'
-                          : isMint
-                            ? 'The basket assets bought with your input.'
-                            : 'The basket assets sold for your output.'}
+                      : quoteCanceled
+                        ? 'Fetching paused.'
+                        : quoteFailed
+                          ? "Some quotes couldn't be fetched."
+                          : cowLegStates.length === 0 && !quotesLoading
+                            ? 'No swaps are needed for this operation.'
+                            : isMint
+                              ? 'The basket assets bought with your input.'
+                              : 'The basket assets sold for your output.'}
                   </p>
                 </div>
               </div>
@@ -1607,7 +1618,23 @@ const QuoteSummary = () => {
 
             <ScrollArea className="h-[min(620px,calc(100vh-290px))] min-h-[360px] lg:h-auto lg:min-h-0 lg:flex-1">
               <div className="flex min-h-full flex-col gap-1 px-2">
-                {!showOrdersPanel ? null : initialLoading ? (
+                {!showOrdersPanel ? null : quoteCanceled ? (
+                  <div className="flex min-h-[320px] flex-1 items-center justify-center px-4 py-10 text-center">
+                    <div className="flex max-w-[320px] flex-col items-center gap-2">
+                      <PauseCircle
+                        size={28}
+                        strokeWidth={1.5}
+                        className="text-muted-foreground"
+                      />
+                      <h4 className="font-medium text-base">
+                        Quote fetch canceled
+                      </h4>
+                      <p className="text-sm text-muted-foreground font-light">
+                        Fetch again to load the swap orders for this mint.
+                      </p>
+                    </div>
+                  </div>
+                ) : initialLoading ? (
                   [0, 1, 2].map((item) => (
                     <Skeleton key={item} className="h-[76px] rounded-[18px]" />
                   ))
