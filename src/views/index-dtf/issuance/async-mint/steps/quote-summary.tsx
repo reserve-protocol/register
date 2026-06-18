@@ -60,6 +60,7 @@ import {
   inputTokenAtom,
   mintAmountAtom,
   quoteCanceledAtom,
+  quoteFetchHaltedAtom,
   redeemAmountAtom,
   slippageAtom,
   useExistingBalancesAtom,
@@ -123,6 +124,7 @@ const QuoteSummary = () => {
   )
   const [dustStartBalances, setDustStart] = useAtom(dustStartBalancesAtom)
   const [quoteCanceled, setQuoteCanceled] = useAtom(quoteCanceledAtom)
+  const setQuoteFetchHalted = useSetAtom(quoteFetchHaltedAtom)
   // Revealed only after the fetch has run a while, so the escape hatch doesn't
   // signal "this is slow" up front.
   const [showSlowQuote, setShowSlowQuote] = useState(false)
@@ -374,6 +376,24 @@ const QuoteSummary = () => {
     (ls) => ls.status === 'error' || !!ls.leg.error
   )
   const quoteErrors = quote?.errors ?? []
+  // A settled-but-failed quote (e.g. amount too small to cover fees). Used to
+  // keep the orders panel visible so the user can see which legs failed,
+  // instead of the whole list disappearing once fetching stops.
+  const quoteFailed = !quotesLoading && (quoteErrors.length > 0 || hasFailedLegs)
+  // Show the orders panel while expanded, while fetching, or when a fetch
+  // failed (so failures stay on screen). Success still collapses unless the
+  // user expanded it.
+  const showOrdersPanel = collateralExpanded || quotesLoading || quoteFailed
+
+  // Stop re-fetching once a quote settles with an error (retrying the same
+  // amount won't help); re-enable on success. setAtom to the same value is a
+  // no-op in Jotai, so this won't loop. Retry is a manual one-shot refetch;
+  // editing the amount clears the halt so the new amount fetches fresh.
+  useEffect(() => {
+    if (quotesLoading) return
+    if (quoteErrors.length > 0) setQuoteFetchHalted(true)
+    else if (quote?.success) setQuoteFetchHalted(false)
+  }, [quotesLoading, quoteErrors.length, quote?.success, setQuoteFetchHalted])
   const readySwapCount = cowLegStates.filter(
     (ls) => ls.status === 'success'
   ).length
@@ -650,6 +670,7 @@ const QuoteSummary = () => {
     setFinalMintSnapshot(null)
     execution.reset()
     setQuoteCanceled(false)
+    setQuoteFetchHalted(false)
     setStep('configure')
   }
 
@@ -657,9 +678,18 @@ const QuoteSummary = () => {
     setFinalMintSnapshot(null)
     execution.reset()
     setQuoteCanceled(false)
+    setQuoteFetchHalted(false)
     setMintAmount('')
     setRedeemAmount('')
     setStep('configure')
+  }
+
+  // One-shot manual retry of a failed quote. refetch() forces a fetch even
+  // though the query is disabled by the halt flag, so it doesn't re-arm the
+  // continuous fetching we stopped.
+  const handleRetryQuote = () => {
+    track('retry_quote')
+    void quoteQuery.refetch()
   }
 
   // Escape hatch: stop the (un-abortable) quote polling but keep every input,
@@ -1059,16 +1089,6 @@ const QuoteSummary = () => {
               </div>
             </button>
 
-            {quoteErrors.length > 0 && (
-              <div className="mx-4 mb-3 rounded-xl border border-destructive/25 bg-destructive/10 text-destructive px-4 py-2 text-sm">
-                {quoteErrors
-                  .map((e) => e.message)
-                  .filter(Boolean)
-                  .join(' ') ||
-                  'Swap quote unavailable. The amount may be too small to cover fees.'}
-              </div>
-            )}
-
             {showCollateralAction && (
               <div className="pb-2">
                 {isError && execution.error && (
@@ -1103,6 +1123,45 @@ const QuoteSummary = () => {
                       }}
                     >
                       Start over
+                    </Button>
+                  </div>
+                ) : quoteErrors.length > 0 ? (
+                  <div className="flex flex-col gap-2">
+                    <div className="rounded-xl border border-destructive/25 bg-destructive/10 text-destructive px-4 py-2 text-sm">
+                      Swap quote unavailable. The amount may be too small to
+                      cover fees. You may{' '}
+                      <button
+                        type="button"
+                        className="font-medium underline underline-offset-2 hover:opacity-80 disabled:opacity-50"
+                        onClick={handleRetryQuote}
+                        disabled={quoteQuery.isFetching}
+                      >
+                        retry
+                      </button>
+                      , or{' '}
+                      <button
+                        type="button"
+                        className="font-medium underline underline-offset-2 hover:opacity-80"
+                        onClick={handleEdit}
+                      >
+                        edit the amount
+                      </button>{' '}
+                      and try again.
+                    </div>
+                    <Button
+                      size="lg"
+                      className="w-full h-[49px] rounded-[12px]"
+                      onClick={handleRetryQuote}
+                      disabled={quoteQuery.isFetching}
+                    >
+                      {quoteQuery.isFetching ? (
+                        <span className="flex items-center gap-2">
+                          <Loader2 size={16} className="animate-spin" />
+                          Retrying…
+                        </span>
+                      ) : (
+                        'Retry'
+                      )}
                     </Button>
                   </div>
                 ) : quoteCanceled ? (
@@ -1521,7 +1580,7 @@ const QuoteSummary = () => {
               height via the grid) without inflating it, so the modal stays the
               height of the form and the orders list scrolls inside. */}
           <div className="contents lg:absolute lg:inset-2 lg:flex lg:flex-col">
-            {collateralExpanded && (
+            {showOrdersPanel && (
               <div className="px-4 py-3 flex items-start justify-between gap-4">
                 <div>
                   <h3 className="font-medium text-base">
@@ -1534,11 +1593,13 @@ const QuoteSummary = () => {
                   <p className="text-sm text-muted-foreground font-light">
                     {executionStarted
                       ? 'Swaps settle via CoW Protocol solvers.'
-                      : cowLegStates.length === 0 && !quotesLoading
-                        ? 'No swaps are needed for this operation.'
-                        : isMint
-                          ? 'The basket assets bought with your input.'
-                          : 'The basket assets sold for your output.'}
+                      : quoteFailed
+                        ? "Some quotes couldn't be fetched."
+                        : cowLegStates.length === 0 && !quotesLoading
+                          ? 'No swaps are needed for this operation.'
+                          : isMint
+                            ? 'The basket assets bought with your input.'
+                            : 'The basket assets sold for your output.'}
                   </p>
                 </div>
               </div>
@@ -1546,7 +1607,7 @@ const QuoteSummary = () => {
 
             <ScrollArea className="h-[min(620px,calc(100vh-290px))] min-h-[360px] lg:h-auto lg:min-h-0 lg:flex-1">
               <div className="flex min-h-full flex-col gap-1 px-2">
-                {!collateralExpanded ? null : initialLoading ? (
+                {!showOrdersPanel ? null : initialLoading ? (
                   [0, 1, 2].map((item) => (
                     <Skeleton key={item} className="h-[76px] rounded-[18px]" />
                   ))
@@ -1577,6 +1638,21 @@ const QuoteSummary = () => {
                       />
                     ))}
                   </>
+                ) : quoteErrors.length > 0 ? (
+                  <div className="flex min-h-[320px] flex-1 items-center justify-center px-4 py-10 text-center">
+                    <div className="max-w-[320px]">
+                      <h4 className="font-medium text-base text-destructive">
+                        Quotes unavailable
+                      </h4>
+                      <p className="mt-1 text-sm text-muted-foreground font-light">
+                        {quoteErrors
+                          .map((e) => e.message)
+                          .filter(Boolean)
+                          .join(' ') ||
+                          'The amount may be too small to cover swap fees. Try a larger amount.'}
+                      </p>
+                    </div>
+                  </div>
                 ) : (
                   <div className="flex min-h-[320px] flex-1 items-center justify-center px-4 py-10 text-center">
                     <div className="max-w-[320px]">

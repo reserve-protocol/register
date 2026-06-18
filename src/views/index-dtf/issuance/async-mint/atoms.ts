@@ -36,6 +36,12 @@ export const slippageAtom = atom<string>('100') // basis points
 // the user keeps their place. Cleared on retry / edit / reset.
 export const quoteCanceledAtom = atom<boolean>(false)
 
+// Set when a quote settles with an error (e.g. amount too small to cover fees).
+// Gates the SDK quote hooks' `enabled` so the app stops re-fetching a quote we
+// already know will fail. Retry is a manual one-shot refetch; editing the
+// amount clears it so the new amount fetches fresh.
+export const quoteFetchHaltedAtom = atom<boolean>(false)
+
 // ─── Operation (mint | redeem) ───────────────────────────────────────
 export const operationAtom = atom<'mint' | 'redeem'>('mint')
 // Whether to use the user's existing basket-token balances to reduce swaps.
@@ -65,4 +71,5 @@ export const resetWizardAtom = atom(null, (_, set) => {
   set(redeemAmountAtom, '')
   set(dustStartBalancesAtom, {})
   set(quoteCanceledAtom, false)
+  set(quoteFetchHaltedAtom, false)
 })
