@@ -516,9 +516,9 @@ export const IndexDTFFeatureCard = ({
                             'hover:text-foreground',
                             'lg:group-hover:gap-1 lg:group-hover:px-2 lg:group-hover:pr-3',
                             index === selectedVersionIndex &&
-                              'bg-background text-foreground dark:bg-foreground lg:group-hover:bg-card dark:group-hover:bg-foreground dark:group-hover:text-background',
+                            'bg-background text-foreground dark:bg-foreground lg:group-hover:bg-card dark:group-hover:bg-foreground dark:group-hover:text-background',
                             index !== selectedVersionIndex &&
-                              'hover:bg-background'
+                            'hover:bg-background'
                           )}
                           onClick={() => {
                             setSelectedVersionIndex(index)
@@ -617,9 +617,9 @@ export const IndexDTFFeatureCard = ({
             className={cn(
               'will-change-transform',
               assetTransitionState === 'exiting' &&
-                '[animation:collateral-assets-chain-exit_180ms_ease-in_forwards]',
+              '[animation:collateral-assets-chain-exit_180ms_ease-in_forwards]',
               assetTransitionState === 'entering' &&
-                '[animation:collateral-assets-chain-enter_220ms_ease-out_forwards]'
+              '[animation:collateral-assets-chain-enter_220ms_ease-out_forwards]'
             )}
           >
             <div
@@ -627,7 +627,7 @@ export const IndexDTFFeatureCard = ({
               className={cn(
                 'flex w-max gap-0 motion-reduce:animate-none',
                 isAssetTickerVisible &&
-                  '[animation:collateral-assets-scroll_18s_linear_infinite]',
+                '[animation:collateral-assets-scroll_18s_linear_infinite]',
                 'lg:[animation:none] lg:group-hover:[animation:collateral-assets-scroll_18s_linear_infinite]'
               )}
             >
@@ -678,7 +678,7 @@ export const IndexDTFFeatureCard = ({
                     className={cn(
                       'transition-colors',
                       index < highlightedWords &&
-                        'text-primary dark:text-foreground'
+                      'text-primary dark:text-foreground'
                     )}
                   >
                     {word}
@@ -999,9 +999,9 @@ const HighlightedDTFs = ({
   const fadeOpacity =
     enableScrollAnimation && scrollDistance > 0
       ? Math.max(
-          0,
-          Math.min(1, (scrollDistance - scrollOffset) / END_FADE_DISTANCE)
-        )
+        0,
+        Math.min(1, (scrollDistance - scrollOffset) / END_FADE_DISTANCE)
+      )
       : 0
   const fadeStyle = {
     opacity: fadeOpacity,

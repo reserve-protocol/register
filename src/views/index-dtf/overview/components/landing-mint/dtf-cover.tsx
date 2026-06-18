@@ -9,7 +9,9 @@ import { useAtomValue } from 'jotai'
 import { Play } from 'lucide-react'
 import { useEffect, useState } from 'react'
 
-const COVER_CLASSNAME = 'w-[450px] h-[450px] rounded-4xl'
+export const DTF_COVER_WIDTH_CLASSNAME = 'w-[calc(100vw-900px)] max-w-[450px]'
+
+const COVER_CLASSNAME = `${DTF_COVER_WIDTH_CLASSNAME} aspect-square rounded-4xl`
 
 const tryLoadImage = async (url: string): Promise<string> => {
   return new Promise((resolve, reject) => {

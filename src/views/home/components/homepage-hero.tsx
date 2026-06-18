@@ -13,7 +13,7 @@ const Header = ({ className }: { className?: string }) => (
     className={cn(
       'max-w-[400px] text-[32px] font-normal leading-[1.25] text-primary',
       'dark:text-foreground',
-      'md:text-[36px]',
+      'md:text-3xl',
       className
     )}
   >
@@ -53,7 +53,7 @@ const MetricsContainer = ({ isVisible }: { isVisible: boolean }) => {
     <div
       className={cn(
         'relative flex w-full min-w-0 gap-1 overflow-hidden rounded-none border-t-2 border-transparent px-6 py-4',
-        'lg:w-auto lg:overflow-visible lg:rounded-full lg:border-2 lg:px-[64px] lg:py-6'
+        'lg:w-auto lg:overflow-visible lg:rounded-full lg:border-2 lg:px-16 lg:py-6'
       )}
     >
       <div
