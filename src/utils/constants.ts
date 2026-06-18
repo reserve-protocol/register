@@ -23,7 +23,7 @@ export const RESERVE_API = isStaging
   : 'https://api.reserve.org/'
 
 export const ZAPPER_API = isStaging
-  ? 'https://zapper-staging.reserve-api.com/'
+  ? 'https://api-staging.reserve.org/'
   : 'https://api.reserve.org/'
 
 export const VERSION = '3.0.0'
