@@ -68,7 +68,7 @@ const ChartBodyArea = ({
       <PriceChartBody
         chartData={chartData as any}
         range={range}
-        dtfStart={dtf?.timestamp}
+        dtfStart={chartData[0]?.timestamp ?? dtf?.timestamp}
         className={bodyHeight}
       />
     </div>

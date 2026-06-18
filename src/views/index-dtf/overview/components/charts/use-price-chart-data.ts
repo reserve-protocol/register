@@ -22,12 +22,14 @@ export function usePriceChartData({ isBTCMode }: { isBTCMode: boolean }) {
 
   const now = Math.floor(Date.now() / 1_000)
   const showHourlyInterval = now - (dtf?.timestamp || 0) < 30 * 86_400
+  // Show 1 year of backfilled NAV before on-chain inception.
+  const allRangeFrom = Math.max(0, (dtf?.timestamp || 0) - 31_536_000)
   const config =
     range === 'all'
       ? {
           to: currentHour,
-          from: dtf?.timestamp || 0,
-          interval: (showHourlyInterval ? '1h' : '1d') as '1h' | '1d',
+          from: allRangeFrom,
+          interval: '1d' as const,
         }
       : historicalConfigs[range]
 
@@ -39,8 +41,8 @@ export function usePriceChartData({ isBTCMode }: { isBTCMode: boolean }) {
         if (r === 'all') {
           return {
             to: currentHour,
-            from: dtf?.timestamp || 0,
-            interval: (showHourlyInterval ? '1h' : '1d') as '1h' | '1d',
+            from: allRangeFrom,
+            interval: '1d' as const,
           }
         }
         return {
@@ -48,7 +50,7 @@ export function usePriceChartData({ isBTCMode }: { isBTCMode: boolean }) {
           ...(showHourlyInterval ? { interval: '1h' as const } : {}),
         }
       })
-  }, [range, dtf?.timestamp, showHourlyInterval])
+  }, [range, allRangeFrom, showHourlyInterval])
 
   const hourOverride =
     showHourlyInterval && range !== 'all' ? { interval: '1h' as const } : {}
