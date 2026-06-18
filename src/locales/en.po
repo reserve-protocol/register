@@ -190,9 +190,15 @@ msgid "{0} Est. APY"
 msgstr ""
 
 #. placeholder {0}: dtf.token.symbol
-#: src/views/index-dtf/overview/components/landing-mint/dtf-cover.tsx:53
-#: src/views/index-dtf/overview/components/landing-mint/dtf-cover.tsx:58
+#: src/views/index-dtf/overview/components/landing-mint/dtf-cover.tsx:55
+#: src/views/index-dtf/overview/components/landing-mint/dtf-cover.tsx:60
 msgid "{0} explainer"
+msgstr ""
+
+#. placeholder {0}: selectedVersion.symbol
+#: src/views/home/components/highlighted-dtfs/transcript-preview.tsx:60
+#: src/views/home/components/highlighted-dtfs/transcript-preview.tsx:61
+msgid "{0} Explainer"
 msgstr ""
 
 #. placeholder {0}: formatPercentage(a.weight)
@@ -1747,7 +1753,7 @@ msgid "BTC"
 msgstr ""
 
 #: src/views/explorer/components/revenue/index.tsx:287
-#: src/views/home/components/highlighted-dtfs.tsx:555
+#: src/views/home/components/highlighted-dtfs/feature-card-header.tsx:93
 #: src/views/index-dtf/auctions/legacy/components/auction-item.tsx:132
 #: src/views/index-dtf/issuance/manual/components/mode-selector.tsx:12
 #: src/views/index-dtf/overview/components/landing-mint/index.tsx:122
@@ -2064,8 +2070,8 @@ msgid "CMC20 is a BNB DTF and you need to bridge your RSR using Wormhole to part
 msgstr ""
 
 #: src/views/home/components/dtf-packing-animation.tsx:320
-msgid "CMC20 packs multiple collateral assets into one DTF token"
-msgstr ""
+#~ msgid "CMC20 packs multiple collateral assets into one DTF token"
+#~ msgstr ""
 
 #: src/views/index-dtf/overview/components/index-disclousure.tsx:118
 msgid "CMC20 whitepaper documentation"
@@ -3012,7 +3018,7 @@ msgstr ""
 msgid "Discord username"
 msgstr ""
 
-#: src/views/home/components/highlighted-dtfs.tsx:902
+#: src/views/home/components/highlighted-dtfs/end-card.tsx:84
 msgid "Discover all our products"
 msgstr ""
 
@@ -3146,7 +3152,7 @@ msgid "DTF cover"
 msgstr ""
 
 #: src/views/home/components/dtf-explainer-button.tsx:26
-#: src/views/index-dtf/overview/components/landing-mint/dtf-cover.tsx:59
+#: src/views/index-dtf/overview/components/landing-mint/dtf-cover.tsx:61
 msgid "DTF Explainer"
 msgstr ""
 
@@ -3738,7 +3744,7 @@ msgstr ""
 msgid "Explore"
 msgstr ""
 
-#: src/views/home/components/highlighted-dtfs.tsx:905
+#: src/views/home/components/highlighted-dtfs/end-card.tsx:87
 msgid "Explore DTFs across broad crypto, ecosystems, yield strategies and more."
 msgstr ""
 
@@ -4243,7 +4249,7 @@ msgstr ""
 msgid "High price impact: {0}"
 msgstr ""
 
-#: src/views/home/components/highlighted-dtfs.tsx:501
+#: src/views/home/components/highlighted-dtfs/chain-tabs.tsx:29
 msgid "Highlighted card chain"
 msgstr ""
 
@@ -4388,7 +4394,7 @@ msgstr ""
 #: src/components/inactive-badge.tsx:18
 #: src/views/home/components/discover-index-dtf/index-dtf-table-columns.tsx:218
 #: src/views/home/components/discover-yield-dtf/yield-dtf-card.tsx:95
-#: src/views/home/components/highlighted-dtfs.tsx:569
+#: src/views/home/components/highlighted-dtfs/feature-card-header.tsx:107
 msgid "Inactive"
 msgstr ""
 
@@ -5028,7 +5034,7 @@ msgstr ""
 msgid "Market cap:"
 msgstr ""
 
-#: src/views/home/components/discover-index-dtf/index.tsx:16
+#: src/views/home/components/discover-index-dtf/index.tsx:15
 msgid "Market Cap:"
 msgstr ""
 
@@ -5539,7 +5545,7 @@ msgstr ""
 
 #: src/components/charts/area/AreaChart.tsx:132
 #: src/views/home/components/discover-index-dtf/index-dtf-table-columns.tsx:137
-#: src/views/home/components/highlighted-dtfs.tsx:597
+#: src/views/home/components/highlighted-dtfs/feature-card-header.tsx:135
 #: src/views/index-dtf/overview/components/charts/percentage-change.tsx:27
 #: src/views/top100/components/top100-table.tsx:35
 #: src/views/top100/components/top100-table.tsx:43
@@ -5823,7 +5829,7 @@ msgstr ""
 msgid "One or more approvals failed"
 msgstr ""
 
-#: src/views/index-dtf/auctions/views/rebalance/updaters/rebalance-metrics-updater.tsx:134
+#: src/views/index-dtf/auctions/views/rebalance/updaters/rebalance-metrics-updater.tsx:142
 msgid "One or more tokens in the rebalance is out of bounds. Rebalance must be closed."
 msgstr ""
 
@@ -5869,9 +5875,12 @@ msgstr ""
 msgid "open"
 msgstr ""
 
-#. placeholder {0}: selectedVersion.name
-#: src/views/home/components/highlighted-dtfs.tsx:653
-msgid "Open {0}"
+#: src/views/home/components/highlighted-dtfs.tsx:613
+#~ msgid "Open {0}"
+#~ msgstr ""
+
+#: src/views/home/components/highlighted-dtfs/asset-ticker.tsx:82
+msgid "Open {selectedVersionName}"
 msgstr ""
 
 #: src/views/index-dtf/governance/components/governance-delegate-list.tsx:121
@@ -6157,6 +6166,10 @@ msgstr ""
 
 #: src/views/index-dtf/governance/views/propose/basket/components/proposal-rebalance-launch-settings.tsx:241
 msgid "Permissionless Launching Allowed"
+msgstr ""
+
+#: src/views/home/components/dtf-packing-animation/index.tsx:107
+msgid "PHOTON packs multiple collateral assets into one DTF token"
 msgstr ""
 
 #: src/components/transactions/table/index.tsx:92
@@ -8813,7 +8826,7 @@ msgstr ""
 msgid "Token"
 msgstr ""
 
-#: src/views/index-dtf/auctions/views/rebalance/updaters/rebalance-metrics-updater.tsx:139
+#: src/views/index-dtf/auctions/views/rebalance/updaters/rebalance-metrics-updater.tsx:141
 msgid "Token \"{symbol}\" is out of bounds. Rebalance must be closed."
 msgstr ""
 
@@ -9307,7 +9320,7 @@ msgstr ""
 msgid "Unexpected error"
 msgstr ""
 
-#: src/views/index-dtf/auctions/views/rebalance/updaters/rebalance-metrics-updater.tsx:144
+#: src/views/index-dtf/auctions/views/rebalance/updaters/rebalance-metrics-updater.tsx:145
 msgid "Unexpected error getting Rebalance data."
 msgstr ""
 
@@ -10196,8 +10209,8 @@ msgstr ""
 msgid "Warning: High price impact"
 msgstr ""
 
-#. placeholder {0}: dtf.name
-#: src/views/home/components/highlighted-dtfs.tsx:696
+#. placeholder {0}: selectedVersion.symbol
+#: src/views/home/components/highlighted-dtfs/transcript-preview.tsx:67
 msgid "Watch {0} explainer"
 msgstr ""
 
@@ -10210,8 +10223,8 @@ msgstr ""
 #~ msgstr ""
 
 #: src/views/home/components/homepage-hero.tsx:46
-#: src/views/index-dtf/overview/components/landing-mint/dtf-cover.tsx:55
-#: src/views/index-dtf/overview/components/landing-mint/dtf-cover.tsx:140
+#: src/views/index-dtf/overview/components/landing-mint/dtf-cover.tsx:57
+#: src/views/index-dtf/overview/components/landing-mint/dtf-cover.tsx:142
 msgid "Watch explainer"
 msgstr ""
 
@@ -10219,7 +10232,7 @@ msgstr ""
 msgid "Watch Explainer"
 msgstr ""
 
-#: src/views/home/components/highlighted-dtfs.tsx:700
+#: src/views/home/components/highlighted-dtfs/transcript-preview.tsx:71
 msgid "Watch Video"
 msgstr ""
 

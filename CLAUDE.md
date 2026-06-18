@@ -24,6 +24,18 @@ Register is the official web interface for the Reserve Protocol, enabling users 
 - **Routing**: React Router v6
 - **Networks**: Ethereum & Base (Arbitrum deprecated for Index DTFs)
 
+### Generated Feature Code Standards
+
+Designer-assisted and Claude-generated feature code must be cleaned before it is treated as production-ready.
+
+- Keep React components under 200 lines and files under 300 lines. Treat this as a strict limit unless a reviewer explicitly accepts the exception.
+- If a feature has three or more closely related files, move them into a feature folder with direct names such as `performance-chart/index.tsx`, `performance-chart-tooltip.tsx`, or `performance-chart-title.tsx`.
+- Preserve UI/UX while cleaning up. Refactors should not change spacing, animation timing, hover behavior, responsive behavior, or copy unless the task asks for it.
+- Keep code dumb and readable. Avoid smart abstractions, unnecessary constants, indirection, and tests that do not protect real behavior.
+- Prefer standard Tailwind utilities like `px-4`, `gap-2`, and `h-12`. Use arbitrary values only for precise visual constraints such as charts, animation geometry, or one-off measured design requirements.
+- Move complex or reusable `useEffect` logic into small hooks. Simple local effects are fine when the behavior is local and obvious.
+- Keep API normalization and defensive data handling near the hook or adapter boundary, not scattered through presentational components.
+
 ## Reserve Protocol Fundamentals
 
 ### Core Concepts
