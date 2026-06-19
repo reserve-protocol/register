@@ -127,7 +127,7 @@ export const indexDTFBasketSharesAtom = atom<Record<string, string>>({})
 export const indexDTFAtom = atom<IndexDTF | undefined>(undefined)
 export const indexDTF7dChangeAtom = atom<number | undefined>(undefined)
 
-export const performanceTimeRangeAtom = atom<TimeRange>('7d')
+export const performanceTimeRangeAtom = atom<TimeRange>('1m')
 export const indexDTFPerformanceLoadingAtom = atom<boolean>(false)
 export const indexDTFMarketCapAtom = atom<number | undefined>(undefined)
 export const indexDTFBrandAtom = atom<IndexDTFBrand | undefined>(undefined)

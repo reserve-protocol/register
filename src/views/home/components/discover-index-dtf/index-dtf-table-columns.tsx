@@ -19,7 +19,7 @@ import { calculatePercentageChange } from './utils'
 
 export const LIMIT_ASSETS = 4
 const HOVER_LIMIT_ASSETS = 10
-const SEVEN_DAYS_SECONDS = 7 * 24 * 60 * 60
+const ONE_MONTH_SECONDS = 30 * 24 * 60 * 60
 const REFRESH_INTERVAL = 1000 * 60 * 30
 
 const chartConfig = {
@@ -75,12 +75,12 @@ const getPerformanceDirection = (
   return 'neutral'
 }
 
-const useDetailedSevenDayPerformance = (dtf: IndexDTFItem) => {
+const useDetailedOneMonthPerformance = (dtf: IndexDTFItem) => {
   return useQuery({
-    queryKey: ['discover-dtf-7d-performance', dtf.chainId, dtf.address],
+    queryKey: ['discover-dtf-1m-performance', dtf.chainId, dtf.address],
     queryFn: async (): Promise<IndexDTFItem['performance']> => {
       const to = Math.floor(Date.now() / 3_600_000) * 3_600
-      const from = to - SEVEN_DAYS_SECONDS
+      const from = to - ONE_MONTH_SECONDS
       const sp = new URLSearchParams()
       sp.set('chainId', dtf.chainId.toString())
       sp.set('address', dtf.address.toLowerCase())
@@ -109,7 +109,7 @@ const useDetailedSevenDayPerformance = (dtf: IndexDTFItem) => {
 
 const PerformanceCell = ({ dtf }: { dtf: IndexDTFItem }) => {
   const fallbackPerformance = dtf.performance
-  const { data: detailedPerformance } = useDetailedSevenDayPerformance(dtf)
+  const { data: detailedPerformance } = useDetailedOneMonthPerformance(dtf)
   const hasDetailedPerformance = !!detailedPerformance?.length
   const performance = hasDetailedPerformance
     ? detailedPerformance
@@ -352,7 +352,7 @@ export const indexDTFColumns: ColumnDef<IndexDTFItem>[] = [
     header: ({ column }) => (
       <TableHeader className="text-right">
         <SorteableButton column={column}>
-          <Trans>Performance (Last 7 Days)</Trans>
+          <Trans>Performance (Last 30 Days)</Trans>
         </SorteableButton>
       </TableHeader>
     ),
