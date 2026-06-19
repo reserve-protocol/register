@@ -1207,25 +1207,27 @@ const QuoteSummary = () => {
                 ) : quoteErrors.length > 0 ? (
                   <div className="flex flex-col gap-2">
                     <div className="rounded-xl border border-destructive/25 bg-destructive/10 text-destructive px-4 py-2 text-sm">
-                      We're sorry, but the swap quote is unavailable. The amount
-                      may be too small to cover fees. Please{' '}
-                      <button
-                        type="button"
-                        className="font-medium underline underline-offset-2 hover:opacity-80 disabled:opacity-50"
-                        onClick={handleRetryQuote}
-                        disabled={quoteQuery.isFetching}
-                      >
-                        retry
-                      </button>
-                      , or{' '}
-                      <button
-                        type="button"
-                        className="font-medium underline underline-offset-2 hover:opacity-80"
-                        onClick={handleEdit}
-                      >
-                        edit the amount
-                      </button>
-                      , and try again.
+                      <Trans>
+                        We're sorry, but the swap quote is unavailable. The
+                        amount may be too small to cover fees. Please{' '}
+                        <button
+                          type="button"
+                          className="font-medium underline underline-offset-2 hover:opacity-80 disabled:opacity-50"
+                          onClick={handleRetryQuote}
+                          disabled={quoteQuery.isFetching}
+                        >
+                          retry
+                        </button>
+                        , or{' '}
+                        <button
+                          type="button"
+                          className="font-medium underline underline-offset-2 hover:opacity-80"
+                          onClick={handleEdit}
+                        >
+                          edit the amount
+                        </button>
+                        , and try again.
+                      </Trans>
                     </div>
                     <Button
                       size="lg"
@@ -1246,30 +1248,32 @@ const QuoteSummary = () => {
                 ) : quoteCanceled ? (
                   <div className="flex flex-col gap-2">
                     <div className="rounded-xl border border-destructive/25 bg-destructive/10 text-destructive px-4 py-2 text-sm">
-                      Quote fetch canceled. Your amount is saved. You may{' '}
-                      <button
-                        type="button"
-                        className="font-medium underline underline-offset-2 hover:opacity-80"
-                        onClick={handleResumeQuote}
-                      >
-                        fetch quotes again
-                      </button>
-                      , or{' '}
-                      <button
-                        type="button"
-                        className="font-medium underline underline-offset-2 hover:opacity-80"
-                        onClick={handleEdit}
-                      >
-                        edit the amount
-                      </button>{' '}
-                      and try again.
+                      <Trans>
+                        Quote fetch canceled. Your amount is saved. You may{' '}
+                        <button
+                          type="button"
+                          className="font-medium underline underline-offset-2 hover:opacity-80"
+                          onClick={handleResumeQuote}
+                        >
+                          fetch quotes again
+                        </button>
+                        , or{' '}
+                        <button
+                          type="button"
+                          className="font-medium underline underline-offset-2 hover:opacity-80"
+                          onClick={handleEdit}
+                        >
+                          edit the amount
+                        </button>{' '}
+                        and try again.
+                      </Trans>
                     </div>
                     <Button
                       size="lg"
                       className="w-full h-[49px] rounded-[12px] bg-foreground text-background hover:bg-foreground/90"
                       onClick={handleResumeQuote}
                     >
-                      Fetch quotes again
+                      <Trans>Fetch quotes again</Trans>
                     </Button>
                   </div>
                 ) : (
@@ -1328,7 +1332,9 @@ const QuoteSummary = () => {
                     {showSlowQuote && (
                       <div className="mt-2 flex flex-col gap-2 rounded-xl border border-warning/30 bg-warning/10 px-4 py-3 text-sm text-warning sm:flex-row sm:items-center sm:justify-between">
                         <span>
-                          Fetching quotes from CoW is taking longer than usual.
+                          <Trans>
+                            Fetching quotes from CoW is taking longer than usual.
+                          </Trans>
                         </span>
                         <div className="flex shrink-0 items-center gap-2">
                           <Button
@@ -1337,7 +1343,7 @@ const QuoteSummary = () => {
                             className="border-warning text-warning hover:bg-warning/10 hover:text-warning"
                             onClick={handleCancelQuote}
                           >
-                            Cancel
+                            <Trans>Cancel</Trans>
                           </Button>
                         </div>
                       </div>
@@ -1473,7 +1479,7 @@ const QuoteSummary = () => {
                         className="rounded-[12px] border border-border/70 bg-transparent h-8 w-8 flex items-center justify-center transition-colors hover:bg-primary hover:text-primary-foreground"
                         onClick={() => quoteQuery.refetch()}
                         disabled={quoteQuery.isFetching || isExecuting}
-                        aria-label="Refresh quotes"
+                        aria-label={t`Refresh quotes`}
                       >
                         <RefreshCw
                           size={16}
@@ -1481,7 +1487,9 @@ const QuoteSummary = () => {
                         />
                       </button>
                     </TooltipTrigger>
-                    <TooltipContent>Refresh quotes</TooltipContent>
+                    <TooltipContent>
+                      <Trans>Refresh quotes</Trans>
+                    </TooltipContent>
                   </Tooltip>
                 </TooltipProvider>
               ) : null}
@@ -1736,13 +1744,15 @@ const QuoteSummary = () => {
                     <button
                       type="button"
                       onClick={() => setCollateralExpanded(false)}
-                      aria-label="Collapse orders"
+                      aria-label={t`Collapse orders`}
                       className="flex size-8 shrink-0 items-center justify-center rounded-full border border-border/70 bg-card text-muted-foreground transition-colors hover:bg-primary hover:text-primary-foreground"
                     >
                       <PanelRightClose size={16} />
                     </button>
                   </TooltipTrigger>
-                  <TooltipContent>Collapse orders</TooltipContent>
+                  <TooltipContent>
+                    <Trans>Collapse orders</Trans>
+                  </TooltipContent>
                 </Tooltip>
               </TooltipProvider>
             </div>
@@ -1758,10 +1768,12 @@ const QuoteSummary = () => {
                         className="text-muted-foreground"
                       />
                       <h4 className="font-medium text-base">
-                        Quote fetch canceled
+                        <Trans>Quote fetch canceled</Trans>
                       </h4>
                       <p className="text-sm text-muted-foreground font-light">
-                        Fetch again to load the swap orders for this mint.
+                        <Trans>
+                          Fetch again to load the swap orders for this mint.
+                        </Trans>
                       </p>
                     </div>
                   </div>
@@ -1800,14 +1812,14 @@ const QuoteSummary = () => {
                   <div className="flex min-h-[320px] flex-1 items-center justify-center px-4 py-10 text-center">
                     <div className="max-w-[320px]">
                       <h4 className="font-medium text-base text-destructive">
-                        Quotes unavailable
+                        <Trans>Quotes unavailable</Trans>
                       </h4>
                       <p className="mt-1 text-sm text-muted-foreground font-light">
                         {quoteErrors
                           .map((e) => e.message)
                           .filter(Boolean)
                           .join(' ') ||
-                          'The amount may be too small to cover swap fees. Try a larger amount.'}
+                          t`The amount may be too small to cover swap fees. Try a larger amount.`}
                       </p>
                     </div>
                   </div>
