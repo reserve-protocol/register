@@ -1,7 +1,5 @@
-import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
 import { cn } from '@/lib/utils'
-import { useLingui } from '@lingui/react/macro'
 import { ArrowRight } from 'lucide-react'
 import type { AssetTickerTransitionState } from '../../hooks/use-highlighted-dtf-animation'
 import {
@@ -33,7 +31,6 @@ export const FeatureCardAssetTicker = ({
   selectedVersionName: string
   transitionState: AssetTickerTransitionState
 }) => {
-  const { t } = useLingui()
   const shouldScroll = assets.length > 1
   const renderedAssets = shouldScroll ? [...assets, ...assets] : assets
 
@@ -75,18 +72,17 @@ export const FeatureCardAssetTicker = ({
           </div>
         </div>
       </div>
-      <Button
-        variant="none"
-        size="icon-rounded"
+      <span
         className={cn(
-          'absolute right-2 top-1/2 z-20 h-8 w-8 -translate-y-1/2 shrink-0 bg-muted text-foreground opacity-100 transition-colors duration-150',
+          'absolute right-2 top-1/2 z-20 inline-flex h-8 w-8 -translate-y-1/2 shrink-0 items-center justify-center rounded-full bg-muted text-foreground opacity-100 transition-colors duration-150',
           'hover:!bg-primary hover:!text-primary-foreground',
           'lg:bg-card lg:opacity-0 lg:group-hover:bg-muted lg:group-hover:opacity-100 lg:group-focus-within:opacity-100'
         )}
-        aria-label={t`Open ${selectedVersionName}`}
+        aria-hidden="true"
+        title={selectedVersionName}
       >
         <ArrowRight size={16} />
-      </Button>
+      </span>
     </div>
   )
 }

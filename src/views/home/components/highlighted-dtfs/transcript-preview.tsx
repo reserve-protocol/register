@@ -61,11 +61,11 @@ export const TranscriptPreview = ({
           iframeTitle={t`${selectedVersion.symbol} Explainer`}
         >
           <Button
+            data-card-action="video"
             variant="none"
             size="inline"
             className="inline-flex shrink-0 items-center gap-1 bg-transparent p-0 text-xs text-primary hover:bg-transparent hover:text-primary/80"
             aria-label={t`Watch ${selectedVersion.symbol} explainer`}
-            onClick={(event) => event.stopPropagation()}
           >
             <span>
               <Trans>Watch Video</Trans>

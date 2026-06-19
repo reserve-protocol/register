@@ -2,14 +2,8 @@ import { isInactiveDTF } from '@/hooks/use-dtf-status'
 import { useIsDesktop } from '@/hooks/use-media-query'
 import { cn } from '@/lib/utils'
 import { getFolioRoute } from '@/utils'
-import {
-  useMemo,
-  useState,
-  type KeyboardEvent,
-  type MouseEvent,
-  type ReactNode,
-} from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useMemo, useState, type MouseEvent, type ReactNode } from 'react'
+import { Link } from 'react-router-dom'
 import {
   useAssetTickerTransition,
   useHighlightedCardVisibility,
@@ -34,6 +28,14 @@ import {
   getPerformanceDirection,
 } from './utils'
 
+const PHOTON_ALIAS_ROUTE = '/bsc/index-dtf/photon/overview'
+
+const getHighlightedDtfRoute = (dtf: HighlightedDTFItem) => {
+  if (dtf.symbol.toUpperCase() === 'PHOTON') return PHOTON_ALIAS_ROUTE
+
+  return getFolioRoute(dtf.address, dtf.chainId)
+}
+
 export const IndexDTFFeatureCard = ({
   dtf,
   bottomSlot,
@@ -47,11 +49,10 @@ export const IndexDTFFeatureCard = ({
   performanceLabel?: string
   showTranscript?: boolean
 }) => {
-  const navigate = useNavigate()
   const chainVersions = dtf.chainVersions
   const [selectedVersionIndex, setSelectedVersionIndex] = useState(0)
   const selectedVersion = chainVersions?.[selectedVersionIndex] ?? dtf
-  const route = getFolioRoute(selectedVersion.address, selectedVersion.chainId)
+  const route = getHighlightedDtfRoute(selectedVersion)
   const versionKey = `${selectedVersion.chainId}-${selectedVersion.address}`
   const exposureAssets = useMemo(
     () => getExposureTickerAssets(selectedVersion),
@@ -90,26 +91,18 @@ export const IndexDTFFeatureCard = ({
       wordDelayMs: TRANSCRIPT_WORD_DELAY_MS,
     })
   const hasPerformanceChart = oneMonthPerformance.length > 0
-  const openCardRoute = () => navigate(route)
-  const handleCardClick = (event: MouseEvent<HTMLDivElement>) => {
-    if (event.defaultPrevented) return
-    openCardRoute()
-  }
-  const handleCardKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
-    if (event.target !== event.currentTarget) return
-    if (event.key !== 'Enter' && event.key !== ' ') return
-
-    event.preventDefault()
-    openCardRoute()
+  const handleCardClick = (event: MouseEvent<HTMLAnchorElement>) => {
+    const target = event.target as HTMLElement | null
+    if (target?.closest('[data-card-action]')) {
+      event.preventDefault()
+    }
   }
 
   return (
-    <div
+    <Link
       ref={cardRef}
-      role="link"
-      tabIndex={0}
+      to={route}
       onClick={handleCardClick}
-      onKeyDown={handleCardKeyDown}
       onMouseEnter={() =>
         showTranscript && isDesktop && setIsTranscriptActive(true)
       }
@@ -127,7 +120,7 @@ export const IndexDTFFeatureCard = ({
       }}
       className={cn(
         FEATURE_CARD_CLASS_NAME,
-        'cursor-pointer',
+        'select-none',
         isInactiveDTF(selectedVersion.status) && 'opacity-60'
       )}
     >
@@ -161,6 +154,6 @@ export const IndexDTFFeatureCard = ({
       ) : (
         bottomSlot
       )}
-    </div>
+    </Link>
   )
 }
