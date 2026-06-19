@@ -10248,7 +10248,7 @@ msgstr "使用外部 Wallet"
 
 #: src/views/earn/views/index-dtf/components/header.tsx:12
 msgid "Use any ERC20 to govern an Index DTF in exchange for a portion of the Mint and TVL fees. There is smart contract risk associated with vote locking your ERC20, but there is no slashing risk associated."
-msgstr "使用任意 ERC20 来治理 Index DTF，以换取 Mint 费用和 TVL 费用的一部分。将你的 ERC20 进行 vote locking 存在智能合约风险，但不存在 slashing 风险。"
+msgstr "使用任意 ERC20 来治理 Index DTF，以换取 Mint 费用和 TVL 费用的一部分。将你的 ERC20 进行 Vote-lock 存在智能合约风险，但不存在 slashing 风险。"
 
 #: src/views/index-dtf/deploy/components/input-with-title.tsx:48
 msgid "Use connected wallet."
