@@ -7,7 +7,6 @@ import {
 } from '../highlighted-dtfs'
 import { formatCurrency } from '@/utils'
 import { IndexDTFItem } from '@/hooks/useIndexDTFList'
-import { useInView } from 'react-intersection-observer'
 import { Trans } from '@lingui/react/macro'
 
 const MarketCapRow = ({ marketCap }: { marketCap: number }) => (
@@ -26,17 +25,12 @@ const MarketCapRow = ({ marketCap }: { marketCap: number }) => (
 )
 
 const DiscoverIndexDTFCard = ({ dtf }: { dtf: IndexDTFItem }) => {
-  const { ref, inView } = useInView({
-    rootMargin: '480px',
-    triggerOnce: true,
-  })
-
   return (
-    <div ref={ref}>
+    <div>
       <IndexDTFFeatureCard
         dtf={dtf}
         chartPlacement="header"
-        enableDetailedPerformance={inView}
+        performanceLabel="7d"
         showTranscript={false}
         bottomSlot={<MarketCapRow marketCap={dtf.marketCap} />}
       />

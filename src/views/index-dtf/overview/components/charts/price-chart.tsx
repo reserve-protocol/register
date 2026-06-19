@@ -14,6 +14,7 @@ import {
   apyHistoryAtom,
   apyTimeseriesAtom,
   dataTypeAtom,
+  priceHistoryAvailabilityAtom,
 } from './price-chart-atoms'
 import PriceChartBody, { ChartSkeleton } from './price-chart-body'
 import PriceChartFooter from './price-chart-footer'
@@ -38,9 +39,11 @@ const getSkeletonHeight = (isYieldIndexDTF: boolean, isYieldMode: boolean) => {
 const ChartBodyArea = ({
   chartData,
   isLoading,
+  xDomain,
 }: {
   chartData: { timestamp: number }[]
   isLoading: boolean
+  xDomain?: readonly [number, number]
 }) => {
   const dataType = useAtomValue(dataTypeAtom)
   const dtf = useAtomValue(indexDTFAtom)
@@ -69,6 +72,8 @@ const ChartBodyArea = ({
         chartData={chartData as any}
         range={range}
         dtfStart={dtf?.timestamp}
+        launchTimestamp={dtf?.timestamp}
+        xDomain={xDomain}
         className={bodyHeight}
       />
     </div>
@@ -107,19 +112,51 @@ const useSyncMarketCap = (timeseries: { marketCap: number }[]) => {
   }, [timeseries, setMarketCap])
 }
 
+const useSyncPriceHistoryAvailability = (
+  address: string | undefined,
+  history: { timeseries: { timestamp: number; price: number }[] } | undefined
+) => {
+  const setPriceHistoryAvailability = useSetAtom(priceHistoryAvailabilityAtom)
+
+  useEffect(() => {
+    if (!address) {
+      setPriceHistoryAvailability(undefined)
+      return
+    }
+
+    if (history === undefined) return
+
+    const firstTimestamp =
+      history.timeseries.find(({ price }) => Boolean(price))?.timestamp ?? null
+
+    setPriceHistoryAvailability({
+      address: address.toLowerCase(),
+      firstTimestamp,
+    })
+  }, [address, history, setPriceHistoryAvailability])
+}
+
 const PriceChart = () => {
   const range = useAtomValue(performanceTimeRangeAtom)
   const dataType = useAtomValue(dataTypeAtom)
+  const dtf = useAtomValue(indexDTFAtom)
   const isYieldIndexDTF = useAtomValue(isYieldIndexDTFAtom)
   const apyTimeseries = useAtomValue(apyTimeseriesAtom)
 
   const isYieldMode = dataType === 'yield'
   const isBTCMode = dataType === 'priceBTC'
 
-  const { history, btcHistory, timeseries } = usePriceChartData({ isBTCMode })
+  const {
+    history,
+    btcHistory,
+    rangeAvailabilityHistory,
+    timeseries,
+    xDomain,
+  } = usePriceChartData({ isBTCMode })
   const apyHistory = useSyncApyHistory()
   useSync7dChange(timeseries, range)
   useSyncMarketCap(timeseries)
+  useSyncPriceHistoryAvailability(dtf?.id, rangeAvailabilityHistory)
 
   const chartData = isYieldMode ? apyTimeseries : timeseries
 
@@ -138,7 +175,11 @@ const PriceChart = () => {
     >
       <div className="px-3 sm:px-6">
         <ChartOverlay timeseries={timeseries} />
-        <ChartBodyArea chartData={chartData} isLoading={isLoading} />
+        <ChartBodyArea
+          chartData={chartData}
+          isLoading={isLoading}
+          xDomain={isYieldMode ? undefined : xDomain}
+        />
       </div>
       <PriceChartFooter />
     </div>

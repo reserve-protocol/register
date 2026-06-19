@@ -8,7 +8,6 @@ import {
   FormLabel,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
-import { Switch } from '@/components/ui/switch'
 import { Textarea } from '@/components/ui/textarea'
 import { Trans, useLingui } from '@lingui/react/macro'
 import { Plus, Trash2 } from 'lucide-react'
@@ -39,8 +38,8 @@ const DownloadableResources = () => {
         </h4>
         <p className="text-legend">
           <Trans>
-            Links to files holders can download from the DTF overview page,
-            like a tear sheet or methodology document.
+            Links to files holders can download from the DTF overview page, like
+            a tear sheet or methodology document.
           </Trans>
         </p>
       </div>
@@ -152,29 +151,27 @@ const ManageAbout = () => {
             <FormControl>
               <Input placeholder="https://..." {...field} />
             </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+      <FormField
+        control={form.control}
+        name="dtf.video"
+        render={({ field }) => (
+          <FormItem>
+            <FormLabel>
+              <Trans>Brand video</Trans>
+            </FormLabel>
+            <FormControl>
+              <Input placeholder="https://youtube.com/..." {...field} />
+            </FormControl>
+            <FormMessage />
           </FormItem>
         )}
       />
 
       <DownloadableResources />
-
-      <div className="flex items-center gap-6 border rounded-3xl p-3 mt-1">
-        <div>
-          <h4 className="font-bold">
-            <Trans>Hide DTF</Trans>
-          </h4>
-          <p className="text-legend">
-            <Trans>
-              This will prevent the DTF from appearing in the DTF list. You can
-              still access it on the UI using the direct link.
-            </Trans>
-          </p>
-        </div>
-        <Switch
-          checked={form.watch('hidden')}
-          onCheckedChange={(checked) => form.setValue('hidden', checked)}
-        />
-      </div>
     </div>
   )
 }

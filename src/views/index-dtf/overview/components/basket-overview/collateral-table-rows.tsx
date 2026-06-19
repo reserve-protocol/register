@@ -48,7 +48,7 @@ export const CollateralTableRows = ({
               />
               <div className="max-w-32 md:max-w-72 lg:max-w-56">
                 <span className="block text-sm sm:text-base">
-                  {getTokenName(token.name)}
+                  {getTokenName(token.name, false)}
                 </span>
                 <span className="block text-[10px] sm:text-xs text-legend font-normal max-w-32 md:max-w-72 lg:max-w-52 break-words">
                   ${token.symbol}

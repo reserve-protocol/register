@@ -1,6 +1,7 @@
 import type { MessageDescriptor } from '@lingui/core'
 import { msg } from '@lingui/core/macro'
 import { useLingui } from '@lingui/react/macro'
+import { getYouTubeVideoId } from '@/utils/youtube'
 import { useMemo } from 'react'
 import { z } from 'zod'
 
@@ -8,17 +9,23 @@ const messages = {
   twitter: msg`Must be a valid Twitter/X URL`,
   telegram: msg`Must be a valid Telegram URL`,
   discord: msg`Must be a valid Discord URL`,
+  youtube: msg`Must be a valid YouTube URL`,
 }
 
 export const buildManageFormSchema = (
   t: (descriptor: MessageDescriptor) => string
 ) =>
   z.object({
-    hidden: z.boolean().optional(),
     dtf: z.object({
       icon: z.string().optional(),
       cover: z.string().optional(),
-      mobileCover: z.string().optional(),
+      video: z
+        .url()
+        .refine((url) => !url || Boolean(getYouTubeVideoId(url)), {
+          message: t(messages.youtube),
+        })
+        .optional()
+        .or(z.literal('')),
       description: z.string().optional(),
       notesFromCreator: z.string().optional(),
       prospectus: z.url().optional().or(z.literal('')),
@@ -86,7 +93,6 @@ export const buildManageFormSchema = (
       creatorLogo: z.instanceof(File).nullable().optional(),
       curatorLogo: z.instanceof(File).nullable().optional(),
       desktopCover: z.instanceof(File).nullable().optional(),
-      mobileCover: z.instanceof(File).nullable().optional(),
     }),
   })
 

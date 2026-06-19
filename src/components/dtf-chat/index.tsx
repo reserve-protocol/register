@@ -1,7 +1,4 @@
-import { ReserveChat, type DtfContext, type ReserveView } from '@reserve-protocol/dtf-chat'
-// Required for the PUBLISHED build (Vite extracts the widget CSS to a separate
-// file). Harmless with the linked source build, which also auto-imports it.
-import '@reserve-protocol/dtf-chat/styles.css'
+import { useIsDesktop } from '@/hooks/use-media-query'
 import { chainIdAtom } from '@/state/atoms'
 import {
   iTokenAddressAtom,
@@ -9,7 +6,9 @@ import {
   indexDTFBasketAtom,
   indexDTFStatusAtom,
 } from '@/state/dtf/atoms'
-import { useIsDesktop } from '@/hooks/use-media-query'
+import { t } from '@lingui/core/macro'
+import { ReserveChat, type DtfContext, type ReserveView } from '@reserve-protocol/dtf-chat'
+import '@reserve-protocol/dtf-chat/styles.css'
 import { useAtomValue } from 'jotai'
 import { useLocation, useNavigate } from 'react-router-dom'
 
@@ -70,6 +69,12 @@ const DtfChat = () => {
   // weights, so we keep the static context to identity + mandate + holdings).
   const onDtf = !!address && pathname.includes('index-dtf')
 
+  // On the mobile index-dtf overview the BUY/SELL CTAs take over the floating
+  // bottom bar (see index-ctas-overview-mobile), so hide the launcher there to
+  // avoid the overlap. It stays mounted — the inline "Ask Reserve AI" button
+  // triggers it — and reappears at sm+ and on every other route.
+  const onIndexOverview = onDtf && pathname.endsWith('/overview')
+
   // 24px gap on desktop, 12px on mobile. On mobile DTF pages also clear the
   // fixed bottom nav bar (h-16 = 64px); `lg` is where that bar becomes a sidebar.
   const isDesktop = useIsDesktop()
@@ -79,28 +84,31 @@ const DtfChat = () => {
 
   const dtfContext: DtfContext | undefined = onDtf
     ? {
-        address,
-        chainId,
-        symbol: dtf?.token.symbol,
-        name: dtf?.token.name,
-        mandate: dtf?.mandate,
-        status,
-        basket: basket?.map((t) => ({ symbol: t.symbol })),
-      }
+      address,
+      chainId,
+      symbol: dtf?.token.symbol,
+      name: dtf?.token.name,
+      mandate: dtf?.mandate,
+      status,
+      basket: basket?.map((t) => ({ symbol: t.symbol })),
+    }
     : undefined
 
   return (
-    <ReserveChat
-      apiBase={apiBase}
-      // Turnstile only against the live server; a local dev server runs without it.
-      turnstileSiteKey={local ? undefined : TURNSTILE_SITE_KEY}
-      dtfContext={dtfContext}
-      view={dtfContext ? undefined : viewForPath(pathname)}
-      offset={{ bottom: bottomOffset, right: rightOffset }}
-      zIndex={50}
-      // Assistant links to app pages route through react-router — no full reload.
-      onNavigate={navigate}
-    />
+    <div className={onIndexOverview ? 'max-sm:[&_.rc-launcher]:hidden' : undefined}>
+      <ReserveChat
+        apiBase={apiBase}
+        // Turnstile only against the live server; a local dev server runs without it.
+        turnstileSiteKey={local ? undefined : TURNSTILE_SITE_KEY}
+        dtfContext={dtfContext}
+        launcherLabel={t`Ask Reserve AI`}
+        view={dtfContext ? undefined : viewForPath(pathname)}
+        offset={{ bottom: bottomOffset, right: rightOffset }}
+        zIndex={50}
+        // Assistant links to app pages route through react-router — no full reload.
+        onNavigate={navigate}
+      />
+    </div>
   )
 }
 

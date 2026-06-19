@@ -8,7 +8,7 @@ const UpgradeBanners = () => {
     <>
       <ProposeV4Upgrade />
       <ProposeV5Upgrade />
-      <ProposeV5UpgradeOptimistic />
+      {/* <ProposeV5UpgradeOptimistic /> */}
     </>
   )
 }

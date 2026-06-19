@@ -26,10 +26,12 @@ export const useFactsheetData = () => {
   const dtf = useAtomValue(indexDTFAtom)
   const address = useAtomValue(iTokenAddressAtom)
   const timeRange = useAtomValue(performanceTimeRangeAtom)
-  const minFrom = dtf?.timestamp || 0
 
-  const currentRangeParams = getRangeParams(timeRange, minFrom)
-  const allRangeParams = getRangeParams('all', minFrom)
+  // Don't clamp the "all" range to on-chain inception — the API backfills NAV
+  // from the basket constituents back ~5y, and the server already caps `from`
+  // to the earliest stored point, so request the full history.
+  const currentRangeParams = getRangeParams(timeRange)
+  const allRangeParams = getRangeParams('all')
 
   const { data: currentRangeData, isLoading: currentLoading } =
     useIndexDTFPriceHistory({
@@ -37,7 +39,7 @@ export const useFactsheetData = () => {
       from: currentRangeParams.from,
       to: currentRangeParams.to,
       interval: currentRangeParams.interval,
-      prefetchRanges: prefetchRanges.map((r) => getRangeParams(r, minFrom)),
+      prefetchRanges: prefetchRanges.map((r) => getRangeParams(r)),
     })
 
   const { data: allRangeData, isLoading: allLoading } = useIndexDTFPriceHistory(
@@ -72,7 +74,9 @@ export const useFactsheetData = () => {
 
     const lastPoint = allTimeseries[allTimeseries.length - 1]
     const currentPrice = lastPoint.price
-    const inception = dtf?.timestamp || 0
+    // Earliest available datapoint — includes the pre-deployment backfill, so
+    // the "from inception" range and All Time cover the full simulated history.
+    const inception = allTimeseries[0]?.timestamp ?? dtf?.timestamp ?? 0
 
     const lastTs = lastPoint.timestamp
 

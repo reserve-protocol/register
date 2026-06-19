@@ -8,11 +8,7 @@ import { useAtomValue } from 'jotai'
 import { useMemo } from 'react'
 import { PerformanceCell } from './performance-cell'
 import { indexDTFBasketAtom } from '@/state/dtf/atoms'
-import { ExposureRow } from './exposure-rows'
-
-// Ondo tokenized stocks always carry an "on" suffix (e.g. MRVLon)
-const formatExchangeSymbol = (symbol: string, exchange: string) =>
-  `${exchange}: $${symbol.replace(/on$/, '')}`
+import { ExposureRow, formatExchangeSymbol } from './exposure-rows'
 
 interface ExposureTableRowsProps {
   rows: ExposureRow[]

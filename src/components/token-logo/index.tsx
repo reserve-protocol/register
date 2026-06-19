@@ -336,6 +336,31 @@ export const PNGS = new Set([
   'wtao',
 ])
 
+export const WEBP = new Set([
+  'aaoion',
+  'axtion',
+  'cienon',
+  'fnon',
+  'liteon',
+  'mtsion',
+  'huton',
+  'corzon',
+  'pwron',
+  'beon',
+  'nvton',
+  'hubbon',
+  'powlon',
+  'dellon',
+  'rokon',
+  'symon',
+  'lsccon',
+  'auron',
+  'mblyon',
+  'himxon',
+  'hsaion',
+  'ouston'
+])
+
 export const EXTERNAL_ASSETS: Record<string, string> = {
   leo: 'https://assets.coingecko.com/coins/images/8418/standard/leo-token.png?1696508607',
   okb: 'https://assets.coingecko.com/coins/images/4463/standard/WeChat_Image_20220118095654.png?1696505053',
@@ -365,6 +390,9 @@ function getKnownTokenLogo(symbol: string) {
   }
   if (PNGS.has(symbol.toLowerCase())) {
     return `/imgs/${symbol.toLowerCase()}.png`
+  }
+  if (WEBP.has(symbol.toLowerCase())) {
+    return `/imgs/${symbol.toLowerCase()}.webp`
   }
   if (EXTERNAL_ASSETS[symbol.toLowerCase()]) {
     return EXTERNAL_ASSETS[symbol.toLowerCase()]

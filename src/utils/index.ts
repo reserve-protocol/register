@@ -415,12 +415,12 @@ export const humanizeTimeFromDays = (days: number) => {
   })
 }
 
-export const getTokenName = (name: string) => {
+export const getTokenName = (name: string, stripOndoTokenized = true) => {
   if (name.startsWith('Moo ')) {
     return name.replace('Moo ', 'Beefy ')
   }
 
-  return name.replace(' (Ondo Tokenized)', '')
+  return stripOndoTokenized ? name.replace(' (Ondo Tokenized)', '') : name
 }
 
 export const getFileNameFromUrl = (url: string) => {

@@ -7,14 +7,21 @@ import {
   formatPercentage,
   formatToSignificantDigits,
 } from '@/utils'
+import { getLaunchSegmentData } from '@/utils/chart-launch-segments'
 import {
   formatXAxisTick as formatTick,
   TimeRange,
 } from '@/utils/chart-formatters'
-import { useAtomValue } from 'jotai'
 import {
-  Area,
+  getPerformanceColorSet,
+  getPerformanceDirection,
+  getPerformanceStroke,
+} from '@/utils/chart-performance-colors'
+import { useAtomValue } from 'jotai'
+import { useId } from 'react'
+import {
   AreaChart,
+  Customized,
   ReferenceLine,
   Tooltip,
   XAxis,
@@ -22,6 +29,9 @@ import {
 } from 'recharts'
 import { avgApyAtom, dataTypeAtom } from './price-chart-atoms'
 import { chartConfig, DataType } from './price-chart-constants'
+import { renderPriceChartDefs } from './price-chart-defs'
+import { PriceChartLaunchMarker } from './price-chart-launch-marker'
+import { renderPriceChartSeries } from './price-chart-series'
 import { PriceTooltip, YieldTooltip } from './price-chart-tooltips'
 import { useXAxisTicks } from './use-price-chart-data'
 
@@ -47,11 +57,15 @@ const PriceChartBody = ({
   chartData,
   range,
   dtfStart,
+  launchTimestamp,
+  xDomain,
   className,
 }: {
   chartData: ChartPoint[]
   range: TimeRange
   dtfStart?: number
+  launchTimestamp?: number
+  xDomain?: readonly [number, number]
   className?: string
 }) => {
   const dataType = useAtomValue(dataTypeAtom)
@@ -59,47 +73,88 @@ const PriceChartBody = ({
   const isMobile = useIsMobile()
   const isYieldMode = dataType === 'yield'
   const isBTCMode = dataType === 'priceBTC'
-  const xAxisTicks = useXAxisTicks(chartData, isMobile)
+  const xAxisTicks = useXAxisTicks(chartData, isMobile, xDomain)
   const chartKey: DataType | 'totalAPY' = isYieldMode ? 'totalAPY' : dataType
+  const chartId = useId().replace(/:/g, '')
 
   const formatYAxisTick = buildYAxisFormatter(dataType, isBTCMode, isYieldMode)
+  const visibleRangeSeconds = xDomain
+    ? xDomain[1] - xDomain[0]
+    : chartData.length > 1
+      ? chartData[chartData.length - 1].timestamp - chartData[0].timestamp
+      : undefined
   const formatXAxisTick = (timestamp: number) =>
-    formatTick(timestamp, range, dtfStart)
+    formatTick(timestamp, range, dtfStart, visibleRangeSeconds)
+  const { data: segmentedChartData, shouldSplit } = getLaunchSegmentData(
+    chartData,
+    chartKey,
+    launchTimestamp
+  )
+  const showLaunchLine =
+    launchTimestamp !== undefined &&
+    (xDomain
+      ? launchTimestamp >= xDomain[0] && launchTimestamp <= xDomain[1]
+      : chartData.length > 0 &&
+        launchTimestamp >= chartData[0].timestamp &&
+        launchTimestamp <= chartData[chartData.length - 1].timestamp)
+  const usePerformanceColors = dataType === 'price'
+  const performanceDirection = getPerformanceDirection(
+    chartData
+      .map((point) => point.price)
+      .filter((value): value is number => value !== undefined)
+      .map((value) => ({ value }))
+  )
+  const overviewPriceColors = getPerformanceColorSet('darkSurface')
+  const priceStrokeGradientId = `${chartId}-overview-price-stroke`
+  const dotsPatternId = `${chartId}-overview-dots`
+  const preLaunchDotsPatternId = `${chartId}-overview-pre-launch-dots`
+  const dotsFadeGradientId = `${chartId}-overview-dots-fade`
+  const dotsMaskId = `${chartId}-overview-dots-mask`
+  const strokeColor = usePerformanceColors
+    ? getPerformanceStroke(
+        performanceDirection,
+        priceStrokeGradientId,
+        'darkSurface'
+      )
+    : isYieldMode
+      ? '#4ADE80'
+      : '#E5EEFA'
+  const preLaunchStrokeColor = usePerformanceColors
+    ? overviewPriceColors.preLaunch.stroke
+    : 'rgba(229, 238, 250, 0.45)'
+  const performanceDotColor =
+    performanceDirection === 'positive' || performanceDirection === 'negative'
+      ? overviewPriceColors[performanceDirection].dot
+      : overviewPriceColors.neutral.dot
+  const dotFillColor = usePerformanceColors ? performanceDotColor : '#E5EEFA'
+  const fill = isYieldMode ? 'url(#yieldGradient)' : `url(#${dotsPatternId})`
+  const preLaunchFill = usePerformanceColors
+    ? `url(#${preLaunchDotsPatternId})`
+    : fill
 
   return (
     <ChartContainer config={chartConfig} className={cn('w-full', className)}>
       <AreaChart
-        data={chartData}
+        data={segmentedChartData}
         margin={{ left: 0, right: 0, top: 5, bottom: 5 }}
         {...{ overflow: 'visible' }}
       >
-        <defs>
-          {isYieldMode ? (
-            <linearGradient
-              id="yieldGradient"
-              x1="0"
-              y1="0"
-              x2="0"
-              y2="1"
-            >
-              <stop offset="0%" stopColor="#4ADE80" stopOpacity={0.3} />
-              <stop offset="100%" stopColor="#4ADE80" stopOpacity={0} />
-            </linearGradient>
-          ) : (
-            <pattern
-              id="dots"
-              x="0"
-              y="0"
-              width="3"
-              height="3"
-              patternUnits="userSpaceOnUse"
-            >
-              <circle cx="1" cy="1" r="0.4" fill="#E5EEFA" opacity="1" />
-            </pattern>
-          )}
-        </defs>
+        {renderPriceChartDefs({
+          dotFillColor,
+          dotsFadeGradientId,
+          dotsMaskId,
+          dotsPatternId,
+          isYieldMode,
+          performanceDirection,
+          preLaunchDotsPatternId,
+          priceColors: overviewPriceColors,
+          priceStrokeGradientId,
+          usePerformanceColors,
+        })}
         <XAxis
           dataKey="timestamp"
+          type="number"
+          domain={xDomain ? [...xDomain] : ['dataMin', 'dataMax']}
           tick={{ fontSize: 13, opacity: 0.7 }}
           tickFormatter={formatXAxisTick}
           className="[&_.recharts-cartesian-axis-tick_text]:!fill-white"
@@ -149,15 +204,31 @@ const PriceChartBody = ({
             }}
           />
         )}
-        <Area
-          type="monotone"
-          dataKey={chartKey}
-          stroke={isYieldMode ? '#4ADE80' : '#E5EEFA'}
-          strokeWidth={1.5}
-          fill={isYieldMode ? 'url(#yieldGradient)' : 'url(#dots)'}
-          isAnimationActive={true}
-          animationDuration={500}
-          animationEasing="ease-in-out"
+        {renderPriceChartSeries({
+          chartKey,
+          dotsMaskId,
+          fill,
+          isYieldMode,
+          preLaunchFill,
+          preLaunchStrokeColor,
+          shouldSplit,
+          strokeColor,
+        })}
+        <Customized
+          component={(props: {
+            offset?: { top: number; height: number; width?: number }
+            width?: number
+            xAxisMap?: Record<
+              string | number,
+              { scale?: (value: number) => number }
+            >
+          }) => (
+            <PriceChartLaunchMarker
+              {...props}
+              launchTimestamp={launchTimestamp}
+              visible={showLaunchLine}
+            />
+          )}
         />
       </AreaChart>
     </ChartContainer>

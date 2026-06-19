@@ -54,6 +54,7 @@ import { useWalletClient } from 'wagmi'
 import { readContracts } from 'wagmi/actions'
 import { useAsyncZap } from '../async-zap-context'
 import LegRow from '../components/leg-row'
+import OndoLimitsBanner from '../components/ondo-limits-banner'
 import { usePriceImpact } from '../hooks/use-price-impact'
 import { useTrackAsyncZap } from '../hooks/use-track-async-zap'
 import { useWizardBalances } from '../hooks/use-wizard-balances'
@@ -101,6 +102,11 @@ const formatOrderCountdown = (seconds: number) => {
 const ceilDiv = (value: bigint, divisor: bigint) =>
   divisor === 0n ? 0n : (value + divisor - 1n) / divisor
 
+// Shares received after the Folio mint fee: the minter pays it off the top, so
+// the collateral-backed shares overstate what lands in the wallet.
+const subtractMintFee = (shares: bigint, mintFee: bigint) =>
+  shares - ceilDiv(shares * mintFee, 10n ** 18n)
+
 const QuoteSummary = () => {
   const setStep = useSetAtom(wizardStepAtom)
   const indexDTF = useAtomValue(indexDTFAtom)
@@ -138,6 +144,7 @@ const QuoteSummary = () => {
   const [nowSec, setNowSec] = useState(() => Math.floor(Date.now() / 1000))
   const [finalMintSnapshot, setFinalMintSnapshot] = useState<{
     shares?: bigint
+    netShares?: bigint
     leftoverCollateralUsd: number
   } | null>(null)
 
@@ -264,8 +271,10 @@ const QuoteSummary = () => {
     36 + Math.max(fundingSourceStackItemCount - 1, 0) * fundingSourceStackOffset
 
   // Quote-derived amounts (folio shares = 18 dec; quoteToken in its decimals).
+  const mintFee = displayQuote?.kind === 'mint' ? displayQuote.mintFee : 0n
+  // Output shares are shown net of the mint fee (what actually lands in the wallet).
   const sharesAmount = displayQuote
-    ? Number(formatUnits(displayQuote.shares, 18))
+    ? Number(formatUnits(subtractMintFee(displayQuote.shares, mintFee), 18))
     : 0
   // Wallet-sourced output token (e.g. USDC/USDT you already hold, when it's a
   // basket collateral) isn't "received" — only count the quote token coming
@@ -342,14 +351,25 @@ const QuoteSummary = () => {
           undefined
         )
       : undefined
+  // Gross collateral-backed shares = the mint() argument; drives the
+  // leftover / required-collateral math below.
   const postFillMintableShares = finalMintLocked
-    ? (finalMintSnapshot?.shares ??
-      execution.mintedShares ??
-      computedPostFillMintableShares)
+    ? (finalMintSnapshot?.shares ?? computedPostFillMintableShares)
     : computedPostFillMintableShares
+  // Net shares received. Post-mint this is the SDK's fee-adjusted mintedShares;
+  // before that it's the gross amount minus the mint fee.
+  const mintedNetShares = finalMintLocked
+    ? (execution.mintedShares ??
+      finalMintSnapshot?.netShares ??
+      (postFillMintableShares !== undefined
+        ? subtractMintFee(postFillMintableShares, mintFee)
+        : undefined))
+    : postFillMintableShares !== undefined
+      ? subtractMintFee(postFillMintableShares, mintFee)
+      : undefined
   const postFillMintableAmount =
-    postFillMintableShares !== undefined
-      ? Number(formatUnits(postFillMintableShares, 18))
+    mintedNetShares !== undefined
+      ? Number(formatUnits(mintedNetShares, 18))
       : undefined
   const leftoverCollateralUsd =
     finalMintLocked && finalMintSnapshot
@@ -741,6 +761,7 @@ const QuoteSummary = () => {
     track('finish_mint')
     setFinalMintSnapshot({
       shares: postFillMintableShares,
+      netShares: mintedNetShares,
       leftoverCollateralUsd,
     })
     void execution.finish()
@@ -1126,6 +1147,8 @@ const QuoteSummary = () => {
                 </div>
               </div>
             </button>
+
+            <OndoLimitsBanner className="mx-4 mb-3 w-auto" />
 
             {showCollateralAction && (
               <div className="pb-2">

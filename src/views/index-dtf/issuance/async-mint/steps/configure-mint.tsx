@@ -19,6 +19,9 @@ import {
   wizardStepAtom,
 } from '../atoms'
 import ComplianceAlert from '../../../components/compliance-alert'
+import OndoLimitsBanner, {
+  useOndoTradingPaused,
+} from '../components/ondo-limits-banner'
 import { useWizardBalances } from '../hooks/use-wizard-balances'
 import { useTrackAsyncZap } from '../hooks/use-track-async-zap'
 
@@ -36,6 +39,7 @@ const ConfigureMint = () => {
   const [redeemAmount, setRedeemAmount] = useAtom(redeemAmountAtom)
   const setUseExistingBalances = useSetAtom(useExistingBalancesAtom)
   const isRestricted = useIsComplianceRestricted()
+  const ondoTradingPaused = useOndoTradingPaused()
   const { track } = useTrackAsyncZap()
 
   if (!indexDTF) return null
@@ -61,8 +65,9 @@ const ConfigureMint = () => {
       ? parsedAmount * indexDTFPrice
       : undefined
   // Allow exceeding the balance so the user can still preview quotes; the
-  // error stays visible and submission is blocked on the quote screen.
-  const isValid = parsedAmount > 0
+  // error stays visible and submission is blocked on the quote screen. Trading
+  // paused (Ondo market closed / asset halted) does block quoting.
+  const isValid = parsedAmount > 0 && !ondoTradingPaused
 
   const handleMax = () => {
     // Use the exact on-chain balance string — Number(formatUnits()).toFixed
@@ -154,6 +159,7 @@ const ConfigureMint = () => {
               className="bg-card p-2 rounded-3xl flex flex-col gap-2"
               style={{ viewTransitionName: isMint ? 'async-mint-step-1' : '' }}
             >
+              <OndoLimitsBanner />
               <div className="px-4 py-3">
                 <h3 className="font-medium text-base">
                   {isMint

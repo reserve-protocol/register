@@ -35,7 +35,7 @@ msgid "(the “Website”), you expressly acknowledge that you have read and und
 msgstr ""
 
 #. placeholder {0}: group.tokens.length
-#: src/views/index-dtf/overview/components/basket-overview/exposure-table-rows.tsx:125
+#: src/views/index-dtf/overview/components/basket-overview/exposure-table-rows.tsx:121
 msgid "{0, plural, one {(# source)} other {(# sources)}}"
 msgstr "{0, plural, one {（# 个来源）} other {（# 个来源）}}"
 
@@ -188,6 +188,18 @@ msgstr "{0} 个 DTFs"
 #: src/views/index-dtf/overview/components/charts/chart-overlay.tsx:83
 msgid "{0} Est. APY"
 msgstr "预计 APY {0}"
+
+#. placeholder {0}: dtf.token.symbol
+#: src/views/index-dtf/overview/components/landing-mint/dtf-cover.tsx:55
+#: src/views/index-dtf/overview/components/landing-mint/dtf-cover.tsx:60
+msgid "{0} explainer"
+msgstr ""
+
+#. placeholder {0}: selectedVersion.symbol
+#: src/views/home/components/highlighted-dtfs/transcript-preview.tsx:60
+#: src/views/home/components/highlighted-dtfs/transcript-preview.tsx:61
+msgid "{0} Explainer"
+msgstr ""
 
 #. placeholder {0}: formatPercentage(a.weight)
 #. placeholder {0}: formatPercentage(p.exposureShare)
@@ -679,8 +691,8 @@ msgstr "关于"
 msgid "About {0}"
 msgstr "关于 {0}"
 
-#: src/views/index-dtf/manage/components/manage-about.tsx:120
-#: src/views/index-dtf/manage/components/manage-about.tsx:123
+#: src/views/index-dtf/manage/components/manage-about.tsx:119
+#: src/views/index-dtf/manage/components/manage-about.tsx:122
 #: src/views/index-dtf/overview/components/index-about-overview.tsx:68
 msgid "About this DTF"
 msgstr "关于此 DTF"
@@ -755,7 +767,7 @@ msgstr ""
 msgid "Add additional recipients"
 msgstr "添加额外接收者"
 
-#: src/views/index-dtf/manage/components/manage-about.tsx:94
+#: src/views/index-dtf/manage/components/manage-about.tsx:93
 msgid "Add file"
 msgstr "添加文件"
 
@@ -849,7 +861,7 @@ msgstr "额外接收方："
 msgid "Address"
 msgstr "地址"
 
-#: src/views/index-dtf/overview/components/basket-overview/bridge-info-dialog.tsx:66
+#: src/views/index-dtf/overview/components/basket-overview/bridge-info-dialog.tsx:74
 #: src/views/index-dtf/overview/components/index-token-address.tsx:36
 msgid "Address copied to clipboard"
 msgstr "地址已复制到剪贴板"
@@ -1182,6 +1194,11 @@ msgstr "以 RSR 形式"
 msgid "As RToken"
 msgstr "以 RToken 形式"
 
+#: src/components/dtf-chat/index.tsx:104
+#: src/views/index-dtf/overview/components/index-ctas-overview-mobile.tsx:149
+msgid "Ask Reserve AI"
+msgstr ""
+
 #: src/components/ui/swap.tsx:255
 msgid "Assembling different routes"
 msgstr "正在组合不同路由"
@@ -1432,6 +1449,11 @@ msgstr "支撑管理器"
 #: src/views/yield-dtf/settings/components/backing-info.tsx:16
 msgid "Backing Parameters"
 msgstr "支撑参数"
+
+#: src/views/home/components/highlighted-dtfs/performance-chart-launch-marker.tsx:31
+#: src/views/index-dtf/overview/components/charts/price-chart-launch-marker.tsx:41
+msgid "Backtracked basket price"
+msgstr ""
 
 #: src/views/yield-dtf/governance/views/proposal/components/ProposedBackupPreview.tsx:118
 msgid "Backup basket"
@@ -1686,6 +1708,10 @@ msgstr "Brand Manager"
 msgid "Brand Managers"
 msgstr "Brand Managers"
 
+#: src/views/index-dtf/manage/components/manage-about.tsx:164
+msgid "Brand video"
+msgstr ""
+
 #. placeholder {0}: token.symbol
 #: src/views/bridge/index.tsx:224
 msgid "Bridge {0}"
@@ -1700,7 +1726,7 @@ msgstr "Bridge / {0}"
 msgid "Bridge DTFs and RSR"
 msgstr "桥接 DTFs 和 RSR"
 
-#: src/views/index-dtf/overview/components/basket-overview/bridge-info-dialog.tsx:178
+#: src/views/index-dtf/overview/components/basket-overview/bridge-info-dialog.tsx:205
 msgid "Bridged asset (held in basket)"
 msgstr "已桥接的资产（持有于篮子中）"
 
@@ -1733,14 +1759,14 @@ msgid "BTC"
 msgstr "BTC"
 
 #: src/views/explorer/components/revenue/index.tsx:287
-#: src/views/home/components/highlighted-dtfs.tsx:636
+#: src/views/home/components/highlighted-dtfs/feature-card-header.tsx:101
 #: src/views/index-dtf/auctions/legacy/components/auction-item.tsx:132
 #: src/views/index-dtf/issuance/manual/components/mode-selector.tsx:12
 #: src/views/index-dtf/overview/components/landing-mint/index.tsx:122
 msgid "Buy"
 msgstr "买入"
 
-#: src/views/index-dtf/overview/components/index-ctas-overview-mobile.tsx:112
+#: src/views/index-dtf/overview/components/index-ctas-overview-mobile.tsx:125
 msgid "BUY"
 msgstr "买入"
 
@@ -2033,7 +2059,7 @@ msgstr "清除"
 msgid "Click retry or use individual approve buttons below."
 msgstr "点击重试或使用下方的单独授权按钮。"
 
-#: src/views/home/components/dtf-explainer-button.tsx:48
+#: src/components/video-modal/index.tsx:51
 msgid "Close"
 msgstr "关闭"
 
@@ -2049,9 +2075,9 @@ msgstr "收盘"
 msgid "CMC20 is a BNB DTF and you need to bridge your RSR using Wormhole to participate in governance."
 msgstr "CMC20 是一个 BNB DTF，你需要使用 Wormhole 桥接你的 RSR 才能参与治理。"
 
-#: src/views/home/components/dtf-packing-animation.tsx:365
-msgid "CMC20 packs multiple collateral assets into one DTF token"
-msgstr ""
+#: src/views/home/components/dtf-packing-animation.tsx:320
+#~ msgid "CMC20 packs multiple collateral assets into one DTF token"
+#~ msgstr ""
 
 #: src/views/index-dtf/overview/components/index-disclousure.tsx:118
 msgid "CMC20 whitepaper documentation"
@@ -2755,7 +2781,7 @@ msgstr ""
 msgid "days"
 msgstr "天"
 
-#: src/views/home/components/homepage-hero.tsx:42
+#: src/views/home/components/homepage-hero.tsx:36
 msgid "Decentralized Token Folios"
 msgstr ""
 
@@ -2998,7 +3024,7 @@ msgstr "Discord 链接"
 msgid "Discord username"
 msgstr "Discord 用户名"
 
-#: src/views/home/components/highlighted-dtfs.tsx:888
+#: src/views/home/components/highlighted-dtfs/end-card.tsx:84
 msgid "Discover all our products"
 msgstr ""
 
@@ -3100,7 +3126,7 @@ msgstr "下载 CSV"
 msgid "Download snapshot"
 msgstr "下载快照"
 
-#: src/views/index-dtf/manage/components/manage-about.tsx:38
+#: src/views/index-dtf/manage/components/manage-about.tsx:37
 #: src/views/index-dtf/overview/components/index-about-overview.tsx:91
 msgid "Downloadable resources"
 msgstr "可下载资源"
@@ -3131,7 +3157,13 @@ msgstr "DTF 类别标签"
 msgid "DTF cover"
 msgstr "DTF 封面"
 
-#: src/views/home/components/dtf-explainer-button.tsx:55
+#: src/views/home/components/highlighted-dtfs/performance-chart-launch-marker.tsx:30
+#: src/views/index-dtf/overview/components/charts/price-chart-launch-marker.tsx:39
+msgid "DTF Created"
+msgstr ""
+
+#: src/views/home/components/dtf-explainer-button.tsx:26
+#: src/views/index-dtf/overview/components/landing-mint/dtf-cover.tsx:61
 msgid "DTF Explainer"
 msgstr "DTF 说明"
 
@@ -3139,7 +3171,7 @@ msgstr "DTF 说明"
 msgid "DTF Explorer"
 msgstr "DTF Explorer"
 
-#: src/views/index-dtf/manage/components/manage-about.tsx:150
+#: src/views/index-dtf/manage/components/manage-about.tsx:149
 msgid "DTF Fact sheet"
 msgstr "DTF 资料表"
 
@@ -3156,7 +3188,7 @@ msgstr ""
 msgid "DTF Governed"
 msgstr "所治理的 DTF"
 
-#: src/views/index-dtf/manage/components/manage-about.tsx:107
+#: src/views/index-dtf/manage/components/manage-about.tsx:106
 msgid "DTF Icon"
 msgstr "DTF 图标"
 
@@ -3165,8 +3197,12 @@ msgid "DTF Inactive"
 msgstr "DTF 未激活"
 
 #: src/views/index-dtf/overview/components/landing-mint/index.tsx:194
-msgid "DTF meme"
-msgstr "DTF meme"
+#~ msgid "DTF meme"
+#~ msgstr "DTF meme"
+
+#: src/views/home/components/highlighted-dtfs/performance-chart-launch-marker.tsx:32
+msgid "DTF price data"
+msgstr ""
 
 #: src/views/index-dtf/governance/views/propose/index.tsx:58
 msgid "DTF Settings"
@@ -3181,7 +3217,7 @@ msgstr "DTF 设置提案"
 msgid "dtf token logo"
 msgstr "DTF 代币标识"
 
-#: src/views/index-dtf/manage/components/submit-button.tsx:229
+#: src/views/index-dtf/manage/components/submit-button.tsx:291
 msgid "DTF updated successfully"
 msgstr "DTF 更新成功"
 
@@ -3723,7 +3759,7 @@ msgstr "过期时间："
 msgid "Explore"
 msgstr "浏览"
 
-#: src/views/home/components/highlighted-dtfs.tsx:891
+#: src/views/home/components/highlighted-dtfs/end-card.tsx:87
 msgid "Explore DTFs across broad crypto, ecosystems, yield strategies and more."
 msgstr ""
 
@@ -3750,7 +3786,7 @@ msgstr "敞口"
 msgid "Exposure Share"
 msgstr "敞口占比"
 
-#: src/views/home/components/discover-index-dtf/basket-hover-card.tsx:39
+#: src/views/home/components/discover-index-dtf/basket-hover-card.tsx:40
 msgid "Exposure:"
 msgstr ""
 
@@ -3793,7 +3829,7 @@ msgstr "读取 CSV 文件失败"
 msgid "Failed to switch to {chainName}"
 msgstr "切换到 {chainName} 失败"
 
-#: src/views/index-dtf/manage/components/submit-button.tsx:237
+#: src/views/index-dtf/manage/components/submit-button.tsx:299
 msgid "Failed to update DTF"
 msgstr "更新 DTF 失败"
 
@@ -3869,7 +3905,7 @@ msgstr "正在获取…"
 msgid "File issues or upvote existing ones"
 msgstr "提交问题或为现有问题投票"
 
-#: src/views/index-dtf/manage/components/manage-about.tsx:55
+#: src/views/index-dtf/manage/components/manage-about.tsx:54
 msgid "File name"
 msgstr "文件名称"
 
@@ -4206,8 +4242,8 @@ msgid "hero-splash"
 msgstr "hero-splash"
 
 #: src/views/index-dtf/manage/components/manage-about.tsx:164
-msgid "Hide DTF"
-msgstr "隐藏 DTF"
+#~ msgid "Hide DTF"
+#~ msgstr "隐藏 DTF"
 
 #: src/views/index-dtf/governance/views/propose/basket/components/legacy-proposal-auction-price-ranges.tsx:108
 #: src/views/index-dtf/governance/views/propose/basket/components/proposal-basket-price-settings.tsx:107
@@ -4228,7 +4264,7 @@ msgstr "价格影响过高"
 msgid "High price impact: {0}"
 msgstr "价格影响较高：{0}"
 
-#: src/views/home/components/highlighted-dtfs.tsx:582
+#: src/views/home/components/highlighted-dtfs/chain-tabs.tsx:29
 msgid "Highlighted card chain"
 msgstr ""
 
@@ -4373,7 +4409,7 @@ msgstr "提取流程中"
 #: src/components/inactive-badge.tsx:18
 #: src/views/home/components/discover-index-dtf/index-dtf-table-columns.tsx:218
 #: src/views/home/components/discover-yield-dtf/yield-dtf-card.tsx:95
-#: src/views/home/components/highlighted-dtfs.tsx:650
+#: src/views/home/components/highlighted-dtfs/feature-card-header.tsx:115
 msgid "Inactive"
 msgstr "未激活"
 
@@ -4765,7 +4801,7 @@ msgstr "每个 chain 的记录上限"
 msgid "Limited"
 msgstr "受限"
 
-#: src/views/index-dtf/manage/components/manage-about.tsx:41
+#: src/views/index-dtf/manage/components/manage-about.tsx:40
 msgid "Links to files holders can download from the DTF overview page, like a tear sheet or methodology document."
 msgstr "持有者可从 DTF 概览页面下载的文件链接，例如简报或方法论文档。"
 
@@ -5013,7 +5049,7 @@ msgstr "市值"
 msgid "Market cap:"
 msgstr "市值："
 
-#: src/views/home/components/discover-index-dtf/index.tsx:16
+#: src/views/home/components/discover-index-dtf/index.tsx:15
 msgid "Market Cap:"
 msgstr ""
 
@@ -5278,7 +5314,7 @@ msgstr "分钟"
 msgid "Missing collateral"
 msgstr "缺少抵押品"
 
-#: src/views/index-dtf/manage/components/submit-button.tsx:166
+#: src/views/index-dtf/manage/components/submit-button.tsx:208
 msgid "Missing signature"
 msgstr "缺少签名"
 
@@ -5321,17 +5357,21 @@ msgstr ""
 msgid "Must be 0 or greater"
 msgstr "必须为 0 或更大"
 
-#: src/views/index-dtf/manage/components/schema.ts:10
+#: src/views/index-dtf/manage/components/schema.ts:11
 msgid "Must be a valid Discord URL"
 msgstr "必须是有效的 Discord URL"
 
-#: src/views/index-dtf/manage/components/schema.ts:9
+#: src/views/index-dtf/manage/components/schema.ts:10
 msgid "Must be a valid Telegram URL"
 msgstr "必须是有效的 Telegram URL"
 
-#: src/views/index-dtf/manage/components/schema.ts:8
+#: src/views/index-dtf/manage/components/schema.ts:9
 msgid "Must be a valid Twitter/X URL"
 msgstr "必须是有效的 Twitter/X URL"
+
+#: src/views/index-dtf/manage/components/schema.ts:12
+msgid "Must be a valid YouTube URL"
+msgstr ""
 
 #: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/form-fields.ts:15
 msgid "Must be between 0 and 100"
@@ -5356,11 +5396,11 @@ msgstr "名称"
 msgid "Name / Symbol"
 msgstr "名称 / 符号"
 
-#: src/views/index-dtf/overview/components/basket-overview/bridge-info-dialog.tsx:119
+#: src/views/index-dtf/overview/components/basket-overview/bridge-info-dialog.tsx:127
 msgid "Native asset (reference)"
 msgstr "原生资产（参考）"
 
-#: src/views/index-dtf/overview/components/basket-overview/bridge-info-dialog.tsx:163
+#: src/views/index-dtf/overview/components/basket-overview/bridge-info-dialog.tsx:182
 msgid "Native L1 Asset"
 msgstr "原生 L1 资产"
 
@@ -5520,7 +5560,7 @@ msgstr "无更改"
 
 #: src/components/charts/area/AreaChart.tsx:132
 #: src/views/home/components/discover-index-dtf/index-dtf-table-columns.tsx:137
-#: src/views/home/components/highlighted-dtfs.tsx:678
+#: src/views/home/components/highlighted-dtfs/feature-card-header.tsx:143
 #: src/views/index-dtf/overview/components/charts/percentage-change.tsx:27
 #: src/views/top100/components/top100-table.tsx:35
 #: src/views/top100/components/top100-table.tsx:43
@@ -5751,8 +5791,8 @@ msgstr "还没准备好设置治理？"
 msgid "Not voted"
 msgstr "未投票"
 
-#: src/views/index-dtf/manage/components/manage-about.tsx:135
-#: src/views/index-dtf/manage/components/manage-about.tsx:138
+#: src/views/index-dtf/manage/components/manage-about.tsx:134
+#: src/views/index-dtf/manage/components/manage-about.tsx:137
 msgid "Notes from Creator"
 msgstr "创建者备注"
 
@@ -5804,7 +5844,7 @@ msgstr "Ondo 代币化股票。最大交易额为该时段每个账户的单笔�
 msgid "One or more approvals failed"
 msgstr "一项或多项授权失败"
 
-#: src/views/index-dtf/auctions/views/rebalance/updaters/rebalance-metrics-updater.tsx:134
+#: src/views/index-dtf/auctions/views/rebalance/updaters/rebalance-metrics-updater.tsx:142
 msgid "One or more tokens in the rebalance is out of bounds. Rebalance must be closed."
 msgstr "再平衡中有一个或多个代币超出范围。必须关闭再平衡。"
 
@@ -5828,7 +5868,7 @@ msgstr "线上及线下仅限受邀活动"
 msgid "Only Auction Launchers will be able to start auctions. After the exclusive launch window for Auction Launcher, any remaining auctions to started will expire."
 msgstr "只有拍卖发起者才能启动拍卖。在拍卖发起者的专属发起窗口结束后，任何尚未启动的拍卖都将过期。"
 
-#: src/views/index-dtf/manage/components/submit-button.tsx:256
+#: src/views/index-dtf/manage/components/submit-button.tsx:318
 msgid "Only Brand Manager"
 msgstr "仅限 Brand Manager"
 
@@ -5850,10 +5890,13 @@ msgstr "只允许整数"
 msgid "open"
 msgstr "开盘"
 
-#. placeholder {0}: selectedVersion.name
-#: src/views/home/components/highlighted-dtfs.tsx:739
-msgid "Open {0}"
-msgstr ""
+#: src/views/home/components/highlighted-dtfs.tsx:613
+#~ msgid "Open {0}"
+#~ msgstr ""
+
+#: src/views/home/components/highlighted-dtfs/asset-ticker.tsx:82
+#~ msgid "Open {selectedVersionName}"
+#~ msgstr ""
 
 #: src/views/index-dtf/governance/components/governance-delegate-list.tsx:121
 msgid "Optimistic"
@@ -5932,7 +5975,7 @@ msgstr "我们的 Zap-swap 支持 {tokensText} 等常见资产，让进出 DTF �
 #: src/components/layout/navigation/index.tsx:77
 #: src/components/layout/navigation/TokenNavigation.tsx:176
 #: src/views/index-dtf/components/navigation/index.tsx:187
-#: src/views/index-dtf/overview/components/basket-overview/bridge-info-dialog.tsx:92
+#: src/views/index-dtf/overview/components/basket-overview/bridge-info-dialog.tsx:100
 msgid "Overview"
 msgstr "概览"
 
@@ -6140,6 +6183,10 @@ msgstr "无需许可时间：<0>{0}</0>"
 msgid "Permissionless Launching Allowed"
 msgstr "允许无许可发起拍卖"
 
+#: src/views/home/components/dtf-packing-animation/index.tsx:107
+msgid "PHOTON packs multiple collateral assets into one DTF token"
+msgstr ""
+
 #: src/components/transactions/table/index.tsx:92
 #: src/views/explorer/components/transactions/useTransactionColumns.tsx:132
 #: src/views/index-dtf/deploy/steps/revenue/revenue-distribution-settings.tsx:27
@@ -6285,7 +6332,7 @@ msgid "Position"
 msgstr "持仓"
 
 #. placeholder {0}: bridge.name
-#: src/views/index-dtf/overview/components/basket-overview/bridge-info-dialog.tsx:253
+#: src/views/index-dtf/overview/components/basket-overview/bridge-info-dialog.tsx:281
 msgid "Potential Risks Using {0}"
 msgstr "使用 {0} 的潜在风险"
 
@@ -6620,8 +6667,8 @@ msgid "Provider"
 msgstr "提供方"
 
 #: src/views/index-dtf/overview/components/basket-overview/bridge-info-dialog.tsx:162
-msgid "Publicly Listed U.S. Security"
-msgstr "美国上市证券"
+#~ msgid "Publicly Listed U.S. Security"
+#~ msgstr "美国上市证券"
 
 #. placeholder {0}: version.date
 #: src/views/index-dtf/overview/components/index-disclousure.tsx:184
@@ -6691,11 +6738,11 @@ msgstr "评级："
 msgid "Raw"
 msgstr "原始数据"
 
-#: src/views/index-dtf/overview/components/basket-overview/bridge-info-dialog.tsx:242
+#: src/views/index-dtf/overview/components/basket-overview/bridge-info-dialog.tsx:270
 msgid "Read about risks"
 msgstr "阅读风险说明"
 
-#: src/views/index-dtf/overview/components/basket-overview/bridge-info-dialog.tsx:234
+#: src/views/index-dtf/overview/components/basket-overview/bridge-info-dialog.tsx:262
 msgid "Read docs"
 msgstr "阅读文档"
 
@@ -6958,7 +7005,7 @@ msgstr "移除粉尘代币"
 msgid "Remove image"
 msgstr "移除图片"
 
-#: src/views/index-dtf/manage/components/manage-about.tsx:82
+#: src/views/index-dtf/manage/components/manage-about.tsx:81
 msgid "Remove resource"
 msgstr "移除资源"
 
@@ -7009,7 +7056,7 @@ msgstr ""
 msgid "Replace Basket with CSV"
 msgstr "用 CSV 替换篮子"
 
-#: src/views/index-dtf/overview/components/index-ctas-overview-mobile.tsx:75
+#: src/views/index-dtf/overview/components/index-ctas-overview-mobile.tsx:91
 msgid "Request access to this product"
 msgstr "申请使用此产品"
 
@@ -7064,7 +7111,7 @@ msgstr "Reserve Docs"
 msgid "Reserve Forum"
 msgstr "Reserve Forum"
 
-#: src/views/home/components/homepage-hero.tsx:26
+#: src/views/home/components/homepage-hero.tsx:20
 msgid "Reserve lets you buy entire portfolios as a single token"
 msgstr ""
 
@@ -7285,7 +7332,7 @@ msgstr "RFC"
 msgid "Risk evaluation"
 msgstr "风险评估"
 
-#: src/views/index-dtf/overview/components/basket-overview/bridge-info-dialog.tsx:101
+#: src/views/index-dtf/overview/components/basket-overview/bridge-info-dialog.tsx:109
 msgid "Risks"
 msgstr "风险"
 
@@ -7573,7 +7620,7 @@ msgstr ""
 msgid "Sell"
 msgstr "卖出"
 
-#: src/views/index-dtf/overview/components/index-ctas-overview-mobile.tsx:98
+#: src/views/index-dtf/overview/components/index-ctas-overview-mobile.tsx:110
 msgid "SELL"
 msgstr "卖出"
 
@@ -8175,7 +8222,7 @@ msgstr "stRSR 代币"
 msgid "Submit"
 msgstr "提交"
 
-#: src/views/index-dtf/manage/components/submit-button.tsx:247
+#: src/views/index-dtf/manage/components/submit-button.tsx:309
 msgid "Submit all changes"
 msgstr "提交所有更改"
 
@@ -8199,7 +8246,7 @@ msgid "Submitted!"
 msgstr "已提交！"
 
 #: src/views/index-dtf/deploy/components/deploy-coming-soon.tsx:182
-#: src/views/index-dtf/manage/components/submit-button.tsx:250
+#: src/views/index-dtf/manage/components/submit-button.tsx:312
 #: src/views/index-dtf/overview/components/eligibility-card.tsx:133
 msgid "Submitting..."
 msgstr "提交中…"
@@ -8703,7 +8750,7 @@ msgstr "根据当地法规，本产品仅向您所在地区的合格投资者提
 msgid "This product isn't available in your region due to local restrictions."
 msgstr "由于当地限制，本产品在你所在的地区不可用。"
 
-#: src/views/index-dtf/overview/components/index-ctas-overview-mobile.tsx:36
+#: src/views/index-dtf/overview/components/index-ctas-overview-mobile.tsx:39
 msgid "This product isn't available in your region due to local restrictions. <0>Learn More</0>"
 msgstr "由于当地的限制，本产品在你所在的地区不可用。<0>了解更多</0>"
 
@@ -8732,8 +8779,8 @@ msgid "This was originally a fast proposal that did not pass governance. Please 
 msgstr ""
 
 #: src/views/index-dtf/manage/components/manage-about.tsx:167
-msgid "This will prevent the DTF from appearing in the DTF list. You can still access it on the UI using the direct link."
-msgstr "这将使该 DTF 不再显示在 DTF 列表中。你仍可以通过直接链接在 UI 上访问它。"
+#~ msgid "This will prevent the DTF from appearing in the DTF list. You can still access it on the UI using the direct link."
+#~ msgstr "这将使该 DTF 不再显示在 DTF 列表中。你仍可以通过直接链接在 UI 上访问它。"
 
 #: src/components/rtoken-setup/token/TokenForm.tsx:30
 #: src/views/index-dtf/settings/components/index-settings-basic.tsx:37
@@ -8805,7 +8852,7 @@ msgstr "切换 {option}"
 msgid "Token"
 msgstr "代币"
 
-#: src/views/index-dtf/auctions/views/rebalance/updaters/rebalance-metrics-updater.tsx:139
+#: src/views/index-dtf/auctions/views/rebalance/updaters/rebalance-metrics-updater.tsx:141
 msgid "Token \"{symbol}\" is out of bounds. Rebalance must be closed."
 msgstr "代币 \"{symbol}\" 超出范围。必须关闭再平衡。"
 
@@ -8911,6 +8958,14 @@ msgstr "代币代码为必填项"
 #: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:101
 msgid "Token:"
 msgstr "代币:"
+
+#: src/views/index-dtf/overview/components/basket-overview/bridge-info-dialog.tsx:203
+#~ msgid "Tokenized Asset"
+#~ msgstr ""
+
+#: src/views/index-dtf/overview/components/basket-overview/bridge-info-dialog.tsx:203
+msgid "Tokenized Asset (held in basket)"
+msgstr "代币化资产（持有于篮子中）"
 
 #: src/components/vote-lock/components/delegate.tsx:106
 msgid "tokens"
@@ -9287,11 +9342,11 @@ msgstr "底层代币敞口"
 msgid "Understand the project and protocols"
 msgstr "了解项目与协议"
 
-#: src/views/index-dtf/manage/components/submit-button.tsx:238
+#: src/views/index-dtf/manage/components/submit-button.tsx:300
 msgid "Unexpected error"
 msgstr "意外错误"
 
-#: src/views/index-dtf/auctions/views/rebalance/updaters/rebalance-metrics-updater.tsx:144
+#: src/views/index-dtf/auctions/views/rebalance/updaters/rebalance-metrics-updater.tsx:145
 msgid "Unexpected error getting Rebalance data."
 msgstr "获取再平衡数据时发生意外错误。"
 
@@ -9554,7 +9609,7 @@ msgstr "升级 Folio 治理 (1/2):"
 msgid "Upgrade to"
 msgstr "升级至"
 
-#: src/views/index-dtf/manage/components/submit-button.tsx:249
+#: src/views/index-dtf/manage/components/submit-button.tsx:311
 msgid "Uploading files..."
 msgstr "正在上传文件……"
 
@@ -9636,12 +9691,12 @@ msgstr "价值："
 msgid "Vault change proposal"
 msgstr "金库变更提案"
 
-#: src/views/index-dtf/overview/components/index-ctas-overview-mobile.tsx:67
-#: src/views/index-dtf/overview/components/index-ctas-overview-mobile.tsx:72
+#: src/views/index-dtf/overview/components/index-ctas-overview-mobile.tsx:83
+#: src/views/index-dtf/overview/components/index-ctas-overview-mobile.tsx:88
 msgid "Verify eligibility"
 msgstr "验证资格"
 
-#: src/views/index-dtf/manage/components/submit-button.tsx:99
+#: src/views/index-dtf/manage/components/submit-button.tsx:126
 msgid "Verify wallet"
 msgstr "验证 Wallet"
 
@@ -9713,6 +9768,11 @@ msgstr ""
 
 #: src/views/portfolio-page/components/active-proposals.tsx:84
 msgid "Veto?"
+msgstr ""
+
+#: src/components/video-modal/index.tsx:46
+#: src/components/video-modal/index.tsx:58
+msgid "Video"
 msgstr ""
 
 #: src/views/earn/views/defi/components/featured-pool-item.tsx:67
@@ -10175,8 +10235,8 @@ msgstr "警告"
 msgid "Warning: High price impact"
 msgstr "警告：价格影响过高"
 
-#. placeholder {0}: dtf.name
-#: src/views/home/components/highlighted-dtfs.tsx:782
+#. placeholder {0}: selectedVersion.symbol
+#: src/views/home/components/highlighted-dtfs/transcript-preview.tsx:68
 msgid "Watch {0} explainer"
 msgstr ""
 
@@ -10188,7 +10248,9 @@ msgstr "观看 RTokens 入门介绍"
 #~ msgid "Watch DTF Explainer"
 #~ msgstr "观看 DTF 说明"
 
-#: src/views/home/components/homepage-hero.tsx:52
+#: src/views/home/components/homepage-hero.tsx:46
+#: src/views/index-dtf/overview/components/landing-mint/dtf-cover.tsx:57
+#: src/views/index-dtf/overview/components/landing-mint/dtf-cover.tsx:142
 msgid "Watch explainer"
 msgstr ""
 
@@ -10196,11 +10258,11 @@ msgstr ""
 msgid "Watch Explainer"
 msgstr ""
 
-#: src/views/home/components/highlighted-dtfs.tsx:786
+#: src/views/home/components/highlighted-dtfs/transcript-preview.tsx:71
 msgid "Watch Video"
 msgstr ""
 
-#: src/views/home/components/homepage-hero.tsx:39
+#: src/views/home/components/homepage-hero.tsx:33
 msgid "We call these tokenized portfolios DTFs:"
 msgstr ""
 
@@ -10260,7 +10322,7 @@ msgstr "权重已保存："
 msgid "Welcome to Reserve — a platform for creating, exploring, and interacting with Decentralized Token Folios (“DTFs”). A DTF is the generic name given to any onchain asset-backed index. DTFs can be created on Reserve’s Yield Protocol or Index Protocol permissionlessly, by any person or entity."
 msgstr "欢迎使用 Reserve —— 一个用于创建、探索 Decentralized Token Folios（“DTF”）并与之交互的平台。DTF 是对任何链上资产支撑指数的通用名称。任何个人或实体都可以无需许可地在 Reserve 的 Yield Protocol 或 Index Protocol 上创建 DTF。"
 
-#: src/views/home/components/dtf-explainer-button.tsx:41
+#: src/views/home/components/dtf-explainer-button.tsx:22
 msgid "What is a <0>DTF</0>?"
 msgstr "什么是 <0>DTF</0>？"
 

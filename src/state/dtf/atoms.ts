@@ -44,7 +44,7 @@ export interface IndexDTFBrand {
   dtf: {
     icon: string
     cover: string
-    mobileCover: string
+    video: string
     description: string
     notesFromCreator: string
     prospectus: string
@@ -234,7 +234,9 @@ export const hasBridgedAssetsAtom = atom((get) => {
   )
 })
 
-export const indexDTFStatusAtom = atom<'active' | 'deprecated' | 'unsupported'>('active')
+export const indexDTFStatusAtom = atom<'active' | 'deprecated' | 'unsupported'>(
+  'active'
+)
 
 export const isSingletonRebalanceAtom = atom((get) => {
   const version = get(indexDTFVersionAtom)

@@ -1,10 +1,9 @@
-import CoverPlaceholder from '@/components/icons/cover-placeholder'
 import TokenLogo from '@/components/token-logo'
 import StackTokenLogo from '@/components/token-logo/StackTokenLogo'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
-import { Trans, useLingui } from '@lingui/react/macro'
+import useComplianceRestrictions from '@/hooks/use-compliance-restrictions'
 import { isInactiveDTF } from '@/hooks/use-dtf-status'
 import {
   indexDTFAtom,
@@ -12,13 +11,14 @@ import {
   indexDTFStatusAtom,
 } from '@/state/dtf/atoms'
 import { useTrackIndexDTFClick } from '@/views/index-dtf/hooks/useTrackIndexDTFPage'
+import { Trans } from '@lingui/react/macro'
 import { useZapperModal, zappableTokens } from '@reserve-protocol/react-zapper'
 import { useAtomValue } from 'jotai'
 import { ArrowDown, ArrowLeftRight } from 'lucide-react'
-import React, { useEffect, useState } from 'react'
-import DTFBalance from './dtf-balance'
+import React from 'react'
 import EligibilityCard from '../eligibility-card'
-import useComplianceRestrictions from '@/hooks/use-compliance-restrictions'
+import DTFBalance from './dtf-balance'
+import DtfCover, { DTF_COVER_WIDTH_CLASSNAME } from './dtf-cover'
 
 const TokenInfo = () => {
   const dtf = useAtomValue(indexDTFAtom)
@@ -139,77 +139,20 @@ const MintBox = () => {
   )
 }
 
-const CoverImage = () => {
-  const { t } = useLingui()
-  const brand = useAtomValue(indexDTFBrandAtom)
-  const [isLoading, setIsLoading] = useState(true)
-
-  const tryLoadImage = async (url: string): Promise<string> => {
-    return new Promise((resolve, reject) => {
-      const img = new Image()
-      img.src = url
-
-      const timeoutId = setTimeout(() => {
-        reject(new Error('Image load timeout'))
-      }, 5000)
-
-      img.onload = () => {
-        clearTimeout(timeoutId)
-        resolve(url)
-      }
-
-      img.onerror = () => {
-        clearTimeout(timeoutId)
-        reject() // Remove error message to avoid console logging
-      }
-    })
-  }
-
-  useEffect(() => {
-    if (brand) {
-      const loadImage = async () => {
-        setIsLoading(true)
-        try {
-          if (brand?.dtf?.cover) {
-            await tryLoadImage(brand.dtf.cover)
-          }
-        } catch (error) { }
-        setIsLoading(false)
-      }
-
-      loadImage()
-    }
-  }, [brand])
-
-  if (isLoading) {
-    return <Skeleton className="w-[450px] h-[450px] rounded-4xl" />
-  }
-
-  if (brand?.dtf?.cover) {
-    return (
-      <img
-        width={450}
-        height={450}
-        className="object-cover h-[450px] w-[450px] rounded-4xl"
-        alt={t`DTF meme`}
-        src={brand.dtf.cover}
-      />
-    )
-  }
-
-  return <CoverPlaceholder className="text-legend" />
-}
-
 const LandingMint = (props: React.HTMLAttributes<HTMLDivElement>) => {
   const { data: complianceData } = useComplianceRestrictions()
 
   return (
     <div className="hidden xl:flex xl:flex-col xl:gap-2 relative" {...props}>
-      <CoverImage />
+      <DtfCover />
       {complianceData?.reason === 'geolocation-restricted' ? (
-        <EligibilityCard className="w-[450px] sticky top-0" />
+        <EligibilityCard
+          className={`${DTF_COVER_WIDTH_CLASSNAME} sticky top-0`}
+        />
       ) : (
-        <div className="w-[450px] sticky top-0 rounded-4xl bg-muted p-1">
+        <div
+          className={`${DTF_COVER_WIDTH_CLASSNAME} sticky top-0 rounded-4xl bg-muted p-1`}
+        >
           <MintBox />
         </div>
       )}
