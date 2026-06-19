@@ -118,6 +118,10 @@ export const useTranscriptPlayback = ({
   const shouldPlay = enabled && active
 
   useEffect(() => {
+    wordRefs.current = wordRefs.current.slice(0, wordCount)
+  }, [wordCount])
+
+  useEffect(() => {
     const setScrollOffsetIfChanged = setChangedNumber(setScrollOffset)
 
     if (!shouldPlay) {
