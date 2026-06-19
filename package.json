@@ -96,6 +96,9 @@
     "serve": "vite preview",
     "typecheck": "tsc --noEmit",
     "typecheck:watch": "tsc --noEmit --watch",
+    "lint": "oxlint",
+    "lint:fix": "oxlint --fix",
+    "lint:fix:dangerous": "oxlint --fix --fix-suggestions --fix-dangerously",
     "analyze": "vite-bundle-visualizer 'build/static/js/*.js'",
     "test": "vitest",
     "test:run": "vitest run",
@@ -110,7 +113,8 @@
     "parse-collaterals": "node scripts/parseCollaterals",
     "generate-seo-tokens": "pnpm exec tsx scripts/generate-seo-tokens.ts",
     "generate-seo-pages": "pnpm exec tsx src/seo/generate-seo-pages.ts",
-    "seo:refresh": "pnpm exec tsx scripts/seo/refresh.ts"
+    "seo:refresh": "pnpm exec tsx scripts/seo/refresh.ts",
+    "prepare": "husky"
   },
   "engines": {
     "node": ">=24.0.0"
@@ -150,7 +154,9 @@
     "@vitejs/plugin-react": "^5.2.0",
     "autoprefixer": "^10.5.0",
     "babel-plugin-macros": "^3.1.0",
+    "husky": "^9.1.7",
     "jsdom": "^27.4.0",
+    "oxlint": "^1.63.0",
     "postcss": "^8.5.10",
     "prettier": "^3.8.3",
     "tailwindcss": "^3.4.19",

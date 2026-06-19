@@ -18,7 +18,7 @@ import { ArrowDown, ArrowLeftRight } from 'lucide-react'
 import React from 'react'
 import EligibilityCard from '../eligibility-card'
 import DTFBalance from './dtf-balance'
-import DtfCover, { DTF_COVER_WIDTH_CLASSNAME } from './dtf-cover'
+import DtfCover from './dtf-cover'
 
 const TokenInfo = () => {
   const dtf = useAtomValue(indexDTFAtom)
@@ -143,15 +143,15 @@ const LandingMint = (props: React.HTMLAttributes<HTMLDivElement>) => {
   const { data: complianceData } = useComplianceRestrictions()
 
   return (
-    <div className="hidden xl:flex xl:flex-col xl:gap-2 relative" {...props}>
+    <div className="hidden xl:flex xl:flex-col xl:gap-2 relative max-w-[450px]" {...props}>
       <DtfCover />
       {complianceData?.reason === 'geolocation-restricted' ? (
         <EligibilityCard
-          className={`${DTF_COVER_WIDTH_CLASSNAME} sticky top-0`}
+          className={`sticky top-0`}
         />
       ) : (
         <div
-          className={`${DTF_COVER_WIDTH_CLASSNAME} sticky top-0 rounded-4xl bg-muted p-1`}
+          className={`sticky top-0 rounded-4xl bg-muted p-1`}
         >
           <MintBox />
         </div>

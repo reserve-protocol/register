@@ -319,7 +319,7 @@ function DataTable<TData, TValue>({
     .rows.map((row) => row.getIsExpanded())
 
   const handleRowClick = (row: Row<TData>, event: React.MouseEvent) => {
-    onRowClick && onRowClick(row.original, event, row)
+    onRowClick?.(row.original, event, row)
 
     if (!expandable || !renderSubComponent) return
 

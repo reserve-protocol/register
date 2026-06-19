@@ -136,7 +136,8 @@ const SimpleDeployButton = ({
       gas={readyToSubmit ? (gas ? BigInt(gas) : undefined) : approvalGas}
       onClick={() => {
         setOngoingTx(true)
-        readyToSubmit ? execute() : approve()
+        if (readyToSubmit) execute()
+        else approve()
       }}
       text={
         readyToSubmit

@@ -1,0 +1,29 @@
+# Lint only staged TS/TSX. Most oxlint rules stay warnings, but the denied rules
+# below block high-signal correctness bugs in changed files. Full typecheck runs in CI.
+# (jsx-key is intentionally NOT denied: it false-positives on JSX tuples; stays a warning.)
+tmpfile=$(mktemp)
+git diff --cached --name-only --diff-filter=ACM -z -- '*.ts' '*.tsx' > "$tmpfile"
+
+if [ ! -s "$tmpfile" ]; then
+  rm "$tmpfile"
+  exit 0
+fi
+
+xargs -0 pnpm exec oxlint \
+  -D no-debugger \
+  -D no-const-assign \
+  -D no-dupe-keys \
+  -D no-duplicate-case \
+  -D no-import-assign \
+  -D no-self-assign \
+  -D no-unreachable \
+  -D no-unsafe-optional-chaining \
+  -D no-unused-expressions \
+  -D react/jsx-no-duplicate-props \
+  -D react/jsx-no-undef \
+  -D typescript/no-non-null-asserted-optional-chain \
+  < "$tmpfile"
+status=$?
+
+rm "$tmpfile"
+exit $status

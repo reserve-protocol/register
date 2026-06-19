@@ -1,942 +1,298 @@
-# Register Application Knowledge Base
+# Register — Agent Knowledge Base
 
-## Overview
+Register is the web interface for Reserve Protocol: **Index DTFs** (current focus) and **Yield DTFs** (legacy).
 
-Register is the official web interface for the Reserve Protocol, enabling users to interact with Index DTFs (Decentralized Token Folios) and Yield DTFs. This document serves as a comprehensive knowledge base for Claude to effectively assist with development.
+- **Stack:** React 18 + Vite · TypeScript (strict) · Jotai · wagmi + viem + RainbowKit · TailwindCSS + shadcn/ui · React Query · React Router v6.
+- **Package manager:** pnpm (NOT npm). **Chains:** Ethereum, Base, BSC. **Arbitrum is deprecated for Index DTFs — never add it.**
 
-## Project Context
+This doc is written for agents: terse rules, verified facts, pointers — not prose. When unsure, copy the nearest existing feature. Index DTF code is current best practice; Yield DTF is legacy.
 
-### Business Context
-
-- **Company**: Small startup with 3 frontend developers
-- **Product Focus**: Index DTFs (newer product line) with legacy support for Yield DTFs
-- **Users**: DeFi users, governance participants, and RSR stakers
-- **Vision**: Decentralized, user-friendly interface for next-generation on-chain financial products
-
-### Technical Stack
-
-- **Framework**: React 18 with Vite
-- **Language**: TypeScript (strict mode)
-- **State Management**: Jotai (atomic state management)
-- **Blockchain**: wagmi + viem + RainbowKit
-- **Styling**: TailwindCSS + shadcn/ui components
-- **Data Fetching**: React Query (TanStack Query)
-- **Routing**: React Router v6
-- **Networks**: Ethereum & Base (Arbitrum deprecated for Index DTFs)
-
-### Generated Feature Code Standards
-
-Designer-assisted and Claude-generated feature code must be cleaned before it is treated as production-ready.
-
-- Keep React components under 200 lines and files under 300 lines. Treat this as a strict limit unless a reviewer explicitly accepts the exception.
-- If a feature has three or more closely related files, move them into a feature folder with direct names such as `performance-chart/index.tsx`, `performance-chart-tooltip.tsx`, or `performance-chart-title.tsx`.
-- Preserve UI/UX while cleaning up. Refactors should not change spacing, animation timing, hover behavior, responsive behavior, or copy unless the task asks for it.
-- Keep code dumb and readable. Avoid smart abstractions, unnecessary constants, indirection, and tests that do not protect real behavior.
-- Prefer standard Tailwind utilities like `px-4`, `gap-2`, and `h-12`. Use arbitrary values only for precise visual constraints such as charts, animation geometry, or one-off measured design requirements.
-- Move complex or reusable `useEffect` logic into small hooks. Simple local effects are fine when the behavior is local and obvious.
-- Keep API normalization and defensive data handling near the hook or adapter boundary, not scattered through presentational components.
-
-## Reserve Protocol Fundamentals
-
-### Core Concepts
-
-#### Index DTFs
-
-- On-chain token portfolios (similar to ETFs)
-- Support up to 100+ tokens on Base, 10+ on Ethereum
-- **IMPORTANT**: Arbitrum is deprecated for Index DTFs. Never consider Arbitrum for any Index DTF changes, mappings, or implementations.
-- Two types:
-  - **Native DTFs** (`weightControl = true`): Maintain percentage allocations
-  - **Tracking DTFs** (`weightControl = false`): Maintain fixed token units
-- Governance via vote-locking mechanism
-- Permissionless minting/redemption
-
-#### Yield DTFs (formerly RTokens)
-
-- Asset-backed, yield-bearing stablecoins
-- Secured by RSR stakers (first-loss capital)
-- Generate yield from underlying collateral
-- Legacy product
-
-#### Rebalancing (v4)
-
-- Single governance proposal executes entire rebalance
-- Dual-window system: Auction Launcher → Community
-- Dutch auction mechanism via CoWSwap
-- Price volatility controls (LOW: 5%, MEDIUM: 10%, HIGH: 50%)
-- Progressive rebalancing with percent slider
-
-### Key Terminology
-
-- **Folio**: Smart contract term for Index DTF token
-- **RSR**: Reserve Rights token (governance & staking)
-- **D27 Format**: Price representation with 27 decimals
-- **Geometric Mean**: Method for calculating fair prices
-- **Absolute vs Relative Progression**: Actual vs user-visible rebalance progress
-
-## Architecture Patterns
-
-### State Management (Jotai)
-
-```typescript
-// ✅ DO: Small, focused atoms
-export const amountAtom = atom<string>('')
-export const tokenAtom = atom<Token | null>(null)
-
-// ✅ DO: Derived atoms for computed values
-export const isValidAmountAtom = atom((get) => {
-  const amount = get(amountAtom)
-  return !isNaN(Number(amount)) && Number(amount) > 0
-})
-
-// ✅ DO: Action atoms for complex operations
-export const resetFormAtom = atom(null, (get, set) => {
-  set(amountAtom, '')
-  set(tokenAtom, null)
-  set(errorAtom, null)
-})
-
-// ✅ DO: Atom families for dynamic instances
-export const tokenBalanceAtomFamily = atomFamily((tokenId: string) =>
-  atom<bigint>(0n)
-)
-
-// ❌ DON'T: Large monolithic state atoms
-// ❌ DON'T: Use useEffect to sync between atoms
-```
-
-### Data Fetching Patterns
-
-#### Index DTF SDK Boundary
-
-Index DTF data should come from `@reserve-protocol/react-sdk` when a hook exists. Register owns UI state, routing, transaction sending, toasts, and product copy; the SDK owns proposal reads, voting-state derivation, builders, and exact on-chain math.
-
-- Keep SDK `Amount` objects in atoms and intermediate types. Do not convert `Amount.formatted` to `Number` and then rebuild fake `Amount` values for SDK helpers.
-- Use SDK-provided `proposal.votingState` for Index DTF proposal display state. Do not add a Register-local Index DTF `getProposalState` wrapper.
-- Convert amounts to `Number` only at display leaves like chart/stat formatting, never before business logic or proposal-state checks.
-- For optimistic Index DTF proposals, call `useIndexDtfOptimisticProposalContext` on detail/voting flows when exact veto threshold, snapshot, or optimistic voting power is needed. Pass that context into SDK proposal/voter-state helpers.
-- Proposal list/overview should avoid hidden per-row RPC hydration. Use SDK list data and documented refresh behavior unless product explicitly needs exact optimistic context there.
-- Keep Yield DTF governance state logic separate under `views/yield-dtf`; do not reuse Yield helpers for Index DTF proposals.
-
-#### Pattern 1: Updater Components
-
-```typescript
-// Used for syncing blockchain state with atoms
-const Updater = () => {
-  const chainId = useAtomValue(chainIdAtom)
-  const setData = useSetAtom(dataAtom)
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const result = await readContract({
-          address: CONTRACT_ADDRESS,
-          abi: contractAbi,
-          functionName: 'getData',
-          chainId,
-        })
-        setData(result)
-      } catch (error) {
-        console.error('Failed to fetch', error)
-      }
-    }
-
-    fetchData()
-  }, [chainId])
-
-  return null
-}
-```
-
-#### Pattern 2: Custom Hooks
-
-```typescript
-// Encapsulates data fetching logic
-export const useTokenBalance = (tokenAddress: Address) => {
-  const wallet = useAtomValue(walletAtom)
-
-  const { data, isLoading, error } = useReadContract({
-    address: tokenAddress,
-    abi: erc20Abi,
-    functionName: 'balanceOf',
-    args: [wallet],
-    enabled: !!wallet,
-  })
-
-  return {
-    balance: data || 0n,
-    isLoading,
-    error,
-  }
-}
-```
-
-### Component Patterns
-
-#### Feature Entry Pattern
-
-```typescript
-// index.tsx - Main feature component
-const FeatureName = () => {
-  useTrackPage('feature', 'view')  // Analytics
-
-  return (
-    <div className="container py-6">
-      <Header />
-      <MainContent />
-      <Updater />  // Optional state sync
-    </div>
-  )
-}
-
-export default withNavigationGuard(FeatureName)
-```
-
-#### Form Pattern (react-hook-form + zod)
-
-```typescript
-// Form schema
-const FormSchema = z.object({
-  name: z.string().min(1, 'Required'),
-  amount: z.string().refine(val => !isNaN(Number(val)), 'Invalid amount')
-})
-
-// Form component
-const MyForm = () => {
-  const form = useForm<z.infer<typeof FormSchema>>({
-    resolver: zodResolver(FormSchema),
-    defaultValues: { name: '', amount: '0' },
-    mode: 'onChange'
-  })
-
-  return (
-    <FormProvider {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)}>
-        <FormField
-          control={form.control}
-          name="amount"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Amount</FormLabel>
-              <FormControl>
-                <Input {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-      </form>
-    </FormProvider>
-  )
-}
-```
-
-#### Transaction Button Pattern
-
-```typescript
-const TransactionButton = () => {
-  const [isValid] = useAtomValue(isValidAtom)
-  const { writeContract, isPending, data } = useWriteContract()
-  const { isSuccess, error } = useWaitForTransactionReceipt({ hash: data })
-
-  useEffect(() => {
-    if (isSuccess) {
-      toast.success('Transaction successful')
-      // Reset form or update state
-    }
-  }, [isSuccess])
-
-  const label = isPending ? 'Please sign...' : data ? 'Confirming...' : 'Submit'
-
-  return (
-    <Button
-      disabled={!isValid || isPending || !!data}
-      onClick={() => writeContract({...})}
-    >
-      {(isPending || data) && <Spinner />}
-      {label}
-    </Button>
-  )
-}
-```
-
-### UI Component Patterns
-
-#### Dialog/Modal Pattern
-
-```typescript
-// Using shadcn/ui dialog with controlled state
-const MyModal = () => {
-  const [open, setOpen] = useAtom(modalOpenAtom)
-
-  return (
-    <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
-        <Button>Open Modal</Button>
-      </DialogTrigger>
-      <DialogContent className="rounded-3xl">
-        <DialogTitle>Title</DialogTitle>
-        <DialogDescription>Description</DialogDescription>
-        {/* Content */}
-      </DialogContent>
-    </Dialog>
-  )
-}
-```
-
-#### List/Table Pattern
-
-```typescript
-// Consistent list rendering with loading and empty states
-const ItemList = () => {
-  const items = useAtomValue(itemsAtom)
-  const isLoading = useAtomValue(loadingAtom)
-
-  if (isLoading) {
-    return <Skeleton className="h-96" />
-  }
-
-  if (!items.length) {
-    return (
-      <div className="flex items-center justify-center h-96">
-        <p className="text-muted-foreground">No items found</p>
-      </div>
-    )
-  }
-
-  return (
-    <ScrollArea className="h-96">
-      {items.map((item) => (
-        <ItemRow key={item.id} item={item} />
-      ))}
-    </ScrollArea>
-  )
-}
-```
-
-### Error Handling Patterns
-
-#### Transaction Error Pattern
-
-```typescript
-// Consistent error display for blockchain transactions
-const TransactionError = ({ error }: { error: Error }) => {
-  const message = error.message.split('\n')[0] // Clean error message
-
-  return (
-    <Alert variant="destructive">
-      <AlertTitle>Transaction Failed</AlertTitle>
-      <AlertDescription>{message}</AlertDescription>
-    </Alert>
-  )
-}
-```
-
-#### Try-Catch Pattern
-
-```typescript
-// API calls with error handling
-const fetchData = async () => {
-  try {
-    setLoading(true)
-    const result = await apiCall()
-    setData(result)
-  } catch (error) {
-    console.error('Failed to fetch data:', error)
-    toast.error('Failed to load data')
-  } finally {
-    setLoading(false)
-  }
-}
-```
-
-### Navigation Patterns
-
-#### Route-based Code Splitting
-
-```typescript
-// Lazy loading for better performance
-const Governance = lazy(() => import('./views/governance'))
-const Auctions = lazy(() => import('./views/auctions'))
-
-// Route configuration
-const routes = [
-  {
-    path: 'governance/*',
-    element: <Governance />
-  },
-  {
-    path: 'auctions/*',
-    element: <Auctions />
-  }
-]
-```
-
-#### Navigation Guards
-
-```typescript
-// HOC pattern for route protection
-const withNavigationGuard = (Component: React.FC) => {
-  return (props: any) => {
-    const wallet = useAtomValue(walletAtom)
-    const navigate = useNavigate()
-
-    useEffect(() => {
-      if (!wallet) {
-        navigate('/')
-      }
-    }, [wallet, navigate])
-
-    return wallet ? <Component {...props} /> : null
-  }
-}
-```
-
-## Common Anti-Patterns & Analysis
-
-### 1. Direct wagmi Usage in Components
-
-**Status**: ❌ NOT an anti-pattern (per user preference)
-
-- **Q**: Should wagmi hooks be wrapped in custom hooks?
-- **A**: No, direct usage is acceptable and often clearer for simple cases
-
-### 2. Console Logging in Production
-
-**Status**: ❌ Anti-pattern
-
-- **Q**: Are these debug logs or intentional?
-- **A**: Most are debug logs that should be removed
-- **Impact**: Information leakage, performance
-- **Solution**: Use proper logging service or remove
-
-### 3. Large Component Files (150+ lines)
-
-**Status**: ⚠️ Code smell, not hard rule
-
-- **Q**: What's the threshold?
-- **A**: Prefer under 150 lines, but readability > arbitrary limits
-- **Solution**: Extract sub-components when it improves clarity
-
-### 4. Inconsistent Async Patterns
-
-**Status**: ❌ Anti-pattern
-
-```typescript
-// ❌ Mixing patterns
-fetchData().then(setData) // Sometimes this
-await fetchData() // Sometimes this
-
-// ✅ Pick one pattern
-const data = await fetchData()
-setData(data)
-```
-
-### 5. Missing Loading States
-
-**Status**: ❌ Anti-pattern
-
-- **Q**: Should every async operation have loading state?
-- **A**: Yes, for better UX
-- **Solution**: Use consistent loading pattern
-
-### 6. Hardcoded Values
-
-**Status**: ⚠️ Context-dependent
-
-```typescript
-// ❌ Bad: Magic numbers without context
-const MIN_AMOUNT = 0.0015
-
-// ✅ Good: Named constants with context
-const MIN_MINTING_FEE = parseEther('0.0015') // 0.15% minimum fee
-```
-
-### 7. useEffect for Derived State
-
-**Status**: ❌ Anti-pattern with Jotai
-
-```typescript
-// ❌ Don't sync atoms with useEffect
-useEffect(() => {
-  setDerivedAtom(baseValue * 2)
-}, [baseValue])
-
-// ✅ Use derived atoms
-const derivedAtom = atom((get) => get(baseAtom) * 2)
-```
-
-## Common Implementation Patterns
-
-### Token Selection Pattern
-
-```typescript
-// Atom for selected token
-export const selectedTokenAtom = atom<Token | null>(null)
-
-// Component with token selector
-const TokenSelector = () => {
-  const [selectedToken, setSelectedToken] = useAtom(selectedTokenAtom)
-  const tokens = useAtomValue(availableTokensAtom)
-
-  return (
-    <Select
-      value={selectedToken?.address}
-      onValueChange={(address) => {
-        const token = tokens.find(t => t.address === address)
-        setSelectedToken(token || null)
-      }}
-    >
-      <SelectTrigger>
-        <SelectValue placeholder="Select token" />
-      </SelectTrigger>
-      <SelectContent>
-        {tokens.map((token) => (
-          <SelectItem key={token.address} value={token.address}>
-            <div className="flex items-center gap-2">
-              <TokenIcon token={token} />
-              <span>{token.symbol}</span>
-            </div>
-          </SelectItem>
-        ))}
-      </SelectContent>
-    </Select>
-  )
-}
-```
-
-### Amount Input Pattern
-
-```typescript
-// Validation atom
-export const isValidAmountAtom = atom((get) => {
-  const amount = get(amountAtom)
-  const balance = get(balanceAtom)
-  return !isNaN(Number(amount)) && Number(amount) > 0 && parseEther(amount) <= balance
-})
-
-// Amount input component
-const AmountInput = () => {
-  const [amount, setAmount] = useAtom(amountAtom)
-  const balance = useAtomValue(balanceAtom)
-  const isValid = useAtomValue(isValidAmountAtom)
-
-  return (
-    <div className="space-y-2">
-      <div className="flex justify-between text-sm">
-        <label>Amount</label>
-        <button
-          onClick={() => setAmount(formatUnits(balance, 18))}
-          className="text-primary hover:underline"
-        >
-          Max: {formatCurrency(Number(formatUnits(balance, 18)))}
-        </button>
-      </div>
-      <Input
-        type="text"
-        value={amount}
-        onChange={(e) => setAmount(e.target.value)}
-        placeholder="0.0"
-        className={cn(!isValid && amount && "border-destructive")}
-      />
-    </div>
-  )
-}
-```
-
-### Accordion/Collapsible Pattern
-
-```typescript
-// Using radix-ui accordion
-const FeatureAccordion = () => {
-  return (
-    <Accordion type="single" collapsible className="w-full">
-      <AccordionItem value="item-1" className="border-b">
-        <AccordionTrigger className="hover:no-underline">
-          <div className="flex items-center gap-2">
-            <Icon />
-            <span>Section Title</span>
-          </div>
-        </AccordionTrigger>
-        <AccordionContent>
-          <div className="pt-4">
-            {/* Content */}
-          </div>
-        </AccordionContent>
-      </AccordionItem>
-    </Accordion>
-  )
-}
-```
-
-### Data Table Pattern
-
-```typescript
-// With sorting and filtering
-const DataTable = () => {
-  const data = useAtomValue(tableDataAtom)
-  const [sortConfig, setSortConfig] = useState<SortConfig>()
-  const [filter, setFilter] = useState('')
-
-  const sortedData = useMemo(() => {
-    if (!sortConfig) return data
-    return [...data].sort((a, b) => {
-      // Sorting logic
-    })
-  }, [data, sortConfig])
-
-  const filteredData = useMemo(() => {
-    return sortedData.filter(item =>
-      item.name.toLowerCase().includes(filter.toLowerCase())
-    )
-  }, [sortedData, filter])
-
-  return (
-    <div>
-      <Input
-        placeholder="Filter..."
-        value={filter}
-        onChange={(e) => setFilter(e.target.value)}
-        className="mb-4"
-      />
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead onClick={() => handleSort('name')}>
-              Name
-            </TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {filteredData.map((item) => (
-            <TableRow key={item.id}>
-              <TableCell>{item.name}</TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </div>
-  )
-}
-```
-
-### Toast Notification Pattern
-
-```typescript
-// Success/Error notifications
-const handleTransaction = async () => {
-  try {
-    const tx = await writeContract({...})
-    toast.success('Transaction submitted', {
-      description: `View on explorer`,
-      action: {
-        label: 'View',
-        onClick: () => window.open(getExplorerUrl(tx.hash))
-      }
-    })
-  } catch (error) {
-    toast.error('Transaction failed', {
-      description: getErrorMessage(error)
-    })
-  }
-}
-```
-
-## Project Structure
-
-```
-src/
-├── assets/           # Static assets
-├── components/
-│   ├── ui/          # shadcn/ui base components
-│   └── (shared)/    # Global composite components
-├── hooks/           # Custom React hooks (blockchain priority)
-├── state/           # Jotai atoms by feature
-├── types/           # TypeScript definitions
-├── utils/           # Pure utility functions
-└── views/           # Route-based page components
-    ├── index-dtf/   # Index DTF features (NEW)
-    │   ├── governance/
-    │   ├── auctions/
-    │   │   └── views/
-    │   │       └── rebalance/  # v4 rebalance UI
-    │   └── issuance/
-    └── staking/     # Yield DTF features (LEGACY)
-```
-
-### Naming Conventions
-
-- **Files & Directories**: `kebab-case` (MANDATORY)
-- **Components**: PascalCase exports from kebab-case files
-- **Functions**: `const` arrow functions preferred
-- **Git Branches**: `feature/description`
-- **Commits**: `feat:`, `chore:`, `bug:` (optional)
-
-## Key Features & Implementation
-
-### 1. Index DTF Rebalancing (v4)
-
-**Location**: `/views/index-dtf/auctions/views/rebalance/`
-
-**Flow**:
-
-1. Governance proposal with `startRebalance` call
-2. Proposal execution starts auction launcher window
-3. Launcher/community calls `openAuction`
-4. Trading bots/CoWSwap fill orders
-5. Basket updates on-chain
-
-**Key Components**:
-
-- `rebalance-setup.tsx`: Percent slider (0-100%)
-- `launch-auctions-button.tsx`: Triggers auctions
-- `rebalance-metrics.tsx`: Progress visualization
-- `use-rebalance-params.ts`: Fetches chain data
-- `get-rebalance-open-auction.ts`: Core calculations
-
-### 2. Governance System
-
-**Location**: `/views/index-dtf/governance/`
-
-**OpenZeppelin Governor Integration**:
-
-- Proposal → Voting → Timelock → Execution
-- Vote-locking for Index DTFs
-- RSR staking for Yield DTFs
-- Delegation support
-
-### 3. Issuance & Redemption
-
-**Location**: `/views/index-dtf/issuance/`
-
-**Methods**:
-
-1. Zapper (one-click with any token)
-2. Manual (exact collateral)
-3. Direct contract interaction
-
-### 4. Data Management
-
-See `/docs/data-sources.md` for the full data routing table, API endpoints, and subgraph schema reference.
-
-**Quick reference**:
-
-- Basket/balances → RPC (`totalAssets()`)
-- Prices → Reserve API (`/current/prices`, 7-source consensus)
-- Metadata (governance, fees, roles) → Subgraph
-- Rebalance state → RPC (`getRebalance()`)
-- Proposal state → RPC (`governor.state()`) — NOT subgraph
-- Historical → Reserve API (`/historical/*`)
-
-## External Integrations
-
-### CoWSwap
-
-- Decentralized solver network for rebalancing
-- Batch auction settlement
-- MEV protection
-
-### RainbowKit
-
-- Wallet connection UI
-- Multi-wallet support
-- ENS resolution
-- Chain switching
-
-### Price Oracles
-
-- Chainlink (Yield DTFs)
-- Alchemy + DefiLlama via api.reserve.org (Index DTFs)
-
-## Development Workflow
-
-### Git Flow
-
-1. Create `feature/` branch
-2. Push to trigger Cloudflare Pages deployment
-3. Test on preview URL
-4. PR with at least one reviewer
-5. Merge to main
-
-**IMPORTANT**: Do NOT commit changes automatically. The user will handle git commits themselves.
-
-### Environment Setup
-
-```env
-# Required
-VITE_WALLETCONNECT_ID=your_id
-
-# Recommended (RPC providers)
-VITE_ALCHEMY_KEY=your_key
-VITE_INFURA_KEY=your_key
-```
-
-### Common Commands
-
-```bash
-npm install          # Install dependencies
-npm run start        # Start dev server (port 3000)
-npm run build        # Build for production
-npm run typecheck    # TypeScript validation
-npm run test         # Run tests (watch mode)
-npm run test:run     # Run tests (single run)
-```
-
-### Testing
-
-- **Framework**: Vitest with jsdom environment
-- **Location**: `src/**/tests/**/*.test.{ts,tsx}`
-- **Run**: `npm run test` (watch) or `npm run test:run` (single)
-- **Current coverage**: Critical hooks (useQuery, useDebounce, useTimeRemaining)
-
-## Known Issues & Tech Debt
-
-### High Priority
-
-1. **Bundle Size**: Large SPA bundle (~10MB)
-2. **Tailwind v4**: Upgrade planned
-
-### Complex Areas Needing Attention
-
-- Governance implementation
-- Mint/redeem flows
-- Staking mechanisms
-- Vote locking system
-- DTF deployment process
-
-### Performance Considerations
-
-- React Query caches API calls
-- Multiple RPC fallbacks for rate limiting
-- 30-second refresh for active auctions
-
-## Best Practices
-
-### Do's ✅
-
-- **State Management**
-  - Create small, focused atoms (single responsibility)
-  - Use derived atoms for computed values
-  - Use atom families for dynamic instances
-  - Prefer `useAtomValue` for read-only, `useSetAtom` for write-only
-- **Component Architecture**
-  - Keep components under 150 lines (soft limit)
-  - Extract reusable logic into custom hooks
-  - Use composition over inheritance
-  - Implement loading and error states consistently
-- **Styling**
-  - Use TailwindCSS utilities exclusively
-  - Use `cn()` helper for conditional classes
-  - Follow shadcn/ui component patterns
-  - Use semantic color variables (primary, destructive, etc.)
-- **Forms**
-  - Always use react-hook-form with zod validation
-  - Use FormProvider for complex forms
-  - Implement proper error messages
-  - Show validation state in real-time (mode: 'onChange')
-- **Blockchain Interactions**
-  - Handle transaction states (pending, confirming, success, error)
-  - Show clear error messages to users
-  - Use wagmi hooks directly when simple (not an anti-pattern)
-  - Implement proper loading states for all async operations
-- **Code Organization**
-  - Follow feature-based folder structure
-  - Use kebab-case for all files and folders
-  - Place shared utilities in `/utils`
-  - Keep atoms close to their usage (feature-specific)
-
-### Don'ts ❌
-
-- **State Management**
-  - Create large monolithic atoms
-  - Use useEffect to sync between atoms
-  - Store derived state in atoms
-  - Mix state management patterns
-- **Component Architecture**
-  - Create "god components" that do everything
-  - Mix presentation and business logic
-  - Ignore loading/error states
-  - Use index as key in dynamic lists
-- **Styling**
-  - Create custom CSS files
-  - Use inline style prop
-  - Hard-code colors instead of using theme variables
-- **Performance**
-  - Fetch data in render phase
-  - Create functions inside render (use useCallback)
-  - Skip React.memo for expensive components
-  - Ignore bundle size impact
-- **Code Quality**
-  - Leave console.log statements
-  - Ignore TypeScript errors
-  - Copy-paste without understanding patterns
-  - Create new patterns without team discussion
-
-## Security Considerations
-
-### Smart Contract Security
-
-- All contracts audited
-- Timelock protection on governance
-- Role-based access control
-- Single active rebalance constraint
-
-### Frontend Security
-
-- Static SPA (reduced attack surface)
-- Security headers in Vite config
-- Battle-tested libraries only
-- No sensitive data in frontend
-
-## Debugging Tips
-
-### Common Issues
-
-1. **"Module not found"**: Check kebab-case naming
-2. **State not updating**: Verify atom dependencies
-3. **Transaction failing**: Check wallet network
-4. **Prices missing**: Verify oracle/API availability
-
-### Useful Console Commands
-
-```javascript
-// Check current network
-wagmi.getChainId()
-
-// Get rebalance state
-jotai.store.get(rebalanceMetricsAtom)
-
-// Force refetch
-queryClient.invalidateQueries(['queryKey'])
-```
-
-## Resources
-
-### Internal Docs
-
-- `/docs/protocol-context.md` — Protocol fundamentals, rebalance lifecycle, governance, roles, chains
-- `/docs/data-sources.md` — Data routing rules, API endpoints, subgraph schema, gotchas
-- `/docs/specs/rebalance-v4-specification.md` — Rebalance v4/v5 specification
-- `/docs/specs/index-dtf-governance-and-proposal.md` — Governance and proposal system
-- `/docs/architecture/*.md` — State management, routing, component architecture, data flow
-- `/docs/prd.md` — Product requirements
-
-### Related Repositories
-
-- **SDK**: [`reserve-protocol/dtf-tools`](https://github.com/reserve-protocol/dtf-tools) — Typed reads, transaction builders, API wrappers. See `docs/KNOWLEDGE.md` for master protocol reference.
-- **Subgraph (Index DTFs)**: [`reserve-protocol/dtf-index-subgraph`](https://github.com/reserve-protocol/dtf-index-subgraph) — Schema, mappings
-- **Subgraph (Yield DTFs)**: [`reserve-protocol/reserve-subgraph`](https://github.com/reserve-protocol/reserve-subgraph)
-- **Contracts**: [`reserve-protocol/reserve-index-dtf`](https://github.com/reserve-protocol/reserve-index-dtf) — Solidity source, ABIs
-- **API**: `reserve-protocol/reserve-api` — Backend endpoints
-
-### External Documentation
-
-- [Reserve Protocol Docs](https://reserve.org/protocol/)
-- [wagmi Documentation](https://wagmi.sh)
-- [RainbowKit Docs](https://rainbowkit.com/docs)
-- [Jotai Documentation](https://jotai.org)
-- [shadcn/ui Components](https://ui.shadcn.com)
+**`AGENTS.md` is a symlink to this file** — edit `CLAUDE.md` only; both Claude Code and AGENTS.md-aware tools read the same content.
 
 ---
 
-_Remember: When in doubt, follow existing patterns in the codebase. The Index DTF code (newer) represents current best practices, while Yield DTF code is legacy._
+## Contribution Model
+
+The goal: agents help humans ship reliable, on-standard code quickly. The codebase will see more LLM-authored work; quality degradation is possible, so contain it early: isolate features, keep code boring, flag risky changes loudly, and make cleanup predictable. Verification surface = the running app + `pnpm typecheck` + `pnpm lint` + changed-code checks + the review pass.
+
+Rules are identity-blind. Do not infer whether a designer or engineer is driving the work. Classify risk by code touched, behavior changed, and blast radius.
+
+### Boundaries — do not cross
+
+- **Index DTF data → the SDK.** Don't hand-roll hooks, updaters, scripts, or derivation for Index DTF reads, governance, builders, or tx calls. (See **SDK — Use It First** below.)
+- **Feature isolation.** A feature may import from `components/ui`, shared `components/`, `hooks/`, `utils/`, `state/`, and the SDK. Shared code must NOT import from a feature folder; features must NOT reach into each other's internals. Lift shared needs up to `components/` or `utils/`.
+- **Index ≠ Yield.** Never reuse Yield DTF helpers/state for Index DTF or vice versa. Yield lives under `views/yield-dtf/*`.
+- **Live state → RPC, not subgraph.** Basket balances, live proposal state, and live rebalance/auction state come from RPC. The subgraph is metadata/history only.
+- **Money is `Amount` / `bigint`.** Keep SDK `Amount` objects intact; convert to `Number` only at display leaves. Never use `Number` for on-chain math.
+- **Design tokens only.** No hardcoded hex/hsl — use semantic Tailwind tokens. (See **Design System** below.)
+- **Shared components keep their defaults.** `DataTable` / `Table` etc. are app-wide — add behavior via opt-in props, never change defaults.
+- **Never auto-commit or push.** Commits and pushes are the user's call. (See **Workflow & Ops** below.)
+
+### Coding rules
+
+- **Dumb beats clever.** Explain it in 30s or it's too complex. Three similar lines beat a premature abstraction. No abstractions for one-time use, no features nobody asked for, no error handling for impossible cases.
+- **Explicit over implicit.** Verbose names over abbreviations, early returns over nested ifs, booleans prefixed `is`/`has`/`can`/`should`. `const` arrow functions.
+- **Size:** components < 200 lines, files < 300. Strict unless a reviewer signs off. Extract sub-components into the feature folder.
+- **State → Jotai.** Small focused atoms; derived atoms for computed values; action atoms for coordinated writes. Never `useEffect` to sync or derive state. `useAtomValue` for reads, `useSetAtom` for writes, `useAtom` only when you need both. Atom families for dynamic instances.
+- **Logic → hooks.** Fetching, derivation, and non-trivial effects live in a hook in the feature's `hooks/`. Components stay dumb: call hooks, render, early-return on loading/empty.
+- **Loading + error states** on every async surface. **Named constants with context** over magic numbers (`MIN_MINTING_FEE = parseEther('0.0015') // 0.15%`).
+- **Comments explain WHY, not WHAT** (`// WHY:` / `// NOTE:`). A better name beats a comment that explains what code does.
+- **`console.log` / `any`:** fine for staging and debugging — just don't ship them as permanent. They are lint **warnings, not errors**. Don't leave TypeScript errors.
+- **Forms:** react-hook-form + zod, `mode: 'onChange'`, `FormProvider` for complex forms.
+- **i18n:** Wrap new user-facing strings with Lingui (`<Trans>` or `t`). Do not wrap intentionally external/user-authored placeholder content unless requested.
+- **Tailwind utilities** (`px-4`, `gap-2`, `h-12`); arbitrary values only for measured/chart geometry. `cn()` (`src/lib/utils.ts`) for conditional classes. No custom CSS files, no inline `style`.
+- **Direct wagmi hooks in components are fine** when simple — not an anti-pattern.
+- **UI parity:** Refactors must preserve spacing, copy, hover/focus states, animation timing, responsive behavior, and accessibility unless the task explicitly changes them.
+
+### Containment & Reuse
+
+A feature should be addable without understanding the whole app, and deletable in one `rm -rf` without breaking anything else. Flexible, not dogmatic — if reuse would force a bad abstraction, write the three dumb lines instead.
+
+- **One feature = one folder** under `views/<domain>/<feature>/` owning its `components/`, `hooks/`, `atoms.ts`, and local `utils.ts`. It owns its atoms; don't mutate another feature's.
+- **Reuse before you build:** UI → `src/components/ui` (don't rebuild a dialog or table). Helpers → `src/utils` (grep first — formatting, validation, routes, time helpers already exist). Data → the SDK. State → Jotai.
+- **Fix local bugs locally.** Do not solve a feature layout/animation issue by changing app containers, routing shells, shared providers, or component defaults unless the task is explicitly about that shared surface.
+
+### Engineer Review Flags
+
+Agents cannot know who is driving the change. They can and must identify risky surfaces. You may implement these when explicitly requested, but final handoff must clearly say **Engineer review required** and explain why:
+
+- on-chain math, `Amount`, `bigint`, decimals, rounding, token units, or tx builders
+- governance, proposal, vote-lock, rebalance, auction, issuance, redemption, or zap behavior
+- SDK/API contracts, request/response shapes, persistence schemas, or backend assumptions
+- shared component defaults, shared atoms/providers, routing, app containers, or global layout
+- cross-feature imports, shared mutable state, or new app-wide utilities
+- security, compliance, geolocation, wallet, transaction, or chain-switching flows
+
+Required handoff note:
+
+- files touched
+- behavior changed
+- why engineer review is required
+- validation performed
+- remaining risk or assumptions
+
+### Agent Review Workflow (run them smart, not every step)
+
+Review agents catch real issues every time but cost time — run them where they pay off, as parallel threads, not blockers.
+
+- **Small change** (one file, copy, a prop, styling, a rename): self-review against the rules above. No agents.
+- **Large change** (multi-file, real logic, new data flow, money/on-chain math):
+  1. **Split into stages** (e.g. "data hook + atoms" → "list UI" → "detail UI").
+  2. **Triage each stage cheaply:** worth a review? Skip trivial/mechanical stages — `pnpm typecheck` + `pnpm lint` + self-review cover those. If a feature keeps triaging to "skip," review once at the end.
+  3. **Worth it → spawn Dark + Light as _background_ subagents and keep building.** Don't idle waiting.
+     - **Dark (hostile):** hallucinated APIs / fake SDK hook names, instruction violations, bugs, missing validation, races, scope creep.
+     - **Light (constructive):** solves the ask? reuses existing patterns / SDK / utils? testable? a simpler way?
+  4. **Reconcile when they land** in one neat pass — fix what's real, drop what isn't, don't re-litigate.
+  5. **Always review the whole feature at least once** at the end (or whenever the user asks), lens on _improving_ quality against these rules.
+
+Loop: build → triage → review-in-parallel → reconcile → ship. Skip reviews that won't pay off; never skip the end-of-feature one. Never leave items "for next session."
+
+### Enforcement (automated)
+
+- **Pre-commit** (`.husky/pre-commit`): `oxlint` on staged `.ts/.tsx`. Most rules are warnings, but a small correctness set is denied on changed files. `any`/`console.log`/unused are warnings, not blockers. Fast; no typecheck.
+- **CI** (`.github/workflows/lint.yml`): `pnpm typecheck` (**blocking** — type errors are real bugs) + `pnpm lint` (full-repo report) + strict oxlint on changed `.ts/.tsx` files for high-signal correctness issues.
+- **Linter:** `oxlint`, config `.oxlintrc.json` (plugins `typescript`, `unicorn`, `oxc`, `react`, `react-perf`). Baseline ~600 warnings / 0 errors — legacy grandfathered, fix incrementally. New code shouldn't add warnings (guidance), and changed files must pass the strict correctness subset.
+
+---
+
+## Design System
+
+Source of truth: `tailwind.config.ts` (tokens) + `src/app.css` (CSS variables, light + `.dark`). Dark mode is class-based (`darkMode: ['class']`) — prefer `dark:` utilities over JS theme branching.
+
+### Color tokens (semantic — never hardcode hex/hsl)
+
+Every color is an HSL CSS variable exposed as a Tailwind color. Use the utility, not a raw value:
+
+- **Surfaces:** `background`, `card`, `container`, `popover`, `muted`, `secondary`, `accent` — each with a `-foreground` pair (e.g. `bg-card text-card-foreground`).
+- **Brand / intent:** `primary`, `success`, `destructive` (+ `-foreground`); `warning` (no `-foreground` pair).
+- **Lines / inputs:** `border`, `borderSecondary`, `input`, `ring`.
+- **Data viz:** `chart-1`…`chart-5`, `legend`, `tvl`.
+
+Examples: `text-muted-foreground`, `border-border`, `bg-primary text-primary-foreground`, `text-destructive`. A new color means adding the CSS var in **both** `:root` and `.dark` in `src/app.css` first — never a one-off hex.
+
+### Type, radius, layout, motion
+
+- **Font: TWK Lausanne.** Only three weights exist — `font-light`/`font-normal` = 300, `font-medium`/`font-semibold` = 500, `font-bold` = 700. Don't expect 400/600; they collapse to these.
+- **Radius:** `rounded-sm/md/lg` derive from `--radius` (0.5rem); plus `rounded-3xl` (1.25rem) and `rounded-4xl` (1.5rem) for cards/dialogs/drawers.
+- **Layout:** centered `container` capped at 1400px. Standard spacing (`p-4`, `gap-2`, `h-12`); arbitrary values only for measured/chart geometry.
+- **Motion:** animations predefined in `tailwind.config.ts` (`animate-fade-in`, `animate-slide-up`, `animate-spin-slow`, `animate-shimmer`, accordion/dialog). Reuse them; don't write keyframes for standard motion.
+
+### Components (don't rebuild these)
+
+shadcn/ui primitives in `src/components/ui`: Dialog, Drawer, Modal, Card, Button, Input, Textarea, Select, Multiselect, Checkbox, Switch, Tabs, Accordion, Collapsible, Tooltip, HoverCard, Popover, DropdownMenu, Command, Table / DataTable / legacy Table, Progress, Slider, Skeleton, Spinner, Sonner (toasts) — plus blockchain-aware ones: `TransactionButton`, `Transaction`, `Swap`, `CopyValue`. Shared composites (token logos, tables, icons) live in `src/components`.
+
+> `DataTable` / legacy `Table` are used app-wide — never change their defaults; add behavior via opt-in props.
+
+---
+
+## SDK — Use It First (Index DTF)
+
+The SDK is `@reserve-protocol/react-sdk` (it wraps `@reserve-protocol/sdk`, a transitive dep — import from `react-sdk`, not `sdk`). It is Register's primary source for Index DTF reads, governance state, proposal builders, and transaction calls. **Before writing a new hook, updater, script, or data utility for Index DTF data, check whether the SDK already exposes it — it almost always does.**
+
+**Two sources you always have, no local setup:**
+
+1. **The installed package** — `node_modules/@reserve-protocol/react-sdk/dist/index.d.mts` is the version-accurate list of every export. Source of truth for what exists; use the discovery command below.
+2. **The SDK repo `reserve-protocol/dtf-interface`** — its `docs/` folder is agent-optimized docs (browse on GitHub or read locally if checked out). Read instead of guessing:
+   - `docs/README.md` — index with per-task reading orders.
+   - `docs/sdk/api-surface.md` — API shape (namespaces, refs, `ContractCall`).
+   - `docs/register/interface.md` (+ `register/governance-flows.md`, `register/issuance-deploy-flows.md`) — how SDK behavior must match Register.
+   - `docs/known-gotchas.md` — pitfalls.
+   - `AGENTS.md` — SDK data-boundary rules (money is always `Amount`, mappers stay deterministic).
+
+**What the SDK gives you** (confirm the exact current name in the installed package before use — don't invent names):
+
+- **Read hooks** (React Query): `useIndexDtf`, `useIndexDtfBasket` / `useCurrentIndexDtfBasket`, `useIndexDtfPrice`, `useIndexDtfProposals` / `useIndexDtfProposal` / `useIndexDtfProposalList`, `useIndexDtfCurrentRebalance` / `useIndexDtfRebalances` / `useIndexDtfRebalanceAuctions`, `useIndexDtfRevenue`, `useIndexDtfVoteLockState` / `useIndexDtfVoterState`, `useAccountPortfolio`, `useDiscoverDtfs` / `useIndexDtfList` / `useIndexCatalog`, and dozens more.
+- **Query options** (`*QueryOptions`, e.g. `indexDtfProposalsQueryOptions`) for every read — use with `useQuery`/`prefetchQuery`/`queryClient` for custom caching or imperative fetches.
+- **Proposal builders:** `useBuildIndexDtfBasketProposal`, `useBuildIndexDtfSettingsProposal`, `useBuildIndexDtfDaoSettingsProposal`, `useBuildIndexDtfBasketSettingsProposal`.
+- **Transaction-call hooks:** `useIndexDtfVoteCall`, `useIndexDtfQueueProposalCall`, `useIndexDtfExecuteProposalCall`, `useIndexDtfCancelProposalCall` — return SDK `ContractCall` objects (`{ chainId, to, data, value, contract: { address, abi, functionName, args } }`) ready to feed `TransactionButton`.
+- **Optimistic governance:** `useIndexDtfOptimisticProposalContext` + the `useIndexDtfOptimistic*` family.
+- **Providers:** `DtfSdkProvider` (wired in `src/state/chain/index.tsx`) and `IndexDtfProvider` (wired in `src/views/index-dtf/index-dtf-container.tsx`, binds active DTF address/chain). `useDtfSdk()` returns the imperative client.
+- **Helpers/constants:** `mapIndexDtfData`, `dtfQueryKeys`, `LIVE_STALE_TIME` / `STATIC_STALE_TIME` / `DEFAULT_STALE_TIME`.
+
+Discover the current surface anytime:
+
+```bash
+grep -oE "export \{[^}]*\}" node_modules/@reserve-protocol/react-sdk/dist/index.d.mts \
+  | tr ',' '\n' | grep -oE "[A-Za-z0-9_]+" | sort -u
+```
+
+**Boundary — who owns what:** Register owns UI state, routing, transaction sending, toasts, product copy. The SDK owns proposal reads, voting-state derivation, builders, exact on-chain math.
+
+- Keep SDK `Amount` objects in atoms/intermediate types. Don't convert `Amount.formatted` → `Number` then rebuild fake `Amount`s.
+- Use SDK `proposal.votingState` for Index DTF proposal display state. Don't add a Register-local `getProposalState`.
+- Convert amounts to `Number` only at display leaves, never before business logic or proposal-state checks.
+- For optimistic proposals, call `useIndexDtfOptimisticProposalContext` on detail/voting flows when exact veto threshold, snapshot, or optimistic voting power is needed; pass it into SDK voter-state helpers.
+- Proposal list/overview: avoid hidden per-row RPC hydration — use SDK list data + documented refresh.
+
+For linking Register against a local SDK checkout while developing the SDK, see `docs/local-sdk-development.md`.
+
+---
+
+## Product Knowledge
+
+Read the relevant doc in `dtf-interface/docs` before building a flow — don't guess protocol behavior:
+
+| Building… | Read |
+| --- | --- |
+| Index DTF reads / discovery | `protocol/data-sources.md` → `index-dtf/overview.md` → `index-dtf/discovery-holders.md` |
+| Mint / Redeem / Zap | `index-dtf/issuance-redemption.md` → `integrations/zapper.md` |
+| Governance / proposals | `protocol/governance.md` → `index-dtf/governance.md` → `register/governance-flows.md` |
+| Rebalance / auctions | `index-dtf/rebalance-auctions.md` → `index-dtf/contracts-and-versions.md` |
+| Revenue / fees / vote-lock | `index-dtf/revenue-fees.md` → `index-dtf/vote-lock.md` |
+| Matching Register behavior | `register/interface.md` |
+
+**Data-source routing** (who owns the truth — never infer from the wrong source). Full table in `docs/data-sources.md`:
+
+| Data | Source |
+| --- | --- |
+| Basket / balances, live supply (incl. pending fee shares) | RPC (`totalAssets()`, `totalSupply()`) |
+| Current price / discovery / status / vote-lock APR | Reserve API |
+| Metadata, governance history, roles, holders | Index subgraph |
+| **Live** proposal state | RPC (`governor.state()`) — NOT subgraph |
+| **Live** rebalance / auction state | RPC (`getRebalance()`) — NOT subgraph |
+| Historical charts | Reserve API |
+
+**Top gotchas** (full list in `docs/known-gotchas.md`):
+
+- The subgraph is not live truth — don't read basket balances, final proposal state, or active auction state from it.
+- Standard vs optimistic governance are separate — never merge their voting powers or delegation.
+- Vote-lock ≠ stRSR, and the vote-lock underlying token is not always RSR. Keep Index vote-lock and Yield stRSR logic apart.
+- Contract versions differ (v5/v6): `startRebalance` / `openAuction` / `bid` signatures vary — don't hardcode an old ABI.
+- `totalSupply()` includes pending fee shares — ignoring them breaks price/share math.
+
+---
+
+## Architecture Notes (pointers, not boilerplate)
+
+- **Updater components** sync chain → atoms and return `null` (see `src/state/**/updater*.tsx`, `views/index-dtf/governance/updater.tsx`). Use only for imperative chain reads that don't fit a hook.
+- **Feature entry** (`index.tsx`) renders sections + an optional `<Updater/>`; wrap with `withNavigationGuard` (`src/hoc/with-navigation-guard.tsx`) where wallet-gated.
+- **Transaction flow:** pending → confirming → success/error with toast feedback. Use `TransactionButton` (`src/components/ui/transaction-button.tsx`) — it handles wallet/chain validation. SDK tx-call hooks return `ContractCall` objects to feed it.
+- **`chainIdAtom` is the chain source of truth** — pass it to wagmi hooks; omitting `chainId` falls back to wallet/mainnet.
+- **Routes** are code-split with `lazy()`.
+
+---
+
+## Project Map
+
+```
+src/
+├── components/
+│   ├── ui/          # shadcn/ui primitives + blockchain-aware components
+│   └── ...          # shared composite components
+├── hooks/           # cross-feature hooks (blockchain priority)
+├── lib/             # cn() and low-level helpers
+├── state/           # Jotai atoms + providers (chain, dtf, wallet, ...)
+├── types/           # TypeScript definitions
+├── utils/           # pure utilities (formatters, validation, routes, chains)
+└── views/           # route-based pages
+    ├── index-dtf/   # Index DTF features (CURRENT)
+    │   ├── governance/
+    │   ├── auctions/views/rebalance/   # v4 rebalance UI
+    │   └── issuance/
+    └── yield-dtf/    # Yield DTF features (LEGACY, e.g. staking/)
+```
+
+**Key locations:**
+- Rebalance v4: `views/index-dtf/auctions/views/rebalance/` — `components/launch-auctions-button.tsx`, `hooks/use-rebalance-params.ts`, `utils/get-rebalance-open-auction.ts`, `updaters/rebalance-metrics-updater.tsx`.
+- Governance: `views/index-dtf/governance/`. Issuance: `views/index-dtf/issuance/` (zapper / manual / direct).
+- SDK provider wiring: `src/state/chain/index.tsx`, `views/index-dtf/index-dtf-container.tsx`.
+- Utilities: `src/utils` (+ `cn` in `src/lib/utils.ts`).
+
+**Naming:** files & dirs `kebab-case` (mandatory) · PascalCase component exports from kebab-case files · `UPPER_SNAKE_CASE` constants · branches `feature/…` or `chore/…`.
+
+---
+
+## Protocol Fundamentals
+
+**Index DTFs** — on-chain token portfolios (like ETFs); 100+ tokens on Base, 10+ on Ethereum. Two basket types:
+- **Native** (`weightControl = true`): maintain percentage allocations.
+- **Tracking** (`weightControl = false`): maintain fixed token units.
+Governance via vote-locking; permissionless mint/redeem.
+
+**Yield DTFs (legacy, formerly RTokens)** — asset-backed yield-bearing stablecoins, secured by RSR stakers (first-loss capital), yield from collateral.
+
+**Rebalancing (v4)** — single governance proposal executes the whole rebalance. Dual window (Auction Launcher → Community), Dutch auctions via CoWSwap. Volatility controls LOW 5% / MEDIUM 10% / HIGH 50%. Progressive via percent slider. Lifecycle: proposal `startRebalance` → execution opens launcher window → `openAuction` → CoWSwap fills → basket updates on-chain.
+
+**Governance** — OpenZeppelin Governor: Proposal → Voting → Timelock → Execution. Vote-locking (Index) / RSR staking (Yield). Delegation supported. Standard + optimistic modes.
+
+**Terms:** Folio = Index DTF token contract · RSR = Reserve Rights (governance/staking) · D27 = 27-decimal price format · Geometric mean = fair-price method · Absolute vs Relative progression = actual vs user-visible rebalance progress.
+
+---
+
+## Workflow & Ops
+
+**Git:** `feature/`/`chore/` branches → push triggers Cloudflare Pages preview → PR with ≥1 reviewer. **Never push to main/master. Never commit or push unless told. No `Co-Authored-By` lines. PR descriptions: clean human summary, no AI attribution.**
+
+**Commands:**
+
+```bash
+pnpm install         # install deps (pnpm, not npm)
+pnpm start           # dev server (port 3000)
+pnpm build           # production build (runs tsc)
+pnpm typecheck       # tsc --noEmit
+pnpm lint            # oxlint full-repo report
+pnpm lint:fix        # safe autofixes only
+pnpm lint:fix:dangerous # behavior-changing oxlint fixes; use only after review
+pnpm test            # vitest watch  ·  pnpm test:run for single run
+```
+
+**Env:** `VITE_WALLETCONNECT_ID` (required); `VITE_ALCHEMY_KEY`, `VITE_INFURA_KEY` (recommended).
+
+**Testing:** Vitest + jsdom. Tests in `src/**/tests/**/*.test.{ts,tsx}`. Test behavior in hooks, not implementation; tests are disposable when requirements change.
+
+**Known issues:** large SPA bundle (~10MB); Tailwind v4 upgrade planned.
+
+**Security:** static SPA; contracts audited; timelock + role-based access; single active rebalance; no sensitive data in frontend.
+
+---
+
+## Resources
+
+**Internal docs:** `/docs/protocol-context.md` · `/docs/data-sources.md` · `/docs/specs/rebalance-v4-specification.md` · `/docs/specs/index-dtf-governance-and-proposal.md` · `/docs/architecture/*.md` · `/docs/prd.md` · `/docs/local-sdk-development.md`.
+
+**Repos:**
+- **SDK:** `@reserve-protocol/react-sdk` + `@reserve-protocol/sdk`, monorepo [`reserve-protocol/dtf-interface`](https://github.com/reserve-protocol/dtf-interface) — agent docs in `docs/`, start at `docs/README.md`.
+- **Subgraphs:** [`dtf-index-subgraph`](https://github.com/reserve-protocol/dtf-index-subgraph) (Index), [`reserve-subgraph`](https://github.com/reserve-protocol/reserve-subgraph) (Yield).
+- **Contracts:** [`reserve-index-dtf`](https://github.com/reserve-protocol/reserve-index-dtf). **API:** `reserve-protocol/reserve-api`.
+
+**External:** [Reserve Protocol](https://reserve.org/protocol/) · [wagmi](https://wagmi.sh) · [RainbowKit](https://rainbowkit.com/docs) · [Jotai](https://jotai.org) · [shadcn/ui](https://ui.shadcn.com).

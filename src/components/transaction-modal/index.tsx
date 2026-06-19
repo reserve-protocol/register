@@ -137,7 +137,6 @@ const TransactionModal = ({
   }
 
   const isPreparing = hasAllowance && call && !isReady
-  !isReady && !validationError && !isIdle && !disabled
 
   return (
     <Modal title={title} onClose={onClose} {...props}>
