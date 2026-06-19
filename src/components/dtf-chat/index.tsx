@@ -69,6 +69,12 @@ const DtfChat = () => {
   // weights, so we keep the static context to identity + mandate + holdings).
   const onDtf = !!address && pathname.includes('index-dtf')
 
+  // On the mobile index-dtf overview the BUY/SELL CTAs take over the floating
+  // bottom bar (see index-ctas-overview-mobile), so hide the launcher there to
+  // avoid the overlap. It stays mounted — the inline "Ask Reserve AI" button
+  // triggers it — and reappears at sm+ and on every other route.
+  const onIndexOverview = onDtf && pathname.endsWith('/overview')
+
   // 24px gap on desktop, 12px on mobile. On mobile DTF pages also clear the
   // fixed bottom nav bar (h-16 = 64px); `lg` is where that bar becomes a sidebar.
   const isDesktop = useIsDesktop()
@@ -89,18 +95,20 @@ const DtfChat = () => {
     : undefined
 
   return (
-    <ReserveChat
-      apiBase={apiBase}
-      // Turnstile only against the live server; a local dev server runs without it.
-      turnstileSiteKey={local ? undefined : TURNSTILE_SITE_KEY}
-      dtfContext={dtfContext}
-      launcherLabel={t`Ask Reserve AI`}
-      view={dtfContext ? undefined : viewForPath(pathname)}
-      offset={{ bottom: bottomOffset, right: rightOffset }}
-      zIndex={50}
-      // Assistant links to app pages route through react-router — no full reload.
-      onNavigate={navigate}
-    />
+    <div className={onIndexOverview ? 'max-sm:[&_.rc-launcher]:hidden' : undefined}>
+      <ReserveChat
+        apiBase={apiBase}
+        // Turnstile only against the live server; a local dev server runs without it.
+        turnstileSiteKey={local ? undefined : TURNSTILE_SITE_KEY}
+        dtfContext={dtfContext}
+        launcherLabel={t`Ask Reserve AI`}
+        view={dtfContext ? undefined : viewForPath(pathname)}
+        offset={{ bottom: bottomOffset, right: rightOffset }}
+        zIndex={50}
+        // Assistant links to app pages route through react-router — no full reload.
+        onNavigate={navigate}
+      />
+    </div>
   )
 }
 
