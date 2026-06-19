@@ -44,6 +44,9 @@ import {
   ChevronRight,
   Info,
   Loader2,
+  PanelRightClose,
+  PanelRightOpen,
+  PauseCircle,
   PenLine,
   RefreshCw,
 } from 'lucide-react'
@@ -63,11 +66,17 @@ import {
   dustStartBalancesAtom,
   inputTokenAtom,
   mintAmountAtom,
+  ordersExpandedAtom,
+  quoteCanceledAtom,
+  quoteFetchHaltedAtom,
   redeemAmountAtom,
   slippageAtom,
   useExistingBalancesAtom,
   wizardStepAtom,
 } from '../atoms'
+
+// How long the quote fetch may run before we surface the cancel escape hatch.
+const SLOW_QUOTE_MS = 20_000
 
 // Submit-button label while the execution lifecycle is running (signing happens
 // at the button level; the per-leg orders carry their own status pills).
@@ -129,8 +138,14 @@ const QuoteSummary = () => {
     useExistingBalancesAtom
   )
   const [dustStartBalances, setDustStart] = useAtom(dustStartBalancesAtom)
+  const [quoteCanceled, setQuoteCanceled] = useAtom(quoteCanceledAtom)
+  const setQuoteFetchHalted = useSetAtom(quoteFetchHaltedAtom)
+  // Revealed only after the fetch has run a while, so the escape hatch doesn't
+  // signal "this is slow" up front.
+  const [showSlowQuote, setShowSlowQuote] = useState(false)
   const { balanceOf } = useWizardBalances()
-  const [collateralExpanded, setCollateralExpanded] = useState(false)
+  // Shared so index.tsx can widen/narrow the wizard wrapper to match.
+  const [collateralExpanded, setCollateralExpanded] = useAtom(ordersExpandedAtom)
   const [nowSec, setNowSec] = useState(() => Math.floor(Date.now() / 1000))
   const [finalMintSnapshot, setFinalMintSnapshot] = useState<{
     shares?: bigint
@@ -163,7 +178,11 @@ const QuoteSummary = () => {
   // Legs not computed yet but the base quote is still being built.
   const initialLoading = legStates.length === 0 && quoteQuery.isFetching
   // Any quote work in flight: drives aggregate skeletons + the submit spinner.
-  const quotesLoading = initialLoading || legsResolving
+  // Includes quoteQuery.isFetching so a manual refresh (refetch) drops the whole
+  // UI back into the fetching state — the submit button shows "Fetching
+  // quotes..." — even though leg states are still populated from the prior run.
+  const quotesLoading =
+    initialLoading || legsResolving || quoteQuery.isFetching
 
   const priceImpactLegs = cowLegStates.map((ls) => ls.leg)
   const {
@@ -391,8 +410,23 @@ const QuoteSummary = () => {
     (ls) => ls.status === 'error' || !!ls.leg.error
   )
   const quoteErrors = quote?.errors ?? []
-  // One message per line, deduped — order-size errors arrive one per asset.
-  const uniqueQuoteErrors = [...new Set(quoteErrors.map((e) => e.message))]
+  // A settled-but-failed quote (e.g. amount too small to cover fees). Used to
+  // keep the orders panel visible so the user can see which legs failed,
+  // instead of the whole list disappearing once fetching stops.
+  const quoteFailed = !quotesLoading && (quoteErrors.length > 0 || hasFailedLegs)
+  // The orders panel — and the wide layout — follow the expand toggle. When
+  // collapsed the panel unmounts and the wizard narrows to centered cards.
+  const showOrdersPanel = collateralExpanded
+
+  // Stop re-fetching once a quote settles with an error (retrying the same
+  // amount won't help); re-enable on success. setAtom to the same value is a
+  // no-op in Jotai, so this won't loop. Retry is a manual one-shot refetch;
+  // editing the amount clears the halt so the new amount fetches fresh.
+  useEffect(() => {
+    if (quotesLoading) return
+    if (quoteErrors.length > 0) setQuoteFetchHalted(true)
+    else if (quote?.success) setQuoteFetchHalted(false)
+  }, [quotesLoading, quoteErrors.length, quote?.success, setQuoteFetchHalted])
   const readySwapCount = cowLegStates.filter(
     (ls) => ls.status === 'success'
   ).length
@@ -423,6 +457,23 @@ const QuoteSummary = () => {
   // Once submitted, the right-hand "quotes" panel reads as live orders.
   const executionStarted =
     isExecuting || isError || Object.keys(execution.ordersByLegId).length > 0
+
+  // "Still fetching quotes" — covers both the base quote and the per-leg CoW
+  // quotes resolving (the slow part: `quote.success` is already true while the
+  // 17 legs are still loading). Stays true until execution starts or the user
+  // cancels, so the slow-quote timer runs uninterrupted to the threshold.
+  const waitingForQuote =
+    quotesLoading && !executionStarted && !quoteCanceled
+
+  // Reveal the cancel escape hatch only after the fetch has run a while.
+  useEffect(() => {
+    if (!waitingForQuote) {
+      setShowSlowQuote(false)
+      return
+    }
+    const timeout = setTimeout(() => setShowSlowQuote(true), SLOW_QUOTE_MS)
+    return () => clearTimeout(timeout)
+  }, [waitingForQuote])
   const filledOrderCount = orderStates.filter(
     (order) => order.phase === 'fulfilled'
   ).length
@@ -657,15 +708,42 @@ const QuoteSummary = () => {
   const handleEdit = () => {
     setFinalMintSnapshot(null)
     execution.reset()
+    setQuoteCanceled(false)
+    setQuoteFetchHalted(false)
     setStep('configure')
   }
 
   const handleNewOperation = () => {
     setFinalMintSnapshot(null)
     execution.reset()
+    setQuoteCanceled(false)
+    setQuoteFetchHalted(false)
     setMintAmount('')
     setRedeemAmount('')
     setStep('configure')
+  }
+
+  // One-shot manual retry of a failed quote. refetch() forces a fetch even
+  // though the query is disabled by the halt flag, so it doesn't re-arm the
+  // continuous fetching we stopped.
+  const handleRetryQuote = () => {
+    track('retry_quote')
+    void quoteQuery.refetch()
+  }
+
+  // Escape hatch: stop the (un-abortable) quote polling but keep every input,
+  // so the user stays exactly where they were.
+  const handleCancelQuote = () => {
+    track('cancel_quote')
+    setShowSlowQuote(false)
+    setQuoteCanceled(true)
+  }
+
+  // Re-enable the quote hooks; the fetch resumes with the same inputs.
+  const handleResumeQuote = () => {
+    track('resume_quote')
+    setShowSlowQuote(false)
+    setQuoteCanceled(false)
   }
 
   // Resumable: re-running after an error / rejected signature continues from
@@ -739,7 +817,14 @@ const QuoteSummary = () => {
 
   return (
     <div className="bg-secondary rounded-3xl p-1 w-full lg:h-full">
-      <div className="grid w-full gap-0.5 lg:h-full lg:grid-cols-2 lg:items-stretch">
+      <div
+        className={cn(
+          'grid w-full gap-0.5 lg:h-full lg:items-stretch lg:transition-[grid-template-columns] lg:duration-500 lg:ease-out',
+          showOrdersPanel
+            ? 'lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]'
+            : 'lg:grid-cols-[minmax(0,1fr)_minmax(0,0fr)]'
+        )}
+      >
         <div
           className={cn(
             'min-w-0 flex flex-col lg:col-start-1',
@@ -773,16 +858,43 @@ const QuoteSummary = () => {
                         : t`Redeeming ${indexDTF?.token.symbol} for ${inputToken.symbol}.`}
                 </p>
               </div>
-              {showEditInputButton && (
-                <button
-                  className="flex size-8 shrink-0 items-center justify-center rounded-full border border-border/70 bg-card text-muted-foreground disabled:opacity-50 disabled:pointer-events-none"
-                  onClick={handleEdit}
-                  disabled={isExecuting}
-                  aria-label={t`Edit input amount`}
-                >
-                  <PenLine size={16} />
-                </button>
-              )}
+              <div className="flex shrink-0 items-center gap-2">
+                <TooltipProvider delayDuration={200}>
+                  {showEditInputButton && (
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <button
+                          className="flex size-8 shrink-0 items-center justify-center rounded-full border border-border/70 bg-card text-muted-foreground transition-colors hover:bg-primary hover:text-primary-foreground disabled:opacity-50 disabled:pointer-events-none"
+                          onClick={handleEdit}
+                          disabled={isExecuting}
+                          aria-label={t`Edit amount`}
+                        >
+                          <PenLine size={16} />
+                        </button>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <Trans>Edit amount</Trans>
+                      </TooltipContent>
+                    </Tooltip>
+                  )}
+                  {!showOrdersPanel && (
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <button
+                          className="flex size-8 shrink-0 items-center justify-center rounded-full border border-border/70 bg-card text-muted-foreground transition-colors hover:bg-primary hover:text-primary-foreground"
+                          onClick={() => setCollateralExpanded(true)}
+                          aria-label={t`Show orders`}
+                        >
+                          <PanelRightOpen size={16} />
+                        </button>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <Trans>Show orders</Trans>
+                      </TooltipContent>
+                    </Tooltip>
+                  )}
+                </TooltipProvider>
+              </div>
             </div>
             <div className="overflow-hidden rounded-xl border border-border/70 bg-transparent">
               <div className="px-4 py-3">
@@ -1055,26 +1167,19 @@ const QuoteSummary = () => {
             </button>
 
             <OndoLimitsBanner className="mx-4 mb-3 w-auto" />
-            {uniqueQuoteErrors.length > 0 && (
-              <div className="mx-4 mb-3 space-y-1 rounded-xl border border-destructive/25 bg-destructive/10 text-destructive px-4 py-2 text-sm">
-                {uniqueQuoteErrors.map((message) => (
-                  <div key={message}>{message}</div>
-                ))}
-              </div>
-            )}
 
             {showCollateralAction && (
               <div className="pb-2">
                 {isError && execution.error && (
                   <div className="mb-2 rounded-xl border border-destructive/25 bg-destructive/10 text-destructive px-4 py-2 text-sm">
-                    {execution.error.message}
+                    {execution.error.message || 'An error occurred. Please try again.'}
                   </div>
                 )}
                 {isError ? (
                   <div className="flex flex-col gap-2">
                     <Button
                       size="lg"
-                      className="w-full h-[49px] rounded-[12px]"
+                      className="w-full h-[49px] rounded-[12px] bg-foreground text-background hover:bg-foreground/90"
                       onClick={
                         retryableLegIds.length > 0
                           ? handleRetryFailed
@@ -1099,56 +1204,151 @@ const QuoteSummary = () => {
                       <Trans>Start over</Trans>
                     </Button>
                   </div>
-                ) : (
-                  <TransactionButtonContainer chain={chainId}>
+                ) : quoteErrors.length > 0 ? (
+                  <div className="flex flex-col gap-2">
+                    <div className="rounded-xl border border-destructive/25 bg-destructive/10 text-destructive px-4 py-2 text-sm">
+                      <Trans>
+                        We're sorry, but the swap quote is unavailable. The
+                        amount may be too small to cover fees. Please{' '}
+                        <button
+                          type="button"
+                          className="font-medium underline underline-offset-2 hover:opacity-80 disabled:opacity-50"
+                          onClick={handleRetryQuote}
+                          disabled={quoteQuery.isFetching}
+                        >
+                          retry
+                        </button>
+                        , or{' '}
+                        <button
+                          type="button"
+                          className="font-medium underline underline-offset-2 hover:opacity-80"
+                          onClick={handleEdit}
+                        >
+                          edit the amount
+                        </button>
+                        , and try again.
+                      </Trans>
+                    </div>
                     <Button
                       size="lg"
-                      className="w-full h-[49px] rounded-[12px]"
-                      disabled={
-                        isExecuting ||
-                        quotesLoading ||
-                        !isValidAmount ||
-                        exceedsBalance ||
-                        !quote?.success ||
-                        quoteErrors.length > 0 ||
-                        hasFailedLegs ||
-                        walletClientMissing
-                      }
-                      onClick={handleSubmit}
+                      className="w-full h-[49px] rounded-[12px] bg-foreground text-background hover:bg-foreground/90"
+                      onClick={handleRetryQuote}
+                      disabled={quoteQuery.isFetching}
                     >
-                      {isExecuting ? (
+                      {quoteQuery.isFetching ? (
                         <span className="flex items-center gap-2">
                           <Loader2 size={16} className="animate-spin" />
-                          {t(
-                            EXECUTION_BUTTON_LABELS[execution.step] ??
-                              msg`Working…`
-                          )}
-                        </span>
-                      ) : quotesLoading ? (
-                        <span className="flex items-center gap-2">
-                          <Loader2 size={16} className="animate-spin" />
-                          <Trans>Fetching quotes...</Trans>
-                        </span>
-                      ) : walletClientLoading ? (
-                        <span className="flex items-center gap-2">
-                          <Loader2 size={16} className="animate-spin" />
-                          <Trans>Preparing wallet...</Trans>
-                        </span>
-                      ) : walletClientMissing ? (
-                        <span className="font-medium">
-                          <Trans>Reconnect wallet</Trans>
+                          <Trans>Retrying…</Trans>
                         </span>
                       ) : (
-                        <span className="font-medium">
-                          {isMint ? (
-                            <Trans>Start collateral trades</Trans>
-                          ) : (
-                            <Trans>Prepare redeem</Trans>
-                          )}
-                        </span>
+                        <Trans>Retry</Trans>
                       )}
                     </Button>
-                  </TransactionButtonContainer>
+                  </div>
+                ) : quoteCanceled ? (
+                  <div className="flex flex-col gap-2">
+                    <div className="rounded-xl border border-destructive/25 bg-destructive/10 text-destructive px-4 py-2 text-sm">
+                      <Trans>
+                        Quote fetch canceled. Your amount is saved. You may{' '}
+                        <button
+                          type="button"
+                          className="font-medium underline underline-offset-2 hover:opacity-80"
+                          onClick={handleResumeQuote}
+                        >
+                          fetch quotes again
+                        </button>
+                        , or{' '}
+                        <button
+                          type="button"
+                          className="font-medium underline underline-offset-2 hover:opacity-80"
+                          onClick={handleEdit}
+                        >
+                          edit the amount
+                        </button>{' '}
+                        and try again.
+                      </Trans>
+                    </div>
+                    <Button
+                      size="lg"
+                      className="w-full h-[49px] rounded-[12px] bg-foreground text-background hover:bg-foreground/90"
+                      onClick={handleResumeQuote}
+                    >
+                      <Trans>Fetch quotes again</Trans>
+                    </Button>
+                  </div>
+                ) : (
+                  <>
+                    <TransactionButtonContainer chain={chainId}>
+                      <Button
+                        size="lg"
+                        className="w-full h-[49px] rounded-[12px]"
+                        disabled={
+                          isExecuting ||
+                          quotesLoading ||
+                          !isValidAmount ||
+                          exceedsBalance ||
+                          !quote?.success ||
+                          quoteErrors.length > 0 ||
+                          hasFailedLegs ||
+                          walletClientMissing
+                        }
+                        onClick={handleSubmit}
+                      >
+                        {isExecuting ? (
+                          <span className="flex items-center gap-2">
+                            <Loader2 size={16} className="animate-spin" />
+                            {t(
+                              EXECUTION_BUTTON_LABELS[execution.step] ??
+                                msg`Working…`
+                            )}
+                          </span>
+                        ) : quotesLoading ? (
+                          <span className="flex items-center gap-2">
+                            <Loader2 size={16} className="animate-spin" />
+                            <Trans>Fetching quotes...</Trans>
+                          </span>
+                        ) : walletClientLoading ? (
+                          <span className="flex items-center gap-2">
+                            <Loader2 size={16} className="animate-spin" />
+                            <Trans>Preparing wallet...</Trans>
+                          </span>
+                        ) : walletClientMissing &&
+                          !hasFailedLegs &&
+                          quoteErrors.length === 0 ? (
+                          <span className="font-medium">
+                            <Trans>Reconnect wallet</Trans>
+                          </span>
+                        ) : (
+                          <span className="font-medium">
+                            {isMint ? (
+                              <Trans>Start collateral trades</Trans>
+                            ) : (
+                              <Trans>Prepare redeem</Trans>
+                            )}
+                          </span>
+                        )}
+                      </Button>
+                    </TransactionButtonContainer>
+                    {showSlowQuote && (
+                      <div className="mt-2 flex flex-col gap-2 rounded-xl border border-warning/30 bg-warning/10 px-4 py-3 text-sm text-warning sm:flex-row sm:items-center sm:justify-between">
+                        <span>
+                          <Trans>
+                            Fetching quotes from CoW is taking longer than usual.
+                          </Trans>
+                        </span>
+                        <div className="flex shrink-0 items-center gap-2">
+                          <Button
+                            variant="outline"
+                            size="xs"
+                            className="border-warning text-warning hover:bg-warning/10 hover:text-warning"
+                            onClick={handleCancelQuote}
+                          >
+                            <Trans>Cancel</Trans>
+                          </Button>
+                        </div>
+                      </div>
+                    )}
+                  </>
                 )}
               </div>
             )}
@@ -1271,18 +1471,28 @@ const QuoteSummary = () => {
                     />
                   )}
                 </div>
-              ) : (
-                <button
-                  className="rounded-[12px] border border-border/70 bg-transparent h-8 w-8 flex items-center justify-center transition-colors hover:bg-primary hover:text-primary-foreground"
-                  onClick={() => quoteQuery.refetch()}
-                  disabled={quoteQuery.isFetching || isExecuting}
-                >
-                  <RefreshCw
-                    size={16}
-                    className={quoteQuery.isFetching ? 'animate-spin' : ''}
-                  />
-                </button>
-              )}
+              ) : !quotesLoading && quote?.success ? (
+                <TooltipProvider delayDuration={200}>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <button
+                        className="rounded-[12px] border border-border/70 bg-transparent h-8 w-8 flex items-center justify-center transition-colors hover:bg-primary hover:text-primary-foreground"
+                        onClick={() => quoteQuery.refetch()}
+                        disabled={quoteQuery.isFetching || isExecuting}
+                        aria-label={t`Refresh quotes`}
+                      >
+                        <RefreshCw
+                          size={16}
+                          className={quoteQuery.isFetching ? 'animate-spin' : ''}
+                        />
+                      </button>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <Trans>Refresh quotes</Trans>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
+              ) : null}
             </div>
 
             <div className="rounded-xl border border-border/70 bg-transparent px-4 py-3">
@@ -1488,41 +1698,86 @@ const QuoteSummary = () => {
           </div>
         </div>
 
-        <div className="bg-background rounded-2xl p-2 lg:col-start-2 lg:relative lg:min-h-0 lg:overflow-hidden animate-in fade-in duration-500 transition-none">
+        <div
+          className={cn(
+            'bg-background rounded-2xl p-2 lg:col-start-2 lg:relative lg:min-h-0 lg:overflow-hidden',
+            // Mobile stacks the panel below; hide it there when collapsed. On
+            // desktop the grid track eases to zero width instead of unmounting;
+            // drop the padding so it doesn't keep a ~16px sliver visible.
+            !showOrdersPanel && 'max-lg:hidden lg:p-0'
+          )}
+        >
           {/* On desktop this fills the column (stretched to the left column's
               height via the grid) without inflating it, so the modal stays the
               height of the form and the orders list scrolls inside. */}
           <div className="contents lg:absolute lg:inset-2 lg:flex lg:flex-col">
-            {collateralExpanded && (
-              <div className="px-4 py-3 flex items-start justify-between gap-4">
-                <div>
-                  <h3 className="font-medium text-base">
-                    {operationComplete ? (
-                      <Trans>Completed orders</Trans>
-                    ) : executionStarted ? (
-                      <Trans>Orders</Trans>
-                    ) : (
-                      <Trans>Collateral swaps</Trans>
-                    )}
-                  </h3>
-                  <p className="text-sm text-muted-foreground font-light">
-                    {executionStarted ? (
-                      <Trans>Swaps settle via CoW Protocol solvers.</Trans>
-                    ) : cowLegStates.length === 0 && !quotesLoading ? (
-                      <Trans>No swaps are needed for this operation.</Trans>
-                    ) : isMint ? (
-                      <Trans>The basket assets bought with your input.</Trans>
-                    ) : (
-                      <Trans>The basket assets sold for your output.</Trans>
-                    )}
-                  </p>
-                </div>
+            <div className="px-4 py-3 flex items-start justify-between gap-4">
+              <div>
+                <h3 className="font-medium text-base">
+                  {operationComplete ? (
+                    <Trans>Completed orders</Trans>
+                  ) : executionStarted ? (
+                    <Trans>Orders</Trans>
+                  ) : (
+                    <Trans>Collateral swaps</Trans>
+                  )}
+                </h3>
+                <p className="text-sm text-muted-foreground font-light">
+                  {executionStarted ? (
+                    <Trans>Swaps settle via CoW Protocol solvers.</Trans>
+                  ) : quoteCanceled ? (
+                    <Trans>Fetching paused.</Trans>
+                  ) : quoteFailed ? (
+                    <Trans>Some quotes couldn't be fetched.</Trans>
+                  ) : cowLegStates.length === 0 && !quotesLoading ? (
+                    <Trans>No swaps are needed for this operation.</Trans>
+                  ) : isMint ? (
+                    <Trans>The basket assets bought with your input.</Trans>
+                  ) : (
+                    <Trans>The basket assets sold for your output.</Trans>
+                  )}
+                </p>
               </div>
-            )}
+              <TooltipProvider delayDuration={200}>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <button
+                      type="button"
+                      onClick={() => setCollateralExpanded(false)}
+                      aria-label={t`Collapse orders`}
+                      className="flex size-8 shrink-0 items-center justify-center rounded-full border border-border/70 bg-card text-muted-foreground transition-colors hover:bg-primary hover:text-primary-foreground"
+                    >
+                      <PanelRightClose size={16} />
+                    </button>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <Trans>Collapse orders</Trans>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            </div>
 
             <ScrollArea className="h-[min(620px,calc(100vh-290px))] min-h-[360px] lg:h-auto lg:min-h-0 lg:flex-1">
               <div className="flex min-h-full flex-col gap-1 px-2">
-                {!collateralExpanded ? null : initialLoading ? (
+                {quoteCanceled ? (
+                  <div className="flex min-h-[320px] flex-1 items-center justify-center px-4 py-10 text-center">
+                    <div className="flex max-w-[320px] flex-col items-center gap-2">
+                      <PauseCircle
+                        size={28}
+                        strokeWidth={1.5}
+                        className="text-muted-foreground"
+                      />
+                      <h4 className="font-medium text-base">
+                        <Trans>Quote fetch canceled</Trans>
+                      </h4>
+                      <p className="text-sm text-muted-foreground font-light">
+                        <Trans>
+                          Fetch again to load the swap orders for this mint.
+                        </Trans>
+                      </p>
+                    </div>
+                  </div>
+                ) : initialLoading ? (
                   [0, 1, 2].map((item) => (
                     <Skeleton key={item} className="h-[76px] rounded-[18px]" />
                   ))
@@ -1553,6 +1808,21 @@ const QuoteSummary = () => {
                       />
                     ))}
                   </>
+                ) : quoteErrors.length > 0 ? (
+                  <div className="flex min-h-[320px] flex-1 items-center justify-center px-4 py-10 text-center">
+                    <div className="max-w-[320px]">
+                      <h4 className="font-medium text-base text-destructive">
+                        <Trans>Quotes unavailable</Trans>
+                      </h4>
+                      <p className="mt-1 text-sm text-muted-foreground font-light">
+                        {quoteErrors
+                          .map((e) => e.message)
+                          .filter(Boolean)
+                          .join(' ') ||
+                          t`The amount may be too small to cover swap fees. Try a larger amount.`}
+                      </p>
+                    </div>
+                  </div>
                 ) : (
                   <div className="flex min-h-[320px] flex-1 items-center justify-center px-4 py-10 text-center">
                     <div className="max-w-[320px]">

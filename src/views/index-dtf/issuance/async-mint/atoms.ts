@@ -31,6 +31,23 @@ export const MINT_INPUT_TOKENS: Record<number, Token> = {
 export const wizardStepAtom = atom<WizardStep>('gnosis-check')
 export const slippageAtom = atom<string>('100') // basis points
 
+// User-initiated escape hatch out of a slow quote fetch. Gates the SDK quote
+// hooks' `enabled` so polling stops, while leaving every input atom intact so
+// the user keeps their place. Cleared on retry / edit / reset.
+export const quoteCanceledAtom = atom<boolean>(false)
+
+// Set when a quote settles with an error (e.g. amount too small to cover fees).
+// Gates the SDK quote hooks' `enabled` so the app stops re-fetching a quote we
+// already know will fail. Retry is a manual one-shot refetch; editing the
+// amount clears it so the new amount fetches fresh.
+export const quoteFetchHaltedAtom = atom<boolean>(false)
+
+// Whether the right-hand orders panel is shown on quote-summary. Also drives
+// the wizard layout width: expanded → wide two-column layout; collapsed →
+// narrow centered cards (like the configure step). Shared so index.tsx can
+// size the wrapper. Default expanded so fetch skeletons / orders show.
+export const ordersExpandedAtom = atom<boolean>(true)
+
 // ─── Operation (mint | redeem) ───────────────────────────────────────
 export const operationAtom = atom<'mint' | 'redeem'>('mint')
 // Whether to use the user's existing basket-token balances to reduce swaps.
@@ -59,4 +76,7 @@ export const resetWizardAtom = atom(null, (_, set) => {
   set(mintAmountAtom, '')
   set(redeemAmountAtom, '')
   set(dustStartBalancesAtom, {})
+  set(quoteCanceledAtom, false)
+  set(quoteFetchHaltedAtom, false)
+  set(ordersExpandedAtom, true)
 })
