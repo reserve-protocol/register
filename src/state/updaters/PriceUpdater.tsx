@@ -74,7 +74,7 @@ const PricesUpdater = () => {
       setEthPrice(+formatUnits(priceData[1][1], 8))
       setBTCPrice(+formatUnits(priceData[2][1], 8))
     }
-  }, [multicallResult])
+  }, [multicallResult, setRSRPrice, setEthPrice, setBTCPrice])
 
   useEffect(() => {
     if (rTokenPrice) {
@@ -83,13 +83,13 @@ const PricesUpdater = () => {
       // default to 1 (RSV case)
       setRTokenPrice(1)
     }
-  }, [rTokenPrice])
+  }, [rTokenPrice, setRTokenPrice])
 
   useEffect(() => {
     if (gasQuote) {
       setGasPrice(gasQuote.gasPrice ?? 0n)
     }
-  }, [gasQuote])
+  }, [gasQuote, setGasPrice])
 
   return null
 }
