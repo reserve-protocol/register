@@ -13,7 +13,6 @@ export const renderPriceChartSeries = ({
   fill,
   isYieldMode,
   preLaunchFill,
-  preLaunchStrokeColor,
   shouldSplit,
   strokeColor,
 }: {
@@ -22,7 +21,6 @@ export const renderPriceChartSeries = ({
   fill: string
   isYieldMode: boolean
   preLaunchFill: string
-  preLaunchStrokeColor: string
   shouldSplit: boolean
   strokeColor: string
 }) => {
@@ -52,7 +50,9 @@ export const renderPriceChartSeries = ({
         key="pre-launch-stroke"
         type="monotone"
         dataKey="preLaunchValue"
-        stroke={preLaunchStrokeColor}
+        stroke={strokeColor}
+        strokeDasharray="2 3"
+        strokeLinecap="round"
         strokeWidth={1.5}
         fill="transparent"
         {...areaAnimation}

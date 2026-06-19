@@ -15,7 +15,6 @@ import {
 import {
   getPerformanceColorSet,
   getPerformanceDirection,
-  getPerformanceStroke,
 } from '@/utils/chart-performance-colors'
 import { useAtomValue } from 'jotai'
 import { useId } from 'react'
@@ -105,32 +104,26 @@ const PriceChartBody = ({
       .map((value) => ({ value }))
   )
   const overviewPriceColors = getPerformanceColorSet('darkSurface')
-  const priceStrokeGradientId = `${chartId}-overview-price-stroke`
   const dotsPatternId = `${chartId}-overview-dots`
   const preLaunchDotsPatternId = `${chartId}-overview-pre-launch-dots`
   const dotsFadeGradientId = `${chartId}-overview-dots-fade`
   const dotsMaskId = `${chartId}-overview-dots-mask`
   const strokeColor = usePerformanceColors
-    ? getPerformanceStroke(
-        performanceDirection,
-        priceStrokeGradientId,
-        'darkSurface'
-      )
+    ? performanceDirection === 'positive'
+      ? overviewPriceColors.positive.end
+      : performanceDirection === 'negative'
+        ? overviewPriceColors.negative.end
+        : overviewPriceColors.neutral.stroke
     : isYieldMode
       ? '#4ADE80'
       : '#E5EEFA'
-  const preLaunchStrokeColor = usePerformanceColors
-    ? overviewPriceColors.preLaunch.stroke
-    : 'rgba(229, 238, 250, 0.45)'
   const performanceDotColor =
     performanceDirection === 'positive' || performanceDirection === 'negative'
       ? overviewPriceColors[performanceDirection].dot
       : overviewPriceColors.neutral.dot
   const dotFillColor = usePerformanceColors ? performanceDotColor : '#E5EEFA'
   const fill = isYieldMode ? 'url(#yieldGradient)' : `url(#${dotsPatternId})`
-  const preLaunchFill = usePerformanceColors
-    ? `url(#${preLaunchDotsPatternId})`
-    : fill
+  const preLaunchFill = fill
 
   return (
     <ChartContainer config={chartConfig} className={cn('w-full', className)}>
@@ -145,11 +138,8 @@ const PriceChartBody = ({
           dotsMaskId,
           dotsPatternId,
           isYieldMode,
-          performanceDirection,
           preLaunchDotsPatternId,
           priceColors: overviewPriceColors,
-          priceStrokeGradientId,
-          usePerformanceColors,
         })}
         <XAxis
           dataKey="timestamp"
@@ -186,7 +176,11 @@ const PriceChartBody = ({
         />
         <Tooltip
           content={
-            isYieldMode ? <YieldTooltip /> : <PriceTooltip dataType={dataType} />
+            isYieldMode ? (
+              <YieldTooltip />
+            ) : (
+              <PriceTooltip dataType={dataType} />
+            )
           }
         />
         {isYieldMode && avgApy > 0 && (
@@ -210,7 +204,6 @@ const PriceChartBody = ({
           fill,
           isYieldMode,
           preLaunchFill,
-          preLaunchStrokeColor,
           shouldSplit,
           strokeColor,
         })}

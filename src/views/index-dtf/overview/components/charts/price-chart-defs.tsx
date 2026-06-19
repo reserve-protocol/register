@@ -1,7 +1,4 @@
-import {
-  getPerformanceColorSet,
-  type PerformanceDirection,
-} from '@/utils/chart-performance-colors'
+import { getPerformanceColorSet } from '@/utils/chart-performance-colors'
 
 type PriceChartColorSet = ReturnType<typeof getPerformanceColorSet>
 
@@ -11,45 +8,18 @@ export const renderPriceChartDefs = ({
   dotsMaskId,
   dotsPatternId,
   isYieldMode,
-  performanceDirection,
   preLaunchDotsPatternId,
   priceColors,
-  priceStrokeGradientId,
-  usePerformanceColors,
 }: {
   dotFillColor: string
   dotsFadeGradientId: string
   dotsMaskId: string
   dotsPatternId: string
   isYieldMode: boolean
-  performanceDirection: PerformanceDirection
   preLaunchDotsPatternId: string
   priceColors: PriceChartColorSet
-  priceStrokeGradientId: string
-  usePerformanceColors: boolean
 }) => (
   <defs>
-    {usePerformanceColors && performanceDirection !== 'neutral' && (
-      <linearGradient
-        id={priceStrokeGradientId}
-        x1="0"
-        y1="0"
-        x2="1"
-        y2="0"
-      >
-        {performanceDirection === 'positive' ? (
-          <>
-            <stop offset="0%" stopColor={priceColors.positive.start} />
-            <stop offset="100%" stopColor={priceColors.positive.end} />
-          </>
-        ) : (
-          <>
-            <stop offset="0%" stopColor={priceColors.negative.start} />
-            <stop offset="100%" stopColor={priceColors.negative.end} />
-          </>
-        )}
-      </linearGradient>
-    )}
     {isYieldMode ? (
       <linearGradient id="yieldGradient" x1="0" y1="0" x2="0" y2="1">
         <stop offset="0%" stopColor="#4ADE80" stopOpacity={0.3} />
@@ -85,13 +55,7 @@ export const renderPriceChartDefs = ({
             opacity={priceColors.preLaunch.dotOpacity}
           />
         </pattern>
-        <linearGradient
-          id={dotsFadeGradientId}
-          x1="0"
-          y1="0"
-          x2="0"
-          y2="1"
-        >
+        <linearGradient id={dotsFadeGradientId} x1="0" y1="0" x2="0" y2="1">
           <stop offset="0%" stopColor="white" stopOpacity="1" />
           <stop offset="72%" stopColor="white" stopOpacity="0.75" />
           <stop offset="100%" stopColor="white" stopOpacity="0" />

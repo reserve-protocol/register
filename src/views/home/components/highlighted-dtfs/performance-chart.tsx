@@ -1,12 +1,12 @@
 import { ChartConfig, ChartContainer } from '@/components/ui/chart'
+import { useIsDesktop } from '@/hooks/use-media-query'
 import { cn } from '@/lib/utils'
 import { getLaunchSegmentData } from '@/utils/chart-launch-segments'
 import {
-  getPerformanceStroke,
   PERFORMANCE_COLORS,
   type PerformanceDirection,
 } from '@/utils/chart-performance-colors'
-import { useId, useMemo, useState } from 'react'
+import { useEffect, useId, useMemo, useRef, useState } from 'react'
 import { Area, AreaChart, Tooltip, XAxis, YAxis } from 'recharts'
 import type { FeaturedDTFItem } from '../../hooks/use-featured-dtfs'
 import {
@@ -46,9 +46,13 @@ export const PerformanceChart = ({
   showPattern?: boolean
 }) => {
   const [isLaunchMarkerActive, setIsLaunchMarkerActive] = useState(false)
+  const [chartWidth, setChartWidth] = useState(0)
+  const isDesktop = useIsDesktop()
+  const isLaunchMarkerVisible = !isDesktop || isLaunchMarkerActive
+  const isLaunchMarkerLineActive = isDesktop && isLaunchMarkerActive
+  const chartRef = useRef<HTMLDivElement>(null)
   const dotsPatternId = useId().replace(/:/g, '')
   const preLaunchDotsPatternId = `${dotsPatternId}-pre-launch`
-  const strokeGradientId = `${dotsPatternId}-stroke`
   const dotsFadeGradientId = `${dotsPatternId}-fade`
   const dotsMaskId = `${dotsPatternId}-mask`
   const { data: segmentedPerformance, shouldSplit } = useMemo(
@@ -56,7 +60,8 @@ export const PerformanceChart = ({
     [launchTimestamp, performance]
   )
   const launchMarkerLeftPercent = useMemo(() => {
-    if (launchTimestamp === undefined || performance.length < 2) return undefined
+    if (launchTimestamp === undefined || performance.length < 2)
+      return undefined
 
     const firstTimestamp = performance[0].timestamp
     const lastTimestamp = performance[performance.length - 1].timestamp
@@ -75,17 +80,34 @@ export const PerformanceChart = ({
       Math.max(0, ((launchTimestamp - firstTimestamp) / rangeSeconds) * 100)
     )
   }, [launchTimestamp, performance])
-  const performanceColor = getPerformanceStroke(direction, strokeGradientId)
+  const performanceColor =
+    direction === 'positive'
+      ? PERFORMANCE_COLORS.positive.end
+      : direction === 'negative'
+        ? PERFORMANCE_COLORS.negative.end
+        : PERFORMANCE_COLORS.neutral.stroke
   const performanceDotColor =
     direction === 'positive'
       ? PERFORMANCE_COLORS.positive.dot
       : direction === 'negative'
         ? PERFORMANCE_COLORS.negative.dot
         : PERFORMANCE_COLORS.neutral.dot
-  const preLaunchStrokeColor = PERFORMANCE_COLORS.preLaunch.stroke
+
+  useEffect(() => {
+    const element = chartRef.current
+    if (!element) return
+
+    const updateChartWidth = () => setChartWidth(element.offsetWidth)
+    updateChartWidth()
+
+    const observer = new ResizeObserver(updateChartWidth)
+    observer.observe(element)
+
+    return () => observer.disconnect()
+  }, [])
 
   return (
-    <div className="relative">
+    <div ref={chartRef} className="relative">
       <ChartContainer
         key={chartKey}
         config={chartConfig}
@@ -97,33 +119,6 @@ export const PerformanceChart = ({
           {...{ overflow: 'visible' }}
         >
           <defs>
-            {direction !== 'neutral' && (
-              <linearGradient id={strokeGradientId} x1="0" y1="0" x2="1" y2="0">
-                {direction === 'positive' ? (
-                  <>
-                    <stop
-                      offset="0%"
-                      stopColor={PERFORMANCE_COLORS.positive.start}
-                    />
-                    <stop
-                      offset="100%"
-                      stopColor={PERFORMANCE_COLORS.positive.end}
-                    />
-                  </>
-                ) : (
-                  <>
-                    <stop
-                      offset="0%"
-                      stopColor={PERFORMANCE_COLORS.negative.start}
-                    />
-                    <stop
-                      offset="100%"
-                      stopColor={PERFORMANCE_COLORS.negative.end}
-                    />
-                  </>
-                )}
-              </linearGradient>
-            )}
             <pattern
               id={dotsPatternId}
               x="0"
@@ -142,13 +137,7 @@ export const PerformanceChart = ({
               height="3"
               patternUnits="userSpaceOnUse"
             >
-              <circle
-                cx="1"
-                cy="1"
-                r="0.45"
-                fill={PERFORMANCE_COLORS.preLaunch.dot}
-                opacity={PERFORMANCE_COLORS.preLaunch.dotOpacity}
-              />
+              <circle cx="1" cy="1" r="0.45" fill={performanceDotColor} />
             </pattern>
             <linearGradient id={dotsFadeGradientId} x1="0" y1="0" x2="0" y2="1">
               <stop offset="0%" stopColor="white" stopOpacity="1" />
@@ -225,7 +214,9 @@ export const PerformanceChart = ({
               <Area
                 type="monotone"
                 dataKey="preLaunchValue"
-                stroke={preLaunchStrokeColor}
+                stroke={performanceColor}
+                strokeDasharray="2 3"
+                strokeLinecap="round"
                 strokeWidth={2}
                 fill="transparent"
                 isAnimationActive
@@ -263,26 +254,27 @@ export const PerformanceChart = ({
           aria-hidden="true"
           className="pointer-events-none absolute z-20 w-px opacity-65"
           style={{
-            backgroundColor: isLaunchMarkerActive
+            backgroundColor: isLaunchMarkerLineActive
               ? 'currentColor'
               : 'transparent',
-            backgroundImage: isLaunchMarkerActive
+            backgroundImage: isLaunchMarkerLineActive
               ? 'none'
               : 'repeating-linear-gradient(to bottom, currentColor 0 3px, transparent 3px 7px)',
             bottom: 26,
-            color: isLaunchMarkerActive
+            color: isLaunchMarkerLineActive
               ? 'hsl(var(--primary))'
               : 'currentColor',
             filter: 'drop-shadow(0 0 3px rgba(0, 0, 0, 0.18))',
             left: `${launchMarkerLeftPercent}%`,
             top: 6,
-            transform: 'translateX(0.5px)',
+            transform: 'translateX(-0.5px)',
           }}
         />
       )}
       {launchMarkerLeftPercent !== undefined && launchMarkerToken && (
         <PerformanceChartLaunchMarker
-          isActive={isLaunchMarkerActive}
+          chartWidth={chartWidth}
+          isActive={isLaunchMarkerVisible}
           leftPercent={launchMarkerLeftPercent}
           onActiveChange={setIsLaunchMarkerActive}
           performanceDirection={direction}
