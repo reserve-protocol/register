@@ -2,7 +2,7 @@
 
 The frontend for [Reserve Protocol](https://reserve.org) — live at [app.reserve.org](https://app.reserve.org).
 
-Register lets users create, manage, and interact with DTFs (Decentralized Token Folios) on Ethereum, Base, and BSC.
+Register lets users create, manage, and interact with DTFs (Decentralized Token Funds) on Ethereum, Base, and BSC.
 
 - Mint and redeem Index DTFs and Yield DTFs
 - Governance: propose, vote, delegate

@@ -33,7 +33,7 @@ const SubHeader = ({ className }: { className?: string }) => (
       <Trans>We call these tokenized portfolios DTFs:</Trans>
     </span>
     <span className="text-xl font-medium">
-      <Trans>Decentralized Token Folios</Trans>
+      <Trans>Decentralized Token Funds</Trans>
     </span>
     <DTFExplainerButton
       className={cn(

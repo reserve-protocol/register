@@ -63,7 +63,7 @@ const STATIC_PAGES: StaticPage[] = [
     route: '/discover',
     title: 'Discover DTFs | Reserve',
     description:
-      'Browse Decentralized Token Folios (DTFs) across Ethereum, Base, and BSC. Crypto index baskets, thematic portfolios, and asset-backed tokens.',
+      'Browse Decentralized Token Funds (DTFs) across Ethereum, Base, and BSC. Crypto index baskets, thematic portfolios, and asset-backed tokens.',
   },
   {
     route: '/explorer',

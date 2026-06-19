@@ -2997,12 +2997,12 @@ msgid "days"
 msgstr "días"
 
 #: src/views/home/components/homepage-hero.tsx:36
-msgid "Decentralized Token Folios"
-msgstr "Decentralized Token Folios"
+msgid "Decentralized Token Funds"
+msgstr "Decentralized Token Funds"
 
 #: src/views/home/components/hero.tsx:68
-#~ msgid "Decentralized Token Folios illustration"
-#~ msgstr "Ilustración de Decentralized Token Folios"
+#~ msgid "Decentralized Token Funds illustration"
+#~ msgstr "Ilustración de Decentralized Token Funds"
 
 #: src/components/rtoken-setup/basket/PluginItem.tsx:50
 msgid "Decimals"
@@ -3650,7 +3650,7 @@ msgstr "Cesta vacía"
 
 #: src/views/index-dtf/deploy/steps/auctions/auctions-form.tsx:58
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-auction-settings.tsx:30
-msgid "Enable bids directly via the folio."
+msgid "Enable bids directly from the DTF."
 msgstr "Habilitar las pujas directamente a través del Folio."
 
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/changes/auction-settings-changes.tsx:123
@@ -9297,8 +9297,8 @@ msgid "There's two freezing roles that put the system in the same state for diff
 msgstr "Hay dos roles de congelamiento que ponen el sistema en el mismo estado por diferentes duraciones:"
 
 #: src/views/home/components/hero.tsx:19
-#~ msgid "These tokenized portfolios are called DTFs: <0/><1>Decentralized Token Folios</1>"
-#~ msgstr "Estos portafolios tokenizados se denominan DTF: <0/><1>Decentralized Token Folios</1>"
+#~ msgid "These tokenized portfolios are called DTFs: <0/><1>Decentralized Token Funds</1>"
+#~ msgstr "Estos portafolios tokenizados se denominan DTF: <0/><1>Decentralized Token Funds</1>"
 
 #: src/components/rtoken-setup/components/RolesEdit.tsx:37
 msgid "This address already holds this role"
@@ -11065,8 +11065,8 @@ msgid "Weights saved:"
 msgstr "Pesos guardados:"
 
 #: src/views/home/components/register-about.tsx:39
-msgid "Welcome to Reserve — a platform for creating, exploring, and interacting with Decentralized Token Folios (“DTFs”). A DTF is the generic name given to any onchain asset-backed index. DTFs can be created on Reserve’s Yield Protocol or Index Protocol permissionlessly, by any person or entity."
-msgstr "Te damos la bienvenida a Reserve — una plataforma para crear, explorar e interactuar con Decentralized Token Folios (“DTFs”). Un DTF es el nombre genérico que se le da a cualquier índice onchain respaldado por activos. Los DTF pueden crearse en el Yield Protocol o el Index Protocol de Reserve sin permisos, por cualquier persona o entidad."
+msgid "Welcome to Reserve — a platform for creating, exploring, and interacting with Decentralized Token Funds (“DTFs”). A DTF is the generic name given to any onchain asset-backed index. DTFs can be created on Reserve’s Yield Protocol or Index Protocol permissionlessly, by any person or entity."
+msgstr "Te damos la bienvenida a Reserve — una plataforma para crear, explorar e interactuar con Decentralized Token Funds (“DTFs”). Un DTF es el nombre genérico que se le da a cualquier índice onchain respaldado por activos. Los DTF pueden crearse en el Yield Protocol o el Index Protocol de Reserve sin permisos, por cualquier persona o entidad."
 
 #: src/views/home/components/dtf-explainer-button.tsx:22
 msgid "What is a <0>DTF</0>?"
@@ -11395,8 +11395,8 @@ msgid "Your {inputSymbol} input is over {MIN_INPUT_LABEL}. Automated Mint may fi
 msgstr "Tu entrada de {inputSymbol} supera {MIN_INPUT_LABEL}. El Mint automatizado puede encontrar una mejor ruta dividiéndola entre el basket antes de hacer Mint."
 
 #: src/views/portfolio-page/components/dtf-positions.tsx:177
-msgid "Your Decentralized Token Folio investments."
-msgstr "Tus inversiones en Decentralized Token Folio."
+msgid "Your Decentralized Token Fund investments."
+msgstr "Tus inversiones en Decentralized Token Fund."
 
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1441
 msgid "Your DTF has been minted."

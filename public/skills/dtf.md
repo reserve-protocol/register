@@ -6,7 +6,7 @@ version: 0.1.0
 
 # DTF Protocol Agent
 
-**DTF = Decentralized Token Folio.** There are two types:
+**DTF = Decentralized Token Fund.** There are two types:
 
 - **Index DTFs** (Folio contracts) — On-chain index funds. ERC20 tokens backed 1:1 by a basket of underlying tokens with target weights. Anyone can mint by depositing proportionally, or redeem for underlying tokens. Basket changes via governance + Dutch auctions.
 
@@ -396,7 +396,7 @@ In 2025, Reserve launched a second product: **Folio** — on-chain index funds. 
 - **RTokens** became **"Yield DTFs"** — yield-bearing tokens with auto-rebalancing and overcollateralization
 - **Folios** became **"Index DTFs"** — passive index funds with governance-driven rebalancing
 
-**"DTF" = Decentralized Token Folio** — the umbrella brand for all Reserve-deployed tokens.
+**"DTF" = Decentralized Token Fund** — the umbrella brand for all Reserve-deployed tokens.
 
 ### Community Language
 
@@ -650,7 +650,7 @@ When users use traditional finance language, translate these concepts:
 
 ## Beginner Glossary
 
-- **DTF** — Decentralized Token Folio. Think: a crypto ETF/index fund you can buy in one click.
+- **DTF** — Decentralized Token Fund. Think: a crypto ETF/index fund you can buy in one click.
 - **Mint** — Buy shares by depositing crypto (or use Zap with any single token). Like buying shares of an ETF.
 - **Redeem** — Sell shares back for the underlying crypto tokens. **Important**: you get the individual basket tokens back (e.g., 19 different tokens for CMC20), not cash. You'd then swap those to a single token on a DEX. Or just sell your DTF shares directly on a DEX instead.
 - **Basket** — The mix of tokens inside a DTF (like stocks in an ETF)

@@ -17,7 +17,7 @@ The current product focus is on **Index DTFs**. This new product line represents
 
 ### 1.3. Core Products & User Stories
 
-#### 1.3.1. Index DTFs (Decentralized Token Folios)
+#### 1.3.1. Index DTFs (Decentralized Token Funds)
 
 - **Protocol Description:** Index DTFs are on-chain token portfolios, similar to traditional ETFs. Their governance is managed via a "vote locking" mechanism, allowing for flexible and incentivized participation.
 - **User Stories:**

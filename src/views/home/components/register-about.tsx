@@ -38,7 +38,7 @@ const Intro = () => (
         <p className="mt-3 text-sm text-legend">
           <Trans>
             Welcome to Reserve — a platform for creating, exploring, and
-            interacting with Decentralized Token Folios (“DTFs”). A DTF is the
+            interacting with Decentralized Token Funds (“DTFs”). A DTF is the
             generic name given to any onchain asset-backed index. DTFs can be
             created on Reserve’s Yield Protocol or Index Protocol
             permissionlessly, by any person or entity.

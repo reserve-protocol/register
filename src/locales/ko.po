@@ -2997,12 +2997,12 @@ msgid "days"
 msgstr "일"
 
 #: src/views/home/components/homepage-hero.tsx:36
-msgid "Decentralized Token Folios"
-msgstr "Decentralized Token Folios"
+msgid "Decentralized Token Funds"
+msgstr "Decentralized Token Funds"
 
 #: src/views/home/components/hero.tsx:68
-#~ msgid "Decentralized Token Folios illustration"
-#~ msgstr "Decentralized Token Folios 일러스트레이션"
+#~ msgid "Decentralized Token Funds illustration"
+#~ msgstr "Decentralized Token Funds 일러스트레이션"
 
 #: src/components/rtoken-setup/basket/PluginItem.tsx:50
 msgid "Decimals"
@@ -3650,7 +3650,7 @@ msgstr "빈 바스켓"
 
 #: src/views/index-dtf/deploy/steps/auctions/auctions-form.tsx:58
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-auction-settings.tsx:30
-msgid "Enable bids directly via the folio."
+msgid "Enable bids directly from the DTF."
 msgstr "Folio를 통해 직접 입찰을 활성화합니다."
 
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/changes/auction-settings-changes.tsx:123
@@ -9297,8 +9297,8 @@ msgid "There's two freezing roles that put the system in the same state for diff
 msgstr "시스템을 동일한 상태로 전환하되 기간이 다른 두 가지 동결 역할이 있습니다:"
 
 #: src/views/home/components/hero.tsx:19
-#~ msgid "These tokenized portfolios are called DTFs: <0/><1>Decentralized Token Folios</1>"
-#~ msgstr "이러한 토큰화된 포트폴리오를 DTF라고 합니다: <0/><1>Decentralized Token Folios</1>"
+#~ msgid "These tokenized portfolios are called DTFs: <0/><1>Decentralized Token Funds</1>"
+#~ msgstr "이러한 토큰화된 포트폴리오를 DTF라고 합니다: <0/><1>Decentralized Token Funds</1>"
 
 #: src/components/rtoken-setup/components/RolesEdit.tsx:37
 msgid "This address already holds this role"
@@ -11065,8 +11065,8 @@ msgid "Weights saved:"
 msgstr "저장된 가중치:"
 
 #: src/views/home/components/register-about.tsx:39
-msgid "Welcome to Reserve — a platform for creating, exploring, and interacting with Decentralized Token Folios (“DTFs”). A DTF is the generic name given to any onchain asset-backed index. DTFs can be created on Reserve’s Yield Protocol or Index Protocol permissionlessly, by any person or entity."
-msgstr "Reserve에 오신 것을 환영합니다. Decentralized Token Folios(“DTF”)를 생성, 탐색하고 상호작용할 수 있는 플랫폼입니다. DTF는 자산으로 백킹되는 모든 온체인 인덱스를 가리키는 일반 명칭입니다. DTF는 누구나 어떤 개인이나 단체든 권한 없이 Reserve의 Yield Protocol 또는 Index Protocol에서 생성할 수 있습니다."
+msgid "Welcome to Reserve — a platform for creating, exploring, and interacting with Decentralized Token Funds (“DTFs”). A DTF is the generic name given to any onchain asset-backed index. DTFs can be created on Reserve’s Yield Protocol or Index Protocol permissionlessly, by any person or entity."
+msgstr "Reserve에 오신 것을 환영합니다. Decentralized Token Funds(“DTF”)를 생성, 탐색하고 상호작용할 수 있는 플랫폼입니다. DTF는 자산으로 백킹되는 모든 온체인 인덱스를 가리키는 일반 명칭입니다. DTF는 누구나 어떤 개인이나 단체든 권한 없이 Reserve의 Yield Protocol 또는 Index Protocol에서 생성할 수 있습니다."
 
 #: src/views/home/components/dtf-explainer-button.tsx:22
 msgid "What is a <0>DTF</0>?"
@@ -11395,8 +11395,8 @@ msgid "Your {inputSymbol} input is over {MIN_INPUT_LABEL}. Automated Mint may fi
 msgstr "{inputSymbol} 입력이 {MIN_INPUT_LABEL}을(를) 초과합니다. 자동 Mint는 Mint 전에 바스켓 전체에 분배하여 더 나은 경로를 찾을 수 있습니다."
 
 #: src/views/portfolio-page/components/dtf-positions.tsx:177
-msgid "Your Decentralized Token Folio investments."
-msgstr "보유 중인 Decentralized Token Folio 투자."
+msgid "Your Decentralized Token Fund investments."
+msgstr "보유 중인 Decentralized Token Fund 투자."
 
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1441
 msgid "Your DTF has been minted."

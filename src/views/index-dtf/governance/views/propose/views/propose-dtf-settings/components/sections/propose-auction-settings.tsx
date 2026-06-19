@@ -27,7 +27,7 @@ const ProposeBidsEnabled = () => {
             <Trans>Permissionless Bids</Trans>
           </div>
           <div className="flex items-center gap-1 text-sm text-muted-foreground">
-            <Trans>Enable bids directly via the folio.</Trans>
+            <Trans>Enable bids directly from the DTF.</Trans>
           </div>
         </div>
 
