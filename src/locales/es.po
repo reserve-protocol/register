@@ -3844,7 +3844,7 @@ msgstr "Pérdida estimada: ~${0}"
 
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1301
 msgid "Estimated output"
-msgstr "Salida estimada"
+msgstr "Resultado estimado"
 
 #: src/views/index-dtf/auctions/views/rebalance/components/rebalance-liquidity-checker.tsx:290
 #: src/views/index-dtf/governance/views/propose/basket/components/proposal-liquidity-checker.tsx:359
@@ -4182,7 +4182,7 @@ msgstr "Completa la información a continuación y ABC Labs se pondrá en contac
 
 #: src/views/index-dtf/issuance/async-mint/components/leg-row.tsx:71
 msgid "Filled"
-msgstr "Completado"
+msgstr "Ejecutado"
 
 #: src/components/rtoken-setup/basket/UnitBasket.tsx:140
 msgid "Filled: {totalDistribution}%"
@@ -4248,7 +4248,7 @@ msgstr "A favor"
 
 #: src/views/index-dtf/governance/views/propose/components/proposal-type-selector.tsx:126
 msgid "For approved governors to fast-track proposals."
-msgstr "Para que los gobernadores aprobados agilicen propuestas."
+msgstr "Para que los Governors aprobados agilicen propuestas."
 
 #: src/views/index-dtf/components/compliance-alert.tsx:19
 msgid "For more information, see our <0>Terms of Use</0>."
@@ -4606,7 +4606,7 @@ msgstr "Cuánto tiempo tienen los gobernadores para emitir sus votos sobre una p
 
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-optimistic-parameters.tsx:144
 msgid "How long governors have to veto an optimistic proposal."
-msgstr "Cuánto tiempo tienen los gobernadores para vetar una propuesta optimista."
+msgstr "Cuánto tiempo tienen los Governors para vetar una propuesta optimista."
 
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-optimistic-parameters.tsx:130
 msgid "How long optimistic proposals wait before the veto period starts."
@@ -5103,7 +5103,7 @@ msgstr "El colateral sobrante no se incluye en el valor de salida del DTF. Puede
 
 #: src/views/index-dtf/issuance/async-mint/steps/success.tsx:252
 msgid "Leftover dust"
-msgstr "Polvo sobrante"
+msgstr "Dust restante"
 
 #: src/components/layout/header/components/header-actions-menu.tsx:99
 msgid "Light"
@@ -5632,7 +5632,7 @@ msgstr "Disponible para Mint ahora"
 
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1292
 msgid "Minted"
-msgstr "Minteado"
+msgstr "Minted"
 
 #: src/views/index-dtf/overview/components/fees-stats.tsx:43
 #: src/views/index-dtf/overview/components/index-metrics-overview.tsx:195
@@ -7347,7 +7347,7 @@ msgstr "Disponible para Redeem ahora"
 
 #: src/views/index-dtf/issuance/async-mint/steps/success.tsx:236
 msgid "Redeemed"
-msgstr "Redimido"
+msgstr "Redeemed"
 
 #. placeholder {0}: indexDTF?.token.symbol
 #. placeholder {1}: inputToken.symbol
@@ -9650,7 +9650,7 @@ msgstr "Intercambiar {0} por colateral"
 #. placeholder {0}: inputToken.symbol
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:992
 msgid "Trade remaining {0} into collateral"
-msgstr "Intercambiar el {0} restante por colateral"
+msgstr "Intercambiar {0} restante por colateral"
 
 #: src/components/ondo-badge.tsx:34
 msgid "Tradeable"
