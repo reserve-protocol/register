@@ -30,11 +30,15 @@ Rules are identity-blind. Do not infer whether a designer or engineer is driving
 
 ### Coding rules
 
-- **Dumb beats clever.** Explain it in 30s or it's too complex. Three similar lines beat a premature abstraction. No abstractions for one-time use, no features nobody asked for, no error handling for impossible cases.
+- **Dumb beats clever.** Explain it in 30s or it's too complex. Three similar _lines_ beat a premature abstraction. No abstractions for one-time use, no features nobody asked for, no error handling for impossible cases.
+- **Rule of three (blocks, not lines).** Two near-identical blocks: leave them. The moment a change creates the **third** copy of a structural block (a JSX row, a handler, a config object that differs only in data), extract a small component/helper and render it N times — as part of that change, not later. When the task is "add another X" and X already exists 2+ times, consolidate first, then add your instance. Guard against the opposite failure: if covering the variations needs more than ~2–3 params or branches, the duplication was fine — leave it.
 - **Explicit over implicit.** Verbose names over abbreviations, early returns over nested ifs, booleans prefixed `is`/`has`/`can`/`should`. `const` arrow functions.
-- **Size:** components < 200 lines, files < 300. Strict unless a reviewer signs off. Extract sub-components into the feature folder.
+- **Size:** components < 200 lines, files < 300. Strict unless a reviewer signs off. Extract sub-components into the feature folder. A component over 500 lines is automatically **Engineer review required**; over 1,000 lines is cleanup work, not a normal feature shape.
 - **State → Jotai.** Small focused atoms; derived atoms for computed values; action atoms for coordinated writes. Never `useEffect` to sync or derive state. `useAtomValue` for reads, `useSetAtom` for writes, `useAtom` only when you need both. Atom families for dynamic instances.
 - **Logic → hooks.** Fetching, derivation, and non-trivial effects live in a hook in the feature's `hooks/`. Components stay dumb: call hooks, render, early-return on loading/empty.
+- **Logic hooks must be tested.** Any hook/helper that transforms SDK/API/RPC data, derives financial values, coordinates transaction state, owns timers/effects, or computes user-visible decisions needs colocated tests for its pure logic. Trivial fetch-only wrappers can be exempt only when they contain no branching, math, timers, or state coordination.
+- **Step components orchestrate only.** Route/flow steps should select data, call hooks, and compose UI. If a step owns RPC reads, timers, animation state, transaction state, or financial/display derivation, extract that logic before adding more behavior.
+- **Leaf UI does not fetch what parents already know.** Rows/cards/list items should render passed data. Do not add per-row queries for data already fetched by the parent or available in a feature hook unless there is a measured reason.
 - **Loading + error states** on every async surface. **Named constants with context** over magic numbers (`MIN_MINTING_FEE = parseEther('0.0015') // 0.15%`).
 - **Comments explain WHY, not WHAT** (`// WHY:` / `// NOTE:`). A better name beats a comment that explains what code does.
 - **`console.log` / `any`:** fine for staging and debugging — just don't ship them as permanent. They are lint **warnings, not errors**. Don't leave TypeScript errors.
@@ -43,6 +47,7 @@ Rules are identity-blind. Do not infer whether a designer or engineer is driving
 - **Tailwind utilities** (`px-4`, `gap-2`, `h-12`); arbitrary values only for measured/chart geometry. `cn()` (`src/lib/utils.ts`) for conditional classes. No custom CSS files, no inline `style`.
 - **Direct wagmi hooks in components are fine** when simple — not an anti-pattern.
 - **UI parity:** Refactors must preserve spacing, copy, hover/focus states, animation timing, responsive behavior, and accessibility unless the task explicitly changes them.
+- **Release-mode cleanup:** near a release, preserve JSX structure, classes, copy, and flow unless the task explicitly changes UI. Prefer pure helper/hook extraction plus tests; avoid visual component decomposition without screenshot/e2e coverage or explicit approval.
 
 ### Containment & Reuse
 
@@ -51,6 +56,7 @@ A feature should be addable without understanding the whole app, and deletable i
 - **One feature = one folder** under `views/<domain>/<feature>/` owning its `components/`, `hooks/`, `atoms.ts`, and local `utils.ts`. It owns its atoms; don't mutate another feature's.
 - **Reuse before you build:** UI → `src/components/ui` (don't rebuild a dialog or table). Helpers → `src/utils` (grep first — formatting, validation, routes, time helpers already exist). Data → the SDK. State → Jotai.
 - **Fix local bugs locally.** Do not solve a feature layout/animation issue by changing app containers, routing shells, shared providers, or component defaults unless the task is explicitly about that shared surface.
+- **Local agent docs inherit root rules.** Feature-level `CLAUDE.md` files may add local SDK/flow context, but they must not weaken this file. They should state that root `CLAUDE.md` remains authoritative, especially for tests, size limits, SDK boundaries, and review flags.
 
 ### Engineer Review Flags
 
@@ -62,6 +68,7 @@ Agents cannot know who is driving the change. They can and must identify risky s
 - shared component defaults, shared atoms/providers, routing, app containers, or global layout
 - cross-feature imports, shared mutable state, or new app-wide utilities
 - security, compliance, geolocation, wallet, transaction, or chain-switching flows
+- route/flow components that exceed size limits or mix UI with RPC reads, timers, animation state, transaction orchestration, and financial derivation
 
 Required handoff note:
 
@@ -75,7 +82,7 @@ Required handoff note:
 
 Review agents catch real issues every time but cost time — run them where they pay off, as parallel threads, not blockers.
 
-- **Small change** (one file, copy, a prop, styling, a rename): self-review against the rules above. No agents.
+- **Small change** (one file, copy, a prop, styling, a rename): self-review against the rules above. If you extended a repeated block, zoom out from the diff and apply the rule of three before finishing. No agents.
 - **Large change** (multi-file, real logic, new data flow, money/on-chain math):
   1. **Split into stages** (e.g. "data hook + atoms" → "list UI" → "detail UI").
   2. **Triage each stage cheaply:** worth a review? Skip trivial/mechanical stages — `pnpm typecheck` + `pnpm lint` + self-review cover those. If a feature keeps triaging to "skip," review once at the end.
@@ -278,7 +285,7 @@ pnpm test            # vitest watch  ·  pnpm test:run for single run
 
 **Env:** `VITE_WALLETCONNECT_ID` (required); `VITE_ALCHEMY_KEY`, `VITE_INFURA_KEY` (recommended).
 
-**Testing:** Vitest + jsdom. Tests in `src/**/tests/**/*.test.{ts,tsx}`. Test behavior in hooks, not implementation; tests are disposable when requirements change.
+**Testing:** Vitest + jsdom. Tests in `src/**/tests/**/*.test.{ts,tsx}`. Test behavior in hooks/helpers, not implementation details; tests are disposable when requirements change. Logic hooks and extracted pure functions need tests that cover weird paths, not just happy paths: missing/zero data, duplicate inputs, negative or no-op deltas, invalid timestamps/amounts, already-completed state, failed/retryable state, timer cleanup, and fallback/default behavior.
 
 **Known issues:** large SPA bundle (~10MB); Tailwind v4 upgrade planned.
 

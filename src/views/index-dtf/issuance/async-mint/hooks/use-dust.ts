@@ -3,6 +3,7 @@ import {
   AsyncZapQuote,
   fetchTokenPrices,
   TokenInfo,
+  TokenPrice,
 } from '@reserve-protocol/async-zap-sdk'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { useMemo } from 'react'
@@ -13,6 +14,55 @@ export type DustItem = {
   token: TokenInfo
   amount: number
   usd: number
+}
+
+export function getDustTokens(
+  quote: AsyncZapQuote | undefined,
+  inputTokenAddress: string
+): TokenInfo[] {
+  if (!quote) return []
+
+  const byAddress = new Map<string, TokenInfo>()
+  for (const fa of quote.folioAssets) {
+    // The input/output token is never dust: for redeem it's the expected
+    // output, for mint it's the separately-shown unused budget. Skip it even
+    // when it's a basket collateral.
+    if (fa.asset.address.toLowerCase() === inputTokenAddress.toLowerCase()) {
+      continue
+    }
+    byAddress.set(fa.asset.address.toLowerCase(), fa.asset)
+  }
+  return [...byAddress.values()]
+}
+
+export function calculateDust({
+  tokens,
+  currentBalances,
+  startBalances,
+  prices,
+}: {
+  tokens: TokenInfo[]
+  currentBalances: Record<string, bigint>
+  startBalances: Record<string, bigint>
+  prices: TokenPrice[]
+}): { items: DustItem[]; totalUsd: number } {
+  const items: DustItem[] = []
+  let totalUsd = 0
+  tokens.forEach((t) => {
+    const address = t.address.toLowerCase()
+    const current = currentBalances[address] ?? 0n
+    const start = startBalances[address] ?? 0n
+    const dust = current > start ? current - start : 0n
+    if (dust === 0n) return
+
+    const amount = Number(formatUnits(dust, t.decimals))
+    const price =
+      prices.find((p) => p.address.toLowerCase() === address)?.price ?? 0
+    const usd = amount * price
+    items.push({ token: t, amount, usd })
+    totalUsd += usd
+  })
+  return { items, totalUsd }
 }
 
 // Computes leftover dust after an async mint/redeem by diffing the user's
@@ -33,18 +83,7 @@ export function useDust({
   inputToken: Token
 }): { items: DustItem[]; totalUsd: number } {
   const tokens = useMemo<TokenInfo[]>(() => {
-    if (!quote) return []
-    const byAddress = new Map<string, TokenInfo>()
-    for (const fa of quote.folioAssets) {
-      // The input/output token is never dust: for redeem it's the expected
-      // output, for mint it's the separately-shown unused budget. Skip it even
-      // when it's a basket collateral.
-      if (fa.asset.address.toLowerCase() === inputToken.address.toLowerCase()) {
-        continue
-      }
-      byAddress.set(fa.asset.address.toLowerCase(), fa.asset)
-    }
-    return [...byAddress.values()]
+    return getDustTokens(quote, inputToken.address)
   }, [quote, inputToken])
 
   const { data: balanceData } = useReadContracts({
@@ -74,22 +113,17 @@ export function useDust({
   })
 
   return useMemo(() => {
-    const items: DustItem[] = []
-    let totalUsd = 0
+    const currentBalances: Record<string, bigint> = {}
     tokens.forEach((t, i) => {
-      const current = (balanceData?.[i]?.result as bigint | undefined) ?? 0n
-      const start = startBalances[t.address.toLowerCase()] ?? 0n
-      const dust = current > start ? current - start : 0n
-      if (dust === 0n) return
-      const amount = Number(formatUnits(dust, t.decimals))
-      const price =
-        prices?.find(
-          (p) => p.address.toLowerCase() === t.address.toLowerCase()
-        )?.price ?? 0
-      const usd = amount * price
-      items.push({ token: t, amount, usd })
-      totalUsd += usd
+      const result = balanceData?.[i]?.result as bigint | undefined
+      currentBalances[t.address.toLowerCase()] = result ?? 0n
     })
-    return { items, totalUsd }
+
+    return calculateDust({
+      tokens,
+      currentBalances,
+      startBalances,
+      prices: prices ?? [],
+    })
   }, [tokens, balanceData, startBalances, prices])
 }

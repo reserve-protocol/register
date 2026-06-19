@@ -50,7 +50,7 @@ import {
   PenLine,
   RefreshCw,
 } from 'lucide-react'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Address, erc20Abi, formatUnits } from 'viem'
 import { useWalletClient } from 'wagmi'
@@ -58,10 +58,18 @@ import { readContracts } from 'wagmi/actions'
 import { useAsyncZap } from '../async-zap-context'
 import LegRow from '../components/leg-row'
 import OndoLimitsBanner from '../components/ondo-limits-banner'
+import { useOrderExpiryCountdown } from '../hooks/use-order-expiry-countdown'
+import { useOrderFillAnimation } from '../hooks/use-order-fill-animation'
 import { usePriceImpact } from '../hooks/use-price-impact'
+import { useSlowQuoteIndicator } from '../hooks/use-slow-quote-indicator'
 import { useTrackAsyncZap } from '../hooks/use-track-async-zap'
 import { useWizardBalances } from '../hooks/use-wizard-balances'
-import { formatPriceImpact, HIGH_PRICE_IMPACT } from '../quote-utils'
+import {
+  ceilDiv,
+  formatOrderCountdown,
+  formatPriceImpact,
+  subtractMintFee,
+} from '../quote-utils'
 import {
   dustStartBalancesAtom,
   inputTokenAtom,
@@ -92,25 +100,6 @@ const EXECUTION_BUTTON_LABELS: Partial<
   waiting_finish: msg`Completing mint…`,
 }
 
-const formatOrderCountdown = (seconds: number) => {
-  if (seconds <= 0) return '0s'
-
-  const minutes = Math.floor(seconds / 60)
-  const remainingSeconds = seconds % 60
-
-  if (minutes === 0) return `${remainingSeconds}s`
-
-  return `${minutes}m ${remainingSeconds.toString().padStart(2, '0')}s`
-}
-
-const ceilDiv = (value: bigint, divisor: bigint) =>
-  divisor === 0n ? 0n : (value + divisor - 1n) / divisor
-
-// Shares received after the Folio mint fee: the minter pays it off the top, so
-// the collateral-backed shares overstate what lands in the wallet.
-const subtractMintFee = (shares: bigint, mintFee: bigint) =>
-  shares - ceilDiv(shares * mintFee, 10n ** 18n)
-
 const QuoteSummary = () => {
   const { t } = useLingui()
   const setStep = useSetAtom(wizardStepAtom)
@@ -140,13 +129,9 @@ const QuoteSummary = () => {
   const [dustStartBalances, setDustStart] = useAtom(dustStartBalancesAtom)
   const [quoteCanceled, setQuoteCanceled] = useAtom(quoteCanceledAtom)
   const setQuoteFetchHalted = useSetAtom(quoteFetchHaltedAtom)
-  // Revealed only after the fetch has run a while, so the escape hatch doesn't
-  // signal "this is slow" up front.
-  const [showSlowQuote, setShowSlowQuote] = useState(false)
   const { balanceOf } = useWizardBalances()
   // Shared so index.tsx can widen/narrow the wizard wrapper to match.
   const [collateralExpanded, setCollateralExpanded] = useAtom(ordersExpandedAtom)
-  const [nowSec, setNowSec] = useState(() => Math.floor(Date.now() / 1000))
   const [finalMintSnapshot, setFinalMintSnapshot] = useState<{
     shares?: bigint
     netShares?: bigint
@@ -228,7 +213,6 @@ const QuoteSummary = () => {
     },
     0
   )
-  const heldCollateralCount = heldCollateralBalances.length
   const { data: inputPrices } = useQuery({
     queryKey: ['async-mint/input-price', chainId, inputToken.address],
     queryFn: () =>
@@ -464,29 +448,13 @@ const QuoteSummary = () => {
   // cancels, so the slow-quote timer runs uninterrupted to the threshold.
   const waitingForQuote =
     quotesLoading && !executionStarted && !quoteCanceled
-
-  // Reveal the cancel escape hatch only after the fetch has run a while.
-  useEffect(() => {
-    if (!waitingForQuote) {
-      setShowSlowQuote(false)
-      return
-    }
-    const timeout = setTimeout(() => setShowSlowQuote(true), SLOW_QUOTE_MS)
-    return () => clearTimeout(timeout)
-  }, [waitingForQuote])
+  const { showSlowQuote, hideSlowQuote } = useSlowQuoteIndicator(
+    waitingForQuote,
+    SLOW_QUOTE_MS
+  )
   const filledOrderCount = orderStates.filter(
     (order) => order.phase === 'fulfilled'
   ).length
-  const previousFilledOrderCount = useRef(filledOrderCount)
-  const countPulseTimeout = useRef<ReturnType<typeof setTimeout> | undefined>(
-    undefined
-  )
-  const [countPulseActive, setCountPulseActive] = useState(false)
-  const previousOrderPhases = useRef<Record<string, string | undefined>>({})
-  const fillAnimationTimeouts = useRef<ReturnType<typeof setTimeout>[]>([])
-  const [recentlyFilledLegIds, setRecentlyFilledLegIds] = useState<Set<string>>(
-    () => new Set()
-  )
   const failedOrderCount = orderStates.filter(
     (order) => order.phase === 'failed' || order.retryable
   ).length
@@ -494,25 +462,17 @@ const QuoteSummary = () => {
     orderCount - filledOrderCount - failedOrderCount,
     0
   )
-  const activeOrderExpiries = orderStates
-    .filter((order) => order.phase !== 'fulfilled' && order.phase !== 'failed')
-    .map((order) => order.order?.validTo)
-    .map((validTo) =>
-      typeof validTo === 'number' ? validTo : Number(validTo ?? 0)
-    )
-    .filter((validTo) => Number.isFinite(validTo) && validTo > 0)
-  const nextOrderExpiry =
-    activeOrderExpiries.length > 0
-      ? Math.min(...activeOrderExpiries)
-      : undefined
-  const orderExpirySeconds =
-    nextOrderExpiry !== undefined
-      ? Math.max(nextOrderExpiry - nowSec, 0)
-      : undefined
-  const orderExpiryCountdown =
-    orderExpirySeconds !== undefined
-      ? formatOrderCountdown(orderExpirySeconds)
-      : undefined
+  const { countPulseActive, recentlyFilledLegIds } = useOrderFillAnimation({
+    executionStarted,
+    filledOrderCount,
+    orderCount,
+    orderStates,
+  })
+  const { orderExpirySeconds, orderExpiryCountdown } =
+    useOrderExpiryCountdown({
+      executionStarted,
+      orderStates,
+    })
   const collateralPanelSummaryLabel = executionStarted
     ? orderCount > 0
       ? t`${filledOrderCount}/${orderCount} Orders filled`
@@ -522,77 +482,6 @@ const QuoteSummary = () => {
         ? t`${swapCount} order`
         : t`${swapCount} orders`
       : t`Orders`
-
-  useEffect(() => {
-    if (
-      executionStarted &&
-      orderCount > 0 &&
-      filledOrderCount > previousFilledOrderCount.current
-    ) {
-      setCountPulseActive(true)
-      if (countPulseTimeout.current) {
-        clearTimeout(countPulseTimeout.current)
-      }
-      countPulseTimeout.current = setTimeout(() => {
-        setCountPulseActive(false)
-      }, 800)
-    }
-
-    previousFilledOrderCount.current = filledOrderCount
-  }, [executionStarted, filledOrderCount, orderCount])
-
-  useEffect(() => {
-    return () => {
-      if (countPulseTimeout.current) {
-        clearTimeout(countPulseTimeout.current)
-      }
-    }
-  }, [])
-
-  useEffect(() => {
-    const newlyFilledLegIds: string[] = []
-
-    for (const order of orderStates) {
-      const previousPhase = previousOrderPhases.current[order.legId]
-
-      if (
-        executionStarted &&
-        order.phase === 'fulfilled' &&
-        previousPhase &&
-        previousPhase !== 'fulfilled'
-      ) {
-        newlyFilledLegIds.push(order.legId)
-      }
-
-      previousOrderPhases.current[order.legId] = order.phase
-    }
-
-    if (newlyFilledLegIds.length === 0) return
-
-    setRecentlyFilledLegIds((current) => {
-      const next = new Set(current)
-      for (const legId of newlyFilledLegIds) next.add(legId)
-      return next
-    })
-
-    const timeout = setTimeout(() => {
-      setRecentlyFilledLegIds((current) => {
-        const next = new Set(current)
-        for (const legId of newlyFilledLegIds) next.delete(legId)
-        return next
-      })
-    }, 1800)
-
-    fillAnimationTimeouts.current.push(timeout)
-  }, [executionStarted, orderStates])
-
-  useEffect(() => {
-    return () => {
-      for (const timeout of fillAnimationTimeouts.current) {
-        clearTimeout(timeout)
-      }
-    }
-  }, [])
 
   const collateralPanelSummaryAction = collateralExpanded
     ? executionStarted
@@ -695,16 +584,6 @@ const QuoteSummary = () => {
       impact !== undefined && impact === 0 && 'text-muted-foreground'
     )
 
-  useEffect(() => {
-    if (!executionStarted || activeOrderExpiries.length === 0) return
-
-    const interval = window.setInterval(() => {
-      setNowSec(Math.floor(Date.now() / 1000))
-    }, 1000)
-
-    return () => window.clearInterval(interval)
-  }, [executionStarted, activeOrderExpiries.length])
-
   const handleEdit = () => {
     setFinalMintSnapshot(null)
     execution.reset()
@@ -735,14 +614,14 @@ const QuoteSummary = () => {
   // so the user stays exactly where they were.
   const handleCancelQuote = () => {
     track('cancel_quote')
-    setShowSlowQuote(false)
+    hideSlowQuote()
     setQuoteCanceled(true)
   }
 
   // Re-enable the quote hooks; the fetch resumes with the same inputs.
   const handleResumeQuote = () => {
     track('resume_quote')
-    setShowSlowQuote(false)
+    hideSlowQuote()
     setQuoteCanceled(false)
   }
 
