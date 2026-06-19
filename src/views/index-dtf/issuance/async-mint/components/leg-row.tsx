@@ -9,6 +9,7 @@ import {
   AsyncZapOrderState,
   fetchTokenPrices,
 } from '@reserve-protocol/async-zap-sdk'
+import { Trans, useLingui } from '@lingui/react/macro'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { ArrowRight, ArrowUpRight, Check, Loader, X } from 'lucide-react'
 import { useMemo } from 'react'
@@ -46,6 +47,7 @@ const LegRow = ({
   quoteError,
   fillAnimationActive,
 }: LegRowProps) => {
+  const { t } = useLingui()
   const sell = leg.side === 'sell'
   const negativeImpact = impact !== undefined && impact < 0
   const positiveImpact = impact !== undefined && impact > 0
@@ -66,16 +68,16 @@ const LegRow = ({
   const statusLabel = !order
     ? undefined
     : orderSettled
-      ? 'Filled'
+      ? t`Filled`
       : orderFailed
         ? String(order.status) === 'expired'
-          ? 'Expired'
+          ? t`Expired`
           : String(order.status) === 'cancelled'
-            ? 'Cancelled'
-            : 'Failed'
+            ? t`Cancelled`
+            : t`Failed`
         : signing
-          ? 'Signing…'
-          : 'Pending'
+          ? t`Signing…`
+          : t`Pending`
   const cowUrl = order?.orderUid
     ? `https://explorer.cow.fi/orders/${order.orderUid}`
     : undefined
@@ -167,11 +169,11 @@ const LegRow = ({
             <div>
               <div className="font-medium text-base truncate">
                 {sell
-                  ? `Selling ${leg.asset.symbol}`
-                  : `Buying ${leg.asset.symbol}`}
+                  ? t`Selling ${leg.asset.symbol}`
+                  : t`Buying ${leg.asset.symbol}`}
               </div>
               <div className="text-sm text-destructive/70">
-                {quoteError || 'Quote unavailable'}
+                {quoteError || t`Quote unavailable`}
               </div>
             </div>
           </div>
@@ -270,7 +272,7 @@ const LegRow = ({
                 rel="noreferrer"
                 className="inline-flex items-center gap-0.5 text-primary hover:underline"
               >
-                View on CoW Swap
+                <Trans>View on CoW Swap</Trans>
                 <ArrowUpRight size={11} />
               </a>
             )}

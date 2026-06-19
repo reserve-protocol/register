@@ -4,6 +4,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover'
+import { Trans, useLingui } from '@lingui/react/macro'
 import { useSetAtom } from 'jotai'
 import { Bell } from 'lucide-react'
 import { useState } from 'react'
@@ -14,6 +15,7 @@ const ContactBellButton = () => {
   const { criteriaMet } = useContactCriteria()
   const setModalOpen = useSetAtom(contactModalOpenAtom)
   const [popoverOpen, setPopoverOpen] = useState(false)
+  const { t } = useLingui()
 
   if (!criteriaMet) return null
 
@@ -27,7 +29,7 @@ const ContactBellButton = () => {
       <PopoverTrigger asChild>
         <button
           type="button"
-          aria-label="Available opportunity"
+          aria-label={t`Available opportunity`}
           className="relative inline-flex items-center justify-center h-8 w-8 rounded-md cursor-pointer hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
         >
           <Bell size={16} strokeWidth={1.5} />
@@ -35,12 +37,14 @@ const ContactBellButton = () => {
         </button>
       </PopoverTrigger>
       <PopoverContent align="end" className="w-60 space-y-2">
-        <p className="font-semibold">Available opportunity!</p>
+        <p className="font-semibold">
+          <Trans>Available opportunity!</Trans>
+        </p>
         <p className="text-sm text-legend">
-          Schedule a call to earn 100,000 RSR.
+          <Trans>Schedule a call to earn 100,000 RSR.</Trans>
         </p>
         <Button size="sm" className="w-full" onClick={handleViewDetails}>
-          View details
+          <Trans>View details</Trans>
         </Button>
       </PopoverContent>
     </Popover>

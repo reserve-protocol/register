@@ -1,4 +1,5 @@
 import { Button } from '@/components/ui/button'
+import { Trans, useLingui } from '@lingui/react/macro'
 import useAtomicBatch from '@/hooks/use-atomic-batch'
 import useIsComplianceRestricted from '@/hooks/use-is-compliance-restricted'
 import { cn } from '@/lib/utils'
@@ -48,6 +49,7 @@ const GnosisRequired = () => {
   const cardStackRef = useRef<HTMLDivElement>(null)
   const isRestricted = useIsComplianceRestricted()
   const { track } = useTrackAsyncZap()
+  const { t } = useLingui()
 
   // The requirements screen prompts to connect (or switch wallet). Once a
   // connection lands and the capability probe confirms support, advance on its
@@ -71,22 +73,22 @@ const GnosisRequired = () => {
     openConnectModal?.()
   }
   const title = showRequirements
-    ? 'Smart Account Required'
-    : 'Automated Mint / Redeem'
+    ? t`Smart Account Required`
+    : t`Automated Mint / Redeem`
   const body = showRequirements
-    ? 'Automated minting and redemption require a wallet with smart account support. Hardware Wallets are not supported.'
-    : 'Mint large USDC amounts through batched CoW Swap orders, or redeem DTFs into the underlying assets. Recommended for market makers or transactions over 50,000 USDC.'
+    ? t`Automated minting and redemption require a wallet with smart account support. Hardware Wallets are not supported.`
+    : t`Mint large USDC amounts through batched CoW Swap orders, or redeem DTFs into the underlying assets. Recommended for market makers or transactions over 50,000 USDC.`
   const verifiedWallets = (
     <div>
       <p className="text-md text-primary dark:text-foreground font-medium mb-4">
-        Known supported wallets
+        <Trans>Known supported wallets</Trans>
       </p>
       <div className="flex items-center gap-2">
         <a
           href="https://metamask.io/"
           target="_blank"
           rel="noopener noreferrer"
-          aria-label="Open MetaMask website"
+          aria-label={t`Open MetaMask website`}
           className="rounded-[8px]"
         >
           <img
@@ -99,7 +101,7 @@ const GnosisRequired = () => {
           href="https://www.ambire.com/"
           target="_blank"
           rel="noopener noreferrer"
-          aria-label="Open Ambire website"
+          aria-label={t`Open Ambire website`}
           className="rounded-[8px]"
         >
           <img
@@ -112,7 +114,7 @@ const GnosisRequired = () => {
           href="https://safe.global/"
           target="_blank"
           rel="noopener noreferrer"
-          aria-label="Open Safe website"
+          aria-label={t`Open Safe website`}
           className="rounded-[8px]"
         >
           <img
@@ -123,8 +125,10 @@ const GnosisRequired = () => {
         </a>
       </div>
       <p className="mt-4 text-sm text-muted-foreground">
-        <span className="font-medium text-foreground">Note:</span> Some wallets,
-        like MetaMask, need smart accounts enabled.
+        <Trans>
+          <span className="font-medium text-foreground">Note:</span> Some
+          wallets, like MetaMask, need smart accounts enabled.
+        </Trans>
       </p>
     </div>
   )
@@ -135,7 +139,9 @@ const GnosisRequired = () => {
           <div className="flex items-center rounded-full justify-center h-8 w-8 bg-amber-700/15 border border-amber-700/20 dark:bg-amber-300/10 dark:border-amber-300/25">
             <Info size={20} strokeWidth={1.5} />
           </div>
-          <p className="text-md font-medium">Most users should use Swap</p>
+          <p className="text-md font-medium">
+            <Trans>Most users should use Swap</Trans>
+          </p>
         </div>
         <Button
           asChild
@@ -143,16 +149,20 @@ const GnosisRequired = () => {
           className="h-8 w-fit shrink-0 rounded-full px-3 !transition-none"
         >
           <Link to=".." relative="path">
-            Use Swap
+            <Trans>Use Swap</Trans>
           </Link>
         </Button>
       </div>
       <div className="flex flex-col px-4 pb-3 pt-4 gap-2">
         <div className="flex flex-col gap-0.5">
-          <p className="text-sm font-medium">Before using automated minting</p>
+          <p className="text-sm font-medium">
+            <Trans>Before using automated minting</Trans>
+          </p>
           <p className="text-sm text-muted-foreground">
-            Automated minting is an advanced feature. For most people, simple
-            swaps are recommended.
+            <Trans>
+              Automated minting is an advanced feature. For most people, simple
+              swaps are recommended.
+            </Trans>
           </p>
         </div>
       </div>
@@ -162,13 +172,13 @@ const GnosisRequired = () => {
   const processIllustration = (
     <div className="px-5 pb-3 mt-1">
       <div className="flex gap-2">
-        <ProcessStep label="You fund" />
+        <ProcessStep label={t`You fund`} />
         <ProcessArrow />
-        <ProcessStep label="CoW routes" />
+        <ProcessStep label={t`CoW routes`} />
         <ProcessArrow />
-        <ProcessStep label="Assets arrive" />
+        <ProcessStep label={t`Assets arrive`} />
         <ProcessArrow />
-        <ProcessStep label="You mint" />
+        <ProcessStep label={t`You mint`} />
       </div>
     </div>
   )
@@ -225,7 +235,7 @@ const GnosisRequired = () => {
                       variant="outline"
                       size="icon"
                       className="size-8 rounded-full !transition-none"
-                      aria-label="Back to automated minting introduction"
+                      aria-label={t`Back to automated minting introduction`}
                       onClick={() => setShowRequirements(false)}
                     >
                       <ArrowLeft size={16} />
@@ -244,12 +254,16 @@ const GnosisRequired = () => {
                               strokeWidth={1.5}
                               className="animate-spin"
                             />
-                            <span>Checking wallet...</span>
+                            <span>
+                              <Trans>Checking wallet...</Trans>
+                            </span>
                           </>
                         ) : (
                           <>
                             <OctagonAlert size={16} strokeWidth={1.5} />
-                            <span>Incompatible wallet</span>
+                            <span>
+                              <Trans>Incompatible wallet</Trans>
+                            </span>
                           </>
                         )}
                       </div>
@@ -259,7 +273,9 @@ const GnosisRequired = () => {
                   <>
                     <div className="flex items-center gap-2 px-5 mb-[64px]">
                       <Combine size={16} strokeWidth={1.5} />
-                      <p className="text-md">Advanced</p>
+                      <p className="text-md">
+                        <Trans>Advanced</Trans>
+                      </p>
                     </div>
                     <h2 className="text-xl font-semibold px-5 mb-1 text-foreground">
                       {title}
@@ -291,7 +307,7 @@ const GnosisRequired = () => {
                             className="h-[49px] rounded-xl sm:flex-[2] !transition-none"
                             onClick={openAccountModal}
                           >
-                            Switch wallet
+                            <Trans>Switch wallet</Trans>
                           </Button>
                           <Button
                             asChild
@@ -304,7 +320,7 @@ const GnosisRequired = () => {
                               target="_blank"
                               rel="noopener noreferrer"
                             >
-                              Learn More
+                              <Trans>Learn More</Trans>
                               <ArrowUpRight size={16} className="ml-1" />
                             </a>
                           </Button>
@@ -322,7 +338,7 @@ const GnosisRequired = () => {
                             className="h-[49px] rounded-xl sm:flex-[2] !transition-none"
                             onClick={handleConnect}
                           >
-                            Connect Wallet
+                            <Trans>Connect Wallet</Trans>
                           </Button>
                           <Button
                             asChild
@@ -335,7 +351,7 @@ const GnosisRequired = () => {
                               target="_blank"
                               rel="noopener noreferrer"
                             >
-                              Learn More
+                              <Trans>Learn More</Trans>
                               <ArrowUpRight size={16} className="ml-1" />
                             </a>
                           </Button>
@@ -351,9 +367,11 @@ const GnosisRequired = () => {
                       onClick={handleShowRequirements}
                       disabled={isConnected && isLoading}
                     >
-                      {isConnected && isLoading
-                        ? 'Checking wallet...'
-                        : 'Continue'}
+                      {isConnected && isLoading ? (
+                        <Trans>Checking wallet...</Trans>
+                      ) : (
+                        <Trans>Continue</Trans>
+                      )}
                     </Button>
                   </div>
                 )}

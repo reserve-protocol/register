@@ -1,3 +1,4 @@
+import { useLingui } from '@lingui/react/macro'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { themeModeAtom, toggleThemeAtom } from './atoms'
 
@@ -23,13 +24,14 @@ const TRANSITION = 'all 400ms cubic-bezier(0.5, 0, 0.2, 1)'
 const DarkModeToggle = () => {
   const mode = useAtomValue(themeModeAtom)
   const toggleTheme = useSetAtom(toggleThemeAtom)
+  const { t } = useLingui()
 
   const { r, transform, cx, cy, opacity } = properties[mode]
 
   return (
     <button
       type="button"
-      aria-label="Toggle theme"
+      aria-label={t`Toggle theme`}
       onClick={toggleTheme}
       className="inline-flex items-center justify-center h-8 w-8 rounded-md cursor-pointer hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
     >
