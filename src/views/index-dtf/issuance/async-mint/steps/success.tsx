@@ -6,6 +6,7 @@ import { chainIdAtom, walletAtom } from '@/state/atoms'
 import { indexDTFAtom, indexDTFPriceAtom } from '@/state/dtf/atoms'
 import { formatCurrency, formatTokenAmount, getFolioRoute } from '@/utils'
 import { ROUTES } from '@/utils/constants'
+import { Trans, useLingui } from '@lingui/react/macro'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { Check, RotateCcw } from 'lucide-react'
 import { Link } from 'react-router-dom'
@@ -46,6 +47,7 @@ const SummaryRow = ({
 )
 
 const Success = () => {
+  const { t } = useLingui()
   const indexDTF = useAtomValue(indexDTFAtom)
   const indexDTFPrice = useAtomValue(indexDTFPriceAtom)
   const chainId = useAtomValue(chainIdAtom)
@@ -144,10 +146,10 @@ const Success = () => {
           <Tabs value={operation} onValueChange={handleSwitchOperation}>
             <TabsList className="h-9">
               <TabsTrigger value="mint" className="px-3">
-                Mint
+                <Trans>Mint</Trans>
               </TabsTrigger>
               <TabsTrigger value="redeem" className="px-3">
-                Redeem
+                <Trans>Redeem</Trans>
               </TabsTrigger>
             </TabsList>
           </Tabs>
@@ -168,20 +170,20 @@ const Success = () => {
                     onClick={handleNewOperation}
                   >
                     <RotateCcw size={14} />
-                    New {isMint ? 'mint' : 'redeem'}
+                    {isMint ? <Trans>New mint</Trans> : <Trans>New redeem</Trans>}
                   </Button>
                   <Button asChild size="sm" className="rounded-full">
                     <Link
                       to={getFolioRoute(indexDTF.id, chainId, ROUTES.OVERVIEW)}
                     >
-                      View DTF
+                      <Trans>View DTF</Trans>
                     </Link>
                   </Button>
                 </div>
               </div>
               <div className="min-w-0">
                 <div className="mb-3 text-base text-primary">
-                  {isMint ? 'Mint Completed' : 'Redeem Completed'}
+                  {isMint ? t`Mint Completed` : t`Redeem Completed`}
                 </div>
                 <div className="flex items-center gap-2">
                   <TokenLogo
@@ -215,27 +217,27 @@ const Success = () => {
               {isMint ? (
                 <>
                   <SummaryRow
-                    label="Input amount"
+                    label={t`Input amount`}
                     value={`${formatCurrency(paidAmount)} ${inputToken.symbol}`}
                   />
                   <SummaryRow
-                    label="Spent"
+                    label={t`Spent`}
                     value={`${formatCurrency(spentAmount)} ${inputToken.symbol}`}
                     subvalue={`${formatTokenAmount(sharesAmount)} ${indexDTF.token.symbol}`}
                   />
                   <SummaryRow
-                    label="Unused (returned)"
+                    label={t`Unused (returned)`}
                     value={`${formatCurrency(unusedBuffer)} ${inputToken.symbol}`}
                   />
                 </>
               ) : (
                 <>
                   <SummaryRow
-                    label="Redeemed"
+                    label={t`Redeemed`}
                     value={`${formatTokenAmount(paidAmount)} ${indexDTF.token.symbol}`}
                   />
                   <SummaryRow
-                    label="Received"
+                    label={t`Received`}
                     value={`${formatCurrency(receivedQuoteTokenAmount)} ${inputToken.symbol}`}
                   />
                 </>
@@ -246,9 +248,11 @@ const Success = () => {
               <div className="rounded-2xl border border-border/70 p-4">
                 <div className="flex items-center justify-between gap-4">
                   <div>
-                    <div className="font-medium text-base">Leftover dust</div>
+                    <div className="font-medium text-base">
+                      <Trans>Leftover dust</Trans>
+                    </div>
                     <p className="mt-1 text-sm font-light text-muted-foreground">
-                      Swaps leave a small residue in your wallet.
+                      <Trans>Swaps leave a small residue in your wallet.</Trans>
                     </p>
                   </div>
                   <div className="text-right text-base font-medium">
@@ -285,9 +289,15 @@ const Success = () => {
 
         <div className="bg-background rounded-2xl p-2 lg:col-start-2 lg:row-start-2 lg:flex lg:h-full lg:flex-col animate-in fade-in duration-500">
           <div className="px-4 py-3">
-            <h3 className="font-medium text-base">Activity history</h3>
+            <h3 className="font-medium text-base">
+              <Trans>Activity history</Trans>
+            </h3>
             <p className="text-sm text-muted-foreground font-light">
-              Collateral swaps for this {operation}.
+              {isMint ? (
+                <Trans>Collateral swaps for this mint.</Trans>
+              ) : (
+                <Trans>Collateral swaps for this redeem.</Trans>
+              )}
             </p>
           </div>
 
@@ -305,7 +315,11 @@ const Success = () => {
               ))
             ) : (
               <div className="-mx-2 rounded-[18px] border border-border/70 px-4 py-3 text-sm text-muted-foreground font-light">
-                No collateral swaps were needed for this {operation}.
+                {isMint ? (
+                  <Trans>No collateral swaps were needed for this mint.</Trans>
+                ) : (
+                  <Trans>No collateral swaps were needed for this redeem.</Trans>
+                )}
               </div>
             )}
           </div>

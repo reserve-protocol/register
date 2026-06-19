@@ -1,5 +1,6 @@
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { cn } from '@/lib/utils'
+import { Trans, useLingui } from '@lingui/react/macro'
 import { Clock } from 'lucide-react'
 import { useOndoLimits } from '../hooks/use-ondo-limits'
 
@@ -15,10 +16,10 @@ const formatResumeTime = (nextOpen: string | null | undefined) => {
   })
 }
 
-const formatSymbolList = (symbols: string[]) =>
+const formatSymbolList = (symbols: string[], and: string) =>
   symbols.length <= 1
     ? symbols.join('')
-    : `${symbols.slice(0, -1).join(', ')} and ${symbols[symbols.length - 1]}`
+    : `${symbols.slice(0, -1).join(', ')} ${and} ${symbols[symbols.length - 1]}`
 
 // Ondo assets in the basket that can't be traded right now, with the time
 // trading resumes. The session caps are static, so a closed/paused market
@@ -44,9 +45,12 @@ export const useOndoTradingPaused = () => {
 }
 
 const OndoLimitsBanner = ({ className }: { className?: string }) => {
+  const { t } = useLingui()
   const paused = useOndoTradingPaused()
 
   if (!paused) return null
+
+  const symbolList = formatSymbolList(paused.symbols, t`and`)
 
   return (
     <Alert
@@ -54,12 +58,14 @@ const OndoLimitsBanner = ({ className }: { className?: string }) => {
       className={cn('rounded-xl bg-warning/10 border-warning/20', className)}
     >
       <Clock className="h-4 w-4" />
-      <AlertTitle>Trading paused</AlertTitle>
+      <AlertTitle>
+        <Trans>Trading paused</Trans>
+      </AlertTitle>
       <AlertDescription>
-        {formatSymbolList(paused.symbols)}{' '}
-        {paused.symbols.length === 1 ? 'is' : 'are'} outside trading hours, so
-        minting and redeeming is unavailable right now.
-        {paused.resumes && ` Trading resumes ${paused.resumes}.`}
+        {paused.symbols.length === 1
+          ? t`${symbolList} is outside trading hours, so minting and redeeming is unavailable right now.`
+          : t`${symbolList} are outside trading hours, so minting and redeeming is unavailable right now.`}
+        {paused.resumes ? ` ${t`Trading resumes ${paused.resumes}.`}` : ''}
       </AlertDescription>
     </Alert>
   )

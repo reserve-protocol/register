@@ -1,5 +1,6 @@
 import { devModeAtom } from '@/state/atoms'
 import { cn } from '@/lib/utils'
+import { Plural, Trans } from '@lingui/react/macro'
 import ChainLogo from 'components/icons/ChainLogo'
 import StackedChainLogo from 'components/icons/StackedChainLogo'
 import { useAtomValue } from 'jotai'
@@ -63,17 +64,25 @@ const ChainFilter = ({
         {Boolean(chainsLogos.length) && (
           <StackedChainLogo chains={chainsLogos} />
         )}
-        {chains.length === 0 && <span className="text-legend">Select a chain</span>}
+        {chains.length === 0 && (
+          <span className="text-legend">
+            <Trans>Select a chain</Trans>
+          </span>
+        )}
         {chains.length == 1 && (
           <span className="text-legend">
             {capitalize(CHAIN_TO_NETWORK[Number(chains[0])])}
           </span>
         )}
         {chains.length > 1 && chains.length !== supportedChainList.length && (
-          <span className="text-legend">{chains.length} chains</span>
+          <span className="text-legend">
+            <Plural value={chains.length} one="# chain" other="# chains" />
+          </span>
         )}
         {chains.length === supportedChainList.length && (
-          <span className="text-legend">All Chains</span>
+          <span className="text-legend">
+            <Trans>All Chains</Trans>
+          </span>
         )}
       </MultiselectDropdrown>
     </div>

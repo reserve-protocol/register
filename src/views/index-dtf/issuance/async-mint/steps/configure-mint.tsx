@@ -7,6 +7,7 @@ import { cn } from '@/lib/utils'
 import { chainIdAtom } from '@/state/atoms'
 import { indexDTFAtom, indexDTFPriceAtom } from '@/state/dtf/atoms'
 import { formatCurrency, formatTokenAmount } from '@/utils'
+import { Trans, useLingui } from '@lingui/react/macro'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { flushSync } from 'react-dom'
 import { formatUnits } from 'viem'
@@ -28,6 +29,7 @@ import { useTrackAsyncZap } from '../hooks/use-track-async-zap'
 const upcomingStepRowClass = 'px-6 py-4 border-b border-secondary'
 
 const ConfigureMint = () => {
+  const { t } = useLingui()
   const setStep = useSetAtom(wizardStepAtom)
   const indexDTF = useAtomValue(indexDTFAtom)
   const indexDTFPrice = useAtomValue(indexDTFPriceAtom)
@@ -108,18 +110,18 @@ const ConfigureMint = () => {
   const upcomingSteps = isMint
     ? [
         [
-          'Automatically acquire assets',
-          `We use your ${inputToken.symbol} to get the assets needed for the mint.`,
+          t`Automatically acquire assets`,
+          t`We use your ${inputToken.symbol} to get the assets needed for the mint.`,
         ],
         [
-          `Mint ${indexDTF.token.symbol}`,
-          'The acquired assets are used to mint your DTF.',
+          t`Mint ${indexDTF.token.symbol}`,
+          t`The acquired assets are used to mint your DTF.`,
         ],
       ]
     : [
         [
-          'Automatically sell collateral',
-          `We redeem your ${indexDTF.token.symbol} and sell the collateral for ${inputToken.symbol}.`,
+          t`Automatically sell collateral`,
+          t`We redeem your ${indexDTF.token.symbol} and sell the collateral for ${inputToken.symbol}.`,
         ],
       ]
 
@@ -145,10 +147,10 @@ const ConfigureMint = () => {
             >
               <TabsList className="bg-card/40 border border-card p-0.5 h-fit rounded-full">
                 <TabsTrigger value="mint" className="px-3.5 rounded-full">
-                  Mint
+                  <Trans>Mint</Trans>
                 </TabsTrigger>
                 <TabsTrigger value="redeem" className="px-3.5 rounded-full">
-                  Redeem
+                  <Trans>Redeem</Trans>
                 </TabsTrigger>
               </TabsList>
             </Tabs>
@@ -163,19 +165,19 @@ const ConfigureMint = () => {
               <div className="px-4 py-3">
                 <h3 className="font-medium text-base">
                   {isMint
-                    ? `Enter ${inputToken.symbol} amount`
-                    : 'Redeem amount'}
+                    ? t`Enter ${inputToken.symbol} amount`
+                    : t`Redeem amount`}
                 </h3>
                 <p className="text-sm text-muted-foreground font-light">
                   {isMint
-                    ? `Choose how much ${inputToken.symbol} to use for this mint.`
-                    : `Redeem ${indexDTF.token.symbol} for ${inputToken.symbol}.`}
+                    ? t`Choose how much ${inputToken.symbol} to use for this mint.`
+                    : t`Redeem ${indexDTF.token.symbol} for ${inputToken.symbol}.`}
                 </p>
               </div>
 
               <div className="rounded-xl bg-muted px-4 py-3">
                 <div className="flex items-center justify-between text-sm text-muted-foreground mb-2">
-                  <span>{isMint ? 'You provide' : 'You redeem'}</span>
+                  <span>{isMint ? t`You provide` : t`You redeem`}</span>
                 </div>
                 <div className="flex items-center justify-between gap-4">
                   <NumericalInput
@@ -211,7 +213,9 @@ const ConfigureMint = () => {
                       : `$${formatCurrency(inputUsdValue)}`}
                   </span>
                   <div className="flex shrink-0 items-center gap-2">
-                    <span className="text-muted-foreground">Balance</span>
+                    <span className="text-muted-foreground">
+                      <Trans>Balance</Trans>
+                    </span>
                     <span className="font-medium">
                       {isMint
                         ? formatCurrency(maxAmount)
@@ -224,13 +228,13 @@ const ConfigureMint = () => {
                       className="h-6 rounded-full bg-primary/15 px-2 font-semibold text-primary/80 hover:bg-primary/15 hover:text-primary/80"
                       onClick={handleMax}
                     >
-                      Max
+                      <Trans>Max</Trans>
                     </Button>
                   </div>
                 </div>
                 {exceedsBalance && (
                   <div className="mt-2 text-sm text-destructive">
-                    Exceeds available balance
+                    <Trans>Exceeds available balance</Trans>
                   </div>
                 )}
               </div>
@@ -241,7 +245,7 @@ const ConfigureMint = () => {
                 disabled={!isValid}
                 onClick={handleGetQuote}
               >
-                Get quote
+                <Trans>Get quote</Trans>
               </Button>
             </div>
 

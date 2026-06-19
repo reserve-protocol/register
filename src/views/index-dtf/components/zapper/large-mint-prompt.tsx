@@ -3,6 +3,7 @@ import { useIsDesktop } from '@/hooks/use-media-query'
 import { getFolioRoute } from '@/utils'
 import { ROUTES } from '@/utils/constants'
 import { useQuote, useZapperModal } from '@reserve-protocol/react-zapper'
+import { Trans, useLingui } from '@lingui/react/macro'
 import { X } from 'lucide-react'
 import { useEffect, useState, type SyntheticEvent } from 'react'
 import { createPortal } from 'react-dom'
@@ -29,40 +30,46 @@ const LargeMintCardBody = ({
   mintRoute,
   onCompare,
   onDismiss,
-}: CardBodyProps) => (
-  <>
-    <div className="flex items-center justify-between gap-3">
-      <div className="mb-3 inline-flex h-6 items-center rounded-full border border-warning/30 bg-warning/10 px-2.5 text-[11px] font-medium text-warning">
-        Over {MIN_INPUT_LABEL}
+}: CardBodyProps) => {
+  const { t } = useLingui()
+  return (
+    <>
+      <div className="flex items-center justify-between gap-3">
+        <div className="mb-3 inline-flex h-6 items-center rounded-full border border-warning/30 bg-warning/10 px-2.5 text-[11px] font-medium text-warning">
+          <Trans>Over {MIN_INPUT_LABEL}</Trans>
+        </div>
+        <button
+          type="button"
+          className="mb-3 flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+          onClick={onDismiss}
+          aria-label={t`Dismiss Automated Mint suggestion`}
+        >
+          <X size={14} />
+        </button>
       </div>
-      <button
-        type="button"
-        className="mb-3 flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
-        onClick={onDismiss}
-        aria-label="Dismiss Automated Mint suggestion"
-      >
-        <X size={14} />
-      </button>
-    </div>
-    <div className="min-w-0">
-      <div className="text-sm font-semibold text-foreground">
-        Large orders may benefit from Automated Mint
+      <div className="min-w-0">
+        <div className="text-sm font-semibold text-foreground">
+          <Trans>Large orders may benefit from Automated Mint</Trans>
+        </div>
+        <p className="mt-1 text-sm font-light leading-5 text-muted-foreground">
+          <Trans>
+            Your {inputSymbol} input is over {MIN_INPUT_LABEL}. Automated Mint
+            may find a better route by splitting it across the basket before
+            minting.
+          </Trans>
+        </p>
+        <Link
+          to={mintRoute}
+          onClick={onCompare}
+          className="mt-4 inline-flex h-8 items-center justify-center rounded-full bg-primary px-4 text-xs font-medium text-primary-foreground no-underline transition-colors hover:bg-primary/90"
+          aria-label={t`Try Automated Mint`}
+        >
+          <Trans>Try Automated Mint</Trans>
+        </Link>
       </div>
-      <p className="mt-1 text-sm font-light leading-5 text-muted-foreground">
-        Your {inputSymbol} input is over {MIN_INPUT_LABEL}. Automated Mint may
-        find a better route by splitting it across the basket before minting.
-      </p>
-      <Link
-        to={mintRoute}
-        onClick={onCompare}
-        className="mt-4 inline-flex h-8 items-center justify-center rounded-full bg-primary px-4 text-xs font-medium text-primary-foreground no-underline transition-colors hover:bg-primary/90"
-        aria-label="Try Automated Mint"
-      >
-        Try Automated Mint
-      </Link>
-    </div>
-  </>
-)
+    </>
+  )
+}
 
 type LargeMintPromptProps = {
   mode: 'inline' | 'modal' | 'simple'
@@ -125,7 +132,7 @@ const LargeMintPrompt = ({ mode, dtfAddress, chain }: LargeMintPromptProps) => {
       >
         <DialogContent showClose={false} className="rounded-3xl">
           <DialogTitle className="sr-only">
-            Automated Mint suggestion
+            <Trans>Automated Mint suggestion</Trans>
           </DialogTitle>
           {body}
         </DialogContent>

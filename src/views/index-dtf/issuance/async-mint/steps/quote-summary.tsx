@@ -28,6 +28,9 @@ import {
 } from '@/utils'
 import { ROUTES } from '@/utils/constants'
 import { ExplorerDataType, getExplorerLink } from '@/utils/getExplorerLink'
+import type { MessageDescriptor } from '@lingui/core'
+import { msg } from '@lingui/core/macro'
+import { Trans, useLingui } from '@lingui/react/macro'
 import {
   AsyncZapExecutionStep,
   fetchTokenPrices,
@@ -68,16 +71,17 @@ import {
 
 // Submit-button label while the execution lifecycle is running (signing happens
 // at the button level; the per-leg orders carry their own status pills).
-const EXECUTION_BUTTON_LABELS: Partial<Record<AsyncZapExecutionStep, string>> =
-  {
-    idle: 'Preparing…',
-    finalized: 'Preparing…',
-    submitting_and_signing: 'Sign in your wallet…',
-    waiting_submit_and_sign: 'Confirming…',
-    waiting_orders: 'Filling orders…',
-    finishing: 'Sign mint…',
-    waiting_finish: 'Completing mint…',
-  }
+const EXECUTION_BUTTON_LABELS: Partial<
+  Record<AsyncZapExecutionStep, MessageDescriptor>
+> = {
+  idle: msg`Preparing…`,
+  finalized: msg`Preparing…`,
+  submitting_and_signing: msg`Sign in your wallet…`,
+  waiting_submit_and_sign: msg`Confirming…`,
+  waiting_orders: msg`Filling orders…`,
+  finishing: msg`Sign mint…`,
+  waiting_finish: msg`Completing mint…`,
+}
 
 const formatOrderCountdown = (seconds: number) => {
   if (seconds <= 0) return '0s'
@@ -99,6 +103,7 @@ const subtractMintFee = (shares: bigint, mintFee: bigint) =>
   shares - ceilDiv(shares * mintFee, 10n ** 18n)
 
 const QuoteSummary = () => {
+  const { t } = useLingui()
   const setStep = useSetAtom(wizardStepAtom)
   const indexDTF = useAtomValue(indexDTFAtom)
   const basket = useAtomValue(indexDTFBasketAtom)
@@ -394,11 +399,15 @@ const QuoteSummary = () => {
   const swapCount = cowLegStates.length
   const collateralSummary = quotesLoading
     ? swapCount > 0
-      ? `Fetching ${swapCount} swap quote${swapCount === 1 ? '' : 's'}`
-      : 'Fetching swap quotes'
+      ? swapCount === 1
+        ? t`Fetching ${swapCount} swap quote`
+        : t`Fetching ${swapCount} swap quotes`
+      : t`Fetching swap quotes`
     : swapCount > 0
-      ? `${readySwapCount} swap quote${readySwapCount === 1 ? '' : 's'} ready`
-      : 'No swaps needed'
+      ? readySwapCount === 1
+        ? t`${readySwapCount} swap quote ready`
+        : t`${readySwapCount} swap quotes ready`
+      : t`No swaps needed`
   const isError = execution.step === 'error'
   const orderStates = Object.values(execution.ordersByLegId)
   const orderCount = Math.max(swapCount, orderStates.length)
@@ -455,11 +464,13 @@ const QuoteSummary = () => {
       : undefined
   const collateralPanelSummaryLabel = executionStarted
     ? orderCount > 0
-      ? `${filledOrderCount}/${orderCount} Orders filled`
-      : 'Orders'
+      ? t`${filledOrderCount}/${orderCount} Orders filled`
+      : t`Orders`
     : swapCount > 0
-      ? `${swapCount} order${swapCount === 1 ? '' : 's'}`
-      : 'Orders'
+      ? swapCount === 1
+        ? t`${swapCount} order`
+        : t`${swapCount} orders`
+      : t`Orders`
 
   useEffect(() => {
     if (
@@ -534,29 +545,29 @@ const QuoteSummary = () => {
 
   const collateralPanelSummaryAction = collateralExpanded
     ? executionStarted
-      ? 'Hide orders'
-      : 'Hide quotes'
+      ? t`Hide orders`
+      : t`Hide quotes`
     : executionStarted
-      ? 'View orders'
-      : 'View quotes'
+      ? t`View orders`
+      : t`View quotes`
   const collateralPanelSecondaryText =
     executionStarted && orderExpiryCountdown !== undefined
-      ? 'Orders expire in'
+      ? t`Orders expire in`
       : collateralPanelSummaryAction
   const showCollateralPanelChevron =
     !executionStarted || orderExpiryCountdown === undefined
   const collateralProgressDetail = executionStarted
     ? failedOrderCount > 0
-      ? `${failedOrderCount} need retry`
+      ? t`${failedOrderCount} need retry`
       : execution.step === 'collateral_ready' ||
           execution.step === 'finishing' ||
           execution.step === 'waiting_finish'
-        ? 'Ready to mint'
+        ? t`Ready to mint`
         : orderExpirySeconds !== undefined
-          ? `Orders expire in ${formatOrderCountdown(orderExpirySeconds)}`
+          ? t`Orders expire in ${formatOrderCountdown(orderExpirySeconds)}`
           : pendingOrderCount > 0
-            ? `${pendingOrderCount} pending`
-            : 'Waiting for orders'
+            ? t`${pendingOrderCount} pending`
+            : t`Waiting for orders`
     : undefined
   const showFinalMintAction =
     isMint &&
@@ -610,14 +621,14 @@ const QuoteSummary = () => {
     Math.abs(outputVsInputDelta)
   )}`
   const mintButtonLabel = canStartFinalMint
-    ? `Mint ${receiveSymbol}`
+    ? t`Mint ${receiveSymbol}`
     : failedOrderCount
-      ? 'Resolve failed orders'
+      ? t`Resolve failed orders`
       : executionStarted
         ? pendingOrderCount > 0
-          ? 'Waiting for collateral'
-          : 'Preparing mint'
-        : 'Acquire assets before minting'
+          ? t`Waiting for collateral`
+          : t`Preparing mint`
+        : t`Acquire assets before minting`
   const showFilledImpactMetrics =
     isMint &&
     executionStarted &&
@@ -742,22 +753,24 @@ const QuoteSummary = () => {
             <div className="mb-1 px-4 py-3 flex items-start justify-between gap-4">
               <div>
                 <h3 className="font-medium text-base">
-                  {operationComplete
-                    ? 'Input confirmed'
-                    : isMint
-                      ? 'Review input amount'
-                      : 'Redeem amount'}
+                  {operationComplete ? (
+                    <Trans>Input confirmed</Trans>
+                  ) : isMint ? (
+                    <Trans>Review input amount</Trans>
+                  ) : (
+                    <Trans>Redeem amount</Trans>
+                  )}
                 </h3>
                 <p className="mt-px text-sm text-muted-foreground font-light">
                   {operationComplete
                     ? isMint
-                      ? 'Used to acquire the required assets.'
-                      : 'Used to redeem and sell collateral.'
+                      ? t`Used to acquire the required assets.`
+                      : t`Used to redeem and sell collateral.`
                     : isMint
-                      ? 'Confirm the value to put toward this mint.'
+                      ? t`Confirm the value to put toward this mint.`
                       : isConvertHeld
-                        ? `Converting basket tokens held in your wallet to ${inputToken.symbol}.`
-                        : `Redeeming ${indexDTF?.token.symbol} for ${inputToken.symbol}.`}
+                        ? t`Converting basket tokens held in your wallet to ${inputToken.symbol}.`
+                        : t`Redeeming ${indexDTF?.token.symbol} for ${inputToken.symbol}.`}
                 </p>
               </div>
               {showEditInputButton && (
@@ -765,7 +778,7 @@ const QuoteSummary = () => {
                   className="flex size-8 shrink-0 items-center justify-center rounded-full border border-border/70 bg-card text-muted-foreground disabled:opacity-50 disabled:pointer-events-none"
                   onClick={handleEdit}
                   disabled={isExecuting}
-                  aria-label="Edit input amount"
+                  aria-label={t`Edit input amount`}
                 >
                   <PenLine size={16} />
                 </button>
@@ -774,7 +787,9 @@ const QuoteSummary = () => {
             <div className="overflow-hidden rounded-xl border border-border/70 bg-transparent">
               <div className="px-4 py-3">
                 <div className="mb-3 flex items-center justify-between gap-3 text-sm text-muted-foreground">
-                  <span>You provide</span>
+                  <span>
+                    <Trans>You provide</Trans>
+                  </span>
                   {showExistingCollateralToggle && (
                     <button
                       type="button"
@@ -791,13 +806,9 @@ const QuoteSummary = () => {
                       disabled={existingCollateralToggleDisabled}
                     >
                       <span>
-                        Existing collateral · $
-                        {formatCurrency(
-                          useExistingBalances
-                            ? walletCollateralUsedUsd
-                            : heldCollateralTotalUsd
-                        )}{' '}
-                        {useExistingBalances ? 'applied' : 'available'}
+                        {useExistingBalances
+                          ? t`Existing collateral · $${formatCurrency(walletCollateralUsedUsd)} applied`
+                          : t`Existing collateral · $${formatCurrency(heldCollateralTotalUsd)} available`}
                       </span>
                       <span
                         className={cn(
@@ -821,11 +832,13 @@ const QuoteSummary = () => {
                       <>
                         <div className="flex h-8 min-w-0 items-center">
                           <span className="text-base font-light leading-8 text-primary">
-                            Basket tokens in your wallet
+                            <Trans>Basket tokens in your wallet</Trans>
                           </span>
                         </div>
                         <div className="mt-2 text-sm font-light text-muted-foreground">
-                          Converted to {inputToken.symbol} — see breakdown
+                          <Trans>
+                            Converted to {inputToken.symbol} — see breakdown
+                          </Trans>
                         </div>
                       </>
                     ) : (
@@ -846,7 +859,7 @@ const QuoteSummary = () => {
                         </div>
                         <div className="mt-2 text-sm font-light text-muted-foreground">
                           {isMint && useExistingBalances
-                            ? `${formatCurrency(remainingInputTokenAmount)} ${inputToken.symbol} + $${formatCurrency(walletCollateralUsedUsd)} existing collateral`
+                            ? t`${formatCurrency(remainingInputTokenAmount)} ${inputToken.symbol} + $${formatCurrency(walletCollateralUsedUsd)} existing collateral`
                             : isMint
                               ? `$${formatCurrency(provideValueUsd)}`
                               : `$${formatCurrency(provideValueUsd)}`}
@@ -942,7 +955,7 @@ const QuoteSummary = () => {
 
             {exceedsBalance && (
               <div className="mt-0.5 rounded-xl bg-destructive/10 text-destructive text-sm py-3 px-4">
-                Exceeds available balance
+                <Trans>Exceeds available balance</Trans>
               </div>
             )}
           </div>
@@ -974,22 +987,23 @@ const QuoteSummary = () => {
                 <h3 className="font-medium text-base">
                   {isMint ? (
                     collateralReady ? (
-                      'Collateral acquired'
+                      <Trans>Collateral acquired</Trans>
+                    ) : useExistingBalances ? (
+                      <Trans>
+                        Trade remaining {inputToken.symbol} into collateral
+                      </Trans>
                     ) : (
-                      <>
-                        Trade {useExistingBalances ? 'remaining ' : ''}
-                        {inputToken.symbol} into collateral
-                      </>
+                      <Trans>Trade {inputToken.symbol} into collateral</Trans>
                     )
                   ) : (
-                    'Sell collateral'
+                    <Trans>Sell collateral</Trans>
                   )}
                 </h3>
                 <div className="mt-px text-sm font-light text-muted-foreground">
                   {isMint
                     ? collateralReady
-                      ? 'Required assets are ready for minting.'
-                      : `Split ${inputToken.symbol} across basket assets.`
+                      ? t`Required assets are ready for minting.`
+                      : t`Split ${inputToken.symbol} across basket assets.`
                     : collateralSummary}
                 </div>
               </div>
@@ -1068,10 +1082,10 @@ const QuoteSummary = () => {
                       }
                     >
                       {retryableLegIds.length > 0
-                        ? `Retry ${retryableLegIds.length} failed order${
-                            retryableLegIds.length > 1 ? 's' : ''
-                          }`
-                        : 'Try again'}
+                        ? retryableLegIds.length === 1
+                          ? t`Retry ${retryableLegIds.length} failed order`
+                          : t`Retry ${retryableLegIds.length} failed orders`
+                        : t`Try again`}
                     </Button>
                     <Button
                       size="lg"
@@ -1082,7 +1096,7 @@ const QuoteSummary = () => {
                         handleEdit()
                       }}
                     >
-                      Start over
+                      <Trans>Start over</Trans>
                     </Button>
                   </div>
                 ) : (
@@ -1105,26 +1119,32 @@ const QuoteSummary = () => {
                       {isExecuting ? (
                         <span className="flex items-center gap-2">
                           <Loader2 size={16} className="animate-spin" />
-                          {EXECUTION_BUTTON_LABELS[execution.step] ??
-                            'Working…'}
+                          {t(
+                            EXECUTION_BUTTON_LABELS[execution.step] ??
+                              msg`Working…`
+                          )}
                         </span>
                       ) : quotesLoading ? (
                         <span className="flex items-center gap-2">
                           <Loader2 size={16} className="animate-spin" />
-                          Fetching quotes...
+                          <Trans>Fetching quotes...</Trans>
                         </span>
                       ) : walletClientLoading ? (
                         <span className="flex items-center gap-2">
                           <Loader2 size={16} className="animate-spin" />
-                          Preparing wallet...
+                          <Trans>Preparing wallet...</Trans>
                         </span>
                       ) : walletClientMissing ? (
-                        <span className="font-medium">Reconnect wallet</span>
+                        <span className="font-medium">
+                          <Trans>Reconnect wallet</Trans>
+                        </span>
                       ) : (
                         <span className="font-medium">
-                          {isMint
-                            ? 'Start collateral trades'
-                            : 'Prepare redeem'}
+                          {isMint ? (
+                            <Trans>Start collateral trades</Trans>
+                          ) : (
+                            <Trans>Prepare redeem</Trans>
+                          )}
                         </span>
                       )}
                     </Button>
@@ -1136,7 +1156,11 @@ const QuoteSummary = () => {
             <div className="mt-2 flex items-center gap-6 px-4 pb-3 text-sm">
               <div className="flex flex-1 items-center justify-between gap-3">
                 <span className="text-muted-foreground">
-                  {showFilledImpactMetrics ? 'Quoted impact' : 'Price impact'}
+                  {showFilledImpactMetrics ? (
+                    <Trans>Quoted impact</Trans>
+                  ) : (
+                    <Trans>Price impact</Trans>
+                  )}
                 </span>
                 <span
                   className={cn(
@@ -1157,7 +1181,11 @@ const QuoteSummary = () => {
               <div className="h-4 w-px shrink-0 bg-border/70" />
               <div className="flex flex-1 items-center justify-between gap-3">
                 <span className="text-muted-foreground">
-                  {showFilledImpactMetrics ? 'Actual impact' : 'Max slippage'}
+                  {showFilledImpactMetrics ? (
+                    <Trans>Actual impact</Trans>
+                  ) : (
+                    <Trans>Max slippage</Trans>
+                  )}
                 </span>
                 {showFilledImpactMetrics ? (
                   <span className={impactValueClassName(actualAggregateImpact)}>
@@ -1197,24 +1225,24 @@ const QuoteSummary = () => {
                 <h3 className="font-medium text-base">
                   {operationComplete ? (
                     isMint ? (
-                      'Mint completed'
+                      <Trans>Mint completed</Trans>
                     ) : (
-                      'Redeem completed'
+                      <Trans>Redeem completed</Trans>
                     )
                   ) : isMint ? (
-                    <>Mint {receiveSymbol}</>
+                    <Trans>Mint {receiveSymbol}</Trans>
                   ) : (
-                    'Quote review'
+                    <Trans>Quote review</Trans>
                   )}
                 </h3>
                 <p className="mt-px text-sm text-muted-foreground font-light">
                   {operationComplete
                     ? isMint
-                      ? 'Your DTF has been minted.'
-                      : `Your ${indexDTF?.token.symbol} has been redeemed.`
+                      ? t`Your DTF has been minted.`
+                      : t`Your ${indexDTF?.token.symbol} has been redeemed.`
                     : isMint
-                      ? 'Use the acquired collateral to mint the DTF.'
-                      : 'Inputs are locked while swap quotes are fetched.'}
+                      ? t`Use the acquired collateral to mint the DTF.`
+                      : t`Inputs are locked while swap quotes are fetched.`}
                 </p>
               </div>
               {operationComplete ? (
@@ -1261,15 +1289,17 @@ const QuoteSummary = () => {
               <div className="text-sm text-muted-foreground mb-3">
                 {operationComplete ? (
                   isMint ? (
-                    'Minted'
+                    <Trans>Minted</Trans>
                   ) : (
-                    'Received'
+                    <Trans>Received</Trans>
                   )
                 ) : showReadyMintOutput ? (
-                  'Ready to mint'
+                  <Trans>Ready to mint</Trans>
                 ) : isMint ? (
                   <span className="inline-flex items-center gap-1">
-                    <span>Estimated output</span>
+                    <span>
+                      <Trans>Estimated output</Trans>
+                    </span>
                     <TooltipProvider delayDuration={200}>
                       <Tooltip>
                         <TooltipTrigger asChild>
@@ -1279,15 +1309,17 @@ const QuoteSummary = () => {
                           />
                         </TooltipTrigger>
                         <TooltipContent className="max-w-[280px]">
-                          Based on current collateral quotes. Your final mint
-                          amount is calculated from the assets acquired after
-                          trades complete.
+                          <Trans>
+                            Based on current collateral quotes. Your final mint
+                            amount is calculated from the assets acquired after
+                            trades complete.
+                          </Trans>
                         </TooltipContent>
                       </Tooltip>
                     </TooltipProvider>
                   </span>
                 ) : (
-                  'You receive'
+                  <Trans>You receive</Trans>
                 )}
               </div>
               <div>
@@ -1345,7 +1377,8 @@ const QuoteSummary = () => {
                           {showReadyMintOutput ? '' : '~'}$
                           {formatCurrency(outputUsdValue)}
                           {showReadyMintOutput
-                            ? ` (${outputVsInputDeltaLabel} vs original input)`
+                            ? ' ' +
+                              t`(${outputVsInputDeltaLabel} vs original input)`
                             : null}
                           {!showReadyMintOutput &&
                             expectedOutputImpact !== undefined &&
@@ -1358,8 +1391,10 @@ const QuoteSummary = () => {
                     {isMint && showReadyMintOutput && (
                       <div className="flex shrink-0 items-center gap-1 text-right">
                         <span>
-                          +${formatCurrency(leftoverCollateralUsd)} leftover
-                          collateral
+                          <Trans>
+                            +${formatCurrency(leftoverCollateralUsd)} leftover
+                            collateral
+                          </Trans>
                         </span>
                         <TooltipProvider delayDuration={200}>
                           <Tooltip>
@@ -1370,9 +1405,11 @@ const QuoteSummary = () => {
                               />
                             </TooltipTrigger>
                             <TooltipContent className="max-w-[280px]">
-                              Leftover collateral is not included in the DTF
-                              output value. It may remain because minting uses
-                              fixed basket ratios.
+                              <Trans>
+                                Leftover collateral is not included in the DTF
+                                output value. It may remain because minting uses
+                                fixed basket ratios.
+                              </Trans>
                             </TooltipContent>
                           </Tooltip>
                         </TooltipProvider>
@@ -1393,7 +1430,7 @@ const QuoteSummary = () => {
                       className="h-[49px] rounded-[12px]"
                       onClick={handleNewOperation}
                     >
-                      New {isMint ? 'mint' : 'redeem'}
+                      {isMint ? <Trans>New mint</Trans> : <Trans>New redeem</Trans>}
                     </Button>
                     <Button
                       asChild
@@ -1407,7 +1444,7 @@ const QuoteSummary = () => {
                           ROUTES.OVERVIEW
                         )}
                       >
-                        View DTF
+                        <Trans>View DTF</Trans>
                       </Link>
                     </Button>
                   </div>
@@ -1426,16 +1463,20 @@ const QuoteSummary = () => {
                       {showFinalMintAction ? (
                         <span className="flex items-center gap-2">
                           <Loader2 size={16} className="animate-spin" />
-                          {EXECUTION_BUTTON_LABELS[execution.step] ??
-                            'Working…'}
+                          {t(
+                            EXECUTION_BUTTON_LABELS[execution.step] ??
+                              msg`Working…`
+                          )}
                         </span>
                       ) : walletClientLoading ? (
                         <span className="flex items-center gap-2">
                           <Loader2 size={16} className="animate-spin" />
-                          Preparing wallet...
+                          <Trans>Preparing wallet...</Trans>
                         </span>
                       ) : walletClientMissing ? (
-                        <span className="font-medium">Reconnect wallet</span>
+                        <span className="font-medium">
+                          <Trans>Reconnect wallet</Trans>
+                        </span>
                       ) : (
                         <span className="font-medium">{mintButtonLabel}</span>
                       )}
@@ -1456,20 +1497,24 @@ const QuoteSummary = () => {
               <div className="px-4 py-3 flex items-start justify-between gap-4">
                 <div>
                   <h3 className="font-medium text-base">
-                    {operationComplete
-                      ? 'Completed orders'
-                      : executionStarted
-                        ? 'Orders'
-                        : 'Collateral swaps'}
+                    {operationComplete ? (
+                      <Trans>Completed orders</Trans>
+                    ) : executionStarted ? (
+                      <Trans>Orders</Trans>
+                    ) : (
+                      <Trans>Collateral swaps</Trans>
+                    )}
                   </h3>
                   <p className="text-sm text-muted-foreground font-light">
-                    {executionStarted
-                      ? 'Swaps settle via CoW Protocol solvers.'
-                      : cowLegStates.length === 0 && !quotesLoading
-                        ? 'No swaps are needed for this operation.'
-                        : isMint
-                          ? 'The basket assets bought with your input.'
-                          : 'The basket assets sold for your output.'}
+                    {executionStarted ? (
+                      <Trans>Swaps settle via CoW Protocol solvers.</Trans>
+                    ) : cowLegStates.length === 0 && !quotesLoading ? (
+                      <Trans>No swaps are needed for this operation.</Trans>
+                    ) : isMint ? (
+                      <Trans>The basket assets bought with your input.</Trans>
+                    ) : (
+                      <Trans>The basket assets sold for your output.</Trans>
+                    )}
                   </p>
                 </div>
               </div>
@@ -1502,7 +1547,7 @@ const QuoteSummary = () => {
                           ls.status === 'error'
                             ? ls.leg.error?.message ||
                               ls.error?.message ||
-                              'Quote unavailable'
+                              t`Quote unavailable`
                             : undefined
                         }
                       />
@@ -1511,9 +1556,11 @@ const QuoteSummary = () => {
                 ) : (
                   <div className="flex min-h-[320px] flex-1 items-center justify-center px-4 py-10 text-center">
                     <div className="max-w-[320px]">
-                      <h4 className="font-medium text-base">No swaps needed</h4>
+                      <h4 className="font-medium text-base">
+                        <Trans>No swaps needed</Trans>
+                      </h4>
                       <p className="mt-1 text-sm text-muted-foreground font-light">
-                        You can proceed directly.
+                        <Trans>You can proceed directly.</Trans>
                       </p>
                     </div>
                   </div>
