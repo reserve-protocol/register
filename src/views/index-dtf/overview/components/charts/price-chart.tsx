@@ -7,7 +7,7 @@ import {
 } from '@/state/dtf/atoms'
 import { isYieldIndexDTFAtom } from '@/state/dtf/yield-index-atoms'
 import { useAtomValue, useSetAtom } from 'jotai'
-import { useEffect, useRef } from 'react'
+import { useEffect } from 'react'
 import useIndexDTFApyHistory from '../../hooks/use-dtf-apy-history'
 import ChartOverlay from './chart-overlay'
 import {
@@ -133,33 +133,6 @@ const useSyncPriceHistoryAvailability = (
   }, [address, history, setPriceHistoryAvailability])
 }
 
-const useDefaultBacktrackedRange = (
-  address: string | undefined,
-  launchTimestamp: number | undefined,
-  range: string,
-  history: { timeseries: { timestamp: number; price: number }[] } | undefined
-) => {
-  const setRange = useSetAtom(performanceTimeRangeAtom)
-  const evaluatedAddressRef = useRef<string | null>(null)
-
-  useEffect(() => {
-    if (!address || !launchTimestamp || history === undefined) return
-
-    const normalizedAddress = address.toLowerCase()
-    if (evaluatedAddressRef.current === normalizedAddress) return
-
-    evaluatedAddressRef.current = normalizedAddress
-
-    const hasBacktrackedData = history.timeseries.some(
-      ({ timestamp, price }) => Boolean(price) && timestamp < launchTimestamp
-    )
-
-    if (hasBacktrackedData && range === '1m') {
-      setRange('1y')
-    }
-  }, [address, history, launchTimestamp, range, setRange])
-}
-
 const PriceChart = () => {
   const range = useAtomValue(performanceTimeRangeAtom)
   const dataType = useAtomValue(dataTypeAtom)
@@ -176,12 +149,6 @@ const PriceChart = () => {
   useSync7dChange(timeseries, range)
   useSyncMarketCap(timeseries)
   useSyncPriceHistoryAvailability(dtf?.id, rangeAvailabilityHistory)
-  useDefaultBacktrackedRange(
-    dtf?.id,
-    dtf?.timestamp,
-    range,
-    rangeAvailabilityHistory
-  )
 
   const chartData = isYieldMode ? apyTimeseries : timeseries
 
