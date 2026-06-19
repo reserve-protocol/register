@@ -139,7 +139,7 @@ const IndexCTAsOverviewMobile = () => {
       <div className="flex sm:hidden justify-end">
         <Button
           variant="none"
-          className="rounded-3xl h-8 px-3 gap-1.5 bg-white text-primary border border-border hover:bg-white/90"
+          className="rounded-3xl h-8 px-3 gap-1.5 bg-primary/dark text-primary/dark border border-border/dark hover:bg-primary/70"
           onClick={() => {
             trackClick('ask-ai')
             openReserveChat()
@@ -153,7 +153,7 @@ const IndexCTAsOverviewMobile = () => {
       {/* Mobile (<sm): floating full-width BUY/SELL bar, pinned above the nav */}
       {createPortal(
         <div className="fixed inset-x-0 bottom-16 z-40 sm:hidden border-t bg-background p-3">
-          {renderCtas('rounded-xl h-12 w-full')}
+          {renderCtas('rounded-full h-10 w-full')}
         </div>,
         document.body
       )}
