@@ -3555,7 +3555,7 @@ msgstr "Cada tipo de intercambio actualmente solo puede ocurrir de una forma; el
 
 #: src/components/layout/navigation/TokenNavigation.tsx:181
 msgid "Earn"
-msgstr "Ganar"
+msgstr "Rendimientos"
 
 #: src/views/portfolio-page/components/available-rewards.tsx:167
 msgid "Earn rewards by staking or participating in governance. <0>Learn more</0>."
@@ -3569,7 +3569,7 @@ msgstr "Gana recompensas en <0>{0} ({1})</0> simplemente manteniendo el Base AI 
 
 #: src/views/earn/views/defi/components/featured-pool-item.tsx:43
 msgid "Earn up to"
-msgstr "Gana hasta"
+msgstr "Obtén hasta un"
 
 #: src/views/home/components/dtf-tabs.tsx:31
 msgid "Earn yield safely with over-collateralized and diversified DeFi positions"
@@ -3577,7 +3577,7 @@ msgstr "Gana rendimiento de forma segura con posiciones DeFi diversificadas y so
 
 #: src/views/home/components/discover-yield-dtf/earn-button.tsx:56
 msgid "Earn:"
-msgstr "Ganar:"
+msgstr "Rendimiento:"
 
 #: src/views/yield-dtf/governance/views/proposal/components/ConfirmProposalOverview.tsx:119
 #: src/views/yield-dtf/governance/views/proposal/components/ContractUpgrades.tsx:95
@@ -6410,7 +6410,7 @@ msgstr "Parámetros"
 
 #: src/components/layout/header/components/app-navigation.tsx:77
 msgid "Participate & Earn"
-msgstr "Participa y gana"
+msgstr "Participa y obtén rendimientos"
 
 #: src/views/portfolio-page/components/vote-locked-positions.tsx:176
 msgid "Participate in governance with any ERC-20 token and earn APY rewards. <0>Learn more</0>."
@@ -7088,7 +7088,7 @@ msgstr "Protocolos"
 
 #: src/views/earn/views/defi/components/earn-heading.tsx:15
 msgid "Provide liquidity across DeFi & earn more with your DTFs"
-msgstr "Aporta liquidez en DeFi y gana más con tus DTFs"
+msgstr "Aporta liquidez en DeFi y obtén más rendimiento con tus DTFs"
 
 #: src/views/index-dtf/overview/components/yield-index/yield-index-composition-tabs.tsx:14
 msgid "Provider"
