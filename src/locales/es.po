@@ -28,7 +28,7 @@ msgstr "- Redeem de {0}"
 
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1381
 msgid "({outputVsInputDeltaLabel} vs original input)"
-msgstr ""
+msgstr "({outputVsInputDeltaLabel} vs. input original)"
 
 #: src/views/yield-dtf/auctions/components/About.tsx:65
 msgid "(in their Github repository)"
@@ -65,7 +65,7 @@ msgstr "{0, plural, one {# chain} other {# chains}}"
 #: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:747
 #: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:768
 msgid "{0, plural, one {# hour} other {# hours}}"
-msgstr ""
+msgstr "{0, plural, one {# hora} other {# horas}}"
 
 #. placeholder {0}: currentAuctionLength / 60
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/changes/auction-settings-changes.tsx:90
@@ -125,7 +125,7 @@ msgstr "{0} {1, plural, one {tiene} other {tienen}} más del 5% de impacto en el
 #. placeholder {2}: formatCurrency(walletCollateralUsedUsd)
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:862
 msgid "{0} {1} + ${2} existing collateral"
-msgstr ""
+msgstr "{0} {1} + ${2} de colateral existente"
 
 #. placeholder {0}: formatCurrency(Number(amount))
 #. placeholder {1}: indexDTF.token.symbol
@@ -206,13 +206,13 @@ msgstr "{0} APY est."
 #: src/views/index-dtf/overview/components/landing-mint/dtf-cover.tsx:55
 #: src/views/index-dtf/overview/components/landing-mint/dtf-cover.tsx:60
 msgid "{0} explainer"
-msgstr ""
+msgstr "explicación de {0}"
 
 #. placeholder {0}: selectedVersion.symbol
 #: src/views/home/components/highlighted-dtfs/transcript-preview.tsx:60
 #: src/views/home/components/highlighted-dtfs/transcript-preview.tsx:61
 msgid "{0} Explainer"
-msgstr ""
+msgstr "Explicación de {0}"
 
 #. placeholder {0}: formatPercentage(a.weight)
 #. placeholder {0}: formatPercentage(p.exposureShare)
@@ -363,11 +363,11 @@ msgstr "{failedCount, plural, one {# aprobación fallida - Reintentar} other {# 
 
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:561
 msgid "{failedOrderCount} need retry"
-msgstr ""
+msgstr "{failedOrderCount} requieren reintento"
 
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:467
 msgid "{filledOrderCount}/{orderCount} Orders filled"
-msgstr ""
+msgstr "{filledOrderCount}/{orderCount} órdenes completadas"
 
 #: src/views/yield-dtf/issuance/components/wrapping/CollateralItem.tsx:323
 msgid "{fromToken} to {toToken}"
@@ -422,7 +422,7 @@ msgstr "{pauseLabel} pausado"
 
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:569
 msgid "{pendingOrderCount} pending"
-msgstr ""
+msgstr "{pendingOrderCount} pendientes"
 
 #: src/components/liquidity-badge.tsx:254
 msgid "{percent} price impact"
@@ -442,11 +442,11 @@ msgstr "{priceImpactLabel}% de impacto en el precio al intercambiar {amountLabel
 
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:408
 msgid "{readySwapCount} swap quote ready"
-msgstr ""
+msgstr "{readySwapCount} cotización de swap lista"
 
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:409
 msgid "{readySwapCount} swap quotes ready"
-msgstr ""
+msgstr "{readySwapCount} cotizaciones de swap listas"
 
 #: src/hooks/use-time-remaining.ts:40
 msgid "{seconds}s"
@@ -458,19 +458,19 @@ msgstr "{strategyCount, plural, one {# estrategia} other {# estrategias}}"
 
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:471
 msgid "{swapCount} order"
-msgstr ""
+msgstr "{swapCount} orden"
 
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:472
 msgid "{swapCount} orders"
-msgstr ""
+msgstr "{swapCount} órdenes"
 
 #: src/views/index-dtf/issuance/async-mint/components/ondo-limits-banner.tsx:67
 msgid "{symbolList} are outside trading hours, so minting and redeeming is unavailable right now."
-msgstr ""
+msgstr "{symbolList} están fuera del horario de trading, por lo que el Mint y el Redeem no están disponibles en este momento."
 
 #: src/views/index-dtf/issuance/async-mint/components/ondo-limits-banner.tsx:66
 msgid "{symbolList} is outside trading hours, so minting and redeeming is unavailable right now."
-msgstr ""
+msgstr "{symbolList} está fuera del horario de trading, por lo que el Mint y el Redeem no están disponibles en este momento."
 
 #: src/components/rtoken-setup/basket/EmergencyCollateral.tsx:117
 msgid "{targetUnit} Backups"
@@ -536,11 +536,11 @@ msgstr "+{remaining} más"
 #. placeholder {0}: formatCurrency(leftoverCollateralUsd)
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1394
 msgid "+${0} leftover collateral"
-msgstr ""
+msgstr "+${0} de colateral sobrante"
 
 #: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:128
 msgid "<0>Note:</0> Some wallets, like MetaMask, need smart accounts enabled."
-msgstr ""
+msgstr "<0>Nota:</0> Algunas Wallets, como MetaMask, necesitan tener habilitadas las smart accounts."
 
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v5-upgrade.tsx:192
 msgid "<0>Release 5.0.0</0> introduces improved rebalancing with per-token auction size limits and the ability to disable bids for individual tokens. <1/>See the <2>changelog</2> for more details."
@@ -570,7 +570,7 @@ msgstr "$<0/> negociados"
 #: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:753
 #: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:774
 msgid "0 seconds"
-msgstr ""
+msgstr "0 segundos"
 
 #: src/views/yield-dtf/issuance/components/issue/IssuanceInfo.tsx:69
 msgid "0-100% Recharge time"
@@ -715,7 +715,7 @@ msgstr "Un actor de confianza responsable de lanzar las subastas aprobadas por l
 
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-optimistic-parameters.tsx:162
 msgid "A trusted actor that can create optimistic proposals."
-msgstr ""
+msgstr "Un actor confiable que puede crear propuestas optimistas."
 
 #: src/views/index-dtf/deploy/steps/roles/roles-form.tsx:22
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-roles.tsx:22
@@ -774,7 +774,7 @@ msgstr "Aceptar retraso de Unstake"
 
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:631
 msgid "Acquire assets before minting"
-msgstr ""
+msgstr "Adquirir activos antes del Mint"
 
 #: src/views/internal/dtf-list/components/dtf-table.tsx:201
 #: src/views/portfolio-page/components/pending-withdrawals.tsx:370
@@ -797,11 +797,11 @@ msgstr "Reequilibrios activos"
 
 #: src/views/index-dtf/issuance/async-mint/steps/success.tsx:293
 msgid "Activity history"
-msgstr ""
+msgstr "Historial de actividad"
 
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1185
 msgid "Actual impact"
-msgstr ""
+msgstr "Impacto real"
 
 #: src/components/rtoken-setup/basket/CustomCollateral.tsx:147
 #: src/views/yield-dtf/governance/views/proposal-detail/components/proposal-summary/BasketChangeSummary.tsx:45
@@ -830,7 +830,7 @@ msgstr "Agregar guardián adicional"
 
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-optimistic-parameters.tsx:165
 msgid "Add additional optimistic proposer"
-msgstr ""
+msgstr "Agregar otro proposer optimista"
 
 #: src/views/index-dtf/deploy/steps/revenue/additional-revenue-recipients.tsx:31
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-revenue-distribution.tsx:33
@@ -933,7 +933,7 @@ msgstr "Dirección"
 
 #: src/components/utils/blockies-avatar.tsx:27
 msgid "Address avatar"
-msgstr ""
+msgstr "Avatar de la dirección"
 
 #: src/views/index-dtf/overview/components/basket-overview/bridge-info-dialog.tsx:74
 #: src/views/index-dtf/overview/components/index-token-address.tsx:36
@@ -950,7 +950,7 @@ msgstr "Timelock de administración"
 
 #: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:277
 msgid "Advanced"
-msgstr ""
+msgstr "Avanzado"
 
 #: src/components/rtoken-setup/token/TokenConfiguration.tsx:30
 msgid "Advanced config:"
@@ -999,7 +999,7 @@ msgstr "Todas las Chains"
 
 #: src/components/filters/chain/ChainFilter.tsx:84
 msgid "All Chains"
-msgstr ""
+msgstr "Todas las Chains"
 
 #: src/views/earn/views/index-dtf/components/table-filters.tsx:53
 #: src/views/earn/views/yield-dtf/components/table-filters.tsx:51
@@ -1048,43 +1048,43 @@ msgstr "Todos los RTokens no listados"
 
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/optimistic.ts:109
 msgid "Allow optimistic proposals to change auction duration."
-msgstr ""
+msgstr "Permitir que las propuestas optimistas cambien la duración de las subastas."
 
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/optimistic.ts:121
 msgid "Allow optimistic proposals to change fee distribution."
-msgstr ""
+msgstr "Permitir que las propuestas optimistas cambien la distribución de comisiones."
 
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/optimistic.ts:145
 msgid "Allow optimistic proposals to change rebalance control mode."
-msgstr ""
+msgstr "Permitir que las propuestas optimistas cambien el modo de control de rebalanceo."
 
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/optimistic.ts:115
 msgid "Allow optimistic proposals to enable or disable direct bids."
-msgstr ""
+msgstr "Permitir que las propuestas optimistas habiliten o deshabiliten las ofertas directas."
 
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/optimistic.ts:139
 msgid "Allow optimistic proposals to rename the DTF token."
-msgstr ""
+msgstr "Permitir que las propuestas optimistas renombren el token del DTF."
 
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/optimistic.ts:101
 msgid "Allow optimistic proposals to start basket rebalances."
-msgstr ""
+msgstr "Permitir que las propuestas optimistas inicien rebalanceos del basket."
 
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/optimistic.ts:151
 msgid "Allow optimistic proposals to update the annualized TVL fee."
-msgstr ""
+msgstr "Permitir que las propuestas optimistas actualicen la comisión anualizada de TVL."
 
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/optimistic.ts:127
 msgid "Allow optimistic proposals to update the DTF mandate."
-msgstr ""
+msgstr "Permitir que las propuestas optimistas actualicen el mandato del DTF."
 
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/optimistic.ts:133
 msgid "Allow optimistic proposals to update the mint fee."
-msgstr ""
+msgstr "Permitir que las propuestas optimistas actualicen la comisión de Mint."
 
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/optimistic.ts:157
 msgid "Allow optimistic proposals to update the trusted filler registry."
-msgstr ""
+msgstr "Permitir que las propuestas optimistas actualicen el registro de fillers confiables."
 
 #: src/views/yield-dtf/deploy/components/TokenForm.tsx:65
 msgid "Allow RToken basket to change weights"
@@ -1132,7 +1132,7 @@ msgstr "Analizando liquidez..."
 
 #: src/views/index-dtf/issuance/async-mint/components/ondo-limits-banner.tsx:53
 msgid "and"
-msgstr ""
+msgstr "y"
 
 #: src/views/index-dtf/overview/components/index-disclousure.tsx:350
 msgid "and agree to the terms therein. ABC Labs, LLC (\"ABC Labs\") created the Website to help facilitate interaction with the Reserve protocol, including the minting and redeeming of DTFs. However, the Website is only one of several ways in which you can interact with the Reserve protocol. ABC Labs has neither created nor deployed any DTF and your ability to interact with specific DTFs via the Website in no way suggests that a DTF is endorsed by ABC Labs. In fact, ABC Labs assumes no liability for your use of the Website and interaction with the Reserve protocol, as covered in the Terms and Conditions."
@@ -1241,12 +1241,12 @@ msgstr "Aprobando..."
 
 #: src/views/index-dtf/overview/components/index-campaign-overview.tsx:52
 msgid "April 1"
-msgstr ""
+msgstr "1 de abril"
 
 #: src/views/portfolio-page/components/staked-positions.tsx:68
 #: src/views/portfolio-page/components/vote-locked-positions.tsx:111
 msgid "APY"
-msgstr ""
+msgstr "APY"
 
 #: src/views/earn/hooks/useEarnTableColumns.tsx:151
 msgid "APY = Base APY + Reward APY. For non-autocompounding pools reinvesting is not accounted, in which case APY = APR."
@@ -1270,7 +1270,7 @@ msgstr "¿Seguro que quieres salir? Esto puede causar que la subasta falle y se 
 
 #: src/views/index-dtf/governance/views/proposal/components/vote-modal.tsx:163
 msgid "Are you sure you wish to challenge?"
-msgstr ""
+msgstr "¿Estás seguro de que quieres impugnar?"
 
 #: src/components/rtoken-setup/token/ExternalRevenueSplit.tsx:97
 msgid "As RSR"
@@ -1283,7 +1283,7 @@ msgstr "Como RToken"
 #: src/components/dtf-chat/index.tsx:104
 #: src/views/index-dtf/overview/components/index-ctas-overview-mobile.tsx:149
 msgid "Ask Reserve AI"
-msgstr ""
+msgstr "Pregúntale a Reserve AI"
 
 #: src/components/ui/swap.tsx:255
 msgid "Assembling different routes"
@@ -1307,7 +1307,7 @@ msgstr "Activos"
 
 #: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:179
 msgid "Assets arrive"
-msgstr ""
+msgstr "Los activos llegan"
 
 #: src/views/index-dtf/governance/components/proposal-preview/rebalance-preview/rebalance-basket-preview.tsx:55
 msgid "Assets being removed"
@@ -1433,31 +1433,31 @@ msgstr ""
 
 #: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:77
 msgid "Automated Mint / Redeem"
-msgstr ""
+msgstr "Mint / Redeem automatizado"
 
 #: src/views/index-dtf/components/zapper/large-mint-prompt.tsx:135
 msgid "Automated Mint suggestion"
-msgstr ""
+msgstr "Sugerencia de Mint automatizado"
 
 #: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:79
 msgid "Automated minting and redemption require a wallet with smart account support. Hardware Wallets are not supported."
-msgstr ""
+msgstr "El Mint y el Redeem automatizados requieren una Wallet con soporte para smart accounts. Las Hardware Wallets no son compatibles."
 
 #: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:162
 msgid "Automated minting is an advanced feature. For most people, simple swaps are recommended."
-msgstr ""
+msgstr "El Mint automatizado es una función avanzada. Para la mayoría de las personas, se recomiendan los swaps simples."
 
 #: src/views/index-dtf/issuance/async-mint/steps/configure-mint.tsx:113
 msgid "Automatically acquire assets"
-msgstr ""
+msgstr "Adquirir activos automáticamente"
 
 #: src/views/index-dtf/issuance/async-mint/steps/configure-mint.tsx:123
 msgid "Automatically sell collateral"
-msgstr ""
+msgstr "Vender colateral automáticamente"
 
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/changes/optimistic-governance-changes.tsx:301
 msgid "Available Actions"
-msgstr ""
+msgstr "Acciones disponibles"
 
 #: src/views/index-dtf/auctions/views/rebalance/components/rebalance-completed.tsx:163
 #: src/views/index-dtf/auctions/views/rebalance/components/rebalance-completed.tsx:213
@@ -1474,15 +1474,15 @@ msgstr "Colaterales disponibles"
 
 #: src/components/layout/contact-modal/bell-button.tsx:32
 msgid "Available opportunity"
-msgstr ""
+msgstr "Oportunidad disponible"
 
 #: src/components/layout/contact-modal/bell-button.tsx:41
 msgid "Available opportunity!"
-msgstr ""
+msgstr "¡Oportunidad disponible!"
 
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-optimistic-parameters.tsx:66
 msgid "Available optimistic actions"
-msgstr ""
+msgstr "Acciones optimistas disponibles"
 
 #: src/views/portfolio-page/components/available-rewards.tsx:165
 msgid "Available Rewards"
@@ -1516,7 +1516,7 @@ msgstr "Esperando aprobaciones... ({completedCount}/{totalCount})"
 
 #: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:238
 msgid "Back to automated minting introduction"
-msgstr ""
+msgstr "Volver a la introducción del Mint automatizado"
 
 #: src/views/yield-dtf/governance/views/proposal/components/ProposalNavigation.tsx:38
 msgid "Back to Governance"
@@ -1579,7 +1579,7 @@ msgstr "Parámetros de respaldo"
 #: src/views/home/components/highlighted-dtfs/performance-chart-launch-marker.tsx:31
 #: src/views/index-dtf/overview/components/charts/price-chart-launch-marker.tsx:41
 msgid "Backtracked basket price"
-msgstr ""
+msgstr "Precio del basket retrospectivo"
 
 #: src/views/yield-dtf/governance/views/proposal/components/ProposedBackupPreview.tsx:118
 msgid "Backup basket"
@@ -1624,7 +1624,7 @@ msgstr "Base APY"
 
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1312
 msgid "Based on current collateral quotes. Your final mint amount is calculated from the assets acquired after trades complete."
-msgstr ""
+msgstr "Basado en las cotizaciones actuales del colateral. El monto final del Mint se calcula a partir de los activos adquiridos una vez completados los trades."
 
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/dtf-settings-proposal-sections.tsx:139
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/dtf-settings-proposal-sections.tsx:140
@@ -1695,7 +1695,7 @@ msgstr "Propuesta de configuración de la cesta"
 
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:835
 msgid "Basket tokens in your wallet"
-msgstr ""
+msgstr "Tokens del basket en tu Wallet"
 
 #: src/views/yield-dtf/settings/components/backing-info.tsx:20
 msgid "Basket warmup period"
@@ -1747,7 +1747,7 @@ msgstr ""
 
 #: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:159
 msgid "Before using automated minting"
-msgstr ""
+msgstr "Antes de usar el Mint automatizado"
 
 #: src/components/vote-lock/components/submit-unlock-button.tsx:145
 msgid "Begin {unlockDelay}-day unlock delay"
@@ -1849,7 +1849,7 @@ msgstr "Brand Managers"
 
 #: src/views/index-dtf/manage/components/manage-about.tsx:164
 msgid "Brand video"
-msgstr ""
+msgstr "Video de marca"
 
 #. placeholder {0}: token.symbol
 #: src/views/bridge/index.tsx:224
@@ -1944,7 +1944,7 @@ msgstr "Comprando (precio actual)"
 #. placeholder {0}: leg.asset.symbol
 #: src/views/index-dtf/issuance/async-mint/components/leg-row.tsx:173
 msgid "Buying {0}"
-msgstr ""
+msgstr "Comprando {0}"
 
 #: src/views/index-dtf/auctions/views/rebalance/components/rebalance-action-overview.tsx:127
 msgid "Buying:"
@@ -1978,7 +1978,7 @@ msgstr "Cálculo:"
 
 #: src/views/index-dtf/overview/components/index-campaign-overview.tsx:49
 msgid "Campaign ends:"
-msgstr ""
+msgstr "La campaña termina:"
 
 #: src/views/earn/views/index-dtf/index.tsx:50
 msgid "Can I unlock my tokens anytime?"
@@ -2025,7 +2025,7 @@ msgstr "Cancelada"
 
 #: src/views/index-dtf/issuance/async-mint/components/leg-row.tsx:76
 msgid "Cancelled"
-msgstr ""
+msgstr "Cancelado"
 
 #: src/views/yield-dtf/governance/views/proposal/components/SpellUpgrade4_2_0.tsx:79
 msgid "Cast Spell"
@@ -2080,19 +2080,19 @@ msgstr "Chain: {chainId}"
 #: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:214
 #: src/views/index-dtf/governance/views/proposal/components/vote-modal.tsx:84
 msgid "Challenge"
-msgstr ""
+msgstr "Impugnar"
 
 #: src/views/index-dtf/governance/views/proposal/components/vote-modal.tsx:190
 msgid "Challenge proposal"
-msgstr ""
+msgstr "Impugnar propuesta"
 
 #: src/views/index-dtf/governance/views/proposal/components/proposal-vote-button.tsx:51
 msgid "Challenged"
-msgstr ""
+msgstr "Impugnada"
 
 #: src/views/index-dtf/governance/views/proposal/components/proposal-detail-votes.tsx:99
 msgid "Challenged votes"
-msgstr ""
+msgstr "Votos impugnados"
 
 #: src/views/yield-dtf/governance/components/AccountVotes.tsx:104
 #: src/views/yield-dtf/governance/views/proposal-detail/components/proposal-summary/BasketChangeSummary.tsx:204
@@ -2106,7 +2106,7 @@ msgstr "Cambiar cesta de respaldo"
 
 #: src/views/index-dtf/governance/components/governance-account-info.tsx:85
 msgid "Change delegate"
-msgstr ""
+msgstr "Cambiar delegado"
 
 #: src/views/yield-dtf/governance/views/proposal/components/ProposedRevenueSplitPreview.tsx:114
 msgid "Change distribution"
@@ -2143,19 +2143,19 @@ msgstr "Verificando liquidez..."
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/submit-proposal-button.tsx:56
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/submit-proposal-button.tsx:54
 msgid "Checking proposal type..."
-msgstr ""
+msgstr "Verificando el tipo de propuesta..."
 
 #: src/views/index-dtf/governance/views/propose/basket/components/submit-proposal-button.tsx:79
 #: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/submit-proposal-button.tsx:73
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/submit-proposal-button.tsx:70
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/submit-proposal-button.tsx:68
 msgid "Checking voting power..."
-msgstr ""
+msgstr "Verificando el poder de voto..."
 
 #: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:258
 #: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:371
 msgid "Checking wallet..."
-msgstr ""
+msgstr "Verificando la Wallet..."
 
 #: src/components/rtoken-setup/governance/GovernanceSetup.tsx:52
 msgid "Choose between our Alexios Governor and anything between one-person rule to arbitrary DAO structure under your defined Ethereum address."
@@ -2164,7 +2164,7 @@ msgstr "Elige entre nuestro Alexios Governor y cualquier opción intermedia, des
 #. placeholder {0}: inputToken.symbol
 #: src/views/index-dtf/issuance/async-mint/steps/configure-mint.tsx:173
 msgid "Choose how much {0} to use for this mint."
-msgstr ""
+msgstr "Elige cuánto {0} usar para este Mint."
 
 #: src/views/yield-dtf/issuance/components/redeem/RedeemNonceModal.tsx:42
 msgid "Choose Redemption Basket"
@@ -2248,7 +2248,7 @@ msgstr "Colateral"
 
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:990
 msgid "Collateral acquired"
-msgstr ""
+msgstr "Colateral adquirido"
 
 #. placeholder {0}: collateral.address
 #: src/components/rtoken-setup/basket/UnitBasket.tsx:150
@@ -2277,15 +2277,15 @@ msgstr "Plugins de colateral"
 
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1505
 msgid "Collateral swaps"
-msgstr ""
+msgstr "Swaps de colateral"
 
 #: src/views/index-dtf/issuance/async-mint/steps/success.tsx:297
 msgid "Collateral swaps for this mint."
-msgstr ""
+msgstr "Swaps de colateral para este Mint."
 
 #: src/views/index-dtf/issuance/async-mint/steps/success.tsx:299
 msgid "Collateral swaps for this redeem."
-msgstr ""
+msgstr "Swaps de colateral para este Redeem."
 
 #: src/components/rtoken-setup/basket/PluginItem.tsx:33
 #: src/views/yield-dtf/governance/views/proposal-detail/components/proposal-summary/BasketChangeSummary.tsx:198
@@ -2354,7 +2354,7 @@ msgstr "Completado"
 
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1501
 msgid "Completed orders"
-msgstr ""
+msgstr "Órdenes completadas"
 
 #: src/views/index-dtf/auctions/legacy/components/proposal-trades.tsx:138
 msgid "Completed:"
@@ -2362,7 +2362,7 @@ msgstr "Completado:"
 
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:83
 msgid "Completing mint…"
-msgstr ""
+msgstr "Completando el Mint…"
 
 #: src/views/index-dtf/overview/components/yield-index/yield-index-composition.tsx:43
 msgid "Composition"
@@ -2370,7 +2370,7 @@ msgstr "Composición"
 
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-optimistic-parameters.tsx:17
 msgid "Configure optimistic proposal parameters, trusted optimistic proposers, and which DTF settings they can propose through the veto flow."
-msgstr ""
+msgstr "Configura los parámetros de las propuestas optimistas, los proposers optimistas confiables y qué ajustes del DTF pueden proponer a través del flujo de veto."
 
 #: src/views/index-dtf/governance/views/propose/basket/components/basket-proposal-overview.tsx:77
 #: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/basket-settings-proposal-overview.tsx:69
@@ -2452,7 +2452,7 @@ msgstr "Confirmar Stake"
 
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:770
 msgid "Confirm the value to put toward this mint."
-msgstr ""
+msgstr "Confirma el valor a destinar a este Mint."
 
 #: src/views/yield-dtf/staking/components/unstake/confirm-unstake-button.tsx:61
 msgid "Confirm Unstake"
@@ -2495,7 +2495,7 @@ msgstr "Confirmando..."
 
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:80
 msgid "Confirming…"
-msgstr ""
+msgstr "Confirmando…"
 
 #. placeholder {0}: form!.tokenName
 #: src/views/index-dtf/deploy/steps/confirm-deploy/success/index.tsx:76
@@ -2528,7 +2528,7 @@ msgstr "Conecta tu Wallet"
 
 #: src/components/vote-lock/components/delegate.tsx:110
 msgid "Connect your wallet to set a delegate after vote-locking."
-msgstr ""
+msgstr "Conecta tu Wallet para asignar un delegado después del vote-lock."
 
 #: src/views/portfolio-page/index.tsx:40
 msgid "Connect your wallet to view your portfolio"
@@ -2545,11 +2545,11 @@ msgstr "Contáctanos para confirmar tu elegibilidad"
 #: src/views/index-dtf/governance/components/contest-badge.tsx:6
 #: src/views/index-dtf/governance/views/proposal/components/proposal-vote.tsx:158
 msgid "Contested"
-msgstr ""
+msgstr "Disputada"
 
 #: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:373
 msgid "Continue"
-msgstr ""
+msgstr "Continuar"
 
 #: src/components/layout/navigation/TokenNavigation.tsx:221
 #: src/views/yield-dtf/settings/components/navigation-sidebar.tsx:18
@@ -2574,7 +2574,7 @@ msgstr "Controla las comisiones, los parámetros de votación y todo lo que no s
 
 #: src/views/index-dtf/settings/components/index-settings-governance.tsx:133
 msgid "Controls fees, voting parameters, and basket changes for an Index DTF"
-msgstr ""
+msgstr "Controla las comisiones, los parámetros de votación y los cambios del basket de un Index DTF"
 
 #: src/views/index-dtf/settings/components/index-settings-governance.tsx:135
 msgid "Controls settings of the vlDAO including vote lock duration and approving revenue tokens"
@@ -2583,12 +2583,12 @@ msgstr "Controla la configuración del vlDAO, incluida la duración del bloqueo 
 #. placeholder {0}: inputToken.symbol
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:839
 msgid "Converted to {0} — see breakdown"
-msgstr ""
+msgstr "Convertido a {0} — ver desglose"
 
 #. placeholder {0}: inputToken.symbol
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:772
 msgid "Converting basket tokens held in your wallet to {0}."
-msgstr ""
+msgstr "Convirtiendo los tokens del basket en tu Wallet a {0}."
 
 #: src/views/index-dtf/overview/components/basket-overview/index.tsx:49
 msgid "Copied to clipboard"
@@ -2649,7 +2649,7 @@ msgstr "cow"
 
 #: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:177
 msgid "CoW routes"
-msgstr ""
+msgstr "Rutas de CoW"
 
 #: src/views/index-dtf/auctions/views/rebalance/components/cowbot/use-cowbot-query.ts:90
 msgid "CowBot encountered errors"
@@ -2848,7 +2848,7 @@ msgstr "% actual"
 
 #: src/views/index-dtf/overview/components/index-campaign-overview.tsx:80
 msgid "Current APR:"
-msgstr ""
+msgstr "APR actual:"
 
 #: src/views/yield-dtf/issuance/components/redeem/RedeemNonceModal.tsx:70
 msgid "Current basket"
@@ -2864,7 +2864,7 @@ msgstr "La cesta actual no está capitalizada, intenta hacer Redeem con una cest
 
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-optimistic-parameters.tsx:69
 msgid "Current DTF settings functions optimistic proposers can propose."
-msgstr ""
+msgstr "Funciones de ajustes del DTF que los proposers optimistas pueden proponer actualmente."
 
 #: src/components/rtoken-setup/components/RolesEdit.tsx:110
 msgid "Current holder"
@@ -2872,7 +2872,7 @@ msgstr "Titular actual"
 
 #: src/components/vote-lock/components/delegate.tsx:157
 msgid "Current locked amount:"
-msgstr ""
+msgstr "Monto bloqueado actual:"
 
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/changes/basics-changes.tsx:67
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/changes/mandate-changes.tsx:31
@@ -2956,7 +2956,7 @@ msgstr "Propuesta de configuración del DAO"
 
 #: src/components/layout/header/components/header-actions-menu.tsx:99
 msgid "Dark"
-msgstr ""
+msgstr "Oscuro"
 
 #: src/views/portfolio-page/components/transactions.tsx:86
 msgid "Date"
@@ -2992,7 +2992,7 @@ msgstr "días"
 
 #: src/views/home/components/homepage-hero.tsx:36
 msgid "Decentralized Token Folios"
-msgstr ""
+msgstr "Decentralized Token Folios"
 
 #: src/views/home/components/hero.tsx:68
 #~ msgid "Decentralized Token Folios illustration"
@@ -3115,15 +3115,15 @@ msgstr "Delegado a: "
 
 #: src/views/index-dtf/governance/components/governance-delegate-list.tsx:166
 msgid "Delegates"
-msgstr ""
+msgstr "Delegados"
 
 #: src/components/vote-lock/components/delegate.tsx:85
 msgid "Delegation"
-msgstr ""
+msgstr "Delegación"
 
 #: src/components/vote-lock/components/submit-delegate-button.tsx:159
 msgid "Delegation updated"
-msgstr ""
+msgstr "Delegación actualizada"
 
 #: src/components/index-basket-setup/basket-table.tsx:68
 #: src/views/index-dtf/governance/components/proposal-preview/rebalance-preview/rebalance-basket-preview.tsx:80
@@ -3235,7 +3235,7 @@ msgstr "Nombre de usuario de Discord"
 
 #: src/views/home/components/highlighted-dtfs/end-card.tsx:84
 msgid "Discover all our products"
-msgstr ""
+msgstr "Descubre todos nuestros productos"
 
 #: src/components/layout/header/components/app-navigation.tsx:57
 msgid "Discover DTFs"
@@ -3253,7 +3253,7 @@ msgstr "Descartar"
 
 #: src/views/index-dtf/components/zapper/large-mint-prompt.tsx:45
 msgid "Dismiss Automated Mint suggestion"
-msgstr ""
+msgstr "Descartar la sugerencia de Mint automatizado"
 
 #: src/views/yield-dtf/issuance/components/zapV2/minters-modal/index.tsx:31
 msgid "Dismiss invitation"
@@ -3373,7 +3373,7 @@ msgstr "Portada del DTF"
 #: src/views/home/components/highlighted-dtfs/performance-chart-launch-marker.tsx:30
 #: src/views/index-dtf/overview/components/charts/price-chart-launch-marker.tsx:39
 msgid "DTF Created"
-msgstr ""
+msgstr "DTF creado"
 
 #: src/views/home/components/dtf-explainer-button.tsx:26
 #: src/views/index-dtf/overview/components/landing-mint/dtf-cover.tsx:61
@@ -3394,7 +3394,7 @@ msgstr "Ficha técnica del DTF"
 
 #: src/views/index-dtf/settings/components/index-settings-governance.tsx:143
 msgid "DTF Governance"
-msgstr ""
+msgstr "Gobernanza del DTF"
 
 #: src/views/portfolio-page/components/active-proposals.tsx:36
 #: src/views/portfolio-page/components/voting-power.tsx:23
@@ -3415,7 +3415,7 @@ msgstr "DTF inactivo"
 
 #: src/views/home/components/highlighted-dtfs/performance-chart-launch-marker.tsx:32
 msgid "DTF price data"
-msgstr ""
+msgstr "Datos de precio del DTF"
 
 #: src/views/index-dtf/governance/views/propose/index.tsx:58
 msgid "DTF Settings"
@@ -3500,7 +3500,7 @@ msgstr "Guardianes duplicados"
 
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/form-fields.ts:25
 msgid "Duplicated optimistic proposers"
-msgstr ""
+msgstr "Proposers optimistas duplicados"
 
 #: src/components/rtoken-setup/token/OtherForm.tsx:24
 #: src/components/rtoken-setup/token/OtherForm.tsx:38
@@ -3565,7 +3565,7 @@ msgstr "Gana recompensas haciendo Stake o participando en la gobernanza. <0>Más
 #. placeholder {1}: campaignData.rewardToken?.symbol
 #: src/views/index-dtf/overview/components/index-campaign-overview.tsx:63
 msgid "Earn rewards in <0>{0} ({1})</0> by simply holding the Base AI Index and claiming your rewards in the Merkl UI."
-msgstr ""
+msgstr "Gana recompensas en <0>{0} ({1})</0> simplemente manteniendo el Base AI Index y reclamando tus recompensas en la interfaz de Merkl."
 
 #: src/views/earn/views/defi/components/featured-pool-item.tsx:43
 msgid "Earn up to"
@@ -3590,7 +3590,7 @@ msgstr "Editar imagen de portada de {variant}"
 
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:781
 msgid "Edit input amount"
-msgstr ""
+msgstr "Editar el monto de entrada"
 
 #: src/views/index-dtf/manage/components/manage-form.tsx:144
 msgid "Edit Overview Content"
@@ -3679,7 +3679,7 @@ msgstr "Asegúrate de que los activos que estás dando de baja no tengan ingreso
 #. placeholder {0}: inputToken.symbol
 #: src/views/index-dtf/issuance/async-mint/steps/configure-mint.tsx:168
 msgid "Enter {0} amount"
-msgstr ""
+msgstr "Ingresa el monto de {0}"
 
 #: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/basket-settings-proposal-section.tsx:39
 #: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/basket-settings-proposal-section.tsx:99
@@ -3747,7 +3747,7 @@ msgstr "Ingresa los pesos actualizados de los tokens de la cesta. Recuerda que l
 
 #: src/components/vote-lock/components/delegate.tsx:95
 msgid "Enter the wallet address that should vote on normal governance proposals."
-msgstr ""
+msgstr "Ingresa la dirección de la Wallet que debe votar en las propuestas de gobernanza normales."
 
 #: src/views/index-dtf/deploy/steps/governance/governance-options.tsx:69
 msgid "Enter the wallet address that will have centralized control of <0/>. Be aware, that having centralized control limits who can interact with <1/> on Register."
@@ -3844,7 +3844,7 @@ msgstr "Pérdida estimada: ~${0}"
 
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1301
 msgid "Estimated output"
-msgstr ""
+msgstr "Salida estimada"
 
 #: src/views/index-dtf/auctions/views/rebalance/components/rebalance-liquidity-checker.tsx:290
 #: src/views/index-dtf/governance/views/propose/basket/components/proposal-liquidity-checker.tsx:359
@@ -3870,7 +3870,7 @@ msgstr "Distribución uniforme"
 #: src/views/index-dtf/issuance/async-mint/steps/configure-mint.tsx:237
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:958
 msgid "Exceeds available balance"
-msgstr ""
+msgstr "Supera el balance disponible"
 
 #: src/views/yield-dtf/overview/components/charts/price-chart.tsx:133
 msgid "Exchange Rate"
@@ -3952,12 +3952,12 @@ msgstr "Progreso de ejecución"
 #. placeholder {0}: formatCurrency(walletCollateralUsedUsd)
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:810
 msgid "Existing collateral · ${0} applied"
-msgstr ""
+msgstr "Colateral existente · ${0} aplicado"
 
 #. placeholder {0}: formatCurrency(heldCollateralTotalUsd)
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:811
 msgid "Existing collateral · ${0} available"
-msgstr ""
+msgstr "Colateral existente · ${0} disponible"
 
 #: src/components/rtoken-setup/components/BackButton.tsx:28
 #: src/views/yield-dtf/deploy/components/NavigationSidebar.tsx:45
@@ -4003,7 +4003,7 @@ msgstr "Explorar"
 
 #: src/views/home/components/highlighted-dtfs/end-card.tsx:87
 msgid "Explore DTFs across broad crypto, ecosystems, yield strategies and more."
-msgstr ""
+msgstr "Explora DTFs en cripto amplio, ecosistemas, estrategias de rendimiento y más."
 
 #: src/views/home/components/register-about.tsx:86
 msgid "explore the Reserve Documentation for more details."
@@ -4030,7 +4030,7 @@ msgstr "Porcentaje de exposición"
 
 #: src/views/home/components/discover-index-dtf/basket-hover-card.tsx:40
 msgid "Exposure:"
-msgstr ""
+msgstr "Exposición:"
 
 #: src/views/yield-dtf/governance/views/proposal-detail/components/proposal-summary/revenue-distribution-summary.tsx:39
 msgid "External"
@@ -4042,7 +4042,7 @@ msgstr "Colateral adicional a mantener"
 
 #: src/views/index-dtf/issuance/async-mint/components/leg-row.tsx:77
 msgid "Failed"
-msgstr ""
+msgstr "Fallido"
 
 #: src/components/ui/seamless-transaction.tsx:92
 msgid "Failed to connect wallet"
@@ -4087,15 +4087,15 @@ msgstr "Rápido"
 
 #: src/components/vote-lock/components/submit-delegate-button.tsx:118
 msgid "fast delegate"
-msgstr ""
+msgstr "delegado rápido"
 
 #: src/views/index-dtf/governance/views/propose/components/proposal-type-selector.tsx:124
 msgid "Fast Governance"
-msgstr ""
+msgstr "Gobernanza rápida"
 
 #: src/views/index-dtf/governance/views/proposal/components/proposal-vote.tsx:180
 msgid "Fast proposal"
-msgstr ""
+msgstr "Propuesta rápida"
 
 #: src/views/explorer/components/tokens/index.tsx:194
 msgid "Featured RTokens"
@@ -4113,7 +4113,7 @@ msgstr "Distribución de comisiones"
 #: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:37
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/optimistic.ts:120
 msgid "Fee recipients"
-msgstr ""
+msgstr "Destinatarios de comisiones"
 
 #: src/components/feedback-button/index.tsx:26
 #: src/components/layout/header/components/app-navigation.tsx:137
@@ -4145,19 +4145,19 @@ msgstr "Comisiones distribuidas"
 
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:403
 msgid "Fetching {swapCount} swap quote"
-msgstr ""
+msgstr "Obteniendo {swapCount} cotización de swap"
 
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:404
 msgid "Fetching {swapCount} swap quotes"
-msgstr ""
+msgstr "Obteniendo {swapCount} cotizaciones de swap"
 
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1130
 msgid "Fetching quotes..."
-msgstr ""
+msgstr "Obteniendo cotizaciones..."
 
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:405
 msgid "Fetching swap quotes"
-msgstr ""
+msgstr "Obteniendo cotizaciones de swap"
 
 #: src/views/yield-dtf/issuance/components/wrapping/CollateralItem.tsx:334
 msgid "Fetching..."
@@ -4182,7 +4182,7 @@ msgstr "Completa la información a continuación y ABC Labs se pondrá en contac
 
 #: src/views/index-dtf/issuance/async-mint/components/leg-row.tsx:71
 msgid "Filled"
-msgstr ""
+msgstr "Completado"
 
 #: src/components/rtoken-setup/basket/UnitBasket.tsx:140
 msgid "Filled: {totalDistribution}%"
@@ -4190,7 +4190,7 @@ msgstr "Completado: {totalDistribution}%"
 
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:81
 msgid "Filling orders…"
-msgstr ""
+msgstr "Completando órdenes…"
 
 #: src/views/earn/views/index-dtf/components/table-filters.tsx:80
 #: src/views/earn/views/yield-dtf/components/table-filters.tsx:79
@@ -4248,7 +4248,7 @@ msgstr "A favor"
 
 #: src/views/index-dtf/governance/views/propose/components/proposal-type-selector.tsx:126
 msgid "For approved governors to fast-track proposals."
-msgstr ""
+msgstr "Para que los gobernadores aprobados agilicen propuestas."
 
 #: src/views/index-dtf/components/compliance-alert.tsx:19
 msgid "For more information, see our <0>Terms of Use</0>."
@@ -4341,7 +4341,7 @@ msgstr "Obtén exposición fácil a narrativas, índices y ecosistemas"
 
 #: src/views/index-dtf/issuance/async-mint/steps/configure-mint.tsx:248
 msgid "Get quote"
-msgstr ""
+msgstr "Obtener cotización"
 
 #: src/views/index-dtf/deploy/steps/confirm-deploy/success/index.tsx:105
 msgid "Go to DTF overview"
@@ -4437,7 +4437,7 @@ msgstr "Token de gobernanza"
 
 #: src/views/index-dtf/governance/views/propose/components/proposal-type-selector.tsx:114
 msgid "Governance with an execution delay greater than 1 week unstaking delay"
-msgstr ""
+msgstr "Gobernanza con un retraso de ejecución mayor que el retraso de Unstake de 1 semana"
 
 #. placeholder {0}: indexDTF.stToken.token.symbol
 #: src/views/index-dtf/governance/components/governance-vote-lock.tsx:65
@@ -4521,11 +4521,11 @@ msgstr "hero-splash"
 
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:548
 msgid "Hide orders"
-msgstr ""
+msgstr "Ocultar órdenes"
 
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:549
 msgid "Hide quotes"
-msgstr ""
+msgstr "Ocultar cotizaciones"
 
 #: src/views/index-dtf/governance/views/propose/basket/components/legacy-proposal-auction-price-ranges.tsx:108
 #: src/views/index-dtf/governance/views/propose/basket/components/proposal-basket-price-settings.tsx:107
@@ -4548,7 +4548,7 @@ msgstr "Alto impacto en el precio: {0}"
 
 #: src/views/home/components/highlighted-dtfs/chain-tabs.tsx:29
 msgid "Highlighted card chain"
-msgstr ""
+msgstr "Chain de la tarjeta destacada"
 
 #: src/components/layout/navigation/TokenNavigation.tsx:182
 #: src/views/yield-dtf/overview/components/historical-metrics.tsx:14
@@ -4606,11 +4606,11 @@ msgstr "Cuánto tiempo tienen los gobernadores para emitir sus votos sobre una p
 
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-optimistic-parameters.tsx:144
 msgid "How long governors have to veto an optimistic proposal."
-msgstr ""
+msgstr "Cuánto tiempo tienen los gobernadores para vetar una propuesta optimista."
 
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-optimistic-parameters.tsx:130
 msgid "How long optimistic proposals wait before the veto period starts."
-msgstr ""
+msgstr "Cuánto tiempo esperan las propuestas optimistas antes de que comience el período de veto."
 
 #. placeholder {0}: rToken.symbol
 #: src/views/yield-dtf/auctions/auctions-sidebar/StakingVaultRevenue.tsx:191
@@ -4676,7 +4676,7 @@ msgstr "en {0}"
 
 #: src/views/index-dtf/overview/components/index-campaign-overview.tsx:60
 msgid "in Daily Payouts"
-msgstr ""
+msgstr "en pagos diarios"
 
 #: src/views/index-dtf/overview/components/zap-mint/buy/index.tsx:139
 #: src/views/index-dtf/overview/components/zap-mint/sell/index.tsx:131
@@ -4713,7 +4713,7 @@ msgstr "Incluye cualquier poder de voto delegado a mí."
 
 #: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:265
 msgid "Incompatible wallet"
-msgstr ""
+msgstr "Wallet incompatible"
 
 #: src/views/yield-dtf/governance/views/proposal-detail/components/proposal-summary/BasketChangeSummary.tsx:53
 msgid "Increase"
@@ -4749,7 +4749,7 @@ msgstr "Index DTFs"
 
 #: src/views/index-dtf/governance/components/governance-stats.tsx:54
 msgid "Information"
-msgstr ""
+msgstr "Información"
 
 #: src/components/rtoken-setup/governance/GovernanceSetup.tsx:122
 msgid "Initial RToken state after deployment"
@@ -4771,11 +4771,11 @@ msgstr "Ingresa la dirección"
 
 #: src/views/index-dtf/issuance/async-mint/steps/success.tsx:220
 msgid "Input amount"
-msgstr ""
+msgstr "Monto de entrada"
 
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:757
 msgid "Input confirmed"
-msgstr ""
+msgstr "Entrada confirmada"
 
 #: src/components/rtoken-setup/governance/GovernanceParameters.tsx:52
 msgid "Input delay"
@@ -4851,7 +4851,7 @@ msgstr "Ingresar el % de fuga en el retiro"
 
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1245
 msgid "Inputs are locked while swap quotes are fetched."
-msgstr ""
+msgstr "Las entradas se bloquean mientras se obtienen las cotizaciones de swap."
 
 #: src/views/index-dtf/overview/components/index-disclousure.tsx:73
 msgid "Inserted missing dates - notification date, admission to trading start date, and publication date (01./F.9/F.10)."
@@ -5030,15 +5030,15 @@ msgstr "ahora mismo"
 
 #: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:84
 msgid "Known supported wallets"
-msgstr ""
+msgstr "Wallets compatibles conocidas"
 
 #: src/components/layout/header/components/header-actions-menu.tsx:115
 msgid "Language"
-msgstr ""
+msgstr "Idioma"
 
 #: src/views/index-dtf/components/zapper/large-mint-prompt.tsx:52
 msgid "Large orders may benefit from Automated Mint"
-msgstr ""
+msgstr "Las órdenes grandes pueden beneficiarse del Mint automatizado"
 
 #. placeholder {0}: Math.ceil(amountUsd / ondo.capacityUsd)
 #: src/components/ondo-badge.tsx:156
@@ -5099,15 +5099,15 @@ msgstr "Conoce más sobre Reserve en su sitio web."
 
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1408
 msgid "Leftover collateral is not included in the DTF output value. It may remain because minting uses fixed basket ratios."
-msgstr ""
+msgstr "El colateral sobrante no se incluye en el valor de salida del DTF. Puede quedar porque el Mint usa proporciones fijas del basket."
 
 #: src/views/index-dtf/issuance/async-mint/steps/success.tsx:252
 msgid "Leftover dust"
-msgstr ""
+msgstr "Polvo sobrante"
 
 #: src/components/layout/header/components/header-actions-menu.tsx:99
 msgid "Light"
-msgstr ""
+msgstr "Claro"
 
 #: src/views/tokens/components/TableFilters.tsx:75
 msgid "Limit of records per chain"
@@ -5144,7 +5144,7 @@ msgstr "Subasta de reequilibrio en vivo"
 
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-optimistic-parameters.tsx:78
 msgid "Loading current allowed actions..."
-msgstr ""
+msgstr "Cargando las acciones permitidas actuales..."
 
 #: src/components/ui/swap.tsx:258
 msgid "Loading DTF"
@@ -5367,7 +5367,7 @@ msgstr "Capitalización de mercado:"
 
 #: src/views/home/components/discover-index-dtf/index.tsx:15
 msgid "Market Cap:"
-msgstr ""
+msgstr "Capitalización de mercado:"
 
 #: src/components/ondo-badge.tsx:46
 msgid "Market closed"
@@ -5557,7 +5557,7 @@ msgstr "Mint {0}% APY est."
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:624
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1233
 msgid "Mint {receiveSymbol}"
-msgstr ""
+msgstr "Mint de {receiveSymbol}"
 
 #: src/components/layout/navigation/index.tsx:78
 msgid "Mint + Redeem"
@@ -5578,11 +5578,11 @@ msgstr "Cantidad de Mint:"
 
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1228
 msgid "Mint completed"
-msgstr ""
+msgstr "Mint completado"
 
 #: src/views/index-dtf/issuance/async-mint/steps/success.tsx:186
 msgid "Mint Completed"
-msgstr ""
+msgstr "Mint completado"
 
 #: src/views/yield-dtf/issuance/components/issue/Issue.tsx:113
 msgid "Mint disabled"
@@ -5591,7 +5591,7 @@ msgstr "Mint deshabilitado"
 #: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:39
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/optimistic.ts:132
 msgid "Mint fee"
-msgstr ""
+msgstr "Comisión de Mint"
 
 #: src/views/index-dtf/deploy/steps/revenue/index.tsx:91
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/changes/revenue-changes.tsx:451
@@ -5612,7 +5612,7 @@ msgstr "La comisión de Mint debe ser de 5% o menor"
 
 #: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:80
 msgid "Mint large USDC amounts through batched CoW Swap orders, or redeem DTFs into the underlying assets. Recommended for market makers or transactions over 50,000 USDC."
-msgstr ""
+msgstr "Haz Mint de grandes cantidades de USDC a través de órdenes agrupadas de CoW Swap, o haz Redeem de DTFs a sus activos subyacentes. Recomendado para market makers o transacciones de más de 50,000 USDC."
 
 #: src/views/yield-dtf/issuance/components/zapV2/settings/ZapSettingsModal.tsx:65
 msgid "Mint RTokens?"
@@ -5632,7 +5632,7 @@ msgstr "Disponible para Mint ahora"
 
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1292
 msgid "Minted"
-msgstr ""
+msgstr "Minteado"
 
 #: src/views/index-dtf/overview/components/fees-stats.tsx:43
 #: src/views/index-dtf/overview/components/index-metrics-overview.tsx:195
@@ -5694,11 +5694,11 @@ msgstr "Más información sobre qué es {dtfName}, de qué se trata, su metodolo
 
 #: src/components/layout/header/components/header-actions-menu.tsx:52
 msgid "More options"
-msgstr ""
+msgstr "Más opciones"
 
 #: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:143
 msgid "Most users should use Swap"
-msgstr ""
+msgstr "La mayoría de los usuarios debería usar Swap"
 
 #: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/form-fields.ts:14
 msgid "Must be 0 or greater"
@@ -5718,7 +5718,7 @@ msgstr "Debe ser una URL de Twitter/X válida"
 
 #: src/views/index-dtf/manage/components/schema.ts:12
 msgid "Must be a valid YouTube URL"
-msgstr ""
+msgstr "Debe ser una URL de YouTube válida"
 
 #: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/form-fields.ts:15
 msgid "Must be between 0 and 100"
@@ -5821,7 +5821,7 @@ msgstr "Nuevo mandato:"
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1433
 #: src/views/index-dtf/issuance/async-mint/steps/success.tsx:173
 msgid "New mint"
-msgstr ""
+msgstr "Nuevo Mint"
 
 #: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:377
 msgid "New mint fee:"
@@ -5838,7 +5838,7 @@ msgstr "Nuevo umbral de propuesta:"
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1433
 #: src/views/index-dtf/issuance/async-mint/steps/success.tsx:173
 msgid "New redeem"
-msgstr ""
+msgstr "Nuevo Redeem"
 
 #: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:412
 msgid "New TVL fee:"
@@ -5917,11 +5917,11 @@ msgstr "Sin cambios"
 
 #: src/views/index-dtf/issuance/async-mint/steps/success.tsx:319
 msgid "No collateral swaps were needed for this mint."
-msgstr ""
+msgstr "No se necesitaron swaps de colateral para este Mint."
 
 #: src/views/index-dtf/issuance/async-mint/steps/success.tsx:321
 msgid "No collateral swaps were needed for this redeem."
-msgstr ""
+msgstr "No se necesitaron swaps de colateral para este Redeem."
 
 #: src/components/charts/area/AreaChart.tsx:132
 #: src/views/home/components/discover-index-dtf/index-dtf-table-columns.tsx:137
@@ -5942,7 +5942,7 @@ msgstr "No se encontraron delegados"
 
 #: src/views/index-dtf/governance/views/proposal/components/proposal-detail-content.tsx:43
 msgid "No description provided for this proposal."
-msgstr ""
+msgstr "No se proporcionó una descripción para esta propuesta."
 
 #: src/views/internal/dtf-list/components/dtf-table.tsx:218
 #: src/views/top100/components/top100-table.tsx:247
@@ -6030,16 +6030,16 @@ msgstr "No se encontró ruta de swap. Considera eliminar este token."
 
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1512
 msgid "No swaps are needed for this operation."
-msgstr ""
+msgstr "No se necesitan swaps para esta operación."
 
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:410
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1560
 msgid "No swaps needed"
-msgstr ""
+msgstr "No se necesitan swaps"
 
 #: src/views/home/components/discover-index-dtf/index-dtf-table-columns.tsx:226
 msgid "No tags"
-msgstr ""
+msgstr "Sin etiquetas"
 
 #: src/components/token-selector-drawer/index.tsx:224
 #: src/views/index-dtf/deploy/steps/basket/token-selector.tsx:374
@@ -6077,7 +6077,7 @@ msgstr "Sin votos"
 
 #: src/views/index-dtf/governance/views/proposal/components/proposal-vote-button.tsx:55
 msgid "No voting power"
-msgstr ""
+msgstr "Sin poder de voto"
 
 #: src/views/earn/components/pools-table.tsx:185
 msgid "No yield opportunities found"
@@ -6114,19 +6114,19 @@ msgstr "Ninguno"
 #: src/components/vote-lock/components/delegate.tsx:120
 #: src/views/index-dtf/governance/components/governance-delegate-list.tsx:118
 msgid "Normal"
-msgstr ""
+msgstr "Normal"
 
 #: src/components/vote-lock/components/delegate.tsx:89
 msgid "Normal and fast governance use separate delegates. Normal delegates vote on normal proposals. Fast delegates can challenge fast proposals."
-msgstr ""
+msgstr "La gobernanza normal y la rápida usan delegados separados. Los delegados normales votan en las propuestas normales. Los delegados rápidos pueden impugnar las propuestas rápidas."
 
 #: src/components/vote-lock/components/submit-delegate-button.tsx:107
 msgid "normal delegate"
-msgstr ""
+msgstr "delegado normal"
 
 #: src/views/index-dtf/governance/components/governance-account-info.tsx:196
 msgid "Normal Delegate"
-msgstr ""
+msgstr "Delegado normal"
 
 #: src/views/yield-dtf/auctions/auctions-sidebar/RevenueAuctionItem.tsx:22
 msgid "Not available"
@@ -6140,7 +6140,7 @@ msgstr "No disponible en tu región"
 #: src/views/index-dtf/governance/components/governance-account-info.tsx:166
 #: src/views/index-dtf/governance/components/governance-account-info.tsx:171
 msgid "Not delegated"
-msgstr ""
+msgstr "Sin delegar"
 
 #: src/views/yield-dtf/auctions/dutch/components/AuctionActions.tsx:104
 msgid "Not enough balance to bid"
@@ -6181,7 +6181,7 @@ msgstr "Impulsar"
 #: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:113
 #: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:218
 msgid "of"
-msgstr ""
+msgstr "de"
 
 #: src/views/index-dtf/overview/components/index-disclousure.tsx:52
 msgid "Official documentation for the CFB LCAP token"
@@ -6202,7 +6202,7 @@ msgstr "Peso anterior / Peso nuevo"
 #. placeholder {0}: new Date(Number(proposal.executionTime) * 1000).toLocaleString(undefined, { month: '2-digit', day: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit', hour12: true }).replace(',', '').replace(/(\d{2})\/(\d{2})\/(\d{2})/, '$1/$2/$3 at')
 #: src/views/index-dtf/governance/components/proposal-list-item.tsx:86
 msgid "on {0}"
-msgstr ""
+msgstr "en {0}"
 
 #: src/views/index-dtf/auctions/views/rebalance/components/rebalance-liquidity-checker.tsx:267
 #: src/views/index-dtf/governance/views/propose/basket/components/proposal-liquidity-checker.tsx:336
@@ -6274,47 +6274,47 @@ msgstr "abierto"
 
 #: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:104
 msgid "Open Ambire website"
-msgstr ""
+msgstr "Abrir el sitio web de Ambire"
 
 #: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:91
 msgid "Open MetaMask website"
-msgstr ""
+msgstr "Abrir el sitio web de MetaMask"
 
 #: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:117
 msgid "Open Safe website"
-msgstr ""
+msgstr "Abrir el sitio web de Safe"
 
 #: src/views/index-dtf/governance/components/governance-delegate-list.tsx:121
 msgid "Optimistic"
-msgstr ""
+msgstr "Optimista"
 
 #: src/views/index-dtf/governance/components/governance-account-info.tsx:190
 msgid "Optimistic delegate"
-msgstr ""
+msgstr "Delegado optimista"
 
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/changes/optimistic-governance-changes.tsx:223
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/dtf-settings-proposal-sections.tsx:182
 msgid "Optimistic Governance"
-msgstr ""
+msgstr "Gobernanza optimista"
 
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/dtf-settings-proposal-sections.tsx:183
 msgid "Optimistic Parameters"
-msgstr ""
+msgstr "Parámetros optimistas"
 
 #: src/views/index-dtf/governance/components/governance-roles.tsx:113
 #: src/views/index-dtf/settings/components/index-settings-roles.tsx:66
 msgid "Optimistic proposer"
-msgstr ""
+msgstr "Proposer optimista"
 
 #: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:140
 #: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:189
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-optimistic-parameters.tsx:161
 msgid "Optimistic Proposer"
-msgstr ""
+msgstr "Proposer optimista"
 
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/changes/optimistic-governance-changes.tsx:258
 msgid "Optimistic Proposers"
-msgstr ""
+msgstr "Proposers optimistas"
 
 #: src/components/index-basket-setup/csv-import.tsx:204
 #: src/views/index-dtf/deploy/steps/basket/basket-csv-setup.tsx:216
@@ -6326,16 +6326,16 @@ msgstr "o arrástralo y suéltalo aquí"
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:473
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1503
 msgid "Orders"
-msgstr ""
+msgstr "Órdenes"
 
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:555
 msgid "Orders expire in"
-msgstr ""
+msgstr "Las órdenes expiran en"
 
 #. placeholder {0}: formatOrderCountdown(orderExpirySeconds)
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:567
 msgid "Orders expire in {0}"
-msgstr ""
+msgstr "Las órdenes expiran en {0}"
 
 #: src/views/index-dtf/overview/components/index-disclousure.tsx:105
 msgid "Original whitepaper documentation"
@@ -6375,7 +6375,7 @@ msgstr "Nuestros Zap-swaps admiten activos comunes como {tokensText}, lo que fac
 
 #: src/views/index-dtf/components/zapper/large-mint-prompt.tsx:39
 msgid "Over {MIN_INPUT_LABEL}"
-msgstr ""
+msgstr "Más de {MIN_INPUT_LABEL}"
 
 #: src/components/layout/navigation/index.tsx:77
 #: src/components/layout/navigation/TokenNavigation.tsx:176
@@ -6427,7 +6427,7 @@ msgstr "Precio anterior"
 
 #: src/views/index-dtf/overview/components/landing-mint/dtf-balance.tsx:88
 msgid "Past week"
-msgstr ""
+msgstr "Última semana"
 
 #: src/views/yield-dtf/governance/views/proposal/components/PauseIssuancePreview.tsx:22
 #: src/views/yield-dtf/governance/views/proposal/components/PauseIssuancePreview.tsx:28
@@ -6477,7 +6477,7 @@ msgstr "Distribución pendiente"
 
 #: src/views/index-dtf/governance/components/proposal-list-item.tsx:72
 msgid "Pending execution"
-msgstr ""
+msgstr "Pendiente de ejecución"
 
 #: src/views/explorer/components/revenue/index.tsx:601
 msgid "Pending Fees:"
@@ -6486,7 +6486,7 @@ msgstr "Comisiones pendientes:"
 #: src/views/index-dtf/governance/components/proposal-list-item.tsx:70
 #: src/views/index-dtf/governance/views/proposal/components/proposal-deadline-alert.tsx:128
 msgid "Pending queue"
-msgstr ""
+msgstr "Cola de pendientes"
 
 #: src/views/portfolio-page/components/pending-withdrawals.tsx:391
 msgid "Pending Withdrawals"
@@ -6565,7 +6565,7 @@ msgstr "Período en segundos"
 #: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:35
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/optimistic.ts:114
 msgid "Permissionless bids"
-msgstr ""
+msgstr "Ofertas sin permiso"
 
 #: src/views/index-dtf/deploy/steps/auctions/auctions-form.tsx:55
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/changes/auction-settings-changes.tsx:119
@@ -6591,7 +6591,7 @@ msgstr "Lanzamiento permissionless habilitado"
 
 #: src/views/home/components/dtf-packing-animation/index.tsx:107
 msgid "PHOTON packs multiple collateral assets into one DTF token"
-msgstr ""
+msgstr "PHOTON agrupa múltiples activos de colateral en un solo token DTF"
 
 #: src/components/transactions/table/index.tsx:92
 #: src/views/explorer/components/transactions/useTransactionColumns.tsx:132
@@ -6762,7 +6762,7 @@ msgstr "Prepárate para ofertar aprobando {0}"
 
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1146
 msgid "Prepare redeem"
-msgstr ""
+msgstr "Preparar el Redeem"
 
 #: src/views/yield-dtf/staking/components/stake/confirm-stake-button.tsx:57
 msgid "Preparing approval"
@@ -6770,7 +6770,7 @@ msgstr "Preparando aprobación"
 
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:630
 msgid "Preparing mint"
-msgstr ""
+msgstr "Preparando el Mint"
 
 #: src/components/transaction-modal/index.tsx:160
 #: src/views/yield-dtf/staking/components/stake/confirm-stake-button.tsx:126
@@ -6785,12 +6785,12 @@ msgstr "Preparando la transacción..."
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1135
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1474
 msgid "Preparing wallet..."
-msgstr ""
+msgstr "Preparando la Wallet..."
 
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:77
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:78
 msgid "Preparing…"
-msgstr ""
+msgstr "Preparando…"
 
 #: src/views/index-dtf/manage/components/logo-upload.tsx:125
 msgid "Preview"
@@ -6838,7 +6838,7 @@ msgstr "Cambio de precio ({0})"
 
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1162
 msgid "Price impact"
-msgstr ""
+msgstr "Impacto en el precio"
 
 #: src/views/index-dtf/auctions/views/rebalance/components/rebalance-price-impact.tsx:42
 #: src/views/index-dtf/overview/components/zap-mint/zap-details.tsx:121
@@ -6992,11 +6992,11 @@ msgstr "Título de la propuesta"
 
 #: src/views/index-dtf/governance/components/proposal-list-item.tsx:74
 msgid "Proposal was canceled"
-msgstr ""
+msgstr "La propuesta fue cancelada"
 
 #: src/views/index-dtf/governance/components/proposal-list-item.tsx:75
 msgid "Proposal was defeated"
-msgstr ""
+msgstr "La propuesta fue rechazada"
 
 #: src/views/explorer/components/governance/index.tsx:132
 #: src/views/index-dtf/governance/components/governance-stats.tsx:57
@@ -7015,7 +7015,7 @@ msgstr "Proponer cambios a ${0}"
 
 #: src/views/index-dtf/governance/views/propose/components/propose-container.tsx:7
 msgid "Propose Container"
-msgstr ""
+msgstr "Contenedor de propuesta"
 
 #: src/views/yield-dtf/governance/views/proposal/components/ProposalBasketSetup.tsx:55
 msgid "Propose how the basket should be distributed going forward. "
@@ -7146,7 +7146,7 @@ msgstr "Expiración de la cotización"
 
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1235
 msgid "Quote review"
-msgstr ""
+msgstr "Revisión de la cotización"
 
 #: src/views/yield-dtf/issuance/components/zapV2/overview/ZapQuoteSource.tsx:16
 #: src/views/yield-dtf/issuance/components/zapV2/settings/ZapSettingsModal.tsx:43
@@ -7156,11 +7156,11 @@ msgstr "Fuente de la cotización"
 #: src/views/index-dtf/issuance/async-mint/components/leg-row.tsx:176
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1550
 msgid "Quote unavailable"
-msgstr ""
+msgstr "Cotización no disponible"
 
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1160
 msgid "Quoted impact"
-msgstr ""
+msgstr "Impacto cotizado"
 
 #: src/views/yield-dtf/issuance/components/zapV2/overview/ZapDetails.tsx:57
 msgid "Rate"
@@ -7204,12 +7204,12 @@ msgstr "Listo"
 #: src/views/index-dtf/governance/components/proposal-list-item.tsx:68
 #: src/views/index-dtf/governance/views/proposal/components/proposal-deadline-alert.tsx:117
 msgid "Ready to execute"
-msgstr ""
+msgstr "Listo para ejecutar"
 
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:565
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1297
 msgid "Ready to mint"
-msgstr ""
+msgstr "Listo para hacer Mint"
 
 #: src/views/index-dtf/auctions/views/rebalance/components/rebalance-completed.tsx:67
 msgid "Rebalance"
@@ -7227,7 +7227,7 @@ msgstr "Precisión del reequilibrio"
 #: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:42
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/optimistic.ts:144
 msgid "Rebalance control"
-msgstr ""
+msgstr "Control de rebalanceo"
 
 #: src/views/index-dtf/auctions/views/rebalance/index.tsx:36
 msgid "Rebalance error"
@@ -7254,7 +7254,7 @@ msgstr "Progreso del reequilibrio"
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1294
 #: src/views/index-dtf/issuance/async-mint/steps/success.tsx:240
 msgid "Received"
-msgstr ""
+msgstr "Recibido"
 
 #: src/components/rtoken-setup/token/ExternalRevenueSplit.tsx:109
 msgid "Receiving eth address"
@@ -7277,7 +7277,7 @@ msgstr "Dirección del destinatario {recipientNumber}"
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1139
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1478
 msgid "Reconnect wallet"
-msgstr ""
+msgstr "Reconectar la Wallet"
 
 #: src/views/tokens/components/TableFilters.tsx:73
 msgid "Record limit"
@@ -7313,7 +7313,7 @@ msgstr "Redeem de {0}"
 #. placeholder {1}: inputToken.symbol
 #: src/views/index-dtf/issuance/async-mint/steps/configure-mint.tsx:174
 msgid "Redeem {0} for {1}."
-msgstr ""
+msgstr "Redeem de {0} por {1}."
 
 #: src/views/index-dtf/issuance/async-mint/steps/configure-mint.tsx:169
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:761
@@ -7331,11 +7331,11 @@ msgstr "Monto a Redeem:"
 
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1230
 msgid "Redeem completed"
-msgstr ""
+msgstr "Redeem completado"
 
 #: src/views/index-dtf/issuance/async-mint/steps/success.tsx:186
 msgid "Redeem Completed"
-msgstr ""
+msgstr "Redeem completado"
 
 #: src/views/yield-dtf/issuance/components/zapV2/token-selector/ZapTokensModal.tsx:111
 msgid "Redeem using"
@@ -7347,13 +7347,13 @@ msgstr "Disponible para Redeem ahora"
 
 #: src/views/index-dtf/issuance/async-mint/steps/success.tsx:236
 msgid "Redeemed"
-msgstr ""
+msgstr "Redimido"
 
 #. placeholder {0}: indexDTF?.token.symbol
 #. placeholder {1}: inputToken.symbol
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:773
 msgid "Redeeming {0} for {1}."
-msgstr ""
+msgstr "Haciendo Redeem de {0} por {1}."
 
 #: src/views/yield-dtf/issuance/components/zapV2/ZapRedeemDisabled.tsx:12
 msgid "Redeems not available during re-collateralization"
@@ -7419,7 +7419,7 @@ msgstr "Listado en Register"
 
 #: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:822
 msgid "Register Optimistic Actions"
-msgstr ""
+msgstr "Registrar acciones optimistas"
 
 #: src/views/yield-dtf/governance/views/proposal/components/ProposedRegisterPreview.tsx:33
 msgid "Registering assets"
@@ -7567,7 +7567,7 @@ msgstr "Aprobaciones requeridas"
 
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1005
 msgid "Required assets are ready for minting."
-msgstr ""
+msgstr "Los activos requeridos están listos para el Mint."
 
 #: src/views/yield-dtf/settings/components/governance-prompt.tsx:17
 msgid "Required setup:"
@@ -7601,7 +7601,7 @@ msgstr "Reserve Forum"
 
 #: src/views/home/components/homepage-hero.tsx:20
 msgid "Reserve lets you buy entire portfolios as a single token"
-msgstr ""
+msgstr "Reserve te permite comprar portafolios enteros como un solo token"
 
 #: src/views/home/components/hero.tsx:14
 #~ msgid "Reserve lets you buy entire portfolios<0/> as a single token"
@@ -7610,7 +7610,7 @@ msgstr ""
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v5-optimistic-upgrade.tsx:302
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v5-optimistic-upgrade.tsx:310
 msgid "Reserve Optimistic Governor Upgrade proposal created"
-msgstr ""
+msgstr "Propuesta de actualización del Reserve Optimistic Governor creada"
 
 #: src/views/yield-dtf/overview/components/backing/risks.tsx:39
 msgid "Reserve Protocol Smart-Contract Risk"
@@ -7634,7 +7634,7 @@ msgstr "Restablecer"
 
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:626
 msgid "Resolve failed orders"
-msgstr ""
+msgstr "Resolver órdenes fallidas"
 
 #: src/hooks/use-compliance-restrictions.ts:49
 msgid "Restricted in your region"
@@ -7647,12 +7647,12 @@ msgstr "Obteniendo precios históricos..."
 #. placeholder {0}: retryableLegIds.length
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1086
 msgid "Retry {0} failed order"
-msgstr ""
+msgstr "Reintentar {0} orden fallida"
 
 #. placeholder {0}: retryableLegIds.length
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1087
 msgid "Retry {0} failed orders"
-msgstr ""
+msgstr "Reintentar {0} órdenes fallidas"
 
 #: src/views/explorer/components/revenue/index.tsx:729
 #: src/views/explorer/index.tsx:46
@@ -7753,7 +7753,7 @@ msgstr "Revisa y describe tu propuesta"
 
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:759
 msgid "Review input amount"
-msgstr ""
+msgstr "Revisar el monto de entrada"
 
 #: src/views/yield-dtf/issuance/components/zapV2/submit/ZapSubmitModal.tsx:97
 msgid "Review Mint"
@@ -8018,7 +8018,7 @@ msgstr "Guardar pesos: {editedRows}/{totalRows} editados"
 
 #: src/components/layout/contact-modal/bell-button.tsx:44
 msgid "Schedule a call to earn 100,000 RSR."
-msgstr ""
+msgstr "Agenda una llamada para ganar 100,000 RSR."
 
 #: src/components/ondo-badge.tsx:180
 msgid "Scheduled event"
@@ -8063,7 +8063,7 @@ msgstr "Buscar un DTF..."
 
 #: src/components/layout/header/components/header-actions-menu.tsx:76
 msgid "Search for DTFs"
-msgstr ""
+msgstr "Buscar DTFs"
 
 #: src/views/earn/views/index-dtf/components/table-filters.tsx:110
 msgid "Search gov token or DTF"
@@ -8079,7 +8079,7 @@ msgstr "Buscando liquidez en DEX"
 
 #: src/components/filters/chain/ChainFilter.tsx:69
 msgid "Select a chain"
-msgstr ""
+msgstr "Selecciona una Chain"
 
 #: src/components/index-basket-setup/csv-import.tsx:201
 #: src/views/index-dtf/deploy/steps/basket/basket-csv-setup.tsx:213
@@ -8101,7 +8101,7 @@ msgstr "Selecciona el tipo de propuesta"
 
 #: src/views/index-dtf/governance/views/propose/components/proposal-type-selector.tsx:100
 msgid "Select Proposal Type"
-msgstr ""
+msgstr "Selecciona el tipo de propuesta"
 
 #: src/components/token-selector-drawer/index.tsx:280
 #: src/views/index-dtf/deploy/steps/basket/token-selector.tsx:485
@@ -8120,12 +8120,12 @@ msgstr "Imagen seleccionada"
 
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-optimistic-parameters.tsx:51
 msgid "Selector registry is not available for this optimistic governor."
-msgstr ""
+msgstr "El registro de selectores no está disponible para este governor optimista."
 
 #. placeholder {0}: stToken?.underlying.symbol ?? t`tokens`
 #: src/components/vote-lock/components/delegate.tsx:104
 msgid "Self-delegation happens automatically when you vote-lock {0}. Come back here after vote-locking to update delegation."
-msgstr ""
+msgstr "La autodelegación ocurre automáticamente cuando haces vote-lock de {0}. Vuelve aquí después del vote-lock para actualizar la delegación."
 
 #: src/views/explorer/components/revenue/index.tsx:306
 #: src/views/index-dtf/auctions/legacy/components/auction-item.tsx:90
@@ -8157,7 +8157,7 @@ msgstr "Vende ${0} onchain"
 
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:999
 msgid "Sell collateral"
-msgstr ""
+msgstr "Vender colateral"
 
 #: src/views/index-dtf/auctions/views/rebalance/components/auction-bids-chart.tsx:334
 #: src/views/index-dtf/auctions/views/rebalance/components/rebalance-liquidity-checker.tsx:278
@@ -8173,7 +8173,7 @@ msgstr "Vendiendo"
 #. placeholder {0}: leg.asset.symbol
 #: src/views/index-dtf/issuance/async-mint/components/leg-row.tsx:172
 msgid "Selling {0}"
-msgstr ""
+msgstr "Vendiendo {0}"
 
 #: src/views/index-dtf/auctions/views/rebalance/components/rebalance-action-overview.tsx:110
 msgid "Selling:"
@@ -8351,11 +8351,11 @@ msgstr "Firma en la Wallet..."
 
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:79
 msgid "Sign in your wallet…"
-msgstr ""
+msgstr "Firma en tu Wallet…"
 
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:82
 msgid "Sign mint…"
-msgstr ""
+msgstr "Firma el Mint…"
 
 #: src/views/index-dtf/deploy/components/right-panel.tsx:51
 msgid "Sign tx to create governance DAO"
@@ -8383,7 +8383,7 @@ msgstr "Firmando..."
 
 #: src/views/index-dtf/issuance/async-mint/components/leg-row.tsx:79
 msgid "Signing…"
-msgstr ""
+msgstr "Firmando…"
 
 #: src/views/index-dtf/deploy/steps/confirm-deploy/index.tsx:138
 msgid "Simple deploy"
@@ -8474,7 +8474,7 @@ msgstr "Subastas de ingresos pequeños"
 
 #: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:76
 msgid "Smart Account Required"
-msgstr ""
+msgstr "Se requiere una smart account"
 
 #: src/views/yield-dtf/settings/components/governance-info.tsx:39
 msgid "Snapshot Delay"
@@ -8561,12 +8561,12 @@ msgstr "Spell 2"
 
 #: src/views/index-dtf/issuance/async-mint/steps/success.tsx:224
 msgid "Spent"
-msgstr ""
+msgstr "Gastado"
 
 #. placeholder {0}: inputToken.symbol
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1006
 msgid "Split {0} across basket assets."
-msgstr ""
+msgstr "Divide {0} entre los activos del basket."
 
 #: src/views/yield-dtf/deploy/components/TokenForm.tsx:45
 msgid "St Token Ticker"
@@ -8678,7 +8678,7 @@ msgstr "Fin de la participación en el rendimiento del Staking"
 
 #: src/views/index-dtf/governance/views/propose/components/proposal-type-selector.tsx:112
 msgid "Standard Governance"
-msgstr ""
+msgstr "Gobernanza estándar"
 
 #: src/views/index-dtf/auctions/views/rebalance/components/cowbot/cowbot-card.tsx:63
 msgid "Start"
@@ -8695,7 +8695,7 @@ msgstr "Iniciar subasta {auctionNumber}"
 
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1144
 msgid "Start collateral trades"
-msgstr ""
+msgstr "Iniciar trades de colateral"
 
 #: src/components/transactions/table/index.tsx:51
 #: src/views/explorer/components/transactions/useTransactionColumns.tsx:31
@@ -8709,12 +8709,12 @@ msgstr "Iniciar la próxima subasta de recolateralización"
 
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1099
 msgid "Start over"
-msgstr ""
+msgstr "Empezar de nuevo"
 
 #: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:33
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/optimistic.ts:100
 msgid "Start rebalance"
-msgstr ""
+msgstr "Iniciar rebalanceo"
 
 #. placeholder {0}: rTokenVault.name
 #: src/views/yield-dtf/auctions/auctions-sidebar/StakingVaultRevenue.tsx:210
@@ -8862,7 +8862,7 @@ msgstr "Excedente por debajo del intercambio mínimo"
 
 #: src/views/index-dtf/components/navigation/index.tsx:192
 msgid "Swap"
-msgstr ""
+msgstr "Swap"
 
 #: src/views/index-dtf/overview/components/zap-mint/submit-zap.tsx:143
 msgid "Swapped"
@@ -8874,11 +8874,11 @@ msgstr "Se intercambió {inputSymbol} por {outputSymbol}"
 
 #: src/views/index-dtf/issuance/async-mint/steps/success.tsx:255
 msgid "Swaps leave a small residue in your wallet."
-msgstr ""
+msgstr "Los swaps dejan un pequeño residuo en tu Wallet."
 
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1510
 msgid "Swaps settle via CoW Protocol solvers."
-msgstr ""
+msgstr "Los swaps se liquidan a través de los solvers de CoW Protocol."
 
 #. placeholder {0}: CHAIN_TAGS[chain || chainId]
 #: src/components/ui/transaction-button.tsx:93
@@ -8909,7 +8909,7 @@ msgstr "Cambiar a Redeem con Zap"
 
 #: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:310
 msgid "Switch wallet"
-msgstr ""
+msgstr "Cambiar de Wallet"
 
 #: src/views/index-dtf/deploy/steps/metadata/form-basic-metadata.tsx:14
 #: src/views/yield-dtf/settings/components/basic-info.tsx:20
@@ -8937,7 +8937,7 @@ msgstr "Objetivo(s)"
 
 #: src/views/index-dtf/deploy/components/right-panel.tsx:132
 msgid "Telegram"
-msgstr ""
+msgstr "Telegram"
 
 #: src/views/index-dtf/manage/components/manage-socials.tsx:36
 msgid "Telegram Link"
@@ -8959,7 +8959,7 @@ msgstr "¡Gracias! Nos pondremos en contacto pronto."
 
 #: src/views/index-dtf/issuance/async-mint/steps/configure-mint.tsx:118
 msgid "The acquired assets are used to mint your DTF."
-msgstr ""
+msgstr "Los activos adquiridos se usan para hacer Mint de tu DTF."
 
 #: src/views/yield-dtf/auctions/auctions-sidebar/claim-rewards/components/TraderEmissions.tsx:157
 msgid "The amount of assets selected affects the gas price, this asset may not be worth claiming yet."
@@ -8975,11 +8975,11 @@ msgstr "El buffer de respaldo es colateral adicional que se mantiene para evitar
 
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1514
 msgid "The basket assets bought with your input."
-msgstr ""
+msgstr "Los activos del basket comprados con tu entrada."
 
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1516
 msgid "The basket assets sold for your output."
-msgstr ""
+msgstr "Los activos del basket vendidos por tu salida."
 
 #: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/sections/propose-basket-roles.tsx:10
 msgid "The basket governance provides a Guardian role that can improve the safety of DTF holders and governors. Guardians have the ability to veto any basket proposal prior to execution. This role is mutable and can be changed by governance in the future."
@@ -9081,7 +9081,7 @@ msgstr "El cargo máximo de Mint es el {0}% del suministro de {1} o un límite i
 
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-optimistic-parameters.tsx:156
 msgid "The optimistic voting power percentage required to veto."
-msgstr ""
+msgstr "El porcentaje de poder de voto optimista requerido para vetar."
 
 #: src/components/rtoken-setup/governance/RoleSetup.tsx:20
 msgid "The pauser has the ability to pause and unpause an RToken's system. The PAUSER role should be assigned to an address that is able to act quickly in response to off-chain events, such as a Chainlink feed failing. It is ok to have multiple pausers. It can be robot-controlled. It can also consist of a 1-of-N multisig for high availability and coverage. It is acceptable for there to be false positives, since redemption remains enabled."
@@ -9208,7 +9208,7 @@ msgstr "El período de calentamiento es la cantidad de segundos que deben transc
 
 #: src/components/layout/header/components/header-actions-menu.tsx:96
 msgid "Theme"
-msgstr ""
+msgstr "Tema"
 
 #: src/views/yield-dtf/overview/components/backing/risks.tsx:63
 msgid "There are a <0>handful of risks</0> associated with any given RToken's collateral assets, including assets' redeemability, the health of their reserves, price volatility, etc. Likewise, because many RTokens leverage assets from external protocols, RToken holders assume all of the risks of its underlying protocols (smart contract, governance, or otherwise)."
@@ -9336,7 +9336,7 @@ msgstr "Este producto no está disponible en tu región debido a restricciones l
 
 #: src/views/index-dtf/governance/views/proposal/components/proposal-vote.tsx:182
 msgid "This proposal will automatically pass if it is not challenged by governance. If it is challenged, it will be resubmitted as a standard proposal."
-msgstr ""
+msgstr "Esta propuesta se aprobará automáticamente si la gobernanza no la impugna. Si es impugnada, se reenviará como una propuesta estándar."
 
 #: src/views/yield-dtf/issuance/components/warnings/index.tsx:139
 msgid "This should last for a few hours, manual minting/redemption is available."
@@ -9356,7 +9356,7 @@ msgstr "Este wallet no es elegible para acceder a este producto. Si crees que se
 
 #: src/views/index-dtf/governance/views/proposal/components/proposal-vote.tsx:160
 msgid "This was originally a fast proposal that did not pass governance. Please review the details of this contested proposal closely."
-msgstr ""
+msgstr "Originalmente esta fue una propuesta rápida que no pasó la gobernanza. Revisa de cerca los detalles de esta propuesta disputada."
 
 #: src/views/index-dtf/manage/components/manage-about.tsx:167
 #~ msgid "This will prevent the DTF from appearing in the DTF list. You can still access it on the UI using the direct link."
@@ -9419,7 +9419,7 @@ msgstr "Alternar {option}"
 
 #: src/components/dark-mode-toggle/index.tsx:34
 msgid "Toggle theme"
-msgstr ""
+msgstr "Cambiar tema"
 
 #: src/components/index-basket-setup/basket-table.tsx:62
 #: src/components/tables/ListedTokensTable.tsx:28
@@ -9503,7 +9503,7 @@ msgstr "El nombre del token debe tener 80 caracteres o menos"
 
 #: src/views/index-dtf/deploy/form-fields.ts:80
 msgid "Token name must contain letters or numbers"
-msgstr ""
+msgstr "El nombre del token debe contener letras o números"
 
 #: src/components/rtoken-setup/token/TokenForm.tsx:26
 #: src/views/yield-dtf/deploy/components/TokenForm.tsx:27
@@ -9553,7 +9553,7 @@ msgstr "Activo tokenizado (mantenido en la cesta)"
 
 #: src/components/vote-lock/components/delegate.tsx:106
 msgid "tokens"
-msgstr ""
+msgstr "tokens"
 
 #: src/views/explorer/components/filters/token-filter.tsx:69
 #: src/views/explorer/index.tsx:37
@@ -9589,7 +9589,7 @@ msgstr "% total a dirección arbitraria"
 
 #: src/views/index-dtf/overview/components/charts/price-chart-tooltips.tsx:59
 msgid "Total APY"
-msgstr ""
+msgstr "APY total"
 
 #: src/views/yield-dtf/overview/components/backing/collateral-exposure.tsx:215
 msgid "Total backing"
@@ -9645,12 +9645,12 @@ msgstr "Rastrear token en tu Wallet"
 #. placeholder {0}: inputToken.symbol
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:996
 msgid "Trade {0} into collateral"
-msgstr ""
+msgstr "Intercambiar {0} por colateral"
 
 #. placeholder {0}: inputToken.symbol
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:992
 msgid "Trade remaining {0} into collateral"
-msgstr ""
+msgstr "Intercambiar el {0} restante por colateral"
 
 #: src/components/ondo-badge.tsx:34
 msgid "Tradeable"
@@ -9710,7 +9710,7 @@ msgstr "El trading se ha pausado temporalmente por precaución debido al exploit
 
 #: src/views/index-dtf/issuance/async-mint/components/ondo-limits-banner.tsx:62
 msgid "Trading paused"
-msgstr ""
+msgstr "Trading pausado"
 
 #: src/views/index-dtf/overview/components/index-disclousure.tsx:84
 msgid "Trading Platforms"
@@ -9719,7 +9719,7 @@ msgstr ""
 #. placeholder {0}: paused.resumes
 #: src/views/index-dtf/issuance/async-mint/components/ondo-limits-banner.tsx:68
 msgid "Trading resumes {0}."
-msgstr ""
+msgstr "El trading se reanuda {0}."
 
 #: src/views/internal/dtf-listed/components/listed-dtf-table.tsx:159
 msgid "Trading Timelock"
@@ -9840,7 +9840,7 @@ msgstr "Iniciar Unstake"
 #: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:45
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/optimistic.ts:156
 msgid "Trusted fillers"
-msgstr ""
+msgstr "Fillers confiables"
 
 #: src/views/internal/dtf-list/components/dtf-table.tsx:221
 msgid "Try adjusting your filters or check back later"
@@ -9854,7 +9854,7 @@ msgstr "Intentar de nuevo"
 #: src/views/index-dtf/components/zapper/large-mint-prompt.tsx:65
 #: src/views/index-dtf/components/zapper/large-mint-prompt.tsx:67
 msgid "Try Automated Mint"
-msgstr ""
+msgstr "Prueba el Mint automatizado"
 
 #: src/views/yield-dtf/issuance/components/zapV2/ZapToggle.tsx:23
 msgid "Turn on Zaps to mint using 1 asset"
@@ -9871,7 +9871,7 @@ msgstr "TVL"
 #: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:43
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/optimistic.ts:150
 msgid "TVL fee"
-msgstr ""
+msgstr "Comisión de TVL"
 
 #: src/views/index-dtf/manage/components/manage-socials.tsx:22
 msgid "Twitter / X Link"
@@ -9928,7 +9928,7 @@ msgstr "No se pueden analizar los datos del contrato"
 #: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:117
 #: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:222
 msgid "Unavailable"
-msgstr ""
+msgstr "No disponible"
 
 #: src/views/explorer/components/collaterals/index.tsx:100
 #: src/views/portfolio-page/components/vote-locked-positions.tsx:66
@@ -10041,7 +10041,7 @@ msgstr "Anular registro de activos"
 
 #: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:824
 msgid "Unregister Optimistic Actions"
-msgstr ""
+msgstr "Desregistrar acciones optimistas"
 
 #: src/views/yield-dtf/governance/views/proposal/components/ProposedUnregisterPreview.tsx:30
 msgid "Unregistering assets"
@@ -10115,7 +10115,7 @@ msgstr "Dirección de Vote Lock no compatible"
 
 #: src/views/index-dtf/issuance/async-mint/steps/success.tsx:229
 msgid "Unused (returned)"
-msgstr ""
+msgstr "Sin usar (devuelto)"
 
 #: src/views/yield-dtf/issuance/components/wrapping/CollateralItem.tsx:361
 msgid "Unwrap"
@@ -10127,7 +10127,7 @@ msgstr "Hacer Unwrap de colaterales"
 
 #: src/components/vote-lock/components/submit-delegate-button.tsx:182
 msgid "Update"
-msgstr ""
+msgstr "Actualizar"
 
 #: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:406
 msgid "Update Annualized TVL Fee"
@@ -10155,7 +10155,7 @@ msgstr "Actualizar comisión de Mint"
 
 #: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:734
 msgid "Update Optimistic Parameters"
-msgstr ""
+msgstr "Actualizar parámetros optimistas"
 
 #: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:596
 msgid "Update Proposal Threshold"
@@ -10196,7 +10196,7 @@ msgstr "Las actualizaciones de las comisiones, los roles, los parámetros de vot
 #. placeholder {0}: currentCall.label
 #: src/components/vote-lock/components/submit-delegate-button.tsx:178
 msgid "Updating {0}..."
-msgstr ""
+msgstr "Actualizando {0}..."
 
 #: src/views/yield-dtf/governance/views/proposal/components/ContractUpgrades.tsx:95
 msgid "Upgrade"
@@ -10256,11 +10256,11 @@ msgstr "Usar el Wallet conectado."
 
 #: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:152
 msgid "Use Swap"
-msgstr ""
+msgstr "Usar Swap"
 
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1244
 msgid "Use the acquired collateral to mint the DTF."
-msgstr ""
+msgstr "Usa el colateral adquirido para hacer Mint del DTF."
 
 #: src/components/rtoken-setup/governance/GovernanceSetup.tsx:49
 msgid "Use the Alexios governor format?"
@@ -10272,11 +10272,11 @@ msgstr "Usado en"
 
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:767
 msgid "Used to acquire the required assets."
-msgstr ""
+msgstr "Se usa para adquirir los activos requeridos."
 
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:768
 msgid "Used to redeem and sell collateral."
-msgstr ""
+msgstr "Se usa para hacer Redeem y vender el colateral."
 
 #: src/views/home/components/register-about.tsx:139
 msgid "User Tracking"
@@ -10364,45 +10364,45 @@ msgstr "Muy rápido"
 
 #: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:741
 msgid "Veto delay"
-msgstr ""
+msgstr "Retraso de veto"
 
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/changes/optimistic-governance-changes.tsx:228
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-optimistic-parameters.tsx:122
 #: src/views/index-dtf/settings/components/index-settings-governance.tsx:84
 msgid "Veto Delay"
-msgstr ""
+msgstr "Retraso de veto"
 
 #: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:762
 msgid "Veto period"
-msgstr ""
+msgstr "Período de veto"
 
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/changes/optimistic-governance-changes.tsx:237
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-optimistic-parameters.tsx:136
 msgid "Veto Period"
-msgstr ""
+msgstr "Período de veto"
 
 #: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:783
 msgid "Veto threshold"
-msgstr ""
+msgstr "Umbral de veto"
 
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/changes/optimistic-governance-changes.tsx:246
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-optimistic-parameters.tsx:150
 #: src/views/index-dtf/settings/components/index-settings-governance.tsx:94
 msgid "Veto Threshold"
-msgstr ""
+msgstr "Umbral de veto"
 
 #: src/views/index-dtf/settings/components/index-settings-governance.tsx:89
 msgid "Veto Window"
-msgstr ""
+msgstr "Ventana de veto"
 
 #: src/views/portfolio-page/components/active-proposals.tsx:84
 msgid "Veto?"
-msgstr ""
+msgstr "¿Vetar?"
 
 #: src/components/video-modal/index.tsx:46
 #: src/components/video-modal/index.tsx:58
 msgid "Video"
-msgstr ""
+msgstr "Video"
 
 #: src/views/earn/views/defi/components/featured-pool-item.tsx:67
 #: src/views/internal/dtf-list/components/dtf-table.tsx:131
@@ -10435,12 +10435,12 @@ msgstr "Ver todos los Index DTFs en todos los Networks con fines de prueba inter
 
 #: src/components/layout/contact-modal/bell-button.tsx:47
 msgid "View details"
-msgstr ""
+msgstr "Ver detalles"
 
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1447
 #: src/views/index-dtf/issuance/async-mint/steps/success.tsx:179
 msgid "View DTF"
-msgstr ""
+msgstr "Ver DTF"
 
 #: src/views/top100/components/top100-basket-hover-card.tsx:148
 msgid "View entire basket"
@@ -10454,7 +10454,7 @@ msgstr "Ver tx de ejecución"
 #: src/views/index-dtf/overview/components/index-governance-overview.tsx:41
 #: src/views/index-dtf/overview/components/index-governance-overview.tsx:134
 msgid "View governance settings"
-msgstr ""
+msgstr "Ver ajustes de gobernanza"
 
 #: src/views/yield-dtf/staking/components/stake/confirm-stake-button.tsx:108
 #: src/views/yield-dtf/staking/components/unstake/confirm-unstake-button.tsx:69
@@ -10471,7 +10471,7 @@ msgstr "Ver lista"
 
 #: src/views/index-dtf/overview/components/index-campaign-overview.tsx:93
 msgid "View Merkl Campaign"
-msgstr ""
+msgstr "Ver la campaña de Merkl"
 
 #: src/views/index-dtf/overview/components/index-governance-overview.tsx:43
 #: src/views/index-dtf/overview/components/index-governance-overview.tsx:136
@@ -10495,7 +10495,7 @@ msgstr "Ver en <0>Tenderly <1/></0>"
 
 #: src/views/index-dtf/issuance/async-mint/components/leg-row.tsx:275
 msgid "View on CoW Swap"
-msgstr ""
+msgstr "Ver en CoW Swap"
 
 #: src/views/yield-dtf/deploy/components/TransactionDivider.tsx:66
 msgid "View on Etherscan"
@@ -10512,7 +10512,7 @@ msgstr "Ver en Tenderly"
 
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:551
 msgid "View orders"
-msgstr ""
+msgstr "Ver órdenes"
 
 #: src/views/index-dtf/overview/components/index-disclousure.tsx:179
 msgid "View PDF →"
@@ -10528,7 +10528,7 @@ msgstr "Consulta propuestas de los distintos DTFs en los que hiciste bloqueo de 
 
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:552
 msgid "View quotes"
-msgstr ""
+msgstr "Ver cotizaciones"
 
 #: src/views/yield-dtf/auctions/components/useColumns.tsx:68
 msgid "View settle tx"
@@ -10610,7 +10610,7 @@ msgstr "Suministro de votos"
 
 #: src/views/index-dtf/governance/views/proposal/components/proposal-vote-button.tsx:57
 msgid "Vote to challenge"
-msgstr ""
+msgstr "Vota para impugnar"
 
 #: src/views/index-dtf/governance/components/governance-delegate-list.tsx:68
 #: src/views/yield-dtf/governance/components/TopVoters.tsx:112
@@ -10623,7 +10623,7 @@ msgstr "Peso del voto"
 
 #: src/components/vote-lock/constants.tsx:8
 msgid "Vote-lock"
-msgstr ""
+msgstr "Vote-lock"
 
 #. placeholder {0}: indexDTF.stToken.underlying.symbol
 #: src/views/index-dtf/governance/components/governance-vote-lock.tsx:86
@@ -10678,7 +10678,7 @@ msgstr "Votación"
 
 #: src/views/index-dtf/governance/components/governance-stats.tsx:74
 msgid "Voting addresses"
-msgstr ""
+msgstr "Direcciones de votación"
 
 #: src/views/yield-dtf/governance/components/GovernanceOverview.tsx:144
 msgid "Voting Addresses"
@@ -10802,7 +10802,7 @@ msgstr "La votación comienza en:"
 
 #: src/views/index-dtf/governance/components/governance-account-info.tsx:187
 msgid "Voting Weight"
-msgstr ""
+msgstr "Peso del voto"
 
 #: src/hooks/use-compliance-restrictions.ts:57
 msgid "VPN detected"
@@ -10839,7 +10839,7 @@ msgstr "Esperando la autorización..."
 
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:629
 msgid "Waiting for collateral"
-msgstr ""
+msgstr "Esperando el colateral"
 
 #: src/views/index-dtf/governance/views/propose/basket/components/submit-proposal-button.tsx:196
 #: src/views/index-dtf/governance/views/propose/components/propose-index-upgrade.tsx:118
@@ -10856,7 +10856,7 @@ msgstr "Esperando confirmación..."
 
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:570
 msgid "Waiting for orders"
-msgstr ""
+msgstr "Esperando las órdenes"
 
 #: src/views/explorer/components/transactions/Filters.tsx:17
 msgid "Wallet"
@@ -10896,7 +10896,7 @@ msgstr "Advertencia: alto impacto en el precio"
 #. placeholder {0}: selectedVersion.symbol
 #: src/views/home/components/highlighted-dtfs/transcript-preview.tsx:68
 msgid "Watch {0} explainer"
-msgstr ""
+msgstr "Ver la explicación de {0}"
 
 #: src/components/yield-dtf-deploy-hero.tsx:63
 msgid "Watch an intro to RTokens"
@@ -10910,19 +10910,19 @@ msgstr "Mira una introducción a los RTokens"
 #: src/views/index-dtf/overview/components/landing-mint/dtf-cover.tsx:57
 #: src/views/index-dtf/overview/components/landing-mint/dtf-cover.tsx:142
 msgid "Watch explainer"
-msgstr ""
+msgstr "Ver la explicación"
 
 #: src/views/home/components/dtf-explainer-button.tsx:32
 msgid "Watch Explainer"
-msgstr ""
+msgstr "Ver la explicación"
 
 #: src/views/home/components/highlighted-dtfs/transcript-preview.tsx:71
 msgid "Watch Video"
-msgstr ""
+msgstr "Ver el video"
 
 #: src/views/home/components/homepage-hero.tsx:33
 msgid "We call these tokenized portfolios DTFs:"
-msgstr ""
+msgstr "A estos portafolios tokenizados los llamamos DTFs:"
 
 #: src/views/index-dtf/governance/components/proposal-preview/unknown-contract-preview.tsx:52
 msgid "We couldn’t retrieve the contract’s ABI from Etherscan. This usually means the contract is not verified. Without its interface, we’re unable to decode any function calls or parameters."
@@ -10934,7 +10934,7 @@ msgstr "Detectamos que te estás conectando a través de una VPN. Desactívala y
 
 #: src/views/index-dtf/governance/views/propose/components/proposal-type-selector.tsx:103
 msgid "We have detected that you have permission to expedite proposals through fast governance. Choose from the following proposal types."
-msgstr ""
+msgstr "Detectamos que tienes permiso para agilizar propuestas a través de la gobernanza rápida. Elige entre los siguientes tipos de propuesta."
 
 #: src/views/index-dtf/deploy/steps/governance/form-existing-erc20.tsx:46
 msgid "We recommend launching your new ERC20 token on <0>CreateMyToken</0>"
@@ -10944,12 +10944,12 @@ msgstr "Recomendamos lanzar tu nuevo token ERC20 en <0>CreateMyToken</0>"
 #. placeholder {1}: inputToken.symbol
 #: src/views/index-dtf/issuance/async-mint/steps/configure-mint.tsx:124
 msgid "We redeem your {0} and sell the collateral for {1}."
-msgstr ""
+msgstr "Hacemos Redeem de tu {0} y vendemos el colateral por {1}."
 
 #. placeholder {0}: inputToken.symbol
 #: src/views/index-dtf/issuance/async-mint/steps/configure-mint.tsx:114
 msgid "We use your {0} to get the assets needed for the mint."
-msgstr ""
+msgstr "Usamos tu {0} para obtener los activos necesarios para el Mint."
 
 #: src/views/index-dtf/overview/components/eligibility-card.tsx:160
 msgid "We're sorry, this product isn't available to customers in your region. In order to access this DTF, you may need to qualify as a <0>qualified investor</0>."
@@ -11082,7 +11082,7 @@ msgstr "Retirado"
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1124
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1468
 msgid "Working…"
-msgstr ""
+msgstr "Procesando…"
 
 #: src/views/index-dtf/factsheet/components/net-performance-summary.tsx:254
 msgid "worst"
@@ -11187,7 +11187,7 @@ msgstr "Puedes dejar tu RToken pausado y volver más tarde a configurar la gober
 
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1563
 msgid "You can proceed directly."
-msgstr ""
+msgstr "Puedes continuar directamente."
 
 #: src/views/index-dtf/deploy/steps/confirm-deploy/success/index.tsx:81
 msgid "You created {stTokenSymbol} DAO"
@@ -11204,7 +11204,7 @@ msgstr "No tienes fondos suficientes para completar esta transacción. Intenta d
 
 #: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:175
 msgid "You fund"
-msgstr ""
+msgstr "Tú aportas"
 
 #: src/components/vote-lock/components/vote-lock.tsx:30
 msgid "You lock:"
@@ -11216,7 +11216,7 @@ msgstr "Es posible que debas importarlo con la dirección del contrato en L2."
 
 #: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:181
 msgid "You mint"
-msgstr ""
+msgstr "Tú haces Mint"
 
 #: src/views/index-dtf/deploy/steps/confirm-deploy/simple/index.tsx:131
 msgid "You mint:"
@@ -11238,11 +11238,11 @@ msgstr "Necesitas hacer mint de al menos $1 en {0} para crear tu nuevo Index DTF
 #: src/views/index-dtf/issuance/async-mint/steps/configure-mint.tsx:180
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:791
 msgid "You provide"
-msgstr ""
+msgstr "Tú proporcionas"
 
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1322
 msgid "You receive"
-msgstr ""
+msgstr "Tú recibes"
 
 #: src/components/ui/swap.tsx:352
 #: src/views/yield-dtf/issuance/components/zapV2/output/ZapOutputContainer.tsx:15
@@ -11255,7 +11255,7 @@ msgstr "Recibes:"
 
 #: src/views/index-dtf/issuance/async-mint/steps/configure-mint.tsx:180
 msgid "You redeem"
-msgstr ""
+msgstr "Tú haces Redeem"
 
 #: src/components/stake-drawer/components/stake.tsx:35
 #: src/views/yield-dtf/staking/components/stake/stake-input.tsx:75
@@ -11311,11 +11311,11 @@ msgstr "Has desbloqueado una invitación al programa de élite de Reserve Instit
 #. placeholder {0}: indexDTF?.token.symbol
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1242
 msgid "Your {0} has been redeemed."
-msgstr ""
+msgstr "Se ha hecho Redeem de tu {0}."
 
 #: src/views/index-dtf/components/zapper/large-mint-prompt.tsx:55
 msgid "Your {inputSymbol} input is over {MIN_INPUT_LABEL}. Automated Mint may find a better route by splitting it across the basket before minting."
-msgstr ""
+msgstr "Tu entrada de {inputSymbol} supera {MIN_INPUT_LABEL}. El Mint automatizado puede encontrar una mejor ruta dividiéndola entre el basket antes de hacer Mint."
 
 #: src/views/portfolio-page/components/dtf-positions.tsx:177
 msgid "Your Decentralized Token Folio investments."
@@ -11323,7 +11323,7 @@ msgstr "Tus inversiones en Decentralized Token Folio."
 
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1241
 msgid "Your DTF has been minted."
-msgstr ""
+msgstr "Se ha hecho Mint de tu DTF."
 
 #: src/views/index-dtf/components/confirm-eligibility-modal.tsx:161
 msgid "Your privacy is protected. This confirmation is stored only in this browser - never personal financial information. <0>Privacy Policy</0>"
