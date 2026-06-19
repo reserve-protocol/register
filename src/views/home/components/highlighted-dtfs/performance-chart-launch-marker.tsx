@@ -2,6 +2,7 @@ import TokenLogo from '@/components/token-logo'
 import { cn } from '@/lib/utils'
 import { type PerformanceDirection } from '@/utils/chart-performance-colors'
 import { useLingui } from '@lingui/react/macro'
+import { useEffect, useRef, useState } from 'react'
 
 type LaunchMarkerToken = {
   address: string
@@ -26,6 +27,8 @@ export const PerformanceChartLaunchMarker = ({
   token: LaunchMarkerToken
 }) => {
   const { t } = useLingui()
+  const priceDataLabelRef = useRef<HTMLSpanElement>(null)
+  const [priceDataLabelWidth, setPriceDataLabelWidth] = useState(78)
   const createdLabel = t`DTF Created`
   const backtrackedLabel = t`Backtracked basket price`
   const compactBacktrackedLabel = t`Backtracked price`
@@ -39,7 +42,6 @@ export const PerformanceChartLaunchMarker = ({
   const longBacktrackedLabelWidth = 112
   const compactBacktrackedLabelWidth = 86
   const minimalBacktrackedLabelWidth = 58
-  const priceDataLabelWidth = 78
   const markerCenterX = (chartWidth * leftPercent) / 100
   const isBadgeClippedLeft = chartWidth > 0 && markerCenterX < markerSize / 2
   const isCreatedLabelVisible = isActive || isBadgeClippedLeft
@@ -75,8 +77,29 @@ export const PerformanceChartLaunchMarker = ({
         ? '#9F4A3D'
         : 'hsl(var(--legend))'
 
+  useEffect(() => {
+    const element = priceDataLabelRef.current
+    if (!element) return
+
+    const updateWidth = () =>
+      setPriceDataLabelWidth(Math.ceil(element.getBoundingClientRect().width))
+    updateWidth()
+
+    const observer = new ResizeObserver(updateWidth)
+    observer.observe(element)
+
+    return () => observer.disconnect()
+  }, [priceDataLabel])
+
   return (
     <>
+      <span
+        ref={priceDataLabelRef}
+        aria-hidden="true"
+        className={cn(segmentAnnotationClassName, 'invisible absolute')}
+      >
+        {priceDataLabel}
+      </span>
       <span
         aria-hidden={!isCreatedLabelVisible}
         className={annotationClassName}
