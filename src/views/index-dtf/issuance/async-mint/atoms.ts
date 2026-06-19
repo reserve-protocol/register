@@ -42,6 +42,12 @@ export const quoteCanceledAtom = atom<boolean>(false)
 // amount clears it so the new amount fetches fresh.
 export const quoteFetchHaltedAtom = atom<boolean>(false)
 
+// Whether the right-hand orders panel is shown on quote-summary. Also drives
+// the wizard layout width: expanded → wide two-column layout; collapsed →
+// narrow centered cards (like the configure step). Shared so index.tsx can
+// size the wrapper. Default expanded so fetch skeletons / orders show.
+export const ordersExpandedAtom = atom<boolean>(true)
+
 // ─── Operation (mint | redeem) ───────────────────────────────────────
 export const operationAtom = atom<'mint' | 'redeem'>('mint')
 // Whether to use the user's existing basket-token balances to reduce swaps.
@@ -72,4 +78,5 @@ export const resetWizardAtom = atom(null, (_, set) => {
   set(dustStartBalancesAtom, {})
   set(quoteCanceledAtom, false)
   set(quoteFetchHaltedAtom, false)
+  set(ordersExpandedAtom, true)
 })

@@ -5,17 +5,11 @@ import { useAtomValue, useSetAtom } from 'jotai'
 import { useEffect } from 'react'
 import useTrackIndexDTFPage from '../../hooks/useTrackIndexDTFPage'
 import { AsyncZapProvider } from './async-zap-context'
-import { resetWizardAtom, wizardStepAtom } from './atoms'
+import { ordersExpandedAtom, resetWizardAtom, wizardStepAtom } from './atoms'
 import GnosisRequired from './steps/gnosis-required'
 import ConfigureMint from './steps/configure-mint'
 import QuoteSummary from './steps/quote-summary'
 import Success from './steps/success'
-import { WizardStep } from './types'
-
-// Steps that show the swaps/orders panel on the right and use the wide layout.
-// quote-summary now drives the whole execution lifecycle in place (no separate
-// processing step), so it stays wide through signing → orders → completion.
-const WIDE_STEPS: WizardStep[] = ['quote-summary', 'success']
 
 const WizardRouter = () => {
   const step = useAtomValue(wizardStepAtom)
@@ -42,6 +36,7 @@ const AsyncMintWizard = () => {
   const indexDTF = useAtomValue(indexDTFAtom)
   const account = useAtomValue(walletAtom)
   const step = useAtomValue(wizardStepAtom)
+  const ordersExpanded = useAtomValue(ordersExpandedAtom)
   const resetWizard = useSetAtom(resetWizardAtom)
 
   // Clear the wizard (step, amounts, toggle) when leaving the page. The SDK
@@ -59,7 +54,11 @@ const AsyncMintWizard = () => {
 
   if (!indexDTF) return null
 
-  const isWide = WIDE_STEPS.includes(step)
+  // quote-summary widens only when the orders panel is expanded; collapsing it
+  // narrows the wizard to centered cards (like the configure step). success
+  // stays wide through completion.
+  const isWide =
+    step === 'success' || (step === 'quote-summary' && ordersExpanded)
 
   return (
     <div className="container flex w-full bg-secondary rounded-4xl flex-col items-center justify-start gap-2">
