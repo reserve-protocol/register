@@ -8,7 +8,16 @@ import { isInactiveDTF } from '@/hooks/use-dtf-status'
 import { useIsDesktop } from '@/hooks/use-media-query'
 import useIndexDTFList, { type IndexDTFItem } from '@/hooks/useIndexDTFList'
 import { cn } from '@/lib/utils'
+import { INDEX_GRAPH_CLIENTS } from '@/state/chain/atoms/chainAtoms'
 import { formatCurrency, getFolioRoute } from '@/utils'
+import { getLaunchSegmentData } from '@/utils/chart-launch-segments'
+import {
+  getPerformanceDirection,
+  getPerformanceStroke,
+  PERFORMANCE_COLORS,
+  type PerformanceDirection,
+} from '@/utils/chart-performance-colors'
+import { ChainId } from '@/utils/chains'
 import { RESERVE_API, ROUTES } from '@/utils/constants'
 import { Trans, useLingui } from '@lingui/react/macro'
 import { useQuery } from '@tanstack/react-query'
@@ -21,7 +30,15 @@ import {
   type ReactNode,
 } from 'react'
 import { Link } from 'react-router-dom'
-import { Area, AreaChart, Tooltip, XAxis, YAxis } from 'recharts'
+import {
+  Area,
+  AreaChart,
+  ReferenceLine,
+  Tooltip as RechartsTooltip,
+  XAxis,
+  YAxis,
+} from 'recharts'
+import type { Address } from 'viem'
 import {
   useAssetTickerTransition,
   useHighlightedCardVisibility,
@@ -32,7 +49,7 @@ import { calculatePercentageChange } from './discover-index-dtf/utils'
 
 const HIGHLIGHTED_LIMIT = 5
 const BACKING_LIMIT = 7
-const SEVEN_DAYS_SECONDS = 7 * 24 * 60 * 60
+const ONE_MONTH_SECONDS = 30 * 24 * 60 * 60
 const COLLATERAL_GAP = 8
 const COLLATERAL_SCROLL_RAMP_PERCENT = 12
 const COLLATERAL_SCROLL_RAMP_DISTANCE_PERCENT = 4
@@ -59,14 +76,42 @@ const FEATURE_CARD_ASSET_TICKER_CLASS_NAME =
 const FEATURE_CARD_GRID_CLASS_NAME =
   'grid grid-cols-1 gap-1 pb-0 will-change-transform md:auto-rows-fr md:grid-cols-2'
 
+// Temporary launch-marker testing fixture. The production highlighting model
+// should use an explicit configured list of DTFs instead of market-cap ranking
+// or a single hardcoded address.
+const TEST_HIGHLIGHTED_DTF = {
+  address: '0xB4c9f9D262df2de911455bfB52bcd112C5fb6E7E' as Address,
+  chainId: ChainId.BSC,
+}
+
+// Temporary visual testing override for the launch badge logo.
+const TEST_BADGE_LOGO_DTF = {
+  address: '0x2f8a339b5889ffac4c5a956787cda593b3c36867' as Address,
+  chainId: ChainId.BSC,
+  symbol: 'CMC20',
+}
+
 type ChainVersion = IndexDTFItem & {
   versionLabel: string
+  launchTimestamp?: number
   performanceSource?: Pick<IndexDTFItem, 'chainId' | 'address'>
 }
 
 type HighlightedDTFItem = IndexDTFItem & {
+  launchTimestamp?: number
   performanceSource?: Pick<IndexDTFItem, 'chainId' | 'address'>
   chainVersions?: ChainVersion[]
+}
+
+type HighlightLaunchMarkerProps = {
+  address: Address
+  chainId: number
+  isActive: boolean
+  leftPercent: number
+  logoSrc?: string
+  onActiveChange: (active: boolean) => void
+  performanceDirection: PerformanceDirection
+  symbol: string
 }
 
 const chartConfig = {
@@ -75,6 +120,250 @@ const chartConfig = {
     color: 'currentColor',
   },
 } satisfies ChartConfig
+
+const HighlightLaunchMarker = ({
+  address,
+  chainId,
+  isActive,
+  leftPercent,
+  logoSrc,
+  onActiveChange,
+  performanceDirection,
+  symbol,
+}: HighlightLaunchMarkerProps) => {
+  const bodySize = 18
+  const iconSize = 10
+  const primaryLabelWidth = 74
+  const segmentLabelWidth = 112
+  const segmentLabelGap = 10
+  const annotationClassName = cn(
+    'pointer-events-none absolute z-30 whitespace-nowrap rounded bg-card rounded-full border border-border shadow-sm px-2 py-1 text-[10px] leading-none text-primary dark:text-card-foreground transition-[opacity,transform] duration-150',
+    isActive ? 'translate-y-0 opacity-100' : 'translate-y-1 opacity-0'
+  )
+  const segmentAnnotationClassName = cn(
+    'pointer-events-none absolute z-30 whitespace-nowrap text-[10px] font-medium leading-none text-muted-foreground transition-[opacity,transform] duration-150',
+    isActive ? 'translate-y-0 opacity-100' : 'translate-y-1 opacity-0'
+  )
+  const priceDataLabelColor =
+    performanceDirection === 'positive' || performanceDirection === 'negative'
+      ? PERFORMANCE_COLORS[performanceDirection].dot
+      : PERFORMANCE_COLORS.neutral.dot
+
+  return (
+    <>
+      <span
+        aria-hidden={!isActive}
+        className={cn(annotationClassName, 'text-center font-medium')}
+        style={{
+          bottom: 32,
+          left: `clamp(8px, calc(${leftPercent}% - ${
+            primaryLabelWidth / 2
+          }px + 0.5px), calc(100% - ${primaryLabelWidth}px - 8px))`,
+          width: primaryLabelWidth,
+        }}
+      >
+        DTF Created
+      </span>
+      <span
+        aria-hidden={!isActive}
+        className={cn(segmentAnnotationClassName, 'text-right')}
+        style={{
+          bottom: 8,
+          left: `clamp(8px, calc(${leftPercent}% - ${
+            segmentLabelWidth + bodySize / 2 + segmentLabelGap
+          }px), calc(100% - ${segmentLabelWidth}px - 8px))`,
+          width: segmentLabelWidth,
+        }}
+      >
+        Backtracked basket price
+      </span>
+      <span
+        aria-hidden={!isActive}
+        className={cn(segmentAnnotationClassName, 'text-left')}
+        style={{
+          bottom: 8,
+          color: priceDataLabelColor,
+          left: `clamp(8px, calc(${leftPercent}% + ${
+            bodySize / 2 + segmentLabelGap
+          }px), calc(100% - ${segmentLabelWidth}px - 8px))`,
+          width: segmentLabelWidth,
+        }}
+      >
+        DTF price data
+      </span>
+      <span
+        aria-label="DTF Created"
+        className="absolute z-40 outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-card"
+        role="button"
+        tabIndex={0}
+        onBlur={() => onActiveChange(false)}
+        onClick={(event) => event.preventDefault()}
+        onFocus={() => onActiveChange(true)}
+        onKeyDown={(event) => {
+          if (event.key === 'Enter' || event.key === ' ') {
+            event.preventDefault()
+          }
+        }}
+        onMouseEnter={() => onActiveChange(true)}
+        onMouseLeave={() => onActiveChange(false)}
+        style={{
+          bottom: 8,
+          height: bodySize,
+          left: `${leftPercent}%`,
+          transform: 'translateX(calc(-50% + 0.5px))',
+          width: bodySize,
+        }}
+      >
+        <span
+          className="absolute inset-x-0 bottom-0 rounded-full border bg-card shadow-sm"
+          style={{
+            alignItems: 'center',
+            borderColor: isActive
+              ? 'hsl(var(--primary))'
+              : 'hsl(var(--primary) / 0.5)',
+            borderWidth: 1,
+            boxShadow: '0 0px 16px rgba(0, 0, 0, 0.18)',
+            display: 'flex',
+            height: bodySize,
+            justifyContent: 'center',
+            width: bodySize,
+          }}
+        >
+          <span
+            className="flex items-center justify-center"
+            style={{
+              height: iconSize,
+              width: iconSize,
+            }}
+          >
+            <TokenLogo
+              address={address}
+              chain={chainId}
+              height={iconSize}
+              src={logoSrc}
+              symbol={symbol}
+              width={iconSize}
+            />
+          </span>
+        </span>
+      </span>
+    </>
+  )
+}
+
+type TestHighlightedDTFSubgraphResponse = {
+  dtf: {
+    id: string
+    timestamp: string
+    token: {
+      name: string
+      symbol: string
+    }
+  } | null
+}
+
+type TestHighlightedDTFCurrentResponse = {
+  price: number
+  marketCap: number
+  basket: {
+    address: Address
+    symbol?: string
+    name?: string
+    weight?: string
+  }[]
+}
+
+type TestHighlightedDTFHistoricalResponse = {
+  timeseries?: { timestamp: number; price: number }[]
+}
+
+const DTF_BY_ID_QUERY = `
+  query GetHighlightedDTFById($id: ID!) {
+    dtf(id: $id) {
+      id
+      timestamp
+      token {
+        name
+        symbol
+      }
+    }
+  }
+`
+
+const getAddressLabel = (address: string) =>
+  `${address.slice(0, 6)}...${address.slice(-4)}`
+
+const fetchJson = async <T,>(url: string): Promise<T> => {
+  const response = await fetch(url)
+
+  if (!response.ok) {
+    throw new Error(`Failed to fetch ${url}`)
+  }
+
+  return response.json() as Promise<T>
+}
+
+const fetchTestHighlightedDTF =
+  async (): Promise<HighlightedDTFItem | null> => {
+    const { address, chainId } = TEST_HIGHLIGHTED_DTF
+    const client = INDEX_GRAPH_CLIENTS[chainId]
+
+    if (!client) return null
+
+    const [subgraphData, currentData, historicalData] = await Promise.all([
+      client.request<TestHighlightedDTFSubgraphResponse>(DTF_BY_ID_QUERY, {
+        id: address.toLowerCase(),
+      }),
+      fetchJson<TestHighlightedDTFCurrentResponse>(
+        `${RESERVE_API}current/dtf?chainId=${chainId}&address=${address}`
+      ),
+      fetchJson<TestHighlightedDTFHistoricalResponse>(
+        `${RESERVE_API}historical/dtf?chainId=${chainId}&address=${address}&from=${
+          Math.floor(Date.now() / 1000) - ONE_MONTH_SECONDS
+        }&to=${Math.floor(Date.now() / 1000)}&interval=1d`
+      ),
+    ])
+
+    if (!subgraphData.dtf) return null
+
+    return {
+      address,
+      chainId,
+      launchTimestamp: Number(subgraphData.dtf.timestamp),
+      name: subgraphData.dtf.token.name,
+      symbol: subgraphData.dtf.token.symbol,
+      price: currentData.price,
+      fee: 0,
+      marketCap: currentData.marketCap,
+      basket: currentData.basket.map((token) => ({
+        address: token.address,
+        symbol: token.symbol || getAddressLabel(token.address),
+        name: token.name,
+        weight: token.weight,
+      })),
+      performance: (historicalData.timeseries ?? []).map(
+        ({ timestamp, price }) => ({
+          timestamp,
+          value: price,
+        })
+      ),
+      performancePercent: 0,
+      status: 'active',
+    }
+  }
+
+const useTestHighlightedDTF = () => {
+  return useQuery({
+    queryKey: [
+      'test-highlighted-dtf',
+      TEST_HIGHLIGHTED_DTF.chainId,
+      TEST_HIGHLIGHTED_DTF.address,
+    ],
+    queryFn: fetchTestHighlightedDTF,
+    staleTime: REFRESH_INTERVAL,
+    refetchInterval: REFRESH_INTERVAL,
+  })
+}
 
 const createDummyEthereumVersion = (
   dtf: IndexDTFItem,
@@ -139,15 +428,15 @@ const withHighlightedChainVersions = (
   ]
 }
 
-const getSevenDayPerformance = (performance: IndexDTFItem['performance']) => {
+const getOneMonthPerformance = (performance: IndexDTFItem['performance']) => {
   if (performance.length === 0) return performance
 
   const lastTimestamp = performance[performance.length - 1].timestamp
   const timestampDivisor = lastTimestamp > 1_000_000_000_000 ? 1000 : 1
-  const sevenDayStart = lastTimestamp / timestampDivisor - SEVEN_DAYS_SECONDS
+  const oneMonthStart = lastTimestamp / timestampDivisor - ONE_MONTH_SECONDS
 
   return performance.filter(
-    ({ timestamp }) => timestamp / timestampDivisor >= sevenDayStart
+    ({ timestamp }) => timestamp / timestampDivisor >= oneMonthStart
   )
 }
 
@@ -168,28 +457,15 @@ const getPaddedValueDomain = ([dataMin, dataMax]: [number, number]): [
   return [dataMin - padding, dataMax + padding]
 }
 
-const getPerformanceDirection = (
-  performance: IndexDTFItem['performance']
-): 'positive' | 'negative' | 'neutral' => {
-  if (performance.length < 2) return 'neutral'
-
-  const firstValue = performance[0].value
-  const lastValue = performance[performance.length - 1].value
-
-  if (lastValue > firstValue) return 'positive'
-  if (lastValue < firstValue) return 'negative'
-  return 'neutral'
-}
-
-const useDetailedSevenDayPerformance = (
+const useDetailedOneMonthPerformance = (
   dtf: Pick<IndexDTFItem, 'chainId' | 'address'>,
   enabled = true
 ) => {
   return useQuery({
-    queryKey: ['highlighted-dtf-7d-performance', dtf.chainId, dtf.address],
+    queryKey: ['highlighted-dtf-1m-performance', dtf.chainId, dtf.address],
     queryFn: async (): Promise<IndexDTFItem['performance']> => {
       const to = Math.floor(Date.now() / 3_600_000) * 3_600
-      const from = to - SEVEN_DAYS_SECONDS
+      const from = to - ONE_MONTH_SECONDS
       const sp = new URLSearchParams()
       sp.set('chainId', dtf.chainId.toString())
       sp.set('address', dtf.address.toLowerCase())
@@ -272,6 +548,7 @@ export const IndexDTFFeatureCard = ({
   const { t } = useLingui()
   const chainVersions = dtf.chainVersions
   const [selectedVersionIndex, setSelectedVersionIndex] = useState(0)
+  const [isLaunchMarkerActive, setIsLaunchMarkerActive] = useState(false)
   const selectedVersion = chainVersions?.[selectedVersionIndex] ?? dtf
   const assetVersionKey = `${selectedVersion.chainId}-${selectedVersion.address}`
   const performanceSource = selectedVersion.performanceSource ?? selectedVersion
@@ -280,34 +557,57 @@ export const IndexDTFFeatureCard = ({
     () => selectedVersion.basket.slice(0, BACKING_LIMIT),
     [selectedVersion]
   )
-  const fallbackSevenDayPerformance = getSevenDayPerformance(
+  const fallbackOneMonthPerformance = getOneMonthPerformance(
     selectedVersion.performance
   )
-  const { data: detailedSevenDayPerformance } = useDetailedSevenDayPerformance(
+  const { data: detailedOneMonthPerformance } = useDetailedOneMonthPerformance(
     performanceSource,
     enableDetailedPerformance
   )
-  const sevenDayPerformance = detailedSevenDayPerformance?.length
-    ? detailedSevenDayPerformance
-    : fallbackSevenDayPerformance
-  const percentageChange = calculatePercentageChange(sevenDayPerformance)
-  const performanceDirection = getPerformanceDirection(sevenDayPerformance)
+  const oneMonthPerformance = detailedOneMonthPerformance?.length
+    ? detailedOneMonthPerformance
+    : fallbackOneMonthPerformance
+  const percentageChange = calculatePercentageChange(oneMonthPerformance)
+  const performanceDirection = getPerformanceDirection(oneMonthPerformance)
+  const { data: segmentedPerformance, shouldSplit } = getLaunchSegmentData(
+    oneMonthPerformance,
+    'value',
+    selectedVersion.launchTimestamp
+  )
+  const showLaunchLine =
+    selectedVersion.launchTimestamp !== undefined &&
+    oneMonthPerformance.length > 1 &&
+    selectedVersion.launchTimestamp >= oneMonthPerformance[0].timestamp &&
+    selectedVersion.launchTimestamp <=
+      oneMonthPerformance[oneMonthPerformance.length - 1].timestamp
+  const launchMarkerLeftPercent =
+    showLaunchLine && selectedVersion.launchTimestamp !== undefined
+      ? Math.min(
+          100,
+          Math.max(
+            0,
+            ((selectedVersion.launchTimestamp -
+              oneMonthPerformance[0].timestamp) /
+              (oneMonthPerformance[oneMonthPerformance.length - 1].timestamp -
+                oneMonthPerformance[0].timestamp)) *
+              100
+          )
+        )
+      : undefined
   const dotsPatternId = useId().replace(/:/g, '')
+  const preLaunchDotsPatternId = `${dotsPatternId}-pre-launch`
   const strokeGradientId = `${dotsPatternId}-stroke`
   const dotsFadeGradientId = `${dotsPatternId}-fade`
   const dotsMaskId = `${dotsPatternId}-mask`
-  const performanceColor =
-    performanceDirection === 'positive'
-      ? `url(#${strokeGradientId})`
-      : performanceDirection === 'negative'
-        ? `url(#${strokeGradientId})`
-        : 'hsl(var(--primary))'
+  const performanceColor = getPerformanceStroke(
+    performanceDirection,
+    strokeGradientId
+  )
   const performanceDotColor =
-    performanceDirection === 'positive'
-      ? '#819D44'
-      : performanceDirection === 'negative'
-        ? '#B85F50'
-        : '#6F6456'
+    performanceDirection === 'positive' || performanceDirection === 'negative'
+      ? PERFORMANCE_COLORS[performanceDirection].dot
+      : PERFORMANCE_COLORS.neutral.dot
+  const preLaunchStrokeColor = PERFORMANCE_COLORS.preLaunch.stroke
   const [isTranscriptActive, setIsTranscriptActive] = useState(false)
   const isDesktop = useIsDesktop()
   const { cardRef, isAssetTickerVisible, isCardInView } =
@@ -333,7 +633,7 @@ export const IndexDTFFeatureCard = ({
     })
   const hasChainTabs = (chainVersions?.length ?? 0) > 1
   const chainTabs = chainVersions ?? []
-  const hasPerformanceChart = sevenDayPerformance.length > 0
+  const hasPerformanceChart = oneMonthPerformance.length > 0
 
   const performanceChart = ({
     className,
@@ -351,7 +651,7 @@ export const IndexDTFFeatureCard = ({
         className={cn('pointer-events-none w-full', className)}
       >
         <AreaChart
-          data={sevenDayPerformance}
+          data={segmentedPerformance}
           margin={{ left: 0, right: 0, top: 6, bottom: 0 }}
           {...{ overflow: 'visible' }}
         >
@@ -360,13 +660,25 @@ export const IndexDTFFeatureCard = ({
               <linearGradient id={strokeGradientId} x1="0" y1="0" x2="1" y2="0">
                 {performanceDirection === 'positive' ? (
                   <>
-                    <stop offset="0%" stopColor="#A2BB6E" />
-                    <stop offset="100%" stopColor="#657D32" />
+                    <stop
+                      offset="0%"
+                      stopColor={PERFORMANCE_COLORS.positive.start}
+                    />
+                    <stop
+                      offset="100%"
+                      stopColor={PERFORMANCE_COLORS.positive.end}
+                    />
                   </>
                 ) : (
                   <>
-                    <stop offset="0%" stopColor="#D69A8F" />
-                    <stop offset="100%" stopColor="#9F4A3D" />
+                    <stop
+                      offset="0%"
+                      stopColor={PERFORMANCE_COLORS.negative.start}
+                    />
+                    <stop
+                      offset="100%"
+                      stopColor={PERFORMANCE_COLORS.negative.end}
+                    />
                   </>
                 )}
               </linearGradient>
@@ -385,6 +697,22 @@ export const IndexDTFFeatureCard = ({
                 r="0.45"
                 fill={performanceDotColor}
                 opacity="1"
+              />
+            </pattern>
+            <pattern
+              id={preLaunchDotsPatternId}
+              x="0"
+              y="0"
+              width="3"
+              height="3"
+              patternUnits="userSpaceOnUse"
+            >
+              <circle
+                cx="1"
+                cy="1"
+                r="0.45"
+                fill={PERFORMANCE_COLORS.preLaunch.dot}
+                opacity={PERFORMANCE_COLORS.preLaunch.dotOpacity}
               />
             </pattern>
             <linearGradient id={dotsFadeGradientId} x1="0" y1="0" x2="0" y2="1">
@@ -406,7 +734,14 @@ export const IndexDTFFeatureCard = ({
               />
             </mask>
           </defs>
-          <XAxis dataKey="timestamp" hide axisLine={false} tickLine={false} />
+          <XAxis
+            dataKey="timestamp"
+            type="number"
+            domain={['dataMin', 'dataMax']}
+            hide
+            axisLine={false}
+            tickLine={false}
+          />
           <YAxis
             dataKey="value"
             hide
@@ -414,8 +749,31 @@ export const IndexDTFFeatureCard = ({
             tickLine={false}
             domain={getPaddedValueDomain}
           />
-          <Tooltip content={() => null} cursor={false} />
-          {showPattern && (
+          <RechartsTooltip content={() => null} cursor={false} />
+          {showPattern && shouldSplit ? (
+            <>
+              <Area
+                type="monotone"
+                dataKey="preLaunchValue"
+                stroke="none"
+                fill={`url(#${preLaunchDotsPatternId})`}
+                mask={`url(#${dotsMaskId})`}
+                isAnimationActive={true}
+                animationDuration={500}
+                animationEasing="ease-in-out"
+              />
+              <Area
+                type="monotone"
+                dataKey="postLaunchValue"
+                stroke="none"
+                fill={`url(#${dotsPatternId})`}
+                mask={`url(#${dotsMaskId})`}
+                isAnimationActive={true}
+                animationDuration={500}
+                animationEasing="ease-in-out"
+              />
+            </>
+          ) : showPattern ? (
             <Area
               type="monotone"
               dataKey="value"
@@ -426,20 +784,78 @@ export const IndexDTFFeatureCard = ({
               animationDuration={500}
               animationEasing="ease-in-out"
             />
+          ) : null}
+          {shouldSplit ? (
+            <>
+              <Area
+                type="monotone"
+                dataKey="preLaunchValue"
+                stroke={preLaunchStrokeColor}
+                strokeWidth={2}
+                fill="transparent"
+                isAnimationActive={true}
+                animationDuration={500}
+                animationEasing="ease-in-out"
+              />
+              <Area
+                type="monotone"
+                dataKey="postLaunchValue"
+                stroke={performanceColor}
+                strokeWidth={2}
+                fill="transparent"
+                isAnimationActive={true}
+                animationDuration={500}
+                animationEasing="ease-in-out"
+              />
+            </>
+          ) : (
+            <Area
+              type="monotone"
+              dataKey="value"
+              stroke={performanceColor}
+              strokeWidth={2}
+              fill="transparent"
+              isAnimationActive={true}
+              animationDuration={500}
+              animationEasing="ease-in-out"
+            />
           )}
-          <Area
-            type="monotone"
-            dataKey="value"
-            stroke={performanceColor}
-            strokeWidth={2}
-            fill="transparent"
-            isAnimationActive={true}
-            animationDuration={500}
-            animationEasing="ease-in-out"
-          />
         </AreaChart>
       </ChartContainer>
       {fadeClassName && <div className={cn(fadeClassName)} />}
+      {launchMarkerLeftPercent !== undefined && (
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute z-20 w-px opacity-65"
+          style={{
+            backgroundColor: isLaunchMarkerActive
+              ? 'currentColor'
+              : 'transparent',
+            backgroundImage: isLaunchMarkerActive
+              ? 'none'
+              : `repeating-linear-gradient(to bottom, currentColor 0 3px, transparent 3px 7px)`,
+            bottom: 8 + 18,
+            color: isLaunchMarkerActive
+              ? 'hsl(var(--primary))'
+              : 'currentColor',
+            filter: 'drop-shadow(0 0 3px rgba(0, 0, 0, 0.18))',
+            left: `${launchMarkerLeftPercent}%`,
+            top: 6,
+            transform: 'translateX(0.5px)',
+          }}
+        />
+      )}
+      {launchMarkerLeftPercent !== undefined && (
+        <HighlightLaunchMarker
+          address={TEST_BADGE_LOGO_DTF.address}
+          chainId={TEST_BADGE_LOGO_DTF.chainId}
+          isActive={isLaunchMarkerActive}
+          leftPercent={launchMarkerLeftPercent}
+          onActiveChange={setIsLaunchMarkerActive}
+          performanceDirection={performanceDirection}
+          symbol={TEST_BADGE_LOGO_DTF.symbol}
+        />
+      )}
     </div>
   )
 
@@ -592,7 +1008,7 @@ export const IndexDTFFeatureCard = ({
                 )}
               >
                 {percentageChange ? (
-                  `${percentageChange} (7d)`
+                  `${percentageChange} (1m)`
                 ) : (
                   <Trans>No data</Trans>
                 )}
@@ -961,14 +1377,25 @@ const HighlightedDTFs = ({
   scrollOffset?: number
 }) => {
   const { data, isLoading } = useIndexDTFList()
+  const { data: testHighlightedDTF } = useTestHighlightedDTF()
 
   const highlighted = useMemo(() => {
     if (!data) return []
 
-    const highlightedDtfs = data
+    const sortedDtfs = data
       .filter((dtf) => !isInactiveDTF(dtf.status))
       .sort((a, b) => b.marketCap - a.marketCap)
-      .slice(0, HIGHLIGHTED_LIMIT)
+
+    const highlightedDtfs = [
+      ...(testHighlightedDTF ? [testHighlightedDTF] : []),
+      ...sortedDtfs.filter(
+        (dtf) =>
+          !testHighlightedDTF ||
+          dtf.chainId !== testHighlightedDTF.chainId ||
+          dtf.address.toLowerCase() !== testHighlightedDTF.address.toLowerCase()
+      ),
+    ].slice(0, HIGHLIGHTED_LIMIT)
+
     const alternatePerformanceSource = highlightedDtfs.find(
       (dtf) => dtf.symbol.toUpperCase() !== 'CMC20'
     )
@@ -976,7 +1403,7 @@ const HighlightedDTFs = ({
     return highlightedDtfs.flatMap((dtf) =>
       withHighlightedChainVersions(dtf, alternatePerformanceSource)
     )
-  }, [data])
+  }, [data, testHighlightedDTF])
 
   const { scrollDistance, trackRef, viewportRef } = useHighlightedScrollMetrics<
     HTMLElement,

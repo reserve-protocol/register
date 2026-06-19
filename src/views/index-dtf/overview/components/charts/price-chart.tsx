@@ -38,9 +38,11 @@ const getSkeletonHeight = (isYieldIndexDTF: boolean, isYieldMode: boolean) => {
 const ChartBodyArea = ({
   chartData,
   isLoading,
+  xDomain,
 }: {
   chartData: { timestamp: number }[]
   isLoading: boolean
+  xDomain?: readonly [number, number]
 }) => {
   const dataType = useAtomValue(dataTypeAtom)
   const dtf = useAtomValue(indexDTFAtom)
@@ -69,6 +71,11 @@ const ChartBodyArea = ({
         chartData={chartData as any}
         range={range}
         dtfStart={dtf?.timestamp}
+        launchTimestamp={dtf?.timestamp}
+        launchMarkerToken={{
+          symbol: dtf?.token.symbol,
+        }}
+        xDomain={xDomain}
         className={bodyHeight}
       />
     </div>
@@ -84,10 +91,7 @@ const useSyncApyHistory = () => {
   return apyHistory
 }
 
-const useSync7dChange = (
-  timeseries: { price: number }[],
-  range: string
-) => {
+const useSync7dChange = (timeseries: { price: number }[], range: string) => {
   const set7dChange = useSetAtom(indexDTF7dChangeAtom)
   useEffect(() => {
     if (timeseries.length === 0 || range !== '7d') return
@@ -116,7 +120,9 @@ const PriceChart = () => {
   const isYieldMode = dataType === 'yield'
   const isBTCMode = dataType === 'priceBTC'
 
-  const { history, btcHistory, timeseries } = usePriceChartData({ isBTCMode })
+  const { history, btcHistory, timeseries, xDomain } = usePriceChartData({
+    isBTCMode,
+  })
   const apyHistory = useSyncApyHistory()
   useSync7dChange(timeseries, range)
   useSyncMarketCap(timeseries)
@@ -138,7 +144,11 @@ const PriceChart = () => {
     >
       <div className="px-3 sm:px-6">
         <ChartOverlay timeseries={timeseries} />
-        <ChartBodyArea chartData={chartData} isLoading={isLoading} />
+        <ChartBodyArea
+          chartData={chartData}
+          isLoading={isLoading}
+          xDomain={isYieldMode ? undefined : xDomain}
+        />
       </div>
       <PriceChartFooter />
     </div>

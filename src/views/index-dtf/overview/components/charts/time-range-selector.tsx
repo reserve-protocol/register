@@ -5,18 +5,20 @@ import { TimeRange } from '@/types'
 import { useAtom, useAtomValue } from 'jotai'
 import { useEffect, useMemo } from 'react'
 import { Trans } from '@lingui/react/macro'
+import useIndexDTFPriceHistory from '../../hooks/use-dtf-price-history'
 import { dataTypeAtom } from './price-chart'
 
 export type Range = TimeRange
 
 const ALL_TIME_RANGES = [
-  { label: '24H', value: '24h', minAge: 0 },
-  { label: '7D', value: '7d', minAge: 604_800 },
-  { label: '1M', value: '1m', minAge: 2_592_000 },
-  { label: '3M', value: '3m', minAge: 7_776_000 },
-  { label: '1Y', value: '1y', minAge: 31_536_000 },
-  { label: 'All', value: 'all', minAge: 0 },
+  { label: '24H', value: '24h' },
+  { label: '7D', value: '7d' },
+  { label: '1M', value: '1m' },
+  { label: '3M', value: '3m' },
+  { label: '1Y', value: '1y' },
+  { label: 'All', value: 'all' },
 ] as const
+const ONE_YEAR_SECONDS = 31_536_000
 
 const TimeRangeSelector = ({
   variant = 'default',
@@ -27,23 +29,39 @@ const TimeRangeSelector = ({
   const dtf = useAtomValue(indexDTFAtom)
   const dataType = useAtomValue(dataTypeAtom)
   const isYieldMode = dataType === 'yield'
+  const currentHour = Math.floor(Date.now() / 3_600_000) * 3_600
+  const oneYearAgo = Math.floor(Date.now() / 1_000) - ONE_YEAR_SECONDS
+  const { data: allHistory } = useIndexDTFPriceHistory({
+    address: dtf?.id,
+    from: 0,
+    to: currentHour,
+    interval: '1d',
+  })
+
+  const hasHistoryOlderThanOneYear = useMemo(() => {
+    if (!allHistory) return undefined
+
+    return allHistory.timeseries.some(
+      ({ price, timestamp }) => Boolean(price) && timestamp < oneYearAgo
+    )
+  }, [allHistory, oneYearAgo])
 
   const availableRanges = useMemo(() => {
     if (!dtf?.timestamp) return null
 
-    const now = Math.floor(Date.now() / 1_000)
-    const dtfAge = now - dtf.timestamp
-
     return ALL_TIME_RANGES.filter((tr) => {
-      if (tr.value === 'all') return true
-      if (tr.value === '24h') return !isYieldMode && dtfAge >= 86_400
-      return dtfAge >= tr.minAge
+      if (tr.value === '24h') return !isYieldMode
+      if (tr.value === 'all') return hasHistoryOlderThanOneYear !== false
+      return true
     })
-  }, [dtf?.timestamp, isYieldMode])
+  }, [dtf?.timestamp, hasHistoryOlderThanOneYear, isYieldMode])
 
   useEffect(() => {
     if (availableRanges && !availableRanges.find((r) => r.value === range)) {
-      setRange('all')
+      setRange(
+        (availableRanges.find((r) => r.value === '1y')?.value ??
+          availableRanges[availableRanges.length - 1].value) as Range
+      )
     }
   }, [availableRanges, range, setRange])
 

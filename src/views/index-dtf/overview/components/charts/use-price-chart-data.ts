@@ -1,17 +1,11 @@
 import { useIsMobile } from '@/hooks/use-media-query'
 import { btcPriceAtom } from '@/state/chain/atoms/chainAtoms'
-import {
-  indexDTFAtom,
-  performanceTimeRangeAtom,
-} from '@/state/dtf/atoms'
+import { indexDTFAtom, performanceTimeRangeAtom } from '@/state/dtf/atoms'
 import { useAtomValue } from 'jotai'
-import { useMemo } from 'react'
+import { useCallback, useMemo } from 'react'
 import useBTCPriceHistory from '../../hooks/use-btc-price-history'
 import useIndexDTFPriceHistory from '../../hooks/use-dtf-price-history'
-import {
-  currentHour,
-  historicalConfigs,
-} from './price-chart-constants'
+import { currentHour, historicalConfigs } from './price-chart-constants'
 import { Range } from './time-range-selector'
 
 export function usePriceChartData({ isBTCMode }: { isBTCMode: boolean }) {
@@ -22,47 +16,42 @@ export function usePriceChartData({ isBTCMode }: { isBTCMode: boolean }) {
 
   const now = Math.floor(Date.now() / 1_000)
   const showHourlyInterval = now - (dtf?.timestamp || 0) < 30 * 86_400
-  const config =
-    range === 'all'
-      ? {
-          to: currentHour,
-          from: dtf?.timestamp || 0,
-          interval: (showHourlyInterval ? '1h' : '1d') as '1h' | '1d',
-        }
-      : historicalConfigs[range]
+  const getRangeConfig = useCallback(
+    (selectedRange: Range) => {
+      if (selectedRange === 'all') {
+        return { to: currentHour, from: 0, interval: '1d' as const }
+      }
+
+      const config = historicalConfigs[selectedRange]
+      const canUseHourlyInterval =
+        selectedRange === '24h' ||
+        selectedRange === '7d' ||
+        selectedRange === '1m'
+
+      return {
+        ...config,
+        ...(showHourlyInterval && canUseHourlyInterval
+          ? { interval: '1h' as const }
+          : {}),
+      }
+    },
+    [showHourlyInterval]
+  )
+  const config = getRangeConfig(range)
 
   const prefetchRanges = useMemo(() => {
     const ranges: Range[] = ['24h', '7d', '1m', '3m', '1y', 'all']
-    return ranges
-      .filter((r) => r !== range)
-      .map((r) => {
-        if (r === 'all') {
-          return {
-            to: currentHour,
-            from: dtf?.timestamp || 0,
-            interval: (showHourlyInterval ? '1h' : '1d') as '1h' | '1d',
-          }
-        }
-        return {
-          ...historicalConfigs[r],
-          ...(showHourlyInterval ? { interval: '1h' as const } : {}),
-        }
-      })
-  }, [range, dtf?.timestamp, showHourlyInterval])
-
-  const hourOverride =
-    showHourlyInterval && range !== 'all' ? { interval: '1h' as const } : {}
+    return ranges.filter((r) => r !== range).map(getRangeConfig)
+  }, [getRangeConfig, range])
 
   const { data: history } = useIndexDTFPriceHistory({
     address: dtf?.id,
     ...config,
-    ...hourOverride,
     prefetchRanges,
   })
 
   const { data: btcHistory } = useBTCPriceHistory({
     ...config,
-    ...hourOverride,
     prefetchRanges,
     enabled: isBTCMode,
   })
@@ -109,14 +98,29 @@ export function usePriceChartData({ isBTCMode }: { isBTCMode: boolean }) {
     interval: config.interval,
     isMobile,
     range,
+    xDomain: range === 'all' ? undefined : ([config.from, config.to] as const),
   }
 }
 
 export function useXAxisTicks(
   chartData: { timestamp: number }[],
-  isMobile: boolean
+  isMobile: boolean,
+  xDomain?: readonly [number, number]
 ) {
   return useMemo(() => {
+    if (xDomain) {
+      const [start, end] = xDomain
+      if (start >= end) return []
+
+      const positions = isMobile
+        ? [0.15, 0.38, 0.62, 0.85]
+        : [0.05, 0.23, 0.41, 0.59, 0.77, 0.95]
+
+      return positions.map((position) =>
+        Math.round(start + (end - start) * position)
+      )
+    }
+
     if (chartData.length === 0) return []
 
     const mobilePositions = [0.15, 0.38, 0.62, 0.85]
@@ -126,5 +130,5 @@ export function useXAxisTicks(
     return positions
       .map((i) => chartData[Math.floor(chartData.length * i)]?.timestamp)
       .filter(Boolean)
-  }, [chartData, isMobile])
+  }, [chartData, isMobile, xDomain])
 }
