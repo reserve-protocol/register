@@ -88,7 +88,7 @@ const Content = () => {
 const IndexDTFOverview = () => {
   useTrackIndexDTFPage('overview')
   return (
-    <div className="flex gap-2">
+    <div className="flex gap-2 mb-16 sm:mb-0">
       <Content />
       <LandingMint />
     </div>
