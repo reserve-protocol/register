@@ -43,7 +43,7 @@ const DtfCover = () => {
           >
             <Button className="gap-2 rounded-full px-5 border-2 bg-[#D5DBE7] text-primary border-white hover:text-primary-foreground">
               <Play className="h-4 w-4 " />
-              <Trans>Watch is</Trans> {dtf?.token.symbol}
+              <Trans>Watch {dtf?.token.symbol}</Trans>
             </Button>
           </VideoModal>
         </div>

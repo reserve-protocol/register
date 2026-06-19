@@ -26,7 +26,7 @@ msgstr " subastado"
 msgid "- Redeem {0}"
 msgstr "- Redeem de {0}"
 
-#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1381
+#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1591
 msgid "({outputVsInputDeltaLabel} vs original input)"
 msgstr "({outputVsInputDeltaLabel} vs. input original)"
 
@@ -123,7 +123,7 @@ msgstr "{0} {1, plural, one {tiene} other {tienen}} más del 5% de impacto en el
 #. placeholder {0}: formatCurrency(remainingInputTokenAmount)
 #. placeholder {1}: inputToken.symbol
 #. placeholder {2}: formatCurrency(walletCollateralUsedUsd)
-#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:862
+#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:974
 msgid "{0} {1} + ${2} existing collateral"
 msgstr "{0} {1} + ${2} de colateral existente"
 
@@ -203,8 +203,8 @@ msgid "{0} Est. APY"
 msgstr "{0} APY est."
 
 #. placeholder {0}: dtf.token.symbol
-#: src/views/index-dtf/overview/components/landing-mint/dtf-cover.tsx:55
-#: src/views/index-dtf/overview/components/landing-mint/dtf-cover.tsx:60
+#: src/views/index-dtf/overview/components/landing-mint/dtf-cover.tsx:20
+#: src/views/index-dtf/overview/components/landing-mint/dtf-cover.tsx:25
 msgid "{0} explainer"
 msgstr "explicación de {0}"
 
@@ -361,11 +361,11 @@ msgstr "{delayInHours, plural, one {# hora} other {# horas}}"
 msgid "{failedCount, plural, one {# approval failed - Retry} other {# approvals failed - Retry}}"
 msgstr "{failedCount, plural, one {# aprobación fallida - Reintentar} other {# aprobaciones fallidas - Reintentar}}"
 
-#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:561
+#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:612
 msgid "{failedOrderCount} need retry"
 msgstr "{failedOrderCount} requieren reintento"
 
-#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:467
+#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:518
 msgid "{filledOrderCount}/{orderCount} Orders filled"
 msgstr "{filledOrderCount}/{orderCount} órdenes completadas"
 
@@ -420,7 +420,7 @@ msgstr "{pauseLabel} sin pausar"
 msgid "{pauseLabel} paused"
 msgstr "{pauseLabel} pausado"
 
-#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:569
+#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:620
 msgid "{pendingOrderCount} pending"
 msgstr "{pendingOrderCount} pendientes"
 
@@ -440,11 +440,11 @@ msgstr "{periodInHours, plural, one {# hora} other {# horas}}"
 msgid "{priceImpactLabel}% price impact swapping {amountLabel} {inputTokenSymbol} for {tokenSymbol}"
 msgstr "{priceImpactLabel}% de impacto en el precio al intercambiar {amountLabel} {inputTokenSymbol} por {tokenSymbol}"
 
-#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:408
+#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:442
 msgid "{readySwapCount} swap quote ready"
 msgstr "{readySwapCount} cotización de swap lista"
 
-#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:409
+#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:443
 msgid "{readySwapCount} swap quotes ready"
 msgstr "{readySwapCount} cotizaciones de swap listas"
 
@@ -456,11 +456,11 @@ msgstr "{seconds}s"
 msgid "{strategyCount, plural, one {# Strategy} other {# Strategies}}"
 msgstr "{strategyCount, plural, one {# estrategia} other {# estrategias}}"
 
-#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:471
+#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:522
 msgid "{swapCount} order"
 msgstr "{swapCount} orden"
 
-#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:472
+#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:523
 msgid "{swapCount} orders"
 msgstr "{swapCount} órdenes"
 
@@ -534,7 +534,7 @@ msgid "+{remaining} more"
 msgstr "+{remaining} más"
 
 #. placeholder {0}: formatCurrency(leftoverCollateralUsd)
-#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1394
+#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1604
 msgid "+${0} leftover collateral"
 msgstr "+${0} de colateral sobrante"
 
@@ -772,7 +772,7 @@ msgstr "Abstenerse"
 msgid "Accept unstake delay"
 msgstr "Aceptar retraso de Unstake"
 
-#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:631
+#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:682
 msgid "Acquire assets before minting"
 msgstr "Adquirir activos antes del Mint"
 
@@ -799,7 +799,7 @@ msgstr "Reequilibrios activos"
 msgid "Activity history"
 msgstr "Historial de actividad"
 
-#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1185
+#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1385
 msgid "Actual impact"
 msgstr "Impacto real"
 
@@ -1216,7 +1216,7 @@ msgstr "Aprobar RSR"
 #. placeholder {0}: tokenIn.symbol
 #. placeholder {0}: usedToken.symbol || 'ERC20'
 #: src/components/vote-lock/components/submit-lock-button.tsx:226
-#: src/views/index-dtf/deploy/steps/confirm-deploy/simple/simple-deploy-button.tsx:144
+#: src/views/index-dtf/deploy/steps/confirm-deploy/simple/simple-deploy-button.tsx:145
 #: src/views/yield-dtf/issuance/components/zapV2/submit/ZapApprovalButton.tsx:60
 msgid "Approve use of {0}"
 msgstr "Aprobar uso de {0}"
@@ -1622,7 +1622,7 @@ msgstr "Balance: "
 msgid "Base APY"
 msgstr "Base APY"
 
-#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1312
+#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1522
 msgid "Based on current collateral quotes. Your final mint amount is calculated from the assets acquired after trades complete."
 msgstr "Basado en las cotizaciones actuales del colateral. El monto final del Mint se calcula a partir de los activos adquiridos una vez completados los trades."
 
@@ -1693,7 +1693,7 @@ msgstr "Configuración de la cesta"
 msgid "Basket settings proposal"
 msgstr "Propuesta de configuración de la cesta"
 
-#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:835
+#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:947
 msgid "Basket tokens in your wallet"
 msgstr "Tokens del basket en tu Wallet"
 
@@ -1996,6 +1996,7 @@ msgstr "¿Puedes describir el DTF que quieres crear? *"
 #: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/basket-settings-proposal-overview.tsx:110
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/dao-settings-proposal-overview.tsx:101
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/dtf-settings-proposal-overview.tsx:110
+#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1346
 #: src/views/yield-dtf/staking/components/stake/edit-delegate.tsx:40
 msgid "Cancel"
 msgstr "Cancelar"
@@ -2241,12 +2242,17 @@ msgstr "CMC20 es un DTF de BNB y necesitas hacer bridge de tu RSR usando Wormhol
 msgid "CMC20 whitepaper documentation"
 msgstr ""
 
+#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1747
+#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1754
+msgid "Collapse orders"
+msgstr "Contraer órdenes"
+
 #: src/views/explorer/components/collaterals/index.tsx:80
 #: src/views/index-dtf/overview/components/basket-overview/basket-table-header.tsx:113
 msgid "Collateral"
 msgstr "Colateral"
 
-#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:990
+#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1102
 msgid "Collateral acquired"
 msgstr "Colateral adquirido"
 
@@ -2275,7 +2281,7 @@ msgstr "Wrappers de plugins de colateral"
 msgid "Collateral Plugins"
 msgstr "Plugins de colateral"
 
-#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1505
+#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1722
 msgid "Collateral swaps"
 msgstr "Swaps de colateral"
 
@@ -2352,7 +2358,7 @@ msgstr "Telegram de la comunidad"
 msgid "Completed"
 msgstr "Completado"
 
-#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1501
+#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1718
 msgid "Completed orders"
 msgstr "Órdenes completadas"
 
@@ -2360,7 +2366,7 @@ msgstr "Órdenes completadas"
 msgid "Completed:"
 msgstr "Completado:"
 
-#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:83
+#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:92
 msgid "Completing mint…"
 msgstr "Completando el Mint…"
 
@@ -2450,7 +2456,7 @@ msgstr "Confirmar Redeem"
 msgid "Confirm Stake"
 msgstr "Confirmar Stake"
 
-#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:770
+#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:855
 msgid "Confirm the value to put toward this mint."
 msgstr "Confirma el valor a destinar a este Mint."
 
@@ -2493,7 +2499,7 @@ msgstr "Confirmando tx..."
 msgid "Confirming..."
 msgstr "Confirmando..."
 
-#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:80
+#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:89
 msgid "Confirming…"
 msgstr "Confirmando…"
 
@@ -2581,12 +2587,12 @@ msgid "Controls settings of the vlDAO including vote lock duration and approving
 msgstr "Controla la configuración del vlDAO, incluida la duración del bloqueo de votos y la aprobación de tokens de ingresos"
 
 #. placeholder {0}: inputToken.symbol
-#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:839
+#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:951
 msgid "Converted to {0} — see breakdown"
 msgstr "Convertido a {0} — ver desglose"
 
 #. placeholder {0}: inputToken.symbol
-#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:772
+#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:857
 msgid "Converting basket tokens held in your wallet to {0}."
 msgstr "Convirtiendo los tokens del basket en tu Wallet a {0}."
 
@@ -2676,7 +2682,7 @@ msgid "CowSwap Auction Filler stopped"
 msgstr "CowSwap Auction Filler detenido"
 
 #. placeholder {0}: form?.symbol || 'DTF'
-#: src/views/index-dtf/deploy/steps/confirm-deploy/simple/simple-deploy-button.tsx:143
+#: src/views/index-dtf/deploy/steps/confirm-deploy/simple/simple-deploy-button.tsx:144
 msgid "Create {0}"
 msgstr "Crear {0}"
 
@@ -3376,7 +3382,7 @@ msgid "DTF Created"
 msgstr "DTF creado"
 
 #: src/views/home/components/dtf-explainer-button.tsx:26
-#: src/views/index-dtf/overview/components/landing-mint/dtf-cover.tsx:61
+#: src/views/index-dtf/overview/components/landing-mint/dtf-cover.tsx:26
 msgid "DTF Explainer"
 msgstr "Explicación de los DTF"
 
@@ -3588,9 +3594,14 @@ msgstr "Editar"
 msgid "Edit {variant} cover image"
 msgstr "Editar imagen de portada de {variant}"
 
+#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:870
+#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:876
+msgid "Edit amount"
+msgstr "Editar monto"
+
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:781
-msgid "Edit input amount"
-msgstr "Editar el monto de entrada"
+#~ msgid "Edit input amount"
+#~ msgstr "Editar el monto de entrada"
 
 #: src/views/index-dtf/manage/components/manage-form.tsx:144
 msgid "Edit Overview Content"
@@ -3842,7 +3853,7 @@ msgstr "Costo de gas estimado:"
 msgid "Estimated loss: ~${0}"
 msgstr "Pérdida estimada: ~${0}"
 
-#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1301
+#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1511
 msgid "Estimated output"
 msgstr "Resultado estimado"
 
@@ -3868,7 +3879,7 @@ msgid "Even distribution"
 msgstr "Distribución uniforme"
 
 #: src/views/index-dtf/issuance/async-mint/steps/configure-mint.tsx:237
-#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:958
+#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1070
 msgid "Exceeds available balance"
 msgstr "Supera el balance disponible"
 
@@ -3950,12 +3961,12 @@ msgid "Execution progress"
 msgstr "Progreso de ejecución"
 
 #. placeholder {0}: formatCurrency(walletCollateralUsedUsd)
-#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:810
+#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:922
 msgid "Existing collateral · ${0} applied"
 msgstr "Colateral existente · ${0} aplicado"
 
 #. placeholder {0}: formatCurrency(heldCollateralTotalUsd)
-#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:811
+#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:923
 msgid "Existing collateral · ${0} available"
 msgstr "Colateral existente · ${0} disponible"
 
@@ -4143,19 +4154,35 @@ msgstr "Comisiones y estadísticas"
 msgid "Fees distributed"
 msgstr "Comisiones distribuidas"
 
-#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:403
+#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1774
+msgid "Fetch again to load the swap orders for this mint."
+msgstr "Vuelve a obtener para cargar las órdenes de swap de este Mint."
+
+#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1276
+msgid "Fetch quotes again"
+msgstr "Volver a obtener cotizaciones"
+
+#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:437
 msgid "Fetching {swapCount} swap quote"
 msgstr "Obteniendo {swapCount} cotización de swap"
 
-#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:404
+#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:438
 msgid "Fetching {swapCount} swap quotes"
 msgstr "Obteniendo {swapCount} cotizaciones de swap"
 
-#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1130
+#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1729
+msgid "Fetching paused."
+msgstr "Obtención pausada."
+
+#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1335
+msgid "Fetching quotes from CoW is taking longer than usual."
+msgstr "Obtener cotizaciones de CoW está tardando más de lo habitual."
+
+#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1308
 msgid "Fetching quotes..."
 msgstr "Obteniendo cotizaciones..."
 
-#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:405
+#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:439
 msgid "Fetching swap quotes"
 msgstr "Obteniendo cotizaciones de swap"
 
@@ -4188,7 +4215,7 @@ msgstr "Ejecutado"
 msgid "Filled: {totalDistribution}%"
 msgstr "Completado: {totalDistribution}%"
 
-#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:81
+#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:90
 msgid "Filling orders…"
 msgstr "Completando órdenes…"
 
@@ -4519,11 +4546,11 @@ msgstr "hero-splash"
 #~ msgid "Hide DTF"
 #~ msgstr "Ocultar DTF"
 
-#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:548
+#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:599
 msgid "Hide orders"
 msgstr "Ocultar órdenes"
 
-#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:549
+#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:600
 msgid "Hide quotes"
 msgstr "Ocultar cotizaciones"
 
@@ -4773,7 +4800,7 @@ msgstr "Ingresa la dirección"
 msgid "Input amount"
 msgstr "Monto de entrada"
 
-#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:757
+#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:842
 msgid "Input confirmed"
 msgstr "Entrada confirmada"
 
@@ -4849,7 +4876,7 @@ msgstr "Ingresa una Wallet"
 msgid "Input withdrawal leak %"
 msgstr "Ingresar el % de fuga en el retiro"
 
-#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1245
+#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1445
 msgid "Inputs are locked while swap quotes are fetched."
 msgstr "Las entradas se bloquean mientras se obtienen las cotizaciones de swap."
 
@@ -5097,7 +5124,7 @@ msgstr "Más información sobre cómo ganar APY"
 msgid "Learn more about Reserve on their website."
 msgstr "Conoce más sobre Reserve en su sitio web."
 
-#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1408
+#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1618
 msgid "Leftover collateral is not included in the DTF output value. It may remain because minting uses fixed basket ratios."
 msgstr "El colateral sobrante no se incluye en el valor de salida del DTF. Puede quedar porque el Mint usa proporciones fijas del basket."
 
@@ -5391,7 +5418,7 @@ msgid "Max precision is 0.01%"
 msgstr "La precisión máxima es 0.01%"
 
 #: src/components/ui/swap.tsx:459
-#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1187
+#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1387
 msgid "Max slippage"
 msgstr "Slippage máximo"
 
@@ -5554,8 +5581,8 @@ msgstr "Mint de {0}"
 msgid "Mint {0}% Est. APY"
 msgstr "Mint {0}% APY est."
 
-#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:624
-#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1233
+#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:675
+#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1433
 msgid "Mint {receiveSymbol}"
 msgstr "Mint de {receiveSymbol}"
 
@@ -5576,7 +5603,7 @@ msgstr "Cantidad de Mint por encima del máximo global de Mint"
 msgid "Mint Amount:"
 msgstr "Cantidad de Mint:"
 
-#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1228
+#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1428
 msgid "Mint completed"
 msgstr "Mint completado"
 
@@ -5630,7 +5657,7 @@ msgstr "Volumen de Mint"
 msgid "Mintable now"
 msgstr "Disponible para Mint ahora"
 
-#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1292
+#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1502
 msgid "Minted"
 msgstr "Minted"
 
@@ -5818,7 +5845,7 @@ msgstr "Nuevo Index DTF"
 msgid "New mandate:"
 msgstr "Nuevo mandato:"
 
-#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1433
+#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1643
 #: src/views/index-dtf/issuance/async-mint/steps/success.tsx:173
 msgid "New mint"
 msgstr "Nuevo Mint"
@@ -5835,7 +5862,7 @@ msgstr "Nueva cesta principal"
 msgid "New proposal threshold:"
 msgstr "Nuevo umbral de propuesta:"
 
-#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1433
+#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1643
 #: src/views/index-dtf/issuance/async-mint/steps/success.tsx:173
 msgid "New redeem"
 msgstr "Nuevo Redeem"
@@ -6028,12 +6055,12 @@ msgstr "Sin riesgo de slashing"
 msgid "No swap path found. Consider removing this token."
 msgstr "No se encontró ruta de swap. Considera eliminar este token."
 
-#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1512
+#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1733
 msgid "No swaps are needed for this operation."
 msgstr "No se necesitan swaps para esta operación."
 
-#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:410
-#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1560
+#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:444
+#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1830
 msgid "No swaps needed"
 msgstr "No se necesitan swaps"
 
@@ -6322,18 +6349,18 @@ msgstr "Proposers optimistas"
 msgid "or drag and drop it here"
 msgstr "o arrástralo y suéltalo aquí"
 
-#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:468
-#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:473
-#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1503
+#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:519
+#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:524
+#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1720
 msgid "Orders"
 msgstr "Órdenes"
 
-#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:555
+#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:606
 msgid "Orders expire in"
 msgstr "Las órdenes expiran en"
 
 #. placeholder {0}: formatOrderCountdown(orderExpirySeconds)
-#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:567
+#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:618
 msgid "Orders expire in {0}"
 msgstr "Las órdenes expiran en {0}"
 
@@ -6494,7 +6521,7 @@ msgstr "Retiros pendientes"
 
 #: src/components/stake-drawer/components/submit-stake-button.tsx:220
 #: src/components/stake-drawer/components/submit-unstake-button.tsx:105
-#: src/components/transaction-modal/index.tsx:160
+#: src/components/transaction-modal/index.tsx:159
 #: src/components/vote-lock/components/submit-delegate-button.tsx:179
 #: src/components/vote-lock/components/submit-lock-button.tsx:218
 #: src/components/vote-lock/components/submit-unlock-button.tsx:138
@@ -6760,7 +6787,7 @@ msgstr "Reequilibrio de precisión"
 msgid "Prepare for bidding by approving {0}"
 msgstr "Prepárate para ofertar aprobando {0}"
 
-#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1146
+#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1326
 msgid "Prepare redeem"
 msgstr "Preparar el Redeem"
 
@@ -6768,11 +6795,11 @@ msgstr "Preparar el Redeem"
 msgid "Preparing approval"
 msgstr "Preparando aprobación"
 
-#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:630
+#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:681
 msgid "Preparing mint"
 msgstr "Preparando el Mint"
 
-#: src/components/transaction-modal/index.tsx:160
+#: src/components/transaction-modal/index.tsx:159
 #: src/views/yield-dtf/staking/components/stake/confirm-stake-button.tsx:126
 #: src/views/yield-dtf/staking/components/unstake/confirm-unstake-button.tsx:89
 msgid "Preparing transaction"
@@ -6782,13 +6809,13 @@ msgstr "Preparando transacción"
 msgid "Preparing transaction..."
 msgstr "Preparando la transacción..."
 
-#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1135
-#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1474
+#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1313
+#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1684
 msgid "Preparing wallet..."
 msgstr "Preparando la Wallet..."
 
-#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:77
-#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:78
+#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:86
+#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:87
 msgid "Preparing…"
 msgstr "Preparando…"
 
@@ -6836,7 +6863,7 @@ msgstr "Precio en el lanzamiento"
 msgid "Price Change ({0})"
 msgstr "Cambio de precio ({0})"
 
-#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1162
+#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1362
 msgid "Price impact"
 msgstr "Impacto en el precio"
 
@@ -7144,7 +7171,15 @@ msgstr "¿Quórum?:"
 msgid "Quote expiration"
 msgstr "Expiración de la cotización"
 
-#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1235
+#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1771
+msgid "Quote fetch canceled"
+msgstr "Obtención de cotizaciones cancelada"
+
+#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1251
+msgid "Quote fetch canceled. Your amount is saved. You may <0>fetch quotes again</0>, or <1>edit the amount</1> and try again."
+msgstr "Obtención de cotizaciones cancelada. Tu monto está guardado. Puedes <0>volver a obtener cotizaciones</0> o <1>editar el monto</1> e intentarlo de nuevo."
+
+#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1435
 msgid "Quote review"
 msgstr "Revisión de la cotización"
 
@@ -7154,13 +7189,17 @@ msgid "Quote source"
 msgstr "Fuente de la cotización"
 
 #: src/views/index-dtf/issuance/async-mint/components/leg-row.tsx:176
-#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1550
+#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1805
 msgid "Quote unavailable"
 msgstr "Cotización no disponible"
 
-#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1160
+#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1360
 msgid "Quoted impact"
 msgstr "Impacto cotizado"
+
+#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1815
+msgid "Quotes unavailable"
+msgstr "Cotizaciones no disponibles"
 
 #: src/views/yield-dtf/issuance/components/zapV2/overview/ZapDetails.tsx:57
 msgid "Rate"
@@ -7206,8 +7245,8 @@ msgstr "Listo"
 msgid "Ready to execute"
 msgstr "Listo para ejecutar"
 
-#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:565
-#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1297
+#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:616
+#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1507
 msgid "Ready to mint"
 msgstr "Listo para hacer Mint"
 
@@ -7251,7 +7290,7 @@ msgstr "Reequilibrio en curso"
 msgid "Rebalance progress"
 msgstr "Progreso del reequilibrio"
 
-#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1294
+#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1504
 #: src/views/index-dtf/issuance/async-mint/steps/success.tsx:240
 msgid "Received"
 msgstr "Recibido"
@@ -7274,8 +7313,8 @@ msgstr "Dirección del destinatario {0}"
 msgid "Recipient {recipientNumber} address"
 msgstr "Dirección del destinatario {recipientNumber}"
 
-#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1139
-#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1478
+#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1319
+#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1688
 msgid "Reconnect wallet"
 msgstr "Reconectar la Wallet"
 
@@ -7316,7 +7355,7 @@ msgid "Redeem {0} for {1}."
 msgstr "Redeem de {0} por {1}."
 
 #: src/views/index-dtf/issuance/async-mint/steps/configure-mint.tsx:169
-#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:761
+#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:846
 #: src/views/yield-dtf/issuance/components/redeem/RedeemInput.tsx:17
 msgid "Redeem amount"
 msgstr "Cantidad de Redeem"
@@ -7329,7 +7368,7 @@ msgstr "Cantidad de Redeem por encima del máximo global de Redeem"
 msgid "Redeem Amount:"
 msgstr "Monto a Redeem:"
 
-#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1230
+#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1430
 msgid "Redeem completed"
 msgstr "Redeem completado"
 
@@ -7351,7 +7390,7 @@ msgstr "Redeemed"
 
 #. placeholder {0}: indexDTF?.token.symbol
 #. placeholder {1}: inputToken.symbol
-#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:773
+#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:858
 msgid "Redeeming {0} for {1}."
 msgstr "Haciendo Redeem de {0} por {1}."
 
@@ -7404,6 +7443,11 @@ msgstr "Actualizar cotización"
 #: src/views/yield-dtf/issuance/components/zapV2/submit/ZapRefreshQuote.tsx:52
 msgid "Refresh Quote"
 msgstr "Actualizar cotización"
+
+#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1482
+#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1491
+msgid "Refresh quotes"
+msgstr "Actualizar cotizaciones"
 
 #: src/views/yield-dtf/governance/views/proposal/components/RegisterProposal.tsx:31
 msgid "Register Assets"
@@ -7565,7 +7609,7 @@ msgstr "Aprobaciones requeridas"
 msgid "Required Approvals"
 msgstr "Aprobaciones requeridas"
 
-#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1005
+#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1117
 msgid "Required assets are ready for minting."
 msgstr "Los activos requeridos están listos para el Mint."
 
@@ -7632,7 +7676,7 @@ msgstr "Reserve Telegram"
 msgid "Reset"
 msgstr "Restablecer"
 
-#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:626
+#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:677
 msgid "Resolve failed orders"
 msgstr "Resolver órdenes fallidas"
 
@@ -7644,15 +7688,23 @@ msgstr "Restringido en tu región"
 msgid "Retrieving historical prices..."
 msgstr "Obteniendo precios históricos..."
 
+#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1244
+msgid "Retry"
+msgstr "Reintentar"
+
 #. placeholder {0}: retryableLegIds.length
-#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1086
+#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1191
 msgid "Retry {0} failed order"
 msgstr "Reintentar {0} orden fallida"
 
 #. placeholder {0}: retryableLegIds.length
-#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1087
+#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1192
 msgid "Retry {0} failed orders"
 msgstr "Reintentar {0} órdenes fallidas"
+
+#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1241
+msgid "Retrying…"
+msgstr "Reintentando…"
 
 #: src/views/explorer/components/revenue/index.tsx:729
 #: src/views/explorer/index.tsx:46
@@ -7751,7 +7803,7 @@ msgstr "Revisar el whitepaper de {0}"
 msgid "Review & describe your proposal"
 msgstr "Revisa y describe tu propuesta"
 
-#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:759
+#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:844
 msgid "Review input amount"
 msgstr "Revisar el monto de entrada"
 
@@ -8155,7 +8207,7 @@ msgstr "Vender ${0}"
 msgid "Sell ${0} onchain"
 msgstr "Vende ${0} onchain"
 
-#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:999
+#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1111
 msgid "Sell collateral"
 msgstr "Vender colateral"
 
@@ -8327,6 +8379,11 @@ msgstr "Mostrar menos"
 msgid "Show more"
 msgstr "Mostrar más"
 
+#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:886
+#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:892
+msgid "Show orders"
+msgstr "Mostrar órdenes"
+
 #. placeholder {0}: Math.min( table.getState().pagination.pageSize, table.getFilteredRowModel().rows.length )
 #. placeholder {1}: table.getFilteredRowModel().rows.length
 #: src/components/ui/data-table.tsx:93
@@ -8349,11 +8406,11 @@ msgstr "Firmar en la Wallet"
 msgid "Sign in wallet..."
 msgstr "Firma en la Wallet..."
 
-#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:79
+#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:88
 msgid "Sign in your wallet…"
 msgstr "Firma en tu Wallet…"
 
-#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:82
+#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:91
 msgid "Sign mint…"
 msgstr "Firma el Mint…"
 
@@ -8501,6 +8558,10 @@ msgstr "Vendido"
 msgid "Some collateral tokens from protocols like Aave and Convex differ technically from other collateral tokens. To ensure proper handling, they must be wrapped in a contract for effective monitoring. Once wrapped, the collateral remains the same but has a new interface for price and appreciation tracking."
 msgstr "Algunos tokens de colateral de protocolos como Aave y Convex difieren técnicamente de otros tokens de colateral. Para garantizar un manejo adecuado, deben envolverse en un contrato para un monitoreo efectivo. Una vez envueltos, el colateral sigue siendo el mismo pero tiene una nueva interfaz para el seguimiento del precio y la apreciación."
 
+#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1731
+msgid "Some quotes couldn't be fetched."
+msgstr "No se pudieron obtener algunas cotizaciones."
+
 #: src/views/index-dtf/overview/components/eligibility-card.tsx:137
 msgid "Something went wrong. Please try again."
 msgstr "Algo salió mal. Inténtalo de nuevo."
@@ -8564,7 +8625,7 @@ msgid "Spent"
 msgstr "Gastado"
 
 #. placeholder {0}: inputToken.symbol
-#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1006
+#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1118
 msgid "Split {0} across basket assets."
 msgstr "Divide {0} entre los activos del basket."
 
@@ -8693,7 +8754,7 @@ msgstr "Iniciar {selectedCount} nuevas subastas"
 msgid "Start auction {auctionNumber}"
 msgstr "Iniciar subasta {auctionNumber}"
 
-#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1144
+#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1324
 msgid "Start collateral trades"
 msgstr "Iniciar trades de colateral"
 
@@ -8707,7 +8768,7 @@ msgstr "Iniciar emisión"
 msgid "Start next recollaterization auction"
 msgstr "Iniciar la próxima subasta de recolateralización"
 
-#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1099
+#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1204
 msgid "Start over"
 msgstr "Empezar de nuevo"
 
@@ -8876,7 +8937,7 @@ msgstr "Se intercambió {inputSymbol} por {outputSymbol}"
 msgid "Swaps leave a small residue in your wallet."
 msgstr "Los swaps dejan un pequeño residuo en tu Wallet."
 
-#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1510
+#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1727
 msgid "Swaps settle via CoW Protocol solvers."
 msgstr "Los swaps se liquidan a través de los solvers de CoW Protocol."
 
@@ -8961,6 +9022,10 @@ msgstr "¡Gracias! Nos pondremos en contacto pronto."
 msgid "The acquired assets are used to mint your DTF."
 msgstr "Los activos adquiridos se usan para hacer Mint de tu DTF."
 
+#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1822
+msgid "The amount may be too small to cover swap fees. Try a larger amount."
+msgstr "El monto puede ser demasiado pequeño para cubrir las comisiones de swap. Prueba con un monto mayor."
+
 #: src/views/yield-dtf/auctions/auctions-sidebar/claim-rewards/components/TraderEmissions.tsx:157
 msgid "The amount of assets selected affects the gas price, this asset may not be worth claiming yet."
 msgstr "La cantidad de activos seleccionados afecta el precio del gas; puede que aún no valga la pena reclamar este activo."
@@ -8973,11 +9038,11 @@ msgstr "El valor aproximado de 1 unidad de <0/> cuando se cree el DTF. El precio
 msgid "The backing buffer is extra collateral held to prevent RSR seizure from trading slippage. When the buffer exceeds 100%, any additional appreciation of collateral is recognized as revenue and sold off in auctions."
 msgstr "El buffer de respaldo es colateral adicional que se mantiene para evitar la incautación de RSR por slippage de trading. Cuando el buffer supera el 100%, cualquier apreciación adicional del colateral se reconoce como ingreso y se vende en subastas."
 
-#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1514
+#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1735
 msgid "The basket assets bought with your input."
 msgstr "Los activos del basket comprados con tu entrada."
 
-#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1516
+#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1737
 msgid "The basket assets sold for your output."
 msgstr "Los activos del basket vendidos por tu salida."
 
@@ -9643,12 +9708,12 @@ msgid "Track token in your wallet"
 msgstr "Rastrear token en tu Wallet"
 
 #. placeholder {0}: inputToken.symbol
-#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:996
+#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1108
 msgid "Trade {0} into collateral"
 msgstr "Intercambiar {0} por colateral"
 
 #. placeholder {0}: inputToken.symbol
-#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:992
+#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1104
 msgid "Trade remaining {0} into collateral"
 msgstr "Intercambiar {0} restante por colateral"
 
@@ -9742,7 +9807,7 @@ msgstr "Transacción 2"
 msgid "Transaction confirmed"
 msgstr "Transacción confirmada"
 
-#: src/components/transaction-modal/index.tsx:146
+#: src/components/transaction-modal/index.tsx:145
 #: src/views/index-dtf/issuance/manual/components/index-manual-issuance.tsx:227
 msgid "Transaction failed"
 msgstr "Transacción fallida"
@@ -9846,7 +9911,7 @@ msgstr "Fillers confiables"
 msgid "Try adjusting your filters or check back later"
 msgstr "Prueba ajustar los filtros o vuelve más tarde"
 
-#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1088
+#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1193
 #: src/views/portfolio-page/index.tsx:130
 msgid "Try again"
 msgstr "Intentar de nuevo"
@@ -10258,7 +10323,7 @@ msgstr "Usar el Wallet conectado."
 msgid "Use Swap"
 msgstr "Usar Swap"
 
-#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1244
+#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1444
 msgid "Use the acquired collateral to mint the DTF."
 msgstr "Usa el colateral adquirido para hacer Mint del DTF."
 
@@ -10270,11 +10335,11 @@ msgstr "¿Usar el formato de gobernador Alexios?"
 msgid "Used in"
 msgstr "Usado en"
 
-#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:767
+#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:852
 msgid "Used to acquire the required assets."
 msgstr "Se usa para adquirir los activos requeridos."
 
-#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:768
+#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:853
 msgid "Used to redeem and sell collateral."
 msgstr "Se usa para hacer Redeem y vender el colateral."
 
@@ -10437,7 +10502,7 @@ msgstr "Ver todos los Index DTFs en todos los Networks con fines de prueba inter
 msgid "View details"
 msgstr "Ver detalles"
 
-#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1447
+#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1657
 #: src/views/index-dtf/issuance/async-mint/steps/success.tsx:179
 msgid "View DTF"
 msgstr "Ver DTF"
@@ -10510,7 +10575,7 @@ msgstr "Ver en el explorador"
 msgid "View on Tenderly"
 msgstr "Ver en Tenderly"
 
-#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:551
+#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:602
 msgid "View orders"
 msgstr "Ver órdenes"
 
@@ -10526,7 +10591,7 @@ msgstr "Ver propuesta"
 msgid "View proposals from different DTFs you have vote-locked."
 msgstr "Consulta propuestas de los distintos DTFs en los que hiciste bloqueo de votos."
 
-#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:552
+#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:603
 msgid "View quotes"
 msgstr "Ver cotizaciones"
 
@@ -10837,7 +10902,7 @@ msgstr "Esperando autorización..."
 msgid "Waiting for allowance..."
 msgstr "Esperando la autorización..."
 
-#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:629
+#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:680
 msgid "Waiting for collateral"
 msgstr "Esperando el colateral"
 
@@ -10854,7 +10919,7 @@ msgstr "Esperando el colateral"
 msgid "Waiting for confirmation..."
 msgstr "Esperando confirmación..."
 
-#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:570
+#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:621
 msgid "Waiting for orders"
 msgstr "Esperando las órdenes"
 
@@ -10893,6 +10958,11 @@ msgstr "Advertencia"
 msgid "Warning: High price impact"
 msgstr "Advertencia: alto impacto en el precio"
 
+#. placeholder {0}: dtf?.token.symbol
+#: src/views/index-dtf/overview/components/landing-mint/dtf-cover.tsx:46
+msgid "Watch {0}"
+msgstr "Ver {0}"
+
 #. placeholder {0}: selectedVersion.symbol
 #: src/views/home/components/highlighted-dtfs/transcript-preview.tsx:68
 msgid "Watch {0} explainer"
@@ -10907,14 +10977,17 @@ msgstr "Mira una introducción a los RTokens"
 #~ msgstr "Ver la explicación de los DTF"
 
 #: src/views/home/components/homepage-hero.tsx:46
-#: src/views/index-dtf/overview/components/landing-mint/dtf-cover.tsx:57
-#: src/views/index-dtf/overview/components/landing-mint/dtf-cover.tsx:142
+#: src/views/index-dtf/overview/components/landing-mint/dtf-cover.tsx:22
 msgid "Watch explainer"
 msgstr "Ver la explicación"
 
 #: src/views/home/components/dtf-explainer-button.tsx:32
 msgid "Watch Explainer"
 msgstr "Ver la explicación"
+
+#: src/views/index-dtf/overview/components/landing-mint/dtf-cover.tsx:46
+#~ msgid "Watch is"
+#~ msgstr ""
 
 #: src/views/home/components/highlighted-dtfs/transcript-preview.tsx:71
 msgid "Watch Video"
@@ -10950,6 +11023,10 @@ msgstr "Hacemos Redeem de tu {0} y vendemos el colateral por {1}."
 #: src/views/index-dtf/issuance/async-mint/steps/configure-mint.tsx:114
 msgid "We use your {0} to get the assets needed for the mint."
 msgstr "Usamos tu {0} para obtener los activos necesarios para el Mint."
+
+#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1210
+msgid "We're sorry, but the swap quote is unavailable. The amount may be too small to cover fees. Please <0>retry</0>, or <1>edit the amount</1>, and try again."
+msgstr "Lo sentimos, pero la cotización de swap no está disponible. El monto puede ser demasiado pequeño para cubrir las comisiones. Por favor, <0>reintenta</0> o <1>edita el monto</1> e inténtalo de nuevo."
 
 #: src/views/index-dtf/overview/components/eligibility-card.tsx:160
 msgid "We're sorry, this product isn't available to customers in your region. In order to access this DTF, you may need to qualify as a <0>qualified investor</0>."
@@ -11079,8 +11156,8 @@ msgstr "Retiros deshabilitados temporalmente"
 msgid "Withdrawn"
 msgstr "Retirado"
 
-#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1124
-#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1468
+#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1302
+#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1678
 msgid "Working…"
 msgstr "Procesando…"
 
@@ -11185,7 +11262,7 @@ msgstr "Puedes conocer más sobre la sobrecolateralización aquí."
 msgid "You can leave your RToken paused and come back to setting up governance later."
 msgstr "Puedes dejar tu RToken pausado y volver más tarde a configurar la gobernanza."
 
-#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1563
+#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1833
 msgid "You can proceed directly."
 msgstr "Puedes continuar directamente."
 
@@ -11236,11 +11313,11 @@ msgid "You need to mint at least $1 worth of {0} in order to create your new Ind
 msgstr "Necesitas hacer mint de al menos $1 en {0} para crear tu nuevo Index DTF."
 
 #: src/views/index-dtf/issuance/async-mint/steps/configure-mint.tsx:180
-#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:791
+#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:903
 msgid "You provide"
 msgstr "Tú proporcionas"
 
-#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1322
+#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1532
 msgid "You receive"
 msgstr "Tú recibes"
 
@@ -11309,7 +11386,7 @@ msgid "You've unlocked an invitation to Reserve Institutional's elite program fo
 msgstr "Has desbloqueado una invitación al programa de élite de Reserve Institutional para grandes titulares de RToken. Los participantes disfrutan de acceso a:"
 
 #. placeholder {0}: indexDTF?.token.symbol
-#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1242
+#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1442
 msgid "Your {0} has been redeemed."
 msgstr "Se ha hecho Redeem de tu {0}."
 
@@ -11321,7 +11398,7 @@ msgstr "Tu entrada de {inputSymbol} supera {MIN_INPUT_LABEL}. El Mint automatiza
 msgid "Your Decentralized Token Folio investments."
 msgstr "Tus inversiones en Decentralized Token Folio."
 
-#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1241
+#: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1441
 msgid "Your DTF has been minted."
 msgstr "Se ha hecho Mint de tu DTF."
 
