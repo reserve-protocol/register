@@ -271,8 +271,6 @@ function replaceMetaTags(html: string, token: SEOToken, fullUrl: string): string
     return html
   }
 
-  const headEndPos = (headMatch.index ?? 0) + headMatch[0].length
-
   // Remove existing meta tags that we'll replace
   let modifiedHtml = html
     // Remove existing title

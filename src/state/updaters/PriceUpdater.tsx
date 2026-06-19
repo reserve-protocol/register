@@ -62,9 +62,17 @@ const PricesUpdater = () => {
 
   useEffect(() => {
     if (multicallResult?.data) {
-      setRSRPrice(+formatUnits((multicallResult?.data as any)[0][1], 8))
-      setEthPrice(+formatUnits((multicallResult?.data as any)[1][1], 8))
-      setBTCPrice(+formatUnits((multicallResult?.data as any)[2][1], 8))
+      const priceData = multicallResult.data as readonly (readonly [
+        bigint,
+        bigint,
+        bigint,
+        bigint,
+        bigint,
+      ])[]
+
+      setRSRPrice(+formatUnits(priceData[0][1], 8))
+      setEthPrice(+formatUnits(priceData[1][1], 8))
+      setBTCPrice(+formatUnits(priceData[2][1], 8))
     }
   }, [multicallResult])
 
