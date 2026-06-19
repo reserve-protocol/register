@@ -104,16 +104,16 @@ const PriceChartBody = ({
       .map((value) => ({ value }))
   )
   const overviewPriceColors = getPerformanceColorSet('darkSurface')
+  const priceStrokeGradientId = `${chartId}-overview-price-stroke`
   const dotsPatternId = `${chartId}-overview-dots`
   const preLaunchDotsPatternId = `${chartId}-overview-pre-launch-dots`
+  const fillGradientId = `${chartId}-overview-fill`
   const dotsFadeGradientId = `${chartId}-overview-dots-fade`
   const dotsMaskId = `${chartId}-overview-dots-mask`
   const strokeColor = usePerformanceColors
-    ? performanceDirection === 'positive'
-      ? overviewPriceColors.positive.end
-      : performanceDirection === 'negative'
-        ? overviewPriceColors.negative.end
-        : overviewPriceColors.neutral.stroke
+    ? performanceDirection === 'positive' || performanceDirection === 'negative'
+      ? `url(#${priceStrokeGradientId})`
+      : overviewPriceColors.neutral.stroke
     : isYieldMode
       ? '#4ADE80'
       : '#E5EEFA'
@@ -123,6 +123,10 @@ const PriceChartBody = ({
       : overviewPriceColors.neutral.dot
   const dotFillColor = usePerformanceColors ? performanceDotColor : '#E5EEFA'
   const fill = isYieldMode ? 'url(#yieldGradient)' : `url(#${dotsPatternId})`
+  const postLaunchFill =
+    usePerformanceColors && performanceDirection !== 'neutral'
+      ? `url(#${fillGradientId})`
+      : fill
   const preLaunchFill = fill
 
   return (
@@ -137,9 +141,13 @@ const PriceChartBody = ({
           dotsFadeGradientId,
           dotsMaskId,
           dotsPatternId,
+          fillGradientId,
           isYieldMode,
+          performanceDirection,
           preLaunchDotsPatternId,
           priceColors: overviewPriceColors,
+          priceStrokeGradientId,
+          usePerformanceColors,
         })}
         <XAxis
           dataKey="timestamp"
@@ -201,7 +209,7 @@ const PriceChartBody = ({
         {renderPriceChartSeries({
           chartKey,
           dotsMaskId,
-          fill,
+          fill: postLaunchFill,
           isYieldMode,
           preLaunchFill,
           shouldSplit,

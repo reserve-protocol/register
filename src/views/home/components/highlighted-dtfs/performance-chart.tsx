@@ -26,6 +26,8 @@ const chartConfig = {
   },
 } satisfies ChartConfig
 
+const chartMargin = { left: 0, right: 0, top: 6, bottom: 0 }
+
 export const PerformanceChart = ({
   chartKey,
   className,
@@ -53,6 +55,8 @@ export const PerformanceChart = ({
   const chartRef = useRef<HTMLDivElement>(null)
   const dotsPatternId = useId().replace(/:/g, '')
   const preLaunchDotsPatternId = `${dotsPatternId}-pre-launch`
+  const strokeGradientId = `${dotsPatternId}-stroke`
+  const fillGradientId = `${dotsPatternId}-fill`
   const dotsFadeGradientId = `${dotsPatternId}-fade`
   const dotsMaskId = `${dotsPatternId}-mask`
   const { data: segmentedPerformance, shouldSplit } = useMemo(
@@ -81,11 +85,9 @@ export const PerformanceChart = ({
     )
   }, [launchTimestamp, performance])
   const performanceColor =
-    direction === 'positive'
-      ? PERFORMANCE_COLORS.positive.end
-      : direction === 'negative'
-        ? PERFORMANCE_COLORS.negative.end
-        : PERFORMANCE_COLORS.neutral.stroke
+    direction === 'positive' || direction === 'negative'
+      ? `url(#${strokeGradientId})`
+      : PERFORMANCE_COLORS.neutral.stroke
   const performanceDotColor =
     direction === 'positive'
       ? PERFORMANCE_COLORS.positive.dot
@@ -115,10 +117,41 @@ export const PerformanceChart = ({
       >
         <AreaChart
           data={segmentedPerformance}
-          margin={{ left: 0, right: 0, top: 6, bottom: 0 }}
+          margin={chartMargin}
           {...{ overflow: 'visible' }}
         >
           <defs>
+            {direction !== 'neutral' && (
+              <linearGradient id={fillGradientId} x1="0" y1="0" x2="0" y2="1">
+                {direction === 'positive' ? (
+                  <>
+                    <stop
+                      offset="0%"
+                      stopColor={PERFORMANCE_COLORS.positive.dot}
+                      stopOpacity="0.5"
+                    />
+                    <stop
+                      offset="100%"
+                      stopColor={PERFORMANCE_COLORS.positive.dot}
+                      stopOpacity="0"
+                    />
+                  </>
+                ) : (
+                  <>
+                    <stop
+                      offset="0%"
+                      stopColor={PERFORMANCE_COLORS.negative.dot}
+                      stopOpacity="0.5"
+                    />
+                    <stop
+                      offset="100%"
+                      stopColor={PERFORMANCE_COLORS.negative.dot}
+                      stopOpacity="0"
+                    />
+                  </>
+                )}
+              </linearGradient>
+            )}
             <pattern
               id={dotsPatternId}
               x="0"
@@ -190,7 +223,11 @@ export const PerformanceChart = ({
                 type="monotone"
                 dataKey="postLaunchValue"
                 stroke="none"
-                fill={`url(#${dotsPatternId})`}
+                fill={
+                  direction === 'neutral'
+                    ? `url(#${dotsPatternId})`
+                    : `url(#${fillGradientId})`
+                }
                 mask={`url(#${dotsMaskId})`}
                 isAnimationActive
                 animationDuration={500}
@@ -209,14 +246,74 @@ export const PerformanceChart = ({
               animationEasing="ease-in-out"
             />
           ) : null}
+        </AreaChart>
+      </ChartContainer>
+      {fadeClassName && (
+        <div className={cn(fadeClassName, isLaunchMarkerVisible && 'z-20')} />
+      )}
+      <ChartContainer
+        key={`${chartKey}-stroke`}
+        config={chartConfig}
+        className={cn(
+          'pointer-events-none absolute inset-0 z-10 w-full',
+          className
+        )}
+      >
+        <AreaChart
+          data={segmentedPerformance}
+          margin={chartMargin}
+          {...{ overflow: 'visible' }}
+        >
+          <defs>
+            {direction !== 'neutral' && (
+              <linearGradient id={strokeGradientId} x1="0" y1="1" x2="0" y2="0">
+                {direction === 'positive' ? (
+                  <>
+                    <stop
+                      offset="0%"
+                      stopColor={PERFORMANCE_COLORS.positive.end}
+                    />
+                    <stop
+                      offset="100%"
+                      stopColor={PERFORMANCE_COLORS.positive.start}
+                    />
+                  </>
+                ) : (
+                  <>
+                    <stop
+                      offset="0%"
+                      stopColor={PERFORMANCE_COLORS.negative.end}
+                    />
+                    <stop
+                      offset="100%"
+                      stopColor={PERFORMANCE_COLORS.negative.start}
+                    />
+                  </>
+                )}
+              </linearGradient>
+            )}
+          </defs>
+          <XAxis
+            dataKey="timestamp"
+            type="number"
+            domain={['dataMin', 'dataMax']}
+            hide
+            axisLine={false}
+            tickLine={false}
+          />
+          <YAxis
+            dataKey="value"
+            hide
+            axisLine={false}
+            tickLine={false}
+            domain={getPaddedValueDomain}
+          />
           {shouldSplit ? (
             <>
               <Area
                 type="monotone"
                 dataKey="preLaunchValue"
                 stroke={performanceColor}
-                strokeDasharray="2 3"
-                strokeLinecap="round"
                 strokeWidth={2}
                 fill="transparent"
                 isAnimationActive
@@ -248,7 +345,6 @@ export const PerformanceChart = ({
           )}
         </AreaChart>
       </ChartContainer>
-      {fadeClassName && <div className={cn(fadeClassName)} />}
       {launchMarkerLeftPercent !== undefined && (
         <div
           aria-hidden="true"

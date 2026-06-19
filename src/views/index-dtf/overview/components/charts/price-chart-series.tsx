@@ -51,8 +51,6 @@ export const renderPriceChartSeries = ({
         type="monotone"
         dataKey="preLaunchValue"
         stroke={strokeColor}
-        strokeDasharray="2 3"
-        strokeLinecap="round"
         strokeWidth={1.5}
         fill="transparent"
         {...areaAnimation}
