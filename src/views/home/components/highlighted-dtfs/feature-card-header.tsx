@@ -39,6 +39,12 @@ export const FeatureCardHeader = ({
   versionKey: string
 }) => {
   const hasChainTabs = chainVersions.length > 1
+  const launchMarkerToken = {
+    address: selectedVersion.address,
+    chainId: selectedVersion.chainId,
+    logoSrc: selectedVersion.brand?.icon,
+    symbol: selectedVersion.symbol,
+  }
 
   return (
     <div className={FEATURE_CARD_MEDIA_CLASS_NAME}>
@@ -83,6 +89,8 @@ export const FeatureCardHeader = ({
                     className="h-12"
                     direction={performanceDirection}
                     fadeClassName=""
+                    launchMarkerToken={launchMarkerToken}
+                    launchTimestamp={selectedVersion.createdAt}
                     performance={oneMonthPerformance}
                     showPattern={false}
                   />
@@ -144,6 +152,8 @@ export const FeatureCardHeader = ({
           chartKey={versionKey}
           className="h-52"
           direction={performanceDirection}
+          launchMarkerToken={launchMarkerToken}
+          launchTimestamp={selectedVersion.createdAt}
           performance={oneMonthPerformance}
         />
       )}

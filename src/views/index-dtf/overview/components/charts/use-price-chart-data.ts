@@ -11,8 +11,8 @@ import useIndexDTFPriceHistory from '../../hooks/use-dtf-price-history'
 import {
   currentHour,
   historicalConfigs,
+  type Range,
 } from './price-chart-constants'
-import { Range } from './time-range-selector'
 
 export function usePriceChartData({ isBTCMode }: { isBTCMode: boolean }) {
   const dtf = useAtomValue(indexDTFAtom)
@@ -36,7 +36,7 @@ export function usePriceChartData({ isBTCMode }: { isBTCMode: boolean }) {
   const prefetchRanges = useMemo(() => {
     const ranges: Range[] = ['24h', '7d', '1m', '3m', '1y', 'all']
     return ranges
-      .filter((r) => r !== range)
+      .filter((r) => r !== range && r !== '1y')
       .map((r) => {
         if (r === 'all') {
           return {
@@ -54,17 +54,22 @@ export function usePriceChartData({ isBTCMode }: { isBTCMode: boolean }) {
 
   const hourOverride =
     showHourlyInterval && range !== 'all' ? { interval: '1h' as const } : {}
+  const effectiveConfig = { ...config, ...hourOverride }
 
   const { data: history } = useIndexDTFPriceHistory({
     address: dtf?.id,
-    ...config,
-    ...hourOverride,
+    ...effectiveConfig,
     prefetchRanges,
   })
 
+  const { data: oneYearHistory } = useIndexDTFPriceHistory({
+    address: dtf?.id,
+    ...historicalConfigs['1y'],
+    enabled: range !== '1y',
+  })
+
   const { data: btcHistory } = useBTCPriceHistory({
-    ...config,
-    ...hourOverride,
+    ...effectiveConfig,
     prefetchRanges,
     enabled: isBTCMode,
   })
@@ -73,7 +78,7 @@ export function usePriceChartData({ isBTCMode }: { isBTCMode: boolean }) {
     const raw = history?.timeseries.filter(({ price }) => Boolean(price)) || []
     const btc = btcHistory?.timeseries || []
     if (!btc.length && !currentBTCPrice) return raw
-    const tolerance = config.interval === '1h' ? 3_600 : 86_400
+    const tolerance = effectiveConfig.interval === '1h' ? 3_600 : 86_400
     const lastBTCTimestamp = btc.length ? btc[btc.length - 1].timestamp : 0
     let j = 0
     return raw.map((d) => {
@@ -101,24 +106,50 @@ export function usePriceChartData({ isBTCMode }: { isBTCMode: boolean }) {
     history?.timeseries,
     btcHistory?.timeseries,
     currentBTCPrice,
-    config.interval,
+    effectiveConfig.interval,
   ])
 
   return {
     history,
     btcHistory,
+    rangeAvailabilityHistory:
+      range === '1y' ? history : oneYearHistory,
     timeseries,
-    interval: config.interval,
+    interval: effectiveConfig.interval,
     isMobile,
     range,
+    xDomain:
+      range === 'all'
+        ? undefined
+        : ([
+            Math.max(effectiveConfig.from, timeseries[0]?.timestamp ?? 0),
+            Math.max(
+              effectiveConfig.to,
+              timeseries[timeseries.length - 1]?.timestamp ?? 0
+            ),
+          ] as const),
   }
 }
 
 export function useXAxisTicks(
   chartData: { timestamp: number }[],
-  isMobile: boolean
+  isMobile: boolean,
+  xDomain?: readonly [number, number]
 ) {
   return useMemo(() => {
+    if (xDomain) {
+      const [start, end] = xDomain
+      if (start >= end) return []
+
+      const positions = isMobile
+        ? [0.15, 0.38, 0.62, 0.85]
+        : [0.05, 0.23, 0.41, 0.59, 0.77, 0.95]
+
+      return positions.map((position) =>
+        Math.round(start + (end - start) * position)
+      )
+    }
+
     if (chartData.length === 0) return []
 
     const mobilePositions = [0.15, 0.38, 0.62, 0.85]
@@ -128,5 +159,5 @@ export function useXAxisTicks(
     return positions
       .map((i) => chartData[Math.floor(chartData.length * i)]?.timestamp)
       .filter(Boolean)
-  }, [chartData, isMobile])
+  }, [chartData, isMobile, xDomain])
 }

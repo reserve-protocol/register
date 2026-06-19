@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 import { Address } from 'viem'
 import { type IndexDTFItem } from '@/hooks/useIndexDTFList'
+import { dateToUnix } from '@/utils'
 
 // TODO: Swap to the production API once featured DTFs are available there.
 const FEATURED_DTFS_URL = 'https://api-staging.reserve.org/v1/discover/featured'
@@ -25,6 +26,7 @@ export type FeaturedExposureGroup = {
 }
 
 export type FeaturedDTFItem = IndexDTFItem & {
+  createdAt?: number
   video?: string
   priceChange?: {
     period?: string
@@ -88,6 +90,12 @@ const getBrandVideo = (item: any) =>
 const normalizeFeaturedItem = (item: any): FeaturedDTFItem => {
   const icon = getBrandIcon(item)
   const video = getBrandVideo(item)
+  const createdAt =
+    typeof item.createdAt === 'number'
+      ? item.createdAt
+      : typeof item.createdAt === 'string' && item.createdAt.trim()
+        ? dateToUnix(item.createdAt)
+        : undefined
 
   return {
     address: item.address,
@@ -106,6 +114,7 @@ const normalizeFeaturedItem = (item: any): FeaturedDTFItem => {
     status: item.status ?? 'active',
     performance: item.performance ?? [],
     performancePercent: item.priceChange?.percent ?? 0,
+    createdAt,
     priceChange: item.priceChange,
     video,
     exposure: normalizeExposure(item.exposure),

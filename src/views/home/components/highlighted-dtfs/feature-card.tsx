@@ -70,7 +70,7 @@ export const IndexDTFFeatureCard = ({
   const [isTranscriptActive, setIsTranscriptActive] = useState(false)
   const isDesktop = useIsDesktop()
   const { cardRef, isAssetTickerVisible, isCardInView } =
-    useHighlightedCardVisibility<HTMLDivElement>(isDesktop)
+    useHighlightedCardVisibility<HTMLAnchorElement>(isDesktop)
   const isActive =
     showTranscript && (isDesktop ? isTranscriptActive : isCardInView)
   const {

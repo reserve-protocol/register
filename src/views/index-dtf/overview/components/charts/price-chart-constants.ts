@@ -1,5 +1,7 @@
 import { ChartConfig } from '@/components/ui/chart'
-import { Range } from './time-range-selector'
+import { TimeRange } from '@/types'
+
+export type Range = TimeRange
 
 export type DataType =
   | 'price'

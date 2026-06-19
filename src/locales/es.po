@@ -1194,7 +1194,8 @@ msgstr "Como RSR"
 msgid "As RToken"
 msgstr "Como RToken"
 
-#: src/components/dtf-chat/index.tsx:97
+#: src/components/dtf-chat/index.tsx:104
+#: src/views/index-dtf/overview/components/index-ctas-overview-mobile.tsx:149
 msgid "Ask Reserve AI"
 msgstr ""
 
@@ -1448,6 +1449,11 @@ msgstr "Backing Manager"
 #: src/views/yield-dtf/settings/components/backing-info.tsx:16
 msgid "Backing Parameters"
 msgstr "Parámetros de respaldo"
+
+#: src/views/home/components/highlighted-dtfs/performance-chart-launch-marker.tsx:31
+#: src/views/index-dtf/overview/components/charts/price-chart-launch-marker.tsx:41
+msgid "Backtracked basket price"
+msgstr ""
 
 #: src/views/yield-dtf/governance/views/proposal/components/ProposedBackupPreview.tsx:118
 msgid "Backup basket"
@@ -1753,14 +1759,14 @@ msgid "BTC"
 msgstr "BTC"
 
 #: src/views/explorer/components/revenue/index.tsx:287
-#: src/views/home/components/highlighted-dtfs/feature-card-header.tsx:93
+#: src/views/home/components/highlighted-dtfs/feature-card-header.tsx:101
 #: src/views/index-dtf/auctions/legacy/components/auction-item.tsx:132
 #: src/views/index-dtf/issuance/manual/components/mode-selector.tsx:12
 #: src/views/index-dtf/overview/components/landing-mint/index.tsx:122
 msgid "Buy"
 msgstr "Comprar"
 
-#: src/views/index-dtf/overview/components/index-ctas-overview-mobile.tsx:112
+#: src/views/index-dtf/overview/components/index-ctas-overview-mobile.tsx:125
 msgid "BUY"
 msgstr "COMPRAR"
 
@@ -3151,6 +3157,11 @@ msgstr "Etiquetas de categoría del DTF"
 msgid "DTF cover"
 msgstr "Portada del DTF"
 
+#: src/views/home/components/highlighted-dtfs/performance-chart-launch-marker.tsx:30
+#: src/views/index-dtf/overview/components/charts/price-chart-launch-marker.tsx:39
+msgid "DTF Created"
+msgstr ""
+
 #: src/views/home/components/dtf-explainer-button.tsx:26
 #: src/views/index-dtf/overview/components/landing-mint/dtf-cover.tsx:61
 msgid "DTF Explainer"
@@ -3188,6 +3199,10 @@ msgstr "DTF inactivo"
 #: src/views/index-dtf/overview/components/landing-mint/index.tsx:194
 #~ msgid "DTF meme"
 #~ msgstr "Meme del DTF"
+
+#: src/views/home/components/highlighted-dtfs/performance-chart-launch-marker.tsx:32
+msgid "DTF price data"
+msgstr ""
 
 #: src/views/index-dtf/governance/views/propose/index.tsx:58
 msgid "DTF Settings"
@@ -4394,7 +4409,7 @@ msgstr "En proceso de retiro"
 #: src/components/inactive-badge.tsx:18
 #: src/views/home/components/discover-index-dtf/index-dtf-table-columns.tsx:218
 #: src/views/home/components/discover-yield-dtf/yield-dtf-card.tsx:95
-#: src/views/home/components/highlighted-dtfs/feature-card-header.tsx:107
+#: src/views/home/components/highlighted-dtfs/feature-card-header.tsx:115
 msgid "Inactive"
 msgstr "Inactivo"
 
@@ -5545,7 +5560,7 @@ msgstr "Sin cambios"
 
 #: src/components/charts/area/AreaChart.tsx:132
 #: src/views/home/components/discover-index-dtf/index-dtf-table-columns.tsx:137
-#: src/views/home/components/highlighted-dtfs/feature-card-header.tsx:135
+#: src/views/home/components/highlighted-dtfs/feature-card-header.tsx:143
 #: src/views/index-dtf/overview/components/charts/percentage-change.tsx:27
 #: src/views/top100/components/top100-table.tsx:35
 #: src/views/top100/components/top100-table.tsx:43
@@ -5880,8 +5895,8 @@ msgstr "abierto"
 #~ msgstr ""
 
 #: src/views/home/components/highlighted-dtfs/asset-ticker.tsx:82
-msgid "Open {selectedVersionName}"
-msgstr ""
+#~ msgid "Open {selectedVersionName}"
+#~ msgstr ""
 
 #: src/views/index-dtf/governance/components/governance-delegate-list.tsx:121
 msgid "Optimistic"
@@ -7041,7 +7056,7 @@ msgstr ""
 msgid "Replace Basket with CSV"
 msgstr "Reemplazar cesta con CSV"
 
-#: src/views/index-dtf/overview/components/index-ctas-overview-mobile.tsx:75
+#: src/views/index-dtf/overview/components/index-ctas-overview-mobile.tsx:91
 msgid "Request access to this product"
 msgstr "Solicita acceso a este producto"
 
@@ -7605,7 +7620,7 @@ msgstr ""
 msgid "Sell"
 msgstr "Vender"
 
-#: src/views/index-dtf/overview/components/index-ctas-overview-mobile.tsx:98
+#: src/views/index-dtf/overview/components/index-ctas-overview-mobile.tsx:110
 msgid "SELL"
 msgstr "VENDER"
 
@@ -8735,7 +8750,7 @@ msgstr "Este producto solo está disponible para inversores calificados en tu re
 msgid "This product isn't available in your region due to local restrictions."
 msgstr "Este producto no está disponible en tu región debido a restricciones locales."
 
-#: src/views/index-dtf/overview/components/index-ctas-overview-mobile.tsx:36
+#: src/views/index-dtf/overview/components/index-ctas-overview-mobile.tsx:39
 msgid "This product isn't available in your region due to local restrictions. <0>Learn More</0>"
 msgstr "Este producto no está disponible en tu región debido a restricciones locales. <0>Más información</0>"
 
@@ -9676,8 +9691,8 @@ msgstr "Valor:"
 msgid "Vault change proposal"
 msgstr "Propuesta de cambio de Vault"
 
-#: src/views/index-dtf/overview/components/index-ctas-overview-mobile.tsx:67
-#: src/views/index-dtf/overview/components/index-ctas-overview-mobile.tsx:72
+#: src/views/index-dtf/overview/components/index-ctas-overview-mobile.tsx:83
+#: src/views/index-dtf/overview/components/index-ctas-overview-mobile.tsx:88
 msgid "Verify eligibility"
 msgstr "Verificar elegibilidad"
 
@@ -10221,7 +10236,7 @@ msgid "Warning: High price impact"
 msgstr "Advertencia: alto impacto en el precio"
 
 #. placeholder {0}: selectedVersion.symbol
-#: src/views/home/components/highlighted-dtfs/transcript-preview.tsx:67
+#: src/views/home/components/highlighted-dtfs/transcript-preview.tsx:68
 msgid "Watch {0} explainer"
 msgstr ""
 

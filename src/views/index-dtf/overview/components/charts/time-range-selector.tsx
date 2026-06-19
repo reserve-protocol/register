@@ -1,22 +1,27 @@
 import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
 import { indexDTFAtom, performanceTimeRangeAtom } from '@/state/dtf/atoms'
-import { TimeRange } from '@/types'
 import { useAtom, useAtomValue } from 'jotai'
 import { useEffect, useMemo } from 'react'
 import { Trans } from '@lingui/react/macro'
-import { dataTypeAtom } from './price-chart'
-
-export type Range = TimeRange
+import {
+  dataTypeAtom,
+  priceHistoryAvailabilityAtom,
+} from './price-chart-atoms'
+import { historicalConfigs, type Range } from './price-chart-constants'
 
 const ALL_TIME_RANGES = [
-  { label: '24H', value: '24h', minAge: 0 },
-  { label: '7D', value: '7d', minAge: 604_800 },
-  { label: '1M', value: '1m', minAge: 2_592_000 },
-  { label: '3M', value: '3m', minAge: 7_776_000 },
-  { label: '1Y', value: '1y', minAge: 31_536_000 },
-  { label: 'All', value: 'all', minAge: 0 },
+  { label: '24H', value: '24h' },
+  { label: '7D', value: '7d' },
+  { label: '1M', value: '1m' },
+  { label: '3M', value: '3m' },
+  { label: '1Y', value: '1y' },
+  { label: 'All', value: 'all' },
 ] as const
+
+const getRangeStartTolerance = (range: Exclude<Range, 'all'>) => {
+  return historicalConfigs[range].interval === '1h' ? 3_600 : 86_400
+}
 
 const TimeRangeSelector = ({
   variant = 'default',
@@ -26,20 +31,32 @@ const TimeRangeSelector = ({
   const [range, setRange] = useAtom(performanceTimeRangeAtom)
   const dtf = useAtomValue(indexDTFAtom)
   const dataType = useAtomValue(dataTypeAtom)
+  const priceHistoryAvailability = useAtomValue(priceHistoryAvailabilityAtom)
   const isYieldMode = dataType === 'yield'
+  const hasCurrentDtfAvailability =
+    priceHistoryAvailability?.address === dtf?.id?.toLowerCase()
+  const firstHistoryTimestamp =
+    priceHistoryAvailability && hasCurrentDtfAvailability
+      ? priceHistoryAvailability.firstTimestamp
+      : undefined
 
   const availableRanges = useMemo(() => {
     if (!dtf?.timestamp) return null
 
-    const now = Math.floor(Date.now() / 1_000)
-    const dtfAge = now - dtf.timestamp
-
     return ALL_TIME_RANGES.filter((tr) => {
       if (tr.value === 'all') return true
-      if (tr.value === '24h') return !isYieldMode && dtfAge >= 86_400
-      return dtfAge >= tr.minAge
+      if (tr.value === '24h' && isYieldMode) return false
+      if (firstHistoryTimestamp === null) return false
+      if (firstHistoryTimestamp !== undefined) {
+        return (
+          firstHistoryTimestamp <=
+          historicalConfigs[tr.value].from + getRangeStartTolerance(tr.value)
+        )
+      }
+
+      return true
     })
-  }, [dtf?.timestamp, isYieldMode])
+  }, [dtf?.timestamp, firstHistoryTimestamp, isYieldMode])
 
   useEffect(() => {
     if (availableRanges && !availableRanges.find((r) => r.value === range)) {

@@ -5,6 +5,10 @@ import { DataType, historicalConfigs } from './price-chart-constants'
 
 export const dataTypeAtom = atom<DataType>('price')
 
+export const priceHistoryAvailabilityAtom = atom<
+  { address: string; firstTimestamp: number | null } | undefined
+>(undefined)
+
 // Raw APY history payload, synced from useIndexDTFApyHistory inside PriceChart.
 // Keeping it in an atom lets other components (chart-overlay) derive the same
 // timeseries and stats without prop drilling.

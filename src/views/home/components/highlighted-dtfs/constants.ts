@@ -23,3 +23,5 @@ export const FEATURE_CARD_ASSET_TICKER_CLASS_NAME =
   'relative overflow-hidden rounded-full border border-card bg-card p-2 pl-0 pr-0.5 lg:border-secondary lg:group-hover:border-card'
 export const FEATURE_CARD_GRID_CLASS_NAME =
   'grid grid-cols-1 gap-1 pb-0 will-change-transform md:auto-rows-fr md:grid-cols-2'
+export const PERFORMANCE_CHART_FADE_CLASSNAME =
+  'pointer-events-none absolute inset-x-0 bottom-0 h-12 bg-gradient-to-b from-card/0 to-card lg:from-background/0 lg:to-background lg:group-hover:from-card/0 lg:group-hover:to-card lg:group-focus-within:from-card/0 lg:group-focus-within:to-card'

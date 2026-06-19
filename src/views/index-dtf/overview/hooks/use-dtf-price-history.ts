@@ -29,6 +29,7 @@ export type UseIndexDTFPriceHistoryParams = {
   from: number
   to: number
   interval: '1h' | '1d'
+  enabled?: boolean
   prefetchRanges?: Array<{
     from: number
     to: number
@@ -41,6 +42,7 @@ const useIndexDTFPriceHistory = ({
   from,
   to,
   interval,
+  enabled = true,
   prefetchRanges = [],
 }: UseIndexDTFPriceHistoryParams) => {
   const chainId = useAtomValue(chainIdAtom)
@@ -51,7 +53,7 @@ const useIndexDTFPriceHistory = ({
     functionName: 'totalSupply',
     chainId,
     query: {
-      enabled: Boolean(address),
+      enabled: Boolean(enabled && address),
     },
   })
 
@@ -110,15 +112,22 @@ const useIndexDTFPriceHistory = ({
 
       return data
     },
-    enabled: Boolean(address && supply && currentPrice),
+    enabled: Boolean(enabled && address && supply && currentPrice),
     refetchInterval: REFRESH_INTERVAL,
     staleTime: REFRESH_INTERVAL,
   })
 
   // Prefetch other ranges in background
   useEffect(() => {
-    if (!address || !supply || !currentPrice || prefetchRanges.length === 0)
+    if (
+      !enabled ||
+      !address ||
+      !supply ||
+      !currentPrice ||
+      prefetchRanges.length === 0
+    ) {
       return
+    }
 
     prefetchRanges.forEach((range) => {
       queryClient.prefetchQuery({
@@ -166,7 +175,15 @@ const useIndexDTFPriceHistory = ({
         staleTime: REFRESH_INTERVAL,
       })
     })
-  }, [address, supply, currentPrice, chainId, queryClient, prefetchRanges])
+  }, [
+    enabled,
+    address,
+    supply,
+    currentPrice,
+    chainId,
+    queryClient,
+    prefetchRanges,
+  ])
 
   return mainQuery
 }
