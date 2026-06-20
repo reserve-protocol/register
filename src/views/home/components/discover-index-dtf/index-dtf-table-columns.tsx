@@ -7,9 +7,12 @@ import { isInactiveDTF } from '@/hooks/use-dtf-status'
 import { type IndexDTFItem } from '@/hooks/useIndexDTFList'
 import { cn } from '@/lib/utils'
 import { formatCurrency, getFolioRoute } from '@/utils'
-import { RESERVE_API } from '@/utils/constants'
+import {
+  getPerformanceDirection as getSeriesPerformanceDirection,
+  PERFORMANCE_COLORS,
+  type PerformanceDirection,
+} from '@/utils/chart-performance-colors'
 import { Trans } from '@lingui/react/macro'
-import { useQuery } from '@tanstack/react-query'
 import { ColumnDef } from '@tanstack/react-table'
 import { useId } from 'react'
 import { Link } from 'react-router-dom'
@@ -19,8 +22,6 @@ import { calculatePercentageChange } from './utils'
 
 export const LIMIT_ASSETS = 4
 const HOVER_LIMIT_ASSETS = 10
-const SEVEN_DAYS_SECONDS = 7 * 24 * 60 * 60
-const REFRESH_INTERVAL = 1000 * 60 * 30
 
 const chartConfig = {
   desktop: {
@@ -45,6 +46,27 @@ const withChainId = (
   chainId: IndexDTFItem['chainId']
 ) => assets.map((asset) => ({ ...asset, chain: chainId }))
 
+const formatPriceChangePercent = (dtf: IndexDTFItem) => {
+  if (typeof dtf.priceChange?.percent !== 'number') {
+    return calculatePercentageChange(dtf.performance)
+  }
+
+  const percent = dtf.priceChange.percent
+  return `${percent > 0 ? '+' : ''}${percent.toFixed(2)}%`
+}
+
+const getDtfPerformanceDirection = (
+  dtf: IndexDTFItem
+): PerformanceDirection => {
+  if (typeof dtf.priceChange?.percent === 'number') {
+    if (dtf.priceChange.percent > 0) return 'positive'
+    if (dtf.priceChange.percent < 0) return 'negative'
+    return 'neutral'
+  }
+
+  return getSeriesPerformanceDirection(dtf.performance)
+}
+
 const getSparklineValueDomain = ([dataMin, dataMax]: [number, number]): [
   number,
   number,
@@ -62,64 +84,13 @@ const getSparklineValueDomain = ([dataMin, dataMax]: [number, number]): [
   return [dataMin - padding, dataMax + padding]
 }
 
-const getPerformanceDirection = (
-  performance: IndexDTFItem['performance']
-): 'positive' | 'negative' | 'neutral' => {
-  if (performance.length < 2) return 'neutral'
-
-  const firstValue = performance[0].value
-  const lastValue = performance[performance.length - 1].value
-
-  if (lastValue > firstValue) return 'positive'
-  if (lastValue < firstValue) return 'negative'
-  return 'neutral'
-}
-
-const useDetailedSevenDayPerformance = (dtf: IndexDTFItem) => {
-  return useQuery({
-    queryKey: ['discover-dtf-7d-performance', dtf.chainId, dtf.address],
-    queryFn: async (): Promise<IndexDTFItem['performance']> => {
-      const to = Math.floor(Date.now() / 3_600_000) * 3_600
-      const from = to - SEVEN_DAYS_SECONDS
-      const sp = new URLSearchParams()
-      sp.set('chainId', dtf.chainId.toString())
-      sp.set('address', dtf.address.toLowerCase())
-      sp.set('from', from.toString())
-      sp.set('to', to.toString())
-      sp.set('interval', '1h')
-
-      const response = await fetch(`${RESERVE_API}historical/dtf?${sp}`)
-
-      if (!response.ok) {
-        throw new Error('Failed to fetch DTF performance')
-      }
-
-      const data = (await response.json()) as {
-        timeseries?: { timestamp: number; price: number }[]
-      }
-
-      return (data.timeseries ?? [])
-        .filter(({ price }) => Boolean(price))
-        .map(({ timestamp, price }) => ({ timestamp, value: price }))
-    },
-    staleTime: REFRESH_INTERVAL,
-    refetchInterval: REFRESH_INTERVAL,
-  })
-}
-
 const PerformanceCell = ({ dtf }: { dtf: IndexDTFItem }) => {
-  const fallbackPerformance = dtf.performance
-  const { data: detailedPerformance } = useDetailedSevenDayPerformance(dtf)
-  const hasDetailedPerformance = !!detailedPerformance?.length
-  const performance = hasDetailedPerformance
-    ? detailedPerformance
-    : fallbackPerformance
-  const chartPerformance = detailedPerformance ?? []
-  const percentageChange = calculatePercentageChange(performance)
-  const performanceDirection = getPerformanceDirection(performance)
+  const performance = dtf.performance
+  const percentageChange = formatPriceChangePercent(dtf)
+  const performanceDirection = getDtfPerformanceDirection(dtf)
   const performanceColorClassName = cn(
-    performanceDirection === 'positive' && 'text-[#657D32]',
-    performanceDirection === 'negative' && 'text-red-600'
+    performanceDirection === 'positive' && 'text-success',
+    performanceDirection === 'negative' && 'text-destructive'
   )
   const strokeGradientId = `${useId().replace(/:/g, '')}-performance-stroke`
   const lineStroke =
@@ -139,13 +110,13 @@ const PerformanceCell = ({ dtf }: { dtf: IndexDTFItem }) => {
         )}
       </div>
       <div className="h-10 w-[90px]">
-        {chartPerformance.length > 1 && (
+        {performance.length > 1 && (
           <ChartContainer
             config={chartConfig}
             className={cn('h-10 w-[90px]', performanceColorClassName)}
           >
             <LineChart
-              data={chartPerformance}
+              data={performance}
               margin={{ top: 3, right: 2, bottom: 3, left: 2 }}
             >
               {performanceDirection === 'positive' && (
@@ -157,8 +128,14 @@ const PerformanceCell = ({ dtf }: { dtf: IndexDTFItem }) => {
                     x2="1"
                     y2="0"
                   >
-                    <stop offset="0%" stopColor="#A2BB6E" />
-                    <stop offset="100%" stopColor="#657D32" />
+                    <stop
+                      offset="0%"
+                      stopColor={PERFORMANCE_COLORS.positive.start}
+                    />
+                    <stop
+                      offset="100%"
+                      stopColor={PERFORMANCE_COLORS.positive.end}
+                    />
                   </linearGradient>
                 </defs>
               )}
@@ -352,7 +329,7 @@ export const indexDTFColumns: ColumnDef<IndexDTFItem>[] = [
     header: ({ column }) => (
       <TableHeader className="text-right">
         <SorteableButton column={column}>
-          <Trans>Performance (Last 7 Days)</Trans>
+          <Trans>Performance (Last 30 Days)</Trans>
         </SorteableButton>
       </TableHeader>
     ),

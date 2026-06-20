@@ -375,7 +375,7 @@ const resetStateAtom = atom(null, (_, set) => {
   set(indexDTFApyAtom, undefined)
   set(indexDTFPoolsDataAtom, undefined)
   set(indexDTFUnderlyingNamesAtom, {})
-  set(performanceTimeRangeAtom, '7d')
+  set(performanceTimeRangeAtom, '1y')
   set(indexDTFStatusAtom, 'active')
 })
 

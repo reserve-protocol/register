@@ -25,8 +25,8 @@ import {
 import { TranscriptPreview } from './transcript-preview'
 import type { ChartPlacement, HighlightedDTFItem } from './types'
 import {
-  formatPerformancePeriodLabel,
   formatPercentageChange,
+  formatPerformancePeriodLabel,
   getExposureTickerAssets,
   getPerformanceDirection,
 } from './utils'
@@ -62,15 +62,16 @@ export const IndexDTFFeatureCard = ({
     () => getExposureTickerAssets(selectedVersion),
     [selectedVersion]
   )
-  const oneMonthPerformance = selectedVersion.performance
   const percentageChange = formatPercentageChange(
     selectedVersion,
-    oneMonthPerformance
+    selectedVersion.performance
   )
   const displayedPerformanceLabel =
     performanceLabel ??
     formatPerformancePeriodLabel(selectedVersion.priceChange?.period)
-  const performanceDirection = getPerformanceDirection(oneMonthPerformance)
+  const performanceDirection = getPerformanceDirection(
+    selectedVersion.performance
+  )
   const [isTranscriptActive, setIsTranscriptActive] = useState(false)
   const transcript = t(getTranscriptDescriptor(selectedVersion.symbol))
   const transcriptWords = useMemo(
@@ -99,7 +100,7 @@ export const IndexDTFFeatureCard = ({
       wordCount: transcriptWords.length,
       wordDelayMs: TRANSCRIPT_WORD_DELAY_MS,
     })
-  const hasPerformanceChart = oneMonthPerformance.length > 0
+  const hasPerformanceChart = selectedVersion.performance.length > 0
   const handleCardClick = (event: MouseEvent<HTMLAnchorElement>) => {
     const target = event.target as HTMLElement | null
     if (target?.closest('[data-card-action]')) {
@@ -137,7 +138,7 @@ export const IndexDTFFeatureCard = ({
         chainVersions={chainVersions ?? []}
         chartPlacement={chartPlacement}
         hasPerformanceChart={hasPerformanceChart}
-        oneMonthPerformance={oneMonthPerformance}
+        oneMonthPerformance={selectedVersion.performance}
         percentageChange={percentageChange}
         performanceLabel={displayedPerformanceLabel}
         performanceDirection={performanceDirection}
