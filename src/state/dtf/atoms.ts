@@ -1,5 +1,5 @@
 import { IndexDTF, TimeRange, Token } from '@/types'
-import { AvailableChain, ChainId } from '@/utils/chains'
+import { AvailableChain } from '@/utils/chains'
 import { atom } from 'jotai'
 import { Address } from 'viem'
 import { walletAtom } from '../atoms'

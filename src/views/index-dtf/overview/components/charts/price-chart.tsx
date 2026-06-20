@@ -135,7 +135,6 @@ const useSyncPriceHistoryAvailability = (
 }
 
 const PriceChart = () => {
-  const range = useAtomValue(performanceTimeRangeAtom)
   const dataType = useAtomValue(dataTypeAtom)
   const dtf = useAtomValue(indexDTFAtom)
   const isYieldIndexDTF = useAtomValue(isYieldIndexDTFAtom)

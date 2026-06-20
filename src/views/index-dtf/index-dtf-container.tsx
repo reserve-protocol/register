@@ -50,7 +50,7 @@ import {
 } from '@reserve-protocol/react-sdk'
 import { useQuery } from '@tanstack/react-query'
 import { atom, useAtom, useAtomValue, useSetAtom } from 'jotai'
-import { useEffect, useLayoutEffect, useState } from 'react'
+import { useCallback, useEffect, useLayoutEffect, useState } from 'react'
 import { Outlet, useNavigate, useParams, useLocation } from 'react-router-dom'
 import { Address } from 'viem'
 import { useReadContract, useSwitchChain } from 'wagmi'
@@ -172,7 +172,7 @@ const useChainWatch = () => {
     if (chainId !== walletChain && walletChain) {
       switchChain({ chainId })
     }
-  }, [chainId])
+  }, [chainId, walletChain, switchChain])
 }
 
 const IndexDTFDataUpdater = () => {
@@ -200,7 +200,16 @@ const IndexDTFDataUpdater = () => {
       weightControl: data.rebalance.weightControl,
       priceControl: data.rebalance.priceControl,
     })
-  }, [data])
+  }, [
+    data,
+    setBasket,
+    setBasketAmounts,
+    setBasketPrices,
+    setBasketShares,
+    setIndexDTF,
+    setIndexDTFBrand,
+    setRebalanceControl,
+  ])
 
   return null
 }
@@ -279,7 +288,7 @@ const IndexDTFVersionUpdater = () => {
     if (version) {
       setIndexDTFVersion(version)
     }
-  }, [version])
+  }, [version, setIndexDTFVersion])
 
   return null
 }
@@ -317,7 +326,7 @@ const PlatformFeeUpdater = ({
     } else if (registryError || feeError) {
       setFee(FALLBACK_PLATFORM_FEES[chainId] ?? 50)
     }
-  }, [feeDetails, registryError, feeError, chainId])
+  }, [feeDetails, registryError, feeError, chainId, setFee])
 
   return null
 }
@@ -355,7 +364,7 @@ const IndexDTFExposureUpdater = ({ chainId }: { chainId: number }) => {
 
   useEffect(() => {
     setPerformanceLoading(isLoading)
-  }, [isLoading])
+  }, [isLoading, setPerformanceLoading])
 
   return null
 }
@@ -391,7 +400,7 @@ const DeprecationStatusUpdater = ({
 
   useEffect(() => {
     setStatus(status)
-  }, [status])
+  }, [status, setStatus])
 
   return null
 }
@@ -411,18 +420,18 @@ const Updater = () => {
 
   useChainWatch()
 
-  const resetState = () => {
+  const resetState = useCallback(() => {
     // Remove duplicates
     resetAtoms()
-  }
+  }, [resetAtoms])
 
-  const refreshIndexDTF = () => {
+  const refreshIndexDTF = useCallback(() => {
     setKey((k) => k + 1)
-  }
+  }, [])
 
   useEffect(() => {
     setRefreshFn(() => refreshIndexDTF)
-  }, [])
+  }, [refreshIndexDTF, setRefreshFn])
 
   // Handle token change
   useLayoutEffect(() => {
@@ -431,10 +440,18 @@ const Updater = () => {
       setChain(chainId as AvailableChain)
       setTokenAddress(tokenAddress)
     }
-  }, [tokenAddress, chainId, currentChainId, currentToken])
+  }, [
+    tokenAddress,
+    chainId,
+    currentChainId,
+    currentToken,
+    resetState,
+    setChain,
+    setTokenAddress,
+  ])
 
   // Reset state on unmount
-  useEffect(() => resetState, [])
+  useEffect(() => resetState, [resetState])
 
   return (
     <div key={key}>
@@ -455,7 +472,7 @@ const InvalidIndexDTFRoute = () => {
 
   useEffect(() => {
     navigate(ROUTES.NOT_FOUND)
-  }, [])
+  }, [navigate])
 
   return null
 }
