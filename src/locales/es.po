@@ -1447,6 +1447,10 @@ msgstr "El Mint y el Redeem automatizados requieren una Wallet con soporte para 
 msgid "Automated minting is an advanced feature. For most people, simple swaps are recommended."
 msgstr "El Mint automatizado es una función avanzada. Para la mayoría de las personas, se recomiendan los swaps simples."
 
+#: src/views/index-dtf/components/zapper/large-mint-prompt.tsx:68
+msgid "Automated minting may be a better way to buy {symbol}. We will help split your order into multiple trades before minting."
+msgstr "El Mint automatizado puede ser una mejor forma de comprar {symbol}. Te ayudaremos a dividir tu orden en varias operaciones antes de hacer el Mint."
+
 #: src/views/index-dtf/issuance/async-mint/steps/configure-mint.tsx:113
 msgid "Automatically acquire assets"
 msgstr "Adquirir activos automáticamente"
@@ -6039,6 +6043,10 @@ msgstr "No se encontraron resultados."
 msgid "No results."
 msgstr "Sin resultados."
 
+#: src/views/index-dtf/components/zapper/large-mint-prompt.tsx:51
+msgid "No route found"
+msgstr "No se encontró ninguna ruta"
+
 #: src/views/yield-dtf/staking/components/withdraw/cooldown-unstake.tsx:90
 msgid "No RSR in cooldown"
 msgstr "No hay RSR en enfriamiento"
@@ -9944,6 +9952,10 @@ msgstr "Intentar de nuevo"
 #: src/views/index-dtf/components/zapper/large-mint-prompt.tsx:67
 msgid "Try Automated Mint"
 msgstr "Prueba el Mint automatizado"
+
+#: src/views/index-dtf/components/zapper/large-mint-prompt.tsx:65
+msgid "Try Minting"
+msgstr "Prueba a mintear"
 
 #: src/views/yield-dtf/issuance/components/zapV2/ZapToggle.tsx:23
 msgid "Turn on Zaps to mint using 1 asset"

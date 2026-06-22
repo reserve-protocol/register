@@ -1447,6 +1447,10 @@ msgstr ""
 msgid "Automated minting is an advanced feature. For most people, simple swaps are recommended."
 msgstr ""
 
+#: src/views/index-dtf/components/zapper/large-mint-prompt.tsx:68
+msgid "Automated minting may be a better way to buy {symbol}. We will help split your order into multiple trades before minting."
+msgstr ""
+
 #: src/views/index-dtf/issuance/async-mint/steps/configure-mint.tsx:113
 msgid "Automatically acquire assets"
 msgstr ""
@@ -6039,6 +6043,10 @@ msgstr ""
 msgid "No results."
 msgstr ""
 
+#: src/views/index-dtf/components/zapper/large-mint-prompt.tsx:51
+msgid "No route found"
+msgstr ""
+
 #: src/views/yield-dtf/staking/components/withdraw/cooldown-unstake.tsx:90
 msgid "No RSR in cooldown"
 msgstr ""
@@ -9932,6 +9940,10 @@ msgstr ""
 #: src/views/index-dtf/components/zapper/large-mint-prompt.tsx:65
 #: src/views/index-dtf/components/zapper/large-mint-prompt.tsx:67
 msgid "Try Automated Mint"
+msgstr ""
+
+#: src/views/index-dtf/components/zapper/large-mint-prompt.tsx:65
+msgid "Try Minting"
 msgstr ""
 
 #: src/views/yield-dtf/issuance/components/zapV2/ZapToggle.tsx:23

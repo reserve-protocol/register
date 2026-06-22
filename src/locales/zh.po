@@ -1447,6 +1447,10 @@ msgstr "自动 Mint 和 Redeem 需要支持智能账户的 Wallet。不支持硬
 msgid "Automated minting is an advanced feature. For most people, simple swaps are recommended."
 msgstr "自动 Mint 是一项高级功能。对大多数人而言，推荐使用简单的 Swap。"
 
+#: src/views/index-dtf/components/zapper/large-mint-prompt.tsx:68
+msgid "Automated minting may be a better way to buy {symbol}. We will help split your order into multiple trades before minting."
+msgstr "自动 Mint 可能是购买 {symbol} 的更好方式。我们会在 Mint 之前帮您将订单拆分为多笔交易。"
+
 #: src/views/index-dtf/issuance/async-mint/steps/configure-mint.tsx:113
 msgid "Automatically acquire assets"
 msgstr "自动获取资产"
@@ -6039,6 +6043,10 @@ msgstr "未找到结果。"
 msgid "No results."
 msgstr "无结果。"
 
+#: src/views/index-dtf/components/zapper/large-mint-prompt.tsx:51
+msgid "No route found"
+msgstr "未找到路径"
+
 #: src/views/yield-dtf/staking/components/withdraw/cooldown-unstake.tsx:90
 msgid "No RSR in cooldown"
 msgstr "无 RSR 处于冷却中"
@@ -9944,6 +9952,10 @@ msgstr "重试"
 #: src/views/index-dtf/components/zapper/large-mint-prompt.tsx:67
 msgid "Try Automated Mint"
 msgstr "尝试自动 Mint"
+
+#: src/views/index-dtf/components/zapper/large-mint-prompt.tsx:65
+msgid "Try Minting"
+msgstr "尝试 Mint"
 
 #: src/views/yield-dtf/issuance/components/zapV2/ZapToggle.tsx:23
 msgid "Turn on Zaps to mint using 1 asset"
