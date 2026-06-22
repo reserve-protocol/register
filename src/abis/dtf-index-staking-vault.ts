@@ -1060,6 +1060,19 @@ export default [
   },
   {
     type: 'function',
+    name: 'tokenJar',
+    inputs: [],
+    outputs: [
+      {
+        name: '',
+        type: 'address',
+        internalType: 'contract GenericTokenJar',
+      },
+    ],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
     name: 'unstakingManager',
     inputs: [],
     outputs: [
