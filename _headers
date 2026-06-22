@@ -45,6 +45,11 @@
 /dtf-llm/index.json
   Content-Type: application/json; charset=utf-8
 
+/dtf-llm/llms.txt
+  Content-Type: text/plain; charset=utf-8
+  Cache-Control: public, max-age=3600
+  X-Robots-Tag: index, follow
+
 /dtf-llm/*.md
   Content-Type: text/markdown; charset=utf-8
   Cache-Control: public, max-age=3600
