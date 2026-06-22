@@ -3,8 +3,12 @@ import { Trans, useLingui } from '@lingui/react/macro'
 import useAtomicBatch from '@/hooks/use-atomic-batch'
 import useIsComplianceRestricted from '@/hooks/use-is-compliance-restricted'
 import { cn } from '@/lib/utils'
+import { chainIdAtom } from '@/state/atoms'
+import { indexDTFAtom } from '@/state/dtf/atoms'
+import { getFolioRoute } from '@/utils'
+import { ROUTES } from '@/utils/constants'
 import { useAccountModal, useConnectModal } from '@rainbow-me/rainbowkit'
-import { useSetAtom } from 'jotai'
+import { useAtomValue, useSetAtom } from 'jotai'
 import {
   ArrowLeft,
   ArrowUpRight,
@@ -18,6 +22,7 @@ import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useAccount, useDisconnect } from 'wagmi'
 import { wizardStepAtom } from '../atoms'
+import { panelModeAtom } from '../../atoms'
 import ComplianceAlert from '../../../components/compliance-alert'
 import { useTrackAsyncZap } from '../hooks/use-track-async-zap'
 
@@ -44,6 +49,16 @@ const GnosisRequired = () => {
   const { disconnectAsync } = useDisconnect()
   const { atomicSupported, isLoading } = useAtomicBatch()
   const setStep = useSetAtom(wizardStepAtom)
+  const setPanelMode = useSetAtom(panelModeAtom)
+  const indexDTF = useAtomValue(indexDTFAtom)
+  const chainId = useAtomValue(chainIdAtom)
+  // The swap lives on the issuance page (panelMode 'swap'). Use an absolute
+  // route so this works whether the wizard is embedded there or standalone at
+  // /issuance/automated — a relative ".." resolves to the DTF overview when
+  // embedded.
+  const swapRoute = indexDTF
+    ? getFolioRoute(indexDTF.id, chainId, ROUTES.ISSUANCE)
+    : ''
   const [showRequirements, setShowRequirements] = useState(false)
   const [requirementsCardHeight, setRequirementsCardHeight] = useState<number>()
   const cardStackRef = useRef<HTMLDivElement>(null)
@@ -148,7 +163,7 @@ const GnosisRequired = () => {
           size="sm"
           className="h-8 w-fit shrink-0 rounded-full px-3 !transition-none"
         >
-          <Link to=".." relative="path">
+          <Link to={swapRoute} onClick={() => setPanelMode('swap')}>
             <Trans>Use Swap</Trans>
           </Link>
         </Button>

@@ -193,11 +193,6 @@ const NavigationItems = () => {
         route: ROUTES.ISSUANCE,
       },
       {
-        icon: <CirclePlus strokeWidth={1.5} size={16} />,
-        label: t`Mint`,
-        route: ROUTES.ISSUANCE + '/automated',
-      },
-      {
         icon: <Landmark strokeWidth={1.5} size={16} />,
         label: t`Governance`,
         route: ROUTES.GOVERNANCE,

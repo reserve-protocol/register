@@ -31,7 +31,10 @@ const WizardRouter = () => {
 // Keeps balance/price syncing alive across all wizard steps. The wrapper width
 // animates between the narrow configure card and the wide quote/orders layout,
 // so the right panel grows into view instead of snapping in.
-const AsyncMintWizard = () => {
+// `embedded` renders the wizard without its own beige `container` wrapper, so a
+// parent (e.g. the issuance page's Swap/Auto toggle) can supply one shared
+// beige surface instead of nesting two.
+const AsyncMintWizard = ({ embedded = false }: { embedded?: boolean }) => {
   useTrackIndexDTFPage('mint-async-wizard')
   const indexDTF = useAtomValue(indexDTFAtom)
   const account = useAtomValue(walletAtom)
@@ -60,26 +63,32 @@ const AsyncMintWizard = () => {
   const isWide =
     step === 'success' || (step === 'quote-summary' && ordersExpanded)
 
+  const inner = (
+    <div
+      className={cn(
+        'w-full mx-auto overflow-hidden rounded-3xl transition-[max-width] duration-500 ease-out',
+        isWide
+          ? 'max-w-[1200px] lg:max-h-[calc(100vh-100px)]'
+          : 'max-w-[476px]'
+      )}
+    >
+      <WizardRouter />
+    </div>
+  )
+
+  if (embedded) return inner
+
   return (
     <div className="container flex w-full bg-secondary rounded-4xl flex-col items-center justify-start gap-2">
-      <div
-        className={cn(
-          'w-full mx-auto overflow-hidden rounded-3xl transition-[max-width] duration-500 ease-out',
-          isWide
-            ? 'max-w-[1200px] lg:max-h-[calc(100vh-100px)]'
-            : 'max-w-[476px]'
-        )}
-      >
-        <WizardRouter />
-      </div>
+      {inner}
     </div>
   )
 }
 
-const AsyncMintWithProvider = () => {
+const AsyncMintWithProvider = ({ embedded = false }: { embedded?: boolean }) => {
   return (
     <AsyncZapProvider>
-      <AsyncMintWizard />
+      <AsyncMintWizard embedded={embedded} />
     </AsyncZapProvider>
   )
 }
