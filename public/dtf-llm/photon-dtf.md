@@ -102,7 +102,7 @@ The document is organized roughly from "what is this and why does it exist" → 
 | **Aggregate constituent market cap** | ~$456B (illustrative, basket data as of June 17, 2026) |
 | **Fees** | **0.3% mint fee** + **0.6% annual TVL (management) fee**; a protocol platform fee is taken out of those fees and used to buy and burn RSR. Onchain gas, exchange spreads, and Ondo mint/redeem terms also apply |
 | **Where to trade** | app.reserve.org (mint/redeem + buy/sell), plus partner venues on BSC (e.g., PancakeSwap) and aggregators (1inch, CoW Swap); onchain, no min/max |
-| **How you pay** | Pay with a range of supported crypto via the app's **zapper** — **BNB, WBNB, USDC**, and other supported tokens — or mint/redeem with the exact basket tokens. USDC is one option, not the only one. |
+| **How you pay** | Pay with a range of supported crypto via the app's **zapper** — **BNB, WBNB, USDT**, and other supported tokens — or mint/redeem with the exact basket tokens. USDT is one option, not the only one. |
 | **Who can buy** | Set by Ondo Global Markets. **Prohibited:** US, Canada, sanctioned jurisdictions. **Restricted (accredited/professional only):** UK, EEA, Switzerland, Singapore, Hong Kong, Malaysia, Brazil. **Elsewhere:** connect a wallet and buy, subject to your own local laws |
 | **Operator** | Reserve.org and app.reserve.org are operated by **ABC Labs, LLC**, which is **not** a bank, broker-dealer, or investment adviser and is **not** registered with the SEC, CFTC, or any financial regulator |
 | **Risk, in one line** | Concentrated, single-theme basket of experimental tokenized assets — can be highly volatile, illiquid, and may **lose value entirely** |
@@ -436,16 +436,16 @@ A DTF's price is based on **Net Asset Value (NAV)** — the combined value of th
 
 Minting and redeeming are what give a DTF its value and its peg to NAV. **Anyone can mint or redeem permissionlessly** — there are no authorized participants or gatekeepers, unlike an ETF.
 
-- **Mint:** deposit the underlying basket tokens — or, via the zapper, a single token of your choice (BNB, WBNB, USDC, etc.) — and receive newly created DTF tokens at NAV.
+- **Mint:** deposit the underlying basket tokens — or, via the zapper, a single token of your choice (BNB, WBNB, USDT, etc.) — and receive newly created DTF tokens at NAV.
 - **Redeem:** burn DTF tokens and receive the underlying basket tokens back at NAV.
 
 This happens in **three ways**, in increasing order of sophistication:
 
-1. **Zapper (one-step, the default in the app).** You click **Buy** or **Sell** on the DTF's page in the Reserve app, choose a single token you want to spend or receive — on BNB Smart Chain that includes **BNB, WBNB, USDC**, and other supported tokens — and the app handles all the swaps and the mint/redeem in one atomic transaction. Because of how decentralized exchanges route trades, you may receive tiny "dust" amounts of certain tokens — typically on the order of 1–10 basis points of the input value.
+1. **Zapper (one-step, the default in the app).** You click **Buy** or **Sell** on the DTF's page in the Reserve app, choose a single token you want to spend or receive — on BNB Smart Chain that includes **BNB, WBNB, USDT**, and other supported tokens — and the app handles all the swaps and the mint/redeem in one atomic transaction. Because of how decentralized exchanges route trades, you may receive tiny "dust" amounts of certain tokens — typically on the order of 1–10 basis points of the input value.
 2. **Manual mint/redeem.** You switch to manual mode and deposit/receive the exact per-token basket amounts, with precise slippage control. Useful if you already hold (or want) the exact underlying tokens.
 3. **Direct contract call.** Integrations and advanced users can call `mint` or `redeem` directly on the DTF contract; basket ratios are enforced onchain. This is the escape hatch that ensures you are never dependent on any offchain tool or front-end to exit a position.
 
-**Important nuance for PHOTON specifically — offchain-liquidity assets (RFQ/intents).** PHOTON's underlying tokens are **Ondo Global Markets tokenized stocks**, whose primary liquidity is **offchain**, not on decentralized exchanges. For DTFs like this, the zapper still lets you pay with a single token of your choice (BNB, WBNB, USDC, etc.), but because there isn't deep onchain liquidity for the Ondo underlyings, the basket-sourcing step routes through **RFQ / intent systems** rather than purely onchain DEX trades: approved minters source the underlying basket tokens as needed (acting as the trading layer) and execute the mint/redeem so the end user still gets a seamless result. The practical implication: buying/selling PHOTON may route through these RFQ minters and through partner venues, and execution quality can depend on them. The permissionless manual redemption path to the underlying Ondo tokens remains available as the ultimate exit.
+**Important nuance for PHOTON specifically — offchain-liquidity assets (RFQ/intents).** PHOTON's underlying tokens are **Ondo Global Markets tokenized stocks**, whose primary liquidity is **offchain**, not on decentralized exchanges. For DTFs like this, the zapper still lets you pay with a single token of your choice (BNB, WBNB, USDT, etc.), but because there isn't deep onchain liquidity for the Ondo underlyings, the basket-sourcing step routes through **RFQ / intent systems** rather than purely onchain DEX trades: approved minters source the underlying basket tokens as needed (acting as the trading layer) and execute the mint/redeem so the end user still gets a seamless result. The practical implication: buying/selling PHOTON may route through these RFQ minters and through partner venues, and execution quality can depend on them. The permissionless manual redemption path to the underlying Ondo tokens remains available as the ultimate exit.
 
 ### 8.5 Rebalancing via onchain Dutch auctions
 
@@ -522,7 +522,7 @@ Each underlying position in PHOTON is an **Ondo Global Markets token representin
 
 ### 9.2 Redemption and the value anchor
 
-The tokenized stocks carry **redemption rights offered by Ondo** — they can ultimately be redeemed for value through Ondo, subject to Ondo's terms, conditions, procedures, availability, and applicable law. This redemption path is the anchor: because the tokens can be redeemed for the value of real shares, their price tracks the underlying equities, and because PHOTON can be redeemed onchain for those tokens, PHOTON's value tracks the basket. **Most users never redeem** — they simply buy and sell PHOTON through the app's zapper using whatever supported token they hold (BNB, WBNB, USDC, etc.) — but the redemption path is what makes the whole structure economically sound rather than a free-floating token.
+The tokenized stocks carry **redemption rights offered by Ondo** — they can ultimately be redeemed for value through Ondo, subject to Ondo's terms, conditions, procedures, availability, and applicable law. This redemption path is the anchor: because the tokens can be redeemed for the value of real shares, their price tracks the underlying equities, and because PHOTON can be redeemed onchain for those tokens, PHOTON's value tracks the basket. **Most users never redeem** — they simply buy and sell PHOTON through the app's zapper using whatever supported token they hold (BNB, WBNB, USDT, etc.) — but the redemption path is what makes the whole structure economically sound rather than a free-floating token.
 
 ### 9.3 Why this layer exists (and its limits)
 
@@ -562,14 +562,14 @@ This is the practical "how do I actually use it" section. **Always confirm the l
 ### 10.1 What you need
 
 - A **self-custody wallet** (e.g., a standard EVM-compatible browser/mobile wallet) connected to a supported chain.
-- A supported token to buy with — e.g., **BNB, WBNB, USDC**, or another token the zapper accepts — plus a little **BNB** for **gas** (BNB is the native gas token on BNB Smart Chain).
+- A supported token to buy with — e.g., **BNB, WBNB, USDT**, or another token the zapper accepts — plus a little **BNB** for **gas** (BNB is the native gas token on BNB Smart Chain).
 - To be in an **eligible jurisdiction** under Ondo's rules, and, in "restricted" jurisdictions, to have completed any required accredited/professional verification.
 
 ### 10.2 Buying (the simple path)
 
 1. Go to **app.reserve.org** and open the **PHOTON** DTF page.
 2. Connect your wallet (make sure you're on the correct network).
-3. Click **Buy**, choose the token you want to spend — **BNB, WBNB, USDC**, or another supported token — and enter an amount. There is **no minimum or maximum** purchase size.
+3. Click **Buy**, choose the token you want to spend — **BNB, WBNB, USDT**, or another supported token — and enter an amount. There is **no minimum or maximum** purchase size.
 4. Review the quote — the app's zapper (or, for PHOTON's Ondo-backed underlyings, the RFQ/intent route) converts your chosen token into the basket and mints PHOTON in one atomic transaction.
 5. Confirm the transaction in your wallet and pay gas. You now hold PHOTON.
 
@@ -577,11 +577,11 @@ You can also buy/sell PHOTON on **partner venues** where it's available — **1i
 
 ### 10.3 Selling
 
-The reverse: on the PHOTON page click **Sell**, choose the token you want to receive (BNB, WBNB, USDC, etc.), review the quote, and confirm. The app redeems/sells the basket and returns your chosen token, minus fees and any slippage/dust.
+The reverse: on the PHOTON page click **Sell**, choose the token you want to receive (BNB, WBNB, USDT, etc.), review the quote, and confirm. The app redeems/sells the basket and returns your chosen token, minus fees and any slippage/dust.
 
 ### 10.4 Redeeming to the underlying (the escape hatch)
 
-Beyond simply selling for USDC, you can **redeem PHOTON onchain for its underlying Ondo tokenized stocks** — either via the app's manual mode or by calling `redeem` directly on the contract. This permissionless redemption is the guarantee that you are never dependent on any single front-end or counterparty to exit; even if the app were down, the contracts remain callable. From the underlying Ondo tokens, redemption to cash value runs through Ondo, subject to Ondo's terms and eligibility.
+Beyond simply selling for USDT, you can **redeem PHOTON onchain for its underlying Ondo tokenized stocks** — either via the app's manual mode or by calling `redeem` directly on the contract. This permissionless redemption is the guarantee that you are never dependent on any single front-end or counterparty to exit; even if the app were down, the contracts remain callable. From the underlying Ondo tokens, redemption to cash value runs through Ondo, subject to Ondo's terms and eligibility.
 
 ### 10.5 Costs to expect at transaction time
 
@@ -595,25 +595,25 @@ Each interaction may involve: the **0.3% mint fee** (on minting), ongoing **0.6%
 
 These simplified examples use round numbers to show how the mechanics and fees behave. They are **not** quotes, and they ignore gas, slippage, and Ondo terms for clarity.
 
-**Example A — buying.** You spend **1,000 USDC** (or the equivalent in BNB, WBNB, or another supported token via the zapper) to buy PHOTON. A **0.3% mint fee** applies to newly minted tokens, so roughly **3 USDC** goes to the fee and about **997 USDC** of value is converted into the basket and minted as PHOTON (before any gas/slippage). You now hold PHOTON worth ~997 USDC at NAV, spread across the nine constituents in their capped market-cap weights (~20% Corning, ~19.8% Coherent, ~18% Lumentum, and so on).
+**Example A — buying.** You spend **1,000 USDT** (or the equivalent in BNB, WBNB, or another supported token via the zapper) to buy PHOTON. A **0.3% mint fee** applies to newly minted tokens, so roughly **3 USDT** goes to the fee and about **997 USDT** of value is converted into the basket and minted as PHOTON (before any gas/slippage). You now hold PHOTON worth ~997 USDT at NAV, spread across the nine constituents in their capped market-cap weights (~20% Corning, ~19.8% Coherent, ~18% Lumentum, and so on).
 
-**Example B — holding (the TVL fee over time).** The **0.6% annual TVL fee** accrues continuously. On a position worth ~1,000 USDC, that is on the order of **~6 USDC per year**, realized as a gradual decline in your PHOTON's value relative to the underlying basket — comparable to a 0.60% expense ratio on a traditional fund. Hold for six months, roughly half accrues; hold longer, more accrues.
+**Example B — holding (the TVL fee over time).** The **0.6% annual TVL fee** accrues continuously. On a position worth ~1,000 USDT, that is on the order of **~6 USDT per year**, realized as a gradual decline in your PHOTON's value relative to the underlying basket — comparable to a 0.60% expense ratio on a traditional fund. Hold for six months, roughly half accrues; hold longer, more accrues.
 
-**Example C — selling/redeeming.** You sell your PHOTON for USDC: the app redeems the basket and returns USDC, minus gas/slippage and any dust. Alternatively you **redeem to the underlying** Ondo tokenized stocks and hold or redeem those through Ondo — the permissionless exit that does not depend on the app.
+**Example C — selling/redeeming.** You sell your PHOTON for USDT: the app redeems the basket and returns USDT, minus gas/slippage and any dust. Alternatively you **redeem to the underlying** Ondo tokenized stocks and hold or redeem those through Ondo — the permissionless exit that does not depend on the app.
 
 **What these examples are not:** they say nothing about whether PHOTON's value will rise or fall — that depends entirely on the prices of the nine underlying stocks, which can go down as well as up, to zero. No return is implied.
 
 ### 10.8 Swapping in and out — the zapper and supported tokens
 
-You do **not** need to already hold the basket tokens (or even a stablecoin) to use PHOTON. The Reserve app's **zapper** lets you enter or exit with a **single token of your choice** and handles everything else in one atomic transaction. On BNB Smart Chain, supported input/output tokens include **BNB, WBNB, USDC**, and other common assets — USDC is just one option, not a requirement.
+You do **not** need to already hold the basket tokens (or even a stablecoin) to use PHOTON. The Reserve app's **zapper** lets you enter or exit with a **single token of your choice** and handles everything else in one atomic transaction. On BNB Smart Chain, supported input/output tokens include **BNB, WBNB, USDT**, and other common assets — USDT is just one option, not a requirement.
 
-- **Buying / minting:** pick the token you want to spend (e.g., **BNB, WBNB, or USDC**) and the amount. The zapper swaps it into the underlying basket and mints PHOTON — or, for PHOTON's Ondo-backed underlyings, routes the basket-sourcing step through RFQ/intent minters — all in one transaction.
-- **Selling / redeeming:** the reverse — the zapper redeems the basket and swaps it into the single token you want to receive (BNB, WBNB, USDC, etc.).
+- **Buying / minting:** pick the token you want to spend (e.g., **BNB, WBNB, or USDT**) and the amount. The zapper swaps it into the underlying basket and mints PHOTON — or, for PHOTON's Ondo-backed underlyings, routes the basket-sourcing step through RFQ/intent minters — all in one transaction.
+- **Selling / redeeming:** the reverse — the zapper redeems the basket and swaps it into the single token you want to receive (BNB, WBNB, USDT, etc.).
 - **One transaction, atomic:** the swap step and the mint/redeem step are packaged together; either the whole thing succeeds or it reverts.
 - **Dust:** because of how trades route, you may receive tiny leftover amounts of certain tokens — typically ~1–10 basis points of the input value.
 - **Manual mode / direct call:** if you'd rather handle the exact basket tokens yourself (full slippage control, or as a fallback if routing is poor), switch to manual mint/redeem or call the contract directly (Section 8.4).
 
-In short: **you can swap in and out of PHOTON with ordinary crypto — BNB, WBNB, USDC, and other supported tokens — not only USDC.** USDC simply tends to get mentioned because it is a stable unit for sizing a position.
+In short: **you can swap in and out of PHOTON with ordinary crypto — BNB, WBNB, USDT, and other supported tokens — not only USDT.** USDT simply tends to get mentioned because it is a stable unit for sizing a position.
 
 ---
 
@@ -653,7 +653,7 @@ A **protocol platform fee** is taken **out of** the mint and TVL fees (not added
 ### 12.3 Transaction-level costs (easy to overlook)
 
 - **Onchain gas** — every mint, redeem, buy, or sell is a blockchain transaction with a network fee, paid in the chain's native token. This varies with network congestion.
-- **Exchange spreads / slippage** — the routing trades that convert your USDC into the basket (or back) incur DEX spreads and price slippage, which depend on liquidity and trade size.
+- **Exchange spreads / slippage** — the routing trades that convert your USDT into the basket (or back) incur DEX spreads and price slippage, which depend on liquidity and trade size.
 - **Dust** — you may receive tiny leftover amounts of certain tokens (typically 1–10 bps of input value) from the zapper's routing.
 - **Ondo mint/redeem terms** — the underlying tokenized stocks carry Ondo's own terms, conditions, and any applicable costs on the underlying mint/redeem path.
 - **RFQ/intent execution** — because PHOTON's underlyings are offchain-liquid, execution may route through approved RFQ minters; pricing depends on them.
@@ -767,7 +767,7 @@ PHOTON is one of **five thematic AI DTFs** Reserve launched together as a suite,
 - **NEOCLOUD** — neocloud / GPU-cloud market ~$35B (2026) → ~$180B+ (2030), ≈5× (ABI Research).
 - **PHOTON** — AI data-center optical spend ~$15B/yr (2026) → ~$154B/yr (2028), ≈10× (Goldman Sachs Research).
 
-**What's identical across the suite:** Index DTFs on BNB Smart Chain; underlyings are Ondo Global Markets tokenized US stocks (each backed 1:1 by a real share in a regulated US brokerage account); market-cap weighting with a per-name cap; **quarterly** rebalance via onchain Dutch auctions; **0.3% mint fee + 0.6% annual TVL fee** (plus the platform fee / RSR burn); permissionless onchain mint/redeem; buy/sell via the app's zapper using BNB, WBNB, USDC, or other supported tokens on **app.reserve.org**; and the **same eligibility rules set by Ondo** (not for US persons / sanctioned jurisdictions; accredited-only in several others). **The same risks apply to every DTF in the suite** — each is a concentrated, single-theme basket of experimental tokenized assets that can lose value entirely (Section 13). Each DTF has its own long-form reference document like this one; for the authoritative, live details on any of them, go to **app.reserve.org**.
+**What's identical across the suite:** Index DTFs on BNB Smart Chain; underlyings are Ondo Global Markets tokenized US stocks (each backed 1:1 by a real share in a regulated US brokerage account); market-cap weighting with a per-name cap; **quarterly** rebalance via onchain Dutch auctions; **0.3% mint fee + 0.6% annual TVL fee** (plus the platform fee / RSR burn); permissionless onchain mint/redeem; buy/sell via the app's zapper using BNB, WBNB, USDT, or other supported tokens on **app.reserve.org**; and the **same eligibility rules set by Ondo** (not for US persons / sanctioned jurisdictions; accredited-only in several others). **The same risks apply to every DTF in the suite** — each is a concentrated, single-theme basket of experimental tokenized assets that can lose value entirely (Section 13). Each DTF has its own long-form reference document like this one; for the authoritative, live details on any of them, go to **app.reserve.org**.
 
 ### 14.9 Official Reserve links and channels
 
@@ -824,7 +824,7 @@ In the interest of the same candor Reserve applies to its own marketing, the mat
 - **TVL fee** — the continuous (block-by-block) management fee on a DTF's assets; 0.6%/yr for PHOTON.
 - **Transceiver** — the module that converts between electrical and optical signals (and back) at each end of an optical link.
 - **Vote-locking** — committing a governance token (RSR by default) to an Index DTF for voting power (and a fee share when enabled).
-- **Zapper** — the Reserve app helper that lets you enter or exit a DTF using a single token of your choice (BNB, WBNB, USDC, or other supported tokens) in one atomic transaction, handling all the swaps and the mint/redeem behind the scenes.
+- **Zapper** — the Reserve app helper that lets you enter or exit a DTF using a single token of your choice (BNB, WBNB, USDT, or other supported tokens) in one atomic transaction, handling all the swaps and the mint/redeem behind the scenes.
 
 ---
 
@@ -858,7 +858,7 @@ A: A **0.3% mint fee** and a **0.6% annual TVL (management) fee.** A protocol pl
 A: No minimum or maximum purchase size.
 
 **Q: How do I buy it?**
-A: On app.reserve.org — connect a wallet, click Buy, and pay with a supported token (BNB, WBNB, USDC, etc.) via the zapper — or on partner venues (PancakeSwap and other BNB Chain DEXs; aggregators like 1inch, CoW Swap). You must be in an eligible jurisdiction.
+A: On app.reserve.org — connect a wallet, click Buy, and pay with a supported token (BNB, WBNB, USDT, etc.) via the zapper — or on partner venues (PancakeSwap and other BNB Chain DEXs; aggregators like 1inch, CoW Swap). You must be in an eligible jurisdiction.
 
 **Q: Can I buy it in the United States?**
 A: **No.** PHOTON is prohibited for US persons (and US territories, Canada, and sanctioned jurisdictions). Several other places (UK, EEA, Switzerland, Singapore, Hong Kong, Malaysia, Brazil) allow it only for accredited/professional investors. Eligibility is set by Ondo.
@@ -870,7 +870,7 @@ A: Ondo Global Markets, the issuer of the underlying tokenized stocks. See docs.
 A: Its price is based on the **NAV** of its underlying tokenized stocks. Because anyone can mint/redeem at NAV onchain, arbitrage keeps the market price close to the value of the basket — though deviations can occur.
 
 **Q: What's the difference between buying PHOTON and redeeming it?**
-A: Most people **buy/sell** PHOTON through the zapper using whatever supported token they hold (BNB, WBNB, USDC, etc.). **Redeeming** burns PHOTON for the underlying Ondo tokenized stocks onchain — the permissionless escape hatch that means you don't depend on any single app or counterparty to exit.
+A: Most people **buy/sell** PHOTON through the zapper using whatever supported token they hold (BNB, WBNB, USDT, etc.). **Redeeming** burns PHOTON for the underlying Ondo tokenized stocks onchain — the permissionless escape hatch that means you don't depend on any single app or counterparty to exit.
 
 **Q: Why does PHOTON use Ondo tokens instead of holding stocks directly?**
 A: Real US-listed shares can't live on a blockchain directly; Ondo's tokenized stocks (backed 1:1 by real shares) are the bridge that lets equities be bundled and traded onchain 24/7.
