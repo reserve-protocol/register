@@ -1,0 +1,59 @@
+{
+  "version": "0.1",
+  "suite": "Reserve Thematic AI DTF Suite",
+  "generated": "2026-06-17",
+  "index": "https://app.reserve.org/dtf-llm/llms.txt",
+  "disclaimer": "Auto-generated with LLM assistance, pending review. Not investment, legal, or tax advice and not an offer or solicitation. The DTFs are not ETFs and not regulated as such; they are concentrated, single-theme baskets of experimental tokenized assets that can lose value entirely, and are not available to US persons or persons in sanctioned jurisdictions. Where these documents disagree with Reserve's official sources, the official sources control. Verify everything on https://app.reserve.org.",
+  "docs": [
+    {
+      "symbol": "PHOTON",
+      "name": "Reserve AI Photonics DTF",
+      "summary": "Light replacing copper inside AI — fiber, lasers, transceivers & optical chips for AI data centers.",
+      "document": "https://app.reserve.org/dtf-llm/photon-dtf.md",
+      "chain": "BNB Smart Chain",
+      "address": "0xa0fe4e0aeca5479705ce996615b2eacb6b6a10fb",
+      "coingecko": "reserve-ai-photonics-dtf",
+      "bytes": 123088
+    },
+    {
+      "symbol": "BUILDOUT",
+      "name": "Reserve AI Infrastructure DTF",
+      "summary": "The picks & shovels of the AI build-out — the 25 largest US-listed semiconductor, memory, equipment, networking & power names.",
+      "document": "https://app.reserve.org/dtf-llm/buildout-dtf.md",
+      "chain": "BNB Smart Chain",
+      "address": "0xd7ce7a841310982acd976d1a6fe7bb6063c5689d",
+      "coingecko": "reserve-ai-infrastructure-dtf",
+      "bytes": 134152
+    },
+    {
+      "symbol": "POWER",
+      "name": "Reserve AI Power DTF",
+      "summary": "The companies that generate, move & condition the electricity behind AI — turbines, nuclear, grid/electrical gear & power chips.",
+      "document": "https://app.reserve.org/dtf-llm/power-dtf.md",
+      "chain": "BNB Smart Chain",
+      "address": "0x290bCc0Fd5096cC3261AE2021841c7BC67Cb0f51",
+      "coingecko": "reserve-ai-power-dtf",
+      "bytes": 137921
+    },
+    {
+      "symbol": "NEOCLOUD",
+      "name": "Reserve AI Capacity & Neocloud DTF",
+      "summary": "The neoclouds & power-rich operators that raise capital, secure power & rent out AI compute by the hour.",
+      "document": "https://app.reserve.org/dtf-llm/neocloud-dtf.md",
+      "chain": "BNB Smart Chain",
+      "address": "0xf571Fe3F0d74521Bc7310B111Faea931C748f27B",
+      "coingecko": "reserve-ai-capacity-and-neocloud-dtf",
+      "bytes": 136796
+    },
+    {
+      "symbol": "ROBOTS",
+      "name": "Reserve Robotics DTF",
+      "summary": "AI stepping off the screen into the physical world — humanoids, surgical robots, factory/warehouse automation, lidar, vision & autonomy.",
+      "document": "https://app.reserve.org/dtf-llm/robots-dtf.md",
+      "chain": "BNB Smart Chain",
+      "address": "0x75617e7653f86f074cc30b9fd4ebf52ba9b62247",
+      "coingecko": "reserve-robotics-dtf",
+      "bytes": 134072
+    }
+  ]
+}
