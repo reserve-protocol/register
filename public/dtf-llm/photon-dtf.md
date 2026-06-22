@@ -1,6 +1,6 @@
 ---
 title: "Reserve AI Photonics DTF ($PHOTON) — Complete Reference"
-version: "0.3"
+version: "0.4"
 version_date: "2026-06-22"
 ticker: PHOTON
 product_type: "Index DTF (Decentralized Token Fund)"
@@ -33,7 +33,7 @@ not_advice: "For informational purposes only. Not investment, legal, or tax advi
 
 # Reserve AI Photonics DTF ($PHOTON) — The Complete Reference
 
-> **Version 0.3** — draft of this reference document (auto-generated, pending human and legal review). Structure, wording, and figures may change in later versions.
+> **Version 0.4** — draft of this reference document (auto-generated, pending human and legal review). Structure, wording, and figures may change in later versions.
 
 > **⚠️ This document was generated with the assistance of a large language model (LLM).** It is a reference compiled from Reserve's published materials (reserve.org, docs.reserve.org, app.reserve.org), the official PHOTON tear sheet, and publicly reported third-party information. It is **not** investment, legal, or tax advice; it is **not** an offer or solicitation; and it may contain errors, omissions, or out-of-date figures. All numbers are **illustrative and approximate as of June 2026** and change at every quarterly rebalance and with the market. Where this document and Reserve's official sources (app.reserve.org, docs.reserve.org, and reserve.org/terms_and_conditions) disagree, **the official sources control.** Always verify on app.reserve.org before acting. See the full legal disclaimer at the end.
 
@@ -576,7 +576,7 @@ This is the practical "how do I actually use it" section. **Always confirm the l
 
 - A **self-custody wallet** (e.g., a standard EVM-compatible browser/mobile wallet) connected to a supported chain.
 - A supported token to buy with — e.g., **BNB, WBNB, USDT**, or another token the zapper accepts — plus a little **BNB** for **gas** (BNB is the native gas token on BNB Smart Chain).
-- To be in an **eligible jurisdiction** under Ondo's rules, and, in "restricted" jurisdictions, to have completed any required accredited/professional verification. This eligibility/verification is determined and administered by **Ondo Global Markets** (the token issuer) under its own process and terms (docs.ondo.finance/ondo-global-markets/eligibility); Reserve/ABC Labs does not set these criteria.
+- To be in an **eligible jurisdiction** under Ondo's rules, and, in "restricted" jurisdictions, to have completed any required accredited/professional verification. Which jurisdictions are prohibited, restricted, or open is set by **Ondo Global Markets** (the token issuer; see docs.ondo.finance/ondo-global-markets/eligibility). If you are in a **restricted** jurisdiction, you can **apply to be approved** as an accredited/professional investor — you submit a request (through the app) and complete the required verification, and the approval is processed by **Reserve** (potentially with a third-party accreditation provider).
 
 ### 10.2 Buying (the simple path)
 
@@ -637,7 +637,7 @@ In short: **you can swap in and out of PHOTON with ordinary crypto — BNB, WBNB
 | Tier | Jurisdictions (illustrative) | What it means |
 |---|---|---|
 | **🚫 Prohibited** | **United States** (and its territories), **Canada**, and **sanctioned jurisdictions** | **Cannot buy or redeem.** PHOTON is not offered or made available to these persons. |
-| **⚠️ Restricted** | **Brazil, United Kingdom, EEA, Switzerland, Singapore, Hong Kong, Malaysia** | Can buy **only after qualifying** as a **professional / accredited investor** under the relevant rules. |
+| **⚠️ Restricted** | **Brazil, United Kingdom, EEA, Switzerland, Singapore, Hong Kong, Malaysia** | Can buy **after being approved** as a **professional / accredited investor** — you can **apply / request approval** in these jurisdictions and complete the required verification. |
 | **✅ Elsewhere** | Most other jurisdictions | Can connect a wallet and buy; **you remain responsible for following your own local laws.** |
 
 Three points that matter:
@@ -646,7 +646,7 @@ Three points that matter:
 - **Eligibility can change** as Ondo updates its rules, and verification requirements in "restricted" jurisdictions can involve a KYC/accreditation step.
 - **You are responsible for your local laws** even in "elsewhere" jurisdictions — tax, securities, and other regulations may still apply to you.
 
-**How eligibility is enforced in the app.** Before you can mint/buy on app.reserve.org you pass a **wallet-based self-attestation**: you check boxes confirming you have read the Terms of Use, that you are **not** located in, a resident of, or a citizen of a restricted jurisdiction, and that you are permitted to purchase tokenized stocks under your local laws. Per the app, this confirmation is **only ever associated with your wallet address — never your personal information**; Reserve/ABC Labs does not collect or store personal identity documents for this gate, and any accredited/professional qualification where required is handled under Ondo's process.
+**How eligibility is enforced in the app.** Before you can mint/buy on app.reserve.org you pass a **wallet-based self-attestation**: you check boxes confirming you have read the Terms of Use, that you are **not** located in, a resident of, or a citizen of a restricted jurisdiction, and that you are permitted to purchase tokenized stocks under your local laws. Per the app, this confirmation is **only ever associated with your wallet address — never your personal information**; Reserve/ABC Labs does not collect or store personal identity documents for this basic gate. Separately, where a **restricted** jurisdiction requires accredited/professional status, you can **apply to be approved** through a request-and-verification process (see Section 11).
 
 ---
 
@@ -881,6 +881,9 @@ A: **No.** PHOTON is prohibited for US persons (and US territories, Canada, and 
 **Q: Who decides eligibility?**
 A: Ondo Global Markets, the issuer of the underlying tokenized stocks. See docs.ondo.finance/ondo-global-markets/eligibility.
 
+**Q: I'm in a restricted jurisdiction (e.g., UK, EEA, Brazil) — how do I get approved?**
+A: You can apply. In restricted jurisdictions you submit a request to be verified as an accredited/professional investor (through the app) and complete the required verification; approvals are processed by Reserve, potentially with the help of a third-party accreditation provider.
+
 **Q: What gives PHOTON its value / how is it priced?**
 A: Its price is based on the **NAV** of its underlying tokenized stocks. Because anyone can mint/redeem at NAV onchain, arbitrage keeps the market price close to the value of the basket — though deviations can occur.
 
@@ -972,4 +975,4 @@ The third-party market-size forecasts referenced (Goldman Sachs and others) are 
 
 ---
 
-*Document type: LLM-generated reference for the Reserve AI Photonics DTF ($PHOTON). Document version 0.3 · Data as of June 2026. This is a living document and a template for the broader Reserve AI DTF suite (BUILDOUT, POWER, NEOCLOUD, ROBOTS). Verify everything on app.reserve.org before acting.*
+*Document type: LLM-generated reference for the Reserve AI Photonics DTF ($PHOTON). Document version 0.4 · Compiled by starl3xx, with LLM assistance · Data as of June 2026. This is a living document and a template for the broader Reserve AI DTF suite (BUILDOUT, POWER, NEOCLOUD, ROBOTS). Verify everything on app.reserve.org before acting.*
