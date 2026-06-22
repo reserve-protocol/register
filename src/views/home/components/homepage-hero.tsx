@@ -106,7 +106,7 @@ const HomepageHero = () => {
       ref={stageRef}
       style={stageStyle}
       className={cn(
-        'relative h-auto rounded-t-4xl',
+        'relative h-auto rounded-4xl',
         'lg:mx-2',
         'xl:h-[calc(100svh-72px+var(--highlighted-scroll-distance))]',
         '2xl:mx-0'
@@ -120,8 +120,8 @@ const HomepageHero = () => {
       >
         <div
           className={cn(
-            'grid min-h-0 flex-1 grid-rows-[auto_minmax(0,1fr)] gap-1 overflow-hidden border-[4px] border-b-0 border-secondary bg-secondary',
-            'lg:rounded-t-4xl',
+            'grid min-h-0 flex-1 grid-rows-[auto_minmax(0,1fr)] gap-1 overflow-hidden border-[4px] border-secondary bg-secondary',
+            'lg:rounded-4xl',
             'xl:grid-cols-[minmax(0,1fr)_minmax(420px,1fr)] xl:grid-rows-1'
           )}
         >
@@ -129,7 +129,7 @@ const HomepageHero = () => {
             className={cn(
               'flex min-h-0 flex-col items-center justify-center gap-4 rounded-3xl rounded-t-none bg-background p-4 pb-10',
               'lg:rounded-3xl lg:rounded-b-3xl lg:pb-[132px]',
-              'xl:rounded-bl-none xl:pb-[184px]'
+              'xl:pb-[184px]'
             )}
           >
             <div className="flex w-full max-w-[520px] flex-col items-center">
