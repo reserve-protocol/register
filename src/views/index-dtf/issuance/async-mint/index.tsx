@@ -66,7 +66,7 @@ const AsyncMintWizard = () => {
         className={cn(
           'w-full mx-auto overflow-hidden rounded-3xl transition-[max-width] duration-500 ease-out',
           isWide
-            ? 'max-w-[1200px] lg:max-h-[calc(100vh-100px)]'
+            ? 'max-w-[1200px] lg:max-h-[calc(100vh-100px)] lg:overflow-y-auto'
             : 'max-w-[476px]'
         )}
       >
