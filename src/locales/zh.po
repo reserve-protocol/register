@@ -1447,6 +1447,10 @@ msgstr "自动 Mint 和 Redeem 需要支持智能账户的 Wallet。不支持硬
 msgid "Automated minting is an advanced feature. For most people, simple swaps are recommended."
 msgstr "自动 Mint 是一项高级功能。对大多数人而言，推荐使用简单的 Swap。"
 
+#: src/views/index-dtf/components/zapper/large-mint-prompt.tsx:68
+msgid "Automated minting may be a better way to buy {symbol}. We will help split your order into multiple trades before minting."
+msgstr "自动 Mint 可能是购买 {symbol} 的更好方式。我们会在 Mint 之前帮您将订单拆分为多笔交易。"
+
 #: src/views/index-dtf/issuance/async-mint/steps/configure-mint.tsx:113
 msgid "Automatically acquire assets"
 msgstr "自动获取资产"
@@ -2514,7 +2518,7 @@ msgstr "恭喜 🎉"
 
 #: src/components/account/index.tsx:112
 msgid "Connect"
-msgstr "连接"
+msgstr "连接钱包"
 
 #: src/components/stake-drawer/components/submit-stake-button.tsx:160
 #: src/components/stake-drawer/components/submit-unstake-button.tsx:72
@@ -2721,7 +2725,7 @@ msgstr "创建 Index DTF"
 #: src/components/layout/header/components/app-navigation.tsx:87
 #: src/components/layout/header/components/app-navigation.tsx:94
 msgid "Create New DTF"
-msgstr "创建新 DTF"
+msgstr "构建 DTF"
 
 #: src/views/index-dtf/deploy/index.tsx:27
 #: src/views/index-dtf/deploy/permissionless/index.tsx:84
@@ -2997,12 +3001,12 @@ msgid "days"
 msgstr "天"
 
 #: src/views/home/components/homepage-hero.tsx:36
-msgid "Decentralized Token Folios"
+msgid "Decentralized Token Funds"
 msgstr "去中心化代币组合（DTF）"
 
 #: src/views/home/components/hero.tsx:68
-#~ msgid "Decentralized Token Folios illustration"
-#~ msgstr "Decentralized Token Folios 插图"
+#~ msgid "Decentralized Token Funds illustration"
+#~ msgstr "Decentralized Token Funds 插图"
 
 #: src/components/rtoken-setup/basket/PluginItem.tsx:50
 msgid "Decimals"
@@ -3209,7 +3213,7 @@ msgstr "详情"
 #: src/components/layout/navigation/TokenNavigation.tsx:210
 #: src/views/index-dtf/components/navigation/index.tsx:212
 msgid "Details + Roles"
-msgstr "详情 + 角色"
+msgstr "配置与角色"
 
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/changes/auction-settings-changes.tsx:123
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/changes/auction-settings-changes.tsx:127
@@ -3245,7 +3249,7 @@ msgstr "探索我们的全部产品"
 
 #: src/components/layout/header/components/app-navigation.tsx:57
 msgid "Discover DTFs"
-msgstr "发现 DTFs"
+msgstr "探索 DTF"
 
 #: src/components/layout/header/components/app-navigation.tsx:157
 msgid "Discussions of ecosystem ideas"
@@ -3650,7 +3654,7 @@ msgstr "篮子为空"
 
 #: src/views/index-dtf/deploy/steps/auctions/auctions-form.tsx:58
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-auction-settings.tsx:30
-msgid "Enable bids directly via the folio."
+msgid "Enable bids directly from the DTF."
 msgstr "通过 Folio 直接启用竞价。"
 
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/changes/auction-settings-changes.tsx:123
@@ -3811,11 +3815,11 @@ msgstr "预计 APY："
 
 #: src/views/home/components/protocol-metrics.tsx:61
 msgid "Est. Partner Revenue"
-msgstr "预计合作伙伴收入"
+msgstr "生态伙伴收益"
 
 #: src/views/home/components/protocol-metrics.tsx:66
 msgid "Est. RSR Revenue"
-msgstr "预计 RSR 收入"
+msgstr "RSR 收益"
 
 #: src/views/yield-dtf/staking/components/overview/staking-stats.tsx:62
 msgid "Est. Staking APY"
@@ -3831,7 +3835,7 @@ msgstr "预计交易价值："
 
 #: src/views/home/components/protocol-metrics.tsx:71
 msgid "Est. Yield Distribution"
-msgstr "预计收益分配"
+msgstr "收益产出"
 
 #: src/components/rtoken-setup/basket/PrimaryBasket.tsx:171
 msgid "Estimated basket APY"
@@ -4032,7 +4036,7 @@ msgstr "浏览器"
 #: src/views/home/components/discover-index-dtf/index-dtf-table-columns.tsx:236
 #: src/views/index-dtf/overview/components/basket-overview/basket-table-header.tsx:103
 msgid "Exposure"
-msgstr "敞口"
+msgstr "成分股"
 
 #: src/views/index-dtf/overview/components/yield-index/yield-index-composition-tabs.tsx:14
 #: src/views/index-dtf/overview/components/yield-index/yield-index-composition-tabs.tsx:15
@@ -4405,7 +4409,7 @@ msgstr "治理代币"
 #: src/views/yield-dtf/overview/components/backing/risks.tsx:84
 #: src/views/yield-dtf/settings/components/navigation-sidebar.tsx:17
 msgid "Governance"
-msgstr "治理"
+msgstr "社区治理"
 
 #: src/views/index-dtf/deploy/components/deploy-accordion.tsx:81
 #: src/views/index-dtf/deploy/components/deploy-accordion.tsx:82
@@ -5651,7 +5655,7 @@ msgstr "使用以下方式 Mint"
 
 #: src/views/home/components/protocol-metrics.tsx:76
 msgid "Mint Volume"
-msgstr "Mint 交易量"
+msgstr "Mint 交易额"
 
 #: src/views/yield-dtf/issuance/components/issue/IssuanceInfo.tsx:158
 msgid "Mintable now"
@@ -6038,6 +6042,10 @@ msgstr "未找到结果。"
 #: src/components/ui/data-table.tsx:456
 msgid "No results."
 msgstr "无结果。"
+
+#: src/views/index-dtf/components/zapper/large-mint-prompt.tsx:51
+msgid "No route found"
+msgstr "未找到路径"
 
 #: src/views/yield-dtf/staking/components/withdraw/cooldown-unstake.tsx:90
 msgid "No RSR in cooldown"
@@ -6437,7 +6445,7 @@ msgstr "参数"
 
 #: src/components/layout/header/components/app-navigation.tsx:77
 msgid "Participate & Earn"
-msgstr "参与并赚取"
+msgstr "赚取收益"
 
 #: src/views/portfolio-page/components/vote-locked-positions.tsx:176
 msgid "Participate in governance with any ERC-20 token and earn APY rewards. <0>Learn more</0>."
@@ -6620,6 +6628,30 @@ msgstr "允许无许可发起拍卖"
 msgid "PHOTON packs multiple collateral assets into one DTF token"
 msgstr "PHOTON 将多种抵押资产打包为一个 DTF token"
 
+#: src/views/home/components/highlighted-dtfs/transcript-copy.ts:4
+msgid "Learn more about this DTF, the assets it tracks, how the basket is weighted, and the role each component plays inside the fund."
+msgstr "进一步了解这个 DTF、它追踪的资产、篮子的加权方式，以及每个组成部分在基金中的作用。"
+
+#: src/views/home/components/highlighted-dtfs/transcript-copy.ts:7
+msgid "The Reserve Photonics DTF (PHOTON) is a weighted basket of public, US-listed photonics companies at the center of the AI buildout. Inside AI data centers, light is replacing copper wire: as AI chips get faster and more data-hungry, the bottleneck shifts from computing the data to moving it, and copper hits a physical wall of heat, power loss, and limited reach. The PHOTON DTF gives you direct exposure to the companies making that shift: the fiber, lasers, transceivers, and optical chips that have become the central nervous system of the AI data center. The basket is composed of companies that generate significant revenue from AI data-center photonics demand, weighted by market capitalization with a 20% cap and a $5B minimum market cap, rebalanced quarterly. The PHOTON DTF bundles Ondo Global Markets tokenized stocks, each of which represents an actual share held in a regulated US brokerage account."
+msgstr "Reserve Photonics DTF（PHOTON）是一个加权篮子，覆盖处于 AI 建设核心位置的美国上市光子学公司。在 AI 数据中心内部，光正在取代铜线：随着 AI 芯片变得更快、数据需求更高，瓶颈正从计算数据转向移动数据，而铜线会遇到发热、功耗损失和传输距离有限的物理极限。PHOTON DTF 让你直接获得这些推动转变的公司的敞口：光纤、激光器、收发器和光芯片，它们已经成为 AI 数据中心的中枢神经系统。该篮子由从 AI 数据中心光子学需求中获得重要收入的公司组成，按市值加权，单一权重上限为 20%，最低市值为 $5B，并按季度再平衡。PHOTON DTF 打包 Ondo Global Markets 的代币化股票，每一只代币化股票都代表存放在受监管美国券商账户中的一股真实股票。"
+
+#: src/views/home/components/highlighted-dtfs/transcript-copy.ts:8
+msgid "The Reserve AI Infrastructure DTF (BUILDOUT) is a weighted basket of public, US-listed semiconductor and hardware companies at the center of the AI buildout. Before any model can run, someone has to build the machine: the chips that compute, the memory that feeds them, the equipment and foundries that make them, and the power that runs it all. The BUILDOUT DTF gives you direct exposure to the picks and shovels of the AI buildout: the semiconductors, memory, manufacturing equipment, networking, and power that every AI dollar flows through first. The basket holds the 25 largest US-listed companies across this AI hardware stack, weighted by market capitalization with a 10% cap, rebalanced quarterly. The BUILDOUT DTF bundles Ondo Global Markets tokenized stocks, each of which represents an actual share held in a regulated US brokerage account."
+msgstr "Reserve AI Infrastructure DTF（BUILDOUT）是一个加权篮子，覆盖处于 AI 建设核心位置的美国上市半导体和硬件公司。任何模型能够运行之前，必须有人先建造机器：负责计算的芯片、为芯片供给数据的内存、制造它们的设备和晶圆厂，以及驱动这一切的电力。BUILDOUT DTF 让你直接获得 AI 建设中“工具和铲子”的敞口：半导体、内存、制造设备、网络和电力，每一美元 AI 投入都会先经过这些环节。该篮子持有 AI 硬件堆栈中市值最大的 25 家美国上市公司，按市值加权，单一权重上限为 10%，并按季度再平衡。BUILDOUT DTF 打包 Ondo Global Markets 的代币化股票，每一只代币化股票都代表存放在受监管美国券商账户中的一股真实股票。"
+
+#: src/views/home/components/highlighted-dtfs/transcript-copy.ts:9
+msgid "The Reserve Robotics DTF (ROBOTS) is a weighted basket of public, US-listed robotics and automation companies at the center of the AI buildout. AI is moving off the screen and into the physical world: the same breakthroughs that taught software to reason are now teaching machines to perceive, decide, and act, and to take on physical labor. The ROBOTS DTF gives you direct exposure to the companies building that transition: the humanoids, surgical robots, factory and warehouse automation, lidar, machine vision, and the chips that let machines navigate the real world. The basket is composed of companies with significant and growing exposure to robotics and automation demand, weighted by market capitalization with a 20% cap and a $2B minimum market cap, rebalanced quarterly. The ROBOTS DTF bundles Ondo Global Markets tokenized stocks, each of which represents an actual share held in a regulated US brokerage account."
+msgstr "Reserve Robotics DTF（ROBOTS）是一个加权篮子，覆盖处于 AI 建设核心位置的美国上市机器人和自动化公司。AI 正从屏幕走向物理世界：那些让软件学会推理的突破，如今正在教会机器感知、决策和行动，并承担实体劳动。ROBOTS DTF 让你直接获得正在构建这一转变的公司的敞口：人形机器人、手术机器人、工厂和仓库自动化、激光雷达、机器视觉，以及让机器在现实世界中导航的芯片。该篮子由对机器人和自动化需求具有重要且持续增长敞口的公司组成，按市值加权，单一权重上限为 20%，最低市值为 $2B，并按季度再平衡。ROBOTS DTF 打包 Ondo Global Markets 的代币化股票，每一只代币化股票都代表存放在受监管美国券商账户中的一股真实股票。"
+
+#: src/views/home/components/highlighted-dtfs/transcript-copy.ts:10
+msgid "The Reserve AI Power DTF (POWER) is a weighted basket of public, US-listed power companies at the center of the AI buildout. Strip away the software and the chips, and AI comes down to electricity: a single AI data center can draw as much power as a small city, and the grid was never built for hundreds of them. The POWER DTF gives you direct exposure to the companies that generate, move, and condition that electricity: the gas turbines, nuclear plants, grid and electrical equipment, and power chips behind the AI buildout. The basket is composed of companies that generate significant revenue from AI data-center power demand, weighted by market capitalization with a 20% cap and a $10B minimum market cap, rebalanced quarterly. The POWER DTF bundles Ondo Global Markets tokenized stocks, each of which represents an actual share held in a regulated US brokerage account."
+msgstr "Reserve AI Power DTF（POWER）是一个加权篮子，覆盖处于 AI 建设核心位置的美国上市电力公司。剥离软件和芯片之后，AI 最终落到电力上：一个 AI 数据中心的耗电量可能相当于一座小城市，而电网从未为数百个这样的数据中心而建设。POWER DTF 让你直接获得那些发电、输电并调节电力的公司的敞口：AI 建设背后的燃气轮机、核电站、电网和电气设备，以及功率芯片。该篮子由从 AI 数据中心电力需求中获得重要收入的公司组成，按市值加权，单一权重上限为 20%，最低市值为 $10B，并按季度再平衡。POWER DTF 打包 Ondo Global Markets 的代币化股票，每一只代币化股票都代表存放在受监管美国券商账户中的一股真实股票。"
+
+#: src/views/home/components/highlighted-dtfs/transcript-copy.ts:11
+msgid "The Reserve AI Capacity & Neocloud DTF (NEOCLOUD) is a weighted basket of public, US-listed neocloud and AI data-center companies at the center of the AI buildout. Building an AI data center costs billions, so most companies that need AI computing rent it instead: a new industry of neoclouds and power-rich data-center operators raises the capital, secures the power, and rents out compute by the hour. The NEOCLOUD DTF gives you direct exposure to the companies turning capital, silicon, and electricity into the compute everyone needs: the GPU-cloud operators and the power-rich sites that host them. The basket is composed of companies with significant and growing revenue from AI compute demand, weighted by market capitalization with a 20% cap and a $10B minimum market cap, rebalanced quarterly. The NEOCLOUD DTF bundles Ondo Global Markets tokenized stocks, each of which represents an actual share held in a regulated US brokerage account."
+msgstr "Reserve AI Capacity & Neocloud DTF（NEOCLOUD）是一个加权篮子，覆盖处于 AI 建设核心位置的美国上市 neocloud 和 AI 数据中心公司。建设一个 AI 数据中心需要数十亿美元，因此大多数需要 AI 算力的公司会选择租用：neocloud 和电力资源充足的数据中心运营商形成了一个新行业，它们募集资本、确保电力，并按小时出租算力。NEOCLOUD DTF 让你直接获得那些把资本、硅和电力转化为所有人都需要的算力的公司的敞口：GPU 云运营商，以及承载它们的电力充足站点。该篮子由从 AI 算力需求中获得重要且持续增长收入的公司组成，按市值加权，单一权重上限为 20%，最低市值为 $10B，并按季度再平衡。NEOCLOUD DTF 打包 Ondo Global Markets 的代币化股票，每一只代币化股票都代表存放在受监管美国券商账户中的一股真实股票。"
+
 #: src/components/transactions/table/index.tsx:92
 #: src/views/explorer/components/transactions/useTransactionColumns.tsx:132
 #: src/views/index-dtf/deploy/steps/revenue/revenue-distribution-settings.tsx:27
@@ -6754,7 +6786,7 @@ msgstr "Pool"
 #: src/views/portfolio-page/index.tsx:37
 #: src/views/portfolio-page/index.tsx:121
 msgid "Portfolio"
-msgstr "投资组合"
+msgstr "我的资产"
 
 #: src/views/portfolio-page/components/portfolio-breakdown.tsx:29
 msgid "Portfolio Breakdown"
@@ -6861,7 +6893,7 @@ msgstr "启动时价格"
 #. placeholder {0}: periodLabel[timeRange]
 #: src/views/index-dtf/overview/components/basket-overview/basket-table-header.tsx:134
 msgid "Price Change ({0})"
-msgstr "价格变化（{0}）"
+msgstr "涨跌幅（{0}）"
 
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1362
 msgid "Price impact"
@@ -8923,7 +8955,7 @@ msgstr "盈余低于最小交易规模"
 
 #: src/views/index-dtf/components/navigation/index.tsx:192
 msgid "Swap"
-msgstr "Swap"
+msgstr "交易"
 
 #: src/views/index-dtf/overview/components/zap-mint/submit-zap.tsx:143
 msgid "Swapped"
@@ -9297,8 +9329,8 @@ msgid "There's two freezing roles that put the system in the same state for diff
 msgstr "有两个冻结角色可将系统置于相同状态,但持续时长不同:"
 
 #: src/views/home/components/hero.tsx:19
-#~ msgid "These tokenized portfolios are called DTFs: <0/><1>Decentralized Token Folios</1>"
-#~ msgstr "这些代币化的投资组合被称为 DTF：<0/><1>Decentralized Token Folios</1>"
+#~ msgid "These tokenized portfolios are called DTFs: <0/><1>Decentralized Token Funds</1>"
+#~ msgstr "这些代币化的投资组合被称为 DTF：<0/><1>Decentralized Token Funds</1>"
 
 #: src/components/rtoken-setup/components/RolesEdit.tsx:37
 msgid "This address already holds this role"
@@ -9920,6 +9952,10 @@ msgstr "重试"
 #: src/views/index-dtf/components/zapper/large-mint-prompt.tsx:67
 msgid "Try Automated Mint"
 msgstr "尝试自动 Mint"
+
+#: src/views/index-dtf/components/zapper/large-mint-prompt.tsx:65
+msgid "Try Minting"
+msgstr "尝试 Mint"
 
 #: src/views/yield-dtf/issuance/components/zapV2/ZapToggle.tsx:23
 msgid "Turn on Zaps to mint using 1 asset"
@@ -11048,7 +11084,7 @@ msgstr "网站链接"
 #: src/views/index-dtf/overview/components/basket-overview/basket-table-header.tsx:125
 #: src/views/index-dtf/overview/components/yield-index/yield-index-composition-tabs.tsx:13
 msgid "Weight"
-msgstr "权重"
+msgstr "占比"
 
 #: src/views/index-dtf/deploy/steps/auctions/auctions-form.tsx:20
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-weight-control.tsx:18
@@ -11065,8 +11101,8 @@ msgid "Weights saved:"
 msgstr "权重已保存："
 
 #: src/views/home/components/register-about.tsx:39
-msgid "Welcome to Reserve — a platform for creating, exploring, and interacting with Decentralized Token Folios (“DTFs”). A DTF is the generic name given to any onchain asset-backed index. DTFs can be created on Reserve’s Yield Protocol or Index Protocol permissionlessly, by any person or entity."
-msgstr "欢迎使用 Reserve —— 一个用于创建、探索 Decentralized Token Folios（“DTF”）并与之交互的平台。DTF 是对任何链上资产支撑指数的通用名称。任何个人或实体都可以无需许可地在 Reserve 的 Yield Protocol 或 Index Protocol 上创建 DTF。"
+msgid "Welcome to Reserve — a platform for creating, exploring, and interacting with Decentralized Token Funds (“DTFs”). A DTF is the generic name given to any onchain asset-backed index. DTFs can be created on Reserve’s Yield Protocol or Index Protocol permissionlessly, by any person or entity."
+msgstr "欢迎使用 Reserve —— 一个用于创建、探索 Decentralized Token Funds（“DTF”）并与之交互的平台。DTF 是对任何链上资产支撑指数的通用名称。任何个人或实体都可以无需许可地在 Reserve 的 Yield Protocol 或 Index Protocol 上创建 DTF。"
 
 #: src/views/home/components/dtf-explainer-button.tsx:22
 msgid "What is a <0>DTF</0>?"
@@ -11395,8 +11431,8 @@ msgid "Your {inputSymbol} input is over {MIN_INPUT_LABEL}. Automated Mint may fi
 msgstr "你的 {inputSymbol} 输入超过 {MIN_INPUT_LABEL}。自动 Mint 可能会在 Mint 前将其分摊到篮子中，从而找到更优路径。"
 
 #: src/views/portfolio-page/components/dtf-positions.tsx:177
-msgid "Your Decentralized Token Folio investments."
-msgstr "你的 Decentralized Token Folio 投资。"
+msgid "Your Decentralized Token Fund investments."
+msgstr "你的 Decentralized Token Fund 投资。"
 
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1441
 msgid "Your DTF has been minted."
@@ -11462,3 +11498,29 @@ msgstr "Zapper 错误"
 #: src/views/index-dtf/overview/components/zap-mint/zap-healthcheck.tsx:24
 msgid "Zaps are currently experiencing issues"
 msgstr "Zap 当前出现问题"
+
+#: src/views/home/components/highlighted-dtfs/performance-chart-launch-marker.tsx:36
+msgid "Est. Historical Price ✱"
+msgstr "估算历史价格 ✱"
+
+#: src/views/home/components/highlighted-dtfs/performance-chart-launch-marker.tsx:37
+msgid "Est. Hist. Price ✱"
+msgstr "估算历史价 ✱"
+
+#: src/views/home/components/highlighted-dtfs/performance-chart-launch-marker.tsx:38
+msgid "Est. Price ✱"
+msgstr "估算价格 ✱"
+
+#: src/views/home/components/highlighted-dtfs/historical-price-disclaimer.tsx:5
+msgid "✱ Estimated historical price is a hypothetical illustration of how the DTF’s launch-day basket would have performed before the DTF was created, using historical prices for those assets. The basket did not actually exist during this period. The figure assumes a fixed basket — it does not reflect actual trading, management fees, slippage, or the rebalancing the DTF performs in practice — and is constructed with the benefit of hindsight. Hypothetical performance is not indicative of future results and is not investment advice."
+msgstr "✱ 估算历史价格是一种假设性示例，用于说明在该 DTF 创建之前，其上线当日的篮子若按这些资产的历史价格计算将会有怎样的表现。该篮子在此期间实际上并不存在。该数字假设篮子固定不变，并不反映实际交易、管理费、滑点或 DTF 在实际操作中执行的再平衡，且是借助事后视角构建的。假设性表现并不代表未来结果，也不构成投资建议。"
+
+#: src/views/home/components/highlighted-dtfs/feature-card-header.tsx:101
+msgctxt "DTF card"
+msgid "Buy"
+msgstr "一键买入"
+
+#: src/views/index-dtf/overview/components/basket-overview/basket-table-header.tsx:113
+msgctxt "DTF basket"
+msgid "Collateral"
+msgstr "底层资产"

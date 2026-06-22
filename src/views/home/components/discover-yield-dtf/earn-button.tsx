@@ -25,11 +25,10 @@ const EarnButton = ({ token, className }: Props) => {
 
   const handleEarn = () => {
     const addresses = [token.id]
+    const bridgedTokens = BRIDGED_RTOKENS[token.chain]?.[token.id] ?? []
 
-    if (BRIDGED_RTOKENS[token.chain]?.[token.id]) {
-      for (const bridgeToken of BRIDGED_RTOKENS[token.chain]?.[token.id]) {
-        addresses.push(bridgeToken.address)
-      }
+    for (const bridgeToken of bridgedTokens) {
+      addresses.push(bridgeToken.address)
     }
 
     navigate(`${ROUTES.EARN_DEFI}?underlying=${addresses.join(',')}`)

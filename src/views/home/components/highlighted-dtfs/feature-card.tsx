@@ -2,6 +2,7 @@ import { isInactiveDTF } from '@/hooks/use-dtf-status'
 import { useIsDesktop } from '@/hooks/use-media-query'
 import { cn } from '@/lib/utils'
 import { getFolioRoute } from '@/utils'
+import { useLingui } from '@lingui/react/macro'
 import { useMemo, useState, type MouseEvent, type ReactNode } from 'react'
 import { Link } from 'react-router-dom'
 import {
@@ -10,20 +11,22 @@ import {
   useTranscriptPlayback,
 } from '../../hooks/use-highlighted-dtf-animation'
 import { FeatureCardAssetTicker } from './asset-ticker'
-import { ChainTabs } from './chain-tabs'
 import {
   ASSET_CHAIN_ENTER_MS,
   ASSET_CHAIN_EXIT_MS,
   FEATURE_CARD_CLASS_NAME,
   TRANSCRIPT_WORD_DELAY_MS,
-  TRANSCRIPT_WORDS,
 } from './constants'
 import { FeatureCardHeader } from './feature-card-header'
+import {
+  getTranscriptDescriptor,
+  splitTranscriptWords,
+} from './transcript-copy'
 import { TranscriptPreview } from './transcript-preview'
 import type { ChartPlacement, HighlightedDTFItem } from './types'
 import {
-  formatPerformancePeriodLabel,
   formatPercentageChange,
+  formatPerformancePeriodLabel,
   getExposureTickerAssets,
   getPerformanceDirection,
 } from './utils'
@@ -49,6 +52,7 @@ export const IndexDTFFeatureCard = ({
   performanceLabel?: string
   showTranscript?: boolean
 }) => {
+  const { t } = useLingui()
   const chainVersions = dtf.chainVersions
   const [selectedVersionIndex, setSelectedVersionIndex] = useState(0)
   const selectedVersion = chainVersions?.[selectedVersionIndex] ?? dtf
@@ -58,16 +62,22 @@ export const IndexDTFFeatureCard = ({
     () => getExposureTickerAssets(selectedVersion),
     [selectedVersion]
   )
-  const oneMonthPerformance = selectedVersion.performance
   const percentageChange = formatPercentageChange(
     selectedVersion,
-    oneMonthPerformance
+    selectedVersion.performance
   )
   const displayedPerformanceLabel =
     performanceLabel ??
     formatPerformancePeriodLabel(selectedVersion.priceChange?.period)
-  const performanceDirection = getPerformanceDirection(oneMonthPerformance)
+  const performanceDirection = getPerformanceDirection(
+    selectedVersion.performance
+  )
   const [isTranscriptActive, setIsTranscriptActive] = useState(false)
+  const transcript = t(getTranscriptDescriptor(selectedVersion.symbol))
+  const transcriptWords = useMemo(
+    () => splitTranscriptWords(transcript),
+    [transcript]
+  )
   const isDesktop = useIsDesktop()
   const { cardRef, isAssetTickerVisible, isCardInView } =
     useHighlightedCardVisibility<HTMLAnchorElement>(isDesktop)
@@ -87,10 +97,10 @@ export const IndexDTFFeatureCard = ({
     useTranscriptPlayback({
       active: isActive,
       enabled: showTranscript,
-      wordCount: TRANSCRIPT_WORDS.length,
+      wordCount: transcriptWords.length,
       wordDelayMs: TRANSCRIPT_WORD_DELAY_MS,
     })
-  const hasPerformanceChart = oneMonthPerformance.length > 0
+  const hasPerformanceChart = selectedVersion.performance.length > 0
   const handleCardClick = (event: MouseEvent<HTMLAnchorElement>) => {
     const target = event.target as HTMLElement | null
     if (target?.closest('[data-card-action]')) {
@@ -128,7 +138,7 @@ export const IndexDTFFeatureCard = ({
         chainVersions={chainVersions ?? []}
         chartPlacement={chartPlacement}
         hasPerformanceChart={hasPerformanceChart}
-        oneMonthPerformance={oneMonthPerformance}
+        oneMonthPerformance={selectedVersion.performance}
         percentageChange={percentageChange}
         performanceLabel={displayedPerformanceLabel}
         performanceDirection={performanceDirection}
@@ -150,6 +160,7 @@ export const IndexDTFFeatureCard = ({
           selectedVersion={selectedVersion}
           transcriptScrollOffset={transcriptScrollOffset}
           transcriptWordRefs={transcriptWordRefs}
+          transcriptWords={transcriptWords}
         />
       ) : (
         bottomSlot

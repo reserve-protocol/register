@@ -70,7 +70,8 @@ export const PriceChartLaunchMarker = ({
       {showSegmentLabel && (
         <text
           x={segmentLabelX + segmentLabelWidth}
-          y={labelY + 11}
+          y={labelY + labelHeight / 2}
+          dominantBaseline="middle"
           fill="rgba(255, 255, 255, 0.58)"
           fontSize={10}
           textAnchor="end"

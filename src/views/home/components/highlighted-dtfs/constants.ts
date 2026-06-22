@@ -7,9 +7,6 @@ export const COLLATERAL_SCROLL_RAMP_GAP_OFFSET =
   (COLLATERAL_GAP / 2) * (COLLATERAL_SCROLL_RAMP_DISTANCE_PERCENT / 50)
 export const ASSET_CHAIN_EXIT_MS = 180
 export const ASSET_CHAIN_ENTER_MS = 220
-export const TRANSCRIPT_PREVIEW =
-  'A short walkthrough of this portfolio, the assets it tracks, how the basket is weighted, and why investors may use it for broad tokenized market exposure. The explainer will cover the core thesis, recent performance drivers, liquidity considerations, and the role each major component plays inside the DTF.'
-export const TRANSCRIPT_WORDS = TRANSCRIPT_PREVIEW.split(' ')
 export const TRANSCRIPT_WORD_DELAY_MS = 280
 export const TRANSCRIPT_LINE_HEIGHT = 18
 export const END_FADE_DISTANCE = 160

@@ -13,7 +13,7 @@ This document has two parts:
 
 ## What is a DTF?
 
-A **Decentralized Token Folio** (DTF) is an ERC20 token backed 1:1 by a basket
+A **Decentralized Token Fund** (DTF) is an ERC20 token backed 1:1 by a basket
 of other ERC20 tokens — effectively an on-chain index fund or ETF. Mint by
 depositing the underlying basket proportionally; redeem for the underlying at
 any time. The Reserve Protocol deploys and governs DTFs.
@@ -631,4 +631,3 @@ Curated index of the largest AI agents created on Virtuals Protocol, rebalanced 
 > Volatile values — current basket weights, price, TVL, market cap, performance —
 > change over time. For live data call `https://api.reserve.org/discover/dtf?chainId=8453`
 > or use the [`@reserve-protocol/dtf-cli`](https://app.reserve.org/skills/dtf.md) skill.
-

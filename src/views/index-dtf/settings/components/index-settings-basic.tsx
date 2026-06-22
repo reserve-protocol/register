@@ -19,11 +19,11 @@ const BasicInfo = () => {
 
   let mandate = indexDTF?.mandate
 
-  if (mandate === '') mandate = t`Unknown`
+  if (mandate && mandate.length > 500) mandate = mandate.substring(0, 500) + '...'
 
-  if (mandate) {
-    if (mandate.length > 500) mandate = mandate.substring(0, 500) + '...'
-  }
+  // Hide the mandate row when the DTF is loaded but has no mandate;
+  // keep it (as a skeleton) while still loading.
+  const showMandate = !indexDTF || !!mandate
 
   return (
     <InfoCard title={t`Basics`} id="basics">
@@ -44,12 +44,14 @@ const BasicInfo = () => {
         address={indexDTF?.id}
         value={indexDTF?.id ? shortenAddress(indexDTF.id) : undefined}
       />
-      <InfoCardItem
-        label={t`Mandate`}
-        icon={<IconWrapper Component={Signature} />}
-        bold={false}
-        value={mandate}
-      />
+      {showMandate && (
+        <InfoCardItem
+          label={t`Mandate`}
+          icon={<IconWrapper Component={Signature} />}
+          bold={false}
+          value={mandate}
+        />
+      )}
       <InfoCardItem
         label={t`Deployer`}
         icon={<IconWrapper Component={Hash} />}

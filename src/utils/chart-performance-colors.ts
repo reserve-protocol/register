@@ -7,7 +7,7 @@ export const PERFORMANCE_COLORS = {
     dot: '#819D44',
   },
   negative: {
-    start: '#D69A8F',
+    start: '#D66A4A',
     end: '#9F4A3D',
     dot: '#B85F50',
   },
@@ -27,7 +27,7 @@ export const PERFORMANCE_COLORS = {
       dot: '#A6C66A',
     },
     negative: {
-      start: '#E9B3A8',
+      start: '#F07A58',
       end: '#C76B5D',
       dot: '#D88B7D',
     },

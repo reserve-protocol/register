@@ -1,5 +1,5 @@
 import { IndexDTF, TimeRange, Token } from '@/types'
-import { AvailableChain, ChainId } from '@/utils/chains'
+import { AvailableChain } from '@/utils/chains'
 import { atom } from 'jotai'
 import { Address } from 'viem'
 import { walletAtom } from '../atoms'
@@ -127,7 +127,7 @@ export const indexDTFBasketSharesAtom = atom<Record<string, string>>({})
 export const indexDTFAtom = atom<IndexDTF | undefined>(undefined)
 export const indexDTF7dChangeAtom = atom<number | undefined>(undefined)
 
-export const performanceTimeRangeAtom = atom<TimeRange>('7d')
+export const performanceTimeRangeAtom = atom<TimeRange>('1y')
 export const indexDTFPerformanceLoadingAtom = atom<boolean>(false)
 export const indexDTFMarketCapAtom = atom<number | undefined>(undefined)
 export const indexDTFBrandAtom = atom<IndexDTFBrand | undefined>(undefined)

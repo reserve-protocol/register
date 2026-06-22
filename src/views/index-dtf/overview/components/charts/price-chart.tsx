@@ -18,6 +18,7 @@ import {
 } from './price-chart-atoms'
 import PriceChartBody, { ChartSkeleton } from './price-chart-body'
 import PriceChartFooter from './price-chart-footer'
+import { calculateTrailingSevenDayChange } from './price-chart-utils'
 import { usePriceChartData } from './use-price-chart-data'
 
 // Re-export so existing imports keep working.
@@ -90,18 +91,15 @@ const useSyncApyHistory = () => {
 }
 
 const useSync7dChange = (
-  timeseries: { price: number }[],
-  range: string
+  timeseries: { timestamp: number; price: number }[]
 ) => {
   const set7dChange = useSetAtom(indexDTF7dChangeAtom)
   useEffect(() => {
-    if (timeseries.length === 0 || range !== '7d') return
-    const firstValue = timeseries[0].price
-    const lastValue = timeseries[timeseries.length - 1].price
-    set7dChange(
-      firstValue === 0 ? undefined : (lastValue - firstValue) / firstValue
-    )
-  }, [timeseries, range, set7dChange])
+    const sevenDayChange = calculateTrailingSevenDayChange(timeseries)
+    if (sevenDayChange !== undefined) {
+      set7dChange(sevenDayChange)
+    }
+  }, [timeseries, set7dChange])
 }
 
 const useSyncMarketCap = (timeseries: { marketCap: number }[]) => {
@@ -137,7 +135,6 @@ const useSyncPriceHistoryAvailability = (
 }
 
 const PriceChart = () => {
-  const range = useAtomValue(performanceTimeRangeAtom)
   const dataType = useAtomValue(dataTypeAtom)
   const dtf = useAtomValue(indexDTFAtom)
   const isYieldIndexDTF = useAtomValue(isYieldIndexDTFAtom)
@@ -146,15 +143,10 @@ const PriceChart = () => {
   const isYieldMode = dataType === 'yield'
   const isBTCMode = dataType === 'priceBTC'
 
-  const {
-    history,
-    btcHistory,
-    rangeAvailabilityHistory,
-    timeseries,
-    xDomain,
-  } = usePriceChartData({ isBTCMode })
+  const { history, btcHistory, rangeAvailabilityHistory, timeseries, xDomain } =
+    usePriceChartData({ isBTCMode })
   const apyHistory = useSyncApyHistory()
-  useSync7dChange(timeseries, range)
+  useSync7dChange(timeseries)
   useSyncMarketCap(timeseries)
   useSyncPriceHistoryAvailability(dtf?.id, rangeAvailabilityHistory)
 

@@ -15,7 +15,6 @@ import {
 import {
   getPerformanceColorSet,
   getPerformanceDirection,
-  getPerformanceStroke,
 } from '@/utils/chart-performance-colors'
 import { useAtomValue } from 'jotai'
 import { useId } from 'react'
@@ -108,29 +107,27 @@ const PriceChartBody = ({
   const priceStrokeGradientId = `${chartId}-overview-price-stroke`
   const dotsPatternId = `${chartId}-overview-dots`
   const preLaunchDotsPatternId = `${chartId}-overview-pre-launch-dots`
+  const fillGradientId = `${chartId}-overview-fill`
   const dotsFadeGradientId = `${chartId}-overview-dots-fade`
   const dotsMaskId = `${chartId}-overview-dots-mask`
   const strokeColor = usePerformanceColors
-    ? getPerformanceStroke(
-        performanceDirection,
-        priceStrokeGradientId,
-        'darkSurface'
-      )
+    ? performanceDirection === 'positive' || performanceDirection === 'negative'
+      ? `url(#${priceStrokeGradientId})`
+      : overviewPriceColors.neutral.stroke
     : isYieldMode
       ? '#4ADE80'
       : '#E5EEFA'
-  const preLaunchStrokeColor = usePerformanceColors
-    ? overviewPriceColors.preLaunch.stroke
-    : 'rgba(229, 238, 250, 0.45)'
   const performanceDotColor =
     performanceDirection === 'positive' || performanceDirection === 'negative'
       ? overviewPriceColors[performanceDirection].dot
       : overviewPriceColors.neutral.dot
   const dotFillColor = usePerformanceColors ? performanceDotColor : '#E5EEFA'
   const fill = isYieldMode ? 'url(#yieldGradient)' : `url(#${dotsPatternId})`
-  const preLaunchFill = usePerformanceColors
-    ? `url(#${preLaunchDotsPatternId})`
-    : fill
+  const postLaunchFill =
+    usePerformanceColors && performanceDirection !== 'neutral'
+      ? `url(#${fillGradientId})`
+      : fill
+  const preLaunchFill = fill
 
   return (
     <ChartContainer config={chartConfig} className={cn('w-full', className)}>
@@ -144,6 +141,7 @@ const PriceChartBody = ({
           dotsFadeGradientId,
           dotsMaskId,
           dotsPatternId,
+          fillGradientId,
           isYieldMode,
           performanceDirection,
           preLaunchDotsPatternId,
@@ -186,7 +184,11 @@ const PriceChartBody = ({
         />
         <Tooltip
           content={
-            isYieldMode ? <YieldTooltip /> : <PriceTooltip dataType={dataType} />
+            isYieldMode ? (
+              <YieldTooltip />
+            ) : (
+              <PriceTooltip dataType={dataType} />
+            )
           }
         />
         {isYieldMode && avgApy > 0 && (
@@ -207,10 +209,9 @@ const PriceChartBody = ({
         {renderPriceChartSeries({
           chartKey,
           dotsMaskId,
-          fill,
+          fill: postLaunchFill,
           isYieldMode,
           preLaunchFill,
-          preLaunchStrokeColor,
           shouldSplit,
           strokeColor,
         })}

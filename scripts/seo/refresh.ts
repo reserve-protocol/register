@@ -203,13 +203,13 @@ function generateLlmsTxt(apiByAddress: Map<string, DiscoverDTF>): string {
 
   return `# Register — the official Reserve Protocol app
 
-> app.reserve.org is the canonical interface for Decentralized Token Folios (DTFs).
+> app.reserve.org is the canonical interface for Decentralized Token Funds (DTFs).
 > Index DTFs are the current flagship product; Yield DTFs are the legacy asset-backed line.
 > Supported chains: Ethereum, Base, BSC.
 
 ## What is a DTF?
 
-A Decentralized Token Folio (DTF) is an ERC20 token backed 1:1 by a basket of
+A Decentralized Token Fund (DTF) is an ERC20 token backed 1:1 by a basket of
 other ERC20 tokens — an on-chain index fund. Anyone can mint a DTF by depositing
 the underlying basket tokens proportionally, and anyone can redeem for the
 underlying. Baskets and fees are set by the DTF's deployer and can be changed
@@ -256,7 +256,7 @@ ${dtfList}
  */
 const PROTOCOL_PRIMER = `## What is a DTF?
 
-A **Decentralized Token Folio** (DTF) is an ERC20 token backed 1:1 by a basket
+A **Decentralized Token Fund** (DTF) is an ERC20 token backed 1:1 by a basket
 of other ERC20 tokens — effectively an on-chain index fund or ETF. Mint by
 depositing the underlying basket proportionally; redeem for the underlying at
 any time. The Reserve Protocol deploys and governs DTFs.
@@ -473,7 +473,7 @@ async function runSkill() {
         name: 'dtf',
         type: 'skill-md',
         description:
-          'Inspect, query, and transact with Reserve Protocol Decentralized Token Folios (DTFs) across Ethereum, Base, and BSC.',
+          'Inspect, query, and transact with Reserve Protocol Decentralized Token Funds (DTFs) across Ethereum, Base, and BSC.',
         url: `${BASE_URL}/skills/dtf.md`,
         digest: `sha256:${digest}`,
       },

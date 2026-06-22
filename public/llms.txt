@@ -1,12 +1,12 @@
 # Register — the official Reserve Protocol app
 
-> app.reserve.org is the canonical interface for Decentralized Token Folios (DTFs).
+> app.reserve.org is the canonical interface for Decentralized Token Funds (DTFs).
 > Index DTFs are the current flagship product; Yield DTFs are the legacy asset-backed line.
 > Supported chains: Ethereum, Base, BSC.
 
 ## What is a DTF?
 
-A Decentralized Token Folio (DTF) is an ERC20 token backed 1:1 by a basket of
+A Decentralized Token Fund (DTF) is an ERC20 token backed 1:1 by a basket of
 other ERC20 tokens — an on-chain index fund. Anyone can mint a DTF by depositing
 the underlying basket tokens proportionally, and anyone can redeem for the
 underlying. Baskets and fees are set by the DTF's deployer and can be changed

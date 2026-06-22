@@ -174,7 +174,7 @@ const IndexDTFPositions = () => {
       <SectionHeader
         icon={Globe}
         title={<Trans>Index DTF Positions</Trans>}
-        subtitle={<Trans>Your Decentralized Token Folio investments.</Trans>}
+        subtitle={<Trans>Your Decentralized Token Fund investments.</Trans>}
         right={
           <Link
             to={`${ROUTES.DISCOVER}?tab=index`}

@@ -110,7 +110,7 @@ export const BasketTableHeader = ({
             >
               <PackageOpen className="w-4 h-4 mr-0 sm:mr-1" />{' '}
               <span className="hidden sm:block">
-                <Trans>Collateral</Trans>
+                <Trans context="DTF basket">Collateral</Trans>
               </span>
             </TabsTrigger>
           </TabsList>

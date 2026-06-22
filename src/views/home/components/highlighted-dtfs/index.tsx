@@ -81,7 +81,7 @@ const HighlightedDTFs = ({
     <section
       ref={viewportRef}
       className={cn(
-        'relative mb-1 min-h-0 overflow-visible lg:overflow-hidden',
+        'relative min-h-0 overflow-visible lg:overflow-hidden',
         className ?? 'mb-16'
       )}
     >

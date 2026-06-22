@@ -4,7 +4,7 @@ import VideoModal from '@/components/video-modal'
 import { cn } from '@/lib/utils'
 import { Trans, useLingui } from '@lingui/react/macro'
 import type { MutableRefObject } from 'react'
-import { TRANSCRIPT_LINE_HEIGHT, TRANSCRIPT_WORDS } from './constants'
+import { TRANSCRIPT_LINE_HEIGHT } from './constants'
 import type { HighlightedDTFItem } from './types'
 
 export const TranscriptPreview = ({
@@ -12,11 +12,13 @@ export const TranscriptPreview = ({
   selectedVersion,
   transcriptScrollOffset,
   transcriptWordRefs,
+  transcriptWords,
 }: {
   highlightedWords: number
   selectedVersion: HighlightedDTFItem
   transcriptScrollOffset: number
   transcriptWordRefs: MutableRefObject<(HTMLSpanElement | null)[]>
+  transcriptWords: string[]
 }) => {
   const { t } = useLingui()
 
@@ -34,7 +36,7 @@ export const TranscriptPreview = ({
         >
           <p className="text-xs leading-[18px] text-legend">
             <span>&ldquo;</span>
-            {TRANSCRIPT_WORDS.map((word, index) => (
+            {transcriptWords.map((word, index) => (
               <span
                 key={`${word}-${index}`}
                 ref={(node) => {
@@ -47,7 +49,7 @@ export const TranscriptPreview = ({
                 )}
               >
                 {word}
-                {index === TRANSCRIPT_WORDS.length - 1 ? '' : ' '}
+                {index === transcriptWords.length - 1 ? '' : ' '}
               </span>
             ))}
             <span>&rdquo;</span>

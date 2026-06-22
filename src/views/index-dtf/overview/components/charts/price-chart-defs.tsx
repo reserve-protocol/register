@@ -10,6 +10,7 @@ export const renderPriceChartDefs = ({
   dotsFadeGradientId,
   dotsMaskId,
   dotsPatternId,
+  fillGradientId,
   isYieldMode,
   performanceDirection,
   preLaunchDotsPatternId,
@@ -21,6 +22,7 @@ export const renderPriceChartDefs = ({
   dotsFadeGradientId: string
   dotsMaskId: string
   dotsPatternId: string
+  fillGradientId: string
   isYieldMode: boolean
   performanceDirection: PerformanceDirection
   preLaunchDotsPatternId: string
@@ -30,22 +32,16 @@ export const renderPriceChartDefs = ({
 }) => (
   <defs>
     {usePerformanceColors && performanceDirection !== 'neutral' && (
-      <linearGradient
-        id={priceStrokeGradientId}
-        x1="0"
-        y1="0"
-        x2="1"
-        y2="0"
-      >
+      <linearGradient id={priceStrokeGradientId} x1="0" y1="1" x2="0" y2="0">
         {performanceDirection === 'positive' ? (
           <>
-            <stop offset="0%" stopColor={priceColors.positive.start} />
-            <stop offset="100%" stopColor={priceColors.positive.end} />
+            <stop offset="0%" stopColor={priceColors.positive.end} />
+            <stop offset="100%" stopColor={priceColors.positive.start} />
           </>
         ) : (
           <>
-            <stop offset="0%" stopColor={priceColors.negative.start} />
-            <stop offset="100%" stopColor={priceColors.negative.end} />
+            <stop offset="0%" stopColor={priceColors.negative.end} />
+            <stop offset="100%" stopColor={priceColors.negative.start} />
           </>
         )}
       </linearGradient>
@@ -69,6 +65,37 @@ export const renderPriceChartDefs = ({
     )}
     {!isYieldMode && (
       <>
+        {usePerformanceColors && performanceDirection !== 'neutral' && (
+          <linearGradient id={fillGradientId} x1="0" y1="0" x2="0" y2="1">
+            {performanceDirection === 'positive' ? (
+              <>
+                <stop
+                  offset="0%"
+                  stopColor={priceColors.positive.dot}
+                  stopOpacity="0.48"
+                />
+                <stop
+                  offset="100%"
+                  stopColor={priceColors.positive.dot}
+                  stopOpacity="0"
+                />
+              </>
+            ) : (
+              <>
+                <stop
+                  offset="0%"
+                  stopColor={priceColors.negative.dot}
+                  stopOpacity="0.48"
+                />
+                <stop
+                  offset="100%"
+                  stopColor={priceColors.negative.dot}
+                  stopOpacity="0"
+                />
+              </>
+            )}
+          </linearGradient>
+        )}
         <pattern
           id={preLaunchDotsPatternId}
           x="0"
@@ -85,13 +112,7 @@ export const renderPriceChartDefs = ({
             opacity={priceColors.preLaunch.dotOpacity}
           />
         </pattern>
-        <linearGradient
-          id={dotsFadeGradientId}
-          x1="0"
-          y1="0"
-          x2="0"
-          y2="1"
-        >
+        <linearGradient id={dotsFadeGradientId} x1="0" y1="0" x2="0" y2="1">
           <stop offset="0%" stopColor="white" stopOpacity="1" />
           <stop offset="72%" stopColor="white" stopOpacity="0.75" />
           <stop offset="100%" stopColor="white" stopOpacity="0" />

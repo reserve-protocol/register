@@ -1,15 +1,22 @@
 import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog'
 import { useIsDesktop } from '@/hooks/use-media-query'
+import { indexDTFAtom } from '@/state/dtf/atoms'
 import { getFolioRoute } from '@/utils'
 import { ROUTES } from '@/utils/constants'
 import { useQuote, useZapperModal } from '@reserve-protocol/react-zapper'
 import { Trans, useLingui } from '@lingui/react/macro'
+import { useAtomValue } from 'jotai'
 import { X } from 'lucide-react'
 import { useEffect, useState, type SyntheticEvent } from 'react'
 import { createPortal } from 'react-dom'
 import { Link } from 'react-router-dom'
 import { Address } from 'viem'
 import { useTrackIndexDTFClick } from '../../hooks/useTrackIndexDTFPage'
+import {
+  INITIAL_MINT_PROMPT_STATE,
+  reduceMintPrompt,
+  type MintPromptState,
+} from './large-mint-prompt-state'
 
 // Show the "Automated Mint" suggestion once the user's buy input is this large.
 export const LARGE_MINT_MIN_INPUT = 50_000
@@ -17,7 +24,8 @@ export const ERROR_MINT_MIN_INPUT = 100
 const MIN_INPUT_LABEL = '$50K'
 
 type CardBodyProps = {
-  inputSymbol: string
+  variant: 'large' | 'error'
+  symbol: string
   mintRoute: string
   onCompare: () => void
   onDismiss: () => void
@@ -26,7 +34,8 @@ type CardBodyProps = {
 // Presentational card body (badge, dismiss, title, description, CTA). Shared by
 // every presentation (desktop side-box, modal-attached box, mobile popup).
 const LargeMintCardBody = ({
-  inputSymbol,
+  variant,
+  symbol,
   mintRoute,
   onCompare,
   onDismiss,
@@ -36,7 +45,11 @@ const LargeMintCardBody = ({
     <>
       <div className="flex items-center justify-between gap-3">
         <div className="mb-3 inline-flex h-6 items-center rounded-full border border-warning/30 bg-warning/10 px-2.5 text-[11px] font-medium text-warning">
-          <Trans>Over {MIN_INPUT_LABEL}</Trans>
+          {variant === 'large' ? (
+            <Trans>Over {MIN_INPUT_LABEL}</Trans>
+          ) : (
+            <Trans>No route found</Trans>
+          )}
         </div>
         <button
           type="button"
@@ -49,13 +62,12 @@ const LargeMintCardBody = ({
       </div>
       <div className="min-w-0">
         <div className="text-sm font-semibold text-foreground">
-          <Trans>Large orders may benefit from Automated Mint</Trans>
+          <Trans>Try Minting</Trans>
         </div>
         <p className="mt-1 text-sm font-light leading-5 text-muted-foreground">
           <Trans>
-            Your {inputSymbol} input is over {MIN_INPUT_LABEL}. Automated Mint
-            may find a better route by splitting it across the basket before
-            minting.
+            Automated minting may be a better way to buy {symbol}. We will help
+            split your order into multiple trades before minting.
           </Trans>
         </p>
         <Link
@@ -82,27 +94,34 @@ const LargeMintPrompt = ({ mode, dtfAddress, chain }: LargeMintPromptProps) => {
   const { currentTab, isOpen } = useZapperModal()
   const isDesktop = useIsDesktop()
   const { trackClick } = useTrackIndexDTFClick('overview', 'mint')
-  const [dismissed, setDismissed] = useState(false)
+  const [state, setState] = useState<MintPromptState>(INITIAL_MINT_PROMPT_STATE)
 
   const isInline = mode === 'inline'
   const inputValue = data?.input.value ?? 0
-  const inputSymbol = data?.input.token.symbol ?? ''
+  // The DTF being bought — `data.input.token` is the *spent* token on the buy tab,
+  // so the symbol comes from the active DTF instead.
+  const symbol = useAtomValue(indexDTFAtom)?.token.symbol ?? ''
 
-  // Flow: buy input -> quote renders -> if large, suggest Automated Mint. Gated
-  // to the buy (mint) tab; for the modal zapper only while the modal is open.
-  const isLarge =
-    currentTab === 'buy' &&
-    !!data?.quote &&
-    inputValue >= LARGE_MINT_MIN_INPUT &&
-    (isInline || isOpen)
+  // Flow: buy input -> quote renders -> if large, suggest Automated Mint; if the
+  // zapper can't find a route, suggest it too. Gated to the buy (mint) tab; for
+  // the modal zapper only while the modal is open.
+  const isBuyContext = currentTab === 'buy' && (isInline || isOpen)
+  const hasValidQuote = !!data?.quote
+  const rawLarge =
+    isBuyContext && hasValidQuote && inputValue >= LARGE_MINT_MIN_INPUT
+  const rawError = isBuyContext && !!error && inputValue >= ERROR_MINT_MIN_INPUT
+  const isApplicable = isBuyContext && inputValue >= ERROR_MINT_MIN_INPUT
 
-  const errorCondition = error && inputValue >= ERROR_MINT_MIN_INPUT
-
+  // Latch the suggestion so it persists across the zapper's periodic refetch (where
+  // `error`/`quote` briefly clear) until the user dismisses it or a valid quote resolves.
   useEffect(() => {
-    if (!(isLarge || errorCondition)) setDismissed(false)
-  }, [isLarge])
+    setState((prev) =>
+      reduceMintPrompt(prev, { rawLarge, rawError, hasValidQuote, isApplicable })
+    )
+  }, [rawLarge, rawError, hasValidQuote, isApplicable])
 
-  const show = !!(isLarge || errorCondition) && !dismissed
+  const dismiss = () => setState((prev) => ({ ...prev, dismissed: true }))
+  const show = state.variant !== null && !state.dismissed
 
   const mintRoute = getFolioRoute(
     dtfAddress,
@@ -114,10 +133,11 @@ const LargeMintPrompt = ({ mode, dtfAddress, chain }: LargeMintPromptProps) => {
   const stop = (e: SyntheticEvent) => e.stopPropagation()
   const body = (
     <LargeMintCardBody
-      inputSymbol={inputSymbol}
+      variant={state.variant === 'error' ? 'error' : 'large'}
+      symbol={symbol}
       mintRoute={mintRoute}
       onCompare={() => trackClick('compare_automated_mint')}
-      onDismiss={() => setDismissed(true)}
+      onDismiss={dismiss}
     />
   )
 
@@ -127,7 +147,7 @@ const LargeMintPrompt = ({ mode, dtfAddress, chain }: LargeMintPromptProps) => {
       <Dialog
         open={show}
         onOpenChange={(open) => {
-          if (!open) setDismissed(true)
+          if (!open) dismiss()
         }}
       >
         <DialogContent showClose={false} className="rounded-3xl">

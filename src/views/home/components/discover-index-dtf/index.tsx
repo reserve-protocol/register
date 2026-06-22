@@ -30,7 +30,7 @@ const DiscoverIndexDTFCard = ({ dtf }: { dtf: IndexDTFItem }) => {
       <IndexDTFFeatureCard
         dtf={dtf}
         chartPlacement="header"
-        performanceLabel="7d"
+        performanceLabel="1m"
         showTranscript={false}
         bottomSlot={<MarketCapRow marketCap={dtf.marketCap} />}
       />

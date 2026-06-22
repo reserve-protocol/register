@@ -1447,6 +1447,10 @@ msgstr ""
 msgid "Automated minting is an advanced feature. For most people, simple swaps are recommended."
 msgstr ""
 
+#: src/views/index-dtf/components/zapper/large-mint-prompt.tsx:68
+msgid "Automated minting may be a better way to buy {symbol}. We will help split your order into multiple trades before minting."
+msgstr ""
+
 #: src/views/index-dtf/issuance/async-mint/steps/configure-mint.tsx:113
 msgid "Automatically acquire assets"
 msgstr ""
@@ -2997,11 +3001,11 @@ msgid "days"
 msgstr ""
 
 #: src/views/home/components/homepage-hero.tsx:36
-msgid "Decentralized Token Folios"
+msgid "Decentralized Token Funds"
 msgstr ""
 
 #: src/views/home/components/hero.tsx:68
-#~ msgid "Decentralized Token Folios illustration"
+#~ msgid "Decentralized Token Funds illustration"
 #~ msgstr ""
 
 #: src/components/rtoken-setup/basket/PluginItem.tsx:50
@@ -3650,7 +3654,7 @@ msgstr ""
 
 #: src/views/index-dtf/deploy/steps/auctions/auctions-form.tsx:58
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-auction-settings.tsx:30
-msgid "Enable bids directly via the folio."
+msgid "Enable bids directly from the DTF."
 msgstr ""
 
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/changes/auction-settings-changes.tsx:123
@@ -6039,6 +6043,10 @@ msgstr ""
 msgid "No results."
 msgstr ""
 
+#: src/views/index-dtf/components/zapper/large-mint-prompt.tsx:51
+msgid "No route found"
+msgstr ""
+
 #: src/views/yield-dtf/staking/components/withdraw/cooldown-unstake.tsx:90
 msgid "No RSR in cooldown"
 msgstr ""
@@ -6618,6 +6626,30 @@ msgstr ""
 
 #: src/views/home/components/dtf-packing-animation/index.tsx:107
 msgid "PHOTON packs multiple collateral assets into one DTF token"
+msgstr ""
+
+#: src/views/home/components/highlighted-dtfs/transcript-copy.ts:4
+msgid "Learn more about this DTF, the assets it tracks, how the basket is weighted, and the role each component plays inside the fund."
+msgstr ""
+
+#: src/views/home/components/highlighted-dtfs/transcript-copy.ts:7
+msgid "The Reserve Photonics DTF (PHOTON) is a weighted basket of public, US-listed photonics companies at the center of the AI buildout. Inside AI data centers, light is replacing copper wire: as AI chips get faster and more data-hungry, the bottleneck shifts from computing the data to moving it, and copper hits a physical wall of heat, power loss, and limited reach. The PHOTON DTF gives you direct exposure to the companies making that shift: the fiber, lasers, transceivers, and optical chips that have become the central nervous system of the AI data center. The basket is composed of companies that generate significant revenue from AI data-center photonics demand, weighted by market capitalization with a 20% cap and a $5B minimum market cap, rebalanced quarterly. The PHOTON DTF bundles Ondo Global Markets tokenized stocks, each of which represents an actual share held in a regulated US brokerage account."
+msgstr ""
+
+#: src/views/home/components/highlighted-dtfs/transcript-copy.ts:8
+msgid "The Reserve AI Infrastructure DTF (BUILDOUT) is a weighted basket of public, US-listed semiconductor and hardware companies at the center of the AI buildout. Before any model can run, someone has to build the machine: the chips that compute, the memory that feeds them, the equipment and foundries that make them, and the power that runs it all. The BUILDOUT DTF gives you direct exposure to the picks and shovels of the AI buildout: the semiconductors, memory, manufacturing equipment, networking, and power that every AI dollar flows through first. The basket holds the 25 largest US-listed companies across this AI hardware stack, weighted by market capitalization with a 10% cap, rebalanced quarterly. The BUILDOUT DTF bundles Ondo Global Markets tokenized stocks, each of which represents an actual share held in a regulated US brokerage account."
+msgstr ""
+
+#: src/views/home/components/highlighted-dtfs/transcript-copy.ts:9
+msgid "The Reserve Robotics DTF (ROBOTS) is a weighted basket of public, US-listed robotics and automation companies at the center of the AI buildout. AI is moving off the screen and into the physical world: the same breakthroughs that taught software to reason are now teaching machines to perceive, decide, and act, and to take on physical labor. The ROBOTS DTF gives you direct exposure to the companies building that transition: the humanoids, surgical robots, factory and warehouse automation, lidar, machine vision, and the chips that let machines navigate the real world. The basket is composed of companies with significant and growing exposure to robotics and automation demand, weighted by market capitalization with a 20% cap and a $2B minimum market cap, rebalanced quarterly. The ROBOTS DTF bundles Ondo Global Markets tokenized stocks, each of which represents an actual share held in a regulated US brokerage account."
+msgstr ""
+
+#: src/views/home/components/highlighted-dtfs/transcript-copy.ts:10
+msgid "The Reserve AI Power DTF (POWER) is a weighted basket of public, US-listed power companies at the center of the AI buildout. Strip away the software and the chips, and AI comes down to electricity: a single AI data center can draw as much power as a small city, and the grid was never built for hundreds of them. The POWER DTF gives you direct exposure to the companies that generate, move, and condition that electricity: the gas turbines, nuclear plants, grid and electrical equipment, and power chips behind the AI buildout. The basket is composed of companies that generate significant revenue from AI data-center power demand, weighted by market capitalization with a 20% cap and a $10B minimum market cap, rebalanced quarterly. The POWER DTF bundles Ondo Global Markets tokenized stocks, each of which represents an actual share held in a regulated US brokerage account."
+msgstr ""
+
+#: src/views/home/components/highlighted-dtfs/transcript-copy.ts:11
+msgid "The Reserve AI Capacity & Neocloud DTF (NEOCLOUD) is a weighted basket of public, US-listed neocloud and AI data-center companies at the center of the AI buildout. Building an AI data center costs billions, so most companies that need AI computing rent it instead: a new industry of neoclouds and power-rich data-center operators raises the capital, secures the power, and rents out compute by the hour. The NEOCLOUD DTF gives you direct exposure to the companies turning capital, silicon, and electricity into the compute everyone needs: the GPU-cloud operators and the power-rich sites that host them. The basket is composed of companies with significant and growing revenue from AI compute demand, weighted by market capitalization with a 20% cap and a $10B minimum market cap, rebalanced quarterly. The NEOCLOUD DTF bundles Ondo Global Markets tokenized stocks, each of which represents an actual share held in a regulated US brokerage account."
 msgstr ""
 
 #: src/components/transactions/table/index.tsx:92
@@ -9286,7 +9318,7 @@ msgid "There's two freezing roles that put the system in the same state for diff
 msgstr ""
 
 #: src/views/home/components/hero.tsx:19
-#~ msgid "These tokenized portfolios are called DTFs: <0/><1>Decentralized Token Folios</1>"
+#~ msgid "These tokenized portfolios are called DTFs: <0/><1>Decentralized Token Funds</1>"
 #~ msgstr ""
 
 #: src/components/rtoken-setup/components/RolesEdit.tsx:37
@@ -9908,6 +9940,10 @@ msgstr ""
 #: src/views/index-dtf/components/zapper/large-mint-prompt.tsx:65
 #: src/views/index-dtf/components/zapper/large-mint-prompt.tsx:67
 msgid "Try Automated Mint"
+msgstr ""
+
+#: src/views/index-dtf/components/zapper/large-mint-prompt.tsx:65
+msgid "Try Minting"
 msgstr ""
 
 #: src/views/yield-dtf/issuance/components/zapV2/ZapToggle.tsx:23
@@ -11054,7 +11090,7 @@ msgid "Weights saved:"
 msgstr ""
 
 #: src/views/home/components/register-about.tsx:39
-msgid "Welcome to Reserve — a platform for creating, exploring, and interacting with Decentralized Token Folios (“DTFs”). A DTF is the generic name given to any onchain asset-backed index. DTFs can be created on Reserve’s Yield Protocol or Index Protocol permissionlessly, by any person or entity."
+msgid "Welcome to Reserve — a platform for creating, exploring, and interacting with Decentralized Token Funds (“DTFs”). A DTF is the generic name given to any onchain asset-backed index. DTFs can be created on Reserve’s Yield Protocol or Index Protocol permissionlessly, by any person or entity."
 msgstr ""
 
 #: src/views/home/components/dtf-explainer-button.tsx:22
@@ -11384,7 +11420,7 @@ msgid "Your {inputSymbol} input is over {MIN_INPUT_LABEL}. Automated Mint may fi
 msgstr ""
 
 #: src/views/portfolio-page/components/dtf-positions.tsx:177
-msgid "Your Decentralized Token Folio investments."
+msgid "Your Decentralized Token Fund investments."
 msgstr ""
 
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1441
@@ -11450,4 +11486,30 @@ msgstr ""
 
 #: src/views/index-dtf/overview/components/zap-mint/zap-healthcheck.tsx:24
 msgid "Zaps are currently experiencing issues"
+msgstr ""
+
+#: src/views/home/components/highlighted-dtfs/performance-chart-launch-marker.tsx:36
+msgid "Est. Historical Price ✱"
+msgstr ""
+
+#: src/views/home/components/highlighted-dtfs/performance-chart-launch-marker.tsx:37
+msgid "Est. Hist. Price ✱"
+msgstr ""
+
+#: src/views/home/components/highlighted-dtfs/performance-chart-launch-marker.tsx:38
+msgid "Est. Price ✱"
+msgstr ""
+
+#: src/views/home/components/highlighted-dtfs/historical-price-disclaimer.tsx:5
+msgid "✱ Estimated historical price is a hypothetical illustration of how the DTF’s launch-day basket would have performed before the DTF was created, using historical prices for those assets. The basket did not actually exist during this period. The figure assumes a fixed basket — it does not reflect actual trading, management fees, slippage, or the rebalancing the DTF performs in practice — and is constructed with the benefit of hindsight. Hypothetical performance is not indicative of future results and is not investment advice."
+msgstr ""
+
+#: src/views/home/components/highlighted-dtfs/feature-card-header.tsx:101
+msgctxt "DTF card"
+msgid "Buy"
+msgstr ""
+
+#: src/views/index-dtf/overview/components/basket-overview/basket-table-header.tsx:113
+msgctxt "DTF basket"
+msgid "Collateral"
 msgstr ""
