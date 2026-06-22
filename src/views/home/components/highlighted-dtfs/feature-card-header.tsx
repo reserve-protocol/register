@@ -98,7 +98,7 @@ export const FeatureCardHeader = ({
               )}
             {!hasChainTabs && chartPlacement === 'body' && (
               <span className="inline-flex h-8 items-center rounded-full bg-primary px-3.5 text-sm font-medium text-primary-foreground opacity-100 transition-opacity duration-150 ease-out lg:opacity-0 lg:group-hover:opacity-100 lg:group-focus-within:opacity-100">
-                <Trans>Buy</Trans>
+                <Trans context="DTF card">Buy</Trans>
               </span>
             )}
           </div>

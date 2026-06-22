@@ -2518,7 +2518,7 @@ msgstr "恭喜 🎉"
 
 #: src/components/account/index.tsx:112
 msgid "Connect"
-msgstr "连接"
+msgstr "连接钱包"
 
 #: src/components/stake-drawer/components/submit-stake-button.tsx:160
 #: src/components/stake-drawer/components/submit-unstake-button.tsx:72
@@ -2725,7 +2725,7 @@ msgstr "创建 Index DTF"
 #: src/components/layout/header/components/app-navigation.tsx:87
 #: src/components/layout/header/components/app-navigation.tsx:94
 msgid "Create New DTF"
-msgstr "创建新 DTF"
+msgstr "构建 DTF"
 
 #: src/views/index-dtf/deploy/index.tsx:27
 #: src/views/index-dtf/deploy/permissionless/index.tsx:84
@@ -3213,7 +3213,7 @@ msgstr "详情"
 #: src/components/layout/navigation/TokenNavigation.tsx:210
 #: src/views/index-dtf/components/navigation/index.tsx:212
 msgid "Details + Roles"
-msgstr "详情 + 角色"
+msgstr "配置与角色"
 
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/changes/auction-settings-changes.tsx:123
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/changes/auction-settings-changes.tsx:127
@@ -3249,7 +3249,7 @@ msgstr "探索我们的全部产品"
 
 #: src/components/layout/header/components/app-navigation.tsx:57
 msgid "Discover DTFs"
-msgstr "发现 DTFs"
+msgstr "探索 DTF"
 
 #: src/components/layout/header/components/app-navigation.tsx:157
 msgid "Discussions of ecosystem ideas"
@@ -3815,11 +3815,11 @@ msgstr "预计 APY："
 
 #: src/views/home/components/protocol-metrics.tsx:61
 msgid "Est. Partner Revenue"
-msgstr "预计合作伙伴收入"
+msgstr "生态伙伴收益"
 
 #: src/views/home/components/protocol-metrics.tsx:66
 msgid "Est. RSR Revenue"
-msgstr "预计 RSR 收入"
+msgstr "RSR 收益"
 
 #: src/views/yield-dtf/staking/components/overview/staking-stats.tsx:62
 msgid "Est. Staking APY"
@@ -3835,7 +3835,7 @@ msgstr "预计交易价值："
 
 #: src/views/home/components/protocol-metrics.tsx:71
 msgid "Est. Yield Distribution"
-msgstr "预计收益分配"
+msgstr "收益产出"
 
 #: src/components/rtoken-setup/basket/PrimaryBasket.tsx:171
 msgid "Estimated basket APY"
@@ -4036,7 +4036,7 @@ msgstr "浏览器"
 #: src/views/home/components/discover-index-dtf/index-dtf-table-columns.tsx:236
 #: src/views/index-dtf/overview/components/basket-overview/basket-table-header.tsx:103
 msgid "Exposure"
-msgstr "敞口"
+msgstr "成分股"
 
 #: src/views/index-dtf/overview/components/yield-index/yield-index-composition-tabs.tsx:14
 #: src/views/index-dtf/overview/components/yield-index/yield-index-composition-tabs.tsx:15
@@ -4409,7 +4409,7 @@ msgstr "治理代币"
 #: src/views/yield-dtf/overview/components/backing/risks.tsx:84
 #: src/views/yield-dtf/settings/components/navigation-sidebar.tsx:17
 msgid "Governance"
-msgstr "治理"
+msgstr "社区治理"
 
 #: src/views/index-dtf/deploy/components/deploy-accordion.tsx:81
 #: src/views/index-dtf/deploy/components/deploy-accordion.tsx:82
@@ -5655,7 +5655,7 @@ msgstr "使用以下方式 Mint"
 
 #: src/views/home/components/protocol-metrics.tsx:76
 msgid "Mint Volume"
-msgstr "Mint 交易量"
+msgstr "Mint 交易额"
 
 #: src/views/yield-dtf/issuance/components/issue/IssuanceInfo.tsx:158
 msgid "Mintable now"
@@ -6445,7 +6445,7 @@ msgstr "参数"
 
 #: src/components/layout/header/components/app-navigation.tsx:77
 msgid "Participate & Earn"
-msgstr "参与并赚取"
+msgstr "赚取收益"
 
 #: src/views/portfolio-page/components/vote-locked-positions.tsx:176
 msgid "Participate in governance with any ERC-20 token and earn APY rewards. <0>Learn more</0>."
@@ -6786,7 +6786,7 @@ msgstr "Pool"
 #: src/views/portfolio-page/index.tsx:37
 #: src/views/portfolio-page/index.tsx:121
 msgid "Portfolio"
-msgstr "投资组合"
+msgstr "我的资产"
 
 #: src/views/portfolio-page/components/portfolio-breakdown.tsx:29
 msgid "Portfolio Breakdown"
@@ -6893,7 +6893,7 @@ msgstr "启动时价格"
 #. placeholder {0}: periodLabel[timeRange]
 #: src/views/index-dtf/overview/components/basket-overview/basket-table-header.tsx:134
 msgid "Price Change ({0})"
-msgstr "价格变化（{0}）"
+msgstr "涨跌幅（{0}）"
 
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1362
 msgid "Price impact"
@@ -8955,7 +8955,7 @@ msgstr "盈余低于最小交易规模"
 
 #: src/views/index-dtf/components/navigation/index.tsx:192
 msgid "Swap"
-msgstr "Swap"
+msgstr "交易"
 
 #: src/views/index-dtf/overview/components/zap-mint/submit-zap.tsx:143
 msgid "Swapped"
@@ -11084,7 +11084,7 @@ msgstr "网站链接"
 #: src/views/index-dtf/overview/components/basket-overview/basket-table-header.tsx:125
 #: src/views/index-dtf/overview/components/yield-index/yield-index-composition-tabs.tsx:13
 msgid "Weight"
-msgstr "权重"
+msgstr "占比"
 
 #: src/views/index-dtf/deploy/steps/auctions/auctions-form.tsx:20
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-weight-control.tsx:18
@@ -11514,3 +11514,13 @@ msgstr "估算价格 ✱"
 #: src/views/home/components/highlighted-dtfs/historical-price-disclaimer.tsx:5
 msgid "✱ Estimated historical price is a hypothetical illustration of how the DTF’s launch-day basket would have performed before the DTF was created, using historical prices for those assets. The basket did not actually exist during this period. The figure assumes a fixed basket — it does not reflect actual trading, management fees, slippage, or the rebalancing the DTF performs in practice — and is constructed with the benefit of hindsight. Hypothetical performance is not indicative of future results and is not investment advice."
 msgstr "✱ 估算历史价格是一种假设性示例，用于说明在该 DTF 创建之前，其上线当日的篮子若按这些资产的历史价格计算将会有怎样的表现。该篮子在此期间实际上并不存在。该数字假设篮子固定不变，并不反映实际交易、管理费、滑点或 DTF 在实际操作中执行的再平衡，且是借助事后视角构建的。假设性表现并不代表未来结果，也不构成投资建议。"
+
+#: src/views/home/components/highlighted-dtfs/feature-card-header.tsx:101
+msgctxt "DTF card"
+msgid "Buy"
+msgstr "一键买入"
+
+#: src/views/index-dtf/overview/components/basket-overview/basket-table-header.tsx:113
+msgctxt "DTF basket"
+msgid "Collateral"
+msgstr "底层资产"
