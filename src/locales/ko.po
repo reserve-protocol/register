@@ -11498,3 +11498,19 @@ msgstr "Zapper 오류"
 #: src/views/index-dtf/overview/components/zap-mint/zap-healthcheck.tsx:24
 msgid "Zaps are currently experiencing issues"
 msgstr "현재 Zap에 문제가 발생하고 있습니다"
+
+#: src/views/home/components/highlighted-dtfs/performance-chart-launch-marker.tsx:36
+msgid "Est. Historical Price ✱"
+msgstr "추정 과거 가격 ✱"
+
+#: src/views/home/components/highlighted-dtfs/performance-chart-launch-marker.tsx:37
+msgid "Est. Hist. Price ✱"
+msgstr "추정 과거가격 ✱"
+
+#: src/views/home/components/highlighted-dtfs/performance-chart-launch-marker.tsx:38
+msgid "Est. Price ✱"
+msgstr "추정 가격 ✱"
+
+#: src/views/home/components/highlighted-dtfs/historical-price-disclaimer.tsx:5
+msgid "✱ Estimated historical price is a hypothetical illustration of how the DTF’s launch-day basket would have performed before the DTF was created, using historical prices for those assets. The basket did not actually exist during this period. The figure assumes a fixed basket — it does not reflect actual trading, management fees, slippage, or the rebalancing the DTF performs in practice — and is constructed with the benefit of hindsight. Hypothetical performance is not indicative of future results and is not investment advice."
+msgstr "✱ 추정 과거 가격은 DTF가 생성되기 전에 해당 자산들의 과거 가격을 사용하여 DTF의 출시일 바스켓이 어떻게 움직였을지를 보여주는 가상의 예시입니다. 이 바스켓은 해당 기간 동안 실제로 존재하지 않았습니다. 이 수치는 고정된 바스켓을 가정하며, 실제 거래, 운용 수수료, 슬리피지 또는 DTF가 실제로 수행하는 리밸런싱을 반영하지 않고 사후적 관점에서 구성된 것입니다. 가상의 성과는 미래의 결과를 보장하지 않으며 투자 자문이 아닙니다."

@@ -11498,3 +11498,19 @@ msgstr "Error de Zapper"
 #: src/views/index-dtf/overview/components/zap-mint/zap-healthcheck.tsx:24
 msgid "Zaps are currently experiencing issues"
 msgstr "Los Zaps están presentando problemas actualmente"
+
+#: src/views/home/components/highlighted-dtfs/performance-chart-launch-marker.tsx:36
+msgid "Est. Historical Price ✱"
+msgstr "Precio histórico est. ✱"
+
+#: src/views/home/components/highlighted-dtfs/performance-chart-launch-marker.tsx:37
+msgid "Est. Hist. Price ✱"
+msgstr "Precio hist. est. ✱"
+
+#: src/views/home/components/highlighted-dtfs/performance-chart-launch-marker.tsx:38
+msgid "Est. Price ✱"
+msgstr "Precio est. ✱"
+
+#: src/views/home/components/highlighted-dtfs/historical-price-disclaimer.tsx:5
+msgid "✱ Estimated historical price is a hypothetical illustration of how the DTF’s launch-day basket would have performed before the DTF was created, using historical prices for those assets. The basket did not actually exist during this period. The figure assumes a fixed basket — it does not reflect actual trading, management fees, slippage, or the rebalancing the DTF performs in practice — and is constructed with the benefit of hindsight. Hypothetical performance is not indicative of future results and is not investment advice."
+msgstr "✱ El precio histórico estimado es una ilustración hipotética de cómo se habría comportado la cesta del día de lanzamiento del DTF antes de su creación, utilizando los precios históricos de esos activos. La cesta no existió realmente durante ese período. La cifra asume una cesta fija — no refleja la negociación real, las comisiones de gestión, el deslizamiento ni el reequilibrio que el DTF realiza en la práctica — y se construye con el beneficio de la retrospectiva. El rendimiento hipotético no es indicativo de resultados futuros y no constituye asesoramiento de inversión."

@@ -11498,3 +11498,19 @@ msgstr "Zapper 错误"
 #: src/views/index-dtf/overview/components/zap-mint/zap-healthcheck.tsx:24
 msgid "Zaps are currently experiencing issues"
 msgstr "Zap 当前出现问题"
+
+#: src/views/home/components/highlighted-dtfs/performance-chart-launch-marker.tsx:36
+msgid "Est. Historical Price ✱"
+msgstr "估算历史价格 ✱"
+
+#: src/views/home/components/highlighted-dtfs/performance-chart-launch-marker.tsx:37
+msgid "Est. Hist. Price ✱"
+msgstr "估算历史价 ✱"
+
+#: src/views/home/components/highlighted-dtfs/performance-chart-launch-marker.tsx:38
+msgid "Est. Price ✱"
+msgstr "估算价格 ✱"
+
+#: src/views/home/components/highlighted-dtfs/historical-price-disclaimer.tsx:5
+msgid "✱ Estimated historical price is a hypothetical illustration of how the DTF’s launch-day basket would have performed before the DTF was created, using historical prices for those assets. The basket did not actually exist during this period. The figure assumes a fixed basket — it does not reflect actual trading, management fees, slippage, or the rebalancing the DTF performs in practice — and is constructed with the benefit of hindsight. Hypothetical performance is not indicative of future results and is not investment advice."
+msgstr "✱ 估算历史价格是一种假设性示例，用于说明在该 DTF 创建之前，其上线当日的篮子若按这些资产的历史价格计算将会有怎样的表现。该篮子在此期间实际上并不存在。该数字假设篮子固定不变，并不反映实际交易、管理费、滑点或 DTF 在实际操作中执行的再平衡，且是借助事后视角构建的。假设性表现并不代表未来结果，也不构成投资建议。"
