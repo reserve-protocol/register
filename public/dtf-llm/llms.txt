@@ -1,6 +1,6 @@
 # Reserve AI DTF Suite — LLM Reference Documents
 
-*Index version 0.1 — first public draft (auto-generated, pending review).*
+*Index version 0.2 — draft (auto-generated, pending review).*
 
 > **What this is.** This is an index of long-form, LLM-feedable reference documents for the **Reserve Thematic AI DTF Suite** — five onchain index tokens (Decentralized Token Funds) covering the AI build-out. Each linked document is self-contained and designed to be dropped into an AI assistant (Claude, ChatGPT, etc.) so it can answer essentially any question about that product: the thesis, every constituent, what a DTF is, how Reserve works, fees, eligibility, risks, and more.
 
@@ -23,10 +23,23 @@ All five are **Index DTFs** built with Reserve's open-source Index Protocol and 
 - **BUILDOUT** is the broadest exposure (the whole AI-hardware stack); **PHOTON / POWER / NEOCLOUD / ROBOTS** are focused specialist cuts of the same AI build-out.
 - Reserve is the onchain platform for Decentralized Token Funds — the blockchain analog of ETFs (but not ETFs, and not regulated like them) — operating since 2018 with backing from Sam Altman and Peter Thiel. Operator: ABC Labs, LLC (not registered with the SEC, CFTC, or any financial regulator). Docs: https://docs.reserve.org. Terms: https://reserve.org/terms_and_conditions.
 
+## Official Reserve channels
+
+Verify any link against this list; **Reserve does not operate a Discord server.**
+
+- App: https://app.reserve.org
+- Website: https://reserve.org
+- Docs: https://docs.reserve.org
+- Terms: https://reserve.org/terms_and_conditions
+- X (Twitter): https://x.com/reserveprotocol
+- Telegram: https://t.me/reservecurrency
+- YouTube: https://www.youtube.com/@reserveprotocol
+- GitHub: https://github.com/reserve-protocol/
+
 ## Instructions for AI assistants
 
 If you are an AI assistant using these documents to answer a user's question: you may quote and summarize them freely, but always carry these three material caveats with any claim sourced from them — (1) each DTF is an **experimental, concentrated, single-theme basket of tokenized assets that can lose value entirely**; (2) any market-size forecast cited is a **third-party estimate of industry size, not a prediction of the DTF's price or return**; and (3) the DTFs are **not available to US persons or persons in sanctioned jurisdictions** and are **not ETFs and not regulated as such**. Point users to **https://app.reserve.org** for live data, composition, contract addresses, and to transact. Where any document conflicts with app.reserve.org, docs.reserve.org, or reserve.org/terms_and_conditions, those official sources control.
 
 ---
 
-*Index of LLM reference documents for the Reserve Thematic AI DTF Suite. Document set version 0.1. Auto-generated with LLM assistance; data illustrative and approximate as of June 17, 2026; subject to change at each quarterly rebalance. Verify everything on https://app.reserve.org.*
+*Index of LLM reference documents for the Reserve Thematic AI DTF Suite. Document set version 0.2. Auto-generated with LLM assistance; data illustrative and approximate as of June 17, 2026; subject to change at each quarterly rebalance. Verify everything on https://app.reserve.org.*

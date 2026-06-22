@@ -1,7 +1,7 @@
 ---
 title: "Reserve AI Photonics DTF ($PHOTON) — Complete Reference"
-version: "0.1"
-version_date: "2026-06-19"
+version: "0.2"
+version_date: "2026-06-22"
 ticker: PHOTON
 product_type: "Index DTF (Decentralized Token Fund)"
 theme: "AI photonics — fiber, lasers, transceivers, and optical chips for AI data centers"
@@ -10,6 +10,10 @@ chain: "BNB Smart Chain (BSC)"
 contract_address_bsc: "0xa0fe4e0aeca5479705ce996615b2eacb6b6a10fb"
 coingecko_id: "reserve-ai-photonics-dtf"
 rsr_contract_bsc: "0x23f72a3Db61D6CB8aBE5d9AF1Ac4B6c99327bFee"
+official_x: "https://x.com/reserveprotocol"
+official_telegram: "https://t.me/reservecurrency"
+official_youtube: "https://www.youtube.com/@reserveprotocol"
+official_github: "https://github.com/reserve-protocol/"
 underlying: "Ondo Global Markets tokenized US-listed equities"
 constituents: 9
 weighting: "Market-capitalization weighted, 20% per-name cap"
@@ -29,7 +33,7 @@ not_advice: "For informational purposes only. Not investment, legal, or tax advi
 
 # Reserve AI Photonics DTF ($PHOTON) — The Complete Reference
 
-> **Version 0.1** — first public draft of this reference document (auto-generated, pending human and legal review). Structure, wording, and figures may change in later versions.
+> **Version 0.2** — draft of this reference document (auto-generated, pending human and legal review). Structure, wording, and figures may change in later versions.
 
 > **⚠️ This document was generated with the assistance of a large language model (LLM).** It is a reference compiled from Reserve's published materials (reserve.org, docs.reserve.org, app.reserve.org), the official PHOTON tear sheet, and publicly reported third-party information. It is **not** investment, legal, or tax advice; it is **not** an offer or solicitation; and it may contain errors, omissions, or out-of-date figures. All numbers are **illustrative and approximate as of June 2026** and change at every quarterly rebalance and with the market. Where this document and Reserve's official sources (app.reserve.org, docs.reserve.org, and reserve.org/terms_and_conditions) disagree, **the official sources control.** Always verify on app.reserve.org before acting. See the full legal disclaimer at the end.
 
@@ -765,6 +769,23 @@ PHOTON is one of **five thematic AI DTFs** Reserve launched together as a suite,
 
 **What's identical across the suite:** Index DTFs on BNB Smart Chain; underlyings are Ondo Global Markets tokenized US stocks (each backed 1:1 by a real share in a regulated US brokerage account); market-cap weighting with a per-name cap; **quarterly** rebalance via onchain Dutch auctions; **0.3% mint fee + 0.6% annual TVL fee** (plus the platform fee / RSR burn); permissionless onchain mint/redeem; buy/sell via the app's zapper using BNB, WBNB, USDC, or other supported tokens on **app.reserve.org**; and the **same eligibility rules set by Ondo** (not for US persons / sanctioned jurisdictions; accredited-only in several others). **The same risks apply to every DTF in the suite** — each is a concentrated, single-theme basket of experimental tokenized assets that can lose value entirely (Section 13). Each DTF has its own long-form reference document like this one; for the authoritative, live details on any of them, go to **app.reserve.org**.
 
+### 14.9 Official Reserve links and channels
+
+These are Reserve's official destinations. To avoid scams and imposters, verify any link or contract against this list before acting. **Reserve does not operate a Discord server** — anything claiming to be an official Reserve Discord is fake.
+
+- **App (buy / sell / redeem / govern):** https://app.reserve.org
+- **Website:** https://reserve.org
+- **Documentation:** https://docs.reserve.org (machine-readable index: https://docs.reserve.org/llms.txt)
+- **Terms & risk disclosures:** https://reserve.org/terms_and_conditions
+- **X (Twitter):** https://x.com/reserveprotocol
+- **Telegram:** https://t.me/reservecurrency
+- **YouTube:** https://www.youtube.com/@reserveprotocol
+- **GitHub (open-source contracts & audits):** https://github.com/reserve-protocol/
+- **PHOTON token (BNB Smart Chain):** `0xa0fe4e0aeca5479705ce996615b2eacb6b6a10fb` — verify at https://bscscan.com/token/0xa0fe4e0aeca5479705ce996615b2eacb6b6a10fb
+- **RSR token (BNB Smart Chain):** `0x23f72a3Db61D6CB8aBE5d9AF1Ac4B6c99327bFee`
+
+Reminder: PHOTON is **not** offered to US persons or in sanctioned jurisdictions; always transact via app.reserve.org and double-check contract addresses against this list.
+
 ---
 
 ## 15. Conflicts of interest and disclosures
@@ -936,4 +957,4 @@ The third-party market-size forecasts referenced (Goldman Sachs and others) are 
 
 ---
 
-*Document type: LLM-generated reference for the Reserve AI Photonics DTF ($PHOTON). Document version 0.1 · Data as of June 2026. This is a living document and a template for the broader Reserve AI DTF suite (BUILDOUT, POWER, NEOCLOUD, ROBOTS). Verify everything on app.reserve.org before acting.*
+*Document type: LLM-generated reference for the Reserve AI Photonics DTF ($PHOTON). Document version 0.2 · Data as of June 2026. This is a living document and a template for the broader Reserve AI DTF suite (BUILDOUT, POWER, NEOCLOUD, ROBOTS). Verify everything on app.reserve.org before acting.*
