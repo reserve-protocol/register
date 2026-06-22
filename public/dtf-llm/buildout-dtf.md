@@ -1,6 +1,6 @@
 ---
 title: "Reserve AI Infrastructure DTF ($BUILDOUT) — Complete Reference"
-version: "0.2"
+version: "0.3"
 version_date: "2026-06-22"
 ticker: BUILDOUT
 product_type: "Index DTF (Decentralized Token Fund)"
@@ -33,7 +33,7 @@ not_advice: "For informational purposes only. Not investment, legal, or tax advi
 
 # Reserve AI Infrastructure DTF ($BUILDOUT) — The Complete Reference
 
-> **Version 0.2** — draft of this reference document (auto-generated, pending human and legal review). Structure, wording, and figures may change in later versions.
+> **Version 0.3** — draft of this reference document (auto-generated, pending human and legal review). Structure, wording, and figures may change in later versions.
 
 > **⚠️ This document was generated with the assistance of a large language model (LLM).** It is a reference compiled from Reserve's published materials (reserve.org, docs.reserve.org, app.reserve.org), the official BUILDOUT tear sheet, and publicly reported third-party information. It is **not** investment, legal, or tax advice; it is **not** an offer or solicitation; and it may contain errors, omissions, or out-of-date figures. All numbers are **illustrative and approximate as of June 2026** and change at every quarterly rebalance and with the market. Where this document and Reserve's official sources (app.reserve.org, docs.reserve.org, and reserve.org/terms_and_conditions) disagree, **the official sources control.** Always verify on app.reserve.org before acting. See the full legal disclaimer at the end.
 
@@ -83,13 +83,13 @@ The document is organized roughly from "what is this and why does it exist" → 
 
 ## 1. Quick reference (the 60-second version)
 
-**BUILDOUT** is an onchain index product — a **Decentralized Token Fund (DTF)** — that packages a weighted basket of the **25 largest US-listed AI-hardware companies** into a **single token** you can buy, sell, and redeem onchain, 24/7. "AI infrastructure" here means the physical machine the entire AI economy runs on: the **chips that compute, the memory that feeds them, the equipment and foundries that make them, the networking that connects them, and the power that runs it all.** The thesis in one sentence: before any model can run, someone has to build the machine — and BUILDOUT gives direct, diversified exposure to the picks-and-shovels suppliers that every AI dollar flows through first, rather than to any single chip or model company.
+**BUILDOUT** is a single onchain token — a **Decentralized Token Fund (DTF)** — that packages a weighted basket of the **25 largest US-listed AI-hardware companies** into a **single token** you can buy, sell, and redeem onchain, 24/7. "AI infrastructure" here means the physical machine the entire AI economy runs on: the **chips that compute, the memory that feeds them, the equipment and foundries that make them, the networking that connects them, and the power that runs it all.** The thesis in one sentence: before any model can run, someone has to build the machine — and BUILDOUT gives direct, diversified exposure to the picks-and-shovels suppliers that every AI dollar flows through first, rather than to any single chip or model company.
 
 | Attribute | Value |
 |---|---|
 | **Name** | Reserve AI Infrastructure DTF |
 | **Ticker** | `BUILDOUT` |
-| **What it is** | An Index DTF (Decentralized Token Fund) — an onchain, ETF-*like* index token (but **not** an ETF and **not** regulated as one) |
+| **What it is** | An Index DTF (Decentralized Token Fund) — an onchain, ETF-*like* basket of tokenized stocks (but **not** an ETF and **not** regulated as one) |
 | **Theme** | AI infrastructure: the picks & shovels — semiconductors, memory, manufacturing equipment, networking, and power for the AI buildout |
 | **Chain** | **BNB Smart Chain (BSC / BNB Chain)** |
 | **Contract address (BSC)** | `0xd7ce7a841310982acd976d1a6fe7bb6063c5689d` (verify on app.reserve.org / bscscan.com before transacting) |
@@ -118,10 +118,10 @@ BUILDOUT is a single token that represents ownership of a curated basket of comp
 Three layers are stacked here, and it helps to keep them distinct:
 
 1. **The theme** — "AI infrastructure," i.e., the *picks and shovels* of the AI buildout. A point of view about where value accrues in the AI economy: not in the apps or the models, but in the physical hardware that every model is built and run on. BUILDOUT expresses that view as a rules-based basket of the 25 largest companies that supply that hardware.
-2. **The wrapper** — a **Decentralized Token Fund**, built with Reserve's open-source **Index Protocol**. This is the onchain machinery that bundles many tokens into one, prices it, lets anyone mint or redeem it at the value of its parts, rebalances it through onchain auctions, and governs it transparently. It is conceptually like an ETF or an index fund, but it lives entirely on a blockchain and is **not** an ETF and **not** regulated like one.
+2. **The wrapper** — a **Decentralized Token Fund**, built with Reserve's open-source **Index Protocol**. This is the onchain machinery that bundles many tokens into one, prices it, lets anyone mint or redeem it at the value of its parts, rebalances it through onchain auctions, and governs it transparently. It is conceptually like an ETF, but it lives entirely on a blockchain and is **not** an ETF and **not** regulated like one.
 3. **The underlying** — **Ondo Global Markets tokenized stocks**. BUILDOUT does not hold shares directly. It holds tokenized versions of those shares, issued by Ondo, where each token is backed 1:1 by a real share of the corresponding company held in a regulated US brokerage account. This is what lets US-listed equities be packaged and traded onchain at all.
 
-Put together: BUILDOUT is **an onchain, tokenized, ETF-like index of the AI-hardware supply chain, redeemable for tokenized stocks, that trades 24/7 with no minimums.** That combination — a clean, single-ticker way to own the entire AI-infrastructure category in one click, onchain — is the product's reason for existing. The names that build AI's machine are scattered across half a dozen very different industries (logic chips, memory, lithography, networking gear, electrical equipment, power generation), and assembling and re-weighting that list by hand every quarter is exactly the kind of work the wrapper does for you.
+Put together: BUILDOUT is **an onchain, tokenized, ETF-like basket of the AI-hardware supply chain, redeemable for tokenized stocks, that trades 24/7 with no minimums.** That combination — a clean, single-ticker way to own the entire AI-infrastructure category in one click, onchain — is the product's reason for existing. The names that build AI's machine are scattered across half a dozen very different industries (logic chips, memory, lithography, networking gear, electrical equipment, power generation), and assembling and re-weighting that list by hand every quarter is exactly the kind of work the wrapper does for you.
 
 **What BUILDOUT is *not*:** It is not an ETF, mutual fund, or any registered investment product. It is not a deposit and is not insured by the FDIC or SIPC. It is not a promise of returns, a yield product, or a leveraged/inverse product. It does not track any third-party index (there is no "AI Infrastructure 25" it is licensed to replicate); its rules are defined by the DTF itself (see Section 7, Methodology). And it is not available to people in the United States.
 
@@ -386,7 +386,7 @@ Mechanically, the rebalance is executed **onchain through Dutch auctions** (desc
 
 ### 7.5 What this means for an investor
 
-BUILDOUT is best understood as a **rules-based but actively-curated thematic basket**, not a passive index fund. The rules (US-listed, Ondo-eligible, significant AI-hardware revenue across the five layers, top 25 by market cap, market-cap weighted, 10% cap, quarterly) are transparent and consistent, but the application of those rules — especially "which companies count as AI-hardware" and which of the five layers to include — is a discretionary call made by the parties operating the DTF. Read the live composition and any published methodology on app.reserve.org before relying on the specific names and weights, and treat the basket as something that evolves quarterly.
+BUILDOUT is best understood as a **rules-based but actively-curated thematic basket**, not a mechanical tracker of an external index. The rules (US-listed, Ondo-eligible, significant AI-hardware revenue across the five layers, top 25 by market cap, market-cap weighted, 10% cap, quarterly) are transparent and consistent, but the application of those rules — especially "which companies count as AI-hardware" and which of the five layers to include — is a discretionary call made by the parties operating the DTF. Read the live composition and any published methodology on app.reserve.org before relying on the specific names and weights, and treat the basket as something that evolves quarterly.
 
 ---
 
@@ -396,7 +396,7 @@ BUILDOUT is built with Reserve's **Index Protocol**. This section explains the w
 
 ### 8.1 Definition: DTF, Index DTF, and "RToken"
 
-A **DTF** is a **Decentralized Token Fund**. (DTFs were originally called **Decentralized Token Funds** — you may still see "Folio" in older Reserve materials and in some of the protocol's internal contract names — but the current name is **Fund**; the two refer to the same thing.) A DTF is a **fully asset-backed ERC-20 token** created with Reserve's open-source smart contracts that represents a basket of underlying tokens held onchain. Anyone can launch, mint, redeem, and govern a DTF permissionlessly.
+A **DTF** is a **Decentralized Token Fund**. (DTFs were originally called **Decentralized Token Folios** — you may still see "Folio" in older Reserve materials and in some of the protocol's internal contract names — but the current name is **Fund**; the two refer to the same thing.) A DTF is a **fully asset-backed ERC-20 token** created with Reserve's open-source smart contracts that represents a basket of underlying tokens held onchain. Anyone can launch, mint, redeem, and govern a DTF permissionlessly.
 
 Reserve has **two families** of DTF:
 
@@ -480,9 +480,9 @@ Reserve's smart contracts have undergone **multiple independent third-party secu
 
 Governance of BUILDOUT is exercised by **RSR vote-lockers**, not by holders of the BUILDOUT token as such. Simply holding BUILDOUT gives you economic exposure to the basket but **no governance vote**; to help govern the DTF (its basket, parameters, and upgrades) you **vote-lock RSR** to it. This is entirely optional — most holders never do it — but here is how it works and how to do it.
 
-**What vote-locking is.** RSR (Reserve Rights) is the **default governance token** for Reserve Index DTFs, including BUILDOUT. "Vote-locking" means committing RSR to a *specific* DTF for a minimum period (currently a **~1-week unlock delay**), during which the locked balance carries voting weight over that DTF. When tokens are locked, the **entire balance counts 1-for-1** toward governance power, and your locked position shows in the app as **vlRSR** (vote-locked RSR); vote-lockers are the DTF's **governors**. Locked RSR cannot be moved until you unlock and the delay elapses.
+**What vote-locking is.** RSR (Reserve Rights) is the **default governance token** for Reserve Index DTFs, including BUILDOUT. "Vote-locking" means committing RSR to a *specific* DTF for a minimum period (currently a **~1-week unlock delay**), during which the locked balance carries voting weight over that DTF. When tokens are locked, the **entire balance counts 1-for-1** toward governance power, and your locked position shows in the app as **vlRSR** (vote-locked RSR); vote-lockers are the DTF's **governors**. Locked RSR cannot be moved until you unlock and the **7-day** delay elapses. On BNB Smart Chain, all of Reserve's BSC DTFs share a **single vlRSR StakingVault** (named "vlRSR"), so you vote-lock RSR into that shared BSC vault to participate in governance.
 
-**What it lets you do.** Vote-lockers can create and vote on proposals (for / against / abstain, directly or by delegation) governing BUILDOUT's **basket composition and target weights, fee schedule (within the protocol's hard ceilings), rebalance parameters, revenue routing, and role assignments** — via the standard and optimistic governance paths in Section 8.7. In exchange for locking and participating, **governors can be allocated a share of the DTF's TVL fee**. But the actual **governance share is set per-DTF**, is shown in the app's **Fees & Revenue Distribution** panel, and **may be 0%**. (For example, a live BNB DTF can show a fixed platform share of ~33% funding the RSR buy-and-burn, a **0% governance share**, and the remainder routed to another recipient.) So **do not assume vote-locking earns you fees** — check BUILDOUT's Fees & Revenue Distribution in the app. Importantly, this is **vote-locking for governance, not "staking"**: on an Index DTF like BUILDOUT you **cannot** stake RSR as first-loss collateral/insurance, and there is **no** staking yield for absorbing risk — that mechanism exists only on Reserve **Yield DTFs**, which BUILDOUT is not (Section 14.7).
+**What it lets you do.** Vote-lockers can create and vote on proposals (for / against / abstain, directly or by delegation) governing BUILDOUT's **basket composition and target weights, fee schedule (within the protocol's hard ceilings), rebalance parameters, revenue routing, and role assignments** — via the standard and optimistic governance paths in Section 8.7. In exchange for locking and participating, **vlRSR governors earn a share of the DTF's fees**. For these BNB Smart Chain DTFs, after a **33% platform share** (which funds the RSR buy-and-burn), the **full ~67% remainder of the mint and TVL fees is routed to vlRSR governance** via a **TokenJar** that automatically converts it into RSR — so governor rewards accrue **passively as an up-only vlRSR/RSR exchange rate, with no manual claiming.** (Reserve's Ethereum-mainnet DTFs use a 50%/50% split.) Always verify the live split in BUILDOUT's **Fees & Revenue Distribution** panel in the app. Importantly, this is **vote-locking for governance, not "staking"**: on an Index DTF like BUILDOUT you **cannot** stake RSR as first-loss collateral/insurance, and there is **no** staking yield for absorbing risk — that mechanism exists only on Reserve **Yield DTFs**, which BUILDOUT is not (Section 14.7).
 
 **How to do it (in the Reserve app).**
 1. Go to **app.reserve.org** and open the **BUILDOUT** DTF page.
@@ -492,6 +492,18 @@ Governance of BUILDOUT is exercised by **RSR vote-lockers**, not by holders of t
 5. To exit, **unlock** your RSR and wait out the **~1-week unlock delay** (you can typically cancel an unlock to resume voting and rewards). Reserve publishes a vote-locking tutorial on its blog (blog.reserve.org).
 
 **Caveats.** Vote-locking is separate from buying/holding BUILDOUT; it requires holding **RSR**, a separate and volatile token (this document is not a solicitation to buy RSR). Locked RSR is **committed** for the unlock window and cannot be transferred during it. Governance powers are broad and **governance attacks are possible** (Section 13.8). None of this is required to simply hold BUILDOUT — it is for those who want a say in how the DTF evolves.
+
+### 8.10 Governance configuration (as deployed)
+
+The concrete, as-deployed configuration for these BNB Smart Chain DTFs, verified live on the app's Details + Roles pages (June 2026; subject to change via governance — always reconfirm onchain):
+
+- **Fees & distribution:** 0.30% mint + 0.60% annual TVL. **Platform share 33%** (funds the RSR buy-and-burn); **Governance share 67%** routed to vlRSR governance through a **TokenJar** that automatically converts it into RSR, so governor rewards accrue as an **up-only vlRSR/RSR exchange rate with no manual claiming**; **deployer share 0%**. (Reserve's Ethereum-mainnet DTFs use a 50%/50% split.) Confirmed live at **33% / 67% / 0%** for all five BSC DTFs.
+- **Governance token & staking vault:** governance token is **vlRSR** (the shared BSC StakingVault `0xE744C8157c346B2931807F42552c8CBc0BB6D34f`) over underlying **RSR** (`0x23f72a3Db61D6CB8aBE5d9AF1Ac4B6c99327bFee`). All five BSC DTFs share this one vlRSR vault — **7-day** governance cycle, **7-day** unstaking delay, **7-day** reward-handout half-life.
+- **Two governors:** each DTF is steered by its own **DTF governor** plus a shared **DAO (vlRSR) governor** (`0xBaF703e7891943D46Ee462A4EC74945b09C67b86`, timelock `0xB8D699cf52F53A8c9801806E6252A837B3E6b039`). BUILDOUT's DTF governor is `0x11DdDE7845764C5317042c51e7e5EC665db33055` (timelock `0xf95e970cDD970e94aB16C6286d0e1e948aA5AC91`).
+- **Governance parameters (both governors):** 2-day voting delay, 3-day voting period, **0.1% proposal threshold**, **10% quorum**, 2-day execution delay; veto path = 4-hour veto delay, 20-hour veto window, **1% veto threshold**. (Standard "pessimistic" cycle ≈ 7 days; optimistic veto cycle ≈ 1 day, whose only fast-path capability is to **start rebalances**.)
+- **Shared roles (verified identical across all five BSC DTFs — reconfirm on each Details + Roles page):** **Guardian** `0xB432b0cf55df8D8F367D965A23198ccDaacc4b1f`; **Optimistic Proposer** `0xF770497BC14dA0E88F65A5C446484c7CEcbEA661`; **Auction Launcher** & **Brand Manager** `0x7DaAf7Bc2eE8bf4C0ac7f37E6b6cfaEB3ed9a868`. Deployer of all five: `0x8D2aa07F1a245d72B009c344690edD8e22a9E993`.
+- **Rebalancing:** these are **"tracking" DTFs** — basket quantities are fixed at rebalance-**proposal** time (not auction time). **Auctions run 15 minutes** on BSC (30 minutes on mainnet), **weight control is disabled**, and **permissionless bidding is enabled** (Reserve's bots plus the CoW Swap solver network can participate).
+- **Other basics:** deployed DTF **version 5.0.0**. The onchain **mandate** (stated objective) may still be empty pending governance — check the DTF's page.
 
 ---
 
@@ -546,7 +558,7 @@ This is the practical "how do I actually use it" section. **Always confirm the l
 
 - A **self-custody wallet** (e.g., a standard EVM-compatible browser/mobile wallet) connected to a supported chain.
 - A supported token to buy with — e.g., **BNB, WBNB, USDT**, or another token the zapper accepts — plus a little **BNB** for **gas** (BNB is the native gas token on BNB Smart Chain).
-- To be in an **eligible jurisdiction** under Ondo's rules, and, in "restricted" jurisdictions, to have completed any required accredited/professional verification.
+- To be in an **eligible jurisdiction** under Ondo's rules, and, in "restricted" jurisdictions, to have completed any required accredited/professional verification. This eligibility/verification is determined and administered by **Ondo Global Markets** (the token issuer) under its own process and terms (docs.ondo.finance/ondo-global-markets/eligibility); Reserve/ABC Labs does not set these criteria.
 
 ### 10.2 Buying (the simple path)
 
@@ -616,6 +628,8 @@ Three points that matter:
 - **Eligibility can change** as Ondo updates its rules, and verification requirements in "restricted" jurisdictions can involve a KYC/accreditation step.
 - **You are responsible for your local laws** even in "elsewhere" jurisdictions — tax, securities, and other regulations may still apply to you.
 
+**How eligibility is enforced in the app.** Before you can mint/buy on app.reserve.org you pass a **wallet-based self-attestation**: you check boxes confirming you have read the Terms of Use, that you are **not** located in, a resident of, or a citizen of a restricted jurisdiction, and that you are permitted to purchase tokenized stocks under your local laws. Per the app, this confirmation is **only ever associated with your wallet address — never your personal information**; Reserve/ABC Labs does not collect or store personal identity documents for this gate, and any accredited/professional qualification where required is handled under Ondo's process.
+
 ---
 
 ## 12. Fees and costs
@@ -631,7 +645,7 @@ Both are **far below** the protocol's hard ceilings (mint fee < 5%, TVL fee < 10
 
 ### 12.2 The platform fee and RSR burn
 
-A **protocol platform fee** is taken **out of** the mint and TVL fees (not added on top) before the remainder is distributed to the DTF's governance-chosen recipients. Currently, the platform's portion is used to **automatically market-buy and burn RSR**, permanently removing it from circulation. This is relevant context for how the ecosystem captures value, and it is part of why holding any Index DTF contributes to RSR's deflationary "sink." The app's **Fees & Revenue Distribution** panel shows the exact split for a given DTF: a **fixed platform share** (for example, ~33% on a live BNB DTF) funds the RSR buy-and-burn, and the **remainder** is routed to governance-set recipients — which can include vote-locking **governors** (a "Governance Share"), the deployer, and/or other addresses. That **governance share may be 0%** for a given DTF, so do not assume vote-lockers currently receive fees — verify in the app.
+A **protocol platform fee** is taken **out of** the mint and TVL fees (not added on top) before the remainder is distributed to the DTF's governance-chosen recipients. Currently, the platform's portion is used to **automatically market-buy and burn RSR**, permanently removing it from circulation. This is relevant context for how the ecosystem captures value, and it is part of why holding any Index DTF contributes to RSR's deflationary "sink." For these BNB Smart Chain DTFs the split is a **33% platform share** (which funds the RSR buy-and-burn) and the **~67% remainder routed to vlRSR governance** via a TokenJar that auto-converts it into RSR — so vote-locking **governors** earn it passively as an up-only vlRSR/RSR exchange rate (no manual claiming). (Reserve's Ethereum-mainnet DTFs use a 50%/50% split.) Verify the live split in each DTF's **Fees & Revenue Distribution** panel in the app; PHOTON's fee setup was finalized via a June 2026 governance proposal.
 
 ### 12.3 Transaction-level costs (easy to overlook)
 
@@ -701,7 +715,7 @@ Blockchain-based systems are inherently experimental and involve technological, 
 
 ### 14.1 The Reserve project and its mission
 
-Reserve describes itself as a long-term project guided by the belief that **"everyone should be able to own and earn their share of the world's wealth."** Its platform lets anyone hold and transfer an entire portfolio of tokenized assets as a single unit. The long-term vision is **asset-backed currency** — money backed by real, diversified assets rather than inflationary fiat — with DTFs as the building blocks: as more of the world's assets (stocks, bonds, commodities, real estate) get tokenized, DTFs can represent ever-broader slices of global wealth. The first product line is crypto/onchain index products (for example, the CMC20 DTF, which tracks CoinMarketCap's top 20 cryptocurrencies by market cap, "like the S&P 500 but for crypto"); thematic equity baskets like BUILDOUT extend the same machinery to tokenized stocks.
+Reserve describes itself as a long-term project guided by the belief that **"everyone should be able to own and earn their share of the world's wealth."** Its platform lets anyone hold and transfer an entire portfolio of tokenized assets as a single unit. The long-term vision is **asset-backed currency** — money backed by real, diversified assets rather than inflationary fiat — with DTFs as the building blocks: as more of the world's assets (stocks, bonds, commodities, real estate) get tokenized, DTFs can represent ever-broader slices of global wealth. The first product line is crypto/onchain baskets (for example, the CMC20 DTF, which tracks CoinMarketCap's top 20 cryptocurrencies by market cap, "like the S&P 500 but for crypto"); thematic equity baskets like BUILDOUT extend the same machinery to tokenized stocks.
 
 ### 14.2 The platform: Reserve app and the two protocols
 
@@ -724,7 +738,7 @@ BUILDOUT, like other Index DTFs, uses **RSR as its default governance token** vi
 
 ### 14.6 RSR tokenomics in more depth (context)
 
-For readers who want the detail (RSR is separate from BUILDOUT; this is background, not a solicitation): RSR has a **fixed maximum supply of 100 billion tokens**, with a majority in circulation and the remainder held in two project-controlled wallets with hard-coded delays. The **Slow Wallet** (team-controlled, funding ecosystem adoption) has a 4-week delay on each withdrawal. The **Slower Wallet** (administered by Confusion Capital) adds a throttle: **no more than 1% of total supply can be withdrawn in any 4-week period**, reducing trust requirements. Future RSR emissions follow a deterministic schedule that emulates Bitcoin's emissions curve. RSR's value-accrual mechanism relevant to BUILDOUT is the **buy-and-burn**: the platform's portion of every Index DTF's mint and TVL fees is used to market-buy RSR and send it to a burn address, applying across all Index DTFs regardless of their chosen governance token.
+For readers who want the detail (RSR is separate from BUILDOUT; this is background, not a solicitation): RSR has a **fixed maximum supply of 100 billion tokens**, with a majority in circulation and the remainder held in two project-controlled wallets with hard-coded delays. The **Slow Wallet** (team-controlled, funding ecosystem adoption) has a 4-week delay on each withdrawal. The **Slower Wallet** (administered by Confusion Capital) adds a throttle: **no more than 1% of total supply can be withdrawn in any 4-week period**, reducing trust requirements. Future RSR emissions follow a deterministic schedule that emulates Bitcoin's emissions curve (this schedule is set by Reserve governance and could change; an RFC on the Reserve governance forum, forum.reserve.org, proposes revising the RSR unlock/emissions plan). RSR's value-accrual mechanism relevant to BUILDOUT is the **buy-and-burn**: the platform's portion of every Index DTF's mint and TVL fees is used to market-buy RSR and send it to a burn address, applying across all Index DTFs regardless of their chosen governance token.
 
 ### 14.7 Yield DTFs in brief (for contrast)
 
@@ -747,7 +761,7 @@ BUILDOUT is one of **five thematic AI DTFs** Reserve launched together as a suit
 - **BUILDOUT** — global semiconductor sales ~$796B (2025) → ~$1.5T (2026E), memory-led (WSTS, Spring 2026).
 - **POWER** — US data-center power ~32 GW (2025) → ~95 GW (2030), ≈3× (Goldman Sachs Research).
 - **ROBOTS** — humanoid-robot market ≈$5T by 2050 (Morgan Stanley); a more conservative ~$38B by 2035 (Goldman Sachs).
-- **NEOCLOUD** — neocloud / GPU-cloud market ~$35B (2026) → ~$180B+ (2030), ≈5× (ABI Research).
+- **NEOCLOUD** — neocloud / GPU-cloud market ~$35B (2026) → ~$180B+ (2030), ≈5× (Mordor Intelligence sizes 2026 at ~$35B; Synergy Research forecasts ~$180B by 2030).
 - **PHOTON** — AI data-center optical spend ~$15B/yr (2026) → ~$154B/yr (2028), ≈10× (Goldman Sachs Research).
 
 **What's identical across the suite:** Index DTFs on BNB Smart Chain; underlyings are Ondo Global Markets tokenized US stocks (each backed 1:1 by a real share in a regulated US brokerage account); market-cap weighting with a per-name cap; **quarterly** rebalance via onchain Dutch auctions; **0.3% mint fee + 0.6% annual TVL fee** (plus the platform fee / RSR burn); permissionless onchain mint/redeem; buy/sell via the app's zapper using BNB, WBNB, USDT, or other supported tokens on **app.reserve.org**; and the **same eligibility rules set by Ondo** (not for US persons / sanctioned jurisdictions; accredited-only in several others). **The same risks apply to every DTF in the suite** — each is a concentrated, single-theme basket of experimental tokenized assets that can lose value entirely (Section 13). Each DTF has its own long-form reference document like this one; for the authoritative, live details on any of them, go to **app.reserve.org**.
@@ -777,7 +791,7 @@ In the interest of the same candor Reserve applies to its own marketing, the mat
 
 - **Self-indexed / discretionary selection.** BUILDOUT does **not** track an independent third-party index. The party operating the DTF **defines the methodology and selects the constituents** (within the published rules). That discretion is a conflict of interest and a source of governance/operator risk.
 - **Operator benefits from usage.** ABC Labs/Reserve **operates the platform and benefits from DTF usage** (fees, RSR buy-and-burn). The more BUILDOUT is used, the more the operator and RSR holders benefit — an incentive to promote it.
-- **Commercial relationship with Ondo.** BUILDOUT's underlyings are **Ondo Global Markets** tokenized stocks, and there is a commercial/partner relationship between Reserve and Ondo (the issuer). Reserve also co-markets with partners such as Ondo, BNB Chain, and Bitget around launches.
+- **Dependence on a third-party issuer (Ondo).** BUILDOUT's underlyings are **Ondo Global Markets** tokenized stocks, so BUILDOUT depends on Ondo's tokens, eligibility rules, and redemption terms. Reserve/ABC Labs and Ondo are separate, independent entities and there is **no formal partnership** between them; this dependence is itself a risk to be aware of (Section 13.5).
 - **RSR promotion.** Reserve materials promote the RSR governance token, which benefits from platform usage including BUILDOUT.
 - **Not independent research.** This document is a Reserve-aligned reference, generated by an LLM from Reserve's materials and public sources. It is **not** independent investment research, and it is **not** advice. Treat its framing of the thesis as the proponent's case, balanced where possible, and do your own diligence.
 
@@ -806,7 +820,7 @@ In the interest of the same candor Reserve applies to its own marketing, the mat
 - **Picks and shovels** — the supplier/infrastructure layer of a boom (here, AI hardware) that gets paid regardless of which end-application wins; the organizing idea of BUILDOUT.
 - **RFQ / intent system** — the mechanism used to mint/redeem DTFs whose underlyings (like Ondo tokens) are offchain-liquid; approved minters source the basket tokens.
 - **RSR (Reserve Rights)** — the Reserve ecosystem token used for governance (vote-locking/staking) and value accrual (fee-funded buy-and-burn). BUILDOUT's default governance token. Separate from BUILDOUT. Canonical RSR on BNB Smart Chain: `0x23f72a3Db61D6CB8aBE5d9AF1Ac4B6c99327bFee`.
-- **vlRSR (vote-locked RSR)** — the form RSR takes when locked to a DTF for governance; vlRSR holders are the DTF's **governors** and may be allocated a share of the DTF's TVL fee (set per-DTF; can be 0%). On BNB-Chain DTFs, RSR must be bridged to BNB Chain (e.g., via Wormhole) before vote-locking.
+- **vlRSR (vote-locked RSR)** — the form RSR takes when locked to a DTF for governance; vlRSR holders are the DTF's **governors** and earn a share of the DTF's fees (on these BSC DTFs, the ~67% of fees remaining after the 33% platform share, auto-converted to RSR as an up-only vlRSR/RSR exchange rate). On BNB-Chain DTFs, RSR must be bridged to BNB Chain (e.g., via Wormhole) before vote-locking.
 - **RToken** — the older technical name for any token launched on Reserve; synonymous with DTF.
 - **TVL fee** — the continuous (block-by-block) management fee on a DTF's assets; 0.6%/yr for BUILDOUT.
 - **Vote-locking** — committing a governance token (RSR by default) to an Index DTF for voting power (and a fee share when enabled).
@@ -818,7 +832,7 @@ In the interest of the same candor Reserve applies to its own marketing, the mat
 ## 17. Frequently asked questions
 
 **Q: What is BUILDOUT in one sentence?**
-A: BUILDOUT is an onchain index token (a Decentralized Token Fund) that holds a weighted basket of the 25 largest US-listed "AI infrastructure" companies — the chips, memory, manufacturing equipment, networking, and power that the AI buildout runs on — redeemable onchain for tokenized stocks.
+A: BUILDOUT is an onchain token (a Decentralized Token Fund) that holds a weighted basket of the 25 largest US-listed "AI infrastructure" companies — the chips, memory, manufacturing equipment, networking, and power that the AI buildout runs on — redeemable onchain for tokenized stocks.
 
 **Q: Is BUILDOUT an ETF?**
 A: No. BUILDOUT is **ETF-like** in spirit (a single token tracking a basket) but it is **not an ETF and is not regulated like one.** It is not a registered investment product, not a deposit, and not FDIC/SIPC-insured.
@@ -899,10 +913,10 @@ A: Nvidia has made strategic investments and partnerships across the AI ecosyste
 A: RSR (Reserve Rights) is the ecosystem's governance/value token. You do **not** need RSR to hold BUILDOUT. RSR vote-lockers govern Index DTFs, and BUILDOUT's platform fee funds RSR buy-and-burn — but BUILDOUT and RSR are separate tokens.
 
 **Q: Can I "stake" RSR on BUILDOUT to earn yield or to insure it?**
-A: No — not in the Yield-DTF sense. BUILDOUT is an **Index DTF**, so you **cannot** stake RSR as first-loss collateral/insurance, and there is no staking reward for absorbing risk (that exists only on Reserve **Yield DTFs**). What you *can* do is **vote-lock** RSR to BUILDOUT to become a **governor** — your locked balance shows as **vlRSR** — and help govern the DTF. Governors can be allocated a share of the DTF's **TVL fee**, but the actual governance share is set per-DTF and shown in the app's **Fees & Revenue Distribution**, and **may be 0%**. Because BUILDOUT is on **BNB Smart Chain**, you must bridge your RSR to BNB Chain (e.g., via Wormhole) to vote-lock — the canonical RSR on BNB Smart Chain is `0x23f72a3Db61D6CB8aBE5d9AF1Ac4B6c99327bFee`. See Section 8.9.
+A: No — not in the Yield-DTF sense. BUILDOUT is an **Index DTF**, so you **cannot** stake RSR as first-loss collateral/insurance, and there is no staking reward for absorbing risk (that exists only on Reserve **Yield DTFs**). What you *can* do is **vote-lock** RSR to BUILDOUT to become a **governor** — your locked balance shows as **vlRSR** — and help govern the DTF. vlRSR governors earn a share of the DTF's fees — for these BSC DTFs, the ~67% of fees remaining after the 33% platform share is routed to vlRSR governance and auto-converted to RSR (accruing as an up-only vlRSR/RSR exchange rate, no manual claiming); verify the live split in the app. Because BUILDOUT is on **BNB Smart Chain**, you must bridge your RSR to BNB Chain (e.g., via Wormhole) to vote-lock — the canonical RSR on BNB Smart Chain is `0x23f72a3Db61D6CB8aBE5d9AF1Ac4B6c99327bFee`. See Section 8.9.
 
-**Q: Who runs Reserve / who is liable?**
-A: reserve.org and app.reserve.org are operated by **ABC Labs, LLC**, which is not a regulated financial intermediary and is not registered with the SEC/CFTC. The protocol is open-source and governed onchain. Nothing here creates any guarantee or liability for your outcomes.
+**Q: Who runs Reserve?**
+A: reserve.org and app.reserve.org are operated by **ABC Labs, LLC**, which is not a regulated financial intermediary and is not registered with the SEC/CFTC. The protocol is open-source and governed onchain.
 
 **Q: What blockchain does BUILDOUT run on, and what's the contract address?**
 A: BUILDOUT is deployed on **BNB Smart Chain (BSC)** at `0xd7ce7a841310982acd976d1a6fe7bb6063c5689d`. Its underlying Ondo tokenized stocks are also BSC tokens. PancakeSwap (a BSC DEX) is a primary trading venue. Reserve's Index Protocol also runs on Ethereum and Base, but BUILDOUT's home chain is BSC. Always confirm the address on app.reserve.org / bscscan.com and beware of imposter tokens reusing the ticker.
@@ -949,10 +963,10 @@ BUILDOUT is a **concentrated, single-theme basket** and may be **more volatile t
 
 Each **Ondo Global Markets** token is fully backed by shares of the corresponding equity in a regulated US brokerage account; any redemption rights are offered by Ondo and remain subject to Ondo's terms, conditions, procedures, availability, and applicable law. Eligibility to buy or redeem is set by Ondo, the token issuer.
 
-**Conflicts of interest:** the operator designs each DTF's methodology, selects its constituents, operates the platform, and benefits from platform usage (including fees and RSR buy-and-burn), and has a commercial relationship with Ondo — these are conflicts of interest. **DTF fees** are 0.3% mint + 0.6% annual TVL; onchain gas, exchange spreads, and Ondo mint/redeem terms also apply.
+**Conflicts of interest:** the operator designs each DTF's methodology, selects its constituents, operates the platform, and benefits from platform usage (including fees and RSR buy-and-burn) — these are conflicts of interest. **DTF fees** are 0.3% mint + 0.6% annual TVL; onchain gas, exchange spreads, and Ondo mint/redeem terms also apply.
 
 The third-party market-size forecasts referenced (WSTS and others) are estimates of industry size, are inherently uncertain, and are **not** projections or guarantees of fund performance. **"Reserve" is a registered trademark of ABC Labs, LLC.** Full terms, eligibility criteria, and risk disclosures apply and are available at **reserve.org/terms_and_conditions.** Where this document conflicts with Reserve's official sources, the official sources control. © ABC Labs, LLC.
 
 ---
 
-*Document type: LLM-generated reference for the Reserve AI Infrastructure DTF ($BUILDOUT). Document version 0.2 · Data as of June 2026. This is a living document and one of the Reserve AI DTF suite (BUILDOUT, POWER, NEOCLOUD, ROBOTS, PHOTON). Verify everything on app.reserve.org before acting.*
+*Document type: LLM-generated reference for the Reserve AI Infrastructure DTF ($BUILDOUT). Document version 0.3 · Data as of June 2026. This is a living document and one of the Reserve AI DTF suite (BUILDOUT, POWER, NEOCLOUD, ROBOTS, PHOTON). Verify everything on app.reserve.org before acting.*
