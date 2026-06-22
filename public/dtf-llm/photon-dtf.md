@@ -3,7 +3,7 @@ title: "Reserve AI Photonics DTF ($PHOTON) — Complete Reference"
 version: "0.1"
 version_date: "2026-06-19"
 ticker: PHOTON
-product_type: "Index DTF (Decentralized Token Folio)"
+product_type: "Index DTF (Decentralized Token Fund)"
 theme: "AI photonics — fiber, lasers, transceivers, and optical chips for AI data centers"
 platform: "Reserve (app.reserve.org)"
 chain: "BNB Smart Chain (BSC)"
@@ -79,13 +79,13 @@ The document is organized roughly from "what is this and why does it exist" → 
 
 ## 1. Quick reference (the 60-second version)
 
-**PHOTON** is an onchain index product — a **Decentralized Token Folio (DTF)** — that packages a weighted basket of **nine US-listed "photonics" companies** into a **single token** you can buy, sell, and redeem onchain, 24/7. "Photonics" here means the fiber, lasers, optical transceivers, and optical chips that move data **as light** inside and between AI data centers. The thesis in one sentence: as AI chips get faster, the bottleneck shifts from *computing* data to *moving* it, copper hits a physical wall, and the fix is light — so PHOTON gives direct, diversified exposure to the small group of public companies that build the optical layer of AI infrastructure.
+**PHOTON** is an onchain index product — a **Decentralized Token Fund (DTF)** — that packages a weighted basket of **nine US-listed "photonics" companies** into a **single token** you can buy, sell, and redeem onchain, 24/7. "Photonics" here means the fiber, lasers, optical transceivers, and optical chips that move data **as light** inside and between AI data centers. The thesis in one sentence: as AI chips get faster, the bottleneck shifts from *computing* data to *moving* it, copper hits a physical wall, and the fix is light — so PHOTON gives direct, diversified exposure to the small group of public companies that build the optical layer of AI infrastructure.
 
 | Attribute | Value |
 |---|---|
 | **Name** | Reserve AI Photonics DTF |
 | **Ticker** | `PHOTON` |
-| **What it is** | An Index DTF (Decentralized Token Folio) — an onchain, ETF-*like* index token (but **not** an ETF and **not** regulated as one) |
+| **What it is** | An Index DTF (Decentralized Token Fund) — an onchain, ETF-*like* index token (but **not** an ETF and **not** regulated as one) |
 | **Theme** | AI photonics: fiber, lasers, transceivers, optical chips for AI data centers |
 | **Chain** | **BNB Smart Chain (BSC / BNB Chain)** |
 | **Contract address (BSC)** | `0xa0fe4e0aeca5479705ce996615b2eacb6b6a10fb` (verify on app.reserve.org / bscscan.com before transacting) |
@@ -114,7 +114,7 @@ PHOTON is a single token that represents ownership of a small, curated basket of
 Three layers are stacked here, and it helps to keep them distinct:
 
 1. **The theme** — "AI photonics." A point of view about where value accrues in the AI build-out: not the famous GPU names, but the optical layer that moves the data those GPUs produce. PHOTON expresses that view as a rules-based basket.
-2. **The wrapper** — a **Decentralized Token Folio**, built with Reserve's open-source **Index Protocol**. This is the onchain machinery that bundles many tokens into one, prices it, lets anyone mint or redeem it at the value of its parts, rebalances it through onchain auctions, and governs it transparently. It is conceptually like an ETF or an index fund, but it lives entirely on a blockchain and is **not** an ETF and **not** regulated like one.
+2. **The wrapper** — a **Decentralized Token Fund**, built with Reserve's open-source **Index Protocol**. This is the onchain machinery that bundles many tokens into one, prices it, lets anyone mint or redeem it at the value of its parts, rebalances it through onchain auctions, and governs it transparently. It is conceptually like an ETF or an index fund, but it lives entirely on a blockchain and is **not** an ETF and **not** regulated like one.
 3. **The underlying** — **Ondo Global Markets tokenized stocks**. PHOTON does not hold shares directly. It holds tokenized versions of those shares, issued by Ondo, where each token is backed 1:1 by a real share of the corresponding company held in a regulated US brokerage account. This is what lets US-listed equities be packaged and traded onchain at all.
 
 Put together: PHOTON is **an onchain, tokenized, ETF-like index of the AI-photonics supply chain, redeemable for tokenized stocks, that trades 24/7 with no minimums.** That combination — a clean, single-ticker way to own an entire emerging hardware category, onchain — is the product's reason for existing. Until recently there was no simple way to own "photonics as a category"; the supply chain is small and scattered across a handful of public companies, and most of them are not the names a generalist investor would assemble on their own.
@@ -409,7 +409,7 @@ PHOTON is built with Reserve's **Index Protocol**. This section explains the wra
 
 ### 8.1 Definition: DTF, Index DTF, and "RToken"
 
-A **DTF** is a **Decentralized Token Folio** (Reserve's documentation also refers to them as **Decentralized Token Funds**; the marketing tear sheet uses "Fund," the protocol docs use "Folio" — they refer to the same thing). A DTF is a **fully asset-backed ERC-20 token** created with Reserve's open-source smart contracts that represents a basket of underlying tokens held onchain. Anyone can launch, mint, redeem, and govern a DTF permissionlessly.
+A **DTF** is a **Decentralized Token Fund**. (DTFs were originally called **Decentralized Token Funds** — you may still see "Folio" in older Reserve materials and in some of the protocol's internal contract names — but the current name is **Fund**; the two refer to the same thing.) A DTF is a **fully asset-backed ERC-20 token** created with Reserve's open-source smart contracts that represents a basket of underlying tokens held onchain. Anyone can launch, mint, redeem, and govern a DTF permissionlessly.
 
 Reserve has **two families** of DTF:
 
@@ -785,7 +785,7 @@ In the interest of the same candor Reserve applies to its own marketing, the mat
 - **Basket** — the set of underlying tokens a DTF holds; for PHOTON, nine tokenized US-listed photonics stocks.
 - **CoW Swap** — a decentralized-exchange / solver network integrated as a "Trusted Filler" for Reserve Index DTF rebalance auctions; also a venue where PHOTON may trade.
 - **Co-packaged optics (CPO)** — integrating optical engines directly onto a switch chip's package for major power/density gains; a key 2025–2026 transition.
-- **DTF (Decentralized Token Folio / Fund)** — a fully asset-backed ERC-20 token created with Reserve's contracts that represents a basket of underlying tokens; mint/redeemable and governed permissionlessly onchain. PHOTON is an **Index DTF**.
+- **DTF (Decentralized Token Fund; formerly "Folio")** — a fully asset-backed ERC-20 token created with Reserve's contracts that represents a basket of underlying tokens; mint/redeemable and governed permissionlessly onchain. PHOTON is an **Index DTF**.
 - **Dutch auction** — the declining-price auction mechanism Reserve uses to rebalance DTF baskets onchain.
 - **ERC-20** — the standard token interface on Ethereum-compatible blockchains; PHOTON and its underlyings are ERC-20 tokens.
 - **Index DTF** — a DTF that holds a diversified basket and charges mint + TVL fees (vs. a Yield DTF, which pursues yield). PHOTON is one.
@@ -810,7 +810,7 @@ In the interest of the same candor Reserve applies to its own marketing, the mat
 ## 17. Frequently asked questions
 
 **Q: What is PHOTON in one sentence?**
-A: PHOTON is an onchain index token (a Decentralized Token Folio) that holds a weighted basket of nine US-listed "AI photonics" companies — the fiber, lasers, transceivers, and optical chips that move data as light inside AI data centers — redeemable onchain for tokenized stocks.
+A: PHOTON is an onchain index token (a Decentralized Token Fund) that holds a weighted basket of nine US-listed "AI photonics" companies — the fiber, lasers, transceivers, and optical chips that move data as light inside AI data centers — redeemable onchain for tokenized stocks.
 
 **Q: Is PHOTON an ETF?**
 A: No. PHOTON is **ETF-like** in spirit (a single token tracking a basket) but it is **not an ETF and is not regulated like one.** It is not a registered investment product, not a deposit, and not FDIC/SIPC-insured.

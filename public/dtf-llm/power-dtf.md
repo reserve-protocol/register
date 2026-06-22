@@ -3,7 +3,7 @@ title: "Reserve AI Power DTF ($POWER) — Complete Reference"
 version: "0.1"
 version_date: "2026-06-19"
 ticker: POWER
-product_type: "Index DTF (Decentralized Token Folio)"
+product_type: "Index DTF (Decentralized Token Fund)"
 theme: "AI power — gas turbines, nuclear, grid & electrical equipment, and power chips for AI data centers"
 platform: "Reserve (app.reserve.org)"
 chain: "BNB Smart Chain (BSC)"
@@ -79,13 +79,13 @@ The document is organized roughly from "what is this and why does it exist" → 
 
 ## 1. Quick reference (the 60-second version)
 
-**POWER** is an onchain index product — a **Decentralized Token Folio (DTF)** — that packages a weighted basket of **thirteen US-listed "AI power" companies** into a **single token** you can buy, sell, and redeem onchain, 24/7. "AI power" here means the companies that **generate, move, and condition the electricity** that AI data centers consume: the gas turbines, nuclear plants, grid and electrical equipment, and power semiconductors behind the AI build-out. The thesis in one sentence: strip away the software and the chips, and AI comes down to electricity — a single AI data center can draw as much power as a small city, the grid was never built for hundreds of them, and POWER gives direct, diversified exposure to the public companies that supply that electricity and the gear that delivers it.
+**POWER** is an onchain index product — a **Decentralized Token Fund (DTF)** — that packages a weighted basket of **thirteen US-listed "AI power" companies** into a **single token** you can buy, sell, and redeem onchain, 24/7. "AI power" here means the companies that **generate, move, and condition the electricity** that AI data centers consume: the gas turbines, nuclear plants, grid and electrical equipment, and power semiconductors behind the AI build-out. The thesis in one sentence: strip away the software and the chips, and AI comes down to electricity — a single AI data center can draw as much power as a small city, the grid was never built for hundreds of them, and POWER gives direct, diversified exposure to the public companies that supply that electricity and the gear that delivers it.
 
 | Attribute | Value |
 |---|---|
 | **Name** | Reserve AI Power DTF |
 | **Ticker** | `POWER` |
-| **What it is** | An Index DTF (Decentralized Token Folio) — an onchain, ETF-*like* index token (but **not** an ETF and **not** regulated as one) |
+| **What it is** | An Index DTF (Decentralized Token Fund) — an onchain, ETF-*like* index token (but **not** an ETF and **not** regulated as one) |
 | **Theme** | AI power: gas turbines, nuclear, grid & electrical equipment, power-at-the-rack, and power chips for AI data centers |
 | **Chain** | **BNB Smart Chain (BSC / BNB Chain)** |
 | **Contract address (BSC)** | `0x290bCc0Fd5096cC3261AE2021841c7BC67Cb0f51` (verify on app.reserve.org / bscscan.com before transacting) |
@@ -114,7 +114,7 @@ POWER is a single token that represents ownership of a curated basket of compani
 Three layers are stacked here, and it helps to keep them distinct:
 
 1. **The theme** — "AI power." A point of view about where value accrues in the AI build-out: not the GPUs and not the software, but the **electricity** that makes the whole thing run and the physical equipment that produces, transports, and conditions it. POWER expresses that view as a rules-based basket.
-2. **The wrapper** — a **Decentralized Token Folio**, built with Reserve's open-source **Index Protocol**. This is the onchain machinery that bundles many tokens into one, prices it, lets anyone mint or redeem it at the value of its parts, rebalances it through onchain auctions, and governs it transparently. It is conceptually like an ETF or an index fund, but it lives entirely on a blockchain and is **not** an ETF and **not** regulated like one.
+2. **The wrapper** — a **Decentralized Token Fund**, built with Reserve's open-source **Index Protocol**. This is the onchain machinery that bundles many tokens into one, prices it, lets anyone mint or redeem it at the value of its parts, rebalances it through onchain auctions, and governs it transparently. It is conceptually like an ETF or an index fund, but it lives entirely on a blockchain and is **not** an ETF and **not** regulated like one.
 3. **The underlying** — **Ondo Global Markets tokenized stocks**. POWER does not hold shares directly. It holds tokenized versions of those shares, issued by Ondo, where each token is backed 1:1 by a real share of the corresponding company held in a regulated US brokerage account. This is what lets US-listed equities be packaged and traded onchain at all.
 
 Put together: POWER is **an onchain, tokenized, ETF-like index of the AI-power supply chain, redeemable for tokenized stocks, that trades 24/7 with no minimums.** That combination — a clean, single-ticker way to own the electricity layer of the AI build-out, onchain — is the product's reason for existing. The "AI energy" trade is spread across very different kinds of companies — power producers, turbine makers, grid contractors, electrical-equipment manufacturers, and chip companies — and most generalist investors would never assemble that mix on their own.
@@ -478,7 +478,7 @@ POWER is built with Reserve's **Index Protocol**. This section explains the wrap
 
 ### 8.1 Definition: DTF, Index DTF, and "RToken"
 
-A **DTF** is a **Decentralized Token Folio** (Reserve's documentation also refers to them as **Decentralized Token Funds**; the marketing tear sheet uses "Fund," the protocol docs use "Folio" — they refer to the same thing). A DTF is a **fully asset-backed ERC-20 token** created with Reserve's open-source smart contracts that represents a basket of underlying tokens held onchain. Anyone can launch, mint, redeem, and govern a DTF permissionlessly.
+A **DTF** is a **Decentralized Token Fund**. (DTFs were originally called **Decentralized Token Funds** — you may still see "Folio" in older Reserve materials and in some of the protocol's internal contract names — but the current name is **Fund**; the two refer to the same thing.) A DTF is a **fully asset-backed ERC-20 token** created with Reserve's open-source smart contracts that represents a basket of underlying tokens held onchain. Anyone can launch, mint, redeem, and govern a DTF permissionlessly.
 
 Reserve has **two families** of DTF:
 
@@ -863,7 +863,7 @@ In the interest of the same candor Reserve applies to its own marketing, the mat
 - **Basket** — the set of underlying tokens a DTF holds; for POWER, thirteen tokenized US-listed AI-power stocks.
 - **Behind-the-meter (BTM)** — power generated on-site at a facility and consumed without crossing the public utility meter, letting operators bypass grid-interconnection queues; Bloom Energy's fuel cells and some Powell/Talen arrangements are examples.
 - **CoW Swap** — a decentralized-exchange / solver network integrated as a "Trusted Filler" for Reserve Index DTF rebalance auctions; also a venue where POWER may trade.
-- **DTF (Decentralized Token Folio / Fund)** — a fully asset-backed ERC-20 token created with Reserve's contracts that represents a basket of underlying tokens; mint/redeemable and governed permissionlessly onchain. POWER is an **Index DTF**.
+- **DTF (Decentralized Token Fund; formerly "Folio")** — a fully asset-backed ERC-20 token created with Reserve's contracts that represents a basket of underlying tokens; mint/redeemable and governed permissionlessly onchain. POWER is an **Index DTF**.
 - **Dutch auction** — the declining-price auction mechanism Reserve uses to rebalance DTF baskets onchain.
 - **ERC-20** — the standard token interface on Ethereum-compatible blockchains; POWER and its underlyings are ERC-20 tokens.
 - **Firm power** — generation available on demand around the clock (gas, nuclear, fuel cells), as opposed to intermittent solar/wind; AI data centers require firm power.
@@ -892,7 +892,7 @@ In the interest of the same candor Reserve applies to its own marketing, the mat
 ## 17. Frequently asked questions
 
 **Q: What is POWER in one sentence?**
-A: POWER is an onchain index token (a Decentralized Token Folio) that holds a weighted basket of thirteen US-listed "AI power" companies — the gas turbines, nuclear plants, grid and electrical equipment, and power chips that generate, move, and condition the electricity behind AI data centers — redeemable onchain for tokenized stocks.
+A: POWER is an onchain index token (a Decentralized Token Fund) that holds a weighted basket of thirteen US-listed "AI power" companies — the gas turbines, nuclear plants, grid and electrical equipment, and power chips that generate, move, and condition the electricity behind AI data centers — redeemable onchain for tokenized stocks.
 
 **Q: Is POWER an ETF?**
 A: No. POWER is **ETF-like** in spirit (a single token tracking a basket) but it is **not an ETF and is not regulated like one.** It is not a registered investment product, not a deposit, and not FDIC/SIPC-insured.

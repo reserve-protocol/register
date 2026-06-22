@@ -3,7 +3,7 @@ title: "Reserve AI Infrastructure DTF ($BUILDOUT) — Complete Reference"
 version: "0.1"
 version_date: "2026-06-19"
 ticker: BUILDOUT
-product_type: "Index DTF (Decentralized Token Folio)"
+product_type: "Index DTF (Decentralized Token Fund)"
 theme: "AI infrastructure — the picks & shovels of the AI buildout: semiconductors, memory, manufacturing equipment, networking, and power"
 platform: "Reserve (app.reserve.org)"
 chain: "BNB Smart Chain (BSC)"
@@ -79,13 +79,13 @@ The document is organized roughly from "what is this and why does it exist" → 
 
 ## 1. Quick reference (the 60-second version)
 
-**BUILDOUT** is an onchain index product — a **Decentralized Token Folio (DTF)** — that packages a weighted basket of the **25 largest US-listed AI-hardware companies** into a **single token** you can buy, sell, and redeem onchain, 24/7. "AI infrastructure" here means the physical machine the entire AI economy runs on: the **chips that compute, the memory that feeds them, the equipment and foundries that make them, the networking that connects them, and the power that runs it all.** The thesis in one sentence: before any model can run, someone has to build the machine — and BUILDOUT gives direct, diversified exposure to the picks-and-shovels suppliers that every AI dollar flows through first, rather than to any single chip or model company.
+**BUILDOUT** is an onchain index product — a **Decentralized Token Fund (DTF)** — that packages a weighted basket of the **25 largest US-listed AI-hardware companies** into a **single token** you can buy, sell, and redeem onchain, 24/7. "AI infrastructure" here means the physical machine the entire AI economy runs on: the **chips that compute, the memory that feeds them, the equipment and foundries that make them, the networking that connects them, and the power that runs it all.** The thesis in one sentence: before any model can run, someone has to build the machine — and BUILDOUT gives direct, diversified exposure to the picks-and-shovels suppliers that every AI dollar flows through first, rather than to any single chip or model company.
 
 | Attribute | Value |
 |---|---|
 | **Name** | Reserve AI Infrastructure DTF |
 | **Ticker** | `BUILDOUT` |
-| **What it is** | An Index DTF (Decentralized Token Folio) — an onchain, ETF-*like* index token (but **not** an ETF and **not** regulated as one) |
+| **What it is** | An Index DTF (Decentralized Token Fund) — an onchain, ETF-*like* index token (but **not** an ETF and **not** regulated as one) |
 | **Theme** | AI infrastructure: the picks & shovels — semiconductors, memory, manufacturing equipment, networking, and power for the AI buildout |
 | **Chain** | **BNB Smart Chain (BSC / BNB Chain)** |
 | **Contract address (BSC)** | `0xd7ce7a841310982acd976d1a6fe7bb6063c5689d` (verify on app.reserve.org / bscscan.com before transacting) |
@@ -114,7 +114,7 @@ BUILDOUT is a single token that represents ownership of a curated basket of comp
 Three layers are stacked here, and it helps to keep them distinct:
 
 1. **The theme** — "AI infrastructure," i.e., the *picks and shovels* of the AI buildout. A point of view about where value accrues in the AI economy: not in the apps or the models, but in the physical hardware that every model is built and run on. BUILDOUT expresses that view as a rules-based basket of the 25 largest companies that supply that hardware.
-2. **The wrapper** — a **Decentralized Token Folio**, built with Reserve's open-source **Index Protocol**. This is the onchain machinery that bundles many tokens into one, prices it, lets anyone mint or redeem it at the value of its parts, rebalances it through onchain auctions, and governs it transparently. It is conceptually like an ETF or an index fund, but it lives entirely on a blockchain and is **not** an ETF and **not** regulated like one.
+2. **The wrapper** — a **Decentralized Token Fund**, built with Reserve's open-source **Index Protocol**. This is the onchain machinery that bundles many tokens into one, prices it, lets anyone mint or redeem it at the value of its parts, rebalances it through onchain auctions, and governs it transparently. It is conceptually like an ETF or an index fund, but it lives entirely on a blockchain and is **not** an ETF and **not** regulated like one.
 3. **The underlying** — **Ondo Global Markets tokenized stocks**. BUILDOUT does not hold shares directly. It holds tokenized versions of those shares, issued by Ondo, where each token is backed 1:1 by a real share of the corresponding company held in a regulated US brokerage account. This is what lets US-listed equities be packaged and traded onchain at all.
 
 Put together: BUILDOUT is **an onchain, tokenized, ETF-like index of the AI-hardware supply chain, redeemable for tokenized stocks, that trades 24/7 with no minimums.** That combination — a clean, single-ticker way to own the entire AI-infrastructure category in one click, onchain — is the product's reason for existing. The names that build AI's machine are scattered across half a dozen very different industries (logic chips, memory, lithography, networking gear, electrical equipment, power generation), and assembling and re-weighting that list by hand every quarter is exactly the kind of work the wrapper does for you.
@@ -392,7 +392,7 @@ BUILDOUT is built with Reserve's **Index Protocol**. This section explains the w
 
 ### 8.1 Definition: DTF, Index DTF, and "RToken"
 
-A **DTF** is a **Decentralized Token Folio** (Reserve's documentation also refers to them as **Decentralized Token Funds**; the marketing tear sheet uses "Fund," the protocol docs use "Folio" — they refer to the same thing). A DTF is a **fully asset-backed ERC-20 token** created with Reserve's open-source smart contracts that represents a basket of underlying tokens held onchain. Anyone can launch, mint, redeem, and govern a DTF permissionlessly.
+A **DTF** is a **Decentralized Token Fund**. (DTFs were originally called **Decentralized Token Funds** — you may still see "Folio" in older Reserve materials and in some of the protocol's internal contract names — but the current name is **Fund**; the two refer to the same thing.) A DTF is a **fully asset-backed ERC-20 token** created with Reserve's open-source smart contracts that represents a basket of underlying tokens held onchain. Anyone can launch, mint, redeem, and govern a DTF permissionlessly.
 
 Reserve has **two families** of DTF:
 
@@ -770,7 +770,7 @@ In the interest of the same candor Reserve applies to its own marketing, the mat
 - **Basket** — the set of underlying tokens a DTF holds; for BUILDOUT, 25 tokenized US-listed AI-hardware stocks.
 - **CoW Swap** — a decentralized-exchange / solver network integrated as a "Trusted Filler" for Reserve Index DTF rebalance auctions; also a venue where BUILDOUT may trade.
 - **CPU / IP** — the central processor and the licensed processor designs/architecture it is built on; Arm (ARM) is the basket's CPU-IP exposure.
-- **DTF (Decentralized Token Folio / Fund)** — a fully asset-backed ERC-20 token created with Reserve's contracts that represents a basket of underlying tokens; mint/redeemable and governed permissionlessly onchain. BUILDOUT is an **Index DTF**.
+- **DTF (Decentralized Token Fund; formerly "Folio")** — a fully asset-backed ERC-20 token created with Reserve's contracts that represents a basket of underlying tokens; mint/redeemable and governed permissionlessly onchain. BUILDOUT is an **Index DTF**.
 - **Dutch auction** — the declining-price auction mechanism Reserve uses to rebalance DTF baskets onchain.
 - **ERC-20** — the standard token interface on Ethereum-compatible blockchains; BUILDOUT and its underlyings are ERC-20 tokens.
 - **EUV (extreme ultraviolet lithography)** — the lithography technology, monopolized by ASML, required to print leading-edge chip features; **High-NA EUV** is its next generation.
@@ -797,7 +797,7 @@ In the interest of the same candor Reserve applies to its own marketing, the mat
 ## 17. Frequently asked questions
 
 **Q: What is BUILDOUT in one sentence?**
-A: BUILDOUT is an onchain index token (a Decentralized Token Folio) that holds a weighted basket of the 25 largest US-listed "AI infrastructure" companies — the chips, memory, manufacturing equipment, networking, and power that the AI buildout runs on — redeemable onchain for tokenized stocks.
+A: BUILDOUT is an onchain index token (a Decentralized Token Fund) that holds a weighted basket of the 25 largest US-listed "AI infrastructure" companies — the chips, memory, manufacturing equipment, networking, and power that the AI buildout runs on — redeemable onchain for tokenized stocks.
 
 **Q: Is BUILDOUT an ETF?**
 A: No. BUILDOUT is **ETF-like** in spirit (a single token tracking a basket) but it is **not an ETF and is not regulated like one.** It is not a registered investment product, not a deposit, and not FDIC/SIPC-insured.

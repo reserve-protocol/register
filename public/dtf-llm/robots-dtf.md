@@ -3,7 +3,7 @@ title: "Reserve Robotics DTF ($ROBOTS) — Complete Reference"
 version: "0.1"
 version_date: "2026-06-19"
 ticker: ROBOTS
-product_type: "Index DTF (Decentralized Token Folio)"
+product_type: "Index DTF (Decentralized Token Fund)"
 theme: "Robotics & automation — AI moving off the screen into the physical world: humanoids, surgical robots, factory & warehouse automation, lidar, machine vision, and autonomy"
 platform: "Reserve (app.reserve.org)"
 chain: "BNB Smart Chain (BSC)"
@@ -79,13 +79,13 @@ The document is organized roughly from "what is this and why does it exist" → 
 
 ## 1. Quick reference (the 60-second version)
 
-**ROBOTS** is an onchain index product — a **Decentralized Token Folio (DTF)** — that packages a weighted basket of **nine US-listed robotics & automation companies** into a **single token** you can buy, sell, and redeem onchain, 24/7. The theme in one sentence: **AI is moving off the screen and into the physical world** — the same breakthroughs that taught software to reason are now teaching machines to perceive, decide, act, and take on physical labor — and ROBOTS gives direct, diversified exposure to the public companies building that transition: surgical robots, factory and warehouse automation, autonomy, lidar, machine vision, and the chips that let machines navigate the real world.
+**ROBOTS** is an onchain index product — a **Decentralized Token Fund (DTF)** — that packages a weighted basket of **nine US-listed robotics & automation companies** into a **single token** you can buy, sell, and redeem onchain, 24/7. The theme in one sentence: **AI is moving off the screen and into the physical world** — the same breakthroughs that taught software to reason are now teaching machines to perceive, decide, act, and take on physical labor — and ROBOTS gives direct, diversified exposure to the public companies building that transition: surgical robots, factory and warehouse automation, autonomy, lidar, machine vision, and the chips that let machines navigate the real world.
 
 | Attribute | Value |
 |---|---|
 | **Name** | Reserve Robotics DTF |
 | **Ticker** | `ROBOTS` |
-| **What it is** | An Index DTF (Decentralized Token Folio) — an onchain, ETF-*like* index token (but **not** an ETF and **not** regulated as one) |
+| **What it is** | An Index DTF (Decentralized Token Fund) — an onchain, ETF-*like* index token (but **not** an ETF and **not** regulated as one) |
 | **Theme** | Robotics & automation: surgical robots, factory/warehouse automation, autonomy, lidar, machine vision, edge silicon |
 | **Chain** | **BNB Smart Chain (BSC / BNB Chain)** |
 | **Contract address (BSC)** | `0x75617e7653f86f074cc30b9fd4ebf52ba9b62247` (verify on app.reserve.org / bscscan.com before transacting) |
@@ -114,7 +114,7 @@ ROBOTS is a single token that represents ownership of a small, curated basket of
 Three layers are stacked here, and it helps to keep them distinct:
 
 1. **The theme** — "robotics & automation," or more precisely **physical AI**: the idea that artificial intelligence is moving from purely digital tasks (writing, coding, image generation) into machines that perceive and act in the real world. ROBOTS expresses that view as a rules-based basket of the public companies — across surgical robotics, factory and warehouse automation, autonomy, lidar, and machine vision — that build the hardware and software of that transition.
-2. **The wrapper** — a **Decentralized Token Folio**, built with Reserve's open-source **Index Protocol**. This is the onchain machinery that bundles many tokens into one, prices it, lets anyone mint or redeem it at the value of its parts, rebalances it through onchain auctions, and governs it transparently. It is conceptually like an ETF or an index fund, but it lives entirely on a blockchain and is **not** an ETF and **not** regulated like one.
+2. **The wrapper** — a **Decentralized Token Fund**, built with Reserve's open-source **Index Protocol**. This is the onchain machinery that bundles many tokens into one, prices it, lets anyone mint or redeem it at the value of its parts, rebalances it through onchain auctions, and governs it transparently. It is conceptually like an ETF or an index fund, but it lives entirely on a blockchain and is **not** an ETF and **not** regulated like one.
 3. **The underlying** — **Ondo Global Markets tokenized stocks**. ROBOTS does not hold shares directly. It holds tokenized versions of those shares, issued by Ondo, where each token is backed 1:1 by a real share of the corresponding company held in a regulated US brokerage account. This is what lets US-listed equities be packaged and traded onchain at all.
 
 Put together: ROBOTS is **an onchain, tokenized, ETF-like index of the robotics & automation supply chain, redeemable for tokenized stocks, that trades 24/7 with no minimums.** That combination — a clean, single-ticker way to own an entire emerging hardware category, onchain — is the product's reason for existing. There is no single stock that *is* "robotics"; the value is scattered across surgical-robot makers, factory-automation giants, warehouse-automation upstarts, self-driving software companies, lidar makers, and the chip suppliers that give machines eyes and reflexes. ROBOTS assembles a representative slice in one position.
@@ -424,7 +424,7 @@ ROBOTS is built with Reserve's **Index Protocol**. This section explains the wra
 
 ### 8.1 Definition: DTF, Index DTF, and "RToken"
 
-A **DTF** is a **Decentralized Token Folio** (Reserve's documentation also refers to them as **Decentralized Token Funds**; the marketing tear sheet uses "Fund," the protocol docs use "Folio" — they refer to the same thing). A DTF is a **fully asset-backed ERC-20 token** created with Reserve's open-source smart contracts that represents a basket of underlying tokens held onchain. Anyone can launch, mint, redeem, and govern a DTF permissionlessly.
+A **DTF** is a **Decentralized Token Fund**. (DTFs were originally called **Decentralized Token Funds** — you may still see "Folio" in older Reserve materials and in some of the protocol's internal contract names — but the current name is **Fund**; the two refer to the same thing.) A DTF is a **fully asset-backed ERC-20 token** created with Reserve's open-source smart contracts that represents a basket of underlying tokens held onchain. Anyone can launch, mint, redeem, and govern a DTF permissionlessly.
 
 Reserve has **two families** of DTF:
 
@@ -800,7 +800,7 @@ In the interest of the same candor Reserve applies to its own marketing, the mat
 - **Autonomy / self-driving** — software and systems that let a vehicle perceive, decide, and drive itself, from driver-assistance up to fully driverless operation. Aurora (AUR) and Mobileye (MBLY) are the basket's autonomy names.
 - **Basket** — the set of underlying tokens a DTF holds; for ROBOTS, nine tokenized US-listed robotics & automation stocks.
 - **CoW Swap** — a decentralized-exchange / solver network integrated as a "Trusted Filler" for Reserve Index DTF rebalance auctions; also a venue where ROBOTS may trade.
-- **DTF (Decentralized Token Folio / Fund)** — a fully asset-backed ERC-20 token created with Reserve's contracts that represents a basket of underlying tokens; mint/redeemable and governed permissionlessly onchain. ROBOTS is an **Index DTF**.
+- **DTF (Decentralized Token Fund; formerly "Folio")** — a fully asset-backed ERC-20 token created with Reserve's contracts that represents a basket of underlying tokens; mint/redeemable and governed permissionlessly onchain. ROBOTS is an **Index DTF**.
 - **Dutch auction** — the declining-price auction mechanism Reserve uses to rebalance DTF baskets onchain.
 - **Embodied AI** — see *physical AI*.
 - **ERC-20** — the standard token interface on Ethereum-compatible blockchains; ROBOTS and its underlyings are ERC-20 tokens.
@@ -828,7 +828,7 @@ In the interest of the same candor Reserve applies to its own marketing, the mat
 ## 17. Frequently asked questions
 
 **Q: What is ROBOTS in one sentence?**
-A: ROBOTS is an onchain index token (a Decentralized Token Folio) that holds a weighted basket of nine US-listed robotics & automation companies — spanning surgical robots, factory and warehouse automation, autonomy, lidar, and machine vision — redeemable onchain for tokenized stocks.
+A: ROBOTS is an onchain index token (a Decentralized Token Fund) that holds a weighted basket of nine US-listed robotics & automation companies — spanning surgical robots, factory and warehouse automation, autonomy, lidar, and machine vision — redeemable onchain for tokenized stocks.
 
 **Q: Is ROBOTS an ETF?**
 A: No. ROBOTS is **ETF-like** in spirit (a single token tracking a basket) but it is **not an ETF and is not regulated like one.** It is not a registered investment product, not a deposit, and not FDIC/SIPC-insured.

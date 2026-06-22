@@ -3,7 +3,7 @@ title: "Reserve AI Capacity & Neocloud DTF ($NEOCLOUD) — Complete Reference"
 version: "0.1"
 version_date: "2026-06-19"
 ticker: NEOCLOUD
-product_type: "Index DTF (Decentralized Token Folio)"
+product_type: "Index DTF (Decentralized Token Fund)"
 theme: "AI compute capacity — neoclouds and power-rich data-center operators that raise capital, secure power, and rent out AI compute by the hour"
 platform: "Reserve (app.reserve.org)"
 chain: "BNB Smart Chain (BSC)"
@@ -79,13 +79,13 @@ The document is organized roughly from "what is this and why does it exist" → 
 
 ## 1. Quick reference (the 60-second version)
 
-**NEOCLOUD** is an onchain index product — a **Decentralized Token Folio (DTF)** — that packages a weighted basket of **eight US-listed AI-compute companies** into a **single token** you can buy, sell, and redeem onchain, 24/7. The theme is **AI compute capacity**: the "neoclouds" and power-rich data-center operators that raise the capital, secure the electricity, install the GPUs, and rent out AI computing power by the hour. The thesis in one sentence: building an AI data center costs billions, so most companies that need AI computing **rent it instead of building it** — and NEOCLOUD gives direct, diversified exposure to the public companies turning capital, silicon, and electricity into the compute everyone needs.
+**NEOCLOUD** is an onchain index product — a **Decentralized Token Fund (DTF)** — that packages a weighted basket of **eight US-listed AI-compute companies** into a **single token** you can buy, sell, and redeem onchain, 24/7. The theme is **AI compute capacity**: the "neoclouds" and power-rich data-center operators that raise the capital, secure the electricity, install the GPUs, and rent out AI computing power by the hour. The thesis in one sentence: building an AI data center costs billions, so most companies that need AI computing **rent it instead of building it** — and NEOCLOUD gives direct, diversified exposure to the public companies turning capital, silicon, and electricity into the compute everyone needs.
 
 | Attribute | Value |
 |---|---|
 | **Name** | Reserve AI Capacity & Neocloud DTF |
 | **Ticker** | `NEOCLOUD` |
-| **What it is** | An Index DTF (Decentralized Token Folio) — an onchain, ETF-*like* index token (but **not** an ETF and **not** regulated as one) |
+| **What it is** | An Index DTF (Decentralized Token Fund) — an onchain, ETF-*like* index token (but **not** an ETF and **not** regulated as one) |
 | **Theme** | AI compute capacity: GPU-cloud operators (neoclouds) and the power-rich sites that host them |
 | **Chain** | **BNB Smart Chain (BSC / BNB Chain)** |
 | **Contract address (BSC)** | `0xf571Fe3F0d74521Bc7310B111Faea931C748f27B` (verify on app.reserve.org / bscscan.com before transacting) |
@@ -114,7 +114,7 @@ NEOCLOUD is a single token that represents ownership of a small, curated basket 
 Three layers are stacked here, and it helps to keep them distinct:
 
 1. **The theme** — "AI compute capacity." A point of view about where value accrues in the AI build-out: not the chip designers and not the hyperscalers, but the layer in between — the **neoclouds** that buy GPUs by the tens of thousands and rent them out, and the **power-rich operators** that own the electricity and real estate those GPUs need. NEOCLOUD expresses that view as a rules-based basket.
-2. **The wrapper** — a **Decentralized Token Folio**, built with Reserve's open-source **Index Protocol**. This is the onchain machinery that bundles many tokens into one, prices it, lets anyone mint or redeem it at the value of its parts, rebalances it through onchain auctions, and governs it transparently. It is conceptually like an ETF or an index fund, but it lives entirely on a blockchain and is **not** an ETF and **not** regulated like one.
+2. **The wrapper** — a **Decentralized Token Fund**, built with Reserve's open-source **Index Protocol**. This is the onchain machinery that bundles many tokens into one, prices it, lets anyone mint or redeem it at the value of its parts, rebalances it through onchain auctions, and governs it transparently. It is conceptually like an ETF or an index fund, but it lives entirely on a blockchain and is **not** an ETF and **not** regulated like one.
 3. **The underlying** — **Ondo Global Markets tokenized stocks**. NEOCLOUD does not hold shares directly. It holds tokenized versions of those shares, issued by Ondo, where each token is backed 1:1 by a real share of the corresponding company held in a regulated US brokerage account. This is what lets US-listed equities be packaged and traded onchain at all.
 
 Put together: NEOCLOUD is **an onchain, tokenized, ETF-like index of the AI compute-capacity supply chain, redeemable for tokenized stocks, that trades 24/7 with no minimums.** That combination — a clean, single-ticker way to own an entire emerging infrastructure category, onchain — is the product's reason for existing. Until recently there was no simple way to own "AI compute capacity as a category"; the supply chain is new, fast-moving, and scattered across a handful of recently-public neoclouds and former-bitcoin-miners that most generalist investors would never assemble on their own.
@@ -406,7 +406,7 @@ NEOCLOUD is built with Reserve's **Index Protocol**. This section explains the w
 
 ### 8.1 Definition: DTF, Index DTF, and "RToken"
 
-A **DTF** is a **Decentralized Token Folio** (Reserve's documentation also refers to them as **Decentralized Token Funds**; the marketing tear sheet uses "Fund," the protocol docs use "Folio" — they refer to the same thing). A DTF is a **fully asset-backed ERC-20 token** created with Reserve's open-source smart contracts that represents a basket of underlying tokens held onchain. Anyone can launch, mint, redeem, and govern a DTF permissionlessly.
+A **DTF** is a **Decentralized Token Fund**. (DTFs were originally called **Decentralized Token Funds** — you may still see "Folio" in older Reserve materials and in some of the protocol's internal contract names — but the current name is **Fund**; the two refer to the same thing.) A DTF is a **fully asset-backed ERC-20 token** created with Reserve's open-source smart contracts that represents a basket of underlying tokens held onchain. Anyone can launch, mint, redeem, and govern a DTF permissionlessly.
 
 Reserve has **two families** of DTF:
 
@@ -792,7 +792,7 @@ In the interest of the same candor Reserve applies to its own marketing, the mat
 - **Colocation** — providing data-center space, power, and cooling in which a customer's (e.g., a neocloud's) servers/GPUs are housed and operated; Core Scientific (CORZ) is the basket's large HPC-colocation exposure.
 - **Contracted backlog** — the total future revenue under signed, multi-year customer contracts; large for several constituents but not yet earned — it depends on building and delivering the capacity on schedule.
 - **CoW Swap** — a decentralized-exchange / solver network integrated as a "Trusted Filler" for Reserve Index DTF rebalance auctions; also a venue where NEOCLOUD may trade.
-- **DTF (Decentralized Token Folio / Fund)** — a fully asset-backed ERC-20 token created with Reserve's contracts that represents a basket of underlying tokens; mint/redeemable and governed permissionlessly onchain. NEOCLOUD is an **Index DTF**.
+- **DTF (Decentralized Token Fund; formerly "Folio")** — a fully asset-backed ERC-20 token created with Reserve's contracts that represents a basket of underlying tokens; mint/redeemable and governed permissionlessly onchain. NEOCLOUD is an **Index DTF**.
 - **Dutch auction** — the declining-price auction mechanism Reserve uses to rebalance DTF baskets onchain.
 - **ERC-20** — the standard token interface on Ethereum-compatible blockchains; NEOCLOUD and its underlyings are ERC-20 tokens.
 - **GPU-cloud** — cloud computing built specifically around renting graphics processing units (GPUs) for AI training and inference; the core product of a neocloud.
@@ -817,7 +817,7 @@ In the interest of the same candor Reserve applies to its own marketing, the mat
 ## 17. Frequently asked questions
 
 **Q: What is NEOCLOUD in one sentence?**
-A: NEOCLOUD is an onchain index token (a Decentralized Token Folio) that holds a weighted basket of eight US-listed "AI compute capacity" companies — the neoclouds that rent out GPU computing and the power-rich operators that host them — redeemable onchain for tokenized stocks.
+A: NEOCLOUD is an onchain index token (a Decentralized Token Fund) that holds a weighted basket of eight US-listed "AI compute capacity" companies — the neoclouds that rent out GPU computing and the power-rich operators that host them — redeemable onchain for tokenized stocks.
 
 **Q: Is NEOCLOUD an ETF?**
 A: No. NEOCLOUD is **ETF-like** in spirit (a single token tracking a basket) but it is **not an ETF and is not regulated like one.** It is not a registered investment product, not a deposit, and not FDIC/SIPC-insured.
