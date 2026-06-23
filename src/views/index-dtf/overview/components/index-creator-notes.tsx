@@ -53,7 +53,9 @@ const IndexCreatorNotes = () => {
         </h2>
         <SectionAnchor id="creator-notes" />
       </div>
-      <p className="text-legend">{brandData.dtf?.notesFromCreator}</p>
+      <p className="text-legend whitespace-pre-line">
+        {brandData.dtf?.notesFromCreator}
+      </p>
     </Card>
   )
 }

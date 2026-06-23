@@ -26,7 +26,7 @@ const YieldIndexAbout = () => {
         </h2>
         <SectionAnchor id="about" />
       </div>
-      <p className="text-legend mb-4">
+      <p className="text-legend mb-4 whitespace-pre-line">
         {brandData.dtf?.description || data.mandate}
       </p>
       <div className="flex items-center gap-4 text-sm">

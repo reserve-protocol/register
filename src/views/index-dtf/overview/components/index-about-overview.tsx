@@ -69,7 +69,7 @@ const Mandate = () => {
         </h2>
         <SectionAnchor id="about" />
       </div>
-      <p className="text-legend">
+      <p className="text-legend whitespace-pre-line">
         {brandData.dtf?.description || data.mandate}
       </p>
     </div>
