@@ -16,6 +16,7 @@ const PERIOD_LABELS = {
   '7d': msg`7 day`,
   '1m': msg`30 day`,
   '3m': msg`90 day`,
+  ytd: msg`year to date`,
   '1y': msg`1 year`,
   all: msg`all time`,
 } as const

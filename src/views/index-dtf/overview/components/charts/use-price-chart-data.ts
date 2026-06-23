@@ -34,7 +34,7 @@ export function usePriceChartData({ isBTCMode }: { isBTCMode: boolean }) {
       : historicalConfigs[range]
 
   const prefetchRanges = useMemo(() => {
-    const ranges: Range[] = ['24h', '7d', '1m', '3m', '1y', 'all']
+    const ranges: Range[] = ['24h', '7d', '1m', '3m', 'ytd', '1y', 'all']
     return ranges
       .filter((r) => r !== range && r !== '1y')
       .map((r) => {

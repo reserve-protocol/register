@@ -19,6 +19,7 @@ export const chartConfig = {
 
 const now = Math.floor(Date.now() / 1_000)
 export const currentHour = Math.floor(now / 3_600) * 3_600
+const startOfYear = Math.floor(Date.UTC(new Date().getUTCFullYear(), 0, 1) / 1_000)
 
 export const historicalConfigs: Record<
   Range,
@@ -28,6 +29,7 @@ export const historicalConfigs: Record<
   '7d': { to: currentHour, from: currentHour - 604_800, interval: '1h' },
   '1m': { to: currentHour, from: currentHour - 2_592_000, interval: '1h' },
   '3m': { to: currentHour, from: currentHour - 7_776_000, interval: '1d' },
+  ytd: { to: currentHour, from: startOfYear, interval: '1d' },
   '1y': { to: currentHour, from: currentHour - 31_536_000, interval: '1d' },
   all: { to: currentHour, from: 0, interval: '1d' },
 }

@@ -1,6 +1,6 @@
 import dayjs from 'dayjs'
 
-export type TimeRange = '24h' | '7d' | '1m' | '3m' | '1y' | 'all'
+export type TimeRange = '24h' | '7d' | '1m' | '3m' | 'ytd' | '1y' | 'all'
 
 /**
  * Formats x-axis tick labels for charts based on time range and DTF age
@@ -27,6 +27,7 @@ export const formatXAxisTick = (
     case '7d':
     case '1m':
     case '3m':
+    case 'ytd':
       return date.format('D MMM')
     case '1y':
       return date.format("MMM 'YY")

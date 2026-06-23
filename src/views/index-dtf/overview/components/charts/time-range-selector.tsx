@@ -15,6 +15,7 @@ const ALL_TIME_RANGES = [
   { label: '7D', value: '7d' },
   { label: '1M', value: '1m' },
   { label: '3M', value: '3m' },
+  { label: 'YTD', value: 'ytd' },
   { label: '1Y', value: '1y' },
   { label: 'All', value: 'all' },
 ] as const

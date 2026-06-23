@@ -84,6 +84,7 @@ export const BasketTableHeader = ({
     '7d': '7d',
     '1m': '30d',
     '3m': '90d',
+    ytd: 'YTD',
     '1y': '1y',
     all: 'All',
   }
