@@ -1,5 +1,5 @@
 {
-  "version": "0.4",
+  "version": "0.5",
   "suite": "Reserve Thematic AI DTF Suite",
   "generated": "2026-06-22",
   "index": "https://app.reserve.org/dtf-llm/llms.txt",
@@ -13,7 +13,7 @@
       "chain": "BNB Smart Chain",
       "address": "0xa0fe4e0aeca5479705ce996615b2eacb6b6a10fb",
       "coingecko": "reserve-ai-photonics-dtf",
-      "bytes": 129823
+      "bytes": 135510
     },
     {
       "symbol": "BUILDOUT",
@@ -23,7 +23,7 @@
       "chain": "BNB Smart Chain",
       "address": "0xd7ce7a841310982acd976d1a6fe7bb6063c5689d",
       "coingecko": "reserve-ai-infrastructure-dtf",
-      "bytes": 140739
+      "bytes": 146426
     },
     {
       "symbol": "POWER",
@@ -33,7 +33,7 @@
       "chain": "BNB Smart Chain",
       "address": "0x290bCc0Fd5096cC3261AE2021841c7BC67Cb0f51",
       "coingecko": "reserve-ai-power-dtf",
-      "bytes": 144496
+      "bytes": 150183
     },
     {
       "symbol": "NEOCLOUD",
@@ -43,7 +43,7 @@
       "chain": "BNB Smart Chain",
       "address": "0xf571Fe3F0d74521Bc7310B111Faea931C748f27B",
       "coingecko": "reserve-ai-capacity-and-neocloud-dtf",
-      "bytes": 143313
+      "bytes": 149000
     },
     {
       "symbol": "ROBOTS",
@@ -53,7 +53,7 @@
       "chain": "BNB Smart Chain",
       "address": "0x75617e7653f86f074cc30b9fd4ebf52ba9b62247",
       "coingecko": "reserve-robotics-dtf",
-      "bytes": 140651
+      "bytes": 146338
     }
   ]
 }

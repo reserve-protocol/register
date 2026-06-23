@@ -1,6 +1,6 @@
 ---
 title: "Reserve AI Capacity & Neocloud DTF ($NEOCLOUD) — Complete Reference"
-version: "0.4"
+version: "0.5"
 version_date: "2026-06-22"
 ticker: NEOCLOUD
 product_type: "Index DTF (Decentralized Token Fund)"
@@ -33,7 +33,7 @@ not_advice: "For informational purposes only. Not investment, legal, or tax advi
 
 # Reserve AI Capacity & Neocloud DTF ($NEOCLOUD) — The Complete Reference
 
-> **Version 0.4** — draft of this reference document (auto-generated, pending human and legal review). Structure, wording, and figures may change in later versions.
+> **Version 0.5** — draft of this reference document (auto-generated, pending human and legal review). Structure, wording, and figures may change in later versions.
 
 > **⚠️ This document was generated with the assistance of a large language model (LLM).** It is a reference compiled from Reserve's published materials (reserve.org, docs.reserve.org, app.reserve.org), the official NEOCLOUD tear sheet, and publicly reported third-party information. It is **not** investment, legal, or tax advice; it is **not** an offer or solicitation; and it may contain errors, omissions, or out-of-date figures. All numbers are **illustrative and approximate as of June 2026** and change at every quarterly rebalance and with the market. Where this document and Reserve's official sources (app.reserve.org, docs.reserve.org, and reserve.org/terms_and_conditions) disagree, **the official sources control.** Always verify on app.reserve.org before acting. See the full legal disclaimer at the end.
 
@@ -488,7 +488,7 @@ Every proposal, vote, and execution is permanently recorded onchain, giving user
 
 ### 8.8 Security and audits
 
-Reserve's smart contracts have undergone **multiple independent third-party security audits**, and the core contracts are upgradeable only via onchain governance proposals (with timelocks). That said — and this is stated plainly in Reserve's own docs and on the tear sheet — **no audit can eliminate all risk.** Smart contracts can contain undiscovered bugs or vulnerabilities; as with any DeFi application, you use the software at your own risk. The protocol also includes pause/freeze states and Guardian safeguards to respond to attacks or bugs, but these only work if the role-holders act competently and in good faith. See the Security & Audits pages in the docs for the current audit list, and Section 13 here for the full risk discussion.
+Reserve's smart contracts have undergone **multiple independent third-party security audits**, and the core contracts are upgradeable only via onchain governance proposals (with timelocks). That said — and this is stated plainly in Reserve's own docs and on the tear sheet — **no audit can eliminate all risk.** Smart contracts can contain undiscovered bugs or vulnerabilities; as with any DeFi application, you use the software at your own risk. The protocol also includes pause/freeze states and Guardian safeguards to respond to attacks or bugs, but these only work if the role-holders act competently and in good faith. The protocol also runs a **$10M bug bounty**, and the **app.reserve.org** front-end is built and maintained by **Reserve (ABC Labs)** — the same team developing the protocol — relying on third-party services under the hood (e.g., Ondo, CoW Swap) while keeping the app software in-house; it has been used for years to mint, redeem, and trade RTokens/DTFs without a security incident. See the Security & Audits pages (docs.reserve.org/core-components/index-dtfs/security) for the current audit list and bug-bounty details, and Section 13 here for the full risk discussion.
 
 ### 8.9 How to vote-lock RSR and participate in NEOCLOUD's governance
 
@@ -506,6 +506,8 @@ Governance of NEOCLOUD is exercised by **RSR vote-lockers**, not by holders of t
 5. To exit, **unlock** your RSR and wait out the **~1-week unlock delay** (you can typically cancel an unlock to resume voting and rewards). Reserve publishes a vote-locking tutorial on its blog (blog.reserve.org).
 
 **Caveats.** Vote-locking is separate from buying/holding NEOCLOUD; it requires holding **RSR**, a separate and volatile token (this document is not a solicitation to buy RSR). Locked RSR is **committed** for the unlock window and cannot be transferred during it. Governance powers are broad and **governance attacks are possible** (Section 13.8). None of this is required to simply hold NEOCLOUD — it is for those who want a say in how the DTF evolves.
+
+**No geographic restrictions on vote-locking.** Buying and holding the DTF is geographically restricted (by Ondo's eligibility rules), but **vote-locking RSR on these DTFs is not** — there are no geographic restrictions on vote-locking RSR to govern these DTFs and earn the vlRSR rewards, even though those rewards accrue in RSR. (Holding and transacting RSR itself remains subject to your own local laws.)
 
 ### 8.10 Governance configuration (as deployed)
 
@@ -548,8 +550,8 @@ These are real, material risks of the tokenized-equity wrapper, and they sit *un
 
 A tokenized stock is an economic representation of a share, not the registered share itself, so the treatment of shareholder entitlements depends on Ondo's terms — and you should not assume it mirrors directly holding the stock. In general for tokenized-equity structures:
 
-- **Dividends:** If an underlying company pays a dividend, how (and whether) that economic value reaches token holders is governed by the issuer's terms. Do not assume NEOCLOUD pays out dividends; NEOCLOUD itself is not structured as an income product, and any underlying dividend handling flows through Ondo's arrangements. (Most NEOCLOUD constituents are capital-intensive growth companies that do not currently pay dividends, but this could change.)
-- **Corporate actions (splits, mergers, spin-offs, delistings):** These are handled per the issuer's terms and can affect the tokenized position and, through it, the basket. A constituent being acquired or delisted is also a trigger for removal at the next rebalance. (This is a live possibility in a consolidating sector — note CoreWeave's *failed* 2025 bid for Core Scientific; a successful future acquisition of a constituent would be such a corporate action.)
+- **Dividends (reinvested — "Total Return Tracker"):** Ondo's tokenized stocks do **not** pay cash dividends to your wallet. They are structured as **"Total Return Trackers"**: when an underlying company pays a dividend, those funds are **automatically reinvested (net of applicable withholding taxes)** to buy additional fractions of the underlying security, so the dividend's value is reflected in the token's value rather than paid out as cash. NEOCLOUD is therefore not an income / cash-distribution product — dividend value accrues into the underlying tokenized positions (and thus into the basket) automatically. (Most NEOCLOUD constituents are capital-intensive growth companies that do not currently pay dividends, but this could change.)
+- **Corporate actions (splits, mergers, spin-offs, delistings):** These are handled per Ondo's terms and can affect the tokenized position and, through it, the basket; an acquired or delisted constituent is also a trigger for removal at the next rebalance. **Delisting is an area of genuine uncertainty:** Ondo's documentation does not clearly specify what happens to a tokenized stock if its underlying company is delisted. You would still hold a bearer claim on the underlying shares that is redeemable for **cash value** through Ondo, but **what that value would be in a delisting scenario is unclear** — treat it as an unquantified risk. (This is a live possibility in a consolidating sector — note CoreWeave's *failed* 2025 bid for Core Scientific; a successful future acquisition of a constituent would be such a corporate action.)
 - **Voting rights:** Holders of tokenized stocks typically do **not** receive the corporate voting rights of the underlying shares. If shareholder voting matters to you, a tokenized wrapper is not equivalent to direct ownership.
 
 The single takeaway: **a tokenized stock is not legally identical to owning the share in a brokerage account.** It is an issuer-backed token whose rights are defined by the issuer's contract. Read Ondo's terms for specifics.
@@ -624,6 +626,10 @@ You do **not** need to already hold the basket tokens (or even a stablecoin) to 
 
 In short: **you can swap in and out of NEOCLOUD with ordinary crypto — BNB, WBNB, USDT, and other supported tokens — not only USDT.** USDT simply tends to get mentioned because it is a stable unit for sizing a position.
 
+### 10.9 Liquidity and market-making
+
+These DTFs are newly launched, so onchain liquidity and trading history are still building — but liquidity was **planned and provisioned as part of the launch**, not left to chance. Reserve **seeded onchain liquidity** for the DTFs at launch and engaged **professional market makers** to quote two-sided markets, uses **automated liquidity management** (e.g., Steer vaults) to maintain pool depth, and runs **liquidity-incentive programs** (e.g., Merkl) to attract and sustain TVL. Rebalances additionally source deep liquidity through the **CoW Swap** solver network with permissionless bidding (Section 8.5). The honest caveat still stands: as a freshly launched product, depth is thinner than in a mature market, so larger orders can see more slippage and a wider gap to underlying NAV — check live depth and quotes in the app before sizing a trade.
+
 ---
 
 ## 11. Eligibility: who can and cannot buy
@@ -642,7 +648,11 @@ Three points that matter:
 - **Eligibility can change** as Ondo updates its rules, and verification requirements in "restricted" jurisdictions can involve a KYC/accreditation step.
 - **You are responsible for your local laws** even in "elsewhere" jurisdictions — tax, securities, and other regulations may still apply to you.
 
-**How eligibility is enforced in the app.** Before you can mint/buy on app.reserve.org you pass a **wallet-based self-attestation**: you check boxes confirming you have read the Terms of Use, that you are **not** located in, a resident of, or a citizen of a restricted jurisdiction, and that you are permitted to purchase tokenized stocks under your local laws. Per the app, this confirmation is **only ever associated with your wallet address — never your personal information**; Reserve/ABC Labs does not collect or store personal identity documents for this basic gate. Separately, where a **restricted** jurisdiction requires accredited/professional status, you can **apply to be approved** through a request-and-verification process (see Section 11).
+**How eligibility is enforced in the app.** Before you can mint/buy on app.reserve.org you pass a **wallet-based self-attestation**: you check boxes confirming you have read the Terms of Use, that you are **not** located in, a resident of, or a citizen of a restricted jurisdiction, and that you are permitted to purchase tokenized stocks under your local laws. Per the app, this confirmation is **only ever associated with your wallet address — never your personal information**; Reserve/ABC Labs does not collect or store personal identity documents for this basic gate. Separately, where a **restricted** jurisdiction requires accredited/professional status, you can **apply to be approved** through a request-and-verification process (see Section 11). Separately, this also resolves a common point of confusion for users in **restricted** jurisdictions (for example, a resident of an **EEA** country — the European Economic Area, i.e., the EU member states plus Iceland, Liechtenstein, and Norway — who is **not** an accredited/professional investor):
+
+- **Can I mint/redeem on app.reserve.org?** In a restricted jurisdiction, generally **not until you have been approved** as an accredited/professional investor (you can apply — see above). The authoritative check is **in the app**: connect your wallet and start the purchase flow and it will tell you directly whether you pass the eligibility gate.
+- **Can I just buy it on a DEX instead?** The DTF is an ERC-20 on BNB Chain, so in principle it can trade on DEXs (e.g., PancakeSwap) outside the app — **but this is not a reliable way around the eligibility rules.** The underlying Ondo tokenized stocks carry **transfer allowlists/permissioning** that can block the wrapper from moving to non-eligible wallets, and using secondary markets to circumvent the issuer's eligibility terms can conflict with **Ondo's terms** and your local rules. Don't treat it as a clean path.
+- **Eligibility can change**, and it is **set by Ondo**, so the in-app check (not this document) is the definitive answer for your wallet and jurisdiction.
 
 ---
 
@@ -673,6 +683,10 @@ A **protocol platform fee** is taken **out of** the mint and TVL fees (not added
 
 Consistent with how Reserve markets these products, **this document quotes no performance, return, or yield figures for NEOCLOUD** — there are none stated here because past or projected returns are not represented and would not be reliable. NEOCLOUD is not a yield product; the TVL fee is a cost, not a payout. Any third-party market-size forecast cited in this document (Section 3) is about *industry* size, not NEOCLOUD's returns.
 
+### 12.5 Putting the fees in context
+
+The 0.3% mint and 0.6%/yr TVL fees are a real, ongoing cost the underlying stocks don't charge — but owning those stocks yourself is **not free** either. Assembling this basket on your own means paying brokerage commissions and bid/ask spreads on each constituent (and possibly FX), and **keeping it aligned means re-trading every quarter** to rebalance — each of those trades carries its own costs, plus your time. NEOCLOUD bundles that buying, weighting, and quarterly rebalancing into a single position; whether its fee is worth it depends on how cheaply and how often you could replicate and rebalance the basket yourself.
+
 ---
 
 ## 13. Risks (read this in full)
@@ -701,7 +715,7 @@ The neocloud thesis could be wrong or already priced in (Section 3.7), and the t
 
 ### 13.4 Tracking / NAV-deviation risk
 
-NEOCLOUD's market price can **trade above or below** the value of its underlying basket. Weights **drift between quarterly rebalances**, so the live basket differs from the published targets. There is **no guarantee** NEOCLOUD tracks its intended basket. Because the underlying tokenized stocks are offchain-liquid and the equities trade only during US market hours while the token trades 24/7 — and because these are unusually volatile, news-sensitive stocks — additional price dislocations can occur. Arbitrage (permissionless mint/redeem) reduces but does not eliminate these gaps.
+NEOCLOUD's market price can **trade above or below** the value of its underlying basket. Weights **drift between quarterly rebalances**, so the live basket differs from the published targets. There is **no guarantee** NEOCLOUD tracks its intended basket. Because the underlying tokenized stocks are offchain-liquid and the equities trade only during US market hours while the token trades 24/7 — and because these are unusually volatile, news-sensitive stocks — additional price dislocations can occur. Arbitrage (permissionless mint/redeem) reduces but does not eliminate these gaps. These products are newly launched; liquidity was seeded and market makers engaged at launch to mitigate this (Section 10.9), but depth is still building, which can widen slippage and NAV gaps.
 
 ### 13.5 Issuer and custodian risk (Ondo / tokenized stocks)
 
@@ -721,7 +735,7 @@ DTF governance powers are broad, so **governance attacks are possible** — e.g.
 
 ### 13.9 Frontend / interface and user-error risk
 
-You may interact via web front-ends that can contain bugs, be compromised, spoofed, censored, or unavailable, potentially inducing you to sign incorrect transactions or approve unintended permissions. **Verify URLs and contract addresses**, beware of imposter tokens that reuse the NEOCLOUD ticker, and remember that onchain transactions are generally irreversible — user error (wrong address, wrong network, bad approval) can cause permanent loss.
+The **app.reserve.org** front-end is built and maintained by **Reserve (ABC Labs)** — not an unrelated third party — and relies on third-party services under the hood (e.g., Ondo, CoW Swap). Even so, any web front-end can contain bugs or be spoofed, compromised, censored, or unavailable, potentially inducing you to sign incorrect transactions or approve unintended permissions. **Verify URLs and contract addresses**, beware of imposter tokens that reuse the NEOCLOUD ticker, use a self-custody wallet, and remember that onchain transactions are generally irreversible — user error (wrong address, wrong network, bad approval) can cause permanent loss.
 
 ### 13.10 Regulatory and eligibility risk
 
@@ -760,7 +774,7 @@ NEOCLOUD, like other Index DTFs, uses **RSR as its default governance token** vi
 
 ### 14.6 RSR tokenomics in more depth (context)
 
-For readers who want the detail (RSR is separate from NEOCLOUD; this is background, not a solicitation): RSR has a **fixed maximum supply of 100 billion tokens**, with a majority in circulation and the remainder held in two project-controlled wallets with hard-coded delays. The **Slow Wallet** (team-controlled, funding ecosystem adoption) has a 4-week delay on each withdrawal. The **Slower Wallet** (administered by Confusion Capital) adds a throttle: **no more than 1% of total supply can be withdrawn in any 4-week period**, reducing trust requirements. Future RSR emissions follow a deterministic schedule that emulates Bitcoin's emissions curve (this schedule is set by Reserve governance and could change; an RFC on the Reserve governance forum, forum.reserve.org, proposes revising the RSR unlock/emissions plan). RSR's value-accrual mechanism relevant to NEOCLOUD is the **buy-and-burn**: the platform's portion of every Index DTF's mint and TVL fees is used to market-buy RSR and send it to a burn address, applying across all Index DTFs regardless of their chosen governance token.
+For readers who want the detail (RSR is separate from NEOCLOUD; this is background, not a solicitation): RSR has a **fixed maximum supply of 100 billion tokens**, with a majority in circulation and the remainder held in two project-controlled wallets with hard-coded delays. The **Slow Wallet** (team-controlled, funding ecosystem adoption) has a 4-week delay on each withdrawal. The **Slower Wallet** (administered by Confusion Capital) adds a throttle: **no more than 1% of total supply can be withdrawn in any 4-week period**, reducing trust requirements. Future RSR emissions follow a deterministic schedule that emulates Bitcoin's emissions curve. **Do not assume any change to RSR's supply, and do not assume any token burn.** From time to time the community discusses supply-reform ideas on the Reserve governance forum — for example, proposals to revise the RSR unlock/emissions plan, or speculative proposals to burn treasury RSR — but these are **discussion items only: they are not implemented, may never be, and should not be relied upon or expected.** Treat RSR's current supply (~100B max, ~62.5B circulating) as the basis, and follow the live conversation at **forum.reserve.org** (e.g., the RSR Unlocking Milestone Plan RFC, forum.reserve.org/t/rfc-rsr-unlocking-milestone-plan/1532) rather than assuming any particular outcome. RSR's value-accrual mechanism relevant to NEOCLOUD is the **buy-and-burn**: the platform's portion of every Index DTF's mint and TVL fees is used to market-buy RSR and send it to a burn address, applying across all Index DTFs regardless of their chosen governance token.
 
 ### 14.7 Yield DTFs in brief (for contrast)
 
@@ -829,6 +843,7 @@ In the interest of the same candor Reserve applies to its own marketing, the mat
 - **CoW Swap** — a decentralized-exchange / solver network integrated as a "Trusted Filler" for Reserve Index DTF rebalance auctions; also a venue where NEOCLOUD may trade.
 - **DTF (Decentralized Token Fund; formerly "Folio")** — a fully asset-backed ERC-20 token created with Reserve's contracts that represents a basket of underlying tokens; mint/redeemable and governed permissionlessly onchain. NEOCLOUD is an **Index DTF**.
 - **Dutch auction** — the declining-price auction mechanism Reserve uses to rebalance DTF baskets onchain.
+- **EEA (European Economic Area)** — the EU member states plus Iceland, Liechtenstein, and Norway. In these docs it appears as a "restricted" jurisdiction where the DTFs are available only to approved accredited/professional investors.
 - **ERC-20** — the standard token interface on Ethereum-compatible blockchains; NEOCLOUD and its underlyings are ERC-20 tokens.
 - **GPU-cloud** — cloud computing built specifically around renting graphics processing units (GPUs) for AI training and inference; the core product of a neocloud.
 - **HPC (high-performance computing)** — computing at the scale and density required for AI training and large simulations; the workloads neoclouds and HPC-colocation hosts are built for.
@@ -933,7 +948,7 @@ A: **No.** CoreWeave proposed a ~$9B all-stock acquisition of Core Scientific (a
 A: RSR (Reserve Rights) is the ecosystem's governance/value token. You do **not** need RSR to hold NEOCLOUD. RSR vote-lockers govern Index DTFs, and NEOCLOUD's platform fee funds RSR buy-and-burn — but NEOCLOUD and RSR are separate tokens.
 
 **Q: Can I "stake" RSR on NEOCLOUD to earn yield or to insure it?**
-A: No — not in the Yield-DTF sense. NEOCLOUD is an **Index DTF**, so you **cannot** stake RSR as first-loss collateral/insurance, and there is no staking reward for absorbing risk (that exists only on Reserve **Yield DTFs**). What you *can* do is **vote-lock** RSR to NEOCLOUD to become a **governor** — your locked balance shows as **vlRSR** — and help govern the DTF. vlRSR governors earn a share of the DTF's fees — for these BSC DTFs, the ~67% of fees remaining after the 33% platform share is routed to vlRSR governance and auto-converted to RSR (accruing as an up-only vlRSR/RSR exchange rate, no manual claiming); verify the live split in the app. Because NEOCLOUD is on **BNB Smart Chain**, you must bridge your RSR to BNB Chain (e.g., via Wormhole) to vote-lock — the canonical RSR on BNB Smart Chain is `0x23f72a3Db61D6CB8aBE5d9AF1Ac4B6c99327bFee`. See Section 8.9.
+A: No — not in the Yield-DTF sense. NEOCLOUD is an **Index DTF**, so you **cannot** stake RSR as first-loss collateral/insurance, and there is no staking reward for absorbing risk (that exists only on Reserve **Yield DTFs**). What you *can* do is **vote-lock** RSR to NEOCLOUD to become a **governor** — your locked balance shows as **vlRSR** — and help govern the DTF. vlRSR governors earn a share of the DTF's fees — for these BSC DTFs, the ~67% of fees remaining after the 33% platform share is routed to vlRSR governance and auto-converted to RSR (accruing as an up-only vlRSR/RSR exchange rate, no manual claiming); verify the live split in the app. Because NEOCLOUD is on **BNB Smart Chain**, you must bridge your RSR to BNB Chain (e.g., via Wormhole) to vote-lock — the canonical RSR on BNB Smart Chain is `0x23f72a3Db61D6CB8aBE5d9AF1Ac4B6c99327bFee`. Note: **vote-locking has no geographic restrictions** (unlike buying the DTF). See Section 8.9.
 
 **Q: Who runs Reserve?**
 A: reserve.org and app.reserve.org are operated by **ABC Labs, LLC**, which is not a regulated financial intermediary and is not registered with the SEC/CFTC. The protocol is open-source and governed onchain.
@@ -992,4 +1007,4 @@ The third-party market-size forecasts referenced (Mordor Intelligence, Synergy R
 
 ---
 
-*Document type: LLM-generated reference for the Reserve AI Capacity & Neocloud DTF ($NEOCLOUD). Document version 0.4 · Compiled by starl3xx, with LLM assistance · Data as of June 2026. This is a living document and part of the broader Reserve AI DTF suite (BUILDOUT, POWER, NEOCLOUD, PHOTON, ROBOTS). Verify everything on app.reserve.org before acting.*
+*Document type: LLM-generated reference for the Reserve AI Capacity & Neocloud DTF ($NEOCLOUD). Document version 0.5 · Compiled by starl3xx, with LLM assistance · Data as of June 2026. This is a living document and part of the broader Reserve AI DTF suite (BUILDOUT, POWER, NEOCLOUD, PHOTON, ROBOTS). Verify everything on app.reserve.org before acting.*
