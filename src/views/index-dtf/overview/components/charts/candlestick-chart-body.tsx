@@ -3,15 +3,14 @@ import { useIsMobile } from '@/hooks/use-media-query'
 import { cn } from '@/lib/utils'
 import { formatCurrency } from '@/utils'
 import { formatXAxisTick as formatTick } from '@/utils/chart-formatters'
-import { getPerformanceColorSet } from '@/utils/chart-performance-colors'
 import { Bar, ComposedChart, Tooltip, XAxis, YAxis } from 'recharts'
 import { CandlestickTooltip } from './candlestick-tooltip'
 import { chartConfig, type Range } from './price-chart-constants'
 import { ChartCandle, getCandleYDomain } from './use-candlestick-data'
 
-const colors = getPerformanceColorSet('darkSurface')
-const UP_COLOR = colors.positive.dot
-const DOWN_COLOR = colors.negative.dot
+// Match the +/- performance text colors (text-success / red-500).
+const UP_COLOR = 'hsl(164 83% 40%)'
+const DOWN_COLOR = '#ef4444'
 
 const formatYAxisTick = (value: number) =>
   '$' + formatCurrency(value, value >= 1000 ? 0 : value < 1 ? 4 : 2)
