@@ -25,6 +25,7 @@ import { wizardStepAtom } from '../atoms'
 import { panelModeAtom } from '../../atoms'
 import ComplianceAlert from '../../../components/compliance-alert'
 import { useTrackAsyncZap } from '../hooks/use-track-async-zap'
+import SwitchToManualLink from '../components/switch-to-manual-link'
 
 const LEARN_MORE_URL = 'https://docs.safe.global/home/what-is-safe'
 
@@ -42,7 +43,7 @@ const ProcessArrow = () => (
   </div>
 )
 
-const GnosisRequired = () => {
+const GnosisRequired = ({ embedded }: { embedded: boolean }) => {
   const { openConnectModal } = useConnectModal()
   const { openAccountModal } = useAccountModal()
   const { isConnected } = useAccount()
@@ -394,6 +395,7 @@ const GnosisRequired = () => {
             </div>
           </div>
         </div>
+        {!embedded && <SwitchToManualLink />}
       </div>
     </div>
   )

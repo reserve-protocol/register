@@ -11,20 +11,23 @@ import ConfigureMint from './steps/configure-mint'
 import QuoteSummary from './steps/quote-summary'
 import Success from './steps/success'
 
-const WizardRouter = () => {
+// `embedded` flows to the entry steps so their "switch to manual" link shows
+// only on the standalone /issuance/automated route, not when the wizard is
+// embedded in the issuance page (which has its own Swap/Auto switch).
+const WizardRouter = ({ embedded }: { embedded: boolean }) => {
   const step = useAtomValue(wizardStepAtom)
 
   switch (step) {
     case 'gnosis-check':
-      return <GnosisRequired />
+      return <GnosisRequired embedded={embedded} />
     case 'configure':
-      return <ConfigureMint />
+      return <ConfigureMint embedded={embedded} />
     case 'quote-summary':
       return <QuoteSummary />
     case 'success':
       return <Success />
     default:
-      return <ConfigureMint />
+      return <ConfigureMint embedded={embedded} />
   }
 }
 
@@ -72,7 +75,7 @@ const AsyncMintWizard = ({ embedded = false }: { embedded?: boolean }) => {
           : 'max-w-[476px]'
       )}
     >
-      <WizardRouter />
+      <WizardRouter embedded={embedded} />
     </div>
   )
 

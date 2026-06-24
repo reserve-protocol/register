@@ -11,6 +11,7 @@ import { Trans, useLingui } from '@lingui/react/macro'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { flushSync } from 'react-dom'
 import { formatUnits } from 'viem'
+import SwitchToManualLink from '../components/switch-to-manual-link'
 import {
   inputTokenAtom,
   mintAmountAtom,
@@ -28,7 +29,7 @@ import { useTrackAsyncZap } from '../hooks/use-track-async-zap'
 
 const upcomingStepRowClass = 'px-6 py-4 border-b border-secondary'
 
-const ConfigureMint = () => {
+const ConfigureMint = ({ embedded }: { embedded: boolean }) => {
   const { t } = useLingui()
   const setStep = useSetAtom(wizardStepAtom)
   const indexDTF = useAtomValue(indexDTFAtom)
@@ -290,6 +291,7 @@ const ConfigureMint = () => {
             </div>
           )}
         </div>
+        {!embedded && <SwitchToManualLink />}
       </div>
     </div>
   )
