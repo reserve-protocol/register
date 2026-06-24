@@ -5,6 +5,10 @@ import { DataType, historicalConfigs } from './price-chart-constants'
 
 export const dataTypeAtom = atom<DataType>('price')
 
+export type ChartType = 'line' | 'candlestick'
+
+export const chartTypeAtom = atom<ChartType>('line')
+
 export const priceHistoryAvailabilityAtom = atom<
   { address: string; firstTimestamp: number | null } | undefined
 >(undefined)

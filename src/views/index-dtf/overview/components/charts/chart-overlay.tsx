@@ -20,9 +20,10 @@ import { IndexDTFPerformance } from '../../hooks/use-dtf-price-history'
 import IndexCreatorOverview from '../index-creator-overview'
 import IndexTokenAddress from '../index-token-address'
 import IndexTokenLogo from '../index-token-logo'
+import ChartTypeSelector from './chart-type-selector'
 import PercentageChange from './percentage-change'
 import { apyStatsAtom, dataTypeAtom } from './price-chart-atoms'
-import TimeRangeSelector from './time-range-selector'
+import TimeRangeMenu from './time-range-menu'
 
 const OverlayHeaderActions = () => {
   const isYieldIndexDTF = useAtomValue(isYieldIndexDTFAtom)
@@ -43,11 +44,13 @@ const OverlayHeaderActions = () => {
 
   return (
     <>
-      <div className="hidden xl:block">
+      <div className="hidden xl:flex items-center gap-2">
         <IndexCreatorOverview />
+        <ChartTypeSelector />
       </div>
-      <div className="block xl:hidden">
-        <TimeRangeSelector />
+      <div className="flex xl:hidden items-center gap-2">
+        <TimeRangeMenu />
+        <ChartTypeSelector />
       </div>
     </>
   )

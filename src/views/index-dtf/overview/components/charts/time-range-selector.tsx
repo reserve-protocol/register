@@ -1,69 +1,15 @@
 import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
-import { indexDTFAtom, performanceTimeRangeAtom } from '@/state/dtf/atoms'
-import { useAtom, useAtomValue } from 'jotai'
-import { useEffect, useMemo } from 'react'
 import { Trans } from '@lingui/react/macro'
-import {
-  dataTypeAtom,
-  priceHistoryAvailabilityAtom,
-} from './price-chart-atoms'
-import { historicalConfigs, type Range } from './price-chart-constants'
-
-const ALL_TIME_RANGES = [
-  { label: '24H', value: '24h' },
-  { label: '7D', value: '7d' },
-  { label: '1M', value: '1m' },
-  { label: '3M', value: '3m' },
-  { label: 'YTD', value: 'ytd' },
-  { label: '1Y', value: '1y' },
-  { label: 'All', value: 'all' },
-] as const
-
-const getRangeStartTolerance = (range: Exclude<Range, 'all'>) => {
-  return historicalConfigs[range].interval === '1h' ? 3_600 : 86_400
-}
+import { useAvailableTimeRanges } from './use-available-time-ranges'
+import { type Range } from './price-chart-constants'
 
 const TimeRangeSelector = ({
   variant = 'default',
 }: {
   variant?: 'default' | 'minimal'
 }) => {
-  const [range, setRange] = useAtom(performanceTimeRangeAtom)
-  const dtf = useAtomValue(indexDTFAtom)
-  const dataType = useAtomValue(dataTypeAtom)
-  const priceHistoryAvailability = useAtomValue(priceHistoryAvailabilityAtom)
-  const isYieldMode = dataType === 'yield'
-  const hasCurrentDtfAvailability =
-    priceHistoryAvailability?.address === dtf?.id?.toLowerCase()
-  const firstHistoryTimestamp =
-    priceHistoryAvailability && hasCurrentDtfAvailability
-      ? priceHistoryAvailability.firstTimestamp
-      : undefined
-
-  const availableRanges = useMemo(() => {
-    if (!dtf?.timestamp) return null
-
-    return ALL_TIME_RANGES.filter((tr) => {
-      if (tr.value === 'all') return true
-      if (tr.value === '24h' && isYieldMode) return false
-      if (firstHistoryTimestamp === null) return false
-      if (firstHistoryTimestamp !== undefined) {
-        return (
-          firstHistoryTimestamp <=
-          historicalConfigs[tr.value].from + getRangeStartTolerance(tr.value)
-        )
-      }
-
-      return true
-    })
-  }, [dtf?.timestamp, firstHistoryTimestamp, isYieldMode])
-
-  useEffect(() => {
-    if (availableRanges && !availableRanges.find((r) => r.value === range)) {
-      setRange('all')
-    }
-  }, [availableRanges, range, setRange])
+  const { range, setRange, availableRanges } = useAvailableTimeRanges()
 
   if (!availableRanges) {
     return (
