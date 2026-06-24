@@ -1,11 +1,13 @@
+import Account from '@/components/account'
+import { Button } from '@/components/ui/button'
 import Copy from '@/components/ui/copy'
-import { ConnectWalletButton } from '@/components/ui/transaction'
 import { shortenAddress } from '@/utils'
+import { ROUTES } from '@/utils/constants'
 import { Trans } from '@lingui/react/macro'
 import { useSetAtom } from 'jotai'
-import { Eye, X } from 'lucide-react'
+import { Binoculars, Eye, Landmark, X } from 'lucide-react'
 import { useEffect } from 'react'
-import { useSearchParams } from 'react-router-dom'
+import { Link, useSearchParams } from 'react-router-dom'
 import { isAddress } from 'viem'
 import { useAccount } from 'wagmi'
 import {
@@ -30,16 +32,118 @@ import PendingWithdrawals from './components/pending-withdrawals'
 import Transactions from './components/transactions'
 import VotingPower from './components/voting-power'
 import { usePortfolio } from './hooks/use-portfolio'
+import { PortfolioResponse } from './types'
+
+const hasPositiveNumber = (value: number | string | null | undefined) =>
+  Number(value ?? 0) > 0
+
+const hasReserveActivity = (data: PortfolioResponse) => {
+  if (hasPositiveNumber(data.totalHoldingsUSD)) return true
+  if (
+    data.indexDTFs.some(
+      (dtf) =>
+        hasPositiveNumber(dtf.amount) ||
+        hasPositiveNumber(dtf.value) ||
+        dtf.rewards?.some((reward) => hasPositiveNumber(reward.value))
+    )
+  ) {
+    return true
+  }
+  if (
+    data.yieldDTFs.some(
+      (dtf) => hasPositiveNumber(dtf.amount) || hasPositiveNumber(dtf.value)
+    )
+  ) {
+    return true
+  }
+  if (
+    data.stakedRSR.some(
+      (position) =>
+        hasPositiveNumber(position.amount) ||
+        hasPositiveNumber(position.value) ||
+        hasPositiveNumber(position.votingPower) ||
+        position.pendingWithdrawals?.some((withdrawal) =>
+          hasPositiveNumber(withdrawal.value)
+        ) ||
+        position.activeProposals?.length
+    )
+  ) {
+    return true
+  }
+  if (
+    data.voteLocks.some(
+      (position) =>
+        hasPositiveNumber(position.amount) ||
+        hasPositiveNumber(position.value) ||
+        hasPositiveNumber(position.votingPower) ||
+        position.rewards?.some((reward) => hasPositiveNumber(reward.value)) ||
+        position.locks?.some((lock) => hasPositiveNumber(lock.value)) ||
+        position.activeProposals?.length
+    )
+  ) {
+    return true
+  }
+
+  return data.rsrBalances.some(
+    (balance) =>
+      hasPositiveNumber(balance.amount) || hasPositiveNumber(balance.value)
+  )
+}
 
 const ConnectPrompt = () => (
-  <div className="flex flex-col items-center justify-center min-h-[60vh] gap-4">
-    <h1 className="text-2xl font-bold">
-      <Trans>Portfolio</Trans>
-    </h1>
-    <p className="text-legend">
-      <Trans>Connect your wallet to view your portfolio</Trans>
-    </p>
-    <ConnectWalletButton />
+  <div className="container mx-auto flex min-h-[calc(100vh-96px)] items-center justify-center px-4 py-10">
+    <div className="flex w-full max-w-[560px] flex-col items-center text-center">
+      <h1 className="text-[2rem] font-semibold leading-9 text-primary md:text-5xl md:leading-[56px]">
+        <Trans>Connect your wallet to view your portfolio</Trans>
+      </h1>
+      <p className="mt-4 max-w-[500px] text-base leading-6 text-legend md:text-lg">
+        <Trans>
+          Your portfolio brings together DTF holdings, staked and vote-locked
+          governance positions, rewards, pending withdrawals, voting power, RSR
+          balances, and recent transactions.
+        </Trans>
+      </p>
+
+      <div className="mt-8">
+        <Account
+          connectLabel={<Trans>Connect wallet</Trans>}
+          showConnectLabelOnMobile
+          connectClassName="bg-primary text-primary-foreground hover:bg-primary/90 dark:border-primary"
+        />
+      </div>
+    </div>
+  </div>
+)
+
+const EmptyPortfolioPrompt = () => (
+  <div className="container mx-auto flex min-h-[calc(100vh-96px)] items-center justify-center px-4 py-10">
+    <div className="flex w-full max-w-[560px] flex-col items-center text-center">
+      <h1 className="text-[2rem] font-semibold leading-9 text-primary md:text-5xl md:leading-[56px]">
+        <Trans>No Reserve activity found in this wallet</Trans>
+      </h1>
+      <p className="mt-4 max-w-[500px] text-base leading-6 text-legend md:text-lg">
+        <Trans>
+          This wallet does not currently hold any DTFs, staked RSR, vote-locked
+          positions, rewards, pending withdrawals, or active governance
+          activity.
+        </Trans>
+      </p>
+
+      <div className="mt-8 flex flex-col items-center gap-3 sm:flex-row">
+        <Button asChild className="gap-2 rounded-full px-5">
+          <Link to={ROUTES.DISCOVER}>
+            <Binoculars size={16} strokeWidth={1.5} />
+            <Trans>Explore DTFs</Trans>
+          </Link>
+        </Button>
+        <Button asChild variant="outline" className="gap-2 rounded-full px-5">
+          <Link to={ROUTES.EARN}>
+            <Landmark size={16} strokeWidth={1.5} />
+            <Trans>Participate and earn</Trans>
+          </Link>
+        </Button>
+      </div>
+    </div>
   </div>
 )
 
@@ -133,6 +237,7 @@ const PortfolioPage = () => {
     )
   if (isLoading || !data)
     return <PortfolioSkeleton isImpersonating={!!impersonatedAddress} />
+  if (!hasReserveActivity(data)) return <EmptyPortfolioPrompt />
 
   return (
     <div className="container mx-auto px-4 py-6 space-y-8">

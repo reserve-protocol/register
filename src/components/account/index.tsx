@@ -63,7 +63,15 @@ const ErrorWrapper = ({
  *
  * Handles wallet interaction
  */
-const Account = () => {
+const Account = ({
+  connectLabel,
+  showConnectLabelOnMobile = false,
+  connectClassName,
+}: {
+  connectLabel?: ReactNode
+  showConnectLabelOnMobile?: boolean
+  connectClassName?: string
+}) => {
   const chainId = useAtomValue(chainIdAtom)
   const isTokenSelected = !!useAtomValue(selectedRTokenAtom)
   const { disconnectAsync } = useDisconnect()
@@ -103,13 +111,26 @@ const Account = () => {
                   <Button
                     variant="accent"
                     onClick={() => handleConnect(openConnectModal)}
-                    className="px-4 py-1 rounded-full font-medium dark:border border-primary/50"
+                    className={cn(
+                      'px-4 py-1 rounded-full font-medium dark:border border-primary/50',
+                      connectClassName
+                    )}
                   >
-                    <span className="flex md:hidden items-center py-1">
+                    <span
+                      className={cn(
+                        'items-center py-1',
+                        showConnectLabelOnMobile ? 'hidden' : 'flex md:hidden'
+                      )}
+                    >
                       <Power size={16} />
                     </span>
-                    <span className="hidden md:block text-base">
-                      <Trans>Connect</Trans>
+                    <span
+                      className={cn(
+                        'text-base',
+                        showConnectLabelOnMobile ? 'block' : 'hidden md:block'
+                      )}
+                    >
+                      {connectLabel ?? <Trans>Connect</Trans>}
                     </span>
                   </Button>
                 )
