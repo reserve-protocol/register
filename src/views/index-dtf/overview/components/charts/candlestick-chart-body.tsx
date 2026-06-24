@@ -190,7 +190,9 @@ const CandlestickChartBody = ({
           dataKey="highLow"
           shape={<Candle />}
           maxBarSize={18}
-          isAnimationActive={false}
+          isAnimationActive
+          animationDuration={500}
+          animationEasing="ease-in-out"
         />
       </ComposedChart>
     </ChartContainer>
