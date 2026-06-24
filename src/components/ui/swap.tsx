@@ -1,4 +1,4 @@
-import TokenLogo from '@/components/token-logo'
+import TokenLogoWithChain from '@/components/token-logo/TokenLogoWithChain'
 import { Button } from '@/components/ui/button'
 import {
   DropdownMenu,
@@ -58,6 +58,7 @@ type SwapItem = {
   onTokenSelect?: (token: Token) => void
   disabled?: boolean
   className?: string
+  chainClassName?: string
 }
 
 type SwapProps = {
@@ -103,7 +104,11 @@ const TokenSelector = ({
   symbol = '',
   tokens,
   onTokenSelect,
-}: Pick<SwapItem, 'address' | 'symbol' | 'tokens' | 'onTokenSelect'>) => {
+  chainClassName,
+}: Pick<
+  SwapItem,
+  'address' | 'symbol' | 'tokens' | 'onTokenSelect' | 'chainClassName'
+>) => {
   const chainId = useAtomValue(chainIdAtom)
   const brand = useAtomValue(indexDTFBrandAtom)
   const dtf = useAtomValue(indexDTFAtom)
@@ -117,12 +122,13 @@ const TokenSelector = ({
     return (
       <div className="flex flex-col gap-1 justify-between items-end min-w-fit">
         <div className="flex items-center gap-1.5 text-2xl font-normal">
-          <TokenLogo
+          <TokenLogoWithChain
             size="lg"
             src={src}
             symbol={symbol}
             address={address}
             chain={chainId}
+            chainClassName={chainClassName}
           />
           <span>{symbol}</span>
         </div>
@@ -140,11 +146,12 @@ const TokenSelector = ({
             size="lg"
           >
             <div className="flex font-normal items-center gap-1.5">
-              <TokenLogo
+              <TokenLogoWithChain
                 size="lg"
                 symbol={symbol}
                 address={address}
                 chain={chainId}
+                chainClassName={chainClassName}
               />
               <span>{symbol}</span>
             </div>
@@ -168,11 +175,12 @@ const TokenSelector = ({
               className="flex items-center justify-between gap-2 pr-2"
             >
               <div className="flex items-center gap-2">
-                <TokenLogo
+                <TokenLogoWithChain
                   size="md"
                   symbol={token.symbol}
                   address={token.address}
                   chain={chainId}
+                  chainClassName="border-popover bg-popover"
                 />
                 <span className="text-lg">{token.symbol}</span>
               </div>
@@ -231,7 +239,10 @@ export const TokenInputBox = ({ from }: Pick<SwapProps, 'from'>) => {
         </h3>
         <div className="flex gap-1">
           <TokenInput {...from} disabled={from.disabled} />
-          <TokenSelector {...from} />
+          <TokenSelector
+            {...from}
+            chainClassName={cn('border-muted bg-muted', from.chainClassName)}
+          />
         </div>
       </div>
       <div>
@@ -364,7 +375,10 @@ export const TokenOutputBox = ({
               className="disabled:cursor-auto disabled:opacity-100"
             />
           )}
-          <TokenSelector {...to} />
+          <TokenSelector
+            {...to}
+            chainClassName={cn('border-card bg-card', to.chainClassName)}
+          />
         </div>
       </div>
       {loading ? (
@@ -430,7 +444,7 @@ export const SlippageSelector = ({
       const parsedValue = 1 / (Number(value) / 100)
       setCustomValue(value)
       onChange(parsedValue.toString())
-    } catch (error) {
+    } catch {
       setCustomValue(value)
     }
   }

@@ -1,8 +1,8 @@
-import StackTokenLogo from '@/components/token-logo/stack-token-logo'
 import { Button } from '@/components/ui/button'
 import { Link } from '@/components/ui/link'
 import { cn } from '@/lib/utils'
 import { chainIdAtom } from '@/state/atoms'
+import { indexDTFAtom } from '@/state/dtf/atoms'
 import { ChainId } from '@/utils/chains'
 import { Trans } from '@lingui/react/macro'
 import { useAtomValue } from 'jotai'
@@ -10,6 +10,7 @@ import { ArrowUpRightIcon } from 'lucide-react'
 
 const RSRBNBHelp = ({ className }: { className?: string }) => {
   const chainId = useAtomValue(chainIdAtom)
+  const indexDTF = useAtomValue(indexDTFAtom)
 
   if (chainId !== ChainId.BSC) return null
 
@@ -22,30 +23,15 @@ const RSRBNBHelp = ({ className }: { className?: string }) => {
       target="_blank"
       href="https://x.com/reserveprotocol/status/1991311026974036379?s=46&t=PSRhUIOkR4MrrAAJE14IIw"
     >
-      <StackTokenLogo
-        outsource={true}
-        tokens={[
-          {
-            symbol: 'RSR',
-            address: '0x8762db106b2c2a0bccb3a80d1ed41273552616e8',
-            chain: ChainId.Mainnet,
-          },
-          {
-            symbol: 'wbnb',
-            address: '0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c',
-            chain: ChainId.BSC,
-          },
-        ]}
-      />
-      <div className="flex items-center gap-2 text-sm w-full">
-        <div className="flex flex-col gap-1 mr-auto">
+      <div className="flex items-end gap-2 text-sm w-full">
+        <div className="flex flex-col gap-1 mr-auto max-w-80">
           <h2 className="font-semibold text-sm">
             <Trans>Need to bridge your RSR?</Trans>
           </h2>
           <p className="text-xs text-legend">
             <Trans>
-              CMC20 is a BNB DTF and you need to bridge your RSR using Wormhole
-              to participate in governance.
+              ${indexDTF?.token.symbol ?? 'This DTF'} is on BSC and you need to
+              bridge your RSR using Wormhole to participate in governance.
             </Trans>
           </p>
         </div>
