@@ -19,7 +19,6 @@ import {
   useIndexDtfDelegates,
 } from '@reserve-protocol/react-sdk'
 import { useAtomValue } from 'jotai'
-import { User2 } from 'lucide-react'
 import { useEffect, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 
@@ -114,10 +113,10 @@ const DelegateTable = ({
 
 const DelegateListOptions = () => (
   <TabsList>
-    <TabsTrigger value="normal" className="text-xs">
+    <TabsTrigger value="normal" className="text-sm">
       <Trans>Normal</Trans>
     </TabsTrigger>
-    <TabsTrigger value="optimistic" className="text-xs">
+    <TabsTrigger value="optimistic" className="text-sm">
       <Trans>Optimistic</Trans>
     </TabsTrigger>
   </TabsList>
@@ -158,16 +157,13 @@ const GovernanceDelegateList = () => {
       onValueChange={(value) => setTab(value as DelegateTabs)}
       className="rounded-4xl bg-background"
     >
-      <div className="flex items-center gap-2 py-4 px-4">
-        <div className="border rounded-full border-foreground p-1">
-          <User2 size={14} />
-        </div>
-        <h2 className="font-semibold text-xl text-primary ml-1 mr-auto">
+      <div className="flex items-center px-6 pt-6 pb-2">
+        <h2 className="text-xl font-semibold text-card-foreground mr-auto">
           <Trans>Delegates</Trans>
         </h2>
         {hasOptimisticGovernance && <DelegateListOptions />}
       </div>
-      <div className="bg-card mr-1 mt-0 rounded-3xl overflow-auto">
+      <div className="overflow-auto px-2 pb-2 pt-2">
         <DelegateTable
           delegates={delegates}
           isLoading={!dtf || isLoading}

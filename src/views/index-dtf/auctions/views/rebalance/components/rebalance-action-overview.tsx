@@ -31,7 +31,7 @@ export function BasketHoverCard({
         sideOffset={-50}
       >
         <div className="flex flex-col gap-2 items-center justify-center">
-          <div className="m-2 p-2 rounded-xl bg-muted w-fit">
+          <div className="m-2 p-2 rounded-2xl bg-muted w-fit">
             <StackTokenLogo
               tokens={tokens}
               overlap={2}

@@ -1,14 +1,21 @@
-import CopyValue from '@/components/ui/copy-value'
+import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
-import { cn } from '@/lib/utils'
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from '@/components/ui/tooltip'
 import { chainIdAtom } from '@/state/atoms'
 import { indexDTFAtom } from '@/state/dtf/atoms'
 import EnsName from '@/components/utils/ens-name'
+import { isAddress } from '@/utils'
 import { ExplorerDataType, getExplorerLink } from '@/utils/getExplorerLink'
+import { useLingui } from '@lingui/react/macro'
 import { atom, useAtomValue } from 'jotai'
-import { ArrowUpRight, ShieldHalf } from 'lucide-react'
+import { ArrowUpRight, CopyIcon, ShieldHalf, UserRoundKey } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { Trans } from '@lingui/react/macro'
+import React from 'react'
 
 const Placeholder = () => (
   <div className="flex items-center justify-between bg-background rounded-3xl p-4">
@@ -57,76 +64,113 @@ const optimisticProposersAtom = atom((get) => {
   return dtf.ownerGovernance?.optimistic?.proposers ?? []
 })
 
+const RoleLabel = ({
+  icon: Icon,
+  children,
+}: {
+  icon: React.ElementType
+  children: React.ReactNode
+}) => (
+  <span className="inline-flex items-center gap-2.5">
+    <Icon size={14} strokeWidth={1.75} className="hidden sm:block" />
+    {children}
+  </span>
+)
+
+const RoleItem = ({
+  label,
+  address,
+}: {
+  label: React.ReactNode
+  address: string
+}) => {
+  const chainId = useAtomValue(chainIdAtom)
+  const { t } = useLingui()
+  const [isCopied, setIsCopied] = React.useState(false)
+  const displayText = isCopied ? t`Copied to clipboard!` : t`Copy to clipboard`
+
+  const handleCopy = (e: React.MouseEvent) => {
+    e.stopPropagation()
+    navigator.clipboard.writeText(isAddress(address) || address)
+    setIsCopied(true)
+    setTimeout(() => setIsCopied(false), 2000)
+  }
+
+  return (
+    <div className="flex items-center justify-between gap-4 px-6 py-1.5">
+      <span className="text-base text-legend">{label}</span>
+      <div className="flex min-w-0 items-center">
+        <span className="truncate text-right text-base font-semibold mr-2">
+          <EnsName address={address} />
+        </span>
+        <Tooltip open={isCopied ? true : undefined} delayDuration={0}>
+          <TooltipTrigger asChild>
+            <Button
+              type="button"
+              variant="ghost"
+              size="icon"
+              className="h-5 w-5 shrink-0 rounded-full px-0"
+              onClick={handleCopy}
+            >
+              <CopyIcon size={12} strokeWidth={1.4} />
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent side="top">{displayText}</TooltipContent>
+        </Tooltip>
+        <Button
+          asChild
+          variant="ghost"
+          size="icon"
+          className="h-5 w-5 shrink-0 rounded-full px-0"
+        >
+          <Link
+            to={getExplorerLink(address, chainId, ExplorerDataType.ADDRESS)}
+            target="_blank"
+          >
+            <ArrowUpRight size={16} strokeWidth={1.75} />
+          </Link>
+        </Button>
+      </div>
+    </div>
+  )
+}
+
 const GovernanceRoles = () => {
   const guardians = useAtomValue(guardiansAtom)
   const optimisticProposers = useAtomValue(optimisticProposersAtom)
-  const chainId = useAtomValue(chainIdAtom)
 
   return (
-    <div className="flex flex-col bg-background rounded-3xl">
-      <div className="flex items-center px-4 pt-4 pb-2 gap-4">
-        <div className="border rounded-full border-foreground p-1">
-          <ShieldHalf size={14} />
-        </div>
-        <h4 className="text-xl font-semibold text-primary">
-          <Trans>Roles</Trans>
+    <div className="flex flex-col rounded-3xl bg-background pb-3">
+      <div className="flex items-center px-6 pt-6 pb-2">
+        <h4 className="text-xl font-semibold text-card-foreground">
+          <Trans>DTF Roles</Trans>
         </h4>
       </div>
+      <div className="pt-2" />
       {(!guardians || !optimisticProposers) && <Placeholder />}
       {!!guardians &&
         guardians.map((guardian, index) => (
-          <div
-            className={cn('flex items-center px-6 py-4', !!index && 'border-t')}
+          <RoleItem
             key={`guardian-${guardian}`}
-          >
-            <div className="mr-auto">
-              <span className="text-legend text-sm block">
+            label={
+              <RoleLabel icon={ShieldHalf}>
                 <Trans>Guardian</Trans> {index + 1}
-              </span>
-              <span className="font-semibold">
-                <EnsName address={guardian} />
-              </span>
-            </div>
-            <div className="p-1 bg-muted rounded-full mr-2">
-              <CopyValue value={guardian} />
-            </div>
-            <Link
-              to={getExplorerLink(guardian, chainId, ExplorerDataType.ADDRESS)}
-              target="_blank"
-              className="p-1 bg-muted rounded-full"
-            >
-              <ArrowUpRight size={14} />
-            </Link>
-          </div>
+              </RoleLabel>
+            }
+            address={guardian}
+          />
         ))}
       {!!optimisticProposers &&
         optimisticProposers.map((proposer, index) => (
-          <div
-            className={cn(
-              'flex items-center px-6 py-4',
-              (!!guardians?.length || !!index) && 'border-t'
-            )}
+          <RoleItem
             key={`optimistic-proposer-${proposer}`}
-          >
-            <div className="mr-auto">
-              <span className="text-legend text-sm block">
+            label={
+              <RoleLabel icon={UserRoundKey}>
                 <Trans>Optimistic proposer</Trans> {index + 1}
-              </span>
-              <span className="font-semibold">
-                <EnsName address={proposer} />
-              </span>
-            </div>
-            <div className="p-1 bg-muted rounded-full mr-2">
-              <CopyValue value={proposer} />
-            </div>
-            <Link
-              to={getExplorerLink(proposer, chainId, ExplorerDataType.ADDRESS)}
-              target="_blank"
-              className="p-1 bg-muted rounded-full"
-            >
-              <ArrowUpRight size={14} />
-            </Link>
-          </div>
+              </RoleLabel>
+            }
+            address={proposer}
+          />
         ))}
     </div>
   )

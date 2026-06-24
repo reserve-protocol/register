@@ -95,12 +95,14 @@ const ProposalList = () => {
   const hasMoreProposals = sortedProposals.length > 10
 
   return (
-    <div className="bg-card rounded-3xl m-1 mt-0">
+    <div className="m-1 mt-0">
       <ScrollArea className="overflow-y-auto">
-        {sortedProposals.length === 0 && <ProposalsPlaceholder />}
-        {displayedProposals.map((proposal) => (
-          <ProposalListItem key={proposal.id} proposal={proposal} />
-        ))}
+        <div className="space-y-1">
+          {sortedProposals.length === 0 && <ProposalsPlaceholder />}
+          {displayedProposals.map((proposal) => (
+            <ProposalListItem key={proposal.id} proposal={proposal} />
+          ))}
+        </div>
       </ScrollArea>
       {hasMoreProposals && (
         <ProposalShowMoreButton

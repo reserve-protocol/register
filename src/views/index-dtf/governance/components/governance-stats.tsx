@@ -4,30 +4,48 @@ import { indexDTFAtom } from '@/state/dtf/atoms'
 import { formatCurrency, formatPercentage } from '@/utils'
 import { Trans } from '@lingui/react/macro'
 import { useAtomValue } from 'jotai'
-import { NotebookTabs } from 'lucide-react'
+import { Coins, FileText, Gauge, Users } from 'lucide-react'
 import React from 'react'
 import { proposalCountAtom } from '../atoms'
 
 export interface IInfoItem {
   text: string | number | undefined
-  title: string | React.ReactElement
+  title: React.ReactNode
   className?: string
 }
 
+const InfoLabel = ({
+  icon: Icon,
+  children,
+}: {
+  icon: React.ElementType
+  children: React.ReactNode
+}) => (
+  <span className="inline-flex items-center gap-2.5">
+    <Icon size={14} strokeWidth={1.75} className="hidden sm:block" />
+    {children}
+  </span>
+)
+
+const InfoGroupLabel = ({ children }: { children: React.ReactNode }) => (
+  <div className="px-6 pb-3 pt-4 text-xs font-medium uppercase text-foreground">
+    {children}
+  </div>
+)
+
 const InfoItem = ({ title, text, className }: IInfoItem) => (
-  <div className="flex flex-col gap-4 px-6 py-4 border-b">
-    <div className={cn('flex items-center', className)}>
-      <div>
-        <div className="flex items-center">
-          <span className="text-legend text-sm">{title}</span>
-        </div>
-        {text === undefined ? (
-          <Skeleton className="h-4 w-24" />
-        ) : (
-          <strong>{text}</strong>
-        )}
-      </div>
-    </div>
+  <div
+    className={cn(
+      'flex items-center justify-between gap-4 px-6 py-1.5',
+      className
+    )}
+  >
+    <span className="text-base text-legend">{title}</span>
+    {text === undefined ? (
+      <Skeleton className="h-4 w-24" />
+    ) : (
+      <strong className="text-base text-right">{text}</strong>
+    )}
   </div>
 )
 
@@ -45,18 +63,44 @@ const GovernanceStats = () => {
     : dtf.ownerGovernance.proposalThreshold
 
   return (
-    <div className="flex flex-col rounded-3xl bg-background">
-      <div className="flex items-center px-4 pt-4 pb-2 gap-4">
-        <div className="border rounded-full border-foreground p-1">
-          <NotebookTabs size={14} />
-        </div>
-        <h4 className="text-xl font-semibold text-primary">
-          <Trans>Information</Trans>
+    <div className="flex flex-col rounded-3xl pb-3 bg-background">
+      <div className="flex items-center px-6 pt-6 pb-2">
+        <h4 className="text-xl font-semibold text-card-foreground">
+          <Trans>Governance Stats</Trans>
         </h4>
       </div>
-      <InfoItem title={<Trans>Proposals</Trans>} text={proposalCount} />
+      <InfoGroupLabel>
+        <Trans>This DTF</Trans>
+      </InfoGroupLabel>
       <InfoItem
-        title={<Trans>Vote Supply</Trans>}
+        title={
+          <InfoLabel icon={FileText}>
+            <Trans>Proposals</Trans>
+          </InfoLabel>
+        }
+        text={proposalCount}
+      />
+      <InfoItem
+        title={
+          <InfoLabel icon={Gauge}>
+            <Trans>Proposal Threshold</Trans>
+          </InfoLabel>
+        }
+        text={
+          proposalThreshold === undefined
+            ? undefined
+            : formatPercentage(proposalThreshold)
+        }
+      />
+      <InfoGroupLabel>
+        <Trans>${dtf?.stToken?.token.symbol ?? 'Vote-lock'} DAO</Trans>
+      </InfoGroupLabel>
+      <InfoItem
+        title={
+          <InfoLabel icon={Coins}>
+            <Trans>Vote Supply</Trans>
+          </InfoLabel>
+        }
         text={
           totalSupply === undefined
             ? undefined
@@ -64,14 +108,13 @@ const GovernanceStats = () => {
         }
       />
       <InfoItem
-        title={<Trans>Proposal Threshold</Trans>}
-        text={
-          proposalThreshold === undefined
-            ? undefined
-            : formatPercentage(proposalThreshold)
+        title={
+          <InfoLabel icon={Users}>
+            <Trans>Voting addresses</Trans>
+          </InfoLabel>
         }
+        text={totalDelegates}
       />
-      <InfoItem title={<Trans>Voting addresses</Trans>} text={totalDelegates} />
     </div>
   )
 }

@@ -64,12 +64,12 @@ export const VoteLockDrawer = ({
           className="flex flex-col"
         >
           <DrawerTitle className="flex gap-2 mt-2 px-2 mb-2">
-            <TabsList className="h-9">
+            <TabsList className="h-9 p-0.5">
               {VOTE_LOCK_TABS.map(({ key, label, icon }) => (
                 <TabsTrigger
                   key={key}
                   value={key}
-                  className="flex gap-1 items-center pl-2 pr-3 data-[state=active]:text-primary"
+                  className="flex h-8 items-center gap-1 py-0 pl-2 pr-3 data-[state=active]:text-primary"
                 >
                   {icon}
                   {label}

@@ -15,6 +15,7 @@ const TokenLogoWithChain = ({
   symbol,
   address,
   chain,
+  src,
   size = 'lg',
   width,
   height,
@@ -23,6 +24,7 @@ const TokenLogoWithChain = ({
   symbol?: string
   address?: string
   chain: number
+  src?: string
   size?: Size
   width?: number
   height?: number
@@ -41,13 +43,14 @@ const TokenLogoWithChain = ({
         symbol={symbol}
         address={address}
         chain={chain}
+        src={src}
         size={size}
         width={logoWidth}
         height={logoHeight}
       />
       <span
         className={cn(
-          'absolute -bottom-0.5 -right-0.5 flex items-center justify-center',
+          'absolute -bottom-0.5 -right-1 flex items-center justify-center rounded-md border-2 border-background bg-background',
           chainClassName
         )}
       >
