@@ -31,7 +31,7 @@ const EarnFAQ = ({
           <AccordionTrigger className="p-6 text-base sm:text-2xl [&[data-state=open]]:border-b text-left">
             {faq.question}
           </AccordionTrigger>
-          <AccordionContent className="text-sm sm:text-base p-6">
+          <AccordionContent className="text-sm sm:text-base p-6 text-foreground">
             {faq.answer}
           </AccordionContent>
         </AccordionItem>

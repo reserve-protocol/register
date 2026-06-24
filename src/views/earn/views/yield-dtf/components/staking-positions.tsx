@@ -1,23 +1,31 @@
 import DecimalDisplay from '@/components/decimal-display'
-import ChainLogo from '@/components/icons/ChainLogo'
 import TokenLogo from '@/components/token-logo'
+import StakeDrawer from '@/components/stake-drawer'
 import DataTable, { SorteableButton } from '@/components/ui/data-table'
+import { Skeleton } from '@/components/ui/skeleton'
+import { TableCell, TableRow } from '@/components/ui/table'
 import { ListedToken } from '@/hooks/useTokenList'
 import { rsrPriceAtom } from '@/state/atoms'
 import { Token } from '@/types'
-import { formatCurrency, formatPercentage } from '@/utils'
+import { formatCurrency } from '@/utils'
+import {
+  EarnGovernanceTokenCell,
+  EarnGovernanceTokenSkeleton,
+  EarnMetricCtaCell,
+  EarnMetricCtaSkeleton,
+} from '@/views/earn/components/earn-table-cells'
+import {
+  earnTableClassName,
+  earnTableRowClassName,
+} from '@/views/earn/components/earn-table-styles'
 import PositionBalance from '@/views/earn/components/position-balance'
 import { Trans, useLingui } from '@lingui/react/macro'
 import { createColumnHelper } from '@tanstack/react-table'
 import { useAtomValue } from 'jotai'
-import { ArrowRight } from 'lucide-react'
 import { useMemo, useState } from 'react'
 import { Address } from 'viem'
 import { filteredYieldDTFListAtom } from '../atoms'
 import TableFilters from './table-filters'
-import StakeDrawer from '@/components/stake-drawer'
-import { TableRow, TableCell } from '@/components/ui/table'
-import { Skeleton } from '@/components/ui/skeleton'
 
 const useColumns = () => {
   const { t } = useLingui()
@@ -29,26 +37,12 @@ const useColumns = () => {
       columnHelper.accessor('id', {
         header: t`Gov. Token`,
         cell: (data) => (
-          <div className="flex items-center gap-3">
-            <div className="relative flex-shrink-0">
-              <TokenLogo src={'/svgs/rsr.svg'} size="xl" />
-              <ChainLogo
-                chain={data.row.original.chain}
-                className="absolute -bottom-1 -right-1"
-              />
-            </div>
-
-            <div className="flex flex-col gap-1">
-              <span className=" font-semibold">RSR</span>
-              <div className="flex items-center gap-1 text-xs whitespace-nowrap sm:text-sm text-legend">
-                <ArrowRight size={14} className="hidden sm:block" />
-                <span className="w-20 overflow-hidden text-ellipsis whitespace-nowrap sm:w-auto sm:overflow-visible sm:whitespace-normal">
-                  {' '}
-                  {data.row.original.stToken.symbol}
-                </span>
-              </div>
-            </div>
-          </div>
+          <EarnGovernanceTokenCell
+            symbol="RSR"
+            logoSrc="/svgs/rsr.svg"
+            chainId={data.row.original.chain}
+            secondarySymbol={data.row.original.stToken.symbol}
+          />
         ),
       }),
       columnHelper.accessor('stakeUsd', {
@@ -94,7 +88,7 @@ const useColumns = () => {
           </SorteableButton>
         ),
         cell: (data) => (
-          <div className="flex items-center gap-1">
+          <div className="flex items-center gap-2">
             <TokenLogo src={data.row.original.logo} />
             <span className="text-legend font-semibold">
               {data.row.original.symbol}
@@ -112,76 +106,50 @@ const useColumns = () => {
           className: 'text-right',
         },
         cell: (data) => {
-          return (
-            <div className="flex items-center justify-end gap-1 text-primary font-semibold whitespace-nowrap">
-              {formatPercentage(data.getValue())}{' '}
-              <span className="hidden md:inline">APY</span>
-              <ArrowRight size={16} strokeWidth={1.5} />
-            </div>
-          )
+          return <EarnMetricCtaCell value={data.getValue()} label="APY" />
         },
       }),
     ]
   }, [rsrPrice, t])
 }
 
-// Custom loading skeleton that matches the exact structure
 const StakingPositionsSkeleton = () => {
-  // Create 5 skeleton rows
   const skeletonRows = Array.from({ length: 5 }, (_, index) => index)
 
   return (
     <>
       {skeletonRows.map((rowIndex) => (
-        <TableRow key={`skeleton-${rowIndex}`} className="border-none hover:bg-transparent">
-          {/* Gov. Token (RSR) - Always visible */}
+        <TableRow
+          key={`skeleton-${rowIndex}`}
+          className="border-none hover:bg-transparent"
+        >
           <TableCell>
-            <div className="flex items-center gap-3">
-              <div className="relative flex-shrink-0">
-                <Skeleton className="h-10 w-10 rounded-full" /> {/* RSR logo */}
-                <Skeleton className="absolute -bottom-1 -right-1 h-4 w-4 rounded-full" /> {/* Chain logo */}
-              </div>
-              <div className="flex flex-col gap-1">
-                <Skeleton className="h-4 w-8" /> {/* RSR text */}
-                <div className="flex items-center gap-1">
-                  <Skeleton className="hidden sm:block h-3 w-3" /> {/* Arrow */}
-                  <Skeleton className="h-3 w-20 sm:w-24" /> {/* stToken symbol */}
-                </div>
-              </div>
-            </div>
+            <EarnGovernanceTokenSkeleton symbolWidth="w-8" />
           </TableCell>
 
-          {/* TVL - Hidden on mobile < 420px */}
           <TableCell className="hidden min-[420px]:table-cell">
             <div className="flex flex-col gap-1">
-              <Skeleton className="h-4 w-20" /> {/* USD value */}
-              <Skeleton className="h-3 w-16" /> {/* RSR amount */}
+              <Skeleton className="h-4 w-20" />
+              <Skeleton className="h-3 w-16" />
             </div>
           </TableCell>
 
-          {/* Staked - Hidden on mobile/tablet < lg */}
           <TableCell className="hidden lg:table-cell">
             <div className="flex flex-col gap-1">
-              <Skeleton className="h-4 w-24" /> {/* Balance */}
-              <Skeleton className="h-3 w-20" /> {/* USD value */}
+              <Skeleton className="h-4 w-24" />
+              <Skeleton className="h-3 w-20" />
             </div>
           </TableCell>
 
-          {/* Governs - Always visible */}
           <TableCell>
-            <div className="flex items-center gap-1">
-              <Skeleton className="h-6 w-6 rounded-full" /> {/* Token logo */}
-              <Skeleton className="h-4 w-16" /> {/* Symbol */}
+            <div className="flex items-center gap-2">
+              <Skeleton className="h-6 w-6 rounded-full" />
+              <Skeleton className="h-4 w-16" />
             </div>
           </TableCell>
 
-          {/* Avg. 30d% - Always visible, right-aligned */}
           <TableCell className="text-right">
-            <div className="flex items-center justify-end gap-1">
-              <Skeleton className="h-4 w-12" /> {/* Percentage */}
-              <Skeleton className="hidden md:inline h-4 w-8" /> {/* APY label */}
-              <Skeleton className="h-4 w-4" /> {/* Arrow */}
-            </div>
+            <EarnMetricCtaSkeleton />
           </TableCell>
         </TableRow>
       ))}
@@ -203,9 +171,8 @@ interface StakeDrawerData {
 const StakingPositions = () => {
   const data = useAtomValue(filteredYieldDTFListAtom)
   const columns = useColumns()
-  const [currentDrawerData, setCurrentDrawerData] = useState<StakeDrawerData | null>(
-    null
-  )
+  const [currentDrawerData, setCurrentDrawerData] =
+    useState<StakeDrawerData | null>(null)
 
   const handleRowClick = (dtf: ListedToken) => {
     // Prepare data for StakeDrawer
@@ -229,18 +196,18 @@ const StakingPositions = () => {
 
   return (
     <>
-      <div className="bg-secondary p-1 rounded-4xl">
+      <div className="mt-4 bg-secondary p-1 rounded-4xl md:mt-10">
         <TableFilters />
-        <div className="bg-card rounded-3xl overflow-hidden sm:p-2 mt-1">
-          <DataTable<ListedToken, any>
-            columns={columns}
-            data={data || []}
-            onRowClick={handleRowClick}
-            initialSorting={[{ id: 'stakingApy', desc: true }]}
-            loading={data === undefined}
-            loadingSkeleton={<StakingPositionsSkeleton />}
-          />
-        </div>
+        <DataTable<ListedToken, any>
+          columns={columns}
+          data={data || []}
+          onRowClick={handleRowClick}
+          initialSorting={[{ id: 'stakingApy', desc: true }]}
+          loading={data === undefined}
+          loadingSkeleton={<StakingPositionsSkeleton />}
+          getRowClassName={() => earnTableRowClassName}
+          className={earnTableClassName}
+        />
       </div>
       {currentDrawerData && (
         <StakeDrawer

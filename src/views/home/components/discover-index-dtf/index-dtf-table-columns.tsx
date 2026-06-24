@@ -172,7 +172,7 @@ export const indexDTFColumns: ColumnDef<IndexDTFItem>[] = [
     cell: ({ row }) => (
       <Link
         to={getFolioRoute(row.original.address, row.original.chainId)}
-        className="flex min-w-0 items-center gap-4"
+        className="flex min-w-0 items-center gap-3"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="relative flex-shrink-0">
