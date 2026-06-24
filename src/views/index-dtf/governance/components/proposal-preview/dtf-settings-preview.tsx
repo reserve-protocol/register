@@ -1,3 +1,4 @@
+import dtfStakingVaultAbi from '@/abis/dtf-index-staking-vault'
 import { chainIdAtom } from '@/state/atoms'
 import { indexDTFAtom, indexDTFFeeAtom } from '@/state/dtf/atoms'
 import { DecodedCalldata } from '@/types'
@@ -23,6 +24,7 @@ import {
 import { Link } from 'react-router-dom'
 import { formatEther, toFunctionSelector, zeroHash } from 'viem'
 import type { Address, Hex } from 'viem'
+import { useReadContract } from 'wagmi'
 
 const OPTIMISTIC_PROPOSER_ROLE =
   '0x26f49d08685d9cdd4951a7470bc8fbe9dd0f00419c1a44c1b89f845867ae12e0'
@@ -228,6 +230,15 @@ export const SetFeeRecipientsPreview = ({
   const chainId = useAtomValue(chainIdAtom)
   const indexDTF = useAtomValue(indexDTFAtom)
   const platformFee = useAtomValue(indexDTFFeeAtom)
+  const { data: tokenJar } = useReadContract({
+    abi: dtfStakingVaultAbi,
+    address: indexDTF?.stToken?.id,
+    functionName: 'tokenJar',
+    chainId,
+    query: {
+      enabled: !!indexDTF?.stToken?.id,
+    },
+  })
   const recipients = decodedCalldata.data[0] as Array<{
     recipient: string
     portion: bigint
@@ -240,14 +251,20 @@ export const SetFeeRecipientsPreview = ({
   let deployerShare = 0
   let governanceShare = 0
 
+  // Fees routed to the stToken OR its tokenJar are the governance share.
+  const governanceRecipients = new Set(
+    [indexDTF.stToken?.id, tokenJar]
+      .filter(Boolean)
+      .map((address) => (address as string).toLowerCase())
+  )
+
   recipients?.forEach((recipient) => {
     const percentage = (Number(recipient.portion) / 1e18) * 100
+    const address = recipient.recipient.toLowerCase()
 
-    if (recipient.recipient.toLowerCase() === indexDTF.deployer.toLowerCase()) {
+    if (address === indexDTF.deployer.toLowerCase()) {
       deployerShare = percentage
-    } else if (
-      recipient.recipient.toLowerCase() === indexDTF.stToken?.id.toLowerCase()
-    ) {
+    } else if (governanceRecipients.has(address)) {
       governanceShare = percentage
     } else {
       externalRecipients.push({

@@ -1,4 +1,5 @@
 import dtfIndexAbiV5 from '@/abis/dtf-index-abi'
+import dtfStakingVaultAbi from '@/abis/dtf-index-staking-vault'
 import {
   indexDTFAtom,
   indexDTFFeeAtom,
@@ -28,6 +29,7 @@ import {
   currentOptimisticAllowedActionsAtom,
   isFormValidAtom,
   currentQuorumPercentageAtom,
+  tokenJarAtom,
 } from './atoms'
 import { proposalThresholdToPercentage, secondsToDays } from '../../shared'
 import {
@@ -57,6 +59,7 @@ const resetAtom = atom(null, (get, set) => {
   set(governanceChangesAtom, {})
   set(optimisticGovernanceChangesAtom, {})
   set(currentOptimisticAllowedActionsAtom, undefined)
+  set(tokenJarAtom, undefined)
 })
 
 const Updater = () => {
@@ -118,6 +121,19 @@ const Updater = () => {
       enabled: !!indexDTF?.id && isV5,
     },
   })
+
+  // Read the stToken's tokenJar so fee-recipient classification folds it into the
+  // governance share (the new StakingVault routes governance fees to the jar).
+  const { data: tokenJar } = useReadContract({
+    abi: dtfStakingVaultAbi,
+    address: indexDTF?.stToken?.id,
+    functionName: 'tokenJar',
+    chainId: indexDTF?.chainId,
+    query: {
+      enabled: !!indexDTF?.stToken?.id,
+    },
+  })
+  const setTokenJar = useSetAtom(tokenJarAtom)
   const reset = useSetAtom(resetAtom)
   const { reset: resetForm, watch, formState, control } = useFormContext()
   const governanceChanges = useAtomValue(governanceChangesAtom)
@@ -205,6 +221,10 @@ const Updater = () => {
   useEffect(() => {
     setCurrentOptimisticAllowedActions(currentOptimisticAllowedActions)
   }, [currentOptimisticAllowedActions, setCurrentOptimisticAllowedActions])
+
+  useEffect(() => {
+    setTokenJar(tokenJar as Address | undefined)
+  }, [tokenJar, setTokenJar])
 
   useEffect(() => {
     if (indexDTF && indexDTF.ownerGovernance && feeRecipients) {
@@ -336,6 +356,9 @@ const Updater = () => {
   }, [
     indexDTF?.id,
     !!feeRecipients,
+    // Re-seed once the tokenJar read resolves and reclassifies the governance
+    // share (it lands after feeRecipients first becomes available).
+    feeRecipients?.governanceShare,
     currentBidsEnabled,
     currentOptimisticAllowedActions,
   ])

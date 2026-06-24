@@ -611,10 +611,13 @@ export const dtfSettingsProposalDataAtom = atom<ProposalData | undefined>(
         })
       }
 
-      // Governance share
+      // Governance share — route to the vault's tokenJar when it exists (revenue
+      // must not be directed to the StakingVault directly); fall back to the
+      // stToken for vaults without a tokenJar.
+      const tokenJar = get(tokenJarAtom)
       if (governanceShare > 0 && indexDTF.stToken) {
         tempRecipients.push({
-          recipient: indexDTF.stToken.id as Address,
+          recipient: (tokenJar ?? indexDTF.stToken.id) as Address,
           portion: calculateShare(governanceShare),
         })
       }
@@ -899,6 +902,10 @@ export const dtfSettingsProposalCalldatasAtom = atom<Hex[] | undefined>(
   }
 )
 
+// The new StakingVault routes the governance share to its tokenJar instead of the
+// stToken. Populated on-chain by the propose-dtf-settings Updater.
+export const tokenJarAtom = atom<Address | undefined>(undefined)
+
 export const feeRecipientsAtom = atom((get) => {
   const indexDTF = get(indexDTFAtom)
 
@@ -914,13 +921,20 @@ export const feeRecipientsAtom = atom((get) => {
   const toShare = (pct: number) =>
     Math.round((pct / PERCENT_ADJUST) * 100) / 100
 
+  // Fees routed to the stToken OR its tokenJar are the governance share.
+  const tokenJar = get(tokenJarAtom)
+  const governanceRecipients = new Set(
+    [indexDTF.stToken?.id, tokenJar]
+      .filter(Boolean)
+      .map((address) => (address as string).toLowerCase())
+  )
+
   for (const recipient of indexDTF.feeRecipients) {
+    const address = recipient.address.toLowerCase()
     // Deployer share - adjust from contract percentage to actual percentage
-    if (recipient.address.toLowerCase() === indexDTF.deployer.toLowerCase()) {
+    if (address === indexDTF.deployer.toLowerCase()) {
       deployerShare = toShare(Number(recipient.percentage))
-    } else if (
-      recipient.address.toLowerCase() === indexDTF.stToken?.id.toLowerCase()
-    ) {
+    } else if (governanceRecipients.has(address)) {
       governanceShare = toShare(Number(recipient.percentage))
     } else {
       externalRecipients.push({
