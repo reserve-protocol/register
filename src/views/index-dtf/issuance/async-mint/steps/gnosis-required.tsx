@@ -43,7 +43,7 @@ const ProcessArrow = () => (
   </div>
 )
 
-const GnosisRequired = ({ embedded }: { embedded: boolean }) => {
+const GnosisRequired = () => {
   const { openConnectModal } = useConnectModal()
   const { openAccountModal } = useAccountModal()
   const { isConnected } = useAccount()
@@ -395,7 +395,7 @@ const GnosisRequired = ({ embedded }: { embedded: boolean }) => {
             </div>
           </div>
         </div>
-        {!embedded && <SwitchToManualLink />}
+        <SwitchToManualLink />
       </div>
     </div>
   )
