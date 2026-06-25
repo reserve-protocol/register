@@ -185,7 +185,9 @@ const BridgeInfoDialog = ({
                 {(isExchange || native.url) && (
                   <Link
                     to={
-                      isExchange ? 'https://docs.ondo.finance/' : native.url!
+                      isExchange
+                        ? `https://app.ondo.finance/assets/${exchangeTokenSymbol.toLowerCase()}`
+                        : native.url!
                     }
                     target="_blank"
                   >
