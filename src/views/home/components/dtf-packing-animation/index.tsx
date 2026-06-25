@@ -3,15 +3,13 @@ import { useIsDesktop } from '@/hooks/use-media-query'
 import { cn } from '@/lib/utils'
 import { formatCurrency } from '@/utils'
 import { useLingui } from '@lingui/react/macro'
-import { useId, useMemo, type CSSProperties } from 'react'
+import { useId, useMemo, useRef } from 'react'
 import {
   useMeasuredElementWidth,
-  useRafElapsedTime,
+  usePackingAnimationFrame,
 } from '../../hooks/use-packing-animation-state'
 import { getExposureTickerAssets } from '../highlighted-dtfs/utils'
 import {
-  CARD_DETAIL_GAP,
-  CARD_RIGHT_EXTRA_PADDING,
   DESKTOP_ANIMATION_HEIGHT,
   DESKTOP_PATH_CENTER_Y,
   DESKTOP_VISUAL_GEOMETRY,
@@ -21,7 +19,7 @@ import {
   PATH_START_X,
   TEXT_PATH_GAP,
 } from './constants'
-import { getCycleState, getGeometry } from './geometry'
+import { computePackingFrame, getGeometry } from './geometry'
 import { PackingAnimationSvg } from './packing-animation-svg'
 import { useFeaturedPhoton } from './use-featured-photon'
 
@@ -29,7 +27,6 @@ const DTFPackingAnimation = ({ className }: { className?: string }) => {
   const { t } = useLingui()
   const photon = useFeaturedPhoton()
   const { ref, width } = useMeasuredElementWidth<HTMLDivElement>()
-  const time = useRafElapsedTime()
   const isDesktop = useIsDesktop()
   const id = useId().replace(/:/g, '')
   const pathId = `${id}-packing-path`
@@ -45,45 +42,64 @@ const DTFPackingAnimation = ({ className }: { className?: string }) => {
   const pathCenterY = isDesktop ? DESKTOP_PATH_CENTER_Y : MOBILE_PATH_CENTER_Y
   const visual = isDesktop ? DESKTOP_VISUAL_GEOMETRY : MOBILE_VISUAL_GEOMETRY
   const textPathRadius = visual.trajectoryRadius + TEXT_PATH_GAP
-  const cardPadding = visual.trajectoryRadius - visual.logoRadius
-  const cardRightPadding = cardPadding + CARD_RIGHT_EXTRA_PADDING
   const geometry = useMemo(
     () => getGeometry(width, pathCenterY, visual),
     [pathCenterY, visual, width]
   )
-  const cycle = getCycleState(time, exposureAssets.length, geometry.pathLength)
+  const itemCount = exposureAssets.length
+  const initialFrame = useMemo(
+    () => computePackingFrame(0, geometry, visual, itemCount),
+    [geometry, visual, itemCount]
+  )
 
-  const borderX =
-    geometry.centerX -
-    visual.trajectoryRadius +
-    (geometry.cardX - (geometry.centerX - visual.trajectoryRadius)) *
-      cycle.morphProgress
-  const borderWidth =
-    visual.trajectoryRadius * 2 +
-    (geometry.cardWidth - visual.trajectoryRadius * 2) * cycle.morphProgress
-  const logoX =
-    geometry.centerX +
-    (geometry.finalLogoX - geometry.centerX) * cycle.morphProgress
+  const trajectoryGroupRef = useRef<SVGGElement>(null)
+  const cardRectRef = useRef<SVGRectElement>(null)
+  const tickerGroupRef = useRef<SVGGElement>(null)
+  const tickerTextRefs = useRef<(SVGTextElement | null)[]>([])
+  const tickerPathRefs = useRef<(SVGTextPathElement | null)[]>([])
+  const logoRef = useRef<HTMLDivElement>(null)
+  const detailRef = useRef<HTMLDivElement>(null)
 
-  const logoStyle = {
-    left: logoX - visual.logoRadius,
-    top: geometry.centerY - visual.logoRadius,
-    width: visual.logoRadius * 2,
-    height: visual.logoRadius * 2,
-  } satisfies CSSProperties
+  const applyFrame = (time: number) => {
+    const frame = computePackingFrame(time, geometry, visual, itemCount)
 
-  const detailStyle = {
-    left: logoX + visual.logoRadius + CARD_DETAIL_GAP,
-    top: geometry.centerY - 22,
-    maxWidth:
-      geometry.cardX +
-      geometry.cardWidth -
-      cardRightPadding -
-      logoX -
-      visual.logoRadius -
-      CARD_DETAIL_GAP,
-    opacity: cycle.textOpacity,
-  } satisfies CSSProperties
+    const trajectory = trajectoryGroupRef.current
+    if (trajectory) {
+      trajectory.setAttribute('opacity', String(frame.trajectoryOpacity))
+    }
+
+    const cardRect = cardRectRef.current
+    if (cardRect) {
+      cardRect.setAttribute('x', String(frame.borderX))
+      cardRect.setAttribute('width', String(frame.borderWidth))
+      cardRect.setAttribute('opacity', String(frame.cardOpacity))
+    }
+
+    const tickerGroup = tickerGroupRef.current
+    if (tickerGroup) tickerGroup.style.display = frame.isReveal ? 'none' : ''
+
+    for (let index = 0; index < frame.tickers.length; index++) {
+      const ticker = frame.tickers[index]
+      const textNode = tickerTextRefs.current[index]
+      if (textNode) textNode.setAttribute('opacity', String(ticker.opacity))
+      const pathNode = tickerPathRefs.current[index]
+      if (pathNode) {
+        pathNode.setAttribute('startOffset', `${ticker.visibleProgress * 100}%`)
+      }
+    }
+
+    const logo = logoRef.current
+    if (logo) logo.style.left = `${frame.logoLeft}px`
+
+    const detail = detailRef.current
+    if (detail) {
+      detail.style.left = `${frame.detailLeft}px`
+      detail.style.maxWidth = `${frame.detailMaxWidth}px`
+      detail.style.opacity = String(frame.detailOpacity)
+    }
+  }
+
+  usePackingAnimationFrame(applyFrame, ref)
 
   const pathD = [
     `M ${PATH_START_X} ${geometry.textOrbitBottomY}`,
@@ -96,6 +112,8 @@ const DTFPackingAnimation = ({ className }: { className?: string }) => {
   const price = photon
     ? `$${formatCurrency(photon.price, photon.price >= 1 ? 2 : 5)}`
     : ''
+
+  const logoSize = visual.logoRadius * 2
 
   return (
     <div
@@ -111,35 +129,50 @@ const DTFPackingAnimation = ({ className }: { className?: string }) => {
           <PackingAnimationSvg
             animationHeight={animationHeight}
             assets={exposureAssets}
-            borderWidth={borderWidth}
-            borderX={borderX}
-            cycle={cycle}
             geometry={geometry}
+            initialFrame={initialFrame}
             pathD={pathD}
             pathId={pathId}
             tickerLineGradientId={tickerLineGradientId}
             visual={visual}
+            trajectoryGroupRef={trajectoryGroupRef}
+            cardRectRef={cardRectRef}
+            tickerGroupRef={tickerGroupRef}
+            tickerTextRefs={tickerTextRefs}
+            tickerPathRefs={tickerPathRefs}
           />
 
           <div
+            ref={logoRef}
             className="pointer-events-none absolute rounded-full"
-            style={logoStyle}
+            style={{
+              left: initialFrame.logoLeft,
+              top: geometry.centerY - visual.logoRadius,
+              width: logoSize,
+              height: logoSize,
+            }}
           >
             <TokenLogo
               address={photon.address}
               chain={photon.chainId}
               src={photon.brand?.icon || undefined}
               symbol={photon.symbol}
-              width={visual.logoRadius * 2}
-              height={visual.logoRadius * 2}
+              width={logoSize}
+              height={logoSize}
               loading="eager"
               fetchPriority="high"
             />
           </div>
 
           <div
+            ref={detailRef}
             className="pointer-events-none absolute min-w-0 text-left"
-            style={detailStyle}
+            style={{
+              left: initialFrame.detailLeft,
+              top: geometry.centerY - 22,
+              maxWidth: initialFrame.detailMaxWidth,
+              opacity: initialFrame.detailOpacity,
+            }}
           >
             <div className="text-base font-normal leading-tight text-foreground">
               {photon.symbol}

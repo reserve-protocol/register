@@ -3,7 +3,7 @@ import { useIsDesktop } from '@/hooks/use-media-query'
 import { cn } from '@/lib/utils'
 import { getFolioRoute } from '@/utils'
 import { useLingui } from '@lingui/react/macro'
-import { useMemo, useState, type MouseEvent, type ReactNode } from 'react'
+import { memo, useMemo, useState, type MouseEvent, type ReactNode } from 'react'
 import { Link } from 'react-router-dom'
 import {
   useAssetTickerTransition,
@@ -23,7 +23,7 @@ import {
   splitTranscriptWords,
 } from './transcript-copy'
 import { TranscriptPreview } from './transcript-preview'
-import type { ChartPlacement, HighlightedDTFItem } from './types'
+import type { ChainVersion, ChartPlacement, HighlightedDTFItem } from './types'
 import {
   formatPercentageChange,
   formatPerformancePeriodLabel,
@@ -33,13 +33,17 @@ import {
 
 const PHOTON_ALIAS_ROUTE = '/bsc/index-dtf/photon/overview'
 
+// WHY: stable reference so memoized FeatureCardHeader doesn't re-render when a
+// DTF has no chainVersions (a fresh `[]` per render would break the memo).
+const EMPTY_CHAIN_VERSIONS: ChainVersion[] = []
+
 const getHighlightedDtfRoute = (dtf: HighlightedDTFItem) => {
   if (dtf.symbol.toUpperCase() === 'PHOTON') return PHOTON_ALIAS_ROUTE
 
   return getFolioRoute(dtf.address, dtf.chainId)
 }
 
-export const IndexDTFFeatureCard = ({
+export const IndexDTFFeatureCard = memo(function IndexDTFFeatureCard({
   dtf,
   bottomSlot,
   chartPlacement = 'body',
@@ -51,7 +55,7 @@ export const IndexDTFFeatureCard = ({
   chartPlacement?: ChartPlacement
   performanceLabel?: string
   showTranscript?: boolean
-}) => {
+}) {
   const { t } = useLingui()
   const chainVersions = dtf.chainVersions
   const [selectedVersionIndex, setSelectedVersionIndex] = useState(0)
@@ -135,7 +139,7 @@ export const IndexDTFFeatureCard = ({
       )}
     >
       <FeatureCardHeader
-        chainVersions={chainVersions ?? []}
+        chainVersions={chainVersions ?? EMPTY_CHAIN_VERSIONS}
         chartPlacement={chartPlacement}
         hasPerformanceChart={hasPerformanceChart}
         oneMonthPerformance={selectedVersion.performance}
@@ -167,4 +171,4 @@ export const IndexDTFFeatureCard = ({
       )}
     </Link>
   )
-}
+})
