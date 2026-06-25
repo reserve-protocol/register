@@ -1,4 +1,4 @@
-import { performanceTimeRangeAtom } from '@/state/dtf/atoms'
+import { indexDTFAtom, performanceTimeRangeAtom } from '@/state/dtf/atoms'
 import { atom } from 'jotai'
 import { ApyDataPoint } from '../../hooks/use-dtf-apy-history'
 import { DataType, historicalConfigs } from './price-chart-constants'
@@ -12,6 +12,20 @@ export const chartTypeAtom = atom<ChartType>('line')
 export const priceHistoryAvailabilityAtom = atom<
   { address: string; firstTimestamp: number | null } | undefined
 >(undefined)
+
+// True when the DTF has pre-launch (estimated historical) price data, i.e. the
+// earliest available data point predates the DTF's creation. Drives the
+// "Est. Historical Price" chart segment and its disclosures footnote.
+export const hasEstimatedHistoricalPriceAtom = atom((get) => {
+  const dtf = get(indexDTFAtom)
+  const availability = get(priceHistoryAvailabilityAtom)
+  if (!dtf?.timestamp || !availability) return false
+  if (availability.address !== dtf.id.toLowerCase()) return false
+  return (
+    availability.firstTimestamp !== null &&
+    availability.firstTimestamp < dtf.timestamp
+  )
+})
 
 // Raw APY history payload, synced from useIndexDTFApyHistory inside PriceChart.
 // Keeping it in an atom lets other components (chart-overlay) derive the same

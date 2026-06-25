@@ -18,6 +18,7 @@ import { Signature, FileText } from 'lucide-react'
 import SectionAnchor from '@/components/section-anchor'
 import { Button } from '@/components/ui/button'
 import { indexDTFAtom, indexDTFExposureDataAtom } from '@/state/dtf/atoms'
+import { hasEstimatedHistoricalPriceAtom } from './charts/price-chart-atoms'
 import { useAtomValue } from 'jotai'
 import { ChainId } from '@/utils/chains'
 import type { MessageDescriptor } from '@lingui/core'
@@ -312,6 +313,10 @@ const OndoRisksDisclosure = () => {
 }
 
 const IndexDisclousure = () => {
+  const hasEstimatedHistoricalPrice = useAtomValue(
+    hasEstimatedHistoricalPriceAtom
+  )
+
   return (
     <Card className="p-6 group/section text-sm" id="disclosures">
       <div className="flex items-center gap-1">
@@ -389,6 +394,21 @@ const IndexDisclousure = () => {
           </a>
           <WhitepaperModal />
         </p>
+        {hasEstimatedHistoricalPrice && (
+          <p className="text-legend mt-2 border-t border-border pt-4">
+            <Trans>
+              ✱ Estimated historical price is a hypothetical illustration of how
+              the DTF’s launch-day basket would have performed before the DTF
+              was created, using historical prices for those assets. The basket
+              did not actually exist during this period. The figure assumes a
+              fixed basket — it does not reflect actual trading, management fees,
+              slippage, or the rebalancing the DTF performs in practice — and is
+              constructed with the benefit of hindsight. Hypothetical
+              performance is not indicative of future results and is not
+              investment advice.
+            </Trans>
+          </p>
+        )}
       </div>
     </Card>
   )
