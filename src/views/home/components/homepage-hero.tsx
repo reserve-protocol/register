@@ -24,15 +24,15 @@ const Header = ({ className }: { className?: string }) => (
 const SubHeader = ({ className }: { className?: string }) => (
   <p
     className={cn(
-      'flex flex-col items-center gap-1 leading-[1.25] text-foreground',
+      'flex flex-col items-center gap-0.5 leading-[1.25] text-foreground',
       'dark:text-foreground',
       className
     )}
   >
-    <span className="text-xl dark:text-legend">
+    <span className="text-lg dark:text-legend">
       <Trans>We call these tokenized portfolios DTFs:</Trans>
     </span>
-    <span className="text-xl font-medium">
+    <span className="text-lg font-medium">
       <Trans>Decentralized Token Funds</Trans>
     </span>
     <DTFExplainerButton
