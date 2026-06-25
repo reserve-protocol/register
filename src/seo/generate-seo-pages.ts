@@ -38,6 +38,17 @@ const CUSTOM_SOCIAL_IMAGES: Record<string, string> = {
   zindex: `${BASE_URL}/imgs/socials/zindex.png`,
 }
 
+// Temporary (302) short links for discover-featured DTFs, e.g.
+// /photon -> /bsc/index-dtf/photon/overview. The slug resolves by symbol via
+// resolveIndexDtfRouteToken; keep in sync with /v1/discover/featured.
+const FEATURED_SHORT_LINKS: { slug: string; chain: string }[] = [
+  { slug: 'photon', chain: 'bsc' },
+  { slug: 'buildout', chain: 'bsc' },
+  { slug: 'robots', chain: 'bsc' },
+  { slug: 'power', chain: 'bsc' },
+  { slug: 'neocloud', chain: 'bsc' },
+]
+
 // All known sub-routes for index-dtf pages
 const INDEX_DTF_ROUTES = [
   '', // Base route (served as /address/)
@@ -367,9 +378,17 @@ async function main() {
     console.log(`  ✓ ${page.route}`)
   }
 
-  // Keep simple _redirects for SPA fallback only (non-SEO routes)
+  // Temporary (302) featured short links first, then the SPA fallback. Order
+  // matters: Cloudflare uses the first matching rule, so specific redirects
+  // must precede the /* catch-all.
   const redirectsPath = path.join(BUILD_DIR, '_redirects')
-  fs.writeFileSync(redirectsPath, '# SPA fallback for non-SEO routes\n/*  /index.html  200\n')
+  const shortLinkRules = FEATURED_SHORT_LINKS.map(
+    ({ slug, chain }) => `/${slug}  /${chain}/index-dtf/${slug}/overview  302`
+  ).join('\n')
+  fs.writeFileSync(
+    redirectsPath,
+    `# Temporary (302) short links for featured DTFs\n${shortLinkRules}\n\n# SPA fallback for non-SEO routes\n/*  /index.html  200\n`
+  )
 
   console.log(
     `\n  ✓ Generated ${totalFiles} DTF pages + ${staticFiles} static shells`
