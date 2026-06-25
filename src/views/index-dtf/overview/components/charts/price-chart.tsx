@@ -9,10 +9,12 @@ import { isYieldIndexDTFAtom } from '@/state/dtf/yield-index-atoms'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { useEffect } from 'react'
 import useIndexDTFApyHistory from '../../hooks/use-dtf-apy-history'
+import CandlestickChart from './candlestick-chart'
 import ChartOverlay from './chart-overlay'
 import {
   apyHistoryAtom,
   apyTimeseriesAtom,
+  chartTypeAtom,
   dataTypeAtom,
   priceHistoryAvailabilityAtom,
 } from './price-chart-atoms'
@@ -47,6 +49,7 @@ const ChartBodyArea = ({
   xDomain?: readonly [number, number]
 }) => {
   const dataType = useAtomValue(dataTypeAtom)
+  const chartType = useAtomValue(chartTypeAtom)
   const dtf = useAtomValue(indexDTFAtom)
   const range = useAtomValue(performanceTimeRangeAtom)
   const isYieldIndexDTF = useAtomValue(isYieldIndexDTFAtom)
@@ -54,6 +57,18 @@ const ChartBodyArea = ({
 
   const bodyHeight = getBodyHeight(isYieldIndexDTF, isYieldMode)
   const skeletonHeight = getSkeletonHeight(isYieldIndexDTF, isYieldMode)
+
+  // Candlestick is a standard-DTF, price-only view with its own data source.
+  if (chartType === 'candlestick' && !isYieldIndexDTF) {
+    return (
+      <div className={cn('pt-2 sm:pt-0', bodyHeight)}>
+        <CandlestickChart
+          bodyHeight={bodyHeight}
+          skeletonHeight={skeletonHeight}
+        />
+      </div>
+    )
+  }
 
   if (isLoading) {
     return (

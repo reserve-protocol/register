@@ -29,7 +29,7 @@ import { useTrackAsyncZap } from '../hooks/use-track-async-zap'
 
 const upcomingStepRowClass = 'px-6 py-4 border-b border-secondary'
 
-const ConfigureMint = ({ embedded }: { embedded: boolean }) => {
+const ConfigureMint = () => {
   const { t } = useLingui()
   const setStep = useSetAtom(wizardStepAtom)
   const indexDTF = useAtomValue(indexDTFAtom)
@@ -291,7 +291,7 @@ const ConfigureMint = ({ embedded }: { embedded: boolean }) => {
             </div>
           )}
         </div>
-        {!embedded && <SwitchToManualLink />}
+        <SwitchToManualLink />
       </div>
     </div>
   )
