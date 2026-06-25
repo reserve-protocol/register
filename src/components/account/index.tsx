@@ -11,7 +11,7 @@ import { ConnectButton } from '@rainbow-me/rainbowkit'
 import { useDisconnect } from 'wagmi'
 import ChainLogo from 'components/icons/ChainLogo'
 import { useAtomValue } from 'jotai'
-import { AlertCircle, Wallet, Power } from 'lucide-react'
+import { AlertCircle } from 'lucide-react'
 import { ReactNode } from 'react'
 import { chainIdAtom, selectedRTokenAtom } from 'state/atoms'
 import { cn } from '@/lib/utils'
@@ -65,11 +65,9 @@ const ErrorWrapper = ({
  */
 const Account = ({
   connectLabel,
-  showConnectLabelOnMobile = false,
   connectClassName,
 }: {
   connectLabel?: ReactNode
-  showConnectLabelOnMobile?: boolean
   connectClassName?: string
 }) => {
   const chainId = useAtomValue(chainIdAtom)
@@ -112,24 +110,11 @@ const Account = ({
                     variant="accent"
                     onClick={() => handleConnect(openConnectModal)}
                     className={cn(
-                      'px-4 py-1 rounded-full font-medium dark:border border-primary/50',
+                      'h-9 px-4 py-1 rounded-full font-medium dark:border border-primary/50',
                       connectClassName
                     )}
                   >
-                    <span
-                      className={cn(
-                        'items-center py-1',
-                        showConnectLabelOnMobile ? 'hidden' : 'flex md:hidden'
-                      )}
-                    >
-                      <Power size={16} />
-                    </span>
-                    <span
-                      className={cn(
-                        'text-base',
-                        showConnectLabelOnMobile ? 'block' : 'hidden md:block'
-                      )}
-                    >
+                    <span className="block text-sm">
                       {connectLabel ?? <Trans>Connect</Trans>}
                     </span>
                   </Button>
@@ -147,25 +132,31 @@ const Account = ({
                       className="flex items-center cursor-pointer text-base"
                       onClick={openAccountModal}
                     >
-                      <div className="lg:hidden relative">
-                        <div className="p-2 border border-border rounded-xl">
-                          <Wallet size={16} />
-                        </div>
-                        <div className="absolute -bottom-1 -right-1">
+                      <div className="lg:hidden">
+                        <div className="flex h-9 items-center justify-center gap-1.5 rounded-full border border-border px-3">
                           {!invalidChain ? (
-                            <ChainLogo chain={chain.id} className="w-3 h-3" />
+                            <ChainLogo
+                              chain={chain.id}
+                              className="h-3.5 w-3.5"
+                            />
                           ) : (
                             <AlertCircle
                               fill="#FF0000"
                               color="#fff"
-                              className="w-3 h-3"
+                              className="h-3.5 w-3.5"
                             />
                           )}
+                          <span className="text-sm font-normal">
+                            {account.displayName}
+                          </span>
                         </div>
                       </div>
-                      <div className="hidden lg:flex items-center gap-2 px-3 py-2 border border-border rounded-4xl whitespace-nowrap">
+                      <div className="hidden h-9 items-center gap-1.5 rounded-full border border-border px-4 whitespace-nowrap lg:flex">
                         {!invalidChain ? (
-                          <ChainLogo chain={chain.id} className="w-4 h-4" />
+                          <ChainLogo
+                            chain={chain.id}
+                            className="w-[14px] h-[14px]"
+                          />
                         ) : (
                           <AlertCircle
                             fill="#FF0000"
@@ -173,7 +164,9 @@ const Account = ({
                             className="w-4 h-4"
                           />
                         )}
-                        <span>{account.displayName}</span>
+                        <span className="text-sm font-normal">
+                          {account.displayName}
+                        </span>
                       </div>
                     </div>
                   </ErrorWrapper>

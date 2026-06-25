@@ -107,7 +107,6 @@ const ConnectPrompt = () => (
       <div className="mt-8">
         <Account
           connectLabel={<Trans>Connect wallet</Trans>}
-          showConnectLabelOnMobile
           connectClassName="bg-primary text-primary-foreground hover:bg-primary/90 dark:border-primary"
         />
       </div>

@@ -21,11 +21,21 @@ themeModeAtom.onMount = () => {
 }
 
 export const toggleThemeAtom = atom(null, (get, set) => {
-  const newMode: ThemeMode =
-    get(themeModeAtom) === 'light' ? 'dark' : 'light'
+  const newMode: ThemeMode = get(themeModeAtom) === 'light' ? 'dark' : 'light'
+  setThemeMode(set, newMode)
+})
+
+export const setThemeModeAtom = atom(null, (_get, set, mode: ThemeMode) => {
+  setThemeMode(set, mode)
+})
+
+const setThemeMode = (
+  set: (atom: typeof themeModeAtom, mode: ThemeMode) => void,
+  newMode: ThemeMode
+) => {
   set(themeModeAtom, newMode)
   localStorage.setItem('theme-ui-color-mode', newMode)
   // Theme-ui + Tailwind both read from the document element
   document.documentElement.setAttribute('data-color-mode', newMode)
   document.documentElement.classList.toggle('dark', newMode === 'dark')
-})
+}

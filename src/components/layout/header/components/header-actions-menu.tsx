@@ -1,20 +1,11 @@
+import { SEARCH_SHORTCUT, searchMenuOpenAtom } from '@/components/command-menu'
 import {
-  SEARCH_SHORTCUT,
-  searchMenuOpenAtom,
-} from '@/components/command-menu'
-import {
+  setThemeModeAtom,
   themeModeAtom,
-  toggleThemeAtom,
 } from '@/components/dark-mode-toggle/atoms'
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuRadioGroup,
-  DropdownMenuRadioItem,
-  DropdownMenuSub,
-  DropdownMenuSubContent,
-  DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import {
@@ -26,14 +17,13 @@ import {
 import { cn } from '@/lib/utils'
 import { Trans, useLingui } from '@lingui/react/macro'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
-import { EllipsisVertical, Globe, Moon, Search, Sun } from 'lucide-react'
+import { Globe, Moon, Search, Sun } from 'lucide-react'
 import { ReactNode } from 'react'
 
-const itemClassName =
-  'p-4 gap-2 flex items-center rounded-3xl bg-card border border-transparent cursor-pointer focus:bg-card focus:border-primary'
-
-const ItemIcon = ({ children }: { children: ReactNode }) => (
-  <div className="p-1 rounded-full border border-foreground">{children}</div>
+const PanelLabel = ({ children }: { children: ReactNode }) => (
+  <div className="px-3 text-xs font-semibold uppercase text-legend">
+    {children}
+  </div>
 )
 
 // Header menu grouping Search/Theme/Language
@@ -41,7 +31,7 @@ const HeaderActionsMenu = () => {
   const { t } = useLingui()
   const [locale, setLocale] = useAtom(localeAtom)
   const mode = useAtomValue(themeModeAtom)
-  const toggleTheme = useSetAtom(toggleThemeAtom)
+  const setThemeMode = useSetAtom(setThemeModeAtom)
   const setSearchOpen = useSetAtom(searchMenuOpenAtom)
 
   return (
@@ -50,90 +40,91 @@ const HeaderActionsMenu = () => {
         <button
           type="button"
           aria-label={t`More options`}
-          className="inline-flex xl:hidden items-center justify-center h-8 w-8 rounded-md border cursor-pointer hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+          className="inline-flex h-9 items-center justify-center gap-1 rounded-full border px-3 cursor-pointer hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 xl:hidden"
         >
-          <EllipsisVertical size={16} strokeWidth={1.5} />
+          <Search size={14} strokeWidth={1.5} />
+          {mode === 'dark' ? (
+            <Moon size={14} strokeWidth={1.5} />
+          ) : (
+            <Sun size={14} strokeWidth={1.5} />
+          )}
+          <Globe size={14} strokeWidth={1.5} />
         </button>
       </DropdownMenuTrigger>
       <DropdownMenuContent
         align="end"
-        className="w-72 rounded-3xl bg-secondary p-1 flex flex-col gap-1"
+        sideOffset={10}
+        className="flex w-screen flex-col gap-[1px] !p-0 !rounded-none border-x-0 bg-secondary shadow-[0_18px_45px_rgba(0,0,0,0.12)] sm:w-72 sm:border-x"
       >
-        <DropdownMenuItem
-          className={itemClassName}
-          // WHY: defer so the dropdown's closing focus-restore doesn't steal
-          // focus from the command dialog input
-          onSelect={() => setTimeout(() => setSearchOpen(true), 0)}
-        >
-          <ItemIcon>
-            <Search size={16} />
-          </ItemIcon>
-          <div className="mr-auto">
-            <span className="font-bold text-base">
-              <Trans>Search</Trans>
-            </span>
-            <p className="text-sm text-legend">
-              <Trans>Search for DTFs</Trans>
-            </p>
-          </div>
-          <span className="hidden md:inline text-xs text-legend">
-            {SEARCH_SHORTCUT}
-          </span>
-        </DropdownMenuItem>
-        <DropdownMenuItem
-          className={itemClassName}
-          onSelect={(e) => {
-            // Keep the menu open so the theme change is visible
-            e.preventDefault()
-            toggleTheme()
-          }}
-        >
-          <ItemIcon>
-            {mode === 'dark' ? <Moon size={16} /> : <Sun size={16} />}
-          </ItemIcon>
-          <div className="mr-auto">
-            <span className="font-bold text-base">
-              <Trans>Theme</Trans>
-            </span>
-            <p className="text-sm text-legend">
-              {mode === 'dark' ? t`Dark` : t`Light`}
-            </p>
-          </div>
-        </DropdownMenuItem>
-        <DropdownMenuSub>
-          <DropdownMenuSubTrigger
-            className={cn(
-              itemClassName,
-              'data-[state=open]:bg-card data-[state=open]:border-primary'
-            )}
+        <div className="bg-background p-3 pt-5">
+          <PanelLabel>
+            <Trans>Search</Trans>
+          </PanelLabel>
+          <button
+            type="button"
+            className="mt-3 flex h-9 w-full items-center justify-center gap-1.5 rounded-full border border-border bg-card px-3 text-sm font-medium text-legend transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+            onClick={() => setTimeout(() => setSearchOpen(true), 0)}
           >
-            <ItemIcon>
-              <Globe size={16} />
-            </ItemIcon>
-            <div className="mr-auto">
-              <span className="font-bold text-base">
-                <Trans>Language</Trans>
-              </span>
-              <p className="text-sm text-legend">{LOCALE_LABELS[locale]}</p>
-            </div>
-          </DropdownMenuSubTrigger>
-          <DropdownMenuSubContent className="min-w-[10rem]">
-            <DropdownMenuRadioGroup
-              value={locale}
-              onValueChange={(value) => setLocale(value as SupportedLocale)}
+            <Search size={14} strokeWidth={1.5} />
+            <span>
+              <Trans>Search for DTFs</Trans>
+            </span>
+            <span className="ml-auto hidden text-xs text-legend md:inline">
+              {SEARCH_SHORTCUT}
+            </span>
+          </button>
+        </div>
+        <div className="bg-background p-3 pt-5">
+          <PanelLabel>
+            <Trans>Theme</Trans>
+          </PanelLabel>
+          <div className="mt-3 grid grid-cols-2 rounded-full bg-muted p-0.5">
+            <button
+              type="button"
+              onClick={() => setThemeMode('light')}
+              className={cn(
+                'flex h-8 items-center justify-center gap-1.5 rounded-full text-sm font-medium text-legend transition-colors',
+                mode === 'light' && 'bg-card text-foreground'
+              )}
             >
-              {SUPPORTED_LOCALES.map((supported) => (
-                <DropdownMenuRadioItem
-                  key={supported}
-                  value={supported}
-                  className="cursor-pointer"
-                >
-                  {LOCALE_LABELS[supported]}
-                </DropdownMenuRadioItem>
-              ))}
-            </DropdownMenuRadioGroup>
-          </DropdownMenuSubContent>
-        </DropdownMenuSub>
+              <Sun size={14} strokeWidth={1.5} />
+              <Trans>Light</Trans>
+            </button>
+            <button
+              type="button"
+              onClick={() => setThemeMode('dark')}
+              className={cn(
+                'flex h-8 items-center justify-center gap-1.5 rounded-full text-sm font-medium text-legend transition-colors',
+                mode === 'dark' && 'bg-card text-foreground'
+              )}
+            >
+              <Moon size={14} strokeWidth={1.5} />
+              <Trans>Dark</Trans>
+            </button>
+          </div>
+        </div>
+        <div className="bg-background p-3 pt-5">
+          <PanelLabel>
+            <Trans>Language</Trans>
+          </PanelLabel>
+          <div className="mt-3 grid grid-cols-2 gap-1">
+            {SUPPORTED_LOCALES.map((supported) => (
+              <button
+                key={supported}
+                type="button"
+                onClick={() => setLocale(supported as SupportedLocale)}
+                className={cn(
+                  'h-9 rounded-full border px-3 text-sm font-medium text-legend transition-colors hover:bg-muted',
+                  locale === supported
+                    ? 'border-primary bg-primary text-primary-foreground'
+                    : 'border-border bg-transparent'
+                )}
+              >
+                {LOCALE_LABELS[supported]}
+              </button>
+            ))}
+          </div>
+        </div>
       </DropdownMenuContent>
     </DropdownMenu>
   )

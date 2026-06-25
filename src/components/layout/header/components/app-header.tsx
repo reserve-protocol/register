@@ -9,6 +9,7 @@ import AppNavigation from './app-navigation'
 import Brand from './Brand'
 import HeaderActionsMenu from './header-actions-menu'
 import LanguageSelector from './language-selector'
+import MobileNavigationDrawer from './mobile-navigation-drawer'
 
 const Container = ({ children }: { children: ReactNode }) => {
   // Check if the route is a "index-dtf" route
@@ -34,11 +35,13 @@ const Container = ({ children }: { children: ReactNode }) => {
  */
 const AppHeader = () => (
   <Container>
-    <div className="container flex items-center h-[56px] md:h-[72px] px-4 sm:px-6">
-      <Brand className="text-primary mr-2 sm:mr-4 cursor-pointer md:-mt-1" />
+    <div className="container flex items-center h-[56px] md:h-[72px] px-2 sm:px-4 lg:px-6">
+      <Brand className="relative z-[60] text-primary mr-2 sm:mr-4 cursor-pointer md:-mt-1" />
       <AppNavigation />
-      <div className="flex items-center gap-1 sm:gap-2">
-        <ContactBellButton />
+      <div className="ml-auto flex items-center gap-1 sm:gap-2 min-[850px]:ml-0">
+        <div className="hidden min-[850px]:block">
+          <ContactBellButton />
+        </div>
         {/* CommandMenu stays mounted below xl for the ⌘K dialog, only its button is hidden */}
         <div className="hidden xl:flex items-center gap-2">
           <CommandMenu />
@@ -47,6 +50,7 @@ const AppHeader = () => (
         </div>
         <HeaderActionsMenu />
         <Account />
+        <MobileNavigationDrawer />
       </div>
     </div>
   </Container>
