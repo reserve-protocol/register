@@ -1,7 +1,11 @@
 import {
+  CARD_DETAIL_GAP,
+  CARD_RIGHT_EXTRA_PADDING,
   COLLAPSE_MS,
   COLLAPSE_TEXT_MS,
+  FADE_IN_PROGRESS,
   FADE_OUT_END_PROGRESS,
+  FADE_OUT_START_PROGRESS,
   FINAL_HOLD_MS,
   PATH_START_X,
   RESET_MS,
@@ -138,5 +142,84 @@ export const getCycleState = (
     morphProgress: expandingProgress * (1 - collapseProgress),
     textOpacity: isReveal ? textProgress * (1 - collapseTextProgress) : 0,
     trajectoryOpacity: isReveal ? 1 - clamp(revealTime / REVEAL_HOLD_MS) : 1,
+  }
+}
+
+export type PackingTickerFrame = {
+  opacity: number
+  visibleProgress: number
+}
+
+export type PackingFrame = {
+  trajectoryOpacity: number
+  cardOpacity: number
+  isReveal: boolean
+  borderX: number
+  borderWidth: number
+  logoLeft: number
+  detailLeft: number
+  detailMaxWidth: number
+  detailOpacity: number
+  tickers: PackingTickerFrame[]
+}
+
+// WHY: single source of truth for the per-frame values. Used both for the
+// initial (time=0) render and for the imperative ref writes in the RAF loop, so
+// the visual output is identical to the previous state-driven implementation.
+export const computePackingFrame = (
+  time: number,
+  geometry: Geometry,
+  visual: VisualGeometry,
+  itemCount: number
+): PackingFrame => {
+  const cycle = getCycleState(time, itemCount, geometry.pathLength)
+
+  const trajectoryStartX = geometry.centerX - visual.trajectoryRadius
+  const borderX =
+    trajectoryStartX + (geometry.cardX - trajectoryStartX) * cycle.morphProgress
+  const borderWidth =
+    visual.trajectoryRadius * 2 +
+    (geometry.cardWidth - visual.trajectoryRadius * 2) * cycle.morphProgress
+  const logoX =
+    geometry.centerX +
+    (geometry.finalLogoX - geometry.centerX) * cycle.morphProgress
+
+  const cardPadding = visual.trajectoryRadius - visual.logoRadius
+  const cardRightPadding = cardPadding + CARD_RIGHT_EXTRA_PADDING
+  const detailMaxWidth =
+    geometry.cardX +
+    geometry.cardWidth -
+    cardRightPadding -
+    logoX -
+    visual.logoRadius -
+    CARD_DETAIL_GAP
+
+  const tickers = Array.from({ length: itemCount }, (_, index) => {
+    const itemTime = cycle.cycleTime - index * cycle.spacingMs
+    const progress = itemTime / cycle.travelMs
+    const visibleProgress = clamp(progress)
+    const fadeIn = clamp(visibleProgress / FADE_IN_PROGRESS)
+    const fadeOut =
+      1 -
+      clamp(
+        (visibleProgress - FADE_OUT_START_PROGRESS) /
+          (FADE_OUT_END_PROGRESS - FADE_OUT_START_PROGRESS)
+      )
+    const opacity =
+      progress < 0 || progress > FADE_OUT_END_PROGRESS ? 0 : fadeIn * fadeOut
+    return { opacity, visibleProgress }
+  })
+
+  return {
+    trajectoryOpacity: cycle.trajectoryOpacity,
+    cardOpacity: cycle.isReveal ? 1 : 0,
+    isReveal: cycle.isReveal,
+    borderX,
+    borderWidth,
+    logoLeft: logoX - visual.logoRadius,
+    detailLeft: logoX + visual.logoRadius + CARD_DETAIL_GAP,
+    detailMaxWidth,
+    detailOpacity: cycle.textOpacity,
+    tickers,
   }
 }

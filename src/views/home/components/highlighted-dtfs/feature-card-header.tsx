@@ -4,7 +4,7 @@ import { isInactiveDTF } from '@/hooks/use-dtf-status'
 import { cn } from '@/lib/utils'
 import { formatCurrency } from '@/utils'
 import { Trans } from '@lingui/react/macro'
-import type { Dispatch, SetStateAction } from 'react'
+import { memo, type Dispatch, type SetStateAction } from 'react'
 import { ChainTabs } from './chain-tabs'
 import {
   FEATURE_CARD_HEADER_CLASS_NAME,
@@ -13,7 +13,7 @@ import {
 import { PerformanceChart } from './performance-chart'
 import type { ChainVersion, ChartPlacement, HighlightedDTFItem } from './types'
 
-export const FeatureCardHeader = ({
+export const FeatureCardHeader = memo(function FeatureCardHeader({
   chainVersions,
   chartPlacement,
   hasPerformanceChart,
@@ -37,7 +37,7 @@ export const FeatureCardHeader = ({
   selectedVersionIndex: number
   setSelectedVersionIndex: Dispatch<SetStateAction<number>>
   versionKey: string
-}) => {
+}) {
   const hasChainTabs = chainVersions.length > 1
   const launchMarkerToken = {
     address: selectedVersion.address,
@@ -159,4 +159,4 @@ export const FeatureCardHeader = ({
       )}
     </div>
   )
-}
+})
