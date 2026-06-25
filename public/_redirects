@@ -1,1 +1,10 @@
+# Temporary (302) short links for featured DTFs -> their overview pages.
+# The slug resolves by symbol via resolveIndexDtfRouteToken, so these are not
+# permanent and must be kept in sync with the `featured` list if it changes.
+/photon     /bsc/index-dtf/photon/overview     302
+/buildout   /bsc/index-dtf/buildout/overview   302
+/robots     /bsc/index-dtf/robots/overview     302
+/power      /bsc/index-dtf/power/overview      302
+/neocloud   /bsc/index-dtf/neocloud/overview   302
+
 /*    /index.html   200
