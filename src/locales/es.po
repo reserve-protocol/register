@@ -9028,6 +9028,10 @@ msgstr "Target:"
 msgid "Target(s)"
 msgstr "Objetivo(s)"
 
+#: src/views/index-dtf/overview/components/index-about-overview.tsx:123
+msgid "Tear Sheet"
+msgstr "Ficha técnica"
+
 #: src/views/index-dtf/deploy/components/right-panel.tsx:132
 msgid "Telegram"
 msgstr "Telegram"
