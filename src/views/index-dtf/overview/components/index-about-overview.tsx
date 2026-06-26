@@ -77,11 +77,13 @@ const Mandate = () => {
   )
 }
 
-// Locale-specific tearsheets hosted on storage.reserve.org, one PDF per locale.
-// Keyed by DTF address (lowercase) across every chain the token is deployed on.
+// Per-token resources for the AI DTF suite, hardcoded in Register and keyed by
+// DTF address (lowercase) across every chain the token is deployed on:
+//   - Tear Sheet: locale-specific PDF hosted on storage.reserve.org.
+//   - LLM Markdown: single Markdown doc served from /public/dtf-llm.
 const TEARSHEET_LOCALES: SupportedLocale[] = ['en', 'es', 'ko', 'zh']
 
-const TEARSHEET_TOKEN_BY_ADDRESS: Record<string, string> = {
+const DTF_RESOURCE_TOKEN_BY_ADDRESS: Record<string, string> = {
   // PHOTON
   '0x5039ece83dc4e0621ebec391128339bd859a84d0': 'PHOTON',
   '0xa0fe4e0aeca5479705ce996615b2eacb6b6a10fb': 'PHOTON',
@@ -99,16 +101,22 @@ const TEARSHEET_TOKEN_BY_ADDRESS: Record<string, string> = {
   '0xf571fe3f0d74521bc7310b111faea931c748f27b': 'NEOCLOUD',
 }
 
-const getTearsheetUrl = (
+const getDtfResourceUrls = (
   dtfAddress: string,
   locale: SupportedLocale
-): string | null => {
-  const tokenName = TEARSHEET_TOKEN_BY_ADDRESS[dtfAddress.toLowerCase()]
+): { tearsheetUrl: string; referenceUrl: string } | null => {
+  const tokenName = DTF_RESOURCE_TOKEN_BY_ADDRESS[dtfAddress.toLowerCase()]
   if (!tokenName) return null
 
   // Fall back to the default locale for any locale without a tearsheet (e.g. pseudo).
-  const target = TEARSHEET_LOCALES.includes(locale) ? locale : DEFAULT_LOCALE
-  return `https://storage.reserve.org/${tokenName}_DTF_Tearsheet_${target}.pdf`
+  const tearsheetLocale = TEARSHEET_LOCALES.includes(locale)
+    ? locale
+    : DEFAULT_LOCALE
+
+  return {
+    tearsheetUrl: `https://storage.reserve.org/${tokenName}_DTF_Tearsheet_${tearsheetLocale}.pdf`,
+    referenceUrl: `/dtf-llm/${tokenName.toLowerCase()}-dtf.md`,
+  }
 }
 
 const DownloadableResources = () => {
@@ -118,9 +126,15 @@ const DownloadableResources = () => {
   const brandData = useAtomValue(indexDTFBrandAtom)
   const files = brandData?.dtf?.files?.filter((file) => file.url) ?? []
 
-  const tearsheetUrl = data?.id ? getTearsheetUrl(data.id, locale) : null
+  const hardcodedUrls = data?.id ? getDtfResourceUrls(data.id, locale) : null
   const resources = [
-    ...(tearsheetUrl ? [{ url: tearsheetUrl, name: t`Tear Sheet` }] : []),
+    ...(hardcodedUrls
+      ? [
+          { url: hardcodedUrls.tearsheetUrl, name: t`Tear Sheet` },
+          // WHY: brand/technical term — same across locales, intentionally not translated.
+          { url: hardcodedUrls.referenceUrl, name: 'LLM Markdown' },
+        ]
+      : []),
     ...files,
   ]
 
