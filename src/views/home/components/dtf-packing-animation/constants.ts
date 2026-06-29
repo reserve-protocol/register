@@ -28,11 +28,11 @@ export type VisualGeometry = {
 export const DESKTOP_VISUAL_GEOMETRY: VisualGeometry = {
   logoRadius: 24,
   trajectoryRadius: 42,
-  cardWidth: 170,
+  cardWidth: 176,
 }
 
 export const MOBILE_VISUAL_GEOMETRY: VisualGeometry = {
   logoRadius: 21,
   trajectoryRadius: 37,
-  cardWidth: 150,
+  cardWidth: 162,
 }

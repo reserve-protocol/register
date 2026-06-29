@@ -13,7 +13,7 @@ export const END_FADE_DISTANCE = 160
 export const FEATURE_CARD_CLASS_NAME =
   'group flex w-full shrink-0 flex-col gap-1 rounded-3xl bg-card p-1 lg:bg-background lg:hover:bg-card'
 export const FEATURE_CARD_MEDIA_CLASS_NAME =
-  'flex flex-col overflow-hidden rounded-t-2xl bg-gradient-to-b from-secondary to-card lg:from-secondary/80 lg:group-hover:from-card'
+  'flex flex-col overflow-hidden rounded-t-2xl bg-gradient-to-b from-secondary to-card transition-colors duration-200 ease-out group-data-[active=true]:from-card lg:from-secondary/80 lg:group-hover:from-card'
 export const FEATURE_CARD_HEADER_CLASS_NAME =
   'flex min-w-0 flex-col gap-3 p-5 pb-2'
 export const FEATURE_CARD_ASSET_TICKER_CLASS_NAME =

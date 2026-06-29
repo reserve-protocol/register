@@ -177,7 +177,7 @@ const DTFPackingAnimation = ({ className }: { className?: string }) => {
             <div className="text-base font-normal leading-tight text-foreground">
               {photon.symbol}
             </div>
-            <div className="mt-1 text-sm font-normal leading-tight text-primary">
+            <div className="mt-1 text-sm font-normal leading-tight text-muted-foreground">
               {price}
             </div>
           </div>

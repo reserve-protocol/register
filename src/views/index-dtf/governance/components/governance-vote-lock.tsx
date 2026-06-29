@@ -113,11 +113,91 @@ const GovernedDtfsHoverCard = ({
   )
 }
 
+type RewardToken = {
+  address?: string
+  name?: string
+  symbol?: string
+}
+
+const RewardTokensHoverCard = ({
+  chainId,
+  tokens,
+}: {
+  chainId: number
+  tokens: RewardToken[]
+}) => {
+  const [open, setOpen] = useState(false)
+
+  return (
+    <HoverCard open={open} onOpenChange={setOpen} openDelay={150}>
+      <HoverCardTrigger asChild>
+        <button
+          type="button"
+          className={`inline-flex items-center gap-1 rounded-full transition-colors focus-visible:outline-none focus-visible:text-primary ${
+            open ? 'text-primary' : 'text-foreground hover:text-primary'
+          }`}
+        >
+          <span className="flex -space-x-2">
+            {tokens.map((token) => (
+              <span
+                key={`${token.address}-${token.symbol}`}
+                className="rounded-full border-2 border-background bg-card"
+              >
+                <TokenLogo
+                  size="md"
+                  symbol={token.symbol}
+                  address={token.address}
+                  chain={chainId}
+                />
+              </span>
+            ))}
+          </span>
+          <ChevronDown
+            size={16}
+            strokeWidth={2}
+            className={`transition-transform ${open ? 'rotate-180' : ''}`}
+          />
+        </button>
+      </HoverCardTrigger>
+      <HoverCardContent align="end" className="w-64 p-1">
+        <div className="mb-2 px-3 pt-3 text-xs font-semibold uppercase tracking-wide text-legend">
+          <Trans>Reward tokens</Trans>
+        </div>
+        <div>
+          {tokens.map((token) => (
+            <div
+              key={`${token.address}-${token.symbol}-detail`}
+              className="flex items-center gap-2 rounded-xl px-3 py-2"
+            >
+              <TokenLogo
+                size="md"
+                symbol={token.symbol}
+                address={token.address}
+                chain={chainId}
+              />
+              <div className="min-w-0">
+                <div className="text-sm font-medium text-foreground">
+                  ${token.symbol}
+                </div>
+                {!!token.name && (
+                  <div className="truncate text-xs text-legend">
+                    {token.name}
+                  </div>
+                )}
+              </div>
+            </div>
+          ))}
+        </div>
+      </HoverCardContent>
+    </HoverCard>
+  )
+}
+
 const RewardFacts = ({
-  rewardsInLabel,
+  rewardsIn,
   claiming,
 }: {
-  rewardsInLabel: string
+  rewardsIn: ReactNode
   claiming: ReactNode
 }) => (
   <>
@@ -127,7 +207,7 @@ const RewardFacts = ({
         <div className="text-base text-legend">
           <Trans>Rewards in</Trans>
         </div>
-        <div className="text-base font-medium">{rewardsInLabel}</div>
+        <div className="text-base font-medium">{rewardsIn}</div>
       </div>
       <div className="h-full w-px bg-border" />
       <div className="flex items-center pt-4 pb-2 justify-between">
@@ -191,6 +271,12 @@ const GovernanceVoteLock = () => {
     (rewardsAccrueAutomatically
       ? underlyingSymbol
       : `$${indexDTF.token.symbol}`)
+  const rewardsIn =
+    rewardTokens.length > 1 ? (
+      <RewardTokensHoverCard chainId={chainId} tokens={rewardTokens} />
+    ) : (
+      rewardsInLabel
+    )
 
   return (
     <div className="rounded-3xl bg-background p-2">
@@ -227,7 +313,7 @@ const GovernanceVoteLock = () => {
               </Trans>
             </p>
             <RewardFacts
-              rewardsInLabel={rewardsInLabel}
+              rewardsIn={rewardsIn}
               claiming={<Trans>Automatic</Trans>}
             />
           </div>
@@ -247,7 +333,7 @@ const GovernanceVoteLock = () => {
               )}
             </p>
             <RewardFacts
-              rewardsInLabel={rewardsInLabel}
+              rewardsIn={rewardsIn}
               claiming={<Trans>Manual</Trans>}
             />
           </div>

@@ -87,6 +87,7 @@ export const IndexDTFFeatureCard = memo(function IndexDTFFeatureCard({
     useHighlightedCardVisibility<HTMLAnchorElement>(isDesktop)
   const isActive =
     showTranscript && (isDesktop ? isTranscriptActive : isCardInView)
+  const isMobileInViewActive = showTranscript && !isDesktop && isCardInView
   const {
     displayedValue: displayedBacking,
     displayedVersionKey,
@@ -132,6 +133,7 @@ export const IndexDTFFeatureCard = memo(function IndexDTFFeatureCard({
           setIsTranscriptActive(false)
         }
       }}
+      data-active={isMobileInViewActive}
       className={cn(
         FEATURE_CARD_CLASS_NAME,
         'select-none',

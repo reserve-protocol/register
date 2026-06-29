@@ -51,8 +51,16 @@ export const PackingAnimationSvg = ({
         x2={geometry.centerX}
         y2={geometry.orbitBottomY}
       >
-        <stop offset="0%" stopColor="hsl(var(--primary))" stopOpacity="0" />
-        <stop offset="100%" stopColor="hsl(var(--primary))" stopOpacity="1" />
+        <stop
+          offset="0%"
+          stopColor="hsl(var(--muted-foreground))"
+          stopOpacity="0"
+        />
+        <stop
+          offset="100%"
+          stopColor="hsl(var(--muted-foreground))"
+          stopOpacity="0.7"
+        />
       </linearGradient>
     </defs>
 
@@ -69,7 +77,7 @@ export const PackingAnimationSvg = ({
         cx={geometry.centerX}
         cy={geometry.centerY}
         r={visual.trajectoryRadius}
-        className="fill-primary/10 stroke-primary"
+        className="fill-secondary stroke-muted-foreground/70"
         fill="none"
         strokeWidth="1.5"
       />
@@ -82,7 +90,7 @@ export const PackingAnimationSvg = ({
       width={initialFrame.borderWidth}
       height={geometry.cardHeight}
       rx={geometry.cardHeight / 2}
-      className="fill-primary/10 stroke-primary"
+      className="fill-secondary stroke-muted-foreground/70"
       strokeWidth="1.5"
       opacity={initialFrame.cardOpacity}
     />
