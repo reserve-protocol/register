@@ -95,7 +95,7 @@ const SubmitLockButton = ({ onSuccess }: { onSuccess?: () => void }) => {
     address: stToken?.id,
     args: [amountToLock],
     chainId: stToken?.chainId,
-    query: { enabled: amountToLock > 0n && !!stToken?.id },
+    query: { enabled: amountToLock > 0n && stToken?.id !== undefined },
   })
 
   const {
@@ -204,13 +204,14 @@ const SubmitLockButton = ({ onSuccess }: { onSuccess?: () => void }) => {
         isProcessing ||
         (!receipt &&
           (readyToSubmit
-            ? isLoading || (!!hash && !receipt)
-            : approving || (!!approvalHash && !approvalReceipt)))
+            ? isLoading || (hash !== undefined && !receipt)
+            : approving ||
+              (approvalHash !== undefined && !approvalReceipt)))
       }
       loadingText={
         isProcessing
           ? t`Processing transaction...`
-          : !!hash
+          : hash !== undefined
             ? t`Confirming tx...`
             : t`Pending, sign in wallet`
       }
