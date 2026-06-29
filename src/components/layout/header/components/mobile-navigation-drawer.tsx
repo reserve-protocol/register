@@ -261,7 +261,7 @@ const MobileNavigationDrawer = () => {
         <button
           type="button"
           className={cn(
-            'inline-flex h-9 w-9 items-center justify-center rounded-full border cursor-pointer hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 min-[850px]:hidden',
+            'inline-flex h-9 w-9 cursor-pointer items-center justify-center rounded-full border bg-card hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 dark:bg-transparent min-[850px]:hidden',
             open && 'relative z-[60]'
           )}
         >

@@ -40,7 +40,7 @@ const HeaderActionsMenu = () => {
         <button
           type="button"
           aria-label={t`More options`}
-          className="inline-flex h-9 items-center justify-center gap-1 rounded-full border px-3 cursor-pointer hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 xl:hidden"
+          className="inline-flex h-9 cursor-pointer items-center justify-center gap-1 rounded-full border bg-card px-3 hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 dark:bg-transparent xl:hidden"
         >
           <Search size={14} strokeWidth={1.5} />
           {mode === 'dark' ? (

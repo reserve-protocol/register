@@ -133,7 +133,7 @@ const Account = ({
                       onClick={openAccountModal}
                     >
                       <div className="lg:hidden">
-                        <div className="flex h-9 items-center justify-center gap-1.5 rounded-full border border-border px-3">
+                        <div className="flex h-9 items-center justify-center gap-1.5 rounded-full border border-border bg-card px-3 dark:bg-transparent">
                           {!invalidChain ? (
                             <ChainLogo
                               chain={chain.id}

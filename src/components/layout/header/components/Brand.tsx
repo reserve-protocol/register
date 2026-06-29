@@ -7,7 +7,7 @@ const Brand = ({ className }: { className?: string }) => {
       <div className="hidden md:hidden lg:flex items-center cursor-pointer dark:text-foreground">
         <Reserve className="h-[22px] w-auto" />
       </div>
-      <div className="ml-1 flex h-9 items-center justify-center lg:hidden">
+      <div className="flex h-9 items-center justify-center dark:text-foreground lg:hidden">
         <Reserve className="h-5 w-auto" />
       </div>
     </Link>
