@@ -15,6 +15,7 @@ import {
 import {
   getPerformanceColorSet,
   getPerformanceDirection,
+  PERFORMANCE_COLORS,
 } from '@/utils/chart-performance-colors'
 import { useAtomValue } from 'jotai'
 import { useId } from 'react'
@@ -49,7 +50,9 @@ const buildYAxisFormatter =
   }
 
 export const ChartSkeleton = ({ className }: { className?: string }) => (
-  <Skeleton className={cn('w-full rounded-lg', className)} />
+  <Skeleton
+    className={cn('w-full rounded-2xl bg-muted-foreground/10', className)}
+  />
 )
 
 const PriceChartBody = ({
@@ -103,7 +106,7 @@ const PriceChartBody = ({
       .filter((value): value is number => value !== undefined)
       .map((value) => ({ value }))
   )
-  const overviewPriceColors = getPerformanceColorSet('darkSurface')
+  const overviewPriceColors = getPerformanceColorSet()
   const priceStrokeGradientId = `${chartId}-overview-price-stroke`
   const dotsPatternId = `${chartId}-overview-dots`
   const preLaunchDotsPatternId = `${chartId}-overview-pre-launch-dots`
@@ -115,7 +118,7 @@ const PriceChartBody = ({
       ? `url(#${priceStrokeGradientId})`
       : overviewPriceColors.neutral.stroke
     : isYieldMode
-      ? '#4ADE80'
+      ? PERFORMANCE_COLORS.positive.dot
       : '#E5EEFA'
   const performanceDotColor =
     performanceDirection === 'positive' || performanceDirection === 'negative'
@@ -153,9 +156,10 @@ const PriceChartBody = ({
           dataKey="timestamp"
           type="number"
           domain={xDomain ? [...xDomain] : ['dataMin', 'dataMax']}
-          tick={{ fontSize: 13, opacity: 0.7 }}
+          tick={isMobile ? false : { fontSize: 13, opacity: 0.7 }}
+          height={isMobile ? 0 : undefined}
           tickFormatter={formatXAxisTick}
-          className="[&_.recharts-cartesian-axis-tick_text]:!fill-white"
+          className="[&_.recharts-cartesian-axis-tick_text]:!fill-muted-foreground"
           axisLine={false}
           tickLine={false}
           interval="preserveStart"
@@ -165,9 +169,13 @@ const PriceChartBody = ({
         <YAxis
           dataKey={chartKey}
           orientation="right"
-          tick={{ fontSize: 13, opacity: 0.7 }}
+          tick={
+            isMobile
+              ? false
+              : { fontSize: 13, opacity: 0.7, textAnchor: 'end', dx: 44 }
+          }
           tickFormatter={formatYAxisTick}
-          className="[&_.recharts-cartesian-axis-tick_text]:!fill-white"
+          className="[&_.recharts-cartesian-axis-tick_text]:!fill-muted-foreground"
           axisLine={false}
           tickLine={false}
           domain={
@@ -178,7 +186,7 @@ const PriceChartBody = ({
                 ]
               : ['auto', 'auto']
           }
-          width={55}
+          width={isMobile ? 0 : 55}
           tickCount={5}
           tickMargin={5}
         />
@@ -194,13 +202,13 @@ const PriceChartBody = ({
         {isYieldMode && avgApy > 0 && (
           <ReferenceLine
             y={avgApy}
-            stroke="#fff"
+            stroke="hsl(var(--foreground))"
             strokeDasharray="4 4"
             strokeOpacity={0.4}
             label={{
               value: `Avg ${formatPercentage(avgApy)}`,
               position: 'insideBottomRight',
-              fill: '#fff',
+              fill: 'hsl(var(--foreground))',
               fontSize: 12,
               opacity: 0.8,
             }}

@@ -1,5 +1,6 @@
 import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
+import { cn } from '@/lib/utils'
 import { Trans } from '@lingui/react/macro'
 import { useAvailableTimeRanges } from './use-available-time-ranges'
 import { type Range } from './price-chart-constants'
@@ -13,22 +14,25 @@ const TimeRangeSelector = ({
 
   if (!availableRanges) {
     return (
-      <div className="gap-1 sm:ml-0 sm:mr-auto bg-white/10 rounded-full p-1">
-        <Skeleton className="h-6 w-[200px] rounded-full" />
+      <div className="sm:ml-0 sm:mr-auto">
+        <Skeleton className="h-5 w-[200px]" />
       </div>
     )
   }
 
   if (variant === 'minimal') {
     return (
-      <div className="flex gap-2">
+      <div className="flex w-full justify-between gap-4 px-2 sm:w-auto sm:justify-start sm:px-0">
         {availableRanges.map((tr) => (
           <button
             key={tr.value}
-            className={`text-xs sm:text-sm ${tr.value === range ? 'text-white font-bold' : 'text-white/50'}`}
+            className={cn(
+              'text-sm font-normal text-muted-foreground hover:text-foreground',
+              tr.value === range && 'text-foreground'
+            )}
             onClick={() => setRange(tr.value as Range)}
           >
-            {tr.value === 'all' ? <Trans>All</Trans> : tr.label}
+            {tr.value === 'all' ? <Trans>ALL</Trans> : tr.label}
           </button>
         ))}
       </div>
@@ -36,15 +40,19 @@ const TimeRangeSelector = ({
   }
 
   return (
-    <div className="gap-1 sm:ml-0 sm:mr-auto bg-white/10 rounded-full p-1 flex">
+    <div className="flex w-full min-w-0 justify-between gap-2 xl:ml-0 xl:mr-auto xl:w-auto xl:justify-start xl:gap-4">
       {availableRanges.map((tr) => (
         <Button
           key={tr.value}
           variant="ghost"
-          className={`h-6 px-2 mr-1 sm:px-2 text-xs sm:text-sm text-white/80 rounded-[60px] hover:bg-white hover:text-black ${tr.value === range ? 'bg-white text-black' : ''}`}
+          className={cn(
+            'h-auto shrink-0 rounded-none bg-transparent p-0 text-sm font-normal text-muted-foreground hover:bg-transparent hover:text-foreground',
+            tr.value === range && 'text-foreground hover:text-foreground',
+            tr.value === '3m' && 'hidden sm:inline-flex'
+          )}
           onClick={() => setRange(tr.value as Range)}
         >
-          {tr.value === 'all' ? <Trans>All</Trans> : tr.label}
+          {tr.value === 'all' ? <Trans>ALL</Trans> : tr.label}
         </Button>
       ))}
     </div>

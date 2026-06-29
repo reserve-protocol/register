@@ -5,8 +5,8 @@ import { IndexDTFPerformance } from '../../hooks/use-dtf-price-history'
 import { DataType } from './price-chart-constants'
 
 const colorClass = (change: number) => {
-  if (change < 0) return 'text-red-500'
-  if (change > 0) return 'text-success'
+  if (change < 0) return 'text-[#9F4A3D] dark:text-[#D66A4A]'
+  if (change > 0) return 'text-[#657D32] dark:text-[#A2BB6E]'
   return ''
 }
 
@@ -15,11 +15,13 @@ const PercentageChange = ({
   dataType,
   wrap = false,
   range = '7d',
+  className,
 }: {
   performance: IndexDTFPerformance['timeseries']
   dataType: DataType
   wrap?: boolean
   range?: string
+  className?: string
 }) => {
   if (performance.length < 2) {
     return (
@@ -42,12 +44,14 @@ const PercentageChange = ({
       : ((penultimateValue - firstValue) / firstValue) * 100
 
   return (
-    <div className={cn('flex items-center', colorClass(change))}>
+    <div
+      className={cn('flex items-center gap-1', colorClass(change), className)}
+    >
       {wrap && '('}
       {change > 0 ? (
-        <ArrowUp className="h-4 w-4" />
+        <ArrowUp className="h-5 w-5" />
       ) : (
-        <ArrowDown className="h-4 w-4" />
+        <ArrowDown className="h-5 w-5" />
       )}
       {change.toFixed(2)}%{wrap && ')'}
       <span className="ml-1">

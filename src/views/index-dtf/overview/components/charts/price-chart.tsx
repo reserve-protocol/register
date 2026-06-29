@@ -28,15 +28,13 @@ export type { DataType } from './price-chart-constants'
 export { dataTypeAtom } from './price-chart-atoms'
 
 const getBodyHeight = (isYieldIndexDTF: boolean, isYieldMode: boolean) => {
-  if (!isYieldIndexDTF) return 'h-48 sm:h-[300px]'
-  const mobile = isYieldMode ? 'h-[176px]' : 'h-[192px]'
-  return `${mobile} sm:h-[254px] xl:h-[294px]`
+  if (!isYieldIndexDTF) return 'h-72 sm:h-[332px]'
+  const mobile = isYieldMode ? 'h-[256px]' : 'h-[272px]'
+  return `${mobile} sm:h-[278px] xl:h-[318px]`
 }
 
 const getSkeletonHeight = (isYieldIndexDTF: boolean, isYieldMode: boolean) => {
-  if (!isYieldIndexDTF) return 'h-44 sm:h-[290px]'
-  const mobile = isYieldMode ? 'h-[158px]' : 'h-[174px]'
-  return `${mobile} sm:h-[244px] xl:h-[284px]`
+  return getBodyHeight(isYieldIndexDTF, isYieldMode)
 }
 
 const ChartBodyArea = ({
@@ -61,7 +59,7 @@ const ChartBodyArea = ({
   // Candlestick is a standard-DTF, price-only view with its own data source.
   if (chartType === 'candlestick' && !isYieldIndexDTF) {
     return (
-      <div className={cn('pt-2 sm:pt-0', bodyHeight)}>
+      <div className={bodyHeight}>
         <CandlestickChart
           bodyHeight={bodyHeight}
           skeletonHeight={skeletonHeight}
@@ -72,18 +70,18 @@ const ChartBodyArea = ({
 
   if (isLoading) {
     return (
-      <div className={cn('pt-2 sm:pt-0', bodyHeight)}>
+      <div className={bodyHeight}>
         <ChartSkeleton className={skeletonHeight} />
       </div>
     )
   }
 
   if (chartData.length === 0) {
-    return <div className={cn('pt-2 sm:pt-0', bodyHeight)} />
+    return <div className={bodyHeight} />
   }
 
   return (
-    <div className={cn('pt-2 sm:pt-0', bodyHeight)}>
+    <div className={bodyHeight}>
       <PriceChartBody
         chartData={chartData as any}
         range={range}
@@ -176,12 +174,14 @@ const PriceChart = () => {
   return (
     <div
       className={cn(
-        'lg:rounded-4xl lg:rounded-b-none bg-[#000] dark:bg-background lg:dark:bg-muted w-full text-[#fff] dark:text-foreground py-3 sm:py-6 pb-20 sm:h-[598px] xl:h-[599px]',
-        isYieldIndexDTF ? 'h-[478px] overflow-hidden' : 'h-[438px]'
+        'w-full overflow-hidden rounded-b-3xl border-t border-card bg-gradient-to-b from-secondary to-card text-foreground sm:rounded-3xl sm:border-t-0 dark:bg-secondary dark:bg-none',
+        isYieldIndexDTF ? 'overflow-hidden' : ''
       )}
     >
-      <div className="px-3 sm:px-6">
+      <div className="px-5 pt-5 sm:px-6 sm:pt-6">
         <ChartOverlay timeseries={timeseries} />
+      </div>
+      <div className="sm:pr-6">
         <ChartBodyArea
           chartData={chartData}
           isLoading={isLoading}

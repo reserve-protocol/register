@@ -62,17 +62,18 @@ export const PriceChartLaunchMarker = ({
         x2={markerX}
         y1={offset.top + 6}
         y2={labelY}
-        stroke="rgba(255, 255, 255, 0.65)"
+        stroke="hsl(var(--foreground))"
+        strokeOpacity={0.38}
         strokeDasharray="3 4"
         strokeWidth={1}
-        style={{ filter: 'drop-shadow(0 0 3px rgba(0, 0, 0, 0.22))' }}
       />
       {showSegmentLabel && (
         <text
           x={segmentLabelX + segmentLabelWidth}
           y={labelY + labelHeight / 2}
           dominantBaseline="middle"
-          fill="rgba(255, 255, 255, 0.58)"
+          fill="hsl(var(--muted-foreground))"
+          fillOpacity={0.8}
           fontSize={10}
           textAnchor="end"
         >

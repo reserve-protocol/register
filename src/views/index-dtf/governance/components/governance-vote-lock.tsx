@@ -270,7 +270,7 @@ const GovernanceVoteLock = () => {
         </Button>
       </CurrentDtfVoteLock>
 
-      <RSRBNBHelp className="p-4" />
+      <RSRBNBHelp compact className="px-4 py-4" />
     </div>
   )
 }

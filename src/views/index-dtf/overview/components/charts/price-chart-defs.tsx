@@ -1,5 +1,6 @@
 import {
   getPerformanceColorSet,
+  PERFORMANCE_COLORS,
   type PerformanceDirection,
 } from '@/utils/chart-performance-colors'
 
@@ -48,8 +49,16 @@ export const renderPriceChartDefs = ({
     )}
     {isYieldMode ? (
       <linearGradient id="yieldGradient" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0%" stopColor="#4ADE80" stopOpacity={0.3} />
-        <stop offset="100%" stopColor="#4ADE80" stopOpacity={0} />
+        <stop
+          offset="0%"
+          stopColor={PERFORMANCE_COLORS.positive.dot}
+          stopOpacity={0.3}
+        />
+        <stop
+          offset="100%"
+          stopColor={PERFORMANCE_COLORS.positive.dot}
+          stopOpacity={0}
+        />
       </linearGradient>
     ) : (
       <pattern

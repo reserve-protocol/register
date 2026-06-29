@@ -8,11 +8,15 @@ import {
 import { getFileNameFromUrl } from '@/utils'
 import { ROUTES } from '@/utils/constants'
 import { useAtomValue } from 'jotai'
-import { BrickWall, Download, ImagePlus } from 'lucide-react'
+import { Download, ImagePlus } from 'lucide-react'
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useTrackIndexDTFClick } from '../../hooks/useTrackIndexDTFPage'
 import SectionAnchor from '@/components/section-anchor'
 import { Trans } from '@lingui/react/macro'
+import { cn } from '@/lib/utils'
+import DtfCover from './landing-mint/dtf-cover'
+import IndexAboutMeta from './index-about-meta'
 
 const BrandManagerEditButton = () => {
   const isBrandManager = useAtomValue(isBrandManagerAtom)
@@ -37,41 +41,87 @@ const BrandManagerEditButton = () => {
 
 const Header = () => {
   const data = useAtomValue(indexDTFAtom)
+  const isBrandManager = useAtomValue(isBrandManagerAtom)
+
+  if (data && !isBrandManager) {
+    return null
+  }
 
   return (
-    <div className="flex items-center gap-2 mb-4">
-      <div className="rounded-full border border-foreground p-2 mr-auto">
-        <BrickWall size={14} strokeWidth={1.5} />
-      </div>
-
-      {!data ? (
-        <Skeleton className="w-60 h-6" />
-      ) : (
-        <BrandManagerEditButton />
-      )}
+    <div className="flex justify-center mb-4 mt-2">
+      {!data ? <Skeleton className="w-60 h-6" /> : <BrandManagerEditButton />}
     </div>
   )
 }
 
-const Mandate = () => {
+const Mandate = ({ anchorId = 'about' }: { anchorId?: string }) => {
   const data = useAtomValue(indexDTFAtom)
   const brandData = useAtomValue(indexDTFBrandAtom)
+  const [expanded, setExpanded] = useState(false)
 
   if (!data || !brandData) {
     return <Skeleton className="w-full h-20" />
   }
 
+  const description = brandData.dtf?.description || data.mandate
+  const descriptionParagraphs = description
+    .split(/\n\s*\n/)
+    .map((paragraph) => paragraph.trim())
+    .filter(Boolean)
+  const shouldCollapse =
+    description.length > 420 || descriptionParagraphs.length > 2
+  const excerpt = shouldCollapse
+    ? `${description.replace(/\s+/g, ' ').trim().slice(0, 560).trim()}...`
+    : description
+
   return (
-    <div>
+    <div className="flex flex-col gap-3 sm:gap-2">
       <div className="flex items-center gap-1">
-        <h2 className="text-2xl font-light mb-1">
+        <h2 className="text-2xl font-light">
           <Trans>About this DTF</Trans>
         </h2>
-        <SectionAnchor id="about" />
+        <SectionAnchor id={anchorId} />
       </div>
-      <p className="text-legend whitespace-pre-line">
-        {brandData.dtf?.description || data.mandate}
-      </p>
+      <div className="text-legend">
+        <div className="space-y-2">
+          {shouldCollapse && !expanded ? (
+            <>
+              <p className="sm:hidden">
+                {excerpt}{' '}
+                <button
+                  type="button"
+                  className="font-medium text-primary"
+                  onClick={() => setExpanded(true)}
+                >
+                  <Trans>Read more</Trans>
+                </button>
+              </p>
+              <div className="hidden space-y-2 sm:block">
+                {descriptionParagraphs.map((paragraph, index) => (
+                  <p key={index} className="whitespace-pre-line">
+                    {paragraph}
+                  </p>
+                ))}
+              </div>
+            </>
+          ) : (
+            descriptionParagraphs.map((paragraph, index) => (
+              <p key={index} className="whitespace-pre-line">
+                {paragraph}
+              </p>
+            ))
+          )}
+        </div>
+        {shouldCollapse && expanded && (
+          <button
+            type="button"
+            className="mt-2 text-sm font-medium text-primary sm:hidden"
+            onClick={() => setExpanded(false)}
+          >
+            <Trans>Read less</Trans>
+          </button>
+        )}
+      </div>
     </div>
   )
 }
@@ -116,46 +166,24 @@ const DownloadableResources = () => {
   )
 }
 
-const AboutLinks = () => {
-  const brandData = useAtomValue(indexDTFBrandAtom)
-
-  return (
-    <div className="flex items-center gap-4 text-sm mt-4">
-      {brandData?.socials?.website && (
-        <Link
-          to={brandData.socials.website}
-          target="_blank"
-          className="underline text-muted-foreground hover:text-foreground"
-        >
-          <Trans>Website</Trans>
-        </Link>
-      )}
-      <Link
-        to={`../${ROUTES.FACTSHEET}`}
-        className="underline text-muted-foreground hover:text-foreground"
-      >
-        <Trans>Performance Sheet</Trans>
-      </Link>
-      {brandData?.socials?.twitter && (
-        <Link
-          to={brandData.socials.twitter}
-          target="_blank"
-          className="underline text-muted-foreground hover:text-foreground"
-        >
-          <Trans>X Account</Trans>
-        </Link>
-      )}
-    </div>
-  )
-}
-
-const IndexAboutOverview = () => (
-  <div id="about" className="group/section">
-    <div className="p-4 sm:p-6">
+const IndexAboutOverview = ({
+  className,
+  id,
+  showCover = false,
+}: {
+  className?: string
+  id?: string
+  showCover?: boolean
+}) => (
+  <div id={id} className={cn('group/section', className)}>
+    <div className="p-2">
       <Header />
-      <Mandate />
-      <AboutLinks />
-      <DownloadableResources />
+      {showCover && <DtfCover className="rounded-xl" />}
+      <div className={cn('p-3 sm:p-4', showCover && 'mt-2 sm:mt-3')}>
+        <Mandate anchorId={id} />
+        <IndexAboutMeta />
+        <DownloadableResources />
+      </div>
     </div>
   </div>
 )

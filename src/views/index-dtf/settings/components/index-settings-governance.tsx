@@ -19,9 +19,11 @@ import Help from '@/components/ui/help'
 export const InnerGovernanceInfo = ({
   kind = 'trading',
   className,
+  layout = 'stacked',
 }: {
   kind?: 'trading' | 'owner' | 'dao'
   className?: string
+  layout?: 'stacked' | 'inline'
 }) => {
   const { t } = useLingui()
   const indexDTF = useAtomValue(indexDTFAtom)
@@ -41,65 +43,81 @@ export const InnerGovernanceInfo = ({
       : kind === 'owner'
         ? indexDTF.ownerGovernance
         : indexDTF.stToken?.governance
+  const icon = (Component: React.ElementType) =>
+    layout === 'inline' ? (
+      <Component size={14} strokeWidth={1.75} className="shrink-0" />
+    ) : (
+      <IconWrapper Component={Component} />
+    )
 
   return (
     <div className={cn(className)}>
       <InfoCardItem
         label={t`Governor Address`}
-        icon={<IconWrapper Component={Hash} />}
+        icon={icon(Hash)}
         address={data?.id}
         value={data?.id ? shortenAddress(data.id) : undefined}
         border={false}
+        layout={layout}
       />
       <InfoCardItem
         label={t`Timelock Address`}
-        icon={<IconWrapper Component={Hash} />}
+        icon={icon(Hash)}
         address={data?.timelock.id}
         value={data?.timelock.id ? shortenAddress(data.timelock.id) : undefined}
+        layout={layout}
       />
       <InfoCardItem
-        icon={<IconWrapper Component={Pause} />}
+        icon={icon(Pause)}
         label={t`Voting Delay`}
         value={data ? parseDuration(data.votingDelay) : undefined}
+        layout={layout}
       />
       <InfoCardItem
-        icon={<IconWrapper Component={Calendar1} />}
+        icon={icon(Calendar1)}
         label={t`Voting Period`}
         value={data ? parseDuration(data.votingPeriod) : undefined}
+        layout={layout}
       />
       <InfoCardItem
-        icon={<IconWrapper Component={FileLock2} />}
+        icon={icon(FileLock2)}
         label={t`Proposal Threshold`}
         value={data ? formatPercentage(data.proposalThreshold) : undefined}
+        layout={layout}
       />
       <InfoCardItem
-        icon={<IconWrapper Component={ShieldCheck} />}
+        icon={icon(ShieldCheck)}
         label={t`Voting Quorum`}
         value={data ? formatPercentage(data.quorum) : undefined}
+        layout={layout}
       />
       {data?.isOptimistic && data.optimistic && (
         <>
           <InfoCardItem
-            icon={<IconWrapper Component={Clock} />}
+            icon={icon(Clock)}
             label={t`Veto Delay`}
             value={parseDuration(data.optimistic.vetoDelay)}
+            layout={layout}
           />
           <InfoCardItem
-            icon={<IconWrapper Component={Hourglass} />}
+            icon={icon(Hourglass)}
             label={t`Veto Window`}
             value={parseDuration(data.optimistic.vetoPeriod)}
+            layout={layout}
           />
           <InfoCardItem
-            icon={<IconWrapper Component={FileLock2} />}
+            icon={icon(FileLock2)}
             label={t`Veto Threshold`}
             value={formatPercentage(data.optimistic.vetoThreshold)}
+            layout={layout}
           />
         </>
       )}
       <InfoCardItem
-        icon={<IconWrapper Component={MousePointerBan} />}
+        icon={icon(MousePointerBan)}
         label={t`Execution Delay`}
         value={data ? parseDuration(data.timelock.executionDelay) : undefined}
+        layout={layout}
       />
     </div>
   )
@@ -119,7 +137,8 @@ const GovernanceInfo = ({
     (kind === 'trading' && !indexDTF.tradingGovernance) ||
     (kind === 'owner' && !indexDTF.ownerGovernance) ||
     (kind === 'dao' && !indexDTF.stToken?.governance) ||
-    (kind === 'trading' && indexDTF.tradingGovernance?.id === indexDTF.ownerGovernance?.id)
+    (kind === 'trading' &&
+      indexDTF.tradingGovernance?.id === indexDTF.ownerGovernance?.id)
   )
     return null
 
