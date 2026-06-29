@@ -1,11 +1,6 @@
 import { formatCurrency } from '@/utils'
+import type { Ref } from 'react'
 import type { AssetTickerItem } from '../highlighted-dtfs/types'
-import {
-  FADE_IN_PROGRESS,
-  FADE_OUT_END_PROGRESS,
-  FADE_OUT_START_PROGRESS,
-} from './constants'
-import { clamp } from './geometry'
 
 const formatWeight = (weight?: string | number) => {
   const value = Number.parseFloat(String(weight ?? '0'))
@@ -15,46 +10,39 @@ const formatWeight = (weight?: string | number) => {
   })}%`
 }
 
+// WHY: opacity and startOffset are animated imperatively via refs in the RAF
+// loop (see DTFPackingAnimation). This node only renders structure + the
+// initial (time=0) frame so the first paint matches the running animation.
 export const PackingTickerText = ({
   asset,
-  index,
   pathId,
-  cycleTime,
-  travelMs,
-  spacingMs,
+  initialOpacity,
+  initialVisibleProgress,
+  textRef,
+  pathRef,
 }: {
   asset: AssetTickerItem
-  index: number
   pathId: string
-  cycleTime: number
-  travelMs: number
-  spacingMs: number
-}) => {
-  const itemTime = cycleTime - index * spacingMs
-  const progress = itemTime / travelMs
-  const visibleProgress = clamp(progress)
-  const fadeIn = clamp(visibleProgress / FADE_IN_PROGRESS)
-  const fadeOut =
-    1 -
-    clamp(
-      (visibleProgress - FADE_OUT_START_PROGRESS) /
-        (FADE_OUT_END_PROGRESS - FADE_OUT_START_PROGRESS)
-    )
-  const opacity =
-    progress < 0 || progress > FADE_OUT_END_PROGRESS ? 0 : fadeIn * fadeOut
-
-  return (
-    <text
-      className="fill-foreground text-xs font-normal"
-      opacity={opacity}
-      dominantBaseline="middle"
+  initialOpacity: number
+  initialVisibleProgress: number
+  textRef: Ref<SVGTextElement>
+  pathRef: Ref<SVGTextPathElement>
+}) => (
+  <text
+    ref={textRef}
+    className="fill-foreground text-xs font-normal"
+    opacity={initialOpacity}
+    dominantBaseline="middle"
+  >
+    <textPath
+      ref={pathRef}
+      href={`#${pathId}`}
+      startOffset={`${initialVisibleProgress * 100}%`}
     >
-      <textPath href={`#${pathId}`} startOffset={`${visibleProgress * 100}%`}>
-        <tspan>{asset.symbol}</tspan>
-        <tspan className="fill-muted-foreground" dx="4">
-          {formatWeight(asset.weight)}
-        </tspan>
-      </textPath>
-    </text>
-  )
-}
+      <tspan>{asset.symbol}</tspan>
+      <tspan className="fill-muted-foreground" dx="4">
+        {formatWeight(asset.weight)}
+      </tspan>
+    </textPath>
+  </text>
+)

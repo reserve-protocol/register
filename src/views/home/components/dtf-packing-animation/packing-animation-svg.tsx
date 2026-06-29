@@ -1,30 +1,37 @@
+import type { MutableRefObject, RefObject } from 'react'
 import type { AssetTickerItem } from '../highlighted-dtfs/types'
 import { PATH_START_X, type VisualGeometry } from './constants'
-import type { Geometry, getCycleState } from './geometry'
+import type { Geometry, PackingFrame } from './geometry'
 import { PackingTickerText } from './packing-ticker-text'
 
 export const PackingAnimationSvg = ({
   animationHeight,
   assets,
-  borderWidth,
-  borderX,
-  cycle,
   geometry,
+  initialFrame,
   pathD,
   pathId,
   tickerLineGradientId,
   visual,
+  trajectoryGroupRef,
+  cardRectRef,
+  tickerGroupRef,
+  tickerTextRefs,
+  tickerPathRefs,
 }: {
   animationHeight: number
   assets: AssetTickerItem[]
-  borderWidth: number
-  borderX: number
-  cycle: ReturnType<typeof getCycleState>
   geometry: Geometry
+  initialFrame: PackingFrame
   pathD: string
   pathId: string
   tickerLineGradientId: string
   visual: VisualGeometry
+  trajectoryGroupRef: RefObject<SVGGElement>
+  cardRectRef: RefObject<SVGRectElement>
+  tickerGroupRef: RefObject<SVGGElement>
+  tickerTextRefs: MutableRefObject<(SVGTextElement | null)[]>
+  tickerPathRefs: MutableRefObject<(SVGTextPathElement | null)[]>
 }) => (
   <svg
     className="absolute inset-0 h-full w-full overflow-visible"
@@ -49,7 +56,7 @@ export const PackingAnimationSvg = ({
       </linearGradient>
     </defs>
 
-    <g opacity={cycle.trajectoryOpacity}>
+    <g ref={trajectoryGroupRef} opacity={initialFrame.trajectoryOpacity}>
       <line
         x1={PATH_START_X}
         y1={geometry.orbitBottomY}
@@ -69,30 +76,38 @@ export const PackingAnimationSvg = ({
     </g>
 
     <rect
-      x={borderX}
+      ref={cardRectRef}
+      x={initialFrame.borderX}
       y={geometry.cardY}
-      width={borderWidth}
+      width={initialFrame.borderWidth}
       height={geometry.cardHeight}
       rx={geometry.cardHeight / 2}
       className="fill-primary/10 stroke-primary"
       strokeWidth="1.5"
-      opacity={cycle.isReveal ? 1 : 0}
+      opacity={initialFrame.cardOpacity}
     />
 
-    {!cycle.isReveal && (
-      <g>
-        {assets.map((asset, index) => (
-          <PackingTickerText
-            key={`${asset.key}-${index}`}
-            asset={asset}
-            index={index}
-            pathId={pathId}
-            cycleTime={cycle.cycleTime}
-            travelMs={cycle.travelMs}
-            spacingMs={cycle.spacingMs}
-          />
-        ))}
-      </g>
-    )}
+    <g
+      ref={tickerGroupRef}
+      style={{ display: initialFrame.isReveal ? 'none' : undefined }}
+    >
+      {assets.map((asset, index) => (
+        <PackingTickerText
+          key={`${asset.key}-${index}`}
+          asset={asset}
+          pathId={pathId}
+          initialOpacity={initialFrame.tickers[index]?.opacity ?? 0}
+          initialVisibleProgress={
+            initialFrame.tickers[index]?.visibleProgress ?? 0
+          }
+          textRef={(node) => {
+            tickerTextRefs.current[index] = node
+          }}
+          pathRef={(node) => {
+            tickerPathRefs.current[index] = node
+          }}
+        />
+      ))}
+    </g>
   </svg>
 )

@@ -41,9 +41,12 @@ const useVoterState = () => {
   return useMemo(() => {
     if (!proposal || !account || !voterState) return undefined
 
+    // WHY: The SDK resolves voting power for this proposal type. Optimistic
+    // proposals use optimistic challenge power, standard proposals use votes.
     return {
       votePower: voterState.votingPower.formatted,
       vote: voterState.vote,
+      hasProposalVotingPower: voterState.hasVotingPower,
     }
   }, [proposal, voterState, account])
 }

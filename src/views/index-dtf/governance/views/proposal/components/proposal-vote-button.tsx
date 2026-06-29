@@ -21,7 +21,7 @@ const ProposalVoteButton = () => {
   const account = useAtomValue(walletAtom)
   const [isVoteVisible, setVoteVisible] = useState(false)
   const { hasUndelegatedBalance } = useDelegateState()
-  const { votePower = '0.0', vote } = useAtomValue(accountVotesAtom)
+  const { vote, hasProposalVotingPower } = useAtomValue(accountVotesAtom)
   const proposal = useAtomValue(proposalDetailAtom)
   const state = useAtomValue(proposalStateAtom)
   const isOptimistic = !!proposal?.isOptimistic
@@ -30,7 +30,7 @@ const ProposalVoteButton = () => {
     return <DelegateButton />
   }
 
-  const noVotingPower = votePower === '0.0' || votePower === '0'
+  const noVotingPower = hasProposalVotingPower === false
 
   return (
     <>
@@ -39,8 +39,7 @@ const ProposalVoteButton = () => {
           !account ||
           !!vote ||
           state !== PROPOSAL_STATES.ACTIVE ||
-          !votePower ||
-          (!isOptimistic && noVotingPower)
+          hasProposalVotingPower !== true
         }
         className="w-full"
         onClick={() => setVoteVisible(true)}
@@ -51,7 +50,7 @@ const ProposalVoteButton = () => {
           <Trans>Challenged</Trans>
         ) : vote ? (
           <Trans>You voted "{vote}"</Trans>
-        ) : noVotingPower && !isOptimistic ? (
+        ) : noVotingPower ? (
           <Trans>No voting power</Trans>
         ) : isOptimistic ? (
           <Trans>Vote to challenge</Trans>

@@ -1,6 +1,5 @@
 import dtfIndexStakingVault from '@/abis/dtf-index-staking-vault'
 import TransactionButton from '@/components/ui/transaction-button'
-import useIsComplianceRestricted from '@/hooks/use-is-compliance-restricted'
 import { walletAtom } from '@/state/atoms'
 import { useLingui } from '@lingui/react/macro'
 import {
@@ -50,7 +49,6 @@ const SubmitLockButton = ({ onSuccess }: { onSuccess?: () => void }) => {
   const processedApprovalHash = useRef<string>()
   const processedReceiptHash = useRef<string>()
   const processingTimer = useRef<ReturnType<typeof setTimeout>>()
-  const isRestricted = useIsComplianceRestricted()
 
   useEffect(() => {
     return () => {
@@ -97,7 +95,7 @@ const SubmitLockButton = ({ onSuccess }: { onSuccess?: () => void }) => {
     address: stToken?.id,
     args: [amountToLock],
     chainId: stToken?.chainId,
-    query: { enabled: amountToLock > 0n && !!stToken?.id },
+    query: { enabled: amountToLock > 0n && stToken?.id !== undefined },
   })
 
   const {
@@ -200,20 +198,20 @@ const SubmitLockButton = ({ onSuccess }: { onSuccess?: () => void }) => {
         !checkbox ||
         receipt?.status === 'success' ||
         amountToLock === 0n ||
-        !hasBalance ||
-        isRestricted
+        !hasBalance
       }
       loading={
         isProcessing ||
         (!receipt &&
           (readyToSubmit
-            ? isLoading || (!!hash && !receipt)
-            : approving || (!!approvalHash && !approvalReceipt)))
+            ? isLoading || (hash !== undefined && !receipt)
+            : approving ||
+              (approvalHash !== undefined && !approvalReceipt)))
       }
       loadingText={
         isProcessing
           ? t`Processing transaction...`
-          : !!hash
+          : hash !== undefined
             ? t`Confirming tx...`
             : t`Pending, sign in wallet`
       }

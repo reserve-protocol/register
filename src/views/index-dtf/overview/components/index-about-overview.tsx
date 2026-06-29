@@ -7,13 +7,14 @@ import {
 } from '@/state/dtf/atoms'
 import { getFileNameFromUrl } from '@/utils'
 import { ROUTES } from '@/utils/constants'
+import { DEFAULT_LOCALE, localeAtom, type SupportedLocale } from '@/i18n'
 import { useAtomValue } from 'jotai'
 import { Download, ImagePlus } from 'lucide-react'
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useTrackIndexDTFClick } from '../../hooks/useTrackIndexDTFPage'
 import SectionAnchor from '@/components/section-anchor'
-import { Trans } from '@lingui/react/macro'
+import { Trans, useLingui } from '@lingui/react/macro'
 import { cn } from '@/lib/utils'
 import DtfCover from './landing-mint/dtf-cover'
 import IndexAboutMeta from './index-about-meta'
@@ -126,12 +127,68 @@ const Mandate = ({ anchorId = 'about' }: { anchorId?: string }) => {
   )
 }
 
+// Per-token resources for the AI DTF suite, hardcoded in Register and keyed by
+// DTF address (lowercase) across every chain the token is deployed on:
+//   - Tear Sheet: locale-specific PDF hosted on storage.reserve.org.
+//   - LLM Markdown: single Markdown doc served from /public/dtf-llm.
+const TEARSHEET_LOCALES: SupportedLocale[] = ['en', 'es', 'ko', 'zh']
+
+const DTF_RESOURCE_TOKEN_BY_ADDRESS: Record<string, string> = {
+  // PHOTON
+  '0x5039ece83dc4e0621ebec391128339bd859a84d0': 'PHOTON',
+  '0xa0fe4e0aeca5479705ce996615b2eacb6b6a10fb': 'PHOTON',
+  // BUILDOUT
+  '0x1ec1d815488936ec8add5cb76ac4563ceef09de3': 'BUILDOUT',
+  '0xd7ce7a841310982acd976d1a6fe7bb6063c5689d': 'BUILDOUT',
+  // ROBOTS
+  '0x09a823930fab5b1fda6e519b1ee33e7da9bda0e5': 'ROBOTS',
+  '0x75617e7653f86f074cc30b9fd4ebf52ba9b62247': 'ROBOTS',
+  // POWER
+  '0x3ce752a0eb838084562c9d7a0e1df24a8ae9542d': 'POWER',
+  '0x290bcc0fd5096cc3261ae2021841c7bc67cb0f51': 'POWER',
+  // NEOCLOUD
+  '0x9429a7332b5a3bcde2781b65ac1a9ebd9f466e12': 'NEOCLOUD',
+  '0xf571fe3f0d74521bc7310b111faea931c748f27b': 'NEOCLOUD',
+}
+
+const getDtfResourceUrls = (
+  dtfAddress: string,
+  locale: SupportedLocale
+): { tearsheetUrl: string; referenceUrl: string } | null => {
+  const tokenName = DTF_RESOURCE_TOKEN_BY_ADDRESS[dtfAddress.toLowerCase()]
+  if (!tokenName) return null
+
+  // Fall back to the default locale for any locale without a tearsheet (e.g. pseudo).
+  const tearsheetLocale = TEARSHEET_LOCALES.includes(locale)
+    ? locale
+    : DEFAULT_LOCALE
+
+  return {
+    tearsheetUrl: `https://storage.reserve.org/${tokenName}_DTF_Tearsheet_${tearsheetLocale}.pdf`,
+    referenceUrl: `/dtf-llm/${tokenName.toLowerCase()}-dtf.md`,
+  }
+}
+
 const DownloadableResources = () => {
+  const { t } = useLingui()
   const data = useAtomValue(indexDTFAtom)
+  const locale = useAtomValue(localeAtom)
   const brandData = useAtomValue(indexDTFBrandAtom)
   const files = brandData?.dtf?.files?.filter((file) => file.url) ?? []
 
-  if (!files.length) return null
+  const hardcodedUrls = data?.id ? getDtfResourceUrls(data.id, locale) : null
+  const resources = [
+    ...(hardcodedUrls
+      ? [
+          { url: hardcodedUrls.tearsheetUrl, name: t`Tear Sheet` },
+          // WHY: brand/technical term — same across locales, intentionally not translated.
+          { url: hardcodedUrls.referenceUrl, name: 'LLM Markdown' },
+        ]
+      : []),
+    ...files,
+  ]
+
+  if (!resources.length) return null
 
   const dtfName = data?.token.name ?? 'this DTF'
 
@@ -147,7 +204,7 @@ const DownloadableResources = () => {
         </Trans>
       </p>
       <div className="flex flex-wrap items-center gap-x-7 gap-y-2 py-2">
-        {files.map((file) => (
+        {resources.map((file) => (
           <a
             key={file.url}
             href={file.url}
