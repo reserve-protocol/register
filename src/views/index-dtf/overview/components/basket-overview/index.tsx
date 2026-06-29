@@ -1,14 +1,22 @@
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { Table } from '@/components/ui/table'
-import { Tabs } from '@/components/ui/tabs'
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { useIsMobile } from '@/hooks/use-media-query'
+import { cn } from '@/lib/utils'
+import { t } from '@lingui/core/macro'
+import { Trans } from '@lingui/react/macro'
 import { useMemo, useState } from 'react'
-import { isAddress } from '@/utils'
-import { useLingui } from '@lingui/react/macro'
-import { toast } from 'sonner'
 import { BasketTableBody } from './basket-table-body'
-import { BasketTableHeader, SortConfig, SortDirection, SortField } from './basket-table-header'
+import {
+  BasketTableHeader,
+  SortConfig,
+  SortDirection,
+  SortField,
+} from './basket-table-header'
 import { buildExposureRows } from './exposure-rows'
+import { MobileCollateralRows } from './mobile-collateral-rows'
+import { MobileExposureRows } from './mobile-exposure-rows'
 import { useBasketOverviewData } from './use-basket-overview-data'
 
 const MAX_TOKENS = 10
@@ -16,7 +24,7 @@ const MAX_TOKENS = 10
 const DEFAULT_SORT: SortConfig = { field: 'weight', direction: 'desc' }
 
 const IndexBasketOverview = () => {
-  const { t } = useLingui()
+  const isMobile = useIsMobile()
   const [viewAll, setViewAll] = useState(false)
   const [activeTab, setActiveTab] = useState<'exposure' | 'collateral'>(
     'exposure'
@@ -25,7 +33,6 @@ const IndexBasketOverview = () => {
   const isExposure = activeTab === 'exposure'
 
   const {
-    basket,
     filtered,
     exposureGroups,
     basketShares,
@@ -33,7 +40,6 @@ const IndexBasketOverview = () => {
     performanceLoading,
     newlyAddedAssets,
     timeRange,
-    hasBridgedAssets,
     chainId,
     marketCaps,
   } = useBasketOverviewData()
@@ -42,11 +48,6 @@ const IndexBasketOverview = () => {
     setActiveTab(tab)
     setSortConfig(DEFAULT_SORT)
     setViewAll(false)
-  }
-
-  const handleCopyAddress = (address: string) => {
-    navigator.clipboard.writeText(isAddress(address) || address)
-    toast.success(t`Copied to clipboard`)
   }
 
   const handleSort = (field: SortField) => {
@@ -99,49 +100,90 @@ const IndexBasketOverview = () => {
   const activeCount = isExposure
     ? (sortedExposureRows?.length ?? 0)
     : (sortedFiltered?.length ?? 0)
-  const showViewAll = activeCount > MAX_TOKENS
+  const limitRows = isMobile && !viewAll
+  const showViewAll = isMobile && activeCount > MAX_TOKENS
 
   return (
-    <div className="relative -mx-4 sm:-mx-5 -mb-4 sm:-mb-5 px-1">
-      <Tabs defaultValue="exposure">
-        <Table>
-          <BasketTableHeader
-            isExposure={isExposure}
-            hasBridgedAssets={hasBridgedAssets || false}
-            chainId={chainId}
-            setActiveTab={handleTabSwitch}
-            sortConfig={sortConfig}
-            onSort={handleSort}
-          />
-          <BasketTableBody
-            filtered={sortedFiltered}
-            isExposure={isExposure}
-            exposureRows={sortedExposureRows}
-            basketShares={basketShares}
-            basketPerformanceChanges={basketPerformanceChanges}
-            performanceLoading={performanceLoading}
-            newlyAddedAssets={newlyAddedAssets}
-            timeRange={timeRange}
-            marketCaps={marketCaps}
-            chainId={chainId}
-            viewAll={viewAll}
-            maxTokens={MAX_TOKENS}
-            onCopyAddress={handleCopyAddress}
-          />
-        </Table>
-      </Tabs>
+    <div className="flex flex-col">
+      <div className={cn('sm:px-6 sm:pt-6', !showViewAll && 'sm:pb-6')}>
+        <Tabs defaultValue="exposure">
+          <TabsList className="mx-2 mb-2 mt-2 flex h-10 w-[calc(100%-1rem)] rounded-[70px] p-0.5 sm:hidden">
+            <TabsTrigger
+              value="exposure"
+              className="h-full flex-1 rounded-[60px] py-0 data-[state=active]:text-primary dark:data-[state=active]:text-foreground"
+              onClick={() => handleTabSwitch('exposure')}
+            >
+              <Trans>Exposure</Trans>
+            </TabsTrigger>
+            <TabsTrigger
+              value="collateral"
+              className="h-full flex-1 rounded-[60px] py-0 data-[state=active]:text-primary dark:data-[state=active]:text-foreground"
+              onClick={() => handleTabSwitch('collateral')}
+            >
+              <Trans context="DTF basket">Collateral</Trans>
+            </TabsTrigger>
+          </TabsList>
+          {isExposure && sortedExposureRows ? (
+            <MobileExposureRows
+              rows={sortedExposureRows}
+              performanceLoading={performanceLoading}
+              timeRange={timeRange}
+              marketCaps={marketCaps}
+              viewAll={!limitRows}
+              maxTokens={MAX_TOKENS}
+            />
+          ) : sortedFiltered ? (
+            <MobileCollateralRows
+              filtered={sortedFiltered}
+              basketShares={basketShares}
+              basketPerformanceChanges={basketPerformanceChanges}
+              performanceLoading={performanceLoading}
+              newlyAddedAssets={newlyAddedAssets}
+              timeRange={timeRange}
+              chainId={chainId}
+              viewAll={!limitRows}
+              maxTokens={MAX_TOKENS}
+            />
+          ) : null}
+          <Table className="hidden sm:table">
+            <BasketTableHeader
+              isExposure={isExposure}
+              setActiveTab={handleTabSwitch}
+              sortConfig={sortConfig}
+              onSort={handleSort}
+            />
+            <BasketTableBody
+              filtered={sortedFiltered}
+              isExposure={isExposure}
+              exposureRows={sortedExposureRows}
+              basketShares={basketShares}
+              basketPerformanceChanges={basketPerformanceChanges}
+              performanceLoading={performanceLoading}
+              newlyAddedAssets={newlyAddedAssets}
+              timeRange={timeRange}
+              marketCaps={marketCaps}
+              chainId={chainId}
+              viewAll={!limitRows}
+              maxTokens={MAX_TOKENS}
+              hasFooterButton={showViewAll}
+            />
+          </Table>
+        </Tabs>
+      </div>
       {showViewAll && (
-        <Button
-          variant="outline"
-          className="w-full rounded-2xl"
-          onClick={() => setViewAll(!viewAll)}
-        >
-          {viewAll
-            ? t`View less`
-            : isExposure
-              ? t`View all ${activeCount} assets`
-              : t`View all ${activeCount} tokens`}
-        </Button>
+        <div className="px-2 pb-2 pt-3">
+          <Button
+            variant="outline"
+            className="w-full rounded-xl"
+            onClick={() => setViewAll(!viewAll)}
+          >
+            {viewAll
+              ? t`View less`
+              : isExposure
+                ? t`View all ${activeCount} assets`
+                : t`View all ${activeCount} tokens`}
+          </Button>
+        </div>
       )}
     </div>
   )
@@ -150,9 +192,7 @@ const IndexBasketOverview = () => {
 export { IndexBasketOverview as IndexBasketOverviewInner }
 
 export default () => (
-  <Card className="pt-3 pb-5 sm:pt-4 sm:pb-6 group/section" id="basket">
-    <div className="px-4 sm:px-6">
-      <IndexBasketOverview />
-    </div>
+  <Card className="pb-0 sm:pb-0 group/section !bg-background" id="basket">
+    <IndexBasketOverview />
   </Card>
 )

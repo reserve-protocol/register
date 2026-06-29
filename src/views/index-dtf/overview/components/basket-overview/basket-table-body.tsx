@@ -4,6 +4,7 @@ import { BasketSkeleton } from './basket-skeleton'
 import { ExposureTableRows } from './exposure-table-rows'
 import { CollateralTableRows } from './collateral-table-rows'
 import { ExposureRow } from './exposure-rows'
+import { cn } from '@/lib/utils'
 
 interface BasketTableBodyProps {
   filtered: Token[] | undefined
@@ -18,7 +19,7 @@ interface BasketTableBodyProps {
   chainId: number
   viewAll: boolean
   maxTokens: number
-  onCopyAddress: (address: string) => void
+  hasFooterButton: boolean
 }
 
 export const BasketTableBody = ({
@@ -34,11 +35,16 @@ export const BasketTableBody = ({
   chainId,
   viewAll,
   maxTokens,
-  onCopyAddress,
+  hasFooterButton,
 }: BasketTableBodyProps) => {
+  const bodyClassName = cn(
+    '[&_tr:first-child_td]:pt-6',
+    !hasFooterButton && '[&_tr:last-child_td]:pb-0'
+  )
+
   if (isExposure && !exposureRows?.length) {
     return (
-      <TableBody>
+      <TableBody className={bodyClassName}>
         <BasketSkeleton isExposure={isExposure} />
       </TableBody>
     )
@@ -46,7 +52,7 @@ export const BasketTableBody = ({
 
   if (!isExposure && !filtered?.length) {
     return (
-      <TableBody>
+      <TableBody className={bodyClassName}>
         <BasketSkeleton isExposure={isExposure} />
       </TableBody>
     )
@@ -54,7 +60,7 @@ export const BasketTableBody = ({
 
   if (isExposure && exposureRows) {
     return (
-      <TableBody>
+      <TableBody className={bodyClassName}>
         <ExposureTableRows
           rows={exposureRows}
           performanceLoading={performanceLoading}
@@ -70,7 +76,7 @@ export const BasketTableBody = ({
   if (!filtered?.length) return null
 
   return (
-    <TableBody>
+    <TableBody className={bodyClassName}>
       <CollateralTableRows
         filtered={filtered}
         basketShares={basketShares}
@@ -81,7 +87,6 @@ export const BasketTableBody = ({
         chainId={chainId}
         viewAll={viewAll}
         maxTokens={maxTokens}
-        onCopyAddress={onCopyAddress}
       />
     </TableBody>
   )
