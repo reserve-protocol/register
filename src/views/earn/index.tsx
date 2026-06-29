@@ -36,12 +36,12 @@ const EarnNavigation = () => {
   return (
     <div className="mb-6 mt-3 flex justify-center px-1 md:mb-8 md:mt-16">
       <Tabs value={activeRoute} onValueChange={(value) => navigate(value)}>
-        <TabsList className="h-8 rounded-[70px] py-0 px-0.5">
+        <TabsList className="h-9 rounded-[70px] px-0.5 py-0">
           {EARN_ROUTES.map((route) => (
             <TabsTrigger
               key={route.path}
               value={route.path}
-              className="h-7 rounded-[60px] px-2.5 text-xs data-[state=active]:text-primary dark:data-[state=active]:text-foreground sm:px-3 sm:text-sm"
+              className="h-8 rounded-[60px] px-3 text-xs data-[state=active]:text-primary dark:data-[state=active]:text-foreground sm:px-4 sm:text-sm"
             >
               {t(route.label)}
             </TabsTrigger>

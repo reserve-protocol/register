@@ -11,6 +11,7 @@ import {
   ExternalVoteLockDrawer,
   type StTokenExtended,
 } from '@/components/vote-lock'
+import { walletAtom } from '@/state/atoms'
 import { formatCurrency, getFolioRoute } from '@/utils'
 import {
   EarnGovernanceTokenCell,
@@ -19,8 +20,13 @@ import {
   EarnMetricCtaSkeleton,
 } from '@/views/earn/components/earn-table-cells'
 import {
+  earnGovernsColumnClassName,
+  earnMetricColumnClassName,
   earnTableClassName,
   earnTableRowClassName,
+  earnTokenColumnClassName,
+  earnTvlColumnClassName,
+  earnWalletColumnClassName,
 } from '@/views/earn/components/earn-table-styles'
 import PositionBalance from '@/views/earn/components/position-balance'
 import { Trans, useLingui } from '@lingui/react/macro'
@@ -32,6 +38,8 @@ import { Address } from 'viem'
 import { dtfDataMapAtom, filteredVoteLockPositionsAtom } from '../atoms'
 import { VoteLockPosition } from '../hooks/use-vote-lock-positions'
 import TableFilters from './table-filters'
+
+const columnHelper = createColumnHelper<VoteLockPosition>()
 
 const GovernedDtfsCell = ({
   dtfs,
@@ -133,7 +141,8 @@ const GovernedDtfsCell = ({
 
 const useColumns = () => {
   const { t } = useLingui()
-  const columnHelper = createColumnHelper<VoteLockPosition>()
+  const wallet = useAtomValue(walletAtom)
+
   return useMemo(() => {
     return [
       columnHelper.accessor('underlying.token.symbol', {
@@ -142,6 +151,9 @@ const useColumns = () => {
             <Trans>Gov. Token</Trans>
           </SorteableButton>
         ),
+        meta: {
+          className: earnTokenColumnClassName,
+        },
         cell: (data) => (
           <EarnGovernanceTokenCell
             symbol={data.row.original.underlying.token.symbol}
@@ -156,7 +168,7 @@ const useColumns = () => {
           <SorteableButton column={column}>TVL</SorteableButton>
         ),
         meta: {
-          className: 'hidden min-[420px]:table-cell',
+          className: earnTvlColumnClassName,
         },
         cell: (data) => (
           <div className="flex flex-col">
@@ -172,23 +184,30 @@ const useColumns = () => {
           </div>
         ),
       }),
-      columnHelper.accessor('lockedAmount', {
-        header: t`Vote locked`,
-        meta: {
-          className: 'hidden lg:table-cell',
-        },
-        cell: (data) => (
-          <PositionBalance
-            address={data.row.original.token.address as Address}
-            chain={data.row.original.chainId}
-            price={data.row.original.token.price}
-            symbol={data.row.original.underlying.token.symbol}
-            decimals={data.row.original.token.decimals}
-          />
-        ),
-      }),
+      ...(wallet
+        ? [
+            columnHelper.accessor('lockedAmount', {
+              header: t`Your lock`,
+              meta: {
+                className: earnWalletColumnClassName,
+              },
+              cell: (data) => (
+                <PositionBalance
+                  address={data.row.original.token.address as Address}
+                  chain={data.row.original.chainId}
+                  price={data.row.original.token.price}
+                  symbol={data.row.original.underlying.token.symbol}
+                  decimals={data.row.original.token.decimals}
+                />
+              ),
+            }),
+          ]
+        : []),
       columnHelper.accessor('dtfs', {
         header: t`Governs`,
+        meta: {
+          className: earnGovernsColumnClassName,
+        },
         cell: (data) => (
           <GovernedDtfsCell
             dtfs={data.row.original.dtfs}
@@ -203,17 +222,21 @@ const useColumns = () => {
           </SorteableButton>
         ),
         meta: {
-          className: 'text-right',
+          className: earnMetricColumnClassName,
         },
         cell: (data) => {
           return <EarnMetricCtaCell value={data.getValue()} label="APR" />
         },
       }),
     ]
-  }, [t])
+  }, [t, wallet])
 }
 
-const VoteLockPositionsSkeleton = () => {
+const VoteLockPositionsSkeleton = ({
+  showWalletPosition,
+}: {
+  showWalletPosition: boolean
+}) => {
   const skeletonRows = Array.from({ length: 5 }, (_, index) => index)
 
   return (
@@ -234,12 +257,14 @@ const VoteLockPositionsSkeleton = () => {
             </div>
           </TableCell>
 
-          <TableCell className="hidden lg:table-cell">
-            <div className="flex flex-col gap-1">
-              <Skeleton className="h-4 w-24" />
-              <Skeleton className="h-3 w-20" />
-            </div>
-          </TableCell>
+          {showWalletPosition && (
+            <TableCell className="hidden lg:table-cell">
+              <div className="flex flex-col gap-1">
+                <Skeleton className="h-4 w-24" />
+                <Skeleton className="h-3 w-20" />
+              </div>
+            </TableCell>
+          )}
 
           <TableCell>
             <div className="flex">
@@ -258,6 +283,7 @@ const VoteLockPositionsSkeleton = () => {
 
 const VoteLockPositions = () => {
   const data = useAtomValue(filteredVoteLockPositionsAtom)
+  const wallet = useAtomValue(walletAtom)
   const columns = useColumns()
   const [currentVoteLock, setCurrentVoteLock] =
     useState<StTokenExtended | null>(null)
@@ -294,7 +320,9 @@ const VoteLockPositions = () => {
           onRowClick={handleRowClick}
           initialSorting={[{ id: 'apr', desc: true }]}
           loading={data === undefined}
-          loadingSkeleton={<VoteLockPositionsSkeleton />}
+          loadingSkeleton={
+            <VoteLockPositionsSkeleton showWalletPosition={!!wallet} />
+          }
           getRowClassName={() => earnTableRowClassName}
           className={earnTableClassName}
         />
