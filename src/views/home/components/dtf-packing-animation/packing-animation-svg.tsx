@@ -53,13 +53,13 @@ export const PackingAnimationSvg = ({
       >
         <stop
           offset="0%"
-          stopColor="hsl(var(--muted-foreground))"
+          className="[stop-color:hsl(var(--primary))] dark:[stop-color:hsl(var(--border))]"
           stopOpacity="0"
         />
         <stop
           offset="100%"
-          stopColor="hsl(var(--muted-foreground))"
-          stopOpacity="0.7"
+          className="[stop-color:hsl(var(--primary))] dark:[stop-color:hsl(var(--border))]"
+          stopOpacity="1"
         />
       </linearGradient>
     </defs>
@@ -68,7 +68,7 @@ export const PackingAnimationSvg = ({
       <line
         x1={PATH_START_X}
         y1={geometry.orbitBottomY}
-        x2={geometry.centerX}
+        x2={geometry.centerX - 1}
         y2={geometry.orbitBottomY}
         stroke={`url(#${tickerLineGradientId})`}
         strokeWidth="1.5"
@@ -77,7 +77,7 @@ export const PackingAnimationSvg = ({
         cx={geometry.centerX}
         cy={geometry.centerY}
         r={visual.trajectoryRadius}
-        className="fill-secondary stroke-muted-foreground/70"
+        className="fill-secondary stroke-primary dark:stroke-border"
         fill="none"
         strokeWidth="1.5"
       />
@@ -90,7 +90,7 @@ export const PackingAnimationSvg = ({
       width={initialFrame.borderWidth}
       height={geometry.cardHeight}
       rx={geometry.cardHeight / 2}
-      className="fill-secondary stroke-muted-foreground/70"
+      className="fill-secondary stroke-primary dark:stroke-border"
       strokeWidth="1.5"
       opacity={initialFrame.cardOpacity}
     />

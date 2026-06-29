@@ -11,9 +11,9 @@ import { useHomepageHeroScroll } from '../hooks/use-homepage-hero-scroll'
 const Header = ({ className }: { className?: string }) => (
   <h1
     className={cn(
-      'max-w-[400px] text-[32px] font-medium leading-[1.25] text-primary',
+      'max-w-[400px] text-[32px] font-normal leading-[1.25] text-primary',
       'dark:text-foreground',
-      'md:text-3xl',
+      'md:text-3xl md:font-medium',
       className
     )}
   >
@@ -37,7 +37,7 @@ const SubHeader = ({ className }: { className?: string }) => (
     </span>
     <DTFExplainerButton
       className={cn(
-        'mt-6 h-9 w-fit rounded-full border-0 bg-transparent px-4 py-0 text-base text-primary',
+        'mt-6 h-9 w-fit rounded-full border-0 bg-transparent px-4 py-0 text-base text-muted-foreground',
         'hover:bg-primary hover:text-background',
         'dark:bg-transparent dark:text-legend dark:hover:bg-primary dark:hover:text-white'
       )}
