@@ -46,9 +46,10 @@ const EligibilityForm = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isValid },
   } = useForm<FormData>({
     resolver: zodResolver(formSchema),
+    mode: 'onChange',
     defaultValues: { name: '', email: '' },
   })
 
@@ -131,7 +132,7 @@ const EligibilityForm = () => {
       </div>
       <Button
         type="submit"
-        disabled={submitting}
+        disabled={submitting || !isValid}
         className="w-full rounded-xl h-12 text-base"
       >
         {submitting ? t`Submitting...` : t`Submit`}
@@ -154,10 +155,8 @@ const EligibilityCard = ({ className }: { className?: string }) => {
       )}
     >
       <div className="flex flex-col gap-1 p-6">
-        <div className="mb-2 flex h-10 w-10 items-center justify-center rounded-full border border-foreground">
-          <Lock size={16} strokeWidth={1.5} />
-        </div>
-        <h3 className="text-lg font-bold">
+        <h3 className="flex items-center gap-2 text-xl font-medium mb-2">
+          <Lock size={20} strokeWidth={2} />
           <Trans>Location restricted</Trans>
         </h3>
         <p>
@@ -179,7 +178,7 @@ const EligibilityCard = ({ className }: { className?: string }) => {
       <div className="border-t border-secondary" />
       <div className="flex flex-col bg-card p-2 pt-4">
         <div className="flex flex-col gap-1 px-4 mb-4">
-          <h4 className="font-bold">
+          <h4 className="font-medium">
             <Trans>Contact us for eligibility</Trans>
           </h4>
           <p className="text-legend text-sm">

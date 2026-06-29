@@ -41,7 +41,7 @@ const EarnNavigation = () => {
             <TabsTrigger
               key={route.path}
               value={route.path}
-              className="h-7 rounded-[60px] px-2.5 text-xs data-[state=active]:text-primary sm:px-3 sm:text-sm"
+              className="h-7 rounded-[60px] px-2.5 text-xs data-[state=active]:text-primary dark:data-[state=active]:text-foreground sm:px-3 sm:text-sm"
             >
               {t(route.label)}
             </TabsTrigger>
@@ -69,7 +69,7 @@ const Earn = () => {
   }, [])
 
   return (
-    <div className="container px-0 lg:px-4 mb-4">
+    <div className="container mb-4">
       <EarnNavigation />
       <Outlet />
       <DeprecatedDTFsUpdater />
