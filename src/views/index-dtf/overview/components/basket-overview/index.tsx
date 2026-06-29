@@ -107,7 +107,12 @@ const IndexBasketOverview = () => {
     <div className="flex flex-col">
       <div className={cn('sm:px-6 sm:pt-6', !showViewAll && 'sm:pb-6')}>
         <Tabs defaultValue="exposure">
-          <TabsList className="mx-2 mb-2 mt-2 flex h-10 w-[calc(100%-1rem)] rounded-[70px] p-0.5 sm:hidden">
+          <div className="px-5 pb-2 pt-5 sm:hidden">
+            <h2 className="text-2xl font-light">
+              <Trans>Holdings</Trans>
+            </h2>
+          </div>
+          <TabsList className="mx-2 mb-1 mt-2 flex h-10 w-[calc(100%-1rem)] rounded-[70px] p-0.5 sm:hidden">
             <TabsTrigger
               value="exposure"
               className="h-full flex-1 rounded-[60px] py-0 data-[state=active]:text-primary dark:data-[state=active]:text-foreground"

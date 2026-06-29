@@ -147,7 +147,12 @@ const EligibilityForm = () => {
 
 const EligibilityCard = ({ className }: { className?: string }) => {
   return (
-    <div className={cn('flex flex-col rounded-3xl bg-secondary', className)}>
+    <div
+      className={cn(
+        'flex flex-col overflow-hidden rounded-3xl bg-secondary',
+        className
+      )}
+    >
       <div className="flex flex-col gap-1 p-6">
         <div className="mb-2 flex h-10 w-10 items-center justify-center rounded-full border border-foreground">
           <Lock size={16} strokeWidth={1.5} />
@@ -172,7 +177,7 @@ const EligibilityCard = ({ className }: { className?: string }) => {
         </p>
       </div>
       <div className="border-t border-secondary" />
-      <div className="flex flex-col rounded-3xl bg-card p-2 pt-4">
+      <div className="flex flex-col bg-card p-2 pt-4">
         <div className="flex flex-col gap-1 px-4 mb-4">
           <h4 className="font-bold">
             <Trans>Contact us for eligibility</Trans>

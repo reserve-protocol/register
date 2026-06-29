@@ -49,7 +49,7 @@ const Header = () => {
   }
 
   return (
-    <div className="flex justify-center mb-4 mt-2">
+    <div className="mb-4 mt-2 flex justify-center px-2">
       {!data ? <Skeleton className="w-60 h-6" /> : <BrandManagerEditButton />}
     </div>
   )
@@ -169,7 +169,7 @@ const getDtfResourceUrls = (
   }
 }
 
-const DownloadableResources = () => {
+const useDownloadableResources = () => {
   const { t } = useLingui()
   const data = useAtomValue(indexDTFAtom)
   const locale = useAtomValue(localeAtom)
@@ -188,38 +188,57 @@ const DownloadableResources = () => {
     ...files,
   ]
 
+  return {
+    resources,
+    dtfName: data?.token.name ?? 'this DTF',
+  }
+}
+
+const DownloadableResources = () => {
+  const { resources, dtfName } = useDownloadableResources()
+
   if (!resources.length) return null
 
-  const dtfName = data?.token.name ?? 'this DTF'
-
   return (
-    <div className="border-y mt-4 py-4">
-      <h3 className="font-medium">
-        <Trans>Downloadable resources</Trans>
-      </h3>
-      <p className="text-legend mb-1">
-        <Trans>
-          More information on what {dtfName} is, what it’s all about,
-          methodology and thesis.
-        </Trans>
-      </p>
-      <div className="flex flex-wrap items-center gap-x-7 gap-y-2 py-2">
-        {resources.map((file) => (
-          <a
-            key={file.url}
-            href={file.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center gap-2 text-primary hover:underline"
-          >
-            <div className="flex size-8 shrink-0 items-center justify-center rounded-full bg-muted">
-              <Download size={16} strokeWidth={1.5} />
+    <>
+      <div className="border-t border-secondary" />
+      <div className="rounded-3xl bg-card p-5 sm:p-6">
+        <h3 className="font-medium mb-1">
+          <Trans>Downloadable resources</Trans>
+        </h3>
+        <p className="text-legend mb-1">
+          <Trans>
+            More information on what {dtfName} is, what it’s all about,
+            methodology and thesis.
+          </Trans>
+        </p>
+        <div className="mt-2 flex flex-wrap items-center gap-x-5 gap-y-2 sm:gap-x-5 sm:mt-4">
+          {resources.map((file, index) => (
+            <div
+              key={file.url}
+              className="flex min-w-0 flex-1 items-center gap-3 sm:flex-none"
+            >
+              {index > 0 && (
+                <div className="h-6 w-px shrink-0 bg-border sm:hidden" />
+              )}
+              <a
+                href={file.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex min-w-0 flex-1 flex-row-reverse items-center justify-between gap-2 text-base font-medium text-primary hover:underline sm:flex-none sm:flex-row sm:justify-start sm:text-sm"
+              >
+                <div className="flex size-6 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground">
+                  <Download size={12} strokeWidth={2} />
+                </div>
+                <span className="truncate">
+                  {file.name || getFileNameFromUrl(file.url)}
+                </span>
+              </a>
             </div>
-            {file.name || getFileNameFromUrl(file.url)}
-          </a>
-        ))}
+          ))}
+        </div>
       </div>
-    </div>
+    </>
   )
 }
 
@@ -233,14 +252,14 @@ const IndexAboutOverview = ({
   showCover?: boolean
 }) => (
   <div id={id} className={cn('group/section', className)}>
-    <div className="p-2">
+    <div>
       <Header />
-      {showCover && <DtfCover className="rounded-xl" />}
-      <div className={cn('p-3 sm:p-4', showCover && 'mt-2 sm:mt-3')}>
+      {showCover && <DtfCover className="m-2 rounded-xl" />}
+      <div className={cn('p-5 sm:p-6', showCover && 'mt-0')}>
         <Mandate anchorId={id} />
         <IndexAboutMeta />
-        <DownloadableResources />
       </div>
+      <DownloadableResources />
     </div>
   </div>
 )

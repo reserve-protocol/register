@@ -110,16 +110,16 @@ const LandingMint = (props: React.HTMLAttributes<HTMLDivElement>) => {
       <div className={isGeoRestricted ? 'z-10' : 'sticky top-0 z-10'}>
         {isGeoRestricted ? (
           <div className="flex flex-col gap-1">
-            <EligibilityCard className="bg-card" />
             <div className="rounded-3xl bg-card p-2">
               <DesktopTokenAddressButton className="w-full" />
             </div>
+            <EligibilityCard className="bg-card" />
           </div>
         ) : (
           <MintBox />
         )}
       </div>
-      <div className="flex flex-1 flex-col gap-1 rounded-4xl bg-muted">
+      <div className="flex flex-1 flex-col gap-1">
         <div className="flex-1 rounded-3xl bg-card">
           <IndexAboutOverview showCover />
         </div>
