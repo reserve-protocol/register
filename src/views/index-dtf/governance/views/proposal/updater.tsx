@@ -23,13 +23,23 @@ const ProposalUpdater = () => {
   }, [proposalDetail, setProposalDetail])
 
   useEffect(() => {
-    setAccountVotes(accountVotes ?? { vote: null, votePower: null })
+    setAccountVotes(
+      accountVotes ?? {
+        vote: null,
+        votePower: null,
+        hasProposalVotingPower: null,
+      }
+    )
   }, [accountVotes, setAccountVotes])
 
   useEffect(() => {
     return () => {
       setProposalDetail(undefined)
-      setAccountVotes({ vote: null, votePower: null })
+      setAccountVotes({
+        vote: null,
+        votePower: null,
+        hasProposalVotingPower: null,
+      })
     }
   }, [setAccountVotes, setProposalDetail])
 

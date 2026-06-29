@@ -1,6 +1,5 @@
 import dtfIndexStakingVault from '@/abis/dtf-index-staking-vault'
 import TransactionButton from '@/components/ui/transaction-button'
-import useIsComplianceRestricted from '@/hooks/use-is-compliance-restricted'
 import { walletAtom } from '@/state/atoms'
 import { useLingui } from '@lingui/react/macro'
 import {
@@ -50,7 +49,6 @@ const SubmitLockButton = ({ onSuccess }: { onSuccess?: () => void }) => {
   const processedApprovalHash = useRef<string>()
   const processedReceiptHash = useRef<string>()
   const processingTimer = useRef<ReturnType<typeof setTimeout>>()
-  const isRestricted = useIsComplianceRestricted()
 
   useEffect(() => {
     return () => {
@@ -200,8 +198,7 @@ const SubmitLockButton = ({ onSuccess }: { onSuccess?: () => void }) => {
         !checkbox ||
         receipt?.status === 'success' ||
         amountToLock === 0n ||
-        !hasBalance ||
-        isRestricted
+        !hasBalance
       }
       loading={
         isProcessing ||
