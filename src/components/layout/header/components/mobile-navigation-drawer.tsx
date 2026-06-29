@@ -94,7 +94,11 @@ const MobileNavSection = ({
   )
 }
 
-const MobileNavigationDrawer = () => {
+const MobileNavigationDrawer = ({
+  triggerClassName,
+}: {
+  triggerClassName?: string
+}) => {
   const { t } = useLingui()
   const [open, setOpen] = useState(false)
   const sections = useMemo(
@@ -261,7 +265,8 @@ const MobileNavigationDrawer = () => {
         <button
           type="button"
           className={cn(
-            'inline-flex h-9 w-9 cursor-pointer items-center justify-center rounded-full border bg-card hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 dark:bg-transparent min-[850px]:hidden',
+            'inline-flex h-9 w-9 cursor-pointer items-center justify-center rounded-full border bg-card transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 dark:bg-transparent min-[850px]:hidden',
+            triggerClassName,
             open && 'relative z-[60]'
           )}
         >

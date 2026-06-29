@@ -26,7 +26,7 @@ const OverlayTitle = () => {
   }
 
   return (
-    <h2 className="text-2xl sm:text-3xl font-light leading-tight w-full break-words">
+    <h2 className="text-2xl sm:text-3xl font-medium sm:font-normal leading-tight w-full break-words text-primary dark:text-foreground">
       <div className="flex items-center gap-2">
         {dtf.token.name}
         {isInactive && <InactiveBadge />}

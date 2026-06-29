@@ -10,7 +10,7 @@ import { ROUTES } from '@/utils/constants'
 import { DEFAULT_LOCALE, localeAtom, type SupportedLocale } from '@/i18n'
 import { useAtomValue } from 'jotai'
 import { Download, ImagePlus } from 'lucide-react'
-import { useState } from 'react'
+import { Fragment, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useTrackIndexDTFClick } from '../../hooks/useTrackIndexDTFPage'
 import SectionAnchor from '@/components/section-anchor'
@@ -212,12 +212,9 @@ const DownloadableResources = () => {
             methodology and thesis.
           </Trans>
         </p>
-        <div className="mt-2 flex flex-wrap items-center gap-x-5 gap-y-2 sm:gap-x-5 sm:mt-4">
+        <div className="mt-2 flex items-center gap-x-4 gap-y-2 sm:mt-4 sm:flex-wrap sm:gap-x-5">
           {resources.map((file, index) => (
-            <div
-              key={file.url}
-              className="flex min-w-0 flex-1 items-center gap-3 sm:flex-none"
-            >
+            <Fragment key={file.url}>
               {index > 0 && (
                 <div className="h-6 w-px shrink-0 bg-border sm:hidden" />
               )}
@@ -234,7 +231,7 @@ const DownloadableResources = () => {
                   {file.name || getFileNameFromUrl(file.url)}
                 </span>
               </a>
-            </div>
+            </Fragment>
           ))}
         </div>
       </div>

@@ -54,6 +54,9 @@ const AppHeader = () => {
   const isIndexDtfOverview =
     pathname.includes('/index-dtf/') && pathname.endsWith('/overview')
   const scrolled = useAppContainerScrolled()
+  const mobileOverviewButtonClassName = isIndexDtfOverview
+    ? cn(scrolled ? 'border-border' : 'border-card', 'dark:border-border')
+    : undefined
 
   return (
     <Container>
@@ -63,7 +66,7 @@ const AppHeader = () => {
           isIndexDtfOverview && !scrolled ? 'bg-transparent' : 'bg-card'
         )}
       >
-        <Brand className="relative z-[60] text-primary mr-2 sm:mr-4 cursor-pointer md:-mt-1" />
+        <Brand className="relative z-[60] -ml-0.5 mr-2 cursor-pointer text-primary sm:mr-4 md:-mt-1 lg:ml-0" />
         <AppNavigation />
         <div className="ml-auto flex items-center gap-1 sm:gap-2 min-[850px]:ml-0">
           <div className="hidden min-[850px]:block">
@@ -75,9 +78,11 @@ const AppHeader = () => {
             <DarkModeToggle />
             <LanguageSelector />
           </div>
-          <HeaderActionsMenu />
-          <Account />
-          <MobileNavigationDrawer />
+          <HeaderActionsMenu triggerClassName={mobileOverviewButtonClassName} />
+          <Account mobileAccountClassName={mobileOverviewButtonClassName} />
+          <MobileNavigationDrawer
+            triggerClassName={mobileOverviewButtonClassName}
+          />
         </div>
       </div>
     </Container>

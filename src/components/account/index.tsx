@@ -66,9 +66,11 @@ const ErrorWrapper = ({
 const Account = ({
   connectLabel,
   connectClassName,
+  mobileAccountClassName,
 }: {
   connectLabel?: ReactNode
   connectClassName?: string
+  mobileAccountClassName?: string
 }) => {
   const chainId = useAtomValue(chainIdAtom)
   const isTokenSelected = !!useAtomValue(selectedRTokenAtom)
@@ -133,7 +135,12 @@ const Account = ({
                       onClick={openAccountModal}
                     >
                       <div className="lg:hidden">
-                        <div className="flex h-9 items-center justify-center gap-1.5 rounded-full border border-border bg-card px-3 dark:bg-transparent">
+                        <div
+                          className={cn(
+                            'flex h-9 items-center justify-center gap-1.5 rounded-full border border-border bg-card px-3 transition-colors dark:bg-transparent',
+                            mobileAccountClassName
+                          )}
+                        >
                           {!invalidChain ? (
                             <ChainLogo
                               chain={chain.id}

@@ -27,7 +27,11 @@ const PanelLabel = ({ children }: { children: ReactNode }) => (
 )
 
 // Header menu grouping Search/Theme/Language
-const HeaderActionsMenu = () => {
+const HeaderActionsMenu = ({
+  triggerClassName,
+}: {
+  triggerClassName?: string
+}) => {
   const { t } = useLingui()
   const [locale, setLocale] = useAtom(localeAtom)
   const mode = useAtomValue(themeModeAtom)
@@ -40,7 +44,10 @@ const HeaderActionsMenu = () => {
         <button
           type="button"
           aria-label={t`More options`}
-          className="inline-flex h-9 cursor-pointer items-center justify-center gap-1 rounded-full border bg-card px-3 hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 dark:bg-transparent xl:hidden"
+          className={cn(
+            'inline-flex h-9 cursor-pointer items-center justify-center gap-1 rounded-full border bg-card px-3 transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 dark:bg-transparent xl:hidden',
+            triggerClassName
+          )}
         >
           <Search size={14} strokeWidth={1.5} />
           {mode === 'dark' ? (
