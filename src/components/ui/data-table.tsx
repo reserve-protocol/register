@@ -22,7 +22,7 @@ import {
   TableRow,
 } from '@/components/ui/table'
 import { cn } from '@/lib/utils'
-import { Fragment, useMemo, useState } from 'react'
+import { Fragment, useState } from 'react'
 import React from 'react'
 import { Button } from './button'
 import {
@@ -79,16 +79,66 @@ export const SorteableButton = ({
 
 const PAGE_SIZE_OPTIONS = [10, 25, 50, 100]
 
+const getPaginationPages = (pageCount: number, currentPage: number) => {
+  if (pageCount <= 7) {
+    return Array.from({ length: pageCount }, (_, index) => index + 1)
+  }
+
+  if (currentPage <= 4) {
+    return [1, 2, 3, 4, 5, 'end-ellipsis', pageCount]
+  }
+
+  if (currentPage >= pageCount - 3) {
+    return [
+      1,
+      'start-ellipsis',
+      pageCount - 4,
+      pageCount - 3,
+      pageCount - 2,
+      pageCount - 1,
+      pageCount,
+    ]
+  }
+
+  return [
+    1,
+    'start-ellipsis',
+    currentPage - 1,
+    currentPage,
+    currentPage + 1,
+    'end-ellipsis',
+    pageCount,
+  ]
+}
+
 const Pagination = ({
   table,
   showPageSizeSelector = false,
+  className,
+  summaryClassName,
+  controlsClassName,
+  buttonClassName,
 }: {
   table: TableType<any>
   showPageSizeSelector?: boolean
+  className?: string
+  summaryClassName?: string
+  controlsClassName?: string
+  buttonClassName?: string
 }) => {
   return (
-    <div className="flex items-center justify-between md:py-4 ">
-      <div className="flex items-center gap-2 text-sm text-muted-foreground ml-6 opacity-0 md:opacity-100">
+    <div
+      className={cn(
+        'flex items-center justify-between px-4 pb-2 pt-3 sm:px-6',
+        className
+      )}
+    >
+      <div
+        className={cn(
+          'flex items-center gap-2 text-sm text-muted-foreground opacity-0 md:opacity-100',
+          summaryClassName
+        )}
+      >
         <span>
           <Trans>
             Showing{' '}
@@ -117,11 +167,15 @@ const Pagination = ({
           </Select>
         )}
       </div>
-      <div className=" flex items-center justify-center">
-        <div className="flex items-center space-x-2">
+      <div className="flex items-center justify-center">
+        <div className={cn('flex items-center space-x-2', controlsClassName)}>
           <Button
             variant="ghost"
-            size="sm"
+            size="xs"
+            className={cn(
+              'min-w-7 rounded-full bg-border/40 text-foreground hover:bg-border/70 disabled:bg-border/20 disabled:text-muted-foreground/50',
+              buttonClassName
+            )}
             onClick={() => table.previousPage()}
             disabled={!table.getCanPreviousPage()}
           >
@@ -131,46 +185,22 @@ const Pagination = ({
             {(() => {
               const pageCount = table.getPageCount()
               const currentPage = table.getState().pagination.pageIndex + 1
-              const pages = []
-
-              // Always show first page
-              pages.push(1)
-
-              if (pageCount <= 5) {
-                // Show all pages if 5 or fewer
-                for (let i = 2; i <= pageCount; i++) {
-                  pages.push(i)
-                }
-              } else {
-                // Show current page and surrounding pages
-                if (currentPage > 3) {
-                  pages.push('...')
-                }
-
-                for (
-                  let i = Math.max(2, currentPage - 1);
-                  i <= Math.min(currentPage + 1, pageCount - 1);
-                  i++
-                ) {
-                  pages.push(i)
-                }
-
-                if (currentPage < pageCount - 2) {
-                  pages.push('...')
-                }
-
-                // Always show last page
-                pages.push(pageCount)
-              }
+              const pages = getPaginationPages(pageCount, currentPage)
 
               return pages.map((pageNumber) =>
-                pageNumber === '...' ? (
+                typeof pageNumber === 'string' ? (
                   <span key={`ellipsis-${pageNumber}`}>...</span>
                 ) : (
                   <Button
                     key={pageNumber}
-                    variant={currentPage === pageNumber ? undefined : 'ghost'}
-                    size="sm"
+                    variant="ghost"
+                    size="xs"
+                    className={cn(
+                      'min-w-7 rounded-full text-muted-foreground hover:bg-border/40 hover:text-foreground',
+                      currentPage === pageNumber &&
+                        'bg-border/50 font-medium text-foreground hover:bg-border/50',
+                      buttonClassName
+                    )}
                     onClick={() => table.setPageIndex(Number(pageNumber) - 1)}
                   >
                     {pageNumber}
@@ -181,7 +211,11 @@ const Pagination = ({
           </div>
           <Button
             variant="ghost"
-            size="sm"
+            size="xs"
+            className={cn(
+              'min-w-7 rounded-full bg-border/40 text-foreground hover:bg-border/70 disabled:bg-border/20 disabled:text-muted-foreground/50',
+              buttonClassName
+            )}
             onClick={() => table.nextPage()}
             disabled={!table.getCanNextPage()}
           >
@@ -193,13 +227,19 @@ const Pagination = ({
   )
 }
 
-interface DataTableComponentProps<TData, TValue>
-  extends DataTableProps<TData, TValue> {
+interface DataTableComponentProps<TData, TValue> extends DataTableProps<
+  TData,
+  TValue
+> {
   className?: string
   expandable?: boolean
   allowMultipleExpand?: boolean
   pagination?: boolean | { pageSize: number }
   showPageSizeSelector?: boolean
+  paginationClassName?: string
+  paginationSummaryClassName?: string
+  paginationControlsClassName?: string
+  paginationButtonClassName?: string
   hoverRowComponent?: (props: {
     row: Row<TData>
     children: React.ReactNode
@@ -278,6 +318,10 @@ function DataTable<TData, TValue>({
   allowMultipleExpand = true,
   pagination,
   showPageSizeSelector = false,
+  paginationClassName,
+  paginationSummaryClassName,
+  paginationControlsClassName,
+  paginationButtonClassName,
   onRowClick,
   hoverRowComponent,
   renderSubComponent,
@@ -303,7 +347,7 @@ function DataTable<TData, TValue>({
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
-    getPaginationRowModel: !!pagination ? getPaginationRowModel() : undefined,
+    getPaginationRowModel: pagination ? getPaginationRowModel() : undefined,
     onPaginationChange: setPaginationState,
     getExpandedRowModel: getExpandedRowModel(),
     onSortingChange: setSorting,
@@ -417,7 +461,16 @@ function DataTable<TData, TValue>({
           )}
         </TableBody>
       </Table>
-      {pagination && <Pagination table={table} showPageSizeSelector={showPageSizeSelector} />}
+      {pagination && (
+        <Pagination
+          table={table}
+          showPageSizeSelector={showPageSizeSelector}
+          className={paginationClassName}
+          summaryClassName={paginationSummaryClassName}
+          controlsClassName={paginationControlsClassName}
+          buttonClassName={paginationButtonClassName}
+        />
+      )}
     </div>
   )
 }
