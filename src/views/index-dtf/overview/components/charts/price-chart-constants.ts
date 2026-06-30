@@ -17,6 +17,10 @@ export const chartConfig = {
   },
 } satisfies ChartConfig
 
+// Light dashed secondary line for the DEX "Market Price" overlay — distinct
+// from the green/red NAV performance line. Tweak freely (designer's call).
+export const MARKET_PRICE_STROKE = '#8AA9DE'
+
 const now = Math.floor(Date.now() / 1_000)
 export const currentHour = Math.floor(now / 3_600) * 3_600
 const startOfYear = Math.floor(Date.UTC(new Date().getUTCFullYear(), 0, 1) / 1_000)

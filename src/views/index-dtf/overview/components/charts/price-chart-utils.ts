@@ -31,3 +31,26 @@ export const calculateTrailingSevenDayChange = (
 
   return (latest.price - start.price) / start.price
 }
+
+export type MarketPriceInfo = {
+  hasData: boolean
+  latest: number | null
+}
+
+// Derives whether a DTF has any DEX market-price data and its most recent
+// value. marketPrice is nullable (many DTFs have no DEX market) and the
+// synthetic live point carries null, so we only count finite positive values.
+export const getMarketPriceInfo = (
+  timeseries: { marketPrice?: number | null }[]
+): MarketPriceInfo => {
+  let latest: number | null = null
+
+  for (const point of timeseries) {
+    const value = point.marketPrice
+    if (typeof value === 'number' && Number.isFinite(value) && value > 0) {
+      latest = value
+    }
+  }
+
+  return { hasData: latest !== null, latest }
+}

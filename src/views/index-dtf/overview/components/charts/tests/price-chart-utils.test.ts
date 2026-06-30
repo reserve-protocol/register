@@ -1,5 +1,8 @@
 import { describe, expect, it } from 'vitest'
-import { calculateTrailingSevenDayChange } from '../price-chart-utils'
+import {
+  calculateTrailingSevenDayChange,
+  getMarketPriceInfo,
+} from '../price-chart-utils'
 
 const DAY = 86_400
 
@@ -33,5 +36,43 @@ describe('calculateTrailingSevenDayChange', () => {
     ])
 
     expect(result).toBeCloseTo(-0.1)
+  })
+})
+
+describe('getMarketPriceInfo', () => {
+  it('returns no data when every point is null', () => {
+    expect(
+      getMarketPriceInfo([
+        { marketPrice: null },
+        { marketPrice: null },
+      ])
+    ).toEqual({ hasData: false, latest: null })
+  })
+
+  it('returns no data for an empty series', () => {
+    expect(getMarketPriceInfo([])).toEqual({ hasData: false, latest: null })
+  })
+
+  it('returns the last finite positive value as latest', () => {
+    expect(
+      getMarketPriceInfo([
+        { marketPrice: 0.33 },
+        { marketPrice: null },
+        { marketPrice: 0.34 },
+        { marketPrice: null },
+      ])
+    ).toEqual({ hasData: true, latest: 0.34 })
+  })
+
+  it('ignores zero, negative, and non-finite values', () => {
+    expect(
+      getMarketPriceInfo([
+        { marketPrice: 0 },
+        { marketPrice: -1 },
+        { marketPrice: Number.NaN },
+        { marketPrice: 0.5 },
+        { marketPrice: 0 },
+      ])
+    ).toEqual({ hasData: true, latest: 0.5 })
   })
 })

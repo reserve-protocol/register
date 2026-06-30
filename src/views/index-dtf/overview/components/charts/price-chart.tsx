@@ -16,11 +16,15 @@ import {
   apyTimeseriesAtom,
   chartTypeAtom,
   dataTypeAtom,
+  marketPriceInfoAtom,
   priceHistoryAvailabilityAtom,
 } from './price-chart-atoms'
 import PriceChartBody, { ChartSkeleton } from './price-chart-body'
 import PriceChartFooter from './price-chart-footer'
-import { calculateTrailingSevenDayChange } from './price-chart-utils'
+import {
+  calculateTrailingSevenDayChange,
+  getMarketPriceInfo,
+} from './price-chart-utils'
 import { usePriceChartData } from './use-price-chart-data'
 
 // Re-export so existing imports keep working.
@@ -125,6 +129,15 @@ const useSyncMarketCap = (timeseries: { marketCap: number }[]) => {
   }, [timeseries, setMarketCap])
 }
 
+const useSyncMarketPrice = (
+  timeseries: { marketPrice?: number | null }[]
+) => {
+  const setMarketPriceInfo = useSetAtom(marketPriceInfoAtom)
+  useEffect(() => {
+    setMarketPriceInfo(getMarketPriceInfo(timeseries))
+  }, [timeseries, setMarketPriceInfo])
+}
+
 const useSyncPriceHistoryAvailability = (
   address: string | undefined,
   history: { timeseries: { timestamp: number; price: number }[] } | undefined
@@ -163,6 +176,7 @@ const PriceChart = () => {
   const apyHistory = useSyncApyHistory()
   useSync7dChange(timeseries)
   useSyncMarketCap(timeseries)
+  useSyncMarketPrice(timeseries)
   useSyncPriceHistoryAvailability(dtf?.id, rangeAvailabilityHistory)
 
   const chartData = isYieldMode ? apyTimeseries : timeseries

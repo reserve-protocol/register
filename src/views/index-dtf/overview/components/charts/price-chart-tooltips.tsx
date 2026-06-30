@@ -6,29 +6,33 @@ import {
 import { Trans } from '@lingui/react/macro'
 import dayjs from 'dayjs'
 import { TooltipProps } from 'recharts'
-import { DataType } from './price-chart-constants'
+import { DataType, MARKET_PRICE_STROKE } from './price-chart-constants'
 
 export function PriceTooltip({
   payload,
   active,
   dataType,
+  showMarketPrice = false,
 }: {
   payload?: TooltipProps<number, string>['payload']
   active?: boolean
   dataType: DataType
+  showMarketPrice?: boolean
 }) {
   if (!active || !payload) return null
 
-  const subtitle = dayjs
-    .unix(+payload[0]?.payload?.timestamp)
-    .format('YYYY-M-D HH:mm')
-  const value = payload[0]?.payload?.[dataType]
+  const point = payload[0]?.payload
+  const subtitle = dayjs.unix(+point?.timestamp).format('YYYY-M-D HH:mm')
+  const value = point?.[dataType]
   const isBTC = dataType === 'priceBTC'
   const formattedValue =
     dataType === 'price' || isBTC
       ? formatToSignificantDigits(value)
       : formatCurrency(value, 2)
   const prefix = isBTC ? '₿' : '$'
+  const marketPrice = point?.marketPrice
+  const showMarketRow =
+    showMarketPrice && typeof marketPrice === 'number' && marketPrice > 0
 
   return (
     <div className="bg-card text-card-foreground rounded-[20px] p-4">
@@ -36,6 +40,22 @@ export function PriceTooltip({
         {prefix}
         {formattedValue}
       </span>
+      {showMarketRow && (
+        <span className="text-sm text-muted-foreground flex items-center gap-1.5 mb-1">
+          <svg width="14" height="6" aria-hidden="true">
+            <line
+              x1="0"
+              y1="3"
+              x2="14"
+              y2="3"
+              stroke={MARKET_PRICE_STROKE}
+              strokeWidth="1.5"
+              strokeDasharray="4 4"
+            />
+          </svg>
+          <Trans>Market</Trans> ${formatToSignificantDigits(marketPrice)}
+        </span>
+      )}
       <span className="text-sm text-muted-foreground">{subtitle}</span>
     </div>
   )
