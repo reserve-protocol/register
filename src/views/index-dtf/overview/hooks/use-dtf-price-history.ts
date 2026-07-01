@@ -14,6 +14,7 @@ export type IndexDTFPerformance = {
     price: number
     marketCap: number
     totalSupply: number
+    marketPrice?: number | null
     basket: {
       address: string
       price: number
@@ -98,6 +99,7 @@ const useIndexDTFPriceHistory = ({
           price: currentPrice,
           marketCap: currentPrice * numberSupply,
           totalSupply: numberSupply,
+          marketPrice: null,
           basket: [],
         })
       }
@@ -166,6 +168,7 @@ const useIndexDTFPriceHistory = ({
               price: currentPrice,
               marketCap: currentPrice * numberSupply,
               totalSupply: numberSupply,
+              marketPrice: null,
               basket: [],
             })
           }

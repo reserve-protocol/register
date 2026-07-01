@@ -1,4 +1,5 @@
 import { indexDTFAtom, performanceTimeRangeAtom } from '@/state/dtf/atoms'
+import { isYieldIndexDTFAtom } from '@/state/dtf/yield-index-atoms'
 import { atom } from 'jotai'
 import { ApyDataPoint } from '../../hooks/use-dtf-apy-history'
 import { DataType, historicalConfigs } from './price-chart-constants'
@@ -8,6 +9,30 @@ export const dataTypeAtom = atom<DataType>('price')
 export type ChartType = 'line' | 'candlestick'
 
 export const chartTypeAtom = atom<ChartType>('line')
+
+// Toggles the DEX "Market Price" overlay on the NAV price line (opt-in).
+export const showMarketPriceAtom = atom(false)
+
+// Whether the active DTF has any market-price data and its latest value,
+// synced from the timeseries inside PriceChart (mirrors the market-cap sync).
+export const marketPriceInfoAtom = atom<{
+  hasData: boolean
+  latest: number | null
+}>({ hasData: false, latest: null })
+
+// Single source of truth for whether the market overlay is currently rendered:
+// toggled on, the DTF has data, in NAV price line mode, on a standard
+// (non-yield) index DTF. Keeps the line, header readout, and tooltip row in
+// lockstep — including when the toggle was left on while switching to the
+// candlestick chart or navigating to another DTF.
+export const isMarketPriceVisibleAtom = atom(
+  (get) =>
+    get(showMarketPriceAtom) &&
+    get(marketPriceInfoAtom).hasData &&
+    get(dataTypeAtom) === 'price' &&
+    get(chartTypeAtom) === 'line' &&
+    !get(isYieldIndexDTFAtom)
+)
 
 export const priceHistoryAvailabilityAtom = atom<
   { address: string; firstTimestamp: number | null } | undefined

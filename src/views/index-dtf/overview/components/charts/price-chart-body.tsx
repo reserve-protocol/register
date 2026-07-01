@@ -26,11 +26,18 @@ import {
   XAxis,
   YAxis,
 } from 'recharts'
-import { avgApyAtom, dataTypeAtom } from './price-chart-atoms'
+import {
+  avgApyAtom,
+  dataTypeAtom,
+  isMarketPriceVisibleAtom,
+} from './price-chart-atoms'
 import { chartConfig, DataType } from './price-chart-constants'
 import { renderPriceChartDefs } from './price-chart-defs'
 import { PriceChartLaunchMarker } from './price-chart-launch-marker'
-import { renderPriceChartSeries } from './price-chart-series'
+import {
+  renderMarketPriceSeries,
+  renderPriceChartSeries,
+} from './price-chart-series'
 import { PriceTooltip, YieldTooltip } from './price-chart-tooltips'
 import { useXAxisTicks } from './use-price-chart-data'
 
@@ -69,6 +76,7 @@ const PriceChartBody = ({
 }) => {
   const dataType = useAtomValue(dataTypeAtom)
   const avgApy = useAtomValue(avgApyAtom)
+  const showMarketLine = useAtomValue(isMarketPriceVisibleAtom)
   const isMobile = useIsMobile()
   const isYieldMode = dataType === 'yield'
   const isBTCMode = dataType === 'priceBTC'
@@ -163,7 +171,10 @@ const PriceChartBody = ({
           tickMargin={10}
         />
         <YAxis
-          dataKey={chartKey}
+          // With an explicit dataKey, recharts derives the domain from that key
+          // alone; dropping it while the market line is shown makes the domain
+          // span both NAV and market series so neither is clipped.
+          dataKey={showMarketLine ? undefined : chartKey}
           orientation="right"
           tick={{ fontSize: 13, opacity: 0.7 }}
           tickFormatter={formatYAxisTick}
@@ -187,7 +198,10 @@ const PriceChartBody = ({
             isYieldMode ? (
               <YieldTooltip />
             ) : (
-              <PriceTooltip dataType={dataType} />
+              <PriceTooltip
+                dataType={dataType}
+                showMarketPrice={showMarketLine}
+              />
             )
           }
         />
@@ -215,6 +229,7 @@ const PriceChartBody = ({
           shouldSplit,
           strokeColor,
         })}
+        {showMarketLine && renderMarketPriceSeries()}
         <Customized
           component={(props: {
             offset?: { top: number; height: number; width?: number }

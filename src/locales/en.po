@@ -5375,6 +5375,10 @@ msgstr ""
 msgid "Market"
 msgstr ""
 
+#: src/views/index-dtf/overview/components/charts/market-price-toggle.tsx
+msgid "Market Price"
+msgstr ""
+
 #: src/views/index-dtf/overview/components/index-disclousure.tsx:286
 msgid "Market Access and Redemption Risk: Minting and redemption for Ondo Tokenized Stocks may be permissioned, capacity-limited, subject to eligibility/whitelisting, and available only during defined windows or business-hour cutoffs tied to traditional market operations. These frictions can prevent arbitrage, impair exits at or near NAV, and amplify secondary-market dislocations, thereby resulting in a partial or total loss of the DTFs' holdings."
 msgstr ""

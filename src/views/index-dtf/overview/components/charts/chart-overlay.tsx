@@ -21,8 +21,15 @@ import IndexCreatorOverview from '../index-creator-overview'
 import IndexTokenAddress from '../index-token-address'
 import IndexTokenLogo from '../index-token-logo'
 import ChartTypeSelector from './chart-type-selector'
+import MarketPriceToggle from './market-price-toggle'
 import PercentageChange from './percentage-change'
-import { apyStatsAtom, dataTypeAtom } from './price-chart-atoms'
+import {
+  apyStatsAtom,
+  dataTypeAtom,
+  isMarketPriceVisibleAtom,
+  marketPriceInfoAtom,
+} from './price-chart-atoms'
+import { MARKET_PRICE_STROKE } from './price-chart-constants'
 import TimeRangeMenu from './time-range-menu'
 
 const OverlayHeaderActions = () => {
@@ -46,10 +53,12 @@ const OverlayHeaderActions = () => {
     <>
       <div className="hidden xl:flex items-center gap-2">
         <IndexCreatorOverview />
+        <MarketPriceToggle />
         <ChartTypeSelector />
       </div>
       <div className="flex xl:hidden items-center gap-2">
         <TimeRangeMenu />
+        <MarketPriceToggle />
         <ChartTypeSelector />
       </div>
     </>
@@ -127,6 +136,37 @@ const PriceValue = () => {
   )
 }
 
+const MarketPriceReadout = () => {
+  const isVisible = useAtomValue(isMarketPriceVisibleAtom)
+  const { latest } = useAtomValue(marketPriceInfoAtom)
+
+  if (!isVisible || latest === null) {
+    return null
+  }
+
+  return (
+    <>
+      <span className="text-sm text-white/40">·</span>
+      <div className="flex items-center gap-1.5 text-sm text-white/60">
+        <svg width="14" height="6" aria-hidden="true">
+          <line
+            x1="0"
+            y1="3"
+            x2="14"
+            y2="3"
+            stroke={MARKET_PRICE_STROKE}
+            strokeWidth="1.5"
+            strokeDasharray="4 4"
+          />
+        </svg>
+        <span>
+          <Trans>Market</Trans> ${formatToSignificantDigits(latest)}
+        </span>
+      </div>
+    </>
+  )
+}
+
 const PriceOverlayInfo = ({
   timeseries,
 }: {
@@ -149,6 +189,7 @@ const PriceOverlayInfo = ({
           />
         )}
       </div>
+      <MarketPriceReadout />
     </div>
   )
 }
