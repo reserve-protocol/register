@@ -3,6 +3,7 @@ import type { IndexDTF } from '@/types'
 import { createStore } from 'jotai'
 import { describe, expect, it } from 'vitest'
 import {
+  chartTypeAtom,
   dataTypeAtom,
   hasEstimatedHistoricalPriceAtom,
   isMarketPriceVisibleAtom,
@@ -104,6 +105,12 @@ describe('isMarketPriceVisibleAtom', () => {
   it('is false outside NAV price mode', () => {
     const store = visibleStore()
     store.set(dataTypeAtom, 'marketCap')
+    expect(store.get(isMarketPriceVisibleAtom)).toBe(false)
+  })
+
+  it('is false on the candlestick chart even if the toggle was left on', () => {
+    const store = visibleStore()
+    store.set(chartTypeAtom, 'candlestick')
     expect(store.get(isMarketPriceVisibleAtom)).toBe(false)
   })
 

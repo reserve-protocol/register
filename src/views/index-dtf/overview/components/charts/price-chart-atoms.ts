@@ -21,14 +21,16 @@ export const marketPriceInfoAtom = atom<{
 }>({ hasData: false, latest: null })
 
 // Single source of truth for whether the market overlay is currently rendered:
-// toggled on, the DTF has data, in NAV price mode, on a standard (non-yield)
-// index DTF. Keeps the line, header readout, and tooltip row in lockstep — and
-// stays correct if the toggle was left on while navigating to another DTF.
+// toggled on, the DTF has data, in NAV price line mode, on a standard
+// (non-yield) index DTF. Keeps the line, header readout, and tooltip row in
+// lockstep — including when the toggle was left on while switching to the
+// candlestick chart or navigating to another DTF.
 export const isMarketPriceVisibleAtom = atom(
   (get) =>
     get(showMarketPriceAtom) &&
     get(marketPriceInfoAtom).hasData &&
     get(dataTypeAtom) === 'price' &&
+    get(chartTypeAtom) === 'line' &&
     !get(isYieldIndexDTFAtom)
 )
 
