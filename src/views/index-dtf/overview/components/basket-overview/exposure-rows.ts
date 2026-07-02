@@ -1,4 +1,5 @@
 import { ExposureGroup, ExposureToken } from '@/state/dtf/atoms'
+import { formatMarketCap } from '@/utils'
 
 export const EXCHANGE_LABELS: Record<string, string> = {
   nasdaq: 'NASDAQ',
@@ -26,6 +27,30 @@ export type ExposureRow =
       weight: number
       change: number | null | undefined
     }
+
+// Market caps are keyed by token address for exchange tokens and by coingecko
+// id for native groups; groups without a coingecko id fall back to their first
+// token's address.
+export const getExposureMarketCap = (
+  row: ExposureRow,
+  marketCaps: Record<string, number> | undefined
+): string | undefined => {
+  if (row.kind === 'token') {
+    const cap = marketCaps?.[row.token.address.toLowerCase()]
+    return cap ? formatMarketCap(cap) : undefined
+  }
+
+  const { native, tokens } = row.group
+
+  if (native?.coingeckoId) {
+    const cap = marketCaps?.[native.coingeckoId]
+    return cap ? formatMarketCap(cap) : undefined
+  }
+
+  const fallbackKey = tokens[0]?.address.toLowerCase()
+  const cap = fallbackKey ? marketCaps?.[fallbackKey] : undefined
+  return cap ? formatMarketCap(cap) : undefined
+}
 
 // Exchange groups (nasdaq/nyse) bundle every stock under one ExposureGroup, so
 // flatten them into per-token rows. That way the table sorts/slices/counts the

@@ -2,6 +2,7 @@ import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
 import useComplianceRestrictions from '@/hooks/use-compliance-restrictions'
+import { useIsLargeDesktop } from '@/hooks/use-media-query'
 import { isInactiveDTF } from '@/hooks/use-dtf-status'
 import { indexDTFAtom, indexDTFStatusAtom } from '@/state/dtf/atoms'
 import { useTrackIndexDTFClick } from '@/views/index-dtf/hooks/useTrackIndexDTFPage'
@@ -101,6 +102,7 @@ const MintBox = () => {
 const LandingMint = (props: React.HTMLAttributes<HTMLDivElement>) => {
   const { data: complianceData } = useComplianceRestrictions()
   const isGeoRestricted = complianceData?.reason === 'geolocation-restricted'
+  const isLargeDesktop = useIsLargeDesktop()
 
   return (
     <div
@@ -120,9 +122,13 @@ const LandingMint = (props: React.HTMLAttributes<HTMLDivElement>) => {
         )}
       </div>
       <div className="flex flex-1 flex-col gap-1">
-        <div className="flex-1 rounded-3xl bg-card">
-          <IndexAboutOverview showCover />
-        </div>
+        {/* WHY: mirror of the sub-xl about card (see overview AboutSection) —
+            only one copy is mounted at a time, so it owns #about at xl. */}
+        {isLargeDesktop && (
+          <div id="about" className="flex-1 rounded-3xl bg-card">
+            <IndexAboutOverview showCover />
+          </div>
+        )}
       </div>
     </div>
   )

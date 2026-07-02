@@ -1,5 +1,7 @@
 import { Skeleton } from '@/components/ui/skeleton'
 import Help from '@/components/ui/help'
+import { cn } from '@/lib/utils'
+import { PERFORMANCE_TEXT_CLASSES } from '@/utils/chart-performance-colors'
 import { TimeRange } from '@/types'
 import { msg } from '@lingui/core/macro'
 import { useLingui } from '@lingui/react/macro'
@@ -34,9 +36,7 @@ export const PerformanceCell = ({
   // Show skeleton while loading
   if (isLoading) {
     return (
-      <Skeleton
-        className={`h-4 w-[60px] ${align === 'end' ? 'ml-auto' : ''}`}
-      />
+      <Skeleton className={cn('h-4 w-[60px]', align === 'end' && 'ml-auto')} />
     )
   }
 
@@ -48,14 +48,14 @@ export const PerformanceCell = ({
   const formattedChange = `${change > 0 ? '+' : ''}${(change * 100).toFixed(2)}%`
   const changeColor =
     change < 0
-      ? 'text-[#9F4A3D] dark:text-[#D66A4A]'
+      ? PERFORMANCE_TEXT_CLASSES.negative
       : change > 0
-        ? 'text-[#657D32] dark:text-[#A2BB6E]'
+        ? PERFORMANCE_TEXT_CLASSES.positive
         : 'text-muted-foreground dark:text-foreground'
 
   return (
-    <div className={`flex items-center ${justifyClass} gap-1`}>
-      <span className={`${changeColor} text-sm font-medium sm:text-base`}>
+    <div className={cn('flex items-center gap-1', justifyClass)}>
+      <span className={cn(changeColor, 'text-sm font-medium sm:text-base')}>
         {formattedChange}
       </span>
       {isNewlyAdded && (

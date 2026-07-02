@@ -6,6 +6,7 @@ import {
 import {
   DropdownMenu,
   DropdownMenuContent,
+  DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import {
@@ -19,6 +20,9 @@ import { Trans, useLingui } from '@lingui/react/macro'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { Globe, Moon, Search, Sun } from 'lucide-react'
 import { ReactNode } from 'react'
+import HeaderControlButton, {
+  type HeaderControlSurface,
+} from './header-control-button'
 
 const PanelLabel = ({ children }: { children: ReactNode }) => (
   <div className="px-3 text-xs font-semibold uppercase text-legend">
@@ -28,9 +32,9 @@ const PanelLabel = ({ children }: { children: ReactNode }) => (
 
 // Header menu grouping Search/Theme/Language
 const HeaderActionsMenu = ({
-  triggerClassName,
+  surface = 'default',
 }: {
-  triggerClassName?: string
+  surface?: HeaderControlSurface
 }) => {
   const { t } = useLingui()
   const [locale, setLocale] = useAtom(localeAtom)
@@ -41,13 +45,10 @@ const HeaderActionsMenu = ({
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <button
-          type="button"
+        <HeaderControlButton
           aria-label={t`More options`}
-          className={cn(
-            'inline-flex h-9 cursor-pointer items-center justify-center gap-1 rounded-full border bg-card px-3 transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 dark:bg-transparent xl:hidden',
-            triggerClassName
-          )}
+          surface={surface}
+          className="gap-1 px-3 xl:hidden"
         >
           <Search size={14} strokeWidth={1.5} />
           {mode === 'dark' ? (
@@ -56,7 +57,7 @@ const HeaderActionsMenu = ({
             <Sun size={14} strokeWidth={1.5} />
           )}
           <Globe size={14} strokeWidth={1.5} />
-        </button>
+        </HeaderControlButton>
       </DropdownMenuTrigger>
       <DropdownMenuContent
         align="end"
@@ -67,10 +68,11 @@ const HeaderActionsMenu = ({
           <PanelLabel>
             <Trans>Search</Trans>
           </PanelLabel>
-          <button
-            type="button"
-            className="mt-3 flex h-9 w-full items-center justify-center gap-1.5 rounded-full border border-border bg-card px-3 text-sm font-medium text-legend transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-            onClick={() => setTimeout(() => setSearchOpen(true), 0)}
+          {/* WHY: DropdownMenuItem closes the menu and restores focus before the
+              deferred open, so the command dialog keeps focus on its input. */}
+          <DropdownMenuItem
+            className="mt-3 flex h-9 w-full cursor-pointer items-center justify-center gap-1.5 rounded-full border border-border bg-card px-3 text-sm font-medium text-legend transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+            onSelect={() => setTimeout(() => setSearchOpen(true), 0)}
           >
             <Search size={14} strokeWidth={1.5} />
             <span>
@@ -79,7 +81,7 @@ const HeaderActionsMenu = ({
             <span className="ml-auto hidden text-xs text-legend md:inline">
               {SEARCH_SHORTCUT}
             </span>
-          </button>
+          </DropdownMenuItem>
         </div>
         <div className="bg-background p-3 pt-5">
           <PanelLabel>

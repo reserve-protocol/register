@@ -2,13 +2,17 @@ import TokenLogo from '@/components/token-logo'
 import { TableCell, TableRow } from '@/components/ui/table'
 import { chainIdAtom } from '@/state/atoms'
 import { TimeRange } from '@/types'
-import { formatMarketCap, getTokenName } from '@/utils'
+import { getTokenName } from '@/utils'
 import { Plural } from '@lingui/react/macro'
 import { useAtomValue } from 'jotai'
 import { useMemo } from 'react'
 import { PerformanceCell } from './performance-cell'
 import { indexDTFBasketAtom } from '@/state/dtf/atoms'
-import { ExposureRow, formatExchangeSymbol } from './exposure-rows'
+import {
+  ExposureRow,
+  formatExchangeSymbol,
+  getExposureMarketCap,
+} from './exposure-rows'
 
 interface ExposureTableRowsProps {
   rows: ExposureRow[]
@@ -41,6 +45,8 @@ export const ExposureTableRows = ({
   return (
     <>
       {rows.slice(0, viewAll ? rows.length : maxTokens).map((row) => {
+        const marketCap = getExposureMarketCap(row, marketCaps)
+
         if (row.kind === 'token') {
           const { token, group, exchange } = row
           return (
@@ -80,13 +86,7 @@ export const ExposureTableRows = ({
                 />
               </TableCell>
               <TableCell className="hidden w-28 whitespace-nowrap py-3 pl-2 pr-0 text-right text-base font-medium sm:table-cell dark:text-muted-foreground">
-                {marketCaps?.[token.address.toLowerCase()] ? (
-                  <span>
-                    {formatMarketCap(marketCaps[token.address.toLowerCase()])}
-                  </span>
-                ) : (
-                  <span>—</span>
-                )}
+                {marketCap ? <span>{marketCap}</span> : <span>—</span>}
               </TableCell>
             </TableRow>
           )
@@ -144,21 +144,7 @@ export const ExposureTableRows = ({
               />
             </TableCell>
             <TableCell className="hidden w-28 whitespace-nowrap py-3 pl-2 pr-0 text-right text-base font-medium sm:table-cell dark:text-muted-foreground">
-              {group.native?.coingeckoId &&
-              marketCaps?.[group.native.coingeckoId] ? (
-                <span>
-                  {formatMarketCap(marketCaps[group.native.coingeckoId])}
-                </span>
-              ) : !group.native?.coingeckoId &&
-                marketCaps?.[group.tokens[0]?.address.toLowerCase()] ? (
-                <span>
-                  {formatMarketCap(
-                    marketCaps[group.tokens[0]?.address.toLowerCase()]
-                  )}
-                </span>
-              ) : (
-                <span>—</span>
-              )}
+              {marketCap ? <span>{marketCap}</span> : <span>—</span>}
             </TableCell>
           </TableRow>
         )

@@ -1,4 +1,5 @@
 import TokenLogo from '@/components/token-logo'
+import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import {
   HoverCard,
@@ -133,10 +134,17 @@ const RewardTokensHoverCard = ({
       <HoverCardTrigger asChild>
         <button
           type="button"
-          className={`inline-flex items-center gap-1 rounded-full transition-colors focus-visible:outline-none focus-visible:text-primary ${
+          // WHY: HoverCard has no touch affordance — click toggles it so the
+          // disclosure works on mobile.
+          onClick={() => setOpen(!open)}
+          className={cn(
+            'inline-flex items-center gap-1 rounded-full transition-colors focus-visible:outline-none focus-visible:text-primary',
             open ? 'text-primary' : 'text-foreground hover:text-primary'
-          }`}
+          )}
         >
+          <span className="sr-only">
+            <Trans>View reward tokens</Trans>
+          </span>
           <span className="flex -space-x-2">
             {tokens.map((token) => (
               <span

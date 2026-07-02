@@ -1,4 +1,5 @@
 import useScrollToHash from '@/hooks/use-scroll-to-hash'
+import { useIsLargeDesktop } from '@/hooks/use-media-query'
 import { Card } from '@/components/ui/card'
 import { indexDTFAtom } from '@/state/dtf/atoms'
 import { isYieldIndexDTFAtom } from '@/state/dtf/yield-index-atoms'
@@ -19,6 +20,10 @@ import YieldIndexComposition from './components/yield-index/yield-index-composit
 
 const AboutSection = () => {
   const isYieldIndexDTF = useAtomValue(isYieldIndexDTFAtom)
+  // WHY: the about card (autoplaying cover video) also lives in the xl-only
+  // LandingMint rail — mount only one copy so the video isn't fetched and
+  // played twice; the xl:hidden class stays as a resize-timing backstop.
+  const isLargeDesktop = useIsLargeDesktop()
 
   if (isYieldIndexDTF) {
     return (
@@ -36,12 +41,14 @@ const AboutSection = () => {
 
   return (
     <>
-      <Card
-        id="about"
-        className="group/section pb-0 pt-0 sm:pb-0 sm:pt-0 xl:hidden"
-      >
-        <IndexAboutOverview className="xl:hidden" showCover />
-      </Card>
+      {!isLargeDesktop && (
+        <Card
+          id="about"
+          className="group/section pb-0 pt-0 sm:pb-0 sm:pt-0 xl:hidden"
+        >
+          <IndexAboutOverview className="xl:hidden" showCover />
+        </Card>
+      )}
       <Card
         id="basket"
         className="group/section !bg-card pb-0 pt-0 sm:pb-0 sm:pt-0"

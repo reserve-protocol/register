@@ -91,9 +91,6 @@ export const BasketTableHeader = ({
               : 'h-auto w-10/12 py-0 pl-0 pr-2 text-left text-xs sm:text-sm'
           }
         >
-          <span className="sm:hidden">
-            <Trans>Asset</Trans>
-          </span>
           <TabsList className="hidden h-7 rounded-[70px] px-0.5 py-0 sm:inline-flex sm:h-8">
             <TabsTrigger
               value="exposure"

@@ -1,4 +1,5 @@
 import DecimalDisplay from '@/components/decimal-display'
+import { cn } from '@/lib/utils'
 import DataTable, { SorteableButton } from '@/components/ui/data-table'
 import {
   HoverCard,
@@ -88,10 +89,16 @@ const GovernedDtfsCell = ({
             <HoverCardTrigger asChild>
               <button
                 type="button"
-                onClick={(e) => e.stopPropagation()}
-                className={`inline-flex items-center gap-0.5 transition-colors focus-visible:outline-none focus-visible:text-primary ${
+                // WHY: HoverCard has no touch affordance — click toggles it so
+                // the disclosure works on mobile without swallowing the row tap.
+                onClick={(e) => {
+                  e.stopPropagation()
+                  setOpen(!open)
+                }}
+                className={cn(
+                  'inline-flex items-center gap-0.5 transition-colors focus-visible:outline-none focus-visible:text-primary',
                   open ? 'text-primary' : 'text-legend hover:text-primary'
-                }`}
+                )}
               >
                 <span>
                   {otherDtfs.length}{' '}
@@ -104,7 +111,7 @@ const GovernedDtfsCell = ({
                 <ChevronDown
                   size={16}
                   strokeWidth={2}
-                  className={`transition-transform ${open ? 'rotate-180' : ''}`}
+                  className={cn('transition-transform', open && 'rotate-180')}
                 />
               </button>
             </HoverCardTrigger>

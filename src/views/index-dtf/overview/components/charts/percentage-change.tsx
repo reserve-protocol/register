@@ -1,12 +1,13 @@
 import { cn } from '@/lib/utils'
+import { PERFORMANCE_TEXT_CLASSES } from '@/utils/chart-performance-colors'
 import { Trans } from '@lingui/react/macro'
 import { ArrowDown, ArrowUp } from 'lucide-react'
 import { IndexDTFPerformance } from '../../hooks/use-dtf-price-history'
 import { DataType } from './price-chart-constants'
 
 const colorClass = (change: number) => {
-  if (change < 0) return 'text-[#9F4A3D] dark:text-[#D66A4A]'
-  if (change > 0) return 'text-[#657D32] dark:text-[#A2BB6E]'
+  if (change < 0) return PERFORMANCE_TEXT_CLASSES.negative
+  if (change > 0) return PERFORMANCE_TEXT_CLASSES.positive
   return ''
 }
 

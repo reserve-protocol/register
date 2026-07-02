@@ -3,6 +3,7 @@ import {
   Drawer,
   DrawerClose,
   DrawerContent,
+  DrawerTitle,
   DrawerTrigger,
 } from '@/components/ui/drawer'
 import { cn } from '@/lib/utils'
@@ -38,6 +39,15 @@ import {
   HeaderNavItemContent,
   headerNavItemClassName,
 } from './header-nav-items'
+import HeaderControlButton, {
+  type HeaderControlSurface,
+} from './header-control-button'
+
+const headerNavIconProps = {
+  className: headerNavIconClassName,
+  strokeWidth: 1.5,
+  size: 16,
+}
 
 const MobileNavSection = ({
   title,
@@ -95,9 +105,9 @@ const MobileNavSection = ({
 }
 
 const MobileNavigationDrawer = ({
-  triggerClassName,
+  surface = 'default',
 }: {
-  triggerClassName?: string
+  surface?: HeaderControlSurface
 }) => {
   const { t } = useLingui()
   const [open, setOpen] = useState(false)
@@ -109,37 +119,19 @@ const MobileNavigationDrawer = ({
           {
             label: t`Discover DTFs`,
             description: t`Browse Index and Yield DTFs`,
-            icon: (
-              <Binoculars
-                className={headerNavIconClassName}
-                strokeWidth={1.5}
-                size={16}
-              />
-            ),
+            icon: <Binoculars {...headerNavIconProps} />,
             to: ROUTES.DISCOVER,
           },
           {
             label: t`Participate & Earn`,
             description: t`Govern, stake, and find yield opportunities`,
-            icon: (
-              <Landmark
-                className={headerNavIconClassName}
-                strokeWidth={1.5}
-                size={16}
-              />
-            ),
+            icon: <Landmark {...headerNavIconProps} />,
             to: ROUTES.EARN,
           },
           {
             label: t`Portfolio`,
             description: t`Track your Reserve activity`,
-            icon: (
-              <Wallet
-                className={headerNavIconClassName}
-                strokeWidth={1.5}
-                size={16}
-              />
-            ),
+            icon: <Wallet {...headerNavIconProps} />,
             to: ROUTES.PORTFOLIO,
           },
         ],
@@ -150,49 +142,25 @@ const MobileNavigationDrawer = ({
           {
             label: t`Create DTF`,
             description: t`Launch your own Index DTF`,
-            icon: (
-              <BadgePlus
-                className={headerNavIconClassName}
-                strokeWidth={1.5}
-                size={16}
-              />
-            ),
+            icon: <BadgePlus {...headerNavIconProps} />,
             to: ROUTES.DEPLOY_INDEX,
           },
           {
             label: t`DTF Explorer`,
             description: t`Get an overview of everything going on`,
-            icon: (
-              <Microscope
-                className={headerNavIconClassName}
-                strokeWidth={1.5}
-                size={16}
-              />
-            ),
+            icon: <Microscope {...headerNavIconProps} />,
             to: ROUTES.EXPLORER,
           },
           {
             label: t`Bridge`,
             description: t`Transfer DTFs across chains`,
-            icon: (
-              <Cable
-                className={headerNavIconClassName}
-                strokeWidth={1.5}
-                size={16}
-              />
-            ),
+            icon: <Cable {...headerNavIconProps} />,
             to: ROUTES.BRIDGE,
           },
           {
             label: t`Create Yield DTF`,
             description: t`Create a new overcollateralized Yield DTF`,
-            icon: (
-              <Flower
-                className={headerNavIconClassName}
-                strokeWidth={1.5}
-                size={16}
-              />
-            ),
+            icon: <Flower {...headerNavIconProps} />,
             to: ROUTES.DEPLOY_YIELD,
           },
         ],
@@ -210,39 +178,21 @@ const MobileNavigationDrawer = ({
           {
             label: t`Blog`,
             description: t`Stay up to date in long form`,
-            icon: (
-              <Newspaper
-                className={headerNavIconClassName}
-                strokeWidth={1.5}
-                size={16}
-              />
-            ),
+            icon: <Newspaper {...headerNavIconProps} />,
             to: RESERVE_BLOG,
             external: true,
           },
           {
             label: t`Docs`,
             description: t`Understand the project and protocols`,
-            icon: (
-              <BookOpen
-                className={headerNavIconClassName}
-                strokeWidth={1.5}
-                size={16}
-              />
-            ),
+            icon: <BookOpen {...headerNavIconProps} />,
             to: PROTOCOL_DOCS,
             external: true,
           },
           {
             label: t`Forum`,
             description: t`Discussions of ecosystem ideas`,
-            icon: (
-              <MessagesSquare
-                className={headerNavIconClassName}
-                strokeWidth={1.5}
-                size={16}
-              />
-            ),
+            icon: <MessagesSquare {...headerNavIconProps} />,
             to: RESERVE_FORUM,
             external: true,
           },
@@ -262,13 +212,9 @@ const MobileNavigationDrawer = ({
   return (
     <Drawer open={open} onOpenChange={setOpen} shouldScaleBackground={false}>
       <DrawerTrigger asChild>
-        <button
-          type="button"
-          className={cn(
-            'inline-flex h-9 w-9 cursor-pointer items-center justify-center rounded-full border bg-card transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 dark:bg-transparent min-[850px]:hidden',
-            triggerClassName,
-            open && 'relative z-[60]'
-          )}
+        <HeaderControlButton
+          surface={surface}
+          className={cn('w-9 min-[850px]:hidden', open && 'relative z-[60]')}
         >
           {open ? (
             <X size={16} strokeWidth={1.5} />
@@ -282,13 +228,16 @@ const MobileNavigationDrawer = ({
               <Trans>Open navigation menu</Trans>
             )}
           </span>
-        </button>
+        </HeaderControlButton>
       </DrawerTrigger>
       <DrawerContent
         showClose={false}
         overlayClassName="bg-card opacity-100"
         className="!bottom-0 !left-0 !right-0 !top-[56px] !w-screen !max-w-none !rounded-none !bg-secondary !p-0 !pt-[1px] md:!left-0 md:!right-0 md:!top-[72px] md:!w-screen"
       >
+        <DrawerTitle className="sr-only">
+          <Trans>Navigation menu</Trans>
+        </DrawerTitle>
         <div className="flex flex-col gap-[1px] overflow-y-auto">
           {sections.map((section, index) => (
             <MobileNavSection

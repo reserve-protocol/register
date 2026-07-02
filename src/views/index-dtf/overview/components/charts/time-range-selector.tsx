@@ -4,6 +4,7 @@ import { cn } from '@/lib/utils'
 import { Trans } from '@lingui/react/macro'
 import { useAvailableTimeRanges } from './use-available-time-ranges'
 import { type Range } from './price-chart-constants'
+import { chartTabActiveClassName, chartTabClassName } from './chart-tab-styles'
 
 const TimeRangeSelector = ({
   variant = 'default',
@@ -46,8 +47,9 @@ const TimeRangeSelector = ({
           key={tr.value}
           variant="ghost"
           className={cn(
-            'h-auto shrink-0 rounded-none bg-transparent p-0 text-sm font-normal text-muted-foreground hover:bg-transparent hover:text-foreground',
-            tr.value === range && 'text-foreground hover:text-foreground',
+            chartTabClassName,
+            'shrink-0',
+            tr.value === range && chartTabActiveClassName,
             tr.value === '3m' && 'hidden sm:inline-flex'
           )}
           onClick={() => setRange(tr.value as Range)}

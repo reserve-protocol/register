@@ -1,4 +1,3 @@
-import Account from '@/components/account'
 import { Button } from '@/components/ui/button'
 import Copy from '@/components/ui/copy'
 import { shortenAddress } from '@/utils'
@@ -10,11 +9,7 @@ import { useEffect } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 import { isAddress } from 'viem'
 import { useAccount } from 'wagmi'
-import {
-  portfolioAddressAtom,
-  portfolioDataAtom,
-  portfolioNowAtom,
-} from './atoms'
+import { portfolioAddressAtom, portfolioDataAtom } from './atoms'
 import AvailableRewards from './components/available-rewards'
 import ActiveProposals from './components/active-proposals'
 import {
@@ -29,66 +24,12 @@ import RSRSection from './components/rsr-section'
 import StakedPositions from './components/staked-positions'
 import VoteLockedPositions from './components/vote-locked-positions'
 import PendingWithdrawals from './components/pending-withdrawals'
+import PortfolioConnectButton from './components/portfolio-connect-button'
 import Transactions from './components/transactions'
 import VotingPower from './components/voting-power'
 import { usePortfolio } from './hooks/use-portfolio'
-import { PortfolioResponse } from './types'
-
-const hasPositiveNumber = (value: number | string | null | undefined) =>
-  Number(value ?? 0) > 0
-
-const hasReserveActivity = (data: PortfolioResponse) => {
-  if (hasPositiveNumber(data.totalHoldingsUSD)) return true
-  if (
-    data.indexDTFs.some(
-      (dtf) =>
-        hasPositiveNumber(dtf.amount) ||
-        hasPositiveNumber(dtf.value) ||
-        dtf.rewards?.some((reward) => hasPositiveNumber(reward.value))
-    )
-  ) {
-    return true
-  }
-  if (
-    data.yieldDTFs.some(
-      (dtf) => hasPositiveNumber(dtf.amount) || hasPositiveNumber(dtf.value)
-    )
-  ) {
-    return true
-  }
-  if (
-    data.stakedRSR.some(
-      (position) =>
-        hasPositiveNumber(position.amount) ||
-        hasPositiveNumber(position.value) ||
-        hasPositiveNumber(position.votingPower) ||
-        position.pendingWithdrawals?.some((withdrawal) =>
-          hasPositiveNumber(withdrawal.value)
-        ) ||
-        position.activeProposals?.length
-    )
-  ) {
-    return true
-  }
-  if (
-    data.voteLocks.some(
-      (position) =>
-        hasPositiveNumber(position.amount) ||
-        hasPositiveNumber(position.value) ||
-        hasPositiveNumber(position.votingPower) ||
-        position.rewards?.some((reward) => hasPositiveNumber(reward.value)) ||
-        position.locks?.some((lock) => hasPositiveNumber(lock.value)) ||
-        position.activeProposals?.length
-    )
-  ) {
-    return true
-  }
-
-  return data.rsrBalances.some(
-    (balance) =>
-      hasPositiveNumber(balance.amount) || hasPositiveNumber(balance.value)
-  )
-}
+import { usePortfolioNow } from './hooks/use-portfolio-now'
+import { hasReserveActivity } from './utils'
 
 const ConnectPrompt = () => (
   <div className="container mx-auto flex min-h-[calc(100vh-96px)] items-center justify-center px-4 py-10">
@@ -105,10 +46,7 @@ const ConnectPrompt = () => (
       </p>
 
       <div className="mt-8">
-        <Account
-          connectLabel={<Trans>Connect wallet</Trans>}
-          connectClassName="bg-primary text-primary-foreground hover:bg-primary/90 dark:border-primary"
-        />
+        <PortfolioConnectButton />
       </div>
     </div>
   </div>
@@ -194,18 +132,8 @@ const PortfolioPage = () => {
   const { data, isLoading, isError, refetch } = usePortfolio(address)
   const setPortfolioData = useSetAtom(portfolioDataAtom)
   const setPortfolioAddress = useSetAtom(portfolioAddressAtom)
-  const setPortfolioNow = useSetAtom(portfolioNowAtom)
 
-  useEffect(() => {
-    const updatePortfolioNow = () => {
-      setPortfolioNow(Math.floor(Date.now() / 1000))
-    }
-
-    updatePortfolioNow()
-    const interval = setInterval(updatePortfolioNow, 60_000)
-
-    return () => clearInterval(interval)
-  }, [setPortfolioNow])
+  usePortfolioNow()
 
   useEffect(() => {
     setPortfolioData(data ?? null)
@@ -226,12 +154,12 @@ const PortfolioPage = () => {
         <p className="text-legend">
           <Trans>Failed to load portfolio data</Trans>
         </p>
-        <button
+        <Button
           onClick={() => refetch()}
-          className="bg-primary text-white text-sm font-medium px-6 py-2 rounded-2xl"
+          className="h-auto rounded-2xl px-6 py-2 text-sm font-medium"
         >
           <Trans>Try again</Trans>
-        </button>
+        </Button>
       </div>
     )
   if (isLoading || !data)

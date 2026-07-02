@@ -8,6 +8,7 @@ import { useLocation } from 'react-router-dom'
 import AppNavigation from './app-navigation'
 import Brand from './Brand'
 import HeaderActionsMenu from './header-actions-menu'
+import { type HeaderControlSurface } from './header-control-button'
 import LanguageSelector from './language-selector'
 import MobileNavigationDrawer from './mobile-navigation-drawer'
 
@@ -54,9 +55,8 @@ const AppHeader = () => {
   const isIndexDtfOverview =
     pathname.includes('/index-dtf/') && pathname.endsWith('/overview')
   const scrolled = useAppContainerScrolled()
-  const mobileOverviewButtonClassName = isIndexDtfOverview
-    ? cn(scrolled ? 'border-border' : 'border-card', 'dark:border-border')
-    : undefined
+  const mobileHeaderSurface: HeaderControlSurface =
+    isIndexDtfOverview && !scrolled ? 'transparent-header' : 'default'
 
   return (
     <Container>
@@ -78,11 +78,9 @@ const AppHeader = () => {
             <DarkModeToggle />
             <LanguageSelector />
           </div>
-          <HeaderActionsMenu triggerClassName={mobileOverviewButtonClassName} />
-          <Account mobileAccountClassName={mobileOverviewButtonClassName} />
-          <MobileNavigationDrawer
-            triggerClassName={mobileOverviewButtonClassName}
-          />
+          <HeaderActionsMenu surface={mobileHeaderSurface} />
+          <Account mobileSurface={mobileHeaderSurface} />
+          <MobileNavigationDrawer surface={mobileHeaderSurface} />
         </div>
       </div>
     </Container>

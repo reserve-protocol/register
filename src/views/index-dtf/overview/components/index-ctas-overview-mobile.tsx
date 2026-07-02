@@ -1,4 +1,5 @@
 import { Button } from '@/components/ui/button'
+import { cn } from '@/lib/utils'
 import {
   Dialog,
   DialogContent,
@@ -21,7 +22,7 @@ import {
 } from '@/state/dtf/atoms'
 import { useTrackIndexDTFClick } from '@/views/index-dtf/hooks/useTrackIndexDTFPage'
 import { DTFMobilePagesMenuButton } from '@/views/index-dtf/components/navigation'
-import { Trans } from '@lingui/react/macro'
+import { Trans, useLingui } from '@lingui/react/macro'
 import { useZapperModal } from '@reserve-protocol/react-zapper'
 import { useAtomValue } from 'jotai'
 import { MessageCircle } from 'lucide-react'
@@ -71,23 +72,27 @@ const openReserveChat = () => {
 }
 
 const IndexCTAsOverviewMobile = () => {
+  const { t } = useLingui()
   const { open, setTab } = useZapperModal()
   const { chain, tokenId } = useParams()
   const { pathname } = useLocation()
-  const { trackClick } = useTrackIndexDTFClick('overview', 'overview')
+  const isOverviewPage = pathname.endsWith('/overview')
+  const currentPage = isOverviewPage
+    ? 'overview'
+    : (pathname.split('/').filter(Boolean).pop() ?? 'overview')
+  const { trackClick } = useTrackIndexDTFClick(currentPage, currentPage)
   const dtf = useAtomValue(indexDTFAtom)
   const brand = useAtomValue(indexDTFBrandAtom)
   const isDeprecated = isInactiveDTF(useAtomValue(indexDTFStatusAtom))
   const { isLoading, data: complianceData } = useComplianceRestrictions()
   const isRestricted = isLoading || complianceData?.restricted === true
   const isGeoRestricted = complianceData?.reason === 'geolocation-restricted'
-  const isOverviewPage = pathname.endsWith('/overview')
 
-  const renderTradeButton = (buttonClassName: string): ReactNode =>
+  const renderTradeButton = (): ReactNode =>
     isGeoRestricted ? (
       <Dialog>
         <DialogTrigger asChild>
-          <Button className={buttonClassName}>
+          <Button className="rounded-full h-10 w-auto shrink-0 px-5">
             <Trans>Verify eligibility</Trans>
           </Button>
         </DialogTrigger>
@@ -104,7 +109,10 @@ const IndexCTAsOverviewMobile = () => {
     ) : (
       <RestrictionPopover enabled={isRestricted}>
         <Button
-          className={`${buttonClassName} ${DISABLED_BUTTON_CLASSES}`}
+          className={cn(
+            'rounded-full h-10 w-auto shrink-0 px-5',
+            DISABLED_BUTTON_CLASSES
+          )}
           aria-disabled={isRestricted || undefined}
           onClick={() => {
             if (isRestricted) return
@@ -118,26 +126,18 @@ const IndexCTAsOverviewMobile = () => {
       </RestrictionPopover>
     )
 
-  // Shared CTA content, rendered both inline (tablet/desktop) and inside the
-  // mobile floating bar. `buttonClassName` controls the sizing per placement.
-  const renderCtas = (buttonClassName: string): ReactNode => (
+  const renderCtas = (): ReactNode => (
     <div className="flex gap-2">
-      <DTFMobilePagesMenuButton
-        buttonClassName={buttonClassName.replace('w-full', 'w-10 p-0')}
-      />
-      {isOverviewPage &&
-        renderTradeButton(
-          buttonClassName.replace('w-full', 'w-auto shrink-0 px-5')
-        )}
+      <DTFMobilePagesMenuButton buttonClassName="rounded-full h-10 w-10 p-0" />
+      {isOverviewPage && renderTradeButton()}
       <Button
         variant="outline"
-        className={buttonClassName.replace(
-          'w-full',
+        className={
           isOverviewPage
-            ? 'w-auto shrink-0 px-3'
-            : 'w-auto shrink-0 gap-1.5 px-4'
-        )}
-        aria-label="Ask Reserve AI"
+            ? 'rounded-full h-10 w-auto shrink-0 px-3'
+            : 'rounded-full h-10 w-auto shrink-0 gap-1.5 px-4'
+        }
+        aria-label={t`Ask Reserve AI`}
         onClick={() => {
           trackClick('ask-ai')
           openReserveChat()
@@ -172,13 +172,13 @@ const IndexCTAsOverviewMobile = () => {
         <>
           <Link
             to={overviewRoute ?? '#'}
-            aria-label="Go to DTF overview"
-            className="fixed bottom-2 left-2 z-40 flex h-14 w-14 shrink-0 items-center justify-center rounded-full border border-card bg-card/80 p-2 shadow-[0_-16px_60px_rgba(0,0,0,0.18)] backdrop-blur-[7px] dark:shadow-[0_-20px_80px_rgba(0,0,0,0.76),0_0_0_1px_rgba(255,255,255,0.08)] sm:hidden"
+            aria-label={t`Go to DTF overview`}
+            className="fixed bottom-2 left-2 z-40 flex h-14 w-14 shrink-0 items-center justify-center rounded-full border border-card bg-card/80 p-2 shadow-[0_-16px_60px_rgba(0,0,0,0.18)] backdrop-blur-[7px] dark:shadow-[0_-20px_80px_rgba(0,0,0,0.76),0_0_0_1px_rgba(255,255,255,0.08)] lg:hidden"
           >
             {renderDtfLogo(40)}
           </Link>
-          <div className="fixed bottom-2 right-2 z-40 w-fit shrink-0 rounded-full border border-card bg-card/80 p-2 shadow-[0_-16px_60px_rgba(0,0,0,0.18)] backdrop-blur-[7px] dark:shadow-[0_-20px_80px_rgba(0,0,0,0.76),0_0_0_1px_rgba(255,255,255,0.08)] sm:hidden">
-            {renderCtas('rounded-full h-10 w-full')}
+          <div className="fixed bottom-2 right-2 z-40 w-fit shrink-0 rounded-full border border-card bg-card/80 p-2 shadow-[0_-16px_60px_rgba(0,0,0,0.18)] backdrop-blur-[7px] dark:shadow-[0_-20px_80px_rgba(0,0,0,0.76),0_0_0_1px_rgba(255,255,255,0.08)] lg:hidden">
+            {renderCtas()}
           </div>
         </>,
         document.body

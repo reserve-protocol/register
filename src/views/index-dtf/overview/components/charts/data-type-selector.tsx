@@ -5,6 +5,7 @@ import { msg } from '@lingui/core/macro'
 import { useLingui } from '@lingui/react/macro'
 import { useAtom, useAtomValue } from 'jotai'
 import { DataType, dataTypeAtom } from './price-chart'
+import { chartTabActiveClassName, chartTabClassName } from './chart-tab-styles'
 
 const standardDataTypes = [
   { label: msg`Price`, value: 'price' },
@@ -57,8 +58,8 @@ const DataTypeSelector = ({
           key={dt.value}
           variant="ghost"
           className={cn(
-            'h-auto rounded-none bg-transparent p-0 text-sm font-normal text-muted-foreground hover:bg-transparent hover:text-foreground',
-            dt.value === dataType && 'text-foreground hover:text-foreground'
+            chartTabClassName,
+            dt.value === dataType && chartTabActiveClassName
           )}
           onClick={() => setDataType(dt.value as DataType)}
         >

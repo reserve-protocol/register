@@ -106,9 +106,10 @@ const EligibilityForm = () => {
           {...register('name')}
           placeholder={t`Name`}
           disabled={submitting}
-          className={
-            errors.name ? 'border-destructive' : 'bg-card h-12 rounded-xl pl-4'
-          }
+          className={cn(
+            'bg-card h-12 rounded-xl pl-4',
+            errors.name && 'border-destructive'
+          )}
         />
         {errors.name && (
           <p className="text-destructive text-sm mt-1">{errors.name.message}</p>
@@ -120,9 +121,10 @@ const EligibilityForm = () => {
           type="email"
           placeholder={t`Email`}
           disabled={submitting}
-          className={
-            errors.email ? 'border-destructive' : 'bg-card h-12 rounded-xl pl-4'
-          }
+          className={cn(
+            'bg-card h-12 rounded-xl pl-4',
+            errors.email && 'border-destructive'
+          )}
         />
         {errors.email && (
           <p className="text-destructive text-sm mt-1">

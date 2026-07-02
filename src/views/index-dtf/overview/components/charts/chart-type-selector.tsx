@@ -10,6 +10,7 @@ import { useLingui } from '@lingui/react/macro'
 import { useAtom } from 'jotai'
 import { ChevronDown } from 'lucide-react'
 import { ChartType, chartTypeAtom } from './price-chart-atoms'
+import { chartTabActiveClassName, chartTabClassName } from './chart-tab-styles'
 
 const ChartTypeSelector = ({ className }: { className?: string }) => {
   const { t } = useLingui()
@@ -67,8 +68,9 @@ const ChartTypeSelector = ({ className }: { className?: string }) => {
             aria-label={label}
             title={label}
             className={cn(
-              'h-auto w-auto rounded-none bg-transparent p-0 text-sm font-normal text-muted-foreground hover:bg-transparent hover:text-foreground',
-              value === chartType && 'text-foreground hover:text-foreground'
+              chartTabClassName,
+              'w-auto',
+              value === chartType && chartTabActiveClassName
             )}
             onClick={() => setChartType(value)}
           >

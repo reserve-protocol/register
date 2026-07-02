@@ -5,10 +5,14 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from '@/components/ui/tooltip'
+import {
+  headerControlSurfaceClassName,
+  type HeaderControlSurface,
+} from '@/components/layout/header/components/header-control-button'
+import { useConnectWithReset } from '@/hooks/use-connect-with-reset'
 import { VoteLockSidebar } from '@/components/vote-lock'
 import { Trans } from '@lingui/react/macro'
 import { ConnectButton } from '@rainbow-me/rainbowkit'
-import { useDisconnect } from 'wagmi'
 import ChainLogo from 'components/icons/ChainLogo'
 import { useAtomValue } from 'jotai'
 import { AlertCircle } from 'lucide-react'
@@ -64,31 +68,13 @@ const ErrorWrapper = ({
  * Handles wallet interaction
  */
 const Account = ({
-  connectLabel,
-  connectClassName,
-  mobileAccountClassName,
+  mobileSurface = 'default',
 }: {
-  connectLabel?: ReactNode
-  connectClassName?: string
-  mobileAccountClassName?: string
+  mobileSurface?: HeaderControlSurface
 }) => {
   const chainId = useAtomValue(chainIdAtom)
   const isTokenSelected = !!useAtomValue(selectedRTokenAtom)
-  const { disconnectAsync } = useDisconnect()
-
-  // Tear down any lingering connector state before opening the modal. Without
-  // this, a fresh Safe-over-WalletConnect connect can hang in "connecting" and
-  // never resolve, leaving the app showing disconnected until a manual refresh
-  // (the Gnosis-required flow already does this and connects reliably). A no-op
-  // for the common disconnected case, so other wallets are unaffected.
-  const handleConnect = async (openConnectModal: () => void) => {
-    try {
-      await disconnectAsync()
-    } catch {
-      // ignore — nothing to disconnect
-    }
-    openConnectModal()
-  }
+  const handleConnect = useConnectWithReset()
 
   return (
     <ConnectButton.Custom>
@@ -111,13 +97,10 @@ const Account = ({
                   <Button
                     variant="accent"
                     onClick={() => handleConnect(openConnectModal)}
-                    className={cn(
-                      'h-9 px-4 py-1 rounded-full font-medium dark:border border-primary/50',
-                      connectClassName
-                    )}
+                    className="h-9 px-4 py-1 rounded-full font-medium dark:border border-primary/50"
                   >
                     <span className="block text-sm">
-                      {connectLabel ?? <Trans>Connect</Trans>}
+                      <Trans>Connect</Trans>
                     </span>
                   </Button>
                 )
@@ -138,7 +121,7 @@ const Account = ({
                         <div
                           className={cn(
                             'flex h-9 items-center justify-center gap-1.5 rounded-full border border-border bg-card px-3 transition-colors dark:bg-transparent',
-                            mobileAccountClassName
+                            headerControlSurfaceClassName(mobileSurface)
                           )}
                         >
                           {!invalidChain ? (

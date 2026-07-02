@@ -67,17 +67,6 @@ const columns: ColumnDef<Transaction>[] = [
       className: 'text-right',
     },
   },
-  // {
-  //   header: ({ column }) => (
-  //     <SorteableButton className="text-sm" column={column}>
-  //       USD
-  //     </SorteableButton>
-  //   ),
-  //   accessorKey: 'amountUSD',
-  //   cell: ({ row }) => {
-  //     return `$${formatCurrency(row.original.amountUSD)}`
-  //   },
-  // },
   {
     header: ({ column }) => (
       <SorteableButton className="ml-auto text-sm" column={column}>
@@ -111,6 +100,9 @@ const columns: ColumnDef<Transaction>[] = [
           target="_blank"
           rel="noreferrer"
         >
+          <span className="sr-only md:hidden">
+            <Trans>View transaction on explorer</Trans>
+          </span>
           <span className="hidden text-legend underline hover:text-primary md:block">
             {shortenString(row.original.hash)}
           </span>
@@ -139,10 +131,6 @@ const TransactionTable = () => {
       columns={columns}
       data={transactions ?? []}
       pagination
-      paginationClassName="px-5 pb-3 pt-4 sm:px-6 [&>div:last-child]:w-full md:[&>div:last-child]:w-auto"
-      paginationSummaryClassName="hidden md:flex md:opacity-100"
-      paginationControlsClassName="w-full gap-1.5 space-x-0 sm:gap-2 md:w-auto"
-      paginationButtonClassName="flex-1 md:flex-none"
       className={cn(
         '[&_table]:bg-card [&_table]:text-sm [&_table]:md:text-sm',
         '[&_thead_tr]:h-9 [&_thead_tr]:border-none',

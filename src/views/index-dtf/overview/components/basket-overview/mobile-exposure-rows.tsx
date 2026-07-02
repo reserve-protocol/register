@@ -1,11 +1,15 @@
 import { chainIdAtom } from '@/state/atoms'
 import { indexDTFBasketAtom } from '@/state/dtf/atoms'
 import { TimeRange } from '@/types'
-import { formatMarketCap, getTokenName } from '@/utils'
+import { getTokenName } from '@/utils'
 import { Plural, Trans } from '@lingui/react/macro'
 import { useAtomValue } from 'jotai'
 import { useMemo } from 'react'
-import { ExposureRow, formatExchangeSymbol } from './exposure-rows'
+import {
+  ExposureRow,
+  formatExchangeSymbol,
+  getExposureMarketCap,
+} from './exposure-rows'
 import { TIME_RANGE_LABELS } from './basket-table-header'
 import { MobileTokenLogo } from './mobile-row-layout'
 import { PerformanceCell } from './performance-cell'
@@ -65,19 +69,7 @@ export const MobileExposureRows = ({
             src={row.group.native?.logo}
           />
         )
-        const marketCap =
-          isToken && marketCaps?.[row.token.address.toLowerCase()]
-            ? formatMarketCap(marketCaps[row.token.address.toLowerCase()])
-            : !isToken && row.group.native?.coingeckoId
-              ? marketCaps?.[row.group.native.coingeckoId]
-                ? formatMarketCap(marketCaps[row.group.native.coingeckoId])
-                : undefined
-              : !isToken &&
-                  marketCaps?.[row.group.tokens[0]?.address.toLowerCase()]
-                ? formatMarketCap(
-                    marketCaps[row.group.tokens[0]?.address.toLowerCase()]
-                  )
-                : undefined
+        const marketCap = getExposureMarketCap(row, marketCaps)
 
         return (
           <div

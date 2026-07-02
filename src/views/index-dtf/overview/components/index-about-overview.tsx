@@ -69,8 +69,10 @@ const Mandate = ({ anchorId = 'about' }: { anchorId?: string }) => {
     .split(/\n\s*\n/)
     .map((paragraph) => paragraph.trim())
     .filter(Boolean)
+  // NOTE: threshold matches the 560-char excerpt slice below — a lower value
+  // renders the full text with a no-op "Read more" for mid-length descriptions.
   const shouldCollapse =
-    description.length > 420 || descriptionParagraphs.length > 2
+    description.length > 560 || descriptionParagraphs.length > 2
   const excerpt = shouldCollapse
     ? `${description.replace(/\s+/g, ' ').trim().slice(0, 560).trim()}...`
     : description

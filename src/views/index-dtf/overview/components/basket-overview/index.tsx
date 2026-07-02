@@ -1,11 +1,9 @@
 import { Button } from '@/components/ui/button'
-import { Card } from '@/components/ui/card'
 import { Table } from '@/components/ui/table'
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { useIsMobile } from '@/hooks/use-media-query'
 import { cn } from '@/lib/utils'
-import { t } from '@lingui/core/macro'
-import { Trans } from '@lingui/react/macro'
+import { Trans, useLingui } from '@lingui/react/macro'
 import { useMemo, useState } from 'react'
 import { BasketTableBody } from './basket-table-body'
 import {
@@ -24,6 +22,7 @@ const MAX_TOKENS = 10
 const DEFAULT_SORT: SortConfig = { field: 'weight', direction: 'desc' }
 
 const IndexBasketOverview = () => {
+  const { t } = useLingui()
   const isMobile = useIsMobile()
   const [viewAll, setViewAll] = useState(false)
   const [activeTab, setActiveTab] = useState<'exposure' | 'collateral'>(
@@ -195,9 +194,3 @@ const IndexBasketOverview = () => {
 }
 
 export { IndexBasketOverview as IndexBasketOverviewInner }
-
-export default () => (
-  <Card className="pb-0 sm:pb-0 group/section !bg-background" id="basket">
-    <IndexBasketOverview />
-  </Card>
-)
