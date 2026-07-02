@@ -14,7 +14,7 @@ Check only the surfaces touched or stressed by the workload:
 
 - Recent commits and diff scope.
 - Failed or flaky commands.
-- User corrections and repeated friction (in `docs/wiki/log.md`, look for `kit-friction` tags).
+- User corrections and repeated friction (in `docs/wiki/log.md`, look for `kit-friction` tags). When running in the kit repo itself there is no log — ask the human which project logs to sweep.
 - Wiki pages that future agents will read.
 - Skills or scripts that were skipped, confusing, too broad, or too expensive.
 - Tool permissions that caused repeated human intervention.
@@ -38,6 +38,6 @@ Friction caused by the kit itself (skills, `scripts/ai-loop/`, templates) is fix
 
 ## Closeout
 
-If changes are made: run scoped verification for the touched files, `node scripts/ai-loop/wiki-lint.mjs` when wiki pages changed, and update the wiki only with distilled rules or decisions.
+If changes are made: run scoped verification for the touched files, `node scripts/ai-loop/wiki-lint.mjs` when wiki pages changed, and update the wiki only with distilled rules or decisions. In the kit repo itself the gate is `node --test` (there is no project config for scoped verification).
 
 If no changes are made, say so briefly and name the reason.

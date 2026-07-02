@@ -6,9 +6,13 @@ Use this when installing the kit into a repo that already has agent context — 
 
 Adoption must only improve the workflow. The existing context encodes local knowledge the kit cannot know — **on any conflict, the repo's existing rule wins by default**, and the conflict is recorded for the human to settle. Nothing is deleted until it has a new home; originals are archived, not removed.
 
+## Adopting Mid-Flight
+
+Adoption rarely lands on a clean tree — in-progress branches and uncommitted work are normal, not blockers. Treat pre-existing uncommitted work as the first stage's input: record its ledger row retroactively once the router lands, and use `workflow-start.mjs --allow-dirty` for the transition. Do not demand a clean tree before adopting.
+
 ## Procedure
 
-1. **Inventory.** List every agent-context file. Read all of them fully before moving anything.
+1. **Inventory.** List every agent-context file. Read all of them fully before moving anything. Tool-generated duplicates count too — other agent CLIs sometimes migrate the same commands/skills into their own directories; dedupe to one source of truth and flag the copies for deletion rather than classifying them twice.
 2. **Classify every rule or fact** into exactly one bucket:
    - *Project knowledge* (product, stack specifics, domain facts, safety rules, UI register, risky surfaces) → `docs/wiki/project.md`; large per-domain material → `docs/wiki/domains/` pages with `sources` globs.
    - *Commands and verification* (build/test/lint invocations, CI expectations) → `ai-loop.config.json` gate and verify rules.

@@ -15,7 +15,9 @@ if (!stage.trim()) {
 }
 
 if (!isTrackedTreeClean() && !args.includes("--allow-dirty")) {
-  console.error("tracked tree is dirty — commit, stash, or inspect first (untracked files are fine)");
+  console.error(
+    "tracked tree is dirty — commit, stash, or inspect first (untracked files are fine); if the dirty state IS the stage's input (e.g. adopting mid-flight), rerun with --allow-dirty",
+  );
   process.exit(1);
 }
 

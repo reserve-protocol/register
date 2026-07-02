@@ -48,7 +48,7 @@ Lazy is not negligent — never simplify away: input validation at trust boundar
 - Work one stage at a time; preserve state in `docs/wiki/progress.md` before context gets large.
 - Prefer one scoped review over many personas. Never run reviewer fan-out by default.
 - Raw logs stay in scratch space; durable docs stay short.
-- If an external reviewer is unavailable, record it as unavailable. A skipped review is not a pass.
+- Unavailable or skipped reviewers: `skills/review-panel.md` § Receiving Review owns the rule.
 - Stop expanding workflow machinery unless a gate blocks product work.
 
 ## Debugging Protocol

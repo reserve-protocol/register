@@ -8,7 +8,7 @@ Influence: distilled from `https://github.com/pbakaus/impeccable` (Apache 2.0). 
 
 Color, spacing, radius, shadow, type scale, and motion come from design tokens defined in the app's style entrypoint (see `skills/design.md` for the token architecture).
 
-- Use semantic tokens (`bg-surface`, `text-fg`, `text-fg-muted`, `border-border`, `ring-ring`) and the brand/status ramps. Do not introduce new raw color families or inline rgba shadows.
+- Use semantic tokens and the brand/status ramps. The names here (`bg-surface`, `text-fg`, `text-fg-muted`, `border-border`, `ring-ring`) are illustrative — the project's real semantic names live in its style entrypoint and design-system wiki page (shadcn-style repos use `bg-card`/`text-foreground`, etc.). Do not introduce new raw color families or inline rgba shadows.
 - Reuse the shared UI primitives (Button, Card, Input, Select, Textarea, Badge, Tooltip) before hand-rolling a control. Hand-rolled raw controls in feature components are a smell — add or adjust a primitive variant instead.
 - A display font is for headings and hero moments — not for body, labels, or data.
 - Accent color is for primary actions, selected state, focus, status, and meaningful signals only.
@@ -27,6 +27,7 @@ Color, spacing, radius, shadow, type scale, and motion come from design tokens d
 - Group related controls tightly; separate distinct regions generously.
 - Flex for one-dimensional control rows; grid for page-level two-dimensional layouts.
 - Cards only for genuinely framed repeated items or tool panels. Do not nest cards.
+- JS-gate breakpoint-exclusive heavy content (autoplaying video, large lists, iframes) — CSS-hiding the extra copy still mounts, downloads, and plays it.
 - Touch targets at least 44x44px where pointer/touch interaction is expected.
 - Text must not overflow buttons, panels, cards, or sidebars at supported widths.
 
@@ -42,4 +43,4 @@ Rewrite before shipping if you see: gradient text · heavy glassmorphism as a pr
 
 ## Verification
 
-For UI changes, fresh evidence includes the relevant scoped checks plus **inspection of the actual rendered UI** (screenshot, smoke artifact, or manual run) covering default and one edge state. Automation is defect evidence, not proof of good design — green gates have shipped broken screens.
+For UI changes, fresh evidence includes the relevant scoped checks plus **inspection of the actual rendered UI** (screenshot, smoke artifact, or manual run) covering default and one edge state — **with realistic data volume**: pagination, overflow, and truncation states need enough data to actually trigger them; a near-empty screen verifies nothing about them. When responsive visibility classes change, check every breakpoint band the old and new classes straddle — a control removed at `sm` and reintroduced at `lg` leaves the band between them broken while mobile and desktop screenshots both pass. Automation is defect evidence, not proof of good design — green gates have shipped broken screens.
