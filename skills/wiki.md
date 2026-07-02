@@ -42,7 +42,7 @@ boundaries, invariants, gotchas, why.
 **Query** (when exploring):
 - Read `index.md` first, follow links. Do not re-derive what a page already answers; if a page is wrong, fix the page.
 
-**Lint** (`node scripts/ai-loop/wiki-lint.mjs`, green required at closeout):
+**Lint** (`node scripts/llm-workflow/wiki-lint.mjs`, green required at closeout):
 - Broken `[[links]]`, pages missing from index, index entries without pages.
 - Missing/invalid frontmatter.
 - Absolute local machine paths in any page (durable docs must survive other machines).

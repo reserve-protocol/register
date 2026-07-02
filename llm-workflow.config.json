@@ -20,7 +20,7 @@
     {
       "name": "wiki-lint",
       "globs": ["docs/wiki/**"],
-      "commands": ["node scripts/ai-loop/wiki-lint.mjs"]
+      "commands": ["node scripts/llm-workflow/wiki-lint.mjs"]
     }
   ],
   "lenses": {

@@ -34,10 +34,10 @@ Otherwise record nothing, or add one concise backlog item if the issue is real b
 
 ## Kit vs Project
 
-Friction caused by the kit itself (skills, `scripts/ai-loop/`, templates) is fixed in the kit repo and pulled into projects with `install.mjs --update` — not patched locally, where the fix dies with the repo.
+Friction caused by the kit itself (skills, `scripts/llm-workflow/`, templates) is fixed in the kit repo and pulled into projects with `install.mjs --update` — not patched locally, where the fix dies with the repo.
 
 ## Closeout
 
-If changes are made: run scoped verification for the touched files, `node scripts/ai-loop/wiki-lint.mjs` when wiki pages changed, and update the wiki only with distilled rules or decisions. In the kit repo itself the gate is `node --test` (there is no project config for scoped verification).
+If changes are made: run scoped verification for the touched files, `node scripts/llm-workflow/wiki-lint.mjs` when wiki pages changed, and update the wiki only with distilled rules or decisions. In the kit repo itself the gate is `node --test` (there is no project config for scoped verification).
 
 If no changes are made, say so briefly and name the reason.

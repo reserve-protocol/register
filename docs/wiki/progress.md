@@ -10,7 +10,7 @@ Stage ledger. One row per stage; keep entries short. Verifier = exact fresh comm
 
 | Stage | Status | Verifier | Review | Next |
 |---|---|---|---|---|
-| adopt-ai-loop | done | `wiki-lint` green (7 pages) · `scope.mjs --base HEAD --dry-run` maps lint/typecheck/test + lenses | complexity: self (docs/tooling only) | — |
+| adopt-llm-workflow | done | `wiki-lint` green (7 pages) · `scope.mjs --base HEAD --dry-run` maps lint/typecheck/test + lenses | complexity: self (docs/tooling only) | — |
 | chat-overrides-containment | done | `pnpm typecheck` + `pnpm lint` + `pnpm test:run` green · launcher screenshot identical post-move | product: self + screenshot | upstream theming to dtf-chat (backlog) |
 | ui-stabilization-sweep | done | `pnpm typecheck` + `pnpm lint` + `pnpm test:run` green (458 tests, 21 new) · screenshots: explorer pagination desktop+mobile, header menu, search dialog, chat launcher | correctness+product+complexity: Dark & Light subagents, findings verified per-claim; security: no tx/money paths changed | engineer review flags in handoff (see log 2026-07-02) |
 

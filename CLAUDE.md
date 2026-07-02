@@ -1,6 +1,6 @@
 # Register — Agent Router
 
-Loader, not playbook. Reusable workflow rules live in `skills/` (kit-owned, updated via ai-loop); project knowledge lives in `docs/wiki/` (project-owned). **`AGENTS.md` is a symlink to this file** — edit `CLAUDE.md` only; both Claude Code and AGENTS.md-aware tools read the same content.
+Loader, not playbook. Reusable workflow rules live in `skills/` (kit-owned, updated via llm-workflow); project knowledge lives in `docs/wiki/` (project-owned). **`AGENTS.md` is a symlink to this file** — edit `CLAUDE.md` only; both Claude Code and AGENTS.md-aware tools read the same content.
 
 ## Non-negotiables (always in force)
 
@@ -26,9 +26,9 @@ Loader, not playbook. Reusable workflow rules live in `skills/` (kit-owned, upda
 ## Default Loop
 
 - Quick fix vs stage: `skills/workflow.md` § Quick Fix or Stage decides; when debating, it's a stage.
-- `node scripts/ai-loop/workflow-start.mjs --stage "<stage>"` for stages; implement the smallest complete slice.
-- Inner loop: `node scripts/ai-loop/scope.mjs --base <base-ref>` (verify commands + required review lenses + red flags for the touched files).
-- Closeout: `node scripts/ai-loop/scope.mjs --gate`, visual check for UI stages, one progress row, wiki ingest, `node scripts/ai-loop/wiki-lint.mjs` green.
+- `node scripts/llm-workflow/workflow-start.mjs --stage "<stage>"` for stages; implement the smallest complete slice.
+- Inner loop: `node scripts/llm-workflow/scope.mjs --base <base-ref>` (verify commands + required review lenses + red flags for the touched files).
+- Closeout: `node scripts/llm-workflow/scope.mjs --gate`, visual check for UI stages, one progress row, wiki ingest, `node scripts/llm-workflow/wiki-lint.mjs` green.
 
 ## Review Budget
 

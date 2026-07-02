@@ -6,7 +6,7 @@ type: context
 
 # Project
 
-Register — the web interface for Reserve Protocol: **Index DTFs** (current focus) and **Yield DTFs** (legacy, `src/views/yield-dtf/*`). Protocol grounding: `docs/protocol-context.md`. Data ownership: `docs/data-sources.md`. Full pre-adoption agent doc archived at `docs/archive/CLAUDE-pre-ai-loop-2026-07-02.md`.
+Register — the web interface for Reserve Protocol: **Index DTFs** (current focus) and **Yield DTFs** (legacy, `src/views/yield-dtf/*`). Protocol grounding: `docs/protocol-context.md`. Data ownership: `docs/data-sources.md`. Full pre-adoption agent doc archived at `docs/archive/CLAUDE-pre-llm-workflow-2026-07-02.md`.
 
 ## Product
 

@@ -1,5 +1,5 @@
 // Deterministic wiki health check. Green required at closeout.
-// Usage: node scripts/ai-loop/wiki-lint.mjs
+// Usage: node scripts/llm-workflow/wiki-lint.mjs
 import { existsSync, readFileSync, readdirSync } from "node:fs";
 import { join, relative } from "node:path";
 import process from "node:process";
@@ -13,7 +13,7 @@ const ABSOLUTE_PATH_PATTERN = /(^|[\s"'`(])(\/Users\/|\/home\/|[A-Z]:\\)/m;
 const root = repoRoot();
 const wikiDir = join(root, "docs/wiki");
 if (!existsSync(wikiDir)) {
-  console.error("docs/wiki not found — run the ai-loop installer first");
+  console.error("docs/wiki not found — run the llm-workflow installer first");
   process.exit(1);
 }
 

@@ -1,5 +1,5 @@
 // Inner-loop gate: map touched files to verify commands, review lenses, and red flags.
-// Usage: node scripts/ai-loop/scope.mjs --base <ref> [--dry-run] [--json]
+// Usage: node scripts/llm-workflow/scope.mjs --base <ref> [--dry-run] [--json]
 import process from "node:process";
 
 import { changedFiles, loadConfig, matchesAny, repoRoot, runCommand, scanRedFlags } from "./lib/core.mjs";
@@ -8,7 +8,7 @@ const args = process.argv.slice(2);
 const gateMode = args.includes("--gate");
 const baseIndex = args.indexOf("--base");
 if (!gateMode && (baseIndex === -1 || !args[baseIndex + 1])) {
-  console.error("usage: node scripts/ai-loop/scope.mjs --base <ref> [--dry-run] [--json] | --gate");
+  console.error("usage: node scripts/llm-workflow/scope.mjs --base <ref> [--dry-run] [--json] | --gate");
   process.exit(2);
 }
 const base = args[baseIndex + 1];

@@ -4,15 +4,15 @@ Use this for staged implementation, scoped verification, debugging, and completi
 
 ## Quick Fix or Stage?
 
-Not every change is a stage. A change that is single-domain, touches no boundary or shared machinery, and needs no new decision is a **quick fix**: edit, run `node scripts/ai-loop/scope.mjs --base HEAD~1` (or the branch base), self-review the diff, commit. No ledger row, no ingest — the ledger-drift lint is the backstop that quick fixes haven't quietly become a feature. If you are debating which one it is, it's a stage.
+Not every change is a stage. A change that is single-domain, touches no boundary or shared machinery, and needs no new decision is a **quick fix**: edit, run `node scripts/llm-workflow/scope.mjs --base HEAD~1` (or the branch base), self-review the diff, commit. No ledger row, no ingest — the ledger-drift lint is the backstop that quick fixes haven't quietly become a feature. If you are debating which one it is, it's a stage.
 
 ## Operating Loop
 
 1. Define stage, non-goals, exit criteria, and base ref. Do not edit code until those exist; if deriving them is risky, ask the human.
-2. Run `node scripts/ai-loop/workflow-start.mjs --stage "<stage>"` for real stages. If the worktree is dirty, inspect `git status --short`; do not hide unrelated user changes.
+2. Run `node scripts/llm-workflow/workflow-start.mjs --stage "<stage>"` for real stages. If the worktree is dirty, inspect `git status --short`; do not hide unrelated user changes.
 3. Implement the smallest complete slice. Keep code domain-gated and easy to rewrite.
 4. Add one runnable check for non-trivial logic.
-5. Inner loop: `node scripts/ai-loop/scope.mjs --base <base-ref>` — runs the verify commands mapped to touched files and names the required review lenses.
+5. Inner loop: `node scripts/llm-workflow/scope.mjs --base <base-ref>` — runs the verify commands mapped to touched files and names the required review lenses.
 6. Review through the required lenses only (see `skills/review-panel.md`).
 7. Reconcile verified scoped findings only.
 8. Close out (below), then ingest into the wiki (see `skills/wiki.md`).
@@ -21,10 +21,10 @@ Not every change is a stage. A change that is single-domain, touches no boundary
 
 Every stage closes the same way. A lighter closeout is a skipped closeout.
 
-1. **Fresh full gate** after the final edit: `node scripts/ai-loop/scope.mjs --gate` runs the config `gate` list and prints the verifier line for the progress row. Scoped verification is an inner-loop tool; it does not replace the full gate. Green gates are not proof of correct behavior — they are the floor.
+1. **Fresh full gate** after the final edit: `node scripts/llm-workflow/scope.mjs --gate` runs the config `gate` list and prints the verifier line for the progress row. Scoped verification is an inner-loop tool; it does not replace the full gate. Green gates are not proof of correct behavior — they are the floor.
 2. **Visual check for UI stages**: see `skills/ui-ux.md` § Verification — automation passing on a broken screen is a recorded failure mode.
 3. **One progress row** in `docs/wiki/progress.md`: stage, status, verifier line (the exact fresh commands that ran green), one line per reviewed lens, next action.
-4. **Wiki ingest**: update the domain pages whose `sources` cover the diff, decisions if any were made, and `log.md`. Then `node scripts/ai-loop/wiki-lint.mjs` green.
+4. **Wiki ingest**: update the domain pages whose `sources` cover the diff, decisions if any were made, and `log.md`. Then `node scripts/llm-workflow/wiki-lint.mjs` green.
 
 ## Scoped Verification (inner loop)
 

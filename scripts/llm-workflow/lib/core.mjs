@@ -1,4 +1,4 @@
-// Shared core for ai-loop scripts. Zero dependencies, Node stdlib only.
+// Shared core for llm-workflow scripts. Zero dependencies, Node stdlib only.
 import { execFileSync } from "node:child_process";
 import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
@@ -73,11 +73,11 @@ export function matchesAny(file, globs) {
   return globs.some((glob) => globToRegExp(glob).test(file));
 }
 
-export const CONFIG_FILE = "ai-loop.config.json";
+export const CONFIG_FILE = "llm-workflow.config.json";
 
 export function loadConfig(root = repoRoot()) {
   const path = join(root, CONFIG_FILE);
-  if (!existsSync(path)) throw new Error(`${CONFIG_FILE} not found at ${root} — run the ai-loop installer first`);
+  if (!existsSync(path)) throw new Error(`${CONFIG_FILE} not found at ${root} — run the llm-workflow installer first`);
   const config = JSON.parse(readFileSync(path, "utf8"));
   if (!Array.isArray(config.gate) || config.gate.length === 0)
     throw new Error("config.gate must be a non-empty array of commands");

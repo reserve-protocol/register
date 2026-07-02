@@ -1,5 +1,5 @@
 // Stage gate: require a named stage on a clean tracked tree, open its ledger row.
-// Usage: node scripts/ai-loop/workflow-start.mjs --stage "<name>" [--allow-dirty]
+// Usage: node scripts/llm-workflow/workflow-start.mjs --stage "<name>" [--allow-dirty]
 import { readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import process from "node:process";
@@ -10,7 +10,7 @@ const args = process.argv.slice(2);
 const stageIndex = args.indexOf("--stage");
 const stage = stageIndex === -1 ? "" : (args[stageIndex + 1] ?? "");
 if (!stage.trim()) {
-  console.error('usage: node scripts/ai-loop/workflow-start.mjs --stage "<name>" [--allow-dirty]');
+  console.error('usage: node scripts/llm-workflow/workflow-start.mjs --stage "<name>" [--allow-dirty]');
   process.exit(2);
 }
 if (/[|\n\r]/.test(stage)) {
