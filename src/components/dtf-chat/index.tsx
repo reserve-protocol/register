@@ -13,6 +13,7 @@ import {
   type ReserveView,
 } from '@reserve-protocol/dtf-chat'
 import '@reserve-protocol/dtf-chat/styles.css'
+import './overrides.css'
 import { useAtomValue } from 'jotai'
 import { useLocation, useNavigate } from 'react-router-dom'
 
