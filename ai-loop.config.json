@@ -1,0 +1,52 @@
+{
+  "kitVersion": 1,
+  "gate": ["pnpm typecheck", "pnpm lint", "pnpm test:run"],
+  "verify": [
+    {
+      "name": "lint",
+      "globs": ["**/*.{ts,tsx,js,jsx,mjs}"],
+      "commands": ["pnpm lint"]
+    },
+    {
+      "name": "typecheck",
+      "globs": ["src/**", "tsconfig*.json", "package.json", "vite.config.ts", "tailwind.config.ts"],
+      "commands": ["pnpm typecheck"]
+    },
+    {
+      "name": "unit-tests",
+      "globs": ["src/**"],
+      "commands": ["pnpm test:run"]
+    }
+  ],
+  "lenses": {
+    "security": [
+      "src/state/**",
+      "**/issuance/**",
+      "**/governance/**",
+      "**/staking/**",
+      "**/bridge/**",
+      "**/auctions/**",
+      "src/components/ui/transaction*",
+      "src/components/ui/swap*"
+    ],
+    "product": ["src/**/*.tsx", "src/**/*.css", "src/locales/**"],
+    "complexity": [
+      "package.json",
+      "*.config.*",
+      "scripts/**",
+      "skills/**",
+      "src/components/ui/**",
+      "src/components/layout/**",
+      "src/state/**",
+      "src/utils/**",
+      "src/hooks/**"
+    ]
+  },
+  "redFlags": {
+    "consoleAllow": []
+  },
+  "wiki": {
+    "ledgerDriftCommits": 15,
+    "domainDriftCommits": 5
+  }
+}

@@ -1,0 +1,59 @@
+---
+title: Project
+updated: 2026-07-02
+type: context
+---
+
+# Project
+
+Register — the web interface for Reserve Protocol: **Index DTFs** (current focus) and **Yield DTFs** (legacy, `src/views/yield-dtf/*`). Protocol grounding: `docs/protocol-context.md`. Data ownership: `docs/data-sources.md`. Full pre-adoption agent doc archived at `docs/archive/CLAUDE-pre-ai-loop-2026-07-02.md`.
+
+## Product
+
+- Index DTFs: on-chain token portfolios (ETF-like); governance via vote-locking; permissionless mint/redeem. Yield DTFs (legacy RTokens): asset-backed yield-bearing stablecoins secured by RSR stakers.
+- Index DTF code is current best practice — when unsure, copy the nearest existing Index feature. **Never reuse Yield DTF helpers/state for Index or vice versa.**
+- Chains: Ethereum, Base, BSC. **Arbitrum is deprecated for Index DTFs — never add it.**
+- Vote-lock ≠ stRSR; standard vs optimistic governance are separate — never merge their voting powers or delegation.
+
+## Stack Specifics
+
+- React 18 + Vite · TypeScript strict · Jotai · wagmi/viem/RainbowKit · TailwindCSS + shadcn/ui · React Query · React Router v6 · Lingui i18n. Package manager is **pnpm, not npm**.
+- Commands: `pnpm start` (dev :3000) · `pnpm typecheck` · `pnpm lint` (oxlint) · `pnpm test:run` (vitest) · `pnpm build`. Env: `VITE_WALLETCONNECT_ID` required; `VITE_ALCHEMY_KEY`/`VITE_INFURA_KEY` recommended.
+- CI: typecheck is **blocking**; oxlint strict correctness subset on changed files; pre-commit runs oxlint on staged files. Baseline ~600 warnings grandfathered — new code shouldn't add warnings.
+- `chainIdAtom` is the chain source of truth — pass it to every wagmi hook; omitting `chainId` falls back to wallet/mainnet.
+- Transaction flow: pending → confirming → success/error with toasts, via `TransactionButton` (`src/components/ui/transaction-button.tsx`) — it handles wallet/chain validation.
+- Updater components sync chain → atoms and return `null` (`src/state/**/updater*.tsx`); only for imperative chain reads that don't fit a hook. Routes are code-split with `lazy()`.
+- Naming: kebab-case files/dirs (mandatory) · PascalCase component exports · UPPER_SNAKE_CASE constants · branches `feature/…`/`chore/…`.
+- Testing: vitest + jsdom, tests in `src/**/tests/**/*.test.{ts,tsx}`. Any hook/helper that transforms SDK/API/RPC data, derives financial values, coordinates tx state, or owns timers must have colocated tests covering weird paths (zero/missing data, invalid amounts, already-completed state, timer cleanup), not just happy paths.
+- Forms: react-hook-form + zod, `mode: 'onChange'`, `FormProvider` for complex forms.
+
+## Safety Rules
+
+- **Index DTF data → the SDK first.** Never hand-roll hooks, updaters, or derivation for Index DTF reads, governance, builders, or tx calls — see [[sdk]].
+- **Live state → RPC, not subgraph.** Basket balances, live proposal state, live rebalance/auction state come from RPC. Subgraph = metadata/history only.
+- **Money is `Amount`/`bigint`.** Never `Number` for on-chain math; convert only at display leaves. Keep SDK `Amount` objects intact through atoms and logic.
+- **Feature isolation.** One feature = one folder under `views/<domain>/<feature>/` owning its `components/`, `hooks/`, `atoms.ts`, `utils.ts`. Shared code never imports from a feature; features never reach into each other's internals. Fix local bugs locally — never via shared containers, providers, routing shells, or component defaults.
+- **Shared components keep their defaults** (`DataTable`, legacy `Table`, …) — behavior via opt-in props only.
+- **Design tokens only** — no hardcoded hex/hsl anywhere; see [[design-system]].
+- **Git: never commit or push unless told. Never push to main/master. No Co-Authored-By lines. PR descriptions: clean human summary, no AI attribution.**
+- Engineer review required — handoff must say so with files/behavior/validation/remaining risk — for: on-chain math, `Amount`/`bigint`/decimals/tx builders; governance, vote-lock, rebalance, auction, issuance, redemption, zap behavior; SDK/API contracts or persistence shapes; shared component defaults, shared atoms/providers, routing, global layout; cross-feature imports or new app-wide utilities; security, compliance, geolocation, wallet, chain-switching flows; route components over size limits mixing UI with RPC/timers/tx orchestration.
+
+## UI Register
+
+- Professional DeFi product. **UI parity is sacred in refactors**: spacing, copy, hover/focus states, animation timing, responsive behavior, and accessibility preserved unless the task explicitly changes them.
+- Wrap new user-facing strings with Lingui (`<Trans>` or `t`); don't wrap user-authored/external placeholder content unless asked. i18n details: `docs/i18n.md`.
+- Reuse `src/components/ui` primitives (incl. blockchain-aware `TransactionButton`, `Transaction`, `Swap`, `CopyValue`); never rebuild dialogs/tables. Tailwind utilities + `cn()`; no custom CSS files, no inline `style`; arbitrary values only for measured/chart geometry.
+
+## Active Risks
+
+- `release/ai-dtf` window: cleanups must preserve JSX structure, classes, copy, and flow unless the task explicitly changes UI. Prefer pure helper/hook extraction + tests; no visual decomposition without screenshot/e2e coverage or explicit approval.
+- `src/app.css` overrides `@reserve-protocol/dtf-chat` internal `.rc-*` classes (launcher theming). Contained deliberately; real fix (theming props/CSS vars) is backlogged upstream in reserve-ai.
+- Large SPA bundle (~10MB); Tailwind v4 upgrade planned.
+
+## Overrides (vs kit skills)
+
+- `console.log` / `any` are lint **warnings, not blockers** here — fine while staging, don't ship them as permanent. Kit red-flags console.log; register is deliberately softer.
+- Tests are colocated per feature (`src/**/tests/**`), not a top-level `tests/` dir — same spirit (feature owns its tests), different location.
+- Review pairs run as **Dark (hostile: hallucinated APIs, instruction violations, bugs, scope creep) + Light (constructive: solves the ask? reuses patterns? simpler way?)** background subagents — a presentation style over the kit's lens taxonomy; reconcile in one pass, don't re-litigate.
+- Size gates: component < 200 lines, file < 300, > 500 auto engineer-review, > 1000 is cleanup work — register's stricter numbers win.
+- Feature-level agent docs (e.g. `src/views/index-dtf/issuance/async-mint/CLAUDE.md`) add local context only and never weaken root rules.
