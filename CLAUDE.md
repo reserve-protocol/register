@@ -28,7 +28,7 @@ Loader, not playbook. Reusable workflow rules live in `skills/` (kit-owned, upda
 - Quick fix vs stage: `skills/workflow.md` § Quick Fix or Stage decides; when debating, it's a stage.
 - `node scripts/ai-loop/workflow-start.mjs --stage "<stage>"` for stages; implement the smallest complete slice.
 - Inner loop: `node scripts/ai-loop/scope.mjs --base <base-ref>` (verify commands + required review lenses + red flags for the touched files).
-- Closeout: `scope.mjs --gate`, visual check for UI stages, one progress row, wiki ingest, `node scripts/ai-loop/wiki-lint.mjs` green.
+- Closeout: `node scripts/ai-loop/scope.mjs --gate`, visual check for UI stages, one progress row, wiki ingest, `node scripts/ai-loop/wiki-lint.mjs` green.
 
 ## Review Budget
 

@@ -164,7 +164,23 @@ const PortfolioPage = () => {
     )
   if (isLoading || !data)
     return <PortfolioSkeleton isImpersonating={!!impersonatedAddress} />
-  if (!hasReserveActivity(data)) return <EmptyPortfolioPrompt />
+  if (!hasReserveActivity(data)) {
+    if (!impersonatedAddress) return <EmptyPortfolioPrompt />
+    // Keep the impersonation banner (and its exit control) even when the
+    // impersonated wallet has no activity.
+    return (
+      <div className="container mx-auto px-4 pt-6">
+        <ImpersonationBanner
+          address={impersonatedAddress}
+          onClear={() => {
+            searchParams.delete('account')
+            setSearchParams(searchParams)
+          }}
+        />
+        <EmptyPortfolioPrompt />
+      </div>
+    )
+  }
 
   return (
     <div className="container mx-auto px-4 py-6 space-y-8">

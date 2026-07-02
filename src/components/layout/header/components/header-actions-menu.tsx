@@ -87,29 +87,35 @@ const HeaderActionsMenu = ({
           <PanelLabel>
             <Trans>Theme</Trans>
           </PanelLabel>
+          {/* WHY: menu items (not raw buttons) so Radix keyboard navigation
+              reaches them; preventDefault keeps the menu open on toggle. */}
           <div className="mt-3 grid grid-cols-2 rounded-full bg-muted p-0.5">
-            <button
-              type="button"
-              onClick={() => setThemeMode('light')}
+            <DropdownMenuItem
+              onSelect={(event) => {
+                event.preventDefault()
+                setThemeMode('light')
+              }}
               className={cn(
-                'flex h-8 items-center justify-center gap-1.5 rounded-full text-sm font-medium text-legend transition-colors',
+                'flex h-8 cursor-pointer items-center justify-center gap-1.5 rounded-full text-sm font-medium text-legend transition-colors',
                 mode === 'light' && 'bg-card text-foreground'
               )}
             >
               <Sun size={14} strokeWidth={1.5} />
               <Trans>Light</Trans>
-            </button>
-            <button
-              type="button"
-              onClick={() => setThemeMode('dark')}
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              onSelect={(event) => {
+                event.preventDefault()
+                setThemeMode('dark')
+              }}
               className={cn(
-                'flex h-8 items-center justify-center gap-1.5 rounded-full text-sm font-medium text-legend transition-colors',
+                'flex h-8 cursor-pointer items-center justify-center gap-1.5 rounded-full text-sm font-medium text-legend transition-colors',
                 mode === 'dark' && 'bg-card text-foreground'
               )}
             >
               <Moon size={14} strokeWidth={1.5} />
               <Trans>Dark</Trans>
-            </button>
+            </DropdownMenuItem>
           </div>
         </div>
         <div className="bg-background p-3 pt-5">
@@ -118,19 +124,21 @@ const HeaderActionsMenu = ({
           </PanelLabel>
           <div className="mt-3 grid grid-cols-2 gap-1">
             {SUPPORTED_LOCALES.map((supported) => (
-              <button
+              <DropdownMenuItem
                 key={supported}
-                type="button"
-                onClick={() => setLocale(supported as SupportedLocale)}
+                onSelect={(event) => {
+                  event.preventDefault()
+                  setLocale(supported as SupportedLocale)
+                }}
                 className={cn(
-                  'h-9 rounded-full border px-3 text-sm font-medium text-legend transition-colors hover:bg-muted',
+                  'flex h-9 cursor-pointer items-center justify-center rounded-full border px-3 text-sm font-medium text-legend transition-colors hover:bg-muted',
                   locale === supported
                     ? 'border-primary bg-primary text-primary-foreground'
                     : 'border-border bg-transparent'
                 )}
               >
                 {LOCALE_LABELS[supported]}
-              </button>
+              </DropdownMenuItem>
             ))}
           </div>
         </div>

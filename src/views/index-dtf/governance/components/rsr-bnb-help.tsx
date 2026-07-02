@@ -1,4 +1,3 @@
-import { Button } from '@/components/ui/button'
 import { Link } from '@/components/ui/link'
 import { cn } from '@/lib/utils'
 import { chainIdAtom } from '@/state/atoms'
@@ -48,17 +47,18 @@ const RSRBNBHelp = ({
             <Trans>Have RSR on another chain? Bridge to BSC</Trans>
           </span>
         </h3>
-        <Button
-          variant="muted"
-          size="icon-rounded"
-          className={
+        {/* WHY: the whole row is already a link — a nested button would add a
+            second focusable control; this is a purely visual affordance. */}
+        <span
+          className={cn(
+            'inline-flex items-center justify-center rounded-full bg-border text-foreground transition-colors',
             compact
               ? 'h-7 w-7'
-              : 'group-hover:bg-primary group-hover:text-primary-foreground'
-          }
+              : 'h-8 w-8 group-hover:bg-primary group-hover:text-primary-foreground'
+          )}
         >
           <ArrowUpRightIcon size={compact ? 14 : 16} />
-        </Button>
+        </span>
       </div>
     </Link>
   )

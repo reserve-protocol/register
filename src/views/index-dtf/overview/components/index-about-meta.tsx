@@ -31,9 +31,10 @@ const CreatorLink = () => {
   }
 
   return (
-    <Link
-      to={link}
+    <a
+      href={link}
       target="_blank"
+      rel="noopener noreferrer"
       className="inline-flex h-9 items-center gap-2 rounded-full border px-3 text-sm text-muted-foreground hover:text-foreground"
     >
       {brandData?.creator?.icon ? (
@@ -48,7 +49,7 @@ const CreatorLink = () => {
         {creator}
         <ArrowUpRight size={14} />
       </span>
-    </Link>
+    </a>
   )
 }
 
@@ -95,14 +96,21 @@ const AboutLinksDropdown = () => {
       <DropdownMenuContent align="start">
         {links.map(({ label, to, external }) => (
           <DropdownMenuItem key={to} asChild>
-            <Link
-              to={to}
-              target={external ? '_blank' : undefined}
-              className="flex items-center gap-2"
-            >
-              {label}
-              {external && <ArrowUpRight size={14} />}
-            </Link>
+            {external ? (
+              <a
+                href={to}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2"
+              >
+                {label}
+                <ArrowUpRight size={14} />
+              </a>
+            ) : (
+              <Link to={to} className="flex items-center gap-2">
+                {label}
+              </Link>
+            )}
           </DropdownMenuItem>
         ))}
       </DropdownMenuContent>

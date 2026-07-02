@@ -13,6 +13,10 @@ if (!stage.trim()) {
   console.error('usage: node scripts/ai-loop/workflow-start.mjs --stage "<name>" [--allow-dirty]');
   process.exit(2);
 }
+if (/[|\n\r]/.test(stage)) {
+  console.error("stage name must not contain pipes or newlines — it becomes a markdown table row");
+  process.exit(2);
+}
 
 if (!isTrackedTreeClean() && !args.includes("--allow-dirty")) {
   console.error(

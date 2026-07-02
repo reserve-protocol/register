@@ -73,8 +73,12 @@ const Mandate = ({ anchorId = 'about' }: { anchorId?: string }) => {
   // renders the full text with a no-op "Read more" for mid-length descriptions.
   const shouldCollapse =
     description.length > 560 || descriptionParagraphs.length > 2
+  const flattened = description.replace(/\s+/g, ' ').trim()
   const excerpt = shouldCollapse
-    ? `${description.replace(/\s+/g, ' ').trim().slice(0, 560).trim()}...`
+    ? // Short multi-paragraph texts collapse for layout, not length — no "…".
+      flattened.length > 560
+      ? `${flattened.slice(0, 560).trim()}...`
+      : flattened
     : description
 
   return (

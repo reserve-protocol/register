@@ -71,11 +71,15 @@ const AddressActions = ({ address }: { address: Address }) => {
   const [isCopied, setIsCopied] = React.useState(false)
   const displayText = isCopied ? t`Copied to clipboard!` : t`Copy to clipboard`
 
-  const handleCopy = (event: React.MouseEvent) => {
+  const handleCopy = async (event: React.MouseEvent) => {
     event.stopPropagation()
-    navigator.clipboard.writeText(address)
-    setIsCopied(true)
-    setTimeout(() => setIsCopied(false), 2000)
+    try {
+      await navigator.clipboard.writeText(address)
+      setIsCopied(true)
+      setTimeout(() => setIsCopied(false), 2000)
+    } catch {
+      // clipboard unavailable/denied — keep the default tooltip
+    }
   }
 
   return (

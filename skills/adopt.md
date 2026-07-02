@@ -25,5 +25,5 @@ Adoption rarely lands on a clean tree — in-progress branches and uncommitted w
 ## Completion Criteria
 
 - Zero information loss: every rule from the inventory has a new home, an override entry, or an explicit drop line.
-- One router: exactly one live agent entry point (AGENTS.md, with CLAUDE.md as shim or symlink).
+- One router: exactly one live agent entry point holding the router content — AGENTS.md with CLAUDE.md as shim, or (when AGENTS.md is a symlink to CLAUDE.md) CLAUDE.md itself. Whichever file owns the content, there is only one.
 - The human is shown the Overrides section and the drop log in the handoff — they are the merge's audit trail.

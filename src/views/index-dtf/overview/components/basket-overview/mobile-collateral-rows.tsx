@@ -41,7 +41,7 @@ export const MobileCollateralRows = ({
 
       return (
         <div
-          key={token.symbol}
+          key={token.address}
           className="border-b border-border py-5 last:border-b-0"
         >
           <div className="flex items-start justify-between gap-4 pr-5">

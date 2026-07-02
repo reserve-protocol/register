@@ -79,10 +79,7 @@ export const DataTablePagination = <TData,>({
 }) => {
   const { currentPage, pages } = usePaginationPages(table)
   const filteredRowCount = table.getFilteredRowModel().rows.length
-  const visibleRowCount = Math.min(
-    table.getState().pagination.pageSize,
-    filteredRowCount
-  )
+  const visibleRowCount = table.getRowModel().rows.length
 
   return (
     <div className="flex items-center justify-between px-5 pb-3 pt-4 sm:px-6">

@@ -130,11 +130,7 @@ const Account = ({
                               className="h-3.5 w-3.5"
                             />
                           ) : (
-                            <AlertCircle
-                              fill="#FF0000"
-                              color="#fff"
-                              className="h-3.5 w-3.5"
-                            />
+                            <AlertCircle className="h-3.5 w-3.5 fill-destructive text-white" />
                           )}
                           <span className="text-sm font-normal">
                             {account.displayName}
@@ -148,11 +144,7 @@ const Account = ({
                             className="w-[14px] h-[14px]"
                           />
                         ) : (
-                          <AlertCircle
-                            fill="#FF0000"
-                            color="#fff"
-                            className="w-4 h-4"
-                          />
+                          <AlertCircle className="w-4 h-4 fill-destructive text-white" />
                         )}
                         <span className="text-sm font-normal">
                           {account.displayName}

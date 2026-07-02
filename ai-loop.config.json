@@ -16,6 +16,11 @@
       "name": "unit-tests",
       "globs": ["src/**"],
       "commands": ["pnpm test:run"]
+    },
+    {
+      "name": "wiki-lint",
+      "globs": ["docs/wiki/**"],
+      "commands": ["node scripts/ai-loop/wiki-lint.mjs"]
     }
   ],
   "lenses": {

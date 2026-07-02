@@ -126,13 +126,15 @@ export function scanRedFlags(files, config, root = repoRoot()) {
     } catch {
       continue; // binary or unreadable
     }
-    const lines = content.split("\n");
     for (const pattern of RED_FLAG_PATTERNS) {
       if (!matchesAny(file, pattern.files)) continue;
       if (pattern.allowKey && (allow[pattern.allowKey] ?? []).includes(file)) continue;
-      lines.forEach((line, index) => {
-        if (pattern.regex.test(line)) findings.push({ file, line: index + 1, id: pattern.id });
-      });
+      // Scan the whole file so patterns spanning lines (e.g. an empty catch
+      // with the brace on the next line) still fire; report the match's line.
+      for (const match of content.matchAll(new RegExp(pattern.regex, "g"))) {
+        const line = content.slice(0, match.index).split("\n").length;
+        findings.push({ file, line, id: pattern.id });
+      }
     }
   }
   return findings;

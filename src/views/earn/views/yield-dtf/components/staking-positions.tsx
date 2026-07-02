@@ -222,7 +222,7 @@ const StakingPositions = () => {
     <>
       <div className="mt-4 bg-secondary p-1 rounded-4xl md:mt-10">
         <TableFilters />
-        <DataTable<ListedToken, any>
+        <DataTable
           columns={columns}
           data={data || []}
           onRowClick={handleRowClick}

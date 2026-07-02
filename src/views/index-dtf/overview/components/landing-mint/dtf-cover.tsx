@@ -66,8 +66,9 @@ const DtfCover = ({ className }: { className?: string }) => {
           </VideoModal>
         ) : (
           <Button
-            className="gap-2 rounded-full border-2 border-white bg-white/50 px-5 text-primary hover:bg-white"
+            className="pointer-events-none gap-2 rounded-full border-2 border-white bg-white/50 px-5 text-primary opacity-60"
             aria-disabled="true"
+            disabled
             type="button"
           >
             <Play className="h-4 w-4 " />
