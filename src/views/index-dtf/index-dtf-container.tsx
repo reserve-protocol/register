@@ -487,23 +487,30 @@ const IndexDTFMobileActions = () => {
   const quoteSource = useAtomValue(indexDTFQuoteSourceAtom)
   const isDeprecated = isInactiveDTF(useAtomValue(indexDTFStatusAtom))
   const isRestricted = useIsComplianceRestricted()
+  const { pathname } = useLocation()
+  // WHY: issuance mounts its own inline ZapperWrapper with a different config
+  // (debug, no hideLargeMintPrompt) — never mount a second instance there, or
+  // the two fight over shared zapper state. One Zapper per route.
+  const isIssuanceRoute = pathname.includes(`/${ROUTES.ISSUANCE}`)
 
   if (!indexDTF) return null
 
   return (
     <>
       <IndexCTAsOverviewMobile />
-      <ZapperWrapper
-        chain={indexDTF.chainId}
-        dtfAddress={indexDTF.id}
-        mode="modal"
-        apiUrl={RESERVE_API}
-        zapperApiUrl={ZAPPER_API}
-        defaultSource={quoteSource}
-        sellOnly={isDeprecated}
-        disabled={isRestricted}
-        hideLargeMintPrompt
-      />
+      {!isIssuanceRoute && (
+        <ZapperWrapper
+          chain={indexDTF.chainId}
+          dtfAddress={indexDTF.id}
+          mode="modal"
+          apiUrl={RESERVE_API}
+          zapperApiUrl={ZAPPER_API}
+          defaultSource={quoteSource}
+          sellOnly={isDeprecated}
+          disabled={isRestricted}
+          hideLargeMintPrompt
+        />
+      )}
     </>
   )
 }
