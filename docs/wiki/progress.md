@@ -23,7 +23,6 @@ Stage ledger. One row per stage; keep entries short. Verifier = exact fresh comm
 - Accessibility audit of animated homepage cards: keyboard states, focus order, labels for chart-only info.
 - Focused tests: home renders hero without discover list; discover renders filters/sections; highlighted card handles no-performance/inactive/chain-version tabs; animation hooks clean up observers and timers.
 - Re-run i18n extraction after cleanup; prune obsolete messages from deleted prototype copy.
-- Decide fate of untracked `.agents/skills/` dir (Codex-generated duplicates of `.claude` commands/skills) — delete or gitignore.
 - Consolidate discover table + highlighted-card chart fetching into a shared hook with stable cache keys (avoid duplicated per-cell historical requests).
 - Chat launcher overlaps bottom-right interactive content (e.g. last pagination button on explorer mobile, pre-existing) — consider auto-hiding near page bottom or reserving clearance.
 - Add an imperative `open()` API to dtf-chat so `index-ctas-overview-mobile.tsx` stops DOM-clicking the launcher via querySelector.
