@@ -1,5 +1,7 @@
 # Async Mint / Redeem Wizard
 
+> Local context only. The root router (`CLAUDE.md`/`AGENTS.md`) and `docs/wiki/project.md` remain authoritative — especially for tests, size limits, SDK boundaries, and engineer-review flags.
+
 Wizard for minting and redeeming Index DTFs through the
 `@reserve-protocol/async-zap-sdk` (CoWSwap under the hood). Reached at
 `/issuance/automated`.

@@ -1,5 +1,6 @@
 import DecimalDisplay from '@/components/decimal-display'
 import { Card } from '@/components/ui/card'
+import { Button } from '@/components/ui/button'
 import DataTable, { SorteableButton } from '@/components/ui/data-table'
 import { cn } from '@/lib/utils'
 import { indexDTFTransactionsAtom, Transaction } from '@/state/dtf/atoms'
@@ -12,22 +13,23 @@ import {
 import { ExplorerDataType, getExplorerLink } from '@/utils/getExplorerLink'
 import { ColumnDef } from '@tanstack/react-table'
 import { useAtomValue } from 'jotai'
-import { ArrowDownUp, ArrowUpRight } from 'lucide-react'
+import { ArrowUpRight } from 'lucide-react'
 import SectionAnchor from '@/components/section-anchor'
 import { msg } from '@lingui/core/macro'
 import type { MessageDescriptor } from '@lingui/core'
 import { Trans, useLingui } from '@lingui/react/macro'
 
-const TRANSACTION_TYPE_LABELS: Record<Transaction['type'], MessageDescriptor> = {
-  Mint: msg`Mint`,
-  Redeem: msg`Redeem`,
-  Transfer: msg`Transfer`,
-}
+const TRANSACTION_TYPE_LABELS: Record<Transaction['type'], MessageDescriptor> =
+  {
+    Mint: msg`Mint`,
+    Redeem: msg`Redeem`,
+    Transfer: msg`Transfer`,
+  }
 
 const TransactionTypeCell = ({ type }: { type: Transaction['type'] }) => {
   const { t } = useLingui()
   const label = TRANSACTION_TYPE_LABELS[type]
-  return <div className="font-semibold">{label ? t(label) : type}</div>
+  return <span className="font-medium">{label ? t(label) : type}</span>
 }
 
 // Columns type/amount/usdAmount/Time/From/Hash
@@ -40,39 +42,34 @@ const columns: ColumnDef<Transaction>[] = [
     ),
     accessorKey: 'type',
     cell: ({ row }) => <TransactionTypeCell type={row.original.type} />,
+    meta: {
+      className: 'pl-5 sm:pl-6',
+    },
   },
   {
     header: ({ column }) => (
-      <SorteableButton className="text-sm" column={column}>
+      <SorteableButton className="ml-auto text-sm" column={column}>
         <Trans>Amount</Trans>
       </SorteableButton>
     ),
     accessorKey: 'amount',
     cell: ({ row }) => {
       return (
-        <div>
-          ${formatCurrency(row.original.amountUSD)}{' '}
-          <span className="text-legend text-xs">
+        <div className="flex items-center justify-end gap-1">
+          <span>${formatCurrency(row.original.amountUSD)}</span>
+          <span className="text-legend">
             (<DecimalDisplay value={row.original.amount} />)
           </span>
         </div>
       )
     },
+    meta: {
+      className: 'text-right',
+    },
   },
-  // {
-  //   header: ({ column }) => (
-  //     <SorteableButton className="text-sm" column={column}>
-  //       USD
-  //     </SorteableButton>
-  //   ),
-  //   accessorKey: 'amountUSD',
-  //   cell: ({ row }) => {
-  //     return `$${formatCurrency(row.original.amountUSD)}`
-  //   },
-  // },
   {
     header: ({ column }) => (
-      <SorteableButton className="text-sm" column={column}>
+      <SorteableButton className="ml-auto text-sm" column={column}>
         <Trans>Time</Trans>
       </SorteableButton>
     ),
@@ -80,10 +77,13 @@ const columns: ColumnDef<Transaction>[] = [
     cell: ({ row }) => {
       return relativeTime(row.original.timestamp, getCurrentTime())
     },
+    meta: {
+      className: 'text-right',
+    },
   },
   {
     header: () => (
-      <span className="hidden md:block">
+      <span className="ml-auto block text-right text-sm">
         <Trans>Explore</Trans>
       </span>
     ),
@@ -96,17 +96,29 @@ const columns: ColumnDef<Transaction>[] = [
             row.original.chain,
             ExplorerDataType.TRANSACTION
           )}
-          className="text-legend underline bg-muted rounded-full w-fit p-1 block md:p-0 md:bg-transparent"
+          className="ml-auto flex w-fit items-center"
           target="_blank"
+          rel="noreferrer"
         >
-          <span className="hidden md:block">
+          <span className="sr-only md:hidden">
+            <Trans>View transaction on explorer</Trans>
+          </span>
+          <span className="hidden text-legend underline hover:text-primary md:block">
             {shortenString(row.original.hash)}
           </span>
-          <span className="block md:hidden">
+          <Button variant="muted" size="icon-rounded" asChild>
+            <span className="md:hidden">
+              <ArrowUpRight size={14} />
+            </span>
+          </Button>
+          <span className="hidden md:ml-1 md:block">
             <ArrowUpRight size={14} />
           </span>
         </a>
       )
+    },
+    meta: {
+      className: 'pr-5 text-right sm:pr-6',
     },
   },
 ]
@@ -120,7 +132,10 @@ const TransactionTable = () => {
       data={transactions ?? []}
       pagination
       className={cn(
-        '[&_table]:bg-card [&_table]:rounded-[20px] [&_table]:text-sm [&_table_tr]:border-none [&_table_th]:text-legend [&_table_th]:border-b'
+        '[&_table]:bg-card [&_table]:text-sm [&_table]:md:text-sm',
+        '[&_thead_tr]:h-9 [&_thead_tr]:border-none',
+        '[&_tbody_tr]:border-none [&_tbody_tr:hover]:bg-secondary/40',
+        '[&_td]:py-3 [&_th]:py-1.5 [&_th]:text-legend'
       )}
     />
   )
@@ -128,20 +143,17 @@ const TransactionTable = () => {
 
 const IndexTransactionTable = () => {
   return (
-    <Card className="p-6 pb-2 group/section" id="transactions">
-      <div className="flex items-center gap-1">
-        <div className="rounded-full border border-foreground p-2 mr-auto">
-          <ArrowDownUp size={14} />
-        </div>
-      </div>
-      <div className="flex items-center gap-2 mb-4"></div>
-      <div className="flex items-center gap-1">
+    <Card
+      className="group/section overflow-hidden pb-2 pt-5 sm:pb-3 sm:pt-6"
+      id="transactions"
+    >
+      <div className="flex items-center gap-1 px-5 sm:px-6">
         <h2 className="text-2xl font-light">
           <Trans>Transactions</Trans>
         </h2>
         <SectionAnchor id="transactions" />
       </div>
-      <div className="flex flex-col gap-2 -mx-6 sm:-mx-4 overflow-x-auto max-w-[calc(100vw-10px)]">
+      <div className="mt-2 overflow-x-auto">
         <TransactionTable />
       </div>
     </Card>

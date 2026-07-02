@@ -1,5 +1,5 @@
 import { useDeprecatedAddresses } from '@/hooks/use-dtf-status'
-import { cn } from '@/lib/utils'
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { ROUTES } from '@/utils/constants'
 import type { MessageDescriptor } from '@lingui/core'
 import { msg } from '@lingui/core/macro'
@@ -7,7 +7,7 @@ import { useLingui } from '@lingui/react/macro'
 import { useSetAtom } from 'jotai'
 import mixpanel from 'mixpanel-browser/src/loaders/loader-module-core'
 import { useEffect } from 'react'
-import { NavLink, Outlet } from 'react-router-dom'
+import { Outlet, useLocation, useNavigate } from 'react-router-dom'
 import { deprecatedDTFAddressesAtom } from './atoms'
 
 const EARN_ROUTES: { label: MessageDescriptor; path: string }[] = [
@@ -27,28 +27,27 @@ const EARN_ROUTES: { label: MessageDescriptor; path: string }[] = [
 
 const EarnNavigation = () => {
   const { t } = useLingui()
+  const location = useLocation()
+  const navigate = useNavigate()
+  const activeRoute =
+    EARN_ROUTES.find((route) => location.pathname.startsWith(route.path))
+      ?.path ?? EARN_ROUTES[0].path
+
   return (
-    <div className="flex justify-center mt-2 md:mt-12 mb-4 md:mb-10 px-1">
-      <div className="flex items-center bg-border p-1 rounded-full">
-        {EARN_ROUTES.map((route) => (
-          <NavLink
-            key={route.path}
-            to={route.path}
-            className="text-xs text-center sm:text-sm"
-          >
-            {({ isActive }: { isActive: boolean }) => (
-              <div
-                className={cn(
-                  'px-3 py-2 rounded-full',
-                  isActive && 'text-primary bg-card'
-                )}
-              >
-                <span>{t(route.label)}</span>
-              </div>
-            )}
-          </NavLink>
-        ))}
-      </div>
+    <div className="mb-6 mt-3 flex justify-center px-1 md:mb-8 md:mt-16">
+      <Tabs value={activeRoute} onValueChange={(value) => navigate(value)}>
+        <TabsList className="h-9 rounded-[70px] px-0.5 py-0">
+          {EARN_ROUTES.map((route) => (
+            <TabsTrigger
+              key={route.path}
+              value={route.path}
+              className="h-8 rounded-[60px] px-3 text-xs data-[state=active]:text-primary dark:data-[state=active]:text-foreground sm:px-4 sm:text-sm"
+            >
+              {t(route.label)}
+            </TabsTrigger>
+          ))}
+        </TabsList>
+      </Tabs>
     </div>
   )
 }
@@ -70,7 +69,7 @@ const Earn = () => {
   }, [])
 
   return (
-    <div className="container px-0 lg:px-4 mb-4">
+    <div className="container mb-4">
       <EarnNavigation />
       <Outlet />
       <DeprecatedDTFsUpdater />

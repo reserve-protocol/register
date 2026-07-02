@@ -225,10 +225,3 @@ body {
   }
 }
 
-/* Keep the chat widget aligned to the centered app container (max-width 1400px):
-   the JS prop sets the gap (--rc-offset-right), this adds the side gutter on
-   screens wider than the container. */
-.rc-root .rc-launcher,
-.rc-root .rc-panel {
-  right: calc(var(--rc-offset-right, 24px) + max(0px, (100vw - 1400px) / 2));
-}

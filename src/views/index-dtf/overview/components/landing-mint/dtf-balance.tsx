@@ -53,13 +53,17 @@ const DTFBalance = () => {
     }
   }, [block])
 
+  if (!account.address || dtfAmount === undefined || dtfAmount <= 0) {
+    return null
+  }
+
   return (
-    <div className="flex flex-col gap-2 font-normal -mt-4">
-      <div>
-        <Trans>Balance</Trans>
+    <div className="flex flex-col gap-1.5 p-4 font-normal">
+      <div className="text-sm text-muted-foreground">
+        <Trans>Wallet balance</Trans>
       </div>
       <div className="flex gap-2 justify-between items-center">
-        <div className="font-semibold text-3xl">
+        <div className="font-semibold text-2xl">
           {balanceValue !== undefined ? (
             <div
               className={cn(
@@ -72,15 +76,15 @@ const DTFBalance = () => {
             <div className="text-muted-foreground">$—.—</div>
           )}
         </div>
-        <div className="text-muted-foreground">
+        <div className="text-sm text-muted-foreground">
           {formatCurrency(dtfAmount ?? 0, 2)} {dtf?.token.symbol}
         </div>
       </div>
-      <div className="flex items-center gap-0.5 text-muted-foreground">
+      <div className="flex items-center gap-0.5 text-sm text-muted-foreground">
         {!!variationValue && variationValue < 0 ? (
-          <ArrowDown className="w-4 h-4 text-primary" />
+          <ArrowDown className="w-3.5 h-3.5 text-primary" />
         ) : (
-          <ArrowUp className="w-4 h-4 text-primary" />
+          <ArrowUp className="w-3.5 h-3.5 text-primary" />
         )}
         <div className="text-primary pr-0.5">
           ${formatCurrency(Math.abs(variationValue ?? 0), 2)}

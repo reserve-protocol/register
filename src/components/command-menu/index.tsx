@@ -100,7 +100,7 @@ const CommandMenu = () => {
         type="button"
         aria-label={t`Search`}
         onClick={() => setOpen(true)}
-        className="inline-flex items-center justify-center h-8 w-8 rounded-md cursor-pointer hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+        className="inline-flex h-9 w-9 cursor-pointer items-center justify-center rounded-full border hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
       >
         <Search size={16} strokeWidth={1.5} />
       </button>

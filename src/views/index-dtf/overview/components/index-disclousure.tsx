@@ -14,7 +14,7 @@ import {
   AccordionTrigger,
 } from '@/components/ui/accordion'
 import { ScrollArea } from '@/components/ui/scroll-area'
-import { Signature, FileText } from 'lucide-react'
+import { FileText } from 'lucide-react'
 import SectionAnchor from '@/components/section-anchor'
 import { Button } from '@/components/ui/button'
 import { indexDTFAtom, indexDTFExposureDataAtom } from '@/state/dtf/atoms'
@@ -318,13 +318,7 @@ const IndexDisclousure = () => {
   )
 
   return (
-    <Card className="p-6 group/section text-sm" id="disclosures">
-      <div className="flex items-center gap-1">
-        <div className="rounded-full border border-foreground p-2 mr-auto">
-          <Signature size={14} />
-        </div>
-      </div>
-      <div className="flex items-center gap-2 mb-4"></div>
+    <Card className="p-5 sm:p-6 group/section text-sm" id="disclosures">
       <div className="flex items-center gap-1">
         <h2 className="text-2xl font-light mb-2">
           <Trans>Disclosures</Trans>
@@ -401,9 +395,9 @@ const IndexDisclousure = () => {
               the DTF’s launch-day basket would have performed before the DTF
               was created, using historical prices for those assets. The basket
               did not actually exist during this period. The figure assumes a
-              fixed basket — it does not reflect actual trading, management fees,
-              slippage, or the rebalancing the DTF performs in practice — and is
-              constructed with the benefit of hindsight. Hypothetical
+              fixed basket — it does not reflect actual trading, management
+              fees, slippage, or the rebalancing the DTF performs in practice —
+              and is constructed with the benefit of hindsight. Hypothetical
               performance is not indicative of future results and is not
               investment advice.
             </Trans>

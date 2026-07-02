@@ -29,20 +29,21 @@ const TimeRangeMenu = ({ className }: { className?: string }) => {
           variant="ghost"
           size="sm"
           className={cn(
-            'flex items-center gap-2 px-2 h-8 py-1 text-sm rounded-full bg-white/5 hover:bg-white/10 text-white/90 hover:text-white border border-white/10 data-[state=open]:bg-white/10 data-[state=open]:text-white focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0 ring-0',
+            'flex items-center gap-2 px-2 h-8 py-1 text-sm rounded-full border border-border bg-card/50 text-foreground hover:bg-card data-[state=open]:bg-card focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0 ring-0',
             className
           )}
         >
           <span className="font-light">
-            {current?.value === 'all' ? <Trans>All</Trans> : (current?.label ?? '')}
+            {current?.value === 'all' ? (
+              <Trans>All</Trans>
+            ) : (
+              (current?.label ?? '')
+            )}
           </span>
           <ChevronDown className="h-4 w-4" />
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent
-        align="end"
-        className="min-w-[7rem] bg-neutral-900 text-white border-white/10"
-      >
+      <DropdownMenuContent align="end" className="min-w-[7rem]">
         <DropdownMenuRadioGroup
           value={range}
           onValueChange={(value) => setRange(value as Range)}
@@ -51,7 +52,7 @@ const TimeRangeMenu = ({ className }: { className?: string }) => {
             <DropdownMenuRadioItem
               key={tr.value}
               value={tr.value}
-              className="text-white/90 focus:bg-white/10 focus:text-white"
+              className="text-foreground focus:bg-muted focus:text-foreground"
             >
               {tr.value === 'all' ? <Trans>All</Trans> : tr.label}
             </DropdownMenuRadioItem>

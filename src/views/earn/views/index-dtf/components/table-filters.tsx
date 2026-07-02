@@ -12,7 +12,6 @@ import {
   dtfsFilterAtom,
   availableDtfsAtom,
   dtfDataMapAtom,
-  indexDTFListAtom,
 } from '../atoms'
 import { CircleIcon } from 'lucide-react'
 
@@ -21,7 +20,6 @@ const DtfFilterDropdown = () => {
   const [selectedDtfs, setSelectedDtfs] = useAtom(dtfsFilterAtom)
   const availableDtfs = useAtomValue(availableDtfsAtom)
   const dtfDataMap = useAtomValue(dtfDataMapAtom)
-  const indexDTFList = useAtomValue(indexDTFListAtom)
 
   const options = useMemo(() => {
     return availableDtfs.map((dtfSymbol) => {
@@ -58,7 +56,7 @@ const DtfFilterDropdown = () => {
   // Get tokens for stacked logo display (up to 5)
   const getStackedTokens = useMemo(() => {
     const dtfsToShow = !selectedDtfs.length ? availableDtfs : selectedDtfs
-    const limitedDtfs = dtfsToShow.slice(0, 5)
+    const limitedDtfs = dtfsToShow.slice(0, selectedDtfs.length ? 5 : 3)
 
     return limitedDtfs.map((dtfSymbol) => {
       const dtfData = dtfDataMap.get(dtfSymbol)
@@ -79,11 +77,12 @@ const DtfFilterDropdown = () => {
         onChange={handleChange}
         placeholder={t`Filter by DTFs`}
         allOption={true}
-        className="h-[68px] w-full min-w-[200px] justify-between rounded-3xl bg-transparent px-4 text-foreground hover:bg-transparent"
+        className="h-[68px] w-full min-w-[200px] justify-between rounded-3xl bg-transparent px-5 text-foreground hover:bg-transparent"
       >
         <div className="flex items-center gap-2">
           {getStackedTokens.length > 0 ? (
             <StackTokenLogo
+              className="[&>div]:rounded-full [&>div]:border-2 [&>div]:border-card [&>div]:bg-card [&>div:nth-child(1)]:z-[5] [&>div:nth-child(2)]:z-[4] [&>div:nth-child(3)]:z-[3] [&>div:nth-child(4)]:z-[2] [&>div:nth-child(5)]:z-[1]"
               tokens={getStackedTokens}
               size={16}
               overlap={4}
@@ -92,7 +91,9 @@ const DtfFilterDropdown = () => {
           ) : (
             <CircleIcon className="h-4 w-4" />
           )}
-          <span className="text-sm font-normal">{displayText()}</span>
+          <span className="text-sm font-medium text-foreground">
+            {displayText()}
+          </span>
         </div>
       </MultiselectDropdown>
     </div>

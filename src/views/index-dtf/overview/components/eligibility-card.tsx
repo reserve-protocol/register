@@ -46,9 +46,10 @@ const EligibilityForm = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isValid },
   } = useForm<FormData>({
     resolver: zodResolver(formSchema),
+    mode: 'onChange',
     defaultValues: { name: '', email: '' },
   })
 
@@ -98,14 +99,17 @@ const EligibilityForm = () => {
     <form
       onSubmit={handleSubmit(onSubmit)}
       noValidate
-      className="flex flex-col gap-4"
+      className="flex flex-col gap-2"
     >
       <div>
         <Input
           {...register('name')}
           placeholder={t`Name`}
           disabled={submitting}
-          className={errors.name ? 'border-destructive' : ''}
+          className={cn(
+            'bg-card h-12 rounded-xl pl-4',
+            errors.name && 'border-destructive'
+          )}
         />
         {errors.name && (
           <p className="text-destructive text-sm mt-1">{errors.name.message}</p>
@@ -117,7 +121,10 @@ const EligibilityForm = () => {
           type="email"
           placeholder={t`Email`}
           disabled={submitting}
-          className={errors.email ? 'border-destructive' : ''}
+          className={cn(
+            'bg-card h-12 rounded-xl pl-4',
+            errors.email && 'border-destructive'
+          )}
         />
         {errors.email && (
           <p className="text-destructive text-sm mt-1">
@@ -127,8 +134,8 @@ const EligibilityForm = () => {
       </div>
       <Button
         type="submit"
-        disabled={submitting}
-        className="w-full rounded-xl h-12"
+        disabled={submitting || !isValid}
+        className="w-full rounded-xl h-12 text-base"
       >
         {submitting ? t`Submitting...` : t`Submit`}
       </Button>
@@ -145,15 +152,13 @@ const EligibilityCard = ({ className }: { className?: string }) => {
   return (
     <div
       className={cn(
-        'flex flex-col gap-2 rounded-4xl bg-secondary p-1',
+        'flex flex-col overflow-hidden rounded-3xl bg-secondary',
         className
       )}
     >
-      <div className="flex flex-col gap-2 p-4">
-        <div className="border border-foreground rounded-full p-1.5 w-fit mb-2">
-          <Lock size={24} strokeWidth={1.5} />
-        </div>
-        <h3 className="text-lg font-bold">
+      <div className="flex flex-col gap-1 p-6">
+        <h3 className="flex items-center gap-2 text-xl font-medium mb-2">
+          <Lock size={20} strokeWidth={2} />
           <Trans>Location restricted</Trans>
         </h3>
         <p>
@@ -172,21 +177,22 @@ const EligibilityCard = ({ className }: { className?: string }) => {
           </Trans>
         </p>
       </div>
-      <div className="flex flex-col gap-6 rounded-3xl bg-card p-6">
-        <div className="flex flex-col gap-2">
-          <h4 className="font-bold">
+      <div className="border-t border-secondary" />
+      <div className="flex flex-col bg-card p-2 pt-4">
+        <div className="flex flex-col gap-1 px-4 mb-4">
+          <h4 className="font-medium">
             <Trans>Contact us for eligibility</Trans>
           </h4>
           <p className="text-legend text-sm">
             <Trans>
-              To verify eligibility, please leave us your name and email, and
-              we will reach out to you personally.
+              To verify eligibility, please leave us your name and email, and we
+              will reach out to you personally.
             </Trans>
           </p>
         </div>
         <EligibilityForm />
         <a
-          className="flex items-center gap-1 text-primary hover:underline w-fit"
+          className="flex items-center gap-1 text-primary hover:underline w-fit px-4 pb-3 pt-4"
           target="_blank"
           rel="noopener noreferrer"
           href={ELIGIBILITY_DOCS_URL}

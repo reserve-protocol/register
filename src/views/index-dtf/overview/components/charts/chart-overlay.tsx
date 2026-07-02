@@ -9,52 +9,13 @@ import {
   indexDTFStatusAtom,
   performanceTimeRangeAtom,
 } from '@/state/dtf/atoms'
-import {
-  indexDTFApyAtom,
-  isYieldIndexDTFAtom,
-} from '@/state/dtf/yield-index-atoms'
+import { indexDTFApyAtom } from '@/state/dtf/yield-index-atoms'
 import { formatPercentage, formatToSignificantDigits } from '@/utils'
 import { Trans } from '@lingui/react/macro'
 import { useAtomValue } from 'jotai'
 import { IndexDTFPerformance } from '../../hooks/use-dtf-price-history'
-import IndexCreatorOverview from '../index-creator-overview'
-import IndexTokenAddress from '../index-token-address'
-import IndexTokenLogo from '../index-token-logo'
-import ChartTypeSelector from './chart-type-selector'
 import PercentageChange from './percentage-change'
 import { apyStatsAtom, dataTypeAtom } from './price-chart-atoms'
-import TimeRangeMenu from './time-range-menu'
-
-const OverlayHeaderActions = () => {
-  const isYieldIndexDTF = useAtomValue(isYieldIndexDTFAtom)
-
-  if (isYieldIndexDTF) {
-    return (
-      <>
-        <div className="hidden xl:flex items-center gap-2">
-          <IndexTokenAddress />
-          <IndexCreatorOverview />
-        </div>
-        <div className="flex xl:hidden items-center gap-2">
-          <IndexCreatorOverview />
-        </div>
-      </>
-    )
-  }
-
-  return (
-    <>
-      <div className="hidden xl:flex items-center gap-2">
-        <IndexCreatorOverview />
-        <ChartTypeSelector />
-      </div>
-      <div className="flex xl:hidden items-center gap-2">
-        <TimeRangeMenu />
-        <ChartTypeSelector />
-      </div>
-    </>
-  )
-}
 
 const OverlayTitle = () => {
   const dtf = useAtomValue(indexDTFAtom)
@@ -65,10 +26,10 @@ const OverlayTitle = () => {
   }
 
   return (
-    <h2 className="text-xl sm:text-2xl font-light w-full break-words">
+    <h2 className="text-2xl sm:text-3xl font-medium sm:font-normal leading-tight w-full break-words text-primary dark:text-foreground">
       <div className="flex items-center gap-2">
         {dtf.token.name}
-        {isInactive && <InactiveBadge className="block sm:hidden" />}
+        {isInactive && <InactiveBadge />}
       </div>
     </h2>
   )
@@ -81,7 +42,7 @@ const YieldOverlayInfo = () => {
 
   return (
     <>
-      <div className="flex items-center gap-2 text-xl sm:text-2xl font-light">
+      <div className="flex items-center gap-2 text-xl sm:text-2xl font-light leading-none">
         {apyData ? (
           <Trans>{formatPercentage(apyData.totalAPY)} Est. APY</Trans>
         ) : (
@@ -89,7 +50,7 @@ const YieldOverlayInfo = () => {
         )}
       </div>
       {stats && (
-        <span className="text-sm text-white/60">
+        <span className="text-sm text-muted-foreground">
           <Trans>
             Avg {formatPercentage(stats.avg)} · range{' '}
             {formatPercentage(stats.min)}–{formatPercentage(stats.max)} (
@@ -132,20 +93,27 @@ const PriceOverlayInfo = ({
 }: {
   timeseries: IndexDTFPerformance['timeseries']
 }) => {
+  const dtf = useAtomValue(indexDTFAtom)
   const dataType = useAtomValue(dataTypeAtom)
   const range = useAtomValue(performanceTimeRangeAtom)
 
   return (
-    <div className="flex items-center gap-2 text-xl sm:text-2xl font-light">
-      <PriceValue />
-      <div className="text-sm">
+    <div className="mt-1.5 flex w-full min-w-0 items-center justify-between gap-3 text-base text-legend">
+      <span className="truncate">
+        <span className="tabular-nums text-foreground">
+          <PriceValue />
+        </span>
+        {dtf && <span> · ${dtf.token.symbol}</span>}
+      </span>
+      <div className="shrink-0 text-base font-medium tabular-nums">
         {timeseries.length === 0 ? (
-          <Skeleton className="w-[100px] h-6" />
+          <Skeleton className="h-6 w-[100px]" />
         ) : (
           <PercentageChange
             performance={timeseries}
             dataType={dataType}
             range={range}
+            className="whitespace-nowrap"
           />
         )}
       </div>
@@ -160,26 +128,18 @@ const ChartOverlay = ({
 }) => {
   const dataType = useAtomValue(dataTypeAtom)
   const isYieldMode = dataType === 'yield'
-  const isInactive = isInactiveDTF(useAtomValue(indexDTFStatusAtom))
 
   return (
     <div
       className={cn(
-        'flex flex-col gap-2',
-        isYieldMode ? '-mb-1.5 sm:-mb-2.5' : 'mb-0 sm:mb-3'
+        'flex flex-col gap-1 pt-1',
+        isYieldMode ? '-mb-1.5 sm:-mb-2.5' : 'mb-4 sm:mb-6'
       )}
     >
-      <div className="flex items-center gap-1 justify-between">
-        <div className="flex flex-wrap items-center gap-2">
-          <div className="flex items-center bg-white/20 rounded-full p-[1px] w-fit">
-            <IndexTokenLogo />
-          </div>
-          {isInactive && <InactiveBadge className="hidden sm:block" />}
+      <div className="flex flex-col gap-1.5">
+        <div className="flex items-start gap-2">
+          <OverlayTitle />
         </div>
-        <OverlayHeaderActions />
-      </div>
-      <div className="flex flex-col gap-0.5">
-        <OverlayTitle />
         {isYieldMode ? (
           <YieldOverlayInfo />
         ) : (

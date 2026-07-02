@@ -3,10 +3,17 @@ import ChainLogo from './ChainLogo'
 
 interface Props extends React.HTMLAttributes<HTMLDivElement> {
   chains: number[]
+  logoClassName?: string
 }
 
 // Shows ethereum/base stacked logos to indicate multichain
-const StackedChainLogo = ({ chains, className, style, ...props }: Props) => (
+const StackedChainLogo = ({
+  chains,
+  className,
+  logoClassName,
+  style,
+  ...props
+}: Props) => (
   <div
     className={cn('relative h-5 w-6 pt-0.5', className)}
     style={{ marginLeft: `${(chains.length - 1) * 10}px`, ...style }}
@@ -16,6 +23,7 @@ const StackedChainLogo = ({ chains, className, style, ...props }: Props) => (
       <ChainLogo
         key={chain}
         chain={chain}
+        className={logoClassName}
         style={{ position: 'absolute', left: -(index * 10) }}
       />
     ))}

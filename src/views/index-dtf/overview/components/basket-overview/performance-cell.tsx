@@ -1,5 +1,7 @@
 import { Skeleton } from '@/components/ui/skeleton'
 import Help from '@/components/ui/help'
+import { cn } from '@/lib/utils'
+import { PERFORMANCE_TEXT_CLASSES } from '@/utils/chart-performance-colors'
 import { TimeRange } from '@/types'
 import { msg } from '@lingui/core/macro'
 import { useLingui } from '@lingui/react/macro'
@@ -9,6 +11,7 @@ interface PerformanceCellProps {
   isLoading: boolean
   isNewlyAdded: boolean
   timeRange: TimeRange
+  align?: 'start' | 'end'
 }
 
 const PERIOD_LABELS = {
@@ -26,29 +29,33 @@ export const PerformanceCell = ({
   isLoading,
   isNewlyAdded,
   timeRange,
+  align = 'end',
 }: PerformanceCellProps) => {
   const { t } = useLingui()
+  const justifyClass = align === 'start' ? 'justify-start' : 'justify-end'
   // Show skeleton while loading
   if (isLoading) {
-    return <Skeleton className="h-4 w-[60px] mx-auto" />
+    return (
+      <Skeleton className={cn('h-4 w-[60px]', align === 'end' && 'ml-auto')} />
+    )
   }
 
   // Show dash if no data available
   if (change == null) {
-    return <span>—</span>
+    return <span className="dark:text-foreground">—</span>
   }
 
   const formattedChange = `${change > 0 ? '+' : ''}${(change * 100).toFixed(2)}%`
   const changeColor =
     change < 0
-      ? 'text-legend'
+      ? PERFORMANCE_TEXT_CLASSES.negative
       : change > 0
-        ? 'text-green-500'
-        : 'text-muted-foreground'
+        ? PERFORMANCE_TEXT_CLASSES.positive
+        : 'text-muted-foreground dark:text-foreground'
 
   return (
-    <div className="flex items-center justify-center gap-1">
-      <span className={`${changeColor} text-sm sm:text-base`}>
+    <div className={cn('flex items-center gap-1', justifyClass)}>
+      <span className={cn(changeColor, 'text-sm font-medium sm:text-base')}>
         {formattedChange}
       </span>
       {isNewlyAdded && (

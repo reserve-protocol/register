@@ -1,45 +1,37 @@
 import { isYieldIndexDTFAtom } from '@/state/dtf/yield-index-atoms'
 import { useAtomValue } from 'jotai'
-import IndexCTAsOverviewMobile from '../index-ctas-overview-mobile'
-import IndexTokenAddress from '../index-token-address'
+import ChartTypeSelector from './chart-type-selector'
 import DataTypeSelector from './data-type-selector'
 import TimeRangeSelector from './time-range-selector'
 
 const StandardFooter = () => (
-  <div className="flex items-center gap-2 justify-between mt-2 border-t border-white/20 pt-4">
-    <div className="pl-6 hidden xl:block">
+  <div className="px-5 pb-5 pt-5 sm:px-6 sm:pb-6">
+    <div className="flex min-w-0 items-center gap-6 xl:hidden">
+      <ChartTypeSelector />
+      <div className="h-4 w-px shrink-0 bg-border" />
+      <div className="min-w-0 flex-1">
+        <TimeRangeSelector />
+      </div>
+    </div>
+    <div className="hidden w-full items-center justify-between xl:flex">
       <TimeRangeSelector />
-    </div>
-    <div className="hidden xl:block pr-6">
-      <IndexTokenAddress />
-    </div>
-    <div className="flex xl:hidden flex-1 pl-3 sm:pl-6">
-      <IndexTokenAddress />
-    </div>
-    <div className="min-w-sm pr-3 xl:pr-6 xl:hidden">
-      <IndexCTAsOverviewMobile />
+      <ChartTypeSelector />
     </div>
   </div>
 )
 
 const YieldFooter = () => (
-  <div className="flex flex-col xl:flex-row gap-2 mt-2 xl:border-t xl:border-white/20 xl:pt-4">
-    <div className="flex xl:hidden items-center justify-between mb-2 px-5 pt-2 pb-4 sm:px-6 border-b border-white/20">
+  <div className="flex flex-col gap-2 px-5 pb-5 pt-5 sm:px-6 sm:pb-6 xl:flex-row">
+    <div className="flex items-center justify-between pb-2 xl:hidden">
       <TimeRangeSelector variant="minimal" />
       <DataTypeSelector variant="minimal" />
     </div>
     <div className="flex items-center gap-2 justify-between xl:flex-1">
-      <div className="pl-6 hidden xl:block">
+      <div className="hidden xl:block">
         <TimeRangeSelector />
       </div>
-      <div className="hidden xl:block pr-6">
+      <div className="hidden xl:block">
         <DataTypeSelector />
-      </div>
-      <div className="flex xl:hidden flex-1 pl-3 sm:pl-6">
-        <IndexTokenAddress />
-      </div>
-      <div className="min-w-sm pr-3 xl:pr-6 xl:hidden">
-        <IndexCTAsOverviewMobile />
       </div>
     </div>
   </div>

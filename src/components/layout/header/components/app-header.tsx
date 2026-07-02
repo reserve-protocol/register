@@ -3,18 +3,19 @@ import DarkModeToggle from '@/components/dark-mode-toggle'
 import { ContactBellButton } from '@/components/layout/contact-modal'
 import { cn } from '@/lib/utils'
 import Account from 'components/account'
-import { ReactNode } from 'react'
+import { ReactNode, useEffect, useState } from 'react'
 import { useLocation } from 'react-router-dom'
 import AppNavigation from './app-navigation'
 import Brand from './Brand'
 import HeaderActionsMenu from './header-actions-menu'
+import { type HeaderControlSurface } from './header-control-button'
 import LanguageSelector from './language-selector'
+import MobileNavigationDrawer from './mobile-navigation-drawer'
 
 const Container = ({ children }: { children: ReactNode }) => {
   // Check if the route is a "index-dtf" route
   const { pathname } = useLocation()
   const isHome = pathname === '/'
-
   const border =
     pathname.includes('earn') ||
     ((!pathname.includes('index-dtf') || pathname.includes('deploy')) &&
@@ -29,27 +30,61 @@ const Container = ({ children }: { children: ReactNode }) => {
   )
 }
 
+const useAppContainerScrolled = () => {
+  const [scrolled, setScrolled] = useState(false)
+
+  useEffect(() => {
+    const scroller = document.getElementById('app-container')
+    if (!scroller) return
+
+    const update = () => setScrolled(scroller.scrollTop > 0)
+    update()
+    scroller.addEventListener('scroll', update, { passive: true })
+
+    return () => scroller.removeEventListener('scroll', update)
+  }, [])
+
+  return scrolled
+}
+
 /**
  * Application header
  */
-const AppHeader = () => (
-  <Container>
-    <div className="container flex items-center h-[56px] md:h-[72px] px-4 sm:px-6">
-      <Brand className="text-primary mr-2 sm:mr-4 cursor-pointer md:-mt-1" />
-      <AppNavigation />
-      <div className="flex items-center gap-1 sm:gap-2">
-        <ContactBellButton />
-        {/* CommandMenu stays mounted below xl for the ⌘K dialog, only its button is hidden */}
-        <div className="hidden xl:flex items-center gap-2">
-          <CommandMenu />
-          <DarkModeToggle />
-          <LanguageSelector />
+const AppHeader = () => {
+  const { pathname } = useLocation()
+  const isIndexDtfOverview =
+    pathname.includes('/index-dtf/') && pathname.endsWith('/overview')
+  const scrolled = useAppContainerScrolled()
+  const mobileHeaderSurface: HeaderControlSurface =
+    isIndexDtfOverview && !scrolled ? 'transparent-header' : 'default'
+
+  return (
+    <Container>
+      <div
+        className={cn(
+          'container flex items-center h-[56px] md:h-[72px] pl-5 pr-2 sm:px-4 lg:px-6 md:bg-transparent',
+          isIndexDtfOverview && !scrolled ? 'bg-transparent' : 'bg-card'
+        )}
+      >
+        <Brand className="relative z-[60] -ml-0.5 mr-2 cursor-pointer text-primary sm:mr-4 md:-mt-1 lg:ml-0" />
+        <AppNavigation />
+        <div className="ml-auto flex items-center gap-1 sm:gap-2 min-[850px]:ml-0">
+          <div className="hidden min-[850px]:block">
+            <ContactBellButton />
+          </div>
+          {/* CommandMenu stays mounted below xl for the ⌘K dialog, only its button is hidden */}
+          <div className="hidden xl:flex items-center gap-2">
+            <CommandMenu />
+            <DarkModeToggle />
+            <LanguageSelector />
+          </div>
+          <HeaderActionsMenu surface={mobileHeaderSurface} />
+          <Account mobileSurface={mobileHeaderSurface} />
+          <MobileNavigationDrawer surface={mobileHeaderSurface} />
         </div>
-        <HeaderActionsMenu />
-        <Account />
       </div>
-    </div>
-  </Container>
-)
+    </Container>
+  )
+}
 
 export default AppHeader

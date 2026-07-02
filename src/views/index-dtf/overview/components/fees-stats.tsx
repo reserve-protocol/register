@@ -20,6 +20,8 @@ import MetricsItem from './metrics-item'
 import SectionAnchor from '@/components/section-anchor'
 import { Trans } from '@lingui/react/macro'
 
+const FEES_METRIC_CLASSNAME = 'px-5 py-3 last:pb-5 sm:px-5 sm:py-5'
+
 const AnnualizedTvlFee = () => {
   const dtf = useAtomValue(indexDTFAtom)
   return (
@@ -32,6 +34,7 @@ const AnnualizedTvlFee = () => {
       }
       icon={<TableRowsSplit size={16} />}
       loading={!dtf?.annualizedTvlFee}
+      className={FEES_METRIC_CLASSNAME}
     />
   )
 }
@@ -44,6 +47,7 @@ const MintingFee = () => {
       value={dtf?.mintingFee ? formatPercentage(dtf?.mintingFee * 100) : ''}
       icon={<ChartPie size={16} />}
       loading={!dtf?.mintingFee}
+      className={FEES_METRIC_CLASSNAME}
     />
   )
 }
@@ -56,6 +60,7 @@ const MarketCap = () => {
       value={marketCap ? `$${formatCurrency(marketCap, 0)}` : '$0'}
       icon={<BadgeDollarSign size={16} />}
       loading={!marketCap}
+      className={FEES_METRIC_CLASSNAME}
     />
   )
 }
@@ -70,6 +75,7 @@ const TxVolume = () => {
       value={`$${formatCurrency(txVolume, 0)}`}
       icon={<ArrowUpDown size={16} />}
       loading={!transactions.length}
+      className={FEES_METRIC_CLASSNAME}
     />
   )
 }
@@ -82,6 +88,7 @@ const UniqueHolders = () => {
       value={formatCurrency(dtf?.token?.currentHolderCount || 0, 0)}
       icon={<Wallet size={16} />}
       loading={!dtf?.token?.currentHolderCount}
+      className={FEES_METRIC_CLASSNAME}
     />
   )
 }
@@ -102,6 +109,7 @@ const Created = () => {
       }
       icon={<Cake size={16} />}
       loading={!dtf?.timestamp}
+      className={FEES_METRIC_CLASSNAME}
     />
   )
 }
@@ -109,7 +117,7 @@ const Created = () => {
 const FeesStats = () => {
   return (
     <Card className="group/section" id="fees-stats">
-      <div className="p-4 sm:p-6 pb-0 sm:pb-0">
+      <div className="p-5 pb-1 sm:p-6 sm:pb-1">
         <div className="flex items-center gap-1">
           <h2 className="text-2xl font-light mb-1">
             <Trans>Fees & Stats</Trans>

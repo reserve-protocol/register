@@ -3,14 +3,14 @@ import { useIsMobile } from '@/hooks/use-media-query'
 import { cn } from '@/lib/utils'
 import { formatCurrency } from '@/utils'
 import { formatXAxisTick as formatTick } from '@/utils/chart-formatters'
+import { PERFORMANCE_COLORS } from '@/utils/chart-performance-colors'
 import { Bar, ComposedChart, Tooltip, XAxis, YAxis } from 'recharts'
 import { CandlestickTooltip } from './candlestick-tooltip'
 import { chartConfig, type Range } from './price-chart-constants'
 import { ChartCandle, getCandleYDomain } from './use-candlestick-data'
 
-// Match the +/- performance text colors (text-success / red-500).
-const UP_COLOR = 'hsl(164 83% 40%)'
-const DOWN_COLOR = '#ef4444'
+const UP_COLOR = PERFORMANCE_COLORS.positive.dot
+const DOWN_COLOR = PERFORMANCE_COLORS.negative.dot
 
 const formatYAxisTick = (value: number) =>
   '$' + formatCurrency(value, value >= 1000 ? 0 : value < 1 ? 4 : 2)
@@ -154,33 +154,41 @@ const CandlestickChartBody = ({
     formatTick(timestamp, range, dtfStart, visibleRangeSeconds)
 
   return (
-    <ChartContainer config={chartConfig} className={cn('w-full', className)}>
+    <ChartContainer
+      config={chartConfig}
+      className={cn('w-full overflow-hidden', className)}
+    >
       <ComposedChart
         data={candles}
         margin={{ left: 0, right: 0, top: 5, bottom: 5 }}
         barCategoryGap="5%"
-        {...{ overflow: 'visible' }}
       >
         <XAxis
           dataKey="timestamp"
-          tick={{ fontSize: 13, opacity: 0.7 }}
+          tick={isMobile ? false : { fontSize: 13, opacity: 0.7 }}
+          height={isMobile ? 0 : undefined}
           tickFormatter={formatXAxisTick}
-          className="[&_.recharts-cartesian-axis-tick_text]:!fill-white"
+          className="[&_.recharts-cartesian-axis-tick_text]:!fill-muted-foreground"
           axisLine={false}
           tickLine={false}
           interval={getCategoryInterval(candles.length, isMobile)}
           tickMargin={10}
           minTickGap={20}
+          padding={{ left: 28, right: 28 }}
         />
         <YAxis
           orientation="right"
-          tick={{ fontSize: 13, opacity: 0.7 }}
+          tick={
+            isMobile
+              ? false
+              : { fontSize: 13, opacity: 0.7, textAnchor: 'end', dx: 44 }
+          }
           tickFormatter={formatYAxisTick}
-          className="[&_.recharts-cartesian-axis-tick_text]:!fill-white"
+          className="[&_.recharts-cartesian-axis-tick_text]:!fill-muted-foreground"
           axisLine={false}
           tickLine={false}
           domain={getCandleYDomain(candles)}
-          width={55}
+          width={isMobile ? 0 : 55}
           tickCount={5}
           tickMargin={5}
         />

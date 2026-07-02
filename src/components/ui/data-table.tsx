@@ -9,7 +9,6 @@ import {
   useReactTable,
   getSortedRowModel,
   Column,
-  Table as TableType,
   PaginationState,
 } from '@tanstack/react-table'
 
@@ -22,19 +21,13 @@ import {
   TableRow,
 } from '@/components/ui/table'
 import { cn } from '@/lib/utils'
-import { Fragment, useMemo, useState } from 'react'
+import { Fragment, useState } from 'react'
 import React from 'react'
 import { Button } from './button'
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from './select'
-import { ArrowDown, ArrowUp, ChevronLeft, ChevronRight } from 'lucide-react'
+import { ArrowDown, ArrowUp } from 'lucide-react'
 import Spinner from './spinner'
 import { Trans } from '@lingui/react/macro'
+import { DataTablePagination } from './data-table-pagination'
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
@@ -77,137 +70,16 @@ export const SorteableButton = ({
   )
 }
 
-const PAGE_SIZE_OPTIONS = [10, 25, 50, 100]
-
-const Pagination = ({
-  table,
-  showPageSizeSelector = false,
-}: {
-  table: TableType<any>
-  showPageSizeSelector?: boolean
-}) => {
-  return (
-    <div className="flex items-center justify-between md:py-4 ">
-      <div className="flex items-center gap-2 text-sm text-muted-foreground ml-6 opacity-0 md:opacity-100">
-        <span>
-          <Trans>
-            Showing{' '}
-            {Math.min(
-              table.getState().pagination.pageSize,
-              table.getFilteredRowModel().rows.length
-            )}{' '}
-            out of {table.getFilteredRowModel().rows.length}
-          </Trans>
-        </span>
-        {showPageSizeSelector && (
-          <Select
-            value={String(table.getState().pagination.pageSize)}
-            onValueChange={(value) => table.setPageSize(Number(value))}
-          >
-            <SelectTrigger className="h-8 w-[70px]">
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              {PAGE_SIZE_OPTIONS.map((size) => (
-                <SelectItem key={size} value={String(size)}>
-                  {size}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        )}
-      </div>
-      <div className=" flex items-center justify-center">
-        <div className="flex items-center space-x-2">
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={() => table.previousPage()}
-            disabled={!table.getCanPreviousPage()}
-          >
-            <ChevronLeft size={16} />
-          </Button>
-          <div className="flex items-center gap-2">
-            {(() => {
-              const pageCount = table.getPageCount()
-              const currentPage = table.getState().pagination.pageIndex + 1
-              const pages = []
-
-              // Always show first page
-              pages.push(1)
-
-              if (pageCount <= 5) {
-                // Show all pages if 5 or fewer
-                for (let i = 2; i <= pageCount; i++) {
-                  pages.push(i)
-                }
-              } else {
-                // Show current page and surrounding pages
-                if (currentPage > 3) {
-                  pages.push('...')
-                }
-
-                for (
-                  let i = Math.max(2, currentPage - 1);
-                  i <= Math.min(currentPage + 1, pageCount - 1);
-                  i++
-                ) {
-                  pages.push(i)
-                }
-
-                if (currentPage < pageCount - 2) {
-                  pages.push('...')
-                }
-
-                // Always show last page
-                pages.push(pageCount)
-              }
-
-              return pages.map((pageNumber) =>
-                pageNumber === '...' ? (
-                  <span key={`ellipsis-${pageNumber}`}>...</span>
-                ) : (
-                  <Button
-                    key={pageNumber}
-                    variant={currentPage === pageNumber ? undefined : 'ghost'}
-                    size="sm"
-                    onClick={() => table.setPageIndex(Number(pageNumber) - 1)}
-                  >
-                    {pageNumber}
-                  </Button>
-                )
-              )
-            })()}
-          </div>
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={() => table.nextPage()}
-            disabled={!table.getCanNextPage()}
-          >
-            <ChevronRight size={16} />
-          </Button>
-        </div>
-      </div>
-    </div>
-  )
-}
-
-interface DataTableComponentProps<TData, TValue>
-  extends DataTableProps<TData, TValue> {
-  className?: string
-  expandable?: boolean
-  allowMultipleExpand?: boolean
+interface DataTableComponentProps<TData, TValue> extends DataTableProps<
+  TData,
+  TValue
+> {
   pagination?: boolean | { pageSize: number }
   showPageSizeSelector?: boolean
   hoverRowComponent?: (props: {
     row: Row<TData>
     children: React.ReactNode
   }) => React.ReactElement
-  renderSubComponent?: (props: { row: Row<TData> }) => React.ReactElement
-  subComponentClassName?: string
-  noResultsClassName?: string
-  stickyHeader?: boolean
   initialSorting?: SortingState
   loading?: boolean
   loadingSkeleton?: React.ReactNode
@@ -303,7 +175,7 @@ function DataTable<TData, TValue>({
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
-    getPaginationRowModel: !!pagination ? getPaginationRowModel() : undefined,
+    getPaginationRowModel: pagination ? getPaginationRowModel() : undefined,
     onPaginationChange: setPaginationState,
     getExpandedRowModel: getExpandedRowModel(),
     onSortingChange: setSorting,
@@ -417,7 +289,12 @@ function DataTable<TData, TValue>({
           )}
         </TableBody>
       </Table>
-      {pagination && <Pagination table={table} showPageSizeSelector={showPageSizeSelector} />}
+      {pagination && (
+        <DataTablePagination
+          table={table}
+          showPageSizeSelector={showPageSizeSelector}
+        />
+      )}
     </div>
   )
 }
@@ -426,7 +303,6 @@ function LoadingSkeleton<TData, TValue>({
   columns,
 }: {
   columns: ColumnDef<TData, TValue>[]
-  noResultsClassName?: string
 }) {
   return (
     <TableRow>

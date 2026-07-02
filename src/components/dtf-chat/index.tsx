@@ -7,8 +7,13 @@ import {
   indexDTFStatusAtom,
 } from '@/state/dtf/atoms'
 import { t } from '@lingui/core/macro'
-import { ReserveChat, type DtfContext, type ReserveView } from '@reserve-protocol/dtf-chat'
+import {
+  ReserveChat,
+  type DtfContext,
+  type ReserveView,
+} from '@reserve-protocol/dtf-chat'
 import '@reserve-protocol/dtf-chat/styles.css'
+import './overrides.css'
 import { useAtomValue } from 'jotai'
 import { useLocation, useNavigate } from 'react-router-dom'
 
@@ -18,7 +23,10 @@ import { useLocation, useNavigate } from 'react-router-dom'
 const TURNSTILE_SITE_KEY = '0x4AAAAAADiKRe72qu3srt7k'
 
 function onLocalhost(): boolean {
-  return typeof window !== 'undefined' && /^(localhost|127\.0\.0\.1)$/.test(window.location.hostname)
+  return (
+    typeof window !== 'undefined' &&
+    /^(localhost|127\.0\.0\.1)$/.test(window.location.hostname)
+  )
 }
 
 /**
@@ -36,7 +44,8 @@ function resolveApiBase(): string | undefined {
   } catch {
     /* SSR / blocked storage */
   }
-  if (import.meta.env.VITE_DTF_CHAT_API) return import.meta.env.VITE_DTF_CHAT_API
+  if (import.meta.env.VITE_DTF_CHAT_API)
+    return import.meta.env.VITE_DTF_CHAT_API
   if (onLocalhost()) return 'http://localhost:8787'
   return undefined
 }
@@ -69,33 +78,31 @@ const DtfChat = () => {
   // weights, so we keep the static context to identity + mandate + holdings).
   const onDtf = !!address && pathname.includes('index-dtf')
 
-  // On the mobile index-dtf overview the BUY/SELL CTAs take over the floating
-  // bottom bar (see index-ctas-overview-mobile), so hide the launcher there to
-  // avoid the overlap. It stays mounted — the inline "Ask Reserve AI" button
-  // triggers it — and reappears at sm+ and on every other route.
-  const onIndexOverview = onDtf && pathname.endsWith('/overview')
+  // DTF mobile pages use their own action bar for chat, but ReserveChat still
+  // needs to stay mounted so that custom button can trigger the panel. Desktop
+  // keeps the standard launcher.
+  const hideLauncher = onDtf
 
-  // 24px gap on desktop, 12px on mobile. On mobile DTF pages also clear the
-  // fixed bottom nav bar (h-16 = 64px); `lg` is where that bar becomes a sidebar.
+  // 24px gap on desktop, 12px on mobile.
   const isDesktop = useIsDesktop()
   const gap = isDesktop ? 24 : 12
-  const bottomOffset = gap + (onDtf && !isDesktop ? 64 : 0)
+  const bottomOffset = gap
   const rightOffset = gap
 
   const dtfContext: DtfContext | undefined = onDtf
     ? {
-      address,
-      chainId,
-      symbol: dtf?.token.symbol,
-      name: dtf?.token.name,
-      mandate: dtf?.mandate,
-      status,
-      basket: basket?.map((t) => ({ symbol: t.symbol })),
-    }
+        address,
+        chainId,
+        symbol: dtf?.token.symbol,
+        name: dtf?.token.name,
+        mandate: dtf?.mandate,
+        status,
+        basket: basket?.map((t) => ({ symbol: t.symbol })),
+      }
     : undefined
 
   return (
-    <div className={onIndexOverview ? 'max-sm:[&_.rc-launcher]:hidden' : undefined}>
+    <div className={hideLauncher ? 'dtf-chat-hide-mobile-launcher' : undefined}>
       <ReserveChat
         apiBase={apiBase}
         // Turnstile only against the live server; a local dev server runs without it.

@@ -27,7 +27,7 @@ import {
   indexDTFPoolsDataAtom,
   indexDTFUnderlyingNamesAtom,
 } from '@/state/dtf/yield-index-atoms'
-import { useDTFStatus } from '@/hooks/use-dtf-status'
+import { isInactiveDTF, useDTFStatus } from '@/hooks/use-dtf-status'
 import { isAddress } from '@/utils'
 import { AvailableChain } from '@/utils/chains'
 import {
@@ -35,6 +35,7 @@ import {
   NETWORKS,
   RESERVE_API,
   ROUTES,
+  ZAPPER_API,
 } from '@/utils/constants'
 import {
   IndexDtfProvider,
@@ -59,6 +60,10 @@ import ConfirmEligibilityModal from './components/confirm-eligibility-modal'
 import GovernanceUpdater from './governance/updater'
 import YieldIndexUpdater from '@/state/updaters/yield-index-updater'
 import { resolveIndexDtfRouteToken } from './utils/resolve-index-dtf-route-token'
+import ZapperWrapper from './components/zapper/zapper-wrapper'
+import { indexDTFQuoteSourceAtom } from './issuance'
+import useIsComplianceRestricted from '@/hooks/use-is-compliance-restricted'
+import IndexCTAsOverviewMobile from './overview/components/index-ctas-overview-mobile'
 
 const DEFAULT_DESCRIPTION =
   'Reserve is the leading platform for permissionless DTFs and asset-backed currencies. Create, manage & trade tokenized indexes with 24/7 transparency.'
@@ -477,6 +482,39 @@ const InvalidIndexDTFRoute = () => {
   return null
 }
 
+const IndexDTFMobileActions = () => {
+  const indexDTF = useAtomValue(indexDTFAtom)
+  const quoteSource = useAtomValue(indexDTFQuoteSourceAtom)
+  const isDeprecated = isInactiveDTF(useAtomValue(indexDTFStatusAtom))
+  const isRestricted = useIsComplianceRestricted()
+  const { pathname } = useLocation()
+  // WHY: issuance mounts its own inline ZapperWrapper with a different config
+  // (debug, no hideLargeMintPrompt) — never mount a second instance there, or
+  // the two fight over shared zapper state. One Zapper per route.
+  const isIssuanceRoute = pathname.includes(`/${ROUTES.ISSUANCE}`)
+
+  if (!indexDTF) return null
+
+  return (
+    <>
+      <IndexCTAsOverviewMobile />
+      {!isIssuanceRoute && (
+        <ZapperWrapper
+          chain={indexDTF.chainId}
+          dtfAddress={indexDTF.id}
+          mode="modal"
+          apiUrl={RESERVE_API}
+          zapperApiUrl={ZAPPER_API}
+          defaultSource={quoteSource}
+          sellOnly={isDeprecated}
+          disabled={isRestricted}
+          hideLargeMintPrompt
+        />
+      )}
+    </>
+  )
+}
+
 const IndexDTFContainer = () => {
   const { chain, tokenId } = useParams()
   const chainId = NETWORKS[chain ?? '']
@@ -510,11 +548,12 @@ const IndexDTFContainer = () => {
 
   return (
     <IndexDtfProvider address={tokenAddress} chainId={indexDtfChainId}>
-      <div className="container flex flex-col-reverse md:flex-row mb-16 lg:mb-0">
+      <div className="container flex min-h-full flex-col-reverse md:flex-row mb-16 lg:mb-0">
         <IndexDTFSEO />
         <Updater />
         <ConfirmEligibilityModal />
         <IndexDTFNavigation />
+        <IndexDTFMobileActions />
         <div className="flex-grow">
           <Outlet />
         </div>

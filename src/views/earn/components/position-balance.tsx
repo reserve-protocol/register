@@ -26,7 +26,7 @@ const PositionBalance = ({
   // Watch for new blocks to update balance
   const { data: blockNumber } = useBlockNumber({
     chainId: chain,
-    watch: true
+    watch: true,
   })
 
   const { data, refetch } = useBalance({
@@ -62,7 +62,7 @@ const PositionBalance = ({
           </span>
         </div>
       ) : (
-        <Trans>No</Trans>
+        <Trans>None</Trans>
       )}
     </div>
   )

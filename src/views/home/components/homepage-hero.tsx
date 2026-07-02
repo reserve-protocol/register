@@ -13,7 +13,7 @@ const Header = ({ className }: { className?: string }) => (
     className={cn(
       'max-w-[400px] text-[32px] font-normal leading-[1.25] text-primary',
       'dark:text-foreground',
-      'md:text-3xl',
+      'md:text-3xl md:font-medium',
       className
     )}
   >
@@ -24,20 +24,20 @@ const Header = ({ className }: { className?: string }) => (
 const SubHeader = ({ className }: { className?: string }) => (
   <p
     className={cn(
-      'flex flex-col items-center gap-1 leading-[1.25] text-foreground',
+      'flex flex-col items-center gap-0.5 leading-[1.25] text-foreground',
       'dark:text-foreground',
       className
     )}
   >
-    <span className="text-xl dark:text-legend">
+    <span className="text-lg dark:text-legend">
       <Trans>We call these tokenized portfolios DTFs:</Trans>
     </span>
-    <span className="text-xl font-medium">
+    <span className="text-lg font-medium">
       <Trans>Decentralized Token Funds</Trans>
     </span>
     <DTFExplainerButton
       className={cn(
-        'mt-6 h-9 w-fit rounded-full border-0 bg-transparent px-4 py-0 text-base text-primary',
+        'mt-6 h-9 w-fit rounded-full border-0 bg-transparent px-4 py-0 text-base text-muted-foreground',
         'hover:bg-primary hover:text-background',
         'dark:bg-transparent dark:text-legend dark:hover:bg-primary dark:hover:text-white'
       )}
