@@ -388,7 +388,7 @@ AIndex aims to provide users with diversified exposure to the top-performing AI 
 
 ## Description
 
-A curated basket of MemeIndexer’s favorite meme coin communities with liquidity on Base. The strongest memecoin communities, all in one decentralized token folio, rebalanced for performance and expanding as top meme coins bridge liquidity.
+A curated basket of MemeIndexer’s favorite meme coin communities with liquidity on Base. The strongest memecoin communities, all in one decentralized token fund, rebalanced for performance and expanding as top meme coins bridge liquidity.
 
 ## Basket constituents
 

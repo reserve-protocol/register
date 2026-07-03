@@ -6,7 +6,7 @@ Owner: Reserve Protocol
 Contact: https://reserve.org
 
 # Agent access
-# This site is the official Reserve Protocol interface for Decentralized Token Folios (DTFs).
+# This site is the official Reserve Protocol interface for Decentralized Token Funds (DTFs).
 # Read-only content (docs, factsheets, skill definitions) may be used by AI agents to
 # answer user questions about the Reserve Protocol and DTFs.
 

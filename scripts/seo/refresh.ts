@@ -146,6 +146,17 @@ function writeOutput(relPath: string, content: string) {
 }
 
 /**
+ * DTFs were renamed "Decentralized Token Folios" → "Decentralized Token
+ * Funds", but deployer-set mandates/brand copy fetched from the API may still
+ * carry the old term. Normalize so regenerated artifacts never reintroduce it.
+ */
+function modernizeTerminology(s: string): string {
+  return s
+    .replace(/Decentralized Token Folio/g, 'Decentralized Token Fund')
+    .replace(/decentralized token folio/g, 'decentralized token fund')
+}
+
+/**
  * Pick the best human-readable description for a DTF. Prefers the deployer-set
  * description, but falls back to the API's mandate/brand.about when the
  * featured-tokens.json entry only has the generic Reserve boilerplate.
@@ -155,8 +166,8 @@ function pickDescription(token: FeaturedToken, api?: DiscoverDTF): string {
   const mandate = api?.mandate?.trim() ?? ''
   const about = api?.brand?.about?.trim() ?? ''
   const isBoilerplate = tokenDesc === DEFAULT_DESCRIPTION || tokenDesc === ''
-  if (isBoilerplate) return mandate || about || tokenDesc
-  return tokenDesc
+  const picked = isBoilerplate ? mandate || about || tokenDesc : tokenDesc
+  return modernizeTerminology(picked)
 }
 
 /** Normalize text for equality checks (dedupe Description/Mandate/About). */
@@ -388,8 +399,8 @@ function buildFactsheet(token: FeaturedToken, api?: DiscoverDTF): string {
 
   // Primary description — promoted from API when the featured entry is boilerplate.
   const description = pickDescription(token, api)
-  const mandate = api?.mandate?.trim() ?? ''
-  const about = api?.brand?.about?.trim() ?? ''
+  const mandate = modernizeTerminology(api?.mandate?.trim() ?? '')
+  const about = modernizeTerminology(api?.brand?.about?.trim() ?? '')
 
   // Dedupe: only emit mandate/about when they add information beyond description.
   const seen = new Set<string>([normalize(description)])
