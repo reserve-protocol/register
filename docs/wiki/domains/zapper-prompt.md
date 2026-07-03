@@ -35,6 +35,12 @@ link via `cow-swap.ts`; native placeholder `0xeeee…eeee` maps to ETH/BNB
 symbols. Both buy and sell tabs; verbs are separate lingui messages, never
 interpolated.
 
+**Ondo off-hours inversion** (PM rule): on DTFs with Ondo assets, the three
+CoW-CTA variants are suppressed while `market.isOpen === false` — off-hours
+the tokenized-stock legs can't be arbitraged, so pushing users to CoW's stale
+secondary liquidity is harmful. The capacity warning is the exact inverse: it
+fires off-hours too (no CTA, informational). Missing market data fails open.
+
 ## Invariants
 
 - The reducer (`large-mint-prompt-state.ts`, unit-tested) **latches** through

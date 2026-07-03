@@ -61,18 +61,35 @@ const LargeMintPrompt = ({ mode, dtfAddress, chain }: LargeMintPromptProps) => {
     minCapacityUsd !== undefined &&
     minCapacityUsd > 0 &&
     inputValue > minCapacityUsd
+  // Never push users to CoW Swap while the Ondo market is closed: off-hours
+  // the tokenized-stock legs can't be arbitraged, so secondary liquidity is
+  // stale and wide. Gates the three CoW-CTA variants below — the capacity
+  // warning above is exempt (no CTA). Missing market data fails open.
+  const isOndoOffHours = assets.length > 0 && market?.isOpen === false
   // The input floor keeps every raw signal inside the `isApplicable` domain;
   // without it a sub-$100 high-impact quote would reset and re-latch (and
   // re-pop the mobile dialog) on every refetch cycle.
   const rawImpact =
     inContext &&
+    !isOndoOffHours &&
     hasValidQuote &&
     inputValue >= ERROR_MINT_MIN_INPUT &&
     (data?.quote?.truePriceImpact ?? 0) > HIGH_PRICE_IMPACT_THRESHOLD
   const rawLarge =
-    inContext && hasValidQuote && inputValue >= LARGE_MINT_MIN_INPUT
-  const rawError = inContext && !!error && inputValue >= ERROR_MINT_MIN_INPUT
-  const isApplicable = inContext && inputValue >= ERROR_MINT_MIN_INPUT
+    inContext &&
+    !isOndoOffHours &&
+    hasValidQuote &&
+    inputValue >= LARGE_MINT_MIN_INPUT
+  const rawError =
+    inContext &&
+    !isOndoOffHours &&
+    !!error &&
+    inputValue >= ERROR_MINT_MIN_INPUT
+  // `!isOndoOffHours` also lives here so a CoW card latched right before the
+  // market closed (or before the ondo data loaded) resets instead of
+  // lingering through the latch.
+  const isApplicable =
+    inContext && !isOndoOffHours && inputValue >= ERROR_MINT_MIN_INPUT
 
   // Latch the suggestion so it persists across the zapper's periodic refetch
   // (where `error`/`quote` briefly clear) until the user dismisses it, the
