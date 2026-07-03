@@ -151,6 +151,10 @@ const config = {
           '0%': { transform: 'translateX(-100%)' },
           '100%': { transform: 'translateX(100%)' },
         },
+        heartbeat: {
+          '0%, 100%': { transform: 'scale(1)' },
+          '50%': { transform: 'scale(1.03)' },
+        },
       },
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
@@ -167,6 +171,7 @@ const config = {
         'slide-out-right': 'slide-out-right 0.5s forwards',
         'slide-up': 'slide-up 0.4s ease-out forwards',
         'proposal-bar-sweep': 'proposal-bar-sweep 2s linear infinite',
+        heartbeat: 'heartbeat 1s ease-in-out infinite',
       },
     },
   },
