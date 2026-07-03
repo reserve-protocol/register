@@ -10,6 +10,7 @@ Stage ledger. One row per stage; keep entries short. Verifier = exact fresh comm
 
 | Stage | Status | Verifier | Review | Next |
 |---|---|---|---|---|
+| referral tracking: capture ?referral, link wallet to code | done | `pnpm typecheck` + `pnpm lint` + `pnpm test:run` green (477 tests) · reserve-api (base origin/staging) `tsc` + `vitest` green (327 tests, 8 new) · browser smoke: 8/8 (capture, lowercase, last-touch overwrite, persistence, event props, invalid-code reject, hash+query link form, no page errors) + landing screenshot | correctness+security+product+complexity: Dark & Light on plan and diff, then /code-review high (15-agent workflow, adversarial verify) — 8 verified findings, all applied: pre-render capture in index.tsx (kills 3 effect-ordering attribution losses), env-scoped dedupe flag, session-set track guard, per-test db mock (restores suite write invariant), Address type, PK code-first | engineer review handoff: wallet↔code POST at connect (AtomUpdater); flip RESERVE_API staging pin before release |
 | cowswap-prompt-rework | done | `pnpm typecheck` + `pnpm lint` + `pnpm test:run` green (473 tests, 21 new) · screenshots: candles default + OHLC tooltip, capacity/large/impact prompt cards on BSC ondo DTF | correctness+security+product+complexity: Dark & Light subagents, findings verified per-claim; adopted: impact input floor, empty-candles line fallback, Arbitrum entry removed, capitalize reuse; rest backlogged | engineer review handoff (zap-adjacent behavior, new app-wide hook); product acks: 1% threshold on mobile dialog, min-cap semantics |
 | adopt-llm-workflow | done | `wiki-lint` green (7 pages) · `scope.mjs --base HEAD --dry-run` maps lint/typecheck/test + lenses | complexity: self (docs/tooling only) | — |
 | chat-overrides-containment | done | `pnpm typecheck` + `pnpm lint` + `pnpm test:run` green · launcher screenshot identical post-move | product: self + screenshot | upstream theming to dtf-chat (backlog) |
@@ -19,6 +20,8 @@ Stage ledger. One row per stage; keep entries short. Verifier = exact fresh comm
 
 <!-- Minor/deferred findings. Delete items when done or obsolete. -->
 
+- Referral: `RESERVE_API` staging pin (`src/utils/constants.ts` "USE PROD BEFORE RELEASING" TODO) is now load-bearing — referral link POSTs land on staging until flipped.
+- Referral: Mixpanel funnel for marketing must key on `referral_landed` (the auto pageview at init fires before the super property is registered, so the first pageview is unattributed).
 - Zapper prompt: fold `currentTab` into the mint-prompt reducer so the tab-reset stops depending on effect declaration order (both reviewers flagged the fragility; behavior verified correct today).
 - Zapper prompt: localize the Ondo session label (Premarket/Regular/Postmarket/Overnight) instead of injecting the capitalized English API word into translated sentences.
 - Zapper prompt: capacity trigger can re-pop the mobile dialog if the input value straddles the cap when the quote's `amountInValue` replaces the local estimate — add hysteresis if reported.

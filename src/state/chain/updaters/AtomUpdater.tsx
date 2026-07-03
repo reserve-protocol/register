@@ -14,6 +14,7 @@ import {
   walletChainAtom,
 } from 'state/atoms'
 import { useAccount, useBlock, usePublicClient } from 'wagmi'
+import { linkWalletToReferral } from 'utils/referral'
 import { Address } from 'viem'
 
 // Keep web3 state in sync with atoms
@@ -39,6 +40,7 @@ const AtomUpdater = () => {
       mixpanel.register({
         wa: account.address,
       })
+      linkWalletToReferral(account.address)
       // Check if the wallet is a Safe Multisig
       const checkIfSafe = async () => {
         try {
