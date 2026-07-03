@@ -15,20 +15,14 @@ if (bscProviders) {
   bscProviders.odos = false
 }
 
-type ZapperWrapperProps = ZapperProps & {
-  // Hide the large-order "Automated Mint" suggestion (shown by default).
-  hideLargeMintPrompt?: boolean
-}
+type ZapperWrapperProps = ZapperProps
 
 const ZapperWithConnect = (props: ZapperProps) => {
   const { openConnectModal } = useConnectModal()
   return <Zapper {...props} connectWallet={openConnectModal} />
 }
 
-const ZapperWrapper = ({
-  hideLargeMintPrompt,
-  ...props
-}: ZapperWrapperProps) => {
+const ZapperWrapper = (props: ZapperWrapperProps) => {
   const { isConnected } = useAccount()
   // Drive the widget's language from the app locale. The zapper only ships
   // en/es/ko/zh, so the dev-only `pseudo` locale falls back to English.
@@ -47,13 +41,11 @@ const ZapperWrapper = ({
       ) : (
         <Zapper {...props} locale={locale} />
       )}
-      {!hideLargeMintPrompt && (
-        <LargeMintPrompt
-          mode={props.mode ?? 'modal'}
-          dtfAddress={props.dtfAddress}
-          chain={props.chain}
-        />
-      )}
+      <LargeMintPrompt
+        mode={props.mode ?? 'modal'}
+        dtfAddress={props.dtfAddress}
+        chain={props.chain}
+      />
     </>
   )
 }

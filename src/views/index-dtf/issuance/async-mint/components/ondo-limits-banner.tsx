@@ -2,7 +2,7 @@ import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { cn } from '@/lib/utils'
 import { Trans, useLingui } from '@lingui/react/macro'
 import { Clock } from 'lucide-react'
-import { useOndoLimits } from '../hooks/use-ondo-limits'
+import { useOndoLimits } from '@/hooks/use-ondo-limits'
 
 const formatResumeTime = (nextOpen: string | null | undefined) => {
   if (!nextOpen) return null

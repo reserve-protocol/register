@@ -6,39 +6,28 @@ import {
   reduceMintPrompt,
 } from '../large-mint-prompt-state'
 
+const BASE: MintPromptSignals = {
+  rawCapacity: false,
+  rawImpact: false,
+  rawLarge: false,
+  rawError: false,
+  hasValidQuote: false,
+  isApplicable: true,
+}
+
 // Signal presets for the common quote phases.
 const SIGNALS: Record<string, MintPromptSignals> = {
-  // Idle: in buy context, qualifying input, nothing resolved yet (initial load / refetch).
-  refetching: {
-    rawLarge: false,
-    rawError: false,
-    hasValidQuote: false,
-    isApplicable: true,
-  },
-  largeQuote: {
-    rawLarge: true,
-    rawError: false,
-    hasValidQuote: true,
-    isApplicable: true,
-  },
-  error: {
-    rawLarge: false,
-    rawError: true,
-    hasValidQuote: false,
-    isApplicable: true,
-  },
-  smallValidQuote: {
-    rawLarge: false,
-    rawError: false,
-    hasValidQuote: true,
-    isApplicable: true,
-  },
-  notApplicable: {
-    rawLarge: false,
-    rawError: false,
-    hasValidQuote: false,
-    isApplicable: false,
-  },
+  // Idle: in context, qualifying input, nothing resolved yet (initial load / refetch).
+  refetching: { ...BASE },
+  largeQuote: { ...BASE, rawLarge: true, hasValidQuote: true },
+  error: { ...BASE, rawError: true },
+  smallValidQuote: { ...BASE, hasValidQuote: true },
+  notApplicable: { ...BASE, isApplicable: false },
+  // Valid quote whose price impact crosses the threshold (any size).
+  impactQuote: { ...BASE, rawImpact: true, hasValidQuote: true },
+  // Input above the Ondo per-transaction cap; independent of the quote.
+  overCapacity: { ...BASE, rawCapacity: true },
+  overCapacityWithQuote: { ...BASE, rawCapacity: true, hasValidQuote: true },
 }
 
 // Fold a sequence of signal phases onto the initial state.
@@ -118,6 +107,122 @@ describe('reduceMintPrompt', () => {
   it('resets (latch + dismissal) when no longer applicable', () => {
     const userDismissed: MintPromptState = { variant: 'error', dismissed: true }
     expect(run([SIGNALS.notApplicable], userDismissed)).toEqual(
+      INITIAL_MINT_PROMPT_STATE
+    )
+  })
+
+  it('latches the impact variant on a high-impact valid quote', () => {
+    expect(run([SIGNALS.impactQuote])).toEqual({
+      variant: 'impact',
+      dismissed: false,
+    })
+  })
+
+  it('keeps the impact variant through a refetch', () => {
+    expect(run([SIGNALS.impactQuote, SIGNALS.refetching])).toEqual({
+      variant: 'impact',
+      dismissed: false,
+    })
+  })
+
+  it('closes the impact card when a clean quote resolves', () => {
+    expect(run([SIGNALS.impactQuote, SIGNALS.smallValidQuote])).toEqual(
+      INITIAL_MINT_PROMPT_STATE
+    )
+  })
+
+  it('latches the capacity variant when the input exceeds the cap', () => {
+    expect(run([SIGNALS.overCapacity])).toEqual({
+      variant: 'capacity',
+      dismissed: false,
+    })
+  })
+
+  it('clears the capacity card the moment its signal drops, even mid-refetch', () => {
+    // Capacity derives from the input value, not the quote, so a refetch
+    // (no raw signals) means the condition genuinely stopped holding.
+    expect(run([SIGNALS.overCapacity, SIGNALS.refetching])).toEqual(
+      INITIAL_MINT_PROMPT_STATE
+    )
+  })
+
+  it('prioritizes capacity over every other concern', () => {
+    const everything: MintPromptSignals = {
+      ...BASE,
+      rawCapacity: true,
+      rawImpact: true,
+      rawLarge: true,
+      hasValidQuote: true,
+    }
+    expect(run([everything])).toEqual({
+      variant: 'capacity',
+      dismissed: false,
+    })
+    expect(run([{ ...BASE, rawCapacity: true, rawError: true }])).toEqual({
+      variant: 'capacity',
+      dismissed: false,
+    })
+  })
+
+  it('prioritizes impact over large when both fire on one quote', () => {
+    expect(
+      run([{ ...BASE, rawImpact: true, rawLarge: true, hasValidQuote: true }])
+    ).toEqual({ variant: 'impact', dismissed: false })
+  })
+
+  it('never downgrades impact -> large when consecutive quotes disagree (the flicker fix)', () => {
+    // Quote A: impact 1.2% -> impact latches. Quote B: impact 0.9% but still
+    // >= $50k -> rawLarge only. The card must stay on impact, not alternate.
+    expect(run([SIGNALS.impactQuote, SIGNALS.largeQuote])).toEqual({
+      variant: 'impact',
+      dismissed: false,
+    })
+    // ...and it stays put across further oscillation.
+    expect(
+      run([
+        SIGNALS.impactQuote,
+        SIGNALS.largeQuote,
+        SIGNALS.impactQuote,
+        SIGNALS.largeQuote,
+      ])
+    ).toEqual({ variant: 'impact', dismissed: false })
+  })
+
+  it('escalates large -> impact when a later quote crosses the threshold', () => {
+    expect(run([SIGNALS.largeQuote, SIGNALS.impactQuote])).toEqual({
+      variant: 'impact',
+      dismissed: false,
+    })
+  })
+
+  it('does not let a transient error displace a latched impact or large card', () => {
+    expect(run([SIGNALS.impactQuote, SIGNALS.error])).toEqual({
+      variant: 'impact',
+      dismissed: false,
+    })
+    expect(run([SIGNALS.largeQuote, SIGNALS.error])).toEqual({
+      variant: 'large',
+      dismissed: false,
+    })
+  })
+
+  it('switches to a live concern when the capacity signal drops in the same commit', () => {
+    expect(run([SIGNALS.overCapacity, SIGNALS.impactQuote])).toEqual({
+      variant: 'impact',
+      dismissed: false,
+    })
+  })
+
+  it('keeps a dismissed capacity card dismissed while over the cap, then resets when under', () => {
+    const userDismissed: MintPromptState = {
+      variant: 'capacity',
+      dismissed: true,
+    }
+    expect(run([SIGNALS.overCapacityWithQuote], userDismissed)).toEqual({
+      variant: 'capacity',
+      dismissed: true,
+    })
+    expect(run([SIGNALS.smallValidQuote], userDismissed)).toEqual(
       INITIAL_MINT_PROMPT_STATE
     )
   })

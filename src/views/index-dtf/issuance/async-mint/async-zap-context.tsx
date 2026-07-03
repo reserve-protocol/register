@@ -32,7 +32,7 @@ import {
   slippageAtom,
   useExistingBalancesAtom,
 } from './atoms'
-import { useOndoLimits } from './hooks/use-ondo-limits'
+import { useOndoLimits } from '@/hooks/use-ondo-limits'
 import { useTrackAsyncZap } from './hooks/use-track-async-zap'
 
 // MetaMask caps EIP-5792 `wallet_sendCalls` at 10 calls per batch.

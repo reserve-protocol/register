@@ -489,8 +489,8 @@ const IndexDTFMobileActions = () => {
   const isRestricted = useIsComplianceRestricted()
   const { pathname } = useLocation()
   // WHY: issuance mounts its own inline ZapperWrapper with a different config
-  // (debug, no hideLargeMintPrompt) — never mount a second instance there, or
-  // the two fight over shared zapper state. One Zapper per route.
+  // (debug, inline prompt) — never mount a second instance there, or the two
+  // fight over shared zapper state. One Zapper per route.
   const isIssuanceRoute = pathname.includes(`/${ROUTES.ISSUANCE}`)
 
   if (!indexDTF) return null
@@ -508,7 +508,6 @@ const IndexDTFMobileActions = () => {
           defaultSource={quoteSource}
           sellOnly={isDeprecated}
           disabled={isRestricted}
-          hideLargeMintPrompt
         />
       )}
     </>

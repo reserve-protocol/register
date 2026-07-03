@@ -7,7 +7,7 @@ export const dataTypeAtom = atom<DataType>('price')
 
 export type ChartType = 'line' | 'candlestick'
 
-export const chartTypeAtom = atom<ChartType>('line')
+export const chartTypeAtom = atom<ChartType>('candlestick')
 
 export const priceHistoryAvailabilityAtom = atom<
   { address: string; firstTimestamp: number | null } | undefined

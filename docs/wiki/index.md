@@ -17,3 +17,4 @@ One line per page. Agents: start here, follow links, keep this list current on i
 ## Domains
 
 - [[design-system]] — tokens, type, motion, ui primitives; never hardcode colors or change shared defaults
+- [[zapper-prompt]] — CoW Swap suggestion card beside the instant zapper: variant priority, latch reducer invariants, Ondo capacity gating

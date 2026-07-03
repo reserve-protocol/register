@@ -56,42 +56,35 @@ const ChartBodyArea = ({
   const bodyHeight = getBodyHeight(isYieldIndexDTF, isYieldMode)
   const skeletonHeight = getSkeletonHeight(isYieldIndexDTF, isYieldMode)
 
-  // Candlestick is a standard-DTF, price-only view with its own data source.
+  const lineBody = isLoading ? (
+    <ChartSkeleton className={skeletonHeight} />
+  ) : chartData.length === 0 ? null : (
+    <PriceChartBody
+      chartData={chartData as any}
+      range={range}
+      dtfStart={dtf?.timestamp}
+      launchTimestamp={dtf?.timestamp}
+      xDomain={xDomain}
+      className={bodyHeight}
+    />
+  )
+
+  // Candlestick is a standard-DTF, price-only view with its own data source;
+  // when that source has no candles, fall back to the line chart rather than
+  // leaving the (default) chart area blank.
   if (chartType === 'candlestick' && !isYieldIndexDTF) {
     return (
       <div className={bodyHeight}>
         <CandlestickChart
           bodyHeight={bodyHeight}
           skeletonHeight={skeletonHeight}
+          fallback={lineBody}
         />
       </div>
     )
   }
 
-  if (isLoading) {
-    return (
-      <div className={bodyHeight}>
-        <ChartSkeleton className={skeletonHeight} />
-      </div>
-    )
-  }
-
-  if (chartData.length === 0) {
-    return <div className={bodyHeight} />
-  }
-
-  return (
-    <div className={bodyHeight}>
-      <PriceChartBody
-        chartData={chartData as any}
-        range={range}
-        dtfStart={dtf?.timestamp}
-        launchTimestamp={dtf?.timestamp}
-        xDomain={xDomain}
-        className={bodyHeight}
-      />
-    </div>
-  )
+  return <div className={bodyHeight}>{lineBody}</div>
 }
 
 const useSyncApyHistory = () => {

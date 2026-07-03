@@ -35,6 +35,18 @@ export type DtfOndoLimits = {
   assets: OndoAssetLimit[]
 }
 
+// Most constrained per-transaction cap across the basket's Ondo assets.
+// Assets without a reported cap are skipped; undefined when none report one.
+export const getMinOndoCapacityUsd = (
+  assets: OndoAssetLimit[]
+): number | undefined => {
+  const caps = assets
+    .map((asset) => asset.capacityUsd)
+    .filter((cap): cap is number => cap !== undefined)
+
+  return caps.length > 0 ? Math.min(...caps) : undefined
+}
+
 export const fetchDtfOndoLimits = async (
   chainId: number,
   address: string
