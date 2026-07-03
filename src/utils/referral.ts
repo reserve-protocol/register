@@ -107,7 +107,10 @@ export const linkWalletToReferral = (wallet: Address) => {
       }
 
       safeSet(linkedKey, '1')
-      mixpanel.track('referral_wallet_linked')
+      mixpanel.track('referral_wallet_linked', {
+        wallet: wallet.toLowerCase(),
+        code,
+      })
     })
     .catch(() => {
       linkedThisSession.delete(linkedKey)
