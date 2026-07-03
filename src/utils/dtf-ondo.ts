@@ -35,16 +35,100 @@ export type DtfOndoLimits = {
   assets: OndoAssetLimit[]
 }
 
-// Most constrained per-transaction cap across the basket's Ondo assets.
-// Assets without a reported cap are skipped; undefined when none report one.
-export const getMinOndoCapacityUsd = (
-  assets: OndoAssetLimit[]
-): number | undefined => {
-  const caps = assets
-    .map((asset) => asset.capacityUsd)
-    .filter((cap): cap is number => cap !== undefined)
+export type OndoSession = keyof OndoSessionLimits
 
-  return caps.length > 0 ? Math.min(...caps) : undefined
+const SESSION_CYCLE: OndoSession[] = [
+  'premarket',
+  'regular',
+  'postmarket',
+  'overnight',
+]
+
+// Max USD of DTF mintable/redeemable per transaction: each asset absorbs its
+// basket-weight fraction of the order, so the binding constraint is
+// min(capacityUsd / weight). `shares` maps lowercase address -> percent string
+// ("24.80"). Assets without a reported cap or a positive weight are skipped;
+// undefined when none qualify.
+export const getOndoWeightedMaxUsd = (
+  assets: OndoAssetLimit[],
+  shares: Record<string, string>
+): number | undefined => {
+  const maxes = assets.flatMap((asset) => {
+    if (asset.capacityUsd === undefined) return []
+    const weight = Number(shares[asset.address.toLowerCase()])
+    if (!(weight > 0)) return []
+    return [asset.capacityUsd / (weight / 100)]
+  })
+
+  return maxes.length > 0 ? Math.min(...maxes) : undefined
+}
+
+// Displayed cap is a conservative round number: $10k steps, $1k under $10k.
+export const floorOndoMaxUsd = (value: number): number => {
+  const step = value >= 10_000 ? 10_000 : 1_000
+  return Math.floor(value / step) * step
+}
+
+// Minting through the underlying basket needs the market open and every
+// reported asset cap above zero.
+export const isOndoMintingAvailable = (
+  market: OndoMarketStatus | null,
+  assets: OndoAssetLimit[]
+): boolean =>
+  assets.length > 0 &&
+  market?.isOpen === true &&
+  assets.every(
+    (asset) => asset.capacityUsd === undefined || asset.capacityUsd > 0
+  )
+
+// Not the negation of available: with missing market data and healthy caps,
+// neither holds (fails open). A paused asset flags unavailable regardless.
+export const isOndoMintingUnavailable = (
+  market: OndoMarketStatus | null,
+  assets: OndoAssetLimit[]
+): boolean =>
+  assets.length > 0 &&
+  (market?.isOpen === false ||
+    assets.some((asset) => asset.capacityUsd === 0))
+
+// First session after `session` (wrapping; the current session is checked
+// last, since an asset can be halted within an otherwise open session and
+// resume tomorrow) where every asset has a positive limit. Undefined for
+// unknown sessions ("closed") or when no session qualifies.
+export const getNextTradableSession = (
+  session: string,
+  assets: OndoAssetLimit[]
+): OndoSession | undefined => {
+  const start = SESSION_CYCLE.indexOf(session as OndoSession)
+  if (start === -1) return undefined
+
+  for (let i = 1; i <= SESSION_CYCLE.length; i++) {
+    const candidate = SESSION_CYCLE[(start + i) % SESSION_CYCLE.length]
+    // A missing bucket falls back to the regular cap — same convention as the
+    // API's sessionCapacity, which produces capacityUsd from these limits.
+    const tradable = assets.every(
+      (asset) =>
+        (asset.sessionLimits?.[candidate] ??
+          asset.sessionLimits?.regular ??
+          0) > 0
+    )
+    if (tradable) return candidate
+  }
+
+  return undefined
+}
+
+// "Jul 6, 9:30 AM" in the viewer's locale and timezone; null when unknown.
+export const formatOndoTime = (iso: string | null | undefined): string | null => {
+  if (!iso) return null
+  const date = new Date(iso)
+  if (Number.isNaN(date.getTime())) return null
+  return date.toLocaleString(undefined, {
+    month: 'short',
+    day: 'numeric',
+    hour: 'numeric',
+    minute: '2-digit',
+  })
 }
 
 export const fetchDtfOndoLimits = async (

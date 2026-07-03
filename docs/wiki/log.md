@@ -1,6 +1,6 @@
 ---
 title: Log
-updated: 2026-07-02
+updated: 2026-07-03
 type: log
 ---
 
@@ -32,3 +32,7 @@ Append-only chronological record: lessons, corrections, friction. Newest section
 - Fastify ordering gotcha: schema validation runs BEFORE preHandler, so a "guard" registered as preHandler does not shield validation; header-only guards belong on onRequest.
 - referral follow-up (user-directed): reserve-api branch re-based onto origin/staging (deploy flow), localStorage helpers kept over atomWithStorage (no reactive consumer; dynamic flag keys don't fit atoms). /code-review high (workflow, 15 agents) then found what two Dark/Light passes missed — all three real bugs shared one root cause: captureReferral lived inside React's effect tree, where child effects (AtomUpdater link, Redirects navigate) run first. Fix was structural, not choreographic: capture to storage at module load in index.tsx, mixpanel half stays post-init. Lesson: when several findings share a root cause, fix the structure once instead of patching each ordering.
 - referral scope cut (user-directed): reserve-api piece removed entirely — Mixpanel is the single attribution store (`referral_wallet_linked` with explicit wallet+code is the link record; Mixpanel export API covers extraction). reserve-api PR #212 closed unmerged, branch feature/referral-links kept on the remote as the archive of the reviewed table+endpoint if a DB record is ever wanted. Register dedupe flag re-scoped from API base to Mixpanel project key.
+
+- weighted-ondo-limits: capacity cap re-derived as weighted `min(capacityUsd / weight)` (see [[decisions]]); new `closed-impact`/`closed-error` prompt variants fill the off-hours gap where high-impact or failed quotes previously showed nothing; signals extracted to a pure `deriveMintPromptSignals` after review flagged the spec-critical booleans were untested inline component code.
+- Lesson (from the Dark reviewer's one Important find): removing a gate from a latch's reset condition (`isApplicable` lost the off-hours term so closed variants could latch) silently un-protects every state the gate was covering — the latched CoW CTA survived a flip to minting-unavailable for a full refetch cycle. When touching a latch reset, re-enumerate what each removed term was protecting and encode it as an explicit rule + test.
+- Lesson: client and API disagreed on missing session buckets (client treated missing as blocked; the API's `sessionCapacity` falls back to the regular cap). For optional payload fields, read the producing side (`reserve-api`) before choosing an interpretation.

@@ -1,6 +1,8 @@
 import { describe, it, expect } from 'vitest'
 import {
+  deriveMintPromptSignals,
   INITIAL_MINT_PROMPT_STATE,
+  MintPromptInputs,
   MintPromptSignals,
   MintPromptState,
   reduceMintPrompt,
@@ -8,10 +10,13 @@ import {
 
 const BASE: MintPromptSignals = {
   rawCapacity: false,
+  rawClosedImpact: false,
+  rawClosedError: false,
   rawImpact: false,
   rawLarge: false,
   rawError: false,
   hasValidQuote: false,
+  mintingUnavailable: false,
   isApplicable: true,
 }
 
@@ -28,6 +33,16 @@ const SIGNALS: Record<string, MintPromptSignals> = {
   // Input above the Ondo per-transaction cap; independent of the quote.
   overCapacity: { ...BASE, rawCapacity: true },
   overCapacityWithQuote: { ...BASE, rawCapacity: true, hasValidQuote: true },
+  // Minting unavailable: a high-impact secondary-market quote / no route at all.
+  closedImpactQuote: {
+    ...BASE,
+    rawClosedImpact: true,
+    hasValidQuote: true,
+    mintingUnavailable: true,
+  },
+  closedError: { ...BASE, rawClosedError: true, mintingUnavailable: true },
+  // Mid-refetch right after minting flipped unavailable.
+  refetchingUnavailable: { ...BASE, mintingUnavailable: true },
 }
 
 // Fold a sequence of signal phases onto the initial state.
@@ -225,5 +240,265 @@ describe('reduceMintPrompt', () => {
     expect(run([SIGNALS.smallValidQuote], userDismissed)).toEqual(
       INITIAL_MINT_PROMPT_STATE
     )
+  })
+
+  it('latches the closed variants and keeps them through a refetch', () => {
+    expect(
+      run([SIGNALS.closedImpactQuote, SIGNALS.refetchingUnavailable])
+    ).toEqual({
+      variant: 'closed-impact',
+      dismissed: false,
+    })
+    expect(run([SIGNALS.closedError, SIGNALS.refetchingUnavailable])).toEqual({
+      variant: 'closed-error',
+      dismissed: false,
+    })
+  })
+
+  it('drops a latched CoW card the moment minting flips unavailable, even mid-refetch', () => {
+    // Without this, the CoW CTA would point at stale liquidity for a full
+    // refetch cycle until the closed signals resolve.
+    expect(run([SIGNALS.impactQuote, SIGNALS.refetchingUnavailable])).toEqual(
+      INITIAL_MINT_PROMPT_STATE
+    )
+    expect(run([SIGNALS.largeQuote, SIGNALS.refetchingUnavailable])).toEqual(
+      INITIAL_MINT_PROMPT_STATE
+    )
+    expect(run([SIGNALS.error, SIGNALS.refetchingUnavailable])).toEqual(
+      INITIAL_MINT_PROMPT_STATE
+    )
+  })
+
+  it('closes a closed card when a clean quote resolves', () => {
+    // Also models an enso quote resolving while unavailable: rawClosedImpact
+    // excludes enso, so the commit looks like a plain valid quote.
+    expect(run([SIGNALS.closedImpactQuote, SIGNALS.smallValidQuote])).toEqual(
+      INITIAL_MINT_PROMPT_STATE
+    )
+    expect(run([SIGNALS.closedError, SIGNALS.smallValidQuote])).toEqual(
+      INITIAL_MINT_PROMPT_STATE
+    )
+  })
+
+  it('escalates a latched CoW card when the market flips unavailable', () => {
+    expect(run([SIGNALS.impactQuote, SIGNALS.closedImpactQuote])).toEqual({
+      variant: 'closed-impact',
+      dismissed: false,
+    })
+    expect(run([SIGNALS.error, SIGNALS.closedError])).toEqual({
+      variant: 'closed-error',
+      dismissed: false,
+    })
+    expect(run([SIGNALS.largeQuote, SIGNALS.closedError])).toEqual({
+      variant: 'closed-error',
+      dismissed: false,
+    })
+  })
+
+  it('never downgrades closed-impact -> closed-error on a transient error', () => {
+    expect(run([SIGNALS.closedImpactQuote, SIGNALS.closedError])).toEqual({
+      variant: 'closed-impact',
+      dismissed: false,
+    })
+  })
+
+  it('escalates closed-error -> closed-impact when a quote resolves', () => {
+    expect(run([SIGNALS.closedError, SIGNALS.closedImpactQuote])).toEqual({
+      variant: 'closed-impact',
+      dismissed: false,
+    })
+  })
+
+  it('replaces a latched closed card with a live CoW concern once minting resumes', () => {
+    // A CoW signal firing proves minting is available again — the stale
+    // "come back later" card must not outrank it on priority alone.
+    expect(run([SIGNALS.closedImpactQuote, SIGNALS.impactQuote])).toEqual({
+      variant: 'impact',
+      dismissed: false,
+    })
+    expect(run([SIGNALS.closedError, SIGNALS.largeQuote])).toEqual({
+      variant: 'large',
+      dismissed: false,
+    })
+    expect(run([SIGNALS.closedError, SIGNALS.smallValidQuote])).toEqual(
+      INITIAL_MINT_PROMPT_STATE
+    )
+  })
+
+  it('prioritizes capacity over the closed variants', () => {
+    expect(
+      run([{ ...BASE, rawCapacity: true, rawClosedImpact: true }])
+    ).toEqual({ variant: 'capacity', dismissed: false })
+  })
+
+  it('hands a latched capacity card over to a closed variant when the market flips', () => {
+    expect(run([SIGNALS.overCapacity, SIGNALS.closedImpactQuote])).toEqual({
+      variant: 'closed-impact',
+      dismissed: false,
+    })
+    expect(run([SIGNALS.overCapacity, SIGNALS.closedError])).toEqual({
+      variant: 'closed-error',
+      dismissed: false,
+    })
+  })
+
+  it('keeps a dismissed closed card dismissed through refetch, then resets on a clean quote', () => {
+    const userDismissed: MintPromptState = {
+      variant: 'closed-impact',
+      dismissed: true,
+    }
+    expect(
+      run([SIGNALS.refetching, SIGNALS.closedImpactQuote], userDismissed)
+    ).toEqual({ variant: 'closed-impact', dismissed: true })
+    expect(run([SIGNALS.smallValidQuote], userDismissed)).toEqual(
+      INITIAL_MINT_PROMPT_STATE
+    )
+    expect(run([SIGNALS.notApplicable], userDismissed)).toEqual(
+      INITIAL_MINT_PROMPT_STATE
+    )
+  })
+})
+
+// In-context defaults: minting available, healthy input, nothing resolved.
+const INPUTS: MintPromptInputs = {
+  inContext: true,
+  inputValue: 1_000,
+  hasValidQuote: false,
+  hasQuoteError: false,
+  source: undefined,
+  truePriceImpact: 0,
+  mintingAvailable: true,
+  mintingUnavailable: false,
+  maxMintUsd: 500_000,
+}
+
+const closed: Partial<MintPromptInputs> = {
+  mintingAvailable: false,
+  mintingUnavailable: true,
+}
+
+const derive = (overrides: Partial<MintPromptInputs>) =>
+  deriveMintPromptSignals({ ...INPUTS, ...overrides })
+
+describe('deriveMintPromptSignals', () => {
+  it('raises capacity above the floored weighted max, pre-quote', () => {
+    expect(derive({ inputValue: 500_001 }).rawCapacity).toBe(true)
+    expect(derive({ inputValue: 500_000 }).rawCapacity).toBe(false)
+  })
+
+  it('suppresses capacity while minting is not available or the cap is unknown/zero', () => {
+    expect(
+      derive({ inputValue: 500_001, mintingAvailable: false }).rawCapacity
+    ).toBe(false)
+    expect(
+      derive({ inputValue: 500_001, maxMintUsd: undefined }).rawCapacity
+    ).toBe(false)
+    expect(derive({ inputValue: 500_001, ...closed, maxMintUsd: 0 }).rawCapacity).toBe(
+      false
+    )
+  })
+
+  it('raises closed-impact only for high-impact non-enso quotes while unavailable', () => {
+    const highImpact: Partial<MintPromptInputs> = {
+      ...closed,
+      hasValidQuote: true,
+      truePriceImpact: 1.2,
+    }
+    expect(derive({ ...highImpact, source: 'zap' }).rawClosedImpact).toBe(true)
+    expect(derive({ ...highImpact, source: 'velora' }).rawClosedImpact).toBe(
+      true
+    )
+    expect(derive({ ...highImpact, source: 'enso' }).rawClosedImpact).toBe(
+      false
+    )
+    expect(
+      derive({ ...highImpact, source: 'zap', truePriceImpact: 1 })
+        .rawClosedImpact
+    ).toBe(false)
+    // Positive-for-user impact never warns.
+    expect(
+      derive({ ...highImpact, source: 'zap', truePriceImpact: -3 })
+        .rawClosedImpact
+    ).toBe(false)
+    // Market open and healthy: the plain impact signal owns it instead.
+    expect(
+      derive({ hasValidQuote: true, truePriceImpact: 1.2, source: 'zap' })
+    ).toMatchObject({ rawClosedImpact: false, rawImpact: true })
+  })
+
+  it('raises closed-error instead of error while unavailable', () => {
+    expect(derive({ ...closed, hasQuoteError: true })).toMatchObject({
+      rawClosedError: true,
+      rawError: false,
+    })
+    expect(derive({ hasQuoteError: true })).toMatchObject({
+      rawClosedError: false,
+      rawError: true,
+    })
+  })
+
+  it('gates the CoW signals off while unavailable', () => {
+    expect(
+      derive({
+        ...closed,
+        hasValidQuote: true,
+        inputValue: 60_000,
+        truePriceImpact: 1.2,
+        source: 'zap',
+      })
+    ).toMatchObject({ rawImpact: false, rawLarge: false })
+  })
+
+  it('raises large on a valid quote at or above the large-order floor', () => {
+    expect(derive({ hasValidQuote: true, inputValue: 50_000 }).rawLarge).toBe(
+      true
+    )
+    expect(derive({ hasValidQuote: true, inputValue: 49_999 }).rawLarge).toBe(
+      false
+    )
+  })
+
+  it('keeps every raw signal inside the isApplicable domain (input >= $100)', () => {
+    const signals = derive({
+      ...closed,
+      inputValue: 99,
+      hasValidQuote: true,
+      hasQuoteError: true,
+      truePriceImpact: 10,
+      source: 'zap',
+    })
+    expect(signals.isApplicable).toBe(false)
+    expect(signals).toMatchObject({
+      rawClosedImpact: false,
+      rawClosedError: false,
+      rawImpact: false,
+      rawError: false,
+    })
+  })
+
+  it('raises nothing out of context', () => {
+    const signals = derive({
+      inContext: false,
+      inputValue: 1_000_000,
+      hasValidQuote: true,
+      truePriceImpact: 10,
+    })
+    expect(signals).toEqual({
+      rawCapacity: false,
+      rawClosedImpact: false,
+      rawClosedError: false,
+      rawImpact: false,
+      rawLarge: false,
+      rawError: false,
+      hasValidQuote: true,
+      mintingUnavailable: false,
+      isApplicable: false,
+    })
+  })
+
+  it('leaves a sub-$1k cap (floored to 0) to the quote-failure path', () => {
+    // floorOndoMaxUsd(<1000) = 0: no pre-quote warning even though minting is
+    // available — the enso failure surfaces as the error card instead.
+    expect(derive({ inputValue: 500, maxMintUsd: 0 }).rawCapacity).toBe(false)
   })
 })
