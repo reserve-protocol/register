@@ -6,10 +6,12 @@ sources:
   - src/utils/referral.ts
 ---
 
-Influencer campaign attribution. Links land on `/?referral=<code>`; the app
-stores the code and reports wallet↔code to reserve-api. Conversions are NOT
-computed here or in reserve-api — they are settled post-campaign from on-chain
-data (subgraph transfers), so client data is attribution-only and safe to lose.
+Influencer campaign attribution, **Mixpanel-only** (the reserve-api piece was
+built, reviewed, then cut — see [[decisions]]). Links land on
+`/?referral=<code>`; everything the campaign needs lives in Mixpanel events,
+extracted later via the Mixpanel export API. Conversions are settled
+post-campaign from on-chain data (subgraph transfers), never from client
+events.
 
 Flow:
 - `storeReferralFromUrl()` runs in `src/index.tsx` BEFORE React renders —
@@ -24,21 +26,16 @@ Flow:
   exists, so `referral_landed` is the reliable landing event, not pageviews.
 - Last-touch: a new `?referral=` always overwrites `localStorage
   register:referral` (bare code string, no expiry — multi-month campaign).
-  Every subsequent Mixpanel event carries the latest code via the `referral`
-  super property.
-- `linkWalletToReferral()` fires in `AtomUpdater` on wallet connect: one POST
-  to reserve-api `POST /referrals/link` per wallet+code. Dedupe = in-memory
-  session set (guards concurrent effect re-runs) + localStorage flag
-  `register:referral-linked:<RESERVE_API>:<wallet>:<code>` — the API base is
-  in the key so staging-era flags can't suppress prod POSTs after the
-  staging pin flips. Server keeps full link history (PK code+wallet,
-  code-first: settlement reads are "wallets by code").
+  Every subsequent Mixpanel event (transactions, zaps, clicks, pageviews)
+  carries the latest code via the `referral` super property.
+- `linkWalletToReferral()` fires in `AtomUpdater` on wallet connect:
+  `referral_wallet_linked` with explicit `{ wallet, code }` — THE attribution
+  record. Deduped once per wallet+code via an in-memory session set plus a
+  localStorage flag scoped by the Mixpanel project key (staging-project flags
+  can't suppress the prod event).
 
 Gotchas:
-- Code regex `/^[a-zA-Z0-9_-]{1,32}$/` must stay in sync with reserve-api
-  `src/routes/referrals/link` (drift = permanent 400 retry on every connect).
 - All localStorage access goes through safeGet/safeSet — bare calls throw in
   Safari Private Mode and would crash the init effect.
-- reserve-api endpoint is origin-filtered (reserve.org hosts + localhost) via
-  an `onRequest` guard — spoofable deterrent, acceptable because credit is
-  settled on-chain. See [[project]] for the API base URL staging-pin risk.
+- Marketing funnels must key on `referral_landed`; the automatic first
+  pageview of a landing always lacks the `referral` prop (init-order).

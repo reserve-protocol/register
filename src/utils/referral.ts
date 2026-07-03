@@ -1,9 +1,7 @@
 import mixpanel from 'mixpanel-browser/src/loaders/loader-module-core'
 import { Address } from 'viem'
-import { RESERVE_API } from './constants'
 
 const REFERRAL_KEY = 'register:referral'
-// Keep in sync with reserve-api referrals/link route
 const CODE_REGEX = /^[a-zA-Z0-9_-]{1,32}$/
 
 // localStorage throws in Safari Private Mode / storage-blocked webviews —
@@ -74,45 +72,26 @@ export const registerReferralSuperProperty = () => {
 }
 
 // Guards concurrent effect re-runs (and caps storage-blocked browsers at one
-// POST + one event per session).
+// event per session).
 const linkedThisSession = new Set<string>()
 
-// Attribution is the only fact the chain can't know; conversions are settled
-// from on-chain data outside this app. The server dedupes on (wallet, code) —
-// the localStorage flag just avoids re-POSTing on every reconnect.
+// The wallet<>code link lives in Mixpanel only: this event is the attribution
+// record, extracted later via the Mixpanel export API. Conversions are
+// settled post-campaign from on-chain data.
 export const linkWalletToReferral = (wallet: Address) => {
   const code = getActiveReferral()
   if (!code) return
 
-  if (!RESERVE_API) {
-    console.error('Referral link skipped: RESERVE_API is not set')
-    return
-  }
-
-  // Scoped by API base so flags set against staging can't suppress the prod
-  // POST after the base URL flips.
-  const linkedKey = `register:referral-linked:${RESERVE_API}:${wallet.toLowerCase()}:${code}`
+  // Scoped by mixpanel project so events fired against the staging project
+  // can't suppress the prod event after keys flip.
+  const project = import.meta.env.VITE_MIXPANEL_KEY || 'mixpanel_key'
+  const linkedKey = `register:referral-linked:${project}:${wallet.toLowerCase()}:${code}`
   if (linkedThisSession.has(linkedKey) || safeGet(linkedKey)) return
+
   linkedThisSession.add(linkedKey)
-
-  fetch(`${RESERVE_API}referrals/link`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ wallet, code }),
+  safeSet(linkedKey, '1')
+  mixpanel.track('referral_wallet_linked', {
+    wallet: wallet.toLowerCase(),
+    code,
   })
-    .then((res) => {
-      if (!res.ok) {
-        linkedThisSession.delete(linkedKey)
-        return
-      }
-
-      safeSet(linkedKey, '1')
-      mixpanel.track('referral_wallet_linked', {
-        wallet: wallet.toLowerCase(),
-        code,
-      })
-    })
-    .catch(() => {
-      linkedThisSession.delete(linkedKey)
-    })
 }
