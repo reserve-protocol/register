@@ -19,3 +19,7 @@ Register moved from a monolithic `CLAUDE.md` to the llm-workflow router + wiki. 
 ## 2026-07-02 — dtf-chat launcher styling contained, not upstreamed (yet)
 
 The `.rc-*` overrides in `src/app.css` restyle `@reserve-protocol/dtf-chat` internals. Kept in register deliberately (release window; cross-repo change too heavy now) but contained in one documented block. Real fix — launcher theming props/CSS variables in the dtf-chat package (reserve-ai repo) — is in [[progress]] backlog.
+
+## 2026-07-03 — Referral tracking is Mixpanel-only; conversions settle on-chain
+
+The referral campaign (influencer links → `/?referral=<code>`) stores attribution exclusively in Mixpanel: the `referral` super property on all events plus `referral_landed` and `referral_wallet_linked` (explicit `{ wallet, code }` — the link record, extracted later via the Mixpanel export API). A reserve-api piece (`referral_links` Postgres table + origin-guarded endpoint) was built and reviewed, then cut the same day — one store is enough, and the Mixpanel API covers extraction (reserve-api PR #212 closed unmerged; its branch holds the code if a DB record is ever wanted again). No conversion/mint tracking anywhere client-side: client events are spoofable, so credit is settled post-campaign from subgraph transfer data. Last-touch, full-history-per-wallet via distinct wallet+code events. See [[referral]].
