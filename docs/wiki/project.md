@@ -22,7 +22,7 @@ Register — the web interface for Reserve Protocol: **Index DTFs** (current foc
 - CI: typecheck is **blocking**; oxlint strict correctness subset on changed files; pre-commit runs oxlint on staged files. Baseline ~600 warnings grandfathered — new code shouldn't add warnings.
 - `chainIdAtom` is the chain source of truth — pass it to every wagmi hook; omitting `chainId` falls back to wallet/mainnet.
 - Transaction flow: pending → confirming → success/error with toasts, via `TransactionButton` (`src/components/ui/transaction-button.tsx`) — it handles wallet/chain validation.
-- Updater components sync chain → atoms and return `null` (`src/state/**/updater*.tsx`); only for imperative chain reads that don't fit a hook. Routes are code-split with `lazy()`.
+- Updater components sync chain → atoms and return `null` (`src/state/**/updater*.tsx`); only for imperative chain reads that don't fit a hook. Routes SHOULD be code-split with `lazy()` — today only async-mint actually is ([[improvements]] #5); new routes must be lazy.
 - Naming: kebab-case files/dirs (mandatory) · PascalCase component exports · UPPER_SNAKE_CASE constants · branches `feature/…`/`chore/…`.
 - Testing: vitest + jsdom, tests in `src/**/tests/**/*.test.{ts,tsx}`. Any hook/helper that transforms SDK/API/RPC data, derives financial values, coordinates tx state, or owns timers must have colocated tests covering weird paths (zero/missing data, invalid amounts, already-completed state, timer cleanup), not just happy paths.
 - Forms: react-hook-form + zod, `mode: 'onChange'`, `FormProvider` for complex forms.

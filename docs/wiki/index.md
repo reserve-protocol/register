@@ -10,6 +10,12 @@ One line per page. Agents: start here, follow links, keep this list current on i
 
 - [[project]] — product context, stack specifics, safety rules, UI register, active risks, kit overrides
 - [[sdk]] — Index DTF data goes through `@reserve-protocol/react-sdk`; discovery, boundaries, gotchas, data-source routing
+- [[ecosystem]] — map of sibling repos (GitHub links), where register wires each, version-bump blast radius
+- [[subgraphs]] — index + yield Goldsky subgraphs: entities, type semantics, USD caveats, what's NOT indexed
+- [[index-protocol]] — Folio contracts: version landscape 1→6, rebalance lifecycle, roles, trusted fillers
+- [[yield-protocol]] — RToken contracts: components, facades, throttles/redeemCustom, collateral status, spells
+- [[zapper]] — react-zapper package (one-instance rule, v2 contract), async-zap-sdk wizard, legacy yield zapV2
+- [[improvements]] — prioritized tech debt: read before features/bugfixes to avoid repeating bad patterns
 - [[progress]] — stage ledger and backlog
 - [[decisions]] — durable decisions with reasoning
 - [[log]] — append-only chronological record
