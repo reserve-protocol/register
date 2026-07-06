@@ -5,6 +5,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog'
+import { cn } from '@/lib/utils'
 import { getYouTubeEmbedUrl } from '@/utils/youtube'
 import { Trans, useLingui } from '@lingui/react/macro'
 import { X } from 'lucide-react'
@@ -20,11 +21,15 @@ const VideoModal = ({
   video,
   title,
   iframeTitle,
+  // Match the source video's ratio so YouTube doesn't letterbox it. Defaults to
+  // 16:9 (most DTF videos); pass an override for differently-sized ones.
+  aspectClassName = 'aspect-video',
   children,
 }: {
   video: string
   title?: ReactNode
   iframeTitle?: string
+  aspectClassName?: string
   children: ReactElement
 }) => {
   const { t } = useLingui()
@@ -52,7 +57,7 @@ const VideoModal = ({
             </span>
           </DialogClose>
         </div>
-        <div className="aspect-[5/3] w-full bg-black">
+        <div className={cn(aspectClassName, 'w-full bg-black')}>
           <iframe
             src={embedUrl}
             title={iframeTitle ?? t`Video`}

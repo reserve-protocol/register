@@ -8,7 +8,15 @@ import { useAtomValue } from 'jotai'
 import { Play } from 'lucide-react'
 import { useState } from 'react'
 
-const DTF_COVER_VIDEO = '/imgs/Neocloud_Thumbnails.webm'
+// Per-DTF animated cover thumbnails, keyed by symbol. PHOTON is the default for
+// any DTF without a dedicated one.
+const DTF_COVER_VIDEOS: Record<string, string> = {
+  PHOTON: '/imgs/PHOTON_Thumbnails.webm',
+  BUILDOUT: '/imgs/BUILDOUT_Thumbnails.webm',
+  NEOCLOUD: '/imgs/Neocloud_Thumbnails.webm',
+  POWER: '/imgs/POWER_Thumbnails.webm',
+}
+const DEFAULT_DTF_COVER_VIDEO = DTF_COVER_VIDEOS.PHOTON
 
 const DtfCover = ({ className }: { className?: string }) => {
   const { t } = useLingui()
@@ -18,6 +26,9 @@ const DtfCover = ({ className }: { className?: string }) => {
 
   const video = brand?.dtf?.video?.trim()
   const playableVideo = video && getYouTubeEmbedUrl(video) ? video : undefined
+  const coverVideo =
+    DTF_COVER_VIDEOS[dtf?.token.symbol?.toUpperCase() ?? ''] ??
+    DEFAULT_DTF_COVER_VIDEO
   const videoTitle = dtf?.token.symbol ? (
     <Trans>{dtf.token.symbol} explainer</Trans>
   ) : (
@@ -39,7 +50,7 @@ const DtfCover = ({ className }: { className?: string }) => {
       )}
     >
       <video
-        src={DTF_COVER_VIDEO}
+        src={coverVideo}
         className={cn(
           'block h-full w-full rounded-[inherit] object-cover transition-opacity duration-200',
           isVideoLoaded ? 'opacity-100' : 'opacity-0'

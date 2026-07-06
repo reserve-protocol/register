@@ -4,7 +4,7 @@ import { cn } from '@/lib/utils'
 import { Trans, useLingui } from '@lingui/react/macro'
 import { type ReactNode } from 'react'
 
-const DTF_VIDEO_URL = 'https://www.youtube.com/watch?v=EL9OHjIab_w'
+const DTF_VIDEO_URL = 'https://www.youtube.com/watch?v=vJMKgy36R04'
 
 const DTFExplainerButton = ({
   className,
@@ -24,6 +24,7 @@ const DTFExplainerButton = ({
         </Trans>
       }
       iframeTitle={t`DTF Explainer`}
+      aspectClassName="aspect-[16/10]"
     >
       <Button
         variant="outline"
