@@ -6,6 +6,7 @@ sources:
   - src/views/index-dtf/overview/components/charts/**
   - src/views/index-dtf/overview/hooks/use-dtf-price-history.ts
   - src/views/index-dtf/overview/hooks/use-btc-price-history.ts
+  - src/utils/chart-downsample.ts
 ---
 
 # Overview Charts (Index DTF price/candles)
@@ -18,8 +19,9 @@ Reserve API REST endpoints, not the SDK and not the subgraph.
 `historicalConfigs` in `price-chart-constants.ts` is the single source of
 range → `from`/`to`/`interval`/`bucket`. `interval` is what the API is asked
 for; `bucket` (seconds) is the display density applied client-side by
-`downsampleToBucket` (`downsample.ts`, keeps last point per bucket plus the
-first and last points — the last is the live "now" point):
+`downsampleToBucket` (`src/utils/chart-downsample.ts` — shared because the
+home page needs it too; keeps last point per bucket plus the first and last
+points — the last is the live "now" point):
 
 - 24H → fetch `5m`, bucket 15m (~97 pts)
 - 7D → fetch `1h`, no bucket (~169 pts)
@@ -45,7 +47,9 @@ override made YTD/1Y request 4.5k–8.8k hourly points (the "crazy chart" bug).
   an unpriced row ever share a timestamp, keep-last may drop the priced one —
   unobserved in real data so far.
 - The factsheet has a parallel range map (`factsheet/utils/constants.ts`
-  `getRangeParams`) — keep the two in sync when changing intervals.
+  `getRangeParams`) that deliberately stays coarser (24h→1h, 1m→1d) until
+  unified with `historicalConfigs` — that unification is in the
+  [[progress]] backlog; don't half-sync it.
 - Candlestick uses its own span-based intervals (`1h/4h/1d/7d/30d`) against
   `v2/historical/dtf/candles/` — a different endpoint with wider interval
   support than the line-chart one.

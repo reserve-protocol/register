@@ -1,5 +1,10 @@
 import { describe, expect, it } from 'vitest'
-import { downsampleToBucket, WEEK_IN_SECONDS } from '../downsample'
+import {
+  downsampleForSpan,
+  downsampleToBucket,
+  getDisplayBucket,
+  WEEK_IN_SECONDS,
+} from '../chart-downsample'
 
 const DAY = 86_400
 const HOUR = 3_600
@@ -50,5 +55,34 @@ describe('downsampleToBucket', () => {
         expect(resultTimestamps.has(daily[i].timestamp)).toBe(true)
       }
     }
+  })
+})
+
+describe('getDisplayBucket', () => {
+  it('mirrors the overview per-range policy', () => {
+    expect(getDisplayBucket(DAY)).toBe(900)
+    expect(getDisplayBucket(7 * DAY)).toBe(3_600)
+    expect(getDisplayBucket(30 * DAY)).toBe(21_600)
+    expect(getDisplayBucket(90 * DAY)).toBe(DAY)
+    expect(getDisplayBucket(365 * DAY)).toBe(DAY)
+    expect(getDisplayBucket(3 * 365 * DAY)).toBe(WEEK_IN_SECONDS)
+  })
+})
+
+describe('downsampleForSpan', () => {
+  it('collapses a 90d hourly series to daily density', () => {
+    const hourly = series(2161, HOUR)
+    const result = downsampleForSpan(hourly)
+
+    expect(result.length).toBeGreaterThan(89)
+    expect(result.length).toBeLessThan(94)
+    expect(result[0]).toBe(hourly[0])
+    expect(result[result.length - 1]).toBe(hourly[hourly.length - 1])
+  })
+
+  it('is a no-op when the data is already at display density', () => {
+    const daily = series(31, DAY)
+    expect(downsampleForSpan(daily)).toHaveLength(31)
+    expect(downsampleForSpan([])).toHaveLength(0)
   })
 })

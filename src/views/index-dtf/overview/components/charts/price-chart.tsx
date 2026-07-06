@@ -149,11 +149,17 @@ const PriceChart = () => {
   const isYieldMode = dataType === 'yield'
   const isBTCMode = dataType === 'priceBTC'
 
-  const { history, btcHistory, rangeAvailabilityHistory, timeseries, xDomain } =
-    usePriceChartData({ isBTCMode })
+  const {
+    history,
+    btcHistory,
+    rangeAvailabilityHistory,
+    timeseries,
+    fullTimeseries,
+    xDomain,
+  } = usePriceChartData({ isBTCMode })
   const apyHistory = useSyncApyHistory()
-  useSync7dChange(timeseries)
-  useSyncMarketCap(timeseries)
+  useSync7dChange(fullTimeseries)
+  useSyncMarketCap(fullTimeseries)
   useSyncPriceHistoryAvailability(dtf?.id, rangeAvailabilityHistory)
 
   const chartData = isYieldMode ? apyTimeseries : timeseries

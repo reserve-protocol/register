@@ -24,21 +24,26 @@ export type IndexDTFPerformance = {
 
 const REFRESH_INTERVAL = 1000 * 60 * 30 // 30 minutes
 
+// The only granularities historical/dtf serves — anything else is HTTP 400.
+export type FetchInterval = '5m' | '1h' | '1d'
+
 export type UseIndexDTFPriceHistoryParams = {
   address?: Address
   from: number
   to: number
-  interval: '5m' | '1h' | '1d'
+  interval: FetchInterval
   enabled?: boolean
   prefetchRanges?: Array<{
     from: number
     to: number
-    interval: '5m' | '1h' | '1d'
+    interval: FetchInterval
   }>
 }
 
 // The API occasionally returns duplicated rows for the same timestamp; keep
-// the last occurrence so the chart doesn't render vertical artifacts.
+// the last occurrence so the chart doesn't render vertical artifacts. Input
+// is expected in ascending timestamp order (API contract) — the fast path
+// returns it untouched; only the rebuilt array is re-sorted.
 export const dedupeByTimestamp = <T extends { timestamp: number }>(
   points: T[]
 ): T[] => {
@@ -53,7 +58,7 @@ export const dedupeByTimestamp = <T extends { timestamp: number }>(
 const fetchHistory = async (
   chainId: number,
   address: string,
-  range: { from: number; to: number; interval: '5m' | '1h' | '1d' },
+  range: { from: number; to: number; interval: FetchInterval },
   currentPrice?: number,
   supply?: bigint
 ): Promise<IndexDTFPerformance> => {

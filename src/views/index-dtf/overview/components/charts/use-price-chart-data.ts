@@ -1,4 +1,3 @@
-import { useIsMobile } from '@/hooks/use-media-query'
 import { btcPriceAtom } from '@/state/chain/atoms/chainAtoms'
 import {
   indexDTFAtom,
@@ -12,7 +11,7 @@ import {
   downsampleToBucket,
   WEEK_IN_SECONDS,
   WEEKLY_DOWNSAMPLE_THRESHOLD,
-} from './downsample'
+} from '@/utils/chart-downsample'
 import {
   currentHour,
   historicalConfigs,
@@ -23,7 +22,6 @@ export function usePriceChartData({ isBTCMode }: { isBTCMode: boolean }) {
   const dtf = useAtomValue(indexDTFAtom)
   const range = useAtomValue(performanceTimeRangeAtom)
   const currentBTCPrice = useAtomValue(btcPriceAtom)
-  const isMobile = useIsMobile()
 
   // Show 1 year of backfilled NAV before on-chain inception.
   const allRangeFrom = Math.max(0, (dtf?.timestamp || 0) - 31_536_000)
@@ -70,16 +68,23 @@ export function usePriceChartData({ isBTCMode }: { isBTCMode: boolean }) {
     enabled: isBTCMode,
   })
 
+  // Full-resolution series for derived stats (7d change, market cap) — the
+  // display series below may be bucketed down and lose the exact 7d point.
+  const fullTimeseries = useMemo(
+    () => history?.timeseries.filter(({ price }) => Boolean(price)) || [],
+    [history?.timeseries]
+  )
+
   const timeseries = useMemo(() => {
-    const filtered =
-      history?.timeseries.filter(({ price }) => Boolean(price)) || []
     const bucket =
       range === 'all'
-        ? filtered.length > WEEKLY_DOWNSAMPLE_THRESHOLD
+        ? fullTimeseries.length > WEEKLY_DOWNSAMPLE_THRESHOLD
           ? WEEK_IN_SECONDS
           : undefined
         : historicalConfigs[range].bucket
-    const raw = bucket ? downsampleToBucket(filtered, bucket) : filtered
+    const raw = bucket
+      ? downsampleToBucket(fullTimeseries, bucket)
+      : fullTimeseries
     const btc = btcHistory?.timeseries || []
     if (!btc.length && !currentBTCPrice) return raw
     const tolerance = { '5m': 300, '1h': 3_600, '1d': 86_400 }[config.interval]
@@ -107,7 +112,7 @@ export function usePriceChartData({ isBTCMode }: { isBTCMode: boolean }) {
       }
     })
   }, [
-    history?.timeseries,
+    fullTimeseries,
     btcHistory?.timeseries,
     currentBTCPrice,
     config.interval,
@@ -120,9 +125,7 @@ export function usePriceChartData({ isBTCMode }: { isBTCMode: boolean }) {
     rangeAvailabilityHistory:
       range === '1y' ? history : oneYearHistory,
     timeseries,
-    interval: config.interval,
-    isMobile,
-    range,
+    fullTimeseries,
     xDomain:
       range === 'all'
         ? undefined

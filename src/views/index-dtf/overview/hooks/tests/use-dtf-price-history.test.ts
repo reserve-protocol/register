@@ -24,7 +24,7 @@ describe('dedupeByTimestamp', () => {
     ])
   })
 
-  it('returns points sorted by timestamp after deduping', () => {
+  it('sorts the rebuilt array by timestamp when duplicates force a rebuild', () => {
     const points = [
       { timestamp: 3, price: 30 },
       { timestamp: 1, price: 10 },
