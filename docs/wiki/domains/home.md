@@ -14,17 +14,18 @@ cards, discover table, metrics.
 ## Featured cards data
 
 `use-featured-dtfs.ts` reads `v1/discover/featured` — the server decides the
-performance period and density (currently ~90d of **hourly** data, ~2.1k
-points per DTF). `normalizeFeaturedItem` downsamples it with
-`downsampleForSpan` (`src/utils/chart-downsample.ts`, span→bucket rule shared
-with the overview policy) so each card's `PerformanceChart` renders ~92
-points instead of thousands — each card draws the series twice (pattern +
-stroke overlay), so density is paid double. Percentage/direction labels use
-`priceChange` from the server and the series first/last points, both
-preserved by the downsample.
+performance period and density. reserve-api downsamples the series
+server-side (`downsampleForSpan` in its `src/lib/chart-downsample.ts`,
+span→bucket rule mirroring the overview policy: 3m span → daily, ~92 pts;
+young DTFs keep hourly density), so `normalizeFeaturedItem` passes
+`performance` through untouched. Each card draws the series twice (pattern +
+stroke overlay), so density is paid double — keep the server series light.
+Percentage/direction labels use `priceChange` from the server, which the API
+computes from the full hourly series before downsampling.
 
 The discover table (`useIndexDTFList`, `v1/discover/dtfs?performance=true`)
-already returns daily 30d series (~31 pts) — no downsampling needed there.
+returns daily 30d series (~31 pts) — the same server-side downsample is a
+no-op there.
 
 ## Performance invariants (do not break)
 
@@ -33,5 +34,5 @@ already returns daily 30d series (~31 pts) — no downsampling needed there.
 - `feature-card.tsx` / `feature-card-header.tsx` are `React.memo` with stable
   props so the charts don't re-render on scroll.
 
-See [[overview-charts]] for the full granularity policy and why the API
-can't serve intermediate intervals.
+See [[overview-charts]] for the overview granularity policy and why
+`historical/dtf` can't serve intermediate intervals.

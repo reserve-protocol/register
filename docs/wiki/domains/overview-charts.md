@@ -19,9 +19,10 @@ Reserve API REST endpoints, not the SDK and not the subgraph.
 `historicalConfigs` in `price-chart-constants.ts` is the single source of
 range → `from`/`to`/`interval`/`bucket`. `interval` is what the API is asked
 for; `bucket` (seconds) is the display density applied client-side by
-`downsampleToBucket` (`src/utils/chart-downsample.ts` — shared because the
-home page needs it too; keeps last point per bucket plus the first and last
-points — the last is the live "now" point):
+`downsampleToBucket` (`src/utils/chart-downsample.ts`; keeps last point per
+bucket plus the first and last points — the last is the live "now" point).
+The home featured cards no longer use it: reserve-api downsamples the
+`discover/featured` series server-side (see [[home]]):
 
 - 24H → fetch `5m`, bucket 15m (~97 pts)
 - 7D → fetch `1h`, no bucket (~169 pts)
