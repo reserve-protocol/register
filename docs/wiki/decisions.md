@@ -1,6 +1,6 @@
 ---
 title: Decisions
-updated: 2026-07-02
+updated: 2026-07-06
 type: decision
 ---
 
@@ -27,3 +27,11 @@ The referral campaign (influencer links → `/?referral=<code>`) stores attribut
 ## 2026-07-03 — Vote-lock is intentionally NOT compliance-gated
 
 The vote-lock (staking-vault deposit) flow deliberately has no geo/compliance restriction: vote-locking is governance participation, not a regulated product surface — users earn RSR rewards on AI DTFs regardless of jurisdiction. The old `useIsComplianceRestricted` gate on `submit-lock-button.tsx` was removed on purpose in the release/ai-dtf rewrite (product call, Luis 2026-07-03). Reviewers: do not re-flag its absence as a security regression. Compliance gating remains on mint/zap surfaces (`isRestricted` on the Zapper CTA, Ondo eligibility modal).
+
+## 2026-07-03 — Ondo cap is weighted per asset; unavailable minting gets its own prompt variants
+
+Supersedes the min-cap semantics recorded as "the confirmed product ask" in cowswap-prompt-rework: the Ondo per-transaction limits are per *asset*, and each asset only absorbs its basket-weight fraction of a DTF mint, so the binding DTF cap is `min(capacityUsd / weight)` — e.g. a $200k cap on an 18.68% weight binds at ~$1.07M of DTF, not $200k. Displayed and compared floored to $10k steps ($1k under $10k) so the trigger matches the label. Confirmed by the product owner (Jorge), who also set the rest of the model: the capacity card stays pre-quote but only fires while minting is *available* (market open, every reported cap > 0); while minting is *unavailable* (market closed or an asset paused at cap 0) quotes defer to un-arbitrageable secondary pools, so a resolved non-enso quote above the existing 1% `truePriceImpact` threshold (deliberately not the widget's 5% alert) shows `closed-impact` and a quote failure shows `closed-error` — both say when to come back (exact `market.nextOpen` when closed; next tradable session otherwise, missing session buckets falling back to the regular cap like the API's `sessionCapacity`) and never show a CoW CTA, since CoW liquidity is equally stale while arbitrage is blocked. Limits are per transaction, so the capacity copy invites splitting large orders.
+
+## 2026-07-06 — Chart granularity: fetch what the API has, bucket client-side for display density
+
+The "choppy charts" task was solved by granularity policy, not by smoothing: the DTF price series is a NAV estimate that reverses direction on ~50% of consecutive points, so any range rendering more than a few hundred points reads as noise. `historical/dtf` accepts exactly `5m`/`1h`/`1d` (everything else 400s; the reported "3h/6h granularity" was data holes, not server behavior), so intermediate display densities are produced client-side by bucketing the finest supported interval (see [[overview-charts]] for the per-range table: 24H fetches 5m and buckets to 15m, 1M fetches 1h and buckets to 6h, All buckets daily data to weekly past 400 points). The first pass landed on plain 1d for 1M and 1h for 24H; the user then asked for more density (31 and 25 points felt too sparse), which produced the fetch-fine/bucket-down pattern. 1Y deliberately stays daily (~366 pts is the standard year-chart density). The <30-day "young DTF → force hourly" override was removed outright: backfilled AI DTFs made it request thousands of hourly points on YTD/1Y, and 24H/7D already cover launch-week detail. Moving-average smoothing was rejected because it misrepresents price data.

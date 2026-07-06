@@ -12,3 +12,21 @@ describe('historicalConfigs.ytd', () => {
     expect(historicalConfigs.ytd.interval).toBe('1d')
   })
 })
+
+describe('historicalConfigs intervals', () => {
+  it('uses sub-daily fetch intervals only for the short ranges (24h/7d/1m)', () => {
+    expect(historicalConfigs['24h'].interval).toBe('5m')
+    expect(historicalConfigs['7d'].interval).toBe('1h')
+    expect(historicalConfigs['1m'].interval).toBe('1h')
+    expect(historicalConfigs['3m'].interval).toBe('1d')
+    expect(historicalConfigs['1y'].interval).toBe('1d')
+    expect(historicalConfigs.all.interval).toBe('1d')
+  })
+
+  it('buckets 24h to 15 minutes and 1m to 6 hours for display', () => {
+    expect(historicalConfigs['24h'].bucket).toBe(900)
+    expect(historicalConfigs['1m'].bucket).toBe(21_600)
+    expect(historicalConfigs['7d'].bucket).toBeUndefined()
+    expect(historicalConfigs['3m'].bucket).toBeUndefined()
+  })
+})

@@ -1,4 +1,3 @@
-import { useIsMobile } from '@/hooks/use-media-query'
 import { btcPriceAtom } from '@/state/chain/atoms/chainAtoms'
 import {
   indexDTFAtom,
@@ -9,6 +8,11 @@ import { useMemo } from 'react'
 import useBTCPriceHistory from '../../hooks/use-btc-price-history'
 import useIndexDTFPriceHistory from '../../hooks/use-dtf-price-history'
 import {
+  downsampleToBucket,
+  WEEK_IN_SECONDS,
+  WEEKLY_DOWNSAMPLE_THRESHOLD,
+} from '@/utils/chart-downsample'
+import {
   currentHour,
   historicalConfigs,
   type Range,
@@ -18,10 +22,7 @@ export function usePriceChartData({ isBTCMode }: { isBTCMode: boolean }) {
   const dtf = useAtomValue(indexDTFAtom)
   const range = useAtomValue(performanceTimeRangeAtom)
   const currentBTCPrice = useAtomValue(btcPriceAtom)
-  const isMobile = useIsMobile()
 
-  const now = Math.floor(Date.now() / 1_000)
-  const showHourlyInterval = now - (dtf?.timestamp || 0) < 30 * 86_400
   // Show 1 year of backfilled NAV before on-chain inception.
   const allRangeFrom = Math.max(0, (dtf?.timestamp || 0) - 31_536_000)
   const config =
@@ -45,20 +46,13 @@ export function usePriceChartData({ isBTCMode }: { isBTCMode: boolean }) {
             interval: '1d' as const,
           }
         }
-        return {
-          ...historicalConfigs[r],
-          ...(showHourlyInterval ? { interval: '1h' as const } : {}),
-        }
+        return historicalConfigs[r]
       })
-  }, [range, allRangeFrom, showHourlyInterval])
-
-  const hourOverride =
-    showHourlyInterval && range !== 'all' ? { interval: '1h' as const } : {}
-  const effectiveConfig = { ...config, ...hourOverride }
+  }, [range, allRangeFrom])
 
   const { data: history } = useIndexDTFPriceHistory({
     address: dtf?.id,
-    ...effectiveConfig,
+    ...config,
     prefetchRanges,
   })
 
@@ -69,16 +63,31 @@ export function usePriceChartData({ isBTCMode }: { isBTCMode: boolean }) {
   })
 
   const { data: btcHistory } = useBTCPriceHistory({
-    ...effectiveConfig,
+    ...config,
     prefetchRanges,
     enabled: isBTCMode,
   })
 
+  // Full-resolution series for derived stats (7d change, market cap) — the
+  // display series below may be bucketed down and lose the exact 7d point.
+  const fullTimeseries = useMemo(
+    () => history?.timeseries.filter(({ price }) => Boolean(price)) || [],
+    [history?.timeseries]
+  )
+
   const timeseries = useMemo(() => {
-    const raw = history?.timeseries.filter(({ price }) => Boolean(price)) || []
+    const bucket =
+      range === 'all'
+        ? fullTimeseries.length > WEEKLY_DOWNSAMPLE_THRESHOLD
+          ? WEEK_IN_SECONDS
+          : undefined
+        : historicalConfigs[range].bucket
+    const raw = bucket
+      ? downsampleToBucket(fullTimeseries, bucket)
+      : fullTimeseries
     const btc = btcHistory?.timeseries || []
     if (!btc.length && !currentBTCPrice) return raw
-    const tolerance = effectiveConfig.interval === '1h' ? 3_600 : 86_400
+    const tolerance = { '5m': 300, '1h': 3_600, '1d': 86_400 }[config.interval]
     const lastBTCTimestamp = btc.length ? btc[btc.length - 1].timestamp : 0
     let j = 0
     return raw.map((d) => {
@@ -103,10 +112,11 @@ export function usePriceChartData({ isBTCMode }: { isBTCMode: boolean }) {
       }
     })
   }, [
-    history?.timeseries,
+    fullTimeseries,
     btcHistory?.timeseries,
     currentBTCPrice,
-    effectiveConfig.interval,
+    config.interval,
+    range,
   ])
 
   return {
@@ -115,16 +125,14 @@ export function usePriceChartData({ isBTCMode }: { isBTCMode: boolean }) {
     rangeAvailabilityHistory:
       range === '1y' ? history : oneYearHistory,
     timeseries,
-    interval: effectiveConfig.interval,
-    isMobile,
-    range,
+    fullTimeseries,
     xDomain:
       range === 'all'
         ? undefined
         : ([
-            Math.max(effectiveConfig.from, timeseries[0]?.timestamp ?? 0),
+            Math.max(config.from, timeseries[0]?.timestamp ?? 0),
             Math.max(
-              effectiveConfig.to,
+              config.to,
               timeseries[timeseries.length - 1]?.timestamp ?? 0
             ),
           ] as const),

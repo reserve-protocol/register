@@ -1,10 +1,16 @@
 import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog'
 import { useOndoLimits } from '@/hooks/use-ondo-limits'
 import { useIsDesktop } from '@/hooks/use-media-query'
-import { indexDTFAtom } from '@/state/dtf/atoms'
+import { indexDTFAtom, indexDTFBasketSharesAtom } from '@/state/dtf/atoms'
 import { formatCurrency } from '@/utils'
-import { capitalize } from '@/utils/constants'
-import { getMinOndoCapacityUsd } from '@/utils/dtf-ondo'
+import {
+  floorOndoMaxUsd,
+  formatOndoTime,
+  getNextTradableSession,
+  getOndoWeightedMaxUsd,
+  isOndoMintingAvailable,
+  isOndoMintingUnavailable,
+} from '@/utils/dtf-ondo'
 import { Trans } from '@lingui/react/macro'
 import { useQuote, useZapperModal } from '@reserve-protocol/react-zapper'
 import { useAtomValue } from 'jotai'
@@ -15,16 +21,11 @@ import { useTrackIndexDTFClick } from '../../hooks/useTrackIndexDTFPage'
 import { getCowSwapUrl } from './cow-swap'
 import LargeMintCardBody from './large-mint-prompt-body'
 import {
+  deriveMintPromptSignals,
   INITIAL_MINT_PROMPT_STATE,
   reduceMintPrompt,
   type MintPromptState,
 } from './large-mint-prompt-state'
-
-// Show the CoW Swap suggestion once the user's input is this large.
-export const LARGE_MINT_MIN_INPUT = 50_000
-export const ERROR_MINT_MIN_INPUT = 100
-// truePriceImpact is a percentage where positive means the user loses value.
-export const HIGH_PRICE_IMPACT_THRESHOLD = 1
 
 type LargeMintPromptProps = {
   mode: 'inline' | 'modal' | 'simple'
@@ -39,6 +40,7 @@ const LargeMintPrompt = ({ mode, dtfAddress, chain }: LargeMintPromptProps) => {
   const { trackClick } = useTrackIndexDTFClick('overview', 'mint')
   const [state, setState] = useState<MintPromptState>(INITIAL_MINT_PROMPT_STATE)
   const { market, assets } = useOndoLimits()
+  const shares = useAtomValue(indexDTFBasketSharesAtom)
 
   const isInline = mode === 'inline'
   const isBuy = currentTab === 'buy'
@@ -48,48 +50,38 @@ const LargeMintPrompt = ({ mode, dtfAddress, chain }: LargeMintPromptProps) => {
   const symbol = useAtomValue(indexDTFAtom)?.token.symbol ?? ''
 
   // Flow: input -> quote renders -> raise the strongest applicable concern:
-  // Ondo per-transaction cap, high price impact, large order, or no route.
-  // For the modal zapper only while the modal is open.
+  // Ondo per-transaction cap, minting-unavailable premium or dead end, high
+  // price impact, large order, or no route. For the modal zapper only while
+  // the modal is open.
   const inContext = isInline || isOpen
   const hasValidQuote = !!data?.quote
-  const minCapacityUsd = getMinOndoCapacityUsd(assets)
-  // Purely input-derived — fires before any quote resolves, market open or
-  // closed. A cap of 0 (per-asset pause) stays the trading-paused banner's
-  // territory, not this card's.
-  const rawCapacity =
-    inContext &&
-    minCapacityUsd !== undefined &&
-    minCapacityUsd > 0 &&
-    inputValue > minCapacityUsd
-  // Never push users to CoW Swap while the Ondo market is closed: off-hours
-  // the tokenized-stock legs can't be arbitraged, so secondary liquidity is
-  // stale and wide. Gates the three CoW-CTA variants below — the capacity
-  // warning above is exempt (no CTA). Missing market data fails open.
-  const isOndoOffHours = assets.length > 0 && market?.isOpen === false
-  // The input floor keeps every raw signal inside the `isApplicable` domain;
-  // without it a sub-$100 high-impact quote would reset and re-latch (and
-  // re-pop the mobile dialog) on every refetch cycle.
-  const rawImpact =
-    inContext &&
-    !isOndoOffHours &&
-    hasValidQuote &&
-    inputValue >= ERROR_MINT_MIN_INPUT &&
-    (data?.quote?.truePriceImpact ?? 0) > HIGH_PRICE_IMPACT_THRESHOLD
-  const rawLarge =
-    inContext &&
-    !isOndoOffHours &&
-    hasValidQuote &&
-    inputValue >= LARGE_MINT_MIN_INPUT
-  const rawError =
-    inContext &&
-    !isOndoOffHours &&
-    !!error &&
-    inputValue >= ERROR_MINT_MIN_INPUT
-  // `!isOndoOffHours` also lives here so a CoW card latched right before the
-  // market closed (or before the ondo data loaded) resets instead of
-  // lingering through the latch.
-  const isApplicable =
-    inContext && !isOndoOffHours && inputValue >= ERROR_MINT_MIN_INPUT
+  const mintingAvailable = isOndoMintingAvailable(market, assets)
+  const mintingUnavailable = isOndoMintingUnavailable(market, assets)
+  // Each asset only absorbs its basket weight of a mint, so the binding cap
+  // is min(capacityUsd / weight) — floored to a round number so the trigger
+  // matches the displayed label.
+  const weightedMaxUsd = getOndoWeightedMaxUsd(assets, shares)
+  const maxMintUsd =
+    weightedMaxUsd === undefined ? undefined : floorOndoMaxUsd(weightedMaxUsd)
+  const {
+    rawCapacity,
+    rawClosedImpact,
+    rawClosedError,
+    rawImpact,
+    rawLarge,
+    rawError,
+    isApplicable,
+  } = deriveMintPromptSignals({
+    inContext,
+    inputValue,
+    hasValidQuote,
+    hasQuoteError: !!error,
+    source: data?.source,
+    truePriceImpact: data?.quote?.truePriceImpact ?? 0,
+    mintingAvailable,
+    mintingUnavailable,
+    maxMintUsd,
+  })
 
   // Latch the suggestion so it persists across the zapper's periodic refetch
   // (where `error`/`quote` briefly clear) until the user dismisses it, the
@@ -98,14 +90,27 @@ const LargeMintPrompt = ({ mode, dtfAddress, chain }: LargeMintPromptProps) => {
     setState((prev) =>
       reduceMintPrompt(prev, {
         rawCapacity,
+        rawClosedImpact,
+        rawClosedError,
         rawImpact,
         rawLarge,
         rawError,
         hasValidQuote,
+        mintingUnavailable,
         isApplicable,
       })
     )
-  }, [rawCapacity, rawImpact, rawLarge, rawError, hasValidQuote, isApplicable])
+  }, [
+    rawCapacity,
+    rawClosedImpact,
+    rawClosedError,
+    rawImpact,
+    rawLarge,
+    rawError,
+    hasValidQuote,
+    mintingUnavailable,
+    isApplicable,
+  ])
 
   // A latched variant (or dismissal) from one tab must not leak into the
   // other while the new tab's quote loads. Must stay declared after the
@@ -134,9 +139,22 @@ const LargeMintPrompt = ({ mode, dtfAddress, chain }: LargeMintPromptProps) => {
             }
       )
     : ''
-  // Off-hours the API reports the regular-session caps, so label them as such
-  // instead of "Closed".
-  const sessionLabel = market?.isOpen ? capitalize(market.session) : 'Regular'
+  // The capacity card only shows while the market is open, so the session is
+  // always live. Lowercase mid-sentence, matching the closed variants.
+  const sessionLabel = market?.session ?? 'regular'
+  // Where the closed variants point the user: an exact reopen time while the
+  // market is closed; otherwise (open but an asset paused) the next session
+  // in which every ondo asset trades. A wrap back to the current session
+  // (mid-session halt) means "tomorrow" — the generic fallback copy reads
+  // better than naming the session the user is already in.
+  const nextOpenLabel =
+    market?.isOpen === false ? formatOndoTime(market.nextOpen) : null
+  const nextSession =
+    market?.isOpen && mintingUnavailable
+      ? getNextTradableSession(market.session, assets)
+      : undefined
+  const nextSessionLabel =
+    nextSession && nextSession !== market?.session ? nextSession : null
 
   // Keep clicks inside the box from reaching Radix's outside-click handler, so
   // the CTA navigates instead of dismissing the zapper modal.
@@ -146,8 +164,10 @@ const LargeMintPrompt = ({ mode, dtfAddress, chain }: LargeMintPromptProps) => {
       variant={state.variant ?? 'large'}
       tab={currentTab}
       symbol={symbol}
-      maxAmountLabel={`$${formatCurrency(minCapacityUsd ?? 0, 0)}`}
+      maxAmountLabel={`$${formatCurrency(maxMintUsd ?? 0, 0)}`}
       sessionLabel={sessionLabel}
+      nextOpenLabel={nextOpenLabel}
+      nextSessionLabel={nextSessionLabel}
       cowSwapUrl={cowSwapUrl}
       onCta={() =>
         trackClick('cowswap_redirect', {

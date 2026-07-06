@@ -11,12 +11,20 @@ type LargeMintCardBodyProps = {
   symbol: string
   // "$200,000" — capacity variant only.
   maxAmountLabel: string
-  // "Regular" — capacity variant only.
+  // "regular" — capacity variant only.
   sessionLabel: string
+  // "Jul 6, 12:05 AM" — closed variants while the market is closed.
+  nextOpenLabel: string | null
+  // "regular" — closed variants while the market is open but an asset is paused.
+  nextSessionLabel: string | null
   cowSwapUrl: string
   onCta: () => void
   onDismiss: () => void
 }
+
+// Capacity and the closed variants are informational — CoW Swap liquidity is
+// as stale as the pools while ondo minting is blocked, so no CTA.
+const COW_CTA_VARIANTS: PromptVariant[] = ['impact', 'large', 'error']
 
 const badge = (variant: PromptVariant): ReactNode => {
   switch (variant) {
@@ -25,21 +33,81 @@ const badge = (variant: PromptVariant): ReactNode => {
     case 'error':
       return <Trans>No route found</Trans>
     case 'impact':
+    case 'closed-impact':
       return <Trans>High price impact</Trans>
+    case 'closed-error':
+      return <Trans>Trading unavailable</Trans>
     case 'capacity':
       return <Trans>Warning</Trans>
   }
 }
 
+const title = (variant: PromptVariant): ReactNode => {
+  switch (variant) {
+    case 'capacity':
+      return <Trans>Order too large</Trans>
+    case 'closed-impact':
+      return <Trans>Expect a worse price</Trans>
+    case 'closed-error':
+      return <Trans>Temporarily unavailable</Trans>
+    default:
+      return <Trans>Try CoW Swap</Trans>
+  }
+}
+
+// The closed variants end with when to retry: an exact reopen time while the
+// market is closed, the next tradable session when an asset is paused.
+// closed-error means nothing fills — a plain retry.
+const comeBack = (
+  nextOpenLabel: string | null,
+  nextSessionLabel: string | null
+): ReactNode => {
+  if (nextOpenLabel) {
+    return <Trans>The market reopens {nextOpenLabel}.</Trans>
+  }
+  if (nextSessionLabel) {
+    return <Trans>Try again during {nextSessionLabel} hours in the US.</Trans>
+  }
+  return <Trans>Try again later when trading resumes.</Trans>
+}
+
+// closed-impact means the trade works, just worse than usual — frame the
+// retry around getting a better price.
+const comeBackForBetterPrice = (
+  nextOpenLabel: string | null,
+  nextSessionLabel: string | null
+): ReactNode => {
+  if (nextOpenLabel) {
+    return (
+      <Trans>
+        For a better price, come back after the market reopens {nextOpenLabel}.
+      </Trans>
+    )
+  }
+  if (nextSessionLabel) {
+    return (
+      <Trans>
+        For a better price, come back during {nextSessionLabel} hours in the
+        US.
+      </Trans>
+    )
+  }
+  return <Trans>For a better price, come back when trading resumes.</Trans>
+}
+
 // Buy/sell wording is kept as whole sentences per tab so each locale can
 // translate them independently — never interpolate the verb.
-const description = (
-  variant: PromptVariant,
-  isBuy: boolean,
-  symbol: string,
-  maxAmountLabel: string,
-  sessionLabel: string
-): ReactNode => {
+const description = ({
+  variant,
+  tab,
+  symbol,
+  maxAmountLabel,
+  sessionLabel,
+  nextOpenLabel,
+  nextSessionLabel,
+}: LargeMintCardBodyProps): ReactNode => {
+  const isBuy = tab === 'buy'
+
   switch (variant) {
     case 'large':
       return (
@@ -74,32 +142,60 @@ const description = (
         </Trans>
       )
     case 'capacity':
-      return isBuy ? (
-        <Trans>
-          You can only buy {maxAmountLabel} per-transaction during{' '}
-          {sessionLabel} hours in the US.
-        </Trans>
-      ) : (
-        <Trans>
-          You can only sell {maxAmountLabel} per-transaction during{' '}
-          {sessionLabel} hours in the US.
-        </Trans>
+      return (
+        <>
+          {isBuy ? (
+            <Trans>
+              You can buy up to {maxAmountLabel} per transaction during{' '}
+              {sessionLabel} hours in the US.
+            </Trans>
+          ) : (
+            <Trans>
+              You can sell up to {maxAmountLabel} per transaction during{' '}
+              {sessionLabel} hours in the US.
+            </Trans>
+          )}{' '}
+          <Trans>
+            For larger amounts, split your order into multiple transactions.
+          </Trans>
+        </>
+      )
+    case 'closed-impact':
+      // Deliberately tab-neutral: the trade is possible on both tabs, just at
+      // a worse price.
+      return (
+        <>
+          <Trans>
+            You're getting a worse price than usual because {symbol}'s
+            underlying stocks aren't trading right now.
+          </Trans>{' '}
+          {comeBackForBetterPrice(nextOpenLabel, nextSessionLabel)}
+        </>
+      )
+    case 'closed-error':
+      return (
+        <>
+          {isBuy ? (
+            <Trans>
+              Minting {symbol} is currently unavailable and we couldn't find
+              another route to buy it.
+            </Trans>
+          ) : (
+            <Trans>
+              Redeeming {symbol} is currently unavailable and we couldn't find
+              another route to sell it.
+            </Trans>
+          )}{' '}
+          {comeBack(nextOpenLabel, nextSessionLabel)}
+        </>
       )
   }
 }
 
 // Presentational card body (badge, dismiss, title, description, CTA). Shared by
 // every presentation (desktop side-box, modal-attached box, mobile popup).
-const LargeMintCardBody = ({
-  variant,
-  tab,
-  symbol,
-  maxAmountLabel,
-  sessionLabel,
-  cowSwapUrl,
-  onCta,
-  onDismiss,
-}: LargeMintCardBodyProps) => {
+const LargeMintCardBody = (props: LargeMintCardBodyProps) => {
+  const { variant, tab, cowSwapUrl, onCta, onDismiss } = props
   const { t } = useLingui()
   const isBuy = tab === 'buy'
 
@@ -120,16 +216,12 @@ const LargeMintCardBody = ({
       </div>
       <div className="min-w-0">
         <div className="text-sm font-semibold text-foreground">
-          {variant === 'capacity' ? (
-            <Trans>Order too large</Trans>
-          ) : (
-            <Trans>Try CoW Swap</Trans>
-          )}
+          {title(variant)}
         </div>
         <p className="mt-1 text-sm font-light leading-5 text-muted-foreground">
-          {description(variant, isBuy, symbol, maxAmountLabel, sessionLabel)}
+          {description(props)}
         </p>
-        {variant !== 'capacity' && (
+        {COW_CTA_VARIANTS.includes(variant) && (
           <a
             href={cowSwapUrl}
             target="_blank"

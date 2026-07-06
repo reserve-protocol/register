@@ -2,6 +2,7 @@ import { useQuery } from '@tanstack/react-query'
 import { Address } from 'viem'
 import { type IndexDTFItem } from '@/hooks/useIndexDTFList'
 import { dateToUnix } from '@/utils'
+import { downsampleForSpan } from '@/utils/chart-downsample'
 
 // TODO: Swap to the production API once featured DTFs are available there.
 const FEATURED_DTFS_URL = 'https://api-staging.reserve.org/v1/discover/featured'
@@ -112,7 +113,10 @@ const normalizeFeaturedItem = (item: any): FeaturedDTFItem => {
       weight: normalizeWeight(token.weight),
     })),
     status: item.status ?? 'active',
-    performance: item.performance ?? [],
+    // The featured endpoint serves hourly data over ~90d (~2.1k points per
+    // DTF, rendered twice per card) — reduce to display density here so every
+    // consumer gets the light series.
+    performance: downsampleForSpan(item.performance ?? []),
     performancePercent: item.priceChange?.percent ?? 0,
     createdAt,
     priceChange: item.priceChange,
