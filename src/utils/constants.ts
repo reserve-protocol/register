@@ -27,6 +27,11 @@ export const RESERVE_API = true // isStaging
 // form can be tested. Remove before releasing.
 export const DISABLE_VPN_BLOCK = true
 
+// TEMP: staging-only — force the DTF geolocation response to
+// 'geolocation-restricted' to test the eligibility flow. Remove before
+// releasing.
+export const FORCE_GEOLOCATION_RESTRICTED = true
+
 export const ZAPPER_API = isStaging
   ? 'https://api-staging.reserve.org/'
   : 'https://api.reserve.org/'

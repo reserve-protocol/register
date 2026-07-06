@@ -1,6 +1,10 @@
 import { trackCompliance } from '@/hooks/useTrackPage'
 import { indexDTFAtom } from '@/state/dtf/atoms'
-import { DISABLE_VPN_BLOCK, RESERVE_API } from '@/utils/constants'
+import {
+  DISABLE_VPN_BLOCK,
+  FORCE_GEOLOCATION_RESTRICTED,
+  RESERVE_API,
+} from '@/utils/constants'
 import { useQuery } from '@tanstack/react-query'
 import { useAtomValue } from 'jotai'
 import { useMemo } from 'react'
@@ -61,6 +65,18 @@ const useDTFGeolocation = (dtfAddress?: Address, chainId?: number) => {
     queryFn: async (): Promise<DTFGeolocationStatus> => {
       if (!dtfAddress || !chainId) {
         throw new Error('Missing DTF address or chainId')
+      }
+
+      // TEMP: staging-only — pretend the backend flagged a qualified-investor
+      // jurisdiction so the eligibility flow can be tested. Skips the real
+      // request and its compliance tracking to keep analytics clean.
+      if (FORCE_GEOLOCATION_RESTRICTED) {
+        return {
+          country: 'Argentina',
+          countryCode: 'AR',
+          restricted: true,
+          restriction: 'geolocation-restricted',
+        }
       }
 
       const response = await fetch(
