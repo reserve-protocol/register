@@ -1,6 +1,6 @@
 import { trackCompliance } from '@/hooks/useTrackPage'
 import { indexDTFAtom } from '@/state/dtf/atoms'
-import { RESERVE_API } from '@/utils/constants'
+import { DISABLE_VPN_BLOCK, RESERVE_API } from '@/utils/constants'
 import { useQuery } from '@tanstack/react-query'
 import { useAtomValue } from 'jotai'
 import { useMemo } from 'react'
@@ -134,6 +134,17 @@ const useDTFRestricted = () => {
     // Restricted: prefer the backend's reason; default to 'geolocation' if
     // it ever comes back as 'none' (shouldn't happen, but defensive).
     const restriction = dtfGeolocation.data.restriction
+
+    // TEMP: staging-only — ignore VPN-based restrictions so the
+    // allowed-jurisdiction form can be tested.
+    if (DISABLE_VPN_BLOCK && restriction === 'vpn') {
+      return {
+        data: { restricted: false },
+        isLoading: false,
+        isError: false,
+      }
+    }
+
     const reason = restriction === 'none' ? 'geolocation' : restriction
 
     return {

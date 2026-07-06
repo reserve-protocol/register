@@ -23,6 +23,10 @@ export const RESERVE_API = true // isStaging
   ? import.meta.env.VITE_STAGING_API
   : 'https://api.reserve.org/'
 
+// TEMP: staging-only — bypass the VPN block so the allowed-jurisdiction
+// form can be tested. Remove before releasing.
+export const DISABLE_VPN_BLOCK = true
+
 export const ZAPPER_API = isStaging
   ? 'https://api-staging.reserve.org/'
   : 'https://api.reserve.org/'

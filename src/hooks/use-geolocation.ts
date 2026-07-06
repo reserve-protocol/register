@@ -1,5 +1,5 @@
 import { trackCompliance } from '@/hooks/useTrackPage'
-import { RESERVE_API } from '@/utils/constants'
+import { DISABLE_VPN_BLOCK, RESERVE_API } from '@/utils/constants'
 import { useQuery } from '@tanstack/react-query'
 
 export type GeolocationStatus = {
@@ -47,6 +47,12 @@ const useGeolocation = () => {
         country: payload.country,
         countryCode: payload.countryCode,
       })
+
+      // TEMP: staging-only — clear the VPN signal (and the restriction that
+      // comes with it) so the allowed-jurisdiction form can be tested.
+      if (DISABLE_VPN_BLOCK && payload.isVPN) {
+        return { ...payload, isVPN: false, restricted: false }
+      }
 
       return payload
     },
