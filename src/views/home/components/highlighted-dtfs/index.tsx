@@ -14,7 +14,7 @@ import {
   HighlightedDTFEndCardPlaceholder,
 } from './end-card'
 import { IndexDTFFeatureCard } from './feature-card'
-import { IndexDTFFeatureCardPlaceholder } from './skeletons'
+import { IndexDTFFeatureIdentityCards } from './identity-card'
 import type { HighlightedDTFItem } from './types'
 import { toHighlightedDtf } from './utils'
 
@@ -92,7 +92,7 @@ const HighlightedDTFs = ({
             style={trackStyle}
             className={FEATURE_CARD_GRID_CLASS_NAME}
           >
-            <IndexDTFFeatureCardPlaceholder count={HIGHLIGHTED_LIMIT} />
+            <IndexDTFFeatureIdentityCards />
             <HighlightedDTFEndCardPlaceholder
               fullWidth={HIGHLIGHTED_LIMIT % 2 === 0}
             />

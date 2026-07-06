@@ -31,17 +31,14 @@ import {
   getPerformanceDirection,
 } from './utils'
 
-const PHOTON_ALIAS_ROUTE = '/bsc/index-dtf/photon/overview'
-
 // WHY: stable reference so memoized FeatureCardHeader doesn't re-render when a
 // DTF has no chainVersions (a fresh `[]` per render would break the memo).
 const EMPTY_CHAIN_VERSIONS: ChainVersion[] = []
 
-const getHighlightedDtfRoute = (dtf: HighlightedDTFItem) => {
-  if (dtf.symbol.toUpperCase() === 'PHOTON') return PHOTON_ALIAS_ROUTE
-
-  return getFolioRoute(dtf.address, dtf.chainId)
-}
+// Featured DTFs resolve by their symbol alias (e.g. /bsc/index-dtf/photon),
+// so route on the symbol rather than the address.
+const getHighlightedDtfRoute = (dtf: HighlightedDTFItem) =>
+  getFolioRoute(dtf.symbol, dtf.chainId)
 
 export const IndexDTFFeatureCard = memo(function IndexDTFFeatureCard({
   dtf,

@@ -2,6 +2,7 @@ import { ChainId } from '@/utils/chains'
 import type {
   FeaturedDTFGroup,
   FeaturedDTFItem,
+  FeaturedExposureGroup,
 } from '../../hooks/use-featured-dtfs'
 import { calculatePercentageChange } from '../discover-index-dtf/utils'
 import { BACKING_LIMIT } from './constants'
@@ -150,42 +151,40 @@ export const formatAssetWeight = (weight?: string | number) => {
   return value.toFixed(2).replace(/\.?0+$/, '')
 }
 
+// Flattens the enriched exposure grouping (native NASDAQ/NYSE groups + tokens)
+// into the orbiting ticker list. Shared by the featured payload and the SDK's
+// per-DTF exposure endpoint, which emit the same structure.
+export const mapExposureGroupsToTickers = (
+  exposure: FeaturedExposureGroup[]
+): AssetTickerItem[] =>
+  exposure
+    .flatMap((group) => {
+      const native = group.native
+
+      if (!native || ['nasdaq', 'nyse'].includes(native.caip2 ?? '')) {
+        return group.tokens.map((token) => ({
+          key: token.address,
+          symbol: stripTokenizedSuffix(token.symbol),
+          weight: token.weight,
+        }))
+      }
+
+      return [
+        {
+          key: native.caip2 ?? native.symbol,
+          symbol: native.symbol,
+          weight: group.totalWeight,
+        },
+      ]
+    })
+    .slice(0, BACKING_LIMIT)
+
 export const getExposureTickerAssets = (
   dtf: FeaturedDTFItem
 ): AssetTickerItem[] => {
   if (!dtf.exposure?.length) return getBasketTickerAssets(dtf)
 
-  const exposureAssets = dtf.exposure.flatMap((group) => {
-    if (!group.native) {
-      return group.tokens.map((token) => ({
-        key: token.address,
-        symbol: stripTokenizedSuffix(token.symbol),
-        weight: token.weight,
-      }))
-    }
+  const exposureAssets = mapExposureGroupsToTickers(dtf.exposure)
 
-    const isExchangeGroup = ['nasdaq', 'nyse'].includes(
-      group.native.caip2 ?? ''
-    )
-
-    if (isExchangeGroup) {
-      return group.tokens.map((token) => ({
-        key: token.address,
-        symbol: stripTokenizedSuffix(token.symbol),
-        weight: token.weight,
-      }))
-    }
-
-    return [
-      {
-        key: group.native.caip2 ?? group.native.symbol,
-        symbol: group.native.symbol,
-        weight: group.totalWeight,
-      },
-    ]
-  })
-
-  return exposureAssets.length
-    ? exposureAssets.slice(0, BACKING_LIMIT)
-    : getBasketTickerAssets(dtf)
+  return exposureAssets.length ? exposureAssets : getBasketTickerAssets(dtf)
 }

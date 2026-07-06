@@ -8,7 +8,6 @@ import {
   useMeasuredElementWidth,
   usePackingAnimationFrame,
 } from '../../hooks/use-packing-animation-state'
-import { getExposureTickerAssets } from '../highlighted-dtfs/utils'
 import {
   DESKTOP_ANIMATION_HEIGHT,
   DESKTOP_PATH_CENTER_Y,
@@ -21,21 +20,18 @@ import {
 } from './constants'
 import { computePackingFrame, getGeometry } from './geometry'
 import { PackingAnimationSvg } from './packing-animation-svg'
-import { useFeaturedPhoton } from './use-featured-photon'
+import { usePhotonAnimationData } from './use-photon-animation-data'
 
 const DTFPackingAnimation = ({ className }: { className?: string }) => {
   const { t } = useLingui()
-  const photon = useFeaturedPhoton()
+  const photon = usePhotonAnimationData()
   const { ref, width } = useMeasuredElementWidth<HTMLDivElement>()
   const isDesktop = useIsDesktop()
   const id = useId().replace(/:/g, '')
   const pathId = `${id}-packing-path`
   const tickerLineGradientId = `${id}-ticker-line-gradient`
 
-  const exposureAssets = useMemo(
-    () => (photon ? getExposureTickerAssets(photon) : []),
-    [photon]
-  )
+  const exposureAssets = photon.exposureAssets
   const animationHeight = isDesktop
     ? DESKTOP_ANIMATION_HEIGHT
     : MOBILE_ANIMATION_HEIGHT
@@ -109,9 +105,10 @@ const DTFPackingAnimation = ({ className }: { className?: string }) => {
     `A ${textPathRadius} ${textPathRadius} 0 0 0 ${geometry.textOrbitLeftX} ${geometry.centerY}`,
     `A ${textPathRadius} ${textPathRadius} 0 0 0 ${geometry.centerX} ${geometry.textOrbitBottomY}`,
   ].join(' ')
-  const price = photon
-    ? `$${formatCurrency(photon.price, photon.price >= 1 ? 2 : 5)}`
-    : ''
+  const price =
+    photon.price != null
+      ? `$${formatCurrency(photon.price, photon.price >= 1 ? 2 : 5)}`
+      : ''
 
   const logoSize = visual.logoRadius * 2
 
@@ -124,7 +121,7 @@ const DTFPackingAnimation = ({ className }: { className?: string }) => {
       )}
       aria-label={t`PHOTON packs multiple collateral assets into one DTF token`}
     >
-      {photon && width > 0 && (
+      {width > 0 && (
         <>
           <PackingAnimationSvg
             animationHeight={animationHeight}
@@ -155,7 +152,7 @@ const DTFPackingAnimation = ({ className }: { className?: string }) => {
             <TokenLogo
               address={photon.address}
               chain={photon.chainId}
-              src={photon.brand?.icon || undefined}
+              src={photon.logo}
               symbol={photon.symbol}
               width={logoSize}
               height={logoSize}

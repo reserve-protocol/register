@@ -11,7 +11,7 @@ import { FeatureCardAssetTickerSkeleton } from './asset-ticker'
 import { PerformanceChartSkeleton } from './performance-chart'
 import type { ChartPlacement } from './types'
 
-const FeatureCardTranscriptSkeleton = () => (
+export const FeatureCardTranscriptSkeleton = () => (
   <div className="flex flex-col items-start gap-2 px-5 py-4 pt-3">
     <div
       className="w-full min-w-0 shrink-0 overflow-hidden"
