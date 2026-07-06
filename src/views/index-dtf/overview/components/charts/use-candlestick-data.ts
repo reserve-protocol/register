@@ -14,6 +14,14 @@ const YEAR = 31_536_000
 
 export type CandleInterval = '1h' | '4h' | '1d' | '7d' | '30d'
 
+export const CANDLE_INTERVAL_SECONDS: Record<CandleInterval, number> = {
+  '1h': 3_600,
+  '4h': 14_400,
+  '1d': DAY,
+  '7d': 7 * DAY,
+  '30d': 30 * DAY,
+}
+
 // Pure: pick the candle bucket size for a visible window so the candle count
 // stays readable on the narrow overview chart. Thresholds chosen so the named
 // ranges land on: 24h -> 1h, 7d -> 4h, 1m/3m -> 1d, ytd/1y -> 7d once the span
@@ -24,6 +32,38 @@ export const getCandleInterval = (spanSeconds: number): CandleInterval => {
   if (spanSeconds < 120 * DAY) return '1d'
   if (spanSeconds < 2 * YEAR) return '7d'
   return '30d'
+}
+
+// Pure: the API buckets on an epoch-aligned grid (floor(ts/N)*N) and clips
+// aggregation at `from`, so an unaligned `from` yields a truncated first
+// candle labeled before the window. Snapping to the same grid keeps the first
+// candle complete and honestly labeled. Snaps down: the candle window may
+// start up to one bucket before the nominal range (complete first candle over
+// window ⊆ range).
+export const snapToBucketStart = (
+  from: number,
+  interval: CandleInterval
+): number => {
+  const seconds = CANDLE_INTERVAL_SECONDS[interval]
+  return from - (from % seconds)
+}
+
+// Pure: find the candle bucket containing `timestamp` and how far into it the
+// timestamp falls (0..1), for positioning overlays on the category axis.
+// Null when it falls outside the series or in a filtered-out bucket.
+export const locateCandleBucket = (
+  candles: ChartCandle[],
+  timestamp: number,
+  intervalSeconds: number
+): { index: number; fraction: number } | null => {
+  const index = candles.findIndex(
+    (c) => timestamp >= c.timestamp && timestamp < c.timestamp + intervalSeconds
+  )
+  if (index === -1) return null
+  return {
+    index,
+    fraction: (timestamp - candles[index].timestamp) / intervalSeconds,
+  }
 }
 
 export type DTFCandle = {
@@ -144,33 +184,47 @@ export const useCandlestickData = () => {
   const range = useAtomValue(performanceTimeRangeAtom)
   const address = dtf?.id as Address | undefined
   const isAll = range === 'all'
+  // Same 'all' window as the line chart (1 year of backfilled NAV before
+  // on-chain inception) so toggling chart types keeps the same range.
+  const allRangeFrom = Math.max(0, (dtf?.timestamp || 0) - 31_536_000)
 
-  // For 'all' we don't know how far back data goes, and the interval depends on
-  // that span (7d weekly under 2y, 30d monthly beyond). Probe the full history
-  // with a cheap coarse (30d) query first to learn the earliest candle.
+  // For 'all' we don't know how far back data goes within the window, and the
+  // interval depends on that span (7d weekly under 2y, 30d monthly beyond).
+  // Probe with a cheap coarse (30d) query first to learn the earliest candle.
   const discovery = useQuery(
-    candleQueryOptions(address, chainId, 0, currentHour, '30d', isAll)
+    candleQueryOptions(
+      address,
+      chainId,
+      snapToBucketStart(allRangeFrom, '30d'),
+      currentHour,
+      '30d',
+      isAll
+    )
   )
 
   const { from, to, interval } = useMemo(() => {
     if (isAll) {
       const earliest = discovery.data?.candles?.[0]?.timestamp ?? currentHour
+      const allInterval = getCandleInterval(currentHour - earliest)
       return {
-        from: 0,
+        from: snapToBucketStart(allRangeFrom, allInterval),
         to: currentHour,
-        interval: getCandleInterval(currentHour - earliest),
+        interval: allInterval,
       }
     }
     const cfg = historicalConfigs[range]
+    const rangeInterval = getCandleInterval(cfg.to - cfg.from)
     return {
-      from: cfg.from,
+      from: snapToBucketStart(cfg.from, rangeInterval),
       to: cfg.to,
-      interval: getCandleInterval(cfg.to - cfg.from),
+      interval: rangeInterval,
     }
-  }, [isAll, range, discovery.data])
+  }, [isAll, range, discovery.data, allRangeFrom])
 
   // When 'all' resolves to 30d this shares the discovery query key, so React
-  // Query serves it from cache with no extra request.
+  // Query serves it from cache with no extra request. A candle-less discovery
+  // skips the main query entirely (it would request the whole window hourly
+  // just to come back empty before the line-chart fallback renders).
   const main = useQuery(
     candleQueryOptions(
       address,
@@ -178,12 +232,17 @@ export const useCandlestickData = () => {
       from,
       to,
       interval,
-      !isAll || Boolean(discovery.data)
+      !isAll || Boolean(discovery.data?.candles?.length)
     )
   )
 
   const candles = useMemo(() => mapCandles(main.data), [main.data])
   const isLoading = (isAll && discovery.isLoading) || main.isLoading
 
-  return { candles, isLoading, interval }
+  return {
+    candles,
+    isLoading,
+    interval,
+    intervalSeconds: CANDLE_INTERVAL_SECONDS[interval],
+  }
 }

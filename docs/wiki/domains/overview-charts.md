@@ -9,6 +9,7 @@ sources:
   - src/utils/chart-downsample.ts
 ---
 
+
 # Overview Charts (Index DTF price/candles)
 
 Line + candlestick charts on the Index DTF overview page. Data comes from the
@@ -40,6 +41,37 @@ Do not reintroduce a "young DTF → force hourly" override: AI DTFs ship with
 backfilled NAV, so long ranges are selectable at launch and the old <30d
 override made YTD/1Y request 4.5k–8.8k hourly points (the "crazy chart" bug).
 
+## Candlestick parity with the line chart
+
+The candle chart (`use-candlestick-data.ts` + `candlestick-chart-body.tsx`)
+must keep the line chart's perceived range when toggling chart types:
+
+- Span-based intervals (`1h/4h/1d/7d/30d`) against `v2/historical/dtf/candles/`
+  — a different endpoint with wider interval support than the line-chart one.
+  Buckets are epoch-aligned server-side (`floor(ts/N)*N`, 7d weeks start on
+  Thursdays) and aggregation clips at `from`, so the request `from` is snapped
+  to the bucket grid (`snapToBucketStart`) — otherwise the first candle is a
+  truncated bucket labeled before the window (YTD used to show "31 Dec").
+- Range `all` clamps `from` to `max(0, dtf.timestamp - 1y)`, the same window
+  as the line chart, instead of fetching the whole table. The coarse `30d`
+  discovery query keeps using the identical snapped `from` so its query key
+  still matches the main query when `all` resolves to `30d` candles.
+- X-axis ticks reuse `useXAxisTicks` (no `xDomain` — a band scale NaN-drops
+  tick values that aren't exact candle timestamps) so both charts label at the
+  same proportional 5%–95% positions. Do not reintroduce a numeric skip
+  `interval`: it decimates explicit ticks too.
+- The "DTF Created" marker (`candlestick-launch-marker.tsx`) locates the
+  bucket containing the launch (`locateCandleBucket`) and offsets by
+  `fraction * bandwidth`, then feeds the precomputed x to the untouched
+  `PriceChartLaunchMarker` via a synthetic single-value scale.
+- Residual, accepted (decision): `snapToBucketStart` floors, so the candle
+  window can start up to one bucket before the nominal range — most visible as
+  a late-December first candle on YTD in years where Jan 1 isn't epoch-week
+  aligned (2026 is; 2027+ mostly isn't). Chosen over ceil-snapping (which
+  would drop up to one bucket of in-range data) — complete, honestly-labeled
+  first candle wins. The right edge lags the line chart's live "now" point by
+  ≤1 interval until the 30-min refetch.
+
 ## Gotchas
 
 - The API sometimes returns duplicate-timestamp rows and irregular gaps;
@@ -51,9 +83,6 @@ override made YTD/1Y request 4.5k–8.8k hourly points (the "crazy chart" bug).
   `getRangeParams`) that deliberately stays coarser (24h→1h, 1m→1d) until
   unified with `historicalConfigs` — that unification is in the
   [[progress]] backlog; don't half-sync it.
-- Candlestick uses its own span-based intervals (`1h/4h/1d/7d/30d`) against
-  `v2/historical/dtf/candles/` — a different endpoint with wider interval
-  support than the line-chart one.
 - BTC data-type mode exists only for the yield-index DTF (BTC+). Its
   historical `priceBTC` level (~1.1) disagrees with the live now-point
   (~0.34) — pre-existing data question, unrelated to granularity (backlog).

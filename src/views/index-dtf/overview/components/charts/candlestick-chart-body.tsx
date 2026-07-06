@@ -4,24 +4,21 @@ import { cn } from '@/lib/utils'
 import { formatCurrency } from '@/utils'
 import { formatXAxisTick as formatTick } from '@/utils/chart-formatters'
 import { PERFORMANCE_COLORS } from '@/utils/chart-performance-colors'
-import { Bar, ComposedChart, Tooltip, XAxis, YAxis } from 'recharts'
+import { Bar, ComposedChart, Customized, Tooltip, XAxis, YAxis } from 'recharts'
+import {
+  CandlestickLaunchMarker,
+  type CandlestickCustomizedProps,
+} from './candlestick-launch-marker'
 import { CandlestickTooltip } from './candlestick-tooltip'
 import { chartConfig, type Range } from './price-chart-constants'
 import { ChartCandle, getCandleYDomain } from './use-candlestick-data'
+import { useXAxisTicks } from './use-price-chart-data'
 
 const UP_COLOR = PERFORMANCE_COLORS.positive.dot
 const DOWN_COLOR = PERFORMANCE_COLORS.negative.dot
 
 const formatYAxisTick = (value: number) =>
   '$' + formatCurrency(value, value >= 1000 ? 0 : value < 1 ? 4 : 2)
-
-// Show ~4 ticks on mobile / ~6 on desktop on a category axis by skipping
-// candles between rendered ticks.
-const getCategoryInterval = (length: number, isMobile: boolean) => {
-  const desired = isMobile ? 4 : 6
-  if (length <= desired) return 0
-  return Math.floor(length / desired)
-}
 
 // Vertical reference line that follows the hovered candle. recharts passes the
 // cursor element either line-style (`points`) or rect-style (`x`/`width`).
@@ -137,11 +134,15 @@ const CandlestickChartBody = ({
   candles,
   range,
   dtfStart,
+  launchTimestamp,
+  intervalSeconds,
   className,
 }: {
   candles: ChartCandle[]
   range: Range
   dtfStart?: number
+  launchTimestamp?: number
+  intervalSeconds: number
   className?: string
 }) => {
   const isMobile = useIsMobile()
@@ -152,6 +153,10 @@ const CandlestickChartBody = ({
       : undefined
   const formatXAxisTick = (timestamp: number) =>
     formatTick(timestamp, range, dtfStart, visibleRangeSeconds)
+  // Same proportional tick placement as the line chart so toggling chart
+  // types keeps the perceived range. Values must be exact candle timestamps
+  // (a band scale NaN-drops anything else); deduped for tiny candle counts.
+  const xAxisTicks = [...new Set(useXAxisTicks(candles, isMobile))]
 
   return (
     <ChartContainer
@@ -171,9 +176,9 @@ const CandlestickChartBody = ({
           className="[&_.recharts-cartesian-axis-tick_text]:!fill-muted-foreground"
           axisLine={false}
           tickLine={false}
-          interval={getCategoryInterval(candles.length, isMobile)}
+          interval="preserveStart"
+          ticks={xAxisTicks}
           tickMargin={10}
-          minTickGap={20}
           padding={{ left: 28, right: 28 }}
         />
         <YAxis
@@ -200,6 +205,16 @@ const CandlestickChartBody = ({
           isAnimationActive
           animationDuration={500}
           animationEasing="ease-in-out"
+        />
+        <Customized
+          component={(props: CandlestickCustomizedProps) => (
+            <CandlestickLaunchMarker
+              {...props}
+              candles={candles}
+              intervalSeconds={intervalSeconds}
+              launchTimestamp={launchTimestamp}
+            />
+          )}
         />
       </ComposedChart>
     </ChartContainer>

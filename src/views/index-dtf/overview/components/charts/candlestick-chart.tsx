@@ -17,7 +17,7 @@ const CandlestickChart = ({
 }) => {
   const dtf = useAtomValue(indexDTFAtom)
   const range = useAtomValue(performanceTimeRangeAtom)
-  const { candles, isLoading } = useCandlestickData()
+  const { candles, isLoading, intervalSeconds } = useCandlestickData()
 
   if (isLoading) {
     return <ChartSkeleton className={skeletonHeight} />
@@ -32,6 +32,8 @@ const CandlestickChart = ({
       candles={candles}
       range={range}
       dtfStart={dtf?.timestamp}
+      launchTimestamp={dtf?.timestamp}
+      intervalSeconds={intervalSeconds}
       className={cn('w-full', bodyHeight)}
     />
   )
