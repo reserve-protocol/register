@@ -27,10 +27,14 @@ const DtfCover = ({ className }: { className?: string }) => {
     ? t`${dtf.token.symbol} explainer`
     : t`DTF Explainer`
 
+  if (!brand?.dtf?.video) {
+    return null
+  }
+
   return (
     <div
       className={cn(
-        'relative isolate aspect-video overflow-hidden rounded-3xl bg-background',
+        'relative isolate aspect-video overflow-hidden rounded-3xl bg-background hidden xl:block',
         className
       )}
     >

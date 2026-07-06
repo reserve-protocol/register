@@ -30,7 +30,7 @@ const ContactBellButton = () => {
         <button
           type="button"
           aria-label={t`Available opportunity`}
-          className="relative inline-flex items-center justify-center h-8 w-8 rounded-md cursor-pointer hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+          className="relative inline-flex items-center justify-center h-9 w-9 border rounded-full cursor-pointer hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
         >
           <Bell size={16} strokeWidth={1.5} />
           <span className="absolute top-1.5 right-1.5 h-1.5 w-1.5 rounded-full bg-red-500 ring-2 ring-background" />
