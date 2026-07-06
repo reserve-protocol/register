@@ -1,0 +1,14 @@
+# Append-only / ledger wiki files: every stage on every branch appends to these,
+# so concurrent branches always collide in the same region. `merge=union` is git's
+# built-in driver that keeps BOTH sides of a conflict automatically (no markers) —
+# honored by local merges/rebases AND by GitHub's PR merge. Scope is exactly the
+# append/ledger files: domain pages are rewritten in place, where union would keep
+# both versions of an edited paragraph and produce garbage — never add them here.
+#
+# Known cosmetic wart: when two branches both bump the `updated:` frontmatter date,
+# union keeps both lines. wiki-lint's parser is last-wins so it stays green; the
+# duplicate self-heals the next time anyone edits that page's frontmatter.
+docs/wiki/log.md        merge=union
+docs/wiki/decisions.md  merge=union
+docs/wiki/progress.md   merge=union
+docs/wiki/index.md      merge=union
