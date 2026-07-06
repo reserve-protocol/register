@@ -1,6 +1,6 @@
-import { describe, it, expect, beforeEach, vi } from 'vitest'
+import { describe, it, expect } from 'vitest'
 import { renderHook, act } from '@testing-library/react'
-import { Provider, useAtom, useAtomValue, useSetAtom } from 'jotai'
+import { Provider, useAtomValue, useSetAtom } from 'jotai'
 import { parseEther } from 'viem'
 import { createElement, ReactNode } from 'react'
 
@@ -10,7 +10,6 @@ import {
   balanceMapAtom,
   tokensNeedingApprovalAtom,
   allowanceMapAtom,
-  assetAmountsMapAtom,
   amountAtom,
 } from '../atoms'
 import { indexDTFAtom, indexDTFBasketAtom } from '@/state/dtf/atoms'
@@ -57,6 +56,17 @@ const createMockToken = (address: string) => ({
   name: 'Test Token',
   decimals: 18,
 })
+
+const E18 = parseEther('1')
+const ceilDiv = (a: bigint, b: bigint) => (a === 0n ? 0n : (a - 1n) / b + 1n)
+
+// The max intentionally sits a hair below the naive floor(balance / rate): the
+// quote rate is floored but the contract pulls with Ceil, so the max is divided
+// by (rate + 1) to guarantee the pull fits. The gap is negligible (~ideal/rate wei).
+const expectNearIdeal = (actual: bigint, ideal: bigint) => {
+  expect(actual).toBeLessThanOrEqual(ideal)
+  expect(ideal - actual).toBeLessThanOrEqual(ideal / 1_000_000n + 2n)
+}
 
 describe('maxMintAmountAtom', () => {
   describe('early returns (guard clauses)', () => {
@@ -139,7 +149,7 @@ describe('maxMintAmountAtom', () => {
         result.current.setBalanceMap({ '0xtoken': parseEther('100') })
       })
 
-      expect(result.current.maxMintAmount).toBe(parseEther('200'))
+      expectNearIdeal(result.current.maxMintAmount, parseEther('200'))
     })
 
     it('returns minimum across multiple assets (limiting asset)', () => {
@@ -163,7 +173,7 @@ describe('maxMintAmountAtom', () => {
         })
       })
 
-      expect(result.current.maxMintAmount).toBe(parseEther('150'))
+      expectNearIdeal(result.current.maxMintAmount, parseEther('150'))
     })
 
     it('skips assets with zero distribution (no division by zero)', () => {
@@ -183,7 +193,7 @@ describe('maxMintAmountAtom', () => {
       })
 
       // Should only consider tokenA: 100 / 0.5 = 200
-      expect(result.current.maxMintAmount).toBe(parseEther('200'))
+      expectNearIdeal(result.current.maxMintAmount, parseEther('200'))
     })
 
     it('handles very small balances correctly', () => {
@@ -197,7 +207,7 @@ describe('maxMintAmountAtom', () => {
         result.current.setBalanceMap({ '0xtoken': parseEther('0.001') })
       })
 
-      expect(result.current.maxMintAmount).toBe(parseEther('10'))
+      expectNearIdeal(result.current.maxMintAmount, parseEther('10'))
     })
 
     it('handles very large balances without overflow', () => {
@@ -212,7 +222,7 @@ describe('maxMintAmountAtom', () => {
         result.current.setBalanceMap({ '0xtoken': billion })
       })
 
-      expect(result.current.maxMintAmount).toBe(parseEther('1000000000'))
+      expectNearIdeal(result.current.maxMintAmount, parseEther('1000000000'))
     })
   })
 
@@ -232,6 +242,33 @@ describe('maxMintAmountAtom', () => {
       // Result * 3 should not exceed 100 (verifies floor behavior)
       const requiredForResult = (maxMint * parseEther('3')) / parseEther('1')
       expect(requiredForResult).toBeLessThanOrEqual(parseEther('100'))
+    })
+
+    // Regression: "ERC20: transfer amount exceeds balance" on max mint.
+    // The quote rate is floor(folioBalance * 1e18 / totalSupply), but the contract
+    // pulls collateral with Ceil at full folioBalance/totalSupply precision. Dividing
+    // the wallet balance by the raw floored rate overshoots the true max, and the
+    // contract's Ceil pull then exceeds the wallet balance by a wei or two. Modeled
+    // here via B/S so the floored rate has a large fractional part (the overshoot case);
+    // the max must leave room for the real ceil pull. Old code (divide by rate) fails.
+    it('leaves headroom for the contract ceil pull', () => {
+      const folioBalance = 2n
+      const totalSupply = 3n
+      const quoteRate = (folioBalance * E18) / totalSupply // floor -> 666…666
+      const walletBalance = parseEther('2')
+
+      const wrapper = createWrapper()
+      const { result } = renderHook(() => useTestSetup(), { wrapper })
+
+      act(() => {
+        result.current.setIndexDTF(createMockIndexDTF())
+        result.current.setAssetDistribution({ '0xtoken': quoteRate })
+        result.current.setBalanceMap({ '0xtoken': walletBalance })
+      })
+
+      const maxMint = result.current.maxMintAmount
+      const contractPull = ceilDiv(folioBalance * maxMint, totalSupply)
+      expect(contractPull).toBeLessThanOrEqual(walletBalance)
     })
   })
 })
