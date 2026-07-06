@@ -13,7 +13,7 @@ Loader, not playbook. Reusable workflow rules live in `skills/` (kit-owned, upda
 ## Load Order
 
 - For staged or code work, read `skills/workflow.md` first.
-- Before writing or reviewing app code, read `skills/code-standards.md`.
+- Before writing or reviewing app code, read `skills/code-standards.md`, then scan `docs/wiki/improvements.md` for your area (anti-patterns are binding; fix listed debt opportunistically when touching it).
 - Before closing a stage, read `skills/review-panel.md` and `skills/wiki.md`.
 - Before user-facing UI work, read `skills/ui-ux.md`.
 - When changing the visual token system, read `skills/design.md` and `docs/wiki/domains/design-system.md`.
