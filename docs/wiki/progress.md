@@ -1,6 +1,6 @@
 ---
 title: Progress
-updated: 2026-07-03
+updated: 2026-07-06
 type: ledger
 ---
 
@@ -10,6 +10,7 @@ Stage ledger. One row per stage; keep entries short. Verifier = exact fresh comm
 
 | Stage | Status | Verifier | Review | Next |
 |---|---|---|---|---|
+| price-chart-granularity: per-range fetch interval + client-side display buckets (24H 5m→15m, 1M 1h→6h, All 1d→1w >400 pts), drop young-DTF hourly override, dedupe timestamps | done | `scope.mjs --gate` green: `pnpm typecheck` + `pnpm lint` + `pnpm test:run` (527 tests, 9 new) · network: per-range `interval` verified on CMC20 + PHOTON (BSC): 24H sends `5m`, 1M sends `1h`, no `1h` on long ranges · visual + rendered point counts: 24H 98 pts, 1M 122 pts, mvDEFI All 532 daily → ~80 weekly, TEST4 518 raw → 394 deduped | correctness: self, fresh full-diff pass; noted keep-last dedupe could drop a priced row on mixed-price dupes (unobserved in data, backlogged) | BTC+ priceBTC historical/live level mismatch backlogged (pre-existing) |
 | zapper: weighted ondo mint limits + off-hours prompts | done | `scope.mjs --gate` green: `pnpm typecheck` + `pnpm lint` + `pnpm test:run` (518 tests, 32 new) · live on BSC PHOTON vs staging (market closed): closed-error card with localized reopen time, closed-impact card on a resolved −8.16% zap quote, no CoW CTA on either | correctness+product+complexity: Dark & Light subagents, per-claim verify; adopted: signals extracted to `deriveMintPromptSignals` + tests, CoW-latch reset on unavailable flip (Dark, Important), session-bucket regular fallback matching reserve-api, lowercase session casing, shared `formatOndoTime`, wrap-to-current fallback copy; declined: tri-state minting-status helper; rest backlogged | engineer review handoff (zap behavior + shared `dtf-ondo` util); Crowdin pass for 13 new msgids |
 | referral tracking: capture ?referral, Mixpanel attribution | done | `pnpm typecheck` + `pnpm lint` + `pnpm test:run` green (477 tests) · browser smoke: 8/8 (capture, lowercase, last-touch overwrite, persistence, event props, invalid-code reject, hash+query link form, no page errors) + landing screenshot | correctness+security+product+complexity: Dark & Light on plan and diff, then /code-review high (15-agent workflow, adversarial verify) — 8 verified findings applied; final scope cut by user to Mixpanel-only (reserve-api PR #212 closed unmerged, register PR #1022) | engineer review handoff: referral_wallet_linked at connect (AtomUpdater) |
 | cowswap-prompt-rework | done | `pnpm typecheck` + `pnpm lint` + `pnpm test:run` green (473 tests, 21 new) · screenshots: candles default + OHLC tooltip, capacity/large/impact prompt cards on BSC ondo DTF | correctness+security+product+complexity: Dark & Light subagents, findings verified per-claim; adopted: impact input floor, empty-candles line fallback, Arbitrum entry removed, capitalize reuse; rest backlogged | engineer review handoff (zap-adjacent behavior, new app-wide hook); product acks: 1% threshold on mobile dialog, min-cap semantics |
@@ -37,6 +38,8 @@ Stage ledger. One row per stage; keep entries short. Verifier = exact fresh comm
 - Focused tests: home renders hero without discover list; discover renders filters/sections; highlighted card handles no-performance/inactive/chain-version tabs; animation hooks clean up observers and timers.
 - Re-run i18n extraction after cleanup; prune obsolete messages from deleted prototype copy.
 - Consolidate discover table + highlighted-card chart fetching into a shared hook with stable cache keys (avoid duplicated per-cell historical requests).
+- Overview charts: BTC+ (yield-index DTF) BTC mode shows historical `priceBTC` ≈ 1.1 vs live now-point ≈ 0.34 — level mismatch between API historical price and `indexDTFPriceAtom` denomination; pre-existing, needs a data/engineer look.
+- Overview charts: unify the factsheet's `getRangeParams` with `historicalConfigs` so the two range→interval maps cannot drift.
 - Chat launcher overlaps bottom-right interactive content (e.g. last pagination button on explorer mobile, pre-existing) — consider auto-hiding near page bottom or reserving clearance.
 - Add an imperative `open()` API to dtf-chat so `index-ctas-overview-mobile.tsx` stops DOM-clicking the launcher via querySelector.
 - `views/index-dtf/components/navigation/index.tsx` is 483 lines mixing sidebar, mobile portal menu, clipboard, and bridged-address logic — split after release (needs screenshot coverage).

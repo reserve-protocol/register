@@ -28,13 +28,64 @@ export type UseIndexDTFPriceHistoryParams = {
   address?: Address
   from: number
   to: number
-  interval: '1h' | '1d'
+  interval: '5m' | '1h' | '1d'
   enabled?: boolean
   prefetchRanges?: Array<{
     from: number
     to: number
-    interval: '1h' | '1d'
+    interval: '5m' | '1h' | '1d'
   }>
+}
+
+// The API occasionally returns duplicated rows for the same timestamp; keep
+// the last occurrence so the chart doesn't render vertical artifacts.
+export const dedupeByTimestamp = <T extends { timestamp: number }>(
+  points: T[]
+): T[] => {
+  const byTimestamp = new Map<number, T>()
+  for (const point of points) {
+    byTimestamp.set(point.timestamp, point)
+  }
+  if (byTimestamp.size === points.length) return points
+  return [...byTimestamp.values()].sort((a, b) => a.timestamp - b.timestamp)
+}
+
+const fetchHistory = async (
+  chainId: number,
+  address: string,
+  range: { from: number; to: number; interval: '5m' | '1h' | '1d' },
+  currentPrice?: number,
+  supply?: bigint
+): Promise<IndexDTFPerformance> => {
+  const sp = new URLSearchParams()
+  sp.set('chainId', chainId.toString())
+  sp.set('address', address.toLowerCase())
+  sp.set('from', range.from.toString())
+  sp.set('to', range.to.toString())
+  sp.set('interval', range.interval)
+
+  const response = await fetch(`${RESERVE_API}historical/dtf?${sp.toString()}`)
+
+  if (!response.ok) {
+    throw new Error('Failed to fetch dtf price history')
+  }
+
+  const data = (await response.json()) as IndexDTFPerformance
+  data.timeseries = dedupeByTimestamp(data.timeseries)
+
+  if (currentPrice && supply) {
+    const numberSupply = +formatEther(supply)
+
+    data.timeseries.push({
+      timestamp: Math.floor(Date.now() / 1_000),
+      price: currentPrice,
+      marketCap: currentPrice * numberSupply,
+      totalSupply: numberSupply,
+      basket: [],
+    })
+  }
+
+  return data
 }
 
 const useIndexDTFPriceHistory = ({
@@ -73,34 +124,13 @@ const useIndexDTFPriceHistory = ({
     queryFn: async (): Promise<IndexDTFPerformance> => {
       const startTime = Date.now()
 
-      const sp = new URLSearchParams()
-      sp.set('chainId', chainId.toString())
-      sp.set('address', address?.toLowerCase() ?? '')
-      sp.set('from', from.toString())
-      sp.set('to', to.toString())
-      sp.set('interval', interval)
-
-      const response = await fetch(
-        `${RESERVE_API}historical/dtf?${sp.toString()}`
+      const data = await fetchHistory(
+        chainId,
+        address ?? '',
+        { from, to, interval },
+        currentPrice,
+        supply
       )
-
-      if (!response.ok) {
-        throw new Error('Failed to fetch dtf price history')
-      }
-
-      const data = (await response.json()) as IndexDTFPerformance
-
-      if (currentPrice && supply) {
-        const numberSupply = +formatEther(supply)
-
-        data.timeseries.push({
-          timestamp: Math.floor(Date.now() / 1_000),
-          price: currentPrice,
-          marketCap: currentPrice * numberSupply,
-          totalSupply: numberSupply,
-          basket: [],
-        })
-      }
 
       // Ensure minimum loading time of 1 second for loading skeleton
       const elapsed = Date.now() - startTime
@@ -140,38 +170,8 @@ const useIndexDTFPriceHistory = ({
           currentPrice,
           supply,
         ],
-        queryFn: async (): Promise<IndexDTFPerformance> => {
-          const sp = new URLSearchParams()
-          sp.set('chainId', chainId.toString())
-          sp.set('address', address?.toLowerCase() ?? '')
-          sp.set('from', range.from.toString())
-          sp.set('to', range.to.toString())
-          sp.set('interval', range.interval)
-
-          const response = await fetch(
-            `${RESERVE_API}historical/dtf?${sp.toString()}`
-          )
-
-          if (!response.ok) {
-            throw new Error('Failed to fetch dtf price history')
-          }
-
-          const data = (await response.json()) as IndexDTFPerformance
-
-          if (currentPrice && supply) {
-            const numberSupply = +formatEther(supply)
-
-            data.timeseries.push({
-              timestamp: Math.floor(Date.now() / 1_000),
-              price: currentPrice,
-              marketCap: currentPrice * numberSupply,
-              totalSupply: numberSupply,
-              basket: [],
-            })
-          }
-
-          return data
-        },
+        queryFn: () =>
+          fetchHistory(chainId, address, range, currentPrice, supply),
         staleTime: REFRESH_INTERVAL,
       })
     })

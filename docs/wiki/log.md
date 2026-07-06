@@ -1,6 +1,6 @@
 ---
 title: Log
-updated: 2026-07-03
+updated: 2026-07-06
 type: log
 ---
 
@@ -36,3 +36,10 @@ Append-only chronological record: lessons, corrections, friction. Newest section
 - weighted-ondo-limits: capacity cap re-derived as weighted `min(capacityUsd / weight)` (see [[decisions]]); new `closed-impact`/`closed-error` prompt variants fill the off-hours gap where high-impact or failed quotes previously showed nothing; signals extracted to a pure `deriveMintPromptSignals` after review flagged the spec-critical booleans were untested inline component code.
 - Lesson (from the Dark reviewer's one Important find): removing a gate from a latch's reset condition (`isApplicable` lost the off-hours term so closed variants could latch) silently un-protects every state the gate was covering — the latched CoW CTA survived a flip to minting-unavailable for a full refetch cycle. When touching a latch reset, re-enumerate what each removed term was protecting and encode it as an explicit rule + test.
 - Lesson: client and API disagreed on missing session buckets (client treated missing as blocked; the API's `sessionCapacity` falls back to the regular cap). For optional payload fields, read the producing side (`reserve-api`) before choosing an interpretation.
+
+## 2026-07-06
+
+- price-chart-granularity stage: diagnosed the "choppy/crazy charts" empirically before touching code — probed `historical/dtf` for both example BSC DTFs and found (a) 1M at `1h` = 721 points with ~50% direction reversals, (b) the <30d young-DTF override forcing `1h` on YTD/1Y for backfilled AI DTFs (4.5k–8.8k points — the actual "crazy" chart), (c) the reported "3h/6h granularity" was just data holes; the API 400s on anything but `5m/1h/1d`. Lesson: measure the API before redesigning around a symptom report.
+- Verified the weekly downsample live by counting recharts path commands (`.recharts-area-curve` `C` segments) — mvDEFI All went 532 daily → ~80 rendered. A first mismatched count (394 on TEST4) turned out to be the dedupe working (518 raw rows had 125 duplicate timestamps), not a bug: replicate the app's full transform pipeline in a script before assuming the UI is wrong.
+- Found pre-existing (backlogged): BTC+ yield DTF's BTC data-type mode renders historical `priceBTC` ≈ 1.1 against a live now-point ≈ 0.34 — denomination mismatch upstream of the charts.
+- Correction (user feedback on the granularity pass): plain supported intervals left 24H (25 pts) and 1M (31 pts) too sparse — the fix generalized to "fetch the finest supported interval, bucket client-side to the display density" (24H: 5m→15m, 1M: 1h→6h), reusing the weekly downsample as a generic `downsampleToBucket`. Lesson: point-count targets (~100 per chart) beat interval names when choosing granularity; when the API doesn't serve the density you want, bucket down from the next finer one instead of settling for the next coarser one.

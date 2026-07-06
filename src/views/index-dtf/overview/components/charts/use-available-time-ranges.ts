@@ -17,7 +17,7 @@ export const ALL_TIME_RANGES = [
 export type TimeRangeOption = (typeof ALL_TIME_RANGES)[number]
 
 const getRangeStartTolerance = (range: Exclude<Range, 'all'>) =>
-  historicalConfigs[range].interval === '1h' ? 3_600 : 86_400
+  historicalConfigs[range].interval === '1d' ? 86_400 : 3_600
 
 // Pure: which ranges are selectable given when the DTF launched / when price
 // history actually starts. `firstHistoryTimestamp === undefined` means "not

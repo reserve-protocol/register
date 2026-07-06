@@ -15,8 +15,8 @@ export type BTCPriceHistory = {
 export type UseBTCPriceHistoryParams = {
   from: number
   to: number
-  interval: '1h' | '1d'
-  prefetchRanges?: Array<{ from: number; to: number; interval: '1h' | '1d' }>
+  interval: '5m' | '1h' | '1d'
+  prefetchRanges?: Array<{ from: number; to: number; interval: '5m' | '1h' | '1d' }>
   enabled?: boolean
 }
 
@@ -38,7 +38,7 @@ type BinanceKline = [
 const fetchBTCPrices = async (
   from: number,
   to: number,
-  interval: '1h' | '1d'
+  interval: '5m' | '1h' | '1d'
 ): Promise<BTCPriceHistory> => {
   const sp = new URLSearchParams()
   sp.set('symbol', 'BTCUSDT')
