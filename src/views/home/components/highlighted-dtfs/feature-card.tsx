@@ -105,7 +105,14 @@ export const IndexDTFFeatureCard = memo(function IndexDTFFeatureCard({
   const hasPerformanceChart = selectedVersion.performance.length > 0
   const handleCardClick = (event: MouseEvent<HTMLAnchorElement>) => {
     const target = event.target as HTMLElement | null
-    if (target?.closest('[data-card-action]')) {
+    // The video modal (Radix Dialog) portals to document.body but still bubbles
+    // through the React tree to this Link — so closing it would otherwise
+    // navigate. Ignore clicks that aren't real DOM descendants of the card, plus
+    // the explicit card-action controls.
+    if (
+      (target && !event.currentTarget.contains(target)) ||
+      target?.closest('[data-card-action]')
+    ) {
       event.preventDefault()
     }
   }
