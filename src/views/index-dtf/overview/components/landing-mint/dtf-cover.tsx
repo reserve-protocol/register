@@ -76,7 +76,7 @@ const DtfCover = ({ className }: { className?: string }) => {
           >
             <Button className="gap-2 rounded-full border-2 border-white bg-white/50 px-5 text-primary hover:bg-white">
               <Play className="h-4 w-4 " />
-              <Trans>Watch {dtf?.token.symbol}</Trans>
+              <Trans>Play video</Trans>
             </Button>
           </VideoModal>
         ) : (
@@ -87,7 +87,7 @@ const DtfCover = ({ className }: { className?: string }) => {
             type="button"
           >
             <Play className="h-4 w-4 " />
-            <Trans>Watch {dtf?.token.symbol}</Trans>
+            <Trans>Play video</Trans>
           </Button>
         )}
       </div>
