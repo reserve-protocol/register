@@ -1,4 +1,5 @@
 import { trackCompliance } from '@/hooks/useTrackPage'
+import { walletAtom } from '@/state/atoms'
 import { indexDTFAtom } from '@/state/dtf/atoms'
 import { RESERVE_API } from '@/utils/constants'
 import { useQuery } from '@tanstack/react-query'
@@ -55,16 +56,25 @@ const isDTFGeolocationStatus = (
   )
 }
 
-const useDTFGeolocation = (dtfAddress?: Address, chainId?: number) => {
+const useDTFGeolocation = (
+  dtfAddress?: Address,
+  chainId?: number,
+  wallet?: Address | null
+) => {
   return useQuery({
-    queryKey: ['dtf-geolocation', dtfAddress?.toLowerCase(), chainId],
+    queryKey: [
+      'dtf-geolocation',
+      dtfAddress?.toLowerCase(),
+      chainId,
+      wallet?.toLowerCase(),
+    ],
     queryFn: async (): Promise<DTFGeolocationStatus> => {
       if (!dtfAddress || !chainId) {
         throw new Error('Missing DTF address or chainId')
       }
 
       const response = await fetch(
-        `${RESERVE_API}v2/compliance/geolocation/dtf/${dtfAddress}?chainId=${chainId}`
+        `${RESERVE_API}v2/compliance/geolocation/dtf/${dtfAddress}?chainId=${chainId}${wallet ? `&address=${wallet}` : ''}`
       )
 
       if (!response.ok) {
@@ -107,7 +117,8 @@ const useDTFGeolocation = (dtfAddress?: Address, chainId?: number) => {
 
 const useDTFRestricted = () => {
   const dtf = useAtomValue(indexDTFAtom)
-  const dtfGeolocation = useDTFGeolocation(dtf?.id, dtf?.chainId)
+  const wallet = useAtomValue(walletAtom)
+  const dtfGeolocation = useDTFGeolocation(dtf?.id, dtf?.chainId, wallet)
 
   return useMemo<DTFRestrictedResult>(() => {
     if (!dtf || dtfGeolocation.isLoading) {
