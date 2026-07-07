@@ -1,5 +1,5 @@
 import useScrollToHash from '@/hooks/use-scroll-to-hash'
-import { useIsLargeDesktop } from '@/hooks/use-media-query'
+import { useIsLargeDesktop, useIsMobile } from '@/hooks/use-media-query'
 import { Card } from '@/components/ui/card'
 import { indexDTFAtom } from '@/state/dtf/atoms'
 import { isYieldIndexDTFAtom } from '@/state/dtf/yield-index-atoms'
@@ -24,6 +24,7 @@ const AboutSection = () => {
   // LandingMint rail — mount only one copy so the video isn't fetched and
   // played twice; the xl:hidden class stays as a resize-timing backstop.
   const isLargeDesktop = useIsLargeDesktop()
+  const isMobile = useIsMobile()
 
   if (isYieldIndexDTF) {
     return (
@@ -39,22 +40,28 @@ const AboutSection = () => {
     )
   }
 
+  const aboutCard = !isLargeDesktop && (
+    <Card
+      id="about"
+      className="group/section pb-0 pt-0 sm:pb-0 sm:pt-0 xl:hidden"
+    >
+      <IndexAboutOverview className="xl:hidden" showCover />
+    </Card>
+  )
+
+  const basketCard = (
+    <Card
+      id="basket"
+      className="group/section !bg-card pb-0 pt-0 sm:pb-0 sm:pt-0"
+    >
+      <IndexBasketOverviewInner />
+    </Card>
+  )
+
   return (
     <>
-      {!isLargeDesktop && (
-        <Card
-          id="about"
-          className="group/section pb-0 pt-0 sm:pb-0 sm:pt-0 xl:hidden"
-        >
-          <IndexAboutOverview className="xl:hidden" showCover />
-        </Card>
-      )}
-      <Card
-        id="basket"
-        className="group/section !bg-card pb-0 pt-0 sm:pb-0 sm:pt-0"
-      >
-        <IndexBasketOverviewInner />
-      </Card>
+      {isMobile ? basketCard : aboutCard}
+      {isMobile ? aboutCard : basketCard}
       <FeesStats />
     </>
   )

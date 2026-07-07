@@ -4,7 +4,11 @@ import { Skeleton } from '@/components/ui/skeleton'
 import useComplianceRestrictions from '@/hooks/use-compliance-restrictions'
 import { useIsLargeDesktop } from '@/hooks/use-media-query'
 import { isInactiveDTF } from '@/hooks/use-dtf-status'
-import { indexDTFAtom, indexDTFStatusAtom } from '@/state/dtf/atoms'
+import {
+  indexDTFAtom,
+  indexDTFBrandAtom,
+  indexDTFStatusAtom,
+} from '@/state/dtf/atoms'
 import { useTrackIndexDTFClick } from '@/views/index-dtf/hooks/useTrackIndexDTFPage'
 import { Trans } from '@lingui/react/macro'
 import { useZapperModal } from '@reserve-protocol/react-zapper'
@@ -14,6 +18,7 @@ import EligibilityCard from '../eligibility-card'
 import IndexAboutOverview from '../index-about-overview'
 import IndexTokenAddress from '../index-token-address'
 import DTFBalance from './dtf-balance'
+import DtfCover from './dtf-cover'
 
 const TokenInfo = () => {
   return <DTFBalance />
@@ -101,14 +106,21 @@ const MintBox = () => {
 
 const LandingMint = (props: React.HTMLAttributes<HTMLDivElement>) => {
   const { data: complianceData } = useComplianceRestrictions()
+  const brand = useAtomValue(indexDTFBrandAtom)
   const isGeoRestricted = complianceData?.reason === 'geolocation-restricted'
   const isLargeDesktop = useIsLargeDesktop()
+  const hasCover = !!brand?.dtf?.video?.trim() || !!brand?.dtf?.cover?.trim()
 
   return (
     <div
       className="hidden xl:flex xl:w-[480px] xl:flex-col xl:gap-1 relative max-w-[480px]"
       {...props}
     >
+      {hasCover && (
+        <div className="rounded-3xl bg-card p-2">
+          <DtfCover className="rounded-xl" />
+        </div>
+      )}
       <div className={isGeoRestricted ? 'z-10' : 'sticky top-0 z-10'}>
         {isGeoRestricted ? (
           <div className="flex flex-col gap-1">
@@ -121,12 +133,12 @@ const LandingMint = (props: React.HTMLAttributes<HTMLDivElement>) => {
           <MintBox />
         )}
       </div>
-      <div className="flex flex-1 flex-col gap-1">
+      <div className="flex flex-col gap-1">
         {/* WHY: mirror of the sub-xl about card (see overview AboutSection) —
             only one copy is mounted at a time, so it owns #about at xl. */}
         {isLargeDesktop && (
-          <div id="about" className="flex-1 rounded-3xl bg-card">
-            <IndexAboutOverview showCover />
+          <div id="about" className="rounded-3xl bg-card">
+            <IndexAboutOverview />
           </div>
         )}
       </div>

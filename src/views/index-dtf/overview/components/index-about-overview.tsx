@@ -143,13 +143,30 @@ const IndexAboutOverview = ({
 }) => (
   <div id={id} className={cn('group/section', className)}>
     <div>
+      {showCover && (
+        <DtfCover className="m-2 rounded-xl md:hidden" showBrandImage={false} />
+      )}
       <Header />
-      {showCover && <DtfCover className="m-2 rounded-xl" />}
       <div className={cn('p-5 sm:p-6', showCover && 'mt-0')}>
         <Mandate anchorId={id} />
         <IndexAboutMeta />
       </div>
-      <DownloadableResources />
+      {showCover ? (
+        <>
+          <div className="hidden border-t border-secondary p-2 empty:hidden md:grid md:grid-cols-2 md:gap-2">
+            <DtfCover className="rounded-xl" showBrandImage={false} />
+            <DownloadableResources
+              className="flex h-full flex-col justify-end"
+              showDivider={false}
+            />
+          </div>
+          <div className="md:hidden">
+            <DownloadableResources />
+          </div>
+        </>
+      ) : (
+        <DownloadableResources />
+      )}
     </div>
   </div>
 )
