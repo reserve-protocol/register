@@ -11,9 +11,8 @@ import {
   DialogDescription,
   DialogTitle,
 } from '@/components/ui/dialog'
+import useComplianceRestrictions from '@/hooks/use-compliance-restrictions'
 import useDtfHasOndoAssets from '@/hooks/use-dtf-has-ondo-assets'
-import useDTFRestricted from '@/hooks/use-dtf-restricted'
-import useGeolocation from '@/hooks/use-geolocation'
 import { trackEligibilityConfirmed } from '@/hooks/useTrackPage'
 import { walletAtom } from '@/state/atoms'
 import { indexDTFAtom } from '@/state/dtf/atoms'
@@ -249,8 +248,7 @@ const EligibilityDialog = ({ onConfirm }: { onConfirm: () => void }) => {
 const ConfirmEligibilityModal = () => {
   const dtf = useAtomValue(indexDTFAtom)
   const wallet = useAtomValue(walletAtom)
-  const dtfRestriction = useDTFRestricted()
-  const geolocation = useGeolocation()
+  const compliance = useComplianceRestrictions()
   const ondo = useDtfHasOndoAssets()
   const [confirmedKeys, setConfirmedKeys] = useState(
     readEligibilityConfirmations
@@ -259,21 +257,15 @@ const ConfirmEligibilityModal = () => {
   const eligibilityKey =
     wallet && dtf ? buildEligibilityKey(dtf.chainId, dtf.id, wallet) : undefined
 
-  // WHY: this is a self-attestation gate for users the automated checks
-  // ALLOW (not VPN, not geo-restricted) before they buy a DTF holding Ondo
-  // tokenized stocks. Restricted users are hard-blocked elsewhere instead.
-  const isUserRestricted =
-    geolocation.isError ||
-    geolocation.data?.restricted === true ||
-    geolocation.data?.isVPN === true
+  // WHY: this is a self-attestation gate for users who can actually trade the
+  // DTF, so it reads the same compliance source that enables the Buy/Sell
+  // CTAs — including the shouldSkipRestrictions (allowlisted wallet) bypass.
+  // Hard-blocked users never see it; they are stopped elsewhere instead.
   const shouldShow =
     !!eligibilityKey &&
     !confirmedKeys.has(eligibilityKey) &&
-    !geolocation.isLoading &&
-    !isUserRestricted &&
-    !dtfRestriction.isLoading &&
-    !dtfRestriction.isError &&
-    dtfRestriction.data?.restricted === false &&
+    !compliance.isLoading &&
+    compliance.data?.restricted === false &&
     !ondo.isLoading &&
     ondo.hasOndoAssets
 
