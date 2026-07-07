@@ -2,14 +2,14 @@ export type PerformanceDirection = 'positive' | 'negative' | 'neutral'
 
 export const PERFORMANCE_COLORS = {
   positive: {
-    start: '#A2BB6E',
-    end: '#657D32',
-    dot: '#819D44',
+    start: '#55D6A2',
+    end: '#159C72',
+    dot: '#24B886',
   },
   negative: {
-    start: '#D66A4A',
-    end: '#9F4A3D',
-    dot: '#B85F50',
+    start: '#FF8A6A',
+    end: '#D84F3A',
+    dot: '#E85F45',
   },
   neutral: {
     stroke: 'hsl(var(--primary))',
@@ -22,14 +22,14 @@ export const PERFORMANCE_COLORS = {
   },
   darkSurface: {
     positive: {
-      start: '#C4D98B',
-      end: '#88A94A',
-      dot: '#A6C66A',
+      start: '#6BE4B2',
+      end: '#24B886',
+      dot: '#55D6A2',
     },
     negative: {
-      start: '#F07A58',
-      end: '#C76B5D',
-      dot: '#D88B7D',
+      start: '#FF9C82',
+      end: '#E85F45',
+      dot: '#FF8A6A',
     },
     neutral: {
       stroke: '#E5EEFA',
@@ -46,8 +46,8 @@ export const PERFORMANCE_COLORS = {
 // Text classes for the same palette (light = end, dark = start). Kept as
 // literal class strings because Tailwind's scanner can't see computed values.
 export const PERFORMANCE_TEXT_CLASSES = {
-  positive: 'text-[#657D32] dark:text-[#A2BB6E]',
-  negative: 'text-[#9F4A3D] dark:text-[#D66A4A]',
+  positive: 'text-[#11845F] dark:text-[#55D6A2]',
+  negative: 'text-[#C24130] dark:text-[#FF8A6A]',
 } as const
 
 type PerformanceColorMode = 'default' | 'darkSurface'

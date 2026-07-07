@@ -3,6 +3,7 @@ import TokenLogo from '@/components/token-logo'
 import { isInactiveDTF } from '@/hooks/use-dtf-status'
 import { cn } from '@/lib/utils'
 import { formatCurrency } from '@/utils'
+import { PERFORMANCE_TEXT_CLASSES } from '@/utils/chart-performance-colors'
 import { Trans } from '@lingui/react/macro'
 import { memo, type Dispatch, type SetStateAction } from 'react'
 import { ChainTabs } from './chain-tabs'
@@ -133,8 +134,10 @@ export const FeatureCardHeader = memo(function FeatureCardHeader({
             <span
               className={cn(
                 'shrink-0 tabular-nums',
-                performanceDirection === 'positive' && 'text-[#657D32]',
-                performanceDirection === 'negative' && 'text-[#9F4A3D]'
+                performanceDirection === 'positive' &&
+                  PERFORMANCE_TEXT_CLASSES.positive,
+                performanceDirection === 'negative' &&
+                  PERFORMANCE_TEXT_CLASSES.negative
               )}
             >
               {percentageChange ? (

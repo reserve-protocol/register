@@ -144,12 +144,29 @@ export const renderPerformancePatternSeries = ({
 
 export const renderPerformanceStrokeDefs = ({
   direction,
+  lineShadowFilterId,
   strokeGradientId,
 }: {
   direction: PerformanceDirection
+  lineShadowFilterId: string
   strokeGradientId: string
 }) => (
   <defs>
+    <filter
+      id={lineShadowFilterId}
+      x="-20%"
+      y="-20%"
+      width="140%"
+      height="140%"
+    >
+      <feDropShadow
+        dx="0"
+        dy="1"
+        stdDeviation="2.5"
+        floodColor="hsl(var(--foreground))"
+        floodOpacity="0.09"
+      />
+    </filter>
     {direction !== 'neutral' && (
       <linearGradient id={strokeGradientId} x1="0" y1="1" x2="0" y2="0">
         <stop offset="0%" stopColor={PERFORMANCE_COLORS[direction].end} />
@@ -160,9 +177,11 @@ export const renderPerformanceStrokeDefs = ({
 )
 
 export const renderPerformanceStrokeSeries = ({
+  lineShadowFilterId,
   performanceColor,
   shouldSplit,
 }: {
+  lineShadowFilterId: string
   performanceColor: string
   shouldSplit: boolean
 }) => {
@@ -175,6 +194,7 @@ export const renderPerformanceStrokeSeries = ({
           stroke={performanceColor}
           strokeWidth={2}
           fill="transparent"
+          filter={`url(#${lineShadowFilterId})`}
           {...areaAnimation}
         />
         <Area
@@ -183,6 +203,7 @@ export const renderPerformanceStrokeSeries = ({
           stroke={performanceColor}
           strokeWidth={2}
           fill="transparent"
+          filter={`url(#${lineShadowFilterId})`}
           {...areaAnimation}
         />
       </>
@@ -196,6 +217,7 @@ export const renderPerformanceStrokeSeries = ({
       stroke={performanceColor}
       strokeWidth={2}
       fill="transparent"
+      filter={`url(#${lineShadowFilterId})`}
       {...areaAnimation}
     />
   )

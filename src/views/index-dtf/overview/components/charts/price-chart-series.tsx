@@ -13,6 +13,7 @@ export const renderPriceChartSeries = ({
   fill,
   isYieldMode,
   preLaunchFill,
+  priceLineShadowFilterId,
   shouldSplit,
   strokeColor,
 }: {
@@ -21,6 +22,7 @@ export const renderPriceChartSeries = ({
   fill: string
   isYieldMode: boolean
   preLaunchFill: string
+  priceLineShadowFilterId: string
   shouldSplit: boolean
   strokeColor: string
 }) => {
@@ -51,8 +53,9 @@ export const renderPriceChartSeries = ({
         type="monotone"
         dataKey="preLaunchValue"
         stroke={strokeColor}
-        strokeWidth={1.5}
+        strokeWidth={2}
         fill="transparent"
+        filter={`url(#${priceLineShadowFilterId})`}
         {...areaAnimation}
       />,
       <Area
@@ -60,8 +63,9 @@ export const renderPriceChartSeries = ({
         type="monotone"
         dataKey="postLaunchValue"
         stroke={strokeColor}
-        strokeWidth={1.5}
+        strokeWidth={2}
         fill="transparent"
+        filter={`url(#${priceLineShadowFilterId})`}
         {...areaAnimation}
       />,
     ]
@@ -82,8 +86,9 @@ export const renderPriceChartSeries = ({
       type="monotone"
       dataKey={chartKey}
       stroke={strokeColor}
-      strokeWidth={1.5}
+      strokeWidth={2}
       fill="transparent"
+      filter={`url(#${priceLineShadowFilterId})`}
       {...areaAnimation}
     />,
   ]

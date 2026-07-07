@@ -16,6 +16,7 @@ export const renderPriceChartDefs = ({
   performanceDirection,
   preLaunchDotsPatternId,
   priceColors,
+  priceLineShadowFilterId,
   priceStrokeGradientId,
   usePerformanceColors,
 }: {
@@ -28,10 +29,26 @@ export const renderPriceChartDefs = ({
   performanceDirection: PerformanceDirection
   preLaunchDotsPatternId: string
   priceColors: PriceChartColorSet
+  priceLineShadowFilterId: string
   priceStrokeGradientId: string
   usePerformanceColors: boolean
 }) => (
   <defs>
+    <filter
+      id={priceLineShadowFilterId}
+      x="-20%"
+      y="-20%"
+      width="140%"
+      height="140%"
+    >
+      <feDropShadow
+        dx="0"
+        dy="1"
+        stdDeviation="2.5"
+        floodColor="hsl(var(--foreground))"
+        floodOpacity="0.09"
+      />
+    </filter>
     {usePerformanceColors && performanceDirection !== 'neutral' && (
       <linearGradient id={priceStrokeGradientId} x1="0" y1="1" x2="0" y2="0">
         {performanceDirection === 'positive' ? (

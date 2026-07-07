@@ -108,6 +108,7 @@ const PriceChartBody = ({
   )
   const overviewPriceColors = getPerformanceColorSet()
   const priceStrokeGradientId = `${chartId}-overview-price-stroke`
+  const priceLineShadowFilterId = `${chartId}-overview-price-line-shadow`
   const dotsPatternId = `${chartId}-overview-dots`
   const preLaunchDotsPatternId = `${chartId}-overview-pre-launch-dots`
   const fillGradientId = `${chartId}-overview-fill`
@@ -149,6 +150,7 @@ const PriceChartBody = ({
           performanceDirection,
           preLaunchDotsPatternId,
           priceColors: overviewPriceColors,
+          priceLineShadowFilterId,
           priceStrokeGradientId,
           usePerformanceColors,
         })}
@@ -220,6 +222,7 @@ const PriceChartBody = ({
           fill: postLaunchFill,
           isYieldMode,
           preLaunchFill,
+          priceLineShadowFilterId,
           shouldSplit,
           strokeColor,
         })}
