@@ -33,9 +33,13 @@ import EligibilityCard from './eligibility-card'
 
 const RestrictionPopover = ({
   enabled,
+  title,
+  description,
   children,
 }: {
   enabled: boolean
+  title?: string
+  description?: string
   children: ReactNode
 }) => {
   if (!enabled) return <>{children}</>
@@ -44,17 +48,16 @@ const RestrictionPopover = ({
     <Popover>
       <PopoverTrigger asChild>{children}</PopoverTrigger>
       <PopoverContent className="w-[260px] text-sm text-center">
-        <Trans>
-          This product isn't available in your region due to local restrictions.{' '}
-          <a
-            className="underline"
-            target="_blank"
-            rel="noopener noreferrer"
-            href="https://reserve.org/terms-and-conditions"
-          >
-            Learn More
-          </a>
-        </Trans>
+        {title && <div className="mb-1 font-semibold">{title}</div>}
+        {description}{' '}
+        <a
+          className="underline"
+          target="_blank"
+          rel="noopener noreferrer"
+          href="https://reserve.org/terms-and-conditions"
+        >
+          <Trans>Learn More</Trans>
+        </a>
       </PopoverContent>
     </Popover>
   )
@@ -107,7 +110,11 @@ const IndexCTAsOverviewMobile = () => {
         </DialogContent>
       </Dialog>
     ) : (
-      <RestrictionPopover enabled={isRestricted}>
+      <RestrictionPopover
+        enabled={complianceData?.restricted === true}
+        title={complianceData?.title}
+        description={complianceData?.description}
+      >
         <Button
           className={cn(
             'rounded-full h-10 w-auto shrink-0 px-5',

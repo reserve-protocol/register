@@ -14,6 +14,7 @@ import {
 import useDtfHasOndoAssets from '@/hooks/use-dtf-has-ondo-assets'
 import useDTFRestricted from '@/hooks/use-dtf-restricted'
 import useGeolocation from '@/hooks/use-geolocation'
+import { trackEligibilityConfirmed } from '@/hooks/useTrackPage'
 import { walletAtom } from '@/state/atoms'
 import { indexDTFAtom } from '@/state/dtf/atoms'
 import { Trans, useLingui } from '@lingui/react/macro'
@@ -281,6 +282,14 @@ const ConfirmEligibilityModal = () => {
   const handleConfirm = () => {
     writeEligibilityConfirmation(eligibilityKey)
     setConfirmedKeys((prev) => new Set(prev).add(eligibilityKey))
+    if (wallet && dtf) {
+      trackEligibilityConfirmed({
+        wa: wallet,
+        ca: dtf.id,
+        ticker: dtf.token.symbol,
+        chain: dtf.chainId,
+      })
+    }
   }
 
   // WHY: key by the tuple so navigating to another wallet/DTF remounts the

@@ -34,6 +34,15 @@ export const trackCompliance = (props: {
   mixpanel.track('compliance_check', props)
 }
 
+export const trackEligibilityConfirmed = (props: {
+  wa: string
+  ca: string
+  ticker?: string
+  chain: number
+}) => {
+  mixpanel.track('eligibility_confirmed', props)
+}
+
 const useTrackPage = (page: string, subpage?: string) => {
   useEffect(() => {
     mixpanel.track_pageview({
