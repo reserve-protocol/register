@@ -2,7 +2,9 @@ import { describe, expect, it } from 'vitest'
 import {
   floorOndoMaxUsd,
   formatOndoTime,
+  formatRetryIn,
   getNextTradableSession,
+  getNextUsMarketOpen,
   getOndoWeightedMaxUsd,
   isOndoMintingAvailable,
   isOndoMintingUnavailable,
@@ -257,5 +259,62 @@ describe('formatOndoTime', () => {
     expect(formatOndoTime(null)).toBeNull()
     expect(formatOndoTime(undefined)).toBeNull()
     expect(formatOndoTime('not-a-date')).toBeNull()
+  })
+})
+
+describe('formatRetryIn', () => {
+  const isoInMinutes = (minutes: number) =>
+    new Date(Date.now() + minutes * 60_000).toISOString()
+
+  it('reports minutes under an hour', () => {
+    expect(formatRetryIn(isoInMinutes(45))).toBe('45 minutes')
+  })
+
+  it('reports whole hours at or above an hour', () => {
+    expect(formatRetryIn(isoInMinutes(120))).toBe('2 hours')
+    // 1h50m rounds to 2 hours
+    expect(formatRetryIn(isoInMinutes(110))).toBe('2 hours')
+  })
+
+  it('singularizes 1 hour and 1 minute', () => {
+    expect(formatRetryIn(isoInMinutes(60))).toBe('1 hour')
+    expect(formatRetryIn(isoInMinutes(0.5))).toBe('1 minute')
+  })
+
+  it('returns null when past, missing, or invalid', () => {
+    expect(formatRetryIn(isoInMinutes(-30))).toBeNull()
+    expect(formatRetryIn(null)).toBeNull()
+    expect(formatRetryIn(undefined)).toBeNull()
+    expect(formatRetryIn('not-a-date')).toBeNull()
+  })
+})
+
+describe('getNextUsMarketOpen', () => {
+  const etParts = (d: Date) =>
+    new Intl.DateTimeFormat('en-US', {
+      timeZone: 'America/New_York',
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: false,
+      weekday: 'short',
+    })
+      .formatToParts(d)
+      .reduce<Record<string, string>>((acc, p) => {
+        acc[p.type] = p.value
+        return acc
+      }, {})
+
+  it('returns a future weekday at 9:30 AM Eastern', () => {
+    const next = getNextUsMarketOpen()
+    expect(next.getTime()).toBeGreaterThan(Date.now())
+    const { hour, minute, weekday } = etParts(next)
+    expect(`${hour}:${minute}`).toBe('09:30')
+    expect(['Mon', 'Tue', 'Wed', 'Thu', 'Fri']).toContain(weekday)
+  })
+
+  it('rolls a Friday evening forward to Monday', () => {
+    // 2026-07-10 is a Friday; 22:00Z = 6:00 PM EDT.
+    const next = getNextUsMarketOpen(new Date('2026-07-10T22:00:00Z'))
+    expect(etParts(next).weekday).toBe('Mon')
   })
 })
