@@ -66,13 +66,13 @@ export const TranscriptPreview = ({
             data-card-action="video"
             variant="none"
             size="inline"
-            className="inline-flex shrink-0 items-center gap-1 bg-transparent p-0 text-xs text-primary hover:bg-transparent hover:text-primary/80"
+            className="group/video inline-flex shrink-0 items-center gap-1 bg-transparent p-0 text-xs text-muted-foreground underline decoration-transparent underline-offset-4 transition-colors hover:bg-transparent hover:text-primary hover:decoration-primary focus-visible:text-primary focus-visible:decoration-primary"
             aria-label={t`Watch ${selectedVersion.symbol} explainer`}
           >
             <span>
               <Trans>Watch Video</Trans>
             </span>
-            <AudioEqualizerIcon className="h-3 w-0 shrink-0 opacity-0 transition-[width,opacity] duration-150 lg:group-hover:w-3 lg:group-hover:opacity-100" />
+            <AudioEqualizerIcon className="h-3 w-0 shrink-0 opacity-0 transition-[width,opacity] duration-150 group-hover/video:w-3 group-hover/video:opacity-100 group-focus-visible/video:w-3 group-focus-visible/video:opacity-100" />
           </Button>
         </VideoModal>
       )}
