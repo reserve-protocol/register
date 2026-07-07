@@ -1,6 +1,13 @@
 {
   "name": "register",
   "version": "1.0.0",
+  "description": "Register — the frontend for Reserve Protocol DTFs.",
+  "license": "BlueOak-1.0.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/reserve-protocol/register.git"
+  },
+  "homepage": "https://app.reserve.org",
   "type": "module",
   "packageManager": "pnpm@11.5.2",
   "dependencies": {

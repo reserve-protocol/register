@@ -12,10 +12,12 @@ Register lets users create, manage, and interact with DTFs (Decentralized Token 
 
 ## Getting started
 
+Requires Node 24+ (see `.nvmrc`) and [pnpm](https://pnpm.io).
+
 ```bash
 cp .env.example .env
-npm i
-npm start
+pnpm install
+pnpm start
 ```
 
 You'll need at minimum a WalletConnect project ID in your `.env`:
@@ -24,16 +26,17 @@ You'll need at minimum a WalletConnect project ID in your `.env`:
 VITE_WALLETCONNECT_ID=your_id
 
 # Recommended for better RPC reliability
-VITE_ALCHEMY_KEY=your_key
-VITE_INFURA_KEY=your_key
+VITE_ALCHEMY=your_key
 ```
 
 Other commands:
 
 ```bash
-npm run build        # Production build
-npm run typecheck    # TypeScript validation
-npm run test         # Run tests (watch mode)
+pnpm build           # Production build
+pnpm typecheck       # TypeScript validation
+pnpm lint            # Lint (oxlint)
+pnpm test            # Run tests (watch mode)
+pnpm test:run        # Run tests once
 ```
 
 ## Stack
@@ -52,3 +55,7 @@ React, TypeScript, Vite, Jotai, TailwindCSS, shadcn/ui, wagmi, viem, React Query
 Fork, branch off `master`, open a PR. See `/docs` for architecture and specs.
 
 To add a Yield DTF to the supported list, follow the instructions at [rtokens](https://github.com/reserve-protocol/rtokens).
+
+## License
+
+[Blue Oak Model License 1.0.0](./LICENSE.md)
