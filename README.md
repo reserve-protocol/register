@@ -56,6 +56,10 @@ Fork, branch off `master`, open a PR. See `/docs` for architecture and specs.
 
 To add a Yield DTF to the supported list, follow the instructions at [rtokens](https://github.com/reserve-protocol/rtokens).
 
+## Security
+
+Found a vulnerability? Please report it privately — see [SECURITY.md](./SECURITY.md).
+
 ## License
 
-[Blue Oak Model License 1.0.0](./LICENSE.md)
+[MIT](./LICENSE.md)
