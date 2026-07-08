@@ -24,8 +24,7 @@ const Section = ({
 }) => (
   <div className="p-3 sm:p-4 border-b border-border">
     <div className="flex items-center mb-3">
-      <Brand />
-      <span className="ml-2 font-bold">{title}</span>
+      <span className="font-semibold text-primary">{title}</span>
     </div>
     {description}
   </div>

@@ -69,11 +69,17 @@
   padding: 0.5rem;
 }
 
-@media (max-width: 640px) {
+/* Hide the widget's own launcher across the whole range where the DTF mobile
+   action bar owns the chat entry point (below Tailwind's `lg`, matching the
+   bar's `lg:hidden`) — otherwise the launcher and the bar's button overlap
+   between sm and lg. */
+@media (max-width: 1023.98px) {
   .dtf-chat-hide-mobile-launcher .rc-launcher {
     display: none;
   }
+}
 
+@media (max-width: 640px) {
   .rc-root .rc-launcher {
     width: 3.5rem;
     height: 3.5rem;

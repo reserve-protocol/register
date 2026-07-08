@@ -205,8 +205,8 @@ msgid "{0} Est. APY"
 msgstr "预计 APY {0}"
 
 #. placeholder {0}: dtf.token.symbol
-#: src/views/index-dtf/overview/components/landing-mint/dtf-cover.tsx:22
-#: src/views/index-dtf/overview/components/landing-mint/dtf-cover.tsx:27
+#: src/views/index-dtf/overview/components/landing-mint/dtf-cover.tsx:33
+#: src/views/index-dtf/overview/components/landing-mint/dtf-cover.tsx:38
 msgid "{0} explainer"
 msgstr "{0} 讲解"
 
@@ -778,7 +778,7 @@ msgstr "关于 {0}"
 
 #: src/views/index-dtf/manage/components/manage-about.tsx:119
 #: src/views/index-dtf/manage/components/manage-about.tsx:122
-#: src/views/index-dtf/overview/components/index-about-overview.tsx:88
+#: src/views/index-dtf/overview/components/index-about-overview.tsx:87
 msgid "About this DTF"
 msgstr "关于此 DTF"
 
@@ -1305,6 +1305,10 @@ msgstr "确定要离开吗？这可能导致拍卖失败并造成价值损失。
 msgid "Are you sure you wish to challenge?"
 msgstr "你确定要发起质疑吗？"
 
+#: src/components/layout/contact-modal/bell-button.tsx:52
+msgid "As a larger holder you get a direct line to the team behind Reserve. Schedule an intro call."
+msgstr "作为较大持有者，你可以直接联系 Reserve 背后的团队。预约一次介绍通话。"
+
 #: src/components/rtoken-setup/token/ExternalRevenueSplit.tsx:97
 msgid "As RSR"
 msgstr "以 RSR 形式"
@@ -1314,8 +1318,8 @@ msgid "As RToken"
 msgstr "以 RToken 形式"
 
 #: src/components/dtf-chat/index.tsx:111
-#: src/views/index-dtf/overview/components/index-ctas-overview-mobile.tsx:140
 #: src/views/index-dtf/overview/components/index-ctas-overview-mobile.tsx:147
+#: src/views/index-dtf/overview/components/index-ctas-overview-mobile.tsx:154
 msgid "Ask Reserve AI"
 msgstr "询问 Reserve AI"
 
@@ -1507,12 +1511,12 @@ msgid "Available Collaterals"
 msgstr "可用抵押品"
 
 #: src/components/layout/contact-modal/bell-button.tsx:32
-msgid "Available opportunity"
-msgstr "可用机会"
+#~ msgid "Available opportunity"
+#~ msgstr "可用机会"
 
 #: src/components/layout/contact-modal/bell-button.tsx:41
-msgid "Available opportunity!"
-msgstr "可用机会！"
+#~ msgid "Available opportunity!"
+#~ msgstr "可用机会！"
 
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-optimistic-parameters.tsx:66
 msgid "Available optimistic actions"
@@ -1761,11 +1765,11 @@ msgstr "请注意，任何人都可以创建出现在此列表中的 RToken。�
 msgid "Because of a low usage, the Reserve DApp is sunsetting mints on Arbitrum. Redemptions will continue to be supported. Yield DTFs are always backed 1:1 by underlying assets and can be permissonlessly redeemed at any time."
 msgstr "由于使用率较低，Reserve DApp 将逐步停止在 Arbitrum 上的 Mint。Redemption 将继续受到支持。Yield DTF 始终由底层资产 1:1 支撑，可随时无许可地 Redeem。"
 
-#: src/views/yield-dtf/overview/components/backing/risks.tsx:87
+#: src/views/yield-dtf/overview/components/backing/risks.tsx:86
 msgid "Because RTokens are governed in a decentralized manner by those staking their RSR on the RToken, the possibility of \"governance attacks\" exists. While <0>undesirable governance outcomes</0> are possible, the protocol's design ensures that there is sufficient incentivisation for responsible, balanced governance decisions. Built-in delays throughout the governance cycle also provide additional layers of security. Nevertheless, research on a specific RToken's governance structure is strongly recommended."
 msgstr "由于 RTokens 由在 RToken 上 Stake 其 RSR 的人以去中心化方式治理，因此存在“治理攻击”的可能性。尽管<0>不良治理结果</0>有可能发生，但协议的设计确保了对负责任、平衡的治理决策有足够的激励。整个治理周期中内置的延迟也提供了额外的安全保障。尽管如此，仍强烈建议研究特定 RToken 的治理结构。"
 
-#: src/views/yield-dtf/overview/components/backing/risks.tsx:42
+#: src/views/yield-dtf/overview/components/backing/risks.tsx:41
 msgid "Because the Reserve protocol is built using smart contracts, it's possible that undiscovered bugs or vulnerabilities in these contracts could be exploited, resulting in loss of user funds. Accordingly, the protocol's contracts undergo <0>regular and rigorous security audits.</0>"
 msgstr "由于 Reserve protocol 使用智能合约构建，这些合约中未被发现的漏洞或缺陷有可能被利用，从而导致用户资金损失。因此，协议的合约会接受<0>定期且严格的安全审计。</0>"
 
@@ -1954,6 +1958,7 @@ msgid "Buy"
 msgstr "买入"
 
 #: src/views/home/components/highlighted-dtfs/feature-card-header.tsx:101
+#: src/views/home/components/highlighted-dtfs/identity-card.tsx:48
 msgctxt "DTF card"
 msgid "Buy"
 msgstr "一键买入"
@@ -1967,14 +1972,18 @@ msgstr "一键买入"
 msgid "Buy {0}"
 msgstr "购买 {0}"
 
-#: src/views/index-dtf/overview/components/index-ctas-overview-mobile.tsx:124
+#: src/views/index-dtf/overview/components/index-ctas-overview-mobile.tsx:131
 #: src/views/index-dtf/overview/components/landing-mint/index.tsx:93
 msgid "Buy / Sell"
 msgstr "买入 / 卖出"
 
 #: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:233
-msgid "Buy on CoW Swap"
-msgstr "在 CoW Swap 上购买"
+#~ msgid "Buy on CoW Swap"
+#~ msgstr "在 CoW Swap 上购买"
+
+#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:231
+msgid "Buy on PancakeSwap"
+msgstr "在 PancakeSwap 上买入"
 
 #: src/views/index-dtf/auctions/views/rebalance/components/rebalance-action.tsx:37
 msgid "Buy/sell tokens to move closer to proposed weights."
@@ -2283,7 +2292,7 @@ msgstr "清除"
 msgid "Click retry or use individual approve buttons below."
 msgstr "点击重试或使用下方的单独授权按钮。"
 
-#: src/components/video-modal/index.tsx:51
+#: src/components/video-modal/index.tsx:56
 #: src/views/index-dtf/overview/components/charts/candlestick-tooltip.tsx:36
 msgid "Close"
 msgstr "关闭"
@@ -2344,7 +2353,7 @@ msgstr "抵押品分配"
 msgid "Collateral Exposure"
 msgstr "抵押品敞口"
 
-#: src/views/yield-dtf/overview/components/backing/risks.tsx:60
+#: src/views/yield-dtf/overview/components/backing/risks.tsx:59
 msgid "Collateral Plugin Wrappers"
 msgstr "抵押品插件包装器"
 
@@ -3046,7 +3055,7 @@ msgstr "DAO 治理"
 msgid "DAO settings proposal"
 msgstr "DAO 设置提案"
 
-#: src/components/layout/header/components/header-actions-menu.tsx:117
+#: src/components/layout/header/components/header-actions-menu.tsx:122
 msgid "Dark"
 msgstr "深色"
 
@@ -3345,7 +3354,7 @@ msgstr "忽略"
 msgid "Dismiss invitation"
 msgstr "忽略邀请"
 
-#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:212
+#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:197
 msgid "Dismiss suggestion"
 msgstr "关闭建议"
 
@@ -3432,7 +3441,7 @@ msgid "Download snapshot"
 msgstr "下载快照"
 
 #: src/views/index-dtf/manage/components/manage-about.tsx:37
-#: src/views/index-dtf/overview/components/index-about-overview.tsx:213
+#: src/views/index-dtf/overview/components/dtf-downloadable-resources.tsx:86
 msgid "Downloadable resources"
 msgstr "可下载资源"
 
@@ -3468,7 +3477,7 @@ msgid "DTF Created"
 msgstr "DTF 已创建"
 
 #: src/views/home/components/dtf-explainer-button.tsx:26
-#: src/views/index-dtf/overview/components/landing-mint/dtf-cover.tsx:28
+#: src/views/index-dtf/overview/components/landing-mint/dtf-cover.tsx:39
 msgid "DTF Explainer"
 msgstr "DTF 说明"
 
@@ -3689,6 +3698,10 @@ msgstr "编辑"
 msgid "Edit {variant} cover image"
 msgstr "编辑{variant}封面图片"
 
+#: src/views/index-dtf/manage/components/cover-image-upload.tsx:179
+msgid "Remove {variant} cover image"
+msgstr "移除{variant}封面图片"
+
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:749
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:755
 msgid "Edit amount"
@@ -3698,7 +3711,7 @@ msgstr "修改金额"
 msgid "Edit Overview Content"
 msgstr "编辑概览内容"
 
-#: src/views/index-dtf/overview/components/index-about-overview.tsx:37
+#: src/views/index-dtf/overview/components/index-about-overview.tsx:36
 msgid "Edit page"
 msgstr "编辑页面"
 
@@ -4083,7 +4096,7 @@ msgstr "退出 Deployer"
 msgid "Expanded J.1 to include energy usage data and the sources and methodologies used for its calculation."
 msgstr "扩充了 J.1，纳入了能源使用数据及其计算所采用的来源和方法。"
 
-#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:50
+#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:54
 msgid "Expect a worse price"
 msgstr "预计价格较差"
 
@@ -4392,28 +4405,32 @@ msgid "For"
 msgstr "赞成"
 
 #: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:82
-msgid "For a better price, come back after the market reopens {nextOpenLabel}."
-msgstr "如需更优价格，请在市场于 {nextOpenLabel} 重新开市后再来。"
+#~ msgid "For a better price, come back after the market reopens {nextOpenLabel}."
+#~ msgstr "如需更优价格，请在市场于 {nextOpenLabel} 重新开市后再来。"
 
 #: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:89
-msgid "For a better price, come back during {nextSessionLabel} hours in the US."
-msgstr "如需更优价格，请在美国 {nextSessionLabel} 时段再来。"
+#~ msgid "For a better price, come back during {nextSessionLabel} hours in the US."
+#~ msgstr "如需更优价格，请在美国 {nextSessionLabel} 时段再来。"
 
 #: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:95
-msgid "For a better price, come back when trading resumes."
-msgstr "如需更优价格，请在交易恢复后再来。"
+#~ msgid "For a better price, come back when trading resumes."
+#~ msgstr "如需更优价格，请在交易恢复后再来。"
 
 #: src/views/index-dtf/governance/views/propose/components/proposal-type-selector.tsx:126
 msgid "For approved governors to fast-track proposals."
 msgstr "供已批准的治理者快速处理提案。"
 
-#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:158
+#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:137
 msgid "For larger amounts, split your order into multiple transactions."
 msgstr "如需更大金额，请将订单拆分为多笔交易。"
 
 #: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:114
-msgid "For larger orders, a DEX aggregator like CoW Swap may get you a better price by routing your trade across multiple sources of liquidity."
-msgstr "对于较大额的订单，像 CoW Swap 这样的 DEX 聚合器可以将您的交易路由到多个流动性来源，从而获得更好的价格。"
+#~ msgid "For larger orders, a DEX aggregator like CoW Swap may get you a better price by routing your trade across multiple sources of liquidity."
+#~ msgstr "对于较大额的订单，像 CoW Swap 这样的 DEX 聚合器可以将您的交易路由到多个流动性来源，从而获得更好的价格。"
+
+#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:94
+msgid "For larger orders, a DEX like PancakeSwap may get you a better price by routing your trade across multiple sources of liquidity."
+msgstr "对于较大订单，PancakeSwap 这样的 DEX 可以通过多种流动性来源路由交易，帮你获得更好的价格。"
 
 #: src/views/index-dtf/components/compliance-alert.tsx:19
 msgid "For more information, see our <0>Terms of Use</0>."
@@ -4515,7 +4532,7 @@ msgid "Get quote"
 msgstr "获取报价"
 
 #: src/views/index-dtf/deploy/steps/confirm-deploy/success/index.tsx:105
-#: src/views/index-dtf/overview/components/index-ctas-overview-mobile.tsx:175
+#: src/views/index-dtf/overview/components/index-ctas-overview-mobile.tsx:182
 msgid "Go to DTF overview"
 msgstr "前往 DTF 概览"
 
@@ -4556,7 +4573,7 @@ msgstr "参与治理、Stake 并发现收益机会"
 #: src/views/index-dtf/overview/components/index-governance-overview.tsx:35
 #: src/views/yield-dtf/deploy/components/NavigationSidebar.tsx:28
 #: src/views/yield-dtf/governance/views/proposal/components/ProposalNavigation.tsx:18
-#: src/views/yield-dtf/overview/components/backing/risks.tsx:84
+#: src/views/yield-dtf/overview/components/backing/risks.tsx:83
 #: src/views/yield-dtf/settings/components/navigation-sidebar.tsx:17
 msgid "Governance"
 msgstr "社区治理"
@@ -4726,7 +4743,7 @@ msgid "High liquidity"
 msgstr "高流动性"
 
 #: src/views/index-dtf/auctions/views/rebalance/components/rebalance-liquidity-checker.tsx:244
-#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:37
+#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:41
 #: src/views/index-dtf/governance/views/propose/basket/components/proposal-liquidity-checker.tsx:311
 msgid "High price impact"
 msgstr "价格影响过高"
@@ -5231,11 +5248,11 @@ msgstr "刚刚"
 msgid "Known supported wallets"
 msgstr "已知支持的 Wallets"
 
-#: src/components/layout/header/components/header-actions-menu.tsx:123
+#: src/components/layout/header/components/header-actions-menu.tsx:135
 msgid "Language"
 msgstr "语言"
 
-#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:32
+#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:36
 msgid "Large Order"
 msgstr "大额订单"
 
@@ -5281,6 +5298,7 @@ msgstr "发起中……"
 
 #: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:339
 #: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:370
+#: src/views/index-dtf/overview/components/index-ctas-overview-mobile.tsx:59
 #: src/views/index-dtf/overview/components/landing-mint/index.tsx:77
 msgid "Learn More"
 msgstr "了解更多"
@@ -5309,7 +5327,7 @@ msgstr "剩余抵押品不计入 DTF 产出价值。由于 Mint 使用固定的�
 msgid "Leftover dust"
 msgstr "剩余零头"
 
-#: src/components/layout/header/components/header-actions-menu.tsx:104
+#: src/components/layout/header/components/header-actions-menu.tsx:109
 msgid "Light"
 msgstr "浅色"
 
@@ -5856,7 +5874,7 @@ msgstr "当前可 Mint 量"
 msgid "Minted"
 msgstr "已 Mint"
 
-#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:179
+#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:156
 msgid "Minting {symbol} is currently unavailable and we couldn't find another route to buy it."
 msgstr "{symbol} 的 Mint 当前不可用，且我们未能找到其他买入路径。"
 
@@ -5918,11 +5936,11 @@ msgstr "每月 P&L"
 msgid "More"
 msgstr "更多"
 
-#: src/views/index-dtf/overview/components/index-about-overview.tsx:216
+#: src/views/index-dtf/overview/components/dtf-downloadable-resources.tsx:89
 msgid "More information on what {dtfName} is, what it’s all about, methodology and thesis."
 msgstr "了解 {dtfName} 是什么、其核心理念、方法论与投资逻辑的更多信息。"
 
-#: src/components/layout/header/components/header-actions-menu.tsx:49
+#: src/components/layout/header/components/header-actions-menu.tsx:40
 msgid "More options"
 msgstr "更多选项"
 
@@ -6249,7 +6267,7 @@ msgstr "未找到结果。"
 msgid "No results."
 msgstr "无结果。"
 
-#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:34
+#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:38
 msgid "No route found"
 msgstr "未找到路径"
 
@@ -6568,7 +6586,7 @@ msgstr "Optimistic 提案人"
 msgid "or drag and drop it here"
 msgstr "或拖放到此处"
 
-#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:48
+#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:52
 msgid "Order too large"
 msgstr "订单过大"
 
@@ -6625,7 +6643,7 @@ msgid "Other recipient {0}"
 msgstr "其他接收者 {0}"
 
 #: src/views/yield-dtf/overview/components/backing/asset-breakdown.tsx:42
-#: src/views/yield-dtf/overview/components/backing/risks.tsx:117
+#: src/views/yield-dtf/overview/components/backing/risks.tsx:116
 msgid "Other Risks"
 msgstr "其他风险"
 
@@ -6849,7 +6867,7 @@ msgstr "无需许可时间：<0>{0}</0>"
 msgid "Permissionless Launching Allowed"
 msgstr "允许无许可发起拍卖"
 
-#: src/views/home/components/dtf-packing-animation/index.tsx:125
+#: src/views/home/components/dtf-packing-animation/index.tsx:122
 msgid "PHOTON packs multiple collateral assets into one DTF token"
 msgstr "PHOTON 将多种抵押资产打包为一个 DTF token"
 
@@ -6871,6 +6889,11 @@ msgstr "平台敞口"
 #: src/views/yield-dtf/overview/components/backing/asset-breakdown.tsx:41
 msgid "Platforms"
 msgstr "平台"
+
+#: src/views/index-dtf/overview/components/landing-mint/dtf-cover.tsx:79
+#: src/views/index-dtf/overview/components/landing-mint/dtf-cover.tsx:90
+msgid "Play video"
+msgstr "播放视频"
 
 #: src/views/yield-dtf/staking/components/overview/about.tsx:50
 msgid "Please carefully evaluate the RToken before choosing to stake your RSR here. If any of the various collaterals of this RToken default, then the staked RSR will be the first funds that get auctioned off to make up the difference for RToken holders."
@@ -7457,11 +7480,11 @@ msgstr "阅读风险说明"
 msgid "Read docs"
 msgstr "阅读文档"
 
-#: src/views/index-dtf/overview/components/index-about-overview.tsx:128
+#: src/views/index-dtf/overview/components/index-about-overview.tsx:127
 msgid "Read less"
 msgstr "收起"
 
-#: src/views/index-dtf/overview/components/index-about-overview.tsx:103
+#: src/views/index-dtf/overview/components/index-about-overview.tsx:102
 #: src/views/yield-dtf/issuance/components/warnings/index.tsx:67
 #: src/views/yield-dtf/issuance/components/warnings/index.tsx:101
 #: src/views/yield-dtf/staking/components/trading-paused-banner.tsx:33
@@ -7630,7 +7653,7 @@ msgstr "已 Redeem"
 msgid "Redeeming {0} for {1}."
 msgstr "正在将 {0} Redeem 为 {1}。"
 
-#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:184
+#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:161
 msgid "Redeeming {symbol} is currently unavailable and we couldn't find another route to sell it."
 msgstr "{symbol} 的 Redeem 当前不可用，且我们未能找到其他卖出路径。"
 
@@ -7828,7 +7851,7 @@ msgstr "从 E.18 节中删除了 \"ongoing\" 一词（无实质性影响）。"
 msgid "Replace Basket with CSV"
 msgstr "用 CSV 替换篮子"
 
-#: src/views/index-dtf/overview/components/index-ctas-overview-mobile.tsx:104
+#: src/views/index-dtf/overview/components/index-ctas-overview-mobile.tsx:107
 msgid "Request access to this product"
 msgstr "申请使用此产品"
 
@@ -7880,7 +7903,7 @@ msgstr "Reserve 让你以单一 token 买入整个投资组合"
 msgid "Reserve Optimistic Governor Upgrade proposal created"
 msgstr "Reserve Optimistic Governor 升级提案已创建"
 
-#: src/views/yield-dtf/overview/components/backing/risks.tsx:39
+#: src/views/yield-dtf/overview/components/backing/risks.tsx:38
 msgid "Reserve Protocol Smart-Contract Risk"
 msgstr "Reserve Protocol 智能合约风险"
 
@@ -8300,15 +8323,19 @@ msgid "Save Weights {editedRows}/{totalRows} edited"
 msgstr "保存权重 已编辑 {editedRows}/{totalRows}"
 
 #: src/components/layout/contact-modal/bell-button.tsx:44
-msgid "Schedule a call to earn 100,000 RSR."
-msgstr "预约通话即可赚取 100,000 RSR。"
+#~ msgid "Schedule a call to earn 100,000 RSR."
+#~ msgstr "预约通话即可赚取 100,000 RSR。"
+
+#: src/components/layout/contact-modal/bell-button.tsx:64
+msgid "Schedule a meeting"
+msgstr "预约会议"
 
 #: src/components/ondo-badge.tsx:180
 msgid "Scheduled event"
 msgstr "预定事件"
 
 #: src/components/command-menu/index.tsx:101
-#: src/components/layout/header/components/header-actions-menu.tsx:69
+#: src/components/layout/header/components/header-actions-menu.tsx:68
 #: src/views/internal/dtf-list/components/dtf-date-chain-filters.tsx:50
 #: src/views/tokens/components/TableFilters.tsx:20
 msgid "Search"
@@ -8344,7 +8371,7 @@ msgstr "搜索 DTF 名称或符号"
 msgid "Search for a DTF..."
 msgstr "搜索 DTF..."
 
-#: src/components/layout/header/components/header-actions-menu.tsx:79
+#: src/components/layout/header/components/header-actions-menu.tsx:76
 msgid "Search for DTFs"
 msgstr "搜索 DTFs"
 
@@ -8413,7 +8440,7 @@ msgstr "当你 Vote-lock {0} 时会自动进行自我委托。Vote-lock 后请�
 #: src/views/explorer/components/revenue/index.tsx:306
 #: src/views/index-dtf/auctions/legacy/components/auction-item.tsx:90
 #: src/views/index-dtf/issuance/manual/components/mode-selector.tsx:13
-#: src/views/index-dtf/overview/components/index-ctas-overview-mobile.tsx:124
+#: src/views/index-dtf/overview/components/index-ctas-overview-mobile.tsx:131
 #: src/views/index-dtf/overview/components/landing-mint/index.tsx:93
 msgid "Sell"
 msgstr "卖出"
@@ -8435,8 +8462,12 @@ msgid "Sell collateral"
 msgstr "出售抵押品"
 
 #: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:235
-msgid "Sell on CoW Swap"
-msgstr "在 CoW Swap 上出售"
+#~ msgid "Sell on CoW Swap"
+#~ msgstr "在 CoW Swap 上出售"
+
+#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:233
+msgid "Sell on PancakeSwap"
+msgstr "在 PancakeSwap 上卖出"
 
 #: src/views/index-dtf/auctions/views/rebalance/components/auction-bids-chart.tsx:334
 #: src/views/index-dtf/auctions/views/rebalance/components/rebalance-liquidity-checker.tsx:278
@@ -9217,6 +9248,14 @@ msgstr "代号"
 msgid "Tags"
 msgstr "标签"
 
+#: src/components/layout/contact-modal/bell-button.tsx:40
+msgid "Talk to the Reserve team"
+msgstr "联系 Reserve 团队"
+
+#: src/components/layout/contact-modal/bell-button.tsx:49
+msgid "Talk to the team"
+msgstr "联系团队"
+
 #: src/views/explorer/components/collaterals/index.tsx:130
 msgid "Target"
 msgstr "目标"
@@ -9232,7 +9271,7 @@ msgstr "目标："
 msgid "Target(s)"
 msgstr "目标"
 
-#: src/views/index-dtf/overview/components/index-about-overview.tsx:189
+#: src/views/index-dtf/overview/components/dtf-downloadable-resources.tsx:62
 msgid "Tear Sheet"
 msgstr "简报"
 
@@ -9251,7 +9290,7 @@ msgstr "Telegram 链接"
 msgid "Telegram username"
 msgstr "Telegram 用户名"
 
-#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:52
+#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:56
 msgid "Temporarily unavailable"
 msgstr "暂时不可用"
 
@@ -9340,7 +9379,7 @@ msgstr "long freezer 有权将 RToken 系统冻结较长一段时间。LONG_FREE
 msgid "The mandate describes what goals its governors should try to achieve. By briefly explaining the RToken's purpose and what the RToken is intended to do, it provides common ground for the governors to decide upon priorities and how to weigh tradeoffs."
 msgstr "该宗旨描述了其治理者应努力实现的目标。通过简要说明 RToken 的用途及其预期功能，它为治理者确定优先事项以及如何权衡取舍提供了共同基础。"
 
-#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:66
+#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:70
 msgid "The market reopens {nextOpenLabel}."
 msgstr "市场将于 {nextOpenLabel} 重新开市。"
 
@@ -9541,11 +9580,11 @@ msgstr ""
 msgid "The warmup period is how many seconds should pass after the basket regained the SOUND status before an RToken can be issued and/or a trade can be opened."
 msgstr "预热期是指篮子恢复 SOUND 状态后，须经过多少秒才能 Mint RToken 和/或开启交易。"
 
-#: src/components/layout/header/components/header-actions-menu.tsx:88
+#: src/components/layout/header/components/header-actions-menu.tsx:93
 msgid "Theme"
 msgstr "主题"
 
-#: src/views/yield-dtf/overview/components/backing/risks.tsx:63
+#: src/views/yield-dtf/overview/components/backing/risks.tsx:62
 msgid "There are a <0>handful of risks</0> associated with any given RToken's collateral assets, including assets' redeemability, the health of their reserves, price volatility, etc. Likewise, because many RTokens leverage assets from external protocols, RToken holders assume all of the risks of its underlying protocols (smart contract, governance, or otherwise)."
 msgstr "任何特定 RToken 的抵押品资产都存在<0>若干风险</0>，包括资产的可 Redeem 性、其储备的健康状况、价格波动等。同样，由于许多 RTokens 使用来自外部协议的资产，RToken 持有者承担其底层协议的所有风险（智能合约、治理或其他风险）。"
 
@@ -9656,7 +9695,7 @@ msgstr "这是 RToken 创建之初的目标抵押品篮子，它定义了发行�
 msgid "This is useful if you want to mint the DTF without trading."
 msgstr "如果你想在不进行交易的情况下 Mint 该 DTF，这会很有用。"
 
-#: src/views/yield-dtf/overview/components/backing/risks.tsx:126
+#: src/views/yield-dtf/overview/components/backing/risks.tsx:125
 msgid "This list is not intended to be conclusive. <0>You can read more about risk in the Reserve docs.</0>"
 msgstr "本列表并非详尽无遗。<0>你可以在 Reserve docs 中阅读更多关于风险的内容。</0>"
 
@@ -9670,8 +9709,8 @@ msgid "This product isn't available in your region due to local restrictions."
 msgstr "由于当地限制，本产品在你所在的地区不可用。"
 
 #: src/views/index-dtf/overview/components/index-ctas-overview-mobile.tsx:47
-msgid "This product isn't available in your region due to local restrictions. <0>Learn More</0>"
-msgstr "由于当地的限制，本产品在你所在的地区不可用。<0>了解更多</0>"
+#~ msgid "This product isn't available in your region due to local restrictions. <0>Learn More</0>"
+#~ msgstr "由于当地的限制，本产品在你所在的地区不可用。<0>了解更多</0>"
 
 #: src/views/index-dtf/governance/views/proposal/components/proposal-vote.tsx:182
 msgid "This proposal will automatically pass if it is not challenged by governance. If it is challenged, it will be resubmitted as a standard proposal."
@@ -9992,7 +10031,7 @@ msgstr "将 {0} 交易为抵押品"
 msgid "Trade remaining {0} into collateral"
 msgstr "将剩余的 {0} 交易为抵押品"
 
-#: src/views/index-dtf/components/zapper/large-mint-prompt.tsx:193
+#: src/views/index-dtf/components/zapper/large-mint-prompt.tsx:202
 msgid "Trade suggestion"
 msgstr "交易建议"
 
@@ -10069,7 +10108,7 @@ msgstr "交易将于 {0} 恢复。"
 msgid "Trading Timelock"
 msgstr "交易 Timelock"
 
-#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:39
+#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:43
 msgid "Trading unavailable"
 msgstr "交易不可用"
 
@@ -10200,11 +10239,11 @@ msgstr "尝试调整筛选条件或稍后再查看"
 msgid "Try again"
 msgstr "重试"
 
-#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:69
+#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:73
 msgid "Try again during {nextSessionLabel} hours in the US."
 msgstr "请在美国 {nextSessionLabel} 时段重试。"
 
-#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:71
+#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:75
 msgid "Try again later when trading resumes."
 msgstr "请稍后在交易恢复后重试。"
 
@@ -10213,8 +10252,12 @@ msgid "Try Automated Mint"
 msgstr "尝试自动 Mint"
 
 #: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:54
-msgid "Try CoW Swap"
-msgstr "试试 CoW Swap"
+#~ msgid "Try CoW Swap"
+#~ msgstr "试试 CoW Swap"
+
+#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:58
+msgid "Try PancakeSwap"
+msgstr "试试 PancakeSwap"
 
 #: src/views/yield-dtf/issuance/components/zapV2/ZapToggle.tsx:23
 msgid "Turn on Zaps to mint using 1 asset"
@@ -10590,6 +10633,10 @@ msgstr "升级至"
 msgid "Uploading files..."
 msgstr "正在上传文件……"
 
+#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:211
+msgid "US stock market hours are <0>9:30 AM</0> to <1>4:00 PM</1> Eastern Time. Current time is: <2>{currentTimeLabel} ET</2>. Please try again in <3>{reopenInLabel}</3>."
+msgstr "美国股市交易时间为美国东部时间 <0>9:30 AM</0> 至 <1>4:00 PM</1>。当前时间：<2>{currentTimeLabel} ET</2>。请在 <3>{reopenInLabel}</3> 后重试。"
+
 #: src/views/explorer/components/transactions/useTransactionColumns.tsx:95
 msgid "USD Value"
 msgstr "USD 价值"
@@ -10685,8 +10732,8 @@ msgstr "价值："
 msgid "Vault change proposal"
 msgstr "金库变更提案"
 
-#: src/views/index-dtf/overview/components/index-ctas-overview-mobile.tsx:96
-#: src/views/index-dtf/overview/components/index-ctas-overview-mobile.tsx:101
+#: src/views/index-dtf/overview/components/index-ctas-overview-mobile.tsx:99
+#: src/views/index-dtf/overview/components/index-ctas-overview-mobile.tsx:104
 msgid "Verify eligibility"
 msgstr "验证资格"
 
@@ -10764,8 +10811,8 @@ msgstr "否决窗口"
 msgid "Veto?"
 msgstr "否决？"
 
-#: src/components/video-modal/index.tsx:46
-#: src/components/video-modal/index.tsx:58
+#: src/components/video-modal/index.tsx:51
+#: src/components/video-modal/index.tsx:63
 msgid "Video"
 msgstr "视频"
 
@@ -10799,8 +10846,8 @@ msgid "View all Index DTFs across networks for internal testing purposes"
 msgstr "查看各 Network 上的所有 Index DTF,用于内部测试"
 
 #: src/components/layout/contact-modal/bell-button.tsx:47
-msgid "View details"
-msgstr "查看详情"
+#~ msgid "View details"
+#~ msgstr "查看详情"
 
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1536
 #: src/views/index-dtf/issuance/async-mint/steps/success.tsx:179
@@ -11267,7 +11314,7 @@ msgstr "想为治理发行新的 ERC20 吗？"
 msgid "Warmup period (s)"
 msgstr "预热期 (s)"
 
-#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:41
+#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:45
 #: src/views/yield-dtf/issuance/components/warnings/index.tsx:54
 #: src/views/yield-dtf/issuance/components/warnings/index.tsx:87
 msgid "Warning"
@@ -11277,11 +11324,10 @@ msgstr "警告"
 msgid "Warning: High price impact"
 msgstr "警告：价格影响过高"
 
-#. placeholder {0}: dtf?.token.symbol
 #: src/views/index-dtf/overview/components/landing-mint/dtf-cover.tsx:64
 #: src/views/index-dtf/overview/components/landing-mint/dtf-cover.tsx:75
-msgid "Watch {0}"
-msgstr "观看 {0}"
+#~ msgid "Watch {0}"
+#~ msgstr "观看 {0}"
 
 #. placeholder {0}: selectedVersion.symbol
 #: src/views/home/components/highlighted-dtfs/transcript-preview.tsx:70
@@ -11293,11 +11339,11 @@ msgid "Watch an intro to RTokens"
 msgstr "观看 RTokens 入门介绍"
 
 #: src/views/home/components/homepage-hero.tsx:46
-#: src/views/index-dtf/overview/components/landing-mint/dtf-cover.tsx:24
+#: src/views/index-dtf/overview/components/landing-mint/dtf-cover.tsx:35
 msgid "Watch explainer"
 msgstr "观看讲解"
 
-#: src/views/home/components/dtf-explainer-button.tsx:32
+#: src/views/home/components/dtf-explainer-button.tsx:33
 msgid "Watch Explainer"
 msgstr "观看讲解"
 
@@ -11310,12 +11356,20 @@ msgid "We call these tokenized portfolios DTFs:"
 msgstr "我们将这些代币化的投资组合称为 DTFs："
 
 #: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:122
-msgid "We couldn't find a good price for this trade right now. We recommend using a DEX aggregator like CoW Swap to buy {symbol}."
-msgstr "我们目前无法为这笔交易找到合适的价格。建议使用像 CoW Swap 这样的 DEX 聚合器来购买 {symbol}。"
+#~ msgid "We couldn't find a good price for this trade right now. We recommend using a DEX aggregator like CoW Swap to buy {symbol}."
+#~ msgstr "我们目前无法为这笔交易找到合适的价格。建议使用像 CoW Swap 这样的 DEX 聚合器来购买 {symbol}。"
 
 #: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:127
-msgid "We couldn't find a good price for this trade right now. We recommend using a DEX aggregator like CoW Swap to sell {symbol}."
-msgstr "我们目前无法为这笔交易找到合适的价格。建议使用像 CoW Swap 这样的 DEX 聚合器来出售 {symbol}。"
+#~ msgid "We couldn't find a good price for this trade right now. We recommend using a DEX aggregator like CoW Swap to sell {symbol}."
+#~ msgstr "我们目前无法为这笔交易找到合适的价格。建议使用像 CoW Swap 这样的 DEX 聚合器来出售 {symbol}。"
+
+#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:101
+msgid "We couldn't find a good price for this trade right now. We recommend using a DEX like PancakeSwap to buy {symbol}."
+msgstr "我们目前无法为这笔交易找到合适的价格。建议使用 PancakeSwap 这样的 DEX 购买 {symbol}。"
+
+#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:106
+msgid "We couldn't find a good price for this trade right now. We recommend using a DEX like PancakeSwap to sell {symbol}."
+msgstr "我们目前无法为这笔交易找到合适的价格。建议使用 PancakeSwap 这样的 DEX 出售 {symbol}。"
 
 #: src/views/index-dtf/governance/components/proposal-preview/unknown-contract-preview.tsx:52
 msgid "We couldn’t retrieve the contract’s ABI from Etherscan. This usually means the contract is not verified. Without its interface, we’re unable to decode any function calls or parameters."
@@ -11574,7 +11628,7 @@ msgstr "Yield DTF（在 Reserve Yield Protocol 上创建）内置超额抵押机
 msgid "Yield:"
 msgstr "收益："
 
-#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:148
+#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:127
 msgid "You can buy up to {maxAmountLabel} per transaction during {sessionLabel} hours in the US."
 msgstr "在美国{sessionLabel}时段内，每笔交易最多可买入 {maxAmountLabel}。"
 
@@ -11598,7 +11652,7 @@ msgstr "你可以让 RToken 保持暂停状态，稍后再回来设置治理。"
 msgid "You can proceed directly."
 msgstr "你可以直接继续。"
 
-#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:153
+#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:132
 msgid "You can sell up to {maxAmountLabel} per transaction during {sessionLabel} hours in the US."
 msgstr "在美国{sessionLabel}时段内，每笔交易最多可卖出 {maxAmountLabel}。"
 
@@ -11717,7 +11771,7 @@ msgstr "你将收到"
 msgid "You'll receive:"
 msgstr "您将收到："
 
-#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:168
+#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:147
 msgid "You're getting a worse price than usual because {symbol}'s underlying stocks aren't trading right now."
 msgstr "由于 {symbol} 的基础股票当前未在交易，您获得的价格比平时更差。"
 
@@ -11743,12 +11797,20 @@ msgid "Your lock"
 msgstr "您的 Vote-lock"
 
 #: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:134
-msgid "Your order has unusually high price impact. We recommend buying {symbol} on CoW Swap to get the best price possible."
-msgstr "您的订单价格影响异常高。建议在 CoW Swap 上购买 {symbol} 以获得最佳价格。"
+#~ msgid "Your order has unusually high price impact. We recommend buying {symbol} on CoW Swap to get the best price possible."
+#~ msgstr "您的订单价格影响异常高。建议在 CoW Swap 上购买 {symbol} 以获得最佳价格。"
+
+#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:113
+msgid "Your order has unusually high price impact. We recommend buying {symbol} on PancakeSwap to get the best price possible."
+msgstr "你的订单价格影响异常高。建议在 PancakeSwap 上购买 {symbol}，以尽可能获得最佳价格。"
 
 #: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:139
-msgid "Your order has unusually high price impact. We recommend selling {symbol} on CoW Swap to get the best price possible."
-msgstr "您的订单价格影响异常高。建议在 CoW Swap 上出售 {symbol} 以获得最佳价格。"
+#~ msgid "Your order has unusually high price impact. We recommend selling {symbol} on CoW Swap to get the best price possible."
+#~ msgstr "您的订单价格影响异常高。建议在 CoW Swap 上出售 {symbol} 以获得最佳价格。"
+
+#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:118
+msgid "Your order has unusually high price impact. We recommend selling {symbol} on PancakeSwap to get the best price possible."
+msgstr "你的订单价格影响异常高。建议在 PancakeSwap 上出售 {symbol}，以尽可能获得最佳价格。"
 
 #: src/views/portfolio-page/index.tsx:41
 msgid "Your portfolio brings together DTF holdings, staked and vote-locked governance positions, rewards, pending withdrawals, voting power, RSR balances, and recent transactions."

@@ -1,6 +1,6 @@
 import { useCallback, useState, useEffect } from 'react'
-import { useDropzone } from 'react-dropzone'
-import { PencilLine, AlertCircle, ImagePlus } from 'lucide-react'
+import { type FileRejection, useDropzone } from 'react-dropzone'
+import { AlertCircle, ImagePlus, X } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import { Button } from '@/components/ui/button'
@@ -30,6 +30,7 @@ function CoverImageUploader({
 }: CoverImageUploaderProps) {
   const { t } = useLingui()
   const [preview, setPreview] = useState<string | null>(defaultImage || null)
+  const [cleared, setCleared] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
   // Create preview when file changes
@@ -42,8 +43,6 @@ function CoverImageUploader({
       if (file) {
         const objectUrl = URL.createObjectURL(file)
         setPreview(objectUrl)
-      } else if (defaultImage) {
-        setPreview(defaultImage)
       } else {
         setPreview(null)
       }
@@ -61,14 +60,14 @@ function CoverImageUploader({
   }, [preview, defaultImage])
 
   useEffect(() => {
-    // Update preview if defaultImage changes
-    if (defaultImage && !value) {
+    // Update preview if defaultImage changes, unless user explicitly cleared
+    if (defaultImage && !value && !cleared) {
       setPreview(defaultImage)
     }
-  }, [defaultImage, value])
+  }, [defaultImage, value, cleared])
 
   const onDrop = useCallback(
-    (acceptedFiles: File[], rejectedFiles: any[]) => {
+    (acceptedFiles: File[], rejectedFiles: FileRejection[]) => {
       setError(null)
 
       if (rejectedFiles.length > 0) {
@@ -85,10 +84,22 @@ function CoverImageUploader({
         return
       }
 
+      setCleared(false)
       updatePreview(file)
       onChange?.(file)
     },
     [onChange, updatePreview, t]
+  )
+
+  const clearImage = useCallback(
+    (e: React.MouseEvent) => {
+      e.stopPropagation()
+      setCleared(true)
+      updatePreview(null)
+      onChange?.(null)
+      setError(null)
+    },
+    [onChange, updatePreview]
   )
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
@@ -148,6 +159,7 @@ function CoverImageUploader({
         )}
       </div>
       <Button
+        type="button"
         variant="outline"
         className={cn(
           'flex items-center gap-2 text-primary w-full rounded-3xl justify-start py-6 hover:text-primary hover:bg-primary/10'
@@ -156,6 +168,17 @@ function CoverImageUploader({
         <ImagePlus size={16} />
         <Trans>Edit {variant} cover image</Trans>
       </Button>
+      {preview && (
+        <Button
+          type="button"
+          variant="ghost"
+          className="flex items-center gap-2 w-full rounded-3xl justify-start text-destructive hover:text-destructive hover:bg-destructive/10"
+          onClick={clearImage}
+        >
+          <X size={16} />
+          <Trans>Remove {variant} cover image</Trans>
+        </Button>
+      )}
 
       {error && (
         <Alert variant="destructive">

@@ -6,9 +6,8 @@ export type HeaderControlSurface = 'default' | 'transparent-header'
 
 // Single source for the surface styling so non-button header chips (e.g. the
 // connected Account pill) stay in sync with HeaderControlButton.
-export const headerControlSurfaceClassName = (
-  surface: HeaderControlSurface
-) => (surface === 'transparent-header' ? 'border-card dark:border-border' : '')
+export const headerControlSurfaceClassName = (surface: HeaderControlSurface) =>
+  surface === 'transparent-header' ? 'border-card dark:border-border' : ''
 
 type HeaderControlButtonProps = ButtonProps & {
   surface?: HeaderControlSurface

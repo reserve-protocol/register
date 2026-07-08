@@ -130,6 +130,8 @@ const PNGS = new Set([
   'eat',
   'cbbtc',
   'wtao',
+  'glwon',
+  'tsemon',
 ])
 
 const EXTERNAL_ASSETS = new Set([

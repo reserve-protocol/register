@@ -1,9 +1,9 @@
-import { sentryVitePlugin } from '@sentry/vite-plugin'
-import { defineConfig } from 'vitest/config'
-import react from '@vitejs/plugin-react'
-import viteTsconfigPaths from 'vite-tsconfig-paths'
 import { lingui } from '@lingui/vite-plugin'
+import { sentryVitePlugin } from '@sentry/vite-plugin'
+import react from '@vitejs/plugin-react'
 import { viteStaticCopy } from 'vite-plugin-static-copy'
+import viteTsconfigPaths from 'vite-tsconfig-paths'
+import { defineConfig } from 'vitest/config'
 
 const isTest = process.env.NODE_ENV === 'test' || process.env.VITEST
 const isDev = process.env.NODE_ENV === 'development'
@@ -16,7 +16,9 @@ export default defineConfig({
           // Skip lingui macros in test - we mock @lingui/macro directly
           ...(!isTest ? ['macros'] : []),
           // Only include locator in development - breaks React internals in prod
-          ...(isDev ? [['@locator/babel-jsx/dist', { env: 'development' }]] : []),
+          ...(isDev
+            ? [['@locator/babel-jsx/dist', { env: 'development' }]]
+            : []),
         ],
       },
     }),
@@ -25,7 +27,10 @@ export default defineConfig({
     viteTsconfigPaths(), // Resolves tsconfig paths (@/, utils/, etc.)
     viteStaticCopy({
       targets: [
-        { src: 'node_modules/@reserve-protocol/rtokens/images/*', dest: 'svgs' },
+        {
+          src: 'node_modules/@reserve-protocol/rtokens/images/*',
+          dest: 'svgs',
+        },
         { src: '_headers', dest: '' }, // Cloudflare security headers
       ],
     }),
@@ -33,7 +38,9 @@ export default defineConfig({
   ],
 
   define: {
-    'import.meta.env.VITE_GIT_SHA': JSON.stringify(process.env.CF_PAGES_COMMIT_SHA),
+    'import.meta.env.VITE_GIT_SHA': JSON.stringify(
+      process.env.CF_PAGES_COMMIT_SHA
+    ),
   },
 
   build: {

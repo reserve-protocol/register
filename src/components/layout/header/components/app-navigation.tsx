@@ -34,8 +34,8 @@ import { useMemo } from 'react'
 import { NavLink, useLocation } from 'react-router-dom'
 import {
   headerNavIconClassName,
-  HeaderNavItemContent,
   headerNavItemClassName,
+  HeaderNavItemContent,
 } from './header-nav-items'
 
 const DiscoverItem = () => {
