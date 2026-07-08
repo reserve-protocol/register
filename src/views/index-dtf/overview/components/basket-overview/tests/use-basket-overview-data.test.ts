@@ -7,6 +7,7 @@ import { useBasketOverviewData } from '../use-basket-overview-data'
 import {
   indexDTFBasketAtom,
   indexDTFBasketSharesAtom,
+  indexDTFCollateralMCapMapAtom,
   indexDTFExposureDataAtom,
   indexDTFExposureMCapMapAtom,
   ExposureGroup,
@@ -23,10 +24,18 @@ const useTestSetup = () => {
   const setBasketShares = useSetAtom(indexDTFBasketSharesAtom)
   const setExposureData = useSetAtom(indexDTFExposureDataAtom)
   const data = useBasketOverviewData()
-  // Read mcap atom directly to verify
+  // Read mcap atoms directly to verify
   const marketCaps = useAtomValue(indexDTFExposureMCapMapAtom)
+  const collateralMarketCaps = useAtomValue(indexDTFCollateralMCapMapAtom)
 
-  return { setBasket, setBasketShares, setExposureData, data, marketCaps }
+  return {
+    setBasket,
+    setBasketShares,
+    setExposureData,
+    data,
+    marketCaps,
+    collateralMarketCaps,
+  }
 }
 
 const mockToken = (address: string, symbol = 'TEST'): Token =>
@@ -144,16 +153,17 @@ describe('useBasketOverviewData', () => {
       result.current.setExposureData([
         mockExposureGroup({
           hasNewlyAdded: true,
-          tokens: [
-            { address: '0xaaa', symbol: 'WETH', weight: 50 },
-          ],
+          tokens: [{ address: '0xaaa', symbol: 'WETH', weight: 50 }],
         }),
         mockExposureGroup({
           hasNewlyAdded: false,
-          native: { symbol: 'USDC', name: 'USD Coin', logo: '', caip2: 'eip155:1' },
-          tokens: [
-            { address: '0xbbb', symbol: 'USDC', weight: 30 },
-          ],
+          native: {
+            symbol: 'USDC',
+            name: 'USD Coin',
+            logo: '',
+            caip2: 'eip155:1',
+          },
+          tokens: [{ address: '0xbbb', symbol: 'USDC', weight: 30 }],
           totalWeight: 30,
         }),
       ])
@@ -171,9 +181,7 @@ describe('useBasketOverviewData', () => {
     act(() => {
       result.current.setExposureData([
         mockExposureGroup({
-          tokens: [
-            { address: '0xaaa', symbol: 'WETH', weight: 50 },
-          ],
+          tokens: [{ address: '0xaaa', symbol: 'WETH', weight: 50 }],
         }),
       ])
     })
@@ -195,6 +203,103 @@ describe('useBasketOverviewData', () => {
     })
     expect(result.current.data.exposureGroups).toEqual([])
     expect(result.current.data.exposureGroups).not.toBeNull()
+  })
+
+  // Exposure tab shows the underlying (tradfi) asset market cap, not the
+  // on-chain token market cap. Ondo tokenized assets carry a distinct
+  // native.marketCap for the real-world asset.
+  it('maps coingeckoId to the native (tradfi) market cap for exposure', () => {
+    const wrapper = createWrapper()
+    const { result } = renderHook(() => useTestSetup(), { wrapper })
+
+    act(() => {
+      result.current.setExposureData([
+        mockExposureGroup({
+          native: {
+            symbol: 'AAPLon',
+            name: 'Apple',
+            logo: '',
+            caip2: 'eip155:1',
+            coingeckoId: 'apple',
+            marketCap: 3_000_000_000_000,
+          },
+          marketCap: 5_000_000, // on-chain (ondo) mcap, should be ignored here
+          tokens: [
+            {
+              address: '0xaaa',
+              symbol: 'AAPLon',
+              weight: 50,
+              marketCap: 5_000_000,
+            },
+          ],
+        }),
+      ])
+    })
+
+    expect(result.current.marketCaps['apple']).toBe(3_000_000_000_000)
+  })
+
+  it('falls back to the group market cap when native has no market cap', () => {
+    const wrapper = createWrapper()
+    const { result } = renderHook(() => useTestSetup(), { wrapper })
+
+    act(() => {
+      result.current.setExposureData([
+        mockExposureGroup({
+          native: {
+            symbol: 'AAVE',
+            name: 'Aave',
+            logo: '',
+            caip2: 'eip155:1',
+            coingeckoId: 'aave',
+          },
+          marketCap: 1_315_950_455,
+          tokens: [
+            {
+              address: '0xaaa',
+              symbol: 'AAVE',
+              weight: 50,
+              marketCap: 1_315_950_455,
+            },
+          ],
+        }),
+      ])
+    })
+
+    expect(result.current.marketCaps['aave']).toBe(1_315_950_455)
+  })
+
+  // Collateral tab shows the on-chain token (ondo) market cap, keyed by
+  // lowercased token address.
+  it('maps lowercased token address to the on-chain token market cap for collateral', () => {
+    const wrapper = createWrapper()
+    const { result } = renderHook(() => useTestSetup(), { wrapper })
+
+    act(() => {
+      result.current.setExposureData([
+        mockExposureGroup({
+          native: {
+            symbol: 'AAPLon',
+            name: 'Apple',
+            logo: '',
+            caip2: 'eip155:1',
+            coingeckoId: 'apple',
+            marketCap: 3_000_000_000_000,
+          },
+          tokens: [
+            {
+              address: '0xAAA',
+              symbol: 'AAPLon',
+              weight: 50,
+              marketCap: 5_000_000,
+            },
+          ],
+        }),
+      ])
+    })
+
+    expect(result.current.collateralMarketCaps['0xaaa']).toBe(5_000_000)
+    expect(result.current.data.collateralMarketCaps['0xaaa']).toBe(5_000_000)
   })
 
   // Bug regression: race condition — basket loads before exposure

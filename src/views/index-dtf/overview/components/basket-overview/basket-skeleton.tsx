@@ -17,24 +17,15 @@ export const BasketSkeleton = ({ isExposure = false }: BasketSkeletonProps) =>
           </div>
         </div>
       </TableCell>
-      {!isExposure && (
-        <TableCell className="text-center px-1 sm:px-3">
-          <Skeleton className="h-4 w-7 sm:w-[60px] mx-auto" />
-        </TableCell>
-      )}
-      {isExposure && (
-        <TableCell className="text-center hidden sm:table-cell">
-          <Skeleton className="h-4 w-[80px] mx-auto" />
-        </TableCell>
-      )}
+      <TableCell className="text-center px-1 sm:px-3">
+        <Skeleton className="h-4 w-7 sm:w-[60px] mx-auto" />
+      </TableCell>
       <TableCell className="text-center px-1 sm:px-3">
         <Skeleton className="h-4 w-8 sm:w-[60px] mx-auto" />
       </TableCell>
-      {isExposure && (
-        <TableCell className="text-right px-1 sm:px-3">
-          <Skeleton className="h-4 w-7 sm:w-[60px] ml-auto" />
-        </TableCell>
-      )}
+      <TableCell className="text-center hidden sm:table-cell">
+        <Skeleton className="h-4 w-[80px] mx-auto" />
+      </TableCell>
       {!isExposure && (
         <TableCell className="text-right px-1 sm:px-3">
           <div className="flex items-center justify-end gap-1 sm:gap-2">

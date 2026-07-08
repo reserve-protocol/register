@@ -4,6 +4,7 @@ import {
   hasBridgedAssetsAtom,
   indexDTFBasketAtom,
   indexDTFBasketSharesAtom,
+  indexDTFCollateralMCapMapAtom,
   indexDTFExposureMapAtom,
   indexDTFExposureMCapMapAtom,
   indexDTFPerformanceLoadingAtom,
@@ -61,6 +62,9 @@ export const useBasketOverviewData = () => {
   }, [exposureGroups])
 
   const marketCaps: MarketCapData = useAtomValue(indexDTFExposureMCapMapAtom)
+  const collateralMarketCaps: MarketCapData = useAtomValue(
+    indexDTFCollateralMCapMapAtom
+  )
 
   return {
     basket,
@@ -74,5 +78,6 @@ export const useBasketOverviewData = () => {
     filtered,
     exposureGroups,
     marketCaps,
+    collateralMarketCaps,
   }
 }

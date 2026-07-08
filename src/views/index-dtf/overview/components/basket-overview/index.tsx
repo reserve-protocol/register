@@ -6,7 +6,12 @@ import { useMemo, useState } from 'react'
 import { isAddress } from '@/utils'
 import { toast } from 'sonner'
 import { BasketTableBody } from './basket-table-body'
-import { BasketTableHeader, SortConfig, SortDirection, SortField } from './basket-table-header'
+import {
+  BasketTableHeader,
+  SortConfig,
+  SortDirection,
+  SortField,
+} from './basket-table-header'
 import { useBasketOverviewData } from './use-basket-overview-data'
 
 const MAX_TOKENS = 10
@@ -33,6 +38,7 @@ const IndexBasketOverview = () => {
     hasBridgedAssets,
     chainId,
     marketCaps,
+    collateralMarketCaps,
   } = useBasketOverviewData()
 
   const handleTabSwitch = (tab: 'exposure' | 'collateral') => {
@@ -124,6 +130,7 @@ const IndexBasketOverview = () => {
             newlyAddedAssets={newlyAddedAssets}
             timeRange={timeRange}
             marketCaps={marketCaps}
+            collateralMarketCaps={collateralMarketCaps}
             chainId={chainId}
             viewAll={viewAll}
             maxTokens={MAX_TOKENS}

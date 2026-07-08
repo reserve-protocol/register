@@ -15,6 +15,7 @@ interface BasketTableBodyProps {
   newlyAddedAssets: Record<string, boolean>
   timeRange: TimeRange
   marketCaps: Record<string, number> | undefined
+  collateralMarketCaps: Record<string, number> | undefined
   chainId: number
   viewAll: boolean
   maxTokens: number
@@ -31,6 +32,7 @@ export const BasketTableBody = ({
   newlyAddedAssets,
   timeRange,
   marketCaps,
+  collateralMarketCaps,
   chainId,
   viewAll,
   maxTokens,
@@ -78,6 +80,7 @@ export const BasketTableBody = ({
         performanceLoading={performanceLoading}
         newlyAddedAssets={newlyAddedAssets}
         timeRange={timeRange}
+        marketCaps={collateralMarketCaps}
         chainId={chainId}
         viewAll={viewAll}
         maxTokens={maxTokens}

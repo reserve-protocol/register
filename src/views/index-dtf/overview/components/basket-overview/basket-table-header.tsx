@@ -5,7 +5,13 @@ import { performanceTimeRangeAtom } from '@/state/dtf/atoms'
 import { capitalize } from '@/utils/constants'
 import { ETHERSCAN_NAMES } from '@/utils/getExplorerLink'
 import { useAtomValue } from 'jotai'
-import { ArrowDown, ArrowUp, ArrowUpDown, PackageOpen, Target } from 'lucide-react'
+import {
+  ArrowDown,
+  ArrowUp,
+  ArrowUpDown,
+  PackageOpen,
+  Target,
+} from 'lucide-react'
 
 export type SortField = 'weight' | 'performance'
 export type SortDirection = 'asc' | 'desc'
@@ -123,11 +129,11 @@ export const BasketTableHeader = ({
           Price Change ({periodLabel[timeRange]})
         </TableHeaderWithSort>
 
-        {isExposure ? (
-          <TableHead className="text-center hidden sm:table-cell">
-            <span className="text-xs sm:text-base">Market Cap</span>
-          </TableHead>
-        ) : (
+        <TableHead className="text-center hidden sm:table-cell">
+          <span className="text-xs sm:text-base">Market Cap</span>
+        </TableHead>
+
+        {!isExposure && (
           <TableHead className="text-right text-xs sm:text-base px-1 sm:px-3">
             {`${hasBridgedAssets ? 'Bridge / ' : ''}${capitalize(
               ETHERSCAN_NAMES[chainId]

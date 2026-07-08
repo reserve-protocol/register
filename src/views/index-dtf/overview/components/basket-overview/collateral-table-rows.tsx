@@ -2,7 +2,7 @@ import TokenLogo from '@/components/token-logo'
 import { Button } from '@/components/ui/button'
 import { TableCell, TableRow } from '@/components/ui/table'
 import { Token, TimeRange } from '@/types'
-import { getTokenName } from '@/utils'
+import { formatMarketCap, getTokenName } from '@/utils'
 import { ExplorerDataType, getExplorerLink } from '@/utils/getExplorerLink'
 import { ArrowUpRight, Copy } from 'lucide-react'
 import { Link } from 'react-router-dom'
@@ -16,6 +16,7 @@ interface CollateralTableRowsProps {
   performanceLoading: boolean
   newlyAddedAssets: Record<string, boolean>
   timeRange: TimeRange
+  marketCaps: Record<string, number> | undefined
   chainId: number
   viewAll: boolean
   maxTokens: number
@@ -29,6 +30,7 @@ export const CollateralTableRows = ({
   performanceLoading,
   newlyAddedAssets,
   timeRange,
+  marketCaps,
   chainId,
   viewAll,
   maxTokens,
@@ -66,6 +68,15 @@ export const CollateralTableRows = ({
               isNewlyAdded={newlyAddedAssets[token.address]}
               timeRange={timeRange}
             />
+          </TableCell>
+          <TableCell className="text-center hidden text-base sm:table-cell">
+            {marketCaps?.[token.address.toLowerCase()] ? (
+              <span>
+                {formatMarketCap(marketCaps[token.address.toLowerCase()])}
+              </span>
+            ) : (
+              <span>—</span>
+            )}
           </TableCell>
           <TableCell className="text-right px-1 sm:px-3">
             <div className="flex items-center justify-end gap-2 flex-wrap-reverse">

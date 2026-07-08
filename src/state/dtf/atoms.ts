@@ -175,6 +175,11 @@ export const indexDTFExposureMapAtom = atom((get) => {
   return map
 })
 
+// Underlying (tradfi) asset market caps for the Exposure tab, keyed by
+// coingeckoId. For tokenized real-world assets (e.g. Ondo equities) this is the
+// market cap of the underlying asset, not the on-chain token. Falls back to the
+// on-chain group market cap for pure-crypto assets that have no distinct
+// underlying.
 export const indexDTFExposureMCapMapAtom = atom((get) => {
   const exposureData = get(indexDTFExposureDataAtom)
   if (!exposureData) return {}
@@ -182,9 +187,26 @@ export const indexDTFExposureMCapMapAtom = atom((get) => {
   const map = {} as MarketCapData
   exposureData.forEach((group) => {
     if (group.native?.coingeckoId) {
-      map[group.native.coingeckoId] = group.marketCap || 0
+      map[group.native.coingeckoId] =
+        group.native.marketCap ?? group.marketCap ?? 0
     }
 
+    group.tokens.forEach((token) => {
+      map[token.address.toLowerCase()] = token?.marketCap || 0
+    })
+  })
+  return map
+})
+
+// On-chain token market caps for the Collateral tab, keyed by lowercased token
+// address. These are the market caps of the collateral tokens themselves (e.g.
+// the Ondo tokenized asset), as opposed to the underlying tradfi asset.
+export const indexDTFCollateralMCapMapAtom = atom((get) => {
+  const exposureData = get(indexDTFExposureDataAtom)
+  if (!exposureData) return {}
+
+  const map = {} as MarketCapData
+  exposureData.forEach((group) => {
     group.tokens.forEach((token) => {
       map[token.address.toLowerCase()] = token?.marketCap || 0
     })
@@ -232,7 +254,9 @@ export const hasBridgedAssetsAtom = atom((get) => {
   )
 })
 
-export const indexDTFStatusAtom = atom<'active' | 'deprecated' | 'unsupported'>('active')
+export const indexDTFStatusAtom = atom<'active' | 'deprecated' | 'unsupported'>(
+  'active'
+)
 
 export const isSingletonRebalanceAtom = atom((get) => {
   const version = get(indexDTFVersionAtom)
@@ -256,4 +280,3 @@ export const isHybridDTFAtom = atom((get) => {
     dtf?.id.toLowerCase() === '0x92d7e020ab1cc45eaf744a5fe5954734fcd07119'
   )
 })
-
