@@ -170,7 +170,7 @@ const LandingMint = (props: React.HTMLAttributes<HTMLDivElement>) => {
           <DtfCover className="rounded-xl" />
         </div>
       )}
-      <div className={isGeoRestricted ? 'z-10' : 'sticky top-0 z-10'}>
+      <div className={isGeoRestricted ? 'z-10' : 'sticky top-1 z-10'}>
         {isGeoRestricted ? (
           <EligibilityCard className="bg-card" />
         ) : (

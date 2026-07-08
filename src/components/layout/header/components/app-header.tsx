@@ -105,10 +105,7 @@ const AppHeader = () => {
             <DarkModeToggle />
             <LanguageSelector />
           </div>
-          <HeaderActionsMenu
-            scrolled={scrolled}
-            surface={mobileHeaderSurface}
-          />
+          <HeaderActionsMenu surface={mobileHeaderSurface} />
           <Account mobileSurface={mobileHeaderSurface} />
           <MobileNavigationDrawer surface={mobileHeaderSurface} />
         </div>

@@ -220,7 +220,7 @@ const StakingPositions = () => {
 
   return (
     <>
-      <div className="mt-4 bg-secondary p-1 rounded-4xl md:mt-10">
+      <div className="mt-4 bg-secondary p-1 rounded-4xl md:mt-10 lg:mx-2 2xl:mx-0">
         <TableFilters />
         <DataTable
           columns={columns}
