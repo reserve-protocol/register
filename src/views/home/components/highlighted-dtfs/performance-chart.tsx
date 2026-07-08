@@ -62,6 +62,7 @@ export const PerformanceChart = ({
   const dotsPatternId = useId().replace(/:/g, '')
   const preLaunchDotsPatternId = `${dotsPatternId}-pre-launch`
   const strokeGradientId = `${dotsPatternId}-stroke`
+  const lineShadowFilterId = `${dotsPatternId}-line-shadow`
   const fillGradientId = `${dotsPatternId}-fill`
   const dotsFadeGradientId = `${dotsPatternId}-fade`
   const dotsMaskId = `${dotsPatternId}-mask`
@@ -178,7 +179,11 @@ export const PerformanceChart = ({
           margin={chartMargin}
           {...{ overflow: 'visible' }}
         >
-          {renderPerformanceStrokeDefs({ direction, strokeGradientId })}
+          {renderPerformanceStrokeDefs({
+            direction,
+            lineShadowFilterId,
+            strokeGradientId,
+          })}
           <XAxis
             dataKey="timestamp"
             type="number"
@@ -194,7 +199,11 @@ export const PerformanceChart = ({
             tickLine={false}
             domain={getPaddedValueDomain}
           />
-          {renderPerformanceStrokeSeries({ performanceColor, shouldSplit })}
+          {renderPerformanceStrokeSeries({
+            lineShadowFilterId,
+            performanceColor,
+            shouldSplit,
+          })}
         </AreaChart>
       </ChartContainer>
       {launchMarkerLeftPercent !== undefined && (

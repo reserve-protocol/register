@@ -14,6 +14,7 @@ import { formatPercentage, formatToSignificantDigits } from '@/utils'
 import { Trans } from '@lingui/react/macro'
 import { useAtomValue } from 'jotai'
 import { IndexDTFPerformance } from '../../hooks/use-dtf-price-history'
+import IndexTokenAddress from '../index-token-address'
 import PercentageChange from './percentage-change'
 import { apyStatsAtom, dataTypeAtom } from './price-chart-atoms'
 
@@ -26,12 +27,36 @@ const OverlayTitle = () => {
   }
 
   return (
-    <h2 className="text-2xl sm:text-3xl font-medium sm:font-normal leading-tight w-full break-words text-primary dark:text-foreground">
-      <div className="flex items-center gap-2">
+    <h2 className="min-w-0 text-2xl font-medium leading-tight text-primary dark:text-foreground sm:text-3xl sm:font-normal">
+      <div className="flex min-w-0 items-center gap-2">
         {dtf.token.name}
         {isInactive && <InactiveBadge />}
       </div>
     </h2>
+  )
+}
+
+const PricePerformanceChange = ({
+  className,
+  timeseries,
+}: {
+  className?: string
+  timeseries: IndexDTFPerformance['timeseries']
+}) => {
+  const dataType = useAtomValue(dataTypeAtom)
+  const range = useAtomValue(performanceTimeRangeAtom)
+
+  if (timeseries.length === 0) {
+    return <Skeleton className={cn('h-6 w-[100px]', className)} />
+  }
+
+  return (
+    <PercentageChange
+      performance={timeseries}
+      dataType={dataType}
+      range={range}
+      className={cn('whitespace-nowrap', className)}
+    />
   )
 }
 
@@ -94,28 +119,26 @@ const PriceOverlayInfo = ({
   timeseries: IndexDTFPerformance['timeseries']
 }) => {
   const dtf = useAtomValue(indexDTFAtom)
-  const dataType = useAtomValue(dataTypeAtom)
-  const range = useAtomValue(performanceTimeRangeAtom)
 
   return (
     <div className="mt-1.5 flex w-full min-w-0 items-center justify-between gap-3 text-base text-legend">
-      <span className="truncate">
-        <span className="tabular-nums text-foreground">
+      <div className="flex min-w-0 items-center gap-2 whitespace-nowrap">
+        <div className="tabular-nums text-foreground">
           <PriceValue />
-        </span>
-        {dtf && <span> · ${dtf.token.symbol}</span>}
-      </span>
-      <div className="shrink-0 text-base font-medium tabular-nums">
-        {timeseries.length === 0 ? (
-          <Skeleton className="h-6 w-[100px]" />
-        ) : (
-          <PercentageChange
-            performance={timeseries}
-            dataType={dataType}
-            range={range}
-            className="whitespace-nowrap"
-          />
+        </div>
+        {dtf && (
+          <>
+            <div className="shrink-0">·</div>
+            <div className="shrink-0">${dtf.token.symbol}</div>
+          </>
         )}
+        <div className="hidden shrink-0 items-center gap-2 font-medium tabular-nums lg:flex">
+          <span className="font-normal text-legend">·</span>
+          <PricePerformanceChange timeseries={timeseries} />
+        </div>
+      </div>
+      <div className="shrink-0 text-base font-medium tabular-nums lg:hidden">
+        <PricePerformanceChange timeseries={timeseries} />
       </div>
     </div>
   )
@@ -137,8 +160,19 @@ const ChartOverlay = ({
       )}
     >
       <div className="flex flex-col gap-1.5">
-        <div className="flex items-start gap-2">
-          <OverlayTitle />
+        <div className="flex items-start justify-between gap-3">
+          <div className="min-w-0 flex-1">
+            <OverlayTitle />
+          </div>
+          <IndexTokenAddress
+            theme="light"
+            className="hidden h-9 shrink-0 rounded-full border-card bg-card px-3 !text-sm font-medium lg:flex"
+            labelClassName="!text-sm font-normal text-muted-foreground"
+            labelGroupClassName="h-full gap-1.5"
+            stackedLogoClassName="pt-0"
+            logoClassName="h-4 w-4 rounded-md border border-card bg-card"
+            chevronClassName="h-3.5 w-3.5 text-muted-foreground"
+          />
         </div>
         {isYieldMode ? (
           <YieldOverlayInfo />

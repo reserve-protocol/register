@@ -1,4 +1,5 @@
 import { DEFAULT_LOCALE, localeAtom, type SupportedLocale } from '@/i18n'
+import { cn } from '@/lib/utils'
 import { indexDTFAtom, indexDTFBrandAtom } from '@/state/dtf/atoms'
 import { getFileNameFromUrl } from '@/utils'
 import { Trans, useLingui } from '@lingui/react/macro'
@@ -73,15 +74,21 @@ const useDownloadableResources = () => {
   }
 }
 
-const DownloadableResources = () => {
+const DownloadableResources = ({
+  className,
+  showDivider = true,
+}: {
+  className?: string
+  showDivider?: boolean
+}) => {
   const { resources, dtfName } = useDownloadableResources()
 
   if (!resources.length) return null
 
   return (
     <>
-      <div className="border-t border-secondary" />
-      <div className="rounded-3xl bg-card p-5 sm:p-6">
+      {showDivider && <div className="border-t border-secondary" />}
+      <div className={cn('rounded-3xl bg-card p-5 sm:p-6', className)}>
         <h3 className="font-medium mb-1">
           <Trans>Downloadable resources</Trans>
         </h3>

@@ -50,9 +50,9 @@ const PercentageChange = ({
     >
       {wrap && '('}
       {change > 0 ? (
-        <ArrowUp className="h-5 w-5" />
+        <ArrowUp className="h-4 w-4" />
       ) : (
-        <ArrowDown className="h-5 w-5" />
+        <ArrowDown className="h-4 w-4" />
       )}
       {change.toFixed(2)}%{wrap && ')'}
       <span className="ml-1">

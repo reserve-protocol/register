@@ -1,35 +1,78 @@
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
+import PancakeSwap from '@/components/icons/logos/PancakeSwap'
 import { Button } from '@/components/ui/button'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu'
 import { Skeleton } from '@/components/ui/skeleton'
 import useComplianceRestrictions from '@/hooks/use-compliance-restrictions'
 import { useIsLargeDesktop } from '@/hooks/use-media-query'
 import { isInactiveDTF } from '@/hooks/use-dtf-status'
-import { indexDTFAtom, indexDTFStatusAtom } from '@/state/dtf/atoms'
+import {
+  indexDTFAtom,
+  indexDTFBrandAtom,
+  indexDTFStatusAtom,
+} from '@/state/dtf/atoms'
 import { useTrackIndexDTFClick } from '@/views/index-dtf/hooks/useTrackIndexDTFPage'
-import { Trans } from '@lingui/react/macro'
+import { Trans, useLingui } from '@lingui/react/macro'
 import { useZapperModal } from '@reserve-protocol/react-zapper'
 import { useAtomValue } from 'jotai'
+import { ChevronDown } from 'lucide-react'
 import React from 'react'
 import EligibilityCard from '../eligibility-card'
 import IndexAboutOverview from '../index-about-overview'
-import IndexTokenAddress from '../index-token-address'
 import DTFBalance from './dtf-balance'
+import DtfCover, { getDtfCoverImage, getDtfCoverVideo } from './dtf-cover'
+import { getDtfDexLinks, type DtfDexLink } from './external-dex-links'
 
 const TokenInfo = () => {
   return <DTFBalance />
 }
 
-const DesktopTokenAddressButton = ({ className }: { className?: string }) => (
-  <IndexTokenAddress
-    theme="light"
-    className={`h-12 justify-between rounded-xl bg-transparent px-3 text-base font-medium ${className ?? 'w-auto'}`}
-    labelClassName="text-base font-normal text-muted-foreground"
-    labelGroupClassName="h-full gap-1.5"
-    stackedLogoClassName="pt-0"
-    logoClassName="h-5 w-5 rounded-md border-2 border-card bg-card"
-    chevronClassName="text-muted-foreground"
-  />
-)
+const ExternalDexDropdown = ({
+  links,
+  onSelect,
+}: {
+  links: DtfDexLink[]
+  onSelect: (link: DtfDexLink) => void
+}) => {
+  const { t } = useLingui()
+
+  if (!links.length) return null
+
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button
+          variant="outline"
+          className="h-12 shrink-0 gap-1.5 rounded-xl px-4 text-base font-medium text-muted-foreground hover:text-foreground"
+          aria-label={t`External trading venues`}
+        >
+          <Trans>External markets</Trans>
+          <ChevronDown className="h-3.5 w-3.5" />
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end" className="w-48 rounded-xl p-1">
+        {links.map((link) => (
+          <DropdownMenuItem key={link.url} className="rounded-lg" asChild>
+            <a
+              href={link.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => onSelect(link)}
+            >
+              <PancakeSwap className="h-4 w-4" />
+              <span>{link.label}</span>
+            </a>
+          </DropdownMenuItem>
+        ))}
+      </DropdownMenuContent>
+    </DropdownMenu>
+  )
+}
 
 const MintBox = () => {
   const { trackClick } = useTrackIndexDTFClick('overview', 'overview')
@@ -40,6 +83,7 @@ const MintBox = () => {
   const { isLoading: isComplianceLoading, data: complianceData } =
     useComplianceRestrictions()
   const isRestricted = !!complianceData?.restricted
+  const dexLinks = getDtfDexLinks(dtf?.chainId, dtf?.id)
 
   return (
     <div className="rounded-3xl bg-card p-2">
@@ -63,23 +107,20 @@ const MintBox = () => {
           <Skeleton className="h-12 w-36 rounded-xl" />
         </div>
       ) : isRestricted ? (
-        <div className="flex flex-col gap-2">
-          <Alert variant="destructive" className="w-full rounded-xl">
-            <AlertTitle>{complianceData?.title}</AlertTitle>
-            <AlertDescription>
-              {complianceData?.description}{' '}
-              <a
-                className="underline"
-                target="_blank"
-                rel="noopener noreferrer"
-                href="https://reserve.org/terms-and-conditions"
-              >
-                <Trans>Learn More</Trans>
-              </a>
-            </AlertDescription>
-          </Alert>
-          <DesktopTokenAddressButton className="w-full" />
-        </div>
+        <Alert variant="destructive" className="w-full rounded-xl">
+          <AlertTitle>{complianceData?.title}</AlertTitle>
+          <AlertDescription>
+            {complianceData?.description}{' '}
+            <a
+              className="underline"
+              target="_blank"
+              rel="noopener noreferrer"
+              href="https://reserve.org/terms-and-conditions"
+            >
+              <Trans>Learn More</Trans>
+            </a>
+          </AlertDescription>
+        </Alert>
       ) : (
         <div className="flex gap-2">
           <Button
@@ -92,7 +133,17 @@ const MintBox = () => {
           >
             {isDeprecated ? <Trans>Sell</Trans> : <Trans>Buy / Sell</Trans>}
           </Button>
-          <DesktopTokenAddressButton />
+          {!isDeprecated && (
+            <ExternalDexDropdown
+              links={dexLinks}
+              onSelect={(link) => {
+                trackClick('external_dex', {
+                  dex: link.label,
+                  url: link.url,
+                })
+              }}
+            />
+          )}
         </div>
       )}
     </div>
@@ -101,32 +152,37 @@ const MintBox = () => {
 
 const LandingMint = (props: React.HTMLAttributes<HTMLDivElement>) => {
   const { data: complianceData } = useComplianceRestrictions()
+  const brand = useAtomValue(indexDTFBrandAtom)
+  const dtf = useAtomValue(indexDTFAtom)
   const isGeoRestricted = complianceData?.reason === 'geolocation-restricted'
   const isLargeDesktop = useIsLargeDesktop()
+  const hasVideoThumbnail =
+    !!brand?.dtf?.video?.trim() && !!getDtfCoverVideo(dtf?.token.symbol)
+  const hasCover = hasVideoThumbnail || !!getDtfCoverImage(brand?.dtf?.cover)
 
   return (
     <div
       className="hidden xl:flex xl:w-[480px] xl:flex-col xl:gap-1 relative max-w-[480px]"
       {...props}
     >
+      {hasCover && (
+        <div className="rounded-3xl bg-card p-2">
+          <DtfCover className="rounded-xl" />
+        </div>
+      )}
       <div className={isGeoRestricted ? 'z-10' : 'sticky top-0 z-10'}>
         {isGeoRestricted ? (
-          <div className="flex flex-col gap-1">
-            <div className="rounded-3xl bg-card p-2">
-              <DesktopTokenAddressButton className="w-full" />
-            </div>
-            <EligibilityCard className="bg-card" />
-          </div>
+          <EligibilityCard className="bg-card" />
         ) : (
           <MintBox />
         )}
       </div>
-      <div className="flex flex-1 flex-col gap-1">
+      <div className="flex flex-col gap-1">
         {/* WHY: mirror of the sub-xl about card (see overview AboutSection) —
             only one copy is mounted at a time, so it owns #about at xl. */}
         {isLargeDesktop && (
-          <div id="about" className="flex-1 rounded-3xl bg-card">
-            <IndexAboutOverview showCover />
+          <div id="about" className="rounded-3xl bg-card">
+            <IndexAboutOverview />
           </div>
         )}
       </div>

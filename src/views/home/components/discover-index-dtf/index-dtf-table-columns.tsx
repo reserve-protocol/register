@@ -10,6 +10,7 @@ import { formatCurrency, getFolioRoute } from '@/utils'
 import {
   getPerformanceDirection as getSeriesPerformanceDirection,
   PERFORMANCE_COLORS,
+  PERFORMANCE_TEXT_CLASSES,
   type PerformanceDirection,
 } from '@/utils/chart-performance-colors'
 import { Trans } from '@lingui/react/macro'
@@ -89,12 +90,12 @@ const PerformanceCell = ({ dtf }: { dtf: IndexDTFItem }) => {
   const percentageChange = formatPriceChangePercent(dtf)
   const performanceDirection = getDtfPerformanceDirection(dtf)
   const performanceColorClassName = cn(
-    performanceDirection === 'positive' && 'text-success',
-    performanceDirection === 'negative' && 'text-destructive'
+    performanceDirection === 'positive' && PERFORMANCE_TEXT_CLASSES.positive,
+    performanceDirection === 'negative' && PERFORMANCE_TEXT_CLASSES.negative
   )
   const strokeGradientId = `${useId().replace(/:/g, '')}-performance-stroke`
   const lineStroke =
-    performanceDirection === 'positive'
+    performanceDirection === 'positive' || performanceDirection === 'negative'
       ? `url(#${strokeGradientId})`
       : 'currentColor'
 
@@ -119,7 +120,8 @@ const PerformanceCell = ({ dtf }: { dtf: IndexDTFItem }) => {
               data={performance}
               margin={{ top: 3, right: 2, bottom: 3, left: 2 }}
             >
-              {performanceDirection === 'positive' && (
+              {(performanceDirection === 'positive' ||
+                performanceDirection === 'negative') && (
                 <defs>
                   <linearGradient
                     id={strokeGradientId}
@@ -130,11 +132,11 @@ const PerformanceCell = ({ dtf }: { dtf: IndexDTFItem }) => {
                   >
                     <stop
                       offset="0%"
-                      stopColor={PERFORMANCE_COLORS.positive.start}
+                      stopColor={PERFORMANCE_COLORS[performanceDirection].start}
                     />
                     <stop
                       offset="100%"
-                      stopColor={PERFORMANCE_COLORS.positive.end}
+                      stopColor={PERFORMANCE_COLORS[performanceDirection].end}
                     />
                   </linearGradient>
                 </defs>

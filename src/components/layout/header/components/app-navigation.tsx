@@ -52,11 +52,11 @@ const DiscoverItem = () => {
             <div
               className={cn(
                 navigationMenuTriggerStyle(),
-                'text-legend hover:text-foreground focus:text-foreground',
+                'text-foreground hover:text-primary focus:text-primary dark:text-muted-foreground dark:hover:text-foreground dark:focus:text-foreground',
                 (isActive || isDTF) && 'text-primary dark:text-foreground'
               )}
             >
-              <span className="hidden text-sm font-medium min-[850px]:block">
+              <span className="hidden text-base font-normal min-[850px]:block">
                 <Trans>Discover DTFs</Trans>
               </span>
             </div>
@@ -204,7 +204,7 @@ const AppNavigation = () => {
       className="mr-auto hidden rounded-3xl border min-[850px]:flex min-[850px]:border-none"
       vClassName="-left-10 min-[850px]:left-auto min-[850px]:right-0"
     >
-      <NavigationMenuList>
+      <NavigationMenuList className="pl-0 pr-2">
         <DiscoverItem />
         {menuItems.map((item) => (
           <NavigationMenuItem
@@ -219,11 +219,11 @@ const AppNavigation = () => {
                   <div
                     className={cn(
                       navigationMenuTriggerStyle(),
-                      'text-legend hover:text-foreground focus:text-foreground',
+                      'text-foreground hover:text-primary focus:text-primary dark:text-muted-foreground dark:hover:text-foreground dark:focus:text-foreground',
                       isActive && 'text-primary dark:text-foreground'
                     )}
                   >
-                    <span className="hidden text-sm font-medium min-[850px]:block">
+                    <span className="hidden text-base font-normal min-[850px]:block">
                       {item.label}
                     </span>
                   </div>
@@ -233,8 +233,8 @@ const AppNavigation = () => {
           </NavigationMenuItem>
         ))}
         <NavigationMenuItem>
-          <NavigationMenuTrigger className="text-legend hover:text-foreground focus:text-foreground data-[state=open]:text-foreground">
-            <span className="hidden text-sm font-medium min-[850px]:block">
+          <NavigationMenuTrigger className="text-foreground hover:text-primary focus:text-primary data-[state=open]:text-primary dark:text-muted-foreground dark:hover:text-foreground dark:focus:text-foreground dark:data-[state=open]:text-foreground">
+            <span className="hidden text-base font-normal min-[850px]:block">
               <Trans>More</Trans>
             </span>
           </NavigationMenuTrigger>
