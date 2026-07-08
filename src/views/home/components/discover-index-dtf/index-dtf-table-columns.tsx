@@ -212,7 +212,7 @@ export const indexDTFColumns: ColumnDef<IndexDTFItem>[] = [
   {
     header: () => (
       <TableHeader className="pl-1.5">
-        <Trans>Exposure</Trans>
+        <Trans>Basket</Trans>
       </TableHeader>
     ),
     accessorKey: 'basket',

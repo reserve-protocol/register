@@ -37,7 +37,7 @@ const SequenceItems = forwardRef<
   <div ref={ref} className={first ? 'flex shrink-0 pl-2' : 'flex shrink-0'}>
     <div className="flex shrink-0 items-center rounded-full px-1.5 py-1">
       <span className="text-sm text-legend">
-        <Trans>Exposure:</Trans>
+        <Trans>Collateral:</Trans>
       </span>
     </div>
     {assets.map((token) => (
