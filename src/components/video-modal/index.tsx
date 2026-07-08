@@ -24,12 +24,14 @@ const VideoModal = ({
   // Match the source video's ratio so YouTube doesn't letterbox it. Defaults to
   // 16:9 (most DTF videos); pass an override for differently-sized ones.
   aspectClassName = 'aspect-video',
+  onOpenChange,
   children,
 }: {
   video: string
   title?: ReactNode
   iframeTitle?: string
   aspectClassName?: string
+  onOpenChange?: (open: boolean) => void
   children: ReactElement
 }) => {
   const { t } = useLingui()
@@ -40,7 +42,7 @@ const VideoModal = ({
   }
 
   return (
-    <Dialog>
+    <Dialog onOpenChange={onOpenChange}>
       <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent
         className="sm:max-w-[960px] max-w-[95vw] p-0 gap-0 overflow-hidden"
