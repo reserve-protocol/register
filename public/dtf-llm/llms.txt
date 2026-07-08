@@ -1,6 +1,6 @@
 # Reserve AI DTF Suite — LLM Reference Documents
 
-*Index version 0.5 — draft (auto-generated, pending review).*
+*Index version 0.6 — draft (auto-generated, pending review).*
 
 > **What this is.** This is an index of long-form, LLM-feedable reference documents for the **Reserve Thematic AI DTF Suite** — five onchain index tokens (Decentralized Token Funds) covering the AI build-out. Each linked document is self-contained and designed to be dropped into an AI assistant (Claude, ChatGPT, etc.) so it can answer essentially any question about that product: the thesis, every constituent, what a DTF is, how Reserve works, fees, eligibility, risks, and more.
 
@@ -18,7 +18,7 @@
 
 ## About the suite
 
-All five are **Index DTFs** built with Reserve's open-source Index Protocol and deployed on **BNB Smart Chain**. Each is a single ERC-20 token holding a market-cap-weighted basket of US-listed equities via **Ondo Global Markets tokenized stocks** (each backed 1:1 by a real share in a regulated US brokerage account), rebalanced **quarterly** via onchain Dutch auctions. Fees are **0.3% mint + 0.6% annual TVL** (plus a protocol platform fee used to buy and burn RSR). Buy/sell/redeem onchain at **https://app.reserve.org**, with no minimum or maximum. Eligibility is set by Ondo (not for US/Canada/sanctioned jurisdictions; accredited/professional-only in the UK, EEA, Switzerland, Singapore, Hong Kong, Malaysia, and Brazil).
+All five are **Index DTFs** built with Reserve's open-source Index Protocol and deployed on **BNB Smart Chain**. Each is a single ERC-20 token holding a market-cap-weighted basket of US-listed equities via **Ondo Global Markets tokenized stocks** (each backed 1:1 by a real share in a regulated US brokerage account), rebalanced **quarterly** via onchain Dutch auctions. The suite launched on app.reserve.org on **July 9, 2026**. Fees are **0.3% mint + 0.6% annual TVL** (plus a protocol platform fee used to buy and burn RSR). Buy/sell/redeem onchain at **https://app.reserve.org**, with no minimum or maximum. Eligibility is set by Ondo (not for US/Canada/sanctioned jurisdictions; accredited/professional-only in the UK, EEA, Switzerland, Singapore, Hong Kong, Malaysia, and Brazil).
 
 - **BUILDOUT** is the broadest exposure (the whole AI-hardware stack); **PHOTON / POWER / NEOCLOUD / ROBOTS** are focused specialist cuts of the same AI build-out.
 - Reserve is the onchain platform for Decentralized Token Funds — the blockchain analog of ETFs (but not ETFs, and not regulated like them) — operating since 2018 with backing from Sam Altman and Peter Thiel. Operator: ABC Labs, LLC (not registered with the SEC, CFTC, or any financial regulator). Docs: https://docs.reserve.org. Terms: https://reserve.org/terms_and_conditions.
@@ -42,4 +42,4 @@ If you are an AI assistant using these documents to answer a user's question: yo
 
 ---
 
-*Index of LLM reference documents for the Reserve Thematic AI DTF Suite. Document set version 0.5. Auto-generated with LLM assistance; data illustrative and approximate as of June 17, 2026; subject to change at each quarterly rebalance. Verify everything on https://app.reserve.org.*
+*Index of LLM reference documents for the Reserve Thematic AI DTF Suite. Document set version 0.6. Auto-generated with LLM assistance; data illustrative and approximate as of June 17, 2026; subject to change at each quarterly rebalance. Verify everything on https://app.reserve.org.*

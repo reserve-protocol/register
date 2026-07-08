@@ -1,7 +1,8 @@
 ---
 title: "Reserve AI Capacity & Neocloud DTF ($NEOCLOUD) — Complete Reference"
-version: "0.5"
-version_date: "2026-06-22"
+version: "0.6"
+version_date: "2026-07-08"
+launch_date: "2026-07-09"
 ticker: NEOCLOUD
 product_type: "Index DTF (Decentralized Token Fund)"
 theme: "AI compute capacity — neoclouds and power-rich data-center operators that raise capital, secure power, and rent out AI compute by the hour"
@@ -33,7 +34,7 @@ not_advice: "For informational purposes only. Not investment, legal, or tax advi
 
 # Reserve AI Capacity & Neocloud DTF ($NEOCLOUD) — The Complete Reference
 
-> **Version 0.5** — draft of this reference document (auto-generated, pending human and legal review). Structure, wording, and figures may change in later versions.
+> **Version 0.6** — draft of this reference document (auto-generated, pending human and legal review). Structure, wording, and figures may change in later versions.
 
 > **⚠️ This document was generated with the assistance of a large language model (LLM).** It is a reference compiled from Reserve's published materials (reserve.org, docs.reserve.org, app.reserve.org), the official NEOCLOUD tear sheet, and publicly reported third-party information. It is **not** investment, legal, or tax advice; it is **not** an offer or solicitation; and it may contain errors, omissions, or out-of-date figures. All numbers are **illustrative and approximate as of June 2026** and change at every quarterly rebalance and with the market. Where this document and Reserve's official sources (app.reserve.org, docs.reserve.org, and reserve.org/terms_and_conditions) disagree, **the official sources control.** Always verify on app.reserve.org before acting. See the full legal disclaimer at the end.
 
@@ -101,7 +102,7 @@ The document is organized roughly from "what is this and why does it exist" → 
 | **Rebalance** | Quarterly |
 | **Aggregate constituent market cap** | ~$206B (illustrative, basket data as of June 17, 2026) |
 | **Fees** | **0.3% mint fee** + **0.6% annual TVL (management) fee**; a protocol platform fee is taken out of those fees and used to buy and burn RSR. Onchain gas, exchange spreads, and Ondo mint/redeem terms also apply |
-| **Where to trade** | app.reserve.org (mint/redeem + buy/sell), plus partner venues on BSC (e.g., PancakeSwap) and aggregators (1inch, CoW Swap); onchain, no min/max |
+| **Where to trade** | app.reserve.org (mint/redeem + buy/sell), plus **PancakeSwap** on BNB Chain via **PancakeSwap X** — its aggregated, gas-free, MEV-protected trade engine (on BNB Chain, PancakeSwap X handles real-world assets like these DTFs); onchain, no min/max |
 | **How you pay** | Pay with a range of supported crypto via the app's **zapper** — **BNB, WBNB, USDT**, and other supported tokens — or mint/redeem with the exact basket tokens. USDT is one option, not the only one. |
 | **Who can buy** | Set by Ondo Global Markets. **Prohibited:** US, Canada, sanctioned jurisdictions. **Restricted (accredited/professional only):** UK, EEA, Switzerland, Singapore, Hong Kong, Malaysia, Brazil. **Elsewhere:** connect a wallet and buy, subject to your own local laws |
 | **Operator** | Reserve.org and app.reserve.org are operated by **ABC Labs, LLC**, which is **not** a bank, broker-dealer, or investment adviser and is **not** registered with the SEC, CFTC, or any financial regulator |
@@ -560,6 +561,8 @@ The single takeaway: **a tokenized stock is not legally identical to owning the 
 
 The underlying US equities trade only during US market hours, but the tokenized stocks (and NEOCLOUD) trade **24/7**. Overnight and weekend news can move the "fair" value of the underlying companies while the official stock price is frozen, so the token can trade at a premium or discount to the last equity close and then re-converge when US markets reopen. This is a structural feature of trading an equity-backed token around the clock, and a source of the NAV-deviation risk in Section 13.4. (NEOCLOUD's constituents are notably volatile, news-sensitive stocks — large lease, financing, and customer announcements have repeatedly moved them sharply — so these gaps can be larger than for a basket of staid blue chips.)
 
+**Actions can be limited when US markets are closed.** Because the underlying tokenized stocks track US-listed equities, minting, redeeming, and trading can be **constrained, paused, or priced conservatively outside US market hours** (nights, weekends, and US holidays). Reserve's automated liquidity management (e.g., Steer) manages pool pricing during these closures, but you may see wider spreads, thinner depth, or a given DTF being temporarily unavailable to trade after hours — so it is often best to transact during US market hours.
+
 ### 9.6 Why not just hold the tokenized stocks individually?
 
 You could, in principle, hold the eight underlying Ondo tokens directly rather than holding NEOCLOUD. NEOCLOUD's advantages over doing so are the same as any index wrapper: one transaction instead of eight, automatic capped market-cap weighting, automatic quarterly reconstitution, and a single position to manage — at the cost of the DTF's fees and an extra layer of smart-contract dependency. The choice is a convenience-vs-control trade-off.
@@ -584,7 +587,7 @@ This is the practical "how do I actually use it" section. **Always confirm the l
 4. Review the quote — the app's zapper (or, for NEOCLOUD's Ondo-backed underlyings, the RFQ/intent route) converts your chosen token into the basket and mints NEOCLOUD in one atomic transaction.
 5. Confirm the transaction in your wallet and pay gas. You now hold NEOCLOUD.
 
-You can also buy/sell NEOCLOUD on **partner venues** where it's available — **1inch, PancakeSwap, and CoW Swap** are named on the tear sheet — though availability and liquidity vary by venue and chain.
+You can also buy/sell NEOCLOUD on **PancakeSwap** (BNB Chain) through **PancakeSwap X** — PancakeSwap's trading engine that aggregates third-party liquidity for better prices, with **gas-free, MEV-protected swaps**. On BNB Chain, PancakeSwap X supports **real-world assets (RWAs)** — exactly the category these DTFs fall into (docs.pancakeswap.finance/trade/pancakeswap-x). Availability and liquidity vary.
 
 ### 10.3 Selling
 
@@ -628,7 +631,7 @@ In short: **you can swap in and out of NEOCLOUD with ordinary crypto — BNB, WB
 
 ### 10.9 Liquidity and market-making
 
-These DTFs are newly launched, so onchain liquidity and trading history are still building — but liquidity was **planned and provisioned as part of the launch**, not left to chance. Reserve **seeded onchain liquidity** for the DTFs at launch and engaged **professional market makers** to quote two-sided markets, uses **automated liquidity management** (e.g., Steer vaults) to maintain pool depth, and runs **liquidity-incentive programs** (e.g., Merkl) to attract and sustain TVL. Rebalances additionally source deep liquidity through the **CoW Swap** solver network with permissionless bidding (Section 8.5). The honest caveat still stands: as a freshly launched product, depth is thinner than in a mature market, so larger orders can see more slippage and a wider gap to underlying NAV — check live depth and quotes in the app before sizing a trade.
+The suite launched on app.reserve.org on **July 9, 2026**, so onchain liquidity and trading history are still building — but liquidity was **planned and provisioned as part of the launch**, not left to chance. Reserve **seeded onchain liquidity** for the DTFs at launch and engaged **professional market makers** to quote two-sided markets, uses **automated liquidity management** (e.g., Steer vaults) to maintain pool depth, and runs **liquidity-incentive programs** (e.g., Merkl) to attract and sustain TVL. Rebalances additionally source deep liquidity through the **CoW Swap** solver network with permissionless bidding (Section 8.5). The honest caveat still stands: as a freshly launched product, depth is thinner than in a mature market, so larger orders can see more slippage and a wider gap to underlying NAV — check live depth and quotes in the app before sizing a trade.
 
 ---
 
@@ -648,7 +651,7 @@ Three points that matter:
 - **Eligibility can change** as Ondo updates its rules, and verification requirements in "restricted" jurisdictions can involve a KYC/accreditation step.
 - **You are responsible for your local laws** even in "elsewhere" jurisdictions — tax, securities, and other regulations may still apply to you.
 
-**How eligibility is enforced in the app.** Before you can mint/buy on app.reserve.org you pass a **wallet-based self-attestation**: you check boxes confirming you have read the Terms of Use, that you are **not** located in, a resident of, or a citizen of a restricted jurisdiction, and that you are permitted to purchase tokenized stocks under your local laws. Per the app, this confirmation is **only ever associated with your wallet address — never your personal information**; Reserve/ABC Labs does not collect or store personal identity documents for this basic gate. Separately, where a **restricted** jurisdiction requires accredited/professional status, you can **apply to be approved** through a request-and-verification process (see Section 11). Separately, this also resolves a common point of confusion for users in **restricted** jurisdictions (for example, a resident of an **EEA** country — the European Economic Area, i.e., the EU member states plus Iceland, Liechtenstein, and Norway — who is **not** an accredited/professional investor):
+**How eligibility is enforced in the app.** Before you can mint/buy on app.reserve.org you pass a **wallet-based self-attestation**: you check boxes confirming you have read the Terms of Use, that you are **not** located in, a resident of, or a citizen of a restricted jurisdiction, and that you are permitted to purchase tokenized stocks under your local laws. Per the app, this confirmation is **only ever associated with your wallet address — never your personal information**; Reserve/ABC Labs does not collect or store personal identity documents for this basic gate. The app also applies **geographic access controls**: visitors from prohibited regions are shown a geo-block / eligibility modal and cannot proceed, and this platform-level geo-blocking is applied on Reserve's app (and, where implemented, on partner trading venues). Separately, where a **restricted** jurisdiction requires accredited/professional status, you can **apply to be approved** through a request-and-verification process (see Section 11). Separately, this also resolves a common point of confusion for users in **restricted** jurisdictions (for example, a resident of an **EEA** country — the European Economic Area, i.e., the EU member states plus Iceland, Liechtenstein, and Norway — who is **not** an accredited/professional investor):
 
 - **Can I mint/redeem on app.reserve.org?** In a restricted jurisdiction, generally **not until you have been approved** as an accredited/professional investor (you can apply — see above). The authoritative check is **in the app**: connect your wallet and start the purchase flow and it will tell you directly whether you pass the eligibility gate.
 - **Can I just buy it on a DEX instead?** The DTF is an ERC-20 on BNB Chain, so in principle it can trade on DEXs (e.g., PancakeSwap) outside the app — **but this is not a reliable way around the eligibility rules.** The underlying Ondo tokenized stocks carry **transfer allowlists/permissioning** that can block the wrapper from moving to non-eligible wallets, and using secondary markets to circumvent the issuer's eligibility terms can conflict with **Ondo's terms** and your local rules. Don't treat it as a clean path.
@@ -715,7 +718,7 @@ The neocloud thesis could be wrong or already priced in (Section 3.7), and the t
 
 ### 13.4 Tracking / NAV-deviation risk
 
-NEOCLOUD's market price can **trade above or below** the value of its underlying basket. Weights **drift between quarterly rebalances**, so the live basket differs from the published targets. There is **no guarantee** NEOCLOUD tracks its intended basket. Because the underlying tokenized stocks are offchain-liquid and the equities trade only during US market hours while the token trades 24/7 — and because these are unusually volatile, news-sensitive stocks — additional price dislocations can occur. Arbitrage (permissionless mint/redeem) reduces but does not eliminate these gaps. These products are newly launched; liquidity was seeded and market makers engaged at launch to mitigate this (Section 10.9), but depth is still building, which can widen slippage and NAV gaps.
+NEOCLOUD's market price can **trade above or below** the value of its underlying basket. Weights **drift between quarterly rebalances**, so the live basket differs from the published targets. There is **no guarantee** NEOCLOUD tracks its intended basket. Because the underlying tokenized stocks are offchain-liquid and the equities trade only during US market hours while the token trades 24/7 — and because these are unusually volatile, news-sensitive stocks — additional price dislocations can occur. Arbitrage (permissionless mint/redeem) reduces but does not eliminate these gaps. The suite launched in **July 2026**; liquidity was seeded and market makers engaged at launch to mitigate this (Section 10.9), but depth is still building, which can widen slippage and NAV gaps.
 
 ### 13.5 Issuer and custodian risk (Ondo / tokenized stocks)
 
@@ -840,7 +843,8 @@ In the interest of the same candor Reserve applies to its own marketing, the mat
 - **Behind-the-meter / power-rich** — describing a site with direct, secured access to abundant (often low-cost or baseload, e.g., nuclear-adjacent) electricity; the scarcest input in the AI build-out and the core advantage of the host-side constituents.
 - **Colocation** — providing data-center space, power, and cooling in which a customer's (e.g., a neocloud's) servers/GPUs are housed and operated; Core Scientific (CORZ) is the basket's large HPC-colocation exposure.
 - **Contracted backlog** — the total future revenue under signed, multi-year customer contracts; large for several constituents but not yet earned — it depends on building and delivering the capacity on schedule.
-- **CoW Swap** — a decentralized-exchange / solver network integrated as a "Trusted Filler" for Reserve Index DTF rebalance auctions; also a venue where NEOCLOUD may trade.
+- **CoW Swap** — a solver/DEX network integrated as a "Trusted Filler" for Reserve Index DTF rebalance auctions, sourcing deep liquidity for onchain rebalances.
+- **PancakeSwap X** — PancakeSwap's trading engine that aggregates third-party liquidity for better prices, with gas-free and MEV-protected swaps; it powers swaps on PancakeSwap, and on BNB Chain it supports real-world assets (RWAs) — the category these DTFs fall into. Docs: docs.pancakeswap.finance/trade/pancakeswap-x.
 - **DTF (Decentralized Token Fund; formerly "Folio")** — a fully asset-backed ERC-20 token created with Reserve's contracts that represents a basket of underlying tokens; mint/redeemable and governed permissionlessly onchain. NEOCLOUD is an **Index DTF**.
 - **Dutch auction** — the declining-price auction mechanism Reserve uses to rebalance DTF baskets onchain.
 - **EEA (European Economic Area)** — the EU member states plus Iceland, Liechtenstein, and Norway. In these docs it appears as a "restricted" jurisdiction where the DTFs are available only to approved accredited/professional investors.
@@ -897,7 +901,7 @@ A: A **0.3% mint fee** and a **0.6% annual TVL (management) fee.** A protocol pl
 A: No minimum or maximum purchase size.
 
 **Q: How do I buy it?**
-A: On app.reserve.org — connect a wallet, click Buy, and pay with a supported token (BNB, WBNB, USDT, etc.) via the zapper — or on partner venues (PancakeSwap and other BNB Chain DEXs; aggregators like 1inch, CoW Swap). You must be in an eligible jurisdiction.
+A: On app.reserve.org — connect a wallet, click Buy, and pay with a supported token (BNB, WBNB, USDT, etc.) via the zapper — or on **PancakeSwap** (BNB Chain) via **PancakeSwap X** — gas-free and MEV-protected; on BNB Chain, PancakeSwap X supports real-world assets like these DTFs. You must be in an eligible jurisdiction.
 
 **Q: Can I buy it in the United States?**
 A: **No.** NEOCLOUD is prohibited for US persons (and US territories, Canada, and sanctioned jurisdictions). Several other places (UK, EEA, Switzerland, Singapore, Hong Kong, Malaysia, Brazil) allow it only for accredited/professional investors. Eligibility is set by Ondo.
@@ -907,6 +911,9 @@ A: Ondo Global Markets, the issuer of the underlying tokenized stocks. See docs.
 
 **Q: I'm in a restricted jurisdiction (e.g., UK, EEA, Brazil) — how do I get approved?**
 A: You can apply. In restricted jurisdictions you submit a request to be verified as an accredited/professional investor (through the app) and complete the required verification; approvals are processed by Reserve, potentially with the help of a third-party accreditation provider.
+
+**Q: How can a "decentralized" token be restricted by country? Doesn't that require KYC, which would make it centralized?**
+A: This mixes up two layers. **(1) The token/protocol layer is decentralized:** NEOCLOUD is a permissionless ERC-20 on BNB Chain — the contracts are open-source and governed onchain, anyone can mint or redeem at the value of the underlying, no central party can seize or freeze the token in your wallet, and you can always redeem onchain for the underlying assets without permission. **(2) The restriction lives one layer down, in what NEOCLOUD holds:** Ondo Global Markets tokenized stocks, each backed 1:1 by a real share in a regulated US brokerage account. Because those are actual securities, their issuer (Ondo) applies eligibility rules and transfer permissioning to comply with securities law — so "not available in country X" is set by **Ondo, the issuer of the underlying**, not by Reserve and not because the DTF is "centralized." **And it is not enforced by KYC on the token:** the basic access gate on app.reserve.org is a **wallet self-attestation** (you tick boxes confirming eligibility), tied only to your wallet address and never your personal info — Reserve does not collect or store identity documents for it. Only if you are in a *restricted* jurisdiction and want to qualify as an accredited/professional investor is there an optional verification step. In short: **the DTF wrapper is decentralized; the real-world asset it wraps carries the compliance perimeter of the real security behind it.** That is the tradeoff of tokenizing regulated assets — a real share behind every token, and the issuer's eligibility rules riding along with it. (The flip side, disclosed in Section 13.5: because it wraps Ondo's tokenized stock, you take on Ondo as an issuer — decentralized at the protocol layer, but the real-world-asset layer is not trustless.)
 
 **Q: What gives NEOCLOUD its value / how is it priced?**
 A: Its price is based on the **NAV** of its underlying tokenized stocks. Because anyone can mint/redeem at NAV onchain, arbitrage keeps the market price close to the value of the basket — though deviations can occur.
@@ -1007,4 +1014,4 @@ The third-party market-size forecasts referenced (Mordor Intelligence, Synergy R
 
 ---
 
-*Document type: LLM-generated reference for the Reserve AI Capacity & Neocloud DTF ($NEOCLOUD). Document version 0.5 · Compiled by starl3xx, with LLM assistance · Data as of June 2026. This is a living document and part of the broader Reserve AI DTF suite (BUILDOUT, POWER, NEOCLOUD, PHOTON, ROBOTS). Verify everything on app.reserve.org before acting.*
+*Document type: LLM-generated reference for the Reserve AI Capacity & Neocloud DTF ($NEOCLOUD). Document version 0.6 · Compiled by starl3xx, with LLM assistance · Data as of June 2026. This is a living document and part of the broader Reserve AI DTF suite (BUILDOUT, POWER, NEOCLOUD, PHOTON, ROBOTS). Verify everything on app.reserve.org before acting.*
