@@ -1,7 +1,11 @@
 import { useQuery } from '@tanstack/react-query'
 import { RESERVE_API } from '@/utils/constants'
 import { formatCurrency } from '@/utils'
-import { HistoricalPortfolioResponse, PortfolioPeriod } from '../types'
+import {
+  HistoricalPortfolioResponse,
+  PortfolioPeriod,
+  PortfolioResponse,
+} from '../types'
 import { Address } from 'viem'
 import { useCallback } from 'react'
 import dayjs from 'dayjs'
@@ -41,6 +45,33 @@ const fetchHistoricalPortfolio = async (
     voteLocked: point.totalVoteLockedUSD,
     rsr: point.totalRSRHoldingsUSD,
   }))
+}
+
+// The historical series ends at the API's last hourly gridpoint (plus CDN
+// cache), so a fresh buy can lag the header total by up to an hour there.
+// Appending the live portfolio keeps the chart end in sync with the header.
+export const appendLivePoint = (
+  chartData: ChartDataPoint[],
+  portfolio: PortfolioResponse
+): ChartDataPoint[] => {
+  const sumValues = (positions: { value: number }[]) =>
+    positions.reduce((acc, p) => acc + p.value, 0)
+  const now = Date.now()
+
+  return [
+    ...chartData,
+    {
+      value: portfolio.totalHoldingsUSD,
+      ts: now,
+      label: dayjs(now).format('MMM DD, YYYY h:mm A'),
+      display: `$${formatCurrency(portfolio.totalHoldingsUSD)}`,
+      indexDTFs: sumValues(portfolio.indexDTFs),
+      yieldDTFs: sumValues(portfolio.yieldDTFs),
+      stakedRSR: sumValues(portfolio.stakedRSR),
+      voteLocked: sumValues(portfolio.voteLocks),
+      rsr: sumValues(portfolio.rsrBalances),
+    },
+  ]
 }
 
 const useHistoricalPeriod = (

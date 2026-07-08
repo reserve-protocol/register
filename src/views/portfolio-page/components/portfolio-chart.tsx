@@ -21,6 +21,7 @@ import {
   portfolioPageTimeRangeAtom,
 } from '../atoms'
 import {
+  appendLivePoint,
   ChartDataPoint,
   useHistoricalPortfolio,
 } from '../hooks/use-historical-portfolio'
@@ -186,7 +187,14 @@ const PortfolioChart = () => {
   const [stacked, setStacked] = useState(false)
   const { getChartData, isLoading } = useHistoricalPortfolio(address)
 
-  const chartData = getChartData(timeRange)
+  const rawChartData = getChartData(timeRange)
+  const chartData = useMemo(
+    () =>
+      rawChartData && portfolio
+        ? appendLivePoint(rawChartData, portfolio)
+        : rawChartData,
+    [rawChartData, portfolio]
+  )
   const totalValue = portfolio?.totalHoldingsUSD ?? 0
 
   const change = useMemo(() => {
