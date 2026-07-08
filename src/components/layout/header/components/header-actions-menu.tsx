@@ -18,7 +18,7 @@ import {
 import { cn } from '@/lib/utils'
 import { Trans, useLingui } from '@lingui/react/macro'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
-import { Globe, Moon, Search, Sun } from 'lucide-react'
+import { Languages, Moon, Search, Sun } from 'lucide-react'
 import { ReactNode } from 'react'
 import HeaderControlButton, {
   type HeaderControlSurface,
@@ -32,10 +32,8 @@ const PanelLabel = ({ children }: { children: ReactNode }) => (
 
 const MenuTrigger = ({
   surface,
-  scrolled,
 }: {
   surface: HeaderControlSurface
-  scrolled: boolean
 }) => {
   const mode = useAtomValue(themeModeAtom)
   const { t } = useLingui()
@@ -45,10 +43,7 @@ const MenuTrigger = ({
       <HeaderControlButton
         aria-label={t`More options`}
         surface={surface}
-        className={cn(
-          'gap-1 px-3 border-0 lg:border lg:border-border lg:bg-transparent xl:hidden',
-          scrolled && 'border'
-        )}
+        className="gap-1 px-3 lg:bg-transparent xl:hidden"
       >
         <Search size={14} strokeWidth={1.5} />
         {mode === 'dark' ? (
@@ -56,7 +51,7 @@ const MenuTrigger = ({
         ) : (
           <Sun size={14} strokeWidth={1.5} />
         )}
-        <Globe size={14} strokeWidth={1.5} />
+        <Languages size={14} strokeWidth={1.5} />
       </HeaderControlButton>
     </DropdownMenuTrigger>
   )
@@ -169,13 +164,11 @@ const LanguageControl = () => {
 // Header menu grouping Search/Theme/Language
 const HeaderActionsMenu = ({
   surface = 'default',
-  scrolled = false,
 }: {
   surface?: HeaderControlSurface
-  scrolled?: boolean
 }) => (
   <DropdownMenu>
-    <MenuTrigger surface={surface} scrolled={scrolled} />
+    <MenuTrigger surface={surface} />
     <DropdownMenuContent
       align="end"
       sideOffset={10}

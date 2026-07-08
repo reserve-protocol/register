@@ -169,7 +169,7 @@ const ChartOverlay = ({
             className="hidden h-9 shrink-0 rounded-full border-card bg-card px-3 !text-sm font-medium lg:flex"
             labelClassName="!text-sm font-normal text-muted-foreground"
             labelGroupClassName="h-full gap-1.5"
-            stackedLogoClassName="pt-0"
+            stackedLogoClassName="pt-0 h-4 w-4"
             logoClassName="h-4 w-4 rounded-md border border-card bg-card"
             chevronClassName="h-3.5 w-3.5 text-muted-foreground"
           />

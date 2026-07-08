@@ -118,7 +118,7 @@ const PoolsTable = ({ data, compact = false }: Props) => {
   })
 
   return (
-    <div className="bg-secondary p-1 rounded-4xl">
+    <div className="bg-secondary p-1 rounded-4xl lg:mx-2 2xl:mx-0">
       {!compact && (
         <div className="mb-1">
           <TableFilters />

@@ -1,6 +1,6 @@
 ---
 title: Home
-updated: 2026-07-06
+updated: 2026-07-08
 type: domain
 sources:
   - src/views/home/**
@@ -14,14 +14,24 @@ cards, discover table, metrics.
 ## Featured cards data
 
 `use-featured-dtfs.ts` reads `v1/discover/featured` — the server decides the
-performance period and density. reserve-api downsamples the series
-server-side (`downsampleForSpan` in its `src/lib/chart-downsample.ts`,
-span→bucket rule mirroring the overview policy: 3m span → daily, ~92 pts;
-young DTFs keep hourly density), so `normalizeFeaturedItem` passes
-`performance` through untouched. Each card draws the series twice (pattern +
-stroke overlay), so density is paid double — keep the server series light.
-Percentage/direction labels use `priceChange` from the server, which the API
-computes from the full hourly series before downsampling.
+performance period and density. Since 2026-07-08 the period is **YTD on a
+daily grid** (reserve-api `discover/featured` route passes
+`performancePeriod: "ytd", performanceInterval: "daily"`), deliberately
+matching the overview page's default YTD range: same Jan-1-UTC window, same
+`historical_dtf_price` daily grid, and `priceChange` = first-vs-last finite
+daily point with **no live-price append** — numerically equal to the overview
+overlay's (penultimate − first)/first, which skips its synthetic now-point.
+~190–366 pts/card; `downsampleForSpan` is a no-op at daily density.
+`normalizeFeaturedItem` passes `performance` through untouched. Each card
+draws the series twice (pattern + stroke overlay), so density is paid double —
+keep the server series light. Card order is server-driven (`order` array =
+reserve-api `FEATURED_TOKENS`); the skeleton `featured-dtfs.ts` list mirrors
+it so cards don't reshuffle when live data lands.
+
+The exposure marquee sorts weight-descending at the client choke point
+(`mapExposureGroupsToTickers` + basket fallback, before the `BACKING_LIMIT`
+slice — top-N by weight, not first-N in basket order); the server also emits
+`exposure` groups/tokens weight-descending.
 
 The discover table (`useIndexDTFList`, `v1/discover/dtfs?performance=true`)
 returns daily 30d series (~31 pts) — the same server-side downsample is a

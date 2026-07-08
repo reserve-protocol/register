@@ -4,9 +4,20 @@ import { cn } from '@/lib/utils'
 import { indexDTFAtom, indexDTFBrandAtom } from '@/state/dtf/atoms'
 import { getYouTubeEmbedUrl } from '@/utils/youtube'
 import { Trans, useLingui } from '@lingui/react/macro'
-import { useAtomValue } from 'jotai'
+import { atom, useAtom, useAtomValue } from 'jotai'
 import { Play } from 'lucide-react'
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
+
+// Once the explainer modal has been opened, the looping cover freezes on its
+// current frame so it doesn't keep animating behind the modal or after it
+// closes. Keyed by DTF address: the mobile and desktop covers are both mounted
+// and must freeze together, and a different DTF's cover should still loop.
+// The overview page clears it on unmount so a fresh visit loops again.
+export const watchedCoverDtfAtom = atom<string | null>(null)
+
+// Touch "hover" is sticky (tap fires mouseenter, mouseleave never comes), so
+// the play-while-hovered affordance is for real pointers only.
+const canHover = () => window.matchMedia('(hover: hover)').matches
 
 // Per-DTF animated cover thumbnails, keyed by symbol.
 const DTF_COVER_VIDEOS: Record<string, string> = {
@@ -41,6 +52,13 @@ const DtfCover = ({
   const brand = useAtomValue(indexDTFBrandAtom)
   const dtf = useAtomValue(indexDTFAtom)
   const [isVideoLoaded, setIsVideoLoaded] = useState(false)
+  const [watchedCoverDtf, setWatchedCoverDtf] = useAtom(watchedCoverDtfAtom)
+  const videoRef = useRef<HTMLVideoElement>(null)
+  const isCoverFrozen = !!dtf && watchedCoverDtf === dtf.id
+
+  useEffect(() => {
+    if (isCoverFrozen) videoRef.current?.pause()
+  }, [isCoverFrozen])
 
   const video = brand?.dtf?.video?.trim()
   const coverImage = getDtfCoverImage(brand?.dtf?.cover)
@@ -68,15 +86,26 @@ const DtfCover = ({
         hasVideoCover ? 'aspect-video' : 'aspect-square',
         className
       )}
+      // Frozen covers loop again while hovered and refreeze on leave — a
+      // handler on the video itself would be swallowed by the button overlay.
+      onMouseEnter={() => {
+        if (isCoverFrozen && canHover())
+          videoRef.current?.play().catch(() => {})
+      }}
+      onMouseLeave={() => {
+        if (isCoverFrozen) videoRef.current?.pause()
+      }}
     >
       {hasVideoCover ? (
         <video
+          ref={videoRef}
           src={coverVideo}
           className={cn(
             'block h-full w-full rounded-[inherit] object-cover transition-opacity duration-200',
             isVideoLoaded ? 'opacity-100' : 'opacity-0'
           )}
-          autoPlay
+          autoPlay={!isCoverFrozen}
+          preload="auto"
           muted
           loop
           playsInline
@@ -104,6 +133,9 @@ const DtfCover = ({
                 video={playableVideo}
                 title={videoTitle}
                 iframeTitle={iframeTitle}
+                onOpenChange={(open) => {
+                  if (open && dtf) setWatchedCoverDtf(dtf.id)
+                }}
               >
                 <Button className="gap-2 rounded-full border-2 border-white bg-white/50 px-5 text-primary hover:bg-white">
                   <Play className="h-4 w-4 " />

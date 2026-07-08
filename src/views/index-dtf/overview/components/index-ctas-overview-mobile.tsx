@@ -22,13 +22,16 @@ import {
 } from '@/state/dtf/atoms'
 import { useTrackIndexDTFClick } from '@/views/index-dtf/hooks/useTrackIndexDTFPage'
 import { DTFMobilePagesMenuButton } from '@/views/index-dtf/components/navigation'
+import { ROUTES } from '@/utils/constants'
 import { Trans, useLingui } from '@lingui/react/macro'
 import { useZapperModal } from '@reserve-protocol/react-zapper'
 import { useAtomValue } from 'jotai'
-import { MessageCircle } from 'lucide-react'
-import { ReactNode } from 'react'
+import { MessageCircle, Wallet } from 'lucide-react'
+import { ReactNode, useMemo } from 'react'
 import { createPortal } from 'react-dom'
 import { Link, useLocation, useParams } from 'react-router-dom'
+import { formatEther } from 'viem'
+import { useAccount, useBalance } from 'wagmi'
 import EligibilityCard from './eligibility-card'
 
 const RestrictionPopover = ({
@@ -87,9 +90,22 @@ const IndexCTAsOverviewMobile = () => {
   const dtf = useAtomValue(indexDTFAtom)
   const brand = useAtomValue(indexDTFBrandAtom)
   const isDeprecated = isInactiveDTF(useAtomValue(indexDTFStatusAtom))
+  const account = useAccount()
   const { isLoading, data: complianceData } = useComplianceRestrictions()
   const isRestricted = isLoading || complianceData?.restricted === true
   const isGeoRestricted = complianceData?.reason === 'geolocation-restricted'
+  const { data: userBalanceData } = useBalance({
+    address: account.address,
+    chainId: dtf?.chainId,
+    token: dtf?.id,
+    query: {
+      enabled: !!dtf?.id && !!account.address,
+    },
+  })
+  const hasDtfBalance = useMemo(() => {
+    if (userBalanceData === undefined) return false
+    return Number(formatEther(userBalanceData.value)) > 0
+  }, [userBalanceData])
 
   const renderTradeButton = (): ReactNode =>
     isGeoRestricted ? (
@@ -136,6 +152,18 @@ const IndexCTAsOverviewMobile = () => {
   const renderCtas = (): ReactNode => (
     <div className="flex gap-2">
       <DTFMobilePagesMenuButton buttonClassName="rounded-full h-10 w-10 p-0" />
+      {isOverviewPage && hasDtfBalance && (
+        <Button
+          asChild
+          variant="outline"
+          className="h-10 w-10 shrink-0 rounded-full p-0"
+          aria-label={t`View portfolio`}
+        >
+          <Link to={ROUTES.PORTFOLIO}>
+            <Wallet className="h-4 w-4" strokeWidth={1.5} />
+          </Link>
+        </Button>
+      )}
       {isOverviewPage && renderTradeButton()}
       <Button
         variant="outline"

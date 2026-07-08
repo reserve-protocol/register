@@ -175,10 +175,10 @@ const EligibilityDialog = ({ onConfirm }: { onConfirm: () => void }) => {
             <Scale className="h-5 w-5" strokeWidth={1.5} />
           </div>
 
-          <div className="text-primary">
+          <div className="text-primary mb-2">
             <Trans>Verify your eligibility</Trans>
           </div>
-          <h2 className="text-xl font-semibold leading-tight">
+          <h2 className="text-xl font-semibold leading-tight max-w-[320px]">
             <Trans>Before continuing, please confirm the following</Trans>
           </h2>
         </div>
