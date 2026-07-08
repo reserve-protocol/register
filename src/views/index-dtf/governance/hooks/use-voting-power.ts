@@ -67,6 +67,7 @@ export const useVotingPower = () => {
 
   return {
     votingPower: votes ? +formatEther(votes) : 0,
+    votingPowerRaw: votes || 0n,
     optimisticVotingPower: optimisticVotes ? +formatEther(optimisticVotes) : 0,
     isOptimisticGovernance,
     isLoading,

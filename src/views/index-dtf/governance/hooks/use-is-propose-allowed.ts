@@ -10,7 +10,7 @@ import { chainIdAtom } from '@/state/atoms'
 export const useIsProposeAllowed = () => {
   const dtf = useAtomValue(indexDTFAtom)
   const chainId = useAtomValue(chainIdAtom)
-  const { votingPower, isLoading } = useVotingPower()
+  const { votingPowerRaw, isLoading } = useVotingPower()
   const governance = getDTFSettingsGovernance(dtf)
   const { data: proposalThreshold, isLoading: isProposalThresholdLoading } =
     useReadContract({
@@ -30,8 +30,8 @@ export const useIsProposeAllowed = () => {
   return {
     isProposeAllowed:
       !!governance?.id &&
-      formattedProposalThreshold !== undefined &&
-      votingPower >= formattedProposalThreshold,
+      proposalThreshold !== undefined &&
+      votingPowerRaw >= proposalThreshold,
     isLoading:
       isLoading ||
       isProposalThresholdLoading ||
