@@ -72,7 +72,7 @@ export const TranscriptPreview = ({
             <span>
               <Trans>Watch Video</Trans>
             </span>
-            <AudioEqualizerIcon className="h-3 w-0 shrink-0 opacity-0 transition-[width,opacity] duration-150 group-hover/video:w-3 group-hover/video:opacity-100 group-focus-visible/video:w-3 group-focus-visible/video:opacity-100" />
+            <AudioEqualizerIcon className="h-3 w-0 shrink-0 opacity-0 transition-[width,opacity] duration-150 group-hover/video:w-3 group-hover/video:opacity-100 group-focus-visible/video:w-3 group-focus-visible/video:opacity-100 lg:group-hover:w-3 lg:group-hover:opacity-100 lg:group-focus-within:w-3 lg:group-focus-within:opacity-100" />
           </Button>
         </VideoModal>
       )}

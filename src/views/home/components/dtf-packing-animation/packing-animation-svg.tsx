@@ -77,7 +77,7 @@ export const PackingAnimationSvg = ({
         cx={geometry.centerX}
         cy={geometry.centerY}
         r={visual.trajectoryRadius}
-        className="fill-secondary stroke-primary dark:stroke-border"
+        className="fill-card stroke-primary dark:fill-secondary dark:stroke-border"
         fill="none"
         strokeWidth="1.5"
       />
@@ -90,7 +90,7 @@ export const PackingAnimationSvg = ({
       width={initialFrame.borderWidth}
       height={geometry.cardHeight}
       rx={geometry.cardHeight / 2}
-      className="fill-secondary stroke-primary dark:stroke-border"
+      className="fill-card stroke-primary dark:fill-secondary dark:stroke-border"
       strokeWidth="1.5"
       opacity={initialFrame.cardOpacity}
     />

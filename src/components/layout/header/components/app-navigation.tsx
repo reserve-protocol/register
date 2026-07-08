@@ -204,7 +204,7 @@ const AppNavigation = () => {
       className="mr-auto hidden rounded-3xl border min-[850px]:flex min-[850px]:border-none"
       vClassName="-left-10 min-[850px]:left-auto min-[850px]:right-0"
     >
-      <NavigationMenuList>
+      <NavigationMenuList className="pl-0 pr-2">
         <DiscoverItem />
         {menuItems.map((item) => (
           <NavigationMenuItem
