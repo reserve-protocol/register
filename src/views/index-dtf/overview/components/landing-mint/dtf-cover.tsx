@@ -8,8 +8,7 @@ import { useAtomValue } from 'jotai'
 import { Play } from 'lucide-react'
 import { useState } from 'react'
 
-// Per-DTF animated cover thumbnails, keyed by symbol. PHOTON is the default for
-// any DTF without a dedicated one.
+// Per-DTF animated cover thumbnails, keyed by symbol.
 const DTF_COVER_VIDEOS: Record<string, string> = {
   PHOTON: '/imgs/PHOTON_Thumbnails.webm',
   BUILDOUT: '/imgs/BUILDOUT_Thumbnails.webm',
@@ -17,6 +16,19 @@ const DTF_COVER_VIDEOS: Record<string, string> = {
   POWER: '/imgs/POWER_Thumbnails.webm',
 }
 const DEFAULT_DTF_COVER_VIDEO = DTF_COVER_VIDEOS.PHOTON
+
+export const getDtfCoverVideo = (symbol: string | undefined) =>
+  DTF_COVER_VIDEOS[symbol?.toUpperCase() ?? ''] ?? DEFAULT_DTF_COVER_VIDEO
+
+export const getDtfCoverImage = (cover: string | undefined) => {
+  const coverImage = cover?.trim()
+
+  if (!coverImage) {
+    return undefined
+  }
+
+  return coverImage
+}
 
 const DtfCover = ({
   className,
@@ -31,11 +43,11 @@ const DtfCover = ({
   const [isVideoLoaded, setIsVideoLoaded] = useState(false)
 
   const video = brand?.dtf?.video?.trim()
-  const coverImage = brand?.dtf?.cover?.trim()
+  const coverImage = getDtfCoverImage(brand?.dtf?.cover)
   const playableVideo = video && getYouTubeEmbedUrl(video) ? video : undefined
-  const coverVideo =
-    DTF_COVER_VIDEOS[dtf?.token.symbol?.toUpperCase() ?? ''] ??
-    DEFAULT_DTF_COVER_VIDEO
+  const coverVideo = getDtfCoverVideo(dtf?.token.symbol)
+  const hasVideoCover = !!video && !!coverVideo
+  const hasBrandCover = !hasVideoCover && showBrandImage && !!coverImage
   const videoTitle = dtf?.token.symbol ? (
     <Trans>{dtf.token.symbol} explainer</Trans>
   ) : (
@@ -45,7 +57,7 @@ const DtfCover = ({
     ? t`${dtf.token.symbol} explainer`
     : t`DTF Explainer`
 
-  if (!video && (!showBrandImage || !coverImage)) {
+  if (!hasVideoCover && !hasBrandCover) {
     return null
   }
 
@@ -53,11 +65,11 @@ const DtfCover = ({
     <div
       className={cn(
         'relative isolate overflow-hidden rounded-3xl bg-background',
-        video && 'aspect-video',
+        hasVideoCover ? 'aspect-video' : 'aspect-square',
         className
       )}
     >
-      {video ? (
+      {hasVideoCover ? (
         <video
           src={coverVideo}
           className={cn(
@@ -74,11 +86,11 @@ const DtfCover = ({
         <img
           src={coverImage}
           alt={dtf?.token.name ? t`${dtf.token.name} cover` : t`DTF cover`}
-          className="block h-auto w-full rounded-[inherit]"
+          className="block h-full w-full rounded-[inherit] object-cover"
           draggable={false}
         />
       )}
-      {video && (
+      {hasVideoCover && (
         <>
           <div className="pointer-events-none absolute inset-0 rounded-[inherit] bg-[radial-gradient(circle,hsl(var(--card)/0.1)_0%,hsl(var(--card)/0.9)_100%)]" />
           <div
