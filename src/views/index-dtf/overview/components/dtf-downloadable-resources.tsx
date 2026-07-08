@@ -5,12 +5,11 @@ import { getFileNameFromUrl } from '@/utils'
 import { Trans, useLingui } from '@lingui/react/macro'
 import { useAtomValue } from 'jotai'
 import { Download } from 'lucide-react'
-import { Fragment } from 'react'
 
 // Per-token resources for the AI DTF suite, hardcoded in Register and keyed by
 // DTF address (lowercase) across every chain the token is deployed on:
 //   - Tear Sheet: locale-specific PDF hosted on storage.reserve.org.
-//   - LLM Markdown: single Markdown doc served from /public/dtf-llm.
+//   - LLM-ready Markdown: single Markdown doc served from /public/dtf-llm.
 const TEARSHEET_LOCALES: SupportedLocale[] = ['en', 'es', 'ko', 'zh']
 
 const DTF_RESOURCE_TOKEN_BY_ADDRESS: Record<string, string> = {
@@ -61,8 +60,10 @@ const useDownloadableResources = () => {
     ...(hardcodedUrls
       ? [
           { url: hardcodedUrls.tearsheetUrl, name: t`Tear Sheet` },
-          // WHY: brand/technical term — same across locales, intentionally not translated.
-          { url: hardcodedUrls.referenceUrl, name: 'LLM Markdown' },
+          {
+            url: hardcodedUrls.referenceUrl,
+            name: t`Markdown file for your LLM`,
+          },
         ]
       : []),
     ...files,
@@ -88,36 +89,34 @@ const DownloadableResources = ({
   return (
     <>
       {showDivider && <div className="border-t border-secondary" />}
-      <div className={cn('rounded-3xl bg-card p-5 sm:p-6', className)}>
-        <h3 className="font-medium mb-1">
-          <Trans>Downloadable resources</Trans>
-        </h3>
-        <p className="text-legend mb-1">
-          <Trans>
-            More information on what {dtfName} is, what it’s all about,
-            methodology and thesis.
-          </Trans>
-        </p>
-        <div className="mt-2 flex items-center gap-x-4 gap-y-2 sm:mt-4 sm:flex-wrap sm:gap-x-5">
-          {resources.map((file, index) => (
-            <Fragment key={file.url}>
-              {index > 0 && (
-                <div className="h-6 w-px shrink-0 bg-border sm:hidden" />
-              )}
-              <a
-                href={file.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex min-w-0 flex-1 flex-row-reverse items-center justify-between gap-2 text-base font-medium text-primary hover:underline sm:flex-none sm:flex-row sm:justify-start sm:text-sm"
-              >
-                <div className="flex size-6 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground">
-                  <Download size={12} strokeWidth={2} />
-                </div>
-                <span className="truncate">
-                  {file.name || getFileNameFromUrl(file.url)}
-                </span>
-              </a>
-            </Fragment>
+      <div className={cn('rounded-3xl bg-card sm:p-6', className)}>
+        <div className="p-5 pb-2 sm:p-0">
+          <h3 className="mb-1 font-medium">
+            <Trans>Downloadable resources</Trans>
+          </h3>
+          <p className="mb-1 text-legend">
+            <Trans>
+              More information on what {dtfName} is, what it’s all about,
+              methodology and thesis.
+            </Trans>
+          </p>
+        </div>
+        <div className="flex flex-col gap-2 p-2 sm:mt-4 sm:flex-row sm:flex-wrap sm:items-center sm:gap-x-5 sm:p-0">
+          {resources.map((file) => (
+            <a
+              key={file.url}
+              href={file.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex min-w-0 items-center justify-start gap-2.5 rounded-full border p-3 text-base font-medium text-primary hover:underline sm:flex-none sm:gap-2 sm:rounded-none sm:border-none sm:p-0 sm:text-sm"
+            >
+              <div className="flex size-6 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground">
+                <Download size={12} strokeWidth={2} />
+              </div>
+              <span className="min-w-0">
+                {file.name || getFileNameFromUrl(file.url)}
+              </span>
+            </a>
           ))}
         </div>
       </div>
