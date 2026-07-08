@@ -17,12 +17,23 @@ const CHAIN_LABELS: Record<number, string> = {
 const getChainLabel = (chainId: number) =>
   CHAIN_LABELS[chainId] ?? `Chain ${chainId}`
 
+const tickerWeight = (asset: AssetTickerItem) => {
+  const weight = Number(asset.weight)
+  return Number.isFinite(weight) ? weight : 0
+}
+
+const byWeightDesc = (a: AssetTickerItem, b: AssetTickerItem) =>
+  tickerWeight(b) - tickerWeight(a)
+
 const getBasketTickerAssets = (dtf: FeaturedDTFItem): AssetTickerItem[] =>
-  dtf.basket.slice(0, BACKING_LIMIT).map((token) => ({
-    key: token.address,
-    symbol: token.symbol,
-    weight: token.weight,
-  }))
+  dtf.basket
+    .map((token) => ({
+      key: token.address,
+      symbol: token.symbol,
+      weight: token.weight,
+    }))
+    .sort(byWeightDesc)
+    .slice(0, BACKING_LIMIT)
 
 const stripTokenizedSuffix = (symbol: string) => symbol.replace(/on$/, '')
 
@@ -131,7 +142,7 @@ export const formatPercentageChange = (
 
 export const formatPerformancePeriodLabel = (period?: string) => {
   const normalizedPeriod = period?.trim().toLowerCase()
-  if (!normalizedPeriod) return '1M'
+  if (!normalizedPeriod) return 'YTD'
 
   const match = normalizedPeriod.match(/^(\d+)\s*(d|w|m|mo|y)$/)
   if (!match) return normalizedPeriod.toUpperCase()
@@ -177,6 +188,9 @@ export const mapExposureGroupsToTickers = (
         },
       ]
     })
+    // Weight-descending regardless of source order — the marquee shows the
+    // heaviest holdings, not the first BACKING_LIMIT in basket order.
+    .sort(byWeightDesc)
     .slice(0, BACKING_LIMIT)
 
 export const getExposureTickerAssets = (
