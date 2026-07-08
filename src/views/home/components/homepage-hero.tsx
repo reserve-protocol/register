@@ -13,8 +13,7 @@ const Header = ({ className }: { className?: string }) => (
     className={cn(
       'text-[32px] font-normal leading-[1.25] text-primary',
       'dark:text-foreground',
-      'md:text-3xl md:font-medium max-w-[300px]',
-      'lg:max-w-[400px]',
+      'md:text-4xl max-w-[340px]',
       className
     )}
   >
@@ -30,10 +29,10 @@ const SubHeader = ({ className }: { className?: string }) => (
       className
     )}
   >
-    <span className="text-lg dark:text-legend">
+    <span className="text-xl dark:text-legend">
       <Trans>We call these tokenized portfolios DTFs:</Trans>
     </span>
-    <span className="text-lg font-medium">
+    <span className="text-xl font-medium">
       <Trans>Decentralized Token Funds</Trans>
     </span>
     <DTFExplainerButton
