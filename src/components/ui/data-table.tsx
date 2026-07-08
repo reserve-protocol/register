@@ -162,27 +162,44 @@ function DataTable<TData, TValue>({
   getRowClassName,
 }: DataTableComponentProps<TData, TValue>) {
   const [sorting, setSorting] = React.useState<SortingState>(initialSorting)
+  const propPageSize =
+    typeof pagination === 'object' ? pagination.pageSize || 10 : 10
   const [paginationState, setPaginationState] = React.useState<PaginationState>(
     {
-      pageSize:
-        typeof pagination === 'boolean' ? 10 : pagination?.pageSize || 10,
+      pageSize: propPageSize,
       pageIndex: 0,
     }
   )
   const [expandedRowId, setExpandedRowId] = useState<string | null>(null)
 
+  React.useEffect(() => {
+    setPaginationState((prev) =>
+      prev.pageSize === propPageSize
+        ? prev
+        : { pageIndex: 0, pageSize: propPageSize }
+    )
+  }, [propPageSize])
+
+  const allRowsPagination = React.useMemo(
+    () => ({ pageIndex: 0, pageSize: Math.max(data.length, 1) }),
+    [data.length]
+  )
+
+  // Tanstack row models are create-once: a conditional getPaginationRowModel
+  // latches on permanently once truthy, so pagination is toggled via state.
   const table = useReactTable({
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
-    getPaginationRowModel: pagination ? getPaginationRowModel() : undefined,
+    getPaginationRowModel: getPaginationRowModel(),
+    autoResetPageIndex: !!pagination,
     onPaginationChange: setPaginationState,
     getExpandedRowModel: getExpandedRowModel(),
     onSortingChange: setSorting,
     getSortedRowModel: getSortedRowModel(),
     state: {
       sorting,
-      pagination: paginationState,
+      pagination: pagination ? paginationState : allRowsPagination,
     },
   })
 
