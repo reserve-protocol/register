@@ -5,9 +5,7 @@ import reserveOptimisticGovernorAbi from '@/abis/reserve-optimistic-governor'
 import votesTokenAbi from '@/abis/votes-token'
 import { chainIdAtom, walletAtom } from '@/state/atoms'
 import { indexDTFAtom } from '@/state/dtf/atoms'
-import { getCurrentTime } from '@/utils'
 import { useAtomValue } from 'jotai'
-import { useMemo } from 'react'
 import {
   getDTFSettingsGovernance,
   getGovernanceVoteTokenAddress,
@@ -23,19 +21,33 @@ export const useVotingPower = () => {
     governance,
     dtf?.stToken?.id
   )
-  const votingPowerTimepoint = useMemo(
-    () => BigInt(getCurrentTime() - 12),
-    [account, governanceAddress, chainId]
-  )
-
-  const { data: votes, isLoading } = useReadContract({
-    address: governanceAddress ?? '0x',
-    functionName: 'getVotes',
+  const { data: governorClock, isLoading: isClockLoading } = useReadContract({
+    address: governanceAddress,
+    functionName: 'clock',
     abi: dtfIndexGovernance,
-    args: [account as Address, votingPowerTimepoint],
     chainId,
     query: {
       enabled: !!account && !!governanceAddress && !!chainId,
+    },
+  })
+  const votingPowerTimepoint =
+    governorClock !== undefined ? BigInt(governorClock) - 1n : undefined
+
+  const { data: votes, isLoading: isVotesLoading } = useReadContract({
+    address: governanceAddress,
+    functionName: 'getVotes',
+    abi: dtfIndexGovernance,
+    args:
+      account && votingPowerTimepoint !== undefined
+        ? [account as Address, votingPowerTimepoint]
+        : undefined,
+    chainId,
+    query: {
+      enabled:
+        !!account &&
+        !!governanceAddress &&
+        !!chainId &&
+        votingPowerTimepoint !== undefined,
     },
   })
   const { data: optimisticParams } = useReadContract({
@@ -70,7 +82,7 @@ export const useVotingPower = () => {
     votingPowerRaw: votes || 0n,
     optimisticVotingPower: optimisticVotes ? +formatEther(optimisticVotes) : 0,
     isOptimisticGovernance,
-    isLoading,
+    isLoading: !!account && (isClockLoading || isVotesLoading),
     isOptimisticLoading,
   }
 }

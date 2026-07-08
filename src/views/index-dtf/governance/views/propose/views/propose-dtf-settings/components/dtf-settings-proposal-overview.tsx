@@ -8,10 +8,16 @@ import { Link } from 'react-router-dom'
 import {
   isProposalConfirmedAtom,
   isProposalValidAtom,
-  isFormValidAtom,
   dtfSettingsProposalDataAtom,
-  proposalDescriptionAtom,
-  hasOnlyRolesChangesAtom,
+  hasTokenNameChangeAtom,
+  hasMandateChangeAtom,
+  hasRolesChangesAtom,
+  hasRevenueDistributionChangesAtom,
+  hasDtfRevenueChangesAtom,
+  hasAuctionLengthChangeAtom,
+  hasWeightControlChangeAtom,
+  hasBidsEnabledChangeAtom,
+  hasGovernanceChangesAtom,
 } from '../atoms'
 import DTFSettingsProposalChanges from './dtf-settings-proposal-changes'
 import SubmitProposalButton from './submit-proposal-button'
@@ -22,30 +28,61 @@ import {
   getDTFSettingsGovernance,
   getGovernanceVoteTokenAddress,
 } from '@/views/index-dtf/governance/governance-helpers'
-import { useFormContext } from 'react-hook-form'
+import { FieldErrors, useFormContext } from 'react-hook-form'
+
+const useHasRelevantFormErrors = (errors: FieldErrors) => {
+  const hasTokenNameChange = useAtomValue(hasTokenNameChangeAtom)
+  const hasMandateChange = useAtomValue(hasMandateChangeAtom)
+  const hasRolesChanges = useAtomValue(hasRolesChangesAtom)
+  const hasRevenueDistributionChanges = useAtomValue(
+    hasRevenueDistributionChangesAtom
+  )
+  const hasDtfRevenueChanges = useAtomValue(hasDtfRevenueChangesAtom)
+  const hasAuctionLengthChange = useAtomValue(hasAuctionLengthChangeAtom)
+  const hasWeightControlChange = useAtomValue(hasWeightControlChangeAtom)
+  const hasBidsEnabledChange = useAtomValue(hasBidsEnabledChangeAtom)
+  const hasGovernanceChanges = useAtomValue(hasGovernanceChangesAtom)
+
+  return !!(
+    (hasTokenNameChange && errors.tokenName) ||
+    (hasMandateChange && errors.mandate) ||
+    (hasRolesChanges &&
+      (errors.roles ||
+        errors.guardians ||
+        errors.brandManagers ||
+        errors.auctionLaunchers)) ||
+    (hasRevenueDistributionChanges &&
+      (errors.governanceShare ||
+        errors.deployerShare ||
+        errors.additionalRevenueRecipients)) ||
+    (hasDtfRevenueChanges && (errors.mintFee || errors.folioFee)) ||
+    (hasAuctionLengthChange && errors.auctionLength) ||
+    (hasWeightControlChange && errors.weightControl) ||
+    (hasBidsEnabledChange && errors.bidsEnabled) ||
+    (hasGovernanceChanges &&
+      (errors.governanceVoteLock ||
+        errors.governanceWalletAddress ||
+        errors.governanceVotingDelay ||
+        errors.governanceVotingPeriod ||
+        errors.governanceVotingQuorum ||
+        errors.governanceVotingThreshold ||
+        errors.governanceExecutionDelay))
+  )
+}
 
 const ConfirmProposalButton = () => {
   const isValid = useAtomValue(isProposalValidAtom)
-  const isFormValid = useAtomValue(isFormValidAtom)
-  const hasOnlyRolesChanges = useAtomValue(hasOnlyRolesChangesAtom)
   const [isProposalConfirmed, setIsProposalConfirmed] = useAtom(
     isProposalConfirmedAtom
   )
   const {
     formState: { errors },
   } = useFormContext()
-  const hasRoleErrors = !!(
-    errors.roles ||
-    errors.guardians ||
-    errors.brandManagers ||
-    errors.auctionLaunchers
-  )
-  const canIgnoreUnchangedSectionErrors = hasOnlyRolesChanges && !hasRoleErrors
+  const hasRelevantFormErrors = useHasRelevantFormErrors(errors)
 
   const handleConfirm = () => {
     if (!isProposalConfirmed) {
-      // When confirming, check if form is valid
-      if (!isFormValid && !canIgnoreUnchangedSectionErrors) {
+      if (hasRelevantFormErrors) {
         // The form will show validation errors
         return
       }
@@ -53,8 +90,7 @@ const ConfirmProposalButton = () => {
     setIsProposalConfirmed(!isProposalConfirmed)
   }
 
-  const isButtonEnabled =
-    isValid && (isFormValid || canIgnoreUnchangedSectionErrors)
+  const isButtonEnabled = isValid && !hasRelevantFormErrors
 
   return (
     <Button
@@ -70,10 +106,13 @@ const ConfirmProposalButton = () => {
 
 const ProposalInstructions = () => {
   const isValid = useAtomValue(isProposalValidAtom)
-  const isFormValid = useAtomValue(isFormValidAtom)
   const confirmed = useAtomValue(isProposalConfirmedAtom)
+  const {
+    formState: { errors },
+  } = useFormContext()
+  const hasRelevantFormErrors = useHasRelevantFormErrors(errors)
 
-  const canProceed = isValid && isFormValid
+  const canProceed = isValid && !hasRelevantFormErrors
 
   const timelineItems = [
     {
@@ -189,7 +228,7 @@ const DTFSettingsProposalOverview = () => {
 
   return (
     <div className="flex flex-col gap-2 relative">
-      <div className={!isProposalConfirmed ? "sticky top-0" : ""}>
+      <div className={!isProposalConfirmed ? 'sticky top-0' : ''}>
         <ProposalOverview />
       </div>
       <VaultProposalChangePreview />
