@@ -13,6 +13,7 @@ import {
   SortField,
 } from './basket-table-header'
 import { buildExposureRows } from './exposure-rows'
+import { MobileBasketSkeleton } from './mobile-basket-skeleton'
 import { MobileCollateralRows } from './mobile-collateral-rows'
 import { MobileExposureRows } from './mobile-exposure-rows'
 import { useBasketOverviewData } from './use-basket-overview-data'
@@ -127,15 +128,19 @@ const IndexBasketOverview = () => {
               <Trans context="DTF basket">Collateral</Trans>
             </TabsTrigger>
           </TabsList>
-          {isExposure && sortedExposureRows ? (
-            <MobileExposureRows
-              rows={sortedExposureRows}
-              performanceLoading={performanceLoading}
-              timeRange={timeRange}
-              marketCaps={marketCaps}
-              viewAll={!limitRows}
-              maxTokens={MAX_TOKENS}
-            />
+          {isExposure ? (
+            sortedExposureRows ? (
+              <MobileExposureRows
+                rows={sortedExposureRows}
+                performanceLoading={performanceLoading}
+                timeRange={timeRange}
+                marketCaps={marketCaps}
+                viewAll={!limitRows}
+                maxTokens={MAX_TOKENS}
+              />
+            ) : (
+              <MobileBasketSkeleton isExposure />
+            )
           ) : sortedFiltered ? (
             <MobileCollateralRows
               filtered={sortedFiltered}
@@ -148,7 +153,9 @@ const IndexBasketOverview = () => {
               viewAll={!limitRows}
               maxTokens={MAX_TOKENS}
             />
-          ) : null}
+          ) : (
+            <MobileBasketSkeleton />
+          )}
           <Table className="hidden sm:table">
             <BasketTableHeader
               isExposure={isExposure}

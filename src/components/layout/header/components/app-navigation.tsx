@@ -56,7 +56,7 @@ const DiscoverItem = () => {
                 (isActive || isDTF) && 'text-primary dark:text-foreground'
               )}
             >
-              <span className="hidden text-sm font-normal min-[850px]:block">
+              <span className="hidden text-base font-normal min-[850px]:block">
                 <Trans>Discover DTFs</Trans>
               </span>
             </div>
@@ -223,7 +223,7 @@ const AppNavigation = () => {
                       isActive && 'text-primary dark:text-foreground'
                     )}
                   >
-                    <span className="hidden text-sm font-normal min-[850px]:block">
+                    <span className="hidden text-base font-normal min-[850px]:block">
                       {item.label}
                     </span>
                   </div>
@@ -234,7 +234,7 @@ const AppNavigation = () => {
         ))}
         <NavigationMenuItem>
           <NavigationMenuTrigger className="text-foreground hover:text-primary focus:text-primary data-[state=open]:text-primary dark:text-muted-foreground dark:hover:text-foreground dark:focus:text-foreground dark:data-[state=open]:text-foreground">
-            <span className="hidden text-sm font-normal min-[850px]:block">
+            <span className="hidden text-base font-normal min-[850px]:block">
               <Trans>More</Trans>
             </span>
           </NavigationMenuTrigger>

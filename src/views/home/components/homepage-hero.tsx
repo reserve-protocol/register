@@ -11,9 +11,10 @@ import { useHomepageHeroScroll } from '../hooks/use-homepage-hero-scroll'
 const Header = ({ className }: { className?: string }) => (
   <h1
     className={cn(
-      'max-w-[400px] text-[32px] font-normal leading-[1.25] text-primary',
+      'text-[32px] font-normal leading-[1.25] text-primary',
       'dark:text-foreground',
-      'md:text-3xl md:font-medium',
+      'md:text-3xl md:font-medium max-w-[300px]',
+      'lg:max-w-[400px]',
       className
     )}
   >
