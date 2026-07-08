@@ -2,36 +2,39 @@ import { indexDTFAtom } from '@/state/dtf/atoms'
 import { useAtomValue } from 'jotai'
 import { useVotingPower } from './use-voting-power'
 import { formatEther } from 'viem'
-import {
-  getDTFSettingsGovernance,
-  getGovernanceVoteTokenAddress,
-} from '../governance-helpers'
-import { useGovernanceTokenSupply } from './use-governance-token-supply'
+import { getDTFSettingsGovernance } from '../governance-helpers'
+import { useReadContract } from 'wagmi'
+import DTFIndexGovernance from '@/abis/dtf-index-governance'
+import { chainIdAtom } from '@/state/atoms'
 
 export const useIsProposeAllowed = () => {
   const dtf = useAtomValue(indexDTFAtom)
+  const chainId = useAtomValue(chainIdAtom)
   const { votingPower, isLoading } = useVotingPower()
   const governance = getDTFSettingsGovernance(dtf)
-  const governanceTokenAddress = getGovernanceVoteTokenAddress(
-    governance,
-    dtf?.stToken?.id
-  )
-  const { voteSupply, isLoading: isVoteSupplyLoading } =
-    useGovernanceTokenSupply(governanceTokenAddress)
-
-  const proposalThreshold =
-    Number(formatEther(BigInt(governance?.proposalThreshold || 0))) /
-    100
+  const { data: proposalThreshold, isLoading: isProposalThresholdLoading } =
+    useReadContract({
+      address: governance?.id,
+      abi: DTFIndexGovernance,
+      functionName: 'proposalThreshold',
+      chainId,
+      query: {
+        enabled: !!governance?.id && !!chainId,
+      },
+    })
+  const formattedProposalThreshold =
+    proposalThreshold !== undefined
+      ? Number(formatEther(proposalThreshold))
+      : undefined
 
   return {
     isProposeAllowed:
-      !!voteSupply &&
-      !!proposalThreshold &&
-      votingPower / voteSupply >= proposalThreshold,
+      !!governance?.id &&
+      formattedProposalThreshold !== undefined &&
+      votingPower >= formattedProposalThreshold,
     isLoading:
       isLoading ||
-      isVoteSupplyLoading ||
-      typeof voteSupply === 'undefined' ||
-      typeof proposalThreshold === 'undefined',
+      isProposalThresholdLoading ||
+      typeof formattedProposalThreshold === 'undefined',
   }
 }
