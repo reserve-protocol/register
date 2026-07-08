@@ -73,6 +73,18 @@ export function matchesAny(file, globs) {
   return globs.some((glob) => globToRegExp(glob).test(file));
 }
 
+// Mechanical signals on two independent axes — semantics stay with the agent.
+// Radius (how far can it break) buys checks and review; size (how much changed) buys ceremony.
+export function computeTierHint(files, lenses, maxLowFiles = 5) {
+  const radius = [];
+  if (lenses.includes("security")) radius.push("security lens");
+  if (lenses.includes("complexity")) radius.push("complexity lens (shared machinery)");
+  const size = files.length > maxLowFiles ? [`${files.length} files`] : [];
+  const profile =
+    radius.length > 0 && size.length > 0 ? "high" : radius.length > 0 || size.length > 0 ? "medium" : "low";
+  return { profile, radius, size };
+}
+
 export const CONFIG_FILE = "llm-workflow.config.json";
 
 export function loadConfig(root = repoRoot()) {

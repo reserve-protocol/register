@@ -52,6 +52,7 @@
   },
   "wiki": {
     "ledgerDriftCommits": 15,
-    "domainDriftCommits": 5
+    "domainDriftCommits": 5,
+    "ledgerRowMaxChars": 700
   }
 }

@@ -2,11 +2,30 @@
 
 Use this for staged implementation, scoped verification, debugging, and completion checks. Project-specific stack and product context live in `docs/wiki/project.md`, not here.
 
-## Quick Fix or Stage?
+## Calibrate: Radius × Size
 
-Not every change is a stage. A change that is single-domain, touches no boundary or shared machinery, and needs no new decision is a **quick fix**: edit, run `node scripts/llm-workflow/scope.mjs --base HEAD~1` (or the branch base), self-review the diff, commit. No ledger row, no ingest — the ledger-drift lint is the backstop that quick fixes haven't quietly become a feature. If you are debating which one it is, it's a stage.
+The expensive parts of the workflow — spawned reviewers, the closeout gate, visual evidence, wiki ingest, plans — are earned, not paid on every diff. Running the full loop on a copy change is waste, and waste teaches agents to route around gates. Two independent questions, answered before editing:
 
-## Operating Loop
+1. **Blast radius — how far can this break?** Isolated (one surface, nothing imports it) → domain (one feature folder) → shared (shared machinery, trust/process boundaries, money math, engineer-review surfaces). Radius buys **checks and review**: which gate runs, who reviews, how much visual evidence.
+2. **Work size — how much work is it?** One edit → one coherent slice → a multi-phase plan. Size buys **ceremony**: whether the work gets a ledger row, a stage, or a plan of stages.
+
+The axes are independent: a one-line fix in shared machinery is small work with a wide radius — heavy review, light ceremony. A four-phase feature inside one domain is the reverse. Collapsing them into one ladder over-processes small risky fixes and under-reviews big "simple" ones.
+
+The profiles:
+
+- **Touch-up** — trivial and isolated: copy/strings, docs, comments, styling values on one surface, data-only config; no control flow changed. Ship with: scoped verify green + self-review of the diff. Glance at the surface only if the change can clip, wrap, or overflow. Nothing else.
+- **Low** — small and contained: a button, an isolated component or hook, a visual change, a small fix inside one domain. Ship with: scoped verify green + self-review through each lens scope named + eyeball the changed surface if rendered output changed. No spawned reviewers, no ledger row, no ingest.
+- **Medium** — wide radius, modest size: the bugfix in shared machinery, the change on a money or engineer-review surface, the small diff many features sit on. One stage: spawned reviewers for the fired lenses, full gate (or gate-equivalent final scoped run), full visual evidence if UI behavior changed, one progress row, ingest only the pages the diff made stale. No plan, no phases.
+- **High** — big work: a multi-phase plan, a feature crossing domains or packages, anything needing new decisions along the way. Plan first, split into stages, run each stage at its own radius, review the whole feature once at the end, full closeout with ingest.
+
+`scope.mjs` prints the mechanical signals for both axes (risk lenses → radius, file count → size) plus a profile hint; you make the semantic call. The signals also work mid-flight: a "low" task whose diff starts firing radius signals gets re-tiered up, not argued down. When debating two profiles, take the heavier one — an under-reviewed wide-radius diff is the expensive mistake; an over-ceremonied small one is only slow.
+
+Two guardrails on the semantic call:
+
+- **Downgrades are explicit.** Shipping below medium while `scope.mjs` prints a radius signal (e.g. a copy-only change inside shared machinery) requires one stated line: the signal and why it doesn't apply. State it in the turn's summary and the commit message. A silent downgrade is how medium gets misfiled as low.
+- **Iterate boundaries from misfires, not theory.** Profile definitions change only when a real misfire is recorded in `log.md` — process work must not displace product work. The ledger-drift lint is the backstop that lower profiles haven't quietly become a feature.
+
+## Operating Loop (medium and high)
 
 1. Define stage, non-goals, exit criteria, and base ref. Do not edit code until those exist; if deriving them is risky, ask the human.
 2. Run `node scripts/llm-workflow/workflow-start.mjs --stage "<stage>"` for real stages. If the worktree is dirty, inspect `git status --short`; do not hide unrelated user changes.
@@ -17,11 +36,11 @@ Not every change is a stage. A change that is single-domain, touches no boundary
 7. Reconcile verified scoped findings only.
 8. Close out (below), then ingest into the wiki (see `skills/wiki.md`).
 
-## Closeout — one tier
+## Stage Closeout
 
-Every stage closes the same way. A lighter closeout is a skipped closeout.
+Every stage (medium and high work) closes the same way. A lighter closeout is a skipped closeout — if a stage seems to deserve less, it was a lower profile: re-tier it, don't shave the closeout.
 
-1. **Fresh full gate** after the final edit: `node scripts/llm-workflow/scope.mjs --gate` runs the config `gate` list and prints the verifier line for the progress row. Scoped verification is an inner-loop tool; it does not replace the full gate. Green gates are not proof of correct behavior — they are the floor.
+1. **Fresh full gate** after the final edit: `node scripts/llm-workflow/scope.mjs --gate` runs the config `gate` list and prints the verifier line for the progress row. Exception: if the final inner-loop `scope.mjs` run (after the last edit) printed `gate-equivalent: yes`, that run already is the fresh gate — don't pay for it twice. Green gates are not proof of correct behavior — they are the floor.
 2. **Visual check for UI stages**: see `skills/ui-ux.md` § Verification — automation passing on a broken screen is a recorded failure mode.
 3. **One progress row** in `docs/wiki/progress.md`: stage, status, verifier line (the exact fresh commands that ran green), one line per reviewed lens, next action.
 4. **Wiki ingest**: update the domain pages whose `sources` cover the diff, decisions if any were made, and `log.md`. Then `node scripts/llm-workflow/wiki-lint.mjs` green.
@@ -59,9 +78,8 @@ Reproduce, inspect the real boundary, form one hypothesis, fix root cause. Do no
 
 No completion claim without fresh evidence from this turn:
 
-- The full gate ran green after the final edit.
-- Every exit criterion has concrete evidence in the progress row.
-- Required review lenses are recorded in the progress row.
+- The profile's closing checks ran green after the final edit: full gate (or a gate-equivalent scoped run) for medium and high, scoped verify for touch-ups and low.
+- Medium and high only: every exit criterion has concrete evidence in the progress row; required review lenses are recorded there.
 - Known failures are named. Skipped external reviewers are named with reason.
 - Scratch output is cleaned or ignored.
 

@@ -25,6 +25,7 @@ try {
 }
 const ledgerDriftLimit = config.wiki?.ledgerDriftCommits ?? 15;
 const domainDriftLimit = config.wiki?.domainDriftCommits ?? 5;
+const ledgerRowMaxChars = config.wiki?.ledgerRowMaxChars ?? 700;
 
 const errors = [];
 const pages = new Map(); // basename → { path, frontmatter, body }
@@ -52,6 +53,17 @@ for (const [name, page] of pages) {
     errors.push(`${rel(path)}: domain page needs sources globs`);
   }
   if (ABSOLUTE_PATH_PATTERN.test(body)) errors.push(`${rel(path)}: absolute local machine path in body`);
+  // A ledger row is a pointer, not a narrative — details live in log.md or git history.
+  if (frontmatter.type === "ledger") {
+    for (const line of body.split("\n")) {
+      if (!line.startsWith("|")) continue;
+      if (line.length > ledgerRowMaxChars) {
+        errors.push(
+          `${rel(path)}: ledger row is ${line.length} chars (limit ${ledgerRowMaxChars}) — move narrative to log.md or git: "${line.slice(0, 60)}…"`,
+        );
+      }
+    }
+  }
   for (const link of wikiLinks(body)) {
     if (!pages.has(link)) errors.push(`${rel(path)}: broken link [[${link}]]`);
   }

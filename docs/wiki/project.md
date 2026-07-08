@@ -1,6 +1,6 @@
 ---
 title: Project
-updated: 2026-07-02
+updated: 2026-07-08
 type: context
 ---
 
@@ -54,6 +54,6 @@ Register — the web interface for Reserve Protocol: **Index DTFs** (current foc
 
 - `console.log` / `any` are lint **warnings, not blockers** here — fine while staging, don't ship them as permanent. Kit red-flags console.log; register is deliberately softer.
 - Tests are colocated per feature (`src/**/tests/**`), not a top-level `tests/` dir — same spirit (feature owns its tests), different location.
-- Review pairs run as **Dark (hostile: hallucinated APIs, instruction violations, bugs, scope creep) + Light (constructive: solves the ask? reuses patterns? simpler way?)** background subagents — a presentation style over the kit's lens taxonomy; reconcile in one pass, don't re-litigate.
+- Review pairs run as **Dark (hostile: hallucinated APIs, instruction violations, bugs, scope creep) + Light (constructive: solves the ask? reuses patterns? simpler way?)** background subagents — a presentation style over the kit's lens taxonomy; reconcile in one pass, don't re-litigate. Pairs spawn at **medium/high profiles only** (wide radius); touch-up and low self-review through the fired lenses (`skills/workflow.md` § Calibrate: Radius × Size).
 - Size gates: component < 200 lines, file < 300, > 500 auto engineer-review, > 1000 is cleanup work — register's stricter numbers win.
 - Feature-level agent docs (e.g. `src/views/index-dtf/issuance/async-mint/CLAUDE.md`) add local context only and never weaken root rules.

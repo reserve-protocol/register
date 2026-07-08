@@ -2,7 +2,15 @@
 // Usage: node scripts/llm-workflow/scope.mjs --base <ref> [--dry-run] [--json]
 import process from "node:process";
 
-import { changedFiles, loadConfig, matchesAny, repoRoot, runCommand, scanRedFlags } from "./lib/core.mjs";
+import {
+  changedFiles,
+  computeTierHint,
+  loadConfig,
+  matchesAny,
+  repoRoot,
+  runCommand,
+  scanRedFlags,
+} from "./lib/core.mjs";
 
 const args = process.argv.slice(2);
 const gateMode = args.includes("--gate");
@@ -49,12 +57,24 @@ for (const [lens, globs] of Object.entries(config.lenses ?? {})) {
 }
 
 const redFlags = scanRedFlags(files, config, root);
+const tierHint = computeTierHint(files, lenses);
+// A scoped run that covers every gate command IS the gate — do not pay for it twice at closeout.
+const gateEquivalent = config.gate.every((command) => commands.includes(command));
 
 if (asJson) {
-  console.log(JSON.stringify({ base, files, commands, lenses, redFlags }, null, 2));
+  console.log(JSON.stringify({ base, files, commands, lenses, redFlags, tierHint, gateEquivalent }, null, 2));
 } else {
   console.log(`scope: ${files.length} file(s) changed vs ${base}`);
   console.log(`lenses: ${lenses.join(", ")}`);
+  const axes = [
+    tierHint.radius.length > 0 ? `radius: ${tierHint.radius.join(", ")}` : "",
+    tierHint.size.length > 0 ? `size: ${tierHint.size.join(", ")}` : "",
+  ].filter(Boolean);
+  console.log(
+    axes.length === 0
+      ? "tier hint: low or touch-up — no radius or size signals; semantics decide (skills/workflow.md § Calibrate)"
+      : `tier hint: ${tierHint.profile} — ${axes.join(" · ")}`,
+  );
   for (const flag of redFlags) console.log(`red-flag: ${flag.file}:${flag.line}: ${flag.id}`);
   console.log(commands.length === 0 ? "no verify commands mapped" : `commands:\n  ${commands.join("\n  ")}`);
 }
@@ -68,6 +88,10 @@ if (!dryRun) {
       console.error(`✗ failed: ${command}`);
       process.exit(1);
     }
+  }
+  if (gateEquivalent) {
+    console.log("\ngate-equivalent: yes — this run covered every gate command; if it stays the last run after the final edit, it is the closeout gate");
+    console.log(`Verifier: ${config.gate.join(" + ")} (fresh, green)`);
   }
 }
 

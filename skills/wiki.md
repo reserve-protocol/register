@@ -45,6 +45,7 @@ boundaries, invariants, gotchas, why.
 **Lint** (`node scripts/llm-workflow/wiki-lint.mjs`, green required at closeout):
 - Broken `[[links]]`, pages missing from index, index entries without pages.
 - Missing/invalid frontmatter.
+- Ledger rows over the character cap (narratives belong in `log.md` or git).
 - Absolute local machine paths in any page (durable docs must survive other machines).
 - Ledger drift: too many commits since `progress.md` last changed.
 - Domain drift: a domain page whose `sources` have newer git commits than the page's `updated` date.
@@ -54,6 +55,7 @@ boundaries, invariants, gotchas, why.
 The wiki's value is synthesis, not accumulation.
 
 - A page over ~100 lines gets split into linked pages, or pruned.
+- A ledger row is a pointer, not a narrative: exact verifier commands + evidence keywords, one line per lens with the headline finding, next action. Adopted/declined reconciliation detail belongs in `log.md` or git history — the lint caps row length (`wiki.ledgerRowMaxChars`, default 700).
 - One page per feature folder; when the feature dies, delete its page and its index line.
 - Every kept sentence must change a future agent's behavior. History belongs in `log.md` or git, not in pages.
 - Contradictions between pages are bugs: fix at the owner page and link, do not restate.

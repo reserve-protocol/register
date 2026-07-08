@@ -1,6 +1,6 @@
 ---
 title: Decisions
-updated: 2026-07-06
+updated: 2026-07-08
 type: decision
 ---
 
@@ -39,3 +39,7 @@ The "choppy charts" task was solved by granularity policy, not by smoothing: the
 ## 2026-07-06 — Ledger wiki files use `merge=union` to stop recurring PR conflicts
 
 `log.md`, `decisions.md`, `progress.md`, `index.md` are append/ledger files every stage on every branch writes to, so concurrent branches collided in the same region on every wiki-touching PR. Fixed with a root `.gitattributes` marking exactly those four `merge=union` (git's built-in keep-both driver, honored locally and by GitHub's PR merge). Scoped precisely: domain pages are rewritten in place, where union would keep both versions of an edited paragraph — never add them. Cost is a cosmetic duplicate `updated:` line when two branches both bump the date; wiki-lint is last-wins so it stays green and it self-heals on the next edit. Heavier alternative considered and rejected: sharding each ledger into one-file-per-stage (eliminates the wart too, but sprawls files and breaks the single-readable-index model the wiki depends on). Portable follow-up: the llm-workflow kit's wiki skill should ship this `.gitattributes` rule for every repo it installs into.
+
+## 2026-07-08 — Workflow process calibrated on two axes: radius × size
+
+Every prompt was paying full-stage cost. Audit showed the mechanical gate is ~32s total (kept as the floor); the real cost was spawned reviewer pairs, double gate runs, visual evidence, and wiki ingest applied to diffs of any size. `skills/workflow.md` § Calibrate: Radius × Size now separates two independent questions: **blast radius** (how far can it break — buys checks and review) and **work size** (how much work — buys ceremony). Four profiles: **touch-up** (trivial+isolated: scoped verify + self-review), **low** (contained slice — button, visual change, in-domain fix: + self-review through fired lenses, eyeball if rendered output changed), **medium** (wide radius, modest size — the shared-machinery bugfix: one stage with spawned reviewers, full gate, one row, ingest only stale pages; no plan/phases), **high** (multi-phase or cross-package: plan → stages, whole-feature review at the end). The axes are the point: collapsing them into one ladder over-processes small risky fixes and under-reviews big "simple" ones. A fired lens names what to check, not who checks it — reviewer pairs spawn at medium/high only. `scope.mjs` prints per-axis mechanical signals (risk lenses → radius, >5 files → size) plus a profile hint, and `gate-equivalent: yes` when a scoped run covered every gate command (it then counts as the closeout gate). When debating two profiles, take the heavier one; the ledger-drift lint is the backstop against profile abuse. Kit and register stay byte-identical on kit-owned files. Follow-up guardrails (same day): ledger rows are pointers, not narratives — wiki-lint caps them at `wiki.ledgerRowMaxChars` (700); downgrades below a fired radius signal must be stated with a reason; profile boundaries change only on misfires recorded in [[log]].
