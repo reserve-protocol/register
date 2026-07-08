@@ -1,9 +1,11 @@
 import useScrollToHash from '@/hooks/use-scroll-to-hash'
+import { useEffect } from 'react'
+import { watchedCoverDtfAtom } from './components/landing-mint/dtf-cover'
 import { useIsLargeDesktop, useIsMobile } from '@/hooks/use-media-query'
 import { Card } from '@/components/ui/card'
 import { indexDTFAtom } from '@/state/dtf/atoms'
 import { isYieldIndexDTFAtom } from '@/state/dtf/yield-index-atoms'
-import { useAtomValue } from 'jotai'
+import { useAtomValue, useSetAtom } from 'jotai'
 import useTrackIndexDTFPage from '../hooks/useTrackIndexDTFPage'
 import PriceChart from './components/charts/price-chart'
 import IndexAboutOverview from './components/index-about-overview'
@@ -87,6 +89,14 @@ const Content = () => {
 
 const IndexDTFOverview = () => {
   useTrackIndexDTFPage('overview')
+  const setWatchedCoverDtf = useSetAtom(watchedCoverDtfAtom)
+
+  // Leaving the overview resets the frozen cover so a fresh visit loops again.
+  useEffect(
+    () => () => setWatchedCoverDtf(null),
+    [setWatchedCoverDtf]
+  )
+
   return (
     <div className="-mx-0 bg-secondary sm:mx-0 sm:bg-transparent">
       <div className="mb-16 flex gap-1 bg-secondary px-0 pb-0 pt-0.5 sm:mb-0 sm:rounded-4xl sm:p-1">

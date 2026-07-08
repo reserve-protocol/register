@@ -12,7 +12,12 @@ import { useEffect, useRef, useState } from 'react'
 // current frame so it doesn't keep animating behind the modal or after it
 // closes. Keyed by DTF address: the mobile and desktop covers are both mounted
 // and must freeze together, and a different DTF's cover should still loop.
-const watchedCoverDtfAtom = atom<string | null>(null)
+// The overview page clears it on unmount so a fresh visit loops again.
+export const watchedCoverDtfAtom = atom<string | null>(null)
+
+// Touch "hover" is sticky (tap fires mouseenter, mouseleave never comes), so
+// the play-while-hovered affordance is for real pointers only.
+const canHover = () => window.matchMedia('(hover: hover)').matches
 
 // Per-DTF animated cover thumbnails, keyed by symbol.
 const DTF_COVER_VIDEOS: Record<string, string> = {
@@ -81,6 +86,15 @@ const DtfCover = ({
         hasVideoCover ? 'aspect-video' : 'aspect-square',
         className
       )}
+      // Frozen covers loop again while hovered and refreeze on leave — a
+      // handler on the video itself would be swallowed by the button overlay.
+      onMouseEnter={() => {
+        if (isCoverFrozen && canHover())
+          videoRef.current?.play().catch(() => {})
+      }}
+      onMouseLeave={() => {
+        if (isCoverFrozen) videoRef.current?.pause()
+      }}
     >
       {hasVideoCover ? (
         <video
