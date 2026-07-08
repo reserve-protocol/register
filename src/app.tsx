@@ -12,7 +12,6 @@ import { getTokenRoute } from 'utils'
 import { registerReferralSuperProperty } from 'utils/referral'
 import AppRoutes from './app-routes'
 import Layout from './components/layout'
-import ContactModal from './components/layout/contact-modal'
 import { Toaster } from './components/ui/sonner'
 import { TooltipProvider } from './components/ui/tooltip'
 import LanguageProvider from './i18n'
@@ -122,7 +121,6 @@ const App = () => {
                 <Updater />
                 <Layout>
                   <Toaster />
-                  <ContactModal />
                   <AppRoutes />
                 </Layout>
               </ChainProvider>

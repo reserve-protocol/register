@@ -3,10 +3,13 @@ import { useOndoLimits } from '@/hooks/use-ondo-limits'
 import { useIsDesktop } from '@/hooks/use-media-query'
 import { indexDTFAtom, indexDTFBasketSharesAtom } from '@/state/dtf/atoms'
 import { formatCurrency } from '@/utils'
+import { ChainId } from '@/utils/chains'
 import {
   floorOndoMaxUsd,
   formatOndoTime,
+  formatRetryIn,
   getNextTradableSession,
+  getNextUsMarketOpen,
   getOndoWeightedMaxUsd,
   isOndoMintingAvailable,
   isOndoMintingUnavailable,
@@ -18,7 +21,7 @@ import { useEffect, useState, type SyntheticEvent } from 'react'
 import { createPortal } from 'react-dom'
 import { Address } from 'viem'
 import { useTrackIndexDTFClick } from '../../hooks/useTrackIndexDTFPage'
-import { getCowSwapUrl } from './cow-swap'
+import { getPancakeSwapUrl } from './pancake-swap'
 import LargeMintCardBody from './large-mint-prompt-body'
 import {
   deriveMintPromptSignals,
@@ -120,25 +123,14 @@ const LargeMintPrompt = ({ mode, dtfAddress, chain }: LargeMintPromptProps) => {
   }, [currentTab])
 
   const dismiss = () => setState((prev) => ({ ...prev, dismissed: true }))
-  const show = state.variant !== null && !state.dismissed
+  // These notices target the BSC AI DTFs only (Ondo-backed baskets + a
+  // PancakeSwap fallback). Other chains never show the card.
+  const show =
+    chain === ChainId.BSC && state.variant !== null && !state.dismissed
 
-  // Every raw signal requires a positive input value, so `data` is present
-  // whenever the card shows.
-  const cowSwapUrl = data
-    ? getCowSwapUrl(
-        isBuy
-          ? {
-              chainId: chain,
-              sellToken: data.input.token.address,
-              buyToken: dtfAddress,
-            }
-          : {
-              chainId: chain,
-              sellToken: dtfAddress,
-              buyToken: data.quote?.tokenOut,
-            }
-      )
-    : ''
+  // PancakeSwap only needs the DTF and the trade direction — buying makes it
+  // the output currency, selling the input.
+  const swapUrl = getPancakeSwapUrl({ dtfAddress, isBuy })
   // The capacity card only shows while the market is open, so the session is
   // always live. Lowercase mid-sentence, matching the closed variants.
   const sessionLabel = market?.session ?? 'regular'
@@ -155,6 +147,21 @@ const LargeMintPrompt = ({ mode, dtfAddress, chain }: LargeMintPromptProps) => {
       : undefined
   const nextSessionLabel =
     nextSession && nextSession !== market?.session ? nextSession : null
+  // closed-impact spells out US market hours and how long until they resume.
+  // Show "now" in Eastern Time too, so it lines up with the 9:30–4 ET hours and
+  // the countdown (the viewer's own local clock is disconnected from both).
+  const currentTimeLabel = new Date().toLocaleTimeString('en-US', {
+    timeZone: 'America/New_York',
+    hour: 'numeric',
+    minute: '2-digit',
+    hour12: true,
+  })
+  // When the market is fully closed, Ondo's nextOpen is authoritative (weekend/
+  // holiday aware). When it's open but the DTF's stocks are paused this session,
+  // there's no timestamp — fall back to the next regular open (9:30 AM ET).
+  const reopenInLabel =
+    (market?.isOpen === false ? formatRetryIn(market.nextOpen) : null) ??
+    formatRetryIn(getNextUsMarketOpen().toISOString())
 
   // Keep clicks inside the box from reaching Radix's outside-click handler, so
   // the CTA navigates instead of dismissing the zapper modal.
@@ -168,9 +175,11 @@ const LargeMintPrompt = ({ mode, dtfAddress, chain }: LargeMintPromptProps) => {
       sessionLabel={sessionLabel}
       nextOpenLabel={nextOpenLabel}
       nextSessionLabel={nextSessionLabel}
-      cowSwapUrl={cowSwapUrl}
+      currentTimeLabel={currentTimeLabel}
+      reopenInLabel={reopenInLabel}
+      swapUrl={swapUrl}
       onCta={() =>
-        trackClick('cowswap_redirect', {
+        trackClick('swap_redirect', {
           variant: state.variant,
           tab: currentTab,
         })
@@ -206,7 +215,7 @@ const LargeMintPrompt = ({ mode, dtfAddress, chain }: LargeMintPromptProps) => {
   // the slide-in keyframe (which animates `transform`) doesn't fight it.
   if (!isInline) {
     return createPortal(
-      <div className="pointer-events-none fixed bottom-0 left-1/2 top-0 z-50 ml-[228px] flex items-center">
+      <div className="pointer-events-none fixed bottom-0 left-1/2 top-0 z-[60] ml-[228px] flex items-center">
         <div
           onPointerDown={stop}
           onMouseDown={stop}

@@ -3,7 +3,6 @@ import { indexDTFAtom, indexDTFBrandAtom } from '@/state/dtf/atoms'
 import { useAtomValue } from 'jotai'
 import SectionAnchor from '@/components/section-anchor'
 import { Link } from 'react-router-dom'
-import { ROUTES } from '@/utils/constants'
 import { Trans } from '@lingui/react/macro'
 
 const YieldIndexAbout = () => {
@@ -39,12 +38,6 @@ const YieldIndexAbout = () => {
             <Trans>Website</Trans>
           </Link>
         )}
-        <Link
-          to={`../${ROUTES.FACTSHEET}`}
-          className="underline text-muted-foreground hover:text-foreground"
-        >
-          <Trans>Performance Sheet</Trans>
-        </Link>
         {brandData.socials?.twitter && (
           <Link
             to={brandData.socials.twitter}

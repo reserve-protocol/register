@@ -334,6 +334,8 @@ export const PNGS = new Set([
   'eat',
   'cbbtc',
   'wtao',
+  'glwon',
+  'tsemon',
 ])
 
 export const WEBP = new Set([

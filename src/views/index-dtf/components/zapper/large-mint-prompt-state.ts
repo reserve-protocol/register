@@ -1,4 +1,4 @@
-// Show the CoW Swap suggestion once the user's input is this large.
+// Show the PancakeSwap suggestion once the user's input is this large.
 export const LARGE_MINT_MIN_INPUT = 50_000
 export const ERROR_MINT_MIN_INPUT = 100
 // truePriceImpact is a percentage where positive means the user loses value.
@@ -88,7 +88,7 @@ export const deriveMintPromptSignals = ({
   // While ondo minting is blocked, quotes defer to secondary pools that can't
   // be arbitraged until minting resumes. A resolved non-enso quote at high
   // impact means the user pays that premium; no quote at all means no route,
-  // period. Both say when to come back instead of pushing to CoW Swap (whose
+  // period. Both say when to come back instead of pushing to PancakeSwap (whose
   // liquidity is equally stale while arbitrage is blocked) — that also keeps
   // the three CoW-CTA signals below gated off while unavailable.
   rawClosedImpact:

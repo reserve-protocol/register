@@ -205,8 +205,8 @@ msgid "{0} Est. APY"
 msgstr ""
 
 #. placeholder {0}: dtf.token.symbol
-#: src/views/index-dtf/overview/components/landing-mint/dtf-cover.tsx:22
-#: src/views/index-dtf/overview/components/landing-mint/dtf-cover.tsx:27
+#: src/views/index-dtf/overview/components/landing-mint/dtf-cover.tsx:33
+#: src/views/index-dtf/overview/components/landing-mint/dtf-cover.tsx:38
 msgid "{0} explainer"
 msgstr ""
 
@@ -778,7 +778,7 @@ msgstr ""
 
 #: src/views/index-dtf/manage/components/manage-about.tsx:119
 #: src/views/index-dtf/manage/components/manage-about.tsx:122
-#: src/views/index-dtf/overview/components/index-about-overview.tsx:88
+#: src/views/index-dtf/overview/components/index-about-overview.tsx:87
 msgid "About this DTF"
 msgstr ""
 
@@ -1305,6 +1305,10 @@ msgstr ""
 msgid "Are you sure you wish to challenge?"
 msgstr ""
 
+#: src/components/layout/contact-modal/bell-button.tsx:52
+msgid "As a larger holder you get a direct line to the team behind Reserve. Schedule an intro call."
+msgstr ""
+
 #: src/components/rtoken-setup/token/ExternalRevenueSplit.tsx:97
 msgid "As RSR"
 msgstr ""
@@ -1314,8 +1318,8 @@ msgid "As RToken"
 msgstr ""
 
 #: src/components/dtf-chat/index.tsx:111
-#: src/views/index-dtf/overview/components/index-ctas-overview-mobile.tsx:140
 #: src/views/index-dtf/overview/components/index-ctas-overview-mobile.tsx:147
+#: src/views/index-dtf/overview/components/index-ctas-overview-mobile.tsx:154
 msgid "Ask Reserve AI"
 msgstr ""
 
@@ -1507,12 +1511,12 @@ msgid "Available Collaterals"
 msgstr ""
 
 #: src/components/layout/contact-modal/bell-button.tsx:32
-msgid "Available opportunity"
-msgstr ""
+#~ msgid "Available opportunity"
+#~ msgstr ""
 
 #: src/components/layout/contact-modal/bell-button.tsx:41
-msgid "Available opportunity!"
-msgstr ""
+#~ msgid "Available opportunity!"
+#~ msgstr ""
 
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-optimistic-parameters.tsx:66
 msgid "Available optimistic actions"
@@ -1761,11 +1765,11 @@ msgstr ""
 msgid "Because of a low usage, the Reserve DApp is sunsetting mints on Arbitrum. Redemptions will continue to be supported. Yield DTFs are always backed 1:1 by underlying assets and can be permissonlessly redeemed at any time."
 msgstr ""
 
-#: src/views/yield-dtf/overview/components/backing/risks.tsx:87
+#: src/views/yield-dtf/overview/components/backing/risks.tsx:86
 msgid "Because RTokens are governed in a decentralized manner by those staking their RSR on the RToken, the possibility of \"governance attacks\" exists. While <0>undesirable governance outcomes</0> are possible, the protocol's design ensures that there is sufficient incentivisation for responsible, balanced governance decisions. Built-in delays throughout the governance cycle also provide additional layers of security. Nevertheless, research on a specific RToken's governance structure is strongly recommended."
 msgstr ""
 
-#: src/views/yield-dtf/overview/components/backing/risks.tsx:42
+#: src/views/yield-dtf/overview/components/backing/risks.tsx:41
 msgid "Because the Reserve protocol is built using smart contracts, it's possible that undiscovered bugs or vulnerabilities in these contracts could be exploited, resulting in loss of user funds. Accordingly, the protocol's contracts undergo <0>regular and rigorous security audits.</0>"
 msgstr ""
 
@@ -1954,6 +1958,7 @@ msgid "Buy"
 msgstr ""
 
 #: src/views/home/components/highlighted-dtfs/feature-card-header.tsx:101
+#: src/views/home/components/highlighted-dtfs/identity-card.tsx:48
 msgctxt "DTF card"
 msgid "Buy"
 msgstr ""
@@ -1967,13 +1972,17 @@ msgstr ""
 msgid "Buy {0}"
 msgstr ""
 
-#: src/views/index-dtf/overview/components/index-ctas-overview-mobile.tsx:124
+#: src/views/index-dtf/overview/components/index-ctas-overview-mobile.tsx:131
 #: src/views/index-dtf/overview/components/landing-mint/index.tsx:93
 msgid "Buy / Sell"
 msgstr ""
 
 #: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:233
-msgid "Buy on CoW Swap"
+#~ msgid "Buy on CoW Swap"
+#~ msgstr ""
+
+#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:231
+msgid "Buy on PancakeSwap"
 msgstr ""
 
 #: src/views/index-dtf/auctions/views/rebalance/components/rebalance-action.tsx:37
@@ -2283,7 +2292,7 @@ msgstr ""
 msgid "Click retry or use individual approve buttons below."
 msgstr ""
 
-#: src/components/video-modal/index.tsx:51
+#: src/components/video-modal/index.tsx:56
 #: src/views/index-dtf/overview/components/charts/candlestick-tooltip.tsx:36
 msgid "Close"
 msgstr ""
@@ -2344,7 +2353,7 @@ msgstr ""
 msgid "Collateral Exposure"
 msgstr ""
 
-#: src/views/yield-dtf/overview/components/backing/risks.tsx:60
+#: src/views/yield-dtf/overview/components/backing/risks.tsx:59
 msgid "Collateral Plugin Wrappers"
 msgstr ""
 
@@ -3046,7 +3055,7 @@ msgstr ""
 msgid "DAO settings proposal"
 msgstr ""
 
-#: src/components/layout/header/components/header-actions-menu.tsx:117
+#: src/components/layout/header/components/header-actions-menu.tsx:122
 msgid "Dark"
 msgstr ""
 
@@ -3345,7 +3354,7 @@ msgstr ""
 msgid "Dismiss invitation"
 msgstr ""
 
-#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:212
+#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:197
 msgid "Dismiss suggestion"
 msgstr ""
 
@@ -3432,7 +3441,7 @@ msgid "Download snapshot"
 msgstr ""
 
 #: src/views/index-dtf/manage/components/manage-about.tsx:37
-#: src/views/index-dtf/overview/components/index-about-overview.tsx:213
+#: src/views/index-dtf/overview/components/dtf-downloadable-resources.tsx:86
 msgid "Downloadable resources"
 msgstr ""
 
@@ -3468,7 +3477,7 @@ msgid "DTF Created"
 msgstr ""
 
 #: src/views/home/components/dtf-explainer-button.tsx:26
-#: src/views/index-dtf/overview/components/landing-mint/dtf-cover.tsx:28
+#: src/views/index-dtf/overview/components/landing-mint/dtf-cover.tsx:39
 msgid "DTF Explainer"
 msgstr ""
 
@@ -3689,6 +3698,10 @@ msgstr ""
 msgid "Edit {variant} cover image"
 msgstr ""
 
+#: src/views/index-dtf/manage/components/cover-image-upload.tsx:179
+msgid "Remove {variant} cover image"
+msgstr ""
+
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:749
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:755
 msgid "Edit amount"
@@ -3698,7 +3711,7 @@ msgstr ""
 msgid "Edit Overview Content"
 msgstr ""
 
-#: src/views/index-dtf/overview/components/index-about-overview.tsx:37
+#: src/views/index-dtf/overview/components/index-about-overview.tsx:36
 msgid "Edit page"
 msgstr ""
 
@@ -4083,7 +4096,7 @@ msgstr ""
 msgid "Expanded J.1 to include energy usage data and the sources and methodologies used for its calculation."
 msgstr ""
 
-#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:50
+#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:54
 msgid "Expect a worse price"
 msgstr ""
 
@@ -4392,27 +4405,31 @@ msgid "For"
 msgstr ""
 
 #: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:82
-msgid "For a better price, come back after the market reopens {nextOpenLabel}."
-msgstr ""
+#~ msgid "For a better price, come back after the market reopens {nextOpenLabel}."
+#~ msgstr ""
 
 #: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:89
-msgid "For a better price, come back during {nextSessionLabel} hours in the US."
-msgstr ""
+#~ msgid "For a better price, come back during {nextSessionLabel} hours in the US."
+#~ msgstr ""
 
 #: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:95
-msgid "For a better price, come back when trading resumes."
-msgstr ""
+#~ msgid "For a better price, come back when trading resumes."
+#~ msgstr ""
 
 #: src/views/index-dtf/governance/views/propose/components/proposal-type-selector.tsx:126
 msgid "For approved governors to fast-track proposals."
 msgstr ""
 
-#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:158
+#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:137
 msgid "For larger amounts, split your order into multiple transactions."
 msgstr ""
 
 #: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:114
-msgid "For larger orders, a DEX aggregator like CoW Swap may get you a better price by routing your trade across multiple sources of liquidity."
+#~ msgid "For larger orders, a DEX aggregator like CoW Swap may get you a better price by routing your trade across multiple sources of liquidity."
+#~ msgstr ""
+
+#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:94
+msgid "For larger orders, a DEX like PancakeSwap may get you a better price by routing your trade across multiple sources of liquidity."
 msgstr ""
 
 #: src/views/index-dtf/components/compliance-alert.tsx:19
@@ -4515,7 +4532,7 @@ msgid "Get quote"
 msgstr ""
 
 #: src/views/index-dtf/deploy/steps/confirm-deploy/success/index.tsx:105
-#: src/views/index-dtf/overview/components/index-ctas-overview-mobile.tsx:175
+#: src/views/index-dtf/overview/components/index-ctas-overview-mobile.tsx:182
 msgid "Go to DTF overview"
 msgstr ""
 
@@ -4556,7 +4573,7 @@ msgstr ""
 #: src/views/index-dtf/overview/components/index-governance-overview.tsx:35
 #: src/views/yield-dtf/deploy/components/NavigationSidebar.tsx:28
 #: src/views/yield-dtf/governance/views/proposal/components/ProposalNavigation.tsx:18
-#: src/views/yield-dtf/overview/components/backing/risks.tsx:84
+#: src/views/yield-dtf/overview/components/backing/risks.tsx:83
 #: src/views/yield-dtf/settings/components/navigation-sidebar.tsx:17
 msgid "Governance"
 msgstr ""
@@ -4726,7 +4743,7 @@ msgid "High liquidity"
 msgstr ""
 
 #: src/views/index-dtf/auctions/views/rebalance/components/rebalance-liquidity-checker.tsx:244
-#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:37
+#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:41
 #: src/views/index-dtf/governance/views/propose/basket/components/proposal-liquidity-checker.tsx:311
 msgid "High price impact"
 msgstr ""
@@ -5231,11 +5248,11 @@ msgstr ""
 msgid "Known supported wallets"
 msgstr ""
 
-#: src/components/layout/header/components/header-actions-menu.tsx:123
+#: src/components/layout/header/components/header-actions-menu.tsx:135
 msgid "Language"
 msgstr ""
 
-#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:32
+#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:36
 msgid "Large Order"
 msgstr ""
 
@@ -5281,6 +5298,7 @@ msgstr ""
 
 #: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:339
 #: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:370
+#: src/views/index-dtf/overview/components/index-ctas-overview-mobile.tsx:59
 #: src/views/index-dtf/overview/components/landing-mint/index.tsx:77
 msgid "Learn More"
 msgstr ""
@@ -5309,7 +5327,7 @@ msgstr ""
 msgid "Leftover dust"
 msgstr ""
 
-#: src/components/layout/header/components/header-actions-menu.tsx:104
+#: src/components/layout/header/components/header-actions-menu.tsx:109
 msgid "Light"
 msgstr ""
 
@@ -5856,7 +5874,7 @@ msgstr ""
 msgid "Minted"
 msgstr ""
 
-#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:179
+#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:156
 msgid "Minting {symbol} is currently unavailable and we couldn't find another route to buy it."
 msgstr ""
 
@@ -5918,11 +5936,11 @@ msgstr ""
 msgid "More"
 msgstr ""
 
-#: src/views/index-dtf/overview/components/index-about-overview.tsx:216
+#: src/views/index-dtf/overview/components/dtf-downloadable-resources.tsx:89
 msgid "More information on what {dtfName} is, what it’s all about, methodology and thesis."
 msgstr ""
 
-#: src/components/layout/header/components/header-actions-menu.tsx:49
+#: src/components/layout/header/components/header-actions-menu.tsx:40
 msgid "More options"
 msgstr ""
 
@@ -6249,7 +6267,7 @@ msgstr ""
 msgid "No results."
 msgstr ""
 
-#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:34
+#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:38
 msgid "No route found"
 msgstr ""
 
@@ -6568,7 +6586,7 @@ msgstr ""
 msgid "or drag and drop it here"
 msgstr ""
 
-#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:48
+#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:52
 msgid "Order too large"
 msgstr ""
 
@@ -6625,7 +6643,7 @@ msgid "Other recipient {0}"
 msgstr ""
 
 #: src/views/yield-dtf/overview/components/backing/asset-breakdown.tsx:42
-#: src/views/yield-dtf/overview/components/backing/risks.tsx:117
+#: src/views/yield-dtf/overview/components/backing/risks.tsx:116
 msgid "Other Risks"
 msgstr ""
 
@@ -6849,7 +6867,7 @@ msgstr ""
 msgid "Permissionless Launching Allowed"
 msgstr ""
 
-#: src/views/home/components/dtf-packing-animation/index.tsx:125
+#: src/views/home/components/dtf-packing-animation/index.tsx:122
 msgid "PHOTON packs multiple collateral assets into one DTF token"
 msgstr ""
 
@@ -6870,6 +6888,11 @@ msgstr ""
 
 #: src/views/yield-dtf/overview/components/backing/asset-breakdown.tsx:41
 msgid "Platforms"
+msgstr ""
+
+#: src/views/index-dtf/overview/components/landing-mint/dtf-cover.tsx:79
+#: src/views/index-dtf/overview/components/landing-mint/dtf-cover.tsx:90
+msgid "Play video"
 msgstr ""
 
 #: src/views/yield-dtf/staking/components/overview/about.tsx:50
@@ -7457,11 +7480,11 @@ msgstr ""
 msgid "Read docs"
 msgstr ""
 
-#: src/views/index-dtf/overview/components/index-about-overview.tsx:128
+#: src/views/index-dtf/overview/components/index-about-overview.tsx:127
 msgid "Read less"
 msgstr ""
 
-#: src/views/index-dtf/overview/components/index-about-overview.tsx:103
+#: src/views/index-dtf/overview/components/index-about-overview.tsx:102
 #: src/views/yield-dtf/issuance/components/warnings/index.tsx:67
 #: src/views/yield-dtf/issuance/components/warnings/index.tsx:101
 #: src/views/yield-dtf/staking/components/trading-paused-banner.tsx:33
@@ -7630,7 +7653,7 @@ msgstr ""
 msgid "Redeeming {0} for {1}."
 msgstr ""
 
-#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:184
+#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:161
 msgid "Redeeming {symbol} is currently unavailable and we couldn't find another route to sell it."
 msgstr ""
 
@@ -7828,7 +7851,7 @@ msgstr ""
 msgid "Replace Basket with CSV"
 msgstr ""
 
-#: src/views/index-dtf/overview/components/index-ctas-overview-mobile.tsx:104
+#: src/views/index-dtf/overview/components/index-ctas-overview-mobile.tsx:107
 msgid "Request access to this product"
 msgstr ""
 
@@ -7880,7 +7903,7 @@ msgstr ""
 msgid "Reserve Optimistic Governor Upgrade proposal created"
 msgstr ""
 
-#: src/views/yield-dtf/overview/components/backing/risks.tsx:39
+#: src/views/yield-dtf/overview/components/backing/risks.tsx:38
 msgid "Reserve Protocol Smart-Contract Risk"
 msgstr ""
 
@@ -8300,7 +8323,11 @@ msgid "Save Weights {editedRows}/{totalRows} edited"
 msgstr ""
 
 #: src/components/layout/contact-modal/bell-button.tsx:44
-msgid "Schedule a call to earn 100,000 RSR."
+#~ msgid "Schedule a call to earn 100,000 RSR."
+#~ msgstr ""
+
+#: src/components/layout/contact-modal/bell-button.tsx:64
+msgid "Schedule a meeting"
 msgstr ""
 
 #: src/components/ondo-badge.tsx:180
@@ -8308,7 +8335,7 @@ msgid "Scheduled event"
 msgstr ""
 
 #: src/components/command-menu/index.tsx:101
-#: src/components/layout/header/components/header-actions-menu.tsx:69
+#: src/components/layout/header/components/header-actions-menu.tsx:68
 #: src/views/internal/dtf-list/components/dtf-date-chain-filters.tsx:50
 #: src/views/tokens/components/TableFilters.tsx:20
 msgid "Search"
@@ -8344,7 +8371,7 @@ msgstr ""
 msgid "Search for a DTF..."
 msgstr ""
 
-#: src/components/layout/header/components/header-actions-menu.tsx:79
+#: src/components/layout/header/components/header-actions-menu.tsx:76
 msgid "Search for DTFs"
 msgstr ""
 
@@ -8413,7 +8440,7 @@ msgstr ""
 #: src/views/explorer/components/revenue/index.tsx:306
 #: src/views/index-dtf/auctions/legacy/components/auction-item.tsx:90
 #: src/views/index-dtf/issuance/manual/components/mode-selector.tsx:13
-#: src/views/index-dtf/overview/components/index-ctas-overview-mobile.tsx:124
+#: src/views/index-dtf/overview/components/index-ctas-overview-mobile.tsx:131
 #: src/views/index-dtf/overview/components/landing-mint/index.tsx:93
 msgid "Sell"
 msgstr ""
@@ -8435,7 +8462,11 @@ msgid "Sell collateral"
 msgstr ""
 
 #: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:235
-msgid "Sell on CoW Swap"
+#~ msgid "Sell on CoW Swap"
+#~ msgstr ""
+
+#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:233
+msgid "Sell on PancakeSwap"
 msgstr ""
 
 #: src/views/index-dtf/auctions/views/rebalance/components/auction-bids-chart.tsx:334
@@ -9217,6 +9248,14 @@ msgstr ""
 msgid "Tags"
 msgstr ""
 
+#: src/components/layout/contact-modal/bell-button.tsx:40
+msgid "Talk to the Reserve team"
+msgstr ""
+
+#: src/components/layout/contact-modal/bell-button.tsx:49
+msgid "Talk to the team"
+msgstr ""
+
 #: src/views/explorer/components/collaterals/index.tsx:130
 msgid "Target"
 msgstr ""
@@ -9232,7 +9271,7 @@ msgstr ""
 msgid "Target(s)"
 msgstr ""
 
-#: src/views/index-dtf/overview/components/index-about-overview.tsx:189
+#: src/views/index-dtf/overview/components/dtf-downloadable-resources.tsx:62
 msgid "Tear Sheet"
 msgstr ""
 
@@ -9251,7 +9290,7 @@ msgstr ""
 msgid "Telegram username"
 msgstr ""
 
-#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:52
+#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:56
 msgid "Temporarily unavailable"
 msgstr ""
 
@@ -9340,7 +9379,7 @@ msgstr ""
 msgid "The mandate describes what goals its governors should try to achieve. By briefly explaining the RToken's purpose and what the RToken is intended to do, it provides common ground for the governors to decide upon priorities and how to weigh tradeoffs."
 msgstr ""
 
-#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:66
+#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:70
 msgid "The market reopens {nextOpenLabel}."
 msgstr ""
 
@@ -9530,11 +9569,11 @@ msgstr ""
 msgid "The warmup period is how many seconds should pass after the basket regained the SOUND status before an RToken can be issued and/or a trade can be opened."
 msgstr ""
 
-#: src/components/layout/header/components/header-actions-menu.tsx:88
+#: src/components/layout/header/components/header-actions-menu.tsx:93
 msgid "Theme"
 msgstr ""
 
-#: src/views/yield-dtf/overview/components/backing/risks.tsx:63
+#: src/views/yield-dtf/overview/components/backing/risks.tsx:62
 msgid "There are a <0>handful of risks</0> associated with any given RToken's collateral assets, including assets' redeemability, the health of their reserves, price volatility, etc. Likewise, because many RTokens leverage assets from external protocols, RToken holders assume all of the risks of its underlying protocols (smart contract, governance, or otherwise)."
 msgstr ""
 
@@ -9645,7 +9684,7 @@ msgstr ""
 msgid "This is useful if you want to mint the DTF without trading."
 msgstr ""
 
-#: src/views/yield-dtf/overview/components/backing/risks.tsx:126
+#: src/views/yield-dtf/overview/components/backing/risks.tsx:125
 msgid "This list is not intended to be conclusive. <0>You can read more about risk in the Reserve docs.</0>"
 msgstr ""
 
@@ -9659,8 +9698,8 @@ msgid "This product isn't available in your region due to local restrictions."
 msgstr ""
 
 #: src/views/index-dtf/overview/components/index-ctas-overview-mobile.tsx:47
-msgid "This product isn't available in your region due to local restrictions. <0>Learn More</0>"
-msgstr ""
+#~ msgid "This product isn't available in your region due to local restrictions. <0>Learn More</0>"
+#~ msgstr ""
 
 #: src/views/index-dtf/governance/views/proposal/components/proposal-vote.tsx:182
 msgid "This proposal will automatically pass if it is not challenged by governance. If it is challenged, it will be resubmitted as a standard proposal."
@@ -9981,7 +10020,7 @@ msgstr ""
 msgid "Trade remaining {0} into collateral"
 msgstr ""
 
-#: src/views/index-dtf/components/zapper/large-mint-prompt.tsx:193
+#: src/views/index-dtf/components/zapper/large-mint-prompt.tsx:202
 msgid "Trade suggestion"
 msgstr ""
 
@@ -10058,7 +10097,7 @@ msgstr ""
 msgid "Trading Timelock"
 msgstr ""
 
-#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:39
+#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:43
 msgid "Trading unavailable"
 msgstr ""
 
@@ -10189,11 +10228,11 @@ msgstr ""
 msgid "Try again"
 msgstr ""
 
-#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:69
+#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:73
 msgid "Try again during {nextSessionLabel} hours in the US."
 msgstr ""
 
-#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:71
+#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:75
 msgid "Try again later when trading resumes."
 msgstr ""
 
@@ -10202,7 +10241,11 @@ msgid "Try Automated Mint"
 msgstr ""
 
 #: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:54
-msgid "Try CoW Swap"
+#~ msgid "Try CoW Swap"
+#~ msgstr ""
+
+#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:58
+msgid "Try PancakeSwap"
 msgstr ""
 
 #: src/views/yield-dtf/issuance/components/zapV2/ZapToggle.tsx:23
@@ -10579,6 +10622,10 @@ msgstr ""
 msgid "Uploading files..."
 msgstr ""
 
+#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:211
+msgid "US stock market hours are <0>9:30 AM</0> to <1>4:00 PM</1> Eastern Time. Current time is: <2>{currentTimeLabel} ET</2>. Please try again in <3>{reopenInLabel}</3>."
+msgstr ""
+
 #: src/views/explorer/components/transactions/useTransactionColumns.tsx:95
 msgid "USD Value"
 msgstr ""
@@ -10674,8 +10721,8 @@ msgstr ""
 msgid "Vault change proposal"
 msgstr ""
 
-#: src/views/index-dtf/overview/components/index-ctas-overview-mobile.tsx:96
-#: src/views/index-dtf/overview/components/index-ctas-overview-mobile.tsx:101
+#: src/views/index-dtf/overview/components/index-ctas-overview-mobile.tsx:99
+#: src/views/index-dtf/overview/components/index-ctas-overview-mobile.tsx:104
 msgid "Verify eligibility"
 msgstr ""
 
@@ -10753,8 +10800,8 @@ msgstr ""
 msgid "Veto?"
 msgstr ""
 
-#: src/components/video-modal/index.tsx:46
-#: src/components/video-modal/index.tsx:58
+#: src/components/video-modal/index.tsx:51
+#: src/components/video-modal/index.tsx:63
 msgid "Video"
 msgstr ""
 
@@ -10788,8 +10835,8 @@ msgid "View all Index DTFs across networks for internal testing purposes"
 msgstr ""
 
 #: src/components/layout/contact-modal/bell-button.tsx:47
-msgid "View details"
-msgstr ""
+#~ msgid "View details"
+#~ msgstr ""
 
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1536
 #: src/views/index-dtf/issuance/async-mint/steps/success.tsx:179
@@ -11256,7 +11303,7 @@ msgstr ""
 msgid "Warmup period (s)"
 msgstr ""
 
-#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:41
+#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:45
 #: src/views/yield-dtf/issuance/components/warnings/index.tsx:54
 #: src/views/yield-dtf/issuance/components/warnings/index.tsx:87
 msgid "Warning"
@@ -11266,11 +11313,10 @@ msgstr ""
 msgid "Warning: High price impact"
 msgstr ""
 
-#. placeholder {0}: dtf?.token.symbol
 #: src/views/index-dtf/overview/components/landing-mint/dtf-cover.tsx:64
 #: src/views/index-dtf/overview/components/landing-mint/dtf-cover.tsx:75
-msgid "Watch {0}"
-msgstr ""
+#~ msgid "Watch {0}"
+#~ msgstr ""
 
 #. placeholder {0}: selectedVersion.symbol
 #: src/views/home/components/highlighted-dtfs/transcript-preview.tsx:70
@@ -11282,11 +11328,11 @@ msgid "Watch an intro to RTokens"
 msgstr ""
 
 #: src/views/home/components/homepage-hero.tsx:46
-#: src/views/index-dtf/overview/components/landing-mint/dtf-cover.tsx:24
+#: src/views/index-dtf/overview/components/landing-mint/dtf-cover.tsx:35
 msgid "Watch explainer"
 msgstr ""
 
-#: src/views/home/components/dtf-explainer-button.tsx:32
+#: src/views/home/components/dtf-explainer-button.tsx:33
 msgid "Watch Explainer"
 msgstr ""
 
@@ -11299,11 +11345,19 @@ msgid "We call these tokenized portfolios DTFs:"
 msgstr ""
 
 #: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:122
-msgid "We couldn't find a good price for this trade right now. We recommend using a DEX aggregator like CoW Swap to buy {symbol}."
-msgstr ""
+#~ msgid "We couldn't find a good price for this trade right now. We recommend using a DEX aggregator like CoW Swap to buy {symbol}."
+#~ msgstr ""
 
 #: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:127
-msgid "We couldn't find a good price for this trade right now. We recommend using a DEX aggregator like CoW Swap to sell {symbol}."
+#~ msgid "We couldn't find a good price for this trade right now. We recommend using a DEX aggregator like CoW Swap to sell {symbol}."
+#~ msgstr ""
+
+#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:101
+msgid "We couldn't find a good price for this trade right now. We recommend using a DEX like PancakeSwap to buy {symbol}."
+msgstr ""
+
+#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:106
+msgid "We couldn't find a good price for this trade right now. We recommend using a DEX like PancakeSwap to sell {symbol}."
 msgstr ""
 
 #: src/views/index-dtf/governance/components/proposal-preview/unknown-contract-preview.tsx:52
@@ -11563,7 +11617,7 @@ msgstr ""
 msgid "Yield:"
 msgstr ""
 
-#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:148
+#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:127
 msgid "You can buy up to {maxAmountLabel} per transaction during {sessionLabel} hours in the US."
 msgstr ""
 
@@ -11587,7 +11641,7 @@ msgstr ""
 msgid "You can proceed directly."
 msgstr ""
 
-#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:153
+#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:132
 msgid "You can sell up to {maxAmountLabel} per transaction during {sessionLabel} hours in the US."
 msgstr ""
 
@@ -11706,7 +11760,7 @@ msgstr ""
 msgid "You'll receive:"
 msgstr ""
 
-#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:168
+#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:147
 msgid "You're getting a worse price than usual because {symbol}'s underlying stocks aren't trading right now."
 msgstr ""
 
@@ -11732,11 +11786,19 @@ msgid "Your lock"
 msgstr ""
 
 #: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:134
-msgid "Your order has unusually high price impact. We recommend buying {symbol} on CoW Swap to get the best price possible."
+#~ msgid "Your order has unusually high price impact. We recommend buying {symbol} on CoW Swap to get the best price possible."
+#~ msgstr ""
+
+#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:113
+msgid "Your order has unusually high price impact. We recommend buying {symbol} on PancakeSwap to get the best price possible."
 msgstr ""
 
 #: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:139
-msgid "Your order has unusually high price impact. We recommend selling {symbol} on CoW Swap to get the best price possible."
+#~ msgid "Your order has unusually high price impact. We recommend selling {symbol} on CoW Swap to get the best price possible."
+#~ msgstr ""
+
+#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:118
+msgid "Your order has unusually high price impact. We recommend selling {symbol} on PancakeSwap to get the best price possible."
 msgstr ""
 
 #: src/views/portfolio-page/index.tsx:41

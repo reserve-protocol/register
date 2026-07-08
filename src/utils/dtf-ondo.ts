@@ -1,5 +1,26 @@
+import dayjs from 'dayjs'
+import timezone from 'dayjs/plugin/timezone'
+import utc from 'dayjs/plugin/utc'
 import { Address } from 'viem'
 import { RESERVE_API } from '@/utils/constants'
+
+dayjs.extend(utc)
+dayjs.extend(timezone)
+
+const US_MARKET_TZ = 'America/New_York'
+
+// Next regular US equity market open (Mon–Fri 9:30 AM ET) as an absolute Date.
+// Skips weekends; ignores holidays — a "roughly when to come back" hint for the
+// asset-paused case, where Ondo gives the next session name but no timestamp.
+export const getNextUsMarketOpen = (from: Date = new Date()): Date => {
+  const nowEt = dayjs(from).tz(US_MARKET_TZ)
+  const openToday = nowEt.hour(9).minute(30).second(0).millisecond(0)
+  let target = nowEt.isBefore(openToday) ? openToday : openToday.add(1, 'day')
+  while (target.day() === 0 || target.day() === 6) {
+    target = target.add(1, 'day')
+  }
+  return target.toDate()
+}
 
 // Client for the reserve-api GET /dtf/ondo endpoint: the Ondo tokenized
 // equities in a DTF basket with their current per-session order limits and
@@ -116,6 +137,20 @@ export const getNextTradableSession = (
   }
 
   return undefined
+}
+
+// Rough time-until as "2 hours" / "45 minutes"; null when unknown or already
+// past. Used to tell the user how long until the US market reopens.
+export const formatRetryIn = (
+  iso: string | null | undefined
+): string | null => {
+  if (!iso) return null
+  const ms = new Date(iso).getTime() - Date.now()
+  if (Number.isNaN(ms) || ms <= 0) return null
+  const minutes = Math.ceil(ms / 60_000)
+  if (minutes < 60) return `${minutes} minute${minutes === 1 ? '' : 's'}`
+  const hours = Math.round(minutes / 60)
+  return `${hours} hour${hours === 1 ? '' : 's'}`
 }
 
 // "Jul 6, 9:30 AM" in the viewer's locale and timezone; null when unknown.

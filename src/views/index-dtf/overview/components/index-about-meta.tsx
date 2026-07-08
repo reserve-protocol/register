@@ -8,7 +8,6 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { chainIdAtom } from '@/state/atoms'
 import { indexDTFAtom, indexDTFBrandAtom } from '@/state/dtf/atoms'
-import { ROUTES } from '@/utils/constants'
 import { ExplorerDataType, getExplorerLink } from '@/utils/getExplorerLink'
 import { Trans } from '@lingui/react/macro'
 import { useAtomValue } from 'jotai'
@@ -60,11 +59,6 @@ const AboutLinksDropdown = () => {
       label: <Trans>Website</Trans>,
       to: brandData.socials.website,
       external: true,
-    },
-    {
-      label: <Trans>Performance Sheet</Trans>,
-      to: `../${ROUTES.FACTSHEET}`,
-      external: false,
     },
     brandData?.socials?.twitter && {
       label: <Trans>X Account</Trans>,
