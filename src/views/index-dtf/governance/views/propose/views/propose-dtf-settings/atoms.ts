@@ -146,9 +146,6 @@ export const currentBasketTokensAtom = atom((get) => {
   )
 })
 
-// Atom to track form validation state
-export const isFormValidAtom = atom(true)
-
 export const isProposalValidAtom = atom((get) => {
   const removedBasketTokens = get(removedBasketTokensAtom)
   const hasTokenNameChange = get(hasTokenNameChangeAtom)
@@ -160,7 +157,6 @@ export const isProposalValidAtom = atom((get) => {
   const hasWeightControlChange = get(hasWeightControlChangeAtom)
   const hasBidsEnabledChange = get(hasBidsEnabledChangeAtom)
   const hasGovernanceChanges = get(hasGovernanceChangesAtom)
-  const isFormValid = get(isFormValidAtom)
 
   const hasChanges =
     removedBasketTokens.length > 0 ||
@@ -175,6 +171,85 @@ export const isProposalValidAtom = atom((get) => {
     hasGovernanceChanges
 
   return hasChanges
+})
+
+// Keys of the react-hook-form errors object (field names + custom zod paths)
+export const formErrorFieldsAtom = atom<string[]>([])
+
+// Maps each settings section to the form fields (and custom zod error paths)
+// that belong to it.
+const SECTION_ERROR_FIELDS = {
+  basics: ['tokenName', 'mandate'],
+  roles: ['guardians', 'brandManagers', 'auctionLaunchers', 'roles'],
+  dtfRevenue: ['mintFee', 'folioFee'],
+  revenueDistribution: [
+    'governanceShare',
+    'deployerShare',
+    'fixedPlatformFee',
+    'additionalRevenueRecipients',
+    'revenue-distribution',
+  ],
+  auction: ['auctionLength', 'weightControl', 'bidsEnabled'],
+  governance: [
+    'governanceVotingDelay',
+    'governanceVotingPeriod',
+    'governanceVotingQuorum',
+    'governanceVotingThreshold',
+    'governanceExecutionDelay',
+  ],
+} as const
+
+// A proposal must only be blocked by validation errors that belong to a section
+// the user has actually changed. A permissionless DTF can legitimately hold
+// on-chain values that fall outside the deploy-time UI limits (e.g. a 0% fee or
+// a sub-15-minute auction), and since only changed settings are encoded into the
+// proposal, those pre-existing values must not block unrelated changes such as a
+// mandate update.
+export const changedSectionsValidAtom = atom((get) => {
+  const errorFields = get(formErrorFieldsAtom)
+  if (errorFields.length === 0) return true
+
+  const errorSet = new Set(errorFields)
+  const sectionHasError = (fields: readonly string[]) =>
+    fields.some((field) => errorSet.has(field))
+
+  if (
+    (get(hasTokenNameChangeAtom) || get(hasMandateChangeAtom)) &&
+    sectionHasError(SECTION_ERROR_FIELDS.basics)
+  ) {
+    return false
+  }
+  if (get(hasRolesChangesAtom) && sectionHasError(SECTION_ERROR_FIELDS.roles)) {
+    return false
+  }
+  if (
+    get(hasDtfRevenueChangesAtom) &&
+    sectionHasError(SECTION_ERROR_FIELDS.dtfRevenue)
+  ) {
+    return false
+  }
+  if (
+    get(hasRevenueDistributionChangesAtom) &&
+    sectionHasError(SECTION_ERROR_FIELDS.revenueDistribution)
+  ) {
+    return false
+  }
+  if (
+    (get(hasAuctionLengthChangeAtom) ||
+      get(hasWeightControlChangeAtom) ||
+      get(hasBidsEnabledChangeAtom)) &&
+    sectionHasError(SECTION_ERROR_FIELDS.auction)
+  ) {
+    return false
+  }
+  if (
+    get(hasGovernanceChangesAtom) &&
+    sectionHasError(SECTION_ERROR_FIELDS.governance)
+  ) {
+    return false
+  }
+
+  return true
 })
 
 export const isProposalConfirmedAtom = atom(false)

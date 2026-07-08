@@ -8,7 +8,7 @@ import { Link } from 'react-router-dom'
 import {
   isProposalConfirmedAtom,
   isProposalValidAtom,
-  isFormValidAtom,
+  changedSectionsValidAtom,
   dtfSettingsProposalDataAtom,
   proposalDescriptionAtom,
 } from '../atoms'
@@ -20,15 +20,15 @@ import { Address } from 'viem'
 
 const ConfirmProposalButton = () => {
   const isValid = useAtomValue(isProposalValidAtom)
-  const isFormValid = useAtomValue(isFormValidAtom)
+  const changedSectionsValid = useAtomValue(changedSectionsValidAtom)
   const [isProposalConfirmed, setIsProposalConfirmed] = useAtom(
     isProposalConfirmedAtom
   )
 
   const handleConfirm = () => {
     if (!isProposalConfirmed) {
-      // When confirming, check if form is valid
-      if (!isFormValid) {
+      // When confirming, check that the changed sections are valid
+      if (!changedSectionsValid) {
         // The form will show validation errors
         return
       }
@@ -36,8 +36,8 @@ const ConfirmProposalButton = () => {
     setIsProposalConfirmed(!isProposalConfirmed)
   }
 
-  // Enable button only if there are changes AND form is valid
-  const isButtonEnabled = isValid && isFormValid
+  // Enable button only if there are changes AND the changed sections are valid
+  const isButtonEnabled = isValid && changedSectionsValid
 
   return (
     <Button
@@ -53,10 +53,10 @@ const ConfirmProposalButton = () => {
 
 const ProposalInstructions = () => {
   const isValid = useAtomValue(isProposalValidAtom)
-  const isFormValid = useAtomValue(isFormValidAtom)
+  const changedSectionsValid = useAtomValue(changedSectionsValidAtom)
   const confirmed = useAtomValue(isProposalConfirmedAtom)
 
-  const canProceed = isValid && isFormValid
+  const canProceed = isValid && changedSectionsValid
 
   const timelineItems = [
     {

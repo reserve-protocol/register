@@ -25,7 +25,7 @@ import {
   weightControlChangeAtom,
   bidsEnabledChangeAtom,
   governanceChangesAtom,
-  isFormValidAtom,
+  formErrorFieldsAtom,
   currentQuorumPercentageAtom,
 } from './atoms'
 import { proposalThresholdToPercentage, secondsToDays } from '../../shared'
@@ -93,7 +93,7 @@ const Updater = () => {
   const setWeightControlChange = useSetAtom(weightControlChangeAtom)
   const setBidsEnabledChange = useSetAtom(bidsEnabledChangeAtom)
   const setGovernanceChanges = useSetAtom(governanceChangesAtom)
-  const setIsFormValid = useSetAtom(isFormValidAtom)
+  const setFormErrorFields = useSetAtom(formErrorFieldsAtom)
 
   // Watch form fields
   const tokenName = watch('tokenName')
@@ -500,11 +500,12 @@ const Updater = () => {
     currentQuorumPercentage,
   ])
 
-  // Track form validation state
+  // Track which form fields currently have validation errors so the proposal
+  // can be gated only on the sections the user actually changed.
+  const formErrorKeys = Object.keys(formState.errors)
   useEffect(() => {
-    console.log('formState.isValid', formState.errors)
-    setIsFormValid(formState.isValid)
-  }, [formState.isValid, setIsFormValid])
+    setFormErrorFields(formErrorKeys)
+  }, [JSON.stringify(formErrorKeys), setFormErrorFields])
 
   useEffect(() => {
     return () => {
