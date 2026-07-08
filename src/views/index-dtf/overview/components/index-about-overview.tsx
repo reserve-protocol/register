@@ -1,13 +1,16 @@
 import SectionAnchor from '@/components/section-anchor'
 import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
+import { isInactiveDTF } from '@/hooks/use-dtf-status'
 import { cn } from '@/lib/utils'
 import {
   indexDTFAtom,
   indexDTFBrandAtom,
+  indexDTFStatusAtom,
   isBrandManagerAtom,
 } from '@/state/dtf/atoms'
 import { ROUTES } from '@/utils/constants'
+import { isFeaturedDtf } from '@/utils/featured-dtfs'
 import { Trans } from '@lingui/react/macro'
 import { useAtomValue } from 'jotai'
 import { ImagePlus } from 'lucide-react'
@@ -15,8 +18,16 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useTrackIndexDTFClick } from '../../hooks/useTrackIndexDTFPage'
 import DownloadableResources from './dtf-downloadable-resources'
-import IndexAboutMeta from './index-about-meta'
+import IndexAboutMeta, {
+  AboutLinksDropdown,
+  CreatorLink,
+} from './index-about-meta'
 import DtfCover from './landing-mint/dtf-cover'
+import { getDtfDexLinks } from './landing-mint/external-dex-links'
+import {
+  ExternalDexDropdown,
+  HowToBuyVideoButton,
+} from './trade-secondary-actions'
 
 const BrandManagerEditButton = () => {
   const isBrandManager = useAtomValue(isBrandManagerAtom)
@@ -50,6 +61,52 @@ const Header = () => {
   return (
     <div className="mb-4 mt-2 flex justify-center px-2">
       {!data ? <Skeleton className="w-60 h-6" /> : <BrandManagerEditButton />}
+    </div>
+  )
+}
+
+const MobileAboutActionGrid = () => {
+  const data = useAtomValue(indexDTFAtom)
+  const brandData = useAtomValue(indexDTFBrandAtom)
+  const status = useAtomValue(indexDTFStatusAtom)
+  const { trackClick } = useTrackIndexDTFClick('overview', 'overview')
+  const isDeprecated = isInactiveDTF(status)
+  const dexLinks = getDtfDexLinks(data?.chainId, data?.id)
+
+  const showHowToBuyVideo = isFeaturedDtf(data?.chainId, data?.id)
+  const showExternalDex = !isDeprecated && dexLinks.length > 0
+  const hasCreator = !!brandData?.creator?.name
+  const hasLinks =
+    !!brandData?.socials?.website || !!brandData?.socials?.twitter
+
+  if (!showHowToBuyVideo && !showExternalDex && !hasCreator && !hasLinks) {
+    return null
+  }
+
+  return (
+    <div className="flex flex-wrap gap-2 px-2 pb-2 md:hidden">
+      {showHowToBuyVideo && (
+        <HowToBuyVideoButton
+          className="min-w-0 flex-1 basis-[calc(50%-0.25rem)] text-sm"
+          onOpen={() => {
+            trackClick('how_to_buy_video')
+          }}
+        />
+      )}
+      {showExternalDex && (
+        <ExternalDexDropdown
+          className="min-w-0 flex-1 basis-[calc(50%-0.25rem)] text-sm"
+          links={dexLinks}
+          onSelect={(link) => {
+            trackClick('external_dex', {
+              dex: link.label,
+              url: link.url,
+            })
+          }}
+        />
+      )}
+      <CreatorLink />
+      <AboutLinksDropdown />
     </div>
   )
 }
@@ -147,8 +204,11 @@ const IndexAboutOverview = ({
         <DtfCover className="m-2 rounded-xl md:hidden" showBrandImage={false} />
       )}
       <Header />
-      <div className={cn('p-5 sm:p-6', showCover && 'mt-0')}>
-        <Mandate anchorId={id} />
+      <div className={cn('sm:p-6', showCover && 'mt-0')}>
+        <div className="p-5 sm:p-0">
+          <Mandate anchorId={id} />
+        </div>
+        <MobileAboutActionGrid />
         <IndexAboutMeta />
       </div>
       {showCover ? (

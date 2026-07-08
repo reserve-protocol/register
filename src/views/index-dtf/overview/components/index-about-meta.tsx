@@ -15,7 +15,7 @@ import { ArrowUpRight, ChevronDown, Crown } from 'lucide-react'
 import type React from 'react'
 import { Link } from 'react-router-dom'
 
-const CreatorLink = () => {
+export const CreatorLink = () => {
   const dtf = useAtomValue(indexDTFAtom)
   const brandData = useAtomValue(indexDTFBrandAtom)
   const chainId = useAtomValue(chainIdAtom)
@@ -34,13 +34,15 @@ const CreatorLink = () => {
       href={link}
       target="_blank"
       rel="noopener noreferrer"
-      className="inline-flex h-9 items-center gap-2 rounded-full border px-3 text-sm text-muted-foreground hover:text-foreground"
+      className="inline-flex h-12 max-w-full flex-none items-center justify-start gap-1.5 rounded-xl border px-3 text-sm font-normal text-muted-foreground hover:text-foreground sm:h-9 sm:gap-2 sm:rounded-full"
     >
-      {brandData?.creator?.icon ? (
-        <TokenLogo src={brandData.creator.icon} size="sm" />
-      ) : (
-        <Crown size={16} />
-      )}
+      <span className="hidden sm:inline-flex">
+        {brandData?.creator?.icon ? (
+          <TokenLogo src={brandData.creator.icon} size="sm" />
+        ) : (
+          <Crown size={16} />
+        )}
+      </span>
       <span>
         <Trans>Created by</Trans>
       </span>
@@ -52,7 +54,7 @@ const CreatorLink = () => {
   )
 }
 
-const AboutLinksDropdown = () => {
+export const AboutLinksDropdown = () => {
   const brandData = useAtomValue(indexDTFBrandAtom)
   const links = [
     brandData?.socials?.website && {
@@ -81,7 +83,7 @@ const AboutLinksDropdown = () => {
         <Button
           variant="outline"
           size="sm"
-          className="h-9 gap-1 rounded-full px-3 text-sm font-normal"
+          className="h-12 min-w-20 flex-1 justify-between gap-1.5 rounded-xl px-3 text-sm font-normal text-muted-foreground hover:text-foreground sm:h-9 sm:flex-none sm:justify-center sm:gap-1 sm:rounded-full"
         >
           <Trans>Links</Trans>
           <ChevronDown size={14} />
@@ -113,7 +115,7 @@ const AboutLinksDropdown = () => {
 }
 
 const IndexAboutMeta = () => (
-  <div className="mt-4 flex flex-wrap items-center gap-2">
+  <div className="mt-4 hidden flex-wrap items-center gap-2 md:flex">
     <CreatorLink />
     <AboutLinksDropdown />
   </div>

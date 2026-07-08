@@ -1,12 +1,5 @@
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
-import PancakeSwap from '@/components/icons/logos/PancakeSwap'
 import { Button } from '@/components/ui/button'
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu'
 import { Skeleton } from '@/components/ui/skeleton'
 import useComplianceRestrictions from '@/hooks/use-compliance-restrictions'
 import { useIsLargeDesktop } from '@/hooks/use-media-query'
@@ -16,62 +9,24 @@ import {
   indexDTFBrandAtom,
   indexDTFStatusAtom,
 } from '@/state/dtf/atoms'
+import { isFeaturedDtf } from '@/utils/featured-dtfs'
 import { useTrackIndexDTFClick } from '@/views/index-dtf/hooks/useTrackIndexDTFPage'
-import { Trans, useLingui } from '@lingui/react/macro'
+import { Trans } from '@lingui/react/macro'
 import { useZapperModal } from '@reserve-protocol/react-zapper'
 import { useAtomValue } from 'jotai'
-import { ChevronDown } from 'lucide-react'
 import React from 'react'
 import EligibilityCard from '../eligibility-card'
 import IndexAboutOverview from '../index-about-overview'
+import {
+  ExternalDexDropdown,
+  SecondaryTradeActions,
+} from '../trade-secondary-actions'
 import DTFBalance from './dtf-balance'
 import DtfCover, { getDtfCoverImage, getDtfCoverVideo } from './dtf-cover'
-import { getDtfDexLinks, type DtfDexLink } from './external-dex-links'
+import { getDtfDexLinks } from './external-dex-links'
 
 const TokenInfo = () => {
   return <DTFBalance />
-}
-
-const ExternalDexDropdown = ({
-  links,
-  onSelect,
-}: {
-  links: DtfDexLink[]
-  onSelect: (link: DtfDexLink) => void
-}) => {
-  const { t } = useLingui()
-
-  if (!links.length) return null
-
-  return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button
-          variant="outline"
-          className="h-12 shrink-0 gap-1.5 rounded-xl px-4 text-base font-medium text-muted-foreground hover:text-foreground"
-          aria-label={t`External trading venues`}
-        >
-          <Trans>External markets</Trans>
-          <ChevronDown className="h-3.5 w-3.5" />
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="w-48 rounded-xl p-1">
-        {links.map((link) => (
-          <DropdownMenuItem key={link.url} className="rounded-lg" asChild>
-            <a
-              href={link.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              onClick={() => onSelect(link)}
-            >
-              <PancakeSwap className="h-4 w-4" />
-              <span>{link.label}</span>
-            </a>
-          </DropdownMenuItem>
-        ))}
-      </DropdownMenuContent>
-    </DropdownMenu>
-  )
 }
 
 const MintBox = () => {
@@ -84,6 +39,8 @@ const MintBox = () => {
     useComplianceRestrictions()
   const isRestricted = !!complianceData?.restricted
   const dexLinks = getDtfDexLinks(dtf?.chainId, dtf?.id)
+  const showHowToBuyVideo = isFeaturedDtf(dtf?.chainId, dtf?.id)
+  const showExternalDex = !isDeprecated && dexLinks.length > 0
 
   return (
     <div className="rounded-3xl bg-card p-2">
@@ -121,6 +78,31 @@ const MintBox = () => {
             </a>
           </AlertDescription>
         </Alert>
+      ) : showHowToBuyVideo ? (
+        <div className="flex flex-col gap-2">
+          <Button
+            className="h-12 w-full rounded-xl text-base font-medium"
+            onClick={() => {
+              trackClick('buy_sell')
+              setTab(isDeprecated ? 'sell' : 'buy')
+              open()
+            }}
+          >
+            {isDeprecated ? <Trans>Sell</Trans> : <Trans>Buy / Sell</Trans>}
+          </Button>
+          <SecondaryTradeActions
+            dexLinks={showExternalDex ? dexLinks : []}
+            onHowToBuy={() => {
+              trackClick('how_to_buy_video')
+            }}
+            onExternalDex={(link) => {
+              trackClick('external_dex', {
+                dex: link.label,
+                url: link.url,
+              })
+            }}
+          />
+        </div>
       ) : (
         <div className="flex gap-2">
           <Button
@@ -133,7 +115,7 @@ const MintBox = () => {
           >
             {isDeprecated ? <Trans>Sell</Trans> : <Trans>Buy / Sell</Trans>}
           </Button>
-          {!isDeprecated && (
+          {showExternalDex && (
             <ExternalDexDropdown
               links={dexLinks}
               onSelect={(link) => {
