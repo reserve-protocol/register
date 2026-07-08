@@ -84,13 +84,7 @@ export const BasketTableHeader = ({
   return (
     <TableHeader>
       <TableRow className="border-none bg-card text-legend hover:bg-transparent">
-        <TableHead
-          className={
-            isExposure
-              ? 'h-auto w-1/2 py-0 pl-0 pr-2 text-left text-xs sm:text-sm'
-              : 'h-auto w-10/12 py-0 pl-0 pr-2 text-left text-xs sm:text-sm'
-          }
-        >
+        <TableHead className="h-auto w-1/2 py-0 pl-0 pr-2 text-left text-xs sm:text-sm">
           <TabsList className="hidden h-7 rounded-[70px] px-0.5 py-0 sm:inline-flex sm:h-8">
             <TabsTrigger
               value="exposure"
@@ -140,13 +134,11 @@ export const BasketTableHeader = ({
           <Trans>Price Change ({TIME_RANGE_LABELS[timeRange]})</Trans>
         </TableHeaderWithSort>
 
-        {isExposure ? (
-          <TableHead className="hidden h-auto w-28 whitespace-nowrap py-0 pl-2 pr-0 text-right sm:table-cell">
-            <span className="text-xs sm:text-sm">
-              <Trans>Market Cap</Trans>
-            </span>
-          </TableHead>
-        ) : null}
+        <TableHead className="hidden h-auto w-28 whitespace-nowrap py-0 pl-2 pr-0 text-right sm:table-cell">
+          <span className="text-xs sm:text-sm">
+            <Trans>Market Cap</Trans>
+          </span>
+        </TableHead>
       </TableRow>
     </TableHeader>
   )

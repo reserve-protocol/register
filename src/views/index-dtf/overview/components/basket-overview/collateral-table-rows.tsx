@@ -1,10 +1,11 @@
 import TokenLogo from '@/components/token-logo'
 import { TableCell, TableRow } from '@/components/ui/table'
 import { Token, TimeRange } from '@/types'
-import { getTokenName } from '@/utils'
+import { formatMarketCap, getTokenName } from '@/utils'
 import { ExplorerDataType, getExplorerLink } from '@/utils/getExplorerLink'
 import { ArrowUpRight } from 'lucide-react'
 import BridgeLabel from './bridge-label'
+import { MarketCapCell } from './market-cap-cell'
 import { PerformanceCell } from './performance-cell'
 
 interface CollateralTableRowsProps {
@@ -14,6 +15,7 @@ interface CollateralTableRowsProps {
   performanceLoading: boolean
   newlyAddedAssets: Record<string, boolean>
   timeRange: TimeRange
+  marketCaps: Record<string, number> | undefined
   chainId: number
   viewAll: boolean
   maxTokens: number
@@ -26,6 +28,7 @@ export const CollateralTableRows = ({
   performanceLoading,
   newlyAddedAssets,
   timeRange,
+  marketCaps,
   chainId,
   viewAll,
   maxTokens,
@@ -38,13 +41,15 @@ export const CollateralTableRows = ({
           chainId,
           ExplorerDataType.TOKEN
         )
+        const cap = marketCaps?.[token.address.toLowerCase()]
+        const marketCap = cap ? formatMarketCap(cap) : undefined
 
         return (
           <TableRow
             key={token.address}
             className="border-none hover:bg-transparent"
           >
-            <TableCell className="w-10/12 min-w-0 py-3 pl-0 pr-2">
+            <TableCell className="w-1/2 min-w-0 py-3 pl-0 pr-2">
               <div className="flex items-center gap-2 font-medium sm:gap-3">
                 <a
                   href={explorerLink}
@@ -102,6 +107,7 @@ export const CollateralTableRows = ({
                 timeRange={timeRange}
               />
             </TableCell>
+            <MarketCapCell marketCap={marketCap} />
           </TableRow>
         )
       })}

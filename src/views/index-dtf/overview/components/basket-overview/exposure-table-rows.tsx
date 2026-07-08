@@ -6,6 +6,7 @@ import { getTokenName } from '@/utils'
 import { Plural } from '@lingui/react/macro'
 import { useAtomValue } from 'jotai'
 import { useMemo } from 'react'
+import { MarketCapCell } from './market-cap-cell'
 import { PerformanceCell } from './performance-cell'
 import { indexDTFBasketAtom } from '@/state/dtf/atoms'
 import {
@@ -85,9 +86,7 @@ export const ExposureTableRows = ({
                   timeRange={timeRange}
                 />
               </TableCell>
-              <TableCell className="hidden w-28 whitespace-nowrap py-3 pl-2 pr-0 text-right text-base font-medium sm:table-cell dark:text-muted-foreground">
-                {marketCap ? <span>{marketCap}</span> : <span>—</span>}
-              </TableCell>
+              <MarketCapCell marketCap={marketCap} />
             </TableRow>
           )
         }

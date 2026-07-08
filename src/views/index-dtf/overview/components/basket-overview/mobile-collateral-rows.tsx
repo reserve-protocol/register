@@ -1,5 +1,5 @@
 import { Token, TimeRange } from '@/types'
-import { getTokenName } from '@/utils'
+import { formatMarketCap, getTokenName } from '@/utils'
 import { ExplorerDataType, getExplorerLink } from '@/utils/getExplorerLink'
 import { Trans } from '@lingui/react/macro'
 import { ArrowUpRight } from 'lucide-react'
@@ -15,6 +15,7 @@ interface MobileCollateralRowsProps {
   performanceLoading: boolean
   newlyAddedAssets: Record<string, boolean>
   timeRange: TimeRange
+  marketCaps: Record<string, number> | undefined
   chainId: number
   viewAll: boolean
   maxTokens: number
@@ -27,6 +28,7 @@ export const MobileCollateralRows = ({
   performanceLoading,
   newlyAddedAssets,
   timeRange,
+  marketCaps,
   chainId,
   viewAll,
   maxTokens,
@@ -38,6 +40,7 @@ export const MobileCollateralRows = ({
         chainId,
         ExplorerDataType.TOKEN
       )
+      const marketCap = marketCaps?.[token.address.toLowerCase()]
 
       return (
         <div
@@ -60,7 +63,7 @@ export const MobileCollateralRows = ({
               {basketShares[token.address]}%
             </div>
           </div>
-          <div className="mt-3 grid grid-cols-[minmax(0,1fr)_minmax(0,max-content)] items-start gap-x-4 pr-5">
+          <div className="mt-3 grid grid-cols-[minmax(0,1fr)_minmax(0,max-content)_minmax(0,max-content)] items-start gap-x-4 pr-5">
             <div className="min-w-0">
               <div className="text-xs leading-none text-muted-foreground">
                 <Trans>Symbol</Trans>
@@ -93,6 +96,14 @@ export const MobileCollateralRows = ({
                   isNewlyAdded={newlyAddedAssets[token.address]}
                   timeRange={timeRange}
                 />
+              </div>
+            </div>
+            <div className="min-w-0 text-right">
+              <div className="text-xs leading-none text-muted-foreground">
+                <Trans>Market Cap</Trans>
+              </div>
+              <div className="mt-1.5 truncate text-sm font-medium text-muted-foreground">
+                {marketCap ? formatMarketCap(marketCap) : '—'}
               </div>
             </div>
           </div>

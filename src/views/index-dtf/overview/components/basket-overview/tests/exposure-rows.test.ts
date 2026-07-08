@@ -6,11 +6,14 @@ import { ExposureRow, getExposureMarketCap } from '../exposure-rows'
 const makeGroup = (partial: Partial<ExposureGroup>): ExposureGroup =>
   ({ tokens: [], totalWeight: 0, ...partial }) as ExposureGroup
 
-const tokenRow = (address: string): ExposureRow => ({
+const tokenRow = (
+  address: string,
+  underlyingMarketCap?: number
+): ExposureRow => ({
   kind: 'token',
   key: address,
   group: makeGroup({}),
-  token: { address, symbol: 'TKN', weight: 1 },
+  token: { address, symbol: 'TKN', weight: 1, underlyingMarketCap },
   exchange: 'NASDAQ',
   weight: 1,
   change: null,
@@ -25,15 +28,17 @@ const groupRow = (group: ExposureGroup): ExposureRow => ({
 })
 
 describe('getExposureMarketCap', () => {
-  it('resolves token rows by lowercased address', () => {
-    const caps = { '0xabc': 1_000_000 }
-    expect(getExposureMarketCap(tokenRow('0xABC'), caps)).toBe(
-      formatMarketCap(1_000_000)
+  it('resolves token rows from the underlying (tradfi) market cap', () => {
+    expect(getExposureMarketCap(tokenRow('0xabc', 150_000_000_000), {})).toBe(
+      formatMarketCap(150_000_000_000)
     )
   })
 
-  it('returns undefined for a token without a cap entry', () => {
-    expect(getExposureMarketCap(tokenRow('0xabc'), {})).toBeUndefined()
+  it('does not fall back to the tokenized mcap for token rows', () => {
+    // The address-keyed entry is the on-chain (tokenized supply) mcap — the
+    // number this column previously showed by mistake
+    const caps = { '0xabc': 1_000_000 }
+    expect(getExposureMarketCap(tokenRow('0xABC'), caps)).toBeUndefined()
     expect(getExposureMarketCap(tokenRow('0xabc'), undefined)).toBeUndefined()
   })
 
@@ -70,6 +75,6 @@ describe('getExposureMarketCap', () => {
   })
 
   it('treats a zero market cap as missing', () => {
-    expect(getExposureMarketCap(tokenRow('0xabc'), { '0xabc': 0 })).toBeUndefined()
+    expect(getExposureMarketCap(tokenRow('0xabc', 0), {})).toBeUndefined()
   })
 })

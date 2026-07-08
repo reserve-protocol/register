@@ -45,7 +45,7 @@ export const BasketTableBody = ({
   if (isExposure && !exposureRows?.length) {
     return (
       <TableBody className={bodyClassName}>
-        <BasketSkeleton isExposure={isExposure} />
+        <BasketSkeleton />
       </TableBody>
     )
   }
@@ -53,7 +53,7 @@ export const BasketTableBody = ({
   if (!isExposure && !filtered?.length) {
     return (
       <TableBody className={bodyClassName}>
-        <BasketSkeleton isExposure={isExposure} />
+        <BasketSkeleton />
       </TableBody>
     )
   }
@@ -84,6 +84,7 @@ export const BasketTableBody = ({
         performanceLoading={performanceLoading}
         newlyAddedAssets={newlyAddedAssets}
         timeRange={timeRange}
+        marketCaps={marketCaps}
         chainId={chainId}
         viewAll={viewAll}
         maxTokens={maxTokens}

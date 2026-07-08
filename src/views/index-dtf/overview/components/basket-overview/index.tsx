@@ -149,6 +149,7 @@ const IndexBasketOverview = () => {
               performanceLoading={performanceLoading}
               newlyAddedAssets={newlyAddedAssets}
               timeRange={timeRange}
+              marketCaps={marketCaps}
               chainId={chainId}
               viewAll={!limitRows}
               maxTokens={MAX_TOKENS}

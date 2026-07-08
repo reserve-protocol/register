@@ -28,15 +28,16 @@ export type ExposureRow =
       change: number | null | undefined
     }
 
-// Market caps are keyed by token address for exchange tokens and by coingecko
-// id for native groups; groups without a coingecko id fall back to their first
-// token's address.
+// Exchange (Ondo tokenized stock) rows show the real company's mcap — the
+// tokenized-supply mcap lives on the Collateral tab. Native groups are keyed
+// by coingecko id; groups without one fall back to their first token's
+// address.
 export const getExposureMarketCap = (
   row: ExposureRow,
   marketCaps: Record<string, number> | undefined
 ): string | undefined => {
   if (row.kind === 'token') {
-    const cap = marketCaps?.[row.token.address.toLowerCase()]
+    const cap = row.token.underlyingMarketCap
     return cap ? formatMarketCap(cap) : undefined
   }
 

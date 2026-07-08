@@ -84,7 +84,10 @@ export type Transaction = {
 
 export type ExposureToken = {
   address: string
+  // On-chain (tokenized supply) mcap — shown on the Collateral tab
   marketCap?: number
+  // Real-company mcap for Ondo tokenized equities — shown on the Exposure tab
+  underlyingMarketCap?: number
   symbol: string
   name?: string
   weight: number
