@@ -13,7 +13,7 @@ import {
 } from '@/i18n'
 import { useLingui } from '@lingui/react/macro'
 import { useAtom } from 'jotai'
-import { Globe } from 'lucide-react'
+import { Languages } from 'lucide-react'
 
 const LanguageSelector = () => {
   const { t } = useLingui()
@@ -27,7 +27,7 @@ const LanguageSelector = () => {
           aria-label={t`Select language`}
           className="inline-flex items-center justify-center h-9 w-9 border rounded-full cursor-pointer hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
         >
-          <Globe size={16} strokeWidth={1.5} />
+          <Languages size={16} strokeWidth={1.5} />
         </button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="min-w-[10rem]">
