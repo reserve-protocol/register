@@ -50,6 +50,5 @@ export interface FactsheetData {
   monthlyChartData?: MonthlyChartDataPoint[]
   performance: PerformanceData
   netPerformance: NetPerformanceYear[]
-  inception: number // timestamp
   currentNav: number
 }

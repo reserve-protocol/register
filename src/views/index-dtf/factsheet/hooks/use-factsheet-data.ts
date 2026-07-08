@@ -77,7 +77,6 @@ export const useFactsheetData = () => {
 
     const lastPoint = allTimeseries[allTimeseries.length - 1]
     const currentPrice = lastPoint.price
-    const inception = dtf?.timestamp ?? allTimeseries[0]?.timestamp ?? 0
 
     const lastTs = lastPoint.timestamp
 
@@ -116,10 +115,9 @@ export const useFactsheetData = () => {
       monthlyChartData,
       performance,
       netPerformance,
-      inception,
       currentNav: currentPrice,
     }
-  }, [currentRangeData, allRangeData, dtf])
+  }, [currentRangeData, allRangeData])
 
   return {
     data: factsheetData,

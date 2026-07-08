@@ -6,7 +6,8 @@ import { Trans, useLingui } from '@lingui/react/macro'
 
 interface PerformanceTableProps {
   performance: PerformanceData
-  inception: number
+  // On-chain DTF deployment timestamp (dtf.timestamp) — the only valid source
+  inception?: number
 }
 
 const formatPerformanceValue = (value: number | null): string => {
@@ -19,7 +20,9 @@ const PerformanceTable = ({
   inception,
 }: PerformanceTableProps) => {
   const { t } = useLingui()
-  const inceptionDate = dayjs.unix(inception).format('MMM D, YYYY')
+  const inceptionDate = inception
+    ? dayjs.unix(inception).format('MMM D, YYYY')
+    : undefined
   const currentDate = dayjs.unix(currentHour).format('MMM D, YYYY')
 
   const rows = [
@@ -41,8 +44,8 @@ const PerformanceTable = ({
           <h3 className="text-2xl font-light mb-1">
             <Trans>Performance from inception*</Trans>
           </h3>
-          <p className="text-sm">
-            ({inceptionDate} - {currentDate})
+          <p className="text-sm min-h-5">
+            {inceptionDate && `(${inceptionDate} - ${currentDate})`}
           </p>
         </div>
 

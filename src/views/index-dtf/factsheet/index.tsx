@@ -9,7 +9,6 @@ import PerformanceTable from './components/performance-table'
 import { Trans } from '@lingui/react/macro'
 import { useFactsheetData } from './hooks/use-factsheet-data'
 import { Separator } from '@/components/ui/separator'
-import { currentHour } from './utils/constants'
 
 const Header = () => {
   const navigate = useNavigate()
@@ -40,6 +39,7 @@ const Header = () => {
 
 const IndexDTFFactsheet = () => {
   const { data, isLoading } = useFactsheetData()
+  const dtf = useAtomValue(indexDTFAtom)
 
   return (
     <div className="container mx-auto px-0 py-0 sm:px-4 sm:py-6 max-w-full">
@@ -65,7 +65,7 @@ const IndexDTFFactsheet = () => {
                       all: null,
                     }
                   }
-                  inception={data?.inception || currentHour}
+                  inception={dtf?.timestamp}
                 />
               </div>
             </div>
@@ -89,7 +89,7 @@ const IndexDTFFactsheet = () => {
                   all: null,
                 }
               }
-              inception={data?.inception || currentHour}
+              inception={dtf?.timestamp}
             />
           </div>
         </div>
