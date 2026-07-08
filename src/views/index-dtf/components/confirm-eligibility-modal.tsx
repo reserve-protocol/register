@@ -22,7 +22,15 @@ import { ChevronDown, Scale } from 'lucide-react'
 import { ReactNode, useState } from 'react'
 import { Address } from 'viem'
 
-const ELIGIBILITY_STORAGE_KEY = 'reserve:index-dtf-eligibility:v2'
+const ELIGIBILITY_STORAGE_KEY = 'reserve:index-dtf-eligibility:v3'
+// v2 stored one entry per (chainId, dtf, wallet); superseded by wallet-wide
+// consent but still read so existing confirmations carry over.
+const LEGACY_ELIGIBILITY_STORAGE_KEY = 'reserve:index-dtf-eligibility:v2'
+const STORAGE_URL = import.meta.env.VITE_STORAGE_URL || ''
+const ELIGIBILITY_CONFIRMATION_API = `${STORAGE_URL}confirm-eligibility`
+// Version tag of the legal copy the user attests to; bump when the terms or
+// the attestation checkboxes change.
+const ELIGIBILITY_TERMS_VERSION = '2026-06'
 const TERMS_URL = 'https://reserve.org/terms-and-conditions'
 const PRIVACY_URL = `${TERMS_URL}#privacy`
 const ELIGIBILITY_DOCS_URL =
@@ -46,23 +54,56 @@ const PROHIBITED_JURISDICTIONS = [
   'United States, or any of its states, possessions, territories or federal districts*',
 ]
 
-// WHY: eligibility is a self-attestation that only holds for the wallet that
-// made it on the DTF it was made for, so it is remembered per
-// (chainId, dtf, wallet) tuple — never as a single device-wide flag.
-const buildEligibilityKey = (
-  chainId: number,
-  dtfAddress: Address,
-  wallet: Address
-) => `${chainId}:${dtfAddress.toLowerCase()}:${wallet.toLowerCase()}`
+// WHY: eligibility is a self-attestation about the person behind the wallet,
+// not about any single DTF, so one confirmation per wallet covers every DTF
+// (re-prompting per DTF proved to be major friction). It is still per wallet,
+// never a device-wide flag.
+const buildEligibilityKey = (wallet: Address) => wallet.toLowerCase()
+
+const readStoredKeys = (storageKey: string): string[] => {
+  try {
+    const raw = localStorage.getItem(storageKey)
+    const parsed: unknown = raw ? JSON.parse(raw) : null
+    return Array.isArray(parsed) ? (parsed as string[]) : []
+  } catch {
+    return []
+  }
+}
 
 const readEligibilityConfirmations = (): Set<string> => {
-  try {
-    const raw = localStorage.getItem(ELIGIBILITY_STORAGE_KEY)
-    const parsed: unknown = raw ? JSON.parse(raw) : null
-    return Array.isArray(parsed) ? new Set(parsed as string[]) : new Set()
-  } catch {
-    return new Set()
-  }
+  const wallets = readStoredKeys(ELIGIBILITY_STORAGE_KEY)
+  // v2 entries were `chainId:dtf:wallet`; the wallet segment carries over
+  const legacyWallets = readStoredKeys(LEGACY_ELIGIBILITY_STORAGE_KEY)
+    .map((key) => key.split(':')[2])
+    .filter(Boolean)
+  return new Set([...wallets, ...legacyWallets])
+}
+
+// Fire-and-forget mirror of the confirmation into our own store; localStorage
+// is the UX source of truth, so a failed POST never blocks or retries.
+const postEligibilityConfirmation = (payload: {
+  wallet: Address
+  dtf: Address
+  chainId: number
+  ticker: string
+}) => {
+  fetch(ELIGIBILITY_CONFIRMATION_API, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    keepalive: true,
+    body: JSON.stringify({
+      wallet: payload.wallet.toLowerCase(),
+      dtf: payload.dtf.toLowerCase(),
+      chainId: payload.chainId,
+      ticker: payload.ticker,
+      attestations: {
+        terms: true,
+        jurisdiction: true,
+        tokenizedStocks: true,
+      },
+      termsVersion: ELIGIBILITY_TERMS_VERSION,
+    }),
+  }).catch(() => {})
 }
 
 const writeEligibilityConfirmation = (key: string) => {
@@ -254,8 +295,7 @@ const ConfirmEligibilityModal = () => {
     readEligibilityConfirmations
   )
 
-  const eligibilityKey =
-    wallet && dtf ? buildEligibilityKey(dtf.chainId, dtf.id, wallet) : undefined
+  const eligibilityKey = wallet ? buildEligibilityKey(wallet) : undefined
 
   // WHY: this is a self-attestation gate for users who can actually trade the
   // DTF, so it reads the same compliance source that enables the Buy/Sell
@@ -281,11 +321,17 @@ const ConfirmEligibilityModal = () => {
         ticker: dtf.token.symbol,
         chain: dtf.chainId,
       })
+      postEligibilityConfirmation({
+        wallet,
+        dtf: dtf.id,
+        chainId: dtf.chainId,
+        ticker: dtf.token.symbol,
+      })
     }
   }
 
-  // WHY: key by the tuple so navigating to another wallet/DTF remounts the
-  // dialog with fresh, unchecked attestations.
+  // WHY: key by wallet so switching wallets remounts the dialog with fresh,
+  // unchecked attestations.
   return <EligibilityDialog key={eligibilityKey} onConfirm={handleConfirm} />
 }
 
