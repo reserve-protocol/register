@@ -1,10 +1,7 @@
 import { cn } from '@/lib/utils'
 import { blockAtom, chainIdAtom } from '@/state/chain/atoms/chainAtoms'
-import {
-  indexDTF7dChangeAtom,
-  indexDTFAtom,
-  indexDTFPriceAtom,
-} from '@/state/dtf/atoms'
+import { indexDTFAtom, indexDTFPriceAtom } from '@/state/dtf/atoms'
+import useWeekAgoPnl from '../../hooks/use-week-ago-pnl'
 import { formatCurrency } from '@/utils'
 import { ROUTES } from '@/utils/constants'
 import { Trans } from '@lingui/react/macro'
@@ -20,7 +17,6 @@ const DTFBalance = () => {
   const indexDTFPrice = useAtomValue(indexDTFPriceAtom)
   const chainId = useAtomValue(chainIdAtom)
   const account = useAccount()
-  const dtf7dChange = useAtomValue(indexDTF7dChangeAtom)
   // Reuse the globally-polled block for the current chain (AtomUpdater) instead
   // of opening a second eth_blockNumber poll just for this balance.
   const block = useAtomValue(blockAtom)
@@ -44,10 +40,14 @@ const DTFBalance = () => {
     return dtfAmount * indexDTFPrice
   }, [dtfAmount, indexDTFPrice])
 
-  const variationValue = useMemo(() => {
-    if (!dtf7dChange || !balanceValue) return undefined
-    return balanceValue * dtf7dChange
-  }, [dtf7dChange, balanceValue])
+  // Real "Past week" PnL: this wallet's position value now vs one week ago
+  // (subgraph balance snapshot × price at that time). null until the wallet
+  // has a week of holding history — a fresh buyer gets no hypothetical PnL.
+  const weekPnl = useWeekAgoPnl({
+    account: account.address,
+    token: dtf?.id,
+    currentValue: balanceValue,
+  })
 
   useEffect(() => {
     if (block && account.address) {
@@ -89,20 +89,24 @@ const DTFBalance = () => {
         </div>
       </div>
       <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-muted-foreground">
-        <div className="flex items-center gap-0.5">
-          {!!variationValue && variationValue < 0 ? (
-            <ArrowDown className="w-3.5 h-3.5 text-primary" />
-          ) : (
-            <ArrowUp className="w-3.5 h-3.5 text-primary" />
-          )}
-          <div className="text-primary pr-0.5">
-            ${formatCurrency(Math.abs(variationValue ?? 0), 2)}
-          </div>{' '}
-          <Trans>Past week</Trans>
-        </div>
-        <span aria-hidden="true" className="text-muted-foreground">
-          ·
-        </span>
+        {weekPnl !== null && (
+          <>
+            <div className="flex items-center gap-0.5">
+              {weekPnl < 0 ? (
+                <ArrowDown className="w-3.5 h-3.5 text-primary" />
+              ) : (
+                <ArrowUp className="w-3.5 h-3.5 text-primary" />
+              )}
+              <div className="text-primary pr-0.5">
+                ${formatCurrency(Math.abs(weekPnl), 2)}
+              </div>{' '}
+              <Trans>Past week</Trans>
+            </div>
+            <span aria-hidden="true" className="text-muted-foreground">
+              ·
+            </span>
+          </>
+        )}
         <div className="text-muted-foreground">
           {formatCurrency(dtfAmount ?? 0, 2)} {dtf?.token.symbol}
         </div>
