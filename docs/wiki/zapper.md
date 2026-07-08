@@ -1,6 +1,6 @@
 ---
 title: Zapper
-updated: 2026-07-03
+updated: 2026-07-08
 type: context
 ---
 
@@ -11,6 +11,8 @@ Three distinct mechanisms; don't mix them up. The CoW-suggestion card next to th
 ## 1. `@reserve-protocol/react-zapper` ([react-zapper](https://github.com/reserve-protocol/react-zapper)) — Index DTF instant zap
 
 Register pins the exact version (no caret) and wraps it in `src/views/index-dtf/components/zapper/zapper-wrapper.tsx` (also mutates `PROVIDER_ENABLED` to disable Odos on BSC, injects RainbowKit `connectWallet` and `locale`).
+
+- **Locked settings for featured DTFs**: the wrapper passes `disabledSettings={{ deepLiquidity: true, forceMint: true }}` (prop added in 2.4.0) for the DTFs hardcoded in `locked-zap-settings.ts` (5 featured BSC DTFs from `/v1/discover/featured`: PHOTON, BUILDOUT, ROBOTS, POWER, NEOCLOUD). A disabled option renders its checkbox frozen unchecked (same treatment as the always-on dust checkbox) and the widget's updater force-resets the backing atom to `false` — including on SPA navigation from a DTF where the user had it checked.
 
 - **v2 contract**: the widget consumes the HOST's `WagmiProvider` + `QueryClientProvider` (the old `wagmiConfig` prop was removed in 2.0.0). Peer floors: wagmi ^2.19, viem ^2.50, react-query ^5.87.
 - **One instance per route — hard rule.** All widget state is module-level jotai atoms on the default store (no `Provider` isolation): two mounted `Zapper`s with different `chain`/`dtfAddress` fight last-writer-wins over shared atoms (`chainIdAtom`, `indexDTFAtom`, tab/modal atoms…). This caused register's real double-mount bug. Mounts: inline in `src/views/index-dtf/issuance/index.tsx`, modal in `index-dtf-container.tsx` — the modal mount is skipped on issuance routes on purpose. `useZapperModal()` shares the single instance.

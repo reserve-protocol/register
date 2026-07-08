@@ -16,6 +16,12 @@ import {
   markCallScheduled,
 } from '@/utils/schedule-call'
 import LargeMintPrompt from './large-mint-prompt'
+import { hasLockedZapSettings } from './locked-zap-settings'
+
+const LOCKED_SETTINGS: ZapperProps['disabledSettings'] = {
+  deepLiquidity: true,
+  forceMint: true,
+}
 
 const bscProviders = PROVIDER_ENABLED[bsc.id]
 if (bscProviders) {
@@ -58,7 +64,15 @@ const ZapperWrapper = (props: ZapperWrapperProps) => {
     }),
     [address, scheduled]
   )
-  const zapperProps: ZapperProps = { ...props, locale, scheduleCall }
+  const disabledSettings = hasLockedZapSettings(props.dtfAddress, props.chain)
+    ? LOCKED_SETTINGS
+    : undefined
+  const zapperProps: ZapperProps = {
+    ...props,
+    locale,
+    scheduleCall,
+    disabledSettings,
+  }
 
   // The inline prompt is positioned `absolute` and anchors to the consumer's
   // nearest positioned ancestor (the issuance page wraps the zapper card in a
