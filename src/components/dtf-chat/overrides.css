@@ -24,20 +24,10 @@
   font-size: 0.875rem;
   font-weight: 500;
   letter-spacing: 0;
-  box-shadow: 0 4px 14px hsl(var(--foreground) / 0.08);
 }
 
 .rc-root .rc-launcher:hover {
   background: hsl(var(--card) / 0.9);
-  box-shadow: 0 8px 22px hsl(var(--foreground) / 0.12);
-}
-
-.dark .rc-root .rc-launcher {
-  box-shadow: 0 4px 14px hsl(var(--foreground) / 0.1);
-}
-
-.dark .rc-root .rc-launcher:hover {
-  box-shadow: 0 8px 22px hsl(var(--foreground) / 0.14);
 }
 
 .rc-root .rc-launcher-icon {
