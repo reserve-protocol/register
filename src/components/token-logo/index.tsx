@@ -196,6 +196,10 @@ const TokenLogo = React.forwardRef<HTMLImageElement, Props>((props, ref) => {
   return (
     <img
       ref={ref}
+      // Remount when the resolved logo replaces the default so the swap fades
+      // in instead of popping. A failed resolution remounts with the same
+      // default graphic, which reads as a no-op.
+      key={currentSrc || 'placeholder'}
       src={currentSrc || '/svgs/defaultLogo.svg'}
       height={h}
       width={w}
@@ -207,6 +211,7 @@ const TokenLogo = React.forwardRef<HTMLImageElement, Props>((props, ref) => {
       style={{ width: w, height: h }}
       className={cn(
         'flex-shrink-0 object-cover object-center rounded-full',
+        currentSrc && 'animate-in fade-in duration-300 motion-reduce:animate-none',
         className,
         TRANSPARENT_TOKENS.has(symbol?.toLowerCase() || '') && 'bg-black'
       )}
