@@ -64,6 +64,7 @@ const DtfTabs = () => {
 
   return (
     <Tabs
+      data-testid="discover-tabs"
       value={type}
       onValueChange={handleValueChange}
       className="px-2 lg:flex lg:justify-center 2xl:px-0"

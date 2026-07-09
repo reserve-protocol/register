@@ -1,94 +1,56 @@
 import { defineConfig, devices } from '@playwright/test'
 
-/**
- * Read environment variables from file.
- * https://github.com/motdotla/dotenv
- */
-// require('dotenv').config();
+// Port 3005 — NEVER 3000 (Luis's own dev server lives there).
+const HOST = '127.0.0.1'
+const PORT = 3005
+const baseURL = `http://${HOST}:${PORT}`
 
-/**
- * See https://playwright.dev/docs/test-configuration.
- */
 export default defineConfig({
-  testDir: './e2e',
-  /* Run tests in files in parallel */
+  testDir: './e2e/tests',
   fullyParallel: true,
-  /* Fail the build on CI if you accidentally left test.only in the source code. */
   forbidOnly: !!process.env.CI,
-  /* Retry on CI only */
   retries: process.env.CI ? 2 : 0,
-  /* Opt out of parallel tests on CI. */
-  workers: process.env.CI ? 1 : undefined,
-  /* Reporter to use. See https://playwright.dev/docs/test-reporters */
-  reporter: [['html', { open: 'never' }]],
-  /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
+  workers: process.env.CI ? 2 : undefined,
+  timeout: 30_000,
+  expect: { timeout: 7_500 },
+  reporter: process.env.CI
+    ? [['github'], ['html', { open: 'never' }]]
+    : [['list'], ['html', { open: 'never' }]],
   use: {
-    /* Base URL to use in actions like `await page.goto('/')`. */
-    baseURL: 'http://localhost:3000',
-
-    /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
+    baseURL,
     trace: 'on-first-retry',
+    screenshot: 'only-on-failure',
   },
-
-  /* Configure projects for major browsers */
   projects: [
     {
-      name: 'chromium',
-      use: {
-        ...devices['Desktop Chrome'],
-        launchOptions: {
-          args: ['--disable-web-security'],
-        },
-      },
+      name: 'smoke',
+      grep: /@smoke/,
+      use: { ...devices['Desktop Chrome'] },
     },
-
-    // {
-    //   name: 'firefox',
-    //   use: { ...devices['Desktop Firefox'] },
-    // },
-
-    // {
-    //   name: 'webkit',
-    //   use: { ...devices['Desktop Safari'] },
-    // },
-
-    /* Test against mobile viewports. */
-    // {
-    //   name: 'Mobile Chrome',
-    //   use: { ...devices['Pixel 5'] },
-    // },
-    // {
-    //   name: 'Mobile Safari',
-    //   use: { ...devices['iPhone 12'] },
-    // },
-
-    /* Test against branded browsers. */
-    // {
-    //   name: 'Microsoft Edge',
-    //   use: { ...devices['Desktop Edge'], channel: 'msedge' },
-    // },
-    // {
-    //   name: 'Google Chrome',
-    //   use: { ...devices['Desktop Chrome'], channel: 'chrome' },
-    // },
-  ],
-
-  /* Run your local dev server before starting the tests */
-  webServer: [
-    // {
-    //   command: [
-    //     `anvil`,
-    //     `--fork-block-number=18180527`,
-    //     `--fork-url=https://eth.llamarpc.com`,
-    //     `--balance 100000000`,
-    //   ].join(' '),
-    //   port: 8545,
-    //   reuseExistingServer: !process.env.CI,
-    // },
     {
-      command: 'npm run start',
-      url: 'http://localhost:3000',
-      reuseExistingServer: !process.env.CI,
+      name: 'full',
+      grepInvert: /@smoke/,
+      use: { ...devices['Desktop Chrome'] },
     },
   ],
+  webServer: {
+    // `pnpm exec vite` (not `pnpm start --`) so --host/--port reach vite's CLI
+    // and override vite.config's port 3000 — otherwise it boots on :3000, the
+    // human's dev-server port.
+    command: `pnpm exec vite --host ${HOST} --port ${PORT} --strictPort`,
+    url: baseURL,
+    reuseExistingServer: !process.env.CI,
+    timeout: 120_000,
+    // Pin env so a developer's .env can't route around the mocks: staging flips
+    // the API/zapper host, and RPC keys add hosts our intercept list won't match.
+    env: {
+      VITE_WALLETCONNECT_ID: 'test-project',
+      VITE_STAGING_API: '',
+      VITE_USE_STAGING: '',
+      VITE_MAINNET_URL: '',
+      VITE_INFURA: '',
+      VITE_ALCHEMY: '',
+      VITE_ANKR: '',
+    },
+  },
 })

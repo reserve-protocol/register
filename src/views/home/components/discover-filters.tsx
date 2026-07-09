@@ -114,6 +114,7 @@ export const SearchFilter = () => {
 
   return (
     <SearchInput
+      data-testid="discover-search"
       placeholder={t`Search by name, ticker, tag or collateral`}
       value={search}
       onChange={(e) => setSearch(e.target.value)}

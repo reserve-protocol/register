@@ -19,7 +19,7 @@ const IndexDTFAuctions = () => {
   }
 
   return (
-    <div className="container">
+    <div className="container" data-testid="dtf-auctions">
       <div className="flex flex-col items-center justify-start sm:justify-center gap-2 lg:bg-secondary sm:min-h-[calc(100vh-136px)] lg:min-h-[calc(100vh-80px)] rounded-4xl lg:mr-2 ">
         <Outlet />
         <Updater />

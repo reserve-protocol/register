@@ -467,7 +467,10 @@ const IndexDTFNavigation = () => {
 
   return (
     <>
-      <div className="hidden lg:sticky lg:top-0 lg:z-30 lg:mr-2 lg:block lg:h-[calc(100vh-80px)] lg:w-20 lg:flex-shrink-0 lg:bg-transparent lg:p-0">
+      <div
+        data-testid="dtf-nav"
+        className="hidden lg:sticky lg:top-0 lg:z-30 lg:mr-2 lg:block lg:h-[calc(100vh-80px)] lg:w-20 lg:flex-shrink-0 lg:bg-transparent lg:p-0"
+      >
         <div className="group/nav sticky top-6 lg:absolute lg:left-0 lg:top-0 lg:z-20 lg:h-full lg:w-20 lg:overflow-hidden lg:rounded-2xl lg:bg-transparent lg:p-5 lg:py-7 lg:transition-all lg:duration-200 lg:before:pointer-events-none lg:before:absolute lg:before:inset-0 lg:before:rounded-[inherit] lg:before:opacity-0 lg:before:backdrop-blur-[7px] lg:before:transition-opacity lg:before:duration-200 lg:after:pointer-events-none lg:after:absolute lg:after:inset-0 lg:after:rounded-[inherit] lg:after:border-2 lg:after:border-card lg:after:bg-background/50 lg:after:opacity-0 lg:after:transition-opacity lg:after:duration-200 lg:hover:w-64 lg:hover:before:opacity-100 lg:hover:after:opacity-100">
           <div className="relative z-10">
             <NavigationHeader />

@@ -44,7 +44,7 @@ const IndexDTFIssuance = () => {
   if (!indexDTF) return null
 
   return (
-    <div className="container">
+    <div className="container" data-testid="dtf-issuance">
       <div className="flex flex-col items-center justify-center gap-4 lg:bg-secondary sm:min-h-[calc(100vh-136px)] lg:min-h-[calc(100vh-80px)] rounded-4xl lg:mr-2 ">
         {panelMode === 'auto' ? (
           <AsyncMint embedded />

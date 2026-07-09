@@ -1,0 +1,89 @@
+{
+  "_meta": {
+    "source": "https://api.reserve.org/current/prices?chainId=8453&tokens=0xcbB7C0000aB88B473b1f5aFd9ef808440eed33Bf,0x4200000000000000000000000000000000000006,0x2615a94df961278DcbC41Fb0a54fEc5f10a693aE,0x9B8Df6E244526ab5F6e6400d331DB28C8fdDdb55,0x12E96C2BFEA6E835CF8Dd38a5834fa61Cf723736,0xa3A34A0D9A08CCDDB6Ed422Ac0A28a06731335aA,0x378c326A472915d38b2D8D41e1345987835FaB64,0x15D0e0c55a3E7eE67152aD7E89acf164253Ff68d",
+    "capturedAt": "2026-07-09T21:47:23.672Z",
+    "dtf": "0x4da9a0f397db1397902070f93a4d6ddbc0e0e6e8",
+    "chainId": 8453
+  },
+  "data": [
+    {
+      "address": "0xcbB7C0000aB88B473b1f5aFd9ef808440eed33Bf",
+      "price": 63160.84685524286,
+      "timestamp": 1783633643,
+      "priceSources": [
+        "zapper",
+        "alchemy",
+        "defillama"
+      ]
+    },
+    {
+      "address": "0x4200000000000000000000000000000000000006",
+      "price": 1745.4639862379622,
+      "timestamp": 1783633643,
+      "priceSources": [
+        "zapper",
+        "zapper-decompose",
+        "alchemy",
+        "defillama"
+      ]
+    },
+    {
+      "address": "0x2615a94df961278DcbC41Fb0a54fEc5f10a693aE",
+      "price": 1.096959289537199,
+      "timestamp": 1783633643,
+      "priceSources": [
+        "coinbase",
+        "alchemy",
+        "defillama"
+      ]
+    },
+    {
+      "address": "0x9B8Df6E244526ab5F6e6400d331DB28C8fdDdb55",
+      "price": 77.98102106972462,
+      "timestamp": 1783633643,
+      "priceSources": [
+        "coinbase",
+        "alchemy",
+        "defillama"
+      ]
+    },
+    {
+      "address": "0x12E96C2BFEA6E835CF8Dd38a5834fa61Cf723736",
+      "price": 0.07317930912813712,
+      "timestamp": 1783633643,
+      "priceSources": [
+        "coinbase",
+        "alchemy",
+        "defillama"
+      ]
+    },
+    {
+      "address": "0xa3A34A0D9A08CCDDB6Ed422Ac0A28a06731335aA",
+      "price": 0.16685,
+      "timestamp": 1783633643,
+      "priceSources": [
+        "coinbase",
+        "alchemy"
+      ]
+    },
+    {
+      "address": "0x378c326A472915d38b2D8D41e1345987835FaB64",
+      "price": 0.18621117620876512,
+      "timestamp": 1783633643,
+      "priceSources": [
+        "coinbase",
+        "alchemy",
+        "defillama"
+      ]
+    },
+    {
+      "address": "0x15D0e0c55a3E7eE67152aD7E89acf164253Ff68d",
+      "price": 67.35998273097053,
+      "timestamp": 1783633643,
+      "priceSources": [
+        "zapper",
+        "defillama"
+      ]
+    }
+  ]
+}

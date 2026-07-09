@@ -27,4 +27,5 @@ One line per page. Agents: start here, follow links, keep this list current on i
 - [[referral]] — influencer campaign attribution: ?referral= capture, last-touch Mixpanel super property, wallet↔code POST to reserve-api; conversions settled on-chain, out of scope
 - [[overview-charts]] — Index DTF price/candles charts: per-range fetch interval + client-side display buckets (shared `chart-downsample`), API supports only 5m/1h/1d, dedupe + no young-DTF hourly override
 - [[basket-overview]] — Holdings table (Exposure/Collateral tabs): two mcap numbers, one per tab (underlying tradfi vs tokenized supply, never cross them); exposure route schema strips undeclared fields; lowercased mcap-map keys
+- [[e2e]] — Playwright suite: offline mock architecture (wallet/rpc/subgraph/api), snapshot capture, smoke-vs-flows split, agent quick loop, phase plan (co-work doc with Codex)
 - [[home]] — landing page: featured cards downsample the server's hourly 90d series to daily at the data layer; ref-driven packing animation and memoized cards are perf invariants

@@ -18,6 +18,11 @@
       "commands": ["pnpm test:run"]
     },
     {
+      "name": "e2e-smoke",
+      "globs": ["e2e/**", "playwright.config.ts"],
+      "commands": ["pnpm exec tsc -p e2e/tsconfig.json --noEmit", "pnpm e2e:smoke"]
+    },
+    {
       "name": "wiki-lint",
       "globs": ["docs/wiki/**"],
       "commands": ["node scripts/llm-workflow/wiki-lint.mjs"]

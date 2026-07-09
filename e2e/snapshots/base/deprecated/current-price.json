@@ -1,0 +1,105 @@
+{
+  "_meta": {
+    "source": "https://api.reserve.org/current/dtf?address=0x47686106181b3cefe4eaf94c4c10b48ac750370b&chainId=8453",
+    "capturedAt": "2026-07-09T21:47:36.333Z",
+    "dtf": "0x47686106181b3cefe4eaf94c4c10b48ac750370b",
+    "chainId": 8453
+  },
+  "data": {
+    "price": 0.28253447156396716,
+    "marketCap": 7241.450000783509,
+    "totalSupply": 25630.323835171417,
+    "basket": [
+      {
+        "address": "0x4F9Fd6Be4a90f2620860d680c0d4d5Fb53d1A825",
+        "amount": 1.8925506031766812,
+        "amountRaw": "1892550603176681259",
+        "decimals": 18,
+        "price": 0.019358498232305003,
+        "weight": "12.97",
+        "priceSource": "zapper, odos, alchemy, defillama"
+      },
+      {
+        "address": "0x1C4CcA7C5DB003824208aDDA61Bd749e55F463a3",
+        "amount": 1.9643863321774542,
+        "amountRaw": "1964386332177454203",
+        "decimals": 18,
+        "price": 0.00426049253925107,
+        "weight": "2.96",
+        "priceSource": "zapper, odos, alchemy, defillama"
+      },
+      {
+        "address": "0x731814e491571A2e9eE3c5b1F7f3b962eE8f4870",
+        "amount": 1.8025610118228164,
+        "amountRaw": "1802561011822816421",
+        "decimals": 18,
+        "price": 0.0013431285044027909,
+        "weight": "0.86",
+        "priceSource": "zapper, odos, alchemy, defillama"
+      },
+      {
+        "address": "0x55cD6469F597452B5A7536e2CD98fDE4c1247ee4",
+        "amount": 1.4278804356395511,
+        "amountRaw": "1427880435639551111",
+        "decimals": 18,
+        "price": 0.0045722573333275875,
+        "weight": "2.31",
+        "priceSource": "zapper, odos, alchemy, defillama"
+      },
+      {
+        "address": "0x58Db197E91Bc8Cf1587F75850683e4bd0730e6BF",
+        "amount": 1.492133429725611,
+        "amountRaw": "1492133429725611022",
+        "decimals": 18,
+        "price": 0.00047420221956795546,
+        "weight": "0.25",
+        "priceSource": "zapper, odos, alchemy, defillama"
+      },
+      {
+        "address": "0x0b3AE50BaBE7FFa4E1A50569ceE6bDEFd4ccAeE0",
+        "amount": 2.256089532887922,
+        "amountRaw": "2256089532887921850",
+        "decimals": 18,
+        "price": 0.0016259632556043192,
+        "weight": "1.30",
+        "priceSource": "zapper, odos, alchemy, defillama"
+      },
+      {
+        "address": "0x98aC5B33A4Ef1151f138941c979211599c2fF953",
+        "amount": 2.0843511673127684,
+        "amountRaw": "2084351167312768592",
+        "decimals": 18,
+        "price": 0.0005946784455881421,
+        "weight": "0.44",
+        "priceSource": "zapper, odos, alchemy, defillama"
+      },
+      {
+        "address": "0xA4A2E2ca3fBfE21aed83471D28b6f65A233C6e00",
+        "amount": 1.8504356242804738,
+        "amountRaw": "1850435624280473808",
+        "decimals": 18,
+        "price": 0.11903638917193525,
+        "weight": "77.95",
+        "priceSource": "zapper, odos, alchemy, defillama"
+      },
+      {
+        "address": "0xFAC77f01957ed1B3DD1cbEa992199B8f85B6E886",
+        "amount": 0.6928389656526431,
+        "amountRaw": "692838965652643087",
+        "decimals": 18,
+        "price": 0.0012498028560210218,
+        "weight": "0.31",
+        "priceSource": "zapper, odos, alchemy, defillama"
+      },
+      {
+        "address": "0xC44141a684f6AA4E36cD9264ab55550B03C88643",
+        "amount": 1.4005086727031728,
+        "amountRaw": "1400508672703172749",
+        "decimals": 18,
+        "price": 0.001305293788107162,
+        "weight": "0.65",
+        "priceSource": "zapper, odos, alchemy, defillama"
+      }
+    ]
+  }
+}

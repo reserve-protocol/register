@@ -1,0 +1,6667 @@
+{
+  "_meta": {
+    "source": "https://api.reserve.org/discover/dtfs?performance=true&brand=true",
+    "capturedAt": "2026-07-09T21:47:17.587Z"
+  },
+  "data": [
+    {
+      "address": "0xA0d69E286B938e21CBf7E51D71F6A4c8918f482F",
+      "name": "Electronic Dollar",
+      "symbol": "eUSD",
+      "price": 0.9996026378247642,
+      "marketCap": 23251268.412820622,
+      "chainId": 1,
+      "type": "yield",
+      "status": "active",
+      "basket": [
+        {
+          "address": "0x27F2f159Fe990Ba83D57f39Fd69661764BEbf37a",
+          "symbol": "wcUSDCv3",
+          "name": "Wrapped cUSDCv3",
+          "weight": "33.3397417401383834"
+        },
+        {
+          "address": "0xEB74EC1d4C1DAB412D5d6674F6833FD19d3118Ce",
+          "symbol": "wcUSDTv3",
+          "name": "Wrapped cUSDTv3",
+          "weight": "33.3195179514886644"
+        },
+        {
+          "address": "0x0aDc69041a2B086f8772aCcE2A754f410F211bed",
+          "symbol": "saEthUSDC",
+          "name": "Static Aave Ethereum USDC",
+          "weight": "33.3407403083729521"
+        }
+      ],
+      "createdAt": 1677113123,
+      "performance": [],
+      "priceChange": {
+        "period": "1m",
+        "displayPeriod": "1M",
+        "ratio": null,
+        "percent": null,
+        "startPrice": null,
+        "endPrice": null,
+        "startTimestamp": null,
+        "endTimestamp": null
+      }
+    },
+    {
+      "address": "0xE72B141DF173b999AE7c1aDcbF60Cc9833Ce56a8",
+      "name": "ETHPlus",
+      "symbol": "ETH+",
+      "price": 1903.6708688196286,
+      "marketCap": 7817583.354760592,
+      "chainId": 1,
+      "type": "yield",
+      "status": "active",
+      "basket": [
+        {
+          "address": "0xCd5fE23C85820F7B72D0926FC9b05b43E359b7ee",
+          "symbol": "weETH",
+          "name": "Wrapped eETH",
+          "weight": "23.4899611410503812"
+        },
+        {
+          "address": "0xA35b1B31Ce002FBF2058D22F30f95D405200A15b",
+          "symbol": "ETHx",
+          "name": "ETHx",
+          "weight": "6.4927416299859113"
+        },
+        {
+          "address": "0xac3E018457B222d93114458476f3E3416Abbe38F",
+          "symbol": "sfrxETH",
+          "name": "Staked Frax Ether",
+          "weight": "14.9877231773428564"
+        },
+        {
+          "address": "0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0",
+          "symbol": "wstETH",
+          "name": "Wrapped liquid staked Ether 2.0",
+          "weight": "50.0301581934787031"
+        },
+        {
+          "address": "0xae78736Cd615f374D3085123A210448E74Fc6393",
+          "symbol": "rETH",
+          "name": "Rocket Pool ETH",
+          "weight": "4.9994158581421478"
+        }
+      ],
+      "createdAt": 1681974875,
+      "performance": [],
+      "priceChange": {
+        "period": "1m",
+        "displayPeriod": "1M",
+        "ratio": null,
+        "percent": null,
+        "startPrice": null,
+        "endPrice": null,
+        "startTimestamp": null,
+        "endTimestamp": null
+      }
+    },
+    {
+      "address": "0x2f8A339B5889FfaC4c5A956787cdA593b3c36867",
+      "name": "CoinMarketCap 20 Index DTF",
+      "symbol": "CMC20",
+      "price": 127.85036526305007,
+      "marketCap": 6085684.521488483,
+      "chainId": 56,
+      "type": "index",
+      "status": "active",
+      "basket": [
+        {
+          "address": "0x7130d2A12B9BCbFAe4f2634d864A1Ee1Ce3Ead9c",
+          "symbol": "BTCB",
+          "name": "BTCB Token",
+          "weight": "71.50"
+        },
+        {
+          "address": "0x2170Ed0880ac9A755fd29B2688956BD959F933F8",
+          "symbol": "ETH",
+          "name": "Ethereum Token",
+          "weight": "11.87"
+        },
+        {
+          "address": "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
+          "symbol": "WBNB",
+          "name": "Wrapped BNB",
+          "weight": "4.34"
+        },
+        {
+          "address": "0x1D2F0da169ceB9fC7B3144628dB156f3F6c60dBE",
+          "symbol": "XRP",
+          "name": "XRP Token",
+          "weight": "3.85"
+        },
+        {
+          "address": "0x570A5D26f7765Ecb712C0924E4De545B89fD43dF",
+          "symbol": "SOL",
+          "name": "SOLANA",
+          "weight": "2.55"
+        },
+        {
+          "address": "0xCE7de646e7208a4Ef112cb6ed5038FA6cC6b12e3",
+          "symbol": "TRX",
+          "name": "TRON",
+          "weight": "1.78"
+        },
+        {
+          "address": "0xbA2aE424d960c26247Dd6c32edC70B295c744C43",
+          "symbol": "DOGE",
+          "name": "Dogecoin",
+          "weight": "0.70"
+        },
+        {
+          "address": "0x3EE2200Efb3400fAbB9AacF31297cBdD1d435D47",
+          "symbol": "ADA",
+          "name": "Cardano Token",
+          "weight": "0.35"
+        },
+        {
+          "address": "0xAeD86A53A8f3DbBa4FB6aE7A5f65f337c606bf28",
+          "symbol": "HYPE",
+          "name": "Hyperliquid",
+          "weight": "0.96"
+        },
+        {
+          "address": "0xF8A0BF9cF54Bb92F17374d9e9A321E6a111a51bD",
+          "symbol": "LINK",
+          "name": "ChainLink Token",
+          "weight": "0.32"
+        },
+        {
+          "address": "0x43C934A845205F0b514417d757d7235B8f53f1B9",
+          "symbol": "XLM",
+          "name": "Stellar",
+          "weight": "0.36"
+        },
+        {
+          "address": "0x8fF795a6F4D97E7887C79beA79aba5cc76444aDf",
+          "symbol": "BCH",
+          "name": "Bitcoin Cash Token",
+          "weight": "0.27"
+        },
+        {
+          "address": "0xd57f2e190C11cffc667AA5aD026Cd4C8DE0772a7",
+          "symbol": "SUI",
+          "name": "Binance-Peg Sui",
+          "weight": "0.17"
+        },
+        {
+          "address": "0x1CE0c2827e2eF14D5C4f29a091d735A204794041",
+          "symbol": "AVAX",
+          "name": "Avalanche",
+          "weight": "0.16"
+        },
+        {
+          "address": "0x0422f966Bf8E978075a97D47eF4c7EFd3563Fa51",
+          "symbol": "HBAR",
+          "name": "Binance-Peg Hedera",
+          "weight": "0.17"
+        },
+        {
+          "address": "0x4338665CBB7B2485A8855A139b75D5e34AB0DB94",
+          "symbol": "LTC",
+          "name": "Litecoin Token",
+          "weight": "0.20"
+        },
+        {
+          "address": "0x1Ba42e5193dfA8B03D15dd1B86a3113bbBEF8Eeb",
+          "symbol": "ZEC",
+          "name": "Zcash Token",
+          "weight": "0.45"
+        }
+      ],
+      "createdAt": 1761830972,
+      "tags": [
+        "Majors",
+        "Bitcoin",
+        "L1",
+        "DeFi",
+        "Perps",
+        "Ecosystem"
+      ],
+      "brand": {
+        "icon": "https://l5394zf57b.ufs.sh/f/mupND8QUUvXxhO6t9I2BbMt4sV2Y6jmzwPSZ3Hrav0gfieuo",
+        "cover": "https://l5394zf57b.ufs.sh/f/mupND8QUUvXxIC8FNf6xZOd2tbVAjQ406SzW5e3InqXoRl1x",
+        "tags": [
+          "Majors",
+          "Bitcoin",
+          "L1",
+          "DeFi",
+          "Perps",
+          "Ecosystem"
+        ],
+        "about": "",
+        "files": []
+      },
+      "performance": [
+        {
+          "timestamp": 1781038582,
+          "value": 125.22225138018776
+        },
+        {
+          "timestamp": 1781124979,
+          "value": 123.77628927544893
+        },
+        {
+          "timestamp": 1781211372,
+          "value": 127.14146238634035
+        },
+        {
+          "timestamp": 1781297774,
+          "value": 127.20211233221704
+        },
+        {
+          "timestamp": 1781384162,
+          "value": 128.75842487896776
+        },
+        {
+          "timestamp": 1781470579,
+          "value": 128.29020481047527
+        },
+        {
+          "timestamp": 1781556979,
+          "value": 134.70684916012172
+        },
+        {
+          "timestamp": 1781643368,
+          "value": 132.9896199609502
+        },
+        {
+          "timestamp": 1781729775,
+          "value": 130.0237505638302
+        },
+        {
+          "timestamp": 1781816176,
+          "value": 127.41839943145617
+        },
+        {
+          "timestamp": 1781902580,
+          "value": 127.17460942876674
+        },
+        {
+          "timestamp": 1781988980,
+          "value": 128.80135518448438
+        },
+        {
+          "timestamp": 1782075414,
+          "value": 128.625606666978
+        },
+        {
+          "timestamp": 1782161817,
+          "value": 129.57257142156035
+        },
+        {
+          "timestamp": 1782248163,
+          "value": 125.31054822870874
+        },
+        {
+          "timestamp": 1782334582,
+          "value": 122.53603480420695
+        },
+        {
+          "timestamp": 1782420981,
+          "value": 119.16773549235624
+        },
+        {
+          "timestamp": 1782507379,
+          "value": 120.26913739476095
+        },
+        {
+          "timestamp": 1782593780,
+          "value": 121.01410402410646
+        },
+        {
+          "timestamp": 1782680168,
+          "value": 119.81732389843775
+        },
+        {
+          "timestamp": 1782766581,
+          "value": 121.78938898654262
+        },
+        {
+          "timestamp": 1782852978,
+          "value": 118.53745921213327
+        },
+        {
+          "timestamp": 1782939403,
+          "value": 121.50503960196635
+        },
+        {
+          "timestamp": 1783025767,
+          "value": 124.53396667819204
+        },
+        {
+          "timestamp": 1783112178,
+          "value": 127.85490765397807
+        },
+        {
+          "timestamp": 1783198579,
+          "value": 128.95902882484467
+        },
+        {
+          "timestamp": 1783284979,
+          "value": 127.94399090334065
+        },
+        {
+          "timestamp": 1783371366,
+          "value": 129.77205623867604
+        },
+        {
+          "timestamp": 1783457780,
+          "value": 129.1363586743535
+        },
+        {
+          "timestamp": 1783544181,
+          "value": 125.90502217542101
+        },
+        {
+          "timestamp": 1783630577,
+          "value": 127.8711400038862
+        }
+      ],
+      "priceChange": {
+        "period": "1m",
+        "displayPeriod": "1M",
+        "ratio": 0.020987594887454004,
+        "percent": 2.0987594887454004,
+        "startPrice": 125.22225138018776,
+        "endPrice": 127.85036526305007,
+        "startTimestamp": 1781038582,
+        "endTimestamp": 1783633637
+      }
+    },
+    {
+      "address": "0x0d86883FAf4FfD7aEb116390af37746F45b6f378",
+      "name": "Web 3 Dollar",
+      "symbol": "USD3",
+      "price": 1.094915450548237,
+      "marketCap": 4493917.506179853,
+      "chainId": 1,
+      "type": "yield",
+      "status": "active",
+      "basket": [
+        {
+          "address": "0xa3931d71877C0E7a3148CB7Eb4463524FEc27fbD",
+          "symbol": "sUSDS",
+          "name": "Savings USDS",
+          "weight": "24.9991745516899485"
+        },
+        {
+          "address": "0x0aDc69041a2B086f8772aCcE2A754f410F211bed",
+          "symbol": "saEthUSDC",
+          "name": "Static Aave Ethereum USDC",
+          "weight": "24.9994543346334272"
+        },
+        {
+          "address": "0x27F2f159Fe990Ba83D57f39Fd69661764BEbf37a",
+          "symbol": "wcUSDCv3",
+          "name": "Wrapped cUSDCv3",
+          "weight": "24.99950433425437"
+        },
+        {
+          "address": "0xBEEF01735c132Ada46AA9aA4c54623cAA92A64CB",
+          "symbol": "steakUSDC",
+          "name": "Steakhouse USDC",
+          "weight": "25.0018667794222541"
+        }
+      ],
+      "createdAt": 1712180087,
+      "performance": [],
+      "priceChange": {
+        "period": "1m",
+        "displayPeriod": "1M",
+        "ratio": null,
+        "percent": null,
+        "startPrice": null,
+        "endPrice": null,
+        "startTimestamp": null,
+        "endTimestamp": null
+      }
+    },
+    {
+      "address": "0x4dA9A0f397dB1397902070f93a4D6ddBC0E0E6e8",
+      "name": "CF Large Cap Index",
+      "symbol": "LCAP",
+      "price": 5.3067515615696275,
+      "marketCap": 2134934.7042900953,
+      "chainId": 8453,
+      "type": "index",
+      "status": "active",
+      "basket": [
+        {
+          "address": "0xcbB7C0000aB88B473b1f5aFd9ef808440eed33Bf",
+          "symbol": "cbBTC",
+          "name": "Coinbase Wrapped BTC",
+          "weight": "42.48"
+        },
+        {
+          "address": "0x4200000000000000000000000000000000000006",
+          "symbol": "WETH",
+          "name": "Wrapped Ether",
+          "weight": "20.72"
+        },
+        {
+          "address": "0x2615a94df961278DcbC41Fb0a54fEc5f10a693aE",
+          "symbol": "uXRP",
+          "name": "XRP (Universal)",
+          "weight": "13.46"
+        },
+        {
+          "address": "0x9B8Df6E244526ab5F6e6400d331DB28C8fdDdb55",
+          "symbol": "uSOL",
+          "name": "Solana (Universal)",
+          "weight": "9.73"
+        },
+        {
+          "address": "0x12E96C2BFEA6E835CF8Dd38a5834fa61Cf723736",
+          "symbol": "uDOGE",
+          "name": "Dogecoin (Universal)",
+          "weight": "2.32"
+        },
+        {
+          "address": "0xa3A34A0D9A08CCDDB6Ed422Ac0A28a06731335aA",
+          "symbol": "uADA",
+          "name": "Cardano (Universal)",
+          "weight": "1.44"
+        },
+        {
+          "address": "0x378c326A472915d38b2D8D41e1345987835FaB64",
+          "symbol": "uXLM",
+          "name": "Stellar (Universal)",
+          "weight": "1.11"
+        },
+        {
+          "address": "0x15D0e0c55a3E7eE67152aD7E89acf164253Ff68d",
+          "symbol": "HYPE",
+          "name": "HYPE",
+          "weight": "8.74"
+        }
+      ],
+      "createdAt": 1753802435,
+      "tags": [
+        "Majors",
+        "Bitcoin",
+        "L1"
+      ],
+      "brand": {
+        "icon": "https://l5394zf57b.ufs.sh/f/mupND8QUUvXxBVjyB3T4H9uivWURqQkxfgFXD7tedNTwsYoS",
+        "cover": "https://l5394zf57b.ufs.sh/f/mupND8QUUvXxyoERsLrX3EJomHD1USwYFd2GKiBg5a8eIx7n",
+        "tags": [
+          "Majors",
+          "Bitcoin",
+          "L1"
+        ],
+        "about": "",
+        "files": []
+      },
+      "performance": [
+        {
+          "timestamp": 1781038582,
+          "value": 5.129198672288513
+        },
+        {
+          "timestamp": 1781124979,
+          "value": 5.00987535076749
+        },
+        {
+          "timestamp": 1781211372,
+          "value": 5.18284716322281
+        },
+        {
+          "timestamp": 1781297774,
+          "value": 5.199517426364501
+        },
+        {
+          "timestamp": 1781384162,
+          "value": 5.2485460408832685
+        },
+        {
+          "timestamp": 1781470579,
+          "value": 5.224105387432905
+        },
+        {
+          "timestamp": 1781556979,
+          "value": 5.613316357320453
+        },
+        {
+          "timestamp": 1781643368,
+          "value": 5.563303211975808
+        },
+        {
+          "timestamp": 1781729775,
+          "value": 5.42708091027893
+        },
+        {
+          "timestamp": 1781816176,
+          "value": 5.304562420238186
+        },
+        {
+          "timestamp": 1781902580,
+          "value": 5.293474284625051
+        },
+        {
+          "timestamp": 1781988980,
+          "value": 5.355177410193129
+        },
+        {
+          "timestamp": 1782075414,
+          "value": 5.343972477244558
+        },
+        {
+          "timestamp": 1782161817,
+          "value": 5.3530964958017035
+        },
+        {
+          "timestamp": 1782248163,
+          "value": 5.141717183073976
+        },
+        {
+          "timestamp": 1782334582,
+          "value": 5.019351284598297
+        },
+        {
+          "timestamp": 1782420981,
+          "value": 4.889948325145011
+        },
+        {
+          "timestamp": 1782507379,
+          "value": 4.9740891875125754
+        },
+        {
+          "timestamp": 1782593780,
+          "value": 4.978482930233795
+        },
+        {
+          "timestamp": 1782680168,
+          "value": 4.937029792210379
+        },
+        {
+          "timestamp": 1782766581,
+          "value": 5.069588881902756
+        },
+        {
+          "timestamp": 1782852978,
+          "value": 4.945237618284877
+        },
+        {
+          "timestamp": 1782939403,
+          "value": 5.047004642661824
+        },
+        {
+          "timestamp": 1783025767,
+          "value": 5.21897569194298
+        },
+        {
+          "timestamp": 1783112178,
+          "value": 5.39692261563564
+        },
+        {
+          "timestamp": 1783198579,
+          "value": 5.447577870880868
+        },
+        {
+          "timestamp": 1783284979,
+          "value": 5.401247906895867
+        },
+        {
+          "timestamp": 1783371366,
+          "value": 5.458993570173881
+        },
+        {
+          "timestamp": 1783457780,
+          "value": 5.4091326204250505
+        },
+        {
+          "timestamp": 1783544181,
+          "value": 5.2422860425177085
+        },
+        {
+          "timestamp": 1783630577,
+          "value": 5.3097747548523815
+        }
+      ],
+      "priceChange": {
+        "period": "1m",
+        "displayPeriod": "1M",
+        "ratio": 0.034616106847328555,
+        "percent": 3.4616106847328556,
+        "startPrice": 5.129198672288513,
+        "endPrice": 5.3067515615696275,
+        "startTimestamp": 1781038582,
+        "endTimestamp": 1783633637
+      }
+    },
+    {
+      "address": "0xCb327b99fF831bF8223cCEd12B1338FF3aA322Ff",
+      "name": "Based ETH",
+      "symbol": "bsdETH",
+      "price": 1883.6267905919713,
+      "marketCap": 1630679.9172178004,
+      "chainId": 8453,
+      "type": "yield",
+      "status": "active",
+      "basket": [
+        {
+          "address": "0x7FcD174E80f264448ebeE8c88a7C4476AAF58Ea6",
+          "symbol": "wsuperOETHb",
+          "name": "Wrapped Super OETH",
+          "weight": "33.3321348098584804"
+        },
+        {
+          "address": "0x2Ae3F1Ec7F1F5012CFEab0185bfc7aa3cf0DEc22",
+          "symbol": "cbETH",
+          "name": "Coinbase Wrapped Staked ETH",
+          "weight": "33.3358753994188298"
+        },
+        {
+          "address": "0xc1CBa3fCea344f92D9239c08C0568f6F2F0ee452",
+          "symbol": "wstETH",
+          "name": "Wrapped liquid staked Ether 2.0",
+          "weight": "33.3319897907226896"
+        }
+      ],
+      "createdAt": 1708532641,
+      "performance": [],
+      "priceChange": {
+        "period": "1m",
+        "displayPeriod": "1M",
+        "ratio": null,
+        "percent": null,
+        "startPrice": null,
+        "endPrice": null,
+        "startTimestamp": null,
+        "endTimestamp": null
+      }
+    },
+    {
+      "address": "0xa0Fe4e0aEca5479705ce996615B2EACB6b6a10Fb",
+      "name": "Reserve Photonics DTF",
+      "symbol": "PHOTON",
+      "price": 92.93138172530787,
+      "marketCap": 843593.1949138367,
+      "chainId": 56,
+      "type": "index",
+      "status": "active",
+      "basket": [
+        {
+          "address": "0x0C50323AF81D5C33822c6Add256Fb9093D42BC74",
+          "symbol": "AXTIon",
+          "name": "AXT (Ondo Tokenized)",
+          "weight": "1.16"
+        },
+        {
+          "address": "0x25a4DbAE9a0Cd8C75656D6b50FFDf4900CC20d8f",
+          "symbol": "GLWon",
+          "name": "Corning (Ondo Tokenized)",
+          "weight": "23.76"
+        },
+        {
+          "address": "0x89a9F7114bE6b220fAe645ba0cbB720889867415",
+          "symbol": "CIENon",
+          "name": "Ciena (Ondo Tokenized)",
+          "weight": "18.51"
+        },
+        {
+          "address": "0x0fAcaFB97ffDbA3cAe88512070AF49bd30674cD9",
+          "symbol": "LITEon",
+          "name": "Lumentum Holdings (Ondo Tokenized)",
+          "weight": "17.11"
+        },
+        {
+          "address": "0x0585756aAFB241b0f8A9Df62Db26c566091Bde0b",
+          "symbol": "COHRon",
+          "name": "Coherent (Ondo Tokenized)",
+          "weight": "17.94"
+        },
+        {
+          "address": "0x1dCd320C5d7b84CD407437c58d56CbbDd0D9d8f3",
+          "symbol": "MTSIon",
+          "name": "MACOM Technology Solutions Holdings (Ondo Tokenized)",
+          "weight": "6.92"
+        },
+        {
+          "address": "0xA1DaaB37dA2a29A1eC721922b55962eB8B481001",
+          "symbol": "FNon",
+          "name": "Fabrinet (Ondo Tokenized)",
+          "weight": "4.86"
+        },
+        {
+          "address": "0x343324170C91c4D8Cf4D439B3E5a619F50621aE7",
+          "symbol": "TSEMon",
+          "name": "Tower Semiconductor (Ondo Tokenized)",
+          "weight": "7.19"
+        },
+        {
+          "address": "0x149Bda9e7251DC36f536d1fE7F92A5ea203F4F3D",
+          "symbol": "AAOIon",
+          "name": "Applied Optoelectronics (Ondo Tokenized)",
+          "weight": "2.55"
+        }
+      ],
+      "createdAt": 1781718876,
+      "brand": {
+        "icon": "https://l5394zf57b.ufs.sh/f/mupND8QUUvXxYmQhYtkGhrj2ScsDNeUp3lRftPgCi0ZM65Vz",
+        "cover": "",
+        "video": "https://youtu.be/Ngb7bpd5keA",
+        "tags": [
+          "AI",
+          "RWA"
+        ],
+        "about": "The Reserve AI Photonics DTF (PHOTON) is a weighted basket of public, US-listed photonics companies at the center of the AI buildout.\n\nThe basket is composed of companies that generate significant revenue from AI data-center photonics demand, weighted by market capitalization with a 20% cap and a $5B minimum market cap, rebalanced quarterly. \n\nWhy a photonics DTF? Inside AI data centers, light is replacing copper wire: as AI chips get faster and more data-hungry, the bottleneck shifts from computing the data to moving it, and copper hits a physical wall of heat, power loss, and limited reach. The PHOTON DTF gives you direct exposure to the companies making that shift: the fiber, lasers, transceivers, and optical chips that have become the central nervous system of the AI data center.\n\nPHOTON bundles Ondo Global Markets tokenized stocks, each of which is backed by actual shares held by Ondo in a regulated US brokerage account.",
+        "files": []
+      },
+      "performance": [
+        {
+          "timestamp": 1781038800,
+          "value": 93.9459646062566
+        },
+        {
+          "timestamp": 1781125200,
+          "value": 93.10058429375586
+        },
+        {
+          "timestamp": 1781211600,
+          "value": 98.87203872098799
+        },
+        {
+          "timestamp": 1781305200,
+          "value": 101.18509011656069
+        },
+        {
+          "timestamp": 1781557200,
+          "value": 106.37937840220984
+        },
+        {
+          "timestamp": 1781643600,
+          "value": 99.11249864280778
+        },
+        {
+          "timestamp": 1781729775,
+          "value": 98.85928973371564
+        },
+        {
+          "timestamp": 1781816176,
+          "value": 101.23752731118698
+        },
+        {
+          "timestamp": 1781902580,
+          "value": 101.3520037594319
+        },
+        {
+          "timestamp": 1781988980,
+          "value": 101.35033269461167
+        },
+        {
+          "timestamp": 1782075414,
+          "value": 101.34866165734353
+        },
+        {
+          "timestamp": 1782161817,
+          "value": 108.58621671712329
+        },
+        {
+          "timestamp": 1782248163,
+          "value": 100.58989730602121
+        },
+        {
+          "timestamp": 1782334582,
+          "value": 105.8102153737445
+        },
+        {
+          "timestamp": 1782420981,
+          "value": 106.56754395426776
+        },
+        {
+          "timestamp": 1782507379,
+          "value": 101.841859921666
+        },
+        {
+          "timestamp": 1782593780,
+          "value": 101.67127306914118
+        },
+        {
+          "timestamp": 1782680168,
+          "value": 101.66959674029368
+        },
+        {
+          "timestamp": 1782766581,
+          "value": 107.33656884176528
+        },
+        {
+          "timestamp": 1782852978,
+          "value": 108.9247169956005
+        },
+        {
+          "timestamp": 1782939403,
+          "value": 99.87391985564857
+        },
+        {
+          "timestamp": 1783025767,
+          "value": 90.5896172477895
+        },
+        {
+          "timestamp": 1783112178,
+          "value": 90.71075802414548
+        },
+        {
+          "timestamp": 1783198579,
+          "value": 90.70926240934824
+        },
+        {
+          "timestamp": 1783284979,
+          "value": 90.70776681921036
+        },
+        {
+          "timestamp": 1783371366,
+          "value": 90.93474549139144
+        },
+        {
+          "timestamp": 1783457780,
+          "value": 86.84606500636755
+        },
+        {
+          "timestamp": 1783544181,
+          "value": 87.5613282966944
+        },
+        {
+          "timestamp": 1783630577,
+          "value": 92.72588604917884
+        }
+      ],
+      "priceChange": {
+        "period": "1m",
+        "displayPeriod": "1M",
+        "ratio": -0.010799643020336328,
+        "percent": -1.0799643020336327,
+        "startPrice": 93.9459646062566,
+        "endPrice": 92.93138172530787,
+        "startTimestamp": 1781038800,
+        "endTimestamp": 1783633637
+      }
+    },
+    {
+      "address": "0xf571Fe3F0d74521Bc7310B111Faea931C748f27B",
+      "name": "Reserve AI NeoCloud DTF",
+      "symbol": "NEOCLOUD",
+      "price": 77.87811288954701,
+      "marketCap": 842516.8145505389,
+      "chainId": 56,
+      "type": "index",
+      "status": "active",
+      "basket": [
+        {
+          "address": "0x25eD86472cf3012607DC6576c58e6432968255C2",
+          "symbol": "CORZon",
+          "name": "Core Scientific (Ondo Tokenized)",
+          "weight": "6.88"
+        },
+        {
+          "address": "0x76E39171Cb665a35981e744e2CEB7012F76caEAc",
+          "symbol": "CRWVon",
+          "name": "CoreWeave (Ondo Tokenized)",
+          "weight": "21.02"
+        },
+        {
+          "address": "0xee268780473E7a0e47baC41547C6E01512555A16",
+          "symbol": "NBISon",
+          "name": "Nebius Group (Ondo Tokenized)",
+          "weight": "20.78"
+        },
+        {
+          "address": "0x8FD70eE385f470c8D6FDA2D93a4E49C849BAC6a6",
+          "symbol": "IRENon",
+          "name": "IREN (Ondo Tokenized)",
+          "weight": "13.74"
+        },
+        {
+          "address": "0x3A82f1C847cc55e52e597fD81c63a812C6722541",
+          "symbol": "HUTon",
+          "name": "Hut 8 (Ondo Tokenized)",
+          "weight": "11.07"
+        },
+        {
+          "address": "0x18De24acb876C0B8392d9C55583Bb21c0355980b",
+          "symbol": "APLDon",
+          "name": "Applied Digital (Ondo Tokenized)",
+          "weight": "8.49"
+        },
+        {
+          "address": "0xaD56701D9e57957e28e546Db7db508A16d4f86CC",
+          "symbol": "WULFon",
+          "name": "Terawulf (Ondo Tokenized)",
+          "weight": "9.30"
+        },
+        {
+          "address": "0xDad07D0Ca26ed4109Bc00893dBee3Ed4cE8ce2a4",
+          "symbol": "CIFRon",
+          "name": "Cipher Mining (Ondo Tokenized)",
+          "weight": "8.72"
+        }
+      ],
+      "createdAt": 1781726065,
+      "brand": {
+        "icon": "https://l5394zf57b.ufs.sh/f/mupND8QUUvXxSLxvYczdsT15PwoUNnDvJ3hXEatCMQxeHuGm",
+        "cover": "",
+        "video": "https://youtu.be/vjHPssKuvuw",
+        "tags": [
+          "AI",
+          "RWA"
+        ],
+        "about": "The Reserve AI Capacity & Neocloud DTF (NEOCLOUD) is a weighted basket of public, US-listed neocloud and AI data-center companies at the center of the AI buildout.  \n\nThe basket is composed of companies that generate significant revenue from AI compute demand, weighted by market capitalization with a 20% cap and a $5B minimum market cap, rebalanced quarterly. \n\nWhy a neocloud DTF? Building an AI data center costs billions, so most companies that need AI computing rent it instead: a new industry of neoclouds and power-rich data-center operators raises the capital, secures the power, and rents out compute by the hour. The NEOCLOUD DTF gives you direct exposure to the companies turning capital, silicon, and electricity into the compute everyone needs: the GPU-cloud operators and the power-rich sites that host them.\n\nNEOCLOUD bundles Ondo Global Markets tokenized stocks, each of which is backed by actual shares held in a regulated US brokerage account.",
+        "files": []
+      },
+      "performance": [
+        {
+          "timestamp": 1781038800,
+          "value": 86.61443928291665
+        },
+        {
+          "timestamp": 1781125200,
+          "value": 81.16811507730262
+        },
+        {
+          "timestamp": 1781211600,
+          "value": 87.8469772308565
+        },
+        {
+          "timestamp": 1781305200,
+          "value": 91.68912299401694
+        },
+        {
+          "timestamp": 1781557200,
+          "value": 96.5317994128133
+        },
+        {
+          "timestamp": 1781643600,
+          "value": 98.17111321287526
+        },
+        {
+          "timestamp": 1781729775,
+          "value": 99.66162318628822
+        },
+        {
+          "timestamp": 1781816176,
+          "value": 101.91754031678964
+        },
+        {
+          "timestamp": 1781902580,
+          "value": 102.1209440229571
+        },
+        {
+          "timestamp": 1781988980,
+          "value": 102.1192602800548
+        },
+        {
+          "timestamp": 1782075414,
+          "value": 102.11757656491362
+        },
+        {
+          "timestamp": 1782161817,
+          "value": 98.753321928507
+        },
+        {
+          "timestamp": 1782248163,
+          "value": 97.02581489278748
+        },
+        {
+          "timestamp": 1782334582,
+          "value": 93.97565589310616
+        },
+        {
+          "timestamp": 1782420981,
+          "value": 89.1863055849856
+        },
+        {
+          "timestamp": 1782507379,
+          "value": 87.10298452732407
+        },
+        {
+          "timestamp": 1782593780,
+          "value": 87.28978569780206
+        },
+        {
+          "timestamp": 1782680168,
+          "value": 87.28834648708462
+        },
+        {
+          "timestamp": 1782766581,
+          "value": 87.11543145187014
+        },
+        {
+          "timestamp": 1782852978,
+          "value": 88.55740826378535
+        },
+        {
+          "timestamp": 1782939403,
+          "value": 79.20042244401083
+        },
+        {
+          "timestamp": 1783025767,
+          "value": 73.10918413623419
+        },
+        {
+          "timestamp": 1783112178,
+          "value": 73.32249803029914
+        },
+        {
+          "timestamp": 1783198579,
+          "value": 73.32128910849745
+        },
+        {
+          "timestamp": 1783284979,
+          "value": 73.32008020662816
+        },
+        {
+          "timestamp": 1783371366,
+          "value": 76.95911922887528
+        },
+        {
+          "timestamp": 1783457780,
+          "value": 71.42954792769171
+        },
+        {
+          "timestamp": 1783544181,
+          "value": 77.1643313987671
+        },
+        {
+          "timestamp": 1783630577,
+          "value": 77.9068838858319
+        }
+      ],
+      "priceChange": {
+        "period": "1m",
+        "displayPeriod": "1M",
+        "ratio": -0.1008645494411547,
+        "percent": -10.08645494411547,
+        "startPrice": 86.61443928291665,
+        "endPrice": 77.87811288954701,
+        "startTimestamp": 1781038800,
+        "endTimestamp": 1783633637
+      }
+    },
+    {
+      "address": "0xD7cE7a841310982AcD976D1a6fe7BB6063c5689D",
+      "name": "Reserve AI Infrastructure DTF",
+      "symbol": "BUILDOUT",
+      "price": 96.78872950643054,
+      "marketCap": 826110.2816652071,
+      "chainId": 56,
+      "type": "index",
+      "status": "active",
+      "basket": [
+        {
+          "address": "0x0fAcaFB97ffDbA3cAe88512070AF49bd30674cD9",
+          "symbol": "LITEon",
+          "name": "Lumentum Holdings (Ondo Tokenized)",
+          "weight": "0.57"
+        },
+        {
+          "address": "0xA9eE28C80f960B889dFbd1902055218cBa016F75",
+          "symbol": "NVDAon",
+          "name": "NVIDIA (Ondo Tokenized)",
+          "weight": "9.92"
+        },
+        {
+          "address": "0xC37042A7a4fa510D8884a433762aB87257B91965",
+          "symbol": "TSMon",
+          "name": "Taiwan Semiconductor Manufacturing (Ondo Tokenized)",
+          "weight": "10.40"
+        },
+        {
+          "address": "0x0ED2E3180EDf393e6bf8Db124bD15DDD54dE150A",
+          "symbol": "AVGOon",
+          "name": "Broadcom (Ondo Tokenized)",
+          "weight": "10.68"
+        },
+        {
+          "address": "0x8b6ACf6041A81567f012Ff6A4C6D96d5818d74bF",
+          "symbol": "MUon",
+          "name": "Micron Technology (Ondo Tokenized)",
+          "weight": "9.48"
+        },
+        {
+          "address": "0x9f16E46c73b43BDB70861247d537bEE4eA18F639",
+          "symbol": "AMDon",
+          "name": "AMD (Ondo Tokenized)",
+          "weight": "8.42"
+        },
+        {
+          "address": "0xb034f6Cb52b7f2Fd5a7EeeffCa6b9aDCD6b9A6F6",
+          "symbol": "ASMLon",
+          "name": "ASML Holding NV (Ondo Tokenized)",
+          "weight": "6.72"
+        },
+        {
+          "address": "0xA528CaaA2f96090e379d43F90834C75dF54D6E74",
+          "symbol": "INTCon",
+          "name": "Intel (Ondo Tokenized)",
+          "weight": "5.29"
+        },
+        {
+          "address": "0x35895a1fa1AFf7FB3204fB01257409Fd75acB24C",
+          "symbol": "LRCXon",
+          "name": "Lam Research (Ondo Tokenized)",
+          "weight": "4.26"
+        },
+        {
+          "address": "0x5ecC352C4640f1d26BD231dbBd171f40f7d0Eec6",
+          "symbol": "AMATon",
+          "name": "Applied Materials (Ondo Tokenized)",
+          "weight": "4.65"
+        },
+        {
+          "address": "0x527C6436E1eAa4f2065CDE4090F798Cb5D031dD6",
+          "symbol": "ARMon",
+          "name": "Arm Holdings plc (Ondo Tokenized)",
+          "weight": "3.46"
+        },
+        {
+          "address": "0xFc263946439b0d802bF4C5a6fCd34E2885259f91",
+          "symbol": "KLACon",
+          "name": "KLA (Ondo Tokenized)",
+          "weight": "2.86"
+        },
+        {
+          "address": "0x4Fd67CB8CFEdc718BAc984b5936abE3330d0a2A4",
+          "symbol": "SNDKon",
+          "name": "SanDisk (Ondo Tokenized)",
+          "weight": "2.64"
+        },
+        {
+          "address": "0xf26518958935654878De15BE7bC79A26971583Ba",
+          "symbol": "DELLon",
+          "name": "Dell Technologies (Ondo Tokenized)",
+          "weight": "2.90"
+        },
+        {
+          "address": "0x1501EC83FFEf405B4331CC4f73277a40fb0C627d",
+          "symbol": "MRVLon",
+          "name": "Marvell Technology (Ondo Tokenized)",
+          "weight": "2.01"
+        },
+        {
+          "address": "0x2Aea1D415D45CCF3EaBE565d45DcaF4ea2035b9c",
+          "symbol": "GEVon",
+          "name": "GE Vernova (Ondo Tokenized)",
+          "weight": "2.94"
+        },
+        {
+          "address": "0xE8ff70859Ce4cbd72E4352b4fb45F5BF39d07464",
+          "symbol": "IBMon",
+          "name": "IBM (Ondo Tokenized)",
+          "weight": "2.81"
+        },
+        {
+          "address": "0x538e2838f9ebC9B891399DF4a8dcc42890D9dc20",
+          "symbol": "ANETon",
+          "name": "Arista Networks (Ondo Tokenized)",
+          "weight": "2.30"
+        },
+        {
+          "address": "0x25a4DbAE9a0Cd8C75656D6b50FFDf4900CC20d8f",
+          "symbol": "GLWon",
+          "name": "Corning (Ondo Tokenized)",
+          "weight": "1.59"
+        },
+        {
+          "address": "0x4697b2A050f7B5A8e1ebc27c325f9D78D094f041",
+          "symbol": "ETNon",
+          "name": "Eaton (Ondo Tokenized)",
+          "weight": "1.58"
+        },
+        {
+          "address": "0x9Cea8A7Be1Ab0320b709d368Ad60d8500f55995f",
+          "symbol": "VRTon",
+          "name": "Vertiv (Ondo Tokenized)",
+          "weight": "1.22"
+        },
+        {
+          "address": "0x2418c2e1aE3B8D767594b3974D32610743f88155",
+          "symbol": "PWRon",
+          "name": "Quanta Services (Ondo Tokenized)",
+          "weight": "1.02"
+        },
+        {
+          "address": "0x65D84F0990B7394209d591380C2952c83D778aA3",
+          "symbol": "CEGon",
+          "name": "Constellation Energy (Ondo Tokenized)",
+          "weight": "0.92"
+        },
+        {
+          "address": "0x0585756aAFB241b0f8A9Df62Db26c566091Bde0b",
+          "symbol": "COHRon",
+          "name": "Coherent (Ondo Tokenized)",
+          "weight": "0.60"
+        },
+        {
+          "address": "0x17D03aE104a9D12E9E5794Efb109B817Dd7f3404",
+          "symbol": "BEon",
+          "name": "Bloom Energy (Ondo Tokenized)",
+          "weight": "0.76"
+        }
+      ],
+      "createdAt": 1781724378,
+      "brand": {
+        "icon": "https://l5394zf57b.ufs.sh/f/mupND8QUUvXxyHeh2QrX3EJomHD1USwYFd2GKiBg5a8eIx7n",
+        "cover": "",
+        "video": "https://youtu.be/Mj43bGvrJ_c",
+        "tags": [
+          "AI",
+          "RWA"
+        ],
+        "about": "The Reserve AI Infrastructure DTF (BUILDOUT) is a weighted basket of public, US-listed semiconductor and hardware companies at the center of the AI buildout. \n\nThe basket holds the 25 largest US-listed companies across this AI hardware stack, weighted by market capitalization with a 10% cap, rebalanced quarterly. \n\nWhy an AI infrastructure DTF? Before any model can run, someone has to build the machine: the chips that compute, the memory that feeds them, the equipment and foundries that make them, and the power that runs it all. The BUILDOUT DTF gives you direct exposure to the picks and shovels of the AI buildout: the semiconductors, memory, manufacturing equipment, networking, and power that every AI dollar flows through first. \n\nBUILDOUT bundles Ondo Global Markets tokenized stocks, each of which is backed by actual shares held in a regulated US brokerage account.",
+        "files": []
+      },
+      "performance": [
+        {
+          "timestamp": 1781038800,
+          "value": 91.04094548407315
+        },
+        {
+          "timestamp": 1781125200,
+          "value": 87.82505104863944
+        },
+        {
+          "timestamp": 1781211600,
+          "value": 94.48465185273956
+        },
+        {
+          "timestamp": 1781305200,
+          "value": 96.59322467105025
+        },
+        {
+          "timestamp": 1781557200,
+          "value": 100.55345132855716
+        },
+        {
+          "timestamp": 1781643600,
+          "value": 96.88286097799003
+        },
+        {
+          "timestamp": 1781729775,
+          "value": 98.93957929484068
+        },
+        {
+          "timestamp": 1781816176,
+          "value": 103.48551376886647
+        },
+        {
+          "timestamp": 1781902580,
+          "value": 103.55476230254611
+        },
+        {
+          "timestamp": 1781988980,
+          "value": 103.56347326565003
+        },
+        {
+          "timestamp": 1782075414,
+          "value": 103.56176573871014
+        },
+        {
+          "timestamp": 1782161817,
+          "value": 105.41244270967823
+        },
+        {
+          "timestamp": 1782248163,
+          "value": 98.00037268445347
+        },
+        {
+          "timestamp": 1782334582,
+          "value": 102.25272088356992
+        },
+        {
+          "timestamp": 1782420981,
+          "value": 101.04691389127888
+        },
+        {
+          "timestamp": 1782507379,
+          "value": 97.11159721298522
+        },
+        {
+          "timestamp": 1782593780,
+          "value": 97.35402238676427
+        },
+        {
+          "timestamp": 1782680168,
+          "value": 97.35194374085425
+        },
+        {
+          "timestamp": 1782766581,
+          "value": 101.04056135656309
+        },
+        {
+          "timestamp": 1782852978,
+          "value": 105.36872477306494
+        },
+        {
+          "timestamp": 1782939403,
+          "value": 98.83570787992258
+        },
+        {
+          "timestamp": 1783025767,
+          "value": 94.01845952076415
+        },
+        {
+          "timestamp": 1783112178,
+          "value": 94.34036277508157
+        },
+        {
+          "timestamp": 1783198579,
+          "value": 94.34898653220684
+        },
+        {
+          "timestamp": 1783284979,
+          "value": 94.39714256125907
+        },
+        {
+          "timestamp": 1783371366,
+          "value": 96.22467074146223
+        },
+        {
+          "timestamp": 1783457780,
+          "value": 92.19632125015208
+        },
+        {
+          "timestamp": 1783544181,
+          "value": 93.3234687128267
+        },
+        {
+          "timestamp": 1783630577,
+          "value": 96.69993187742533
+        }
+      ],
+      "priceChange": {
+        "period": "1m",
+        "displayPeriod": "1M",
+        "ratio": 0.06313405459264393,
+        "percent": 6.313405459264393,
+        "startPrice": 91.04094548407315,
+        "endPrice": 96.78872950643054,
+        "startTimestamp": 1781038800,
+        "endTimestamp": 1783633637
+      }
+    },
+    {
+      "address": "0x290bCc0Fd5096cC3261AE2021841c7BC67Cb0f51",
+      "name": "Reserve AI Power DTF",
+      "symbol": "POWER",
+      "price": 95.8366519102778,
+      "marketCap": 804463.6844252499,
+      "chainId": 56,
+      "type": "index",
+      "status": "active",
+      "basket": [
+        {
+          "address": "0xD381aec27DAAcCC87F102FF4Ad6652F8b5F20bA0",
+          "symbol": "POWLon",
+          "name": "Powell Industries (Ondo Tokenized)",
+          "weight": "0.94"
+        },
+        {
+          "address": "0x2Aea1D415D45CCF3EaBE565d45DcaF4ea2035b9c",
+          "symbol": "GEVon",
+          "name": "GE Vernova (Ondo Tokenized)",
+          "weight": "21.17"
+        },
+        {
+          "address": "0x4697b2A050f7B5A8e1ebc27c325f9D78D094f041",
+          "symbol": "ETNon",
+          "name": "Eaton (Ondo Tokenized)",
+          "weight": "17.08"
+        },
+        {
+          "address": "0x9Cea8A7Be1Ab0320b709d368Ad60d8500f55995f",
+          "symbol": "VRTon",
+          "name": "Vertiv (Ondo Tokenized)",
+          "weight": "13.46"
+        },
+        {
+          "address": "0x2418c2e1aE3B8D767594b3974D32610743f88155",
+          "symbol": "PWRon",
+          "name": "Quanta Services (Ondo Tokenized)",
+          "weight": "10.96"
+        },
+        {
+          "address": "0x65D84F0990B7394209d591380C2952c83D778aA3",
+          "symbol": "CEGon",
+          "name": "Constellation Energy (Ondo Tokenized)",
+          "weight": "9.76"
+        },
+        {
+          "address": "0xbbE4Dfe7a349Fb72aEc6f52d5CD9bDD78AE8f313",
+          "symbol": "TLNon",
+          "name": "Talen Energy (Ondo Tokenized)",
+          "weight": "1.89"
+        },
+        {
+          "address": "0x17D03aE104a9D12E9E5794Efb109B817Dd7f3404",
+          "symbol": "BEon",
+          "name": "Bloom Energy (Ondo Tokenized)",
+          "weight": "7.85"
+        },
+        {
+          "address": "0xf2C24c47805f4f72d3919C8674bFDd401505794B",
+          "symbol": "VSTon",
+          "name": "Vistra (Ondo Tokenized)",
+          "weight": "5.80"
+        },
+        {
+          "address": "0xB35a9EAB5D25282f4e668798B629a9294e9A47aa",
+          "symbol": "ONon",
+          "name": "ON Semiconductor (Ondo Tokenized)",
+          "weight": "4.16"
+        },
+        {
+          "address": "0x484Ce83BB55b50D70236C7D1E29E0Ba7524f905B",
+          "symbol": "NVTon",
+          "name": "nVent Electric (Ondo Tokenized)",
+          "weight": "2.73"
+        },
+        {
+          "address": "0xa59469D91563CaeedDd2ffC731f41215E7b691ef",
+          "symbol": "VICRon",
+          "name": "Vicor (Ondo Tokenized)",
+          "weight": "1.39"
+        },
+        {
+          "address": "0x1C42C07257F936a7c4f84B8D756c95817E23631A",
+          "symbol": "HUBBon",
+          "name": "Hubbell (Ondo Tokenized)",
+          "weight": "2.81"
+        }
+      ],
+      "createdAt": 1781725454,
+      "brand": {
+        "icon": "https://l5394zf57b.ufs.sh/f/mupND8QUUvXxZKOsPr8JmlcRC50zSbLNDr2MEexXdkwT78ah",
+        "cover": "",
+        "video": "",
+        "tags": [
+          "AI",
+          "RWA"
+        ],
+        "about": "The Reserve AI Power DTF (POWER) is a weighted basket of public, US-listed power companies at the center of the AI buildout.\n\nThe basket is composed of companies that generate significant revenue from AI data-center power demand, weighted by market capitalization with a 20% cap and a $10B minimum market cap, rebalanced quarterly. \n\nWhy a power DTF? Strip away the software and the chips, and AI comes down to electricity: a single AI data center can draw as much power as a small city, and the grid was never built for hundreds of them. The POWER DTF gives you direct exposure to the companies that generate, move, and condition that electricity: the gas turbines, nuclear plants, grid and electrical equipment, and power chips behind the AI buildout.\n\nPOWER bundles Ondo Global Markets tokenized stocks, each of which is backed by actual share held in a regulated US brokerage account.",
+        "files": []
+      },
+      "performance": [
+        {
+          "timestamp": 1781038800,
+          "value": 91.8957542414573
+        },
+        {
+          "timestamp": 1781125200,
+          "value": 87.11306701730639
+        },
+        {
+          "timestamp": 1781211600,
+          "value": 91.67085084100033
+        },
+        {
+          "timestamp": 1781305200,
+          "value": 93.82302629717996
+        },
+        {
+          "timestamp": 1781557200,
+          "value": 97.30720095517728
+        },
+        {
+          "timestamp": 1781643368,
+          "value": 97.16311316205491
+        },
+        {
+          "timestamp": 1781729775,
+          "value": 100.03643972351755
+        },
+        {
+          "timestamp": 1781816176,
+          "value": 103.75014844380499
+        },
+        {
+          "timestamp": 1781902580,
+          "value": 104.01419648813635
+        },
+        {
+          "timestamp": 1781988980,
+          "value": 104.00726895373089
+        },
+        {
+          "timestamp": 1782075414,
+          "value": 104.0107992367338
+        },
+        {
+          "timestamp": 1782161817,
+          "value": 107.38531132727235
+        },
+        {
+          "timestamp": 1782248163,
+          "value": 100.23030189562373
+        },
+        {
+          "timestamp": 1782334582,
+          "value": 102.04694246732006
+        },
+        {
+          "timestamp": 1782420981,
+          "value": 101.82548377612336
+        },
+        {
+          "timestamp": 1782507379,
+          "value": 95.56305948749161
+        },
+        {
+          "timestamp": 1782593780,
+          "value": 95.57222512732683
+        },
+        {
+          "timestamp": 1782680168,
+          "value": 95.57064935795596
+        },
+        {
+          "timestamp": 1782766581,
+          "value": 98.05786860219831
+        },
+        {
+          "timestamp": 1782852978,
+          "value": 102.49577787253776
+        },
+        {
+          "timestamp": 1782939403,
+          "value": 97.90637830479263
+        },
+        {
+          "timestamp": 1783025767,
+          "value": 94.55451454411792
+        },
+        {
+          "timestamp": 1783112178,
+          "value": 94.9706475951556
+        },
+        {
+          "timestamp": 1783198579,
+          "value": 94.96908174443472
+        },
+        {
+          "timestamp": 1783284979,
+          "value": 94.96751591953117
+        },
+        {
+          "timestamp": 1783371366,
+          "value": 98.26602366187844
+        },
+        {
+          "timestamp": 1783457780,
+          "value": 93.86004110401318
+        },
+        {
+          "timestamp": 1783544181,
+          "value": 93.8843113597415
+        },
+        {
+          "timestamp": 1783630577,
+          "value": 95.86046462603645
+        }
+      ],
+      "priceChange": {
+        "period": "1m",
+        "displayPeriod": "1M",
+        "ratio": 0.042884436842051885,
+        "percent": 4.2884436842051885,
+        "startPrice": 91.8957542414573,
+        "endPrice": 95.8366519102778,
+        "startTimestamp": 1781038800,
+        "endTimestamp": 1783633637
+      }
+    },
+    {
+      "address": "0x75617e7653f86f074Cc30b9Fd4eBf52bA9b62247",
+      "name": "Reserve Robotics DTF",
+      "symbol": "ROBOTS",
+      "price": 101.01531040819859,
+      "marketCap": 791414.4088875748,
+      "chainId": 56,
+      "type": "index",
+      "status": "active",
+      "basket": [
+        {
+          "address": "0x30033A17ea24E90631532582a1917c64AFBF87Af",
+          "symbol": "OUSTon",
+          "name": "Ouster (Ondo Tokenized)",
+          "weight": "2.54"
+        },
+        {
+          "address": "0x784584933C2192Caa062E90d8140D94768CE62d8",
+          "symbol": "ISRGon",
+          "name": "Intuitive Surgical (Ondo Tokenized)",
+          "weight": "19.92"
+        },
+        {
+          "address": "0x95F7423c51Eab71cBD00ca855B0B2B2153F14184",
+          "symbol": "ROKon",
+          "name": "Rockwell Automation (Ondo Tokenized)",
+          "weight": "19.67"
+        },
+        {
+          "address": "0xc79Fc7aF952c8B41c6b7b7657dd24F44f7C10F2A",
+          "symbol": "SYMon",
+          "name": "Symbotic (Ondo Tokenized)",
+          "weight": "20.71"
+        },
+        {
+          "address": "0x80F03ABCb2BD85237740dD69f87d2F5De3909012",
+          "symbol": "LSCCon",
+          "name": "Lattice Semiconductor (Ondo Tokenized)",
+          "weight": "15.83"
+        },
+        {
+          "address": "0x66a1409FE303d00209202933e3d31eE43AaAB39d",
+          "symbol": "AURon",
+          "name": "Aurora Innovation (Ondo Tokenized)",
+          "weight": "10.17"
+        },
+        {
+          "address": "0x847ef23A3F99aF79A185ce033e1664165b846eEa",
+          "symbol": "HSAIon",
+          "name": "Hesai Group (Ondo Tokenized)",
+          "weight": "2.24"
+        },
+        {
+          "address": "0xCC977B493f52B4b6B6a0c3594530f2BaEe565E96",
+          "symbol": "MBLYon",
+          "name": "Mobileye Global (Ondo Tokenized)",
+          "weight": "6.65"
+        },
+        {
+          "address": "0x6cF3b84f0Ba4d86d9f6987812A11Db2c447D9483",
+          "symbol": "HIMXon",
+          "name": "Himax Technologies (Ondo Tokenized)",
+          "weight": "2.27"
+        }
+      ],
+      "createdAt": 1781724769,
+      "brand": {
+        "icon": "https://l5394zf57b.ufs.sh/f/mupND8QUUvXxmEIFouUUvXxgOp9n53Rqlys7HtMJG1oZVT6a",
+        "cover": "",
+        "video": "",
+        "tags": [
+          "AI",
+          "RWA"
+        ],
+        "about": "The Reserve Robotics DTF (ROBOTS) is a weighted basket of public, US-listed robotics and automation companies at the center of the AI buildout.  \n\nThe basket is composed of companies with significant and growing exposure to robotics and automation demand, weighted by market capitalization with a 20% cap and a $2B minimum market cap, rebalanced quarterly. \n\nWhy a robotics DTF? AI is moving off the screen and into the physical world: the same breakthroughs that taught software to reason are now teaching machines to perceive, decide, and act, and to take on physical labor. The ROBOTS DTF gives you direct exposure to the companies building that transition: the humanoids, surgical robots, factory and warehouse automation, lidar, machine vision, and the chips that let machines navigate the real world.\n\nROBOTS bundles Ondo Global Markets tokenized stocks, each of which is backed by actual shares held in a regulated US brokerage account.",
+        "files": []
+      },
+      "performance": [
+        {
+          "timestamp": 1781038800,
+          "value": 101.00912369462375
+        },
+        {
+          "timestamp": 1781125200,
+          "value": 97.23994849314363
+        },
+        {
+          "timestamp": 1781211600,
+          "value": 100.65589433478628
+        },
+        {
+          "timestamp": 1781305200,
+          "value": 100.68332925421787
+        },
+        {
+          "timestamp": 1781557200,
+          "value": 102.32508672206734
+        },
+        {
+          "timestamp": 1781643368,
+          "value": 100.40181253305897
+        },
+        {
+          "timestamp": 1781729775,
+          "value": 99.36531048287475
+        },
+        {
+          "timestamp": 1781816176,
+          "value": 101.44860532356654
+        },
+        {
+          "timestamp": 1781902580,
+          "value": 101.98360280831207
+        },
+        {
+          "timestamp": 1781988980,
+          "value": 101.97830388734093
+        },
+        {
+          "timestamp": 1782075414,
+          "value": 101.98026252867307
+        },
+        {
+          "timestamp": 1782161817,
+          "value": 101.18138030706727
+        },
+        {
+          "timestamp": 1782248163,
+          "value": 98.18465955929429
+        },
+        {
+          "timestamp": 1782334582,
+          "value": 98.11407211405036
+        },
+        {
+          "timestamp": 1782420981,
+          "value": 98.24922371377748
+        },
+        {
+          "timestamp": 1782507379,
+          "value": 98.12031955443635
+        },
+        {
+          "timestamp": 1782593780,
+          "value": 98.52462779369742
+        },
+        {
+          "timestamp": 1782680168,
+          "value": 98.52300334589843
+        },
+        {
+          "timestamp": 1782766581,
+          "value": 101.0867522626509
+        },
+        {
+          "timestamp": 1782852978,
+          "value": 105.74961041874559
+        },
+        {
+          "timestamp": 1782939403,
+          "value": 105.05882263862797
+        },
+        {
+          "timestamp": 1783025767,
+          "value": 101.96351031445917
+        },
+        {
+          "timestamp": 1783112178,
+          "value": 102.20537518494542
+        },
+        {
+          "timestamp": 1783198579,
+          "value": 102.20369004996464
+        },
+        {
+          "timestamp": 1783284979,
+          "value": 102.20200494276789
+        },
+        {
+          "timestamp": 1783371366,
+          "value": 103.99533829843062
+        },
+        {
+          "timestamp": 1783457780,
+          "value": 99.25163013365032
+        },
+        {
+          "timestamp": 1783544181,
+          "value": 98.68476480889703
+        },
+        {
+          "timestamp": 1783630577,
+          "value": 100.8304973183366
+        }
+      ],
+      "priceChange": {
+        "period": "1m",
+        "displayPeriod": "1M",
+        "ratio": 0.00006124905700140874,
+        "percent": 0.006124905700140874,
+        "startPrice": 101.00912369462375,
+        "endPrice": 101.01531040819859,
+        "startTimestamp": 1781038800,
+        "endTimestamp": 1783633637
+      }
+    },
+    {
+      "address": "0xe00CFa595841fb331105b93C19827797C925E3E4",
+      "name": "Reserve Venionaire L1 Select DTF",
+      "symbol": "VLONE",
+      "price": 45.15568347807469,
+      "marketCap": 194939.40960218132,
+      "chainId": 8453,
+      "type": "index",
+      "status": "active",
+      "basket": [
+        {
+          "address": "0x51436F6bD047797DE7D11E9d32685f029aed1069",
+          "symbol": "TONCOIN",
+          "name": "Wrapped TON Coin",
+          "weight": "3.71"
+        },
+        {
+          "address": "0x9c0e042d65a2e1fF31aC83f404E5Cb79F452c337",
+          "symbol": "uAPT",
+          "name": "Aptos (Universal)",
+          "weight": "2.93"
+        },
+        {
+          "address": "0x806041B6473DA60abbe1b256d9A2749A151be6C6",
+          "symbol": "stTAO",
+          "name": "Tensorplex Staked TAO",
+          "weight": "4.06"
+        },
+        {
+          "address": "0x71a67215a2025F501f386A49858A9ceD2FC0249d",
+          "symbol": "uSEI",
+          "name": "Sei (Universal)",
+          "weight": "2.90"
+        },
+        {
+          "address": "0xb0505e5a99abd03d94a1169e638B78EDfEd26ea4",
+          "symbol": "uSUI",
+          "name": "Sui (Universal)",
+          "weight": "3.41"
+        },
+        {
+          "address": "0xcbB7C0000aB88B473b1f5aFd9ef808440eed33Bf",
+          "symbol": "cbBTC",
+          "name": "Coinbase Wrapped BTC",
+          "weight": "15.05"
+        },
+        {
+          "address": "0x9B8Df6E244526ab5F6e6400d331DB28C8fdDdb55",
+          "symbol": "uSOL",
+          "name": "Solana (Universal)",
+          "weight": "6.83"
+        },
+        {
+          "address": "0x4200000000000000000000000000000000000006",
+          "symbol": "WETH",
+          "name": "Wrapped Ether",
+          "weight": "15.93"
+        },
+        {
+          "address": "0x2615a94df961278DcbC41Fb0a54fEc5f10a693aE",
+          "symbol": "uXRP",
+          "name": "XRP (Universal)",
+          "weight": "6.59"
+        },
+        {
+          "address": "0xfA1df3F6108dB461Fd89437F320fE50C125aF5F0",
+          "symbol": "TRX",
+          "name": "TRON",
+          "weight": "4.85"
+        },
+        {
+          "address": "0x3a51f2a377EA8B55FAf3c671138A00503B031Af3",
+          "symbol": "uALGO",
+          "name": "Algorand (Universal)",
+          "weight": "3.43"
+        },
+        {
+          "address": "0x6e934283DaE5D5D1831cbE8d557c44c9B83F30Ee",
+          "symbol": "uATOM",
+          "name": "Cosmos (Universal)",
+          "weight": "2.43"
+        },
+        {
+          "address": "0xd6a34b430C05ac78c24985f8abEE2616BC1788Cb",
+          "symbol": "uAVAX",
+          "name": "Avalanche (Universal)",
+          "weight": "3.61"
+        },
+        {
+          "address": "0x7bE0Cc2cADCD4A8f9901B4a66244DcDd9Bd02e0F",
+          "symbol": "uBCH",
+          "name": "Bitcoin Cash (Universal)",
+          "weight": "5.82"
+        },
+        {
+          "address": "0x0F813f4785b2360009F9aC9BF6121a85f109efc6",
+          "symbol": "uDOT",
+          "name": "Polkadot (Universal)",
+          "weight": "2.68"
+        },
+        {
+          "address": "0xc79e06860Aa9564f95E08fb7E5b61458d0C63898",
+          "symbol": "uHBAR",
+          "name": "Hedera (Universal)",
+          "weight": "2.80"
+        },
+        {
+          "address": "0xDB18Fb11Db1b972A54bD89cE04bAd61855c07788",
+          "symbol": "uINJ",
+          "name": "Injective (Universal)",
+          "weight": "2.77"
+        },
+        {
+          "address": "0x3EB097375fc2FC361e4a472f5E7067238c547c52",
+          "symbol": "uLTC",
+          "name": "Litecoin (Universal)",
+          "weight": "3.30"
+        },
+        {
+          "address": "0x5ed25E305E08F58AFD7995EaC72563E6BE65A617",
+          "symbol": "uNEAR",
+          "name": "NEAR (Universal)",
+          "weight": "3.40"
+        },
+        {
+          "address": "0x378c326A472915d38b2D8D41e1345987835FaB64",
+          "symbol": "uXLM",
+          "name": "Stellar (Universal)",
+          "weight": "3.50"
+        }
+      ],
+      "createdAt": 1760977343,
+      "tags": [
+        "L1",
+        "Majors"
+      ],
+      "brand": {
+        "icon": "https://l5394zf57b.ufs.sh/f/mupND8QUUvXxBuCxaCT4H9uivWURqQkxfgFXD7tedNTwsYoS",
+        "cover": "https://l5394zf57b.ufs.sh/f/mupND8QUUvXx89TTcwLGalgPSqjk8NZnKMIoY9WVLOwsbxD6",
+        "tags": [
+          "L1",
+          "Majors"
+        ],
+        "about": "",
+        "files": []
+      },
+      "performance": [
+        {
+          "timestamp": 1781038582,
+          "value": 45.045211765025606
+        },
+        {
+          "timestamp": 1781124979,
+          "value": 43.56875557798528
+        },
+        {
+          "timestamp": 1781211372,
+          "value": 44.96233844917937
+        },
+        {
+          "timestamp": 1781297774,
+          "value": 44.89442175036168
+        },
+        {
+          "timestamp": 1781384162,
+          "value": 45.869174809136815
+        },
+        {
+          "timestamp": 1781470579,
+          "value": 45.511333412835825
+        },
+        {
+          "timestamp": 1781556979,
+          "value": 48.947959433398324
+        },
+        {
+          "timestamp": 1781643368,
+          "value": 48.37521424910942
+        },
+        {
+          "timestamp": 1781729775,
+          "value": 47.13898631972187
+        },
+        {
+          "timestamp": 1781816176,
+          "value": 46.242775530376555
+        },
+        {
+          "timestamp": 1781902580,
+          "value": 45.664323856108965
+        },
+        {
+          "timestamp": 1781988980,
+          "value": 45.99071963717364
+        },
+        {
+          "timestamp": 1782075414,
+          "value": 45.98833674735796
+        },
+        {
+          "timestamp": 1782161817,
+          "value": 46.111393806060235
+        },
+        {
+          "timestamp": 1782248163,
+          "value": 44.45622724853764
+        },
+        {
+          "timestamp": 1782334582,
+          "value": 43.34905309822324
+        },
+        {
+          "timestamp": 1782420981,
+          "value": 42.22590347103629
+        },
+        {
+          "timestamp": 1782507379,
+          "value": 42.84859905996528
+        },
+        {
+          "timestamp": 1782593780,
+          "value": 42.94447537043906
+        },
+        {
+          "timestamp": 1782680168,
+          "value": 42.75743755790648
+        },
+        {
+          "timestamp": 1782766581,
+          "value": 43.767747183021726
+        },
+        {
+          "timestamp": 1782852978,
+          "value": 42.444961912574016
+        },
+        {
+          "timestamp": 1782939403,
+          "value": 43.70525178818336
+        },
+        {
+          "timestamp": 1783025767,
+          "value": 44.71619538045353
+        },
+        {
+          "timestamp": 1783112178,
+          "value": 46.40946106013019
+        },
+        {
+          "timestamp": 1783198579,
+          "value": 46.71046119830438
+        },
+        {
+          "timestamp": 1783284979,
+          "value": 46.44315550100028
+        },
+        {
+          "timestamp": 1783371366,
+          "value": 46.76034026085547
+        },
+        {
+          "timestamp": 1783457780,
+          "value": 45.9374786250998
+        },
+        {
+          "timestamp": 1783544181,
+          "value": 44.218135631080884
+        },
+        {
+          "timestamp": 1783630577,
+          "value": 45.1626404906897
+        }
+      ],
+      "priceChange": {
+        "period": "1m",
+        "displayPeriod": "1M",
+        "ratio": 0.002452462952674146,
+        "percent": 0.2452462952674146,
+        "startPrice": 45.045211765025606,
+        "endPrice": 45.15568347807469,
+        "startTimestamp": 1781038582,
+        "endTimestamp": 1783633637
+      }
+    },
+    {
+      "address": "0x23418De10d422AD71C9D5713a2B8991a9c586443",
+      "name": "Bloomberg Galaxy Crypto Index",
+      "symbol": "BGCI",
+      "price": 1.5567841575008359,
+      "marketCap": 170565.35654256726,
+      "chainId": 8453,
+      "type": "index",
+      "status": "active",
+      "basket": [
+        {
+          "address": "0xcbB7C0000aB88B473b1f5aFd9ef808440eed33Bf",
+          "symbol": "cbBTC",
+          "name": "Coinbase Wrapped BTC",
+          "weight": "34.41"
+        },
+        {
+          "address": "0xCb327b99fF831bF8223cCEd12B1338FF3aA322Ff",
+          "symbol": "bsdETH",
+          "name": "Based ETH",
+          "weight": "36.09"
+        },
+        {
+          "address": "0x9B8Df6E244526ab5F6e6400d331DB28C8fdDdb55",
+          "symbol": "uSOL",
+          "name": "Solana (Universal)",
+          "weight": "9.58"
+        },
+        {
+          "address": "0xd403D1624DAEF243FbcBd4A80d8A6F36afFe32b2",
+          "symbol": "uLINK",
+          "name": "Chainlink (Universal)",
+          "weight": "1.33"
+        },
+        {
+          "address": "0xa3A34A0D9A08CCDDB6Ed422Ac0A28a06731335aA",
+          "symbol": "uADA",
+          "name": "Cardano (Universal)",
+          "weight": "1.39"
+        },
+        {
+          "address": "0x378c326A472915d38b2D8D41e1345987835FaB64",
+          "symbol": "uXLM",
+          "name": "Stellar (Universal)",
+          "weight": "1.43"
+        },
+        {
+          "address": "0x2615a94df961278DcbC41Fb0a54fEc5f10a693aE",
+          "symbol": "uXRP",
+          "name": "XRP (Universal)",
+          "weight": "15.77"
+        }
+      ],
+      "createdAt": 1739558581,
+      "tags": [
+        "Majors",
+        "Bitcoin",
+        "L1"
+      ],
+      "brand": {
+        "icon": "https://l5394zf57b.ufs.sh/f/mupND8QUUvXxatO12rMDmcrOHpGTwz5KhD49x3ZgtblqPMsQ",
+        "cover": "https://l5394zf57b.ufs.sh/f/mupND8QUUvXxTfIGVQVErw7NR6IzV3oEtCKn2uf0vT4XgYmS",
+        "tags": [
+          "Majors",
+          "Bitcoin",
+          "L1"
+        ],
+        "about": "The Bloomberg Galaxy Crypto Index DTF tracks the Bloomberg Galaxy Crypto Index (“BGCI”). The BGCI is a benchmark designed to measure the performance of the largest cryptocurrencies by market capitalization traded in USD. The Index is owned and administered by Bloomberg and co-branded with Galaxy Digital Capital Management.\n\nIndex constituents are selected based on qualified exchange and daily liquidity qualifications set forth by BGCI rules. Each constituent represents a holding no more than 35% of the Index and no less than 1% of the Index’s overall value. Cryptocurrencies are considered for addition/removal to/from the Index on a monthly basis.",
+        "files": []
+      },
+      "performance": [
+        {
+          "timestamp": 1781038582,
+          "value": 1.504122632381987
+        },
+        {
+          "timestamp": 1781124979,
+          "value": 1.4758976559456451
+        },
+        {
+          "timestamp": 1781211372,
+          "value": 1.5211238362470523
+        },
+        {
+          "timestamp": 1781297774,
+          "value": 1.5185383600906024
+        },
+        {
+          "timestamp": 1781384162,
+          "value": 1.5365829654678707
+        },
+        {
+          "timestamp": 1781470579,
+          "value": 1.5267766483026388
+        },
+        {
+          "timestamp": 1781556979,
+          "value": 1.6463391557883853
+        },
+        {
+          "timestamp": 1781643368,
+          "value": 1.6232934670304378
+        },
+        {
+          "timestamp": 1781729775,
+          "value": 1.5729408398404074
+        },
+        {
+          "timestamp": 1781816176,
+          "value": 1.5411655270313658
+        },
+        {
+          "timestamp": 1781902580,
+          "value": 1.533810935234102
+        },
+        {
+          "timestamp": 1781988980,
+          "value": 1.5560405512623385
+        },
+        {
+          "timestamp": 1782075414,
+          "value": 1.5566533474946949
+        },
+        {
+          "timestamp": 1782161817,
+          "value": 1.5606261476104002
+        },
+        {
+          "timestamp": 1782248163,
+          "value": 1.5039019012679735
+        },
+        {
+          "timestamp": 1782334582,
+          "value": 1.4572645975490857
+        },
+        {
+          "timestamp": 1782420981,
+          "value": 1.4198140404990462
+        },
+        {
+          "timestamp": 1782507379,
+          "value": 1.4449973292396714
+        },
+        {
+          "timestamp": 1782593780,
+          "value": 1.4496744085321818
+        },
+        {
+          "timestamp": 1782680168,
+          "value": 1.4373621512014823
+        },
+        {
+          "timestamp": 1782766581,
+          "value": 1.475943747131533
+        },
+        {
+          "timestamp": 1782852978,
+          "value": 1.4388040598264586
+        },
+        {
+          "timestamp": 1782939403,
+          "value": 1.4784583861215692
+        },
+        {
+          "timestamp": 1783025767,
+          "value": 1.5303983676108865
+        },
+        {
+          "timestamp": 1783112178,
+          "value": 1.5796146422631394
+        },
+        {
+          "timestamp": 1783198579,
+          "value": 1.6006201822404535
+        },
+        {
+          "timestamp": 1783284979,
+          "value": 1.5839084202473959
+        },
+        {
+          "timestamp": 1783371366,
+          "value": 1.600717024596283
+        },
+        {
+          "timestamp": 1783457780,
+          "value": 1.5868976270354984
+        },
+        {
+          "timestamp": 1783544181,
+          "value": 1.539762562414654
+        },
+        {
+          "timestamp": 1783630577,
+          "value": 1.5579165300120705
+        }
+      ],
+      "priceChange": {
+        "period": "1m",
+        "displayPeriod": "1M",
+        "ratio": 0.03501145716785877,
+        "percent": 3.501145716785877,
+        "startPrice": 1.504122632381987,
+        "endPrice": 1.5567841575008359,
+        "startTimestamp": 1781038582,
+        "endTimestamp": 1783633637
+      }
+    },
+    {
+      "address": "0x323c03c48660fE31186fa82c289b0766d331Ce21",
+      "name": "Open Stablecoin Index",
+      "symbol": "OPEN",
+      "price": 0.3316877273076669,
+      "marketCap": 147921.73640205862,
+      "chainId": 1,
+      "type": "index",
+      "status": "active",
+      "basket": [
+        {
+          "address": "0x7Fc66500c84A76Ad7e9c93437bFc5Ac33E2DDaE9",
+          "symbol": "AAVE",
+          "name": "Aave Token",
+          "weight": "46.61"
+        },
+        {
+          "address": "0xD533a949740bb3306d119CC777fa900bA034cd52",
+          "symbol": "CRV",
+          "name": "Curve DAO Token",
+          "weight": "7.69"
+        },
+        {
+          "address": "0x8207c1FfC5B6804F6024322CcF34F29c3541Ae26",
+          "symbol": "OGN",
+          "name": "OriginToken",
+          "weight": "4.01"
+        },
+        {
+          "address": "0x3432B6A60D23Ca0dFCa7761B7ab56459D9C964D0",
+          "symbol": "FXS",
+          "name": "Frax Share",
+          "weight": "4.82"
+        },
+        {
+          "address": "0x41D5D79431A913C4aE7d69a668ecdfE5fF9DFB68",
+          "symbol": "INV",
+          "name": "Inverse DAO",
+          "weight": "5.24"
+        },
+        {
+          "address": "0x6DEA81C8171D0bA574754EF6F8b412F2Ed88c54D",
+          "symbol": "LQTY",
+          "name": "LQTY",
+          "weight": "13.10"
+        },
+        {
+          "address": "0x320623b8E4fF03373931769A31Fc52A4E78B5d70",
+          "symbol": "RSR",
+          "name": "Reserve Rights",
+          "weight": "1.40"
+        },
+        {
+          "address": "0x419905009e4656fdC02418C7Df35B1E61Ed5F726",
+          "symbol": "RSUP",
+          "name": "Resupply",
+          "weight": "3.36"
+        },
+        {
+          "address": "0x365AccFCa291e7D3914637ABf1F7635dB165Bb09",
+          "symbol": "FXN",
+          "name": "FXN Token",
+          "weight": "12.08"
+        },
+        {
+          "address": "0xdBdb4d16EdA451D0503b854CF79D55697F90c8DF",
+          "symbol": "ALCX",
+          "name": "Alchemix",
+          "weight": "1.69"
+        }
+      ],
+      "createdAt": 1744659395,
+      "tags": [
+        "Stablecoins",
+        "DeFi",
+        "Majors",
+        "Ecosystem"
+      ],
+      "brand": {
+        "icon": "https://l5394zf57b.ufs.sh/f/mupND8QUUvXxqD7AIQfxfH57h2mseoNual3tKBRCYyvnS1E8",
+        "cover": "https://l5394zf57b.ufs.sh/f/mupND8QUUvXxcwPs6NedT8k4DKLMpQBrH6YAOCP1Wh72svtR",
+        "tags": [
+          "Stablecoins",
+          "DeFi",
+          "Majors",
+          "Ecosystem"
+        ],
+        "about": "The Open Stablecoin Networks Index is a value-weighted DTF that tracks DeFi’s ten strongest open stablecoin networks in one $OPEN token. Eligible projects are first whitelisted by vSQUILL-OPEN governance, which reviews asset backing, peg design, mint and redeem rules, safety mechanisms, revenue sharing, and decentralized control. Whitelisted projects are then ranked and weighted, with only the top ten included. \n\nWeights use a composite score: 60% on TVL relative to FDV, comparing supplied value to market valuation, 20% on year-over-year TVL growth, and 20% on liquidity efficiency. Quarterly rebalances cap holdings at 40% and set a 1% minimum to help reduce concentration risk and smooth large swings.\n",
+        "files": []
+      },
+      "performance": [
+        {
+          "timestamp": 1781038582,
+          "value": 0.2999589396674637
+        },
+        {
+          "timestamp": 1781124979,
+          "value": 0.2938444502155447
+        },
+        {
+          "timestamp": 1781211372,
+          "value": 0.30776948112366265
+        },
+        {
+          "timestamp": 1781297774,
+          "value": 0.3046678668889316
+        },
+        {
+          "timestamp": 1781384162,
+          "value": 0.30808238997986304
+        },
+        {
+          "timestamp": 1781470579,
+          "value": 0.30497197148139077
+        },
+        {
+          "timestamp": 1781556979,
+          "value": 0.3327629599858757
+        },
+        {
+          "timestamp": 1781643368,
+          "value": 0.33441142163502585
+        },
+        {
+          "timestamp": 1781729775,
+          "value": 0.32297204262256896
+        },
+        {
+          "timestamp": 1781816176,
+          "value": 0.3172767759400528
+        },
+        {
+          "timestamp": 1781902580,
+          "value": 0.31096114440145334
+        },
+        {
+          "timestamp": 1781988980,
+          "value": 0.31632708233255213
+        },
+        {
+          "timestamp": 1782075414,
+          "value": 0.3129371582373394
+        },
+        {
+          "timestamp": 1782161817,
+          "value": 0.3173340626945628
+        },
+        {
+          "timestamp": 1782248163,
+          "value": 0.30306198644132826
+        },
+        {
+          "timestamp": 1782334582,
+          "value": 0.309456124083986
+        },
+        {
+          "timestamp": 1782420981,
+          "value": 0.31099838498481364
+        },
+        {
+          "timestamp": 1782507379,
+          "value": 0.33605868563025265
+        },
+        {
+          "timestamp": 1782593780,
+          "value": 0.33769450451357336
+        },
+        {
+          "timestamp": 1782680168,
+          "value": 0.3286200018289373
+        },
+        {
+          "timestamp": 1782766581,
+          "value": 0.3348558144292664
+        },
+        {
+          "timestamp": 1782852978,
+          "value": 0.31603669174699517
+        },
+        {
+          "timestamp": 1782939403,
+          "value": 0.32545067594458077
+        },
+        {
+          "timestamp": 1783025767,
+          "value": 0.3345952503032924
+        },
+        {
+          "timestamp": 1783112178,
+          "value": 0.34149692206913784
+        },
+        {
+          "timestamp": 1783198579,
+          "value": 0.346130253586087
+        },
+        {
+          "timestamp": 1783284979,
+          "value": 0.34025619185936457
+        },
+        {
+          "timestamp": 1783371366,
+          "value": 0.35077730200565366
+        },
+        {
+          "timestamp": 1783457780,
+          "value": 0.338078324316606
+        },
+        {
+          "timestamp": 1783544181,
+          "value": 0.3272911386379207
+        },
+        {
+          "timestamp": 1783630577,
+          "value": 0.3324389276983292
+        }
+      ],
+      "priceChange": {
+        "period": "1m",
+        "displayPeriod": "1M",
+        "ratio": 0.10577710294408273,
+        "percent": 10.577710294408273,
+        "startPrice": 0.2999589396674637,
+        "endPrice": 0.3316877273076669,
+        "startTimestamp": 1781038582,
+        "endTimestamp": 1783633637
+      }
+    },
+    {
+      "address": "0xeBcda5b80f62DD4DD2A96357b42BB6Facbf30267",
+      "name": "Alpha Base Index",
+      "symbol": "ABX",
+      "price": 0.0008659352775780991,
+      "marketCap": 113262.72806902824,
+      "chainId": 8453,
+      "type": "index",
+      "status": "active",
+      "basket": [
+        {
+          "address": "0x1B5cE2a593a840E3ad3549a34D7b3dEc697c114D",
+          "symbol": "ALTT",
+          "name": "Altcoinist",
+          "weight": "5.12"
+        },
+        {
+          "address": "0x3722264aB15a1dfCe5a5af89e6547F7949A8ABA3",
+          "symbol": "LFI",
+          "name": "LienFi",
+          "weight": "1.51"
+        },
+        {
+          "address": "0xA4A2E2ca3fBfE21aed83471D28b6f65A233C6e00",
+          "symbol": "TIBBIR",
+          "name": "Ribbita by Virtuals",
+          "weight": "92.09"
+        },
+        {
+          "address": "0x0086cFF0c1E5D17b19F5bCd4c8840a5B4251D959",
+          "symbol": "ODAI",
+          "name": "ODEI AI",
+          "weight": "0.55"
+        },
+        {
+          "address": "0x7afE438411ee3959C7De6f7fB76bf9C769320bA3",
+          "symbol": "BLOCKTRONICS",
+          "name": "Blocktronics",
+          "weight": "0.73"
+        }
+      ],
+      "createdAt": 1739217373,
+      "tags": [
+        "AI",
+        "RWA",
+        "DeFi",
+        "Memes"
+      ],
+      "brand": {
+        "icon": "https://l5394zf57b.ufs.sh/f/mupND8QUUvXxqxCVXk7fxfH57h2mseoNual3tKBRCYyvnS1E",
+        "cover": "https://l5394zf57b.ufs.sh/f/mupND8QUUvXxIHmFGpxZOd2tbVAjQ406SzW5e3InqXoRl1xK",
+        "tags": [
+          "AI",
+          "RWA",
+          "DeFi",
+          "Memes"
+        ],
+        "about": "The Alpha Base Index is a DAO-governed DTF, curating the top alpha Base projects with the highest risk-adjusted growth potential, leveraging the collective intelligence of the Base Trenches to identify market opportunities.",
+        "files": []
+      },
+      "performance": [
+        {
+          "timestamp": 1781038582,
+          "value": 0.0007804705898942955
+        },
+        {
+          "timestamp": 1781124979,
+          "value": 0.000765921479006674
+        },
+        {
+          "timestamp": 1781211372,
+          "value": 0.0008271251722804093
+        },
+        {
+          "timestamp": 1781297774,
+          "value": 0.000855668608526615
+        },
+        {
+          "timestamp": 1781384162,
+          "value": 0.0008868629244164579
+        },
+        {
+          "timestamp": 1781470579,
+          "value": 0.0008789982536795581
+        },
+        {
+          "timestamp": 1781556979,
+          "value": 0.0009460408345965509
+        },
+        {
+          "timestamp": 1781643368,
+          "value": 0.0009157636889993735
+        },
+        {
+          "timestamp": 1781729775,
+          "value": 0.0009117699067651482
+        },
+        {
+          "timestamp": 1781816176,
+          "value": 0.0008661967221600277
+        },
+        {
+          "timestamp": 1781902580,
+          "value": 0.0008761328671617174
+        },
+        {
+          "timestamp": 1781988980,
+          "value": 0.0008314538562480287
+        },
+        {
+          "timestamp": 1782075414,
+          "value": 0.000825304486661
+        },
+        {
+          "timestamp": 1782161817,
+          "value": 0.0008053612043648061
+        },
+        {
+          "timestamp": 1782248163,
+          "value": 0.0007951620035157048
+        },
+        {
+          "timestamp": 1782334582,
+          "value": 0.0007513834045011675
+        },
+        {
+          "timestamp": 1782420981,
+          "value": 0.0007437684028405234
+        },
+        {
+          "timestamp": 1782507379,
+          "value": 0.0007558247277654866
+        },
+        {
+          "timestamp": 1782593780,
+          "value": 0.0007655366635150504
+        },
+        {
+          "timestamp": 1782680168,
+          "value": 0.0007388224590371576
+        },
+        {
+          "timestamp": 1782766581,
+          "value": 0.00076424096640556
+        },
+        {
+          "timestamp": 1782852978,
+          "value": 0.000753137873466249
+        },
+        {
+          "timestamp": 1782939403,
+          "value": 0.0007639438202308636
+        },
+        {
+          "timestamp": 1783025767,
+          "value": 0.0007845816459406478
+        },
+        {
+          "timestamp": 1783112178,
+          "value": 0.000810093351418948
+        },
+        {
+          "timestamp": 1783198579,
+          "value": 0.0008194886528111191
+        },
+        {
+          "timestamp": 1783284979,
+          "value": 0.0008674852282926136
+        },
+        {
+          "timestamp": 1783371366,
+          "value": 0.0009317314149931161
+        },
+        {
+          "timestamp": 1783457780,
+          "value": 0.000912154313091758
+        },
+        {
+          "timestamp": 1783544181,
+          "value": 0.0007798021608247392
+        },
+        {
+          "timestamp": 1783630577,
+          "value": 0.0008725028695220963
+        }
+      ],
+      "priceChange": {
+        "period": "1m",
+        "displayPeriod": "1M",
+        "ratio": 0.1095040463925472,
+        "percent": 10.95040463925472,
+        "startPrice": 0.0007804705898942955,
+        "endPrice": 0.0008659352775780991,
+        "startTimestamp": 1781038582,
+        "endTimestamp": 1783633637
+      }
+    },
+    {
+      "address": "0xaCdf0DBA4B9839b96221a8487e9ca660a48212be",
+      "name": "High Yield USD",
+      "symbol": "hyUSD",
+      "price": 1.3048352538915269,
+      "marketCap": 74525.2012271305,
+      "chainId": 1,
+      "type": "yield",
+      "status": "deprecated",
+      "basket": [
+        {
+          "address": "0x9D39A5DE30e57443BfF2A8307A4256c8797A3497",
+          "symbol": "sUSDe",
+          "name": "Staked USDe",
+          "weight": "33.3074720922323006"
+        },
+        {
+          "address": "0x83F20F44975D03b1b09e64809B757c47f942BEeA",
+          "symbol": "sDAI",
+          "name": "Savings Dai",
+          "weight": "33.34289544642376"
+        },
+        {
+          "address": "0x27F2f159Fe990Ba83D57f39Fd69661764BEbf37a",
+          "symbol": "wcUSDCv3",
+          "name": "Wrapped cUSDCv3",
+          "weight": "33.3496324613439393"
+        }
+      ],
+      "createdAt": 1682107487,
+      "performance": [],
+      "priceChange": {
+        "period": "1m",
+        "displayPeriod": "1M",
+        "ratio": null,
+        "percent": null,
+        "startPrice": null,
+        "endPrice": null,
+        "startTimestamp": null,
+        "endTimestamp": null
+      }
+    },
+    {
+      "address": "0xCc7FF230365bD730eE4B352cC2492CEdAC49383e",
+      "name": "High Yield USD",
+      "symbol": "hyUSD",
+      "price": 1.1371523198469302,
+      "marketCap": 65913.11854846087,
+      "chainId": 8453,
+      "type": "yield",
+      "status": "deprecated",
+      "basket": [
+        {
+          "address": "0xDB5b8cead52f77De0f6B5255f73F348AAf2CBb8D",
+          "symbol": "wsAMM-eUSD/USDC",
+          "name": "wStable AMM - eUSD/USDC",
+          "weight": "49.9835962973422538"
+        },
+        {
+          "address": "0x6F6f81e5E66f503184f2202D83a79650c3285759",
+          "symbol": "saBasUSDC",
+          "name": "Static Aave Base USDC",
+          "weight": "25.0082090658542241"
+        },
+        {
+          "address": "0x53f1Df4E5591Ae35Bf738742981669c3767241FA",
+          "symbol": "wcUSDCv3",
+          "name": "Wrapped cUSDCv3",
+          "weight": "25.0081946368035219"
+        }
+      ],
+      "createdAt": 1697138413,
+      "performance": [],
+      "priceChange": {
+        "period": "1m",
+        "displayPeriod": "1M",
+        "ratio": null,
+        "percent": null,
+        "startPrice": null,
+        "endPrice": null,
+        "startTimestamp": null,
+        "endTimestamp": null
+      }
+    },
+    {
+      "address": "0x4E3B170DcBe704b248df5f56D488114acE01B1C5",
+      "name": "BTC ETH DCA Index",
+      "symbol": "BED",
+      "price": 0.7698086910652657,
+      "marketCap": 54824.94284075307,
+      "chainId": 1,
+      "type": "index",
+      "status": "active",
+      "basket": [
+        {
+          "address": "0xcbB7C0000aB88B473b1f5aFd9ef808440eed33Bf",
+          "symbol": "cbBTC",
+          "name": "Coinbase Wrapped BTC",
+          "weight": "40.40"
+        },
+        {
+          "address": "0x68Ad3F6da23ad1cD24CB5089492ccF186bfBBe7b",
+          "symbol": "mooMorpho-Steakhouse-WETH",
+          "name": "Moo Morpho Steakhouse WETH",
+          "weight": "39.79"
+        },
+        {
+          "address": "0xbBA4D1CEcc111BDC74bD2f95050Fb11aCB3b8A5E",
+          "symbol": "mooMorpho-Steakhouse-USDC",
+          "name": "Moo Morpho Steakhouse USDC",
+          "weight": "19.81"
+        }
+      ],
+      "createdAt": 1740082055,
+      "tags": [
+        "Majors",
+        "Bitcoin",
+        "DeFi",
+        "Stablecoins"
+      ],
+      "brand": {
+        "icon": "https://l5394zf57b.ufs.sh/f/mupND8QUUvXxMTU5lPoRix5rWy10MU6N3YbuCjQ2hleoTVF4",
+        "cover": "https://l5394zf57b.ufs.sh/f/mupND8QUUvXxXimePtvSWBt87indcYzG3qhmufKyrAD514we",
+        "tags": [
+          "Majors",
+          "Bitcoin",
+          "DeFi",
+          "Stablecoins"
+        ],
+        "about": "You can set it and go to BED. An equal weighted basket of BTC and ETH aimed to DCA into each constituent through monthly rebalancing and earn additional yield through lending into high-quality, low-risk isolated risk money markets. A good night’s sleep.",
+        "files": []
+      },
+      "performance": [
+        {
+          "timestamp": 1781038582,
+          "value": 0.7489946267392915
+        },
+        {
+          "timestamp": 1781124979,
+          "value": 0.7424504815323104
+        },
+        {
+          "timestamp": 1781211372,
+          "value": 0.7586217934619837
+        },
+        {
+          "timestamp": 1781297774,
+          "value": 0.757262377080589
+        },
+        {
+          "timestamp": 1781384162,
+          "value": 0.762502584189711
+        },
+        {
+          "timestamp": 1781470579,
+          "value": 0.7604608337514726
+        },
+        {
+          "timestamp": 1781556979,
+          "value": 0.7966295370447981
+        },
+        {
+          "timestamp": 1781643368,
+          "value": 0.7886268404360414
+        },
+        {
+          "timestamp": 1781729775,
+          "value": 0.772898988386568
+        },
+        {
+          "timestamp": 1781816176,
+          "value": 0.7622242705572324
+        },
+        {
+          "timestamp": 1781902580,
+          "value": 0.7614727483868553
+        },
+        {
+          "timestamp": 1781988980,
+          "value": 0.7690826512330269
+        },
+        {
+          "timestamp": 1782075414,
+          "value": 0.7701137194062585
+        },
+        {
+          "timestamp": 1782161817,
+          "value": 0.7729055559871594
+        },
+        {
+          "timestamp": 1782248163,
+          "value": 0.7515621099019891
+        },
+        {
+          "timestamp": 1782334582,
+          "value": 0.7365952755873897
+        },
+        {
+          "timestamp": 1782420981,
+          "value": 0.7208785728539592
+        },
+        {
+          "timestamp": 1782507379,
+          "value": 0.7247528287014557
+        },
+        {
+          "timestamp": 1782593780,
+          "value": 0.7273248016196121
+        },
+        {
+          "timestamp": 1782680168,
+          "value": 0.7228380650067799
+        },
+        {
+          "timestamp": 1782766581,
+          "value": 0.7352943659505369
+        },
+        {
+          "timestamp": 1782852978,
+          "value": 0.7201341871431433
+        },
+        {
+          "timestamp": 1782939403,
+          "value": 0.7330093988662147
+        },
+        {
+          "timestamp": 1783025767,
+          "value": 0.7526987564696995
+        },
+        {
+          "timestamp": 1783112178,
+          "value": 0.7682276201702017
+        },
+        {
+          "timestamp": 1783198579,
+          "value": 0.7765933764335398
+        },
+        {
+          "timestamp": 1783284979,
+          "value": 0.771805127313874
+        },
+        {
+          "timestamp": 1783371366,
+          "value": 0.7765233630624856
+        },
+        {
+          "timestamp": 1783457780,
+          "value": 0.777249594104998
+        },
+        {
+          "timestamp": 1783544181,
+          "value": 0.7626068080268814
+        },
+        {
+          "timestamp": 1783630577,
+          "value": 0.7702613937107774
+        }
+      ],
+      "priceChange": {
+        "period": "1m",
+        "displayPeriod": "1M",
+        "ratio": 0.02778933731018491,
+        "percent": 2.778933731018491,
+        "startPrice": 0.7489946267392915,
+        "endPrice": 0.7698086910652657,
+        "startTimestamp": 1781038582,
+        "endTimestamp": 1783633637
+      }
+    },
+    {
+      "address": "0x44551CA46Fa5592bb572E20043f7C3D54c85cAD7",
+      "name": "Clanker Index",
+      "symbol": "CLX",
+      "price": 0.4335201318572408,
+      "marketCap": 53637.12787384316,
+      "chainId": 8453,
+      "type": "index",
+      "status": "active",
+      "basket": [
+        {
+          "address": "0x1bc0c42215582d5A085795f4baDbaC3ff36d1Bcb",
+          "symbol": "CLANKER",
+          "name": "tokenbot",
+          "weight": "26.37"
+        },
+        {
+          "address": "0x22aF33FE49fD1Fa80c7149773dDe5890D3c76F3b",
+          "symbol": "BNKR",
+          "name": "BankrCoin",
+          "weight": "58.44"
+        },
+        {
+          "address": "0x7D928816CC9c462DD7adef911De41535E444CB07",
+          "symbol": "FAIR",
+          "name": "Faircaster",
+          "weight": "0.77"
+        },
+        {
+          "address": "0x9f86dB9fc6f7c9408e8Fda3Ff8ce4e78ac7a6b07",
+          "symbol": "CLAWD",
+          "name": "clawd.atg.eth",
+          "weight": "1.57"
+        },
+        {
+          "address": "0xB695559b26BB2c9703ef1935c37AeaE9526bab07",
+          "symbol": "MOLT",
+          "name": "Moltbook",
+          "weight": "1.01"
+        },
+        {
+          "address": "0x9Cb41FD9dC6891BAe8187029461bfAADF6CC0C69",
+          "symbol": "noice",
+          "name": "noice",
+          "weight": "1.73"
+        },
+        {
+          "address": "0xa1F72459dfA10BAD200Ac160eCd78C6b77a747be",
+          "symbol": "CLAWNCH",
+          "name": "CLAWNCH",
+          "weight": "1.00"
+        },
+        {
+          "address": "0x3ec2156D4c0A9CBdAB4a016633b7BcF6a8d68Ea2",
+          "symbol": "DRB",
+          "name": "DebtReliefBot",
+          "weight": "5.23"
+        },
+        {
+          "address": "0x16332535E2c27da578bC2e82bEb09Ce9d3C8EB07",
+          "symbol": "ClawBank",
+          "name": "ClawBank",
+          "weight": "2.48"
+        },
+        {
+          "address": "0x50D2280441372486BeecdD328c1854743EBaCb07",
+          "symbol": "KellyClaude",
+          "name": "KellyClaude",
+          "weight": "1.40"
+        }
+      ],
+      "createdAt": 1739299479,
+      "tags": [
+        "Memes",
+        "SocialFi"
+      ],
+      "brand": {
+        "icon": "https://l5394zf57b.ufs.sh/f/mupND8QUUvXxBA9RFeT4H9uivWURqQkxfgFXD7tedNTwsYoS",
+        "cover": "https://l5394zf57b.ufs.sh/f/mupND8QUUvXxYULL8okGhrj2ScsDNeUp3lRftPgCi0ZM65Vz",
+        "tags": [
+          "Memes",
+          "SocialFi"
+        ],
+        "about": "",
+        "files": []
+      },
+      "performance": [
+        {
+          "timestamp": 1781038582,
+          "value": 0.5606766009846149
+        },
+        {
+          "timestamp": 1781124979,
+          "value": 0.5126386603373794
+        },
+        {
+          "timestamp": 1781211372,
+          "value": 0.5173486857367962
+        },
+        {
+          "timestamp": 1781297774,
+          "value": 0.5431138137162567
+        },
+        {
+          "timestamp": 1781384162,
+          "value": 0.5522169211177546
+        },
+        {
+          "timestamp": 1781470579,
+          "value": 0.5303292219718406
+        },
+        {
+          "timestamp": 1781556979,
+          "value": 0.5492536368764316
+        },
+        {
+          "timestamp": 1781643368,
+          "value": 0.556956772024751
+        },
+        {
+          "timestamp": 1781729775,
+          "value": 0.53402948745157
+        },
+        {
+          "timestamp": 1781816176,
+          "value": 0.5124525327533022
+        },
+        {
+          "timestamp": 1781902580,
+          "value": 0.5211754238787911
+        },
+        {
+          "timestamp": 1781988980,
+          "value": 0.5802179546041601
+        },
+        {
+          "timestamp": 1782075414,
+          "value": 0.5567752808629893
+        },
+        {
+          "timestamp": 1782161817,
+          "value": 0.5344675567469952
+        },
+        {
+          "timestamp": 1782248163,
+          "value": 0.5064157663630883
+        },
+        {
+          "timestamp": 1782334582,
+          "value": 0.4708830847629897
+        },
+        {
+          "timestamp": 1782420981,
+          "value": 0.46133662967618655
+        },
+        {
+          "timestamp": 1782507379,
+          "value": 0.47343516936277524
+        },
+        {
+          "timestamp": 1782593780,
+          "value": 0.4690962759890219
+        },
+        {
+          "timestamp": 1782680168,
+          "value": 0.45403845559712386
+        },
+        {
+          "timestamp": 1782766581,
+          "value": 0.47263810095994657
+        },
+        {
+          "timestamp": 1782852978,
+          "value": 0.4556775370126994
+        },
+        {
+          "timestamp": 1782939403,
+          "value": 0.4723980144379118
+        },
+        {
+          "timestamp": 1783025767,
+          "value": 0.5037760939762648
+        },
+        {
+          "timestamp": 1783112178,
+          "value": 0.5181022865285916
+        },
+        {
+          "timestamp": 1783198579,
+          "value": 0.5086171490991301
+        },
+        {
+          "timestamp": 1783284979,
+          "value": 0.4926610651953033
+        },
+        {
+          "timestamp": 1783371366,
+          "value": 0.4943112596164451
+        },
+        {
+          "timestamp": 1783457780,
+          "value": 0.4755314146668891
+        },
+        {
+          "timestamp": 1783544181,
+          "value": 0.4410962821484083
+        },
+        {
+          "timestamp": 1783630577,
+          "value": 0.433952390483245
+        }
+      ],
+      "priceChange": {
+        "period": "1m",
+        "displayPeriod": "1M",
+        "ratio": -0.22679111078306496,
+        "percent": -22.679111078306498,
+        "startPrice": 0.5606766009846149,
+        "endPrice": 0.4335201318572408,
+        "startTimestamp": 1781038582,
+        "endTimestamp": 1783633637
+      }
+    },
+    {
+      "address": "0xF91384484F4717314798E8975BCd904A35fc2BF1",
+      "name": "Imagine The SMEL",
+      "symbol": "SMEL",
+      "price": 0.7526152925837102,
+      "marketCap": 44783.592717500425,
+      "chainId": 1,
+      "type": "index",
+      "status": "active",
+      "basket": [
+        {
+          "address": "0x56072C95FAA701256059aa122697B133aDEd9279",
+          "symbol": "SKY",
+          "name": "SKY Governance Token",
+          "weight": "20.72"
+        },
+        {
+          "address": "0x58D97B57BB95320F9a05dC918Aef65434969c2B2",
+          "symbol": "MORPHO",
+          "name": "Morpho Token",
+          "weight": "22.97"
+        },
+        {
+          "address": "0x63a936Cc9740126f21eC8144aCfF22C2Ff89149c",
+          "symbol": "mooMorpho-Smokehouse-wstETH",
+          "name": "Moo Morpho Smokehouse wstETH",
+          "weight": "16.74"
+        },
+        {
+          "address": "0x5A98FcBEA516Cf06857215779Fd812CA3beF1B32",
+          "symbol": "LDO",
+          "name": "Lido DAO Token",
+          "weight": "17.90"
+        },
+        {
+          "address": "0x562Ea6FfFD1293b9433E7b81A2682C31892ea013",
+          "symbol": "mooMorpho-Smokehouse-USDC",
+          "name": "Moo Morpho Smokehouse USDC",
+          "weight": "21.67"
+        }
+      ],
+      "createdAt": 1740080639,
+      "tags": [
+        "DeFi",
+        "Stablecoins",
+        "LST"
+      ],
+      "brand": {
+        "icon": "https://l5394zf57b.ufs.sh/f/mupND8QUUvXxxi581ZKa2RzUWur86ESst14dTH3KhC5mobYj",
+        "cover": "https://l5394zf57b.ufs.sh/f/mupND8QUUvXxlP6dr3uayQT7o1EpdCqrPNWnUXD5i63Ve9Ls",
+        "tags": [
+          "DeFi",
+          "Stablecoins",
+          "LST"
+        ],
+        "about": "",
+        "files": []
+      },
+      "performance": [
+        {
+          "timestamp": 1781038582,
+          "value": 0.7014334341683777
+        },
+        {
+          "timestamp": 1781124979,
+          "value": 0.6984326259311255
+        },
+        {
+          "timestamp": 1781211372,
+          "value": 0.7083527406319741
+        },
+        {
+          "timestamp": 1781297774,
+          "value": 0.702633585855987
+        },
+        {
+          "timestamp": 1781384162,
+          "value": 0.702526820553794
+        },
+        {
+          "timestamp": 1781470579,
+          "value": 0.7015281172101315
+        },
+        {
+          "timestamp": 1781556979,
+          "value": 0.7233152123950016
+        },
+        {
+          "timestamp": 1781643368,
+          "value": 0.7214095772595046
+        },
+        {
+          "timestamp": 1781729775,
+          "value": 0.7159919746639811
+        },
+        {
+          "timestamp": 1781816176,
+          "value": 0.7137804759634372
+        },
+        {
+          "timestamp": 1781902580,
+          "value": 0.7114718627599093
+        },
+        {
+          "timestamp": 1781988980,
+          "value": 0.7046782452281593
+        },
+        {
+          "timestamp": 1782075414,
+          "value": 0.7091221003322222
+        },
+        {
+          "timestamp": 1782161817,
+          "value": 0.7039628064509104
+        },
+        {
+          "timestamp": 1782248163,
+          "value": 0.6719378136005432
+        },
+        {
+          "timestamp": 1782334582,
+          "value": 0.6672031743074776
+        },
+        {
+          "timestamp": 1782420981,
+          "value": 0.6547596026463522
+        },
+        {
+          "timestamp": 1782507379,
+          "value": 0.6554899659942051
+        },
+        {
+          "timestamp": 1782593780,
+          "value": 0.6560378047347856
+        },
+        {
+          "timestamp": 1782680168,
+          "value": 0.6534824699765376
+        },
+        {
+          "timestamp": 1782766581,
+          "value": 0.679376572618402
+        },
+        {
+          "timestamp": 1782852978,
+          "value": 0.6738979819402202
+        },
+        {
+          "timestamp": 1782939403,
+          "value": 0.69557679104504
+        },
+        {
+          "timestamp": 1783025767,
+          "value": 0.7163419948975109
+        },
+        {
+          "timestamp": 1783112178,
+          "value": 0.7200209491461413
+        },
+        {
+          "timestamp": 1783198579,
+          "value": 0.71710618562099
+        },
+        {
+          "timestamp": 1783284979,
+          "value": 0.7148200353093559
+        },
+        {
+          "timestamp": 1783371366,
+          "value": 0.72153810168785
+        },
+        {
+          "timestamp": 1783457780,
+          "value": 0.735112993276966
+        },
+        {
+          "timestamp": 1783544181,
+          "value": 0.7435221226093773
+        },
+        {
+          "timestamp": 1783630577,
+          "value": 0.7522889422840521
+        }
+      ],
+      "priceChange": {
+        "period": "1m",
+        "displayPeriod": "1M",
+        "ratio": 0.0729675203977323,
+        "percent": 7.29675203977323,
+        "startPrice": 0.7014334341683777,
+        "endPrice": 0.7526152925837102,
+        "startTimestamp": 1781038582,
+        "endTimestamp": 1783633637
+      }
+    },
+    {
+      "address": "0xe8b46b116D3BdFA787CE9CF3f5aCC78dc7cA380E",
+      "name": "MarketVector Token Terminal Fundamental Index",
+      "symbol": "MVTT10F",
+      "price": 0.028669578897629777,
+      "marketCap": 41054.73141104044,
+      "chainId": 8453,
+      "type": "index",
+      "status": "active",
+      "basket": [
+        {
+          "address": "0xfA1df3F6108dB461Fd89437F320fE50C125aF5F0",
+          "symbol": "TRX",
+          "name": "TRON",
+          "weight": "28.43"
+        },
+        {
+          "address": "0x9B8Df6E244526ab5F6e6400d331DB28C8fdDdb55",
+          "symbol": "uSOL",
+          "name": "Solana (Universal)",
+          "weight": "9.24"
+        },
+        {
+          "address": "0xCb327b99fF831bF8223cCEd12B1338FF3aA322Ff",
+          "symbol": "bsdETH",
+          "name": "Based ETH",
+          "weight": "7.84"
+        },
+        {
+          "address": "0x5ed25E305E08F58AFD7995EaC72563E6BE65A617",
+          "symbol": "uNEAR",
+          "name": "NEAR (Universal)",
+          "weight": "3.23"
+        },
+        {
+          "address": "0xc3De830EA07524a0761646a6a4e4be0e114a3C83",
+          "symbol": "UNI",
+          "name": "Uniswap",
+          "weight": "11.29"
+        },
+        {
+          "address": "0x7fdAa50d7399ac436943028edA6ed9a1BD89509f",
+          "symbol": "WBNB",
+          "name": "Wrapped BNB",
+          "weight": "8.78"
+        },
+        {
+          "address": "0xcbB7C0000aB88B473b1f5aFd9ef808440eed33Bf",
+          "symbol": "cbBTC",
+          "name": "Coinbase Wrapped BTC",
+          "weight": "2.20"
+        },
+        {
+          "address": "0x63706e401c06ac8513145b7687A14804d17f814b",
+          "symbol": "AAVE",
+          "name": "Aave Token",
+          "weight": "10.98"
+        },
+        {
+          "address": "0x15D0e0c55a3E7eE67152aD7E89acf164253Ff68d",
+          "symbol": "HYPE",
+          "name": "HYPE",
+          "weight": "13.81"
+        },
+        {
+          "address": "0xD76d45358B79564817aa87F02F3b85338B96f06a",
+          "symbol": "uPOL",
+          "name": "Polygon (Universal)",
+          "weight": "4.20"
+        }
+      ],
+      "createdAt": 1739559743,
+      "tags": [
+        "Majors",
+        "L1",
+        "DeFi",
+        "Bitcoin"
+      ],
+      "brand": {
+        "icon": "https://l5394zf57b.ufs.sh/f/mupND8QUUvXxKSQko5CrbmG93jXWCYL8oeizUfuh0ZFONdJD",
+        "cover": "https://l5394zf57b.ufs.sh/f/mupND8QUUvXxxDiH6kKa2RzUWur86ESst14dTH3KhC5mobYj",
+        "tags": [
+          "Majors",
+          "L1",
+          "DeFi",
+          "Bitcoin"
+        ],
+        "about": "The MarketVector™ Token Terminal Fundamental Index DTF tracks the MarketVector™ Token Terminal Fundamental Index (MVTT10F), designed to track the performance of the largest and most liquid digital assets that meet the fundamental criteria of daily average fees and daily average users. The fundamental data is provided by Token Terminal. The index is weighted based on fundamental factors.",
+        "files": []
+      },
+      "performance": [
+        {
+          "timestamp": 1781038582,
+          "value": 0.025849614748674803
+        },
+        {
+          "timestamp": 1781124979,
+          "value": 0.02511965260910259
+        },
+        {
+          "timestamp": 1781211372,
+          "value": 0.02560764143429662
+        },
+        {
+          "timestamp": 1781297774,
+          "value": 0.025843277203970005
+        },
+        {
+          "timestamp": 1781384162,
+          "value": 0.026132872164307167
+        },
+        {
+          "timestamp": 1781470579,
+          "value": 0.026088314795142793
+        },
+        {
+          "timestamp": 1781556979,
+          "value": 0.027727411367924327
+        },
+        {
+          "timestamp": 1781643368,
+          "value": 0.028345667901462118
+        },
+        {
+          "timestamp": 1781729775,
+          "value": 0.028039612945366835
+        },
+        {
+          "timestamp": 1781816176,
+          "value": 0.02748766003740563
+        },
+        {
+          "timestamp": 1781902580,
+          "value": 0.027586032913204286
+        },
+        {
+          "timestamp": 1781988980,
+          "value": 0.02786951895369552
+        },
+        {
+          "timestamp": 1782075414,
+          "value": 0.027835551114713922
+        },
+        {
+          "timestamp": 1782161817,
+          "value": 0.027935228019471483
+        },
+        {
+          "timestamp": 1782248163,
+          "value": 0.026881993703359853
+        },
+        {
+          "timestamp": 1782334582,
+          "value": 0.026698637878894163
+        },
+        {
+          "timestamp": 1782420981,
+          "value": 0.026521055013643508
+        },
+        {
+          "timestamp": 1782507379,
+          "value": 0.027264102852342428
+        },
+        {
+          "timestamp": 1782593780,
+          "value": 0.02717012421626681
+        },
+        {
+          "timestamp": 1782680168,
+          "value": 0.026975840819934142
+        },
+        {
+          "timestamp": 1782766581,
+          "value": 0.02762228853406256
+        },
+        {
+          "timestamp": 1782852978,
+          "value": 0.026690607606765632
+        },
+        {
+          "timestamp": 1782939403,
+          "value": 0.0268072874218118
+        },
+        {
+          "timestamp": 1783025767,
+          "value": 0.027846634639851115
+        },
+        {
+          "timestamp": 1783112178,
+          "value": 0.028561687533251716
+        },
+        {
+          "timestamp": 1783198579,
+          "value": 0.028686728806427628
+        },
+        {
+          "timestamp": 1783284979,
+          "value": 0.028650741728610547
+        },
+        {
+          "timestamp": 1783371366,
+          "value": 0.029129870777173467
+        },
+        {
+          "timestamp": 1783457780,
+          "value": 0.02892508582872066
+        },
+        {
+          "timestamp": 1783544181,
+          "value": 0.028282599531047795
+        },
+        {
+          "timestamp": 1783630577,
+          "value": 0.028676843509944108
+        }
+      ],
+      "priceChange": {
+        "period": "1m",
+        "displayPeriod": "1M",
+        "ratio": 0.10909114802569898,
+        "percent": 10.9091148025699,
+        "startPrice": 0.025849614748674803,
+        "endPrice": 0.028669578897629777,
+        "startTimestamp": 1781038582,
+        "endTimestamp": 1783633637
+      }
+    },
+    {
+      "address": "0x188D12Eb13a5Eadd0867074ce8354B1AD6f4790b",
+      "name": "CoinDesk DeFi Select Index",
+      "symbol": "DFX",
+      "price": 0.6425972942648205,
+      "marketCap": 35150.49135748879,
+      "chainId": 1,
+      "type": "index",
+      "status": "active",
+      "basket": [
+        {
+          "address": "0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984",
+          "symbol": "UNI",
+          "name": "Uniswap",
+          "weight": "37.36"
+        },
+        {
+          "address": "0x7Fc66500c84A76Ad7e9c93437bFc5Ac33E2DDaE9",
+          "symbol": "AAVE",
+          "name": "Aave Token",
+          "weight": "21.04"
+        },
+        {
+          "address": "0x5A98FcBEA516Cf06857215779Fd812CA3beF1B32",
+          "symbol": "LDO",
+          "name": "Lido DAO Token",
+          "weight": "3.81"
+        },
+        {
+          "address": "0xD533a949740bb3306d119CC777fa900bA034cd52",
+          "symbol": "CRV",
+          "name": "Curve DAO Token",
+          "weight": "4.56"
+        },
+        {
+          "address": "0xfAbA6f8e4a5E8Ab82F62fe7C39859FA577269BE3",
+          "symbol": "ONDO",
+          "name": "Ondo",
+          "weight": "23.25"
+        },
+        {
+          "address": "0x57e114B691Db790C35207b2e685D4A43181e6061",
+          "symbol": "ENA",
+          "name": "ENA",
+          "weight": "9.98"
+        }
+      ],
+      "createdAt": 1739989283,
+      "tags": [
+        "DeFi"
+      ],
+      "brand": {
+        "icon": "https://l5394zf57b.ufs.sh/f/mupND8QUUvXx5V0tDlhN1x8WsPzKQYEGuJwIpDVehmXl4fqM",
+        "cover": "https://l5394zf57b.ufs.sh/f/mupND8QUUvXx53aN2YhN1x8WsPzKQYEGuJwIpDVehmXl4fqM",
+        "tags": [
+          "DeFi"
+        ],
+        "about": "The CoinDesk DeFi Select Index DTF tracks the CoinDesk DeFi Select Index (DFX), designed to measure the market capitalization weighted performance of some of the largest and most liquid digital assets classified in the Decentralized Finance (“DeFi”) Sector that meet certain trading and custody requirements.",
+        "files": []
+      },
+      "performance": [
+        {
+          "timestamp": 1781038582,
+          "value": 0.5343928759878052
+        },
+        {
+          "timestamp": 1781124979,
+          "value": 0.5117903937802866
+        },
+        {
+          "timestamp": 1781211372,
+          "value": 0.5428820041589038
+        },
+        {
+          "timestamp": 1781297774,
+          "value": 0.5437460597169563
+        },
+        {
+          "timestamp": 1781384162,
+          "value": 0.550567725415246
+        },
+        {
+          "timestamp": 1781470579,
+          "value": 0.5385230986004343
+        },
+        {
+          "timestamp": 1781556979,
+          "value": 0.5850781257560558
+        },
+        {
+          "timestamp": 1781643368,
+          "value": 0.6430717992691245
+        },
+        {
+          "timestamp": 1781729775,
+          "value": 0.6261474114565225
+        },
+        {
+          "timestamp": 1781816176,
+          "value": 0.6054392616508336
+        },
+        {
+          "timestamp": 1781902580,
+          "value": 0.5967068604307533
+        },
+        {
+          "timestamp": 1781988980,
+          "value": 0.5936107691718202
+        },
+        {
+          "timestamp": 1782075414,
+          "value": 0.5932209508722588
+        },
+        {
+          "timestamp": 1782161817,
+          "value": 0.5926247704506284
+        },
+        {
+          "timestamp": 1782248163,
+          "value": 0.5684963488101291
+        },
+        {
+          "timestamp": 1782334582,
+          "value": 0.5717776678721863
+        },
+        {
+          "timestamp": 1782420981,
+          "value": 0.5735811946068088
+        },
+        {
+          "timestamp": 1782507379,
+          "value": 0.6108133985952849
+        },
+        {
+          "timestamp": 1782593780,
+          "value": 0.6072956246172357
+        },
+        {
+          "timestamp": 1782680168,
+          "value": 0.5941780227214558
+        },
+        {
+          "timestamp": 1782766581,
+          "value": 0.6090218792815826
+        },
+        {
+          "timestamp": 1782852978,
+          "value": 0.5753163869429134
+        },
+        {
+          "timestamp": 1782939403,
+          "value": 0.5829841726951712
+        },
+        {
+          "timestamp": 1783025767,
+          "value": 0.6266925586634784
+        },
+        {
+          "timestamp": 1783112178,
+          "value": 0.6390856467408677
+        },
+        {
+          "timestamp": 1783198579,
+          "value": 0.6406860163762194
+        },
+        {
+          "timestamp": 1783284979,
+          "value": 0.6293283716132113
+        },
+        {
+          "timestamp": 1783371366,
+          "value": 0.6469117772046762
+        },
+        {
+          "timestamp": 1783457780,
+          "value": 0.6389890226184904
+        },
+        {
+          "timestamp": 1783544181,
+          "value": 0.6271693137221235
+        },
+        {
+          "timestamp": 1783630577,
+          "value": 0.6447145373795646
+        }
+      ],
+      "priceChange": {
+        "period": "1m",
+        "displayPeriod": "1M",
+        "ratio": 0.20248102686062855,
+        "percent": 20.248102686062854,
+        "startPrice": 0.5343928759878052,
+        "endPrice": 0.6425972942648205,
+        "startTimestamp": 1781038582,
+        "endTimestamp": 1783633637
+      }
+    },
+    {
+      "address": "0x9a1741E151233a82Cf69209A2F1bC7442B1fB29C",
+      "name": "DeFi Growth Index",
+      "symbol": "DGI",
+      "price": 0.6503712164548955,
+      "marketCap": 23463.408082213387,
+      "chainId": 1,
+      "type": "index",
+      "status": "active",
+      "basket": [
+        {
+          "address": "0xDEf1CA1fb7FBcDC777520aa7f396b4E015F497aB",
+          "symbol": "COW",
+          "name": "CoW Protocol Token",
+          "weight": "5.97"
+        },
+        {
+          "address": "0x01791F726B4103694969820be083196cC7c045fF",
+          "symbol": "YB",
+          "name": "Yield Basis",
+          "weight": "0.41"
+        },
+        {
+          "address": "0x58D97B57BB95320F9a05dC918Aef65434969c2B2",
+          "symbol": "MORPHO",
+          "name": "Morpho Token",
+          "weight": "76.46"
+        },
+        {
+          "address": "0x259338656198eC7A76c729514D3CB45Dfbf768A1",
+          "symbol": "RESOLV",
+          "name": "Resolv",
+          "weight": "0.01"
+        },
+        {
+          "address": "0x6f40d4A6237C257fff2dB00FA0510DeEECd303eb",
+          "symbol": "FLUID",
+          "name": "Fluid",
+          "weight": "4.82"
+        },
+        {
+          "address": "0x643C4E15d7d62Ad0aBeC4a9BD4b001aA3Ef52d66",
+          "symbol": "SYRUP",
+          "name": "Syrup Token",
+          "weight": "12.24"
+        },
+        {
+          "address": "0x365AccFCa291e7D3914637ABf1F7635dB165Bb09",
+          "symbol": "FXN",
+          "name": "FXN Token",
+          "weight": "0.09"
+        }
+      ],
+      "createdAt": 1739926919,
+      "tags": [
+        "DeFi"
+      ],
+      "brand": {
+        "icon": "https://l5394zf57b.ufs.sh/f/mupND8QUUvXxx5Z4pEnKa2RzUWur86ESst14dTH3KhC5mobY",
+        "cover": "https://l5394zf57b.ufs.sh/f/mupND8QUUvXxjz86YsFRwh3cEqUL2OHX1kzGKtMAygspxlu0",
+        "tags": [
+          "DeFi"
+        ],
+        "about": "The DeFi Growth Index tracks the performance of early-stage DeFi projects that demonstrate innovative mechanisms and established market demand, with strong potential for significant growth in user base, transaction volume, and/or Total Value Locked (TVL) as relevant. This is achieved through a curated portfolio of tokens native to these projects.",
+        "files": []
+      },
+      "performance": [
+        {
+          "timestamp": 1781038582,
+          "value": 0.5736130181944054
+        },
+        {
+          "timestamp": 1781124979,
+          "value": 0.587942470879306
+        },
+        {
+          "timestamp": 1781211372,
+          "value": 0.5767797425195423
+        },
+        {
+          "timestamp": 1781297774,
+          "value": 0.5732185457019876
+        },
+        {
+          "timestamp": 1781384162,
+          "value": 0.5758521265257206
+        },
+        {
+          "timestamp": 1781470579,
+          "value": 0.5785409291379321
+        },
+        {
+          "timestamp": 1781556979,
+          "value": 0.5895860113702759
+        },
+        {
+          "timestamp": 1781643368,
+          "value": 0.5856670139369992
+        },
+        {
+          "timestamp": 1781729775,
+          "value": 0.5821356859493249
+        },
+        {
+          "timestamp": 1781816176,
+          "value": 0.5775656753383162
+        },
+        {
+          "timestamp": 1781902580,
+          "value": 0.5680070954927583
+        },
+        {
+          "timestamp": 1781988980,
+          "value": 0.5492073847067648
+        },
+        {
+          "timestamp": 1782075414,
+          "value": 0.5523186591013758
+        },
+        {
+          "timestamp": 1782161817,
+          "value": 0.5450229214795176
+        },
+        {
+          "timestamp": 1782248163,
+          "value": 0.5045072005733674
+        },
+        {
+          "timestamp": 1782334582,
+          "value": 0.5177099143356866
+        },
+        {
+          "timestamp": 1782420981,
+          "value": 0.5078948007921792
+        },
+        {
+          "timestamp": 1782507379,
+          "value": 0.5200457176694662
+        },
+        {
+          "timestamp": 1782593780,
+          "value": 0.5311153940437445
+        },
+        {
+          "timestamp": 1782680168,
+          "value": 0.5216975492439041
+        },
+        {
+          "timestamp": 1782766581,
+          "value": 0.5528920365488948
+        },
+        {
+          "timestamp": 1782852978,
+          "value": 0.5600830983621075
+        },
+        {
+          "timestamp": 1782939403,
+          "value": 0.6044610045463147
+        },
+        {
+          "timestamp": 1783025767,
+          "value": 0.6036803165442454
+        },
+        {
+          "timestamp": 1783112178,
+          "value": 0.5907516676215979
+        },
+        {
+          "timestamp": 1783198579,
+          "value": 0.5835322923655705
+        },
+        {
+          "timestamp": 1783284979,
+          "value": 0.5840659239390679
+        },
+        {
+          "timestamp": 1783371366,
+          "value": 0.5971047067270261
+        },
+        {
+          "timestamp": 1783457780,
+          "value": 0.6035644234431182
+        },
+        {
+          "timestamp": 1783544181,
+          "value": 0.6083506334975137
+        },
+        {
+          "timestamp": 1783630577,
+          "value": 0.642783203619047
+        }
+      ],
+      "priceChange": {
+        "period": "1m",
+        "displayPeriod": "1M",
+        "ratio": 0.13381530025609656,
+        "percent": 13.381530025609656,
+        "startPrice": 0.5736130181944054,
+        "endPrice": 0.6503712164548955,
+        "startTimestamp": 1781038582,
+        "endTimestamp": 1783633637
+      }
+    },
+    {
+      "address": "0x005F893EcD7bF9667195642f7649DA8163e23658",
+      "name": "Degen ETH",
+      "symbol": "dgnETH",
+      "price": 1748.2223909688614,
+      "marketCap": 22934.114947588776,
+      "chainId": 1,
+      "type": "yield",
+      "status": "deprecated",
+      "basket": [
+        {
+          "address": "0x78Fc2c2eD1A4cDb5402365934aE5648aDAd094d0",
+          "symbol": "Re7WETH",
+          "name": "Re7 WETH",
+          "weight": "12.5256516461640699"
+        },
+        {
+          "address": "0xDcEe70654261AF21C44c093C300eD3Bb97b78192",
+          "symbol": "wOETH",
+          "name": "Wrapped OETH",
+          "weight": "12.5119246142844088"
+        },
+        {
+          "address": "0xDbC0cE2321B76D3956412B36e9c0FA9B0fD176E7",
+          "symbol": "stkcvxETH+ETH-f",
+          "name": "Staked Curve.fi Factory Crypto Pool: ETH+/ETH Convex Deposit",
+          "weight": "74.9624237395515211"
+        }
+      ],
+      "createdAt": 1718050727,
+      "performance": [],
+      "priceChange": {
+        "period": "1m",
+        "displayPeriod": "1M",
+        "ratio": null,
+        "percent": null,
+        "startPrice": null,
+        "endPrice": null,
+        "startTimestamp": null,
+        "endTimestamp": null
+      }
+    },
+    {
+      "address": "0x641B0453487C9D14c5df96d45a481ef1dc84e31f",
+      "name": "Maat",
+      "symbol": "MAAT",
+      "price": 1.0350911165528007,
+      "marketCap": 20817.46963538161,
+      "chainId": 8453,
+      "type": "yield",
+      "status": "deprecated",
+      "basket": [
+        {
+          "address": "0x184460704886f9F2A7F3A0c2887680867954dC6E",
+          "symbol": "saBasUSDC",
+          "name": "Static Aave Base USDC",
+          "weight": "49.1418194555165395"
+        },
+        {
+          "address": "0xA694f7177C6c839C951C74C797283B35D0A486c8",
+          "symbol": "wcUSDCv3",
+          "name": "Wrapped cUSDCv3",
+          "weight": "49.1419030058816255"
+        },
+        {
+          "address": "0xc1CBa3fCea344f92D9239c08C0568f6F2F0ee452",
+          "symbol": "wstETH",
+          "name": "Wrapped liquid staked Ether 2.0",
+          "weight": "0.8580758823110571"
+        },
+        {
+          "address": "0x2Ae3F1Ec7F1F5012CFEab0185bfc7aa3cf0DEc22",
+          "symbol": "cbETH",
+          "name": "Coinbase Wrapped Staked ETH",
+          "weight": "0.8582016562907777"
+        }
+      ],
+      "createdAt": 1711319601,
+      "performance": [],
+      "priceChange": {
+        "period": "1m",
+        "displayPeriod": "1M",
+        "ratio": null,
+        "percent": null,
+        "startPrice": null,
+        "endPrice": null,
+        "startTimestamp": null,
+        "endTimestamp": null
+      }
+    },
+    {
+      "address": "0xe4a10951f962e6cB93Cb843a4ef05d2F99DB1F94",
+      "name": "Sagix Club Edelweiss",
+      "symbol": "ixEdel",
+      "price": 100.42286433094691,
+      "marketCap": 11397.215131049488,
+      "chainId": 1,
+      "type": "index",
+      "status": "active",
+      "basket": [
+        {
+          "address": "0xa3931d71877C0E7a3148CB7Eb4463524FEc27fbD",
+          "symbol": "sUSDS",
+          "name": "Savings USDS",
+          "weight": "21.92"
+        },
+        {
+          "address": "0xB58E61C3098d85632Df34EecfB899A1Ed80921cB",
+          "symbol": "ZCHF",
+          "name": "Frankencoin",
+          "weight": "24.65"
+        },
+        {
+          "address": "0xBEEF01735c132Ada46AA9aA4c54623cAA92A64CB",
+          "symbol": "steakUSDC",
+          "name": "Steakhouse USDC",
+          "weight": "16.88"
+        },
+        {
+          "address": "0x80ac24aA929eaF5013f6436cdA2a7ba190f5Cc0b",
+          "symbol": "syrupUSDC",
+          "name": "Syrup USDC",
+          "weight": "5.82"
+        },
+        {
+          "address": "0xcbB7C0000aB88B473b1f5aFd9ef808440eed33Bf",
+          "symbol": "cbBTC",
+          "name": "Coinbase Wrapped BTC",
+          "weight": "13.02"
+        },
+        {
+          "address": "0x68749665FF8D2d112Fa859AA293F07A622782F38",
+          "symbol": "XAUt",
+          "name": "Tether Gold",
+          "weight": "17.71"
+        }
+      ],
+      "createdAt": 1768402847,
+      "tags": [
+        "RWA",
+        "Stablecoins",
+        "Bitcoin"
+      ],
+      "brand": {
+        "icon": "https://l5394zf57b.ufs.sh/f/mupND8QUUvXxjThLW3aFRwh3cEqUL2OHX1kzGKtMAygspxlu",
+        "cover": "https://l5394zf57b.ufs.sh/f/mupND8QUUvXxFET8Dt5B1dLwS72N0ctR8IDzgvjfQy4UMkhW",
+        "tags": [
+          "RWA",
+          "Stablecoins",
+          "Bitcoin"
+        ],
+        "about": "Store of value engineered for resilience. ixEDEL combines humanity's proven stores of value—gold, Bitcoin, Swiss Franc—with yield-bearing stables to preserve purchasing power whether markets face inflation, deflation, growth, or stagnation. No directional macro bets required.",
+        "files": []
+      },
+      "performance": [
+        {
+          "timestamp": 1781038582,
+          "value": 100.97090080163119
+        },
+        {
+          "timestamp": 1781124979,
+          "value": 100.09474834813474
+        },
+        {
+          "timestamp": 1781211372,
+          "value": 101.09256520360053
+        },
+        {
+          "timestamp": 1781297774,
+          "value": 101.1635899689289
+        },
+        {
+          "timestamp": 1781384162,
+          "value": 101.25615423243475
+        },
+        {
+          "timestamp": 1781470579,
+          "value": 101.29878274743886
+        },
+        {
+          "timestamp": 1781556979,
+          "value": 102.23108290089307
+        },
+        {
+          "timestamp": 1781643368,
+          "value": 102.17611696224029
+        },
+        {
+          "timestamp": 1781729775,
+          "value": 101.38694751038386
+        },
+        {
+          "timestamp": 1781816176,
+          "value": 100.79670522556708
+        },
+        {
+          "timestamp": 1781902580,
+          "value": 100.48502595501486
+        },
+        {
+          "timestamp": 1781988980,
+          "value": 100.58687378368927
+        },
+        {
+          "timestamp": 1782075414,
+          "value": 100.5933297070294
+        },
+        {
+          "timestamp": 1782161817,
+          "value": 100.73421255322044
+        },
+        {
+          "timestamp": 1782248163,
+          "value": 100.08211290305043
+        },
+        {
+          "timestamp": 1782334582,
+          "value": 99.26208937427297
+        },
+        {
+          "timestamp": 1782420981,
+          "value": 99.06890637616756
+        },
+        {
+          "timestamp": 1782507379,
+          "value": 99.37053170455765
+        },
+        {
+          "timestamp": 1782593780,
+          "value": 99.51428829771706
+        },
+        {
+          "timestamp": 1782680168,
+          "value": 99.41978248803079
+        },
+        {
+          "timestamp": 1782766581,
+          "value": 99.28587908242773
+        },
+        {
+          "timestamp": 1782852978,
+          "value": 99.0709131887283
+        },
+        {
+          "timestamp": 1782939403,
+          "value": 99.3249226391928
+        },
+        {
+          "timestamp": 1783025767,
+          "value": 100.90531963384468
+        },
+        {
+          "timestamp": 1783112178,
+          "value": 100.6876656699082
+        },
+        {
+          "timestamp": 1783198579,
+          "value": 100.80277130702649
+        },
+        {
+          "timestamp": 1783284979,
+          "value": 100.6481661412347
+        },
+        {
+          "timestamp": 1783371366,
+          "value": 100.76725895060892
+        },
+        {
+          "timestamp": 1783457780,
+          "value": 100.47026751815598
+        },
+        {
+          "timestamp": 1783544181,
+          "value": 99.90362634482001
+        },
+        {
+          "timestamp": 1783630577,
+          "value": 100.44673896230587
+        }
+      ],
+      "priceChange": {
+        "period": "1m",
+        "displayPeriod": "1M",
+        "ratio": -0.005427667440156453,
+        "percent": -0.5427667440156453,
+        "startPrice": 100.97090080163119,
+        "endPrice": 100.42286433094691,
+        "startTimestamp": 1781038582,
+        "endTimestamp": 1783633637
+      }
+    },
+    {
+      "address": "0x78da5799CF427Fee11e9996982F4150eCe7a99A7",
+      "name": "Revenue Generating USD",
+      "symbol": "rgUSD",
+      "price": 1.0000076871688393,
+      "marketCap": 10890.973028606555,
+      "chainId": 1,
+      "type": "yield",
+      "status": "deprecated",
+      "basket": [
+        {
+          "address": "0x83F20F44975D03b1b09e64809B757c47f942BEeA",
+          "symbol": "sDAI",
+          "name": "Savings Dai",
+          "weight": "100"
+        }
+      ],
+      "createdAt": 1710519971,
+      "performance": [],
+      "priceChange": {
+        "period": "1m",
+        "displayPeriod": "1M",
+        "ratio": null,
+        "percent": null,
+        "startPrice": null,
+        "endPrice": null,
+        "startTimestamp": null,
+        "endTimestamp": null
+      }
+    },
+    {
+      "address": "0xfe45EDa533e97198d9f3dEEDA9aE6c147141f6F9",
+      "name": "AIndex",
+      "symbol": "AI",
+      "price": 0.04314801280302967,
+      "marketCap": 8312.358063949043,
+      "chainId": 8453,
+      "type": "index",
+      "status": "deprecated",
+      "basket": [
+        {
+          "address": "0x0b3e328455c4059EEb9e3f84b5543F74E24e7E1b",
+          "symbol": "VIRTUAL",
+          "name": "Virtual Protocol",
+          "weight": "34.84"
+        },
+        {
+          "address": "0xb33Ff54b9F7242EF1593d2C9Bcd8f9df46c77935",
+          "symbol": "FAI",
+          "name": "FAI",
+          "weight": "2.56"
+        },
+        {
+          "address": "0xAC1Bd2486aAf3B5C0fc3Fd868558b082a531B2B4",
+          "symbol": "TOSHI",
+          "name": "Toshi",
+          "weight": "3.73"
+        },
+        {
+          "address": "0x4F9Fd6Be4a90f2620860d680c0d4d5Fb53d1A825",
+          "symbol": "AIXBT",
+          "name": "aixbt by Virtuals",
+          "weight": "1.45"
+        },
+        {
+          "address": "0xacfE6019Ed1A7Dc6f7B508C02d1b04ec88cC21bf",
+          "symbol": "VVV",
+          "name": "Venice Token",
+          "weight": "33.90"
+        },
+        {
+          "address": "0xB22a793a81ff5b6Ad37F40d5FE1E0AC4184d52F3",
+          "symbol": "TONY",
+          "name": "Big Tony",
+          "weight": "3.07"
+        },
+        {
+          "address": "0xC0041EF357B183448B235a8Ea73Ce4E4eC8c265F",
+          "symbol": "COOKIE",
+          "name": "Cookie",
+          "weight": "0.39"
+        },
+        {
+          "address": "0xB3e3c89B8D9c88B1fe96856E382959eE6291ebbA",
+          "symbol": "REKT",
+          "name": "Rekt",
+          "weight": "6.31"
+        },
+        {
+          "address": "0x6B2504A03ca4D43d0D73776F6aD46dAb2F2a4cFD",
+          "symbol": "REI",
+          "name": "Unit 00 - Rei",
+          "weight": "4.82"
+        },
+        {
+          "address": "0xA4A2E2ca3fBfE21aed83471D28b6f65A233C6e00",
+          "symbol": "TIBBIR",
+          "name": "Ribbita by Virtuals",
+          "weight": "8.93"
+        }
+      ],
+      "createdAt": 1739387375,
+      "tags": [
+        "AI",
+        "Memes"
+      ],
+      "brand": {
+        "icon": "https://l5394zf57b.ufs.sh/f/mupND8QUUvXxYAFIGckGhrj2ScsDNeUp3lRftPgCi0ZM65Vz",
+        "cover": "https://l5394zf57b.ufs.sh/f/mupND8QUUvXxoS7Q0DpWJ8eBKlh20iDxdQzgc7AtSIO5MUyN",
+        "tags": [
+          "AI",
+          "Memes"
+        ],
+        "about": "AIndex aims to provide users with diversified exposure to the top-performing AI agents and AI infrastructure projects. By leveraging the Base blockchain ecosystem, AIndex offers a carefully curated and balanced index of AI-focused tokens, allowing holders to benefit from the growth of AI technology and infrastructure while minimizing individual project risk.",
+        "files": []
+      },
+      "performance": [
+        {
+          "timestamp": 1781038582,
+          "value": 0.04798029211227328
+        },
+        {
+          "timestamp": 1781124979,
+          "value": 0.04363353322428856
+        },
+        {
+          "timestamp": 1781211372,
+          "value": 0.04641294139875272
+        },
+        {
+          "timestamp": 1781297774,
+          "value": 0.047574442991669255
+        },
+        {
+          "timestamp": 1781384162,
+          "value": 0.051696524834350034
+        },
+        {
+          "timestamp": 1781470579,
+          "value": 0.05056931679220419
+        },
+        {
+          "timestamp": 1781556979,
+          "value": 0.05191319071650707
+        },
+        {
+          "timestamp": 1781643368,
+          "value": 0.05086379852289979
+        },
+        {
+          "timestamp": 1781729775,
+          "value": 0.049960276678468946
+        },
+        {
+          "timestamp": 1781816176,
+          "value": 0.047513829107674016
+        },
+        {
+          "timestamp": 1781902580,
+          "value": 0.0477514395055542
+        },
+        {
+          "timestamp": 1781988980,
+          "value": 0.04733474528432385
+        },
+        {
+          "timestamp": 1782075414,
+          "value": 0.048114326278937566
+        },
+        {
+          "timestamp": 1782161817,
+          "value": 0.04806069754870533
+        },
+        {
+          "timestamp": 1782248163,
+          "value": 0.04538433055222739
+        },
+        {
+          "timestamp": 1782334582,
+          "value": 0.04270116793782256
+        },
+        {
+          "timestamp": 1782420981,
+          "value": 0.04337559285561023
+        },
+        {
+          "timestamp": 1782507379,
+          "value": 0.0431721334729145
+        },
+        {
+          "timestamp": 1782593780,
+          "value": 0.0431875895220954
+        },
+        {
+          "timestamp": 1782680168,
+          "value": 0.043048767321120764
+        },
+        {
+          "timestamp": 1782766581,
+          "value": 0.044693693464984176
+        },
+        {
+          "timestamp": 1782852978,
+          "value": 0.042030736969141703
+        },
+        {
+          "timestamp": 1782939403,
+          "value": 0.04435712953347412
+        },
+        {
+          "timestamp": 1783025767,
+          "value": 0.044861940808171054
+        },
+        {
+          "timestamp": 1783112178,
+          "value": 0.04635419850567453
+        },
+        {
+          "timestamp": 1783198579,
+          "value": 0.0445509301428354
+        },
+        {
+          "timestamp": 1783284979,
+          "value": 0.04409641170252188
+        },
+        {
+          "timestamp": 1783371366,
+          "value": 0.043918155504359076
+        },
+        {
+          "timestamp": 1783457780,
+          "value": 0.04222063358403631
+        },
+        {
+          "timestamp": 1783544181,
+          "value": 0.042068985365006174
+        },
+        {
+          "timestamp": 1783630577,
+          "value": 0.043268123673319704
+        }
+      ],
+      "priceChange": {
+        "period": "1m",
+        "displayPeriod": "1M",
+        "ratio": -0.10071383679649425,
+        "percent": -10.071383679649424,
+        "startPrice": 0.04798029211227328,
+        "endPrice": 0.04314801280302967,
+        "startTimestamp": 1781038582,
+        "endTimestamp": 1783633637
+      }
+    },
+    {
+      "address": "0x47686106181b3CEfe4eAf94C4c10b48Ac750370b",
+      "name": "Virtuals Index",
+      "symbol": "VTF",
+      "price": 0.2823699442927641,
+      "marketCap": 7237.233113542857,
+      "chainId": 8453,
+      "type": "index",
+      "status": "deprecated",
+      "basket": [
+        {
+          "address": "0x4F9Fd6Be4a90f2620860d680c0d4d5Fb53d1A825",
+          "symbol": "AIXBT",
+          "name": "aixbt by Virtuals",
+          "weight": "12.97"
+        },
+        {
+          "address": "0x1C4CcA7C5DB003824208aDDA61Bd749e55F463a3",
+          "symbol": "GAME",
+          "name": "GAME by Virtuals",
+          "weight": "2.96"
+        },
+        {
+          "address": "0x731814e491571A2e9eE3c5b1F7f3b962eE8f4870",
+          "symbol": "VADER",
+          "name": "VaderAI by Virtuals",
+          "weight": "0.86"
+        },
+        {
+          "address": "0x55cD6469F597452B5A7536e2CD98fDE4c1247ee4",
+          "symbol": "LUNA",
+          "name": "Luna by Virtuals",
+          "weight": "2.31"
+        },
+        {
+          "address": "0x58Db197E91Bc8Cf1587F75850683e4bd0730e6BF",
+          "symbol": "AXR",
+          "name": "Axelrod by Virtuals",
+          "weight": "0.25"
+        },
+        {
+          "address": "0x0b3AE50BaBE7FFa4E1A50569ceE6bDEFd4ccAeE0",
+          "symbol": "WIRE",
+          "name": "717ai by Virtuals",
+          "weight": "1.30"
+        },
+        {
+          "address": "0x98aC5B33A4Ef1151f138941c979211599c2fF953",
+          "symbol": "VPAY",
+          "name": "VPay by Virtuals",
+          "weight": "0.44"
+        },
+        {
+          "address": "0xA4A2E2ca3fBfE21aed83471D28b6f65A233C6e00",
+          "symbol": "TIBBIR",
+          "name": "Ribbita by Virtuals",
+          "weight": "77.95"
+        },
+        {
+          "address": "0xFAC77f01957ed1B3DD1cbEa992199B8f85B6E886",
+          "symbol": "FACY",
+          "name": "ArAIstotle by Virtuals",
+          "weight": "0.31"
+        },
+        {
+          "address": "0xC44141a684f6AA4E36cD9264ab55550B03C88643",
+          "symbol": "ETHY",
+          "name": "Ethy AI by Virtuals",
+          "weight": "0.65"
+        }
+      ],
+      "createdAt": 1739494629,
+      "tags": [
+        "AI",
+        "Ecosystem",
+        "Memes"
+      ],
+      "brand": {
+        "icon": "https://l5394zf57b.ufs.sh/f/mupND8QUUvXx5AQG85hN1x8WsPzKQYEGuJwIpDVehmXl4fqM",
+        "cover": "https://l5394zf57b.ufs.sh/f/mupND8QUUvXxtUYEfjVkP0T3EBpuIeMVN91Fm8AJUZHzglct",
+        "tags": [
+          "AI",
+          "Ecosystem",
+          "Memes"
+        ],
+        "about": "",
+        "files": []
+      },
+      "performance": [
+        {
+          "timestamp": 1781038582,
+          "value": 0.2685218747938614
+        },
+        {
+          "timestamp": 1781124979,
+          "value": 0.260078066510434
+        },
+        {
+          "timestamp": 1781211372,
+          "value": 0.2801498138533915
+        },
+        {
+          "timestamp": 1781297774,
+          "value": 0.2915808155835414
+        },
+        {
+          "timestamp": 1781384162,
+          "value": 0.3038566706043324
+        },
+        {
+          "timestamp": 1781470579,
+          "value": 0.3001211185884925
+        },
+        {
+          "timestamp": 1781556979,
+          "value": 0.321417312741732
+        },
+        {
+          "timestamp": 1781643368,
+          "value": 0.31099616270679054
+        },
+        {
+          "timestamp": 1781729775,
+          "value": 0.30804811908154567
+        },
+        {
+          "timestamp": 1781816176,
+          "value": 0.2921643500735666
+        },
+        {
+          "timestamp": 1781902580,
+          "value": 0.2981072369560186
+        },
+        {
+          "timestamp": 1781988980,
+          "value": 0.2855967879220004
+        },
+        {
+          "timestamp": 1782075414,
+          "value": 0.28542831592568385
+        },
+        {
+          "timestamp": 1782161817,
+          "value": 0.27544647327218935
+        },
+        {
+          "timestamp": 1782248163,
+          "value": 0.2714294457506211
+        },
+        {
+          "timestamp": 1782334582,
+          "value": 0.25466712786295964
+        },
+        {
+          "timestamp": 1782420981,
+          "value": 0.2517854805982759
+        },
+        {
+          "timestamp": 1782507379,
+          "value": 0.2566312301149645
+        },
+        {
+          "timestamp": 1782593780,
+          "value": 0.25595590347283353
+        },
+        {
+          "timestamp": 1782680168,
+          "value": 0.25147498541612257
+        },
+        {
+          "timestamp": 1782766581,
+          "value": 0.2580147757691026
+        },
+        {
+          "timestamp": 1782852978,
+          "value": 0.24868575837308227
+        },
+        {
+          "timestamp": 1782939403,
+          "value": 0.2517182700204859
+        },
+        {
+          "timestamp": 1783025767,
+          "value": 0.2598337326952148
+        },
+        {
+          "timestamp": 1783112178,
+          "value": 0.26630440742887523
+        },
+        {
+          "timestamp": 1783198579,
+          "value": 0.2737733764476038
+        },
+        {
+          "timestamp": 1783284979,
+          "value": 0.28271081173285684
+        },
+        {
+          "timestamp": 1783371366,
+          "value": 0.3015222109883773
+        },
+        {
+          "timestamp": 1783457780,
+          "value": 0.2940477439522012
+        },
+        {
+          "timestamp": 1783544181,
+          "value": 0.2560365763770001
+        },
+        {
+          "timestamp": 1783630577,
+          "value": 0.2837774703833118
+        }
+      ],
+      "priceChange": {
+        "period": "1m",
+        "displayPeriod": "1M",
+        "ratio": 0.0515714762886023,
+        "percent": 5.15714762886023,
+        "startPrice": 0.2685218747938614,
+        "endPrice": 0.2823699442927641,
+        "startTimestamp": 1781038582,
+        "endTimestamp": 1783633637
+      }
+    },
+    {
+      "address": "0xA5cdea03B11042fc10B52aF9eCa48bb17A2107d2",
+      "name": "RWA Index",
+      "symbol": "mvRWA",
+      "price": 0.4539828571803664,
+      "marketCap": 6769.3433568301925,
+      "chainId": 1,
+      "type": "index",
+      "status": "deprecated",
+      "basket": [
+        {
+          "address": "0x320623b8E4fF03373931769A31Fc52A4E78B5d70",
+          "symbol": "RSR",
+          "name": "Reserve Rights",
+          "weight": "1.61"
+        },
+        {
+          "address": "0xfAbA6f8e4a5E8Ab82F62fe7C39859FA577269BE3",
+          "symbol": "ONDO",
+          "name": "Ondo",
+          "weight": "18.70"
+        },
+        {
+          "address": "0x9f8F72aA9304c8B593d555F12eF6589cC3A579A2",
+          "symbol": "MKR",
+          "name": "Maker",
+          "weight": "62.63"
+        },
+        {
+          "address": "0x57e114B691Db790C35207b2e685D4A43181e6061",
+          "symbol": "ENA",
+          "name": "ENA",
+          "weight": "8.30"
+        },
+        {
+          "address": "0x4C1746A800D224393fE2470C70A35717eD4eA5F1",
+          "symbol": "PLUME",
+          "name": "Plume",
+          "weight": "0.80"
+        },
+        {
+          "address": "0xcccCCCcCCC33D538DBC2EE4fEab0a7A1FF4e8A94",
+          "symbol": "CFG",
+          "name": "Centrifuge",
+          "weight": "7.96"
+        }
+      ],
+      "createdAt": 1740075311,
+      "tags": [
+        "RWA"
+      ],
+      "brand": {
+        "icon": "https://l5394zf57b.ufs.sh/f/mupND8QUUvXxHWjFtoZo73hGVUOQXrem4RS6TkLaNEnPwBxz",
+        "cover": "https://l5394zf57b.ufs.sh/f/mupND8QUUvXxhinnzBp2BbMt4sV2Y6jmzwPSZ3Hrav0gfieu",
+        "tags": [
+          "RWA"
+        ],
+        "about": "An index exclusively tracking governance tokens of protocols that bring real-world assets (e.g. T-bills, corporate debt, commodities) onto the blockchain, emphasizing credible tokenization, verifiable collateral, and regulatory clarity upheld by audits or attestations.",
+        "files": []
+      },
+      "performance": [
+        {
+          "timestamp": 1781038582,
+          "value": 0.47039574522556504
+        },
+        {
+          "timestamp": 1781124979,
+          "value": 0.4508891589148243
+        },
+        {
+          "timestamp": 1781211372,
+          "value": 0.47386536053151823
+        },
+        {
+          "timestamp": 1781297774,
+          "value": 0.4714588372046623
+        },
+        {
+          "timestamp": 1781384162,
+          "value": 0.47423722995675077
+        },
+        {
+          "timestamp": 1781470579,
+          "value": 0.47106724547376505
+        },
+        {
+          "timestamp": 1781556979,
+          "value": 0.48763545404709147
+        },
+        {
+          "timestamp": 1781643368,
+          "value": 0.49021435233149385
+        },
+        {
+          "timestamp": 1781729775,
+          "value": 0.4919261805245397
+        },
+        {
+          "timestamp": 1781816176,
+          "value": 0.48516505128215276
+        },
+        {
+          "timestamp": 1781902580,
+          "value": 0.4847010761530649
+        },
+        {
+          "timestamp": 1781988980,
+          "value": 0.4796641411943412
+        },
+        {
+          "timestamp": 1782075414,
+          "value": 0.48392702401246
+        },
+        {
+          "timestamp": 1782161817,
+          "value": 0.484537712766619
+        },
+        {
+          "timestamp": 1782248163,
+          "value": 0.4564216450946869
+        },
+        {
+          "timestamp": 1782334582,
+          "value": 0.4388747457182379
+        },
+        {
+          "timestamp": 1782420981,
+          "value": 0.4305264054475568
+        },
+        {
+          "timestamp": 1782507379,
+          "value": 0.42630299858234544
+        },
+        {
+          "timestamp": 1782593780,
+          "value": 0.42040985716011403
+        },
+        {
+          "timestamp": 1782680168,
+          "value": 0.42009544912651275
+        },
+        {
+          "timestamp": 1782766581,
+          "value": 0.4396164113481802
+        },
+        {
+          "timestamp": 1782852978,
+          "value": 0.43372279246413353
+        },
+        {
+          "timestamp": 1782939403,
+          "value": 0.43210205956373704
+        },
+        {
+          "timestamp": 1783025767,
+          "value": 0.4649956562940053
+        },
+        {
+          "timestamp": 1783112178,
+          "value": 0.475738891134695
+        },
+        {
+          "timestamp": 1783198579,
+          "value": 0.46793644652680466
+        },
+        {
+          "timestamp": 1783284979,
+          "value": 0.4608117816179347
+        },
+        {
+          "timestamp": 1783371366,
+          "value": 0.45995798786588143
+        },
+        {
+          "timestamp": 1783457780,
+          "value": 0.4522714241241772
+        },
+        {
+          "timestamp": 1783544181,
+          "value": 0.446328901029443
+        },
+        {
+          "timestamp": 1783630577,
+          "value": 0.4574335219474214
+        }
+      ],
+      "priceChange": {
+        "period": "1m",
+        "displayPeriod": "1M",
+        "ratio": -0.03489165922903554,
+        "percent": -3.489165922903554,
+        "startPrice": 0.47039574522556504,
+        "endPrice": 0.4539828571803664,
+        "startTimestamp": 1781038582,
+        "endTimestamp": 1783633637
+      }
+    },
+    {
+      "address": "0xb8753941196692E322846cfEE9C14C97AC81928A",
+      "name": "Base MemeIndexer DTF",
+      "symbol": "BDTF",
+      "price": 0.20007999429968126,
+      "marketCap": 3999.79548807044,
+      "chainId": 8453,
+      "type": "index",
+      "status": "active",
+      "basket": [
+        {
+          "address": "0x84054a6b72dd5c58Da8106e410e62658083a80E4",
+          "symbol": "DTF",
+          "name": "Believe In Something",
+          "weight": "5.07"
+        },
+        {
+          "address": "0x50dA645f148798F68EF2d7dB7C1CB22A6819bb2C",
+          "symbol": "SPX",
+          "name": "SPX6900",
+          "weight": "33.58"
+        },
+        {
+          "address": "0x12E96C2BFEA6E835CF8Dd38a5834fa61Cf723736",
+          "symbol": "uDOGE",
+          "name": "Dogecoin (Universal)",
+          "weight": "22.70"
+        },
+        {
+          "address": "0x2Da56AcB9Ea78330f947bD57C54119Debda7AF71",
+          "symbol": "Mog",
+          "name": "Mog Coin",
+          "weight": "17.60"
+        },
+        {
+          "address": "0x0d97F261b1e88845184f678e2d1e7a98D9FD38dE",
+          "symbol": "TYBG",
+          "name": "Base God",
+          "weight": "2.10"
+        },
+        {
+          "address": "0xB4fDe59a779991bfB6a52253B51947828b982be3",
+          "symbol": "PEPE",
+          "name": "Pepe",
+          "weight": "18.95"
+        }
+      ],
+      "createdAt": 1739991521,
+      "tags": [
+        "Memes",
+        "Ecosystem"
+      ],
+      "brand": {
+        "icon": "https://l5394zf57b.ufs.sh/f/mupND8QUUvXxHVRL2EZo73hGVUOQXrem4RS6TkLaNEnPwBxz",
+        "cover": "https://l5394zf57b.ufs.sh/f/mupND8QUUvXx6O0hmFjo5HX2ruyDEOjm3xTQzMYsRS9JwBNA",
+        "tags": [
+          "Memes",
+          "Ecosystem"
+        ],
+        "about": "",
+        "files": []
+      },
+      "performance": [
+        {
+          "timestamp": 1781038582,
+          "value": 0.1968097586480542
+        },
+        {
+          "timestamp": 1781124979,
+          "value": 0.19590424958594901
+        },
+        {
+          "timestamp": 1781211372,
+          "value": 0.19689611104147348
+        },
+        {
+          "timestamp": 1781297774,
+          "value": 0.20243133001882807
+        },
+        {
+          "timestamp": 1781384162,
+          "value": 0.2044967045070528
+        },
+        {
+          "timestamp": 1781470579,
+          "value": 0.20336375946383292
+        },
+        {
+          "timestamp": 1781556979,
+          "value": 0.21550551712551205
+        },
+        {
+          "timestamp": 1781643368,
+          "value": 0.22244017975040348
+        },
+        {
+          "timestamp": 1781729775,
+          "value": 0.23104493518100536
+        },
+        {
+          "timestamp": 1781816176,
+          "value": 0.21391454439677526
+        },
+        {
+          "timestamp": 1781902580,
+          "value": 0.20966877293902475
+        },
+        {
+          "timestamp": 1781988980,
+          "value": 0.2115934125388256
+        },
+        {
+          "timestamp": 1782075414,
+          "value": 0.21213919706244694
+        },
+        {
+          "timestamp": 1782161817,
+          "value": 0.21288942975435576
+        },
+        {
+          "timestamp": 1782248163,
+          "value": 0.2000358645697336
+        },
+        {
+          "timestamp": 1782334582,
+          "value": 0.19129247623089057
+        },
+        {
+          "timestamp": 1782420981,
+          "value": 0.18569675144510864
+        },
+        {
+          "timestamp": 1782507379,
+          "value": 0.19026359867524506
+        },
+        {
+          "timestamp": 1782593780,
+          "value": 0.191741317142121
+        },
+        {
+          "timestamp": 1782680168,
+          "value": 0.18859294845565464
+        },
+        {
+          "timestamp": 1782766581,
+          "value": 0.19505754171635029
+        },
+        {
+          "timestamp": 1782852978,
+          "value": 0.18760904109948515
+        },
+        {
+          "timestamp": 1782939403,
+          "value": 0.19083309280866084
+        },
+        {
+          "timestamp": 1783025767,
+          "value": 0.1996876153425664
+        },
+        {
+          "timestamp": 1783112178,
+          "value": 0.2168764046283374
+        },
+        {
+          "timestamp": 1783198579,
+          "value": 0.21822969550875398
+        },
+        {
+          "timestamp": 1783284979,
+          "value": 0.21276431636068371
+        },
+        {
+          "timestamp": 1783371366,
+          "value": 0.20979827733797907
+        },
+        {
+          "timestamp": 1783457780,
+          "value": 0.20723108028375078
+        },
+        {
+          "timestamp": 1783544181,
+          "value": 0.19813572082479652
+        },
+        {
+          "timestamp": 1783630577,
+          "value": 0.2003773402305512
+        }
+      ],
+      "priceChange": {
+        "period": "1m",
+        "displayPeriod": "1M",
+        "ratio": 0.016616227132695588,
+        "percent": 1.661622713269559,
+        "startPrice": 0.1968097586480542,
+        "endPrice": 0.20007999429968126,
+        "startTimestamp": 1781038582,
+        "endTimestamp": 1783633637
+      }
+    },
+    {
+      "address": "0xF8EF6e785473E82527908B06023Ac3e401cCFDcd",
+      "name": "Club Night DTF",
+      "symbol": "CLUB",
+      "price": 0.47662254298488593,
+      "marketCap": 3483.3673369374337,
+      "chainId": 8453,
+      "type": "index",
+      "status": "deprecated",
+      "basket": [
+        {
+          "address": "0x5F6a682A58854C7fBE228712aEEFfcCDe0008Ac0",
+          "symbol": "SHEKEL",
+          "name": "Rabbi Schlomo by Virtuals",
+          "weight": "0.77"
+        },
+        {
+          "address": "0x0578d8A44db98B23BF096A382e016e29a5Ce0ffe",
+          "symbol": "HIGHER",
+          "name": "higher",
+          "weight": "0.21"
+        },
+        {
+          "address": "0x4200000000000000000000000000000000000006",
+          "symbol": "WETH",
+          "name": "Wrapped Ether",
+          "weight": "55.46"
+        },
+        {
+          "address": "0x84054a6b72dd5c58Da8106e410e62658083a80E4",
+          "symbol": "DTF",
+          "name": "Believe In Something",
+          "weight": "0.86"
+        },
+        {
+          "address": "0xcbB7C0000aB88B473b1f5aFd9ef808440eed33Bf",
+          "symbol": "cbBTC",
+          "name": "Coinbase Wrapped BTC",
+          "weight": "12.85"
+        },
+        {
+          "address": "0xc55E93C62874D8100dBd2DfE307EDc1036ad5434",
+          "symbol": "mooBIFI",
+          "name": "Moo BIFI",
+          "weight": "3.40"
+        },
+        {
+          "address": "0xaB36452DbAC151bE02b16Ca17d8919826072f64a",
+          "symbol": "RSR",
+          "name": "Reserve Rights",
+          "weight": "2.28"
+        },
+        {
+          "address": "0xC0041EF357B183448B235a8Ea73Ce4E4eC8c265F",
+          "symbol": "COOKIE",
+          "name": "Cookie",
+          "weight": "0.52"
+        },
+        {
+          "address": "0xacfE6019Ed1A7Dc6f7B508C02d1b04ec88cC21bf",
+          "symbol": "VVV",
+          "name": "Venice Token",
+          "weight": "7.46"
+        },
+        {
+          "address": "0xa3A34A0D9A08CCDDB6Ed422Ac0A28a06731335aA",
+          "symbol": "uADA",
+          "name": "Cardano (Universal)",
+          "weight": "0.69"
+        },
+        {
+          "address": "0x50dA645f148798F68EF2d7dB7C1CB22A6819bb2C",
+          "symbol": "SPX",
+          "name": "SPX6900",
+          "weight": "1.93"
+        },
+        {
+          "address": "0x4ed4E862860beD51a9570b96d89aF5E1B0Efefed",
+          "symbol": "DEGEN",
+          "name": "Degen",
+          "weight": "0.99"
+        },
+        {
+          "address": "0x2a06A17CBC6d0032Cac2c6696DA90f29D39a1a29",
+          "symbol": "BITCOIN",
+          "name": "HarryPotterObamaSonic10Inu",
+          "weight": "0.46"
+        },
+        {
+          "address": "0xc79e06860Aa9564f95E08fb7E5b61458d0C63898",
+          "symbol": "uHBAR",
+          "name": "Hedera (Universal)",
+          "weight": "1.23"
+        },
+        {
+          "address": "0xB4fDe59a779991bfB6a52253B51947828b982be3",
+          "symbol": "PEPE",
+          "name": "Pepe",
+          "weight": "1.14"
+        },
+        {
+          "address": "0x2Da56AcB9Ea78330f947bD57C54119Debda7AF71",
+          "symbol": "Mog",
+          "name": "Mog Coin",
+          "weight": "0.56"
+        },
+        {
+          "address": "0x860E7C04a066a31E86750521C30F854F4f08D178",
+          "symbol": "FUCK",
+          "name": "FUCK",
+          "weight": "2.83"
+        },
+        {
+          "address": "0x9B8Df6E244526ab5F6e6400d331DB28C8fdDdb55",
+          "symbol": "uSOL",
+          "name": "Solana (Universal)",
+          "weight": "2.97"
+        },
+        {
+          "address": "0x2f6c17fa9f9bC3600346ab4e48C0701e1d5962AE",
+          "symbol": "Fartcoin",
+          "name": "Based Fartcoin",
+          "weight": "0.33"
+        },
+        {
+          "address": "0x2615a94df961278DcbC41Fb0a54fEc5f10a693aE",
+          "symbol": "uXRP",
+          "name": "XRP (Universal)",
+          "weight": "3.06"
+        }
+      ],
+      "createdAt": 1740728449,
+      "brand": {
+        "icon": "https://l5394zf57b.ufs.sh/f/mupND8QUUvXxEIICJFnqGL3YqrVoxUsP7zikIh9mNaO4QBTy",
+        "cover": "https://l5394zf57b.ufs.sh/f/mupND8QUUvXxbpfyl5AMwQU5EfZ13DVP2hdtAnlOHSG6eFm0",
+        "tags": [],
+        "about": "",
+        "files": []
+      },
+      "performance": [
+        {
+          "timestamp": 1781038582,
+          "value": 0.4734469893943512
+        },
+        {
+          "timestamp": 1781124979,
+          "value": 0.45836996504659644
+        },
+        {
+          "timestamp": 1781211372,
+          "value": 0.472810036053259
+        },
+        {
+          "timestamp": 1781297774,
+          "value": 0.4720188974675002
+        },
+        {
+          "timestamp": 1781384162,
+          "value": 0.48269646907971064
+        },
+        {
+          "timestamp": 1781470579,
+          "value": 0.4817391230416904
+        },
+        {
+          "timestamp": 1781556979,
+          "value": 0.514181636400543
+        },
+        {
+          "timestamp": 1781643368,
+          "value": 0.5095761366848454
+        },
+        {
+          "timestamp": 1781729775,
+          "value": 0.4987276834782612
+        },
+        {
+          "timestamp": 1781816176,
+          "value": 0.48479017631028626
+        },
+        {
+          "timestamp": 1781902580,
+          "value": 0.482499927206261
+        },
+        {
+          "timestamp": 1781988980,
+          "value": 0.4884215071984057
+        },
+        {
+          "timestamp": 1782075414,
+          "value": 0.49043552381720124
+        },
+        {
+          "timestamp": 1782161817,
+          "value": 0.4918565862907969
+        },
+        {
+          "timestamp": 1782248163,
+          "value": 0.4701826241470417
+        },
+        {
+          "timestamp": 1782334582,
+          "value": 0.45404692837016297
+        },
+        {
+          "timestamp": 1782420981,
+          "value": 0.44490365395560644
+        },
+        {
+          "timestamp": 1782507379,
+          "value": 0.4472812412825126
+        },
+        {
+          "timestamp": 1782593780,
+          "value": 0.44860615017394023
+        },
+        {
+          "timestamp": 1782680168,
+          "value": 0.44602116097562294
+        },
+        {
+          "timestamp": 1782766581,
+          "value": 0.4577597751957883
+        },
+        {
+          "timestamp": 1782852978,
+          "value": 0.44201143074489146
+        },
+        {
+          "timestamp": 1782939403,
+          "value": 0.456106757973168
+        },
+        {
+          "timestamp": 1783025767,
+          "value": 0.4734365966872378
+        },
+        {
+          "timestamp": 1783112178,
+          "value": 0.4910454074100565
+        },
+        {
+          "timestamp": 1783198579,
+          "value": 0.4920921906566709
+        },
+        {
+          "timestamp": 1783284979,
+          "value": 0.48759534555188383
+        },
+        {
+          "timestamp": 1783371366,
+          "value": 0.4903876465630458
+        },
+        {
+          "timestamp": 1783457780,
+          "value": 0.48444114049244913
+        },
+        {
+          "timestamp": 1783544181,
+          "value": 0.4730908152782749
+        },
+        {
+          "timestamp": 1783630577,
+          "value": 0.4771536932528024
+        }
+      ],
+      "priceChange": {
+        "period": "1m",
+        "displayPeriod": "1M",
+        "ratio": 0.006707305488618697,
+        "percent": 0.6707305488618697,
+        "startPrice": 0.4734469893943512,
+        "endPrice": 0.47662254298488593,
+        "startTimestamp": 1781038582,
+        "endTimestamp": 1783633637
+      }
+    },
+    {
+      "address": "0xFc0B1EEf20e4c68B3DCF36c4537Cfa7Ce46CA70b",
+      "name": "USDC Plus",
+      "symbol": "USDC+",
+      "price": 1.17350725481459,
+      "marketCap": 3349.8363775264697,
+      "chainId": 1,
+      "type": "yield",
+      "status": "deprecated",
+      "basket": [
+        {
+          "address": "0xBEEF01735c132Ada46AA9aA4c54623cAA92A64CB",
+          "symbol": "steakUSDC",
+          "name": "Steakhouse USDC",
+          "weight": "33.3332964764775816"
+        },
+        {
+          "address": "0x093c07787920eB34A0A0c7a09823510725Aee4Af",
+          "symbol": "wcUSDCv3",
+          "name": "Wrapped cUSDCv3",
+          "weight": "33.3334070470447484"
+        },
+        {
+          "address": "0x7f7B77e49d5b30445f222764a794AFE14af062eB",
+          "symbol": "mrp-aUSDC",
+          "name": "Tokenised Morpho Position - Aave interest bearing USDC",
+          "weight": "33.3332964764776699"
+        }
+      ],
+      "createdAt": 1695140195,
+      "performance": [],
+      "priceChange": {
+        "period": "1m",
+        "displayPeriod": "1M",
+        "ratio": null,
+        "percent": null,
+        "startPrice": null,
+        "endPrice": null,
+        "startTimestamp": null,
+        "endTimestamp": null
+      }
+    },
+    {
+      "address": "0x20d81101D254729a6E689418526bE31e2c544290",
+      "name": "Large Cap DeFi Index",
+      "symbol": "mvDEFI",
+      "price": 0.4959325477306256,
+      "marketCap": 3194.621689276418,
+      "chainId": 1,
+      "type": "index",
+      "status": "deprecated",
+      "basket": [
+        {
+          "address": "0x7Fc66500c84A76Ad7e9c93437bFc5Ac33E2DDaE9",
+          "symbol": "AAVE",
+          "name": "Aave Token",
+          "weight": "21.96"
+        },
+        {
+          "address": "0x58D97B57BB95320F9a05dC918Aef65434969c2B2",
+          "symbol": "MORPHO",
+          "name": "Morpho Token",
+          "weight": "44.11"
+        },
+        {
+          "address": "0xD533a949740bb3306d119CC777fa900bA034cd52",
+          "symbol": "CRV",
+          "name": "Curve DAO Token",
+          "weight": "4.16"
+        },
+        {
+          "address": "0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984",
+          "symbol": "UNI",
+          "name": "Uniswap",
+          "weight": "18.19"
+        },
+        {
+          "address": "0x808507121B80c02388fAd14726482e061B8da827",
+          "symbol": "PENDLE",
+          "name": "Pendle",
+          "weight": "4.75"
+        },
+        {
+          "address": "0x5A98FcBEA516Cf06857215779Fd812CA3beF1B32",
+          "symbol": "LDO",
+          "name": "Lido DAO Token",
+          "weight": "1.69"
+        },
+        {
+          "address": "0xFe0c30065B384F05761f15d0CC899D4F9F9Cc0eB",
+          "symbol": "ETHFI",
+          "name": "ether.fi governance token",
+          "weight": "3.69"
+        },
+        {
+          "address": "0xec53bF9167f50cDEB3Ae105f56099aaaB9061F83",
+          "symbol": "EIGEN",
+          "name": "Eigen",
+          "weight": "1.45"
+        }
+      ],
+      "createdAt": 1739903855,
+      "tags": [
+        "DeFi"
+      ],
+      "brand": {
+        "icon": "https://l5394zf57b.ufs.sh/f/mupND8QUUvXxEPb8hIqGL3YqrVoxUsP7zikIh9mNaO4QBTy8",
+        "cover": "https://l5394zf57b.ufs.sh/f/mupND8QUUvXxFmJ12XB1dLwS72N0ctR8IDzgvjfQy4UMkhWi",
+        "tags": [
+          "DeFi"
+        ],
+        "about": "This index tracks a curated basket of tokens from core DeFi sectors—including lending/borrowing protocols, decentralized exchanges, stablecoin issuers, yield aggregators, and other smart contract-based financial primitives.",
+        "files": []
+      },
+      "performance": [
+        {
+          "timestamp": 1781038582,
+          "value": 0.399134208426745
+        },
+        {
+          "timestamp": 1781124979,
+          "value": 0.39921902211472754
+        },
+        {
+          "timestamp": 1781211372,
+          "value": 0.40482323641696755
+        },
+        {
+          "timestamp": 1781297774,
+          "value": 0.4057213290845214
+        },
+        {
+          "timestamp": 1781384162,
+          "value": 0.4095343820505325
+        },
+        {
+          "timestamp": 1781470579,
+          "value": 0.40682627422841305
+        },
+        {
+          "timestamp": 1781556979,
+          "value": 0.42791726168453725
+        },
+        {
+          "timestamp": 1781643368,
+          "value": 0.445865419661809
+        },
+        {
+          "timestamp": 1781729775,
+          "value": 0.4399979436674613
+        },
+        {
+          "timestamp": 1781816176,
+          "value": 0.43475676182716305
+        },
+        {
+          "timestamp": 1781902580,
+          "value": 0.4271531948127443
+        },
+        {
+          "timestamp": 1781988980,
+          "value": 0.420887587090868
+        },
+        {
+          "timestamp": 1782075414,
+          "value": 0.42277804188898505
+        },
+        {
+          "timestamp": 1782161817,
+          "value": 0.42011851100865244
+        },
+        {
+          "timestamp": 1782248163,
+          "value": 0.3960894215527306
+        },
+        {
+          "timestamp": 1782334582,
+          "value": 0.4081557840332043
+        },
+        {
+          "timestamp": 1782420981,
+          "value": 0.4084885229078403
+        },
+        {
+          "timestamp": 1782507379,
+          "value": 0.42909510651226757
+        },
+        {
+          "timestamp": 1782593780,
+          "value": 0.4301697041623322
+        },
+        {
+          "timestamp": 1782680168,
+          "value": 0.4213293635645142
+        },
+        {
+          "timestamp": 1782766581,
+          "value": 0.4403589278706534
+        },
+        {
+          "timestamp": 1782852978,
+          "value": 0.4289785251676227
+        },
+        {
+          "timestamp": 1782939403,
+          "value": 0.4474963269465834
+        },
+        {
+          "timestamp": 1783025767,
+          "value": 0.4612206935871743
+        },
+        {
+          "timestamp": 1783112178,
+          "value": 0.45917069560317403
+        },
+        {
+          "timestamp": 1783198579,
+          "value": 0.46081099904061296
+        },
+        {
+          "timestamp": 1783284979,
+          "value": 0.45554063515445853
+        },
+        {
+          "timestamp": 1783371366,
+          "value": 0.4734118065967034
+        },
+        {
+          "timestamp": 1783457780,
+          "value": 0.4700550829194102
+        },
+        {
+          "timestamp": 1783544181,
+          "value": 0.46886900700004314
+        },
+        {
+          "timestamp": 1783630577,
+          "value": 0.4933483205403408
+        }
+      ],
+      "priceChange": {
+        "period": "1m",
+        "displayPeriod": "1M",
+        "ratio": 0.2425207793775122,
+        "percent": 24.25207793775122,
+        "startPrice": 0.399134208426745,
+        "endPrice": 0.4959325477306256,
+        "startTimestamp": 1781038582,
+        "endTimestamp": 1783633637
+      }
+    },
+    {
+      "address": "0xC9a3e2B3064c1c0546D3D0edc0A748E9f93Cf18d",
+      "name": "Vaya",
+      "symbol": "Vaya",
+      "price": 1.0005768180552908,
+      "marketCap": 1508.5685907200266,
+      "chainId": 8453,
+      "type": "yield",
+      "status": "deprecated",
+      "basket": [
+        {
+          "address": "0x6F6f81e5E66f503184f2202D83a79650c3285759",
+          "symbol": "saBasUSDC",
+          "name": "Static Aave Base USDC",
+          "weight": "20.000050393271321"
+        },
+        {
+          "address": "0x073F98792ef4c00bB5f11B1F64f13cB25Cde0d8D",
+          "symbol": "wsgUSDbC",
+          "name": "Wrapped Stargate USDbC",
+          "weight": "39.9999468789471607"
+        },
+        {
+          "address": "0xbC0033679AEf41Fb9FeB553Fdf55a8Bb2fC5B29e",
+          "symbol": "wcUSDCv3",
+          "name": "Wrapped cUSDCv3",
+          "weight": "40.0000027277815182"
+        }
+      ],
+      "createdAt": 1697222341,
+      "performance": [],
+      "priceChange": {
+        "period": "1m",
+        "displayPeriod": "1M",
+        "ratio": null,
+        "percent": null,
+        "startPrice": null,
+        "endPrice": null,
+        "startTimestamp": null,
+        "endTimestamp": null
+      }
+    },
+    {
+      "address": "0xD600e748C17Ca237Fcb5967Fa13d688AFf17Be78",
+      "name": "MarketVector Digital Assets 25 Index",
+      "symbol": "MVDA25",
+      "price": 1.0877247042508624,
+      "marketCap": 1180.7034106958238,
+      "chainId": 8453,
+      "type": "index",
+      "status": "deprecated",
+      "basket": [
+        {
+          "address": "0xcbB7C0000aB88B473b1f5aFd9ef808440eed33Bf",
+          "symbol": "cbBTC",
+          "name": "Coinbase Wrapped BTC",
+          "weight": "20.79"
+        },
+        {
+          "address": "0xCb327b99fF831bF8223cCEd12B1338FF3aA322Ff",
+          "symbol": "bsdETH",
+          "name": "Based ETH",
+          "weight": "13.83"
+        },
+        {
+          "address": "0x2615a94df961278DcbC41Fb0a54fEc5f10a693aE",
+          "symbol": "uXRP",
+          "name": "XRP (Universal)",
+          "weight": "4.20"
+        },
+        {
+          "address": "0x9B8Df6E244526ab5F6e6400d331DB28C8fdDdb55",
+          "symbol": "uSOL",
+          "name": "Solana (Universal)",
+          "weight": "4.52"
+        },
+        {
+          "address": "0x7fdAa50d7399ac436943028edA6ed9a1BD89509f",
+          "symbol": "WBNB",
+          "name": "Wrapped BNB",
+          "weight": "4.86"
+        },
+        {
+          "address": "0xa3A34A0D9A08CCDDB6Ed422Ac0A28a06731335aA",
+          "symbol": "uADA",
+          "name": "Cardano (Universal)",
+          "weight": "2.98"
+        },
+        {
+          "address": "0xfA1df3F6108dB461Fd89437F320fE50C125aF5F0",
+          "symbol": "TRX",
+          "name": "TRON",
+          "weight": "7.62"
+        },
+        {
+          "address": "0xd403D1624DAEF243FbcBd4A80d8A6F36afFe32b2",
+          "symbol": "uLINK",
+          "name": "Chainlink (Universal)",
+          "weight": "3.72"
+        },
+        {
+          "address": "0xd6a34b430C05ac78c24985f8abEE2616BC1788Cb",
+          "symbol": "uAVAX",
+          "name": "Avalanche (Universal)",
+          "weight": "1.95"
+        },
+        {
+          "address": "0x15D0e0c55a3E7eE67152aD7E89acf164253Ff68d",
+          "symbol": "HYPE",
+          "name": "HYPE",
+          "weight": "15.36"
+        },
+        {
+          "address": "0x378c326A472915d38b2D8D41e1345987835FaB64",
+          "symbol": "uXLM",
+          "name": "Stellar (Universal)",
+          "weight": "4.08"
+        },
+        {
+          "address": "0xc79e06860Aa9564f95E08fb7E5b61458d0C63898",
+          "symbol": "uHBAR",
+          "name": "Hedera (Universal)",
+          "weight": "2.04"
+        },
+        {
+          "address": "0xb0505e5a99abd03d94a1169e638B78EDfEd26ea4",
+          "symbol": "uSUI",
+          "name": "Sui (Universal)",
+          "weight": "1.88"
+        },
+        {
+          "address": "0x0F813f4785b2360009F9aC9BF6121a85f109efc6",
+          "symbol": "uDOT",
+          "name": "Polkadot (Universal)",
+          "weight": "0.92"
+        },
+        {
+          "address": "0x3EB097375fc2FC361e4a472f5E7067238c547c52",
+          "symbol": "uLTC",
+          "name": "Litecoin (Universal)",
+          "weight": "2.28"
+        },
+        {
+          "address": "0x806041B6473DA60abbe1b256d9A2749A151be6C6",
+          "symbol": "stTAO",
+          "name": "Tensorplex Staked TAO",
+          "weight": "1.30"
+        },
+        {
+          "address": "0x7bE0Cc2cADCD4A8f9901B4a66244DcDd9Bd02e0F",
+          "symbol": "uBCH",
+          "name": "Bitcoin Cash (Universal)",
+          "weight": "2.69"
+        },
+        {
+          "address": "0xc3De830EA07524a0761646a6a4e4be0e114a3C83",
+          "symbol": "UNI",
+          "name": "Uniswap",
+          "weight": "1.46"
+        },
+        {
+          "address": "0x5ed25E305E08F58AFD7995EaC72563E6BE65A617",
+          "symbol": "uNEAR",
+          "name": "NEAR (Universal)",
+          "weight": "1.67"
+        },
+        {
+          "address": "0x63706e401c06ac8513145b7687A14804d17f814b",
+          "symbol": "AAVE",
+          "name": "Aave Token",
+          "weight": "0.94"
+        },
+        {
+          "address": "0xF0134C5eA11d1fc75fa1b25fAC00F8d82C38bD52",
+          "symbol": "MNT",
+          "name": "Mantle",
+          "weight": "0.91"
+        }
+      ],
+      "createdAt": 1739559257,
+      "tags": [
+        "Majors",
+        "L1",
+        "DeFi",
+        "Ecosystem",
+        "Bitcoin"
+      ],
+      "brand": {
+        "icon": "https://l5394zf57b.ufs.sh/f/mupND8QUUvXx5te5HJhN1x8WsPzKQYEGuJwIpDVehmXl4fqM",
+        "cover": "https://l5394zf57b.ufs.sh/f/mupND8QUUvXx2ePFu43eGNiyXBR6dcvwK2n4E1orzutZfUVa",
+        "tags": [
+          "Majors",
+          "L1",
+          "DeFi",
+          "Ecosystem",
+          "Bitcoin"
+        ],
+        "about": "The MarketVector™ Digital Assets 25 Index DTF tracks the MarketVector™ Digital Assets 25 Index (MVDA25) which is a modified market cap-weighted index which tracks the performance of the 25 largest and most liquid digital assets. Most demanding size and liquidity screenings are applied to potential index components to ensure investability.",
+        "files": []
+      },
+      "performance": [
+        {
+          "timestamp": 1781038582,
+          "value": 1.0510041645260737
+        },
+        {
+          "timestamp": 1781124979,
+          "value": 1.017574823544001
+        },
+        {
+          "timestamp": 1781211372,
+          "value": 1.0504921565863101
+        },
+        {
+          "timestamp": 1781297774,
+          "value": 1.0567962386055825
+        },
+        {
+          "timestamp": 1781384162,
+          "value": 1.067203213873869
+        },
+        {
+          "timestamp": 1781470579,
+          "value": 1.0621256689819272
+        },
+        {
+          "timestamp": 1781556979,
+          "value": 1.1438969896431685
+        },
+        {
+          "timestamp": 1781643368,
+          "value": 1.1421590548818068
+        },
+        {
+          "timestamp": 1781729775,
+          "value": 1.122790095176897
+        },
+        {
+          "timestamp": 1781816176,
+          "value": 1.0976937532563549
+        },
+        {
+          "timestamp": 1781902580,
+          "value": 1.0936320628010814
+        },
+        {
+          "timestamp": 1781988980,
+          "value": 1.1002934096873986
+        },
+        {
+          "timestamp": 1782075414,
+          "value": 1.095811223302715
+        },
+        {
+          "timestamp": 1782161817,
+          "value": 1.0963538134816864
+        },
+        {
+          "timestamp": 1782248163,
+          "value": 1.051056967845023
+        },
+        {
+          "timestamp": 1782334582,
+          "value": 1.0295206591444206
+        },
+        {
+          "timestamp": 1782420981,
+          "value": 1.0091049591982604
+        },
+        {
+          "timestamp": 1782507379,
+          "value": 1.0252465491061589
+        },
+        {
+          "timestamp": 1782593780,
+          "value": 1.0228477960109073
+        },
+        {
+          "timestamp": 1782680168,
+          "value": 1.012877466018787
+        },
+        {
+          "timestamp": 1782766581,
+          "value": 1.042700965355409
+        },
+        {
+          "timestamp": 1782852978,
+          "value": 1.0187581854070842
+        },
+        {
+          "timestamp": 1782939403,
+          "value": 1.0357374429024253
+        },
+        {
+          "timestamp": 1783025767,
+          "value": 1.0692614466535881
+        },
+        {
+          "timestamp": 1783112178,
+          "value": 1.1094564960118936
+        },
+        {
+          "timestamp": 1783198579,
+          "value": 1.118490861324712
+        },
+        {
+          "timestamp": 1783284979,
+          "value": 1.115541983265705
+        },
+        {
+          "timestamp": 1783371366,
+          "value": 1.1224998287112768
+        },
+        {
+          "timestamp": 1783457780,
+          "value": 1.108716183773895
+        },
+        {
+          "timestamp": 1783544181,
+          "value": 1.0716058739860244
+        },
+        {
+          "timestamp": 1783630577,
+          "value": 1.0877220658785782
+        }
+      ],
+      "priceChange": {
+        "period": "1m",
+        "displayPeriod": "1M",
+        "ratio": 0.03493852923156305,
+        "percent": 3.493852923156305,
+        "startPrice": 1.0510041645260737,
+        "endPrice": 1.0877247042508624,
+        "startTimestamp": 1781038582,
+        "endTimestamp": 1783633637
+      }
+    },
+    {
+      "address": "0x89Ff8f639d402839205a6BF03Cc01BdFfa4768b7",
+      "name": "Strategic Base Reserve by SSR",
+      "symbol": "SBR",
+      "price": 0.7652135879460474,
+      "marketCap": 993.5643252962143,
+      "chainId": 8453,
+      "type": "index",
+      "status": "deprecated",
+      "basket": [
+        {
+          "address": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+          "symbol": "USDC",
+          "name": "USD Coin",
+          "weight": "79.49"
+        },
+        {
+          "address": "0x940181a94A35A4569E4529A3CDfB74e38FD98631",
+          "symbol": "AERO",
+          "name": "Aerodrome",
+          "weight": "3.14"
+        },
+        {
+          "address": "0xaB36452DbAC151bE02b16Ca17d8919826072f64a",
+          "symbol": "RSR",
+          "name": "Reserve Rights",
+          "weight": "0.33"
+        },
+        {
+          "address": "0xED6E000dEF95780fb89734c07EE2ce9F6dcAf110",
+          "symbol": "EDGE",
+          "name": "Edge",
+          "weight": "0.58"
+        },
+        {
+          "address": "0xAC1Bd2486aAf3B5C0fc3Fd868558b082a531B2B4",
+          "symbol": "TOSHI",
+          "name": "Toshi",
+          "weight": "0.53"
+        },
+        {
+          "address": "0xc1CBa3fCea344f92D9239c08C0568f6F2F0ee452",
+          "symbol": "wstETH",
+          "name": "Wrapped liquid staked Ether 2.0",
+          "weight": "6.92"
+        },
+        {
+          "address": "0xaBa3eEab76737AcCf3d73F5a00FC971F8cbE24d5",
+          "symbol": "SSR",
+          "name": "Strategic Super Reserve",
+          "weight": "0.00"
+        },
+        {
+          "address": "0x1B5cE2a593a840E3ad3549a34D7b3dEc697c114D",
+          "symbol": "ALTT",
+          "name": "Altcoinist",
+          "weight": "0.71"
+        },
+        {
+          "address": "0x1111111111166b7FE7bd91427724B487980aFc69",
+          "symbol": "ZORA",
+          "name": "Zora",
+          "weight": "0.69"
+        },
+        {
+          "address": "0xFbB75A59193A3525a8825BeBe7D4b56899E2f7e1",
+          "symbol": "RSC",
+          "name": "ResearchCoin",
+          "weight": "1.60"
+        },
+        {
+          "address": "0xA4A2E2ca3fBfE21aed83471D28b6f65A233C6e00",
+          "symbol": "TIBBIR",
+          "name": "Ribbita by Virtuals",
+          "weight": "0.55"
+        },
+        {
+          "address": "0x306aCd0c07c430AbBBb2e74Ef7bdE94F32A898c0",
+          "symbol": "SEDA",
+          "name": "SEDA",
+          "weight": "0.01"
+        },
+        {
+          "address": "0xC729777d0470F30612B1564Fd96E8Dd26f5814E3",
+          "symbol": "SAPIEN",
+          "name": "Sapien",
+          "weight": "1.90"
+        },
+        {
+          "address": "0x696F9436B67233384889472Cd7cD58A6fB5DF4f1",
+          "symbol": "AVNT",
+          "name": "Avantis",
+          "weight": "0.79"
+        },
+        {
+          "address": "0x1bc0c42215582d5A085795f4baDbaC3ff36d1Bcb",
+          "symbol": "CLANKER",
+          "name": "tokenbot",
+          "weight": "1.15"
+        },
+        {
+          "address": "0x820C5F0fB255a1D18fd0eBB0F1CCefbC4D546dA7",
+          "symbol": "A0X",
+          "name": "A0x",
+          "weight": "0.06"
+        },
+        {
+          "address": "0xB166E8B140D35D9D8226E40C09f757BAC5A4d87d",
+          "symbol": "NPC",
+          "name": "Non-Playable Coin",
+          "weight": "0.64"
+        },
+        {
+          "address": "0xB1a03EdA10342529bBF8EB700a06C60441fEf25d",
+          "symbol": "MIGGLES",
+          "name": "Mister Miggles",
+          "weight": "0.25"
+        },
+        {
+          "address": "0x9a26F5433671751C3276a065f57e5a02D2817973",
+          "symbol": "KEYCAT",
+          "name": "Keyboard Cat",
+          "weight": "0.49"
+        },
+        {
+          "address": "0x06f71fb90F84b35302d132322A3C90E4477333b0",
+          "symbol": "BRACKY",
+          "name": "BRACKY",
+          "weight": "0.00"
+        },
+        {
+          "address": "0x7Ce02e86354EA0Cc3b302AeAdC0Ab56bC7EB44b8",
+          "symbol": "SIRE",
+          "name": "SIRE",
+          "weight": "0.17"
+        }
+      ],
+      "createdAt": 1760448403,
+      "tags": [
+        "AI",
+        "DeFi",
+        "SocialFi",
+        "RWA",
+        "DeSci",
+        "LST",
+        "Oracles",
+        "Ecosystem",
+        "Memes"
+      ],
+      "brand": {
+        "icon": "https://l5394zf57b.ufs.sh/f/mupND8QUUvXxCMn3mS5IaG8BcjrOCHFdVzwvnJyeRXN3plWs",
+        "cover": "https://l5394zf57b.ufs.sh/f/mupND8QUUvXxbBq5kBMwQU5EfZ13DVP2hdtAnlOHSG6eFm0y",
+        "tags": [
+          "AI",
+          "DeFi",
+          "SocialFi",
+          "RWA",
+          "DeSci",
+          "LST",
+          "Oracles",
+          "Ecosystem",
+          "Memes"
+        ],
+        "about": "The Strategic Base Reserve by EnigmaFund Venture Capital is a DAO-governed DTF, curating the best of Base projects restoring liquidity and attention to the premiere projects, builders and communities. A part of the Strategic Super Reserve, governed with the $SSR token.",
+        "files": []
+      },
+      "performance": [
+        {
+          "timestamp": 1781038582,
+          "value": 0.7588773622798831
+        },
+        {
+          "timestamp": 1781124979,
+          "value": 0.7558803403231797
+        },
+        {
+          "timestamp": 1781211372,
+          "value": 0.7616282935894836
+        },
+        {
+          "timestamp": 1781297774,
+          "value": 0.7611036685401958
+        },
+        {
+          "timestamp": 1781384162,
+          "value": 0.7637413465806241
+        },
+        {
+          "timestamp": 1781470579,
+          "value": 0.761995124701784
+        },
+        {
+          "timestamp": 1781556979,
+          "value": 0.7749586368285907
+        },
+        {
+          "timestamp": 1781643368,
+          "value": 0.7758875494971458
+        },
+        {
+          "timestamp": 1781729775,
+          "value": 0.7693571047241182
+        },
+        {
+          "timestamp": 1781816176,
+          "value": 0.765283168672056
+        },
+        {
+          "timestamp": 1781902580,
+          "value": 0.7673469965108735
+        },
+        {
+          "timestamp": 1781988980,
+          "value": 0.7725862371479122
+        },
+        {
+          "timestamp": 1782075414,
+          "value": 0.7709735643670913
+        },
+        {
+          "timestamp": 1782161817,
+          "value": 0.7709758132567063
+        },
+        {
+          "timestamp": 1782248163,
+          "value": 0.7642835184172103
+        },
+        {
+          "timestamp": 1782334582,
+          "value": 0.7594192935023265
+        },
+        {
+          "timestamp": 1782420981,
+          "value": 0.7575499278007423
+        },
+        {
+          "timestamp": 1782507379,
+          "value": 0.756651242467248
+        },
+        {
+          "timestamp": 1782593780,
+          "value": 0.756688014455503
+        },
+        {
+          "timestamp": 1782680168,
+          "value": 0.7566967446342525
+        },
+        {
+          "timestamp": 1782766581,
+          "value": 0.757906521474665
+        },
+        {
+          "timestamp": 1782852978,
+          "value": 0.7563556669653009
+        },
+        {
+          "timestamp": 1782939403,
+          "value": 0.7592136012611675
+        },
+        {
+          "timestamp": 1783025767,
+          "value": 0.7663238421546192
+        },
+        {
+          "timestamp": 1783112178,
+          "value": 0.7742614853562189
+        },
+        {
+          "timestamp": 1783198579,
+          "value": 0.77626254464178
+        },
+        {
+          "timestamp": 1783284979,
+          "value": 0.7749528550070796
+        },
+        {
+          "timestamp": 1783371366,
+          "value": 0.7743592741063245
+        },
+        {
+          "timestamp": 1783457780,
+          "value": 0.7738043610859118
+        },
+        {
+          "timestamp": 1783544181,
+          "value": 0.7669702751656112
+        },
+        {
+          "timestamp": 1783630577,
+          "value": 0.7673549327106022
+        }
+      ],
+      "priceChange": {
+        "period": "1m",
+        "displayPeriod": "1M",
+        "ratio": 0.008349472498597793,
+        "percent": 0.8349472498597793,
+        "startPrice": 0.7588773622798831,
+        "endPrice": 0.7652135879460474,
+        "startTimestamp": 1781038582,
+        "endTimestamp": 1783633637
+      }
+    },
+    {
+      "address": "0x160c18476F6f5099f374033fbc695c9234Cda495",
+      "name": "Zora Index",
+      "symbol": "ZINDEX",
+      "price": 0.0818820111815875,
+      "marketCap": 478.509738437527,
+      "chainId": 8453,
+      "type": "index",
+      "status": "deprecated",
+      "basket": [
+        {
+          "address": "0x50F88fe97f72CD3E75b9Eb4f747F59BcEBA80d59",
+          "symbol": "jesse",
+          "name": "jesse",
+          "weight": "42.16"
+        },
+        {
+          "address": "0xcaf75598B8b9a6E645B60D882845d361F549f5EC",
+          "symbol": "balajis",
+          "name": "balajis",
+          "weight": "14.84"
+        },
+        {
+          "address": "0xfE9eDe4478AD200a2186175a81f9CE9F0E679270",
+          "symbol": "propaganda",
+          "name": "propaganda",
+          "weight": "1.65"
+        },
+        {
+          "address": "0x56f8AD6112C2DB9F9848243531B277cE1C3BE30c",
+          "symbol": "docker",
+          "name": "Docker",
+          "weight": "1.56"
+        },
+        {
+          "address": "0x9B13358E3a023507E7046c18f508A958cDA75f54",
+          "symbol": "jacob",
+          "name": "jacob",
+          "weight": "10.83"
+        },
+        {
+          "address": "0xAfD3a55AE8C86FB550495223f92f1Af192E163fd",
+          "symbol": "11am",
+          "name": "11am",
+          "weight": "6.09"
+        },
+        {
+          "address": "0xF4d7fD100b5B03e51261a2E6a673632eF2c68896",
+          "symbol": "coinage",
+          "name": "coinage",
+          "weight": "9.60"
+        },
+        {
+          "address": "0xE99D2F7988c5F2d013A34E7484f079cAB87f469F",
+          "symbol": "ZXBT",
+          "name": "ZXBT",
+          "weight": "1.33"
+        },
+        {
+          "address": "0x1a7d4E930a3c18A558B92F6017878Dd31a9c2faf",
+          "symbol": "avgjoescrypto",
+          "name": "avgjoescrypto",
+          "weight": "4.45"
+        },
+        {
+          "address": "0xd2969cc475A49e73182Ae1c517AdD57dB0F1c2AC",
+          "symbol": "VV",
+          "name": "visualizevalue",
+          "weight": "6.03"
+        },
+        {
+          "address": "0x8C32bcFC720FEC35443748A96030cE866d0665ff",
+          "symbol": "latenightonbase",
+          "name": "latenightonbase",
+          "weight": "1.46"
+        }
+      ],
+      "createdAt": 1765396307,
+      "tags": [
+        "SocialFi",
+        "Ecosystem"
+      ],
+      "brand": {
+        "icon": "https://l5394zf57b.ufs.sh/f/mupND8QUUvXxkoaTf2cxf5YKldLsOuTopPF8NbnAw2VgImZv",
+        "cover": "https://l5394zf57b.ufs.sh/f/mupND8QUUvXx1zskUHH0CTvVPkJjRK9owSL5hxD4Y0lpBud2",
+        "tags": [
+          "SocialFi",
+          "Ecosystem"
+        ],
+        "about": "The Zora Index (ZINDEX) is a dynamic token basket that tracks a curated selection of high-signal creator and cultural assets on Zora. The index is governed by holders of CreatorDAO’s $CREATOR token. The basket is designed to evolve over time, reflecting changes in creator activity, cultural momentum, and onchain engagement across Zora, while maintaining a focus on assets viewed as foundational within the ecosystem.\n\nEligibility criteria:\nThe initial index filters for established, high conviction creators and projects who have traded on Zora for at least 90 days, generated over $500,000 in total volume, strong recent activity ($100,000 in the last 30 days and $5,000 in the last 7 days), hold an onchain rank of 50 or better, and maintain a minimum audience of 1,500 followers on Twitter or Farcaster. \nWe also allow for clear outliers: if a coin is the number one asset on Zora, it may be included regardless of whether it meets every threshold, since leaders of that size are impossible to ignore. \n\nEach asset’s weight in the portfolio is determined using a square root function of the asset’s market cap relative to the total market cap of all coins in the basket. \nFor any future additions to the index, the same criteria will guide consideration (though they may evolve as the market grows) with final inclusion determined by a DAO vote.\nThe index is rebalanced every two weeks.\n",
+        "files": []
+      },
+      "performance": [
+        {
+          "timestamp": 1781038582,
+          "value": 0.07896656955774217
+        },
+        {
+          "timestamp": 1781124979,
+          "value": 0.07244166484166886
+        },
+        {
+          "timestamp": 1781211372,
+          "value": 0.06857599568201003
+        },
+        {
+          "timestamp": 1781297774,
+          "value": 0.07429804361865273
+        },
+        {
+          "timestamp": 1781384162,
+          "value": 0.07615354295713281
+        },
+        {
+          "timestamp": 1781470579,
+          "value": 0.07739653429363443
+        },
+        {
+          "timestamp": 1781556979,
+          "value": 0.07752712739312817
+        },
+        {
+          "timestamp": 1781643368,
+          "value": 0.07435784632650384
+        },
+        {
+          "timestamp": 1781729775,
+          "value": 0.07948219794169605
+        },
+        {
+          "timestamp": 1781816176,
+          "value": 0.07022899441542495
+        },
+        {
+          "timestamp": 1781902580,
+          "value": 0.1852394833467494
+        },
+        {
+          "timestamp": 1781988980,
+          "value": 0.10702417688208053
+        },
+        {
+          "timestamp": 1782075414,
+          "value": 0.07574053780563605
+        },
+        {
+          "timestamp": 1782161817,
+          "value": 0.15528850299510621
+        },
+        {
+          "timestamp": 1782248163,
+          "value": 0.06581479053579231
+        },
+        {
+          "timestamp": 1782334582,
+          "value": 0.0686799281474154
+        },
+        {
+          "timestamp": 1782420981,
+          "value": 0.06698355059811605
+        },
+        {
+          "timestamp": 1782507379,
+          "value": 0.07311274616047372
+        },
+        {
+          "timestamp": 1782593780,
+          "value": 0.06679922411194028
+        },
+        {
+          "timestamp": 1782680168,
+          "value": 0.07319892289218567
+        },
+        {
+          "timestamp": 1782766581,
+          "value": 0.0794814527452353
+        },
+        {
+          "timestamp": 1782852978,
+          "value": 0.07280323782049279
+        },
+        {
+          "timestamp": 1782939403,
+          "value": 0.06979736838215898
+        },
+        {
+          "timestamp": 1783025767,
+          "value": 0.07085593530127507
+        },
+        {
+          "timestamp": 1783112178,
+          "value": 0.15145657247727476
+        },
+        {
+          "timestamp": 1783198579,
+          "value": 0.06580644183789917
+        },
+        {
+          "timestamp": 1783284979,
+          "value": 0.09941917189094739
+        },
+        {
+          "timestamp": 1783371366,
+          "value": 0.08393492884601121
+        },
+        {
+          "timestamp": 1783457780,
+          "value": 0.08732535529150164
+        },
+        {
+          "timestamp": 1783544181,
+          "value": 0.09514861041777654
+        },
+        {
+          "timestamp": 1783630577,
+          "value": 0.08711218067139698
+        }
+      ],
+      "priceChange": {
+        "period": "1m",
+        "displayPeriod": "1M",
+        "ratio": 0.036919947772499975,
+        "percent": 3.6919947772499975,
+        "startPrice": 0.07896656955774217,
+        "endPrice": 0.0818820111815875,
+        "startTimestamp": 1781038582,
+        "endTimestamp": 1783633637
+      }
+    },
+    {
+      "address": "0x8f0987DDb485219c767770e2080E5cC01ddc772a",
+      "name": "Base Yield Index",
+      "symbol": "BSDX",
+      "price": 0.4367585413298012,
+      "marketCap": 384.0030533724526,
+      "chainId": 8453,
+      "type": "yield",
+      "status": "deprecated",
+      "basket": [
+        {
+          "address": "0x4BD08a771CdAbA5333CAc6F20322eD7d72b6cBfA",
+          "symbol": "wvAMM-WETH/cbBTC",
+          "name": "wVolatile AMM - WETH/cbBTC",
+          "weight": "49.2173549381384633"
+        },
+        {
+          "address": "0xA762F790a31654D9AeF7DE550A473A0F5621E4F1",
+          "symbol": "wvAMM-WETH/DEGEN",
+          "name": "wVolatile AMM - WETH/DEGEN",
+          "weight": "3.3116296321142305"
+        },
+        {
+          "address": "0x1F599F8657CAA38Ee825e4E2d64F695749E2a161",
+          "symbol": "wvAMM-WETH/WELL",
+          "name": "wVolatile AMM - WETH/WELL",
+          "weight": "13.1040600107743472"
+        },
+        {
+          "address": "0xfaAC26b279338dF8cF56B11A572617f674A2F69C",
+          "symbol": "wvAMM-Mog/WETH",
+          "name": "wVolatile AMM - Mog/WETH",
+          "weight": "1.8524520268172482"
+        },
+        {
+          "address": "0x65f2c1b253a3E45670aDD259C9688Edf1A3b814d",
+          "symbol": "wvAMM-WETH/AERO",
+          "name": "wVolatile AMM - WETH/AERO",
+          "weight": "32.5145033921557105"
+        }
+      ],
+      "createdAt": 1733848581,
+      "performance": [],
+      "priceChange": {
+        "period": "1m",
+        "displayPeriod": "1M",
+        "ratio": null,
+        "percent": null,
+        "startPrice": null,
+        "endPrice": null,
+        "startTimestamp": null,
+        "endTimestamp": null
+      }
+    }
+  ]
+}

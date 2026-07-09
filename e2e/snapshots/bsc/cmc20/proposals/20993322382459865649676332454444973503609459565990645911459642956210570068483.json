@@ -1,0 +1,50 @@
+{
+  "_meta": {
+    "source": "https://api.goldsky.com/api/public/project_cmgzim3e100095np2gjnbh6ry/subgraphs/dtf-index-bsc/prod/gn",
+    "capturedAt": "2026-07-09T21:47:30.847Z",
+    "dtf": "0x2f8a339b5889ffac4c5a956787cda593b3c36867",
+    "chainId": 56,
+    "query": "getProposalDetail",
+    "proposalId": "20993322382459865649676332454444973503609459565990645911459642956210570068483"
+  },
+  "data": {
+    "proposal": {
+      "id": "20993322382459865649676332454444973503609459565990645911459642956210570068483",
+      "timelockId": null,
+      "description": "# Extension of onchain voting and execution process of Basket Governance \n [https://forum.reserve.org/t/cmc20-rfc-proposal-to-extend-the-onchain-voting-and-execution-process-of-basket-governance/1566](https://forum.reserve.org/t/cmc20-rfc-proposal-to-extend-the-onchain-voting-and-execution-process-of-basket-governance/1566) \n This proposal seeks to extend the CMC20 onchain governance process from 48 hours to 72 hours by increasing the review period, voting period and execution delay to 24 hours each. The objective is to strengthen governance security by providing the core team, governors and the wider community with additional time to identify and respond to malicious proposals before execution.\n\n![image](https://europe1.discourse-cdn.com/flex005/uploads/reserve/original/2X/c/c7500460583e5380c847d21dc9d270b5a7871112.png)",
+      "creationTime": "1781357255",
+      "voteStart": "1781364455",
+      "voteEnd": "1781443655",
+      "queueBlock": null,
+      "queueTime": null,
+      "state": "PENDING",
+      "executionETA": null,
+      "executionTime": null,
+      "creationBlock": "103998298",
+      "cancellationTime": null,
+      "calldatas": [
+        "0x790518870000000000000000000000000000000000000000000000000000000000015180",
+        "0xe540d01d0000000000000000000000000000000000000000000000000000000000015180"
+      ],
+      "targets": [
+        "0x12940889e849012c633f47ba8925bbee4ee96d45",
+        "0x12940889e849012c633f47ba8925bbee4ee96d45"
+      ],
+      "proposer": {
+        "address": "0x49b4564cb533e092d43c628386258f0b78d86c52"
+      },
+      "votes": [],
+      "forWeightedVotes": "0",
+      "againstWeightedVotes": "0",
+      "abstainWeightedVotes": "0",
+      "quorumVotes": "23360875397327446835470523",
+      "forDelegateVotes": "0",
+      "abstainDelegateVotes": "0",
+      "againstDelegateVotes": "0",
+      "executionTxnHash": null,
+      "governance": {
+        "id": "0x12940889e849012c633f47ba8925bbee4ee96d45"
+      }
+    }
+  }
+}

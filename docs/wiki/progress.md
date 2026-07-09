@@ -1,6 +1,6 @@
 ---
 title: Progress
-updated: 2026-07-08
+updated: 2026-07-09
 type: ledger
 ---
 
@@ -10,6 +10,7 @@ Stage ledger. One row per stage; keep entries short. Verifier = exact fresh comm
 
 | Stage | Status | Verifier | Review | Next |
 |---|---|---|---|---|
+| e2e-suite phase 1: playwright foundation + smoke tests | active (base 0a1c0c6f2) | — | — | define exit criteria |
 | featured YTD parity + order + sorted marquee + daos catalog fix (cross-repo) | done (base 295cbbde0) | register gate-equivalent green (549 tests, 5 new) · reserve-api tsc + vitest (397, 5 new) · staging: 5 DTFs × 190 daily pts, 0 nulls · Playwright: marquee weight-desc | correctness+product+complexity: Dark & Light, per-claim verify — parity VERIFIED; adopted: Arbitrum guard, catalog-import reset, YTD label fallback, dead `getVisibleFolios` deleted; rest in git + log | **Engineer review required** (priceChange enum +ytd, `/dtf/daos` source swap, exposure order) · acks: deprecated-DTF DAOs drop from earn list, brand-hidden can reappear · purge daos 24h CDN cache at deploy |
 | Market cap columns (RES-2101/2102): tradfi mcap on exposure, tokenized on collateral | done (base 84dd69762) | register `scope.mjs --gate` green (544 tests) · reserve-api tsc + vitest (376 tests, 2 new) · live Ondo: all 9 PHOTON underlying mcaps · Playwright: exposure vs collateral, BGCI byte-identical, mobile, dark+light | 4 lenses: Dark & Light, per-claim verify; shared Important fixed (unguarded Ondo parse could 500 `/dtf/exposure`); ondo fetch gated to ondo baskets; rest in git | **Engineer review required** (`exposureTokenSchema` gains `underlyingMarketCap`) · deploy reserve-api staging FIRST — 1h+30m CDN cache extends the exposure `—` window |
 | Lock zap settings for featured DTFs | done (base 2471be013) | `scope.mjs --gate` green (544 tests, 3 new) · Playwright on linked react-zapper 2.4.0: PHOTON settings frozen+disabled, CMC20 togglable, SPA nav force-resets | correctness+product+complexity: Dark & Light, per-claim verify — zero Critical/Important; adopted `hasLockedZapSettings` tests + casing-proof compare; rest in git | **Engineer review required** (zap behavior): 2.4.0 `disabledSettings` forces deepLiquidity/forceMint off for 5 featured BSC DTFs · dep is `link:../react-zapper` — after npm publish pin `"2.4.0"` + `pnpm install` before committing |
