@@ -18,7 +18,14 @@ const IndexDTFTable = ({
 
   const handleRowClick = (row: IndexDTFItem, event: React.MouseEvent) => {
     event.stopPropagation()
-    navigate(getFolioRoute(row.address, row.chainId))
+    const route = getFolioRoute(row.address, row.chainId)
+
+    if (event.metaKey || event.ctrlKey) {
+      window.open(route, '_blank')
+      return
+    }
+
+    navigate(route)
   }
 
   if (isLoading) {
