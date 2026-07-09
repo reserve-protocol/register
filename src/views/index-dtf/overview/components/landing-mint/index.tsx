@@ -14,6 +14,7 @@ import { isInactiveDTF } from '@/hooks/use-dtf-status'
 import {
   indexDTFAtom,
   indexDTFBrandAtom,
+  indexDTFBrandExtrasResolvedAtom,
   indexDTFStatusAtom,
 } from '@/state/dtf/atoms'
 import { useTrackIndexDTFClick } from '@/views/index-dtf/hooks/useTrackIndexDTFPage'
@@ -153,6 +154,7 @@ const MintBox = () => {
 const LandingMint = (props: React.HTMLAttributes<HTMLDivElement>) => {
   const { data: complianceData } = useComplianceRestrictions()
   const brand = useAtomValue(indexDTFBrandAtom)
+  const brandExtrasResolved = useAtomValue(indexDTFBrandExtrasResolvedAtom)
   const dtf = useAtomValue(indexDTFAtom)
   const isGeoRestricted = complianceData?.reason === 'geolocation-restricted'
   const isLargeDesktop = useIsLargeDesktop()
@@ -165,7 +167,7 @@ const LandingMint = (props: React.HTMLAttributes<HTMLDivElement>) => {
       className="hidden xl:flex xl:w-[480px] xl:flex-col xl:gap-1 relative max-w-[480px]"
       {...props}
     >
-      {(hasCover || brand === undefined) && (
+      {(hasCover || brand === undefined || !brandExtrasResolved) && (
         <div className="rounded-3xl bg-card p-2">
           <DtfCover className="rounded-xl" />
         </div>

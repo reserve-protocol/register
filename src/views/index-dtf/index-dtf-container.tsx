@@ -7,6 +7,7 @@ import { chainIdAtom, walletChainAtom } from '@/state/atoms'
 import {
   indexDTF7dChangeAtom,
   indexDTFAtom,
+  indexDTFBrandExtrasResolvedAtom,
   indexDTFBasketAmountsAtom,
   indexDTFBasketAtom,
   indexDTFBasketPricesAtom,
@@ -196,7 +197,21 @@ const IndexDTFDataUpdater = () => {
     const { basket, prices, amounts, shares } = getBasketState(data)
 
     setIndexDTF(data)
-    setIndexDTFBrand(mapSdkBrand(data.brand))
+    // Merge-preserve video/files: the SDK brand payload can omit them, and a
+    // bare overwrite made the cover card unmount until BrandFilesUpdater
+    // re-merged — the ugliest layout shift on the page.
+    setIndexDTFBrand((prev) => {
+      const next = mapSdkBrand(data.brand)
+      if (!prev || !next) return next
+      return {
+        ...next,
+        dtf: {
+          ...next.dtf,
+          video: next.dtf.video || prev.dtf.video,
+          files: next.dtf.files.length ? next.dtf.files : prev.dtf.files,
+        },
+      }
+    })
     setBasket(basket)
     setBasketPrices(prices)
     setBasketAmounts(amounts)
@@ -225,9 +240,14 @@ const IndexDTFDataUpdater = () => {
 const BrandFilesUpdater = () => {
   const dtf = useAtomValue(indexDTFAtom)
   const setIndexDTFBrand = useSetAtom(indexDTFBrandAtom)
+  const setBrandExtrasResolved = useSetAtom(indexDTFBrandExtrasResolvedAtom)
   const brand = useAtomValue(indexDTFBrandAtom)
 
-  const { data: brandExtras } = useQuery({
+  const {
+    data: brandExtras,
+    isSuccess,
+    isError,
+  } = useQuery({
     queryKey: ['brand-files', dtf?.id, dtf?.chainId],
     queryFn: async () => {
       const response = await fetch(
@@ -279,6 +299,10 @@ const BrandFilesUpdater = () => {
     })
     // re-merge when the SDK brand lands/refreshes (it resets SDK-missing fields)
   }, [brandExtras, brand, setIndexDTFBrand])
+
+  useEffect(() => {
+    if (isSuccess || isError) setBrandExtrasResolved(true)
+  }, [isSuccess, isError, setBrandExtrasResolved])
 
   return null
 }
@@ -381,6 +405,7 @@ const resetStateAtom = atom(null, (_, set) => {
   set(indexDTFBasketSharesAtom, {})
   set(indexDTFAtom, undefined)
   set(indexDTFBrandAtom, undefined)
+  set(indexDTFBrandExtrasResolvedAtom, false)
   set(indexDTFRebalanceControlAtom, undefined)
   set(indexDTFFeeAtom, undefined)
   set(indexDTF7dChangeAtom, undefined)

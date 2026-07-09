@@ -2,7 +2,11 @@ import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
 import VideoModal from '@/components/video-modal'
 import { cn } from '@/lib/utils'
-import { indexDTFAtom, indexDTFBrandAtom } from '@/state/dtf/atoms'
+import {
+  indexDTFAtom,
+  indexDTFBrandAtom,
+  indexDTFBrandExtrasResolvedAtom,
+} from '@/state/dtf/atoms'
 import { getYouTubeEmbedUrl } from '@/utils/youtube'
 import { Trans, useLingui } from '@lingui/react/macro'
 import { atom, useAtom, useAtomValue } from 'jotai'
@@ -68,6 +72,7 @@ const DtfCover = ({
 }) => {
   const { t } = useLingui()
   const brand = useAtomValue(indexDTFBrandAtom)
+  const brandExtrasResolved = useAtomValue(indexDTFBrandExtrasResolvedAtom)
   const dtf = useAtomValue(indexDTFAtom)
   const [isVideoLoaded, setIsVideoLoaded] = useState(false)
   const [watchedCoverDtf, setWatchedCoverDtf] = useAtom(watchedCoverDtfAtom)
@@ -93,7 +98,10 @@ const DtfCover = ({
     ? t`${dtf.token.symbol} explainer`
     : t`DTF Explainer`
 
-  if (brand === undefined) {
+  // Two loading phases: brand not yet set, or brand set from the SDK payload
+  // (which can omit `video`) with the authoritative folio-manager read still
+  // in flight. Collapsing in between made the cover flap out and back in.
+  if (brand === undefined || (!hasVideoCover && !brandExtrasResolved)) {
     return <DtfCoverSkeleton className={className} />
   }
 
@@ -118,6 +126,11 @@ const DtfCover = ({
         if (isCoverFrozen) videoRef.current?.pause()
       }}
     >
+      {/* The video paints at opacity-0 until its first frame decodes — keep
+          the skeleton underneath so the card never flashes white. */}
+      {hasVideoCover && !isVideoLoaded && (
+        <DtfCoverSkeleton className="absolute inset-0" />
+      )}
       {hasVideoCover ? (
         <video
           ref={videoRef}
