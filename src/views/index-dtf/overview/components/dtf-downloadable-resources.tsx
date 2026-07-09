@@ -1,5 +1,6 @@
 import { DEFAULT_LOCALE, localeAtom, type SupportedLocale } from '@/i18n'
 import { cn } from '@/lib/utils'
+import { Skeleton } from '@/components/ui/skeleton'
 import { indexDTFAtom, indexDTFBrandAtom } from '@/state/dtf/atoms'
 import { getFileNameFromUrl } from '@/utils'
 import { Trans, useLingui } from '@lingui/react/macro'
@@ -75,6 +76,38 @@ const useDownloadableResources = () => {
   }
 }
 
+// Hold the rendered footprint (heading + blurb + two download links) while
+// the DTF is still loading so the about card doesn't grow when it lands.
+const DownloadableResourcesSkeleton = ({
+  className,
+  showDivider,
+}: {
+  className?: string
+  showDivider?: boolean
+}) => (
+  <>
+    {showDivider && <div className="border-t border-secondary" />}
+    <div className={cn('rounded-3xl bg-card sm:p-6', className)}>
+      <div className="p-5 pb-2 sm:p-0">
+        <Skeleton className="mb-2 h-5 w-52" />
+        <Skeleton className="mb-1 h-4 w-full" />
+        <Skeleton className="h-4 w-2/3" />
+      </div>
+      <div className="flex flex-col gap-2 p-2 sm:mt-4 sm:flex-row sm:flex-wrap sm:items-center sm:gap-x-5 sm:p-0">
+        {[0, 1].map((pill) => (
+          <div
+            key={pill}
+            className="flex items-center gap-2.5 rounded-full border p-3 sm:gap-2 sm:rounded-none sm:border-none sm:p-0"
+          >
+            <Skeleton className="size-6 rounded-full" />
+            <Skeleton className="h-4 w-28" />
+          </div>
+        ))}
+      </div>
+    </div>
+  </>
+)
+
 const DownloadableResources = ({
   className,
   showDivider = true,
@@ -82,7 +115,17 @@ const DownloadableResources = ({
   className?: string
   showDivider?: boolean
 }) => {
+  const data = useAtomValue(indexDTFAtom)
   const { resources, dtfName } = useDownloadableResources()
+
+  if (!data) {
+    return (
+      <DownloadableResourcesSkeleton
+        className={className}
+        showDivider={showDivider}
+      />
+    )
+  }
 
   if (!resources.length) return null
 

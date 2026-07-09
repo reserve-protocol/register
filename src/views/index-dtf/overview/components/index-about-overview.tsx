@@ -43,16 +43,38 @@ const Header = () => {
   const data = useAtomValue(indexDTFAtom)
   const isBrandManager = useAtomValue(isBrandManagerAtom)
 
-  if (data && !isBrandManager) {
+  // Almost nobody is a brand manager, so the loading state matches the common
+  // final state: nothing. A skeleton here caused pure layout shift.
+  if (!data || !isBrandManager) {
     return null
   }
 
   return (
     <div className="mb-4 mt-2 flex justify-center px-2">
-      {!data ? <Skeleton className="w-60 h-6" /> : <BrandManagerEditButton />}
+      <BrandManagerEditButton />
     </div>
   )
 }
+
+// Mirror the rendered shape (title + a few paragraphs at PHOTON-ish length)
+// so the about card doesn't grow when the description lands.
+const MandateSkeleton = () => (
+  <div className="flex flex-col gap-3 sm:gap-2">
+    <Skeleton className="h-8 w-48" />
+    <div className="space-y-2">
+      {[3, 4, 3].map((lines, paragraph) => (
+        <div key={paragraph} className="space-y-1.5 pt-1">
+          {Array.from({ length: lines }, (_, line) => (
+            <Skeleton
+              key={line}
+              className={cn('h-4', line === lines - 1 ? 'w-3/4' : 'w-full')}
+            />
+          ))}
+        </div>
+      ))}
+    </div>
+  </div>
+)
 
 const Mandate = ({ anchorId = 'about' }: { anchorId?: string }) => {
   const data = useAtomValue(indexDTFAtom)
@@ -60,7 +82,7 @@ const Mandate = ({ anchorId = 'about' }: { anchorId?: string }) => {
   const [expanded, setExpanded] = useState(false)
 
   if (!data || !brandData) {
-    return <Skeleton className="w-full h-20" />
+    return <MandateSkeleton />
   }
 
   const description = brandData.dtf?.description || data.mandate

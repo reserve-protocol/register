@@ -1,4 +1,5 @@
 import { Button } from '@/components/ui/button'
+import { Skeleton } from '@/components/ui/skeleton'
 import VideoModal from '@/components/video-modal'
 import { cn } from '@/lib/utils'
 import { indexDTFAtom, indexDTFBrandAtom } from '@/state/dtf/atoms'
@@ -41,6 +42,23 @@ export const getDtfCoverImage = (cover: string | undefined) => {
   return coverImage
 }
 
+// Brand data hasn't resolved yet — hold the video-cover footprint (assume a
+// video, our featured DTFs all have one) so the column doesn't jump when the
+// real cover arrives.
+const DtfCoverSkeleton = ({ className }: { className?: string }) => (
+  <div
+    className={cn(
+      'relative aspect-video overflow-hidden rounded-3xl',
+      className
+    )}
+  >
+    <Skeleton className="h-full w-full rounded-[inherit]" />
+    <div className="absolute inset-0 flex items-center justify-center">
+      <Skeleton className="h-10 w-36 rounded-full" />
+    </div>
+  </div>
+)
+
 const DtfCover = ({
   className,
   showBrandImage = true,
@@ -74,6 +92,10 @@ const DtfCover = ({
   const iframeTitle = dtf?.token.symbol
     ? t`${dtf.token.symbol} explainer`
     : t`DTF Explainer`
+
+  if (brand === undefined) {
+    return <DtfCoverSkeleton className={className} />
+  }
 
   if (!hasVideoCover && !hasBrandCover) {
     return null

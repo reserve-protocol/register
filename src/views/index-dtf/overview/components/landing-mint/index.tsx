@@ -165,7 +165,7 @@ const LandingMint = (props: React.HTMLAttributes<HTMLDivElement>) => {
       className="hidden xl:flex xl:w-[480px] xl:flex-col xl:gap-1 relative max-w-[480px]"
       {...props}
     >
-      {hasCover && (
+      {(hasCover || brand === undefined) && (
         <div className="rounded-3xl bg-card p-2">
           <DtfCover className="rounded-xl" />
         </div>
