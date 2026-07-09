@@ -35,6 +35,7 @@ const ProposalVoteButton = () => {
   return (
     <>
       <Button
+        data-testid="proposal-vote-btn"
         disabled={
           !account ||
           !!vote ||

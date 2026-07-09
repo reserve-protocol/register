@@ -7,6 +7,7 @@ import {
   type Hex,
 } from 'viem'
 import type { UnmockedLogger } from './logger'
+import type { MockOverrides } from './overrides'
 
 // Glob patterns for every RPC host wagmi/viem may hit (mirrors registerRpcUrls
 // in src/utils/rpc-urls.ts). Patterns match domain-only URLs too, so we use
@@ -42,6 +43,23 @@ const VOTING_POWER: Hex = encodeAbiParameters(
   [100_000n * 10n ** 18n]
 )
 
+// 3 zero words — decodes as 0 for uint/bool/address return types.
+const ZERO_RETURN: Hex = ('0x' + '0'.repeat(192)) as Hex
+
+// folio.version() — the SDK version-gates write ABIs; an empty string would
+// misroute those paths. All registry DTFs are v5 (verified on-chain).
+const FOLIO_VERSION: Hex = encodeAbiParameters([{ type: 'string' }], ['5.0.0'])
+
+// folio.totalAssets() returns (address[], uint256[]); empty arrays keep basket
+// reads well-formed (the vote flow doesn't need real balances).
+const EMPTY_ASSETS: Hex = encodeAbiParameters(
+  [{ type: 'address[]' }, { type: 'uint256[]' }],
+  [[], []]
+)
+
+// Multicall3.getEthBalance(address) — mirror the 100 ETH eth_getBalance answers.
+const ETH_BALANCE: Hex = encodeAbiParameters([{ type: 'uint256' }], [100n * 10n ** 18n])
+
 // Per-(address, selector) override table for eth_call return data.
 // Key is `${address}:${selector}` (address lowercased) or `*:${selector}` for
 // address-agnostic answers. Seeded with the getVotes/getPastVotes family so
@@ -50,10 +68,20 @@ const callOverrides: Record<string, Hex> = {
   '*:0x9ab24eb0': VOTING_POWER, // getVotes(address)
   '*:0xeb9019d4': VOTING_POWER, // getVotes(address,uint256)
   '*:0x3a46b1a8': VOTING_POWER, // getPastVotes(address,uint256)
+  '*:0x8e539e8c': VOTING_POWER, // getPastTotalSupply(uint256) — vote-token snapshot supply
+  // castVote(uint256,uint8) returns the weight cast — non-zero so
+  // useSimulateContract succeeds and the vote button becomes ready.
+  '*:0x56781388': VOTING_POWER,
+  '*:0x54fd4d50': FOLIO_VERSION, // version()
+  '*:0x01e1d114': EMPTY_ASSETS, // totalAssets()
+  '*:0x70a08231': ZERO_RETURN, // balanceOf(address) — folio/wallet token balances
+  '*:0x4d2301cc': ETH_BALANCE, // Multicall3.getEthBalance(address)
+  // Fee-display reads on the DTF container (peripheral to governance). A DTF
+  // with no DAO fee registry reads as fee-free — a valid, deterministic state.
+  '*:0x9980cb23': ZERO_RETURN, // daoFeeRegistry() → zero address
+  '*:0x23409f42': ZERO_RETURN, // getFeeDetails() on the (zero) fee registry
+  '*:0xb7d6ca64': ZERO_RETURN, // native-token fee/price probe on the eEeE… sentinel
 }
-
-// 3 zero words — decodes as 0 for uint/bool/address return types.
-const ZERO_RETURN: Hex = ('0x' + '0'.repeat(192)) as Hex
 
 // Chainlink AggregatorV3.latestRoundData() selector. Feeds are read all over the
 // app for USD conversions; answer must be non-zero and updatedAt must be fresh
@@ -87,6 +115,16 @@ function latestRoundData(to: string): Hex {
   )
 }
 
+// ERC-6372 clock() — governance reads it to clamp the getVotes() snapshot
+// timepoint. Must track the frozen clock so the timepoint math stays sane; the
+// exact value is irrelevant since getVotes answers VOTING_POWER at any timepoint.
+const CLOCK = '0x91ddadf4'
+function clockValue(): Hex {
+  // uint48 on-chain, but a value fitting in 48 bits encodes to the same 32-byte
+  // word as uint256; encode as uint256 so viem's types accept a bigint.
+  return encodeAbiParameters([{ type: 'uint256' }], [BigInt(mockNowSeconds())])
+}
+
 function selectorOf(data: string): string {
   return data.slice(0, 10).toLowerCase()
 }
@@ -98,15 +136,30 @@ function lookupOverride(to: string, data: string): Hex | undefined {
 }
 
 // Answer one inner eth_call (used directly and for each Multicall3 sub-call).
-function handleSingleCall(to: string, data: string, log: UnmockedLogger): Hex {
-  if (selectorOf(data) === LATEST_ROUND_DATA) return latestRoundData(to)
+// Per-test overrides win over the static table so a spec can change a read
+// mid-test (e.g. a live vote tally after the vote tx).
+function handleSingleCall(
+  to: string,
+  data: string,
+  log: UnmockedLogger,
+  overrides?: MockOverrides
+): Hex {
+  const selector = selectorOf(data)
+  const override = overrides?.lookupEthCall(to, selector)
+  if (override) return override
+  if (selector === LATEST_ROUND_DATA) return latestRoundData(to)
+  if (selector === CLOCK) return clockValue()
   const hit = lookupOverride(to, data)
   if (hit) return hit
-  log('unmocked eth_call', { to, selector: selectorOf(data) })
+  log('unmocked eth_call', { to, selector })
   return ZERO_RETURN
 }
 
-function handleMulticall3(data: string, log: UnmockedLogger): Hex {
+function handleMulticall3(
+  data: string,
+  log: UnmockedLogger,
+  overrides?: MockOverrides
+): Hex {
   const decoded = decodeFunctionData({ abi: multicall3Abi, data: data as Hex })
   if (decoded.functionName !== 'aggregate3') {
     log('unmocked multicall', { fn: decoded.functionName })
@@ -116,7 +169,7 @@ function handleMulticall3(data: string, log: UnmockedLogger): Hex {
   const calls = decoded.args[0] as ReadonlyArray<{ target: string; callData: string }>
   const results = calls.map((call) => ({
     success: true,
-    returnData: handleSingleCall(call.target, call.callData, log),
+    returnData: handleSingleCall(call.target, call.callData, log, overrides),
   }))
 
   return encodeFunctionResult({
@@ -163,6 +216,7 @@ function receiptFor(chainId: number) {
 export interface RpcContext {
   chainId: number
   log: UnmockedLogger
+  overrides?: MockOverrides
 }
 
 // Single dispatch point for JSON-RPC methods. Shared by the HTTP route mock and
@@ -233,8 +287,8 @@ export function handleRpcMethod(
       const call = params?.[0] as { to?: string; data?: string } | undefined
       const to = (call?.to ?? '').toLowerCase()
       const data = call?.data ?? '0x'
-      if (to === MULTICALL3) return handleMulticall3(data, ctx.log)
-      return handleSingleCall(to, data, ctx.log)
+      if (to === MULTICALL3) return handleMulticall3(data, ctx.log, ctx.overrides)
+      return handleSingleCall(to, data, ctx.log, ctx.overrides)
     }
 
     default:
@@ -251,7 +305,11 @@ function rpcResult(id: number, result: unknown) {
 
 // Intercept all RPC hosts. Handles single requests and batched arrays (viem
 // multicall batching). eth_chainId respects the URL's actual chain.
-export async function mockRpcRoutes(page: Page, log: UnmockedLogger) {
+export async function mockRpcRoutes(
+  page: Page,
+  log: UnmockedLogger,
+  overrides?: MockOverrides
+) {
   for (const pattern of RPC_HOST_PATTERNS) {
     await page.route(pattern, (route) => {
       const request = route.request()
@@ -264,7 +322,7 @@ export async function mockRpcRoutes(page: Page, log: UnmockedLogger) {
       }
 
       const chainId = chainIdForUrl(request.url())
-      const ctx: RpcContext = { chainId, log }
+      const ctx: RpcContext = { chainId, log, overrides }
 
       let body: unknown
       try {

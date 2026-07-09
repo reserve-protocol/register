@@ -1,5 +1,6 @@
 import type { Page } from '@playwright/test'
 import type { UnmockedLogger } from './logger'
+import type { MockOverrides } from './overrides'
 import { findDtfByAddress, REGISTRY } from './registry'
 import { loadSnapshot, snapshotExists } from './snapshots'
 
@@ -24,6 +25,7 @@ export const DEFAULT_GEOLOCATION: GeolocationStatus = {
 export interface ApiMockOptions {
   log: UnmockedLogger
   geolocation: GeolocationStatus
+  overrides?: MockOverrides
 }
 
 function json(route: import('@playwright/test').Route, data: unknown, status = 200) {
@@ -40,15 +42,37 @@ function dtfFromParam(url: URL, param: string) {
 }
 
 export async function mockApiRoutes(page: Page, options: ApiMockOptions) {
-  const { log, geolocation } = options
+  const { log, geolocation, overrides } = options
 
   await page.route('**/api.reserve.org/**', (route) => {
     const url = new URL(route.request().url())
     const path = url.pathname // e.g. /discover/dtfs, /v2/compliance/geolocation
 
+    // Per-test overlay wins over snapshots — matched by pathname substring.
+    const overlaid = overrides?.lookupApi(path)
+    if (overlaid !== undefined) return json(route, overlaid)
+
     // Compliance geolocation — unrestricted US by default; fixture-overridable.
     if (path.includes('/v2/compliance/geolocation')) {
       return json(route, geolocation)
+    }
+
+    // Per-wallet compliance — unrestricted. `address` is the last path segment.
+    if (path.includes('/v2/compliance/wallet/')) {
+      const address = path.split('/').pop() ?? ''
+      return json(route, { address, isRestricted: false, shouldSkipRestrictions: false })
+    }
+
+    // Connected-wallet portfolio (header + contact criteria) — empty holdings.
+    if (path.includes('/v1/portfolio/')) {
+      return json(route, {
+        totalHoldingsUSD: 0,
+        indexDTFs: [],
+        yieldDTFs: [],
+        stakedRSR: [],
+        voteLocks: [],
+        rsrBalances: [],
+      })
     }
 
     if (path.includes('/discover/dtf')) {

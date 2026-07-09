@@ -143,7 +143,7 @@ const QUERIES = {
       votes { choice voter { address } weight }
       forWeightedVotes againstWeightedVotes abstainWeightedVotes quorumVotes
       forDelegateVotes abstainDelegateVotes againstDelegateVotes
-      executionTxnHash governance { id }
+      executionTxnHash governance { id token { id } timelock { id type } }
     }
   }`,
   getTransferEvents: `query getTransferEvents($dtf: String!) {

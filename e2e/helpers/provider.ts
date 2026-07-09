@@ -1,11 +1,13 @@
 import type { Page } from '@playwright/test'
 import type { UnmockedLogger } from './logger'
+import type { MockOverrides } from './overrides'
 import { handleRpcMethod } from './rpc'
 
 export interface TestWalletConfig {
   address: string
   chainId: number
   log: UnmockedLogger
+  overrides?: MockOverrides
 }
 
 // Inject an EIP-6963 + EIP-1193 mock wallet before app JS runs.
@@ -24,7 +26,7 @@ export interface TestWalletConfig {
 // The connector's real job here is wallet ops: accounts, chain switch,
 // signatures, sendTransaction.
 export async function installTestWallet(page: Page, config: TestWalletConfig) {
-  const { address, log } = config
+  const { address, log, overrides } = config
   let currentChainId = config.chainId
 
   await page.exposeFunction(
@@ -74,10 +76,12 @@ export async function installTestWallet(page: Page, config: TestWalletConfig) {
           return '0x56bc75e2d63100000' // 100 ETH
 
         default:
-          // Everything else (reads) goes through the shared RPC dispatch.
+          // Everything else (reads) goes through the shared RPC dispatch —
+          // same per-test overrides as the HTTP mock so answers stay identical.
           return handleRpcMethod(request.method, request.params, {
             chainId: currentChainId,
             log,
+            overrides,
           })
       }
     }

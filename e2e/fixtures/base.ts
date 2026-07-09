@@ -1,6 +1,7 @@
 import { test as base } from '@playwright/test'
 import { DEFAULT_GEOLOCATION, mockApiRoutes, type GeolocationStatus } from '../helpers/api'
 import type { UnmockedLogger } from '../helpers/logger'
+import { MockOverrides } from '../helpers/overrides'
 import { mockRpcRoutes, setMockNow } from '../helpers/rpc'
 import { mockSubgraphRoutes } from '../helpers/subgraph'
 
@@ -9,6 +10,9 @@ export interface BaseFixtures {
   // restricted-region tests: test.use({ compliance: {...} }). Named `compliance`
   // (not `geolocation`) to avoid clashing with Playwright's built-in geolocation.
   compliance: GeolocationStatus
+  // Per-test overlay every mock consults before its snapshots — lets a spec
+  // change a boundary response mid-test (post-tx state). Fresh per test.
+  overrides: MockOverrides
   // Every `[E2E] unmocked ...` line collected during the test. @smoke tests fail
   // at teardown if this is non-empty; flow tests only attach it to the report.
   unmockedCalls: string[]
@@ -25,8 +29,14 @@ async function fulfillEmpty(route: import('@playwright/test').Route, body: unkno
 export const test = base.extend<BaseFixtures>({
   compliance: [DEFAULT_GEOLOCATION, { option: true }],
 
+  // Fresh per test — a new instance means overrides never leak between tests.
+  // oxlint-disable-next-line no-empty-pattern -- Playwright derives fixture deps from the destructuring pattern; {} = no deps
+  overrides: async ({}, use) => {
+    await use(new MockOverrides())
+  },
+
   unmockedCalls: [
-    async ({ page, compliance }, use, testInfo) => {
+    async ({ page, compliance, overrides }, use, testInfo) => {
       const calls: string[] = []
       const log: UnmockedLogger = (message, detail) => {
         const line = `[E2E] ${message}${detail ? ' ' + JSON.stringify(detail) : ''}`
@@ -35,9 +45,9 @@ export const test = base.extend<BaseFixtures>({
       }
 
       // Boundaries we answer.
-      await mockRpcRoutes(page, log)
-      await mockSubgraphRoutes(page, log)
-      await mockApiRoutes(page, { log, geolocation: compliance })
+      await mockRpcRoutes(page, log, overrides)
+      await mockSubgraphRoutes(page, log, overrides)
+      await mockApiRoutes(page, { log, geolocation: compliance, overrides })
 
       // WalletConnect / relay / explorer: fulfill empty (NOT abort) — connectors
       // init eagerly on mount and aborts surface unhandled rejections.

@@ -99,7 +99,10 @@ const VoteModal = (props: ModalProps) => {
   if (hash && status === 'success') {
     return (
       <Modal {...props}>
-        <div className="flex flex-col items-center justify-center p-4">
+        <div
+          data-testid="vote-success"
+          className="flex flex-col items-center justify-center p-4"
+        >
           <CheckCircle size={36} />
           <br />
           <span>
@@ -174,6 +177,7 @@ const VoteModal = (props: ModalProps) => {
             <span className="font-semibold ml-2">{option.label}</span>
             <label className="ml-auto cursor-pointer">
               <Checkbox
+                data-testid={`vote-option-${VOTE_LABEL[option.value]?.toLowerCase()}`}
                 checked={vote === option.value}
                 onCheckedChange={() => setVote(option.value)}
                 disabled={isLoading || isMining}
@@ -185,6 +189,7 @@ const VoteModal = (props: ModalProps) => {
 
       <Separator className="my-4 -mx-4 w-[calc(100%+2rem)]" />
       <TransactionButton
+        data-testid="vote-submit-btn"
         loading={isLoading || isMining}
         variant={!!hash ? 'accent' : 'default'}
         text={isOptimistic ? t`Challenge proposal` : t`Vote`}
