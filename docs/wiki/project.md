@@ -41,7 +41,7 @@ Register — the web interface for Reserve Protocol: **Index DTFs** (current foc
 ## UI Register
 
 - Professional DeFi product. **UI parity is sacred in refactors**: spacing, copy, hover/focus states, animation timing, responsive behavior, and accessibility preserved unless the task explicitly changes them.
-- Wrap new user-facing strings with Lingui (`<Trans>` or `t`); don't wrap user-authored/external placeholder content unless asked. i18n details: `docs/i18n.md`.
+- Wrap new user-facing strings with Lingui (`<Trans>` or `t`) **and fill es/ko/zh in the same change** — the agent generates all translations, following the glossary in `docs/i18n.md`. Don't wrap user-authored/external placeholder content unless asked.
 - Reuse `src/components/ui` primitives (incl. blockchain-aware `TransactionButton`, `Transaction`, `Swap`, `CopyValue`); never rebuild dialogs/tables. Tailwind utilities + `cn()`; no custom CSS files, no inline `style`; arbitrary values only for measured/chart geometry.
 
 ## Active Risks
