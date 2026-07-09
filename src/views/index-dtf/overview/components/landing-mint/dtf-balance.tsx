@@ -43,7 +43,7 @@ const DTFBalance = () => {
   // Real "Past week" PnL: this wallet's position value now vs one week ago
   // (subgraph balance snapshot × price at that time). null until the wallet
   // has a week of holding history — a fresh buyer gets no hypothetical PnL.
-  const weekPnl = useWeekAgoPnl({
+  const { pnl: weekPnl, isResolved: pnlResolved } = useWeekAgoPnl({
     account: account.address,
     token: dtf?.id,
     currentValue: balanceValue,
@@ -55,8 +55,15 @@ const DTFBalance = () => {
     }
   }, [block])
 
+  // Expand only once everything the card renders has settled (balance, USD
+  // value, and the PnL fetches) — expanding on the first partial state made
+  // the card slide in with "$—.—" and then reflow again with real numbers.
   const hasBalance =
-    !!account.address && dtfAmount !== undefined && dtfAmount > 0
+    !!account.address &&
+    dtfAmount !== undefined &&
+    dtfAmount > 0 &&
+    balanceValue !== undefined &&
+    pnlResolved
 
   // The wrapper stays mounted and animates its row height, so when the
   // balance lands it slides the Buy/Sell buttons down instead of jumping them.
@@ -77,18 +84,15 @@ const DTFBalance = () => {
               <Trans>{dtf?.token.symbol ?? 'DTF'} balance</Trans>
             </div>
             <div className="flex gap-2 justify-between items-center">
-              <div className="font-semibold text-2xl">
-                {balanceValue !== undefined ? (
-                  <div
-                    className={cn(
-                      balanceValue > 0 ? 'text-primary' : 'text-muted-foreground'
-                    )}
-                  >
-                    ${formatCurrency(balanceValue, 2)}
-                  </div>
-                ) : (
-                  <div className="text-muted-foreground">$—.—</div>
+              <div
+                className={cn(
+                  'font-semibold text-2xl',
+                  (balanceValue ?? 0) > 0
+                    ? 'text-primary'
+                    : 'text-muted-foreground'
                 )}
+              >
+                ${formatCurrency(balanceValue ?? 0, 2)}
               </div>
               <div className="flex shrink-0 items-center gap-2 text-base font-medium text-muted-foreground transition-colors group-hover:text-primary">
                 <Trans>View portfolio</Trans>

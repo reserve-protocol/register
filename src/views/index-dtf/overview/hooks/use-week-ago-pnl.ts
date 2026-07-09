@@ -67,7 +67,11 @@ const useWeekAgoPnl = ({
     []
   )
 
-  const { data: snapshotData } = useIndexDTFSubgraph(
+  const {
+    data: snapshotData,
+    isSuccess: snapshotSettled,
+    isError: snapshotFailed,
+  } = useIndexDTFSubgraph(
     account && token ? weekAgoSnapshotQuery : null,
     {
       account: account?.toLowerCase(),
@@ -86,7 +90,11 @@ const useWeekAgoPnl = ({
     return Number(formatEther(BigInt(snapshot.amount)))
   }, [snapshotData])
 
-  const { data: priceThen } = useQuery({
+  const {
+    data: priceThen,
+    isSuccess: priceSettled,
+    isError: priceFailed,
+  } = useQuery({
     queryKey: ['dtf-price-at', chainId, token, weekAgo],
     queryFn: async (): Promise<number | null> => {
       const sp = new URLSearchParams()
@@ -111,7 +119,18 @@ const useWeekAgoPnl = ({
     staleTime: Infinity,
   })
 
-  return calculateWeekAgoPnl({ snapshotAmount, priceThen, currentValue })
+  // Resolved = every fetch this PnL depends on has settled (success or error),
+  // so a null pnl now means "hide the row", not "still loading". Consumers use
+  // it to animate the balance card in exactly once, with its final content.
+  const needsPrice = snapshotAmount !== null && snapshotAmount > 0
+  const isResolved =
+    (snapshotSettled || snapshotFailed) &&
+    (!needsPrice || priceSettled || priceFailed)
+
+  return {
+    pnl: calculateWeekAgoPnl({ snapshotAmount, priceThen, currentValue }),
+    isResolved,
+  }
 }
 
 export default useWeekAgoPnl
