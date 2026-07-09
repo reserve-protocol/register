@@ -8,6 +8,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { Skeleton } from '@/components/ui/skeleton'
+import { cn } from '@/lib/utils'
 import useComplianceRestrictions from '@/hooks/use-compliance-restrictions'
 import { useIsLargeDesktop } from '@/hooks/use-media-query'
 import { isInactiveDTF } from '@/hooks/use-dtf-status'
@@ -26,7 +27,11 @@ import React from 'react'
 import EligibilityCard from '../eligibility-card'
 import IndexAboutOverview from '../index-about-overview'
 import DTFBalance from './dtf-balance'
-import DtfCover, { getDtfCoverImage, getDtfCoverVideo } from './dtf-cover'
+import DtfCover, {
+  DtfCoverSkeleton,
+  getDtfCoverImage,
+  getDtfCoverVideo,
+} from './dtf-cover'
 import { getDtfDexLinks, type DtfDexLink } from './external-dex-links'
 
 const TokenInfo = () => {
@@ -167,11 +172,28 @@ const LandingMint = (props: React.HTMLAttributes<HTMLDivElement>) => {
       className="hidden xl:flex xl:w-[480px] xl:flex-col xl:gap-1 relative max-w-[480px]"
       {...props}
     >
-      {(hasCover || brand === undefined || !brandExtrasResolved) && (
-        <div className="rounded-3xl bg-card p-2">
-          <DtfCover className="rounded-xl" />
+      {/* The slot assumes a video cover (they all get one eventually) and
+          holds a skeleton while brand data loads. If the DTF turns out to
+          have none, it collapses smoothly — the skeleton stays rendered
+          inside the shrinking row instead of vanishing in one frame. */}
+      <div
+        className={cn(
+          'grid transition-[grid-template-rows] duration-500 ease-out motion-reduce:transition-none',
+          hasCover || brand === undefined || !brandExtrasResolved
+            ? 'grid-rows-[1fr]'
+            : 'grid-rows-[0fr]'
+        )}
+      >
+        <div className="overflow-hidden">
+          <div className="rounded-3xl bg-card p-2">
+            {hasCover ? (
+              <DtfCover className="rounded-xl" />
+            ) : (
+              <DtfCoverSkeleton className="rounded-xl" />
+            )}
+          </div>
         </div>
-      )}
+      </div>
       <div className={isGeoRestricted ? 'z-10' : 'sticky top-1 z-10'}>
         {isGeoRestricted ? (
           <EligibilityCard className="bg-card" />

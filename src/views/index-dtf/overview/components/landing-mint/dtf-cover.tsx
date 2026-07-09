@@ -49,7 +49,7 @@ export const getDtfCoverImage = (cover: string | undefined) => {
 // Brand data hasn't resolved yet — hold the video-cover footprint (assume a
 // video, our featured DTFs all have one) so the column doesn't jump when the
 // real cover arrives.
-const DtfCoverSkeleton = ({ className }: { className?: string }) => (
+export const DtfCoverSkeleton = ({ className }: { className?: string }) => (
   <div
     className={cn(
       'relative aspect-video overflow-hidden rounded-3xl',
