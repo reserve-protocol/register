@@ -75,6 +75,7 @@ const DtfCover = ({
   const brandExtrasResolved = useAtomValue(indexDTFBrandExtrasResolvedAtom)
   const dtf = useAtomValue(indexDTFAtom)
   const [isVideoLoaded, setIsVideoLoaded] = useState(false)
+  const [isImageLoaded, setIsImageLoaded] = useState(false)
   const [watchedCoverDtf, setWatchedCoverDtf] = useAtom(watchedCoverDtfAtom)
   const videoRef = useRef<HTMLVideoElement>(null)
   const isCoverFrozen = !!dtf && watchedCoverDtf === dtf.id
@@ -101,19 +102,26 @@ const DtfCover = ({
   // Two loading phases: brand not yet set, or brand set from the SDK payload
   // (which can omit `video`) with the authoritative folio-manager read still
   // in flight. Collapsing in between made the cover flap out and back in.
-  if (brand === undefined || (!hasVideoCover && !brandExtrasResolved)) {
-    return <DtfCoverSkeleton className={className} />
-  }
+  const isBrandLoading =
+    brand === undefined || (!hasVideoCover && !brandExtrasResolved)
 
-  if (!hasVideoCover && !hasBrandCover) {
+  if (!isBrandLoading && !hasVideoCover && !hasBrandCover) {
     return null
   }
+
+  // The skeleton assumes a 16:9 video cover; image-only DTFs are square, so
+  // the container's aspect-ratio animates between the two instead of snapping.
+  const showsSquareImage = !isBrandLoading && hasBrandCover
+  const coverPainted = hasVideoCover
+    ? isVideoLoaded
+    : showsSquareImage && isImageLoaded
 
   return (
     <div
       className={cn(
         'relative isolate overflow-hidden rounded-3xl bg-background',
-        hasVideoCover ? 'aspect-video' : 'aspect-square',
+        'transition-[aspect-ratio] duration-500 ease-out motion-reduce:transition-none',
+        showsSquareImage ? 'aspect-square' : 'aspect-video',
         className
       )}
       // Frozen covers loop again while hovered and refreeze on leave — a
@@ -126,17 +134,15 @@ const DtfCover = ({
         if (isCoverFrozen) videoRef.current?.pause()
       }}
     >
-      {/* The video paints at opacity-0 until its first frame decodes — keep
-          the skeleton underneath, cross-fading out as the video fades in, so
-          the card never flashes white (not even mid-fade). */}
-      {hasVideoCover && (
-        <DtfCoverSkeleton
-          className={cn(
-            'absolute inset-0 transition-opacity duration-500 motion-reduce:transition-none',
-            isVideoLoaded ? 'opacity-0' : 'opacity-100'
-          )}
-        />
-      )}
+      {/* The cover paints at opacity-0 until it has pixels (video first frame
+          or image load) — keep the skeleton underneath, cross-fading out as
+          the cover fades in, so the card never flashes white. */}
+      <DtfCoverSkeleton
+        className={cn(
+          'absolute inset-0 transition-opacity duration-500 motion-reduce:transition-none',
+          coverPainted ? 'opacity-0' : 'opacity-100'
+        )}
+      />
       {hasVideoCover ? (
         <video
           ref={videoRef}
@@ -152,14 +158,18 @@ const DtfCover = ({
           playsInline
           onLoadedData={() => setIsVideoLoaded(true)}
         />
-      ) : (
+      ) : showsSquareImage ? (
         <img
           src={coverImage}
           alt={dtf?.token.name ? t`${dtf.token.name} cover` : t`DTF cover`}
-          className="block h-full w-full rounded-[inherit] object-cover"
+          className={cn(
+            'block h-full w-full rounded-[inherit] object-cover transition-opacity duration-500 motion-reduce:transition-none',
+            isImageLoaded ? 'opacity-100' : 'opacity-0'
+          )}
           draggable={false}
+          onLoad={() => setIsImageLoaded(true)}
         />
-      )}
+      ) : null}
       {hasVideoCover && (
         <>
           <div className="pointer-events-none absolute inset-0 rounded-[inherit] bg-[radial-gradient(circle,hsl(var(--card)/0.1)_0%,hsl(var(--card)/0.9)_100%)]" />
