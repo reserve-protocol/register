@@ -76,6 +76,17 @@ const DtfCover = ({
   const dtf = useAtomValue(indexDTFAtom)
   const [isVideoLoaded, setIsVideoLoaded] = useState(false)
   const [isImageLoaded, setIsImageLoaded] = useState(false)
+  const [coverSettled, setCoverSettled] = useState(false)
+  const coverPainted = isVideoLoaded || isImageLoaded
+
+  // Drop the skeleton layers entirely once the fade-in completes — leaving
+  // them mounted let the pulse bleed through covers with transparency. Timer
+  // instead of transitionend so motion-reduce (no transition) settles too.
+  useEffect(() => {
+    if (!coverPainted) return
+    const timer = setTimeout(() => setCoverSettled(true), 500)
+    return () => clearTimeout(timer)
+  }, [coverPainted])
   const [watchedCoverDtf, setWatchedCoverDtf] = useAtom(watchedCoverDtfAtom)
   const videoRef = useRef<HTMLVideoElement>(null)
   const isCoverFrozen = !!dtf && watchedCoverDtf === dtf.id
@@ -112,9 +123,6 @@ const DtfCover = ({
   // The skeleton assumes a 16:9 video cover; image-only DTFs are square, so
   // the container's aspect-ratio animates between the two instead of snapping.
   const showsSquareImage = !isBrandLoading && hasBrandCover
-  const coverPainted = hasVideoCover
-    ? isVideoLoaded
-    : showsSquareImage && isImageLoaded
 
   return (
     <div
@@ -135,14 +143,23 @@ const DtfCover = ({
       }}
     >
       {/* The cover paints at opacity-0 until it has pixels (video first frame
-          or image load) — keep the skeleton underneath, cross-fading out as
-          the cover fades in, so the card never flashes white. */}
-      <DtfCoverSkeleton
-        className={cn(
-          'absolute inset-0 transition-opacity duration-500 motion-reduce:transition-none',
-          coverPainted ? 'opacity-0' : 'opacity-100'
-        )}
-      />
+          or image load). The base shimmer stays FULLY opaque underneath so the
+          cover fades in over a flat surface — cross-fading both layers made
+          them visibly blend mid-fade. The play-button ghost exits early: the
+          moment we know the cover is an image, or the real button takes over. */}
+      {!coverSettled && (
+        <>
+          <Skeleton className="absolute inset-0 rounded-[inherit]" />
+          <div
+            className={cn(
+              'absolute inset-0 flex items-center justify-center transition-opacity duration-300 motion-reduce:transition-none',
+              showsSquareImage || coverPainted ? 'opacity-0' : 'opacity-100'
+            )}
+          >
+            <Skeleton className="h-10 w-36 rounded-full" />
+          </div>
+        </>
+      )}
       {hasVideoCover ? (
         <video
           ref={videoRef}
