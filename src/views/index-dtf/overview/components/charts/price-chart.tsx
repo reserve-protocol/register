@@ -9,14 +9,18 @@ import { isYieldIndexDTFAtom } from '@/state/dtf/yield-index-atoms'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { useEffect } from 'react'
 import useIndexDTFApyHistory from '../../hooks/use-dtf-apy-history'
+import CandlestickChart from './candlestick-chart'
 import ChartOverlay from './chart-overlay'
 import {
   apyHistoryAtom,
   apyTimeseriesAtom,
+  chartTypeAtom,
   dataTypeAtom,
+  priceHistoryAvailabilityAtom,
 } from './price-chart-atoms'
 import PriceChartBody, { ChartSkeleton } from './price-chart-body'
 import PriceChartFooter from './price-chart-footer'
+import { calculateTrailingSevenDayChange } from './price-chart-utils'
 import { usePriceChartData } from './use-price-chart-data'
 
 // Re-export so existing imports keep working.
@@ -24,25 +28,26 @@ export type { DataType } from './price-chart-constants'
 export { dataTypeAtom } from './price-chart-atoms'
 
 const getBodyHeight = (isYieldIndexDTF: boolean, isYieldMode: boolean) => {
-  if (!isYieldIndexDTF) return 'h-48 sm:h-[300px]'
-  const mobile = isYieldMode ? 'h-[176px]' : 'h-[192px]'
-  return `${mobile} sm:h-[254px] xl:h-[294px]`
+  if (!isYieldIndexDTF) return 'h-72 sm:h-[332px]'
+  const mobile = isYieldMode ? 'h-[256px]' : 'h-[272px]'
+  return `${mobile} sm:h-[278px] xl:h-[318px]`
 }
 
 const getSkeletonHeight = (isYieldIndexDTF: boolean, isYieldMode: boolean) => {
-  if (!isYieldIndexDTF) return 'h-44 sm:h-[290px]'
-  const mobile = isYieldMode ? 'h-[158px]' : 'h-[174px]'
-  return `${mobile} sm:h-[244px] xl:h-[284px]`
+  return getBodyHeight(isYieldIndexDTF, isYieldMode)
 }
 
 const ChartBodyArea = ({
   chartData,
   isLoading,
+  xDomain,
 }: {
   chartData: { timestamp: number }[]
   isLoading: boolean
+  xDomain?: readonly [number, number]
 }) => {
   const dataType = useAtomValue(dataTypeAtom)
+  const chartType = useAtomValue(chartTypeAtom)
   const dtf = useAtomValue(indexDTFAtom)
   const range = useAtomValue(performanceTimeRangeAtom)
   const isYieldIndexDTF = useAtomValue(isYieldIndexDTFAtom)
@@ -51,28 +56,35 @@ const ChartBodyArea = ({
   const bodyHeight = getBodyHeight(isYieldIndexDTF, isYieldMode)
   const skeletonHeight = getSkeletonHeight(isYieldIndexDTF, isYieldMode)
 
-  if (isLoading) {
+  const lineBody = isLoading ? (
+    <ChartSkeleton className={skeletonHeight} />
+  ) : chartData.length === 0 ? null : (
+    <PriceChartBody
+      chartData={chartData as any}
+      range={range}
+      dtfStart={dtf?.timestamp}
+      launchTimestamp={dtf?.timestamp}
+      xDomain={xDomain}
+      className={bodyHeight}
+    />
+  )
+
+  // Candlestick is a standard-DTF, price-only view with its own data source;
+  // when that source has no candles, fall back to the line chart rather than
+  // leaving the (default) chart area blank.
+  if (chartType === 'candlestick' && !isYieldIndexDTF) {
     return (
-      <div className={cn('pt-2 sm:pt-0', bodyHeight)}>
-        <ChartSkeleton className={skeletonHeight} />
+      <div className={bodyHeight}>
+        <CandlestickChart
+          bodyHeight={bodyHeight}
+          skeletonHeight={skeletonHeight}
+          fallback={lineBody}
+        />
       </div>
     )
   }
 
-  if (chartData.length === 0) {
-    return <div className={cn('pt-2 sm:pt-0', bodyHeight)} />
-  }
-
-  return (
-    <div className={cn('pt-2 sm:pt-0', bodyHeight)}>
-      <PriceChartBody
-        chartData={chartData as any}
-        range={range}
-        dtfStart={dtf?.timestamp}
-        className={bodyHeight}
-      />
-    </div>
-  )
+  return <div className={bodyHeight}>{lineBody}</div>
 }
 
 const useSyncApyHistory = () => {
@@ -85,18 +97,15 @@ const useSyncApyHistory = () => {
 }
 
 const useSync7dChange = (
-  timeseries: { price: number }[],
-  range: string
+  timeseries: { timestamp: number; price: number }[]
 ) => {
   const set7dChange = useSetAtom(indexDTF7dChangeAtom)
   useEffect(() => {
-    if (timeseries.length === 0 || range !== '7d') return
-    const firstValue = timeseries[0].price
-    const lastValue = timeseries[timeseries.length - 1].price
-    set7dChange(
-      firstValue === 0 ? undefined : (lastValue - firstValue) / firstValue
-    )
-  }, [timeseries, range, set7dChange])
+    const sevenDayChange = calculateTrailingSevenDayChange(timeseries)
+    if (sevenDayChange !== undefined) {
+      set7dChange(sevenDayChange)
+    }
+  }, [timeseries, set7dChange])
 }
 
 const useSyncMarketCap = (timeseries: { marketCap: number }[]) => {
@@ -107,19 +116,51 @@ const useSyncMarketCap = (timeseries: { marketCap: number }[]) => {
   }, [timeseries, setMarketCap])
 }
 
+const useSyncPriceHistoryAvailability = (
+  address: string | undefined,
+  history: { timeseries: { timestamp: number; price: number }[] } | undefined
+) => {
+  const setPriceHistoryAvailability = useSetAtom(priceHistoryAvailabilityAtom)
+
+  useEffect(() => {
+    if (!address) {
+      setPriceHistoryAvailability(undefined)
+      return
+    }
+
+    if (history === undefined) return
+
+    const firstTimestamp =
+      history.timeseries.find(({ price }) => Boolean(price))?.timestamp ?? null
+
+    setPriceHistoryAvailability({
+      address: address.toLowerCase(),
+      firstTimestamp,
+    })
+  }, [address, history, setPriceHistoryAvailability])
+}
+
 const PriceChart = () => {
-  const range = useAtomValue(performanceTimeRangeAtom)
   const dataType = useAtomValue(dataTypeAtom)
+  const dtf = useAtomValue(indexDTFAtom)
   const isYieldIndexDTF = useAtomValue(isYieldIndexDTFAtom)
   const apyTimeseries = useAtomValue(apyTimeseriesAtom)
 
   const isYieldMode = dataType === 'yield'
   const isBTCMode = dataType === 'priceBTC'
 
-  const { history, btcHistory, timeseries } = usePriceChartData({ isBTCMode })
+  const {
+    history,
+    btcHistory,
+    rangeAvailabilityHistory,
+    timeseries,
+    fullTimeseries,
+    xDomain,
+  } = usePriceChartData({ isBTCMode })
   const apyHistory = useSyncApyHistory()
-  useSync7dChange(timeseries, range)
-  useSyncMarketCap(timeseries)
+  useSync7dChange(fullTimeseries)
+  useSyncMarketCap(fullTimeseries)
+  useSyncPriceHistoryAvailability(dtf?.id, rangeAvailabilityHistory)
 
   const chartData = isYieldMode ? apyTimeseries : timeseries
 
@@ -132,13 +173,19 @@ const PriceChart = () => {
   return (
     <div
       className={cn(
-        'lg:rounded-4xl lg:rounded-b-none bg-[#000] dark:bg-background lg:dark:bg-muted w-full text-[#fff] dark:text-foreground py-3 sm:py-6 pb-20 sm:h-[598px] xl:h-[599px]',
-        isYieldIndexDTF ? 'h-[478px] overflow-hidden' : 'h-[438px]'
+        'w-full overflow-hidden rounded-b-3xl border-t border-card bg-gradient-to-b from-secondary to-card text-foreground sm:rounded-3xl sm:border-t-0 sm:ring-1 sm:ring-inset sm:ring-white dark:bg-secondary dark:bg-none dark:sm:ring-card',
+        isYieldIndexDTF ? 'overflow-hidden' : ''
       )}
     >
-      <div className="px-3 sm:px-6">
+      <div className="px-5 pt-5 sm:px-6 sm:pt-6">
         <ChartOverlay timeseries={timeseries} />
-        <ChartBodyArea chartData={chartData} isLoading={isLoading} />
+      </div>
+      <div className="sm:pr-6">
+        <ChartBodyArea
+          chartData={chartData}
+          isLoading={isLoading}
+          xDomain={isYieldMode ? undefined : xDomain}
+        />
       </div>
       <PriceChartFooter />
     </div>

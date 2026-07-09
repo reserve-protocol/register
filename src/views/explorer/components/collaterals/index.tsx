@@ -1,4 +1,5 @@
 import { createColumnHelper } from '@tanstack/react-table'
+import { Trans, useLingui } from '@lingui/react/macro'
 import { Button } from '@/components/ui/button'
 import BasketCubeIcon from 'components/icons/BasketCubeIcon'
 import ChainLogo from 'components/icons/ChainLogo'
@@ -62,11 +63,12 @@ const allPluginsAtom = atomWithLoadable(async (get) => {
 })
 
 const PluginList = () => {
+  const { t } = useLingui()
   const columnHelper = createColumnHelper<Plugin>()
   const columns = useMemo(
     () => [
       columnHelper.accessor('chainId', {
-        header: 'Network',
+        header: t`Network`,
         cell: (data) => (
           <div className="flex items-center">
             <ChainLogo chain={data.getValue()} />
@@ -75,7 +77,7 @@ const PluginList = () => {
         ),
       }),
       columnHelper.accessor('symbol', {
-        header: 'Collateral',
+        header: t`Collateral`,
         cell: (data) => {
           return (
             <a
@@ -95,7 +97,7 @@ const PluginList = () => {
         },
       }),
       columnHelper.accessor('underlyingAddress', {
-        header: 'Underlying',
+        header: t`Underlying`,
         cell: (data) => {
           const address = data.getValue() || data.row.original.erc20
 
@@ -125,16 +127,16 @@ const PluginList = () => {
         },
       }),
       columnHelper.accessor('targetName', {
-        header: 'Target',
+        header: t`Target`,
       }),
       columnHelper.accessor('protocol', {
-        header: 'Protocol',
+        header: t`Protocol`,
       }),
       columnHelper.accessor('version', {
-        header: 'Version',
+        header: t`Version`,
       }),
       columnHelper.accessor('maxTradeVolume', {
-        header: 'Max trade',
+        header: t`Max trade`,
         cell: (data) => (
           <span>
             {formatCurrency(+data.getValue(), 0, {
@@ -145,11 +147,11 @@ const PluginList = () => {
         ),
       }),
       columnHelper.accessor('delayUntilDefault', {
-        header: 'Default delay',
+        header: t`Default delay`,
         cell: (data) => <span>{parseDuration(+data.getValue())}</span>,
       }),
       columnHelper.accessor('supply', {
-        header: 'Supply',
+        header: t`Supply`,
         cell: (data) => (
           <span>
             {formatCurrency(+data.getValue(), 0, {
@@ -164,7 +166,7 @@ const PluginList = () => {
         cell: (data) => <span>{formatPercentage(data.getValue())}</span>,
       }),
     ],
-    [columnHelper]
+    [columnHelper, t]
   )
   const data = useAtomValue(allPluginsAtom) ?? []
 
@@ -185,7 +187,9 @@ const Collaterals = () => {
       <CollateralYieldUpdater />
       <div className="flex items-center gap-2 pl-5 flex-wrap mb-4 md:mb-8">
         <BasketCubeIcon fontSize={32} />
-        <h2 className="mr-auto text-xl font-medium">Available Collaterals</h2>
+        <h2 className="mr-auto text-xl font-medium">
+          <Trans>Available Collaterals</Trans>
+        </h2>
         <div className="hidden md:flex gap-2 ml-2">
           <Button
             size="sm"
@@ -193,7 +197,7 @@ const Collaterals = () => {
             className="border-2"
             onClick={() => window.open(REGISTER_FEEDBACK, '_blank')}
           >
-            Request plugin
+            <Trans>Request plugin</Trans>
           </Button>
         </div>
       </div>

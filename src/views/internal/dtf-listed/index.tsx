@@ -1,3 +1,4 @@
+import { Trans } from '@lingui/react/macro'
 import ListedDTFTable from './components/listed-dtf-table'
 import Updater from './updater'
 
@@ -7,10 +8,14 @@ const InternalDTFListed = () => {
       <Updater />
 
       <div className="mb-8 px-2">
-        <h1 className="text-3xl font-bold mb-2">Listed DTFs</h1>
+        <h1 className="text-3xl font-bold mb-2">
+          <Trans>Listed DTFs</Trans>
+        </h1>
         <p className="text-muted-foreground">
-          Whitelisted Index DTFs displayed on the discover page with their
-          governance addresses
+          <Trans>
+            Whitelisted Index DTFs displayed on the discover page with their
+            governance addresses
+          </Trans>
         </p>
       </div>
 

@@ -5,7 +5,7 @@ import { useSwitchChain } from 'wagmi'
 import { Button } from './button'
 import { CHAIN_TAGS } from '@/utils/constants'
 import { useConnectModal } from '@rainbow-me/rainbowkit'
-import { Trans } from '@lingui/macro'
+import { Trans } from '@lingui/react/macro'
 
 type ButtonSize =
   | 'default'
@@ -74,7 +74,7 @@ export const TransactionButtonContainer = ({
         className={switchChainButtonClassName}
         size={size}
       >
-        Switch to {CHAIN_TAGS[chain || chainId]}
+        <Trans>Switch to {CHAIN_TAGS[chain || chainId]}</Trans>
       </Button>
     )
   }

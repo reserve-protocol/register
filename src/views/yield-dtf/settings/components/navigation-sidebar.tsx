@@ -1,9 +1,10 @@
-import { t } from '@lingui/macro'
+import { useLingui } from '@lingui/react/macro'
 import Navigation from '@/components/section-navigation/section-navigation'
 import { useMemo } from 'react'
 import { cn } from '@/lib/utils'
 
 const NavigationSidebar = ({ className }: { className?: string }) => {
+  const { t } = useLingui()
   const sections = useMemo(
     () => [
       t`Roles & Controls`,
@@ -16,7 +17,7 @@ const NavigationSidebar = ({ className }: { className?: string }) => {
       t`Governance`,
       t`Contract Addresses`,
     ],
-    []
+    [t]
   )
 
   return (

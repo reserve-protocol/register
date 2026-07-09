@@ -2,6 +2,7 @@ import dtfIndexAbi from '@/abis/dtf-index-abi'
 import { Button } from '@/components/ui/button'
 import { indexDTFAtom } from '@/state/dtf/atoms'
 import { parseDuration, parseDurationShort } from '@/utils'
+import { Trans, useLingui } from '@lingui/react/macro'
 import { atom, useAtom, useAtomValue } from 'jotai'
 import { LoaderCircle, MousePointerBan } from 'lucide-react'
 import { useEffect, useState } from 'react'
@@ -22,6 +23,7 @@ const auctionNumberAtom = atom((get) => {
 })
 
 const CommunityLaunchAuctionsButton = () => {
+  const { t } = useLingui()
   const dtf = useAtomValue(indexDTFAtom)
   const rebalance = useAtomValue(currentRebalanceAtom)
   const rebalancePercent = useAtomValue(rebalancePercentAtom)
@@ -32,6 +34,7 @@ const CommunityLaunchAuctionsButton = () => {
   const { writeContract, isError, isPending, data } = useWriteContract()
   const { isSuccess } = useWaitForTransactionReceipt({
     hash: data,
+    chainId: dtf?.chainId,
   })
   const [error, setError] = useState<string | null>(null)
   const [countdown, setCountdown] = useState<number>(0)
@@ -96,11 +99,12 @@ const CommunityLaunchAuctionsButton = () => {
         abi: dtfIndexAbi,
         functionName: 'openAuctionUnrestricted',
         args: [BigInt(rebalance.rebalance.nonce)],
+        chainId: dtf?.chainId,
       })
     } catch (e) {
       console.error('Error opening auction', e)
       setIsLaunching(false)
-      setError('Error opening auctions')
+      setError(t`Error opening auctions`)
     }
   }
 
@@ -108,9 +112,9 @@ const CommunityLaunchAuctionsButton = () => {
     return (
       <div className="flex gap-2 items-center justify-center p-6 text-center">
         <div className="text-sm text-muted-foreground">
-          Community launch is not available for this rebalance
+          <Trans>Community launch is not available for this rebalance</Trans>
         </div>
-        <Help content="Only the auction launcher can start auctions" />
+        <Help content={t`Only the auction launcher can start auctions`} />
       </div>
     )
   }
@@ -121,12 +125,14 @@ const CommunityLaunchAuctionsButton = () => {
         <Button className="rounded-xl w-full py-6 gap-2" disabled={true}>
           <MousePointerBan size={14} strokeWidth={1.5} />
           <span className="text-sm text-muted-foreground">
-            Permissionless in:{' '}
-            <span className="font-bold ">
-              {parseDurationShort(countdown, { round: true })
-                .replaceAll(' ', '')
-                .replaceAll(',', ' ')}
-            </span>
+            <Trans>
+              Permissionless in:{' '}
+              <span className="font-bold ">
+                {parseDurationShort(countdown, { round: true })
+                  .replaceAll(' ', '')
+                  .replaceAll(',', ' ')}
+              </span>
+            </Trans>
           </span>
         </Button>
       </div>
@@ -150,12 +156,18 @@ const CommunityLaunchAuctionsButton = () => {
           <>
             <LoaderCircle size={16} className="animate-spin" />
             <span>
-              {isAuctionOngoing ? 'Rebalance ongoing' : 'Launching...'}
+              {isAuctionOngoing ? (
+                <Trans>Rebalance ongoing</Trans>
+              ) : (
+                <Trans>Launching...</Trans>
+              )}
             </span>
           </>
         ) : (
           <>
-            <span>Start auction {auctionNumber}</span>
+            <span>
+              <Trans>Start auction {auctionNumber}</Trans>
+            </span>
             <span className="font-light">
               ({parseDuration(dtf?.auctionLength ?? 0, { round: true })})
             </span>

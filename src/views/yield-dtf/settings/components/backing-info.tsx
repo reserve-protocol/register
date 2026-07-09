@@ -1,4 +1,4 @@
-import { t } from '@lingui/macro'
+import { useLingui } from '@lingui/react/macro'
 import useRToken from '@/hooks/useRToken'
 import { useAtomValue } from 'jotai'
 import { isModuleLegacyAtom, rTokenConfigurationAtom } from '@/state/atoms'
@@ -6,6 +6,7 @@ import { formatCurrency, formatPercentage, parseDuration } from '@/utils'
 import { InfoCard, InfoCardItem } from './settings-info-card'
 
 const BackingInfo = () => {
+  const { t } = useLingui()
   const rToken = useRToken()
   const params = useAtomValue(rTokenConfigurationAtom)
   const { auctions: isLegacy, issuance: isIssuanceLegacy } =

@@ -65,7 +65,7 @@ const ChainSelector = () => {
     setValue('chain', newChain)
     if (chainId !== newChain) {
       setChain(newChain)
-      switchChain && switchChain({ chainId: newChain })
+      switchChain?.({ chainId: newChain })
     }
   }
 

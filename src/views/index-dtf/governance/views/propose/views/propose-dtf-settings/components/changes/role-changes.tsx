@@ -1,6 +1,7 @@
 import { Button } from '@/components/ui/button'
 import { indexDTFAtom } from '@/state/dtf/atoms'
 import { shortenAddress } from '@/utils'
+import { Trans, useLingui } from '@lingui/react/macro'
 import { useAtom, useAtomValue } from 'jotai'
 import { useFormContext } from 'react-hook-form'
 import {
@@ -17,7 +18,7 @@ import {
 import { Address } from 'viem'
 import { rolesChangesAtom, hasRolesChangesAtom } from '../../atoms'
 import { ChangeSection, RevertButton } from './shared'
-import { useMemo } from 'react'
+import { ReactNode, useMemo } from 'react'
 import { cn } from '@/lib/utils'
 import { Link } from 'react-router-dom'
 import { ExplorerDataType, getExplorerLink } from '@/utils/getExplorerLink'
@@ -45,6 +46,7 @@ const RoleChangeItem = ({
   type: 'add' | 'remove'
   onRevert: (address: string) => void
 }) => {
+  const { t } = useLingui()
   const chainId = useAtomValue(chainIdAtom)
 
   return (
@@ -61,7 +63,7 @@ const RoleChangeItem = ({
             type === 'add' ? 'text-success' : 'text-destructive'
           )}
         >
-          {type === 'add' ? 'Added' : 'Removed'}
+          {type === 'add' ? t`Added` : t`Removed`}
         </h4>
         <Link
           className={cn('text-sm text-legend flex items-center gap-1')}
@@ -138,7 +140,7 @@ const RoleChangesList = ({
 
 interface RoleChangeSectionProps {
   roleType: 'guardian' | 'brandManager' | 'auctionLauncher'
-  title: string
+  title: ReactNode
   current: string[]
   proposed: Address[]
   onRevertAdd: (address: string) => void
@@ -154,14 +156,17 @@ const RoleChangeSection = ({
   onRevertAdd,
   onRevertRemove,
   onRevertAll,
-}: RoleChangeSectionProps) => (
+}: RoleChangeSectionProps) => {
+  const { t } = useLingui()
+
+  return (
   <div className="p-2 rounded-lg bg-muted/70 border space-y-3">
     <div className="flex items-center justify-between p-2 pb-0">
       <div className="flex items-center gap-2 text-sm font-medium">
         <RoleIcon role={roleType} />
         {title}
       </div>
-      <RevertButton onClick={onRevertAll} label="Revert All" />
+      <RevertButton onClick={onRevertAll} label={t`Revert All`} />
     </div>
 
     <RoleChangesList
@@ -171,7 +176,8 @@ const RoleChangeSection = ({
       onRevertRemove={onRevertRemove}
     />
   </div>
-)
+  )
+}
 
 const RoleChanges = () => {
   const indexDTF = useAtomValue(indexDTFAtom)
@@ -225,12 +231,15 @@ const RoleChanges = () => {
   }
 
   return (
-    <ChangeSection title="Role Updates" icon={<Shield size={16} />}>
+    <ChangeSection
+      title={<Trans>Role Updates</Trans>}
+      icon={<Shield size={16} />}
+    >
       <div className="space-y-3">
         {rolesChanges.guardians && (
           <RoleChangeSection
             roleType="guardian"
-            title="Guardians"
+            title={<Trans>Guardians</Trans>}
             current={currentGuardians}
             proposed={rolesChanges.guardians}
             onRevertAdd={(addr) => handleRevertRoleAddition('guardians', addr)}
@@ -244,7 +253,7 @@ const RoleChanges = () => {
         {rolesChanges.brandManagers && (
           <RoleChangeSection
             roleType="brandManager"
-            title="Brand Managers"
+            title={<Trans>Brand Managers</Trans>}
             current={currentBrandManagers}
             proposed={rolesChanges.brandManagers}
             onRevertAdd={(addr) =>
@@ -260,7 +269,7 @@ const RoleChanges = () => {
         {rolesChanges.auctionLaunchers && (
           <RoleChangeSection
             roleType="auctionLauncher"
-            title="Auction Launchers"
+            title={<Trans>Auction Launchers</Trans>}
             current={currentAuctionLaunchers}
             proposed={rolesChanges.auctionLaunchers}
             onRevertAdd={(addr) =>

@@ -7,6 +7,7 @@ import { useMemo } from 'react'
 import Skeleton from 'react-loading-skeleton'
 import IndexTokenLogo from '../../overview/components/index-token-logo'
 import { factsheetChartTypeAtom } from '../atoms'
+import { Trans } from '@lingui/react/macro'
 import type { ChartDataPoint } from '../types/factsheet-data'
 import ChartTypeSelector from './chart-type-selector'
 
@@ -81,7 +82,7 @@ const ChartOverlay = ({ timeseries, currentNav }: ChartOverlayProps) => {
                   )}
                   {`${percentageChange.toFixed(2)}%`}
                   <span className="ml-1">
-                    ({range === 'all' ? 'All' : range})
+                    ({range === 'all' ? <Trans>All</Trans> : range})
                   </span>
                 </div>
               )}

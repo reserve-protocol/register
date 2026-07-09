@@ -1,4 +1,4 @@
-import { Trans, t } from '@lingui/macro'
+import { Trans, useLingui } from '@lingui/react/macro'
 import { Input } from 'components'
 import Help from 'components/help'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
@@ -10,6 +10,7 @@ import {
 } from '../atoms'
 
 const TokenSearchInput = () => {
+  const { t } = useLingui()
   const value = useAtomValue(debouncedSearchInputAtom.currentValueAtom)
   const setValue = useSetAtom(debouncedSearchInputAtom.debouncedValueAtom)
 
@@ -29,6 +30,7 @@ const TokenSearchInput = () => {
 }
 
 const ChainSelectFilter = () => {
+  const { t } = useLingui()
   const [value, setValue] = useAtom(chainFilterAtom)
 
   const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -45,7 +47,7 @@ const ChainSelectFilter = () => {
         onChange={handleChange}
         value={value}
       >
-        <option value={0}>All</option>
+        <option value={0}>{t`All`}</option>
         {supportedChainList.map((chain) => (
           <option key={chain} value={chain}>
             {CHAIN_TAGS[chain]}
@@ -57,6 +59,7 @@ const ChainSelectFilter = () => {
 }
 
 const RecordLimitSelect = () => {
+  const { t } = useLingui()
   const [value, setValue] = useAtom(recordLimitAtom)
 
   const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -69,7 +72,7 @@ const RecordLimitSelect = () => {
         <span className="ml-2 mr-2 text-legend">
           <Trans>Record limit</Trans>
         </span>
-        <Help content="Limit of records per chain" />
+        <Help content={t`Limit of records per chain`} />
       </div>
 
       <select

@@ -1,5 +1,6 @@
 import Swap from '@/components/ui/swap'
 import { formatCurrency } from '@/utils'
+import { useLingui } from '@lingui/react/macro'
 import { useAtom, useAtomValue } from 'jotai'
 import { rsrPriceAtom } from '@/state/atoms'
 import {
@@ -12,6 +13,7 @@ import {
 import { adjustMaxAmount } from '../utils/adjust-max-amount'
 
 const Unstake = () => {
+  const { t } = useLingui()
   const stToken = useAtomValue(stTokenAtom)
   const [input, onChange] = useAtom(stakingInputAtom)
   const rsrPrice = useAtomValue(rsrPriceAtom)
@@ -33,7 +35,7 @@ const Unstake = () => {
   return (
     <Swap
       from={{
-        title: 'You unstake:',
+        title: t`You unstake:`,
         address: stToken.stToken.address,
         symbol: stToken.stToken.symbol,
         value: input,

@@ -1,3 +1,4 @@
+import { Trans } from '@lingui/react/macro'
 import { atom, useAtomValue } from 'jotai'
 import { useState } from 'react'
 import { Minus, Plus } from 'lucide-react'
@@ -21,7 +22,9 @@ const UnstakeDelayOverview = () => {
         className="flex items-center text-lg font-semibold cursor-pointer"
         onClick={() => setOpen(!isOpen)}
       >
-        <span className="mr-auto">Unstake delay</span>
+        <span className="mr-auto">
+          <Trans>Unstake delay</Trans>
+        </span>
         <span className="font-semibold mr-3">{delay}</span>
         {isOpen ? <Minus /> : <Plus />}
       </div>
@@ -29,9 +32,11 @@ const UnstakeDelayOverview = () => {
         <>
           <UnstakeFlow />
           <p className="mt-3 text-xs text-legend block">
-            Funds will be used in the case of a collateral default during the
-            unstaking delay and up until the point of the manually triggered
-            withdraw transaction.
+            <Trans>
+              Funds will be used in the case of a collateral default during the
+              unstaking delay and up until the point of the manually triggered
+              withdraw transaction.
+            </Trans>
           </p>
         </>
       )}

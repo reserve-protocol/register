@@ -26,7 +26,7 @@ const FeaturedPools = () => {
   }, [pools, deprecated])
 
   return (
-    <div className="bg-secondary p-1 rounded-4xl">
+    <div className="bg-secondary p-1 rounded-4xl lg:mx-2 2xl:mx-0">
       <div className="bg-card p-2  rounded-3xl">
         <div className="flex flex-row flex-wrap sm:flex-nowrap justify-start sm:justify-center lg:justify-between w-full gap-1 md:gap-4 [&>*:last-child]:hidden lg:[&>*:last-child]:flex">
           {selectedPools.map((pool, index) => (

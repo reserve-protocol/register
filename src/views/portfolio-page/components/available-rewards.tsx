@@ -6,6 +6,7 @@ import DataTable from '@/components/ui/data-table'
 import { formatCurrency, formatToSignificantDigits, formatUSD } from '@/utils'
 import { useConnectModal } from '@rainbow-me/rainbowkit'
 import { ColumnDef } from '@tanstack/react-table'
+import { Trans, useLingui } from '@lingui/react/macro'
 import { useAtomValue } from 'jotai'
 import { Gift } from 'lucide-react'
 import { useCallback, useEffect } from 'react'
@@ -23,6 +24,7 @@ import SectionHeader from './section-header'
 type RewardRow = PortfolioRewardRow
 
 const ClaimButton = ({ reward }: { reward: RewardRow }) => {
+  const { t } = useLingui()
   const wallet = useAtomValue(walletAtom)
   const walletChain = useAtomValue(walletChainAtom)
   const { openConnectModal } = useConnectModal()
@@ -37,7 +39,7 @@ const ClaimButton = ({ reward }: { reward: RewardRow }) => {
   useEffect(() => {
     if (claimed) {
       toast.success(
-        reward.source === 'revenue' ? 'Fees distributed' : 'Rewards claimed',
+        reward.source === 'revenue' ? t`Fees distributed` : t`Rewards claimed`,
         { duration: 8000 }
       )
     }
@@ -74,8 +76,8 @@ const ClaimButton = ({ reward }: { reward: RewardRow }) => {
   }, [wallet, walletChain, reward, openConnectModal, switchChainAsync, writeContract])
 
   const isRevenue = reward.source === 'revenue'
-  const idleLabel = isRevenue ? 'Distribute Fees' : 'Claim'
-  const doneLabel = isRevenue ? 'Distributed' : 'Claimed'
+  const idleLabel = isRevenue ? t`Distribute Fees` : t`Claim`
+  const doneLabel = isRevenue ? t`Distributed` : t`Claimed`
 
   return (
     <Button
@@ -93,7 +95,7 @@ const columns: ColumnDef<RewardRow, any>[] = [
   {
     id: 'name',
     accessorKey: 'name',
-    header: 'Reward Token',
+    header: () => <Trans>Reward Token</Trans>,
     cell: ({ row }) => (
       <div className="flex items-center gap-2">
         <TokenLogoWithChain
@@ -104,7 +106,11 @@ const columns: ColumnDef<RewardRow, any>[] = [
         <div className="flex flex-col">
           <p className="font-bold text-sm">{row.original.symbol}</p>
           <span className="text-xs text-legend">
-            {row.original.source === 'revenue' ? 'Revenue' : 'Staking'}
+            {row.original.source === 'revenue' ? (
+              <Trans>Revenue</Trans>
+            ) : (
+              <Trans>Staking</Trans>
+            )}
           </span>
         </div>
       </div>
@@ -113,7 +119,7 @@ const columns: ColumnDef<RewardRow, any>[] = [
   {
     id: 'balance',
     accessorKey: 'amount',
-    header: 'Balance',
+    header: () => <Trans>Balance</Trans>,
     cell: ({ row }) => {
       const val = Number(row.original.amount)
       return (
@@ -126,7 +132,7 @@ const columns: ColumnDef<RewardRow, any>[] = [
   {
     id: 'value',
     accessorKey: 'value',
-    header: 'Value',
+    header: () => <Trans>Value</Trans>,
     cell: ({ row }) => {
       const val = row.original.value
       return (
@@ -138,7 +144,7 @@ const columns: ColumnDef<RewardRow, any>[] = [
   },
   {
     id: 'actions',
-    header: 'Claim',
+    header: () => <Trans>Claim</Trans>,
     cell: ({ row }) => <ClaimButton reward={row.original} />,
     meta: { className: 'text-right' },
   },
@@ -156,9 +162,9 @@ const AvailableRewards = () => {
     <div id="available-rewards">
       <SectionHeader
         icon={Gift}
-        title="Available Rewards"
+        title={<Trans>Available Rewards</Trans>}
         subtitle={
-          <>
+          <Trans>
             Earn rewards by staking or participating in governance.{' '}
             <a
               href="https://docs.reserve.org/core-components/index-dtfs/roles"
@@ -169,7 +175,7 @@ const AvailableRewards = () => {
               Learn more
             </a>
             .
-          </>
+          </Trans>
         }
       />
       <div className="bg-card rounded-[20px] border border-border overflow-hidden">

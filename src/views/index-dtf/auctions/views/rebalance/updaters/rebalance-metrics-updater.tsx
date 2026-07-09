@@ -1,6 +1,7 @@
 import { chainIdAtom, devModeAtom } from '@/state/atoms'
 import { isHybridDTFAtom } from '@/state/dtf/atoms'
 import { ChainId } from '@/utils/chains'
+import { useLingui } from '@lingui/react/macro'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { useCallback, useEffect } from 'react'
 import { currentRebalanceAtom, RebalanceByProposal } from '../../../atoms'
@@ -10,7 +11,6 @@ import {
   rebalanceErrorAtom,
   rebalanceMetricsAtom,
   rebalancePercentAtom,
-  rebalanceTokenMapAtom,
   savedWeightsAtom,
 } from '../atoms'
 import useRebalanceParams, {
@@ -19,6 +19,7 @@ import useRebalanceParams, {
 import getRebalanceOpenAuction from '../utils/get-rebalance-open-auction'
 
 const RebalanceMetricsUpdater = () => {
+  const { t } = useLingui()
   const setRebalanceMetrics = useSetAtom(rebalanceMetricsAtom)
   const setRebalanceError = useSetAtom(rebalanceErrorAtom)
   const rebalancePercent = useAtomValue(rebalancePercentAtom)
@@ -30,7 +31,6 @@ const RebalanceMetricsUpdater = () => {
   const auctions = useAtomValue(rebalanceAuctionsAtom)
   const chainId = useAtomValue(chainIdAtom)
   const isDevMode = useAtomValue(devModeAtom)
-  const tokenMap = useAtomValue(rebalanceTokenMapAtom)
 
   const updateMetrics = useCallback(
     (
@@ -125,16 +125,24 @@ const RebalanceMetricsUpdater = () => {
       } catch (e) {
         console.error('Error getting rebalance metrics', e)
         if (e instanceof Error && e.message.includes('out of bounds')) {
-          const tokenAddr = e.message.split(' ')[1]?.toLowerCase().replace(':', '')
-          console.log('words', tokenAddr)
-          if (!tokenMap[tokenAddr]) {
-            setRebalanceError('One or more tokens in the rebalance is out of bounds. Rebalance must be closed.')
-          } else {
-            setRebalanceError(`Token "${tokenMap[tokenAddr].symbol}" is out of bounds. Rebalance must be closed.`)
-          }
+          // The rebalance lib prints the token as "[object Object]" on v5, so
+          // identify it by matching the locked low price from the message.
+          const lockedLow = e.message.match(/initial range \[(\d+)/)?.[1]
+          const index = currentRebalance.rebalance.priceLowLimit.findIndex(
+            (low) => low === lockedLow
+          )
+          const symbol =
+            index >= 0
+              ? currentRebalance.rebalance.tokens[index]?.symbol
+              : undefined
 
+          setRebalanceError(
+            symbol
+              ? t`Token "${symbol}" is out of bounds. Rebalance must be closed.`
+              : t`One or more tokens in the rebalance is out of bounds. Rebalance must be closed.`
+          )
         } else {
-          setRebalanceError('Unexpected error getting Rebalance data.')
+          setRebalanceError(t`Unexpected error getting Rebalance data.`)
         }
       }
     },
@@ -147,7 +155,7 @@ const RebalanceMetricsUpdater = () => {
       chainId,
       isDevMode,
       setRebalanceError,
-      tokenMap
+      t,
     ]
   )
 

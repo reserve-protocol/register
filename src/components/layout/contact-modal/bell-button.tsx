@@ -4,21 +4,31 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover'
-import { useSetAtom } from 'jotai'
+import {
+  CALENDLY_URL,
+  isCallScheduled,
+  markCallScheduled,
+} from '@/utils/schedule-call'
+import { Trans, useLingui } from '@lingui/react/macro'
 import { Bell } from 'lucide-react'
+import mixpanel from 'mixpanel-browser/src/loaders/loader-module-core'
 import { useState } from 'react'
-import { contactModalOpenAtom } from './atoms'
 import { useContactCriteria } from './use-criteria'
 
 const ContactBellButton = () => {
-  const { criteriaMet } = useContactCriteria()
-  const setModalOpen = useSetAtom(contactModalOpenAtom)
+  const { wallet, criteriaMet } = useContactCriteria()
   const [popoverOpen, setPopoverOpen] = useState(false)
+  const { t } = useLingui()
 
-  if (!criteriaMet) return null
+  if (!criteriaMet || isCallScheduled(wallet)) return null
 
-  const handleViewDetails = () => {
-    setModalOpen(true)
+  const handleSchedule = () => {
+    mixpanel.track('contact_us_modal_click', {
+      action: 'scheduled',
+      source: 'bell',
+      wallet,
+    })
+    markCallScheduled(wallet)
     setPopoverOpen(false)
   }
 
@@ -27,20 +37,32 @@ const ContactBellButton = () => {
       <PopoverTrigger asChild>
         <button
           type="button"
-          aria-label="Available opportunity"
-          className="relative inline-flex items-center justify-center h-8 w-8 rounded-md cursor-pointer hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+          aria-label={t`Talk to the Reserve team`}
+          className="relative inline-flex items-center justify-center h-9 w-9 border rounded-full cursor-pointer hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
         >
           <Bell size={16} strokeWidth={1.5} />
           <span className="absolute top-1.5 right-1.5 h-1.5 w-1.5 rounded-full bg-red-500 ring-2 ring-background" />
         </button>
       </PopoverTrigger>
-      <PopoverContent align="end" className="w-60 space-y-2">
-        <p className="font-semibold">Available opportunity!</p>
-        <p className="text-sm text-legend">
-          Schedule a call to earn 100,000 RSR.
+      <PopoverContent align="end" className="w-64 space-y-2">
+        <p className="font-semibold">
+          <Trans>Talk to the team</Trans>
         </p>
-        <Button size="sm" className="w-full" onClick={handleViewDetails}>
-          View details
+        <p className="text-sm text-legend">
+          <Trans>
+            As a larger holder you get a direct line to the team behind Reserve.
+            Schedule an intro call.
+          </Trans>
+        </p>
+        <Button asChild size="sm" className="w-full">
+          <a
+            href={CALENDLY_URL}
+            target="_blank"
+            rel="noreferrer"
+            onClick={handleSchedule}
+          >
+            <Trans>Schedule a meeting</Trans>
+          </a>
         </Button>
       </PopoverContent>
     </Popover>

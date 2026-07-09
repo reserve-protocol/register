@@ -9,6 +9,8 @@ import Issuance from '@/views/yield-dtf/issuance'
 import Overview from '@/views/yield-dtf/overview'
 import Settings from '@/views/yield-dtf/settings'
 import Staking from '@/views/yield-dtf/staking'
+import Spinner from '@/components/ui/spinner'
+import { lazy, Suspense } from 'react'
 import { Navigate, Route, Routes } from 'react-router-dom'
 import RTokenContainer from 'state/rtoken/RTokenContainer'
 import { GOVERNANCE_PROPOSAL_TYPES, ROUTES } from 'utils/constants'
@@ -49,11 +51,17 @@ import EarnIndexDTF from './views/earn/views/index-dtf'
 import EarnYieldDTF from './views/earn/views/yield-dtf'
 import EarnDefi from './views/earn/views/defi'
 import Home from './views/home'
+import Discover from './views/home/discover'
+
+const AsyncMintWizard = lazy(
+  () => import('./views/index-dtf/issuance/async-mint')
+)
 
 // TODO: Fix recoll call on yield dtf auction page
 const AppRoutes = () => (
   <Routes>
     <Route path={ROUTES.HOME} element={<Home />} />
+    <Route path={ROUTES.DISCOVER} element={<Discover />} />
     {/* Internal routes */}
     <Route path="/internal/dtf-list" element={<InternalDTFList />} />
     <Route path="/internal/dtf-listed" element={<InternalDTFListed />} />
@@ -103,6 +111,20 @@ const AppRoutes = () => (
       <Route
         path={`${ROUTES.ISSUANCE}/manual`}
         element={<IndexDTFManualIssuance />}
+      />
+      <Route
+        path={`${ROUTES.ISSUANCE}/automated`}
+        element={
+          <Suspense
+            fallback={
+              <div className="h-screen w-full flex items-center justify-center">
+                <Spinner size={24} />
+              </div>
+            }
+          >
+            <AsyncMintWizard />
+          </Suspense>
+        }
       />
       <Route
         path={`${ROUTES.AUCTIONS}/legacy`}

@@ -6,9 +6,8 @@ import BasketSettingsProposalSections from './components/basket-settings-proposa
 import BasketSettingsProposalOverview from './components/basket-settings-proposal-overview'
 import Updater from './updater'
 import ConfirmBasketSettingsProposal from './components/confirm-basket-settings-proposal'
-import { createProposeBasketSettingsSchema } from './form-fields'
+import { useProposeBasketSettingsSchema } from './form-fields'
 import { indexDTFAtom } from '@/state/dtf/atoms'
-import { useMemo } from 'react'
 
 const ProposalStage = () => {
   const isConfirmed = useAtomValue(isProposalConfirmedAtom)
@@ -22,9 +21,7 @@ const IndexDTFBasketSettingsProposal = () => {
   const indexDTF = useAtomValue(indexDTFAtom)
   const quorumDenominator = indexDTF?.tradingGovernance?.quorumDenominator
 
-  const schema = useMemo(() => {
-    return createProposeBasketSettingsSchema(Number(quorumDenominator))
-  }, [quorumDenominator])
+  const schema = useProposeBasketSettingsSchema(Number(quorumDenominator))
 
   const methods = useForm({
     mode: 'onTouched',

@@ -5,6 +5,7 @@ import BasicInputWithAdditional, {
 import { useAtomValue } from 'jotai'
 import { walletAtom } from '@/state/atoms'
 import { Button } from '@/components/ui/button'
+import { Trans } from '@lingui/react/macro'
 import { useFormContext } from 'react-hook-form'
 
 type InputWithTitleProps = BasicInputWithAdditionalProps & {
@@ -44,7 +45,7 @@ const InputWithTitle = ({
                   className="text-primary p-0 h-auto inline-block"
                   onClick={onUseConnected}
                 >
-                  Use connected wallet.
+                  <Trans>Use connected wallet.</Trans>
                 </Button>
               ) : null}
             </div>

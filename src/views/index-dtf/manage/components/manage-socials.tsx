@@ -5,6 +5,7 @@ import {
   FormLabel,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
+import { Trans } from '@lingui/react/macro'
 import { useFormContext } from 'react-hook-form'
 
 const ManageSocials = () => {
@@ -17,7 +18,9 @@ const ManageSocials = () => {
         name="socials.twitter"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>Twitter / X Link</FormLabel>
+            <FormLabel>
+              <Trans>Twitter / X Link</Trans>
+            </FormLabel>
             <FormControl>
               <Input placeholder="https://x.com/username" {...field} />
             </FormControl>
@@ -29,7 +32,9 @@ const ManageSocials = () => {
         name="socials.telegram"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>Telegram Link</FormLabel>
+            <FormLabel>
+              <Trans>Telegram Link</Trans>
+            </FormLabel>
             <FormControl>
               <Input placeholder="https://t.me/username" {...field} />
             </FormControl>
@@ -41,7 +46,9 @@ const ManageSocials = () => {
         name="socials.discord"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>Discord Link</FormLabel>
+            <FormLabel>
+              <Trans>Discord Link</Trans>
+            </FormLabel>
             <FormControl>
               <Input placeholder="https://discord.com/username" {...field} />
             </FormControl>
@@ -53,7 +60,9 @@ const ManageSocials = () => {
         name="socials.website"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>Website Link</FormLabel>
+            <FormLabel>
+              <Trans>Website Link</Trans>
+            </FormLabel>
             <FormControl>
               <Input placeholder="https://example.com" {...field} />
             </FormControl>

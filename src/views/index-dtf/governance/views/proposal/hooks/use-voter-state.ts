@@ -1,42 +1,54 @@
-import dtfIndexGovernance from '@/abis/dtf-index-governance'
-import { chainIdAtom, walletAtom } from '@/state/atoms'
-import { getCurrentTime } from '@/utils'
+import { walletAtom } from '@/state/atoms'
+import { PROPOSAL_STATES } from '@/utils/constants'
+import {
+  useIndexDtfIdentity,
+  useIndexDtfProposalVoterState,
+} from '@reserve-protocol/react-sdk'
 import { useAtomValue } from 'jotai'
 import { useMemo } from 'react'
-import { formatEther } from 'viem'
-import { useReadContract } from 'wagmi'
 import { proposalDetailAtom } from '../atom'
 
 const useVoterState = () => {
-  const chainId = useAtomValue(chainIdAtom)
+  const { chainId } = useIndexDtfIdentity()
   const account = useAtomValue(walletAtom)
   const proposal = useAtomValue(proposalDetailAtom)
+  const canReadVoterState =
+    proposal?.votingState.state === PROPOSAL_STATES.ACTIVE
 
-  const { data: votePower } = useReadContract({
-    address: proposal?.governor,
-    abi: dtfIndexGovernance,
-    functionName: 'getVotes',
-    chainId,
-    args:
-      account && proposal
-        ? [
-            account,
-            BigInt(Math.min(proposal?.voteStart - 1, getCurrentTime() - 1)),
-          ]
-        : undefined,
+  const params =
+    account && proposal && canReadVoterState
+      ? {
+          chainId,
+          governance: proposal.governor,
+          account,
+          proposal: {
+            id: proposal.id,
+            voteStart: proposal.voteStart,
+            voteToken: proposal.voteToken,
+            votes: proposal.votes,
+            ...(proposal.isOptimistic === undefined
+              ? {}
+              : { isOptimistic: proposal.isOptimistic }),
+            ...(proposal.optimistic ? { optimistic: proposal.optimistic } : {}),
+          },
+        }
+      : undefined
+
+  const { data: voterState } = useIndexDtfProposalVoterState(params, {
+    refetchInterval: 30_000,
   })
 
   return useMemo(() => {
-    if (!proposal || !votePower || !account) return undefined
+    if (!proposal || !account || !voterState) return undefined
 
+    // WHY: The SDK resolves voting power for this proposal type. Optimistic
+    // proposals use optimistic challenge power, standard proposals use votes.
     return {
-      votePower: formatEther(votePower),
-      vote:
-        proposal.votes.find(
-          (vote) => vote.voter.toLowerCase() === account.toLowerCase()
-        )?.choice ?? null,
+      votePower: voterState.votingPower.formatted,
+      vote: voterState.vote,
+      hasProposalVotingPower: voterState.hasVotingPower,
     }
-  }, [proposal, votePower, account])
+  }, [proposal, voterState, account])
 }
 
 export default useVoterState

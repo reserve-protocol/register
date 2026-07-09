@@ -1,6 +1,7 @@
 import { cn } from '@/lib/utils'
 import { walletAtom } from '@/state/atoms'
 import { formatCurrency } from '@/utils'
+import { Trans } from '@lingui/react/macro'
 import { useAtomValue } from 'jotai'
 import { Lock, LockOpen } from 'lucide-react'
 import { useEffect } from 'react'
@@ -25,7 +26,7 @@ const PositionBalance = ({
   // Watch for new blocks to update balance
   const { data: blockNumber } = useBlockNumber({
     chainId: chain,
-    watch: true
+    watch: true,
   })
 
   const { data, refetch } = useBalance({
@@ -61,7 +62,7 @@ const PositionBalance = ({
           </span>
         </div>
       ) : (
-        'No'
+        <Trans>None</Trans>
       )}
     </div>
   )

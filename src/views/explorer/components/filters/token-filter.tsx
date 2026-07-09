@@ -1,7 +1,7 @@
 import rtokens from '@reserve-protocol/rtokens'
 import useIndexDTFList from '@/hooks/useIndexDTFList'
 import { type DTFType } from '@/views/explorer/components/governance/atoms'
-import { Trans } from '@lingui/macro'
+import { Trans, useLingui } from '@lingui/react/macro'
 import CirclesIcon from 'components/icons/CirclesIcon'
 import TokenLogo from 'components/icons/TokenLogo'
 import useRTokenLogo from 'hooks/useRTokenLogo'
@@ -51,6 +51,7 @@ const TokenFilter = ({
   dtfType,
   ...props
 }: Omit<IMultiselectDropdrown, 'options'> & { dtfType?: DTFType }) => {
+  const { t } = useLingui()
   const yieldOptions = useYieldTokenOptions()
   const indexOptions = useIndexTokenOptions()
 
@@ -60,7 +61,7 @@ const TokenFilter = ({
     return [...yieldOptions, ...indexOptions]
   }, [dtfType, yieldOptions, indexOptions])
 
-  const label = dtfType === 'index' ? 'DTFs' : 'tokens'
+  const allLabel = dtfType === 'index' ? t`All DTFs` : t`All tokens`
 
   return (
     <div className={className}>
@@ -71,8 +72,8 @@ const TokenFilter = ({
         <CirclesIcon />
         <span className="ml-2 text-legend">
           {props.selected.length
-            ? `${props.selected.length} selected`
-            : `All ${label}`}
+            ? t`${props.selected.length} selected`
+            : allLabel}
         </span>
       </MultiselectDropdrown>
     </div>

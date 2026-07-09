@@ -1,4 +1,4 @@
-import { t } from '@lingui/macro'
+import { useLingui } from '@lingui/react/macro'
 import FacadeAct from 'abis/FacadeAct'
 import TransactionButton from '@/components/ui/transaction-button'
 import useContractWrite from 'hooks/useContractWrite'
@@ -27,6 +27,7 @@ const claimAllRewardsTxAtom = atom((get) => {
 })
 
 const ClaimAllRewardsButton = () => {
+  const { t } = useLingui()
   const call = useAtomValue(claimAllRewardsTxAtom)
   const { isReady, write, hash, gas, isLoading } = useContractWrite(call)
   const { status } = useWatchTransaction({ hash, label: 'Claim rewards' })

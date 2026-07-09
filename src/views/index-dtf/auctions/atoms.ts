@@ -1,5 +1,5 @@
-import { PartialProposal } from '@/lib/governance'
 import { Token } from '@/types'
+import type { IndexDtfProposalSummary } from '@reserve-protocol/react-sdk'
 import { atom } from 'jotai'
 import { governanceProposalsAtom } from '../governance/atoms'
 import { RebalanceMetrics } from './views/rebalance-list/hooks/use-rebalance-metrics'
@@ -27,7 +27,7 @@ export type Rebalance = {
 
 export type RebalanceByProposal = {
   rebalance: Rebalance
-  proposal: PartialProposal
+  proposal: IndexDtfProposalSummary
 }
 
 export const isV4Atom = atom((get) => {
@@ -61,10 +61,13 @@ export const rebalancesByProposalAtom = atom<
   if (!rebalances || !proposals) return undefined
 
   // Create a map of execution block to proposal for O(1) lookup
-  const proposalsByExecutionBlock = new Map<string, PartialProposal>()
+  const proposalsByExecutionBlock = new Map<string, IndexDtfProposalSummary>()
   for (const proposal of proposals) {
-    if (proposal.executionBlock) {
-      proposalsByExecutionBlock.set(proposal.executionBlock, proposal)
+    if (proposal.executionBlock !== undefined) {
+      proposalsByExecutionBlock.set(
+        proposal.executionBlock.toString(),
+        proposal
+      )
     }
   }
 
@@ -97,7 +100,7 @@ export const rebalancesByProposalListAtom = atom<
 
   return Object.values(rebalancesByProposal).sort(
     (a, b) =>
-      Number(b.proposal.executionBlock) - Number(a.proposal.executionBlock)
+      (b.proposal.executionBlock ?? 0) - (a.proposal.executionBlock ?? 0)
   )
 })
 

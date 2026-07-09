@@ -1,0 +1,55 @@
+name: Lint & Typecheck
+
+on:
+  push:
+    branches: [main, master, 'release/**']
+  pull_request:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+      # Type errors are real bugs — this blocks the PR.
+      - name: Typecheck
+        run: pnpm typecheck
+      # oxlint exits non-zero only on ERRORS. The ~600 legacy warnings (and
+      # any/console.log) do not fail CI — gradual adoption, flexible by design.
+      - name: Lint
+        run: pnpm lint
+      # Changed files get a stricter correctness pass. This keeps legacy warnings
+      # grandfathered while blocking high-signal bugs in new work.
+      # (jsx-key omitted: false-positives on JSX tuples; stays a warning.)
+      - name: Strict lint changed files
+        if: github.event_name == 'pull_request'
+        shell: bash
+        run: |
+          mapfile -d '' files < <(git diff --name-only -z --diff-filter=ACM "origin/${{ github.base_ref }}...HEAD" -- '*.ts' '*.tsx')
+          if [ "${#files[@]}" -eq 0 ]; then
+            exit 0
+          fi
+
+          pnpm exec oxlint \
+            -D no-debugger \
+            -D no-const-assign \
+            -D no-dupe-keys \
+            -D no-duplicate-case \
+            -D no-import-assign \
+            -D no-self-assign \
+            -D no-unreachable \
+            -D no-unsafe-optional-chaining \
+            -D no-unused-expressions \
+            -D react/jsx-no-duplicate-props \
+            -D react/jsx-no-undef \
+            -D typescript/no-non-null-asserted-optional-chain \
+            "${files[@]}"

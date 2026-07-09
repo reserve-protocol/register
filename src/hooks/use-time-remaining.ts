@@ -1,3 +1,4 @@
+import { t } from '@lingui/core/macro'
 import { useEffect, useState } from 'react'
 
 /**
@@ -19,7 +20,7 @@ const useTimeRemaining = (targetTimestamp?: number): string => {
       const diffSec = Math.floor(targetTimestamp - Date.now() / 1000)
 
       if (diffSec <= 0) {
-        setTimeLeft('Ended')
+        setTimeLeft(t`Ended`)
         return
       }
 
@@ -29,14 +30,14 @@ const useTimeRemaining = (targetTimestamp?: number): string => {
       const seconds = diffSec % 60
 
       const parts: string[] = []
-      if (days) parts.push(`${days}d`)
-      if (hours || days) parts.push(`${hours}h`)
-      if (minutes || hours || days) parts.push(`${minutes}m`)
+      if (days) parts.push(t`${days}d`)
+      if (hours || days) parts.push(t`${hours}h`)
+      if (minutes || hours || days) parts.push(t`${minutes}m`)
 
       // Only show seconds if less than 1 hour remaining
       const totalHours = days * 24 + hours
       if (totalHours < 1) {
-        parts.push(`${seconds}s`)
+        parts.push(t`${seconds}s`)
       }
 
       setTimeLeft(parts.join(' '))

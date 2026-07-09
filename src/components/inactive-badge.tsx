@@ -4,6 +4,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from '@/components/ui/tooltip'
+import { Trans } from '@lingui/react/macro'
 
 const InactiveBadge = ({ className }: { className?: string }) => (
   <Tooltip>
@@ -14,12 +15,15 @@ const InactiveBadge = ({ className }: { className?: string }) => (
           className
         )}
       >
-        Inactive
+        <Trans>Inactive</Trans>
       </span>
     </TooltipTrigger>
     <TooltipContent className="max-w-xs">
-      This DTF is inactive. New issuance and governance proposals are disabled,
-      but holders can still redeem their tokens and stakers can unstake.
+      <Trans>
+        This DTF is inactive. New issuance and governance proposals are
+        disabled, but holders can still redeem their tokens and stakers can
+        unstake.
+      </Trans>
     </TooltipContent>
   </Tooltip>
 )

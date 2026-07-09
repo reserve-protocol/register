@@ -146,6 +146,17 @@ function writeOutput(relPath: string, content: string) {
 }
 
 /**
+ * DTFs were renamed "Decentralized Token Folios" → "Decentralized Token
+ * Funds", but deployer-set mandates/brand copy fetched from the API may still
+ * carry the old term. Normalize so regenerated artifacts never reintroduce it.
+ */
+function modernizeTerminology(s: string): string {
+  return s
+    .replace(/Decentralized Token Folio/g, 'Decentralized Token Fund')
+    .replace(/decentralized token folio/g, 'decentralized token fund')
+}
+
+/**
  * Pick the best human-readable description for a DTF. Prefers the deployer-set
  * description, but falls back to the API's mandate/brand.about when the
  * featured-tokens.json entry only has the generic Reserve boilerplate.
@@ -155,8 +166,8 @@ function pickDescription(token: FeaturedToken, api?: DiscoverDTF): string {
   const mandate = api?.mandate?.trim() ?? ''
   const about = api?.brand?.about?.trim() ?? ''
   const isBoilerplate = tokenDesc === DEFAULT_DESCRIPTION || tokenDesc === ''
-  if (isBoilerplate) return mandate || about || tokenDesc
-  return tokenDesc
+  const picked = isBoilerplate ? mandate || about || tokenDesc : tokenDesc
+  return modernizeTerminology(picked)
 }
 
 /** Normalize text for equality checks (dedupe Description/Mandate/About). */
@@ -203,13 +214,13 @@ function generateLlmsTxt(apiByAddress: Map<string, DiscoverDTF>): string {
 
   return `# Register — the official Reserve Protocol app
 
-> app.reserve.org is the canonical interface for Decentralized Token Folios (DTFs).
+> app.reserve.org is the canonical interface for Decentralized Token Funds (DTFs).
 > Index DTFs are the current flagship product; Yield DTFs are the legacy asset-backed line.
 > Supported chains: Ethereum, Base, BSC.
 
 ## What is a DTF?
 
-A Decentralized Token Folio (DTF) is an ERC20 token backed 1:1 by a basket of
+A Decentralized Token Fund (DTF) is an ERC20 token backed 1:1 by a basket of
 other ERC20 tokens — an on-chain index fund. Anyone can mint a DTF by depositing
 the underlying basket tokens proportionally, and anyone can redeem for the
 underlying. Baskets and fees are set by the DTF's deployer and can be changed
@@ -256,7 +267,7 @@ ${dtfList}
  */
 const PROTOCOL_PRIMER = `## What is a DTF?
 
-A **Decentralized Token Folio** (DTF) is an ERC20 token backed 1:1 by a basket
+A **Decentralized Token Fund** (DTF) is an ERC20 token backed 1:1 by a basket
 of other ERC20 tokens — effectively an on-chain index fund or ETF. Mint by
 depositing the underlying basket proportionally; redeem for the underlying at
 any time. The Reserve Protocol deploys and governs DTFs.
@@ -388,8 +399,8 @@ function buildFactsheet(token: FeaturedToken, api?: DiscoverDTF): string {
 
   // Primary description — promoted from API when the featured entry is boilerplate.
   const description = pickDescription(token, api)
-  const mandate = api?.mandate?.trim() ?? ''
-  const about = api?.brand?.about?.trim() ?? ''
+  const mandate = modernizeTerminology(api?.mandate?.trim() ?? '')
+  const about = modernizeTerminology(api?.brand?.about?.trim() ?? '')
 
   // Dedupe: only emit mandate/about when they add information beyond description.
   const seen = new Set<string>([normalize(description)])
@@ -473,7 +484,7 @@ async function runSkill() {
         name: 'dtf',
         type: 'skill-md',
         description:
-          'Inspect, query, and transact with Reserve Protocol Decentralized Token Folios (DTFs) across Ethereum, Base, and BSC.',
+          'Inspect, query, and transact with Reserve Protocol Decentralized Token Funds (DTFs) across Ethereum, Base, and BSC.',
         url: `${BASE_URL}/skills/dtf.md`,
         digest: `sha256:${digest}`,
       },

@@ -1,12 +1,12 @@
 # Register — the official Reserve Protocol app
 
-> app.reserve.org is the canonical interface for Decentralized Token Folios (DTFs).
+> app.reserve.org is the canonical interface for Decentralized Token Funds (DTFs).
 > Index DTFs are the current flagship product; Yield DTFs are the legacy asset-backed line.
 > Supported chains: Ethereum, Base, BSC.
 
 ## What is a DTF?
 
-A Decentralized Token Folio (DTF) is an ERC20 token backed 1:1 by a basket of
+A Decentralized Token Fund (DTF) is an ERC20 token backed 1:1 by a basket of
 other ERC20 tokens — an on-chain index fund. Anyone can mint a DTF by depositing
 the underlying basket tokens proportionally, and anyone can redeem for the
 underlying. Baskets and fees are set by the DTF's deployer and can be changed
@@ -46,7 +46,7 @@ Pages on this site are static and intentionally do not embed moving numbers.
 - [CMC20 — CoinMarketCap 20 Index DTF](https://app.reserve.org/bsc/index-dtf/0x2f8a339b5889ffac4c5a956787cda593b3c36867/): The CoinMarketCap 20 Index DTF (CMC20) is a liquid index token powered by Reserve that tracks the CoinMarketCap 20 Index. The CMC20 Index is a benchmark designed to measure the performance of the top 20 cryptocurrency projects by market capitalization, as ranked by CoinMarketCap. It excludes stablecoins (i.e. USDT), tokens that are pegged to other crypto assets (i.e. WBTC or stETH), and assets with limited investability (e.g. potential litigation risk, or limited circulating liquidity). The index represents the broader cryptocurrency market while providing insight into the performance of a diverse set of digital assets.
 - [ABX — Alpha Base Index](https://app.reserve.org/base/index-dtf/0xebcda5b80f62dd4dd2a96357b42bb6facbf30267/): The Alpha Base Index is a DAO-governed DTF, curating the top alpha Base projects with the highest risk-adjusted growth potential, leveraging the collective intelligence of the Base Trenches to identify market opportunities.
 - [AI — AIndex](https://app.reserve.org/base/index-dtf/0xfe45eda533e97198d9f3deeda9ae6c147141f6f9/): AIndex aims to provide users with diversified exposure to the top-performing AI agents and AI infrastructure projects. By leveraging the Base blockchain ecosystem, AIndex offers a carefully curated and balanced index of AI-focused tokens, allowing holders to benefit from the growth of AI technology and infrastructure while minimizing individual project risk.
-- [BDTF — Base MemeIndexer DTF](https://app.reserve.org/base/index-dtf/0xb8753941196692e322846cfee9c14c97ac81928a/): A curated basket of MemeIndexer’s favorite meme coin communities with liquidity on Base. The strongest memecoin communities, all in one decentralized token folio, rebalanced for performance and expanding as top meme coins bridge liquidity.
+- [BDTF — Base MemeIndexer DTF](https://app.reserve.org/base/index-dtf/0xb8753941196692e322846cfee9c14c97ac81928a/): A curated basket of MemeIndexer’s favorite meme coin communities with liquidity on Base. The strongest memecoin communities, all in one decentralized token fund, rebalanced for performance and expanding as top meme coins bridge liquidity.
 - [BGCI — Bloomberg Galaxy Crypto Index](https://app.reserve.org/base/index-dtf/0x23418de10d422ad71c9d5713a2b8991a9c586443/): The Bloomberg Galaxy Crypto Index DTF tracks the Bloomberg Galaxy Crypto Index (“BGCI”). The BGCI is a benchmark designed to measure the performance of the largest cryptocurrencies by market capitalization traded in USD. The Index is owned and administered by Bloomberg and co-branded with Galaxy Digital Capital Management.
 - [CLUB — Club Night DTF](https://app.reserve.org/base/index-dtf/0xf8ef6e785473e82527908b06023ac3e401ccfdcd/): This DTF contains and shall contain whatever the ETH Denver 2025 DTF Club Night partiers want it to!
 - [CLX — Clanker Index](https://app.reserve.org/base/index-dtf/0x44551ca46fa5592bb572e20043f7c3d54c85cad7/): One-click exposure to the best performing assets in the Clanker ecosystem through a single liquid asset.

@@ -1,4 +1,4 @@
-import { Trans } from '@lingui/macro'
+import { Trans } from '@lingui/react/macro'
 import ChainLogo from 'components/icons/ChainLogo'
 import { backupCollateralAtom, basketAtom } from 'components/rtoken-setup/atoms'
 import { useAtom, useAtomValue } from 'jotai'
@@ -86,14 +86,14 @@ const ChainSelector = () => {
       }
 
       setChain(newChain as AvailableChain)
-      switchChain && switchChain({ chainId: newChain })
+      switchChain?.({ chainId: newChain })
     }
   }
 
   return (
     <div className="mb-3">
       <span className="text-xs ml-3 mb-2 block text-muted-foreground">
-        Chain
+        <Trans>Chain</Trans>
       </span>
       <div className="flex flex-col xl:flex-row gap-2 max-[1430px]:flex-col">
         {filteredSupportedChainList.map((chain) => (

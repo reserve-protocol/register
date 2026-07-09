@@ -4,6 +4,7 @@ import { Skeleton } from '@/components/ui/skeleton'
 import { chainIdAtom } from '@/state/atoms'
 import { indexDTFAtom } from '@/state/dtf/atoms'
 import { formatPercentage, getCurrentTime } from '@/utils'
+import { Trans } from '@lingui/react/macro'
 import { atom, useAtomValue } from 'jotai'
 import { ArrowRight } from 'lucide-react'
 import { formatUnits } from 'viem'
@@ -65,7 +66,9 @@ const ShareRange = ({
 
   return (
     <span className="text-xs whitespace-nowrap">
-      from {formatPercentage(from)} to {formatPercentage(to)}
+      <Trans>
+        from {formatPercentage(from)} to {formatPercentage(to)}
+      </Trans>
     </span>
   )
 }
@@ -84,7 +87,8 @@ const TradePreview = ({ trade }: { trade: AssetTrade }) => {
     <div className="grid grid-cols-[1fr_auto_1fr] gap-2 items-center w-full sm:w-80 mr-auto">
       <div className="flex flex-col gap-1">
         <span>
-          {isCompleted ? 'Sold' : 'Sell'} ${trade.sell.symbol}
+          {isCompleted ? <Trans>Sold</Trans> : <Trans>Sell</Trans>} $
+          {trade.sell.symbol}
         </span>
         <div className="flex items-center gap-1">
           <TokenLogo
@@ -125,7 +129,8 @@ const TradePreview = ({ trade }: { trade: AssetTrade }) => {
       </div>
       <div className="flex flex-col gap-1 items-end">
         <span>
-          {isCompleted ? 'Bought' : 'Buy'} ${trade.buy.symbol}
+          {isCompleted ? <Trans>Bought</Trans> : <Trans>Buy</Trans>} $
+          {trade.buy.symbol}
         </span>
         <div className="flex items-center gap-1">
           {isCompleted ? (

@@ -1,7 +1,7 @@
 import { Card } from '@/components/ui/card'
 import { Separator } from '@/components/ui/separator'
 import DocsLink from '@/components/utils/docs-link'
-import { Trans } from '@lingui/macro'
+import { Trans } from '@lingui/react/macro'
 import { atom, useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { chainIdAtom } from 'state/atoms'
 import { ChainId } from 'utils/chains'

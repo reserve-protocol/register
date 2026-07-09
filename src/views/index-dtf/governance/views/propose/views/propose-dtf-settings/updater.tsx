@@ -1,4 +1,5 @@
 import dtfIndexAbiV5 from '@/abis/dtf-index-abi'
+import dtfStakingVaultAbi from '@/abis/dtf-index-staking-vault'
 import {
   indexDTFAtom,
   indexDTFFeeAtom,
@@ -6,10 +7,9 @@ import {
   indexDTFVersionAtom,
 } from '@/state/dtf/atoms'
 import { atom, useAtomValue, useSetAtom } from 'jotai'
-import { chainIdAtom } from '@/state/atoms'
-import { useEffect, useRef } from 'react'
+import { useEffect, useMemo, useRef } from 'react'
 import { useFormContext, useWatch } from 'react-hook-form'
-import { useReadContract } from 'wagmi'
+import { useReadContract, useReadContracts } from 'wagmi'
 import {
   feeRecipientsAtom,
   isProposalConfirmedAtom,
@@ -25,10 +25,23 @@ import {
   weightControlChangeAtom,
   bidsEnabledChangeAtom,
   governanceChangesAtom,
+  optimisticGovernanceChangesAtom,
+  currentOptimisticAllowedActionsAtom,
   isFormValidAtom,
   currentQuorumPercentageAtom,
+  tokenJarAtom,
 } from './atoms'
 import { proposalThresholdToPercentage, secondsToDays } from '../../shared'
+import {
+  DEFAULT_OPTIMISTIC_VETO_DELAY,
+  DEFAULT_OPTIMISTIC_VETO_PERIOD,
+  DEFAULT_OPTIMISTIC_VETO_THRESHOLD,
+  OPTIMISTIC_ACTIONS,
+  arraysEqualIgnoreCase,
+  selectorRegistryAbi,
+} from './optimistic'
+import type { OptimisticActionId } from './optimistic'
+import type { Address } from 'viem'
 
 const resetAtom = atom(null, (get, set) => {
   set(removedBasketTokensAtom, [])
@@ -44,6 +57,9 @@ const resetAtom = atom(null, (get, set) => {
   set(weightControlChangeAtom, undefined)
   set(bidsEnabledChangeAtom, undefined)
   set(governanceChangesAtom, {})
+  set(optimisticGovernanceChangesAtom, {})
+  set(currentOptimisticAllowedActionsAtom, undefined)
+  set(tokenJarAtom, undefined)
 })
 
 const Updater = () => {
@@ -51,9 +67,49 @@ const Updater = () => {
   const feeRecipients = useAtomValue(feeRecipientsAtom)
   const rebalanceControl = useAtomValue(indexDTFRebalanceControlAtom)
   const version = useAtomValue(indexDTFVersionAtom)
-  const chainId = useAtomValue(chainIdAtom)
   const platformFee = useAtomValue(indexDTFFeeAtom)
   const isV5 = version.startsWith('5')
+  const optimisticGovernance = indexDTF?.ownerGovernance?.optimistic
+  const optimisticSelectorRegistry = optimisticGovernance?.selectorRegistry
+
+  const optimisticSelectorContracts = useMemo(() => {
+    if (
+      !indexDTF?.id ||
+      !indexDTF.ownerGovernance?.isOptimistic ||
+      !optimisticSelectorRegistry
+    ) {
+      return []
+    }
+
+    return OPTIMISTIC_ACTIONS.map((action) => ({
+      abi: selectorRegistryAbi,
+      address: optimisticSelectorRegistry,
+      functionName: 'isAllowed' as const,
+      args: [indexDTF.id as Address, action.selector] as const,
+      chainId: indexDTF.chainId,
+    }))
+  }, [
+    indexDTF?.id,
+    indexDTF?.chainId,
+    indexDTF?.ownerGovernance?.isOptimistic,
+    optimisticSelectorRegistry,
+  ])
+
+  const { data: optimisticSelectorResults } = useReadContracts({
+    contracts: optimisticSelectorContracts,
+    allowFailure: false,
+    query: {
+      enabled: optimisticSelectorContracts.length > 0,
+    },
+  })
+
+  const currentOptimisticAllowedActions = useMemo(() => {
+    if (!optimisticSelectorResults) return undefined
+
+    return OPTIMISTIC_ACTIONS.filter(
+      (_, index) => optimisticSelectorResults[index]
+    ).map((action) => action.id)
+  }, [optimisticSelectorResults])
 
   // Read bidsEnabled from contract (v5+ only)
   const { data: currentBidsEnabled } = useReadContract({
@@ -65,6 +121,19 @@ const Updater = () => {
       enabled: !!indexDTF?.id && isV5,
     },
   })
+
+  // Read the stToken's tokenJar so fee-recipient classification folds it into the
+  // governance share (the new StakingVault routes governance fees to the jar).
+  const { data: tokenJar } = useReadContract({
+    abi: dtfStakingVaultAbi,
+    address: indexDTF?.stToken?.id,
+    functionName: 'tokenJar',
+    chainId: indexDTF?.chainId,
+    query: {
+      enabled: !!indexDTF?.stToken?.id,
+    },
+  })
+  const setTokenJar = useSetAtom(tokenJarAtom)
   const reset = useSetAtom(resetAtom)
   const { reset: resetForm, watch, formState, control } = useFormContext()
   const governanceChanges = useAtomValue(governanceChangesAtom)
@@ -78,6 +147,9 @@ const Updater = () => {
   const auctionLengthChange = useAtomValue(auctionLengthChangeAtom)
   const weightControlChange = useAtomValue(weightControlChangeAtom)
   const bidsEnabledChange = useAtomValue(bidsEnabledChangeAtom)
+  const optimisticGovernanceChanges = useAtomValue(
+    optimisticGovernanceChangesAtom
+  )
   const currentQuorumPercentage = useAtomValue(currentQuorumPercentageAtom)
   const isResettingForm = useRef(false)
 
@@ -93,6 +165,12 @@ const Updater = () => {
   const setWeightControlChange = useSetAtom(weightControlChangeAtom)
   const setBidsEnabledChange = useSetAtom(bidsEnabledChangeAtom)
   const setGovernanceChanges = useSetAtom(governanceChangesAtom)
+  const setOptimisticGovernanceChanges = useSetAtom(
+    optimisticGovernanceChangesAtom
+  )
+  const setCurrentOptimisticAllowedActions = useSetAtom(
+    currentOptimisticAllowedActionsAtom
+  )
   const setIsFormValid = useSetAtom(isFormValidAtom)
 
   // Watch form fields
@@ -110,6 +188,9 @@ const Updater = () => {
   const governanceVotingThreshold = watch('governanceVotingThreshold')
   const governanceVotingQuorum = watch('governanceVotingQuorum')
   const governanceExecutionDelay = watch('governanceExecutionDelay')
+  const optimisticVetoDelay = watch('optimisticVetoDelay')
+  const optimisticVetoPeriod = watch('optimisticVetoPeriod')
+  const optimisticVetoThreshold = watch('optimisticVetoThreshold')
 
   // Use useWatch for arrays to ensure updates are captured immediately
   const guardians = useWatch({
@@ -124,10 +205,26 @@ const Updater = () => {
     name: 'auctionLaunchers',
     control,
   })
+  const optimisticProposers = useWatch({
+    name: 'optimisticProposers',
+    control,
+  })
+  const optimisticActions = useWatch({
+    name: 'optimisticActions',
+    control,
+  })
   const additionalRevenueRecipients = useWatch({
     name: 'additionalRevenueRecipients',
     control,
   })
+
+  useEffect(() => {
+    setCurrentOptimisticAllowedActions(currentOptimisticAllowedActions)
+  }, [currentOptimisticAllowedActions, setCurrentOptimisticAllowedActions])
+
+  useEffect(() => {
+    setTokenJar(tokenJar as Address | undefined)
+  }, [tokenJar, setTokenJar])
 
   useEffect(() => {
     if (indexDTF && indexDTF.ownerGovernance && feeRecipients) {
@@ -146,6 +243,15 @@ const Updater = () => {
       const currentExecutionDelay = secondsToDays(
         Number(indexDTF.ownerGovernance.timelock.executionDelay)
       )
+      const optimistic = indexDTF.ownerGovernance.optimistic
+      const currentOptimisticVetoDelay = secondsToDays(
+        optimistic?.vetoDelay ?? DEFAULT_OPTIMISTIC_VETO_DELAY
+      )
+      const currentOptimisticVetoPeriod = secondsToDays(
+        optimistic?.vetoPeriod ?? DEFAULT_OPTIMISTIC_VETO_PERIOD
+      )
+      const currentOptimisticVetoThreshold =
+        optimistic?.vetoThreshold ?? DEFAULT_OPTIMISTIC_VETO_THRESHOLD
 
       resetForm({
         tokenName:
@@ -220,6 +326,26 @@ const Updater = () => {
           rolesChanges.auctionLaunchers !== undefined
             ? rolesChanges.auctionLaunchers
             : indexDTF.auctionLaunchers,
+        optimisticVetoDelay:
+          optimisticGovernanceChanges.vetoDelay !== undefined
+            ? optimisticGovernanceChanges.vetoDelay / 86400
+            : currentOptimisticVetoDelay,
+        optimisticVetoPeriod:
+          optimisticGovernanceChanges.vetoPeriod !== undefined
+            ? optimisticGovernanceChanges.vetoPeriod / 86400
+            : currentOptimisticVetoPeriod,
+        optimisticVetoThreshold:
+          optimisticGovernanceChanges.vetoThreshold !== undefined
+            ? optimisticGovernanceChanges.vetoThreshold
+            : currentOptimisticVetoThreshold,
+        optimisticProposers:
+          optimisticGovernanceChanges.optimisticProposers !== undefined
+            ? optimisticGovernanceChanges.optimisticProposers
+            : indexDTF.ownerGovernance.optimistic?.proposers ?? [],
+        optimisticActions:
+          optimisticGovernanceChanges.allowedActions !== undefined
+            ? optimisticGovernanceChanges.allowedActions
+            : currentOptimisticAllowedActions ?? [],
       })
 
       // Reset the flag after form reset
@@ -227,7 +353,15 @@ const Updater = () => {
         isResettingForm.current = false
       }, 100)
     }
-  }, [indexDTF?.id, !!feeRecipients, currentBidsEnabled])
+  }, [
+    indexDTF?.id,
+    !!feeRecipients,
+    // Re-seed once the tokenJar read resolves and reclassifies the governance
+    // share (it lands after feeRecipients first becomes available).
+    feeRecipients?.governanceShare,
+    currentBidsEnabled,
+    currentOptimisticAllowedActions,
+  ])
 
   // Watch for token name changes (v5+ only)
   useEffect(() => {
@@ -500,9 +634,87 @@ const Updater = () => {
     currentQuorumPercentage,
   ])
 
+  // Watch for optimistic governance changes
+  useEffect(() => {
+    const governance = indexDTF?.ownerGovernance
+    if (!governance?.isOptimistic) {
+      setOptimisticGovernanceChanges({})
+      return
+    }
+
+    setOptimisticGovernanceChanges((prevChanges) => {
+      const changes = { ...prevChanges }
+      const optimistic = governance.optimistic
+      const currentVetoDelay = optimistic?.vetoDelay ?? DEFAULT_OPTIMISTIC_VETO_DELAY
+      const currentVetoPeriod =
+        optimistic?.vetoPeriod ?? DEFAULT_OPTIMISTIC_VETO_PERIOD
+      const currentVetoThreshold =
+        optimistic?.vetoThreshold ?? DEFAULT_OPTIMISTIC_VETO_THRESHOLD
+
+      if (optimisticVetoDelay !== undefined) {
+        const newValueInSeconds = Math.round(optimisticVetoDelay * 86400)
+        if (newValueInSeconds !== Number(currentVetoDelay)) {
+          changes.vetoDelay = newValueInSeconds
+        } else {
+          delete changes.vetoDelay
+        }
+      }
+
+      if (optimisticVetoPeriod !== undefined) {
+        const newValueInSeconds = Math.round(optimisticVetoPeriod * 86400)
+        if (newValueInSeconds !== Number(currentVetoPeriod)) {
+          changes.vetoPeriod = newValueInSeconds
+        } else {
+          delete changes.vetoPeriod
+        }
+      }
+
+      if (optimisticVetoThreshold !== undefined) {
+        if (Number(optimisticVetoThreshold) !== Number(currentVetoThreshold)) {
+          changes.vetoThreshold = Number(optimisticVetoThreshold)
+        } else {
+          delete changes.vetoThreshold
+        }
+      }
+
+      if (optimisticProposers) {
+        const newProposers = optimisticProposers.filter(Boolean) as Address[]
+        const currentProposers = governance.optimistic?.proposers ?? []
+
+        if (!arraysEqualIgnoreCase(newProposers, currentProposers)) {
+          changes.optimisticProposers = newProposers
+        } else {
+          delete changes.optimisticProposers
+        }
+      }
+
+      if (optimisticActions && currentOptimisticAllowedActions) {
+        const newActions = optimisticActions.filter(
+          Boolean
+        ) as OptimisticActionId[]
+
+        if (!arraysEqualIgnoreCase(newActions, currentOptimisticAllowedActions)) {
+          changes.allowedActions = newActions
+        } else {
+          delete changes.allowedActions
+        }
+      }
+
+      return changes
+    })
+  }, [
+    optimisticVetoDelay,
+    optimisticVetoPeriod,
+    optimisticVetoThreshold,
+    optimisticProposers,
+    optimisticActions,
+    currentOptimisticAllowedActions,
+    indexDTF?.ownerGovernance,
+    setOptimisticGovernanceChanges,
+  ])
+
   // Track form validation state
   useEffect(() => {
-    console.log('formState.isValid', formState.errors)
     setIsFormValid(formState.isValid)
   }, [formState.isValid, setIsFormValid])
 

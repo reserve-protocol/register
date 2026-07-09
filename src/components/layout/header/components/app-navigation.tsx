@@ -1,5 +1,3 @@
-// import HeaderMenu from './HeaderMenu'
-import ReserveSquare from '@/components/icons/ReserveSquare'
 import TelegramIcon from '@/components/icons/TelegramIcon'
 import {
   NavigationMenu,
@@ -19,22 +17,26 @@ import {
   ROUTES,
   TELEGRAM_INVITE,
 } from '@/utils/constants'
-import { t, Trans } from '@lingui/macro'
+import { Trans, useLingui } from '@lingui/react/macro'
 import {
-  ArrowRight,
-  ArrowUpRight,
   BadgePlus,
-  Binoculars,
+  BookOpen,
   Cable,
   Ear,
   Flower,
   Landmark,
-  LayoutGrid,
+  MessagesSquare,
   Microscope,
+  Newspaper,
   Wallet,
 } from 'lucide-react'
-import { ReactNode, useMemo } from 'react'
+import { useMemo } from 'react'
 import { NavLink, useLocation } from 'react-router-dom'
+import {
+  headerNavIconClassName,
+  headerNavItemClassName,
+  HeaderNavItemContent,
+} from './header-nav-items'
 
 const DiscoverItem = () => {
   const { pathname } = useLocation()
@@ -45,16 +47,16 @@ const DiscoverItem = () => {
   return (
     <NavigationMenuItem>
       <NavigationMenuLink asChild>
-        <NavLink to={ROUTES.HOME}>
+        <NavLink to={ROUTES.DISCOVER}>
           {({ isActive }: { isActive: boolean }) => (
             <div
               className={cn(
                 navigationMenuTriggerStyle(),
-                (isActive || isDTF) && 'text-primary'
+                'text-foreground hover:text-primary focus:text-primary dark:text-muted-foreground dark:hover:text-foreground dark:focus:text-foreground',
+                (isActive || isDTF) && 'text-primary dark:text-foreground'
               )}
             >
-              <Binoculars strokeWidth={1.5} size={16} />
-              <span className="hidden min-[850px]:block text-base">
+              <span className="hidden text-base font-normal min-[850px]:block">
                 <Trans>Discover DTFs</Trans>
               </span>
             </div>
@@ -65,11 +67,9 @@ const DiscoverItem = () => {
   )
 }
 
-const IconContainer = ({ children }: { children: ReactNode }) => (
-  <div className=" p-1 rounded-full border border-foreground">{children}</div>
-)
-
 const AppNavigation = () => {
+  const { t } = useLingui()
+  const { pathname } = useLocation()
   const [menuItems, moreLinks, externalLinks] = useMemo(
     () => [
       [
@@ -84,18 +84,20 @@ const AppNavigation = () => {
           to: ROUTES.PORTFOLIO,
         },
         {
-          label: t`Create New DTF`,
+          label: t`Create DTF`,
           icon: <BadgePlus strokeWidth={1.5} size={16} />,
           to: ROUTES.DEPLOY_INDEX,
         },
       ],
       [
         {
-          label: t`Create New DTF`,
+          label: t`Create DTF`,
           icon: (
-            <IconContainer>
-              <BadgePlus size={16} />
-            </IconContainer>
+            <BadgePlus
+              className={headerNavIconClassName}
+              strokeWidth={1.5}
+              size={16}
+            />
           ),
           description: t`Launch your own Index DTF`,
           to: ROUTES.DEPLOY_INDEX,
@@ -104,29 +106,35 @@ const AppNavigation = () => {
         {
           label: t`DTF Explorer`,
           icon: (
-            <IconContainer>
-              <Microscope size={16} />
-            </IconContainer>
+            <Microscope
+              className={headerNavIconClassName}
+              strokeWidth={1.5}
+              size={16}
+            />
           ),
           description: t`Get an overview of everything going on`,
           to: ROUTES.EXPLORER,
         },
         {
-          label: t`Reserve Bridge`,
+          label: t`Bridge`,
           icon: (
-            <IconContainer>
-              <Cable size={16} />
-            </IconContainer>
+            <Cable
+              className={headerNavIconClassName}
+              strokeWidth={1.5}
+              size={16}
+            />
           ),
           description: t`Transfer DTFs across chains`,
           to: ROUTES.BRIDGE,
         },
         {
-          label: t`Yield DTF Creator`,
+          label: t`Create Yield DTF`,
           icon: (
-            <IconContainer>
-              <Flower size={16} />
-            </IconContainer>
+            <Flower
+              className={headerNavIconClassName}
+              strokeWidth={1.5}
+              size={16}
+            />
           ),
           description: t`Create a new overcollateralized Yield DTF`,
           to: ROUTES.DEPLOY_YIELD,
@@ -134,46 +142,69 @@ const AppNavigation = () => {
       ],
       [
         {
-          label: t`Feedback`,
-          icon: <Ear color="#5F5DF9" />,
+          label: t`Feedback & Requests`,
+          icon: <Ear className={headerNavIconClassName} size={16} />,
           description: t`File issues or upvote existing ones`,
           to: REGISTER_FEEDBACK,
+          external: true,
         },
         {
-          label: t`Reserve Blog`,
-          icon: <ReserveSquare />,
+          label: t`Blog`,
+          icon: (
+            <Newspaper
+              className={headerNavIconClassName}
+              strokeWidth={1.5}
+              size={16}
+            />
+          ),
           description: t`Stay up to date in long form`,
           to: RESERVE_BLOG,
+          external: true,
         },
         {
-          label: t`Reserve Docs`,
-          icon: <ReserveSquare />,
+          label: t`Docs`,
+          icon: (
+            <BookOpen
+              className={headerNavIconClassName}
+              strokeWidth={1.5}
+              size={16}
+            />
+          ),
           description: t`Understand the project and protocols`,
           to: PROTOCOL_DOCS,
+          external: true,
         },
         {
-          label: t`Reserve Forum`,
-          icon: <ReserveSquare />,
+          label: t`Forum`,
+          icon: (
+            <MessagesSquare
+              className={headerNavIconClassName}
+              strokeWidth={1.5}
+              size={16}
+            />
+          ),
           description: t`Discussions of ecosystem ideas`,
           to: RESERVE_FORUM,
+          external: true,
         },
         {
-          label: t`Reserve Telegram`,
+          label: t`Telegram`,
           icon: <TelegramIcon color="#5865F2" width={20} />,
           description: t`Join the conversation or ask questions`,
           to: TELEGRAM_INVITE,
+          external: true,
         },
       ],
     ],
-    []
+    [t]
   )
 
   return (
     <NavigationMenu
-      className="mr-auto border min-[850px]:border-none rounded-3xl"
-      vClassName="-left-10 md:left-40"
+      className="mr-auto hidden rounded-3xl border min-[850px]:flex min-[850px]:border-none"
+      vClassName="-left-10 min-[850px]:left-auto min-[850px]:right-0"
     >
-      <NavigationMenuList>
+      <NavigationMenuList className="pl-0 pr-2">
         <DiscoverItem />
         {menuItems.map((item) => (
           <NavigationMenuItem
@@ -188,11 +219,11 @@ const AppNavigation = () => {
                   <div
                     className={cn(
                       navigationMenuTriggerStyle(),
-                      isActive && 'text-primary'
+                      'text-foreground hover:text-primary focus:text-primary dark:text-muted-foreground dark:hover:text-foreground dark:focus:text-foreground',
+                      isActive && 'text-primary dark:text-foreground'
                     )}
                   >
-                    {item.icon}
-                    <span className="hidden min-[850px]:block text-base">
+                    <span className="hidden text-base font-normal min-[850px]:block">
                       {item.label}
                     </span>
                   </div>
@@ -202,52 +233,42 @@ const AppNavigation = () => {
           </NavigationMenuItem>
         ))}
         <NavigationMenuItem>
-          <NavigationMenuTrigger>
-            <LayoutGrid strokeWidth={1.5} size={16} />
-            <span className="hidden min-[850px]:block text-base">More</span>
+          <NavigationMenuTrigger className="text-foreground hover:text-primary focus:text-primary data-[state=open]:text-primary dark:text-muted-foreground dark:hover:text-foreground dark:focus:text-foreground dark:data-[state=open]:text-foreground">
+            <span className="hidden text-base font-normal min-[850px]:block">
+              <Trans>More</Trans>
+            </span>
           </NavigationMenuTrigger>
-          <NavigationMenuContent className="rounded-4xl">
-            <div className="bg-secondary w-72 sm:w-96 flex p-1 flex-col gap-1">
-              {moreLinks.map((item) => (
-                <NavigationMenuLink
-                  key={item.to}
-                  asChild
-                  className={cn(
-                    'p-4 gap-2 flex items-center rounded-3xl bg-card border border-transparent hover:border-primary',
-                    item.mobileOnly && 'min-[850px]:hidden'
-                  )}
-                >
-                  <NavLink to={item.to}>
-                    {item.icon}
-                    <div className="mr-auto">
-                      <span className="font-bold">{item.label}</span>
-                      <p className="hidden md:block text-sm text-legend">
-                        {item.description}
-                      </p>
-                    </div>
-                    <div className="bg-primary p-1 rounded-full text-primary-foreground">
-                      <ArrowRight size={16} />
-                    </div>
-                  </NavLink>
-                </NavigationMenuLink>
-              ))}
+          <NavigationMenuContent className="bg-secondary">
+            <div className="w-72 sm:w-96 flex flex-col gap-1 p-1 pb-1.5">
+              {moreLinks
+                .filter((item) => !item.mobileOnly)
+                .map((item) => {
+                  const isActive =
+                    pathname === item.to || pathname.startsWith(`${item.to}/`)
+
+                  return (
+                    <NavigationMenuLink key={item.to} asChild>
+                      <NavLink
+                        to={item.to}
+                        className={cn(headerNavItemClassName, 'rounded-2xl')}
+                      >
+                        <HeaderNavItemContent
+                          item={item}
+                          isActive={isActive}
+                          showDescription={false}
+                        />
+                      </NavLink>
+                    </NavigationMenuLink>
+                  )
+                })}
               {externalLinks.map((item) => (
                 <NavigationMenuLink
                   key={item.to}
                   href={item.to}
                   target="_blank"
-                  className="p-4 gap-2 flex items-center rounded-3xl bg-card border border-transparent hover:border-primary"
+                  className={cn(headerNavItemClassName, 'rounded-2xl')}
                 >
-                  {item.icon}
-                  <div className="mr-auto">
-                    <span className="font-bold">{item.label}</span>
-                    <p className="hidden md:block text-sm text-legend">
-                      {item.description}
-                    </p>
-                  </div>
-                  <div className="bg-muted p-1 rounded-full">
-                    <ArrowUpRight size={16} />
-                  </div>
+                  <HeaderNavItemContent item={item} showDescription={false} />
                 </NavigationMenuLink>
               ))}
             </div>

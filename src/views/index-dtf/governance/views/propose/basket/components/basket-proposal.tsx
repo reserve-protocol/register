@@ -5,6 +5,7 @@ import {
 } from '@/components/ui/accordion'
 import { Button } from '@/components/ui/button'
 import { ROUTES } from '@/utils/constants'
+import { Trans, useLingui } from '@lingui/react/macro'
 import { useAtom } from 'jotai'
 import { ArrowLeftIcon, Boxes } from 'lucide-react'
 import { Link } from 'react-router-dom'
@@ -23,24 +24,33 @@ const Header = () => (
         <ArrowLeftIcon size={24} strokeWidth={1.5} />
       </Button>
     </Link>
-    <h1 className="font-bold text-xl">Basket change proposal</h1>
+    <h1 className="font-bold text-xl">
+      <Trans>Basket change proposal</Trans>
+    </h1>
   </div>
 )
-const BasketSetupAccordion = () => (
-  <AccordionItem value="basket" className="rounded-3xl bg-card m-1 border-none">
-    <ProposalStepTrigger
-      id="basket"
-      icon={<Boxes size={16} strokeWidth={1.5} />}
-      title="Set basket composition"
-    />
-    <AccordionContent className="flex flex-col animate-fade-in">
-      <h2 className="text-xl  sm:text-2xl font-bold text-primary mx-4 sm:mx-6 mb-2">
-        Basket composition
-      </h2>
-      <ProposalBasketSetup />
-    </AccordionContent>
-  </AccordionItem>
-)
+const BasketSetupAccordion = () => {
+  const { t } = useLingui()
+
+  return (
+    <AccordionItem
+      value="basket"
+      className="rounded-3xl bg-card m-1 border-none"
+    >
+      <ProposalStepTrigger
+        id="basket"
+        icon={<Boxes size={16} strokeWidth={1.5} />}
+        title={t`Set basket composition`}
+      />
+      <AccordionContent className="flex flex-col animate-fade-in">
+        <h2 className="text-xl  sm:text-2xl font-bold text-primary mx-4 sm:mx-6 mb-2">
+          <Trans>Basket composition</Trans>
+        </h2>
+        <ProposalBasketSetup />
+      </AccordionContent>
+    </AccordionItem>
+  )
+}
 
 const BasketProposal = () => {
   const [step, setStep] = useAtom(stepAtom)

@@ -1,4 +1,4 @@
-import { Trans } from '@lingui/macro'
+import { Trans } from '@lingui/react/macro'
 import DocsLink from '@/components/utils/docs-link'
 import { atom, useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { chainIdAtom } from 'state/atoms'

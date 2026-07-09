@@ -1,3 +1,4 @@
+import { Trans } from '@lingui/react/macro'
 import { NavLink, Outlet } from 'react-router-dom'
 import { ROUTES } from 'utils/constants'
 
@@ -25,13 +26,25 @@ const Navigation = () => {
   return (
     <div className="flex items-center border-b border-border gap-4 md:gap-6 justify-center text-sm md:text-base">
       <NavItem to={ROUTES.EXPLORER_TRANSACTIONS}>
-        <span className="block md:hidden">Txs</span>
-        <span className="hidden md:block">Transactions</span>
+        <span className="block md:hidden">
+          <Trans>Txs</Trans>
+        </span>
+        <span className="hidden md:block">
+          <Trans>Transactions</Trans>
+        </span>
       </NavItem>
-      <NavItem to={ROUTES.EXPLORER_TOKENS}>Tokens</NavItem>
-      <NavItem to={ROUTES.EXPLORER_COLLATERALS}>Collaterals</NavItem>
-      <NavItem to={ROUTES.EXPLORER_GOVERNANCE}>Governance</NavItem>
-      <NavItem to={ROUTES.EXPLORER_REVENUE}>Revenue</NavItem>
+      <NavItem to={ROUTES.EXPLORER_TOKENS}>
+        <Trans>Tokens</Trans>
+      </NavItem>
+      <NavItem to={ROUTES.EXPLORER_COLLATERALS}>
+        <Trans>Collaterals</Trans>
+      </NavItem>
+      <NavItem to={ROUTES.EXPLORER_GOVERNANCE}>
+        <Trans>Governance</Trans>
+      </NavItem>
+      <NavItem to={ROUTES.EXPLORER_REVENUE}>
+        <Trans>Revenue</Trans>
+      </NavItem>
     </div>
   )
 }

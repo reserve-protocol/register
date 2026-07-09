@@ -1,3 +1,4 @@
+import { Trans } from '@lingui/react/macro'
 import { Button } from '@/components/ui/button'
 import useRToken from 'hooks/useRToken'
 import { useAtomValue } from 'jotai'
@@ -52,7 +53,9 @@ const ProposalSnapshot = () => {
       disabled={!proposal}
     >
       <Download size={14} />
-      <span className="ml-2">Download snapshot</span>
+      <span className="ml-2">
+        <Trans>Download snapshot</Trans>
+      </span>
     </Button>
   )
 }

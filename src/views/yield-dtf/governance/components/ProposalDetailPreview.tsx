@@ -1,3 +1,4 @@
+import { Trans } from '@lingui/react/macro'
 import SectionWrapper from '@/components/section-navigation/section-wrapper'
 import { Card } from '@/components/ui/card'
 import Spinner from '@/components/ui/spinner'
@@ -85,7 +86,9 @@ const ProposalDetail = ({
       {!groups.length && (
         <Card className="p-4 mb-4 text-center">
           <Spinner size={18} />
-          <span className="block">Loading execution details...</span>
+          <span className="block">
+            <Trans>Loading execution details...</Trans>
+          </span>
         </Card>
       )}
       <div className="flex flex-col gap-4">

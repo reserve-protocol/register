@@ -1,4 +1,4 @@
-import { t } from '@lingui/macro'
+import { useLingui } from '@lingui/react/macro'
 import BasketHandler from 'abis/BasketHandler'
 import RToken from 'abis/RToken'
 import TransactionModal from 'components/transaction-modal'
@@ -58,6 +58,7 @@ const allowancesAtom = atom((get) => {
 })
 
 const ConfirmIssuance = ({ onClose }: { onClose: () => void }) => {
+  const { t } = useLingui()
   const [signing, setSigning] = useState(false)
   const rToken = useAtomValue(rTokenAtom)
   const rTokenContracts = useAtomValue(rTokenContractsAtom)
@@ -90,7 +91,7 @@ const ConfirmIssuance = ({ onClose }: { onClose: () => void }) => {
     }
 
     if (!hasAllowance) {
-      return 'Please grant collateral allowance'
+      return t`Please grant collateral allowance`
     }
 
     return t`Begin minting ${formatCurrency(Number(amount))} ${rToken?.symbol ?? ''}`

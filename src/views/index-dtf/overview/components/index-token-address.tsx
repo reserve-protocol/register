@@ -7,6 +7,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
+import { cn } from '@/lib/utils'
 import { chainIdAtom } from '@/state/atoms'
 import { iTokenAddressAtom } from '@/state/dtf/atoms'
 import { isAddress, shortenAddress } from '@/utils'
@@ -16,11 +17,7 @@ import { useAtomValue } from 'jotai'
 import { ArrowUpRight, ChevronDown, Copy, ExternalLink } from 'lucide-react'
 import { useMemo } from 'react'
 import { toast } from 'sonner'
-
-const copyAddress = (addr: string) => {
-  navigator.clipboard.writeText(isAddress(addr) || addr)
-  toast.success('Address copied to clipboard')
-}
+import { Trans, useLingui } from '@lingui/react/macro'
 
 const openExplorer = (addr: string, chain: number) => {
   window.open(getExplorerLink(addr, chain, ExplorerDataType.TOKEN), '_blank')
@@ -28,11 +25,29 @@ const openExplorer = (addr: string, chain: number) => {
 
 const IndexTokenAddress = ({
   theme = 'dark',
+  className,
+  labelClassName,
+  labelGroupClassName,
+  stackedLogoClassName,
+  logoClassName,
+  chevronClassName,
 }: {
   theme?: 'light' | 'dark'
+  className?: string
+  labelClassName?: string
+  labelGroupClassName?: string
+  stackedLogoClassName?: string
+  logoClassName?: string
+  chevronClassName?: string
 }) => {
+  const { t } = useLingui()
   const chainId = useAtomValue(chainIdAtom)
   const address = useAtomValue(iTokenAddressAtom)
+
+  const copyAddress = (addr: string) => {
+    navigator.clipboard.writeText(isAddress(addr) || addr)
+    toast.success(t`Address copied to clipboard`)
+  }
 
   const bridgedAddresses = useMemo(
     () => (address ? BRIDGED_INDEX_DTFS[address.toLowerCase()] : null),
@@ -45,11 +60,16 @@ const IndexTokenAddress = ({
 
   const isDark = theme === 'dark'
 
-  const triggerClassName = isDark
-    ? 'flex items-center gap-2 px-2 h-8 text-sm sm:text-base py-1 rounded-full bg-white/5 hover:bg-white/10 text-white/90 hover:text-white border border-white/10 data-[state=open]:bg-white/10 data-[state=open]:text-white focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0 ring-0'
-    : 'flex items-center gap-2 px-2 h-8 text-sm sm:text-base py-1 rounded-full border border-border focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0 ring-0'
+  const triggerClassName = cn(
+    isDark
+      ? 'flex items-center gap-2 px-2 h-8 text-sm sm:text-base py-1 rounded-full bg-white/5 hover:bg-white/10 text-white/90 hover:text-white border border-white/10 data-[state=open]:bg-white/10 data-[state=open]:text-white focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0 ring-0'
+      : 'flex items-center gap-2 px-2 h-8 text-sm sm:text-base py-1 rounded-full border border-border focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0 ring-0',
+    className
+  )
 
-  const contentClassName = isDark ? 'bg-neutral-900 text-white border-white/10' : ''
+  const contentClassName = isDark
+    ? 'bg-neutral-900 text-white border-white/10'
+    : ''
 
   const menuItemClassName = isDark
     ? 'flex items-center gap-2 text-white/90 focus:bg-white/10 focus:text-white'
@@ -59,17 +79,32 @@ const IndexTokenAddress = ({
     ? 'p-1 rounded hover:bg-white/10 text-white/70 hover:text-white transition-colors'
     : 'p-1 rounded hover:bg-muted text-muted-foreground hover:text-foreground transition-colors'
 
+  const getBridgeLabel = (addr: string) =>
+    addr.toLowerCase() === address.toLowerCase() ? (
+      <Trans>Native</Trans>
+    ) : (
+      <Trans>Bridged</Trans>
+    )
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" size="sm" className={triggerClassName}>
-          {bridgedAddresses ? (
-            <StackedChainLogo chains={bridgedAddresses.map((b) => b.chain)} />
-          ) : (
-            <ChainLogo chain={chainId} />
-          )}
-          <span className="text-sm font-light">{shortenAddress(address)}</span>
-          <ChevronDown className="h-4 w-4" />
+          <span className={cn('flex items-center gap-2', labelGroupClassName)}>
+            {bridgedAddresses ? (
+              <StackedChainLogo
+                chains={bridgedAddresses.map((b) => b.chain)}
+                className={stackedLogoClassName}
+                logoClassName={logoClassName}
+              />
+            ) : (
+              <ChainLogo chain={chainId} className={logoClassName} />
+            )}
+            <span className={cn('text-sm font-light', labelClassName)}>
+              {shortenAddress(address)}
+            </span>
+          </span>
+          <ChevronDown className={cn('h-4 w-4', chevronClassName)} />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="start" className={contentClassName}>
@@ -81,20 +116,30 @@ const IndexTokenAddress = ({
             >
               <div className="flex items-center gap-2">
                 <ChainLogo chain={chain} className="h-4 w-4" />
-                <span className="text-sm">{shortenAddress(addr)}</span>
+                <div className="flex flex-col">
+                  <span className="text-sm">{shortenAddress(addr)}</span>
+                  <span
+                    className={cn(
+                      'text-xs',
+                      isDark ? 'text-white/50' : 'text-muted-foreground'
+                    )}
+                  >
+                    {getBridgeLabel(addr)}
+                  </span>
+                </div>
               </div>
               <div className="flex items-center gap-0.5">
                 <button
                   onClick={() => copyAddress(addr)}
                   className={iconButtonClassName}
-                  title="Copy address"
+                  title={t`Copy address`}
                 >
                   <Copy className="h-3.5 w-3.5" />
                 </button>
                 <button
                   onClick={() => openExplorer(addr, chain)}
                   className={iconButtonClassName}
-                  title="View on explorer"
+                  title={t`View on explorer`}
                 >
                   <ExternalLink className="h-3.5 w-3.5" />
                 </button>
@@ -107,13 +152,13 @@ const IndexTokenAddress = ({
               onClick={() => copyAddress(address)}
               className={menuItemClassName}
             >
-              Copy address
+              <Trans>Copy address</Trans>
             </DropdownMenuItem>
             <DropdownMenuItem
               onClick={() => openExplorer(address, chainId)}
               className={`${menuItemClassName} gap-1.5`}
             >
-              View on explorer
+              <Trans>View on explorer</Trans>
               <ArrowUpRight className="h-4 w-4" />
             </DropdownMenuItem>
           </>

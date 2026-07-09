@@ -1,4 +1,4 @@
-import { Trans } from '@lingui/macro'
+import { Trans, useLingui } from '@lingui/react/macro'
 import { Input } from 'components'
 import { Button } from '@/components/ui/button'
 import { useState } from 'react'
@@ -11,6 +11,7 @@ const NewAssetAddress = ({
   onSave(value: string): void
   addresses: string[]
 }) => {
+  const { t } = useLingui()
   const [address, setAddress] = useState('')
 
   const isValid = !!isAddress(address)
@@ -23,7 +24,7 @@ const NewAssetAddress = ({
       <Input
         className="my-4"
         value={address}
-        placeholder="Input address"
+        placeholder={t`Input address`}
         onChange={(e) => setAddress(e.target.value)}
       />
       {((address && !isValid) || isExisting) && (

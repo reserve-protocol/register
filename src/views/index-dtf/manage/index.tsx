@@ -5,17 +5,17 @@ import { useEffect } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import CoverImages from './components/cover-images'
 import ManageForm from './components/manage-form'
-import { manageFormSchema, ManageFormValues } from './components/schema'
+import { ManageFormValues, useManageFormSchema } from './components/schema'
 import SubmitButton from './components/submit-button'
 
 const defaultValues: ManageFormValues = {
-  hidden: false,
   dtf: {
     icon: '',
     cover: '',
-    mobileCover: '',
+    video: '',
     description: '',
     notesFromCreator: '',
+    files: [],
     tags: [],
     basketType: 'percentage-based',
   },
@@ -40,17 +40,18 @@ const defaultValues: ManageFormValues = {
     creatorLogo: undefined,
     curatorLogo: undefined,
     desktopCover: undefined,
-    mobileCover: undefined,
   },
 }
 
 const IndexDTFManage = () => {
+  const manageFormSchema = useManageFormSchema()
   const form = useForm({
     resolver: zodResolver(manageFormSchema),
     defaultValues,
     mode: 'onChange',
   })
   const data = useAtomValue(indexDTFBrandAtom)
+  const { reset } = form
 
   useEffect(() => {
     if (data) {
@@ -69,9 +70,9 @@ const IndexDTFManage = () => {
         }
       }
 
-      form.reset(formData)
+      reset(formData, { keepDirtyValues: true })
     }
-  }, [!!data])
+  }, [data, reset])
 
   return (
     <FormProvider {...form}>

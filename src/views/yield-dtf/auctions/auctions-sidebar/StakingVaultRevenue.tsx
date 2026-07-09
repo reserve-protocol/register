@@ -1,7 +1,9 @@
+import { Trans, useLingui } from '@lingui/react/macro'
 import StakingVault from 'abis/StakingVault'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { Separator } from '@/components/ui/separator'
+import { dateLocale } from '@/utils/locale'
 import Help from 'components/help'
 import { Loader2 } from 'lucide-react'
 import useContractWrite from 'hooks/useContractWrite'
@@ -16,6 +18,7 @@ import RevenueOverviewHeader from './RevenueOverviewHeader'
 import { useReadContracts } from 'wagmi'
 
 const StakingVaultRevenue = () => {
+  const { t } = useLingui()
   const rToken = useRToken()
   const rTokenAPY = useAtomValue(estimatedApyAtom)
 
@@ -118,7 +121,9 @@ const StakingVaultRevenue = () => {
 
     const _nextPeriodAPY = (futureAmt / (stBalance - futureAmt || 1)) * 52 * 100
 
-    const _rewardsEnds = new Date(rewardsEnd * 1000).toLocaleString()
+    const _rewardsEnds = new Date(rewardsEnd * 1000).toLocaleString(
+      dateLocale()
+    )
 
     const delta = (avgAPY - _nextPeriodAPY) / 100
     const _neededToHitAvg = delta > 0 ? (delta * stBalance) / 52 : 0
@@ -145,35 +150,45 @@ const StakingVaultRevenue = () => {
 
   return (
     <>
-      <RevenueOverviewHeader text="Staking vault revenue stats" />
+      <RevenueOverviewHeader text={t`Staking vault revenue stats`} />
       <Card className="p-0 border border-border bg-muted">
         <div className="flex flex-col w-full gap-1 p-4">
           <div className="flex items-center gap-1 justify-between">
-            <span className="text-legend">Current {rTokenVault.name} APY</span>
+            <span className="text-legend">
+              <Trans>Current {rTokenVault.name} APY</Trans>
+            </span>
             <span className="font-bold">{formatPercentage(currentAPY)}</span>
           </div>
           <div className="flex items-center gap-1 justify-between">
-            <span className="text-legend">30d avg {rTokenVault.name} APY</span>
+            <span className="text-legend">
+              <Trans>30d avg {rTokenVault.name} APY</Trans>
+            </span>
             <span className="font-bold">{formatPercentage(avgAPY)}</span>
           </div>
 
           <div className="flex items-center gap-1 justify-between">
-            <span className="text-legend">Current reward period ends</span>
+            <span className="text-legend">
+              <Trans>Current reward period ends</Trans>
+            </span>
             <span className="font-bold">{currentPeriodEnds}</span>
           </div>
 
           <Separator />
 
           <div className="flex items-center gap-1 justify-between">
-            <span className="text-legend">Future sdgnETH APY (next period)</span>
+            <span className="text-legend">
+              <Trans>Future sdgnETH APY (next period)</Trans>
+            </span>
             <span className="font-bold">{formatPercentage(nextPeriodAPY)}</span>
           </div>
 
           <div className="flex items-center gap-1 justify-between">
             <div className="flex items-center gap-1">
-              <span className="text-legend">Delta from 30d avg</span>
+              <span className="text-legend">
+                <Trans>Delta from 30d avg</Trans>
+              </span>
               <Help
-                content={`How much ${rToken.symbol} is needed to hit the 30d avg`}
+                content={t`How much ${rToken.symbol} is needed to hit the 30d avg`}
               />
             </div>
             <span className="font-bold">{`${formatCurrency(
@@ -188,9 +203,11 @@ const StakingVaultRevenue = () => {
           >
             {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
             <div className="flex items-center justify-center gap-1">
-              <span>Nudge</span>
+              <span>
+                <Trans>Nudge</Trans>
+              </span>
               <Help
-                content={`Starts the next ${rTokenVault.name} reward period once the current one ends. Disabled until then.`}
+                content={t`Starts the next ${rTokenVault.name} reward period once the current one ends. Disabled until then.`}
                 placement="bottom"
               />
             </div>

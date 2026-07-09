@@ -20,7 +20,7 @@ const NavigationMenu = React.forwardRef<
     {...props}
   >
     {children}
-    <NavigationMenuViewport className={vClassName} />
+    <NavigationMenuViewport containerClassName={vClassName} />
   </NavigationMenuPrimitive.Root>
 ))
 NavigationMenu.displayName = NavigationMenuPrimitive.Root.displayName
@@ -32,7 +32,7 @@ const NavigationMenuList = React.forwardRef<
   <NavigationMenuPrimitive.List
     ref={ref}
     className={cn(
-      'group flex flex-1 list-none items-center justify-center',
+      'group flex flex-1 list-none items-center justify-center px-2',
       className
     )}
     {...props}
@@ -43,7 +43,7 @@ NavigationMenuList.displayName = NavigationMenuPrimitive.List.displayName
 const NavigationMenuItem = NavigationMenuPrimitive.Item
 
 const navigationMenuTriggerStyle = cva(
-  'group inline-flex gap-1.5 h-10 w-max items-center justify-center rounded-md px-2 xl:px-3 py-2 text-sm transition-colors hover:text-primary focus:text-primary focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-[active]:text-primary data-[state=open]:text-primary'
+  'group inline-flex gap-1.5 h-10 w-max items-center justify-center rounded-md px-3 py-2 text-sm transition-colors hover:text-primary focus:text-primary focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-[active]:text-primary data-[state=open]:text-primary'
 )
 
 const NavigationMenuTrigger = React.forwardRef<
@@ -83,12 +83,16 @@ const NavigationMenuLink = NavigationMenuPrimitive.Link
 
 const NavigationMenuViewport = React.forwardRef<
   React.ElementRef<typeof NavigationMenuPrimitive.Viewport>,
-  React.ComponentPropsWithoutRef<typeof NavigationMenuPrimitive.Viewport>
->(({ className, ...props }, ref) => (
-  <div className={cn('absolute left-0 top-full flex justify-center')}>
+  React.ComponentPropsWithoutRef<typeof NavigationMenuPrimitive.Viewport> & {
+    containerClassName?: string
+  }
+>(({ className, containerClassName, ...props }, ref) => (
+  <div
+    className={cn('absolute top-full flex justify-center', containerClassName)}
+  >
     <NavigationMenuPrimitive.Viewport
       className={cn(
-        'origin-top-center relative mt-1.5 h-[var(--radix-navigation-menu-viewport-height)] w-full overflow-hidden rounded-3xl border shadow-lg data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-90 ',
+        'origin-top-center relative mt-1.5 h-[var(--radix-navigation-menu-viewport-height)] w-full overflow-hidden rounded-3xl border border-card shadow-lg data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-90 ',
         className
       )}
       ref={ref}

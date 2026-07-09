@@ -20,6 +20,7 @@ import {
 import { useState } from 'react'
 import { ArrowDown, ArrowUp } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import { Trans } from '@lingui/react/macro'
 import TableFilters from './table-filters'
 
 interface Props {
@@ -32,12 +33,22 @@ const LoadingSkeleton = () => {
     <Table className="border-separate border-spacing-y-1 min-w-[800px]">
       <TableHeader>
         <TableRow className="border-none hover:bg-transparent">
-          <TableHead>Pool</TableHead>
-          <TableHead>Project</TableHead>
-          <TableHead>Chain</TableHead>
+          <TableHead>
+            <Trans>Pool</Trans>
+          </TableHead>
+          <TableHead>
+            <Trans>Project</Trans>
+          </TableHead>
+          <TableHead>
+            <Trans>Chain</Trans>
+          </TableHead>
           <TableHead>APY</TableHead>
-          <TableHead>Base APY</TableHead>
-          <TableHead>Reward APY</TableHead>
+          <TableHead>
+            <Trans>Base APY</Trans>
+          </TableHead>
+          <TableHead>
+            <Trans>Reward APY</Trans>
+          </TableHead>
           <TableHead>TVL</TableHead>
         </TableRow>
       </TableHeader>
@@ -107,7 +118,7 @@ const PoolsTable = ({ data, compact = false }: Props) => {
   })
 
   return (
-    <div className="bg-secondary p-1 rounded-4xl">
+    <div className="bg-secondary p-1 rounded-4xl lg:mx-2 2xl:mx-0">
       {!compact && (
         <div className="mb-1">
           <TableFilters />
@@ -171,7 +182,7 @@ const PoolsTable = ({ data, compact = false }: Props) => {
                 <TableRow className="border-none">
                   <TableCell colSpan={columns.length} className="text-center">
                     <p className="text-legend py-8">
-                      No yield opportunities found
+                      <Trans>No yield opportunities found</Trans>
                     </p>
                   </TableCell>
                 </TableRow>

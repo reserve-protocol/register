@@ -1,5 +1,6 @@
 import { Separator } from '@/components/ui/separator'
 import { chainIdAtom } from '@/state/atoms'
+import { Trans, useLingui } from '@lingui/react/macro'
 import { useAtomValue } from 'jotai'
 import { ArrowUpRightIcon } from 'lucide-react'
 import { useFormContext } from 'react-hook-form'
@@ -20,6 +21,7 @@ const createMyTokenUrls = {
 } as const
 
 const LaunchTokenBanner = () => {
+  const { t } = useLingui()
   const { watch } = useFormContext()
   const chainId = useAtomValue(chainIdAtom)
   const formChainId = watch('chain')
@@ -32,17 +34,19 @@ const LaunchTokenBanner = () => {
     >
       <div className="flex items-center gap-2">
         <img
-          alt="hero-splash"
+          alt={t`hero-splash`}
           src="https://storage.reserve.org/create-my-token.png"
           className="h-5"
         />
         <div>
           <div className="font-bold">
-            Want to launch a new ERC20 for governance?
+            <Trans>Want to launch a new ERC20 for governance?</Trans>
           </div>
           <div className="text-muted-foreground">
-            We recommend launching your new ERC20 token on{' '}
-            <span className="text-primary">CreateMyToken</span>
+            <Trans>
+              We recommend launching your new ERC20 token on{' '}
+              <span className="text-primary">CreateMyToken</span>
+            </Trans>
           </div>
         </div>
       </div>
@@ -54,6 +58,7 @@ const LaunchTokenBanner = () => {
 }
 
 const GovernanceExistingERC20 = () => {
+  const { t } = useLingui()
   const chainId = useAtomValue(chainIdAtom)
   const { watch } = useFormContext()
   const governanceERC20address = watch('governanceERC20address')
@@ -70,7 +75,7 @@ const GovernanceExistingERC20 = () => {
     <div className="px-4">
       <BasicInput
         fieldName="governanceERC20address"
-        label={symbol || 'ERC20 address'}
+        label={symbol || t`ERC20 address`}
         placeholder="0x..."
         highlightLabel={!!symbol}
       />

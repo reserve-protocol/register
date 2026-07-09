@@ -1,4 +1,4 @@
-import { t } from '@lingui/macro'
+import { useLingui } from '@lingui/react/macro'
 import FacadeAct from 'abis/FacadeAct'
 import { ExecuteButton } from '@/components/ui/transaction-button'
 import MeltIcon from 'components/icons/MeltIcon'
@@ -12,6 +12,7 @@ import { auctionsOverviewAtom } from '../atoms'
 import RevenueBoxContainer from './RevenueBoxContainer'
 
 const MeltingBox = () => {
+  const { t } = useLingui()
   const revenueData = useAtomValue(auctionsOverviewAtom)
   const rToken = useRToken()
   const contracts = useAtomValue(rTokenContractsAtom)
@@ -49,7 +50,7 @@ const MeltingBox = () => {
           text={t`Trigger melt`}
           size="sm"
           className="ml-auto"
-          successLabel="Success!"
+          successLabel={t`Success!`}
           call={call}
         />
       }

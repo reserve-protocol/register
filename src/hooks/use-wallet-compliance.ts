@@ -1,3 +1,4 @@
+import { trackCompliance } from '@/hooks/useTrackPage'
 import { walletAtom } from '@/state/atoms'
 import { RESERVE_API } from '@/utils/constants'
 import { useQuery } from '@tanstack/react-query'
@@ -36,13 +37,22 @@ const useWalletCompliance = () => {
       )
 
       if (!response.ok) {
+        trackCompliance({ endpoint: 'wallet', status: 'error' })
         throw new Error('Failed to check wallet compliance')
       }
 
       const payload: unknown = await response.json()
       if (!isWalletCompliance(payload)) {
+        trackCompliance({ endpoint: 'wallet', status: 'error' })
         throw new Error('Invalid wallet compliance payload')
       }
+
+      trackCompliance({
+        endpoint: 'wallet',
+        status: 'success',
+        restricted: payload.isRestricted,
+        shouldSkipRestrictions: payload.shouldSkipRestrictions,
+      })
 
       return payload
     },

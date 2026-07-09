@@ -1,5 +1,6 @@
 import TokenLogo from '@/components/token-logo'
 import StackTokenLogo from '@/components/token-logo/StackTokenLogo'
+import { Trans } from '@lingui/react/macro'
 import { Button } from '@/components/ui/button'
 import {
   HoverCard,
@@ -7,7 +8,7 @@ import {
   HoverCardTrigger,
 } from '@/components/ui/hover-card'
 import { ScrollArea } from '@/components/ui/scroll-area'
-import { getFolioRoute, shortenAddress } from '@/utils'
+import { getFolioRoute } from '@/utils'
 import { ROUTES } from '@/utils/constants'
 import { ArrowRightIcon } from 'lucide-react'
 import { useMemo } from 'react'
@@ -18,10 +19,7 @@ import { Top100DTF } from '../types'
 
 const LIMIT_ASSETS = 10
 
-const useBasketTokenMeta = (
-  basket: Top100DTF['basket'],
-  chainId: number
-) => {
+const useBasketTokenMeta = (basket: Top100DTF['basket'], chainId: number) => {
   const contracts = useMemo(
     () =>
       basket.slice(0, LIMIT_ASSETS).flatMap((token) => [
@@ -85,7 +83,7 @@ const Top100BasketHoverCard = ({
         sideOffset={-50}
       >
         <div className="flex flex-col gap-2 items-center justify-center">
-          <div className="m-2 p-2 rounded-xl bg-muted w-fit">
+          <div className="m-2 p-2 rounded-2xl bg-muted w-fit">
             <StackTokenLogo
               tokens={head.map((r) => ({ ...r, chain: dtf.chainId }))}
               overlap={2}
@@ -140,10 +138,12 @@ const Top100BasketHoverCard = ({
                 )
               )
             }}
-            className="border-border rounded-xl w-full h-12 text-base font-bold"
+            className="border-border rounded-2xl w-full h-12 text-base font-bold"
           >
             <div className="flex items-center gap-1.5">
-              <span>View entire basket</span>
+              <span>
+                <Trans>View entire basket</Trans>
+              </span>
               <ArrowRightIcon className="w-4 h-4" />
             </div>
           </Button>

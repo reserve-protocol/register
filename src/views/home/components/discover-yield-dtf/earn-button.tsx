@@ -11,6 +11,7 @@ import { BRIDGED_RTOKENS, ROUTES } from 'utils/constants'
 import { getAddress } from 'viem'
 import VerticalDivider from './vertical-divider'
 import { trackClick } from '@/hooks/useTrackPage'
+import { Trans } from '@lingui/react/macro'
 
 interface Props {
   token: ListedToken
@@ -24,11 +25,10 @@ const EarnButton = ({ token, className }: Props) => {
 
   const handleEarn = () => {
     const addresses = [token.id]
+    const bridgedTokens = BRIDGED_RTOKENS[token.chain]?.[token.id] ?? []
 
-    if (BRIDGED_RTOKENS[token.chain]?.[token.id]) {
-      for (const bridgeToken of BRIDGED_RTOKENS[token.chain]?.[token.id]) {
-        addresses.push(bridgeToken.address)
-      }
+    for (const bridgeToken of bridgedTokens) {
+      addresses.push(bridgeToken.address)
     }
 
     navigate(`${ROUTES.EARN_DEFI}?underlying=${addresses.join(',')}`)
@@ -52,7 +52,7 @@ const EarnButton = ({ token, className }: Props) => {
           <div className="flex items-center gap-2 md:gap-1">
             <EarnIcon color="currentColor" />
             <div className="flex items-start md:items-center flex-col md:flex-row gap-1">
-              <span>Earn: </span>
+              <span><Trans>Earn:</Trans> </span>
               <span className="font-bold ml-0 md:ml-1">
                 {earnData.maxApy.toFixed(0)}% APY
               </span>

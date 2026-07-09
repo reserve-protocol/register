@@ -6,7 +6,7 @@ Quick protocol reference for frontend work. Detailed source: [`dtf-tools/docs/KN
 
 ## What is a DTF?
 
-A **Decentralized Token Folio** is an ERC20 token backed 1:1 by a basket of underlying ERC20 tokens. Anyone can mint by depositing basket tokens proportionally, redeem for underlying tokens.
+A **Decentralized Token Fund** is an ERC20 token backed 1:1 by a basket of underlying ERC20 tokens. Anyone can mint by depositing basket tokens proportionally, redeem for underlying tokens.
 
 ### Two Product Lines
 

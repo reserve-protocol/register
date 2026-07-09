@@ -1,4 +1,6 @@
-import { t } from '@lingui/macro'
+import { msg } from '@lingui/core/macro'
+import { useLingui } from '@lingui/react/macro'
+import type { MessageDescriptor } from '@lingui/core'
 import Help from 'components/help'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
@@ -27,18 +29,18 @@ interface FormFieldProps extends FieldProps {
   disabled?: boolean
 }
 
-export const getErrorMessage = (error: StringMap): string => {
+export const getErrorMessage = (error: StringMap): MessageDescriptor => {
   switch (error.type) {
     case 'required':
-      return t`This field is required`
+      return msg`This field is required`
     case 'pattern':
-      return t`Invalid number`
+      return msg`Invalid number`
     case 'max':
-      return t`Invalid maximum range`
+      return msg`Invalid maximum range`
     case 'min':
-      return t`Invalid minimum range `
+      return msg`Invalid minimum range `
     default:
-      return t`Invalid value`
+      return msg`Invalid value`
   }
 }
 
@@ -101,6 +103,7 @@ export const FormField = ({
   helper,
   ...props
 }: FormFieldProps) => {
+  const { t } = useLingui()
   const {
     register,
     getFieldState,
@@ -110,7 +113,7 @@ export const FormField = ({
   let errorMessage = ''
   if (errors && errors[name]) {
     errorMessage = String(
-      errors[name]?.message || getErrorMessage(errors[name])
+      errors[name]?.message || t(getErrorMessage(errors[name]))
     )
   }
 

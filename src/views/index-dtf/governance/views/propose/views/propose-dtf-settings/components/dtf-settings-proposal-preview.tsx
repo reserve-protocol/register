@@ -6,6 +6,7 @@ import { chainIdAtom } from '@/state/atoms'
 import { DecodedCalldata } from '@/types'
 import { ExplorerDataType, getExplorerLink } from '@/utils/getExplorerLink'
 import RawCallPreview from '@/views/index-dtf/governance/components/proposal-preview/raw-call-preview'
+import { Trans } from '@lingui/react/macro'
 import {
   SetMandatePreview,
   RemoveFromBasketPreview,
@@ -16,12 +17,19 @@ import {
   SetTVLFeePreview,
   SetAuctionLengthPreview,
   SetDustAmountPreview,
+  SetOptimisticParamsPreview,
+  SelectorRegistryPreview,
 } from '@/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview'
 import { useAtomValue } from 'jotai'
 import { ArrowUpRightIcon } from 'lucide-react'
 import { useMemo } from 'react'
 import { Link } from 'react-router-dom'
-import { Abi, Address, decodeFunctionData, getAbiItem, Hex } from 'viem'
+import { decodeFunctionData, getAbiItem } from 'viem'
+import type { Abi, Address, Hex } from 'viem'
+import {
+  dtfIndexGovernanceOptimisticAbi,
+  selectorRegistryAbi,
+} from '../optimistic'
 
 const TABS = {
   SUMMARY: 'overview',
@@ -49,11 +57,11 @@ const Header = ({ address }: { address: Address }) => {
 
       <TabsList className="h-9">
         <TabsTrigger value={TABS.SUMMARY} className="w-max h-7">
-          Summary
+          <Trans>Summary</Trans>
         </TabsTrigger>
 
         <TabsTrigger value={TABS.RAW} className="w-max h-7">
-          Raw
+          <Trans>Raw</Trans>
         </TabsTrigger>
       </TabsList>
     </div>
@@ -68,51 +76,46 @@ const useDecodedCalldatas = (
 
     return calldatas.map((calldata) => {
       try {
-        // Try decoding with dtfIndexAbi first
-        try {
-          const { functionName, args } = decodeFunctionData({
-            abi: dtfIndexAbi,
-            data: calldata,
-          })
+        const abis = [
+          dtfIndexAbi,
+          dtfIndexAbiV2,
+          dtfIndexGovernanceOptimisticAbi,
+          selectorRegistryAbi,
+        ] as const
 
-          const result = getAbiItem({
-            abi: dtfIndexAbi as Abi,
-            name: functionName as string,
-          })
+        for (const abi of abis) {
+          try {
+            const { functionName, args } = decodeFunctionData({
+              abi,
+              data: calldata,
+            })
 
-          return {
-            signature: functionName,
-            parameters:
-              result && 'inputs' in result
-                ? result.inputs.map((input) => `${input.name}: ${input.type}`)
-                : [],
-            callData: calldata,
-            data: (args ?? []) as unknown as unknown[] as string[],
-          }
-        } catch {
-          // If that fails, try with dtfIndexAbiV2
-          const { functionName, args } = decodeFunctionData({
-            abi: dtfIndexAbiV2,
-            data: calldata,
-          })
+            const result = getAbiItem({
+              abi: abi as Abi,
+              name: functionName as string,
+            })
 
-          const result = getAbiItem({
-            abi: dtfIndexAbiV2 as Abi,
-            name: functionName as string,
-          })
-
-          return {
-            signature: functionName,
-            parameters:
-              result && 'inputs' in result
-                ? result.inputs.map((input) => `${input.name}: ${input.type}`)
-                : [],
-            callData: calldata,
-            data: (args ?? []) as unknown as unknown[] as string[],
+            return {
+              signature: functionName,
+              parameters:
+                result && 'inputs' in result
+                  ? result.inputs.map((input) => `${input.name}: ${input.type}`)
+                  : [],
+              callData: calldata,
+              data: (args ?? []) as unknown as unknown[] as string[],
+            }
+          } catch {
+            continue
           }
         }
-      } catch (error) {
-        console.error('Failed to decode calldata:', error)
+
+        return {
+          signature: 'unknown',
+          parameters: [],
+          callData: calldata,
+          data: [],
+        }
+      } catch {
         return {
           signature: 'unknown',
           parameters: [],
@@ -137,7 +140,7 @@ const RawPreview = ({ data }: { data: DecodedCalldata[] }) => {
 const UnknownPreview = ({ signature }: { signature: string }) => {
   return (
     <div className="text-sm text-muted-foreground">
-      Preview not available for: {signature}
+      <Trans>Preview not available for: {signature}</Trans>
     </div>
   )
 }
@@ -157,6 +160,9 @@ const dtfSettingsPreviewComponents: Record<string, React.ComponentType<any>> = {
   // Role management
   grantRole: GrantRolePreview,
   revokeRole: RevokeRolePreview,
+  setOptimisticParams: SetOptimisticParamsPreview,
+  registerSelectors: SelectorRegistryPreview,
+  unregisterSelectors: SelectorRegistryPreview,
 }
 
 const OverviewPreview = ({ data }: { data: DecodedCalldata[] }) => {

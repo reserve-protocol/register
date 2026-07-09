@@ -3,6 +3,7 @@ import {
   formatPercentage,
   formatToSignificantDigits,
 } from '@/utils'
+import { Trans } from '@lingui/react/macro'
 import dayjs from 'dayjs'
 import { TooltipProps } from 'recharts'
 import { DataType } from './price-chart-constants'
@@ -55,11 +56,15 @@ export function YieldTooltip({
   return (
     <div className="bg-card text-card-foreground rounded-[20px] p-4">
       <span className="text-base font-medium block mb-1">
-        {formatPercentage(d?.totalAPY)} Total APY
+        {formatPercentage(d?.totalAPY)} <Trans>Total APY</Trans>
       </span>
       <div className="text-sm text-muted-foreground space-y-0.5 mb-1">
-        <div>{formatPercentage(d?.collateralAPY)} Base APY</div>
-        <div>{formatPercentage(d?.redirectAPY)} Revenue Boost</div>
+        <div>
+          {formatPercentage(d?.collateralAPY)} <Trans>Base APY</Trans>
+        </div>
+        <div>
+          {formatPercentage(d?.redirectAPY)} <Trans>Revenue Boost</Trans>
+        </div>
       </div>
       <span className="text-sm text-muted-foreground">{subtitle}</span>
     </div>

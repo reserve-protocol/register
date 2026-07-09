@@ -1,5 +1,6 @@
 import TransactionButton from '@/components/ui/transaction-button'
 import { walletAtom } from '@/state/atoms'
+import { useLingui } from '@lingui/react/macro'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { useEffect, useState } from 'react'
 import {
@@ -28,6 +29,7 @@ import StRSR from 'abis/StRSR'
 import StRSRVotes from 'abis/StRSRVotes'
 
 const SubmitStakeButton = () => {
+  const { t } = useLingui()
   const wallet = useAtomValue(walletAtom)
   const stToken = useAtomValue(stTokenAtom)
   const stakingInput = useAtomValue(stakingInputAtom)
@@ -142,7 +144,7 @@ const SubmitStakeButton = () => {
   useEffect(() => {
     if (receipt?.status === 'success') {
       setIsProcessing(true)
-      toast.success('RSR staked successfully!')
+      toast.success(t`RSR staked successfully!`)
       const timer = setTimeout(() => {
         setCloseDrawer(true)
         setIsProcessing(false)
@@ -155,34 +157,34 @@ const SubmitStakeButton = () => {
   // Button text logic
   const getButtonText = () => {
     if (!wallet) {
-      return 'Connect wallet'
+      return t`Connect wallet`
     }
 
     if (delegationLoading) {
-      return 'Loading...'
+      return t`Loading...`
     }
 
     if (!isValid) {
-      return 'Enter valid amount'
+      return t`Enter valid amount`
     }
 
     if (!checkbox) {
-      return 'Accept unstake delay'
+      return t`Accept unstake delay`
     }
 
     if (needsValidDelegate && !isValidDelegate) {
-      return 'Invalid delegate address'
+      return t`Invalid delegate address`
     }
 
     if (receipt?.status === 'success') {
-      return 'Transaction confirmed'
+      return t`Transaction confirmed`
     }
 
     if (readyToSubmit) {
-      return 'Stake RSR'
+      return t`Stake RSR`
     }
 
-    return 'Approve RSR'
+    return t`Approve RSR`
   }
 
   return (
@@ -210,12 +212,12 @@ const SubmitStakeButton = () => {
         }
         loadingText={
           isProcessing
-            ? 'Processing transaction...'
+            ? t`Processing transaction...`
             : !!hash
-              ? 'Confirming tx...'
+              ? t`Confirming tx...`
               : !!approvalHash
-                ? 'Confirming approval...'
-                : 'Pending, sign in wallet'
+                ? t`Confirming approval...`
+                : t`Pending, sign in wallet`
         }
         onClick={readyToSubmit ? write : approve}
         text={getButtonText()}

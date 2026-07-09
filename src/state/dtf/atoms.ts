@@ -1,11 +1,12 @@
 import { IndexDTF, TimeRange, Token } from '@/types'
-import { AvailableChain, ChainId } from '@/utils/chains'
+import { AvailableChain } from '@/utils/chains'
 import { atom } from 'jotai'
 import { Address } from 'viem'
 import { walletAtom } from '../atoms'
 import { UNIVERSAL_ASSETS, WORMHOLE_ASSETS } from '@/utils/constants'
 import { checkVersion } from '@/utils'
 import { Bridge, MarketCapData, NativeToken } from '@/types/token-mappings'
+import type { Amount } from '@reserve-protocol/react-sdk'
 
 // TODO: placeholders
 export interface IToken extends Token {
@@ -43,10 +44,11 @@ export interface IndexDTFBrand {
   dtf: {
     icon: string
     cover: string
-    mobileCover: string
+    video: string
     description: string
     notesFromCreator: string
     prospectus: string
+    files: { url: string; name: string }[]
     tags: string[]
     basketType: 'percentage-based' | 'unit-based'
   }
@@ -82,7 +84,10 @@ export type Transaction = {
 
 export type ExposureToken = {
   address: string
+  // On-chain (tokenized supply) mcap — shown on the Collateral tab
   marketCap?: number
+  // Real-company mcap for Ondo tokenized equities — shown on the Exposure tab
+  underlyingMarketCap?: number
   symbol: string
   name?: string
   weight: number
@@ -118,17 +123,22 @@ export const indexDTFBasketAtom = atom<Token[] | undefined>(undefined)
 
 export const indexDTFBasketPricesAtom = atom<Record<string, number>>({})
 
-export const indexDTFBasketAmountsAtom = atom<Record<string, number>>({})
+export const indexDTFBasketAmountsAtom = atom<Record<string, Amount>>({})
 
 export const indexDTFBasketSharesAtom = atom<Record<string, string>>({})
 
 export const indexDTFAtom = atom<IndexDTF | undefined>(undefined)
 export const indexDTF7dChangeAtom = atom<number | undefined>(undefined)
 
-export const performanceTimeRangeAtom = atom<TimeRange>('7d')
+export const performanceTimeRangeAtom = atom<TimeRange>('ytd')
 export const indexDTFPerformanceLoadingAtom = atom<boolean>(false)
 export const indexDTFMarketCapAtom = atom<number | undefined>(undefined)
 export const indexDTFBrandAtom = atom<IndexDTFBrand | undefined>(undefined)
+// True once the folio-manager brand read settles — the authoritative source
+// for `dtf.video`/`files`. The SDK brand write can land WITHOUT video (its
+// mapping drops untyped fields), so anything gating on the cover video must
+// hold its skeleton until this flips or the cover flaps out and back in.
+export const indexDTFBrandExtrasResolvedAtom = atom(false)
 export const indexDTFTransactionsAtom = atom<Transaction[]>([])
 
 export const indexDTFFeeAtom = atom<number | undefined>(undefined)
@@ -232,7 +242,9 @@ export const hasBridgedAssetsAtom = atom((get) => {
   )
 })
 
-export const indexDTFStatusAtom = atom<'active' | 'deprecated' | 'unsupported'>('active')
+export const indexDTFStatusAtom = atom<'active' | 'deprecated' | 'unsupported'>(
+  'active'
+)
 
 export const isSingletonRebalanceAtom = atom((get) => {
   const version = get(indexDTFVersionAtom)
@@ -256,4 +268,3 @@ export const isHybridDTFAtom = atom((get) => {
     dtf?.id.toLowerCase() === '0x92d7e020ab1cc45eaf744a5fe5954734fcd07119'
   )
 })
-

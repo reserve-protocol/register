@@ -18,7 +18,14 @@ const IndexDTFTable = ({
 
   const handleRowClick = (row: IndexDTFItem, event: React.MouseEvent) => {
     event.stopPropagation()
-    navigate(getFolioRoute(row.address, row.chainId))
+    const route = getFolioRoute(row.address, row.chainId)
+
+    if (event.metaKey || event.ctrlKey) {
+      window.open(route, '_blank')
+      return
+    }
+
+    navigate(route)
   }
 
   if (isLoading) {
@@ -32,14 +39,18 @@ const IndexDTFTable = ({
       pagination={data.length > 20 ? { pageSize: 20 } : undefined}
       onRowClick={handleRowClick}
       getRowClassName={(row) =>
-        isInactiveDTF(row.original.status) ? 'opacity-60' : undefined
+        cn(
+          'group/dtf-row hover:!bg-background',
+          isInactiveDTF(row.original.status) && 'opacity-60'
+        )
       }
       className={cn(
         'hidden lg:block',
         '[&_table]:bg-card [&_table]:rounded-[20px] [&_table]:text-base',
+        '[&_table_tr]:border-secondary',
         '[&_table_thead_th]:px-6',
-        '[&_table_tbody_td]:px-6',
-        '[&_table_tbody]:rounded-[20px] [&_table_tbody_tr:last-child_td]:rounded-bl-[20px] [&_table_tbody_tr:last-child_td:last-child]:rounded-br-[20px]'
+        '[&_table_tbody_td]:p-6',
+        '[&_table_tbody]:rounded-[20px] [&_table_tbody_tr:last-child_td:first-child]:rounded-bl-[20px] [&_table_tbody_tr:last-child_td:last-child]:rounded-br-[20px]'
       )}
     />
   )

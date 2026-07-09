@@ -1,6 +1,7 @@
 import useIndexDTFSubgraph from '@/hooks/useIndexDTFSugbraph'
 import { chainIdAtom } from '@/state/atoms'
 import { gql } from 'graphql-request'
+import { useLingui } from '@lingui/react/macro'
 import { useAtomValue } from 'jotai'
 import { useFormContext } from 'react-hook-form'
 import { erc20Abi, isAddress } from 'viem'
@@ -16,6 +17,7 @@ const stTokenQuery = gql`
 `
 
 const GovernanceExistingVoteLock = () => {
+  const { t } = useLingui()
   const chainId = useAtomValue(chainIdAtom)
   const { watch } = useFormContext()
   const governanceVoteLock = watch('governanceVoteLock')
@@ -44,7 +46,7 @@ const GovernanceExistingVoteLock = () => {
     <div className="flex flex-col gap-2 px-3">
       <BasicInput
         fieldName="governanceVoteLock"
-        label={symbol || 'Vote Lock address'}
+        label={symbol || t`Vote Lock address`}
         placeholder="0x..."
         highlightLabel={!!symbol}
       />

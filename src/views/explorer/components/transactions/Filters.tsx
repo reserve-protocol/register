@@ -3,10 +3,11 @@ import { debouncedWalletInputAtom, filtersAtom } from './atoms'
 import ChainFilter from '../filters/ChainFilter'
 import TokenFilter from '../filters/token-filter'
 import TransactionTypeFilter from '../filters/TransactionTypeFilter'
-import { Trans, t } from '@lingui/macro'
+import { Trans, useLingui } from '@lingui/react/macro'
 import { Input } from 'components'
 
 const WalletFilter = () => {
+  const { t } = useLingui()
   const value = useAtomValue(debouncedWalletInputAtom.currentValueAtom)
   const setValue = useSetAtom(debouncedWalletInputAtom.debouncedValueAtom)
 

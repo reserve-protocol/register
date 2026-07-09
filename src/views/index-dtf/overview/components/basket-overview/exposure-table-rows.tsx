@@ -2,13 +2,21 @@ import TokenLogo from '@/components/token-logo'
 import { TableCell, TableRow } from '@/components/ui/table'
 import { chainIdAtom } from '@/state/atoms'
 import { TimeRange } from '@/types'
-import { formatMarketCap } from '@/utils'
+import { getTokenName } from '@/utils'
+import { Plural } from '@lingui/react/macro'
 import { useAtomValue } from 'jotai'
+import { useMemo } from 'react'
+import { MarketCapCell } from './market-cap-cell'
 import { PerformanceCell } from './performance-cell'
-import { ExposureGroup } from '@/state/dtf/atoms'
+import { indexDTFBasketAtom } from '@/state/dtf/atoms'
+import {
+  ExposureRow,
+  formatExchangeSymbol,
+  getExposureMarketCap,
+} from './exposure-rows'
 
 interface ExposureTableRowsProps {
-  exposureGroups: [string, ExposureGroup][]
+  rows: ExposureRow[]
   performanceLoading: boolean
   timeRange: TimeRange
   marketCaps: Record<string, number> | undefined
@@ -17,7 +25,7 @@ interface ExposureTableRowsProps {
 }
 
 export const ExposureTableRows = ({
-  exposureGroups,
+  rows,
   performanceLoading,
   timeRange,
   marketCaps,
@@ -25,77 +33,121 @@ export const ExposureTableRows = ({
   maxTokens,
 }: ExposureTableRowsProps) => {
   const chainId = useAtomValue(chainIdAtom)
+  const basket = useAtomValue(indexDTFBasketAtom)
+
+  const tokenNames = useMemo(() => {
+    const map: Record<string, string> = {}
+    for (const token of basket ?? []) {
+      map[token.address.toLowerCase()] = token.name
+    }
+    return map
+  }, [basket])
 
   return (
     <>
-      {exposureGroups
-        .slice(0, viewAll ? exposureGroups.length : maxTokens)
-        .map(([key, group]) => {
-          const native = group.native || {
-            symbol: key,
-            name: key,
-            logo: '',
-          }
+      {rows.slice(0, viewAll ? rows.length : maxTokens).map((row) => {
+        const marketCap = getExposureMarketCap(row, marketCaps)
+
+        if (row.kind === 'token') {
+          const { token, group, exchange } = row
           return (
-            <TableRow key={native.symbol} className="border-none">
-              <TableCell>
-                <div className="flex items-center font-semibold gap-2 sm:gap-3 break-words">
-                  {native.logo ? (
-                    <TokenLogo size="lg" src={native.logo} />
-                  ) : (
-                    <TokenLogo
-                      size="lg"
-                      symbol={native.symbol}
-                      address={group.tokens[0]?.address || ''}
-                      chain={chainId}
-                    />
-                  )}
-                  <div className="max-w-32 md:max-w-72 lg:max-w-56">
+            <TableRow
+              key={row.key}
+              className="border-none hover:bg-transparent"
+            >
+              <TableCell className="w-1/2 min-w-0 py-3 pl-0 pr-2">
+                <div className="flex items-center gap-2 break-words font-medium sm:gap-3">
+                  <TokenLogo
+                    size="xl"
+                    symbol={token.symbol}
+                    address={token.address}
+                    chain={chainId}
+                  />
+                  <div className="flex min-w-0 max-w-48 flex-col gap-0.5 md:max-w-80 lg:max-w-80">
                     <span className="block text-sm sm:text-base">
-                      {native.name}
-                    </span>
-                    <span className="block text-[10px] sm:text-xs text-legend font-normal max-w-32 md:max-w-72 lg:max-w-52 break-words">
-                      ${native.symbol}
-                      {group.tokens.length > 1 && (
-                        <span className="ml-1 text-muted-foreground">
-                          ({group.tokens.length} sources)
-                        </span>
+                      {getTokenName(
+                        tokenNames[token.address.toLowerCase()] ?? ''
                       )}
+                    </span>
+                    <span className="block max-w-48 break-words text-[10px] font-normal text-legend sm:text-xs md:max-w-72 lg:max-w-80">
+                      {formatExchangeSymbol(token.symbol, exchange)}
                     </span>
                   </div>
                 </div>
               </TableCell>
-              <TableCell className="text-primary text-center font-bold text-sm sm:text-base px-1 sm:px-3">
-                {group.totalWeight.toFixed(2)}%
+              <TableCell className="w-20 whitespace-nowrap py-3 pl-2 pr-0 text-right text-sm font-medium text-primary sm:text-base dark:text-foreground">
+                {token.weight.toFixed(2)}%
               </TableCell>
-              <TableCell className="text-center  px-1 sm:px-3">
+              <TableCell className="w-28 py-3 pl-2 pr-0 text-right">
                 <PerformanceCell
-                  change={group.change ?? null}
+                  change={token.change ?? group.change ?? null}
                   isLoading={performanceLoading}
                   isNewlyAdded={group.hasNewlyAdded || false}
                   timeRange={timeRange}
                 />
               </TableCell>
-              <TableCell className="text-center hidden text-base sm:table-cell">
-                {group.native?.coingeckoId &&
-                marketCaps?.[group.native.coingeckoId] ? (
-                  <span>
-                    {formatMarketCap(marketCaps[group.native.coingeckoId])}
-                  </span>
-                ) : !group.native?.coingeckoId &&
-                  marketCaps?.[group.tokens[0]?.address.toLowerCase()] ? (
-                  <span>
-                    {formatMarketCap(
-                      marketCaps[group.tokens[0]?.address.toLowerCase()]
-                    )}
-                  </span>
-                ) : (
-                  <span>—</span>
-                )}
-              </TableCell>
+              <MarketCapCell marketCap={marketCap} />
             </TableRow>
           )
-        })}
+        }
+
+        const { group } = row
+        const native = group.native || {
+          symbol: row.key,
+          name: row.key,
+          logo: '',
+        }
+
+        return (
+          <TableRow key={row.key} className="border-none hover:bg-transparent">
+            <TableCell className="w-1/2 min-w-0 py-3 pl-0 pr-2">
+              <div className="flex items-center gap-2 break-words font-medium sm:gap-3">
+                {native.logo ? (
+                  <TokenLogo size="xl" src={native.logo} />
+                ) : (
+                  <TokenLogo
+                    size="xl"
+                    symbol={native.symbol}
+                    address={group.tokens[0]?.address || ''}
+                    chain={chainId}
+                  />
+                )}
+                <div className="flex min-w-0 max-w-52 flex-col gap-0.5 md:max-w-96 lg:max-w-80">
+                  <span className="block text-sm sm:text-base">
+                    {native.name}
+                  </span>
+                  <span className="block max-w-52 break-words text-[10px] font-normal text-legend sm:text-xs md:max-w-96 lg:max-w-80">
+                    ${native.symbol}
+                    {group.tokens.length > 1 && (
+                      <span className="ml-1 text-muted-foreground">
+                        <Plural
+                          value={group.tokens.length}
+                          one="(# source)"
+                          other="(# sources)"
+                        />
+                      </span>
+                    )}
+                  </span>
+                </div>
+              </div>
+            </TableCell>
+            <TableCell className="w-20 whitespace-nowrap py-3 pl-2 pr-0 text-right text-sm font-medium text-primary sm:text-base dark:text-foreground">
+              {group.totalWeight.toFixed(2)}%
+            </TableCell>
+            <TableCell className="w-28 py-3 pl-2 pr-0 text-right">
+              <PerformanceCell
+                change={group.change ?? null}
+                isLoading={performanceLoading}
+                isNewlyAdded={group.hasNewlyAdded || false}
+                timeRange={timeRange}
+              />
+            </TableCell>
+            <TableCell className="hidden w-28 whitespace-nowrap py-3 pl-2 pr-0 text-right text-base font-medium sm:table-cell dark:text-muted-foreground">
+              {marketCap ? <span>{marketCap}</span> : <span>—</span>}
+            </TableCell>
+          </TableRow>
+        )
+      })}
     </>
   )
 }

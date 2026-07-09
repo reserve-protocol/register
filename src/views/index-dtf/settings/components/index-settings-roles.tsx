@@ -1,10 +1,11 @@
 import { Skeleton } from '@/components/ui/skeleton'
 import EnsName from '@/components/utils/ens-name'
 import { indexDTFAtom } from '@/state/dtf/atoms'
-import { t } from '@lingui/macro'
+import { useLingui } from '@lingui/react/macro'
 import { atom, useAtomValue } from 'jotai'
-import { Image, MousePointerClick, ShieldHalf } from 'lucide-react'
+import { Image, MousePointerClick, ShieldHalf, UserRoundKey } from 'lucide-react'
 import { IconWrapper, InfoCard, InfoCardItem } from './settings-info-card'
+import { useMemo } from 'react'
 
 const guardiansAtom = atom((get) => {
   const dtf = get(indexDTFAtom)
@@ -30,8 +31,14 @@ const guardiansAtom = atom((get) => {
 })
 
 const RolesInfo = () => {
+  const { t } = useLingui()
   const indexDTF = useAtomValue(indexDTFAtom)
   const guardians = useAtomValue(guardiansAtom)
+  const optimisticProposers = useMemo(() => {
+    if (indexDTF?.ownerGovernance?.optimistic) return indexDTF?.ownerGovernance.optimistic.proposers
+
+    return []
+  }, [indexDTF])
 
   return (
     <InfoCard title={t`Roles`} id="roles" secondary>
@@ -51,6 +58,15 @@ const RolesInfo = () => {
           icon={<IconWrapper Component={ShieldHalf} />}
           address={guardian}
           value={<EnsName address={guardian} />}
+        />
+      ))}
+      {optimisticProposers.map((proposer) => (
+        <InfoCardItem
+          key={proposer}
+          label={t`Optimistic proposer`}
+          icon={<IconWrapper Component={UserRoundKey} />}
+          address={proposer}
+          value={<EnsName address={proposer} />}
         />
       ))}
       {indexDTF?.auctionLaunchers?.map((approver) => (

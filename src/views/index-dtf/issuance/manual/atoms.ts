@@ -69,8 +69,12 @@ export const maxMintAmountAtom = atom((get) => {
     }
 
     const currentBalance = balanceMap[asset]
+    // The quote rate is floored (toAssets rounds down), but mint pulls collateral
+    // with Ceil rounding — dividing by the raw rate overshoots the max by a wei or
+    // two and reverts with "transfer amount exceeds balance". +1n on the divisor
+    // guarantees the ceil pull fits for every asset.
     const possibleAmount =
-      (currentBalance * parseEther('1')) / requiredAmountPerToken
+      (currentBalance * parseEther('1')) / (requiredAmountPerToken + 1n)
 
     if (maxAmount === undefined || possibleAmount < maxAmount) {
       maxAmount = possibleAmount

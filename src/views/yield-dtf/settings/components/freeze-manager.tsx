@@ -1,4 +1,4 @@
-import { Trans, t } from '@lingui/macro'
+import { Trans, useLingui } from '@lingui/react/macro'
 import Main from '@/abis/Main'
 import useContractWrite from '@/hooks/useContractWrite'
 import useRToken from '@/hooks/useRToken'
@@ -13,6 +13,7 @@ import RolesView from './roles-view'
 import SettingItem from './setting-item'
 
 const ShortFreeze = () => {
+  const { t } = useLingui()
   const { freezers } = useAtomValue(rTokenManagersAtom)
   const rToken = useRToken()
   const accountRole = useAtomValue(accountRoleAtom)
@@ -45,6 +46,7 @@ const ShortFreeze = () => {
 }
 
 const LongFreeze = () => {
+  const { t } = useLingui()
   const { longFreezers } = useAtomValue(rTokenManagersAtom)
   const rToken = useRToken()
   const accountRole = useAtomValue(accountRoleAtom)
@@ -77,6 +79,7 @@ const LongFreeze = () => {
 }
 
 const FreezeManager = () => {
+  const { t } = useLingui()
   const rToken = useRToken()
   const accountRole = useAtomValue(accountRoleAtom)
   const { frozen: isFrozen } = useAtomValue(rTokenStateAtom)

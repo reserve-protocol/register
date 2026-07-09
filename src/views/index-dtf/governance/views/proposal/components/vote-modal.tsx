@@ -2,13 +2,13 @@ import GoTo from '@/components/ui/go-to'
 import TransactionButton from '@/components/ui/transaction-button'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Separator } from '@/components/ui/separator'
-import { ModalProps } from 'components'
+import EnsName from '@/components/utils/ens-name'
 import useWatchTransaction from '@/hooks/useWatchTransaction'
-import { t, Trans } from '@lingui/macro'
-import Governance from 'abis/Governance'
-import { Modal } from 'components'
+import { Trans, useLingui } from '@lingui/react/macro'
+import { useIndexDtfVoteCall } from '@reserve-protocol/react-sdk'
+import { Modal, ModalProps } from 'components'
 import useContractWrite from 'hooks/useContractWrite'
-import { useAtomValue } from 'jotai'
+import { useAtomValue, useSetAtom } from 'jotai'
 import {
   CheckCircle,
   ExternalLink,
@@ -24,9 +24,8 @@ import {
   ExplorerDataType,
   getExplorerLink,
 } from 'utils/getExplorerLink'
-import EnsName from '@/components/utils/ens-name'
-import { proposalDetailAtom } from '../atom'
-import { proposalRefreshFnAtom } from '../updater'
+import { accountVotesAtom, proposalDetailAtom } from '../atom'
+import useRefreshProposal from '../hooks/use-refresh-proposal'
 
 export const VOTE_TYPE = {
   AGAINST: 0,
@@ -34,21 +33,42 @@ export const VOTE_TYPE = {
   ABSTAIN: 2,
 }
 
+const VOTE_LABEL: Record<number, string> = {
+  [VOTE_TYPE.AGAINST]: 'AGAINST',
+  [VOTE_TYPE.FOR]: 'FOR',
+  [VOTE_TYPE.ABSTAIN]: 'ABSTAIN',
+}
+
 // TODO: Move to tailwind
 const VoteModal = (props: ModalProps) => {
+  const { t } = useLingui()
   const chainId = useAtomValue(chainIdAtom)
   const [vote, setVote] = useState(-1)
   const proposal = useAtomValue(proposalDetailAtom)
-  const isValid = proposal?.id && vote !== -1
-  const refreshFn = useAtomValue(proposalRefreshFnAtom)
+  const isOptimistic = !!proposal?.isOptimistic
+  const support = isOptimistic ? VOTE_TYPE.AGAINST : vote
+  const isValid = proposal?.id && support !== -1
+  const refreshProposal = useRefreshProposal()
+  const setAccountVotes = useSetAtom(accountVotesAtom)
+  const call = useIndexDtfVoteCall(
+    isValid && proposal
+      ? {
+          chainId: proposal.chainId,
+          governance: proposal.governor,
+          proposalId: proposal.id,
+          support: support as 0 | 1 | 2,
+        }
+      : undefined
+  )
 
   const { hash, isLoading, isReady, write } = useContractWrite(
-    isValid
+    call
       ? {
-          address: proposal?.governor ?? '0x',
-          functionName: 'castVote',
-          abi: Governance,
-          args: [BigInt(proposal.id), vote],
+          address: call.contract.address,
+          chainId: call.chainId,
+          functionName: call.contract.functionName,
+          abi: call.contract.abi,
+          args: call.contract.args,
         }
       : undefined
   )
@@ -61,14 +81,18 @@ const VoteModal = (props: ModalProps) => {
 
   const { status, isMining } = useWatchTransaction({
     hash,
-    label: t`Vote`,
+    label: isOptimistic ? t`Challenge` : t`Vote`,
   })
 
   useEffect(() => {
     if (status === 'success') {
-      refreshFn?.()
+      setAccountVotes((current) => ({
+        ...current,
+        vote: isOptimistic ? 'CHALLENGE' : VOTE_LABEL[support] ?? current.vote,
+      }))
+      refreshProposal()
     }
-  }, [status])
+  }, [isOptimistic, refreshProposal, setAccountVotes, status, support])
 
   // TODO: Signed modal should be its own component
   // TODO: reused on other modals
@@ -78,7 +102,9 @@ const VoteModal = (props: ModalProps) => {
         <div className="flex flex-col items-center justify-center p-4">
           <CheckCircle size={36} />
           <br />
-          <span>Transaction successful!</span>
+          <span>
+            <Trans>Transaction successful!</Trans>
+          </span>
           <br />
           <a
             href={getExplorerLink(hash, chainId, ExplorerDataType.TRANSACTION)}
@@ -95,58 +121,73 @@ const VoteModal = (props: ModalProps) => {
   }
 
   return (
-    <Modal {...props} title={t`Voting`} style={{ maxWidth: 420 }}>
-      <div className="flex flex-col items-center">
-        <span className="text-xl font-medium">
-          "
-          {proposal?.description
-            ? getProposalTitle(proposal.description)
-            : 'Loading...'}
-        </span>
-        <div className="flex items-center mt-2">
-          <span className="text-legend">
-            <Trans>Proposed by</Trans>:
-          </span>
-          <span className="ml-1">
-            <EnsName address={proposal?.proposer?.address ?? ''} />
-          </span>
-          <GoTo
-            className="ml-2"
-            href={getExplorerLink(
-              proposal?.proposer?.address ?? '',
-              chainId,
-              ExplorerDataType.ADDRESS
-            )}
-          />
-        </div>
-      </div>
-      <Separator className="my-4 -mx-4 w-[calc(100%+2rem)]" />
-      {voteOptions.map((option, index) => (
-        <div
-          className={`flex items-center ${index ? 'mt-2' : ''}`}
-          key={option.value}
-        >
-          {option.value === VOTE_TYPE.FOR && <ThumbsUp size={16} />}
-          {option.value === VOTE_TYPE.AGAINST && <ThumbsDown size={16} />}
-          {option.value === VOTE_TYPE.ABSTAIN && <Slash size={16} />}
-          <span className="font-semibold ml-2">
-            {option.label}
-          </span>
-          <label className="ml-auto cursor-pointer">
-            <Checkbox
-              checked={vote === option.value}
-              onCheckedChange={() => setVote(option.value)}
-              disabled={isLoading || isMining}
-            />
-          </label>
-        </div>
-      ))}
+    <Modal
+      {...props}
+      title={isOptimistic ? undefined : t`Voting`}
+      titleProps={{ className: 'font-semibold' }}
+      style={{ maxWidth: 420 }}
+    >
+      {!isOptimistic && (
+        <>
+          <div className="flex flex-col items-center">
+            <span className="text-xl font-medium">
+              "
+              {proposal?.description ? (
+                getProposalTitle(proposal.description)
+              ) : (
+                <Trans>Loading...</Trans>
+              )}
+            </span>
+            <div className="flex items-center mt-2">
+              <span className="text-legend">
+                <Trans>Proposed by</Trans>:
+              </span>
+              <span className="ml-1">
+                <EnsName address={proposal?.proposer?.address ?? ''} />
+              </span>
+              <GoTo
+                className="ml-2"
+                href={getExplorerLink(
+                  proposal?.proposer?.address ?? '',
+                  chainId,
+                  ExplorerDataType.ADDRESS
+                )}
+              />
+            </div>
+          </div>
+          <Separator className="my-4 -mx-4 w-[calc(100%+2rem)]" />
+        </>
+      )}
+      {isOptimistic ? (
+        <h2 className="px-6 py-8 text-center text-2xl font-semibold leading-tight">
+          <Trans>Are you sure you wish to challenge?</Trans>
+        </h2>
+      ) : (
+        voteOptions.map((option, index) => (
+          <div
+            className={`flex items-center ${index ? 'mt-2' : ''}`}
+            key={option.value}
+          >
+            {option.value === VOTE_TYPE.FOR && <ThumbsUp size={16} />}
+            {option.value === VOTE_TYPE.AGAINST && <ThumbsDown size={16} />}
+            {option.value === VOTE_TYPE.ABSTAIN && <Slash size={16} />}
+            <span className="font-semibold ml-2">{option.label}</span>
+            <label className="ml-auto cursor-pointer">
+              <Checkbox
+                checked={vote === option.value}
+                onCheckedChange={() => setVote(option.value)}
+                disabled={isLoading || isMining}
+              />
+            </label>
+          </div>
+        ))
+      )}
 
       <Separator className="my-4 -mx-4 w-[calc(100%+2rem)]" />
       <TransactionButton
         loading={isLoading || isMining}
         variant={!!hash ? 'accent' : 'default'}
-        text={t`Vote`}
+        text={isOptimistic ? t`Challenge proposal` : t`Vote`}
         loadingText={isMining ? t`Confirming...` : undefined}
         className="w-full"
         onClick={write}

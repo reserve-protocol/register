@@ -2,12 +2,12 @@ import dtfAdminAbi from '@/abis/dtf-admin-abi'
 import dtfIndexAbi from '@/abis/dtf-index-abi-v1'
 import DTFIndexGovernance from '@/abis/dtf-index-governance'
 import { Button } from '@/components/ui/button'
-import { getProposalState, PartialProposal } from '@/lib/governance'
 import { chainIdAtom } from '@/state/atoms'
 import { indexDTFAtom, indexDTFVersionAtom } from '@/state/dtf/atoms'
 import { getCurrentTime } from '@/utils'
 import { ChainId } from '@/utils/chains'
 import { PROPOSAL_STATES } from '@/utils/constants'
+import type { IndexDtfProposalSummary } from '@reserve-protocol/react-sdk'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { AlertCircle, Loader2 } from 'lucide-react'
 import { useCallback, useEffect } from 'react'
@@ -15,7 +15,9 @@ import { encodeFunctionData, getAddress, pad } from 'viem'
 import { useWaitForTransactionReceipt, useWriteContract } from 'wagmi'
 import { governanceProposalsAtom, refetchTokenAtom } from '../../../atoms'
 import { useIsProposeAllowed } from '../../../hooks/use-is-propose-allowed'
+import useRecentProposalReceipt from '../../../hooks/use-recent-proposal-receipt'
 import { toast } from 'sonner'
+import { Trans, useLingui } from '@lingui/react/macro'
 
 export const spellAbi = [
   { inputs: [], stateMutability: 'nonpayable', type: 'constructor' },
@@ -54,7 +56,9 @@ const matchesUpgradeMessage = (description: string) =>
   description === UPGRADE_FOLIO_MESSAGE ||
   description.startsWith(`${UPGRADE_FOLIO_MESSAGE} #`)
 
-const getNextUpgradeDescription = (proposals: PartialProposal[]): string => {
+const getNextUpgradeDescription = (
+  proposals: readonly IndexDtfProposalSummary[]
+): string => {
   let maxNonce = 0
   const prefix = `${UPGRADE_FOLIO_MESSAGE} #`
   for (const p of proposals) {
@@ -74,16 +78,24 @@ type SpellUpgradeProps = {
 }
 
 const ProposeBanner = ({ refetch, description }: SpellUpgradeProps) => {
+  const { t } = useLingui()
   const dtf = useAtomValue(indexDTFAtom)
   const chainId = useAtomValue(chainIdAtom)
   const spell = spellAddress[chainId]
+  const handleRecentProposalReceipt = useRecentProposalReceipt()
 
-  const { writeContract, data, isPending } = useWriteContract()
+  const { writeContract, data: hash, isPending } = useWriteContract()
 
-  const { isSuccess } = useWaitForTransactionReceipt({
-    hash: data,
+  const {
+    data: receipt,
+    isSuccess,
+    error: receiptError,
+  } = useWaitForTransactionReceipt({
+    hash,
     chainId,
   })
+  const isConfirming = !!hash && !receipt && !receiptError
+  const isSubmitted = isConfirming || receipt?.status === 'success'
 
   const isReady =
     dtf?.id &&
@@ -96,6 +108,7 @@ const ProposeBanner = ({ refetch, description }: SpellUpgradeProps) => {
     if (!dtf || !spell || !dtf.ownerGovernance) return
 
     writeContract({
+      chainId,
       address: dtf.ownerGovernance.id,
       abi: DTFIndexGovernance,
       functionName: 'propose',
@@ -125,16 +138,43 @@ const ProposeBanner = ({ refetch, description }: SpellUpgradeProps) => {
   }
 
   useEffect(() => {
-    if (isSuccess) {
-      setTimeout(() => {
-        toast('Proposal created!', {
-          description: 'DTF V5.0.0 upgrade proposal created',
+    if (
+      !isSuccess ||
+      !receipt ||
+      receipt.status !== 'success' ||
+      !dtf?.ownerGovernance?.id
+    ) {
+      return
+    }
+
+    void handleRecentProposalReceipt({
+      receipt,
+      governor: dtf.ownerGovernance.id,
+      onSuccess: () => {
+        toast(t`Proposal created!`, {
+          description: t`DTF V5.0.0 upgrade proposal created`,
           icon: '🎉',
         })
         refetch()
-      }, 10000)
-    }
-  }, [isSuccess])
+      },
+      onFallback: () => {
+        setTimeout(() => {
+          toast(t`Proposal created!`, {
+            description: t`DTF V5.0.0 upgrade proposal created`,
+            icon: '🎉',
+          })
+          refetch()
+        }, 10000)
+      },
+    })
+  }, [
+    dtf?.ownerGovernance?.id,
+    handleRecentProposalReceipt,
+    isSuccess,
+    receipt,
+    refetch,
+    t,
+  ])
 
   if (!proposalAvailable) {
     return null
@@ -145,40 +185,46 @@ const ProposeBanner = ({ refetch, description }: SpellUpgradeProps) => {
       <div className="flex flex-row items-center gap-2 ">
         <AlertCircle size={24} className="text-primary shrink-0" />
         <div>
-          <h4 className="font-bold text-primary">New version available</h4>
+          <h4 className="font-bold text-primary">
+            <Trans>New version available</Trans>
+          </h4>
           <p className="text-sm">
-            <strong>Release 5.0.0</strong> introduces improved rebalancing with
-            per-token auction size limits and the ability to disable bids for
-            individual tokens. <br />
-            See the{' '}
-            <a
-              className="text-primary underline"
-              href="https://github.com/reserve-protocol/reserve-index-dtf/releases/tag/r5.0.0"
-              target="_blank"
-            >
-              changelog
-            </a>{' '}
-            for more details.
+            <Trans>
+              <strong>Release 5.0.0</strong> introduces improved rebalancing
+              with per-token auction size limits and the ability to disable bids
+              for individual tokens. <br />
+              See the{' '}
+              <a
+                className="text-primary underline"
+                href="https://github.com/reserve-protocol/reserve-index-dtf/releases/tag/r5.0.0"
+                target="_blank"
+              >
+                changelog
+              </a>{' '}
+              for more details.
+            </Trans>
           </p>
         </div>
       </div>
       <Button
-        disabled={!isReady || isPending || !!data}
+        disabled={!isReady || isPending || isSubmitted}
         onClick={handlePropose}
         className="w-full mt-2"
       >
-        {(isPending || !!data) && (
+        {(isPending || isSubmitted) && (
           <Loader2 className="w-4 h-4 animate-spin mr-2" />
         )}
-        {isPending && 'Pending, sign in wallet...'}
-        {!isPending && !!data && 'Waiting for confirmation...'}
-        {!isPending && !data && 'Propose upgrade'}
+        {isPending && t`Pending, sign in wallet...`}
+        {!isPending && isSubmitted && t`Waiting for confirmation...`}
+        {!isPending && !isSubmitted && t`Propose upgrade`}
       </Button>
     </div>
   )
 }
 
-const validProposalExists = (proposals: PartialProposal[]): boolean => {
+const validProposalExists = (
+  proposals: readonly IndexDtfProposalSummary[]
+): boolean => {
   const states = [
     PROPOSAL_STATES.PENDING,
     PROPOSAL_STATES.ACTIVE,
@@ -191,13 +237,11 @@ const validProposalExists = (proposals: PartialProposal[]): boolean => {
       return false
     }
 
-    const pState = getProposalState(p)
-
-    if (pState.state === PROPOSAL_STATES.EXPIRED) {
+    if (p.votingState.state === PROPOSAL_STATES.EXPIRED) {
       return false
     }
 
-    return states.includes(pState.state)
+    return states.includes(p.votingState.state)
   })
 }
 
@@ -213,7 +257,7 @@ export default function ProposeV5Upgrade() {
   }, [setRefetchToken])
 
   // Show banner for v4.x DTFs (4.0.0 and 4.0.1)
-  const isUpgradeable = version.startsWith('4.')
+  const isUpgradeable = typeof version === 'string' && version.startsWith('4.')
 
   if (!isProposeAllowed || !proposals || !isUpgradeable) return null
 

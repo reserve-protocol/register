@@ -1,4 +1,4 @@
-import { t } from '@lingui/macro'
+import { Trans, useLingui } from '@lingui/react/macro'
 import GoTo from '@/components/go-to'
 import { useAtomValue } from 'jotai'
 import { chainIdAtom, rTokenRevenueSplitAtom } from '@/state/atoms'
@@ -7,19 +7,20 @@ import { ExplorerDataType, getExplorerLink } from '@/utils/getExplorerLink'
 import { InfoCard, InfoCardItem } from './settings-info-card'
 
 const RevenueSplitInfo = () => {
+  const { t } = useLingui()
   const distribution = useAtomValue(rTokenRevenueSplitAtom)
   const chainId = useAtomValue(chainIdAtom)
 
   return (
     <InfoCard title={t`Revenue Distribution`} id="revenue-distribution">
       <InfoCardItem
-        label="% to"
+        label={t`% to`}
         value={t`RToken holders`}
         right={<span className="font-semibold">{distribution?.holders || 0}%</span>}
         border={false}
       />
       <InfoCardItem
-        label="% to"
+        label={t`% to`}
         value={t`RSR Stakers`}
         right={<span className="font-semibold">{distribution?.stakers || 0}%</span>}
       />
@@ -43,7 +44,9 @@ const RevenueSplitInfo = () => {
               right={<span className="font-semibold">{dist.total}%</span>}
             />
             <div className="ml-4 pb-4 px-4">
-              <span className="text-legend">RToken/RSR split:</span>{' '}
+              <span className="text-legend">
+                <Trans>RToken/RSR split:</Trans>
+              </span>{' '}
               <span>
                 {dist.holders}/{dist.stakers}
               </span>

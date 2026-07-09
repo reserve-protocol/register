@@ -1,3 +1,4 @@
+import { Trans, useLingui } from '@lingui/react/macro'
 import Governance from 'abis/Governance'
 import { useAtomValue } from 'jotai'
 import { useMemo } from 'react'
@@ -34,6 +35,7 @@ const BooleanIcon = ({
 }
 
 const ProposalDetailStats = () => {
+  const { t } = useLingui()
   const rToken = useAtomValue(rTokenAtom)
   const proposal = useAtomValue(proposalDetailAtom)
   const { state } = useAtomValue(getProposalStateAtom)
@@ -99,16 +101,17 @@ const ProposalDetailStats = () => {
     <div className="rounded-3xl bg-background p-2">
       <span className="block p-4 text-xl font-bold leading-5">
         {[PROPOSAL_STATES.ACTIVE, PROPOSAL_STATES.PENDING].includes(state)
-          ? 'Current'
-          : 'Final'}{' '}
-        votes
+          ? t`Current votes`
+          : t`Final votes`}
       </span>
       <div className="overflow-hidden rounded-md border border-border shadow-[0px_10px_38px_6px_rgba(0,0,0,0.05)] [&>div:not(:last-child)]:border-b [&>div:not(:last-child)]:border-border">
         <div className="flex flex-col gap-4 bg-card p-4">
           <div className="flex items-center justify-between gap-2">
             <div className="flex items-center gap-3">
               <BooleanIcon value={quorumReached} />
-              <span>Quorum</span>
+              <span>
+                <Trans>Quorum</Trans>
+              </span>
             </div>
             <div className="flex items-center gap-2 text-xs sm:text-sm">
               <span
@@ -121,15 +124,17 @@ const ProposalDetailStats = () => {
               </span>
 
               <span className="whitespace-nowrap text-secondary-foreground">
-                {formatCurrency(currentQuorum, 0, {
-                  notation: 'compact',
-                  compactDisplay: 'short',
-                })}{' '}
-                of{' '}
-                {formatCurrency(quorumNeeded, 0, {
-                  notation: 'compact',
-                  compactDisplay: 'short',
-                })}
+                <Trans>
+                  {formatCurrency(currentQuorum, 0, {
+                    notation: 'compact',
+                    compactDisplay: 'short',
+                  })}{' '}
+                  of{' '}
+                  {formatCurrency(quorumNeeded, 0, {
+                    notation: 'compact',
+                    compactDisplay: 'short',
+                  })}
+                </Trans>
               </span>
             </div>
           </div>
@@ -147,7 +152,9 @@ const ProposalDetailStats = () => {
                 colorSuccess={colors.accentInverted}
                 colorFailure="red"
               />
-              <span>Majority support</span>
+              <span>
+                <Trans>Majority support</Trans>
+              </span>
             </div>
             <div className="flex items-center gap-2 text-xs sm:text-sm">
               <span
@@ -156,7 +163,7 @@ const ProposalDetailStats = () => {
                   majoritySupport ? 'text-primary' : 'text-red-500'
                 )}
               >
-                {majoritySupport ? 'Yes' : 'No'}
+                {majoritySupport ? t`Yes` : t`No`}
               </span>
               <span className="text-secondary-foreground">
                 {formatPercentage(
@@ -192,7 +199,9 @@ const ProposalDetailStats = () => {
               <ThumbsUp size={18} color={colors.accentInverted} />
             </div>
             <div className="flex flex-col">
-              <span className="min-w-[60px]">For</span>
+              <span className="min-w-[60px]">
+                <Trans>For</Trans>
+              </span>
               <span className="font-bold text-primary">
                 {formatCurrency(+forVotes, 0, {
                   notation: 'compact',
@@ -203,7 +212,9 @@ const ProposalDetailStats = () => {
           </div>
           <div className="flex flex-1 items-center justify-end gap-3 p-4 text-right">
             <div className="flex flex-col">
-              <span className="min-w-[60px]">Against</span>
+              <span className="min-w-[60px]">
+                <Trans>Against</Trans>
+              </span>
               <span className="font-bold text-red-500">
                 {formatCurrency(+againstVotes, 0, {
                   notation: 'compact',
@@ -221,7 +232,9 @@ const ProposalDetailStats = () => {
             <div className="flex h-7 w-7 items-center justify-center rounded bg-muted">
               <Slash size={18} />
             </div>
-            <span className="min-w-[60px]">Abstain</span>
+            <span className="min-w-[60px]">
+              <Trans>Abstain</Trans>
+            </span>
           </div>
           <span className="font-bold text-secondary-foreground">
             {formatCurrency(+abstainVotes, 0, {

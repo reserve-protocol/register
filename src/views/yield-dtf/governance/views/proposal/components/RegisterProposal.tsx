@@ -1,4 +1,4 @@
-import { Trans } from '@lingui/macro'
+import { Trans } from '@lingui/react/macro'
 import { useAtom, useAtomValue } from 'jotai'
 import { rTokenAssetsAtom } from 'state/atoms'
 import { Card } from '@/components/ui/card'

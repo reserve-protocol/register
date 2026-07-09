@@ -2,6 +2,7 @@ import Spinner from '@/components/ui/spinner'
 import useTimeRemaining from '@/hooks/use-time-remaining'
 import { cn } from '@/lib/utils'
 import { getCurrentTime } from '@/utils'
+import { Trans, useLingui } from '@lingui/react/macro'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { Clock } from 'lucide-react'
 import { useMemo, useEffect, useState } from 'react'
@@ -25,6 +26,7 @@ const calculateOptimalTime = (startTime: number, endTime: number): number =>
   startTime + (endTime - startTime) / 2
 
 const AuctionBids = ({ auction }: { auction: Auction }) => {
+  const { t } = useLingui()
   const rebalanceParams = useRebalanceParams()
 
   const chartData = useMemo(() => {
@@ -100,8 +102,8 @@ const AuctionBids = ({ auction }: { auction: Auction }) => {
         optimalTime={chartData.optimalTime}
         currentTime={chartData.currentTime}
         bids={chartData.bids}
-        title={`Auction ${auction.id}`}
-        description="Live rebalance auction"
+        title={t`Auction ${auction.id}`}
+        description={t`Live rebalance auction`}
       />
     </div>
   )
@@ -158,9 +160,11 @@ const AuctionItem = ({
           <Spinner size={SPINNER_SIZE} />
         </div>
         <div className="text-left">
-          <h4 className="text-primary">Auction {index + 1}</h4>
+          <h4 className="text-primary">
+            <Trans>Auction {index + 1}</Trans>
+          </h4>
           <p className="text-legend font-normal text-xs">
-            Bidding is ongoing...
+            <Trans>Bidding is ongoing...</Trans>
           </p>
         </div>
         <TimeRemaining auction={auction} />

@@ -1,12 +1,13 @@
-import { useAtom, useAtomValue, useSetAtom } from "jotai"
-import { chainFilterAtom, searchFilterAtom } from "../atoms"
-import { SearchInput } from "@/components/ui/input"
-import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group"
-import { useState } from "react"
-import { LayoutGrid } from "lucide-react"
-import { ChainId } from "@/utils/chains"
-import ChainLogo from "@/components/icons/ChainLogo"
-import { cn } from "@/lib/utils"
+import { useAtom, useAtomValue, useSetAtom } from 'jotai'
+import { chainFilterAtom, searchFilterAtom } from '../atoms'
+import { SearchInput } from '@/components/ui/input'
+import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
+import { useState } from 'react'
+import { ChainId } from '@/utils/chains'
+import ChainLogo from '@/components/icons/ChainLogo'
+import { cn } from '@/lib/utils'
+import SquareStackedChainLogo from '@/components/icons/SquareStackedChainLogo'
+import { useLingui } from '@lingui/react/macro'
 
 const SingleToggleFilter = ({
   options,
@@ -24,32 +25,40 @@ const SingleToggleFilter = ({
   className?: string
 }) => {
   return (
-    <ToggleGroup
-      type="single"
-      value={value}
-      onValueChange={onValueChange}
+    <div
       className={cn(
-        'bg-card rounded-bl-3xl rounded-br-3xl sm:rounded-3xl px-4 py-4',
-
+        'rounded-bl-3xl rounded-br-3xl bg-card px-4 py-4 sm:rounded-3xl',
         className
       )}
     >
-      {options.map(({ text, icon }, index) => (
-        <ToggleGroupItem
-          key={text}
-          value={index.toString()}
-          className="flex items-center gap-0 h-8 px-2 data-[state=on]:bg-muted data-[state=on]:text-primary hover:text-primary hover:bg-muted"
-        >
-          {icon}
-          <div className="hidden sm:block ml-[6px]">{text}</div>
-        </ToggleGroupItem>
-      ))}
-    </ToggleGroup>
+      <ToggleGroup
+        type="single"
+        value={value}
+        onValueChange={onValueChange}
+        className="w-full justify-start gap-0.5 overflow-x-auto rounded-full bg-muted p-0.5 sm:w-auto sm:justify-center"
+      >
+        {options.map(({ text, icon }, index) => (
+          <ToggleGroupItem
+            key={text}
+            value={index.toString()}
+            className={cn(
+              'h-8 min-w-0 flex-1 gap-1.5 rounded-full px-3 text-sm font-medium text-legend transition-[background-color,color] sm:flex-none',
+              'data-[state=off]:hover:bg-foreground/5 data-[state=off]:hover:text-foreground',
+              'data-[state=on]:bg-card data-[state=on]:text-foreground',
+              'dark:data-[state=on]:bg-card dark:data-[state=on]:text-foreground'
+            )}
+          >
+            {icon}
+            <span className="hidden lg:inline">{text}</span>
+          </ToggleGroupItem>
+        ))}
+      </ToggleGroup>
+    </div>
   )
 }
 
-
 const ChainFilter = () => {
+  const { t } = useLingui()
   const currentFilter = useAtomValue(chainFilterAtom)
   const [selected, setSelected] = useState(
     currentFilter.length > 1 ? '0' : currentFilter[0] === 1 ? '1' : '2'
@@ -58,22 +67,28 @@ const ChainFilter = () => {
 
   const chains = [
     {
-      icon: <LayoutGrid />,
-      text: 'All chains',
+      text: t`All chains`,
+      icon: (
+        <SquareStackedChainLogo
+          chains={[ChainId.Mainnet, ChainId.Base, ChainId.BSC]}
+        />
+      ),
       filter: [ChainId.Base, ChainId.Mainnet, ChainId.BSC],
     },
     {
-      icon: <ChainLogo chain={ChainId.Mainnet} />,
+      icon: (
+        <ChainLogo chain={ChainId.Mainnet} className="h-5 w-5 rounded-md" />
+      ),
       text: 'Ethereum',
       filter: [ChainId.Mainnet],
     },
     {
-      icon: <ChainLogo chain={ChainId.Base} />,
+      icon: <ChainLogo chain={ChainId.Base} className="h-5 w-5 rounded-md" />,
       text: 'Base',
       filter: [ChainId.Base],
     },
     {
-      icon: <ChainLogo chain={ChainId.BSC} />,
+      icon: <ChainLogo chain={ChainId.BSC} className="h-5 w-5 rounded-md" />,
       text: 'Binance',
       filter: [ChainId.BSC],
     },
@@ -94,20 +109,22 @@ const ChainFilter = () => {
 }
 
 export const SearchFilter = () => {
+  const { t } = useLingui()
   const [search, setSearch] = useAtom(searchFilterAtom)
 
   return (
     <SearchInput
-      placeholder="Search by name, ticker, tag or collateral"
+      placeholder={t`Search by name, ticker, tag or collateral`}
       value={search}
       onChange={(e) => setSearch(e.target.value)}
       className="flex-grow [&_input]:border-none [&_input]:rounded-none [&_input]:rounded-tl-3xl [&_input]:rounded-tr-3xl sm:[&_input]:rounded-3xl"
+      inputClassName="h-[68px]"
     />
   )
 }
 
 const DiscoverFilters = () => (
-  <div className="flex flex-col items-stretch sm:flex-row sm:items-center gap-[2px] sm:gap-1">
+  <div className="flex flex-col items-stretch gap-[2px] sm:flex-row sm:items-center sm:gap-1">
     <SearchFilter />
     <ChainFilter />
   </div>

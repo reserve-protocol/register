@@ -8,6 +8,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover'
+import { useLingui } from '@lingui/react/macro'
 import { useAtomValue } from 'jotai'
 import { useCallback, useEffect, useState } from 'react'
 import { ChevronDown, ChevronUp, Mail } from 'lucide-react'
@@ -23,33 +24,6 @@ type SocialMediaOption = {
   placeholder: string
   icon: React.ReactNode
 }
-
-const SOCIAL_MEDIA_OPTIONS = [
-  {
-    key: 'telegram',
-    name: 'Telegram',
-    placeholder: 'Telegram username',
-    icon: <TelegramIcon />,
-  },
-  {
-    key: 'twitter',
-    name: 'x.com',
-    placeholder: 'x.com username',
-    icon: <XIcon height={18} width={18} />,
-  },
-  {
-    key: 'discord',
-    name: 'Discord',
-    placeholder: 'Discord username',
-    icon: <DiscordColorIcon />,
-  },
-  {
-    key: 'email',
-    name: 'Email',
-    placeholder: 'Email address',
-    icon: <Mail size={14} />,
-  },
-]
 
 const Dropdown = ({
   selected,
@@ -108,12 +82,39 @@ const Dropdown = ({
 }
 
 const SocialMediaInput = ({ className }: { className?: string }) => {
+  const { t } = useLingui()
   const account = useAtomValue(walletAtom)
   const [value, setValue] = useState('')
   const [submitted, setSubmitted] = useState(false)
   const [copied, setCopied] = useState(false)
+  const socialMediaOptions: SocialMediaOption[] = [
+    {
+      key: 'telegram',
+      name: 'Telegram',
+      placeholder: t`Telegram username`,
+      icon: <TelegramIcon />,
+    },
+    {
+      key: 'twitter',
+      name: 'x.com',
+      placeholder: t`x.com username`,
+      icon: <XIcon height={18} width={18} />,
+    },
+    {
+      key: 'discord',
+      name: 'Discord',
+      placeholder: t`Discord username`,
+      icon: <DiscordColorIcon />,
+    },
+    {
+      key: 'email',
+      name: t`Email`,
+      placeholder: t`Email address`,
+      icon: <Mail size={14} />,
+    },
+  ]
   const [selected, setSelected] = useState<SocialMediaOption>(
-    SOCIAL_MEDIA_OPTIONS[0]
+    socialMediaOptions[0]
   )
   const { tokenIn, amountIn, tokenOut } = useZap()
 
@@ -162,7 +163,7 @@ const SocialMediaInput = ({ className }: { className?: string }) => {
     >
       <Dropdown
         selected={selected}
-        options={SOCIAL_MEDIA_OPTIONS}
+        options={socialMediaOptions}
         onSelectOption={(option: SocialMediaOption) => {
           setValue('')
           setSelected(option)
@@ -190,7 +191,7 @@ const SocialMediaInput = ({ className }: { className?: string }) => {
             setCopied(true)
           }}
         >
-          {copied ? 'Copied!' : 'Copy'}
+          {copied ? t`Copied!` : t`Copy`}
         </Button>
       ) : (
         <Button
@@ -199,7 +200,7 @@ const SocialMediaInput = ({ className }: { className?: string }) => {
           disabled={!value || submitted}
           onClick={() => handleTrackUsername(selected.key)}
         >
-          Count me in
+          {t`Count me in`}
         </Button>
       )}
     </div>

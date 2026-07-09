@@ -1,5 +1,8 @@
 import { formatCurrency } from '@/utils'
 import { cn } from '@/lib/utils'
+import type { MessageDescriptor } from '@lingui/core'
+import { msg } from '@lingui/core/macro'
+import { Trans, useLingui } from '@lingui/react/macro'
 import { useAtom, useAtomValue } from 'jotai'
 import { useEffect, useMemo, useState } from 'react'
 import { ArrowUpRight, ArrowDownRight, Loader } from 'lucide-react'
@@ -18,28 +21,34 @@ import {
   portfolioPageTimeRangeAtom,
 } from '../atoms'
 import {
+  appendLivePoint,
   ChartDataPoint,
   useHistoricalPortfolio,
 } from '../hooks/use-historical-portfolio'
 import { PortfolioPeriod } from '../types'
 import { Card } from '@/components/ui/card'
 
-const PERIOD_LABELS: { key: PortfolioPeriod; label: string }[] = [
+// Period codes (24hr/7d/1m/...) stay untranslated; only 'All time' is wrapped.
+const PERIOD_LABELS: {
+  key: PortfolioPeriod
+  label: string | MessageDescriptor
+}[] = [
   { key: '24h', label: '24hr' },
   { key: '7d', label: '7d' },
   { key: '1m', label: '1m' },
   { key: '3m', label: '3m' },
   { key: '6m', label: '6m' },
-  { key: 'All', label: 'All time' },
+  { key: 'All', label: msg`All time` },
 ]
 
-const PERIOD_SUFFIX: Record<PortfolioPeriod, string> = {
+// Suffix codes (24H/7D/...) stay untranslated; only 'All' is wrapped.
+const PERIOD_SUFFIX: Record<PortfolioPeriod, string | MessageDescriptor> = {
   '24h': '24H',
   '7d': '7D',
   '1m': '1M',
   '3m': '3M',
   '6m': '6M',
-  All: 'All',
+  All: msg`All`,
 }
 
 const formatYAxis = (value: number) => {
@@ -49,22 +58,29 @@ const formatYAxis = (value: number) => {
 }
 
 // Rendering order: bottom→top (reversed in tooltip to match visual top→bottom)
+// 'RSR' label is a token symbol and stays untranslated.
 const CATEGORIES = [
   { key: 'rsr', label: 'RSR', color: 'hsl(var(--primary))' },
-  { key: 'voteLocked', label: 'Vote-locked', color: '#e2a735' },
-  { key: 'stakedRSR', label: 'Staked RSR', color: '#e07044' },
-  { key: 'yieldDTFs', label: 'Yield DTFs', color: '#2a9d8f' },
-  { key: 'indexDTFs', label: 'Index DTFs', color: '#4a7ebf' },
+  { key: 'voteLocked', label: msg`Vote-locked`, color: '#e2a735' },
+  { key: 'stakedRSR', label: msg`Staked RSR`, color: '#e07044' },
+  { key: 'yieldDTFs', label: msg`Yield DTFs`, color: '#2a9d8f' },
+  { key: 'indexDTFs', label: msg`Index DTFs`, color: '#4a7ebf' },
 ] as const
 
+const renderLabel = (
+  t: (descriptor: MessageDescriptor) => string,
+  label: string | MessageDescriptor
+) => (typeof label === 'string' ? label : t(label))
+
 function ChartTooltip({ payload, active, stacked }: any) {
+  const { t } = useLingui()
   if (!active || !payload?.[0]) return null
   const point = payload[0]?.payload as ChartDataPoint
 
   const categories = [...CATEGORIES]
     .reverse()
     .map((c) => ({
-      label: c.label,
+      label: renderLabel(t, c.label),
       color: c.color,
       value: point[c.key] as number,
     }))
@@ -95,7 +111,9 @@ function ChartTooltip({ payload, active, stacked }: any) {
         ))}
       </div>
       <div className="border-t border-border mt-2 pt-2 flex items-center justify-between gap-6">
-        <span className="text-xs font-semibold">Total</span>
+        <span className="text-xs font-semibold">
+          <Trans>Total</Trans>
+        </span>
         <span className="text-sm font-bold tabular-nums">
           ${formatCurrency(point.value)}
         </span>
@@ -110,34 +128,38 @@ const TimeRangeTabs = ({
 }: {
   active: PortfolioPeriod
   onChange: (p: PortfolioPeriod) => void
-}) => (
-  <div className="flex items-center bg-muted rounded-2xl p-0.5 w-fit">
-    {PERIOD_LABELS.map(({ key, label }) => (
-      <button
-        key={key}
-        onClick={() => onChange(key)}
-        className={cn(
-          'px-2.5 py-1.5 text-sm rounded-xl transition-all whitespace-nowrap',
-          active === key
-            ? 'bg-card text-primary font-medium shadow-[0px_1px_8px_2px_rgba(0,0,0,0.05)]'
-            : 'text-foreground hover:text-primary'
-        )}
-      >
-        {label}
-      </button>
-    ))}
-  </div>
-)
+}) => {
+  const { t } = useLingui()
+  return (
+    <div className="flex items-center bg-muted rounded-2xl p-0.5 w-fit">
+      {PERIOD_LABELS.map(({ key, label }) => (
+        <button
+          key={key}
+          onClick={() => onChange(key)}
+          className={cn(
+            'px-2.5 py-1.5 text-sm rounded-xl transition-all whitespace-nowrap',
+            active === key
+              ? 'bg-card text-primary font-medium shadow-[0px_1px_8px_2px_rgba(0,0,0,0.05)]'
+              : 'text-foreground hover:text-primary'
+          )}
+        >
+          {renderLabel(t, label)}
+        </button>
+      ))}
+    </div>
+  )
+}
 
-const CHART_LOADING_TEXTS = [
-  'Loading your portfolio data...',
-  'Retrieving historical prices...',
-  'Calculating performance metrics...',
-  'Assembling your chart...',
-  'Almost there...',
+const CHART_LOADING_TEXTS: MessageDescriptor[] = [
+  msg`Loading your portfolio data...`,
+  msg`Retrieving historical prices...`,
+  msg`Calculating performance metrics...`,
+  msg`Assembling your chart...`,
+  msg`Almost there...`,
 ]
 
 const ChartLoadingSkeleton = () => {
+  const { t } = useLingui()
   const [textIndex, setTextIndex] = useState(0)
 
   useEffect(() => {
@@ -151,20 +173,28 @@ const ChartLoadingSkeleton = () => {
     <div className="relative mt-2 h-[406px] rounded-2xl bg-muted animate-pulse flex items-center justify-center">
       <div className="flex items-center gap-2 bg-card rounded-full px-4 py-2 text-sm text-primary border border-primary animate-fade-in">
         <Loader size={16} className="animate-spin-slow" />
-        {CHART_LOADING_TEXTS[textIndex]}
+        {t(CHART_LOADING_TEXTS[textIndex])}
       </div>
     </div>
   )
 }
 
 const PortfolioChart = () => {
+  const { t } = useLingui()
   const address = useAtomValue(portfolioAddressAtom)
   const portfolio = useAtomValue(portfolioDataAtom)
   const [timeRange, setTimeRange] = useAtom(portfolioPageTimeRangeAtom)
   const [stacked, setStacked] = useState(false)
   const { getChartData, isLoading } = useHistoricalPortfolio(address)
 
-  const chartData = getChartData(timeRange)
+  const rawChartData = getChartData(timeRange)
+  const chartData = useMemo(
+    () =>
+      rawChartData && portfolio
+        ? appendLivePoint(rawChartData, portfolio)
+        : rawChartData,
+    [rawChartData, portfolio]
+  )
   const totalValue = portfolio?.totalHoldingsUSD ?? 0
 
   const change = useMemo(() => {
@@ -210,7 +240,7 @@ const PortfolioChart = () => {
                   {formatCurrency(Math.abs(change.diff))})
                 </span>
                 <span className="text-sm text-legend ml-1">
-                  {PERIOD_SUFFIX[timeRange]}
+                  {renderLabel(t, PERIOD_SUFFIX[timeRange])}
                 </span>
               </>
             )}
@@ -230,7 +260,7 @@ const PortfolioChart = () => {
         <ChartLoadingSkeleton />
       ) : chartData.length === 0 ? (
         <div className="flex items-center justify-center h-[414px] text-legend">
-          No data available
+          <Trans>No data available</Trans>
         </div>
       ) : (
         <div

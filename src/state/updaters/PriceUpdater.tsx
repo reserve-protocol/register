@@ -39,7 +39,7 @@ const PricesUpdater = () => {
   const setGasPrice = useSetAtom(gasFeeAtom)
   const setRTokenPrice = useSetAtom(rTokenPriceAtom)
 
-  const { data: gasQuote } = useEstimateFeesPerGas()
+  const { data: gasQuote } = useEstimateFeesPerGas({ chainId })
 
   // Price for RSR and ETH pull from chainlink
   const multicallResult = useReadContracts({
@@ -62,11 +62,19 @@ const PricesUpdater = () => {
 
   useEffect(() => {
     if (multicallResult?.data) {
-      setRSRPrice(+formatUnits((multicallResult?.data as any)[0][1], 8))
-      setEthPrice(+formatUnits((multicallResult?.data as any)[1][1], 8))
-      setBTCPrice(+formatUnits((multicallResult?.data as any)[2][1], 8))
+      const priceData = multicallResult.data as readonly (readonly [
+        bigint,
+        bigint,
+        bigint,
+        bigint,
+        bigint,
+      ])[]
+
+      setRSRPrice(+formatUnits(priceData[0][1], 8))
+      setEthPrice(+formatUnits(priceData[1][1], 8))
+      setBTCPrice(+formatUnits(priceData[2][1], 8))
     }
-  }, [multicallResult])
+  }, [multicallResult, setRSRPrice, setEthPrice, setBTCPrice])
 
   useEffect(() => {
     if (rTokenPrice) {
@@ -75,13 +83,13 @@ const PricesUpdater = () => {
       // default to 1 (RSV case)
       setRTokenPrice(1)
     }
-  }, [rTokenPrice])
+  }, [rTokenPrice, setRTokenPrice])
 
   useEffect(() => {
     if (gasQuote) {
       setGasPrice(gasQuote.gasPrice ?? 0n)
     }
-  }, [gasQuote])
+  }, [gasQuote, setGasPrice])
 
   return null
 }

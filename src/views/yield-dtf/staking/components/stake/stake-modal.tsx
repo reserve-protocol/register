@@ -1,4 +1,4 @@
-import { t } from '@lingui/macro'
+import { useLingui } from '@lingui/react/macro'
 import { Modal } from 'components'
 import ShowMore from 'components/transaction-modal/ShowMore'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
@@ -21,6 +21,7 @@ import { stRsrTickerAtom } from '@/views/yield-dtf/staking/atoms'
 import UnstakeDelay from '../unstake-delay'
 
 const AmountsPreview = () => {
+  const { t } = useLingui()
   const amount = useAtomValue(stakeAmountAtom)
   const usdAmount = useAtomValue(stakeAmountUsdAtom)
   const stAmount = useAtomValue(stakeOutputAtom)
@@ -80,6 +81,7 @@ const StakeExtra = () => {
 }
 
 const StakeModal = ({ onClose }: { onClose(): void }) => {
+  const { t } = useLingui()
   const setAmount = useSetAtom(stakeAmountAtom)
   const handleClose = useCallback(() => {
     setAmount('')

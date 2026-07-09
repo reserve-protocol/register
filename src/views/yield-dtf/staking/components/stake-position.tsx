@@ -1,4 +1,4 @@
-import { Trans } from '@lingui/macro'
+import { Trans } from '@lingui/react/macro'
 import { useAtomValue } from 'jotai'
 import { accountCurrentPositionAtom, rateAtom, stRsrTickerAtom } from '../atoms'
 import TokenLogo from 'components/icons/TokenLogo'
@@ -46,7 +46,9 @@ const StakePosition = ({ className }: StakePositionProps) => {
           <span className="w-4 text-lg font-semibold">=</span>
           <TokenLogo symbol="rsr" className="mx-2" />
           <div>
-            <span className="text-xs text-legend">Exchangeable for</span>
+            <span className="text-xs text-legend">
+              <Trans>Exchangeable for</Trans>
+            </span>
             <div className="font-semibold">
               <span>
                 {formatCurrency(+balance.balance * rate, 2, {
@@ -65,7 +67,9 @@ const StakePosition = ({ className }: StakePositionProps) => {
           <TrendingIcon />
           <TokenLogo symbol="rsr" className="mx-2" />
           <div>
-            <span className="text-xs text-legend">Rewards</span>
+            <span className="text-xs text-legend">
+              <Trans>Rewards</Trans>
+            </span>
             <div className="font-semibold">
               <span>
                 {formatCurrency(rewards, 2, {

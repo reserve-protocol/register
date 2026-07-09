@@ -1,3 +1,4 @@
+import { Trans } from '@lingui/react/macro'
 import TokenLogo from 'components/icons/TokenLogo'
 import { useAtomValue } from 'jotai'
 import { rsrBalanceAtom, rsrPriceAtom } from 'state/atoms'
@@ -11,7 +12,9 @@ const RsrBalance = () => {
   return (
     <div className="ml-auto flex items-center flex-shrink-0">
       <TokenLogo width={16} symbol="rsr" />
-      <span className="ml-2 text-legend">Balance</span>
+      <span className="ml-2 text-legend">
+        <Trans>Balance</Trans>
+      </span>
       <span className="mx-1 font-semibold">
         {formatCurrency(+balance.balance, 2, {
           notation: 'compact',
@@ -29,7 +32,9 @@ const UnstakeOutput = () => {
 
   return (
     <div className="p-3 border border-border rounded-3xl overflow-hidden">
-      <span className="block">You receive:</span>
+      <span className="block">
+        <Trans>You receive:</Trans>
+      </span>
       <div className="flex items-center text-xl font-semibold overflow-hidden">
         <span>{amount ? formatCurrency(Number(amount) * rate) : '0'}</span>
         <span className="ml-2 text-legend">RSR</span>

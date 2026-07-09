@@ -1,5 +1,6 @@
 import ChainLogo from '@/components/icons/ChainLogo'
 import TokenLogo from '@/components/token-logo'
+import { cn } from '@/lib/utils'
 
 type Size = 'sm' | 'md' | 'lg' | 'xl'
 
@@ -14,24 +15,47 @@ const TokenLogoWithChain = ({
   symbol,
   address,
   chain,
+  src,
   size = 'lg',
+  width,
+  height,
+  chainClassName,
 }: {
   symbol?: string
   address?: string
   chain: number
+  src?: string
   size?: Size
+  width?: number
+  height?: number
+  chainClassName?: string
 }) => {
-  const s = chainLogoSize[size]
+  const logoWidth = width ?? undefined
+  const logoHeight = height ?? undefined
+  const s =
+    width || height
+      ? Math.round(((width ?? height ?? 32) / 32) * chainLogoSize.xl)
+      : chainLogoSize[size]
 
   return (
     <div className="relative flex-shrink-0">
-      <TokenLogo symbol={symbol} address={address} chain={chain} size={size} />
-      <ChainLogo
+      <TokenLogo
+        symbol={symbol}
+        address={address}
         chain={chain}
-        className="absolute -bottom-0.5 -right-0.5"
-        width={s}
-        height={s}
+        src={src}
+        size={size}
+        width={logoWidth}
+        height={logoHeight}
       />
+      <span
+        className={cn(
+          'absolute -bottom-0.5 -right-1 flex items-center justify-center rounded-md border-2 border-background bg-background',
+          chainClassName
+        )}
+      >
+        <ChainLogo chain={chain} width={s} height={s} />
+      </span>
     </div>
   )
 }

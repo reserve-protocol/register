@@ -8,8 +8,12 @@ import { useAtomValue } from 'jotai'
 import { Combine, Globe, Palette, Zap } from 'lucide-react'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { useTheme } from 'next-themes'
+import useIsDarkMode from '@/hooks/use-is-dark-mode'
 import { z } from 'zod'
+import { msg } from '@lingui/core/macro'
+import { Trans, useLingui } from '@lingui/react/macro'
+import type { MessageDescriptor } from '@lingui/core'
+import { useMemo } from 'react'
 import SocialMediaInput, {
   SOCIAL_MEDIA_OPTIONS,
   type SocialMediaOption,
@@ -17,24 +21,30 @@ import SocialMediaInput, {
 
 const STORAGE_URL = import.meta.env.VITE_STORAGE_URL || ''
 
-const formSchema = z.object({
-  contactValue: z.string().min(1, 'Required'),
-  dtfDescription: z.string().min(1, 'Required'),
-  investmentPlan: z.string().optional(),
-  whyPeopleWant: z.string().optional(),
-})
+const messages = {
+  required: msg`Required`,
+}
 
-type FormData = z.infer<typeof formSchema>
+const buildFormSchema = (t: (descriptor: MessageDescriptor) => string) =>
+  z.object({
+    contactValue: z.string().min(1, t(messages.required)),
+    dtfDescription: z.string().min(1, t(messages.required)),
+    investmentPlan: z.string().optional(),
+    whyPeopleWant: z.string().optional(),
+  })
+
+type FormData = z.infer<ReturnType<typeof buildFormSchema>>
 
 const DeployComingSoon = () => {
-  const { resolvedTheme } = useTheme()
-  const isDarkMode = resolvedTheme === 'dark'
+  const { t } = useLingui()
+  const isDarkMode = useIsDarkMode()
   const account = useAtomValue(walletAtom)
   const [submitted, setSubmitted] = useState(false)
   const [submitting, setSubmitting] = useState(false)
   const [selectedContact, setSelectedContact] = useState<SocialMediaOption>(
     SOCIAL_MEDIA_OPTIONS[0]
   )
+  const formSchema = useMemo(() => buildFormSchema(t), [t])
 
   const {
     register,
@@ -87,23 +97,23 @@ const DeployComingSoon = () => {
           </div>
           <div className="flex-grow min-h-3 lg:min-h-6" />
           <h2 className="text-3xl text-primary font-semibold mb-0.5">
-            Want to create an Index DTF?
+            <Trans>Want to create an Index DTF?</Trans>
           </h2>
           <p className="max-w-[520px] text-legend">
-            Fill out the information below and ABC Labs will reach out!
+            <Trans>Fill out the information below and ABC Labs will reach out!</Trans>
           </p>
           <div className="-mx-3 lg:-mx-6 w-[calc(100%+1.5rem)] lg:w-[calc(100%+3rem)] border-t border-secondary my-4" />
           {submitted ? (
             <div className="p-4 bg-primary/10 rounded-xl text-center">
               <p className="text-primary font-medium">
-                Thank you! We'll be in touch soon.
+                <Trans>Thank you! We'll be in touch soon.</Trans>
               </p>
             </div>
           ) : (
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
               <div>
                 <label className="block text-sm font-medium mb-2">
-                  How can we reach you? *
+                  <Trans>How can we reach you? *</Trans>
                 </label>
                 <div className="lg:-mx-3">
                   <SocialMediaInput
@@ -124,11 +134,11 @@ const DeployComingSoon = () => {
 
               <div>
                 <label className="block text-sm font-medium mb-2">
-                  Can you describe the DTF you want to create? *
+                  <Trans>Can you describe the DTF you want to create? *</Trans>
                 </label>
                 <Textarea
                   {...register('dtfDescription')}
-                  placeholder="e.g. tokens to be included, strategy, methodology"
+                  placeholder={t`e.g. tokens to be included, strategy, methodology`}
                   className={`w-full lg:-mx-3 lg:w-[calc(100%+1.5rem)] rounded-xl ${errors.dtfDescription ? 'border-destructive' : ''}`}
                   disabled={submitting}
                   rows={3}
@@ -142,7 +152,7 @@ const DeployComingSoon = () => {
 
               <div>
                 <label className="block text-sm font-medium mb-2">
-                  How do you plan to get people to invest in your DTF?
+                  <Trans>How do you plan to get people to invest in your DTF?</Trans>
                 </label>
                 <Textarea
                   {...register('investmentPlan')}
@@ -154,7 +164,7 @@ const DeployComingSoon = () => {
 
               <div>
                 <label className="block text-sm font-medium mb-2">
-                  Why do you think people want this DTF?
+                  <Trans>Why do you think people want this DTF?</Trans>
                 </label>
                 <Textarea
                   {...register('whyPeopleWant')}
@@ -169,7 +179,7 @@ const DeployComingSoon = () => {
                 disabled={submitting}
                 className="w-full lg:-mx-3  lg:w-[calc(100%+1.5rem)] rounded-xl h-12"
               >
-                {submitting ? 'Submitting...' : 'Contact me'}
+                {submitting ? t`Submitting...` : t`Contact me`}
               </Button>
             </form>
           )}
@@ -178,7 +188,7 @@ const DeployComingSoon = () => {
           <img
             src={isDarkMode ? '/imgs/GM-dark.svg' : '/imgs/GM-light.svg'}
             className="w-full h-full object-cover object-center rounded-3xl"
-            alt="reserve splash"
+            alt={t`reserve splash`}
           />
         </div>
       </div>
@@ -187,7 +197,7 @@ const DeployComingSoon = () => {
         target="_blank"
         className="text-legend underline my-9 text-center"
       >
-        Looking to create a Yield DTF?
+        <Trans>Looking to create a Yield DTF?</Trans>
       </a>
     </div>
   )

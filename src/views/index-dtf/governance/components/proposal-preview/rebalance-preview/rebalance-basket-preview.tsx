@@ -17,6 +17,7 @@ import { ExplorerDataType, getExplorerLink } from '@/utils/getExplorerLink'
 import { useAtomValue } from 'jotai'
 import { AlertTriangle, ArrowUpRight } from 'lucide-react'
 import { Link } from 'react-router-dom'
+import { Trans } from '@lingui/react/macro'
 
 export type EstimatedBasketAsset = {
   token: Token
@@ -42,7 +43,7 @@ const RebalanceBasketPreview = ({
   )
 
   return (
-    <div className="rounded-3xl bg-card">
+    <div className="rounded-2xl bg-card border mx-1 mb-1">
       {removedAssets.length > 0 && (
         <div className="mb-4">
           <Alert
@@ -50,10 +51,14 @@ const RebalanceBasketPreview = ({
             className="rounded-xl bg-warning/10 border-warning/20 [&>svg]:top-1/2 [&>svg]:-translate-y-1/2"
           >
             <AlertTriangle className="h-4 w-4" />
-            <AlertTitle>Assets being removed</AlertTitle>
+            <AlertTitle>
+              <Trans>Assets being removed</Trans>
+            </AlertTitle>
             <AlertDescription>
-              {removedAssets.map((a) => a.token.symbol).join(', ')} will be
-              removed from the basket
+              <Trans>
+                {removedAssets.map((a) => a.token.symbol).join(', ')} will be
+                removed from the basket
+              </Trans>
             </AlertDescription>
           </Alert>
         </div>
@@ -62,12 +67,18 @@ const RebalanceBasketPreview = ({
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead className="border-r">Token</TableHead>
-              <TableHead className="w-24 text-center">Current</TableHead>
-              <TableHead className="bg-primary/10 text-primary text-center font-bold w-24">
-                Expected
+              <TableHead className="border-r">
+                <Trans>Token</Trans>
               </TableHead>
-              <TableHead className="w-24 text-center">Delta</TableHead>
+              <TableHead className="w-24 text-center">
+                <Trans>Current</Trans>
+              </TableHead>
+              <TableHead className="bg-primary/10 text-primary text-center font-bold w-24">
+                <Trans>Expected</Trans>
+              </TableHead>
+              <TableHead className="w-24 text-center">
+                <Trans>Delta</Trans>
+              </TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>

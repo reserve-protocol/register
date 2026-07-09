@@ -1,4 +1,4 @@
-import { Trans } from '@lingui/macro'
+import { Trans } from '@lingui/react/macro'
 import TokenBalance from 'components/token-balance'
 import TrackAsset from 'components/track-asset'
 import useRToken from 'hooks/useRToken'

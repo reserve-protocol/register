@@ -6,7 +6,6 @@ import {
   indexDTFBasketAtom,
   indexDTFBasketSharesAtom,
   indexDTFRebalanceControlAtom,
-  indexDTFVersionAtom,
 } from '@/state/dtf/atoms'
 import { DecodedCalldata, Token } from '@/types'
 import { calculatePriceFromRange } from '@/utils'
@@ -15,11 +14,18 @@ import { getTargetBasket } from '@reserve-protocol/dtf-rebalance-lib'
 import { useQuery } from '@tanstack/react-query'
 import { atom, useAtomValue } from 'jotai'
 import { useMemo } from 'react'
-import { Address, formatUnits, Hex } from 'viem'
+import {
+  Abi,
+  Address,
+  decodeFunctionData,
+  formatUnits,
+  getAbiItem,
+  Hex,
+  toFunctionSelector,
+} from 'viem'
 import useAssetPricesWithSnapshot from './use-asset-prices-with-snapshot'
-import { getDecodedCalldata } from './use-decoded-call-datas'
 import useTokensInfo from './useTokensInfo'
-import { IndexDTFPerformance } from '@/views/index-dtf/overview/hooks/use-dtf-price-history'
+import type { IndexDTFPerformance } from '@/views/index-dtf/overview/hooks/use-dtf-price-history'
 
 // current/initial/snapshot will be the same at proposal time
 type BasketAsset = {
@@ -54,6 +60,35 @@ type Range = {
   high: bigint
 }
 
+const START_REBALANCE_V4_SELECTOR = toFunctionSelector(
+  'startRebalance(address[],(uint256,uint256,uint256)[],(uint256,uint256)[],(uint256,uint256,uint256),uint256,uint256)'
+)
+const START_REBALANCE_V5_SELECTOR = toFunctionSelector(
+  'startRebalance((address,(uint256,uint256,uint256),(uint256,uint256),uint256,bool)[],(uint256,uint256,uint256),uint256,uint256)'
+)
+
+const getDecodedCalldata = (abi: Abi, calldata: Hex): DecodedCalldata => {
+  const { functionName, args } = decodeFunctionData({
+    abi,
+    data: calldata,
+  })
+
+  const result = getAbiItem({
+    abi,
+    name: functionName as string,
+  })
+
+  return {
+    signature: functionName,
+    parameters:
+      result && 'inputs' in result
+        ? result.inputs.map((input) => `${input.name}: ${input.type}`)
+        : [],
+    callData: calldata,
+    data: (args ?? []) as unknown as unknown[] as string[],
+  }
+}
+
 // V5 TokenRebalanceParams structure from the ABI
 type TokenRebalanceParams = {
   token: Address
@@ -66,18 +101,23 @@ type TokenRebalanceParams = {
 export const useDecodedRebalanceCalldata = (
   calldata: Hex[] | undefined
 ): { data: RebalanceCall; calldata: DecodedCalldata } | undefined => {
-  const version = useAtomValue(indexDTFVersionAtom)
+  const rebalanceCalldata = calldata?.length === 1 ? calldata[0] : undefined
 
   return useMemo(() => {
     // Rebalance calls is always only one
-    if (calldata?.length !== 1) return undefined
+    if (!rebalanceCalldata) return undefined
 
-    const isV5 = version.startsWith('5')
+    const selector = rebalanceCalldata.slice(0, 10)
+    const isV5 = selector === START_REBALANCE_V5_SELECTOR
+    let abi: Abi | undefined
+
+    if (isV5) abi = dtfIndexAbiV5
+    if (selector === START_REBALANCE_V4_SELECTOR) abi = dtfIndexAbiV4
+
+    if (!abi) return undefined
 
     try {
-      // Try to decode with the appropriate ABI based on version
-      const abi = isV5 ? dtfIndexAbiV5 : dtfIndexAbiV4
-      const decodedCalldata = getDecodedCalldata(abi, calldata[0])
+      const decodedCalldata = getDecodedCalldata(abi, rebalanceCalldata)
 
       if (decodedCalldata.signature !== 'startRebalance') return undefined
 
@@ -126,11 +166,10 @@ export const useDecodedRebalanceCalldata = (
           calldata: decodedCalldata,
         }
       }
-    } catch (e) {
-      console.error('Error decoding rebalance calldata', e)
+    } catch {
       return undefined
     }
-  }, [JSON.stringify(calldata), version])
+  }, [rebalanceCalldata])
 }
 
 const currentBasketMapAtom = atom<Record<string, Token> | undefined>((get) => {
@@ -138,7 +177,8 @@ const currentBasketMapAtom = atom<Record<string, Token> | undefined>((get) => {
   return (
     currentBasket?.reduce(
       (acc, token) => {
-        acc[token.address] = token
+        const address = token.address.toLowerCase() as Address
+        acc[address] = { ...token, address }
         return acc
       },
       {} as Record<string, Token>
@@ -150,9 +190,10 @@ const currentBasketMapAtom = atom<Record<string, Token> | undefined>((get) => {
 // Uses current basket info and only fetches missing tokens
 const useTokens = (tokens: string[]): Record<string, Token> | undefined => {
   const currentBasketMap = useAtomValue(currentBasketMapAtom)
+  const tokenAddresses = tokens.map((token) => token.toLowerCase())
   // Wait until we have the current basket map to fetch missing tokens info
   const missingTokens = currentBasketMap
-    ? tokens.filter((token) => !currentBasketMap[token])
+    ? tokenAddresses.filter((token) => !currentBasketMap[token])
     : []
   const { data: missingTokensInfo } = useTokensInfo(missingTokens)
 
@@ -214,8 +255,8 @@ const useDTFBasketWeights = (timestamp?: number) => {
 /**
  * Hook to parse and preview rebalance basket changes from calldata
  *
- * Currently processes only the first calldata in the array for 4.0 rebalance flow.
- * Future versions may need to handle multiple calldatas if the rebalance process changes.
+ * Historical proposals can use v4 or v5 startRebalance signatures, so decode by
+ * calldata selector instead of the DTF's current version.
  */
 const useRebalanceBasketPreview = (
   calldata: Hex[] | undefined,
@@ -240,9 +281,14 @@ const useRebalanceBasketPreview = (
     )
       return undefined
 
+    const tokenList = rebalance.data.tokens.map((token) => token.toLowerCase())
+    if (tokenList.some((token) => !tokens[token] || !prices[token])) {
+      return undefined
+    }
+
     const initialPrices: Record<string, number> = {}
     for (let i = 0; i < rebalance.data.weights.length; i++) {
-      const token = rebalance.data.tokens[i].toLowerCase()
+      const token = tokenList[i]
       const decimals = tokens[token].decimals
 
       initialPrices[token] = calculatePriceFromRange(
@@ -255,7 +301,6 @@ const useRebalanceBasketPreview = (
     }
 
     // keep track of the token order for the target basket
-    const tokenList = rebalance.data.tokens.map((token) => token.toLowerCase())
     // if weight control is true (tracking dtf), use current price, otherwise use snapshot price
     const priceList = tokenList.map((token, index) => {
       if (rebalanceControl.weightControl) {

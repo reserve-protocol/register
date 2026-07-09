@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/button'
 import Timeline from '@/components/ui/timeline'
 import { indexDTFAtom, indexDTFBrandAtom } from '@/state/dtf/atoms'
 import { ROUTES } from '@/utils/constants'
+import { Trans, useLingui } from '@lingui/react/macro'
 import { useAtom, useAtomValue } from 'jotai'
 import { Link } from 'react-router-dom'
 import {
@@ -17,18 +18,21 @@ import SubmitProposalButton from './submit-proposal-button'
 import SimulateProposalCard from '@/views/index-dtf/governance/components/simulate-proposal-card'
 import { chainIdAtom } from '@/state/atoms'
 import { Address } from 'viem'
+import { shouldBypassFormValidation } from '@/utils/form-validation'
 
 const ConfirmProposalButton = () => {
+  const { t } = useLingui()
   const isValid = useAtomValue(isProposalValidAtom)
   const isFormValid = useAtomValue(isFormValidAtom)
   const [isProposalConfirmed, setIsProposalConfirmed] = useAtom(
     isProposalConfirmedAtom
   )
+  const bypassFormValidation = shouldBypassFormValidation()
 
   const handleConfirm = () => {
     if (!isProposalConfirmed) {
       // When confirming, check if form is valid
-      if (!isFormValid) {
+      if (!isFormValid && !bypassFormValidation) {
         // The form will show validation errors
         return
       }
@@ -37,7 +41,7 @@ const ConfirmProposalButton = () => {
   }
 
   // Enable button only if there are changes AND form is valid
-  const isButtonEnabled = isValid && isFormValid
+  const isButtonEnabled = isValid && (isFormValid || bypassFormValidation)
 
   return (
     <Button
@@ -46,37 +50,39 @@ const ConfirmProposalButton = () => {
       variant={isProposalConfirmed ? 'outline' : 'default'}
       onClick={handleConfirm}
     >
-      {isProposalConfirmed ? 'Edit proposal' : 'Confirm & prepare proposal'}
+      {isProposalConfirmed ? t`Edit proposal` : t`Confirm & prepare proposal`}
     </Button>
   )
 }
 
 const ProposalInstructions = () => {
+  const { t } = useLingui()
   const isValid = useAtomValue(isProposalValidAtom)
   const isFormValid = useAtomValue(isFormValidAtom)
   const confirmed = useAtomValue(isProposalConfirmedAtom)
+  const bypassFormValidation = shouldBypassFormValidation()
 
-  const canProceed = isValid && isFormValid
+  const canProceed = isValid && (isFormValid || bypassFormValidation)
 
   const timelineItems = [
     {
-      title: 'Configure proposal',
+      title: t`Configure proposal`,
       isActive: !canProceed,
       isCompleted: canProceed,
     },
     {
-      title: 'Finalize basket proposal',
+      title: t`Finalize basket proposal`,
       children: <ConfirmProposalButton />,
       isActive: canProceed && !confirmed,
       isCompleted: confirmed,
     },
     {
-      title: 'Review & describe your proposal',
+      title: t`Review & describe your proposal`,
       children: <SubmitProposalButton />,
       isActive: confirmed,
     },
     {
-      title: 'Voting delay begins',
+      title: t`Voting delay begins`,
     },
   ]
 
@@ -101,7 +107,7 @@ const Header = () => {
           size="xs"
           className="rounded-[42px] font-light text-destructive hover:text-destructive"
         >
-          Cancel
+          <Trans>Cancel</Trans>
         </Button>
       </Link>
     </div>
@@ -116,7 +122,7 @@ const VaultProposalChangePreview = () => {
   return (
     <div className="mt-2 border-4 border-secondary rounded-3xl bg-background p-2">
       <h3 className="font-bold mb-6 text-primary px-4 pt-4">
-        Proposed changes
+        <Trans>Proposed changes</Trans>
       </h3>
       <DTFSettingsProposalChanges />
     </div>

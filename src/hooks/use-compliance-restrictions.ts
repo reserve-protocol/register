@@ -1,5 +1,7 @@
 import { walletAtom } from '@/state/atoms'
-import { t } from '@lingui/macro'
+import { msg } from '@lingui/core/macro'
+import type { MessageDescriptor } from '@lingui/core'
+import { useLingui } from '@lingui/react/macro'
 import { useAtomValue } from 'jotai'
 import { useMemo } from 'react'
 import useDTFRestricted from './use-dtf-restricted'
@@ -31,32 +33,30 @@ export type ComplianceRestrictionsResult = {
   isLoading: boolean
 }
 
-const getRestrictionMessage = (
-  reason: ComplianceRestrictionReason
-): { title: string; description: string } => {
-  switch (reason) {
-    case 'wallet':
-      return {
-        title: t`Wallet restricted`,
-        description: t`This wallet is not eligible to access this product. If you think this is an error, try connecting a different wallet or contact support.`,
-      }
-    case 'geolocation-restricted':
-      return {
-        title: t`Restricted in your region`,
-        description: t`This product is only available to qualified investors in your region due to local regulations.`,
-      }
-    case 'geolocation':
-    case 'geolocation-prohibited':
-      return {
-        title: t`Not available in your region`,
-        description: t`This product isn't available in your region due to local restrictions.`,
-      }
-    case 'vpn':
-      return {
-        title: t`VPN detected`,
-        description: t`We detected that you are connecting through a VPN. Please disable it and refresh the page to access this product. If you think this is an error, contact support.`,
-      }
-  }
+const RESTRICTION_MESSAGES: Record<
+  ComplianceRestrictionReason,
+  { title: MessageDescriptor; description: MessageDescriptor }
+> = {
+  wallet: {
+    title: msg`Wallet restricted`,
+    description: msg`This wallet is not eligible to access this product. If you think this is an error, try connecting a different wallet or contact support.`,
+  },
+  geolocation: {
+    title: msg`Not available in your region`,
+    description: msg`This product isn't available in your region due to local restrictions.`,
+  },
+  'geolocation-restricted': {
+    title: msg`Restricted in your region`,
+    description: msg`This product is only available to qualified investors in your region due to local regulations.`,
+  },
+  'geolocation-prohibited': {
+    title: msg`Not available in your region`,
+    description: msg`This product isn't available in your region due to local restrictions.`,
+  },
+  vpn: {
+    title: msg`VPN detected`,
+    description: msg`We detected that you are connecting through a VPN. Please disable it and refresh the page to access this product. If you think this is an error, contact support.`,
+  },
 }
 
 const allowed = (
@@ -72,49 +72,53 @@ const restricted = ({
   reason,
   geolocation,
   wallet,
+  t,
 }: {
   reason: ComplianceRestrictionReason
   geolocation?: GeolocationStatus
   wallet?: WalletCompliance
+  t: (descriptor: MessageDescriptor) => string
 }): ComplianceRestrictionsData => ({
   restricted: true,
   reason,
-  ...getRestrictionMessage(reason),
+  title: t(RESTRICTION_MESSAGES[reason].title),
+  description: t(RESTRICTION_MESSAGES[reason].description),
   geolocation,
   wallet,
 })
 
 const useComplianceRestrictions = () => {
   const wallet = useAtomValue(walletAtom)
+  const { t } = useLingui()
   const geolocation = useGeolocation()
   const walletCompliance = useWalletCompliance()
   const dtfRestriction = useDTFRestricted()
 
   return useMemo<ComplianceRestrictionsResult>(() => {
-    // No wallet connected: nothing to restrict yet (enforced at transaction time)
-    if (!wallet) {
-      return { data: allowed(geolocation.data), isLoading: false }
-    }
-
-    if (walletCompliance.isLoading) {
-      return { data: undefined, isLoading: true }
-    }
-
-    if (walletCompliance.data?.shouldSkipRestrictions) {
-      return {
-        data: allowed(geolocation.data, walletCompliance.data),
-        isLoading: false,
+    // Wallet compliance only applies once a wallet is connected; geolocation
+    // and DTF checks are IP-based and run regardless.
+    if (wallet) {
+      if (walletCompliance.isLoading) {
+        return { data: undefined, isLoading: true }
       }
-    }
 
-    if (walletCompliance.isError || walletCompliance.data?.isRestricted) {
-      return {
-        data: restricted({
-          reason: 'wallet',
-          geolocation: geolocation.data,
-          wallet: walletCompliance.data,
-        }),
-        isLoading: false,
+      if (walletCompliance.data?.shouldSkipRestrictions) {
+        return {
+          data: allowed(geolocation.data, walletCompliance.data),
+          isLoading: false,
+        }
+      }
+
+      if (walletCompliance.isError || walletCompliance.data?.isRestricted) {
+        return {
+          data: restricted({
+            reason: 'wallet',
+            geolocation: geolocation.data,
+            wallet: walletCompliance.data,
+            t,
+          }),
+          isLoading: false,
+        }
       }
     }
 
@@ -128,6 +132,7 @@ const useComplianceRestrictions = () => {
           reason: 'geolocation',
           geolocation: geolocation.data,
           wallet: walletCompliance.data,
+          t,
         }),
         isLoading: false,
       }
@@ -139,6 +144,7 @@ const useComplianceRestrictions = () => {
           reason: 'geolocation',
           geolocation: geolocation.data,
           wallet: walletCompliance.data,
+          t,
         }),
         isLoading: false,
       }
@@ -154,6 +160,7 @@ const useComplianceRestrictions = () => {
           reason: dtfRestriction.data.reason ?? 'geolocation',
           geolocation: geolocation.data,
           wallet: walletCompliance.data,
+          t,
         }),
         isLoading: false,
       }
@@ -173,6 +180,7 @@ const useComplianceRestrictions = () => {
     walletCompliance.data,
     walletCompliance.isError,
     walletCompliance.isLoading,
+    t,
   ])
 }
 

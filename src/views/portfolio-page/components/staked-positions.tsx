@@ -9,6 +9,7 @@ import {
   getTokenRoute,
 } from '@/utils'
 import { ColumnDef } from '@tanstack/react-table'
+import { Trans } from '@lingui/react/macro'
 import { useAtomValue } from 'jotai'
 import { HandCoins } from 'lucide-react'
 import { Link } from 'react-router-dom'
@@ -21,7 +22,7 @@ const columns: ColumnDef<PortfolioStakedRSR, any>[] = [
   {
     id: 'name',
     accessorKey: 'name',
-    header: 'Position',
+    header: () => <Trans>Position</Trans>,
     cell: ({ row }) => (
       <div className="flex items-center gap-2 min-h-10">
         <TokenLogoWithChain symbol="RSR" chain={row.original.chainId} />
@@ -38,7 +39,7 @@ const columns: ColumnDef<PortfolioStakedRSR, any>[] = [
   },
   {
     id: 'governs',
-    header: 'Governs',
+    header: () => <Trans>Governs</Trans>,
     cell: ({ row }) => (
       <div className="flex items-center gap-1.5">
         <TokenLogo
@@ -63,7 +64,9 @@ const columns: ColumnDef<PortfolioStakedRSR, any>[] = [
     id: 'apy',
     accessorKey: 'apy',
     header: ({ column }) => (
-      <SorteableButton column={column}>APY</SorteableButton>
+      <SorteableButton column={column}>
+        <Trans>APY</Trans>
+      </SorteableButton>
     ),
     cell: ({ row }) => {
       const val = row.original.apy
@@ -78,7 +81,9 @@ const columns: ColumnDef<PortfolioStakedRSR, any>[] = [
     id: 'balance',
     accessorKey: 'amount',
     header: ({ column }) => (
-      <SorteableButton column={column}>Balance</SorteableButton>
+      <SorteableButton column={column}>
+        <Trans>Balance</Trans>
+      </SorteableButton>
     ),
     cell: ({ row }) => {
       const val = Number(row.original.amount)
@@ -93,7 +98,9 @@ const columns: ColumnDef<PortfolioStakedRSR, any>[] = [
     id: 'value',
     accessorKey: 'value',
     header: ({ column }) => (
-      <SorteableButton column={column}>Value</SorteableButton>
+      <SorteableButton column={column}>
+        <Trans>Value</Trans>
+      </SorteableButton>
     ),
     cell: ({ row }) => {
       const val = row.original.value
@@ -106,7 +113,11 @@ const columns: ColumnDef<PortfolioStakedRSR, any>[] = [
   },
   {
     id: 'action',
-    header: () => <span className="flex justify-end">Action</span>,
+    header: () => (
+      <span className="flex justify-end">
+        <Trans>Action</Trans>
+      </span>
+    ),
     cell: ({ row }) => (
       <div className="flex justify-end">
         <Button
@@ -125,7 +136,7 @@ const columns: ColumnDef<PortfolioStakedRSR, any>[] = [
             )
           }}
         >
-          Modify
+          <Trans>Modify</Trans>
         </Button>
       </div>
     ),
@@ -144,9 +155,9 @@ const StakedPositions = () => {
     <div>
       <SectionHeader
         icon={HandCoins}
-        title="Staked RSR Positions"
+        title={<Trans>Staked RSR Positions</Trans>}
         subtitle={
-          <>
+          <Trans>
             Stake your RSR and earn APY rewards.{' '}
             <a
               href="https://docs.reserve.org/core-components/rsr-reserve-rights"
@@ -157,7 +168,7 @@ const StakedPositions = () => {
               Learn more
             </a>
             .
-          </>
+          </Trans>
         }
       />
       <div className="bg-card rounded-[20px] border border-border overflow-hidden">

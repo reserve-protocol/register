@@ -1,3 +1,4 @@
+import { Trans } from '@lingui/react/macro'
 import { ChevronDown, ChevronUp } from 'lucide-react'
 import { useState } from 'react'
 
@@ -29,11 +30,11 @@ export const ExpandToggle = ({
   >
     {expanded ? (
       <>
-        Show less <ChevronUp size={16} />
+        <Trans>Show less</Trans> <ChevronUp size={16} />
       </>
     ) : (
       <>
-        Show all ({total}) <ChevronDown size={16} />
+        <Trans>Show all ({total})</Trans> <ChevronDown size={16} />
       </>
     )}
   </button>

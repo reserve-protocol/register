@@ -1,4 +1,4 @@
-import { t, Trans } from '@lingui/macro'
+import { Trans, useLingui } from '@lingui/react/macro'
 import { Button } from '@/components/ui/button'
 import { ArrowRight, Plus, Square, X } from 'lucide-react'
 import { useFormContext } from 'react-hook-form'
@@ -104,6 +104,7 @@ export const ParameterPreview = ({
   values,
   className,
 }: ParameterPreviewProps) => {
+  const { t } = useLingui()
   const { resetField } = useFormContext()
   const { field, current, proposed } = values
 

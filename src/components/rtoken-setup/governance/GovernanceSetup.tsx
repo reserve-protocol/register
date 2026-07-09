@@ -1,4 +1,4 @@
-import { t, Trans } from '@lingui/macro'
+import { Trans, useLingui } from '@lingui/react/macro'
 import { Field, FormField } from 'components/field'
 import { useFormContext } from 'react-hook-form'
 import { Card } from '@/components/ui/card'
@@ -26,6 +26,7 @@ const GovernanceSetup = ({
   disabled = false,
   className,
 }: GovernanceSetupProps) => {
+  const { t } = useLingui()
   const { watch, setValue } = useFormContext()
   const defaultGovernance = watch('defaultGovernance')
   const unfreeze = watch('unfreeze')

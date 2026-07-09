@@ -1,4 +1,5 @@
 import { Card } from '@/components/ui/card'
+import { dateLocale } from '@/utils/locale'
 import {
   indexDTF24hVolumeAtom,
   indexDTFAtom,
@@ -17,12 +18,15 @@ import {
 } from 'lucide-react'
 import MetricsItem from './metrics-item'
 import SectionAnchor from '@/components/section-anchor'
+import { Trans } from '@lingui/react/macro'
+
+const FEES_METRIC_CLASSNAME = 'px-5 py-3 last:pb-5 sm:px-5 sm:py-5'
 
 const AnnualizedTvlFee = () => {
   const dtf = useAtomValue(indexDTFAtom)
   return (
     <MetricsItem
-      label="Annualized TVL Fee"
+      label={<Trans>Annualized TVL Fee</Trans>}
       value={
         dtf?.annualizedTvlFee
           ? formatPercentage(dtf?.annualizedTvlFee * 100)
@@ -30,6 +34,7 @@ const AnnualizedTvlFee = () => {
       }
       icon={<TableRowsSplit size={16} />}
       loading={!dtf?.annualizedTvlFee}
+      className={FEES_METRIC_CLASSNAME}
     />
   )
 }
@@ -38,10 +43,11 @@ const MintingFee = () => {
   const dtf = useAtomValue(indexDTFAtom)
   return (
     <MetricsItem
-      label="Minting Fee"
+      label={<Trans>Minting Fee</Trans>}
       value={dtf?.mintingFee ? formatPercentage(dtf?.mintingFee * 100) : ''}
       icon={<ChartPie size={16} />}
       loading={!dtf?.mintingFee}
+      className={FEES_METRIC_CLASSNAME}
     />
   )
 }
@@ -50,10 +56,11 @@ const MarketCap = () => {
   const marketCap = useAtomValue(indexDTFMarketCapAtom)
   return (
     <MetricsItem
-      label="Market Cap"
+      label={<Trans>Market Cap</Trans>}
       value={marketCap ? `$${formatCurrency(marketCap, 0)}` : '$0'}
       icon={<BadgeDollarSign size={16} />}
       loading={!marketCap}
+      className={FEES_METRIC_CLASSNAME}
     />
   )
 }
@@ -64,10 +71,11 @@ const TxVolume = () => {
 
   return (
     <MetricsItem
-      label="24h Volume"
+      label={<Trans>24h Volume</Trans>}
       value={`$${formatCurrency(txVolume, 0)}`}
       icon={<ArrowUpDown size={16} />}
       loading={!transactions.length}
+      className={FEES_METRIC_CLASSNAME}
     />
   )
 }
@@ -76,10 +84,11 @@ const UniqueHolders = () => {
   const dtf = useAtomValue(indexDTFAtom)
   return (
     <MetricsItem
-      label="Unique Holders"
+      label={<Trans>Unique Holders</Trans>}
       value={formatCurrency(dtf?.token?.currentHolderCount || 0, 0)}
       icon={<Wallet size={16} />}
       loading={!dtf?.token?.currentHolderCount}
+      className={FEES_METRIC_CLASSNAME}
     />
   )
 }
@@ -88,10 +97,10 @@ const Created = () => {
   const dtf = useAtomValue(indexDTFAtom)
   return (
     <MetricsItem
-      label="Created"
+      label={<Trans>Created</Trans>}
       value={
         dtf?.timestamp
-          ? new Date(dtf.timestamp * 1000).toLocaleDateString('en-US', {
+          ? new Date(dtf.timestamp * 1000).toLocaleDateString(dateLocale(), {
               year: 'numeric',
               month: 'long',
               day: 'numeric',
@@ -100,6 +109,7 @@ const Created = () => {
       }
       icon={<Cake size={16} />}
       loading={!dtf?.timestamp}
+      className={FEES_METRIC_CLASSNAME}
     />
   )
 }
@@ -107,9 +117,11 @@ const Created = () => {
 const FeesStats = () => {
   return (
     <Card className="group/section" id="fees-stats">
-      <div className="p-4 sm:p-6 pb-0 sm:pb-0">
+      <div className="p-5 pb-1 sm:p-6 sm:pb-1">
         <div className="flex items-center gap-1">
-          <h2 className="text-2xl font-light mb-1">Fees & Stats</h2>
+          <h2 className="text-2xl font-light mb-1">
+            <Trans>Fees & Stats</Trans>
+          </h2>
           <SectionAnchor id="fees-stats" />
         </div>
       </div>

@@ -1,4 +1,4 @@
-import { t } from '@lingui/macro'
+import { useLingui } from '@lingui/react/macro'
 import AreaChart from 'components/charts/area/AreaChart'
 import dayjs from 'dayjs'
 import { gql } from 'graphql-request'
@@ -77,6 +77,7 @@ type APYOptions = (typeof APY_OPTIONS)[number]['key']
 const today = getUTCStartOfDay(Date.now() / 1000)
 
 const APYChart = ({ className }: { className?: string }) => {
+  const { t } = useLingui()
   const rToken = useRToken()
   const rsrPrice = useAtomValue(rsrPriceAtom)
   const rTokenPrice = useAtomValue(rTokenPriceAtom)

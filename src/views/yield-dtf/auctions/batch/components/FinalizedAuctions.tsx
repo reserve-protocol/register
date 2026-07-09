@@ -1,4 +1,4 @@
-import { Trans } from '@lingui/macro'
+import { Trans } from '@lingui/react/macro'
 import { Table } from '@/components/ui/legacy-table'
 import { useAtomValue } from 'jotai'
 import { endedTradesAtom } from '../../atoms'

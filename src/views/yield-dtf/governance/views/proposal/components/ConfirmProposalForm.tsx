@@ -1,4 +1,5 @@
-import { Trans, t } from '@lingui/macro'
+import { Trans } from '@lingui/react/macro'
+import { useLingui } from '@lingui/react/macro'
 import { Input } from 'components'
 import Field from 'components/field'
 import useRToken from 'hooks/useRToken'
@@ -19,6 +20,7 @@ const ConfirmProposalForm = ({
   addresses: string[]
   calldatas: string[]
 }) => {
+  const { t } = useLingui()
   const [title, setTitle] = useState('')
   const [rfc, setRFC] = useState('')
   const [description, setDescription] = useState<string | undefined>('')

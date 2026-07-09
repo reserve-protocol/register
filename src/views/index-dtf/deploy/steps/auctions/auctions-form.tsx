@@ -3,22 +3,7 @@ import { humanizeMinutes } from '@/utils'
 import { HandCoins, Hourglass, LandPlot } from 'lucide-react'
 import { Controller, useFormContext } from 'react-hook-form'
 import ToggleGroupWithCustom from '../../components/toggle-group-with-custom'
-
-const TOGGLE_FORMS = [
-  {
-    title: 'Auction length',
-    description: `How long dutch auctions will run when swapping tokens out of the basket. Shorter auction lengths benefit from less market volatility affecting the price during the auction. Longer auctions benefit from having more time for discovering the best price when swapping two tokens.`,
-    icon: <Hourglass size={14} strokeWidth={1.5} />,
-    options: [15, 30, 45],
-    optionsFormatter: (option: number) => humanizeMinutes(option),
-    fieldName: 'auctionLength',
-    customLabel: 'minutes',
-    customPlaceholder: 'Enter custom length',
-    inputProps: {
-      max: 45,
-    },
-  },
-]
+import { Trans, useLingui } from '@lingui/react/macro'
 
 const WeightControl = () => {
   const { control } = useFormContext()
@@ -31,11 +16,15 @@ const WeightControl = () => {
         </div>
 
         <div className="flex flex-col">
-          <div className="text-base font-bold">Weight control</div>
+          <div className="text-base font-bold">
+            <Trans>Weight control</Trans>
+          </div>
           <div className="flex items-center gap-1 text-sm text-muted-foreground">
-            Allowing the weight control will allow the rebalance to adjust the
-            weights of the tokens in the basket, turning this off is recommended
-            for tracking DTFs.
+            <Trans>
+              Allowing the weight control will allow the rebalance to adjust the
+              weights of the tokens in the basket, turning this off is
+              recommended for tracking DTFs.
+            </Trans>
           </div>
         </div>
 
@@ -62,9 +51,11 @@ const BidsEnabled = () => {
         </div>
 
         <div className="flex flex-col">
-          <div className="text-base font-bold">Permissionless Bids</div>
+          <div className="text-base font-bold">
+            <Trans>Permissionless Bids</Trans>
+          </div>
           <div className="flex items-center gap-1 text-sm text-muted-foreground">
-            Enable bids directly via the folio.
+            <Trans>Enable bids directly from the DTF.</Trans>
           </div>
         </div>
 
@@ -80,14 +71,34 @@ const BidsEnabled = () => {
   )
 }
 
-const AuctionsForm = () => (
-  <div className="flex flex-col gap-2 px-2 mb-2">
-    {TOGGLE_FORMS.map((form) => (
-      <ToggleGroupWithCustom key={form.fieldName} {...form} />
-    ))}
-    <BidsEnabled />
-    <WeightControl />
-  </div>
-)
+const AuctionsForm = () => {
+  const { t } = useLingui()
+
+  const toggleForms = [
+    {
+      title: t`Auction length`,
+      description: t`How long dutch auctions will run when swapping tokens out of the basket. Shorter auction lengths benefit from less market volatility affecting the price during the auction. Longer auctions benefit from having more time for discovering the best price when swapping two tokens.`,
+      icon: <Hourglass size={14} strokeWidth={1.5} />,
+      options: [15, 30, 45],
+      optionsFormatter: (option: number) => humanizeMinutes(option),
+      fieldName: 'auctionLength',
+      customLabel: t`minutes`,
+      customPlaceholder: t`Enter custom length`,
+      inputProps: {
+        max: 45,
+      },
+    },
+  ]
+
+  return (
+    <div className="flex flex-col gap-2 px-2 mb-2">
+      {toggleForms.map((form) => (
+        <ToggleGroupWithCustom key={form.fieldName} {...form} />
+      ))}
+      <BidsEnabled />
+      <WeightControl />
+    </div>
+  )
+}
 
 export default AuctionsForm

@@ -1,4 +1,5 @@
 import Enso from '@/components/icons/Enso'
+import { Trans } from '@lingui/react/macro'
 import { Zap } from 'lucide-react'
 import { useZap } from '../context/ZapContext'
 
@@ -11,7 +12,9 @@ const ZapQuoteSource = () => {
 
   return (
     <div className="flex items-center gap-1.5 text-sm text-muted-foreground">
-      <span>Quote source</span>
+      <span>
+        <Trans>Quote source</Trans>
+      </span>
       <div className="flex items-center gap-1 font-medium text-foreground">
         {isEnso ? <Enso width={14} /> : <Zap size={14} />}
         <span>{isEnso ? 'Enso' : 'Zap'}</span>

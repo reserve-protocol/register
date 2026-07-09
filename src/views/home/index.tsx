@@ -1,20 +1,16 @@
-import useTrackPage from "@/hooks/useTrackPage"
-import Hero from "./components/hero"
-import FeedbackButton from "@/components/feedback-button"
-import DiscoverDTFS from "./components/discover-dtfs"
-import DtfTabs from "./components/dtf-tabs"
-import RegisterAbout from "./components/register-about"
+import useTrackPage from '@/hooks/useTrackPage'
+import HomepageHero from './components/homepage-hero'
+import { HistoricalPriceDisclaimer } from './components/highlighted-dtfs/historical-price-disclaimer'
+import RegisterAbout from './components/register-about'
 
 const Home = () => {
-  useTrackPage('discover')
+  useTrackPage('home')
 
   return (
     <div className="container">
-      <Hero />
-      <DtfTabs />
-      <DiscoverDTFS />
+      <HomepageHero />
+      <HistoricalPriceDisclaimer />
       <RegisterAbout />
-      <FeedbackButton className="bottom-2" />
     </div>
   )
 }

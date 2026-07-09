@@ -1,4 +1,4 @@
-import { t } from '@lingui/macro'
+import { useLingui } from '@lingui/react/macro'
 import { CopyIcon } from 'lucide-react'
 import React, { useState } from 'react'
 import { isAddress } from '@/utils'
@@ -17,17 +17,17 @@ const Copy: React.FC<CopyProps> = ({
   side = 'top',
   className,
 }) => {
-  const copyText = t`Copy to clipboard`
-  const confirmText = t`Copied to clipboard!`
-  const [displayText, setDisplayText] = useState(copyText)
+  const { t } = useLingui()
+  const [isCopied, setIsCopied] = useState(false)
   const [isOpen, setIsOpen] = useState(false)
+  const displayText = isCopied ? t`Copied to clipboard!` : t`Copy to clipboard`
 
   const handleCopy = () => {
     navigator.clipboard.writeText(isAddress(value) || value)
-    setDisplayText(confirmText)
+    setIsCopied(true)
     setIsOpen(true)
     setTimeout(() => {
-      setDisplayText(copyText)
+      setIsCopied(false)
       setIsOpen(false)
     }, 2000) // Reset after 2 seconds
   }

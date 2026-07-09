@@ -2,10 +2,12 @@ import dayjs from 'dayjs'
 import type { PerformanceData } from '../types/factsheet-data'
 import { CalendarRange } from 'lucide-react'
 import { currentHour } from '../utils/constants'
+import { Trans, useLingui } from '@lingui/react/macro'
 
 interface PerformanceTableProps {
   performance: PerformanceData
-  inception: number
+  // On-chain DTF deployment timestamp (dtf.timestamp) — the only valid source
+  inception?: number
 }
 
 const formatPerformanceValue = (value: number | null): string => {
@@ -17,16 +19,19 @@ const PerformanceTable = ({
   performance,
   inception,
 }: PerformanceTableProps) => {
-  const inceptionDate = dayjs.unix(inception).format('MMM D, YYYY')
+  const { t } = useLingui()
+  const inceptionDate = inception
+    ? dayjs.unix(inception).format('MMM D, YYYY')
+    : undefined
   const currentDate = dayjs.unix(currentHour).format('MMM D, YYYY')
 
   const rows = [
-    { label: '1 Month', value: performance['1m'] },
-    { label: '3 Month', value: performance['3m'] },
-    { label: '6 Month', value: performance['6m'] },
+    { label: t`1 Month`, value: performance['1m'] },
+    { label: t`3 Month`, value: performance['3m'] },
+    { label: t`6 Month`, value: performance['6m'] },
     { label: 'YTD', value: performance.ytd },
-    { label: '1 Year', value: performance['1y'] },
-    { label: 'All Time', value: performance.all },
+    { label: t`1 Year`, value: performance['1y'] },
+    { label: t`All Time`, value: performance.all },
   ]
 
   return (
@@ -37,10 +42,10 @@ const PerformanceTable = ({
       <div>
         <div className="mx-6 mb-6">
           <h3 className="text-2xl font-light mb-1">
-            Performance from inception*
+            <Trans>Performance from inception*</Trans>
           </h3>
-          <p className="text-sm">
-            ({inceptionDate} - {currentDate})
+          <p className="text-sm min-h-5">
+            {inceptionDate && `(${inceptionDate} - ${currentDate})`}
           </p>
         </div>
 

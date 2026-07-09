@@ -34,14 +34,22 @@ export const getRangeParams = (range: string, minFrom: number = 0) => {
       to: currentHour,
       interval: '1d' as const,
     },
+    ytd: {
+      from: Math.floor(
+        Date.UTC(new Date(currentHour * 1000).getUTCFullYear(), 0, 1) / 1000
+      ),
+      to: currentHour,
+      interval: '1d' as const,
+    },
     '1y': {
       from: currentHour - TIME_PERIODS.YEAR,
       to: currentHour,
       interval: '1d' as const,
     },
-    all: { from: minFrom, to: currentHour, interval: '1d' as const },
+    all: { from: 0, to: currentHour, interval: '1d' as const },
   }
-  return intervals[range as keyof typeof intervals] || intervals['7d']
+  const params = intervals[range as keyof typeof intervals] || intervals['7d']
+  return { ...params, from: Math.max(params.from, minFrom) }
 }
 
 export const MONTH_NAMES = [

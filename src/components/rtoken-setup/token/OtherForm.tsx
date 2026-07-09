@@ -1,4 +1,4 @@
-import { t } from '@lingui/macro'
+import { useLingui } from '@lingui/react/macro'
 import { FormField } from 'components/field'
 import { useFormContext } from 'react-hook-form'
 import { decimalPattern, numberPattern, parseDuration } from 'utils'
@@ -11,6 +11,7 @@ interface OtherFormProps {
  * View: Deploy -> Token setup
  */
 const OtherForm = ({ className }: OtherFormProps) => {
+  const { t } = useLingui()
   const { watch } = useFormContext()
   const [shortFreezeHelp, longFreezeHelp, unstakingDelayHelp]: string[] = watch(
     ['shortFreeze', 'longFreeze', 'unstakingDelay']

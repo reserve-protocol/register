@@ -1,4 +1,4 @@
-import { Trans } from '@lingui/macro'
+import { Trans } from '@lingui/react/macro'
 import { Button } from '@/components/ui/button'
 import SectionWrapper from '@/components/section-navigation/section-wrapper'
 import { Card } from '@/components/ui/card'

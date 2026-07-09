@@ -1,4 +1,5 @@
 import TokenLogo from '@/components/token-logo'
+import { Trans } from '@lingui/react/macro'
 import { Button } from '@/components/ui/button'
 import { NumericalInput } from '@/components/ui/input'
 import { indexDTFAtom, indexDTFBrandAtom } from '@/state/dtf/atoms'
@@ -26,7 +27,9 @@ const DTFMaxAmount = () => {
         </h2>
       </div>
       <div className="flex items-center gap-1">
-        <span className="text-legend">Max:</span>
+        <span className="text-legend">
+          <Trans>Max:</Trans>
+        </span>
         <span className="font-bold">
           {formatCurrency(Number(formatEther(maxAmount)), 2, {
             notation: 'compact',
@@ -40,7 +43,7 @@ const DTFMaxAmount = () => {
           disabled={isRestricted}
           onClick={() => setMaxAmount(formatEther(maxAmount))}
         >
-          Use
+          <Trans>Use</Trans>
         </Button>
       </div>
     </div>
@@ -60,7 +63,11 @@ const AmountInput = () => {
   return (
     <div className="flex flex-col">
       <label htmlFor="manual-input">
-        {mode === 'buy' ? 'Mint Amount:' : 'Redeem Amount:'}
+        {mode === 'buy' ? (
+          <Trans>Mint Amount:</Trans>
+        ) : (
+          <Trans>Redeem Amount:</Trans>
+        )}
       </label>
 
       <div className="flex items-center">

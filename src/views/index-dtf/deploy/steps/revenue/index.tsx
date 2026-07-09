@@ -6,30 +6,36 @@ import RevenueDistributionSettings from './revenue-distribution-settings'
 import { useFormContext } from 'react-hook-form'
 import { Decimal } from '../../utils/decimals'
 import { INDEX_PROTOCOL_DOCS } from '@/utils/constants'
+import { Trans, useLingui } from '@lingui/react/macro'
 
 const Description = () => (
   <div className="px-6 pb-6 text-base">
-    Index DTF generate revenue by charging fees for minting and holding the DTF.
-    Revenue generated from fees can be sent to the DTF's creator, the vote-lock
-    DAO, or any arbitrary address (wallet or smart contract). A portion of this
-    revenue will automatically be sent to the protocol based on the TVL of the
-    DTF. You can see a complete list of the platform fee schedule{' '}
-    <a
-      href={INDEX_PROTOCOL_DOCS + '#fees-revenue'}
-      target="_blank"
-      rel="noreferrer"
-      className="text-primary"
-    >
-      here
-    </a>
-    .
+    <Trans>
+      Index DTF generate revenue by charging fees for minting and holding the
+      DTF. Revenue generated from fees can be sent to the DTF's creator, the
+      vote-lock DAO, or any arbitrary address (wallet or smart contract). A
+      portion of this revenue will automatically be sent to the protocol based
+      on the TVL of the DTF. You can see a complete list of the platform fee
+      schedule{' '}
+      <a
+        href={INDEX_PROTOCOL_DOCS + '#fees-revenue'}
+        target="_blank"
+        rel="noreferrer"
+        className="text-primary"
+      >
+        here
+      </a>
+      .
+    </Trans>
   </div>
 )
 
 const FeeDistributionDescription = () => (
   <div className="px-6 pb-6 text-base">
-    Define what portion of the revenue goes to the DTF's creator, the vote-lock
-    DAO, or any arbitrary address (wallet or smart contract).
+    <Trans>
+      Define what portion of the revenue goes to the DTF's creator, the
+      vote-lock DAO, or any arbitrary address (wallet or smart contract).
+    </Trans>
   </div>
 )
 
@@ -44,14 +50,17 @@ const AnnualizedFeeWarningMessage = ({
 
   return (
     <span>
-      There is a minimum platform fee of 0.15%. This means that 0.15% of the fee
-      set above will go to the platform and only {diff}% of the fee will be
-      split amongst other recipients.
+      <Trans>
+        There is a minimum platform fee of 0.15%. This means that 0.15% of the
+        fee set above will go to the platform and only {diff}% of the fee will
+        be split amongst other recipients.
+      </Trans>
     </span>
   )
 }
 
 const RevenueDistribution = () => {
+  const { t } = useLingui()
   const { watch } = useFormContext()
   const folioFee = watch('folioFee')
   const mintFee = watch('mintFee')
@@ -60,8 +69,8 @@ const RevenueDistribution = () => {
 
   const toggleForms = [
     {
-      title: 'Annualized TVL Fee',
-      description: `A percentage-based fee charged by the DTF based on the total value of the tokens held in the contract. The platform will keep 50% of revenue from this fee. (Min: 0.15%, Max: 10%)`,
+      title: t`Annualized TVL Fee`,
+      description: t`A percentage-based fee charged by the DTF based on the total value of the tokens held in the contract. The platform will keep 50% of revenue from this fee. (Min: 0.15%, Max: 10%)`,
       icon: <TableColumnsSplit size={14} strokeWidth={1.5} />,
       options: [0.15, 0.3, 0.5, 1, 2],
       optionsFormatter: (option: number) => formatPercentage(option),
@@ -79,8 +88,8 @@ const RevenueDistribution = () => {
     },
 
     {
-      title: 'Mint Fee',
-      description: `A one-time fee deducted from the tokens a user receives when they mint the DTF. The platform will keep 50% of revenue from this fee. (Min: 0.15%, Max: 5%)`,
+      title: t`Mint Fee`,
+      description: t`A one-time fee deducted from the tokens a user receives when they mint the DTF. The platform will keep 50% of revenue from this fee. (Min: 0.15%, Max: 5%)`,
       icon: <Eclipse size={14} strokeWidth={1.5} />,
       options: [0.15, 0.3, 0.5, 1, 2],
       optionsFormatter: (option: number) => formatPercentage(option),
@@ -107,7 +116,7 @@ const RevenueDistribution = () => {
         ))}
       </div>
       <h1 className="text-2xl font-bold text-primary my-4 ml-6">
-        Fee Distribution
+        <Trans>Fee Distribution</Trans>
       </h1>
       <FeeDistributionDescription />
       <RevenueDistributionSettings />

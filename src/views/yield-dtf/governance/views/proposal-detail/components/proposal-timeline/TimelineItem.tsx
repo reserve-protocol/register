@@ -1,3 +1,6 @@
+import type { MessageDescriptor } from '@lingui/core'
+import { msg } from '@lingui/core/macro'
+import { Trans, useLingui } from '@lingui/react/macro'
 import ExplorerAddress from '@/components/utils/explorer-address'
 import useBlockTimestamp from 'hooks/useBlockTimestamp'
 import { useAtomValue } from 'jotai'
@@ -71,11 +74,13 @@ export const TimelineItemCreated = () => {
   return (
     <TimelineItem
       icon={<Circle size={18} />}
-      title="Proposal created"
+      title={<Trans>Proposal created</Trans>}
       surtitle={formatDate(+(proposal?.creationTime || 0) * 1000)}
       subtitle={
         <div className="flex items-center gap-1">
-          <span>By:</span>
+          <span>
+            <Trans>By:</Trans>
+          </span>
           <ExplorerAddress address={proposal?.proposer || ''} chain={chainId} ens />
         </div>
       }
@@ -98,7 +103,7 @@ export const TimelineItemVotingDelay = () => {
   return (
     <TimelineItem
       icon={<Clock size={18} />}
-      title="Voting delay"
+      title={<Trans>Voting delay</Trans>}
       surtitle={parseDuration(duration)}
       showProgress={showProgress}
       progress={progress * 100}
@@ -123,7 +128,7 @@ export const TimelineItemVotingPeriod = () => {
   return (
     <TimelineItem
       icon={<PlayCircle size={18} />}
-      title="Voting Period"
+      title={<Trans>Voting Period</Trans>}
       surtitle={formatDate(+(startTime || 0) * 1000)}
       showProgress={enabled && inProgress}
       progress={(duration > 0 ? elapsed / duration : 0) * 100}
@@ -133,6 +138,7 @@ export const TimelineItemVotingPeriod = () => {
 }
 
 export const TimelineItemVotingPeriodEnds = () => {
+  const { t } = useLingui()
   const proposal = useAtomValue(proposalDetailAtom)
   const isTimeunit = isTimeunitGovernance(proposal?.version ?? '1')
   const _startTime = useBlockTimestamp(proposal?.startBlock)
@@ -147,9 +153,9 @@ export const TimelineItemVotingPeriodEnds = () => {
   return (
     <TimelineItem
       icon={<StopCircle size={18} />}
-      title="Voting Period Ends"
+      title={<Trans>Voting Period Ends</Trans>}
       surtitle={formatDate(+(endTime || 0) * 1000)}
-      subtitle={enabled ? '' : `in ${parseDuration(elapsed)}`}
+      subtitle={enabled ? '' : t`in ${parseDuration(elapsed)}`}
       enabled={enabled}
     />
   )
@@ -164,14 +170,14 @@ const VALID_STATES = [
   PROPOSAL_STATES.EXECUTED,
   PROPOSAL_STATES.CANCELED,
 ]
-const TITLE_BY_STATE: Record<string, string> = {
-  [PROPOSAL_STATES.DEFEATED]: 'Proposal defeated',
-  [PROPOSAL_STATES.QUORUM_NOT_REACHED]: 'Quorum not reached',
-  [PROPOSAL_STATES.EXPIRED]: 'Proposal expired',
-  [PROPOSAL_STATES.SUCCEEDED]: 'Proposal succeeded',
-  [PROPOSAL_STATES.QUEUED]: 'Proposal succeeded',
-  [PROPOSAL_STATES.EXECUTED]: 'Proposal succeeded',
-  [PROPOSAL_STATES.CANCELED]: 'Proposal succeeded',
+const TITLE_BY_STATE: Record<string, MessageDescriptor> = {
+  [PROPOSAL_STATES.DEFEATED]: msg`Proposal defeated`,
+  [PROPOSAL_STATES.QUORUM_NOT_REACHED]: msg`Quorum not reached`,
+  [PROPOSAL_STATES.EXPIRED]: msg`Proposal expired`,
+  [PROPOSAL_STATES.SUCCEEDED]: msg`Proposal succeeded`,
+  [PROPOSAL_STATES.QUEUED]: msg`Proposal succeeded`,
+  [PROPOSAL_STATES.EXECUTED]: msg`Proposal succeeded`,
+  [PROPOSAL_STATES.CANCELED]: msg`Proposal succeeded`,
 }
 const ICON_BY_STATE: Record<string, ReactNode> = {
   [PROPOSAL_STATES.DEFEATED]: <XCircle color="red" size={18} />,
@@ -192,6 +198,7 @@ const COLOR_BY_STATE: Record<string, string> = {
   [PROPOSAL_STATES.CANCELED]: 'text-green-500',
 }
 export const TimelineItemVotingResult = () => {
+  const { t } = useLingui()
   const proposalState = useAtomValue(getProposalStateAtom)
   const show = VALID_STATES.includes(proposalState.state)
 
@@ -202,7 +209,7 @@ export const TimelineItemVotingResult = () => {
       icon={ICON_BY_STATE[proposalState.state]}
       title={
         <span className={COLOR_BY_STATE[proposalState.state]}>
-          {TITLE_BY_STATE[proposalState.state]}
+          {t(TITLE_BY_STATE[proposalState.state])}
         </span>
       }
     />
@@ -231,7 +238,7 @@ export const TimelineItemQueued = () => {
   return (
     <TimelineItem
       icon={<MoreHorizontal size={18} />}
-      title="Queued"
+      title={<Trans>Queued</Trans>}
       surtitle={formatDate(queueTime * 1000)}
       subtitle={parseDuration(duration)}
       showProgress={showProgress}
@@ -245,12 +252,13 @@ const VALID_STATES_END = [
   PROPOSAL_STATES.EXECUTED,
   PROPOSAL_STATES.CANCELED,
 ]
-const TITLE_BY_STATE_END: Record<string, string> = {
-  [PROPOSAL_STATES.QUEUED]: 'Execute proposal',
-  [PROPOSAL_STATES.EXECUTED]: 'Executed',
-  [PROPOSAL_STATES.CANCELED]: 'Canceled',
+const TITLE_BY_STATE_END: Record<string, MessageDescriptor> = {
+  [PROPOSAL_STATES.QUEUED]: msg`Execute proposal`,
+  [PROPOSAL_STATES.EXECUTED]: msg`Executed`,
+  [PROPOSAL_STATES.CANCELED]: msg`Canceled`,
 }
 export const TimelineItemEnd = () => {
+  const { t } = useLingui()
   const proposal = useAtomValue(proposalDetailAtom)
   const proposalState = useAtomValue(getProposalStateAtom)
 
@@ -265,7 +273,7 @@ export const TimelineItemEnd = () => {
   return (
     <TimelineItem
       icon={<Circle size={18} />}
-      title={TITLE_BY_STATE_END[proposalState.state]}
+      title={t(TITLE_BY_STATE_END[proposalState.state])}
       surtitle={formatDate(
         (proposalState.state === PROPOSAL_STATES.QUEUED
           ? executionETA

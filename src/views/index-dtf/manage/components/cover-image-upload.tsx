@@ -1,9 +1,10 @@
 import { useCallback, useState, useEffect } from 'react'
-import { useDropzone } from 'react-dropzone'
-import { PencilLine, AlertCircle, ImagePlus } from 'lucide-react'
+import { type FileRejection, useDropzone } from 'react-dropzone'
+import { AlertCircle, ImagePlus, X } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import { Button } from '@/components/ui/button'
+import { Trans, useLingui } from '@lingui/react/macro'
 
 const MAX_FILE_SIZE = 1024 * 1024 // 1MB
 
@@ -27,7 +28,9 @@ function CoverImageUploader({
   defaultImage,
   variant,
 }: CoverImageUploaderProps) {
+  const { t } = useLingui()
   const [preview, setPreview] = useState<string | null>(defaultImage || null)
+  const [cleared, setCleared] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
   // Create preview when file changes
@@ -40,8 +43,6 @@ function CoverImageUploader({
       if (file) {
         const objectUrl = URL.createObjectURL(file)
         setPreview(objectUrl)
-      } else if (defaultImage) {
-        setPreview(defaultImage)
       } else {
         setPreview(null)
       }
@@ -59,18 +60,18 @@ function CoverImageUploader({
   }, [preview, defaultImage])
 
   useEffect(() => {
-    // Update preview if defaultImage changes
-    if (defaultImage && !value) {
+    // Update preview if defaultImage changes, unless user explicitly cleared
+    if (defaultImage && !value && !cleared) {
       setPreview(defaultImage)
     }
-  }, [defaultImage, value])
+  }, [defaultImage, value, cleared])
 
   const onDrop = useCallback(
-    (acceptedFiles: File[], rejectedFiles: any[]) => {
+    (acceptedFiles: File[], rejectedFiles: FileRejection[]) => {
       setError(null)
 
       if (rejectedFiles.length > 0) {
-        setError('Please upload an image file (PNG, JPG, GIF) less than 1MB.')
+        setError(t`Please upload an image file (PNG, JPG, GIF) less than 1MB.`)
         return
       }
 
@@ -79,12 +80,24 @@ function CoverImageUploader({
       const file = acceptedFiles[0]
 
       if (file.size > MAX_FILE_SIZE) {
-        setError('File size exceeds 1MB limit. Please choose a smaller file.')
+        setError(t`File size exceeds 1MB limit. Please choose a smaller file.`)
         return
       }
 
+      setCleared(false)
       updatePreview(file)
       onChange?.(file)
+    },
+    [onChange, updatePreview, t]
+  )
+
+  const clearImage = useCallback(
+    (e: React.MouseEvent) => {
+      e.stopPropagation()
+      setCleared(true)
+      updatePreview(null)
+      onChange?.(null)
+      setError(null)
     },
     [onChange, updatePreview]
   )
@@ -113,7 +126,7 @@ function CoverImageUploader({
           <div className="absolute inset-0">
             <img
               src={preview || '/placeholder.svg'}
-              alt="Cover preview"
+              alt={t`Cover preview`}
               className="object-cover w-full h-full rounded-3xl"
               sizes="(max-width: 768px) 100vw, 50vw"
             />
@@ -129,7 +142,7 @@ function CoverImageUploader({
               <ImagePlus size={16} />
             </div>
             <p className="text-muted-foreground ">
-              Drag & drop to upload (max 1MB)
+              <Trans>Drag & drop to upload (max 1MB)</Trans>
             </p>
           </div>
         )}
@@ -139,19 +152,33 @@ function CoverImageUploader({
             <div className="p-1 rounded-full border border-dashed border-primary">
               <ImagePlus size={16} />
             </div>
-            <p>Drop image here</p>
+            <p>
+              <Trans>Drop image here</Trans>
+            </p>
           </div>
         )}
       </div>
       <Button
+        type="button"
         variant="outline"
         className={cn(
           'flex items-center gap-2 text-primary w-full rounded-3xl justify-start py-6 hover:text-primary hover:bg-primary/10'
         )}
       >
         <ImagePlus size={16} />
-        Edit {variant} cover image
+        <Trans>Edit {variant} cover image</Trans>
       </Button>
+      {preview && (
+        <Button
+          type="button"
+          variant="ghost"
+          className="flex items-center gap-2 w-full rounded-3xl justify-start text-destructive hover:text-destructive hover:bg-destructive/10"
+          onClick={clearImage}
+        >
+          <X size={16} />
+          <Trans>Remove {variant} cover image</Trans>
+        </Button>
+      )}
 
       {error && (
         <Alert variant="destructive">

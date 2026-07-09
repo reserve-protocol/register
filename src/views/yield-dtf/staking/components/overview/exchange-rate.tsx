@@ -1,3 +1,4 @@
+import { Trans } from '@lingui/react/macro'
 import AreaChart from 'components/charts/area/AreaChart'
 import dayjs from 'dayjs'
 import { gql } from 'graphql-request'
@@ -68,7 +69,9 @@ const ExchangeRate = () => {
       height={160}
       title={
         !rate ? (
-          <span className="text-legend">Loading history...</span>
+          <span className="text-legend">
+            <Trans>Loading history...</Trans>
+          </span>
         ) : (
           <>
             <span className="font-semibold">1 {stToken} =</span>{' '}

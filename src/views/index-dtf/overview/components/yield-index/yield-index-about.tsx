@@ -3,7 +3,7 @@ import { indexDTFAtom, indexDTFBrandAtom } from '@/state/dtf/atoms'
 import { useAtomValue } from 'jotai'
 import SectionAnchor from '@/components/section-anchor'
 import { Link } from 'react-router-dom'
-import { ROUTES } from '@/utils/constants'
+import { Trans } from '@lingui/react/macro'
 
 const YieldIndexAbout = () => {
   const data = useAtomValue(indexDTFAtom)
@@ -21,11 +21,11 @@ const YieldIndexAbout = () => {
     <div className="p-4 sm:p-6">
       <div className="flex items-center gap-1">
         <h2 className="text-2xl font-light mb-1">
-          About {data.token.symbol}
+          <Trans>About {data.token.symbol}</Trans>
         </h2>
         <SectionAnchor id="about" />
       </div>
-      <p className="text-legend mb-4">
+      <p className="text-legend mb-4 whitespace-pre-line">
         {brandData.dtf?.description || data.mandate}
       </p>
       <div className="flex items-center gap-4 text-sm">
@@ -35,22 +35,16 @@ const YieldIndexAbout = () => {
             target="_blank"
             className="underline text-muted-foreground hover:text-foreground"
           >
-            Website
+            <Trans>Website</Trans>
           </Link>
         )}
-        <Link
-          to={`../${ROUTES.FACTSHEET}`}
-          className="underline text-muted-foreground hover:text-foreground"
-        >
-          Performance Sheet
-        </Link>
         {brandData.socials?.twitter && (
           <Link
             to={brandData.socials.twitter}
             target="_blank"
             className="underline text-muted-foreground hover:text-foreground"
           >
-            X Account
+            <Trans>X Account</Trans>
           </Link>
         )}
       </div>

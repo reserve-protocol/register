@@ -2,6 +2,7 @@ import { RTokenIcon } from '@/components/icons/logos'
 import Timeline from '@/components/ui/timeline'
 import ExplorerAddress from '@/components/utils/explorer-address'
 import { chainIdAtom } from '@/state/atoms'
+import { Trans, useLingui } from '@lingui/react/macro'
 import { useAtomValue } from 'jotai'
 import { Asterisk, NotebookTabs } from 'lucide-react'
 import { ReactNode } from 'react'
@@ -25,6 +26,7 @@ const IndexTokenGraphic = () => {
 }
 
 const DeployTimeline = () => {
+  const { t } = useLingui()
   const chainId = useAtomValue(chainIdAtom)
   const formReadyForSubmit = useAtomValue(formReadyForSubmitAtom)
   const showCreateGovernanceDAO =
@@ -36,7 +38,7 @@ const DeployTimeline = () => {
 
   const timelineItems = [
     {
-      title: 'Configure your Index DTF',
+      title: t`Configure your Index DTF`,
       isActive: true,
     },
     ...(showCreateGovernanceDAO
@@ -44,9 +46,9 @@ const DeployTimeline = () => {
         {
           title: daoCreated
             ? stTokenSymbol
-              ? `Created ${stTokenSymbol} DAO`
-              : 'Governance DAO created'
-            : 'Sign tx to create governance DAO',
+              ? t`Created ${stTokenSymbol} DAO`
+              : t`Governance DAO created`
+            : t`Sign tx to create governance DAO`,
           rightText:
             daoCreated && stTokenAddress ? (
               <ExplorerAddress address={stTokenAddress} chain={chainId} />
@@ -57,7 +59,7 @@ const DeployTimeline = () => {
       ]
       : []),
     {
-      title: 'Create Index DTF',
+      title: t`Create Index DTF`,
       children: (
         <ConfirmIndexDeploy
           isActive={
@@ -71,7 +73,7 @@ const DeployTimeline = () => {
         (!showCreateGovernanceDAO && formReadyForSubmit),
     },
     {
-      title: 'Index DTF successfully created',
+      title: t`Index DTF successfully created`,
       isActive: !!deployedDTF,
     },
   ]
@@ -103,31 +105,36 @@ const SocialMediaLink = ({ href, icon, title }: SocialMediaLinkProps) => {
 }
 
 const HelpText = () => {
+  const { t } = useLingui()
   return (
     <div className="w-full rounded-3xl bg-background flex flex-col gap-3 p-6">
       <div className="p-2 rounded-full border border-foreground w-fit">
         <NotebookTabs size={14} strokeWidth={1.5} />
       </div>
       <div className="flex flex-col gap-1">
-        <span className="text-xl font-bold">Need help deploying?</span>
+        <span className="text-xl font-bold">
+          <Trans>Need help deploying?</Trans>
+        </span>
         <span className="text-muted-foreground">
-          Deploying through this UI doesn't require deep technical knowledge as
-          long as you don't need novel collateral plugins for your baskets.
-          However, we encourage you to talk to someone proficient in the
-          protocol and read the docs to learn more before confirming any
-          transactions.
+          <Trans>
+            Deploying through this UI doesn't require deep technical knowledge
+            as long as you don't need novel collateral plugins for your baskets.
+            However, we encourage you to talk to someone proficient in the
+            protocol and read the docs to learn more before confirming any
+            transactions.
+          </Trans>
         </span>
       </div>
       <div className="flex gap-2">
         <SocialMediaLink
           href={TELEGRAM_INVITE}
           icon={<TelegramIcon />}
-          title="Telegram"
+          title={t`Telegram`}
         />
         <SocialMediaLink
           href={INDEX_PROTOCOL_DOCS}
           icon={<RTokenIcon />}
-          title="Docs"
+          title={t`Docs`}
         />
         {/* <SocialMediaLink
           href=""

@@ -1,4 +1,4 @@
-import { Trans } from '@lingui/macro'
+import { Trans, useLingui } from '@lingui/react/macro'
 import { Button } from '@/components/ui/button'
 import EmptyBoxIcon from 'components/icons/EmptyBoxIcon'
 import { gql } from 'graphql-request'
@@ -75,7 +75,9 @@ export const ProposalVotingState = ({
   data,
 }: {
   data: IProposalVotingState
-}) => (
+}) => {
+  const { t } = useLingui()
+  return (
   <>
     {(data.state === PROPOSAL_STATES.ACTIVE ||
       data.state === PROPOSAL_STATES.QUEUED) &&
@@ -84,8 +86,8 @@ export const ProposalVotingState = ({
         <div className="flex items-center text-xs">
           <span className="text-legend">
             {data.state === PROPOSAL_STATES.ACTIVE
-              ? 'Voting ends in:'
-              : 'Execution available in:'}
+              ? t`Voting ends in:`
+              : t`Execution available in:`}
           </span>
           <span className="font-semibold ml-1">
             {parseDuration(data.deadline, {
@@ -97,7 +99,7 @@ export const ProposalVotingState = ({
       )}
     {data.state === PROPOSAL_STATES.PENDING && data.deadline ? (
       <div className="flex items-center mt-2 text-xs">
-        Voting starts in:{' '}
+        <Trans>Voting starts in:</Trans>{' '}
         <span className="font-semibold ml-1">
           {parseDuration(data.deadline, {
             units: ['d', 'h'],
@@ -114,12 +116,14 @@ export const ProposalVotingState = ({
           <span
             className={cn('font-medium', data.quorum ? 'text-success' : 'text-warning')}
           >
-            {data.quorum ? 'Yes' : 'No'}
+            {data.quorum ? t`Yes` : t`No`}
           </span>
         </div>
         <Circle size={4} />
         <div className="flex items-center gap-1">
-          <span className="text-legend">Votes:</span>
+          <span className="text-legend">
+            <Trans>Votes:</Trans>
+          </span>
           <span className="text-primary font-semibold">
             {formatPercentage(data.for)}
           </span>
@@ -132,7 +136,8 @@ export const ProposalVotingState = ({
       </div>
     )}
   </>
-)
+  )
+}
 
 // {dayjs.unix(+proposal.creationTime).format('YYYY-M-D')}
 

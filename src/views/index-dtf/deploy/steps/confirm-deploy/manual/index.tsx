@@ -13,6 +13,7 @@ import ConfirmManualDeployButton from './components/confirm-manual-deploy-button
 import DeployAssetsApproval from './components/deploy-assets-approvals'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { indexDeployFormDataAtom } from '../atoms'
+import { Trans } from '@lingui/react/macro'
 
 const AssetAllowanceUpdater = () => {
   const basketAssets = useAtomValue(basketAllowanceAtom)
@@ -33,10 +34,14 @@ const InitialFolioInput = () => {
 
   return (
     <div>
-      <h4 className="font-bold ml-2">How much do you want to mint?</h4>
+      <h4 className="font-bold ml-2">
+        <Trans>How much do you want to mint?</Trans>
+      </h4>
 
       <div className="flex flex-col  mt-2 p-4 bg-muted rounded-3xl">
-        <label htmlFor="manual-input">Mint Amount:</label>
+        <label htmlFor="manual-input">
+          <Trans>Mint Amount:</Trans>
+        </label>
 
         <div className="flex items-center">
           <div className="flex flex-col flex-grow min-w-0">

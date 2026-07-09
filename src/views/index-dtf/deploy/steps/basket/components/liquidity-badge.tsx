@@ -1,5 +1,6 @@
 import SharedLiquidityBadge from '@/components/liquidity-badge'
 import { LiquidityLevel } from '@/utils/liquidity'
+import { useLingui } from '@lingui/react/macro'
 import { useAtomValue } from 'jotai'
 import { liquiditySimulationAmountAtom } from '../atoms'
 import { getLiquidityCheckTokenSymbol } from '../hooks/use-liquidity-check'
@@ -25,13 +26,16 @@ const LiquidityBadge = ({
   isLoading,
   error,
 }: LiquidityBadgeProps) => {
+  const { t } = useLingui()
   const simulationAmount = useAtomValue(liquiditySimulationAmountAtom)
   const inputTokenSymbol = getLiquidityCheckTokenSymbol(chainId)
   const amountLabel = formatAmount(simulationAmount)
 
+  const priceImpactLabel =
+    priceImpact !== undefined ? priceImpact.toFixed(2) : undefined
   const tradeDescription =
-    priceImpact !== undefined && tokenSymbol
-      ? `${priceImpact.toFixed(2)}% price impact swapping ${amountLabel} ${inputTokenSymbol} for ${tokenSymbol}`
+    priceImpactLabel !== undefined && tokenSymbol
+      ? t`${priceImpactLabel}% price impact swapping ${amountLabel} ${inputTokenSymbol} for ${tokenSymbol}`
       : undefined
 
   return (

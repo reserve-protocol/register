@@ -1,7 +1,7 @@
 import { encodeFunctionData, parseEther } from 'viem'
 import dtfGovernanceAbi from '@/abis/dtf-index-governance'
 import timelockAbi from '@/abis/Timelock'
-import { GovernanceChanges, PERCENTAGE_CONSTANTS } from '../types'
+import { GovernanceChanges } from '../types'
 
 /**
  * Encode voting delay change
@@ -75,14 +75,14 @@ export const encodeExecutionDelay = (seconds: number) => {
 }
 
 /**
- * Convert stored proposal threshold to percentage
- * @param threshold - Stored threshold value
+ * Convert SDK proposal threshold to percentage
+ * @param threshold - Percentage value (0-100)
  * @returns Percentage (0-100)
  */
 export const proposalThresholdToPercentage = (
   threshold: bigint | number
 ): number => {
-  return Number(threshold) / PERCENTAGE_CONSTANTS.PROPOSAL_THRESHOLD_MULTIPLIER
+  return Number(threshold)
 }
 
 /**

@@ -1,4 +1,4 @@
-import { Trans, t } from '@lingui/macro'
+import { Trans, useLingui } from '@lingui/react/macro'
 import RevenueTrader from 'abis/RevenueTrader'
 import { ExecuteButton } from '@/components/ui/transaction-button'
 import { useAtomValue, useSetAtom } from 'jotai'
@@ -18,6 +18,7 @@ const ClaimFromTraderButton = ({
   trader: Trader
   erc20s: RewardTokenWithCollaterals[]
 }) => {
+  const { t } = useLingui()
   const rTokenContracts = useAtomValue(rTokenContractsAtom)
   const availableRewards = useAtomValue(traderRewardsAtom)
   const wallet = useAtomValue(walletAtom)
@@ -78,9 +79,9 @@ const ClaimFromTraderButton = ({
         text={t`Claim $${formatCurrency(claimAmount)}`}
         size="sm"
         className="ml-auto"
-        txLabel="Claim rewards"
+        txLabel={t`Claim rewards`}
         onSuccess={handleSuccess}
-        successLabel="Success!"
+        successLabel={t`Success!`}
         call={transaction}
       />
     </div>

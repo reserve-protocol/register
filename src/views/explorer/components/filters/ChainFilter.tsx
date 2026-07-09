@@ -5,7 +5,7 @@ import { useMemo } from 'react'
 import { CHAIN_TAGS, supportedChainList } from 'utils/constants'
 import ChainLogo from 'components/icons/ChainLogo'
 import StackedChainLogo from 'components/icons/StackedChainLogo'
-import { Trans } from '@lingui/macro'
+import { Plural, Trans } from '@lingui/react/macro'
 
 const ChainFilter = (props: Omit<IMultiselectDropdrown, 'options'>) => {
   const options = useMemo(() => {
@@ -23,7 +23,13 @@ const ChainFilter = (props: Omit<IMultiselectDropdrown, 'options'>) => {
       </span>
       <MultiselectDropdrown className="mt-1" minLimit={1} options={options} {...props}>
         <StackedChainLogo chains={props.selected.map((v) => Number(v))} />
-        <span className="text-legend">{props.selected.length} chains</span>
+        <span className="text-legend">
+          <Plural
+            value={props.selected.length}
+            one="# chain"
+            other="# chains"
+          />
+        </span>
       </MultiselectDropdrown>
     </div>
   )

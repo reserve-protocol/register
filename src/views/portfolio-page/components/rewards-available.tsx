@@ -1,4 +1,5 @@
 import { formatCurrency } from '@/utils'
+import { Trans } from '@lingui/react/macro'
 import { useAtomValue } from 'jotai'
 import { ArrowUpRight } from 'lucide-react'
 import { portfolioRewardsAtom } from '../atoms'
@@ -13,10 +14,12 @@ const RewardsAvailable = () => {
     <div className="bg-card border border-border rounded-[20px] px-6 py-4 flex flex-col justify-between gap-2">
       <div>
         <h3 className="font-bold text-xl text-primary leading-[30px]">
-          Rewards Available
+          <Trans>Rewards Available</Trans>
         </h3>
         <p className="text-sm font-light text-legend">
-          Your total participation awards available across all chains
+          <Trans>
+            Your total participation awards available across all chains
+          </Trans>
         </p>
       </div>
       <p className="text-xl font-bold text-primary">
@@ -30,7 +33,7 @@ const RewardsAvailable = () => {
         }
         className="bg-primary text-white text-xs font-medium px-4 py-2 rounded-2xl w-fit"
       >
-        Collect Rewards
+        <Trans>Collect Rewards</Trans>
       </button>
       <a
         href="/earn"
@@ -38,7 +41,7 @@ const RewardsAvailable = () => {
         target="_blank"
         rel="noreferrer"
       >
-        Learn more about how to earn APY
+        <Trans>Learn more about how to earn APY</Trans>
         <ArrowUpRight size={16} />
       </a>
     </div>

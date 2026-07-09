@@ -1,30 +1,37 @@
-import { useMemo, useState } from 'react'
+import { ReactNode, useMemo, useState } from 'react'
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
 import { useFormContext } from 'react-hook-form'
 import { FastForward, SlidersHorizontal, Snail, Zap } from 'lucide-react'
+import { msg } from '@lingui/core/macro'
+import { useLingui } from '@lingui/react/macro'
+import type { MessageDescriptor } from '@lingui/core'
 
-const OPTIONS = [
+const OPTIONS: {
+  value: 'slow' | 'fast' | 'very-fast' | 'custom'
+  label: MessageDescriptor
+  icon: ReactNode
+}[] = [
   {
     value: 'slow',
-    label: 'Slow',
+    label: msg`Slow`,
     icon: <Snail />,
   },
   {
     value: 'fast',
-    label: 'Fast',
+    label: msg`Fast`,
     icon: <FastForward />,
   },
   {
     value: 'very-fast',
-    label: 'Very Fast',
+    label: msg`Very Fast`,
     icon: <Zap />,
   },
   {
     value: 'custom',
-    label: 'Custom',
+    label: msg`Custom`,
     icon: <SlidersHorizontal />,
   },
-] as const
+]
 
 const fields = [
   'VotingDelay',
@@ -111,6 +118,7 @@ type ToggleGroupPresetProps = {
 }
 
 export const ToggleGroupPreset = ({ section }: ToggleGroupPresetProps) => {
+  const { t } = useLingui()
   const [force, setForce] = useState(false)
   const { watch, setValue, clearErrors } = useFormContext()
 
@@ -141,7 +149,7 @@ export const ToggleGroupPreset = ({ section }: ToggleGroupPresetProps) => {
             value={option.value}
             className="flex-grow px-5 h-12 whitespace-nowrap rounded-lg data-[state=on]:bg-card data-[state=on]:shadow-sm text-secondary-foreground/80 data-[state=on]:text-primary"
           >
-            {option.icon} {option.label}
+            {option.icon} {t(option.label)}
           </ToggleGroupItem>
         ))}
       </ToggleGroup>

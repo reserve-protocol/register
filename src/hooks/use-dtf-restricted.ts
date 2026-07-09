@@ -1,3 +1,5 @@
+import { trackCompliance } from '@/hooks/useTrackPage'
+import { walletAtom } from '@/state/atoms'
 import { indexDTFAtom } from '@/state/dtf/atoms'
 import { RESERVE_API } from '@/utils/constants'
 import { useQuery } from '@tanstack/react-query'
@@ -22,6 +24,7 @@ type DTFRestrictedData = {
 type DTFRestrictedResult = {
   data?: DTFRestrictedData
   isLoading: boolean
+  isError: boolean
 }
 
 type DTFGeolocationStatus = {
@@ -53,26 +56,58 @@ const isDTFGeolocationStatus = (
   )
 }
 
-const useDTFGeolocation = (dtfAddress?: Address, chainId?: number) => {
+const useDTFGeolocation = (
+  dtfAddress?: Address,
+  chainId?: number,
+  wallet?: Address | null
+) => {
   return useQuery({
-    queryKey: ['dtf-geolocation', dtfAddress?.toLowerCase(), chainId],
+    queryKey: [
+      'dtf-geolocation',
+      dtfAddress?.toLowerCase(),
+      chainId,
+      wallet?.toLowerCase(),
+    ],
     queryFn: async (): Promise<DTFGeolocationStatus> => {
       if (!dtfAddress || !chainId) {
         throw new Error('Missing DTF address or chainId')
       }
 
       const response = await fetch(
-        `${RESERVE_API}v2/compliance/geolocation/dtf/${dtfAddress}?chainId=${chainId}`
+        `${RESERVE_API}v2/compliance/geolocation/dtf/${dtfAddress}?chainId=${chainId}${wallet ? `&address=${wallet}` : ''}`
       )
 
       if (!response.ok) {
+        trackCompliance({
+          endpoint: 'dtf',
+          status: 'error',
+          ca: dtfAddress,
+          chain: chainId,
+        })
         throw new Error('Failed to fetch DTF geolocation')
       }
 
       const payload: unknown = await response.json()
       if (!isDTFGeolocationStatus(payload)) {
+        trackCompliance({
+          endpoint: 'dtf',
+          status: 'error',
+          ca: dtfAddress,
+          chain: chainId,
+        })
         throw new Error('Invalid DTF geolocation payload')
       }
+
+      trackCompliance({
+        endpoint: 'dtf',
+        status: 'success',
+        restricted: payload.restricted,
+        reason: payload.restriction,
+        country: payload.country,
+        countryCode: payload.countryCode,
+        ca: dtfAddress,
+        chain: chainId,
+      })
 
       return payload
     },
@@ -82,11 +117,12 @@ const useDTFGeolocation = (dtfAddress?: Address, chainId?: number) => {
 
 const useDTFRestricted = () => {
   const dtf = useAtomValue(indexDTFAtom)
-  const dtfGeolocation = useDTFGeolocation(dtf?.id, dtf?.chainId)
+  const wallet = useAtomValue(walletAtom)
+  const dtfGeolocation = useDTFGeolocation(dtf?.id, dtf?.chainId, wallet)
 
   return useMemo<DTFRestrictedResult>(() => {
     if (!dtf || dtfGeolocation.isLoading) {
-      return { data: undefined, isLoading: true }
+      return { data: undefined, isLoading: true, isError: false }
     }
 
     // Fail-closed on error: restricted with unknown reason
@@ -94,6 +130,7 @@ const useDTFRestricted = () => {
       return {
         data: { restricted: true },
         isLoading: false,
+        isError: true,
       }
     }
 
@@ -101,6 +138,7 @@ const useDTFRestricted = () => {
       return {
         data: { restricted: false },
         isLoading: false,
+        isError: false,
       }
     }
 
@@ -112,6 +150,7 @@ const useDTFRestricted = () => {
     return {
       data: { restricted: true, reason },
       isLoading: false,
+      isError: false,
     }
   }, [
     dtf,

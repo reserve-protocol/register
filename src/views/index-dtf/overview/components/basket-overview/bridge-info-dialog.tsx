@@ -6,7 +6,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { ChainId } from '@/utils/chains'
 import { ExplorerDataType, getExplorerLink } from '@/utils/getExplorerLink'
 import { NativeToken, Bridge } from '@/types/token-mappings'
-import { isAddress, shortenAddress } from '@/utils'
+import { getTokenName, isAddress, shortenAddress } from '@/utils'
+import { EXCHANGE_LABELS, formatExchangeSymbol } from './exposure-rows'
 import {
   ArrowUpRight,
   Binoculars,
@@ -20,6 +21,7 @@ import { Link } from 'react-router-dom'
 import { toast } from 'sonner'
 import { CHAIN_TAGS } from '@/utils/constants'
 import { useState } from 'react'
+import { Trans, useLingui } from '@lingui/react/macro'
 
 const getNativeChainId = (caip2: string): number | null => {
   if (caip2.startsWith('eip155:1')) return ChainId.Mainnet
@@ -53,15 +55,23 @@ const BridgeInfoDialog = ({
   tokenName,
   chainId,
 }: BridgeInfoDialogProps) => {
+  const { t } = useLingui()
   const [activeTab, setActiveTab] = useState('overview')
 
   if (!bridgeInfo) return null
 
   const { native, bridge, mapping } = bridgeInfo
 
+  // nasdaq/nyse "natives" are the exchange itself (shared across every stock in
+  // the group), so show the individual stock's name/logo and a "NASDAQ: $AMZN"
+  // reference label instead of the generic exchange identity.
+  const exchangeLabel = EXCHANGE_LABELS[native.caip2]
+  const isExchange = !!exchangeLabel
+  const exchangeTokenSymbol = mapping.symbol || tokenSymbol || native.symbol
+
   const handleCopyAddress = () => {
     navigator.clipboard.writeText(isAddress(tokenAddress) || tokenAddress)
-    toast.success('Address copied to clipboard')
+    toast.success(t`Address copied to clipboard`)
   }
 
   const handleOpenChange = (isOpen: boolean) => {
@@ -80,20 +90,24 @@ const BridgeInfoDialog = ({
         <Tabs value={activeTab} onValueChange={setActiveTab}>
           <DialogHeader className="flex flex-row items-start p-4 m-0">
             <div className="p-0.5 bg-card rounded-4xl mt-1 mr-auto">
-              <TabsList className="flex flex-row  rounded-4xl p-0 h-8">
+              <TabsList className="flex flex-row  rounded-4xl p-0 px-0.5 h-8">
                 <TabsTrigger
                   value="overview"
                   className="data-[state=active]:text-primary rounded-4xl"
                 >
                   <Binoculars size={16} />
-                  <span className="ml-2">Overview</span>
+                  <span className="ml-2">
+                    <Trans>Overview</Trans>
+                  </span>
                 </TabsTrigger>
                 <TabsTrigger
                   value="risks"
                   className="data-[state=active]:text-primary rounded-4xl"
                 >
                   <OctagonAlert size={16} />
-                  <span className="ml-2">Risks</span>
+                  <span className="ml-2">
+                    <Trans>Risks</Trans>
+                  </span>
                 </TabsTrigger>
               </TabsList>
             </div>
@@ -110,7 +124,7 @@ const BridgeInfoDialog = ({
             <div className="bg-card rounded-4xl mx-1">
               <div className="border-b border-secondary p-5 flex items-center justify-between">
                 <h4 className="font-semibold text-sm">
-                  Native asset (reference)
+                  <Trans>Native asset (reference)</Trans>
                 </h4>
                 <div className="flex items-center gap-1">
                   {(() => {
@@ -144,19 +158,39 @@ const BridgeInfoDialog = ({
                 </div>
               </div>
               <div className="p-5 flex items-center gap-3">
-                <TokenLogo size="xl" src={native.logo} />
+                {isExchange ? (
+                  <TokenLogo
+                    size="xl"
+                    symbol={mapping.symbol || tokenSymbol}
+                    address={tokenAddress}
+                    chain={chainId}
+                  />
+                ) : (
+                  <TokenLogo size="xl" src={native.logo} />
+                )}
                 <div className="flex-1">
                   <span className="font-semibold block">
-                    {native.name} ({native.symbol})
+                    {isExchange
+                      ? getTokenName(tokenName || exchangeTokenSymbol)
+                      : `${native.name} (${native.symbol})`}
                   </span>
                   <span className="text-sm text-legend">
                     {native.address
                       ? shortenAddress(native.address)
-                      : 'Native L1 Asset'}
+                      : isExchange
+                        ? formatExchangeSymbol(exchangeTokenSymbol, exchangeLabel)
+                        : t`Native L1 Asset`}
                   </span>
                 </div>
-                {native.url && (
-                  <Link to={native.url} target="_blank">
+                {(isExchange || native.url) && (
+                  <Link
+                    to={
+                      isExchange
+                        ? `https://app.ondo.finance/assets/${exchangeTokenSymbol.toLowerCase()}`
+                        : native.url!
+                    }
+                    target="_blank"
+                  >
                     <Button variant="muted" size="icon-rounded">
                       <ArrowUpRight className="w-4 h-4" />
                     </Button>
@@ -167,7 +201,11 @@ const BridgeInfoDialog = ({
             <div className="bg-card rounded-4xl m-1">
               <div className="border-b border-secondary p-5 flex items-center justify-between">
                 <h4 className="font-semibold text-sm">
-                  Bridged asset (held in basket)
+                  {isExchange ? (
+                    <Trans>Tokenized Asset (held in basket)</Trans>
+                  ) : (
+                    <Trans>Bridged asset (held in basket)</Trans>
+                  )}
                 </h4>
                 <div className="flex items-center gap-1">
                   <ChainLogo chain={chainId} className="w-4 h-4" />
@@ -223,7 +261,7 @@ const BridgeInfoDialog = ({
                       variant="ghost"
                       className="text-primary hover:text-primary gap-2"
                     >
-                      <FileSpreadsheet size={16} /> Read docs
+                      <FileSpreadsheet size={16} /> <Trans>Read docs</Trans>
                     </Button>
                   </Link>
                   <Button
@@ -231,7 +269,7 @@ const BridgeInfoDialog = ({
                     className="text-legend gap-2"
                     onClick={() => setActiveTab('risks')}
                   >
-                    <OctagonAlert size={16} /> Read about risks{' '}
+                    <OctagonAlert size={16} /> <Trans>Read about risks</Trans>{' '}
                     <ChevronDown size={16} />
                   </Button>
                 </div>
@@ -242,7 +280,7 @@ const BridgeInfoDialog = ({
             <div className="text-sm bg-card rounded-4xl m-1">
               <div className="p-5 border-b border-secondary">
                 <h4 className="text-primary font-semibold">
-                  Potential Risks Using {bridge.name}
+                  <Trans>Potential Risks Using {bridge.name}</Trans>
                 </h4>
               </div>
               <div className="p-5 space-y-2">

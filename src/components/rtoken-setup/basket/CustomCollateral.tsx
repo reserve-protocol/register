@@ -1,4 +1,4 @@
-import { t, Trans } from '@lingui/macro'
+import { Trans, useLingui } from '@lingui/react/macro'
 import CollateralAbi from 'abis/CollateralAbi'
 import ERC20 from 'abis/ERC20'
 import { Input } from 'components'
@@ -18,6 +18,7 @@ const CustomCollateral = ({
 }: {
   onAdd(collateral: CollateralPlugin): void
 }) => {
+  const { t } = useLingui()
   const [isActive, setActive] = useState(false)
   const [isValidating, setValidating] = useState(false)
   const [address, setAddress] = useState('')
@@ -96,7 +97,9 @@ const CustomCollateral = ({
     return (
       <div>
         <div>
-          <span className="text-legend ml-3">Plugin address</span>
+          <span className="text-legend ml-3">
+            <Trans>Plugin address</Trans>
+          </span>
           <Input
             className="mt-2"
             onChange={(e) => handleChange(e.target.value)}

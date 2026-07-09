@@ -1,3 +1,4 @@
+import { Trans, useLingui } from '@lingui/react/macro'
 import AsteriskIcon from 'components/icons/AsteriskIcon'
 import TokenLogo from 'components/icons/TokenLogo'
 import useRToken from 'hooks/useRToken'
@@ -38,26 +39,27 @@ interface IStatusBox {
 }
 
 const StatusBox = ({ status, className }: IStatusBox) => {
+  const { t } = useLingui()
   const statusMap = {
     added: {
-      label: 'Add',
+      label: t`Add`,
       icon: <Plus size={16} color="#2150A9" />,
     },
     removed: {
-      label: 'Remove',
+      label: t`Remove`,
       icon: <X size={16} color="#FF0000" />,
     },
     increased: {
-      label: 'Increase',
+      label: t`Increase`,
       icon: <ArrowUp size={16} color="#11BB8D" />,
     },
     reduced: {
-      label: 'Reduce',
+      label: t`Reduce`,
       color: 'warning',
       icon: <ArrowDown size={16} color="#FF8A00" />,
     },
     unchanged: {
-      label: 'No change',
+      label: t`No change`,
       icon: <AsteriskIcon />,
     },
   }
@@ -91,7 +93,9 @@ const BasketDiffItem = ({ item }: { item: DiffItem }) => {
           </span>
           <div className="flex items-center gap-1">
             <span className="font-medium">{item.targetUnit}</span>|
-            <span className="text-legend">APY:</span>{' '}
+            <span className="text-legend">
+              <Trans>APY:</Trans>
+            </span>{' '}
             <span className="font-medium">
               {formatPercentage(apys[item.symbol.toLowerCase()])}
             </span>
@@ -149,7 +153,9 @@ const BasketAPYDiff = ({
 
   return (
     <div className="flex items-center pt-4 mt-2 border-t border-border font-medium">
-      <span className="mr-auto">30-day blended APY:</span>
+      <span className="mr-auto">
+        <Trans>30-day blended APY:</Trans>
+      </span>
       <span className="text-legend ml-4 mr-1">
         {formatPercentage(currentApy)}
       </span>
@@ -178,7 +184,9 @@ const BasketChangeSummary = ({
     return (
       <div className="flex flex-col gap-2 items-center my-6">
         <Spinner size={20} />
-        <span className="text-legend">Loading summary...</span>
+        <span className="text-legend">
+          <Trans>Loading summary...</Trans>
+        </span>
       </div>
     )
   }
@@ -186,11 +194,15 @@ const BasketChangeSummary = ({
   return (
     <div className="mt-2">
       <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 mb-2 text-muted-foreground text-xs">
-        <span>Collateral token</span>
-        <span className="mr-0 sm:mr-auto ml-auto">
-          Old weight / New weight
+        <span>
+          <Trans>Collateral token</Trans>
         </span>
-        <span className="ml-auto hidden sm:block">Change</span>
+        <span className="mr-0 sm:mr-auto ml-auto">
+          <Trans>Old weight / New weight</Trans>
+        </span>
+        <span className="ml-auto hidden sm:block">
+          <Trans>Change</Trans>
+        </span>
       </div>
       <div className="flex flex-col gap-4 sm:gap-2 w-full">
         {data?.diff.map((item) => (

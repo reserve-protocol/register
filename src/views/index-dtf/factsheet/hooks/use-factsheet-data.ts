@@ -20,16 +20,19 @@ import type {
 } from '../types/factsheet-data'
 import { useMemo } from 'react'
 
-const prefetchRanges = ['24h', '7d', '1m', '3m', '1y']
+const prefetchRanges = ['24h', '7d', '1m', '3m', 'ytd', '1y']
 
 export const useFactsheetData = () => {
   const dtf = useAtomValue(indexDTFAtom)
   const address = useAtomValue(iTokenAddressAtom)
   const timeRange = useAtomValue(performanceTimeRangeAtom)
-  const minFrom = dtf?.timestamp || 0
 
-  const currentRangeParams = getRangeParams(timeRange, minFrom)
-  const allRangeParams = getRangeParams('all', minFrom)
+  // The API backfills NAV ~5y before deployment from the basket constituents;
+  // this page reports real performance only, so every range is clamped to the
+  // on-chain inception (dtf.timestamp).
+  const inceptionTs = dtf?.timestamp ?? 0
+  const currentRangeParams = getRangeParams(timeRange, inceptionTs)
+  const allRangeParams = getRangeParams('all', inceptionTs)
 
   const { data: currentRangeData, isLoading: currentLoading } =
     useIndexDTFPriceHistory({
@@ -37,7 +40,8 @@ export const useFactsheetData = () => {
       from: currentRangeParams.from,
       to: currentRangeParams.to,
       interval: currentRangeParams.interval,
-      prefetchRanges: prefetchRanges.map((r) => getRangeParams(r, minFrom)),
+      enabled: !!dtf,
+      prefetchRanges: prefetchRanges.map((r) => getRangeParams(r, inceptionTs)),
     })
 
   const { data: allRangeData, isLoading: allLoading } = useIndexDTFPriceHistory(
@@ -46,6 +50,7 @@ export const useFactsheetData = () => {
       from: allRangeParams.from,
       to: allRangeParams.to,
       interval: allRangeParams.interval,
+      enabled: !!dtf,
     }
   )
 
@@ -72,7 +77,6 @@ export const useFactsheetData = () => {
 
     const lastPoint = allTimeseries[allTimeseries.length - 1]
     const currentPrice = lastPoint.price
-    const inception = dtf?.timestamp || 0
 
     const lastTs = lastPoint.timestamp
 
@@ -111,7 +115,6 @@ export const useFactsheetData = () => {
       monthlyChartData,
       performance,
       netPerformance,
-      inception,
       currentNav: currentPrice,
     }
   }, [currentRangeData, allRangeData])

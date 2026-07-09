@@ -1,5 +1,6 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { useEffect } from 'react'
+import type { FetchInterval } from './use-dtf-price-history'
 
 const BINANCE_KLINES_URL = 'https://api.binance.com/api/v3/klines'
 
@@ -15,8 +16,12 @@ export type BTCPriceHistory = {
 export type UseBTCPriceHistoryParams = {
   from: number
   to: number
-  interval: '1h' | '1d'
-  prefetchRanges?: Array<{ from: number; to: number; interval: '1h' | '1d' }>
+  interval: FetchInterval
+  prefetchRanges?: Array<{
+    from: number
+    to: number
+    interval: FetchInterval
+  }>
   enabled?: boolean
 }
 
@@ -38,7 +43,7 @@ type BinanceKline = [
 const fetchBTCPrices = async (
   from: number,
   to: number,
-  interval: '1h' | '1d'
+  interval: FetchInterval
 ): Promise<BTCPriceHistory> => {
   const sp = new URLSearchParams()
   sp.set('symbol', 'BTCUSDT')

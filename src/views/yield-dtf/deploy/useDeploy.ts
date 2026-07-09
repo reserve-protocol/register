@@ -8,6 +8,7 @@ import { useFormContext, useFormState, useWatch } from 'react-hook-form'
 import { useSearchParams } from 'react-router-dom'
 import { chainIdAtom } from 'state/atoms'
 import { FACADE_WRITE_ADDRESS } from 'utils/addresses'
+import { shouldBypassFormValidation } from '@/utils/form-validation'
 import {
   backupCollateralAtom,
   basketAtom,
@@ -32,11 +33,8 @@ export const useDeployParams = () => {
   const chainId = useAtomValue(chainIdAtom)
   const formFields = useDebounce(useWatch(), 500)
   const { isValid, isValidating } = useFormState()
-  const debugBypass = searchParams.get('debug') === 'true'
   const isFormValid =
-    !!import.meta.env.VITE_DISABLE_VALIDATION ||
-    debugBypass ||
-    (isValid && !isValidating)
+    shouldBypassFormValidation(searchParams) || (isValid && !isValidating)
 
   const isDeployValid =
     isBasketValid && isRevenueSplitValid && isValidExternalMap && isFormValid

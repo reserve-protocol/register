@@ -7,6 +7,9 @@ import {
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 import { ROUTES } from '@/utils/constants'
+import type { MessageDescriptor } from '@lingui/core'
+import { msg } from '@lingui/core/macro'
+import { Trans, useLingui } from '@lingui/react/macro'
 import { useAtom, useAtomValue } from 'jotai'
 import {
   ArrowLeftIcon,
@@ -40,8 +43,8 @@ const scrollToSection = (sectionId: string) => {
 export type BASKET_SETTING = {
   id: BASKET_SETTINGS_ID
   icon: ReactNode
-  title: string
-  titleSecondary: string
+  title: MessageDescriptor
+  titleSecondary: MessageDescriptor
   content: ReactNode
 }
 
@@ -49,15 +52,15 @@ const BASKET_SETTINGS: BASKET_SETTING[] = [
   {
     id: 'governance',
     icon: <Landmark size={14} strokeWidth={1.5} />,
-    title: 'Governance',
-    titleSecondary: 'Governance Parameters',
+    title: msg`Governance`,
+    titleSecondary: msg`Governance Parameters`,
     content: <ProposeBasketGovernance />,
   },
   {
     id: 'roles',
     icon: <Shield size={14} strokeWidth={1.5} />,
-    title: 'Roles',
-    titleSecondary: 'Role Management',
+    title: msg`Roles`,
+    titleSecondary: msg`Role Management`,
     content: <ProposeBasketRoles />,
   },
 ]
@@ -67,6 +70,7 @@ const ProposeSectionTrigger = ({
   icon,
   title,
 }: Omit<BASKET_SETTING, 'content' | 'titleSecondary'>) => {
+  const { t } = useLingui()
   const selectedSection = useAtomValue(selectedSectionAtom)
   const isActive = selectedSection === id
 
@@ -93,7 +97,7 @@ const ProposeSectionTrigger = ({
             isActive ? 'text-primary hidden' : ''
           )}
         >
-          {title}
+          {t(title)}
         </div>
       </div>
       <div className="flex items-center gap-1">
@@ -119,11 +123,14 @@ const Header = () => (
         <ArrowLeftIcon size={24} strokeWidth={1.5} />
       </Button>
     </Link>
-    <h1 className="font-bold text-xl">Basket settings proposal</h1>
+    <h1 className="font-bold text-xl">
+      <Trans>Basket settings proposal</Trans>
+    </h1>
   </div>
 )
 
 const BasketSettingsProposalSections = () => {
+  const { t } = useLingui()
   const [section, setSection] = useAtom(selectedSectionAtom)
 
   return (
@@ -151,7 +158,7 @@ const BasketSettingsProposalSections = () => {
             <ProposeSectionTrigger id={id} icon={icon} title={title} />
             <AccordionContent className="flex flex-col animate-fade-in">
               <div className="text-2xl font-bold text-primary ml-6 mb-2">
-                {titleSecondary}
+                {t(titleSecondary)}
               </div>
               {content}
             </AccordionContent>

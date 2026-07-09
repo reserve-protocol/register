@@ -1,4 +1,4 @@
-import { Trans } from '@lingui/macro'
+import { Trans } from '@lingui/react/macro'
 import { Button } from '@/components/ui/button'
 import useRToken from 'hooks/useRToken'
 import { useAtomValue } from 'jotai'

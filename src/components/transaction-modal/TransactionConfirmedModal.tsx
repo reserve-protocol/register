@@ -1,4 +1,4 @@
-import { Trans } from '@lingui/macro'
+import { Trans } from '@lingui/react/macro'
 import ExternalArrowIcon from 'components/icons/ExternalArrowIcon'
 import TransactionSignedIcon from 'components/icons/SignedTransactionIcon'
 import { Modal } from 'components'

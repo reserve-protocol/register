@@ -1,6 +1,7 @@
 import { Button } from '@/components/ui/button'
 import BasicInput from '@/views/index-dtf/deploy/components/basic-input'
 import { Decimal } from '@/views/index-dtf/deploy/utils/decimals'
+import { Trans, useLingui } from '@lingui/react/macro'
 import { Landmark, LandPlot, PlusIcon, TrainTrack, XIcon } from 'lucide-react'
 import { ReactNode, useCallback } from 'react'
 import { useFormContext, useWatch } from 'react-hook-form'
@@ -29,7 +30,7 @@ const AddRecipientButton = () => {
       onClick={onAdd}
     >
       <PlusIcon size={16} />
-      Add additional recipients
+      <Trans>Add additional recipients</Trans>
     </Button>
   )
 }
@@ -55,13 +56,16 @@ const RemoveRecipientButton = ({ index }: { index: number }) => {
 }
 
 const AdditionalRevenueRecipient = ({ index }: { index: number }) => {
+  const { t } = useLingui()
+  const recipientNumber = index + 1
+
   return (
     <div className="w-full rounded-xl flex items-center gap-2 justify-between px-4 py-3 bg-muted/70">
       <div className="w-full flex items-top gap-2">
         <BasicInput
           className="w-full"
           fieldName={`additionalRevenueRecipients[${index}].address`}
-          label={`Recipient ${index + 1} address`}
+          label={t`Recipient ${recipientNumber} address`}
           placeholder="0x..."
         />
         <BasicInput
@@ -99,30 +103,6 @@ const AdditionalRevenueRecipients = ({ children }: { children: ReactNode }) => {
     </div>
   )
 }
-
-const SETTINGS = [
-  {
-    title: 'Platform',
-    description:
-      'Percentage of fee revenue sent to the protocol; cannot be changed by governance.',
-    field: 'fixedPlatformFee',
-    icon: <TrainTrack size={14} strokeWidth={1.5} />,
-    disabled: true,
-  },
-  {
-    title: 'Creator',
-    description: 'Percentage of fee revenue sent to the creator of the DTF.',
-    icon: <Landmark size={14} strokeWidth={1.5} />,
-    field: 'deployerShare',
-  },
-  {
-    title: 'Governance',
-    icon: <LandPlot size={14} strokeWidth={1.5} />,
-    description:
-      'Percentage of fee revenue sent to the vote-lock DAO governing the DTF.',
-    field: 'governanceShare',
-  },
-]
 
 const useFormValues = () => {
   const { getValues } = useFormContext()
@@ -176,7 +156,9 @@ const RemainingAllocation = () => {
   return (
     <div className="flex flex-col gap-2">
       <div className="text-base ml-auto px-4">
-        <span className="text-muted-foreground">Remaining allocation:</span>{' '}
+        <span className="text-muted-foreground">
+          <Trans>Remaining allocation:</Trans>
+        </span>{' '}
         <span
           className={cn(
             hasError ? 'text-destructive' : 'text-success',
@@ -238,13 +220,36 @@ const EvenDistributionButton = () => {
       className="flex gap-2 text-base pl-3 pr-4 rounded-xl text-nowrap w-48 py-7 -mr-2 bg-muted/80"
       onClick={onEvenDistribution}
     >
-      Even distribution
+      <Trans>Even distribution</Trans>
     </Button>
   )
 }
 
 const ProposeRevenueDistribution = () => {
+  const { t } = useLingui()
   const { getValues } = useFormContext()
+
+  const SETTINGS = [
+    {
+      title: t`Platform`,
+      description: t`Percentage of fee revenue sent to the protocol; cannot be changed by governance.`,
+      field: 'fixedPlatformFee',
+      icon: <TrainTrack size={14} strokeWidth={1.5} />,
+      disabled: true,
+    },
+    {
+      title: t`Creator`,
+      description: t`Percentage of fee revenue sent to the creator of the DTF.`,
+      icon: <Landmark size={14} strokeWidth={1.5} />,
+      field: 'deployerShare',
+    },
+    {
+      title: t`Governance`,
+      icon: <LandPlot size={14} strokeWidth={1.5} />,
+      description: t`Percentage of fee revenue sent to the vote-lock DAO governing the DTF.`,
+      field: 'governanceShare',
+    },
+  ]
 
   return (
     <div className="flex flex-col gap-2 mx-2 mb-3">

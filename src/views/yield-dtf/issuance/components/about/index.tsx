@@ -1,4 +1,4 @@
-import { Trans } from '@lingui/macro'
+import { Trans } from '@lingui/react/macro'
 import { Button } from '@/components/ui/button'
 import { useSetAtom } from 'jotai'
 import { wrapSidebarAtom } from '@/views/yield-dtf/issuance/atoms'

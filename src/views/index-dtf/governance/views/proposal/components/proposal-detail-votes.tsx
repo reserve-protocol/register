@@ -7,7 +7,8 @@ import { cn } from '@/lib/utils'
 import { chainIdAtom } from '@/state/atoms'
 import { formatCurrency } from '@/utils'
 import { ExplorerDataType, getExplorerLink } from '@/utils/getExplorerLink'
-import { Trans } from '@lingui/macro'
+import { Trans } from '@lingui/react/macro'
+import type { Amount } from '@reserve-protocol/react-sdk'
 import { atom, useAtomValue } from 'jotai'
 import { proposalDetailAtom } from '../atom'
 
@@ -19,7 +20,7 @@ const TABS = {
 
 interface Vote {
   voter: string
-  weight: string
+  weight: Amount
   choice: string
 }
 
@@ -75,7 +76,7 @@ const VoteList = ({ votes }: { votes: Vote[] }) => {
                 vote.choice === 'ABSTAIN' && 'text-legend'
               )}
             >
-              {formatCurrency(+vote.weight, 0, {
+              {formatCurrency(Number(vote.weight.formatted), 0, {
                 notation: 'compact',
                 compactDisplay: 'short',
               })}
@@ -88,14 +89,34 @@ const VoteList = ({ votes }: { votes: Vote[] }) => {
 }
 
 const ProposalDetailVotes = () => {
+  const proposal = useAtomValue(proposalDetailAtom)
   const votes = useAtomValue(proposalVotesAtom)
+
+  if (proposal?.isOptimistic) {
+    return (
+      <div className="bg-background rounded-3xl p-4">
+        <h2 className="text-xl ml-3 font-semibold mb-4">
+          <Trans>Challenged votes</Trans>
+        </h2>
+        <div className="bg-card rounded-3xl p-4 border">
+          <VoteList votes={votes[TABS.AGAINST]} />
+        </div>
+      </div>
+    )
+  }
 
   return (
     <Tabs className="bg-background rounded-3xl p-2" defaultValue={TABS.FOR}>
       <TabsList>
-        <TabsTrigger value={TABS.FOR}>Votes for</TabsTrigger>
-        <TabsTrigger value={TABS.AGAINST}>Votes against</TabsTrigger>
-        <TabsTrigger value={TABS.ABSTAIN}>Abstain</TabsTrigger>
+        <TabsTrigger value={TABS.FOR}>
+          <Trans>Votes for</Trans>
+        </TabsTrigger>
+        <TabsTrigger value={TABS.AGAINST}>
+          <Trans>Votes against</Trans>
+        </TabsTrigger>
+        <TabsTrigger value={TABS.ABSTAIN}>
+          <Trans>Abstain</Trans>
+        </TabsTrigger>
       </TabsList>
       <div className="bg-card rounded-3xl p-4 border mt-2">
         {Object.entries(votes).map(([key, value]) => (

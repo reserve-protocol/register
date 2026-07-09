@@ -196,15 +196,22 @@ const TokenLogo = React.forwardRef<HTMLImageElement, Props>((props, ref) => {
   return (
     <img
       ref={ref}
+      // Remount when the resolved logo replaces the default so the swap fades
+      // in instead of popping. A failed resolution remounts with the same
+      // default graphic, which reads as a no-op.
+      key={currentSrc || 'placeholder'}
       src={currentSrc || '/svgs/defaultLogo.svg'}
       height={h}
       width={w}
       loading={loading}
       decoding="async"
-      fetchPriority={fetchPriority}
+      // React 18's DOM renderer doesn't map camelCase `fetchPriority`; pass the
+      // lowercase DOM attribute so the hint applies without a console warning.
+      {...{ fetchpriority: fetchPriority }}
       style={{ width: w, height: h }}
       className={cn(
         'flex-shrink-0 object-cover object-center rounded-full',
+        currentSrc && 'animate-in fade-in duration-300 motion-reduce:animate-none',
         className,
         TRANSPARENT_TOKENS.has(symbol?.toLowerCase() || '') && 'bg-black'
       )}
@@ -332,6 +339,33 @@ export const PNGS = new Set([
   'eat',
   'cbbtc',
   'wtao',
+  'glwon',
+  'tsemon',
+])
+
+export const WEBP = new Set([
+  'aaoion',
+  'axtion',
+  'cienon',
+  'fnon',
+  'liteon',
+  'mtsion',
+  'huton',
+  'corzon',
+  'pwron',
+  'beon',
+  'nvton',
+  'hubbon',
+  'powlon',
+  'dellon',
+  'rokon',
+  'symon',
+  'lsccon',
+  'auron',
+  'mblyon',
+  'himxon',
+  'hsaion',
+  'ouston'
 ])
 
 export const EXTERNAL_ASSETS: Record<string, string> = {
@@ -363,6 +397,9 @@ function getKnownTokenLogo(symbol: string) {
   }
   if (PNGS.has(symbol.toLowerCase())) {
     return `/imgs/${symbol.toLowerCase()}.png`
+  }
+  if (WEBP.has(symbol.toLowerCase())) {
+    return `/imgs/${symbol.toLowerCase()}.webp`
   }
   if (EXTERNAL_ASSETS[symbol.toLowerCase()]) {
     return EXTERNAL_ASSETS[symbol.toLowerCase()]

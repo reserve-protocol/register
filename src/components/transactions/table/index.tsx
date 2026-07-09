@@ -1,4 +1,4 @@
-import { t, Trans } from '@lingui/macro'
+import { Trans, useLingui } from '@lingui/react/macro'
 import { createColumnHelper } from '@tanstack/react-table'
 import Help from 'components/help'
 import ChainLogo from 'components/icons/ChainLogo'
@@ -37,6 +37,7 @@ const TransactionsTable = ({
   external = true,
   className,
 }: Props) => {
+  const { t } = useLingui()
   const currentTime = useAtomValue(blockTimestampAtom)
   const chainId = useAtomValue(chainIdAtom)
   const rToken = useAtomValue(rTokenAtom)
@@ -56,7 +57,7 @@ const TransactionsTable = ({
       DEPOSIT: t`Deposit`,
       WITHDRAWAL: t`Withdraw`,
     }),
-    []
+    [t]
   )
   const columnHelper = createColumnHelper<TransactionRecord>()
 
@@ -123,7 +124,7 @@ const TransactionsTable = ({
         },
       }),
     ],
-    [currentTime, chainId]
+    [currentTime, chainId, t]
   )
 
   return (

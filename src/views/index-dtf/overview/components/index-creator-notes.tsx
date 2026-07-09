@@ -7,6 +7,7 @@ import { useAtomValue } from 'jotai'
 import { ArrowUpRight, ScrollText } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import SectionAnchor from '@/components/section-anchor'
+import { Trans } from '@lingui/react/macro'
 
 const IndexCreatorNotes = () => {
   const brandData = useAtomValue(indexDTFBrandAtom)
@@ -24,7 +25,9 @@ const IndexCreatorNotes = () => {
         </div>
         <div className="flex items-center gap-1">
           <ScrollText size={14} strokeWidth={1} />
-          <span className="text-legend">Creator:</span>
+          <span className="text-legend">
+            <Trans>Creator:</Trans>
+          </span>
           <Link
             to={getExplorerLink(
               data.deployer,
@@ -45,10 +48,14 @@ const IndexCreatorNotes = () => {
       </div>
       <div className="flex items-center gap-2 mb-4"></div>
       <div className="flex items-center gap-1">
-        <h2 className="text-4xl mb-2">Notes from the creator</h2>
+        <h2 className="text-4xl mb-2">
+          <Trans>Notes from the creator</Trans>
+        </h2>
         <SectionAnchor id="creator-notes" />
       </div>
-      <p className="text-legend">{brandData.dtf?.notesFromCreator}</p>
+      <p className="text-legend whitespace-pre-line">
+        {brandData.dtf?.notesFromCreator}
+      </p>
     </Card>
   )
 }

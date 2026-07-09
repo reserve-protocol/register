@@ -1,4 +1,4 @@
-import { t, Trans } from '@lingui/macro'
+import { Trans, useLingui } from '@lingui/react/macro'
 import { FormField } from 'components/field'
 
 interface TokenFormProps {
@@ -8,7 +8,9 @@ interface TokenFormProps {
 /**
  * View: Deploy -> Token setup
  */
-const TokenForm = ({ className }: TokenFormProps) => (
+const TokenForm = ({ className }: TokenFormProps) => {
+  const { t } = useLingui()
+  return (
   <div className={className}>
     <div className="flex items-center mb-4">
       <span className="ml-2 text-xl font-medium">
@@ -47,6 +49,7 @@ const TokenForm = ({ className }: TokenFormProps) => (
       }}
     />
   </div>
-)
+  )
+}
 
 export default TokenForm

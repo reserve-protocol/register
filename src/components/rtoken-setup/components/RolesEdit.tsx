@@ -1,4 +1,4 @@
-import { Trans } from '@lingui/macro'
+import { Trans, useLingui } from '@lingui/react/macro'
 import { Button } from '@/components/ui/button'
 import { Input } from 'components'
 import Help from 'components/help'
@@ -15,6 +15,7 @@ const NewRoleAddress = ({
   onDismiss(): void
   addresses: string[]
 }) => {
+  const { t } = useLingui()
   const [address, setAddress] = useState('')
   const isValid = !!isAddress(address)
   const isExisting =
@@ -27,7 +28,7 @@ const NewRoleAddress = ({
         className="my-3"
         autoFocus
         value={address}
-        placeholder="Input address"
+        placeholder={t`Input address`}
         onChange={(e) => setAddress(e.target.value)}
       />
       {((address && !isValid) || isExisting) && (
@@ -135,7 +136,9 @@ const RolesEdit = ({
           onClick={() => setCreate(true)}
           variant="muted"
         >
-          Add new {title.substring(0, title.length - 1).toLowerCase()}
+          <Trans>
+            Add new {title.substring(0, title.length - 1).toLowerCase()}
+          </Trans>
         </Button>
       )}
     </div>

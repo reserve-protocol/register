@@ -18,12 +18,13 @@ const isStaging =
     import.meta.env.VITE_USE_STAGING) &&
   import.meta.env.VITE_STAGING_API
 
-export const RESERVE_API = isStaging
+// TODO: USE PROD BEFORE RELEASING
+export const RESERVE_API = true // isStaging
   ? import.meta.env.VITE_STAGING_API
   : 'https://api.reserve.org/'
 
 export const ZAPPER_API = isStaging
-  ? 'https://zapper-staging.reserve-api.com/'
+  ? 'https://api-staging.reserve.org/'
   : 'https://api.reserve.org/'
 
 export const VERSION = '3.0.0'
@@ -273,6 +274,7 @@ export const blockDuration = {
   [ChainId.Mainnet]: 12,
   [ChainId.Base]: 2,
   [ChainId.Arbitrum]: 1,
+  [ChainId.BSC]: 1,
 }
 export const supportedChainList = [
   ChainId.Mainnet,

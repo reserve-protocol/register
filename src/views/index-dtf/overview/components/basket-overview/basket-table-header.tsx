@@ -1,11 +1,10 @@
 import { TableHead, TableHeader, TableRow } from '@/components/ui/table'
-import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { cn } from '@/lib/utils'
 import { performanceTimeRangeAtom } from '@/state/dtf/atoms'
-import { capitalize } from '@/utils/constants'
-import { ETHERSCAN_NAMES } from '@/utils/getExplorerLink'
 import { useAtomValue } from 'jotai'
-import { ArrowDown, ArrowUp, ArrowUpDown, PackageOpen, Target } from 'lucide-react'
+import { ArrowDown, ArrowUp, ArrowUpDown } from 'lucide-react'
+import { Trans } from '@lingui/react/macro'
 
 export type SortField = 'weight' | 'performance'
 export type SortDirection = 'asc' | 'desc'
@@ -15,31 +14,45 @@ export interface SortConfig {
   direction: SortDirection
 }
 
+export const TIME_RANGE_LABELS = {
+  '24h': '1d',
+  '7d': '7d',
+  '1m': '30d',
+  '3m': '90d',
+  ytd: 'YTD',
+  '1y': '1y',
+  all: 'All',
+} as const
+
 const TableHeaderWithSort = ({
   field,
   sortConfig,
   onSort,
   children,
   className = '',
+  buttonClassName,
 }: {
   field: SortField
   sortConfig: SortConfig
   onSort: (field: SortField) => void
   children: React.ReactNode
   className?: string
+  buttonClassName?: string
 }) => {
   const isActive = sortConfig.field === field
   const isDesc = isActive && sortConfig.direction === 'desc'
   const isAsc = isActive && sortConfig.direction === 'asc'
+  const isRightAligned = className.includes('text-right')
 
   return (
     <TableHead className={className}>
       <button
         onClick={() => onSort(field)}
         className={cn(
-          'inline-flex items-center gap-1 hover:text-primary transition-colors cursor-pointer text-xs sm:text-base',
+          'inline-flex items-center gap-1 hover:text-primary transition-colors cursor-pointer text-xs sm:text-sm',
           isActive && 'text-primary',
-          className.includes('text-right') && 'ml-auto'
+          isRightAligned && 'ml-auto w-full justify-end',
+          buttonClassName
         )}
       >
         {children}
@@ -57,50 +70,39 @@ const TableHeaderWithSort = ({
 
 export const BasketTableHeader = ({
   isExposure,
-  hasBridgedAssets,
-  chainId,
   setActiveTab,
   sortConfig,
   onSort,
 }: {
   isExposure: boolean
-  hasBridgedAssets: boolean
-  chainId: number
   setActiveTab: (tab: 'exposure' | 'collateral') => void
   sortConfig: SortConfig
   onSort: (field: SortField) => void
 }) => {
   const timeRange = useAtomValue(performanceTimeRangeAtom)
 
-  const periodLabel = {
-    '24h': '1d',
-    '7d': '7d',
-    '1m': '30d',
-    '3m': '90d',
-    '1y': '1y',
-    all: 'All',
-  }
-
   return (
     <TableHeader>
-      <TableRow className="border-none text-legend bg-card sticky -top-[1px]">
-        <TableHead className="text-left text-xs sm:text-base py-1">
-          <TabsList className="h-9 rounded-[70px] p-0.5">
+      <TableRow className="border-none bg-card text-legend hover:bg-transparent">
+        <TableHead className="h-auto w-1/2 py-0 pl-0 pr-2 text-left text-xs sm:text-sm">
+          <TabsList className="hidden h-7 rounded-[70px] px-0.5 py-0 sm:inline-flex sm:h-8">
             <TabsTrigger
               value="exposure"
-              className="rounded-[60px] px-2 data-[state=active]:text-primary"
+              className="rounded-[60px] px-3 data-[state=active]:text-primary dark:data-[state=active]:text-foreground"
               onClick={() => setActiveTab('exposure')}
             >
-              <Target className="w-4 h-4 mr-0 sm:mr-1" />{' '}
-              <span className="hidden sm:block">Exposure</span>
+              <span>
+                <Trans>Exposure</Trans>
+              </span>
             </TabsTrigger>
             <TabsTrigger
               value="collateral"
-              className="rounded-[60px] px-2 data-[state=active]:text-primary"
+              className="rounded-[60px] px-3 data-[state=active]:text-primary dark:data-[state=active]:text-foreground"
               onClick={() => setActiveTab('collateral')}
             >
-              <PackageOpen className="w-4 h-4 mr-0 sm:mr-1" />{' '}
-              <span className="hidden sm:block">Collateral</span>
+              <span>
+                <Trans context="DTF basket">Collateral</Trans>
+              </span>
             </TabsTrigger>
           </TabsList>
         </TableHead>
@@ -109,31 +111,34 @@ export const BasketTableHeader = ({
           field="weight"
           sortConfig={sortConfig}
           onSort={onSort}
-          className="text-center px-1 sm:px-3"
+          className={
+            isExposure
+              ? 'h-auto w-20 whitespace-nowrap py-0 pl-2 pr-0 text-right'
+              : 'h-auto w-16 whitespace-nowrap py-0 pl-2 pr-0 text-right'
+          }
+          buttonClassName="dark:text-foreground"
         >
-          Weight
+          <Trans>Weight</Trans>
         </TableHeaderWithSort>
 
         <TableHeaderWithSort
           field="performance"
           sortConfig={sortConfig}
           onSort={onSort}
-          className="text-center px-1 sm:px-3"
+          className={
+            isExposure
+              ? 'h-auto w-28 py-0 pl-2 pr-0 text-right text-wrap sm:text-nowrap'
+              : 'h-auto w-28 whitespace-nowrap py-0 pl-3 pr-0 text-right'
+          }
         >
-          Price Change ({periodLabel[timeRange]})
+          <Trans>Price Change ({TIME_RANGE_LABELS[timeRange]})</Trans>
         </TableHeaderWithSort>
 
-        {isExposure ? (
-          <TableHead className="text-center hidden sm:table-cell">
-            <span className="text-xs sm:text-base">Market Cap</span>
-          </TableHead>
-        ) : (
-          <TableHead className="text-right text-xs sm:text-base px-1 sm:px-3">
-            {`${hasBridgedAssets ? 'Bridge / ' : ''}${capitalize(
-              ETHERSCAN_NAMES[chainId]
-            )}`}
-          </TableHead>
-        )}
+        <TableHead className="hidden h-auto w-28 whitespace-nowrap py-0 pl-2 pr-0 text-right sm:table-cell">
+          <span className="text-xs sm:text-sm">
+            <Trans>Market Cap</Trans>
+          </span>
+        </TableHead>
       </TableRow>
     </TableHeader>
   )

@@ -2,6 +2,7 @@ import DecimalDisplay from '@/components/decimal-display'
 import { Skeleton } from '@/components/ui/skeleton'
 import { isAuctionLauncherAtom, isHybridDTFAtom } from '@/state/dtf/atoms'
 import { formatPercentage } from '@/utils'
+import { Trans } from '@lingui/react/macro'
 import { atom, useAtomValue, useSetAtom } from 'jotai'
 import {
   ArrowLeftRight,
@@ -45,7 +46,9 @@ const SavedWeights = () => {
     <div className="flex items-center gap-2 flex-wrap mb-4">
       <div className="flex items-center gap-2 mr-auto text-legend">
         <CheckCircle2 className="h-4 w-4" />
-        <span>Weights saved:</span>
+        <span>
+          <Trans>Weights saved:</Trans>
+        </span>
       </div>
       {canEditWeights ? (
         <button
@@ -53,7 +56,9 @@ const SavedWeights = () => {
           onClick={() => setShowManageWeights(true)}
         >
           <Check className="h-4 w-4 text-primary" />
-          <span className="text-primary">Yes</span>
+          <span className="text-primary">
+            <Trans>Yes</Trans>
+          </span>
           <ChevronRight className="h-4 w-4 text-primary" />
         </button>
       ) : (
@@ -66,7 +71,7 @@ const SavedWeights = () => {
           <span
             className={areWeightsSettled ? 'text-primary' : 'text-destructive'}
           >
-            {areWeightsSettled ? 'Yes' : 'No'}
+            {areWeightsSettled ? <Trans>Yes</Trans> : <Trans>No</Trans>}
           </span>
         </>
       )}
@@ -84,7 +89,9 @@ const RebalanceOverview = () => {
       <div className="flex items-center gap-2 flex-wrap">
         <div className="flex items-center gap-2 mr-auto text-legend">
           <ArrowLeftRight className="h-4 w-4" />
-          <span>Total value traded:</span>
+          <span>
+            <Trans>Total value traded:</Trans>
+          </span>
         </div>
         <span>
           $
@@ -94,7 +101,9 @@ const RebalanceOverview = () => {
       <div className="flex items-center gap-2 mt-4 flex-wrap">
         <div className="flex items-center gap-2 mr-auto text-legend">
           <Target className="h-4 w-4" />
-          <span>Current basket deviation:</span>
+          <span>
+            <Trans>Current basket deviation:</Trans>
+          </span>
         </div>
         {trackingError ? (
           <span>-{formatPercentage(trackingError)}</span>

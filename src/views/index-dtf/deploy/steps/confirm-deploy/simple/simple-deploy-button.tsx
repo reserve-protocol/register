@@ -1,6 +1,7 @@
 import TransactionButton from '@/components/ui/transaction-button'
 import useContractWrite from '@/hooks/useContractWrite'
 import { ZapResult } from '@/views/yield-dtf/issuance/components/zapV2/api'
+import { useLingui } from '@lingui/react/macro'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { Address, erc20Abi, parseEventLogs } from 'viem'
 import { useSendTransaction, useWaitForTransactionReceipt } from 'wagmi'
@@ -18,6 +19,7 @@ const SimpleDeployButton = ({
 }: {
   data: ZapResult
 }) => {
+  const { t } = useLingui()
   const form = useAtomValue(indexDeployFormDataAtom)
   const inputToken = useAtomValue(inputTokenAtom)
   const defaultInputToken = useAtomValue(defaultInputTokenAtom)
@@ -68,7 +70,7 @@ const SimpleDeployButton = ({
     error: txError,
   } = useWatchTransaction({
     hash: data,
-    label: `Deployed & minted ${form?.symbol || 'DTF'}`,
+    label: t`Deployed & minted ${form?.symbol || 'DTF'}`,
   })
 
   const execute = () => {
@@ -128,18 +130,19 @@ const SimpleDeployButton = ({
       loading={approving || loadingTx || validatingTx || confirmingApproval}
       loadingText={
         validatingTx || confirmingApproval
-          ? 'Confirming tx...'
-          : 'Pending, sign in wallet'
+          ? t`Confirming tx...`
+          : t`Pending, sign in wallet`
       }
       gas={readyToSubmit ? (gas ? BigInt(gas) : undefined) : approvalGas}
       onClick={() => {
         setOngoingTx(true)
-        readyToSubmit ? execute() : approve()
+        if (readyToSubmit) execute()
+        else approve()
       }}
       text={
         readyToSubmit
-          ? `Create ${form?.symbol || 'DTF'}`
-          : `Approve use of ${usedToken.symbol || 'ERC20'}`
+          ? t`Create ${form?.symbol || 'DTF'}`
+          : t`Approve use of ${usedToken.symbol || 'ERC20'}`
       }
       className="w-full"
       error={

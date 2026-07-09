@@ -1,4 +1,4 @@
-import { t } from '@lingui/macro'
+import { useLingui } from '@lingui/react/macro'
 import { FormField } from 'components/field'
 import { useFormContext } from 'react-hook-form'
 import { cn } from '@/lib/utils'
@@ -12,6 +12,7 @@ interface BackingFormProps {
  * View: Deploy -> Token setup
  */
 const BackingForm = ({ className }: BackingFormProps) => {
+  const { t } = useLingui()
   const { watch } = useFormContext()
   const [
     tradingDelayHelp,

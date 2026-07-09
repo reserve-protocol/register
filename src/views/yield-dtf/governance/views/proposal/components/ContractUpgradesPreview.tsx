@@ -1,4 +1,4 @@
-import { t } from '@lingui/macro'
+import { Trans, useLingui } from '@lingui/react/macro'
 import { Button } from '@/components/ui/button'
 import { useAtom } from 'jotai'
 import { cn } from '@/lib/utils'
@@ -12,6 +12,7 @@ interface Props {
 }
 
 const ContractUpgradesPreview = ({ className }: Props) => {
+  const { t } = useLingui()
   const [upgrades, setUpgrades] = useAtom(contractUpgradesAtom)
   const contracts = Object.keys(upgrades)
 
@@ -45,7 +46,7 @@ const ContractUpgradesPreview = ({ className }: Props) => {
             size="sm"
             onClick={() => handleRevert(contract)}
           >
-            Revert
+            <Trans>Revert</Trans>
           </Button>
         </div>
       ))}

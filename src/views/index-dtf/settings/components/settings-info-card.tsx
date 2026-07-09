@@ -68,6 +68,7 @@ const InfoCardItem = ({
   address,
   bold = true,
   border = true,
+  layout = 'stacked',
 }: {
   label: string
   icon: React.ReactNode
@@ -76,8 +77,49 @@ const InfoCardItem = ({
   bold?: boolean
   address?: string
   border?: boolean
+  layout?: 'stacked' | 'inline'
 }) => {
   const chainId = useAtomValue(chainIdAtom)
+
+  if (layout === 'inline') {
+    return (
+      <div
+        className={cn(
+          'flex items-center justify-between gap-4 p-4',
+          className,
+          border && 'border-t'
+        )}
+      >
+        <div className="flex min-w-0 items-center gap-2.5 text-base text-legend">
+          {icon}
+          <span className="truncate">{label}</span>
+        </div>
+        <div className="flex shrink-0 items-center gap-2 text-right">
+          {!value ? (
+            <Skeleton className="h-4 w-24" />
+          ) : (
+            <span className={cn('text-base', bold && 'font-semibold')}>
+              {value}
+            </span>
+          )}
+          {!!address && (
+            <>
+              <div className="flex items-center justify-center bg-muted dark:bg-white/5 rounded-full p-1.5">
+                <Copy value={address} size={10} />
+              </div>
+              <Link
+                to={getExplorerLink(address, chainId, ExplorerDataType.ADDRESS)}
+                target="_blank"
+                className="p-1 bg-muted dark:bg-white/5 rounded-full"
+              >
+                <ArrowUpRight size={14} />
+              </Link>
+            </>
+          )}
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div
@@ -91,7 +133,7 @@ const InfoCardItem = ({
         {!value ? (
           <Skeleton className="h-4 w-24" />
         ) : (
-          <span className={cn(bold && 'font-bold')}>{value}</span>
+          <span className={cn(bold && 'font-semibold')}>{value}</span>
         )}
       </div>
       {!!address && (

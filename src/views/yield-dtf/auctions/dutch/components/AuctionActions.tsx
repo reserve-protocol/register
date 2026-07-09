@@ -1,3 +1,4 @@
+import { Trans, useLingui } from '@lingui/react/macro'
 import DutchTradeAbi from 'abis/DutchTrade'
 import ERC20 from 'abis/ERC20'
 import { ExecuteButton } from '@/components/ui/transaction-button'
@@ -19,6 +20,7 @@ const AuctionActions = ({
   data: DutchTrade
   currentPrice: bigint
 }) => {
+  const { t } = useLingui()
   const chainId = useAtomValue(chainIdAtom)
   const wallet = useAtomValue(walletAtom)
   const [bidded, setBidded] = useState(false)
@@ -74,29 +76,33 @@ const AuctionActions = ({
         {!hasAllowance && (
           <>
             <ExecuteButton
-              text={`Approve ${data.buyingTokenSymbol}`}
+              text={t`Approve ${data.buyingTokenSymbol}`}
               call={approveCall}
               variant="accent"
-              successLabel="Waiting allowance..."
+              successLabel={t`Waiting allowance...`}
               size="sm"
               className="ml-4"
             />
             <span className="text-legend text-xs ml-2">
-              Prepare for bidding by approving {data.buyingTokenSymbol}
+              <Trans>
+                Prepare for bidding by approving {data.buyingTokenSymbol}
+              </Trans>
             </span>
           </>
         )}
         {hasAllowance && currentPrice !== 0n && (
           <>
             <ExecuteButton
-              text={`Bid ${formatCurrency(
+              text={t`Bid ${formatCurrency(
                 +formatUnits(currentPrice, data.buyingTokenDecimals)
               )} ${data.buyingTokenSymbol}`}
               className="ml-4"
               call={hasBalance ? bidCall : undefined}
               variant="accent"
-              successLabel="Auction bidded"
-              txLabel={hasBalance ? 'Auction bid' : 'Not enough balance to bid'}
+              successLabel={t`Auction bidded`}
+              txLabel={
+                hasBalance ? t`Auction bid` : t`Not enough balance to bid`
+              }
               disabled={!hasBalance}
               size="sm"
               onSuccess={handleBid}

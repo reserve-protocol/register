@@ -1,5 +1,6 @@
 import withNavigationGuard from '@/hoc/with-navigation-guard'
 import { ROUTES } from '@/utils/constants'
+import { Trans } from '@lingui/react/macro'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { ArrowUpRight, Flower, Globe } from 'lucide-react'
 import { FormProvider, useForm } from 'react-hook-form'
@@ -7,8 +8,8 @@ import { useNavigate } from 'react-router-dom'
 import DeployAccordion from './components/deploy-accordion'
 import RightPanel from './components/right-panel'
 import {
-  DeployFormSchema,
   dtfDeployDefaultValues,
+  useDeployFormSchema,
 } from './form-fields'
 import Updater from './updater'
 import useTrackPage from '@/hooks/useTrackPage'
@@ -22,7 +23,9 @@ const DeployerHeader = () => {
         <div className="rounded-full p-[6px] border border-primary dark:border-muted-foreground">
           <Globe size={20} strokeWidth={1.5} />
         </div>
-        <div className="text-xl font-medium">Create New Index DTF</div>
+        <div className="text-xl font-medium">
+          <Trans>Create New Index DTF</Trans>
+        </div>
       </div>
       <div
         className="hidden sm:flex items-center gap-2 cursor-pointer"
@@ -30,7 +33,9 @@ const DeployerHeader = () => {
         role="button"
       >
         <Flower size={16} strokeWidth={2} />
-        <div>Looking for Yield DTFs?</div>
+        <div>
+          <Trans>Looking for Yield DTFs?</Trans>
+        </div>
         <div className="rounded-full p-1 bg-primary text-white dark:bg-muted-foreground/20">
           <ArrowUpRight size={12} strokeWidth={2} />
         </div>
@@ -42,8 +47,9 @@ const DeployerHeader = () => {
 const IndexTokenDeploy = () => {
   useTrackPage('create', 'index_dtf')
 
+  const deployFormSchema = useDeployFormSchema()
   const form = useForm({
-    resolver: zodResolver(DeployFormSchema),
+    resolver: zodResolver(deployFormSchema),
     defaultValues: dtfDeployDefaultValues,
     mode: 'onTouched',
   })

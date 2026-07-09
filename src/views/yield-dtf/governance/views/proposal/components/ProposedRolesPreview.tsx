@@ -1,4 +1,4 @@
-import { t } from '@lingui/macro'
+import { useLingui } from '@lingui/react/macro'
 import { useAtom, useAtomValue } from 'jotai'
 import { cn } from '@/lib/utils'
 import { shortenAddress } from 'utils'
@@ -12,6 +12,7 @@ interface Props {
 }
 
 const ProposedRolesPreview = ({ className }: Props) => {
+  const { t } = useLingui()
   const changes = useAtomValue(roleChangesAtom)
   const [proposedRoles, setProposedRoles] = useAtom(proposedRolesAtom)
 

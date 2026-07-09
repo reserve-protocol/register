@@ -13,6 +13,7 @@ import {
   ScrollText,
   Signature,
 } from 'lucide-react'
+import { Trans } from '@lingui/react/macro'
 import { ReactNode } from 'react'
 import ManageAbout from './manage-about'
 import ManageCreator from './manage-creator'
@@ -25,7 +26,7 @@ type Step = 'about' | 'creator' | 'curator' | 'socials'
 export type ProposalStep = {
   id: Step
   icon: ReactNode
-  title: string
+  title: ReactNode
   description: ReactNode
   content: ReactNode
 }
@@ -34,20 +35,22 @@ export const DEPLOY_STEPS: ProposalStep[] = [
   {
     id: 'about',
     icon: <Signature size={14} />,
-    title: 'About',
+    title: <Trans>About</Trans>,
     description: (
       <span>
-        Customize the appearance of this DTF on{' '}
-        <a
-          href="https://app.reserve.org"
-          target="_blank"
-          className="text-primary"
-        >
-          app.reserve.org
-        </a>{' '}
-        and provide additional information for prospective holders. These
-        changes will not automatically populate on external services like
-        CoinGecko or CoinMarketCap.
+        <Trans>
+          Customize the appearance of this DTF on{' '}
+          <a
+            href="https://app.reserve.org"
+            target="_blank"
+            className="text-primary"
+          >
+            app.reserve.org
+          </a>{' '}
+          and provide additional information for prospective holders. These
+          changes will not automatically populate on external services like
+          CoinGecko or CoinMarketCap.
+        </Trans>
       </span>
     ),
     content: <ManageAbout />,
@@ -55,12 +58,14 @@ export const DEPLOY_STEPS: ProposalStep[] = [
   {
     id: 'creator',
     icon: <ScrollText size={14} />,
-    title: 'Creator',
+    title: <Trans>Creator</Trans>,
     description: (
       <span>
-        Customize the creator section below the DTF name. You can choose the
-        profile picture, name of the creator, and provide a link to the creators
-        website.
+        <Trans>
+          Customize the creator section below the DTF name. You can choose the
+          profile picture, name of the creator, and provide a link to the
+          creators website.
+        </Trans>
       </span>
     ),
     content: <ManageCreator />,
@@ -68,12 +73,14 @@ export const DEPLOY_STEPS: ProposalStep[] = [
   {
     id: 'curator',
     icon: <NotepadText size={14} />,
-    title: 'Curator',
+    title: <Trans>Curator</Trans>,
     description: (
       <span>
-        Customize the curator section below the DTF name. You can choose the
-        profile picture, name of the creator, and provide a link to the creators
-        website.
+        <Trans>
+          Customize the curator section below the DTF name. You can choose the
+          profile picture, name of the creator, and provide a link to the
+          creators website.
+        </Trans>
       </span>
     ),
     content: <ManageCurator />,
@@ -81,8 +88,10 @@ export const DEPLOY_STEPS: ProposalStep[] = [
   {
     id: 'socials',
     icon: <ScanQrCode size={14} />,
-    title: 'Socials',
-    description: 'Add links to your social media accounts and website.',
+    title: <Trans>Socials</Trans>,
+    description: (
+      <Trans>Add links to your social media accounts and website.</Trans>
+    ),
     content: <ManageSocials />,
   },
 ]
@@ -131,7 +140,9 @@ const Header = () => (
       <div className="rounded-full text-primary border-primary border p-1 group-hover:bg-primary/10">
         <ArrowLeft size={16} />
       </div>
-      <h1 className="text-primary font-bold text-xl">Edit Overview Content</h1>
+      <h1 className="text-primary font-bold text-xl">
+        <Trans>Edit Overview Content</Trans>
+      </h1>
     </Link>
   </div>
 )

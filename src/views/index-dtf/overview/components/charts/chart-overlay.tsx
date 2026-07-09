@@ -9,48 +9,19 @@ import {
   indexDTFStatusAtom,
   performanceTimeRangeAtom,
 } from '@/state/dtf/atoms'
-import {
-  indexDTFApyAtom,
-  isYieldIndexDTFAtom,
-} from '@/state/dtf/yield-index-atoms'
+import { indexDTFApyAtom } from '@/state/dtf/yield-index-atoms'
 import { formatPercentage, formatToSignificantDigits } from '@/utils'
+import { Trans } from '@lingui/react/macro'
 import { useAtomValue } from 'jotai'
 import { IndexDTFPerformance } from '../../hooks/use-dtf-price-history'
-import IndexCreatorOverview from '../index-creator-overview'
 import IndexTokenAddress from '../index-token-address'
-import IndexTokenLogo from '../index-token-logo'
 import PercentageChange from './percentage-change'
 import { apyStatsAtom, dataTypeAtom } from './price-chart-atoms'
-import TimeRangeSelector from './time-range-selector'
 
-const OverlayHeaderActions = () => {
-  const isYieldIndexDTF = useAtomValue(isYieldIndexDTFAtom)
-
-  if (isYieldIndexDTF) {
-    return (
-      <>
-        <div className="hidden xl:flex items-center gap-2">
-          <IndexTokenAddress />
-          <IndexCreatorOverview />
-        </div>
-        <div className="flex xl:hidden items-center gap-2">
-          <IndexCreatorOverview />
-        </div>
-      </>
-    )
-  }
-
-  return (
-    <>
-      <div className="hidden xl:block">
-        <IndexCreatorOverview />
-      </div>
-      <div className="block xl:hidden">
-        <TimeRangeSelector />
-      </div>
-    </>
-  )
-}
+// "(BSC)" / "(ETH)" suffixes are catalog bookkeeping, not display copy — the
+// chain is already shown by the token address chip next to the title.
+const stripChainSuffix = (name: string) =>
+  name.replace(/\s*\((ETH|BASE|BSC)\)\s*$/i, '')
 
 const OverlayTitle = () => {
   const dtf = useAtomValue(indexDTFAtom)
@@ -61,12 +32,36 @@ const OverlayTitle = () => {
   }
 
   return (
-    <h2 className="text-xl sm:text-2xl font-light w-full break-words">
-      <div className="flex items-center gap-2">
-        {dtf.token.name}
-        {isInactive && <InactiveBadge className="block sm:hidden" />}
+    <h2 className="min-w-0 text-2xl font-medium leading-tight text-primary dark:text-foreground sm:text-3xl sm:font-normal">
+      <div className="flex min-w-0 items-center gap-2">
+        {stripChainSuffix(dtf.token.name)}
+        {isInactive && <InactiveBadge />}
       </div>
     </h2>
+  )
+}
+
+const PricePerformanceChange = ({
+  className,
+  timeseries,
+}: {
+  className?: string
+  timeseries: IndexDTFPerformance['timeseries']
+}) => {
+  const dataType = useAtomValue(dataTypeAtom)
+  const range = useAtomValue(performanceTimeRangeAtom)
+
+  if (timeseries.length === 0) {
+    return <Skeleton className={cn('h-6 w-[100px]', className)} />
+  }
+
+  return (
+    <PercentageChange
+      performance={timeseries}
+      dataType={dataType}
+      range={range}
+      className={cn('whitespace-nowrap', className)}
+    />
   )
 }
 
@@ -77,18 +72,20 @@ const YieldOverlayInfo = () => {
 
   return (
     <>
-      <div className="flex items-center gap-2 text-xl sm:text-2xl font-light">
+      <div className="flex items-center gap-2 text-xl sm:text-2xl font-light leading-none">
         {apyData ? (
-          <>{formatPercentage(apyData.totalAPY)} Est. APY</>
+          <Trans>{formatPercentage(apyData.totalAPY)} Est. APY</Trans>
         ) : (
           <Skeleton className="w-[200px] h-7 sm:h-8" />
         )}
       </div>
       {stats && (
-        <span className="text-sm text-white/60">
-          Avg {formatPercentage(stats.avg)} · range{' '}
-          {formatPercentage(stats.min)}–{formatPercentage(stats.max)} (
-          {range === 'all' ? 'All' : range})
+        <span className="text-sm text-muted-foreground">
+          <Trans>
+            Avg {formatPercentage(stats.avg)} · range{' '}
+            {formatPercentage(stats.min)}–{formatPercentage(stats.max)} (
+            {range === 'all' ? 'All' : range})
+          </Trans>
         </span>
       )}
     </>
@@ -126,22 +123,27 @@ const PriceOverlayInfo = ({
 }: {
   timeseries: IndexDTFPerformance['timeseries']
 }) => {
-  const dataType = useAtomValue(dataTypeAtom)
-  const range = useAtomValue(performanceTimeRangeAtom)
+  const dtf = useAtomValue(indexDTFAtom)
 
   return (
-    <div className="flex items-center gap-2 text-xl sm:text-2xl font-light">
-      <PriceValue />
-      <div className="text-sm">
-        {timeseries.length === 0 ? (
-          <Skeleton className="w-[100px] h-6" />
-        ) : (
-          <PercentageChange
-            performance={timeseries}
-            dataType={dataType}
-            range={range}
-          />
+    <div className="mt-1.5 flex w-full min-w-0 items-center justify-between gap-3 text-base text-legend">
+      <div className="flex min-w-0 items-center gap-2 whitespace-nowrap">
+        <div className="tabular-nums text-foreground">
+          <PriceValue />
+        </div>
+        {dtf && (
+          <>
+            <div className="shrink-0">·</div>
+            <div className="shrink-0">${dtf.token.symbol}</div>
+          </>
         )}
+        <div className="hidden shrink-0 items-center gap-2 font-medium tabular-nums lg:flex">
+          <span className="font-normal text-legend">·</span>
+          <PricePerformanceChange timeseries={timeseries} />
+        </div>
+      </div>
+      <div className="shrink-0 text-base font-medium tabular-nums lg:hidden">
+        <PricePerformanceChange timeseries={timeseries} />
       </div>
     </div>
   )
@@ -154,26 +156,29 @@ const ChartOverlay = ({
 }) => {
   const dataType = useAtomValue(dataTypeAtom)
   const isYieldMode = dataType === 'yield'
-  const isInactive = isInactiveDTF(useAtomValue(indexDTFStatusAtom))
 
   return (
     <div
       className={cn(
-        'flex flex-col gap-2',
-        isYieldMode ? '-mb-1.5 sm:-mb-2.5' : 'mb-0 sm:mb-3'
+        'flex flex-col gap-1 pt-1',
+        isYieldMode ? '-mb-1.5 sm:-mb-2.5' : 'mb-4 sm:mb-6'
       )}
     >
-      <div className="flex items-center gap-1 justify-between">
-        <div className="flex flex-wrap items-center gap-2">
-          <div className="flex items-center bg-white/20 rounded-full p-[1px] w-fit">
-            <IndexTokenLogo />
+      <div className="flex flex-col gap-1.5">
+        <div className="flex items-start justify-between gap-3">
+          <div className="min-w-0 flex-1">
+            <OverlayTitle />
           </div>
-          {isInactive && <InactiveBadge className="hidden sm:block" />}
+          <IndexTokenAddress
+            theme="light"
+            className="hidden h-9 shrink-0 rounded-full border-card bg-card px-3 !text-sm font-medium lg:flex"
+            labelClassName="!text-sm font-normal text-muted-foreground"
+            labelGroupClassName="h-full gap-1.5"
+            stackedLogoClassName="pt-0 h-4 w-4"
+            logoClassName="h-4 w-4 rounded-md border border-card bg-card"
+            chevronClassName="h-3.5 w-3.5 text-muted-foreground"
+          />
         </div>
-        <OverlayHeaderActions />
-      </div>
-      <div className="flex flex-col gap-0.5">
-        <OverlayTitle />
         {isYieldMode ? (
           <YieldOverlayInfo />
         ) : (

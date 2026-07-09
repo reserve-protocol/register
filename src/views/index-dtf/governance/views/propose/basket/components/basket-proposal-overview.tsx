@@ -1,6 +1,7 @@
 import TokenLogo from '@/components/token-logo'
 import { Button } from '@/components/ui/button'
 import Timeline from '@/components/ui/timeline'
+import { Trans, useLingui } from '@lingui/react/macro'
 import { useAtom, useAtomValue } from 'jotai'
 import { Link } from 'react-router-dom'
 import {
@@ -33,7 +34,7 @@ const Header = () => {
           size="xs"
           className="rounded-[42px] font-light text-destructive hover:text-destructive"
         >
-          Cancel
+          <Trans>Cancel</Trans>
         </Button>
       </Link>
     </div>
@@ -41,6 +42,7 @@ const Header = () => {
 }
 
 const ConfirmProposalButton = () => {
+  const { t } = useLingui()
   const isValid = useAtomValue(isBasketProposalValidAtom)
   const isLiquidityLoading = useAtomValue(proposalLiquidityLoadingAtom)
   const [isProposalConfirmed, setIsProposalConfirmed] = useAtom(
@@ -57,37 +59,38 @@ const ConfirmProposalButton = () => {
       onClick={() => setIsProposalConfirmed(!isProposalConfirmed)}
     >
       {waitForLiquidity
-        ? 'Checking liquidity...'
+        ? t`Checking liquidity...`
         : isProposalConfirmed
-          ? 'Edit proposal'
-          : 'Confirm & prepare proposal'}
+          ? t`Edit proposal`
+          : t`Confirm & prepare proposal`}
     </Button>
   )
 }
 
 const ProposalInstructions = () => {
+  const { t } = useLingui()
   const isValid = useAtomValue(isBasketProposalValidAtom)
   const confirmed = useAtomValue(isProposalConfirmedAtom)
 
   const timelineItems = [
     {
-      title: 'Configure proposal',
+      title: t`Configure proposal`,
       isActive: !isValid,
       isCompleted: isValid,
     },
     {
-      title: 'Finalize basket proposal',
+      title: t`Finalize basket proposal`,
       children: <ConfirmProposalButton />,
       isActive: isValid && !confirmed,
       isCompleted: confirmed,
     },
     {
-      title: 'Review & describe your proposal',
+      title: t`Review & describe your proposal`,
       children: <SubmitProposalButton />,
       isActive: confirmed,
     },
     {
-      title: 'Voting delay begins',
+      title: t`Voting delay begins`,
     },
   ]
 

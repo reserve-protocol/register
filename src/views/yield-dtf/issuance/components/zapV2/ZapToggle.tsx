@@ -1,4 +1,4 @@
-import { Trans } from '@lingui/macro'
+import { Trans } from '@lingui/react/macro'
 import { Switch } from '@/components/ui/switch'
 import { cn } from '@/lib/utils'
 import { Zap as ZapIcon } from 'lucide-react'

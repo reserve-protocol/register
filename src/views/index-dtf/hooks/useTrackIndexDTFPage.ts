@@ -29,7 +29,7 @@ export const useTrackIndexDTF = (
 ) => {
   const indexDTF = useAtomValue(indexDTFAtom)
 
-  const track = (ctaLabel: string) => {
+  const track = (ctaLabel: string, props?: Record<string, unknown>) => {
     if (!indexDTF) return
     mixpanel.track(event, {
       page,
@@ -38,6 +38,7 @@ export const useTrackIndexDTF = (
       ca: indexDTF.id,
       ticker: indexDTF.token.symbol,
       chain: indexDTF.chainId,
+      ...props,
     })
   }
 

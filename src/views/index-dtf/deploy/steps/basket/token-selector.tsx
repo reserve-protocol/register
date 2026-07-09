@@ -36,6 +36,7 @@ import {
 } from 'lucide-react'
 import { useCallback, useEffect, useMemo } from 'react'
 import { useFormContext } from 'react-hook-form'
+import { Plural, Trans, useLingui } from '@lingui/react/macro'
 import AutoSizer from 'react-virtualized-auto-sizer'
 import { FixedSizeList as List } from 'react-window'
 import {
@@ -63,7 +64,7 @@ const TokenButton = ({ variant }: TokenButtonProps) => {
         )}
       >
         <PlusIcon size={16} />
-        Add token
+        <Trans>Add token</Trans>
       </Button>
     </DrawerTrigger>
   )
@@ -108,7 +109,7 @@ const EvenDistributionButton = () => {
       onClick={onEvenDistribution}
       disabled={disabled}
     >
-      Even distribution
+      <Trans>Even distribution</Trans>
     </Button>
   )
 
@@ -121,7 +122,11 @@ const EvenDistributionButton = () => {
       <Tooltip>
         <TooltipTrigger asChild>{button}</TooltipTrigger>
         <TooltipContent className="max-w-xs">
-          <p>Distribute weights equally among all tokens in the basket.</p>
+          <p>
+            <Trans>
+              Distribute weights equally among all tokens in the basket.
+            </Trans>
+          </p>
         </TooltipContent>
       </Tooltip>
     </TooltipProvider>
@@ -141,6 +146,7 @@ const OpenButtonSecondary = () => {
 }
 
 const SearchToken = () => {
+  const { t } = useLingui()
   const [search, setSearch] = useAtom(searchTokenAtom)
   const handleSearch = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => setSearch(e.target.value),
@@ -150,7 +156,7 @@ const SearchToken = () => {
   return (
     <SearchInput
       className="mx-2"
-      placeholder="Search by token name or address"
+      placeholder={t`Search by token name or address`}
       value={search}
       onChange={handleSearch}
     />
@@ -232,10 +238,10 @@ const TokenSelectorHeader = () => {
     <DrawerTitle className="flex gap-2 mt-2 px-2 mb-2">
       <TabsList className="h-9">
         <TabsTrigger value="all" className="w-max h-7">
-          All
+          <Trans>All</Trans>
         </TabsTrigger>
         <TabsTrigger value="selected" className="w-max h-7">
-          Selected ({selectedTokens.length})
+          <Trans>Selected ({selectedTokens.length})</Trans>
         </TabsTrigger>
       </TabsList>
     </DrawerTitle>
@@ -286,7 +292,7 @@ const UnlistedToken = () => {
   if (isErrorPrice || isErrorMetadata) {
     return (
       <div className="flex items-center justify-center h-full text-muted-foreground">
-        Token not supported
+        <Trans>Token not supported</Trans>
       </div>
     )
   }
@@ -346,8 +352,12 @@ const TokenList = ({ showSelected = false }: TokenListProps) => {
   if (error) {
     return (
       <div className="flex flex-col items-center justify-center h-full p-4 text-center text-muted-foreground">
-        <p>Failed to load tokens</p>
-        <p className="text-sm">Please try again later</p>
+        <p>
+          <Trans>Failed to load tokens</Trans>
+        </p>
+        <p className="text-sm">
+          <Trans>Please try again later</Trans>
+        </p>
       </div>
     )
   }
@@ -360,9 +370,11 @@ const TokenList = ({ showSelected = false }: TokenListProps) => {
         <UnlistedToken />
       ) : filteredTokens.length === 0 ? (
         <div className="flex flex-col items-center justify-center text-center h-full">
-          <div className="text-muted-foreground">No tokens found</div>
+          <div className="text-muted-foreground">
+            <Trans>No tokens found</Trans>
+          </div>
           <div className="text-primary mt-6">
-            Would you like us to add support for this token?
+            <Trans>Would you like us to add support for this token?</Trans>
           </div>
           <div className="flex gap-2 mt-4">
             <Button
@@ -372,7 +384,7 @@ const TokenList = ({ showSelected = false }: TokenListProps) => {
             >
               <a href={REGISTER_FEEDBACK}>
                 <MessageCirclePlus className="h-4 w-4" />
-                Request on Canny
+                <Trans>Request on Canny</Trans>
               </a>
             </Button>
             <Button
@@ -382,7 +394,7 @@ const TokenList = ({ showSelected = false }: TokenListProps) => {
             >
               <a href={TELEGRAM_INVITE}>
                 <MessageSquare className="h-4 w-4" />
-                Message us on Telegram
+                <Trans>Message us on Telegram</Trans>
               </a>
             </Button>
           </div>
@@ -469,9 +481,15 @@ const SubmitSelectedTokens = () => {
         disabled={disabled}
         onClick={onSubmit}
       >
-        {disabled
-          ? 'Select tokens'
-          : `Add ${selectedTokens.length} token${selectedTokens.length > 1 ? 's' : ''}`}
+        {disabled ? (
+          <Trans>Select tokens</Trans>
+        ) : (
+          <Plural
+            value={selectedTokens.length}
+            one="Add # token"
+            other="Add # tokens"
+          />
+        )}
       </Button>
     </DrawerTrigger>
   )

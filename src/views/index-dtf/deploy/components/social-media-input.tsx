@@ -9,11 +9,14 @@ import { Mail, ChevronDown } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import XIcon from 'components/icons/XIcon'
 import TelegramIcon from 'components/icons/TelegramIcon'
+import { msg } from '@lingui/core/macro'
+import { useLingui } from '@lingui/react/macro'
+import type { MessageDescriptor } from '@lingui/core'
 
 export type SocialMediaOption = {
   key: string
   name: string
-  placeholder: string
+  placeholder: MessageDescriptor
   icon: React.ReactNode
 }
 
@@ -21,19 +24,19 @@ export const SOCIAL_MEDIA_OPTIONS: SocialMediaOption[] = [
   {
     key: 'telegram',
     name: 'Telegram',
-    placeholder: 'Telegram username',
+    placeholder: msg`Telegram username`,
     icon: <TelegramIcon className="h-4 w-4" />,
   },
   {
     key: 'twitter',
     name: 'x.com',
-    placeholder: 'x.com username',
+    placeholder: msg`x.com username`,
     icon: <XIcon className="h-4 w-4" />,
   },
   {
     key: 'email',
     name: 'Email',
-    placeholder: 'Email address',
+    placeholder: msg`Email address`,
     icon: <Mail className="h-4 w-4" />,
   },
 ]
@@ -55,6 +58,7 @@ const SocialMediaInput = ({
   disabled,
   error,
 }: SocialMediaInputProps) => {
+  const { t } = useLingui()
   return (
     <div className="relative flex-grow">
       <div className="absolute left-2 top-1/2 -translate-y-1/2 z-10 border-r pr-1">
@@ -92,7 +96,7 @@ const SocialMediaInput = ({
           disabled && 'text-muted-foreground',
           error && 'border-destructive'
         )}
-        placeholder={selected.placeholder}
+        placeholder={t(selected.placeholder)}
         value={value}
         onChange={(e) => onChange(e.target.value)}
         disabled={disabled}

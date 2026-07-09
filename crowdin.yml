@@ -1,0 +1,8 @@
+files:
+  - source: /src/locales/en.po
+    translation: /src/locales/%two_letters_code%.po
+
+# Crowdin "Chinese Simplified" (zh-CN) -> zh.po
+languages_mapping:
+  two_letters_code:
+    zh-CN: zh

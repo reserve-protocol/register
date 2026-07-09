@@ -1,0 +1,19 @@
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "ignorePatterns": [
+    "**/node_modules/**",
+    "**/.turbo/**",
+    "**/.next/**",
+    "**/dist/**",
+    "**/build/**",
+    "**/out/**",
+    "**/.cache/**",
+    "**/coverage/**"
+  ],
+  "plugins": ["typescript", "unicorn", "oxc", "react", "react-perf"],
+  "settings": {
+    "react": {
+      "version": "18.3.1"
+    }
+  }
+}

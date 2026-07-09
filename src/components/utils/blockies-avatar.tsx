@@ -1,4 +1,5 @@
 import { cn } from '@/lib/utils'
+import { useLingui } from '@lingui/react/macro'
 import * as blockies from 'blockies-ts'
 import { useMemo } from 'react'
 
@@ -13,6 +14,7 @@ const BlockiesAvatar = ({
   size = 24,
   className,
 }: BlockiesAvatarProps) => {
+  const { t } = useLingui()
   const avatarImgSrc = useMemo(() => {
     return blockies.create({ seed: address.toLocaleLowerCase() }).toDataURL()
   }, [address])
@@ -22,7 +24,7 @@ const BlockiesAvatar = ({
       width={size}
       height={size}
       src={avatarImgSrc}
-      alt="Address avatar"
+      alt={t`Address avatar`}
       className={cn('rounded-md', className)}
     />
   )

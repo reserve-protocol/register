@@ -1,6 +1,6 @@
 import TelegramIcon from '@/components/icons/TelegramIcon'
 import XIcon from '@/components/icons/XIcon'
-import { Trans } from '@lingui/macro'
+import { Trans } from '@lingui/react/macro'
 import GithubIcon from 'components/icons/GithubIcon'
 import { Link as RouterLink } from 'react-router-dom'
 import {
@@ -38,7 +38,7 @@ const Intro = () => (
         <p className="mt-3 text-sm text-legend">
           <Trans>
             Welcome to Reserve — a platform for creating, exploring, and
-            interacting with Decentralized Token Folios (“DTFs”). A DTF is the
+            interacting with Decentralized Token Funds (“DTFs”). A DTF is the
             generic name given to any onchain asset-backed index. DTFs can be
             created on Reserve’s Yield Protocol or Index Protocol
             permissionlessly, by any person or entity.
@@ -74,7 +74,7 @@ const Intro = () => (
             href="https://www.youtube.com/watch?v=rXCAHlshSm8"
             target="_blank"
           >
-            You can learn more about overcollateralization here.
+            <Trans>You can learn more about overcollateralization here.</Trans>
           </a>
         </p>
         <p className="mt-2 text-sm text-legend">
@@ -83,7 +83,7 @@ const Intro = () => (
             We’d be happy to help! You can also
           </Trans>{' '}
           <a className="underline" href={PROTOCOL_DOCS} target="_blank">
-            explore the Reserve Documentation for more details.
+            <Trans>explore the Reserve Documentation for more details.</Trans>
           </a>
         </p>
       </div>
@@ -105,7 +105,7 @@ const About = () => (
           ways.
         </Trans>{' '}
         <a className="underline" href="https://reserve.org/" target="_blank">
-          Learn more about Reserve on their website.
+          <Trans>Learn more about Reserve on their website.</Trans>
         </a>
       </p>
       <h3 className="mt-4 text-xl font-semibold">
@@ -175,10 +175,15 @@ const RegisterAbout = () => (
           target="_blank"
           href="https://www.abclabs.co/"
         >
-          <p className="font-semibold">Made by ABC Labs</p>
+          <p className="font-semibold">
+            <Trans>Made by ABC Labs</Trans>
+          </p>
         </a>
         <p className="text-xs text-legend">
-          Version: {import.meta.env.VITE_GIT_SHA?.slice(0, 7) || 'development'}
+          <Trans>
+            Version:{' '}
+            {import.meta.env.VITE_GIT_SHA?.slice(0, 7) || 'development'}
+          </Trans>
         </p>
       </div>
     </div>

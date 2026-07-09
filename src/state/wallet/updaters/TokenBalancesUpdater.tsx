@@ -88,6 +88,7 @@ export const TokenBalancesUpdater = () => {
   const { tokens, calls } = useAtomValue(balancesCallAtom) ?? {}
   const setBalances = useSetAtom(balancesAtom)
   const wallet = useAtomValue(walletAtom)
+  const chainId = useAtomValue(chainIdAtom)
 
   const { data }: { data: bigint[] | undefined } = useWatchReadContracts({
     contracts: calls,
@@ -95,6 +96,7 @@ export const TokenBalancesUpdater = () => {
   })
   const { data: balance } = useBalance({
     address: wallet || undefined,
+    chainId,
   })
 
   useEffect(() => {

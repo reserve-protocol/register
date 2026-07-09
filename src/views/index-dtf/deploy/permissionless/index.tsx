@@ -13,7 +13,8 @@ import {
 } from '../atoms'
 import DeployAccordion from '../components/deploy-accordion'
 import RightPanel from '../components/right-panel'
-import { DeployFormSchema, DeployStepId } from '../form-fields'
+import { DeployStepId, useDeployFormSchema } from '../form-fields'
+import { Trans } from '@lingui/react/macro'
 import {
   getPermissionlessDefaults,
   PERMISSIONLESS_READONLY_STEPS,
@@ -79,15 +80,18 @@ const PermissionlessHeader = () => (
     <div className="rounded-full p-[6px] border border-primary dark:border-muted-foreground">
       <Globe size={20} strokeWidth={1.5} />
     </div>
-    <div className="text-xl font-medium">Create New Index DTF</div>
+    <div className="text-xl font-medium">
+      <Trans>Create New Index DTF</Trans>
+    </div>
   </div>
 )
 
 const PermissionlessDeploy = () => {
   useTrackPage('create', 'index_dtf_permissionless')
 
+  const deployFormSchema = useDeployFormSchema()
   const form = useForm({
-    resolver: zodResolver(DeployFormSchema),
+    resolver: zodResolver(deployFormSchema),
     defaultValues: getPermissionlessDefaults(ChainId.Base, 50),
     mode: 'onTouched',
   })

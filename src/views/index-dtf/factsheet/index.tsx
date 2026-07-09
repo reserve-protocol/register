@@ -6,9 +6,9 @@ import { useNavigate } from 'react-router-dom'
 import FactsheetChart from './components/factsheet-chart'
 import NetPerformanceSummary from './components/net-performance-summary'
 import PerformanceTable from './components/performance-table'
+import { Trans } from '@lingui/react/macro'
 import { useFactsheetData } from './hooks/use-factsheet-data'
 import { Separator } from '@/components/ui/separator'
-import { currentHour } from './utils/constants'
 
 const Header = () => {
   const navigate = useNavigate()
@@ -28,10 +28,10 @@ const Header = () => {
         <ArrowLeft className="h-4 w-4" strokeWidth={1.5} />
       </Button>
       <h1 className="hidden sm:block text-2xl font-light text-white sm:text-black sm:dark:text-white">
-        {dtf?.token?.name || 'Index DTF'} Performance
+        <Trans>{dtf?.token?.name || 'Index DTF'} Performance</Trans>
       </h1>
       <h1 className="sm:hidden text-xl font-light text-white sm:text-black sm:dark:text-white">
-        {dtf?.token?.symbol || 'Index DTF'} Performance
+        <Trans>{dtf?.token?.symbol || 'Index DTF'} Performance</Trans>
       </h1>
     </div>
   )
@@ -39,6 +39,7 @@ const Header = () => {
 
 const IndexDTFFactsheet = () => {
   const { data, isLoading } = useFactsheetData()
+  const dtf = useAtomValue(indexDTFAtom)
 
   return (
     <div className="container mx-auto px-0 py-0 sm:px-4 sm:py-6 max-w-full">
@@ -64,7 +65,7 @@ const IndexDTFFactsheet = () => {
                       all: null,
                     }
                   }
-                  inception={data?.inception || currentHour}
+                  inception={dtf?.timestamp}
                 />
               </div>
             </div>
@@ -88,7 +89,7 @@ const IndexDTFFactsheet = () => {
                   all: null,
                 }
               }
-              inception={data?.inception || currentHour}
+              inception={dtf?.timestamp}
             />
           </div>
         </div>

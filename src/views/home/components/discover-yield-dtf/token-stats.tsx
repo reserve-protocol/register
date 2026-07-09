@@ -1,4 +1,4 @@
-import { Trans } from '@lingui/macro'
+import { Plural, Trans } from '@lingui/react/macro'
 import CollaterizationIcon from 'components/icons/CollaterizationIcon'
 import MoneyIcon from 'components/icons/MoneyIcon'
 import PegIcon from 'components/icons/PegIcon'
@@ -45,9 +45,15 @@ const TokenStats = ({ token, supplyETHTerms }: TokenStatsProps) => {
           <Trans>Peg:</Trans>
         </span>
         <span className="font-semibold">
-          {token?.targetUnits?.split(',').length > 2
-            ? `${token?.targetUnits?.split(',').length} targets`
-            : token.targetUnits}
+          {token?.targetUnits?.split(',').length > 2 ? (
+            <Plural
+              value={token.targetUnits.split(',').length}
+              one="# target"
+              other="# targets"
+            />
+          ) : (
+            token.targetUnits
+          )}
         </span>
       </div>
       <VerticalDivider className="hidden lg:flex" />

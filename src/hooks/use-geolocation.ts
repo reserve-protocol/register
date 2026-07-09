@@ -1,5 +1,8 @@
+import { trackCompliance } from '@/hooks/useTrackPage'
+import { walletAtom } from '@/state/atoms'
 import { RESERVE_API } from '@/utils/constants'
 import { useQuery } from '@tanstack/react-query'
+import { useAtomValue } from 'jotai'
 
 export type GeolocationStatus = {
   country: string
@@ -7,8 +10,6 @@ export type GeolocationStatus = {
   restricted: boolean
   isVPN: boolean
 }
-
-const GEOLOCATION_QUERY_KEY = ['geolocation'] as const
 
 const isGeolocationStatus = (value: unknown): value is GeolocationStatus => {
   if (typeof value !== 'object' || value === null) return false
@@ -22,19 +23,34 @@ const isGeolocationStatus = (value: unknown): value is GeolocationStatus => {
 }
 
 const useGeolocation = () => {
+  const wallet = useAtomValue(walletAtom)
+
   return useQuery({
-    queryKey: GEOLOCATION_QUERY_KEY,
+    queryKey: ['geolocation', wallet?.toLowerCase()],
     queryFn: async (): Promise<GeolocationStatus> => {
-      const response = await fetch(`${RESERVE_API}v2/compliance/geolocation`)
+      const response = await fetch(
+        `${RESERVE_API}v2/compliance/geolocation${wallet ? `?address=${wallet}` : ''}`
+      )
 
       if (!response.ok) {
+        trackCompliance({ endpoint: 'geolocation', status: 'error' })
         throw new Error('Failed to fetch geolocation')
       }
 
       const payload: unknown = await response.json()
       if (!isGeolocationStatus(payload)) {
+        trackCompliance({ endpoint: 'geolocation', status: 'error' })
         throw new Error('Invalid geolocation payload')
       }
+
+      trackCompliance({
+        endpoint: 'geolocation',
+        status: 'success',
+        restricted: payload.restricted,
+        isVPN: payload.isVPN,
+        country: payload.country,
+        countryCode: payload.countryCode,
+      })
 
       return payload
     },

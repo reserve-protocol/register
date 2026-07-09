@@ -1,11 +1,14 @@
 import NextButton from '../../components/next-button'
 import RolesForm from './roles-form'
+import { Trans } from '@lingui/react/macro'
 
 const Description = () => (
   <div className="px-6 pb-6 text-base">
-    The Reserve Index Protocol provides several roles that can improve the
-    safety and experience of DTF holders and governors. These roles are mutable
-    and can be changed by governance in the future.
+    <Trans>
+      The Reserve Index Protocol provides several roles that can improve the
+      safety and experience of DTF holders and governors. These roles are
+      mutable and can be changed by governance in the future.
+    </Trans>
   </div>
 )
 

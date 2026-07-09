@@ -1,4 +1,5 @@
-import { t } from '@lingui/macro'
+import { msg } from '@lingui/core/macro'
+import type { MessageDescriptor } from '@lingui/core'
 import { atom } from 'jotai'
 import { atomWithReset } from 'jotai/utils'
 import { chainIdAtom, rTokenAssetsAtom, selectedRTokenAtom } from 'state/atoms'
@@ -102,15 +103,15 @@ const getCollateralByTarget = (collaterals: CollateralPlugin[]) => {
   )
 }
 
-export const isValidBasketAtom = atom((get): [boolean, string[]] => {
+export const isValidBasketAtom = atom((get): [boolean, MessageDescriptor[]] => {
   const basket = get(basketAtom)
   const backup = get(backupCollateralAtom)
-  const errors: string[] = []
+  const errors: MessageDescriptor[] = []
 
   const units = Object.keys(basket)
 
   if (!units.length) {
-    errors.push(t`Primary basket not defined`)
+    errors.push(msg`Primary basket not defined`)
   }
 
   for (const targetUnit of units) {
@@ -119,11 +120,11 @@ export const isValidBasketAtom = atom((get): [boolean, string[]] => {
       0
     )
     if (distribution !== 100) {
-      errors.push(t`Invalid (${targetUnit}) basket distribution`)
+      errors.push(msg`Invalid (${targetUnit}) basket distribution`)
     }
 
     if (Number(basket[targetUnit].scale) <= 0) {
-      errors.push(t`Invalid (${targetUnit}) basket scale`)
+      errors.push(msg`Invalid (${targetUnit}) basket scale`)
     }
 
     if (backup[targetUnit]) {
@@ -134,7 +135,7 @@ export const isValidBasketAtom = atom((get): [boolean, string[]] => {
         collaterals &&
         (diversityFactor > collaterals || diversityFactor <= 0)
       ) {
-        errors.push(t`Invalid (${targetUnit}) backup diversity factor`)
+        errors.push(msg`Invalid (${targetUnit}) backup diversity factor`)
       }
     }
   }

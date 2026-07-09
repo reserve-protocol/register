@@ -1,5 +1,6 @@
 import { Button } from '@/components/ui/button'
 import { isSingletonRebalanceAtom } from '@/state/dtf/atoms'
+import { Trans } from '@lingui/react/macro'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { ChevronDown, ChevronUp, Settings } from 'lucide-react'
 import {
@@ -51,7 +52,7 @@ const NextButton = () => {
         className="w-full mb-2 rounded-xl"
         size="lg"
       >
-        Confirm & Prepare Proposal
+        <Trans>Confirm & Prepare Proposal</Trans>
       </Button>
     </div>
   )
@@ -60,11 +61,13 @@ const NextButton = () => {
 const ProposalBasketSetup = () => (
   <>
     <p className="text-sm sm:text-base mx-4 sm:mx-6 mb-6">
-      Enter the updated weights for the tokens in the basket. Remember, the
-      weights represent the proportion of each token relative to the total USD
-      value of basket at the time of the proposal. We will calculate the
-      required auctions needed to adopt the new basket if the proposal passes
-      governance.
+      <Trans>
+        Enter the updated weights for the tokens in the basket. Remember, the
+        weights represent the proportion of each token relative to the total USD
+        value of basket at the time of the proposal. We will calculate the
+        required auctions needed to adopt the new basket if the proposal passes
+        governance.
+      </Trans>
     </p>
     <div className="flex flex-col gap-2 mx-2">
       <BasketCsvSetup />

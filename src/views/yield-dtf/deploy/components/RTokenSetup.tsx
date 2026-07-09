@@ -1,4 +1,4 @@
-import { t } from '@lingui/macro'
+import { useLingui } from '@lingui/react/macro'
 import BasketSetup from 'components/rtoken-setup/basket/BasketSetup'
 import GovernanceSetup from 'components/rtoken-setup/governance/GovernanceSetup'
 import RevenueSplit from 'components/rtoken-setup/token/RevenueSplit'
@@ -16,6 +16,7 @@ interface Props {
 }
 
 const DeploySection = ({ enabled = true }) => {
+  const { t } = useLingui()
   const tx = null
 
   if (!enabled && tx) {
@@ -52,20 +53,24 @@ const DeploySection = ({ enabled = true }) => {
   )
 }
 
-const GovernanceSection = ({ enabled = true }) => (
-  <>
-    <SectionWrapper className="relative" navigationIndex={7}>
-      <GovernanceSetup disabled={!enabled} />
-      {!enabled && (
-        <div className="absolute top-0 bottom-0 w-full bg-background opacity-50" />
-      )}
-    </SectionWrapper>
-    <TransactionDivider
-      title={t`Transaction 2`}
-      subtitle={t`Governance gets deployed & your RToken is now usable (if unpaused)`}
-    />
-  </>
-)
+const GovernanceSection = ({ enabled = true }) => {
+  const { t } = useLingui()
+
+  return (
+    <>
+      <SectionWrapper className="relative" navigationIndex={7}>
+        <GovernanceSetup disabled={!enabled} />
+        {!enabled && (
+          <div className="absolute top-0 bottom-0 w-full bg-background opacity-50" />
+        )}
+      </SectionWrapper>
+      <TransactionDivider
+        title={t`Transaction 2`}
+        subtitle={t`Governance gets deployed & your RToken is now usable (if unpaused)`}
+      />
+    </>
+  )
+}
 
 const RTokenSetup = ({ governance = false, className }: Props) => {
   return (

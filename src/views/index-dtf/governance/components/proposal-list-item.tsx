@@ -1,0 +1,219 @@
+import ProposalStatusBar from '@/components/proposal-status-bar'
+import { cn } from '@/lib/utils'
+import { formatPercentage, getProposalTitle, parseDuration } from '@/utils'
+import { PROPOSAL_STATES } from '@/utils/constants'
+import { isOptimisticReadyToExecute } from '@/views/index-dtf/governance/utils/proposal-flow'
+import { Trans } from '@lingui/react/macro'
+import type { IndexDtfProposalSummary } from '@reserve-protocol/react-sdk'
+import {
+  Ban,
+  CheckCircle2,
+  Clock,
+  FileX,
+  HandFist,
+  ThumbsDown,
+  ThumbsUp,
+} from 'lucide-react'
+import { Link } from 'react-router-dom'
+import useProposalStages from '../hooks/use-proposal-stages'
+import ContestedBadge from './contest-badge'
+import OptimisticBadge from './optimistic-badge'
+import { useMemo } from 'react'
+
+type IProposalListItem = {
+  proposal: IndexDtfProposalSummary
+}
+
+const FINISHED_STATES = new Set([
+  PROPOSAL_STATES.CANCELED,
+  PROPOSAL_STATES.DEFEATED,
+  PROPOSAL_STATES.EXECUTED,
+  PROPOSAL_STATES.EXPIRED,
+  PROPOSAL_STATES.QUORUM_NOT_REACHED,
+])
+const ACTIVE_STATES = new Set([
+  PROPOSAL_STATES.PENDING,
+  PROPOSAL_STATES.ACTIVE,
+  PROPOSAL_STATES.SUCCEEDED,
+  PROPOSAL_STATES.QUEUED,
+])
+
+const ActiveProposalState = ({
+  state,
+  deadline,
+}: {
+  state: string
+  deadline: number
+}) => {
+  const description = {
+    [PROPOSAL_STATES.PENDING]: <Trans>Voting starts in:</Trans>,
+    [PROPOSAL_STATES.ACTIVE]: <Trans>Voting ends in:</Trans>,
+    [PROPOSAL_STATES.QUEUED]: <Trans>Execution available in:</Trans>,
+  }
+  const timeLeft = parseDuration(deadline, {
+    units: ['d', 'h', 'm'],
+    round: true,
+  })
+
+  return (
+    <div className="flex items-center text-sm gap-1 mt-1 mr-auto">
+      <span className="text-legend">{description[state]}</span>
+      <span className="font-semibold text-primary">{timeLeft}</span>
+    </div>
+  )
+}
+
+const ProposalStateIcon = ({ state }: { state: string }) => {
+  // Clock icon indicates action needs to be taken.
+  if (state === PROPOSAL_STATES.SUCCEEDED || state === PROPOSAL_STATES.QUEUED) {
+    return <Clock size={16} className="text-primary" />
+  }
+
+  // Executed => success!
+  if (state === PROPOSAL_STATES.EXECUTED) {
+    return <CheckCircle2 size={16} className="text-success" />
+  }
+
+  return <FileX size={16} className="text-destructive" />
+}
+
+const ProposalState = ({ proposal }: IProposalListItem) => {
+  if (
+    ACTIVE_STATES.has(proposal.state) &&
+    proposal.votingState.deadline &&
+    proposal.votingState.deadline > 0
+  ) {
+    return (
+      <ActiveProposalState
+        state={proposal.state}
+        deadline={proposal.votingState.deadline}
+      />
+    )
+  }
+
+  const STATE_LABEL = {
+    [PROPOSAL_STATES.SUCCEEDED]: isOptimisticReadyToExecute(proposal) ? (
+      <Trans>Ready to execute</Trans>
+    ) : (
+      <Trans>Pending queue</Trans>
+    ),
+    [PROPOSAL_STATES.QUEUED]: <Trans>Pending execution</Trans>,
+    [PROPOSAL_STATES.EXECUTED]: <Trans>Executed</Trans>,
+    [PROPOSAL_STATES.CANCELED]: <Trans>Proposal was canceled</Trans>,
+    [PROPOSAL_STATES.DEFEATED]: <Trans>Proposal was defeated</Trans>,
+    [PROPOSAL_STATES.EXPIRED]: <Trans>Proposal expired</Trans>,
+    [PROPOSAL_STATES.QUORUM_NOT_REACHED]: <Trans>Quorum not reached</Trans>,
+  }
+
+  return (
+    <div className="flex items-center gap-1.5 text-sm mr-auto">
+      <ProposalStateIcon state={proposal.state} />
+      <strong>{STATE_LABEL[proposal.state] || 'Unknown'}</strong>
+      {PROPOSAL_STATES.EXECUTED === proposal.state && (
+        <span className="hidden md:block text-legend">
+          <Trans>
+            on{' '}
+            {new Date(Number(proposal.executionTime) * 1000)
+              .toLocaleString(undefined, {
+                month: '2-digit',
+                day: '2-digit',
+                year: '2-digit',
+                hour: '2-digit',
+                minute: '2-digit',
+                hour12: true,
+              })
+              .replace(',', '')
+              .replace(/(\d{2})\/(\d{2})\/(\d{2})/, '$1/$2/$3 at')}
+          </Trans>
+        </span>
+      )}
+    </div>
+  )
+}
+
+const ProposalVoteState = ({ proposal }: IProposalListItem) => {
+  const isFinished = FINISHED_STATES.has(proposal.state)
+  const success = isFinished ? 'text-legend' : 'text-success'
+  const fail = isFinished ? 'text-legend' : 'text-destructive'
+  const challenge = isFinished ? 'text-primary' : 'text-warning'
+
+  if (proposal.isOptimistic) {
+    return (
+      <div className="flex items-center gap-2 text-sm">
+        <HandFist size={16} className={challenge} />{' '}
+        <strong className={cn(challenge, 'mr-1')}>
+          {formatPercentage(Math.min(proposal.votingState.against, 100))}
+        </strong>
+      </div>
+    )
+  }
+
+  return (
+    <div className="flex items-center gap-2 text-sm">
+      <ThumbsUp size={16} className={success} />{' '}
+      <strong className={cn(success, 'mr-1')}>
+        {formatPercentage(proposal.votingState.for)}
+      </strong>
+      <ThumbsDown size={16} className={fail} />{' '}
+      <strong className={cn(fail, 'mr-1')}>
+        {formatPercentage(proposal.votingState.against)}
+      </strong>
+      <Ban size={16} className="text-legend" />{' '}
+      <span className={cn(isFinished && 'text-legend')}>
+        {formatPercentage(proposal.votingState.abstain)}
+      </span>
+    </div>
+  )
+}
+
+const ProposalTitle = ({ proposal }: IProposalListItem) => {
+  const badge = useMemo(() => {
+    if (ACTIVE_STATES.has(proposal.state)) {
+      if (proposal.isOptimistic) {
+        return <OptimisticBadge />
+      }
+      if (proposal.wasChallenged) {
+        return <ContestedBadge />
+      }
+    }
+
+    return null
+  }, [proposal])
+
+  return (
+    <div className="flex items-start gap-3">
+      <h2 className="font-semibold text-base mr-auto">
+        {getProposalTitle(proposal.description)}
+      </h2>
+      {badge}
+    </div>
+  )
+}
+
+const ProposalProgress = ({ proposal }: IProposalListItem) => {
+  const stages = useProposalStages(proposal)
+  if (FINISHED_STATES.has(proposal.state)) return null
+
+  return <ProposalStatusBar className="my-1" stages={stages} />
+}
+
+const ProposalListItem = ({ proposal }: IProposalListItem) => (
+  <Link
+    to={`proposal/${proposal.id}`}
+    className={cn(
+      'flex flex-col gap-2 rounded-3xl p-4 cursor-pointer transition-colors',
+      ACTIVE_STATES.has(proposal.state)
+        ? 'bg-card hover:bg-background'
+        : 'bg-background/80 hover:bg-background'
+    )}
+  >
+    <ProposalTitle proposal={proposal} />
+    <ProposalProgress proposal={proposal} />
+    <div className="flex items-center">
+      <ProposalState proposal={proposal} />
+      <ProposalVoteState proposal={proposal} />
+    </div>
+  </Link>
+)
+
+export default ProposalListItem

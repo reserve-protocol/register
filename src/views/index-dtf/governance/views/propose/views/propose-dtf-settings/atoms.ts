@@ -13,8 +13,11 @@ import {
 } from '@/state/dtf/atoms'
 import { Token } from '@/types'
 import { BIGINT_MAX } from '@/utils/constants'
+import type { MessageDescriptor } from '@lingui/core'
+import { msg } from '@lingui/core/macro'
 import { atom } from 'jotai'
-import { Address, encodeFunctionData, Hex, parseEther } from 'viem'
+import { encodeFunctionData, parseEther } from 'viem'
+import type { Address, Hex } from 'viem'
 import {
   GovernanceChanges,
   ProposalData,
@@ -27,6 +30,27 @@ import {
   humanizeTimeFromSeconds,
   proposalThresholdToPercentage,
 } from '../../shared'
+import {
+  DEFAULT_OPTIMISTIC_VETO_DELAY,
+  DEFAULT_OPTIMISTIC_VETO_PERIOD,
+  DEFAULT_OPTIMISTIC_VETO_THRESHOLD,
+  OPTIMISTIC_ACTIONS,
+  OPTIMISTIC_PROPOSER_ROLE,
+  dtfIndexGovernanceOptimisticAbi,
+  percentageToD18,
+  selectorRegistryAbi,
+} from './optimistic'
+import type {
+  OptimisticActionId,
+  OptimisticGovernanceChanges,
+} from './optimistic'
+
+type GovernanceChangeDisplayLocalized = Omit<
+  GovernanceChangeDisplay,
+  'title'
+> & {
+  title: MessageDescriptor
+}
 
 // UI
 export const selectedSectionAtom = atom<string | undefined>(undefined)
@@ -59,6 +83,13 @@ export const weightControlChangeAtom = atom<boolean | undefined>(undefined)
 export const bidsEnabledChangeAtom = atom<boolean | undefined>(undefined)
 
 export const governanceChangesAtom = atom<GovernanceChanges>({})
+
+export const optimisticGovernanceChangesAtom =
+  atom<OptimisticGovernanceChanges>({})
+
+export const currentOptimisticAllowedActionsAtom = atom<
+  OptimisticActionId[] | undefined
+>(undefined)
 
 // Has changes atoms for easy checking
 export const hasTokenNameChangeAtom = atom((get) => {
@@ -120,6 +151,17 @@ export const hasGovernanceChangesAtom = atom((get) => {
   )
 })
 
+export const hasOptimisticGovernanceChangesAtom = atom((get) => {
+  const changes = get(optimisticGovernanceChangesAtom)
+  return !!(
+    changes.vetoDelay !== undefined ||
+    changes.vetoPeriod !== undefined ||
+    changes.vetoThreshold !== undefined ||
+    changes.optimisticProposers !== undefined ||
+    changes.allowedActions !== undefined
+  )
+})
+
 // remove-dust-tokens
 export const removedBasketTokensAtom = atom<Token[]>([])
 export const currentBasketTokensAtom = atom((get) => {
@@ -158,9 +200,12 @@ export const isProposalValidAtom = atom((get) => {
   const hasDtfRevenueChanges = get(hasDtfRevenueChangesAtom)
   const hasAuctionLengthChange = get(hasAuctionLengthChangeAtom)
   const hasWeightControlChange = get(hasWeightControlChangeAtom)
-  const hasBidsEnabledChange = get(hasBidsEnabledChangeAtom)
-  const hasGovernanceChanges = get(hasGovernanceChangesAtom)
-  const isFormValid = get(isFormValidAtom)
+    const hasBidsEnabledChange = get(hasBidsEnabledChangeAtom)
+    const hasGovernanceChanges = get(hasGovernanceChangesAtom)
+    const hasOptimisticGovernanceChanges = get(
+      hasOptimisticGovernanceChangesAtom
+    )
+    const isFormValid = get(isFormValidAtom)
 
   const hasChanges =
     removedBasketTokens.length > 0 ||
@@ -172,7 +217,8 @@ export const isProposalValidAtom = atom((get) => {
     hasAuctionLengthChange ||
     hasWeightControlChange ||
     hasBidsEnabledChange ||
-    hasGovernanceChanges
+    hasGovernanceChanges ||
+    hasOptimisticGovernanceChanges
 
   return hasChanges
 })
@@ -214,6 +260,9 @@ export const dtfSettingsProposalDataAtom = atom<ProposalData | undefined>(
     const bidsEnabledChange = get(bidsEnabledChangeAtom)
     const rebalanceControl = get(indexDTFRebalanceControlAtom)
     const governanceChanges = get(governanceChangesAtom)
+    const optimisticGovernanceChanges = get(optimisticGovernanceChangesAtom)
+    const currentOptimisticAllowedActions =
+      get(currentOptimisticAllowedActionsAtom) ?? []
     const feeRecipients = get(feeRecipientsAtom)
 
     if (!isConfirmed || !indexDTF) return undefined
@@ -562,10 +611,13 @@ export const dtfSettingsProposalDataAtom = atom<ProposalData | undefined>(
         })
       }
 
-      // Governance share
+      // Governance share — route to the vault's tokenJar when it exists (revenue
+      // must not be directed to the StakingVault directly); fall back to the
+      // stToken for vaults without a tokenJar.
+      const tokenJar = get(tokenJarAtom)
       if (governanceShare > 0 && indexDTF.stToken) {
         tempRecipients.push({
-          recipient: indexDTF.stToken.id as Address,
+          recipient: (tokenJar ?? indexDTF.stToken.id) as Address,
           portion: calculateShare(governanceShare),
         })
       }
@@ -645,72 +697,202 @@ export const dtfSettingsProposalDataAtom = atom<ProposalData | undefined>(
       }
     }
 
+    // 8. Handle optimistic governance settings
+    if (
+      indexDTF.ownerGovernance?.isOptimistic &&
+      Object.keys(optimisticGovernanceChanges).length > 0
+    ) {
+      const governance = indexDTF.ownerGovernance
+      const optimistic = governance.optimistic
+      const governanceAddress = governance.id as Address
+      const timelockAddress = governance.timelock?.id as Address | undefined
+      const selectorRegistry = optimistic?.selectorRegistry as Address | undefined
+
+      if (
+        optimisticGovernanceChanges.vetoDelay !== undefined ||
+        optimisticGovernanceChanges.vetoPeriod !== undefined ||
+        optimisticGovernanceChanges.vetoThreshold !== undefined
+      ) {
+        calldatas.push(
+          encodeFunctionData({
+            abi: dtfIndexGovernanceOptimisticAbi,
+            functionName: 'setOptimisticParams',
+            args: [
+              {
+                vetoDelay:
+                  optimisticGovernanceChanges.vetoDelay ??
+                  optimistic?.vetoDelay ??
+                  DEFAULT_OPTIMISTIC_VETO_DELAY,
+                vetoPeriod:
+                  optimisticGovernanceChanges.vetoPeriod ??
+                  optimistic?.vetoPeriod ??
+                  DEFAULT_OPTIMISTIC_VETO_PERIOD,
+                vetoThreshold: percentageToD18(
+                  optimisticGovernanceChanges.vetoThreshold ??
+                    optimistic?.vetoThreshold ??
+                    DEFAULT_OPTIMISTIC_VETO_THRESHOLD
+                ),
+              },
+            ],
+          })
+        )
+        targets.push(governanceAddress)
+      }
+
+      if (optimisticGovernanceChanges.optimisticProposers && timelockAddress) {
+        const currentProposers = optimistic?.proposers ?? []
+        const newProposers = optimisticGovernanceChanges.optimisticProposers
+
+        const removedProposers = currentProposers.filter(
+          (addr) =>
+            !newProposers.some(
+              (newAddr) => newAddr.toLowerCase() === addr.toLowerCase()
+            )
+        )
+        for (const proposer of removedProposers) {
+          calldatas.push(
+            encodeFunctionData({
+              abi: timelockAbi,
+              functionName: 'revokeRole',
+              args: [OPTIMISTIC_PROPOSER_ROLE, proposer],
+            })
+          )
+          targets.push(timelockAddress)
+        }
+
+        const addedProposers = newProposers.filter(
+          (addr) =>
+            !currentProposers.some(
+              (currentAddr) => currentAddr.toLowerCase() === addr.toLowerCase()
+            )
+        )
+        for (const proposer of addedProposers) {
+          calldatas.push(
+            encodeFunctionData({
+              abi: timelockAbi,
+              functionName: 'grantRole',
+              args: [OPTIMISTIC_PROPOSER_ROLE, proposer],
+            })
+          )
+          targets.push(timelockAddress)
+        }
+      }
+
+      if (optimisticGovernanceChanges.allowedActions && selectorRegistry) {
+        const newActions = optimisticGovernanceChanges.allowedActions
+        const addedSelectors = newActions
+          .filter((actionId) => !currentOptimisticAllowedActions.includes(actionId))
+          .map((actionId) => OPTIMISTIC_ACTIONS.find((action) => action.id === actionId)?.selector)
+          .filter((selector): selector is Hex => !!selector)
+        const removedSelectors = currentOptimisticAllowedActions
+          .filter((actionId) => !newActions.includes(actionId))
+          .map((actionId) => OPTIMISTIC_ACTIONS.find((action) => action.id === actionId)?.selector)
+          .filter((selector): selector is Hex => !!selector)
+
+        if (addedSelectors.length > 0) {
+          calldatas.push(
+            encodeFunctionData({
+              abi: selectorRegistryAbi,
+              functionName: 'registerSelectors',
+              args: [
+                [
+                  {
+                    target: indexDTF.id as Address,
+                    selectors: addedSelectors,
+                  },
+                ],
+              ],
+            })
+          )
+          targets.push(selectorRegistry)
+        }
+
+        if (removedSelectors.length > 0) {
+          calldatas.push(
+            encodeFunctionData({
+              abi: selectorRegistryAbi,
+              functionName: 'unregisterSelectors',
+              args: [
+                [
+                  {
+                    target: indexDTF.id as Address,
+                    selectors: removedSelectors,
+                  },
+                ],
+              ],
+            })
+          )
+          targets.push(selectorRegistry)
+        }
+      }
+    }
+
     return calldatas.length > 0 ? { calldatas, targets } : undefined
   }
 )
 
 // Atom for formatted governance changes for display
-export const dtfGovernanceChangesDisplayAtom = atom<GovernanceChangeDisplay[]>(
-  (get) => {
-    const governanceChanges = get(governanceChangesAtom)
-    const dtf = get(indexDTFAtom)
+export const dtfGovernanceChangesDisplayAtom = atom<
+  GovernanceChangeDisplayLocalized[]
+>((get) => {
+  const governanceChanges = get(governanceChangesAtom)
+  const dtf = get(indexDTFAtom)
 
-    if (!dtf?.ownerGovernance) return []
+  if (!dtf?.ownerGovernance) return []
 
-    const governance = dtf.ownerGovernance
-    const changes = []
+  const governance = dtf.ownerGovernance
+  const changes: GovernanceChangeDisplayLocalized[] = []
 
-    if (governanceChanges.votingDelay !== undefined) {
-      changes.push({
-        key: 'votingDelay' as keyof GovernanceChanges,
-        title: 'Voting Delay',
-        current: humanizeTimeFromSeconds(Number(governance.votingDelay)),
-        new: humanizeTimeFromSeconds(governanceChanges.votingDelay),
-      })
-    }
-
-    if (governanceChanges.votingPeriod !== undefined) {
-      changes.push({
-        key: 'votingPeriod' as keyof GovernanceChanges,
-        title: 'Voting Period',
-        current: humanizeTimeFromSeconds(Number(governance.votingPeriod)),
-        new: humanizeTimeFromSeconds(governanceChanges.votingPeriod),
-      })
-    }
-
-    if (governanceChanges.proposalThreshold !== undefined) {
-      changes.push({
-        key: 'proposalThreshold' as keyof GovernanceChanges,
-        title: 'Proposal Threshold',
-        current: `${proposalThresholdToPercentage(governance.proposalThreshold).toFixed(2)}%`,
-        new: `${Number(governanceChanges.proposalThreshold).toFixed(2)}%`,
-      })
-    }
-
-    if (governanceChanges.quorumPercent !== undefined) {
-      const currentQuorum = get(currentQuorumPercentageAtom)
-      changes.push({
-        key: 'quorumPercent' as keyof GovernanceChanges,
-        title: 'Voting Quorum',
-        current: `${currentQuorum.toFixed(2)}%`,
-        new: `${governanceChanges.quorumPercent}%`,
-      })
-    }
-
-    if (governanceChanges.executionDelay !== undefined) {
-      changes.push({
-        key: 'executionDelay' as keyof GovernanceChanges,
-        title: 'Execution Delay',
-        current: humanizeTimeFromSeconds(
-          Number(governance.timelock?.executionDelay || 0)
-        ),
-        new: humanizeTimeFromSeconds(governanceChanges.executionDelay),
-      })
-    }
-
-    return changes
+  if (governanceChanges.votingDelay !== undefined) {
+    changes.push({
+      key: 'votingDelay' as keyof GovernanceChanges,
+      title: msg`Voting Delay`,
+      current: humanizeTimeFromSeconds(Number(governance.votingDelay)),
+      new: humanizeTimeFromSeconds(governanceChanges.votingDelay),
+    })
   }
-)
+
+  if (governanceChanges.votingPeriod !== undefined) {
+    changes.push({
+      key: 'votingPeriod' as keyof GovernanceChanges,
+      title: msg`Voting Period`,
+      current: humanizeTimeFromSeconds(Number(governance.votingPeriod)),
+      new: humanizeTimeFromSeconds(governanceChanges.votingPeriod),
+    })
+  }
+
+  if (governanceChanges.proposalThreshold !== undefined) {
+    changes.push({
+      key: 'proposalThreshold' as keyof GovernanceChanges,
+      title: msg`Proposal Threshold`,
+      current: `${proposalThresholdToPercentage(governance.proposalThreshold).toFixed(2)}%`,
+      new: `${Number(governanceChanges.proposalThreshold).toFixed(2)}%`,
+    })
+  }
+
+  if (governanceChanges.quorumPercent !== undefined) {
+    const currentQuorum = get(currentQuorumPercentageAtom)
+    changes.push({
+      key: 'quorumPercent' as keyof GovernanceChanges,
+      title: msg`Voting Quorum`,
+      current: `${currentQuorum.toFixed(2)}%`,
+      new: `${governanceChanges.quorumPercent}%`,
+    })
+  }
+
+  if (governanceChanges.executionDelay !== undefined) {
+    changes.push({
+      key: 'executionDelay' as keyof GovernanceChanges,
+      title: msg`Execution Delay`,
+      current: humanizeTimeFromSeconds(
+        Number(governance.timelock?.executionDelay || 0)
+      ),
+      new: humanizeTimeFromSeconds(governanceChanges.executionDelay),
+    })
+  }
+
+  return changes
+})
 
 // Backwards compatibility atom
 export const dtfSettingsProposalCalldatasAtom = atom<Hex[] | undefined>(
@@ -719,6 +901,10 @@ export const dtfSettingsProposalCalldatasAtom = atom<Hex[] | undefined>(
     return proposalData?.calldatas
   }
 )
+
+// The new StakingVault routes the governance share to its tokenJar instead of the
+// stToken. Populated on-chain by the propose-dtf-settings Updater.
+export const tokenJarAtom = atom<Address | undefined>(undefined)
 
 export const feeRecipientsAtom = atom((get) => {
   const indexDTF = get(indexDTFAtom)
@@ -735,13 +921,20 @@ export const feeRecipientsAtom = atom((get) => {
   const toShare = (pct: number) =>
     Math.round((pct / PERCENT_ADJUST) * 100) / 100
 
+  // Fees routed to the stToken OR its tokenJar are the governance share.
+  const tokenJar = get(tokenJarAtom)
+  const governanceRecipients = new Set(
+    [indexDTF.stToken?.id, tokenJar]
+      .filter(Boolean)
+      .map((address) => (address as string).toLowerCase())
+  )
+
   for (const recipient of indexDTF.feeRecipients) {
+    const address = recipient.address.toLowerCase()
     // Deployer share - adjust from contract percentage to actual percentage
-    if (recipient.address.toLowerCase() === indexDTF.deployer.toLowerCase()) {
+    if (address === indexDTF.deployer.toLowerCase()) {
       deployerShare = toShare(Number(recipient.percentage))
-    } else if (
-      recipient.address.toLowerCase() === indexDTF.stToken?.id.toLowerCase()
-    ) {
+    } else if (governanceRecipients.has(address)) {
       governanceShare = toShare(Number(recipient.percentage))
     } else {
       externalRecipients.push({

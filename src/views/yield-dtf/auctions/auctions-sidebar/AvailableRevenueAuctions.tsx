@@ -1,4 +1,4 @@
-import { t } from '@lingui/macro'
+import { useLingui } from '@lingui/react/macro'
 import { Separator } from '@/components/ui/separator'
 import AuctionsIcon from 'components/icons/AuctionsIcon'
 import { atom, useAtomValue, useSetAtom } from 'jotai'
@@ -22,6 +22,7 @@ const setAuctionAtom = atom(null, (get, set, index: number) => {
 })
 
 const AvailableRevenueAuctions = () => {
+  const { t } = useLingui()
   const revenueData = useAtomValue(auctionsOverviewAtom)
   const selectedAuctions = useAtomValue(selectedAuctionsAtom)
   const setSelectedAuctions = useSetAtom(setAuctionAtom)
@@ -37,7 +38,7 @@ const AvailableRevenueAuctions = () => {
     <RevenueBoxContainer
       title={t`Auctionable revenue`}
       icon={<AuctionsIcon />}
-      subtitle={`${revenueData?.availableAuctions.length ?? 0} auctions`}
+      subtitle={t`${revenueData?.availableAuctions.length ?? 0} auctions`}
       className="mb-4"
     >
       {(revenueData?.availableAuctions ?? []).map((auction, index) => (

@@ -12,6 +12,7 @@ import { Card } from '@/components/ui/card'
 import { Label } from '@/components/ui/label'
 import { Switch } from '@/components/ui/switch'
 import { Button } from '@/components/ui/button'
+import { Trans } from '@lingui/react/macro'
 import { RotateCcw } from 'lucide-react'
 
 const DTFFilters = () => {
@@ -43,7 +44,9 @@ const DTFFilters = () => {
   return (
     <Card className="p-4">
       <div className="flex items-center justify-between mb-3">
-        <h3 className="text-sm font-semibold">Filter by Role</h3>
+        <h3 className="text-sm font-semibold">
+          <Trans>Filter by Role</Trans>
+        </h3>
         {hasActiveFilters && (
           <Button
             variant="ghost"
@@ -52,7 +55,7 @@ const DTFFilters = () => {
             className="h-8 px-2 text-xs"
           >
             <RotateCcw className="h-3 w-3 mr-1" />
-            Reset
+            <Trans>Reset</Trans>
           </Button>
         )}
       </div>
@@ -68,7 +71,7 @@ const DTFFilters = () => {
             htmlFor="governor-filter"
             className="text-sm font-normal cursor-pointer"
           >
-            DTFs where I'm a Governor
+            <Trans>DTFs where I'm a Governor</Trans>
           </Label>
         </div>
         
@@ -82,7 +85,7 @@ const DTFFilters = () => {
             htmlFor="guardian-filter"
             className="text-sm font-normal cursor-pointer"
           >
-            DTFs where I'm a Guardian
+            <Trans>DTFs where I'm a Guardian</Trans>
           </Label>
         </div>
         
@@ -96,7 +99,7 @@ const DTFFilters = () => {
             htmlFor="creator-filter"
             className="text-sm font-normal cursor-pointer"
           >
-            DTFs I created
+            <Trans>DTFs I created</Trans>
           </Label>
         </div>
         
@@ -110,7 +113,7 @@ const DTFFilters = () => {
             htmlFor="balance-filter"
             className="text-sm font-normal cursor-pointer"
           >
-            DTFs where I have balance
+            <Trans>DTFs where I have balance</Trans>
           </Label>
         </div>
       </div>
@@ -118,7 +121,7 @@ const DTFFilters = () => {
       {hasActiveFilters && (
         <div className="mt-3 pt-3 border-t">
           <p className="text-xs text-muted-foreground">
-            Showing DTFs matching your selected filters
+            <Trans>Showing DTFs matching your selected filters</Trans>
           </p>
         </div>
       )}
