@@ -5,7 +5,7 @@ import {
 } from '@/components/ui/hover-card'
 import { type IndexDTFItem } from '@/hooks/useIndexDTFList'
 import { Trans } from '@lingui/react/macro'
-import { forwardRef, useState } from 'react'
+import { forwardRef, useMemo, useState } from 'react'
 import { useMeasuredMarquee } from '../../hooks/use-measured-marquee'
 
 const SCROLL_PIXELS_PER_SECOND = 72
@@ -49,7 +49,13 @@ SequenceItems.displayName = 'SequenceItems'
 
 export function BasketHoverCard({ indexDTF, children }: BasketHoverCardProps) {
   const [open, setOpen] = useState(false)
-  const exposureAssets = indexDTF.basket
+  const exposureAssets = useMemo(
+    () =>
+      [...indexDTF.basket].sort(
+        (a, b) => Number(b.weight ?? 0) - Number(a.weight ?? 0)
+      ),
+    [indexDTF.basket]
+  )
   const { repeatCount, sequenceRef, viewportRef } = useMeasuredMarquee({
     active: open,
     easeInSeconds: EASE_IN_SECONDS,
