@@ -127,16 +127,22 @@ const DtfCover = ({
       }}
     >
       {/* The video paints at opacity-0 until its first frame decodes — keep
-          the skeleton underneath so the card never flashes white. */}
-      {hasVideoCover && !isVideoLoaded && (
-        <DtfCoverSkeleton className="absolute inset-0" />
+          the skeleton underneath, cross-fading out as the video fades in, so
+          the card never flashes white (not even mid-fade). */}
+      {hasVideoCover && (
+        <DtfCoverSkeleton
+          className={cn(
+            'absolute inset-0 transition-opacity duration-500 motion-reduce:transition-none',
+            isVideoLoaded ? 'opacity-0' : 'opacity-100'
+          )}
+        />
       )}
       {hasVideoCover ? (
         <video
           ref={videoRef}
           src={coverVideo}
           className={cn(
-            'block h-full w-full rounded-[inherit] object-cover transition-opacity duration-200',
+            'block h-full w-full rounded-[inherit] object-cover transition-opacity duration-500 motion-reduce:transition-none',
             isVideoLoaded ? 'opacity-100' : 'opacity-0'
           )}
           autoPlay={!isCoverFrozen}
