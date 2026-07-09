@@ -18,8 +18,7 @@ const isStaging =
     import.meta.env.VITE_USE_STAGING) &&
   import.meta.env.VITE_STAGING_API
 
-// TODO: USE PROD BEFORE RELEASING
-export const RESERVE_API = true // isStaging
+export const RESERVE_API = isStaging
   ? import.meta.env.VITE_STAGING_API
   : 'https://api.reserve.org/'
 

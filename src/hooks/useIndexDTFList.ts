@@ -1,9 +1,8 @@
 import { useQuery } from '@tanstack/react-query'
 import { Address } from 'viem'
 
-// TODO: Swap to the production API once the optimized discover response is live.
 const INDEX_DTFS_URL =
-  'https://api-staging.reserve.org/v1/discover/dtfs?performance=true&brand=true'
+  'https://api.reserve.org/v1/discover/dtfs?performance=true&brand=true'
 
 type Performance = { timestamp: number; value: number }
 
