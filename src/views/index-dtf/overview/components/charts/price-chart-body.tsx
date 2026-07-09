@@ -50,9 +50,11 @@ const buildYAxisFormatter =
   }
 
 export const ChartSkeleton = ({ className }: { className?: string }) => (
-  <Skeleton
-    className={cn('w-full rounded-2xl bg-muted-foreground/10', className)}
-  />
+  <div className="sm:ml-6">
+    <Skeleton
+      className={cn('w-full rounded-xl bg-muted-foreground/10', className)}
+    />
+  </div>
 )
 
 const PriceChartBody = ({
