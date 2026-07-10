@@ -15,7 +15,7 @@ import {
 import { VotingState } from '@/lib/governance'
 import { PROPOSAL_STATES } from '@/utils/constants'
 
-export const portfolioPageTimeRangeAtom = atom<PortfolioPeriod>('3m')
+export const portfolioPageTimeRangeAtom = atom<PortfolioPeriod>('1y')
 
 export const portfolioDataAtom = atom<PortfolioResponse | null>(null)
 

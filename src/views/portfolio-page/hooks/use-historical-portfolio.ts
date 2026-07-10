@@ -7,8 +7,11 @@ import {
   PortfolioResponse,
 } from '../types'
 import { Address } from 'viem'
-import { useCallback } from 'react'
+import { useCallback, useEffect, useMemo } from 'react'
+import { useAtomValue, useSetAtom } from 'jotai'
 import dayjs from 'dayjs'
+import { portfolioPageTimeRangeAtom } from '../atoms'
+import { getAvailableTimeRanges } from '@/views/index-dtf/overview/components/charts/use-available-time-ranges'
 
 export type ChartDataPoint = {
   value: number
@@ -74,45 +77,109 @@ export const appendLivePoint = (
   ]
 }
 
+const STALE_TIME: Record<PortfolioPeriod, number> = {
+  '24h': 300_000,
+  '7d': 60_000,
+  '1m': 300_000,
+  '3m': 300_000,
+  ytd: 300_000,
+  '1y': 300_000,
+  all: 300_000,
+}
+
 const useHistoricalPeriod = (
   address: Address | null | undefined,
   period: PortfolioPeriod,
-  staleTime: number
+  enabled: boolean
 ) =>
   useQuery({
     queryKey: ['historical-portfolio', address, period],
     queryFn: () => fetchHistoricalPortfolio(address!, period),
-    enabled: !!address,
-    staleTime,
+    enabled: !!address && enabled,
+    staleTime: STALE_TIME[period],
   })
 
-export const useHistoricalPortfolio = (address?: Address | null) => {
-  const q24h = useHistoricalPeriod(address, '24h', 300_000)
-  const q7d = useHistoricalPeriod(address, '7d', 60_000)
-  const q1m = useHistoricalPeriod(address, '1m', 300_000)
-  const q3m = useHistoricalPeriod(address, '3m', 300_000)
-  const q6m = useHistoricalPeriod(address, '6m', 300_000)
-  const qAll = useHistoricalPeriod(address, 'All', 300_000)
+const getFirstHistoryTimestamp = (
+  data: ChartDataPoint[] | undefined
+): number | null | undefined => {
+  if (data === undefined) return undefined
+  const first = data.find((p) => p.value > 0)
+  if (!first) return null
+  return Math.floor(first.ts / 1000)
+}
 
-  const queries: Record<
-    PortfolioPeriod,
-    { data: ChartDataPoint[] | undefined; isLoading: boolean }
-  > = {
-    '24h': q24h,
-    '7d': q7d,
-    '1m': q1m,
-    '3m': q3m,
-    '6m': q6m,
-    All: qAll,
-  }
+export const useHistoricalPortfolio = (address?: Address | null) => {
+  const timeRange = useAtomValue(portfolioPageTimeRangeAtom)
+  const setTimeRange = useSetAtom(portfolioPageTimeRangeAtom)
+
+  const q24h = useHistoricalPeriod(address, '24h', true)
+  const q7d = useHistoricalPeriod(address, '7d', true)
+  const q1m = useHistoricalPeriod(address, '1m', true)
+  const q3m = useHistoricalPeriod(address, '3m', true)
+  const qytd = useHistoricalPeriod(address, 'ytd', true)
+  const q1y = useHistoricalPeriod(address, '1y', true)
+  const qall = useHistoricalPeriod(address, 'all', timeRange === 'all')
+
+  const data = useMemo(
+    () => ({
+      '24h': q24h.data,
+      '7d': q7d.data,
+      '1m': q1m.data,
+      '3m': q3m.data,
+      ytd: qytd.data,
+      '1y': q1y.data,
+      all: qall.data,
+    }),
+    [q24h.data, q7d.data, q1m.data, q3m.data, qytd.data, q1y.data, qall.data]
+  )
 
   const getChartData = useCallback(
-    (period: PortfolioPeriod) => queries[period]?.data ?? null,
-    [q24h.data, q7d.data, q1m.data, q3m.data, q6m.data, qAll.data]
+    (period: PortfolioPeriod) => data[period] ?? null,
+    [data]
   )
+
+  const firstHistoryTimestamp = useMemo(
+    () => getFirstHistoryTimestamp(data['1y']),
+    [data['1y']]
+  )
+
+  const availableTimeRanges = useMemo(
+    () =>
+      getAvailableTimeRanges({
+        dtfTimestamp: 1,
+        firstHistoryTimestamp,
+        isYieldMode: false,
+      }),
+    [firstHistoryTimestamp]
+  )
+
+  const defaultTimeRange = useMemo<PortfolioPeriod>(() => {
+    if (!availableTimeRanges) return '1y'
+    const nonAll = availableTimeRanges.filter((r) => r.value !== 'all')
+    return (nonAll[nonAll.length - 1]?.value ?? '1y') as PortfolioPeriod
+  }, [availableTimeRanges])
+
+  useEffect(() => {
+    if (!availableTimeRanges) return
+    const isAvailable = availableTimeRanges.some((r) => r.value === timeRange)
+    if (!isAvailable && defaultTimeRange !== timeRange) {
+      setTimeRange(defaultTimeRange)
+    }
+  }, [availableTimeRanges, defaultTimeRange, setTimeRange, timeRange])
+
+  const selectedQuery =
+    {
+      '24h': q24h,
+      '7d': q7d,
+      '1m': q1m,
+      '3m': q3m,
+      ytd: qytd,
+      '1y': q1y,
+      all: qall,
+    }[timeRange] ?? q1y
 
   return {
     getChartData,
-    isLoading: q7d.isLoading,
+    isLoading: selectedQuery.isLoading,
   }
 }
