@@ -166,7 +166,8 @@ export const formatAssetWeight = (weight?: string | number) => {
 // into the orbiting ticker list. Shared by the featured payload and the SDK's
 // per-DTF exposure endpoint, which emit the same structure.
 export const mapExposureGroupsToTickers = (
-  exposure: FeaturedExposureGroup[]
+  exposure: readonly FeaturedExposureGroup[] = [],
+  limit = BACKING_LIMIT
 ): AssetTickerItem[] =>
   exposure
     .flatMap((group) => {
@@ -191,14 +192,15 @@ export const mapExposureGroupsToTickers = (
     // Weight-descending regardless of source order — the marquee shows the
     // heaviest holdings, not the first BACKING_LIMIT in basket order.
     .sort(byWeightDesc)
-    .slice(0, BACKING_LIMIT)
+    .slice(0, limit)
 
 export const getExposureTickerAssets = (
-  dtf: FeaturedDTFItem
+  dtf: FeaturedDTFItem,
+  limit = BACKING_LIMIT
 ): AssetTickerItem[] => {
   if (!dtf.exposure?.length) return getBasketTickerAssets(dtf)
 
-  const exposureAssets = mapExposureGroupsToTickers(dtf.exposure)
+  const exposureAssets = mapExposureGroupsToTickers(dtf.exposure, limit)
 
   return exposureAssets.length ? exposureAssets : getBasketTickerAssets(dtf)
 }

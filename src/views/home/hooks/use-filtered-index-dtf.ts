@@ -1,11 +1,12 @@
 import { isInactiveDTF } from '@/hooks/use-dtf-status'
 import useIndexDTFList, { IndexDTFItem } from '@/hooks/useIndexDTFList'
 import { chainFilterAtom, searchFilterAtom } from '../atoms'
+import { getExposureTickerAssets } from '../components/highlighted-dtfs/utils'
 import { useAtomValue } from 'jotai'
 import { useMemo } from 'react'
 
 const useFilteredDTFIndex = () => {
-  const { data, isLoading } = useIndexDTFList()
+  const { data, isLoading } = useIndexDTFList({ withExposure: true })
   const search = useAtomValue(searchFilterAtom)
   const chains = useAtomValue(chainFilterAtom)
 
@@ -30,11 +31,12 @@ const useFilteredDTFIndex = () => {
         const tagMatch = dtf.brand?.tags?.some((tag) =>
           tag.toLowerCase().includes(searchLower)
         )
-        const collateralMatch = dtf.basket?.some((collateral) =>
-          collateral.symbol.toLowerCase().includes(searchLower)
-        )
+        const exposureMatch = getExposureTickerAssets(
+          dtf,
+          Number.MAX_SAFE_INTEGER
+        ).some((asset) => asset.symbol.toLowerCase().includes(searchLower))
 
-        if (!nameMatch && !symbolMatch && !collateralMatch && !tagMatch) {
+        if (!nameMatch && !symbolMatch && !exposureMatch && !tagMatch) {
           return false
         }
       }

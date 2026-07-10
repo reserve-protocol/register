@@ -1,3 +1,4 @@
+import { useDtfSdk, type SupportedChainId } from '@reserve-protocol/react-sdk'
 import { useQuery } from '@tanstack/react-query'
 import { Address } from 'viem'
 
@@ -19,6 +20,30 @@ type IndexDTFListResponsePriceChange = Omit<
   percent?: number | null
 }
 
+export type IndexDtfExposureToken = {
+  address: string
+  symbol: string
+  name?: string
+  weight: number
+  marketCap?: number
+  change?: number
+  bridge?: unknown
+}
+
+export type IndexDtfExposureGroup = {
+  native: {
+    symbol: string
+    name?: string
+    logo?: string
+    caip2?: string
+  } | null
+  tokens: readonly IndexDtfExposureToken[]
+  totalWeight: number
+  change?: number
+  hasNewlyAdded?: boolean
+  marketCap?: number
+}
+
 export type IndexDTFItem = {
   address: Address
   symbol: string
@@ -38,6 +63,8 @@ export type IndexDTFItem = {
     tags?: string[]
   }
   priceChange?: IndexDTFPriceChange
+  createdAt?: number
+  exposure?: readonly IndexDtfExposureGroup[]
 }
 
 type IndexDTFListResponseItem = {
@@ -97,9 +124,45 @@ export const normalizeIndexDtfList = (
     .sort((x, y) => y.marketCap - x.marketCap)
 }
 
-const useIndexDTFList = () => {
+const fetchIndexDtfExposures = async (
+  sdk: ReturnType<typeof useDtfSdk>,
+  items: IndexDTFItem[]
+): Promise<Record<string, readonly IndexDtfExposureGroup[]>> => {
+  const results = await Promise.all(
+    items.map(async (item) => {
+      try {
+        const exposure = await sdk.index.getExposure({
+          address: item.address,
+          chainId: item.chainId as SupportedChainId,
+          period: '24h',
+        })
+
+        return {
+          address: item.address.toLowerCase(),
+          exposure: exposure as unknown as readonly IndexDtfExposureGroup[],
+        }
+      } catch {
+        return { address: item.address.toLowerCase(), exposure: [] }
+      }
+    })
+  )
+
+  return results.reduce(
+    (acc, { address, exposure }) => {
+      acc[address] = exposure
+      return acc
+    },
+    {} as Record<string, readonly IndexDtfExposureGroup[]>
+  )
+}
+
+const useIndexDTFList = ({
+  withExposure,
+}: { withExposure?: boolean } = {}) => {
+  const sdk = useDtfSdk()
+
   return useQuery({
-    queryKey: ['index-dtf-list'],
+    queryKey: ['index-dtf-list', { withExposure }],
     queryFn: async (): Promise<IndexDTFItem[]> => {
       const response = await fetch(INDEX_DTFS_URL)
 
@@ -108,8 +171,18 @@ const useIndexDTFList = () => {
       }
 
       const data = (await response.json()) as IndexDTFListResponseItem[]
+      const items = normalizeIndexDtfList(data)
 
-      return normalizeIndexDtfList(data)
+      if (!withExposure) {
+        return items
+      }
+
+      const exposureByAddress = await fetchIndexDtfExposures(sdk, items)
+
+      return items.map((item) => ({
+        ...item,
+        exposure: exposureByAddress[item.address.toLowerCase()] ?? [],
+      }))
     },
     refetchInterval: REFRESH_INTERVAL,
     staleTime: REFRESH_INTERVAL,

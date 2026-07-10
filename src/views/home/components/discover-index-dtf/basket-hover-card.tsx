@@ -7,9 +7,12 @@ import { type IndexDTFItem } from '@/hooks/useIndexDTFList'
 import { Trans } from '@lingui/react/macro'
 import { forwardRef, useMemo, useState } from 'react'
 import { useMeasuredMarquee } from '../../hooks/use-measured-marquee'
+import { AssetTickerItem } from '../highlighted-dtfs/types'
+import { mapExposureGroupsToTickers } from '../highlighted-dtfs/utils'
 
 const SCROLL_PIXELS_PER_SECOND = 72
 const EASE_IN_SECONDS = 1.2
+const HOVER_LIMIT_ASSETS = 10
 
 interface BasketHoverCardProps {
   indexDTF: IndexDTFItem
@@ -19,7 +22,7 @@ interface BasketHoverCardProps {
 const CollateralAssetItem = ({
   token,
 }: {
-  token: IndexDTFItem['basket'][number]
+  token: AssetTickerItem
 }) => (
   <div className="flex shrink-0 items-center gap-1 rounded-full px-1.5 py-1">
     <span className="ml-1 text-sm text-foreground">${token.symbol}</span>
@@ -30,18 +33,18 @@ const CollateralAssetItem = ({
 const SequenceItems = forwardRef<
   HTMLDivElement,
   {
-    assets: IndexDTFItem['basket']
+    assets: AssetTickerItem[]
     first?: boolean
   }
 >(({ assets, first }, ref) => (
   <div ref={ref} className={first ? 'flex shrink-0 pl-2' : 'flex shrink-0'}>
     <div className="flex shrink-0 items-center rounded-full px-1.5 py-1">
       <span className="text-sm text-legend">
-        <Trans>Collateral:</Trans>
+        <Trans>Exposure:</Trans>
       </span>
     </div>
     {assets.map((token) => (
-      <CollateralAssetItem key={token.address} token={token} />
+      <CollateralAssetItem key={token.key} token={token} />
     ))}
   </div>
 ))
@@ -50,11 +53,8 @@ SequenceItems.displayName = 'SequenceItems'
 export function BasketHoverCard({ indexDTF, children }: BasketHoverCardProps) {
   const [open, setOpen] = useState(false)
   const exposureAssets = useMemo(
-    () =>
-      [...indexDTF.basket].sort(
-        (a, b) => Number(b.weight ?? 0) - Number(a.weight ?? 0)
-      ),
-    [indexDTF.basket]
+    () => mapExposureGroupsToTickers(indexDTF.exposure, HOVER_LIMIT_ASSETS),
+    [indexDTF.exposure]
   )
   const { repeatCount, sequenceRef, viewportRef } = useMeasuredMarquee({
     active: open,

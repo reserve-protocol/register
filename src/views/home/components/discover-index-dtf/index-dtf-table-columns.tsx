@@ -20,6 +20,7 @@ import { Link } from 'react-router-dom'
 import { Line, LineChart, YAxis } from 'recharts'
 import { BasketHoverCard } from './basket-hover-card'
 import { calculatePercentageChange } from './utils'
+import { mapExposureGroupsToTickers } from '../highlighted-dtfs/utils'
 
 export const LIMIT_ASSETS = 4
 const HOVER_LIMIT_ASSETS = 10
@@ -43,9 +44,15 @@ const exposureTriggerClassName =
   'inline-flex items-center gap-1 rounded-full border border-transparent p-1.5 transition-[border-color,background-color,opacity] duration-150 group-hover/dtf-row:border-secondary group-hover/dtf-row:bg-card'
 
 const withChainId = (
-  assets: IndexDTFItem['basket'],
+  assets: { key: string; symbol: string; weight?: string | number }[],
   chainId: IndexDTFItem['chainId']
-) => assets.map((asset) => ({ ...asset, chain: chainId }))
+) =>
+  assets.map((asset) => ({
+    address: asset.key,
+    symbol: asset.symbol,
+    weight: asset.weight,
+    chain: chainId,
+  }))
 
 const formatPriceChangePercent = (dtf: IndexDTFItem) => {
   if (typeof dtf.priceChange?.percent !== 'number') {
@@ -212,26 +219,32 @@ export const indexDTFColumns: ColumnDef<IndexDTFItem>[] = [
   {
     header: () => (
       <TableHeader className="pl-1.5">
-        <Trans>Basket</Trans>
+        <Trans>Exposure</Trans>
       </TableHeader>
     ),
-    accessorKey: 'basket',
+    accessorKey: 'exposure',
     meta: {
       className: 'w-[180px] min-w-[180px] pr-2',
     },
     cell: ({ row }) => {
-      const basket = row.original.basket
-      const hiddenAssetCount = Math.max(0, basket.length - LIMIT_ASSETS)
+      const allExposureAssets = mapExposureGroupsToTickers(
+        row.original.exposure,
+        Number.MAX_SAFE_INTEGER
+      )
+      const hiddenAssetCount = Math.max(
+        0,
+        allExposureAssets.length - LIMIT_ASSETS
+      )
       const hoverHiddenAssetCount = Math.max(
         0,
-        basket.length - HOVER_LIMIT_ASSETS
+        allExposureAssets.length - HOVER_LIMIT_ASSETS
       )
       const cappedBacking = withChainId(
-        basket.slice(0, LIMIT_ASSETS),
+        allExposureAssets.slice(0, LIMIT_ASSETS),
         row.original.chainId
       )
       const hoverBacking = withChainId(
-        basket.slice(0, HOVER_LIMIT_ASSETS),
+        allExposureAssets.slice(0, HOVER_LIMIT_ASSETS),
         row.original.chainId
       )
 
