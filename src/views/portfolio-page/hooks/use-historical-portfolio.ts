@@ -139,8 +139,8 @@ export const useHistoricalPortfolio = (address?: Address | null) => {
   )
 
   const firstHistoryTimestamp = useMemo(
-    () => getFirstHistoryTimestamp(data['1y']),
-    [data['1y']]
+    () => getFirstHistoryTimestamp(q1y.data),
+    [q1y.data]
   )
 
   const availableTimeRanges = useMemo(
