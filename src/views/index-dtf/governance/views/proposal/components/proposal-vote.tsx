@@ -41,6 +41,7 @@ const ViewExecuteTxButton = () => {
       target="_blank"
     >
       <Button
+        data-testid="proposal-execute-tx-btn"
         variant="outline"
         className="flex items-center gap-2  justify-center w-full"
       >

@@ -85,6 +85,7 @@ const ProposeSectionTrigger = ({
 
   return (
     <AccordionTrigger
+      data-testid={`propose-section-trigger-${id}`}
       withChevron={false}
       className={cn(
         'flex items-center justify-between w-full p-6',

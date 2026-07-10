@@ -40,11 +40,12 @@ const RebalanceHeader = () => {
           <ArrowLeft />
         </Button>
       </Link>
-      {!!rebalance ? (
+      {rebalance ? (
         <Link
           to={`../../${ROUTES.GOVERNANCE_PROPOSAL}/${rebalance?.proposal.id}`}
           target="_blank"
           className="underline"
+          data-testid="auctions-rebalance-title"
         >
           {getProposalTitle(rebalance.proposal.description)}
         </Link>

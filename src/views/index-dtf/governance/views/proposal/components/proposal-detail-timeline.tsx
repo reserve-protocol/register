@@ -237,7 +237,10 @@ export const TimelineItemVotingResult = () => {
     <TimelineItem
       icon={ICON_BY_STATE[proposal?.votingState.state ?? '']}
       title={
-        <span style={{ color: COLOR_BY_STATE[proposal?.votingState.state ?? ''] }}>
+        <span
+          data-testid={`proposal-result-${(proposal?.votingState.state ?? '').toLowerCase()}`}
+          style={{ color: COLOR_BY_STATE[proposal?.votingState.state ?? ''] }}
+        >
           {t(TITLE_BY_STATE[proposal?.votingState.state ?? ''])}
         </span>
       }

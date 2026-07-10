@@ -211,9 +211,35 @@ function resolveIndexQuery(
       if (matched) break
     }
     const snap = matched && govCache.get(matched.address.toLowerCase())
-    if (snap) return { data: snap }
+    if (matched && snap) {
+      // Captured list proposals carry no `governance` sub-object, but the SDK's
+      // mapIndexDtfProposalSummary dereferences governance.{id,token,timelock} —
+      // backfill each proposal from its parent governance + the DTF object
+      // (same enrichment the detail path gets).
+      const dtfObj = dtfObjectFor(matched.address)
+      const raw = snap as { governances?: Record<string, unknown>[] }
+      const governances = (raw.governances ?? []).map((g) => ({
+        ...g,
+        proposals: ((g.proposals as Record<string, unknown>[]) ?? []).map((p) =>
+          enrichProposalGovernance({ ...p, governance: { id: g.id } }, dtfObj)
+        ),
+      }))
+      return { data: { ...raw, governances } }
+    }
     // No governance snapshot (e.g. DTF has no governance) — empty, not an error.
     return { data: { governances: [], stakingToken: null } }
+  }
+
+  // Vote-lock sidebar: which DTFs a vote-lock token governs — none of our
+  // registry vote-locks govern extra DTFs, so empty is the truthful default.
+  if (op === 'GetGovernedDtfs') {
+    return { data: { dtfs: [] } }
+  }
+
+  // Delegates panel — deterministic empty (no staking token context). Specs
+  // needing delegates overlay this op with delegatedVotesRaw etc.
+  if (op === 'GetIndexDtfDelegates') {
+    return { data: { stakingToken: null } }
   }
 
   if (op === 'getTransferEvents' || body.includes('transferEvents')) {

@@ -82,7 +82,7 @@ const RebalanceList = () => {
           {isLoading && <LoadingState />}
           {!isLoading && activeRebalances.length === 0 && <EmptyState />}
 
-          {activeRebalances.map((rebalance, index) => (
+          {activeRebalances.map((rebalance) => (
             <ActiveRebalanceItem
               key={rebalance.proposal.id}
               rebalance={rebalance}

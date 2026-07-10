@@ -33,6 +33,7 @@ const ConfirmProposalButton = () => {
 
   return (
     <Button
+      data-testid="propose-confirm-btn"
       className="w-full"
       disabled={!isButtonEnabled}
       variant={isProposalConfirmed ? 'outline' : 'default'}

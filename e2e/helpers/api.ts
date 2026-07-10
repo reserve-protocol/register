@@ -142,6 +142,13 @@ export async function mockApiRoutes(page: Page, options: ApiMockOptions) {
       return json(route, { market: null, assets: [] })
     }
 
+    // Per-asset historical prices (simulated basket / snapshot pricing) — the
+    // consumer keys results by the echoed address and treats an empty
+    // timeseries as price 0. Overlay per-test for real magnitudes.
+    if (path.includes('/historical/prices')) {
+      return json(route, { address: url.searchParams.get('address') ?? '', timeseries: [] })
+    }
+
     if (path.includes('/historical/dtf')) {
       const dtf = dtfFromParam(url, 'address')
       if (dtf && snapshotExists(`${dtf.snapshotDir}/historical-price.json`)) {
