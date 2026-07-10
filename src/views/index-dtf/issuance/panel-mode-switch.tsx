@@ -21,6 +21,7 @@ const PanelModeSwitch = () => {
       <button
         type="button"
         onClick={() => setMode('swap')}
+        data-testid="issuance-use-swap"
         className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline"
       >
         <ArrowLeftRight size={15} />
@@ -34,6 +35,7 @@ const PanelModeSwitch = () => {
   return (
     <Link
       to={getFolioRoute(dtf.id, chainId, `${ROUTES.ISSUANCE}/manual`)}
+      data-testid="issuance-mode-switch"
       className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline"
     >
       <Trans>Switch to Manual Mint</Trans>

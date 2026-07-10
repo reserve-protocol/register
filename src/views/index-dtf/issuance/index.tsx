@@ -51,7 +51,10 @@ const IndexDTFIssuance = () => {
         ) : (
           <div className="relative flex w-full flex-col items-center gap-3 rounded-4xl sm:w-[420px] lg:gap-3">
             <ComplianceAlert />
-            <div className="w-full rounded-3xl border-2 border-secondary bg-card p-2 sm:w-[420px]">
+            <div
+              data-testid="issuance-zap-widget"
+              className="w-full rounded-3xl border-2 border-secondary bg-card p-2 sm:w-[420px]"
+            >
               <ZapperWrapper
                 chain={indexDTF.chainId}
                 dtfAddress={indexDTF.id}

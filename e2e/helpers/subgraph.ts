@@ -203,6 +203,15 @@ function resolveIndexQuery(
     return graphError(`[E2E] unmocked operation: GetIndexDTF (no snapshot for ${id})`)
   }
 
+  // Auctions history — the app's query is misnamed `getGovernanceStats`
+  // upstream (use-rebalance-auctions.ts) but selects `auctions(...)`; match on
+  // the selection BEFORE the real governances branch or it gets the governance
+  // payload and the hook silently degrades to []. Empty is deterministic;
+  // bid-list specs overlay this op.
+  if (body.includes('auctions(')) {
+    return { data: { auctions: [] } }
+  }
+
   if (op === 'getGovernanceStats' || body.includes('governances(')) {
     const ids = ((vars.governanceIds as string[]) ?? (vars.ids as string[]) ?? []) as string[]
     let matched: RegistryDTF | undefined

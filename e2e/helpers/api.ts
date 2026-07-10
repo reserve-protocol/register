@@ -174,8 +174,21 @@ export async function mockApiRoutes(page: Page, options: ApiMockOptions) {
       return json(route, [])
     }
 
+    // Token LIST endpoint — must match before the generic /zapper healthcheck:
+    // an object here crashes use-asset-price-volatility's tokens.map and takes
+    // the whole rebalance detail down via its error boundary.
+    if (path.includes('/zapper/tokens')) {
+      return json(route, [])
+    }
+
     if (path.includes('/zapper')) {
       return json(route, { status: 'ok', healthy: true })
+    }
+
+    // Rebalance liquidity probe (POST) — deterministic empty; auction specs
+    // overlay real payloads per-test.
+    if (path.includes('/rebalance/liquidity')) {
+      return json(route, { market: null, totals: { sellUsd: 0, buyUsd: 0 }, assets: [] })
     }
 
     if (path.endsWith('/health')) {
