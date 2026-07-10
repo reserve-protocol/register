@@ -1,6 +1,7 @@
 import type { Page } from '@playwright/test'
 import type { UnmockedLogger } from './logger'
 import type { MockOverrides } from './overrides'
+import type { BoundaryRequest } from './requests'
 import { findDtfByAddress, REGISTRY } from './registry'
 import { loadSnapshot, snapshotExists } from './snapshots'
 
@@ -26,6 +27,7 @@ export interface ApiMockOptions {
   log: UnmockedLogger
   geolocation: GeolocationStatus
   overrides?: MockOverrides
+  requests?: BoundaryRequest[]
 }
 
 function json(route: import('@playwright/test').Route, data: unknown, status = 200) {
@@ -41,16 +43,121 @@ function dtfFromParam(url: URL, param: string) {
   return value ? findDtfByAddress(value) : undefined
 }
 
+function isCapturedDiscoverDtf(url: URL, addressParam = 'address'): boolean {
+  const address = url.searchParams.get(addressParam)?.toLowerCase()
+  const chainId = Number(url.searchParams.get('chainId'))
+  if (!address || !Number.isFinite(chainId)) return false
+  const discover = loadSnapshot<Array<{ address: string; chainId: number }>>(
+    'shared/discover-dtfs.json'
+  )
+  return discover.some(
+    (dtf) => dtf.address.toLowerCase() === address && Number(dtf.chainId) === chainId
+  )
+}
+
+function knownPriceResponse(chainId: number, requestedTokens: Set<string>) {
+  const known = new Set<string>(['0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'])
+  const prices: Array<{ address: string; price: number; timestamp?: number }> = []
+
+  for (const dtf of REGISTRY.filter((entry) => entry.chainId === chainId)) {
+    if (snapshotExists(`${dtf.snapshotDir}/token-prices.json`)) {
+      for (const price of loadSnapshot<Array<{ address: string; price: number; timestamp?: number }>>(
+        `${dtf.snapshotDir}/token-prices.json`
+      )) {
+        known.add(price.address.toLowerCase())
+        prices.push(price)
+      }
+    }
+    if (snapshotExists(`${dtf.snapshotDir}/chain-state.json`)) {
+      const state = loadSnapshot<{ basketTokens: Array<{ address: string }> }>(
+        `${dtf.snapshotDir}/chain-state.json`
+      )
+      for (const token of state.basketTokens) known.add(token.address.toLowerCase())
+    }
+    const snapshot = loadSnapshot<{
+      dtf: {
+        token?: { address?: string }
+        stToken?: {
+          token?: { address?: string }
+          underlying?: { address?: string }
+          rewards?: Array<{ rewardToken?: { address?: string } }>
+        }
+      }
+    }>(`${dtf.snapshotDir}/dtf.json`).dtf
+    for (const address of [
+      snapshot.token?.address,
+      snapshot.stToken?.token?.address,
+      snapshot.stToken?.underlying?.address,
+      ...(snapshot.stToken?.rewards?.map((reward) => reward.rewardToken?.address) ?? []),
+    ]) {
+      if (address) known.add(address.toLowerCase())
+    }
+  }
+
+  // The discover response can contain DTFs outside the small deterministic
+  // registry used for deep journeys. Their captured basket identities are still
+  // valid inputs to the shared current-price batch requested by the home/detail
+  // surfaces, so admit those exact addresses without opening a wildcard.
+  const discover = loadSnapshot<
+    Array<{ chainId: number; basket?: Array<{ address: string }> }>
+  >('shared/discover-dtfs.json')
+  for (const dtf of discover) {
+    if (Number(dtf.chainId) !== chainId) continue
+    for (const token of dtf.basket ?? []) known.add(token.address.toLowerCase())
+  }
+
+  const commonByChain: Record<number, string[]> = {
+    1: ['0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'],
+    56: [
+      '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee',
+      '0x55d398326f99059ff775485246999027b3197955',
+    ],
+    8453: [
+      '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee',
+      '0x4200000000000000000000000000000000000006',
+      '0xd9aaec86b65d86f6a7b5b1b0c42ffa531710b6ca',
+      '0x833589fcd6edb6e08f4c7c32d4f71b54bda02913',
+      '0x50c5725949a6f0c72e6c4a641f24049a917db0cb',
+    ],
+  }
+  for (const address of commonByChain[chainId] ?? []) known.add(address)
+  if (![...requestedTokens].every((address) => known.has(address))) return undefined
+
+  const byAddress = new Map(prices.map((price) => [price.address.toLowerCase(), price]))
+  return [...requestedTokens].map(
+    (address) =>
+      byAddress.get(address) ?? {
+        address,
+        price: 1,
+        timestamp: Math.floor(Date.now() / 1000),
+      }
+  )
+}
+
 export async function mockApiRoutes(page: Page, options: ApiMockOptions) {
-  const { log, geolocation, overrides } = options
+  const { log, geolocation, overrides, requests } = options
 
   const handler = (route: Parameters<Parameters<Page['route']>[1]>[0]) => {
     const url = new URL(route.request().url())
+    const method = route.request().method()
     const path = url.pathname // e.g. /discover/dtfs, /v2/compliance/geolocation
 
-    // Per-test overlay wins over snapshots — matched by pathname substring.
-    const overlaid = overrides?.lookupApi(path)
+    requests?.push({
+      boundary: 'api',
+      method,
+      pathname: path,
+      search: Object.fromEntries(url.searchParams),
+    })
+
+    // Per-test overlay wins over snapshots — exact method/path plus any
+    // identity-bearing query fields the spec supplies.
+    const overlaid = overrides?.lookupApi(method, url)
     if (overlaid !== undefined) return json(route, overlaid)
+
+    if (method !== 'GET' && !(method === 'POST' && path === '/rebalance/liquidity')) {
+      log('unmocked reserve-api method', { method, path })
+      return json(route, { error: 'unexpected reserve-api method' }, 405)
+    }
 
     // Per-DTF compliance — MUST match before the generic geolocation branch
     // (same path prefix). useDTFRestricted fail-closes to restricted on a bad
@@ -108,14 +215,25 @@ export async function mockApiRoutes(page: Page, options: ApiMockOptions) {
       if (dtf && snapshotExists(`${dtf.snapshotDir}/folio-manager.json`)) {
         return json(route, loadSnapshot(`${dtf.snapshotDir}/folio-manager.json`))
       }
-      return json(route, {})
+      log('unmocked reserve-api identity', {
+        path,
+        folio: url.searchParams.get('folio'),
+        chainId: url.searchParams.get('chainId'),
+      })
+      return json(route, { error: 'unknown folio-manager identity' }, 500)
     }
 
     if (path.includes('/current/dtf')) {
       const dtf = dtfFromParam(url, 'address')
-      // Non-registry DTF (e.g. one referenced only by the discover list) — benign
-      // empty, not a gap. Registry DTFs must have a snapshot, so a miss is loud.
-      if (!dtf) return json(route, {})
+      if (!dtf && isCapturedDiscoverDtf(url)) return json(route, {})
+      if (!dtf) {
+        log('unmocked reserve-api identity', {
+          path,
+          address: url.searchParams.get('address'),
+          chainId: url.searchParams.get('chainId'),
+        })
+        return json(route, { error: 'unknown current-dtf identity' }, 500)
+      }
       if (snapshotExists(`${dtf.snapshotDir}/current-price.json`)) {
         return json(route, loadSnapshot(`${dtf.snapshotDir}/current-price.json`))
       }
@@ -128,7 +246,13 @@ export async function mockApiRoutes(page: Page, options: ApiMockOptions) {
       if (dtf && snapshotExists(`${dtf.snapshotDir}/exposure.json`)) {
         return json(route, loadSnapshot(`${dtf.snapshotDir}/exposure.json`))
       }
-      return json(route, [])
+      if (isCapturedDiscoverDtf(url)) return json(route, [])
+      log('unmocked reserve-api identity', {
+        path,
+        address: url.searchParams.get('address'),
+        chainId: url.searchParams.get('chainId'),
+      })
+      return json(route, { error: 'unknown exposure identity' }, 500)
     }
 
     if (path.includes('/dtf/icons')) {
@@ -139,6 +263,14 @@ export async function mockApiRoutes(page: Page, options: ApiMockOptions) {
     // resolves. No registry DTF holds Ondo assets, so the empty shape is the
     // truthful state (and keeps market-paused warnings deterministic).
     if (path.includes('/dtf/ondo')) {
+      if (!isCapturedDiscoverDtf(url)) {
+        log('unmocked reserve-api identity', {
+          path,
+          address: url.searchParams.get('address'),
+          chainId: url.searchParams.get('chainId'),
+        })
+        return json(route, { error: 'unknown dtf-ondo identity' }, 500)
+      }
       return json(route, { market: null, assets: [] })
     }
 
@@ -146,7 +278,17 @@ export async function mockApiRoutes(page: Page, options: ApiMockOptions) {
     // consumer keys results by the echoed address and treats an empty
     // timeseries as price 0. Overlay per-test for real magnitudes.
     if (path.includes('/historical/prices')) {
-      return json(route, { address: url.searchParams.get('address') ?? '', timeseries: [] })
+      const address = url.searchParams.get('address')?.toLowerCase()
+      const chainId = Number(url.searchParams.get('chainId'))
+      if (address && knownPriceResponse(chainId, new Set([address]))) {
+        return json(route, { address, timeseries: [] })
+      }
+      log('unmocked reserve-api identity', {
+        path,
+        address: address ?? '(missing)',
+        chainId: url.searchParams.get('chainId'),
+      })
+      return json(route, { error: 'unknown historical-price identity' }, 500)
     }
 
     if (path.includes('/historical/dtf')) {
@@ -154,7 +296,12 @@ export async function mockApiRoutes(page: Page, options: ApiMockOptions) {
       if (dtf && snapshotExists(`${dtf.snapshotDir}/historical-price.json`)) {
         return json(route, loadSnapshot(`${dtf.snapshotDir}/historical-price.json`))
       }
-      return json(route, { timeseries: [] })
+      log('unmocked reserve-api identity', {
+        path,
+        address: url.searchParams.get('address'),
+        chainId: url.searchParams.get('chainId'),
+      })
+      return json(route, { error: 'unknown historical-dtf identity' }, 500)
     }
 
     if (path.includes('/dtf/price')) {
@@ -163,11 +310,20 @@ export async function mockApiRoutes(page: Page, options: ApiMockOptions) {
 
     if (path.includes('/current/prices')) {
       const chainId = url.searchParams.get('chainId')
-      const dtf = REGISTRY.find(
-        (d) => String(d.chainId) === chainId && snapshotExists(`${d.snapshotDir}/token-prices.json`)
+      const requestedTokens = new Set(
+        (url.searchParams.get('tokens') ?? '')
+          .split(',')
+          .filter(Boolean)
+          .map((token) => token.toLowerCase())
       )
-      if (dtf) return json(route, loadSnapshot(`${dtf.snapshotDir}/token-prices.json`))
-      return json(route, {})
+      const response = knownPriceResponse(Number(chainId), requestedTokens)
+      if (response && requestedTokens.size > 0) return json(route, response)
+      log('unmocked reserve-api identity', {
+        path,
+        chainId,
+        tokens: [...requestedTokens].sort(),
+      })
+      return json(route, { error: 'unknown token-price identity' }, 500)
     }
 
     if (path.includes('/dtf/daos')) {
@@ -203,6 +359,14 @@ export async function mockApiRoutes(page: Page, options: ApiMockOptions) {
     // Rebalance metrics (historical MetricsRow) — empty by default; auctions
     // specs overlay real payloads per-test via overrides.api.
     if (path.includes('/dtf/rebalance')) {
+      if (!isCapturedDiscoverDtf(url)) {
+        log('unmocked reserve-api identity', {
+          path,
+          address: url.searchParams.get('address'),
+          chainId: url.searchParams.get('chainId'),
+        })
+        return json(route, { error: 'unknown rebalance identity' }, 500)
+      }
       return json(route, [])
     }
 

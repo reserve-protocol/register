@@ -1,8 +1,10 @@
+import { decodeFunctionData, parseAbi, type Hex } from 'viem'
 import { connectWallet, expect, test } from '../../fixtures/wallet'
-import { freezeTime, proposalTime } from '../../helpers/clock'
+import { advanceTime, freezeTime, proposalTime } from '../../helpers/clock'
 import { dtfPath, findDtfByAddress } from '../../helpers/registry'
 import { loadSnapshot } from '../../helpers/snapshots'
 import { loadEnrichedProposal } from '../../helpers/subgraph'
+import type { BoundaryRequest } from '../../helpers/requests'
 
 // Vertical slice: the full governance write path on base/lcap. Proves the whole
 // offline stack end-to-end — frozen clock pins an ACTIVE voting window, the mock
@@ -16,6 +18,7 @@ const DTF_ADDRESS = '0x4dA9A0f397dB1397902070f93a4D6ddBC0E0E6e8' // base/lcap
 // ACTIVE and votable regardless of when the snapshot ages.
 const PROPOSAL_ID =
   '111337429388977163548785296806473337490511918976677753366781905746718791330309'
+const VOTE_ABI = parseAbi(['function castVote(uint256 proposalId, uint8 support) returns (uint256)'])
 
 interface ProposalSnapshot {
   proposal: {
@@ -35,6 +38,8 @@ function loadProposal(): ProposalSnapshot {
 test('cast a For vote through the full transaction flow', async ({
   page,
   overrides,
+  txLog,
+  boundaryRequests,
 }) => {
   const dtf = findDtfByAddress(DTF_ADDRESS)!
   const { proposal } = loadProposal()
@@ -52,7 +57,7 @@ test('cast a For vote through the full transaction flow', async ({
   // notifyManager (setTimeout-batched), so the connected-account reads (voter
   // state -> voting power) fetch but never reach React until time advances.
   // Without this the vote button stays disabled forever.
-  await page.clock.runFor(5_000)
+  await advanceTime(page, 5_000)
 
   // Baseline tally before voting — the captured "For" weight, compact-formatted.
   const forVotes = page.getByTestId('proposal-for-votes')
@@ -69,24 +74,34 @@ test('cast a For vote through the full transaction flow', async ({
   // Build it from the same enriched snapshot the mock serves, so only the field
   // under test changes. 42M is distinct from the captured ~1.8M For weight.
   const overlay = loadEnrichedProposal(PROPOSAL_ID)!
-  overrides.subgraph('GetIndexDtfProposalVotingSnapshot', {
-    proposal: { ...overlay.proposal, forWeightedVotes: '42000000000000000000000000' },
-  })
+  overrides.subgraph(
+    {
+      operationName: 'GetIndexDtfProposalVotingSnapshot',
+      variables: { proposalId: PROPOSAL_ID },
+    },
+    {
+      proposal: { ...overlay.proposal, forWeightedVotes: '42000000000000000000000000' },
+    }
+  )
 
   // Pump — flush react-query: selecting a choice fires the castVote
   // useSimulateContract; its result (isReady) reaches React only once the clock
   // advances, so the submit button stays disabled without this.
-  await page.clock.runFor(5_000)
+  await advanceTime(page, 5_000)
 
   // 4. Submit — the modal's TransactionButton runs the write. The mock provider
-  //    answers eth_sendTransaction with a fixed hash; the RPC mock serves a
-  //    confirmations-safe receipt.
+  //    records a unique hash; the RPC mock serves only its correlated receipt.
   await page.getByTestId('vote-submit-btn').click()
 
-  // Pump 1 — receipt polling: useWaitForTransactionReceipt polls
-  // eth_getTransactionReceipt on an interval that never elapses under the frozen
-  // clock; advance it so pending -> confirming -> success can complete.
-  await page.clock.runFor(10_000)
+  // Wait until the provider has actually accepted the send before pumping its
+  // frozen receipt timers. Advancing too early races the scheduled first poll
+  // under parallel load and made this flow flaky.
+  await expect.poll(() => txLog.length).toBe(1)
+  await advanceTime(page, 5_000) // first correlated receipt poll returns pending
+  await expect
+    .poll(() => receiptRequestCount(boundaryRequests, txLog[0].hash))
+    .toBeGreaterThanOrEqual(1)
+  await advanceTime(page, 5_000) // next poll returns the successful receipt
 
   // Success state a user actually sees (Lingui copy -> testid, not text).
   await expect(page.getByTestId('vote-success')).toBeVisible()
@@ -94,8 +109,27 @@ test('cast a For vote through the full transaction flow', async ({
   // Pump 2 — post-vote refetch: the success handler invalidates the proposal +
   // voting-snapshot queries; advance so the refetch (which hits the overlay)
   // settles before we assert.
-  await page.clock.runFor(5_000)
+  await advanceTime(page, 5_000)
 
   // 5. The observed tally reflects the overlaid voting snapshot.
   await expect(forVotes).toHaveText('42M')
+
+  expect(txLog).toHaveLength(1)
+  const voteTx = txLog[0]
+  expect(voteTx.chainId).toBe(dtf.chainId)
+  const governance = overlay.proposal.governance as { id: string }
+  expect(voteTx.to).toBe(governance.id.toLowerCase())
+  expect(BigInt(voteTx.value)).toBe(0n)
+  const decoded = decodeFunctionData({ abi: VOTE_ABI, data: voteTx.data as Hex })
+  expect(decoded.functionName).toBe('castVote')
+  expect(decoded.args).toEqual([BigInt(PROPOSAL_ID), 1])
 })
+
+function receiptRequestCount(requests: BoundaryRequest[], hash: string): number {
+  return requests.filter(
+    (request) =>
+      request.boundary === 'rpc' &&
+      request.method === 'eth_getTransactionReceipt' &&
+      String(request.params[0]).toLowerCase() === hash.toLowerCase()
+  ).length
+}

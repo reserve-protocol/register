@@ -3,6 +3,8 @@ import { DEFAULT_GEOLOCATION, mockApiRoutes, type GeolocationStatus } from '../h
 import type { UnmockedLogger } from '../helpers/logger'
 import { MockOverrides } from '../helpers/overrides'
 import { resetFrozenTime } from '../helpers/clock'
+import type { TxRecord } from '../helpers/provider'
+import type { BoundaryRequest } from '../helpers/requests'
 import { mockRpcRoutes, setMockNow } from '../helpers/rpc'
 import { mockSubgraphRoutes } from '../helpers/subgraph'
 
@@ -14,9 +16,20 @@ export interface BaseFixtures {
   // Per-test overlay every mock consults before its snapshots — lets a spec
   // change a boundary response mid-test (post-tx state). Fresh per test.
   overrides: MockOverrides
-  // Every `[E2E] unmocked ...` line collected during the test. @smoke tests fail
-  // at teardown if this is non-empty; flow tests only attach it to the report.
+  // Every `[E2E] unmocked ...` line collected during the test. Tests fail at
+  // teardown if this is non-empty (opt out per-spec with allowUnmocked).
   unmockedCalls: string[]
+  // Every submitted transaction, appended by the wallet provider's
+  // eth_sendTransaction. Empty for tests that never install the wallet. Fresh per
+  // test — specs assert payloads (to / decoded fn / approval spender) off it.
+  txLog: TxRecord[]
+  // Every handled API/subgraph/RPC request. Tests use this to prove source,
+  // identity, parameters, and request counts rather than only rendered shells.
+  boundaryRequests: BoundaryRequest[]
+  // Escape hatch for genuinely exploratory specs: when true, unmocked calls are
+  // still logged/attached but don't fail the test. Default false — a committed
+  // migration flow must fail on any unmocked RPC/API/subgraph/egress call.
+  allowUnmocked: boolean
 }
 
 async function fulfillEmpty(route: import('@playwright/test').Route, body: unknown = {}) {
@@ -29,6 +42,7 @@ async function fulfillEmpty(route: import('@playwright/test').Route, body: unkno
 
 export const test = base.extend<BaseFixtures>({
   compliance: [DEFAULT_GEOLOCATION, { option: true }],
+  allowUnmocked: [false, { option: true }],
 
   // Fresh per test — a new instance means overrides never leak between tests.
   // oxlint-disable-next-line no-empty-pattern -- Playwright derives fixture deps from the destructuring pattern; {} = no deps
@@ -36,8 +50,23 @@ export const test = base.extend<BaseFixtures>({
     await use(new MockOverrides())
   },
 
+  // Fresh array per test — the wallet provider appends to it on each send.
+  // oxlint-disable-next-line no-empty-pattern -- {} = no deps (Playwright reads deps from the pattern)
+  txLog: async ({}, use) => {
+    await use([])
+  },
+
+  // oxlint-disable-next-line no-empty-pattern -- {} = no deps
+  boundaryRequests: async ({}, use) => {
+    await use([])
+  },
+
   unmockedCalls: [
-    async ({ page, compliance, overrides }, use, testInfo) => {
+    async (
+      { page, compliance, overrides, txLog, boundaryRequests, allowUnmocked },
+      use,
+      testInfo
+    ) => {
       const calls: string[] = []
       const log: UnmockedLogger = (message, detail) => {
         const line = `[E2E] ${message}${detail ? ' ' + JSON.stringify(detail) : ''}`
@@ -45,10 +74,53 @@ export const test = base.extend<BaseFixtures>({
         console.error(line)
       }
 
+      // Register the catch-all FIRST. Playwright gives later, more-specific
+      // routes precedence; anything not claimed below reaches this default-deny
+      // boundary instead of escaping to the network.
+      await page.route('**/*', async (route) => {
+        const url = new URL(route.request().url())
+        if (url.hostname === '127.0.0.1' || url.hostname === 'localhost') {
+          return route.fallback()
+        }
+        const inertHosts = [
+          'assets.coingecko.com',
+          'connect.facebook.net',
+          'dd.dexscreener.com',
+          'raw.githubusercontent.com',
+          'www.googletagmanager.com',
+        ]
+        // Remote visual assets and trackers are intentionally inert in E2E. They do not
+        // carry product data and Playwright assertions use local structure,
+        // alt text, and values rather than live pixels.
+        if (
+          route.request().resourceType() === 'image' ||
+          inertHosts.includes(url.hostname) ||
+          url.hostname.endsWith('.ufs.sh') ||
+          (url.hostname === 'app.reserve.org' && url.pathname.startsWith('/svgs/')) ||
+          (url.hostname === 'app2.universal.xyz' && url.pathname.startsWith('/wrapped-tokens/'))
+        ) {
+          return route.abort()
+        }
+        log('unmocked egress', {
+          method: route.request().method(),
+          url: `${url.origin}${url.pathname}`,
+        })
+        return route.fulfill({
+          status: 502,
+          contentType: 'application/json',
+          body: JSON.stringify({ error: '[E2E] outbound request is not allowlisted' }),
+        })
+      })
+
       // Boundaries we answer.
-      await mockRpcRoutes(page, log, overrides)
-      await mockSubgraphRoutes(page, log, overrides)
-      await mockApiRoutes(page, { log, geolocation: compliance, overrides })
+      await mockRpcRoutes(page, log, overrides, txLog, boundaryRequests)
+      await mockSubgraphRoutes(page, log, overrides, boundaryRequests)
+      await mockApiRoutes(page, {
+        log,
+        geolocation: compliance,
+        overrides,
+        requests: boundaryRequests,
+      })
 
       // WalletConnect / relay / explorer: fulfill empty (NOT abort) — connectors
       // init eagerly on mount and aborts surface unhandled rejections.
@@ -62,11 +134,16 @@ export const test = base.extend<BaseFixtures>({
       await page.route('**api.llama.fi**', (r) => fulfillEmpty(r, { status: 'success', data: [] }))
       await page.route('**yields.reserve.org**', (r) => fulfillEmpty(r, { status: 'success', data: [] }))
       await page.route('**api.merkl.xyz**', (r) => fulfillEmpty(r, []))
+      await page.route('**contentful-storage.reserve-337.workers.dev/status/**', (r) =>
+        fulfillEmpty(r, { restricted: false })
+      )
 
       // Analytics — abort is safe, they are fire-and-forget beacons.
       await page.route('**sentry.io**', (r) => r.abort())
       await page.route('**mixpanel.com**', (r) => r.abort())
       await page.route('**segment.io**', (r) => r.abort())
+      await page.route('**googletagmanager.com**', (r) => r.abort())
+      await page.route('**connect.facebook.net**', (r) => r.abort())
 
       // Image CDNs — abort to avoid non-deterministic network.
       await page.route('**token-icons.llamao.fi**', (r) => r.abort())
@@ -92,10 +169,11 @@ export const test = base.extend<BaseFixtures>({
           contentType: 'text/plain',
         })
       }
-      // A green smoke run must be trustworthy without reading logs.
-      if (testInfo.tags.includes('@smoke') && calls.length) {
+      // Every committed test is strict by default. Exploratory work must opt out
+      // explicitly with test.use({ allowUnmocked: true }).
+      if (!allowUnmocked && calls.length) {
         throw new Error(
-          `@smoke test hit ${calls.length} unmocked call(s):\n${calls.join('\n')}`
+          `test hit ${calls.length} unmocked call(s):\n${calls.join('\n')}`
         )
       }
     },

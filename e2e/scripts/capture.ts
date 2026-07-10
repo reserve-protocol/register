@@ -15,15 +15,34 @@
  * MAX_SERIES_POINTS before writing to keep the repo lean; the moving-window
  * params and downsampling are recorded in _meta.window.
  */
-import { mkdirSync, writeFileSync } from 'fs'
+import {
+  copyFileSync,
+  cpSync,
+  existsSync,
+  mkdirSync,
+  mkdtempSync,
+  readFileSync,
+  renameSync,
+  rmSync,
+  writeFileSync,
+} from 'fs'
 import { dirname, join } from 'path'
 import { fileURLToPath } from 'url'
 import { createPublicClient, http, type Address, type Abi } from 'viem'
 import { CHAINS, REGISTRY, type RegistryDTF } from '../helpers/registry'
+import {
+  PINNED_PROPOSALS,
+  PRESERVED_FLOW_FILES,
+  requiredSnapshotPaths,
+} from '../helpers/snapshot-manifest'
 
 const snapshotsDir = join(dirname(fileURLToPath(import.meta.url)), '..', 'snapshots')
+const e2eDir = join(snapshotsDir, '..')
+let outputDir = snapshotsDir
+const captureFailures: string[] = []
 const RESERVE_API = 'https://api.reserve.org'
 const MAX_SERIES_POINTS = 200
+const MAX_SNAPSHOT_AGE_MS = 45 * 86_400_000
 
 // Targeted capture mode from `--only=<dtf|chain>`; undefined = full capture.
 type OnlyMode = 'dtf' | 'chain'
@@ -76,6 +95,18 @@ interface DownsampleReport {
   to: number
 }
 
+interface CapturedDtfGovernanceRefs {
+  ownerGovernance?: { id?: string }
+  legacyAdmins?: string[]
+  tradingGovernance?: { id?: string }
+  legacyAuctionApprovers?: string[]
+  stToken?: {
+    id?: string
+    governance?: { id?: string }
+    legacyGovernance?: string[]
+  }
+}
+
 function evenSample<T>(arr: T[], max: number): T[] {
   if (arr.length <= max) return arr
   const step = arr.length / max
@@ -114,7 +145,7 @@ function saveSnapshot(
   data: unknown,
   extra: Record<string, unknown> = {}
 ) {
-  const full = join(snapshotsDir, relativePath)
+  const full = join(outputDir, relativePath)
   mkdirSync(dirname(full), { recursive: true })
   const snapshot = { _meta: { source, capturedAt: new Date().toISOString(), ...extra }, data }
   writeFileSync(full, JSON.stringify(snapshot, null, 2))
@@ -141,7 +172,9 @@ async function fetchSubgraph(
   })
   if (!res.ok) throw new Error(`Subgraph ${res.status}: ${url}`)
   const json = (await res.json()) as { data?: Record<string, unknown>; errors?: unknown[] }
-  if (json.errors?.length) console.warn(`  ! subgraph errors chain ${chainId}:`, json.errors)
+  if (json.errors?.length) {
+    throw new Error(`Subgraph errors chain ${chainId}: ${JSON.stringify(json.errors)}`)
+  }
   return json.data ?? null
 }
 
@@ -367,7 +400,9 @@ async function tryCapture<T>(label: string, fn: () => Promise<T>): Promise<T | u
   try {
     return await fn()
   } catch (e) {
-    console.warn(`  ! skip ${label}: ${(e as Error).message}`)
+    const message = `${label}: ${(e as Error).message}`
+    captureFailures.push(message)
+    console.warn(`  ! ${message}`)
     return undefined
   }
 }
@@ -378,10 +413,57 @@ async function captureShared() {
     const url = `${RESERVE_API}/discover/dtfs?performance=true&brand=true`
     saveSnapshot('shared/discover-dtfs.json', url, await fetchApi(url))
   })
+  await tryCapture('featured-dtfs', async () => {
+    const url = 'https://api-staging.reserve.org/v1/discover/featured'
+    saveSnapshot('shared/featured-dtfs.json', url, await fetchApi(url))
+  })
   await tryCapture('protocol-metrics', async () => {
     const url = `${RESERVE_API}/protocol/metrics`
     saveSnapshot('shared/protocol-metrics.json', url, await fetchApi(url))
   })
+}
+
+async function capturePinnedFlowFixtures() {
+  for (const { snapshotDir, proposalId } of PINNED_PROPOSALS) {
+    const dtf = REGISTRY.find((entry) => entry.snapshotDir === snapshotDir)
+    if (!dtf) throw new Error(`Pinned proposal has no registry DTF: ${snapshotDir}`)
+    await tryCapture(`pinned proposal ${proposalId}`, async () => {
+      const detail = await fetchSubgraph(dtf.chainId, QUERIES.getProposalDetail, {
+        id: proposalId,
+      })
+      saveSnapshot(
+        `${snapshotDir}/proposals/${proposalId}.json`,
+        subgraphUrlFor(dtf.chainId)!,
+        detail,
+        {
+          dtf: dtf.address.toLowerCase(),
+          chainId: dtf.chainId,
+          query: 'getProposalDetail',
+          proposalId,
+        }
+      )
+    })
+  }
+
+  for (const relativePath of PRESERVED_FLOW_FILES) {
+    const source = join(snapshotsDir, relativePath)
+    if (!existsSync(source)) {
+      captureFailures.push(`preserved fixture missing: ${relativePath}`)
+      continue
+    }
+    const raw = JSON.parse(readFileSync(source, 'utf-8')) as {
+      _meta?: { capturedAt?: string }
+    }
+    const capturedAt = Date.parse(raw._meta?.capturedAt ?? '')
+    if (!Number.isFinite(capturedAt) || Date.now() - capturedAt > MAX_SNAPSHOT_AGE_MS) {
+      captureFailures.push(`preserved fixture stale or invalid: ${relativePath}`)
+      continue
+    }
+    const destination = join(outputDir, relativePath)
+    mkdirSync(dirname(destination), { recursive: true })
+    copyFileSync(source, destination)
+    console.log(`  preserved ${relativePath}`)
+  }
 }
 
 // Read the folio's on-chain basket shape (totalAssets), supply and decimals via
@@ -513,7 +595,7 @@ async function captureDtf(dtf: RegistryDTF, only?: OnlyMode) {
 
   await tryCapture('token-prices', async () => {
     const tokens = (currentPrice?.basket ?? []).map((t) => t.address).filter(Boolean)
-    if (!tokens.length) return
+    if (!tokens.length) throw new Error(`current-price returned no basket tokens for ${dtf.slug}`)
     const url = `${RESERVE_API}/current/prices?chainId=${chainId}&tokens=${tokens.join(',')}`
     saveSnapshot(`${dir}/token-prices.json`, url, await fetchApi(url), { dtf: addr, chainId })
   })
@@ -531,7 +613,7 @@ async function captureDtf(dtf: RegistryDTF, only?: OnlyMode) {
     saveSnapshot(`${dir}/rebalances.json`, subgraphUrlFor(chainId)!, data, { dtf: addr, chainId, query: 'getRebalances' })
   })
 
-  const d = dtfData?.dtf as Record<string, any> | undefined
+  const d = dtfData?.dtf as CapturedDtfGovernanceRefs | undefined
   if (d) {
     const governanceIds = [
       d.ownerGovernance?.id,
@@ -573,22 +655,59 @@ async function main() {
     // shared/proposal/governance/historical snapshots untouched (and _meta's
     // capturedAt, so e2e:check freshness still reflects the last FULL capture).
     console.log(`Targeted capture (--only=${only})...`)
+    const temporaryDir = mkdtempSync(join(e2eDir, '.snapshots-targeted-'))
+    cpSync(snapshotsDir, temporaryDir, { recursive: true })
+    outputDir = temporaryDir
     for (const dtf of REGISTRY) await captureDtf(dtf, only)
+    if (captureFailures.length) {
+      throw new Error(`Targeted snapshot capture incomplete:\n${captureFailures.join('\n')}`)
+    }
+    publishSnapshotTree(temporaryDir)
     console.log('\nDone. Snapshots in e2e/snapshots/')
     return
   }
 
   console.log('Capturing e2e snapshots from production...')
+  const temporaryDir = mkdtempSync(join(e2eDir, '.snapshots-capture-'))
+  outputDir = temporaryDir
   await captureShared()
   for (const dtf of REGISTRY) await captureDtf(dtf)
+  await capturePinnedFlowFixtures()
+  if (captureFailures.length) {
+    throw new Error(`Snapshot capture incomplete:\n${captureFailures.join('\n')}`)
+  }
+  const missing = requiredSnapshotPaths().filter(
+    (relativePath) => !existsSync(join(temporaryDir, relativePath))
+  )
+  if (missing.length) {
+    throw new Error(`Snapshot capture missing required files:\n${missing.join('\n')}`)
+  }
   saveSnapshot('_meta.json', 'e2e/scripts/capture.ts', {
     capturedAt: new Date().toISOString(),
     dtfs: REGISTRY.map((d) => ({ slug: d.slug, address: d.address, chainId: d.chainId })),
   })
+  publishSnapshotTree(temporaryDir)
   console.log('\nDone. Snapshots in e2e/snapshots/')
 }
 
+function publishSnapshotTree(temporaryDir: string) {
+  const backupDir = `${snapshotsDir}.previous`
+  rmSync(backupDir, { recursive: true, force: true })
+  renameSync(snapshotsDir, backupDir)
+  try {
+    renameSync(temporaryDir, snapshotsDir)
+    outputDir = snapshotsDir
+    rmSync(backupDir, { recursive: true, force: true })
+  } catch (error) {
+    if (!existsSync(snapshotsDir) && existsSync(backupDir)) {
+      renameSync(backupDir, snapshotsDir)
+    }
+    throw error
+  }
+}
+
 main().catch((e) => {
+  if (outputDir !== snapshotsDir) rmSync(outputDir, { recursive: true, force: true })
   console.error('Capture failed:', e)
   process.exit(1)
 })

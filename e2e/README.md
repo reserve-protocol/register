@@ -8,7 +8,8 @@ CI-cheap. Architecture decisions live in `docs/wiki/domains/e2e.md` — read tha
 
 ```bash
 pnpm e2e:smoke     # fast @smoke set, offline, chromium (boots dev server on :3005)
-pnpm e2e           # full suite (all non-@smoke specs)
+pnpm e2e:full      # all non-@smoke behavioral specs
+pnpm e2e           # both Playwright projects (smoke + full)
 pnpm e2e:ui        # Playwright UI mode
 pnpm e2e:capture   # refresh snapshots from live prod
 pnpm e2e:capture --only=dtf    # ONLY dtf.json + chain-state.json per DTF
@@ -28,7 +29,8 @@ Never uses :3000 — that's the human's dev server.
 
 ## How the mocks layer
 
-One auto fixture (`fixtures/base.ts`) installs every boundary on each test:
+One auto fixture (`fixtures/base.ts`) installs every boundary on each test and
+default-denies any non-local request that is not explicitly modeled:
 
 - **`helpers/rpc.ts`** — JSON-RPC for all known RPC hosts. `eth_chainId` respects
   the URL's chain. Multicall3 `aggregate3` is decoded/encoded with viem (never
@@ -49,6 +51,9 @@ One auto fixture (`fixtures/base.ts`) installs every boundary on each test:
 - **`helpers/provider.ts`** — injected EIP-6963 + EIP-1193 wallet (`fixtures/wallet.ts`).
   HTTP interception is the PRIMARY read path; the provider forwards reads to the
   same dispatch as a belt. Connecting is an explicit `connectWallet(page)`.
+  Every sent transaction is recorded in `txLog` with a unique hash; receipt and
+  transaction lookups are correlated to that record. Tests can queue success,
+  revert, pending-poll, or user-rejection outcomes with `overrides.transaction()`.
 - **`helpers/clock.ts`** — `freezeTime` + `proposalTime`/`rebalanceTime` to pin
   governance/rebalance phases against snapshot timestamps.
 
@@ -59,11 +64,10 @@ shared by mocks, capture, and tests. `helpers/snapshots.ts` loads the
 ## Fail-loud philosophy
 
 Every mock that can't answer calls the logger (`[E2E] unmocked ...`). The base
-fixture collects those lines:
-
-- **@smoke tests fail at teardown** if any occurred — a green smoke run is
-  trustworthy without reading logs.
-- **Flow tests** only attach the lines to the report (lenient).
+fixture collects those lines and **every committed test fails at teardown** if
+any occurred. A deliberately exploratory spec may opt out explicitly with
+`test.use({ allowUnmocked: true })`; that opt-out is not acceptable in committed
+acceptance coverage. Unknown external egress also fails and is reported.
 
 Faking-to-zero without logging is banned — gaps must surface. When a spec hits an
 unmocked call, add the answer to the relevant helper (RPC override, subgraph op,
@@ -82,7 +86,7 @@ same shape — copy it:
    The injected provider is `window.ethereum`, so wagmi auto-connects on mount;
    the helper tolerates both auto-connect and the explicit RainbowKit modal.
 3. **Drive the UI with `data-testid` locators**, never translated copy.
-4. **Pump the clock at every wait point** (see protocol below).
+4. **Pump the clock at every wait point with `advanceTime`** (see below).
 5. **Assert user-visible state** — a success `data-testid`, an updated tally,
    a disabled button. For post-tx state that changed, use an overlay (below).
 6. **End clean** — zero `[E2E] unmocked` lines. Run the spec, read the report's
@@ -105,20 +109,21 @@ So after **any action that kicks off async reads**, advance the clock:
 
 ```ts
 await connectWallet(page)
-await page.clock.runFor(5_000)   // flush voter-state read → vote button enables
+await advanceTime(page, 5_000)   // flush voter-state read → vote button enables
 
 await page.getByTestId('vote-option-for').click()
-await page.clock.runFor(5_000)   // flush castVote simulate → submit enables
+await advanceTime(page, 5_000)   // flush castVote simulate → submit enables
 
 await page.getByTestId('vote-submit-btn').click()
-await page.clock.runFor(10_000)  // receipt polling → pending → confirming → success
+await advanceTime(page, 10_000)  // receipt polling → pending → confirming → success
 await expect(page.getByTestId('vote-success')).toBeVisible()
 
-await page.clock.runFor(5_000)   // post-tx refetch (query invalidation) settles
+await advanceTime(page, 5_000)   // post-tx refetch (query invalidation) settles
 ```
 
-Every `runFor` gets a comment naming the timer it satisfies. If a locator times
-out waiting for `enabled`/`visible`, the first suspect is a missing pump.
+`advanceTime` moves the browser clock and the Node-side RPC clock together, so
+block and Chainlink timestamps cannot drift. Every call gets a comment naming
+the timer it satisfies. Raw `page.clock.runFor` is forbidden in specs.
 
 ### Post-tx overlay (observing state that changed)
 
@@ -130,17 +135,24 @@ between tests:
 ```ts
 // after the vote, the app refetches the voting snapshot; serve a bumped tally
 const overlay = loadEnrichedProposal(PROPOSAL_ID)!
-overrides.subgraph('GetIndexDtfProposalVotingSnapshot', {
+overrides.subgraph({
+  operationName: 'GetIndexDtfProposalVotingSnapshot',
+  variables: { id: PROPOSAL_ID },
+}, {
   proposal: { ...overlay.proposal, forWeightedVotes: '42000000000000000000000000' },
 })
 // ...cast the vote, then pump so the invalidation-driven refetch hits the overlay
 ```
 
-Three typed setters, keyed the way each dispatcher matches:
+Four typed setters, keyed the way each dispatcher matches:
 
-- `overrides.subgraph(operationName, data)` — by GraphQL `operationName`.
-- `overrides.ethCall(address, selector, hex)` — by `(address, 4-byte selector)`.
-- `overrides.api(pathSubstring, data)` — by reserve-api pathname substring.
+- `overrides.subgraph({ operationName, variables }, data)` — exact operation and
+  the specified identity variables.
+- `overrides.ethCall(address, calldata, hex)` — address plus full calldata.
+- `overrides.api({ method, pathname, search }, data)` — exact method/path and
+  the specified query fields.
+- `overrides.transaction(outcome)` — queue a `success`, `revert`, or `reject`
+  result; success/revert can specify `pendingPolls`.
 
 Set the overlay **before** the action that triggers the refetch; the initial
 render already fetched the un-overlaid value, so you get a clean before/after.
@@ -153,4 +165,19 @@ render already fetched the un-overlaid value, so you get a clean before/after.
    window params + downsampling are recorded in each file's `_meta.window`.
 3. `pnpm e2e:check` must pass (structure, coverage, freshness).
 
-Snapshots are committed. Refresh before they age out (45-day hard fail).
+Snapshots are committed. A full capture writes to a temporary tree, verifies the
+required manifest, and publishes atomically; a failed endpoint cannot partially
+refresh the suite or advance its marker. Targeted captures update only their
+requested files and do not advance global freshness. `e2e:check` validates all
+required files, every per-file timestamp, and DTF/chain identity. Refresh before
+the 45-day hard fail.
+
+## Transaction assertion contract
+
+Any write-flow acceptance test must inspect `txLog`, not only the success toast.
+Assert the chain, target, value, function selector/decoded arguments, approval
+spender and amount, transaction order, and that the explorer link contains the
+recorded unique hash. This is the suite's contract with Register's transaction
+builder; protocol math and calldata construction still require SDK unit/live
+tests. Governance, issuance, compliance, auction, fee, deployment, and staking
+writes require engineer review before shipping.

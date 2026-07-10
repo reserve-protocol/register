@@ -47,6 +47,7 @@ const TimeRangeSelector = ({
           key={tr.value}
           variant="ghost"
           data-testid={`overview-range-${tr.value}`}
+          data-active={tr.value === range ? 'true' : 'false'}
           className={cn(
             chartTabClassName,
             'shrink-0',

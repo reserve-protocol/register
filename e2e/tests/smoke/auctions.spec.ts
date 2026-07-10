@@ -46,8 +46,6 @@ test('auctions list renders idle offline @smoke', async ({ page }) => {
   // exists). A paused clock freezes react-query's notifyManager, so nothing
   // reaches React until time advances.
   await advanceTime(page, 5_000)
-  // Let the dependent queries' (mocked) responses land in real time.
-  await page.waitForTimeout(250)
   // Pump 2 — flush getRebalances + proposal list into React so the list can
   // bucket rows (rebalancesAtom × governanceProposalsAtom by executionBlock).
   await advanceTime(page, 5_000)

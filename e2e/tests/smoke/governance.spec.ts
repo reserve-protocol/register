@@ -53,47 +53,6 @@ interface DtfSnapshot {
 // the "Show all" toggle).
 const DEFAULT_PAGE_SIZE = 10
 
-// A single zero word — benign zero for address / uint / empty-collection returns.
-const ZERO_WORD = ('0x' + '0'.repeat(64)) as `0x${string}`
-
-// The captured GetIndexDtfProposals snapshot nests bare proposals under each
-// governance WITHOUT the `governance { id token{id} timelock{id} }` sub-object
-// the SDK list mapper (mapIndexDtfProposalSummary) dereferences — it throws on
-// `getAddress(proposal.governance.id)`, the list query errors, and no rows
-// render. The detail path is enriched centrally (enrichProposalGovernance) but
-// the `governances(` list branch is not. We backfill it here via the sanctioned
-// per-test overlay, built from the DTF snapshot's per-governance timelock ids +
-// the vote-lock stToken as the vote token. (Reported as a subgraph.ts gap.)
-function enrichProposalsOverlay(
-  gov: GovernanceSnapshot,
-  dtfData: DtfSnapshot['dtf']
-) {
-  const voteToken = dtfData.stToken.id
-  const timelockByGov = new Map<string, string | undefined>()
-  for (const g of [
-    dtfData.ownerGovernance,
-    dtfData.tradingGovernance,
-    dtfData.stToken.governance,
-  ]) {
-    if (g?.id) timelockByGov.set(g.id.toLowerCase(), g.timelock?.id)
-  }
-
-  return {
-    stakingToken: gov.stakingToken,
-    governances: gov.governances.map((g) => ({
-      ...g,
-      proposals: g.proposals.map((p) => ({
-        ...p,
-        governance: {
-          id: g.id,
-          token: { id: voteToken },
-          timelock: { id: timelockByGov.get(g.id.toLowerCase()) ?? g.id },
-        },
-      })),
-    })),
-  }
-}
-
 // GetIndexDtfDelegates wants raw vote weights + optimistic fields the capture
 // query under-selects. Rebuild them from the snapshot's formatted votes (18
 // decimals) with optimistic zeros. (Reported as a capture/subgraph gap.)
@@ -130,26 +89,25 @@ test.beforeEach(async ({ overrides }) => {
     `${dtf.snapshotDir}/dtf.json`
   )
 
-  overrides.subgraph('GetIndexDtfProposals', enrichProposalsOverlay(gov, dtfData))
-  overrides.subgraph('GetIndexDtfDelegates', delegatesOverlay(gov))
+  overrides.subgraph(
+    { operationName: 'GetIndexDtfDelegates' },
+    delegatesOverlay(gov)
+  )
   // Vote-lock sidebar asks which DTFs this vote lock governs — this one.
-  overrides.subgraph('GetGovernedDtfs', {
-    dtfs: [
-      {
-        id: DTF_ADDRESS.toLowerCase(),
-        token: {
-          name: dtfData.token.name,
-          symbol: dtfData.token.symbol,
+  overrides.subgraph(
+    { operationName: 'GetGovernedDtfs' },
+    {
+      dtfs: [
+        {
+          id: DTF_ADDRESS.toLowerCase(),
+          token: {
+            name: dtfData.token.name,
+            symbol: dtfData.token.symbol,
+          },
         },
-      },
-    ],
-  })
-  // Ondo tokenized-equity limits probe — no Ondo assets in this basket.
-  overrides.api('/dtf/ondo', { market: null, assets: [] })
-
-  // Container fee-display read the shared RPC mock doesn't seed:
-  // getPendingFeeShares() on the DTF. Benign zero. (Reported as an rpc.ts gap.)
-  overrides.ethCall(DTF_ADDRESS, '0x834e630f', ZERO_WORD)
+      ],
+    }
+  )
 })
 
 test('governance page renders snapshot proposal rows offline @smoke', async ({

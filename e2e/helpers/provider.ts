@@ -1,13 +1,43 @@
 import type { Page } from '@playwright/test'
 import type { UnmockedLogger } from './logger'
 import type { MockOverrides } from './overrides'
+import type { BoundaryRequest } from './requests'
 import { handleRpcMethod } from './rpc'
+
+// One submitted transaction, recorded per-test so specs can assert the payload
+// (chainId, to, decoded function/args, approval spender) instead of trusting a
+// fixed hash. Populated by eth_sendTransaction below and exposed as the `txLog`
+// fixture. `data`/`value` default to '0x' when the wallet omits them.
+export interface TxRecord {
+  hash: string
+  chainId: number
+  from: string
+  to: string
+  data: string
+  value: string
+  receiptStatus: 'success' | 'revert'
+  pendingPolls: number
+}
 
 export interface TestWalletConfig {
   address: string
   chainId: number
   log: UnmockedLogger
   overrides?: MockOverrides
+  // Per-test transaction log — every eth_sendTransaction appends its record here.
+  txLog: TxRecord[]
+  requests?: BoundaryRequest[]
+}
+
+// Per-worker monotonic counter → a UNIQUE tx hash per send. viem dedupes
+// waitForTransactionReceipt observers by hash, so a fixed hash made a second tx
+// (mint after the approve batch) join an already-settled observer and hang.
+// Receipts resolve only for hashes recorded in txLog (rpc.ts correlates them);
+// unknown hashes fail loud.
+let txNonce = 0
+function nextTxHash(): string {
+  txNonce += 1
+  return '0x' + txNonce.toString(16).padStart(64, '0')
 }
 
 // Inject an EIP-6963 + EIP-1193 mock wallet before app JS runs.
@@ -26,8 +56,9 @@ export interface TestWalletConfig {
 // The connector's real job here is wallet ops: accounts, chain switch,
 // signatures, sendTransaction.
 export async function installTestWallet(page: Page, config: TestWalletConfig) {
-  const { address, log, overrides } = config
+  const { address, log, overrides, txLog, requests } = config
   let currentChainId = config.chainId
+  const receiptPolls = new Map<string, number>()
 
   await page.exposeFunction(
     'e2eWalletRequest',
@@ -63,8 +94,38 @@ export async function installTestWallet(page: Page, config: TestWalletConfig) {
         case 'wallet_getPermissions':
           return [{ parentCapability: 'eth_accounts' }]
 
-        case 'eth_sendTransaction':
-          return '0x' + 'a'.repeat(64)
+        case 'eth_sendTransaction': {
+          const tx = (request.params?.[0] ?? {}) as {
+            from?: string
+            to?: string
+            data?: string
+            value?: string
+          }
+          const outcome = overrides?.consumeTransactionOutcome() ?? {
+            kind: 'success' as const,
+            pendingPolls: 1,
+          }
+          if (outcome.kind === 'reject') {
+            const error = new Error(outcome.message ?? 'User rejected the request') as Error & {
+              code?: number
+            }
+            error.code = outcome.code ?? 4001
+            throw error
+          }
+
+          const hash = nextTxHash()
+          txLog.push({
+            hash,
+            chainId: currentChainId,
+            from: (tx.from ?? address).toLowerCase(),
+            to: (tx.to ?? '').toLowerCase(),
+            data: tx.data ?? '0x',
+            value: tx.value ?? '0x0',
+            receiptStatus: outcome.kind,
+            pendingPolls: outcome.pendingPolls ?? 1,
+          })
+          return hash
+        }
 
         case 'personal_sign':
           return '0x' + 'b'.repeat(130)
@@ -78,10 +139,18 @@ export async function installTestWallet(page: Page, config: TestWalletConfig) {
         default:
           // Everything else (reads) goes through the shared RPC dispatch —
           // same per-test overrides as the HTTP mock so answers stay identical.
+          requests?.push({
+            boundary: 'rpc',
+            chainId: currentChainId,
+            method: request.method,
+            params: request.params ?? [],
+          })
           return handleRpcMethod(request.method, request.params, {
             chainId: currentChainId,
             log,
             overrides,
+            txLog,
+            receiptPolls,
           })
       }
     }

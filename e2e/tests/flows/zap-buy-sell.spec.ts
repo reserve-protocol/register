@@ -1,5 +1,5 @@
 import type { Locator, Page } from '@playwright/test'
-import { formatUnits } from 'viem'
+import { decodeFunctionData, formatUnits, parseAbi } from 'viem'
 import { connectWallet, expect, test } from '../../fixtures/wallet'
 import { dtfPath, findDtfByAddress } from '../../helpers/registry'
 import {
@@ -32,7 +32,7 @@ import {
 // Token symbols (ETH/LCAP) are not translated copy, so asserting them is safe.
 
 const DTF_ADDRESS = '0x4dA9A0f397dB1397902070f93a4D6ddBC0E0E6e8' // base/lcap
-const MOCK_TX_HASH_PREFIX = '/tx/0xaaaa' // helpers/rpc.ts fixed tx hash
+const APPROVE_ABI = parseAbi(['function approve(address spender, uint256 amount)'])
 
 function activePanel(page: Page): Locator {
   return page
@@ -66,12 +66,17 @@ function pinned(direction: ZapDirection) {
   const result = snapshot.data.result
   if (!result) throw new Error(`zap-${direction} snapshot has no result`)
   return {
+    params: snapshot.params,
+    result,
     inputAmount: formatUnits(BigInt(snapshot.params.amountIn), 18),
     // Quote output as rendered in the (read-only) amount-out field — the widget
     // writes the full formatUnits string, so a 6-char prefix is stable.
     outputPrefix: formatUnits(BigInt(result.amountOut), 18).slice(0, 6),
     received: formatReceived(result.amountOut, 18),
     approvalNeeded: result.approvalNeeded,
+    // The prepared swap calldata — the mock wallet swallows it, so the txLog
+    // must show exactly this to/data (proves the widget submitted the quote).
+    tx: result.tx,
   }
 }
 
@@ -91,6 +96,7 @@ test('buy LCAP with ETH: quote -> submit -> success', async ({
   page,
   overrides,
   unmockedCalls,
+  txLog,
 }) => {
   const buy = pinned('buy')
   await setupZapPage(page, overrides, unmockedCalls)
@@ -117,15 +123,24 @@ test('buy LCAP with ETH: quote -> submit -> success', async ({
   await expect(submit).toBeEnabled()
   await submit.click()
 
-  // Mock provider returns the fixed hash; receipt polling (real timers)
-  // resolves pending -> mining -> success and the success view mounts, linking
-  // the tx on the explorer and showing the received LCAP amount.
+  // Mock provider returns a unique hash; receipt polling (real timers) resolves
+  // pending -> mining -> success and the success view mounts, linking the tx on
+  // the explorer and showing the received LCAP amount.
   const widget = page.getByTestId('issuance-zap-widget')
-  const txLink = widget.locator(`a[href*="${MOCK_TX_HASH_PREFIX}"]`)
+  const txLink = widget.locator('a[href*="/tx/0x"]')
   await expect(txLink).toBeVisible({ timeout: 15_000 })
   await expect(
     widget.locator('span', { hasText: new RegExp(`^${buy.received.replace('.', '\\.')}$`) })
   ).toBeVisible()
+
+  // Payload assertion: exactly one submitted tx and it is the quote's prepared
+  // swap calldata (to + data), and the success link points at its hash.
+  expect(txLog).toHaveLength(1)
+  expect(txLog[0].chainId).toBe(buy.params.chainId)
+  expect(txLog[0].to).toBe(buy.tx!.to.toLowerCase())
+  expect(txLog[0].data.toLowerCase()).toBe(buy.tx!.data.toLowerCase())
+  expect(BigInt(txLog[0].value)).toBe(BigInt(buy.tx!.value))
+  await expect(txLink).toHaveAttribute('href', new RegExp(txLog[0].hash))
 
   expect(unmockedCalls).toEqual([])
 })
@@ -134,6 +149,7 @@ test('sell LCAP for ETH: quote -> approve -> submit -> success', async ({
   page,
   overrides,
   unmockedCalls,
+  txLog,
 }) => {
   const sell = pinned('sell')
   // The pinned sell quote was captured with approvalNeeded=true (ERC20 in) —
@@ -174,17 +190,40 @@ test('sell LCAP for ETH: quote -> approve -> submit -> success', async ({
   await submit.click()
   await approvalReceipt
 
+  expect(txLog).toHaveLength(1)
+  const approval = txLog[0]
+  const decodedApproval = decodeFunctionData({
+    abi: APPROVE_ABI,
+    data: approval.data as `0x${string}`,
+  })
+  expect(approval.chainId).toBe(sell.params.chainId)
+  expect(approval.to).toBe(sell.result.tokenIn.toLowerCase())
+  expect(decodedApproval.functionName).toBe('approve')
+  expect(decodedApproval.args[0].toLowerCase()).toBe(
+    sell.result.approvalAddress.toLowerCase()
+  )
+  expect(decodedApproval.args[1]).toBe((BigInt(sell.result.amountIn) * 120n) / 100n)
+  expect(BigInt(approval.value)).toBe(0n)
+
   // Step 2 — swap: the same button re-enables armed with the zap calldata once
   // the approval receipt state lands in React.
   await expect(submit).toBeEnabled({ timeout: 15_000 })
   await submit.click()
 
   const widget = page.getByTestId('issuance-zap-widget')
-  const txLink = widget.locator(`a[href*="${MOCK_TX_HASH_PREFIX}"]`)
+  const txLink = widget.locator('a[href*="/tx/0x"]')
   await expect(txLink).toBeVisible({ timeout: 15_000 })
   await expect(
     widget.locator('span', { hasText: new RegExp(`^${sell.received.replace('.', '\\.')}$`) })
   ).toBeVisible()
+
+  expect(txLog).toHaveLength(2)
+  const swap = txLog[1]
+  expect(swap.chainId).toBe(sell.params.chainId)
+  expect(swap.to).toBe(sell.tx!.to.toLowerCase())
+  expect(swap.data.toLowerCase()).toBe(sell.tx!.data.toLowerCase())
+  expect(BigInt(swap.value)).toBe(BigInt(sell.tx!.value))
+  await expect(txLink).toHaveAttribute('href', new RegExp(swap.hash))
 
   expect(unmockedCalls).toEqual([])
 })

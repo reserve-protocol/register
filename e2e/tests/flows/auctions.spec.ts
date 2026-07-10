@@ -1,8 +1,9 @@
-import { encodeFunctionResult, type Hex } from 'viem'
+import { decodeFunctionData, encodeFunctionResult, multicall3Abi, type Hex } from 'viem'
 import { expect, test } from '../../fixtures/base'
 import { advanceTime, freezeTime, rebalanceTime } from '../../helpers/clock'
 import { dtfPath, findDtfByAddress } from '../../helpers/registry'
 import { loadSnapshot } from '../../helpers/snapshots'
+import type { BoundaryRequest } from '../../helpers/requests'
 
 // Rebalance / auctions flows on base/lcap (v5).
 //
@@ -68,6 +69,35 @@ function idleTime(): number {
   return max + 86_400
 }
 
+function includesEthCall(
+  requests: BoundaryRequest[],
+  address: string,
+  selector: string
+): boolean {
+  return requests.some((request) => {
+    if (request.boundary !== 'rpc' || request.method !== 'eth_call') return false
+    const call = request.params[0] as { to?: string; data?: string } | undefined
+    if (!call?.to || !call.data) return false
+    if (
+      call.to.toLowerCase() === address.toLowerCase() &&
+      call.data.slice(0, 10).toLowerCase() === selector
+    ) {
+      return true
+    }
+    try {
+      const decoded = decodeFunctionData({ abi: multicall3Abi, data: call.data as Hex })
+      if (decoded.functionName !== 'aggregate3') return false
+      return decoded.args[0].some(
+        (inner) =>
+          inner.target.toLowerCase() === address.toLowerCase() &&
+          inner.callData.slice(0, 10).toLowerCase() === selector
+      )
+    } catch {
+      return false
+    }
+  })
+}
+
 // The list/detail data resolves in TWO react-query flush rounds under a frozen
 // clock (notifyManager batches on setTimeout):
 //   pump 1 — flush GetIndexDTF: indexDTFAtom hydrates, which ENABLES the
@@ -75,15 +105,28 @@ function idleTime(): number {
 //   (real-time yield so the dependent queries' mocked responses land)
 //   pump 2 — flush getRebalances + proposal list into React so rows/detail can
 //            bucket by executionBlock.
-async function settleListData(page: import('@playwright/test').Page) {
+async function settleListData(
+  page: import('@playwright/test').Page,
+  boundaryRequests: BoundaryRequest[]
+) {
   await advanceTime(page, 5_000) // pump 1 — flush GetIndexDTF
-  await page.waitForTimeout(250) // dependent responses land (real time)
+  await expect
+    .poll(
+      () =>
+        boundaryRequests.filter(
+          (request) =>
+            request.boundary === 'subgraph' &&
+            ['getRebalances', 'GetIndexDtfProposals'].includes(request.operationName)
+        ).length
+    )
+    .toBeGreaterThanOrEqual(2)
   await advanceTime(page, 5_000) // pump 2 — flush rebalances + proposals
 }
 
 test('historical rebalances render from snapshot with API metrics', async ({
   page,
   overrides,
+  boundaryRequests,
 }) => {
   const dtf = findDtfByAddress(DTF_ADDRESS)!
   const rebalances = loadRebalances()
@@ -93,9 +136,10 @@ test('historical rebalances render from snapshot with API metrics', async ({
 
   // Rebalance metrics come from api.reserve.org/dtf/rebalance (empty [] by
   // default in the shared api mock). Serve a real-shaped payload so the metric
-  // cells render values instead of skeletons. Matched by pathname substring, so
+  // cells render values instead of skeletons. This override constrains the exact
+  // pathname while deliberately accepting every captured nonce, so
   // every nonce gets the same payload — fine for a per-row render assertion.
-  overrides.api('dtf/rebalance', [
+  overrides.api({ pathname: '/dtf/rebalance' }, [
     {
       id: 'rebalance-metrics',
       nonce: Number(rebalances[0].nonce),
@@ -115,7 +159,7 @@ test('historical rebalances render from snapshot with API metrics', async ({
   await page.goto(dtfPath(dtf, 'auctions'))
   await expect(page.getByTestId('dtf-auctions')).toBeVisible()
 
-  await settleListData(page)
+  await settleListData(page, boundaryRequests)
 
   // One historical row per snapshot rebalance (all 5 match a proposal by
   // executionBlock), zero active rows.
@@ -135,7 +179,10 @@ test('historical rebalances render from snapshot with API metrics', async ({
   await expect(firstRow).toContainText('1,234,567')
 })
 
-test('an in-window rebalance renders as an active list row', async ({ page }) => {
+test('an in-window rebalance renders as an active list row', async ({
+  page,
+  boundaryRequests,
+}) => {
   const dtf = findDtfByAddress(DTF_ADDRESS)!
   const rebalances = loadRebalances()
   const latest = rebalances[0]
@@ -147,7 +194,7 @@ test('an in-window rebalance renders as an active list row', async ({ page }) =>
   await page.goto(dtfPath(dtf, 'auctions'))
   await expect(page.getByTestId('dtf-auctions')).toBeVisible()
 
-  await settleListData(page)
+  await settleListData(page, boundaryRequests)
 
   await expect(page.getByTestId('auctions-active-item')).toHaveCount(1)
   await expect(page.getByTestId('auctions-historical-item')).toHaveCount(
@@ -162,6 +209,7 @@ test('an in-window rebalance renders as an active list row', async ({ page }) =>
 test('active rebalance detail renders from an encoded getRebalance()', async ({
   page,
   overrides,
+  boundaryRequests,
 }) => {
   const dtf = findDtfByAddress(DTF_ADDRESS)!
   const latest = loadRebalances()[0]
@@ -174,10 +222,10 @@ test('active rebalance detail renders from an encoded getRebalance()', async ({
   // shared api mock's generic /zapper branch answers it with the healthcheck
   // OBJECT -> `tokens.map` crashes the view (shared gap, see report). Serve an
   // empty list so every asset falls back to 'medium' volatility.
-  overrides.api('zapper/tokens', [])
+  overrides.api({ pathname: '/zapper/tokens' }, [])
   // Liquidity checker POSTs /rebalance/liquidity (unmocked in the shared api
   // helper — see report). Empty result: no liquidity warnings.
-  overrides.api('rebalance/liquidity', {
+  overrides.api({ method: 'POST', pathname: '/rebalance/liquidity' }, {
     market: null,
     totals: { sellUsd: 0, buyUsd: 0 },
     assets: [],
@@ -195,7 +243,7 @@ test('active rebalance detail renders from an encoded getRebalance()', async ({
   // Settles currentRebalanceAtom (rebalances × proposals); the overridden
   // getRebalance/totalSupply/totalAssets contract read flushes in the same
   // rounds and feeds the active view.
-  await settleListData(page)
+  await settleListData(page, boundaryRequests)
 
   // Active branch: the header renders with the matched proposal title (the
   // currentRebalanceAtom lookup by proposal id succeeded), and the completed
@@ -208,11 +256,17 @@ test('active rebalance detail renders from an encoded getRebalance()', async ({
   // dtf-rebalance-lib coherently: the metrics updater ran without setting
   // rebalanceErrorAtom (incoherent weights/prices render an error banner).
   await expect(page.getByTestId('auctions-rebalance-error')).toHaveCount(0)
+  await expect(page.getByTestId('auctions-round')).toHaveAttribute('data-round', '2')
+
+  // viem may batch this no-argument read into Multicall3. Decode the outer
+  // request so the assertion proves the exact live RPC source in either mode.
+  expect(includesEthCall(boundaryRequests, dtf.address, '0xaa3b5568')).toBe(true)
 })
 
 test('expired rebalance detail renders the completed card', async ({
   page,
   overrides,
+  boundaryRequests,
 }) => {
   const dtf = findDtfByAddress(DTF_ADDRESS)!
   const latest = loadRebalances()[0]
@@ -222,8 +276,8 @@ test('expired rebalance detail renders the completed card', async ({
   await freezeTime(page, rebalanceTime(latest, 'expired'))
 
   // Same /zapper/tokens + /rebalance/liquidity fills as the active-detail test.
-  overrides.api('zapper/tokens', [])
-  overrides.api('rebalance/liquidity', {
+  overrides.api({ pathname: '/zapper/tokens' }, [])
+  overrides.api({ method: 'POST', pathname: '/rebalance/liquidity' }, {
     market: null,
     totals: { sellUsd: 0, buyUsd: 0 },
     assets: [],
@@ -234,7 +288,7 @@ test('expired rebalance detail renders the completed card', async ({
 
   // Settles currentRebalanceAtom — isCompletedAtom then flips the detail to
   // the completed card.
-  await settleListData(page)
+  await settleListData(page, boundaryRequests)
 
   await expect(page.getByTestId('auctions-rebalance-completed')).toBeVisible()
   await expect(page.getByTestId('auctions-rebalance-header')).toHaveCount(0)

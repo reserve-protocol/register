@@ -103,6 +103,7 @@ test('holdings table renders exposure rows and the two mcap framings never cross
 test('price chart renders and survives time-range switches', async ({
   page,
   unmockedCalls,
+  boundaryRequests,
 }) => {
   const dtf = findDtfByAddress(LCAP) as RegistryDTF
   await page.goto(dtfPath(dtf, 'overview'))
@@ -111,6 +112,7 @@ test('price chart renders and survives time-range switches', async ({
   // recharts mounts an SVG once the price-history query resolves — presence
   // proves the data path (no crash, no permanently-empty chart area).
   await expect(chart.locator('svg').first()).toBeVisible()
+  await expect(chart.locator('.recharts-area-curve').first()).toHaveAttribute('d', /.+/)
 
   // Cycle the available ranges (each refetches historical/dtf with a different
   // window). The footer is duplicated for the xl/non-xl layouts, so scope to
@@ -120,8 +122,26 @@ test('price chart renders and survives time-range switches', async ({
     const btn = page.locator(`[data-testid="overview-range-${range}"]:visible`)
     if ((await btn.count()) === 0) continue // range not offered for this DTF
     await btn.click()
+    await expect(btn).toHaveAttribute('data-active', 'true')
     await expect(chart.locator('svg').first()).toBeVisible()
+    await expect(chart.locator('.recharts-area-curve').first()).toHaveAttribute('d', /.+/)
   }
+
+  const historyRequests = boundaryRequests.filter(
+    (request) => request.boundary === 'api' && request.pathname === '/historical/dtf'
+  )
+  expect(historyRequests.length).toBeGreaterThan(1)
+  const signatures = new Set(
+    historyRequests.map((request) => {
+      if (request.boundary !== 'api') return ''
+      expect(request.search.chainId).toBe(String(dtf.chainId))
+      expect(request.search.address.toLowerCase()).toBe(dtf.address.toLowerCase())
+      expect(Number(request.search.from)).toBeLessThan(Number(request.search.to))
+      expect(['5m', '1h', '1d']).toContain(request.search.interval)
+      return `${request.search.from}:${request.search.to}:${request.search.interval}`
+    })
+  )
+  expect(signatures.size).toBeGreaterThan(1)
 
   expect(unmockedCalls).toEqual([])
 })

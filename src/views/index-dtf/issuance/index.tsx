@@ -53,6 +53,7 @@ const IndexDTFIssuance = () => {
             <ComplianceAlert />
             <div
               data-testid="issuance-zap-widget"
+              data-restricted={isRestricted ? 'true' : 'false'}
               className="w-full rounded-3xl border-2 border-secondary bg-card p-2 sm:w-[420px]"
             >
               <ZapperWrapper

@@ -1,6 +1,7 @@
 import type { Page } from '@playwright/test'
 import {
   decodeFunctionData,
+  decodeAbiParameters,
   encodeAbiParameters,
   encodeFunctionResult,
   multicall3Abi,
@@ -8,7 +9,9 @@ import {
 } from 'viem'
 import type { UnmockedLogger } from './logger'
 import type { MockOverrides } from './overrides'
-import { REGISTRY } from './registry'
+import type { TxRecord } from './provider'
+import type { BoundaryRequest } from './requests'
+import { REGISTRY, TEST_ADDRESS } from './registry'
 import { loadSnapshot, snapshotExists } from './snapshots'
 
 // Glob patterns for every RPC host wagmi/viem may hit (mirrors registerRpcUrls
@@ -49,7 +52,8 @@ const VOTING_POWER: Hex = encodeAbiParameters(
 const ZERO_RETURN: Hex = ('0x' + '0'.repeat(192)) as Hex
 
 // folio.version() — the SDK version-gates write ABIs; an empty string would
-// misroute those paths. All registry DTFs are v5 (verified on-chain).
+// misroute those paths. Non-registry fallback only: registry DTFs get their
+// real captured version (v4 or v5) per-address via seedChainState.
 const FOLIO_VERSION: Hex = encodeAbiParameters([{ type: 'string' }], ['5.0.0'])
 
 // folio.totalAssets() returns (address[], uint256[]); empty arrays keep basket
@@ -159,7 +163,6 @@ const callOverrides: Record<string, Hex> = {
   // on-chain version via an address-specific chain-state override.
   '*:0x54fd4d50': FOLIO_VERSION,
   '*:0x01e1d114': EMPTY_ASSETS, // totalAssets() — registry DTFs get real baskets (chain-state)
-  '*:0x70a08231': ZERO_RETURN, // balanceOf(address) — folio/wallet token balances
   '*:0x4d2301cc': ETH_BALANCE, // Multicall3.getEthBalance(address)
   '*:0xaa3b5568': IDLE_REBALANCE, // getRebalance() — no active rebalance by default
   // Fee-display reads on the DTF container (peripheral to governance). A DTF
@@ -172,6 +175,29 @@ const callOverrides: Record<string, Hex> = {
   '*:0x12edb24c': EMPTY_ADDRESS_ARRAY, // getAllRewardTokens() → empty
   '*:0x834e630f': ZERO_RETURN, // getPendingFeeShares() → 0
 }
+const knownTokenAddresses = new Set<string>()
+const knownContractAddresses = new Set<string>([TEST_ADDRESS.toLowerCase()])
+
+const COMMON_TOKEN_METADATA = [
+  {
+    address: '0xd9aAEc86B65D86f6A7B5B1b0c42FFA531710b6CA',
+    name: 'USD Base Coin',
+    symbol: 'USDbC',
+    decimals: 6,
+  },
+  {
+    address: '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913',
+    name: 'USD Coin',
+    symbol: 'USDC',
+    decimals: 6,
+  },
+  {
+    address: '0x50c5725949A6F0c72E6C4a641F24049A917DB0Cb',
+    name: 'Dai Stablecoin',
+    symbol: 'DAI',
+    decimals: 18,
+  },
+] as const
 
 // --- Chain-state seeding ---
 // Address-specific answers for every registry DTF, captured live by
@@ -189,6 +215,20 @@ interface ChainState {
   basketTokens: Array<{ address: string; name: string; symbol: string; decimals: number }>
 }
 
+interface DtfMetadataSnapshot {
+  dtf: {
+    token: { address: string; name: string; symbol: string; decimals: number; totalSupply: string }
+    stToken?: {
+      id: string
+      token?: { address: string; name: string; symbol: string; decimals: number; totalSupply: string }
+      underlying?: { address: string; name: string; symbol: string; decimals: number }
+      governance?: { id: string; timelock?: { id: string } }
+    }
+    ownerGovernance?: { id: string; timelock?: { id: string } }
+    tradingGovernance?: { id: string; timelock?: { id: string } }
+  }
+}
+
 const SELECTOR = {
   totalAssets: '0x01e1d114',
   totalSupply: '0x18160ddd',
@@ -198,7 +238,66 @@ const SELECTOR = {
   symbol: '0x95d89b41',
 } as const
 
+const KNOWN_ZERO_SELECTORS = [
+  '0x07089246',
+  '0x160cbed7',
+  '0x2656227d',
+  '0x2cec11d4',
+  '0x587cde1e',
+  '0x91d14854',
+  '0xb298a5a7',
+  '0xb58131b0',
+  '0xce3eb05c',
+  '0xce96cb77',
+] as const
+
 let chainStateSeeded = false
+
+function seedTokenMetadata(token: {
+  address: string
+  name: string
+  symbol: string
+  decimals: number
+}) {
+  const address = token.address.toLowerCase()
+  knownTokenAddresses.add(address)
+  callOverrides[`${address}:${SELECTOR.name}`] = encodeAbiParameters(
+    [{ type: 'string' }],
+    [token.name]
+  )
+  callOverrides[`${address}:${SELECTOR.symbol}`] = encodeAbiParameters(
+    [{ type: 'string' }],
+    [token.symbol]
+  )
+  callOverrides[`${address}:${SELECTOR.decimals}`] = encodeAbiParameters(
+    [{ type: 'uint256' }],
+    [BigInt(token.decimals)]
+  )
+}
+
+function seedNestedTokenMetadata(value: unknown) {
+  if (!value || typeof value !== 'object') return
+  if (Array.isArray(value)) {
+    for (const item of value) seedNestedTokenMetadata(item)
+    return
+  }
+  const candidate = value as Record<string, unknown>
+  if (
+    typeof candidate.address === 'string' &&
+    typeof candidate.name === 'string' &&
+    typeof candidate.symbol === 'string' &&
+    typeof candidate.decimals === 'number'
+  ) {
+    seedTokenMetadata(candidate as {
+      address: string
+      name: string
+      symbol: string
+      decimals: number
+    })
+  }
+  for (const nested of Object.values(candidate)) seedNestedTokenMetadata(nested)
+}
+
 function seedChainState() {
   if (chainStateSeeded) return
   chainStateSeeded = true
@@ -207,6 +306,8 @@ function seedChainState() {
     if (!snapshotExists(path)) continue
     const state = loadSnapshot<ChainState>(path)
     const addr = dtf.address.toLowerCase()
+    knownTokenAddresses.add(addr)
+    knownContractAddresses.add(addr)
     callOverrides[`${addr}:${SELECTOR.totalAssets}`] = encodeAbiParameters(
       [{ type: 'address[]' }, { type: 'uint256[]' }],
       [state.totalAssets.tokens as Hex[], state.totalAssets.amounts.map(BigInt)]
@@ -225,16 +326,58 @@ function seedChainState() {
       [{ type: 'string' }],
       [state.version]
     )
-    for (const token of state.basketTokens) {
-      const tokenAddr = token.address.toLowerCase()
-      callOverrides[`${tokenAddr}:${SELECTOR.name}`] = encodeAbiParameters([{ type: 'string' }], [token.name])
-      callOverrides[`${tokenAddr}:${SELECTOR.symbol}`] = encodeAbiParameters([{ type: 'string' }], [token.symbol])
-      callOverrides[`${tokenAddr}:${SELECTOR.decimals}`] = encodeAbiParameters(
-        [{ type: 'uint256' }],
-        [BigInt(token.decimals)]
-      )
+    for (const token of state.basketTokens) seedTokenMetadata(token)
+
+    // Rebalance snapshots preserve metadata for assets that are being added or
+    // removed and therefore may not yet appear in totalAssets(). Seed only the
+    // exact captured token objects so active-auction views remain strict.
+    const rebalancesPath = `${dtf.snapshotDir}/rebalances.json`
+    if (snapshotExists(rebalancesPath)) {
+      seedNestedTokenMetadata(loadSnapshot(rebalancesPath))
+    }
+
+    const metadata = loadSnapshot<DtfMetadataSnapshot>(`${dtf.snapshotDir}/dtf.json`).dtf
+    const metadataTokens = [
+      metadata.token,
+      metadata.stToken?.token,
+      metadata.stToken?.underlying,
+    ].filter(Boolean) as Array<{
+      address: string
+      name: string
+      symbol: string
+      decimals: number
+      totalSupply?: string
+    }>
+    for (const token of metadataTokens) {
+      const tokenAddress = token.address.toLowerCase()
+      seedTokenMetadata(token)
+      if (token.totalSupply) {
+        callOverrides[`${tokenAddress}:${SELECTOR.totalSupply}`] = encodeAbiParameters(
+          [{ type: 'uint256' }],
+          [BigInt(token.totalSupply)]
+        )
+      }
+    }
+    const knownContracts = [
+      metadata.stToken?.id,
+      metadata.stToken?.governance?.id,
+      metadata.stToken?.governance?.timelock?.id,
+      metadata.ownerGovernance?.id,
+      metadata.ownerGovernance?.timelock?.id,
+      metadata.tradingGovernance?.id,
+      metadata.tradingGovernance?.timelock?.id,
+    ].filter(Boolean) as string[]
+    for (const contract of knownContracts) {
+      knownContractAddresses.add(contract.toLowerCase())
+      for (const selector of KNOWN_ZERO_SELECTORS) {
+        callOverrides[`${contract.toLowerCase()}:${selector}`] = ZERO_RETURN
+      }
     }
   }
+
+  // These balances are polled by the wallet updater on every Base page and are
+  // project constants, not arbitrary RPC identities.
+  for (const token of COMMON_TOKEN_METADATA) seedTokenMetadata(token)
 }
 
 // Chainlink AggregatorV3.latestRoundData() selector. Feeds are read all over the
@@ -300,8 +443,32 @@ function handleSingleCall(
   overrides?: MockOverrides
 ): Hex {
   const selector = selectorOf(data)
-  const override = overrides?.lookupEthCall(to, selector)
+  const override = overrides?.lookupEthCall(to, data)
   if (override) return override
+  if (selector === '0x70a08231' && knownTokenAddresses.has(to.toLowerCase())) {
+    const [owner] = decodeAbiParameters(
+      [{ type: 'address' }],
+      (`0x${data.slice(10)}`) as Hex
+    )
+    if (
+      owner.toLowerCase() === TEST_ADDRESS.toLowerCase() ||
+      knownContractAddresses.has(owner.toLowerCase())
+    ) {
+      return ZERO_RETURN
+    }
+  }
+  if (selector === '0xdd62ed3e' && knownTokenAddresses.has(to.toLowerCase())) {
+    const [owner, spender] = decodeAbiParameters(
+      [{ type: 'address' }, { type: 'address' }],
+      (`0x${data.slice(10)}`) as Hex
+    )
+    if (
+      owner.toLowerCase() === TEST_ADDRESS.toLowerCase() &&
+      knownContractAddresses.has(spender.toLowerCase())
+    ) {
+      return ZERO_RETURN
+    }
+  }
   if (selector === LATEST_ROUND_DATA) return latestRoundData(to)
   if (selector === CLOCK) return clockValue()
   const hit = lookupOverride(to, data)
@@ -334,12 +501,28 @@ function handleMulticall3(
   })
 }
 
-const BLOCK_NUMBER_INT = 0x1000000
-const BLOCK_NUMBER = '0x' + BLOCK_NUMBER_INT.toString(16)
-const MOCK_TX_HASH = ('0x' + 'a'.repeat(64)) as Hex
+// Per-worker monotonic block counter. eth_blockNumber ticks it on every call so
+// block-keyed refetches observe a fresh block each poll (the manual issuance
+// updater keys useWatchReadContracts off the block number — a constant block
+// froze its post-tx allowance/balance refetch, which the issuance spec used to
+// patch with a local ticking route; this promotes that fix into the shared mock).
+// Receipts sit a confirmation margin BELOW the current tip, so confirmations are
+// always satisfied relative to wherever the counter has ticked to.
+let blockCounter = 0x1000000
+
+function nextBlockNumber(): number {
+  blockCounter += 1
+  return blockCounter
+}
+
+function currentBlockNumber(): number {
+  return blockCounter
+}
+
+const hexBlock = (n: number): string => '0x' + n.toString(16)
 
 // Confirmation margin per chain — receipt.blockNumber must sit far enough below
-// eth_blockNumber to satisfy that chain's confirmation wait (Base historically
+// the CURRENT block to satisfy that chain's confirmation wait (Base historically
 // needed 3). Generous margins keep useWaitForTransactionReceipt resolving.
 const CONFIRMATION_MARGIN: Record<number, number> = {
   1: 6,
@@ -347,22 +530,24 @@ const CONFIRMATION_MARGIN: Record<number, number> = {
   56: 15,
 }
 
-function receiptFor(chainId: number) {
+function receiptFor(chainId: number, tx: TxRecord) {
   const margin = CONFIRMATION_MARGIN[chainId] ?? 6
-  const receiptBlock = BLOCK_NUMBER_INT - margin
+  const receiptBlock = currentBlockNumber() - margin
   return {
     blockHash: '0x' + '1'.repeat(64),
-    blockNumber: '0x' + receiptBlock.toString(16),
+    blockNumber: hexBlock(receiptBlock),
     contractAddress: null,
     cumulativeGasUsed: '0x5208',
     effectiveGasPrice: '0x3b9aca00',
-    from: '0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266',
+    from: tx.from,
     gasUsed: '0x5208',
     logs: [],
     logsBloom: '0x' + '0'.repeat(512),
-    status: '0x1',
-    to: '0x0000000000000000000000000000000000000000',
-    transactionHash: MOCK_TX_HASH,
+    status: tx.receiptStatus === 'success' ? '0x1' : '0x0',
+    to: tx.to,
+    // Echo the requested hash so a receipt corresponds to the tx that was sent
+    // (the provider now issues a UNIQUE hash per eth_sendTransaction).
+    transactionHash: tx.hash as Hex,
     transactionIndex: '0x0',
     type: '0x2',
   }
@@ -372,6 +557,8 @@ export interface RpcContext {
   chainId: number
   log: UnmockedLogger
   overrides?: MockOverrides
+  txLog?: readonly TxRecord[]
+  receiptPolls?: Map<string, number>
 }
 
 // Single dispatch point for JSON-RPC methods. Shared by the HTTP route mock and
@@ -389,7 +576,7 @@ export function handleRpcMethod(
       return String(ctx.chainId)
 
     case 'eth_blockNumber':
-      return BLOCK_NUMBER
+      return hexBlock(nextBlockNumber())
 
     case 'eth_gasPrice':
       return '0x3b9aca00'
@@ -408,7 +595,7 @@ export function handleRpcMethod(
 
     case 'eth_feeHistory':
       return {
-        oldestBlock: BLOCK_NUMBER,
+        oldestBlock: hexBlock(currentBlockNumber()),
         baseFeePerGas: ['0x3b9aca00', '0x3b9aca00'],
         gasUsedRatio: [0.5],
         reward: [['0x3b9aca00']],
@@ -424,12 +611,55 @@ export function handleRpcMethod(
     case 'eth_getLogs':
       return []
 
-    case 'eth_getTransactionReceipt':
-      return receiptFor(ctx.chainId)
+    case 'eth_getTransactionReceipt': {
+      const hash = (params?.[0] as string | undefined)?.toLowerCase()
+      const tx = hash && ctx.txLog?.find((entry) => entry.hash.toLowerCase() === hash)
+      if (!hash || !tx) {
+        ctx.log('unmocked transaction receipt', { hash: hash ?? '(missing)' })
+        return null
+      }
+      const polls = ctx.receiptPolls?.get(hash) ?? 0
+      ctx.receiptPolls?.set(hash, polls + 1)
+      if (polls < tx.pendingPolls) return null
+      return receiptFor(ctx.chainId, tx)
+    }
 
-    case 'eth_getBlockByNumber':
+    case 'eth_getTransactionByHash': {
+      const hash = (params?.[0] as string | undefined)?.toLowerCase()
+      const tx = hash && ctx.txLog?.find((entry) => entry.hash.toLowerCase() === hash)
+      if (!hash || !tx) {
+        ctx.log('unmocked transaction lookup', { hash: hash ?? '(missing)' })
+        return null
+      }
       return {
-        number: BLOCK_NUMBER,
+        blockHash: null,
+        blockNumber: null,
+        chainId: hexBlock(tx.chainId),
+        from: tx.from,
+        gas: '0x5208',
+        gasPrice: '0x3b9aca00',
+        hash: tx.hash,
+        input: tx.data,
+        nonce: '0x0',
+        to: tx.to,
+        transactionIndex: null,
+        type: '0x2',
+        value: tx.value,
+      }
+    }
+
+    case 'eth_getBlockByNumber': {
+      // Echo a requested block number verbatim (coherent history reads). For a
+      // moving tag ('latest'/'pending'/...) TICK the counter: the app's blockAtom
+      // is fed by useBlock({ watch: true }), which polls THIS method (not
+      // eth_blockNumber) — a constant number here froze block-keyed refetches.
+      const tag = params?.[0] as string | undefined
+      const blockNumber =
+        typeof tag === 'string' && tag.startsWith('0x')
+          ? tag
+          : hexBlock(nextBlockNumber())
+      return {
+        number: blockNumber,
         hash: '0x' + '0'.repeat(64),
         timestamp: '0x' + mockNowSeconds().toString(16),
         baseFeePerGas: '0x3b9aca00',
@@ -437,6 +667,7 @@ export function handleRpcMethod(
         gasUsed: '0x0',
         transactions: [],
       }
+    }
 
     case 'eth_call': {
       const call = params?.[0] as { to?: string; data?: string } | undefined
@@ -463,8 +694,11 @@ function rpcResult(id: number, result: unknown) {
 export async function mockRpcRoutes(
   page: Page,
   log: UnmockedLogger,
-  overrides?: MockOverrides
+  overrides?: MockOverrides,
+  txLog?: readonly TxRecord[],
+  requests?: BoundaryRequest[]
 ) {
+  const receiptPolls = new Map<string, number>()
   for (const pattern of RPC_HOST_PATTERNS) {
     await page.route(pattern, (route) => {
       const request = route.request()
@@ -477,7 +711,7 @@ export async function mockRpcRoutes(
       }
 
       const chainId = chainIdForUrl(request.url())
-      const ctx: RpcContext = { chainId, log, overrides }
+      const ctx: RpcContext = { chainId, log, overrides, txLog, receiptPolls }
 
       let body: unknown
       try {
@@ -491,6 +725,14 @@ export async function mockRpcRoutes(
       }
 
       if (Array.isArray(body)) {
+        for (const req of body as Array<{ method: string; params?: unknown[] }>) {
+          requests?.push({
+            boundary: 'rpc',
+            chainId,
+            method: req.method,
+            params: req.params ?? [],
+          })
+        }
         const responses = body.map((req: { id: number; method: string; params?: unknown[] }) =>
           rpcResult(req.id, handleRpcMethod(req.method, req.params, ctx))
         )
@@ -502,6 +744,12 @@ export async function mockRpcRoutes(
       }
 
       const single = body as { id: number; method: string; params?: unknown[] }
+      requests?.push({
+        boundary: 'rpc',
+        chainId,
+        method: single.method,
+        params: single.params ?? [],
+      })
       return route.fulfill({
         status: 200,
         contentType: 'application/json',

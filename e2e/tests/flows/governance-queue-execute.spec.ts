@@ -1,5 +1,5 @@
 import { connectWallet, expect, test } from '../../fixtures/wallet'
-import { freezeTime, proposalTime } from '../../helpers/clock'
+import { advanceTime, freezeTime, proposalTime } from '../../helpers/clock'
 import { dtfPath, findDtfByAddress } from '../../helpers/registry'
 import { loadSnapshot } from '../../helpers/snapshots'
 import { loadEnrichedProposal } from '../../helpers/subgraph'
@@ -14,6 +14,10 @@ import { loadEnrichedProposal } from '../../helpers/subgraph'
 const DTF_ADDRESS = '0x4dA9A0f397dB1397902070f93a4D6ddBC0E0E6e8' // base/lcap
 const PROPOSAL_ID =
   '111337429388977163548785296806473337490511918976677753366781905746718791330309'
+const GOVERNOR_ACTION_ABI = parseAbi([
+  'function queue(address[] targets, uint256[] values, bytes[] calldatas, bytes32 descriptionHash) returns (uint256)',
+  'function execute(address[] targets, uint256[] values, bytes[] calldatas, bytes32 descriptionHash) payable returns (uint256)',
+])
 
 const dtf = findDtfByAddress(DTF_ADDRESS)!
 
@@ -31,19 +35,25 @@ function loadProposal() {
   return loadEnrichedProposal(PROPOSAL_ID)!.proposal as {
     voteStart: string
     voteEnd: string
+    governance: { id: string }
+    targets: string[]
+    calldatas: string[]
+    description: string
+    [key: string]: unknown
   }
 }
 
 test('queue a succeeded proposal through the full transaction flow', async ({
   page,
   overrides,
+  txLog,
 }) => {
   const proposal = loadProposal()
 
   // Winning tallies after voteEnd -> SDK derives SUCCEEDED -> queue CTA.
   // 20M For clears lcap's ~6.48M quorum with zero Against.
   overrides.subgraph(
-    'GetIndexDtfProposal',
+    { operationName: 'GetIndexDtfProposal', variables: { proposalId: PROPOSAL_ID } },
     proposalDetailOverlay({
       forWeightedVotes: '20000000000000000000000000',
       againstWeightedVotes: '0',
@@ -58,7 +68,7 @@ test('queue a succeeded proposal through the full transaction flow', async ({
   // Pump — flush react-query: the detail query + the queueProposal
   // useSimulateContract (isReady) resolve but only reach React once the paused
   // clock advances.
-  await page.clock.runFor(5_000)
+  await advanceTime(page, 5_000)
 
   const queueBtn = page.getByTestId('proposal-queue-btn')
   await expect(queueBtn).toBeVisible()
@@ -68,7 +78,7 @@ test('queue a succeeded proposal through the full transaction flow', async ({
 
   // Pump — receipt polling: useWatchTransaction polls the receipt on an
   // interval that never elapses under the frozen clock.
-  await page.clock.runFor(10_000)
+  await advanceTime(page, 10_000)
 
   // On success the component moves the proposal to QUEUED locally: the queue
   // CTA disappears and the timeline shows the queued result step.
@@ -78,11 +88,15 @@ test('queue a succeeded proposal through the full transaction flow', async ({
   // Execution is still timelocked (ETA = now + executionDelay), so no execute
   // CTA yet — exactly what a governor sees right after queueing.
   await expect(page.getByTestId('proposal-execute-btn')).toHaveCount(0)
+
+  expect(txLog).toHaveLength(1)
+  assertGovernorAction(txLog[0], 'queue', proposal)
 })
 
 test('execute a queued proposal past its ETA through the full transaction flow', async ({
   page,
   overrides,
+  txLog,
 }) => {
   const proposal = loadProposal()
   const voteEnd = Number(proposal.voteEnd)
@@ -90,7 +104,7 @@ test('execute a queued proposal past its ETA through the full transaction flow',
   // Raw QUEUED with an ETA already in the past when we freeze at
   // voteEnd + 3600 ('ended' phase) -> canExecuteProposal is true -> execute CTA.
   overrides.subgraph(
-    'GetIndexDtfProposal',
+    { operationName: 'GetIndexDtfProposal', variables: { proposalId: PROPOSAL_ID } },
     proposalDetailOverlay({
       state: 'QUEUED',
       forWeightedVotes: '20000000000000000000000000',
@@ -109,7 +123,7 @@ test('execute a queued proposal past its ETA through the full transaction flow',
 
   // Pump — flush react-query: detail query + executeProposal simulate
   // (isReady) reach React only when the clock advances.
-  await page.clock.runFor(5_000)
+  await advanceTime(page, 5_000)
 
   const executeBtn = page.getByTestId('proposal-execute-btn')
   await expect(executeBtn).toBeVisible()
@@ -118,12 +132,52 @@ test('execute a queued proposal past its ETA through the full transaction flow',
   await executeBtn.click()
 
   // Pump — receipt polling for the execute tx.
-  await page.clock.runFor(10_000)
+  await advanceTime(page, 10_000)
 
   // On success the component moves the proposal to EXECUTED locally: the
   // timeline shows the executed result and the action area now links to the
-  // execution tx (the mock wallet's fixed hash).
+  // execution tx (the mock wallet's recorded unique hash).
   await expect(page.getByTestId('proposal-result-executed')).toBeVisible()
   await expect(page.getByTestId('proposal-execute-tx-btn')).toBeVisible()
   await expect(page.getByTestId('proposal-execute-btn')).toHaveCount(0)
+
+  expect(txLog).toHaveLength(1)
+  assertGovernorAction(txLog[0], 'execute', proposal)
 })
+
+function assertGovernorAction(
+  tx: {
+    chainId: number
+    to: string
+    data: string
+    value: string
+  },
+  functionName: 'queue' | 'execute',
+  proposal: Record<string, unknown>
+) {
+  const governance = proposal.governance as { id: string }
+  const targets = proposal.targets as string[]
+  const calldatas = proposal.calldatas as string[]
+  const description = proposal.description as string
+  expect(tx.chainId).toBe(dtf.chainId)
+  expect(tx.to).toBe(governance.id.toLowerCase())
+  expect(BigInt(tx.value)).toBe(0n)
+  const decoded = decodeFunctionData({
+    abi: GOVERNOR_ACTION_ABI,
+    data: tx.data as Hex,
+  })
+  expect(decoded.functionName).toBe(functionName)
+  expect(decoded.args[0].map((address) => address.toLowerCase())).toEqual(
+    targets.map((address) => address.toLowerCase())
+  )
+  expect(decoded.args[1]).toEqual(targets.map(() => 0n))
+  expect([...decoded.args[2]]).toEqual(calldatas)
+  expect(decoded.args[3]).toBe(keccak256(stringToHex(description)))
+}
+import {
+  decodeFunctionData,
+  keccak256,
+  parseAbi,
+  stringToHex,
+  type Hex,
+} from 'viem'

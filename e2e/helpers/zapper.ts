@@ -1,8 +1,8 @@
 import type { Page } from '@playwright/test'
-import { encodeAbiParameters, parseUnits } from 'viem'
+import { encodeAbiParameters, encodeFunctionData, erc20Abi, parseUnits } from 'viem'
 import type { UnmockedLogger } from './logger'
 import type { MockOverrides } from './overrides'
-import { findDtfByAddress } from './registry'
+import { findDtfByAddress, TEST_ADDRESS } from './registry'
 import { loadSnapshot, loadSnapshotRaw, snapshotExists } from './snapshots'
 
 // Zapper (buy/sell) mock boundary — owned by the zap specs ONLY.
@@ -100,7 +100,7 @@ export function loadZapSnapshot(
 const AGGREGATORS = ['odos', 'velora', 'enso'] as const
 
 // Logger the zap specs hand to mockZapperRoutes: mirrors the base fixture's
-// collector — push into the test's `unmockedCalls` (so @smoke teardown fails on
+// collector — push into the test's `unmockedCalls` (so strict teardown fails on
 // any hit) AND console.error (so the line shows up in reports/CI output).
 export function zapUnmockedLogger(unmockedCalls: string[]): UnmockedLogger {
   return (message, detail) => {
@@ -121,7 +121,7 @@ function matches(params: ZapQuoteParams, query: URLSearchParams): boolean {
 
 // Install the zapper mock for one DTF. `log` should push into the spec's
 // `unmockedCalls` fixture array (same contract as helpers/provider.ts) so
-// @smoke specs fail loudly on any quote request outside the pinned inputs.
+// committed specs fail loudly on any quote request outside the pinned inputs.
 export async function mockZapperRoutes(
   page: Page,
   dtfAddress: string,
@@ -232,14 +232,24 @@ export function seedDtfBalance(
   dtfAddress: string,
   amount: string
 ) {
+  const sell = loadZapSnapshot(dtfAddress, 'sell').data.result
+  if (!sell) throw new Error('zap-sell snapshot has no result')
   overrides.ethCall(
     dtfAddress,
-    SELECTORS.balanceOf,
+    encodeFunctionData({
+      abi: erc20Abi,
+      functionName: 'balanceOf',
+      args: [TEST_ADDRESS],
+    }),
     encodeAbiParameters([{ type: 'uint256' }], [parseUnits(amount, 18)])
   )
   overrides.ethCall(
     dtfAddress,
-    SELECTORS.approve,
+    encodeFunctionData({
+      abi: erc20Abi,
+      functionName: 'approve',
+      args: [sell.approvalAddress as `0x${string}`, (BigInt(sell.amountIn) * 120n) / 100n],
+    }),
     encodeAbiParameters([{ type: 'bool' }], [true])
   )
 }

@@ -1,6 +1,7 @@
 import type { Page } from '@playwright/test'
 import type { UnmockedLogger } from './logger'
 import type { MockOverrides } from './overrides'
+import type { BoundaryRequest } from './requests'
 import { findDtfByAddress, REGISTRY, type RegistryDTF } from './registry'
 import { loadSnapshot, snapshotExists } from './snapshots'
 
@@ -166,7 +167,7 @@ function resolveIndexQuery(
 
   // Per-test overlay wins over snapshots — keyed by the exact operationName so a
   // spec can, e.g., serve a fresher voting snapshot after a vote tx.
-  const overlaid = overrides?.lookupSubgraph(op)
+  const overlaid = overrides?.lookupSubgraph(op, vars)
   if (overlaid !== undefined) return { data: overlaid }
 
   // The SDK sends the proposal id as `proposalId`; older callers used `id`.
@@ -235,7 +236,11 @@ function resolveIndexQuery(
       }))
       return { data: { ...raw, governances } }
     }
-    // No governance snapshot (e.g. DTF has no governance) — empty, not an error.
+    if (ids.length) {
+      log('unmocked operation identity', { op, governanceIds: ids })
+      return graphError(`[E2E] unmocked operation identity: ${op}`)
+    }
+    // No governance ids means the DTF genuinely has no governance.
     return { data: { governances: [], stakingToken: null } }
   }
 
@@ -252,19 +257,23 @@ function resolveIndexQuery(
   }
 
   if (op === 'getTransferEvents' || body.includes('transferEvents')) {
-    const dtf = dtfForAddress((vars.dtf as string) ?? '')
+    const address = (vars.dtf as string) ?? ''
+    const dtf = dtfForAddress(address)
     if (dtf && snapshotExists(`${dtf.snapshotDir}/transfer-events.json`)) {
       return { data: loadSnapshot(`${dtf.snapshotDir}/transfer-events.json`) }
     }
-    return { data: { transferEvents: [] } }
+    log('unmocked operation identity', { op: 'getTransferEvents', dtf: address })
+    return graphError('[E2E] unmocked operation identity: getTransferEvents')
   }
 
   if (op === 'getRebalances' || body.includes('rebalances') || body.includes('rebalance(')) {
-    const dtf = dtfForAddress((vars.dtf as string) ?? '')
+    const address = (vars.dtf as string) ?? ''
+    const dtf = dtfForAddress(address)
     if (dtf && snapshotExists(`${dtf.snapshotDir}/rebalances.json`)) {
       return { data: loadSnapshot(`${dtf.snapshotDir}/rebalances.json`) }
     }
-    return { data: { rebalances: [] } }
+    log('unmocked operation identity', { op: 'getRebalances', dtf: address })
+    return graphError('[E2E] unmocked operation identity: getRebalances')
   }
 
   log('unmocked operation', { op })
@@ -274,7 +283,8 @@ function resolveIndexQuery(
 export async function mockSubgraphRoutes(
   page: Page,
   log: UnmockedLogger,
-  overrides?: MockOverrides
+  overrides?: MockOverrides,
+  requests?: BoundaryRequest[]
 ) {
   await page.route('**/api.goldsky.com/**', (route) => {
     const request = route.request()
@@ -288,6 +298,12 @@ export async function mockSubgraphRoutes(
 
     const url = request.url()
     const body = request.postData() ?? ''
+    const parsed = parseBody(body)
+    requests?.push({
+      boundary: 'subgraph',
+      operationName: parsed.operationName ?? '',
+      variables: parsed.variables ?? {},
+    })
     const isIndex = url.includes('dtf-index')
     const response = isIndex ? resolveIndexQuery(body, log, overrides) : { data: EMPTY_SHAPE }
 

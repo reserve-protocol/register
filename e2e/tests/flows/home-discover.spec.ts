@@ -102,18 +102,7 @@ test('home hero and featured section render without unmocked calls', async ({
   page,
   unmockedCalls,
 }) => {
-  // Featured DTFs are fetched from the staging host, which the base fixture does
-  // NOT intercept — serve them here from the discover snapshot so the highlighted
-  // section renders offline. Register before navigation so the first fetch hits it.
-  const featured = topIndexDtfs().slice(0, 3)
-  await page.route('**api-staging.reserve.org/**', (route) =>
-    route.fulfill({
-      json: {
-        order: featured.map((d) => d.symbol),
-        items: Object.fromEntries(featured.map((d) => [d.symbol, [d]])),
-      },
-    })
-  )
+  const featured = loadSnapshot<{ order: string[] }>('shared/featured-dtfs.json')
 
   await page.goto('/')
 
@@ -123,7 +112,8 @@ test('home hero and featured section render without unmocked calls', async ({
   // Featured/highlighted section rendered its cards (each card is a link).
   const highlighted = page.getByTestId('home-highlighted')
   await expect(highlighted).toBeAttached()
-  expect(await highlighted.locator('a').count()).toBeGreaterThan(0)
+  // One link per captured feature plus the intentional "discover all" end card.
+  await expect(highlighted.locator('a')).toHaveCount(featured.order.length + 1)
 
   // Every boundary was answered — no live calls leaked.
   expect(unmockedCalls).toEqual([])

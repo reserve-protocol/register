@@ -12,7 +12,7 @@ import { test as baseTest, expect } from './base'
 // RPC mock (see provider.ts) whether or not a wallet is connected.
 export const test = baseTest.extend<{ walletProvider: void }>({
   walletProvider: [
-    async ({ page, unmockedCalls, overrides }, use) => {
+    async ({ page, unmockedCalls, overrides, txLog, boundaryRequests }, use) => {
       const log = (message: string, detail?: Record<string, unknown>) => {
         unmockedCalls.push(`[E2E] ${message}${detail ? ' ' + JSON.stringify(detail) : ''}`)
       }
@@ -21,6 +21,8 @@ export const test = baseTest.extend<{ walletProvider: void }>({
         chainId: CHAINS.base.chainId,
         log,
         overrides,
+        txLog,
+        requests: boundaryRequests,
       })
       await use()
     },

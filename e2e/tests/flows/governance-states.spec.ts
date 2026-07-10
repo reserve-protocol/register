@@ -1,8 +1,9 @@
 import { expect, test } from '../../fixtures/base'
-import { freezeTime, proposalTime } from '../../helpers/clock'
+import { advanceTime, freezeTime, proposalTime } from '../../helpers/clock'
 import { dtfPath, findDtfByAddress } from '../../helpers/registry'
 import { loadSnapshot } from '../../helpers/snapshots'
 import { loadEnrichedProposal } from '../../helpers/subgraph'
+import type { BoundaryRequest } from '../../helpers/requests'
 
 // Proposal detail rendered in distinct lifecycle states. The SDK derives the
 // display state (proposal.votingState.state) from the RAW subgraph `state` +
@@ -41,16 +42,34 @@ function loadProposal() {
   }
 }
 
+async function settleProposal(
+  page: import('@playwright/test').Page,
+  boundaryRequests: BoundaryRequest[]
+) {
+  await advanceTime(page, 5_000) // flush DTF identity; enables proposal detail
+  await expect
+    .poll(() =>
+      boundaryRequests.some(
+        (request) =>
+          request.boundary === 'subgraph' &&
+          request.operationName === 'GetIndexDtfProposal'
+      )
+    )
+    .toBe(true)
+  await advanceTime(page, 5_000) // flush the proposal response into React
+}
+
 test('pending proposal shows a disabled vote CTA and no result', async ({
   page,
   overrides,
+  boundaryRequests,
 }) => {
   const proposal = loadProposal()
 
   // Raw PENDING + frozen before voteStart -> SDK derives PENDING (the captured
   // raw state is ACTIVE, which never derives back to PENDING).
   overrides.subgraph(
-    'GetIndexDtfProposal',
+    { operationName: 'GetIndexDtfProposal', variables: { proposalId: PROPOSAL_ID } },
     proposalDetailOverlay({ state: 'PENDING' })
   )
   await freezeTime(page, proposalTime(proposal, 'pending'))
@@ -59,7 +78,7 @@ test('pending proposal shows a disabled vote CTA and no result', async ({
 
   // Pump — flush react-query (notifyManager is frozen under a paused clock):
   // the proposal detail query resolves but never reaches React otherwise.
-  await page.clock.runFor(5_000)
+  await settleProposal(page, boundaryRequests)
 
   // PENDING renders the vote button, disabled (no wallet + voting not open).
   const voteBtn = page.getByTestId('proposal-vote-btn')
@@ -75,13 +94,14 @@ test('pending proposal shows a disabled vote CTA and no result', async ({
 test('ended proposal with more against votes derives DEFEATED', async ({
   page,
   overrides,
+  boundaryRequests,
 }) => {
   const proposal = loadProposal()
 
   // Vote totals are the fields the derivation reads: against > for after
   // voteEnd -> DEFEATED. Amounts are 18-decimal raw strings.
   overrides.subgraph(
-    'GetIndexDtfProposal',
+    { operationName: 'GetIndexDtfProposal', variables: { proposalId: PROPOSAL_ID } },
     proposalDetailOverlay({
       forWeightedVotes: '1000000000000000000000000', // 1M
       againstWeightedVotes: '15000000000000000000000000', // 15M
@@ -93,7 +113,7 @@ test('ended proposal with more against votes derives DEFEATED', async ({
   await page.goto(dtfPath(dtf, `governance/proposal/${PROPOSAL_ID}`))
 
   // Pump — flush react-query so the detail query's data reaches React.
-  await page.clock.runFor(5_000)
+  await settleProposal(page, boundaryRequests)
 
   // Timeline result badge shows the derived DEFEATED state.
   await expect(page.getByTestId('proposal-result-defeated')).toBeVisible()
@@ -107,13 +127,14 @@ test('ended proposal with more against votes derives DEFEATED', async ({
 test('ended proposal below quorum derives QUORUM_NOT_REACHED', async ({
   page,
   overrides,
+  boundaryRequests,
 }) => {
   const proposal = loadProposal()
   const quorum = BigInt(proposal.quorumVotes) // ~6.48M for lcap
 
   // For wins the majority but for+abstain misses quorum -> QUORUM_NOT_REACHED.
   overrides.subgraph(
-    'GetIndexDtfProposal',
+    { operationName: 'GetIndexDtfProposal', variables: { proposalId: PROPOSAL_ID } },
     proposalDetailOverlay({
       forWeightedVotes: (quorum / 2n).toString(),
       againstWeightedVotes: '1000000000000000000000', // 1k
@@ -125,7 +146,7 @@ test('ended proposal below quorum derives QUORUM_NOT_REACHED', async ({
   await page.goto(dtfPath(dtf, `governance/proposal/${PROPOSAL_ID}`))
 
   // Pump — flush react-query so the detail query's data reaches React.
-  await page.clock.runFor(5_000)
+  await settleProposal(page, boundaryRequests)
 
   await expect(
     page.getByTestId('proposal-result-quorum_not_reached')
@@ -137,6 +158,7 @@ test('ended proposal below quorum derives QUORUM_NOT_REACHED', async ({
 test('executed proposal shows result and the execute-tx link', async ({
   page,
   overrides,
+  boundaryRequests,
 }) => {
   const proposal = loadProposal()
   const executionTime = Number(proposal.voteEnd) + 7200
@@ -145,7 +167,7 @@ test('executed proposal shows result and the execute-tx link', async ({
   // raw state EXECUTED passes straight through the derivation; the tx hash
   // feeds the "View execute tx" CTA.
   overrides.subgraph(
-    'GetIndexDtfProposal',
+    { operationName: 'GetIndexDtfProposal', variables: { proposalId: PROPOSAL_ID } },
     proposalDetailOverlay({
       state: 'EXECUTED',
       executionTime: String(executionTime),
@@ -162,7 +184,7 @@ test('executed proposal shows result and the execute-tx link', async ({
   await page.goto(dtfPath(dtf, `governance/proposal/${PROPOSAL_ID}`))
 
   // Pump — flush react-query so the detail query's data reaches React.
-  await page.clock.runFor(5_000)
+  await settleProposal(page, boundaryRequests)
 
   // Timeline shows the executed result (label is "Proposal succeeded").
   await expect(page.getByTestId('proposal-result-executed')).toBeVisible()

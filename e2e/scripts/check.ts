@@ -4,13 +4,22 @@
  *
  * Usage: pnpm e2e:check
  */
-import { readFileSync, readdirSync, statSync } from 'fs'
+import { existsSync, readFileSync, readdirSync, statSync } from 'fs'
 import { dirname, join, relative } from 'path'
 import { fileURLToPath } from 'url'
 import { REGISTRY } from '../helpers/registry'
+import { requiredSnapshotPaths } from '../helpers/snapshot-manifest'
 
 const snapshotsDir = join(dirname(fileURLToPath(import.meta.url)), '..', 'snapshots')
 const MAX_AGE_DAYS = 45
+const DAY_MS = 86_400_000
+
+function ageInDays(capturedAt: unknown): number | undefined {
+  if (typeof capturedAt !== 'string') return undefined
+  const timestamp = new Date(capturedAt).getTime()
+  if (!Number.isFinite(timestamp) || timestamp > Date.now() + DAY_MS) return undefined
+  return Math.floor((Date.now() - timestamp) / DAY_MS)
+}
 
 function allJsonFiles(dir: string): string[] {
   const out: string[] = []
@@ -31,7 +40,11 @@ function checkAge(): boolean {
     console.error('FAIL: no _meta.json. Run "pnpm e2e:capture".')
     return false
   }
-  const days = Math.floor((Date.now() - new Date(capturedAt).getTime()) / 86_400_000)
+  const days = ageInDays(capturedAt)
+  if (days === undefined) {
+    console.error(`FAIL: invalid full-capture timestamp: ${String(capturedAt)}`)
+    return false
+  }
   if (days > MAX_AGE_DAYS) {
     console.error(`FAIL: snapshots are ${days} days old (>${MAX_AGE_DAYS}). Run "pnpm e2e:capture".`)
     return false
@@ -53,6 +66,23 @@ function checkStructure(): boolean {
       } else if (raw.data === undefined || raw.data === null) {
         console.error(`FAIL: empty data in ${rel}`)
         ok = false
+      } else {
+        const days = ageInDays(raw._meta.capturedAt)
+        if (days === undefined || days > MAX_AGE_DAYS) {
+          console.error(
+            `FAIL: invalid/stale capturedAt in ${rel}: ${String(raw._meta.capturedAt)}`
+          )
+          ok = false
+        }
+        const dtf = REGISTRY.find((entry) => rel.startsWith(`${entry.snapshotDir}/`))
+        if (
+          dtf &&
+          (String(raw._meta.dtf).toLowerCase() !== dtf.address.toLowerCase() ||
+            Number(raw._meta.chainId) !== dtf.chainId)
+        ) {
+          console.error(`FAIL: snapshot identity mismatch in ${rel}`)
+          ok = false
+        }
       }
     } catch (e) {
       console.error(`FAIL: invalid JSON ${rel}: ${(e as Error).message}`)
@@ -63,18 +93,17 @@ function checkStructure(): boolean {
   return ok
 }
 
-// Every registry DTF must have at least its core dtf.json snapshot.
+// Every shared and per-DTF boundary required by committed tests must exist.
 function checkCoverage(): boolean {
   let ok = true
-  for (const dtf of REGISTRY) {
-    try {
-      statSync(join(snapshotsDir, dtf.snapshotDir, 'dtf.json'))
-    } catch {
-      console.error(`FAIL: missing ${dtf.snapshotDir}/dtf.json for ${dtf.slug}. Run "pnpm e2e:capture".`)
+  const required = requiredSnapshotPaths()
+  for (const relativePath of required) {
+    if (!existsSync(join(snapshotsDir, relativePath))) {
+      console.error(`FAIL: missing ${relativePath}. Run "pnpm e2e:capture".`)
       ok = false
     }
   }
-  if (ok) console.log(`ok: all ${REGISTRY.length} registry DTFs have snapshots`)
+  if (ok) console.log(`ok: all ${required.length} required snapshots exist`)
   return ok
 }
 
