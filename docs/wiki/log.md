@@ -1,6 +1,6 @@
 ---
 title: Log
-updated: 2026-07-08
+updated: 2026-07-10
 type: log
 ---
 
@@ -67,4 +67,22 @@ Append-only chronological record: lessons, corrections, friction. Newest section
 - Drift fixes (same session, self-reported): (1) progress.md rows had become essays — 6 rows compressed to pointer form (full reconciliation lives in git history), and wiki-lint now caps ledger rows (`wiki.ledgerRowMaxChars`, default 700) so it can't recur silently; (2) profile misfiling guarded — downgrading below medium while scope.mjs prints a radius signal now requires one stated line (signal + why it doesn't apply); (3) profile boundaries iterate only from misfires recorded here, not theory — process work must not displace product work during the release window.
 - Featured YTD stage (cross-repo): homepage featured now matches the overview default — reserve-api `discover/featured` serves `ytd` + daily grid, priceChange first-vs-last finite daily point, no live append; equal by construction to the overview's (penultimate−first)/first because both hit the same `historical_dtf_price` generate_series grid and the overview skips its synthetic now-point. Order server-driven via `FEATURED_TOKENS` (BUILDOUT, POWER, PHOTON, NEOCLOUD, ROBOTS); marquee sorted weight-desc at the client choke point (covers both the featured payload AND the SDK exposure route feeding the photon animation) plus server-side in `groupExposure`. `/dtf/daos` re-sourced from dtf-catalog (active only, Arbitrum-guarded) — the folio-manager brand table lagged new launches; dead `getVisibleFolios` deleted. Dark verified parity end-to-end; adopted from review: cached-rejected-catalog-import reset (one transient failure used to 500 discover+daos until restart), the Arbitrum guard the test already asserted, YTD label fallback. Expected homepage YTD once deployed: BUILDOUT +68.39, POWER +36.94, PHOTON +84.04, NEOCLOUD +57.02, ROBOTS −2.44 (staging 2026-07-08).
 - Overview loading-shift sweep (QA): the worst shift was NOT a skeleton gap — `indexDTFBrandAtom` is written twice (SDK payload first, WITHOUT `dtf.video`; folio-manager merge second), so the cover card unmounted and remounted. Fix: `indexDTFBrandExtrasResolvedAtom` gates the cover skeleton until the authoritative read settles, and the SDK write merge-preserves video/files. Balance card now expands once via grid-rows animation, gated on balance + USD value + PnL all settled (`useWeekAgoPnl` returns `{ pnl, isResolved }`). Cover video cross-fades with its skeleton underlay. Note: the container updater changes are shared machinery — engineer eyes on `index-dtf-container.tsx` when reviewing the push.
+
+## 2026-07-10
+
+- discover-exposure-assets (RES-2110): Discover page now shows DTF exposure
+  assets in the mobile ticker tapes and desktop "Backing" column. The
+  `v1/discover/dtfs` endpoint only returns `basket`, so `useIndexDTFList` fetches
+  per-DTF exposure via `sdk.index.getExposure` after the list load and merges it
+  into each `IndexDTFItem`. Both the mobile marquee (`IndexDTFFeatureCard`) and
+  the desktop table share `mapExposureGroupsToTickers` with the same
+  weight-descending sort and basket fallback. Verified with `scope.mjs --gate`
+  and a browser view of `/discover` on mobile. PR #1036.
+- `use-featured-dtfs.ts` cleanup: removed the broad `any` typing in the API
+  normalizer and replaced it with `unknown`/`Record<string, unknown>` assertions
+  while aligning the featured DTF exposure types with `IndexDTFItem`.
+- Environment friction: `oxlint`'s `@oxlint/binding-linux-x64-gnu` optional
+  dependency only installed cleanly with Node 24 + pnpm 11.5.2; Node 20 + pnpm
+  11.11.0 silently left the binding missing and `pnpm lint` failed. `husky`
+  pre-commit also requires `pnpm` on `PATH` during `git commit`.
 

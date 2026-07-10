@@ -1,6 +1,6 @@
 ---
 title: Progress
-updated: 2026-07-08
+updated: 2026-07-10
 type: ledger
 ---
 
@@ -29,6 +29,7 @@ Stage ledger. One row per stage; keep entries short. Verifier = exact fresh comm
 | adopt-llm-workflow | done | `wiki-lint` green (7 pages) · `scope.mjs --base HEAD --dry-run` maps lint/typecheck/test + lenses | complexity: self (docs/tooling only) | — |
 | chat-overrides-containment | done | `pnpm typecheck` + `pnpm lint` + `pnpm test:run` green · launcher screenshot identical post-move | product: self + screenshot | upstream theming to dtf-chat (backlog) |
 | ui-stabilization-sweep | done | `pnpm typecheck` + `pnpm lint` + `pnpm test:run` green (458 tests, 21 new) · screenshots: explorer pagination desktop+mobile, header menu, search dialog, chat launcher | correctness+product+complexity: Dark & Light subagents, findings verified per-claim; security: no tx/money paths changed | engineer review flags in handoff (see log 2026-07-02) |
+| discover-exposure-assets (RES-2110) | done | `scope.mjs --base origin/master` gate-equivalent green: `pnpm typecheck` + `pnpm lint` + `pnpm test:run` (561 tests) · browser: mobile `/discover` cards show exposure tickers (e.g. CMC20 `$BTC`/`$ETH`) | correctness+product+complexity: scope lenses + self-review; `use-featured-dtfs.ts` `any`→`unknown` cleanup; no red flags | PR #1036 ready for review |
 
 ## Backlog
 

@@ -1,6 +1,6 @@
 ---
 title: Home
-updated: 2026-07-08
+updated: 2026-07-10
 type: domain
 sources:
   - src/views/home/**
@@ -36,6 +36,16 @@ slice — top-N by weight, not first-N in basket order); the server also emits
 The discover table (`useIndexDTFList`, `v1/discover/dtfs?performance=true`)
 returns daily 30d series (~31 pts) — the same server-side downsample is a
 no-op there.
+
+## Discover list exposure
+
+`v1/discover/dtfs?performance=true` returns `basket` only. To show exposure
+assets (the non-Ondo underlying tickers) in the Discover cards and table,
+`useIndexDTFList({ withExposure: true })` fetches per-DTF exposure via
+`sdk.index.getExposure` after the list load and merges it into each
+`IndexDTFItem`. Both the mobile ticker marquee (`IndexDTFFeatureCard`) and
+the desktop "Backing" column then use `mapExposureGroupsToTickers` with the
+same weight-descending sort and basket fallback.
 
 ## Performance invariants (do not break)
 
