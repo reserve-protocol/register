@@ -1,6 +1,6 @@
 ---
 title: Progress
-updated: 2026-07-09
+updated: 2026-07-10
 type: ledger
 ---
 
@@ -10,6 +10,7 @@ Stage ledger. One row per stage; keep entries short. Verifier = exact fresh comm
 
 | Stage | Status | Verifier | Review | Next |
 |---|---|---|---|---|
+| E2E trust hardening + reconciliation (Codex impl, Fable verify/review) | done (base a1c231fea) | independent agent: full 27/27 ×3 · smoke 11/11 · combined 38/38 · helpers 9/9 · e2e:check · typecheck+lint green · zero unmocked · payload spot-checks decode real calldata | Dark+Light on whole diff: 0 blocker/major; adopted: dead smoke code, 2 false comments, wiki count→manifest-owned, SDK-bump re-sync step; CI re-authored after a stale revert destroyed Codex's (lesson in log) | **Engineer review required**: governance/issuance/compliance flows + tx-provider contract · then commit + SDK migration characterization |
 | E2E SDK migration audit | done (base bc0d84ddb) | e2e TS + snapshot check green · wiki-lint 19 pages · SDK docs links 93 + oxfmt green · observed smoke 6/9, combined 18/25 (Phase 2 WIP; no full-gate claim) | correctness+security+product: self, full code/live-run audit; external reviewer unavailable; prioritized contract in [[e2e]] | Fable closes trust blockers; then characterize `feature/sdk-integration` |
 | e2e-suite phases 1–2: offline playwright foundation + 7-area index-dtf coverage | done (base 0a1c0c6f2) | fresh gate: typecheck app+e2e · lint 0 new errors · vitest 561 · e2e:check · 38 e2e tests: 38/38 then 37/38 (zap-sell flake, named) · 76 deterministic unmocked eth_calls in governance flows (named) | correctness: per-area verify ×2 + independent full-suite run · product: snapshot-derived values, mcap framings guarded · security/complexity: orchestrator-reviewed shared mocks, Dark/Light on plan · whole-feature pair owed phase 3 | 2.5: zap flake, governance eth_call gaps, flows fail-on-unmocked, allowlist, tx log |
 | featured YTD parity + order + sorted marquee + daos catalog fix (cross-repo) | done (base 295cbbde0) | register gate-equivalent green (549 tests, 5 new) · reserve-api tsc + vitest (397, 5 new) · staging: 5 DTFs × 190 daily pts, 0 nulls · Playwright: marquee weight-desc | correctness+product+complexity: Dark & Light, per-claim verify — parity VERIFIED; adopted: Arbitrum guard, catalog-import reset, YTD label fallback, dead `getVisibleFolios` deleted; rest in git + log | **Engineer review required** (priceChange enum +ytd, `/dtf/daos` source swap, exposure order) · acks: deprecated-DTF DAOs drop from earn list, brand-hidden can reappear · purge daos 24h CDN cache at deploy |
@@ -36,6 +37,10 @@ Stage ledger. One row per stage; keep entries short. Verifier = exact fresh comm
 
 <!-- Minor/deferred findings. Delete items when done or obsolete. -->
 
+- E2E: `GET_REBALANCE_ABI` tuple is duplicated verbatim in `e2e/helpers/rpc.ts` and `e2e/tests/flows/auctions.spec.ts` — extract one shared const before the idle/active encodings can diverge.
+- E2E: annotate each bare selector in `KNOWN_ZERO_SELECTORS` (rpc.ts) with its function signature — every other override entry is annotated; unlabeled selectors invite unsafe extensions.
+- E2E: `auctions.spec.ts` asserts hardcoded `data-round '2'` derived from the ±40% weight skew over captured chain-state — a basket-changing re-capture breaks it opaquely; assert `> 0` or document the coupling at the assertion.
+- E2E: per-spec `seedFolio` (issuance-manual) / `seedZapSurface` metadata seeding is now redundant with central chain-state seeding — harmless (overrides win); delete on next touch.
 - Featured/overview YTD parity edge: duplicate-timestamp dedupe direction differs (register client keeps LAST, reserve-api bulk query keeps FIRST) — unify only if an exact-parity mismatch is ever reported.
 - Referral: `RESERVE_API` staging pin (`src/utils/constants.ts` "USE PROD BEFORE RELEASING" TODO) is now load-bearing — referral link POSTs land on staging until flipped.
 - Referral: Mixpanel funnel for marketing must key on `referral_landed` (the auto pageview at init fires before the super property is registered, so the first pageview is unattributed).

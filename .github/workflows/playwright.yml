@@ -1,27 +1,68 @@
-name: Playwright Tests
+name: E2E
+
 on:
   push:
-    branches: [ main, master ]
+    branches: [master]
   pull_request:
-    branches: [ main, master ]
+    branches: [master]
+  schedule:
+    # Nightly full suite at 06:00 UTC.
+    - cron: '0 6 * * *'
+  workflow_dispatch:
+
 jobs:
-  test:
+  smoke:
+    if: github.event_name == 'push' || github.event_name == 'pull_request'
+    timeout-minutes: 30
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+      - name: Typecheck (app + e2e)
+        run: pnpm typecheck
+      - name: Snapshot manifest and freshness
+        run: pnpm e2e:check
+      - name: Install Chromium
+        run: pnpm exec playwright install --with-deps chromium
+      - name: Smoke suite
+        run: pnpm e2e:smoke
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: smoke-report
+          path: playwright-report/
+          retention-days: 14
+
+  full:
+    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
     timeout-minutes: 60
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
-    - uses: actions/setup-node@v3
-      with:
-        node-version: 18
-    - name: Install dependencies
-      run: npm ci
-    - name: Install Playwright Browsers
-      run: npx playwright install --with-deps
-    - name: Run Playwright tests
-      run: npx playwright test
-    - uses: actions/upload-artifact@v3
-      if: always()
-      with:
-        name: playwright-report
-        path: playwright-report/
-        retention-days: 30
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+      - name: Typecheck (app + e2e)
+        run: pnpm typecheck
+      - name: Snapshot manifest and freshness
+        run: pnpm e2e:check
+      - name: Install Chromium
+        run: pnpm exec playwright install --with-deps chromium
+      - name: Full suite
+        run: pnpm e2e:full
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: full-report
+          path: playwright-report/
+          retention-days: 30
