@@ -88,4 +88,25 @@ settings/auction write families. Those require new registry fixtures and
 behavior specs rather than looser mocks. Governance, issuance, compliance, and
 transaction-contract edits require engineer review.
 
+## Planned next pass (gap analysis 2026-07-10)
+
+Every write flow currently asserts success only — `overrides.transaction`
+(revert/reject) is implemented but unused. Chain skew: flows run base/lcap;
+bsc/cmc20 and mainnet/open (the only v4 path) get only the overview smoke.
+Packages (disjoint new spec files; helpers/fixtures/src stay orchestrator-owned):
+
+- **A — failure paths (P1)**: revert + user-reject across vote/queue/execute,
+  mint/redeem, zap buy/sell, propose. Existing scaffolding, zero new fixtures.
+- **B — multichain (P1)**: governance list/states + auctions bucketing on
+  bsc/cmc20 and mainnet/open; snapshots already captured.
+- **C — propose breadth (P1→P2)**: dtf-settings/fees (on-snapshot), then
+  basket + basket-settings (needs liquidity/price `overrides.api` payloads).
+- **D — zap + compliance edges (P2)**: high-impact/no-quote/insufficient-
+  balance/low-liquidity states (needs 2 new captured zap snapshots —
+  orchestrator pre-step) + restriction across manual issuance and open surfaces.
+
+Deferred (needs src testids/roles + engineer review): settings distribute-fees
+write, auction launch/bid, async-mint wizard, manage/factsheet, legacy v2
+auctions, wallet disconnect mid-flow.
+
 Related: [[project]], [[sdk]].
