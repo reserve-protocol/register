@@ -2,7 +2,14 @@
  * Capture e2e snapshots from live production APIs + subgraphs into
  * e2e/snapshots/<chain>/<slug>/*.json, wrapped in a {_meta, data} envelope.
  *
- * Usage: pnpm e2e:capture
+ * Usage:
+ *   pnpm e2e:capture              full capture (all boundaries, all DTFs)
+ *   pnpm e2e:capture --only=dtf   re-capture ONLY dtf.json + chain-state.json
+ *   pnpm e2e:capture --only=chain re-capture ONLY chain-state.json
+ *
+ * The targeted modes exist so we can refresh the SDK-shaped GetIndexDTF payload
+ * and on-chain basket reads WITHOUT churning the proposal/governance/historical
+ * snapshots that committed flow specs depend on.
  *
  * Time-series responses (historical price, exposure) are downsampled to
  * MAX_SERIES_POINTS before writing to keep the repo lean; the moving-window
@@ -11,11 +18,52 @@
 import { mkdirSync, writeFileSync } from 'fs'
 import { dirname, join } from 'path'
 import { fileURLToPath } from 'url'
+import { createPublicClient, http, type Address, type Abi } from 'viem'
 import { CHAINS, REGISTRY, type RegistryDTF } from '../helpers/registry'
 
 const snapshotsDir = join(dirname(fileURLToPath(import.meta.url)), '..', 'snapshots')
 const RESERVE_API = 'https://api.reserve.org'
 const MAX_SERIES_POINTS = 200
+
+// Targeted capture mode from `--only=<dtf|chain>`; undefined = full capture.
+type OnlyMode = 'dtf' | 'chain'
+function parseOnly(): OnlyMode | undefined {
+  const arg = process.argv.find((a) => a.startsWith('--only='))
+  const value = arg?.split('=')[1]
+  if (value === 'dtf' || value === 'chain') return value
+  if (value) throw new Error(`Unknown --only value: ${value} (expected dtf|chain)`)
+  return undefined
+}
+
+// Public RPC per chain for on-chain reads (totalAssets/totalSupply/decimals).
+const PUBLIC_RPC: Record<number, string> = {
+  1: 'https://ethereum-rpc.publicnode.com',
+  8453: 'https://base-rpc.publicnode.com',
+  56: 'https://bsc-rpc.publicnode.com',
+}
+
+// Minimal folio ABI for the basket-shaping reads the SDK does off-chain.
+const FOLIO_ABI = [
+  {
+    type: 'function',
+    name: 'totalAssets',
+    stateMutability: 'view',
+    inputs: [],
+    outputs: [{ type: 'address[]' }, { type: 'uint256[]' }],
+  },
+  { type: 'function', name: 'totalSupply', stateMutability: 'view', inputs: [], outputs: [{ type: 'uint256' }] },
+  { type: 'function', name: 'decimals', stateMutability: 'view', inputs: [], outputs: [{ type: 'uint8' }] },
+  { type: 'function', name: 'version', stateMutability: 'view', inputs: [], outputs: [{ type: 'string' }] },
+] as const satisfies Abi
+
+// ERC-20 metadata for every basket token — the SDK's getBasket follows
+// totalAssets() with a name/symbol/decimals multicall over the basket tokens,
+// so the RPC mock must answer those per-address too.
+const ERC20_META_ABI = [
+  { type: 'function', name: 'name', stateMutability: 'view', inputs: [], outputs: [{ type: 'string' }] },
+  { type: 'function', name: 'symbol', stateMutability: 'view', inputs: [], outputs: [{ type: 'string' }] },
+  { type: 'function', name: 'decimals', stateMutability: 'view', inputs: [], outputs: [{ type: 'uint8' }] },
+] as const satisfies Abi
 
 const subgraphUrlFor = (chainId: number) =>
   Object.values(CHAINS).find((c) => c.chainId === chainId)?.indexSubgraphUrl
@@ -100,22 +148,174 @@ async function fetchSubgraph(
 // --- GraphQL queries (mirror the app's operations, defined once) ---
 
 const QUERIES = {
-  getDTF: `query getDTF($id: String!) {
-    dtf(id: $id) {
-      id proxyAdmin timestamp deployer ownerAddress mintingFee tvlFee
-      annualizedTvlFee mandate auctionDelay auctionLength auctionApprovers
-      auctionLaunchers brandManagers totalRevenue protocolRevenue
-      governanceRevenue externalRevenue feeRecipients legacyAdmins
+  // Verbatim copy of the SDK's GetIndexDtfDocument — `sdk.index.get` (via
+  // react-sdk's useCurrentIndexDtf) feeds this exact shape through `mapIndexDtf`
+  // → `mapIndexDtfData`, and it reads nested fields (admins, token.address,
+  // token.snapshot, weightControl/priceControl, governance name/version/
+  // optimistic params, delegation counts) that the old hand-written query
+  // omitted — so a legacy-shaped snapshot made mapIndexDtf throw.
+  //
+  // NOT importable: @reserve-protocol/sdk@0.2.0 does not export the document.
+  // Source: @reserve-protocol/sdk@0.2.0 dist/index.mjs, const GetIndexDtfDocument
+  // (query GetIndexDTF). Keep in sync on SDK bumps — the dtf-data.spec canary
+  // catches drift. `$block` is omitted at call time (always latest).
+  getDTF: `query GetIndexDTF($id: ID!, $block: Block_height) {
+    dtf(id: $id, block: $block) {
+      id
+      proxyAdmin
+      timestamp
+      deployer
+      ownerAddress
+      admins
+      mintingFee
+      tvlFee
+      annualizedTvlFee
+      mandate
+      auctionDelay
+      auctionLength
+      auctionApprovers
+      auctionLaunchers
+      brandManagers
+      totalRevenue
+      protocolRevenue
+      governanceRevenue
+      externalRevenue
+      feeRecipients
+      bidsEnabled
+      trustedFillerRegistry
+      trustedFillerEnabled
+      weightControl
+      priceControl
+      ownerGovernance {
+        id
+        name
+        version
+        votingDelay
+        votingPeriod
+        proposalThreshold
+        quorumVotes
+        quorumNumerator
+        quorumDenominator
+        isOptimistic
+        optimisticVetoDelay
+        optimisticVetoPeriod
+        optimisticVetoThreshold
+        optimisticProposalThrottleCapacity
+        optimisticSelectorRegistry
+        optimisticProposers
+        timelock {
+          id
+          guardians
+          optimisticProposers
+          executionDelay
+          type
+        }
+      }
+      legacyAdmins
+      tradingGovernance {
+        id
+        name
+        version
+        votingDelay
+        votingPeriod
+        proposalThreshold
+        quorumVotes
+        quorumNumerator
+        quorumDenominator
+        isOptimistic
+        optimisticVetoDelay
+        optimisticVetoPeriod
+        optimisticVetoThreshold
+        optimisticProposalThrottleCapacity
+        optimisticSelectorRegistry
+        optimisticProposers
+        timelock {
+          id
+          guardians
+          optimisticProposers
+          executionDelay
+          type
+        }
+      }
       legacyAuctionApprovers
-      ownerGovernance { id votingDelay votingPeriod proposalThreshold quorumNumerator quorumDenominator timelock { id guardians executionDelay } }
-      tradingGovernance { id votingDelay votingPeriod proposalThreshold quorumNumerator quorumDenominator timelock { id guardians executionDelay } }
-      token { id name symbol decimals totalSupply currentHolderCount }
+      token {
+        id
+        address
+        name
+        symbol
+        decimals
+        totalSupply
+        currentHolderCount
+        cumulativeHolderCount
+        transferCount
+        mintCount
+        burnCount
+        totalBurned
+        totalMinted
+      }
       stToken {
-        id token { name symbol decimals totalSupply }
-        underlying { name symbol address decimals }
-        governance { id votingDelay votingPeriod proposalThreshold quorumNumerator quorumDenominator timelock { id guardians executionDelay } }
+        id
+        token {
+          id
+          address
+          name
+          symbol
+          decimals
+          totalSupply
+          currentHolderCount
+          cumulativeHolderCount
+          transferCount
+          mintCount
+          burnCount
+          totalBurned
+          totalMinted
+        }
+        currentDelegates
+        totalDelegates
+        delegatedVotesRaw
+        currentOptimisticDelegates
+        totalOptimisticDelegates
+        optimisticDelegatedVotesRaw
+        underlying {
+          name
+          symbol
+          address
+          decimals
+        }
+        governance {
+          id
+          name
+          version
+          votingDelay
+          votingPeriod
+          proposalThreshold
+          quorumVotes
+          quorumNumerator
+          quorumDenominator
+          isOptimistic
+          optimisticVetoDelay
+          optimisticVetoPeriod
+          optimisticVetoThreshold
+          optimisticProposalThrottleCapacity
+          optimisticSelectorRegistry
+          optimisticProposers
+          timelock {
+            id
+            guardians
+            optimisticProposers
+            executionDelay
+            type
+          }
+        }
         legacyGovernance
-        rewards(where: { active: true }) { rewardToken { address name symbol decimals } }
+        rewards(where: {active: true}) {
+          rewardToken {
+            address
+            name
+            symbol
+            decimals
+          }
+        }
       }
     }
   }`,
@@ -184,11 +384,96 @@ async function captureShared() {
   })
 }
 
-async function captureDtf(dtf: RegistryDTF) {
+// Read the folio's on-chain basket shape (totalAssets), supply and decimals via
+// a live RPC. These feed the RPC mock's address-specific eth_call overrides so
+// the SDK's off-chain basket derivation (which reads totalAssets) resolves to a
+// real, non-empty basket. bigints are hex-encoded as strings.
+async function captureChainState(dtf: RegistryDTF) {
+  const addr = dtf.address.toLowerCase()
+  const dir = dtf.snapshotDir
+  const rpcUrl = PUBLIC_RPC[dtf.chainId]
+  if (!rpcUrl) throw new Error(`No public RPC for chain ${dtf.chainId}`)
+
+  await tryCapture('chain-state', async () => {
+    const client = createPublicClient({ transport: http(rpcUrl) })
+    const contract = { address: dtf.address as Address, abi: FOLIO_ABI } as const
+    const [assets, totalSupply, decimals, version] = await Promise.all([
+      client.readContract({ ...contract, functionName: 'totalAssets' }),
+      client.readContract({ ...contract, functionName: 'totalSupply' }),
+      client.readContract({ ...contract, functionName: 'decimals' }),
+      client.readContract({ ...contract, functionName: 'version' }),
+    ])
+    const [tokens, amounts] = assets as readonly [readonly Address[], readonly bigint[]]
+
+    // Basket-token metadata, mirroring the SDK's getTokensData multicall.
+    const meta = await client.multicall({
+      // Canonical Multicall3, same address on eth/base/bsc (chain not configured
+      // on this ad-hoc client, so viem can't infer it).
+      multicallAddress: '0xcA11bde05977b3631167028862bE2a173976CA11',
+      allowFailure: false,
+      contracts: tokens.flatMap((address) => [
+        { address, abi: ERC20_META_ABI, functionName: 'name' } as const,
+        { address, abi: ERC20_META_ABI, functionName: 'symbol' } as const,
+        { address, abi: ERC20_META_ABI, functionName: 'decimals' } as const,
+      ]),
+    })
+    const basketTokens = tokens.map((address, i) => ({
+      address: address.toLowerCase(),
+      name: meta[i * 3] as string,
+      symbol: meta[i * 3 + 1] as string,
+      decimals: Number(meta[i * 3 + 2]),
+    }))
+
+    const data = {
+      totalAssets: {
+        tokens: tokens.map((t) => t.toLowerCase()),
+        amounts: amounts.map((a) => '0x' + a.toString(16)),
+      },
+      totalSupply: '0x' + (totalSupply as bigint).toString(16),
+      decimals: Number(decimals),
+      version: version as string,
+      basketTokens,
+    }
+    saveSnapshot(`${dir}/chain-state.json`, rpcUrl, data, { dtf: addr, chainId: dtf.chainId })
+  })
+}
+
+// Re-capture only the SDK-shaped GetIndexDTF subgraph payload for one DTF.
+async function captureDtfSubgraph(
+  dtf: RegistryDTF
+): Promise<{ dtf?: Record<string, unknown> } | undefined> {
+  const addr = dtf.address.toLowerCase()
+  const dir = dtf.snapshotDir
+  return tryCapture('dtf', async () => {
+    const data = (await fetchSubgraph(dtf.chainId, QUERIES.getDTF, { id: addr })) as {
+      dtf?: Record<string, unknown>
+    } | null
+    saveSnapshot(`${dir}/dtf.json`, subgraphUrlFor(dtf.chainId)!, data, {
+      dtf: addr,
+      chainId: dtf.chainId,
+      query: 'GetIndexDTF',
+    })
+    return data ?? undefined
+  })
+}
+
+async function captureDtf(dtf: RegistryDTF, only?: OnlyMode) {
   const dir = dtf.snapshotDir
   const addr = dtf.address.toLowerCase()
   const chainId = dtf.chainId
   console.log(`\n${dtf.slug.toUpperCase()} (${dtf.chain}, ${addr}):`)
+
+  // Targeted modes touch ONLY dtf.json / chain-state.json — never the
+  // proposal/governance/historical snapshots flow specs depend on.
+  if (only === 'chain') {
+    await captureChainState(dtf)
+    return
+  }
+  if (only === 'dtf') {
+    await captureDtfSubgraph(dtf)
+    await captureChainState(dtf)
+    return
+  }
 
   const currentPrice = await tryCapture('current-price', async () => {
     const url = `${RESERVE_API}/current/dtf?address=${addr}&chainId=${chainId}`
@@ -233,13 +518,8 @@ async function captureDtf(dtf: RegistryDTF) {
     saveSnapshot(`${dir}/token-prices.json`, url, await fetchApi(url), { dtf: addr, chainId })
   })
 
-  const dtfData = await tryCapture('dtf', async () => {
-    const data = (await fetchSubgraph(chainId, QUERIES.getDTF, { id: addr })) as {
-      dtf?: Record<string, unknown>
-    } | null
-    saveSnapshot(`${dir}/dtf.json`, subgraphUrlFor(chainId)!, data, { dtf: addr, chainId, query: 'getDTF' })
-    return data
-  })
+  const dtfData = await captureDtfSubgraph(dtf)
+  await captureChainState(dtf)
 
   await tryCapture('transfer-events', async () => {
     const data = await fetchSubgraph(chainId, QUERIES.getTransferEvents, { dtf: addr })
@@ -287,6 +567,17 @@ async function captureDtf(dtf: RegistryDTF) {
 }
 
 async function main() {
+  const only = parseOnly()
+  if (only) {
+    // Targeted refresh: dtf.json (+ chain-state) or chain-state only. Leaves the
+    // shared/proposal/governance/historical snapshots untouched (and _meta's
+    // capturedAt, so e2e:check freshness still reflects the last FULL capture).
+    console.log(`Targeted capture (--only=${only})...`)
+    for (const dtf of REGISTRY) await captureDtf(dtf, only)
+    console.log('\nDone. Snapshots in e2e/snapshots/')
+    return
+  }
+
   console.log('Capturing e2e snapshots from production...')
   await captureShared()
   for (const dtf of REGISTRY) await captureDtf(dtf)

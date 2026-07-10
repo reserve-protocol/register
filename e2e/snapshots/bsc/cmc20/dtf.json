@@ -1,10 +1,10 @@
 {
   "_meta": {
     "source": "https://api.goldsky.com/api/public/project_cmgzim3e100095np2gjnbh6ry/subgraphs/dtf-index-bsc/prod/gn",
-    "capturedAt": "2026-07-09T21:47:29.229Z",
+    "capturedAt": "2026-07-10T00:20:54.277Z",
     "dtf": "0x2f8a339b5889ffac4c5a956787cda593b3c36867",
     "chainId": 56,
-    "query": "getDTF"
+    "query": "GetIndexDTF"
   },
   "data": {
     "dtf": {
@@ -13,6 +13,9 @@
       "timestamp": "1761830972",
       "deployer": "0x89e68b97466c65e215c0b13de256188867f358ae",
       "ownerAddress": "0x6d44e530f298ddea2ef69af60d54150d563415d7",
+      "admins": [
+        "0x6d44e530f298ddea2ef69af60d54150d563415d7"
+      ],
       "mintingFee": "3000000000000000",
       "tvlFee": "95272355",
       "annualizedTvlFee": "3000000000000000",
@@ -34,18 +37,28 @@
       "governanceRevenue": "68959408179707162713",
       "externalRevenue": "855096661428367221244",
       "feeRecipients": "0x1d60bbbef79fb9540d271dbb01925380323a8f66:74626865671641780,0x51292ffb1f70b26b771ff3f410db18e3e2c450d7:850746268656716300,0xede6a014caa31e23e9d8c345c022101477a91292:74626865671641920",
-      "legacyAdmins": [
-        "0x5bed18aca50e6057e6658fe8498004092eedcdcf",
-        "0xe8e67a366e5166c442b6d376adc772b93cde7825"
-      ],
-      "legacyAuctionApprovers": [],
+      "bidsEnabled": true,
+      "trustedFillerRegistry": "0x08424d7c52bf9edd4070701591ea3fe6dca6449b",
+      "trustedFillerEnabled": true,
+      "weightControl": false,
+      "priceControl": 1,
       "ownerGovernance": {
         "id": "0x6304135c135da8553d66b0065c8a7c3b0d16c1e8",
+        "name": "Reserve Folio Governor",
+        "version": "1",
         "votingDelay": "172800",
         "votingPeriod": "259200",
         "proposalThreshold": "10000000000000000",
+        "quorumVotes": "23361996715448969308779524",
         "quorumNumerator": "100000000000000000",
         "quorumDenominator": "1000000000000000000",
+        "isOptimistic": false,
+        "optimisticVetoDelay": null,
+        "optimisticVetoPeriod": null,
+        "optimisticVetoThreshold": null,
+        "optimisticProposalThrottleCapacity": null,
+        "optimisticSelectorRegistry": null,
+        "optimisticProposers": [],
         "timelock": {
           "id": "0x6d44e530f298ddea2ef69af60d54150d563415d7",
           "guardians": [
@@ -53,16 +66,32 @@
             "0x7f7bf1d0b4bb7395bb68e99e20c732f3aefffe47",
             "0xf49bca9c5119e340e01af83e452f0a27a5321898"
           ],
-          "executionDelay": "172800"
+          "optimisticProposers": [],
+          "executionDelay": "172800",
+          "type": "OWNER"
         }
       },
+      "legacyAdmins": [
+        "0x5bed18aca50e6057e6658fe8498004092eedcdcf",
+        "0xe8e67a366e5166c442b6d376adc772b93cde7825"
+      ],
       "tradingGovernance": {
         "id": "0x12940889e849012c633f47ba8925bbee4ee96d45",
+        "name": "Reserve Folio Governor",
+        "version": "1",
         "votingDelay": "7200",
         "votingPeriod": "79200",
         "proposalThreshold": "1000000000000000",
+        "quorumVotes": "19859755481775234919699342",
         "quorumNumerator": "100000000000000000",
         "quorumDenominator": "1000000000000000000",
+        "isOptimistic": false,
+        "optimisticVetoDelay": null,
+        "optimisticVetoPeriod": null,
+        "optimisticVetoThreshold": null,
+        "optimisticProposalThrottleCapacity": null,
+        "optimisticSelectorRegistry": null,
+        "optimisticProposers": [],
         "timelock": {
           "id": "0x0fec839eba2e311daf16663cc367c77473bbf728",
           "guardians": [
@@ -70,25 +99,50 @@
             "0x7f7bf1d0b4bb7395bb68e99e20c732f3aefffe47",
             "0xf49bca9c5119e340e01af83e452f0a27a5321898"
           ],
-          "executionDelay": "86400"
+          "optimisticProposers": [],
+          "executionDelay": "86400",
+          "type": "TRADING"
         }
       },
+      "legacyAuctionApprovers": [],
       "token": {
         "id": "0x2f8a339b5889ffac4c5a956787cda593b3c36867",
+        "address": "0x2f8a339b5889ffac4c5a956787cda593b3c36867",
         "name": "CoinMarketCap 20 Index DTF",
         "symbol": "CMC20",
         "decimals": 18,
-        "totalSupply": "47600055807171812621514",
-        "currentHolderCount": "38533"
+        "totalSupply": "47611816523363371995607",
+        "currentHolderCount": "38533",
+        "cumulativeHolderCount": "67249",
+        "transferCount": "1233972",
+        "mintCount": "38142",
+        "burnCount": "32518",
+        "totalBurned": "376446948339742997764917",
+        "totalMinted": "424058764863106369760524"
       },
       "stToken": {
         "id": "0xede6a014caa31e23e9d8c345c022101477a91292",
         "token": {
+          "id": "0xede6a014caa31e23e9d8c345c022101477a91292",
+          "address": "0xede6a014caa31e23e9d8c345c022101477a91292",
           "name": "Vote Lock vlRSR-CMCindex",
           "symbol": "vlRSR-CMCindex",
           "decimals": 18,
-          "totalSupply": "164108060448885195944799253"
+          "totalSupply": "164108060448885195944799253",
+          "currentHolderCount": "153",
+          "cumulativeHolderCount": "186",
+          "transferCount": "156",
+          "mintCount": "262",
+          "burnCount": "35",
+          "totalBurned": "182451259093914653483938723",
+          "totalMinted": "346559319542799849428737976"
         },
+        "currentDelegates": "37",
+        "totalDelegates": "65",
+        "delegatedVotesRaw": "162124619680208808880613813",
+        "currentOptimisticDelegates": "0",
+        "totalOptimisticDelegates": "0",
+        "optimisticDelegatedVotesRaw": "0",
         "underlying": {
           "name": "Reserve Rights",
           "symbol": "RSR",
@@ -97,11 +151,21 @@
         },
         "governance": {
           "id": "0x3d047abc5b95bc9989904c557789c1bcf3057d99",
+          "name": "Reserve Folio Governor",
+          "version": "1",
           "votingDelay": "172800",
           "votingPeriod": "259200",
           "proposalThreshold": "10000000000000000",
+          "quorumVotes": "100000000000000000000",
           "quorumNumerator": "100000000000000000",
           "quorumDenominator": "1000000000000000000",
+          "isOptimistic": false,
+          "optimisticVetoDelay": null,
+          "optimisticVetoPeriod": null,
+          "optimisticVetoThreshold": null,
+          "optimisticProposalThrottleCapacity": null,
+          "optimisticSelectorRegistry": null,
+          "optimisticProposers": [],
           "timelock": {
             "id": "0x1a30fa4a274e08cc537a589a7669ab8fe564163a",
             "guardians": [
@@ -109,7 +173,9 @@
               "0x7f7bf1d0b4bb7395bb68e99e20c732f3aefffe47",
               "0xf49bca9c5119e340e01af83e452f0a27a5321898"
             ],
-            "executionDelay": "172800"
+            "optimisticProposers": [],
+            "executionDelay": "172800",
+            "type": "VOTE_LOCKING"
           }
         },
         "legacyGovernance": [

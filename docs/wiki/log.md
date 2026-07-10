@@ -1,6 +1,6 @@
 ---
 title: Log
-updated: 2026-07-08
+updated: 2026-07-09
 type: log
 ---
 
@@ -68,3 +68,6 @@ Append-only chronological record: lessons, corrections, friction. Newest section
 - Featured YTD stage (cross-repo): homepage featured now matches the overview default — reserve-api `discover/featured` serves `ytd` + daily grid, priceChange first-vs-last finite daily point, no live append; equal by construction to the overview's (penultimate−first)/first because both hit the same `historical_dtf_price` generate_series grid and the overview skips its synthetic now-point. Order server-driven via `FEATURED_TOKENS` (BUILDOUT, POWER, PHOTON, NEOCLOUD, ROBOTS); marquee sorted weight-desc at the client choke point (covers both the featured payload AND the SDK exposure route feeding the photon animation) plus server-side in `groupExposure`. `/dtf/daos` re-sourced from dtf-catalog (active only, Arbitrum-guarded) — the folio-manager brand table lagged new launches; dead `getVisibleFolios` deleted. Dark verified parity end-to-end; adopted from review: cached-rejected-catalog-import reset (one transient failure used to 500 discover+daos until restart), the Arbitrum guard the test already asserted, YTD label fallback. Expected homepage YTD once deployed: BUILDOUT +68.39, POWER +36.94, PHOTON +84.04, NEOCLOUD +57.02, ROBOTS −2.44 (staging 2026-07-08).
 - Overview loading-shift sweep (QA): the worst shift was NOT a skeleton gap — `indexDTFBrandAtom` is written twice (SDK payload first, WITHOUT `dtf.video`; folio-manager merge second), so the cover card unmounted and remounted. Fix: `indexDTFBrandExtrasResolvedAtom` gates the cover skeleton until the authoritative read settles, and the SDK write merge-preserves video/files. Balance card now expands once via grid-rows animation, gated on balance + USD value + PnL all settled (`useWeekAgoPnl` returns `{ pnl, isResolved }`). Cover video cross-fades with its skeleton underlay. Note: the container updater changes are shared machinery — engineer eyes on `index-dtf-container.tsx` when reviewing the push.
 
+## 2026-07-09
+
+- Codex audited the E2E suite against the complete non-Yield SDK migration plan. Architecture approved; trust blockers and the flow-by-flow acceptance contract are now in [[e2e]]. Highest-value findings: enforce a real outbound-network allowlist, make snapshot capture atomic/per-file fresh, run against the exact paired SDK versions, match mocks on request identity, fail unknown calls in committed flows, capture/assert every submitted transaction, and add v1/v4/v5/v6 coverage or explicit product gates. Workflow scope correctly surfaced the active debug specs/logging; no kit change justified because Phase 2 is intentionally mid-debug.

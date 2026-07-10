@@ -8,6 +8,8 @@ import {
 } from 'viem'
 import type { UnmockedLogger } from './logger'
 import type { MockOverrides } from './overrides'
+import { REGISTRY } from './registry'
+import { loadSnapshot, snapshotExists } from './snapshots'
 
 // Glob patterns for every RPC host wagmi/viem may hit (mirrors registerRpcUrls
 // in src/utils/rpc-urls.ts). Patterns match domain-only URLs too, so we use
@@ -51,11 +53,91 @@ const ZERO_RETURN: Hex = ('0x' + '0'.repeat(192)) as Hex
 const FOLIO_VERSION: Hex = encodeAbiParameters([{ type: 'string' }], ['5.0.0'])
 
 // folio.totalAssets() returns (address[], uint256[]); empty arrays keep basket
-// reads well-formed (the vote flow doesn't need real balances).
+// reads well-formed (the vote flow doesn't need real balances). Registry DTFs
+// override this per-address with real basket data (see seedChainState).
 const EMPTY_ASSETS: Hex = encodeAbiParameters(
   [{ type: 'address[]' }, { type: 'uint256[]' }],
   [[], []]
 )
+
+// Properly ABI-encoded EMPTY address[] — a real dynamic-array head (offset 0x20,
+// length 0), NOT ZERO_RETURN (whose leading word is an invalid array offset).
+const EMPTY_ADDRESS_ARRAY: Hex = encodeAbiParameters([{ type: 'address[]' }], [[]])
+
+// folio.getRebalance() v5 output tuple, idle (no active rebalance): nonce 0, no
+// tokens, zero limits/timestamps, bids off. Keeps the auctions "idle" state from
+// logging an unmocked read. Tuple shape copied verbatim from the viem-validated
+// GET_REBALANCE_ABI in e2e/tests/flows/auctions.spec.ts.
+const GET_REBALANCE_ABI = [
+  {
+    type: 'function',
+    name: 'getRebalance',
+    stateMutability: 'view',
+    inputs: [],
+    outputs: [
+      { name: 'nonce', type: 'uint256' },
+      { name: 'priceControl', type: 'uint8' },
+      {
+        name: 'tokens',
+        type: 'tuple[]',
+        components: [
+          { name: 'token', type: 'address' },
+          {
+            name: 'weight',
+            type: 'tuple',
+            components: [
+              { name: 'low', type: 'uint256' },
+              { name: 'spot', type: 'uint256' },
+              { name: 'high', type: 'uint256' },
+            ],
+          },
+          {
+            name: 'price',
+            type: 'tuple',
+            components: [
+              { name: 'low', type: 'uint256' },
+              { name: 'high', type: 'uint256' },
+            ],
+          },
+          { name: 'maxAuctionSize', type: 'uint256' },
+          { name: 'inRebalance', type: 'bool' },
+        ],
+      },
+      {
+        name: 'limits',
+        type: 'tuple',
+        components: [
+          { name: 'low', type: 'uint256' },
+          { name: 'spot', type: 'uint256' },
+          { name: 'high', type: 'uint256' },
+        ],
+      },
+      {
+        name: 'timestamps',
+        type: 'tuple',
+        components: [
+          { name: 'startedAt', type: 'uint256' },
+          { name: 'restrictedUntil', type: 'uint256' },
+          { name: 'availableUntil', type: 'uint256' },
+        ],
+      },
+      { name: 'bidsEnabled_', type: 'bool' },
+    ],
+  },
+] as const
+
+const IDLE_REBALANCE: Hex = encodeFunctionResult({
+  abi: GET_REBALANCE_ABI,
+  functionName: 'getRebalance',
+  result: [
+    0n,
+    0,
+    [],
+    { low: 0n, spot: 0n, high: 0n },
+    { startedAt: 0n, restrictedUntil: 0n, availableUntil: 0n },
+    false,
+  ],
+})
 
 // Multicall3.getEthBalance(address) — mirror the 100 ETH eth_getBalance answers.
 const ETH_BALANCE: Hex = encodeAbiParameters([{ type: 'uint256' }], [100n * 10n ** 18n])
@@ -72,15 +154,87 @@ const callOverrides: Record<string, Hex> = {
   // castVote(uint256,uint8) returns the weight cast — non-zero so
   // useSimulateContract succeeds and the vote button becomes ready.
   '*:0x56781388': VOTING_POWER,
-  '*:0x54fd4d50': FOLIO_VERSION, // version()
-  '*:0x01e1d114': EMPTY_ASSETS, // totalAssets()
+  // version() fallback for NON-registry addresses only — protocol version is
+  // per-DTF and version-gates write ABIs, so registry folios get their real
+  // on-chain version via an address-specific chain-state override.
+  '*:0x54fd4d50': FOLIO_VERSION,
+  '*:0x01e1d114': EMPTY_ASSETS, // totalAssets() — registry DTFs get real baskets (chain-state)
   '*:0x70a08231': ZERO_RETURN, // balanceOf(address) — folio/wallet token balances
   '*:0x4d2301cc': ETH_BALANCE, // Multicall3.getEthBalance(address)
+  '*:0xaa3b5568': IDLE_REBALANCE, // getRebalance() — no active rebalance by default
   // Fee-display reads on the DTF container (peripheral to governance). A DTF
   // with no DAO fee registry reads as fee-free — a valid, deterministic state.
   '*:0x9980cb23': ZERO_RETURN, // daoFeeRegistry() → zero address
   '*:0x23409f42': ZERO_RETURN, // getFeeDetails() on the (zero) fee registry
   '*:0xb7d6ca64': ZERO_RETURN, // native-token fee/price probe on the eEeE… sentinel
+  // Settings-page reads on the staking vault / DTF (surfaced by settings.spec).
+  '*:0x490c98f5': ZERO_RETURN, // tokenJar() → zero address
+  '*:0x12edb24c': EMPTY_ADDRESS_ARRAY, // getAllRewardTokens() → empty
+  '*:0x834e630f': ZERO_RETURN, // getPendingFeeShares() → 0
+}
+
+// --- Chain-state seeding ---
+// Address-specific answers for every registry DTF, captured live by
+// `pnpm e2e:capture --only=chain` into snapshots/<chain>/<slug>/chain-state.json:
+// the folio's real basket (totalAssets), supply, decimals and protocol version,
+// plus name/symbol/decimals for each basket token (the SDK's getBasket runs a
+// metadata multicall over the basket after totalAssets). Loaded lazily once —
+// per-test overrides still beat these, these beat the `*:` wildcards.
+
+interface ChainState {
+  totalAssets: { tokens: string[]; amounts: string[] }
+  totalSupply: string
+  decimals: number
+  version: string
+  basketTokens: Array<{ address: string; name: string; symbol: string; decimals: number }>
+}
+
+const SELECTOR = {
+  totalAssets: '0x01e1d114',
+  totalSupply: '0x18160ddd',
+  decimals: '0x313ce567',
+  version: '0x54fd4d50',
+  name: '0x06fdde03',
+  symbol: '0x95d89b41',
+} as const
+
+let chainStateSeeded = false
+function seedChainState() {
+  if (chainStateSeeded) return
+  chainStateSeeded = true
+  for (const dtf of REGISTRY) {
+    const path = `${dtf.snapshotDir}/chain-state.json`
+    if (!snapshotExists(path)) continue
+    const state = loadSnapshot<ChainState>(path)
+    const addr = dtf.address.toLowerCase()
+    callOverrides[`${addr}:${SELECTOR.totalAssets}`] = encodeAbiParameters(
+      [{ type: 'address[]' }, { type: 'uint256[]' }],
+      [state.totalAssets.tokens as Hex[], state.totalAssets.amounts.map(BigInt)]
+    )
+    callOverrides[`${addr}:${SELECTOR.totalSupply}`] = encodeAbiParameters(
+      [{ type: 'uint256' }],
+      [BigInt(state.totalSupply)]
+    )
+    // uint8 occupies the same 32-byte word as uint256 — encode as uint256 so
+    // viem's types accept a bigint.
+    callOverrides[`${addr}:${SELECTOR.decimals}`] = encodeAbiParameters(
+      [{ type: 'uint256' }],
+      [BigInt(state.decimals)]
+    )
+    callOverrides[`${addr}:${SELECTOR.version}`] = encodeAbiParameters(
+      [{ type: 'string' }],
+      [state.version]
+    )
+    for (const token of state.basketTokens) {
+      const tokenAddr = token.address.toLowerCase()
+      callOverrides[`${tokenAddr}:${SELECTOR.name}`] = encodeAbiParameters([{ type: 'string' }], [token.name])
+      callOverrides[`${tokenAddr}:${SELECTOR.symbol}`] = encodeAbiParameters([{ type: 'string' }], [token.symbol])
+      callOverrides[`${tokenAddr}:${SELECTOR.decimals}`] = encodeAbiParameters(
+        [{ type: 'uint256' }],
+        [BigInt(token.decimals)]
+      )
+    }
+  }
 }
 
 // Chainlink AggregatorV3.latestRoundData() selector. Feeds are read all over the
@@ -130,6 +284,7 @@ function selectorOf(data: string): string {
 }
 
 function lookupOverride(to: string, data: string): Hex | undefined {
+  seedChainState()
   const selector = selectorOf(data)
   const addr = to.toLowerCase()
   return callOverrides[`${addr}:${selector}`] ?? callOverrides[`*:${selector}`]

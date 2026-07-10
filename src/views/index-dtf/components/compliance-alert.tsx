@@ -11,6 +11,7 @@ const ComplianceAlert = ({ className }: { className?: string }) => {
   return (
     <Alert
       variant="destructive"
+      data-testid="compliance-alert"
       className={cn('rounded-3xl mb-4 text-sm sm:w-[420px] mx-auto', className)}
     >
       <AlertTitle>{data.title}</AlertTitle>

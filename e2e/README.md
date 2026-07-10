@@ -11,8 +11,17 @@ pnpm e2e:smoke     # fast @smoke set, offline, chromium (boots dev server on :30
 pnpm e2e           # full suite (all non-@smoke specs)
 pnpm e2e:ui        # Playwright UI mode
 pnpm e2e:capture   # refresh snapshots from live prod
+pnpm e2e:capture --only=dtf    # ONLY dtf.json + chain-state.json per DTF
+pnpm e2e:capture --only=chain  # ONLY chain-state.json (live RPC reads)
 pnpm e2e:check     # snapshot structure + staleness gate (hard-fails >45 days)
 ```
+
+Use the `--only` modes after an SDK bump: they refresh the SDK-shaped
+`GetIndexDTF` payload and the on-chain basket reads WITHOUT churning the
+proposal/governance/historical snapshots that committed flow specs pin to.
+`tests/smoke/dtf-data.spec.ts` is the canary — it fails when the captured
+dtf.json shape drifts from the installed SDK's `GetIndexDtfDocument` (the
+query is copied verbatim into `scripts/capture.ts`; the SDK doesn't export it).
 
 The dev server is reused if already running on :3005; first run boots it (~20s).
 Never uses :3000 — that's the human's dev server.
@@ -26,6 +35,13 @@ One auto fixture (`fixtures/base.ts`) installs every boundary on each test:
   hand-rolled). `eth_call` answers from a per-`(address, selector)` override table
   (seeded: getVotes → voting power; Chainlink `latestRoundData` → fresh price);
   unknown reads return zero-words **and log** `[E2E] unmocked eth_call`.
+  Registry DTFs additionally get address-specific answers seeded from
+  `snapshots/<chain>/<slug>/chain-state.json` (captured live): real
+  `totalAssets()` basket, `totalSupply`, `decimals`, the folio's actual
+  protocol `version()` (v4 vs v5 gates write ABIs), and `name/symbol/decimals`
+  for every basket token — this is what makes the SDK's basket derivation
+  (and the overview's data layer) resolve offline. Precedence: per-test
+  `overrides.ethCall` > address-specific > `*:` wildcard > fail-loud zero.
 - **`helpers/subgraph.ts`** — Goldsky, dispatched by GraphQL `operationName`
   (body-substring fallback), snapshot-backed per DTF. Yield subgraph → empty shape.
 - **`helpers/api.ts`** — api.reserve.org by pathname, snapshot-backed per DTF.

@@ -105,6 +105,7 @@ const HomepageHero = () => {
     <div
       ref={stageRef}
       style={stageStyle}
+      data-testid="home-hero"
       className={cn(
         'relative h-auto rounded-4xl',
         'lg:mx-2',

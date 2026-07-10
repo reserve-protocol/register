@@ -1,0 +1,85 @@
+{
+  "_meta": {
+    "source": "https://base-rpc.publicnode.com",
+    "capturedAt": "2026-07-10T02:58:34.556Z",
+    "dtf": "0x4da9a0f397db1397902070f93a4d6ddbc0e0e6e8",
+    "chainId": 8453
+  },
+  "data": {
+    "totalAssets": {
+      "tokens": [
+        "0xcbb7c0000ab88b473b1f5afd9ef808440eed33bf",
+        "0x4200000000000000000000000000000000000006",
+        "0x2615a94df961278dcbc41fb0a54fec5f10a693ae",
+        "0x9b8df6e244526ab5f6e6400d331db28c8fdddb55",
+        "0x12e96c2bfea6e835cf8dd38a5834fa61cf723736",
+        "0xa3a34a0d9a08ccddb6ed422ac0a28a06731335aa",
+        "0x378c326a472915d38b2d8d41e1345987835fab64",
+        "0x15d0e0c55a3e7ee67152ad7e89acf164253ff68d"
+      ],
+      "amounts": [
+        "0x55aeded5",
+        "0xdc2d6df7050a4a92c",
+        "0x3793bbff4f40c17f8fcb",
+        "0x90b7f6bf86023e62a8",
+        "0x8f651c7c6c693f003f0c",
+        "0x2731b32d15ff97df6f9b",
+        "0x1af48ea990d234743d9b",
+        "0x96566d2cf60872d04b"
+      ]
+    },
+    "totalSupply": "0x5551350a2ba2eec5ab19",
+    "decimals": 18,
+    "version": "5.0.0",
+    "basketTokens": [
+      {
+        "address": "0xcbb7c0000ab88b473b1f5afd9ef808440eed33bf",
+        "name": "Coinbase Wrapped BTC",
+        "symbol": "cbBTC",
+        "decimals": 8
+      },
+      {
+        "address": "0x4200000000000000000000000000000000000006",
+        "name": "Wrapped Ether",
+        "symbol": "WETH",
+        "decimals": 18
+      },
+      {
+        "address": "0x2615a94df961278dcbc41fb0a54fec5f10a693ae",
+        "name": "XRP (Universal)",
+        "symbol": "uXRP",
+        "decimals": 18
+      },
+      {
+        "address": "0x9b8df6e244526ab5f6e6400d331db28c8fdddb55",
+        "name": "Solana (Universal)",
+        "symbol": "uSOL",
+        "decimals": 18
+      },
+      {
+        "address": "0x12e96c2bfea6e835cf8dd38a5834fa61cf723736",
+        "name": "Dogecoin (Universal)",
+        "symbol": "uDOGE",
+        "decimals": 18
+      },
+      {
+        "address": "0xa3a34a0d9a08ccddb6ed422ac0a28a06731335aa",
+        "name": "Cardano (Universal)",
+        "symbol": "uADA",
+        "decimals": 18
+      },
+      {
+        "address": "0x378c326a472915d38b2d8d41e1345987835fab64",
+        "name": "Stellar (Universal)",
+        "symbol": "uXLM",
+        "decimals": 18
+      },
+      {
+        "address": "0x15d0e0c55a3e7ee67152ad7e89acf164253ff68d",
+        "name": "HYPE",
+        "symbol": "HYPE",
+        "decimals": 18
+      }
+    ]
+  }
+}

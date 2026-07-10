@@ -37,6 +37,7 @@ const DtfTabTrigger = ({ value, icon, title, subtitle }: Tab) => {
   return (
   <TabsTrigger
     value={value}
+    data-testid={`discover-tab-${value}`}
     className={cn(
       'flex items-center justify-center lg:justify-start w-full h-full p-3 lg:py-6 lg:px-8 rounded-full hover:bg-foreground/5',
       'data-[state=active]:text-primary dark:data-[state=active]:text-foreground data-[state=inactive]:text-muted-foreground/ data-[state=inactive]:grayscale'

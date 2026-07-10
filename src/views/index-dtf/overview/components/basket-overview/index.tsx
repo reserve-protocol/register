@@ -104,7 +104,7 @@ const IndexBasketOverview = () => {
   const showViewAll = isMobile && activeCount > MAX_TOKENS
 
   return (
-    <div className="flex flex-col">
+    <div data-testid="overview-basket" className="flex flex-col">
       <div className={cn('sm:px-6 sm:pt-6', !showViewAll && 'sm:pb-6')}>
         <Tabs defaultValue="exposure">
           <div className="px-5 pb-2 pt-5 sm:hidden">

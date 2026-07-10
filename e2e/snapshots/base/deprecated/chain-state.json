@@ -1,0 +1,101 @@
+{
+  "_meta": {
+    "source": "https://base-rpc.publicnode.com",
+    "capturedAt": "2026-07-10T02:58:35.469Z",
+    "dtf": "0x47686106181b3cefe4eaf94c4c10b48ac750370b",
+    "chainId": 8453
+  },
+  "data": {
+    "totalAssets": {
+      "tokens": [
+        "0x4f9fd6be4a90f2620860d680c0d4d5fb53d1a825",
+        "0x1c4cca7c5db003824208adda61bd749e55f463a3",
+        "0x731814e491571a2e9ee3c5b1f7f3b962ee8f4870",
+        "0x55cd6469f597452b5a7536e2cd98fde4c1247ee4",
+        "0x58db197e91bc8cf1587f75850683e4bd0730e6bf",
+        "0x0b3ae50babe7ffa4e1a50569cee6bdefd4ccaee0",
+        "0x98ac5b33a4ef1151f138941c979211599c2ff953",
+        "0xa4a2e2ca3fbfe21aed83471d28b6f65a233c6e00",
+        "0xfac77f01957ed1b3dd1cbea992199b8f85b6e886",
+        "0xc44141a684f6aa4e36cd9264ab55550b03c88643"
+      ],
+      "amounts": [
+        "0xa46c8a9132ff4fd216d",
+        "0xaaaa4082fe123ab5f8f",
+        "0x9c9b11415a1a6b705fe",
+        "0x7c0dbb923d9cdde8d49",
+        "0x81a2cb658d1817d8795",
+        "0xc402129db1fe866c451",
+        "0xb516690f6510272ee3e",
+        "0xa0c3dad6a57df134a63",
+        "0x3c318cbf6b72cc4ccc1",
+        "0x79acf3e085de8c785f4"
+      ]
+    },
+    "totalSupply": "0x56e1c8838b69426f508",
+    "decimals": 18,
+    "version": "4.0.0",
+    "basketTokens": [
+      {
+        "address": "0x4f9fd6be4a90f2620860d680c0d4d5fb53d1a825",
+        "name": "aixbt by Virtuals",
+        "symbol": "AIXBT",
+        "decimals": 18
+      },
+      {
+        "address": "0x1c4cca7c5db003824208adda61bd749e55f463a3",
+        "name": "GAME by Virtuals",
+        "symbol": "GAME",
+        "decimals": 18
+      },
+      {
+        "address": "0x731814e491571a2e9ee3c5b1f7f3b962ee8f4870",
+        "name": "VaderAI by Virtuals",
+        "symbol": "VADER",
+        "decimals": 18
+      },
+      {
+        "address": "0x55cd6469f597452b5a7536e2cd98fde4c1247ee4",
+        "name": "Luna by Virtuals",
+        "symbol": "LUNA",
+        "decimals": 18
+      },
+      {
+        "address": "0x58db197e91bc8cf1587f75850683e4bd0730e6bf",
+        "name": "Axelrod by Virtuals",
+        "symbol": "AXR",
+        "decimals": 18
+      },
+      {
+        "address": "0x0b3ae50babe7ffa4e1a50569cee6bdefd4ccaee0",
+        "name": "717ai by Virtuals",
+        "symbol": "WIRE",
+        "decimals": 18
+      },
+      {
+        "address": "0x98ac5b33a4ef1151f138941c979211599c2ff953",
+        "name": "VPay by Virtuals",
+        "symbol": "VPAY",
+        "decimals": 18
+      },
+      {
+        "address": "0xa4a2e2ca3fbfe21aed83471d28b6f65a233c6e00",
+        "name": "Ribbita by Virtuals",
+        "symbol": "TIBBIR",
+        "decimals": 18
+      },
+      {
+        "address": "0xfac77f01957ed1b3dd1cbea992199b8f85b6e886",
+        "name": "ArAIstotle by Virtuals",
+        "symbol": "FACY",
+        "decimals": 18
+      },
+      {
+        "address": "0xc44141a684f6aa4e36cd9264ab55550b03c88643",
+        "name": "Ethy AI by Virtuals",
+        "symbol": "ETHY",
+        "decimals": 18
+      }
+    ]
+  }
+}

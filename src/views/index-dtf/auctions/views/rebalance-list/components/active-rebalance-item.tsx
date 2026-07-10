@@ -71,6 +71,7 @@ const ActiveRebalanceItem = ({ rebalance }: ActiveRebalanceItemProps) => {
     <div
       className="bg-card rounded-3xl cursor-pointer"
       role="button"
+      data-testid="auctions-active-item"
       onClick={() => navigate(`rebalance/${rebalance.proposal.id}`)}
     >
       <Header

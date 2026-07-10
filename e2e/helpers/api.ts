@@ -44,13 +44,27 @@ function dtfFromParam(url: URL, param: string) {
 export async function mockApiRoutes(page: Page, options: ApiMockOptions) {
   const { log, geolocation, overrides } = options
 
-  await page.route('**/api.reserve.org/**', (route) => {
+  const handler = (route: Parameters<Parameters<Page['route']>[1]>[0]) => {
     const url = new URL(route.request().url())
     const path = url.pathname // e.g. /discover/dtfs, /v2/compliance/geolocation
 
     // Per-test overlay wins over snapshots — matched by pathname substring.
     const overlaid = overrides?.lookupApi(path)
     if (overlaid !== undefined) return json(route, overlaid)
+
+    // Per-DTF compliance — MUST match before the generic geolocation branch
+    // (same path prefix). useDTFRestricted fail-closes to restricted on a bad
+    // shape, which would spuriously gate every DTF surface. Override per-test
+    // via overrides.api('/v2/compliance/geolocation/dtf/', ...) for restricted
+    // variants (restriction: 'geolocation-restricted' | 'geolocation-prohibited' | 'vpn').
+    if (path.includes('/v2/compliance/geolocation/dtf/')) {
+      return json(route, {
+        country: geolocation.country,
+        countryCode: geolocation.countryCode,
+        restricted: false,
+        restriction: 'none',
+      })
+    }
 
     // Compliance geolocation — unrestricted US by default; fixture-overridable.
     if (path.includes('/v2/compliance/geolocation')) {
@@ -73,6 +87,12 @@ export async function mockApiRoutes(page: Page, options: ApiMockOptions) {
         voteLocks: [],
         rsrBalances: [],
       })
+    }
+
+    // Featured DTFs — src deliberately hits the STAGING host for this
+    // (use-featured-dtfs.ts TODO), which is why the staging host is routed too.
+    if (path.includes('/discover/featured')) {
+      return json(route, loadSnapshot('shared/featured-dtfs.json'))
     }
 
     if (path.includes('/discover/dtf')) {
@@ -115,6 +135,13 @@ export async function mockApiRoutes(page: Page, options: ApiMockOptions) {
       return json(route, {})
     }
 
+    // Ondo tokenized-equity limits — polled by the overview once basket data
+    // resolves. No registry DTF holds Ondo assets, so the empty shape is the
+    // truthful state (and keeps market-paused warnings deterministic).
+    if (path.includes('/dtf/ondo')) {
+      return json(route, { market: null, assets: [] })
+    }
+
     if (path.includes('/historical/dtf')) {
       const dtf = dtfFromParam(url, 'address')
       if (dtf && snapshotExists(`${dtf.snapshotDir}/historical-price.json`)) {
@@ -153,7 +180,18 @@ export async function mockApiRoutes(page: Page, options: ApiMockOptions) {
       return json(route, {})
     }
 
+    // Rebalance metrics (historical MetricsRow) — empty by default; auctions
+    // specs overlay real payloads per-test via overrides.api.
+    if (path.includes('/dtf/rebalance')) {
+      return json(route, [])
+    }
+
     log('unmocked reserve-api', { path })
     return json(route, { error: 'unmocked reserve-api endpoint', path }, 500)
-  })
+  }
+
+  await page.route('**/api.reserve.org/**', handler)
+  // The glob above can't match the staging host (no `api.reserve.org` substring)
+  // and src deliberately hits staging for featured DTFs — route it explicitly.
+  await page.route('**/api-staging.reserve.org/**', handler)
 }

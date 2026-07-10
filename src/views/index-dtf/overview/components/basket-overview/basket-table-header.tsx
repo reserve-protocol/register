@@ -88,6 +88,7 @@ export const BasketTableHeader = ({
           <TabsList className="hidden h-7 rounded-[70px] px-0.5 py-0 sm:inline-flex sm:h-8">
             <TabsTrigger
               value="exposure"
+              data-testid="overview-basket-tab-exposure"
               className="rounded-[60px] px-3 data-[state=active]:text-primary dark:data-[state=active]:text-foreground"
               onClick={() => setActiveTab('exposure')}
             >
@@ -97,6 +98,7 @@ export const BasketTableHeader = ({
             </TabsTrigger>
             <TabsTrigger
               value="collateral"
+              data-testid="overview-basket-tab-collateral"
               className="rounded-[60px] px-3 data-[state=active]:text-primary dark:data-[state=active]:text-foreground"
               onClick={() => setActiveTab('collateral')}
             >

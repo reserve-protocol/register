@@ -7,10 +7,30 @@ import { setMockNow } from './rpc'
 // pinned by combining this with the *Time helpers below, so tests don't rot as
 // snapshots age. Also freezes the Node-side mock time so block/feed timestamps
 // served by the RPC mock agree with the browser's frozen world.
+let frozenMs: number | undefined
+
+// Called by the base fixture at teardown — a stale frozen value would make
+// advanceTime desync the next test's clocks.
+export function resetFrozenTime() {
+  frozenMs = undefined
+}
+
 export async function freezeTime(page: Page, timestampSeconds: number) {
-  await page.clock.install({ time: timestampSeconds * 1000 })
-  await page.clock.pauseAt(timestampSeconds * 1000)
-  setMockNow(timestampSeconds * 1000)
+  frozenMs = timestampSeconds * 1000
+  await page.clock.install({ time: frozenMs })
+  await page.clock.pauseAt(frozenMs)
+  setMockNow(frozenMs)
+}
+
+// Advance BOTH clocks in lockstep. Raw page.clock.runFor() moves only the
+// browser, silently desyncing block/feed timestamps served by the RPC mock —
+// use this everywhere a frozen test pumps timers (Codex audit item 9).
+export async function advanceTime(page: Page, ms: number) {
+  await page.clock.runFor(ms)
+  if (frozenMs !== undefined) {
+    frozenMs += ms
+    setMockNow(frozenMs)
+  }
 }
 
 // A timestamp (seconds) placed inside/around a proposal's voting window, read

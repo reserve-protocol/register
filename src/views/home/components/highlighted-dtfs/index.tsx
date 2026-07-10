@@ -80,6 +80,7 @@ const HighlightedDTFs = ({
   return (
     <section
       ref={viewportRef}
+      data-testid="home-highlighted"
       className={cn(
         'relative min-h-0 overflow-visible lg:overflow-hidden',
         className ?? 'mb-16'

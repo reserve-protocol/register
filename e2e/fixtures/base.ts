@@ -2,6 +2,7 @@ import { test as base } from '@playwright/test'
 import { DEFAULT_GEOLOCATION, mockApiRoutes, type GeolocationStatus } from '../helpers/api'
 import type { UnmockedLogger } from '../helpers/logger'
 import { MockOverrides } from '../helpers/overrides'
+import { resetFrozenTime } from '../helpers/clock'
 import { mockRpcRoutes, setMockNow } from '../helpers/rpc'
 import { mockSubgraphRoutes } from '../helpers/subgraph'
 
@@ -83,6 +84,7 @@ export const test = base.extend<BaseFixtures>({
       // Frozen mock time is a per-worker singleton (set by freezeTime) — reset
       // so it can't leak into the next test.
       setMockNow(undefined)
+      resetFrozenTime()
 
       if (calls.length) {
         await testInfo.attach('unmocked-calls', {

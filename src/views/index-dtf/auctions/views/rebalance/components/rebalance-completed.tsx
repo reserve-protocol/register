@@ -76,7 +76,10 @@ const RebalanceCompleted = () => {
   }, [metrics?.timestamp, t])
 
   return (
-    <div className="bg-secondary rounded-3xl min-w-[350px] sm:min-w-[420px]">
+    <div
+      className="bg-secondary rounded-3xl min-w-[350px] sm:min-w-[420px]"
+      data-testid="auctions-rebalance-completed"
+    >
       {/* Blue header section with gradient - stays in background */}
       <div className="h-56 bg-gradient-to-b from-primary to-primary/70 rounded-3xl relative w-full">
         {/* Back button and title */}
