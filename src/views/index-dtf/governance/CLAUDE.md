@@ -25,8 +25,10 @@ time.
 | Propose flow — DAO settings | `e2e/tests/flows/governance-propose.spec.ts` |
 | Propose flow — fees (dtf-settings) | `e2e/tests/flows/governance-propose-dtf-settings.spec.ts` (fee calldata round-trip) |
 | Propose flow — basket | `e2e/tests/flows/governance-propose-basket.spec.ts` (form + guards; full submit blocked on golden `startRebalance` fixture) |
+| Propose flow — basket-settings (trading-gov params) | `e2e/tests/flows/governance-propose-basket-settings.spec.ts` (setVotingPeriod round-trip; phantom-threshold + empty-guard `test.fixme` pending app fix) |
+| Proposal description markdown/XSS rendering | `e2e/tests/flows/governance-description-render.spec.ts` |
 | Queue/execute CTAs | `e2e/tests/flows/governance-queue-execute.spec.ts` + `flows/failures-governance.spec.ts` |
-| Chain/version-gated behavior | `e2e/tests/flows/governance-multichain.spec.ts` (bsc v5 + mainnet v4) |
+| Chain/version-gated behavior | `e2e/tests/flows/governance-multichain.spec.ts` (bsc v5 + mainnet v4) + `flows/governance-writes-v4.spec.ts` (v4 castVote/queue/execute calldata) |
 | Delegation UI | `e2e/tests/smoke/governance.spec.ts` (delegates section) |
 | Anything in hooks/updaters/atoms here | all of the above: `pnpm exec playwright test --project=full e2e/tests/flows/governance-*.spec.ts` + smoke |
 
@@ -73,10 +75,16 @@ mapper dereferences — serve proposals ONLY through it or the list breaks).
   different governor addresses — assert the tx `to`, not just success.
 - Timelock delay between queue and execute (frozen clock must cross `eta`).
 - Multichain: COVERED for list + PENDING/DEFEATED/EXECUTED states + chain-
-  correct explorer hosts on bsc/cmc20 (v5) and mainnet/open (v4). Still open:
-  v4/v5 WRITE-ABI gates on mainnet (needs a wallet-connected v4 spec), and the
-  rebalance-preview price path on non-lcap chains (central price mock only
-  knows current-basket tokens).
+  correct explorer hosts on bsc/cmc20 (v5) and mainnet/open (v4). v4/v5
+  WRITE-ABI gates on mainnet now COVERED (`governance-writes-v4.spec.ts`:
+  castVote/queue/execute — v4 uses standard OZ selectors, decodes correctly).
+  Still open: rebalance-preview price path on non-lcap chains (central price
+  mock only knows current-basket tokens).
+- Description XSS (`governance-description-render.spec.ts`): `<script>` inert,
+  `onerror`/`javascript:` neutralized, control markdown renders — but raw
+  `<iframe>` RENDERS AND LOADS ITS SRC (attacker-controlled on-chain
+  description → live external frame). BUG, `test.fixme`'d, engineer triage;
+  same renderer in yield governance too (`ProposalMdDescription.tsx` ×2).
 - Validation caveat: zod form bounds (fee min/max etc.) are BYPASSED on
   localhost/dev (`shouldBypassFormValidation`) — the e2e harness cannot
   exercise them; bounds need schema unit tests instead.
@@ -90,6 +98,16 @@ mapper dereferences — serve proposals ONLY through it or the list breaks).
   subgraph. Don't "fix" a test by moving live state into the subgraph mock.
 - ERC-6372 `clock()` is mocked (timestamp mode); governor deadline math
   breaks silently if a new read bypasses the frozen clock.
+- KNOWN APP BUG (`propose-basket-settings/updater.tsx`): the threshold
+  change-detector seeds the field from the already-percentage
+  `proposalThreshold` (identity `proposalThresholdToPercentage`) but compares
+  it against `Number(proposalThreshold) / 1e18` — never equal, so EVERY
+  basket-settings proposal appends a phantom `setProposalThreshold` calldata
+  and the empty-change guard never trips. Two tests `test.fixme`'d until fixed.
+- Wallet-connected MAINNET specs need mainnet ZAP_TOKENS `balanceOf` +
+  `/current/prices` seeding — the central mock only seeds base/bsc, so a
+  connected mainnet spec fails teardown without per-test `overrides.ethCall`/
+  `overrides.api` (promote to `rpc.ts`/`api.ts` when mainnet writes grow).
 
 Engineer review is required for behavior changes here (repo stop-condition
 surface) — tests passing is not sign-off.

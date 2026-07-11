@@ -103,9 +103,13 @@ Covered (compliance, `compliance-surfaces.spec.ts`): `geolocation-prohibited`
 + `vpn` gate manual MINT inputs while redeem stays open; overview + governance
 stay fully functional under restriction (over-block guard).
 
-Not covered — **planned**: deprecated-DTF redeem-only UX (`sellOnly` prop is
-set but unexercised); the widget's low-liquidity checkbox variant (distinct
-from the impact gate; needs a deepLiquidity-flagged capture).
+Covered (`issuance-deprecated.spec.ts`): deprecated-DTF redeem-only UX on
+base/deprecated VTF — `sellOnly` forces the sell tab active, disables buy,
+a forced buy-tab click does not switch panels, no mint submittable (txLog
+empty); redeem stays interactive.
+
+Not covered — **planned**: the widget's low-liquidity checkbox variant
+(distinct from the impact gate; needs a deepLiquidity-flagged capture).
 
 Not covered — **deferred (engineer review)**: the automated async-mint wizard
 entirely (no testids yet; CoW lifecycle) — a missing async-mint test is a

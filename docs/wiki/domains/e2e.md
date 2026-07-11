@@ -115,4 +115,35 @@ auction launch/bid, async-mint wizard, manage/factsheet, legacy v2 auctions,
 wallet disconnect mid-flow. Validation caveat: zod form bounds are bypassed on
 localhost/dev, so bounds need schema unit tests, not e2e.
 
-Related: [[project]], [[sdk]].
+## Yield DTF (RToken) plan — blueprint (2026-07-11), not yet built
+
+Feasibility confirmed: yield subgraph reachable, public no-auth RPCs
+(`ethereum-rpc.publicnode.com`, `1rpc.io`) execute `eth_call` — capture needs no
+credentials. Architecture is FUNDAMENTALLY different from Index: yield views
+read almost everything from RPC via vendored ABIs (FacadeRead/FacadeAct, Main,
+StRSR, BasketHandler, RToken, governor), NOT off-chain via the SDK. So the core
+new mechanism is a **record/replay eth_call map** (`address:calldata → return`)
+captured at a pinned block per RToken — do not hand-encode selectors like the
+index chain-state seeding.
+
+Fixtures: eUSD (mainnet `0xA0d69E286B938e21CBf7E51D71F6A4c8918f482F`, active
+staking + rewards) + hyUSD (base `0xCc7FF230365bD730eE4B352cC2492CEdAC49383e`).
+Route shape `/:chain/token/:tokenId/<page>`. Skip arbitrum/KNOX.
+
+Orchestrator-owned seams (additive, serialized, engineer-review): `YIELD_REGISTRY`
++ `rtokenPath` in registry.ts; URL-based index/yield fork (`resolveYieldQuery`)
+in subgraph.ts leaving the index path untouched; record/replay lookup layer +
+`eth_getStorageAt` case + `hasRole`/account wildcards in rpc.ts; extend
+`knownPriceResponse` for yield tokens in api.ts; `captureYieldDtf` +
+`YIELD_DTF_FILES` in the manifest; Tenderly gate in base.ts. Reuse unchanged:
+provider/tx-ledger, overrides (incl. `ethBalance`), `mockZapperRoutes`.
+
+Phases: F (capture eUSD+hyUSD eth_call map + subgraph snapshots + api tokens →
+one overview render smoke green) → S (per-view render smokes: overview,
+issuance, staking, auctions-idle, governance list/detail, settings) → W (flows:
+manual mint `RToken.issue` FIRST — reuses wallet/tx-ledger; then stake RSR with
+draft-queue/`getStorageAt`/time-advance; then vote). Defer: deploy (non-goal),
+redeemCustom (needs undercollateralized fixture), auction/settings writes
+(role-gated + golden simulate fixtures), propose submit (Tenderly), wrap/unwrap.
+
+Related: [[project]], [[sdk]], [[yield-protocol]], [[subgraphs]].
