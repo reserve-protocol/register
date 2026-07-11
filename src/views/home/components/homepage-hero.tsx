@@ -35,7 +35,7 @@ const SubHeader = ({ className }: { className?: string }) => (
     <span className="text-xl font-medium">
       <Trans>Decentralized Token Funds</Trans>
     </span>
-    <DTFExplainerButton
+    {/* <DTFExplainerButton
       className={cn(
         'mt-6 h-9 w-fit rounded-full border-0 bg-transparent px-4 py-0 text-base text-muted-foreground',
         'hover:bg-primary hover:text-background',
@@ -44,7 +44,7 @@ const SubHeader = ({ className }: { className?: string }) => (
     >
       <Play className="mr-1 h-4 w-4 fill-current" />
       <Trans>Watch explainer</Trans>
-    </DTFExplainerButton>
+    </DTFExplainerButton> */}
   </p>
 )
 
