@@ -19,6 +19,7 @@ import {
 import MetricsItem from './metrics-item'
 import SectionAnchor from '@/components/section-anchor'
 import { Trans } from '@lingui/react/macro'
+import usePoolSwaps24hVolume from './index-transaction-table-with-swaps/use-pool-swaps-24h-volume'
 
 const FEES_METRIC_CLASSNAME = 'px-5 py-3 last:pb-5 sm:px-5 sm:py-5'
 
@@ -68,13 +69,15 @@ const MarketCap = () => {
 const TxVolume = () => {
   const transactions = useAtomValue(indexDTFTransactionsAtom)
   const txVolume = useAtomValue(indexDTF24hVolumeAtom)
+  const { volume: swapVolume, isLoading: swapVolumeLoading } =
+    usePoolSwaps24hVolume()
 
   return (
     <MetricsItem
       label={<Trans>24h Volume</Trans>}
-      value={`$${formatCurrency(txVolume, 0)}`}
+      value={`$${formatCurrency(txVolume + swapVolume, 0)}`}
       icon={<ArrowUpDown size={16} />}
-      loading={!transactions.length}
+      loading={!transactions.length || swapVolumeLoading}
       className={FEES_METRIC_CLASSNAME}
     />
   )
