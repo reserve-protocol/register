@@ -88,6 +88,19 @@ export const mapPoolSwapEvents = (
     .sort((a, b) => b.timestamp - a.timestamp)
 }
 
+// Same 24h window (`>` cutoff) and current-price USD approximation as
+// indexDTF24hVolumeAtom, so both halves of the stat share semantics.
+export const compute24hSwapVolumeUsd = (
+  swaps: PoolSwap[],
+  price: number,
+  nowSeconds: number
+): number => {
+  const cutoff = nowSeconds - 24 * 60 * 60
+  return swaps
+    .filter((swap) => swap.timestamp > cutoff)
+    .reduce((acc, swap) => acc + swap.amount * (price || 0), 0)
+}
+
 export const mergeTransactionRows = (
   transactions: Transaction[],
   swaps: PoolSwap[],

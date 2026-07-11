@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { Transaction } from '@/state/dtf/atoms'
 import {
+  compute24hSwapVolumeUsd,
   mapPoolSwapEvents,
   mergeTransactionRows,
   PoolTransferEvent,
@@ -172,5 +173,52 @@ describe('mergeTransactionRows', () => {
 
   it('returns empty when both sources are empty', () => {
     expect(mergeTransactionRows([], [], 1)).toEqual([])
+  })
+})
+
+describe('compute24hSwapVolumeUsd', () => {
+  const NOW = 200_000
+  const DAY = 24 * 60 * 60
+
+  const swapAt = (timestamp: number, amountWei = '2000000000000000000') =>
+    mapPoolSwapEvents(
+      {
+        buys: [
+          event({
+            id: `id-${timestamp}`,
+            hash: `0x${timestamp}`,
+            timestamp: String(timestamp),
+            amount: amountWei,
+          }),
+        ],
+        sells: [],
+      },
+      PM,
+      CHAIN
+    )[0]
+
+  it('returns 0 for no swaps', () => {
+    expect(compute24hSwapVolumeUsd([], 5, NOW)).toBe(0)
+  })
+
+  it('sums only swaps inside the trailing 24h window', () => {
+    const inside = swapAt(NOW - DAY + 1)
+    const atCutoff = swapAt(NOW - DAY)
+    const outside = swapAt(NOW - DAY - 1)
+
+    expect(compute24hSwapVolumeUsd([inside, atCutoff, outside], 5, NOW)).toBe(
+      10
+    )
+  })
+
+  it('sums both directions', () => {
+    const buy = swapAt(NOW - 100)
+    const sell = { ...swapAt(NOW - 50), type: 'Sell' as const }
+
+    expect(compute24hSwapVolumeUsd([buy, sell], 5, NOW)).toBe(20)
+  })
+
+  it('returns 0 without NaN when the price is missing', () => {
+    expect(compute24hSwapVolumeUsd([swapAt(NOW - 100)], 0, NOW)).toBe(0)
   })
 })

@@ -4,15 +4,16 @@ import { request } from 'graphql-request'
 import { hasUniV4PoolSwaps, UNISWAP_V4_POOL_MANAGER } from './constants'
 import { mapPoolSwapEvents, PoolSwapsResponse } from './swap-transactions'
 
-// first: 100 per direction — the swap window can be shorter than the
-// unbounded mint/redeem window on deep table pages; fine for a recent feed.
+// first: 1000 per direction (subgraph max) — a cap, not a fixed size; keeps
+// the 24h volume stat from undercounting on heavy trading days. Beyond that
+// the swap window can be shorter than the unbounded mint/redeem window.
 const poolSwapsQuery = `
   query ($dtf: String!, $pm: String!) {
     buys: transferEvents(
       where: { token: $dtf, type: "TRANSFER", from: $pm }
       orderBy: timestamp
       orderDirection: desc
-      first: 100
+      first: 1000
     ) {
       id
       hash
@@ -29,7 +30,7 @@ const poolSwapsQuery = `
       where: { token: $dtf, type: "TRANSFER", to: $pm }
       orderBy: timestamp
       orderDirection: desc
-      first: 100
+      first: 1000
     ) {
       id
       hash
