@@ -88,25 +88,31 @@ settings/auction write families. Those require new registry fixtures and
 behavior specs rather than looser mocks. Governance, issuance, compliance, and
 transaction-contract edits require engineer review.
 
-## Planned next pass (gap analysis 2026-07-10)
+## Coverage pass 2 (landed 2026-07-10)
 
-Every write flow currently asserts success only — `overrides.transaction`
-(revert/reject) is implemented but unused. Chain skew: flows run base/lcap;
-bsc/cmc20 and mainnet/open (the only v4 path) get only the overview smoke.
-Packages (disjoint new spec files; helpers/fixtures/src stay orchestrator-owned):
+Failure paths (reject + revert) are covered for every write flow — vote/queue/
+execute, mint/redeem, zap buy/sell — and register's error handling proved
+CORRECT (viem marks reverted receipts as query-status error, so success
+branches can't fire); the suite now regression-locks that. Multichain:
+governance states + auctions bucketing run on bsc/cmc20 (v5) and mainnet/open
+(v4) with chain-correct explorer links. Propose: fee-change calldata
+round-trips (UI % → `setTVLFee`/`setMintFee` args), injection + empty-change
+guards; basket propose covers form/guards only. Zap edges: impact ≥5%
+acknowledgment gate (via the `overrides.ethBalance` opt-in), quote-error
+recovery, client-side insufficient-funds (server flag is dead code).
+Compliance: manual-surface gating + over-block guard (overview/governance stay
+open). Three captured edge fixtures (`zap-buy-highimpact`, `zap-buy-
+insufficient`, `zap-error` with real 500) are preserved flow files.
 
-- **A — failure paths (P1)**: revert + user-reject across vote/queue/execute,
-  mint/redeem, zap buy/sell, propose. Existing scaffolding, zero new fixtures.
-- **B — multichain (P1)**: governance list/states + auctions bucketing on
-  bsc/cmc20 and mainnet/open; snapshots already captured.
-- **C — propose breadth (P1→P2)**: dtf-settings/fees (on-snapshot), then
-  basket + basket-settings (needs liquidity/price `overrides.api` payloads).
-- **D — zap + compliance edges (P2)**: high-impact/no-quote/insufficient-
-  balance/low-liquidity states (needs 2 new captured zap snapshots —
-  orchestrator pre-step) + restriction across manual issuance and open surfaces.
-
-Deferred (needs src testids/roles + engineer review): settings distribute-fees
-write, auction launch/bid, async-mint wizard, manage/factsheet, legacy v2
-auctions, wallet disconnect mid-flow.
+Still open, in priority order: golden `startRebalance` calldata fixture to
+unlock full basket-propose submit; v4 write-ABI coverage on mainnet/open
+(wallet-connected); central price mock only knows current-basket tokens
+(blocks rebalance-preview on non-lcap chains); Tenderly simulation model
+(currently gated off per-test); basket-settings (trading-gov params) spec;
+propose-form + error-state testids; centralize the reverted-tx reason re-call.
+Deferred (needs src/roles + engineer review): settings distribute-fees write,
+auction launch/bid, async-mint wizard, manage/factsheet, legacy v2 auctions,
+wallet disconnect mid-flow. Validation caveat: zod form bounds are bypassed on
+localhost/dev, so bounds need schema unit tests, not e2e.
 
 Related: [[project]], [[sdk]].

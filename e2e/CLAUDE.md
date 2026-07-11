@@ -48,6 +48,7 @@ query subset, RPC by address + FULL calldata):
 overrides.subgraph({ operationName: 'GetIndexDtfProposal' }, { dtf, proposal })
 overrides.api({ pathname: '/current/dtf', search: { address } }, data)
 overrides.ethCall(folio, calldata, encodeAbiParameters(...))   // exact calldata
+overrides.ethBalance(TEST_ADDRESS, 2_000n * 10n ** 18n)        // vs 100 ETH default
 ```
 
 Swap mid-test to model post-transaction state (submit → change the mock →

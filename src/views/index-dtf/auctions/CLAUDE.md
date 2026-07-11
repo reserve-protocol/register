@@ -69,8 +69,9 @@ Quick loop: `pnpm exec playwright test e2e/tests/smoke/auctions.spec.ts`
 - **Deferred** (needs testids/roles + engineer review): `launchAuction` and
   `bid` writes (permission-gated on `isAuctionLauncherAtom`); legacy v2 UI and
   `/auctions/legacy` route.
-- **Planned**: multichain bucketing on `bsc/cmc20` + `mainnet/open`
-  (`rebalances.json` snapshots exist for both).
+- **Covered** (`flows/auctions-multichain.spec.ts`): historical bucketing +
+  API metrics + idle empty active section + in-window active row on
+  `bsc/cmc20` and `mainnet/open`.
 
 ## Edge cases to keep covered (or consciously skip)
 

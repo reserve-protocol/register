@@ -133,9 +133,6 @@ export async function installTestWallet(page: Page, config: TestWalletConfig) {
         case 'eth_signTypedData_v4':
           return '0x' + 'c'.repeat(130)
 
-        case 'eth_getBalance':
-          return '0x56bc75e2d63100000' // 100 ETH
-
         default:
           // Everything else (reads) goes through the shared RPC dispatch —
           // same per-test overrides as the HTTP mock so answers stay identical.

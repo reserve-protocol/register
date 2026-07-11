@@ -1,4 +1,4 @@
-import type { Page } from '@playwright/test'
+import { expect, type Locator, type Page } from '@playwright/test'
 import { encodeAbiParameters, encodeFunctionData, erc20Abi, parseUnits } from 'viem'
 import type { UnmockedLogger } from './logger'
 import type { MockOverrides } from './overrides'
@@ -41,6 +41,20 @@ import { loadSnapshot, loadSnapshotRaw, snapshotExists } from './snapshots'
 
 export type ZapDirection = 'buy' | 'sell'
 
+// Every pinned quote fixture the mock can serve. Beyond the two happy paths:
+// edge-state characterizations captured live (see _meta.source in each file) —
+// 'buy-highimpact' (1000 ETH, ~58% impact, above the widget's 5% warning gate),
+// 'buy-insufficient' (200 ETH, ~1% impact, server says insufficientFunds),
+// 'error' (1-wei quote the API cannot construct; served with its real 500).
+export const ZAP_FIXTURES = [
+  'buy',
+  'sell',
+  'buy-highimpact',
+  'buy-insufficient',
+  'error',
+] as const
+export type ZapFixtureName = (typeof ZAP_FIXTURES)[number]
+
 export interface ZapQuoteParams {
   chainId: number
   tokenIn: string
@@ -78,23 +92,48 @@ export interface ZapQuoteResponse {
 interface ZapSnapshot {
   params: ZapQuoteParams
   data: ZapQuoteResponse
+  // HTTP status the mock serves this fixture with (error captures keep their
+  // real 500 via _meta.httpStatus; quotes default to 200).
+  status: number
 }
 
 // Load a zap quote snapshot (throws if missing — capture before writing specs).
 export function loadZapSnapshot(
   dtfAddress: string,
-  direction: ZapDirection
+  fixture: ZapFixtureName
 ): ZapSnapshot {
   const dtf = findDtfByAddress(dtfAddress)
   if (!dtf) throw new Error(`Unknown registry DTF: ${dtfAddress}`)
   const raw = loadSnapshotRaw<ZapQuoteResponse>(
-    `${dtf.snapshotDir}/zap-${direction}.json`
+    `${dtf.snapshotDir}/zap-${fixture}.json`
   )
-  const params = (raw._meta as { params?: ZapQuoteParams }).params
-  if (!params) {
-    throw new Error(`zap-${direction}.json is missing _meta.params`)
+  const meta = raw._meta as { params?: ZapQuoteParams; httpStatus?: number }
+  if (!meta.params) {
+    throw new Error(`zap-${fixture}.json is missing _meta.params`)
   }
-  return { params, data: raw.data }
+  return { params: meta.params, data: raw.data, status: meta.httpStatus ?? 200 }
+}
+
+// Fill the zap amount-in and wait for the pinned quote to land in the
+// read-only output field — as ONE retried unit. The widget's balance hydration
+// re-renders the input and can WIPE a value typed too early (the input snaps
+// back to "0", no quote ever fires, and the output waits out its full timeout).
+// Retrying fill+quote together self-heals: a wiped fill simply refills after
+// the wipe. This was the root cause of the historical "zap output stuck at 0"
+// flake. Inner 10s per attempt, 90s total — quotes take ~2s isolated but >20s
+// under full-suite load.
+export async function fillAmountAwaitQuote(
+  panel: Locator,
+  amount: string,
+  outputPrefix: string
+): Promise<void> {
+  const input = panel.locator('input[inputmode="decimal"]:not([disabled])')
+  const output = panel.locator('input[inputmode="decimal"][disabled]')
+  const expected = new RegExp(`^${outputPrefix.replace('.', '\\.')}`)
+  await expect(async () => {
+    await input.fill(amount)
+    await expect(output).toHaveValue(expected, { timeout: 10_000 })
+  }).toPass({ timeout: 90_000 })
 }
 
 const AGGREGATORS = ['odos', 'velora', 'enso'] as const
@@ -127,12 +166,10 @@ export async function mockZapperRoutes(
   dtfAddress: string,
   log: UnmockedLogger
 ) {
-  const snapshots = (['buy', 'sell'] as const)
-    .filter((direction) => {
-      const dtf = findDtfByAddress(dtfAddress)
-      return dtf && snapshotExists(`${dtf.snapshotDir}/zap-${direction}.json`)
-    })
-    .map((direction) => loadZapSnapshot(dtfAddress, direction))
+  const snapshots = ZAP_FIXTURES.filter((fixture) => {
+    const dtf = findDtfByAddress(dtfAddress)
+    return dtf && snapshotExists(`${dtf.snapshotDir}/zap-${fixture}.json`)
+  }).map((fixture) => loadZapSnapshot(dtfAddress, fixture))
 
   // Native zap quotes: pinned-input snapshot or fail-loud 500.
   await page.route('**/api.reserve.org/api/zapper/**', (route) => {
@@ -148,7 +185,7 @@ export async function mockZapperRoutes(
     const hit = snapshots.find((s) => matches(s.params, url.searchParams))
     if (hit) {
       return route.fulfill({
-        status: 200,
+        status: hit.status,
         contentType: 'application/json',
         body: JSON.stringify(hit.data),
       })

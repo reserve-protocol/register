@@ -91,14 +91,21 @@ Covered (SUCCESS paths only, base/lcap): zap buy (ETH→LCAP, no approval) + sel
 decoded args and post-tx balance; compliance top-level geo-block, per-DTF VPN
 block, and unrestricted-open — but ONLY on the zap surface.
 
-Not covered — **planned next pass**: tx revert/reject paths on every surface
-(`overrides.transaction({ kind: 'revert' })` / `{ kind: 'reject' }` exists,
-unused);
-zap edge states — the widget's zap-mint components (low-liquidity warning,
-`zapper-healthcheck`, dust/warning checkboxes, error message) need new captured
-high-impact + error quote snapshots (orchestrator-owned) before they can be
-driven; compliance on the MANUAL surface; deprecated-DTF redeem-only UX
-(`sellOnly` prop is set but unexercised).
+Covered (failure paths, `failures-issuance.spec.ts` / `failures-zap.spec.ts`):
+reject + revert for manual mint/redeem and zap buy/sell (incl. the approve and
+swap sub-steps) — error surfaces, controls recover, no fake success, staged
+post-tx data stays hidden. Covered (edge states, `zap-edge.spec.ts`): high
+price impact — both the insufficient-balance masking at the default 100 ETH
+AND the ≥5% acknowledgment checkbox gate (via `overrides.ethBalance` funding);
+quote-error surface + recovery; client-side insufficient-funds gating (the
+widget IGNORES the server `insufficientFunds` field — balance math wins).
+Covered (compliance, `compliance-surfaces.spec.ts`): `geolocation-prohibited`
++ `vpn` gate manual MINT inputs while redeem stays open; overview + governance
+stay fully functional under restriction (over-block guard).
+
+Not covered — **planned**: deprecated-DTF redeem-only UX (`sellOnly` prop is
+set but unexercised); the widget's low-liquidity checkbox variant (distinct
+from the impact gate; needs a deepLiquidity-flagged capture).
 
 Not covered — **deferred (engineer review)**: the automated async-mint wizard
 entirely (no testids yet; CoW lifecycle) — a missing async-mint test is a

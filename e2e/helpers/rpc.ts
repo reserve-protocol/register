@@ -471,6 +471,18 @@ function handleSingleCall(
   }
   if (selector === LATEST_ROUND_DATA) return latestRoundData(to)
   if (selector === CLOCK) return clockValue()
+  // Multicall3.getEthBalance(address) — honor a per-test balance override for
+  // the decoded address (mirrors the eth_getBalance path); default 100 ETH.
+  if (selector === '0x4d2301cc') {
+    const [account] = decodeAbiParameters(
+      [{ type: 'address' }],
+      (`0x${data.slice(10)}`) as Hex
+    )
+    const balance = overrides?.lookupEthBalance(account)
+    if (balance !== undefined) {
+      return encodeAbiParameters([{ type: 'uint256' }], [balance])
+    }
+  }
   const hit = lookupOverride(to, data)
   if (hit) return hit
   log('unmocked eth_call', { to, selector })
@@ -584,11 +596,17 @@ export function handleRpcMethod(
     case 'eth_estimateGas':
       return '0x5208'
 
-    case 'eth_getBalance':
+    case 'eth_getBalance': {
       // 100 ETH for everyone — the HTTP transport is the primary read path, so
       // a zero here (while the wallet provider says 100) renders
-      // insufficient-balance states in connected flows.
+      // insufficient-balance states in connected flows. Per-test opt-out via
+      // overrides.ethBalance(address, wei).
+      const balanceOverride = ctx.overrides?.lookupEthBalance(
+        String((params?.[0] as string) ?? '')
+      )
+      if (balanceOverride !== undefined) return '0x' + balanceOverride.toString(16)
       return '0x56bc75e2d63100000'
+    }
 
     case 'eth_maxPriorityFeePerGas':
       return '0x3b9aca00'

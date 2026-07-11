@@ -1,6 +1,7 @@
 import { decodeAbiParameters } from 'viem'
 import { describe, expect, it, vi } from 'vitest'
 import { chainIdForUrl, handleRpcMethod, type RpcContext } from '../rpc'
+import { MockOverrides } from '../overrides'
 import type { TxRecord } from '../provider'
 import { findDtfByAddress } from '../registry'
 
@@ -51,6 +52,33 @@ describe('RPC transaction receipts', () => {
     expect(
       handleRpcMethod('eth_getTransactionReceipt', [HASH], context([tx]))
     ).toMatchObject({ status: '0x0' })
+  })
+})
+
+describe('native balance overrides', () => {
+  const WALLET = '0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266'
+  const DEFAULT_100_ETH = '0x56bc75e2d63100000'
+
+  it('serves the shared 100 ETH default without an override', () => {
+    expect(handleRpcMethod('eth_getBalance', [WALLET, 'latest'], context())).toBe(
+      DEFAULT_100_ETH
+    )
+  })
+
+  it('serves a per-test balance only for the overridden address', () => {
+    const overrides = new MockOverrides()
+    overrides.ethBalance(WALLET, 2000n * 10n ** 18n)
+    const ctx = { ...context(), overrides }
+    expect(handleRpcMethod('eth_getBalance', [WALLET.toLowerCase(), 'latest'], ctx)).toBe(
+      '0x' + (2000n * 10n ** 18n).toString(16)
+    )
+    expect(
+      handleRpcMethod(
+        'eth_getBalance',
+        ['0x0000000000000000000000000000000000000009', 'latest'],
+        ctx
+      )
+    ).toBe(DEFAULT_100_ETH)
   })
 })
 

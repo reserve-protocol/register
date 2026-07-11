@@ -36,6 +36,9 @@ export class MockOverrides {
   private ethCalls = new Map<string, Hex>()
   private apiRequests: ApiOverride[] = []
   private transactionOutcomes: MockTransactionOutcome[] = []
+  // lowercased address -> native balance in wei (eth_getBalance). Opt-in:
+  // everyone else keeps the shared 100 ETH default.
+  private ethBalances = new Map<string, bigint>()
 
   // --- setters (called from the test body) ---
 
@@ -56,6 +59,13 @@ export class MockOverrides {
   // The full calldata is required, including encoded arguments.
   ethCall(address: string, calldata: string, returnHex: Hex): void {
     this.ethCalls.set(`${address.toLowerCase()}:${calldata.toLowerCase()}`, returnHex)
+  }
+
+  // Override the native balance one address reports via eth_getBalance —
+  // e.g. fund the test wallet past the 100 ETH default so an expensive
+  // high-impact quote is affordable and the impact gate renders.
+  ethBalance(address: string, wei: bigint): void {
+    this.ethBalances.set(address.toLowerCase(), wei)
   }
 
   // Override an exact reserve-api method/path, optionally constraining the
@@ -92,6 +102,10 @@ export class MockOverrides {
 
   lookupEthCall(address: string, calldata: string): Hex | undefined {
     return this.ethCalls.get(`${address.toLowerCase()}:${calldata.toLowerCase()}`)
+  }
+
+  lookupEthBalance(address: string): bigint | undefined {
+    return this.ethBalances.get(address.toLowerCase())
   }
 
   lookupApi(method: string, url: URL): unknown | undefined {

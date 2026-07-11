@@ -33,6 +33,9 @@ export const PINNED_PROPOSALS = [
 export const PRESERVED_FLOW_FILES = [
   'base/lcap/zap-buy.json',
   'base/lcap/zap-sell.json',
+  'base/lcap/zap-buy-highimpact.json',
+  'base/lcap/zap-buy-insufficient.json',
+  'base/lcap/zap-error.json',
 ] as const
 
 export function requiredSnapshotPaths(): string[] {

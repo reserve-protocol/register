@@ -4,6 +4,7 @@ import { connectWallet, expect, test } from '../../fixtures/wallet'
 import type { MockOverrides } from '../../helpers/overrides'
 import { dtfPath, findDtfByAddress } from '../../helpers/registry'
 import {
+  fillAmountAwaitQuote,
   loadZapSnapshot,
   mockZapperRoutes,
   seedZapSurface,
@@ -60,10 +61,15 @@ async function openTradeSurface(
 
 async function enterPinnedBuyAmount(widget: ReturnType<Page['getByTestId']>) {
   const snapshot = loadZapSnapshot(DTF_ADDRESS, 'buy')
-  await widget
-    .locator('input[inputmode="decimal"]:not([disabled])')
-    .fill(formatUnits(BigInt(snapshot.params.amountIn), 18))
-  await expect(widget.locator('input[inputmode="decimal"][disabled]')).not.toHaveValue('')
+  // Wipe-resilient fill + real quote-output wait (the old bare fill could be
+  // wiped by balance hydration, and `not.toHaveValue('')` passed vacuously on
+  // the "0" default with no quote ever fired) — see helpers/zapper.
+  const outputPrefix = formatUnits(BigInt(snapshot.data.result!.amountOut), 18).slice(0, 6)
+  await fillAmountAwaitQuote(
+    widget,
+    formatUnits(BigInt(snapshot.params.amountIn), 18),
+    outputPrefix
+  )
 }
 
 test.describe('restricted region', () => {

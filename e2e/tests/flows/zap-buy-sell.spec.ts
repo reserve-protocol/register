@@ -3,6 +3,7 @@ import { decodeFunctionData, formatUnits, parseAbi } from 'viem'
 import { connectWallet, expect, test } from '../../fixtures/wallet'
 import { dtfPath, findDtfByAddress } from '../../helpers/registry'
 import {
+  fillAmountAwaitQuote,
   loadZapSnapshot,
   mockZapperRoutes,
   seedDtfBalance,
@@ -30,6 +31,11 @@ import {
 // "…-trigger-sell", panels with data-state) and the two amount fields are the
 // only inputmode="decimal" inputs — enabled = amount-in, disabled = quote-out.
 // Token symbols (ETH/LCAP) are not translated copy, so asserting them is safe.
+
+// Serial + 90s per-test budget: quote round-trips take ~2s isolated but >20s
+// under full-suite load on the single dev server (matches zap-edge/failures-zap;
+// the 45s quote expects below need headroom inside the test timeout).
+test.describe.configure({ mode: 'serial', timeout: 90_000 })
 
 const DTF_ADDRESS = '0x4dA9A0f397dB1397902070f93a4D6ddBC0E0E6e8' // base/lcap
 const APPROVE_ABI = parseAbi(['function approve(address spender, uint256 amount)'])
@@ -108,15 +114,9 @@ test('buy LCAP with ETH: quote -> submit -> success', async ({
   // Confirm the default input token — the pinned quote is ETH -> LCAP.
   await expect(buyPanel.locator('button[aria-haspopup="menu"]')).toContainText('ETH')
 
-  // Enter THE pinned amount; anything else hits the fail-loud 500.
-  await buyPanel.locator('input[inputmode="decimal"]:not([disabled])').fill(buy.inputAmount)
-
-  // Quote round-trip: 500ms debounce + fetch, then the snapshot's amountOut
-  // lands in the read-only output field.
-  await expect(buyPanel.locator('input[inputmode="decimal"][disabled]')).toHaveValue(
-    new RegExp(`^${buy.outputPrefix.replace('.', '\\.')}`),
-    { timeout: 10_000 }
-  )
+  // Enter THE pinned amount (anything else hits the fail-loud 500) and wait
+  // for the quote — wipe-resilient, see fillAmountAwaitQuote in helpers/zapper.
+  await fillAmountAwaitQuote(buyPanel, buy.inputAmount, buy.outputPrefix)
 
   // ETH needs no approval — the last button in the panel is the swap submit.
   const submit = buyPanel.locator('button').last()
@@ -168,12 +168,7 @@ test('sell LCAP for ETH: quote -> approve -> submit -> success', async ({
   // Sell output token defaults to ETH — matches the pinned LCAP -> ETH quote.
   await expect(sellPanel.locator('button[aria-haspopup="menu"]')).toContainText('ETH')
 
-  await sellPanel.locator('input[inputmode="decimal"]:not([disabled])').fill(sell.inputAmount)
-
-  await expect(sellPanel.locator('input[inputmode="decimal"][disabled]')).toHaveValue(
-    new RegExp(`^${sell.outputPrefix.replace('.', '\\.')}`),
-    { timeout: 10_000 }
-  )
+  await fillAmountAwaitQuote(sellPanel, sell.inputAmount, sell.outputPrefix)
 
   const submit = sellPanel.locator('button').last()
 

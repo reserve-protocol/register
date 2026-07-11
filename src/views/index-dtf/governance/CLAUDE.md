@@ -21,9 +21,12 @@ time.
 |---|---|
 | Proposal list, filters, pagination | `e2e/tests/smoke/governance.spec.ts` |
 | Proposal detail, state banners/CTAs | `e2e/tests/flows/governance-states.spec.ts` |
-| Vote UI/submission | `e2e/tests/flows/governance-vote.spec.ts` |
-| Propose flow (any proposal type) | `e2e/tests/flows/governance-propose.spec.ts` |
-| Queue/execute CTAs | `e2e/tests/flows/governance-queue-execute.spec.ts` |
+| Vote UI/submission | `e2e/tests/flows/governance-vote.spec.ts` + `flows/failures-governance.spec.ts` (reject/revert) |
+| Propose flow — DAO settings | `e2e/tests/flows/governance-propose.spec.ts` |
+| Propose flow — fees (dtf-settings) | `e2e/tests/flows/governance-propose-dtf-settings.spec.ts` (fee calldata round-trip) |
+| Propose flow — basket | `e2e/tests/flows/governance-propose-basket.spec.ts` (form + guards; full submit blocked on golden `startRebalance` fixture) |
+| Queue/execute CTAs | `e2e/tests/flows/governance-queue-execute.spec.ts` + `flows/failures-governance.spec.ts` |
+| Chain/version-gated behavior | `e2e/tests/flows/governance-multichain.spec.ts` (bsc v5 + mainnet v4) |
 | Delegation UI | `e2e/tests/smoke/governance.spec.ts` (delegates section) |
 | Anything in hooks/updaters/atoms here | all of the above: `pnpm exec playwright test --project=full e2e/tests/flows/governance-*.spec.ts` + smoke |
 
@@ -64,11 +67,19 @@ mapper dereferences — serve proposals ONLY through it or the list breaks).
 - Voting with zero power / after voteEnd (CTA must not submit; txLog empty).
 - Proposal list empty state (DTF with no proposals) vs list slicing
   ("Show all" beyond `DEFAULT_PAGE_SIZE = 10`).
-- Rejected/reverted vote tx (`overrides.transaction`) — UI must recover, not
-  hang on pending.
+- Rejected/reverted tx — COVERED for vote, queue, AND execute in
+  `failures-governance.spec.ts` (recovery, no false state, staged data hidden).
 - Multi-governor DTFs: owner vs trading vs vote-lock governance routes to
   different governor addresses — assert the tx `to`, not just success.
 - Timelock delay between queue and execute (frozen clock must cross `eta`).
+- Multichain: COVERED for list + PENDING/DEFEATED/EXECUTED states + chain-
+  correct explorer hosts on bsc/cmc20 (v5) and mainnet/open (v4). Still open:
+  v4/v5 WRITE-ABI gates on mainnet (needs a wallet-connected v4 spec), and the
+  rebalance-preview price path on non-lcap chains (central price mock only
+  knows current-basket tokens).
+- Validation caveat: zod form bounds (fee min/max etc.) are BYPASSED on
+  localhost/dev (`shouldBypassFormValidation`) — the e2e harness cannot
+  exercise them; bounds need schema unit tests instead.
 
 ## Traps
 
