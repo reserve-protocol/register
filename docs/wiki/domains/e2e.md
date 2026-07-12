@@ -35,8 +35,9 @@ mapper/math/calldata correctness remains the SDK repositories' responsibility.
 
 The injected EIP-6963/EIP-1193 provider records every send in the per-test
 `txLog` with a unique hash. Receipt and transaction lookups accept only recorded
-hashes and echo the recorded from/to/data/value. Tests may queue pending success,
-revert, or user rejection. Write specs assert chain, target, value, decoded
+hashes AND require the querying chain to match the tx's chain (a hash sent on
+one chain fails loud when queried from another). Tests may queue pending
+success, revert, or user rejection. Write specs assert chain, target, value, decoded
 function/arguments, approval spender/amount, order, and explorer hash—not just a
 success toast.
 
@@ -65,10 +66,17 @@ age, and DTF/chain identity.
 - `pnpm e2e:capture:yield`: re-capture the yield RToken eth_call + subgraph maps.
 - `pnpm exec vitest run e2e/helpers/tests`: mock-contract unit tests.
 
-CI uses pnpm, Node 24, current actions, and Chromium only. PR/push runs typecheck,
-snapshot check, and smoke; nightly/manual runs typecheck, snapshot check, and the
-full project. Workflow scope also routes Index DTF, home, state, and hook changes
-through the smoke gate.
+CI uses pnpm, Node 24, current actions, and Chromium only. PR/push runs
+typecheck, the mock-contract unit tests, snapshot check, and smoke; nightly/
+manual adds the full project. Workflow scope routes Index+Yield DTF, home,
+state, and hook changes through that gate.
+
+Speed: local workers are capped at 5 (one Vite server doesn't scale past it).
+Quick-loop tiers — unit tests <1s → one scoped spec ~3–5s → smoke ~16s → full
+~78s; snapshots are parse-cached per worker. Prefer the narrowest tier for a
+change (the domain guides' diff→test tables name the spec). An unmocked-call
+failure names the function + the helper to model it in (`e2e/CLAUDE.md` has the
+boundary map + new-test recipe).
 
 ## Maintenance rules
 
@@ -116,22 +124,37 @@ auction launch/bid, async-mint wizard, manage/factsheet, legacy v2 auctions,
 wallet disconnect mid-flow. Validation caveat: zod form bounds are bypassed on
 localhost/dev, so bounds need schema unit tests, not e2e.
 
-## Yield DTF (RToken) — Phase F landed (2026-07-12)
+## Yield DTF (RToken) — Phase F + audit hardening (2026-07-12)
 
-Foundation shipped: `YIELD_REGISTRY` (eUSD mainnet, hyUSD base) + `rtokenPath`;
-a record/replay eth_call map per RToken captured at a pinned block by
-`scripts/capture-yield.ts` (`pnpm e2e:capture:yield`); yield seams in rpc.ts
-(map lookup + `eth_getStorageAt` + `hasRole`/account wildcards), subgraph.ts
-(`resolveYieldQuery`), api.ts (yield price tokens), and a Tenderly gate in
-base.ts. Both `yield-overview` smokes render name/symbol/price/backing fully
-offline with zero unmocked calls; 2 mock-contract unit tests cover replay +
-fail-loud. Two isolation rules keep the INDEX path byte-identical: the yield
-subgraph resolver only engages while a yield test is active
-(`isYieldReplayActive` — index pages incidentally poll a dtf-yield subgraph),
-and wrong-chain-facade / zero-address transient reads (pre-`chainIdAtom`-switch)
-are absorbed only under `setYieldReplay(chainId)`. Still to build: per-view
-smokes (issuance/staking/auctions/governance/settings) then flows (mint first,
-then stake, then vote) — see the blueprint below.
+Foundation: `YIELD_REGISTRY` (eUSD mainnet, hyUSD base) + `rtokenPath`; a
+record/replay eth_call map per RToken captured at a pinned block by
+`scripts/capture-yield.ts` (`pnpm e2e:capture:yield`); yield seams in rpc.ts,
+subgraph.ts (`resolveYieldQuery`), api.ts (yield price tokens). Both
+`yield-overview` smokes render name/symbol/price/backing offline with zero
+unmocked calls.
+
+Trust rules (post-audit; the whole point is that a yield test can't go green
+while wrong):
+
+- **Chain-scoped replay** — the eth_call map is keyed `chainId:address:calldata`
+  and the subgraph key `chainId::op::query::identity`, so a shared address (RSR
+  feed) or a no-identity op can't serve one chain's data to another.
+- **Fail-loud, no wildcard fall-through** — under `setYieldReplay(chainId)`, an
+  uncaptured contract read fails loud rather than borrowing the index
+  `*:selector` tables or the $1 Chainlink default. Only time/balance infra backs
+  the captured map. There is NO blanket `hasRole`/`eth_getStorageAt` answer —
+  removed until a write flow models them exactly.
+- **Index isolation** — the yield subgraph resolver engages only while a yield
+  test is active (`isYieldReplayActive`; index pages incidentally poll a
+  dtf-yield subgraph). A read arriving off the fixture's chain (or on the zero
+  address) is a pre-`chainIdAtom`-switch transient, absorbed unlogged; a read
+  AT the fixture's chain on a real address still fails loud, so a stuck-chain
+  bug surfaces as an assertion failure, never a false green.
+- `e2e:check` validates yield snapshot identity, pinned block, nonempty map, and
+  within-chain key collisions.
+
+Still to build: per-view smokes (issuance/staking/auctions/governance/settings)
+then flows (mint → stake → vote) — see the blueprint below.
 
 ### Blueprint (for the remaining phases)
 
