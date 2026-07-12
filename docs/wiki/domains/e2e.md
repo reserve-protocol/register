@@ -62,6 +62,7 @@ age, and DTF/chain identity.
 - `pnpm e2e:full`: all non-smoke behavior specs.
 - `pnpm e2e`: both projects.
 - `pnpm e2e:check`: manifest, identity, and freshness.
+- `pnpm e2e:capture:yield`: re-capture the yield RToken eth_call + subgraph maps.
 - `pnpm exec vitest run e2e/helpers/tests`: mock-contract unit tests.
 
 CI uses pnpm, Node 24, current actions, and Chromium only. PR/push runs typecheck,
@@ -115,7 +116,24 @@ auction launch/bid, async-mint wizard, manage/factsheet, legacy v2 auctions,
 wallet disconnect mid-flow. Validation caveat: zod form bounds are bypassed on
 localhost/dev, so bounds need schema unit tests, not e2e.
 
-## Yield DTF (RToken) plan — blueprint (2026-07-11), not yet built
+## Yield DTF (RToken) — Phase F landed (2026-07-12)
+
+Foundation shipped: `YIELD_REGISTRY` (eUSD mainnet, hyUSD base) + `rtokenPath`;
+a record/replay eth_call map per RToken captured at a pinned block by
+`scripts/capture-yield.ts` (`pnpm e2e:capture:yield`); yield seams in rpc.ts
+(map lookup + `eth_getStorageAt` + `hasRole`/account wildcards), subgraph.ts
+(`resolveYieldQuery`), api.ts (yield price tokens), and a Tenderly gate in
+base.ts. Both `yield-overview` smokes render name/symbol/price/backing fully
+offline with zero unmocked calls; 2 mock-contract unit tests cover replay +
+fail-loud. Two isolation rules keep the INDEX path byte-identical: the yield
+subgraph resolver only engages while a yield test is active
+(`isYieldReplayActive` — index pages incidentally poll a dtf-yield subgraph),
+and wrong-chain-facade / zero-address transient reads (pre-`chainIdAtom`-switch)
+are absorbed only under `setYieldReplay(chainId)`. Still to build: per-view
+smokes (issuance/staking/auctions/governance/settings) then flows (mint first,
+then stake, then vote) — see the blueprint below.
+
+### Blueprint (for the remaining phases)
 
 Feasibility confirmed: yield subgraph reachable, public no-auth RPCs
 (`ethereum-rpc.publicnode.com`, `1rpc.io`) execute `eth_call` — capture needs no

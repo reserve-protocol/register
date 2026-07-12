@@ -2,7 +2,7 @@ import type { Page } from '@playwright/test'
 import type { UnmockedLogger } from './logger'
 import type { MockOverrides } from './overrides'
 import type { BoundaryRequest } from './requests'
-import { findDtfByAddress, REGISTRY } from './registry'
+import { findDtfByAddress, REGISTRY, YIELD_REGISTRY } from './registry'
 import { loadSnapshot, snapshotExists } from './snapshots'
 
 // api.reserve.org interception, dispatched by pathname. Per-DTF endpoints load
@@ -91,6 +91,19 @@ function knownPriceResponse(chainId: number, requestedTokens: Set<string>) {
       ...(snapshot.stToken?.rewards?.map((reward) => reward.rewardToken?.address) ?? []),
     ]) {
       if (address) known.add(address.toLowerCase())
+    }
+  }
+
+  // Yield RTokens price their basket/RSR/stToken via the same shared batch.
+  // Their identities live in the captured eth_call map (address:calldata keys),
+  // so admit every contract address that appears there for this chain — the
+  // truthful set of tokens a yield view can request, without a wildcard.
+  for (const dtf of YIELD_REGISTRY.filter((entry) => entry.chainId === chainId)) {
+    const path = `${dtf.snapshotDir}/rtoken-chain-state.json`
+    if (!snapshotExists(path)) continue
+    const callMap = loadSnapshot<Record<string, string>>(path)
+    for (const callKey of Object.keys(callMap)) {
+      known.add(callKey.split(':')[0].toLowerCase())
     }
   }
 

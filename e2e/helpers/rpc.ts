@@ -11,7 +11,7 @@ import type { UnmockedLogger } from './logger'
 import type { MockOverrides } from './overrides'
 import type { TxRecord } from './provider'
 import type { BoundaryRequest } from './requests'
-import { REGISTRY, TEST_ADDRESS } from './registry'
+import { REGISTRY, TEST_ADDRESS, YIELD_REGISTRY } from './registry'
 import { loadSnapshot, snapshotExists } from './snapshots'
 
 // Glob patterns for every RPC host wagmi/viem may hit (mirrors registerRpcUrls
@@ -422,6 +422,111 @@ function clockValue(): Hex {
   return encodeAbiParameters([{ type: 'uint256' }], [BigInt(mockNowSeconds())])
 }
 
+// --- Yield-DTF (RToken) record/replay ---
+// Yield views read almost everything from RPC via vendored ABIs, so the yield
+// smokes replay a captured `address:calldata → return` map (captured live at a
+// pinned block by scripts/capture-yield.ts). Gated behind an explicit toggle so
+// the INDEX path is byte-for-byte unchanged: yieldReplay is off for every index
+// test, and its captured feeds/versions never leak into the index tables.
+// 0 = replay off (index tests). Non-zero = the chainId of the yield fixture
+// under test — used to absorb pre-chain-switch transient reads (see below).
+let yieldReplayChain = 0
+let yieldSeeded = false
+const yieldCallMap = new Map<string, Hex>()
+
+const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000'
+
+// FacadeRead + FacadeAct per chain (mirrors src/utils/addresses.ts). On a yield
+// page's FIRST render, `chainIdAtom` still holds its mainnet default and the
+// route's chain hasn't propagated yet, so the read atoms briefly hit the
+// mainnet facade (and a zero token address) before re-firing on the correct
+// chain. Those transients carry no data and resolve on the next render; we
+// absorb ONLY facade reads for a chain OTHER than the fixture under test (and
+// zero-address reads), so a real miss on the fixture's OWN facade still fails
+// loud.
+const YIELD_FACADES: Record<number, string[]> = {
+  1: ['0x2c7ca56342177343a2954c250702fd464f4d0613', '0xca60954e8819827b0c56e1ec313175fe68712d98'],
+  8453: ['0xeb2071e9b542555e90e6e4e1f83fa17423583991', '0x72be467048a4d9cbcc599251243f3ed9f46a42f5'],
+}
+function facadeChainOf(address: string): number | undefined {
+  const addr = address.toLowerCase()
+  for (const [chainId, facades] of Object.entries(YIELD_FACADES)) {
+    if (facades.includes(addr)) return Number(chainId)
+  }
+  return undefined
+}
+// address:selector fallback for CLOCK-parameterized reads whose arg is a live
+// timepoint (governor quorum(timepoint)/quorumNumerator(timepoint) — the app
+// passes Date.now()/1000-100, so the exact calldata can't be pinned). Exactly
+// one value is captured per address+selector; return it regardless of the arg.
+const yieldSelectorMap = new Map<string, Hex>()
+const CLOCK_PARAM_SELECTORS = new Set(['0xf8ce560a', '0x60c4247f'])
+const HAS_ROLE = '0x91d14854'
+const TRUE_RETURN: Hex = encodeAbiParameters([{ type: 'bool' }], [true])
+const ZERO_STORAGE: Hex = ('0x' + '0'.repeat(64)) as Hex
+
+// The yield smoke calls this with the fixture's chainId before navigation; the
+// base fixture resets it (0) at teardown so replay state never leaks into a
+// following index test.
+export function setYieldReplay(chainId: number | false) {
+  yieldReplayChain = chainId || 0
+}
+
+// True only while a yield smoke/flow is driving the page. The subgraph mock
+// consults this so index tests keep baseline behavior verbatim: a yield-context
+// query (e.g. an index page incidentally polling a dtf-yield subgraph) is only
+// served from the yield replay when a yield test is active — otherwise it gets
+// the same empty shape the pre-yield suite returned.
+export function isYieldReplayActive(): boolean {
+  return yieldReplayChain !== 0
+}
+
+// A pre-chain-switch transient read (see YIELD_FACADES): the zero token address,
+// or a facade belonging to a chain other than the fixture under test. Absorbed
+// (deterministic zeros, unlogged) — never masks a real miss on the fixture's
+// own chain.
+function isYieldTransient(to: string): boolean {
+  if (!yieldReplayChain) return false
+  if (to.toLowerCase() === ZERO_ADDRESS) return true
+  const facadeChain = facadeChainOf(to)
+  return facadeChain !== undefined && facadeChain !== yieldReplayChain
+}
+
+function seedYieldChainState() {
+  if (yieldSeeded) return
+  yieldSeeded = true
+  for (const dtf of YIELD_REGISTRY) {
+    const path = `${dtf.snapshotDir}/rtoken-chain-state.json`
+    if (!snapshotExists(path)) continue
+    const map = loadSnapshot<Record<string, Hex>>(path)
+    for (const [key, value] of Object.entries(map)) {
+      yieldCallMap.set(key.toLowerCase(), value)
+      const [addr, calldata] = key.toLowerCase().split(':')
+      const selector = calldata.slice(0, 10)
+      if (CLOCK_PARAM_SELECTORS.has(selector)) {
+        yieldSelectorMap.set(`${addr}:${selector}`, value)
+      }
+    }
+  }
+}
+
+function lookupYieldExact(to: string, data: string): Hex | undefined {
+  seedYieldChainState()
+  return yieldCallMap.get(`${to.toLowerCase()}:${data.toLowerCase()}`)
+}
+
+function lookupYieldFallback(to: string, selector: string): Hex | undefined {
+  const addr = to.toLowerCase()
+  if (CLOCK_PARAM_SELECTORS.has(selector)) {
+    const hit = yieldSelectorMap.get(`${addr}:${selector}`)
+    if (hit) return hit
+  }
+  // hasRole(role,account) — no wallet on read-only views, but Phase W write
+  // flows gate on it; a permissive answer keeps role-gated UI actionable.
+  if (selector === HAS_ROLE) return TRUE_RETURN
+  return undefined
+}
+
 function selectorOf(data: string): string {
   return data.slice(0, 10).toLowerCase()
 }
@@ -445,6 +550,13 @@ function handleSingleCall(
   const selector = selectorOf(data)
   const override = overrides?.lookupEthCall(to, data)
   if (override) return override
+  // Captured yield map wins over the generic index tables/handlers so replayed
+  // Chainlink feeds, per-contract versions and FacadeRead reads are served
+  // verbatim (only active under the yield smokes' opt-in).
+  if (yieldReplayChain) {
+    const exact = lookupYieldExact(to, data)
+    if (exact) return exact
+  }
   if (selector === '0x70a08231' && knownTokenAddresses.has(to.toLowerCase())) {
     const [owner] = decodeAbiParameters(
       [{ type: 'address' }],
@@ -485,6 +597,15 @@ function handleSingleCall(
   }
   const hit = lookupOverride(to, data)
   if (hit) return hit
+  // Yield: clock-parameterized reads (arg-agnostic) + role checks, before we
+  // fail loud. Kept after the exact map so captured values always win.
+  if (yieldReplayChain) {
+    const fallback = lookupYieldFallback(to, selector)
+    if (fallback) return fallback
+    // Pre-chain-switch transient (wrong-chain facade / zero address): absorb
+    // deterministically without logging — it re-fires correctly next render.
+    if (isYieldTransient(to)) return ZERO_RETURN
+  }
   log('unmocked eth_call', { to, selector })
   return ZERO_RETURN
 }
@@ -625,6 +746,13 @@ export function handleRpcMethod(
     case 'eth_getCode':
       // Non-empty bytecode so viem treats registry addresses as contracts.
       return '0x6080604052'
+
+    case 'eth_getStorageAt':
+      // Yield staking/draft-queue reads raw storage slots. A zero word is a
+      // valid "empty slot" answer; gated so index stays strict on this method.
+      if (yieldReplayChain) return ZERO_STORAGE
+      ctx.log('unmocked rpc method', { method })
+      return '0x'
 
     case 'eth_getLogs':
       return []

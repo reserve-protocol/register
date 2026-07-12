@@ -1,4 +1,4 @@
-import { REGISTRY } from './registry'
+import { REGISTRY, YIELD_REGISTRY } from './registry'
 
 const SHARED_FILES = [
   'shared/discover-dtfs.json',
@@ -18,6 +18,17 @@ const DTF_FILES = [
   'token-prices.json',
   'transfer-events.json',
 ] as const
+
+// Yield-DTF (RToken) fixtures — captured by scripts/capture-yield.ts (separate
+// from the index full capture). The eth_call record/replay map + the yield
+// subgraph request log per fixture.
+const YIELD_DTF_FILES = ['rtoken-chain-state.json', 'yield-graph.json'] as const
+
+export function yieldSnapshotPaths(): string[] {
+  return YIELD_REGISTRY.flatMap((dtf) =>
+    YIELD_DTF_FILES.map((filename) => `${dtf.snapshotDir}/${filename}`)
+  )
+}
 
 export const PINNED_PROPOSALS = [
   {
@@ -48,5 +59,6 @@ export function requiredSnapshotPaths(): string[] {
       ({ snapshotDir, proposalId }) => `${snapshotDir}/proposals/${proposalId}.json`
     ),
     ...PRESERVED_FLOW_FILES,
+    ...yieldSnapshotPaths(),
   ]
 }

@@ -2,8 +2,9 @@ import type { Page } from '@playwright/test'
 import type { UnmockedLogger } from './logger'
 import type { MockOverrides } from './overrides'
 import type { BoundaryRequest } from './requests'
-import { findDtfByAddress, REGISTRY, type RegistryDTF } from './registry'
+import { findDtfByAddress, REGISTRY, YIELD_REGISTRY, type RegistryDTF } from './registry'
 import { loadSnapshot, snapshotExists } from './snapshots'
+import { isYieldReplayActive } from './rpc'
 
 // Goldsky GraphQL interception. Index-DTF queries are served from per-DTF
 // snapshots, dispatched primarily by operationName (body-substring fallback for
@@ -280,6 +281,74 @@ function resolveIndexQuery(
   return graphError(`[E2E] unmocked operation: ${op || '(anonymous)'}`)
 }
 
+// --- Yield-DTF (RToken) subgraph replay ---
+// Yield views hit the dtf-yield-* subgraphs with a different op set than index
+// (GetTokenListOverview, GetRecentTransactions, getRTokenOwner, getHistorical-
+// Baskets, getRTokenDistribution, and FOUR queries that collide on the name
+// getTokenDailyPrice — disambiguated by selection). scripts/capture-yield.ts
+// records each real response into <chain>/<slug>/yield-graph.json as a request
+// log; we match on op + normalized query body (the selection signature) + the
+// identity variable, deliberately IGNORING fromTime (a now-relative window that
+// shifts between capture and replay while the returned series is the same).
+
+interface YieldGraphEntry {
+  op: string
+  query: string
+  variables: Record<string, unknown>
+  data: unknown
+}
+
+let yieldEntries: YieldGraphEntry[] | undefined
+
+function normalizeQuery(query: string): string {
+  return query.replace(/\s+/g, ' ').trim()
+}
+
+// Stable identity for an operation, excluding the fromTime window.
+function queryIdentity(variables: Record<string, unknown>): string {
+  if (variables.id !== undefined) return `id:${String(variables.id).toLowerCase()}`
+  if (variables.tokenId !== undefined) return `tokenId:${String(variables.tokenId).toLowerCase()}`
+  if (Array.isArray(variables.tokenIds)) {
+    return `tokenIds:${(variables.tokenIds as string[]).map((t) => t.toLowerCase()).join(',')}`
+  }
+  return ''
+}
+
+function yieldEntryKey(op: string, query: string, identity: string): string {
+  return `${op}::${normalizeQuery(query)}::${identity}`
+}
+
+function loadYieldEntries(): YieldGraphEntry[] {
+  if (yieldEntries) return yieldEntries
+  yieldEntries = []
+  for (const dtf of YIELD_REGISTRY) {
+    const path = `${dtf.snapshotDir}/yield-graph.json`
+    if (snapshotExists(path)) {
+      yieldEntries.push(...loadSnapshot<YieldGraphEntry[]>(path))
+    }
+  }
+  return yieldEntries
+}
+
+function resolveYieldQuery(body: string, log: UnmockedLogger, overrides?: MockOverrides) {
+  const parsed = parseBody(body)
+  const op = parsed.operationName ?? ''
+  const vars = parsed.variables ?? {}
+
+  const overlaid = overrides?.lookupSubgraph(op, vars)
+  if (overlaid !== undefined) return { data: overlaid }
+
+  const identity = queryIdentity(vars)
+  const key = yieldEntryKey(op, parsed.query ?? '', identity)
+  const match = loadYieldEntries().find(
+    (entry) => yieldEntryKey(entry.op, entry.query, queryIdentity(entry.variables)) === key
+  )
+  if (match) return { data: match.data }
+
+  log('unmocked yield operation', { op, identity })
+  return graphError(`[E2E] unmocked yield operation: ${op || '(anonymous)'} (${identity})`)
+}
+
 export async function mockSubgraphRoutes(
   page: Page,
   log: UnmockedLogger,
@@ -304,8 +373,17 @@ export async function mockSubgraphRoutes(
       operationName: parsed.operationName ?? '',
       variables: parsed.variables ?? {},
     })
-    const isIndex = url.includes('dtf-index')
-    const response = isIndex ? resolveIndexQuery(body, log, overrides) : { data: EMPTY_SHAPE }
+    // URL-based fork: yield RTokens read the dtf-yield-* subgraphs, index reads
+    // dtf-index-*. The yield resolver only engages while a yield test is active
+    // (isYieldReplayActive) — so index tests, which incidentally poll a
+    // dtf-yield subgraph via app updaters, keep the pre-yield EMPTY_SHAPE
+    // behavior verbatim instead of hitting the yield replay's fail-loud.
+    const response =
+      url.includes('dtf-yield') && isYieldReplayActive()
+        ? resolveYieldQuery(body, log, overrides)
+        : url.includes('dtf-index')
+          ? resolveIndexQuery(body, log, overrides)
+          : { data: EMPTY_SHAPE }
 
     return route.fulfill({
       status: 200,

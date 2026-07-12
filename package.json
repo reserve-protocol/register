@@ -114,6 +114,7 @@
   "e2e:smoke": "playwright test --project=smoke",
   "e2e:ui": "playwright test --ui",
   "e2e:capture": "tsx e2e/scripts/capture.ts",
+  "e2e:capture:yield": "tsx e2e/scripts/capture-yield.ts",
   "e2e:check": "tsx e2e/scripts/check.ts",
   "extract": "lingui extract",
   "translations": "lingui extract --clean",

@@ -5,7 +5,7 @@ import { MockOverrides } from '../helpers/overrides'
 import { resetFrozenTime } from '../helpers/clock'
 import type { TxRecord } from '../helpers/provider'
 import type { BoundaryRequest } from '../helpers/requests'
-import { mockRpcRoutes, setMockNow } from '../helpers/rpc'
+import { mockRpcRoutes, setMockNow, setYieldReplay } from '../helpers/rpc'
 import { mockSubgraphRoutes } from '../helpers/subgraph'
 
 export interface BaseFixtures {
@@ -134,6 +134,12 @@ export const test = base.extend<BaseFixtures>({
       await page.route('**api.llama.fi**', (r) => fulfillEmpty(r, { status: 'success', data: [] }))
       await page.route('**yields.reserve.org**', (r) => fulfillEmpty(r, { status: 'success', data: [] }))
       await page.route('**api.merkl.xyz**', (r) => fulfillEmpty(r, []))
+
+      // Tenderly simulation API (gov/write flows) — inert so those specs don't
+      // trip the default-deny egress. The tenderly RPC gateway is otherwise
+      // handled as an RPC host; here we blanket both to an empty body.
+      await page.route('**api.tenderly.co**', (r) => fulfillEmpty(r))
+      await page.route('**gateway.tenderly.co**', (r) => fulfillEmpty(r))
       await page.route('**contentful-storage.reserve-337.workers.dev/status/**', (r) =>
         fulfillEmpty(r, { restricted: false })
       )
@@ -161,6 +167,7 @@ export const test = base.extend<BaseFixtures>({
       // Frozen mock time is a per-worker singleton (set by freezeTime) — reset
       // so it can't leak into the next test.
       setMockNow(undefined)
+      setYieldReplay(false)
       resetFrozenTime()
 
       if (calls.length) {

@@ -1,6 +1,6 @@
 import { decodeAbiParameters } from 'viem'
 import { describe, expect, it, vi } from 'vitest'
-import { chainIdForUrl, handleRpcMethod, type RpcContext } from '../rpc'
+import { chainIdForUrl, handleRpcMethod, setYieldReplay, type RpcContext } from '../rpc'
 import { MockOverrides } from '../overrides'
 import type { TxRecord } from '../provider'
 import { findDtfByAddress } from '../registry'
@@ -87,6 +87,49 @@ describe('RPC URL chain routing', () => {
     expect(chainIdForUrl('https://ethereum-rpc.publicnode.com')).toBe(1)
     expect(chainIdForUrl('https://base-mainnet.infura.io/v3/key')).toBe(8453)
     expect(chainIdForUrl('https://bsc-rpc.publicnode.com')).toBe(56)
+  })
+})
+
+describe('yield record/replay', () => {
+  const EUSD = '0xa0d69e286b938e21cbf7e51d71f6a4c8918f482f'
+  const NAME = '0x06fdde03'
+  const call = (to: string, data: string, ctx: RpcContext) =>
+    handleRpcMethod('eth_call', [{ to, data }], ctx)
+
+  it('replays a captured yield call and fails loud on an uncaptured one', () => {
+    setYieldReplay(1) // eUSD is mainnet
+    try {
+      // Captured: the rToken name read returns real data (a non-empty string).
+      const ctx = { ...context(), chainId: 1 }
+      const name = decodeAbiParameters(
+        [{ type: 'string' }],
+        call(EUSD, NAME, ctx) as `0x${string}`
+      )[0]
+      expect(name).toBe('Electronic Dollar')
+
+      // Uncaptured call on the fixture's OWN chain must fail loud (logged),
+      // NOT be silently absorbed — absorption is only for wrong-chain transients.
+      const missCtx = { ...context(), chainId: 1 }
+      call(EUSD, '0xdeadbeef', missCtx)
+      expect(missCtx.log).toHaveBeenCalledWith(
+        'unmocked eth_call',
+        expect.objectContaining({ to: EUSD })
+      )
+    } finally {
+      setYieldReplay(false)
+    }
+  })
+
+  it('absorbs a wrong-chain facade transient without logging', () => {
+    setYieldReplay(8453) // viewing a base fixture
+    try {
+      // The mainnet FacadeRead is the wrong chain here → transient, absorbed.
+      const ctx = { ...context(), chainId: 8453 }
+      call('0x2c7ca56342177343a2954c250702fd464f4d0613', '0xa2f38585', ctx)
+      expect(ctx.log).not.toHaveBeenCalled()
+    } finally {
+      setYieldReplay(false)
+    }
   })
 })
 

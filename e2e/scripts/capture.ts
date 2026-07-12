@@ -34,6 +34,7 @@ import {
   PINNED_PROPOSALS,
   PRESERVED_FLOW_FILES,
   requiredSnapshotPaths,
+  yieldSnapshotPaths,
 } from '../helpers/snapshot-manifest'
 
 const snapshotsDir = join(dirname(fileURLToPath(import.meta.url)), '..', 'snapshots')
@@ -445,7 +446,10 @@ async function capturePinnedFlowFixtures() {
     })
   }
 
-  for (const relativePath of PRESERVED_FLOW_FILES) {
+  // Yield fixtures are captured out-of-band (scripts/capture-yield.ts) but must
+  // survive a full index capture, which publishes a fresh tree. Preserve them
+  // alongside the zap flow fixtures with the same freshness guard.
+  for (const relativePath of [...PRESERVED_FLOW_FILES, ...yieldSnapshotPaths()]) {
     const source = join(snapshotsDir, relativePath)
     if (!existsSync(source)) {
       captureFailures.push(`preserved fixture missing: ${relativePath}`)
