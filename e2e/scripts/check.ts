@@ -7,7 +7,7 @@
 import { existsSync, readFileSync, readdirSync, statSync } from 'fs'
 import { dirname, join, relative } from 'path'
 import { fileURLToPath } from 'url'
-import { REGISTRY } from '../helpers/registry'
+import { REGISTRY, YIELD_REGISTRY } from '../helpers/registry'
 import { requiredSnapshotPaths } from '../helpers/snapshot-manifest'
 
 const snapshotsDir = join(dirname(fileURLToPath(import.meta.url)), '..', 'snapshots')
@@ -83,6 +83,29 @@ function checkStructure(): boolean {
           console.error(`FAIL: snapshot identity mismatch in ${rel}`)
           ok = false
         }
+        // Yield fixtures carry their own identity + pinned-block metadata and a
+        // nonempty replay map — a capture against the wrong RToken/chain, or a
+        // truncated map, must fail here rather than at test time.
+        const rtoken = YIELD_REGISTRY.find((entry) => rel.startsWith(`${entry.snapshotDir}/`))
+        if (rtoken) {
+          if (
+            String(raw._meta.dtf).toLowerCase() !== rtoken.address.toLowerCase() ||
+            Number(raw._meta.chainId) !== rtoken.chainId
+          ) {
+            console.error(`FAIL: yield snapshot identity mismatch in ${rel}`)
+            ok = false
+          }
+          if (rel.endsWith('rtoken-chain-state.json')) {
+            if (!Number.isFinite(raw._meta.block) || !Number.isFinite(raw._meta.blockTimestamp)) {
+              console.error(`FAIL: yield chain-state missing block/blockTimestamp in ${rel}`)
+              ok = false
+            }
+            if (!raw.data || Object.keys(raw.data).length === 0) {
+              console.error(`FAIL: yield chain-state replay map is empty in ${rel}`)
+              ok = false
+            }
+          }
+        }
       }
     } catch (e) {
       console.error(`FAIL: invalid JSON ${rel}: ${(e as Error).message}`)
@@ -107,7 +130,45 @@ function checkCoverage(): boolean {
   return ok
 }
 
+// The yield replay keys are chain-scoped, so a shared address (e.g. the RSR/USD
+// Chainlink feed) legitimately appears on two chains with different values.
+// This check documents that overlap and fails only if the SAME chain's file
+// somehow carries a duplicate — a real capture corruption.
+function checkYieldCollisions(): boolean {
+  let ok = true
+  let crossChainShared = 0
+  const perChain = new Map<number, Map<string, string>>()
+  for (const rtoken of YIELD_REGISTRY) {
+    const file = join(snapshotsDir, rtoken.snapshotDir, 'rtoken-chain-state.json')
+    if (!existsSync(file)) continue
+    const map = JSON.parse(readFileSync(file, 'utf-8')).data as Record<string, string>
+    const chainMap = perChain.get(rtoken.chainId) ?? new Map<string, string>()
+    for (const [key, value] of Object.entries(map)) {
+      if (chainMap.has(key)) {
+        console.error(`FAIL: duplicate replay key within chain ${rtoken.chainId}: ${key}`)
+        ok = false
+      }
+      chainMap.set(key, value)
+    }
+    perChain.set(rtoken.chainId, chainMap)
+  }
+  const chains = [...perChain.entries()]
+  for (let i = 0; i < chains.length; i++) {
+    for (let j = i + 1; j < chains.length; j++) {
+      for (const key of chains[i][1].keys()) {
+        if (chains[j][1].has(key)) crossChainShared++
+      }
+    }
+  }
+  if (ok) {
+    console.log(
+      `ok: yield replay keys are chain-scoped (${crossChainShared} address:calldata shared across chains, disambiguated by chainId)`
+    )
+  }
+  return ok
+}
+
 console.log('Checking e2e snapshots...\n')
-const results = [checkAge(), checkStructure(), checkCoverage()]
+const results = [checkAge(), checkStructure(), checkCoverage(), checkYieldCollisions()]
 if (results.some((r) => !r)) process.exit(1)
 console.log('\nAll checks passed.')
