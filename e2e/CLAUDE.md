@@ -103,7 +103,7 @@ wrong chain fails loud.
 | RPC `eth_call` (index) | `helpers/rpc.ts` `callOverrides` / `seedChainState` | address + calldata |
 | RPC `eth_call` (yield) | `helpers/rpc.ts` yield replay map | chainId + address + calldata (captured) |
 | RPC receipt / tx | `helpers/rpc.ts` (from `txLog`) | chainId + recorded hash |
-| Subgraph (index) | `helpers/subgraph.ts` `resolveIndexQuery` | operation + variables |
+| Subgraph (index) | `helpers/subgraph.ts` `resolveIndexQuery` | URL chain + operation + variables |
 | Subgraph (yield) | `helpers/subgraph.ts` `resolveYieldQuery` | chainId + operation + query + identity |
 | Reserve API | `helpers/api.ts` (path branches) | method + path + query identity |
 | Zapper quote | `helpers/zapper.ts` pinned fixtures | chainId + tokenIn/out + amountIn |
@@ -137,3 +137,9 @@ spec-local `page.route` or a wildcard that could answer the wrong identity.
 Speed tiers for a quick validation loop: unit tests (<1s) → one scoped spec
 (~3–5s) → smoke (~16s) → full (~78s). Prefer the narrowest tier that covers
 your change; the domain guides' diff→test tables say which spec.
+
+Do NOT run two suites at once against the reused dev server (e.g. smoke + full,
+or two agents) — they contend on the single Vite server and produce false
+flakes. Run one suite at a time, or let the webServer spin up fresh (kill :3005
+first). A "failure" that vanishes when re-run in isolation is contention, not a
+real regression — check before touching timeouts.
