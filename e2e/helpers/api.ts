@@ -40,6 +40,12 @@ function json(route: import('@playwright/test').Route, data: unknown, status = 2
 
 function dtfFromParam(url: URL, param: string) {
   const value = url.searchParams.get(param)
+  // Resolve by address alone — this mirrors the real reserve-api, whose DTF
+  // endpoints key on the globally-unique folio address and treat `chainId` as
+  // an advisory/default (the app sends e.g. /current/dtf?address=<base DTF>&
+  // chainId=1). Enforcing chainId here would fail legitimate requests. Chain
+  // identity IS enforced where the app is genuinely chain-routed: RPC host and
+  // subgraph URL (see rpc.ts / subgraph.ts).
   return value ? findDtfByAddress(value) : undefined
 }
 
