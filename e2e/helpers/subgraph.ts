@@ -157,7 +157,18 @@ function graphError(message: string) {
   return { data: null, errors: [{ message }] }
 }
 
-function resolveIndexQuery(
+// mainnet/base/bsc from the dtf-index-<chain> Goldsky URL. Unlike the reserve
+// API (address-keyed, chainId advisory), the index subgraph host IS
+// chain-specific (gqlClientAtom picks it by chainId), so a DTF query must reach
+// the matching chain's URL.
+export function indexChainForUrl(url: string): number {
+  if (url.includes('dtf-index-base')) return 8453
+  if (url.includes('dtf-index-bsc')) return 56
+  return 1
+}
+
+export function resolveIndexQuery(
+  chainId: number,
   body: string,
   log: UnmockedLogger,
   overrides?: MockOverrides
@@ -170,6 +181,25 @@ function resolveIndexQuery(
   // spec can, e.g., serve a fresher voting snapshot after a vote tx.
   const overlaid = overrides?.lookupSubgraph(op, vars)
   if (overlaid !== undefined) return { data: overlaid }
+
+  // Chain identity: if this query names a DTF (id/dtfId/address var) that lives
+  // on a DIFFERENT chain than this subgraph URL, the app mis-routed it — fail
+  // loud instead of serving the right-chain snapshot (a false green for the
+  // exact wrong-chain-routing the multichain matrix exists to catch).
+  const dtfVar = (vars.id ?? vars.dtfId ?? vars.address) as string | undefined
+  if (dtfVar) {
+    const named = dtfForAddress(dtfVar)
+    if (named && named.chainId !== chainId) {
+      log('unmocked operation', {
+        op,
+        reason: 'wrong-chain subgraph URL for DTF',
+        dtf: dtfVar,
+        urlChain: chainId,
+        dtfChain: named.chainId,
+      })
+      return graphError(`[E2E] wrong-chain subgraph: ${dtfVar} (chain ${named.chainId}) queried on chain ${chainId}`)
+    }
+  }
 
   // The SDK sends the proposal id as `proposalId`; older callers used `id`.
   const proposalId = (vars.proposalId as string) ?? (vars.id as string) ?? ''
@@ -404,7 +434,7 @@ export async function mockSubgraphRoutes(
       url.includes('dtf-yield') && isYieldReplayActive()
         ? resolveYieldQuery(yieldChainForUrl(url), body, log, overrides)
         : url.includes('dtf-index')
-          ? resolveIndexQuery(body, log, overrides)
+          ? resolveIndexQuery(indexChainForUrl(url), body, log, overrides)
           : { data: EMPTY_SHAPE }
 
     return route.fulfill({
