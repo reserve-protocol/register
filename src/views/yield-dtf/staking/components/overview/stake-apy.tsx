@@ -12,7 +12,7 @@ const StakeApy = () => {
         <span>
           <Trans>Est. Staking Yield:</Trans>
         </span>{' '}
-        <span className="ml-1 text-primary">
+        <span data-testid="staking-apy" className="ml-1 text-primary">
           {formatPercentage(stakers || 0)}
         </span>
       </div>

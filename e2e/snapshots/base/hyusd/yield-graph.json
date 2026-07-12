@@ -1,7 +1,7 @@
 {
   "_meta": {
     "source": "e2e/scripts/capture-yield.ts",
-    "capturedAt": "2026-07-11T20:41:03.235Z",
+    "capturedAt": "2026-07-12T20:29:24.339Z",
     "dtf": "0xcc7ff230365bd730ee4b352cc2492cedac49383e",
     "chainId": 8453,
     "subgraph": "https://api.goldsky.com/api/public/project_cmgzim3e100095np2gjnbh6ry/subgraphs/dtf-yield-base/4.2.0-v2/gn"
@@ -18,21 +18,33 @@
           "0xc9a3e2b3064c1c0546d3d0edc0a748e9f93cf18d",
           "0x641b0453487c9d14c5df96d45a481ef1dc84e31f"
         ],
-        "fromTime": 1783197645
+        "fromTime": 1783283297
       },
       "data": {
         "tokenDailySnapshots": [
           {
             "token": {
+              "id": "0xcb327b99ff831bf8223cced12b1338ff3aa322ff"
+            },
+            "dailyVolume": "112528876527573021057"
+          },
+          {
+            "token": {
               "id": "0xcc7ff230365bd730ee4b352cc2492cedac49383e"
             },
-            "dailyVolume": "10031036934538471579"
+            "dailyVolume": "754794861853484435"
           },
           {
             "token": {
               "id": "0xcb327b99ff831bf8223cced12b1338ff3aa322ff"
             },
-            "dailyVolume": "764427671444412927246"
+            "dailyVolume": "796600022869768522199"
+          },
+          {
+            "token": {
+              "id": "0xcc7ff230365bd730ee4b352cc2492cedac49383e"
+            },
+            "dailyVolume": "10314518667475929826"
           },
           {
             "token": {
@@ -99,36 +111,18 @@
               "id": "0xcb327b99ff831bf8223cced12b1338ff3aa322ff"
             },
             "dailyVolume": "375653634557095964370"
-          },
-          {
-            "token": {
-              "id": "0xcc7ff230365bd730ee4b352cc2492cedac49383e"
-            },
-            "dailyVolume": "296849195937339354"
-          },
-          {
-            "token": {
-              "id": "0xcb327b99ff831bf8223cced12b1338ff3aa322ff"
-            },
-            "dailyVolume": "372874741553483520537"
-          },
-          {
-            "token": {
-              "id": "0xcc7ff230365bd730ee4b352cc2492cedac49383e"
-            },
-            "dailyVolume": "2156034630848551981"
           }
         ],
         "tokens": [
           {
             "id": "0xcc7ff230365bd730ee4b352cc2492cedac49383e",
-            "lastPriceUSD": "1.137272089594725732",
+            "lastPriceUSD": "1.137281375416788996",
             "name": "High Yield USD",
             "symbol": "hyUSD",
             "totalSupply": "56770406533703810144111",
-            "holderCount": "3444",
-            "transferCount": "192592",
-            "cumulativeVolume": "276991414496529545926870629",
+            "holderCount": "3442",
+            "transferCount": "192608",
+            "cumulativeVolume": "276991415534806140717813311",
             "rToken": {
               "backing": "1000000000000000000",
               "targetUnits": "USD",
@@ -321,13 +315,13 @@
           },
           {
             "id": "0xcb327b99ff831bf8223cced12b1338ff3aa322ff",
-            "lastPriceUSD": "1965.341556172539777882",
+            "lastPriceUSD": "1963.236933509642988847",
             "name": "Based ETH",
             "symbol": "bsdETH",
-            "totalSupply": "901104505581555214728",
+            "totalSupply": "900317450641275799357",
             "holderCount": "12452",
-            "transferCount": "749745",
-            "cumulativeVolume": "780731264869844120218273",
+            "transferCount": "749859",
+            "cumulativeVolume": "780875966097797048834283",
             "rToken": {
               "backing": "1000000000000000000",
               "targetUnits": "ETH",
@@ -452,639 +446,6 @@
             }
           }
         ]
-      }
-    },
-    {
-      "op": "getRTokenOwner",
-      "query": "query getRTokenOwner($id: String!) { rtoken(id: $id) { owners pausers freezers longFreezers } governance(id: $id) { guardians governanceFrameworks(orderBy: name, orderDirection: desc) { id name proposalThreshold contractAddress quorumDenominator quorumNumerator quorumVotes executionDelay timelockAddress votingDelay votingPeriod } } }",
-      "variables": {
-        "id": "0xcc7ff230365bd730ee4b352cc2492cedac49383e"
-      },
-      "data": {
-        "rtoken": {
-          "owners": [],
-          "pausers": [],
-          "freezers": [],
-          "longFreezers": []
-        },
-        "governance": {
-          "guardians": [
-            "0x6f1d6b86d4ad705385e751e6e88b0fdfdbadf298"
-          ],
-          "governanceFrameworks": [
-            {
-              "id": "0xffef97179f58a582def73e6d2e4bcd2bdc8ca128",
-              "name": "Governor Anastasius",
-              "proposalThreshold": "10167609405081689701602",
-              "contractAddress": "0xffef97179f58a582def73e6d2e4bcd2bdc8ca128",
-              "quorumDenominator": "100",
-              "quorumNumerator": "0",
-              "quorumVotes": "3756049228166335167168513",
-              "executionDelay": "259200",
-              "timelockAddress": "0x4284d76a03f9b398ff7aec58c9dec94b289070cf",
-              "votingDelay": "172800",
-              "votingPeriod": "259200"
-            },
-            {
-              "id": "0xc8e63d3501a246fa1ddbabe4ad0b50e9d32aa8bb",
-              "name": "Governor Alexios",
-              "proposalThreshold": "10000",
-              "contractAddress": "0xc8e63d3501a246fa1ddbabe4ad0b50e9d32aa8bb",
-              "quorumDenominator": "100",
-              "quorumNumerator": "10",
-              "quorumVotes": "10228010384689829084720561",
-              "executionDelay": "259200",
-              "timelockAddress": "0xf093d7f00f3dce6d415be564f41cb4bc032fb367",
-              "votingDelay": "86400",
-              "votingPeriod": "129600"
-            }
-          ]
-        }
-      }
-    },
-    {
-      "op": "getTokenDailyPrice",
-      "query": "query getTokenDailyPrice($id: String!, $fromTime: Int!) { token(id: $id) { snapshots: dailyTokenSnapshot( first: 1000 where: { timestamp_gte: $fromTime } ) { timestamp priceUSD basketRate } } }",
-      "variables": {
-        "id": "0xcc7ff230365bd730ee4b352cc2492cedac49383e",
-        "fromTime": 1781210445
-      },
-      "data": {
-        "token": {
-          "snapshots": [
-            {
-              "timestamp": "1781247229",
-              "priceUSD": "1.137228709613542431",
-              "basketRate": "1.137497414593440331242622661541145"
-            },
-            {
-              "timestamp": "1781376341",
-              "priceUSD": "1.137104648428485846",
-              "basketRate": "1.137497414593440331242622661541145"
-            },
-            {
-              "timestamp": "1781479275",
-              "priceUSD": "1.137146404445092174",
-              "basketRate": "1.137497414593440331242622661541145"
-            },
-            {
-              "timestamp": "1781567243",
-              "priceUSD": "1.137214764286982511",
-              "basketRate": "1.137497414593440331242622661541145"
-            },
-            {
-              "timestamp": "1781634059",
-              "priceUSD": "1.137241094041412335",
-              "basketRate": "1.137497414593440331242622661541145"
-            },
-            {
-              "timestamp": "1781711365",
-              "priceUSD": "1.137275385597192497",
-              "basketRate": "1.137497414593440331242622661541145"
-            },
-            {
-              "timestamp": "1781788623",
-              "priceUSD": "1.137594723837470124",
-              "basketRate": "1.137497414593440331242622661541145"
-            },
-            {
-              "timestamp": "1781867337",
-              "priceUSD": "1.137680889430618706",
-              "basketRate": "1.137497414593440331242622661541145"
-            },
-            {
-              "timestamp": "1781992715",
-              "priceUSD": "1.137554038444243537",
-              "basketRate": "1.137497414593440331242622661541145"
-            },
-            {
-              "timestamp": "1782042361",
-              "priceUSD": "1.137842195053243552",
-              "basketRate": "1.137497414593440331242622661541145"
-            },
-            {
-              "timestamp": "1782146623",
-              "priceUSD": "1.13760338481254901",
-              "basketRate": "1.137497414593440331242622661541145"
-            },
-            {
-              "timestamp": "1782253023",
-              "priceUSD": "1.137756267713949462",
-              "basketRate": "1.137497414593440331242622661541145"
-            },
-            {
-              "timestamp": "1782330527",
-              "priceUSD": "1.13700057357587791",
-              "basketRate": "1.137497420282053140984239365806288"
-            },
-            {
-              "timestamp": "1782412297",
-              "priceUSD": "1.1368054563456905",
-              "basketRate": "1.137497420282053140984239365806288"
-            },
-            {
-              "timestamp": "1782503817",
-              "priceUSD": "1.137068335622211409",
-              "basketRate": "1.137497420282053140984239365806288"
-            },
-            {
-              "timestamp": "1782579125",
-              "priceUSD": "1.136854225543697053",
-              "basketRate": "1.137497420282053140984239365806288"
-            },
-            {
-              "timestamp": "1782662693",
-              "priceUSD": "1.137006163775884799",
-              "basketRate": "1.137497420282053140984239365806288"
-            },
-            {
-              "timestamp": "1782723351",
-              "priceUSD": "1.137049626918071027",
-              "basketRate": "1.137497420282053140984239365806288"
-            },
-            {
-              "timestamp": "1782851245",
-              "priceUSD": "1.136708464333406527",
-              "basketRate": "1.137497421056364214163644313461128"
-            },
-            {
-              "timestamp": "1782944175",
-              "priceUSD": "1.136967374187194983",
-              "basketRate": "1.137497421056364214163644313461128"
-            },
-            {
-              "timestamp": "1783033327",
-              "priceUSD": "1.136693473316122798",
-              "basketRate": "1.137497421056364214163644313461128"
-            },
-            {
-              "timestamp": "1783113427",
-              "priceUSD": "1.137022911854696213",
-              "basketRate": "1.137497421288713985656626657448452"
-            },
-            {
-              "timestamp": "1783202463",
-              "priceUSD": "1.13692316575359707",
-              "basketRate": "1.137497421288713985656626657448452"
-            },
-            {
-              "timestamp": "1783264895",
-              "priceUSD": "1.13696144170661944",
-              "basketRate": "1.137497421288713985656626657448452"
-            },
-            {
-              "timestamp": "1783342293",
-              "priceUSD": "1.137002752909070999",
-              "basketRate": "1.137497421288713985656626657448452"
-            },
-            {
-              "timestamp": "1783456075",
-              "priceUSD": "1.137107335119475176",
-              "basketRate": "1.137497421288713985656626657448452"
-            },
-            {
-              "timestamp": "1783497079",
-              "priceUSD": "1.137141547272856872",
-              "basketRate": "1.137497421288713985656626657448452"
-            },
-            {
-              "timestamp": "1783621739",
-              "priceUSD": "1.13714459513025681",
-              "basketRate": "1.137497421288713985656626657448452"
-            },
-            {
-              "timestamp": "1783704931",
-              "priceUSD": "1.136827679136080944",
-              "basketRate": "1.137497421585603239432908389702051"
-            },
-            {
-              "timestamp": "1783800627",
-              "priceUSD": "1.137272089594725732",
-              "basketRate": "1.137497421585603239432908389702051"
-            }
-          ]
-        }
-      }
-    },
-    {
-      "op": "getHistoricalBaskets",
-      "query": "query getHistoricalBaskets($id: String!) { rtoken(id: $id) { historicalBaskets(orderBy: timestamp, orderDirection: desc) { timestamp collaterals { id symbol } collateralDistribution rTokenDist rsrDist } } }",
-      "variables": {
-        "id": "0xcc7ff230365bd730ee4b352cc2492cedac49383e"
-      },
-      "data": {
-        "rtoken": {
-          "historicalBaskets": [
-            {
-              "timestamp": "1774474801",
-              "collaterals": [
-                {
-                  "id": "0x53f1df4e5591ae35bf738742981669c3767241fa",
-                  "symbol": "wcUSDCv3"
-                },
-                {
-                  "id": "0x6f6f81e5e66f503184f2202d83a79650c3285759",
-                  "symbol": "saBasUSDC"
-                },
-                {
-                  "id": "0xdb5b8cead52f77de0f6b5255f73f348aaf2cbb8d",
-                  "symbol": "wsAMM-eUSD/USDC"
-                }
-              ],
-              "collateralDistribution": "{\"0xdb5b8cead52f77de0f6b5255f73f348aaf2cbb8d\":{\"dist\":\"0.499043864038059643\",\"target\":\"USD\"},\"0x6f6f81e5e66f503184f2202d83a79650c3285759\":{\"dist\":\"0.250478186187855325\",\"target\":\"USD\"},\"0x53f1df4e5591ae35bf738742981669c3767241fa\":{\"dist\":\"0.25047794977408503\",\"target\":\"USD\"}}",
-              "rTokenDist": 0,
-              "rsrDist": 10000
-            },
-            {
-              "timestamp": "1773156999",
-              "collaterals": [
-                {
-                  "id": "0x53f1df4e5591ae35bf738742981669c3767241fa",
-                  "symbol": "wcUSDCv3"
-                },
-                {
-                  "id": "0x6f6f81e5e66f503184f2202d83a79650c3285759",
-                  "symbol": "saBasUSDC"
-                },
-                {
-                  "id": "0xdb5b8cead52f77de0f6b5255f73f348aaf2cbb8d",
-                  "symbol": "wsAMM-eUSD/USDC"
-                }
-              ],
-              "collateralDistribution": "{\"0xdb5b8cead52f77de0f6b5255f73f348aaf2cbb8d\":{\"dist\":\"0.499043864038059643\",\"target\":\"USD\"},\"0x6f6f81e5e66f503184f2202d83a79650c3285759\":{\"dist\":\"0.250478186187855325\",\"target\":\"USD\"},\"0x53f1df4e5591ae35bf738742981669c3767241fa\":{\"dist\":\"0.25047794977408503\",\"target\":\"USD\"}}",
-              "rTokenDist": 8100,
-              "rsrDist": 1900
-            },
-            {
-              "timestamp": "1732755993",
-              "collaterals": [
-                {
-                  "id": "0x53f1df4e5591ae35bf738742981669c3767241fa",
-                  "symbol": "wcUSDCv3"
-                },
-                {
-                  "id": "0x6f6f81e5e66f503184f2202d83a79650c3285759",
-                  "symbol": "saBasUSDC"
-                },
-                {
-                  "id": "0xdb5b8cead52f77de0f6b5255f73f348aaf2cbb8d",
-                  "symbol": "wsAMM-eUSD/USDC"
-                }
-              ],
-              "collateralDistribution": "{\"0xdb5b8cead52f77de0f6b5255f73f348aaf2cbb8d\":{\"dist\":\"0.499043864038059643\",\"target\":\"USD\"},\"0x6f6f81e5e66f503184f2202d83a79650c3285759\":{\"dist\":\"0.250478186187855325\",\"target\":\"USD\"},\"0x53f1df4e5591ae35bf738742981669c3767241fa\":{\"dist\":\"0.25047794977408503\",\"target\":\"USD\"}}",
-              "rTokenDist": 8100,
-              "rsrDist": 1600
-            },
-            {
-              "timestamp": "1718671253",
-              "collaterals": [
-                {
-                  "id": "0x53f1df4e5591ae35bf738742981669c3767241fa",
-                  "symbol": "wcUSDCv3"
-                },
-                {
-                  "id": "0x6f6f81e5e66f503184f2202d83a79650c3285759",
-                  "symbol": "saBasUSDC"
-                }
-              ],
-              "collateralDistribution": "{\"0x6f6f81e5e66f503184f2202d83a79650c3285759\":{\"dist\":\"0.500000071718929019\",\"target\":\"USD\"},\"0x53f1df4e5591ae35bf738742981669c3767241fa\":{\"dist\":\"0.49999992828107098\",\"target\":\"USD\"}}",
-              "rTokenDist": 8100,
-              "rsrDist": 1600
-            },
-            {
-              "timestamp": "1712940397",
-              "collaterals": [
-                {
-                  "id": "0x184460704886f9f2a7f3a0c2887680867954dc6e",
-                  "symbol": "saBasUSDC"
-                },
-                {
-                  "id": "0xa694f7177c6c839c951c74c797283b35d0a486c8",
-                  "symbol": "wcUSDCv3"
-                }
-              ],
-              "collateralDistribution": "{\"0x184460704886f9f2a7f3a0c2887680867954dc6e\":{\"dist\":\"0.500000121426788026\",\"target\":\"USD\"},\"0xa694f7177c6c839c951c74c797283b35d0a486c8\":{\"dist\":\"0.499999878573211973\",\"target\":\"USD\"}}",
-              "rTokenDist": 8100,
-              "rsrDist": 1600
-            },
-            {
-              "timestamp": "1711385543",
-              "collaterals": [
-                {
-                  "id": "0x073f98792ef4c00bb5f11b1f64f13cb25cde0d8d",
-                  "symbol": "wsgUSDbC"
-                },
-                {
-                  "id": "0xa8d818c719c1034e731feba2088f4f011d44acb3",
-                  "symbol": "wcUSDCv3"
-                }
-              ],
-              "collateralDistribution": "{\"0xa8d818c719c1034e731feba2088f4f011d44acb3\":{\"dist\":\"0.500000028927900711\",\"target\":\"USD\"},\"0x073f98792ef4c00bb5f11b1f64f13cb25cde0d8d\":{\"dist\":\"0.499999971072099288\",\"target\":\"USD\"}}",
-              "rTokenDist": 8100,
-              "rsrDist": 1600
-            },
-            {
-              "timestamp": "1702417791",
-              "collaterals": [
-                {
-                  "id": "0x073f98792ef4c00bb5f11b1f64f13cb25cde0d8d",
-                  "symbol": "wsgUSDbC"
-                },
-                {
-                  "id": "0xa8d818c719c1034e731feba2088f4f011d44acb3",
-                  "symbol": "wcUSDCv3"
-                }
-              ],
-              "collateralDistribution": "{\"0xa8d818c719c1034e731feba2088f4f011d44acb3\":{\"dist\":\"0.500000028927900711\",\"target\":\"USD\"},\"0x073f98792ef4c00bb5f11b1f64f13cb25cde0d8d\":{\"dist\":\"0.499999971072099288\",\"target\":\"USD\"}}",
-              "rTokenDist": 8100,
-              "rsrDist": 1600
-            },
-            {
-              "timestamp": "1697138413",
-              "collaterals": [
-                {
-                  "id": "0x073f98792ef4c00bb5f11b1f64f13cb25cde0d8d",
-                  "symbol": "wsgUSDbC"
-                },
-                {
-                  "id": "0xbc0033679aef41fb9feb553fdf55a8bb2fc5b29e",
-                  "symbol": "wcUSDCv3"
-                }
-              ],
-              "collateralDistribution": "{\"0x073f98792ef4c00bb5f11b1f64f13cb25cde0d8d\":{\"dist\":\"0.500000133053769298\",\"target\":\"USD\"},\"0xbc0033679aef41fb9feb553fdf55a8bb2fc5b29e\":{\"dist\":\"0.499999866946230701\",\"target\":\"USD\"}}",
-              "rTokenDist": 8100,
-              "rsrDist": 1600
-            }
-          ]
-        }
-      }
-    },
-    {
-      "op": "getTokenDailyPrice",
-      "query": "query getTokenDailyPrice($id: String!, $fromTime: Int!) { token(id: $id) { snapshots: dailyTokenSnapshot( first: 1000 where: { timestamp_gte: $fromTime } ) { timestamp supply: dailyTotalSupply } } }",
-      "variables": {
-        "id": "0xcc7ff230365bd730ee4b352cc2492cedac49383e",
-        "fromTime": 1781210445
-      },
-      "data": {
-        "token": {
-          "snapshots": [
-            {
-              "timestamp": "1781247229",
-              "supply": "58407241661365215456805"
-            },
-            {
-              "timestamp": "1781376341",
-              "supply": "58407241661365215456805"
-            },
-            {
-              "timestamp": "1781479275",
-              "supply": "58407241661365215456805"
-            },
-            {
-              "timestamp": "1781567243",
-              "supply": "58407241661365215456805"
-            },
-            {
-              "timestamp": "1781634059",
-              "supply": "58407241661365215456805"
-            },
-            {
-              "timestamp": "1781711365",
-              "supply": "58407241661365215456805"
-            },
-            {
-              "timestamp": "1781788623",
-              "supply": "58407241661365215456805"
-            },
-            {
-              "timestamp": "1781867337",
-              "supply": "58407241661365215456805"
-            },
-            {
-              "timestamp": "1781992715",
-              "supply": "58407241661365215456805"
-            },
-            {
-              "timestamp": "1782042361",
-              "supply": "58407241661365215456805"
-            },
-            {
-              "timestamp": "1782146623",
-              "supply": "58407241661365215456805"
-            },
-            {
-              "timestamp": "1782253023",
-              "supply": "58407241661365215456805"
-            },
-            {
-              "timestamp": "1782330527",
-              "supply": "58318642628955324038915"
-            },
-            {
-              "timestamp": "1782412297",
-              "supply": "58318642628955324038915"
-            },
-            {
-              "timestamp": "1782503817",
-              "supply": "58318642628955324038915"
-            },
-            {
-              "timestamp": "1782579125",
-              "supply": "58318642628955324038915"
-            },
-            {
-              "timestamp": "1782662693",
-              "supply": "58318642628955324038915"
-            },
-            {
-              "timestamp": "1782723351",
-              "supply": "58318642628955324038915"
-            },
-            {
-              "timestamp": "1782851245",
-              "supply": "57963315404508970567909"
-            },
-            {
-              "timestamp": "1782944175",
-              "supply": "57963315404508970567909"
-            },
-            {
-              "timestamp": "1783033327",
-              "supply": "57963315404508970567909"
-            },
-            {
-              "timestamp": "1783113427",
-              "supply": "57963315392669152000272"
-            },
-            {
-              "timestamp": "1783202463",
-              "supply": "57963315392669152000272"
-            },
-            {
-              "timestamp": "1783264895",
-              "supply": "57963315392669152000272"
-            },
-            {
-              "timestamp": "1783342293",
-              "supply": "57963315392669152000272"
-            },
-            {
-              "timestamp": "1783456075",
-              "supply": "57963315392669152000272"
-            },
-            {
-              "timestamp": "1783497079",
-              "supply": "57963315392669152000272"
-            },
-            {
-              "timestamp": "1783621739",
-              "supply": "57963315392669152000272"
-            },
-            {
-              "timestamp": "1783704931",
-              "supply": "56770406533703810144111"
-            },
-            {
-              "timestamp": "1783800627",
-              "supply": "56770406533703810144111"
-            }
-          ]
-        }
-      }
-    },
-    {
-      "op": "getTokenDailyPrice",
-      "query": "query getTokenDailyPrice($id: String!, $fromTime: Int!) { rtoken(id: $id) { snapshots: dailySnapshots( first: 365 where: { timestamp_gte: $fromTime } ) { timestamp rsrStaked } } }",
-      "variables": {
-        "id": "0xcc7ff230365bd730ee4b352cc2492cedac49383e",
-        "fromTime": 1781210445
-      },
-      "data": {
-        "rtoken": {
-          "snapshots": [
-            {
-              "timestamp": "1781247229",
-              "rsrStaked": "32182751590122406204307347"
-            },
-            {
-              "timestamp": "1781376341",
-              "rsrStaked": "32182751590122406204307347"
-            },
-            {
-              "timestamp": "1781479275",
-              "rsrStaked": "32182751590122406204307347"
-            },
-            {
-              "timestamp": "1781567243",
-              "rsrStaked": "32182751590122406204307347"
-            },
-            {
-              "timestamp": "1781634059",
-              "rsrStaked": "32182751590122406204307347"
-            },
-            {
-              "timestamp": "1781711365",
-              "rsrStaked": "32182751590122406204307347"
-            },
-            {
-              "timestamp": "1781788623",
-              "rsrStaked": "32182751590122406204307347"
-            },
-            {
-              "timestamp": "1781876509",
-              "rsrStaked": "22830030147282651155249484"
-            },
-            {
-              "timestamp": "1781992715",
-              "rsrStaked": "22830030147282651155249484"
-            },
-            {
-              "timestamp": "1782042361",
-              "rsrStaked": "22830030147282651155249484"
-            },
-            {
-              "timestamp": "1782146623",
-              "rsrStaked": "22830030147282651155249484"
-            },
-            {
-              "timestamp": "1782253023",
-              "rsrStaked": "22830030147282651155249484"
-            },
-            {
-              "timestamp": "1782330527",
-              "rsrStaked": "22830030147282651155249484"
-            },
-            {
-              "timestamp": "1782412297",
-              "rsrStaked": "22830030147282651155249484"
-            },
-            {
-              "timestamp": "1782503817",
-              "rsrStaked": "22830030147282651155249484"
-            },
-            {
-              "timestamp": "1782579125",
-              "rsrStaked": "22830030147282651155249484"
-            },
-            {
-              "timestamp": "1782662693",
-              "rsrStaked": "22830030147282651155249484"
-            },
-            {
-              "timestamp": "1782723351",
-              "rsrStaked": "22830030147282651155249484"
-            },
-            {
-              "timestamp": "1782851245",
-              "rsrStaked": "22830030147282651155249484"
-            },
-            {
-              "timestamp": "1782944175",
-              "rsrStaked": "22830030147282651155249484"
-            },
-            {
-              "timestamp": "1783033327",
-              "rsrStaked": "22830030147282651155249484"
-            },
-            {
-              "timestamp": "1783113427",
-              "rsrStaked": "22830030147282651155249484"
-            },
-            {
-              "timestamp": "1783202463",
-              "rsrStaked": "22830030147282651155249484"
-            },
-            {
-              "timestamp": "1783264895",
-              "rsrStaked": "22830030147282651155249484"
-            },
-            {
-              "timestamp": "1783342293",
-              "rsrStaked": "22830030147282651155249484"
-            },
-            {
-              "timestamp": "1783456075",
-              "rsrStaked": "22830030147282651155249484"
-            },
-            {
-              "timestamp": "1783497079",
-              "rsrStaked": "22830030147282651155249484"
-            },
-            {
-              "timestamp": "1783621739",
-              "rsrStaked": "22830030147282651155249484"
-            },
-            {
-              "timestamp": "1783704931",
-              "rsrStaked": "22830030147282651155249484"
-            },
-            {
-              "timestamp": "1783800627",
-              "rsrStaked": "22830030147282651155249484"
-            }
-          ]
-        }
       }
     },
     {
@@ -4435,31 +3796,633 @@
       }
     },
     {
-      "op": "getRTokenDistribution",
-      "query": "query getRTokenDistribution($id: String!) { rtoken(id: $id) { revenueDistribution { id rTokenDist rsrDist destination } } }",
+      "op": "getTokenDailyPrice",
+      "query": "query getTokenDailyPrice($id: String!, $fromTime: Int!) { token(id: $id) { snapshots: dailyTokenSnapshot( first: 1000 where: { timestamp_gte: $fromTime } ) { timestamp priceUSD basketRate } } }",
+      "variables": {
+        "id": "0xcc7ff230365bd730ee4b352cc2492cedac49383e",
+        "fromTime": 1781296097
+      },
+      "data": {
+        "token": {
+          "snapshots": [
+            {
+              "timestamp": "1781376341",
+              "priceUSD": "1.137104648428485846",
+              "basketRate": "1.137497414593440331242622661541145"
+            },
+            {
+              "timestamp": "1781479275",
+              "priceUSD": "1.137146404445092174",
+              "basketRate": "1.137497414593440331242622661541145"
+            },
+            {
+              "timestamp": "1781567243",
+              "priceUSD": "1.137214764286982511",
+              "basketRate": "1.137497414593440331242622661541145"
+            },
+            {
+              "timestamp": "1781634059",
+              "priceUSD": "1.137241094041412335",
+              "basketRate": "1.137497414593440331242622661541145"
+            },
+            {
+              "timestamp": "1781711365",
+              "priceUSD": "1.137275385597192497",
+              "basketRate": "1.137497414593440331242622661541145"
+            },
+            {
+              "timestamp": "1781788623",
+              "priceUSD": "1.137594723837470124",
+              "basketRate": "1.137497414593440331242622661541145"
+            },
+            {
+              "timestamp": "1781867337",
+              "priceUSD": "1.137680889430618706",
+              "basketRate": "1.137497414593440331242622661541145"
+            },
+            {
+              "timestamp": "1781992715",
+              "priceUSD": "1.137554038444243537",
+              "basketRate": "1.137497414593440331242622661541145"
+            },
+            {
+              "timestamp": "1782042361",
+              "priceUSD": "1.137842195053243552",
+              "basketRate": "1.137497414593440331242622661541145"
+            },
+            {
+              "timestamp": "1782146623",
+              "priceUSD": "1.13760338481254901",
+              "basketRate": "1.137497414593440331242622661541145"
+            },
+            {
+              "timestamp": "1782253023",
+              "priceUSD": "1.137756267713949462",
+              "basketRate": "1.137497414593440331242622661541145"
+            },
+            {
+              "timestamp": "1782330527",
+              "priceUSD": "1.13700057357587791",
+              "basketRate": "1.137497420282053140984239365806288"
+            },
+            {
+              "timestamp": "1782412297",
+              "priceUSD": "1.1368054563456905",
+              "basketRate": "1.137497420282053140984239365806288"
+            },
+            {
+              "timestamp": "1782503817",
+              "priceUSD": "1.137068335622211409",
+              "basketRate": "1.137497420282053140984239365806288"
+            },
+            {
+              "timestamp": "1782579125",
+              "priceUSD": "1.136854225543697053",
+              "basketRate": "1.137497420282053140984239365806288"
+            },
+            {
+              "timestamp": "1782662693",
+              "priceUSD": "1.137006163775884799",
+              "basketRate": "1.137497420282053140984239365806288"
+            },
+            {
+              "timestamp": "1782723351",
+              "priceUSD": "1.137049626918071027",
+              "basketRate": "1.137497420282053140984239365806288"
+            },
+            {
+              "timestamp": "1782851245",
+              "priceUSD": "1.136708464333406527",
+              "basketRate": "1.137497421056364214163644313461128"
+            },
+            {
+              "timestamp": "1782944175",
+              "priceUSD": "1.136967374187194983",
+              "basketRate": "1.137497421056364214163644313461128"
+            },
+            {
+              "timestamp": "1783033327",
+              "priceUSD": "1.136693473316122798",
+              "basketRate": "1.137497421056364214163644313461128"
+            },
+            {
+              "timestamp": "1783113427",
+              "priceUSD": "1.137022911854696213",
+              "basketRate": "1.137497421288713985656626657448452"
+            },
+            {
+              "timestamp": "1783202463",
+              "priceUSD": "1.13692316575359707",
+              "basketRate": "1.137497421288713985656626657448452"
+            },
+            {
+              "timestamp": "1783264895",
+              "priceUSD": "1.13696144170661944",
+              "basketRate": "1.137497421288713985656626657448452"
+            },
+            {
+              "timestamp": "1783342293",
+              "priceUSD": "1.137002752909070999",
+              "basketRate": "1.137497421288713985656626657448452"
+            },
+            {
+              "timestamp": "1783456075",
+              "priceUSD": "1.137107335119475176",
+              "basketRate": "1.137497421288713985656626657448452"
+            },
+            {
+              "timestamp": "1783497079",
+              "priceUSD": "1.137141547272856872",
+              "basketRate": "1.137497421288713985656626657448452"
+            },
+            {
+              "timestamp": "1783621739",
+              "priceUSD": "1.13714459513025681",
+              "basketRate": "1.137497421288713985656626657448452"
+            },
+            {
+              "timestamp": "1783704931",
+              "priceUSD": "1.136827679136080944",
+              "basketRate": "1.137497421585603239432908389702051"
+            },
+            {
+              "timestamp": "1783806549",
+              "priceUSD": "1.137277821756652968",
+              "basketRate": "1.137497421585603239432908389702051"
+            },
+            {
+              "timestamp": "1783883985",
+              "priceUSD": "1.137281375416788996",
+              "basketRate": "1.137497421585603239432908389702051"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "op": "getTokenDailyPrice",
+      "query": "query getTokenDailyPrice($id: String!, $fromTime: Int!) { token(id: $id) { snapshots: dailyTokenSnapshot( first: 1000 where: { timestamp_gte: $fromTime } ) { timestamp supply: dailyTotalSupply } } }",
+      "variables": {
+        "id": "0xcc7ff230365bd730ee4b352cc2492cedac49383e",
+        "fromTime": 1781296097
+      },
+      "data": {
+        "token": {
+          "snapshots": [
+            {
+              "timestamp": "1781376341",
+              "supply": "58407241661365215456805"
+            },
+            {
+              "timestamp": "1781479275",
+              "supply": "58407241661365215456805"
+            },
+            {
+              "timestamp": "1781567243",
+              "supply": "58407241661365215456805"
+            },
+            {
+              "timestamp": "1781634059",
+              "supply": "58407241661365215456805"
+            },
+            {
+              "timestamp": "1781711365",
+              "supply": "58407241661365215456805"
+            },
+            {
+              "timestamp": "1781788623",
+              "supply": "58407241661365215456805"
+            },
+            {
+              "timestamp": "1781867337",
+              "supply": "58407241661365215456805"
+            },
+            {
+              "timestamp": "1781992715",
+              "supply": "58407241661365215456805"
+            },
+            {
+              "timestamp": "1782042361",
+              "supply": "58407241661365215456805"
+            },
+            {
+              "timestamp": "1782146623",
+              "supply": "58407241661365215456805"
+            },
+            {
+              "timestamp": "1782253023",
+              "supply": "58407241661365215456805"
+            },
+            {
+              "timestamp": "1782330527",
+              "supply": "58318642628955324038915"
+            },
+            {
+              "timestamp": "1782412297",
+              "supply": "58318642628955324038915"
+            },
+            {
+              "timestamp": "1782503817",
+              "supply": "58318642628955324038915"
+            },
+            {
+              "timestamp": "1782579125",
+              "supply": "58318642628955324038915"
+            },
+            {
+              "timestamp": "1782662693",
+              "supply": "58318642628955324038915"
+            },
+            {
+              "timestamp": "1782723351",
+              "supply": "58318642628955324038915"
+            },
+            {
+              "timestamp": "1782851245",
+              "supply": "57963315404508970567909"
+            },
+            {
+              "timestamp": "1782944175",
+              "supply": "57963315404508970567909"
+            },
+            {
+              "timestamp": "1783033327",
+              "supply": "57963315404508970567909"
+            },
+            {
+              "timestamp": "1783113427",
+              "supply": "57963315392669152000272"
+            },
+            {
+              "timestamp": "1783202463",
+              "supply": "57963315392669152000272"
+            },
+            {
+              "timestamp": "1783264895",
+              "supply": "57963315392669152000272"
+            },
+            {
+              "timestamp": "1783342293",
+              "supply": "57963315392669152000272"
+            },
+            {
+              "timestamp": "1783456075",
+              "supply": "57963315392669152000272"
+            },
+            {
+              "timestamp": "1783497079",
+              "supply": "57963315392669152000272"
+            },
+            {
+              "timestamp": "1783621739",
+              "supply": "57963315392669152000272"
+            },
+            {
+              "timestamp": "1783704931",
+              "supply": "56770406533703810144111"
+            },
+            {
+              "timestamp": "1783806549",
+              "supply": "56770406533703810144111"
+            },
+            {
+              "timestamp": "1783883985",
+              "supply": "56770406533703810144111"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "op": "getRTokenOwner",
+      "query": "query getRTokenOwner($id: String!) { rtoken(id: $id) { owners pausers freezers longFreezers } governance(id: $id) { guardians governanceFrameworks(orderBy: name, orderDirection: desc) { id name proposalThreshold contractAddress quorumDenominator quorumNumerator quorumVotes executionDelay timelockAddress votingDelay votingPeriod } } }",
       "variables": {
         "id": "0xcc7ff230365bd730ee4b352cc2492cedac49383e"
       },
       "data": {
         "rtoken": {
-          "revenueDistribution": [
+          "owners": [],
+          "pausers": [],
+          "freezers": [],
+          "longFreezers": []
+        },
+        "governance": {
+          "guardians": [
+            "0x6f1d6b86d4ad705385e751e6e88b0fdfdbadf298"
+          ],
+          "governanceFrameworks": [
             {
-              "id": "0x0000000000000000000000000000000000000001-0xcc7ff230365bd730ee4b352cc2492cedac49383e",
-              "rTokenDist": 0,
-              "rsrDist": 0,
-              "destination": "0x0000000000000000000000000000000000000001"
+              "id": "0xffef97179f58a582def73e6d2e4bcd2bdc8ca128",
+              "name": "Governor Anastasius",
+              "proposalThreshold": "10167609405081689701602",
+              "contractAddress": "0xffef97179f58a582def73e6d2e4bcd2bdc8ca128",
+              "quorumDenominator": "100",
+              "quorumNumerator": "0",
+              "quorumVotes": "3756049228166335167168513",
+              "executionDelay": "259200",
+              "timelockAddress": "0x4284d76a03f9b398ff7aec58c9dec94b289070cf",
+              "votingDelay": "172800",
+              "votingPeriod": "259200"
             },
             {
-              "id": "0x0000000000000000000000000000000000000002-0xcc7ff230365bd730ee4b352cc2492cedac49383e",
+              "id": "0xc8e63d3501a246fa1ddbabe4ad0b50e9d32aa8bb",
+              "name": "Governor Alexios",
+              "proposalThreshold": "10000",
+              "contractAddress": "0xc8e63d3501a246fa1ddbabe4ad0b50e9d32aa8bb",
+              "quorumDenominator": "100",
+              "quorumNumerator": "10",
+              "quorumVotes": "10228010384689829084720561",
+              "executionDelay": "259200",
+              "timelockAddress": "0xf093d7f00f3dce6d415be564f41cb4bc032fb367",
+              "votingDelay": "86400",
+              "votingPeriod": "129600"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "op": "getHistoricalBaskets",
+      "query": "query getHistoricalBaskets($id: String!) { rtoken(id: $id) { historicalBaskets(orderBy: timestamp, orderDirection: desc) { timestamp collaterals { id symbol } collateralDistribution rTokenDist rsrDist } } }",
+      "variables": {
+        "id": "0xcc7ff230365bd730ee4b352cc2492cedac49383e"
+      },
+      "data": {
+        "rtoken": {
+          "historicalBaskets": [
+            {
+              "timestamp": "1774474801",
+              "collaterals": [
+                {
+                  "id": "0x53f1df4e5591ae35bf738742981669c3767241fa",
+                  "symbol": "wcUSDCv3"
+                },
+                {
+                  "id": "0x6f6f81e5e66f503184f2202d83a79650c3285759",
+                  "symbol": "saBasUSDC"
+                },
+                {
+                  "id": "0xdb5b8cead52f77de0f6b5255f73f348aaf2cbb8d",
+                  "symbol": "wsAMM-eUSD/USDC"
+                }
+              ],
+              "collateralDistribution": "{\"0xdb5b8cead52f77de0f6b5255f73f348aaf2cbb8d\":{\"dist\":\"0.499043864038059643\",\"target\":\"USD\"},\"0x6f6f81e5e66f503184f2202d83a79650c3285759\":{\"dist\":\"0.250478186187855325\",\"target\":\"USD\"},\"0x53f1df4e5591ae35bf738742981669c3767241fa\":{\"dist\":\"0.25047794977408503\",\"target\":\"USD\"}}",
               "rTokenDist": 0,
-              "rsrDist": 10000,
-              "destination": "0x0000000000000000000000000000000000000002"
+              "rsrDist": 10000
             },
             {
-              "id": "0x0d58fbb8fee6c3647130f059443ef6bca523dcdb-0xcc7ff230365bd730ee4b352cc2492cedac49383e",
-              "rTokenDist": 0,
-              "rsrDist": 0,
-              "destination": "0x0d58fbb8fee6c3647130f059443ef6bca523dcdb"
+              "timestamp": "1773156999",
+              "collaterals": [
+                {
+                  "id": "0x53f1df4e5591ae35bf738742981669c3767241fa",
+                  "symbol": "wcUSDCv3"
+                },
+                {
+                  "id": "0x6f6f81e5e66f503184f2202d83a79650c3285759",
+                  "symbol": "saBasUSDC"
+                },
+                {
+                  "id": "0xdb5b8cead52f77de0f6b5255f73f348aaf2cbb8d",
+                  "symbol": "wsAMM-eUSD/USDC"
+                }
+              ],
+              "collateralDistribution": "{\"0xdb5b8cead52f77de0f6b5255f73f348aaf2cbb8d\":{\"dist\":\"0.499043864038059643\",\"target\":\"USD\"},\"0x6f6f81e5e66f503184f2202d83a79650c3285759\":{\"dist\":\"0.250478186187855325\",\"target\":\"USD\"},\"0x53f1df4e5591ae35bf738742981669c3767241fa\":{\"dist\":\"0.25047794977408503\",\"target\":\"USD\"}}",
+              "rTokenDist": 8100,
+              "rsrDist": 1900
+            },
+            {
+              "timestamp": "1732755993",
+              "collaterals": [
+                {
+                  "id": "0x53f1df4e5591ae35bf738742981669c3767241fa",
+                  "symbol": "wcUSDCv3"
+                },
+                {
+                  "id": "0x6f6f81e5e66f503184f2202d83a79650c3285759",
+                  "symbol": "saBasUSDC"
+                },
+                {
+                  "id": "0xdb5b8cead52f77de0f6b5255f73f348aaf2cbb8d",
+                  "symbol": "wsAMM-eUSD/USDC"
+                }
+              ],
+              "collateralDistribution": "{\"0xdb5b8cead52f77de0f6b5255f73f348aaf2cbb8d\":{\"dist\":\"0.499043864038059643\",\"target\":\"USD\"},\"0x6f6f81e5e66f503184f2202d83a79650c3285759\":{\"dist\":\"0.250478186187855325\",\"target\":\"USD\"},\"0x53f1df4e5591ae35bf738742981669c3767241fa\":{\"dist\":\"0.25047794977408503\",\"target\":\"USD\"}}",
+              "rTokenDist": 8100,
+              "rsrDist": 1600
+            },
+            {
+              "timestamp": "1718671253",
+              "collaterals": [
+                {
+                  "id": "0x53f1df4e5591ae35bf738742981669c3767241fa",
+                  "symbol": "wcUSDCv3"
+                },
+                {
+                  "id": "0x6f6f81e5e66f503184f2202d83a79650c3285759",
+                  "symbol": "saBasUSDC"
+                }
+              ],
+              "collateralDistribution": "{\"0x6f6f81e5e66f503184f2202d83a79650c3285759\":{\"dist\":\"0.500000071718929019\",\"target\":\"USD\"},\"0x53f1df4e5591ae35bf738742981669c3767241fa\":{\"dist\":\"0.49999992828107098\",\"target\":\"USD\"}}",
+              "rTokenDist": 8100,
+              "rsrDist": 1600
+            },
+            {
+              "timestamp": "1712940397",
+              "collaterals": [
+                {
+                  "id": "0x184460704886f9f2a7f3a0c2887680867954dc6e",
+                  "symbol": "saBasUSDC"
+                },
+                {
+                  "id": "0xa694f7177c6c839c951c74c797283b35d0a486c8",
+                  "symbol": "wcUSDCv3"
+                }
+              ],
+              "collateralDistribution": "{\"0x184460704886f9f2a7f3a0c2887680867954dc6e\":{\"dist\":\"0.500000121426788026\",\"target\":\"USD\"},\"0xa694f7177c6c839c951c74c797283b35d0a486c8\":{\"dist\":\"0.499999878573211973\",\"target\":\"USD\"}}",
+              "rTokenDist": 8100,
+              "rsrDist": 1600
+            },
+            {
+              "timestamp": "1711385543",
+              "collaterals": [
+                {
+                  "id": "0x073f98792ef4c00bb5f11b1f64f13cb25cde0d8d",
+                  "symbol": "wsgUSDbC"
+                },
+                {
+                  "id": "0xa8d818c719c1034e731feba2088f4f011d44acb3",
+                  "symbol": "wcUSDCv3"
+                }
+              ],
+              "collateralDistribution": "{\"0xa8d818c719c1034e731feba2088f4f011d44acb3\":{\"dist\":\"0.500000028927900711\",\"target\":\"USD\"},\"0x073f98792ef4c00bb5f11b1f64f13cb25cde0d8d\":{\"dist\":\"0.499999971072099288\",\"target\":\"USD\"}}",
+              "rTokenDist": 8100,
+              "rsrDist": 1600
+            },
+            {
+              "timestamp": "1702417791",
+              "collaterals": [
+                {
+                  "id": "0x073f98792ef4c00bb5f11b1f64f13cb25cde0d8d",
+                  "symbol": "wsgUSDbC"
+                },
+                {
+                  "id": "0xa8d818c719c1034e731feba2088f4f011d44acb3",
+                  "symbol": "wcUSDCv3"
+                }
+              ],
+              "collateralDistribution": "{\"0xa8d818c719c1034e731feba2088f4f011d44acb3\":{\"dist\":\"0.500000028927900711\",\"target\":\"USD\"},\"0x073f98792ef4c00bb5f11b1f64f13cb25cde0d8d\":{\"dist\":\"0.499999971072099288\",\"target\":\"USD\"}}",
+              "rTokenDist": 8100,
+              "rsrDist": 1600
+            },
+            {
+              "timestamp": "1697138413",
+              "collaterals": [
+                {
+                  "id": "0x073f98792ef4c00bb5f11b1f64f13cb25cde0d8d",
+                  "symbol": "wsgUSDbC"
+                },
+                {
+                  "id": "0xbc0033679aef41fb9feb553fdf55a8bb2fc5b29e",
+                  "symbol": "wcUSDCv3"
+                }
+              ],
+              "collateralDistribution": "{\"0x073f98792ef4c00bb5f11b1f64f13cb25cde0d8d\":{\"dist\":\"0.500000133053769298\",\"target\":\"USD\"},\"0xbc0033679aef41fb9feb553fdf55a8bb2fc5b29e\":{\"dist\":\"0.499999866946230701\",\"target\":\"USD\"}}",
+              "rTokenDist": 8100,
+              "rsrDist": 1600
+            }
+          ]
+        }
+      }
+    },
+    {
+      "op": "getTokenDailyPrice",
+      "query": "query getTokenDailyPrice($id: String!, $fromTime: Int!) { rtoken(id: $id) { snapshots: dailySnapshots( first: 365 where: { timestamp_gte: $fromTime } ) { timestamp rsrStaked } } }",
+      "variables": {
+        "id": "0xcc7ff230365bd730ee4b352cc2492cedac49383e",
+        "fromTime": 1781296097
+      },
+      "data": {
+        "rtoken": {
+          "snapshots": [
+            {
+              "timestamp": "1781376341",
+              "rsrStaked": "32182751590122406204307347"
+            },
+            {
+              "timestamp": "1781479275",
+              "rsrStaked": "32182751590122406204307347"
+            },
+            {
+              "timestamp": "1781567243",
+              "rsrStaked": "32182751590122406204307347"
+            },
+            {
+              "timestamp": "1781634059",
+              "rsrStaked": "32182751590122406204307347"
+            },
+            {
+              "timestamp": "1781711365",
+              "rsrStaked": "32182751590122406204307347"
+            },
+            {
+              "timestamp": "1781788623",
+              "rsrStaked": "32182751590122406204307347"
+            },
+            {
+              "timestamp": "1781876509",
+              "rsrStaked": "22830030147282651155249484"
+            },
+            {
+              "timestamp": "1781992715",
+              "rsrStaked": "22830030147282651155249484"
+            },
+            {
+              "timestamp": "1782042361",
+              "rsrStaked": "22830030147282651155249484"
+            },
+            {
+              "timestamp": "1782146623",
+              "rsrStaked": "22830030147282651155249484"
+            },
+            {
+              "timestamp": "1782253023",
+              "rsrStaked": "22830030147282651155249484"
+            },
+            {
+              "timestamp": "1782330527",
+              "rsrStaked": "22830030147282651155249484"
+            },
+            {
+              "timestamp": "1782412297",
+              "rsrStaked": "22830030147282651155249484"
+            },
+            {
+              "timestamp": "1782503817",
+              "rsrStaked": "22830030147282651155249484"
+            },
+            {
+              "timestamp": "1782579125",
+              "rsrStaked": "22830030147282651155249484"
+            },
+            {
+              "timestamp": "1782662693",
+              "rsrStaked": "22830030147282651155249484"
+            },
+            {
+              "timestamp": "1782723351",
+              "rsrStaked": "22830030147282651155249484"
+            },
+            {
+              "timestamp": "1782851245",
+              "rsrStaked": "22830030147282651155249484"
+            },
+            {
+              "timestamp": "1782944175",
+              "rsrStaked": "22830030147282651155249484"
+            },
+            {
+              "timestamp": "1783033327",
+              "rsrStaked": "22830030147282651155249484"
+            },
+            {
+              "timestamp": "1783113427",
+              "rsrStaked": "22830030147282651155249484"
+            },
+            {
+              "timestamp": "1783202463",
+              "rsrStaked": "22830030147282651155249484"
+            },
+            {
+              "timestamp": "1783264895",
+              "rsrStaked": "22830030147282651155249484"
+            },
+            {
+              "timestamp": "1783342293",
+              "rsrStaked": "22830030147282651155249484"
+            },
+            {
+              "timestamp": "1783456075",
+              "rsrStaked": "22830030147282651155249484"
+            },
+            {
+              "timestamp": "1783497079",
+              "rsrStaked": "22830030147282651155249484"
+            },
+            {
+              "timestamp": "1783621739",
+              "rsrStaked": "22830030147282651155249484"
+            },
+            {
+              "timestamp": "1783704931",
+              "rsrStaked": "22830030147282651155249484"
+            },
+            {
+              "timestamp": "1783806549",
+              "rsrStaked": "22830030147282651155249484"
+            },
+            {
+              "timestamp": "1783883985",
+              "rsrStaked": "22830030147282651155249484"
             }
           ]
         }
@@ -4475,7 +4438,11 @@
         "rtoken": {
           "snapshots": [
             {
-              "timestamp": "1783800627",
+              "timestamp": "1783883985",
+              "rsrStaked": "22830030147282651155249484"
+            },
+            {
+              "timestamp": "1783806549",
               "rsrStaked": "22830030147282651155249484"
             },
             {
@@ -5929,17 +5896,17 @@
             {
               "timestamp": "1752450489",
               "rsrStaked": "70357213977545190063131052"
-            },
-            {
-              "timestamp": "1752354003",
-              "rsrStaked": "70357213977545190063131052"
             }
           ]
         },
         "token": {
           "snapshots": [
             {
-              "timestamp": "1783800627",
+              "timestamp": "1783883985",
+              "supply": "56770406533703810144111"
+            },
+            {
+              "timestamp": "1783806549",
               "supply": "56770406533703810144111"
             },
             {
@@ -7393,10 +7360,1495 @@
             {
               "timestamp": "1752450489",
               "supply": "3818639251008538863085995"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "op": "getRTokenDistribution",
+      "query": "query getRTokenDistribution($id: String!) { rtoken(id: $id) { revenueDistribution { id rTokenDist rsrDist destination } } }",
+      "variables": {
+        "id": "0xcc7ff230365bd730ee4b352cc2492cedac49383e"
+      },
+      "data": {
+        "rtoken": {
+          "revenueDistribution": [
+            {
+              "id": "0x0000000000000000000000000000000000000001-0xcc7ff230365bd730ee4b352cc2492cedac49383e",
+              "rTokenDist": 0,
+              "rsrDist": 0,
+              "destination": "0x0000000000000000000000000000000000000001"
             },
             {
-              "timestamp": "1752354003",
-              "supply": "3818639251008538863085995"
+              "id": "0x0000000000000000000000000000000000000002-0xcc7ff230365bd730ee4b352cc2492cedac49383e",
+              "rTokenDist": 0,
+              "rsrDist": 10000,
+              "destination": "0x0000000000000000000000000000000000000002"
+            },
+            {
+              "id": "0x0d58fbb8fee6c3647130f059443ef6bca523dcdb-0xcc7ff230365bd730ee4b352cc2492cedac49383e",
+              "rTokenDist": 0,
+              "rsrDist": 0,
+              "destination": "0x0d58fbb8fee6c3647130f059443ef6bca523dcdb"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "op": "getRTokenExchangeRate",
+      "query": "query getRTokenExchangeRate($id: String!, $fromTime: Int!) { rtoken(id: $id) { snapshots: dailySnapshots( first: 365 where: { timestamp_gte: $fromTime } ) { timestamp rsrExchangeRate } } }",
+      "variables": {
+        "id": "0xcc7ff230365bd730ee4b352cc2492cedac49383e",
+        "fromTime": 1752784147
+      },
+      "data": {
+        "rtoken": {
+          "snapshots": [
+            {
+              "timestamp": "1752789639",
+              "rsrExchangeRate": "1.05601604984345768"
+            },
+            {
+              "timestamp": "1752877111",
+              "rsrExchangeRate": "1.05601604984345768"
+            },
+            {
+              "timestamp": "1752968179",
+              "rsrExchangeRate": "1.05601604984345768"
+            },
+            {
+              "timestamp": "1753055507",
+              "rsrExchangeRate": "1.05601604984345768"
+            },
+            {
+              "timestamp": "1753139785",
+              "rsrExchangeRate": "1.05601604984345768"
+            },
+            {
+              "timestamp": "1753226787",
+              "rsrExchangeRate": "1.059116567148759176"
+            },
+            {
+              "timestamp": "1753313417",
+              "rsrExchangeRate": "1.059116567148759176"
+            },
+            {
+              "timestamp": "1753394403",
+              "rsrExchangeRate": "1.059116567148759176"
+            },
+            {
+              "timestamp": "1753486203",
+              "rsrExchangeRate": "1.059116567148759176"
+            },
+            {
+              "timestamp": "1753566431",
+              "rsrExchangeRate": "1.059116567148759176"
+            },
+            {
+              "timestamp": "1753651527",
+              "rsrExchangeRate": "1.059116567148759176"
+            },
+            {
+              "timestamp": "1753743805",
+              "rsrExchangeRate": "1.059116567148759176"
+            },
+            {
+              "timestamp": "1753825109",
+              "rsrExchangeRate": "1.059116567148759176"
+            },
+            {
+              "timestamp": "1753914969",
+              "rsrExchangeRate": "1.059116567148759176"
+            },
+            {
+              "timestamp": "1753994831",
+              "rsrExchangeRate": "1.059116567148759176"
+            },
+            {
+              "timestamp": "1754086965",
+              "rsrExchangeRate": "1.059116567148759176"
+            },
+            {
+              "timestamp": "1754176733",
+              "rsrExchangeRate": "1.059116567148759176"
+            },
+            {
+              "timestamp": "1754255623",
+              "rsrExchangeRate": "1.059116567148759176"
+            },
+            {
+              "timestamp": "1754344257",
+              "rsrExchangeRate": "1.059116567148759176"
+            },
+            {
+              "timestamp": "1754436993",
+              "rsrExchangeRate": "1.059116567148759176"
+            },
+            {
+              "timestamp": "1754521143",
+              "rsrExchangeRate": "1.059116567148759176"
+            },
+            {
+              "timestamp": "1754601505",
+              "rsrExchangeRate": "1.059116567148759176"
+            },
+            {
+              "timestamp": "1754694075",
+              "rsrExchangeRate": "1.059116567148759176"
+            },
+            {
+              "timestamp": "1754774149",
+              "rsrExchangeRate": "1.06238538694475374"
+            },
+            {
+              "timestamp": "1754868951",
+              "rsrExchangeRate": "1.06238538694475374"
+            },
+            {
+              "timestamp": "1754955003",
+              "rsrExchangeRate": "1.06238538694475374"
+            },
+            {
+              "timestamp": "1755041395",
+              "rsrExchangeRate": "1.06238538694475374"
+            },
+            {
+              "timestamp": "1755127677",
+              "rsrExchangeRate": "1.06238538694475374"
+            },
+            {
+              "timestamp": "1755214885",
+              "rsrExchangeRate": "1.06238538694475374"
+            },
+            {
+              "timestamp": "1755295263",
+              "rsrExchangeRate": "1.062888373837787661"
+            },
+            {
+              "timestamp": "1755387943",
+              "rsrExchangeRate": "1.062960084406110669"
+            },
+            {
+              "timestamp": "1755472727",
+              "rsrExchangeRate": "1.062960084406110669"
+            },
+            {
+              "timestamp": "1755559693",
+              "rsrExchangeRate": "1.062960084406110669"
+            },
+            {
+              "timestamp": "1755642875",
+              "rsrExchangeRate": "1.062960084406110669"
+            },
+            {
+              "timestamp": "1755730407",
+              "rsrExchangeRate": "1.062960084406110669"
+            },
+            {
+              "timestamp": "1755819487",
+              "rsrExchangeRate": "1.062960084406110669"
+            },
+            {
+              "timestamp": "1755905403",
+              "rsrExchangeRate": "1.062960084406110669"
+            },
+            {
+              "timestamp": "1755992813",
+              "rsrExchangeRate": "1.062960084406110669"
+            },
+            {
+              "timestamp": "1756079421",
+              "rsrExchangeRate": "1.062960084406110669"
+            },
+            {
+              "timestamp": "1756163609",
+              "rsrExchangeRate": "1.062960084406110669"
+            },
+            {
+              "timestamp": "1756250865",
+              "rsrExchangeRate": "1.062960084406110669"
+            },
+            {
+              "timestamp": "1756338237",
+              "rsrExchangeRate": "1.062960084406110669"
+            },
+            {
+              "timestamp": "1756419673",
+              "rsrExchangeRate": "1.062960084406110669"
+            },
+            {
+              "timestamp": "1756511071",
+              "rsrExchangeRate": "1.062960084406110669"
+            },
+            {
+              "timestamp": "1756583907",
+              "rsrExchangeRate": "1.062960084406110669"
+            },
+            {
+              "timestamp": "1756683149",
+              "rsrExchangeRate": "1.062960084406110669"
+            },
+            {
+              "timestamp": "1756766369",
+              "rsrExchangeRate": "1.062960084406110669"
+            },
+            {
+              "timestamp": "1756856847",
+              "rsrExchangeRate": "1.063482162959905941"
+            },
+            {
+              "timestamp": "1756941249",
+              "rsrExchangeRate": "1.063482162959905941"
+            },
+            {
+              "timestamp": "1757023043",
+              "rsrExchangeRate": "1.063482162959905941"
+            },
+            {
+              "timestamp": "1757110775",
+              "rsrExchangeRate": "1.063482162959905941"
+            },
+            {
+              "timestamp": "1757199243",
+              "rsrExchangeRate": "1.063482162959905941"
+            },
+            {
+              "timestamp": "1757282403",
+              "rsrExchangeRate": "1.063482162959905941"
+            },
+            {
+              "timestamp": "1757374203",
+              "rsrExchangeRate": "1.063482162959905941"
+            },
+            {
+              "timestamp": "1757454855",
+              "rsrExchangeRate": "1.063482162959905941"
+            },
+            {
+              "timestamp": "1757527203",
+              "rsrExchangeRate": "1.063482162959905941"
+            },
+            {
+              "timestamp": "1757619003",
+              "rsrExchangeRate": "1.063482162959905941"
+            },
+            {
+              "timestamp": "1757720347",
+              "rsrExchangeRate": "1.063482162959905941"
+            },
+            {
+              "timestamp": "1757806135",
+              "rsrExchangeRate": "1.063482162959905941"
+            },
+            {
+              "timestamp": "1757894021",
+              "rsrExchangeRate": "1.063482162959905941"
+            },
+            {
+              "timestamp": "1757971315",
+              "rsrExchangeRate": "1.063482162959905941"
+            },
+            {
+              "timestamp": "1758055759",
+              "rsrExchangeRate": "1.063482162959905941"
+            },
+            {
+              "timestamp": "1758139203",
+              "rsrExchangeRate": "1.063482162959905941"
+            },
+            {
+              "timestamp": "1758231003",
+              "rsrExchangeRate": "1.063482162959905941"
+            },
+            {
+              "timestamp": "1758322803",
+              "rsrExchangeRate": "1.063482162959905941"
+            },
+            {
+              "timestamp": "1758402083",
+              "rsrExchangeRate": "1.063482162959905941"
+            },
+            {
+              "timestamp": "1758488551",
+              "rsrExchangeRate": "1.063482162959905941"
+            },
+            {
+              "timestamp": "1758567603",
+              "rsrExchangeRate": "1.063482162959905941"
+            },
+            {
+              "timestamp": "1758659403",
+              "rsrExchangeRate": "1.063482162959905941"
+            },
+            {
+              "timestamp": "1758754705",
+              "rsrExchangeRate": "1.063482162959905941"
+            },
+            {
+              "timestamp": "1758843003",
+              "rsrExchangeRate": "1.063482162959905941"
+            },
+            {
+              "timestamp": "1758929827",
+              "rsrExchangeRate": "1.063482162959905941"
+            },
+            {
+              "timestamp": "1759009065",
+              "rsrExchangeRate": "1.063482162959905941"
+            },
+            {
+              "timestamp": "1759101603",
+              "rsrExchangeRate": "1.069716130536144193"
+            },
+            {
+              "timestamp": "1759189305",
+              "rsrExchangeRate": "1.069885923785977583"
+            },
+            {
+              "timestamp": "1759275735",
+              "rsrExchangeRate": "1.069885923785977583"
+            },
+            {
+              "timestamp": "1759362533",
+              "rsrExchangeRate": "1.069885923785977583"
+            },
+            {
+              "timestamp": "1759446679",
+              "rsrExchangeRate": "1.069885923785977583"
+            },
+            {
+              "timestamp": "1759535577",
+              "rsrExchangeRate": "1.069885923785977583"
+            },
+            {
+              "timestamp": "1759616447",
+              "rsrExchangeRate": "1.069885923785977583"
+            },
+            {
+              "timestamp": "1759700543",
+              "rsrExchangeRate": "1.069885923785977583"
+            },
+            {
+              "timestamp": "1759793653",
+              "rsrExchangeRate": "1.069885923785977583"
+            },
+            {
+              "timestamp": "1759879753",
+              "rsrExchangeRate": "1.069885923785977583"
+            },
+            {
+              "timestamp": "1759965361",
+              "rsrExchangeRate": "1.069885923785977583"
+            },
+            {
+              "timestamp": "1760052565",
+              "rsrExchangeRate": "1.070903565200267836"
+            },
+            {
+              "timestamp": "1760137361",
+              "rsrExchangeRate": "1.070903565200267836"
+            },
+            {
+              "timestamp": "1760225403",
+              "rsrExchangeRate": "1.070903565200267836"
+            },
+            {
+              "timestamp": "1760309913",
+              "rsrExchangeRate": "1.070903565200267836"
+            },
+            {
+              "timestamp": "1760394477",
+              "rsrExchangeRate": "1.071065212068732042"
+            },
+            {
+              "timestamp": "1760485749",
+              "rsrExchangeRate": "1.071347711822476352"
+            },
+            {
+              "timestamp": "1760562003",
+              "rsrExchangeRate": "1.071347711822476352"
+            },
+            {
+              "timestamp": "1760653803",
+              "rsrExchangeRate": "1.071347711822476352"
+            },
+            {
+              "timestamp": "1760739795",
+              "rsrExchangeRate": "1.071347711822476352"
+            },
+            {
+              "timestamp": "1760824775",
+              "rsrExchangeRate": "1.071347711822476352"
+            },
+            {
+              "timestamp": "1760904149",
+              "rsrExchangeRate": "1.071347711822476352"
+            },
+            {
+              "timestamp": "1760992203",
+              "rsrExchangeRate": "1.071347711822476352"
+            },
+            {
+              "timestamp": "1761084005",
+              "rsrExchangeRate": "1.071347711822476352"
+            },
+            {
+              "timestamp": "1761177237",
+              "rsrExchangeRate": "1.071347711822476352"
+            },
+            {
+              "timestamp": "1761249517",
+              "rsrExchangeRate": "1.071347711822476352"
+            },
+            {
+              "timestamp": "1761336931",
+              "rsrExchangeRate": "1.071347711822476352"
+            },
+            {
+              "timestamp": "1761433227",
+              "rsrExchangeRate": "1.071347711822476352"
+            },
+            {
+              "timestamp": "1761512977",
+              "rsrExchangeRate": "1.071347711822476352"
+            },
+            {
+              "timestamp": "1761604203",
+              "rsrExchangeRate": "1.071347711822476352"
+            },
+            {
+              "timestamp": "1761692939",
+              "rsrExchangeRate": "1.071347711822476352"
+            },
+            {
+              "timestamp": "1761770705",
+              "rsrExchangeRate": "1.071347711822476352"
+            },
+            {
+              "timestamp": "1761857253",
+              "rsrExchangeRate": "1.075145347630241752"
+            },
+            {
+              "timestamp": "1761950001",
+              "rsrExchangeRate": "1.075145347630241752"
+            },
+            {
+              "timestamp": "1762032603",
+              "rsrExchangeRate": "1.075145347630241752"
+            },
+            {
+              "timestamp": "1762127207",
+              "rsrExchangeRate": "1.075375021118020165"
+            },
+            {
+              "timestamp": "1762209239",
+              "rsrExchangeRate": "1.075375021118020165"
+            },
+            {
+              "timestamp": "1762295515",
+              "rsrExchangeRate": "1.075375021118020165"
+            },
+            {
+              "timestamp": "1762378933",
+              "rsrExchangeRate": "1.075375021118020165"
+            },
+            {
+              "timestamp": "1762472209",
+              "rsrExchangeRate": "1.075375021118020165"
+            },
+            {
+              "timestamp": "1762559397",
+              "rsrExchangeRate": "1.075375021118020165"
+            },
+            {
+              "timestamp": "1762644603",
+              "rsrExchangeRate": "1.075375021118020165"
+            },
+            {
+              "timestamp": "1762731751",
+              "rsrExchangeRate": "1.075375021118020165"
+            },
+            {
+              "timestamp": "1762797605",
+              "rsrExchangeRate": "1.075375021118020165"
+            },
+            {
+              "timestamp": "1762898335",
+              "rsrExchangeRate": "1.075375021118020165"
+            },
+            {
+              "timestamp": "1762985607",
+              "rsrExchangeRate": "1.075375021118020165"
+            },
+            {
+              "timestamp": "1763074983",
+              "rsrExchangeRate": "1.075375021118020165"
+            },
+            {
+              "timestamp": "1763164419",
+              "rsrExchangeRate": "1.075375021118020165"
+            },
+            {
+              "timestamp": "1763237369",
+              "rsrExchangeRate": "1.075375021118020165"
+            },
+            {
+              "timestamp": "1763335145",
+              "rsrExchangeRate": "1.075375021118020165"
+            },
+            {
+              "timestamp": "1763415859",
+              "rsrExchangeRate": "1.075375021118020165"
+            },
+            {
+              "timestamp": "1763509281",
+              "rsrExchangeRate": "1.075375021118020165"
+            },
+            {
+              "timestamp": "1763593909",
+              "rsrExchangeRate": "1.075375021118020165"
+            },
+            {
+              "timestamp": "1763682335",
+              "rsrExchangeRate": "1.075375021118020165"
+            },
+            {
+              "timestamp": "1763763179",
+              "rsrExchangeRate": "1.075944059466937474"
+            },
+            {
+              "timestamp": "1763847713",
+              "rsrExchangeRate": "1.075944059466937474"
+            },
+            {
+              "timestamp": "1763937005",
+              "rsrExchangeRate": "1.075944059466937474"
+            },
+            {
+              "timestamp": "1764010707",
+              "rsrExchangeRate": "1.075944059466937474"
+            },
+            {
+              "timestamp": "1764096759",
+              "rsrExchangeRate": "1.075976411832097199"
+            },
+            {
+              "timestamp": "1764185049",
+              "rsrExchangeRate": "1.075976411832097199"
+            },
+            {
+              "timestamp": "1764273603",
+              "rsrExchangeRate": "1.075976411832097199"
+            },
+            {
+              "timestamp": "1764370893",
+              "rsrExchangeRate": "1.075993036037041106"
+            },
+            {
+              "timestamp": "1764457505",
+              "rsrExchangeRate": "1.075993036037041106"
+            },
+            {
+              "timestamp": "1764518405",
+              "rsrExchangeRate": "1.075993036037041106"
+            },
+            {
+              "timestamp": "1764618275",
+              "rsrExchangeRate": "1.076007639046857361"
+            },
+            {
+              "timestamp": "1764719655",
+              "rsrExchangeRate": "1.076010985690980075"
+            },
+            {
+              "timestamp": "1764794327",
+              "rsrExchangeRate": "1.076035594225780935"
+            },
+            {
+              "timestamp": "1764885143",
+              "rsrExchangeRate": "1.076828539365032412"
+            },
+            {
+              "timestamp": "1764977403",
+              "rsrExchangeRate": "1.076828539365032412"
+            },
+            {
+              "timestamp": "1765058307",
+              "rsrExchangeRate": "1.076828539365032412"
+            },
+            {
+              "timestamp": "1765133357",
+              "rsrExchangeRate": "1.076828539365032412"
+            },
+            {
+              "timestamp": "1765238009",
+              "rsrExchangeRate": "1.076828539365032412"
+            },
+            {
+              "timestamp": "1765315465",
+              "rsrExchangeRate": "1.076828539365032412"
+            },
+            {
+              "timestamp": "1765407967",
+              "rsrExchangeRate": "1.076828539365032412"
+            },
+            {
+              "timestamp": "1765490397",
+              "rsrExchangeRate": "1.076828539365032412"
+            },
+            {
+              "timestamp": "1765583161",
+              "rsrExchangeRate": "1.076828539365032412"
+            },
+            {
+              "timestamp": "1765667767",
+              "rsrExchangeRate": "1.076828539365032412"
+            },
+            {
+              "timestamp": "1765756719",
+              "rsrExchangeRate": "1.076828539365032412"
+            },
+            {
+              "timestamp": "1765843037",
+              "rsrExchangeRate": "1.083115844794222697"
+            },
+            {
+              "timestamp": "1765928959",
+              "rsrExchangeRate": "1.083115844794222697"
+            },
+            {
+              "timestamp": "1766009391",
+              "rsrExchangeRate": "1.083115844794222697"
+            },
+            {
+              "timestamp": "1766097917",
+              "rsrExchangeRate": "1.083115844794222697"
+            },
+            {
+              "timestamp": "1766187361",
+              "rsrExchangeRate": "1.083115844794222697"
+            },
+            {
+              "timestamp": "1766262099",
+              "rsrExchangeRate": "1.083115844794222697"
+            },
+            {
+              "timestamp": "1766354425",
+              "rsrExchangeRate": "1.083115844794222697"
+            },
+            {
+              "timestamp": "1766442607",
+              "rsrExchangeRate": "1.083115844794222697"
+            },
+            {
+              "timestamp": "1766523981",
+              "rsrExchangeRate": "1.083115844794222697"
+            },
+            {
+              "timestamp": "1766600399",
+              "rsrExchangeRate": "1.083115844794222697"
+            },
+            {
+              "timestamp": "1766697155",
+              "rsrExchangeRate": "1.085257786410282439"
+            },
+            {
+              "timestamp": "1766783453",
+              "rsrExchangeRate": "1.085257786410282439"
+            },
+            {
+              "timestamp": "1766879227",
+              "rsrExchangeRate": "1.085257786410282439"
+            },
+            {
+              "timestamp": "1766964297",
+              "rsrExchangeRate": "1.085257786410282439"
+            },
+            {
+              "timestamp": "1767038807",
+              "rsrExchangeRate": "1.085257786410282439"
+            },
+            {
+              "timestamp": "1767135657",
+              "rsrExchangeRate": "1.085257786410282439"
+            },
+            {
+              "timestamp": "1767206593",
+              "rsrExchangeRate": "1.085257786410282439"
+            },
+            {
+              "timestamp": "1767282497",
+              "rsrExchangeRate": "1.085257786410282439"
+            },
+            {
+              "timestamp": "1767393005",
+              "rsrExchangeRate": "1.085257786410282439"
+            },
+            {
+              "timestamp": "1767483981",
+              "rsrExchangeRate": "1.085257786410282439"
+            },
+            {
+              "timestamp": "1767546007",
+              "rsrExchangeRate": "1.085257786410282439"
+            },
+            {
+              "timestamp": "1767657267",
+              "rsrExchangeRate": "1.086063284242346365"
+            },
+            {
+              "timestamp": "1767732559",
+              "rsrExchangeRate": "1.086063284242346365"
+            },
+            {
+              "timestamp": "1767823257",
+              "rsrExchangeRate": "1.086691050883760477"
+            },
+            {
+              "timestamp": "1767913339",
+              "rsrExchangeRate": "1.086691050883760477"
+            },
+            {
+              "timestamp": "1767976287",
+              "rsrExchangeRate": "1.086691050883760477"
+            },
+            {
+              "timestamp": "1768077035",
+              "rsrExchangeRate": "1.086691050883760477"
+            },
+            {
+              "timestamp": "1768171319",
+              "rsrExchangeRate": "1.088301358651903548"
+            },
+            {
+              "timestamp": "1768249805",
+              "rsrExchangeRate": "1.088301358651903548"
+            },
+            {
+              "timestamp": "1768341605",
+              "rsrExchangeRate": "1.088301358651903548"
+            },
+            {
+              "timestamp": "1768433405",
+              "rsrExchangeRate": "1.088301358651903548"
+            },
+            {
+              "timestamp": "1768517285",
+              "rsrExchangeRate": "1.088301358651903548"
+            },
+            {
+              "timestamp": "1768598979",
+              "rsrExchangeRate": "1.089563199472653737"
+            },
+            {
+              "timestamp": "1768681703",
+              "rsrExchangeRate": "1.089563199472653737"
+            },
+            {
+              "timestamp": "1768770005",
+              "rsrExchangeRate": "1.089563199472653737"
+            },
+            {
+              "timestamp": "1768861805",
+              "rsrExchangeRate": "1.089563199472653737"
+            },
+            {
+              "timestamp": "1768952485",
+              "rsrExchangeRate": "1.089563199472653737"
+            },
+            {
+              "timestamp": "1769039489",
+              "rsrExchangeRate": "1.090512098358478785"
+            },
+            {
+              "timestamp": "1769104805",
+              "rsrExchangeRate": "1.090512098358478785"
+            },
+            {
+              "timestamp": "1769205411",
+              "rsrExchangeRate": "1.090749076328796791"
+            },
+            {
+              "timestamp": "1769288407",
+              "rsrExchangeRate": "1.090749076328796791"
+            },
+            {
+              "timestamp": "1769384789",
+              "rsrExchangeRate": "1.090749076328796791"
+            },
+            {
+              "timestamp": "1769458537",
+              "rsrExchangeRate": "1.0909836051648248"
+            },
+            {
+              "timestamp": "1769533205",
+              "rsrExchangeRate": "1.0909836051648248"
+            },
+            {
+              "timestamp": "1769640123",
+              "rsrExchangeRate": "1.0909836051648248"
+            },
+            {
+              "timestamp": "1769717525",
+              "rsrExchangeRate": "1.0909836051648248"
+            },
+            {
+              "timestamp": "1769797455",
+              "rsrExchangeRate": "1.0909836051648248"
+            },
+            {
+              "timestamp": "1769900973",
+              "rsrExchangeRate": "1.091295378517295708"
+            },
+            {
+              "timestamp": "1769975933",
+              "rsrExchangeRate": "1.091295378517295708"
+            },
+            {
+              "timestamp": "1770069605",
+              "rsrExchangeRate": "1.091295378517295708"
+            },
+            {
+              "timestamp": "1770161405",
+              "rsrExchangeRate": "1.091295378517295708"
+            },
+            {
+              "timestamp": "1770222605",
+              "rsrExchangeRate": "1.091295378517295708"
+            },
+            {
+              "timestamp": "1770320749",
+              "rsrExchangeRate": "1.091295378517295708"
+            },
+            {
+              "timestamp": "1770417169",
+              "rsrExchangeRate": "1.091295378517295708"
+            },
+            {
+              "timestamp": "1770493817",
+              "rsrExchangeRate": "1.091295378517295708"
+            },
+            {
+              "timestamp": "1770571303",
+              "rsrExchangeRate": "1.091295378517295708"
+            },
+            {
+              "timestamp": "1770648547",
+              "rsrExchangeRate": "1.091295378517295708"
+            },
+            {
+              "timestamp": "1770727717",
+              "rsrExchangeRate": "1.091295378517295708"
+            },
+            {
+              "timestamp": "1770853799",
+              "rsrExchangeRate": "1.091295378517295708"
+            },
+            {
+              "timestamp": "1770930147",
+              "rsrExchangeRate": "1.091295378517295708"
+            },
+            {
+              "timestamp": "1771020401",
+              "rsrExchangeRate": "1.091295378517295708"
+            },
+            {
+              "timestamp": "1771112839",
+              "rsrExchangeRate": "1.091295378517295708"
+            },
+            {
+              "timestamp": "1771190315",
+              "rsrExchangeRate": "1.091295378517295708"
+            },
+            {
+              "timestamp": "1771267689",
+              "rsrExchangeRate": "1.091295378517295708"
+            },
+            {
+              "timestamp": "1771344935",
+              "rsrExchangeRate": "1.091295378517295708"
+            },
+            {
+              "timestamp": "1771422343",
+              "rsrExchangeRate": "1.091295378517295708"
+            },
+            {
+              "timestamp": "1771526567",
+              "rsrExchangeRate": "1.091295378517295708"
+            },
+            {
+              "timestamp": "1771577191",
+              "rsrExchangeRate": "1.091295378517295708"
+            },
+            {
+              "timestamp": "1771709641",
+              "rsrExchangeRate": "1.091295378517295708"
+            },
+            {
+              "timestamp": "1771731887",
+              "rsrExchangeRate": "1.091295378517295708"
+            },
+            {
+              "timestamp": "1771890265",
+              "rsrExchangeRate": "1.091295378517295708"
+            },
+            {
+              "timestamp": "1771967639",
+              "rsrExchangeRate": "1.091295378517295708"
+            },
+            {
+              "timestamp": "1772045061",
+              "rsrExchangeRate": "1.091295378517295708"
+            },
+            {
+              "timestamp": "1772147043",
+              "rsrExchangeRate": "1.091713994169954877"
+            },
+            {
+              "timestamp": "1772199765",
+              "rsrExchangeRate": "1.091713994169954877"
+            },
+            {
+              "timestamp": "1772316835",
+              "rsrExchangeRate": "1.091713994169954877"
+            },
+            {
+              "timestamp": "1772376983",
+              "rsrExchangeRate": "1.091713994169954877"
+            },
+            {
+              "timestamp": "1772486385",
+              "rsrExchangeRate": "1.091713994169954877"
+            },
+            {
+              "timestamp": "1772570557",
+              "rsrExchangeRate": "1.091713994169954877"
+            },
+            {
+              "timestamp": "1772664261",
+              "rsrExchangeRate": "1.09173259198358493"
+            },
+            {
+              "timestamp": "1772750667",
+              "rsrExchangeRate": "1.09173367166020902"
+            },
+            {
+              "timestamp": "1772826407",
+              "rsrExchangeRate": "1.09173597631514533"
+            },
+            {
+              "timestamp": "1772896481",
+              "rsrExchangeRate": "1.09173597631514533"
+            },
+            {
+              "timestamp": "1772994753",
+              "rsrExchangeRate": "1.09173597631514533"
+            },
+            {
+              "timestamp": "1773051175",
+              "rsrExchangeRate": "1.09173597631514533"
+            },
+            {
+              "timestamp": "1773173619",
+              "rsrExchangeRate": "1.09173597631514533"
+            },
+            {
+              "timestamp": "1773251017",
+              "rsrExchangeRate": "1.09173597631514533"
+            },
+            {
+              "timestamp": "1773352213",
+              "rsrExchangeRate": "1.09173597631514533"
+            },
+            {
+              "timestamp": "1773438135",
+              "rsrExchangeRate": "1.09173597631514533"
+            },
+            {
+              "timestamp": "1773515647",
+              "rsrExchangeRate": "1.09173597631514533"
+            },
+            {
+              "timestamp": "1773593013",
+              "rsrExchangeRate": "1.09173597631514533"
+            },
+            {
+              "timestamp": "1773670343",
+              "rsrExchangeRate": "1.09173597631514533"
+            },
+            {
+              "timestamp": "1773747839",
+              "rsrExchangeRate": "1.09173597631514533"
+            },
+            {
+              "timestamp": "1773850607",
+              "rsrExchangeRate": "1.09173597631514533"
+            },
+            {
+              "timestamp": "1773934033",
+              "rsrExchangeRate": "1.09173597631514533"
+            },
+            {
+              "timestamp": "1774033955",
+              "rsrExchangeRate": "1.09173597631514533"
+            },
+            {
+              "timestamp": "1774134805",
+              "rsrExchangeRate": "1.09173597631514533"
+            },
+            {
+              "timestamp": "1774212229",
+              "rsrExchangeRate": "1.09173597631514533"
+            },
+            {
+              "timestamp": "1774289553",
+              "rsrExchangeRate": "1.09173597631514533"
+            },
+            {
+              "timestamp": "1774392845",
+              "rsrExchangeRate": "1.09173597631514533"
+            },
+            {
+              "timestamp": "1774448431",
+              "rsrExchangeRate": "1.09173597631514533"
+            },
+            {
+              "timestamp": "1774521747",
+              "rsrExchangeRate": "1.09173597631514533"
+            },
+            {
+              "timestamp": "1774646405",
+              "rsrExchangeRate": "1.09173597631514533"
+            },
+            {
+              "timestamp": "1774687587",
+              "rsrExchangeRate": "1.09173597631514533"
+            },
+            {
+              "timestamp": "1774801239",
+              "rsrExchangeRate": "1.09173597631514533"
+            },
+            {
+              "timestamp": "1774908775",
+              "rsrExchangeRate": "1.09173597631514533"
+            },
+            {
+              "timestamp": "1774987831",
+              "rsrExchangeRate": "1.091751612956984211"
+            },
+            {
+              "timestamp": "1775068203",
+              "rsrExchangeRate": "1.091751612956984211"
+            },
+            {
+              "timestamp": "1775173755",
+              "rsrExchangeRate": "1.091751612956984211"
+            },
+            {
+              "timestamp": "1775255403",
+              "rsrExchangeRate": "1.091751612956984211"
+            },
+            {
+              "timestamp": "1775318403",
+              "rsrExchangeRate": "1.091752143506018696"
+            },
+            {
+              "timestamp": "1775412005",
+              "rsrExchangeRate": "1.091752143506018696"
+            },
+            {
+              "timestamp": "1775484003",
+              "rsrExchangeRate": "1.091752338490538188"
+            },
+            {
+              "timestamp": "1775605671",
+              "rsrExchangeRate": "1.091752338490538188"
+            },
+            {
+              "timestamp": "1775682745",
+              "rsrExchangeRate": "1.091752338490538188"
+            },
+            {
+              "timestamp": "1775760339",
+              "rsrExchangeRate": "1.091752338490538188"
+            },
+            {
+              "timestamp": "1775837675",
+              "rsrExchangeRate": "1.091752704575711364"
+            },
+            {
+              "timestamp": "1775940987",
+              "rsrExchangeRate": "1.091752704575711364"
+            },
+            {
+              "timestamp": "1776021045",
+              "rsrExchangeRate": "1.091752704575711364"
+            },
+            {
+              "timestamp": "1776123595",
+              "rsrExchangeRate": "1.091752704575711364"
+            },
+            {
+              "timestamp": "1776196803",
+              "rsrExchangeRate": "1.091752704575711364"
+            },
+            {
+              "timestamp": "1776289895",
+              "rsrExchangeRate": "1.091752704575711364"
+            },
+            {
+              "timestamp": "1776379659",
+              "rsrExchangeRate": "1.091752704575711364"
+            },
+            {
+              "timestamp": "1776457023",
+              "rsrExchangeRate": "1.091752704575711364"
+            },
+            {
+              "timestamp": "1776556173",
+              "rsrExchangeRate": "1.091752704575711364"
+            },
+            {
+              "timestamp": "1776627003",
+              "rsrExchangeRate": "1.091752704575711364"
+            },
+            {
+              "timestamp": "1776724863",
+              "rsrExchangeRate": "1.091752704575711364"
+            },
+            {
+              "timestamp": "1776810603",
+              "rsrExchangeRate": "1.091752704575711364"
+            },
+            {
+              "timestamp": "1776880805",
+              "rsrExchangeRate": "1.091752704575711364"
+            },
+            {
+              "timestamp": "1776979803",
+              "rsrExchangeRate": "1.091752704575711364"
+            },
+            {
+              "timestamp": "1777045637",
+              "rsrExchangeRate": "1.091752704575711364"
+            },
+            {
+              "timestamp": "1777153733",
+              "rsrExchangeRate": "1.091752704575711364"
+            },
+            {
+              "timestamp": "1777242603",
+              "rsrExchangeRate": "1.091752704575711364"
+            },
+            {
+              "timestamp": "1777321367",
+              "rsrExchangeRate": "1.091752704575711364"
+            },
+            {
+              "timestamp": "1777416047",
+              "rsrExchangeRate": "1.091752704575711364"
+            },
+            {
+              "timestamp": "1777467629",
+              "rsrExchangeRate": "1.091752704575711364"
+            },
+            {
+              "timestamp": "1777586405",
+              "rsrExchangeRate": "1.091752704575711364"
+            },
+            {
+              "timestamp": "1777647607",
+              "rsrExchangeRate": "1.091752704575711364"
+            },
+            {
+              "timestamp": "1777752007",
+              "rsrExchangeRate": "1.091752704575711364"
+            },
+            {
+              "timestamp": "1777850027",
+              "rsrExchangeRate": "1.091752704575711364"
+            },
+            {
+              "timestamp": "1777927391",
+              "rsrExchangeRate": "1.091752704575711364"
+            },
+            {
+              "timestamp": "1778020555",
+              "rsrExchangeRate": "1.091752704575711364"
+            },
+            {
+              "timestamp": "1778104721",
+              "rsrExchangeRate": "1.091752704575711364"
+            },
+            {
+              "timestamp": "1778191215",
+              "rsrExchangeRate": "1.091752704575711364"
+            },
+            {
+              "timestamp": "1778277603",
+              "rsrExchangeRate": "1.091752704575711364"
+            },
+            {
+              "timestamp": "1778342849",
+              "rsrExchangeRate": "1.091752704575711364"
+            },
+            {
+              "timestamp": "1778436211",
+              "rsrExchangeRate": "1.091752704575711364"
+            },
+            {
+              "timestamp": "1778518811",
+              "rsrExchangeRate": "1.091752704575711364"
+            },
+            {
+              "timestamp": "1778624055",
+              "rsrExchangeRate": "1.091752704575711364"
+            },
+            {
+              "timestamp": "1778704895",
+              "rsrExchangeRate": "1.091752704575711364"
+            },
+            {
+              "timestamp": "1778787645",
+              "rsrExchangeRate": "1.091752704575711364"
+            },
+            {
+              "timestamp": "1778887455",
+              "rsrExchangeRate": "1.091752704575711364"
+            },
+            {
+              "timestamp": "1778952791",
+              "rsrExchangeRate": "1.091752704575711364"
+            },
+            {
+              "timestamp": "1779011305",
+              "rsrExchangeRate": "1.091752704575711364"
+            },
+            {
+              "timestamp": "1779121819",
+              "rsrExchangeRate": "1.091752704575711364"
+            },
+            {
+              "timestamp": "1779217011",
+              "rsrExchangeRate": "1.091752704575711364"
+            },
+            {
+              "timestamp": "1779320745",
+              "rsrExchangeRate": "1.091752704575711364"
+            },
+            {
+              "timestamp": "1779406035",
+              "rsrExchangeRate": "1.091752704575711364"
+            },
+            {
+              "timestamp": "1779478213",
+              "rsrExchangeRate": "1.091752704575711364"
+            },
+            {
+              "timestamp": "1779574443",
+              "rsrExchangeRate": "1.091752704575711364"
+            },
+            {
+              "timestamp": "1779660007",
+              "rsrExchangeRate": "1.091752704575711364"
+            },
+            {
+              "timestamp": "1779707511",
+              "rsrExchangeRate": "1.091752704575711364"
+            },
+            {
+              "timestamp": "1779784937",
+              "rsrExchangeRate": "1.091752704575711364"
+            },
+            {
+              "timestamp": "1779924631",
+              "rsrExchangeRate": "1.091752704575711364"
+            },
+            {
+              "timestamp": "1779995485",
+              "rsrExchangeRate": "1.091752704575711364"
+            },
+            {
+              "timestamp": "1780085557",
+              "rsrExchangeRate": "1.091752704575711364"
+            },
+            {
+              "timestamp": "1780171109",
+              "rsrExchangeRate": "1.091752704575711364"
+            },
+            {
+              "timestamp": "1780245359",
+              "rsrExchangeRate": "1.091752704575711364"
+            },
+            {
+              "timestamp": "1780334657",
+              "rsrExchangeRate": "1.091752704575711364"
+            },
+            {
+              "timestamp": "1780436483",
+              "rsrExchangeRate": "1.091752704575711364"
+            },
+            {
+              "timestamp": "1780524023",
+              "rsrExchangeRate": "1.091752704575711364"
+            },
+            {
+              "timestamp": "1780585207",
+              "rsrExchangeRate": "1.091752704575711364"
+            },
+            {
+              "timestamp": "1780694643",
+              "rsrExchangeRate": "1.091752704575711364"
+            },
+            {
+              "timestamp": "1780782915",
+              "rsrExchangeRate": "1.091752704575711364"
+            },
+            {
+              "timestamp": "1780860305",
+              "rsrExchangeRate": "1.091752704575711364"
+            },
+            {
+              "timestamp": "1780962237",
+              "rsrExchangeRate": "1.091752704575711364"
+            },
+            {
+              "timestamp": "1781014947",
+              "rsrExchangeRate": "1.091752704575711364"
+            },
+            {
+              "timestamp": "1781092377",
+              "rsrExchangeRate": "1.091752704575711364"
+            },
+            {
+              "timestamp": "1781202571",
+              "rsrExchangeRate": "1.091752704575711364"
+            },
+            {
+              "timestamp": "1781247229",
+              "rsrExchangeRate": "1.091752704575711364"
+            },
+            {
+              "timestamp": "1781376341",
+              "rsrExchangeRate": "1.091752704575711364"
+            },
+            {
+              "timestamp": "1781479275",
+              "rsrExchangeRate": "1.091752704575711364"
+            },
+            {
+              "timestamp": "1781567243",
+              "rsrExchangeRate": "1.091752704575711364"
+            },
+            {
+              "timestamp": "1781634059",
+              "rsrExchangeRate": "1.091752704575711364"
+            },
+            {
+              "timestamp": "1781711365",
+              "rsrExchangeRate": "1.091752704575711364"
+            },
+            {
+              "timestamp": "1781788623",
+              "rsrExchangeRate": "1.091752704575711364"
+            },
+            {
+              "timestamp": "1781876509",
+              "rsrExchangeRate": "1.091753409976339298"
+            },
+            {
+              "timestamp": "1781992715",
+              "rsrExchangeRate": "1.091753409976339298"
+            },
+            {
+              "timestamp": "1782042361",
+              "rsrExchangeRate": "1.091753409976339298"
+            },
+            {
+              "timestamp": "1782146623",
+              "rsrExchangeRate": "1.091753409976339298"
+            },
+            {
+              "timestamp": "1782253023",
+              "rsrExchangeRate": "1.091753409976339298"
+            },
+            {
+              "timestamp": "1782330527",
+              "rsrExchangeRate": "1.091753409976339298"
+            },
+            {
+              "timestamp": "1782412297",
+              "rsrExchangeRate": "1.091753409976339298"
+            },
+            {
+              "timestamp": "1782503817",
+              "rsrExchangeRate": "1.091753409976339298"
+            },
+            {
+              "timestamp": "1782579125",
+              "rsrExchangeRate": "1.091753409976339298"
+            },
+            {
+              "timestamp": "1782662693",
+              "rsrExchangeRate": "1.091753409976339298"
+            },
+            {
+              "timestamp": "1782723351",
+              "rsrExchangeRate": "1.091753409976339298"
+            },
+            {
+              "timestamp": "1782851245",
+              "rsrExchangeRate": "1.091753409976339298"
+            },
+            {
+              "timestamp": "1782944175",
+              "rsrExchangeRate": "1.091753409976339298"
+            },
+            {
+              "timestamp": "1783033327",
+              "rsrExchangeRate": "1.091753409976339298"
+            },
+            {
+              "timestamp": "1783113427",
+              "rsrExchangeRate": "1.091753409976339298"
+            },
+            {
+              "timestamp": "1783202463",
+              "rsrExchangeRate": "1.091753409976339298"
+            },
+            {
+              "timestamp": "1783264895",
+              "rsrExchangeRate": "1.091753409976339298"
+            },
+            {
+              "timestamp": "1783342293",
+              "rsrExchangeRate": "1.091753409976339298"
+            },
+            {
+              "timestamp": "1783456075",
+              "rsrExchangeRate": "1.091753409976339298"
+            },
+            {
+              "timestamp": "1783497079",
+              "rsrExchangeRate": "1.091753409976339298"
+            },
+            {
+              "timestamp": "1783621739",
+              "rsrExchangeRate": "1.091753409976339298"
+            },
+            {
+              "timestamp": "1783704931",
+              "rsrExchangeRate": "1.091753409976339298"
+            },
+            {
+              "timestamp": "1783806549",
+              "rsrExchangeRate": "1.091753409976339298"
+            },
+            {
+              "timestamp": "1783883985",
+              "rsrExchangeRate": "1.091753409976339298"
             }
           ]
         }

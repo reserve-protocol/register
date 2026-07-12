@@ -129,6 +129,19 @@ export const test = base.extend<BaseFixtures>({
       await page.route('**web3modal.org**', (r) => fulfillEmpty(r))
       await page.route('**reown.com**', (r) => fulfillEmpty(r))
 
+      // Yield client-side geo check: RToken issuance reads geolocationAtom,
+      // which probes Cloudflare's cdn-cgi/trace for the caller's country
+      // (distinct from the index Reserve-API compliance path). Serve a
+      // deterministic trace carrying the compliance fixture's country so
+      // mint-enabled state is test-controllable, not a live network lookup.
+      await page.route('**/cdn-cgi/trace**', (route) =>
+        route.fulfill({
+          status: 200,
+          contentType: 'text/plain',
+          body: `fl=e2e\nloc=${compliance.countryCode}\nvisit_scheme=https`,
+        })
+      )
+
       // Yield/reward aggregators the overview polls.
       await page.route('**yields.llama.fi**', (r) => fulfillEmpty(r, { status: 'success', data: [] }))
       await page.route('**api.llama.fi**', (r) => fulfillEmpty(r, { status: 'success', data: [] }))

@@ -93,7 +93,7 @@ const Issue = () => {
           }}
         />
       )}
-      <Card className="p-4 border-2 border-secondary">
+      <Card data-testid="issuance-mint-panel" className="p-4 border-2 border-secondary">
         <IssueInput title={t`Mint`} compact={false} />
         <Button
           className="w-full mt-4"

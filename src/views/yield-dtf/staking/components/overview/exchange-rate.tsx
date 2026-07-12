@@ -75,7 +75,10 @@ const ExchangeRate = () => {
         ) : (
           <>
             <span className="font-semibold">1 {stToken} =</span>{' '}
-            <span className="ml-1 text-primary font-semibold">
+            <span
+              data-testid="staking-exchange-rate"
+              className="ml-1 text-primary font-semibold"
+            >
               {formatCurrency(rate, 5)} RSR
             </span>
           </>

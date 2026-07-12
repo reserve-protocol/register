@@ -448,6 +448,18 @@ let yieldSeeded = false
 const yieldCallMap = new Map<string, Hex>()
 
 const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000'
+// A single 32-byte zero word — the shape of an eth_getStorageAt answer (vs
+// ZERO_RETURN's three words for uint/bool/address eth_call returns).
+const ZERO_WORD: Hex = ('0x' + '0'.repeat(64)) as Hex
+
+// Sentinel recorded by scripts/capture-yield.ts for an allow-failure probe that
+// REVERTED on-chain at the pinned block (e.g. the config updater tries a legacy
+// Broker.auctionLength() that reverts on a modern broker; the app reads it with
+// allowFailure and ignores the failure). Contains non-hex chars so it can never
+// collide with real return data. Replaying it as a genuine multicall
+// success:false keeps the app on the exact branch it took on-chain — and keeps
+// fail-loud honest: an UNcaptured read still logs, only captured reverts pass.
+export const YIELD_REVERT_SENTINEL = '0xrevert'
 
 // FacadeRead + FacadeAct per chain (mirrors src/utils/addresses.ts). On a yield
 // page's FIRST render, `chainIdAtom` still holds its mainnet default and the
@@ -508,6 +520,14 @@ function seedYieldChainState() {
 function lookupYieldExact(chainId: number, to: string, data: string): Hex | undefined {
   seedYieldChainState()
   return yieldCallMap.get(`${chainId}:${to.toLowerCase()}:${data.toLowerCase()}`)
+}
+
+// Exact captured word for a storage slot, chain-scoped (a slot key is a bare
+// 32-byte word — 0x + 64 hex — so it shares the yield map with calldata keys
+// without colliding). No blanket fallback: an uncaptured slot fails loud.
+function lookupYieldStorage(chainId: number, to: string, slot: string): Hex | undefined {
+  seedYieldChainState()
+  return yieldCallMap.get(`${chainId}:${to.toLowerCase()}:${slot.toLowerCase()}`)
 }
 
 function lookupYieldFallback(chainId: number, to: string, selector: string): Hex | undefined {
@@ -632,10 +652,14 @@ function handleMulticall3(
   }
 
   const calls = decoded.args[0] as ReadonlyArray<{ target: string; callData: string }>
-  const results = calls.map((call) => ({
-    success: true,
-    returnData: handleSingleCall(chainId, call.target, call.callData, log, overrides),
-  }))
+  const results = calls.map((call) => {
+    const returnData = handleSingleCall(chainId, call.target, call.callData, log, overrides)
+    // A captured revert replays as a real allowFailure failure (success:false),
+    // not a zero-word success — the app must see the on-chain outcome.
+    return returnData === YIELD_REVERT_SENTINEL
+      ? { success: false, returnData: '0x' as Hex }
+      : { success: true, returnData }
+  })
 
   return encodeFunctionResult({
     abi: multicall3Abi,
@@ -757,12 +781,27 @@ export function handleRpcMethod(
       // Non-empty bytecode so viem treats registry addresses as contracts.
       return '0x6080604052'
 
-    case 'eth_getStorageAt':
-      // Fail loud (audit P1): the blanket zero-word answer for any slot masked
-      // real storage-derived state. Model exact (chain, address, slot) reads
-      // when the first staking/draft-queue flow needs them.
+    case 'eth_getStorageAt': {
+      // Yield replay serves exact captured slots (chain-scoped). The staking
+      // withdraw updater reads the stToken draft-era slot on every render, so a
+      // read-only staking smoke needs this — but only for the EXACT captured
+      // (chain, address, slot). Off-chain / zero-address reads are pre-switch
+      // transients (absorbed); an uncaptured slot on the fixture's chain fails
+      // loud, never a blanket zero word (audit P1).
+      if (yieldReplayChain) {
+        const address = String((params?.[0] as string) ?? '').toLowerCase()
+        const slot = String((params?.[1] as string) ?? '').toLowerCase()
+        if (ctx.chainId !== yieldReplayChain || address === ZERO_ADDRESS) return ZERO_WORD
+        const hit = lookupYieldStorage(ctx.chainId, address, slot)
+        if (hit) return hit
+        ctx.log('unmocked storage read', { chainId: ctx.chainId, address, slot })
+        return ZERO_WORD
+      }
+      // Index path unchanged: fail loud (audit P1). The blanket zero-word answer
+      // for any slot masked real storage-derived state.
       ctx.log('unmocked rpc method', { method })
       return '0x'
+    }
 
     case 'eth_getLogs':
       return []
@@ -840,7 +879,11 @@ export function handleRpcMethod(
       const to = (call?.to ?? '').toLowerCase()
       const data = call?.data ?? '0x'
       if (to === MULTICALL3) return handleMulticall3(ctx.chainId, data, ctx.log, ctx.overrides)
-      return handleSingleCall(ctx.chainId, to, data, ctx.log, ctx.overrides)
+      const single = handleSingleCall(ctx.chainId, to, data, ctx.log, ctx.overrides)
+      // A captured revert reached as a STANDALONE call (not inside a multicall):
+      // the app read it with allowFailure, so a zero-word answer is inert. The
+      // key is captured, so this is deterministic — not a fail-loud miss.
+      return single === YIELD_REVERT_SENTINEL ? ZERO_RETURN : single
     }
 
     default:

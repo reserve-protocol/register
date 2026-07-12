@@ -136,6 +136,54 @@ describe('yield record/replay', () => {
     }
   })
 
+  it('replays a captured storage slot and fails loud on an uncaptured one', () => {
+    // The staking withdraw updater reads the stToken draft-era slot via
+    // eth_getStorageAt — an exact captured (chain, address, slot), no blanket word.
+    const EUSD_ST = '0x18ba6e33ceb80f077deb9260c9111e62f21ae7b8'
+    const SLOT = '0x0000000000000000000000000000000000000000000000000000000000000109'
+    const ZERO_WORD = '0x' + '0'.repeat(64)
+    setYieldReplay(1)
+    try {
+      const ctx = { ...context(), chainId: 1 }
+      const word = handleRpcMethod('eth_getStorageAt', [EUSD_ST, SLOT, 'latest'], ctx)
+      expect(word).not.toBe(ZERO_WORD)
+      expect(ctx.log).not.toHaveBeenCalled()
+
+      // An uncaptured slot on the fixture's chain fails loud (no blanket word).
+      const missCtx = { ...context(), chainId: 1 }
+      const miss = handleRpcMethod(
+        'eth_getStorageAt',
+        [EUSD_ST, '0x' + '0'.repeat(63) + '1', 'latest'],
+        missCtx
+      )
+      expect(miss).toBe(ZERO_WORD)
+      expect(missCtx.log).toHaveBeenCalledWith(
+        'unmocked storage read',
+        expect.objectContaining({ address: EUSD_ST })
+      )
+    } finally {
+      setYieldReplay(false)
+    }
+  })
+
+  it('replays a captured allow-failure revert without logging it as unmocked', () => {
+    // The config updater probes a legacy Broker.auctionLength() that reverts on a
+    // modern broker (captured as a revert). A standalone replay serves an inert
+    // zero-return and does NOT fail loud — the key IS captured, just as a revert.
+    const EUSD_BROKER = '0x90eb22a31b69c29c34162e0e9278cc0617aa2b50'
+    const AUCTION_LENGTH = '0x325c25a2'
+    const ZERO_RETURN = '0x' + '0'.repeat(192)
+    setYieldReplay(1)
+    try {
+      const ctx = { ...context(), chainId: 1 }
+      const result = call(EUSD_BROKER, AUCTION_LENGTH, ctx)
+      expect(result).toBe(ZERO_RETURN)
+      expect(ctx.log).not.toHaveBeenCalled()
+    } finally {
+      setYieldReplay(false)
+    }
+  })
+
   it('does NOT fall through to index wildcards / $1 feed when a yield read is uncaptured', () => {
     // version() (0x54fd4d50) and getVotes (0x9ab24eb0) have index `*:selector`
     // wildcards; latestRoundData (0xfeaf968c) has the $1 Chainlink default. On an

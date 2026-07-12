@@ -1,661 +1,12 @@
 {
   "_meta": {
     "source": "e2e/scripts/capture-yield.ts",
-    "capturedAt": "2026-07-11T20:40:44.922Z",
+    "capturedAt": "2026-07-12T20:28:15.938Z",
     "dtf": "0xa0d69e286b938e21cbf7e51d71f6a4c8918f482f",
     "chainId": 1,
     "subgraph": "https://api.goldsky.com/api/public/project_cmgzim3e100095np2gjnbh6ry/subgraphs/dtf-yield-mainnet/4.2.0-v2/gn"
   },
   "data": [
-    {
-      "op": "GetTokenListOverview",
-      "query": "query GetTokenListOverview($tokenIds: [String]!, $fromTime: Int!) { tokenDailySnapshots( orderBy: timestamp orderDirection: desc where: { timestamp_gte: $fromTime, token_in: $tokenIds } ) { token { id } dailyVolume } tokens( where: { id_in: $tokenIds } orderBy: totalSupply orderDirection: desc ) { id lastPriceUSD name symbol totalSupply holderCount transferCount cumulativeVolume rToken { backing targetUnits rsrStaked rsrLocked collaterals { id symbol } contracts(where: { name: \"BASKET_HANDLER\" }) { id name } collateralDistribution revenueDistribution { id rTokenDist rsrDist destination } rewardToken { token { id name symbol decimals } } } } }",
-      "variables": {
-        "tokenIds": [
-          "0x005f893ecd7bf9667195642f7649da8163e23658",
-          "0xa0d69e286b938e21cbf7e51d71f6a4c8918f482f",
-          "0xe72b141df173b999ae7c1adcbf60cc9833ce56a8",
-          "0xacdf0dba4b9839b96221a8487e9ca660a48212be",
-          "0xfc0b1eef20e4c68b3dcf36c4537cfa7ce46ca70b",
-          "0x0d86883faf4ffd7aeb116390af37746f45b6f378",
-          "0x78da5799cf427fee11e9996982f4150ece7a99a7"
-        ],
-        "fromTime": 1783197627
-      },
-      "data": {
-        "tokenDailySnapshots": [
-          {
-            "token": {
-              "id": "0xe72b141df173b999ae7c1adcbf60cc9833ce56a8"
-            },
-            "dailyVolume": "42127959860776483185"
-          },
-          {
-            "token": {
-              "id": "0xa0d69e286b938e21cbf7e51d71f6a4c8918f482f"
-            },
-            "dailyVolume": "173413714184101975112385"
-          },
-          {
-            "token": {
-              "id": "0x0d86883faf4ffd7aeb116390af37746f45b6f378"
-            },
-            "dailyVolume": "51265596380150764249029"
-          },
-          {
-            "token": {
-              "id": "0xa0d69e286b938e21cbf7e51d71f6a4c8918f482f"
-            },
-            "dailyVolume": "303923695386867844951921"
-          },
-          {
-            "token": {
-              "id": "0xe72b141df173b999ae7c1adcbf60cc9833ce56a8"
-            },
-            "dailyVolume": "344941439152673066486"
-          },
-          {
-            "token": {
-              "id": "0x0d86883faf4ffd7aeb116390af37746f45b6f378"
-            },
-            "dailyVolume": "102561379292397376907621"
-          },
-          {
-            "token": {
-              "id": "0xfc0b1eef20e4c68b3dcf36c4537cfa7ce46ca70b"
-            },
-            "dailyVolume": "2704605211117645033"
-          },
-          {
-            "token": {
-              "id": "0xa0d69e286b938e21cbf7e51d71f6a4c8918f482f"
-            },
-            "dailyVolume": "355389517195990517108918"
-          },
-          {
-            "token": {
-              "id": "0xe72b141df173b999ae7c1adcbf60cc9833ce56a8"
-            },
-            "dailyVolume": "160454756858607336255"
-          },
-          {
-            "token": {
-              "id": "0x0d86883faf4ffd7aeb116390af37746f45b6f378"
-            },
-            "dailyVolume": "69313343599539035888051"
-          },
-          {
-            "token": {
-              "id": "0xa0d69e286b938e21cbf7e51d71f6a4c8918f482f"
-            },
-            "dailyVolume": "767646020867425234471483"
-          },
-          {
-            "token": {
-              "id": "0xe72b141df173b999ae7c1adcbf60cc9833ce56a8"
-            },
-            "dailyVolume": "143689847805933916642"
-          },
-          {
-            "token": {
-              "id": "0x0d86883faf4ffd7aeb116390af37746f45b6f378"
-            },
-            "dailyVolume": "7782152851645164374598"
-          },
-          {
-            "token": {
-              "id": "0xe72b141df173b999ae7c1adcbf60cc9833ce56a8"
-            },
-            "dailyVolume": "419145335368037339302"
-          },
-          {
-            "token": {
-              "id": "0xa0d69e286b938e21cbf7e51d71f6a4c8918f482f"
-            },
-            "dailyVolume": "2457517148312699418606129"
-          },
-          {
-            "token": {
-              "id": "0x0d86883faf4ffd7aeb116390af37746f45b6f378"
-            },
-            "dailyVolume": "36453376476817846328057"
-          },
-          {
-            "token": {
-              "id": "0xa0d69e286b938e21cbf7e51d71f6a4c8918f482f"
-            },
-            "dailyVolume": "628448109019906492549779"
-          },
-          {
-            "token": {
-              "id": "0xe72b141df173b999ae7c1adcbf60cc9833ce56a8"
-            },
-            "dailyVolume": "2391211275114914127353"
-          },
-          {
-            "token": {
-              "id": "0xe72b141df173b999ae7c1adcbf60cc9833ce56a8"
-            },
-            "dailyVolume": "367954952776892520896"
-          },
-          {
-            "token": {
-              "id": "0xa0d69e286b938e21cbf7e51d71f6a4c8918f482f"
-            },
-            "dailyVolume": "820552970293218993275093"
-          },
-          {
-            "token": {
-              "id": "0x0d86883faf4ffd7aeb116390af37746f45b6f378"
-            },
-            "dailyVolume": "18212747702364687744822"
-          },
-          {
-            "token": {
-              "id": "0xe72b141df173b999ae7c1adcbf60cc9833ce56a8"
-            },
-            "dailyVolume": "78970966428498917655"
-          },
-          {
-            "token": {
-              "id": "0xa0d69e286b938e21cbf7e51d71f6a4c8918f482f"
-            },
-            "dailyVolume": "174638611349387719213048"
-          }
-        ],
-        "tokens": [
-          {
-            "id": "0xa0d69e286b938e21cbf7e51d71f6a4c8918f482f",
-            "lastPriceUSD": "0.999780616293205258",
-            "name": "Electronic Dollar",
-            "symbol": "eUSD",
-            "totalSupply": "23249398342590277208124074",
-            "holderCount": "-1709",
-            "transferCount": "319661",
-            "cumulativeVolume": "2520062337044679956392057769",
-            "rToken": {
-              "backing": "1002259979355228190",
-              "targetUnits": "USD",
-              "rsrStaked": "2975615271063256591195488029",
-              "rsrLocked": "3198429983978676812948436161",
-              "collaterals": [
-                {
-                  "id": "0x0adc69041a2b086f8772acce2a754f410f211bed",
-                  "symbol": "saEthUSDC"
-                },
-                {
-                  "id": "0x27f2f159fe990ba83d57f39fd69661764bebf37a",
-                  "symbol": "wcUSDCv3"
-                },
-                {
-                  "id": "0xeb74ec1d4c1dab412d5d6674f6833fd19d3118ce",
-                  "symbol": "wcUSDTv3"
-                }
-              ],
-              "contracts": [
-                {
-                  "id": "0x6d309297dddfea104a6e89a132e2f05ce3828e07",
-                  "name": "BASKET_HANDLER"
-                }
-              ],
-              "collateralDistribution": "{\"0x27f2f159fe990ba83d57f39fd69661764bebf37a\":{\"dist\":\"0.333386439423566749\",\"target\":\"USD\"},\"0xeb74ec1d4c1dab412d5d6674f6833fd19d3118ce\":{\"dist\":\"0.333217577711900742\",\"target\":\"USD\"},\"0x0adc69041a2b086f8772acce2a754f410f211bed\":{\"dist\":\"0.333395982864532507\",\"target\":\"USD\"}}",
-              "revenueDistribution": [
-                {
-                  "id": "0x0000000000000000000000000000000000000001-0xa0d69e286b938e21cbf7e51d71f6a4c8918f482f",
-                  "rTokenDist": 0,
-                  "rsrDist": 0,
-                  "destination": "0x0000000000000000000000000000000000000001"
-                },
-                {
-                  "id": "0x0000000000000000000000000000000000000002-0xa0d69e286b938e21cbf7e51d71f6a4c8918f482f",
-                  "rTokenDist": 0,
-                  "rsrDist": 4004,
-                  "destination": "0x0000000000000000000000000000000000000002"
-                },
-                {
-                  "id": "0x12ec148a193ba7b3a141ce6d02ade326883d28d9-0xa0d69e286b938e21cbf7e51d71f6a4c8918f482f",
-                  "rTokenDist": 5556,
-                  "rsrDist": 0,
-                  "destination": "0x12ec148a193ba7b3a141ce6d02ade326883d28d9"
-                },
-                {
-                  "id": "0x1c8fa333e3f136bc07d7487af88ec778d160ad8e-0xa0d69e286b938e21cbf7e51d71f6a4c8918f482f",
-                  "rTokenDist": 0,
-                  "rsrDist": 0,
-                  "destination": "0x1c8fa333e3f136bc07d7487af88ec778d160ad8e"
-                },
-                {
-                  "id": "0x2e3f334f9035aab204347508415dec785cd5075e-0xa0d69e286b938e21cbf7e51d71f6a4c8918f482f",
-                  "rTokenDist": 440,
-                  "rsrDist": 0,
-                  "destination": "0x2e3f334f9035aab204347508415dec785cd5075e"
-                }
-              ],
-              "rewardToken": {
-                "token": {
-                  "id": "0x18ba6e33ceb80f077deb9260c9111e62f21ae7b8",
-                  "name": "eusdRSR Token",
-                  "symbol": "eusdRSR",
-                  "decimals": 18
-                }
-              }
-            }
-          },
-          {
-            "id": "0x0d86883faf4ffd7aeb116390af37746f45b6f378",
-            "lastPriceUSD": "1.095123068207803908",
-            "name": "Web 3 Dollar",
-            "symbol": "USD3",
-            "totalSupply": "4132267378472891718414480",
-            "holderCount": "-1055",
-            "transferCount": "16142",
-            "cumulativeVolume": "906394666864853435284491210",
-            "rToken": {
-              "backing": "1005780806580301986",
-              "targetUnits": "USD",
-              "rsrStaked": "433811514284262867799942325",
-              "rsrLocked": "435056045103541350507898688",
-              "collaterals": [
-                {
-                  "id": "0x0adc69041a2b086f8772acce2a754f410f211bed",
-                  "symbol": "saEthUSDC"
-                },
-                {
-                  "id": "0x27f2f159fe990ba83d57f39fd69661764bebf37a",
-                  "symbol": "wcUSDCv3"
-                },
-                {
-                  "id": "0xa3931d71877c0e7a3148cb7eb4463524fec27fbd",
-                  "symbol": "sUSDS"
-                },
-                {
-                  "id": "0xbeef01735c132ada46aa9aa4c54623caa92a64cb",
-                  "symbol": "steakUSDC"
-                }
-              ],
-              "contracts": [
-                {
-                  "id": "0x19835e5817a6fdc944100e86da2fce86327457b8",
-                  "name": "BASKET_HANDLER"
-                }
-              ],
-              "collateralDistribution": "{\"0xa3931d71877c0e7a3148cb7eb4463524fec27fbd\":{\"dist\":\"0.250017541327123714\",\"target\":\"USD\"},\"0x0adc69041a2b086f8772acce2a754f410f211bed\":{\"dist\":\"0.249986281024315061\",\"target\":\"USD\"},\"0x27f2f159fe990ba83d57f39fd69661764bebf37a\":{\"dist\":\"0.249985844763588571\",\"target\":\"USD\"},\"0xbeef01735c132ada46aa9aa4c54623caa92a64cb\":{\"dist\":\"0.250010332884972651\",\"target\":\"USD\"}}",
-              "revenueDistribution": [
-                {
-                  "id": "0x0000000000000000000000000000000000000001-0x0d86883faf4ffd7aeb116390af37746f45b6f378",
-                  "rTokenDist": 8500,
-                  "rsrDist": 0,
-                  "destination": "0x0000000000000000000000000000000000000001"
-                },
-                {
-                  "id": "0x0000000000000000000000000000000000000002-0x0d86883faf4ffd7aeb116390af37746f45b6f378",
-                  "rTokenDist": 0,
-                  "rsrDist": 1500,
-                  "destination": "0x0000000000000000000000000000000000000002"
-                },
-                {
-                  "id": "0x1c8fa333e3f136bc07d7487af88ec778d160ad8e-0x0d86883faf4ffd7aeb116390af37746f45b6f378",
-                  "rTokenDist": 0,
-                  "rsrDist": 0,
-                  "destination": "0x1c8fa333e3f136bc07d7487af88ec778d160ad8e"
-                }
-              ],
-              "rewardToken": {
-                "token": {
-                  "id": "0x55230b05d4c1f4a0b4f804dc52919f06355dfbf8",
-                  "name": "usd3RSR Token",
-                  "symbol": "usd3RSR",
-                  "decimals": 18
-                }
-              }
-            }
-          },
-          {
-            "id": "0xacdf0dba4b9839b96221a8487e9ca660a48212be",
-            "lastPriceUSD": "1.298790069341965654",
-            "name": "High Yield USD",
-            "symbol": "hyUSD",
-            "totalSupply": "57114647278488164495031",
-            "holderCount": "-118",
-            "transferCount": "1442",
-            "cumulativeVolume": "54451220798540704066031620",
-            "rToken": {
-              "backing": "1011154171350811317",
-              "targetUnits": "USD",
-              "rsrStaked": "47970117132005678076659196",
-              "rsrLocked": "48087893170418526059380690",
-              "collaterals": [
-                {
-                  "id": "0x27f2f159fe990ba83d57f39fd69661764bebf37a",
-                  "symbol": "wcUSDCv3"
-                },
-                {
-                  "id": "0x83f20f44975d03b1b09e64809b757c47f942beea",
-                  "symbol": "sDAI"
-                },
-                {
-                  "id": "0x9d39a5de30e57443bff2a8307a4256c8797a3497",
-                  "symbol": "sUSDe"
-                }
-              ],
-              "contracts": [
-                {
-                  "id": "0x9119db28432bd97abf4c3d81b929849e0490c7a6",
-                  "name": "BASKET_HANDLER"
-                }
-              ],
-              "collateralDistribution": "{\"0x9d39a5de30e57443bff2a8307a4256c8797a3497\":{\"dist\":\"0.333144769249724025\",\"target\":\"USD\"},\"0x83f20f44975d03b1b09e64809b757c47f942beea\":{\"dist\":\"0.333407272436037688\",\"target\":\"USD\"},\"0x27f2f159fe990ba83d57f39fd69661764bebf37a\":{\"dist\":\"0.333447958314238286\",\"target\":\"USD\"}}",
-              "revenueDistribution": [
-                {
-                  "id": "0x0000000000000000000000000000000000000001-0xacdf0dba4b9839b96221a8487e9ca660a48212be",
-                  "rTokenDist": 0,
-                  "rsrDist": 0,
-                  "destination": "0x0000000000000000000000000000000000000001"
-                },
-                {
-                  "id": "0x0000000000000000000000000000000000000002-0xacdf0dba4b9839b96221a8487e9ca660a48212be",
-                  "rTokenDist": 0,
-                  "rsrDist": 10000,
-                  "destination": "0x0000000000000000000000000000000000000002"
-                },
-                {
-                  "id": "0x5b00bdc6907216db6aa59986e0ad65842acc060c-0xacdf0dba4b9839b96221a8487e9ca660a48212be",
-                  "rTokenDist": 0,
-                  "rsrDist": 0,
-                  "destination": "0x5b00bdc6907216db6aa59986e0ad65842acc060c"
-                }
-              ],
-              "rewardToken": {
-                "token": {
-                  "id": "0x7db3c57001c80644208fb8aa81ba1200c7b0731d",
-                  "name": "hyusdRSR Token",
-                  "symbol": "hyusdRSR",
-                  "decimals": 18
-                }
-              }
-            }
-          },
-          {
-            "id": "0x78da5799cf427fee11e9996982f4150ece7a99a7",
-            "lastPriceUSD": "1.000587194591388219",
-            "name": "Revenue Generating USD",
-            "symbol": "rgUSD",
-            "totalSupply": "10890889308501630742609",
-            "holderCount": "-154",
-            "transferCount": "2802",
-            "cumulativeVolume": "52914448740899597648577455",
-            "rToken": {
-              "backing": "1024314925001235058",
-              "targetUnits": "USD",
-              "rsrStaked": "21559698819026598558603062",
-              "rsrLocked": "22809957088636619082773935",
-              "collaterals": [
-                {
-                  "id": "0x83f20f44975d03b1b09e64809b757c47f942beea",
-                  "symbol": "sDAI"
-                }
-              ],
-              "contracts": [
-                {
-                  "id": "0x82b34ca23d965b931bb0a0eec048d24850a55fc3",
-                  "name": "BASKET_HANDLER"
-                }
-              ],
-              "collateralDistribution": "{\"0x83f20f44975d03b1b09e64809b757c47f942beea\":{\"dist\":\"1\",\"target\":\"USD\"}}",
-              "revenueDistribution": [
-                {
-                  "id": "0x0000000000000000000000000000000000000001-0x78da5799cf427fee11e9996982f4150ece7a99a7",
-                  "rTokenDist": 0,
-                  "rsrDist": 0,
-                  "destination": "0x0000000000000000000000000000000000000001"
-                },
-                {
-                  "id": "0x0000000000000000000000000000000000000002-0x78da5799cf427fee11e9996982f4150ece7a99a7",
-                  "rTokenDist": 0,
-                  "rsrDist": 10000,
-                  "destination": "0x0000000000000000000000000000000000000002"
-                },
-                {
-                  "id": "0x090d330e388f126d35958a0dc4673cee3248c2bd-0x78da5799cf427fee11e9996982f4150ece7a99a7",
-                  "rTokenDist": 0,
-                  "rsrDist": 0,
-                  "destination": "0x090d330e388f126d35958a0dc4673cee3248c2bd"
-                },
-                {
-                  "id": "0xafbd3c81c006bd0f2d40442b32afee0efb4e480f-0x78da5799cf427fee11e9996982f4150ece7a99a7",
-                  "rTokenDist": 0,
-                  "rsrDist": 0,
-                  "destination": "0xafbd3c81c006bd0f2d40442b32afee0efb4e480f"
-                },
-                {
-                  "id": "0xebf151c176c67c5b6de1252dfd3cf043bfdbb20b-0x78da5799cf427fee11e9996982f4150ece7a99a7",
-                  "rTokenDist": 9000,
-                  "rsrDist": 0,
-                  "destination": "0xebf151c176c67c5b6de1252dfd3cf043bfdbb20b"
-                },
-                {
-                  "id": "0xfecd2c03dfa65e53ef2faabb7c3968283a5b2e84-0x78da5799cf427fee11e9996982f4150ece7a99a7",
-                  "rTokenDist": 500,
-                  "rsrDist": 0,
-                  "destination": "0xfecd2c03dfa65e53ef2faabb7c3968283a5b2e84"
-                }
-              ],
-              "rewardToken": {
-                "token": {
-                  "id": "0x08c04056af7b8bd7c75e5179afe6b0a99d067c50",
-                  "name": "rgusdRSR Token",
-                  "symbol": "rgusdRSR",
-                  "decimals": 18
-                }
-              }
-            }
-          },
-          {
-            "id": "0xe72b141df173b999ae7c1adcbf60cc9833ce56a8",
-            "lastPriceUSD": "1985.938858557710502553",
-            "name": "ETHPlus",
-            "symbol": "ETH+",
-            "totalSupply": "4088054418824023784359",
-            "holderCount": "-1220",
-            "transferCount": "237201",
-            "cumulativeVolume": "1230303574186360274291007",
-            "rToken": {
-              "backing": "1003463637030136378",
-              "targetUnits": "ETH",
-              "rsrStaked": "545956403202982382645313516",
-              "rsrLocked": "575351089897256465817663544",
-              "collaterals": [
-                {
-                  "id": "0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0",
-                  "symbol": "wstETH"
-                },
-                {
-                  "id": "0xa35b1b31ce002fbf2058d22f30f95d405200a15b",
-                  "symbol": "ETHx"
-                },
-                {
-                  "id": "0xac3e018457b222d93114458476f3e3416abbe38f",
-                  "symbol": "sfrxETH"
-                },
-                {
-                  "id": "0xae78736cd615f374d3085123a210448e74fc6393",
-                  "symbol": "rETH"
-                },
-                {
-                  "id": "0xcd5fe23c85820f7b72d0926fc9b05b43e359b7ee",
-                  "symbol": "weETH"
-                }
-              ],
-              "contracts": [
-                {
-                  "id": "0x56f40a33e3a3fe2f1614bf82cbeb35987ac10194",
-                  "name": "BASKET_HANDLER"
-                }
-              ],
-              "collateralDistribution": "{\"0xcd5fe23c85820f7b72d0926fc9b05b43e359b7ee\":{\"dist\":\"0.234984817125763416\",\"target\":\"ETH\"},\"0xa35b1b31ce002fbf2058d22f30f95d405200a15b\":{\"dist\":\"0.064969844766453133\",\"target\":\"ETH\"},\"0xac3e018457b222d93114458476f3e3416abbe38f\":{\"dist\":\"0.150051306044527029\",\"target\":\"ETH\"},\"0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0\":{\"dist\":\"0.499962701627131278\",\"target\":\"ETH\"},\"0xae78736cd615f374d3085123a210448e74fc6393\":{\"dist\":\"0.050031330436125142\",\"target\":\"ETH\"}}",
-              "revenueDistribution": [
-                {
-                  "id": "0x0000000000000000000000000000000000000001-0xe72b141df173b999ae7c1adcbf60cc9833ce56a8",
-                  "rTokenDist": 9000,
-                  "rsrDist": 0,
-                  "destination": "0x0000000000000000000000000000000000000001"
-                },
-                {
-                  "id": "0x0000000000000000000000000000000000000002-0xe72b141df173b999ae7c1adcbf60cc9833ce56a8",
-                  "rTokenDist": 0,
-                  "rsrDist": 300,
-                  "destination": "0x0000000000000000000000000000000000000002"
-                },
-                {
-                  "id": "0xcbca96091f43c024730a020e57515a18b5dc633b-0xe72b141df173b999ae7c1adcbf60cc9833ce56a8",
-                  "rTokenDist": 0,
-                  "rsrDist": 700,
-                  "destination": "0xcbca96091f43c024730a020e57515a18b5dc633b"
-                }
-              ],
-              "rewardToken": {
-                "token": {
-                  "id": "0xffa151ad0a0e2e40f39f9e5e9f87cf9e45e819dd",
-                  "name": "eth+RSR Token",
-                  "symbol": "eth+RSR",
-                  "decimals": 18
-                }
-              }
-            }
-          },
-          {
-            "id": "0xfc0b1eef20e4c68b3dcf36c4537cfa7ce46ca70b",
-            "lastPriceUSD": "1.173523439330015108",
-            "name": "USDC Plus",
-            "symbol": "USDC+",
-            "totalSupply": "2855686824557799156792",
-            "holderCount": "-47",
-            "transferCount": "1122",
-            "cumulativeVolume": "12993510151163912232827965",
-            "rToken": {
-              "backing": "1341897381004712384",
-              "targetUnits": "USD",
-              "rsrStaked": "1411316746142881476256663",
-              "rsrLocked": "1612316910259104947905999",
-              "collaterals": [
-                {
-                  "id": "0x093c07787920eb34a0a0c7a09823510725aee4af",
-                  "symbol": "wcUSDCv3"
-                },
-                {
-                  "id": "0x7f7b77e49d5b30445f222764a794afe14af062eb",
-                  "symbol": "mrp-aUSDC"
-                },
-                {
-                  "id": "0xbeef01735c132ada46aa9aa4c54623caa92a64cb",
-                  "symbol": "steakUSDC"
-                }
-              ],
-              "contracts": [
-                {
-                  "id": "0x162587b5b4c01d26afafd4a1cca61cdc632c9508",
-                  "name": "BASKET_HANDLER"
-                }
-              ],
-              "collateralDistribution": "{\"0xbeef01735c132ada46aa9aa4c54623caa92a64cb\":{\"dist\":\"0.333333057812169921\",\"target\":\"USD\"},\"0x093c07787920eb34a0a0c7a09823510725aee4af\":{\"dist\":\"0.33333388437566011\",\"target\":\"USD\"},\"0x7f7b77e49d5b30445f222764a794afe14af062eb\":{\"dist\":\"0.333333057812169967\",\"target\":\"USD\"}}",
-              "revenueDistribution": [
-                {
-                  "id": "0x0000000000000000000000000000000000000001-0xfc0b1eef20e4c68b3dcf36c4537cfa7ce46ca70b",
-                  "rTokenDist": 0,
-                  "rsrDist": 0,
-                  "destination": "0x0000000000000000000000000000000000000001"
-                },
-                {
-                  "id": "0x0000000000000000000000000000000000000002-0xfc0b1eef20e4c68b3dcf36c4537cfa7ce46ca70b",
-                  "rTokenDist": 0,
-                  "rsrDist": 10000,
-                  "destination": "0x0000000000000000000000000000000000000002"
-                },
-                {
-                  "id": "0x27c9948edcc34c81131a800dba9cfd9ad74068a3-0xfc0b1eef20e4c68b3dcf36c4537cfa7ce46ca70b",
-                  "rTokenDist": 1000,
-                  "rsrDist": 0,
-                  "destination": "0x27c9948edcc34c81131a800dba9cfd9ad74068a3"
-                }
-              ],
-              "rewardToken": {
-                "token": {
-                  "id": "0x1c77ebbab708153f5f899c29b155a6cc92a2ac40",
-                  "name": "usdc+RSR Token",
-                  "symbol": "usdc+RSR",
-                  "decimals": 18
-                }
-              }
-            }
-          },
-          {
-            "id": "0x005f893ecd7bf9667195642f7649da8163e23658",
-            "lastPriceUSD": "1581.644141804806131996",
-            "name": "Degen ETH",
-            "symbol": "dgnETH",
-            "totalSupply": "13118534041243307359",
-            "holderCount": "-253",
-            "transferCount": "3596",
-            "cumulativeVolume": "38284294487083908156061",
-            "rToken": {
-              "backing": "1103575642965086571",
-              "targetUnits": "ETH",
-              "rsrStaked": "2102736602412347646941067",
-              "rsrLocked": "3108816208403570280830552",
-              "collaterals": [
-                {
-                  "id": "0x78fc2c2ed1a4cdb5402365934ae5648adad094d0",
-                  "symbol": "Re7WETH"
-                },
-                {
-                  "id": "0xdbc0ce2321b76d3956412b36e9c0fa9b0fd176e7",
-                  "symbol": "stkcvxETH+ETH-f"
-                },
-                {
-                  "id": "0xdcee70654261af21c44c093c300ed3bb97b78192",
-                  "symbol": "wOETH"
-                }
-              ],
-              "contracts": [
-                {
-                  "id": "0x218303645ac852f9fa334edb214aacf3b255ad56",
-                  "name": "BASKET_HANDLER"
-                }
-              ],
-              "collateralDistribution": "{\"0x78fc2c2ed1a4cdb5402365934ae5648adad094d0\":{\"dist\":\"0.125306819809849059\",\"target\":\"ETH\"},\"0xdcee70654261af21c44c093c300ed3bb97b78192\":{\"dist\":\"0.125114353551979524\",\"target\":\"ETH\"},\"0xdbc0ce2321b76d3956412b36e9c0fa9b0fd176e7\":{\"dist\":\"0.749578826638171416\",\"target\":\"ETH\"}}",
-              "revenueDistribution": [
-                {
-                  "id": "0x0000000000000000000000000000000000000001-0x005f893ecd7bf9667195642f7649da8163e23658",
-                  "rTokenDist": 0,
-                  "rsrDist": 0,
-                  "destination": "0x0000000000000000000000000000000000000001"
-                },
-                {
-                  "id": "0x0000000000000000000000000000000000000002-0x005f893ecd7bf9667195642f7649da8163e23658",
-                  "rTokenDist": 0,
-                  "rsrDist": 10000,
-                  "destination": "0x0000000000000000000000000000000000000002"
-                },
-                {
-                  "id": "0x5bdd1fa233843bfc034891be8a6769e58f1e1346-0x005f893ecd7bf9667195642f7649da8163e23658",
-                  "rTokenDist": 9500,
-                  "rsrDist": 0,
-                  "destination": "0x5bdd1fa233843bfc034891be8a6769e58f1e1346"
-                }
-              ],
-              "rewardToken": {
-                "token": {
-                  "id": "0xba3d95db765a827d82adef775595c37e9da2c3c2",
-                  "name": "dgnethRSR Token",
-                  "symbol": "dgnethRSR",
-                  "decimals": 18
-                }
-              }
-            }
-          }
-        ]
-      }
-    },
     {
       "op": "GetRecentTransactions",
       "query": "query GetRecentTransactions($tokenId: String!) { entries( orderBy: timestamp where: { token: $tokenId, type_not: \"TRANSFER\" } orderDirection: desc first: 200 ) { id type amount amountUSD hash from { id } to { id } token { symbol } timestamp } }",
@@ -3928,80 +3279,658 @@
       }
     },
     {
-      "op": "getRTokenOwner",
-      "query": "query getRTokenOwner($id: String!) { rtoken(id: $id) { owners pausers freezers longFreezers } governance(id: $id) { guardians governanceFrameworks(orderBy: name, orderDirection: desc) { id name proposalThreshold contractAddress quorumDenominator quorumNumerator quorumVotes executionDelay timelockAddress votingDelay votingPeriod } } }",
+      "op": "GetTokenListOverview",
+      "query": "query GetTokenListOverview($tokenIds: [String]!, $fromTime: Int!) { tokenDailySnapshots( orderBy: timestamp orderDirection: desc where: { timestamp_gte: $fromTime, token_in: $tokenIds } ) { token { id } dailyVolume } tokens( where: { id_in: $tokenIds } orderBy: totalSupply orderDirection: desc ) { id lastPriceUSD name symbol totalSupply holderCount transferCount cumulativeVolume rToken { backing targetUnits rsrStaked rsrLocked collaterals { id symbol } contracts(where: { name: \"BASKET_HANDLER\" }) { id name } collateralDistribution revenueDistribution { id rTokenDist rsrDist destination } rewardToken { token { id name symbol decimals } } } } }",
       "variables": {
-        "id": "0xa0d69e286b938e21cbf7e51d71f6a4c8918f482f"
+        "tokenIds": [
+          "0x005f893ecd7bf9667195642f7649da8163e23658",
+          "0xa0d69e286b938e21cbf7e51d71f6a4c8918f482f",
+          "0xe72b141df173b999ae7c1adcbf60cc9833ce56a8",
+          "0xacdf0dba4b9839b96221a8487e9ca660a48212be",
+          "0xfc0b1eef20e4c68b3dcf36c4537cfa7ce46ca70b",
+          "0x0d86883faf4ffd7aeb116390af37746f45b6f378",
+          "0x78da5799cf427fee11e9996982f4150ece7a99a7"
+        ],
+        "fromTime": 1783283228
       },
       "data": {
-        "rtoken": {
-          "owners": [
-            "0xd979cf15f7275a3df838513ab911587d23b6d29e"
-          ],
-          "pausers": [
-            "0x7f9ffa8dea49647725ca6ce621e03aa20401ff63",
-            "0x4bad40e0d92ebc2620a0d5aff7887c7f2e67fdd8",
-            "0xe45c3179b135288dd8e1e3c20eafebb2b2e7d771",
-            "0x0d88776dd9a654cfe9c67b5b1d9ce2fddd815a34"
-          ],
-          "freezers": [
-            "0x4986164f2fb9bb898b19382b1e835cd9c81eba46",
-            "0x4bad40e0d92ebc2620a0d5aff7887c7f2e67fdd8",
-            "0xe45c3179b135288dd8e1e3c20eafebb2b2e7d771",
-            "0x0d88776dd9a654cfe9c67b5b1d9ce2fddd815a34"
-          ],
-          "longFreezers": [
-            "0x0173e2965c1aec9d395eb14e3407ef95c2e1a47d"
-          ]
-        },
-        "governance": {
-          "guardians": [
-            "0x576ca79e46171a2b3e26f13a4334940ebcd72164",
-            "0x96dc1c14d3d5e2ddaa52368adfe6e6b20b976832",
-            "0x576ca79e46171a2b3e26f13a4334940ebcd72164"
-          ],
-          "governanceFrameworks": [
-            {
-              "id": "0xf4a9288d5deb0eae987e5926795094bf6f4662f8",
-              "name": "Governor Anastasius",
-              "proposalThreshold": "313920334106359403636927",
-              "contractAddress": "0xf4a9288d5deb0eae987e5926795094bf6f4662f8",
-              "quorumDenominator": "100",
-              "quorumNumerator": "0",
-              "quorumVotes": "337883824598407661923616837",
-              "executionDelay": "259200",
-              "timelockAddress": "0x7bea807798313fe8f557780dbd6b829c1e3ad560",
-              "votingDelay": "172800",
-              "votingPeriod": "259200"
+        "tokenDailySnapshots": [
+          {
+            "token": {
+              "id": "0xa0d69e286b938e21cbf7e51d71f6a4c8918f482f"
             },
-            {
-              "id": "0x96dc1c14d3d5e2ddaa52368adfe6e6b20b976832",
-              "name": "Governor Anastasius",
-              "proposalThreshold": "10000",
-              "contractAddress": "0x96dc1c14d3d5e2ddaa52368adfe6e6b20b976832",
-              "quorumDenominator": "100",
-              "quorumNumerator": "15",
-              "quorumVotes": "362181100749260489466480961",
-              "executionDelay": "259200",
-              "timelockAddress": "0xd979cf15f7275a3df838513ab911587d23b6d29e",
-              "votingDelay": "172800",
-              "votingPeriod": "259200"
+            "dailyVolume": "127168405774116177592952"
+          },
+          {
+            "token": {
+              "id": "0xe72b141df173b999ae7c1adcbf60cc9833ce56a8"
             },
-            {
-              "id": "0x7e880d8bd9c9612d6a9759f96acd23df4a4650e6",
-              "name": "Governor Alexios",
-              "proposalThreshold": "10000",
-              "contractAddress": "0x7e880d8bd9c9612d6a9759f96acd23df4a4650e6",
-              "quorumDenominator": "100",
-              "quorumNumerator": "15",
-              "quorumVotes": "471661561526014021337985667",
-              "executionDelay": "0",
-              "timelockAddress": "0xc8ee187a5e5c9dc9b42414ddf861ffc615446a2c",
-              "votingDelay": "14400",
-              "votingPeriod": "21600"
+            "dailyVolume": "39402646798362024464"
+          },
+          {
+            "token": {
+              "id": "0x0d86883faf4ffd7aeb116390af37746f45b6f378"
+            },
+            "dailyVolume": "100921276250062577682841"
+          },
+          {
+            "token": {
+              "id": "0xe72b141df173b999ae7c1adcbf60cc9833ce56a8"
+            },
+            "dailyVolume": "50971432905719862805"
+          },
+          {
+            "token": {
+              "id": "0xa0d69e286b938e21cbf7e51d71f6a4c8918f482f"
+            },
+            "dailyVolume": "202082478211454487563618"
+          },
+          {
+            "token": {
+              "id": "0x0d86883faf4ffd7aeb116390af37746f45b6f378"
+            },
+            "dailyVolume": "78823835689523764858917"
+          },
+          {
+            "token": {
+              "id": "0xa0d69e286b938e21cbf7e51d71f6a4c8918f482f"
+            },
+            "dailyVolume": "303923695386867844951921"
+          },
+          {
+            "token": {
+              "id": "0xe72b141df173b999ae7c1adcbf60cc9833ce56a8"
+            },
+            "dailyVolume": "344941439152673066486"
+          },
+          {
+            "token": {
+              "id": "0x0d86883faf4ffd7aeb116390af37746f45b6f378"
+            },
+            "dailyVolume": "102561379292397376907621"
+          },
+          {
+            "token": {
+              "id": "0xfc0b1eef20e4c68b3dcf36c4537cfa7ce46ca70b"
+            },
+            "dailyVolume": "2704605211117645033"
+          },
+          {
+            "token": {
+              "id": "0xa0d69e286b938e21cbf7e51d71f6a4c8918f482f"
+            },
+            "dailyVolume": "355389517195990517108918"
+          },
+          {
+            "token": {
+              "id": "0xe72b141df173b999ae7c1adcbf60cc9833ce56a8"
+            },
+            "dailyVolume": "160454756858607336255"
+          },
+          {
+            "token": {
+              "id": "0x0d86883faf4ffd7aeb116390af37746f45b6f378"
+            },
+            "dailyVolume": "69313343599539035888051"
+          },
+          {
+            "token": {
+              "id": "0xa0d69e286b938e21cbf7e51d71f6a4c8918f482f"
+            },
+            "dailyVolume": "767646020867425234471483"
+          },
+          {
+            "token": {
+              "id": "0xe72b141df173b999ae7c1adcbf60cc9833ce56a8"
+            },
+            "dailyVolume": "143689847805933916642"
+          },
+          {
+            "token": {
+              "id": "0x0d86883faf4ffd7aeb116390af37746f45b6f378"
+            },
+            "dailyVolume": "7782152851645164374598"
+          },
+          {
+            "token": {
+              "id": "0xe72b141df173b999ae7c1adcbf60cc9833ce56a8"
+            },
+            "dailyVolume": "419145335368037339302"
+          },
+          {
+            "token": {
+              "id": "0xa0d69e286b938e21cbf7e51d71f6a4c8918f482f"
+            },
+            "dailyVolume": "2457517148312699418606129"
+          },
+          {
+            "token": {
+              "id": "0x0d86883faf4ffd7aeb116390af37746f45b6f378"
+            },
+            "dailyVolume": "36453376476817846328057"
+          },
+          {
+            "token": {
+              "id": "0xa0d69e286b938e21cbf7e51d71f6a4c8918f482f"
+            },
+            "dailyVolume": "628448109019906492549779"
+          },
+          {
+            "token": {
+              "id": "0xe72b141df173b999ae7c1adcbf60cc9833ce56a8"
+            },
+            "dailyVolume": "2391211275114914127353"
+          },
+          {
+            "token": {
+              "id": "0xe72b141df173b999ae7c1adcbf60cc9833ce56a8"
+            },
+            "dailyVolume": "367954952776892520896"
+          },
+          {
+            "token": {
+              "id": "0xa0d69e286b938e21cbf7e51d71f6a4c8918f482f"
+            },
+            "dailyVolume": "820552970293218993275093"
+          },
+          {
+            "token": {
+              "id": "0x0d86883faf4ffd7aeb116390af37746f45b6f378"
+            },
+            "dailyVolume": "18212747702364687744822"
+          }
+        ],
+        "tokens": [
+          {
+            "id": "0xa0d69e286b938e21cbf7e51d71f6a4c8918f482f",
+            "lastPriceUSD": "0.999730152856103448",
+            "name": "Electronic Dollar",
+            "symbol": "eUSD",
+            "totalSupply": "23249398342590277208124074",
+            "holderCount": "-1709",
+            "transferCount": "319914",
+            "cumulativeVolume": "2520218174214481425082101954",
+            "rToken": {
+              "backing": "1002259979355228190",
+              "targetUnits": "USD",
+              "rsrStaked": "2975615271063256591195488029",
+              "rsrLocked": "3198429983978676812948436161",
+              "collaterals": [
+                {
+                  "id": "0x0adc69041a2b086f8772acce2a754f410f211bed",
+                  "symbol": "saEthUSDC"
+                },
+                {
+                  "id": "0x27f2f159fe990ba83d57f39fd69661764bebf37a",
+                  "symbol": "wcUSDCv3"
+                },
+                {
+                  "id": "0xeb74ec1d4c1dab412d5d6674f6833fd19d3118ce",
+                  "symbol": "wcUSDTv3"
+                }
+              ],
+              "contracts": [
+                {
+                  "id": "0x6d309297dddfea104a6e89a132e2f05ce3828e07",
+                  "name": "BASKET_HANDLER"
+                }
+              ],
+              "collateralDistribution": "{\"0x27f2f159fe990ba83d57f39fd69661764bebf37a\":{\"dist\":\"0.333386439423566749\",\"target\":\"USD\"},\"0xeb74ec1d4c1dab412d5d6674f6833fd19d3118ce\":{\"dist\":\"0.333217577711900742\",\"target\":\"USD\"},\"0x0adc69041a2b086f8772acce2a754f410f211bed\":{\"dist\":\"0.333395982864532507\",\"target\":\"USD\"}}",
+              "revenueDistribution": [
+                {
+                  "id": "0x0000000000000000000000000000000000000001-0xa0d69e286b938e21cbf7e51d71f6a4c8918f482f",
+                  "rTokenDist": 0,
+                  "rsrDist": 0,
+                  "destination": "0x0000000000000000000000000000000000000001"
+                },
+                {
+                  "id": "0x0000000000000000000000000000000000000002-0xa0d69e286b938e21cbf7e51d71f6a4c8918f482f",
+                  "rTokenDist": 0,
+                  "rsrDist": 4004,
+                  "destination": "0x0000000000000000000000000000000000000002"
+                },
+                {
+                  "id": "0x12ec148a193ba7b3a141ce6d02ade326883d28d9-0xa0d69e286b938e21cbf7e51d71f6a4c8918f482f",
+                  "rTokenDist": 5556,
+                  "rsrDist": 0,
+                  "destination": "0x12ec148a193ba7b3a141ce6d02ade326883d28d9"
+                },
+                {
+                  "id": "0x1c8fa333e3f136bc07d7487af88ec778d160ad8e-0xa0d69e286b938e21cbf7e51d71f6a4c8918f482f",
+                  "rTokenDist": 0,
+                  "rsrDist": 0,
+                  "destination": "0x1c8fa333e3f136bc07d7487af88ec778d160ad8e"
+                },
+                {
+                  "id": "0x2e3f334f9035aab204347508415dec785cd5075e-0xa0d69e286b938e21cbf7e51d71f6a4c8918f482f",
+                  "rTokenDist": 440,
+                  "rsrDist": 0,
+                  "destination": "0x2e3f334f9035aab204347508415dec785cd5075e"
+                }
+              ],
+              "rewardToken": {
+                "token": {
+                  "id": "0x18ba6e33ceb80f077deb9260c9111e62f21ae7b8",
+                  "name": "eusdRSR Token",
+                  "symbol": "eusdRSR",
+                  "decimals": 18
+                }
+              }
             }
-          ]
-        }
+          },
+          {
+            "id": "0x0d86883faf4ffd7aeb116390af37746f45b6f378",
+            "lastPriceUSD": "1.094997403690005734",
+            "name": "Web 3 Dollar",
+            "symbol": "USD3",
+            "totalSupply": "4166262456487528210612435",
+            "holderCount": "-1055",
+            "transferCount": "16162",
+            "cumulativeVolume": "906523146380412870862783939",
+            "rToken": {
+              "backing": "1005909441552410221",
+              "targetUnits": "USD",
+              "rsrStaked": "433811514284262867799942325",
+              "rsrLocked": "435056045103541350507898688",
+              "collaterals": [
+                {
+                  "id": "0x0adc69041a2b086f8772acce2a754f410f211bed",
+                  "symbol": "saEthUSDC"
+                },
+                {
+                  "id": "0x27f2f159fe990ba83d57f39fd69661764bebf37a",
+                  "symbol": "wcUSDCv3"
+                },
+                {
+                  "id": "0xa3931d71877c0e7a3148cb7eb4463524fec27fbd",
+                  "symbol": "sUSDS"
+                },
+                {
+                  "id": "0xbeef01735c132ada46aa9aa4c54623caa92a64cb",
+                  "symbol": "steakUSDC"
+                }
+              ],
+              "contracts": [
+                {
+                  "id": "0x19835e5817a6fdc944100e86da2fce86327457b8",
+                  "name": "BASKET_HANDLER"
+                }
+              ],
+              "collateralDistribution": "{\"0xa3931d71877c0e7a3148cb7eb4463524fec27fbd\":{\"dist\":\"0.250017541327123714\",\"target\":\"USD\"},\"0x0adc69041a2b086f8772acce2a754f410f211bed\":{\"dist\":\"0.249986281024315061\",\"target\":\"USD\"},\"0x27f2f159fe990ba83d57f39fd69661764bebf37a\":{\"dist\":\"0.249985844763588571\",\"target\":\"USD\"},\"0xbeef01735c132ada46aa9aa4c54623caa92a64cb\":{\"dist\":\"0.250010332884972651\",\"target\":\"USD\"}}",
+              "revenueDistribution": [
+                {
+                  "id": "0x0000000000000000000000000000000000000001-0x0d86883faf4ffd7aeb116390af37746f45b6f378",
+                  "rTokenDist": 8500,
+                  "rsrDist": 0,
+                  "destination": "0x0000000000000000000000000000000000000001"
+                },
+                {
+                  "id": "0x0000000000000000000000000000000000000002-0x0d86883faf4ffd7aeb116390af37746f45b6f378",
+                  "rTokenDist": 0,
+                  "rsrDist": 1500,
+                  "destination": "0x0000000000000000000000000000000000000002"
+                },
+                {
+                  "id": "0x1c8fa333e3f136bc07d7487af88ec778d160ad8e-0x0d86883faf4ffd7aeb116390af37746f45b6f378",
+                  "rTokenDist": 0,
+                  "rsrDist": 0,
+                  "destination": "0x1c8fa333e3f136bc07d7487af88ec778d160ad8e"
+                }
+              ],
+              "rewardToken": {
+                "token": {
+                  "id": "0x55230b05d4c1f4a0b4f804dc52919f06355dfbf8",
+                  "name": "usd3RSR Token",
+                  "symbol": "usd3RSR",
+                  "decimals": 18
+                }
+              }
+            }
+          },
+          {
+            "id": "0xacdf0dba4b9839b96221a8487e9ca660a48212be",
+            "lastPriceUSD": "1.298790069341965654",
+            "name": "High Yield USD",
+            "symbol": "hyUSD",
+            "totalSupply": "57114647278488164495031",
+            "holderCount": "-118",
+            "transferCount": "1442",
+            "cumulativeVolume": "54451220798540704066031620",
+            "rToken": {
+              "backing": "1011154171350811317",
+              "targetUnits": "USD",
+              "rsrStaked": "47970117132005678076659196",
+              "rsrLocked": "48087893170418526059380690",
+              "collaterals": [
+                {
+                  "id": "0x27f2f159fe990ba83d57f39fd69661764bebf37a",
+                  "symbol": "wcUSDCv3"
+                },
+                {
+                  "id": "0x83f20f44975d03b1b09e64809b757c47f942beea",
+                  "symbol": "sDAI"
+                },
+                {
+                  "id": "0x9d39a5de30e57443bff2a8307a4256c8797a3497",
+                  "symbol": "sUSDe"
+                }
+              ],
+              "contracts": [
+                {
+                  "id": "0x9119db28432bd97abf4c3d81b929849e0490c7a6",
+                  "name": "BASKET_HANDLER"
+                }
+              ],
+              "collateralDistribution": "{\"0x9d39a5de30e57443bff2a8307a4256c8797a3497\":{\"dist\":\"0.333144769249724025\",\"target\":\"USD\"},\"0x83f20f44975d03b1b09e64809b757c47f942beea\":{\"dist\":\"0.333407272436037688\",\"target\":\"USD\"},\"0x27f2f159fe990ba83d57f39fd69661764bebf37a\":{\"dist\":\"0.333447958314238286\",\"target\":\"USD\"}}",
+              "revenueDistribution": [
+                {
+                  "id": "0x0000000000000000000000000000000000000001-0xacdf0dba4b9839b96221a8487e9ca660a48212be",
+                  "rTokenDist": 0,
+                  "rsrDist": 0,
+                  "destination": "0x0000000000000000000000000000000000000001"
+                },
+                {
+                  "id": "0x0000000000000000000000000000000000000002-0xacdf0dba4b9839b96221a8487e9ca660a48212be",
+                  "rTokenDist": 0,
+                  "rsrDist": 10000,
+                  "destination": "0x0000000000000000000000000000000000000002"
+                },
+                {
+                  "id": "0x5b00bdc6907216db6aa59986e0ad65842acc060c-0xacdf0dba4b9839b96221a8487e9ca660a48212be",
+                  "rTokenDist": 0,
+                  "rsrDist": 0,
+                  "destination": "0x5b00bdc6907216db6aa59986e0ad65842acc060c"
+                }
+              ],
+              "rewardToken": {
+                "token": {
+                  "id": "0x7db3c57001c80644208fb8aa81ba1200c7b0731d",
+                  "name": "hyusdRSR Token",
+                  "symbol": "hyusdRSR",
+                  "decimals": 18
+                }
+              }
+            }
+          },
+          {
+            "id": "0x78da5799cf427fee11e9996982f4150ece7a99a7",
+            "lastPriceUSD": "1.000587194591388219",
+            "name": "Revenue Generating USD",
+            "symbol": "rgUSD",
+            "totalSupply": "10890889308501630742609",
+            "holderCount": "-154",
+            "transferCount": "2802",
+            "cumulativeVolume": "52914448740899597648577455",
+            "rToken": {
+              "backing": "1024314925001235058",
+              "targetUnits": "USD",
+              "rsrStaked": "21559698819026598558603062",
+              "rsrLocked": "22809957088636619082773935",
+              "collaterals": [
+                {
+                  "id": "0x83f20f44975d03b1b09e64809b757c47f942beea",
+                  "symbol": "sDAI"
+                }
+              ],
+              "contracts": [
+                {
+                  "id": "0x82b34ca23d965b931bb0a0eec048d24850a55fc3",
+                  "name": "BASKET_HANDLER"
+                }
+              ],
+              "collateralDistribution": "{\"0x83f20f44975d03b1b09e64809b757c47f942beea\":{\"dist\":\"1\",\"target\":\"USD\"}}",
+              "revenueDistribution": [
+                {
+                  "id": "0x0000000000000000000000000000000000000001-0x78da5799cf427fee11e9996982f4150ece7a99a7",
+                  "rTokenDist": 0,
+                  "rsrDist": 0,
+                  "destination": "0x0000000000000000000000000000000000000001"
+                },
+                {
+                  "id": "0x0000000000000000000000000000000000000002-0x78da5799cf427fee11e9996982f4150ece7a99a7",
+                  "rTokenDist": 0,
+                  "rsrDist": 10000,
+                  "destination": "0x0000000000000000000000000000000000000002"
+                },
+                {
+                  "id": "0x090d330e388f126d35958a0dc4673cee3248c2bd-0x78da5799cf427fee11e9996982f4150ece7a99a7",
+                  "rTokenDist": 0,
+                  "rsrDist": 0,
+                  "destination": "0x090d330e388f126d35958a0dc4673cee3248c2bd"
+                },
+                {
+                  "id": "0xafbd3c81c006bd0f2d40442b32afee0efb4e480f-0x78da5799cf427fee11e9996982f4150ece7a99a7",
+                  "rTokenDist": 0,
+                  "rsrDist": 0,
+                  "destination": "0xafbd3c81c006bd0f2d40442b32afee0efb4e480f"
+                },
+                {
+                  "id": "0xebf151c176c67c5b6de1252dfd3cf043bfdbb20b-0x78da5799cf427fee11e9996982f4150ece7a99a7",
+                  "rTokenDist": 9000,
+                  "rsrDist": 0,
+                  "destination": "0xebf151c176c67c5b6de1252dfd3cf043bfdbb20b"
+                },
+                {
+                  "id": "0xfecd2c03dfa65e53ef2faabb7c3968283a5b2e84-0x78da5799cf427fee11e9996982f4150ece7a99a7",
+                  "rTokenDist": 500,
+                  "rsrDist": 0,
+                  "destination": "0xfecd2c03dfa65e53ef2faabb7c3968283a5b2e84"
+                }
+              ],
+              "rewardToken": {
+                "token": {
+                  "id": "0x08c04056af7b8bd7c75e5179afe6b0a99d067c50",
+                  "name": "rgusdRSR Token",
+                  "symbol": "rgusdRSR",
+                  "decimals": 18
+                }
+              }
+            }
+          },
+          {
+            "id": "0xe72b141df173b999ae7c1adcbf60cc9833ce56a8",
+            "lastPriceUSD": "1985.410829743294105712",
+            "name": "ETHPlus",
+            "symbol": "ETH+",
+            "totalSupply": "4088054418824023784359",
+            "holderCount": "-1220",
+            "transferCount": "237425",
+            "cumulativeVolume": "1230351820306203579695091",
+            "rToken": {
+              "backing": "1003463637030136378",
+              "targetUnits": "ETH",
+              "rsrStaked": "545956403202982382645313516",
+              "rsrLocked": "575351089897256465817663544",
+              "collaterals": [
+                {
+                  "id": "0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0",
+                  "symbol": "wstETH"
+                },
+                {
+                  "id": "0xa35b1b31ce002fbf2058d22f30f95d405200a15b",
+                  "symbol": "ETHx"
+                },
+                {
+                  "id": "0xac3e018457b222d93114458476f3e3416abbe38f",
+                  "symbol": "sfrxETH"
+                },
+                {
+                  "id": "0xae78736cd615f374d3085123a210448e74fc6393",
+                  "symbol": "rETH"
+                },
+                {
+                  "id": "0xcd5fe23c85820f7b72d0926fc9b05b43e359b7ee",
+                  "symbol": "weETH"
+                }
+              ],
+              "contracts": [
+                {
+                  "id": "0x56f40a33e3a3fe2f1614bf82cbeb35987ac10194",
+                  "name": "BASKET_HANDLER"
+                }
+              ],
+              "collateralDistribution": "{\"0xcd5fe23c85820f7b72d0926fc9b05b43e359b7ee\":{\"dist\":\"0.234984817125763416\",\"target\":\"ETH\"},\"0xa35b1b31ce002fbf2058d22f30f95d405200a15b\":{\"dist\":\"0.064969844766453133\",\"target\":\"ETH\"},\"0xac3e018457b222d93114458476f3e3416abbe38f\":{\"dist\":\"0.150051306044527029\",\"target\":\"ETH\"},\"0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0\":{\"dist\":\"0.499962701627131278\",\"target\":\"ETH\"},\"0xae78736cd615f374d3085123a210448e74fc6393\":{\"dist\":\"0.050031330436125142\",\"target\":\"ETH\"}}",
+              "revenueDistribution": [
+                {
+                  "id": "0x0000000000000000000000000000000000000001-0xe72b141df173b999ae7c1adcbf60cc9833ce56a8",
+                  "rTokenDist": 9000,
+                  "rsrDist": 0,
+                  "destination": "0x0000000000000000000000000000000000000001"
+                },
+                {
+                  "id": "0x0000000000000000000000000000000000000002-0xe72b141df173b999ae7c1adcbf60cc9833ce56a8",
+                  "rTokenDist": 0,
+                  "rsrDist": 300,
+                  "destination": "0x0000000000000000000000000000000000000002"
+                },
+                {
+                  "id": "0xcbca96091f43c024730a020e57515a18b5dc633b-0xe72b141df173b999ae7c1adcbf60cc9833ce56a8",
+                  "rTokenDist": 0,
+                  "rsrDist": 700,
+                  "destination": "0xcbca96091f43c024730a020e57515a18b5dc633b"
+                }
+              ],
+              "rewardToken": {
+                "token": {
+                  "id": "0xffa151ad0a0e2e40f39f9e5e9f87cf9e45e819dd",
+                  "name": "eth+RSR Token",
+                  "symbol": "eth+RSR",
+                  "decimals": 18
+                }
+              }
+            }
+          },
+          {
+            "id": "0xfc0b1eef20e4c68b3dcf36c4537cfa7ce46ca70b",
+            "lastPriceUSD": "1.173523439330015108",
+            "name": "USDC Plus",
+            "symbol": "USDC+",
+            "totalSupply": "2855686824557799156792",
+            "holderCount": "-47",
+            "transferCount": "1122",
+            "cumulativeVolume": "12993510151163912232827965",
+            "rToken": {
+              "backing": "1341897381004712384",
+              "targetUnits": "USD",
+              "rsrStaked": "1411316746142881476256663",
+              "rsrLocked": "1612316910259104947905999",
+              "collaterals": [
+                {
+                  "id": "0x093c07787920eb34a0a0c7a09823510725aee4af",
+                  "symbol": "wcUSDCv3"
+                },
+                {
+                  "id": "0x7f7b77e49d5b30445f222764a794afe14af062eb",
+                  "symbol": "mrp-aUSDC"
+                },
+                {
+                  "id": "0xbeef01735c132ada46aa9aa4c54623caa92a64cb",
+                  "symbol": "steakUSDC"
+                }
+              ],
+              "contracts": [
+                {
+                  "id": "0x162587b5b4c01d26afafd4a1cca61cdc632c9508",
+                  "name": "BASKET_HANDLER"
+                }
+              ],
+              "collateralDistribution": "{\"0xbeef01735c132ada46aa9aa4c54623caa92a64cb\":{\"dist\":\"0.333333057812169921\",\"target\":\"USD\"},\"0x093c07787920eb34a0a0c7a09823510725aee4af\":{\"dist\":\"0.33333388437566011\",\"target\":\"USD\"},\"0x7f7b77e49d5b30445f222764a794afe14af062eb\":{\"dist\":\"0.333333057812169967\",\"target\":\"USD\"}}",
+              "revenueDistribution": [
+                {
+                  "id": "0x0000000000000000000000000000000000000001-0xfc0b1eef20e4c68b3dcf36c4537cfa7ce46ca70b",
+                  "rTokenDist": 0,
+                  "rsrDist": 0,
+                  "destination": "0x0000000000000000000000000000000000000001"
+                },
+                {
+                  "id": "0x0000000000000000000000000000000000000002-0xfc0b1eef20e4c68b3dcf36c4537cfa7ce46ca70b",
+                  "rTokenDist": 0,
+                  "rsrDist": 10000,
+                  "destination": "0x0000000000000000000000000000000000000002"
+                },
+                {
+                  "id": "0x27c9948edcc34c81131a800dba9cfd9ad74068a3-0xfc0b1eef20e4c68b3dcf36c4537cfa7ce46ca70b",
+                  "rTokenDist": 1000,
+                  "rsrDist": 0,
+                  "destination": "0x27c9948edcc34c81131a800dba9cfd9ad74068a3"
+                }
+              ],
+              "rewardToken": {
+                "token": {
+                  "id": "0x1c77ebbab708153f5f899c29b155a6cc92a2ac40",
+                  "name": "usdc+RSR Token",
+                  "symbol": "usdc+RSR",
+                  "decimals": 18
+                }
+              }
+            }
+          },
+          {
+            "id": "0x005f893ecd7bf9667195642f7649da8163e23658",
+            "lastPriceUSD": "1581.644141804806131996",
+            "name": "Degen ETH",
+            "symbol": "dgnETH",
+            "totalSupply": "13118534041243307359",
+            "holderCount": "-253",
+            "transferCount": "3596",
+            "cumulativeVolume": "38284294487083908156061",
+            "rToken": {
+              "backing": "1103575642965086571",
+              "targetUnits": "ETH",
+              "rsrStaked": "2102736602412347646941067",
+              "rsrLocked": "3108816208403570280830552",
+              "collaterals": [
+                {
+                  "id": "0x78fc2c2ed1a4cdb5402365934ae5648adad094d0",
+                  "symbol": "Re7WETH"
+                },
+                {
+                  "id": "0xdbc0ce2321b76d3956412b36e9c0fa9b0fd176e7",
+                  "symbol": "stkcvxETH+ETH-f"
+                },
+                {
+                  "id": "0xdcee70654261af21c44c093c300ed3bb97b78192",
+                  "symbol": "wOETH"
+                }
+              ],
+              "contracts": [
+                {
+                  "id": "0x218303645ac852f9fa334edb214aacf3b255ad56",
+                  "name": "BASKET_HANDLER"
+                }
+              ],
+              "collateralDistribution": "{\"0x78fc2c2ed1a4cdb5402365934ae5648adad094d0\":{\"dist\":\"0.125306819809849059\",\"target\":\"ETH\"},\"0xdcee70654261af21c44c093c300ed3bb97b78192\":{\"dist\":\"0.125114353551979524\",\"target\":\"ETH\"},\"0xdbc0ce2321b76d3956412b36e9c0fa9b0fd176e7\":{\"dist\":\"0.749578826638171416\",\"target\":\"ETH\"}}",
+              "revenueDistribution": [
+                {
+                  "id": "0x0000000000000000000000000000000000000001-0x005f893ecd7bf9667195642f7649da8163e23658",
+                  "rTokenDist": 0,
+                  "rsrDist": 0,
+                  "destination": "0x0000000000000000000000000000000000000001"
+                },
+                {
+                  "id": "0x0000000000000000000000000000000000000002-0x005f893ecd7bf9667195642f7649da8163e23658",
+                  "rTokenDist": 0,
+                  "rsrDist": 10000,
+                  "destination": "0x0000000000000000000000000000000000000002"
+                },
+                {
+                  "id": "0x5bdd1fa233843bfc034891be8a6769e58f1e1346-0x005f893ecd7bf9667195642f7649da8163e23658",
+                  "rTokenDist": 9500,
+                  "rsrDist": 0,
+                  "destination": "0x5bdd1fa233843bfc034891be8a6769e58f1e1346"
+                }
+              ],
+              "rewardToken": {
+                "token": {
+                  "id": "0xba3d95db765a827d82adef775595c37e9da2c3c2",
+                  "name": "dgnethRSR Token",
+                  "symbol": "dgnethRSR",
+                  "decimals": 18
+                }
+              }
+            }
+          }
+        ]
       }
     },
     {
@@ -4009,16 +3938,11 @@
       "query": "query getTokenDailyPrice($id: String!, $fromTime: Int!) { token(id: $id) { snapshots: dailyTokenSnapshot( first: 1000 where: { timestamp_gte: $fromTime } ) { timestamp priceUSD basketRate } } }",
       "variables": {
         "id": "0xa0d69e286b938e21cbf7e51d71f6a4c8918f482f",
-        "fromTime": 1781210427
+        "fromTime": 1781296028
       },
       "data": {
         "token": {
           "snapshots": [
-            {
-              "timestamp": "1781221943",
-              "priceUSD": "0.999559061360156034",
-              "basketRate": "1"
-            },
             {
               "timestamp": "1781308571",
               "priceUSD": "0.999741095187589193",
@@ -4165,9 +4089,272 @@
               "basketRate": "1"
             },
             {
-              "timestamp": "1783801979",
-              "priceUSD": "0.999780616293205258",
+              "timestamp": "1783812923",
+              "priceUSD": "0.999790557013584765",
               "basketRate": "1"
+            },
+            {
+              "timestamp": "1783882715",
+              "priceUSD": "0.999730152856103448",
+              "basketRate": "1"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "op": "getRTokenOwner",
+      "query": "query getRTokenOwner($id: String!) { rtoken(id: $id) { owners pausers freezers longFreezers } governance(id: $id) { guardians governanceFrameworks(orderBy: name, orderDirection: desc) { id name proposalThreshold contractAddress quorumDenominator quorumNumerator quorumVotes executionDelay timelockAddress votingDelay votingPeriod } } }",
+      "variables": {
+        "id": "0xa0d69e286b938e21cbf7e51d71f6a4c8918f482f"
+      },
+      "data": {
+        "rtoken": {
+          "owners": [
+            "0xd979cf15f7275a3df838513ab911587d23b6d29e"
+          ],
+          "pausers": [
+            "0x7f9ffa8dea49647725ca6ce621e03aa20401ff63",
+            "0x4bad40e0d92ebc2620a0d5aff7887c7f2e67fdd8",
+            "0xe45c3179b135288dd8e1e3c20eafebb2b2e7d771",
+            "0x0d88776dd9a654cfe9c67b5b1d9ce2fddd815a34"
+          ],
+          "freezers": [
+            "0x4986164f2fb9bb898b19382b1e835cd9c81eba46",
+            "0x4bad40e0d92ebc2620a0d5aff7887c7f2e67fdd8",
+            "0xe45c3179b135288dd8e1e3c20eafebb2b2e7d771",
+            "0x0d88776dd9a654cfe9c67b5b1d9ce2fddd815a34"
+          ],
+          "longFreezers": [
+            "0x0173e2965c1aec9d395eb14e3407ef95c2e1a47d"
+          ]
+        },
+        "governance": {
+          "guardians": [
+            "0x576ca79e46171a2b3e26f13a4334940ebcd72164",
+            "0x96dc1c14d3d5e2ddaa52368adfe6e6b20b976832",
+            "0x576ca79e46171a2b3e26f13a4334940ebcd72164"
+          ],
+          "governanceFrameworks": [
+            {
+              "id": "0xf4a9288d5deb0eae987e5926795094bf6f4662f8",
+              "name": "Governor Anastasius",
+              "proposalThreshold": "313920334106359403636927",
+              "contractAddress": "0xf4a9288d5deb0eae987e5926795094bf6f4662f8",
+              "quorumDenominator": "100",
+              "quorumNumerator": "0",
+              "quorumVotes": "337883824598407661923616837",
+              "executionDelay": "259200",
+              "timelockAddress": "0x7bea807798313fe8f557780dbd6b829c1e3ad560",
+              "votingDelay": "172800",
+              "votingPeriod": "259200"
+            },
+            {
+              "id": "0x96dc1c14d3d5e2ddaa52368adfe6e6b20b976832",
+              "name": "Governor Anastasius",
+              "proposalThreshold": "10000",
+              "contractAddress": "0x96dc1c14d3d5e2ddaa52368adfe6e6b20b976832",
+              "quorumDenominator": "100",
+              "quorumNumerator": "15",
+              "quorumVotes": "362181100749260489466480961",
+              "executionDelay": "259200",
+              "timelockAddress": "0xd979cf15f7275a3df838513ab911587d23b6d29e",
+              "votingDelay": "172800",
+              "votingPeriod": "259200"
+            },
+            {
+              "id": "0x7e880d8bd9c9612d6a9759f96acd23df4a4650e6",
+              "name": "Governor Alexios",
+              "proposalThreshold": "10000",
+              "contractAddress": "0x7e880d8bd9c9612d6a9759f96acd23df4a4650e6",
+              "quorumDenominator": "100",
+              "quorumNumerator": "15",
+              "quorumVotes": "471661561526014021337985667",
+              "executionDelay": "0",
+              "timelockAddress": "0xc8ee187a5e5c9dc9b42414ddf861ffc615446a2c",
+              "votingDelay": "14400",
+              "votingPeriod": "21600"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "op": "getTokenDailyPrice",
+      "query": "query getTokenDailyPrice($id: String!, $fromTime: Int!) { rtoken(id: $id) { snapshots: dailySnapshots( first: 365 where: { timestamp_gte: $fromTime } ) { timestamp rsrStaked } } }",
+      "variables": {
+        "id": "0xa0d69e286b938e21cbf7e51d71f6a4c8918f482f",
+        "fromTime": 1781296028
+      },
+      "data": {
+        "rtoken": {
+          "snapshots": [
+            {
+              "timestamp": "1781308571",
+              "rsrStaked": "2717315708395681990722105115"
+            },
+            {
+              "timestamp": "1781394623",
+              "rsrStaked": "2717315708395681990722105115"
+            },
+            {
+              "timestamp": "1781481599",
+              "rsrStaked": "2717561512477190958952098061"
+            },
+            {
+              "timestamp": "1781567831",
+              "rsrStaked": "2717561512477190958952098061"
+            },
+            {
+              "timestamp": "1781654243",
+              "rsrStaked": "2721300641436180893869982712"
+            },
+            {
+              "timestamp": "1781739791",
+              "rsrStaked": "2722130908778694800846765531"
+            },
+            {
+              "timestamp": "1781827091",
+              "rsrStaked": "2723286442332115184142365824"
+            },
+            {
+              "timestamp": "1781913431",
+              "rsrStaked": "2766837509750431888368371672"
+            },
+            {
+              "timestamp": "1781994863",
+              "rsrStaked": "2766837509750431888368371672"
+            },
+            {
+              "timestamp": "1782086327",
+              "rsrStaked": "2766837509750431888368371672"
+            },
+            {
+              "timestamp": "1782171563",
+              "rsrStaked": "2780725826709501138975512123"
+            },
+            {
+              "timestamp": "1782258407",
+              "rsrStaked": "2780725826709501138975512123"
+            },
+            {
+              "timestamp": "1782345431",
+              "rsrStaked": "2780725826709501138975512123"
+            },
+            {
+              "timestamp": "1782431495",
+              "rsrStaked": "2780725826709501138975512123"
+            },
+            {
+              "timestamp": "1782517415",
+              "rsrStaked": "2792520038950937265032623649"
+            },
+            {
+              "timestamp": "1782604559",
+              "rsrStaked": "2792520038950937265032623649"
+            },
+            {
+              "timestamp": "1782691019",
+              "rsrStaked": "2795361504642115319387838270"
+            },
+            {
+              "timestamp": "1782776759",
+              "rsrStaked": "2795361504642115319387838270"
+            },
+            {
+              "timestamp": "1782863543",
+              "rsrStaked": "2825425043391487865268402211"
+            },
+            {
+              "timestamp": "1782950363",
+              "rsrStaked": "2826772639587772863744461110"
+            },
+            {
+              "timestamp": "1783036031",
+              "rsrStaked": "2828252177289298871533952963"
+            },
+            {
+              "timestamp": "1783122179",
+              "rsrStaked": "2987291199631146816491467998"
+            },
+            {
+              "timestamp": "1783208651",
+              "rsrStaked": "2988258128305641312577254925"
+            },
+            {
+              "timestamp": "1783295591",
+              "rsrStaked": "2988258128305641312577254925"
+            },
+            {
+              "timestamp": "1783381415",
+              "rsrStaked": "2989819262152653957861392045"
+            },
+            {
+              "timestamp": "1783468775",
+              "rsrStaked": "2997183488798743320217114756"
+            },
+            {
+              "timestamp": "1783552007",
+              "rsrStaked": "2998427825353325715013473625"
+            },
+            {
+              "timestamp": "1783640891",
+              "rsrStaked": "2970290381363729394804477093"
+            },
+            {
+              "timestamp": "1783727759",
+              "rsrStaked": "2970290381363729394804477093"
+            },
+            {
+              "timestamp": "1783812923",
+              "rsrStaked": "2975615271063256591195488029"
+            },
+            {
+              "timestamp": "1783882715",
+              "rsrStaked": "2975615271063256591195488029"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "op": "getRTokenDistribution",
+      "query": "query getRTokenDistribution($id: String!) { rtoken(id: $id) { revenueDistribution { id rTokenDist rsrDist destination } } }",
+      "variables": {
+        "id": "0xa0d69e286b938e21cbf7e51d71f6a4c8918f482f"
+      },
+      "data": {
+        "rtoken": {
+          "revenueDistribution": [
+            {
+              "id": "0x0000000000000000000000000000000000000001-0xa0d69e286b938e21cbf7e51d71f6a4c8918f482f",
+              "rTokenDist": 0,
+              "rsrDist": 0,
+              "destination": "0x0000000000000000000000000000000000000001"
+            },
+            {
+              "id": "0x0000000000000000000000000000000000000002-0xa0d69e286b938e21cbf7e51d71f6a4c8918f482f",
+              "rTokenDist": 0,
+              "rsrDist": 4004,
+              "destination": "0x0000000000000000000000000000000000000002"
+            },
+            {
+              "id": "0x12ec148a193ba7b3a141ce6d02ade326883d28d9-0xa0d69e286b938e21cbf7e51d71f6a4c8918f482f",
+              "rTokenDist": 5556,
+              "rsrDist": 0,
+              "destination": "0x12ec148a193ba7b3a141ce6d02ade326883d28d9"
+            },
+            {
+              "id": "0x1c8fa333e3f136bc07d7487af88ec778d160ad8e-0xa0d69e286b938e21cbf7e51d71f6a4c8918f482f",
+              "rTokenDist": 0,
+              "rsrDist": 0,
+              "destination": "0x1c8fa333e3f136bc07d7487af88ec778d160ad8e"
+            },
+            {
+              "id": "0x2e3f334f9035aab204347508415dec785cd5075e-0xa0d69e286b938e21cbf7e51d71f6a4c8918f482f",
+              "rTokenDist": 440,
+              "rsrDist": 0,
+              "destination": "0x2e3f334f9035aab204347508415dec785cd5075e"
             }
           ]
         }
@@ -5167,15 +5354,11 @@
       "query": "query getTokenDailyPrice($id: String!, $fromTime: Int!) { token(id: $id) { snapshots: dailyTokenSnapshot( first: 1000 where: { timestamp_gte: $fromTime } ) { timestamp supply: dailyTotalSupply } } }",
       "variables": {
         "id": "0xa0d69e286b938e21cbf7e51d71f6a4c8918f482f",
-        "fromTime": 1781210427
+        "fromTime": 1781296028
       },
       "data": {
         "token": {
           "snapshots": [
-            {
-              "timestamp": "1781221943",
-              "supply": "23272689324251547643538397"
-            },
             {
               "timestamp": "1781308571",
               "supply": "23272689324251547643538397"
@@ -5293,146 +5476,12 @@
               "supply": "23249398342590277208124074"
             },
             {
-              "timestamp": "1783801979",
+              "timestamp": "1783812923",
               "supply": "23249398342590277208124074"
-            }
-          ]
-        }
-      }
-    },
-    {
-      "op": "getTokenDailyPrice",
-      "query": "query getTokenDailyPrice($id: String!, $fromTime: Int!) { rtoken(id: $id) { snapshots: dailySnapshots( first: 365 where: { timestamp_gte: $fromTime } ) { timestamp rsrStaked } } }",
-      "variables": {
-        "id": "0xa0d69e286b938e21cbf7e51d71f6a4c8918f482f",
-        "fromTime": 1781210427
-      },
-      "data": {
-        "rtoken": {
-          "snapshots": [
-            {
-              "timestamp": "1781221943",
-              "rsrStaked": "2707235719105701085755521739"
             },
             {
-              "timestamp": "1781308571",
-              "rsrStaked": "2717315708395681990722105115"
-            },
-            {
-              "timestamp": "1781394623",
-              "rsrStaked": "2717315708395681990722105115"
-            },
-            {
-              "timestamp": "1781481599",
-              "rsrStaked": "2717561512477190958952098061"
-            },
-            {
-              "timestamp": "1781567831",
-              "rsrStaked": "2717561512477190958952098061"
-            },
-            {
-              "timestamp": "1781654243",
-              "rsrStaked": "2721300641436180893869982712"
-            },
-            {
-              "timestamp": "1781739791",
-              "rsrStaked": "2722130908778694800846765531"
-            },
-            {
-              "timestamp": "1781827091",
-              "rsrStaked": "2723286442332115184142365824"
-            },
-            {
-              "timestamp": "1781913431",
-              "rsrStaked": "2766837509750431888368371672"
-            },
-            {
-              "timestamp": "1781994863",
-              "rsrStaked": "2766837509750431888368371672"
-            },
-            {
-              "timestamp": "1782086327",
-              "rsrStaked": "2766837509750431888368371672"
-            },
-            {
-              "timestamp": "1782171563",
-              "rsrStaked": "2780725826709501138975512123"
-            },
-            {
-              "timestamp": "1782258407",
-              "rsrStaked": "2780725826709501138975512123"
-            },
-            {
-              "timestamp": "1782345431",
-              "rsrStaked": "2780725826709501138975512123"
-            },
-            {
-              "timestamp": "1782431495",
-              "rsrStaked": "2780725826709501138975512123"
-            },
-            {
-              "timestamp": "1782517415",
-              "rsrStaked": "2792520038950937265032623649"
-            },
-            {
-              "timestamp": "1782604559",
-              "rsrStaked": "2792520038950937265032623649"
-            },
-            {
-              "timestamp": "1782691019",
-              "rsrStaked": "2795361504642115319387838270"
-            },
-            {
-              "timestamp": "1782776759",
-              "rsrStaked": "2795361504642115319387838270"
-            },
-            {
-              "timestamp": "1782863543",
-              "rsrStaked": "2825425043391487865268402211"
-            },
-            {
-              "timestamp": "1782950363",
-              "rsrStaked": "2826772639587772863744461110"
-            },
-            {
-              "timestamp": "1783036031",
-              "rsrStaked": "2828252177289298871533952963"
-            },
-            {
-              "timestamp": "1783122179",
-              "rsrStaked": "2987291199631146816491467998"
-            },
-            {
-              "timestamp": "1783208651",
-              "rsrStaked": "2988258128305641312577254925"
-            },
-            {
-              "timestamp": "1783295591",
-              "rsrStaked": "2988258128305641312577254925"
-            },
-            {
-              "timestamp": "1783381415",
-              "rsrStaked": "2989819262152653957861392045"
-            },
-            {
-              "timestamp": "1783468775",
-              "rsrStaked": "2997183488798743320217114756"
-            },
-            {
-              "timestamp": "1783552007",
-              "rsrStaked": "2998427825353325715013473625"
-            },
-            {
-              "timestamp": "1783640891",
-              "rsrStaked": "2970290381363729394804477093"
-            },
-            {
-              "timestamp": "1783727759",
-              "rsrStaked": "2970290381363729394804477093"
-            },
-            {
-              "timestamp": "1783801979",
-              "rsrStaked": "2975615271063256591195488029"
+              "timestamp": "1783882715",
+              "supply": "23249398342590277208124074"
             }
           ]
         }
@@ -5448,7 +5497,11 @@
         "rtoken": {
           "snapshots": [
             {
-              "timestamp": "1783801979",
+              "timestamp": "1783882715",
+              "rsrStaked": "2975615271063256591195488029"
+            },
+            {
+              "timestamp": "1783812923",
               "rsrStaked": "2975615271063256591195488029"
             },
             {
@@ -6902,17 +6955,17 @@
             {
               "timestamp": "1752451031",
               "rsrStaked": "2545222949881272623771394610"
-            },
-            {
-              "timestamp": "1752364595",
-              "rsrStaked": "2555181942997976990328041770"
             }
           ]
         },
         "token": {
           "snapshots": [
             {
-              "timestamp": "1783801979",
+              "timestamp": "1783882715",
+              "supply": "23249398342590277208124074"
+            },
+            {
+              "timestamp": "1783812923",
               "supply": "23249398342590277208124074"
             },
             {
@@ -8366,53 +8419,1464 @@
             {
               "timestamp": "1752451031",
               "supply": "25933451086925170498116554"
-            },
-            {
-              "timestamp": "1752364595",
-              "supply": "25933451086925170498116554"
             }
           ]
         }
       }
     },
     {
-      "op": "getRTokenDistribution",
-      "query": "query getRTokenDistribution($id: String!) { rtoken(id: $id) { revenueDistribution { id rTokenDist rsrDist destination } } }",
+      "op": "getRTokenExchangeRate",
+      "query": "query getRTokenExchangeRate($id: String!, $fromTime: Int!) { rtoken(id: $id) { snapshots: dailySnapshots( first: 365 where: { timestamp_gte: $fromTime } ) { timestamp rsrExchangeRate } } }",
       "variables": {
-        "id": "0xa0d69e286b938e21cbf7e51d71f6a4c8918f482f"
+        "id": "0xa0d69e286b938e21cbf7e51d71f6a4c8918f482f",
+        "fromTime": 1752784079
       },
       "data": {
         "rtoken": {
-          "revenueDistribution": [
+          "snapshots": [
             {
-              "id": "0x0000000000000000000000000000000000000001-0xa0d69e286b938e21cbf7e51d71f6a4c8918f482f",
-              "rTokenDist": 0,
-              "rsrDist": 0,
-              "destination": "0x0000000000000000000000000000000000000001"
+              "timestamp": "1752796727",
+              "rsrExchangeRate": "1.169959337451108461"
             },
             {
-              "id": "0x0000000000000000000000000000000000000002-0xa0d69e286b938e21cbf7e51d71f6a4c8918f482f",
-              "rTokenDist": 0,
-              "rsrDist": 4004,
-              "destination": "0x0000000000000000000000000000000000000002"
+              "timestamp": "1752882947",
+              "rsrExchangeRate": "1.1700069873234433"
             },
             {
-              "id": "0x12ec148a193ba7b3a141ce6d02ade326883d28d9-0xa0d69e286b938e21cbf7e51d71f6a4c8918f482f",
-              "rTokenDist": 5556,
-              "rsrDist": 0,
-              "destination": "0x12ec148a193ba7b3a141ce6d02ade326883d28d9"
+              "timestamp": "1752969371",
+              "rsrExchangeRate": "1.170046681172917222"
             },
             {
-              "id": "0x1c8fa333e3f136bc07d7487af88ec778d160ad8e-0xa0d69e286b938e21cbf7e51d71f6a4c8918f482f",
-              "rTokenDist": 0,
-              "rsrDist": 0,
-              "destination": "0x1c8fa333e3f136bc07d7487af88ec778d160ad8e"
+              "timestamp": "1753055771",
+              "rsrExchangeRate": "1.170140424572238977"
             },
             {
-              "id": "0x2e3f334f9035aab204347508415dec785cd5075e-0xa0d69e286b938e21cbf7e51d71f6a4c8918f482f",
-              "rTokenDist": 440,
-              "rsrDist": 0,
-              "destination": "0x2e3f334f9035aab204347508415dec785cd5075e"
+              "timestamp": "1753141895",
+              "rsrExchangeRate": "1.170140424572238977"
+            },
+            {
+              "timestamp": "1753228751",
+              "rsrExchangeRate": "1.17021146504137617"
+            },
+            {
+              "timestamp": "1753314311",
+              "rsrExchangeRate": "1.17021146504137617"
+            },
+            {
+              "timestamp": "1753401599",
+              "rsrExchangeRate": "1.17021146504137617"
+            },
+            {
+              "timestamp": "1753487735",
+              "rsrExchangeRate": "1.17021146504137617"
+            },
+            {
+              "timestamp": "1753573895",
+              "rsrExchangeRate": "1.171042082418837607"
+            },
+            {
+              "timestamp": "1753660679",
+              "rsrExchangeRate": "1.171042082418837607"
+            },
+            {
+              "timestamp": "1753747175",
+              "rsrExchangeRate": "1.171042082418837607"
+            },
+            {
+              "timestamp": "1753833539",
+              "rsrExchangeRate": "1.171348275912012254"
+            },
+            {
+              "timestamp": "1753919591",
+              "rsrExchangeRate": "1.171348275912012254"
+            },
+            {
+              "timestamp": "1754006351",
+              "rsrExchangeRate": "1.171614724200481971"
+            },
+            {
+              "timestamp": "1754092487",
+              "rsrExchangeRate": "1.171691014375621023"
+            },
+            {
+              "timestamp": "1754178947",
+              "rsrExchangeRate": "1.171787176200367621"
+            },
+            {
+              "timestamp": "1754265587",
+              "rsrExchangeRate": "1.1718515753174601"
+            },
+            {
+              "timestamp": "1754351963",
+              "rsrExchangeRate": "1.1718515753174601"
+            },
+            {
+              "timestamp": "1754438147",
+              "rsrExchangeRate": "1.171966597116704787"
+            },
+            {
+              "timestamp": "1754524187",
+              "rsrExchangeRate": "1.171966597116704787"
+            },
+            {
+              "timestamp": "1754611163",
+              "rsrExchangeRate": "1.172089817460039154"
+            },
+            {
+              "timestamp": "1754697551",
+              "rsrExchangeRate": "1.172157723142579748"
+            },
+            {
+              "timestamp": "1754783927",
+              "rsrExchangeRate": "1.172284584122528124"
+            },
+            {
+              "timestamp": "1754870339",
+              "rsrExchangeRate": "1.172284584122528124"
+            },
+            {
+              "timestamp": "1754956763",
+              "rsrExchangeRate": "1.172743504159577506"
+            },
+            {
+              "timestamp": "1755042815",
+              "rsrExchangeRate": "1.172920688558171537"
+            },
+            {
+              "timestamp": "1755129575",
+              "rsrExchangeRate": "1.17304267268545792"
+            },
+            {
+              "timestamp": "1755215831",
+              "rsrExchangeRate": "1.17304267268545792"
+            },
+            {
+              "timestamp": "1755302363",
+              "rsrExchangeRate": "1.17344908647094969"
+            },
+            {
+              "timestamp": "1755388499",
+              "rsrExchangeRate": "1.173549933426909945"
+            },
+            {
+              "timestamp": "1755474851",
+              "rsrExchangeRate": "1.173691608054512946"
+            },
+            {
+              "timestamp": "1755561227",
+              "rsrExchangeRate": "1.173691608054512946"
+            },
+            {
+              "timestamp": "1755647963",
+              "rsrExchangeRate": "1.174034751487589724"
+            },
+            {
+              "timestamp": "1755733907",
+              "rsrExchangeRate": "1.174034751487589724"
+            },
+            {
+              "timestamp": "1755820655",
+              "rsrExchangeRate": "1.174034751487589724"
+            },
+            {
+              "timestamp": "1755906815",
+              "rsrExchangeRate": "1.174594257001205178"
+            },
+            {
+              "timestamp": "1755993395",
+              "rsrExchangeRate": "1.17475521202670246"
+            },
+            {
+              "timestamp": "1756079687",
+              "rsrExchangeRate": "1.17475521202670246"
+            },
+            {
+              "timestamp": "1756166303",
+              "rsrExchangeRate": "1.174966059443721712"
+            },
+            {
+              "timestamp": "1756252463",
+              "rsrExchangeRate": "1.174966059443721712"
+            },
+            {
+              "timestamp": "1756339151",
+              "rsrExchangeRate": "1.174966059443721712"
+            },
+            {
+              "timestamp": "1756425563",
+              "rsrExchangeRate": "1.175204039439921473"
+            },
+            {
+              "timestamp": "1756511951",
+              "rsrExchangeRate": "1.17530412225926256"
+            },
+            {
+              "timestamp": "1756596407",
+              "rsrExchangeRate": "1.175396999472953424"
+            },
+            {
+              "timestamp": "1756684139",
+              "rsrExchangeRate": "1.175469640242214917"
+            },
+            {
+              "timestamp": "1756770383",
+              "rsrExchangeRate": "1.175517199514287387"
+            },
+            {
+              "timestamp": "1756857419",
+              "rsrExchangeRate": "1.175600991496284858"
+            },
+            {
+              "timestamp": "1756943087",
+              "rsrExchangeRate": "1.175902797765063257"
+            },
+            {
+              "timestamp": "1757030387",
+              "rsrExchangeRate": "1.176000719881501039"
+            },
+            {
+              "timestamp": "1757115995",
+              "rsrExchangeRate": "1.176000719881501039"
+            },
+            {
+              "timestamp": "1757202887",
+              "rsrExchangeRate": "1.176414596475125268"
+            },
+            {
+              "timestamp": "1757289515",
+              "rsrExchangeRate": "1.176805741852347355"
+            },
+            {
+              "timestamp": "1757375783",
+              "rsrExchangeRate": "1.176805741852347355"
+            },
+            {
+              "timestamp": "1757461475",
+              "rsrExchangeRate": "1.177215192134714924"
+            },
+            {
+              "timestamp": "1757547959",
+              "rsrExchangeRate": "1.177382329368863166"
+            },
+            {
+              "timestamp": "1757634563",
+              "rsrExchangeRate": "1.177382329368863166"
+            },
+            {
+              "timestamp": "1757721527",
+              "rsrExchangeRate": "1.177806923582267571"
+            },
+            {
+              "timestamp": "1757807903",
+              "rsrExchangeRate": "1.177838103696068701"
+            },
+            {
+              "timestamp": "1757894207",
+              "rsrExchangeRate": "1.178118944938496255"
+            },
+            {
+              "timestamp": "1757980691",
+              "rsrExchangeRate": "1.178376451757715547"
+            },
+            {
+              "timestamp": "1758066347",
+              "rsrExchangeRate": "1.178376451757715547"
+            },
+            {
+              "timestamp": "1758152831",
+              "rsrExchangeRate": "1.178376451757715547"
+            },
+            {
+              "timestamp": "1758239555",
+              "rsrExchangeRate": "1.178821613253300889"
+            },
+            {
+              "timestamp": "1758325991",
+              "rsrExchangeRate": "1.178934184256699352"
+            },
+            {
+              "timestamp": "1758412691",
+              "rsrExchangeRate": "1.179179756768069447"
+            },
+            {
+              "timestamp": "1758499151",
+              "rsrExchangeRate": "1.179199069751560514"
+            },
+            {
+              "timestamp": "1758585563",
+              "rsrExchangeRate": "1.179498750206699091"
+            },
+            {
+              "timestamp": "1758671915",
+              "rsrExchangeRate": "1.179498750206699091"
+            },
+            {
+              "timestamp": "1758758207",
+              "rsrExchangeRate": "1.179817946498296284"
+            },
+            {
+              "timestamp": "1758844787",
+              "rsrExchangeRate": "1.17998873131294632"
+            },
+            {
+              "timestamp": "1758930299",
+              "rsrExchangeRate": "1.180116208465729503"
+            },
+            {
+              "timestamp": "1759017347",
+              "rsrExchangeRate": "1.180296194756029112"
+            },
+            {
+              "timestamp": "1759103051",
+              "rsrExchangeRate": "1.180296194756029112"
+            },
+            {
+              "timestamp": "1759190267",
+              "rsrExchangeRate": "1.180698732883898958"
+            },
+            {
+              "timestamp": "1759276739",
+              "rsrExchangeRate": "1.180873197379990402"
+            },
+            {
+              "timestamp": "1759363031",
+              "rsrExchangeRate": "1.181029762320258873"
+            },
+            {
+              "timestamp": "1759449431",
+              "rsrExchangeRate": "1.181114128029368576"
+            },
+            {
+              "timestamp": "1759535723",
+              "rsrExchangeRate": "1.181339209423676301"
+            },
+            {
+              "timestamp": "1759621535",
+              "rsrExchangeRate": "1.181580062006351526"
+            },
+            {
+              "timestamp": "1759708427",
+              "rsrExchangeRate": "1.181666895180465341"
+            },
+            {
+              "timestamp": "1759795127",
+              "rsrExchangeRate": "1.18181883905184732"
+            },
+            {
+              "timestamp": "1759881551",
+              "rsrExchangeRate": "1.182015109427324355"
+            },
+            {
+              "timestamp": "1759966595",
+              "rsrExchangeRate": "1.182015109427324355"
+            },
+            {
+              "timestamp": "1760051795",
+              "rsrExchangeRate": "1.182015109427324355"
+            },
+            {
+              "timestamp": "1760138399",
+              "rsrExchangeRate": "1.182447286759298573"
+            },
+            {
+              "timestamp": "1760225939",
+              "rsrExchangeRate": "1.182610755292434788"
+            },
+            {
+              "timestamp": "1760313503",
+              "rsrExchangeRate": "1.182754403061351144"
+            },
+            {
+              "timestamp": "1760399075",
+              "rsrExchangeRate": "1.183037693989435864"
+            },
+            {
+              "timestamp": "1760486255",
+              "rsrExchangeRate": "1.183189737361547255"
+            },
+            {
+              "timestamp": "1760571983",
+              "rsrExchangeRate": "1.183189737361547255"
+            },
+            {
+              "timestamp": "1760658011",
+              "rsrExchangeRate": "1.183412225437678411"
+            },
+            {
+              "timestamp": "1760745251",
+              "rsrExchangeRate": "1.183611182821090271"
+            },
+            {
+              "timestamp": "1760831075",
+              "rsrExchangeRate": "1.183611182821090271"
+            },
+            {
+              "timestamp": "1760917487",
+              "rsrExchangeRate": "1.183611182821090271"
+            },
+            {
+              "timestamp": "1761004367",
+              "rsrExchangeRate": "1.18408869824851285"
+            },
+            {
+              "timestamp": "1761089951",
+              "rsrExchangeRate": "1.18408869824851285"
+            },
+            {
+              "timestamp": "1761176663",
+              "rsrExchangeRate": "1.18408869824851285"
+            },
+            {
+              "timestamp": "1761263531",
+              "rsrExchangeRate": "1.184494591628843459"
+            },
+            {
+              "timestamp": "1761347567",
+              "rsrExchangeRate": "1.184650427832615006"
+            },
+            {
+              "timestamp": "1761435971",
+              "rsrExchangeRate": "1.184650427832615006"
+            },
+            {
+              "timestamp": "1761523139",
+              "rsrExchangeRate": "1.184650427832615006"
+            },
+            {
+              "timestamp": "1761608507",
+              "rsrExchangeRate": "1.185233363122869604"
+            },
+            {
+              "timestamp": "1761695999",
+              "rsrExchangeRate": "1.185331943552219283"
+            },
+            {
+              "timestamp": "1761781283",
+              "rsrExchangeRate": "1.185331943552219283"
+            },
+            {
+              "timestamp": "1761868523",
+              "rsrExchangeRate": "1.18571969549988448"
+            },
+            {
+              "timestamp": "1761955079",
+              "rsrExchangeRate": "1.185775291869721975"
+            },
+            {
+              "timestamp": "1762039175",
+              "rsrExchangeRate": "1.185775291869721975"
+            },
+            {
+              "timestamp": "1762127747",
+              "rsrExchangeRate": "1.186180652351286674"
+            },
+            {
+              "timestamp": "1762214363",
+              "rsrExchangeRate": "1.186379591121221005"
+            },
+            {
+              "timestamp": "1762300535",
+              "rsrExchangeRate": "1.186482811423915667"
+            },
+            {
+              "timestamp": "1762385303",
+              "rsrExchangeRate": "1.186662022341328597"
+            },
+            {
+              "timestamp": "1762473455",
+              "rsrExchangeRate": "1.186779732031338383"
+            },
+            {
+              "timestamp": "1762559651",
+              "rsrExchangeRate": "1.186946609919936296"
+            },
+            {
+              "timestamp": "1762646027",
+              "rsrExchangeRate": "1.187053226020324542"
+            },
+            {
+              "timestamp": "1762732667",
+              "rsrExchangeRate": "1.187053226020324542"
+            },
+            {
+              "timestamp": "1762818851",
+              "rsrExchangeRate": "1.187053226020324542"
+            },
+            {
+              "timestamp": "1762905119",
+              "rsrExchangeRate": "1.187737182704960109"
+            },
+            {
+              "timestamp": "1762991975",
+              "rsrExchangeRate": "1.187942959790220924"
+            },
+            {
+              "timestamp": "1763077979",
+              "rsrExchangeRate": "1.188124495538491135"
+            },
+            {
+              "timestamp": "1763164703",
+              "rsrExchangeRate": "1.188124495538491135"
+            },
+            {
+              "timestamp": "1763250947",
+              "rsrExchangeRate": "1.188419638631420972"
+            },
+            {
+              "timestamp": "1763337095",
+              "rsrExchangeRate": "1.188419638631420972"
+            },
+            {
+              "timestamp": "1763423999",
+              "rsrExchangeRate": "1.188419638631420972"
+            },
+            {
+              "timestamp": "1763510291",
+              "rsrExchangeRate": "1.188942927307586701"
+            },
+            {
+              "timestamp": "1763596619",
+              "rsrExchangeRate": "1.189052796370216629"
+            },
+            {
+              "timestamp": "1763682815",
+              "rsrExchangeRate": "1.189151230001174401"
+            },
+            {
+              "timestamp": "1763769479",
+              "rsrExchangeRate": "1.189251570305244868"
+            },
+            {
+              "timestamp": "1763855003",
+              "rsrExchangeRate": "1.189332045520640772"
+            },
+            {
+              "timestamp": "1763942039",
+              "rsrExchangeRate": "1.189332045520640772"
+            },
+            {
+              "timestamp": "1764028739",
+              "rsrExchangeRate": "1.189444148032528821"
+            },
+            {
+              "timestamp": "1764114755",
+              "rsrExchangeRate": "1.189542315794818104"
+            },
+            {
+              "timestamp": "1764201239",
+              "rsrExchangeRate": "1.189630383032424812"
+            },
+            {
+              "timestamp": "1764286475",
+              "rsrExchangeRate": "1.18968261116303405"
+            },
+            {
+              "timestamp": "1764373667",
+              "rsrExchangeRate": "1.189727612443653697"
+            },
+            {
+              "timestamp": "1764460211",
+              "rsrExchangeRate": "1.18976942708544358"
+            },
+            {
+              "timestamp": "1764547139",
+              "rsrExchangeRate": "1.18980814575204218"
+            },
+            {
+              "timestamp": "1764633323",
+              "rsrExchangeRate": "1.189830819193588477"
+            },
+            {
+              "timestamp": "1764719711",
+              "rsrExchangeRate": "1.189888393685152873"
+            },
+            {
+              "timestamp": "1764806339",
+              "rsrExchangeRate": "1.190352731651406951"
+            },
+            {
+              "timestamp": "1764892643",
+              "rsrExchangeRate": "1.190504718593172317"
+            },
+            {
+              "timestamp": "1764978047",
+              "rsrExchangeRate": "1.190946019518054489"
+            },
+            {
+              "timestamp": "1765064855",
+              "rsrExchangeRate": "1.191251362412915601"
+            },
+            {
+              "timestamp": "1765151891",
+              "rsrExchangeRate": "1.191582582027922762"
+            },
+            {
+              "timestamp": "1765236371",
+              "rsrExchangeRate": "1.19167414407317285"
+            },
+            {
+              "timestamp": "1765324799",
+              "rsrExchangeRate": "1.19167414407317285"
+            },
+            {
+              "timestamp": "1765411151",
+              "rsrExchangeRate": "1.19167414407317285"
+            },
+            {
+              "timestamp": "1765497071",
+              "rsrExchangeRate": "1.192694932739322122"
+            },
+            {
+              "timestamp": "1765583843",
+              "rsrExchangeRate": "1.192819773575631417"
+            },
+            {
+              "timestamp": "1765669883",
+              "rsrExchangeRate": "1.192819773575631417"
+            },
+            {
+              "timestamp": "1765756571",
+              "rsrExchangeRate": "1.193354926121144042"
+            },
+            {
+              "timestamp": "1765842179",
+              "rsrExchangeRate": "1.19355758209289242"
+            },
+            {
+              "timestamp": "1765928759",
+              "rsrExchangeRate": "1.193701343155054317"
+            },
+            {
+              "timestamp": "1766015999",
+              "rsrExchangeRate": "1.193822371774195965"
+            },
+            {
+              "timestamp": "1766102063",
+              "rsrExchangeRate": "1.193997366619946952"
+            },
+            {
+              "timestamp": "1766188475",
+              "rsrExchangeRate": "1.194068422611444494"
+            },
+            {
+              "timestamp": "1766272319",
+              "rsrExchangeRate": "1.194215528894177352"
+            },
+            {
+              "timestamp": "1766360531",
+              "rsrExchangeRate": "1.194330559306350618"
+            },
+            {
+              "timestamp": "1766447387",
+              "rsrExchangeRate": "1.194416869796200836"
+            },
+            {
+              "timestamp": "1766533439",
+              "rsrExchangeRate": "1.194492360623294287"
+            },
+            {
+              "timestamp": "1766619791",
+              "rsrExchangeRate": "1.194492360623294287"
+            },
+            {
+              "timestamp": "1766706371",
+              "rsrExchangeRate": "1.194674914735261557"
+            },
+            {
+              "timestamp": "1766792675",
+              "rsrExchangeRate": "1.194674914735261557"
+            },
+            {
+              "timestamp": "1766879987",
+              "rsrExchangeRate": "1.194799168081529086"
+            },
+            {
+              "timestamp": "1766965151",
+              "rsrExchangeRate": "1.194851413225822847"
+            },
+            {
+              "timestamp": "1767052103",
+              "rsrExchangeRate": "1.194912413930143208"
+            },
+            {
+              "timestamp": "1767136667",
+              "rsrExchangeRate": "1.194912413930143208"
+            },
+            {
+              "timestamp": "1767222599",
+              "rsrExchangeRate": "1.195692338147074927"
+            },
+            {
+              "timestamp": "1767311771",
+              "rsrExchangeRate": "1.196010710524956256"
+            },
+            {
+              "timestamp": "1767397955",
+              "rsrExchangeRate": "1.19625069008779161"
+            },
+            {
+              "timestamp": "1767482651",
+              "rsrExchangeRate": "1.196710941706344928"
+            },
+            {
+              "timestamp": "1767570515",
+              "rsrExchangeRate": "1.196710941706344928"
+            },
+            {
+              "timestamp": "1767657323",
+              "rsrExchangeRate": "1.197271733657387855"
+            },
+            {
+              "timestamp": "1767743963",
+              "rsrExchangeRate": "1.197426206060254149"
+            },
+            {
+              "timestamp": "1767829655",
+              "rsrExchangeRate": "1.197898428863746644"
+            },
+            {
+              "timestamp": "1767916739",
+              "rsrExchangeRate": "1.19808188348158214"
+            },
+            {
+              "timestamp": "1768002971",
+              "rsrExchangeRate": "1.198406351580755839"
+            },
+            {
+              "timestamp": "1768089047",
+              "rsrExchangeRate": "1.198406351580755839"
+            },
+            {
+              "timestamp": "1768175735",
+              "rsrExchangeRate": "1.198996393282713205"
+            },
+            {
+              "timestamp": "1768260983",
+              "rsrExchangeRate": "1.198996393282713205"
+            },
+            {
+              "timestamp": "1768347863",
+              "rsrExchangeRate": "1.19954757084481515"
+            },
+            {
+              "timestamp": "1768435127",
+              "rsrExchangeRate": "1.199809257203878672"
+            },
+            {
+              "timestamp": "1768521095",
+              "rsrExchangeRate": "1.19983934832733515"
+            },
+            {
+              "timestamp": "1768607435",
+              "rsrExchangeRate": "1.200340464803989265"
+            },
+            {
+              "timestamp": "1768690055",
+              "rsrExchangeRate": "1.200613843077773623"
+            },
+            {
+              "timestamp": "1768780679",
+              "rsrExchangeRate": "1.200795322934469958"
+            },
+            {
+              "timestamp": "1768867067",
+              "rsrExchangeRate": "1.201118927745044258"
+            },
+            {
+              "timestamp": "1768952963",
+              "rsrExchangeRate": "1.201325834948633953"
+            },
+            {
+              "timestamp": "1769039903",
+              "rsrExchangeRate": "1.201737637618299924"
+            },
+            {
+              "timestamp": "1769125523",
+              "rsrExchangeRate": "1.20192271117077036"
+            },
+            {
+              "timestamp": "1769211959",
+              "rsrExchangeRate": "1.202211321446239626"
+            },
+            {
+              "timestamp": "1769298383",
+              "rsrExchangeRate": "1.202585344273635593"
+            },
+            {
+              "timestamp": "1769385035",
+              "rsrExchangeRate": "1.202717243878836084"
+            },
+            {
+              "timestamp": "1769471915",
+              "rsrExchangeRate": "1.203137812430750165"
+            },
+            {
+              "timestamp": "1769557223",
+              "rsrExchangeRate": "1.203471327724513435"
+            },
+            {
+              "timestamp": "1769644751",
+              "rsrExchangeRate": "1.203587817660027216"
+            },
+            {
+              "timestamp": "1769731019",
+              "rsrExchangeRate": "1.203587817660027216"
+            },
+            {
+              "timestamp": "1769816999",
+              "rsrExchangeRate": "1.204111489130669857"
+            },
+            {
+              "timestamp": "1769903795",
+              "rsrExchangeRate": "1.204551185598189531"
+            },
+            {
+              "timestamp": "1769990399",
+              "rsrExchangeRate": "1.204897480427823065"
+            },
+            {
+              "timestamp": "1770076751",
+              "rsrExchangeRate": "1.2049425809696154"
+            },
+            {
+              "timestamp": "1770162515",
+              "rsrExchangeRate": "1.205429830539313106"
+            },
+            {
+              "timestamp": "1770249479",
+              "rsrExchangeRate": "1.205646425580189764"
+            },
+            {
+              "timestamp": "1770335651",
+              "rsrExchangeRate": "1.205901974045875727"
+            },
+            {
+              "timestamp": "1770421883",
+              "rsrExchangeRate": "1.206085620961685028"
+            },
+            {
+              "timestamp": "1770508343",
+              "rsrExchangeRate": "1.206315047926200988"
+            },
+            {
+              "timestamp": "1770595043",
+              "rsrExchangeRate": "1.206315047926200988"
+            },
+            {
+              "timestamp": "1770681419",
+              "rsrExchangeRate": "1.20700686898436348"
+            },
+            {
+              "timestamp": "1770767927",
+              "rsrExchangeRate": "1.20732713662255255"
+            },
+            {
+              "timestamp": "1770853415",
+              "rsrExchangeRate": "1.207559673161127295"
+            },
+            {
+              "timestamp": "1770938783",
+              "rsrExchangeRate": "1.207559673161127295"
+            },
+            {
+              "timestamp": "1771027031",
+              "rsrExchangeRate": "1.208051946635848109"
+            },
+            {
+              "timestamp": "1771113359",
+              "rsrExchangeRate": "1.208223946466143379"
+            },
+            {
+              "timestamp": "1771199447",
+              "rsrExchangeRate": "1.208223946466143379"
+            },
+            {
+              "timestamp": "1771286387",
+              "rsrExchangeRate": "1.208606688482001962"
+            },
+            {
+              "timestamp": "1771371227",
+              "rsrExchangeRate": "1.208664311685662049"
+            },
+            {
+              "timestamp": "1771457939",
+              "rsrExchangeRate": "1.208664311685662049"
+            },
+            {
+              "timestamp": "1771545251",
+              "rsrExchangeRate": "1.209037353570357052"
+            },
+            {
+              "timestamp": "1771630799",
+              "rsrExchangeRate": "1.209143656058797021"
+            },
+            {
+              "timestamp": "1771716503",
+              "rsrExchangeRate": "1.209217870736760009"
+            },
+            {
+              "timestamp": "1771804655",
+              "rsrExchangeRate": "1.209318011229144687"
+            },
+            {
+              "timestamp": "1771890791",
+              "rsrExchangeRate": "1.209371973560086388"
+            },
+            {
+              "timestamp": "1771977215",
+              "rsrExchangeRate": "1.209464435286328026"
+            },
+            {
+              "timestamp": "1772063999",
+              "rsrExchangeRate": "1.209591364728567193"
+            },
+            {
+              "timestamp": "1772149811",
+              "rsrExchangeRate": "1.20966051479675489"
+            },
+            {
+              "timestamp": "1772236151",
+              "rsrExchangeRate": "1.209671112388359438"
+            },
+            {
+              "timestamp": "1772322839",
+              "rsrExchangeRate": "1.209728136736893736"
+            },
+            {
+              "timestamp": "1772408375",
+              "rsrExchangeRate": "1.209728136736893736"
+            },
+            {
+              "timestamp": "1772495855",
+              "rsrExchangeRate": "1.209728136736893736"
+            },
+            {
+              "timestamp": "1772582159",
+              "rsrExchangeRate": "1.209728136736893736"
+            },
+            {
+              "timestamp": "1772668559",
+              "rsrExchangeRate": "1.209957888955282047"
+            },
+            {
+              "timestamp": "1772755091",
+              "rsrExchangeRate": "1.209957888955282047"
+            },
+            {
+              "timestamp": "1772841143",
+              "rsrExchangeRate": "1.209957888955282047"
+            },
+            {
+              "timestamp": "1772927915",
+              "rsrExchangeRate": "1.210035255143578614"
+            },
+            {
+              "timestamp": "1773014339",
+              "rsrExchangeRate": "1.210085089553764721"
+            },
+            {
+              "timestamp": "1773100535",
+              "rsrExchangeRate": "1.210153069354610921"
+            },
+            {
+              "timestamp": "1773186635",
+              "rsrExchangeRate": "1.210963974791197349"
+            },
+            {
+              "timestamp": "1773272915",
+              "rsrExchangeRate": "1.211692395955534248"
+            },
+            {
+              "timestamp": "1773359879",
+              "rsrExchangeRate": "1.212306986017116108"
+            },
+            {
+              "timestamp": "1773444371",
+              "rsrExchangeRate": "1.212968884067636367"
+            },
+            {
+              "timestamp": "1773532727",
+              "rsrExchangeRate": "1.213344966436838034"
+            },
+            {
+              "timestamp": "1773618971",
+              "rsrExchangeRate": "1.213344966436838034"
+            },
+            {
+              "timestamp": "1773705479",
+              "rsrExchangeRate": "1.214245156756658317"
+            },
+            {
+              "timestamp": "1773791783",
+              "rsrExchangeRate": "1.214245156756658317"
+            },
+            {
+              "timestamp": "1773877943",
+              "rsrExchangeRate": "1.215168605683143508"
+            },
+            {
+              "timestamp": "1773964595",
+              "rsrExchangeRate": "1.215168605683143508"
+            },
+            {
+              "timestamp": "1774051187",
+              "rsrExchangeRate": "1.215168605683143508"
+            },
+            {
+              "timestamp": "1774137491",
+              "rsrExchangeRate": "1.215168605683143508"
+            },
+            {
+              "timestamp": "1774223747",
+              "rsrExchangeRate": "1.216460424276561297"
+            },
+            {
+              "timestamp": "1774310375",
+              "rsrExchangeRate": "1.216460424276561297"
+            },
+            {
+              "timestamp": "1774396307",
+              "rsrExchangeRate": "1.216831402988347208"
+            },
+            {
+              "timestamp": "1774482911",
+              "rsrExchangeRate": "1.217086640531787778"
+            },
+            {
+              "timestamp": "1774569467",
+              "rsrExchangeRate": "1.217086640531787778"
+            },
+            {
+              "timestamp": "1774655387",
+              "rsrExchangeRate": "1.217086640531787778"
+            },
+            {
+              "timestamp": "1774741691",
+              "rsrExchangeRate": "1.217479328093227891"
+            },
+            {
+              "timestamp": "1774828487",
+              "rsrExchangeRate": "1.217479328093227891"
+            },
+            {
+              "timestamp": "1774913819",
+              "rsrExchangeRate": "1.218351987306060876"
+            },
+            {
+              "timestamp": "1774999787",
+              "rsrExchangeRate": "1.218866177204507074"
+            },
+            {
+              "timestamp": "1775087843",
+              "rsrExchangeRate": "1.21897671953299152"
+            },
+            {
+              "timestamp": "1775173019",
+              "rsrExchangeRate": "1.219430658937801908"
+            },
+            {
+              "timestamp": "1775258531",
+              "rsrExchangeRate": "1.219539861722143728"
+            },
+            {
+              "timestamp": "1775345627",
+              "rsrExchangeRate": "1.219539861722143728"
+            },
+            {
+              "timestamp": "1775433551",
+              "rsrExchangeRate": "1.220220545813965971"
+            },
+            {
+              "timestamp": "1775519855",
+              "rsrExchangeRate": "1.220220545813965971"
+            },
+            {
+              "timestamp": "1775606363",
+              "rsrExchangeRate": "1.220748534979795756"
+            },
+            {
+              "timestamp": "1775692235",
+              "rsrExchangeRate": "1.221068716318017053"
+            },
+            {
+              "timestamp": "1775778791",
+              "rsrExchangeRate": "1.221337789382538226"
+            },
+            {
+              "timestamp": "1775864927",
+              "rsrExchangeRate": "1.221513982321784635"
+            },
+            {
+              "timestamp": "1775949815",
+              "rsrExchangeRate": "1.221817813273169476"
+            },
+            {
+              "timestamp": "1776036791",
+              "rsrExchangeRate": "1.222139917646247045"
+            },
+            {
+              "timestamp": "1776124439",
+              "rsrExchangeRate": "1.222139917646247045"
+            },
+            {
+              "timestamp": "1776210023",
+              "rsrExchangeRate": "1.222462331147484166"
+            },
+            {
+              "timestamp": "1776297323",
+              "rsrExchangeRate": "1.222462331147484166"
+            },
+            {
+              "timestamp": "1776383639",
+              "rsrExchangeRate": "1.223017687395847001"
+            },
+            {
+              "timestamp": "1776470327",
+              "rsrExchangeRate": "1.223017687395847001"
+            },
+            {
+              "timestamp": "1776555599",
+              "rsrExchangeRate": "1.223355181707623255"
+            },
+            {
+              "timestamp": "1776642863",
+              "rsrExchangeRate": "1.223355181707623255"
+            },
+            {
+              "timestamp": "1776727907",
+              "rsrExchangeRate": "1.223355181707623255"
+            },
+            {
+              "timestamp": "1776815963",
+              "rsrExchangeRate": "1.2241433403292646"
+            },
+            {
+              "timestamp": "1776901343",
+              "rsrExchangeRate": "1.2241433403292646"
+            },
+            {
+              "timestamp": "1776981119",
+              "rsrExchangeRate": "1.2241433403292646"
+            },
+            {
+              "timestamp": "1777070231",
+              "rsrExchangeRate": "1.2241433403292646"
+            },
+            {
+              "timestamp": "1777156403",
+              "rsrExchangeRate": "1.224985084105229335"
+            },
+            {
+              "timestamp": "1777247627",
+              "rsrExchangeRate": "1.224985084105229335"
+            },
+            {
+              "timestamp": "1777334351",
+              "rsrExchangeRate": "1.224985084105229335"
+            },
+            {
+              "timestamp": "1777417211",
+              "rsrExchangeRate": "1.224985084105229335"
+            },
+            {
+              "timestamp": "1777506275",
+              "rsrExchangeRate": "1.225474427368715207"
+            },
+            {
+              "timestamp": "1777590119",
+              "rsrExchangeRate": "1.225474427368715207"
+            },
+            {
+              "timestamp": "1777678103",
+              "rsrExchangeRate": "1.225474427368715207"
+            },
+            {
+              "timestamp": "1777766003",
+              "rsrExchangeRate": "1.225705099544508497"
+            },
+            {
+              "timestamp": "1777852271",
+              "rsrExchangeRate": "1.225817046174515449"
+            },
+            {
+              "timestamp": "1777937819",
+              "rsrExchangeRate": "1.225817046174515449"
+            },
+            {
+              "timestamp": "1778025587",
+              "rsrExchangeRate": "1.225929494493377699"
+            },
+            {
+              "timestamp": "1778111399",
+              "rsrExchangeRate": "1.225994133814066792"
+            },
+            {
+              "timestamp": "1778197499",
+              "rsrExchangeRate": "1.225994133814066792"
+            },
+            {
+              "timestamp": "1778283407",
+              "rsrExchangeRate": "1.225994133814066792"
+            },
+            {
+              "timestamp": "1778370059",
+              "rsrExchangeRate": "1.227075950056031286"
+            },
+            {
+              "timestamp": "1778457563",
+              "rsrExchangeRate": "1.227075950056031286"
+            },
+            {
+              "timestamp": "1778541947",
+              "rsrExchangeRate": "1.227513855513623668"
+            },
+            {
+              "timestamp": "1778629715",
+              "rsrExchangeRate": "1.227513855513623668"
+            },
+            {
+              "timestamp": "1778715527",
+              "rsrExchangeRate": "1.227779992687214477"
+            },
+            {
+              "timestamp": "1778803139",
+              "rsrExchangeRate": "1.227779992687214477"
+            },
+            {
+              "timestamp": "1778887415",
+              "rsrExchangeRate": "1.227779992687214477"
+            },
+            {
+              "timestamp": "1778961467",
+              "rsrExchangeRate": "1.228302146737818585"
+            },
+            {
+              "timestamp": "1779061487",
+              "rsrExchangeRate": "1.228576480250348402"
+            },
+            {
+              "timestamp": "1779148463",
+              "rsrExchangeRate": "1.228809986954522319"
+            },
+            {
+              "timestamp": "1779235079",
+              "rsrExchangeRate": "1.229126247648234149"
+            },
+            {
+              "timestamp": "1779315683",
+              "rsrExchangeRate": "1.229470171888502309"
+            },
+            {
+              "timestamp": "1779407039",
+              "rsrExchangeRate": "1.229470171888502309"
+            },
+            {
+              "timestamp": "1779494363",
+              "rsrExchangeRate": "1.229470171888502309"
+            },
+            {
+              "timestamp": "1779579203",
+              "rsrExchangeRate": "1.229470171888502309"
+            },
+            {
+              "timestamp": "1779666287",
+              "rsrExchangeRate": "1.230479513559280159"
+            },
+            {
+              "timestamp": "1779753323",
+              "rsrExchangeRate": "1.2306720424456648"
+            },
+            {
+              "timestamp": "1779839927",
+              "rsrExchangeRate": "1.2306720424456648"
+            },
+            {
+              "timestamp": "1779926255",
+              "rsrExchangeRate": "1.2306720424456648"
+            },
+            {
+              "timestamp": "1780010975",
+              "rsrExchangeRate": "1.231187229686709026"
+            },
+            {
+              "timestamp": "1780098911",
+              "rsrExchangeRate": "1.231187229686709026"
+            },
+            {
+              "timestamp": "1780184123",
+              "rsrExchangeRate": "1.231553988656950476"
+            },
+            {
+              "timestamp": "1780271783",
+              "rsrExchangeRate": "1.231662703221732402"
+            },
+            {
+              "timestamp": "1780357139",
+              "rsrExchangeRate": "1.231662703221732402"
+            },
+            {
+              "timestamp": "1780444607",
+              "rsrExchangeRate": "1.231662703221732402"
+            },
+            {
+              "timestamp": "1780530971",
+              "rsrExchangeRate": "1.23201344837663601"
+            },
+            {
+              "timestamp": "1780617179",
+              "rsrExchangeRate": "1.232127972980782582"
+            },
+            {
+              "timestamp": "1780703999",
+              "rsrExchangeRate": "1.232214255778976265"
+            },
+            {
+              "timestamp": "1780790255",
+              "rsrExchangeRate": "1.232282984607014387"
+            },
+            {
+              "timestamp": "1780876799",
+              "rsrExchangeRate": "1.232282984607014387"
+            },
+            {
+              "timestamp": "1780962947",
+              "rsrExchangeRate": "1.232282984607014387"
+            },
+            {
+              "timestamp": "1781049203",
+              "rsrExchangeRate": "1.232447923478846877"
+            },
+            {
+              "timestamp": "1781134967",
+              "rsrExchangeRate": "1.232447923478846877"
+            },
+            {
+              "timestamp": "1781221943",
+              "rsrExchangeRate": "1.232547195838867451"
+            },
+            {
+              "timestamp": "1781308571",
+              "rsrExchangeRate": "1.232583613271737195"
+            },
+            {
+              "timestamp": "1781394623",
+              "rsrExchangeRate": "1.232583613271737195"
+            },
+            {
+              "timestamp": "1781481599",
+              "rsrExchangeRate": "1.232649750497183919"
+            },
+            {
+              "timestamp": "1781567831",
+              "rsrExchangeRate": "1.232649750497183919"
+            },
+            {
+              "timestamp": "1781654243",
+              "rsrExchangeRate": "1.23271395161545199"
+            },
+            {
+              "timestamp": "1781739791",
+              "rsrExchangeRate": "1.232727771046561871"
+            },
+            {
+              "timestamp": "1781827091",
+              "rsrExchangeRate": "1.232762607415716389"
+            },
+            {
+              "timestamp": "1781913431",
+              "rsrExchangeRate": "1.232883067080404497"
+            },
+            {
+              "timestamp": "1781994863",
+              "rsrExchangeRate": "1.232883067080404497"
+            },
+            {
+              "timestamp": "1782086327",
+              "rsrExchangeRate": "1.232883067080404497"
+            },
+            {
+              "timestamp": "1782171563",
+              "rsrExchangeRate": "1.234803604176908619"
+            },
+            {
+              "timestamp": "1782258407",
+              "rsrExchangeRate": "1.234803604176908619"
+            },
+            {
+              "timestamp": "1782345431",
+              "rsrExchangeRate": "1.234803604176908619"
+            },
+            {
+              "timestamp": "1782431495",
+              "rsrExchangeRate": "1.234803604176908619"
+            },
+            {
+              "timestamp": "1782517415",
+              "rsrExchangeRate": "1.237006901712586111"
+            },
+            {
+              "timestamp": "1782604559",
+              "rsrExchangeRate": "1.237006901712586111"
+            },
+            {
+              "timestamp": "1782691019",
+              "rsrExchangeRate": "1.237844717012304817"
+            },
+            {
+              "timestamp": "1782776759",
+              "rsrExchangeRate": "1.237844717012304817"
+            },
+            {
+              "timestamp": "1782863543",
+              "rsrExchangeRate": "1.238410798203992029"
+            },
+            {
+              "timestamp": "1782950363",
+              "rsrExchangeRate": "1.238845796974092299"
+            },
+            {
+              "timestamp": "1783036031",
+              "rsrExchangeRate": "1.239450385563697447"
+            },
+            {
+              "timestamp": "1783122179",
+              "rsrExchangeRate": "1.239958804190636141"
+            },
+            {
+              "timestamp": "1783208651",
+              "rsrExchangeRate": "1.240360158212865953"
+            },
+            {
+              "timestamp": "1783295591",
+              "rsrExchangeRate": "1.240360158212865953"
+            },
+            {
+              "timestamp": "1783381415",
+              "rsrExchangeRate": "1.241006697729187385"
+            },
+            {
+              "timestamp": "1783468775",
+              "rsrExchangeRate": "1.241305861597278435"
+            },
+            {
+              "timestamp": "1783552007",
+              "rsrExchangeRate": "1.241779797103113107"
+            },
+            {
+              "timestamp": "1783640891",
+              "rsrExchangeRate": "1.241993046172655764"
+            },
+            {
+              "timestamp": "1783727759",
+              "rsrExchangeRate": "1.241993046172655764"
+            },
+            {
+              "timestamp": "1783812923",
+              "rsrExchangeRate": "1.242468583711615995"
+            },
+            {
+              "timestamp": "1783882715",
+              "rsrExchangeRate": "1.242468583711615995"
             }
           ]
         }

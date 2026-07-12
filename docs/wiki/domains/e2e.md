@@ -129,9 +129,32 @@ localhost/dev, so bounds need schema unit tests, not e2e.
 Foundation: `YIELD_REGISTRY` (eUSD mainnet, hyUSD base) + `rtokenPath`; a
 record/replay eth_call map per RToken captured at a pinned block by
 `scripts/capture-yield.ts` (`pnpm e2e:capture:yield`); yield seams in rpc.ts,
-subgraph.ts (`resolveYieldQuery`), api.ts (yield price tokens). Both
-`yield-overview` smokes render name/symbol/price/backing offline with zero
-unmocked calls.
+subgraph.ts (`resolveYieldQuery`), api.ts (yield price tokens). Render smokes for
+THREE read-only views render offline with zero unmocked calls: `yield-overview`
+(name/symbol/price/backing), `yield-issuance` (manual mint/redeem panels, Zaps
+toggled off), `yield-staking` (StRSR exchange-rate + estimated APY). The capture
+script walks all three views (`overview`/`issuance`/`staking`) at ONE pinned
+block into the shared `rtoken-chain-state.json` + `yield-graph.json` (graph ops
+deduped). Value derivations are shared via `helpers/yield.ts`
+(`yieldTokenMeta`/`yieldPinnedTimestamp`). Structural testids added
+(attribute-only) on the yield views: `issuance-mint-panel`,
+`issuance-redeem-panel`, `issuance-manual-toggle`, `staking-exchange-rate`,
+`staking-apy`.
+
+Two additional captured-boundary kinds the per-view smokes needed (both
+trust-preserving — an UNcaptured read still fails loud):
+- **Storage reads** — the staking withdraw updater reads the stToken draft-era
+  slot via `eth_getStorageAt` on every render. Capture records the exact
+  `address:slot → word`; replay serves it chain-scoped, no blanket zero word.
+- **Allow-failure reverts** — the config updater probes a legacy
+  `Broker.auctionLength()` (and other legacy fns) that REVERT on modern
+  contracts; the app reads them with `allowFailure` and ignores the failure.
+  Capture records the revert as a `YIELD_REVERT_SENTINEL` marker; replay serves
+  a genuine multicall `success:false` so the app stays on its on-chain branch.
+- **Yield geo-compliance** — RToken issuance reads `geolocationAtom`, which
+  probes Cloudflare `cdn-cgi/trace` (distinct from the index Reserve-API
+  compliance). The base fixture serves a deterministic trace carrying the
+  `compliance` fixture's country, so mint-enabled state is test-controllable.
 
 Trust rules (post-audit; the whole point is that a yield test can't go green
 while wrong):
@@ -153,8 +176,9 @@ while wrong):
 - `e2e:check` validates yield snapshot identity, pinned block, nonempty map, and
   within-chain key collisions.
 
-Still to build: per-view smokes (issuance/staking/auctions/governance/settings)
-then flows (mint → stake → vote) — see the blueprint below.
+Still to build: remaining per-view smokes (auctions/governance/settings) then
+flows (mint → stake → vote) — see the blueprint below. Overview/issuance/staking
+render smokes are DONE (2026-07-12).
 
 ### Blueprint (for the remaining phases)
 

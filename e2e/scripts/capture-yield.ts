@@ -30,7 +30,7 @@ import {
   type Hex,
 } from 'viem'
 import { CHAINS, YIELD_REGISTRY, rtokenPath, type YieldDTF } from '../helpers/registry'
-import { RPC_HOST_PATTERNS } from '../helpers/rpc'
+import { RPC_HOST_PATTERNS, YIELD_REVERT_SENTINEL } from '../helpers/rpc'
 
 const snapshotsDir = join(dirname(fileURLToPath(import.meta.url)), '..', 'snapshots')
 const BASE_URL = 'http://127.0.0.1:3005'
@@ -103,10 +103,24 @@ async function captureDtf(dtf: YieldDTF) {
 
   const ethCallMap: Record<string, Hex> = {}
   const graphEntries: GraphEntry[] = []
+  // Dedup graph ops across the multi-view walk (overview/issuance/staking all
+  // fire the shared token/overview queries) so re-navigations don't triple the
+  // file. Keyed by op + normalized query + identity vars (fromTime excluded —
+  // it's the now-relative window the replay resolver already ignores).
+  const seenGraphKeys = new Set<string>()
 
   const recordCall = (to: string, data: string, result: Hex) => {
     if (!data || data === '0x') return
+    // A successful answer always wins over a prior revert marker.
     ethCallMap[`${to.toLowerCase()}:${data.toLowerCase()}`] = result
+  }
+
+  // Record an allow-failure probe that REVERTED on-chain so the replay serves a
+  // real success:false (see YIELD_REVERT_SENTINEL). Only mark when no successful
+  // value exists for the key — a success recorded elsewhere must not be clobbered.
+  const recordRevert = (to: string, data: string) => {
+    const key = `${to.toLowerCase()}:${data.toLowerCase()}`
+    if (!(key in ethCallMap)) ethCallMap[key] = YIELD_REVERT_SENTINEL as Hex
   }
 
   const recordEthCall = (to: string, data: string, result: Hex) => {
@@ -122,6 +136,7 @@ async function captureDtf(dtf: YieldDTF) {
           }) as ReadonlyArray<{ success: boolean; returnData: Hex }>
           calls.forEach((c, i) => {
             if (results[i]?.success) recordCall(c.target, c.callData, results[i].returnData)
+            else recordRevert(c.target, c.callData)
           })
           return
         }
@@ -186,6 +201,23 @@ async function captureDtf(dtf: YieldDTF) {
         const call = req.params?.[0] as { to?: string; data?: string } | undefined
         if (call?.to && call.data) recordEthCall(call.to, call.data, resp.result)
       }
+      // A standalone eth_call that reverted (error, no result) is a captured
+      // allow-failure probe — record the revert so the replay is deterministic.
+      if (req.method === 'eth_call' && (resp as { error?: unknown }).error) {
+        const call = req.params?.[0] as { to?: string; data?: string } | undefined
+        if (call?.to && call.data !== undefined) recordRevert(call.to, call.data)
+      }
+      // Record raw storage reads (address:slot → word) into the SAME map. The
+      // staking withdraw updater reads the stToken's draft-era slot via
+      // eth_getStorageAt (not calldata), so it needs an exact captured answer —
+      // the replay fails loud otherwise (no blanket storage word). A 32-byte
+      // slot key (0x + 64 hex) can't collide with an eth_call calldata key
+      // (which starts with a 4-byte selector).
+      if (req.method === 'eth_getStorageAt' && resp.result && resp.result !== '0x') {
+        const addr = req.params?.[0] as string | undefined
+        const slot = req.params?.[1] as string | undefined
+        if (addr && slot) ethCallMap[`${addr.toLowerCase()}:${slot.toLowerCase()}`] = resp.result as Hex
+      }
     }
 
     return route.fulfill({
@@ -214,12 +246,18 @@ async function captureDtf(dtf: YieldDTF) {
     // Only record ops against THIS DTF's yield subgraph (skip cross-chain lists
     // that belong to the other fixture's chain — they get captured on its run).
     if (request.url().includes(`dtf-yield-${dtf.chain}`) && json?.data) {
-      graphEntries.push({
-        op: parsed.operationName ?? '',
-        query: (parsed.query ?? '').replace(/\s+/g, ' ').trim(),
-        variables: parsed.variables ?? {},
-        data: capSeries(json.data),
-      })
+      const normQuery = (parsed.query ?? '').replace(/\s+/g, ' ').trim()
+      const { fromTime: _fromTime, ...idVars } = parsed.variables ?? {}
+      const key = `${parsed.operationName ?? ''}::${normQuery}::${JSON.stringify(idVars)}`
+      if (!seenGraphKeys.has(key)) {
+        seenGraphKeys.add(key)
+        graphEntries.push({
+          op: parsed.operationName ?? '',
+          query: normQuery,
+          variables: parsed.variables ?? {},
+          data: capSeries(json.data),
+        })
+      }
     }
     return route.fulfill({
       status: 200,
@@ -237,8 +275,26 @@ async function captureDtf(dtf: YieldDTF) {
   for (const pattern of RPC_HOST_PATTERNS) await page.route(pattern, handleRpc)
   await page.route('**/api.goldsky.com/**', handleGraph)
 
-  await page.goto(`${BASE_URL}${rtokenPath(dtf, 'overview')}`)
-  await page.waitForTimeout(SETTLE_MS)
+  // Walk every read-only view we smoke-test, at the SAME pinned block, so the
+  // eth_call map + subgraph ops feed overview, issuance, and staking from one
+  // consistent snapshot. Reads accumulate into the shared maps (keys are
+  // deduped); account-parameterized reads (balanceOf/allowance) don't fire
+  // because no wallet is connected — those are served by handlers at test time.
+  const views = ['overview', 'issuance', 'staking'] as const
+  for (const view of views) {
+    await page.goto(`${BASE_URL}${rtokenPath(dtf, view)}`)
+    await page.waitForTimeout(SETTLE_MS)
+    // Issuance defaults to the Zap panel (off-chain quote APIs). Switch to the
+    // manual mint/redeem surface so its RPC-only reads — the read-only smoke's
+    // target — are recorded too.
+    if (view === 'issuance') {
+      const toggle = page.getByTestId('issuance-manual-toggle')
+      if (await toggle.count()) {
+        await toggle.first().click().catch(() => {})
+        await page.waitForTimeout(SETTLE_MS)
+      }
+    }
+  }
   await browser.close()
 
   const callCount = Object.keys(ethCallMap).length
