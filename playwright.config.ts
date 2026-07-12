@@ -1,3 +1,4 @@
+import { cpus } from 'os'
 import { defineConfig, devices } from '@playwright/test'
 
 // Port 3005 — NEVER 3000 (Luis's own dev server lives there).
@@ -5,12 +6,19 @@ const HOST = '127.0.0.1'
 const PORT = 3005
 const baseURL = `http://${HOST}:${PORT}`
 
+// Cap local workers at 5. Every worker's Chromium hits ONE Vite dev server +
+// mock layer, which doesn't scale with cores — past ~5, the zap quote flows
+// contend and flake without improving wall time (bound by the slowest chain,
+// not raw parallelism). 3× full runs at 5 were flake-free vs an intermittent
+// failure at the 7-worker default on a 14-core machine.
+const localWorkers = Math.max(1, Math.min(5, cpus().length - 2))
+
 export default defineConfig({
   testDir: './e2e/tests',
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,
-  workers: process.env.CI ? 2 : undefined,
+  workers: process.env.CI ? 2 : localWorkers,
   timeout: 30_000,
   expect: { timeout: 7_500 },
   reporter: process.env.CI
