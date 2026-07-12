@@ -40,6 +40,16 @@ Stage ledger. One row per stage; keep entries short. Verifier = exact fresh comm
 
 <!-- Minor/deferred findings. Delete items when done or obsolete. -->
 
+### E2E coverage debt (fail-loud workarounds to pay down)
+
+A mock strict enough that a spec routes AROUND its gap silently shrinks the
+covered surface. Every in-spec workaround belongs here as tracked debt — not a
+buried comment — so "fail-loud" never degrades into "avoid-the-boundary" (re-audit insight, 2026-07-12).
+
+- **Non-basket proposal pinning** (`governance-multichain.spec.ts:17`): lifecycle-state tests pin governance-parameter proposals to skip the basket rebalance-preview, because the central price mock only knows current-basket tokens and 500s on added/removed tokens. Pay down by capturing per-token prices for the preview path; then the multichain tests can exercise basket proposals.
+- **Yield is overview-only**: the yield slice characterizes overview render but not issuance/staking/auctions/governance/settings. Not a bug (staged roadmap in [[e2e]] § Yield), but tracked so "yield is covered" is never assumed.
+- **RPC index reads are not chain-keyed** (`rpc.ts` `lookupOverride`): index chain-state resolves by `address:selector`, chain-agnostic. Low risk (wagmi's per-chain transports route index reads correctly by construction; folio addresses are globally unique), but a deep wagmi misroute wouldn't be caught at the boundary. Key `chainId:address:selector` if index write coverage grows.
+- **$1 price landmines (latent)**: `/dtf/price` flat `{price:1}`, `latestRoundData` unknown-feed $1, `knownPriceResponse` uncaptured-token $1. No active false green (specs assert snapshot-derived values), but identity-gate/fail-loud before value-correctness assertions lean on them.
 - E2E hardening staged plan (from CODEX_AUDIT + fresh audit, 2026-07-12; Stage 1 DONE):
   - Stage 2 — yield capture/check integrity: `e2e:check` validates yield identity + cross-chain collisions; atomic yield capture (temp-tree + rollback) with readiness-wait instead of the 16s sleep + required-op manifest; explicit yield price fixture (reject unknown tokens, no `$1` fallback; smoke asserts a snapshot-derived price).
   - Stage 3 — index chain-identity (pre-existing, low present risk): api.ts/subgraph.ts assert the request's chainId/URL against the snapshot's chain; negative wrong-chain-endpoint tests.

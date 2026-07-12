@@ -23,6 +23,10 @@ covers what, domain states, edge cases) live next to each view:
   Never commit `allowUnmocked: true`; if a real boundary is missing, model it
   centrally in the right helper (with a negative unit test in
   `e2e/helpers/tests/`), not with a spec-local `page.route`.
+- If you route AROUND a mock gap instead of modeling it (pin a different fixture,
+  pick a non-triggering input, assert less), that is COVERAGE DEBT — add a line
+  to `docs/wiki/progress.md` § E2E coverage debt. Strictness that authors avoid
+  silently shrinks what's actually covered; the debt list keeps it honest.
 - Selectors: `data-testid="<area>-<element>"` (kebab-case). Never English
   copy or name-based role queries — accessible names are Lingui-translated.
 - No `waitForTimeout`, no raw `page.clock.*` in specs. Wait on an observable
