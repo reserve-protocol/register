@@ -444,26 +444,12 @@ const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000'
 // absorb ONLY facade reads for a chain OTHER than the fixture under test (and
 // zero-address reads), so a real miss on the fixture's OWN facade still fails
 // loud.
-const YIELD_FACADES: Record<number, string[]> = {
-  1: ['0x2c7ca56342177343a2954c250702fd464f4d0613', '0xca60954e8819827b0c56e1ec313175fe68712d98'],
-  8453: ['0xeb2071e9b542555e90e6e4e1f83fa17423583991', '0x72be467048a4d9cbcc599251243f3ed9f46a42f5'],
-}
-function facadeChainOf(address: string): number | undefined {
-  const addr = address.toLowerCase()
-  for (const [chainId, facades] of Object.entries(YIELD_FACADES)) {
-    if (facades.includes(addr)) return Number(chainId)
-  }
-  return undefined
-}
 // address:selector fallback for CLOCK-parameterized reads whose arg is a live
 // timepoint (governor quorum(timepoint)/quorumNumerator(timepoint) — the app
 // passes Date.now()/1000-100, so the exact calldata can't be pinned). Exactly
 // one value is captured per address+selector; return it regardless of the arg.
 const yieldSelectorMap = new Map<string, Hex>()
 const CLOCK_PARAM_SELECTORS = new Set(['0xf8ce560a', '0x60c4247f'])
-const HAS_ROLE = '0x91d14854'
-const TRUE_RETURN: Hex = encodeAbiParameters([{ type: 'bool' }], [true])
-const ZERO_STORAGE: Hex = ('0x' + '0'.repeat(64)) as Hex
 
 // The yield smoke calls this with the fixture's chainId before navigation; the
 // base fixture resets it (0) at teardown so replay state never leaks into a
@@ -481,16 +467,6 @@ export function isYieldReplayActive(): boolean {
   return yieldReplayChain !== 0
 }
 
-// A pre-chain-switch transient read (see YIELD_FACADES): the zero token address,
-// or a facade belonging to a chain other than the fixture under test. Absorbed
-// (deterministic zeros, unlogged) — never masks a real miss on the fixture's
-// own chain.
-function isYieldTransient(to: string): boolean {
-  if (!yieldReplayChain) return false
-  if (to.toLowerCase() === ZERO_ADDRESS) return true
-  const facadeChain = facadeChainOf(to)
-  return facadeChain !== undefined && facadeChain !== yieldReplayChain
-}
 
 function seedYieldChainState() {
   if (yieldSeeded) return
@@ -499,31 +475,37 @@ function seedYieldChainState() {
     const path = `${dtf.snapshotDir}/rtoken-chain-state.json`
     if (!snapshotExists(path)) continue
     const map = loadSnapshot<Record<string, Hex>>(path)
+    // Keys are chain-scoped (`chainId:address:calldata`). The SAME address —
+    // e.g. the RSR/USD Chainlink feed or Multicall3 — appears on both mainnet
+    // and base with DIFFERENT captured values, so a chainless key would let one
+    // chain replay the other's data (base loading last would win). The chainId
+    // comes from the fixture that owns the file.
     for (const [key, value] of Object.entries(map)) {
-      yieldCallMap.set(key.toLowerCase(), value)
+      const scoped = `${dtf.chainId}:${key.toLowerCase()}`
+      yieldCallMap.set(scoped, value)
       const [addr, calldata] = key.toLowerCase().split(':')
       const selector = calldata.slice(0, 10)
       if (CLOCK_PARAM_SELECTORS.has(selector)) {
-        yieldSelectorMap.set(`${addr}:${selector}`, value)
+        yieldSelectorMap.set(`${dtf.chainId}:${addr}:${selector}`, value)
       }
     }
   }
 }
 
-function lookupYieldExact(to: string, data: string): Hex | undefined {
+function lookupYieldExact(chainId: number, to: string, data: string): Hex | undefined {
   seedYieldChainState()
-  return yieldCallMap.get(`${to.toLowerCase()}:${data.toLowerCase()}`)
+  return yieldCallMap.get(`${chainId}:${to.toLowerCase()}:${data.toLowerCase()}`)
 }
 
-function lookupYieldFallback(to: string, selector: string): Hex | undefined {
-  const addr = to.toLowerCase()
+function lookupYieldFallback(chainId: number, to: string, selector: string): Hex | undefined {
   if (CLOCK_PARAM_SELECTORS.has(selector)) {
-    const hit = yieldSelectorMap.get(`${addr}:${selector}`)
+    const hit = yieldSelectorMap.get(`${chainId}:${to.toLowerCase()}:${selector}`)
     if (hit) return hit
   }
-  // hasRole(role,account) — no wallet on read-only views, but Phase W write
-  // flows gate on it; a permissive answer keeps role-gated UI actionable.
-  if (selector === HAS_ROLE) return TRUE_RETURN
+  // NOTE: blanket hasRole/storage fallbacks were removed (audit P1) — read-only
+  // overview needs neither, and a permissive `true` would let a future
+  // role-gated write pass without modeling its real authorization. Model exact
+  // (chain, address, role/slot) answers when the first write flow needs them.
   return undefined
 }
 
@@ -542,6 +524,7 @@ function lookupOverride(to: string, data: string): Hex | undefined {
 // Per-test overrides win over the static table so a spec can change a read
 // mid-test (e.g. a live vote tally after the vote tx).
 function handleSingleCall(
+  chainId: number,
   to: string,
   data: string,
   log: UnmockedLogger,
@@ -550,12 +533,34 @@ function handleSingleCall(
   const selector = selectorOf(data)
   const override = overrides?.lookupEthCall(to, data)
   if (override) return override
-  // Captured yield map wins over the generic index tables/handlers so replayed
-  // Chainlink feeds, per-contract versions and FacadeRead reads are served
-  // verbatim (only active under the yield smokes' opt-in).
+  // Under yield replay the captured chain-scoped map is the ONLY source of
+  // contract data — a self-contained branch that does NOT fall through to the
+  // index `*:selector` wildcards or the $1 Chainlink default (audit P1: those
+  // would silently answer an uncaptured yield read with plausible index data,
+  // defeating the yield smokes' zero-unmocked guarantee). Only time/balance
+  // infrastructure and the transient absorber back the captured map.
   if (yieldReplayChain) {
-    const exact = lookupYieldExact(to, data)
+    // Pre-chain-switch transient: the yield page first renders at chainIdAtom's
+    // default (and with a briefly-undefined token address) before the route's
+    // chain propagates. A read off the fixture's chain, or on the zero address,
+    // carries no data and re-fires correctly next render — absorb it. Reads AT
+    // the fixture's chain on a real address still fail loud if uncaptured (so a
+    // stuck-chain bug surfaces as an assertion failure, never a false green).
+    if (chainId !== yieldReplayChain || to === ZERO_ADDRESS) return ZERO_RETURN
+    const exact = lookupYieldExact(chainId, to, data)
     if (exact) return exact
+    const fallback = lookupYieldFallback(chainId, to, selector)
+    if (fallback) return fallback
+    if (selector === CLOCK) return clockValue()
+    if (selector === '0x4d2301cc') {
+      const [account] = decodeAbiParameters([{ type: 'address' }], (`0x${data.slice(10)}`) as Hex)
+      const balance = overrides?.lookupEthBalance(account)
+      return balance !== undefined
+        ? encodeAbiParameters([{ type: 'uint256' }], [balance])
+        : ETH_BALANCE
+    }
+    log('unmocked eth_call', { chainId, to, selector })
+    return ZERO_RETURN
   }
   if (selector === '0x70a08231' && knownTokenAddresses.has(to.toLowerCase())) {
     const [owner] = decodeAbiParameters(
@@ -597,20 +602,12 @@ function handleSingleCall(
   }
   const hit = lookupOverride(to, data)
   if (hit) return hit
-  // Yield: clock-parameterized reads (arg-agnostic) + role checks, before we
-  // fail loud. Kept after the exact map so captured values always win.
-  if (yieldReplayChain) {
-    const fallback = lookupYieldFallback(to, selector)
-    if (fallback) return fallback
-    // Pre-chain-switch transient (wrong-chain facade / zero address): absorb
-    // deterministically without logging — it re-fires correctly next render.
-    if (isYieldTransient(to)) return ZERO_RETURN
-  }
   log('unmocked eth_call', { to, selector })
   return ZERO_RETURN
 }
 
 function handleMulticall3(
+  chainId: number,
   data: string,
   log: UnmockedLogger,
   overrides?: MockOverrides
@@ -624,7 +621,7 @@ function handleMulticall3(
   const calls = decoded.args[0] as ReadonlyArray<{ target: string; callData: string }>
   const results = calls.map((call) => ({
     success: true,
-    returnData: handleSingleCall(call.target, call.callData, log, overrides),
+    returnData: handleSingleCall(chainId, call.target, call.callData, log, overrides),
   }))
 
   return encodeFunctionResult({
@@ -748,9 +745,9 @@ export function handleRpcMethod(
       return '0x6080604052'
 
     case 'eth_getStorageAt':
-      // Yield staking/draft-queue reads raw storage slots. A zero word is a
-      // valid "empty slot" answer; gated so index stays strict on this method.
-      if (yieldReplayChain) return ZERO_STORAGE
+      // Fail loud (audit P1): the blanket zero-word answer for any slot masked
+      // real storage-derived state. Model exact (chain, address, slot) reads
+      // when the first staking/draft-queue flow needs them.
       ctx.log('unmocked rpc method', { method })
       return '0x'
 
@@ -759,9 +756,15 @@ export function handleRpcMethod(
 
     case 'eth_getTransactionReceipt': {
       const hash = (params?.[0] as string | undefined)?.toLowerCase()
-      const tx = hash && ctx.txLog?.find((entry) => entry.hash.toLowerCase() === hash)
+      // Require chain identity (audit P1): a tx submitted on one chain must not
+      // resolve a receipt when queried from another chain's RPC host.
+      const tx =
+        hash &&
+        ctx.txLog?.find(
+          (entry) => entry.hash.toLowerCase() === hash && entry.chainId === ctx.chainId
+        )
       if (!hash || !tx) {
-        ctx.log('unmocked transaction receipt', { hash: hash ?? '(missing)' })
+        ctx.log('unmocked transaction receipt', { hash: hash ?? '(missing)', chainId: ctx.chainId })
         return null
       }
       const polls = ctx.receiptPolls?.get(hash) ?? 0
@@ -772,9 +775,13 @@ export function handleRpcMethod(
 
     case 'eth_getTransactionByHash': {
       const hash = (params?.[0] as string | undefined)?.toLowerCase()
-      const tx = hash && ctx.txLog?.find((entry) => entry.hash.toLowerCase() === hash)
+      const tx =
+        hash &&
+        ctx.txLog?.find(
+          (entry) => entry.hash.toLowerCase() === hash && entry.chainId === ctx.chainId
+        )
       if (!hash || !tx) {
-        ctx.log('unmocked transaction lookup', { hash: hash ?? '(missing)' })
+        ctx.log('unmocked transaction lookup', { hash: hash ?? '(missing)', chainId: ctx.chainId })
         return null
       }
       return {
@@ -819,8 +826,8 @@ export function handleRpcMethod(
       const call = params?.[0] as { to?: string; data?: string } | undefined
       const to = (call?.to ?? '').toLowerCase()
       const data = call?.data ?? '0x'
-      if (to === MULTICALL3) return handleMulticall3(data, ctx.log, ctx.overrides)
-      return handleSingleCall(to, data, ctx.log, ctx.overrides)
+      if (to === MULTICALL3) return handleMulticall3(ctx.chainId, data, ctx.log, ctx.overrides)
+      return handleSingleCall(ctx.chainId, to, data, ctx.log, ctx.overrides)
     }
 
     default:

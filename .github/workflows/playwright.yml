@@ -26,6 +26,8 @@ jobs:
         run: pnpm install --frozen-lockfile
       - name: Typecheck (app + e2e)
         run: pnpm typecheck
+      - name: Mock-contract unit tests (fail-loud trust layer)
+        run: pnpm exec vitest run e2e/helpers/tests
       - name: Snapshot manifest and freshness
         run: pnpm e2e:check
       - name: Install Chromium
@@ -54,6 +56,8 @@ jobs:
         run: pnpm install --frozen-lockfile
       - name: Typecheck (app + e2e)
         run: pnpm typecheck
+      - name: Mock-contract unit tests (fail-loud trust layer)
+        run: pnpm exec vitest run e2e/helpers/tests
       - name: Snapshot manifest and freshness
         run: pnpm e2e:check
       - name: Install Chromium

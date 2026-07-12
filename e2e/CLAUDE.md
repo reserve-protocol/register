@@ -8,8 +8,9 @@ covers what, domain states, edge cases) live next to each view:
 
 ## Did a diff — should I test?
 
-- Touched `src/views/index-dtf/**`, `src/views/home/**`, `src/state/**`, or
-  `src/hooks/**` → run `pnpm e2e:smoke` (the scoped gate does this too).
+- Touched `src/views/index-dtf/**`, `src/views/yield-dtf/**`,
+  `src/views/home/**`, `src/state/**`, or `src/hooks/**` → run `pnpm e2e:smoke`
+  and `pnpm exec vitest run e2e/helpers/tests` (the scoped gate does both).
 - Changed behavior in an area with a flow spec → also run it:
   `pnpm exec playwright test --project=full e2e/tests/flows/<area>.spec.ts`.
 - New user-visible behavior in a covered area → extend that area's spec.

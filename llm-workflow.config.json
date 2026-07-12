@@ -23,11 +23,16 @@
         "e2e/**",
         "playwright.config.ts",
         "src/views/index-dtf/**",
+        "src/views/yield-dtf/**",
         "src/views/home/**",
         "src/state/**",
         "src/hooks/**"
       ],
-      "commands": ["pnpm exec tsc -p e2e/tsconfig.json --noEmit", "pnpm e2e:smoke"]
+      "commands": [
+        "pnpm exec tsc -p e2e/tsconfig.json --noEmit",
+        "pnpm exec vitest run e2e/helpers/tests",
+        "pnpm e2e:smoke"
+      ]
     },
     {
       "name": "wiki-lint",

@@ -298,7 +298,12 @@ interface YieldGraphEntry {
   data: unknown
 }
 
-let yieldEntries: YieldGraphEntry[] | undefined
+// Each loaded entry is tagged with the chainId of the fixture that owns its
+// file so replay is chain-scoped: an op with no identity variable (e.g. a
+// global GetRecentTransactions feed) would otherwise match the FIRST fixture's
+// entry regardless of chain, letting a base page render mainnet data.
+type ChainedYieldEntry = YieldGraphEntry & { chainId: number }
+let yieldEntries: ChainedYieldEntry[] | undefined
 
 function normalizeQuery(query: string): string {
   return query.replace(/\s+/g, ' ').trim()
@@ -314,23 +319,34 @@ function queryIdentity(variables: Record<string, unknown>): string {
   return ''
 }
 
-function yieldEntryKey(op: string, query: string, identity: string): string {
-  return `${op}::${normalizeQuery(query)}::${identity}`
+function yieldEntryKey(chainId: number, op: string, query: string, identity: string): string {
+  return `${chainId}::${op}::${normalizeQuery(query)}::${identity}`
 }
 
-function loadYieldEntries(): YieldGraphEntry[] {
+// mainnet/base from the dtf-yield-<chain> Goldsky URL.
+function yieldChainForUrl(url: string): number {
+  return url.includes('dtf-yield-base') ? 8453 : 1
+}
+
+function loadYieldEntries(): ChainedYieldEntry[] {
   if (yieldEntries) return yieldEntries
   yieldEntries = []
   for (const dtf of YIELD_REGISTRY) {
     const path = `${dtf.snapshotDir}/yield-graph.json`
     if (snapshotExists(path)) {
-      yieldEntries.push(...loadSnapshot<YieldGraphEntry[]>(path))
+      const entries = loadSnapshot<YieldGraphEntry[]>(path)
+      yieldEntries.push(...entries.map((e) => ({ ...e, chainId: dtf.chainId })))
     }
   }
   return yieldEntries
 }
 
-function resolveYieldQuery(body: string, log: UnmockedLogger, overrides?: MockOverrides) {
+function resolveYieldQuery(
+  chainId: number,
+  body: string,
+  log: UnmockedLogger,
+  overrides?: MockOverrides
+) {
   const parsed = parseBody(body)
   const op = parsed.operationName ?? ''
   const vars = parsed.variables ?? {}
@@ -339,13 +355,14 @@ function resolveYieldQuery(body: string, log: UnmockedLogger, overrides?: MockOv
   if (overlaid !== undefined) return { data: overlaid }
 
   const identity = queryIdentity(vars)
-  const key = yieldEntryKey(op, parsed.query ?? '', identity)
+  const key = yieldEntryKey(chainId, op, parsed.query ?? '', identity)
   const match = loadYieldEntries().find(
-    (entry) => yieldEntryKey(entry.op, entry.query, queryIdentity(entry.variables)) === key
+    (entry) =>
+      yieldEntryKey(entry.chainId, entry.op, entry.query, queryIdentity(entry.variables)) === key
   )
   if (match) return { data: match.data }
 
-  log('unmocked yield operation', { op, identity })
+  log('unmocked yield operation', { chainId, op, identity })
   return graphError(`[E2E] unmocked yield operation: ${op || '(anonymous)'} (${identity})`)
 }
 
@@ -380,7 +397,7 @@ export async function mockSubgraphRoutes(
     // behavior verbatim instead of hitting the yield replay's fail-loud.
     const response =
       url.includes('dtf-yield') && isYieldReplayActive()
-        ? resolveYieldQuery(body, log, overrides)
+        ? resolveYieldQuery(yieldChainForUrl(url), body, log, overrides)
         : url.includes('dtf-index')
           ? resolveIndexQuery(body, log, overrides)
           : { data: EMPTY_SHAPE }

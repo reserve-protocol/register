@@ -33,7 +33,10 @@ describe('RPC transaction receipts', () => {
   it('rejects receipt requests for hashes the wallet never submitted', () => {
     const ctx = context()
     expect(handleRpcMethod('eth_getTransactionReceipt', [HASH], ctx)).toBeNull()
-    expect(ctx.log).toHaveBeenCalledWith('unmocked transaction receipt', { hash: HASH })
+    expect(ctx.log).toHaveBeenCalledWith(
+      'unmocked transaction receipt',
+      expect.objectContaining({ hash: HASH })
+    )
   })
 
   it('returns pending before a correlated successful receipt', () => {
@@ -52,6 +55,19 @@ describe('RPC transaction receipts', () => {
     expect(
       handleRpcMethod('eth_getTransactionReceipt', [HASH], context([tx]))
     ).toMatchObject({ status: '0x0' })
+  })
+
+  it('does not resolve a receipt when queried from the wrong chain (audit P1)', () => {
+    const tx = transaction() // chainId 8453
+    tx.pendingPolls = 0
+    // Same hash, but the querying chain is mainnet — must fail loud, not return
+    // a plausible receipt stamped with the wrong chain.
+    const ctx = { ...context([tx]), chainId: 1 }
+    expect(handleRpcMethod('eth_getTransactionReceipt', [HASH], ctx)).toBeNull()
+    expect(ctx.log).toHaveBeenCalledWith(
+      'unmocked transaction receipt',
+      expect.objectContaining({ chainId: 1 })
+    )
   })
 })
 
@@ -120,11 +136,49 @@ describe('yield record/replay', () => {
     }
   })
 
-  it('absorbs a wrong-chain facade transient without logging', () => {
+  it('does NOT fall through to index wildcards / $1 feed when a yield read is uncaptured', () => {
+    // version() (0x54fd4d50) and getVotes (0x9ab24eb0) have index `*:selector`
+    // wildcards; latestRoundData (0xfeaf968c) has the $1 Chainlink default. On an
+    // UNKNOWN yield address none are captured, so all three must fail loud —
+    // otherwise the yield zero-unmocked guarantee is a lie (audit P1).
+    setYieldReplay(1)
+    try {
+      const UNKNOWN = '0x00000000000000000000000000000000deadbe01'
+      for (const selector of ['0x54fd4d50', '0x9ab24eb0', '0xfeaf968c']) {
+        const ctx = { ...context(), chainId: 1 }
+        call(UNKNOWN, selector, ctx)
+        expect(ctx.log).toHaveBeenCalledWith(
+          'unmocked eth_call',
+          expect.objectContaining({ to: UNKNOWN })
+        )
+      }
+    } finally {
+      setYieldReplay(false)
+    }
+  })
+
+  it('keys replay by chain: the same address on another chain does not leak', () => {
+    // A shared address (Chainlink RSR/USD feed) is captured on BOTH chains with
+    // different values. Requesting it as the base fixture must NOT return the
+    // mainnet value (chainless keys had base overwrite mainnet — audit P0).
+    const SHARED = '0x759bbc1be8f90ee6457c44abc7d443842a976d02' // feed, both chains
+    const FEED = '0xfeaf968c' // latestRoundData
+    setYieldReplay(1)
+    const mainnetVal = call(SHARED, FEED, { ...context(), chainId: 1 })
+    setYieldReplay(8453)
+    const baseVal = call(SHARED, FEED, { ...context(), chainId: 8453 })
+    setYieldReplay(false)
+    // Both resolve to their OWN chain's captured value — and they differ.
+    expect(mainnetVal).not.toBe(baseVal)
+  })
+
+  it('absorbs a pre-chain-switch transient (read off the fixture chain) unlogged', () => {
     setYieldReplay(8453) // viewing a base fixture
     try {
-      // The mainnet FacadeRead is the wrong chain here → transient, absorbed.
-      const ctx = { ...context(), chainId: 8453 }
+      // A read arriving at mainnet (chainId 1) while the base fixture is under
+      // test is a pre-switch transient — absorbed, not logged, regardless of
+      // which contract it targets.
+      const ctx = { ...context(), chainId: 1 }
       call('0x2c7ca56342177343a2954c250702fd464f4d0613', '0xa2f38585', ctx)
       expect(ctx.log).not.toHaveBeenCalled()
     } finally {

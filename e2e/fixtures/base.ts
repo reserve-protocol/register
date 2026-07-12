@@ -135,11 +135,10 @@ export const test = base.extend<BaseFixtures>({
       await page.route('**yields.reserve.org**', (r) => fulfillEmpty(r, { status: 'success', data: [] }))
       await page.route('**api.merkl.xyz**', (r) => fulfillEmpty(r, []))
 
-      // Tenderly simulation API (gov/write flows) — inert so those specs don't
-      // trip the default-deny egress. The tenderly RPC gateway is otherwise
-      // handled as an RPC host; here we blanket both to an empty body.
-      await page.route('**api.tenderly.co**', (r) => fulfillEmpty(r))
-      await page.route('**gateway.tenderly.co**', (r) => fulfillEmpty(r))
+      // Tenderly simulation stays DEFAULT-DENIED (audit P1): a blanket fulfill
+      // silently accepts any malformed/new simulation request, defeating
+      // default-deny. Simulation is out of scope; model it exactly (with request
+      // recording + a negative test) when the first flow that needs it lands.
       await page.route('**contentful-storage.reserve-337.workers.dev/status/**', (r) =>
         fulfillEmpty(r, { restricted: false })
       )
