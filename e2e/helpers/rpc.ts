@@ -12,7 +12,20 @@ import type { MockOverrides } from './overrides'
 import type { TxRecord } from './provider'
 import type { BoundaryRequest } from './requests'
 import { REGISTRY, TEST_ADDRESS, YIELD_REGISTRY } from './registry'
+import { selectorName } from './selectors'
 import { loadSnapshot, snapshotExists } from './snapshots'
+
+// Rich detail for an unmocked eth_call: names the function when known and
+// points at the helper to model it in, so a red test reads as a fix recipe.
+function unmockedCallDetail(chainId: number, to: string, selector: string) {
+  return {
+    chainId,
+    to,
+    selector,
+    fn: selectorName(selector) ?? '(unknown selector)',
+    hint: 'model in e2e/helpers/rpc.ts (or a per-test overrides.ethCall)',
+  }
+}
 
 // Glob patterns for every RPC host wagmi/viem may hit (mirrors registerRpcUrls
 // in src/utils/rpc-urls.ts). Patterns match domain-only URLs too, so we use
@@ -559,7 +572,7 @@ function handleSingleCall(
         ? encodeAbiParameters([{ type: 'uint256' }], [balance])
         : ETH_BALANCE
     }
-    log('unmocked eth_call', { chainId, to, selector })
+    log('unmocked eth_call', unmockedCallDetail(chainId, to, selector))
     return ZERO_RETURN
   }
   if (selector === '0x70a08231' && knownTokenAddresses.has(to.toLowerCase())) {
@@ -602,7 +615,7 @@ function handleSingleCall(
   }
   const hit = lookupOverride(to, data)
   if (hit) return hit
-  log('unmocked eth_call', { to, selector })
+  log('unmocked eth_call', unmockedCallDetail(chainId, to, selector))
   return ZERO_RETURN
 }
 

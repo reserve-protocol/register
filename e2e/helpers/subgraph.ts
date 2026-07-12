@@ -277,7 +277,7 @@ function resolveIndexQuery(
     return graphError('[E2E] unmocked operation identity: getRebalances')
   }
 
-  log('unmocked operation', { op })
+  log('unmocked operation', { op, hint: 'model in e2e/helpers/subgraph.ts (or overrides.subgraph)' })
   return graphError(`[E2E] unmocked operation: ${op || '(anonymous)'}`)
 }
 
@@ -362,7 +362,12 @@ function resolveYieldQuery(
   )
   if (match) return { data: match.data }
 
-  log('unmocked yield operation', { chainId, op, identity })
+  log('unmocked yield operation', {
+    chainId,
+    op,
+    identity,
+    hint: 'capture via pnpm e2e:capture:yield, or a per-test overrides.subgraph',
+  })
   return graphError(`[E2E] unmocked yield operation: ${op || '(anonymous)'} (${identity})`)
 }
 

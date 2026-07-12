@@ -187,6 +187,27 @@ describe('yield record/replay', () => {
   })
 })
 
+describe('failure-oriented unmocked messages', () => {
+  it('names the function and points at the helper for an uncaptured yield read', () => {
+    setYieldReplay(1)
+    try {
+      const ctx = { ...context(), chainId: 1 }
+      // version() on an unknown address — must fail loud WITH a decoded name.
+      handleRpcMethod(
+        'eth_call',
+        [{ to: '0x00000000000000000000000000000000deadbe02', data: '0x54fd4d50' }],
+        ctx
+      )
+      expect(ctx.log).toHaveBeenCalledWith(
+        'unmocked eth_call',
+        expect.objectContaining({ fn: 'version()', hint: expect.stringContaining('rpc.ts') })
+      )
+    } finally {
+      setYieldReplay(false)
+    }
+  })
+})
+
 describe('address-specific protocol versions', () => {
   it('preserves captured v4 and v5 version gates', () => {
     const v5 = findDtfByAddress('0x4dA9A0f397dB1397902070f93a4D6ddBC0E0E6e8')!

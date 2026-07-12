@@ -383,7 +383,10 @@ export async function mockApiRoutes(page: Page, options: ApiMockOptions) {
       return json(route, [])
     }
 
-    log('unmocked reserve-api', { path })
+    log('unmocked reserve-api', {
+      path,
+      hint: 'model in e2e/helpers/api.ts (add a path branch, or overrides.api)',
+    })
     return json(route, { error: 'unmocked reserve-api endpoint', path }, 500)
   }
 
