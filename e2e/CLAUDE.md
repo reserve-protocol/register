@@ -88,8 +88,48 @@ boundaries; only truly inert hosts belong in the base-fixture inert list. A
 call appearing AFTER a fix often means new UI hydrated and made new reads —
 that's the fail-loud system working, not a regression.
 
+## Boundary map — where to model a new request
+
+A failing test's `[E2E] unmocked …` line names the boundary and the helper; this
+is the same map. Every mock matches on CHAIN + identity — a right address on the
+wrong chain fails loud.
+
+| Request | Helper | Matches on |
+|---|---|---|
+| RPC `eth_call` (index) | `helpers/rpc.ts` `callOverrides` / `seedChainState` | address + calldata |
+| RPC `eth_call` (yield) | `helpers/rpc.ts` yield replay map | chainId + address + calldata (captured) |
+| RPC receipt / tx | `helpers/rpc.ts` (from `txLog`) | chainId + recorded hash |
+| Subgraph (index) | `helpers/subgraph.ts` `resolveIndexQuery` | operation + variables |
+| Subgraph (yield) | `helpers/subgraph.ts` `resolveYieldQuery` | chainId + operation + query + identity |
+| Reserve API | `helpers/api.ts` (path branches) | method + path + query identity |
+| Zapper quote | `helpers/zapper.ts` pinned fixtures | chainId + tokenIn/out + amountIn |
+| Per-test override (any) | the `overrides` fixture | exact identity you supply |
+
+Rule: model a product boundary CENTRALLY (+ a negative unit test in
+`helpers/tests/`); use `overrides.*` for a per-test state swap; never a
+spec-local `page.route` or a wildcard that could answer the wrong identity.
+
+## Writing a new test (recipe)
+
+1. Pick the tier: pure mock/helper logic → a `helpers/tests/*.test.ts` unit test
+   (sub-second). One view's behavior → a spec (~3–5s). Read the area's
+   `src/views/.../CLAUDE.md` for its states + testids first.
+2. Navigate via `dtfPath`/`rtokenPath`; assert `data-testid`s and
+   snapshot-derived values (never copy, never hardcoded numbers).
+3. Run it; for every `[E2E] unmocked …` line, model that boundary per the map
+   above (add a negative unit test if it's a new central branch).
+4. Writes: `connectWallet`, assert the decoded `txLog` payload; add the
+   reject/revert case via `overrides.transaction`.
+5. Verify: `pnpm exec vitest run e2e/helpers/tests` then your spec, then
+   `pnpm e2e:smoke`. Strict teardown must stay green.
+
 ## Commands
 
 `pnpm e2e:smoke` (fast, per-diff) · `pnpm e2e:full` (flows) · `pnpm e2e` (both)
 · `pnpm e2e:ui` (headed debug) · `pnpm exec vitest run e2e/helpers/tests`
-(mock contracts) · `pnpm e2e:check` / `pnpm e2e:capture` (snapshots).
+(mock contracts, fastest tier) · `pnpm e2e:check` / `pnpm e2e:capture` /
+`pnpm e2e:capture:yield` (snapshots).
+
+Speed tiers for a quick validation loop: unit tests (<1s) → one scoped spec
+(~3–5s) → smoke (~16s) → full (~78s). Prefer the narrowest tier that covers
+your change; the domain guides' diff→test tables say which spec.
