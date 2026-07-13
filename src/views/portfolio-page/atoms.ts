@@ -13,7 +13,7 @@ import {
   PortfolioReward,
 } from './types'
 import { VotingState } from '@/lib/governance'
-import { PROPOSAL_STATES } from '@/utils/constants'
+import { isHiddenDtfSymbol, PROPOSAL_STATES } from '@/utils/constants'
 
 export const portfolioPageTimeRangeAtom = atom<PortfolioPeriod>('3m')
 
@@ -35,8 +35,11 @@ export const portfolioYieldDTFsAtom = atom(
 export const portfolioStakedRSRAtom = atom(
   (get) => get(portfolioDataAtom)?.stakedRSR ?? []
 )
-export const portfolioVoteLocksAtom = atom(
-  (get) => get(portfolioDataAtom)?.voteLocks ?? []
+export const portfolioVoteLocksAtom = atom((get) =>
+  (get(portfolioDataAtom)?.voteLocks ?? []).map((voteLock) => ({
+    ...voteLock,
+    dtfs: voteLock.dtfs.filter((dtf) => !isHiddenDtfSymbol(dtf.symbol)),
+  }))
 )
 export const portfolioRSRBalancesAtom = atom(
   (get) => get(portfolioDataAtom)?.rsrBalances ?? []
@@ -151,16 +154,17 @@ export const portfolioActiveProposalsAtom = atom<ActiveProposalRow[]>((get) => {
     )
   const locked = voteLocks
     .filter((v) => Number(v.amount) > 0)
-    .flatMap((v) =>
-      (v.activeProposals || []).map((p) => ({
+    .flatMap((v) => {
+      if (!v.dtfs?.length) return []
+      return (v.activeProposals || []).map((p) => ({
         ...p,
-        dtfName: v.dtfs?.[0]?.name || v.symbol,
-        dtfSymbol: v.dtfs?.[0]?.symbol || v.symbol,
-        dtfAddress: v.dtfs?.[0]?.address || v.stTokenAddress,
+        dtfName: v.dtfs[0].name,
+        dtfSymbol: v.dtfs[0].symbol,
+        dtfAddress: v.dtfs[0].address,
         chainId: v.chainId,
         isIndexDTF: true,
       }))
-    )
+    })
   return [...staked, ...locked]
     .map((p) => ({
       ...p,

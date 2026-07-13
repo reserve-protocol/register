@@ -1,4 +1,5 @@
 import { ChainId } from '@/utils/chains'
+import { isHiddenDtfSymbol } from '@/utils/constants'
 import { atom } from 'jotai'
 import { VoteLockPosition } from './hooks/use-vote-lock-positions'
 import { IndexDTFItem } from '@/hooks/useIndexDTFList'
@@ -45,48 +46,57 @@ export const filteredVoteLockPositionsAtom = atom((get) => {
 
   if (!positions) return undefined
 
-  return positions.filter((position) => {
+  return positions.reduce<VoteLockPosition[]>((acc, position) => {
+    const visibleDtfs = position.dtfs.filter(
+      (dtf) => !isHiddenDtfSymbol(dtf.symbol)
+    )
+
     // Chain filter
     if (!chains.includes(position.chainId.toString())) {
-      return false
+      return acc
+    }
+
+    // Hide positions that only govern hidden DTFs
+    if (position.dtfs.length > 0 && visibleDtfs.length === 0) {
+      return acc
     }
 
     // Deprecated filter: hide positions that only govern deprecated DTFs
     if (
-      position.dtfs.length > 0 &&
-      position.dtfs.every((dtf) => deprecated.has(dtf.address.toLowerCase()))
+      visibleDtfs.length > 0 &&
+      visibleDtfs.every((dtf) => deprecated.has(dtf.address.toLowerCase()))
     ) {
-      return false
+      return acc
     }
 
     // Search filter (by gov token symbol/name or DTF symbol/name)
     if (search) {
-      // Check gov token matches
       const matchesGovToken =
         position.underlying.token.symbol.toLowerCase().includes(search) ||
         position.underlying.token.name.toLowerCase().includes(search) ||
         position.token.symbol.toLowerCase().includes(search)
 
-      // Check if any DTF matches
-      const matchesDTF = position.dtfs.some(dtf =>
-        dtf.symbol.toLowerCase().includes(search) ||
-        dtf.name.toLowerCase().includes(search)
+      const matchesDTF = visibleDtfs.some(
+        (dtf) =>
+          dtf.symbol.toLowerCase().includes(search) ||
+          dtf.name.toLowerCase().includes(search)
       )
 
-      if (!matchesGovToken && !matchesDTF) return false
+      if (!matchesGovToken && !matchesDTF) return acc
     }
 
     // DTF filter
     if (selectedDtfs.length > 0) {
-      const positionDtfs = position.dtfs.map((dtf) => dtf.symbol)
+      const positionDtfs = visibleDtfs.map((dtf) => dtf.symbol)
       const hasSelectedDtf = selectedDtfs.some((dtf) =>
         positionDtfs.includes(dtf)
       )
-      if (!hasSelectedDtf) return false
+      if (!hasSelectedDtf) return acc
     }
 
-    return true
-  })
+    acc.push({ ...position, dtfs: visibleDtfs })
+    return acc
+  }, [])
 })
 
 // Get unique DTFs from all positions for the dropdown options
@@ -98,7 +108,10 @@ export const availableDtfsAtom = atom((get) => {
   const dtfSet = new Set<string>()
   positions.forEach((position) => {
     position.dtfs.forEach((dtf) => {
-      if (!deprecated.has(dtf.address.toLowerCase())) {
+      if (
+        !isHiddenDtfSymbol(dtf.symbol) &&
+        !deprecated.has(dtf.address.toLowerCase())
+      ) {
         dtfSet.add(dtf.symbol)
       }
     })

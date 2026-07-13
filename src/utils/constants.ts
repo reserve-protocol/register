@@ -599,3 +599,9 @@ export const RSR_FILTER_ADDRESSES = [
 
 export const UNITS_DISCLAIMER =
   "The units inputted (from csv or manually) are scaled so the portfolio value matches the DTF's NAV. Example: If the DTF trades at 100× NAV and you input 1,000 units, all units are scaled down by 100× to keep the NAV unchanged"
+
+// TODO: Remove this hardcoded filter when COMPUTE, ENERGY, and QUANTUM DTFs are moved to production.
+export const HIDDEN_DTF_SYMBOLS = new Set(['COMPUTE', 'ENERGY', 'QUANTUM'])
+
+export const isHiddenDtfSymbol = (symbol: string) =>
+  HIDDEN_DTF_SYMBOLS.has(symbol)
