@@ -1,6 +1,6 @@
 ---
 title: E2E Suite
-updated: 2026-07-12
+updated: 2026-07-13
 type: domain
 sources:
   - e2e/**
@@ -14,6 +14,29 @@ Offline Index-DTF acceptance coverage for home/discover, overview, issuance,
 zaps, compliance, auctions, governance, and settings. The suite characterizes
 Register behavior at the installed `@reserve-protocol/react-sdk` version; SDK
 mapper/math/calldata correctness remains the SDK repositories' responsibility.
+
+## How the suite is organized (foundational)
+
+Tests are grouped by **route → subroute** (domain), not by test-type; the
+canonical coverage matrix is `E2E_TEST_MAP.md` at repo root. EVERY page is
+tested across three dimensions, and a spec missing any of them is incomplete:
+
+1. **State-space** — every product-distinct state (governance proposals =
+   TYPE × STATE × standard/optimistic; rebalance = idle/running/restricted/
+   permissionless/completed/expired), not one happy render.
+2. **Loading lifecycle** — ordered phases L0 blank → L1 skeleton (right
+   shape/box, no reflow) → L2 partial (each island resolves independently, 0
+   unexpected layout shift) → L3 full (behavior/value assertions). Do NOT assert
+   on a skeleton-phase testid as if it were the loaded page.
+3. **Mobile** — the same L0–L3 at a phone viewport (`@mobile` project) + mobile
+   chrome.
+
+Known quality gap (2026-07-13): the original suite was built flat (`smoke/` +
+`flows/`) and desktop-happy-path-only, so several specs assert on a testid that
+renders during the skeleton phase — they test the shell, race hydration, and
+miss layout shift. Migrating to the domain tree + adding the lifecycle/mobile
+dimensions is tracked in `E2E_TEST_MAP.md`. `e2e/CLAUDE.md` § Foundational Rule
+is binding for all new specs.
 
 ## Trust contract
 
@@ -91,11 +114,12 @@ hand-copied `GetIndexDTF` query in `e2e/scripts/capture.ts` from the new SDK
 dist (it is not exported) and re-run `pnpm e2e:capture` — the `dtf-data` canary
 smoke fails on drift but only a fresh capture fixes it.
 
-Coverage intentionally does not claim forked-chain execution, mobile matrices,
-visual regression, Yield DTF flows, v6 contracts, vote-lock/deploy, or full
-settings/auction write families. Those require new registry fixtures and
-behavior specs rather than looser mocks. Governance, issuance, compliance, and
-transaction-contract edits require engineer review.
+Coverage intentionally does not claim forked-chain execution, visual/pixel
+regression, v6 contracts, or full settings/auction write families yet. Mobile
+and the loading lifecycle are NO LONGER non-goals — they are required dimensions
+per the Foundational Rule (previously skipped; now tracked debt in
+`E2E_TEST_MAP.md`). Governance, issuance, compliance, and transaction-contract
+edits require engineer review.
 
 ## Coverage pass 2 (landed 2026-07-10)
 

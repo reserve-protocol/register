@@ -6,6 +6,33 @@ under `e2e/helpers/` or `e2e/fixtures/`. Domain-specific guides (which spec
 covers what, domain states, edge cases) live next to each view:
 `src/views/index-dtf/<area>/CLAUDE.md`.
 
+## FOUNDATIONAL RULE — how every page is tested (not optional)
+
+The suite is organized by **route → subroute** (domain), NOT by test-type. The
+canonical map is `E2E_TEST_MAP.md` — a new page test goes at its domain node
+there, and EVERY page is tested across THREE dimensions:
+
+1. **State-space** — every meaningful state, not one happy render. Combinatorial
+   surfaces (governance proposals = TYPE × STATE × standard/optimistic; rebalance
+   = idle/running/restricted/permissionless/completed/expired) get one test per
+   product-distinct state, because each renders + does different things.
+2. **Loading lifecycle** — assert the ordered phases, do NOT assert on a
+   skeleton-phase testid as if it were the loaded page:
+   - **L0 blank** — mounts, no crash.
+   - **L1 skeleton** — right shape/count, occupies the content's box (no reflow).
+   - **L2 partial** — each data island resolves independently; resolving one must
+     not shift another. Layout-shift budget: 0 unexpected reflows.
+   - **L3 full** — all islands resolved → the actual behavior/value assertions.
+   Delay per-island boundary responses (`overrides` holds a response) to freeze
+   each phase; add attribute-only `<area>-skeleton` testids where missing.
+3. **Mobile** — the same L0–L3 at a phone viewport (`@mobile` project), plus
+   mobile chrome (bottom nav, portal menu, mobile CTA bar, table→card, dialogs).
+
+A spec that only checks the fully-loaded desktop happy path is INCOMPLETE — it
+misses the loading UX (where the layout shifts live) and mobile entirely. This
+is how the suite should have been built from the start; apply it to all new
+work and when touching an existing spec.
+
 ## Did a diff — should I test?
 
 - Touched `src/views/index-dtf/**`, `src/views/yield-dtf/**`,
@@ -115,17 +142,24 @@ spec-local `page.route` or a wildcard that could answer the wrong identity.
 
 ## Writing a new test (recipe)
 
+0. Place it by DOMAIN — find the route→subroute node in `E2E_TEST_MAP.md`; the
+   spec lives under `e2e/tests/<domain>/<route>/`. Enumerate the page's STATES
+   there (one test per product-distinct state), and plan the L0–L3 lifecycle +
+   `@mobile` variant (see the Foundational Rule). A single happy-path desktop
+   test is not a complete page test.
 1. Pick the tier: pure mock/helper logic → a `helpers/tests/*.test.ts` unit test
    (sub-second). One view's behavior → a spec (~3–5s). Read the area's
    `src/views/.../CLAUDE.md` for its states + testids first.
 2. Navigate via `dtfPath`/`rtokenPath`; assert `data-testid`s and
-   snapshot-derived values (never copy, never hardcoded numbers).
+   snapshot-derived values (never copy, never hardcoded numbers). For lifecycle:
+   hold a boundary response via `overrides` to freeze L1/L2, assert the skeleton
+   shape + no reflow, then release and assert content in the same box.
 3. Run it; for every `[E2E] unmocked …` line, model that boundary per the map
    above (add a negative unit test if it's a new central branch).
 4. Writes: `connectWallet`, assert the decoded `txLog` payload; add the
    reject/revert case via `overrides.transaction`.
-5. Verify: `pnpm exec vitest run e2e/helpers/tests` then your spec, then
-   `pnpm e2e:smoke`. Strict teardown must stay green.
+5. Verify: `pnpm exec vitest run e2e/helpers/tests` then your spec (desktop +
+   `@mobile`), then `pnpm e2e:smoke`. Strict teardown must stay green.
 
 ## Commands
 
