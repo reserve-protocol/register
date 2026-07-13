@@ -71,6 +71,7 @@ const BasicInfo = () => {
         <InfoCardItem
           label={t`Weight Control`}
           icon={<IconWrapper Component={ToggleRight} />}
+          testId="settings-weight-control"
           value={rebalanceControl.weightControl ? t`Enabled` : t`Disabled`}
         />
       )}
@@ -78,6 +79,7 @@ const BasicInfo = () => {
         <InfoCardItem
           label={t`Permissionless Bids`}
           icon={<IconWrapper Component={ToggleRight} />}
+          testId="settings-permissionless-bids"
           value={indexDTF?.rebalance.bidsEnabled ? t`Enabled` : t`Disabled`}
         />
       )}

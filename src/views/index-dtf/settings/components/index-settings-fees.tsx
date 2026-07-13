@@ -25,6 +25,7 @@ type Recipient = {
   value: string
   address?: string
   icon: React.ReactNode
+  testId?: string
 }
 
 // WHY: On the new StakingVault, governance fees are routed to the vault's
@@ -42,17 +43,20 @@ export const getFeeRecipients = (
     label: msg`Fixed Platform Share`,
     value: `${platformFee}%`,
     icon: <IconWrapper Component={TrainTrack} />,
+    testId: 'settings-fee-platform',
   }
   const deployerShare: Recipient = {
     label: msg`Deployer Share`,
     value: '0%',
     address: indexDTF.deployer,
     icon: <IconWrapper Component={LandPlot} />,
+    testId: 'settings-fee-deployer',
   }
   const governanceShare: Recipient = {
     label: msg`Governance Share`,
     value: '0%',
     icon: <IconWrapper Component={Landmark} />,
+    testId: 'settings-fee-governance',
   }
   const externalRecipients: Recipient[] = []
   const PERCENT_ADJUST = 100 / (100 - platformFee)
@@ -79,6 +83,7 @@ export const getFeeRecipients = (
         value: share,
         address: recipient.address,
         icon: <IconWrapper Component={Hash} />,
+        testId: `settings-fee-other-${externalRecipients.length + 1}`,
       })
     }
   }
@@ -120,6 +125,7 @@ const FeesInfo = () => {
           border={false}
           icon={<IconWrapper Component={TableRowsSplit} />}
           label={t`Annualized TVL Fee`}
+          testId="settings-fee-annualized"
           value={
             indexDTF
               ? formatPercentage(indexDTF?.annualizedTvlFee * 100)
@@ -131,6 +137,7 @@ const FeesInfo = () => {
           border={false}
           icon={<IconWrapper Component={ChartPie} />}
           label={t`Minting Fee`}
+          testId="settings-fee-minting"
           value={
             indexDTF ? formatPercentage(indexDTF?.mintingFee * 100) : undefined
           }
@@ -145,6 +152,7 @@ const FeesInfo = () => {
             icon={recipient.icon}
             address={recipient.address}
             border={!!index}
+            testId={recipient.testId}
           />
         ))}
       </div>

@@ -69,6 +69,7 @@ const InfoCardItem = ({
   bold = true,
   border = true,
   layout = 'stacked',
+  testId,
 }: {
   label: string
   icon: React.ReactNode
@@ -78,12 +79,14 @@ const InfoCardItem = ({
   address?: string
   border?: boolean
   layout?: 'stacked' | 'inline'
+  testId?: string
 }) => {
   const chainId = useAtomValue(chainIdAtom)
 
   if (layout === 'inline') {
     return (
       <div
+        data-testid={testId}
         className={cn(
           'flex items-center justify-between gap-4 p-4',
           className,
@@ -123,6 +126,7 @@ const InfoCardItem = ({
 
   return (
     <div
+      data-testid={testId}
       className={cn('flex items-center p-4', className, border && 'border-t')}
     >
       {icon}

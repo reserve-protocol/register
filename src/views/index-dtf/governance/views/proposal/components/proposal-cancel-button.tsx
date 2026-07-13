@@ -88,6 +88,7 @@ const ProposalCancel = () => {
 
   return (
     <TransactionButton
+      data-testid="proposal-cancel-btn"
       variant="destructive"
       size="sm"
       loading={isMining || isLoading}
