@@ -80,11 +80,12 @@ export const useMultichainQuery = <T = any>(
       ? ['graphql-multichain', query, variables]
       : ['graphql-multichain-disabled'],
     queryFn: async () => {
+      const chainList = Object.keys(clients).map(Number)
       const chains: Set<number> = new Set(
         variables._chain ? variables._chain : supportedChainList
       )
 
-      const calls = supportedChainList.map((chain) =>
+      const calls = chainList.map((chain) =>
         chains.has(chain) && clients[chain]
           ? clients[chain].request<T>(
               query as RequestDocument,
@@ -95,7 +96,7 @@ export const useMultichainQuery = <T = any>(
 
       const results = await Promise.all(calls)
 
-      return supportedChainList.reduce(
+      return chainList.reduce(
         (acc, chainId, index) => {
           acc[chainId] = results[index]
           return acc

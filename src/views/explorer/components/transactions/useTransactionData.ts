@@ -5,6 +5,7 @@ import { atom, useAtomValue } from 'jotai'
 import { useMemo } from 'react'
 import { INDEX_GRAPH_CLIENTS } from 'state/atoms'
 import { supportedChainList } from 'utils/constants'
+import { ChainId } from 'utils/chains'
 import { Address, formatEther, getAddress } from 'viem'
 import {
   debouncedWalletInputAtom,
@@ -130,18 +131,52 @@ const filtersQueryAtom = atom((get) => {
   }
 })
 
+const indexChainList = Object.keys(INDEX_GRAPH_CLIENTS).map(Number)
+
 const useTransactionData = () => {
+  const filters = useAtomValue(filtersAtom)
   const variables = useAtomValue(filtersQueryAtom)
+  const { data: indexDTFs } = useIndexDTFList()
+
+  const indexVariables = useMemo(() => {
+    const selected = new Set(filters.tokens)
+    const bscTokens = new Set(
+      (indexDTFs ?? [])
+        .filter((dtf) => dtf.chainId === ChainId.BSC)
+        .map((dtf) => dtf.address.toLowerCase())
+    )
+
+    const hasBscToken = Array.from(selected).some((token) =>
+      bscTokens.has(token.toLowerCase())
+    )
+    const allSupportedChains =
+      filters.chains.length === supportedChainList.length &&
+      supportedChainList.every((chain) =>
+        filters.chains.includes(chain.toString())
+      )
+
+    const shouldIncludeBsc = hasBscToken || (allSupportedChains && !selected.size)
+
+    const chainIds = variables._chain ? [...variables._chain] : []
+    if (shouldIncludeBsc && !chainIds.includes(ChainId.BSC)) {
+      chainIds.push(ChainId.BSC)
+    }
+
+    return {
+      ...variables,
+      _chain: chainIds.length ? chainIds : undefined,
+    }
+  }, [filters, indexDTFs, variables])
+
   const { data: yieldData } = useMultichainQuery(
     explorerTransactionsQuery,
     variables
   )
   const { data: indexData } = useMultichainQuery(
     indexTransferEventsQuery,
-    variables,
+    indexVariables,
     { clients: INDEX_GRAPH_CLIENTS }
   )
-  const { data: indexDTFs } = useIndexDTFList()
 
   return useMemo(() => {
     if (!yieldData && !indexData) return []
@@ -169,7 +204,9 @@ const useTransactionData = () => {
           }))
         )
       }
+    }
 
+    for (const chain of indexChainList) {
       if (indexData?.[chain]) {
         tx.push(
           ...indexData[chain].transferEvents.map((event: any) => {
