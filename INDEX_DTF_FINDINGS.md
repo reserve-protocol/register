@@ -20,6 +20,39 @@ unilaterally on shared/release-sensitive surfaces without triage.
 
 ---
 
+## FIX PLAN (ranked; fixes await triage with Luis, then corroborate against the suite)
+
+The suite is the corroboration harness: each fix un-fixmes its regression test
+or flips a characterization assertion. Order by leverage × severity.
+
+### Tier 1 — high-leverage / high-severity (engineer review; do first)
+
+- **FIX-A · Container chain-init order** → clears findings **#1, #7, #8, #17, #18** (FIVE, across subgraph/REST/version/wallet/fees) at once; 125-file blast radius. Shape: gate the SDK-consumer children in `index-dtf-container.tsx` until `chainIdAtom` + token identity match the route (or set them synchronously before mount / pass route `chainId` as a prop to ALL updaters — the sibling updaters already do). Corroborate: un-fixme `spa-chain-identity.spec.ts` + `spa-state-cleanup.spec.ts` wrong-chain assertions.
+- **FIX-B · Zero fee-denominator guard** → **#15** (whole-page DoS). One line: guard `feeDenominator === 0n` before the division → take the fallback path. Corroborate: un-fixme the `settings.spec.ts` crash test.
+- **FIX-C · resetStateAtom completeness** → **#7, #21**. Add `indexDTFVersionAtom` + chart-selection atoms (`dataTypeAtom`/`chartTypeAtom`/`apyHistoryAtom`) to the reset. (FIX-A reduces the window; this closes the reset gap independently.)
+
+### Tier 2 — real bugs, moderate
+
+- **FIX-D · iframe XSS** (#2) — add `rehype-sanitize` (or an iframe/script denylist) to `proposal-md-description.tsx` (index + yield). Un-fixme the render test.
+- **FIX-E · Phantom setProposalThreshold** (#3) — align the threshold change-detector (drop the `/1e18` or fix the misnamed helper). Un-fixme the 2 basket-settings tests.
+- **FIX-F · Platform-fee fallback masks error** (#16) — surface an error/indeterminate state instead of silently showing a fabricated 50%.
+- **FIX-G · parseEther(mintingFee) crash path** (#10) — guard the fee parse (scientific-notation / >100%).
+- **FIX-H · asset-prices divergence throw** (#4) — guard the missing-address read at `use-asset-prices-with-snapshot.ts:72`.
+- **FIX-I · redeem minAmountsOut=0** (#9) — floor low-decimal legs to a nonzero minimum or warn.
+- **FIX-J · chart infinite skeleton on price=0** (#20) — empty/error state when `currentPrice===0`.
+
+### Tier 3 — practices / hygiene / perf
+
+- FeesInfo chainId consistency (#17, also subsumed by FIX-A), balanceMap case (#11), isValidAtom sell-mode (#12), un-debounced recompute (#13), dead `use-dtf-price.ts` (#19), falsy-choice vote gate (#14), localhost form-validation bypass (#5), propose double-fire manual check (#6).
+
+### Suite/mock debt (not app; pay down in the suite)
+
+- `getFeeDetails` mock returns 3 words but the ABI has 4 → decode error → the DEFAULT settings state shows the fabricated 50% fallback, not real fees. Model `getFeeDetails` centrally with each DTF's captured fee (recipient/numerator/denominator/floor) in `chain-state.json`.
+- Yield capture completeness (0x/empty/error shapes) + atomic publish + value assertions (from CODEX_AUDIT).
+- Exclusive-suite-server lock (contention).
+
+---
+
 ## Verified clean (probed adversarially, proven sound — the "bug-free" evidence)
 
 - **Manual mint math** — `maxMintAmount`'s `+1n` ceil guard is ALWAYS sufficient (floored client-required is strictly < balance for every asset); MAX is always a valid submittable mint; `minSharesOut`/`minAmountsOut` match the fee/slippage formulas to the wei; empty/zero/over-balance inputs keep submit disabled with empty txLog; a second mint under an existing allowance emits 0 approvals + 2 mints (no re-approve/race). Locked by `issuance-manual-boundaries.spec.ts`.
