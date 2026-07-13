@@ -1,97 +1,96 @@
 # Workflow Skill
 
-Use this for staged implementation, scoped verification, debugging, and completion checks. Project-specific stack and product context live in `docs/wiki/project.md`, not here.
+Use this for implementation, debugging, scoped verification, and completion. Project facts live in `docs/wiki/`; review mechanics live in `skills/review-panel.md`.
+
+## Trust Target
+
+Optimize for evidence a non-engineer can inspect, not a promise of one-shot correctness. No workflow eliminates model mistakes. This one makes intent explicit, forces the shortest useful feedback loop, bounds review cost, and labels uncertainty instead of laundering it into “done.”
 
 ## Calibrate: Radius × Size
 
-The expensive parts of the workflow — spawned reviewers, the closeout gate, visual evidence, wiki ingest, plans — are earned, not paid on every diff. Running the full loop on a copy change is waste, and waste teaches agents to route around gates. Two independent questions, answered before editing:
+Answer before editing:
 
-1. **Blast radius — how far can this break?** Isolated (one surface, nothing imports it) → domain (one feature folder) → shared (shared machinery, trust/process boundaries, money math, engineer-review surfaces). Radius buys **checks and review**: which gate runs, who reviews, how much visual evidence.
-2. **Work size — how much work is it?** One edit → one coherent slice → a multi-phase plan. Size buys **ceremony**: whether the work gets a ledger row, a stage, or a plan of stages.
+1. **Blast radius:** isolated → domain → shared/trust/money/public contract. Radius buys verification and review.
+2. **Work size:** one edit → coherent slice → multi-slice goal. Size buys planning and durable state.
 
-The axes are independent: a one-line fix in shared machinery is small work with a wide radius — heavy review, light ceremony. A four-phase feature inside one domain is the reverse. Collapsing them into one ladder over-processes small risky fixes and under-reviews big "simple" ones.
+Profiles:
 
-The profiles:
+- **Touch-up:** trivial, isolated, no control-flow change. Scoped verify + diff self-review. Inspect rendered output only when clipping/wrapping can change.
+- **Low:** contained behavior or UI change in one domain. Scoped verify + self-review through fired lenses; inspect the changed surface when output changed.
+- **Medium:** modest work with wide radius. One stage, one independent review at most, full gate (or gate-equivalent final scoped run), visual evidence when applicable, one ledger row, targeted wiki ingest.
+- **High:** multi-slice, cross-domain/package, or contract-shaping work. Load `skills/planning.md`; final whole-goal review and full closeout.
 
-- **Touch-up** — trivial and isolated: copy/strings, docs, comments, styling values on one surface, data-only config; no control flow changed. Ship with: scoped verify green + self-review of the diff. Glance at the surface only if the change can clip, wrap, or overflow. Nothing else.
-- **Low** — small and contained: a button, an isolated component or hook, a visual change, a small fix inside one domain. Ship with: scoped verify green + self-review through each lens scope named + eyeball the changed surface if rendered output changed. No spawned reviewers, no ledger row, no ingest.
-- **Medium** — wide radius, modest size: the bugfix in shared machinery, the change on a money or engineer-review surface, the small diff many features sit on. One stage: spawned reviewers for the fired lenses, full gate (or gate-equivalent final scoped run), full visual evidence if UI behavior changed, one progress row, ingest only the pages the diff made stale. No plan, no phases.
-- **High** — big work: a multi-phase plan, a feature crossing domains or packages, anything needing new decisions along the way. Plan first, split into stages, run each stage at its own radius, review the whole feature once at the end, full closeout with ingest.
+`scope.mjs` prints mechanical signals; semantics decide. A low/touch-up downgrade despite a radius signal must name the signal and why it does not apply. Change profile boundaries only after a recorded real misfire.
 
-`scope.mjs` prints the mechanical signals for both axes (risk lenses → radius, file count → size) plus a profile hint; you make the semantic call. The signals also work mid-flight: a "low" task whose diff starts firing radius signals gets re-tiered up, not argued down. When debating two profiles, take the heavier one — an under-reviewed wide-radius diff is the expensive mistake; an over-ceremonied small one is only slow.
+The **fixed point** is the single commit/ref the whole task diffs against — every scoped run, review, and completion claim compares to it. `workflow-start` prints it as the base ref.
 
-Two guardrails on the semantic call:
+## Medium Task Contract
 
-- **Downgrades are explicit.** Shipping below medium while `scope.mjs` prints a radius signal (e.g. a copy-only change inside shared machinery) requires one stated line: the signal and why it doesn't apply. State it in the turn's summary and the commit message. A silent downgrade is how medium gets misfiled as low.
-- **Iterate boundaries from misfires, not theory.** Profile definitions change only when a real misfire is recorded in `log.md` — process work must not displace product work. The ledger-drift lint is the backstop that lower profiles haven't quietly become a feature.
+Before medium edits, pin:
 
-## Operating Loop (medium and high)
+- fixed point (commit/ref);
+- current and desired behavior;
+- non-goals;
+- acceptance evidence: commands, behavior, visual state, or artifact that proves each criterion;
+- highest stable test seam for changed behavior;
+- unresolved decisions or assumptions.
 
-1. Define stage, non-goals, exit criteria, and base ref. Do not edit code until those exist; if deriving them is risky, ask the human.
-2. Run `node scripts/llm-workflow/workflow-start.mjs --stage "<stage>"` for real stages. If the worktree is dirty, inspect `git status --short`; do not hide unrelated user changes.
-3. Implement the smallest complete slice. Keep code domain-gated and easy to rewrite.
-4. Add one runnable check for non-trivial logic.
-5. Inner loop: `node scripts/llm-workflow/scope.mjs --base <base-ref>` — runs the verify commands mapped to touched files and names the required review lenses.
-6. Review through the required lenses only (see `skills/review-panel.md`).
-7. Reconcile verified scoped findings only.
-8. Close out (below), then ingest into the wiki (see `skills/wiki.md`).
+Keep it compact in the active progress note. Ask the human only when an unresolved choice materially changes behavior, architecture, risk, or scope. Routine implementation details are the agent's responsibility. High work uses `skills/planning.md` instead.
+
+## Operating Loop (Medium and High)
+
+1. Pin the medium contract, or follow `skills/planning.md` for high.
+2. Run `node scripts/llm-workflow/workflow-start.mjs --stage "<name>"` for medium. High adds `--contract <plan>`. `--allow-dirty` is only for inspected in-progress/adoption input.
+3. Implement the smallest unblocked slice.
+4. For changed behavior, use `skills/testing.md`.
+5. Run `node scripts/llm-workflow/scope.mjs --base <fixed-point>`; fix mapped failures and inspect red flags.
+6. Review at the profile's budget (`skills/review-panel.md`).
+7. Reconcile verified findings once; re-review only after material fixes.
+8. Close out and ingest (`skills/wiki.md`).
+
+## Feedback Branches
+
+- Bug, failure, flake, or regression: read `skills/debugging.md` before proposing a fix.
+- New or changed non-trivial behavior: read `skills/testing.md` before implementation.
+- Copy, docs, data-only config, generated code, and trivial wiring use mapped checks; do not manufacture low-value tests.
+
+## Scoped Verification
+
+`scope.mjs` unions commands mapped to touched files and prints `verify-gap` for unmapped files. Run focused tests during iteration, scoped verification after a coherent edit, and the full gate once after the final edit. Boundary-crossing files must map to wider commands. A code/config gap requires a mapping or an explicit appropriate check; docs/scratch may close with stated self-review.
 
 ## Stage Closeout
 
-Every stage (medium and high work) closes the same way. A lighter closeout is a skipped closeout — if a stage seems to deserve less, it was a lower profile: re-tier it, don't shave the closeout.
+1. Fresh full gate with `scope.mjs --gate`, unless the final post-edit scoped run printed `gate-equivalent: yes`.
+2. UI: inspect the real rendered surface with realistic data, default plus one edge state, and every breakpoint band crossed by the change.
+3. Review through Intent and Engineering Risk at the allowed budget.
+4. Update the progress row with exact verifier evidence, review disposition, state, and next action.
+5. Ingest only stale wiki pages; run wiki-lint.
 
-1. **Fresh full gate** after the final edit: `node scripts/llm-workflow/scope.mjs --gate` runs the config `gate` list and prints the verifier line for the progress row. Exception: if the final inner-loop `scope.mjs` run (after the last edit) printed `gate-equivalent: yes`, that run already is the fresh gate — don't pay for it twice. Green gates are not proof of correct behavior — they are the floor.
-2. **Visual check for UI stages**: see `skills/ui-ux.md` § Verification — automation passing on a broken screen is a recorded failure mode.
-3. **One progress row** in `docs/wiki/progress.md`: stage, status, verifier line (the exact fresh commands that ran green), one line per reviewed lens, next action.
-4. **Wiki ingest**: update the domain pages whose `sources` cover the diff, decisions if any were made, and `log.md`. Then `node scripts/llm-workflow/wiki-lint.mjs` green.
+Valid states:
 
-## Scoped Verification (inner loop)
+- `active` — implementation in progress;
+- `implementation-verified` — automated/behavior evidence green, review incomplete;
+- `review-pending` — required independent review unavailable;
+- `human-review-required` — named risk needs human judgment;
+- `done` — acceptance evidence, required review, closeout, and documentation are complete.
 
-`scope.mjs` maps touched files to commands via the config `verify` rules (glob groups → commands, union of all matching rules). Boundary-crossing files (IPC, config, package, shared) belong in rules that expand verification wider — impact is wider than the diff.
+Unavailable review never becomes `done`. Human-review-required work may be handed off but must keep that label.
+
+Before reverting, restoring, or reconciling a shared-tree file, inspect its live diff and latest handoff. Unexpected changes belong to the user or another worker until proven otherwise; report them, never discard them from a stale instruction.
 
 ## Laziness Ladder
 
-Run the ladder after understanding the task and tracing the touched flow:
+Need → existing pattern → platform/stdlib → installed dependency → tiny helper → only then a new abstraction/dependency. Never simplify away trust-boundary validation, data-loss prevention, security, accessibility, or requested behavior.
 
-1. Does this need to exist?
-2. Does this codebase already have the pattern?
-3. Does the standard library or platform do it?
-4. Does an installed dependency do it?
-5. Can a tiny helper solve it?
-6. Only then add a new dependency or abstraction.
-
-Lazy is not negligent — never simplify away: input validation at trust boundaries, error handling that prevents data loss, security measures, accessibility basics, or explicitly requested behavior. Use deliberate-shortcut comments only when they name the ceiling and the upgrade trigger.
-
-## Session Budget
-
-- Work one stage at a time; preserve state in `docs/wiki/progress.md` before context gets large.
-- Prefer one scoped review over many personas. Never run reviewer fan-out by default.
-- Raw logs stay in scratch space; durable docs stay short.
-- Unavailable or skipped reviewers: `skills/review-panel.md` § Receiving Review owns the rule.
-- Stop expanding workflow machinery unless a gate blocks product work.
-
-## Debugging Protocol
-
-Reproduce, inspect the real boundary, form one hypothesis, fix root cause. Do not propose fixes before root-cause investigation. When changing behavior gated on a state variable, grep every writer of that variable before calling the change complete — fixing the obvious trigger is a trap when many code paths write the same state. After three failed attempts on the same symptom, stop and question the architecture or ask the human.
-
-## Verification Gate
+## Completion Gate
 
 No completion claim without fresh evidence from this turn:
 
-- The profile's closing checks ran green after the final edit: full gate (or a gate-equivalent scoped run) for medium and high, scoped verify for touch-ups and low.
-- Medium and high only: every exit criterion has concrete evidence in the progress row; required review lenses are recorded there.
-- Known failures are named. Skipped external reviewers are named with reason.
-- Scratch output is cleaned or ignored.
+- each acceptance criterion maps to inspected evidence;
+- final profile checks ran after the final edit;
+- applicable debugging/testing evidence from their owning skills is present;
+- required review is complete, or state says pending/human-required;
+- known failures, skipped live checks, assumptions, unknowns, and unavailable tools are named — "I don't know" beats manufactured confidence;
+- scratch/debug output is removed or ignored.
 
-Hard-won specifics that stay true across projects:
-
-- Typecheck tests too. Untyped tests silently drift from the interfaces they claim to cover; the drift surfaces as latent type errors, not test failures.
-- If a check runs against build output, guard staleness (rebuild when any source is newer than each output tree, checked per tree). A stale bundle passing is worse than no check.
-
-## Concise Output
-
-Status in one or two sentences; one line per finding (`path:line: severity: problem. fix.`); durable summaries as decision/evidence/next action. Raw logs go to scratch files. Never compress destructive-action confirmations, security warnings, ordered command sequences, or exact code/paths/error strings.
-
-## Red Flags
-
-Stop before finishing on: raw payload logs, `console.log` in app code (outside the config allowlist), broad `any`, skipped tests, unbounded buffers, rendering raw model HTML, secrets in local artifacts, unverified review changes, or process work displacing product work. `scope.mjs` scans for the mechanical ones; the rest are on you.
+Green commands prove only what they cover. Confidence is not evidence; worker/reviewer reports are claims until checked.

@@ -108,7 +108,9 @@ export function runCommand(command, cwd) {
   const [bin, ...args] = command.split(/\s+/);
   if (bin.includes("="))
     throw new Error(`env prefixes are not supported ("${bin}") — wrap the command in a package script`);
+  const startedAt = Date.now();
   execFileSync(bin, args, { stdio: "inherit", cwd });
+  return Date.now() - startedAt;
 }
 
 const RED_FLAG_PATTERNS = [

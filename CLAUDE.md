@@ -13,6 +13,9 @@ Loader, not playbook. Reusable workflow rules live in `skills/` (kit-owned, upda
 ## Load Order
 
 - For staged or code work, read `skills/workflow.md` first.
+- When `workflow.md` classifies work as high/multi-session, read `skills/planning.md` and write the durable plan.
+- Before implementing a bug fix or non-trivial behavior change with a test seam, read `skills/testing.md` (RED→GREEN→REFACTOR; test the real seam, not a mock).
+- When debugging a failure, read `skills/debugging.md`; for architecture decisions, `skills/architecture-review.md`; when reconciling review findings, `skills/re-conciliate.md`.
 - Before writing or reviewing app code, read `skills/code-standards.md`, then scan `docs/wiki/improvements.md` for your area (anti-patterns are binding; fix listed debt opportunistically when touching it).
 - Before closing a stage, read `skills/review-panel.md` and `skills/wiki.md`.
 - Before user-facing UI work, read `skills/ui-ux.md`.
