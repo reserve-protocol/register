@@ -11,13 +11,17 @@ import {
 } from '@/state/dtf/atoms'
 import { indexDTFApyAtom } from '@/state/dtf/yield-index-atoms'
 import { formatPercentage, formatToSignificantDigits } from '@/utils'
-import { getIndexDtfDisplayName } from '@/utils/dtf-names'
 import { Trans } from '@lingui/react/macro'
 import { useAtomValue } from 'jotai'
 import { IndexDTFPerformance } from '../../hooks/use-dtf-price-history'
 import IndexTokenAddress from '../index-token-address'
 import PercentageChange from './percentage-change'
 import { apyStatsAtom, dataTypeAtom } from './price-chart-atoms'
+
+// "(BSC)" / "(ETH)" suffixes are catalog bookkeeping, not display copy — the
+// chain is already shown by the token address chip next to the title.
+const stripChainSuffix = (name: string) =>
+  name.replace(/\s*\((ETH|BASE|BSC)\)\s*$/i, '')
 
 const OverlayTitle = () => {
   const dtf = useAtomValue(indexDTFAtom)
@@ -30,7 +34,7 @@ const OverlayTitle = () => {
   return (
     <h2 className="min-w-0 text-2xl font-medium leading-tight text-primary dark:text-foreground sm:text-3xl sm:font-normal">
       <div className="flex min-w-0 items-center gap-2">
-        {getIndexDtfDisplayName(dtf.token)}
+        {stripChainSuffix(dtf.token.name)}
         {isInactive && <InactiveBadge />}
       </div>
     </h2>
