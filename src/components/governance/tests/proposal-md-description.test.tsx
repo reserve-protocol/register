@@ -28,6 +28,23 @@ describe('ProposalMdDescription sanitizer', () => {
     ).toBeUndefined()
   })
 
+  it('strips raw positioning/overlay classes while keeping syntax highlighting', () => {
+    const container = renderMd(
+      [
+        '<div class="fixed inset-0 z-40 bg-background"><a class="absolute inset-0" href="https://evil.example">x</a></div>',
+        '',
+        '```ts',
+        'const x = 1',
+        '```',
+      ].join('\n')
+    )
+    const hostileDiv = container.querySelector('div.fixed, div.inset-0, div.z-40, div\\.bg-background')
+    expect(hostileDiv).toBeNull()
+    expect(container.innerHTML).not.toContain('inset-0')
+    expect(container.innerHTML).not.toContain('bg-background')
+    expect(container.querySelector('span.token')).not.toBeNull()
+  })
+
   it('drops event-handler attributes like onerror', () => {
     const container = renderMd('<img src="x" onerror="window.__pwned=true">')
     expect(container.querySelector('img[onerror]')).toBeNull()
