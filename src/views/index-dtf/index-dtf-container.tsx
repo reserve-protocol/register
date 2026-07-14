@@ -26,7 +26,7 @@ import {
   indexDTFPoolsDataAtom,
   indexDTFUnderlyingNamesAtom,
 } from '@/state/dtf/yield-index-atoms'
-import { isInactiveDTF, useDTFStatus } from '@/hooks/use-dtf-status'
+import { deriveDtfStatus, isInactiveDTF } from '@/hooks/use-dtf-status'
 import { isAddress } from '@/utils'
 import { AvailableChain } from '@/utils/chains'
 import { NETWORKS, RESERVE_API, ROUTES, ZAPPER_API } from '@/utils/constants'
@@ -38,6 +38,7 @@ import {
   useIndexDtfExposure,
   useIndexDtfIdentity,
   useIndexDtfPlatformFee,
+  useIndexDtfStatus,
   useIndexDtfVersion,
   supportedChainIds,
   type IndexDtfBrand as SdkIndexDtfBrand,
@@ -290,19 +291,18 @@ const resetStateAtom = atom(null, (_, set) => {
   set(indexDTFStatusAtom, 'active')
 })
 
-const DeprecationStatusUpdater = ({
-  tokenAddress,
-  chainId,
-}: {
-  tokenAddress?: string
-  chainId: number
-}) => {
-  const status = useDTFStatus(tokenAddress, chainId)
+const STATUS_REFRESH_INTERVAL = 1000 * 60 * 10
+
+const DeprecationStatusUpdater = () => {
+  const identity = useIndexDtfIdentity()
   const setStatus = useSetAtom(indexDTFStatusAtom)
+  const { data: status } = useIndexDtfStatus(identity, {
+    refetchInterval: STATUS_REFRESH_INTERVAL,
+  })
 
   useEffect(() => {
-    setStatus(status)
-  }, [status, setStatus])
+    setStatus(deriveDtfStatus(status, identity.address, identity.chainId))
+  }, [status, identity.address, identity.chainId, setStatus])
 
   return null
 }
@@ -362,7 +362,7 @@ const Updater = () => {
       <PlatformFeeUpdater />
       <IndexDTFExposureUpdater />
       <YieldIndexUpdater chainId={chainId} />
-      <DeprecationStatusUpdater tokenAddress={tokenAddress} chainId={chainId} />
+      <DeprecationStatusUpdater />
       <GovernanceUpdater />
     </div>
   )

@@ -56,12 +56,24 @@ const useDiscoverDTFs = () => {
   })
 }
 
-const isKnownDeprecated = (address: string, chainId?: number): boolean => {
+export const isKnownDeprecated = (
+  address: string,
+  chainId?: number
+): boolean => {
   const lower = address.toLowerCase()
   return KNOWN_DEPRECATED.some(
     (d) => d.address === lower && d.chainId === chainId
   )
 }
+
+// KNOWN_DEPRECATED fail-safe: until the discovery read lands (or if it fails),
+// known-deprecated DTFs must read as deprecated instantly — never as active.
+export const deriveDtfStatus = (
+  status: DTFStatus | undefined,
+  address: string,
+  chainId: number
+): DTFStatus =>
+  status ?? (isKnownDeprecated(address, chainId) ? 'deprecated' : 'active')
 
 export const useDTFStatus = (
   address?: string,
