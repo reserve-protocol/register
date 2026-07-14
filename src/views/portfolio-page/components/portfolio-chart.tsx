@@ -26,20 +26,18 @@ import {
   useHistoricalPortfolio,
 } from '../hooks/use-historical-portfolio'
 import { PortfolioPeriod } from '../types'
+import { ALL_TIME_RANGES } from '@/views/index-dtf/overview/components/charts/use-available-time-ranges'
 import { Card } from '@/components/ui/card'
 
-// Period codes (24hr/7d/1m/...) stay untranslated; only 'All time' is wrapped.
+// Period codes match the DTF Overview time ranges; only 'All time' is wrapped.
 const PERIOD_LABELS: {
   key: PortfolioPeriod
   label: string | MessageDescriptor
-}[] = [
-  { key: '24h', label: '24hr' },
-  { key: '7d', label: '7d' },
-  { key: '1m', label: '1m' },
-  { key: '3m', label: '3m' },
-  { key: '6m', label: '6m' },
-  { key: 'All', label: msg`All time` },
-]
+}[] = ALL_TIME_RANGES.map((range) =>
+  range.value === 'all'
+    ? { key: 'all', label: msg`All time` }
+    : { key: range.value as PortfolioPeriod, label: range.label }
+)
 
 // Suffix codes (24H/7D/...) stay untranslated; only 'All' is wrapped.
 const PERIOD_SUFFIX: Record<PortfolioPeriod, string | MessageDescriptor> = {
@@ -47,8 +45,9 @@ const PERIOD_SUFFIX: Record<PortfolioPeriod, string | MessageDescriptor> = {
   '7d': '7D',
   '1m': '1M',
   '3m': '3M',
-  '6m': '6M',
-  All: msg`All`,
+  ytd: 'YTD',
+  '1y': '1Y',
+  all: msg`All`,
 }
 
 const formatYAxis = (value: number) => {
