@@ -12,6 +12,7 @@ const BASE: MintPromptSignals = {
   rawCapacity: false,
   rawClosedImpact: false,
   rawClosedError: false,
+  rawBetterPrice: false,
   rawImpact: false,
   rawLarge: false,
   rawError: false,
@@ -30,6 +31,15 @@ const SIGNALS: Record<string, MintPromptSignals> = {
   notApplicable: { ...BASE, isApplicable: false },
   // Valid quote whose price impact crosses the threshold (any size).
   impactQuote: { ...BASE, rawImpact: true, hasValidQuote: true },
+  // Valid quote that PCSX beats outright.
+  betterPriceQuote: { ...BASE, rawBetterPrice: true, hasValidQuote: true },
+  // PCSX beats a quote that also crosses the impact threshold.
+  betterPriceImpactQuote: {
+    ...BASE,
+    rawBetterPrice: true,
+    rawImpact: true,
+    hasValidQuote: true,
+  },
   // Input above the Ondo per-transaction cap; independent of the quote.
   overCapacity: { ...BASE, rawCapacity: true },
   overCapacityWithQuote: { ...BASE, rawCapacity: true, hasValidQuote: true },
@@ -210,6 +220,46 @@ describe('reduceMintPrompt', () => {
     })
   })
 
+  it('prioritizes better-price over impact when both fire on one quote', () => {
+    expect(run([SIGNALS.betterPriceImpactQuote])).toEqual({
+      variant: 'better-price',
+      dismissed: false,
+    })
+  })
+
+  it('escalates impact -> better-price and never downgrades back', () => {
+    expect(run([SIGNALS.impactQuote, SIGNALS.betterPriceQuote])).toEqual({
+      variant: 'better-price',
+      dismissed: false,
+    })
+    expect(
+      run([
+        SIGNALS.betterPriceQuote,
+        SIGNALS.impactQuote,
+        SIGNALS.betterPriceQuote,
+      ])
+    ).toEqual({ variant: 'better-price', dismissed: false })
+  })
+
+  it('keeps better-price through a refetch and closes it on a clean quote', () => {
+    expect(run([SIGNALS.betterPriceQuote, SIGNALS.refetching])).toEqual({
+      variant: 'better-price',
+      dismissed: false,
+    })
+    expect(run([SIGNALS.betterPriceQuote, SIGNALS.smallValidQuote])).toEqual(
+      INITIAL_MINT_PROMPT_STATE
+    )
+  })
+
+  it('prioritizes capacity and the closed variants over better-price', () => {
+    expect(
+      run([{ ...SIGNALS.betterPriceQuote, rawCapacity: true }])
+    ).toEqual({ variant: 'capacity', dismissed: false })
+    expect(
+      run([SIGNALS.betterPriceQuote, SIGNALS.closedImpactQuote])
+    ).toEqual({ variant: 'closed-impact', dismissed: false })
+  })
+
   it('does not let a transient error displace a latched impact or large card', () => {
     expect(run([SIGNALS.impactQuote, SIGNALS.error])).toEqual({
       variant: 'impact',
@@ -370,6 +420,7 @@ const INPUTS: MintPromptInputs = {
   mintingAvailable: true,
   mintingUnavailable: false,
   maxMintUsd: 500_000,
+  pcsxBetter: false,
 }
 
 const closed: Partial<MintPromptInputs> = {
@@ -449,6 +500,21 @@ describe('deriveMintPromptSignals', () => {
     ).toMatchObject({ rawImpact: false, rawLarge: false })
   })
 
+  it('raises better-price only for a resolved quote PCSX beats, while minting is not blocked', () => {
+    expect(
+      derive({ hasValidQuote: true, pcsxBetter: true }).rawBetterPrice
+    ).toBe(true)
+    expect(derive({ pcsxBetter: true }).rawBetterPrice).toBe(false)
+    expect(
+      derive({ ...closed, hasValidQuote: true, pcsxBetter: true })
+        .rawBetterPrice
+    ).toBe(false)
+    expect(
+      derive({ hasValidQuote: true, pcsxBetter: true, inputValue: 99 })
+        .rawBetterPrice
+    ).toBe(false)
+  })
+
   it('raises large on a valid quote at or above the large-order floor', () => {
     expect(derive({ hasValidQuote: true, inputValue: 50_000 }).rawLarge).toBe(
       true
@@ -487,6 +553,7 @@ describe('deriveMintPromptSignals', () => {
       rawCapacity: false,
       rawClosedImpact: false,
       rawClosedError: false,
+      rawBetterPrice: false,
       rawImpact: false,
       rawLarge: false,
       rawError: false,

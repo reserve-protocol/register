@@ -21,7 +21,8 @@ import { useEffect, useState, type SyntheticEvent } from 'react'
 import { createPortal } from 'react-dom'
 import { Address } from 'viem'
 import { useTrackIndexDTFClick } from '../../hooks/useTrackIndexDTFPage'
-import { getPancakeSwapUrl } from './pancake-swap'
+import { getPancakeSwapTradeUrl, getPancakeSwapUrl } from './pancake-swap'
+import { usePcsxAmountOut } from './use-pcsx-quote'
 import LargeMintCardBody from './large-mint-prompt-body'
 import {
   deriveMintPromptSignals,
@@ -58,6 +59,11 @@ const LargeMintPrompt = ({ mode, dtfAddress, chain }: LargeMintPromptProps) => {
   // the modal is open.
   const inContext = isInline || isOpen
   const hasValidQuote = !!data?.quote
+  const pcsxAmountOut = usePcsxAmountOut(chain, data?.quote)
+  const pcsxBetter =
+    !!data?.quote &&
+    !!pcsxAmountOut &&
+    BigInt(pcsxAmountOut) > BigInt(data.quote.amountOut)
   const mintingAvailable = isOndoMintingAvailable(market, assets)
   const mintingUnavailable = isOndoMintingUnavailable(market, assets)
   // Each asset only absorbs its basket weight of a mint, so the binding cap
@@ -70,6 +76,7 @@ const LargeMintPrompt = ({ mode, dtfAddress, chain }: LargeMintPromptProps) => {
     rawCapacity,
     rawClosedImpact,
     rawClosedError,
+    rawBetterPrice,
     rawImpact,
     rawLarge,
     rawError,
@@ -84,6 +91,7 @@ const LargeMintPrompt = ({ mode, dtfAddress, chain }: LargeMintPromptProps) => {
     mintingAvailable,
     mintingUnavailable,
     maxMintUsd,
+    pcsxBetter,
   })
 
   // Latch the suggestion so it persists across the zapper's periodic refetch
@@ -95,6 +103,7 @@ const LargeMintPrompt = ({ mode, dtfAddress, chain }: LargeMintPromptProps) => {
         rawCapacity,
         rawClosedImpact,
         rawClosedError,
+        rawBetterPrice,
         rawImpact,
         rawLarge,
         rawError,
@@ -107,6 +116,7 @@ const LargeMintPrompt = ({ mode, dtfAddress, chain }: LargeMintPromptProps) => {
     rawCapacity,
     rawClosedImpact,
     rawClosedError,
+    rawBetterPrice,
     rawImpact,
     rawLarge,
     rawError,
@@ -129,8 +139,17 @@ const LargeMintPrompt = ({ mode, dtfAddress, chain }: LargeMintPromptProps) => {
     chain === ChainId.BSC && state.variant !== null && !state.dismissed
 
   // PancakeSwap only needs the DTF and the trade direction — buying makes it
-  // the output currency, selling the input.
-  const swapUrl = getPancakeSwapUrl({ dtfAddress, isBuy })
+  // the output currency, selling the input. The better-price variant instead
+  // links the exact quoted trade; if the quote clears mid-refetch it falls
+  // back to the plain link until the next quote resolves.
+  const swapUrl =
+    state.variant === 'better-price' && data?.quote
+      ? getPancakeSwapTradeUrl({
+          tokenIn: data.quote.tokenIn,
+          tokenOut: data.quote.tokenOut,
+          exactAmountIn: data.input.amount,
+        })
+      : getPancakeSwapUrl({ dtfAddress, isBuy })
   // The capacity card only shows while the market is open, so the session is
   // always live. Lowercase mid-sentence, matching the closed variants.
   const sessionLabel = market?.session ?? 'regular'

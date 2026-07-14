@@ -58,7 +58,7 @@ msgstr "{0, plural, one {경매 #회 실행} other {경매 #회 실행}}"
 #. placeholder {0}: chains.length
 #. placeholder {0}: props.selected.length
 #: src/components/filters/chain/ChainFilter.tsx:79
-#: src/views/explorer/components/filters/ChainFilter.tsx:27
+#: src/views/explorer/components/filters/ChainFilter.tsx:31
 msgid "{0, plural, one {# chain} other {# chains}}"
 msgstr "{0, plural, one {Chain #개} other {Chain #개}}"
 
@@ -190,7 +190,7 @@ msgid "{0} available"
 msgstr "{0}개 사용 가능"
 
 #. placeholder {0}: dtf?.token.symbol ?? 'DTF'
-#: src/views/index-dtf/overview/components/landing-mint/dtf-balance.tsx:68
+#: src/views/index-dtf/overview/components/landing-mint/dtf-balance.tsx:84
 msgid "{0} balance"
 msgstr "{0} 잔액"
 
@@ -200,7 +200,7 @@ msgid "{0} buffer as % of mcap:"
 msgstr "시가총액 대비 {0} 버퍼 비율:"
 
 #. placeholder {0}: dtf.token.name
-#: src/views/index-dtf/overview/components/landing-mint/dtf-cover.tsx:117
+#: src/views/index-dtf/overview/components/landing-mint/dtf-cover.tsx:181
 msgid "{0} cover"
 msgstr "{0} 커버 이미지"
 
@@ -210,13 +210,13 @@ msgid "{0} DTFs"
 msgstr "{0} DTFs"
 
 #. placeholder {0}: formatPercentage(apyData.totalAPY)
-#: src/views/index-dtf/overview/components/charts/chart-overlay.tsx:72
+#: src/views/index-dtf/overview/components/charts/chart-overlay.tsx:73
 msgid "{0} Est. APY"
 msgstr "{0} 예상 APY"
 
 #. placeholder {0}: dtf.token.symbol
-#: src/views/index-dtf/overview/components/landing-mint/dtf-cover.tsx:70
-#: src/views/index-dtf/overview/components/landing-mint/dtf-cover.tsx:75
+#: src/views/index-dtf/overview/components/landing-mint/dtf-cover.tsx:105
+#: src/views/index-dtf/overview/components/landing-mint/dtf-cover.tsx:110
 msgid "{0} explainer"
 msgstr "{0} 설명"
 
@@ -662,7 +662,7 @@ msgstr "24시간 공급량 변동"
 msgid "24h Tx Volume"
 msgstr "24시간 트랜잭션 거래량"
 
-#: src/views/index-dtf/overview/components/fees-stats.tsx:74
+#: src/views/index-dtf/overview/components/fees-stats.tsx:77
 msgid "24h Volume"
 msgstr "24시간 거래량"
 
@@ -788,7 +788,7 @@ msgstr "{0} 정보"
 
 #: src/views/index-dtf/manage/components/manage-about.tsx:119
 #: src/views/index-dtf/manage/components/manage-about.tsx:122
-#: src/views/index-dtf/overview/components/index-about-overview.tsx:87
+#: src/views/index-dtf/overview/components/index-about-overview.tsx:109
 msgid "About this DTF"
 msgstr "이 DTF 소개"
 
@@ -961,7 +961,7 @@ msgstr "추가 수령인:"
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-roles.tsx:41
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-roles.tsx:50
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-optimistic-parameters.tsx:166
-#: src/views/index-dtf/settings/components/index-settings-basic.tsx:42
+#: src/views/index-dtf/settings/components/index-settings-basic.tsx:51
 #: src/views/internal/dtf-list/components/dtf-table.tsx:189
 #: src/views/internal/dtf-listed/components/listed-dtf-table.tsx:153
 #: src/views/yield-dtf/governance/components/TopVoters.tsx:90
@@ -1018,7 +1018,7 @@ msgstr "Alexios는 Compound Governor Bravo에서 채택한 표준 토큰 투표 
 #: src/views/index-dtf/overview/components/charts/percentage-change.tsx:59
 #: src/views/index-dtf/overview/components/charts/time-range-menu.tsx:38
 #: src/views/index-dtf/overview/components/charts/time-range-menu.tsx:57
-#: src/views/portfolio-page/components/portfolio-chart.tsx:51
+#: src/views/portfolio-page/components/portfolio-chart.tsx:61
 #: src/views/tokens/components/TableFilters.tsx:50
 msgid "All"
 msgstr "전체"
@@ -1064,7 +1064,7 @@ msgid "all time"
 msgstr "전체 기간"
 
 #: src/views/internal/dtf-list/components/dtf-date-chain-filters.tsx:76
-#: src/views/portfolio-page/components/portfolio-chart.tsx:41
+#: src/views/portfolio-page/components/portfolio-chart.tsx:39
 #: src/views/yield-dtf/governance/components/GovernanceOverview.tsx:128
 msgid "All time"
 msgstr "전체 기간"
@@ -1142,13 +1142,14 @@ msgstr "{symbol} 사용 허용"
 msgid "Allowing the weight control will allow the rebalance to adjust the weights of the tokens in the basket, turning this off is recommended for tracking DTFs."
 msgstr "가중치 제어를 허용하면 리밸런싱 시 바스켓 내 토큰의 가중치를 조정할 수 있습니다. tracking DTF의 경우 이 기능을 끄는 것을 권장합니다."
 
-#: src/views/portfolio-page/components/portfolio-chart.tsx:158
+#: src/views/portfolio-page/components/portfolio-chart.tsx:170
 msgid "Almost there..."
 msgstr "거의 완료되었습니다..."
 
 #: src/components/transactions/table/index.tsx:78
 #: src/views/explorer/components/revenue/index.tsx:348
 #: src/views/explorer/components/transactions/useTransactionColumns.tsx:77
+#: src/views/index-dtf/overview/components/index-transaction-table-with-swaps/columns.tsx:53
 #: src/views/index-dtf/overview/components/index-transaction-table.tsx:52
 #: src/views/yield-dtf/auctions/components/useColumns.tsx:40
 #: src/views/yield-dtf/overview/components/rtoken-transactions.tsx:110
@@ -1200,7 +1201,7 @@ msgstr "DTF의 RSR 스테이커와 투표 잠금 참여자에게 분배되거나
 #: src/views/index-dtf/deploy/steps/revenue/index.tsx:72
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/changes/revenue-changes.tsx:460
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-revenue.tsx:74
-#: src/views/index-dtf/overview/components/fees-stats.tsx:29
+#: src/views/index-dtf/overview/components/fees-stats.tsx:30
 #: src/views/index-dtf/overview/components/index-metrics-overview.tsx:183
 #: src/views/index-dtf/settings/components/index-settings-fees.tsx:122
 msgid "Annualized TVL Fee"
@@ -1337,7 +1338,7 @@ msgstr "Reserve AI에게 질문"
 msgid "Assembling different routes"
 msgstr "다양한 경로 구성 중"
 
-#: src/views/portfolio-page/components/portfolio-chart.tsx:157
+#: src/views/portfolio-page/components/portfolio-chart.tsx:169
 msgid "Assembling your chart..."
 msgstr "차트를 구성하는 중..."
 
@@ -1491,7 +1492,7 @@ msgstr "자동 Mint와 Redeem에는 스마트 계정을 지원하는 Wallet이 �
 msgid "Automated minting is an advanced feature. For most people, simple swaps are recommended."
 msgstr "자동 Mint는 고급 기능입니다. 대부분의 사용자에게는 간단한 Swap을 권장합니다."
 
-#: src/views/index-dtf/governance/components/governance-vote-lock.tsx:325
+#: src/views/index-dtf/governance/components/governance-vote-lock.tsx:331
 msgid "Automatic"
 msgstr "자동"
 
@@ -1536,7 +1537,7 @@ msgstr "사용 가능한 거래:"
 #. placeholder {1}: formatPercentage(stats.min)
 #. placeholder {2}: formatPercentage(stats.max)
 #. placeholder {3}: range === 'all' ? 'All' : range
-#: src/views/index-dtf/overview/components/charts/chart-overlay.tsx:79
+#: src/views/index-dtf/overview/components/charts/chart-overlay.tsx:80
 msgid "Avg {0} · range {1}–{2} ({3})"
 msgstr "평균 {0} · 범위 {1}–{2} ({3})"
 
@@ -1662,7 +1663,7 @@ msgstr "현재 담보 견적을 기준으로 합니다. 최종 Mint 수량은 �
 
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/dtf-settings-proposal-sections.tsx:139
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/dtf-settings-proposal-sections.tsx:140
-#: src/views/index-dtf/settings/components/index-settings-basic.tsx:29
+#: src/views/index-dtf/settings/components/index-settings-basic.tsx:38
 #: src/views/yield-dtf/deploy/components/NavigationSidebar.tsx:19
 #: src/views/yield-dtf/deploy/components/TokenParameters.tsx:123
 msgid "Basics"
@@ -1828,6 +1829,14 @@ msgstr "최고"
 msgid "Best Quote"
 msgstr "최적 견적"
 
+#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:41
+msgid "Better price found"
+msgstr ""
+
+#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:59
+msgid "Better price on PancakeSwap"
+msgstr ""
+
 #. placeholder {0}: formatCurrency( +formatUnits(currentPrice, data.buyingTokenDecimals) )
 #. placeholder {1}: data.buyingTokenSymbol
 #: src/views/yield-dtf/auctions/dutch/components/AuctionActions.tsx:96
@@ -1957,6 +1966,7 @@ msgstr "BTC"
 #: src/views/explorer/components/revenue/index.tsx:287
 #: src/views/index-dtf/auctions/legacy/components/auction-item.tsx:132
 #: src/views/index-dtf/issuance/manual/components/mode-selector.tsx:12
+#: src/views/index-dtf/overview/components/index-transaction-table-with-swaps/columns.tsx:26
 msgid "Buy"
 msgstr "매수"
 
@@ -1976,11 +1986,11 @@ msgid "Buy {0}"
 msgstr "{0} 매수"
 
 #: src/views/index-dtf/overview/components/index-ctas-overview-mobile.tsx:147
-#: src/views/index-dtf/overview/components/landing-mint/index.tsx:134
+#: src/views/index-dtf/overview/components/landing-mint/index.tsx:140
 msgid "Buy / Sell"
 msgstr "매수 / 매도"
 
-#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:231
+#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:252
 msgid "Buy on PancakeSwap"
 msgstr "PancakeSwap에서 구매"
 
@@ -2029,7 +2039,7 @@ msgstr "귀하는"
 msgid "By:"
 msgstr "제안자:"
 
-#: src/views/portfolio-page/components/portfolio-chart.tsx:156
+#: src/views/portfolio-page/components/portfolio-chart.tsx:168
 msgid "Calculating performance metrics..."
 msgstr "성과 지표를 계산하는 중..."
 
@@ -2274,7 +2284,7 @@ msgstr "청구 가능한 배출량"
 msgid "Claimed"
 msgstr "청구 완료"
 
-#: src/views/index-dtf/governance/components/governance-vote-lock.tsx:223
+#: src/views/index-dtf/governance/components/governance-vote-lock.tsx:224
 msgid "Claiming"
 msgstr "수령 중"
 
@@ -2843,7 +2853,7 @@ msgstr "Yield DTF 생성"
 msgid "Create yours"
 msgstr "직접 생성하기"
 
-#: src/views/index-dtf/overview/components/fees-stats.tsx:100
+#: src/views/index-dtf/overview/components/fees-stats.tsx:103
 #: src/views/index-dtf/overview/components/index-metrics-overview.tsx:163
 #: src/views/internal/dtf-list/components/dtf-date-chain-filters.tsx:67
 #: src/views/internal/dtf-list/components/dtf-table.tsx:198
@@ -3261,7 +3271,7 @@ msgstr "직접 RToken 배포하기"
 msgid "Deployed & minted {0}"
 msgstr "{0} 배포 및 Mint 완료"
 
-#: src/views/index-dtf/settings/components/index-settings-basic.tsx:56
+#: src/views/index-dtf/settings/components/index-settings-basic.tsx:82
 msgid "Deployer"
 msgstr "배포자"
 
@@ -3309,8 +3319,8 @@ msgstr "세부 정보 + 역할"
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/changes/auction-settings-changes.tsx:127
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/changes/auction-settings-changes.tsx:147
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/changes/auction-settings-changes.tsx:151
-#: src/views/index-dtf/settings/components/index-settings-basic.tsx:74
-#: src/views/index-dtf/settings/components/index-settings-basic.tsx:81
+#: src/views/index-dtf/settings/components/index-settings-basic.tsx:100
+#: src/views/index-dtf/settings/components/index-settings-basic.tsx:107
 msgid "Disabled"
 msgstr "비활성화됨"
 
@@ -3357,7 +3367,7 @@ msgstr "닫기"
 msgid "Dismiss invitation"
 msgstr "초대 닫기"
 
-#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:197
+#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:218
 msgid "Dismiss suggestion"
 msgstr "제안 닫기"
 
@@ -3444,7 +3454,7 @@ msgid "Download snapshot"
 msgstr "스냅샷 다운로드"
 
 #: src/views/index-dtf/manage/components/manage-about.tsx:37
-#: src/views/index-dtf/overview/components/dtf-downloadable-resources.tsx:95
+#: src/views/index-dtf/overview/components/dtf-downloadable-resources.tsx:138
 msgid "Downloadable resources"
 msgstr "다운로드 가능한 자료"
 
@@ -3470,7 +3480,7 @@ msgstr "DTF 바스켓이 재담보화 진행 중입니다."
 msgid "DTF Category Tags"
 msgstr "DTF 카테고리 태그"
 
-#: src/views/index-dtf/overview/components/landing-mint/dtf-cover.tsx:117
+#: src/views/index-dtf/overview/components/landing-mint/dtf-cover.tsx:181
 #: src/views/top100/components/top100-card.tsx:39
 msgid "DTF cover"
 msgstr "DTF 커버"
@@ -3481,7 +3491,7 @@ msgid "DTF Created"
 msgstr "DTF 생성됨"
 
 #: src/views/home/components/dtf-explainer-button.tsx:26
-#: src/views/index-dtf/overview/components/landing-mint/dtf-cover.tsx:76
+#: src/views/index-dtf/overview/components/landing-mint/dtf-cover.tsx:111
 msgid "DTF Explainer"
 msgstr "DTF 설명"
 
@@ -3554,7 +3564,7 @@ msgstr "DTF V4.0.0 업그레이드 제안이 생성되었습니다"
 msgid "DTF V5.0.0 upgrade proposal created"
 msgstr "DTF V5.0.0 업그레이드 제안이 생성되었습니다"
 
-#: src/views/index-dtf/governance/components/governance-vote-lock.tsx:91
+#: src/views/index-dtf/governance/components/governance-vote-lock.tsx:92
 msgid "DTFs governed by {voteLockSymbol}"
 msgstr "{voteLockSymbol}이(가) 거버넌스하는 DTF"
 
@@ -3761,8 +3771,8 @@ msgstr "Folio를 통해 직접 입찰을 활성화합니다."
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/changes/auction-settings-changes.tsx:127
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/changes/auction-settings-changes.tsx:147
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/changes/auction-settings-changes.tsx:151
-#: src/views/index-dtf/settings/components/index-settings-basic.tsx:74
-#: src/views/index-dtf/settings/components/index-settings-basic.tsx:81
+#: src/views/index-dtf/settings/components/index-settings-basic.tsx:100
+#: src/views/index-dtf/settings/components/index-settings-basic.tsx:107
 msgid "Enabled"
 msgstr "활성화됨"
 
@@ -4096,7 +4106,7 @@ msgstr "Deployer 종료"
 msgid "Expanded J.1 to include energy usage data and the sources and methodologies used for its calculation."
 msgstr "J.1을 확장하여 에너지 사용 데이터와 그 계산에 사용된 출처 및 방법론을 포함했습니다."
 
-#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:54
+#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:63
 msgid "Expect a worse price"
 msgstr "불리한 가격 예상"
 
@@ -4129,6 +4139,7 @@ msgstr "만료됨:"
 msgid "Expires in:"
 msgstr "만료까지:"
 
+#: src/views/index-dtf/overview/components/index-transaction-table-with-swaps/columns.tsx:88
 #: src/views/index-dtf/overview/components/index-transaction-table.tsx:87
 msgid "Explore"
 msgstr "탐색"
@@ -4168,11 +4179,11 @@ msgstr "노출 비중"
 msgid "External"
 msgstr "외부"
 
-#: src/views/index-dtf/overview/components/landing-mint/index.tsx:54
+#: src/views/index-dtf/overview/components/landing-mint/index.tsx:60
 msgid "External markets"
 msgstr "외부 마켓"
 
-#: src/views/index-dtf/overview/components/landing-mint/index.tsx:52
+#: src/views/index-dtf/overview/components/landing-mint/index.tsx:58
 msgid "External trading venues"
 msgstr "외부 거래 플랫폼"
 
@@ -4278,7 +4289,7 @@ msgstr "수수료 및 분배"
 msgid "Fees & Revenue Distribution"
 msgstr "수수료 및 수익 분배"
 
-#: src/views/index-dtf/overview/components/fees-stats.tsx:123
+#: src/views/index-dtf/overview/components/fees-stats.tsx:126
 msgid "Fees & Stats"
 msgstr "수수료 및 통계"
 
@@ -4411,11 +4422,11 @@ msgstr "찬성"
 msgid "For approved governors to fast-track proposals."
 msgstr "승인된 거버너가 제안을 신속 처리할 수 있도록 합니다."
 
-#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:137
+#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:158
 msgid "For larger amounts, split your order into multiple transactions."
 msgstr "더 큰 금액은 주문을 여러 건의 거래로 나누어 진행하세요."
 
-#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:94
+#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:115
 msgid "For larger orders, a DEX like PancakeSwap may get you a better price by routing your trade across multiple sources of liquidity."
 msgstr "대규모 주문의 경우 PancakeSwap 같은 DEX가 여러 유동성 소스로 거래를 라우팅해 더 나은 가격을 제공할 수 있습니다."
 
@@ -4457,7 +4468,7 @@ msgstr "동결 상태"
 msgid "Freezers"
 msgstr "Freezers"
 
-#: src/views/explorer/components/transactions/useTransactionColumns.tsx:109
+#: src/views/explorer/components/transactions/useTransactionColumns.tsx:115
 #: src/views/yield-dtf/overview/components/rtoken-transactions.tsx:153
 msgid "From"
 msgstr "보내는 주소"
@@ -4537,7 +4548,7 @@ msgid "Gov. Token"
 msgstr "거버넌스 토큰"
 
 #. placeholder {0}: indexDTF.token.symbol
-#: src/views/index-dtf/governance/components/governance-vote-lock.tsx:306
+#: src/views/index-dtf/governance/components/governance-vote-lock.tsx:312
 msgid "Govern ${0}"
 msgstr "${0} 거버넌스"
 
@@ -4730,7 +4741,7 @@ msgid "High liquidity"
 msgstr "높은 유동성"
 
 #: src/views/index-dtf/auctions/views/rebalance/components/rebalance-liquidity-checker.tsx:244
-#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:41
+#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:48
 #: src/views/index-dtf/governance/views/propose/basket/components/proposal-liquidity-checker.tsx:311
 msgid "High price impact"
 msgstr "높은 가격 영향"
@@ -4945,7 +4956,7 @@ msgstr "Index DTF가 성공적으로 생성되었습니다"
 #: src/components/command-menu/index.tsx:67
 #: src/views/home/components/dtf-tabs.tsx:24
 #: src/views/portfolio-page/components/portfolio-breakdown.tsx:36
-#: src/views/portfolio-page/components/portfolio-chart.tsx:67
+#: src/views/portfolio-page/components/portfolio-chart.tsx:77
 msgid "Index DTFs"
 msgstr "Index DTFs"
 
@@ -5239,7 +5250,7 @@ msgstr "알려진 지원 Wallet"
 msgid "Language"
 msgstr "언어"
 
-#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:36
+#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:43
 msgid "Large Order"
 msgstr "대규모 주문"
 
@@ -5286,7 +5297,7 @@ msgstr "시작 중..."
 #: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:339
 #: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:370
 #: src/views/index-dtf/overview/components/index-ctas-overview-mobile.tsx:62
-#: src/views/index-dtf/overview/components/landing-mint/index.tsx:120
+#: src/views/index-dtf/overview/components/landing-mint/index.tsx:126
 msgid "Learn More"
 msgstr "자세히 보기"
 
@@ -5413,7 +5424,7 @@ msgstr "토큰 목록을 불러오는 중입니다... 다시 시도해 주세요
 msgid "Loading trades..."
 msgstr "거래 불러오는 중..."
 
-#: src/views/portfolio-page/components/portfolio-chart.tsx:154
+#: src/views/portfolio-page/components/portfolio-chart.tsx:166
 msgid "Loading your portfolio data..."
 msgstr "포트폴리오 데이터를 불러오는 중..."
 
@@ -5527,7 +5538,7 @@ msgstr "진행하기 전에 가중치를 관리하세요"
 #: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:40
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-metadata.tsx:51
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/optimistic.ts:126
-#: src/views/index-dtf/settings/components/index-settings-basic.tsx:49
+#: src/views/index-dtf/settings/components/index-settings-basic.tsx:58
 #: src/views/yield-dtf/deploy/components/TokenForm.tsx:50
 #: src/views/yield-dtf/settings/components/basic-info.tsx:21
 msgid "Mandate"
@@ -5547,7 +5558,7 @@ msgstr "Mandate는 필수입니다"
 msgid "Mandate Update"
 msgstr "권한 업데이트"
 
-#: src/views/index-dtf/governance/components/governance-vote-lock.tsx:345
+#: src/views/index-dtf/governance/components/governance-vote-lock.tsx:351
 msgid "Manual"
 msgstr "수동"
 
@@ -5567,7 +5578,7 @@ msgstr "수동 Redeem"
 msgid "Manually estimated APY calculated from basket averaged yield."
 msgstr "바스켓 평균 수익을 바탕으로 수동 산정한 예상 APY입니다."
 
-#: src/views/index-dtf/overview/components/dtf-downloadable-resources.tsx:65
+#: src/views/index-dtf/overview/components/dtf-downloadable-resources.tsx:66
 msgid "Markdown file for your LLM"
 msgstr "LLM용 Markdown 파일"
 
@@ -5585,7 +5596,7 @@ msgstr "시장 접근 및 상환 위험: Ondo Tokenized Stocks의 Mint와 Redeem
 #: src/views/index-dtf/overview/components/basket-overview/mobile-collateral-rows.tsx:103
 #: src/views/index-dtf/overview/components/basket-overview/mobile-exposure-rows.tsx:121
 #: src/views/index-dtf/overview/components/charts/data-type-selector.tsx:12
-#: src/views/index-dtf/overview/components/fees-stats.tsx:59
+#: src/views/index-dtf/overview/components/fees-stats.tsx:60
 #: src/views/index-dtf/overview/components/index-metrics-overview.tsx:76
 #: src/views/internal/dtf-list/components/dtf-table.tsx:192
 #: src/views/portfolio-page/components/dtf-positions.tsx:121
@@ -5758,6 +5769,7 @@ msgstr "경미한 텍스트 수정"
 #: src/views/index-dtf/issuance/async-mint/steps/configure-mint.tsx:151
 #: src/views/index-dtf/issuance/async-mint/steps/success.tsx:149
 #: src/views/index-dtf/issuance/manual/components/index-manual-issuance.tsx:195
+#: src/views/index-dtf/overview/components/index-transaction-table-with-swaps/columns.tsx:23
 #: src/views/index-dtf/overview/components/index-transaction-table.tsx:24
 #: src/views/yield-dtf/issuance/components/issue/Issue.tsx:97
 #: src/views/yield-dtf/issuance/components/zapV2/ZapTabs.tsx:22
@@ -5866,11 +5878,11 @@ msgstr "현재 Mint 가능"
 msgid "Minted"
 msgstr "Mint됨"
 
-#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:156
+#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:177
 msgid "Minting {symbol} is currently unavailable and we couldn't find another route to buy it."
 msgstr "현재 {symbol} Mint를 이용할 수 없으며 매수할 다른 경로를 찾지 못했습니다."
 
-#: src/views/index-dtf/overview/components/fees-stats.tsx:46
+#: src/views/index-dtf/overview/components/fees-stats.tsx:47
 #: src/views/index-dtf/overview/components/index-metrics-overview.tsx:195
 #: src/views/index-dtf/settings/components/index-settings-fees.tsx:133
 msgid "Minting Fee"
@@ -5924,7 +5936,7 @@ msgstr "월간 P&L"
 msgid "More"
 msgstr "더 보기"
 
-#: src/views/index-dtf/overview/components/dtf-downloadable-resources.tsx:98
+#: src/views/index-dtf/overview/components/dtf-downloadable-resources.tsx:141
 msgid "More information on what {dtfName} is, what it’s all about, methodology and thesis."
 msgstr "{dtfName}이(가) 무엇인지, 어떤 프로젝트인지, 방법론과 투자 논리에 대한 자세한 정보입니다."
 
@@ -5964,7 +5976,7 @@ msgstr "0에서 100 사이여야 합니다"
 #: src/views/home/components/discover-index-dtf/index-dtf-table-placeholder.tsx:17
 #: src/views/index-dtf/deploy/steps/metadata/form-basic-metadata.tsx:10
 #: src/views/index-dtf/overview/components/eligibility-card.tsx:107
-#: src/views/index-dtf/settings/components/index-settings-basic.tsx:31
+#: src/views/index-dtf/settings/components/index-settings-basic.tsx:40
 #: src/views/portfolio-page/components/dtf-positions.tsx:31
 #: src/views/portfolio-page/components/rsr-section.tsx:18
 #: src/views/top100/components/top100-table-placeholder.tsx:9
@@ -6025,7 +6037,7 @@ msgstr "순성과 요약"
 msgid "Network"
 msgstr "Network"
 
-#: src/views/explorer/components/filters/ChainFilter.tsx:22
+#: src/views/explorer/components/filters/ChainFilter.tsx:26
 msgid "Networks"
 msgstr "Networks"
 
@@ -6171,7 +6183,7 @@ msgstr "이 Redeem에는 담보 Swap이 필요하지 않았습니다."
 msgid "No data"
 msgstr "데이터 없음"
 
-#: src/views/portfolio-page/components/portfolio-chart.tsx:263
+#: src/views/portfolio-page/components/portfolio-chart.tsx:278
 msgid "No data available"
 msgstr "사용 가능한 데이터가 없습니다"
 
@@ -6255,7 +6267,7 @@ msgstr "결과를 찾을 수 없습니다."
 msgid "No results."
 msgstr "결과 없음."
 
-#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:38
+#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:45
 msgid "No route found"
 msgstr "경로를 찾을 수 없음"
 
@@ -6574,7 +6586,7 @@ msgstr "Optimistic 제안자"
 msgid "or drag and drop it here"
 msgstr "또는 여기에 드래그 앤 드롭하세요"
 
-#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:52
+#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:61
 msgid "Order too large"
 msgstr "주문이 너무 큽니다"
 
@@ -6608,12 +6620,12 @@ msgid "Other config"
 msgstr "기타 설정"
 
 #: src/views/earn/views/index-dtf/components/vote-lock-positions.tsx:106
-#: src/views/index-dtf/governance/components/governance-vote-lock.tsx:77
+#: src/views/index-dtf/governance/components/governance-vote-lock.tsx:78
 msgid "other DTF"
 msgstr "기타 DTF"
 
 #: src/views/earn/views/index-dtf/components/vote-lock-positions.tsx:108
-#: src/views/index-dtf/governance/components/governance-vote-lock.tsx:79
+#: src/views/index-dtf/governance/components/governance-vote-lock.tsx:80
 msgid "other DTFs"
 msgstr "기타 DTF"
 
@@ -6658,6 +6670,14 @@ msgstr "Owner 주소"
 msgid "Owners"
 msgstr "Owners"
 
+#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:103
+msgid "PancakeSwap is currently offering a better price for this exact order. We recommend buying {symbol} there instead."
+msgstr ""
+
+#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:108
+msgid "PancakeSwap is currently offering a better price for this exact order. We recommend selling {symbol} there instead."
+msgstr ""
+
 #: src/views/index-dtf/governance/components/proposal-preview/raw-call-preview.tsx:28
 #: src/views/index-dtf/governance/components/proposal-preview/rebalance-preview/legacy-basket-proposal-preview.tsx:305
 #: src/views/index-dtf/governance/views/propose/basket/components/proposal-basket-preview.tsx:388
@@ -6688,7 +6708,7 @@ msgstr "통과됨"
 msgid "Past Price"
 msgstr "과거 가격"
 
-#: src/views/index-dtf/overview/components/landing-mint/dtf-balance.tsx:103
+#: src/views/index-dtf/overview/components/landing-mint/dtf-balance.tsx:116
 msgid "Past week"
 msgstr "지난주"
 
@@ -6831,7 +6851,7 @@ msgstr "무허가 입찰"
 #: src/views/index-dtf/deploy/steps/auctions/auctions-form.tsx:55
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/changes/auction-settings-changes.tsx:119
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-auction-settings.tsx:27
-#: src/views/index-dtf/settings/components/index-settings-basic.tsx:79
+#: src/views/index-dtf/settings/components/index-settings-basic.tsx:105
 msgid "Permissionless Bids"
 msgstr "허가 없는 입찰"
 
@@ -6855,7 +6875,7 @@ msgid "PHOTON packs multiple collateral assets into one DTF token"
 msgstr "PHOTON은 여러 담보 자산을 하나의 DTF 토큰으로 묶습니다"
 
 #: src/components/transactions/table/index.tsx:92
-#: src/views/explorer/components/transactions/useTransactionColumns.tsx:132
+#: src/views/explorer/components/transactions/useTransactionColumns.tsx:138
 #: src/views/index-dtf/deploy/steps/revenue/revenue-distribution-settings.tsx:27
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-revenue-distribution.tsx:234
 msgid "Platform"
@@ -6873,8 +6893,8 @@ msgstr "플랫폼 익스포저"
 msgid "Platforms"
 msgstr "플랫폼"
 
-#: src/views/index-dtf/overview/components/landing-mint/dtf-cover.tsx:142
-#: src/views/index-dtf/overview/components/landing-mint/dtf-cover.tsx:153
+#: src/views/index-dtf/overview/components/landing-mint/dtf-cover.tsx:210
+#: src/views/index-dtf/overview/components/landing-mint/dtf-cover.tsx:221
 msgid "Play video"
 msgstr "동영상 재생"
 
@@ -7463,11 +7483,11 @@ msgstr "리스크 알아보기"
 msgid "Read docs"
 msgstr "문서 보기"
 
-#: src/views/index-dtf/overview/components/index-about-overview.tsx:127
+#: src/views/index-dtf/overview/components/index-about-overview.tsx:149
 msgid "Read less"
 msgstr "접기"
 
-#: src/views/index-dtf/overview/components/index-about-overview.tsx:102
+#: src/views/index-dtf/overview/components/index-about-overview.tsx:124
 #: src/views/yield-dtf/issuance/components/warnings/index.tsx:67
 #: src/views/yield-dtf/issuance/components/warnings/index.tsx:101
 #: src/views/yield-dtf/staking/components/trading-paused-banner.tsx:33
@@ -7570,6 +7590,7 @@ msgstr "레코드 제한"
 #: src/views/index-dtf/issuance/async-mint/steps/configure-mint.tsx:154
 #: src/views/index-dtf/issuance/async-mint/steps/success.tsx:152
 #: src/views/index-dtf/issuance/manual/components/index-manual-issuance.tsx:195
+#: src/views/index-dtf/overview/components/index-transaction-table-with-swaps/columns.tsx:24
 #: src/views/index-dtf/overview/components/index-transaction-table.tsx:25
 #: src/views/yield-dtf/issuance/components/redeem/RedeemInput.tsx:16
 #: src/views/yield-dtf/issuance/components/zapV2/ZapTabs.tsx:24
@@ -7636,7 +7657,7 @@ msgstr "Redeem됨"
 msgid "Redeeming {0} for {1}."
 msgstr "{0}을(를) {1}(으)로 Redeem하는 중입니다."
 
-#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:161
+#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:182
 msgid "Redeeming {symbol} is currently unavailable and we couldn't find another route to sell it."
 msgstr "현재 {symbol} Redeem을 이용할 수 없으며 매도할 다른 경로를 찾지 못했습니다."
 
@@ -7914,7 +7935,7 @@ msgstr "리소스"
 msgid "Restricted in your region"
 msgstr "거주 지역에서 제한됨"
 
-#: src/views/portfolio-page/components/portfolio-chart.tsx:155
+#: src/views/portfolio-page/components/portfolio-chart.tsx:167
 msgid "Retrieving historical prices..."
 msgstr "과거 가격을 가져오는 중..."
 
@@ -8100,7 +8121,7 @@ msgstr "리워드 비율 (소수)"
 msgid "Reward Token"
 msgstr "리워드 토큰"
 
-#: src/views/index-dtf/governance/components/governance-vote-lock.tsx:172
+#: src/views/index-dtf/governance/components/governance-vote-lock.tsx:173
 msgid "Reward tokens"
 msgstr "보상 토큰"
 
@@ -8116,7 +8137,7 @@ msgstr "사용 가능한 리워드"
 msgid "Rewards claimed"
 msgstr "청구된 리워드"
 
-#: src/views/index-dtf/governance/components/governance-vote-lock.tsx:216
+#: src/views/index-dtf/governance/components/governance-vote-lock.tsx:217
 msgid "Rewards in"
 msgstr "보상 토큰"
 
@@ -8420,7 +8441,8 @@ msgstr "{0}을(를) Vote-lock하면 자가 위임이 자동으로 이루어집�
 #: src/views/index-dtf/auctions/legacy/components/auction-item.tsx:90
 #: src/views/index-dtf/issuance/manual/components/mode-selector.tsx:13
 #: src/views/index-dtf/overview/components/index-ctas-overview-mobile.tsx:147
-#: src/views/index-dtf/overview/components/landing-mint/index.tsx:134
+#: src/views/index-dtf/overview/components/index-transaction-table-with-swaps/columns.tsx:27
+#: src/views/index-dtf/overview/components/landing-mint/index.tsx:140
 msgid "Sell"
 msgstr "매도"
 
@@ -8440,7 +8462,7 @@ msgstr "${0} 판매"
 msgid "Sell collateral"
 msgstr "담보 매도"
 
-#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:233
+#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:254
 msgid "Sell on PancakeSwap"
 msgstr "PancakeSwap에서 판매"
 
@@ -8602,12 +8624,14 @@ msgid "show less"
 msgstr "간략히 보기"
 
 #: src/views/index-dtf/governance/components/governance-proposal-list.tsx:76
+#: src/views/index-dtf/settings/components/index-settings-basic.tsx:73
 #: src/views/portfolio-page/components/expand-toggle.tsx:33
 #: src/views/yield-dtf/issuance/components/zapV2/submit/ZapSubmitModal.tsx:61
 msgid "Show less"
 msgstr "간략히 표시"
 
 #: src/components/transaction-modal/ShowMore.tsx:21
+#: src/views/index-dtf/settings/components/index-settings-basic.tsx:73
 #: src/views/yield-dtf/issuance/components/zapV2/submit/ZapSubmitModal.tsx:61
 msgid "Show more"
 msgstr "더 보기"
@@ -8924,7 +8948,7 @@ msgstr "Staked"
 
 #: src/views/explorer/components/tokens/index.tsx:160
 #: src/views/portfolio-page/components/portfolio-breakdown.tsx:38
-#: src/views/portfolio-page/components/portfolio-chart.tsx:65
+#: src/views/portfolio-page/components/portfolio-chart.tsx:75
 #: src/views/yield-dtf/overview/components/backing/backing-overview.tsx:94
 #: src/views/yield-dtf/overview/components/collateral-pie-chart-wrapper.tsx:106
 #: src/views/yield-dtf/staking/components/overview/staking-metrics.tsx:26
@@ -9250,7 +9274,7 @@ msgstr "타깃:"
 msgid "Target(s)"
 msgstr "타깃"
 
-#: src/views/index-dtf/overview/components/dtf-downloadable-resources.tsx:62
+#: src/views/index-dtf/overview/components/dtf-downloadable-resources.tsx:63
 msgid "Tear Sheet"
 msgstr "티어 시트"
 
@@ -9269,7 +9293,7 @@ msgstr "Telegram 링크"
 msgid "Telegram username"
 msgstr "Telegram 사용자명"
 
-#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:56
+#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:65
 msgid "Temporarily unavailable"
 msgstr "일시적으로 이용 불가"
 
@@ -9358,7 +9382,7 @@ msgstr "long freezer는 RToken 시스템을 장기간 동결할 수 있는 권�
 msgid "The mandate describes what goals its governors should try to achieve. By briefly explaining the RToken's purpose and what the RToken is intended to do, it provides common ground for the governors to decide upon priorities and how to weigh tradeoffs."
 msgstr "맨데이트는 거버너가 달성해야 할 목표를 설명합니다. RToken의 목적과 RToken이 의도하는 바를 간략히 설명함으로써, 거버너가 우선순위를 정하고 트레이드오프를 어떻게 따져볼지 결정하는 데 공통의 기반을 제공합니다."
 
-#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:70
+#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:79
 msgid "The market reopens {nextOpenLabel}."
 msgstr "시장은 {nextOpenLabel}에 다시 열립니다."
 
@@ -9449,6 +9473,10 @@ msgstr "Reserve AI Capacity & Neocloud DTF(NEOCLOUD)는 AI 인프라 구축의 �
 msgid "The Reserve AI Infrastructure DTF (BUILDOUT) is a weighted basket of public, US-listed semiconductor and hardware companies at the center of the AI buildout. Before any model can run, someone has to build the machine: the chips that compute, the memory that feeds them, the equipment and foundries that make them, and the power that runs it all. The BUILDOUT DTF gives you direct exposure to the picks and shovels of the AI buildout: the semiconductors, memory, manufacturing equipment, networking, and power that every AI dollar flows through first. The basket holds the 25 largest US-listed companies across this AI hardware stack, weighted by market capitalization with a 10% cap, rebalanced quarterly. The BUILDOUT DTF bundles Ondo Global Markets tokenized stocks, each of which represents an actual share held in a regulated US brokerage account."
 msgstr "Reserve AI Infrastructure DTF(BUILDOUT)는 AI 인프라 구축의 중심에 있는 미국 상장 반도체 및 하드웨어 공개 기업들로 구성된 가중 바스켓입니다. 어떤 모델이든 실행되기 전에 누군가는 그 기계를 만들어야 합니다. 연산을 수행하는 칩, 칩에 데이터를 공급하는 메모리, 이를 만드는 장비와 파운드리, 그리고 모든 것을 구동하는 전력이 필요합니다. BUILDOUT DTF는 AI 구축의 핵심 도구에 직접 노출됩니다. 모든 AI 투자금이 먼저 통과하는 반도체, 메모리, 제조 장비, 네트워킹, 전력입니다. 이 바스켓은 AI 하드웨어 스택 전반의 미국 상장 기업 중 가장 큰 25개 기업을 보유하며, 시가총액 가중 방식에 10% 상한을 적용하고 분기마다 리밸런싱합니다. BUILDOUT DTF는 Ondo Global Markets의 토큰화 주식을 묶으며, 각 토큰화 주식은 규제받는 미국 증권 계좌에 보관된 실제 주식 1주를 나타냅니다."
 
+#: src/views/home/components/highlighted-dtfs/transcript-copy.ts:7
+msgid "The Reserve AI Photonics DTF (PHOTON) is a weighted basket of public, US-listed photonics companies at the center of the AI buildout. Inside AI data centers, light is replacing copper wire: as AI chips get faster and more data-hungry, the bottleneck shifts from computing the data to moving it, and copper hits a physical wall of heat, power loss, and limited reach. The PHOTON DTF gives you direct exposure to the companies making that shift: the fiber, lasers, transceivers, and optical chips that have become the central nervous system of the AI data center. The basket is composed of companies that generate significant revenue from AI data-center photonics demand, weighted by market capitalization with a 20% cap and a $5B minimum market cap, rebalanced quarterly. The PHOTON DTF bundles Ondo Global Markets tokenized stocks, each of which represents an actual share held in a regulated US brokerage account."
+msgstr "Reserve AI Photonics DTF(PHOTON)는 AI 인프라 구축의 중심에 있는 미국 상장 포토닉스 공개 기업들로 구성된 가중 바스켓입니다. AI 데이터센터 안에서는 빛이 구리선을 대체하고 있습니다. AI 칩이 더 빨라지고 더 많은 데이터를 요구할수록 병목은 데이터를 계산하는 일에서 데이터를 이동하는 일로 옮겨가며, 구리는 발열, 전력 손실, 제한된 도달거리라는 물리적 한계에 부딪힙니다. PHOTON DTF는 이러한 전환을 만드는 기업들, 즉 AI 데이터센터의 중추 신경계가 된 광섬유, 레이저, 트랜시버, 광학 칩 기업에 직접 노출됩니다. 이 바스켓은 AI 데이터센터 포토닉스 수요에서 의미 있는 매출을 창출하는 기업들로 구성되며, 시가총액 가중 방식에 20% 상한과 $5B 최소 시가총액 조건을 적용하고 분기마다 리밸런싱합니다. PHOTON DTF는 Ondo Global Markets의 토큰화 주식을 묶으며, 각 토큰화 주식은 규제받는 미국 증권 계좌에 보관된 실제 주식 1주를 나타냅니다."
+
 #: src/views/home/components/highlighted-dtfs/transcript-copy.ts:10
 msgid "The Reserve AI Power DTF (POWER) is a weighted basket of public, US-listed power companies at the center of the AI buildout. Strip away the software and the chips, and AI comes down to electricity: a single AI data center can draw as much power as a small city, and the grid was never built for hundreds of them. The POWER DTF gives you direct exposure to the companies that generate, move, and condition that electricity: the gas turbines, nuclear plants, grid and electrical equipment, and power chips behind the AI buildout. The basket is composed of companies that generate significant revenue from AI data-center power demand, weighted by market capitalization with a 20% cap and a $10B minimum market cap, rebalanced quarterly. The POWER DTF bundles Ondo Global Markets tokenized stocks, each of which represents an actual share held in a regulated US brokerage account."
 msgstr "Reserve AI Power DTF(POWER)는 AI 인프라 구축의 중심에 있는 미국 상장 전력 공개 기업들로 구성된 가중 바스켓입니다. 소프트웨어와 칩을 걷어내면 AI는 결국 전기입니다. 하나의 AI 데이터센터는 작은 도시만큼의 전력을 끌어쓸 수 있고, 전력망은 그런 데이터센터 수백 개를 위해 설계된 적이 없습니다. POWER DTF는 그 전기를 생산하고, 이동시키고, 안정화하는 기업들에 직접 노출됩니다. AI 구축 뒤에 있는 가스터빈, 원자력 발전소, 전력망 및 전기 장비, 전력 반도체 기업들입니다. 이 바스켓은 AI 데이터센터 전력 수요에서 의미 있는 매출을 창출하는 기업들로 구성되며, 시가총액 가중 방식에 20% 상한과 $10B 최소 시가총액 조건을 적용하고 분기마다 리밸런싱합니다. POWER DTF는 Ondo Global Markets의 토큰화 주식을 묶으며, 각 토큰화 주식은 규제받는 미국 증권 계좌에 보관된 실제 주식 1주를 나타냅니다."
@@ -9461,10 +9489,6 @@ msgstr "Reserve Index Protocol은 DTF 보유자와 거버너의 안전성과 경
 #: src/views/index-dtf/deploy/steps/auctions/index.tsx:7
 msgid "The Reserve Index Protocol uses dutch auctions any time when modifying token weights in the basket. A dutch auction is a type of auction where the token on sale starts at a high price, with the price lowering gradually until buyers place enough bids to fill the lot."
 msgstr "Reserve Index Protocol은 바스켓의 토큰 가중치를 수정할 때마다 더치 경매를 사용합니다. 더치 경매는 판매 토큰이 높은 가격에서 시작하여, 구매자가 해당 물량을 채울 만큼 충분히 입찰할 때까지 가격이 점진적으로 낮아지는 경매 방식입니다."
-
-#: src/views/home/components/highlighted-dtfs/transcript-copy.ts:7
-msgid "The Reserve AI Photonics DTF (PHOTON) is a weighted basket of public, US-listed photonics companies at the center of the AI buildout. Inside AI data centers, light is replacing copper wire: as AI chips get faster and more data-hungry, the bottleneck shifts from computing the data to moving it, and copper hits a physical wall of heat, power loss, and limited reach. The PHOTON DTF gives you direct exposure to the companies making that shift: the fiber, lasers, transceivers, and optical chips that have become the central nervous system of the AI data center. The basket is composed of companies that generate significant revenue from AI data-center photonics demand, weighted by market capitalization with a 20% cap and a $5B minimum market cap, rebalanced quarterly. The PHOTON DTF bundles Ondo Global Markets tokenized stocks, each of which represents an actual share held in a regulated US brokerage account."
-msgstr "Reserve AI Photonics DTF(PHOTON)는 AI 인프라 구축의 중심에 있는 미국 상장 포토닉스 공개 기업들로 구성된 가중 바스켓입니다. AI 데이터센터 안에서는 빛이 구리선을 대체하고 있습니다. AI 칩이 더 빨라지고 더 많은 데이터를 요구할수록 병목은 데이터를 계산하는 일에서 데이터를 이동하는 일로 옮겨가며, 구리는 발열, 전력 손실, 제한된 도달거리라는 물리적 한계에 부딪힙니다. PHOTON DTF는 이러한 전환을 만드는 기업들, 즉 AI 데이터센터의 중추 신경계가 된 광섬유, 레이저, 트랜시버, 광학 칩 기업에 직접 노출됩니다. 이 바스켓은 AI 데이터센터 포토닉스 수요에서 의미 있는 매출을 창출하는 기업들로 구성되며, 시가총액 가중 방식에 20% 상한과 $5B 최소 시가총액 조건을 적용하고 분기마다 리밸런싱합니다. PHOTON DTF는 Ondo Global Markets의 토큰화 주식을 묶으며, 각 토큰화 주식은 규제받는 미국 증권 계좌에 보관된 실제 주식 1주를 나타냅니다."
 
 #: src/views/home/components/register-about.tsx:98
 msgid "The Reserve Project"
@@ -9609,7 +9633,7 @@ msgstr "이 자산은 {0} 기간 동안 바스켓에 추가되었습니다"
 msgid "This DTF"
 msgstr "이 DTF"
 
-#: src/views/index-dtf/overview/components/landing-mint/index.tsx:94
+#: src/views/index-dtf/overview/components/landing-mint/index.tsx:100
 msgid "This DTF can only be sold"
 msgstr "이 DTF는 매도만 가능합니다"
 
@@ -9644,7 +9668,7 @@ msgid "This DTF is no longer actively governed and can only be sold. This DTF ca
 msgstr "이 DTF는 더 이상 적극적으로 거버넌스되지 않으며 매각만 가능합니다. 이 DTF는 바스켓을 리밸런싱할 수 없으며 새로운 ${0} 토큰도 Mint할 수 없습니다."
 
 #. placeholder {0}: dtf?.token.symbol
-#: src/views/index-dtf/overview/components/landing-mint/index.tsx:97
+#: src/views/index-dtf/overview/components/landing-mint/index.tsx:103
 msgid "This DTF is no longer actively governed, cannot rebalance, and no new ${0} can be created."
 msgstr "이 DTF는 더 이상 활발히 거버넌스되지 않으며, 리밸런싱할 수 없고, 새로운 ${0}을(를) 생성할 수 없습니다."
 
@@ -9716,7 +9740,7 @@ msgid "This was originally a fast proposal that did not pass governance. Please 
 msgstr "이 제안은 원래 거버넌스를 통과하지 못한 Fast 제안이었습니다. 이의가 제기된 이 제안의 세부 사항을 면밀히 검토하세요."
 
 #: src/components/rtoken-setup/token/TokenForm.tsx:30
-#: src/views/index-dtf/settings/components/index-settings-basic.tsx:37
+#: src/views/index-dtf/settings/components/index-settings-basic.tsx:46
 #: src/views/yield-dtf/deploy/components/TokenForm.tsx:31
 msgid "Ticker"
 msgstr "티커"
@@ -9730,9 +9754,10 @@ msgid "Ticker - symbol eg. USD+"
 msgstr "티커 - 심볼 예: USD+"
 
 #: src/components/transactions/table/index.tsx:88
-#: src/views/explorer/components/transactions/useTransactionColumns.tsx:105
+#: src/views/explorer/components/transactions/useTransactionColumns.tsx:111
 #: src/views/index-dtf/auctions/views/rebalance/components/auction-bids-chart.tsx:213
 #: src/views/index-dtf/auctions/views/rebalance/components/auction-bids-chart.tsx:322
+#: src/views/index-dtf/overview/components/index-transaction-table-with-swaps/columns.tsx:74
 #: src/views/index-dtf/overview/components/index-transaction-table.tsx:73
 #: src/views/yield-dtf/overview/components/rtoken-transactions.tsx:147
 msgid "Time"
@@ -9929,7 +9954,7 @@ msgstr "상위 100개 DTFs"
 msgid "Top voting addresses"
 msgstr "상위 투표 주소"
 
-#: src/views/portfolio-page/components/portfolio-chart.tsx:115
+#: src/views/portfolio-page/components/portfolio-chart.tsx:125
 msgid "Total"
 msgstr "합계"
 
@@ -10006,7 +10031,7 @@ msgstr "{0}을(를) 담보로 거래"
 msgid "Trade remaining {0} into collateral"
 msgstr "남은 {0}을(를) 담보로 거래"
 
-#: src/views/index-dtf/components/zapper/large-mint-prompt.tsx:202
+#: src/views/index-dtf/components/zapper/large-mint-prompt.tsx:221
 msgid "Trade suggestion"
 msgstr "거래 제안"
 
@@ -10083,7 +10108,7 @@ msgstr "{0}에 거래가 재개됩니다."
 msgid "Trading Timelock"
 msgstr "Trading Timelock"
 
-#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:43
+#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:50
 msgid "Trading unavailable"
 msgstr "거래 불가"
 
@@ -10161,6 +10186,7 @@ msgstr "트랜잭션 성공!"
 #: src/components/layout/navigation/TokenNavigation.tsx:183
 #: src/views/explorer/components/transactions/index.tsx:38
 #: src/views/explorer/index.tsx:33
+#: src/views/index-dtf/overview/components/index-transaction-table-with-swaps/index.tsx:39
 #: src/views/index-dtf/overview/components/index-transaction-table.tsx:152
 #: src/views/portfolio-page/components/transactions.tsx:162
 #: src/views/yield-dtf/overview/components/rtoken-transactions.tsx:222
@@ -10174,6 +10200,7 @@ msgstr "트랜잭션이 서명되었습니다!"
 #: src/components/transactions/table/index.tsx:48
 #: src/views/explorer/components/filters/TransactionTypeFilter.tsx:13
 #: src/views/explorer/components/transactions/useTransactionColumns.tsx:28
+#: src/views/index-dtf/overview/components/index-transaction-table-with-swaps/columns.tsx:25
 #: src/views/index-dtf/overview/components/index-transaction-table.tsx:26
 #: src/views/yield-dtf/overview/components/rtoken-transactions.tsx:77
 msgid "Transfer"
@@ -10214,15 +10241,15 @@ msgstr "필터를 조정하거나 나중에 다시 확인해 보세요"
 msgid "Try again"
 msgstr "다시 시도"
 
-#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:73
+#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:82
 msgid "Try again during {nextSessionLabel} hours in the US."
 msgstr "미국 {nextSessionLabel} 시간대에 다시 시도해 주세요."
 
-#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:75
+#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:84
 msgid "Try again later when trading resumes."
 msgstr "거래가 재개되면 나중에 다시 시도해 주세요."
 
-#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:58
+#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:67
 msgid "Try PancakeSwap"
 msgstr "PancakeSwap 시도"
 
@@ -10284,6 +10311,7 @@ msgstr "Txs"
 
 #: src/components/transactions/table/index.tsx:67
 #: src/views/explorer/components/transactions/useTransactionColumns.tsx:69
+#: src/views/index-dtf/overview/components/index-transaction-table-with-swaps/columns.tsx:41
 #: src/views/index-dtf/overview/components/index-transaction-table.tsx:40
 #: src/views/index-dtf/overview/components/yield-index/yield-index-composition-tabs.tsx:14
 #: src/views/portfolio-page/components/transactions.tsx:101
@@ -10338,7 +10366,7 @@ msgstr "리밸런싱 데이터를 가져오는 중 예기치 않은 오류가 �
 msgid "Unfreeze"
 msgstr "동결 해제"
 
-#: src/views/index-dtf/overview/components/fees-stats.tsx:87
+#: src/views/index-dtf/overview/components/fees-stats.tsx:90
 #: src/views/index-dtf/overview/components/index-metrics-overview.tsx:88
 msgid "Unique Holders"
 msgstr "고유 보유자 수"
@@ -10600,7 +10628,7 @@ msgstr "업그레이드 대상"
 msgid "Uploading files..."
 msgstr "파일 업로드 중..."
 
-#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:211
+#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:232
 msgid "US stock market hours are <0>9:30 AM</0> to <1>4:00 PM</1> Eastern Time. Current time is: <2>{currentTimeLabel} ET</2>. Please try again in <3>{reopenInLabel}</3>."
 msgstr "미국 주식 시장 시간은 동부 시간 기준 <0>9:30 AM</0>부터 <1>4:00 PM</1>까지입니다. 현재 시간: <2>{currentTimeLabel} ET</2>. <3>{reopenInLabel}</3> 후 다시 시도하세요."
 
@@ -10724,7 +10752,7 @@ msgstr "트랜잭션 확인 중..."
 
 #: src/components/rtoken-setup/basket/PluginItem.tsx:64
 #: src/views/explorer/components/collaterals/index.tsx:136
-#: src/views/index-dtf/settings/components/index-settings-basic.tsx:66
+#: src/views/index-dtf/settings/components/index-settings-basic.tsx:92
 msgid "Version"
 msgstr "버전"
 
@@ -10892,7 +10920,7 @@ msgid "View PDF →"
 msgstr "PDF 보기 →"
 
 #: src/views/index-dtf/overview/components/index-ctas-overview-mobile.tsx:160
-#: src/views/index-dtf/overview/components/landing-mint/dtf-balance.tsx:85
+#: src/views/index-dtf/overview/components/landing-mint/dtf-balance.tsx:98
 msgid "View portfolio"
 msgstr "포트폴리오 보기"
 
@@ -10908,7 +10936,7 @@ msgstr "투표 잠금한 여러 DTF의 제안을 확인하세요."
 msgid "View quotes"
 msgstr "견적 보기"
 
-#: src/views/index-dtf/governance/components/governance-vote-lock.tsx:146
+#: src/views/index-dtf/governance/components/governance-vote-lock.tsx:147
 msgid "View reward tokens"
 msgstr "보상 토큰 보기"
 
@@ -10916,6 +10944,7 @@ msgstr "보상 토큰 보기"
 msgid "View settle tx"
 msgstr "정산 트랜잭션 보기"
 
+#: src/views/index-dtf/overview/components/index-transaction-table-with-swaps/columns.tsx:105
 #: src/views/index-dtf/overview/components/index-transaction-table.tsx:104
 msgid "View transaction on explorer"
 msgstr "익스플로러에서 트랜잭션 보기"
@@ -11010,17 +11039,17 @@ msgstr "투표 가중치"
 msgid "Vote-lock"
 msgstr "Vote-lock"
 
-#: src/views/index-dtf/governance/components/governance-vote-lock.tsx:337
+#: src/views/index-dtf/governance/components/governance-vote-lock.tsx:343
 msgid "Vote-lock {underlyingSymbol} in {voteLockSymbol} to govern and earn from this DTF's TVL fee."
 msgstr "{underlyingSymbol}을(를) {voteLockSymbol}에 Vote-lock하여 이 DTF를 거버넌스하고 TVL 수수료 수익을 받아보세요."
 
-#: src/views/index-dtf/governance/components/governance-vote-lock.tsx:318
-#: src/views/index-dtf/governance/components/governance-vote-lock.tsx:332
+#: src/views/index-dtf/governance/components/governance-vote-lock.tsx:324
+#: src/views/index-dtf/governance/components/governance-vote-lock.tsx:338
 msgid "Vote-lock {underlyingSymbol} in {voteLockSymbol} to govern and earn from TVL fees across all {voteLockGovernedLabel} DTFs."
 msgstr "{underlyingSymbol}을(를) {voteLockSymbol}에 Vote-lock하여 {voteLockGovernedLabel} DTF 전체를 거버넌스하고 TVL 수수료 수익을 받아보세요."
 
 #. placeholder {0}: indexDTF.stToken.underlying.symbol
-#: src/views/index-dtf/governance/components/governance-vote-lock.tsx:362
+#: src/views/index-dtf/governance/components/governance-vote-lock.tsx:368
 msgid "Vote-lock ${0}"
 msgstr "${0} 투표 잠금"
 
@@ -11033,7 +11062,7 @@ msgid "Vote-Lock on Index DTFs"
 msgstr "Index DTF의 투표 잠금"
 
 #: src/views/portfolio-page/components/portfolio-breakdown.tsx:39
-#: src/views/portfolio-page/components/portfolio-chart.tsx:64
+#: src/views/portfolio-page/components/portfolio-chart.tsx:74
 msgid "Vote-locked"
 msgstr "투표 잠금됨"
 
@@ -11278,7 +11307,7 @@ msgstr "거버넌스용 새 ERC20을 출시하시겠습니까?"
 msgid "Warmup period (s)"
 msgstr "워밍업 기간 (초)"
 
-#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:45
+#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:52
 #: src/views/yield-dtf/issuance/components/warnings/index.tsx:54
 #: src/views/yield-dtf/issuance/components/warnings/index.tsx:87
 msgid "Warning"
@@ -11297,8 +11326,7 @@ msgstr "{0} 설명 영상 보기"
 msgid "Watch an intro to RTokens"
 msgstr "RToken 소개 영상 보기"
 
-#: src/views/home/components/homepage-hero.tsx:46
-#: src/views/index-dtf/overview/components/landing-mint/dtf-cover.tsx:72
+#: src/views/index-dtf/overview/components/landing-mint/dtf-cover.tsx:107
 msgid "Watch explainer"
 msgstr "설명 영상 보기"
 
@@ -11314,11 +11342,11 @@ msgstr "영상 보기"
 msgid "We call these tokenized portfolios DTFs:"
 msgstr "이러한 토큰화된 포트폴리오를 DTF라고 부릅니다:"
 
-#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:101
+#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:122
 msgid "We couldn't find a good price for this trade right now. We recommend using a DEX like PancakeSwap to buy {symbol}."
 msgstr "현재 이 거래에 좋은 가격을 찾을 수 없습니다. {symbol} 구매에는 PancakeSwap 같은 DEX 사용을 권장합니다."
 
-#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:106
+#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:127
 msgid "We couldn't find a good price for this trade right now. We recommend using a DEX like PancakeSwap to sell {symbol}."
 msgstr "현재 이 거래에 좋은 가격을 찾을 수 없습니다. {symbol} 판매에는 PancakeSwap 같은 DEX 사용을 권장합니다."
 
@@ -11381,7 +11409,7 @@ msgid "Weight control"
 msgstr "가중치 제어"
 
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/changes/auction-settings-changes.tsx:143
-#: src/views/index-dtf/settings/components/index-settings-basic.tsx:72
+#: src/views/index-dtf/settings/components/index-settings-basic.tsx:98
 msgid "Weight Control"
 msgstr "가중치 제어"
 
@@ -11567,7 +11595,7 @@ msgstr "Yield DTF Staking"
 #: src/components/command-menu/index.tsx:68
 #: src/views/home/components/dtf-tabs.tsx:30
 #: src/views/portfolio-page/components/portfolio-breakdown.tsx:37
-#: src/views/portfolio-page/components/portfolio-chart.tsx:66
+#: src/views/portfolio-page/components/portfolio-chart.tsx:76
 msgid "Yield DTFs"
 msgstr "Yield DTFs"
 
@@ -11579,7 +11607,7 @@ msgstr "Yield DTF(Reserve Yield Protocol에서 생성)는 백킹 자산이 디�
 msgid "Yield:"
 msgstr "수익:"
 
-#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:127
+#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:148
 msgid "You can buy up to {maxAmountLabel} per transaction during {sessionLabel} hours in the US."
 msgstr "미국 {sessionLabel} 시간 동안 거래당 최대 {maxAmountLabel}까지 매수할 수 있습니다."
 
@@ -11595,7 +11623,7 @@ msgstr "RToken을 일시중지 상태로 두고 나중에 거버넌스 설정으
 msgid "You can proceed directly."
 msgstr "바로 진행할 수 있습니다."
 
-#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:132
+#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:153
 msgid "You can sell up to {maxAmountLabel} per transaction during {sessionLabel} hours in the US."
 msgstr "미국 {sessionLabel} 시간 동안 거래당 최대 {maxAmountLabel}까지 매도할 수 있습니다."
 
@@ -11714,7 +11742,7 @@ msgstr "받게 될 수량"
 msgid "You'll receive:"
 msgstr "받게 될 금액:"
 
-#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:147
+#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:168
 msgid "You're getting a worse price than usual because {symbol}'s underlying stocks aren't trading right now."
 msgstr "{symbol}의 기초 주식이 현재 거래되지 않아 평소보다 불리한 가격이 적용되고 있습니다."
 
@@ -11739,11 +11767,11 @@ msgstr "DTF가 Mint되었습니다."
 msgid "Your lock"
 msgstr "나의 Vote-lock"
 
-#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:113
+#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:134
 msgid "Your order has unusually high price impact. We recommend buying {symbol} on PancakeSwap to get the best price possible."
 msgstr "주문에 비정상적으로 높은 가격 영향이 있습니다. 가능한 최적의 가격을 위해 PancakeSwap에서 {symbol} 구매를 권장합니다."
 
-#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:118
+#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:139
 msgid "Your order has unusually high price impact. We recommend selling {symbol} on PancakeSwap to get the best price possible."
 msgstr "주문에 비정상적으로 높은 가격 영향이 있습니다. 가능한 최적의 가격을 위해 PancakeSwap에서 {symbol} 판매를 권장합니다."
 
