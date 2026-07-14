@@ -1,6 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
 import { Address } from 'viem'
-import { getIndexDtfDisplayName } from '@/utils/dtf-names'
 
 const INDEX_DTFS_URL =
   'https://api.reserve.org/v1/discover/dtfs?performance=true&brand=true'
@@ -79,7 +78,7 @@ export const normalizeIndexDtfList = (
       return {
         address: item.address,
         symbol: item.symbol,
-        name: getIndexDtfDisplayName(item),
+        name: item.name,
         price: item.price ?? 0,
         fee: item.fee ?? 0,
         marketCap: item.marketCap ?? 0,
