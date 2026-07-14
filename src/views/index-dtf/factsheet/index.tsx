@@ -42,7 +42,7 @@ const IndexDTFFactsheet = () => {
   const dtf = useAtomValue(indexDTFAtom)
 
   return (
-    <div className="container mx-auto px-0 py-0 sm:px-4 sm:py-6 max-w-full">
+    <div data-testid="dtf-factsheet" className="container mx-auto px-0 py-0 sm:px-4 sm:py-6 max-w-full">
       <Header />
 
       <div className="flex flex-col gap-1 bg-secondary sm:rounded-4xl">

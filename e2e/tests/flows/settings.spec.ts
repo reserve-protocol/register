@@ -246,7 +246,7 @@ test('DEFAULT registry read fails → platform fee silently falls back to 50%', 
 // "RangeError: Division by zero" and `dtf-settings` never mounts (count 0).
 // Fix: guard denominator === 0n before dividing (fall back like the read-error
 // path). Marked fixme — the desired post-fix behavior is that the page survives.
-test.fixme(
+test(
   'BUG: zero fee denominator must not crash the DTF container',
   async ({ page, overrides }) => {
     seedFeeRegistry(overrides, 1n, 0n)

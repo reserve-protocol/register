@@ -183,6 +183,11 @@ export function resolveIndexQuery(
   const overlaid = overrides?.lookupSubgraph(op, vars)
   if (overlaid !== undefined) return { data: overlaid }
 
+  // Past-week PnL balance snapshot (overview balance card, wallet-gated). Empty
+  // is the product default — "wasn't holding a week ago" hides the PnL row. A
+  // spec that wants a non-zero week-ago position overrides via overrides.subgraph.
+  if (op === 'AccountBalanceWeekAgo') return { data: { accountBalanceDailySnapshots: [] } }
+
   // The SDK sends the proposal id as `proposalId`; older callers used `id`.
   const proposalId = (vars.proposalId as string) ?? (vars.id as string) ?? ''
 
@@ -289,6 +294,20 @@ export function resolveIndexQuery(
     return graphError('[E2E] unmocked operation identity: getRebalances')
   }
 
+  // Explorer (general, cross-DTF) governance aggregation. getAllIndexProposals
+  // pulls every index proposal for the vote filter; getDTFGovernance maps
+  // whitelisted DTF ids → governor ids. Empty-but-correctly-shaped is the honest
+  // default (the explorer's populated state is a per-test overlay). The SHAPE
+  // matters: use-proposals-data iterates `proposals`/`dtfs` UNGUARDED, so a
+  // missing field crashes the whole explorer (GH0) — these branches return the
+  // arrays the hook expects.
+  if (op === 'getAllIndexProposals') {
+    return { data: { proposals: [] } }
+  }
+  if (op === 'getDTFGovernance') {
+    return { data: { dtfs: [] } }
+  }
+
   log('unmocked operation', { op, hint: 'model in e2e/helpers/subgraph.ts (or overrides.subgraph)' })
   return graphError(`[E2E] unmocked operation: ${op || '(anonymous)'}`)
 }
@@ -360,7 +379,7 @@ function loadYieldEntries(): ChainedYieldEntry[] {
   return yieldEntries
 }
 
-function resolveYieldQuery(
+export function resolveYieldQuery(
   chainId: number,
   body: string,
   log: UnmockedLogger,
@@ -372,6 +391,24 @@ function resolveYieldQuery(
 
   const overlaid = overrides?.lookupSubgraph(op, vars)
   if (overlaid !== undefined) return { data: overlaid }
+
+  // Explorer transactions tab (default route) — a cross-chain feed on the
+  // RToken/yield subgraph. Per-chain `{ entries: [] }` is the honest empty
+  // default; the SHAPE matters — useTransactionData reads `data[chain].entries.map`
+  // guarding only `data[chain]`, so a response without `entries` crashes the whole
+  // explorer (GH0). Populated-feed specs overlay this op.
+  if (op === 'Transactions' || body.includes('entries(')) {
+    return { data: { entries: [] } }
+  }
+  // Connected-wallet account panels (portfolio positions, stake history). The
+  // test wallet holds nothing on the yield side by default → empty/null account.
+  // A spec seeding a position overlays these ops.
+  if (op === 'getAccountTokens') {
+    return { data: { account: null } }
+  }
+  if (op === 'getAccountStakeHistory') {
+    return { data: { account: null } }
+  }
 
   const identity = queryIdentity(vars)
   const key = yieldEntryKey(chainId, op, parsed.query ?? '', identity)
@@ -396,7 +433,7 @@ export async function mockSubgraphRoutes(
   overrides?: MockOverrides,
   requests?: BoundaryRequest[]
 ) {
-  await page.route('**/api.goldsky.com/**', (route) => {
+  await page.route('**/api.goldsky.com/**', async (route) => {
     const request = route.request()
     if (request.method() !== 'POST') {
       return route.fulfill({
@@ -415,6 +452,7 @@ export async function mockSubgraphRoutes(
       variables: parsed.variables ?? {},
       urlChain: subgraphChainForUrl(url),
     })
+    await overrides?.holds.gate({ boundary: 'subgraph', operationName: parsed.operationName ?? '' })
     // URL-based fork: yield RTokens read the dtf-yield-* subgraphs, index reads
     // dtf-index-*. The yield resolver only engages while a yield test is active
     // (isYieldReplayActive) — so index tests, which incidentally poll a

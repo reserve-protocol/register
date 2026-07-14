@@ -26,7 +26,12 @@ const StakeButton = () => {
   return (
     <>
       <div className="mt-4">
-        <Button className="w-full" disabled={!isValid} onClick={handleOpen}>
+        <Button
+          data-testid="stake-open-btn"
+          className="w-full"
+          disabled={!isValid}
+          onClick={handleOpen}
+        >
           <Trans>Stake RSR</Trans>
         </Button>
       </div>

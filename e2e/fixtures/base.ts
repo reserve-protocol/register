@@ -176,6 +176,10 @@ export const test = base.extend<BaseFixtures>({
 
       await use(calls)
 
+      // Release any lifecycle holds the spec left parked so teardown can't hang
+      // on an un-released gate.
+      overrides.holds.releaseAll()
+
       // Frozen mock time is a per-worker singleton (set by freezeTime) — reset
       // so it can't leak into the next test.
       setMockNow(undefined)

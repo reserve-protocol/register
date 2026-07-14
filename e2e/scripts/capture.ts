@@ -55,6 +55,19 @@ function parseOnly(): OnlyMode | undefined {
   return undefined
 }
 
+// `--dtf=<slug>` restricts a FULL capture to a single registry DTF, leaving
+// every other snapshot on disk untouched (copy-then-publish). Used to add a new
+// fixture without re-fetching — and risking drift on — the existing ones.
+function parseDtfFilter(): string | undefined {
+  const arg = process.argv.find((a) => a.startsWith('--dtf='))
+  const slug = arg?.split('=')[1]
+  if (!slug) return undefined
+  if (!REGISTRY.some((d) => d.slug === slug)) {
+    throw new Error(`Unknown --dtf value: ${slug}`)
+  }
+  return slug
+}
+
 // Public RPC per chain for on-chain reads (totalAssets/totalSupply/decimals).
 const PUBLIC_RPC: Record<number, string> = {
   1: 'https://ethereum-rpc.publicnode.com',
@@ -653,6 +666,24 @@ async function captureDtf(dtf: RegistryDTF, only?: OnlyMode) {
 }
 
 async function main() {
+  const dtfFilter = parseDtfFilter()
+  if (dtfFilter) {
+    // Full capture of one new/updated fixture; preserve all other snapshots.
+    console.log(`Targeted full capture (--dtf=${dtfFilter})...`)
+    const temporaryDir = mkdtempSync(join(e2eDir, '.snapshots-dtf-'))
+    cpSync(snapshotsDir, temporaryDir, { recursive: true })
+    outputDir = temporaryDir
+    for (const dtf of REGISTRY.filter((d) => d.slug === dtfFilter)) {
+      await captureDtf(dtf)
+    }
+    if (captureFailures.length) {
+      throw new Error(`Snapshot capture incomplete:\n${captureFailures.join('\n')}`)
+    }
+    publishSnapshotTree(temporaryDir)
+    console.log('\nDone. Snapshots in e2e/snapshots/')
+    return
+  }
+
   const only = parseOnly()
   if (only) {
     // Targeted refresh: dtf.json (+ chain-state) or chain-state only. Leaves the

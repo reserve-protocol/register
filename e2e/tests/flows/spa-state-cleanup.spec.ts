@@ -44,18 +44,13 @@ test('cross-chain navigation shows each DTF its own symbol, never a stale one', 
   }
 })
 
-// FINDING (chain-init race, REST boundary): before `chainIdAtom` settles to the
-// route's chain, the DTF market-price query fetches `/current/dtf` with
-// `chainId=1` (the mainnet default) for a Base/BSC DTF's address. In prod
-// reserve-api keys on chainId+address, so chain 1 has no such DTF → the first
-// price fetch is wrong-chain (empty/errored) until it self-heals. The e2e api
-// mock resolves current/dtf by address regardless of chain, so the suite stays
-// green and this is the one place the wrong-chain request is asserted.
-//
-// Same class as the spa-chain-identity subgraph bug, DIFFERENT boundary (REST
-// current/dtf vs subgraph). UN-FIXME when the market-price query is gated on the
-// route chain (or chainIdAtom is initialized before SDK/price consumers mount).
-test.fixme(
+// Chain-init race at the REST boundary: same root cause as the spa-chain-identity
+// subgraph bug (react-zapper's ChainIdUpdater syncing its chain in a lagging
+// effect), DIFFERENT boundary — the price consumer fetched `/current/dtf` with
+// `chainId=1` for a Base/BSC DTF before the route chain settled. Fixed by seeding
+// react-zapper's chainIdAtom synchronously during render. Asserts every
+// `/current/dtf` fetch for a DTF targets ITS chain, never mainnet.
+test(
   'cross-chain navigation never fetches current/dtf on the wrong chain',
   async ({ page, boundaryRequests }) => {
     await page.goto(dtfPath(mainnet, 'overview'))

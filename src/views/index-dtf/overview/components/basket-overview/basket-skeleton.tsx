@@ -3,7 +3,7 @@ import { TableCell, TableRow } from '@/components/ui/table'
 
 export const BasketSkeleton = () =>
   Array.from({ length: 10 }).map((_, i) => (
-    <TableRow key={i} className="border-none hover:bg-transparent">
+    <TableRow key={i} data-testid="overview-basket-skeleton" className="border-none hover:bg-transparent">
       <TableCell className="py-3 pl-0 pr-2">
         <div className="flex items-center gap-2 sm:gap-3">
           <Skeleton className="h-8 w-8 flex-shrink-0 rounded-full" />

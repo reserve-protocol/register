@@ -1,0 +1,96 @@
+{
+  "_meta": {
+    "source": "https://api.reserve.org/current/dtf?address=0xa0fe4e0aeca5479705ce996615b2eacb6b6a10fb&chainId=56",
+    "capturedAt": "2026-07-14T00:51:22.526Z",
+    "dtf": "0xa0fe4e0aeca5479705ce996615b2eacb6b6a10fb",
+    "chainId": 56
+  },
+  "data": {
+    "price": 88.59048231731182,
+    "marketCap": 924384.4591504838,
+    "totalSupply": 10434.35406344826,
+    "basket": [
+      {
+        "address": "0x0C50323AF81D5C33822c6Add256Fb9093D42BC74",
+        "amount": 0.017010265432280413,
+        "amountRaw": "17010265432280414",
+        "decimals": 18,
+        "price": 50.240476,
+        "weight": "0.96",
+        "priceSource": "ondo"
+      },
+      {
+        "address": "0x25a4DbAE9a0Cd8C75656D6b50FFDf4900CC20d8f",
+        "amount": 0.11352778087626235,
+        "amountRaw": "113527780876262349",
+        "decimals": 18,
+        "price": 183.66625,
+        "weight": "23.54",
+        "priceSource": "ondo"
+      },
+      {
+        "address": "0x89a9F7114bE6b220fAe645ba0cbB720889867415",
+        "amount": 0.03680427131093744,
+        "amountRaw": "36804271310937439",
+        "decimals": 18,
+        "price": 446.53,
+        "weight": "18.55",
+        "priceSource": "ondo"
+      },
+      {
+        "address": "0x0fAcaFB97ffDbA3cAe88512070AF49bd30674cD9",
+        "amount": 0.02022828395734672,
+        "amountRaw": "20228283957346719",
+        "decimals": 18,
+        "price": 767.924286,
+        "weight": "17.53",
+        "priceSource": "ondo"
+      },
+      {
+        "address": "0x0585756aAFB241b0f8A9Df62Db26c566091Bde0b",
+        "amount": 0.050866932128785534,
+        "amountRaw": "50866932128785535",
+        "decimals": 18,
+        "price": 307.510909,
+        "weight": "17.66",
+        "priceSource": "ondo"
+      },
+      {
+        "address": "0x1dCd320C5d7b84CD407437c58d56CbbDd0D9d8f3",
+        "amount": 0.019837180901977246,
+        "amountRaw": "19837180901977247",
+        "decimals": 18,
+        "price": 295.915,
+        "weight": "6.63",
+        "priceSource": "ondo"
+      },
+      {
+        "address": "0xA1DaaB37dA2a29A1eC721922b55962eB8B481001",
+        "amount": 0.009315863518816324,
+        "amountRaw": "9315863518816324",
+        "decimals": 18,
+        "price": 485.986792,
+        "weight": "5.11",
+        "priceSource": "ondo"
+      },
+      {
+        "address": "0x343324170C91c4D8Cf4D439B3E5a619F50621aE7",
+        "amount": 0.029334884594055775,
+        "amountRaw": "29334884594055776",
+        "decimals": 18,
+        "price": 229.4465,
+        "weight": "7.60",
+        "priceSource": "ondo"
+      },
+      {
+        "address": "0x149Bda9e7251DC36f536d1fE7F92A5ea203F4F3D",
+        "amount": 0.01933467054806249,
+        "amountRaw": "19334670548062489",
+        "decimals": 18,
+        "price": 111.004,
+        "weight": "2.42",
+        "priceSource": "ondo"
+      }
+    ]
+  }
+}

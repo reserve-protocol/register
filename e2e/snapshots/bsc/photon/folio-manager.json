@@ -1,0 +1,44 @@
+{
+  "_meta": {
+    "source": "https://api.reserve.org/folio-manager/read?folio=0xa0fe4e0aeca5479705ce996615b2eacb6b6a10fb&chainId=56",
+    "capturedAt": "2026-07-14T00:51:22.757Z",
+    "dtf": "0xa0fe4e0aeca5479705ce996615b2eacb6b6a10fb",
+    "chainId": 56
+  },
+  "data": {
+    "status": "ok",
+    "parsedData": {
+      "hidden": true,
+      "dtf": {
+        "icon": "https://l5394zf57b.ufs.sh/f/mupND8QUUvXxYmQhYtkGhrj2ScsDNeUp3lRftPgCi0ZM65Vz",
+        "cover": "",
+        "video": "https://youtu.be/Ngb7bpd5keA",
+        "description": "The Reserve AI Photonics DTF (PHOTON) is a weighted basket of public, US-listed photonics companies at the center of the AI buildout.\n\nThe basket is composed of companies that generate significant revenue from AI data-center photonics demand, weighted by market capitalization with a 20% cap and a $5B minimum market cap, rebalanced quarterly. \n\nWhy a photonics DTF? Inside AI data centers, light is replacing copper wire: as AI chips get faster and more data-hungry, the bottleneck shifts from computing the data to moving it, and copper hits a physical wall of heat, power loss, and limited reach. The PHOTON DTF gives you direct exposure to the companies making that shift: the fiber, lasers, transceivers, and optical chips that have become the central nervous system of the AI data center.\n\nPHOTON bundles Ondo Global Markets tokenized stocks, each of which is backed by actual shares held by Ondo in a regulated US brokerage account.",
+        "notesFromCreator": "",
+        "prospectus": "",
+        "files": [],
+        "tags": [
+          "AI",
+          "RWA"
+        ],
+        "basketType": "percentage-based"
+      },
+      "creator": {
+        "name": "",
+        "icon": "",
+        "link": ""
+      },
+      "curator": {
+        "name": "",
+        "icon": "",
+        "link": ""
+      },
+      "socials": {
+        "twitter": "",
+        "telegram": "",
+        "discord": "",
+        "website": ""
+      }
+    }
+  }
+}

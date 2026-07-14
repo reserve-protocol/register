@@ -50,7 +50,7 @@ const Navigation = () => {
 }
 
 const Explorer = () => (
-  <div className="container flex flex-col gap-1 ">
+  <div data-testid="explorer-page" className="container flex flex-col gap-1 ">
     <Navigation />
     <div className="flex-grow">
       <Outlet />

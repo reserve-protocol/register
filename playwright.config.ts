@@ -30,6 +30,10 @@ export default defineConfig({
     screenshot: 'only-on-failure',
   },
   projects: [
+    // Desktop projects (run on CI). A `@mobile` tag does NOT exclude a spec here —
+    // it ADDS a mobile run. So `@smoke @mobile` runs on desktop-smoke + mobile;
+    // `@mobile` alone runs on desktop-full + mobile. Mobile-CHROME-only specs
+    // guard with `test.skip(({}, i) => i.project.name !== 'mobile', ...)`.
     {
       name: 'smoke',
       grep: /@smoke/,
@@ -39,6 +43,14 @@ export default defineConfig({
       name: 'full',
       grepInvert: /@smoke/,
       use: { ...devices['Desktop Chrome'] },
+    },
+    // Mobile variants at a phone viewport. Pixel 7 keeps the Chromium engine
+    // (matching desktop) — only viewport/touch change, so failures are layout,
+    // not browser-engine, differences. Off CI; run locally: `pnpm e2e:mobile`.
+    {
+      name: 'mobile',
+      grep: /@mobile/,
+      use: { ...devices['Pixel 7'] },
     },
   ],
   webServer: {

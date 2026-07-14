@@ -21,6 +21,7 @@ const StakeInputField = () => {
   return (
     <div className="relative z-0">
       <NumericalInput
+        data-testid="stake-amount-input"
         variant="transparent"
         placeholder="0 RSR"
         value={amount}

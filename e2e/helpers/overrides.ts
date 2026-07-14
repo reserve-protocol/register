@@ -1,4 +1,5 @@
 import type { Hex } from 'viem'
+import { HoldRegistry } from '../harness/hold'
 
 export type MockTransactionOutcome =
   | { kind: 'success' | 'revert'; pendingPolls?: number }
@@ -39,6 +40,10 @@ export class MockOverrides {
   // lowercased address -> native balance in wei (eth_getBalance). Opt-in:
   // everyone else keeps the shared 100 ETH default.
   private ethBalances = new Map<string, bigint>()
+
+  // Controllable-latency gates for the loading lifecycle. Dispatchers call
+  // `holds.gate(identity)` before fulfilling; the harness `mock.hold()` adds one.
+  readonly holds = new HoldRegistry()
 
   // --- setters (called from the test body) ---
 

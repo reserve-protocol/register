@@ -66,9 +66,18 @@ Quick loop: `pnpm exec playwright test e2e/tests/smoke/auctions.spec.ts`
   ACTIVE list row; active detail with a decoded Multicall3 proof `getRebalance()`
   came from RPC + asserted derived round; completed card; empty active section;
   idle smoke.
-- **Deferred** (needs testids/roles + engineer review): `launchAuction` and
-  `bid` writes (permission-gated on `isAuctionLauncherAtom`); legacy v2 UI and
-  `/auctions/legacy` route.
+- **Covered** (`index-dtf/auctions/launch-write.spec.ts`, harness + wallet, bsc/cmc20):
+  the launch PERMISSION MATRIX — a launcher submits `openAuction()` (GetIndexDTF
+  overlay enrols the test wallet in `auctionLaunchers`), a non-launcher in the
+  permissionless window submits `openAuctionUnrestricted()` (subgraph
+  `getRebalances` window widened since captured windows are zero-width). Asserts
+  target + selector + rebalance nonce. **cmc20 not lcap**: `isHybridDTFAtom` is
+  hardcoded to LCAP+Venionaire and a hybrid DTF forces a Manage-Weights step
+  before the launch button. ENGINEER REVIEW STILL REQUIRED for the openAuction
+  weight/price MATH (`getRebalanceOpenAuction`) — the spec proves the call fires,
+  not that the args are numerically correct.
+- **Deferred** (needs testids/roles + engineer review): `bid` writes; legacy v2
+  UI and `/auctions/legacy` route.
 - **Covered** (`flows/auctions-multichain.spec.ts`): historical bucketing +
   API metrics + idle empty active section + in-window active row on
   `bsc/cmc20` and `mainnet/open`.

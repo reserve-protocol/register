@@ -133,6 +133,7 @@ const LaunchAuctionsButton = () => {
       switchChainButtonClassName="w-full"
     >
       <Button
+        data-testid="auctions-launch-btn"
         className="rounded-xl py-6 w-full gap-2"
         disabled={!isValid || isPending || isAuctionOngoing || isLaunching}
         onClick={handleStartAuctions}

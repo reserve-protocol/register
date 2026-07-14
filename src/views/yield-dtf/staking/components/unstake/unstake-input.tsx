@@ -23,6 +23,7 @@ const UnstakeInputField = () => {
   return (
     <div className="relative z-0">
       <NumericalInput
+        data-testid="unstake-amount-input"
         variant="transparent"
         placeholder={`0 ${ticker}`}
         value={amount}

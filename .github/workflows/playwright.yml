@@ -3,14 +3,26 @@ name: E2E
 on:
   push:
     branches: [master]
+  # Every PR (any target branch) gets the smoke gate. The suite is the source of
+  # truth for "is the feature working / is the bug fixed" — so it must run before
+  # merge, not only nightly.
   pull_request:
-    branches: [master]
   schedule:
-    # Nightly full suite at 06:00 UTC.
+    # Nightly desktop full + mobile at 06:00 UTC.
     - cron: '0 6 * * *'
   workflow_dispatch:
 
+# One E2E run per ref at a time. A new push cancels the in-flight run (PRs) so we
+# never burn minutes on stale commits; the fixed Vite port means concurrent runs
+# on the same runner would contend anyway.
+concurrency:
+  group: e2e-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
+  # Fast PR gate: typecheck + mock-contract unit tests + snapshot freshness +
+  # desktop smoke. Target: green in a few minutes. Keep slow write/lifecycle
+  # specs OUT of smoke (they belong to the nightly full run).
   smoke:
     if: github.event_name == 'push' || github.event_name == 'pull_request'
     timeout-minutes: 30
@@ -41,6 +53,9 @@ jobs:
           path: playwright-report/
           retention-days: 14
 
+  # Nightly / on-demand: the full desktop flows AND the mobile project, so mobile
+  # is genuinely verified on a schedule (not merely "declared but never run").
+  # Not on PRs — this is the slow, comprehensive pass.
   full:
     if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
     timeout-minutes: 60
@@ -62,8 +77,12 @@ jobs:
         run: pnpm e2e:check
       - name: Install Chromium
         run: pnpm exec playwright install --with-deps chromium
-      - name: Full suite
+      - name: Full desktop suite
         run: pnpm e2e:full
+      # Mobile runs after desktop (same runner, sequential — the fixed Vite port
+      # forbids parallel suites). This is the only continuous mobile coverage.
+      - name: Mobile suite
+        run: pnpm e2e:mobile
       - uses: actions/upload-artifact@v4
         if: always()
         with:

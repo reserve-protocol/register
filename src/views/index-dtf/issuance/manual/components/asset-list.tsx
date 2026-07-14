@@ -243,6 +243,7 @@ const AssetItem = ({ token }: { token: Token }) => {
 
   return (
     <div
+      data-testid="issuance-basket-row"
       className={cn(
         'flex gap-2 border-t p-4',
         mode === 'buy' ? 'flex-col' : 'justify-between'
@@ -283,7 +284,7 @@ const Placeholder = () => {
   return (
     <div className="flex flex-col">
       {[...Array(5)].map((_, i) => (
-        <div key={i} className="flex items-center border-t gap-2 p-2">
+        <div key={i} data-testid="issuance-basket-skeleton" className="flex items-center border-t gap-2 p-2">
           <Skeleton className="rounded-full h-8 w-8" />
           <Skeleton className="w-40 h-11" />
           <Skeleton className="ml-auto w-16 h-8" />

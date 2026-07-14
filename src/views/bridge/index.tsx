@@ -253,7 +253,7 @@ const TokenListHelper = ({ tokens, targetChain = ChainId.Base, fromChain = Chain
 
 const BridgeList = () => {
   return (
-    <div className="flex flex-col w-full md:w-[44rem] gap-4 my-10">
+    <div data-testid="bridge-page" className="flex flex-col w-full md:w-[44rem] gap-4 my-10">
       <div className="bg-background rounded-3xl">
         <BridgeCard
           name="Portal"

@@ -1,9 +1,15 @@
-import { decodeFunctionData, encodeFunctionResult, multicall3Abi, type Hex } from 'viem'
+import { decodeFunctionData, multicall3Abi, type Hex } from 'viem'
 import { expect, test } from '../../fixtures/base'
 import { advanceTime, freezeTime, rebalanceTime } from '../../helpers/clock'
 import { dtfPath, findDtfByAddress } from '../../helpers/registry'
 import { loadSnapshot } from '../../helpers/snapshots'
 import type { BoundaryRequest } from '../../helpers/requests'
+import {
+  encodeActiveRebalance as encodeActiveRebalanceShared,
+  loadRebalances as loadRebalancesShared,
+  proposalIdFor as proposalIdForShared,
+  type Rebalance,
+} from '../../helpers/rebalance-tuple'
 
 // Rebalance / auctions flows on base/lcap (v5).
 //
@@ -22,47 +28,12 @@ import type { BoundaryRequest } from '../../helpers/requests'
 
 const DTF_ADDRESS = '0x4dA9A0f397dB1397902070f93a4D6ddBC0E0E6e8' // base/lcap
 
-interface Rebalance {
-  nonce: string
-  priceControl: string
-  rebalanceLowLimit: number
-  rebalanceSpotLimit: number
-  rebalanceHighLimit: number
-  restrictedUntil: string
-  availableUntil: string
-  blockNumber: string
-  timestamp: string
-}
-interface RebalancesSnapshot {
-  rebalances: Rebalance[]
-}
-interface GovernanceSnapshot {
-  governances: Array<{
-    proposals: Array<{ id: string; executionBlock?: number }>
-  }>
-}
-
-function loadRebalances(): Rebalance[] {
-  const dtf = findDtfByAddress(DTF_ADDRESS)!
-  return loadSnapshot<RebalancesSnapshot>(`${dtf.snapshotDir}/rebalances.json`)
-    .rebalances
-}
-
-// The list matches rebalances to proposals by executionBlock === blockNumber;
-// resolve the proposal id the same way so detail routes stay snapshot-derived.
-function proposalIdFor(rebalance: Rebalance): string {
-  const dtf = findDtfByAddress(DTF_ADDRESS)!
-  const { governances } = loadSnapshot<GovernanceSnapshot>(
-    `${dtf.snapshotDir}/governance.json`
-  )
-  for (const gov of governances) {
-    const match = gov.proposals.find(
-      (p) => String(p.executionBlock ?? '') === rebalance.blockNumber
-    )
-    if (match) return match.id
-  }
-  throw new Error(`No proposal matches rebalance block ${rebalance.blockNumber}`)
-}
+// Thin wrappers pinning the shared rebalance-tuple helpers to this file's DTF,
+// so every call site below stays argument-free.
+const localDtf = () => findDtfByAddress(DTF_ADDRESS)!
+const loadRebalances = (): Rebalance[] => loadRebalancesShared(localDtf())
+const proposalIdFor = (rebalance: Rebalance): string =>
+  proposalIdForShared(localDtf(), rebalance)
 
 function idleTime(): number {
   const max = Math.max(...loadRebalances().map((r) => Number(r.availableUntil)))
@@ -235,7 +206,7 @@ test('active rebalance detail renders from an encoded getRebalance()', async ({
   // the chain-state basket (skewed so there is trading left to do), timestamps
   // and limits from the rebalance snapshot. Address-specific overrides win over
   // the shared idle `*:` entry.
-  overrides.ethCall(dtf.address, '0xaa3b5568', encodeActiveRebalance(latest))
+  overrides.ethCall(dtf.address, '0xaa3b5568', encodeActiveRebalanceShared(dtf, latest))
 
   await page.goto(dtfPath(dtf, `auctions/rebalance/${proposalIdFor(latest)}`))
   await expect(page.getByTestId('dtf-auctions')).toBeVisible()
@@ -294,121 +265,3 @@ test('expired rebalance detail renders the completed card', async ({
   await expect(page.getByTestId('auctions-rebalance-header')).toHaveCount(0)
 })
 
-// v5 getRebalance() output tuple, validated to encode/decode with viem:
-// [nonce, priceControl, TokenRebalanceParams[], limits, timestamps, bidsEnabled].
-// The shared rpc.ts idle entry uses this same shape.
-const GET_REBALANCE_ABI = [
-  {
-    type: 'function',
-    name: 'getRebalance',
-    stateMutability: 'view',
-    inputs: [],
-    outputs: [
-      { name: 'nonce', type: 'uint256' },
-      { name: 'priceControl', type: 'uint8' },
-      {
-        name: 'tokens',
-        type: 'tuple[]',
-        components: [
-          { name: 'token', type: 'address' },
-          {
-            name: 'weight',
-            type: 'tuple',
-            components: [
-              { name: 'low', type: 'uint256' },
-              { name: 'spot', type: 'uint256' },
-              { name: 'high', type: 'uint256' },
-            ],
-          },
-          {
-            name: 'price',
-            type: 'tuple',
-            components: [
-              { name: 'low', type: 'uint256' },
-              { name: 'high', type: 'uint256' },
-            ],
-          },
-          { name: 'maxAuctionSize', type: 'uint256' },
-          { name: 'inRebalance', type: 'bool' },
-        ],
-      },
-      {
-        name: 'limits',
-        type: 'tuple',
-        components: [
-          { name: 'low', type: 'uint256' },
-          { name: 'spot', type: 'uint256' },
-          { name: 'high', type: 'uint256' },
-        ],
-      },
-      {
-        name: 'timestamps',
-        type: 'tuple',
-        components: [
-          { name: 'startedAt', type: 'uint256' },
-          { name: 'restrictedUntil', type: 'uint256' },
-          { name: 'availableUntil', type: 'uint256' },
-        ],
-      },
-      { name: 'bidsEnabled_', type: 'bool' },
-    ],
-  },
-] as const
-
-// Snapshot numbers above 2^53 lose float precision on JSON.parse, but stay
-// integral — BigInt() of an integral float is exact enough for UI display.
-function toBig(value: number): bigint {
-  return BigInt(value)
-}
-
-interface ChainState {
-  totalAssets: { tokens: string[]; amounts: string[] }
-  totalSupply: string
-}
-
-// An ACTIVE tuple that dtf-rebalance-lib accepts as coherent:
-// - tokens/balances/supply come from the chain-state snapshot (the SAME data
-//   the RPC mock serves for totalAssets/totalSupply), so the lib's
-//   buValue-vs-shareValue sanity check (must be within 10x) passes;
-// - weight.spot is D27{tok/BU}: amount * 1e27 / supply targets the CURRENT
-//   holdings, then alternating tokens are skewed ±40% so progression < 100%
-//   (unskewed weights read as "Rebalance Finished");
-// - price ranges are wide open — the snapshot's priceLow/HighLimit arrays are
-//   NOT index-aligned with its tokens array, and a mismatched range trips the
-//   lib's "spot price out of bounds" kill switch;
-// - nonce/limits/timestamps come from the rebalance snapshot so the RPC state
-//   agrees with the subgraph history.
-function encodeActiveRebalance(rebalance: Rebalance): Hex {
-  const dtf = findDtfByAddress(DTF_ADDRESS)!
-  const chainState = loadSnapshot<ChainState>(`${dtf.snapshotDir}/chain-state.json`)
-  const supply = BigInt(chainState.totalSupply)
-  const restrictedUntil = BigInt(rebalance.restrictedUntil)
-  const availableUntil = BigInt(rebalance.availableUntil)
-
-  return encodeFunctionResult({
-    abi: GET_REBALANCE_ABI,
-    functionName: 'getRebalance',
-    result: [
-      BigInt(rebalance.nonce),
-      Number(rebalance.priceControl),
-      chainState.totalAssets.tokens.map((address, i) => {
-        const balanced = (BigInt(chainState.totalAssets.amounts[i]) * 10n ** 27n) / supply
-        const spot = (balanced * (i % 2 === 0 ? 140n : 60n)) / 100n
-        return {
-          token: address as `0x${string}`,
-          weight: { low: (spot * 90n) / 100n, spot, high: (spot * 110n) / 100n },
-          price: { low: 1n, high: 10n ** 45n },
-          maxAuctionSize: 10n ** 36n,
-          inRebalance: true,
-        }
-      }),
-      {
-        low: toBig(rebalance.rebalanceLowLimit),
-        spot: toBig(rebalance.rebalanceSpotLimit),
-        high: toBig(rebalance.rebalanceHighLimit),
-      },
-      { startedAt: BigInt(rebalance.timestamp), restrictedUntil, availableUntil },
-      true, // bidsEnabled — active
-    ],
-  })
-}

@@ -1,0 +1,148 @@
+{
+  "_meta": {
+    "source": "https://api.goldsky.com/api/public/project_cmgzim3e100095np2gjnbh6ry/subgraphs/dtf-index-bsc/prod/gn",
+    "capturedAt": "2026-07-14T00:51:27.395Z",
+    "dtf": "0xa0fe4e0aeca5479705ce996615b2eacb6b6a10fb",
+    "chainId": 56,
+    "query": "getRebalances"
+  },
+  "data": {
+    "rebalances": [
+      {
+        "id": "0xa0fe4e0aeca5479705ce996615b2eacb6b6a10fb-0x1",
+        "nonce": "1",
+        "tokens": [
+          {
+            "address": "0x0585756aafb241b0f8a9df62db26c566091bde0b",
+            "name": "Coherent (Ondo Tokenized)",
+            "symbol": "COHRon",
+            "decimals": 18
+          },
+          {
+            "address": "0x0c50323af81d5c33822c6add256fb9093d42bc74",
+            "name": "AXT (Ondo Tokenized)",
+            "symbol": "AXTIon",
+            "decimals": 18
+          },
+          {
+            "address": "0x0facafb97ffdba3cae88512070af49bd30674cd9",
+            "name": "Lumentum Holdings (Ondo Tokenized)",
+            "symbol": "LITEon",
+            "decimals": 18
+          },
+          {
+            "address": "0x149bda9e7251dc36f536d1fe7f92a5ea203f4f3d",
+            "name": "Applied Optoelectronics (Ondo Tokenized)",
+            "symbol": "AAOIon",
+            "decimals": 18
+          },
+          {
+            "address": "0x1dcd320c5d7b84cd407437c58d56cbbdd0d9d8f3",
+            "name": "MACOM Technology Solutions Holdings (Ondo Tokenized)",
+            "symbol": "MTSIon",
+            "decimals": 18
+          },
+          {
+            "address": "0x25a4dbae9a0cd8c75656d6b50ffdf4900cc20d8f",
+            "name": "Corning (Ondo Tokenized)",
+            "symbol": "GLWon",
+            "decimals": 18
+          },
+          {
+            "address": "0x343324170c91c4d8cf4d439b3e5a619f50621ae7",
+            "name": "Tower Semiconductor (Ondo Tokenized)",
+            "symbol": "TSEMon",
+            "decimals": 18
+          },
+          {
+            "address": "0x89a9f7114be6b220fae645ba0cbb720889867415",
+            "name": "Ciena (Ondo Tokenized)",
+            "symbol": "CIENon",
+            "decimals": 18
+          },
+          {
+            "address": "0x8ac76a51cc950d9822d68b83fe1ad97b32cd580d",
+            "name": "USD Coin",
+            "symbol": "USDC",
+            "decimals": 18
+          },
+          {
+            "address": "0xa1daab37da2a29a1ec721922b55962eb8b481001",
+            "name": "Fabrinet (Ondo Tokenized)",
+            "symbol": "FNon",
+            "decimals": 18
+          }
+        ],
+        "priceControl": "1.0",
+        "weightLowLimit": [
+          "0",
+          "106677758756991895893801700",
+          "34583580739716501681358812",
+          "19007752810933011526390190",
+          "47797730850189368850059922",
+          "18640248072728878807837285",
+          "8753764350917065550639427",
+          "27564880751960560198043632",
+          "19604557668015791628484127",
+          "15983902602262780446952309"
+        ],
+        "weightSpotLimit": [
+          "0",
+          "106677758756991895893801700",
+          "34583580739716501681358812",
+          "19007752810933011526390190",
+          "47797730850189368850059922",
+          "18640248072728878807837285",
+          "8753764350917065550639427",
+          "27564880751960560198043632",
+          "19604557668015791628484127",
+          "15983902602262780446952309"
+        ],
+        "weightHighLimit": [
+          "0",
+          "106677758756991895893801700",
+          "34583580739716501681358812",
+          "19007752810933011526390190",
+          "47797730850189368850059922",
+          "18640248072728878807837285",
+          "8753764350917065550639427",
+          "27564880751960560198043632",
+          "19604557668015791628484127",
+          "15983902602262780446952309"
+        ],
+        "rebalanceLowLimit": "1",
+        "rebalanceSpotLimit": "1000000000000000000",
+        "rebalanceHighLimit": "3999999999999999928",
+        "priceLowLimit": [
+          "249724559037685150",
+          "46881250000000000000",
+          "115620000000000000000",
+          "237714285750000000000",
+          "102791666750000000000",
+          "96673333250000000000",
+          "158513333250000000000",
+          "71560000000000000000",
+          "47463750000000000000",
+          "27900833250000000000"
+        ],
+        "priceHighLimit": [
+          "3995592944602962401",
+          "750100000000000000001",
+          "1849920000000000000001",
+          "3803428572000000000001",
+          "1644666668000000000001",
+          "1546773332000000000001",
+          "2536213332000000000001",
+          "1144960000000000000001",
+          "759420000000000000001",
+          "446413332000000000001"
+        ],
+        "restrictedUntil": "1781975028",
+        "availableUntil": "1781975028",
+        "transactionHash": "0x033eb808352335078d0ab2a1f037cf5455afa942a8509088d28a87498944a2c2",
+        "blockNumber": "104794906",
+        "timestamp": "1781715828"
+      }
+    ]
+  }
+}

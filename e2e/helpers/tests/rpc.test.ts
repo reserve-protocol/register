@@ -1,9 +1,9 @@
-import { decodeAbiParameters } from 'viem'
+import { decodeAbiParameters, encodeAbiParameters, encodeFunctionData, parseAbi } from 'viem'
 import { describe, expect, it, vi } from 'vitest'
 import { chainIdForUrl, handleRpcMethod, setYieldReplay, type RpcContext } from '../rpc'
 import { MockOverrides } from '../overrides'
 import type { TxRecord } from '../provider'
-import { findDtfByAddress } from '../registry'
+import { findDtfByAddress, TEST_ADDRESS } from '../registry'
 
 const HASH = `0x${'1'.repeat(64)}`
 
@@ -228,6 +228,87 @@ describe('yield record/replay', () => {
       // which contract it targets.
       const ctx = { ...context(), chainId: 1 }
       call('0x2c7ca56342177343a2954c250702fd464f4d0613', '0xa2f38585', ctx)
+      expect(ctx.log).not.toHaveBeenCalled()
+    } finally {
+      setYieldReplay(false)
+    }
+  })
+})
+
+describe('connected-wallet yield defaults (honest silent zero, not fail-loud)', () => {
+  const call = (
+    to: string,
+    data: string,
+    ctx: RpcContext,
+    overrides?: MockOverrides
+  ) => handleRpcMethod('eth_call', [{ to, data }], { ...ctx, overrides })
+  const balanceOf = (owner: string) =>
+    encodeFunctionData({
+      abi: parseAbi(['function balanceOf(address)']),
+      functionName: 'balanceOf',
+      args: [owner as `0x${string}`],
+    })
+  const TOKEN = '0x00000000000000000000000000000000deadbe10'
+
+  it('answers the TEST wallet balanceOf with 0, silently (no fail-loud storm)', () => {
+    setYieldReplay(1)
+    try {
+      const ctx = { ...context(), chainId: 1 }
+      const r = call(TOKEN, balanceOf(TEST_ADDRESS), ctx) as `0x${string}`
+      expect(BigInt(r)).toBe(0n)
+      expect(ctx.log).not.toHaveBeenCalled()
+    } finally {
+      setYieldReplay(false)
+    }
+  })
+
+  it('STILL fails loud for a balanceOf of some OTHER address (not the test wallet)', () => {
+    setYieldReplay(1)
+    try {
+      const ctx = { ...context(), chainId: 1 }
+      call(TOKEN, balanceOf('0x000000000000000000000000000000000000beef'), ctx)
+      expect(ctx.log).toHaveBeenCalledWith('unmocked eth_call', expect.anything())
+    } finally {
+      setYieldReplay(false)
+    }
+  })
+
+  it('a per-test ethCall seed WINS over the zero default (and no index wildcard leak)', () => {
+    setYieldReplay(1)
+    const overrides = new MockOverrides()
+    const cd = balanceOf(TEST_ADDRESS)
+    overrides.ethCall(TOKEN, cd, encodeAbiParameters([{ type: 'uint256' }], [123n]))
+    try {
+      const ctx = { ...context(), chainId: 1 }
+      const r = call(TOKEN, cd, ctx, overrides) as `0x${string}`
+      expect(BigInt(r)).toBe(123n)
+    } finally {
+      setYieldReplay(false)
+    }
+  })
+
+  it('FacadeRead.pendingUnstakings (0xe5cea2f6) returns an empty array, silently', () => {
+    setYieldReplay(1)
+    try {
+      const ctx = { ...context(), chainId: 1 }
+      const r = call('0x2c7ca56342177343a2954c250702fd464f4d0613', '0xe5cea2f6', ctx) as `0x${string}`
+      const [pending] = decodeAbiParameters(
+        [{ type: 'tuple[]', components: [{ type: 'uint256' }, { type: 'uint256' }, { type: 'uint256' }] }],
+        r
+      )
+      expect(pending).toEqual([])
+      expect(ctx.log).not.toHaveBeenCalled()
+    } finally {
+      setYieldReplay(false)
+    }
+  })
+
+  it('reads the zapper native sentinel as 0, silently', () => {
+    setYieldReplay(1)
+    try {
+      const ctx = { ...context(), chainId: 1 }
+      const r = call('0xeeeeeeee14d718c2b47d9923deab1335e144eeee', '0xb7d6ca64', ctx) as `0x${string}`
+      expect(BigInt(r)).toBe(0n)
       expect(ctx.log).not.toHaveBeenCalled()
     } finally {
       setYieldReplay(false)

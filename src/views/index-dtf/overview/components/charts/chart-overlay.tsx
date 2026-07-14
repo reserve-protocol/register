@@ -28,7 +28,7 @@ const OverlayTitle = () => {
   const isInactive = isInactiveDTF(useAtomValue(indexDTFStatusAtom))
 
   if (!dtf) {
-    return <Skeleton className="w-[250px] h-7 sm:h-8" />
+    return <Skeleton data-testid="overview-name-skeleton" className="w-[250px] h-7 sm:h-8" />
   }
 
   return (
@@ -114,7 +114,7 @@ const PriceValue = () => {
   }
 
   if (!price) {
-    return <Skeleton className="w-[100px] h-6 sm:h-7 mt-1" />
+    return <Skeleton data-testid="overview-price-skeleton" className="w-[100px] h-6 sm:h-7 mt-1" />
   }
 
   return (

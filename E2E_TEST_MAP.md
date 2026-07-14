@@ -148,3 +148,48 @@ mobile-smoke, mobile-full.
 
 Migration is mechanical (move + retag existing 42 specs into the tree; no logic
 change), then fill the ⬜ gaps + add the lifecycle/mobile dimensions per page.
+
+---
+
+## § 2026-07 deep-read reconciliation (authoritative — supersedes stale rows above)
+
+A full code-level read of every domain (7 parallel deep-dives) corrected the map
+and surfaced concrete states/edge-cases. Bugs found live in `E2E_BUG_LEDGER.md`.
+
+**Status corrections**
+- 🐛 **#15 zero-denom DoS → ✅ CLOSED** (FIX-B; crash test un-fixmed, passes).
+- 🐛 **#1/#18 chain-init subgraph/REST → ✅ CLOSED** (react-zapper 2.6.0; SPA tests un-fixmed, pass).
+- 🐛 **#17 chain-init (register `tokenJar()` RPC) → STILL OPEN** — the react-zapper fix did NOT cover register's own `chainIdAtom` RPC consumers. Add an **RPC-chain SPA assertion** (eth_call chain, not just subgraph).
+- **"Whitelist" proposal type does NOT exist.** `ProposalType = standard | optimistic` only. The four create forms are **Basket · DTF Settings · Basket Settings · DAO**. Allowlist calldata has no propose UI (falls to raw-call preview). Replace every "Whitelist" cell with **Optimistic**.
+- **Bridge is a STATIC link page** — no form/quote/chain-select. Scope to href/deep-link/copy only.
+
+**Highest-value gaps the deep-read confirmed (ranked)**
+1. **Optimistic governance — entire surface uncovered, no fixture** (challenge-vote AGAINST-only, veto window, SUCCEEDED→execute-no-queue, selector-registry preview, eligibility fork, optimistic delegates tab, optimistic-params create form). Largest combinatorial + highest-risk (fail-open eligibility M17).
+2. **Governance detail "changes" previews per TYPE** — 18 dtf-settings handlers + basket rebalance diff + gov-param diffs are decoded-but-untested; a decode bug silently misleads voters. Orthogonal to STATE (previews render identically in every state).
+3. **Automated CoW issuance wizard — zero coverage AND zero testids** (gnosis-check → configure → quote-summary → execution lifecycle → success; slow-quote 20s cancel; ondo-paused; convert-held). Testids must be added first.
+4. **Yield DTF — all write flows uncovered** (mint/redeem/stake/unstake/withdraw/cancel/dutch-bid/claim/vote/pause-freeze); render-only smokes today. Prioritize stake→unstake→cooldown→withdraw lifecycle + paused/frozen/redeem-only gating (hyUSD fixture already redeem-only).
+5. **Auctions `openAuction`/`openAuctionUnrestricted` writes + permission matrix** (launcher vs community vs disconnected; restricted vs permissionless window — needs a synthesized `getRebalance()` tuple since lcap has zero-width windows) + positive `auctions-rebalance-error` + legacy v2 (read-only, launch button dead).
+6. **General routes — portfolio / explorer(×5) / earn(×3) / tokens / top100** entirely uncovered; each needs NEW capture (see below). Deploy gates uncovered (no capture; assert route wiring).
+7. **Loading lifecycle (L1/L2) + mobile — uncovered everywhere.** No `<area>-skeleton` testids; the layout-shift surfaces (overview time-range selector reflow, chart→null collapse, balance/cover animations) are exactly where dimension-2 belongs.
+
+**Per-domain edge cases worth a dedicated test** (beyond the happy path)
+- **Overview:** price-0 / 0-supply (H3/M3 permanent skeletons), all-zero-weight exposure (M5 infinite basket skeleton), Market-Cap/Supply data-type shows unit price (M6), `%`-change firstValue=0 (M4), candlestick↔line toggle (default candlestick — current test only passes via line fallback), young-DTF range availability + auto-reset-to-`all` reflow, stale `dataType`/`chartType` on yield→standard SPA nav (M13).
+- **Issuance (index):** v1 vs v2 mint calldata (minSharesOut present/absent), redeem dust minOut=0 (zero slippage floor), USDT-fork approve→revoke→re-approve, approve-all partial/retry, manual deprecated sell-only (manual surface, not just zap), async compliance fail-open (H2), async convert-held, async no-collateral-legs skip-to-mint, wallet-disconnect mid-wizard reset.
+- **Governance:** CANCELED & EXPIRED as *fetched* terminal states (only post-tx CANCELED tested), QUEUED-with-null-ETA stuck (M15), delegate/undelegated-balance CTA replacing vote, shared-governor propose menu (3 vs 4 options), threshold/quorum/delay round-trips, vote-lock card variants (reward-token single/multi, APR badge threshold, governed-DTFs hovercard).
+- **Auctions:** restricted↔permissionless window boundary, `<`vs`<=` completion off-by-one (L4), token map mismatch white-screen (M7), hybrid manage-weights, Ondo cap auto-default.
+- **Settings/Manage/Factsheet:** Manage SIWE→upload→save→error + brand-manager gate (M8 whitelist backdoor); Factsheet performance math (`calculatePerformance`, monthly P&L, CSV, inception clamp, empty state); Settings optimistic veto rows, reward-tokens card, governance-token hidden-when-no-stToken, trading-gov hidden-when-equal-owner, `platformFee===100` Infinity (M9). **Manage + Factsheet have ZERO testids today.**
+- **Yield:** frozen-redeem enabled-but-reverts (M11), undercollateralized redeem block + dead `redeemCustom` path, cooldown/draft time-boundary (pending↔available split, `endId` semantics L17), settings role-gating (pauser/freezer/owner), legacy single-pause branch.
+- **General:** portfolio past-activity-only hides tx history (GM1), empty-vs-loading-vs-error tri-state everywhere (GH1/GM2/GM3/GM6), earn Arb↔BSC chain swap (GM5) + BSC casing drop (GL2) + yield search bypasses DTF filter (GL3), explorer revenue Arb-gates-all (GH2), tokens dead sort (GH3), top100 dedup/table↔card swap, deploy route collision (GH4), empty-chain-filter empties table (GL1).
+
+**NEW capture fixtures required** (not covered by existing SDK/subgraph/zapper/RPC boundaries)
+- **Portfolio:** REST `v1/portfolio/{a}`, `v1/historical/portfolio/{a}?period=×6`, `v1/portfolio/{a}/transactions` — variants: full / empty / past-activity-only / error / impersonation (`?account=`).
+- **Explorer:** per-tab subgraph + RPC (transactions, tokens, collaterals, governance+block-number, revenue FacadeRead).
+- **Earn:** DefiLlama `yields.llama.fi/pools`, REST `dtf/daos` (vote-lock), yield subgraph `tokenDailySnapshots`.
+- **Tokens / Top100:** yield `rtokens` subgraph / `TOP100_QUERY` subgraph.
+- **Automated wizard:** CoW quote + order-status boundaries (+ ondo-paused).
+- **Synthesized (no capture):** optimistic proposal fixture, rebalance `getRebalance()` tuple with `availableUntil>restrictedUntil`, price-0/0-supply DTF, all-zero-weight basket, QUEUED-null-ETA proposal.
+
+**Engineer-review surfaces** (tests are coverage, not sign-off): all governance
+calldata/decode + optimistic, auctions `openAuction*` + weight/limit math, yield
+mint/redeem/stake writes + pause/freeze, all fee math, the price/supply SDK
+pipeline (H3), and #17 chain correctness.

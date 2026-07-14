@@ -156,7 +156,7 @@ function knownPriceResponse(chainId: number, requestedTokens: Set<string>) {
 export async function mockApiRoutes(page: Page, options: ApiMockOptions) {
   const { log, geolocation, overrides, requests } = options
 
-  const handler = (route: Parameters<Parameters<Page['route']>[1]>[0]) => {
+  const handler = async (route: Parameters<Parameters<Page['route']>[1]>[0]) => {
     const url = new URL(route.request().url())
     const method = route.request().method()
     const path = url.pathname // e.g. /discover/dtfs, /v2/compliance/geolocation
@@ -167,6 +167,7 @@ export async function mockApiRoutes(page: Page, options: ApiMockOptions) {
       pathname: path,
       search: Object.fromEntries(url.searchParams),
     })
+    await overrides?.holds.gate({ boundary: 'api', pathname: path })
 
     // Per-test overlay wins over snapshots — exact method/path plus any
     // identity-bearing query fields the spec supplies.

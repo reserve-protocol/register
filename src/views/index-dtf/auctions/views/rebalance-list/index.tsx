@@ -42,7 +42,7 @@ const EmptyState = () => {
 }
 
 const LoadingState = () => {
-  return <Skeleton className="h-52 bg-background rounded-3xl " />
+  return <Skeleton data-testid="auctions-list-skeleton" className="h-52 bg-background rounded-3xl " />
 }
 
 const LegacyTradesButton = () => {

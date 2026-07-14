@@ -1,0 +1,82 @@
+{
+  "_meta": {
+    "source": "https://api.reserve.org/current/prices?chainId=56&tokens=0x0C50323AF81D5C33822c6Add256Fb9093D42BC74,0x25a4DbAE9a0Cd8C75656D6b50FFDf4900CC20d8f,0x89a9F7114bE6b220fAe645ba0cbB720889867415,0x0fAcaFB97ffDbA3cAe88512070AF49bd30674cD9,0x0585756aAFB241b0f8A9Df62Db26c566091Bde0b,0x1dCd320C5d7b84CD407437c58d56CbbDd0D9d8f3,0xA1DaaB37dA2a29A1eC721922b55962eB8B481001,0x343324170C91c4D8Cf4D439B3E5a619F50621aE7,0x149Bda9e7251DC36f536d1fE7F92A5ea203F4F3D",
+    "capturedAt": "2026-07-14T00:51:25.889Z",
+    "dtf": "0xa0fe4e0aeca5479705ce996615b2eacb6b6a10fb",
+    "chainId": 56
+  },
+  "data": [
+    {
+      "address": "0x0C50323AF81D5C33822c6Add256Fb9093D42BC74",
+      "price": 50.241304,
+      "timestamp": 1783990285,
+      "priceSources": [
+        "ondo"
+      ]
+    },
+    {
+      "address": "0x25a4DbAE9a0Cd8C75656D6b50FFDf4900CC20d8f",
+      "price": 183.599344,
+      "timestamp": 1783990285,
+      "priceSources": [
+        "ondo"
+      ]
+    },
+    {
+      "address": "0x89a9F7114bE6b220fAe645ba0cbB720889867415",
+      "price": 446.53,
+      "timestamp": 1783990285,
+      "priceSources": [
+        "ondo"
+      ]
+    },
+    {
+      "address": "0x0fAcaFB97ffDbA3cAe88512070AF49bd30674cD9",
+      "price": 767.915,
+      "timestamp": 1783990285,
+      "priceSources": [
+        "ondo"
+      ]
+    },
+    {
+      "address": "0x0585756aAFB241b0f8A9Df62Db26c566091Bde0b",
+      "price": 307.510909,
+      "timestamp": 1783990285,
+      "priceSources": [
+        "ondo"
+      ]
+    },
+    {
+      "address": "0x1dCd320C5d7b84CD407437c58d56CbbDd0D9d8f3",
+      "price": 295.915,
+      "timestamp": 1783990285,
+      "priceSources": [
+        "ondo"
+      ]
+    },
+    {
+      "address": "0xA1DaaB37dA2a29A1eC721922b55962eB8B481001",
+      "price": 485.986792,
+      "timestamp": 1783990285,
+      "priceSources": [
+        "ondo"
+      ]
+    },
+    {
+      "address": "0x343324170C91c4D8Cf4D439B3E5a619F50621aE7",
+      "price": 229.4465,
+      "timestamp": 1783990285,
+      "priceSources": [
+        "ondo"
+      ]
+    },
+    {
+      "address": "0x149Bda9e7251DC36f536d1fE7F92A5ea203F4F3D",
+      "price": 111.083562,
+      "timestamp": 1783990285,
+      "priceSources": [
+        "ondo"
+      ]
+    }
+  ]
+}

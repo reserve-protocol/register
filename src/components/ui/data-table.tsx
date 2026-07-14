@@ -322,7 +322,7 @@ function LoadingSkeleton<TData, TValue>({
   columns: ColumnDef<TData, TValue>[]
 }) {
   return (
-    <TableRow>
+    <TableRow data-testid="data-table-loading">
       <TableCell colSpan={columns.length} className="h-24 text-center">
         <div className="flex flex-col items-center justify-center gap-2 text-primary">
           <Spinner size={24} />

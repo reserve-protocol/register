@@ -11,6 +11,7 @@ import type { UnmockedLogger } from './logger'
 import type { MockOverrides } from './overrides'
 import type { TxRecord } from './provider'
 import type { BoundaryRequest } from './requests'
+import type { HoldIdentity } from '../harness/hold'
 import { REGISTRY, TEST_ADDRESS, YIELD_REGISTRY } from './registry'
 import { selectorName } from './selectors'
 import { loadSnapshot, snapshotExists } from './snapshots'
@@ -580,6 +581,12 @@ function handleSingleCall(
     // the fixture's chain on a real address still fail loud if uncaptured (so a
     // stuck-chain bug surfaces as an assertion failure, never a false green).
     if (chainId !== yieldReplayChain || to === ZERO_ADDRESS) return ZERO_RETURN
+    // Per-test seed wins over captured data (e.g. seeding the connected wallet's
+    // stRSR balance for an unstake — the replay map is wallet-agnostic). Use the
+    // per-test EXACT override table, NOT lookupOverride — the latter carries index
+    // `*:selector` wildcards + the $1 feed that must never leak into yield (P1).
+    const seeded = overrides?.lookupEthCall(to, data)
+    if (seeded) return seeded
     const exact = lookupYieldExact(chainId, to, data)
     if (exact) return exact
     const fallback = lookupYieldFallback(chainId, to, selector)
@@ -591,6 +598,25 @@ function handleSingleCall(
       return balance !== undefined
         ? encodeAbiParameters([{ type: 'uint256' }], [balance])
         : ETH_BALANCE
+    }
+    // Connecting a wallet fires the app-wide account updater: balanceOf/allowance
+    // across every listed token. The test wallet holds nothing (except what a spec
+    // seeds above), so 0 is the honest default — answer silently, not fail-loud.
+    if (selector === '0x70a08231' || selector === '0xdd62ed3e') {
+      const [owner] = decodeAbiParameters([{ type: 'address' }], (`0x${data.slice(10)}`) as Hex)
+      if (owner.toLowerCase() === TEST_ADDRESS.toLowerCase()) return ZERO_RETURN
+    }
+    // FacadeRead.pendingUnstakings(rToken, draftEra, account) — the staking
+    // withdraw updater's per-account read. The fresh test wallet has none, so an
+    // empty Pending[] is the honest default (offset word + zero length).
+    if (selector === '0xe5cea2f6') {
+      return `0x${'20'.padStart(64, '0')}${'0'.padStart(64, '0')}` as Hex
+    }
+    // react-zapper's native-token sentinel: the connected-wallet portfolio
+    // updater reads it (inside a multicall) but the wallet-less yield capture
+    // omits it. The fresh wallet holds none → 0 is the honest default.
+    if (to.toLowerCase() === '0xeeeeeeee14d718c2b47d9923deab1335e144eeee') {
+      return ZERO_RETURN
     }
     log('unmocked eth_call', unmockedCallDetail(chainId, to, selector))
     return ZERO_RETURN
@@ -900,6 +926,31 @@ function rpcResult(id: number, result: unknown) {
 
 // Intercept all RPC hosts. Handles single requests and batched arrays (viem
 // multicall batching). eth_chainId respects the URL's actual chain.
+// Build the hold-gate identity for an RPC request. For eth_call, params[0] is
+// `{ to, data }` — surface both so a hold can target one contract call by
+// selector (calldata prefix), not just the coarse method.
+function rpcHoldIdentity(method: string, params?: unknown[]): HoldIdentity {
+  const call = Array.isArray(params) ? (params[0] as { to?: string; data?: string } | undefined) : undefined
+  const to = call && typeof call === 'object' ? call.to : undefined
+  const data = call && typeof call === 'object' ? call.data : undefined
+  const base: HoldIdentity = { boundary: 'rpc', method, ...(to ? { to } : {}), ...(data ? { data } : {}) }
+
+  // Surface inner calls of a multicall3 aggregate3 so a selector/`to` hold can
+  // target a batched read (aggregate3 selector 0x82ad56cb).
+  if (to?.toLowerCase() === MULTICALL3 && data?.toLowerCase().startsWith('0x82ad56cb')) {
+    try {
+      const decoded = decodeFunctionData({ abi: multicall3Abi, data: data as Hex })
+      if (decoded.functionName === 'aggregate3') {
+        const calls = decoded.args[0] as ReadonlyArray<{ target: string; callData: string }>
+        return { ...base, inner: calls.map((c) => ({ to: c.target, data: c.callData })) }
+      }
+    } catch {
+      // fall through to the un-decoded identity
+    }
+  }
+  return base
+}
+
 export async function mockRpcRoutes(
   page: Page,
   log: UnmockedLogger,
@@ -909,7 +960,7 @@ export async function mockRpcRoutes(
 ) {
   const receiptPolls = new Map<string, number>()
   for (const pattern of RPC_HOST_PATTERNS) {
-    await page.route(pattern, (route) => {
+    await page.route(pattern, async (route) => {
       const request = route.request()
       if (request.method() !== 'POST') {
         return route.fulfill({
@@ -942,6 +993,9 @@ export async function mockRpcRoutes(
             params: req.params ?? [],
           })
         }
+        for (const req of body as Array<{ method: string; params?: unknown[] }>) {
+          await overrides?.holds.gate(rpcHoldIdentity(req.method, req.params))
+        }
         const responses = body.map((req: { id: number; method: string; params?: unknown[] }) =>
           rpcResult(req.id, handleRpcMethod(req.method, req.params, ctx))
         )
@@ -959,6 +1013,7 @@ export async function mockRpcRoutes(
         method: single.method,
         params: single.params ?? [],
       })
+      await overrides?.holds.gate(rpcHoldIdentity(single.method, single.params))
       return route.fulfill({
         status: 200,
         contentType: 'application/json',

@@ -99,6 +99,14 @@ export const REGISTRY: RegistryDTF[] = [
     slug: 'deprecated',
     deprecated: true,
   }),
+  // Optimistic-governance fixture (BSC PHOTON): a 'featured' DTF whose owner
+  // governance uses the timelock-guardian (optimistic) path. Exercises the
+  // governance TYPE × STATE surface the standard fixtures can't reach.
+  dtf({
+    address: '0xa0Fe4e0aEca5479705ce996615B2EACB6b6a10Fb',
+    chain: 'bsc',
+    slug: 'photon',
+  }),
 ]
 
 export function findDtfByAddress(address: string): RegistryDTF | undefined {

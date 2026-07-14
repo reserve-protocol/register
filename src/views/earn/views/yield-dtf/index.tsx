@@ -46,7 +46,7 @@ const EarnYieldDTF = () => {
   const { t } = useLingui()
   const faqs = useFaqs()
   return (
-    <div>
+    <div data-testid="earn-yield-dtf">
       <Header />
       <StakingPositions />
       <EarnFAQ title={t`Staking Frequently Asked Questions`} faqs={faqs} />

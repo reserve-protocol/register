@@ -23,7 +23,7 @@ const IndexDTFTablePlaceholder = () => (
       </TableHeader>
       <TableBody className="bg-card">
         {Array.from({ length: 15 }).map((_, index) => (
-          <TableRow key={index} className="hover:bg-transparent">
+          <TableRow key={index} data-testid="discover-table-skeleton" className="hover:bg-transparent">
             <TableCell>
               <div className="flex items-center gap-3 min-w-[320px]">
                 <Skeleton className="h-10 w-10 flex-shrink-0 rounded-full" />

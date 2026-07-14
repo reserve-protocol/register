@@ -122,7 +122,12 @@ const ConfirmStakeButton = () => {
 
   return (
     <div>
-      <Button disabled={!isReady} onClick={execute} className="w-full">
+      <Button
+        data-testid="stake-confirm-btn"
+        disabled={!isReady}
+        onClick={execute}
+        className="w-full"
+      >
         {!isReady ? t`Preparing transaction` : t`Confirm Stake`}
       </Button>
       {errorMsg}

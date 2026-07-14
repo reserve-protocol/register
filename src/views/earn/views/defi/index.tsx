@@ -13,7 +13,7 @@ const EarnDefi = () => {
   return (
     <>
       <EarnHeading />
-      <div className="flex flex-col gap-3 mt-4 md:mt-6">
+      <div data-testid="earn-defi" className="flex flex-col gap-3 mt-4 md:mt-6">
         <FeaturedPools />
         <DTFDefiEarn />
       </div>
