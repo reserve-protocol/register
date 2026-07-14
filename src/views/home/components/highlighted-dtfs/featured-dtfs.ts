@@ -41,7 +41,7 @@ export const FEATURED_DTFS: FeaturedIdentity[] = [
     address: '0xa0Fe4e0aEca5479705ce996615B2EACB6b6a10Fb',
     chainId: ChainId.BSC,
     symbol: 'PHOTON',
-    name: 'Reserve Photonics DTF',
+    name: 'Reserve AI Photonics DTF',
     logo: 'https://l5394zf57b.ufs.sh/f/mupND8QUUvXxYmQhYtkGhrj2ScsDNeUp3lRftPgCi0ZM65Vz',
   },
   {
@@ -49,7 +49,7 @@ export const FEATURED_DTFS: FeaturedIdentity[] = [
     address: '0xf571Fe3F0d74521Bc7310B111Faea931C748f27B',
     chainId: ChainId.BSC,
     symbol: 'NEOCLOUD',
-    name: 'Reserve AI NeoCloud DTF',
+    name: 'Reserve AI Capacity & Neocloud DTF',
     logo: 'https://l5394zf57b.ufs.sh/f/mupND8QUUvXxSLxvYczdsT15PwoUNnDvJ3hXEatCMQxeHuGm',
   },
   {

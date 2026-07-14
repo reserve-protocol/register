@@ -56,9 +56,22 @@ describe('normalizeIndexDtfList', () => {
           percent: null,
         },
       },
+      {
+        address: '0x0000000000000000000000000000000000000005',
+        symbol: 'NEOCLOUD',
+        name: 'Reserve AI NeoCloud DTF',
+        type: 'index',
+        chainId: 56,
+        marketCap: 175,
+      },
     ])
 
-    expect(result.map((item) => item.symbol)).toEqual(['HIGH', 'FLAT', 'LOW'])
+    expect(result.map((item) => item.symbol)).toEqual([
+      'HIGH',
+      'NEOCLOUD',
+      'FLAT',
+      'LOW',
+    ])
     expect(result[0]).toMatchObject({
       performance: [],
       performancePercent: -2.5,
@@ -68,14 +81,17 @@ describe('normalizeIndexDtfList', () => {
         percent: -2.5,
       },
     })
-    expect(result[2]).toMatchObject({
+    expect(result[1]).toMatchObject({
+      name: 'Reserve AI Capacity & Neocloud DTF',
+    })
+    expect(result[3]).toMatchObject({
       performance: [
         { timestamp: 1000, value: 9 },
         { timestamp: 2000, value: 10 },
       ],
       performancePercent: 11.11,
     })
-    expect(result[1]).toMatchObject({
+    expect(result[2]).toMatchObject({
       performancePercent: 0,
       priceChange: {
         period: '1m',
