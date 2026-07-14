@@ -285,6 +285,24 @@ const SELECTOR = {
   symbol: '0x95d89b41',
 } as const
 
+// stRSR staking WRITE functions (all void). wagmi's `useSimulateContract` fires
+// an eth_call to simulate each before the write — including transiently, e.g. the
+// stake flow briefly simulates `stakeAndDelegate` before the on-chain `delegates`
+// read resolves and it settles to `stake`. That simulate targets a captured stRSR
+// but its exact (amount-bearing) calldata is never captured, so it must be
+// answered as an empty success or it fails loud (a race the full suite usually
+// slips past but isolation catches). The REAL submitted tx is still asserted from
+// txLog; a successful simulate does not change which call is submitted (that is
+// decided at click time, after `delegates` has resolved to `stake`).
+const STRSR_WRITE_SELECTORS = new Set([
+  '0xa694fc3a', // stake(uint256)
+  '0x735e6c7a', // stakeAndDelegate(uint256,address)
+  '0x2e17de78', // unstake(uint256)
+  '0xf3fef3a3', // withdraw(address,uint256)
+  '0x2b187b2b', // cancelUnstake(uint256)
+  '0x5c19a95c', // delegate(address)
+])
+
 const KNOWN_ZERO_SELECTORS = [
   '0x07089246',
   '0x160cbed7',
@@ -688,6 +706,11 @@ function handleSingleCall(
     // omits it. The fresh wallet holds none → 0 is the honest default.
     if (to.toLowerCase() === '0xeeeeeeee14d718c2b47d9923deab1335e144eeee') {
       return ZERO_RETURN
+    }
+    // stRSR write-function SIMULATE on a known stRSR → empty success (void). See
+    // STRSR_WRITE_SELECTORS. An unknown-address write simulate still fails loud.
+    if (STRSR_WRITE_SELECTORS.has(selector) && isKnownAddr(to)) {
+      return '0x' as Hex
     }
     log('unmocked eth_call', unmockedCallDetail(chainId, to, selector))
     return ZERO_RETURN

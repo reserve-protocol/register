@@ -385,9 +385,9 @@ const buildBridgeMap = (
 export const BRIDGED_INDEX_DTFS = buildBridgeMap(CMC20_ADDRESS, LCAP_ADDRESS)
 
 for (const chain of supportedChainList) {
-  LISTED_RTOKEN_ADDRESSES[chain] = [
-    ...Object.keys(rtokens[chain] || {}).map((s) => s.toLowerCase()),
-  ]
+  LISTED_RTOKEN_ADDRESSES[chain] = Object.keys(rtokens[chain] || {}).map((s) =>
+    s.toLowerCase()
+  )
 }
 
 export const TRADERS: Trader[] = ['backingManager', 'rsrTrader', 'rTokenTrader']

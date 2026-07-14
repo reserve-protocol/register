@@ -325,13 +325,22 @@ export function resolveIndexQuery(
   }
 
   if (op === 'getTransferEvents' || body.includes('transferEvents')) {
+    // Single-DTF form (useIndexDTFTransactions) carries `$dtf` → serve that DTF's
+    // captured transfer events; a missing snapshot for a NAMED DTF is a real gap,
+    // so fail loud.
     const address = (vars.dtf as string) ?? ''
-    const dtf = dtfForAddress(address)
-    if (dtf && snapshotExists(`${dtf.snapshotDir}/transfer-events.json`)) {
-      return { data: loadSnapshot(`${dtf.snapshotDir}/transfer-events.json`) }
+    if (address) {
+      const dtf = dtfForAddress(address)
+      if (dtf && snapshotExists(`${dtf.snapshotDir}/transfer-events.json`)) {
+        return { data: loadSnapshot(`${dtf.snapshotDir}/transfer-events.json`) }
+      }
+      log('unmocked operation identity', { op: 'getTransferEvents', dtf: address })
+      return graphError('[E2E] unmocked operation identity: getTransferEvents')
     }
-    log('unmocked operation identity', { op: 'getTransferEvents', dtf: address })
-    return graphError('[E2E] unmocked operation identity: getTransferEvents')
+    // Explorer aggregate form (IndexTransferEvents) filters cross-DTF by `$where`
+    // with no single identity → deterministic empty. A spec wanting rows overlays
+    // this op. Mirrors the auctions/governance cross-DTF empty defaults.
+    return { data: { transferEvents: [] } }
   }
 
   if (op === 'getRebalances' || body.includes('rebalances') || body.includes('rebalance(')) {
