@@ -156,7 +156,7 @@ export const useHistoricalPortfolio = (address?: Address | null) => {
   const defaultTimeRange = useMemo<PortfolioPeriod>(() => {
     if (!availableTimeRanges) return '1y'
     const nonAll = availableTimeRanges.filter((r) => r.value !== 'all')
-    return (nonAll[nonAll.length - 1]?.value ?? '1y') as PortfolioPeriod
+    return (nonAll[nonAll.length - 1]?.value ?? 'all') as PortfolioPeriod
   }, [availableTimeRanges])
 
   useEffect(() => {
@@ -181,5 +181,6 @@ export const useHistoricalPortfolio = (address?: Address | null) => {
   return {
     getChartData,
     isLoading: selectedQuery.isLoading,
+    availableTimeRanges,
   }
 }

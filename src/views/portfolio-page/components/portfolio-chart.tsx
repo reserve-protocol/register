@@ -122,16 +122,18 @@ function ChartTooltip({ payload, active, stacked }: any) {
 }
 
 const TimeRangeTabs = ({
+  periods,
   active,
   onChange,
 }: {
+  periods: typeof PERIOD_LABELS
   active: PortfolioPeriod
   onChange: (p: PortfolioPeriod) => void
 }) => {
   const { t } = useLingui()
   return (
     <div className="flex items-center bg-muted rounded-2xl p-0.5 w-fit">
-      {PERIOD_LABELS.map(({ key, label }) => (
+      {periods.map(({ key, label }) => (
         <button
           key={key}
           onClick={() => onChange(key)}
@@ -184,7 +186,20 @@ const PortfolioChart = () => {
   const portfolio = useAtomValue(portfolioDataAtom)
   const [timeRange, setTimeRange] = useAtom(portfolioPageTimeRangeAtom)
   const [stacked, setStacked] = useState(false)
-  const { getChartData, isLoading } = useHistoricalPortfolio(address)
+  const { getChartData, isLoading, availableTimeRanges } =
+    useHistoricalPortfolio(address)
+
+  // Same rule as the DTF Overview: ranges older than the account's history
+  // are hidden, since the hook resets any unavailable selection.
+  const periods = useMemo(
+    () =>
+      availableTimeRanges
+        ? PERIOD_LABELS.filter(({ key }) =>
+            availableTimeRanges.some((r) => r.value === key)
+          )
+        : PERIOD_LABELS,
+    [availableTimeRanges]
+  )
 
   const rawChartData = getChartData(timeRange)
   const chartData = useMemo(
@@ -246,6 +261,7 @@ const PortfolioChart = () => {
           </div>
         </div>
         <TimeRangeTabs
+          periods={periods}
           active={timeRange}
           onChange={(p) => {
             setTimeRange(p)
