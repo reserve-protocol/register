@@ -1,6 +1,6 @@
 ---
 title: SDK
-updated: 2026-07-02
+updated: 2026-07-14
 type: context
 ---
 
@@ -38,6 +38,16 @@ Confirm exact current names in the installed package before use — never invent
 - **Optimistic governance**: `useIndexDtfOptimisticProposalContext` + `useIndexDtfOptimistic*` family.
 - **Providers**: `DtfSdkProvider` (wired in `src/state/chain/index.tsx`), `IndexDtfProvider` (wired in `src/views/index-dtf/index-dtf-container.tsx`); `useDtfSdk()` for the imperative client.
 - **Helpers**: `mapIndexDtfData`, `dtfQueryKeys`, `LIVE_STALE_TIME`/`STATIC_STALE_TIME`/`DEFAULT_STALE_TIME`.
+
+## Math corroboration (hardening R0, 2026-07-14 — branch `feature/hardening-integration`)
+
+Before register delegated math to the SDK, its governance/rebalance/fee/APY math was audited against the actual governor contracts and register's own findings. Verdict: SDK math **fails loud** (no fabricated `$1`/`|| 1n`/50% fallbacks; deploy-basket + open-auction builders throw on zero/negative price and zero supply via `dtf-rebalance-lib`) — genuinely safer than register's pre-hardening code. Fixes landed on the migration branch:
+
+- **Tie semantics (was a real bug):** Index `getProposalState` treated `for === against` as SUCCEEDED; OZ `GovernorCountingSimple._voteSucceeded` (FolioGovernor + yield `Governance.sol`, both confirmed no override) requires `for > against` STRICTLY → a tie is DEFEATED. Fixed + vectors. **This is a user-visible governance-badge change** pending Luis's SDK review.
+- **Yield list state (was a gap):** `getYieldDtfProposals` returned raw subgraph state that lags time transitions. Now derives a summary state (`getYieldDtfProposalState`, same strict-tie rule) from one chain block per request — Anastasius off `block.timestamp`, Alexios off `block.number`, never the consumer wall clock. Stale-PENDING past deadline resolves to the vote outcome, never EXPIRED.
+- Unmocked open-auction builder tests (zero price/supply throw) + a golden `openAuction` calldata fixture were added (were plumbing-only against a mocked lib).
+
+Implication for migration: adopt the SDK's `proposal.votingState` / list state directly — it now matches register's corrected `getProposalStatus` semantics. Z8 (yield staking-vault reward-period APY) has NO SDK equivalent and a sidebar-only helper fails the boundary test → stays register-side.
 
 ## Boundary — who owns what
 
