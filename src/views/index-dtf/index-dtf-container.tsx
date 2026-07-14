@@ -3,7 +3,6 @@ import useFavicon from '@/hooks/useFavicon'
 import useIndexDTFTransactions from '@/hooks/useIndexDTFTransactions'
 import { chainIdAtom, walletChainAtom } from '@/state/atoms'
 import {
-  ExposureGroup,
   indexDTFAtom,
   indexDTFBasketAmountsAtom,
   indexDTFBasketAtom,
@@ -38,7 +37,6 @@ import {
   supportedChainIds,
   type IndexDtfBrand as SdkIndexDtfBrand,
   type IndexDtfData,
-  type IndexDtfExposurePeriod,
   type SupportedChainId,
 } from '@reserve-protocol/react-sdk'
 import { atom, useAtom, useAtomValue, useSetAtom } from 'jotai'
@@ -246,17 +244,15 @@ const IndexDTFExposureUpdater = () => {
   const period = useAtomValue(performanceTimeRangeAtom)
 
   const { data: exposureData, isLoading } = useIndexDtfExposure(
-    // The exposure API supports 'ytd' (the app default) but the SDK's period
-    // union doesn't list it yet; it passes the value through untouched.
-    { ...identity, period: period as IndexDtfExposurePeriod },
+    { ...identity, period },
     { refetchInterval: 60000 }
   )
 
   useEffect(() => {
     if (exposureData) {
-      // The SDK types `native` loosely and doesn't carry underlyingMarketCap
-      // yet; the payload is the same exposure shape this atom always held.
-      setExposureData(exposureData as unknown as ExposureGroup[])
+      setExposureData(
+        exposureData.map((group) => ({ ...group, tokens: [...group.tokens] }))
+      )
     }
   }, [exposureData, setExposureData])
 
