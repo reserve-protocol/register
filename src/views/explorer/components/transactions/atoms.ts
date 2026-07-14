@@ -1,6 +1,9 @@
 import { atom } from 'jotai'
 import { _atomWithDebounce } from 'utils/atoms/atomWithDebounce'
 import { supportedChainList } from 'utils/constants'
+import { ChainId } from 'utils/chains'
+
+export const transactionChains = [...supportedChainList, ChainId.BSC]
 
 interface IFilters {
   chains: string[]
@@ -45,7 +48,7 @@ export const entryTypes = {
 }
 
 export const filtersAtom = atom<IFilters>({
-  chains: supportedChainList.map((chain) => chain.toString()),
+  chains: transactionChains.map((chain) => chain.toString()),
   tokens: [],
   type: Object.values(ENTRY_TYPES).filter(
     (type) => type !== ENTRY_TYPES.TRANSFER
