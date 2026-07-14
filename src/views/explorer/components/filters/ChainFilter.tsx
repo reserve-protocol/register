@@ -7,14 +7,18 @@ import ChainLogo from 'components/icons/ChainLogo'
 import StackedChainLogo from 'components/icons/StackedChainLogo'
 import { Plural, Trans } from '@lingui/react/macro'
 
-const ChainFilter = (props: Omit<IMultiselectDropdrown, 'options'>) => {
+interface ChainFilterProps extends Omit<IMultiselectDropdrown, 'options'> {
+  chains?: number[]
+}
+
+const ChainFilter = ({ chains = supportedChainList, ...props }: ChainFilterProps) => {
   const options = useMemo(() => {
-    return supportedChainList.map((chainId) => ({
+    return chains.map((chainId) => ({
       label: CHAIN_TAGS[chainId],
       value: chainId.toString(),
       icon: <ChainLogo chain={chainId} />,
     }))
-  }, [])
+  }, [chains])
 
   return (
     <div>

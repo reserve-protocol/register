@@ -94,8 +94,14 @@ const useTransactionColumns = () => {
       columnHelper.accessor('amountUSD', {
         header: t`USD Value`,
         cell: (data) => {
-          if (isNaN(+data.getValue())) {
-            return `$${data.getValue()}`
+          const value = data.getValue()
+
+          if (value === null || value === undefined) {
+            return '—'
+          }
+
+          if (isNaN(+value)) {
+            return `$${value}`
           }
 
           return formatUsdCurrencyCell(data as any)

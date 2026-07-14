@@ -13,6 +13,7 @@ import useIndexDTFList from '@/hooks/useIndexDTFList'
 import { chainIdAtom } from '@/state/atoms'
 import { indexDTFAtom } from '@/state/dtf/atoms'
 import { getFolioRoute } from '@/utils'
+import { isHiddenDtfSymbol } from '@/utils/constants'
 import { Trans } from '@lingui/react/macro'
 import { useAtomValue } from 'jotai'
 import { ChevronDown } from 'lucide-react'
@@ -238,6 +239,9 @@ const GovernanceVoteLock = () => {
   )
   const { data: listedDtfs } = useIndexDTFList()
   const governedDtfs = (governedDtfsData ?? []) as GovernedDtf[]
+  const visibleGovernedDtfs = governedDtfs.filter(
+    (dtf) => !isHiddenDtfSymbol(dtf.token.symbol)
+  )
   const listedDtfAddresses = useMemo(() => {
     if (!listedDtfs || !indexDTF?.chainId) return null
 
@@ -251,8 +255,10 @@ const GovernanceVoteLock = () => {
     )
   }, [listedDtfs, indexDTF?.chainId])
   const listedGovernedDtfs = listedDtfAddresses
-    ? governedDtfs.filter((dtf) => listedDtfAddresses.has(dtf.id.toLowerCase()))
-    : governedDtfs
+    ? visibleGovernedDtfs.filter((dtf) =>
+        listedDtfAddresses.has(dtf.id.toLowerCase())
+      )
+    : visibleGovernedDtfs
 
   if (!indexDTF?.stToken) {
     return <Placeholder />

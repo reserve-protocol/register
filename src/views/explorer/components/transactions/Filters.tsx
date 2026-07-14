@@ -1,5 +1,5 @@
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
-import { debouncedWalletInputAtom, filtersAtom } from './atoms'
+import { debouncedWalletInputAtom, filtersAtom, transactionChains } from './atoms'
 import ChainFilter from '../filters/ChainFilter'
 import TokenFilter from '../filters/token-filter'
 import TransactionTypeFilter from '../filters/TransactionTypeFilter'
@@ -46,6 +46,7 @@ const TransactionFilters = () => {
         onChange={(selected) => handleChange('type', selected)}
       />
       <ChainFilter
+        chains={transactionChains}
         selected={filters.chains}
         onChange={(selected) => handleChange('chains', selected)}
       />

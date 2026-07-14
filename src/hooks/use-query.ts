@@ -2,7 +2,7 @@ import {
   keepPreviousData,
   useQuery as useReactQuery,
 } from '@tanstack/react-query'
-import { RequestDocument } from 'graphql-request'
+import { GraphQLClient, RequestDocument } from 'graphql-request'
 import { useAtomValue } from 'jotai'
 import { GRAPH_CLIENTS, chainIdAtom, gqlClientAtom } from 'state/atoms'
 import { supportedChainList } from 'utils/constants'
@@ -14,6 +14,7 @@ interface QueryConfig {
   enabled?: boolean
   refetchOnWindowFocus?: boolean
   keepPreviousData?: boolean // Maps to React Query's placeholderData
+  clients?: Record<number, GraphQLClient>
 }
 
 /**
@@ -42,7 +43,7 @@ const useQuery = <T = any>(
 ): UseQueryReturn<T> => {
   const client = useAtomValue(gqlClientAtom)
   const chainId = useAtomValue(chainIdAtom)
-  const { keepPreviousData: shouldKeepPrevious, ...restConfig } = config
+  const { keepPreviousData: shouldKeepPrevious, clients: _clients, ...restConfig } = config
 
   const result = useReactQuery({
     queryKey: query
@@ -71,20 +72,22 @@ export const useMultichainQuery = <T = any>(
   variables: Record<string, any> = {},
   config: QueryConfig = {}
 ): UseQueryReturn<{ [chainId: number]: T }> => {
-  const { keepPreviousData: shouldKeepPrevious, ...restConfig } = config
+  const { keepPreviousData: shouldKeepPrevious, clients: customClients, ...restConfig } = config
+  const clients = customClients ?? GRAPH_CLIENTS
 
   const result = useReactQuery({
     queryKey: query
       ? ['graphql-multichain', query, variables]
       : ['graphql-multichain-disabled'],
     queryFn: async () => {
+      const chainList = Object.keys(clients).map(Number)
       const chains: Set<number> = new Set(
         variables._chain ? variables._chain : supportedChainList
       )
 
-      const calls = supportedChainList.map((chain) =>
-        chains.has(chain)
-          ? GRAPH_CLIENTS[chain].request<T>(
+      const calls = chainList.map((chain) =>
+        chains.has(chain) && clients[chain]
+          ? clients[chain].request<T>(
               query as RequestDocument,
               variables[chain] || variables
             )
@@ -93,7 +96,7 @@ export const useMultichainQuery = <T = any>(
 
       const results = await Promise.all(calls)
 
-      return supportedChainList.reduce(
+      return chainList.reduce(
         (acc, chainId, index) => {
           acc[chainId] = results[index]
           return acc

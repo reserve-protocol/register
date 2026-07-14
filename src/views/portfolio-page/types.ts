@@ -1,4 +1,5 @@
 import { Address } from 'viem'
+import { TimeRange } from '@/types'
 
 // Current portfolio response
 export interface PortfolioResponse {
@@ -171,4 +172,4 @@ export interface HistoricalDataPoint {
   totalRSRHoldingsUSD: number
 }
 
-export type PortfolioPeriod = '24h' | '7d' | '1m' | '3m' | '6m' | 'All'
+export type PortfolioPeriod = TimeRange

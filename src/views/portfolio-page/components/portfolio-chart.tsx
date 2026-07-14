@@ -3,7 +3,7 @@ import { cn } from '@/lib/utils'
 import type { MessageDescriptor } from '@lingui/core'
 import { msg } from '@lingui/core/macro'
 import { Trans, useLingui } from '@lingui/react/macro'
-import { useAtom, useAtomValue } from 'jotai'
+import { atom, useAtom, useAtomValue } from 'jotai'
 import { useEffect, useMemo, useState } from 'react'
 import { ArrowUpRight, ArrowDownRight, Loader } from 'lucide-react'
 import dayjs from 'dayjs'
@@ -17,6 +17,7 @@ import {
 } from 'recharts'
 import {
   portfolioAddressAtom,
+  portfolioAvailableTimeRangesAtom,
   portfolioDataAtom,
   portfolioPageTimeRangeAtom,
 } from '../atoms'
@@ -26,20 +27,28 @@ import {
   useHistoricalPortfolio,
 } from '../hooks/use-historical-portfolio'
 import { PortfolioPeriod } from '../types'
+import { ALL_TIME_RANGES } from '@/views/index-dtf/overview/components/charts/use-available-time-ranges'
 import { Card } from '@/components/ui/card'
 
-// Period codes (24hr/7d/1m/...) stay untranslated; only 'All time' is wrapped.
+// Period codes match the DTF Overview time ranges; only 'All time' is wrapped.
 const PERIOD_LABELS: {
   key: PortfolioPeriod
   label: string | MessageDescriptor
-}[] = [
-  { key: '24h', label: '24hr' },
-  { key: '7d', label: '7d' },
-  { key: '1m', label: '1m' },
-  { key: '3m', label: '3m' },
-  { key: '6m', label: '6m' },
-  { key: 'All', label: msg`All time` },
-]
+}[] = ALL_TIME_RANGES.map((range) =>
+  range.value === 'all'
+    ? { key: 'all', label: msg`All time` }
+    : { key: range.value as PortfolioPeriod, label: range.label }
+)
+
+// Same rule as the DTF Overview: ranges older than the account's history
+// are hidden, and the time-range atom clamps any unavailable selection.
+const visiblePeriodsAtom = atom((get) => {
+  const available = get(portfolioAvailableTimeRangesAtom)
+  if (!available) return PERIOD_LABELS
+  return PERIOD_LABELS.filter(({ key }) =>
+    available.some((r) => r.value === key)
+  )
+})
 
 // Suffix codes (24H/7D/...) stay untranslated; only 'All' is wrapped.
 const PERIOD_SUFFIX: Record<PortfolioPeriod, string | MessageDescriptor> = {
@@ -47,8 +56,9 @@ const PERIOD_SUFFIX: Record<PortfolioPeriod, string | MessageDescriptor> = {
   '7d': '7D',
   '1m': '1M',
   '3m': '3M',
-  '6m': '6M',
-  All: msg`All`,
+  ytd: 'YTD',
+  '1y': '1Y',
+  all: msg`All`,
 }
 
 const formatYAxis = (value: number) => {
@@ -123,16 +133,18 @@ function ChartTooltip({ payload, active, stacked }: any) {
 }
 
 const TimeRangeTabs = ({
+  periods,
   active,
   onChange,
 }: {
+  periods: typeof PERIOD_LABELS
   active: PortfolioPeriod
   onChange: (p: PortfolioPeriod) => void
 }) => {
   const { t } = useLingui()
   return (
     <div className="flex items-center bg-muted rounded-2xl p-0.5 w-fit">
-      {PERIOD_LABELS.map(({ key, label }) => (
+      {periods.map(({ key, label }) => (
         <button
           key={key}
           onClick={() => onChange(key)}
@@ -186,6 +198,8 @@ const PortfolioChart = () => {
   const [timeRange, setTimeRange] = useAtom(portfolioPageTimeRangeAtom)
   const [stacked, setStacked] = useState(false)
   const { getChartData, isLoading } = useHistoricalPortfolio(address)
+
+  const periods = useAtomValue(visiblePeriodsAtom)
 
   const rawChartData = getChartData(timeRange)
   const chartData = useMemo(
@@ -247,6 +261,7 @@ const PortfolioChart = () => {
           </div>
         </div>
         <TimeRangeTabs
+          periods={periods}
           active={timeRange}
           onChange={(p) => {
             setTimeRange(p)
