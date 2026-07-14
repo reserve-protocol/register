@@ -16,7 +16,6 @@ import { isInactiveDTF } from '@/hooks/use-dtf-status'
 import {
   indexDTFAtom,
   indexDTFBrandAtom,
-  indexDTFBrandExtrasResolvedAtom,
   indexDTFStatusAtom,
 } from '@/state/dtf/atoms'
 import { useTrackIndexDTFClick } from '@/views/index-dtf/hooks/useTrackIndexDTFPage'
@@ -161,7 +160,6 @@ const MintBox = () => {
 const LandingMint = (props: React.HTMLAttributes<HTMLDivElement>) => {
   const { data: complianceData } = useComplianceRestrictions()
   const brand = useAtomValue(indexDTFBrandAtom)
-  const brandExtrasResolved = useAtomValue(indexDTFBrandExtrasResolvedAtom)
   const dtf = useAtomValue(indexDTFAtom)
   const isGeoRestricted = complianceData?.reason === 'geolocation-restricted'
   const isLargeDesktop = useIsLargeDesktop()
@@ -181,7 +179,7 @@ const LandingMint = (props: React.HTMLAttributes<HTMLDivElement>) => {
       <div
         className={cn(
           'grid transition-[grid-template-rows] duration-500 ease-out motion-reduce:transition-none',
-          hasCover || brand === undefined || !brandExtrasResolved
+          hasCover || brand === undefined
             ? 'grid-rows-[1fr]'
             : 'grid-rows-[0fr]'
         )}

@@ -134,11 +134,6 @@ export const performanceTimeRangeAtom = atom<TimeRange>('ytd')
 export const indexDTFPerformanceLoadingAtom = atom<boolean>(false)
 export const indexDTFMarketCapAtom = atom<number | undefined>(undefined)
 export const indexDTFBrandAtom = atom<IndexDTFBrand | undefined>(undefined)
-// True once the folio-manager brand read settles — the authoritative source
-// for `dtf.video`/`files`. The SDK brand write can land WITHOUT video (its
-// mapping drops untyped fields), so anything gating on the cover video must
-// hold its skeleton until this flips or the cover flaps out and back in.
-export const indexDTFBrandExtrasResolvedAtom = atom(false)
 export const indexDTFTransactionsAtom = atom<Transaction[]>([])
 
 export const indexDTFFeeAtom = atom<number | undefined>(undefined)

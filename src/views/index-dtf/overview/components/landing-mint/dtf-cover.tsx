@@ -2,11 +2,7 @@ import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
 import VideoModal from '@/components/video-modal'
 import { cn } from '@/lib/utils'
-import {
-  indexDTFAtom,
-  indexDTFBrandAtom,
-  indexDTFBrandExtrasResolvedAtom,
-} from '@/state/dtf/atoms'
+import { indexDTFAtom, indexDTFBrandAtom } from '@/state/dtf/atoms'
 import { getYouTubeEmbedUrl } from '@/utils/youtube'
 import { Trans, useLingui } from '@lingui/react/macro'
 import { atom, useAtom, useAtomValue } from 'jotai'
@@ -72,7 +68,6 @@ const DtfCover = ({
 }) => {
   const { t } = useLingui()
   const brand = useAtomValue(indexDTFBrandAtom)
-  const brandExtrasResolved = useAtomValue(indexDTFBrandExtrasResolvedAtom)
   const dtf = useAtomValue(indexDTFAtom)
   const [isVideoLoaded, setIsVideoLoaded] = useState(false)
   const [isImageLoaded, setIsImageLoaded] = useState(false)
@@ -110,11 +105,9 @@ const DtfCover = ({
     ? t`${dtf.token.symbol} explainer`
     : t`DTF Explainer`
 
-  // Two loading phases: brand not yet set, or brand set from the SDK payload
-  // (which can omit `video`) with the authoritative folio-manager read still
-  // in flight. Collapsing in between made the cover flap out and back in.
-  const isBrandLoading =
-    brand === undefined || (!hasVideoCover && !brandExtrasResolved)
+  // The SDK brand payload carries video/files (0.4.1+), so the brand atom
+  // lands complete in one write — no second folio-manager read to wait on.
+  const isBrandLoading = brand === undefined
 
   if (!isBrandLoading && !hasVideoCover && !hasBrandCover) {
     return null

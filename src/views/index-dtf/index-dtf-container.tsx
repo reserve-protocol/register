@@ -7,7 +7,6 @@ import { chainIdAtom, walletChainAtom } from '@/state/atoms'
 import {
   indexDTF7dChangeAtom,
   indexDTFAtom,
-  indexDTFBrandExtrasResolvedAtom,
   indexDTFBasketAmountsAtom,
   indexDTFBasketAtom,
   indexDTFBasketPricesAtom,
@@ -75,23 +74,15 @@ const isIndexDtfChain = (chainId: number): chainId is SupportedChainId =>
 const mapSdkBrand = (brand: SdkIndexDtfBrand | undefined) => {
   if (!brand) return undefined
 
-  // `files` and `video` are not typed on the SDK brand yet (0.1.5), but the API
-  // returns them.
-  const brandWithApiFields = brand as SdkIndexDtfBrand & {
-    files?: { url?: string; name?: string }[]
-    video?: string
-  }
-  const files = brandWithApiFields.files ?? []
-
   return {
     dtf: {
       icon: brand.icon ?? '',
       cover: brand.cover ?? '',
-      video: brandWithApiFields.video ?? '',
+      video: brand.video ?? '',
       description: brand.description ?? '',
       notesFromCreator: brand.notesFromCreator ?? '',
       prospectus: brand.prospectus ?? '',
-      files: files.map((file) => ({
+      files: brand.files.map((file) => ({
         url: file.url ?? '',
         name: file.name ?? '',
       })),
@@ -197,21 +188,7 @@ const IndexDTFDataUpdater = () => {
     const { basket, prices, amounts, shares } = getBasketState(data)
 
     setIndexDTF(data)
-    // Merge-preserve video/files: the SDK brand payload can omit them, and a
-    // bare overwrite made the cover card unmount until BrandFilesUpdater
-    // re-merged — the ugliest layout shift on the page.
-    setIndexDTFBrand((prev) => {
-      const next = mapSdkBrand(data.brand)
-      if (!prev || !next) return next
-      return {
-        ...next,
-        dtf: {
-          ...next.dtf,
-          video: next.dtf.video || prev.dtf.video,
-          files: next.dtf.files.length ? next.dtf.files : prev.dtf.files,
-        },
-      }
-    })
+    setIndexDTFBrand(mapSdkBrand(data.brand))
     setBasket(basket)
     setBasketPrices(prices)
     setBasketAmounts(amounts)
@@ -230,79 +207,6 @@ const IndexDTFDataUpdater = () => {
     setIndexDTFBrand,
     setRebalanceControl,
   ])
-
-  return null
-}
-
-// The SDK's brand mapping whitelists fields and can drop newer `dtf` fields, so
-// read them straight from the folio-manager API and merge them into the brand
-// atom. Remove once the SDK maps these fields.
-const BrandFilesUpdater = () => {
-  const dtf = useAtomValue(indexDTFAtom)
-  const setIndexDTFBrand = useSetAtom(indexDTFBrandAtom)
-  const setBrandExtrasResolved = useSetAtom(indexDTFBrandExtrasResolvedAtom)
-  const brand = useAtomValue(indexDTFBrandAtom)
-
-  const {
-    data: brandExtras,
-    isSuccess,
-    isError,
-  } = useQuery({
-    queryKey: ['brand-files', dtf?.id, dtf?.chainId],
-    queryFn: async () => {
-      const response = await fetch(
-        `${RESERVE_API}folio-manager/read?folio=${dtf!.id.toLowerCase()}&chainId=${dtf!.chainId}`
-      )
-
-      if (!response.ok) {
-        throw new Error(`Failed to fetch brand files: ${response.statusText}`)
-      }
-
-      const body = await response.json()
-      const rawDtf = body?.parsedData?.dtf ?? {}
-      const brandFiles = (rawDtf.files ?? []) as {
-        url?: string
-        name?: string
-      }[]
-
-      return {
-        files: brandFiles.map((file) => ({
-          url: file.url ?? '',
-          name: file.name ?? '',
-        })),
-        video: rawDtf.video ?? '',
-      }
-    },
-    enabled: !!dtf?.id,
-  })
-
-  useEffect(() => {
-    if (!brandExtras) return
-
-    setIndexDTFBrand((prev) => {
-      if (!prev) return prev
-
-      const current = prev.dtf.files ?? []
-      const files = brandExtras.files
-      const unchanged =
-        current.length === files.length &&
-        current.every((file, i) => {
-          return file.url === files[i].url && file.name === files[i].name
-        }) &&
-        prev.dtf.video === brandExtras.video
-      if (unchanged) return prev
-
-      return {
-        ...prev,
-        dtf: { ...prev.dtf, files, video: brandExtras.video },
-      }
-    })
-    // re-merge when the SDK brand lands/refreshes (it resets SDK-missing fields)
-  }, [brandExtras, brand, setIndexDTFBrand])
-
-  useEffect(() => {
-    if (isSuccess || isError) setBrandExtrasResolved(true)
-  }, [isSuccess, isError, setBrandExtrasResolved])
 
   return null
 }
@@ -409,7 +313,6 @@ const resetStateAtom = atom(null, (_, set) => {
   set(indexDTFBasketSharesAtom, {})
   set(indexDTFAtom, undefined)
   set(indexDTFBrandAtom, undefined)
-  set(indexDTFBrandExtrasResolvedAtom, false)
   set(indexDTFRebalanceControlAtom, undefined)
   set(indexDTFFeeAtom, undefined)
   set(indexDTF7dChangeAtom, undefined)
@@ -490,7 +393,6 @@ const Updater = () => {
   return (
     <div key={key}>
       <IndexDTFDataUpdater />
-      <BrandFilesUpdater />
       <IndexDTFVersionUpdater />
       <PlatformFeeUpdater tokenAddress={tokenAddress} chainId={chainId} />
       <IndexDTFExposureUpdater chainId={chainId} />
