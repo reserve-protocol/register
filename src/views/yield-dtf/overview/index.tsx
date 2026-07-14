@@ -37,7 +37,7 @@ const SectionDivider = () => (
 const Overview = () => {
   useScrollToHash()
   return (
-  <SectionContainer className="w-full p-1 md:p-4">
+  <SectionContainer data-testid="yield-overview" className="w-full p-1 md:p-4">
     <StargateWarning />
     <SectionWrapper navigationIndex={0}>
       <Hero />

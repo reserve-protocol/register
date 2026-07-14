@@ -88,6 +88,7 @@ const ProposalQueue = () => {
 
   return (
     <TransactionButton
+      data-testid="proposal-queue-btn"
       className="w-full ml-auto"
       loading={isMining || isLoading}
       mining={isMining}

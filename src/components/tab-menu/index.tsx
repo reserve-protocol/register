@@ -5,6 +5,7 @@ interface Item {
   key: string | number
   label: string
   icon?: JSX.Element
+  testid?: string
 }
 
 interface Props {
@@ -35,6 +36,7 @@ const MenuItem = ({
   return (
     <div
       role="button"
+      data-testid={item.testid}
       className={cn(
         'flex items-center justify-center cursor-pointer select-none rounded-md ml-0.5 first:ml-0',
         small ? 'p-1.5 text-xs font-medium' : 'px-2 py-1.5 text-sm',

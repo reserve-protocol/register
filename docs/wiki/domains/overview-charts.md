@@ -1,6 +1,6 @@
 ---
 title: Overview Charts
-updated: 2026-07-06
+updated: 2026-07-09
 type: domain
 sources:
   - src/views/index-dtf/overview/components/charts/**
@@ -90,5 +90,7 @@ must keep the line chart's perceived range when toggling chart types:
 - BTC overlay klines come from Binance with the same `1h`/`1d` interval; the
   nearest-neighbor join tolerance is one bucket, and weekly-downsampled DTF
   points still match their same-day daily BTC point.
+
+E2E: charts are covered by [[e2e]] overview specs (`overview-price-chart`, `overview-range-<value>` testids; range buttons render duplicated xl/non-xl — scope locators `:visible`). The api mock serves the candles endpoint line-shaped, so tests exercise the line-chart fallback, not candles.
 
 See [[sdk]] for why other Index DTF data must go through the react-sdk.

@@ -31,7 +31,7 @@ const rebalanceListAtom = atom((get) => {
 
 const EmptyState = () => {
   return (
-    <div className="h-52 bg-background rounded-3xl p-1">
+    <div className="h-52 bg-background rounded-3xl p-1" data-testid="auctions-empty-state">
       <div className="bg-secondary/70 w-full h-full flex flex-col items-center justify-center rounded-3xl">
         <h1 className="text-xl text-legend">
           <Trans>No rebalances found</Trans>
@@ -42,7 +42,7 @@ const EmptyState = () => {
 }
 
 const LoadingState = () => {
-  return <Skeleton className="h-52 bg-background rounded-3xl " />
+  return <Skeleton data-testid="auctions-list-skeleton" className="h-52 bg-background rounded-3xl " />
 }
 
 const LegacyTradesButton = () => {
@@ -66,8 +66,11 @@ const RebalanceList = () => {
     useAtomValue(rebalanceListAtom)
 
   return (
-    <div className="w-full space-y-6 md:space-y-8 px-0 sm:px-2 lg:px-4 md:px-0 md:w-[706px]">
-      <section className="pt-6">
+    <div
+      className="w-full space-y-6 md:space-y-8 px-0 sm:px-2 lg:px-4 md:px-0 md:w-[706px]"
+      data-testid="auctions-rebalance-list"
+    >
+      <section className="pt-6" data-testid="auctions-active-section">
         <SectionHeader
           color="primary"
           title={<Trans>Active Rebalances</Trans>}
@@ -79,7 +82,7 @@ const RebalanceList = () => {
           {isLoading && <LoadingState />}
           {!isLoading && activeRebalances.length === 0 && <EmptyState />}
 
-          {activeRebalances.map((rebalance, index) => (
+          {activeRebalances.map((rebalance) => (
             <ActiveRebalanceItem
               key={rebalance.proposal.id}
               rebalance={rebalance}
@@ -88,7 +91,7 @@ const RebalanceList = () => {
         </div>
       </section>
 
-      <section>
+      <section data-testid="auctions-historical-section">
         <SectionHeader
           title={<Trans>Historical Rebalances</Trans>}
           count={historicalRebalances.length}

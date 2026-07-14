@@ -48,6 +48,7 @@ The dumb solution wins. Code an agent or a human can rewrite in a week beats cod
 
 - Tests live in dedicated `tests/` folders, not alongside source.
 - Behavior, not implementation. Would this catch a real bug? If not, delete it.
+- `skills/testing.md` owns red-green, seams, oracles, and mock rules for changed behavior.
 - Good targets: critical business logic, trust boundaries, failure modes, edge cases that have broken before, complex async flows.
 - Tests are typechecked like source. Failing tests get root-caused, never skipped.
 - Tests are deletable when requirements change — they are feedback loops, not coverage metrics.

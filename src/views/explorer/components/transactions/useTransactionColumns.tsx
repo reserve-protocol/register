@@ -18,9 +18,13 @@ import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
 import { formatEther } from 'viem'
 import { TransactionRecord } from './useTransactionData'
 
+// Stateless typed factory — hoisted so it's stable across renders (a per-render
+// instance would either force the columns useMemo to recompute every render or
+// be a stale-closure lint warning).
+const columnHelper = createColumnHelper<TransactionRecord>()
+
 const useTransactionColumns = () => {
   const { t } = useLingui()
-  const columnHelper = createColumnHelper<TransactionRecord>()
   const transactionTypes: StringMap = useMemo(
     () => ({
       MINT: t`Mint`,

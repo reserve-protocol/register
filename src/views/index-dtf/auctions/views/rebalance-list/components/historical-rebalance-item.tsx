@@ -17,6 +17,7 @@ export const HistoricalRebalanceItem = ({
   return (
     <div
       className="bg-card rounded-3xl cursor-pointer"
+      data-testid="auctions-historical-item"
       onClick={() => navigate(`rebalance/${rebalance.proposal.id}`)}
     >
       <div className="flex items-center justify-between p-4 gap-4 md:p-6 border-b border-secondary">

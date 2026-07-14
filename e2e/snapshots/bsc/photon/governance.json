@@ -1,0 +1,246 @@
+{
+  "_meta": {
+    "source": "https://api.goldsky.com/api/public/project_cmgzim3e100095np2gjnbh6ry/subgraphs/dtf-index-bsc/prod/gn",
+    "capturedAt": "2026-07-14T00:51:27.535Z",
+    "dtf": "0xa0fe4e0aeca5479705ce996615b2eacb6b6a10fb",
+    "chainId": 56,
+    "query": "getGovernanceStats"
+  },
+  "data": {
+    "governances": [
+      {
+        "id": "0x1f294065be98e6ff9b89f9992637495d775a4105",
+        "proposalCount": "2",
+        "proposals": [
+          {
+            "id": "25684996549431620547253100672560447751109935021551288294631727908593758120748",
+            "description": "Reserve Optimistic Governor upgrade #1",
+            "creationTime": "1780697185",
+            "state": "QUEUED",
+            "forWeightedVotes": "1000000000000000000",
+            "abstainWeightedVotes": "0",
+            "againstWeightedVotes": "0",
+            "executionETA": "1781019832",
+            "executionTime": null,
+            "quorumVotes": "100000000000000000",
+            "voteStart": "1780698049",
+            "voteEnd": "1780698913",
+            "executionBlock": null,
+            "creationBlock": "102533188",
+            "proposer": {
+              "address": "0x8e0507c16435caca6cb71a7fb0e0636fd3891df4"
+            }
+          },
+          {
+            "id": "91454084175422471886408644442609592600857585524384193420685294633294942605394",
+            "description": "Reserve Optimistic Governor upgrade #2",
+            "creationTime": "1780714129",
+            "state": "EXECUTED",
+            "forWeightedVotes": "1000000000000000000",
+            "abstainWeightedVotes": "0",
+            "againstWeightedVotes": "0",
+            "executionETA": "1780868446",
+            "executionTime": "1780931442",
+            "quorumVotes": "100000000000000000",
+            "voteStart": "1780714993",
+            "voteEnd": "1780715857",
+            "executionBlock": "103053084",
+            "creationBlock": "102570774",
+            "proposer": {
+              "address": "0x8e0507c16435caca6cb71a7fb0e0636fd3891df4"
+            }
+          }
+        ]
+      },
+      {
+        "id": "0xbaf703e7891943d46ee462a4ec74945b09c67b86",
+        "proposalCount": "0",
+        "proposals": []
+      },
+      {
+        "id": "0xebc7ba32ff02fa4ab7d78525d8ce26e17c13fce3",
+        "proposalCount": "0",
+        "proposals": []
+      },
+      {
+        "id": "0xf6f73c085b22d791705b8173712f37a2feee58e1",
+        "proposalCount": "6",
+        "proposals": [
+          {
+            "id": "1632753547942400485487244529706448548312444396537289329110699127488569818856",
+            "description": "# Initial Rebalance \n [Initial Rebalance](Initial Rebalance) \n Initial Rebalance",
+            "creationTime": "1781573851",
+            "state": "EXECUTED",
+            "forWeightedVotes": "0",
+            "abstainWeightedVotes": "0",
+            "againstWeightedVotes": "0",
+            "executionETA": null,
+            "executionTime": "1781715828",
+            "quorumVotes": "5000000000000000000",
+            "voteStart": "1781588251",
+            "voteEnd": "1781660251",
+            "executionBlock": "104794906",
+            "creationBlock": "104479507",
+            "proposer": {
+              "address": "0xf770497bc14da0e88f65a5c446484c7cecbea661"
+            }
+          },
+          {
+            "id": "21719318965766978942514048377893989677549375520004606664126727655463700426016",
+            "description": "# Mandate proposal \n [Mandate proposal](Mandate proposal) \n Mandate proposal",
+            "creationTime": "1781632332",
+            "state": "EXECUTED",
+            "forWeightedVotes": "9990000000000000000000000",
+            "abstainWeightedVotes": "0",
+            "againstWeightedVotes": "0",
+            "executionETA": "1782328636",
+            "executionTime": "1782336186",
+            "quorumVotes": "999050000000000000000000",
+            "voteStart": "1781805132",
+            "voteEnd": "1782064332",
+            "executionBlock": "106172640",
+            "creationBlock": "104609419",
+            "proposer": {
+              "address": "0xb209eed4d80fb47e5c16577e44dad1073c5c5015"
+            }
+          },
+          {
+            "id": "51884239877443459690882448373311832746149934632570104230470301032345569986283",
+            "description": "# Fees: 0.30% Mint Fee; 0.60% TVL Fee \n []() \n ",
+            "creationTime": "1781036227",
+            "state": "EXECUTED",
+            "forWeightedVotes": "500000000000000000000",
+            "abstainWeightedVotes": "0",
+            "againstWeightedVotes": "0",
+            "executionETA": "1781703398",
+            "executionTime": "1781704174",
+            "quorumVotes": "50000000000000000000",
+            "voteStart": "1781209027",
+            "voteEnd": "1781468227",
+            "executionBlock": "104769019",
+            "creationBlock": "103285664",
+            "proposer": {
+              "address": "0x8d2aa07f1a245d72b009c344690edd8e22a9e993"
+            }
+          },
+          {
+            "id": "5401711146639244377742387518559779721239034479390927824360819366483007584987",
+            "description": "# Mandate change proposal \n [Mandate change proposal](Mandate change proposal) \n Mandate change proposal",
+            "creationTime": "1783470235",
+            "state": "ACTIVE",
+            "forWeightedVotes": "87912000000000000000000000",
+            "abstainWeightedVotes": "0",
+            "againstWeightedVotes": "0",
+            "executionETA": null,
+            "executionTime": null,
+            "quorumVotes": "11344038738202524499024611",
+            "voteStart": "1783643035",
+            "voteEnd": "1783902235",
+            "executionBlock": null,
+            "creationBlock": "108691249",
+            "proposer": {
+              "address": "0xb209eed4d80fb47e5c16577e44dad1073c5c5015"
+            }
+          },
+          {
+            "id": "60469064596330484035716226402904045092943399515316212089003193883773610986738",
+            "description": "# Clear mandate \n []() \n ",
+            "creationTime": "1781034874",
+            "state": "EXECUTED",
+            "forWeightedVotes": "500000000000000000000",
+            "abstainWeightedVotes": "0",
+            "againstWeightedVotes": "0",
+            "executionETA": "1781703410",
+            "executionTime": "1781704135",
+            "quorumVotes": "50000000000000000000",
+            "voteStart": "1781207674",
+            "voteEnd": "1781466874",
+            "executionBlock": "104768931",
+            "creationBlock": "103282660",
+            "proposer": {
+              "address": "0x8d2aa07f1a245d72b009c344690edd8e22a9e993"
+            }
+          },
+          {
+            "id": "82550983327557421097632936929217062192052188166218953930584861964762160820745",
+            "description": "# Name change \n [Name change](Name change) \n Name change",
+            "creationTime": "1781616304",
+            "state": "EXECUTED",
+            "forWeightedVotes": "9990000000000000000000000",
+            "abstainWeightedVotes": "0",
+            "againstWeightedVotes": "0",
+            "executionETA": "1782328596",
+            "executionTime": "1782336144",
+            "quorumVotes": "999050000000000000000000",
+            "voteStart": "1781789104",
+            "voteEnd": "1782048304",
+            "executionBlock": "106172545",
+            "creationBlock": "104573814",
+            "proposer": {
+              "address": "0xb209eed4d80fb47e5c16577e44dad1073c5c5015"
+            }
+          }
+        ]
+      }
+    ],
+    "stakingToken": {
+      "id": "0xe744c8157c346b2931807f42552c8cbc0bb6d34f",
+      "totalDelegates": "11",
+      "token": {
+        "totalSupply": "130695268906433002916726348"
+      },
+      "delegates": [
+        {
+          "address": "0x49b4564cb533e092d43c628386258f0b78d86c52",
+          "delegatedVotes": "78228029.41490359",
+          "numberVotes": 6
+        },
+        {
+          "address": "0xb209eed4d80fb47e5c16577e44dad1073c5c5015",
+          "delegatedVotes": "24990000",
+          "numberVotes": 12
+        },
+        {
+          "address": "0x5188dbf722df94569d41f3c8a32e6b76939a0ad5",
+          "delegatedVotes": "23531442.423426104990246119",
+          "numberVotes": 0
+        },
+        {
+          "address": "0x1f55a8e2d2d01b235bbcff4abd812d1d162e4351",
+          "delegatedVotes": "1196146.05859914",
+          "numberVotes": 0
+        },
+        {
+          "address": "0x616b7de7560aa30d7ee6d361660309167a4c5139",
+          "delegatedVotes": "929597.64591993",
+          "numberVotes": 0
+        },
+        {
+          "address": "0x6f009e8dc2ae81250060987abfd94dd555326012",
+          "delegatedVotes": "800298.9",
+          "numberVotes": 0
+        },
+        {
+          "address": "0xcbd327fe829015636e8e473ccf29f7dbc87c6034",
+          "delegatedVotes": "694405.2546493",
+          "numberVotes": 0
+        },
+        {
+          "address": "0x3aa4fc0b7aca8454de6d7f4f5b49d159e970b05f",
+          "delegatedVotes": "323102.9021715",
+          "numberVotes": 0
+        },
+        {
+          "address": "0x0ce43ee9d1b9a3ab62ff19f23211a889e58ff808",
+          "delegatedVotes": "1746.306763437926480229",
+          "numberVotes": 0
+        },
+        {
+          "address": "0x8d2aa07f1a245d72b009c344690edd8e22a9e993",
+          "delegatedVotes": "500",
+          "numberVotes": 2
+        }
+      ]
+    }
+  }
+}

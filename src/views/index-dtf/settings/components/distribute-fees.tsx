@@ -58,7 +58,7 @@ const DistributeFees = () => {
           {pendingFees === undefined ? (
             <Skeleton className="h-4 w-20" />
           ) : (
-            <div>
+            <div data-testid="settings-pending-fees">
               <span className="mr-1">
                 {formatCurrency(formattedPendingFees)} ${indexDTF.token.symbol}
               </span>
@@ -77,6 +77,7 @@ const DistributeFees = () => {
             variant="outline-primary"
             disabled={isPending || isLoading || receipt?.status === 'success'}
             className="w-full"
+            data-testid="settings-distribute-btn"
           >
             {isPending || isLoading
               ? t`Loading...`

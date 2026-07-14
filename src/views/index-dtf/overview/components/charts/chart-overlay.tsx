@@ -24,14 +24,21 @@ const OverlayTitle = () => {
   const isInactive = isInactiveDTF(useAtomValue(indexDTFStatusAtom))
 
   if (!dtf) {
-    return <Skeleton className="w-[250px] h-7 sm:h-8" />
+    return <Skeleton data-testid="overview-name-skeleton" className="w-[250px] h-7 sm:h-8" />
   }
 
   return (
-    <h2 className="min-w-0 text-2xl font-medium leading-tight text-primary dark:text-foreground sm:text-3xl sm:font-normal">
+    <h2
+      data-testid="overview-dtf-name"
+      className="min-w-0 text-2xl font-medium leading-tight text-primary dark:text-foreground sm:text-3xl sm:font-normal"
+    >
       <div className="flex min-w-0 items-center gap-2">
         {stripIndexDtfChainSuffix(dtf.token.name)}
-        {isInactive && <InactiveBadge />}
+        {isInactive && (
+          <span data-testid="overview-inactive-badge">
+            <InactiveBadge />
+          </span>
+        )}
       </div>
     </h2>
   )
@@ -103,7 +110,7 @@ const PriceValue = () => {
   }
 
   if (!price) {
-    return <Skeleton className="w-[100px] h-6 sm:h-7 mt-1" />
+    return <Skeleton data-testid="overview-price-skeleton" className="w-[100px] h-6 sm:h-7 mt-1" />
   }
 
   return (
@@ -124,13 +131,18 @@ const PriceOverlayInfo = ({
   return (
     <div className="mt-1.5 flex w-full min-w-0 items-center justify-between gap-3 text-base text-legend">
       <div className="flex min-w-0 items-center gap-2 whitespace-nowrap">
-        <div className="tabular-nums text-foreground">
+        <div
+          data-testid="overview-dtf-price"
+          className="tabular-nums text-foreground"
+        >
           <PriceValue />
         </div>
         {dtf && (
           <>
             <div className="shrink-0">·</div>
-            <div className="shrink-0">${dtf.token.symbol}</div>
+            <div data-testid="overview-dtf-symbol" className="shrink-0">
+              ${dtf.token.symbol}
+            </div>
           </>
         )}
         <div className="hidden shrink-0 items-center gap-2 font-medium tabular-nums lg:flex">

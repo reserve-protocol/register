@@ -207,6 +207,7 @@ const MintRedeemButton = () => {
         <Button
           disabled={!isValid || isLoading}
           className="gap-2 w-full"
+          data-testid="issuance-submit-btn"
           onClick={handleSubmit}
         >
           {isLoading && <Spinner />}

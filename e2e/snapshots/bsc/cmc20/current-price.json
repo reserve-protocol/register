@@ -1,0 +1,168 @@
+{
+  "_meta": {
+    "source": "https://api.reserve.org/current/dtf?address=0x2f8a339b5889ffac4c5a956787cda593b3c36867&chainId=56",
+    "capturedAt": "2026-07-09T21:47:26.576Z",
+    "dtf": "0x2f8a339b5889ffac4c5a956787cda593b3c36867",
+    "chainId": 56
+  },
+  "data": {
+    "price": 127.85036526305007,
+    "marketCap": 6085684.521488483,
+    "totalSupply": 47600.05580717181,
+    "basket": [
+      {
+        "address": "0x7130d2A12B9BCbFAe4f2634d864A1Ee1Ce3Ead9c",
+        "amount": 0.001445519139633425,
+        "amountRaw": "1445519139633425",
+        "decimals": 18,
+        "price": 63243.453489082094,
+        "weight": "71.50",
+        "priceSource": "cmc"
+      },
+      {
+        "address": "0x2170Ed0880ac9A755fd29B2688956BD959F933F8",
+        "amount": 0.008702804490943326,
+        "amountRaw": "8702804490943326",
+        "decimals": 18,
+        "price": 1744.38374860054,
+        "weight": "11.87",
+        "priceSource": "cmc"
+      },
+      {
+        "address": "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
+        "amount": 0.009727667320313575,
+        "amountRaw": "9727667320313575",
+        "decimals": 18,
+        "price": 569.8025942747591,
+        "weight": "4.34",
+        "priceSource": "cmc"
+      },
+      {
+        "address": "0x1D2F0da169ceB9fC7B3144628dB156f3F6c60dBE",
+        "amount": 4.491444681397095,
+        "amountRaw": "4491444681397094445",
+        "decimals": 18,
+        "price": 1.0967916805703122,
+        "weight": "3.85",
+        "priceSource": "cmc"
+      },
+      {
+        "address": "0x570A5D26f7765Ecb712C0924E4De545B89fD43dF",
+        "amount": 0.041854975088984746,
+        "amountRaw": "41854975088984749",
+        "decimals": 18,
+        "price": 77.91398140023225,
+        "weight": "2.55",
+        "priceSource": "cmc"
+      },
+      {
+        "address": "0xCE7de646e7208a4Ef112cb6ed5038FA6cC6b12e3",
+        "amount": 6.854671,
+        "amountRaw": "6854671",
+        "decimals": 6,
+        "price": 0.3319447598137134,
+        "weight": "1.78",
+        "priceSource": "cmc"
+      },
+      {
+        "address": "0xbA2aE424d960c26247Dd6c32edC70B295c744C43",
+        "amount": 12.26146093,
+        "amountRaw": "1226146093",
+        "decimals": 8,
+        "price": 0.07320551598834779,
+        "weight": "0.70",
+        "priceSource": "cmc"
+      },
+      {
+        "address": "0x3EE2200Efb3400fAbB9AacF31297cBdD1d435D47",
+        "amount": 2.647721040640484,
+        "amountRaw": "2647721040640483864",
+        "decimals": 18,
+        "price": 0.16686954560113093,
+        "weight": "0.35",
+        "priceSource": "cmc"
+      },
+      {
+        "address": "0xAeD86A53A8f3DbBa4FB6aE7A5f65f337c606bf28",
+        "amount": 0.018185794311917997,
+        "amountRaw": "18185794311917995",
+        "decimals": 18,
+        "price": 67.27453811525798,
+        "weight": "0.96",
+        "priceSource": "cmc"
+      },
+      {
+        "address": "0xF8A0BF9cF54Bb92F17374d9e9A321E6a111a51bD",
+        "amount": 0.05309234390131532,
+        "amountRaw": "53092343901315321",
+        "decimals": 18,
+        "price": 7.7584831772473635,
+        "weight": "0.32",
+        "priceSource": "cmc"
+      },
+      {
+        "address": "0x43C934A845205F0b514417d757d7235B8f53f1B9",
+        "amount": 2.4628293748941865,
+        "amountRaw": "2462829374894186525",
+        "decimals": 18,
+        "price": 0.1865110167089972,
+        "weight": "0.36",
+        "priceSource": "cmc"
+      },
+      {
+        "address": "0x8fF795a6F4D97E7887C79beA79aba5cc76444aDf",
+        "amount": 0.001435076654057054,
+        "amountRaw": "1435076654057054",
+        "decimals": 18,
+        "price": 237.86220148711547,
+        "weight": "0.27",
+        "priceSource": "cmc"
+      },
+      {
+        "address": "0xd57f2e190C11cffc667AA5aD026Cd4C8DE0772a7",
+        "amount": 0.29397799384450624,
+        "amountRaw": "293977993844506227",
+        "decimals": 18,
+        "price": 0.7181630799262424,
+        "weight": "0.17",
+        "priceSource": "cmc"
+      },
+      {
+        "address": "0x1CE0c2827e2eF14D5C4f29a091d735A204794041",
+        "amount": 0.031068126267081445,
+        "amountRaw": "31068126267081444",
+        "decimals": 18,
+        "price": 6.707202195547121,
+        "weight": "0.16",
+        "priceSource": "cmc"
+      },
+      {
+        "address": "0x0422f966Bf8E978075a97D47eF4c7EFd3563Fa51",
+        "amount": 3.091652181121766,
+        "amountRaw": "3091652181121765809",
+        "decimals": 18,
+        "price": 0.07033891750496844,
+        "weight": "0.17",
+        "priceSource": "cmc"
+      },
+      {
+        "address": "0x4338665CBB7B2485A8855A139b75D5e34AB0DB94",
+        "amount": 0.005697236494169185,
+        "amountRaw": "5697236494169185",
+        "decimals": 18,
+        "price": 43.95948386719826,
+        "weight": "0.20",
+        "priceSource": "cmc"
+      },
+      {
+        "address": "0x1Ba42e5193dfA8B03D15dd1B86a3113bbBEF8Eeb",
+        "amount": 0.001195349265734155,
+        "amountRaw": "1195349265734155",
+        "decimals": 18,
+        "price": 486.32206105799867,
+        "weight": "0.45",
+        "priceSource": "cmc"
+      }
+    ]
+  }
+}

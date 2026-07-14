@@ -76,7 +76,7 @@ const IndexDTFManage = () => {
 
   return (
     <FormProvider {...form}>
-      <div className="grid grid-cols-1 md:grid-cols-[2fr_1fr] gap-2 pr-2 pb-4">
+      <div data-testid="dtf-manage" className="grid grid-cols-1 md:grid-cols-[2fr_1fr] gap-2 pr-2 pb-4">
         <ManageForm />
         <div className="flex flex-col gap-2">
           <SubmitButton />

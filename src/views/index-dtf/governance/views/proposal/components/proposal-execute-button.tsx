@@ -85,6 +85,7 @@ const ProposalExecute = () => {
 
   return (
     <TransactionButton
+      data-testid="proposal-execute-btn"
       size="sm"
       loading={isMining || isLoading}
       mining={isMining}

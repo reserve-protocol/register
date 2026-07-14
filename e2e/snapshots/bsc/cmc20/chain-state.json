@@ -1,0 +1,157 @@
+{
+  "_meta": {
+    "source": "https://bsc-rpc.publicnode.com",
+    "capturedAt": "2026-07-10T02:58:34.888Z",
+    "dtf": "0x2f8a339b5889ffac4c5a956787cda593b3c36867",
+    "chainId": 56
+  },
+  "data": {
+    "totalAssets": {
+      "tokens": [
+        "0x7130d2a12b9bcbfae4f2634d864a1ee1ce3ead9c",
+        "0x2170ed0880ac9a755fd29b2688956bd959f933f8",
+        "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c",
+        "0x1d2f0da169ceb9fc7b3144628db156f3f6c60dbe",
+        "0x570a5d26f7765ecb712c0924e4de545b89fd43df",
+        "0xce7de646e7208a4ef112cb6ed5038fa6cc6b12e3",
+        "0xba2ae424d960c26247dd6c32edc70b295c744c43",
+        "0x3ee2200efb3400fabb9aacf31297cbdd1d435d47",
+        "0xaed86a53a8f3dbba4fb6ae7a5f65f337c606bf28",
+        "0xf8a0bf9cf54bb92f17374d9e9a321e6a111a51bd",
+        "0x43c934a845205f0b514417d757d7235b8f53f1b9",
+        "0x8ff795a6f4d97e7887c79bea79aba5cc76444adf",
+        "0xd57f2e190c11cffc667aa5ad026cd4c8de0772a7",
+        "0x1ce0c2827e2ef14d5c4f29a091d735a204794041",
+        "0x0422f966bf8e978075a97d47ef4c7efd3563fa51",
+        "0x4338665cbb7b2485a8855a139b75d5e34ab0db94",
+        "0x1ba42e5193dfa8b03d15dd1b86a3113bbbef8eeb"
+      ],
+      "amounts": [
+        "0x3b9ebb97248519471",
+        "0x166f1e11d0d3c78a8f",
+        "0x191370c7b855da3572",
+        "0x2d3a06ef205c975cb950",
+        "0x6be4c1806f82457f29",
+        "0x4be44e9137",
+        "0x35075601975f",
+        "0x1aa948ba20c2df151edb",
+        "0x2ee1176b34f6471d71",
+        "0x88dc78df2647c2eabd",
+        "0x18ccabcf9f65476a9e24",
+        "0x3b307965c9e18a65e",
+        "0x2f5d0b2c910a7c026d0",
+        "0x50165844c340ddf5cb",
+        "0x1f21a5dd15e2c6fbf053",
+        "0xeafb226a097a0cb13",
+        "0x314d46b9aae1a7413"
+      ]
+    },
+    "totalSupply": "0xa11d125ff44c0659a5e",
+    "decimals": 18,
+    "version": "5.0.0",
+    "basketTokens": [
+      {
+        "address": "0x7130d2a12b9bcbfae4f2634d864a1ee1ce3ead9c",
+        "name": "BTCB Token",
+        "symbol": "BTCB",
+        "decimals": 18
+      },
+      {
+        "address": "0x2170ed0880ac9a755fd29b2688956bd959f933f8",
+        "name": "Ethereum Token",
+        "symbol": "ETH",
+        "decimals": 18
+      },
+      {
+        "address": "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c",
+        "name": "Wrapped BNB",
+        "symbol": "WBNB",
+        "decimals": 18
+      },
+      {
+        "address": "0x1d2f0da169ceb9fc7b3144628db156f3f6c60dbe",
+        "name": "XRP Token",
+        "symbol": "XRP",
+        "decimals": 18
+      },
+      {
+        "address": "0x570a5d26f7765ecb712c0924e4de545b89fd43df",
+        "name": "SOLANA",
+        "symbol": "SOL",
+        "decimals": 18
+      },
+      {
+        "address": "0xce7de646e7208a4ef112cb6ed5038fa6cc6b12e3",
+        "name": "TRON",
+        "symbol": "TRX",
+        "decimals": 6
+      },
+      {
+        "address": "0xba2ae424d960c26247dd6c32edc70b295c744c43",
+        "name": "Dogecoin",
+        "symbol": "DOGE",
+        "decimals": 8
+      },
+      {
+        "address": "0x3ee2200efb3400fabb9aacf31297cbdd1d435d47",
+        "name": "Cardano Token",
+        "symbol": "ADA",
+        "decimals": 18
+      },
+      {
+        "address": "0xaed86a53a8f3dbba4fb6ae7a5f65f337c606bf28",
+        "name": "Hyperliquid",
+        "symbol": "HYPE",
+        "decimals": 18
+      },
+      {
+        "address": "0xf8a0bf9cf54bb92f17374d9e9a321e6a111a51bd",
+        "name": "ChainLink Token",
+        "symbol": "LINK",
+        "decimals": 18
+      },
+      {
+        "address": "0x43c934a845205f0b514417d757d7235b8f53f1b9",
+        "name": "Stellar",
+        "symbol": "XLM",
+        "decimals": 18
+      },
+      {
+        "address": "0x8ff795a6f4d97e7887c79bea79aba5cc76444adf",
+        "name": "Bitcoin Cash Token",
+        "symbol": "BCH",
+        "decimals": 18
+      },
+      {
+        "address": "0xd57f2e190c11cffc667aa5ad026cd4c8de0772a7",
+        "name": "Binance-Peg Sui",
+        "symbol": "SUI",
+        "decimals": 18
+      },
+      {
+        "address": "0x1ce0c2827e2ef14d5c4f29a091d735a204794041",
+        "name": "Avalanche",
+        "symbol": "AVAX",
+        "decimals": 18
+      },
+      {
+        "address": "0x0422f966bf8e978075a97d47ef4c7efd3563fa51",
+        "name": "Binance-Peg Hedera",
+        "symbol": "HBAR",
+        "decimals": 18
+      },
+      {
+        "address": "0x4338665cbb7b2485a8855a139b75d5e34ab0db94",
+        "name": "Litecoin Token",
+        "symbol": "LTC",
+        "decimals": 18
+      },
+      {
+        "address": "0x1ba42e5193dfa8b03d15dd1b86a3113bbbef8eeb",
+        "name": "Zcash Token",
+        "symbol": "ZEC",
+        "decimals": 18
+      }
+    ]
+  }
+}

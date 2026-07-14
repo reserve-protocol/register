@@ -1,0 +1,93 @@
+{
+  "_meta": {
+    "source": "https://bsc-rpc.publicnode.com",
+    "capturedAt": "2026-07-14T00:51:27.165Z",
+    "dtf": "0xa0fe4e0aeca5479705ce996615b2eacb6b6a10fb",
+    "chainId": 56
+  },
+  "data": {
+    "totalAssets": {
+      "tokens": [
+        "0x0c50323af81d5c33822c6add256fb9093d42bc74",
+        "0x25a4dbae9a0cd8c75656d6b50ffdf4900cc20d8f",
+        "0x89a9f7114be6b220fae645ba0cbb720889867415",
+        "0x0facafb97ffdba3cae88512070af49bd30674cd9",
+        "0x0585756aafb241b0f8a9df62db26c566091bde0b",
+        "0x1dcd320c5d7b84cd407437c58d56cbbdd0d9d8f3",
+        "0xa1daab37da2a29a1ec721922b55962eb8b481001",
+        "0x343324170c91c4d8cf4d439b3e5a619f50621ae7",
+        "0x149bda9e7251dc36f536d1fe7f92a5ea203f4f3d"
+      ],
+      "amounts": [
+        "0x9a5aff6b970efa4e4",
+        "0x4062e0b2df89c71eb6",
+        "0x14df8a635fe210ff76",
+        "0xb78e7bbd908ce4fd2",
+        "0x1cd9455d56f4afef14",
+        "0xb401f28e9e9c42524",
+        "0x5488d56f0be39146e",
+        "0x10a313292cd6100bef",
+        "0xaf729c8969a98016e"
+      ]
+    },
+    "totalSupply": "0x237240e28f8bf24c617",
+    "decimals": 18,
+    "version": "5.0.0",
+    "basketTokens": [
+      {
+        "address": "0x0c50323af81d5c33822c6add256fb9093d42bc74",
+        "name": "AXT (Ondo Tokenized)",
+        "symbol": "AXTIon",
+        "decimals": 18
+      },
+      {
+        "address": "0x25a4dbae9a0cd8c75656d6b50ffdf4900cc20d8f",
+        "name": "Corning (Ondo Tokenized)",
+        "symbol": "GLWon",
+        "decimals": 18
+      },
+      {
+        "address": "0x89a9f7114be6b220fae645ba0cbb720889867415",
+        "name": "Ciena (Ondo Tokenized)",
+        "symbol": "CIENon",
+        "decimals": 18
+      },
+      {
+        "address": "0x0facafb97ffdba3cae88512070af49bd30674cd9",
+        "name": "Lumentum Holdings (Ondo Tokenized)",
+        "symbol": "LITEon",
+        "decimals": 18
+      },
+      {
+        "address": "0x0585756aafb241b0f8a9df62db26c566091bde0b",
+        "name": "Coherent (Ondo Tokenized)",
+        "symbol": "COHRon",
+        "decimals": 18
+      },
+      {
+        "address": "0x1dcd320c5d7b84cd407437c58d56cbbdd0d9d8f3",
+        "name": "MACOM Technology Solutions Holdings (Ondo Tokenized)",
+        "symbol": "MTSIon",
+        "decimals": 18
+      },
+      {
+        "address": "0xa1daab37da2a29a1ec721922b55962eb8b481001",
+        "name": "Fabrinet (Ondo Tokenized)",
+        "symbol": "FNon",
+        "decimals": 18
+      },
+      {
+        "address": "0x343324170c91c4d8cf4d439b3e5a619f50621ae7",
+        "name": "Tower Semiconductor (Ondo Tokenized)",
+        "symbol": "TSEMon",
+        "decimals": 18
+      },
+      {
+        "address": "0x149bda9e7251dc36f536d1fe7f92a5ea203f4f3d",
+        "name": "Applied Optoelectronics (Ondo Tokenized)",
+        "symbol": "AAOIon",
+        "decimals": 18
+      }
+    ]
+  }
+}

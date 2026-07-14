@@ -43,7 +43,7 @@ const RolesInfo = () => {
   return (
     <InfoCard title={t`Roles`} id="roles" secondary>
       {!indexDTF && (
-        <div className="flex items-center p-4">
+        <div className="flex items-center p-4" data-testid="settings-roles-skeleton">
           <Skeleton className="h-8 w-8 rounded-full" />
           <div className="ml-3">
             <Skeleton className="h-4 w-16" />

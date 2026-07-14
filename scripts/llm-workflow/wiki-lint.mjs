@@ -55,6 +55,7 @@ for (const [name, page] of pages) {
   if (ABSOLUTE_PATH_PATTERN.test(body)) errors.push(`${rel(path)}: absolute local machine path in body`);
   // A ledger row is a pointer, not a narrative — details live in log.md or git history.
   if (frontmatter.type === "ledger") {
+    const rowKeys = new Set();
     for (const line of body.split("\n")) {
       if (!line.startsWith("|")) continue;
       if (line.length > ledgerRowMaxChars) {
@@ -62,9 +63,21 @@ for (const [name, page] of pages) {
           `${rel(path)}: ledger row is ${line.length} chars (limit ${ledgerRowMaxChars}) — move narrative to log.md or git: "${line.slice(0, 60)}…"`,
         );
       }
+      const key = line.split("|")[1]?.trim();
+      if (!key || key.toLowerCase() === "stage" || /^-+$/.test(key)) continue;
+      if (rowKeys.has(key)) errors.push(`${rel(path)}: duplicate ledger row key "${key}"`);
+      rowKeys.add(key);
     }
   }
-  for (const link of wikiLinks(body)) {
+  const links = wikiLinks(body);
+  if (name === "index") {
+    for (const link of duplicates(links)) errors.push(`${rel(path)}: duplicate index link [[${link}]]`);
+  }
+  if (frontmatter.type === "decision") {
+    const headings = [...body.matchAll(/^##\s+(.+)$/gm)].map((match) => match[1].trim());
+    for (const heading of duplicates(headings)) errors.push(`${rel(path)}: duplicate decision heading "${heading}"`);
+  }
+  for (const link of links) {
     if (!pages.has(link)) errors.push(`${rel(path)}: broken link [[${link}]]`);
   }
   if (name !== "index" && !wikiLinks(pages.get("index")?.body ?? "").includes(name)) {
@@ -158,6 +171,16 @@ function parseFrontmatter(raw) {
 
 function wikiLinks(body) {
   return [...body.matchAll(/\[\[([^\]]+)\]\]/g)].map((found) => found[1].trim());
+}
+
+function duplicates(values) {
+  const seen = new Set();
+  const duplicated = new Set();
+  for (const value of values) {
+    if (seen.has(value)) duplicated.add(value);
+    seen.add(value);
+  }
+  return duplicated;
 }
 
 function rel(path) {

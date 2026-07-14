@@ -44,14 +44,18 @@ const IndexDTFIssuance = () => {
   if (!indexDTF) return null
 
   return (
-    <div className="container">
+    <div className="container" data-testid="dtf-issuance">
       <div className="flex flex-col items-center justify-center gap-4 lg:bg-secondary sm:min-h-[calc(100vh-136px)] lg:min-h-[calc(100vh-80px)] rounded-4xl lg:mr-2 ">
         {panelMode === 'auto' ? (
           <AsyncMint embedded />
         ) : (
           <div className="relative flex w-full flex-col items-center gap-3 rounded-4xl sm:w-[420px] lg:gap-3">
             <ComplianceAlert />
-            <div className="w-full rounded-3xl border-2 border-secondary bg-card p-2 sm:w-[420px]">
+            <div
+              data-testid="issuance-zap-widget"
+              data-restricted={isRestricted ? 'true' : 'false'}
+              className="w-full rounded-3xl border-2 border-secondary bg-card p-2 sm:w-[420px]"
+            >
               <ZapperWrapper
                 chain={indexDTF.chainId}
                 dtfAddress={indexDTF.id}

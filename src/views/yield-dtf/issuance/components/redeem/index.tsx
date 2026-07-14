@@ -30,7 +30,7 @@ const Redeem = () => {
   return (
     <>
       {confirming && <ConfirmRedemption onClose={() => setConfirming(false)} />}
-      <Card className="p-4 h-fit relative border-2 border-secondary">
+      <Card data-testid="issuance-redeem-panel" className="p-4 h-fit relative border-2 border-secondary">
         <RedeemInput disabled={!isCollaterized} compact={false} />
         <Button
           disabled={!isValid || !isCollaterized}

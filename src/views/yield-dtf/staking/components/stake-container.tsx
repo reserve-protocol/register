@@ -18,8 +18,8 @@ const Header = ({
   const { t } = useLingui()
   const menuOptions = useMemo(() => {
     const allOptions = [
-      { key: 1, label: t`Stake`, icon: <Plus size={16} /> },
-      { key: 0, label: t`Unstake`, icon: <Minus size={16} /> },
+      { key: 1, label: t`Stake`, icon: <Plus size={16} />, testid: 'staking-tab-stake' },
+      { key: 0, label: t`Unstake`, icon: <Minus size={16} />, testid: 'staking-tab-unstake' },
     ]
     return isDeprecated ? allOptions.filter((o) => o.key === 0) : allOptions
   }, [isDeprecated, t])

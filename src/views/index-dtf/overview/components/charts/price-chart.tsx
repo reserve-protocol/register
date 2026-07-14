@@ -172,6 +172,7 @@ const PriceChart = () => {
 
   return (
     <div
+      data-testid="overview-price-chart"
       className={cn(
         'w-full overflow-hidden rounded-b-3xl border-t border-card bg-gradient-to-b from-secondary to-card text-foreground sm:rounded-3xl sm:border-t-0 sm:ring-1 sm:ring-inset sm:ring-white dark:bg-secondary dark:bg-none dark:sm:ring-card',
         isYieldIndexDTF ? 'overflow-hidden' : ''

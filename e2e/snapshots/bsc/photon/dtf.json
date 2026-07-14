@@ -1,0 +1,193 @@
+{
+  "_meta": {
+    "source": "https://api.goldsky.com/api/public/project_cmgzim3e100095np2gjnbh6ry/subgraphs/dtf-index-bsc/prod/gn",
+    "capturedAt": "2026-07-14T00:51:26.391Z",
+    "dtf": "0xa0fe4e0aeca5479705ce996615b2eacb6b6a10fb",
+    "chainId": 56,
+    "query": "GetIndexDTF"
+  },
+  "data": {
+    "dtf": {
+      "id": "0xa0fe4e0aeca5479705ce996615b2eacb6b6a10fb",
+      "proxyAdmin": "0xaec9a8c5f3d46fa570297669738010fab3d447ec",
+      "timestamp": "1780691026",
+      "deployer": "0x8d2aa07f1a245d72b009c344690edd8e22a9e993",
+      "ownerAddress": "0x57979cc4930aa511f8804cc3805f2f947ef5d8bc",
+      "admins": [
+        "0x823677ea4c1abb3e4f26eee767c550f48425e042"
+      ],
+      "mintingFee": "3000000000000000",
+      "tvlFee": "190831821",
+      "annualizedTvlFee": "6000000000000000",
+      "mandate": "The Reserve Photonics DTF (PHOTON) is a weighted basket of public, US-listed photonics companies at the center of the AI buildout. Inside AI data centers, light is replacing copper wire: as AI chips get faster and more data-hungry, the bottleneck shifts from computing the data to moving it, and copper hits a physical wall of heat, power loss, and limited reach. The PHOTON DTF gives you direct exposure to the companies making that shift: the fiber, lasers, transceivers, and optical chips that have become the central nervous system of the AI data center. The basket is composed of companies that generate significant revenue from AI data-center photonics demand, weighted by market capitalization with a 20% cap and a $5B minimum market cap, rebalanced quarterly. The PHOTON DTF bundles Ondo Global Markets tokenized stocks, each of which represents an actual share held in a regulated US brokerage account. Learn more at app.reserve.org. ",
+      "auctionDelay": "0",
+      "auctionLength": "900",
+      "auctionApprovers": [
+        "0x823677ea4c1abb3e4f26eee767c550f48425e042"
+      ],
+      "auctionLaunchers": [
+        "0x7daaf7bc2ee8bf4c0ac7f37e6b6cfaeb3ed9a868"
+      ],
+      "brandManagers": [
+        "0x7daaf7bc2ee8bf4c0ac7f37e6b6cfaeb3ed9a868"
+      ],
+      "totalRevenue": "8903145754965535792",
+      "protocolRevenue": "3068446466224778191",
+      "governanceRevenue": "5834699288740757601",
+      "externalRevenue": "0",
+      "feeRecipients": "0x0c2c5064c32800b26d3e0e8a031f366a892ae793:1000000000000000000",
+      "bidsEnabled": true,
+      "trustedFillerRegistry": "0x08424d7c52bf9edd4070701591ea3fe6dca6449b",
+      "trustedFillerEnabled": true,
+      "weightControl": false,
+      "priceControl": 1,
+      "ownerGovernance": {
+        "id": "0xf6f73c085b22d791705b8173712f37a2feee58e1",
+        "name": "Reserve Optimistic Governor",
+        "version": "1.0.0",
+        "votingDelay": "172800",
+        "votingPeriod": "259200",
+        "proposalThreshold": "1000000000000000",
+        "quorumVotes": "11344038738202524499024611",
+        "quorumNumerator": "100000000000000000",
+        "quorumDenominator": "1000000000000000000",
+        "isOptimistic": true,
+        "optimisticVetoDelay": "14400",
+        "optimisticVetoPeriod": "72000",
+        "optimisticVetoThreshold": "10000000000000000",
+        "optimisticProposalThrottleCapacity": "3",
+        "optimisticSelectorRegistry": "0x285cfa670345eb13c05516252590e81b2eae43e3",
+        "optimisticProposers": [
+          "0xf770497bc14da0e88f65a5c446484c7cecbea661"
+        ],
+        "timelock": {
+          "id": "0x823677ea4c1abb3e4f26eee767c550f48425e042",
+          "guardians": [
+            "0xf6f73c085b22d791705b8173712f37a2feee58e1",
+            "0xb432b0cf55df8d8f367d965a23198ccdaacc4b1f"
+          ],
+          "optimisticProposers": [
+            "0xf770497bc14da0e88f65a5c446484c7cecbea661"
+          ],
+          "executionDelay": "172800",
+          "type": "TRADING"
+        }
+      },
+      "legacyAdmins": [
+        "0x72f87239981159ed23673012ee3806ca6114ab2a",
+        "0x1f294065be98e6ff9b89f9992637495d775a4105",
+        "0x3dde17cfd36e740cb7452cb2f59fc925eacb91ab"
+      ],
+      "tradingGovernance": {
+        "id": "0xf6f73c085b22d791705b8173712f37a2feee58e1",
+        "name": "Reserve Optimistic Governor",
+        "version": "1.0.0",
+        "votingDelay": "172800",
+        "votingPeriod": "259200",
+        "proposalThreshold": "1000000000000000",
+        "quorumVotes": "11344038738202524499024611",
+        "quorumNumerator": "100000000000000000",
+        "quorumDenominator": "1000000000000000000",
+        "isOptimistic": true,
+        "optimisticVetoDelay": "14400",
+        "optimisticVetoPeriod": "72000",
+        "optimisticVetoThreshold": "10000000000000000",
+        "optimisticProposalThrottleCapacity": "3",
+        "optimisticSelectorRegistry": "0x285cfa670345eb13c05516252590e81b2eae43e3",
+        "optimisticProposers": [
+          "0xf770497bc14da0e88f65a5c446484c7cecbea661"
+        ],
+        "timelock": {
+          "id": "0x823677ea4c1abb3e4f26eee767c550f48425e042",
+          "guardians": [
+            "0xf6f73c085b22d791705b8173712f37a2feee58e1",
+            "0xb432b0cf55df8d8f367d965a23198ccdaacc4b1f"
+          ],
+          "optimisticProposers": [
+            "0xf770497bc14da0e88f65a5c446484c7cecbea661"
+          ],
+          "executionDelay": "172800",
+          "type": "TRADING"
+        }
+      },
+      "legacyAuctionApprovers": [
+        "0xebc7ba32ff02fa4ab7d78525d8ce26e17c13fce3"
+      ],
+      "token": {
+        "id": "0xa0fe4e0aeca5479705ce996615b2eacb6b6a10fb",
+        "address": "0xa0fe4e0aeca5479705ce996615b2eacb6b6a10fb",
+        "name": "Reserve AI Photonics DTF (BSC)",
+        "symbol": "PHOTON",
+        "decimals": 18,
+        "totalSupply": "10434354063448260419984",
+        "currentHolderCount": "385",
+        "cumulativeHolderCount": "424",
+        "transferCount": "3752",
+        "mintCount": "202",
+        "burnCount": "49",
+        "totalBurned": "1127237855393497060482",
+        "totalMinted": "11561591918841757480466"
+      },
+      "stToken": {
+        "id": "0xe744c8157c346b2931807f42552c8cbc0bb6d34f",
+        "token": {
+          "id": "0xe744c8157c346b2931807f42552c8cbc0bb6d34f",
+          "address": "0xe744c8157c346b2931807f42552c8cbc0bb6d34f",
+          "name": "Vote-Locked Reserve Rights",
+          "symbol": "vlRSR",
+          "decimals": 18,
+          "totalSupply": "130695268906433002916726348",
+          "currentHolderCount": "11",
+          "cumulativeHolderCount": "11",
+          "transferCount": "0",
+          "mintCount": "18",
+          "burnCount": "0",
+          "totalBurned": "0",
+          "totalMinted": "130695268906433002916726348"
+        },
+        "currentDelegates": "10",
+        "totalDelegates": "11",
+        "delegatedVotesRaw": "130695268906433002916726348",
+        "currentOptimisticDelegates": "11",
+        "totalOptimisticDelegates": "11",
+        "optimisticDelegatedVotesRaw": "130695268906433002916726348",
+        "underlying": {
+          "name": "Reserve Rights",
+          "symbol": "RSR",
+          "address": "0x23f72a3db61d6cb8abe5d9af1ac4b6c99327bfee",
+          "decimals": 18
+        },
+        "governance": {
+          "id": "0xbaf703e7891943d46ee462a4ec74945b09c67b86",
+          "name": "Reserve Optimistic Governor",
+          "version": "1.0.0",
+          "votingDelay": "172800",
+          "votingPeriod": "259200",
+          "proposalThreshold": "1000000000000000",
+          "quorumVotes": null,
+          "quorumNumerator": "100000000000000000",
+          "quorumDenominator": "1000000000000000000",
+          "isOptimistic": true,
+          "optimisticVetoDelay": "14400",
+          "optimisticVetoPeriod": "72000",
+          "optimisticVetoThreshold": "10000000000000000",
+          "optimisticProposalThrottleCapacity": "2",
+          "optimisticSelectorRegistry": "0xc50d3c33d7d2f95e14a98f12cafdfec04f919cd6",
+          "optimisticProposers": [],
+          "timelock": {
+            "id": "0xb8d699cf52f53a8c9801806e6252a837b3e6b039",
+            "guardians": [
+              "0xbaf703e7891943d46ee462a4ec74945b09c67b86",
+              "0xb432b0cf55df8d8f367d965a23198ccdaacc4b1f"
+            ],
+            "optimisticProposers": [],
+            "executionDelay": "172800",
+            "type": "VOTE_LOCKING"
+          }
+        },
+        "legacyGovernance": [],
+        "rewards": []
+      }
+    }
+  }
+}

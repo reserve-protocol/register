@@ -53,6 +53,7 @@ export const ExposureTableRows = ({
           return (
             <TableRow
               key={row.key}
+              data-testid="overview-basket-row"
               className="border-none hover:bg-transparent"
             >
               <TableCell className="w-1/2 min-w-0 py-3 pl-0 pr-2">
@@ -99,7 +100,11 @@ export const ExposureTableRows = ({
         }
 
         return (
-          <TableRow key={row.key} className="border-none hover:bg-transparent">
+          <TableRow
+            key={row.key}
+            data-testid="overview-basket-row"
+            className="border-none hover:bg-transparent"
+          >
             <TableCell className="w-1/2 min-w-0 py-3 pl-0 pr-2">
               <div className="flex items-center gap-2 break-words font-medium sm:gap-3">
                 {native.logo ? (
@@ -142,7 +147,10 @@ export const ExposureTableRows = ({
                 timeRange={timeRange}
               />
             </TableCell>
-            <TableCell className="hidden w-28 whitespace-nowrap py-3 pl-2 pr-0 text-right text-base font-medium sm:table-cell dark:text-muted-foreground">
+            <TableCell
+              data-testid="overview-basket-mcap"
+              className="hidden w-28 whitespace-nowrap py-3 pl-2 pr-0 text-right text-base font-medium sm:table-cell dark:text-muted-foreground"
+            >
               {marketCap ? <span>{marketCap}</span> : <span>—</span>}
             </TableCell>
           </TableRow>

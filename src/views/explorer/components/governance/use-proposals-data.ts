@@ -213,7 +213,7 @@ const useIndexDTFProposals = () => {
 
           // Build governance ID → DTF info lookup
           const governanceToDTF = new Map<string, DTFInfo>()
-          for (const dtf of governanceRes.dtfs) {
+          for (const dtf of governanceRes.dtfs ?? []) {
             const info = dtfInfoMap.get(dtf.id.toLowerCase())
             if (!info) continue
 
@@ -295,7 +295,7 @@ const useProposalsData = () => {
     // --- Index DTF proposals (whitelisted only) ---
     if (indexData && filters.type !== 'yield') {
       for (const result of indexData) {
-        for (const entry of result.proposals) {
+        for (const entry of result.proposals ?? []) {
           const govId = entry.governance.id.toLowerCase()
           const dtfInfo = result.governanceToDTF.get(govId)
 

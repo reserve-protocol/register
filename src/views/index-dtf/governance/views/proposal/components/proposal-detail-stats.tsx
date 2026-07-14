@@ -254,7 +254,10 @@ const VoteDistributionStat = ({
             <span className="min-w-[60px]">
               <Trans>For</Trans>
             </span>
-            <span className="font-bold text-accent-inverted">
+            <span
+              data-testid="proposal-for-votes"
+              className="font-bold text-accent-inverted"
+            >
               {formatCurrency(+forVotes, 0, {
                 notation: 'compact',
                 compactDisplay: 'short',

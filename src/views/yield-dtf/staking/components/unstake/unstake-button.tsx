@@ -28,6 +28,7 @@ const UnstakeButton = () => {
     <>
       <div className="mt-4">
         <Button
+          data-testid="unstake-open-btn"
           className="w-full"
           disabled={!isValid && isAvailable}
           onClick={handleOpen}

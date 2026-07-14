@@ -38,6 +38,8 @@ const DataTypeSelector = ({
         {options.map((dt) => (
           <button
             key={dt.value}
+            data-testid={`overview-datatype-${dt.value}`}
+            data-active={dt.value === dataType}
             className={cn(
               'text-sm font-normal text-muted-foreground hover:text-foreground',
               dt.value === dataType && 'text-foreground'
@@ -56,6 +58,8 @@ const DataTypeSelector = ({
       {options.map((dt) => (
         <Button
           key={dt.value}
+          data-testid={`overview-datatype-${dt.value}`}
+          data-active={dt.value === dataType}
           variant="ghost"
           className={cn(
             chartTabClassName,

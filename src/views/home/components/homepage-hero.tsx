@@ -1,8 +1,6 @@
 import { cn } from '@/lib/utils'
 import { useIsLargeDesktop } from '@/hooks/use-media-query'
-import { Play } from 'lucide-react'
 import DTFPackingAnimation from './dtf-packing-animation'
-import DTFExplainerButton from './dtf-explainer-button'
 import HighlightedDTFs from './highlighted-dtfs'
 import ProtocolMetrics from './protocol-metrics'
 import { Trans } from '@lingui/react/macro'
@@ -35,16 +33,6 @@ const SubHeader = ({ className }: { className?: string }) => (
     <span className="text-xl font-medium">
       <Trans>Decentralized Token Funds</Trans>
     </span>
-    {/* <DTFExplainerButton
-      className={cn(
-        'mt-6 h-9 w-fit rounded-full border-0 bg-transparent px-4 py-0 text-base text-muted-foreground',
-        'hover:bg-primary hover:text-background',
-        'dark:bg-transparent dark:text-legend dark:hover:bg-primary dark:hover:text-white'
-      )}
-    >
-      <Play className="mr-1 h-4 w-4 fill-current" />
-      <Trans>Watch explainer</Trans>
-    </DTFExplainerButton> */}
   </p>
 )
 
@@ -105,6 +93,7 @@ const HomepageHero = () => {
     <div
       ref={stageRef}
       style={stageStyle}
+      data-testid="home-hero"
       className={cn(
         'relative h-auto rounded-4xl',
         'lg:mx-2',

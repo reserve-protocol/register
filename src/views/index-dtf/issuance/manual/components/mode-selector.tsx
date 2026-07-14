@@ -40,6 +40,7 @@ const ModeSelector = () => {
         <ToggleGroupItem
           key={option}
           value={option}
+          data-testid={`issuance-mode-${option}`}
           disabled={isDeprecated && option === 'buy'}
           className="px-5 capitalize h-8 whitespace-nowrap rounded-lg data-[state=on]:bg-card text-secondary-foreground/80 data-[state=on]:text-primary flex-grow"
         >

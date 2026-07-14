@@ -351,7 +351,11 @@ const PlatformFeeUpdater = ({
   useEffect(() => {
     if (feeDetails) {
       const [, feeNumerator, feeDenominator] = feeDetails
-      setFee(Number((feeNumerator * 100n) / feeDenominator))
+      setFee(
+        feeDenominator === 0n
+          ? (FALLBACK_PLATFORM_FEES[chainId] ?? 50)
+          : Number((feeNumerator * 100n) / feeDenominator)
+      )
     } else if (registryError || feeError) {
       setFee(FALLBACK_PLATFORM_FEES[chainId] ?? 50)
     }

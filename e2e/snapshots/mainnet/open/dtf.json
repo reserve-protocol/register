@@ -1,0 +1,213 @@
+{
+  "_meta": {
+    "source": "https://api.goldsky.com/api/public/project_cmgzim3e100095np2gjnbh6ry/subgraphs/dtf-index-mainnet/prod/gn",
+    "capturedAt": "2026-07-10T00:20:54.797Z",
+    "dtf": "0x323c03c48660fe31186fa82c289b0766d331ce21",
+    "chainId": 1,
+    "query": "GetIndexDTF"
+  },
+  "data": {
+    "dtf": {
+      "id": "0x323c03c48660fe31186fa82c289b0766d331ce21",
+      "proxyAdmin": "0x0b79e381ed8d6d676c772dba61cbeea0b2d28c7d",
+      "timestamp": "1744659395",
+      "deployer": "0x66f66192f91eaa3d48c95ab6bdaf9ade26db06f1",
+      "ownerAddress": "0xd900b9a9cf3a0ecc394b6b9935ea3e56dafc02c1",
+      "admins": [
+        "0xd900b9a9cf3a0ecc394b6b9935ea3e56dafc02c1"
+      ],
+      "mintingFee": "3000000000000000",
+      "tvlFee": "238719762",
+      "annualizedTvlFee": "7500000000000000",
+      "mandate": "Track leading decentralized stablecoin-networks advancing transparency, composability, and user-led governance. Included protocols should be evaluated on verifiable asset-backing, peg design, mint/redeem logic, safety mechanisms, yield-sharing, and decentralized control.",
+      "auctionDelay": "86400",
+      "auctionLength": "1800",
+      "auctionApprovers": [
+        "0x075fa5a4fbf5a32cd0660e9cdfff4a6bfa0c6b4a"
+      ],
+      "auctionLaunchers": [
+        "0xde3b1a502a6f25b92434a00c4169b195b2f1528c",
+        "0x7daaf7bc2ee8bf4c0ac7f37e6b6cfaeb3ed9a868"
+      ],
+      "brandManagers": [
+        "0x66f66192f91eaa3d48c95ab6bdaf9ade26db06f1"
+      ],
+      "totalRevenue": "16110996795749490906094",
+      "protocolRevenue": "8055498397874745453509",
+      "governanceRevenue": "4833299038724847271556",
+      "externalRevenue": "3222199359149898181029",
+      "feeRecipients": "0x2aea77c4757d897aae2710b8a60280777f504e8c:600000000000000000,0xde3b1a502a6f25b92434a00c4169b195b2f1528c:400000000000000000",
+      "bidsEnabled": null,
+      "trustedFillerRegistry": "0x279ccf56441fc74f1aac39e7fac165dec5a88b3a",
+      "trustedFillerEnabled": true,
+      "weightControl": true,
+      "priceControl": 1,
+      "ownerGovernance": {
+        "id": "0x020d7c4a87485709d91e78aeeb2b2177ebfbaf41",
+        "name": "Reserve Folio Governor",
+        "version": "1",
+        "votingDelay": "172800",
+        "votingPeriod": "259200",
+        "proposalThreshold": "10000000000000000",
+        "quorumVotes": "77498736614114758067426",
+        "quorumNumerator": "10",
+        "quorumDenominator": "100",
+        "isOptimistic": false,
+        "optimisticVetoDelay": null,
+        "optimisticVetoPeriod": null,
+        "optimisticVetoThreshold": null,
+        "optimisticProposalThrottleCapacity": null,
+        "optimisticSelectorRegistry": null,
+        "optimisticProposers": [],
+        "timelock": {
+          "id": "0xd900b9a9cf3a0ecc394b6b9935ea3e56dafc02c1",
+          "guardians": [
+            "0x020d7c4a87485709d91e78aeeb2b2177ebfbaf41",
+            "0xde3b1a502a6f25b92434a00c4169b195b2f1528c"
+          ],
+          "optimisticProposers": [],
+          "executionDelay": "172800",
+          "type": "OWNER"
+        }
+      },
+      "legacyAdmins": [
+        "0xaafb13a3df7ce70c140e40c959d58fd5cc443cba",
+        "0x7498c6ab0669a09de7b9185ba72a98fa3ca39cc9"
+      ],
+      "tradingGovernance": {
+        "id": "0xedebefe7179c5fc74853ad30147beecc20860579",
+        "name": "Reserve Folio Governor",
+        "version": "1",
+        "votingDelay": "172800",
+        "votingPeriod": "432000",
+        "proposalThreshold": "10000000000000000",
+        "quorumVotes": "112613728105839017765107",
+        "quorumNumerator": "10",
+        "quorumDenominator": "100",
+        "isOptimistic": false,
+        "optimisticVetoDelay": null,
+        "optimisticVetoPeriod": null,
+        "optimisticVetoThreshold": null,
+        "optimisticProposalThrottleCapacity": null,
+        "optimisticSelectorRegistry": null,
+        "optimisticProposers": [],
+        "timelock": {
+          "id": "0x075fa5a4fbf5a32cd0660e9cdfff4a6bfa0c6b4a",
+          "guardians": [
+            "0xedebefe7179c5fc74853ad30147beecc20860579",
+            "0xde3b1a502a6f25b92434a00c4169b195b2f1528c"
+          ],
+          "optimisticProposers": [],
+          "executionDelay": "259200",
+          "type": "TRADING"
+        }
+      },
+      "legacyAuctionApprovers": [
+        "0xedebefe7179c5fc74853ad30147beecc20860579"
+      ],
+      "token": {
+        "id": "0x323c03c48660fe31186fa82c289b0766d331ce21",
+        "address": "0x323c03c48660fe31186fa82c289b0766d331ce21",
+        "name": "Open Stablecoin Index",
+        "symbol": "OPEN",
+        "decimals": 18,
+        "totalSupply": "445966866494428349564935",
+        "currentHolderCount": "152",
+        "cumulativeHolderCount": "377",
+        "transferCount": "8046",
+        "mintCount": "1936",
+        "burnCount": "1289",
+        "totalBurned": "3694889056940991606113560",
+        "totalMinted": "4140855923435419955678495"
+      },
+      "stToken": {
+        "id": "0x2aea77c4757d897aae2710b8a60280777f504e8c",
+        "token": {
+          "id": "0x2aea77c4757d897aae2710b8a60280777f504e8c",
+          "address": "0x2aea77c4757d897aae2710b8a60280777f504e8c",
+          "name": "Vote Lock vlSQUILL-OPEN",
+          "symbol": "vlSQUILL-OPEN",
+          "decimals": 18,
+          "totalSupply": "1125019273028853882740726",
+          "currentHolderCount": "221",
+          "cumulativeHolderCount": "230",
+          "transferCount": "4",
+          "mintCount": "388",
+          "burnCount": "53",
+          "totalBurned": "813496823618116586124703",
+          "totalMinted": "1938516096646970468865429"
+        },
+        "currentDelegates": "176",
+        "totalDelegates": "233",
+        "delegatedVotesRaw": "1125019273028853882740726",
+        "currentOptimisticDelegates": "0",
+        "totalOptimisticDelegates": "0",
+        "optimisticDelegatedVotesRaw": "0",
+        "underlying": {
+          "name": "Squid Pro Quo",
+          "symbol": "SQUILL",
+          "address": "0x7ebab7190d3d574ce82d29f2fa1422f18e29969c",
+          "decimals": 18
+        },
+        "governance": {
+          "id": "0x34a5fac531a7576d22df18d6cac89478f5688d90",
+          "name": "Reserve Folio Governor",
+          "version": "1",
+          "votingDelay": "172800",
+          "votingPeriod": "432000",
+          "proposalThreshold": "10000000000000000",
+          "quorumVotes": "112613728105839017765107",
+          "quorumNumerator": "10",
+          "quorumDenominator": "100",
+          "isOptimistic": false,
+          "optimisticVetoDelay": null,
+          "optimisticVetoPeriod": null,
+          "optimisticVetoThreshold": null,
+          "optimisticProposalThrottleCapacity": null,
+          "optimisticSelectorRegistry": null,
+          "optimisticProposers": [],
+          "timelock": {
+            "id": "0xe67dbb662ac0ce48829f040f031c974cee869f04",
+            "guardians": [
+              "0x34a5fac531a7576d22df18d6cac89478f5688d90",
+              "0xde3b1a502a6f25b92434a00c4169b195b2f1528c"
+            ],
+            "optimisticProposers": [],
+            "executionDelay": "259200",
+            "type": "VOTE_LOCKING"
+          }
+        },
+        "legacyGovernance": [
+          "0x0000000000000000000000000000000000000000",
+          "0xe926577a152ffd5f5036f88bf7e8e8d3652b558c"
+        ],
+        "rewards": [
+          {
+            "rewardToken": {
+              "address": "0x320623b8e4ff03373931769a31fc52a4e78b5d70",
+              "name": "Reserve Rights",
+              "symbol": "RSR",
+              "decimals": 18
+            }
+          },
+          {
+            "rewardToken": {
+              "address": "0x323c03c48660fe31186fa82c289b0766d331ce21",
+              "name": "Open Stablecoin Index",
+              "symbol": "OPEN",
+              "decimals": 18
+            }
+          },
+          {
+            "rewardToken": {
+              "address": "0xa0d69e286b938e21cbf7e51d71f6a4c8918f482f",
+              "name": "Electronic Dollar",
+              "symbol": "eUSD",
+              "decimals": 18
+            }
+          }
+        ]
+      }
+    }
+  }
+}

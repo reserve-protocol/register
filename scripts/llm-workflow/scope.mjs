@@ -25,31 +25,38 @@ const asJson = args.includes("--json");
 
 const root = repoRoot();
 const config = loadConfig(root);
-
 // --gate: run the full closeout gate and print a ready-to-paste verifier line.
 if (gateMode) {
+  const startedAt = Date.now();
   for (const command of config.gate) {
     console.log(`\n▶ ${command}`);
     try {
-      runCommand(command, root);
+      const elapsed = runCommand(command, root);
+      console.log(`✓ ${command} (${(elapsed / 1000).toFixed(1)}s)`);
     } catch {
       console.error(`✗ gate failed: ${command}`);
       process.exit(1);
     }
   }
-  console.log(`\nVerifier: ${config.gate.join(" + ")} (fresh, green)`);
+  console.log(
+    `\nVerifier: ${config.gate.join(" + ")} (fresh, green; ${((Date.now() - startedAt) / 1000).toFixed(1)}s)`,
+  );
   process.exit(0);
 }
 
 const files = changedFiles(base);
 
 const commands = [];
+const mappedFiles = new Set();
 for (const rule of config.verify) {
-  if (!files.some((file) => matchesAny(file, rule.globs))) continue;
+  const matches = files.filter((file) => matchesAny(file, rule.globs));
+  if (matches.length === 0) continue;
+  for (const file of matches) mappedFiles.add(file);
   for (const command of rule.commands) {
     if (!commands.includes(command)) commands.push(command);
   }
 }
+const unmappedFiles = files.filter((file) => !mappedFiles.has(file));
 
 const lenses = ["correctness"];
 for (const [lens, globs] of Object.entries(config.lenses ?? {})) {
@@ -62,7 +69,7 @@ const tierHint = computeTierHint(files, lenses);
 const gateEquivalent = config.gate.every((command) => commands.includes(command));
 
 if (asJson) {
-  console.log(JSON.stringify({ base, files, commands, lenses, redFlags, tierHint, gateEquivalent }, null, 2));
+  console.log(JSON.stringify({ base, files, commands, unmappedFiles, lenses, redFlags, tierHint, gateEquivalent }, null, 2));
 } else {
   console.log(`scope: ${files.length} file(s) changed vs ${base}`);
   console.log(`lenses: ${lenses.join(", ")}`);
@@ -76,6 +83,7 @@ if (asJson) {
       : `tier hint: ${tierHint.profile} — ${axes.join(" · ")}`,
   );
   for (const flag of redFlags) console.log(`red-flag: ${flag.file}:${flag.line}: ${flag.id}`);
+  for (const file of unmappedFiles) console.log(`verify-gap: ${file}: no scoped command mapped`);
   console.log(commands.length === 0 ? "no verify commands mapped" : `commands:\n  ${commands.join("\n  ")}`);
 }
 
@@ -83,7 +91,8 @@ if (!dryRun) {
   for (const command of commands) {
     console.log(`\n▶ ${command}`);
     try {
-      runCommand(command, root);
+      const elapsed = runCommand(command, root);
+      console.log(`✓ ${command} (${(elapsed / 1000).toFixed(1)}s)`);
     } catch {
       console.error(`✗ failed: ${command}`);
       process.exit(1);

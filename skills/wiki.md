@@ -13,6 +13,8 @@ Influence: Andrej Karpathy's "LLM Wiki" pattern (gist `442a6bf555914893e9891c115
 - `decisions.md` — durable decisions with reasoning; split into pages when it outgrows the split rule.
 - `domains/<name>.md` — one page per feature/domain folder of the codebase.
 
+The installer marks the four shared append/ledger files (`log.md`, `decisions.md`, `progress.md`, `index.md`) as `merge=union` in `.gitattributes` unless the project already owns a rule for that path. Domain pages deliberately keep normal merging because they are rewritten in place. Wiki-lint rejects the common semantic merge failures: duplicate ledger row keys, index links, and decision headings.
+
 ## Page Format
 
 YAML frontmatter, then a short body with `[[wiki-links]]` (target = another page's filename without `.md`).
@@ -46,6 +48,7 @@ boundaries, invariants, gotchas, why.
 - Broken `[[links]]`, pages missing from index, index entries without pages.
 - Missing/invalid frontmatter.
 - Ledger rows over the character cap (narratives belong in `log.md` or git).
+- Duplicate ledger row keys, index links, and decision headings left by union merges.
 - Absolute local machine paths in any page (durable docs must survive other machines).
 - Ledger drift: too many commits since `progress.md` last changed.
 - Domain drift: a domain page whose `sources` have newer git commits than the page's `updated` date.
@@ -60,4 +63,5 @@ The wiki's value is synthesis, not accumulation.
 - Every kept sentence must change a future agent's behavior. History belongs in `log.md` or git, not in pages.
 - Contradictions between pages are bugs: fix at the owner page and link, do not restate.
 - `log.md` is append-only but not immortal: periodically prune sections older than ~3 months down to entries still worth reading; git keeps the rest.
+- `progress.md` rows compress the same way: collapse stages older than ~3 months (or a shipped feature's rows once superseded) into one archive line each; git keeps the detail.
 - Domain `sources` globs must not use `{a,b}` braces (git pathspecs ignore them; drift would never fire) — list the globs separately.

@@ -78,12 +78,12 @@ const EarnIndexDTF = () => {
   const { t } = useLingui()
   const faqs = useFaqs()
   return (
-    <>
+    <div data-testid="earn-index-dtf">
       <Header />
       <VoteLockPositions />
       <EarnFAQ title={t`Vote Lock Frequently Asked Questions`} faqs={faqs} />
       <Updater />
-    </>
+    </div>
   )
 }
 

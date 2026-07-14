@@ -53,7 +53,7 @@ const Header = () => (
 
 // TODO: Replace for a more accurate proposal list skeleton
 const ProposalsSkeleton = () => (
-  <Skeleton className="h-[520px] m-1 rounded-3xl" />
+  <Skeleton data-testid="governance-list-skeleton" className="h-[520px] m-1 rounded-3xl" />
 )
 
 const ProposalsPlaceholder = () => (
@@ -115,7 +115,7 @@ const ProposalList = () => {
 }
 
 const GovernanceProposalList = () => (
-  <div className="rounded-4xl bg-secondary h-fit">
+  <div data-testid="governance-proposals" className="rounded-4xl bg-secondary h-fit">
     <Header />
     <ProposalList />
   </div>

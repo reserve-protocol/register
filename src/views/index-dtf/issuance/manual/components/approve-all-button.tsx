@@ -89,7 +89,12 @@ const ApproveAllButton = () => {
   return (
     <div className="flex flex-col gap-2">
       <TransactionButtonContainer>
-        <Button disabled={disabled} className="gap-2 w-full" onClick={onClick}>
+        <Button
+          disabled={disabled}
+          className="gap-2 w-full"
+          data-testid="issuance-approve-all-btn"
+          onClick={onClick}
+        >
           {isProcessing && <Spinner />}
           {label}
         </Button>

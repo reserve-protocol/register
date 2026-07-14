@@ -1,0 +1,16 @@
+{
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "types": ["node"],
+    "noEmit": true,
+    // Node-side test code (Node 22+): ES2023 for Array.findLast etc. — the app
+    // tsconfig stays on ES2022, this only widens the e2e project.
+    "target": "ES2023",
+    "lib": ["DOM", "DOM.Iterable", "ES2023"]
+  },
+  "include": ["**/*.ts", "../playwright.config.ts"],
+  // Spec TEMPLATES use import paths relative to their COPY destination
+  // (e2e/tests/<domain>/<route>/), not their own location, so they don't
+  // typecheck in place. They are reference skeletons, never collected or run.
+  "exclude": ["templates/**"]
+}

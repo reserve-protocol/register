@@ -194,7 +194,7 @@ const useTransactionData = () => {
     for (const chain of supportedChainList) {
       if (yieldData?.[chain]) {
         tx.push(
-          ...yieldData[chain].entries.map((entry: any) => ({
+          ...(yieldData[chain].entries ?? []).map((entry: any) => ({
             ...entry,
             amount: BigInt(entry.amount),
             timestamp: Number(entry.timestamp),
@@ -209,7 +209,7 @@ const useTransactionData = () => {
     for (const chain of indexChainList) {
       if (indexData?.[chain]) {
         tx.push(
-          ...indexData[chain].transferEvents.map((event: any) => {
+          ...(indexData[chain].transferEvents ?? []).map((event: any) => {
             const tokenAddress = getAddress(event.token.id)
             const price = priceMap[`${chain}-${event.token.id.toLowerCase()}`]
             const amount = Number(formatEther(BigInt(event.amount)))

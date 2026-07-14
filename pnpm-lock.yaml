@@ -122,11 +122,11 @@ importers:
         specifier: ^3.2.1
         version: 3.2.1(decimal.js-light@2.5.1)
       '@reserve-protocol/react-sdk':
-        specifier: ^0.2.0
-        version: 0.2.0(@tanstack/react-query@5.99.0(react@18.3.1))(bufferutil@4.1.0)(react@18.3.1)(typescript@5.9.3)(utf-8-validate@5.0.10)(viem@2.52.0(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@5.0.10)(zod@4.3.6))
+        specifier: ^0.4.0
+        version: 0.4.0(@tanstack/react-query@5.99.0(react@18.3.1))(bufferutil@4.1.0)(react@18.3.1)(typescript@5.9.3)(utf-8-validate@5.0.10)(viem@2.52.0(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@5.0.10)(zod@4.3.6))
       '@reserve-protocol/react-zapper':
-        specifier: 2.5.1
-        version: 2.5.1(@babel/core@7.29.0)(@babel/template@7.28.6)(@tanstack/react-query@5.99.0(react@18.3.1))(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(viem@2.52.0(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@5.0.10)(zod@4.3.6))(wagmi@2.19.5(@tanstack/query-core@5.99.0)(@tanstack/react-query@5.99.0(react@18.3.1))(@types/react@18.3.28)(bufferutil@4.1.0)(react@18.3.1)(typescript@5.9.3)(utf-8-validate@5.0.10)(viem@2.52.0(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@5.0.10)(zod@4.3.6))(zod@4.3.6))
+        specifier: 2.6.0
+        version: 2.6.0(@babel/core@7.29.0)(@babel/template@7.28.6)(@tanstack/react-query@5.99.0(react@18.3.1))(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(viem@2.52.0(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@5.0.10)(zod@4.3.6))(wagmi@2.19.5(@tanstack/query-core@5.99.0)(@tanstack/react-query@5.99.0(react@18.3.1))(@types/react@18.3.28)(bufferutil@4.1.0)(react@18.3.1)(typescript@5.9.3)(utf-8-validate@5.0.10)(viem@2.52.0(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@5.0.10)(zod@4.3.6))(zod@4.3.6))
       '@reserve-protocol/rtokens':
         specifier: ^1.1.23
         version: 1.1.23
@@ -3216,8 +3216,8 @@ packages:
       viem: ^2.50.4
       wagmi: ^2.19.5
 
-  '@reserve-protocol/dtf-catalog@0.0.2':
-    resolution: {integrity: sha512-CcfAW7NZNZPtH4aSNjgRH11a4zpgBTdGXZjVNhqWRfonotMYNGunJoxH8x3tifBo37lIXOpyuL4o94vWA06lOw==}
+  '@reserve-protocol/dtf-catalog@0.1.2':
+    resolution: {integrity: sha512-KoJBtDiE29IL2uUHFy2RH77kshYUkHRAl6MM0r+pBAfqCNCTJPDL3EucsXOwJNbfu/nuJw7gDrb+5gq8mdyC2A==}
     engines: {node: '>=24'}
 
   '@reserve-protocol/dtf-chat@0.0.4':
@@ -3233,16 +3233,16 @@ packages:
     peerDependencies:
       decimal.js-light: ^2.5.1
 
-  '@reserve-protocol/react-sdk@0.2.0':
-    resolution: {integrity: sha512-i7bIONq0d4TA/li0uGzahdgcI9wDOe+X/ruZZ+TIS60qCUtdCOo/PzqvmHy8Th8QfO23fdlYmgSH3VL1BjLgqA==}
+  '@reserve-protocol/react-sdk@0.4.0':
+    resolution: {integrity: sha512-MRZzk8DdBvJOsNPx4Zs0vZ7w1scfekqNJNu+iv8id/dJ8KPPHerfpuiekpYscVQjmAiL2lNdf6uR2ulA0N0YZQ==}
     engines: {node: '>=24'}
     peerDependencies:
       '@tanstack/react-query': ^5.99.0
       react: ^18.3.1
       viem: ^2.48.0
 
-  '@reserve-protocol/react-zapper@2.5.1':
-    resolution: {integrity: sha512-NKvzKHs5HfYG9XHKrg2RZJOIpQkMfJMqa7jMDZqwNZZd3h99HRAFsdjNdEhotFDfhmZj+ZIyBU5nkLA5esejnA==}
+  '@reserve-protocol/react-zapper@2.6.0':
+    resolution: {integrity: sha512-TnipbEcJ0vUmgkvfTmVG2RXWA8Ty1Jyw7QyL8OeuWZ1JNwwTFDoyThrJmBO4IPD8NxplWDW5bqoqirRSQfuCHA==}
     peerDependencies:
       '@tanstack/react-query': ^5.87.4
       react: ^18.3.1
@@ -3253,8 +3253,8 @@ packages:
   '@reserve-protocol/rtokens@1.1.23':
     resolution: {integrity: sha512-VYP0BNhULhFzAGpzaqe1pkuMpCvLmuNYsYHE0xkKgiqaMZdztSlnCNK2BRlsDbFD/HQZwcoAoYjFpEHQbq2GoA==}
 
-  '@reserve-protocol/sdk@0.2.0':
-    resolution: {integrity: sha512-3d18vNfgHgniV70TanwlvUsnV4sM+5NVC2HaD71/nbMo+XCfQWobtJO4yeW7C1+Hu4OT1phqhaW35lcKbtvvfA==}
+  '@reserve-protocol/sdk@0.4.0':
+    resolution: {integrity: sha512-EHtIHxzkSUlX73PnkIpDhEZ9Zie+VOkEkK1dcuemqakmuKv1rM6oK5L11qAw2nxDHYdI5apqqs6AvvxJMAKNnQ==}
     engines: {node: '>=24'}
 
   '@reserve-protocol/trusted-fillers-sdk@0.3.0':
@@ -5852,46 +5852,6 @@ packages:
 
   jose@6.2.2:
     resolution: {integrity: sha512-d7kPDd34KO/YnzaDOlikGpOurfF0ByC2sEV4cANCtdqLlTfBlw2p14O/5d/zv40gJPbIQxfES3nSx1/oYNyuZQ==}
-
-  jotai@1.13.1:
-    resolution: {integrity: sha512-RUmH1S4vLsG3V6fbGlKzGJnLrDcC/HNb5gH2AeA9DzuJknoVxSGvvg8OBB7lke+gDc4oXmdVsaKn/xDUhWZ0vw==}
-    engines: {node: '>=12.20.0'}
-    peerDependencies:
-      '@babel/core': '*'
-      '@babel/template': '*'
-      jotai-devtools: '*'
-      jotai-immer: '*'
-      jotai-optics: '*'
-      jotai-redux: '*'
-      jotai-tanstack-query: '*'
-      jotai-urql: '*'
-      jotai-valtio: '*'
-      jotai-xstate: '*'
-      jotai-zustand: '*'
-      react: ^18.3.1
-    peerDependenciesMeta:
-      '@babel/core':
-        optional: true
-      '@babel/template':
-        optional: true
-      jotai-devtools:
-        optional: true
-      jotai-immer:
-        optional: true
-      jotai-optics:
-        optional: true
-      jotai-redux:
-        optional: true
-      jotai-tanstack-query:
-        optional: true
-      jotai-urql:
-        optional: true
-      jotai-valtio:
-        optional: true
-      jotai-xstate:
-        optional: true
-      jotai-zustand:
-        optional: true
 
   jotai@2.19.1:
     resolution: {integrity: sha512-sqm9lVZiqBHZH8aSRk32DSiZDHY3yUIlulXYn9GQj7/LvoUdYXSMti7ZPJGo+6zjzKFt5a25k/I6iBCi43PJcw==}
@@ -11850,7 +11810,7 @@ snapshots:
       - multiformats
       - supports-color
 
-  '@reserve-protocol/dtf-catalog@0.0.2': {}
+  '@reserve-protocol/dtf-catalog@0.1.2': {}
 
   '@reserve-protocol/dtf-chat@0.0.4(@ai-sdk/react@2.0.199(react@18.3.1)(zod@4.3.6))(ai@5.0.197(zod@4.3.6))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
@@ -11865,9 +11825,9 @@ snapshots:
     dependencies:
       decimal.js-light: 2.5.1
 
-  '@reserve-protocol/react-sdk@0.2.0(@tanstack/react-query@5.99.0(react@18.3.1))(bufferutil@4.1.0)(react@18.3.1)(typescript@5.9.3)(utf-8-validate@5.0.10)(viem@2.52.0(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@5.0.10)(zod@4.3.6))':
+  '@reserve-protocol/react-sdk@0.4.0(@tanstack/react-query@5.99.0(react@18.3.1))(bufferutil@4.1.0)(react@18.3.1)(typescript@5.9.3)(utf-8-validate@5.0.10)(viem@2.52.0(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@5.0.10)(zod@4.3.6))':
     dependencies:
-      '@reserve-protocol/sdk': 0.2.0(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@5.0.10)
+      '@reserve-protocol/sdk': 0.4.0(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@5.0.10)
       '@tanstack/react-query': 5.99.0(react@18.3.1)
       react: 18.3.1
       viem: 2.52.0(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@5.0.10)(zod@4.3.6)
@@ -11876,7 +11836,7 @@ snapshots:
       - typescript
       - utf-8-validate
 
-  '@reserve-protocol/react-zapper@2.5.1(@babel/core@7.29.0)(@babel/template@7.28.6)(@tanstack/react-query@5.99.0(react@18.3.1))(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(viem@2.52.0(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@5.0.10)(zod@4.3.6))(wagmi@2.19.5(@tanstack/query-core@5.99.0)(@tanstack/react-query@5.99.0(react@18.3.1))(@types/react@18.3.28)(bufferutil@4.1.0)(react@18.3.1)(typescript@5.9.3)(utf-8-validate@5.0.10)(viem@2.52.0(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@5.0.10)(zod@4.3.6))(zod@4.3.6))':
+  '@reserve-protocol/react-zapper@2.6.0(@babel/core@7.29.0)(@babel/template@7.28.6)(@tanstack/react-query@5.99.0(react@18.3.1))(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(viem@2.52.0(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@5.0.10)(zod@4.3.6))(wagmi@2.19.5(@tanstack/query-core@5.99.0)(@tanstack/react-query@5.99.0(react@18.3.1))(@types/react@18.3.28)(bufferutil@4.1.0)(react@18.3.1)(typescript@5.9.3)(utf-8-validate@5.0.10)(viem@2.52.0(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@5.0.10)(zod@4.3.6))(zod@4.3.6))':
     dependencies:
       '@lucide/lab': 0.1.2
       '@radix-ui/react-accordion': 1.2.12(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -11891,7 +11851,7 @@ snapshots:
       '@tanstack/react-query': 5.99.0(react@18.3.1)
       clsx: 2.1.1
       decimal.js-light: 2.5.1
-      jotai: 1.13.1(@babel/core@7.29.0)(@babel/template@7.28.6)(react@18.3.1)
+      jotai: 2.19.1(@babel/core@7.29.0)(@babel/template@7.28.6)(@types/react@18.3.28)(react@18.3.1)
       lucide-react: 0.461.0(react@18.3.1)
       mixpanel-browser: 2.78.0
       react: 18.3.1
@@ -11905,22 +11865,13 @@ snapshots:
       - '@babel/template'
       - '@types/react'
       - '@types/react-dom'
-      - jotai-devtools
-      - jotai-immer
-      - jotai-optics
-      - jotai-redux
-      - jotai-tanstack-query
-      - jotai-urql
-      - jotai-valtio
-      - jotai-xstate
-      - jotai-zustand
 
   '@reserve-protocol/rtokens@1.1.23': {}
 
-  '@reserve-protocol/sdk@0.2.0(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@5.0.10)':
+  '@reserve-protocol/sdk@0.4.0(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@5.0.10)':
     dependencies:
       '@graphql-typed-document-node/core': 3.2.0(graphql@16.13.2)
-      '@reserve-protocol/dtf-catalog': 0.0.2
+      '@reserve-protocol/dtf-catalog': 0.1.2
       '@reserve-protocol/dtf-rebalance-lib': 3.2.1(decimal.js-light@2.5.1)
       decimal.js-light: 2.5.1
       graphql: 16.13.2
@@ -15320,13 +15271,6 @@ snapshots:
   jiti@2.6.1: {}
 
   jose@6.2.2: {}
-
-  jotai@1.13.1(@babel/core@7.29.0)(@babel/template@7.28.6)(react@18.3.1):
-    dependencies:
-      react: 18.3.1
-    optionalDependencies:
-      '@babel/core': 7.29.0
-      '@babel/template': 7.28.6
 
   jotai@2.19.1(@babel/core@7.29.0)(@babel/template@7.28.6)(@types/react@18.3.28)(react@18.3.1):
     optionalDependencies:

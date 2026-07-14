@@ -1,0 +1,65 @@
+{
+  "_meta": {
+    "source": "https://api.goldsky.com/api/public/project_cmgzim3e100095np2gjnbh6ry/subgraphs/dtf-index-bsc/prod/gn",
+    "capturedAt": "2026-07-14T00:51:28.606Z",
+    "dtf": "0xa0fe4e0aeca5479705ce996615b2eacb6b6a10fb",
+    "chainId": 56,
+    "query": "getProposalDetail",
+    "proposalId": "51884239877443459690882448373311832746149934632570104230470301032345569986283"
+  },
+  "data": {
+    "proposal": {
+      "id": "51884239877443459690882448373311832746149934632570104230470301032345569986283",
+      "timelockId": "0x92529859b4cc5b4e46788cbcce3ee436dda9af16587b10e7066729856dd09433",
+      "description": "# Fees: 0.30% Mint Fee; 0.60% TVL Fee \n []() \n ",
+      "creationTime": "1781036227",
+      "voteStart": "1781209027",
+      "voteEnd": "1781468227",
+      "queueBlock": "104383406",
+      "queueTime": "1781530598",
+      "state": "EXECUTED",
+      "executionETA": "1781703398",
+      "executionTime": "1781704174",
+      "creationBlock": "103285664",
+      "cancellationTime": null,
+      "calldatas": [
+        "0xeddd0d9c000000000000000000000000000000000000000000000000000aa87bee538000",
+        "0x9fa0bba4000000000000000000000000000000000000000000000000001550f7dca70000"
+      ],
+      "targets": [
+        "0xa0fe4e0aeca5479705ce996615b2eacb6b6a10fb",
+        "0xa0fe4e0aeca5479705ce996615b2eacb6b6a10fb"
+      ],
+      "proposer": {
+        "address": "0x8d2aa07f1a245d72b009c344690edd8e22a9e993"
+      },
+      "votes": [
+        {
+          "choice": "FOR",
+          "voter": {
+            "address": "0x8d2aa07f1a245d72b009c344690edd8e22a9e993"
+          },
+          "weight": "500000000000000000000"
+        }
+      ],
+      "forWeightedVotes": "500000000000000000000",
+      "againstWeightedVotes": "0",
+      "abstainWeightedVotes": "0",
+      "quorumVotes": "50000000000000000000",
+      "forDelegateVotes": "1",
+      "abstainDelegateVotes": "0",
+      "againstDelegateVotes": "0",
+      "executionTxnHash": "0x00924b0de3b93db1029b6a93fc72561c4087823a72bf63fab2ebc7c4d056d0b4",
+      "governance": {
+        "id": "0xf6f73c085b22d791705b8173712f37a2feee58e1",
+        "token": {
+          "id": "0xe744c8157c346b2931807f42552c8cbc0bb6d34f"
+        },
+        "timelock": {
+          "id": "0x823677ea4c1abb3e4f26eee767c550f48425e042",
+          "type": "TRADING"
+        }
+      }
+    }
+  }
+}

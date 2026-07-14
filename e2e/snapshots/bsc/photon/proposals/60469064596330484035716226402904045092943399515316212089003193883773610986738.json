@@ -1,0 +1,63 @@
+{
+  "_meta": {
+    "source": "https://api.goldsky.com/api/public/project_cmgzim3e100095np2gjnbh6ry/subgraphs/dtf-index-bsc/prod/gn",
+    "capturedAt": "2026-07-14T00:51:29.130Z",
+    "dtf": "0xa0fe4e0aeca5479705ce996615b2eacb6b6a10fb",
+    "chainId": 56,
+    "query": "getProposalDetail",
+    "proposalId": "60469064596330484035716226402904045092943399515316212089003193883773610986738"
+  },
+  "data": {
+    "proposal": {
+      "id": "60469064596330484035716226402904045092943399515316212089003193883773610986738",
+      "timelockId": "0xe81c889b8eb3e6bee4c1eacf398f9e0658d635dce756568842fd643aa45ef8f9",
+      "description": "# Clear mandate \n []() \n ",
+      "creationTime": "1781034874",
+      "voteStart": "1781207674",
+      "voteEnd": "1781466874",
+      "queueBlock": "104383432",
+      "queueTime": "1781530610",
+      "state": "EXECUTED",
+      "executionETA": "1781703410",
+      "executionTime": "1781704135",
+      "creationBlock": "103282660",
+      "cancellationTime": null,
+      "calldatas": [
+        "0x9f200bba00000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000000"
+      ],
+      "targets": [
+        "0xa0fe4e0aeca5479705ce996615b2eacb6b6a10fb"
+      ],
+      "proposer": {
+        "address": "0x8d2aa07f1a245d72b009c344690edd8e22a9e993"
+      },
+      "votes": [
+        {
+          "choice": "FOR",
+          "voter": {
+            "address": "0x8d2aa07f1a245d72b009c344690edd8e22a9e993"
+          },
+          "weight": "500000000000000000000"
+        }
+      ],
+      "forWeightedVotes": "500000000000000000000",
+      "againstWeightedVotes": "0",
+      "abstainWeightedVotes": "0",
+      "quorumVotes": "50000000000000000000",
+      "forDelegateVotes": "1",
+      "abstainDelegateVotes": "0",
+      "againstDelegateVotes": "0",
+      "executionTxnHash": "0x7e062e29135bcb1356c622128e7f98c7d4d37bb4824f181507552ca7363155e0",
+      "governance": {
+        "id": "0xf6f73c085b22d791705b8173712f37a2feee58e1",
+        "token": {
+          "id": "0xe744c8157c346b2931807f42552c8cbc0bb6d34f"
+        },
+        "timelock": {
+          "id": "0x823677ea4c1abb3e4f26eee767c550f48425e042",
+          "type": "TRADING"
+        }
+      }
+    }
+  }
+}

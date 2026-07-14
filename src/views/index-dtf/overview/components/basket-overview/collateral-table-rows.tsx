@@ -47,6 +47,7 @@ export const CollateralTableRows = ({
         return (
           <TableRow
             key={token.address}
+            data-testid="overview-basket-row"
             className="border-none hover:bg-transparent"
           >
             <TableCell className="w-1/2 min-w-0 py-3 pl-0 pr-2">

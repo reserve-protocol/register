@@ -170,6 +170,7 @@ const SubmitProposalButton = () => {
   return (
     <TransactionButtonContainer chain={chainId}>
       <Button
+        data-testid="propose-submit-btn"
         disabled={
           !isReady || isPending || isSubmitted || !dtf?.stToken?.governance?.id
         }

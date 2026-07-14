@@ -31,17 +31,21 @@ const RebalanceHeader = () => {
   const rebalance = useAtomValue(currentRebalanceAtom)
 
   return (
-    <div className="flex items-center gap-4 p-4 md:p-6 border-b border-secondary">
+    <div
+      className="flex items-center gap-4 p-4 md:p-6 border-b border-secondary"
+      data-testid="auctions-rebalance-header"
+    >
       <Link to={`../`}>
         <Button variant="muted" size="icon-rounded">
           <ArrowLeft />
         </Button>
       </Link>
-      {!!rebalance ? (
+      {rebalance ? (
         <Link
           to={`../../${ROUTES.GOVERNANCE_PROPOSAL}/${rebalance?.proposal.id}`}
           target="_blank"
           className="underline"
+          data-testid="auctions-rebalance-title"
         >
           {getProposalTitle(rebalance.proposal.description)}
         </Link>

@@ -25,6 +25,7 @@ const ZapToggleBottom = ({
         />
       </div>
       <Button
+        data-testid="issuance-manual-toggle"
         variant="muted"
         size="sm"
         onClick={() => setZapEnabled(false)}

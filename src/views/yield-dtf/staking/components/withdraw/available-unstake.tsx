@@ -67,6 +67,7 @@ const ConfirmWithdraw = () => {
 
   return (
     <Button
+      data-testid="withdraw-btn"
       size="sm"
       className="mt-3"
       onClick={write}

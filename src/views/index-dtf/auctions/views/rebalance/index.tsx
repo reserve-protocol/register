@@ -31,7 +31,10 @@ const RebalanceError = () => {
   if (!rebalanceError) return null
 
   return (
-    <div className="rounded-3xl p-3 border border-red-500 bg-red-500/10">
+    <div
+      className="rounded-3xl p-3 border border-red-500 bg-red-500/10"
+      data-testid="auctions-rebalance-error"
+    >
       <h1 className="font-semibold text-red-500">
         <Trans>Rebalance error</Trans>
       </h1>

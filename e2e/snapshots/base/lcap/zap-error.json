@@ -1,0 +1,23 @@
+{
+ "_meta": {
+  "source": "https://api.reserve.org/api/zapper/8453/swap?chainId=8453&signer=0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266&tokenIn=0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee&amountIn=1&tokenOut=0x4dA9A0f397dB1397902070f93a4D6ddBC0E0E6e8&slippage=100&trade=true&bypassCache=false&deepLiquidity=false",
+  "capturedAt": "2026-07-10T17:07:07.781Z",
+  "dtf": "0x4da9a0f397db1397902070f93a4d6ddbc0e0e6e8",
+  "chainId": 8453,
+  "params": {
+   "chainId": 8453,
+   "tokenIn": "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+   "tokenOut": "0x4dA9A0f397dB1397902070f93a4D6ddBC0E0E6e8",
+   "amountIn": "1",
+   "slippage": 100,
+   "trade": true
+  },
+  "httpStatus": 500
+ },
+ "data": {
+  "status": "error",
+  "error": "Failed to construct swap",
+  "version": "a9537e7",
+  "worker": "d6c1c52c"
+ }
+}

@@ -1,0 +1,101 @@
+{
+  "_meta": {
+    "source": "https://ethereum-rpc.publicnode.com",
+    "capturedAt": "2026-07-10T02:58:35.152Z",
+    "dtf": "0x323c03c48660fe31186fa82c289b0766d331ce21",
+    "chainId": 1
+  },
+  "data": {
+    "totalAssets": {
+      "tokens": [
+        "0x7fc66500c84a76ad7e9c93437bfc5ac33e2ddae9",
+        "0xd533a949740bb3306d119cc777fa900ba034cd52",
+        "0x8207c1ffc5b6804f6024322ccf34f29c3541ae26",
+        "0x3432b6a60d23ca0dfca7761b7ab56459d9c964d0",
+        "0x41d5d79431a913c4ae7d69a668ecdfe5ff9dfb68",
+        "0x6dea81c8171d0ba574754ef6f8b412f2ed88c54d",
+        "0x320623b8e4ff03373931769a31fc52a4e78b5d70",
+        "0x419905009e4656fdc02418c7df35b1e61ed5f726",
+        "0x365accfca291e7d3914637abf1f7635db165bb09",
+        "0xdbdb4d16eda451d0503b854cf79d55697f90c8df"
+      ],
+      "amounts": [
+        "0x293036d27f096e0b9f",
+        "0xbfc3bab6d6cff06380c",
+        "0x490976a2a440deddda27",
+        "0x659bc910e22a62b7961",
+        "0x2871eafe45a89215e5",
+        "0x171a4194c50f9cf93522",
+        "0x1579b1ac03e33b2c546bc",
+        "0xecda5c8aca3108db408",
+        "0x49f05daae7226d9f6d",
+        "0x467ff5afe82e7098a9"
+      ]
+    },
+    "totalSupply": "0x5e7b3c0de9ebd3712004",
+    "decimals": 18,
+    "version": "4.0.0",
+    "basketTokens": [
+      {
+        "address": "0x7fc66500c84a76ad7e9c93437bfc5ac33e2ddae9",
+        "name": "Aave Token",
+        "symbol": "AAVE",
+        "decimals": 18
+      },
+      {
+        "address": "0xd533a949740bb3306d119cc777fa900ba034cd52",
+        "name": "Curve DAO Token",
+        "symbol": "CRV",
+        "decimals": 18
+      },
+      {
+        "address": "0x8207c1ffc5b6804f6024322ccf34f29c3541ae26",
+        "name": "OriginToken",
+        "symbol": "OGN",
+        "decimals": 18
+      },
+      {
+        "address": "0x3432b6a60d23ca0dfca7761b7ab56459d9c964d0",
+        "name": "Frax Share",
+        "symbol": "FXS",
+        "decimals": 18
+      },
+      {
+        "address": "0x41d5d79431a913c4ae7d69a668ecdfe5ff9dfb68",
+        "name": "Inverse DAO",
+        "symbol": "INV",
+        "decimals": 18
+      },
+      {
+        "address": "0x6dea81c8171d0ba574754ef6f8b412f2ed88c54d",
+        "name": "LQTY",
+        "symbol": "LQTY",
+        "decimals": 18
+      },
+      {
+        "address": "0x320623b8e4ff03373931769a31fc52a4e78b5d70",
+        "name": "Reserve Rights",
+        "symbol": "RSR",
+        "decimals": 18
+      },
+      {
+        "address": "0x419905009e4656fdc02418c7df35b1e61ed5f726",
+        "name": "Resupply",
+        "symbol": "RSUP",
+        "decimals": 18
+      },
+      {
+        "address": "0x365accfca291e7d3914637abf1f7635db165bb09",
+        "name": "FXN Token",
+        "symbol": "FXN",
+        "decimals": 18
+      },
+      {
+        "address": "0xdbdb4d16eda451d0503b854cf79d55697f90c8df",
+        "name": "Alchemix",
+        "symbol": "ALCX",
+        "decimals": 18
+      }
+    ]
+  }
+}

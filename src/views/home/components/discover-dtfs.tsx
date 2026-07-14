@@ -16,7 +16,10 @@ const DTFS = () => {
 
 const DiscoverDTFS = () => {
   return (
-    <div className="flex flex-col gap-1 p-1 rounded-4xl bg-secondary lg:mx-2 2xl:mx-0">
+    <div
+      data-testid="discover-dtf-table"
+      className="flex flex-col gap-1 p-1 rounded-4xl bg-secondary lg:mx-2 2xl:mx-0"
+    >
       <DiscoverFilters />
       <DTFS />
     </div>

@@ -1,0 +1,58 @@
+{
+  "_meta": {
+    "source": "https://api.goldsky.com/api/public/project_cmgzim3e100095np2gjnbh6ry/subgraphs/dtf-index-bsc/prod/gn",
+    "capturedAt": "2026-07-09T21:47:29.878Z",
+    "dtf": "0x2f8a339b5889ffac4c5a956787cda593b3c36867",
+    "chainId": 56,
+    "query": "getProposalDetail",
+    "proposalId": "107805152808145435485767961897036741967813922875641903507806873874276172922196"
+  },
+  "data": {
+    "proposal": {
+      "id": "107805152808145435485767961897036741967813922875641903507806873874276172922196",
+      "timelockId": "0xfa320f2b5187576091ed3f1ed2e22ee4a0c88f4541f014a5f45f5f29fc84f2df",
+      "description": "# [Reproposal] Extension of onchain voting and execution process of Basket Governance \n [https://forum.reserve.org/t/cmc20-rfc-proposal-to-extend-the-onchain-voting-and-execution-process-of-basket-governance/1566](https://forum.reserve.org/t/cmc20-rfc-proposal-to-extend-the-onchain-voting-and-execution-process-of-basket-governance/1566) \n **RFC brought forward to the IP stage for a second time after the initial IPs voting window occurred entirely over the weekend, ensuring governors have the opportunity to review and vote during the working week.**\n\nThis proposal seeks to extend the CMC20 onchain governance process from 48 hours to 72 hours by increasing the review period, voting period and execution delay to 24 hours each. The objective is to strengthen governance security by providing the core team, governors and the wider community with additional time to identify and respond to malicious proposals before execution.\n\n![image](https://europe1.discourse-cdn.com/flex005/uploads/reserve/original/2X/c/c7500460583e5380c847d21dc9d270b5a7871112.png)",
+      "creationTime": "1781775492",
+      "voteStart": "1781782692",
+      "voteEnd": "1781861892",
+      "queueBlock": "106508854",
+      "queueTime": "1782487530",
+      "state": "QUEUED",
+      "executionETA": "1782573930",
+      "executionTime": null,
+      "creationBlock": "104927454",
+      "cancellationTime": null,
+      "calldatas": [
+        "0x790518870000000000000000000000000000000000000000000000000000000000015180",
+        "0xe540d01d0000000000000000000000000000000000000000000000000000000000015180"
+      ],
+      "targets": [
+        "0x12940889e849012c633f47ba8925bbee4ee96d45",
+        "0x12940889e849012c633f47ba8925bbee4ee96d45"
+      ],
+      "proposer": {
+        "address": "0x49b4564cb533e092d43c628386258f0b78d86c52"
+      },
+      "votes": [
+        {
+          "choice": "FOR",
+          "voter": {
+            "address": "0xb209eed4d80fb47e5c16577e44dad1073c5c5015"
+          },
+          "weight": "26521226029021685584636783"
+        }
+      ],
+      "forWeightedVotes": "26521226029021685584636783",
+      "againstWeightedVotes": "0",
+      "abstainWeightedVotes": "0",
+      "quorumVotes": "22896473448014543835470523",
+      "forDelegateVotes": "1",
+      "abstainDelegateVotes": "0",
+      "againstDelegateVotes": "0",
+      "executionTxnHash": null,
+      "governance": {
+        "id": "0x12940889e849012c633f47ba8925bbee4ee96d45"
+      }
+    }
+  }
+}

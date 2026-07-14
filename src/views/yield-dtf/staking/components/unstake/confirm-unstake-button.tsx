@@ -85,7 +85,12 @@ const ConfirmUnstakeButton = () => {
 
   return (
     <div>
-      <Button disabled={!isReady} onClick={write} className="w-full">
+      <Button
+        data-testid="unstake-confirm-btn"
+        disabled={!isReady}
+        onClick={write}
+        className="w-full"
+      >
         {!isReady ? t`Preparing transaction` : t`Begin unstaking process`}
       </Button>
       {!!errorMsg && (

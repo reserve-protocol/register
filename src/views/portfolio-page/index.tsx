@@ -32,7 +32,7 @@ import { usePortfolioNow } from './hooks/use-portfolio-now'
 import { hasReserveActivity } from './utils'
 
 const ConnectPrompt = () => (
-  <div className="container mx-auto flex min-h-[calc(100vh-96px)] items-center justify-center px-4 py-10">
+  <div data-testid="portfolio-connect-prompt" className="container mx-auto flex min-h-[calc(100vh-96px)] items-center justify-center px-4 py-10">
     <div className="flex w-full max-w-[560px] flex-col items-center text-center">
       <h1 className="text-[2rem] font-semibold leading-9 text-primary dark:text-foreground md:text-5xl md:leading-[56px]">
         <Trans>Connect your wallet to view your portfolio</Trans>

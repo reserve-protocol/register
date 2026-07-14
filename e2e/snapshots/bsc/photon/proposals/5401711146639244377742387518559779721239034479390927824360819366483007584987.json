@@ -1,0 +1,70 @@
+{
+  "_meta": {
+    "source": "https://api.goldsky.com/api/public/project_cmgzim3e100095np2gjnbh6ry/subgraphs/dtf-index-bsc/prod/gn",
+    "capturedAt": "2026-07-14T00:51:28.991Z",
+    "dtf": "0xa0fe4e0aeca5479705ce996615b2eacb6b6a10fb",
+    "chainId": 56,
+    "query": "getProposalDetail",
+    "proposalId": "5401711146639244377742387518559779721239034479390927824360819366483007584987"
+  },
+  "data": {
+    "proposal": {
+      "id": "5401711146639244377742387518559779721239034479390927824360819366483007584987",
+      "timelockId": null,
+      "description": "# Mandate change proposal \n [Mandate change proposal](Mandate change proposal) \n Mandate change proposal",
+      "creationTime": "1783470235",
+      "voteStart": "1783643035",
+      "voteEnd": "1783902235",
+      "queueBlock": null,
+      "queueTime": null,
+      "state": "ACTIVE",
+      "executionETA": null,
+      "executionTime": null,
+      "creationBlock": "108691249",
+      "cancellationTime": null,
+      "calldatas": [
+        "0x9f200bba0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000016554686520526573657276652041492050686f746f6e69637320445446202850484f544f4e292061696d7320746f2062652061207765696768746564206261736b6574206f66207075626c69632c2055532d6c69737465642070686f746f6e69637320636f6d70616e696573206174207468652063656e746572206f6620746865204149206275696c646f75742e0a0a546865206261736b6574207368616c6c20626520636f6d706f736564206f6620636f6d70616e69657320746861742067656e6572617465207369676e69666963616e7420726576656e75652066726f6d20414920646174612d63656e7465722070686f746f6e6963732064656d616e642c207765696768746564206279206d61726b6574206361706974616c697a6174696f6e20776974682061203230252063617020616e64206120243542206d696e696d756d206d61726b6574206361702c20726562616c616e63656420717561727465726c792e000000000000000000000000000000000000000000000000000000"
+      ],
+      "targets": [
+        "0xa0fe4e0aeca5479705ce996615b2eacb6b6a10fb"
+      ],
+      "proposer": {
+        "address": "0xb209eed4d80fb47e5c16577e44dad1073c5c5015"
+      },
+      "votes": [
+        {
+          "choice": "FOR",
+          "voter": {
+            "address": "0x49b4564cb533e092d43c628386258f0b78d86c52"
+          },
+          "weight": "77922000000000000000000000"
+        },
+        {
+          "choice": "FOR",
+          "voter": {
+            "address": "0xb209eed4d80fb47e5c16577e44dad1073c5c5015"
+          },
+          "weight": "9990000000000000000000000"
+        }
+      ],
+      "forWeightedVotes": "87912000000000000000000000",
+      "againstWeightedVotes": "0",
+      "abstainWeightedVotes": "0",
+      "quorumVotes": "11344038738202524499024611",
+      "forDelegateVotes": "2",
+      "abstainDelegateVotes": "0",
+      "againstDelegateVotes": "0",
+      "executionTxnHash": null,
+      "governance": {
+        "id": "0xf6f73c085b22d791705b8173712f37a2feee58e1",
+        "token": {
+          "id": "0xe744c8157c346b2931807f42552c8cbc0bb6d34f"
+        },
+        "timelock": {
+          "id": "0x823677ea4c1abb3e4f26eee767c550f48425e042",
+          "type": "TRADING"
+        }
+      }
+    }
+  }
+}

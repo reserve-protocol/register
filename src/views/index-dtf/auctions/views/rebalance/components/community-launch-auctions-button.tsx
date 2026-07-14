@@ -142,6 +142,7 @@ const CommunityLaunchAuctionsButton = () => {
   return (
     <div className="flex flex-col gap-2 p-2">
       <Button
+        data-testid="auctions-community-launch-btn"
         className="rounded-xl w-full py-6 gap-2"
         disabled={
           !isValid ||

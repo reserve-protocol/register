@@ -67,7 +67,11 @@ const RoundDescription = () => {
 
   return (
     <div className="p-4 md:p-6">
-      <h1 className="text-2xl text-primary font-semibold">
+      <h1
+        data-testid="auctions-round"
+        data-round={String(metrics?.round ?? '')}
+        className="text-2xl text-primary font-semibold"
+      >
         {t(ROUND_TITLE[metrics?.round ?? 0])}
       </h1>
       <p className="text-legend">{description}</p>

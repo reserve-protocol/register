@@ -30,7 +30,7 @@ const DTFMaxAmount = () => {
         <span className="text-legend">
           <Trans>Max:</Trans>
         </span>
-        <span className="font-bold">
+        <span className="font-bold" data-testid="issuance-max-amount">
           {formatCurrency(Number(formatEther(maxAmount)), 2, {
             notation: 'compact',
             compactDisplay: 'short',
@@ -41,6 +41,7 @@ const DTFMaxAmount = () => {
           className="bg-primary/10 rounded-full border-primary/10"
           size="xs"
           disabled={isRestricted}
+          data-testid="issuance-max-btn"
           onClick={() => setMaxAmount(formatEther(maxAmount))}
         >
           <Trans>Use</Trans>
@@ -79,6 +80,7 @@ const AmountInput = () => {
             onChange={setAmount}
             autoFocus
             disabled={isRestricted}
+            data-testid="issuance-amount-input"
           />
           <div className="w-full overflow-hidden">
             <span className="text-legend mt-1.5 block max-w-52 truncate">
