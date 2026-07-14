@@ -4,7 +4,6 @@ import useIndexDTFTransactions from '@/hooks/useIndexDTFTransactions'
 import { chainIdAtom, walletChainAtom } from '@/state/atoms'
 import {
   ExposureGroup,
-  indexDTF7dChangeAtom,
   indexDTFAtom,
   indexDTFBasketAmountsAtom,
   indexDTFBasketAtom,
@@ -21,11 +20,7 @@ import {
   iTokenAddressAtom,
   performanceTimeRangeAtom,
 } from '@/state/dtf/atoms'
-import {
-  indexDTFApyAtom,
-  indexDTFPoolsDataAtom,
-  indexDTFUnderlyingNamesAtom,
-} from '@/state/dtf/yield-index-atoms'
+import { resetIndexDTFAtomsAtom } from '@/state/dtf/reset-index-dtf-atoms'
 import { deriveDtfStatus, isInactiveDTF } from '@/hooks/use-dtf-status'
 import { isAddress } from '@/utils'
 import { AvailableChain } from '@/utils/chains'
@@ -272,25 +267,6 @@ const IndexDTFExposureUpdater = () => {
   return null
 }
 
-const resetStateAtom = atom(null, (_, set) => {
-  set(indexDTFBasketAtom, undefined)
-  set(indexDTFBasketPricesAtom, {})
-  set(indexDTFBasketAmountsAtom, {})
-  set(indexDTFBasketSharesAtom, {})
-  set(indexDTFAtom, undefined)
-  set(indexDTFBrandAtom, undefined)
-  set(indexDTFRebalanceControlAtom, undefined)
-  set(indexDTFFeeAtom, undefined)
-  set(indexDTF7dChangeAtom, undefined)
-  set(indexDTFPerformanceLoadingAtom, false)
-  set(indexDTFExposureDataAtom, null)
-  set(indexDTFApyAtom, undefined)
-  set(indexDTFPoolsDataAtom, undefined)
-  set(indexDTFUnderlyingNamesAtom, {})
-  set(performanceTimeRangeAtom, 'ytd')
-  set(indexDTFStatusAtom, 'active')
-})
-
 const STATUS_REFRESH_INTERVAL = 1000 * 60 * 10
 
 const DeprecationStatusUpdater = () => {
@@ -315,7 +291,7 @@ const Updater = () => {
   const setChain = useSetAtom(chainIdAtom)
   const currentChainId = useAtomValue(chainIdAtom)
   const [currentToken, setTokenAddress] = useAtom(iTokenAddressAtom)
-  const resetAtoms = useSetAtom(resetStateAtom)
+  const resetAtoms = useSetAtom(resetIndexDTFAtomsAtom)
   const setRefreshFn = useSetAtom(indexDTFRefreshFnAtom)
   const [key, setKey] = useState(0)
   useIndexDTFTransactions(tokenAddress, chainId)

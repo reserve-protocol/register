@@ -77,6 +77,7 @@ const MarketCap = () => {
       value={marketCap ? `$${formatCurrency(marketCap, 0)}` : '$0'}
       icon={<BadgeDollarSign size={16} />}
       loading={!marketCap}
+      testId="overview-mcap"
     />
   )
 }
@@ -152,6 +153,7 @@ const TxVolume = () => {
       value={`$${formatCurrency(txVolume, 0)}`}
       icon={<ArrowUpDown size={16} />}
       loading={!transactions.length}
+      testId="overview-tx-volume"
     />
   )
 }
