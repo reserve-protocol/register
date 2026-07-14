@@ -8,6 +8,10 @@ export type MockTransactionOutcome =
 interface SubgraphOverride {
   operationName: string
   variables: Record<string, unknown>
+  // When set, the override only answers requests hitting that chain's subgraph
+  // URL — the seam for per-chain shapes on multichain fan-outs (e.g. one chain
+  // truthy-but-malformed while the others stay healthy, the A1 crash class).
+  chain?: number
   data: unknown
 }
 
@@ -40,6 +44,10 @@ export class MockOverrides {
   // lowercased address -> native balance in wei (eth_getBalance). Opt-in:
   // everyone else keeps the shared 100 ETH default.
   private ethBalances = new Map<string, bigint>()
+  // lowercased token address -> price-gap kind for /current/prices. The central
+  // mock leans unknown-but-admitted tokens to $1; this is the explicit escape:
+  // 'omit' drops the token from the response, 'zero' answers price 0.
+  private priceGaps = new Map<string, 'omit' | 'zero'>()
 
   // Controllable-latency gates for the loading lifecycle. Dispatchers call
   // `holds.gate(identity)` before fulfilling; the harness `mock.hold()` adds one.
@@ -49,13 +57,16 @@ export class MockOverrides {
 
   // Override a subgraph operation. `data` is the object under GraphQL `data`,
   // e.g. overrides.subgraph('GetIndexDtfProposalVotingSnapshot', { proposal }).
+  // `chain` scopes the override to one chain's subgraph host; omit it to answer
+  // every chain (unchanged default).
   subgraph(
-    match: { operationName: string; variables?: Record<string, unknown> },
+    match: { operationName: string; variables?: Record<string, unknown>; chain?: number },
     data: unknown
   ): void {
     this.subgraphOps.push({
       operationName: match.operationName,
       variables: match.variables ?? {},
+      chain: match.chain,
       data,
     })
   }
@@ -87,6 +98,14 @@ export class MockOverrides {
     })
   }
 
+  // Declare a token's price as missing ('omit') or zero for /current/prices —
+  // overrides both a captured snapshot price and the $1 lean. Chain-keyed:
+  // shared addresses (e.g. the native sentinel) exist on every chain, so an
+  // address-only gap would leak across all price batches in the test.
+  priceGap(chain: number, address: string, kind: 'omit' | 'zero' = 'omit'): void {
+    this.priceGaps.set(`${chain}:${address.toLowerCase()}`, kind)
+  }
+
   transaction(outcome: MockTransactionOutcome): void {
     this.transactionOutcomes.push(outcome)
   }
@@ -95,12 +114,14 @@ export class MockOverrides {
 
   lookupSubgraph(
     operationName: string | undefined,
-    variables: Record<string, unknown>
+    variables: Record<string, unknown>,
+    chain?: number
   ): unknown | undefined {
     if (!operationName) return undefined
     return this.subgraphOps.findLast(
       (entry) =>
         entry.operationName === operationName &&
+        (entry.chain === undefined || entry.chain === chain) &&
         entriesMatch(entry.variables, variables)
     )?.data
   }
@@ -111,6 +132,10 @@ export class MockOverrides {
 
   lookupEthBalance(address: string): bigint | undefined {
     return this.ethBalances.get(address.toLowerCase())
+  }
+
+  lookupPriceGap(chain: number, address: string): 'omit' | 'zero' | undefined {
+    return this.priceGaps.get(`${chain}:${address.toLowerCase()}`)
   }
 
   lookupApi(method: string, url: URL): unknown | undefined {

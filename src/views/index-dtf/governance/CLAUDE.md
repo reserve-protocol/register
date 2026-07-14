@@ -85,9 +85,10 @@ mapper dereferences — serve proposals ONLY through it or the list breaks).
   `<iframe>` RENDERS AND LOADS ITS SRC (attacker-controlled on-chain
   description → live external frame). BUG, `test.fixme`'d, engineer triage;
   same renderer in yield governance too (`ProposalMdDescription.tsx` ×2).
-- Validation caveat: zod form bounds (fee min/max etc.) are BYPASSED on
-  localhost/dev (`shouldBypassFormValidation`) — the e2e harness cannot
-  exercise them; bounds need schema unit tests instead.
+- Validation: zod form bounds (fee min/max etc.) are bypassed on localhost/dev
+  (`shouldBypassFormValidation`) but NOT in e2e — the harness Vite server sets
+  `VITE_E2E`, which pins the bypass off, so bounds are assertable
+  (`index-dtf/governance/fee-bounds.spec.ts`).
 
 ## Traps
 

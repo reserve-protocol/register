@@ -79,7 +79,7 @@ class TxControl {
 class MockControl {
   constructor(private readonly overrides: MockOverrides) {}
   subgraph(
-    match: { operationName: string; variables?: Record<string, unknown> },
+    match: { operationName: string; variables?: Record<string, unknown>; chain?: number },
     data: unknown
   ): this {
     this.overrides.subgraph(match, data)
