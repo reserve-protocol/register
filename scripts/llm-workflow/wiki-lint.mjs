@@ -43,7 +43,10 @@ for (const path of walkMarkdown(wikiDir)) {
 }
 
 for (const [name, page] of pages) {
-  const { frontmatter, body, path } = page;
+  const { frontmatter, duplicateKeys, body, path } = page;
+  for (const key of duplicateKeys ?? []) {
+    errors.push(`${rel(path)}: duplicate frontmatter key "${key}" (union-merge artifact — keep one)`);
+  }
   if (!frontmatter.title) errors.push(`${rel(path)}: frontmatter missing title`);
   if (!/^\d{4}-\d{2}-\d{2}$/.test(frontmatter.updated ?? ""))
     errors.push(`${rel(path)}: frontmatter updated must be YYYY-MM-DD`);
@@ -149,6 +152,7 @@ function parseFrontmatter(raw) {
   const match = /^---\r?\n([\s\S]*?)\r?\n---\r?\n?([\s\S]*)$/.exec(raw.replaceAll("\r\n", "\n"));
   if (!match) return null;
   const frontmatter = {};
+  const duplicateKeys = new Set();
   let listKey = null;
   for (const line of match[1].split("\n")) {
     const item = /^\s+-\s+(.+)$/.exec(line);
@@ -158,6 +162,8 @@ function parseFrontmatter(raw) {
     }
     const pair = /^(\w+):\s*(.*)$/.exec(line);
     if (!pair) continue;
+    // Union merges duplicate scalar keys (e.g. two `updated:` lines); last-one-wins would silently skew drift dates.
+    if (pair[1] in frontmatter) duplicateKeys.add(pair[1]);
     if (pair[2] === "") {
       listKey = pair[1];
       frontmatter[listKey] = [];
@@ -166,7 +172,7 @@ function parseFrontmatter(raw) {
       listKey = null;
     }
   }
-  return { frontmatter, body: match[2] };
+  return { frontmatter, duplicateKeys, body: match[2] };
 }
 
 function wikiLinks(body) {

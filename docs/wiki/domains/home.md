@@ -1,6 +1,6 @@
 ---
 title: Home
-updated: 2026-07-08
+updated: 2026-07-14
 type: domain
 sources:
   - src/views/home/**
@@ -9,11 +9,13 @@ sources:
 # Home (landing page)
 
 Marketing landing: hero + packing animation, highlighted (featured) DTF
-cards, discover table, metrics.
+cards, discover table, metrics. (The hero's "Watch explainer" button and the
+DTF explainer dialog were removed 2026-07.)
 
 ## Featured cards data
 
-`use-featured-dtfs.ts` reads `v1/discover/featured` — the server decides the
+`use-featured-dtfs.ts` reads `${RESERVE_API}v1/discover/featured` (prod by
+default; staging only when `VITE_STAGING_API` is set) — the server decides the
 performance period and density. Since 2026-07-08 the period is **YTD on a
 daily grid** (reserve-api `discover/featured` route passes
 `performancePeriod: "ytd", performanceInterval: "daily"`), deliberately
@@ -22,20 +24,23 @@ matching the overview page's default YTD range: same Jan-1-UTC window, same
 daily point with **no live-price append** — numerically equal to the overview
 overlay's (penultimate − first)/first, which skips its synthetic now-point.
 ~190–366 pts/card; `downsampleForSpan` is a no-op at daily density.
-`normalizeFeaturedItem` passes `performance` through untouched. Each card
+`normalizeFeaturedItem` passes `performance` through untouched; the period
+label falls back to `YTD` (not 1M) when the server omits it. Each card
 draws the series twice (pattern + stroke overlay), so density is paid double —
 keep the server series light. Card order is server-driven (`order` array =
 reserve-api `FEATURED_TOKENS`); the skeleton `featured-dtfs.ts` list mirrors
 it so cards don't reshuffle when live data lands.
 
-The exposure marquee sorts weight-descending at the client choke point
-(`mapExposureGroupsToTickers` + basket fallback, before the `BACKING_LIMIT`
-slice — top-N by weight, not first-N in basket order); the server also emits
-`exposure` groups/tokens weight-descending.
+The exposure marquee sorts weight-descending before the `BACKING_LIMIT`
+slice — top-N by weight, not first-N in source order — on **both** paths:
+`mapExposureGroupsToTickers` and the raw-basket fallback
+(`getBasketTickerAssets`).
 
 The discover table (`useIndexDTFList`, `v1/discover/dtfs?performance=true`)
 returns daily 30d series (~31 pts) — the same server-side downsample is a
-no-op there.
+no-op there. On mobile, `use-filtered-index-dtf` requests `exposure` data
+(`useIndexDTFList({ exposure: !isDesktop })`) to render the basket/exposure
+column that desktop shows via hover.
 
 ## Performance invariants (do not break)
 
