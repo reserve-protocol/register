@@ -1,5 +1,3 @@
-import daoFeeRegistryAbi from '@/abis/dao-fee-registry-abi'
-import dtfIndexAbi from '@/abis/dtf-index-abi-v1'
 import SEO from '@/components/seo'
 import useFavicon from '@/hooks/useFavicon'
 import useIndexDTFTransactions from '@/hooks/useIndexDTFTransactions'
@@ -30,19 +28,14 @@ import {
 import { isInactiveDTF, useDTFStatus } from '@/hooks/use-dtf-status'
 import { isAddress } from '@/utils'
 import { AvailableChain } from '@/utils/chains'
-import {
-  FALLBACK_PLATFORM_FEES,
-  NETWORKS,
-  RESERVE_API,
-  ROUTES,
-  ZAPPER_API,
-} from '@/utils/constants'
+import { NETWORKS, RESERVE_API, ROUTES, ZAPPER_API } from '@/utils/constants'
 import {
   IndexDtfProvider,
   type Amount,
   useCurrentIndexDtf,
   useIndexCatalog,
   useIndexDtfIdentity,
+  useIndexDtfPlatformFee,
   useIndexDtfVersion,
   supportedChainIds,
   type IndexDtfBrand as SdkIndexDtfBrand,
@@ -54,7 +47,7 @@ import { atom, useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { useCallback, useEffect, useLayoutEffect, useState } from 'react'
 import { Outlet, useNavigate, useParams, useLocation } from 'react-router-dom'
 import { Address } from 'viem'
-import { useReadContract, useSwitchChain } from 'wagmi'
+import { useSwitchChain } from 'wagmi'
 import IndexDTFNavigation from './components/navigation'
 import ConfirmEligibilityModal from './components/confirm-eligibility-modal'
 import GovernanceUpdater from './governance/updater'
@@ -226,44 +219,21 @@ const IndexDTFVersionUpdater = () => {
   return null
 }
 
-const PlatformFeeUpdater = ({
-  tokenAddress,
-  chainId,
-}: {
-  tokenAddress?: string
-  chainId: number
-}) => {
+// Thin atom adapter: derived proposal atoms consume the fee, so consumers
+// can't all take the hook yet. A failed registry read flags 'unavailable' —
+// consumers render an explicit unavailable state, never a fabricated fee.
+const PlatformFeeUpdater = () => {
+  const identity = useIndexDtfIdentity()
   const setFee = useSetAtom(indexDTFFeeAtom)
-
-  const { data: registryAddress, isError: registryError } = useReadContract({
-    address: tokenAddress as Address,
-    abi: dtfIndexAbi,
-    functionName: 'daoFeeRegistry',
-    chainId,
-    query: { enabled: !!tokenAddress },
-  })
-
-  const { data: feeDetails, isError: feeError } = useReadContract({
-    address: registryAddress as Address,
-    abi: daoFeeRegistryAbi,
-    functionName: 'getFeeDetails',
-    args: [tokenAddress as Address],
-    chainId,
-    query: { enabled: !!registryAddress && !!tokenAddress },
-  })
+  const { data, isError } = useIndexDtfPlatformFee(identity)
 
   useEffect(() => {
-    if (feeDetails) {
-      const [, feeNumerator, feeDenominator] = feeDetails
-      setFee(
-        feeDenominator === 0n
-          ? (FALLBACK_PLATFORM_FEES[chainId] ?? 50)
-          : Number((feeNumerator * 100n) / feeDenominator)
-      )
-    } else if (registryError || feeError) {
-      setFee(FALLBACK_PLATFORM_FEES[chainId] ?? 50)
+    if (data) {
+      setFee(data.percent)
+    } else if (isError) {
+      setFee('unavailable')
     }
-  }, [feeDetails, registryError, feeError, chainId, setFee])
+  }, [data, isError, setFee])
 
   return null
 }
@@ -394,7 +364,7 @@ const Updater = () => {
     <div key={key}>
       <IndexDTFDataUpdater />
       <IndexDTFVersionUpdater />
-      <PlatformFeeUpdater tokenAddress={tokenAddress} chainId={chainId} />
+      <PlatformFeeUpdater />
       <IndexDTFExposureUpdater chainId={chainId} />
       <YieldIndexUpdater chainId={chainId} />
       <DeprecationStatusUpdater tokenAddress={tokenAddress} chainId={chainId} />

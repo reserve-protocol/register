@@ -280,7 +280,7 @@ const Updater = () => {
           revenueDistributionChanges.additionalRecipients !== undefined
             ? revenueDistributionChanges.additionalRecipients
             : feeRecipients.externalRecipients,
-        fixedPlatformFee: platformFee ?? 0,
+        fixedPlatformFee: typeof platformFee === 'number' ? platformFee : 0,
         auctionLength:
           auctionLengthChange !== undefined
             ? auctionLengthChange

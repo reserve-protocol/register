@@ -98,10 +98,10 @@ function displayShare(rawPercentage: bigint, platformFee: number): string {
   return formatPercentage(sdkPercent / adjust)
 }
 
-// --- DAO fee registry (PlatformFeeUpdater's two chained reads) ---
-// The shared mock answers getFeeDetails with a too-short word, so the app takes
-// its error FALLBACK. Model the registry so the platform fee is derived from a
-// real on-chain read: platformFee = Number(numerator * 100 / denominator).
+// --- DAO fee registry (the SDK platform-fee read's two chained calls) ---
+// The shared mock answers getFeeDetails with a too-short word, so the read
+// errors and the fee shows as unavailable. Model the registry so the platform
+// fee is derived from a real on-chain read: percent = numerator * 100 / denominator.
 const DAO_FEE_REGISTRY_SELECTOR = '0x9980cb23' // daoFeeRegistry()
 const FEE_REGISTRY = '0x1234567890123456789012345678901234567890'
 const FEE_DETAILS_ABI = parseAbi([
@@ -214,40 +214,33 @@ test('fee recipient shares are platform-fee adjusted from the on-chain registry'
   )
 })
 
-// BUG M10 (ledger). When the DAO fee-registry read fails, PlatformFeeUpdater
-// (index-dtf-container.tsx:351-358) silently sets a HARDCODED fallback
-// (FALLBACK_PLATFORM_FEES[8453] = 50) and the "Fixed Platform Share" row shows
-// "50%" as if it were the real protocol fee — no error indicator — and that
-// fabricated 50% feeds PERCENT_ADJUST, scaling every recipient share off a guess.
-//
-// DESIRED behavior (this fixme, CODEX IDX-SET-002): a failed registry read must
-// surface an indeterminate/error state, NEVER present a fabricated percentage as
-// live truth. Fails today (no `settings-fee-unavailable` state exists) — that's
-// the point; do NOT re-assert the fabricated 50% as green product truth. Un-fixme
-// when the app stops masking the read failure.
-test.fixme(
-  'registry read failure surfaces UNAVAILABLE, not a fabricated 50% fee',
-  async ({ page }) => {
-    await gotoSettings(page) // no seedFeeRegistry → error path
+// B1/M10 (ledger, CODEX IDX-SET-002). A failed DAO fee-registry read must
+// surface an explicit unavailable state — never the old fabricated
+// FALLBACK_PLATFORM_FEES 50% presented as live truth. The SDK platform-fee
+// read errors (default mock answers getFeeDetails with a too-short word) and
+// the fee atom flags 'unavailable'.
+test('registry read failure surfaces UNAVAILABLE, not a fabricated 50% fee', async ({
+  page,
+}) => {
+  await gotoSettings(page) // no seedFeeRegistry → error path
 
-    // The platform-fee surface must NOT confidently render a percentage it never
-    // read; it must show an explicit unavailable/error affordance.
-    await expect(page.getByTestId('settings-fee-unavailable')).toBeVisible()
-    await expect(page.getByTestId('settings-fee-platform')).not.toContainText('50%')
-  }
-)
+  // react-query retries the failed registry read (1s/2s/4s backoff) before
+  // erroring — pump the frozen clock past the backoff window.
+  await advanceTime(page, 5_000)
+  await advanceTime(page, 5_000)
 
-// BUG (medium/high): a fee registry whose getFeeDetails returns feeDenominator=0
-// crashes the WHOLE index-DTF container. PlatformFeeUpdater does
-// `Number((feeNumerator * 100n) / feeDenominator)` with no zero guard, so a 0
-// denominator throws `RangeError: Division by zero` inside the updater's effect,
-// which unmounts the entire container subtree (every tab, not just settings).
-// Repro (confirmed): seedFeeRegistry(overrides, 1n, 0n) → pageerror
-// "RangeError: Division by zero" and `dtf-settings` never mounts (count 0).
-// Fix: guard denominator === 0n before dividing (fall back like the read-error
-// path). Marked fixme — the desired post-fix behavior is that the page survives.
+  // The platform-fee surface must NOT confidently render a percentage it never
+  // read; it must show an explicit unavailable/error affordance.
+  await expect(page.getByTestId('settings-fee-unavailable')).toBeVisible()
+  await expect(page.getByTestId('settings-fee-platform')).toHaveCount(0)
+})
+
+// Regression (was a container-wide crash): a registry whose getFeeDetails
+// returns feeDenominator=0 used to throw `RangeError: Division by zero` inside
+// PlatformFeeUpdater's effect and unmount the whole container subtree. The SDK
+// platform-fee read maps denominator 0 → percent 0, so the page must survive.
 test(
-  'BUG: zero fee denominator must not crash the DTF container',
+  'zero fee denominator must not crash the DTF container',
   async ({ page, overrides }) => {
     seedFeeRegistry(overrides, 1n, 0n)
     await gotoSettings(page)

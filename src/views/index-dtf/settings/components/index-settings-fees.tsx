@@ -1,5 +1,4 @@
 import dtfStakingVaultAbi from '@/abis/dtf-index-staking-vault'
-import { chainIdAtom } from '@/state/atoms'
 import { indexDTFAtom, indexDTFFeeAtom } from '@/state/dtf/atoms'
 import { IndexDTF } from '@/types'
 import { formatPercentage } from '@/utils'
@@ -96,20 +95,24 @@ const FeesInfo = () => {
   const { t } = useLingui()
   const indexDTF = useAtomValue(indexDTFAtom)
   const platformFee = useAtomValue(indexDTFFeeAtom)
-  const chainId = useAtomValue(chainIdAtom)
 
   const { data: tokenJar } = useReadContract({
     abi: dtfStakingVaultAbi,
     address: indexDTF?.stToken?.id,
     functionName: 'tokenJar',
-    chainId,
+    chainId: indexDTF?.chainId,
     query: {
       enabled: Boolean(indexDTF?.stToken),
     },
   })
 
   const feeRecipients = useMemo(
-    () => getFeeRecipients(indexDTF, platformFee, tokenJar),
+    () =>
+      getFeeRecipients(
+        indexDTF,
+        typeof platformFee === 'number' ? platformFee : undefined,
+        tokenJar
+      ),
     [indexDTF, platformFee, tokenJar]
   )
 
@@ -144,17 +147,27 @@ const FeesInfo = () => {
         />
       </div>
       <div className="bg-card rounded-3xl mt-1">
-        {feeRecipients?.map((recipient, index) => (
+        {platformFee === 'unavailable' ? (
           <InfoCardItem
-            key={recipient.address ?? index}
-            label={t(recipient.label)}
-            value={recipient.value}
-            icon={recipient.icon}
-            address={recipient.address}
-            border={!!index}
-            testId={recipient.testId}
+            label={t`Revenue Distribution`}
+            value={t`Unavailable`}
+            icon={<IconWrapper Component={TrainTrack} />}
+            border={false}
+            testId="settings-fee-unavailable"
           />
-        ))}
+        ) : (
+          feeRecipients?.map((recipient, index) => (
+            <InfoCardItem
+              key={recipient.address ?? index}
+              label={t(recipient.label)}
+              value={recipient.value}
+              icon={recipient.icon}
+              address={recipient.address}
+              border={!!index}
+              testId={recipient.testId}
+            />
+          ))
+        )}
       </div>
     </InfoCard>
   )

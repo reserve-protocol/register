@@ -136,7 +136,11 @@ export const indexDTFMarketCapAtom = atom<number | undefined>(undefined)
 export const indexDTFBrandAtom = atom<IndexDTFBrand | undefined>(undefined)
 export const indexDTFTransactionsAtom = atom<Transaction[]>([])
 
-export const indexDTFFeeAtom = atom<number | undefined>(undefined)
+// undefined = read in flight; 'unavailable' = registry read failed. Consumers
+// must render an explicit unavailable state — never substitute a made-up fee.
+export const indexDTFFeeAtom = atom<number | 'unavailable' | undefined>(
+  undefined
+)
 
 export const indexDTF24hVolumeAtom = atom<number>((get) => {
   const txs = get(indexDTFTransactionsAtom)
