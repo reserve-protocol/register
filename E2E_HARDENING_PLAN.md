@@ -5,6 +5,19 @@ the **execution plan**; `E2E_TEST_MAP.md` becomes the single machine-readable
 coverage ledger (see §8). Where an item maps to a Codex backlog ID (`HARN-001`,
 `IDX-AUC-008`, …) it is cited so nothing is lost._
 
+## Execution status (live)
+
+| Phase | State | Evidence |
+|---|---|---|
+| **0 — Trust** | 8/9 done | chain enforcement (HARN-001/002, incl. proposal-only path) +5 unit tests · yield identity (HARN-006/007, `pendingUnstakings` rToken-scoped) canonizing tests replaced · M10+redeem green-bugs → fixmes · fake version-reset removed · egress default-deny (HARN-004/005) · fixme-validity static lint in `e2e:check` (HARN-021 **partial** — runtime unfix-gate still open). Remaining: HARN-008 yield-price. |
+| **1 — Fast authoring** | started | `e2e/templates/{read,write,lifecycle}` + guide entry. Remaining: `e2e:new` scaffold, META-004 lint. |
+| **2 — Math unit tests** | started (3 files, 22 tests) | governance (Z18 + wei-precision), factsheet (Z12), portfolio (Z22 + wei-precision) — independent vectors + `it.fails` bug capture. Remaining: fee/dutch/throttle/cooldown/rebalance (Z26). |
+| **CI** | done | every PR + concurrency + nightly mobile. |
+| **Reviewer sweep** | converged | 5 passes → 38 findings (P0:0 P1:10 P2:16 P3:12) in `REGISTER_HARDENING.md` Appendix Z. |
+| 3 (controller/wallet), 4/7 (mock refresh), 8 (wiki→single ledger), rest of 2 | pending | next-session, multi-week. |
+
+Verified green throughout: e2e unit 52 · app unit 627+ · smoke 47 · flows 100 · `e2e:check` · app+e2e tsc 0.
+
 ## 0. The one goal, and what it implies
 
 **The suite is the source of truth for "is this feature done / is this bug
@@ -101,6 +114,42 @@ ship-yield-writes trade-off, and it's now debt to pay in Phase 0.
 **Nothing else ships until this is done.** Every item here closes a confirmed
 false-green. This is the first PR I'd open.
 
+> **STATUS (executed this session — 8/9 done, all green: 52 unit · 47 smoke · 100 flows):**
+> ✅ Chain enforcement (HARN-001/002) — `resolveIndexQuery` now gets `urlChain`;
+> wrong-chain DTF requests are refused (transient self-heals, persistent regression
+> fails). **Proposal-only ops** (voting snapshot, no dtf address) are now gated via
+> the proposal's owning DTF too; +5 negative unit tests. ✅ Yield identity
+> (HARN-006/007) — balanceOf/allowance/pendingUnstakings gated on a known-address
+> set (yield replay ∪ common majors); `pendingUnstakings` additionally requires a
+> **known rToken** (1st arg), not just the facade + account — an arbitrary rToken
+> now fails loud. Canonizing unit tests replaced with known-success + unknown-fail-loud.
+> ✅ Fake version-reset test removed (kept as documented gap). ✅ M10 fee + redeem
+> `minOut=0` characterizations → desired-behavior fixmes (no longer green bugs).
+> ✅ Image egress default-deny (HARN-004) — unlisted image hosts fail loud
+> (surfaced + allowlisted `discourse-cdn`). ✅ cdn-cgi/trace scoped to the app's
+> real Cloudflare hosts (HARN-005). 🟡 fixme-validity check in `e2e:check`
+> (HARN-021 **PARTIAL**) — a **static** lint rejects placeholder fixmes that never
+> observe the app (now comment-stripped, so a signal must be in executable code).
+> It does NOT yet prove a fixme *fails* when un-skipped — the runtime
+> unfix-and-require-failure gate (below) remains open.
+> ✅ `package.json` already clean (reindent was reconciled). ✅ Chain gate extended
+> to governance-stats (`governanceIds`/`ids`) — a base governor id served on the
+> mainnet host is now refused (was a hole; +2 unit tests). ✅ Base ZAP stablecoins
+> (USDbC / base USDC / DAI) registered as KNOWN at module load — a base yield wallet
+> read is now silent-zero regardless of worker order (was an order-dependent
+> fail-loud landmine; +1 unit test). ⬜ **REMAINING:**
+> HARN-008 yield price identity (capture `{chainId,token,price}` fixtures, reject
+> non-token addresses, no synthetic `$1`) — the larger item, deferred to its own pass.
+>
+> **e2e trust backlog (LOW, from the Dark trust review — not blocking):**
+> (1) `knownYieldAddresses` is not chain-scoped — a right-address-wrong-chain
+> balanceOf/allowance/pendingUnstakings of `TEST_ADDRESS` is answered silent-zero
+> instead of failing loud (blast radius tiny: the value is always 0). Chain-scope
+> the known-set to fully honor "wrong chain fails loud" for those 3 selectors.
+> (2) `check.ts` `//`-strip can over-truncate a line where `//` appears inside a
+> string/URL alongside a real signal (false FAIL) — acceptable for a static lint;
+> tighten if it ever bites.
+
 | Item | Codex ID | What | Acceptance |
 |---|---|---|---|
 | Restore Index subgraph chain enforcement | HARN-001/002 | Pass `subgraphChainForUrl(url)` into `resolveIndexQuery`; require URL chain == registry chain before snapshot/overlay fulfillment (unless a spec declares a negative wrong-chain case). Restore the negative helper unit test. | Base/BSC/Mainnet DTF succeeds only on its chain's Goldsky URL; wrong host → modeled error + unmocked-identity failure. Keep the SPA journey as supplemental. |
@@ -120,6 +169,14 @@ sneak in again.
 ---
 
 ## 4. Phase 1 — "Any LLM writes any test fast" (the DX contract)
+
+> **STATUS (executed this session):** ✅ Spec templates shipped
+> (`e2e/templates/{read,write,lifecycle}.spec.template.ts`) — each carries the
+> minimum-oracle as its comments (the write template forbids `txLog.length>0`/
+> `last()`-only). ✅ `e2e/CLAUDE.md` "Writing a new test" now opens with
+> "START FROM A TEMPLATE." ⬜ REMAINING: the `pnpm e2e:new <domain>/<route>
+> --kind=` scaffold script; the META-004 lint that statically rejects the
+> forbidden patterns.
 
 The goal: an LLM opens the repo, and there is **exactly one obvious way** to write
 each kind of test, with the oracle baked in so it can't under-assert. Mechanisms:
@@ -164,6 +221,20 @@ template, the fixture, the capture step, and the run command without reading
 The fix is to lift the math into pure functions and unit-test them against
 **independent reviewed vectors** (never the same formula the code uses — Codex
 HARN-018).
+
+> **STATUS (executed this session — 3 files, 22 tests, green):**
+> ✅ `proposal-detail/tests/atom.test.ts` (10) — correct on-chain proposal-state
+> derivation + the **Z18 bug** (tie→SUCCEEDED vs bigint tie→DEFEATED) via `it.fails`,
+> plus a **wei-precision vector** (>2^53, 1-wei winner that `Number()` collapses to
+> a tie): the bigint path respects the margin, the Number path loses it (`it.fails`).
+> ✅ `factsheet/utils/tests/calculations.test.ts` (6) — `calculatePerformance` +
+> `calculateMonthlyChartData` vectors + the **Z12 bug** (zero prior-month price →
+> Infinity, unguarded) via `it.fails`.
+> ✅ `portfolio-page/tests/atoms.test.ts` (6) — the **Z22 duplicate of Z18** (tie +
+> the same wei-precision vector) via `it.fails`. All use the pattern: independent
+> vectors lock correct math; a known bug is captured by `it.fails` that flips when fixed.
+> ⬜ REMAINING: fee math (needs extraction from the component first — money
+> surface), dutch price, cooldown/endId, throttle, rebalance `getRebalanceOpenAuction`.
 
 Surfaces to extract (if inline) and unit-test:
 

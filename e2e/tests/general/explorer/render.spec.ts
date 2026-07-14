@@ -3,13 +3,15 @@ import { test, expect } from '../../../harness'
 // Explorer — a general (non-DTF) surface with 5 tabs, previously zero-coverage.
 // Disconnected: the explorer reads no wallet state to render. Cross-chain
 // subgraph queries are modelled empty-but-correctly-shaped centrally (subgraph.ts).
-//
-// COVERAGE DEBT: the transactions tab (default route) has NO committed render
-// spec — GH0 crashes it under load (the deprecated Arbitrum chain in
-// supportedChainList is still queried and yields an entries-less shape → the
-// unguarded `.map` throws). Committing that render would ship a flaky spec.
-// The GH0 fixme below is its stand-in until the guard lands; then add the render.
 test.use({ wallet: false })
+
+test('explorer: transactions tab (default route) renders offline @smoke', async ({
+  harness,
+}) => {
+  const page = harness.page
+  await page.goto('/explorer')
+  await expect(page.getByTestId('explorer-page')).toBeVisible({ timeout: 15_000 })
+})
 
 test('explorer: governance tab renders the proposals surface @smoke', async ({
   harness,
@@ -19,25 +21,26 @@ test('explorer: governance tab renders the proposals surface @smoke', async ({
   await expect(page.getByTestId('explorer-page')).toBeVisible({ timeout: 15_000 })
 })
 
-// GH0 — CONFIRMED crash (engineer triage): useTransactionData
-// (src/views/explorer/components/transactions/useTransactionData.ts:111-113)
-// guards `if (data[chain])` but then reads `data[chain].entries.map(...)`
-// UNguarded. A per-chain response without `entries` (subgraph error / partial /
-// schema drift) throws "Cannot read properties of undefined (reading 'map')" and
-// the app's error boundary replaces the ENTIRE explorer landing page with
-// "An unexpected error occurred". Fix: `(data[chain]?.entries ?? []).map(...)`.
-// Un-fixme once the guard lands.
-test.fixme(
-  'explorer: transactions tab survives a subgraph response missing entries @smoke',
-  async ({ harness, overrides }) => {
-    const page = harness.page
-    // A truthy per-chain response with no `entries` field — exactly what the
-    // guard misses (data[chain] is set, data[chain].entries is undefined).
-    overrides.subgraph({ operationName: 'Transactions' }, {})
-
-    await page.goto('/explorer')
-    await expect(page.getByTestId('explorer-page')).toBeVisible({ timeout: 15_000 })
-    // The error-boundary heading must NOT appear (it does today — the bug).
-    await expect(page.getByText('An unexpected error')).toHaveCount(0)
-  }
-)
+// NO A1/A2 REGRESSION TEST HERE — ON PURPOSE, and this is a real lesson.
+//
+// A1 (`useTransactionData`, useMemo, `data[chain].entries.map`) and A2
+// (`use-proposals-data`, queryFn, `governanceRes.dtfs` / `result.proposals`) are
+// both guarded with `?? []` now. Both were tagged "CONFIRMED / reproduced" in
+// REGISTER_HARDENING.md via `test.fixme` blocks — but a `fixme` is SKIPPED, so
+// those repros were never actually executed. When run for real this pass, NEITHER
+// reproduces through the mock harness:
+//
+//  • A1: a whole-op `overrides.subgraph({operationName:'Transactions'}, {})` makes
+//    the multichain query resolve to `data = {}` (or reject as a whole — e.g. the
+//    deprecated Arbitrum chain in `supportedChainList` has no index client), so
+//    `data[chain]` is falsy / `data` is undefined and the `.map` line is never
+//    reached. The bug needs one chain truthy-but-`entries`-less while the others
+//    succeed — a per-chain shape the op-level override can't express.
+//  • A2: the loops live inside a react-query `queryFn`, so an unguarded throw is
+//    caught as query-error state — it never blanks the page. A page-level
+//    "explorer-page visible" assertion passes with or without the guard.
+//
+// So an e2e test here would be a FALSE GREEN (it passes without the fix). The
+// guards are kept as correct defensive hygiene; a faithful test needs either a
+// per-chain override primitive (harness gap) or extracting the pure transform for
+// a unit test. Tracked in REGISTER_HARDENING.md A1/A2 and the coverage-debt list.

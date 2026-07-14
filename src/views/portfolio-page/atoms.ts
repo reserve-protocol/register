@@ -63,7 +63,8 @@ const ACTIVE_STATES = new Set([
 
 // WHY: Portfolio proposals are aggregate API rows, not SDK proposal DTOs.
 // Do not rebuild fake SDK Amounts from formatted strings for display filtering.
-const getPortfolioProposalVotingState = (
+// Exported for unit testing (pure) — see tests/atoms.test.ts.
+export const getPortfolioProposalVotingState = (
   p: PortfolioProposal,
   timestamp: number
 ): VotingState => {

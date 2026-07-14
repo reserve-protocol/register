@@ -58,6 +58,20 @@ function loadProposalDetail(dtf: RegistryDTF, proposalId: string): unknown | nul
   return snapshotExists(path) ? loadSnapshot(path) : null
 }
 
+// The registry DTF that owns a proposal snapshot — the proposal's chain identity.
+// Proposal-only operations (voting snapshot) carry no dtf/id address, so the
+// chain gate resolves their owning chain through this (HARN-002 proposal path).
+function dtfForProposalId(proposalId: string): RegistryDTF | undefined {
+  if (!proposalId) return undefined
+  for (const dtf of REGISTRY) {
+    if (snapshotExists(`${dtf.snapshotDir}/proposals/${proposalId}.json`)) {
+      ensureLoaded(dtf)
+      return dtf
+    }
+  }
+  return undefined
+}
+
 // The DTF's `dtf` object from its snapshot (carries governance context).
 function dtfObjectFor(address: string): Record<string, unknown> | undefined {
   const dtf = dtfForAddress(address)
@@ -157,26 +171,62 @@ function graphError(message: string) {
   return { data: null, errors: [{ message }] }
 }
 
-// The index subgraph resolves DTFs by their globally-unique address, NOT by the
-// subgraph URL's chain — as a WORKAROUND for a known app bug, not because it's
-// correct (unlike the reserve-api, which is genuinely address-keyed). The real
-// index subgraph host IS chain-specific, so a base/bsc DTF SHOULD reach its own
-// chain's URL. But `index-dtf-container.tsx` sets `chainIdAtom` in a layout
-// effect that runs AFTER the SDK-consumer children mount, so their first query
-// fires against the stale mainnet client — a transient wrong-chain request.
-// A strict URL-chain guard here flakily fails every base/bsc index test on that
-// transient. Tracked as a triaged app bug + a `test.fixme` regression in
-// `flows/spa-chain-identity.spec.ts` (asserts each request's registry-chain
-// host); when the container inits chain identity before mounting consumers, the
-// fixme flips green and this can enforce chain again. See CODEX_AUDIT § P0.
+// The real index subgraph host IS chain-specific: a base/bsc DTF must reach its
+// OWN chain's Goldsky URL. We enforce that here by REFUSING to serve a DTF from
+// the wrong-chain URL (graphError), NOT by resolving purely by address.
+//
+// This handles the one documented app transient without flaking: the DTF
+// container sets `chainIdAtom` in a layout effect that runs AFTER SDK-consumer
+// children mount, so their first query can fire against the stale mainnet client.
+// Refusing that request makes the query refetch on the correct chain and succeed
+// — the transient self-heals. A PERSISTENT wrong-chain request (the real
+// regression this suite exists to catch — a valid address sent to the wrong
+// host) never loads data, so its spec fails. `flows/spa-chain-identity.spec.ts`
+// additionally asserts the positive request-boundary identity. See CODEX P0
+// (HARN-001/002).
 export function resolveIndexQuery(
   body: string,
   log: UnmockedLogger,
-  overrides?: MockOverrides
+  overrides?: MockOverrides,
+  urlChain?: number
 ) {
   const parsed = parseBody(body)
   const op = parsed.operationName ?? ''
   const vars = parsed.variables ?? {}
+
+  // Chain identity gate — BEFORE overlays, so a test-local `overrides.subgraph`
+  // payload also cannot be served to the wrong-chain host (HARN-002). Applies to
+  // any request carrying a resolvable DTF identity — a DTF address, a proposal id,
+  // OR a governance id (getGovernanceStats is chain-specific too). Only ops with
+  // no resolvable identity at all (voter-keyed cross-DTF aggregations) are
+  // chain-agnostic.
+  const identityId =
+    (vars.id as string) ??
+    (vars.dtfId as string) ??
+    (vars.dtf as string) ??
+    ''
+  // Proposal ops carry no dtf address — only proposalId (or the legacy `id`).
+  // Resolve the proposal's owning DTF so a wrong-chain proposal request is also
+  // refused (HARN-002). dtfForAddress(id) wins when `id` is a real address; the
+  // proposal lookup covers the id-is-a-proposalId and proposalId-var callers.
+  const proposalIdentity = (vars.proposalId as string) ?? (vars.id as string) ?? ''
+  // Governance-stats ops key on a chain-specific governor id (`governanceIds`) or
+  // a DTF-address array (`ids`) — neither is a single `id`, so resolve them too,
+  // or a base governor id served on the mainnet host would slip the gate.
+  const govIds = (vars.governanceIds as string[]) ?? []
+  const idArray = Array.isArray(vars.ids) ? (vars.ids as string[]) : []
+  const identityDtf =
+    (identityId ? dtfForAddress(identityId) : undefined) ??
+    (proposalIdentity ? dtfForProposalId(proposalIdentity) : undefined) ??
+    govIds.map((g) => dtfForGovernanceId(g)).find(Boolean) ??
+    idArray.map((a) => dtfForAddress(a)).find(Boolean)
+  if (urlChain !== undefined && identityDtf && identityDtf.chainId !== urlChain) {
+    // Silent refusal (no fail-loud log): the transient is expected and self-heals;
+    // a persistent regression surfaces as missing data in the spec's assertions.
+    return graphError(
+      `[E2E] wrong-chain index subgraph: ${identityDtf.slug}(chain ${identityDtf.chainId}) requested on chain ${urlChain}`
+    )
+  }
 
   // Per-test overlay wins over snapshots — keyed by the exact operationName so a
   // spec can, e.g., serve a fresher voting snapshot after a vote tx.
@@ -462,7 +512,7 @@ export async function mockSubgraphRoutes(
       url.includes('dtf-yield') && isYieldReplayActive()
         ? resolveYieldQuery(yieldChainForUrl(url), body, log, overrides)
         : url.includes('dtf-index')
-          ? resolveIndexQuery(body, log, overrides)
+          ? resolveIndexQuery(body, log, overrides, subgraphChainForUrl(url))
           : { data: EMPTY_SHAPE }
 
     return route.fulfill({

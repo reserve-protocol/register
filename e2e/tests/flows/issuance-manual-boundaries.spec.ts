@@ -394,48 +394,44 @@ test('redeem: minAmountsOut is the exact 5% floor of the per-asset required amou
   expect(decoded.args[3]).toEqual(expectedMinOuts)
 })
 
-// EDGE (P2): a non-trivial redeem ships minAmountsOut = 0 for the low-rate /
-// low-decimal asset, silently removing that asset's slippage protection. cbBTC
-// (8-decimal, rate ~3567 per 1e18 shares) needs ~0.00028 shares before its
-// required amount rounds above 0; below that the 5% floor collapses to 0. This
-// is CURRENT behavior — the test documents it rather than asserting a fix.
-test('redeem dust: low-rate asset loses slippage protection (minOut = 0)', async ({
-  page,
-  overrides,
-  boundaryRequests,
-  txLog,
-}) => {
-  const rates = basketRates()
-  seedFolio(overrides, rates)
-  seedWalletState(overrides, rates, { balancePerToken: () => 0n, allowance: 0n })
-  seedDtfBalance(overrides, 100n * E18)
+// BUG (ledger, ENGINEER REVIEW REQUIRED — money). A non-trivial redeem ships
+// minAmountsOut = 0 for the low-rate / low-decimal asset (cbBTC: 8-decimal, rate
+// ~3567/1e18; below ~0.00028 shares its required amount rounds to 0 and the 5%
+// floor collapses to 0), silently removing that asset's slippage protection.
+//
+// DESIRED (this fixme, CODEX IDX-MAN-006): a real redeem must NEVER ship zero
+// slippage protection on a leg — either enforce a nonzero floor OR block the
+// unsafe-dust redeem with a visible warning. Engineer must pick the policy. This
+// asserts the safety invariant (no zero-protection leg); it fails today, which
+// is the point — we do NOT codify the unprotected redeem as green product truth.
+test.fixme(
+  'redeem never silently ships zero slippage protection on a leg',
+  async ({ page, overrides, boundaryRequests, txLog }) => {
+    const rates = basketRates()
+    seedFolio(overrides, rates)
+    seedWalletState(overrides, rates, { balancePerToken: () => 0n, allowance: 0n })
+    seedDtfBalance(overrides, 100n * E18)
 
-  await gotoManual(page, boundaryRequests)
-  await page.getByTestId('issuance-mode-sell').click()
-  await advanceTime(page, 2_000)
+    await gotoManual(page, boundaryRequests)
+    await page.getByTestId('issuance-mode-sell').click()
+    await advanceTime(page, 2_000)
 
-  const shares = parseEther('0.0001') // a real, spendable amount — not 1 wei
-  await page.getByTestId('issuance-amount-input').fill('0.0001')
-  const submit = page.getByTestId('issuance-submit-btn')
-  await expect(submit).toBeEnabled()
-  await submit.click()
-  await advanceTime(page, 10_000)
-  await advanceTime(page, 5_000)
+    await page.getByTestId('issuance-amount-input').fill('0.0001')
+    const submit = page.getByTestId('issuance-submit-btn')
+    await expect(submit).toBeEnabled()
+    await submit.click()
+    await advanceTime(page, 10_000)
+    await advanceTime(page, 5_000)
 
-  const decoded = decodeFunctionData({
-    abi: FOLIO_REDEEM_ABI,
-    data: txLog[0].data as Hex,
-  })
-  const minOuts = decoded.args[3] as readonly bigint[]
-  const expectedMinOuts = rates.map((r) => {
-    const required = (r.rate * shares) / E18
-    return (required * 95n) / 100n
-  })
-  expect(decoded.args[3]).toEqual(expectedMinOuts)
-  // The finding: at least one asset ships zero protection while others don't.
-  expect(minOuts.some((m) => m === 0n)).toBe(true)
-  expect(minOuts.some((m) => m > 0n)).toBe(true)
-})
+    const decoded = decodeFunctionData({
+      abi: FOLIO_REDEEM_ABI,
+      data: txLog[0].data as Hex,
+    })
+    const minOuts = decoded.args[3] as readonly bigint[]
+    // Safety invariant: every leg keeps nonzero protection.
+    expect(minOuts.every((m) => m > 0n)).toBe(true)
+  }
+)
 
 // ---------------------------------------------------------------------------
 // Approve→mint→mint — no redundant re-approval once allowance covers it.

@@ -89,13 +89,15 @@ export const test = base.extend<BaseFixtures>({
           'raw.githubusercontent.com',
           'www.googletagmanager.com',
         ]
-        // Remote visual assets and trackers are intentionally inert in E2E. They do not
-        // carry product data and Playwright assertions use local structure,
-        // alt text, and values rather than live pixels.
+        // Named inert visual-asset / tracker hosts are aborted silently — they
+        // carry no product data and assertions use local structure/alt/values,
+        // not live pixels. An image from an UNLISTED host is NOT silently
+        // aborted: it falls through to fail-loud egress, so a newly-introduced
+        // remote image dependency surfaces instead of vanishing (CODEX HARN-004).
         if (
-          route.request().resourceType() === 'image' ||
           inertHosts.includes(url.hostname) ||
           url.hostname.endsWith('.ufs.sh') ||
+          url.hostname.endsWith('.discourse-cdn.com') || // forum images in proposal descriptions
           (url.hostname === 'app.reserve.org' && url.pathname.startsWith('/svgs/')) ||
           (url.hostname === 'app2.universal.xyz' && url.pathname.startsWith('/wrapped-tokens/'))
         ) {
@@ -134,12 +136,27 @@ export const test = base.extend<BaseFixtures>({
       // (distinct from the index Reserve-API compliance path). Serve a
       // deterministic trace carrying the compliance fixture's country so
       // mint-enabled state is test-controllable, not a live network lookup.
-      await page.route('**/cdn-cgi/trace**', (route) =>
-        route.fulfill({
-          status: 200,
-          contentType: 'text/plain',
-          body: `fl=e2e\nloc=${compliance.countryCode}\nvisit_scheme=https`,
-        })
+      // Scoped to the app's ACTUAL fallback hosts (state/geolocation/atoms.ts) —
+      // a cdn-cgi/trace probe to any OTHER host falls through to fail-loud egress
+      // instead of being answered host-agnostically (CODEX HARN-005).
+      const KNOWN_TRACE_HOSTS = new Set([
+        'one.one.one.one',
+        '1.0.0.1',
+        'cloudflare-dns.com',
+        'cloudflare-eth.com',
+        'cloudflare-ipfs.com',
+        'workers.dev',
+        'pages.dev',
+        'cloudflare.tv',
+      ])
+      await page.route(
+        (url) => url.pathname === '/cdn-cgi/trace' && KNOWN_TRACE_HOSTS.has(url.hostname),
+        (route) =>
+          route.fulfill({
+            status: 200,
+            contentType: 'text/plain',
+            body: `fl=e2e\nloc=${compliance.countryCode}\nvisit_scheme=https`,
+          })
       )
 
       // Yield/reward aggregators the overview polls.

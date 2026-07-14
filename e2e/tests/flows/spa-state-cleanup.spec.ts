@@ -1,5 +1,5 @@
 import { expect, test } from '../../fixtures/base'
-import { dtfPath, findDtfByAddress, REGISTRY, type RegistryDTF } from '../../helpers/registry'
+import { dtfPath, REGISTRY, type RegistryDTF } from '../../helpers/registry'
 import { loadSnapshot } from '../../helpers/snapshots'
 
 // SPA cross-chain navigation — state cleanup + chain-init race.
@@ -90,10 +90,12 @@ test(
 // write-ABI selection and version-conditional UI, so version-gated surfaces
 // render against the PRIOR DTF's version during that window.
 //
-// Not asserted here (no stable version-gated testid on the overview to key on)
-// — documented for engineer triage. Add resetState coverage for
-// indexDTFVersionAtom, then a version-gated e2e assertion becomes possible.
-test.fixme('indexDTFVersionAtom is reset on cross-chain navigation', async () => {
-  const v4 = findDtfByAddress('0x323c03c48660fe31186fa82c289b0766d331ce21')!
-  expect(v4.chainId).toBe(1)
-})
+// NO TEST HERE ON PURPOSE. A `test.fixme` whose body only checked a fixture's
+// chain would PASS if un-fixmed, which violates the rule that a bug regression
+// must fail for its stated root cause (CODEX HARN-021 / IDX-OVR-013). Reaching
+// this needs a version-gated observable the overview does not yet expose (a
+// `data-dtf-version` on a version-conditional surface). Until that testid exists
+// this stays a documented gap in E2E_BUG_LEDGER.md, not a placeholder green test.
+// Desired regression: load a v4 DTF, populate a v4-gated branch, SPA-navigate to
+// a v5 DTF, assert the v5 branch + destination RPC identity — fails if the atom
+// reset is removed.

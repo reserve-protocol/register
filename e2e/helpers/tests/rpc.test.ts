@@ -235,7 +235,7 @@ describe('yield record/replay', () => {
   })
 })
 
-describe('connected-wallet yield defaults (honest silent zero, not fail-loud)', () => {
+describe('connected-wallet yield defaults (KNOWN → silent zero, UNKNOWN → fail loud)', () => {
   const call = (
     to: string,
     data: string,
@@ -248,13 +248,18 @@ describe('connected-wallet yield defaults (honest silent zero, not fail-loud)', 
       functionName: 'balanceOf',
       args: [owner as `0x${string}`],
     })
-  const TOKEN = '0x00000000000000000000000000000000deadbe10'
+  // WETH mainnet — a registered common portfolio token (known).
+  const KNOWN_TOKEN = '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2'
+  // An address that is NOT a captured/known token — must fail loud.
+  const UNKNOWN_TOKEN = '0x00000000000000000000000000000000deadbe10'
+  // The eUSD FacadeRead — present in the yield replay map (known).
+  const FACADE = '0x2c7ca56342177343a2954c250702fd464f4d0613'
 
-  it('answers the TEST wallet balanceOf with 0, silently (no fail-loud storm)', () => {
+  it('KNOWN token: test-wallet balanceOf → 0, silently (no fail-loud storm)', () => {
     setYieldReplay(1)
     try {
       const ctx = { ...context(), chainId: 1 }
-      const r = call(TOKEN, balanceOf(TEST_ADDRESS), ctx) as `0x${string}`
+      const r = call(KNOWN_TOKEN, balanceOf(TEST_ADDRESS), ctx) as `0x${string}`
       expect(BigInt(r)).toBe(0n)
       expect(ctx.log).not.toHaveBeenCalled()
     } finally {
@@ -262,11 +267,39 @@ describe('connected-wallet yield defaults (honest silent zero, not fail-loud)', 
     }
   })
 
-  it('STILL fails loud for a balanceOf of some OTHER address (not the test wallet)', () => {
+  // The base ZAP stablecoins are read by the wallet updater on every connected
+  // base session. They must be KNOWN at module load (not lazily via the non-yield
+  // seedChainState), or a base yield wallet read fails loud order-dependently.
+  it('base ZAP stablecoin (USDbC) under yield replay: balanceOf → 0 silently, order-independent', () => {
+    setYieldReplay(8453)
+    try {
+      const ctx = { ...context(), chainId: 8453 }
+      const USDbC = '0xd9aAEc86B65D86f6A7B5B1b0c42FFA531710b6CA'
+      const r = call(USDbC, balanceOf(TEST_ADDRESS), ctx) as `0x${string}`
+      expect(BigInt(r)).toBe(0n)
+      expect(ctx.log).not.toHaveBeenCalled()
+    } finally {
+      setYieldReplay(false)
+    }
+  })
+
+  it('UNKNOWN address: test-wallet balanceOf FAILS LOUD (no silent empty-wallet)', () => {
     setYieldReplay(1)
     try {
       const ctx = { ...context(), chainId: 1 }
-      call(TOKEN, balanceOf('0x000000000000000000000000000000000000beef'), ctx)
+      call(UNKNOWN_TOKEN, balanceOf(TEST_ADDRESS), ctx)
+      // A wrong stToken / arbitrary contract must NOT look like an empty wallet.
+      expect(ctx.log).toHaveBeenCalledWith('unmocked eth_call', expect.anything())
+    } finally {
+      setYieldReplay(false)
+    }
+  })
+
+  it('KNOWN token: balanceOf of some OTHER owner still fails loud', () => {
+    setYieldReplay(1)
+    try {
+      const ctx = { ...context(), chainId: 1 }
+      call(KNOWN_TOKEN, balanceOf('0x000000000000000000000000000000000000beef'), ctx)
       expect(ctx.log).toHaveBeenCalledWith('unmocked eth_call', expect.anything())
     } finally {
       setYieldReplay(false)
@@ -277,27 +310,59 @@ describe('connected-wallet yield defaults (honest silent zero, not fail-loud)', 
     setYieldReplay(1)
     const overrides = new MockOverrides()
     const cd = balanceOf(TEST_ADDRESS)
-    overrides.ethCall(TOKEN, cd, encodeAbiParameters([{ type: 'uint256' }], [123n]))
+    overrides.ethCall(UNKNOWN_TOKEN, cd, encodeAbiParameters([{ type: 'uint256' }], [123n]))
     try {
       const ctx = { ...context(), chainId: 1 }
-      const r = call(TOKEN, cd, ctx, overrides) as `0x${string}`
+      const r = call(UNKNOWN_TOKEN, cd, ctx, overrides) as `0x${string}`
       expect(BigInt(r)).toBe(123n)
     } finally {
       setYieldReplay(false)
     }
   })
 
-  it('FacadeRead.pendingUnstakings (0xe5cea2f6) returns an empty array, silently', () => {
+  const pendingUnstakings = (rToken: string, account: string) =>
+    encodeFunctionData({
+      abi: parseAbi(['function pendingUnstakings(address,uint256,address)']),
+      functionName: 'pendingUnstakings',
+      args: [rToken as `0x${string}`, 0n, account as `0x${string}`],
+    })
+
+  it('pendingUnstakings on the KNOWN facade for a KNOWN rToken + TEST_ADDRESS → empty array, silently', () => {
     setYieldReplay(1)
     try {
       const ctx = { ...context(), chainId: 1 }
-      const r = call('0x2c7ca56342177343a2954c250702fd464f4d0613', '0xe5cea2f6', ctx) as `0x${string}`
+      // rToken must be a known identity (here: a common token) — not arbitrary.
+      const r = call(FACADE, pendingUnstakings(KNOWN_TOKEN, TEST_ADDRESS), ctx) as `0x${string}`
       const [pending] = decodeAbiParameters(
         [{ type: 'tuple[]', components: [{ type: 'uint256' }, { type: 'uint256' }, { type: 'uint256' }] }],
         r
       )
       expect(pending).toEqual([])
       expect(ctx.log).not.toHaveBeenCalled()
+    } finally {
+      setYieldReplay(false)
+    }
+  })
+
+  it('pendingUnstakings for an UNKNOWN rToken fails loud (rToken identity scoped, HARN-007)', () => {
+    setYieldReplay(1)
+    try {
+      const ctx = { ...context(), chainId: 1 }
+      // A mis-seeded / arbitrary rToken must NOT silently look like an empty
+      // withdrawal queue — it surfaces so a wrong-identity read is caught.
+      call(FACADE, pendingUnstakings('0x0000000000000000000000000000000000000abc', TEST_ADDRESS), ctx)
+      expect(ctx.log).toHaveBeenCalledWith('unmocked eth_call', expect.anything())
+    } finally {
+      setYieldReplay(false)
+    }
+  })
+
+  it('pendingUnstakings for a NON-test account fails loud (identity scoped)', () => {
+    setYieldReplay(1)
+    try {
+      const ctx = { ...context(), chainId: 1 }
+      call(FACADE, pendingUnstakings(KNOWN_TOKEN, '0x000000000000000000000000000000000000beef'), ctx)
+      expect(ctx.log).toHaveBeenCalledWith('unmocked eth_call', expect.anything())
     } finally {
       setYieldReplay(false)
     }

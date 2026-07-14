@@ -110,7 +110,7 @@ const useTransactionData = () => {
     for (const chain of supportedChainList) {
       if (data[chain]) {
         tx.push(
-          ...data[chain].entries.map((entry: any) => ({
+          ...(data[chain].entries ?? []).map((entry: any) => ({
             ...entry,
             chain,
             tokenAddress: getAddress(entry.token.id),

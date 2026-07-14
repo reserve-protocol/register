@@ -214,28 +214,28 @@ test('fee recipient shares are platform-fee adjusted from the on-chain registry'
   )
 })
 
-// BUG (medium): when the DAO fee-registry read fails/errors, PlatformFeeUpdater
+// BUG M10 (ledger). When the DAO fee-registry read fails, PlatformFeeUpdater
 // (index-dtf-container.tsx:351-358) silently sets a HARDCODED fallback
 // (FALLBACK_PLATFORM_FEES[8453] = 50) and the "Fixed Platform Share" row shows
-// "50%" as though it were the real protocol fee — with no error indicator. Worse,
-// that fabricated 50% feeds PERCENT_ADJUST, so EVERY recipient share below it is
-// scaled by a guess. The shared mock reproduces the failure path (getFeeDetails
-// returns a too-short word → decode error). This test documents the current
-// (masking) behavior; it is not a crash, so it runs green rather than as fixme.
-test('DEFAULT registry read fails → platform fee silently falls back to 50%', async ({
-  page,
-}) => {
-  await gotoSettings(page) // no seedFeeRegistry → error fallback path
+// "50%" as if it were the real protocol fee — no error indicator — and that
+// fabricated 50% feeds PERCENT_ADJUST, scaling every recipient share off a guess.
+//
+// DESIRED behavior (this fixme, CODEX IDX-SET-002): a failed registry read must
+// surface an indeterminate/error state, NEVER present a fabricated percentage as
+// live truth. Fails today (no `settings-fee-unavailable` state exists) — that's
+// the point; do NOT re-assert the fabricated 50% as green product truth. Un-fixme
+// when the app stops masking the read failure.
+test.fixme(
+  'registry read failure surfaces UNAVAILABLE, not a fabricated 50% fee',
+  async ({ page }) => {
+    await gotoSettings(page) // no seedFeeRegistry → error path
 
-  await expect(page.getByTestId('settings-fee-platform')).toContainText('50%')
-  // Recipient shares are computed off the fabricated 50%, not a real fee.
-  const governance = parseRecipients().find(
-    (r) => r.address === data.stToken.id.toLowerCase()
-  )!
-  await expect(page.getByTestId('settings-fee-governance')).toContainText(
-    displayShare(governance.rawPercentage, 50)
-  )
-})
+    // The platform-fee surface must NOT confidently render a percentage it never
+    // read; it must show an explicit unavailable/error affordance.
+    await expect(page.getByTestId('settings-fee-unavailable')).toBeVisible()
+    await expect(page.getByTestId('settings-fee-platform')).not.toContainText('50%')
+  }
+)
 
 // BUG (medium/high): a fee registry whose getFeeDetails returns feeDenominator=0
 // crashes the WHOLE index-DTF container. PlatformFeeUpdater does

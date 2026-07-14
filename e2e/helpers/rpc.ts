@@ -192,6 +192,28 @@ const callOverrides: Record<string, Hex> = {
 const knownTokenAddresses = new Set<string>()
 const knownContractAddresses = new Set<string>([TEST_ADDRESS.toLowerCase()])
 
+// Canonical cross-chain majors the app-wide portfolio/wallet updater reads
+// balanceOf on for every connected session (not necessarily in any single
+// fixture's capture). Registering them keeps the connected-wallet silent-zero
+// honest for real tokens while an UNKNOWN address still fails loud (HARN-006).
+for (const address of [
+  // Mainnet
+  '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2', // WETH
+  '0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599', // WBTC
+  '0xdAC17F958D2ee523a2206206994597C13D831ec7', // USDT
+  '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48', // USDC
+  '0x6B175474E89094C44Da98b954EedeAC495271d0F', // DAI
+  '0x853d955aCEf822Db058eb8505911ED77F175b99e', // FRAX
+  '0x99D8a9C45b2ecA8864373A26D1459e3Dff1e17F3', // MIM
+  '0x320623b8E4fF03373931769A31Fc52A4E78B5d70', // RSR
+  // Base
+  '0x4200000000000000000000000000000000000006', // WETH
+  '0xcbB7C0000aB88B473b1f5aFd9ef808440eed33Bf', // cbBTC
+  '0xaB36452DbAC151bE02b16Ca17d8919826072f64a', // RSR
+]) {
+  knownTokenAddresses.add(address.toLowerCase())
+}
+
 const COMMON_TOKEN_METADATA = [
   {
     address: '0xd9aAEc86B65D86f6A7B5B1b0c42FFA531710b6CA',
@@ -212,6 +234,17 @@ const COMMON_TOKEN_METADATA = [
     decimals: 18,
   },
 ] as const
+
+// Register the common base ZAP stablecoins (USDbC / base USDC / base DAI) as
+// KNOWN at module load. The wallet updater reads balanceOf on ZAP_TOKENS[base]
+// for every connected base session, but their metadata is otherwise only seeded
+// lazily in the NON-yield path (seedChainState → seedTokenMetadata). Without this,
+// a connected base YIELD wallet read fails loud — and worse, order-dependently
+// (an index spec running first in the worker would seed them; a yield spec first
+// would not). The known-set must not depend on seedChainState() (HARN-006).
+for (const token of COMMON_TOKEN_METADATA) {
+  knownTokenAddresses.add(token.address.toLowerCase())
+}
 
 // --- Chain-state seeding ---
 // Address-specific answers for every registry DTF, captured live by
@@ -447,6 +480,12 @@ function clockValue(): Hex {
 let yieldReplayChain = 0
 let yieldSeeded = false
 const yieldCallMap = new Map<string, Hex>()
+// Every address that appears in the yield replay map — a token, facade, stToken,
+// RToken, feed, or protocol contract we actually captured. Used to gate the
+// connected-wallet silent-zero: a read on an address NOT in here (a wrong
+// stToken, spender, or arbitrary contract) fails loud instead of looking like an
+// honest empty wallet (CODEX HARN-006).
+const knownYieldAddresses = new Set<string>()
 
 const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000'
 // A single 32-byte zero word — the shape of an eth_getStorageAt answer (vs
@@ -510,6 +549,7 @@ function seedYieldChainState() {
       const scoped = `${dtf.chainId}:${key.toLowerCase()}`
       yieldCallMap.set(scoped, value)
       const [addr, calldata] = key.toLowerCase().split(':')
+      knownYieldAddresses.add(addr)
       const selector = calldata.slice(0, 10)
       if (CLOCK_PARAM_SELECTORS.has(selector)) {
         yieldSelectorMap.set(`${dtf.chainId}:${addr}:${selector}`, value)
@@ -600,17 +640,48 @@ function handleSingleCall(
         : ETH_BALANCE
     }
     // Connecting a wallet fires the app-wide account updater: balanceOf/allowance
-    // across every listed token. The test wallet holds nothing (except what a spec
-    // seeds above), so 0 is the honest default — answer silently, not fail-loud.
-    if (selector === '0x70a08231' || selector === '0xdd62ed3e') {
+    // across the listed tokens. The test wallet holds nothing (except what a spec
+    // seeds above), so 0 is the honest default — BUT only for a KNOWN token/
+    // contract (captured in the yield replay, a registry basket token, or a common
+    // token). A read on an unknown/wrong address falls through to fail-loud, so a
+    // mis-seeded stToken or spender surfaces instead of looking empty (HARN-006).
+    const isKnownAddr = (a: string) =>
+      knownYieldAddresses.has(a.toLowerCase()) ||
+      knownTokenAddresses.has(a.toLowerCase()) ||
+      knownContractAddresses.has(a.toLowerCase())
+    if (selector === '0x70a08231' && isKnownAddr(to)) {
       const [owner] = decodeAbiParameters([{ type: 'address' }], (`0x${data.slice(10)}`) as Hex)
       if (owner.toLowerCase() === TEST_ADDRESS.toLowerCase()) return ZERO_RETURN
     }
+    if (selector === '0xdd62ed3e' && isKnownAddr(to)) {
+      const [owner, spender] = decodeAbiParameters(
+        [{ type: 'address' }, { type: 'address' }],
+        (`0x${data.slice(10)}`) as Hex
+      )
+      if (owner.toLowerCase() === TEST_ADDRESS.toLowerCase() && isKnownAddr(spender)) {
+        return ZERO_RETURN
+      }
+    }
     // FacadeRead.pendingUnstakings(rToken, draftEra, account) — the staking
-    // withdraw updater's per-account read. The fresh test wallet has none, so an
-    // empty Pending[] is the honest default (offset word + zero length).
-    if (selector === '0xe5cea2f6') {
-      return `0x${'20'.padStart(64, '0')}${'0'.padStart(64, '0')}` as Hex
+    // withdraw updater's per-account read. Scope to a known facade, a KNOWN
+    // rToken (1st arg), AND TEST_ADDRESS (3rd arg). A wrong facade, an unknown/
+    // mis-seeded rToken, or a non-test account all fall through to fail-loud, so
+    // a wrong-identity read surfaces instead of looking like an empty wallet
+    // (HARN-007). The fresh wallet has none → empty Pending[] (offset + 0 length).
+    // NOTE: draftEra (2nd arg) is intentionally NOT gated — it's a dynamic per-
+    // rToken counter with no offline source of truth; the rToken+account identity
+    // is what a regression would get wrong.
+    if (selector === '0xe5cea2f6' && isKnownAddr(to)) {
+      const [rToken, , account] = decodeAbiParameters(
+        [{ type: 'address' }, { type: 'uint256' }, { type: 'address' }],
+        (`0x${data.slice(10)}`) as Hex
+      )
+      if (
+        account.toLowerCase() === TEST_ADDRESS.toLowerCase() &&
+        isKnownAddr(rToken)
+      ) {
+        return `0x${'20'.padStart(64, '0')}${'0'.padStart(64, '0')}` as Hex
+      }
     }
     // react-zapper's native-token sentinel: the connected-wallet portfolio
     // updater reads it (inside a multicall) but the wallet-less yield capture

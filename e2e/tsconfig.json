@@ -8,5 +8,9 @@
     "target": "ES2023",
     "lib": ["DOM", "DOM.Iterable", "ES2023"]
   },
-  "include": ["**/*.ts", "../playwright.config.ts"]
+  "include": ["**/*.ts", "../playwright.config.ts"],
+  // Spec TEMPLATES use import paths relative to their COPY destination
+  // (e2e/tests/<domain>/<route>/), not their own location, so they don't
+  // typecheck in place. They are reference skeletons, never collected or run.
+  "exclude": ["templates/**"]
 }

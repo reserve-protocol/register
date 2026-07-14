@@ -142,6 +142,12 @@ spec-local `page.route` or a wildcard that could answer the wrong identity.
 
 ## Writing a new test (recipe)
 
+**START FROM A TEMPLATE.** Copy the matching skeleton from `e2e/templates/`
+(`read.spec.template.ts`, `write.spec.template.ts`, `lifecycle.spec.template.ts`)
+into `e2e/tests/<domain>/<route>/`. Its comments ARE the minimum oracle — a write
+template will not let you ship a `txLog.length > 0` / `last()`-only assertion.
+Then follow the steps below to fill it in.
+
 0. Place it by DOMAIN — find the route→subroute node in `E2E_TEST_MAP.md`; the
    spec lives under `e2e/tests/<domain>/<route>/`. Enumerate the page's STATES
    there (one test per product-distinct state), and plan the L0–L3 lifecycle +

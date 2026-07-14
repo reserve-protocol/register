@@ -168,7 +168,81 @@ function checkYieldCollisions(): boolean {
   return ok
 }
 
+// A committed `test.fixme` must assert DESIRED behavior that fails when
+// un-fixmed — not a placeholder that would already pass (CODEX HARN-021). We
+// can't cheaply un-skip every fixme in a browser here, but we CAN reject the
+// fake-test class statically: a fixme body that never observes the app (no
+// page/harness/testid/tx interaction) cannot possibly fail for a product reason.
+function checkFixmeValidity(): boolean {
+  const testsDir = join(dirname(fileURLToPath(import.meta.url)), '..', 'tests')
+  const APP_SIGNALS = [
+    'page.',
+    'harness.',
+    'getByTestId',
+    'boundaryRequests',
+    'txLog',
+    'decodeFunctionData',
+    'toBeVisible',
+    'toBeEnabled',
+    'toBeDisabled',
+    'toHaveCount',
+  ]
+  const specFiles: string[] = []
+  const walk = (dir: string) => {
+    for (const entry of readdirSync(dir, { withFileTypes: true })) {
+      const p = join(dir, entry.name)
+      if (entry.isDirectory()) walk(p)
+      else if (entry.name.endsWith('.spec.ts')) specFiles.push(p)
+    }
+  }
+  walk(testsDir)
+  let ok = true
+  let count = 0
+  for (const file of specFiles) {
+    const lines = readFileSync(file, 'utf8').split('\n')
+    for (let i = 0; i < lines.length; i++) {
+      if (!/test\.fixme\(/.test(lines[i])) continue
+      count++
+      let end = i + 1
+      while (
+        end < lines.length &&
+        end < i + 80 &&
+        !/\btest(\.fixme)?\(/.test(lines[end])
+      ) {
+        end++
+      }
+      // Strip comments FIRST — a signal must appear in executable code, not in
+      // a descriptive comment. Without this, a placeholder fixme that only
+      // *mentions* `page.`/`txLog` in prose would pass (CODEX: the raw-text scan
+      // is too weak). This lint still cannot prove a fixme FAILS when un-skipped
+      // (that needs a browser run) — it only rejects the never-observes-the-app
+      // class. HARN-021 stays PARTIAL until a runtime unfix-and-require-fail gate.
+      const body = lines
+        .slice(i, end)
+        .join('\n')
+        .replace(/\/\*[\s\S]*?\*\//g, '')
+        .replace(/\/\/[^\n]*/g, '')
+      if (!APP_SIGNALS.some((s) => body.includes(s))) {
+        console.error(
+          `FAIL: placeholder fixme at ${relative(process.cwd(), file)}:${i + 1} — it never observes the app (no page/harness/testid/tx). A fixme must assert desired behavior that fails when un-fixmed.`
+        )
+        ok = false
+      }
+    }
+  }
+  if (ok) {
+    console.log(`ok: all ${count} test.fixme cases observe real app behavior (no placeholder fixmes)`)
+  }
+  return ok
+}
+
 console.log('Checking e2e snapshots...\n')
-const results = [checkAge(), checkStructure(), checkCoverage(), checkYieldCollisions()]
+const results = [
+  checkAge(),
+  checkStructure(),
+  checkCoverage(),
+  checkYieldCollisions(),
+  checkFixmeValidity(),
+]
 if (results.some((r) => !r)) process.exit(1)
 console.log('\nAll checks passed.')
