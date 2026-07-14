@@ -7,7 +7,7 @@ import { encodeAbiParameters } from 'viem'
 import type { MockOverrides } from '../../../helpers/overrides'
 import type { Page } from '@playwright/test'
 
-// B3 (REGISTER_HARDENING.md): zod form bounds used to be bypassed on
+// B3 (docs/plans/REGISTER_HARDENING.md): zod form bounds used to be bypassed on
 // localhost/dev, so they were unassertable in e2e AND a broken bound could
 // ship unnoticed. The e2e Vite server now sets VITE_E2E, which pins
 // shouldBypassFormValidation OFF — this spec proves an out-of-range fee is

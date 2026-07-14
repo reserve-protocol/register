@@ -21,7 +21,7 @@ test('explorer: governance tab renders the proposals surface @smoke', async ({
   await expect(page.getByTestId('explorer-page')).toBeVisible({ timeout: 15_000 })
 })
 
-// A1 regression (GH0, REGISTER_HARDENING.md): useTransactionData reads
+// A1 regression (GH0, docs/plans/REGISTER_HARDENING.md): useTransactionData reads
 // `data[chain].entries.map` guarding only `data[chain]`. The crash needs ONE
 // chain truthy-but-`entries`-less while the others return real feeds — a shape
 // only the chain-scoped override can express (a whole-op override makes every

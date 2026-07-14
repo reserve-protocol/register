@@ -220,6 +220,11 @@ quietly gates behavior across the app.
   intended "hybrid" semantics.
 
 ### D2 — `[P2]` Deprecated Arbitrum is still queried on **Index** paths (scope carefully)
+> **Site correction (verified 2026-07-14):** the primary cited site is a false
+> positive — `use-proposals-data.ts` `useBlockChains` Arbitrum read feeds the
+> **yield** proposal loop over `supportedChainList` (`blocks?.[chain]` at ~:271),
+> and Arbitrum RToken governance is supported. KEEP it (Z32 rule). D2 reduces to
+> the per-site grep of remaining `ChainId.Arbitrum` fan-outs.
 - **Where:** `src/views/explorer/components/governance/use-proposals-data.ts:137`
   (`useBlockChains` reads an Arbitrum block number); grep `ChainId.Arbitrum`
   across `src/` for other fan-outs.

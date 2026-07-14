@@ -154,7 +154,7 @@ change), then fill the ⬜ gaps + add the lifecycle/mobile dimensions per page.
 ## § 2026-07 deep-read reconciliation (authoritative — supersedes stale rows above)
 
 A full code-level read of every domain (7 parallel deep-dives) corrected the map
-and surfaced concrete states/edge-cases. Bugs found live in `E2E_BUG_LEDGER.md`.
+and surfaced concrete states/edge-cases. Bugs found live in `docs/plans/E2E_BUG_LEDGER.md`.
 
 **Status corrections**
 - 🐛 **#15 zero-denom DoS → ✅ CLOSED** (FIX-B; crash test un-fixmed, passes).

@@ -83,7 +83,7 @@ describe('getProposalState (Number) — agrees on unambiguous outcomes', () => {
   })
 })
 
-// BUG Z18 (REGISTER_HARDENING.md, engineer review). getProposalState uses `+`
+// BUG Z18 (docs/plans/REGISTER_HARDENING.md, engineer review). getProposalState uses `+`
 // (JS Number) vote weights and treats a TIE as SUCCEEDED (`againstVotes > forVotes`
 // is false on a tie → falls through to SUCCEEDED), contradicting getProposalStatus
 // and the on-chain governor (tie → DEFEATED). `it.fails` documents the current

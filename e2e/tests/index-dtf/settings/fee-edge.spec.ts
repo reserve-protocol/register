@@ -4,7 +4,7 @@ import { REGISTRY } from '../../../helpers/registry'
 // Settings fee-math edge (ledger M9): a fee registry with numerator==denominator
 // yields platformFee=100 → PERCENT_ADJUST = 100/(100-100) = Infinity → every
 // recipient share collapses to 0%. Desired: a coherent breakdown (the DTF's
-// governance recipient keeps a non-zero share). See E2E_BUG_LEDGER.md M9.
+// governance recipient keeps a non-zero share). See docs/plans/E2E_BUG_LEDGER.md M9.
 const base = REGISTRY.find((d) => d.chainId === 8453 && !d.deprecated)!
 
 test.fixme('settings: platformFee=100 must not zero every recipient share @smoke', async ({

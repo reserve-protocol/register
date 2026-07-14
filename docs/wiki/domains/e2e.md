@@ -18,7 +18,7 @@ mapper/math/calldata correctness remains the SDK repositories' responsibility.
 ## How the suite is organized (foundational)
 
 Tests are grouped by **route → subroute** (domain), not by test-type; the
-canonical coverage matrix is `E2E_TEST_MAP.md` at repo root. EVERY page is
+canonical coverage matrix is `e2e/TEST_MAP.md`. EVERY page is
 tested across three dimensions, and a spec missing any of them is incomplete:
 
 1. **State-space** — every product-distinct state (governance proposals =
@@ -35,7 +35,7 @@ Known quality gap (2026-07-13): the original suite was built flat (`smoke/` +
 `flows/`) and desktop-happy-path-only, so several specs assert on a testid that
 renders during the skeleton phase — they test the shell, race hydration, and
 miss layout shift. Migrating to the domain tree + adding the lifecycle/mobile
-dimensions is tracked in `E2E_TEST_MAP.md`. `e2e/CLAUDE.md` § Foundational Rule
+dimensions is tracked in `e2e/TEST_MAP.md`. `e2e/CLAUDE.md` § Foundational Rule
 is binding for all new specs.
 
 ## Trust contract
@@ -118,7 +118,7 @@ Coverage intentionally does not claim forked-chain execution, visual/pixel
 regression, v6 contracts, or full settings/auction write families yet. Mobile
 and the loading lifecycle are NO LONGER non-goals — they are required dimensions
 per the Foundational Rule (previously skipped; now tracked debt in
-`E2E_TEST_MAP.md`). Governance, issuance, compliance, and transaction-contract
+`e2e/TEST_MAP.md`). Governance, issuance, compliance, and transaction-contract
 edits require engineer review.
 
 ## Coverage pass 2 (landed 2026-07-10)

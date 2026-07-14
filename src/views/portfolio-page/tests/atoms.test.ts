@@ -52,7 +52,7 @@ describe('getPortfolioProposalVotingState — terminal outcomes', () => {
   })
 })
 
-// BUG Z22 (REGISTER_HARDENING.md) — a second instance of Z18. Uses JS `Number`
+// BUG Z22 (docs/plans/REGISTER_HARDENING.md) — a second instance of Z18. Uses JS `Number`
 // on wei vote weights (precision loss > 2^53) and treats a tie (for == against,
 // both > 0) as SUCCEEDED (`againstVotes > forVotes || forVotes === 0` is false on
 // a nonzero tie → falls through to SUCCEEDED), contradicting the on-chain

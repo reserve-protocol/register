@@ -95,7 +95,7 @@ test(
 // must fail for its stated root cause (CODEX HARN-021 / IDX-OVR-013). Reaching
 // this needs a version-gated observable the overview does not yet expose (a
 // `data-dtf-version` on a version-conditional surface). Until that testid exists
-// this stays a documented gap in E2E_BUG_LEDGER.md, not a placeholder green test.
+// this stays a documented gap in docs/plans/E2E_BUG_LEDGER.md, not a placeholder green test.
 // Desired regression: load a v4 DTF, populate a v4-gated branch, SPA-navigate to
 // a v5 DTF, assert the v5 branch + destination RPC identity — fails if the atom
 // reset is removed.

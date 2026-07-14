@@ -9,7 +9,7 @@ covers what, domain states, edge cases) live next to each view:
 ## FOUNDATIONAL RULE — how every page is tested (not optional)
 
 The suite is organized by **route → subroute** (domain), NOT by test-type. The
-canonical map is `E2E_TEST_MAP.md` — a new page test goes at its domain node
+canonical map is `e2e/TEST_MAP.md` — a new page test goes at its domain node
 there, and EVERY page is tested across THREE dimensions:
 
 1. **State-space** — every meaningful state, not one happy render. Combinatorial
@@ -168,7 +168,7 @@ into `e2e/tests/<domain>/<route>/`. Its comments ARE the minimum oracle — a wr
 template will not let you ship a `txLog.length > 0` / `last()`-only assertion.
 Then follow the steps below to fill it in.
 
-0. Place it by DOMAIN — find the route→subroute node in `E2E_TEST_MAP.md`; the
+0. Place it by DOMAIN — find the route→subroute node in `e2e/TEST_MAP.md`; the
    spec lives under `e2e/tests/<domain>/<route>/`. Enumerate the page's STATES
    there (one test per product-distinct state), and plan the L0–L3 lifecycle +
    `@mobile` variant (see the Foundational Rule). A single happy-path desktop

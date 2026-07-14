@@ -149,7 +149,10 @@ Per slice, uniform:
 repos, one big review per branch, consolidated engineer-review handoff (only
 significant math changes, else a "guards only" note), the terminal greps —
 zero hardening `test.fixme` in `e2e/tests`, zero hardening `it.fails` in `src`
-— and the **final workflow plan** (below).
+— and the **final workflow plan** (below), plus the **docs sweep** (Luis,
+2026-07-14): every doc this effort produced or touched ends up in `docs/plans/`
+(or next to its domain), superseded docs deleted, repo root clean per the
+CLAUDE.md docs-hygiene rule.
 
 ## Dogfood: this effort evaluates the workflow and the e2e suite
 
@@ -297,7 +300,7 @@ Adopt only the reads the findings sit on (not P3):
 
 | finding | resolution | tests |
 |---|---|---|
-| Z8 staking-vault APY | adopt the SDK's yield APY (corroborated in R0: `assets > 0`, `rewardsEnd > rewardsStart` guards — add there if missing); register renders "—" on indeterminate | SDK unit vectors (0 assets, degenerate period) · register render check |
+| Z8 staking-vault APY | **register-side fix** (R0 verdict 2026-07-14: SDK yield APY is corroborated-safe but has NO reward-period StakingVaultRevenue equivalent — adding one for a sidebar fails the boundary test). Guard `assets > 0`, `rewardsEnd > rewardsStart` → "—" in register | register: extract APY math → unit vectors (0 assets, degenerate period) + render check |
 | F3 frozen redeem gate | if SDK `getConfiguration`/frozen-status read exists or is trivially added (consumption-first), adopt; else register patch on the gate | unit on gate predicate (either side) · e2e frozen fixture → redeem disabled, RED-verify (if the rTokenState multicall model blocks it, unit carries — say so) |
 | Z1 portfolio white-screen | adopt SDK portfolio reads (current/historical/transactions — already shipped) with validated mappers; `hasReserveActivity` + breakdown atom consume the mapped shape | SDK mapper fixtures (partial-body) · register e2e: portfolio renders on partial body via `overrides.api`, RED-verify |
 | Z4 (portfolio timeseries + transactions) | same adoption dissolves `use-historical-portfolio` / `useIndexDTFTransactions` raw fetches | SDK fixtures; register unit only for surviving local transforms |
