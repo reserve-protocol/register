@@ -11,7 +11,7 @@ import {
 } from '@/state/dtf/atoms'
 import { indexDTFApyAtom } from '@/state/dtf/yield-index-atoms'
 import { formatPercentage, formatToSignificantDigits } from '@/utils'
-import { getIndexDtfDisplayName } from '@/utils/dtf-names'
+import { stripIndexDtfChainSuffix } from '@/utils/dtf-names'
 import { Trans } from '@lingui/react/macro'
 import { useAtomValue } from 'jotai'
 import { IndexDTFPerformance } from '../../hooks/use-dtf-price-history'
@@ -30,7 +30,7 @@ const OverlayTitle = () => {
   return (
     <h2 className="min-w-0 text-2xl font-medium leading-tight text-primary dark:text-foreground sm:text-3xl sm:font-normal">
       <div className="flex min-w-0 items-center gap-2">
-        {getIndexDtfDisplayName(dtf.token)}
+        {stripIndexDtfChainSuffix(dtf.token.name)}
         {isInactive && <InactiveBadge />}
       </div>
     </h2>

@@ -2,7 +2,6 @@ import { useQuery } from '@tanstack/react-query'
 import { Address } from 'viem'
 import { type IndexDTFItem } from '@/hooks/useIndexDTFList'
 import { dateToUnix } from '@/utils'
-import { getIndexDtfDisplayName } from '@/utils/dtf-names'
 
 // TODO: Swap to the production API once featured DTFs are available there.
 const FEATURED_DTFS_URL = 'https://api-staging.reserve.org/v1/discover/featured'
@@ -101,7 +100,7 @@ const normalizeFeaturedItem = (item: any): FeaturedDTFItem => {
   return {
     address: item.address,
     symbol: item.symbol,
-    name: getIndexDtfDisplayName(item),
+    name: item.name,
     price: item.price ?? 0,
     fee: item.fee ?? 0,
     marketCap: item.marketCap ?? 0,

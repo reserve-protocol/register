@@ -59,7 +59,7 @@ describe('normalizeIndexDtfList', () => {
       {
         address: '0x0000000000000000000000000000000000000005',
         symbol: 'NEOCLOUD',
-        name: 'Reserve AI NeoCloud DTF',
+        name: 'Reserve AI Capacity & Neocloud DTF',
         type: 'index',
         chainId: 56,
         marketCap: 175,
