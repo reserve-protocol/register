@@ -291,9 +291,17 @@ const SubmitButton = () => {
       track('submit_successful')
       toast.success(t`DTF updated successfully`, { position: 'bottom-right' })
       updateBrandData(payload as IndexDTFBrand)
-      // The brand atom is fed from the SDK's index DTF query — refresh it so
-      // a stale cache doesn't clobber the data we just saved.
-      queryClient.invalidateQueries({ queryKey: dtfQueryKeys.index.all() })
+      // The brand atom is fed from the SDK's full index DTF query — refresh
+      // that one query so a stale cache doesn't clobber the saved data.
+      if (dtf) {
+        queryClient.invalidateQueries({
+          queryKey: dtfQueryKeys.index.full({
+            address: dtf.id,
+            chainId: dtf.chainId,
+            brand: true,
+          }),
+        })
+      }
       setState('idle')
     } catch (e: any) {
       console.error('Error submitting form:', e)
