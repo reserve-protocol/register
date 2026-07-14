@@ -47,6 +47,7 @@ export const getDtfCoverImage = (cover: string | undefined) => {
 // real cover arrives.
 export const DtfCoverSkeleton = ({ className }: { className?: string }) => (
   <div
+    data-testid="overview-cover-skeleton"
     className={cn(
       'relative aspect-video overflow-hidden rounded-3xl',
       className
@@ -105,9 +106,11 @@ const DtfCover = ({
     ? t`${dtf.token.symbol} explainer`
     : t`DTF Explainer`
 
-  // The SDK brand payload carries video/files (0.4.1+), so the brand atom
-  // lands complete in one write — no second folio-manager read to wait on.
-  const isBrandLoading = brand === undefined
+  // The DTF and its brand land from the same SDK payload (0.4.1 types
+  // video/files), and an unbranded DTF settles with brand === undefined —
+  // gate loading on the DTF itself so "no brand" collapses the cover
+  // instead of holding a skeleton forever.
+  const isBrandLoading = dtf === undefined
 
   if (!isBrandLoading && !hasVideoCover && !hasBrandCover) {
     return null

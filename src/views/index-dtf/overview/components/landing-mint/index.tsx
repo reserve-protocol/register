@@ -172,14 +172,15 @@ const LandingMint = (props: React.HTMLAttributes<HTMLDivElement>) => {
       className="hidden xl:flex xl:w-[480px] xl:flex-col xl:gap-1 relative max-w-[480px]"
       {...props}
     >
-      {/* The slot assumes a video cover (they all get one eventually) and
-          holds a skeleton while brand data loads. If the DTF turns out to
-          have none, it collapses smoothly — the skeleton stays rendered
-          inside the shrinking row instead of vanishing in one frame. */}
+      {/* While the DTF loads, the slot holds a video-shaped skeleton. Once it
+          settles: a cover fades in, or — no cover — the skeleton is dropped
+          and the row collapses. The skeleton never lingers on the settled
+          no-cover state (that was a permanent-skeleton bug). */}
       <div
+        data-testid="overview-cover-slot"
         className={cn(
           'grid transition-[grid-template-rows] duration-500 ease-out motion-reduce:transition-none',
-          hasCover || brand === undefined
+          hasCover || dtf === undefined
             ? 'grid-rows-[1fr]'
             : 'grid-rows-[0fr]'
         )}
@@ -188,9 +189,9 @@ const LandingMint = (props: React.HTMLAttributes<HTMLDivElement>) => {
           <div className="rounded-3xl bg-card p-2">
             {hasCover ? (
               <DtfCover className="rounded-xl" />
-            ) : (
+            ) : dtf === undefined ? (
               <DtfCoverSkeleton className="rounded-xl" />
-            )}
+            ) : null}
           </div>
         </div>
       </div>
