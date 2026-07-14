@@ -10,8 +10,10 @@ import { Address } from 'viem'
 import { useCallback, useEffect, useMemo } from 'react'
 import { useAtomValue, useSetAtom } from 'jotai'
 import dayjs from 'dayjs'
-import { portfolioPageTimeRangeAtom } from '../atoms'
-import { getAvailableTimeRanges } from '@/views/index-dtf/overview/components/charts/use-available-time-ranges'
+import {
+  portfolioFirstHistoryTimestampAtom,
+  portfolioPageTimeRangeAtom,
+} from '../atoms'
 
 export type ChartDataPoint = {
   value: number
@@ -110,7 +112,7 @@ const getFirstHistoryTimestamp = (
 
 export const useHistoricalPortfolio = (address?: Address | null) => {
   const timeRange = useAtomValue(portfolioPageTimeRangeAtom)
-  const setTimeRange = useSetAtom(portfolioPageTimeRangeAtom)
+  const setFirstHistoryTimestamp = useSetAtom(portfolioFirstHistoryTimestampAtom)
 
   const q24h = useHistoricalPeriod(address, '24h', true)
   const q7d = useHistoricalPeriod(address, '7d', true)
@@ -138,34 +140,9 @@ export const useHistoricalPortfolio = (address?: Address | null) => {
     [data]
   )
 
-  const firstHistoryTimestamp = useMemo(
-    () => getFirstHistoryTimestamp(q1y.data),
-    [q1y.data]
-  )
-
-  const availableTimeRanges = useMemo(
-    () =>
-      getAvailableTimeRanges({
-        dtfTimestamp: 1,
-        firstHistoryTimestamp,
-        isYieldMode: false,
-      }),
-    [firstHistoryTimestamp]
-  )
-
-  const defaultTimeRange = useMemo<PortfolioPeriod>(() => {
-    if (!availableTimeRanges) return '1y'
-    const nonAll = availableTimeRanges.filter((r) => r.value !== 'all')
-    return (nonAll[nonAll.length - 1]?.value ?? '1y') as PortfolioPeriod
-  }, [availableTimeRanges])
-
   useEffect(() => {
-    if (!availableTimeRanges) return
-    const isAvailable = availableTimeRanges.some((r) => r.value === timeRange)
-    if (!isAvailable && defaultTimeRange !== timeRange) {
-      setTimeRange(defaultTimeRange)
-    }
-  }, [availableTimeRanges, defaultTimeRange, setTimeRange, timeRange])
+    setFirstHistoryTimestamp(getFirstHistoryTimestamp(q1y.data))
+  }, [q1y.data, setFirstHistoryTimestamp])
 
   const selectedQuery =
     {

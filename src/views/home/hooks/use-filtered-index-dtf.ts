@@ -1,11 +1,13 @@
 import { isInactiveDTF } from '@/hooks/use-dtf-status'
+import { useIsDesktop } from '@/hooks/use-media-query'
 import useIndexDTFList, { IndexDTFItem } from '@/hooks/useIndexDTFList'
 import { chainFilterAtom, searchFilterAtom } from '../atoms'
 import { useAtomValue } from 'jotai'
 import { useMemo } from 'react'
 
 const useFilteredDTFIndex = () => {
-  const { data, isLoading } = useIndexDTFList()
+  const isDesktop = useIsDesktop()
+  const { data, isLoading } = useIndexDTFList({ exposure: !isDesktop })
   const search = useAtomValue(searchFilterAtom)
   const chains = useAtomValue(chainFilterAtom)
 

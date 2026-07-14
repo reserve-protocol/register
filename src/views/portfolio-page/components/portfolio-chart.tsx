@@ -3,7 +3,7 @@ import { cn } from '@/lib/utils'
 import type { MessageDescriptor } from '@lingui/core'
 import { msg } from '@lingui/core/macro'
 import { Trans, useLingui } from '@lingui/react/macro'
-import { useAtom, useAtomValue } from 'jotai'
+import { atom, useAtom, useAtomValue } from 'jotai'
 import { useEffect, useMemo, useState } from 'react'
 import { ArrowUpRight, ArrowDownRight, Loader } from 'lucide-react'
 import dayjs from 'dayjs'
@@ -17,6 +17,7 @@ import {
 } from 'recharts'
 import {
   portfolioAddressAtom,
+  portfolioAvailableTimeRangesAtom,
   portfolioDataAtom,
   portfolioPageTimeRangeAtom,
 } from '../atoms'
@@ -38,6 +39,16 @@ const PERIOD_LABELS: {
     ? { key: 'all', label: msg`All time` }
     : { key: range.value as PortfolioPeriod, label: range.label }
 )
+
+// Same rule as the DTF Overview: ranges older than the account's history
+// are hidden, and the time-range atom clamps any unavailable selection.
+const visiblePeriodsAtom = atom((get) => {
+  const available = get(portfolioAvailableTimeRangesAtom)
+  if (!available) return PERIOD_LABELS
+  return PERIOD_LABELS.filter(({ key }) =>
+    available.some((r) => r.value === key)
+  )
+})
 
 // Suffix codes (24H/7D/...) stay untranslated; only 'All' is wrapped.
 const PERIOD_SUFFIX: Record<PortfolioPeriod, string | MessageDescriptor> = {
@@ -122,16 +133,18 @@ function ChartTooltip({ payload, active, stacked }: any) {
 }
 
 const TimeRangeTabs = ({
+  periods,
   active,
   onChange,
 }: {
+  periods: typeof PERIOD_LABELS
   active: PortfolioPeriod
   onChange: (p: PortfolioPeriod) => void
 }) => {
   const { t } = useLingui()
   return (
     <div className="flex items-center bg-muted rounded-2xl p-0.5 w-fit">
-      {PERIOD_LABELS.map(({ key, label }) => (
+      {periods.map(({ key, label }) => (
         <button
           key={key}
           onClick={() => onChange(key)}
@@ -185,6 +198,8 @@ const PortfolioChart = () => {
   const [timeRange, setTimeRange] = useAtom(portfolioPageTimeRangeAtom)
   const [stacked, setStacked] = useState(false)
   const { getChartData, isLoading } = useHistoricalPortfolio(address)
+
+  const periods = useAtomValue(visiblePeriodsAtom)
 
   const rawChartData = getChartData(timeRange)
   const chartData = useMemo(
@@ -246,6 +261,7 @@ const PortfolioChart = () => {
           </div>
         </div>
         <TimeRangeTabs
+          periods={periods}
           active={timeRange}
           onChange={(p) => {
             setTimeRange(p)
