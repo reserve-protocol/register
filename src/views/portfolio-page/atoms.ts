@@ -14,8 +14,43 @@ import {
 } from './types'
 import { VotingState } from '@/lib/governance'
 import { isHiddenDtfSymbol, PROPOSAL_STATES } from '@/utils/constants'
+import { getAvailableTimeRanges } from '@/views/index-dtf/overview/components/charts/use-available-time-ranges'
 
-export const portfolioPageTimeRangeAtom = atom<PortfolioPeriod>('1y')
+export const portfolioFirstHistoryTimestampAtom = atom<
+  number | null | undefined
+>(undefined)
+
+export const portfolioAvailableTimeRangesAtom = atom((get) =>
+  getAvailableTimeRanges({
+    dtfTimestamp: 1,
+    firstHistoryTimestamp: get(portfolioFirstHistoryTimestampAtom),
+    isYieldMode: false,
+  })
+)
+
+export const portfolioDefaultTimeRangeAtom = atom<PortfolioPeriod>((get) => {
+  const available = get(portfolioAvailableTimeRangesAtom)
+  if (!available) return '1y'
+  const nonAll = available.filter((r) => r.value !== 'all')
+  return (nonAll[nonAll.length - 1]?.value ?? 'all') as PortfolioPeriod
+})
+
+const portfolioPageTimeRangeBaseAtom = atom<PortfolioPeriod>('1y')
+
+// Reads clamp to the available ranges, so a selection that outlives the
+// account's history falls back to the default instead of an empty chart.
+export const portfolioPageTimeRangeAtom = atom(
+  (get) => {
+    const selected = get(portfolioPageTimeRangeBaseAtom)
+    const available = get(portfolioAvailableTimeRangesAtom)
+    if (!available || available.some((r) => r.value === selected)) {
+      return selected
+    }
+    return get(portfolioDefaultTimeRangeAtom)
+  },
+  (_get, set, period: PortfolioPeriod) =>
+    set(portfolioPageTimeRangeBaseAtom, period)
+)
 
 export const portfolioDataAtom = atom<PortfolioResponse | null>(null)
 

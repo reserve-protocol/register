@@ -3,7 +3,7 @@ import { cn } from '@/lib/utils'
 import type { MessageDescriptor } from '@lingui/core'
 import { msg } from '@lingui/core/macro'
 import { Trans, useLingui } from '@lingui/react/macro'
-import { useAtom, useAtomValue } from 'jotai'
+import { atom, useAtom, useAtomValue } from 'jotai'
 import { useEffect, useMemo, useState } from 'react'
 import { ArrowUpRight, ArrowDownRight, Loader } from 'lucide-react'
 import dayjs from 'dayjs'
@@ -17,6 +17,7 @@ import {
 } from 'recharts'
 import {
   portfolioAddressAtom,
+  portfolioAvailableTimeRangesAtom,
   portfolioDataAtom,
   portfolioPageTimeRangeAtom,
 } from '../atoms'
@@ -38,6 +39,16 @@ const PERIOD_LABELS: {
     ? { key: 'all', label: msg`All time` }
     : { key: range.value as PortfolioPeriod, label: range.label }
 )
+
+// Same rule as the DTF Overview: ranges older than the account's history
+// are hidden, and the time-range atom clamps any unavailable selection.
+const visiblePeriodsAtom = atom((get) => {
+  const available = get(portfolioAvailableTimeRangesAtom)
+  if (!available) return PERIOD_LABELS
+  return PERIOD_LABELS.filter(({ key }) =>
+    available.some((r) => r.value === key)
+  )
+})
 
 // Suffix codes (24H/7D/...) stay untranslated; only 'All' is wrapped.
 const PERIOD_SUFFIX: Record<PortfolioPeriod, string | MessageDescriptor> = {
@@ -186,20 +197,9 @@ const PortfolioChart = () => {
   const portfolio = useAtomValue(portfolioDataAtom)
   const [timeRange, setTimeRange] = useAtom(portfolioPageTimeRangeAtom)
   const [stacked, setStacked] = useState(false)
-  const { getChartData, isLoading, availableTimeRanges } =
-    useHistoricalPortfolio(address)
+  const { getChartData, isLoading } = useHistoricalPortfolio(address)
 
-  // Same rule as the DTF Overview: ranges older than the account's history
-  // are hidden, since the hook resets any unavailable selection.
-  const periods = useMemo(
-    () =>
-      availableTimeRanges
-        ? PERIOD_LABELS.filter(({ key }) =>
-            availableTimeRanges.some((r) => r.value === key)
-          )
-        : PERIOD_LABELS,
-    [availableTimeRanges]
-  )
+  const periods = useAtomValue(visiblePeriodsAtom)
 
   const rawChartData = getChartData(timeRange)
   const chartData = useMemo(
