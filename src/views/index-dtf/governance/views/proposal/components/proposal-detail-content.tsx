@@ -5,7 +5,9 @@ import { lazy, Suspense } from 'react'
 import GovernanceProposalPreview from '../../../components/governance-proposal-preview'
 import { proposalDetailAtom } from '../atom'
 
-const DescriptionMarkdown = lazy(() => import('./proposal-md-description'))
+const DescriptionMarkdown = lazy(
+  () => import('@/components/governance/proposal-md-description')
+)
 
 const ProposalDescriptionSkeleton = () => (
   <div className="px-6 pt-4 pb-2">

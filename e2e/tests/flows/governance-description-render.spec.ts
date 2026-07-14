@@ -8,36 +8,24 @@ import type { MockOverrides } from '../../helpers/overrides'
 
 // SECURITY: proposal descriptions reach the chain verbatim (the propose specs
 // prove the form sends raw markdown/HTML with no escaping), so XSS safety rests
-// ENTIRELY on the detail renderer — proposal-md-description.tsx feeds the raw
-// string to @uiw/react-md-editor's <MDEditor.Markdown>. That component pushes
-// rehype-raw (raw HTML is parsed into real element nodes) and its allowElement
-// filter admits any alphanumeric tag, so <script>/<iframe>/<img> are NOT
-// structurally dropped up front — the only thing between a hostile proposer and
-// the viewer is how React + react-markdown handle those nodes. These tests
-// render a proposal whose on-chain `description` is attacker-controlled and
-// assert no payload EXECUTES.
+// ENTIRELY on the detail renderer — the shared
+// src/components/governance/proposal-md-description.tsx, which runs
+// rehype-sanitize AFTER rehype-raw with an allowlist schema (S3 fix; the
+// schema's own unit vectors live next to the component). These tests render a
+// proposal whose on-chain `description` is attacker-controlled and assert no
+// payload EXECUTES and no embed tag survives, on the real page.
 //
 // Recipe mirrors governance-states.spec.ts: a GetIndexDtfProposal overlay that
 // mutates exactly one field (`description`) + freezeTime so the SDK's state
 // derivation is deterministic (the description renders in every lifecycle
 // state; we pin one). No wallet — the renderer runs for any visitor.
 //
-// FINDINGS (empirically characterized on this branch; triage-first — app code
-// intentionally NOT changed):
-//  - SAFE — script: an inline <script> element IS inserted into the DOM but
-//    stays INERT (never executes; the tripwire below never flips). React does
-//    not run script elements it mounts. Not exploitable alone.
-//  - SAFE — img onerror: react-markdown strips the string onerror handler, so
-//    <img src=x onerror=...> renders as a plain broken image with NO handler —
-//    the src=x load failure runs nothing.
-//  - SAFE — javascript: href: `[x](javascript:alert(1))` is neutralized to
-//    href="javascript:void(0)" — the alert payload is stripped and clicking is
-//    inert. (The href still starts with "javascript:", so the guard asserts the
-//    PAYLOAD is gone + clicking fires nothing, not that the scheme is absent.)
-//  - BUG (see the fixme test): a raw <iframe> in a description MATERIALIZES and
-//    LOADS its attacker-controlled src (observed egress to
-//    https://evil.example/frame). Stored framing/redirect vector on a fully
-//    attacker-controlled field — human triage required.
+// Pre-fix history (why these exact vectors): <script> mounted but stayed inert;
+// <img onerror> was stripped by react-markdown; `javascript:` hrefs were
+// neutralized to javascript:void(0); but a raw <iframe> MATERIALIZED and LOADED
+// its attacker-controlled src (observed egress to https://evil.example/frame).
+// Post-fix, the sanitizer strips script/iframe/object/embed/form entirely and
+// removes javascript:/data: URLs (the hostile anchor renders with NO href).
 
 const DTF_ADDRESS = '0x4dA9A0f397dB1397902070f93a4D6ddBC0E0E6e8' // base/lcap
 const PROPOSAL_ID =
@@ -70,14 +58,19 @@ const EXEC_PAYLOAD = [
   '[hostile link](javascript:alert(1))',
 ].join('\n')
 
-// Control + a raw <iframe>. Reused only by the fixme test.
-const IFRAME_PAYLOAD = [
+// Control + raw embed tags. Any of these loading its src fires the suite's
+// unmocked-egress guard, so a regression fails twice over.
+const EMBED_PAYLOAD = [
   '# Security E2E Proposal',
   'Intro paragraph with no f-word so the parser keeps it.',
   '',
   '## Control Heading',
   '',
   '<iframe src="https://evil.example/frame"></iframe>',
+  '',
+  '<object data="https://evil.example/object"></object>',
+  '',
+  '<embed src="https://evil.example/embed">',
 ].join('\n')
 
 interface DtfSnapshot {
@@ -180,11 +173,9 @@ test('script, img onerror, and javascript: href payloads never execute', async (
   // still renders as a broken image; only the handler must be gone.)
   await expect(container.locator('img[onerror]')).toHaveCount(0)
 
-  // The javascript: link renders, but its payload must be stripped (neutralized
-  // to javascript:void(0)) — assert the alert() payload is gone, then CLICK it
-  // to prove the anchor is inert. react-markdown keeps a benign javascript:
-  // scheme here, so we can't assert the scheme is absent; we assert no payload
-  // and no execution.
+  // The javascript: link renders as text, but the sanitizer strips its href —
+  // assert the alert() payload is gone, then CLICK it to prove the anchor is
+  // inert.
   const hostileLink = container.getByText('hostile link', { exact: true })
   await expect(hostileLink).toHaveCount(1)
   const href = (await hostileLink.first().getAttribute('href')) ?? ''
@@ -200,26 +191,25 @@ test('script, img onerror, and javascript: href payloads never execute', async (
   expect(dialogFired).toBe(false)
 })
 
-// BUG: a raw <iframe> in a proposal description MATERIALIZES in the DOM and
-// LOADS its src. Proven in the initial run of this spec: rendering
-// `<iframe src="https://evil.example/frame"></iframe>` produced a live <iframe>
-// element AND an outbound GET to https://evil.example/frame (caught by the
-// suite's unmocked-egress guard). Because the description field is fully
-// attacker-controlled on-chain, any proposer can frame arbitrary external
-// content on the governance detail page (redirect/clickjacking bait, tracking,
-// exploit-page loading). react-md-editor's rehype-raw + alphanumeric
-// allowElement filter lets the iframe through; there is no rehype-sanitize.
-// Triage-first: app code intentionally NOT touched. Un-fixme once the renderer
-// strips iframes (e.g. rehype-sanitize or an allowElement denylist).
-test.fixme(
-  'raw iframe in a description must not materialize or load its src',
-  async ({ page, overrides, boundaryRequests }) => {
-    const container = await renderDescription(
-      page,
-      overrides,
-      boundaryRequests,
-      IFRAME_PAYLOAD
-    )
-    await expect(container.locator('iframe')).toHaveCount(0)
-  }
-)
+// Regression for the S3 fix: pre-fix, a raw <iframe> MATERIALIZED and LOADED
+// its src (observed egress to https://evil.example/frame). The renderer now
+// runs rehype-sanitize with an allowlist schema
+// (src/components/governance/proposal-md-description.tsx) that strips
+// iframe/object/embed; if any of them regresses, its src load also trips the
+// unmocked-egress teardown guard.
+test('raw iframe/object/embed in a description must not materialize or load their src', async ({
+  page,
+  overrides,
+  boundaryRequests,
+}) => {
+  const container = await renderDescription(
+    page,
+    overrides,
+    boundaryRequests,
+    EMBED_PAYLOAD
+  )
+  await expect(container.locator('h2')).toContainText('Control Heading')
+  await expect(container.locator('iframe')).toHaveCount(0)
+  await expect(container.locator('object')).toHaveCount(0)
+  await expect(container.locator('embed')).toHaveCount(0)
+})
