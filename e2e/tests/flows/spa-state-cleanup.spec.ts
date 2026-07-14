@@ -100,8 +100,10 @@ test(
   'SPA DTF→DTF nav: stat cards never show the prior DTF mcap/tx volume',
   async ({ page, overrides }) => {
     await page.goto(dtfPath(baseDtf, 'overview'))
-    const mcap = page.getByTestId('overview-mcap')
-    const txVolume = page.getByTestId('overview-tx-volume')
+    // Fees & Stats duplicates cards for the mobile/desktop layouts — scope to
+    // the visible copy.
+    const mcap = page.locator('[data-testid="overview-mcap"]:visible')
+    const txVolume = page.locator('[data-testid="overview-tx-volume"]:visible')
     await expect(mcap).toHaveText(/^\$[\d,]+/, { timeout: 20_000 })
     await expect(txVolume).toHaveText(/^\$[\d,]+/, { timeout: 20_000 })
     const priorMcap = (await mcap.textContent())!
@@ -134,9 +136,13 @@ test(
 
     // Load window: the mirrors were reset, so the cards hold skeletons — the
     // prior DTF's values must not be present anywhere in the stat cards.
-    await expect(page.getByTestId('overview-mcap-loading')).toBeVisible()
+    await expect(
+      page.locator('[data-testid="overview-mcap-loading"]:visible')
+    ).toBeVisible()
     await expect(mcap).toHaveCount(0)
-    await expect(page.getByTestId('overview-tx-volume-loading')).toBeVisible()
+    await expect(
+      page.locator('[data-testid="overview-tx-volume-loading"]:visible')
+    ).toBeVisible()
     await expect(txVolume).toHaveCount(0)
 
     // Release: the destination's own values resolve (distinct snapshots).
