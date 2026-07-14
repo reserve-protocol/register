@@ -59,9 +59,19 @@ answer. If you touch chain-conditional overview logic, this matrix is the guard
 - **No frozen clock here.** Overview specs run on real time (unlike governance)
   — ranges compute `from`/`to` from `Date.now()`, so keep assertions relative
   (`from < to`), never pin absolute timestamps.
-- **Deprecated/inactive**: driven by the discover/dtfs snapshot `status`; the
-  Inactive badge (`overview-inactive-badge`, rendered in `chart-overlay.tsx`)
-  keys on the testid — label is Lingui-translated, never assert copy.
+- **Deprecated/inactive**: driven by the discover/dtfs snapshot `status` (read
+  through the SDK's `useIndexDtfStatus`, with the KNOWN_DEPRECATED instant
+  fail-safe in `use-dtf-status.ts`); the Inactive badge
+  (`overview-inactive-badge`, rendered in `chart-overlay.tsx`) keys on the
+  testid — label is Lingui-translated, never assert copy.
+- **Unbranded DTF**: `overrides.api({ pathname: '/folio-manager/read' }, {})`
+  → the SDK settles brand as undefined and the cover slot collapses
+  (`overview-cover-slot` / `overview-cover-skeleton`) — a settled state, not a
+  loading one. Covered in `e2e/tests/index-dtf/overview/edge-cases.spec.ts`.
+- **Stat cards**: `overview-mcap` / `overview-tx-volume` (+`-loading`) live in
+  `fees-stats.tsx`, which renders mobile AND desktop copies — always scope
+  locators `:visible`. Market cap derives from the `/historical/dtf` series;
+  tx volume from the anonymous transferEvents subgraph query.
 
 ## The mcap framing trap (do not cross the two numbers)
 
