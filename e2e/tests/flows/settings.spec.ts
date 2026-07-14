@@ -235,17 +235,38 @@ test('registry read failure surfaces UNAVAILABLE, not a fabricated 50% fee', asy
   await expect(page.getByTestId('settings-fee-platform')).toHaveCount(0)
 })
 
-// Regression (was a container-wide crash): a registry whose getFeeDetails
-// returns feeDenominator=0 used to throw `RangeError: Division by zero` inside
-// PlatformFeeUpdater's effect and unmount the whole container subtree. The SDK
-// platform-fee read maps denominator 0 → percent 0, so the page must survive.
+// B1 + regression (was a container-wide crash): a registry whose getFeeDetails
+// returns feeDenominator=0 is an INVALID fee tuple, not a 0% fee. The SDK read
+// fails loud (SdkError INVALID_RESPONSE) and the app must show the unavailable
+// state — a confident "0%" would be the same disease as the fabricated 50%.
 test(
-  'zero fee denominator must not crash the DTF container',
+  'zero fee denominator surfaces UNAVAILABLE, not a confident 0% (and never crashes)',
   async ({ page, overrides }) => {
     seedFeeRegistry(overrides, 1n, 0n)
     await gotoSettings(page)
+
+    // The container survives the invalid registry response…
     await expect(page.getByTestId('dtf-settings')).toBeVisible()
     await expect(page.getByTestId('settings-fee-annualized')).toBeVisible()
+
+    // …and after react-query's retry backoff the fee reads as unavailable.
+    await advanceTime(page, 5_000)
+    await advanceTime(page, 5_000)
+    await expect(page.getByTestId('settings-fee-unavailable')).toBeVisible()
+    await expect(page.getByTestId('settings-fee-platform')).toHaveCount(0)
+  }
+)
+
+// Distinct from the invalid tuple above: numerator=0 with a real denominator IS
+// a legitimate 0% platform fee and must render as one, not as unavailable.
+test(
+  'zero numerator renders a real 0% platform fee',
+  async ({ page, overrides }) => {
+    seedFeeRegistry(overrides, 0n, 5n)
+    await gotoSettings(page)
+
+    await expect(page.getByTestId('settings-fee-platform')).toContainText('0%')
+    await expect(page.getByTestId('settings-fee-unavailable')).toHaveCount(0)
   }
 )
 
