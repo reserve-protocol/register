@@ -3,8 +3,7 @@ import { Address } from 'viem'
 import { type IndexDTFItem } from '@/hooks/useIndexDTFList'
 import { dateToUnix } from '@/utils'
 
-// TODO: Swap to the production API once featured DTFs are available there.
-const FEATURED_DTFS_URL = 'https://api-staging.reserve.org/v1/discover/featured'
+const FEATURED_DTFS_URL = 'https://api.reserve.org/v1/discover/featured'
 const REFRESH_INTERVAL = 1000 * 60 * 10
 
 export type FeaturedExposureToken = {
