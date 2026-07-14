@@ -3,6 +3,7 @@ import useFavicon from '@/hooks/useFavicon'
 import useIndexDTFTransactions from '@/hooks/useIndexDTFTransactions'
 import { chainIdAtom, walletChainAtom } from '@/state/atoms'
 import {
+  ExposureGroup,
   indexDTF7dChangeAtom,
   indexDTFAtom,
   indexDTFBasketAmountsAtom,
@@ -34,15 +35,16 @@ import {
   type Amount,
   useCurrentIndexDtf,
   useIndexCatalog,
+  useIndexDtfExposure,
   useIndexDtfIdentity,
   useIndexDtfPlatformFee,
   useIndexDtfVersion,
   supportedChainIds,
   type IndexDtfBrand as SdkIndexDtfBrand,
   type IndexDtfData,
+  type IndexDtfExposurePeriod,
   type SupportedChainId,
 } from '@reserve-protocol/react-sdk'
-import { useQuery } from '@tanstack/react-query'
 import { atom, useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { useCallback, useEffect, useLayoutEffect, useState } from 'react'
 import { Outlet, useNavigate, useParams, useLocation } from 'react-router-dom'
@@ -238,34 +240,27 @@ const PlatformFeeUpdater = () => {
   return null
 }
 
-const IndexDTFExposureUpdater = ({ chainId }: { chainId: number }) => {
-  const dtf = useAtomValue(indexDTFAtom)
+// Thin atom adapter: several consumers (incl. the yield-index updater and
+// derived atoms) still read the exposure atom — migrate them off it
+// consumer-by-consumer before deleting the mirror.
+const IndexDTFExposureUpdater = () => {
+  const identity = useIndexDtfIdentity()
   const setExposureData = useSetAtom(indexDTFExposureDataAtom)
   const setPerformanceLoading = useSetAtom(indexDTFPerformanceLoadingAtom)
   const period = useAtomValue(performanceTimeRangeAtom)
 
-  const { data: exposureData, isLoading } = useQuery({
-    queryKey: ['dtf-exposure', dtf?.id, chainId, period],
-    queryFn: async () => {
-      if (!dtf?.id) return null
-
-      const response = await fetch(
-        `${RESERVE_API}dtf/exposure?chainId=${chainId}&address=${dtf.id}&period=${period}`
-      )
-
-      if (!response.ok) {
-        throw new Error(`Failed to fetch exposure data: ${response.statusText}`)
-      }
-
-      return response.json()
-    },
-    enabled: !!dtf?.id && !!chainId,
-    refetchInterval: 60000,
-  })
+  const { data: exposureData, isLoading } = useIndexDtfExposure(
+    // The exposure API supports 'ytd' (the app default) but the SDK's period
+    // union doesn't list it yet; it passes the value through untouched.
+    { ...identity, period: period as IndexDtfExposurePeriod },
+    { refetchInterval: 60000 }
+  )
 
   useEffect(() => {
     if (exposureData) {
-      setExposureData(exposureData)
+      // The SDK types `native` loosely and doesn't carry underlyingMarketCap
+      // yet; the payload is the same exposure shape this atom always held.
+      setExposureData(exposureData as unknown as ExposureGroup[])
     }
   }, [exposureData, setExposureData])
 
@@ -365,7 +360,7 @@ const Updater = () => {
       <IndexDTFDataUpdater />
       <IndexDTFVersionUpdater />
       <PlatformFeeUpdater />
-      <IndexDTFExposureUpdater chainId={chainId} />
+      <IndexDTFExposureUpdater />
       <YieldIndexUpdater chainId={chainId} />
       <DeprecationStatusUpdater tokenAddress={tokenAddress} chainId={chainId} />
       <GovernanceUpdater />
