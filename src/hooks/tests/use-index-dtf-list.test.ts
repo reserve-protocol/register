@@ -22,6 +22,19 @@ describe('normalizeIndexDtfList', () => {
           displayPeriod: '1M',
           percent: 11.11,
         },
+        exposure: [
+          {
+            native: { symbol: 'BTC' },
+            tokens: [
+              {
+                address: '0x0000000000000000000000000000000000000010',
+                symbol: 'cbBTC',
+                weight: 50,
+              },
+            ],
+            totalWeight: 50,
+          },
+        ],
       },
       {
         address: '0x0000000000000000000000000000000000000002',
@@ -74,6 +87,19 @@ describe('normalizeIndexDtfList', () => {
         { timestamp: 2000, value: 10 },
       ],
       performancePercent: 11.11,
+      exposure: [
+        {
+          native: { symbol: 'BTC' },
+          tokens: [
+            {
+              address: '0x0000000000000000000000000000000000000010',
+              symbol: 'cbBTC',
+              weight: 50,
+            },
+          ],
+          totalWeight: 50,
+        },
+      ],
     })
     expect(result[1]).toMatchObject({
       performancePercent: 0,

@@ -19,6 +19,17 @@ type IndexDTFListResponsePriceChange = Omit<
   percent?: number | null
 }
 
+export type IndexDTFExposureGroup = {
+  native: {
+    symbol: string
+    name?: string
+    logo?: string
+    caip2?: string
+  } | null
+  tokens: { address: Address; symbol: string; weight: number }[]
+  totalWeight: number
+}
+
 export type IndexDTFItem = {
   address: Address
   symbol: string
@@ -38,6 +49,7 @@ export type IndexDTFItem = {
     tags?: string[]
   }
   priceChange?: IndexDTFPriceChange
+  exposure?: IndexDTFExposureGroup[]
 }
 
 type IndexDTFListResponseItem = {
@@ -54,6 +66,7 @@ type IndexDTFListResponseItem = {
   type?: string
   brand?: IndexDTFItem['brand']
   priceChange?: IndexDTFListResponsePriceChange
+  exposure?: IndexDTFExposureGroup[]
 }
 
 const REFRESH_INTERVAL = 1000 * 60 * 10 // 10 minutes
@@ -92,16 +105,19 @@ export const normalizeIndexDtfList = (
         performancePercent: priceChange?.percent ?? 0,
         brand: item.brand,
         priceChange,
+        exposure: item.exposure,
       }
     })
     .sort((x, y) => y.marketCap - x.marketCap)
 }
 
-const useIndexDTFList = () => {
+const useIndexDTFList = ({ exposure = false }: { exposure?: boolean } = {}) => {
   return useQuery({
-    queryKey: ['index-dtf-list'],
+    queryKey: ['index-dtf-list', exposure],
     queryFn: async (): Promise<IndexDTFItem[]> => {
-      const response = await fetch(INDEX_DTFS_URL)
+      const response = await fetch(
+        exposure ? `${INDEX_DTFS_URL}&exposure=true` : INDEX_DTFS_URL
+      )
 
       if (!response.ok) {
         throw new Error('Failed to fetch dtf list')
