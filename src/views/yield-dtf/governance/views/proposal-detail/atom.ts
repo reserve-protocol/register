@@ -1,15 +1,7 @@
 import { PROPOSAL_STATES, blockDuration } from 'utils/constants'
 import { atom } from 'jotai'
 import { blockAtom, chainIdAtom, rTokenGovernanceAtom } from 'state/atoms'
-import {
-  Address,
-  Hex,
-  encodeAbiParameters,
-  keccak256,
-  parseAbiParameters,
-  parseEther,
-  toBytes,
-} from 'viem'
+import { Address, Hex, keccak256, parseEther, toBytes } from 'viem'
 import { TenderlySimulation } from 'types'
 import { atomWithReset } from 'jotai/utils'
 import { getCurrentTime } from 'utils'
@@ -278,24 +270,34 @@ export const getProposalStateAtom = atom((get) => {
   return state
 })
 
+// WHY (Z17): the queue/execute args and the timelock operation id must derive
+// their zero-values array from the SAME targets, or they drift — a hardcoded
+// single-element `[0n]` produced the wrong operation id for every multi-action
+// proposal, silently disabling the guardian Cancel button. Both consumers build
+// from this one payload; the id delegates to the SDK's audited V4 batch hash.
+const toTimelockPayload = (proposal: ProposalDetail) => ({
+  governor: proposal.governor,
+  targets: proposal.targets,
+  calldatas: proposal.calldatas,
+  description: proposal.description,
+})
+
 export const proposalTxArgsAtom = atom(
   (get): [Address[], bigint[], Hex[], Hex] | undefined => {
     const governance = get(rTokenGovernanceAtom)
     const proposal = get(proposalDetailAtom)
 
-    if (
-      !proposal ||
-      !proposal.calldatas.length ||
-      !governance.governor
-    ) {
+    if (!proposal || !proposal.calldatas.length || !governance.governor) {
       return undefined
     }
 
+    const payload = toTimelockPayload(proposal)
+
     return [
-      proposal.targets,
-      new Array(proposal.targets.length).fill(0n),
-      proposal.calldatas,
-      keccak256(toBytes(proposal.description)),
+      payload.targets,
+      payload.targets.map(() => 0n),
+      payload.calldatas,
+      keccak256(toBytes(payload.description)),
     ]
   }
 )
@@ -303,20 +305,9 @@ export const proposalTxArgsAtom = atom(
 export const timelockIdAtom = atom((get) => {
   const proposal = get(proposalDetailAtom)
 
-  const encodedParams = proposal
-    ? encodeAbiParameters(
-      parseAbiParameters('address[], uint256[], bytes[], bytes32, bytes32'),
-      [
-        proposal.targets,
-        [0n],
-        proposal.calldatas,
-        '0x0000000000000000000000000000000000000000000000000000000000000000',
-        keccak256(toBytes(proposal.description)),
-      ]
-    )
-    : undefined
+  if (!proposal) return undefined
 
-  return encodedParams ? keccak256(encodedParams) : undefined
+  return getGovernorTimelockOperationIdV4(toTimelockPayload(proposal))
 })
 
 export const canExecuteAtom = atom((get) => {

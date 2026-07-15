@@ -1,6 +1,21 @@
 import { describe, expect, it } from 'vitest'
+import { createStore } from 'jotai'
+import {
+  encodeAbiParameters,
+  keccak256,
+  parseAbiParameters,
+  toBytes,
+  zeroHash,
+  type Address,
+  type Hex,
+} from 'viem'
 import { PROPOSAL_STATES } from 'utils/constants'
-import { getProposalState, getProposalStatus } from '../atom'
+import {
+  getProposalState,
+  getProposalStatus,
+  proposalDetailAtom,
+  timelockIdAtom,
+} from '../atom'
 
 // Independent-vector unit tests for the two pure proposal-state derivations.
 // These are the "does the number mean the right thing" tests the e2e suite
@@ -149,5 +164,52 @@ describe('list vs detail agree (Z18 single source of truth)', () => {
 
   it('agree on a clear pass (both SUCCEEDED)', () => {
     agree({ for: '1000', against: '500', abstain: '0', quorum: '100' })
+  })
+})
+
+// Z17. The timelock operation id is keccak256 over (targets, values, calldatas,
+// predecessor, salt). The old preimage hardcoded a single-element `[0n]` values
+// array regardless of targets.length, so for any multi-action proposal the id
+// did not match the on-chain operation and the guardian Cancel button stayed
+// disabled. timelockIdAtom now delegates to the SDK's OZ 4.x batch hash, which
+// builds one zero value PER target.
+describe('timelockIdAtom multi-action operation id (Z17)', () => {
+  const targets = [
+    '0x1111111111111111111111111111111111111111',
+    '0x2222222222222222222222222222222222222222',
+    '0x3333333333333333333333333333333333333333',
+  ] as Address[]
+  const calldatas = ['0xaaaa', '0xbbbb', '0xcccc'] as Hex[]
+  const description = '# Multi-action proposal\nrotate two roles'
+  const governor = '0x9999999999999999999999999999999999999999' as Address
+
+  // Hand-computed OZ 4.x hashOperationBatch: salt = descriptionHash, predecessor
+  // = zeroHash, one zero value per target.
+  const handComputed = (values: bigint[]) =>
+    keccak256(
+      encodeAbiParameters(
+        parseAbiParameters('address[], uint256[], bytes[], bytes32, bytes32'),
+        [targets, values, calldatas, zeroHash, keccak256(toBytes(description))]
+      )
+    )
+
+  const readId = () => {
+    const store = createStore()
+    store.set(proposalDetailAtom, {
+      governor,
+      targets,
+      calldatas,
+      description,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } as any)
+    return store.get(timelockIdAtom)
+  }
+
+  it('matches hashOperationBatch with a zero value PER target (N=3)', () => {
+    expect(readId()).toBe(handComputed([0n, 0n, 0n]))
+  })
+
+  it('differs from the old single-element [0n] preimage (the Z17 bug)', () => {
+    expect(readId()).not.toBe(handComputed([0n]))
   })
 })
