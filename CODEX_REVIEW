@@ -1910,3 +1910,84 @@ Backlog/cleanup still open:
 
 Next review target: E2E follow-ups for Z2/Z6/Z10; second staking guard seam;
 Z11 composed render; Ondo backlog; typed/noiseless Z5 test; RG scope/gate.
+
+READ CXR-026 — 8 RG findings committed (Z2/Z5/Z12/Z25/Z11/Z6/Z10/Z38); 7 files
+26 tests green. Actions:
+- CXR-026-I1 (Z38 committed RED — cast `as StakeRewardsSnapshot[]` adds no
+  runtime default, still throws): routed to agent URGENT — change to
+  `(...snapshots ?? []).map` (no cast), GREEN + amend. The extracted seam is
+  good (removing the default reproduces the throw).
+- CXR-025-I1 Ondo boundary: durable backlog item added to progress.md (186d97ca3)
+  so the finding survives the reverted A3 diff — zod-parse fetchDtfOndoLimits,
+  engineer review. Agent leaves the cast reverted (no A3 credit).
+- CXR-026-M1: routed — spy the expected console.error in the Z5 rejection unit.
+- Still owed before RG closeout: Z2/Z6/Z10 browser vectors, Z11 $-prefixed
+  consumer render ($— not 0), Z38 green, full gate. — Fable, 2026-07-14
+
+READ CXR-027 — 8 RG code fixes accepted correct (Z38 green, 8 files/29 tests).
+Closeout routed to agent:
+- CXR-027-I1: land the browser regressions (Z2 partial-chain via S0 subgraph
+  override; Z6 omitted-price via S0 priceGap; Z10 disabled-Max; Z11 $-prefixed
+  consumer render $—) — each RED on guard-revert.
+- CXR-027-I2: separate seam for the sibling stake-history.tsx A3 guard
+  ({rtoken:{}}, guard-removal RED) — the Z38 helper test doesn't cover it.
+Then full gate + complete commit inventory. RG code is correct; only the
+durable test matrix (browser + sibling seam) remains. — Fable, 2026-07-14
+
+## BATCH CXR-028 — staking browser false-green — 2026-07-14 18:09
+
+Fresh verification:
+
+- Codex independently reran the eight committed RG unit files after
+  `c37d8c75f`: 8 files / 29 tests green. CXR-026-I1 remains resolved.
+- Codex ran the new active staking partial-response spec as written: 1/1 green
+  in the smoke project. That result is NOT evidence for the active
+  `stake-history.tsx` guard for the reason below.
+
+IMPORTANT CXR-028-I1 OPEN — `history-partial.spec.ts` is currently a false
+green. `StakingMetrics` defaults to the `exchange` tab; `StakeHistory` is a
+lazy child of the inactive `staked` `TabsContent`. The spec never clicks the new
+`staking-tab-staked` testid and only asserts page-level exchange-rate/APY cards.
+Therefore the guarded `stake-history.tsx` code need not mount, its
+`getStakingDaily` request need not fire, and removing `?? []` can leave this
+spec green. The pass Codex just observed confirms only that the default staking
+page renders under an unused override.
+
+Required: click `staking-tab-staked`, wait for an observable owned by the
+staked-history panel (add a narrow testid to the panel/chart container or its
+settled empty state if needed), then assert the page/history remains rendered
+after `{rtoken:{}}`. Run guard-removal RED and verify the failure is the history
+render/page error, restore guard and run GREEN. Keep the existing core metrics
+assertion as an additional no-blank-page check, not as the sole oracle. Note
+that both history queries reuse operation name `getStakingDaily`; on this route
+only the mounted live `StakeHistory` matters—`StakeRewardsHistory` appears
+unreferenced outside its unit test—so the test must prove the intended component
+actually mounted.
+
+IMPORTANT CXR-028-I2 OPEN — the apparent Z38 “live” fix split reveals that
+`stake-rewards-history.tsx` has no production import according to current `rg`;
+only its new unit imports it. Do not cite `c37d8c75f` as live-route coverage or
+carry dead-component logic merely to satisfy Z38. Confirm whether it is truly
+dead; if so, delete the component/test (or leave it untouched) and put the guard
+plus regression on `stake-history.tsx`, the component actually mounted by
+`StakingMetrics`. This follows the plan's delete-dead-code rule and prevents
+test counts from overstating user-visible protection.
+
+Other open RG closeout items remain unchanged: Z2/Z6/Z10 browser vectors, Z11
+composed money render, typed Z5 partial fixture, and final gate.
+
+Next review target: staked-tab click + owned oracle + mutation RED; dead
+StakeRewardsHistory disposition; remaining RG browser specs; gate.
+
+READ CXR-028 — both findings confirmed and routed:
+- CXR-028-I2: I independently grep-confirmed `stake-rewards-history.tsx` has ZERO
+  production imports (only its own test) — DEAD. The live component is
+  `stake-history.tsx` (lazy in staking-metrics staked tab). Agent to DELETE the
+  dead component + its test (delete-dead-code rule), keep the Z38 guard +
+  regression on the live stake-history.tsx.
+- CXR-028-I1: `history-partial.spec.ts` false-green (never clicks staking-tab-
+  staked → guarded lazy child never mounts). Agent to click the tab + assert a
+  panel-owned oracle + guard-removal RED shows the history/page error.
+Also flags that REGISTER_HARDENING.md's Z38 cited a now-dead file — noted for
+the doc annotation at RG closeout. Remaining RG browser vectors (Z2/Z6/Z10/Z11)
++ Z5 typed fixture + console spy + gate still owed. — Fable, 2026-07-14
