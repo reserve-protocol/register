@@ -172,6 +172,75 @@ export const useDecodedRebalanceCalldata = (
   }, [rebalanceCalldata])
 }
 
+type SnapshotBasketToken = { address: string; price: number; amount: number }
+
+// Each token's snapshot weight is its share of the DTF's value:
+// (tokenPrice * tokenAmount) / dtfPrice * 100. A non-finite/≤0 dtfPrice — or a
+// non-finite token price/amount — makes a weight Infinity/NaN, which `.toFixed`
+// renders as the literal string "Infinity"/"NaN" per token weight (Z7). We only
+// accept a fully finite result; any non-finite input yields undefined so the
+// caller can treat the snapshot as indeterminate. `> 0` alone would ACCEPT
+// Infinity (→ confident 0.00) — mirror the M2b finite-price contract.
+export const computeSnapshotWeights = (
+  basket: SnapshotBasketToken[],
+  dtfPrice: number
+): Record<string, string> | undefined => {
+  if (!(Number.isFinite(dtfPrice) && dtfPrice > 0)) return undefined
+
+  const weights: Record<string, string> = {}
+  for (const token of basket) {
+    const weight = ((token.price * token.amount) / dtfPrice) * 100
+    if (!Number.isFinite(weight)) return undefined
+    weights[token.address.toLowerCase()] = weight.toFixed(2)
+  }
+  return weights
+}
+
+// Resolve the proposal-time snapshot weights from the historical timeseries. Any
+// unusable input — an EMPTY timeseries or a malformed/0 snapshot price — throws
+// (indeterminate) rather than substituting the current on-chain basket. Viewing
+// an OLD proposal whose endpoint returns nothing/garbage would otherwise mislabel
+// TODAY's basket as the proposal-time snapshot — a confidently-wrong preview
+// (CXR-059-I2 / CXR-062-I1). The caller surfaces the throw as a suppressed
+// preview (the summary stays on its skeleton — fail-closed, no fabricated money).
+export const resolveSnapshotWeights = (
+  response: IndexDTFPerformance
+): Record<string, string> => {
+  if (!response.timeseries.length) {
+    throw new Error('Historical snapshot unavailable (empty timeseries)')
+  }
+
+  const middlePoint = Math.floor(response.timeseries.length / 2)
+  const { basket, price } = response.timeseries[middlePoint]
+  const weights = computeSnapshotWeights(basket, price)
+  if (!weights) {
+    throw new Error('Historical snapshot price unavailable')
+  }
+  return weights
+}
+
+// queryFn body for the historical basket-weights read, extracted so the
+// fetch → resolve wiring is testable with only a fetch mock (no wagmi). Live
+// view (no timestamp) keeps the current on-chain weights; the historical path
+// fails loud on empty/malformed data (Z7).
+export const fetchSnapshotWeights = async (
+  dtf: { id: string },
+  chainId: number,
+  timestamp: number | undefined,
+  currentWeights: Record<string, string>
+): Promise<Record<string, string>> => {
+  if (!timestamp) return currentWeights
+
+  const from = Number(timestamp) - 1 * 60 * 60
+  const to = Number(timestamp) + 1 * 60 * 60
+  const historical = `${RESERVE_API}historical/dtf?chainId=${chainId}&address=${dtf.id}&from=${from}&to=${to}&interval=1h`
+  const response = (await fetch(historical).then((res) =>
+    res.json()
+  )) as IndexDTFPerformance
+
+  return resolveSnapshotWeights(response)
+}
+
 const currentBasketMapAtom = atom<Record<string, Token> | undefined>((get) => {
   const currentBasket = get(indexDTFBasketAtom)
   return (
@@ -217,36 +286,7 @@ const useDTFBasketWeights = (timestamp?: number) => {
     queryKey: ['dtf-basket-weights', dtf, chainId, timestamp, currentWeights],
     queryFn: async () => {
       if (!dtf) return {}
-
-      if (!timestamp) return currentWeights
-
-      const from = Number(timestamp) - 1 * 60 * 60
-      const to = Number(timestamp) + 1 * 60 * 60
-      const historical = `${RESERVE_API}historical/dtf?chainId=${chainId}&address=${dtf.id}&from=${from}&to=${to}&interval=1h`
-      const response = (await fetch(historical).then((res) =>
-        res.json()
-      )) as IndexDTFPerformance
-
-      if (!response.timeseries.length) return currentWeights
-
-      // Grab the basket of the middle point of the timeseries
-      const middlePoint = Math.floor(response.timeseries.length / 2)
-      const basket = response.timeseries[middlePoint].basket
-      const dtfPrice = response.timeseries[middlePoint].price
-
-      // Now with the basket of that snapshot, we calculate the weights using the token amounts and pricing
-      const weights = basket.reduce(
-        (acc, token) => {
-          const price = token.price
-          const amount = token.amount
-          const weight = ((price * amount) / dtfPrice) * 100
-          acc[token.address.toLowerCase()] = weight.toFixed(2)
-          return acc
-        },
-        {} as Record<string, string>
-      )
-
-      return weights
+      return fetchSnapshotWeights(dtf, chainId, timestamp, currentWeights)
     },
     enabled: Boolean(dtf && Object.keys(currentWeights).length),
   })

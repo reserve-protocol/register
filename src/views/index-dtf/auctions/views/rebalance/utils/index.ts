@@ -10,3 +10,14 @@ export const mapToAssets = (
     {} as Record<string, bigint>
   )
 }
+
+// A rebalance is "ongoing" until its availableUntil window closes. Background
+// polling (auctions history, liquidity) must stop once it does, otherwise a
+// visitor parked on a completed/historical rebalance keeps hitting the subgraph
+// and liquidity API forever (Z29). A missing/NaN window reads as not-ongoing so
+// polling fails toward off, never on.
+export const isRebalanceOngoing = (
+  availableUntil: string | undefined,
+  nowSeconds: number
+): boolean =>
+  availableUntil !== undefined && Number(availableUntil) >= nowSeconds

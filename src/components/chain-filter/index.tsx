@@ -3,75 +3,71 @@ import SquareStackedChainLogo from '@/components/icons/SquareStackedChainLogo'
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
 import { cn } from '@/lib/utils'
 import { ChainId } from '@/utils/chains'
-import type { MessageDescriptor } from '@lingui/core'
 import { msg } from '@lingui/core/macro'
 import { useLingui } from '@lingui/react/macro'
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
+
+const CHAIN_LABELS: Record<number, string> = {
+  [ChainId.Mainnet]: 'Ethereum',
+  [ChainId.Base]: 'Base',
+  [ChainId.BSC]: 'Binance',
+  [ChainId.Arbitrum]: 'Arbitrum',
+}
 
 interface ChainFilterProps {
   value: string[]
   onChange: (value: string[]) => void
+  // Caller-owned chain set. This is a shared, multi-domain component, so it must
+  // never hardcode one domain's chains — Index (no deprecated Arbitrum) and
+  // Yield/RToken (Arbitrum redeem-only, no BSC) differ. Index callers pass
+  // INDEX_DTF_CHAINS; pools/Yield callers pass the Yield supported set.
+  supportedChains: readonly number[]
   className?: string
 }
 
-const chains: {
-  icon: JSX.Element
-  text: string
-  label?: MessageDescriptor
-  filter: string[]
-}[] = [
-  {
-    icon: (
-      <SquareStackedChainLogo
-        chains={[ChainId.Mainnet, ChainId.Base, ChainId.BSC]}
-      />
-    ),
-    text: 'All chains',
-    label: msg`All chains`,
-    filter: [
-      ChainId.Base.toString(),
-      ChainId.Mainnet.toString(),
-      ChainId.BSC.toString(),
-    ],
-  },
-  {
-    icon: <ChainLogo chain={ChainId.Mainnet} className="h-5 w-5 rounded-md" />,
-    text: 'Ethereum',
-    filter: [ChainId.Mainnet.toString()],
-  },
-  {
-    icon: <ChainLogo chain={ChainId.Base} className="h-5 w-5 rounded-md" />,
-    text: 'Base',
-    filter: [ChainId.Base.toString()],
-  },
-  {
-    icon: <ChainLogo chain={ChainId.BSC} className="h-5 w-5 rounded-md" />,
-    text: 'Binance',
-    filter: [ChainId.BSC.toString()],
-  },
-]
-
-const getSelectedIndex = (currentFilter: string[]) => {
-  if (currentFilter.length > 1) return '0' // All chains
-  if (currentFilter[0] === ChainId.Mainnet.toString()) return '1'
-  if (currentFilter[0] === ChainId.Base.toString()) return '2'
-  if (currentFilter[0] === ChainId.BSC.toString()) return '3'
-  return '0'
-}
-
-const ChainFilter = (props: ChainFilterProps) => {
+const ChainFilter = ({
+  value: currentFilter,
+  onChange: setFilters,
+  supportedChains,
+  className,
+}: ChainFilterProps) => {
   const { t } = useLingui()
-  const { value: currentFilter, onChange: setFilters, className } = props
+
+  const options = useMemo(
+    () => [
+      {
+        icon: <SquareStackedChainLogo chains={[...supportedChains]} />,
+        label: msg`All chains`,
+        text: 'All chains',
+        filter: supportedChains.map(String),
+      },
+      ...supportedChains.map((chain) => ({
+        icon: <ChainLogo chain={chain} className="h-5 w-5 rounded-md" />,
+        label: undefined,
+        text: CHAIN_LABELS[chain] ?? String(chain),
+        filter: [String(chain)],
+      })),
+    ],
+    [supportedChains]
+  )
+
+  const getSelectedIndex = (filter: string[]) => {
+    if (filter.length !== 1) return '0' // All chains (or empty)
+    const idx = supportedChains.findIndex((c) => String(c) === filter[0])
+    return idx === -1 ? '0' : String(idx + 1)
+  }
+
   const [selected, setSelected] = useState(getSelectedIndex(currentFilter))
 
-  // Update selected when filter changes externally
+  // Update selected when the filter or the chain set changes externally
   useEffect(() => {
     setSelected(getSelectedIndex(currentFilter))
-  }, [currentFilter])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentFilter, supportedChains])
 
   const handleSelect = (value: string) => {
     setSelected(value)
-    setFilters(chains[Number(value)]?.filter ?? [])
+    setFilters(options[Number(value)]?.filter ?? [])
   }
 
   return (
@@ -87,7 +83,7 @@ const ChainFilter = (props: ChainFilterProps) => {
         onValueChange={handleSelect}
         className="w-full justify-start gap-0.5 overflow-x-auto rounded-full bg-muted p-0.5 sm:w-auto lg:justify-center"
       >
-        {chains.map(({ text, label, icon }, index) => (
+        {options.map(({ text, label, icon }, index) => (
           <ToggleGroupItem
             key={text}
             value={index.toString()}
@@ -99,9 +95,7 @@ const ChainFilter = (props: ChainFilterProps) => {
             )}
           >
             {icon}
-            <span className="hidden sm:inline">
-              {label ? t(label) : text}
-            </span>
+            <span className="hidden sm:inline">{label ? t(label) : text}</span>
           </ToggleGroupItem>
         ))}
       </ToggleGroup>

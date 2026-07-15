@@ -2,6 +2,7 @@ import dtfStakingVaultAbi from '@/abis/dtf-index-staking-vault'
 import { indexDTFAtom, indexDTFFeeAtom } from '@/state/dtf/atoms'
 import { IndexDTF } from '@/types'
 import { formatPercentage } from '@/utils'
+import { getFeePercentAdjust, isDisplayablePlatformFee } from '@/utils/fees'
 import { msg } from '@lingui/core/macro'
 import type { MessageDescriptor } from '@lingui/core'
 import { useLingui } from '@lingui/react/macro'
@@ -37,6 +38,10 @@ export const getFeeRecipients = (
   tokenJar: Address | undefined
 ): Recipient[] | undefined => {
   if (!indexDTF || platformFee === undefined) return undefined
+  // A degenerate/invalid platform fee (>= 100, negative, non-finite) can't yield
+  // a real share-of-total split — signal indeterminate so the caller renders
+  // "Unavailable" instead of a fabricated allocation (B2).
+  if (!isDisplayablePlatformFee(platformFee)) return undefined
 
   const platformShare: Recipient = {
     label: msg`Fixed Platform Share`,
@@ -58,7 +63,7 @@ export const getFeeRecipients = (
     testId: 'settings-fee-governance',
   }
   const externalRecipients: Recipient[] = []
-  const PERCENT_ADJUST = 100 / (100 - platformFee)
+  const PERCENT_ADJUST = getFeePercentAdjust(platformFee)
 
   const deployer = indexDTF.deployer.toLowerCase()
   const governanceRecipients = new Set(
@@ -147,7 +152,9 @@ const FeesInfo = () => {
         />
       </div>
       <div className="bg-card rounded-3xl mt-1">
-        {platformFee === 'unavailable' ? (
+        {platformFee === 'unavailable' ||
+        (typeof platformFee === 'number' &&
+          !isDisplayablePlatformFee(platformFee)) ? (
           <InfoCardItem
             label={t`Revenue Distribution`}
             value={t`Unavailable`}

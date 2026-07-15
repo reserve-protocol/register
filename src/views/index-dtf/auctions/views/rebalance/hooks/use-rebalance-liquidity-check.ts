@@ -14,7 +14,9 @@ import {
   OndoMarket,
 } from '@/utils/rebalance-liquidity'
 export { NATIVE_SYMBOL } from '@/utils/zapper'
+import { currentRebalanceAtom } from '../../../atoms'
 import { rebalanceMetricsAtom, rebalanceTokenMapAtom } from '../atoms'
+import { isRebalanceOngoing } from '../utils'
 import useRebalanceParams from './use-rebalance-params'
 
 const DEBOUNCE_DELAY = 1_000
@@ -103,6 +105,7 @@ const useRebalanceLiquidityCheck = () => {
   const tokenMap = useAtomValue(rebalanceTokenMapAtom)
   const chainId = useAtomValue(chainIdAtom)
   const ethPrice = useAtomValue(ethPriceAtom)
+  const rebalance = useAtomValue(currentRebalanceAtom)
   const rebalanceParams = useRebalanceParams()
   const queryClient = useQueryClient()
 
@@ -165,7 +168,14 @@ const useRebalanceLiquidityCheck = () => {
     },
     enabled: !!tokens.length && !!rebalanceParams && !!chainId && !!ethPrice,
     staleTime: 30_000,
-    refetchInterval: 30_000,
+    // Only poll while the rebalance window is open; stop on completed/historical (Z29).
+    refetchInterval: () =>
+      isRebalanceOngoing(
+        rebalance?.rebalance.availableUntil,
+        Math.floor(Date.now() / 1000)
+      )
+        ? 30_000
+        : false,
   })
 
   const { liquidityMap, ondoMap, market } = data

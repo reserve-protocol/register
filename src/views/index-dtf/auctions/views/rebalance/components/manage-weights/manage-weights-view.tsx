@@ -14,6 +14,7 @@ import {
   BasketItem,
 } from '@/components/index-basket-setup'
 import ManageWeightsContent from './manage-weights-content'
+import { computeFolioUnits } from './utils/weight-calculation-utils'
 import { getRebalanceTokens, getRebalanceWeights } from '../../utils/transforms'
 
 const ManageWeightsView = () => {
@@ -23,11 +24,15 @@ const ManageWeightsView = () => {
   const rebalanceControl = useAtomValue(indexDTFRebalanceControlAtom)
   const savedProposedUnits = useAtomValue(managedWeightUnitsAtom)
 
+  // A 0 supply makes every per-share (folio) unit indeterminate — bail rather
+  // than render a fabricated `supply || 1n` inflated basket (Z9).
+  const hasSupply = !!rebalanceParams && rebalanceParams.supply > 0n
+
   const { initialBasket, priceMap } = useMemo(() => {
     const basket: Record<string, BasketItem> = {}
     const prices: Record<string, number> = {}
 
-    if (!rebalanceParams || !rebalanceControl) {
+    if (!rebalanceParams || !rebalanceControl || !hasSupply) {
       return { initialBasket: basket, priceMap: prices }
     }
 
@@ -98,12 +103,11 @@ const ManageWeightsView = () => {
       const address = tokenAddress.toLowerCase()
       const token = tokenMap[address]
       const assets = rebalanceParams.currentAssets[address] || 0n
-      const totalSupply = rebalanceParams.supply || 1n
 
-      // TODO @audit
-      const folio = (assets * 10n ** 18n) / totalSupply
+      // supply is guaranteed > 0n here (hasSupply gate), so folio is never null.
+      const folio = computeFolioUnits(assets, rebalanceParams.supply)
 
-      if (token) {
+      if (token && folio !== null) {
         const folioValue = formatUnits(folio, token.decimals)
         const proposedValue = proposedUnitsFromWeights[address] || folioValue
         basket[address] = {
@@ -118,9 +122,10 @@ const ManageWeightsView = () => {
     })
 
     return { initialBasket: basket, priceMap: prices }
-  }, [rebalanceParams, tokenMap, savedProposedUnits, rebalanceControl])
+  }, [rebalanceParams, hasSupply, tokenMap, savedProposedUnits, rebalanceControl])
 
-  if (!showView || !rebalanceParams || !rebalanceControl) return null
+  if (!showView || !rebalanceParams || !rebalanceControl || !hasSupply)
+    return null
 
   return (
     <BasketSetupProvider

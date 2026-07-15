@@ -5,6 +5,7 @@ import request, { gql } from 'graphql-request'
 import { useAtomValue } from 'jotai'
 import { currentRebalanceAtom } from '../../../atoms'
 import { Auction, refreshNonceAtom } from '../atoms'
+import { isRebalanceOngoing } from '../utils'
 
 type Response = {
   auctions: Auction[]
@@ -85,7 +86,14 @@ const useRebalanceAuctions = () => {
       }
     },
     enabled: !!rebalance?.rebalance.id,
-    refetchInterval: 1000 * 30, // every 30s!
+    // Only poll while the rebalance window is open; stop on completed/historical (Z29).
+    refetchInterval: () =>
+      isRebalanceOngoing(
+        rebalance?.rebalance.availableUntil,
+        Math.floor(Date.now() / 1000)
+      )
+        ? 1000 * 30
+        : false,
   })
 }
 

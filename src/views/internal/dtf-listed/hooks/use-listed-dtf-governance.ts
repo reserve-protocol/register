@@ -1,5 +1,5 @@
 import { INDEX_GRAPH_CLIENTS } from '@/state/chain/atoms/chainAtoms'
-import { ChainId } from '@/utils/chains'
+import { INDEX_DTF_CHAINS } from '@/utils/constants'
 import { useQuery } from '@tanstack/react-query'
 import { gql } from 'graphql-request'
 import { Address } from 'viem'
@@ -51,8 +51,6 @@ const governanceQuery = gql`
     }
   }
 `
-
-const SUPPORTED_CHAINS = [ChainId.Mainnet, ChainId.Base, ChainId.BSC] as const
 
 export const mapGovernanceResponse = (
   // Partial: a malformed/partial subgraph response may omit `dtfs` entirely.
@@ -121,7 +119,7 @@ const useListedDTFGovernance = (dtfList: IndexDTFItem[] | undefined) => {
         dtfList.map((dtf) => [dtf.address.toLowerCase(), dtf])
       )
 
-      const dtfsByChain = SUPPORTED_CHAINS.reduce(
+      const dtfsByChain = INDEX_DTF_CHAINS.reduce(
         (acc, chainId) => {
           acc[chainId] = dtfList
             .filter((dtf) => dtf.chainId === chainId)
@@ -132,7 +130,7 @@ const useListedDTFGovernance = (dtfList: IndexDTFItem[] | undefined) => {
       )
 
       return fetchListedDTFGovernanceRows(
-        SUPPORTED_CHAINS,
+        INDEX_DTF_CHAINS,
         dtfsByChain,
         apiDataMap,
         (chainId, ids) =>

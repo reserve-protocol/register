@@ -13,6 +13,7 @@ import {
 } from '@/state/dtf/atoms'
 import { Token } from '@/types'
 import { BIGINT_MAX } from '@/utils/constants'
+import { getFeePercentAdjust, isDisplayablePlatformFee } from '@/utils/fees'
 import type { MessageDescriptor } from '@lingui/core'
 import { msg } from '@lingui/core/macro'
 import { atom } from 'jotai'
@@ -916,7 +917,10 @@ export const feeRecipientsAtom = atom((get) => {
   let governanceShare = 0
   const platformFee = get(indexDTFFeeAtom)
   if (typeof platformFee !== 'number') return undefined
-  const PERCENT_ADJUST = 100 / (100 - platformFee)
+  // Degenerate/invalid fee (>= 100, negative, non-finite) → indeterminate; the
+  // propose flow renders nothing rather than a fabricated split (B2).
+  if (!isDisplayablePlatformFee(platformFee)) return undefined
+  const PERCENT_ADJUST = getFeePercentAdjust(platformFee)
 
   const toShare = (pct: number) =>
     Math.round((pct / PERCENT_ADJUST) * 100) / 100

@@ -103,4 +103,23 @@ describe('getFeeRecipients', () => {
     expect(find(result, 'Governance Share')?.value).toBe('0%')
     expect(find(result, 'Deployer Share')?.value).toBe('0%')
   })
+
+  it('returns undefined (→ Unavailable) for a degenerate platformFee=100 (B2)', () => {
+    // Infinity PERCENT_ADJUST would collapse every share to 0%/NaN%. A 100%
+    // platform fee is not a displayable split → indeterminate, never fabricated.
+    expect(
+      getFeeRecipients(
+        makeDTF([{ address: STTOKEN, percentage: '80' }], STTOKEN),
+        100,
+        undefined
+      )
+    ).toBeUndefined()
+  })
+
+  it('returns undefined for a non-finite / out-of-range platformFee (B2)', () => {
+    const dtf = makeDTF([{ address: STTOKEN, percentage: '80' }], STTOKEN)
+    expect(getFeeRecipients(dtf, NaN, undefined)).toBeUndefined()
+    expect(getFeeRecipients(dtf, 150, undefined)).toBeUndefined()
+    expect(getFeeRecipients(dtf, -1, undefined)).toBeUndefined()
+  })
 })
