@@ -43,6 +43,7 @@ import {
   SLIPPAGE_OPTIONS,
   zappableTokens,
 } from '../constants'
+import { computeMaxTokenIn } from './max-token-in'
 
 export type IssuanceOperation = 'mint' | 'redeem'
 
@@ -84,6 +85,7 @@ type ZapContextType = {
   chainId: number
   account?: Address
   onClickMax: () => void
+  canCalculateMax: boolean
   loadingZap: boolean
   validatingZap: boolean
   error?: ZapErrorType
@@ -133,6 +135,7 @@ const ZapContext = createContext<ZapContextType>({
   setAmountIn: () => {},
   setSelectedToken: () => {},
   onClickMax: () => {},
+  canCalculateMax: true,
   loadingZap: false,
   validatingZap: false,
   chainId: 0,
@@ -283,8 +286,12 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
     let maxTokenIn = +(tokenIn.balance ?? '0')
 
     if (operation === 'mint') {
-      const maxAmount = (tokenOut.price || 0) * (issuanceAvailable || 0)
-      maxTokenIn = maxAmount / (tokenIn.price || 1) || maxTokenIn
+      // Max is disabled when the input token can't be priced (canCalculateMax),
+      // so this normally returns a real value; fall back to the balance rather
+      // than a $1 divisor as defense (Z10).
+      maxTokenIn =
+        computeMaxTokenIn(tokenOut.price, issuanceAvailable, tokenIn.price) ||
+        maxTokenIn
     } else {
       maxTokenIn = redemptionAvailable || maxTokenIn
     }
@@ -325,6 +332,13 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
     rToken?.symbol,
     t,
   ])
+
+  // Mint's Max converts a USD cap into a token quantity via the input price;
+  // disable it when we can't price the input rather than fabricating a $1
+  // divisor (Z10). Redeem's Max derives from redemptionAvailable, so it's fine.
+  const canCalculateMax =
+    operation !== 'mint' ||
+    computeMaxTokenIn(tokenOut.price, issuanceAvailable, tokenIn.price) !== null
 
   const endpoint = useDebounce(
     useMemo(() => {
@@ -686,6 +700,7 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
         account,
         tokens,
         onClickMax,
+        canCalculateMax,
         loadingZap: isLoading,
         validatingZap: isValidating,
         tokenIn,
