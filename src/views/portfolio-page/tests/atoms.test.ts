@@ -1,6 +1,13 @@
 import { describe, expect, it } from 'vitest'
+import { createStore } from 'jotai'
+import type { Address } from 'viem'
 import { PROPOSAL_STATES } from 'utils/constants'
-import { getPortfolioProposalVotingState } from '../atoms'
+import {
+  getPortfolioProposalVotingState,
+  portfolioActiveProposalsAtom,
+  portfolioDataAtom,
+  portfolioNowAtom,
+} from '../atoms'
 import type { PortfolioProposal } from '../types'
 
 // Independent-vector tests for the Portfolio active-proposals state derivation.
@@ -76,5 +83,83 @@ describe('getPortfolioProposalVotingState wei precision (Z22 fixed)', () => {
         quorum: '100',
       })
     ).toBe(PROPOSAL_STATES.DEFEATED)
+  })
+})
+
+// CXR-076: the portfolio outcome is the SDK proposal-state oracle (Yield → yield
+// oracle, Index → Index oracle), selected by the row's isIndexDTF flag. Exercise
+// the real production seam (portfolioActiveProposalsAtom) at the exact-deadline
+// boundary — the SDK uses `> voteEnd` (ACTIVE at the deadline), the old local
+// copy used `>= voteEnd` (already terminal). RED: the pre-fix atoms return
+// SUCCEEDED at the exact deadline where the SDK returns ACTIVE.
+const ADDR = '0x1111111111111111111111111111111111111111' as Address
+
+const activeRows = (
+  now: number,
+  source: 'yield' | 'index',
+  proposal: Record<string, unknown>
+) => {
+  const store = createStore()
+  store.set(portfolioNowAtom, now)
+  const position = {
+    amount: '1',
+    name: 'Test',
+    symbol: 'TEST',
+    address: ADDR,
+    chainId: 1,
+    activeProposals: [proposal],
+  }
+  store.set(portfolioDataAtom, {
+    indexDTFs: [],
+    yieldDTFs: [],
+    rsrBalances: [],
+    stakedRSR: source === 'yield' ? [position] : [],
+    voteLocks:
+      source === 'index'
+        ? [{ ...position, dtfs: [{ name: 'Test', symbol: 'TEST', address: ADDR }] }]
+        : [],
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } as any)
+  return store.get(portfolioActiveProposalsAtom)
+}
+
+const standardProposal = (voteEnd: number) => ({
+  state: PROPOSAL_STATES.ACTIVE,
+  voteStart: '100',
+  voteEnd: String(voteEnd),
+  forWeightedVotes: '1000',
+  againstWeightedVotes: '500',
+  abstainWeightedVotes: '0',
+  quorumVotes: '100',
+  creationTime: '1',
+})
+
+describe('portfolioActiveProposalsAtom — SDK oracle via production seam (CXR-076)', () => {
+  it('yield: at the exact deadline the proposal is ACTIVE, not terminal', () => {
+    const rows = activeRows(500, 'yield', standardProposal(500))
+    expect(rows).toHaveLength(1)
+    expect(rows[0].voting.state).toBe(PROPOSAL_STATES.ACTIVE)
+  })
+
+  it('yield: after the deadline a for-winning quorum-met proposal is SUCCEEDED', () => {
+    const rows = activeRows(501, 'yield', standardProposal(500))
+    expect(rows).toHaveLength(1)
+    expect(rows[0].voting.state).toBe(PROPOSAL_STATES.SUCCEEDED)
+  })
+
+  it('index: at the exact deadline the proposal is ACTIVE (Index oracle)', () => {
+    const rows = activeRows(500, 'index', standardProposal(500))
+    expect(rows).toHaveLength(1)
+    expect(rows[0].voting.state).toBe(PROPOSAL_STATES.ACTIVE)
+  })
+
+  it('index optimistic: unopposed after the window resolves to SUCCEEDED', () => {
+    const rows = activeRows(501, 'index', {
+      ...standardProposal(500),
+      isOptimistic: true,
+      againstWeightedVotes: '0',
+    })
+    expect(rows).toHaveLength(1)
+    expect(rows[0].voting.state).toBe(PROPOSAL_STATES.SUCCEEDED)
   })
 })
