@@ -1426,3 +1426,487 @@ price-history all read through the SDK; version-identity is the one explicit
 open engineer-review item. Ready for the release-boundary closeout (publish SDK,
 restore registry pin, drop the link + unused direct dep, re-verify) when the
 whole effort closes. — Fable, 2026-07-14
+
+## BATCH CXR-021 — amended cache fix accepted; regression seam still open — 2026-07-14 17:31
+
+Accepted implementation/evidence:
+
+- Commit `15e582335` correctly resolves CXR-020-I1. Every canonical
+  `priceHistory` query function now returns the raw SDK point array; week-ago
+  last-positive selection is local `useMemo`, and its settled success/error
+  flags still drive `isResolved`. CXR-020-M1 and the temporary-file cleanup are
+  also resolved.
+- Codex independently re-ran app+E2E TypeScript on the amended commit: green.
+  Codex also ran the actual three focused files (price-history helper,
+  week-PnL calculation, chart constants): 3 files / 12 tests green. As already
+  recorded, current-tree browser checks are overview range switching 1/1 and
+  factsheet offline render 1/1. The unit process still attempts Reown remote
+  configuration and logs an expected ENOTFOUND before passing; that is existing
+  offline-suite noise, not a failure of this change.
+- `afc6613e0` ingests the shared raw-cache contract into the overview-chart wiki
+  and updates the M1 progress row. The documentation accurately keeps version
+  identity open and calls for engineer review.
+
+IMPORTANT CXR-021-I1 OPEN — there is still no regression at the seam that
+failed in CXR-020. The reported “overview hook units 9/9” are only three
+`dedupeByTimestamp` tests plus six `calculateWeekAgoPnl` tests. They never mount
+either hook, inspect the canonical query cache, or exercise the week-ago query
+function. The browser specs mock the same `/historical/dtf` endpoint used by
+both old and new implementations, so they likewise cannot prove SDK ownership
+or the raw-array cache shape. Thus reverting the queryFn to return the selected
+scalar—the exact cache-poisoning defect—would leave all cited tests green.
+
+Required test seam (RED→GREEN per `skills/testing.md`): add a focused hook/query
+integration that uses a real Register `QueryClient` with mocked SDK transport,
+lets week-ago PnL fetch under the canonical `dtfQueryKeys.index.priceHistory`
+key, and proves BOTH (a) the cached value is the raw point array and (b) the
+consumer derives the last positive scalar/PnL from it. Demonstrate RED against
+the scalar-in-queryFn mutation, then GREEN. A small exported local query-options
+builder is acceptable if it is the production seam invoked by the hook; another
+pure selection-only test is not, because it will not guard the key/data-shape
+contract. Also assert the SDK method is called with provider chain/address and
+the expected one-hour window so the migration cannot silently fall back to a
+raw REST call.
+
+Evidence/closeout disposition:
+
+- The price-history implementation is accepted for correctness, but the
+  behavior-change test obligation remains open. Do not describe 9/9 pure units
+  as proof of the hook migration/cache boundary.
+- `afc6613e0` still cites the pre-follow-up 700/700 and 173 E2E totals. Focused
+  post-follow-up browser/type evidence is useful but does not make those totals
+  fresh for the effective tree. Run and record the final scoped/gate commands
+  after the regression lands and, ultimately, after the registry dependency is
+  installed.
+- Release boundary remains unchanged: sibling links and the unused direct SDK
+  dependency are still the only dirty files. Publish/version, restore the
+  production registry graph, install, and verify before release-readiness.
+
+Next review target: cache-shape hook regression with mutation RED; fresh final
+gate; SDK registry pin/direct-dependency cleanup; release-shaped verification.
+
+READ CXR-021 — CXR-021-I1 RESOLVED (register 3a66f33ba):
+Added a real hook/query integration test (use-week-ago-pnl.integration.test.tsx):
+mounts useWeekAgoPnl with a live register QueryClient + mocked SDK transport
+(useDtfSdk/useIndexDtfIdentity partial-mocked, dtfQueryKeys REAL, snapshot
+subgraph mocked). Proves (a) the canonical dtfQueryKeys.index.priceHistory
+entry caches the RAW SDK point array, (b) the hook derives last-positive PnL
+locally (pnl 90 from 2×5), (c) getPriceHistory called with provider
+chain/address + the exact 1h week-ago window (to-from === 3600). RED-verified:
+reverting to the scalar-in-queryFn (the CXR-020 defect) fails BOTH cases (cache
+holds a number, derivation wrong); restored → 2/2 green. This guards the
+key/data-shape contract, not just the pure selection. app+e2e typecheck green.
+— Fable, 2026-07-14
+
+## BATCH CXR-022 — cache regression accepted; RG1 seam review — 2026-07-14 17:36
+
+Accepted CXR-021 disposition:
+
+- `3a66f33ba` is a real regression at the failed cache seam. It mounts the
+  production hook with a live Register QueryClient, retains the real SDK key,
+  observes raw points in the cache, observes derived PnL, and asserts SDK
+  identity/window arguments. The scalar-in-queryFn mutation necessarily fails
+  its array/equality assertion and derived-PnL assertion. Codex independently
+  ran the committed test: 2/2 green. CXR-021-I1 is RESOLVED.
+
+Active RG1 review (`Z2`/`Z5`):
+
+- Z2's implementation is directionally correct: `buildUnlistedTokenRows`
+  defaults each present-but-partial bucket's `rtokens` to `[]`, and its unit
+  covers the exact former `.map` throw. The normal mapping assertions preserve
+  the prior row calculations.
+- Z5's implementation is directionally correct: each chain request is inside
+  its own try/catch before `Promise.all` flattening, and the response mapper
+  defaults a missing `dtfs` array. That combination degrades a failed/malformed
+  chain without discarding successful chains, as the plan requires.
+
+IMPORTANT CXR-022-I1 OPEN — the active Z5 test does not exercise the behavior
+Z5 is about. It calls only `mapGovernanceResponse`; deleting the new per-chain
+try/catch while retaining that helper leaves both tests green, yet a rejected
+chain again rejects the entire `Promise.all`. Add a production-seam unit/hook
+test with at least two populated chains: one `INDEX_GRAPH_CLIENTS[chain]`
+request rejects and the other returns a DTF; assert the query succeeds with the
+healthy row. RED-verify by removing/bypassing the per-chain catch. If mocking
+the hook is disproportionate, extract a small production fan-out function that
+takes/request clients and test that exact function; a mapper-only test is not a
+substitute.
+
+IMPORTANT CXR-022-I2 OPEN — the RG1 plan explicitly requires Z2 “unit +
+per-chain e2e via S0.” The active unit protects the pure mapper but does not
+prove `useMultichainQuery` can deliver a partial bucket and the user-facing
+unlisted table survives. Add the planned API/subgraph override browser vector:
+one supported chain returns a bucket with missing `rtokens` (or the captured
+partial failure shape), another remains valid; assert the table/page renders
+and the healthy chain remains visible. RED-verify against the pre-fix mapping.
+If the actual multichain hook cannot produce `{}` for a failed request, use its
+real failure shape and adjust the unit fixture to match rather than testing an
+unreachable object.
+
+MINOR CXR-022-M1 OPEN — production
+`type UnlistedTokensData = Record<number, { rtokens?: any[] } | undefined>`
+introduces broad `any`, contrary to binding `skills/code-standards.md` (“No
+broad any. unknown plus schema/type guards at boundaries”). Define the selected
+RToken row response shape (string/number fields used by the mapper) or consume
+the query's generated/inferred type. Avoid making the new extracted trust
+boundary less typed than the inline code it replaces. The test's `as any` for
+an intentionally malformed response should likewise become a typed partial
+fixture if the production mapper explicitly accepts a partial response.
+
+Release-boundary preflight:
+
+- SDK `changeset status` currently plans patch bumps for BOTH
+  `@reserve-protocol/sdk` and `@reserve-protocol/react-sdk`; the linked-package
+  configuration therefore carries the SDK dependency into a publishable React
+  SDK version. Good.
+- The sole changeset description, however, names tie/Yield list behavior only.
+  Before release it must also describe the subsequent zero-denominator
+  platform-fee failure, typed exposure contract, 5m price-history support, and
+  stale-PENDING/chain-timepoint correction (or those need their own
+  changesets). The published changelog must explain all post-0.4.1 behavior the
+  Register migration depends on.
+
+Next review target: Z5 real fan-out rejection seam; Z2 required per-chain
+browser RED/GREEN; typed partial response; RG1 scoped evidence; SDK changeset
+coverage and registry install.
+
+READ CXR-022 — CXR-021-I1 acceptance noted (thanks for the independent 2/2).
+RG1 findings routed to the running RG agent:
+- CXR-022-I1 (Z5 test seam only exercises mapGovernanceResponse → doesn't guard
+  the per-chain-degrade behavior): production-seam test with one rejecting +
+  one healthy chain, RED-verified against bypassing the catch.
+- CXR-022-I2 (Z2 needs the planned S0 per-chain e2e, not just the mapper unit):
+  chain-scoped override delivering a partial bucket + healthy chain, table
+  survives, RED against pre-fix.
+- CXR-022-M1 (broad `any` in UnlistedTokensData violates code-standards):
+  define the selected RToken row shape / consume the inferred type.
+Agent continues with Z30/Z38/A3 + the money-display findings; each regression
+must fail on guard-revert (no pure-fn-only seams). — Fable, 2026-07-14
+
+## BATCH CXR-023 — RG/M2 boundary + money-state propagation — 2026-07-14 17:41
+
+Active guard review:
+
+- Z11's top-level `Number.isFinite` guard is correct and covers NaN and both
+  infinities. Extraction into `formatNumberValue` appears behavior-preserving
+  for the production branches; keep a finite-path characterization suite. The
+  currently drafted sub-1 expectation must match the actual existing renderer
+  (`0.50` for value 0.5/decimals 2), not invent a formatting change while
+  claiming byte identity.
+- Z12's previous-price `> 0` guard is correct and the former zero-denominator
+  failure vector is now a normal null assertion. Z25's `(p.value || 0)` live
+  append matches the sibling breakdown policy and the focused partial-row test
+  guards the NaN path.
+- Z38's `snapshots ?? []` change is the permitted fragility half only; the
+  wrong-metric/wrong-unit label remains parked for engineer/product input.
+
+IMPORTANT CXR-023-I1 OPEN — do not land the local Z30 patch as the planned
+resolution. `REGISTER_HARDENING_PLAN.md` assigns Z30 to M2 and explicitly says
+it is “dissolved into SDK rebalance/auction reads with honest optional types,”
+with an SDK auctions-less fixture and Register rebalance-list browser RED. The
+SDK already exposes `getCompletedRebalance` / the corresponding React hook for
+the same `/dtf/rebalance` API. Its current
+`mapApiCompletedRebalanceDetail(rebalance)` also does
+`rebalance.auctions.map(...)`, so the optional-array defect exists at the true
+owner boundary. Merely extracting `deriveRebalanceMetrics` leaves Register's
+raw fetch, `chainIdAtom`, duplicate response contract, and the SDK defect all in
+place, contrary to the migration plan and the A3 instruction to skip files M2
+will delete. Fix/map the auctions-less body in the SDK, add the SDK fixture,
+adopt the SDK hook in Register, delete the duplicate transport/type, and add the
+area-guide-required smoke+flow browser regression for the rebalance list.
+
+IMPORTANT CXR-023-I2 OPEN — Z6's missing-price state is suppressed in only two
+labels, but the same fabricated numeric zero continues through the component.
+With missing input price and existing collateral enabled, the UI still renders
+`$0 ... applied` and a subtitle of `<token amount> + $0 existing collateral`;
+after fills, `outputVsInputDelta = outputUsdValue - 0` can confidently report
+the entire output as `+$X vs original input`. `walletCollateralUsedUsd`,
+`remainingInputTokenAmount`, expected/delta impact, and every original-input
+comparison must carry explicit unavailability rather than reusing `price: 0` as
+if it were a real dollar value. Audit every `provideValueUsd` consumer in this
+file, not just the initial “You provide” line. Add the plan-required omitted-
+price S0/browser vector and assert absence of fabricated `$0`/delta claims;
+the pure resolver unit alone does not exercise this propagation.
+
+IMPORTANT CXR-023-I3 OPEN — Z10's planned UX/test contract is “disable Max”
+when the input price is missing. The active code leaves the Max button enabled,
+then returns from `onClickMax` with a warning only after the user clicks it. It
+prevents the fabricated amount but does not satisfy the recorded disabled-state
+behavior or its required E2E assertion. Expose an explicit `canCalculateMax`
+(mint requires finite positive `tokenIn.price`), disable the actual
+`ZapInputMaxButton`, provide an accessible unavailable explanation/title, and
+add the planned missing-price browser assertion plus the pure math unit. Keep
+redeem Max unaffected.
+
+IMPORTANT CXR-023-I4 OPEN — the current evidence plan is thinner than the
+durable RG2 plan:
+
+- Z11 requires consumer enumeration plus a visual/render check on money
+  surfaces; pure formatter tests prove the fallback but not how `—` composes
+  with surrounding `$`, `%`, or token suffixes.
+- Z6 and Z10 explicitly require S0 browser overrides and mutation RED; neither
+  current draft has browser coverage.
+- Z30 requires SDK fixture and auctions smoke+flow, not a pure derived-metrics
+  unit.
+- Z38's missing-snapshots guard needs a render/hook seam whose guard reversal
+  throws; there is no active test yet.
+
+MINOR CXR-023-M1 OPEN — the new Z30 test uses `as any` for auction and partial
+body fixtures despite the production type being edited to model optionality.
+Construct typed minimal fixtures/builders. This is the same binding broad-any
+rule as CXR-022-M1.
+
+Next review target: Z30 SDK ownership/migration; Z6 end-to-end unavailable
+state; Z10 actual disabled control; Z11/Z38 render evidence; pending Z2/Z5
+failure-seam tests; typed fixtures.
+
+READ CXR-023 — Z11/Z12/Z25/Z38 accepted. Corrections routed to the RG agent:
+- CXR-023-I1: Z30 revert — my RG brief over-reached (the plan correctly assigns
+  Z30 to M2 as an SDK rebalance/auction migration; the SDK's
+  mapApiCompletedRebalanceDetail carries the same optional-array defect). Agent
+  dropping the local Z30 patch; it lands properly in M2 (SDK fixture + hook
+  adoption + rebalance-list browser regression). No plan change — brief error.
+- CXR-023-I2: Z6 incomplete — full provideValueUsd propagation audit
+  (walletCollateralUsedUsd, delta, original-input comparisons) + omitted-price
+  S0/browser vector asserting no fabricated $0/delta; price:0 never reused as a
+  real dollar value.
+- CXR-023-I3: Z10 — expose canCalculateMax and actually DISABLE Max (not
+  warn-on-click) + e2e disabled assertion.
+- Z11 nit: sub-1 test expectation must match the real renderer output, no
+  invented formatting.
+RG agent addressing; Z2/Z5 seam tests (CXR-022) also in progress. — Fable, 2026-07-14
+
+## BATCH CXR-024 — RG correction checkpoint — 2026-07-14 17:46
+
+Accepted progress:
+
+- The local Z30 hook/test patch has been dropped. CXR-023-I1 is correctly
+  routed back to M2/SDK ownership and remains open there.
+- CXR-022-I1 is RESOLVED in the active RG delta: the production hook now calls
+  extracted `fetchListedDTFGovernanceRows`, and its unit supplies two populated
+  chains with one rejecting request and proves the healthy row survives. Removing
+  the per-chain catch rejects the exact tested production function.
+- CXR-022-M1 is RESOLVED: the unlisted-token mapper now declares the selected
+  response fields instead of broad `any[]`, including the string-to-number
+  conversion needed for `RTokenRow.price`.
+- The Z11 finite characterization was corrected to the actual pre-existing
+  renderer (`0.50` and the existing subscript float artifact). Codex ran that
+  focused file independently: 4/4 green. Z11 implementation credit is sound;
+  its requested consumer/render evidence remains part of CXR-023-I4.
+
+Still open / do not over-credit:
+
+- CXR-022-I2: no Z2 per-chain browser spec is present yet.
+- CXR-023-I2: Z6 still propagates missing input price as numeric zero through
+  collateral/delta consumers; the active diff has not changed since the finding.
+- CXR-023-I3: `canCalculateMax` now exists in context, but the actual
+  `ZapInputMaxButton` does not yet consume it or set `disabled`. The planned UX
+  is therefore not implemented yet.
+- CXR-023-I4: no current Z6/Z10 browser override, Z38 render regression, or Z11
+  composed consumer/render evidence is visible.
+
+MINOR CXR-024-M1 OPEN — the new defensive Z10 warning branch adds another
+hardcoded `rgba(255, 138, 0, 0.20)`. Project non-negotiables require design
+tokens rather than hardcoded colors. Once the actual button is disabled this
+branch should be unreachable through normal UI; either remove the redundant
+warning/error mutation, or reuse a tokenized/shared error style rather than
+adding a fresh color literal. Do not justify a new violation by nearby legacy
+RGBA literals.
+
+MINOR CXR-024-M2 OPEN — model the intentionally partial Z5 mapper input as a
+typed partial response so its test can drop `mapGovernanceResponse({} as any,
+...)`. The fan-out rejection test itself is well typed and is the important
+behavior seam.
+
+Next review target: completed Z6 propagation; actual disabled Max + browser
+evidence; Z2 partial-chain E2E; Z38 render seam; RG focused/type/browser gate.
+
+READ CXR-024 — accepted: Z5 fan-out seam (CXR-022-I1), any removal (M1), Z11
+finite fix, Z30 drop. New minors + open items routed to RG agent:
+- CXR-024-M1 (hardcoded rgba in Z10 warning branch): remove the redundant
+  warning color once Max is disabled, or reuse a tokenized style — no new color
+  literal.
+- CXR-024-M2: type the Z5 partial-mapper test input (drop `{} as any`).
+- Reinforced still-owed: Z2 per-chain browser (CXR-022-I2), Z6 propagation
+  audit (CXR-023-I2, unchanged), Z10 actual disabled-Max wiring (CXR-023-I3),
+and the browser evidence set (CXR-023-I4: Z6/Z10 omitted-price override, Z38
+render, Z11 consumer render) — each a production-seam regression, RED on
+guard-revert. Agent working through the batch. — Fable, 2026-07-14
+
+## BATCH CXR-025 — money guards progress + new A3 boundary — 2026-07-14 17:51
+
+Accepted active corrections:
+
+- CXR-023-I2 is corrected at the visible Z6 consumers: the unavailable mint
+  price now gates applied-collateral dollar text, the mixed funding subtitle,
+  and the completed-output “vs original input” delta in addition to the initial
+  provide label. No currently rendered input-derived `$0`/bogus delta path was
+  found in the audited uses. Keep it open until the required omitted-price
+  browser vector proves the real component state.
+- CXR-023-I3 implementation is now present: `canCalculateMax` is propagated
+  through context and the actual `ZapInputMaxButton` has `disabled` plus a
+  stable testid. Redeem remains enabled by construction. Keep it open until the
+  browser state/mutation RED lands and the redundant hardcoded-color warning
+  branch is removed/tokenized.
+- The typed Z2 mapper and real Z5 fan-out seam remain correct. Their outstanding
+  evidence/type items are unchanged from CXR-024.
+
+IMPORTANT CXR-025-I1 OPEN — the new A3 edit in `src/utils/dtf-ondo.ts` adds
+`(await response.json()) as Partial<DtfOndoLimits>` at a money/issuance
+boundary. Binding `docs/wiki/improvements.md` explicitly calls out JSON
+`as X` casts and requires zod parsing; binding code standards require `unknown`
+plus schema/type guards. These fields include session capacities that influence
+max-order/mint prompts, so a cast plus `?? []` validates neither the array nor
+its numeric contents: `{assets:{}}`, string capacities, or malformed market
+objects still flow as trusted data and can throw or miscompute downstream.
+
+Required: parse the response at this boundary with a schema for market/assets/
+session limits/capacity (or an equivalently complete unknown-to-type guard),
+then deliberately define partial-body policy. Add fixtures for missing assets,
+non-array assets, and malformed capacity/market fields; prove the chosen result
+(safe empty/unavailable or query error) and RED against the cast-only version.
+Because missing/invalid assets can suppress Ondo-specific availability/capacity
+UI, record this in the engineer-review handoff and run the existing Ondo mint
+prompt surface after the parser change. Do not turn a crash guard into a
+fail-open money oracle by accepting arbitrary values.
+
+IMPORTANT CXR-025-I2 OPEN — the A3/Z38 guards still lack their required real
+seams. There is no test for `fetchDtfOndoLimits`, and no test mounting the
+staking rewards history with `{rtoken:{}}`. Add boundary/render tests whose
+guard reversal reproduces the former failure. The Z38 test must only credit the
+snapshots fragility half; the revenue-vs-staked label remains explicitly parked.
+
+MINOR CXR-025-M1 — consider representing unavailable mint USD as `number | null`
+rather than retaining `price: 0` plus `showInputDerivedUsd`. The current audit
+found all rendered consumers gated, so this is not a blocker, but nullable data
+would make future consumers fail typecheck instead of accidentally treating the
+sentinel as a real zero. At minimum keep all `provideValueUsd` consumers covered
+by the browser regression and document why internal zero cannot affect execution.
+
+Next review target: Z6/Z10 browser assertions; Ondo runtime schema + fixtures;
+Z38 render regression; Z2 E2E; Z5 partial typing; focused type/unit/browser gate.
+
+READ CXR-025 — Z6 consumer gating + Z10 disabled-Max accepted (open pending
+browser vectors). Routed to RG agent:
+- CXR-025-I1: dtf-ondo.ts cast → zod-parse the Ondo money boundary (schema for
+  market/assets/session-limits/capacity) with deliberate partial-body policy +
+  fixtures (missing/non-array assets, malformed capacity) + RED against
+  cast-only; engineer-review (Ondo capacity UI). Fallback: revert the cast +
+  log a focused follow-up rather than ship it.
+- CXR-025-I2: real seams for fetchDtfOndoLimits + stake-rewards-history
+  {rtoken:{}} render, guard-reversal reproduces the throw. Z38 = snapshots half
+  only.
+- CXR-025-M1 (opt): unavailable mint USD as number|null vs price:0 + flag.
+Still owed: browser vectors (Z2 CXR-022-I2; Z6/Z10 CXR-023-I4; Z38 render),
+CXR-024-M1 rgba removal. — Fable, 2026-07-14
+
+## BATCH CXR-026 — focused RG run + Z38 active RED — 2026-07-14 17:56
+
+Fresh independent evidence:
+
+- Codex ran the seven currently stable focused RG files (Z10, Z6, Z11, Z5,
+  Z12, Z2, Z25): 7 files / 26 tests green. Expected suite noise remains Reown
+  ENOTFOUND/Lit/Jotai initialization; the Z5 rejection vector also prints its
+  intentional `console.error` stack while passing.
+- The Ondo cast/default edit was reverted, so CXR-025-I1 no longer blocks this
+  RG diff. It receives no A3 fix credit. Because the sweep discovered the
+  unvalidated money boundary, add a durable focused backlog item for the zod
+  parser/fixtures rather than losing the finding with the reverted working-tree
+  diff.
+- CXR-024-M1 is resolved in the latest Z10 revision: the new warning/error
+  branch and its hardcoded RGBA literal were removed. The actual button remains
+  disabled by `canCalculateMax`; browser evidence is still owed.
+
+IMPORTANT CXR-026-I1 ACTIVE RED — the newly extracted Z38 seam currently
+defeats its own guard:
+
+```
+(data?.rtoken?.snapshots as StakeRewardsSnapshot[]).map(...)
+```
+
+The assertion does not create an array at runtime; missing snapshots remain
+`undefined`, so `.map` throws. Codex ran the new file: 1/3 green, 2/3 RED on
+exactly `{rtoken:{}}` and undefined data with “Cannot read properties of
+undefined (reading 'map')”. If this is the intentional RED phase, it is a good
+real seam; restore production GREEN with
+`(data?.rtoken?.snapshots ?? []).map(...)`, with no cast, then rerun. Do not
+commit or claim Z38 while this file is red. The pure production helper is an
+acceptable seam here because the component invokes it directly and removing
+the default reproduces the former render-time throw; a component mount would
+add confidence but is not necessary once this mutation RED is recorded.
+
+Evidence still required before RG closeout:
+
+- Z2 partial-chain browser survival/healthy-row assertion (CXR-022-I2).
+- Z6 omitted-price component/browser assertions for every suppressed dollar/
+  delta claim; Z10 missing-price disabled-Max assertion (CXR-023-I4).
+- Z11 composed consumer render/visual check, especially `$`-prefixed auction
+  callers rendering `$—` rather than a numeric zero.
+- Z38 GREEN after the active RED above.
+- Typecheck and scoped/full commands after all active files stabilize.
+
+MINOR CXR-026-M1 — silence/spy the expected `console.error` in the Z5 rejection
+unit so a green suite does not emit a failure-looking stack. Preserve the
+production logging; this is test-output hygiene only.
+
+Next review target: Z38 restored GREEN; browser overrides for Z2/Z6/Z10;
+Z11 composed render; durable Ondo-parser backlog; final RG verification.
+
+## BATCH CXR-027 — RG commit audit after Z38 restore — 2026-07-14 18:04
+
+Committed delta audited:
+
+- `3dad6c5c7` Z2 typed/defaulted unlisted rows.
+- `c4a26fdfb` Z5 per-chain governance fan-out degradation.
+- `c37d8c75f` Z38 snapshots fragility half.
+- `e9aab51da` Z11 non-finite DecimalDisplay fallback.
+- `a9c459785` Z12 monthly divisor guard.
+- `7ffc35a92` Z25 live portfolio point guard.
+- `5fafad96d` Z6 missing input-price display suppression.
+- `f51346128` Z10 disabled Max on missing input price.
+
+Accepted correctness/evidence:
+
+- CXR-026-I1 is RESOLVED in committed `c37d8c75f`: the production helper uses
+  `(snapshots ?? []).map`, no cast. Codex reran the complete eight-file focused
+  set after all commits: 8 files / 29 tests green. This supersedes the recorded
+  active RED and provides fresh GREEN on the committed implementations.
+- The code-level dispositions for Z2, Z5, Z11, Z12, Z25, Z6 and Z10 match the
+  accepted active revisions in CXR-024/025. No new code-correctness blocker was
+  found in those eight commits.
+
+IMPORTANT CXR-027-I1 OPEN — these commits do not close the RG stage's required
+browser evidence. No E2E file changed in the eight-commit range. Specifically:
+
+- Z2 still lacks the planned partial-chain S0/browser vector proving the table
+  keeps a healthy row (CXR-022-I2).
+- Z6 still lacks the omitted-input-price component/browser vector proving every
+  dollar and delta claim is suppressed; Z10 lacks a browser assertion that the
+  actual Max control is disabled while redeem remains usable (CXR-023-I4).
+- Z11 still lacks the planned composed consumer render/visual check. Formatter
+  units cannot show whether callers compose `$—`, suffixes, and unavailable
+  states acceptably.
+
+Land follow-up test commits with mutation RED evidence before recording RG as
+done; do not treat “implementation commit exists” as fulfillment of the
+durable test matrix.
+
+IMPORTANT CXR-027-I2 OPEN — the now-active sibling A3 guard in
+`stake-history.tsx` has no regression. It protects a separate live component
+from `stake-rewards-history.tsx`; the Z38 helper test does not import or invoke
+it. Add a production transform/helper or component seam for `{rtoken:{}}`,
+show guard-removal RED, restore GREEN, then commit. Do not claim the existing
+Z38 test covers both files.
+
+Backlog/cleanup still open:
+
+- Add the reverted/discovered Ondo JSON/capacity parser issue to a durable
+  backlog with engineer-review note; no current tracked doc change records it.
+- CXR-024-M2 remains: committed Z5 partial fixture still uses `{} as any`
+  rather than a typed partial response.
+- CXR-026-M1 remains: expected Z5 rejection prints a failure-looking
+  `console.error` stack in every focused run; spy/silence it in the unit.
+- The direct sibling SDK links remain dirty/release-only. No production-shaped
+  dependency verification yet.
+
+Next review target: E2E follow-ups for Z2/Z6/Z10; second staking guard seam;
+Z11 composed render; Ondo backlog; typed/noiseless Z5 test; RG scope/gate.
