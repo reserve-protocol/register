@@ -6,6 +6,7 @@ import { loadSnapshot } from '../../../helpers/snapshots'
 import { encodeAbiParameters } from 'viem'
 import type { MockOverrides } from '../../../helpers/overrides'
 import type { Page } from '@playwright/test'
+import { seedFeeRegistry } from '../../../harness/seed'
 
 // B3 (docs/plans/REGISTER_HARDENING.md): zod form bounds used to be bypassed on
 // localhost/dev, so they were unassertable in e2e AND a broken bound could
@@ -33,6 +34,10 @@ const UINT_ZERO = encodeAbiParameters([{ type: 'uint256' }], [0n])
 
 async function bootProposeFees(page: Page, overrides: MockOverrides) {
   const snapshot = loadSnapshot<DtfSnapshot>(`${dtf.snapshotDir}/dtf.json`).dtf
+  // The form's revenue seeding gates on the platform fee resolving; since
+  // B1/M1 a failed registry read is 'unavailable' (no fabricated 50% that
+  // silently unblocked this form) — model a real registry read.
+  seedFeeRegistry(overrides, dtf, 1n, 5n) // platformFee = 20%
   overrides.ethCall(DTF_ADDRESS, '0x459cf24b', BOOL_TRUE) // bidsEnabled()
   overrides.ethCall(snapshot.stToken.id, '0x18160ddd', UINT_ZERO) // keep Tenderly sim not-ready
 
