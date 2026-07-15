@@ -56,6 +56,9 @@ describe('fetchListedDTFGovernanceRows degrades on a bad chain (Z5)', () => {
   ])
 
   it('keeps the healthy chain when another chain rejects', async () => {
+    // The fan-out logs the rejected chain (kept in prod) — silence it here so
+    // the green suite doesn't print a failure-looking stack (CXR-026-M1).
+    const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
     const request = vi.fn((chainId: number) =>
       chainId === 1
         ? Promise.reject(new Error('chain 1 subgraph down'))
@@ -74,5 +77,6 @@ describe('fetchListedDTFGovernanceRows degrades on a bad chain (Z5)', () => {
     expect(rows[0].chainId).toBe(8453)
     expect(rows[0].symbol).toBe('DTFA')
     expect(request).toHaveBeenCalledTimes(2)
+    errorSpy.mockRestore()
   })
 })
