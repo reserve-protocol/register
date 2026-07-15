@@ -59,6 +59,60 @@ export interface RTokenRow {
   chain: number
 }
 
+// Shape of a single `rtokens` row as selected by `query` above — the fields the
+// mapper actually reads. Kept narrow so the trust boundary is typed, not `any`.
+interface UnlistedRTokenResult {
+  id: string
+  targetUnits: string
+  rsrStaked: string
+  token: {
+    name: string
+    symbol: string
+    lastPriceUSD: string
+    transferCount: number
+    totalSupply: string
+    cumulativeVolume: string
+  }
+}
+
+type UnlistedTokensData = Record<
+  number,
+  { rtokens?: UnlistedRTokenResult[] } | undefined
+>
+
+export const buildUnlistedTokenRows = (
+  data: UnlistedTokensData | undefined,
+  chains: readonly number[],
+  currentRsrPrice: number
+): RTokenRow[] => {
+  if (!data) return []
+
+  const rows: RTokenRow[] = []
+  for (const chain of chains) {
+    // A per-chain subgraph error/partial response can return the bucket without
+    // `rtokens` — guard the array, not just the bucket (GH0 twin, Z2).
+    for (const rtoken of data[chain]?.rtokens ?? []) {
+      rows.push({
+        id: getAddress(rtoken.id),
+        targetUnits: rtoken.targetUnits,
+        chain,
+        name: rtoken.token.name,
+        symbol: rtoken.token.symbol,
+        price: +rtoken.token.lastPriceUSD,
+        transactionCount: rtoken.token.transferCount,
+        cumulativeVolume:
+          +formatEther(BigInt(rtoken.token.cumulativeVolume)) *
+          +rtoken.token.lastPriceUSD,
+        staked: +formatEther(BigInt(rtoken.rsrStaked)) * currentRsrPrice,
+        marketCap:
+          +formatEther(BigInt(rtoken.token.totalSupply)) *
+          +rtoken.token.lastPriceUSD,
+      })
+    }
+  }
+  return rows
+}
+
 const useUnlistedTokens = () => {
   const filters = useAtomValue(tokenFilterAtom)
   const { data } = useMultichainQuery(query, filters)
@@ -68,32 +122,7 @@ const useUnlistedTokens = () => {
 
   useEffect(() => {
     if (data) {
-      const tokens: RTokenRow[] = []
-
-      for (const chain of supportedChainList) {
-        if (data[chain]) {
-          tokens.push(
-            ...data[chain].rtokens.map((rtoken: any) => ({
-              id: getAddress(rtoken.id),
-              targetUnits: rtoken.targetUnits,
-              chain,
-              name: rtoken.token.name,
-              symbol: rtoken.token.symbol,
-              price: rtoken.token.lastPriceUSD,
-              transactionCount: rtoken.token.transferCount,
-              cumulativeVolume:
-                +formatEther(rtoken.token.cumulativeVolume) *
-                +rtoken.token.lastPriceUSD,
-              staked: +formatEther(rtoken.rsrStaked) * currentRsrPrice,
-              marketCap:
-                +formatEther(rtoken.token.totalSupply) *
-                rtoken.token.lastPriceUSD,
-            }))
-          )
-        }
-      }
-
-      setTokens(tokens)
+      setTokens(buildUnlistedTokenRows(data, supportedChainList, currentRsrPrice))
     }
   }, [data, currentRsrPrice])
 
