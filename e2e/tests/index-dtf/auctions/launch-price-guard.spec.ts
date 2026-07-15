@@ -23,7 +23,7 @@ const dtf = REGISTRY.find((d) => d.slug === 'cmc20')! // bsc, non-hybrid, v5
 test.use({ walletChain: 56 })
 
 const BSC_USDT = '0x55d398326f99059fF775485246999027B3197955'
-// A cmc20 rebalance/basket token (CAKE on BSC) — present in the price batch, so
+// A cmc20 rebalance/basket token (BTCB on BSC) — present in the price batch, so
 // zeroing its price exercises the "well-formed array, one unusable price" path.
 const CMC20_TOKEN = '0x7130d2a12b9bcbfae4f2634d864a1ee1ce3ead9c'
 

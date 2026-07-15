@@ -1,8 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import {
-  parseCurrentPricesResponse,
-  parseHistoricalSnapshotPrice,
-} from '../use-asset-prices-with-snapshot'
+import { parseCurrentPricesResponse } from '../use-asset-prices-with-snapshot'
 
 describe('parseCurrentPricesResponse (Z37 shape guard)', () => {
   it('maps a well-formed array into current/snapshot prices, lowercasing keys', () => {
@@ -47,42 +44,6 @@ describe('parseCurrentPricesResponse (Z37 shape guard)', () => {
     )
     expect(() => parseCurrentPricesResponse(undefined)).toThrow(
       'Unexpected prices response shape'
-    )
-  })
-})
-
-describe('parseHistoricalSnapshotPrice (Z37 historical shape guard)', () => {
-  it('reads the middle timeseries point', () => {
-    expect(
-      parseHistoricalSnapshotPrice({
-        address: '0xabc',
-        timeseries: [
-          { price: 1, timestamp: 1 },
-          { price: 2, timestamp: 2 },
-          { price: 3, timestamp: 3 },
-        ],
-      })
-    ).toBe(2)
-  })
-
-  it('returns 0 for a well-formed but empty timeseries (legit "no price")', () => {
-    expect(
-      parseHistoricalSnapshotPrice({ address: '0xabc', timeseries: [] })
-    ).toBe(0)
-  })
-
-  it('throws on a { statusCode } error body — never silently retains current price', () => {
-    expect(() =>
-      parseHistoricalSnapshotPrice({ statusCode: 500, message: 'boom' })
-    ).toThrow('boom')
-  })
-
-  it('throws when timeseries is missing / mis-shaped', () => {
-    expect(() => parseHistoricalSnapshotPrice({ address: '0xabc' })).toThrow(
-      'Unexpected historical prices response shape'
-    )
-    expect(() => parseHistoricalSnapshotPrice(null)).toThrow(
-      'Unexpected historical prices response shape'
     )
   })
 })

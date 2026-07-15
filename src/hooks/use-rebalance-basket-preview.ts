@@ -267,8 +267,7 @@ const useRebalanceBasketPreview = (
   const tokens = useTokens(rebalance?.data.tokens ?? [])
   const rebalanceControl = useAtomValue(indexDTFRebalanceControlAtom)
   const { data: prices } = useAssetPricesWithSnapshot(
-    tokens ? Object.keys(tokens) : undefined,
-    timestamp
+    tokens ? Object.keys(tokens) : undefined
   )
 
   return useMemo(() => {
