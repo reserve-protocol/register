@@ -40,8 +40,27 @@ passes without its fix.
 - **Versioning: `link:../dtf-sdk` during dev, publish + pin at the end**
   (react-zapper 2.4.0 flow: after publish, pin the real version + `pnpm install`
   before merging register).
-- **Branches: one long-lived branch per repo**, slices as coherent commits, one
-  big review each at the end. Never push/merge without Luis's say-so.
+- **Branches: concentrated checkpoint branches, one per wave** (Luis, 2026-07-14),
+  so each is a focused PR to review — NOT one giant branch. Naming
+  `hardening-chk-N`, stacked (each branches off the previous so its PR diffs
+  only its own wave):
+  - **chk-1** — foundational hardening: S0 harness + S3 sanitizer + M1 container
+    migration + RG register-only guards (the current `feature/register-hardening`
+    → renamed to `hardening-chk-1` when RG closes).
+  - **chk-2** — **rebalances/auctions (M2), fully isolated.** This is the
+    hardest surface to review (on-chain rebalance math + `openAuction` calldata);
+    Luis reviews it carefully and separately. Testing a rebalance is non-trivial
+    — the PR must carry the browser regressions + the engineer-review handoff +
+    the "SDK math is already fail-loud" scouting note (`scratchpad/M2-brief.md`).
+  - **chk-3** — governance-state adoption (M3); **chk-4** — yield/portfolio (M4);
+    **chk-5** — a11y (S7); **chk-6** — error boundaries (S8). Adjust as waves
+    merge/split; keep each a single reviewable concern.
+  - **SDK** side mirrors per checkpoint: SDK-PR-1 = chk-1's SDK commits
+    (tie/yield-state/fee/exposure/interval); SDK-PR-2 = chk-2's rebalance SDK
+    commits; etc. A register checkpoint's PR depends on its SDK PR
+    merging/publishing first (release-boundary closeout).
+  - Never push/merge without Luis's say-so. Checkpoint branches are created
+    locally at wave close; Luis opens the PRs when ready.
 - **Engineer review: one consolidated end-of-effort assessment.** Expected
   changes are guards/adoptions that don't move main-flow math; each math-adjacent
   change must be e2e-validatable. If anything genuinely significant to on-chain
