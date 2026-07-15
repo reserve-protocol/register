@@ -163,3 +163,61 @@ describe('portfolioActiveProposalsAtom — SDK oracle via production seam (CXR-0
     expect(rows[0].voting.state).toBe(PROPOSAL_STATES.SUCCEEDED)
   })
 })
+
+// CXR-078: the reserve-api portfolio row now carries the optimistic veto context,
+// so the Index oracle finalizes a challenged proposal by comparing against votes
+// to the veto threshold (1000 here). RED: before the adapter passed `optimistic`,
+// an opposed optimistic proposal past its window returned proposal.state (ACTIVE)
+// forever — so the pure oracle returned ACTIVE, not DEFEATED, and the missing-
+// context row (no filter) stayed stranded in the active list.
+const indexOptimistic = (against: string, extra: Record<string, unknown> = {}) => ({
+  ...standardProposal(500),
+  isIndexDTF: true,
+  isOptimistic: true,
+  vetoThreshold: '100000000000000000',
+  vetoThresholdVotes: '1000',
+  optimisticSnapshot: '1',
+  optimisticSnapshotSupply: '10000',
+  againstWeightedVotes: against,
+  ...extra,
+})
+
+const optimisticState = (against: string, now = 501) =>
+  getPortfolioProposalVotingState(
+    indexOptimistic(against) as unknown as PortfolioProposal,
+    now
+  ).state
+
+describe('getPortfolioProposalVotingState — optimistic Index veto (CXR-078)', () => {
+  it('opposed below the veto threshold → SUCCEEDED', () => {
+    expect(optimisticState('999')).toBe(PROPOSAL_STATES.SUCCEEDED)
+  })
+  it('opposed at/above the veto threshold → DEFEATED', () => {
+    expect(optimisticState('1000')).toBe(PROPOSAL_STATES.DEFEATED)
+  })
+  it('below the veto threshold before the deadline stays ACTIVE', () => {
+    expect(optimisticState('500', 499)).toBe(PROPOSAL_STATES.ACTIVE)
+  })
+})
+
+describe('portfolioActiveProposalsAtom — optimistic list membership (CXR-078)', () => {
+  it('opposed below the veto threshold stays in the active list (SUCCEEDED)', () => {
+    const rows = activeRows(501, 'index', indexOptimistic('999'))
+    expect(rows).toHaveLength(1)
+    expect(rows[0].voting.state).toBe(PROPOSAL_STATES.SUCCEEDED)
+  })
+
+  it('vetoed proposal leaves the active list (DEFEATED is terminal)', () => {
+    const rows = activeRows(501, 'index', indexOptimistic('1000'))
+    expect(rows).toHaveLength(0)
+  })
+
+  it('opposed but missing veto context past the window is dropped, not stranded ACTIVE', () => {
+    const rows = activeRows(501, 'index', {
+      ...standardProposal(500),
+      isOptimistic: true,
+      againstWeightedVotes: '1000',
+    })
+    expect(rows).toHaveLength(0)
+  })
+})

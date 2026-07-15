@@ -108,12 +108,55 @@ const ACTIVE_STATES = new Set([
 // outcome/lifecycle is the SDK's audited derivation (Z22) — no local copy of the
 // governor math — selected by the row's `isIndexDTF` flag: Index proposals
 // (incl. optimistic vote-lock) go through the Index oracle, Yield proposals
-// through the yield oracle. Aggregate rows carry no optimistic RPC context, same
-// as the explorer list; the Index oracle degrades safely (unopposed → SUCCEEDED).
+// through the yield oracle. The reserve-api portfolio row carries the optimistic
+// veto context (CXR-078), so the Index oracle can finalize a challenged proposal
+// instead of holding it ACTIVE forever.
 // Exported for unit testing (pure) — see tests/atoms.test.ts.
 const rawAmount = (value: string): Amount => {
   const raw = BigInt(value)
   return { raw, formatted: formatEther(raw) }
+}
+
+const MAX_UINT256 = (1n << 256n) - 1n
+
+// A challenged/transitioned proposal reports vetoThresholdVotes as MAX_UINT256;
+// an unset optimistic threshold reports 0. Both mean "no usable veto votes".
+const parseVetoThresholdVotes = (value?: string | null): bigint | undefined => {
+  if (value === null || value === undefined) return undefined
+  const raw = BigInt(value)
+  return raw === MAX_UINT256 ? undefined : raw
+}
+
+const parseVetoThreshold = (value?: string | null): bigint | undefined => {
+  const threshold = parseVetoThresholdVotes(value)
+  return threshold === 0n ? undefined : threshold
+}
+
+// Mirrors the SDK's optimistic-context mapper: build it only when EVERY veto
+// input is present and valid. A partial context (e.g. snapshotSupply defaulted
+// to 0) would make the oracle report CANCELED; no context makes it hold ACTIVE.
+// So it's all-or-nothing — a missing field yields undefined and the caller drops
+// the un-finalizable row from the active list.
+const buildIndexOptimisticContext = (p: PortfolioProposal) => {
+  if (p.isOptimistic !== true) return undefined
+  const vetoThreshold = parseVetoThreshold(p.vetoThreshold)
+  const vetoThresholdVotes = parseVetoThresholdVotes(p.vetoThresholdVotes)
+  if (
+    p.optimisticSnapshot == null ||
+    p.optimisticSnapshotSupply == null ||
+    vetoThreshold === undefined ||
+    vetoThresholdVotes === undefined
+  ) {
+    return undefined
+  }
+  return {
+    proposalId: p.id,
+    voteToken: p.dtfAddress,
+    snapshot: BigInt(p.optimisticSnapshot),
+    snapshotSupply: rawAmount(p.optimisticSnapshotSupply),
+    vetoThreshold,
+    vetoThresholdVotes: rawAmount(vetoThresholdVotes.toString()),
+  }
 }
 
 export const getPortfolioProposalVotingState = (
@@ -128,6 +171,7 @@ export const getPortfolioProposalVotingState = (
   const quorumVotes = rawAmount(p.quorumVotes)
 
   if (p.isIndexDTF) {
+    const optimistic = buildIndexOptimisticContext(p)
     return getIndexProposalState(
       {
         state: p.state,
@@ -139,6 +183,9 @@ export const getPortfolioProposalVotingState = (
         abstainWeightedVotes,
         quorumVotes,
         executionETA: p.executionETA ? Number(p.executionETA) : undefined,
+        ...(optimistic
+          ? { optimistic, vetoThreshold: optimistic.vetoThreshold }
+          : {}),
       } as Parameters<typeof getIndexProposalState>[0],
       timestamp
     )
@@ -231,6 +278,18 @@ export const portfolioActiveProposalsAtom = atom<ActiveProposalRow[]>((get) => {
       voting: getPortfolioProposalVotingState(p, timestamp),
     }))
     .filter((p) => ACTIVE_STATES.has(p.voting.state))
+    // An optimistic Index proposal still ACTIVE past its window means the oracle
+    // couldn't finalize it (missing veto context) — its veto period is over and
+    // there's nothing to act on, so drop it instead of stranding it as active.
+    .filter(
+      (p) =>
+        !(
+          p.isIndexDTF &&
+          p.isOptimistic === true &&
+          p.voting.state === PROPOSAL_STATES.ACTIVE &&
+          timestamp > Number(p.voteEnd)
+        )
+    )
     .sort((a, b) => Number(b.creationTime) - Number(a.creationTime))
 })
 
