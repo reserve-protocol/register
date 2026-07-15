@@ -20,12 +20,12 @@
   NaN/Infinity/÷0. So Z26/Z19's on-chain math doesn't silently skew — a 0 price
   throws. The register work is UX: validate BEFORE the lib call and surface
   "price unavailable — cannot launch" instead of a generic try/catch error.
-- **SDK completed-rebalance mapper throws on missing auctions** (INVALID_RESPONSE).
-  Z30 decision needed: is an auctions-less completed rebalance a VALID "no
-  auctions run" state (→ map to `[]`, register shows "0 auctions") or malformed
-  (→ throw)? The finding says "Analytics fields optional — not present when no
-  auctions" ⇒ absent = valid empty ⇒ SDK should map to `[]`, not throw. **This
-  is an API-contract/product call → confirm with Luis before changing the SDK.**
+- **[SUPERSEDED by § M2a UPDATE below]** ~~SDK completed-rebalance mapper throws
+  on missing auctions; is auctions-less valid-empty (map `[]`) or malformed
+  (throw)?~~ This hypothesis was DISPROVEN by real-API verification: the mapper
+  threw because of an array-envelope bug (not auctions-less), and `auctions` is
+  ALWAYS present (`[]` when none) — so omission = malformed = fail-loud. See the
+  M2a UPDATE for the actual resolution.
 
 ## Register raw-fetch/atom sites to migrate (~15 files under auctions/)
 updater.tsx, atoms.ts, rebalance-list/{metrics-row, historical-rebalance-item,
@@ -61,7 +61,9 @@ Do NOT run concurrently with another main-tree agent. SDK changes need the
 Node24 rebuild + Playwright coordination (port 3005 check).
 
 ## Unresolved for Luis
-1. Z30 auctions-less: valid-empty (map []) vs malformed (throw)?
+1. ~~Z30 auctions-less: valid-empty vs malformed?~~ **RESOLVED (M2a):** empirically
+   omission = malformed = fail-loud; the open item is cross-chain confirmation of
+   the `/dtf/rebalance` contract (single-element array + auctions-always-present).
 2. Z24 auctionLength on-chain floor (still open from the plan).
 3. The whole M2 auction-math surface is engineer-review — Luis reviews before merge.
 
