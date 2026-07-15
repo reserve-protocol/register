@@ -22,6 +22,25 @@ const dailyQuery = gql`
     }
   }
 `
+interface StakeRewardsSnapshot {
+  timestamp: string
+  cumulativeRSRRevenueUSD: number
+}
+interface StakeRewardsData {
+  rtoken?: { snapshots?: StakeRewardsSnapshot[] }
+}
+
+export const buildStakeRewardsRows = (data: StakeRewardsData | undefined) =>
+  // Guard `snapshots`, not just `rtoken` — a partial subgraph response can return
+  // the rtoken without its snapshots (Z38).
+  (data?.rtoken?.snapshots ?? []).map(
+    ({ timestamp, cumulativeRSRRevenueUSD }) => ({
+      value: cumulativeRSRRevenueUSD,
+      label: dayjs.unix(+timestamp).format('YYYY-M-D HH:mm:ss'),
+      display: `${formatCurrency(cumulativeRSRRevenueUSD)}`,
+    })
+  )
+
 const StakeRewardsHistory = () => {
   const rToken = useRToken()
   const [current, setCurrent] = useState(TIME_RANGES.MONTH)
@@ -31,25 +50,7 @@ const StakeRewardsHistory = () => {
     fromTime,
   })
 
-  const rows = useMemo(() => {
-    if (data) {
-      return (
-        data.rtoken?.snapshots.map(
-          ({
-            timestamp,
-            cumulativeRSRRevenueUSD,
-          }: {
-            timestamp: string
-            cumulativeRSRRevenueUSD: number
-          }) => ({
-            value: cumulativeRSRRevenueUSD,
-            label: dayjs.unix(+timestamp).format('YYYY-M-D HH:mm:ss'),
-            display: `${formatCurrency(cumulativeRSRRevenueUSD)}`,
-          })
-        ) || []
-      )
-    }
-  }, [data])
+  const rows = useMemo(() => buildStakeRewardsRows(data), [data])
 
   const currentValue = rows && rows.length ? rows[rows.length - 1].value : 0
 
