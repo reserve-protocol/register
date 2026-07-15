@@ -14,7 +14,6 @@ import {
   indexDTFRebalanceControlAtom,
   indexDTFStatusAtom,
   indexDTFTransactionsAtom,
-  indexDTFVersionAtom,
   performanceTimeRangeAtom,
 } from '@/state/dtf/atoms'
 import {
@@ -45,9 +44,9 @@ export const resetIndexDTFAtomsAtom = atom(null, (_, set) => {
   set(indexDTFStatusAtom, 'active')
   set(indexDTFTransactionsAtom, [])
   set(indexDTFMarketCapAtom, undefined)
-  // Loading sentinel, NOT '4.0.0' — resetting to a concrete version would
-  // fabricate v4 while a v5 destination's version read is still pending, and
-  // this atom selects write ABIs + version-gated branches. Consumers are not
-  // yet gated on the pending state (open engineer-review item).
-  set(indexDTFVersionAtom, undefined)
+  // indexDTFVersionAtom is deliberately NOT reset: it initializes to a
+  // concrete '4.0.0' and its consumers select v4/v5 ABIs + calldata with no
+  // pending state, so any reset value fabricates a version during the load
+  // window. Full version-identity gating is an open engineer-review item —
+  // see docs/wiki/progress.md § Backlog.
 })

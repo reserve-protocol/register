@@ -82,14 +82,16 @@ test(
   }
 )
 
-// FIXED (M1/Z21): `indexDTFVersionAtom` is now cleared by
-// resetIndexDTFAtomsAtom (state/dtf/reset-index-dtf-atoms.ts) together with the
-// transactions/market-cap mirrors, and the reset list is unit-pinned in
-// state/dtf/tests/reset-index-dtf-atoms.test.ts. A version-gated e2e observable
+// OPEN (engineer review — CXR-013): `indexDTFVersionAtom` is NOT reset on
+// DTF→DTF nav and initializes to a concrete '4.0.0', so a wrong version is
+// fabricated/leaked during a DTF's load window. Any reset value would fabricate
+// too — its consumers (getFolioVersion, basketProposalCalldatasAtom, isV5
+// branches) select v4/v5 ABIs + calldata with no pending state. The sound fix
+// (undefined initial + gating every consumer until useIndexDtfVersion resolves)
+// is tracked in docs/wiki/progress.md § Backlog. A version-gated e2e observable
 // (`data-dtf-version` on a version-conditional surface) is still the missing
-// piece for an end-to-end regression — tracked in docs/plans/E2E_BUG_LEDGER.md;
-// a placeholder spec that can't fail for the root cause stays out on purpose
-// (CODEX HARN-021 / IDX-OVR-013).
+// piece for an end-to-end regression; a placeholder spec that can't fail for
+// the root cause stays out on purpose (CODEX HARN-021 / IDX-OVR-013).
 
 // Z21 (atom leaks): DTF→DTF SPA navigation (in-app click, NO reload) must clear
 // the per-DTF stat mirrors — indexDTFTransactionsAtom (tx volume / 24h supply)

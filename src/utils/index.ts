@@ -480,12 +480,10 @@ export const uuidv4 = () => {
 }
 
 // Check if the current version is greater than or equal to the required version
-// (a pending/undefined current version never satisfies the requirement)
 export const checkVersion = (
   requiredVersion: string,
-  currentVersion: string | undefined
+  currentVersion: string
 ): boolean => {
-  if (!currentVersion) return false
   const requiredVersionParts = requiredVersion.split('.').map(Number)
   const currentVersionParts = currentVersion.split('.').map(Number)
 

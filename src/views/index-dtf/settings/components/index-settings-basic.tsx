@@ -19,7 +19,7 @@ const BasicInfo = () => {
   const indexDTF = useAtomValue(indexDTFAtom)
   const version = useAtomValue(indexDTFVersionAtom)
   const rebalanceControl = useAtomValue(indexDTFRebalanceControlAtom)
-  const isV5 = version?.startsWith('5') ?? false
+  const isV5 = version.startsWith('5')
   const [mandateExpanded, setMandateExpanded] = useState(false)
 
   const mandate = indexDTF?.mandate

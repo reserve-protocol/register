@@ -510,7 +510,7 @@ export const basketProposalCalldatasAtom = atom<Hex[] | undefined>((get) => {
   const maxAuctionSizesMap = get(maxAuctionSizesAtom)
 
   // Determine folio version (4 and 5 are the enum values)
-  const folioVersion = version?.startsWith('5') ? 5 : 4
+  const folioVersion = version.startsWith('5') ? 5 : 4
 
   if (
     !isConfirmed ||

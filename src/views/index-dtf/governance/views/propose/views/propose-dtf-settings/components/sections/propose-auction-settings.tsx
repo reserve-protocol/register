@@ -11,7 +11,7 @@ import ProposeWeightControl from './propose-weight-control'
 const ProposeBidsEnabled = () => {
   const { control } = useFormContext()
   const version = useAtomValue(indexDTFVersionAtom)
-  const isV5 = version?.startsWith('5') ?? false
+  const isV5 = version.startsWith('5')
 
   if (!isV5) return null
 

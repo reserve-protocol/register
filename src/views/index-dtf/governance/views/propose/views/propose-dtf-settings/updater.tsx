@@ -68,7 +68,7 @@ const Updater = () => {
   const rebalanceControl = useAtomValue(indexDTFRebalanceControlAtom)
   const version = useAtomValue(indexDTFVersionAtom)
   const platformFee = useAtomValue(indexDTFFeeAtom)
-  const isV5 = version?.startsWith('5') ?? false
+  const isV5 = version.startsWith('5')
   const optimisticGovernance = indexDTF?.ownerGovernance?.optimistic
   const optimisticSelectorRegistry = optimisticGovernance?.selectorRegistry
 

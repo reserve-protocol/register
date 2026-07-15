@@ -13,12 +13,10 @@ export const FOLIO_VERSION_V5 = 5 as FolioVersion
 
 /**
  * Convert version string to FolioVersion enum
- * v5.x.x → V5, everything else (incl. pending/undefined) → V4
+ * v5.x.x → V5, everything else → V4
  */
-export function getFolioVersion(
-  versionString: string | undefined
-): FolioVersion {
-  return versionString?.startsWith('5') ? FOLIO_VERSION_V5 : FOLIO_VERSION_V4
+export function getFolioVersion(versionString: string): FolioVersion {
+  return versionString.startsWith('5') ? FOLIO_VERSION_V5 : FOLIO_VERSION_V4
 }
 
 // -------------------------------------------------------------------
