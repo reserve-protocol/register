@@ -17,13 +17,13 @@ const baseCtx = {
 }
 
 describe('ZapInputMaxButton (Z10)', () => {
-  it('disables Max when the input price is missing (canCalculateMax=false)', () => {
+  it('disables Max when the calculation is unavailable (canCalculateMax=false)', () => {
     mockUseZap.mockReturnValue({ ...baseCtx, canCalculateMax: false })
     const { getByTestId } = render(<ZapInputMaxButton />)
     expect(getByTestId('zap-max-button').hasAttribute('disabled')).toBe(true)
   })
 
-  it('enables Max when the input price is available', () => {
+  it('enables Max when the calculation is available', () => {
     mockUseZap.mockReturnValue({ ...baseCtx, canCalculateMax: true })
     const { getByTestId } = render(<ZapInputMaxButton />)
     expect(getByTestId('zap-max-button').hasAttribute('disabled')).toBe(false)

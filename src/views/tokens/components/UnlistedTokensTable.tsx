@@ -28,9 +28,10 @@ type RTokenCountData = Record<
   { protocol?: { rTokenCount?: number | string } | null } | undefined
 >
 
-// Unlisted count = total RTokens per chain minus the curated listed set. A
-// partial GetRTokenCount response (missing bucket/protocol) contributes 0 rather
-// than throwing or fabricating a total (A3, GH0 class).
+// Unlisted count = per chain, (total RTokens − curated listed set). A partial
+// GetRTokenCount response must never render a negative or NaN "unlisted" total:
+// a missing / non-numeric per-chain count is SKIPPED, and a present count is
+// clamped at 0 so a stale/inconsistent value can't go negative (A3, GH0 class).
 export const sumUnlistedRTokenCount = (
   data: RTokenCountData | undefined,
   chains: readonly number[]
@@ -39,8 +40,10 @@ export const sumUnlistedRTokenCount = (
 
   let total = 0
   for (const chain of chains) {
-    const rTokenCount = Number(data[chain]?.protocol?.rTokenCount ?? 0)
-    total += rTokenCount - (LISTED_RTOKEN_ADDRESSES[chain]?.length ?? 0)
+    const count = Number(data[chain]?.protocol?.rTokenCount)
+    if (!Number.isFinite(count)) continue // missing / non-numeric → contribute 0
+    const listed = LISTED_RTOKEN_ADDRESSES[chain]?.length ?? 0
+    total += Math.max(0, count - listed)
   }
   return total
 }

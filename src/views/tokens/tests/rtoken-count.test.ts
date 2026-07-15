@@ -14,21 +14,41 @@ describe('sumUnlistedRTokenCount (A3)', () => {
     expect(total).toBe(3)
   })
 
-  it('treats a missing chain bucket as 0 contribution (no throw)', () => {
-    expect(() => sumUnlistedRTokenCount({}, [ChainId.Mainnet])).not.toThrow()
-    // Missing bucket → 0 total − listed count.
-    expect(sumUnlistedRTokenCount({}, [ChainId.Mainnet])).toBe(-listed)
+  it('clamps a per-chain contribution at 0 (never negative)', () => {
+    // A stale/inconsistent count below the listed set must not go negative.
+    const total = sumUnlistedRTokenCount(
+      { [ChainId.Mainnet]: { protocol: { rTokenCount: 0 } } },
+      [ChainId.Mainnet]
+    )
+    expect(total).toBe(0)
   })
 
-  it('treats a missing protocol as 0 (no throw)', () => {
-    expect(() =>
+  it('skips a missing bucket (contributes 0, not a negative)', () => {
+    expect(() => sumUnlistedRTokenCount({}, [ChainId.Mainnet])).not.toThrow()
+    expect(sumUnlistedRTokenCount({}, [ChainId.Mainnet])).toBe(0)
+  })
+
+  it('skips a missing protocol (contributes 0)', () => {
+    expect(
       sumUnlistedRTokenCount({ [ChainId.Mainnet]: {} }, [ChainId.Mainnet])
-    ).not.toThrow()
+    ).toBe(0)
     expect(
       sumUnlistedRTokenCount({ [ChainId.Mainnet]: { protocol: null } }, [
         ChainId.Mainnet,
       ])
-    ).toBe(-listed)
+    ).toBe(0)
+  })
+
+  it('skips a non-numeric string count (NaN-safe), keeping healthy chains', () => {
+    // GraphQL permits a string here — Number('bad') = NaN must not poison the sum.
+    const total = sumUnlistedRTokenCount(
+      {
+        [ChainId.Mainnet]: { protocol: { rTokenCount: 'bad' } },
+        [ChainId.Base]: { protocol: { rTokenCount: LISTED_RTOKEN_ADDRESSES[ChainId.Base].length + 2 } },
+      },
+      [ChainId.Mainnet, ChainId.Base]
+    )
+    expect(total).toBe(2)
   })
 
   it('returns 0 for undefined data', () => {
