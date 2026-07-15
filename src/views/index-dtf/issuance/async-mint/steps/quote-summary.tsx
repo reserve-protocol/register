@@ -56,6 +56,7 @@ import { Address, erc20Abi, formatUnits } from 'viem'
 import { useWalletClient } from 'wagmi'
 import { readContracts } from 'wagmi/actions'
 import { useAsyncZap } from '../async-zap-context'
+import { resolveInputTokenPrice } from './input-token-price'
 import LegRow from '../components/leg-row'
 import OndoLimitsBanner from '../components/ondo-limits-banner'
 import { useOrderExpiryCountdown } from '../hooks/use-order-expiry-countdown'
@@ -225,10 +226,22 @@ const QuoteSummary = () => {
     staleTime: 30_000,
     enabled: !!inputToken.address,
   })
-  const inputTokenPrice = inputPrices?.[0]?.price ?? 1
+  const { price: inputTokenPrice, available: isInputPriceAvailable } =
+    resolveInputTokenPrice(inputPrices)
   const provideValueUsd = isMint
     ? parsedPay * inputTokenPrice
     : parsedPay * (indexDTFPrice ?? 0)
+  // Mint's provide-value is USD derived from the input-token price; when that
+  // price is unavailable, show "Price unavailable" instead of a fabricated $
+  // figure (Z6). Redeem derives from indexDTFPrice, so it's unaffected.
+  const mintProvideValueDisplay =
+    isMint && !isInputPriceAvailable
+      ? t`Price unavailable`
+      : `$${formatCurrency(provideValueUsd)}`
+  // Any USD figure derived from the input-token price (provide value, applied
+  // collateral, output-vs-input delta) is unavailable for a mint we can't price
+  // — never render a fabricated $0 or a bogus delta (Z6). Redeem is unaffected.
+  const showInputDerivedUsd = !isMint || isInputPriceAvailable
   const walletCollateralUsedUsd = useExistingBalances
     ? isMint
       ? Math.min(heldCollateralTotalUsd, provideValueUsd)
@@ -798,7 +811,9 @@ const QuoteSummary = () => {
                     >
                       <span>
                         {useExistingBalances
-                          ? t`Existing collateral · $${formatCurrency(walletCollateralUsedUsd)} applied`
+                          ? showInputDerivedUsd
+                            ? t`Existing collateral · $${formatCurrency(walletCollateralUsedUsd)} applied`
+                            : t`Existing collateral applied`
                           : t`Existing collateral · $${formatCurrency(heldCollateralTotalUsd)} available`}
                       </span>
                       <span
@@ -842,7 +857,7 @@ const QuoteSummary = () => {
                             )}
                           >
                             {isMint && useExistingBalances
-                              ? `$${formatCurrency(provideValueUsd)}`
+                              ? mintProvideValueDisplay
                               : isMint
                                 ? payAmountStr || '0.00'
                                 : payAmountStr || '0'}
@@ -850,9 +865,11 @@ const QuoteSummary = () => {
                         </div>
                         <div className="mt-2 text-sm font-light text-muted-foreground">
                           {isMint && useExistingBalances
-                            ? t`${formatCurrency(remainingInputTokenAmount)} ${inputToken.symbol} + $${formatCurrency(walletCollateralUsedUsd)} existing collateral`
+                            ? showInputDerivedUsd
+                              ? t`${formatCurrency(remainingInputTokenAmount)} ${inputToken.symbol} + $${formatCurrency(walletCollateralUsedUsd)} existing collateral`
+                              : t`${formatCurrency(remainingInputTokenAmount)} ${inputToken.symbol} + existing collateral`
                             : isMint
-                              ? `$${formatCurrency(provideValueUsd)}`
+                              ? mintProvideValueDisplay
                               : `$${formatCurrency(provideValueUsd)}`}
                         </div>
                       </>
@@ -1465,7 +1482,7 @@ const QuoteSummary = () => {
                         <>
                           {showReadyMintOutput ? '' : '~'}$
                           {formatCurrency(outputUsdValue)}
-                          {showReadyMintOutput
+                          {showReadyMintOutput && showInputDerivedUsd
                             ? ' ' +
                               t`(${outputVsInputDeltaLabel} vs original input)`
                             : null}
