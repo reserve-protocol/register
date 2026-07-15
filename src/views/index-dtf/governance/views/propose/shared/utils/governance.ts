@@ -86,6 +86,22 @@ export const proposalThresholdToPercentage = (
 }
 
 /**
+ * Whether the form's proposal-threshold percentage differs from the current
+ * on-chain threshold.
+ *
+ * WHY (E1): the form field is seeded from proposalThresholdToPercentage (already
+ * a percentage), so the change-detector must compare against the SAME percentage
+ * basis. Comparing the field to raw/1e18 flags the threshold as changed on every
+ * proposal, appending a phantom setProposalThreshold calldata and defeating the
+ * empty-change guard. Shared by the DAO- and basket-settings updaters so they
+ * can't drift.
+ */
+export const isProposalThresholdChanged = (
+  formPercentage: number,
+  governanceThreshold: bigint | number
+): boolean => formPercentage !== proposalThresholdToPercentage(governanceThreshold)
+
+/**
  * Check if governance changes object has any changes
  */
 export const hasGovernanceChanges = (changes: GovernanceChanges): boolean => {

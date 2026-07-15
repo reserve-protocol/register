@@ -11,7 +11,11 @@ import {
   isProposalConfirmedAtom,
   currentQuorumPercentageAtom,
 } from './atoms'
-import { proposalThresholdToPercentage, secondsToDays } from '../../shared'
+import {
+  isProposalThresholdChanged,
+  proposalThresholdToPercentage,
+  secondsToDays,
+} from '../../shared'
 
 const Updater = () => {
   const indexDTF = useAtomValue(indexDTFAtom)
@@ -114,12 +118,14 @@ const Updater = () => {
           }
         }
 
-        // Check proposal threshold (convert to percentage for comparison)
+        // Check proposal threshold (compare like-for-like percentage — E1)
         if (daoVotingThreshold !== undefined) {
-          const currentThreshold = proposalThresholdToPercentage(
-            governance.proposalThreshold
-          )
-          if (daoVotingThreshold !== currentThreshold) {
+          if (
+            isProposalThresholdChanged(
+              daoVotingThreshold,
+              governance.proposalThreshold
+            )
+          ) {
             changes.proposalThreshold = daoVotingThreshold
           } else {
             delete changes.proposalThreshold

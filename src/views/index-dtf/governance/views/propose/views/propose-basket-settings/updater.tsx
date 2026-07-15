@@ -11,7 +11,11 @@ import {
   isProposalConfirmedAtom,
   currentQuorumPercentageAtom,
 } from './atoms'
-import { proposalThresholdToPercentage, secondsToDays } from '../../shared'
+import {
+  isProposalThresholdChanged,
+  proposalThresholdToPercentage,
+  secondsToDays,
+} from '../../shared'
 
 const Updater = () => {
   const indexDTF = useAtomValue(indexDTFAtom)
@@ -123,10 +127,14 @@ const Updater = () => {
           delete changes.votingPeriod
         }
 
-        // Check proposal threshold (convert to percentage for comparison)
+        // Check proposal threshold (compare like-for-like percentage — E1)
         if (basketVotingThreshold !== undefined && basketVotingThreshold !== '') {
-          const currentThreshold = Number(governance.proposalThreshold) / 1e18
-          if (basketVotingThreshold !== currentThreshold) {
+          if (
+            isProposalThresholdChanged(
+              basketVotingThreshold,
+              governance.proposalThreshold
+            )
+          ) {
             changes.proposalThreshold = basketVotingThreshold
           } else {
             delete changes.proposalThreshold
