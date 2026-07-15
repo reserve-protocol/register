@@ -6,6 +6,9 @@ and the general surfaces: explorer, earn, bridge, portfolio, discover). This is
 a focused hardening pass, **not** a rewrite — the architecture is sound; the risk
 lives at the boundaries._
 
+> **Execution:** slice-by-slice plan with test tiers per item lives in
+> `REGISTER_HARDENING_PLAN.md`. Fixes get annotated `FIXED` here as they land.
+
 > **How to use this doc.** Each finding has a location, a concrete failure
 > scenario, a fix, effort, and whether it's an engineer-review / on-chain-math
 > surface. Line numbers were accurate at the time of writing — **verify against
@@ -159,6 +162,9 @@ fee-preview surfaces. **Engineer-review / on-chain-math surface.**
 - **Effort:** small. Two sites.
 
 ### B3 — `[P2]` Fee bounds can't be validated (validation bypass on non-prod)
+> **Decision (Luis, 2026-07-14):** e2e gets its own environment where the
+> bypass is OFF (dedicated e2e build mode); dev keeps the bypass. Schema unit
+> tests land regardless. See `REGISTER_HARDENING_PLAN.md` S0.
 - **Where:** `shouldBypassFormValidation` (localhost/dev builds).
 - **What:** zod form bounds (fee min/max, thresholds) are **bypassed** on
   localhost/dev. Consequence: the bounds are untestable in the e2e harness *and*
@@ -214,6 +220,11 @@ quietly gates behavior across the app.
   intended "hybrid" semantics.
 
 ### D2 — `[P2]` Deprecated Arbitrum is still queried on **Index** paths (scope carefully)
+> **Site correction (verified 2026-07-14):** the primary cited site is a false
+> positive — `use-proposals-data.ts` `useBlockChains` Arbitrum read feeds the
+> **yield** proposal loop over `supportedChainList` (`blocks?.[chain]` at ~:271),
+> and Arbitrum RToken governance is supported. KEEP it (Z32 rule). D2 reduces to
+> the per-site grep of remaining `ChainId.Arbitrum` fan-outs.
 - **Where:** `src/views/explorer/components/governance/use-proposals-data.ts:137`
   (`useBlockChains` reads an Arbitrum block number); grep `ChainId.Arbitrum`
   across `src/` for other fan-outs.
@@ -601,7 +612,9 @@ before touching. None duplicate A1–G3 above._
 - **Fix:** guard the denominator `> 0` (mirror the other sites) and return `null`.
 - **Effort:** trivial.
 
-### Z13 — [P2] Hardcoded brand-manager allowlist grants privileged UI across every DTF
+### Z13 — [P2 · ACCEPTED AS-IS] Hardcoded brand-manager allowlist grants privileged UI across every DTF
+> **Decision (Luis, 2026-07-14):** these are team brand-manager wallets; leave
+> as implemented — not critical or relevant. Do not remove or relocate.
 - **Where:** `src/state/dtf/atoms.ts:206-225` — `WHITELISTED_ADDRESSES` (4
   hardcoded addresses, literal `// TODO: Retrieve from server, hardcoded for now`)
   is spread into `isBrandManagerAtom`'s manager set alongside the DTF's real
@@ -1125,7 +1138,10 @@ line numbers before touching. None duplicate A1–Z32._
   `priceResult.timeseries ?? []`; delete the dead historical branch or guard it.
 - **Effort:** small.
 
-### Z38 — [P2] Staking rewards chart labels a USD revenue figure as "Total staked … RSR" (confidently-wrong money label)
+### Z38 — [P2 · PARKED] Staking rewards chart labels a USD revenue figure as "Total staked … RSR" (confidently-wrong money label)
+> **Decision (Luis, 2026-07-14):** intended metric (revenue vs staked) needs
+> product/engineer input — parked; the `snapshots ?? []` fragility half is
+> still in scope (plan RG1).
 - **Where:** `src/views/yield-dtf/staking/components/overview/stake-rewards-history.tsx`
   — the row `value` is the subgraph's `cumulativeRSRRevenueUSD` (`:20-21,45`),
   `currentValue` is that latest value (`:54`), and the chart title renders it as

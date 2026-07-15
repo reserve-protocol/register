@@ -229,8 +229,9 @@ export function resolveIndexQuery(
   }
 
   // Per-test overlay wins over snapshots — keyed by the exact operationName so a
-  // spec can, e.g., serve a fresher voting snapshot after a vote tx.
-  const overlaid = overrides?.lookupSubgraph(op, vars)
+  // spec can, e.g., serve a fresher voting snapshot after a vote tx. urlChain
+  // scopes chain-bearing overrides to this host's chain.
+  const overlaid = overrides?.lookupSubgraph(op, vars, urlChain)
   if (overlaid !== undefined) return { data: overlaid }
 
   // Past-week PnL balance snapshot (overview balance card, wallet-gated). Empty
@@ -448,7 +449,7 @@ export function resolveYieldQuery(
   const op = parsed.operationName ?? ''
   const vars = parsed.variables ?? {}
 
-  const overlaid = overrides?.lookupSubgraph(op, vars)
+  const overlaid = overrides?.lookupSubgraph(op, vars, chainId)
   if (overlaid !== undefined) return { data: overlaid }
 
   // Explorer transactions tab (default route) — a cross-chain feed on the
@@ -517,12 +518,21 @@ export async function mockSubgraphRoutes(
     // (isYieldReplayActive) — so index tests, which incidentally poll a
     // dtf-yield subgraph via app updaters, keep the pre-yield EMPTY_SHAPE
     // behavior verbatim instead of hitting the yield replay's fail-loud.
+    // The fallback branch (yield URLs outside yield replay + legacy hosts) still
+    // consults the per-test overlay: cross-chain feeds like the explorer's
+    // Transactions query live here, and per-chain override shapes (A1) must be
+    // expressible without activating the yield replay.
+    const fallbackOverlaid = overrides?.lookupSubgraph(
+      parsed.operationName,
+      parsed.variables ?? {},
+      subgraphChainForUrl(url)
+    )
     const response =
       url.includes('dtf-yield') && isYieldReplayActive()
         ? resolveYieldQuery(yieldChainForUrl(url), body, log, overrides)
         : url.includes('dtf-index')
           ? resolveIndexQuery(body, log, overrides, subgraphChainForUrl(url))
-          : { data: EMPTY_SHAPE }
+          : { data: fallbackOverlaid !== undefined ? fallbackOverlaid : EMPTY_SHAPE }
 
     return route.fulfill({
       status: 200,

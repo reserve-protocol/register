@@ -7,7 +7,9 @@ import Skeleton from 'react-loading-skeleton'
 import { normalizeDescription } from 'utils'
 import { cn } from '@/lib/utils'
 
-const DescriptionMarkdown = lazy(() => import('./ProposalMdDescription'))
+const DescriptionMarkdown = lazy(
+  () => import('@/components/governance/proposal-md-description')
+)
 
 const TABS = {
   DESCRIPTION: 'description',

@@ -9,7 +9,7 @@ const ZERO_UINT = encodeAbiParameters([{ type: 'uint256' }], [0n])
 // Overview edge cases that reach ledger bugs. Each asserts the DESIRED behavior
 // and is `test.fixme` because the app is currently buggy — the failing assertion
 // IS the validation that the suite catches the bug (flip to `test` when fixed).
-// See E2E_BUG_LEDGER.md for the root-cause file:line.
+// See docs/plans/E2E_BUG_LEDGER.md for the root-cause file:line.
 const base = REGISTRY.find((d) => d.chainId === 8453 && !d.deprecated)!
 const expectedName = loadSnapshot<{ dtf: { token: { name: string } } }>(
   `${base.snapshotDir}/dtf.json`

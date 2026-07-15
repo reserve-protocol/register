@@ -9,7 +9,7 @@ covers what, domain states, edge cases) live next to each view:
 ## FOUNDATIONAL RULE — how every page is tested (not optional)
 
 The suite is organized by **route → subroute** (domain), NOT by test-type. The
-canonical map is `E2E_TEST_MAP.md` — a new page test goes at its domain node
+canonical map is `e2e/TEST_MAP.md` — a new page test goes at its domain node
 there, and EVERY page is tested across THREE dimensions:
 
 1. **State-space** — every meaningful state, not one happy render. Combinatorial
@@ -64,6 +64,24 @@ work and when touching an existing spec.
   are shared: extending them affects every spec — prefer per-test `overrides`.
 - Assert values derived from snapshots (`loadSnapshot`, helpers like
   `proposalTime`), never hardcoded numbers — re-captures must not break specs.
+- Form validation is prod-like in e2e: the webServer sets `VITE_E2E`, which
+  turns `shouldBypassFormValidation` OFF (B3). Zod form bounds ARE assertable;
+  never "fix" a disabled-CTA assertion by re-enabling the bypass.
+
+## RED-verify (regression specs only)
+
+A regression spec that has never failed proves nothing — `test.fixme` repros
+that were never executed have shipped as false confirmations before. For any
+spec written to pin a fix:
+
+1. Revert the fix (the guard/branch the spec exists for) in the working tree.
+2. Run the spec — it MUST fail, with the failure mode the fix prevents.
+3. Restore the fix. Run the spec — it MUST pass.
+4. Record the RED run in the `docs/wiki/progress.md` row (what was reverted,
+   observed failure).
+
+If step 2 passes, the spec is a false green: fix the spec (or the harness gap
+that makes the state inexpressible), never commit it as coverage.
 
 ## Recipes
 
@@ -78,9 +96,11 @@ query subset, RPC by address + FULL calldata):
 
 ```ts
 overrides.subgraph({ operationName: 'GetIndexDtfProposal' }, { dtf, proposal })
+overrides.subgraph({ operationName: 'Transactions', chain: 8453 }, {})  // ONE chain of a multichain fan-out
 overrides.api({ pathname: '/current/dtf', search: { address } }, data)
 overrides.ethCall(folio, calldata, encodeAbiParameters(...))   // exact calldata
 overrides.ethBalance(TEST_ADDRESS, 2_000n * 10n ** 18n)        // vs 100 ETH default
+overrides.priceGap(chainId, token, 'omit' | 'zero')  // kill the /current/prices $1 lean for one chain+token
 ```
 
 Swap mid-test to model post-transaction state (submit → change the mock →
@@ -148,7 +168,7 @@ into `e2e/tests/<domain>/<route>/`. Its comments ARE the minimum oracle — a wr
 template will not let you ship a `txLog.length > 0` / `last()`-only assertion.
 Then follow the steps below to fill it in.
 
-0. Place it by DOMAIN — find the route→subroute node in `E2E_TEST_MAP.md`; the
+0. Place it by DOMAIN — find the route→subroute node in `e2e/TEST_MAP.md`; the
    spec lives under `e2e/tests/<domain>/<route>/`. Enumerate the page's STATES
    there (one test per product-distinct state), and plan the L0–L3 lifecycle +
    `@mobile` variant (see the Foundational Rule). A single happy-path desktop
@@ -178,8 +198,10 @@ Speed tiers for a quick validation loop: unit tests (<1s) → one scoped spec
 (~3–5s) → smoke (~16s) → full (~78s). Prefer the narrowest tier that covers
 your change; the domain guides' diff→test tables say which spec.
 
-Do NOT run two suites at once against the reused dev server (e.g. smoke + full,
-or two agents) — they contend on the single Vite server and produce false
-flakes. Run one suite at a time, or let the webServer spin up fresh (kill :3005
-first). A "failure" that vanishes when re-run in isolation is contention, not a
-real regression — check before touching timeouts.
+Do NOT run two suites at once (e.g. smoke + full, or two agents): the webServer
+never reuses an existing :3005 (a foreign server would void the pinned env /
+validation contract), so a second run fails on the occupied port — and if it
+didn't, contention would produce false flakes. Run one suite at a time; free a
+stray server with `lsof -ti :3005 | xargs kill`. A "failure" that vanishes when
+re-run in isolation is contention, not a real regression — check before
+touching timeouts.

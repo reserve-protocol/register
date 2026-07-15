@@ -61,7 +61,12 @@ function isCapturedDiscoverDtf(url: URL, addressParam = 'address'): boolean {
   )
 }
 
-function knownPriceResponse(chainId: number, requestedTokens: Set<string>) {
+// Exported for the helpers/tests unit tier (price-gap contract).
+export function knownPriceResponse(
+  chainId: number,
+  requestedTokens: Set<string>,
+  overrides?: MockOverrides
+) {
   const known = new Set<string>(['0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'])
   const prices: Array<{ address: string; price: number; timestamp?: number }> = []
 
@@ -143,14 +148,18 @@ function knownPriceResponse(chainId: number, requestedTokens: Set<string>) {
   if (![...requestedTokens].every((address) => known.has(address))) return undefined
 
   const byAddress = new Map(prices.map((price) => [price.address.toLowerCase(), price]))
-  return [...requestedTokens].map(
-    (address) =>
-      byAddress.get(address) ?? {
-        address,
-        price: 1,
-        timestamp: Math.floor(Date.now() / 1000),
-      }
-  )
+  return [...requestedTokens].flatMap((address) => {
+    // Per-test price gap beats both the captured price and the $1 lean — the
+    // seam for "this token has no price" states (RG2/F1).
+    const gap = overrides?.lookupPriceGap(chainId, address)
+    if (gap === 'omit') return []
+    const price = byAddress.get(address) ?? {
+      address,
+      price: 1,
+      timestamp: Math.floor(Date.now() / 1000),
+    }
+    return [gap === 'zero' ? { ...price, price: 0 } : price]
+  })
 }
 
 export async function mockApiRoutes(page: Page, options: ApiMockOptions) {
@@ -336,7 +345,7 @@ export async function mockApiRoutes(page: Page, options: ApiMockOptions) {
           .filter(Boolean)
           .map((token) => token.toLowerCase())
       )
-      const response = knownPriceResponse(Number(chainId), requestedTokens)
+      const response = knownPriceResponse(Number(chainId), requestedTokens, overrides)
       if (response && requestedTokens.size > 0) return json(route, response)
       log('unmocked reserve-api identity', {
         path,

@@ -1,6 +1,6 @@
 # E2E Hardening & Execution Plan
 
-_Response to the Codex audit (`CODEX_FEEDBACK.md`) + the standing goal. This is
+_Response to the Codex audit (`CODEX_FEEDBACK.md`, consumed — deleted, see git history) + the standing goal. This is
 the **execution plan**; `E2E_TEST_MAP.md` becomes the single machine-readable
 coverage ledger (see §8). Where an item maps to a Codex backlog ID (`HARN-001`,
 `IDX-AUC-008`, …) it is cited so nothing is lost._

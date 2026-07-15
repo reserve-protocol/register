@@ -21,26 +21,45 @@ test('explorer: governance tab renders the proposals surface @smoke', async ({
   await expect(page.getByTestId('explorer-page')).toBeVisible({ timeout: 15_000 })
 })
 
-// NO A1/A2 REGRESSION TEST HERE — ON PURPOSE, and this is a real lesson.
+// A1 regression (GH0, docs/plans/REGISTER_HARDENING.md): useTransactionData reads
+// `data[chain].entries.map` guarding only `data[chain]`. The crash needs ONE
+// chain truthy-but-`entries`-less while the others return real feeds — a shape
+// only the chain-scoped override can express (a whole-op override makes every
+// chain malformed at once and never reaches the `.map`). Without the `?? []`
+// guard the useMemo throws during render → page-level error boundary → the
+// whole explorer route blanks, so the healthy chain's row never appears.
 //
-// A1 (`useTransactionData`, useMemo, `data[chain].entries.map`) and A2
-// (`use-proposals-data`, queryFn, `governanceRes.dtfs` / `result.proposals`) are
-// both guarded with `?? []` now. Both were tagged "CONFIRMED / reproduced" in
-// REGISTER_HARDENING.md via `test.fixme` blocks — but a `fixme` is SKIPPED, so
-// those repros were never actually executed. When run for real this pass, NEITHER
-// reproduces through the mock harness:
-//
-//  • A1: a whole-op `overrides.subgraph({operationName:'Transactions'}, {})` makes
-//    the multichain query resolve to `data = {}` (or reject as a whole — e.g. the
-//    deprecated Arbitrum chain in `supportedChainList` has no index client), so
-//    `data[chain]` is falsy / `data` is undefined and the `.map` line is never
-//    reached. The bug needs one chain truthy-but-`entries`-less while the others
-//    succeed — a per-chain shape the op-level override can't express.
-//  • A2: the loops live inside a react-query `queryFn`, so an unguarded throw is
-//    caught as query-error state — it never blanks the page. A page-level
-//    "explorer-page visible" assertion passes with or without the guard.
-//
-// So an e2e test here would be a FALSE GREEN (it passes without the fix). The
-// guards are kept as correct defensive hygiene; a faithful test needs either a
-// per-chain override primitive (harness gap) or extracting the pure transform for
-// a unit test. Tracked in REGISTER_HARDENING.md A1/A2 and the coverage-debt list.
+// RED-verify: revert `(yieldData[chain].entries ?? [])` to
+// `yieldData[chain].entries` in useTransactionData.ts — this test must fail.
+test('explorer: one chain returning a malformed transactions body must not blank the page @smoke', async ({
+  harness,
+}) => {
+  const page = harness.page
+  const HASH = `0x${'ab'.repeat(32)}`
+  const entry = {
+    id: 'e2e-entry-1',
+    type: 'TRANSFER',
+    amount: '1000000000000000000',
+    amountUSD: '1.02',
+    hash: HASH,
+    from: { id: '0x1111111111111111111111111111111111111111' },
+    to: { id: '0x2222222222222222222222222222222222222222' },
+    token: { id: '0x320623b8e4ff03373931769a31fc52a4e78b5d70', symbol: 'RSR' },
+    timestamp: 1700000000,
+  }
+
+  // Healthy feed everywhere...
+  harness.mock.subgraph({ operationName: 'Transactions' }, { entries: [entry] })
+  // ...except base: truthy response body MISSING `entries` (partial/drifted shape).
+  harness.mock.subgraph({ operationName: 'Transactions', chain: 8453 }, {})
+
+  await page.goto('/explorer')
+
+  // The healthy chain's row renders (its explorer link carries our tx hash) —
+  // which also proves the multichain data actually landed, so the malformed
+  // base body reached the unguarded read path.
+  await expect(page.locator(`a[href*="${HASH}"]`).first()).toBeVisible({
+    timeout: 15_000,
+  })
+  await expect(page.getByTestId('explorer-page')).toBeVisible()
+})

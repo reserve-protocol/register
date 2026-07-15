@@ -9,6 +9,7 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { Skeleton } from '@/components/ui/skeleton'
 import { cn } from '@/lib/utils'
+import { isSafeHttpUrl } from '@/utils/url'
 import useComplianceRestrictions from '@/hooks/use-compliance-restrictions'
 import { useIsLargeDesktop } from '@/hooks/use-media-query'
 import { isInactiveDTF } from '@/hooks/use-dtf-status'
@@ -46,8 +47,9 @@ const ExternalDexDropdown = ({
   onSelect: (link: DtfDexLink) => void
 }) => {
   const { t } = useLingui()
+  const safeLinks = links.filter((link) => isSafeHttpUrl(link.url))
 
-  if (!links.length) return null
+  if (!safeLinks.length) return null
 
   return (
     <DropdownMenu>
@@ -62,7 +64,7 @@ const ExternalDexDropdown = ({
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-48 rounded-xl p-1">
-        {links.map((link) => (
+        {safeLinks.map((link) => (
           <DropdownMenuItem key={link.url} className="rounded-lg" asChild>
             <a
               href={link.url}

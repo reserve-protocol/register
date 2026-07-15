@@ -1,6 +1,6 @@
 ---
 title: Project
-updated: 2026-07-08
+updated: 2026-07-14
 type: context
 ---
 
@@ -14,6 +14,17 @@ Register — the web interface for Reserve Protocol: **Index DTFs** (current foc
 - Index DTF code is current best practice — when unsure, copy the nearest existing Index feature. **Never reuse Yield DTF helpers/state for Index or vice versa.**
 - Chains: Ethereum, Base, BSC. **Arbitrum is deprecated for Index DTFs — never add it.**
 - Vote-lock ≠ stRSR; standard vs optimistic governance are separate — never merge their voting powers or delegation.
+
+## Team & Ownership
+
+- Luis — lead; architects and **owns the DTF SDK** (dtf-interface monorepo:
+  `@reserve-protocol/sdk`, `react-sdk`, `dtf-catalog`); final review for SDK
+  changes. Juampi and Jorge — fullstack. Josh — design. Devin + claude/codex
+  agents — most register iteration is agent-driven.
+- **SDK boundary rule of thumb: if a routine design change requires an SDK PR,
+  the line is in the wrong place.** The SDK moves at protocol cadence (~2-3
+  versions/year at maturity); register changes constantly. Protocol
+  data/math/calldata → SDK; anything design/product-shaped → register. See [[sdk]].
 
 ## Stack Specifics
 
@@ -35,6 +46,7 @@ Register — the web interface for Reserve Protocol: **Index DTFs** (current foc
 - **Feature isolation.** One feature = one folder under `views/<domain>/<feature>/` owning its `components/`, `hooks/`, `atoms.ts`, `utils.ts`. Shared code never imports from a feature; features never reach into each other's internals. Fix local bugs locally — never via shared containers, providers, routing shells, or component defaults.
 - **Shared components keep their defaults** (`DataTable`, legacy `Table`, …) — behavior via opt-in props only.
 - **Design tokens only** — no hardcoded hex/hsl anywhere; see [[design-system]].
+- **e2e suite health is part of every stage.** Register work is agent-driven and the offline suite ([[e2e]]) is the contract that makes that safe. Stages touching covered surfaces update mocks/snapshots as part of the stage (fail-loud misses are work, not noise), never leave a new `test.fixme` without a tracked owner, and keep re-capture cheap. A red or routed-around e2e is a blocker.
 - **Git: never commit or push unless told. Never push to main/master. No Co-Authored-By lines. PR descriptions: clean human summary, no AI attribution.**
 - Engineer review required — handoff must say so with files/behavior/validation/remaining risk — for: on-chain math, `Amount`/`bigint`/decimals/tx builders; governance, vote-lock, rebalance, auction, issuance, redemption, zap behavior; SDK/API contracts or persistence shapes; shared component defaults, shared atoms/providers, routing, global layout; cross-feature imports or new app-wide utilities; security, compliance, geolocation, wallet, chain-switching flows; route components over size limits mixing UI with RPC/timers/tx orchestration.
 

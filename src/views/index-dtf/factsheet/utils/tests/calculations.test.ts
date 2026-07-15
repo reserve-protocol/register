@@ -37,7 +37,7 @@ describe('calculateMonthlyChartData (pure)', () => {
   })
 })
 
-// BUG Z12 (REGISTER_HARDENING.md). The monthly P&L divides by the previous
+// BUG Z12 (docs/plans/REGISTER_HARDENING.md). The monthly P&L divides by the previous
 // month's last price with NO zero-guard — the base calculatePerformance IS
 // guarded, but this inline path does not reuse it — so a zero prior-month price
 // yields Infinity instead of an unavailable point. `it.fails` documents it and

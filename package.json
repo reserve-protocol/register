@@ -87,6 +87,7 @@
     "react-virtualized-auto-sizer": "^1.0.26",
     "react-window": "^1.8.11",
     "recharts": "^2.15.4",
+    "rehype-sanitize": "^5.0.1",
     "sonner": "^1.7.4",
     "tailwind-merge": "^2.6.1",
     "tailwindcss-animate": "^1.0.7",

@@ -3,6 +3,7 @@ import { cn } from '@/lib/utils'
 import { Skeleton } from '@/components/ui/skeleton'
 import { indexDTFAtom, indexDTFBrandAtom } from '@/state/dtf/atoms'
 import { getFileNameFromUrl } from '@/utils'
+import { isSafeHttpUrl } from '@/utils/url'
 import { Trans, useLingui } from '@lingui/react/macro'
 import { useAtomValue } from 'jotai'
 import { Download } from 'lucide-react'
@@ -54,7 +55,8 @@ const useDownloadableResources = () => {
   const data = useAtomValue(indexDTFAtom)
   const locale = useAtomValue(localeAtom)
   const brandData = useAtomValue(indexDTFBrandAtom)
-  const files = brandData?.dtf?.files?.filter((file) => file.url) ?? []
+  const files =
+    brandData?.dtf?.files?.filter((file) => isSafeHttpUrl(file.url)) ?? []
 
   const hardcodedUrls = data?.id ? getDtfResourceUrls(data.id, locale) : null
   const resources = [
