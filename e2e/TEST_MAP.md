@@ -49,6 +49,7 @@ dialogs). Playwright project matrix: `{smoke, full} × {desktop, mobile}`.
 | Discover | — | index list, search narrow/restore, index↔yield tab, deprecated-DTF search (Stage 2), empty/error, row→overview | L0–L3 | ⬜ | 🟡 search+tab+nav |
 | Earn | IndexDTF / YieldDTF / DeFi | each earn tab list, sort, empty/error, APY columns | L0–L3 | ⬜ | ⬜ |
 | Portfolio | — | connected holdings, empty (no activity), past-activity-only edge, disconnected | L0–L3 | ⬜ | ⬜ |
+| Tokens (`/tokens`) | listed + unlisted | listed/unlisted RTokens tables; unlisted partial-chain survival (Z2, `general/tokens/unlisted-partial.spec.ts`) | L0–L3 | ⬜ | 🟡 Z2 partial-response only |
 | Create Index DTF | deploy wizard | coming-soon gate + permissionless deploy path (multi-step: basket/CSV, governance, confirm) | L0–L3 | ⬜ | ⬜ (deferred non-goal) |
 | Create Yield DTF | deploy wizard | multi-step deploy | L0–L3 | ⬜ | ⬜ (deferred non-goal) |
 | Explorer | Transactions | list, filters, chain filter, pagination, empty | L0–L3 | ⬜ | ⬜ |
