@@ -108,22 +108,28 @@ export const getPortfolioProposalVotingState = (
 ): VotingState => {
   const voteStart = Number(p.voteStart)
   const voteEnd = Number(p.voteEnd)
+  // WHY (Z22): vote weights are 18-decimal wei — a Number cast loses precision
+  // above 2^53 and mishandles ties, flipping the outcome/quorum badge. Decide
+  // the outcome and quorum in bigint (OZ strict majority). Number is only for
+  // the display percentage bars (a ratio, unit- and precision-tolerant).
+  const forVotesRaw = BigInt(p.forWeightedVotes)
+  const againstVotesRaw = BigInt(p.againstWeightedVotes)
+  const abstainVotesRaw = BigInt(p.abstainWeightedVotes)
+  const quorumVotesRaw = BigInt(p.quorumVotes)
   const forVotes = Number(p.forWeightedVotes)
   const abstainVotes = Number(p.abstainWeightedVotes)
   const againstVotes = Number(p.againstWeightedVotes)
-  const quorumVotes = Number(p.quorumVotes)
   const totalVotes = forVotes + againstVotes + abstainVotes
   const isOptimistic = p.isOptimistic === true
+  const reachedQuorum = forVotesRaw > 0n && forVotesRaw >= quorumVotesRaw
   const state: VotingState = {
     state: p.state,
     deadline: null,
-    quorum: isOptimistic ? false : forVotes > 0 && forVotes >= quorumVotes,
-    forVotesReachedQuorum: isOptimistic
-      ? false
-      : forVotes > 0 && forVotes >= quorumVotes,
+    quorum: isOptimistic ? false : reachedQuorum,
+    forVotesReachedQuorum: isOptimistic ? false : reachedQuorum,
     participationQuorumReached: isOptimistic
       ? false
-      : forVotes + abstainVotes >= quorumVotes,
+      : forVotesRaw + abstainVotesRaw >= quorumVotesRaw,
     vetoReached: false,
     for: 0,
     against: 0,
@@ -149,9 +155,10 @@ export const getPortfolioProposalVotingState = (
     if (timestamp >= voteEnd) {
       if (isOptimistic) {
         state.state = PROPOSAL_STATES.SUCCEEDED
-      } else if (againstVotes > forVotes || forVotes === 0) {
+      } else if (forVotesRaw <= againstVotesRaw) {
+        // Tie or zero-for → DEFEATED (OZ GovernorCountingSimple strict majority).
         state.state = PROPOSAL_STATES.DEFEATED
-      } else if (forVotes + abstainVotes < quorumVotes) {
+      } else if (forVotesRaw + abstainVotesRaw < quorumVotesRaw) {
         state.state = PROPOSAL_STATES.QUORUM_NOT_REACHED
       } else {
         state.state = PROPOSAL_STATES.SUCCEEDED

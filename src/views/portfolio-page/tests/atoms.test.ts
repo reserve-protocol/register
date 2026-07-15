@@ -52,25 +52,22 @@ describe('getPortfolioProposalVotingState — terminal outcomes', () => {
   })
 })
 
-// BUG Z22 (docs/plans/REGISTER_HARDENING.md) — a second instance of Z18. Uses JS `Number`
-// on wei vote weights (precision loss > 2^53) and treats a tie (for == against,
-// both > 0) as SUCCEEDED (`againstVotes > forVotes || forVotes === 0` is false on
-// a nonzero tie → falls through to SUCCEEDED), contradicting the on-chain
-// governor. `it.fails` documents it and flips when the app is fixed.
-describe('getPortfolioProposalVotingState TIE — KNOWN BUG (Z22)', () => {
-  it.fails('nonzero TIE should be DEFEATED but is currently SUCCEEDED', () => {
+// Z22 FIXED (a second instance of Z18). The outcome is now decided in bigint
+// with OZ strict majority, so a nonzero tie (for == against) is DEFEATED, not
+// SUCCEEDED.
+describe('getPortfolioProposalVotingState TIE (Z22 fixed)', () => {
+  it('nonzero TIE → DEFEATED', () => {
     expect(state({ for: '500', against: '500', abstain: '0', quorum: '100' })).toBe(
       PROPOSAL_STATES.DEFEATED
     )
   })
 })
 
-// BUG Z22 (precision dimension). Same Number() cast, same failure above 2^53:
-// AGAINST beats FOR by 1 wei, but Number('9007199254740993') ===
-// Number('9007199254740992'), so the derivation sees a tie and returns SUCCEEDED
-// where the on-chain governor is DEFEATED. Flips green when the app uses BigInt.
-describe('getPortfolioProposalVotingState wei precision — KNOWN BUG (Z22 precision)', () => {
-  it.fails('Number path loses the 1-wei margin: should be DEFEATED, is SUCCEEDED', () => {
+// Z22 precision FIXED. AGAINST beats FOR by exactly 1 wei; the old Number cast
+// collapsed both to 2^53 and returned SUCCEEDED, bigint keeps the margin →
+// DEFEATED like the on-chain governor.
+describe('getPortfolioProposalVotingState wei precision (Z22 fixed)', () => {
+  it('bigint path respects the 1-wei margin → DEFEATED', () => {
     expect(
       state({
         for: '9007199254740992', // 2^53
