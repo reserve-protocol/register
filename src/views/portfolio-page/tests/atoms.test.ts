@@ -164,12 +164,16 @@ describe('portfolioActiveProposalsAtom — SDK oracle via production seam (CXR-0
   })
 })
 
-// CXR-078: the reserve-api portfolio row now carries the optimistic veto context,
-// so the Index oracle finalizes a challenged proposal by comparing against votes
-// to the veto threshold (1000 here). RED: before the adapter passed `optimistic`,
-// an opposed optimistic proposal past its window returned proposal.state (ACTIVE)
-// forever — so the pure oracle returned ACTIVE, not DEFEATED, and the missing-
-// context row (no filter) stayed stranded in the active list.
+// CXR-078/CXR-085: the reserve-api portfolio row carries the optimistic veto
+// context, so the Index oracle finalizes a challenged proposal by comparing
+// against votes to the veto threshold (1000 here). A transitioned proposal has no
+// usable context and reports vetoThreshold == MAX_UINT256; that sentinel is
+// preserved and resolves to DEFEATED. RED (CXR-078): before the adapter passed
+// `optimistic`, an opposed proposal past its window returned ACTIVE not DEFEATED;
+// RED (CXR-085): dropping the raw top-level vetoThreshold leaves the transitioned
+// proposal ACTIVE instead of DEFEATED.
+const MAX_UINT256 = ((1n << 256n) - 1n).toString()
+
 const indexOptimistic = (against: string, extra: Record<string, unknown> = {}) => ({
   ...standardProposal(500),
   isIndexDTF: true,
@@ -188,7 +192,7 @@ const optimisticState = (against: string, now = 501) =>
     now
   ).state
 
-describe('getPortfolioProposalVotingState — optimistic Index veto (CXR-078)', () => {
+describe('getPortfolioProposalVotingState — optimistic Index veto (CXR-078/085)', () => {
   it('opposed below the veto threshold → SUCCEEDED', () => {
     expect(optimisticState('999')).toBe(PROPOSAL_STATES.SUCCEEDED)
   })
@@ -198,9 +202,33 @@ describe('getPortfolioProposalVotingState — optimistic Index veto (CXR-078)', 
   it('below the veto threshold before the deadline stays ACTIVE', () => {
     expect(optimisticState('500', 499)).toBe(PROPOSAL_STATES.ACTIVE)
   })
+  it('transitioned proposal (vetoThreshold = MAX_UINT256) → DEFEATED', () => {
+    const transitioned = {
+      ...standardProposal(500),
+      isIndexDTF: true,
+      isOptimistic: true,
+      vetoThreshold: MAX_UINT256,
+    } as unknown as PortfolioProposal
+    expect(getPortfolioProposalVotingState(transitioned, 501).state).toBe(
+      PROPOSAL_STATES.DEFEATED
+    )
+  })
+  it('transitioned proposal is DEFEATED immediately, inside the voting window', () => {
+    const transitioned = {
+      ...standardProposal(500),
+      isIndexDTF: true,
+      isOptimistic: true,
+      vetoThreshold: MAX_UINT256,
+    } as unknown as PortfolioProposal
+    // now=300 is after voteStart(100), before voteEnd(500): the sentinel resolves
+    // it now, it does not wait for the deadline.
+    expect(getPortfolioProposalVotingState(transitioned, 300).state).toBe(
+      PROPOSAL_STATES.DEFEATED
+    )
+  })
 })
 
-describe('portfolioActiveProposalsAtom — optimistic list membership (CXR-078)', () => {
+describe('portfolioActiveProposalsAtom — optimistic list membership (CXR-078/085)', () => {
   it('opposed below the veto threshold stays in the active list (SUCCEEDED)', () => {
     const rows = activeRows(501, 'index', indexOptimistic('999'))
     expect(rows).toHaveLength(1)
@@ -212,11 +240,20 @@ describe('portfolioActiveProposalsAtom — optimistic list membership (CXR-078)'
     expect(rows).toHaveLength(0)
   })
 
-  it('opposed but missing veto context past the window is dropped, not stranded ACTIVE', () => {
+  it('transitioned proposal leaves the active list (DEFEATED via the sentinel)', () => {
     const rows = activeRows(501, 'index', {
       ...standardProposal(500),
       isOptimistic: true,
-      againstWeightedVotes: '1000',
+      vetoThreshold: MAX_UINT256,
+    })
+    expect(rows).toHaveLength(0)
+  })
+
+  it('transitioned proposal leaves the active list even inside the window', () => {
+    const rows = activeRows(300, 'index', {
+      ...standardProposal(500),
+      isOptimistic: true,
+      vetoThreshold: MAX_UINT256,
     })
     expect(rows).toHaveLength(0)
   })
