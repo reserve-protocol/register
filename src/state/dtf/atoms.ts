@@ -163,7 +163,10 @@ export const indexDTFPriceAtom = atom((get) => {
   return basketPrices[dtf.token.id.toLowerCase()]
 })
 
-export const indexDTFVersionAtom = atom('4.0.0')
+// undefined = version read pending (post-navigation loading sentinel). The
+// '4.0.0' initial default predates the sentinel; gating every version consumer
+// on the pending state is an open engineer-review item — see progress backlog.
+export const indexDTFVersionAtom = atom<string | undefined>('4.0.0')
 
 export const indexDTFExposureDataAtom = atom<ExposureGroup[] | null>(null)
 

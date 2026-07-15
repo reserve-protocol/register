@@ -35,7 +35,9 @@ describe('resetIndexDTFAtomsAtom', () => {
 
     expect(store.get(indexDTFTransactionsAtom)).toEqual([])
     expect(store.get(indexDTFMarketCapAtom)).toBeUndefined()
-    expect(store.get(indexDTFVersionAtom)).toBe('4.0.0')
+    // Loading sentinel — a concrete '4.0.0' here would fabricate v4 for
+    // version-gated branches while the destination's read is pending.
+    expect(store.get(indexDTFVersionAtom)).toBeUndefined()
     expect(store.get(indexDTFStatusAtom)).toBe('active')
     expect(store.get(indexDTFFeeAtom)).toBeUndefined()
   })

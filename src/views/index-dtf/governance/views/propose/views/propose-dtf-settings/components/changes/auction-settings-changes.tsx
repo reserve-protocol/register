@@ -24,7 +24,7 @@ const AuctionSettingsChanges = () => {
   const indexDTF = useAtomValue(indexDTFAtom)
   const rebalanceControl = useAtomValue(indexDTFRebalanceControlAtom)
   const version = useAtomValue(indexDTFVersionAtom)
-  const isV5 = version.startsWith('5')
+  const isV5 = version?.startsWith('5') ?? false
 
   const [auctionLengthChange, setAuctionLengthChange] = useAtom(
     auctionLengthChangeAtom

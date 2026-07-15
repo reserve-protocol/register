@@ -159,7 +159,7 @@ exposure/status), and the suite pins the hardening that rode on it:
   live), zero denominator → unavailable (SDK throws INVALID_RESPONSE — a
   confident 0% is the RED state), and numerator=0/denominator>0 → a real 0%.
   Error-path specs must pump ~10s past react-query's retry backoff.
-- **Z21 (atom leaks)**: `flows/spa-state-cleanup.spec.ts` drives a REAL in-app
+- **Z21 (atom leaks)**: `flows/dtf-nav-state-cleanup.spec.ts` drives a REAL in-app
   DTF→DTF navigation (discover table row click — `page.goto` reboots the app
   and proves nothing about resets) with the destination's `/historical/dtf` +
   anonymous transferEvents boundaries held open, asserting the stat cards hold

@@ -15,7 +15,7 @@ const BasicsChanges = () => {
   const { t } = useLingui()
   const indexDTF = useAtomValue(indexDTFAtom)
   const version = useAtomValue(indexDTFVersionAtom)
-  const isV5 = version.startsWith('5')
+  const isV5 = version?.startsWith('5') ?? false
   const [tokenNameChange, setTokenNameChange] = useAtom(tokenNameChangeAtom)
   const [mandateChange, setMandateChange] = useAtom(mandateChangeAtom)
   const hasTokenNameChange = useAtomValue(hasTokenNameChangeAtom)

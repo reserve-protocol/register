@@ -110,9 +110,11 @@ const useWeekAgoPnl = ({
       if (!response.ok) throw new Error('Failed to fetch dtf price at week ago')
 
       const data = (await response.json()) as {
-        timeseries: { timestamp: number; price: number }[]
+        timeseries?: { timestamp: number; price: number }[]
       }
-      const point = [...data.timeseries].reverse().find((p) => p.price > 0)
+      const point = [...(data.timeseries ?? [])]
+        .reverse()
+        .find((p) => p.price > 0)
       return point?.price ?? null
     },
     enabled: !!token && snapshotAmount !== null && snapshotAmount > 0,

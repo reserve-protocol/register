@@ -2,13 +2,13 @@ import { expect, test } from '../../fixtures/base'
 import { dtfPath, REGISTRY, type RegistryDTF } from '../../helpers/registry'
 import { loadSnapshot } from '../../helpers/snapshots'
 
-// SPA cross-chain navigation — state cleanup + chain-init race.
+// DTF→DTF navigation — state cleanup + chain-init race.
 //
-// Companion to spa-chain-identity.spec.ts (the subgraph container bug). This
-// spec covers the SAME root cause — SDK/price consumers firing before the
-// route's chain identity settles — at the REST price boundary, plus the
-// positive side: the container's resetState DOES clear the hero, so no stale
-// symbol/price from the previous DTF bleeds through.
+// Companion to reload-chain-identity.spec.ts (the subgraph container bug).
+// The first two tests use `page.goto` — DOCUMENT navigations that boot a fresh
+// runtime — so they cover the fresh-load init race (deep links), NOT
+// same-runtime SPA state. The Z21 test at the bottom drives a real in-app
+// router navigation for the same-runtime contract.
 
 interface DtfSnapshot {
   dtf: { token: { name: string; symbol: string } }
@@ -21,11 +21,11 @@ const bsc = REGISTRY.find((d) => d.chainId === 56)! // cmc20 (v5)
 const symbolOf = (dtf: RegistryDTF) =>
   loadSnapshot<DtfSnapshot>(`${dtf.snapshotDir}/dtf.json`).dtf.token.symbol
 
-// POSITIVE contract: cross-chain nav clears the hero — each DTF shows ITS own
-// symbol, never the previous DTF's. resetState (indexDTFAtom -> undefined) fires
+// POSITIVE contract: each fresh cross-chain load shows the DTF's own symbol,
+// never another DTF's. resetState (indexDTFAtom -> undefined) fires
 // synchronously in the container's useLayoutEffect, so the hero holds a skeleton
 // until the new DTF's SDK data lands rather than showing stale identity.
-test('cross-chain navigation shows each DTF its own symbol, never a stale one', async ({
+test('full reload cross-chain: each DTF shows its own symbol, never a stale one', async ({
   page,
 }) => {
   for (const dtf of [mainnet, baseDtf, bsc, mainnet]) {
@@ -44,14 +44,14 @@ test('cross-chain navigation shows each DTF its own symbol, never a stale one', 
   }
 })
 
-// Chain-init race at the REST boundary: same root cause as the spa-chain-identity
-// subgraph bug (react-zapper's ChainIdUpdater syncing its chain in a lagging
-// effect), DIFFERENT boundary — the price consumer fetched `/current/dtf` with
-// `chainId=1` for a Base/BSC DTF before the route chain settled. Fixed by seeding
-// react-zapper's chainIdAtom synchronously during render. Asserts every
-// `/current/dtf` fetch for a DTF targets ITS chain, never mainnet.
+// Chain-init race at the REST boundary: same root cause as the
+// reload-chain-identity subgraph bug (react-zapper's ChainIdUpdater syncing its
+// chain in a lagging effect), DIFFERENT boundary — the price consumer fetched
+// `/current/dtf` with `chainId=1` for a Base/BSC DTF before the route chain
+// settled. Fixed by seeding react-zapper's chainIdAtom synchronously during
+// render. Asserts every `/current/dtf` fetch for a DTF targets ITS chain.
 test(
-  'cross-chain navigation never fetches current/dtf on the wrong chain',
+  'full reload cross-chain: never fetches current/dtf on the wrong chain',
   async ({ page, boundaryRequests }) => {
     await page.goto(dtfPath(mainnet, 'overview'))
     await expect(page.getByTestId('overview-dtf-symbol')).toHaveText(
@@ -107,7 +107,6 @@ test(
     await expect(mcap).toHaveText(/^\$[\d,]+/, { timeout: 20_000 })
     await expect(txVolume).toHaveText(/^\$[\d,]+/, { timeout: 20_000 })
     const priorMcap = (await mcap.textContent())!
-    const priorTxVolume = (await txVolume.textContent())!
 
     // Park the destination's mcap (historical/dtf REST) and transactions
     // (anonymous transferEvents subgraph query) so the load window stays open.
@@ -145,12 +144,19 @@ test(
     ).toBeVisible()
     await expect(txVolume).toHaveCount(0)
 
-    // Release: the destination's own values resolve (distinct snapshots).
+    // The destination's parked sources were actually requested — the skeletons
+    // above are a held load window, not a dead data path.
+    expect(holdHistory.hits).toBeGreaterThan(0)
+    expect(holdTransfers.hits).toBeGreaterThan(0)
+
+    // Release: the destination's own values resolve. Mcap snapshots are real,
+    // distinct numbers so the inequality holds; 24h tx volume is legitimately
+    // $0 for both registry DTFs (old snapshot txs), so only resolution is
+    // asserted there — the load-window assertions above carry the regression.
     holdHistory.release()
     holdTransfers.release()
     await expect(mcap).toHaveText(/^\$[\d,]+/, { timeout: 20_000 })
     await expect(mcap).not.toHaveText(priorMcap)
     await expect(txVolume).toHaveText(/^\$[\d,]+/, { timeout: 20_000 })
-    await expect(txVolume).not.toHaveText(priorTxVolume)
   }
 )

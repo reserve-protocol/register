@@ -16,7 +16,7 @@ const ProposeMetadata = () => {
   const { t } = useLingui()
   const form = useFormContext()
   const version = useAtomValue(indexDTFVersionAtom)
-  const isV5 = version.startsWith('5')
+  const isV5 = version?.startsWith('5') ?? false
 
   return (
     <div className="px-4 mb-4 flex flex-col gap-4">
