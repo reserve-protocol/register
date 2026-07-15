@@ -14,6 +14,11 @@ import { TenderlySimulation } from 'types'
 import { atomWithReset } from 'jotai/utils'
 import { getCurrentTime } from 'utils'
 import { isTimeunitGovernance } from '@/views/yield-dtf/governance/utils'
+import {
+  getGovernorTimelockOperationIdV4,
+  getYieldDtfProposalState,
+  type Amount,
+} from '@reserve-protocol/react-sdk'
 
 export interface ProposalDetail {
   id: string
@@ -73,6 +78,36 @@ export const accountVotesAtom = atom<{
   votePower: null,
 })
 
+// Vote weights arrive as decimal-ether strings; parseEther keeps them exact
+// (a Number cast is lossy above 2^53 and mishandles ties).
+const weiAmount = (value?: string): Amount => {
+  const raw = parseEther(value ?? '0')
+  return { raw, formatted: value ?? '0' }
+}
+
+// WHY (Z18): the tie / >2^53-wei-sensitive terminal outcome is delegated to the
+// SDK's audited derivation (OZ GovernorCountingSimple strict majority, bigint)
+// so the explorer list, the detail badges, and getProposalStatus share ONE
+// source of truth and can't disagree at a boundary. Callers gate this on
+// `currentTimepoint > voteEnd`, so forcing state ACTIVE yields the terminal
+// state (SUCCEEDED / DEFEATED / QUORUM_NOT_REACHED) only.
+const deriveTerminalOutcome = (
+  proposal: Partial<ProposalDetail>,
+  currentTimepoint: number
+): string =>
+  getYieldDtfProposalState(
+    {
+      state: 'ACTIVE',
+      voteStart: Number(proposal.startBlock ?? 0),
+      voteEnd: Number(proposal.endBlock ?? 0),
+      forWeightedVotes: weiAmount(proposal.forWeightedVotes),
+      againstWeightedVotes: weiAmount(proposal.againstWeightedVotes),
+      abstainWeightedVotes: weiAmount(proposal.abstainWeightedVotes),
+      quorumVotes: weiAmount(proposal.quorumVotes),
+    },
+    currentTimepoint
+  )
+
 export const getProposalStatus = (
   proposal: Partial<ProposalDetail>,
   blockNumber: number
@@ -102,17 +137,7 @@ export const getProposalStatus = (
     proposal.state === PROPOSAL_STATES.ACTIVE &&
     timeunit > (proposal.endBlock || 0)
   ) {
-    const forVotes = parseEther(proposal.forWeightedVotes ?? '0')
-    const abstainVotes = parseEther(proposal.abstainWeightedVotes ?? '0')
-    const againstVotes = parseEther(proposal.againstWeightedVotes ?? '0')
-    const quorum = parseEther(proposal.quorumVotes ?? '0')
-
-    if (forVotes <= againstVotes) {
-      return PROPOSAL_STATES.DEFEATED
-    } else if (forVotes + abstainVotes < quorum) {
-      return PROPOSAL_STATES.QUORUM_NOT_REACHED
-    }
-    return PROPOSAL_STATES.SUCCEEDED
+    return deriveTerminalOutcome(proposal, timeunit)
   }
 
   return status
@@ -178,18 +203,7 @@ export const getProposalState = (
     } else if (proposal.state === PROPOSAL_STATES.ACTIVE) {
       // Proposal voting ended check status
       if (timeunit > proposal.endBlock) {
-        const forVotes = +proposal.forWeightedVotes
-        const abstainVotes = +proposal.abstainWeightedVotes
-        const againstVotes = +proposal.againstWeightedVotes
-        const quorum = +proposal.quorumVotes
-
-        if (againstVotes > forVotes) {
-          state.state = PROPOSAL_STATES.DEFEATED
-        } else if (forVotes + abstainVotes < quorum) {
-          state.state = PROPOSAL_STATES.QUORUM_NOT_REACHED
-        } else {
-          state.state = PROPOSAL_STATES.SUCCEEDED
-        }
+        state.state = deriveTerminalOutcome(proposal, timeunit)
       } else {
         state.deadline = isTimeunit
           ? proposal.endBlock - timestamp
@@ -201,9 +215,9 @@ export const getProposalState = (
       +proposal.forWeightedVotes +
       +proposal.againstWeightedVotes +
       +proposal.abstainWeightedVotes
+    const forVotesRaw = parseEther(proposal.forWeightedVotes)
     state.quorum =
-      !!Number(proposal.forWeightedVotes) &&
-      +proposal.forWeightedVotes >= +proposal.quorumVotes
+      forVotesRaw > 0n && forVotesRaw >= parseEther(proposal.quorumVotes)
 
     if (totalVotes) {
       state.for = (+proposal.forWeightedVotes / totalVotes) * 100
@@ -252,18 +266,7 @@ export const getProposalStateAtom = atom((get) => {
     } else if (proposal.state === PROPOSAL_STATES.ACTIVE) {
       // Proposal voting ended check status
       if (timeunit > proposal.endBlock) {
-        const forVotes = +proposal.forWeightedVotes
-        const abstainVotes = +proposal.abstainWeightedVotes
-        const againstVotes = +proposal.againstWeightedVotes
-        const quorum = +proposal.quorumVotes
-
-        if (againstVotes > forVotes) {
-          state.state = PROPOSAL_STATES.DEFEATED
-        } else if (forVotes + abstainVotes < quorum) {
-          state.state = PROPOSAL_STATES.QUORUM_NOT_REACHED
-        } else {
-          state.state = PROPOSAL_STATES.SUCCEEDED
-        }
+        state.state = deriveTerminalOutcome(proposal, timeunit)
       } else {
         state.deadline = isTimeunit
           ? proposal.endBlock - timestamp

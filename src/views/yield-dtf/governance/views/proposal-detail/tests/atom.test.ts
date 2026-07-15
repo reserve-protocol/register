@@ -83,35 +83,28 @@ describe('getProposalState (Number) — agrees on unambiguous outcomes', () => {
   })
 })
 
-// BUG Z18 (docs/plans/REGISTER_HARDENING.md, engineer review). getProposalState uses `+`
-// (JS Number) vote weights and treats a TIE as SUCCEEDED (`againstVotes > forVotes`
-// is false on a tie → falls through to SUCCEEDED), contradicting getProposalStatus
-// and the on-chain governor (tie → DEFEATED). `it.fails` documents the current
-// wrong behavior and will FLIP (start failing) the moment the app is fixed —
-// prompting removal of this marker.
-describe('getProposalState TIE handling — KNOWN BUG (Z18)', () => {
-  it.fails('TIE should be DEFEATED but is currently SUCCEEDED', () => {
+// Z18 FIXED. getProposalState now delegates the terminal outcome to the SDK's
+// bigint derivation, so a TIE is DEFEATED (OZ strict majority), matching
+// getProposalStatus and the on-chain governor.
+describe('getProposalState TIE handling (Z18 fixed)', () => {
+  it('TIE → DEFEATED', () => {
     const s = getProposalState(
       proposal({ for: '500', against: '500', abstain: '0', quorum: '100' }),
       ENDED_BLOCK,
       1
     ).state
-    // Desired (matches getProposalStatus + on-chain). Fails today.
     expect(s).toBe(PROPOSAL_STATES.DEFEATED)
   })
 })
 
-// BUG Z18 (precision dimension). Vote weights are wei — above 2^53 the `Number`
-// cast is lossy. Here AGAINST beats FOR by exactly 1 wei, but both are 2^53±:
-// Number('9007199254740993') === Number('9007199254740992'), so the Number path
-// sees an (already-mishandled) tie and returns SUCCEEDED, while the on-chain
-// governor (against > for) is DEFEATED. The bigint getProposalStatus is correct;
-// this pins that getProposalState is NOT. Flips green when the app uses BigInt.
-describe('getProposalState wei precision — KNOWN BUG (Z18 precision)', () => {
+// Z18 precision FIXED. Vote weights above 2^53 are exact under bigint. AGAINST
+// beats FOR by 1 wei; the old Number cast collapsed both to 2^53 and returned
+// SUCCEEDED, the bigint path returns DEFEATED (against > for) like the governor.
+describe('getProposalState wei precision (Z18 fixed)', () => {
   const FOR = '9007199254740992' // 2^53
   const AGAINST = '9007199254740993' // 2^53 + 1 (one wei more)
 
-  it('bigint path already respects the 1-wei margin → DEFEATED', () => {
+  it('bigint path respects the 1-wei margin → DEFEATED', () => {
     expect(
       getProposalStatus(
         proposal({ for: FOR, against: AGAINST, abstain: '0', quorum: '100' }),
@@ -120,12 +113,41 @@ describe('getProposalState wei precision — KNOWN BUG (Z18 precision)', () => {
     ).toBe(PROPOSAL_STATES.DEFEATED)
   })
 
-  it.fails('Number path loses the 1-wei margin: should be DEFEATED, is SUCCEEDED', () => {
+  it('getProposalState respects the 1-wei margin → DEFEATED', () => {
     const s = getProposalState(
       proposal({ for: FOR, against: AGAINST, abstain: '0', quorum: '100' }),
       ENDED_BLOCK,
       1
     ).state
     expect(s).toBe(PROPOSAL_STATES.DEFEATED)
+  })
+})
+
+// One source of truth: the badge (getProposalState) and the list (getProposalStatus)
+// derive the terminal outcome from the same SDK function, so they can never
+// disagree at a tie or a >2^53-wei ±1 boundary.
+describe('list vs detail agree (Z18 single source of truth)', () => {
+  const agree = (v: Parameters<typeof proposal>[0]) => {
+    const p = proposal(v)
+    expect(getProposalState(p, ENDED_BLOCK, 1).state).toBe(
+      getProposalStatus(p, ENDED_BLOCK)
+    )
+  }
+
+  it('agree at a TIE (both DEFEATED)', () => {
+    agree({ for: '500', against: '500', abstain: '0', quorum: '100' })
+  })
+
+  it('agree at a >2^53-wei 1-wei margin (both DEFEATED)', () => {
+    agree({
+      for: '9007199254740992',
+      against: '9007199254740993',
+      abstain: '0',
+      quorum: '100',
+    })
+  })
+
+  it('agree on a clear pass (both SUCCEEDED)', () => {
+    agree({ for: '1000', against: '500', abstain: '0', quorum: '100' })
   })
 })
