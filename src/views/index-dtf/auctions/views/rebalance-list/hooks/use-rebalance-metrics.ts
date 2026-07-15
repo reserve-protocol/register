@@ -1,12 +1,11 @@
-import { chainIdAtom } from '@/state/atoms'
+import { indexDTFRebalanceControlAtom } from '@/state/dtf/atoms'
 import {
-  iTokenAddressAtom,
-  indexDTFRebalanceControlAtom,
-} from '@/state/dtf/atoms'
-import { useQuery } from '@tanstack/react-query'
+  useIndexDtfCompletedRebalance,
+  useIndexDtfIdentity,
+  type IndexDtfCompletedRebalanceDetail,
+} from '@reserve-protocol/react-sdk'
 import { useAtomValue } from 'jotai'
 import { rebalancesByProposalAtom } from '../../../atoms'
-import { RESERVE_API } from '@/utils/constants'
 
 export interface RebalanceMetrics {
   timestamp: number
@@ -19,123 +18,49 @@ export interface RebalanceMetrics {
   marketCapRebalanceImpact: number // percentage
 }
 
-// API Response Types
-interface RebalanceApiToken {
-  address: string
-  name: string
-  decimals: number
-}
+/**
+ * Maps the SDK completed-rebalance detail to the display metrics.
+ *
+ * WHY: preserves the pre-migration display — genuinely-absent analytics coerce
+ * to 0 (no UX regression). See M2a report: "(b) render unavailable for absent
+ * analytics?" is a display-polish question for Luis; never expose undefined/NaN.
+ */
+export function toRebalanceMetrics(
+  data: IndexDtfCompletedRebalanceDetail | undefined,
+  isTrackingDTF: boolean
+): RebalanceMetrics | null {
+  if (!data) return null
 
-interface RebalanceApiBid {
-  id: string
-  bidder: string
-  sellToken: RebalanceApiToken
-  buyToken: RebalanceApiToken
-  sellAmount: string
-  buyAmount: string
-  transactionHash: string
-  blockNumber: number
-  timestamp: number
-  sellTokenPrice: number
-  buyTokenPrice: number
-  sellAmountUsd: number
-  buyAmountUsd: number
-  priceImpactUsd: number
-  priceImpactPercent: number
-  price: number
-}
-
-interface RebalanceApiAuction {
-  id: string
-  startTime: number
-  endTime: number
-  bids: RebalanceApiBid[]
-  totalSellAmountUsd: number
-  totalBuyAmountUsd: number
-  totalPriceImpactUsd: number
-  avgPriceImpactPercent: number
-}
-
-interface RebalanceApiResponse {
-  id: string
-  nonce: number
-  timestamp: number
-  availableUntil: number
-  blockNumber: number
-  tokens: RebalanceApiToken[]
-  auctions: RebalanceApiAuction[]
-  // Analytics fields are optional (not present when no auctions)
-  totalSellAmountUsd?: number
-  totalBuyAmountUsd?: number
-  totalPriceImpactUsd?: number
-  avgPriceImpactPercent?: number
-  rebalanceGainLossUsd?: number
-  rebalanceGainLossPercent?: number
-  totalRebalancedUsd?: number
-  totalBidsCount?: number
-  marketCapAtStart?: number
-  trackingBasketDeviation?: number
-  nativeBasketDeviation?: number
-  rebalanceAccuracy?: number
-  marketCapRebalanceImpact?: number
+  return {
+    timestamp: data.timestamp,
+    auctionsRun: data.auctions.length,
+    totalRebalancedUsd: data.totalRebalancedUsd ?? 0,
+    priceImpact: data.avgPriceImpactPercent ?? 0,
+    totalPriceImpactUsd: data.totalPriceImpactUsd ?? 0,
+    rebalanceAccuracy: Math.min(100, data.rebalanceAccuracy ?? 0),
+    deviationFromTarget: Math.abs(
+      isTrackingDTF
+        ? data.trackingBasketDeviation ?? 0
+        : data.nativeBasketDeviation ?? 0
+    ),
+    marketCapRebalanceImpact: data.marketCapRebalanceImpact ?? 0,
+  }
 }
 
 /**
- * Hook to fetch rebalance metrics from the API
+ * Hook to fetch rebalance metrics from the SDK completed-rebalance read.
  */
 export const useRebalanceMetrics = (proposalId: string) => {
-  const chainId = useAtomValue(chainIdAtom)
-  const dtfAddress = useAtomValue(iTokenAddressAtom)
+  const { address, chainId } = useIndexDtfIdentity()
   const rebalancesByProposal = useAtomValue(rebalancesByProposalAtom)
   const rebalanceControl = useAtomValue(indexDTFRebalanceControlAtom)
   const isTrackingDTF = !rebalanceControl?.weightControl
 
-  const rebalanceData = rebalancesByProposal?.[proposalId]
+  const nonce = rebalancesByProposal?.[proposalId]?.rebalance.nonce
 
-  const { data: apiResponse, isLoading, error } = useQuery({
-    queryKey: [
-      'rebalance-metrics',
-      chainId,
-      dtfAddress,
-      rebalanceData?.rebalance.nonce,
-    ],
-    queryFn: async () => {
-      if (!rebalanceData?.rebalance.nonce) {
-        throw new Error('Nonce not found for rebalance')
-      }
+  const { data, isLoading } = useIndexDtfCompletedRebalance(
+    nonce !== undefined ? { chainId, address, nonce } : undefined
+  )
 
-      const response = await fetch(
-        `${RESERVE_API}dtf/rebalance?chainId=${chainId}&address=${dtfAddress}&nonce=${rebalanceData.rebalance.nonce}`
-      )
-
-      if (!response.ok) {
-        throw new Error('Failed to fetch rebalance metrics')
-      }
-
-      const data: RebalanceApiResponse[] = await response.json()
-
-      // The API returns an array, we want the first item
-      return data[0] || null
-    },
-    enabled: !!chainId && !!dtfAddress && !!rebalanceData?.rebalance.nonce,
-  })
-
-  const metrics: RebalanceMetrics | null = apiResponse
-    ? {
-        timestamp: apiResponse.timestamp,
-        auctionsRun: apiResponse.auctions.length,
-        totalRebalancedUsd: apiResponse.totalRebalancedUsd ?? 0,
-        priceImpact: apiResponse.avgPriceImpactPercent ?? 0,
-        totalPriceImpactUsd: apiResponse.totalPriceImpactUsd ?? 0,
-        rebalanceAccuracy: Math.min(100, apiResponse.rebalanceAccuracy ?? 0),
-        deviationFromTarget: Math.abs(
-          isTrackingDTF
-            ? apiResponse.trackingBasketDeviation ?? 0
-            : apiResponse.nativeBasketDeviation ?? 0
-        ),
-        marketCapRebalanceImpact: apiResponse.marketCapRebalanceImpact ?? 0,
-      }
-    : null
-
-  return { loading: isLoading, metrics }
+  return { loading: isLoading, metrics: toRebalanceMetrics(data, isTrackingDTF) }
 }
