@@ -23,6 +23,28 @@ const rTokenCountQuery = gql`
   }
 `
 
+type RTokenCountData = Record<
+  number,
+  { protocol?: { rTokenCount?: number | string } | null } | undefined
+>
+
+// Unlisted count = total RTokens per chain minus the curated listed set. A
+// partial GetRTokenCount response (missing bucket/protocol) contributes 0 rather
+// than throwing or fabricating a total (A3, GH0 class).
+export const sumUnlistedRTokenCount = (
+  data: RTokenCountData | undefined,
+  chains: readonly number[]
+): number => {
+  if (!data) return 0
+
+  let total = 0
+  for (const chain of chains) {
+    const rTokenCount = Number(data[chain]?.protocol?.rTokenCount ?? 0)
+    total += rTokenCount - (LISTED_RTOKEN_ADDRESSES[chain]?.length ?? 0)
+  }
+  return total
+}
+
 const sortKeyMap: StringMap = {
   symbol: 'token__symbol',
   price: 'token__lastPriceUSD',
@@ -39,15 +61,7 @@ const useRTokenCount = () => {
 
   useEffect(() => {
     if (data) {
-      let total = 0
-
-      for (const chain of supportedChainList) {
-        total +=
-          Number(data[chain].protocol.rTokenCount) -
-          LISTED_RTOKEN_ADDRESSES[chain].length
-      }
-
-      setCount(total)
+      setCount(sumUnlistedRTokenCount(data, supportedChainList))
     }
   }, [data])
 
@@ -132,7 +146,7 @@ const UnlistedTokensTable = () => {
   }, [])
 
   return (
-    <>
+    <div data-testid="unlisted-tokens-table">
       <RTokenFilters />
       <Table
         pagination
@@ -151,7 +165,7 @@ const UnlistedTokensTable = () => {
           {formatCurrency(rTokenCount, 0)}
         </span>
       </div>
-    </>
+    </div>
   )
 }
 
