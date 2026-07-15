@@ -1,4 +1,4 @@
-import { describe, expect, it, vi } from 'vitest'
+import { afterEach, describe, expect, it, vi } from 'vitest'
 import { Address } from 'viem'
 import {
   DTFGovernanceResponse,
@@ -37,9 +37,7 @@ describe('mapGovernanceResponse', () => {
 
   it('returns [] on a partial response missing dtfs (Z5)', () => {
     const partial: Partial<DTFGovernanceResponse> = {} // dtfs omitted
-    expect(() =>
-      mapGovernanceResponse(partial as DTFGovernanceResponse, new Map(), 1)
-    ).not.toThrow()
+    expect(() => mapGovernanceResponse(partial, new Map(), 1)).not.toThrow()
     expect(mapGovernanceResponse(undefined, new Map(), 1)).toEqual([])
   })
 })
@@ -55,10 +53,13 @@ describe('fetchListedDTFGovernanceRows degrades on a bad chain (Z5)', () => {
     [dtf.id.toLowerCase(), { marketCap: 7 } as IndexDTFItem],
   ])
 
+  // The fan-out logs the rejected chain (kept in prod) — silence it here so the
+  // green suite doesn't print a failure-looking stack (CXR-026-M1). afterEach
+  // restore ensures an assertion failure can't leak the mock.
+  afterEach(() => vi.restoreAllMocks())
+
   it('keeps the healthy chain when another chain rejects', async () => {
-    // The fan-out logs the rejected chain (kept in prod) — silence it here so
-    // the green suite doesn't print a failure-looking stack (CXR-026-M1).
-    const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
+    vi.spyOn(console, 'error').mockImplementation(() => {})
     const request = vi.fn((chainId: number) =>
       chainId === 1
         ? Promise.reject(new Error('chain 1 subgraph down'))
@@ -77,6 +78,5 @@ describe('fetchListedDTFGovernanceRows degrades on a bad chain (Z5)', () => {
     expect(rows[0].chainId).toBe(8453)
     expect(rows[0].symbol).toBe('DTFA')
     expect(request).toHaveBeenCalledTimes(2)
-    errorSpy.mockRestore()
   })
 })

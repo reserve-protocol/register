@@ -55,7 +55,8 @@ const governanceQuery = gql`
 const SUPPORTED_CHAINS = [ChainId.Mainnet, ChainId.Base, ChainId.BSC] as const
 
 export const mapGovernanceResponse = (
-  response: DTFGovernanceResponse | undefined,
+  // Partial: a malformed/partial subgraph response may omit `dtfs` entirely.
+  response: Partial<DTFGovernanceResponse> | undefined,
   apiDataMap: Map<string, IndexDTFItem>,
   chainId: number
 ): ListedDTFGovernance[] =>
