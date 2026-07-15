@@ -90,7 +90,7 @@ Explorer + Earn + Portfolio + Bridge are **entirely uncovered** today.
 | Overview | — | render ×2 fixtures, backing, price, charts, edges | L0–L3 | ⬜ | ✅ render; ⬜ edges/mobile |
 | Issuance | Manual | mint/redeem, redeem-only (paused hyUSD), math, compliance geo | L0–L3 | ⬜ | 🟡 render only |
 | Issuance | Zap | zap mint/redeem, quote states | L0–L3 | ⬜ | ⬜ |
-| Stake | — | stake/unstake/withdraw/cancel, exchange-rate, cooldown vs available, draft queue, staked-history snapshots-partial survival (Z38, `history-partial.spec.ts`, desktop+mobile) | L0–L3 | ⬜ | 🟡 render + stake/unstake write + Z38 partial-response |
+| Stake | — | stake/unstake/withdraw/cancel, exchange-rate, cooldown vs available, draft queue, staked-history snapshots-partial survival (Z38, `history-partial.spec.ts`, desktop+mobile) | L0–L3 | 🟡 Z38 only | 🟡 render + stake/unstake write + Z38 partial-response |
 | Auctions | — | revenue auctions, recollateralization, dutch bid, claim — read + write | L0–L3 | ⬜ | ⬜ |
 | Governance | Overview | proposal list, delegates | L0–L3 | ⬜ | ⬜ |
 | Governance | Create proposal | RToken param proposals | L0–L3 | ⬜ | ⬜ |
