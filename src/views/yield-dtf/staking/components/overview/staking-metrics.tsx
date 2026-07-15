@@ -21,8 +21,10 @@ const StakingMetrics = () => {
     <div className="rounded-3xl border border-border p-6">
       <Tabs defaultValue="exchange">
         <TabsList className="mb-4">
-          <TabsTrigger value="exchange">{ticker}/RSR</TabsTrigger>
-          <TabsTrigger value="staked">
+          <TabsTrigger value="exchange" data-testid="staking-tab-exchange">
+            {ticker}/RSR
+          </TabsTrigger>
+          <TabsTrigger value="staked" data-testid="staking-tab-staked">
             <Trans>Staked RSR</Trans>
           </TabsTrigger>
         </TabsList>

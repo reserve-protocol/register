@@ -34,6 +34,24 @@ const dailyQuery = gql`
     }
   }
 `
+interface StakeHistorySnapshot {
+  timestamp: string
+  rsrStaked: bigint
+}
+interface StakeHistoryData {
+  rtoken?: { snapshots?: StakeHistorySnapshot[] }
+}
+
+export const buildStakeHistoryRows = (data: StakeHistoryData | undefined) =>
+  // Guard `snapshots`, not just `rtoken` — a partial subgraph response can return
+  // the rtoken without snapshots (Z38, live on the staking route via
+  // StakingMetrics).
+  (data?.rtoken?.snapshots ?? []).map(({ timestamp, rsrStaked }) => ({
+    value: +formatEther(rsrStaked),
+    label: dayjs.unix(+timestamp).format('YYYY-M-D HH:mm:ss'),
+    display: `${formatCurrency(+formatEther(rsrStaked))}`,
+  }))
+
 const StakeHistory = () => {
   const rToken = useRToken()
   const [current, setCurrent] = useState(TIME_RANGES.MONTH)
@@ -44,25 +62,7 @@ const StakeHistory = () => {
     fromTime,
   })
 
-  const rows = useMemo(() => {
-    if (data) {
-      return (
-        data.rtoken?.snapshots.map(
-          ({
-            timestamp,
-            rsrStaked,
-          }: {
-            timestamp: string
-            rsrStaked: bigint
-          }) => ({
-            value: +formatEther(rsrStaked),
-            label: dayjs.unix(+timestamp).format('YYYY-M-D HH:mm:ss'),
-            display: `${formatCurrency(+formatEther(rsrStaked))}`,
-          })
-        ) || []
-      )
-    }
-  }, [data])
+  const rows = useMemo(() => buildStakeHistoryRows(data), [data])
 
   const currentValue = rows && rows.length ? rows[rows.length - 1].value : 0
 
@@ -71,33 +71,35 @@ const StakeHistory = () => {
   }
 
   return (
-    <AreaChart
-      height={160}
-      title={
-        !currentValue ? (
-          <span className="text-legend">
-            <Trans>Loading history...</Trans>
-          </span>
-        ) : (
-          <>
-            <span className="font-semibold">
-              <Trans>Total staked:</Trans>
-            </span>{' '}
-            <span className="ml-1 text-primary font-semibold">
-              {formatCurrency(currentValue, 2, {
-                notation: 'compact',
-                compactDisplay: 'short',
-              })}{' '}
-              RSR
+    <div data-testid="staking-history-panel">
+      <AreaChart
+        height={160}
+        title={
+          !currentValue ? (
+            <span className="text-legend">
+              <Trans>Loading history...</Trans>
             </span>
-          </>
-        )
-      }
-      data={rows}
-      timeRange={TIME_RANGES}
-      currentRange={current}
-      onRangeChange={handleChange}
-    />
+          ) : (
+            <>
+              <span className="font-semibold">
+                <Trans>Total staked:</Trans>
+              </span>{' '}
+              <span className="ml-1 text-primary font-semibold">
+                {formatCurrency(currentValue, 2, {
+                  notation: 'compact',
+                  compactDisplay: 'short',
+                })}{' '}
+                RSR
+              </span>
+            </>
+          )
+        }
+        data={rows}
+        timeRange={TIME_RANGES}
+        currentRange={current}
+        onRangeChange={handleChange}
+      />
+    </div>
   )
 }
 
