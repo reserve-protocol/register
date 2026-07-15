@@ -67,10 +67,16 @@ describe('openAuction (Z19 legacy v2 guards)', () => {
     )
   })
 
-  it('fails loud on a NaN price (decimal.js-light rejects it — never coerced)', () => {
-    // NaN is caught by the Decimal conversion before our guard; either way it
-    // throws rather than producing a bigint. What matters: no coerced value.
-    expect(() => call({ prices: [NaN, 1] })).toThrow()
+  it('fails loud on a NaN price with the guard message (validated before Decimal)', () => {
+    expect(() => call({ prices: [NaN, 1] })).toThrow(
+      'sell/buy token price unavailable'
+    )
+  })
+
+  it('fails loud on a non-finite (Infinity) price', () => {
+    expect(() => call({ prices: [Infinity, 1] })).toThrow(
+      'sell/buy token price unavailable'
+    )
   })
 
   it('fails loud when supply is 0 (division by supply)', () => {

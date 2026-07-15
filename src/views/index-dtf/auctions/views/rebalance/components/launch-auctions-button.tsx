@@ -174,7 +174,7 @@ const LaunchAuctionsButton = () => {
       {priceUnavailable && (
         <p
           data-testid="auctions-price-unavailable"
-          className="text-center text-sm text-red-500 px-2 pb-2"
+          className="text-center text-sm text-destructive px-2 pb-2"
         >
           {unavailableSymbol ? (
             <Trans>Price unavailable for {unavailableSymbol} — cannot launch</Trans>

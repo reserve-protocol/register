@@ -45,6 +45,28 @@ export const openAuction = (
     throw new Error('openAuction: supply must be > 0')
   }
 
+  // Resolve the sell/buy indices, then validate the RAW prices they consume
+  // BEFORE any Decimal construction — a NaN/Inf/<=0 price is caught by our own
+  // guard with a clear message, never coerced into a skewed bigint.
+  let x = _prices.length
+  let y = _prices.length
+
+  for (let i = 0; i < _prices.length; i++) {
+    if (tokens[i] == auction.sell) {
+      x = i
+    } else if (tokens[i] == auction.buy) {
+      y = i
+    }
+  }
+
+  if (x == _prices.length || y == _prices.length) {
+    throw new Error('auction tokens not found in tokens array')
+  }
+
+  if (!isUsablePrice(_prices[x]) || !isUsablePrice(_prices[y])) {
+    throw new Error('openAuction: sell/buy token price unavailable')
+  }
+
   // convert price number inputs to bigints
 
   // {USD/wholeTok}
@@ -63,30 +85,6 @@ export const openAuction = (
 
   // {USD} = {USD/wholeShare} * {wholeShare}
   const sharesValue = new Decimal(_dtfPrice).mul(supply)
-
-  // ====
-
-  // indices
-  let x = prices.length
-  let y = prices.length
-
-  // find indices
-
-  for (let i = 0; i < prices.length; i++) {
-    if (tokens[i] == auction.sell) {
-      x = i
-    } else if (tokens[i] == auction.buy) {
-      y = i
-    }
-  }
-
-  if (x == prices.length || y == prices.length) {
-    throw new Error('auction tokens not found in tokens array')
-  }
-
-  if (!isUsablePrice(_prices[x]) || !isUsablePrice(_prices[y])) {
-    throw new Error('openAuction: sell/buy token price unavailable')
-  }
 
   // calculate startPrice/endPrice
 
