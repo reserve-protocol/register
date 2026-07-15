@@ -64,6 +64,20 @@ describe('appendLivePoint', () => {
     expect(live.rsr).toBe(3)
   })
 
+  it('treats a position without a value as 0, never NaN (Z25)', () => {
+    const portfolio: PortfolioResponse = {
+      ...emptyPortfolio,
+      totalHoldingsUSD: 10,
+      // A partial API row missing `value` must not poison the category total.
+      indexDTFs: [{ value: 10 }, {}] as PortfolioResponse['indexDTFs'],
+    }
+
+    const [, live] = appendLivePoint([historicalPoint], portfolio)
+
+    expect(live.indexDTFs).toBe(10)
+    expect(Number.isNaN(live.indexDTFs)).toBe(false)
+  })
+
   it('does not mutate the original series', () => {
     const original = [historicalPoint]
     const result = appendLivePoint(original, emptyPortfolio)

@@ -59,8 +59,10 @@ export const appendLivePoint = (
   chartData: ChartDataPoint[],
   portfolio: PortfolioResponse
 ): ChartDataPoint[] => {
-  const sumValues = (positions: { value: number }[]) =>
-    positions.reduce((acc, p) => acc + p.value, 0)
+  // Match portfolioBreakdownAtom: a position missing `value` contributes 0, not
+  // NaN (which would poison the whole live-point total) (Z25).
+  const sumValues = (positions: { value?: number }[]) =>
+    positions.reduce((acc, p) => acc + (p.value || 0), 0)
   const now = Date.now()
 
   return [
