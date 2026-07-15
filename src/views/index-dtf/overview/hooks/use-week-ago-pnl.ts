@@ -1,9 +1,11 @@
 import useIndexDTFSubgraph from '@/hooks/useIndexDTFSugbraph'
-import { chainIdAtom } from '@/state/atoms'
-import { RESERVE_API } from '@/utils/constants'
+import {
+  dtfQueryKeys,
+  useDtfSdk,
+  useIndexDtfIdentity,
+} from '@reserve-protocol/react-sdk'
 import { useQuery } from '@tanstack/react-query'
 import { gql } from 'graphql-request'
-import { useAtomValue } from 'jotai'
 import { useMemo } from 'react'
 import { Address, formatEther } from 'viem'
 
@@ -59,7 +61,8 @@ const useWeekAgoPnl = ({
   token?: Address
   currentValue?: number
 }) => {
-  const chainId = useAtomValue(chainIdAtom)
+  const sdk = useDtfSdk()
+  const { chainId } = useIndexDtfIdentity()
 
   // Hour-floored so query keys stay stable within the hour.
   const weekAgo = useMemo(
@@ -90,36 +93,36 @@ const useWeekAgoPnl = ({
     return Number(formatEther(BigInt(snapshot.amount)))
   }, [snapshotData])
 
+  const priceParams = token
+    ? {
+        address: token,
+        chainId,
+        from: weekAgo - 3_600,
+        to: weekAgo,
+        interval: '1h' as const,
+      }
+    : undefined
+
+  // Shares the canonical raw-history key, so the queryFn MUST return the raw
+  // point array (the key's contract) — the last-positive selection happens
+  // locally below, never inside the shared cache entry.
   const {
-    data: priceThen,
+    data: pricePoints,
     isSuccess: priceSettled,
     isError: priceFailed,
   } = useQuery({
-    queryKey: ['dtf-price-at', chainId, token, weekAgo],
-    queryFn: async (): Promise<number | null> => {
-      const sp = new URLSearchParams()
-      sp.set('chainId', chainId.toString())
-      sp.set('address', token?.toLowerCase() ?? '')
-      sp.set('from', (weekAgo - 3_600).toString())
-      sp.set('to', weekAgo.toString())
-      sp.set('interval', '1h')
-
-      const response = await fetch(
-        `${RESERVE_API}historical/dtf?${sp.toString()}`
-      )
-      if (!response.ok) throw new Error('Failed to fetch dtf price at week ago')
-
-      const data = (await response.json()) as {
-        timeseries?: { timestamp: number; price: number }[]
-      }
-      const point = [...(data.timeseries ?? [])]
-        .reverse()
-        .find((p) => p.price > 0)
-      return point?.price ?? null
-    },
-    enabled: !!token && snapshotAmount !== null && snapshotAmount > 0,
+    queryKey: dtfQueryKeys.index.priceHistory(priceParams),
+    queryFn: () => sdk.index.getPriceHistory(priceParams!),
+    enabled: !!priceParams && snapshotAmount !== null && snapshotAmount > 0,
     staleTime: Infinity,
   })
+
+  // Last point at/before the mark with a real price — snapshots can carry
+  // leading zero-price rows.
+  const priceThen = useMemo(() => {
+    if (!pricePoints) return null
+    return [...pricePoints].reverse().find((p) => p.price > 0)?.price ?? null
+  }, [pricePoints])
 
   // Resolved = every fetch this PnL depends on has settled (success or error),
   // so a null pnl now means "hide the row", not "still loading". Consumers use

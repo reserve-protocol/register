@@ -1,9 +1,12 @@
-import { chainIdAtom } from '@/state/atoms'
 import { indexDTFPriceAtom } from '@/state/dtf/atoms'
-import { RESERVE_API } from '@/utils/constants'
+import {
+  dtfQueryKeys,
+  useDtfSdk,
+  useIndexDtfIdentity,
+} from '@reserve-protocol/react-sdk'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { useAtomValue } from 'jotai'
-import { useEffect } from 'react'
+import { useEffect, useMemo } from 'react'
 import { Address, erc20Abi, formatEther } from 'viem'
 import { useReadContract } from 'wagmi'
 
@@ -55,44 +58,6 @@ export const dedupeByTimestamp = <T extends { timestamp: number }>(
   return [...byTimestamp.values()].sort((a, b) => a.timestamp - b.timestamp)
 }
 
-const fetchHistory = async (
-  chainId: number,
-  address: string,
-  range: { from: number; to: number; interval: FetchInterval },
-  currentPrice?: number,
-  supply?: bigint
-): Promise<IndexDTFPerformance> => {
-  const sp = new URLSearchParams()
-  sp.set('chainId', chainId.toString())
-  sp.set('address', address.toLowerCase())
-  sp.set('from', range.from.toString())
-  sp.set('to', range.to.toString())
-  sp.set('interval', range.interval)
-
-  const response = await fetch(`${RESERVE_API}historical/dtf?${sp.toString()}`)
-
-  if (!response.ok) {
-    throw new Error('Failed to fetch dtf price history')
-  }
-
-  const data = (await response.json()) as IndexDTFPerformance
-  data.timeseries = dedupeByTimestamp(data.timeseries)
-
-  if (currentPrice && supply) {
-    const numberSupply = +formatEther(supply)
-
-    data.timeseries.push({
-      timestamp: Math.floor(Date.now() / 1_000),
-      price: currentPrice,
-      marketCap: currentPrice * numberSupply,
-      totalSupply: numberSupply,
-      basket: [],
-    })
-  }
-
-  return data
-}
-
 const useIndexDTFPriceHistory = ({
   address,
   from,
@@ -101,7 +66,8 @@ const useIndexDTFPriceHistory = ({
   enabled = true,
   prefetchRanges = [],
 }: UseIndexDTFPriceHistoryParams) => {
-  const chainId = useAtomValue(chainIdAtom)
+  const sdk = useDtfSdk()
+  const { chainId } = useIndexDtfIdentity()
   const currentPrice = useAtomValue(indexDTFPriceAtom)
   const { data: supply } = useReadContract({
     address: address as Address,
@@ -115,44 +81,64 @@ const useIndexDTFPriceHistory = ({
 
   const queryClient = useQueryClient()
 
-  // Main query for selected range
-  const mainQuery = useQuery({
-    queryKey: [
-      'dtf-historical-price',
-      address,
-      from,
-      to,
-      interval,
-      currentPrice,
-      supply,
-    ],
-    queryFn: async (): Promise<IndexDTFPerformance> => {
+  // Raw timeseries through the SDK, keyed by the SDK's canonical query key (one
+  // key per source — chart, factsheet and week-ago PnL all share it). The
+  // dedupe + live-point composition stays here as product policy, applied over
+  // the cached SDK points below.
+  const params = address ? { address, chainId, from, to, interval } : undefined
+
+  const rawQuery = useQuery({
+    queryKey: dtfQueryKeys.index.priceHistory(params),
+    queryFn: async () => {
+      if (!params) return []
       const startTime = Date.now()
+      const points = await sdk.index.getPriceHistory(params)
 
-      const data = await fetchHistory(
-        chainId,
-        address ?? '',
-        { from, to, interval },
-        currentPrice,
-        supply
-      )
-
-      // Ensure minimum loading time of 1 second for loading skeleton
-      const elapsed = Date.now() - startTime
-      const remainingTime = Math.max(0, 1000 - elapsed)
-
-      if (remainingTime > 0) {
-        await new Promise((resolve) => setTimeout(resolve, remainingTime))
+      // Floor the fetch at 1s so a fast response doesn't flash the skeleton.
+      const remaining = Math.max(0, 1000 - (Date.now() - startTime))
+      if (remaining > 0) {
+        await new Promise((resolve) => setTimeout(resolve, remaining))
       }
 
-      return data
+      return points
     },
     enabled: Boolean(enabled && address && supply && currentPrice),
     refetchInterval: REFRESH_INTERVAL,
     staleTime: REFRESH_INTERVAL,
   })
 
-  // Prefetch other ranges in background
+  const data = useMemo<IndexDTFPerformance | undefined>(() => {
+    if (!rawQuery.data || !address) return undefined
+
+    const timeseries = dedupeByTimestamp(
+      rawQuery.data.map((point) => ({
+        timestamp: point.timestamp,
+        price: point.price,
+        marketCap: point.marketCap,
+        totalSupply: point.totalSupply,
+        basket: point.basket.map((asset) => ({
+          address: asset.address,
+          price: asset.price,
+          amount: asset.amount,
+        })),
+      }))
+    )
+
+    if (currentPrice && supply) {
+      const numberSupply = +formatEther(supply)
+      timeseries.push({
+        timestamp: Math.floor(Date.now() / 1_000),
+        price: currentPrice,
+        marketCap: currentPrice * numberSupply,
+        totalSupply: numberSupply,
+        basket: [],
+      })
+    }
+
+    return { address, timeseries }
+  }, [rawQuery.data, address, currentPrice, supply])
+
+  // Prefetch other ranges under the SAME SDK keys.
   useEffect(() => {
     if (
       !enabled ||
@@ -165,18 +151,16 @@ const useIndexDTFPriceHistory = ({
     }
 
     prefetchRanges.forEach((range) => {
+      const rangeParams = {
+        address,
+        chainId,
+        from: range.from,
+        to: range.to,
+        interval: range.interval,
+      }
       queryClient.prefetchQuery({
-        queryKey: [
-          'dtf-historical-price',
-          address,
-          range.from,
-          range.to,
-          range.interval,
-          currentPrice,
-          supply,
-        ],
-        queryFn: () =>
-          fetchHistory(chainId, address, range, currentPrice, supply),
+        queryKey: dtfQueryKeys.index.priceHistory(rangeParams),
+        queryFn: () => sdk.index.getPriceHistory(rangeParams),
         staleTime: REFRESH_INTERVAL,
       })
     })
@@ -188,9 +172,10 @@ const useIndexDTFPriceHistory = ({
     chainId,
     queryClient,
     prefetchRanges,
+    sdk,
   ])
 
-  return mainQuery
+  return { ...rawQuery, data }
 }
 
 export default useIndexDTFPriceHistory
