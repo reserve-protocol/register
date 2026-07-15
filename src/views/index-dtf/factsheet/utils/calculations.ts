@@ -263,12 +263,13 @@ export const calculateMonthlyChartData = (
 
   // 4) Calculate monthly P&L using last price of each month vs last price of previous month
   return months.map(([, current], index) => {
+    const prevPrice = index === 0 ? 0 : months[index - 1][1].lastPrice
+    // Guard the divisor like the other performance sites in this file — a zero
+    // prior-month price yields an unavailable point, not Infinity (Z12).
     const monthlyPL =
-      index === 0
-        ? null // no previous month to compare
-        : ((current.lastPrice - months[index - 1][1].lastPrice) /
-            months[index - 1][1].lastPrice) *
-          100
+      index === 0 || prevPrice <= 0
+        ? null
+        : ((current.lastPrice - prevPrice) / prevPrice) * 100
 
     // Use the end of month timestamp (normalized)
     const date = new Date(current.lastTs * 1000)
