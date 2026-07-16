@@ -1831,11 +1831,11 @@ msgstr "最优报价"
 
 #: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:41
 msgid "Better price found"
-msgstr ""
+msgstr "发现更优价格"
 
 #: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:59
 msgid "Better price on PancakeSwap"
-msgstr ""
+msgstr "PancakeSwap 上价格更优"
 
 #. placeholder {0}: formatCurrency( +formatUnits(currentPrice, data.buyingTokenDecimals) )
 #. placeholder {1}: data.buyingTokenSymbol
@@ -6672,11 +6672,11 @@ msgstr "Owners"
 
 #: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:103
 msgid "PancakeSwap is currently offering a better price for this exact order. We recommend buying {symbol} there instead."
-msgstr ""
+msgstr "PancakeSwap 目前为这笔相同的订单提供更优价格。我们建议改为在 PancakeSwap 买入 {symbol}。"
 
 #: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:108
 msgid "PancakeSwap is currently offering a better price for this exact order. We recommend selling {symbol} there instead."
-msgstr ""
+msgstr "PancakeSwap 目前为这笔相同的订单提供更优价格。我们建议改为在 PancakeSwap 卖出 {symbol}。"
 
 #: src/views/index-dtf/governance/components/proposal-preview/raw-call-preview.tsx:28
 #: src/views/index-dtf/governance/components/proposal-preview/rebalance-preview/legacy-basket-proposal-preview.tsx:305
