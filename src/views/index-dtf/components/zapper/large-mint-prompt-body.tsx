@@ -28,10 +28,17 @@ type LargeMintCardBodyProps = {
 
 // Capacity and the closed variants are informational — PancakeSwap liquidity is
 // as stale as the pools while ondo minting is blocked, so no CTA.
-const SWAP_CTA_VARIANTS: PromptVariant[] = ['impact', 'large', 'error']
+const SWAP_CTA_VARIANTS: PromptVariant[] = [
+  'better-price',
+  'impact',
+  'large',
+  'error',
+]
 
 const badge = (variant: PromptVariant): ReactNode => {
   switch (variant) {
+    case 'better-price':
+      return <Trans>Better price found</Trans>
     case 'large':
       return <Trans>Large Order</Trans>
     case 'error':
@@ -48,6 +55,8 @@ const badge = (variant: PromptVariant): ReactNode => {
 
 const title = (variant: PromptVariant): ReactNode => {
   switch (variant) {
+    case 'better-price':
+      return <Trans>Better price on PancakeSwap</Trans>
     case 'capacity':
       return <Trans>Order too large</Trans>
     case 'closed-impact':
@@ -89,6 +98,18 @@ const description = ({
   const isBuy = tab === 'buy'
 
   switch (variant) {
+    case 'better-price':
+      return isBuy ? (
+        <Trans>
+          PancakeSwap is currently offering a better price for this exact
+          order. We recommend buying {symbol} there instead.
+        </Trans>
+      ) : (
+        <Trans>
+          PancakeSwap is currently offering a better price for this exact
+          order. We recommend selling {symbol} there instead.
+        </Trans>
+      )
     case 'large':
       return (
         <Trans>
