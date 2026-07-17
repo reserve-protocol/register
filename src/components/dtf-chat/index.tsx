@@ -103,36 +103,7 @@ const DtfChat = () => {
     : undefined
 
   return (
-    <div
-      className={hideLauncher ? 'dtf-chat-hide-mobile-launcher' : undefined}
-      // ReserveChat renders its launcher inside this subtree (no portal) but
-      // exposes no open callback. Capture launcher clicks and, once the toggle
-      // settles, read aria-expanded (internal/unstable) to count real opens.
-      // Mobile DTF pages open the panel via their own action-bar button (a
-      // synthetic launcher click), so gate to desktop to avoid double counting.
-      onClickCapture={(e) => {
-        if (!isDesktop) return
-        if (
-          !(e.target as HTMLElement).closest(
-            '[data-testid="reserve-chat-launcher"]'
-          )
-        )
-          return
-        requestAnimationFrame(() => {
-          const launcher = document.querySelector(
-            '[data-testid="reserve-chat-launcher"]'
-          )
-          if (launcher?.getAttribute('aria-expanded') !== 'true') return
-          trackClick(
-            onDtf ? 'overview' : (viewForPath(pathname) ?? 'home'),
-            'ask-ai',
-            onDtf ? address : undefined,
-            onDtf ? dtf?.token.symbol : undefined,
-            onDtf ? chainId : undefined
-          )
-        })
-      }}
-    >
+    <div className={hideLauncher ? 'dtf-chat-hide-mobile-launcher' : undefined}>
       <ReserveChat
         apiBase={apiBase}
         // Turnstile only against the live server; a local dev server runs without it.
@@ -144,6 +115,19 @@ const DtfChat = () => {
         zIndex={50}
         // Assistant links to app pages route through react-router — no full reload.
         onNavigate={navigate}
+        // Track chat opens (desktop only). Mobile DTF pages open the panel via
+        // their own action-bar button, which already tracks ask-ai — gating to
+        // desktop avoids double counting.
+        onOpen={() => {
+          if (!isDesktop) return
+          trackClick(
+            onDtf ? 'overview' : (viewForPath(pathname) ?? 'home'),
+            'ask-ai',
+            onDtf ? address : undefined,
+            onDtf ? dtf?.token.symbol : undefined,
+            onDtf ? chainId : undefined
+          )
+        }}
       />
     </div>
   )
