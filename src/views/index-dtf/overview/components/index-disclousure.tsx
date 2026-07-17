@@ -184,7 +184,7 @@ const WhitepaperModal = () => {
                       onClick={() =>
                         trackClick('whitepaper_pdf', {
                           token: config.tokenName,
-                          whitepaper_version: t(version.label),
+                          whitepaper_version: version.label.id ?? version.label.message,
                           url: version.url,
                         })
                       }
@@ -212,7 +212,7 @@ const WhitepaperModal = () => {
                         if (value === 'changes')
                           trackClick('whitepaper_changes_expand', {
                             token: config.tokenName,
-                            whitepaper_version: t(version.label),
+                            whitepaper_version: version.label.id ?? version.label.message,
                           })
                       }}
                     >
