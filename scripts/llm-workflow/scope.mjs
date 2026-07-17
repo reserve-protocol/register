@@ -10,6 +10,7 @@ import {
   repoRoot,
   runCommand,
   scanRedFlags,
+  staleAreaGuides,
 } from "./lib/core.mjs";
 
 const args = process.argv.slice(2);
@@ -64,12 +65,15 @@ for (const [lens, globs] of Object.entries(config.lenses ?? {})) {
 }
 
 const redFlags = scanRedFlags(files, config, root);
+const areaGuides = staleAreaGuides(files, root);
 const tierHint = computeTierHint(files, lenses);
 // A scoped run that covers every gate command IS the gate — do not pay for it twice at closeout.
 const gateEquivalent = config.gate.every((command) => commands.includes(command));
 
 if (asJson) {
-  console.log(JSON.stringify({ base, files, commands, unmappedFiles, lenses, redFlags, tierHint, gateEquivalent }, null, 2));
+  console.log(
+    JSON.stringify({ base, files, commands, unmappedFiles, lenses, redFlags, areaGuides, tierHint, gateEquivalent }, null, 2),
+  );
 } else {
   console.log(`scope: ${files.length} file(s) changed vs ${base}`);
   console.log(`lenses: ${lenses.join(", ")}`);
@@ -83,6 +87,10 @@ if (asJson) {
       : `tier hint: ${tierHint.profile} — ${axes.join(" · ")}`,
   );
   for (const flag of redFlags) console.log(`red-flag: ${flag.file}:${flag.line}: ${flag.id}`);
+  for (const { guide, touched } of areaGuides)
+    console.log(
+      `area-guide: ${guide} — diff touches ${touched} file(s) in this area but not the guide; read it against the diff and fix anything stale before closeout`,
+    );
   for (const file of unmappedFiles) console.log(`verify-gap: ${file}: no scoped command mapped`);
   console.log(commands.length === 0 ? "no verify commands mapped" : `commands:\n  ${commands.join("\n  ")}`);
 }
