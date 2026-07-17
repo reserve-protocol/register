@@ -24,6 +24,7 @@ import { ChainId } from '@/utils/chains'
 import type { MessageDescriptor } from '@lingui/core'
 import { msg } from '@lingui/core/macro'
 import { Trans, useLingui } from '@lingui/react/macro'
+import { useTrackIndexDTFClick } from '../../hooks/useTrackIndexDTFPage'
 
 // --- Whitepaper config ---
 // To add a new token: add a new entry keyed by lowercase address.
@@ -126,6 +127,7 @@ const WHITEPAPER_CONFIG: Record<string, WhitepaperConfig> = {
 const WhitepaperModal = () => {
   const { t } = useLingui()
   const dtf = useAtomValue(indexDTFAtom)
+  const { trackClick } = useTrackIndexDTFClick('overview', 'overview')
 
   const config = dtf?.id ? WHITEPAPER_CONFIG[dtf.id.toLowerCase()] : undefined
 
@@ -134,7 +136,11 @@ const WhitepaperModal = () => {
   const hasMultipleVersions = config.versions.length > 1
 
   return (
-    <Dialog>
+    <Dialog
+      onOpenChange={(open) => {
+        if (open) trackClick('whitepaper_open', { token: config.tokenName })
+      }}
+    >
       <DialogTrigger asChild>
         <Button variant="outline" className="flex gap-2 mt-3 text-foreground">
           <Trans>Review {config.tokenName} Whitepaper</Trans>
@@ -175,6 +181,13 @@ const WhitepaperModal = () => {
                       href={version.url}
                       target="_blank"
                       rel="noopener noreferrer"
+                      onClick={() =>
+                        trackClick('whitepaper_pdf', {
+                          token: config.tokenName,
+                          whitepaper_version: t(version.label),
+                          url: version.url,
+                        })
+                      }
                       className="text-primary hover:underline text-sm font-medium flex items-center gap-1"
                     >
                       <Trans>View PDF →</Trans>
@@ -192,7 +205,17 @@ const WhitepaperModal = () => {
                   )}
 
                   {version.changes && (
-                    <Accordion type="single" collapsible>
+                    <Accordion
+                      type="single"
+                      collapsible
+                      onValueChange={(value) => {
+                        if (value === 'changes')
+                          trackClick('whitepaper_changes_expand', {
+                            token: config.tokenName,
+                            whitepaper_version: t(version.label),
+                          })
+                      }}
+                    >
                       <AccordionItem value="changes" className="border-0">
                         <AccordionTrigger className="text-sm font-medium hover:no-underline py-2 px-0">
                           {t(version.changes.title)}

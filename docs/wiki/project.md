@@ -27,6 +27,13 @@ Register — the web interface for Reserve Protocol: **Index DTFs** (current foc
 - Testing: vitest + jsdom, tests in `src/**/tests/**/*.test.{ts,tsx}`. Any hook/helper that transforms SDK/API/RPC data, derives financial values, coordinates tx state, or owns timers must have colocated tests covering weird paths (zero/missing data, invalid amounts, already-completed state, timer cleanup), not just happy paths.
 - Forms: react-hook-form + zod, `mode: 'onChange'`, `FormProvider` for complex forms.
 
+## Analytics / Instrumentation
+
+- Register tracks user interactions in **Mixpanel** (project 3026455; AI DTFs board 11283195). When adding or changing a user-facing interaction (button, link, modal open, tab, toggle, media play, download), decide whether it needs an event — if product/analytics would want to see it, instrument it **in the same change**.
+- **How**: on Index DTF surfaces use `useTrackIndexDTFClick(page, subpage)` / `useTrackIndexDTF(event, …)` (`src/views/index-dtf/hooks/useTrackIndexDTFPage.ts`) — they auto-attach `ca`/`ticker`/`chain` from `indexDTFAtom`. Elsewhere use `trackClick(page, cta, ca?, ticker?, chain?)` / `useTrackPage` (`src/hooks/useTrackPage.ts`). Page views go through `useTrackPage` / `useTrackIndexDTFPage`.
+- New interactions ride the existing **`tap`** event as a new `cta` value (snake_case) — not a new event name — so they break down cleanly on the board and, carrying `ca`, scope to the AI DTFs via the "AI DTF" custom property. Reserve new event names for non-tap telemetry (tx, api, compliance).
+- Autocapture (`$mp_click`/`$mp_scroll`/…) is enabled app-wide (`src/app.tsx`, `capture_text_content` on) — a coarse net, **not** a substitute for a semantic `tap` cta on interactions you actually want to measure.
+
 ## Safety Rules
 
 - **Index DTF data → the SDK first.** Never hand-roll hooks, updaters, or derivation for Index DTF reads, governance, builders, or tx calls — see [[sdk]].
