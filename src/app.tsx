@@ -25,6 +25,13 @@ const useMixpanelInit = () => {
       initialized.current = true
       mixpanel.init(import.meta.env.VITE_MIXPANEL_KEY || 'mixpanel_key', {
         track_pageview: true,
+        autocapture: {
+          // The board's page-view metric is the track_pageview event above;
+          // let autocapture handle everything else so we don't double-count.
+          pageview: false,
+          // Keep element text so $mp_click carries labels ("Play video", etc.).
+          capture_text_content: true,
+        },
       })
       registerReferralSuperProperty()
     }

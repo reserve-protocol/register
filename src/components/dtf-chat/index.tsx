@@ -1,4 +1,5 @@
 import { useIsDesktop } from '@/hooks/use-media-query'
+import { trackClick } from '@/hooks/useTrackPage'
 import { chainIdAtom } from '@/state/atoms'
 import {
   iTokenAddressAtom,
@@ -102,7 +103,36 @@ const DtfChat = () => {
     : undefined
 
   return (
-    <div className={hideLauncher ? 'dtf-chat-hide-mobile-launcher' : undefined}>
+    <div
+      className={hideLauncher ? 'dtf-chat-hide-mobile-launcher' : undefined}
+      // ReserveChat renders its launcher inside this subtree (no portal) but
+      // exposes no open callback. Capture launcher clicks and, once the toggle
+      // settles, read aria-expanded (internal/unstable) to count real opens.
+      // Mobile DTF pages open the panel via their own action-bar button (a
+      // synthetic launcher click), so gate to desktop to avoid double counting.
+      onClickCapture={(e) => {
+        if (!isDesktop) return
+        if (
+          !(e.target as HTMLElement).closest(
+            '[data-testid="reserve-chat-launcher"]'
+          )
+        )
+          return
+        requestAnimationFrame(() => {
+          const launcher = document.querySelector(
+            '[data-testid="reserve-chat-launcher"]'
+          )
+          if (launcher?.getAttribute('aria-expanded') !== 'true') return
+          trackClick(
+            onDtf ? 'overview' : (viewForPath(pathname) ?? 'home'),
+            'ask-ai',
+            onDtf ? address : undefined,
+            onDtf ? dtf?.token.symbol : undefined,
+            onDtf ? chainId : undefined
+          )
+        })
+      }}
+    >
       <ReserveChat
         apiBase={apiBase}
         // Turnstile only against the live server; a local dev server runs without it.

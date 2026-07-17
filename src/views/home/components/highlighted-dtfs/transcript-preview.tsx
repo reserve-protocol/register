@@ -1,6 +1,7 @@
 import AudioEqualizerIcon from '@/components/icons/AudioEqualizerIcon'
 import { Button } from '@/components/ui/button'
 import VideoModal from '@/components/video-modal'
+import { trackClick } from '@/hooks/useTrackPage'
 import { cn } from '@/lib/utils'
 import { Trans, useLingui } from '@lingui/react/macro'
 import type { MutableRefObject } from 'react'
@@ -61,6 +62,18 @@ export const TranscriptPreview = ({
           video={selectedVersion.video}
           title={<Trans>{selectedVersion.symbol} Explainer</Trans>}
           iframeTitle={t`${selectedVersion.symbol} Explainer`}
+          onOpenChange={(open) => {
+            if (open)
+              trackClick(
+                window.location.pathname.startsWith('/discover')
+                  ? 'discover'
+                  : 'home',
+                'video',
+                selectedVersion.address,
+                selectedVersion.symbol,
+                selectedVersion.chainId
+              )
+          }}
         >
           <Button
             data-card-action="video"
