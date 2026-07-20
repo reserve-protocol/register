@@ -233,14 +233,15 @@ const QuoteSummary = () => {
     : parsedPay * (indexDTFPrice ?? 0)
   // Mint's provide-value is USD derived from the input-token price; when that
   // price is unavailable, show "Price unavailable" instead of a fabricated $
-  // figure (Z6). Redeem derives from indexDTFPrice, so it's unaffected.
+  // figure (Z6). Redeem's provide side derives from indexDTFPrice; its
+  // input-priced figure is the receive value, guarded separately below.
   const mintProvideValueDisplay =
     isMint && !isInputPriceAvailable
       ? t`Price unavailable`
       : `$${formatCurrency(provideValueUsd)}`
   // Any USD figure derived from the input-token price (provide value, applied
   // collateral, output-vs-input delta) is unavailable for a mint we can't price
-  // — never render a fabricated $0 or a bogus delta (Z6). Redeem is unaffected.
+  // — never render a fabricated $0 or a bogus delta (Z6).
   const showInputDerivedUsd = !isMint || isInputPriceAvailable
   const walletCollateralUsedUsd = useExistingBalances
     ? isMint
@@ -303,6 +304,12 @@ const QuoteSummary = () => {
   const receiveUsdValue = isMint
     ? sharesAmount * (indexDTFPrice ?? 0)
     : receiveAmount * inputTokenPrice
+  // Redeem's receive side is priced by the input token — same Z6 rule as mint's
+  // provide side: no price, no fabricated $0.
+  const redeemReceiveValueDisplay =
+    !isMint && !isInputPriceAvailable
+      ? t`Price unavailable`
+      : `$${formatCurrency(receiveUsdValue)}`
   const expectedOutputImpact =
     isMint && provideValueUsd > 0 && receiveUsdValue > 0
       ? (receiveUsdValue - provideValueUsd) / provideValueUsd
@@ -1491,7 +1498,7 @@ const QuoteSummary = () => {
                             ` (${formatPriceImpact(expectedOutputImpact)})`}
                         </>
                       ) : (
-                        <>${formatCurrency(receiveUsdValue)}</>
+                        <>{redeemReceiveValueDisplay}</>
                       )}
                     </div>
                     {isMint && showReadyMintOutput && (

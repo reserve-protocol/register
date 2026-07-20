@@ -176,4 +176,19 @@ describe('getRebalanceOpenAuction (Z26 fail-loud wrapper)', () => {
     expect(result.arrays.currentPrices).toEqual([100, 200])
     expect(result.arrays.decimals).toEqual([18n, 6n])
   })
+
+  it('fails closed when a rebalance token is missing from the token map', () => {
+    // Subgraph lag / version shape mismatch: the on-chain rebalance lists a
+    // token the token list doesn't know. Pre-guard this was a render TypeError.
+    const args = baseArgs()
+    args[1] = { [A]: token(A, 18) } // drop B's metadata, prices stay valid
+
+    const result = buildOpenAuctionArrays(...args)
+
+    expect(result).toEqual({
+      ok: false,
+      reason: 'token-metadata-missing',
+      token: B,
+    })
+  })
 })

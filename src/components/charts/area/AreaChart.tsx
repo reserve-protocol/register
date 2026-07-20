@@ -18,7 +18,8 @@ import { formatCurrency } from 'utils'
 type ChartData = { value: number; label?: string; display?: string }[]
 
 interface Props {
-  data: ChartData
+  // Undefined = still loading — the component renders its own loading state.
+  data?: ChartData
   title: React.ReactNode
   heading?: string
   timeRange?: StringMap
@@ -47,7 +48,7 @@ function CustomTooltip({ payload, active }: any) {
   return null
 }
 
-const Gain = ({ data }: { data: ChartData }) => {
+const Gain = ({ data }: { data?: ChartData }) => {
   const gain = useMemo(() => {
     if (data && data.length > 1) {
       return (
