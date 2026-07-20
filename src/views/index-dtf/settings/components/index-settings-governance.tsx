@@ -8,6 +8,7 @@ import {
   FileLock2,
   Hash,
   Hourglass,
+  ListChecks,
   MousePointerBan,
   Pause,
   ShieldCheck,
@@ -67,6 +68,15 @@ export const InnerGovernanceInfo = ({
         value={data?.timelock.id ? shortenAddress(data.timelock.id) : undefined}
         layout={layout}
       />
+      {kind === 'owner' && data?.optimistic?.selectorRegistry && (
+        <InfoCardItem
+          label={t`Selector Registry`}
+          icon={icon(ListChecks)}
+          address={data.optimistic.selectorRegistry}
+          value={shortenAddress(data.optimistic.selectorRegistry)}
+          layout={layout}
+        />
+      )}
       <InfoCardItem
         icon={icon(Pause)}
         label={t`Voting Delay`}
