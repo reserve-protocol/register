@@ -3,7 +3,13 @@ import EnsName from '@/components/utils/ens-name'
 import { indexDTFAtom } from '@/state/dtf/atoms'
 import { useLingui } from '@lingui/react/macro'
 import { atom, useAtomValue } from 'jotai'
-import { Image, MousePointerClick, ShieldHalf, UserRoundKey } from 'lucide-react'
+import {
+  Image,
+  ListChecks,
+  MousePointerClick,
+  ShieldHalf,
+  UserRoundKey,
+} from 'lucide-react'
 import { IconWrapper, InfoCard, InfoCardItem } from './settings-info-card'
 import { useMemo } from 'react'
 
@@ -39,6 +45,7 @@ const RolesInfo = () => {
 
     return []
   }, [indexDTF])
+  const selectorRegistry = indexDTF?.ownerGovernance?.optimistic?.selectorRegistry
 
   return (
     <InfoCard title={t`Roles`} id="roles" secondary>
@@ -69,6 +76,14 @@ const RolesInfo = () => {
           value={<EnsName address={proposer} />}
         />
       ))}
+      {selectorRegistry && (
+        <InfoCardItem
+          label={t`Selector Registry`}
+          icon={<IconWrapper Component={ListChecks} />}
+          address={selectorRegistry}
+          value={<EnsName address={selectorRegistry} />}
+        />
+      )}
       {indexDTF?.auctionLaunchers?.map((approver) => (
         <InfoCardItem
           key={approver}
