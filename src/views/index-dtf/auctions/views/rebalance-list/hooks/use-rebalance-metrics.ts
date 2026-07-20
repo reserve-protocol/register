@@ -3,8 +3,10 @@ import {
   useIndexDtfCompletedRebalance,
   useIndexDtfIdentity,
   type IndexDtfCompletedRebalanceDetail,
+  type SupportedChainId,
 } from '@reserve-protocol/react-sdk'
 import { useAtomValue } from 'jotai'
+import type { Address } from 'viem'
 import { rebalancesByProposalAtom } from '../../../atoms'
 
 export interface RebalanceMetrics {
@@ -47,6 +49,15 @@ export function toRebalanceMetrics(
   }
 }
 
+// Nonce 0 (subgraph serves it as a string, '0') is a real rebalance nonce —
+// gate on `!== undefined`, never truthiness (the pre-SDK hook's
+// `enabled: !!nonce` bug). The SDK read accepts number | string.
+export const toCompletedRebalanceParams = (
+  chainId: SupportedChainId,
+  address: Address,
+  nonce: number | string | undefined
+) => (nonce !== undefined ? { chainId, address, nonce } : undefined)
+
 /**
  * Hook to fetch rebalance metrics from the SDK completed-rebalance read.
  */
@@ -59,7 +70,7 @@ export const useRebalanceMetrics = (proposalId: string) => {
   const nonce = rebalancesByProposal?.[proposalId]?.rebalance.nonce
 
   const { data, isLoading } = useIndexDtfCompletedRebalance(
-    nonce !== undefined ? { chainId, address, nonce } : undefined
+    toCompletedRebalanceParams(chainId, address, nonce)
   )
 
   return { loading: isLoading, metrics: toRebalanceMetrics(data, isTrackingDTF) }

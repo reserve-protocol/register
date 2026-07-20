@@ -1,6 +1,9 @@
 import type { IndexDtfCompletedRebalanceDetail } from '@reserve-protocol/react-sdk'
 import { describe, expect, it } from 'vitest'
-import { toRebalanceMetrics } from '../use-rebalance-metrics'
+import {
+  toCompletedRebalanceParams,
+  toRebalanceMetrics,
+} from '../use-rebalance-metrics'
 
 const base: IndexDtfCompletedRebalanceDetail = {
   nonce: 1,
@@ -74,5 +77,29 @@ describe('toRebalanceMetrics', () => {
 
     expect(toRebalanceMetrics(data, true)?.deviationFromTarget).toBe(7)
     expect(toRebalanceMetrics(data, false)?.deviationFromTarget).toBe(3)
+  })
+})
+
+describe('toCompletedRebalanceParams', () => {
+  const chainId = 8453 as const
+  const address = '0x0000000000000000000000000000000000000001' as const
+
+  it('nonce 0 is a real rebalance — params are built, not disabled', () => {
+    // The pre-SDK hook gated on `enabled: !!nonce`, silently disabling the
+    // read for the first rebalance. The subgraph serves the nonce as a string.
+    expect(toCompletedRebalanceParams(chainId, address, 0)).toEqual({
+      chainId,
+      address,
+      nonce: 0,
+    })
+    expect(toCompletedRebalanceParams(chainId, address, '0')).toEqual({
+      chainId,
+      address,
+      nonce: '0',
+    })
+  })
+
+  it('an unresolved nonce disables the read', () => {
+    expect(toCompletedRebalanceParams(chainId, address, undefined)).toBeUndefined()
   })
 })

@@ -23,7 +23,11 @@ export type OpenAuctionArrays = {
 
 export type OpenAuctionBuildResult =
   | { ok: true; arrays: OpenAuctionArrays }
-  | { ok: false; reason: 'price-unavailable'; token: string }
+  | {
+      ok: false
+      reason: 'price-unavailable' | 'token-metadata-missing'
+      token: string
+    }
 
 // WHY: a token the price API omits or returns with a 0 price must never be
 // coerced into the weight math — a 0/absent price silently skews the target
@@ -70,7 +74,15 @@ export function buildOpenAuctionArrays(
       return { ok: false, reason: 'price-unavailable', token: address }
     }
 
-    decimals.push(BigInt(tokenMap[address].decimals))
+    // A rebalance token absent from the subgraph token list (indexer lag,
+    // version shape mismatch) used to TypeError during render — same fail-closed
+    // treatment as a missing price, launch stays blocked.
+    const tokenMeta = tokenMap[address]
+    if (!tokenMeta) {
+      return { ok: false, reason: 'token-metadata-missing', token: address }
+    }
+
+    decimals.push(BigInt(tokenMeta.decimals))
     currentPrices.push(currentPrice)
     targetBasketPrices.push(targetPrice)
     priceError.push(
