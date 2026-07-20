@@ -39,8 +39,10 @@ export function calculatePriceImpact({
   for (const p of prices) {
     priceByAddress.set(p.address.toLowerCase(), p.price)
   }
-  const quoteTokenPrice =
-    priceByAddress.get(quoteToken.address.toLowerCase()) ?? 1
+  // No reference price for the quote token → no impact math at all; a
+  // fabricated $1 would skew every leg (same rule as the per-leg reference
+  // price below).
+  const quoteTokenPrice = priceByAddress.get(quoteToken.address.toLowerCase())
 
   const byLeg: Record<string, number | undefined> = {}
   let weightedSum = 0
@@ -53,10 +55,12 @@ export function calculatePriceImpact({
     const quoteUnits = Number(
       formatUnits(leg.quoteTokenAmount, quoteToken.decimals)
     )
-    // Need a resolved quote and a usable reference price.
+    // Need a resolved quote and usable reference prices on both sides.
     if (
       !referencePrice ||
       referencePrice <= 0 ||
+      !quoteTokenPrice ||
+      quoteTokenPrice <= 0 ||
       assetUnits <= 0 ||
       quoteUnits <= 0
     ) {

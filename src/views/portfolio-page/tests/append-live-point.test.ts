@@ -85,4 +85,30 @@ describe('appendLivePoint', () => {
     expect(original).toHaveLength(1)
     expect(result).not.toBe(original)
   })
+
+  it('skips the live point when the headline total is not finite (Z25)', () => {
+    const original = [historicalPoint]
+    const broken = {
+      ...emptyPortfolio,
+      totalHoldingsUSD: NaN,
+    }
+
+    // Appending would paint $NaN / a fake crash-to-zero at the chart's end.
+    const result = appendLivePoint(original, broken)
+
+    expect(result).toBe(original)
+  })
+
+  it('treats a missing position array as empty, not a crash (Z25)', () => {
+    const partial = {
+      ...emptyPortfolio,
+      totalHoldingsUSD: 5,
+      indexDTFs: undefined,
+    } as unknown as PortfolioResponse
+
+    const [, live] = appendLivePoint([historicalPoint], partial)
+
+    expect(live.value).toBe(5)
+    expect(live.indexDTFs).toBe(0)
+  })
 })
