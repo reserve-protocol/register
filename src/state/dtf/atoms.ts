@@ -6,7 +6,7 @@ import { walletAtom } from '../atoms'
 import { UNIVERSAL_ASSETS, WORMHOLE_ASSETS } from '@/utils/constants'
 import { checkVersion } from '@/utils'
 import { Bridge, MarketCapData, NativeToken } from '@/types/token-mappings'
-import type { Amount } from '@reserve-protocol/react-sdk'
+import type { Amount, IndexDtfBrand } from '@reserve-protocol/react-sdk'
 
 // TODO: placeholders
 export interface IToken extends Token {
@@ -40,35 +40,9 @@ export interface ITokenGovernance {
   token: Token
 }
 
-export interface IndexDTFBrand {
-  dtf: {
-    icon: string
-    cover: string
-    video: string
-    description: string
-    notesFromCreator: string
-    prospectus: string
-    files: { url: string; name: string }[]
-    tags: string[]
-    basketType: 'percentage-based' | 'unit-based'
-  }
-  creator: {
-    name: string
-    icon: string
-    link: string
-  }
-  curator: {
-    name: string
-    icon: string
-    link: string
-  }
-  socials: {
-    twitter: string
-    telegram: string
-    discord: string
-    website: string
-  }
-}
+// One brand shape, owned by the SDK mapper (display-ready: '' defaults, files
+// always present, basketType narrowed) — register stores it as-is.
+export type IndexDTFBrand = IndexDtfBrand
 
 export type Transaction = {
   id: string

@@ -155,4 +155,17 @@ describe('explorer aggregation branches (shape guards GH0)', () => {
     expect(Array.isArray(res.data?.entries)).toBe(true)
     expect(log).not.toHaveBeenCalled()
   })
+
+  it('SDK IndexDtfAccountBalanceSnapshot resolves an empty snapshot list (PnL hidden)', () => {
+    const log = vi.fn()
+    const res = resolveIndexQuery(
+      JSON.stringify({
+        operationName: 'IndexDtfAccountBalanceSnapshot',
+        variables: { account: '0x1', token: '0x2', before: '1' },
+      }),
+      log
+    ) as { data?: { accountBalanceDailySnapshots?: unknown } }
+    expect(Array.isArray(res.data?.accountBalanceDailySnapshots)).toBe(true)
+    expect(log).not.toHaveBeenCalled()
+  })
 })

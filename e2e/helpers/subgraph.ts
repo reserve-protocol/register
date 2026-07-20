@@ -237,7 +237,10 @@ export function resolveIndexQuery(
   // Past-week PnL balance snapshot (overview balance card, wallet-gated). Empty
   // is the product default — "wasn't holding a week ago" hides the PnL row. A
   // spec that wants a non-zero week-ago position overrides via overrides.subgraph.
-  if (op === 'AccountBalanceWeekAgo') return { data: { accountBalanceDailySnapshots: [] } }
+  // SDK week-ago PnL snapshot read (was register-local `AccountBalanceWeekAgo`).
+  // Empty = the wallet holds no history at the mark → PnL row hidden.
+  if (op === 'IndexDtfAccountBalanceSnapshot')
+    return { data: { accountBalanceDailySnapshots: [] } }
 
   // The SDK sends the proposal id as `proposalId`; older callers used `id`.
   const proposalId = (vars.proposalId as string) ?? (vars.id as string) ?? ''

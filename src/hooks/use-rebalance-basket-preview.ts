@@ -182,7 +182,7 @@ type SnapshotBasketToken = { address: string; price: number; amount: number }
 // caller can treat the snapshot as indeterminate. `> 0` alone would ACCEPT
 // Infinity (→ confident 0.00) — mirror the M2b finite-price contract.
 export const computeSnapshotWeights = (
-  basket: SnapshotBasketToken[],
+  basket: readonly SnapshotBasketToken[],
   dtfPrice: number
 ): Record<string, string> | undefined => {
   if (!(Number.isFinite(dtfPrice) && dtfPrice > 0)) return undefined
