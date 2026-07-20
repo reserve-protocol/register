@@ -3,7 +3,7 @@ import { chainIdAtom } from '@/state/atoms'
 import { indexDTFAtom, indexDTFFeeAtom } from '@/state/dtf/atoms'
 import { DecodedCalldata } from '@/types'
 import EnsName from '@/components/utils/ens-name'
-import { shortenAddress } from '@/utils'
+import { isLoaded, shortenAddress } from '@/utils'
 import { getFeePercentAdjust, isDisplayablePlatformFee } from '@/utils/fees'
 import { ExplorerDataType, getExplorerLink } from '@/utils/getExplorerLink'
 import type { MessageDescriptor } from '@lingui/core'
@@ -244,7 +244,7 @@ export const SetFeeRecipientsPreview = ({
     portion: bigint
   }>
 
-  if (!indexDTF || typeof platformFee !== 'number') return null
+  if (!indexDTF || !isLoaded(platformFee)) return null
 
   // A degenerate/invalid platform fee (>= 100, negative, non-finite) can't yield
   // a real share-of-total split — surface "Unavailable" rather than a fabricated

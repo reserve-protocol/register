@@ -1,7 +1,7 @@
 import dtfStakingVaultAbi from '@/abis/dtf-index-staking-vault'
 import { indexDTFAtom, indexDTFFeeAtom } from '@/state/dtf/atoms'
 import { IndexDTF } from '@/types'
-import { formatPercentage } from '@/utils'
+import { formatPercentage, isLoaded } from '@/utils'
 import { getFeePercentAdjust, isDisplayablePlatformFee } from '@/utils/fees'
 import { msg } from '@lingui/core/macro'
 import type { MessageDescriptor } from '@lingui/core'
@@ -115,7 +115,7 @@ const FeesInfo = () => {
     () =>
       getFeeRecipients(
         indexDTF,
-        typeof platformFee === 'number' ? platformFee : undefined,
+        isLoaded(platformFee) ? platformFee : undefined,
         tokenJar
       ),
     [indexDTF, platformFee, tokenJar]
@@ -153,8 +153,7 @@ const FeesInfo = () => {
       </div>
       <div className="bg-card rounded-3xl mt-1">
         {platformFee === 'unavailable' ||
-        (typeof platformFee === 'number' &&
-          !isDisplayablePlatformFee(platformFee)) ? (
+        (isLoaded(platformFee) && !isDisplayablePlatformFee(platformFee)) ? (
           <InfoCardItem
             label={t`Revenue Distribution`}
             value={t`Unavailable`}

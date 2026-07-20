@@ -1,4 +1,5 @@
 import dtfIndexAbiV5 from '@/abis/dtf-index-abi'
+import { isLoaded } from '@/utils'
 import dtfStakingVaultAbi from '@/abis/dtf-index-staking-vault'
 import {
   indexDTFAtom,
@@ -284,7 +285,7 @@ const Updater = () => {
           revenueDistributionChanges.additionalRecipients !== undefined
             ? revenueDistributionChanges.additionalRecipients
             : feeRecipients.externalRecipients,
-        fixedPlatformFee: typeof platformFee === 'number' ? platformFee : 0,
+        fixedPlatformFee: isLoaded(platformFee) ? platformFee : 0,
         auctionLength:
           auctionLengthChange !== undefined
             ? auctionLengthChange
