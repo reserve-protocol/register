@@ -31,7 +31,11 @@ import {
   currentQuorumPercentageAtom,
   tokenJarAtom,
 } from './atoms'
-import { proposalThresholdToPercentage, secondsToDays } from '../../shared'
+import {
+  isProposalThresholdChanged,
+  proposalThresholdToPercentage,
+  secondsToDays,
+} from '../../shared'
 import {
   DEFAULT_OPTIMISTIC_VETO_DELAY,
   DEFAULT_OPTIMISTIC_VETO_PERIOD,
@@ -586,12 +590,14 @@ const Updater = () => {
           }
         }
 
-        // Check proposal threshold (convert to percentage for comparison)
+        // Check proposal threshold (compare like-for-like percentage — E1)
         if (governanceVotingThreshold !== undefined) {
-          const currentThreshold = proposalThresholdToPercentage(
-            governance.proposalThreshold
-          )
-          if (governanceVotingThreshold !== currentThreshold) {
+          if (
+            isProposalThresholdChanged(
+              governanceVotingThreshold,
+              governance.proposalThreshold
+            )
+          ) {
             changes.proposalThreshold = governanceVotingThreshold
           } else {
             delete changes.proposalThreshold
