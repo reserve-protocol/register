@@ -1,5 +1,8 @@
 import { cn } from '@/lib/utils'
-import { getChartReferenceTimestamp } from '@/utils/chart-reference-date'
+import {
+  getChartReferenceTimestamp,
+  isAIDTF,
+} from '@/utils/chart-reference-date'
 import { indexDTFAtom, performanceTimeRangeAtom } from '@/state/dtf/atoms'
 import { useAtomValue } from 'jotai'
 import type { ReactNode } from 'react'
@@ -38,6 +41,7 @@ const CandlestickChart = ({
         dtf?.chainId,
         dtf?.timestamp
       )}
+      useLaunchLabel={isAIDTF(dtf?.id, dtf?.chainId)}
       intervalSeconds={intervalSeconds}
       className={cn('w-full', bodyHeight)}
     />

@@ -21,6 +21,7 @@ export const PerformanceChartLaunchMarker = ({
   onActiveChange,
   performanceDirection,
   token,
+  useLaunchLabel = false,
 }: {
   chartWidth: number
   isActive: boolean
@@ -28,11 +29,12 @@ export const PerformanceChartLaunchMarker = ({
   onActiveChange: (active: boolean) => void
   performanceDirection: PerformanceDirection
   token: LaunchMarkerToken
+  useLaunchLabel?: boolean
 }) => {
   const { t } = useLingui()
   const priceDataLabelRef = useRef<HTMLSpanElement>(null)
   const [priceDataLabelWidth, setPriceDataLabelWidth] = useState(78)
-  const createdLabel = t`DTF Created`
+  const createdLabel = useLaunchLabel ? t`DTF Launch` : t`DTF Created`
   const backtrackedLabel = t`Est. Historical Price ✱`
   const compactBacktrackedLabel = t`Est. Hist. Price ✱`
   const minimalBacktrackedLabel = t`Est. Price ✱`

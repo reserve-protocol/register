@@ -135,6 +135,7 @@ const CandlestickChartBody = ({
   range,
   dtfStart,
   launchTimestamp,
+  useLaunchLabel = false,
   intervalSeconds,
   className,
 }: {
@@ -142,6 +143,7 @@ const CandlestickChartBody = ({
   range: Range
   dtfStart?: number
   launchTimestamp?: number
+  useLaunchLabel?: boolean
   intervalSeconds: number
   className?: string
 }) => {
@@ -213,6 +215,7 @@ const CandlestickChartBody = ({
               candles={candles}
               intervalSeconds={intervalSeconds}
               launchTimestamp={launchTimestamp}
+              useLaunchLabel={useLaunchLabel}
             />
           )}
         />

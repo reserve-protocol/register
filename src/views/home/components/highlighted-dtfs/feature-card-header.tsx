@@ -4,7 +4,10 @@ import { isInactiveDTF } from '@/hooks/use-dtf-status'
 import { cn } from '@/lib/utils'
 import { formatCurrency } from '@/utils'
 import { PERFORMANCE_TEXT_CLASSES } from '@/utils/chart-performance-colors'
-import { getChartReferenceTimestamp } from '@/utils/chart-reference-date'
+import {
+  getChartReferenceTimestamp,
+  isAIDTF,
+} from '@/utils/chart-reference-date'
 import { Trans } from '@lingui/react/macro'
 import { memo, type Dispatch, type SetStateAction } from 'react'
 import { ChainTabs } from './chain-tabs'
@@ -51,6 +54,10 @@ export const FeatureCardHeader = memo(function FeatureCardHeader({
     selectedVersion.address,
     selectedVersion.chainId,
     selectedVersion.createdAt
+  )
+  const useLaunchLabel = isAIDTF(
+    selectedVersion.address,
+    selectedVersion.chainId
   )
 
   return (
@@ -100,6 +107,7 @@ export const FeatureCardHeader = memo(function FeatureCardHeader({
                     launchTimestamp={launchTimestamp}
                     performance={oneMonthPerformance}
                     showPattern={false}
+                    useLaunchLabel={useLaunchLabel}
                   />
                 </div>
               )}
@@ -164,6 +172,7 @@ export const FeatureCardHeader = memo(function FeatureCardHeader({
           launchMarkerToken={launchMarkerToken}
           launchTimestamp={launchTimestamp}
           performance={oneMonthPerformance}
+          useLaunchLabel={useLaunchLabel}
         />
       )}
     </div>

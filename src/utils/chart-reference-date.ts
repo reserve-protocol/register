@@ -15,7 +15,13 @@ const AI_DTFS: { address: string; chainId: number }[] = [
   { address: '0x75617e7653f86f074cc30b9fd4ebf52ba9b62247', chainId: ChainId.BSC },
 ]
 
-const isAIDTF = (address: string, chainId: number) => {
+// True for the five AI DTFs, which use the July 9, 2026 launch date as their
+// chart reference and label the marker "DTF Launch" instead of "DTF Created".
+export const isAIDTF = (
+  address: string | undefined,
+  chainId: number | undefined
+): boolean => {
+  if (!address || chainId === undefined) return false
   const lower = address.toLowerCase()
   return AI_DTFS.some(
     (dtf) => dtf.address.toLowerCase() === lower && dtf.chainId === chainId
@@ -30,7 +36,6 @@ export const getChartReferenceTimestamp = (
   chainId: number | undefined,
   inceptionTimestamp: number | undefined
 ): number | undefined => {
-  if (!address || chainId === undefined) return inceptionTimestamp
   return isAIDTF(address, chainId)
     ? AI_DTF_REFERENCE_TIMESTAMP
     : inceptionTimestamp
