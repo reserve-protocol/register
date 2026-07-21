@@ -1,12 +1,10 @@
 import { indexDTFPriceAtom } from '@/state/dtf/atoms'
 import {
-  dtfQueryKeys,
-  useDtfSdk,
   useIndexDtfIdentity,
   useIndexDtfPerformance,
+  usePrefetchIndexDtfPriceHistory,
   type IndexDtfPerformancePoint,
 } from '@reserve-protocol/react-sdk'
-import { useQueryClient } from '@tanstack/react-query'
 import { useAtomValue } from 'jotai'
 import { useEffect, useMemo } from 'react'
 import { Address, erc20Abi, formatEther } from 'viem'
@@ -43,7 +41,6 @@ const useIndexDTFPriceHistory = ({
   enabled = true,
   prefetchRanges = [],
 }: UseIndexDTFPriceHistoryParams) => {
-  const sdk = useDtfSdk()
   const { chainId } = useIndexDtfIdentity()
   const currentPrice = useAtomValue(indexDTFPriceAtom)
   const { data: supply } = useReadContract({
@@ -56,7 +53,7 @@ const useIndexDTFPriceHistory = ({
     },
   })
 
-  const queryClient = useQueryClient()
+  const prefetch = usePrefetchIndexDtfPriceHistory()
 
   // The SDK owns dedupe + the live point (chart end stays in sync with the
   // header price); the cache entry stays the raw series under the canonical
@@ -100,29 +97,18 @@ const useIndexDTFPriceHistory = ({
     }
 
     prefetchRanges.forEach((range) => {
-      const rangeParams = {
-        address,
-        chainId,
-        from: range.from,
-        to: range.to,
-        interval: range.interval,
-      }
-      queryClient.prefetchQuery({
-        queryKey: dtfQueryKeys.index.priceHistory(rangeParams),
-        queryFn: () => sdk.index.getPriceHistory(rangeParams),
-        staleTime: REFRESH_INTERVAL,
-      })
+      prefetch(
+        {
+          address,
+          chainId,
+          from: range.from,
+          to: range.to,
+          interval: range.interval,
+        },
+        REFRESH_INTERVAL
+      )
     })
-  }, [
-    enabled,
-    address,
-    supply,
-    currentPrice,
-    chainId,
-    queryClient,
-    prefetchRanges,
-    sdk,
-  ])
+  }, [enabled, address, supply, currentPrice, chainId, prefetchRanges, prefetch])
 
   return { ...query, data }
 }

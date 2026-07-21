@@ -19,6 +19,28 @@ type: context
 
 Confirm exact current names in the installed package before use — never invent hook names.
 
+## The three-tier ownership rule (decided 2026-07-21, Luis)
+
+Every piece of DTF data code lands in exactly one layer:
+
+1. **`sdk`** — transport + math primitives + types. No react, no product
+   semantics. Data hygiene lives here (e.g. `selectPriceAtMark` skipping
+   zero-price rows — an API artifact, not framing).
+2. **`react-sdk`** — one hook per read, nothing above that: canonical query
+   key, caching, enabled-gating. **Register never imports `useDtfSdk` or calls
+   the sdk client directly** — if you need to, the react-sdk is missing a hook
+   (add it there, incl. prefetch/invalidations: see
+   `usePrefetchIndexDtfPriceHistory`). Parameterized data-completeness is fine
+   (`useIndexDtfPerformance`'s opt-in live point).
+3. **`register`** — product hooks composing react-sdk hooks + product math
+   (e.g. `useWeekAgoPnl`: value-diff semantics, when to hide, settling).
+
+The litmus test: **if a hook's semantics would change on a design revision,
+it's too high in the stack.** SDK changes at protocol cadence; register changes
+weekly. Known `useDtfSdk` escapees still to migrate: `use-vote-lock-refresh`,
+`use-recent-proposal-receipt`, `use-proposal-type-eligibility` (each likely
+needs an invalidate/prefetch-style react-sdk primitive).
+
 ## Repo & versioning facts
 
 - pnpm+turbo monorepo: `packages/sdk` (`@reserve-protocol/sdk`) + `packages/react-sdk` (which `export *`s the core — import only from react-sdk) are **version-linked** via changesets and bump together (0.3.x line); `packages/dtf-catalog` versions independently. ESM-only.
