@@ -17,7 +17,7 @@ import {
 import { Trans } from '@lingui/react/macro'
 import { useQuote, useZapperModal } from '@reserve-protocol/react-zapper'
 import { useAtomValue } from 'jotai'
-import { useEffect, useState, type SyntheticEvent } from 'react'
+import { useEffect, useRef, useState, type SyntheticEvent } from 'react'
 import { createPortal } from 'react-dom'
 import { Address } from 'viem'
 import { useTrackIndexDTFClick } from '../../hooks/useTrackIndexDTFPage'
@@ -29,6 +29,7 @@ import {
   INITIAL_MINT_PROMPT_STATE,
   reduceMintPrompt,
   type MintPromptState,
+  type MintPromptVariant,
 } from './large-mint-prompt-state'
 
 type LargeMintPromptProps = {
@@ -132,11 +133,42 @@ const LargeMintPrompt = ({ mode, dtfAddress, chain }: LargeMintPromptProps) => {
     setState(INITIAL_MINT_PROMPT_STATE)
   }, [currentTab])
 
-  const dismiss = () => setState((prev) => ({ ...prev, dismissed: true }))
+  const dismiss = () => {
+    // Guard against the mobile dialog's onOpenChange re-firing dismiss after the
+    // card is already dismissed (state.dismissed flips on the next render).
+    if (state.variant && !state.dismissed) {
+      trackClick('mint_prompt_dismiss', {
+        variant: state.variant,
+        tab: currentTab,
+      })
+    }
+    setState((prev) => ({ ...prev, dismissed: true }))
+  }
   // These notices target the BSC AI DTFs only (Ondo-backed baskets + a
   // PancakeSwap fallback). Other chains never show the card.
   const show =
     chain === ChainId.BSC && state.variant !== null && !state.dismissed
+
+  // One impression per variant surfaced. The reducer only escalates (never
+  // downgrades or flickers on refetch), so a changed variant is a genuinely new
+  // concern that earns its own impression. Reset when the card hides so a later
+  // re-show tracks again. Covers all 7 variants — including the 3 informational
+  // ones (capacity, closed-impact, closed-error) that have no CTA and were
+  // otherwise invisible in analytics.
+  const shownVariantRef = useRef<MintPromptVariant>(null)
+  useEffect(() => {
+    if (show && state.variant) {
+      if (shownVariantRef.current !== state.variant) {
+        shownVariantRef.current = state.variant
+        trackClick('mint_prompt_shown', {
+          variant: state.variant,
+          tab: currentTab,
+        })
+      }
+    } else {
+      shownVariantRef.current = null
+    }
+  }, [show, state.variant, currentTab, trackClick])
 
   // PancakeSwap only needs the DTF and the trade direction — buying makes it
   // the output currency, selling the input. The better-price variant instead
