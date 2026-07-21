@@ -11,11 +11,11 @@ import { useNavigate } from 'react-router-dom'
 import { StringMap } from 'types'
 import { formatCurrency, formatUsdCurrencyCell, getTokenRoute } from 'utils'
 import { LISTED_RTOKEN_ADDRESSES, supportedChainList } from 'utils/constants'
-import useUnlistedTokens, { RTokenRow } from '../useUnlistedTokens'
+import useUnlistedTokens, { YieldDtfRow } from '../useUnlistedTokens'
 import { sortByAtom } from '../atoms'
-import RTokenFilters from './TableFilters'
+import YieldDtfFilters from './TableFilters'
 
-const rTokenCountQuery = gql`
+const yieldDtfCountQuery = gql`
   query GetRTokenCount {
     protocol(id: "reserveprotocol-v1") {
       rTokenCount
@@ -23,17 +23,15 @@ const rTokenCountQuery = gql`
   }
 `
 
-type RTokenCountData = Record<
+type YieldDtfCountData = Record<
   number,
   { protocol?: { rTokenCount?: number | string } | null } | undefined
 >
 
-// Unlisted count = per chain, (total RTokens − curated listed set). A partial
-// GetRTokenCount response must never render a negative or NaN "unlisted" total:
-// a missing / non-numeric per-chain count is SKIPPED, and a present count is
-// clamped at 0 so a stale/inconsistent value can't go negative (A3, GH0 class).
-export const sumUnlistedRTokenCount = (
-  data: RTokenCountData | undefined,
+// Per chain: total minus the curated listed set — a missing per-chain count
+// contributes 0, and the clamp keeps a stale count from going negative (A3).
+export const sumUnlistedYieldDtfCount = (
+  data: YieldDtfCountData | undefined,
   chains: readonly number[]
 ): number => {
   if (!data) return 0
@@ -41,7 +39,7 @@ export const sumUnlistedRTokenCount = (
   let total = 0
   for (const chain of chains) {
     const count = Number(data[chain]?.protocol?.rTokenCount)
-    if (!Number.isFinite(count)) continue // missing / non-numeric → contribute 0
+    if (!Number.isFinite(count)) continue
     const listed = LISTED_RTOKEN_ADDRESSES[chain]?.length ?? 0
     total += Math.max(0, count - listed)
   }
@@ -58,13 +56,13 @@ const sortKeyMap: StringMap = {
   staked: 'token__staked',
 }
 
-const useRTokenCount = () => {
-  const { data } = useMultichainQuery(rTokenCountQuery)
+const useYieldDtfCount = () => {
+  const { data } = useMultichainQuery(yieldDtfCountQuery)
   const [count, setCount] = useState(0)
 
   useEffect(() => {
     if (data) {
-      setCount(sumUnlistedRTokenCount(data, supportedChainList))
+      setCount(sumUnlistedYieldDtfCount(data, supportedChainList))
     }
   }, [data])
 
@@ -75,8 +73,8 @@ const UnlistedTokensTable = () => {
   const { t } = useLingui()
   const navigate = useNavigate()
   const data = useUnlistedTokens()
-  const rTokenCount = useRTokenCount()
-  const columnHelper = createColumnHelper<RTokenRow>()
+  const rTokenCount = useYieldDtfCount()
+  const columnHelper = createColumnHelper<YieldDtfRow>()
   const setSorting = useSetAtom(sortByAtom)
 
   const columns = useMemo(
@@ -150,7 +148,7 @@ const UnlistedTokensTable = () => {
 
   return (
     <div data-testid="unlisted-tokens-table">
-      <RTokenFilters />
+      <YieldDtfFilters />
       <Table
         pagination
         onRowClick={handleClick}

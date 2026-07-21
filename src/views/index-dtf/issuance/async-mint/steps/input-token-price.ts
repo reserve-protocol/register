@@ -1,7 +1,5 @@
-// WHY: a missing input-token price must never be silently treated as $1 — that
-// renders a confidently wrong "You provide $X". Resolve to an explicit
-// availability flag so the USD figure can be suppressed instead of fabricated
-// (Z6). Money surface — engineer review.
+// A missing price-feed entry resolves to an explicit availability flag so USD
+// figures are suppressed, never fabricated from $1/$0 (Z6).
 export const resolveInputTokenPrice = (
   inputPrices: { price?: number }[] | undefined
 ): { price: number; available: boolean } => {
