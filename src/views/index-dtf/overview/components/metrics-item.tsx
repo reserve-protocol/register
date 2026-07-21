@@ -20,6 +20,7 @@ const MetricsItem = ({
   link,
   loading,
   className,
+  testId,
 }: {
   label: ReactNode
   value: string
@@ -29,6 +30,7 @@ const MetricsItem = ({
   link?: string
   loading?: boolean
   className?: string
+  testId?: string
 }) => {
   return (
     <div
@@ -44,9 +46,11 @@ const MetricsItem = ({
         {label}
       </div>
       {loading ? (
-        <Skeleton className="w-24 h-6" />
+        <span data-testid={testId ? `${testId}-loading` : undefined}>
+          <Skeleton className="w-24 h-6" />
+        </span>
       ) : (
-        <div className="flex items-center gap-1">
+        <div className="flex items-center gap-1" data-testid={testId}>
           {valueHover ? (
             <TooltipProvider>
               <Tooltip delayDuration={0}>

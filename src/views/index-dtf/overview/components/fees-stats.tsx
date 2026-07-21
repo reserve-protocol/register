@@ -62,6 +62,7 @@ const MarketCap = () => {
       icon={<BadgeDollarSign size={16} />}
       loading={!marketCap}
       className={FEES_METRIC_CLASSNAME}
+      testId="overview-mcap"
     />
   )
 }
@@ -79,6 +80,7 @@ const TxVolume = () => {
       icon={<ArrowUpDown size={16} />}
       loading={!transactions.length || swapVolumeLoading}
       className={FEES_METRIC_CLASSNAME}
+      testId="overview-tx-volume"
     />
   )
 }

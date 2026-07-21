@@ -181,7 +181,7 @@ function graphError(message: string) {
 // Refusing that request makes the query refetch on the correct chain and succeed
 // — the transient self-heals. A PERSISTENT wrong-chain request (the real
 // regression this suite exists to catch — a valid address sent to the wrong
-// host) never loads data, so its spec fails. `flows/spa-chain-identity.spec.ts`
+// host) never loads data, so its spec fails. `flows/reload-chain-identity.spec.ts`
 // additionally asserts the positive request-boundary identity. See CODEX P0
 // (HARN-001/002).
 export function resolveIndexQuery(

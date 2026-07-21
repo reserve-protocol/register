@@ -565,7 +565,7 @@ export const dtfSettingsProposalDataAtom = atom<ProposalData | undefined>(
 
       // Calculate using the same logic as calculateRevenueDistribution
       const platformFee = get(indexDTFFeeAtom)
-      if (platformFee === undefined) return undefined
+      if (typeof platformFee !== 'number') return undefined
 
       // Convert from actual percentage (including platform fee) to contract percentage (excluding platform fee)
       // User input: actual % of total revenue -> Contract needs: % of non-platform portion
@@ -915,7 +915,7 @@ export const feeRecipientsAtom = atom((get) => {
   let deployerShare = 0
   let governanceShare = 0
   const platformFee = get(indexDTFFeeAtom)
-  if (platformFee === undefined) return undefined
+  if (typeof platformFee !== 'number') return undefined
   const PERCENT_ADJUST = 100 / (100 - platformFee)
 
   const toShare = (pct: number) =>

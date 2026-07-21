@@ -2,11 +2,7 @@ import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
 import VideoModal from '@/components/video-modal'
 import { cn } from '@/lib/utils'
-import {
-  indexDTFAtom,
-  indexDTFBrandAtom,
-  indexDTFBrandExtrasResolvedAtom,
-} from '@/state/dtf/atoms'
+import { indexDTFAtom, indexDTFBrandAtom } from '@/state/dtf/atoms'
 import { getYouTubeEmbedUrl } from '@/utils/youtube'
 import { Trans, useLingui } from '@lingui/react/macro'
 import { atom, useAtom, useAtomValue } from 'jotai'
@@ -51,6 +47,7 @@ export const getDtfCoverImage = (cover: string | undefined) => {
 // real cover arrives.
 export const DtfCoverSkeleton = ({ className }: { className?: string }) => (
   <div
+    data-testid="overview-cover-skeleton"
     className={cn(
       'relative aspect-video overflow-hidden rounded-3xl',
       className
@@ -72,7 +69,6 @@ const DtfCover = ({
 }) => {
   const { t } = useLingui()
   const brand = useAtomValue(indexDTFBrandAtom)
-  const brandExtrasResolved = useAtomValue(indexDTFBrandExtrasResolvedAtom)
   const dtf = useAtomValue(indexDTFAtom)
   const [isVideoLoaded, setIsVideoLoaded] = useState(false)
   const [isImageLoaded, setIsImageLoaded] = useState(false)
@@ -110,11 +106,11 @@ const DtfCover = ({
     ? t`${dtf.token.symbol} explainer`
     : t`DTF Explainer`
 
-  // Two loading phases: brand not yet set, or brand set from the SDK payload
-  // (which can omit `video`) with the authoritative folio-manager read still
-  // in flight. Collapsing in between made the cover flap out and back in.
-  const isBrandLoading =
-    brand === undefined || (!hasVideoCover && !brandExtrasResolved)
+  // The DTF and its brand land from the same SDK payload (0.4.1 types
+  // video/files), and an unbranded DTF settles with brand === undefined —
+  // gate loading on the DTF itself so "no brand" collapses the cover
+  // instead of holding a skeleton forever.
+  const isBrandLoading = dtf === undefined
 
   if (!isBrandLoading && !hasVideoCover && !hasBrandCover) {
     return null

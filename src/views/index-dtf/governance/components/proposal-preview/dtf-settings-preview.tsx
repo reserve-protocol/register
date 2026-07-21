@@ -227,14 +227,13 @@ export const SetFeeRecipientsPreview = ({
   decodedCalldata: DecodedCalldata
   targetAddress?: Address
 }) => {
-  const chainId = useAtomValue(chainIdAtom)
   const indexDTF = useAtomValue(indexDTFAtom)
   const platformFee = useAtomValue(indexDTFFeeAtom)
   const { data: tokenJar } = useReadContract({
     abi: dtfStakingVaultAbi,
     address: indexDTF?.stToken?.id,
     functionName: 'tokenJar',
-    chainId,
+    chainId: indexDTF?.chainId,
     query: {
       enabled: !!indexDTF?.stToken?.id,
     },
@@ -244,7 +243,7 @@ export const SetFeeRecipientsPreview = ({
     portion: bigint
   }>
 
-  if (!indexDTF || platformFee === undefined) return null
+  if (!indexDTF || typeof platformFee !== 'number') return null
 
   // Parse recipients into categories
   const externalRecipients: Array<{ address: string; percentage: number }> = []
@@ -345,7 +344,7 @@ export const SetFeeRecipientsPreview = ({
               <Link
                 to={getExplorerLink(
                   recipient.address,
-                  chainId,
+                  indexDTF.chainId,
                   ExplorerDataType.ADDRESS
                 )}
                 target="_blank"

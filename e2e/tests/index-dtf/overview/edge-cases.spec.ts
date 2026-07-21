@@ -59,3 +59,30 @@ test.fixme(
     })
   }
 )
+
+// M1 regression (CXR-008-I1): an UNBRANDED DTF — folio-manager answers with no
+// parsedData, so the SDK settles brand as undefined — must collapse the cover
+// slot once the DTF itself loads. Gating the skeleton on brand-value presence
+// (brand === undefined) held the skeleton forever, because undefined is ALSO
+// the settled "no brand" result.
+test(
+  'overview: unbranded DTF collapses the cover skeleton once loaded @smoke',
+  async ({ harness }) => {
+    const page = harness.page
+    harness.mock.api({ pathname: '/folio-manager/read' }, {})
+    await harness.goto(base, 'overview')
+
+    // The rest of the overview still renders (brand is optional data).
+    // overview-dtf-name reads the same indexDTFAtom the cover gates on, so once
+    // the name paints the DTF has settled.
+    await expect(page.getByTestId('overview-dtf-name')).toContainText(expectedName, {
+      timeout: 15_000,
+    })
+    // Loaded + no brand → the cover skeleton is dropped from the DOM (not merely
+    // clipped by a collapsing grid, which raced the render). The slot stays
+    // mounted; asserting its presence first keeps a vanished testid from
+    // false-greening the skeleton check.
+    await expect(page.getByTestId('overview-cover-slot')).toBeAttached()
+    await expect(page.getByTestId('overview-cover-skeleton')).toHaveCount(0)
+  }
+)

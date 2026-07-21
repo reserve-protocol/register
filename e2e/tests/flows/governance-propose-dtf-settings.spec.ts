@@ -13,6 +13,7 @@ import {
 } from 'viem'
 import type { MockOverrides } from '../../helpers/overrides'
 import type { Page } from '@playwright/test'
+import { seedFeeRegistry } from '../../harness/seed'
 
 // DTF-settings (fees) propose flow — money-critical. Pure on-snapshot data
 // (no price/liquidity API), so we drive the fee form, submit, and decode the
@@ -49,6 +50,12 @@ const UINT_ZERO = encodeAbiParameters([{ type: 'uint256' }], [0n])
 // time-derived read stays consistent with the snapshots.
 async function bootProposeFees(page: Page, overrides: MockOverrides) {
   const snapshot = loadDtf()
+
+  // The propose form's revenue seeding is gated on the platform fee resolving
+  // (feeRecipientsAtom returns undefined otherwise). Since B1/M1 a failed
+  // registry read is 'unavailable' — it no longer falls back to a fabricated
+  // 50% that happened to unblock this form — so model a real registry read.
+  seedFeeRegistry(overrides, dtf, 1n, 5n) // platformFee = 20%
 
   // bidsEnabled() (0x459cf24b) on the folio is read by the DTF-settings Updater
   // (v5) but isn't in the central chain-state seed — answer it (inert: we never

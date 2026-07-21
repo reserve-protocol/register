@@ -18,7 +18,7 @@ export type Bridge = {
   description: string
   logo: string
   logoDark?: string | null
-  risks: string[]
+  risks: readonly string[]
   wrappedVersion: boolean
 }
 

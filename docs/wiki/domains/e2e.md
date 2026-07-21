@@ -1,6 +1,6 @@
 ---
 title: E2E Suite
-updated: 2026-07-13
+updated: 2026-07-14
 type: domain
 sources:
   - e2e/**
@@ -147,6 +147,34 @@ Deferred (needs src/roles + engineer review): settings distribute-fees write,
 auction launch/bid, async-mint wizard, manage/factsheet, legacy v2 auctions,
 wallet disconnect mid-flow. Validation caveat: zod form bounds are bypassed on
 localhost/dev, so bounds need schema unit tests, not e2e.
+
+## M1 container migration coverage (2026-07-14)
+
+The Index container's route reads now go through the SDK (brand/platform-fee/
+exposure/status), and the suite pins the hardening that rode on it:
+
+- **Fee (B1)**: `flows/settings.spec.ts` covers the SDK platform-fee read —
+  happy path (registry-seeded 1n/5n → 20%), read failure → `settings-fee-
+  unavailable` + NO numeric `settings-fee-platform` (former M10 fixme, now
+  live), zero denominator → unavailable (SDK throws INVALID_RESPONSE — a
+  confident 0% is the RED state), and numerator=0/denominator>0 → a real 0%.
+  Error-path specs must pump ~10s past react-query's retry backoff.
+- **Z21 (atom leaks)**: `flows/dtf-nav-state-cleanup.spec.ts` drives a REAL in-app
+  DTF→DTF navigation (discover table row click — `page.goto` reboots the app
+  and proves nothing about resets) with the destination's `/historical/dtf` +
+  anonymous transferEvents boundaries held open, asserting the stat cards hold
+  skeletons instead of the prior DTF's mcap/tx volume. Stat testids:
+  `overview-mcap`, `overview-tx-volume` (+`-loading` variants; scope `:visible`
+  — Fees & Stats renders mobile+desktop copies). Reset list is unit-pinned in
+  `src/state/dtf/tests/reset-index-dtf-atoms.test.ts`.
+- **Brand**: only ONE folio-manager request exists now (the SDK full-DTF read;
+  `BrandFilesUpdater` is gone). Unbranded DTFs (`/folio-manager/read` → `{}`)
+  are a settled state: the cover slot collapses (`overview-cover-slot`,
+  `overview-cover-skeleton`) — see `index-dtf/overview/edge-cases.spec.ts`.
+- **Status**: container deprecation status comes from the SDK discovery read
+  (`/discover/dtfs` with a `limit` param — same api.ts branch); the
+  KNOWN_DEPRECATED instant fail-safe stays and is unit-pinned
+  (`src/hooks/tests/use-dtf-status.test.ts`).
 
 ## Yield DTF (RToken) — Phase F + audit hardening (2026-07-12)
 

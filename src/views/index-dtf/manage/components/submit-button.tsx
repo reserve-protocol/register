@@ -10,6 +10,7 @@ import {
   isBrandManagerAtom,
 } from '@/state/dtf/atoms'
 import { RESERVE_API } from '@/utils/constants'
+import { dtfQueryKeys } from '@reserve-protocol/react-sdk'
 import { Trans, useLingui } from '@lingui/react/macro'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { atom, useAtomValue, useSetAtom } from 'jotai'
@@ -290,9 +291,17 @@ const SubmitButton = () => {
       track('submit_successful')
       toast.success(t`DTF updated successfully`, { position: 'bottom-right' })
       updateBrandData(payload as IndexDTFBrand)
-      // BrandFilesUpdater merges dtf.files from its own query — refresh it so
-      // a stale cache doesn't clobber the data we just saved.
-      queryClient.invalidateQueries({ queryKey: ['brand-files'] })
+      // The brand atom is fed from the SDK's full index DTF query — refresh
+      // that one query so a stale cache doesn't clobber the saved data.
+      if (dtf) {
+        queryClient.invalidateQueries({
+          queryKey: dtfQueryKeys.index.full({
+            address: dtf.id,
+            chainId: dtf.chainId,
+            brand: true,
+          }),
+        })
+      }
       setState('idle')
     } catch (e: any) {
       console.error('Error submitting form:', e)
