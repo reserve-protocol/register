@@ -56,6 +56,7 @@ import { Address, erc20Abi, formatUnits } from 'viem'
 import { useWalletClient } from 'wagmi'
 import { readContracts } from 'wagmi/actions'
 import { useAsyncZap } from '../async-zap-context'
+import { resolveInputTokenPrice } from './input-token-price'
 import LegRow from '../components/leg-row'
 import OndoLimitsBanner from '../components/ondo-limits-banner'
 import { useOrderExpiryCountdown } from '../hooks/use-order-expiry-countdown'
@@ -225,10 +226,19 @@ const QuoteSummary = () => {
     staleTime: 30_000,
     enabled: !!inputToken.address,
   })
-  const inputTokenPrice = inputPrices?.[0]?.price ?? 1
+  const { price: inputTokenPrice, available: isInputPriceAvailable } =
+    resolveInputTokenPrice(inputPrices)
   const provideValueUsd = isMint
     ? parsedPay * inputTokenPrice
     : parsedPay * (indexDTFPrice ?? 0)
+  // No input-token price → suppress every USD figure derived from it instead
+  // of fabricating $0 (Z6). Mint's input-priced side is provide; redeem's is
+  // the receive value below.
+  const mintProvideValueDisplay =
+    isMint && !isInputPriceAvailable
+      ? t`Price unavailable`
+      : `$${formatCurrency(provideValueUsd)}`
+  const showInputDerivedUsd = !isMint || isInputPriceAvailable
   const walletCollateralUsedUsd = useExistingBalances
     ? isMint
       ? Math.min(heldCollateralTotalUsd, provideValueUsd)
@@ -290,6 +300,10 @@ const QuoteSummary = () => {
   const receiveUsdValue = isMint
     ? sharesAmount * (indexDTFPrice ?? 0)
     : receiveAmount * inputTokenPrice
+  const redeemReceiveValueDisplay =
+    !isMint && !isInputPriceAvailable
+      ? t`Price unavailable`
+      : `$${formatCurrency(receiveUsdValue)}`
   const expectedOutputImpact =
     isMint && provideValueUsd > 0 && receiveUsdValue > 0
       ? (receiveUsdValue - provideValueUsd) / provideValueUsd
@@ -798,7 +812,9 @@ const QuoteSummary = () => {
                     >
                       <span>
                         {useExistingBalances
-                          ? t`Existing collateral · $${formatCurrency(walletCollateralUsedUsd)} applied`
+                          ? showInputDerivedUsd
+                            ? t`Existing collateral · $${formatCurrency(walletCollateralUsedUsd)} applied`
+                            : t`Existing collateral applied`
                           : t`Existing collateral · $${formatCurrency(heldCollateralTotalUsd)} available`}
                       </span>
                       <span
@@ -842,7 +858,7 @@ const QuoteSummary = () => {
                             )}
                           >
                             {isMint && useExistingBalances
-                              ? `$${formatCurrency(provideValueUsd)}`
+                              ? mintProvideValueDisplay
                               : isMint
                                 ? payAmountStr || '0.00'
                                 : payAmountStr || '0'}
@@ -850,9 +866,11 @@ const QuoteSummary = () => {
                         </div>
                         <div className="mt-2 text-sm font-light text-muted-foreground">
                           {isMint && useExistingBalances
-                            ? t`${formatCurrency(remainingInputTokenAmount)} ${inputToken.symbol} + $${formatCurrency(walletCollateralUsedUsd)} existing collateral`
+                            ? showInputDerivedUsd
+                              ? t`${formatCurrency(remainingInputTokenAmount)} ${inputToken.symbol} + $${formatCurrency(walletCollateralUsedUsd)} existing collateral`
+                              : t`${formatCurrency(remainingInputTokenAmount)} ${inputToken.symbol} + existing collateral`
                             : isMint
-                              ? `$${formatCurrency(provideValueUsd)}`
+                              ? mintProvideValueDisplay
                               : `$${formatCurrency(provideValueUsd)}`}
                         </div>
                       </>
@@ -1465,7 +1483,7 @@ const QuoteSummary = () => {
                         <>
                           {showReadyMintOutput ? '' : '~'}$
                           {formatCurrency(outputUsdValue)}
-                          {showReadyMintOutput
+                          {showReadyMintOutput && showInputDerivedUsd
                             ? ' ' +
                               t`(${outputVsInputDeltaLabel} vs original input)`
                             : null}
@@ -1474,7 +1492,7 @@ const QuoteSummary = () => {
                             ` (${formatPriceImpact(expectedOutputImpact)})`}
                         </>
                       ) : (
-                        <>${formatCurrency(receiveUsdValue)}</>
+                        <>{redeemReceiveValueDisplay}</>
                       )}
                     </div>
                     {isMint && showReadyMintOutput && (

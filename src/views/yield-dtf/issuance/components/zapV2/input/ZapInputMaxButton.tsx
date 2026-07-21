@@ -6,7 +6,7 @@ import TokenLogo from 'components/icons/TokenLogo'
 import { useMemo } from 'react'
 
 const ZapInputMaxButton = () => {
-  const { operation, tokenIn, onClickMax } = useZap()
+  const { operation, tokenIn, onClickMax, canCalculateMax } = useZap()
 
   const decimalsFormat = useMemo(() => {
     const balance = +(tokenIn.balance ?? 0)
@@ -33,6 +33,8 @@ const ZapInputMaxButton = () => {
           variant="secondary"
           className="rounded"
           onClick={onClickMax}
+          disabled={!canCalculateMax}
+          data-testid="zap-max-button"
         >
           <Trans>Max</Trans>
         </Button>

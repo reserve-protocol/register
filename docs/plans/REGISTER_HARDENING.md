@@ -1142,6 +1142,11 @@ line numbers before touching. None duplicate A1–Z32._
 > **Decision (Luis, 2026-07-14):** intended metric (revenue vs staked) needs
 > product/engineer input — parked; the `snapshots ?? []` fragility half is
 > still in scope (plan RG1).
+> **Correction (RG wave, CXR-028):** the cited `stake-rewards-history.tsx` is
+> DEAD (zero production imports) — deleted. The live component is
+> `stake-history.tsx` (lazy in `staking-metrics.tsx` staked tab); the fragility
+> guard + regression moved there. The wrong-metric label question is moot on the
+> dead file; re-scope it to `stake-history.tsx` if product still wants the relabel.
 - **Where:** `src/views/yield-dtf/staking/components/overview/stake-rewards-history.tsx`
   — the row `value` is the subgraph's `cumulativeRSRRevenueUSD` (`:20-21,45`),
   `currentValue` is that latest value (`:54`), and the chart title renders it as

@@ -59,8 +59,11 @@ export const appendLivePoint = (
   chartData: ChartDataPoint[],
   portfolio: PortfolioResponse
 ): ChartDataPoint[] => {
-  const sumValues = (positions: { value: number }[]) =>
-    positions.reduce((acc, p) => acc + p.value, 0)
+  // A non-finite total or missing rows must never paint $NaN / a fake
+  // crash-to-zero at the chart's end (Z25).
+  if (!Number.isFinite(portfolio.totalHoldingsUSD)) return chartData
+  const sumValues = (positions?: { value?: number }[]) =>
+    (positions ?? []).reduce((acc, p) => acc + (p.value || 0), 0)
   const now = Date.now()
 
   return [

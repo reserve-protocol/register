@@ -182,4 +182,33 @@ describe('calculatePriceImpact', () => {
 
     expect(result.actualAggregate).toBeUndefined()
   })
+
+  it('yields no impact when the quote-token price is missing — never a fabricated $1', () => {
+    const sellLeg = leg({
+      id: 'sell-weth',
+      side: 'sell',
+      asset: weth,
+      assetAmount: parseUnits('1', 18),
+      quoteTokenAmount: parseUnits('3300', 6),
+    })
+
+    // Prices resolve for the legs' assets but NOT for the quote token. The old
+    // `?? 1` fabricated a $1 quote price, reporting ~-100% impact on real legs.
+    const result = calculatePriceImpact({
+      legs: [sellLeg],
+      quoteToken,
+      prices: prices.filter((p) => p.address !== usdc.address),
+      ordersByLegId: {
+        [sellLeg.id]: fulfilledOrder(
+          sellLeg.id,
+          parseUnits('1', 18),
+          parseUnits('3150', 6)
+        ),
+      },
+    })
+
+    expect(result.byLeg[sellLeg.id]).toBeUndefined()
+    expect(result.aggregate).toBeUndefined()
+    expect(result.actualAggregate).toBeUndefined()
+  })
 })

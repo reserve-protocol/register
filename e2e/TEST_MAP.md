@@ -49,6 +49,7 @@ dialogs). Playwright project matrix: `{smoke, full} × {desktop, mobile}`.
 | Discover | — | index list, search narrow/restore, index↔yield tab, deprecated-DTF search (Stage 2), empty/error, row→overview | L0–L3 | ⬜ | 🟡 search+tab+nav |
 | Earn | IndexDTF / YieldDTF / DeFi | each earn tab list, sort, empty/error, APY columns | L0–L3 | ⬜ | ⬜ |
 | Portfolio | — | connected holdings, empty (no activity), past-activity-only edge, disconnected | L0–L3 | ⬜ | ⬜ |
+| Tokens (`/tokens`) | listed + unlisted | listed/unlisted RTokens tables; unlisted partial-chain survival (Z2, `general/tokens/unlisted-partial.spec.ts`) | L0–L3 | ⬜ | 🟡 Z2 partial-response only |
 | Create Index DTF | deploy wizard | coming-soon gate + permissionless deploy path (multi-step: basket/CSV, governance, confirm) | L0–L3 | ⬜ | ⬜ (deferred non-goal) |
 | Create Yield DTF | deploy wizard | multi-step deploy | L0–L3 | ⬜ | ⬜ (deferred non-goal) |
 | Explorer | Transactions | list, filters, chain filter, pagination, empty | L0–L3 | ⬜ | ⬜ |
@@ -89,7 +90,7 @@ Explorer + Earn + Portfolio + Bridge are **entirely uncovered** today.
 | Overview | — | render ×2 fixtures, backing, price, charts, edges | L0–L3 | ⬜ | ✅ render; ⬜ edges/mobile |
 | Issuance | Manual | mint/redeem, redeem-only (paused hyUSD), math, compliance geo | L0–L3 | ⬜ | 🟡 render only |
 | Issuance | Zap | zap mint/redeem, quote states | L0–L3 | ⬜ | ⬜ |
-| Stake | — | stake/unstake/withdraw/cancel, exchange-rate, cooldown vs available, draft queue | L0–L3 | ⬜ | 🟡 render only |
+| Stake | — | stake/unstake/withdraw/cancel, exchange-rate, cooldown vs available, draft queue, staked-history snapshots-partial survival (Z38, `history-partial.spec.ts`, desktop+mobile) | L0–L3 | 🟡 Z38 only | 🟡 render + stake/unstake write + Z38 partial-response |
 | Auctions | — | revenue auctions, recollateralization, dutch bid, claim — read + write | L0–L3 | ⬜ | ⬜ |
 | Governance | Overview | proposal list, delegates | L0–L3 | ⬜ | ⬜ |
 | Governance | Create proposal | RToken param proposals | L0–L3 | ⬜ | ⬜ |
