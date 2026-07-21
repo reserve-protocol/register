@@ -72,8 +72,9 @@ Quick loop: `pnpm exec playwright test e2e/tests/smoke/auctions.spec.ts`
   permissionless window submits `openAuctionUnrestricted()` (subgraph
   `getRebalances` window widened since captured windows are zero-width). Asserts
   target + selector + rebalance nonce. **cmc20 not lcap**: `isHybridDTFAtom` is
-  now derived from `rebalanceControl.weightControl` (native = hybrid, D1) — cmc20
-  is tracking (`weightControl=false`) so it stays non-hybrid; a hybrid (native)
+  a curated allowlist (hybrid REQUIRES weight control but is not implied by it —
+  the D1 weightControl derivation was reverted, Luis 2026-07-21) — cmc20
+  is tracking so it stays non-hybrid; a hybrid (allowlisted native)
   DTF forces a Manage-Weights step before the launch button, so mock
   `weightControl` to drive that step. ENGINEER REVIEW STILL REQUIRED for the openAuction
   weight/price MATH (`getRebalanceOpenAuction`) — the spec proves the call fires,

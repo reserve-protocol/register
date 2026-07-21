@@ -225,14 +225,21 @@ export const isSingletonRebalanceAtom = atom((get) => {
   return checkVersion('4.0.0', version)
 })
 
-// A "hybrid" DTF is a NATIVE DTF (weightControl === true) — its weights are
-// governance-controlled, so the auction launcher manages them (the deferWeights
-// / Manage-Weights flow) rather than deriving them from price like a tracking
-// DTF (weightControl === false). This was an address allowlist (LCAP + Venionaire
-// + test DTFs, all confirmed weightControl=true on-chain); deriving it from
-// weightControl covers every native DTF without hand-maintaining the list (D1).
+// Hybrid is a curated product designation, NOT derivable from weightControl:
+// it requires weight control but not every weight-controlled DTF is hybrid
+// (Luis, 2026-07-21 — the D1 weightControl derivation was wrong and reverted).
 export const isHybridDTFAtom = atom((get) => {
-  const rebalanceControl = get(indexDTFRebalanceControlAtom)
+  const dtf = get(indexDTFAtom)
 
-  return rebalanceControl?.weightControl === true
+  return (
+    dtf?.id.toLowerCase() === '0x4da9a0f397db1397902070f93a4d6ddbc0e0e6e8' || // LCAP
+    dtf?.id.toLowerCase() === '0xe00cfa595841fb331105b93c19827797c925e3e4' || // Venionaire
+    // TODO: remove this after testing
+    dtf?.id.toLowerCase() === '0x1532536c22366dde6b5174ebe519578bccc6b5a3' ||
+    dtf?.id.toLowerCase() === '0x045dc337c12a9a5d2c790d01554913b1a9e1044a' ||
+    dtf?.id.toLowerCase() === '0xdb35c98b919053f77356e7d89b11069cf9185764' ||
+    dtf?.id.toLowerCase() === '0x2b3e7fec6995acc564fd587974fd29b94992ba3a' ||
+    dtf?.id.toLowerCase() === '0x384f00864a5d880a2ad79900ead6eb9ded2924d9' ||
+    dtf?.id.toLowerCase() === '0x92d7e020ab1cc45eaf744a5fe5954734fcd07119'
+  )
 })
