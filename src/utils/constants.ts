@@ -281,10 +281,7 @@ export const supportedChainList = [
   ChainId.Arbitrum,
 ]
 
-// Chains where Index DTFs live. Distinct from supportedChainList (the Yield/
-// RToken set, which includes deprecated-for-Index Arbitrum but not BSC).
-// Arbitrum is deprecated for Index DTFs — never add it here. Single source of
-// truth so deprecating/adding an Index chain is a one-line change (G3/D2).
+// Index DTF chains, distinct from supportedChainList (Yield/RToken) — Arbitrum is deprecated for Index, never add it.
 export const INDEX_DTF_CHAINS = [
   ChainId.Mainnet,
   ChainId.Base,

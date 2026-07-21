@@ -105,8 +105,7 @@ describe('getFeeRecipients', () => {
   })
 
   it('returns undefined (→ Unavailable) for a degenerate platformFee=100 (B2)', () => {
-    // Infinity PERCENT_ADJUST would collapse every share to 0%/NaN%. A 100%
-    // platform fee is not a displayable split → indeterminate, never fabricated.
+    // A 100% platform fee is not a displayable split — indeterminate, never fabricated.
     expect(
       getFeeRecipients(
         makeDTF([{ address: STTOKEN, percentage: '80' }], STTOKEN),

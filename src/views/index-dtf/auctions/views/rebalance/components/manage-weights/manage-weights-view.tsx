@@ -24,8 +24,7 @@ const ManageWeightsView = () => {
   const rebalanceControl = useAtomValue(indexDTFRebalanceControlAtom)
   const savedProposedUnits = useAtomValue(managedWeightUnitsAtom)
 
-  // A 0 supply makes every per-share (folio) unit indeterminate — bail rather
-  // than render a fabricated `supply || 1n` inflated basket (Z9).
+  // A 0 supply makes every per-share unit indeterminate — bail rather than render a fabricated basket.
   const hasSupply = !!rebalanceParams && rebalanceParams.supply > 0n
 
   const { initialBasket, priceMap } = useMemo(() => {

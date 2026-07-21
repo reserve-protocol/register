@@ -15,9 +15,7 @@ import {
 import { CHAIN_TO_NETWORK, RESERVE_STORAGE, ROUTES } from './constants'
 import dayjs from 'dayjs'
 
-// Loaded-check for atoms shaped `T | 'unavailable' | undefined` (undefined =
-// still loading, 'unavailable' = the read failed). Narrow with this instead of
-// typeof checks so 0 counts as loaded.
+// Narrows `T | 'unavailable' | undefined` (loading) so 0 counts as loaded.
 export const isLoaded = <T>(
   value: T | 'unavailable' | undefined
 ): value is T => value !== undefined && value !== 'unavailable'

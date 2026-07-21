@@ -85,8 +85,7 @@ describe('toCompletedRebalanceParams', () => {
   const address = '0x0000000000000000000000000000000000000001' as const
 
   it('nonce 0 is a real rebalance — params are built, not disabled', () => {
-    // The pre-SDK hook gated on `enabled: !!nonce`, silently disabling the
-    // read for the first rebalance. The subgraph serves the nonce as a string.
+    // The subgraph serves nonce 0 as string '0' — it must not disable the read.
     expect(toCompletedRebalanceParams(chainId, address, 0)).toEqual({
       chainId,
       address,

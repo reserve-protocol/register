@@ -168,7 +168,7 @@ const useRebalanceLiquidityCheck = () => {
     },
     enabled: !!tokens.length && !!rebalanceParams && !!chainId && !!ethPrice,
     staleTime: 30_000,
-    // Only poll while the rebalance window is open; stop on completed/historical (Z29).
+    // Only poll while the rebalance window is open; stop on completed/historical.
     refetchInterval: () =>
       isRebalanceOngoing(
         rebalance?.rebalance.availableUntil,

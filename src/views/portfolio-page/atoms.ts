@@ -104,13 +104,7 @@ const ACTIVE_STATES = new Set([
   PROPOSAL_STATES.QUEUED,
 ])
 
-// Portfolio active proposals mix Yield staked-RSR and Index vote-lock rows. The
-// outcome/lifecycle is the SDK's audited derivation (Z22) — no local copy of the
-// governor math — selected by the row's `isIndexDTF` flag: Index proposals
-// (incl. optimistic vote-lock) go through the Index oracle, Yield proposals
-// through the yield oracle. The reserve-api portfolio row carries the optimistic
-// veto context (CXR-078), so the Index oracle can finalize a challenged proposal
-// instead of holding it ACTIVE forever.
+// Outcome/lifecycle is the SDK's audited derivation, selected by the row's isIndexDTF flag — no local governor math.
 // Exported for unit testing (pure) — see tests/atoms.test.ts.
 const rawAmount = (value: string): Amount => {
   const raw = BigInt(value)
@@ -119,8 +113,7 @@ const rawAmount = (value: string): Amount => {
 
 const MAX_UINT256 = (1n << 256n) - 1n
 
-// A challenged/transitioned proposal reports vetoThresholdVotes as MAX_UINT256;
-// an unset optimistic threshold reports 0. Both mean "no usable veto votes".
+// MAX_UINT256 (challenged/transitioned) and 0 (unset threshold) both mean "no usable veto votes".
 const parseVetoThresholdVotes = (value?: string | null): bigint | undefined => {
   if (value === null || value === undefined) return undefined
   const raw = BigInt(value)
@@ -132,11 +125,7 @@ const parseVetoThreshold = (value?: string | null): bigint | undefined => {
   return threshold === 0n ? undefined : threshold
 }
 
-// Mirrors the SDK's optimistic-context mapper: build it only when EVERY veto
-// input is present and valid (a partial context, e.g. snapshotSupply defaulted to
-// 0, would make the oracle report CANCELED). A challenged/transitioned proposal
-// reports vetoThreshold == MAX_UINT256 and has no usable context here; that
-// sentinel is preserved separately by the caller so the oracle still resolves it.
+// Build the optimistic context only when every veto input is valid — a partial context makes the oracle report CANCELED.
 const buildIndexOptimisticContext = (p: PortfolioProposal) => {
   if (p.isOptimistic !== true) return undefined
   const vetoThreshold = parseVetoThreshold(p.vetoThreshold)
@@ -172,9 +161,7 @@ export const getPortfolioProposalVotingState = (
 
   if (p.isIndexDTF) {
     const optimistic = buildIndexOptimisticContext(p)
-    // The top-level vetoThreshold is preserved raw and independently of the
-    // context: a transitioned proposal reports MAX_UINT256 here with no context,
-    // and the oracle uses that sentinel to resolve it to DEFEATED.
+    // vetoThreshold stays raw and context-independent — the MAX_UINT256 sentinel is how the oracle resolves a transitioned proposal.
     const vetoThreshold =
       optimistic?.vetoThreshold ??
       (p.vetoThreshold != null ? BigInt(p.vetoThreshold) : undefined)
@@ -196,8 +183,7 @@ export const getPortfolioProposalVotingState = (
     )
   }
 
-  // Yield staked-RSR (standard OZ governance): the SDK yield oracle owns the
-  // state; deadline + display percentages are computed locally (UI only).
+  // The SDK yield oracle owns the state; deadline + display percentages are UI-local.
   const derivedState = getYieldDtfProposalState(
     {
       state: p.state,

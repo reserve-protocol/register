@@ -102,7 +102,6 @@ export const useInternalDTFList = (
     queryFn: async () => {
       const allDTFs: InternalDTF[] = []
       
-      // Fetch from all Index DTF chains
       const chains = INDEX_DTF_CHAINS
       
       for (const chainId of chains) {

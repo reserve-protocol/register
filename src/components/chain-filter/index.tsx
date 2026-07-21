@@ -17,10 +17,7 @@ const CHAIN_LABELS: Record<number, string> = {
 interface ChainFilterProps {
   value: string[]
   onChange: (value: string[]) => void
-  // Caller-owned chain set. This is a shared, multi-domain component, so it must
-  // never hardcode one domain's chains — Index (no deprecated Arbitrum) and
-  // Yield/RToken (Arbitrum redeem-only, no BSC) differ. Index callers pass
-  // INDEX_DTF_CHAINS; pools/Yield callers pass the Yield supported set.
+  // Caller-owned: Index and Yield chain sets differ — never hardcode one domain's.
   supportedChains: readonly number[]
   className?: string
 }
@@ -59,7 +56,6 @@ const ChainFilter = ({
 
   const [selected, setSelected] = useState(getSelectedIndex(currentFilter))
 
-  // Update selected when the filter or the chain set changes externally
   useEffect(() => {
     setSelected(getSelectedIndex(currentFilter))
     // eslint-disable-next-line react-hooks/exhaustive-deps

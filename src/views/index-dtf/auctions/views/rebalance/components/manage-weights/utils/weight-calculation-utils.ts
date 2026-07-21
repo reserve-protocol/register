@@ -2,10 +2,7 @@ import { getCurrentBasket } from '@/lib/index-rebalance/utils'
 import { Address, parseUnits } from 'viem'
 import { BasketItem } from '@/components/index-basket-setup'
 
-// Per-share token units (folio) = assets * 1e18 / supply. A 0 supply makes this
-// indeterminate: the old `supply || 1n` substituted a wildly inflated
-// `assets * 1e18` and showed it as real currentUnits (Z9). Return null so the
-// caller can surface an indeterminate state instead of a confident wrong number.
+// A 0 supply makes per-share units indeterminate — return null so the caller surfaces it, never a confident wrong number.
 export const computeFolioUnits = (
   assets: bigint,
   supply: bigint

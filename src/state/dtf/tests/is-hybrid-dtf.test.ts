@@ -5,8 +5,7 @@ import { indexDTFAtom, isHybridDTFAtom } from '../atoms'
 
 const dtf = (id: string) => ({ id }) as IndexDTF
 
-// Hybrid is a curated designation (requires weight control, but not every
-// weight-controlled DTF is hybrid) — the allowlist is the source of truth.
+// Hybrid is a curated designation — the allowlist is the source of truth.
 describe('isHybridDTFAtom', () => {
   it('is hybrid for an allowlisted DTF (case-insensitive)', () => {
     const store = createStore()

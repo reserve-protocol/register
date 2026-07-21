@@ -5,11 +5,7 @@ import { Auction } from '../types'
 const D26 = 10n ** 26n
 const D27 = 10n ** 27n
 
-// SELL=$2/tok, BUY=$1/tok, both 18-decimals, supply = 1 whole share,
-// dtfPrice = $10/share, target basket = 50/50. Hand-computed:
-//   price      = 2/1 = 2            → spot/start/end = 2 * D27 = 2e27
-//   wholeSell  = 0.5 * 10 / 2 / 1 = 2.5  → sellLimit = 2.5e27
-//   wholeBuy   = 0.5 * 10 / 1 / 1 = 5    → buyLimit  = 5e27
+// Hand-computed fixture: $2 sell / $1 buy, $10/share, 50/50 target → price 2e27, sellLimit 2.5e27, buyLimit 5e27.
 const baseAuction: Auction = {
   sell: 'SELL',
   buy: 'BUY',

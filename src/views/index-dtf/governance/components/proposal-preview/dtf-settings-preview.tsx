@@ -246,10 +246,7 @@ export const SetFeeRecipientsPreview = ({
 
   if (!indexDTF || !isLoaded(platformFee)) return null
 
-  // A degenerate/invalid platform fee (>= 100, negative, non-finite) can't yield
-  // a real share-of-total split — surface "Unavailable" rather than a fabricated
-  // allocation (B2). Clamping would show raw shares next to "Platform 100%",
-  // summing to ~200%.
+  // A fee outside [0, 100) has no real share-of-total split — surface "Unavailable", never fabricate.
   if (!isDisplayablePlatformFee(platformFee)) {
     return (
       <div className="rounded-2xl border bg-muted/70 p-2 space-y-3">
@@ -299,9 +296,7 @@ export const SetFeeRecipientsPreview = ({
     }
   })
 
-  // The percentages from the calldata sum to 100% (excluding platform fee).
-  // For display, we show the actual percentage of total revenue by dividing by
-  // PERCENT_ADJUST (guarded against platformFee >= 100 → Infinity, see B2).
+  // Calldata percentages exclude the platform fee — divide by PERCENT_ADJUST for share of total revenue.
   const PERCENT_ADJUST = getFeePercentAdjust(platformFee)
   const adjustedDeployerShare = deployerShare / PERCENT_ADJUST
   const adjustedGovernanceShare = governanceShare / PERCENT_ADJUST

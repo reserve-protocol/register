@@ -59,8 +59,7 @@ const LaunchAuctionsButton = () => {
       ? savedWeights
       : rebalanceParams?.initialWeights
 
-  // Validate the openAuction prices up front so a missing/0 price surfaces a
-  // specific "cannot launch" state instead of a generic error after the click.
+  // Validate prices up front so a missing/0 price surfaces "cannot launch" before the click.
   const priceCheck = useMemo(() => {
     if (!rebalanceParams || !rebalance || !weightsToUse) return undefined
     return buildRebalanceOpenAuctionArrays(
@@ -78,8 +77,7 @@ const LaunchAuctionsButton = () => {
     )
   }, [rebalanceParams, rebalance, weightsToUse, isHybridDTF])
 
-  // A hard price-fetch error (malformed / {statusCode} body) leaves params
-  // undefined, so surface it explicitly instead of an inert disabled button.
+  // A hard price-fetch error leaves params undefined — surface it, not an inert disabled button.
   const priceUnavailable = isPriceError || priceCheck?.ok === false
   const unavailableSymbol =
     priceCheck && !priceCheck.ok

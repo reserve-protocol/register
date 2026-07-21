@@ -2,8 +2,7 @@ import { renderHook } from '@testing-library/react'
 import { describe, expect, it, vi } from 'vitest'
 import useWeekAgoPnl, { calculateWeekAgoPnl } from '../use-week-ago-pnl'
 
-// The SDK primitives are mocked — these tests pin register's PRODUCT layer:
-// the value-diff semantics and the composition/settling wiring.
+// SDK primitives are mocked — these pin register's product layer (value-diff semantics, wiring).
 const mocks = vi.hoisted(() => ({
   snapshot: vi.fn(),
   priceHistory: vi.fn(),

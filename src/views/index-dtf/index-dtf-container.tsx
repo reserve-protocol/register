@@ -121,9 +121,7 @@ const useChainWatch = () => {
   }, [chainId, walletChain, switchChain])
 }
 
-// Every SDK read the DTF route mirrors into atoms, in one place. The atoms
-// stay because each read has several consumers (derived propose atoms, the
-// yield-index updater) that can't all take the hook directly yet.
+// The atoms stay because each SDK read has several consumers that can't take the hook directly yet.
 const IndexDtfUpdaters = () => {
   const identity = useIndexDtfIdentity()
   const setIndexDTF = useSetAtom(indexDTFAtom)
@@ -141,8 +139,7 @@ const IndexDtfUpdaters = () => {
 
   const { data } = useCurrentIndexDtf()
   const { data: version } = useIndexDtfVersion(identity)
-  // A failed registry read flags 'unavailable' — consumers render an explicit
-  // unavailable state, never a fabricated fee.
+  // A failed registry read flags 'unavailable' — consumers render it explicitly, never a fabricated fee.
   const { data: fee, isError: feeUnavailable } = useIndexDtfPlatformFee(identity)
   const period = useAtomValue(performanceTimeRangeAtom)
   const { data: exposureData, isLoading: exposureLoading } = useIndexDtfExposure(

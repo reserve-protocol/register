@@ -38,9 +38,7 @@ export const getFeeRecipients = (
   tokenJar: Address | undefined
 ): Recipient[] | undefined => {
   if (!indexDTF || platformFee === undefined) return undefined
-  // A degenerate/invalid platform fee (>= 100, negative, non-finite) can't yield
-  // a real share-of-total split — signal indeterminate so the caller renders
-  // "Unavailable" instead of a fabricated allocation (B2).
+  // A fee outside [0, 100) has no real share-of-total split — signal indeterminate, never fabricate.
   if (!isDisplayablePlatformFee(platformFee)) return undefined
 
   const platformShare: Recipient = {

@@ -28,9 +28,7 @@ export const calculateWeekAgoPnl = ({
   return currentValue - snapshotAmount * priceThen
 }
 
-// Product composition over the SDK primitives: the snapshot and price-history
-// hooks own fetching/caching; the framing (which period, value-diff semantics,
-// when to hide) lives here.
+// The SDK hooks own fetching/caching; the period framing and value-diff semantics live here.
 const useWeekAgoPnl = ({
   account,
   token,

@@ -918,8 +918,7 @@ export const feeRecipientsAtom = atom((get) => {
   let governanceShare = 0
   const platformFee = get(indexDTFFeeAtom)
   if (!isLoaded(platformFee)) return undefined
-  // Degenerate/invalid fee (>= 100, negative, non-finite) → indeterminate; the
-  // propose flow renders nothing rather than a fabricated split (B2).
+  // A fee outside [0, 100) is indeterminate — render nothing, never a fabricated split.
   if (!isDisplayablePlatformFee(platformFee)) return undefined
   const PERCENT_ADJUST = getFeePercentAdjust(platformFee)
 

@@ -107,8 +107,7 @@ describe('buildOpenAuctionArrays (Z26 price validation)', () => {
   })
 
   it('ignores a 0 snapshot price when tracking (snapshot not consumed)', () => {
-    // currentPrices feed both getOpenAuction and the target basket → a stale 0
-    // snapshot must not block a launch whose math never reads it.
+    // A stale 0 snapshot must not block a launch whose math never reads it.
     const result = buildOpenAuctionArrays(
       ...baseArgs({ useCurrentPricesForTarget: true, snapshotB: 0 })
     )
@@ -178,8 +177,7 @@ describe('getRebalanceOpenAuction (Z26 fail-loud wrapper)', () => {
   })
 
   it('fails closed when a rebalance token is missing from the token map', () => {
-    // Subgraph lag / version shape mismatch: the on-chain rebalance lists a
-    // token the token list doesn't know. Pre-guard this was a render TypeError.
+    // Subgraph lag: the on-chain rebalance lists a token the token list doesn't know.
     const args = baseArgs()
     args[1] = { [A]: token(A, 18) } // drop B's metadata, prices stay valid
 

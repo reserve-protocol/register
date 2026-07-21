@@ -9,10 +9,7 @@ export type TokenPriceWithSnapshot = Record<
   { currentPrice: number; snapshotPrice: number }
 >
 
-// WHY: the API returns a `{ statusCode, message }` object on error and can
-// otherwise return a non-array; feeding either into `.reduce` throws an opaque
-// error. Reject the bad shape loud (mirrors usePrices) so the rebalance price
-// path never silently degrades into a $0-everywhere basket.
+// The API returns `{ statusCode, message }` on error — reject bad shapes loud so prices never degrade to $0-everywhere.
 export function parseCurrentPricesResponse(
   body: unknown
 ): TokenPriceWithSnapshot {

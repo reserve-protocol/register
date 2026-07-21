@@ -20,15 +20,7 @@ import {
   timelockIdAtom,
 } from '../atom'
 
-// The two PRODUCTION seams both delegate the proposal lifecycle + terminal
-// outcome to the SDK's bigint derivation (OZ GovernorCountingSimple strict
-// majority; tie → DEFEATED; exact wei precision), so they can never disagree:
-//
-//   - LIST/explorer  → getProposalState (raw subgraph WEI strings)
-//   - DETAIL/badges  → getProposalStateAtom (formatEther'd ETHER strings)
-//
-// A non-"Governor Anastasius" framework selects the BLOCK-based path, so the
-// block number deterministically controls the clock.
+// Both production seams (list: raw wei strings, detail: formatEther'd) delegate lifecycle + outcome to the SDK's bigint derivation.
 
 const ENDED_BLOCK = 1000 // > endBlock → voting window closed
 
@@ -48,8 +40,7 @@ const proposal = (
   governanceFramework: { name: 'Governor Alexios' }, // block-based
 })
 
-// DETAIL-seam: proposalDetailAtom holds formatEther'd (ether) strings and reads
-// the block clock from blockAtom. Returns getProposalStateAtom's derived state.
+// DETAIL-seam fixture: formatEther'd ether strings, block clock from blockAtom.
 const readDetailState = (
   block: number,
   votes: { for: string; against: string; abstain: string; quorum: string },
@@ -99,8 +90,7 @@ describe('getProposalState (list seam) — terminal outcomes', () => {
     )
   })
 
-  // Faithful list fixture: raw wei integer strings, AGAINST beats FOR by 1 wei.
-  // The old Number cast collapsed both to 2^53 and returned SUCCEEDED (Z18).
+  // Raw wei integer strings, AGAINST beats FOR by 1 wei — a Number cast would collapse both at 2^53.
   it('respects a 1-wei margin in raw wei → DEFEATED', () => {
     expect(
       state({
@@ -136,9 +126,7 @@ describe('getProposalStateAtom (detail seam) — terminal outcomes', () => {
     ).toBe(PROPOSAL_STATES.DEFEATED)
   })
 
-  // Faithful detail fixture: formatEther'd ether strings differing by ONE wei.
-  // parseEther round-trips them exactly, so the bigint margin survives (the old
-  // Number cast lost it → SUCCEEDED). Proves the detail-seam unit convention.
+  // formatEther'd strings differing by ONE wei — parseEther round-trips exactly, so the margin survives.
   it('respects a 1-wei margin in formatted ether → DEFEATED', () => {
     expect(
       readDetailState(ENDED_BLOCK, {
@@ -151,9 +139,7 @@ describe('getProposalStateAtom (detail seam) — terminal outcomes', () => {
   })
 })
 
-// One source of truth: the list seam (raw wei) and the detail seam (formatted
-// ether) derive the SAME outcome for the equivalent proposal at a tie and at a
-// >2^53-wei ±1 boundary.
+// The list seam (raw wei) and detail seam (formatted ether) derive the SAME outcome at a tie and at a >2^53-wei ±1 boundary.
 describe('list vs detail agree (Z18 single source of truth)', () => {
   it('agree at a TIE (both DEFEATED)', () => {
     const list = getProposalState(
@@ -193,12 +179,7 @@ describe('list vs detail agree (Z18 single source of truth)', () => {
   })
 })
 
-// Z18 lifecycle. A subgraph PENDING proposal lags the on-chain time transitions.
-// Pre-fix, register mapped a PENDING proposal at/after endBlock to EXPIRED (and
-// the consumers disagreed at the exact-deadline equality). The SDK now owns the
-// whole lifecycle: at the exact deadline it is ACTIVE, and after it the stale
-// PENDING resolves to the vote outcome, never EXPIRED. Asserted through BOTH
-// production seams.
+// At the exact deadline the proposal is ACTIVE; after it a stale subgraph PENDING resolves to the vote outcome, never EXPIRED.
 const WIN = { for: '1000', against: '500', abstain: '0', quorum: '100' }
 const TIE = { for: '500', against: '500', abstain: '0', quorum: '100' }
 const UNDER = { for: '10', against: '5', abstain: '1', quorum: '1000' }
@@ -241,12 +222,7 @@ describe('stale subgraph PENDING past the deadline — detail seam (Z18 lifecycl
   })
 })
 
-// Z17. The timelock operation id is keccak256 over (targets, values, calldatas,
-// predecessor, salt). The old preimage hardcoded a single-element `[0n]` values
-// array regardless of targets.length, so for any multi-action proposal the id
-// did not match the on-chain operation and the guardian Cancel button stayed
-// disabled. timelockIdAtom now delegates to the SDK's OZ 4.x batch hash, which
-// builds one zero value PER target — and shares one payload with proposalTxArgsAtom.
+// The timelock operation id must build one zero value PER target and share one payload with proposalTxArgsAtom.
 describe('timelockIdAtom multi-action operation id (Z17)', () => {
   const targets = [
     '0x1111111111111111111111111111111111111111',
@@ -257,8 +233,7 @@ describe('timelockIdAtom multi-action operation id (Z17)', () => {
   const description = '# Multi-action proposal\nrotate two roles'
   const governor = '0x9999999999999999999999999999999999999999' as Address
 
-  // Hand-computed OZ 4.x hashOperationBatch: salt = descriptionHash, predecessor
-  // = zeroHash, one zero value per target.
+  // Hand-computed OZ 4.x hashOperationBatch: salt = descriptionHash, predecessor = zeroHash, one zero value per target.
   const handComputed = (values: bigint[]) =>
     keccak256(
       encodeAbiParameters(
@@ -287,9 +262,7 @@ describe('timelockIdAtom multi-action operation id (Z17)', () => {
     expect(readId()).not.toBe(handComputed([0n]))
   })
 
-  // Both consumers of the shared payload must agree: the queue/execute args must
-  // carry the SAME N zero-values / targets / calldatas / description-hash as the
-  // id preimage, so a regression on the write side can't slip past.
+  // The queue/execute args must carry the SAME zero-values/targets/calldatas/description-hash as the id preimage.
   it('proposalTxArgsAtom builds N zero-values from the same payload', () => {
     const store = createStore()
     store.set(rTokenGovernanceAtom, {

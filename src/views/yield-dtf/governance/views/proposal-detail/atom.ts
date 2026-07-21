@@ -70,25 +70,14 @@ export const accountVotesAtom = atom<{
   votePower: null,
 })
 
-// The two seams feed vote weights in DIFFERENT units: the explorer list passes
-// RAW subgraph wei strings, the detail path normalizes through `formatEther`
-// (decimal ether). `parseEther` accepts both — an integer wei string is scaled
-// uniformly across all four fields (the outcome is scale-invariant), and a
-// formatted-ether string round-trips exactly — so the bigint comparison is exact
-// in both, unlike the old `Number` cast (lossy above 2^53, mishandles ties).
+// The list seam passes raw wei strings, the detail seam formatEther'd — parseEther keeps the bigint comparison exact in both.
 const weiAmount = (value?: string): Amount => {
   const raw = parseEther(value ?? '0')
   return { raw, formatted: value ?? '0' }
 }
 
-// WHY (Z18): the whole proposal lifecycle AND terminal outcome are delegated to
-// the SDK's audited derivation — the PENDING→ACTIVE transition, a stale subgraph
-// PENDING/ACTIVE past the deadline resolving to the vote outcome (never EXPIRED),
-// OZ GovernorCountingSimple strict-majority ties, and >2^53-wei precision. This
-// is the ONE source of truth the explorer list (getProposalState) and the detail
-// badges (getProposalStateAtom) share, so they can't disagree at any boundary.
-// Register keeps only UI deadlines + display percentages. `currentTimepoint` is
-// the proposal's native unit: unix seconds for Anastasius, block for Alexios.
+// Lifecycle + terminal outcome are the SDK's audited derivation — the one source of truth the list and detail seams share.
+// `currentTimepoint` is the proposal's native unit: unix seconds for Anastasius, block for Alexios.
 const deriveState = (
   proposal: Partial<ProposalDetail>,
   currentTimepoint: number
@@ -146,8 +135,7 @@ export const getProposalState = (
     )
     const timeunit = isTimeunit ? timestamp : blockNumber
 
-    // State is the SDK's authoritative lifecycle derivation; the branches below
-    // only compute the UI countdown for the states that have one.
+    // The branches below only compute the UI countdown — state itself is the SDK's derivation.
     state.state = deriveState(proposal, timeunit)
 
     // TODO: Guardian can cancel on the QUEUED state!
@@ -198,8 +186,7 @@ export const getProposalStateAtom = atom((get) => {
     const isTimeunit = isTimeunitGovernance(proposal.version)
     const timeunit = isTimeunit ? timestamp : blockNumber
 
-    // State is the SDK's authoritative lifecycle derivation; the branches below
-    // only compute the UI countdown for the states that have one.
+    // The branches below only compute the UI countdown — state itself is the SDK's derivation.
     state.state = deriveState(proposal, timeunit)
 
     // TODO: Guardian can cancel on the QUEUED state!
@@ -219,11 +206,7 @@ export const getProposalStateAtom = atom((get) => {
   return state
 })
 
-// WHY (Z17): the queue/execute args and the timelock operation id must derive
-// their zero-values array from the SAME targets, or they drift — a hardcoded
-// single-element `[0n]` produced the wrong operation id for every multi-action
-// proposal, silently disabling the guardian Cancel button. Both consumers build
-// from this one payload; the id delegates to the SDK's audited V4 batch hash.
+// The queue/execute args and the timelock operation id must derive their zero-values from the SAME targets, or they drift.
 const toTimelockPayload = (proposal: ProposalDetail) => ({
   governor: proposal.governor,
   targets: proposal.targets,

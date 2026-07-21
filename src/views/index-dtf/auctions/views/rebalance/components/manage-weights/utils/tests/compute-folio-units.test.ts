@@ -10,7 +10,6 @@ describe('computeFolioUnits (Z9)', () => {
   })
 
   it('returns null for a 0 supply (indeterminate, never the || 1n inflation)', () => {
-    // With `supply || 1n` this would return the wildly inflated assets * 1e18.
     expect(computeFolioUnits(40n * E18, 0n)).toBeNull()
   })
 

@@ -118,7 +118,7 @@ const Updater = () => {
           }
         }
 
-        // Check proposal threshold (compare like-for-like percentage — E1)
+        // Threshold compares on the seeded percentage basis
         if (daoVotingThreshold !== undefined) {
           if (
             isProposalThresholdChanged(

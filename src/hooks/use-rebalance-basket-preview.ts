@@ -174,13 +174,7 @@ export const useDecodedRebalanceCalldata = (
 
 type SnapshotBasketToken = { address: string; price: number; amount: number }
 
-// Each token's snapshot weight is its share of the DTF's value:
-// (tokenPrice * tokenAmount) / dtfPrice * 100. A non-finite/≤0 dtfPrice — or a
-// non-finite token price/amount — makes a weight Infinity/NaN, which `.toFixed`
-// renders as the literal string "Infinity"/"NaN" per token weight (Z7). We only
-// accept a fully finite result; any non-finite input yields undefined so the
-// caller can treat the snapshot as indeterminate. `> 0` alone would ACCEPT
-// Infinity (→ confident 0.00) — mirror the M2b finite-price contract.
+// Any non-finite input yields undefined (indeterminate) — otherwise `.toFixed` renders literal "Infinity"/"NaN" weights.
 export const computeSnapshotWeights = (
   basket: readonly SnapshotBasketToken[],
   dtfPrice: number
@@ -196,13 +190,7 @@ export const computeSnapshotWeights = (
   return weights
 }
 
-// Resolve the proposal-time snapshot weights from the historical timeseries. Any
-// unusable input — an EMPTY timeseries or a malformed/0 snapshot price — throws
-// (indeterminate) rather than substituting the current on-chain basket. Viewing
-// an OLD proposal whose endpoint returns nothing/garbage would otherwise mislabel
-// TODAY's basket as the proposal-time snapshot — a confidently-wrong preview
-// (CXR-059-I2 / CXR-062-I1). The caller surfaces the throw as a suppressed
-// preview (the summary stays on its skeleton — fail-closed, no fabricated money).
+// Unusable historical data throws — never substitute today's basket as the proposal-time snapshot.
 export const resolveSnapshotWeights = (
   response: IndexDTFPerformance
 ): Record<string, string> => {
@@ -219,10 +207,7 @@ export const resolveSnapshotWeights = (
   return weights
 }
 
-// queryFn body for the historical basket-weights read, extracted so the
-// fetch → resolve wiring is testable with only a fetch mock (no wagmi). Live
-// view (no timestamp) keeps the current on-chain weights; the historical path
-// fails loud on empty/malformed data (Z7).
+// Extracted so the fetch → resolve wiring is testable with only a fetch mock.
 export const fetchSnapshotWeights = async (
   dtf: { id: string },
   chainId: number,

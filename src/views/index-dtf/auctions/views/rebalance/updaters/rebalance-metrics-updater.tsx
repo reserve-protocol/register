@@ -178,8 +178,7 @@ const RebalanceMetricsUpdater = () => {
     }
   }, [rebalanceParams, currentRebalance, updateMetrics, rebalancePercent])
 
-  // A hard price-fetch error leaves rebalanceParams undefined → updateMetrics
-  // never runs; surface the reason on the banner instead of a silent skeleton.
+  // A hard price-fetch error leaves rebalanceParams undefined — surface the reason, not a silent skeleton.
   useEffect(() => {
     if (isPriceError) {
       setRebalanceError(t`Price data unavailable — cannot launch auction.`)

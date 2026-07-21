@@ -3,10 +3,7 @@ import { Decimal } from 'decimal.js-light'
 import { bn, D18d, D27d, ONE, TWO } from './numbers'
 import { Auction } from './types'
 
-// WHY: prices[x]/prices[y] are divisors and supply divides every limit — a 0,
-// negative, or NaN price (or 0 supply) would coerce into a skewed bigint / a
-// div-by-0. Fail loud so the caller renders "unavailable" instead of launching
-// a bad auction.
+// Prices are divisors and supply divides every limit — fail loud instead of coercing a bad input into a skewed auction.
 const isUsablePrice = (price: number): boolean =>
   Number.isFinite(price) && price > 0
 
@@ -45,9 +42,7 @@ export const openAuction = (
     throw new Error('openAuction: supply must be > 0')
   }
 
-  // Resolve the sell/buy indices, then validate the RAW prices they consume
-  // BEFORE any Decimal construction — a NaN/Inf/<=0 price is caught by our own
-  // guard with a clear message, never coerced into a skewed bigint.
+  // Validate the raw prices before any Decimal construction so a bad price fails with a clear message.
   let x = _prices.length
   let y = _prices.length
 

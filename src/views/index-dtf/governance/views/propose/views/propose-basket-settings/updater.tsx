@@ -127,7 +127,7 @@ const Updater = () => {
           delete changes.votingPeriod
         }
 
-        // Check proposal threshold (compare like-for-like percentage — E1)
+        // Threshold compares on the seeded percentage basis
         if (basketVotingThreshold !== undefined && basketVotingThreshold !== '') {
           if (
             isProposalThresholdChanged(

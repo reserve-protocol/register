@@ -20,13 +20,7 @@ export interface RebalanceMetrics {
   marketCapRebalanceImpact: number // percentage
 }
 
-/**
- * Maps the SDK completed-rebalance detail to the display metrics.
- *
- * WHY: preserves the pre-migration display — genuinely-absent analytics coerce
- * to 0 (no UX regression). See M2a report: "(b) render unavailable for absent
- * analytics?" is a display-polish question for Luis; never expose undefined/NaN.
- */
+// Absent analytics coerce to 0 by design — never expose undefined/NaN.
 export function toRebalanceMetrics(
   data: IndexDtfCompletedRebalanceDetail | undefined,
   isTrackingDTF: boolean
@@ -49,18 +43,13 @@ export function toRebalanceMetrics(
   }
 }
 
-// Nonce 0 (subgraph serves it as a string, '0') is a real rebalance nonce —
-// gate on `!== undefined`, never truthiness (the pre-SDK hook's
-// `enabled: !!nonce` bug). The SDK read accepts number | string.
+// Nonce 0 (subgraph serves '0') is a real rebalance nonce — gate on `!== undefined`, never truthiness.
 export const toCompletedRebalanceParams = (
   chainId: SupportedChainId,
   address: Address,
   nonce: number | string | undefined
 ) => (nonce !== undefined ? { chainId, address, nonce } : undefined)
 
-/**
- * Hook to fetch rebalance metrics from the SDK completed-rebalance read.
- */
 export const useRebalanceMetrics = (proposalId: string) => {
   const { address, chainId } = useIndexDtfIdentity()
   const rebalancesByProposal = useAtomValue(rebalancesByProposalAtom)

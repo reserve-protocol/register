@@ -59,9 +59,7 @@ describe('getPortfolioProposalVotingState — terminal outcomes', () => {
   })
 })
 
-// Z22 FIXED (a second instance of Z18). The outcome is now decided in bigint
-// with OZ strict majority, so a nonzero tie (for == against) is DEFEATED, not
-// SUCCEEDED.
+// The outcome is decided in bigint with OZ strict majority — a nonzero tie is DEFEATED, not SUCCEEDED.
 describe('getPortfolioProposalVotingState TIE (Z22 fixed)', () => {
   it('nonzero TIE → DEFEATED', () => {
     expect(state({ for: '500', against: '500', abstain: '0', quorum: '100' })).toBe(
@@ -70,9 +68,7 @@ describe('getPortfolioProposalVotingState TIE (Z22 fixed)', () => {
   })
 })
 
-// Z22 precision FIXED. AGAINST beats FOR by exactly 1 wei; the old Number cast
-// collapsed both to 2^53 and returned SUCCEEDED, bigint keeps the margin →
-// DEFEATED like the on-chain governor.
+// AGAINST beats FOR by exactly 1 wei — bigint keeps the margin a Number cast would collapse at 2^53.
 describe('getPortfolioProposalVotingState wei precision (Z22 fixed)', () => {
   it('bigint path respects the 1-wei margin → DEFEATED', () => {
     expect(
@@ -86,12 +82,7 @@ describe('getPortfolioProposalVotingState wei precision (Z22 fixed)', () => {
   })
 })
 
-// CXR-076: the portfolio outcome is the SDK proposal-state oracle (Yield → yield
-// oracle, Index → Index oracle), selected by the row's isIndexDTF flag. Exercise
-// the real production seam (portfolioActiveProposalsAtom) at the exact-deadline
-// boundary — the SDK uses `> voteEnd` (ACTIVE at the deadline), the old local
-// copy used `>= voteEnd` (already terminal). RED: the pre-fix atoms return
-// SUCCEEDED at the exact deadline where the SDK returns ACTIVE.
+// The SDK uses `> voteEnd` (ACTIVE at the exact deadline) — exercised through the real production seam.
 const ADDR = '0x1111111111111111111111111111111111111111' as Address
 
 const activeRows = (
@@ -164,14 +155,7 @@ describe('portfolioActiveProposalsAtom — SDK oracle via production seam (CXR-0
   })
 })
 
-// CXR-078/CXR-085: the reserve-api portfolio row carries the optimistic veto
-// context, so the Index oracle finalizes a challenged proposal by comparing
-// against votes to the veto threshold (1000 here). A transitioned proposal has no
-// usable context and reports vetoThreshold == MAX_UINT256; that sentinel is
-// preserved and resolves to DEFEATED. RED (CXR-078): before the adapter passed
-// `optimistic`, an opposed proposal past its window returned ACTIVE not DEFEATED;
-// RED (CXR-085): dropping the raw top-level vetoThreshold leaves the transitioned
-// proposal ACTIVE instead of DEFEATED.
+// The reserve-api row carries the optimistic veto context; a transitioned proposal's MAX_UINT256 sentinel resolves to DEFEATED.
 const MAX_UINT256 = ((1n << 256n) - 1n).toString()
 
 const indexOptimistic = (against: string, extra: Record<string, unknown> = {}) => ({
@@ -220,8 +204,7 @@ describe('getPortfolioProposalVotingState — optimistic Index veto (CXR-078/085
       isOptimistic: true,
       vetoThreshold: MAX_UINT256,
     } as unknown as PortfolioProposal
-    // now=300 is after voteStart(100), before voteEnd(500): the sentinel resolves
-    // it now, it does not wait for the deadline.
+    // The sentinel resolves mid-window — it does not wait for the deadline.
     expect(getPortfolioProposalVotingState(transitioned, 300).state).toBe(
       PROPOSAL_STATES.DEFEATED
     )

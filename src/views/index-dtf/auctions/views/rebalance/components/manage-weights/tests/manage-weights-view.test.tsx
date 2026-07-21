@@ -6,8 +6,7 @@ import { describe, expect, it, vi } from 'vitest'
 import { indexDTFRebalanceControlAtom } from '@/state/dtf/atoms'
 import { showManageWeightsViewAtom } from '../../../atoms'
 
-// Content is heavy (BasketSetup + wagmi) — a sentinel proves whether the view
-// rendered it or bailed. useRebalanceParams is wagmi-driven — stub per test.
+// Content is wagmi-heavy — a sentinel proves whether the view rendered it or bailed.
 vi.mock('../manage-weights-content', () => ({
   default: () => <div data-testid="mwc" />,
 }))
@@ -42,8 +41,6 @@ const renderView = (supply: bigint) => {
 }
 
 describe('ManageWeightsView 0-supply guard (Z9)', () => {
-  // With the guard reverted (supply || 1n), the memo proceeds on 0n and the
-  // view renders content instead of bailing — so this fails on regression.
   it('renders nothing when supply is 0n (indeterminate, no fabricated basket)', () => {
     const { queryByTestId } = renderView(0n)
     expect(queryByTestId('mwc')).toBeNull()

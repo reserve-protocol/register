@@ -71,16 +71,10 @@ export const ChainFilter = () => {
   const setFilters = useSetAtom(chainFilterAtom)
   const dtfType = useAtomValue(dtfTypeFilterAtom)
 
-  // The chain filter drives both discover tabs, so its chain set must follow
-  // the active domain: Index (INDEX_DTF_CHAINS, no deprecated Arbitrum) vs
-  // Yield/RToken (supportedChainList, Arbitrum redeem-only). Never impose the
-  // Index set on the Yield tab (would prune Arbitrum, add BSC).
+  // The chain set follows the active tab's domain — never impose one domain's set on the other.
   const chainSet = dtfType === 'yield' ? supportedChainList : [...INDEX_DTF_CHAINS]
 
-  // Reset the APPLIED filter to the new domain's full set on a tab switch —
-  // otherwise a stale cross-domain value lingers (e.g. Index BSC while the Yield
-  // list filters, hiding Arbitrum) even though the buttons show the new domain.
-  // Reset-to-All is the safest default. CXR-067-I1.
+  // Reset the applied filter on tab switch — a stale cross-domain chain silently hides rows.
   useEffect(() => {
     setFilters([...chainSet])
     setSelected('0')

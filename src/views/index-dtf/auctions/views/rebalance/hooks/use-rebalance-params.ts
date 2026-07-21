@@ -48,13 +48,7 @@ export type RebalanceParams = {
   bidsEnabled: boolean
 }
 
-/**
- * Shared price query for the rebalance/auction path. Exposed so the launch UI
- * can distinguish loading from a hard price-fetch ERROR (a `{statusCode}` body
- * throws in parseCurrentPricesResponse) — otherwise the error collapses into an
- * inert `undefined` params and the button disables without saying why. Same
- * queryKey as useRebalanceParams reads → one fetch, shared cache.
- */
+// Exposed so the launch UI can distinguish loading from a hard price-fetch error; same queryKey as useRebalanceParams → one fetch.
 export const useRebalancePrices = () => {
   const basket = useAtomValue(indexDTFBasketAtom)
   const rebalance = useAtomValue(currentRebalanceAtom)

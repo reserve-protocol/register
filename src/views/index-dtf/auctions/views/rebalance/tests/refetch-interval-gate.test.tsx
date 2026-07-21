@@ -6,10 +6,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { governanceProposalsAtom } from '../../../../governance/atoms'
 import { currentProposalIdAtom, rebalancesAtom } from '../../../atoms'
 
-// Capture the exact options object each hook passes to useQuery so we can
-// exercise its wired refetchInterval callback (Z29). This guards the REAL seam:
-// a hook that reverts to a literal `refetchInterval: 30_000` fails here because
-// the captured value is no longer a function returning false on expiry.
+// Captures the options each hook passes to useQuery so the wired refetchInterval callback is exercised, not a mock.
 type CapturedQuery = {
   queryKey?: readonly unknown[]
   refetchInterval?: (() => number | false) | number | false
@@ -70,8 +67,6 @@ beforeEach(() => {
 })
 
 describe('rebalance poll refetchInterval is gated on the window (Z29)', () => {
-  // Asserts the captured refetchInterval is a callback (fails if a hook reverts
-  // to a literal interval) and invokes it.
   const invokeInterval = (key: string): number | false => {
     const fn = captured[key].refetchInterval
     expect(typeof fn).toBe('function')

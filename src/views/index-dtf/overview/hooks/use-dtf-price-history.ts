@@ -55,9 +55,7 @@ const useIndexDTFPriceHistory = ({
 
   const prefetch = usePrefetchIndexDtfPriceHistory()
 
-  // The SDK owns dedupe + the live point (chart end stays in sync with the
-  // header price); the cache entry stays the raw series under the canonical
-  // key, shared with every other price-history consumer.
+  // The SDK owns dedupe + the live point; the cache entry stays the raw series under the canonical shared key.
   const query = useIndexDtfPerformance(
     address
       ? {

@@ -86,7 +86,7 @@ const useRebalanceAuctions = () => {
       }
     },
     enabled: !!rebalance?.rebalance.id,
-    // Only poll while the rebalance window is open; stop on completed/historical (Z29).
+    // Only poll while the rebalance window is open; stop on completed/historical.
     refetchInterval: () =>
       isRebalanceOngoing(
         rebalance?.rebalance.availableUntil,

@@ -29,21 +29,11 @@ export type OpenAuctionBuildResult =
       token: string
     }
 
-// WHY: a token the price API omits or returns with a 0 price must never be
-// coerced into the weight math — a 0/absent price silently skews the target
-// basket and feeds a bad USD/token price into the openAuction calldata. Fail
-// loud with the offending token so the launcher can block instead of launching
-// a skewed auction.
+// A 0/absent price must never reach the weight math — it silently skews the auction calldata.
 const isUsablePrice = (price: number | undefined): price is number =>
   typeof price === 'number' && Number.isFinite(price) && price > 0
 
-/**
- * Pure array builder + price validator for the openAuction path. Validates
- * exactly the prices the lib consumes: getOpenAuction always reads
- * currentPrices; getTargetBasket reads currentPrices when the DTF is
- * tracking/hybrid, otherwise the snapshot (initialPrices). Order mirrors
- * `rebalanceTokens`.
- */
+// Validates exactly the prices the lib consumes: currentPrices always, snapshot prices only for non-tracking targets.
 export function buildOpenAuctionArrays(
   rebalanceTokens: string[],
   tokenMap: Record<string, Token>,
@@ -74,9 +64,7 @@ export function buildOpenAuctionArrays(
       return { ok: false, reason: 'price-unavailable', token: address }
     }
 
-    // A rebalance token absent from the subgraph token list (indexer lag,
-    // version shape mismatch) used to TypeError during render — same fail-closed
-    // treatment as a missing price, launch stays blocked.
+    // A token absent from the subgraph token list (indexer lag) fails closed like a missing price.
     const tokenMeta = tokenMap[address]
     if (!tokenMeta) {
       return { ok: false, reason: 'token-metadata-missing', token: address }
@@ -107,9 +95,7 @@ export function buildOpenAuctionArrays(
   }
 }
 
-// WHY: thrown (not returned) so every caller of getRebalanceOpenAuction fails
-// loud — no path can accidentally feed a coerced price into the lib. Callers
-// that render UX (launch button) check buildRebalanceOpenAuctionArrays directly.
+// Thrown (not returned) so every getRebalanceOpenAuction caller fails loud; UX callers check buildRebalanceOpenAuctionArrays directly.
 export class PriceUnavailableError extends Error {
   readonly token: string
   constructor(token: string) {
@@ -119,11 +105,7 @@ export class PriceUnavailableError extends Error {
   }
 }
 
-/**
- * Assemble the tokenMap + version-aware token order, then build/validate the
- * arrays. Shared by getRebalanceOpenAuction (which throws on failure) and the
- * launch button (which renders a disabled "price unavailable" state).
- */
+// Shared by getRebalanceOpenAuction (throws on failure) and the launch button (renders a disabled state).
 export function buildRebalanceOpenAuctionArrays(
   version: FolioVersion,
   tokens: Token[],

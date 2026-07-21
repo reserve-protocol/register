@@ -40,8 +40,7 @@ export interface ITokenGovernance {
   token: Token
 }
 
-// One brand shape, owned by the SDK mapper (display-ready: '' defaults, files
-// always present, basketType narrowed) — register stores it as-is.
+// Brand shape is owned by the SDK mapper (display-ready) — register stores it as-is.
 export type IndexDTFBrand = IndexDtfBrand
 
 export type Transaction = {
@@ -225,9 +224,7 @@ export const isSingletonRebalanceAtom = atom((get) => {
   return checkVersion('4.0.0', version)
 })
 
-// Hybrid is a curated product designation, NOT derivable from weightControl:
-// it requires weight control but not every weight-controlled DTF is hybrid
-// (Luis, 2026-07-21 — the D1 weightControl derivation was wrong and reverted).
+// Hybrid is a curated designation — requires weight control but is not implied by it.
 export const isHybridDTFAtom = atom((get) => {
   const dtf = get(indexDTFAtom)
 
