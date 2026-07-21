@@ -91,7 +91,7 @@ const RecordLimitSelect = () => {
   )
 }
 
-const RTokenFilters = () => {
+const YieldDtfFilters = () => {
   return (
     <div className="flex items-center justify-center flex-col sm:flex-row mb-8 mx-4 sm:mx-0">
       <TokenSearchInput />
@@ -101,4 +101,4 @@ const RTokenFilters = () => {
   )
 }
 
-export default RTokenFilters
+export default YieldDtfFilters

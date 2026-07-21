@@ -52,6 +52,31 @@ export const buildStakeHistoryRows = (data: StakeHistoryData | undefined) =>
     display: `${formatCurrency(+formatEther(rsrStaked))}`,
   }))
 
+const StakeHistoryTitle = ({ currentValue }: { currentValue: number }) => {
+  if (!currentValue) {
+    return (
+      <span className="text-legend">
+        <Trans>Loading history...</Trans>
+      </span>
+    )
+  }
+
+  return (
+    <>
+      <span className="font-semibold">
+        <Trans>Total staked:</Trans>
+      </span>{' '}
+      <span className="ml-1 text-primary font-semibold">
+        {formatCurrency(currentValue, 2, {
+          notation: 'compact',
+          compactDisplay: 'short',
+        })}{' '}
+        RSR
+      </span>
+    </>
+  )
+}
+
 const StakeHistory = () => {
   const rToken = useRToken()
   const [current, setCurrent] = useState(TIME_RANGES.MONTH)
@@ -74,26 +99,7 @@ const StakeHistory = () => {
     <div data-testid="staking-history-panel">
       <AreaChart
         height={160}
-        title={
-          !currentValue ? (
-            <span className="text-legend">
-              <Trans>Loading history...</Trans>
-            </span>
-          ) : (
-            <>
-              <span className="font-semibold">
-                <Trans>Total staked:</Trans>
-              </span>{' '}
-              <span className="ml-1 text-primary font-semibold">
-                {formatCurrency(currentValue, 2, {
-                  notation: 'compact',
-                  compactDisplay: 'short',
-                })}{' '}
-                RSR
-              </span>
-            </>
-          )
-        }
+        title={<StakeHistoryTitle currentValue={currentValue} />}
         data={rows}
         timeRange={TIME_RANGES}
         currentRange={current}
