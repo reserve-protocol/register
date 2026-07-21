@@ -4,6 +4,7 @@ import { isInactiveDTF } from '@/hooks/use-dtf-status'
 import { cn } from '@/lib/utils'
 import { formatCurrency } from '@/utils'
 import { PERFORMANCE_TEXT_CLASSES } from '@/utils/chart-performance-colors'
+import { getChartReferenceTimestamp } from '@/utils/chart-reference-date'
 import { Trans } from '@lingui/react/macro'
 import { memo, type Dispatch, type SetStateAction } from 'react'
 import { ChainTabs } from './chain-tabs'
@@ -46,6 +47,11 @@ export const FeatureCardHeader = memo(function FeatureCardHeader({
     logoSrc: selectedVersion.brand?.icon,
     symbol: selectedVersion.symbol,
   }
+  const launchTimestamp = getChartReferenceTimestamp(
+    selectedVersion.address,
+    selectedVersion.chainId,
+    selectedVersion.createdAt
+  )
 
   return (
     <div className={FEATURE_CARD_MEDIA_CLASS_NAME}>
@@ -91,7 +97,7 @@ export const FeatureCardHeader = memo(function FeatureCardHeader({
                     direction={performanceDirection}
                     fadeClassName=""
                     launchMarkerToken={launchMarkerToken}
-                    launchTimestamp={selectedVersion.createdAt}
+                    launchTimestamp={launchTimestamp}
                     performance={oneMonthPerformance}
                     showPattern={false}
                   />
@@ -156,7 +162,7 @@ export const FeatureCardHeader = memo(function FeatureCardHeader({
           className="h-52"
           direction={performanceDirection}
           launchMarkerToken={launchMarkerToken}
-          launchTimestamp={selectedVersion.createdAt}
+          launchTimestamp={launchTimestamp}
           performance={oneMonthPerformance}
         />
       )}

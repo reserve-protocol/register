@@ -1,4 +1,5 @@
 import { cn } from '@/lib/utils'
+import { getChartReferenceTimestamp } from '@/utils/chart-reference-date'
 import {
   indexDTF7dChangeAtom,
   indexDTFAtom,
@@ -63,7 +64,11 @@ const ChartBodyArea = ({
       chartData={chartData as any}
       range={range}
       dtfStart={dtf?.timestamp}
-      launchTimestamp={dtf?.timestamp}
+      launchTimestamp={getChartReferenceTimestamp(
+        dtf?.id,
+        dtf?.chainId,
+        dtf?.timestamp
+      )}
       xDomain={xDomain}
       className={bodyHeight}
     />
