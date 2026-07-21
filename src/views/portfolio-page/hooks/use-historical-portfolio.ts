@@ -59,12 +59,9 @@ export const appendLivePoint = (
   chartData: ChartDataPoint[],
   portfolio: PortfolioResponse
 ): ChartDataPoint[] => {
-  // No headline total → no live point; appending 0/NaN would paint a fake
+  // A non-finite total or missing rows must never paint $NaN / a fake
   // crash-to-zero at the chart's end (Z25).
   if (!Number.isFinite(portfolio.totalHoldingsUSD)) return chartData
-  // Match portfolioBreakdownAtom: a position missing `value` contributes 0, not
-  // NaN (which would poison the whole live-point total); a missing position
-  // array contributes nothing (Z25).
   const sumValues = (positions?: { value?: number }[]) =>
     (positions ?? []).reduce((acc, p) => acc + (p.value || 0), 0)
   const now = Date.now()

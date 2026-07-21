@@ -35,17 +35,10 @@ describe('mapGovernanceResponse', () => {
     expect(rows[0].ownerTimelock).toBe(dtf.ownerGovernance.timelock.id)
   })
 
-  it('returns [] on a partial response missing dtfs (Z5)', () => {
-    const partial: Partial<DTFGovernanceResponse> = {} // dtfs omitted
-    expect(() => mapGovernanceResponse(partial, new Map(), 1)).not.toThrow()
-    expect(mapGovernanceResponse(undefined, new Map(), 1)).toEqual([])
-  })
 })
 
-// Production-seam test (CXR-022-I1): the fan-out must degrade, not reject, when
-// one chain's request fails. RED-verify by removing the per-chain try/catch in
-// fetchListedDTFGovernanceRows — the whole Promise.all then rejects and this
-// test throws instead of returning the healthy row.
+// One chain's failed request must degrade to the healthy chains, not reject
+// the whole fan-out.
 describe('fetchListedDTFGovernanceRows degrades on a bad chain (Z5)', () => {
   const CHAINS = [1, 8453] as const
   const dtfsByChain = { 1: ['0xaaa'], 8453: [dtf.id.toLowerCase()] }

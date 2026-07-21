@@ -55,14 +55,11 @@ const governanceQuery = gql`
 const SUPPORTED_CHAINS = [ChainId.Mainnet, ChainId.Base, ChainId.BSC] as const
 
 export const mapGovernanceResponse = (
-  // Partial: a malformed/partial subgraph response may omit `dtfs` entirely.
-  response: Partial<DTFGovernanceResponse> | undefined,
+  response: DTFGovernanceResponse,
   apiDataMap: Map<string, IndexDTFItem>,
   chainId: number
 ): ListedDTFGovernance[] =>
-  // A malformed/partial subgraph response can omit `dtfs` — guard the array so
-  // one bad chain doesn't reject the whole fan-out (Z5).
-  (response?.dtfs ?? []).map((dtf) => {
+  response.dtfs.map((dtf) => {
     const apiData = apiDataMap.get(dtf.id.toLowerCase())
     return {
       id: dtf.id,
@@ -78,9 +75,6 @@ export const mapGovernanceResponse = (
     }
   })
 
-// Production fan-out. Isolated from `useQuery` and the concrete graph clients so
-// the per-chain degrade-not-reject behavior (Z5) is unit-testable with a fake
-// `request`. One chain rejecting must NOT reject the whole Promise.all.
 export const fetchListedDTFGovernanceRows = async (
   chains: readonly number[],
   dtfsByChain: Record<number, string[]>,
@@ -92,8 +86,7 @@ export const fetchListedDTFGovernanceRows = async (
       const ids = dtfsByChain[chainId]
       if (!ids || ids.length === 0) return []
 
-      // Per-chain try/catch mirrors the sibling use-internal-dtf-list.ts so one
-      // chain's failure degrades to the chains that answered (Z5).
+      // One chain failing degrades to the chains that answered.
       try {
         return mapGovernanceResponse(await request(chainId, ids), apiDataMap, chainId)
       } catch (error) {

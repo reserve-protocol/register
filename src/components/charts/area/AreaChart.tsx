@@ -18,7 +18,6 @@ import { formatCurrency } from 'utils'
 type ChartData = { value: number; label?: string; display?: string }[]
 
 interface Props {
-  // Undefined = still loading — the component renders its own loading state.
   data?: ChartData
   title: React.ReactNode
   heading?: string

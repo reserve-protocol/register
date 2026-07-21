@@ -46,7 +46,7 @@ const query = gql`
   }
 `
 
-export interface RTokenRow {
+export interface YieldDtfRow {
   id: Address
   targetUnits: string
   name: string
@@ -84,10 +84,10 @@ export const buildUnlistedTokenRows = (
   data: UnlistedTokensData | undefined,
   chains: readonly number[],
   currentRsrPrice: number
-): RTokenRow[] => {
+): YieldDtfRow[] => {
   if (!data) return []
 
-  const rows: RTokenRow[] = []
+  const rows: YieldDtfRow[] = []
   for (const chain of chains) {
     // A per-chain subgraph error/partial response can return the bucket without
     // `rtokens` — guard the array, not just the bucket (GH0 twin, Z2).
@@ -118,7 +118,7 @@ const useUnlistedTokens = () => {
   const { data } = useMultichainQuery(query, filters)
   const currentRsrPrice = useAtomValue(rsrPriceAtom)
 
-  const [tokens, setTokens] = useState<RTokenRow[]>([])
+  const [tokens, setTokens] = useState<YieldDtfRow[]>([])
 
   useEffect(() => {
     if (data) {
