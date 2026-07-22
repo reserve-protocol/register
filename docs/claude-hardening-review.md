@@ -473,3 +473,26 @@ documentation topology; this review is broader on fresh browser evidence (their
 tester could not run Playwright — port ownership), the AI-texture/style
 analysis, and the auction-builder reshape. Together they form the reconciled
 finding ledger for the next checkpoint.
+
+---
+
+## 7. SDK release-readiness verification (2026-07-22)
+
+Fresh verification of `dtf-sdk` for the 0.5.0 release. **Verdict: READY** — no
+blockers found; every check below ran green this session.
+
+| Check | Result |
+|---|---|
+| Branch parity | `feature/hardening-integration` == `origin/sdk/hardening` (`f1ee8f5`) — PR #27's head IS the full release state (the "9-commit superset" gap both reviews flagged has since closed) |
+| Changesets | 10 present; `changeset status` computes **minor for both packages** → 0.4.1 → **0.5.0**. The patch-leak risk (strict-tie-semantics) is resolved — it's minor |
+| Gates | sdk: tsc clean, 309 passed/17 skipped · react-sdk: tsc clean, 77 passed · both `pnpm build` green |
+| Register-needed symbols | All present in built dists: performance/prefetch/snapshot/status hooks in react-sdk; `getYieldDtfProposalState`, `selectPriceAtMark`, `getIndexDtfAccountBalanceSnapshot`, `getIndexDtfStatus`, `getProposalState` in sdk, re-exported via react-sdk's `export *` (verified in dist, not source) |
+| Catalog dependency | `@reserve-protocol/dtf-catalog` is **published** (0.1.3, matches workspace version); sdk dist imports it externally (not bundled); catalog content **unchanged vs main** — published resolution serves identical data. `workspace:*` deps convert to real versions at `pnpm`/changeset publish |
+| Package integrity | `files`/`exports` maps point at existing dist artifacts; engines fields present; `publish.yml` (changesets) + `release: changeset publish` script in place. Note: react-sdk ships ESM-only (`index.mjs` + `.d.mts`) — fine for register (Vite/vitest ESM) |
+
+Release-day sequence (unchanged from R1, now verified executable):
+1. Merge PR #27 → run the changeset version/publish flow → 0.5.0 on the registry.
+2. Register: pin `0.5.0`, drop the `link:` entries, clean `pnpm install`.
+3. Full register gates against the pinned build (the true clean-install proof —
+   the one check that structurally cannot run before publish), then
+   `feature/hardening` → master.
