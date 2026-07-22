@@ -121,7 +121,7 @@ describe('index subgraph chain enforcement (HARN-001/002)', () => {
   })
 })
 
-describe('explorer aggregation branches (shape guards GH0)', () => {
+describe('explorer aggregation branches (shape guards)', () => {
   it('getAllIndexProposals returns a proposals ARRAY (not undefined)', () => {
     const log = vi.fn()
     const res = resolveIndexQuery(

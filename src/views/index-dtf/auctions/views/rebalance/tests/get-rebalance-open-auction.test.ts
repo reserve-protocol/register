@@ -60,7 +60,7 @@ const baseArgs = (
   ] as Parameters<typeof buildOpenAuctionArrays>
 }
 
-describe('buildOpenAuctionArrays (Z26 price validation)', () => {
+describe('buildOpenAuctionArrays (price validation)', () => {
   it('builds arrays in rebalanceTokens order when every price is > 0', () => {
     const result = buildOpenAuctionArrays(...baseArgs())
     expect(result.ok).toBe(true)
@@ -115,7 +115,7 @@ describe('buildOpenAuctionArrays (Z26 price validation)', () => {
   })
 })
 
-describe('getRebalanceOpenAuction (Z26 fail-loud wrapper)', () => {
+describe('getRebalanceOpenAuction (fail-loud wrapper)', () => {
   const v5Rebalance = {
     tokens: [{ token: A }, { token: B }],
   } as any

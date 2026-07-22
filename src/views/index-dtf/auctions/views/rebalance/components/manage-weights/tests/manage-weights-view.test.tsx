@@ -40,7 +40,7 @@ const renderView = (supply: bigint) => {
   return render(<ManageWeightsView />, { wrapper })
 }
 
-describe('ManageWeightsView 0-supply guard (Z9)', () => {
+describe('ManageWeightsView 0-supply guard', () => {
   it('renders nothing when supply is 0n (indeterminate, no fabricated basket)', () => {
     const { queryByTestId } = renderView(0n)
     expect(queryByTestId('mwc')).toBeNull()

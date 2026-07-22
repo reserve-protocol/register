@@ -16,7 +16,7 @@ const makeStore = (platformFee: number) => {
   return store
 }
 
-describe('feeRecipientsAtom platform-fee guard (B2)', () => {
+describe('feeRecipientsAtom platform-fee guard', () => {
   it('returns a split for a displayable fee', () => {
     const result = makeStore(50).get(feeRecipientsAtom)
     // platformFee 50 → adjust 2 → 80% governance displays as 40%

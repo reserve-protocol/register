@@ -66,7 +66,7 @@ beforeEach(() => {
   for (const k of Object.keys(captured)) delete captured[k]
 })
 
-describe('rebalance poll refetchInterval is gated on the window (Z29)', () => {
+describe('rebalance poll refetchInterval is gated on the window', () => {
   const invokeInterval = (key: string): number | false => {
     const fn = captured[key].refetchInterval
     expect(typeof fn).toBe('function')

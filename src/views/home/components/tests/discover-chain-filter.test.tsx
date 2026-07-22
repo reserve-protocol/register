@@ -17,7 +17,7 @@ const setup = () => {
   return store
 }
 
-describe('Discover ChainFilter domain reset (CXR-067-I1)', () => {
+describe('Discover ChainFilter domain reset', () => {
   it('applies the Yield chain set (Arbitrum, no BSC) when switching to the Yield tab', async () => {
     const store = setup()
 

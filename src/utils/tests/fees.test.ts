@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { getFeePercentAdjust, isDisplayablePlatformFee } from '../fees'
 
-describe('isDisplayablePlatformFee (B2)', () => {
+describe('isDisplayablePlatformFee', () => {
   it('accepts a finite fee in [0, 100)', () => {
     expect(isDisplayablePlatformFee(0)).toBe(true)
     expect(isDisplayablePlatformFee(50)).toBe(true)
@@ -23,7 +23,7 @@ describe('isDisplayablePlatformFee (B2)', () => {
   })
 })
 
-describe('getFeePercentAdjust (B2)', () => {
+describe('getFeePercentAdjust', () => {
   it('is 1 at platformFee 0 (no platform cut → shares shown as-is)', () => {
     expect(getFeePercentAdjust(0)).toBe(1)
   })

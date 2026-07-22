@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { parseCurrentPricesResponse } from '../use-asset-prices-with-snapshot'
 
-describe('parseCurrentPricesResponse (Z37 shape guard)', () => {
+describe('parseCurrentPricesResponse (shape guard)', () => {
   it('maps a well-formed array into current/snapshot prices, lowercasing keys', () => {
     const result = parseCurrentPricesResponse([
       { address: '0xAbC0000000000000000000000000000000000001', price: 12.5 },
@@ -19,7 +19,7 @@ describe('parseCurrentPricesResponse (Z37 shape guard)', () => {
     })
   })
 
-  it('coerces a missing token price to 0 (existing behavior — Z26 catches it later)', () => {
+  it('coerces a missing token price to 0 (existing behavior — catches it later)', () => {
     const result = parseCurrentPricesResponse([
       { address: '0xAbC0000000000000000000000000000000000001' },
     ])

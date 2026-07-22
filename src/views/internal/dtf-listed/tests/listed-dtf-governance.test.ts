@@ -1,7 +1,6 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { Address } from 'viem'
 import {
-  DTFGovernanceResponse,
   fetchListedDTFGovernanceRows,
   mapGovernanceResponse,
 } from '../hooks/use-listed-dtf-governance'
@@ -39,7 +38,7 @@ describe('mapGovernanceResponse', () => {
 
 // One chain's failed request must degrade to the healthy chains, not reject
 // the whole fan-out.
-describe('fetchListedDTFGovernanceRows degrades on a bad chain (Z5)', () => {
+describe('fetchListedDTFGovernanceRows degrades on a bad chain', () => {
   const CHAINS = [1, 8453] as const
   const dtfsByChain = { 1: ['0xaaa'], 8453: [dtf.id.toLowerCase()] }
   const apiMap = new Map<string, IndexDTFItem>([

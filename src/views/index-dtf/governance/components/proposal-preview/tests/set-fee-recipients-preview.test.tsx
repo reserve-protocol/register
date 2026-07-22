@@ -40,7 +40,7 @@ const renderPreview = (platformFee: number) => {
   )
 }
 
-describe('SetFeeRecipientsPreview platform-fee guard (B2)', () => {
+describe('SetFeeRecipientsPreview platform-fee guard', () => {
   it('renders Unavailable at platformFee=100 (no numeric allocation)', () => {
     const { queryByTestId } = renderPreview(100)
     expect(queryByTestId('settings-preview-fee-unavailable')).not.toBeNull()

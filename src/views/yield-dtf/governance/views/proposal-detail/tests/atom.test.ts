@@ -78,7 +78,7 @@ describe('getProposalState (list seam) — terminal outcomes', () => {
     )
   })
 
-  it('TIE (for == against) → DEFEATED (Z18: OZ strict majority)', () => {
+  it('TIE (for == against) → DEFEATED (OZ strict majority)', () => {
     expect(state({ for: '500', against: '500', abstain: '0', quorum: '100' })).toBe(
       PROPOSAL_STATES.DEFEATED
     )
@@ -115,7 +115,7 @@ describe('getProposalStateAtom (detail seam) — terminal outcomes', () => {
     ).toBe(PROPOSAL_STATES.SUCCEEDED)
   })
 
-  it('TIE → DEFEATED (Z18)', () => {
+  it('TIE → DEFEATED', () => {
     expect(
       readDetailState(ENDED_BLOCK, {
         for: '500',
@@ -140,7 +140,7 @@ describe('getProposalStateAtom (detail seam) — terminal outcomes', () => {
 })
 
 // The list seam (raw wei) and detail seam (formatted ether) derive the SAME outcome at a tie and at a >2^53-wei ±1 boundary.
-describe('list vs detail agree (Z18 single source of truth)', () => {
+describe('list vs detail agree (single source of truth)', () => {
   it('agree at a TIE (both DEFEATED)', () => {
     const list = getProposalState(
       proposal({ for: '5', against: '5', abstain: '0', quorum: '1' }),
@@ -184,7 +184,7 @@ const WIN = { for: '1000', against: '500', abstain: '0', quorum: '100' }
 const TIE = { for: '500', against: '500', abstain: '0', quorum: '100' }
 const UNDER = { for: '10', against: '5', abstain: '1', quorum: '1000' }
 
-describe('stale subgraph PENDING past the deadline — list seam (Z18 lifecycle)', () => {
+describe('stale subgraph PENDING past the deadline — list seam (lifecycle)', () => {
   const state = (block: number, v: typeof WIN) =>
     getProposalState(proposal(v, PROPOSAL_STATES.PENDING), block, 1).state
 
@@ -205,7 +205,7 @@ describe('stale subgraph PENDING past the deadline — list seam (Z18 lifecycle)
   })
 })
 
-describe('stale subgraph PENDING past the deadline — detail seam (Z18 lifecycle)', () => {
+describe('stale subgraph PENDING past the deadline — detail seam (lifecycle)', () => {
   const state = (block: number, v: typeof WIN) =>
     readDetailState(block, v, PROPOSAL_STATES.PENDING)
 
@@ -223,7 +223,7 @@ describe('stale subgraph PENDING past the deadline — detail seam (Z18 lifecycl
 })
 
 // The timelock operation id must build one zero value PER target and share one payload with proposalTxArgsAtom.
-describe('timelockIdAtom multi-action operation id (Z17)', () => {
+describe('timelockIdAtom multi-action operation id', () => {
   const targets = [
     '0x1111111111111111111111111111111111111111',
     '0x2222222222222222222222222222222222222222',
@@ -258,7 +258,7 @@ describe('timelockIdAtom multi-action operation id (Z17)', () => {
     expect(readId()).toBe(handComputed([0n, 0n, 0n]))
   })
 
-  it('differs from the old single-element [0n] preimage (the Z17 bug)', () => {
+  it('differs from the old single-element [0n] preimage', () => {
     expect(readId()).not.toBe(handComputed([0n]))
   })
 

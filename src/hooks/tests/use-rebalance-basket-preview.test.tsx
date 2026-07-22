@@ -86,7 +86,7 @@ describe('useDecodedRebalanceCalldata', () => {
   })
 })
 
-describe('computeSnapshotWeights (Z7)', () => {
+describe('computeSnapshotWeights', () => {
   const basket = [
     { address: '0xAAA', price: 2, amount: 30 }, // 60 USD
     { address: '0xBBB', price: 5, amount: 8 }, //  40 USD
@@ -119,7 +119,7 @@ describe('computeSnapshotWeights (Z7)', () => {
   })
 })
 
-describe('resolveSnapshotWeights (Z7 / CXR-062-I1)', () => {
+describe('resolveSnapshotWeights', () => {
   const point = (price: number) => ({
     timeseries: [
       { price, basket: [{ address: '0xAAA', price: 2, amount: 30 }] },
@@ -143,7 +143,7 @@ describe('resolveSnapshotWeights (Z7 / CXR-062-I1)', () => {
   })
 })
 
-describe('fetchSnapshotWeights caller seam (Z7 / CXR-062-I1)', () => {
+describe('fetchSnapshotWeights caller seam', () => {
   const dtf = { id: '0xdtf' }
   const current = { '0xaaa': '10.00' }
 

@@ -5,7 +5,7 @@ import {
 } from '../governance'
 
 // The threshold field is seeded as a percentage — a raw/1e18 comparison never matches, appending a phantom calldata.
-describe('isProposalThresholdChanged (E1)', () => {
+describe('isProposalThresholdChanged', () => {
   it('a seeded-then-untouched value is NOT a change', () => {
     const governanceThreshold = 0.01
     const seeded = proposalThresholdToPercentage(governanceThreshold)

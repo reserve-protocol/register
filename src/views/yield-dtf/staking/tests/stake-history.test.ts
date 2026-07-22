@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { buildStakeHistoryRows } from '../components/overview/stake-history'
 
-describe('buildStakeHistoryRows (Z38)', () => {
+describe('buildStakeHistoryRows', () => {
   it('maps snapshots to chart rows', () => {
     const rows = buildStakeHistoryRows({
       rtoken: {
@@ -12,7 +12,7 @@ describe('buildStakeHistoryRows (Z38)', () => {
     expect(rows[0].value).toBe(2)
   })
 
-  it('does not throw when rtoken has no snapshots (Z38)', () => {
+  it('does not throw when rtoken has no snapshots', () => {
     // Partial subgraph response: rtoken present, snapshots missing.
     expect(() => buildStakeHistoryRows({ rtoken: {} })).not.toThrow()
     expect(buildStakeHistoryRows({ rtoken: {} })).toEqual([])

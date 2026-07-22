@@ -3,7 +3,7 @@ import { computeFolioUnits } from '../weight-calculation-utils'
 
 const E18 = 10n ** 18n
 
-describe('computeFolioUnits (Z9)', () => {
+describe('computeFolioUnits', () => {
   it('computes per-share units as assets * 1e18 / supply', () => {
     // 40 assets over a supply of 10 shares → 4 tokens per share
     expect(computeFolioUnits(40n * E18, 10n * E18)).toBe(4n * E18)

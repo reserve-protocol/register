@@ -33,7 +33,7 @@ const call = (
     10 // dtfPrice USD/wholeShare
   )
 
-describe('openAuction (Z19 legacy v2 guards)', () => {
+describe('openAuction (legacy v2 guards)', () => {
   it('returns the hand-computed [sellLimit, buyLimit, startPrice, endPrice] with D27 scaling', () => {
     const [sellLimit, buyLimit, startPrice, endPrice] = call()
     expect(sellLimit).toBe(25n * D26) // 2.5e27

@@ -64,7 +64,7 @@ describe('appendLivePoint', () => {
     expect(live.rsr).toBe(3)
   })
 
-  it('treats a position without a value as 0, never NaN (Z25)', () => {
+  it('treats a position without a value as 0, never NaN', () => {
     const portfolio: PortfolioResponse = {
       ...emptyPortfolio,
       totalHoldingsUSD: 10,
@@ -86,7 +86,7 @@ describe('appendLivePoint', () => {
     expect(result).not.toBe(original)
   })
 
-  it('skips the live point when the headline total is not finite (Z25)', () => {
+  it('skips the live point when the headline total is not finite', () => {
     const original = [historicalPoint]
     const broken = {
       ...emptyPortfolio,
@@ -99,7 +99,7 @@ describe('appendLivePoint', () => {
     expect(result).toBe(original)
   })
 
-  it('treats a missing position array as empty, not a crash (Z25)', () => {
+  it('treats a missing position array as empty, not a crash', () => {
     const partial = {
       ...emptyPortfolio,
       totalHoldingsUSD: 5,

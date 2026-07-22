@@ -43,7 +43,7 @@ describe('toRebalanceMetrics', () => {
     })
   })
 
-  it('coerces absent analytics to 0 for an auctions-less (present-empty) rebalance (Z30)', () => {
+  it('coerces absent analytics to 0 for an auctions-less (present-empty) rebalance', () => {
     // Present-empty auctions + absent analytics — the "0 auctions" product state.
     const metrics = toRebalanceMetrics(base, false)
 

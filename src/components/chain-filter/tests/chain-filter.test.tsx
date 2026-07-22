@@ -17,7 +17,7 @@ const renderFilter = (supportedChains: readonly number[], value: string[]) => {
   return { onChange, ...utils }
 }
 
-describe('generic ChainFilter caller-owned chain set (CXR-066-I2)', () => {
+describe('generic ChainFilter caller-owned chain set', () => {
   it('offers the Index set (Binance, no Arbitrum) and its All value excludes Arbitrum', () => {
     const { onChange, getByText, queryByText } = renderFilter(INDEX_DTF_CHAINS, [
       String(ChainId.Mainnet),

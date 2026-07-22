@@ -5,7 +5,7 @@ import { ChainId } from 'utils/chains'
 
 const listed = LISTED_RTOKEN_ADDRESSES[ChainId.Mainnet].length
 
-describe('sumUnlistedYieldDtfCount (A3)', () => {
+describe('sumUnlistedYieldDtfCount', () => {
   it('subtracts the listed set from each chain total', () => {
     const total = sumUnlistedYieldDtfCount(
       { [ChainId.Mainnet]: { protocol: { rTokenCount: listed + 3 } } },

@@ -27,7 +27,7 @@ describe('buildUnlistedTokenRows', () => {
     expect(rows[0].marketCap).toBe(6) // 3 * 2
   })
 
-  it('does not throw when a chain bucket is present but has no rtokens (Z2)', () => {
+  it('does not throw when a chain bucket is present but has no rtokens', () => {
     // The GH0-class regression: bucket truthy, `rtokens` missing.
     expect(() => buildUnlistedTokenRows({ 1: {} }, [1], 1)).not.toThrow()
     expect(buildUnlistedTokenRows({ 1: {} }, [1], 1)).toEqual([])

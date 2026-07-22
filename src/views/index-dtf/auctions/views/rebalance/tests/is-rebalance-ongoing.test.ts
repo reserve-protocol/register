@@ -3,7 +3,7 @@ import { isRebalanceOngoing } from '../utils'
 
 const NOW = 1_700_000_000
 
-describe('isRebalanceOngoing (Z29 poll gate)', () => {
+describe('isRebalanceOngoing (poll gate)', () => {
   it('is ongoing while availableUntil is in the future', () => {
     expect(isRebalanceOngoing(String(NOW + 3600), NOW)).toBe(true)
   })

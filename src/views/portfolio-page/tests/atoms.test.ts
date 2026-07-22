@@ -60,7 +60,7 @@ describe('getPortfolioProposalVotingState — terminal outcomes', () => {
 })
 
 // The outcome is decided in bigint with OZ strict majority — a nonzero tie is DEFEATED, not SUCCEEDED.
-describe('getPortfolioProposalVotingState TIE (Z22 fixed)', () => {
+describe('getPortfolioProposalVotingState TIE', () => {
   it('nonzero TIE → DEFEATED', () => {
     expect(state({ for: '500', against: '500', abstain: '0', quorum: '100' })).toBe(
       PROPOSAL_STATES.DEFEATED
@@ -69,7 +69,7 @@ describe('getPortfolioProposalVotingState TIE (Z22 fixed)', () => {
 })
 
 // AGAINST beats FOR by exactly 1 wei — bigint keeps the margin a Number cast would collapse at 2^53.
-describe('getPortfolioProposalVotingState wei precision (Z22 fixed)', () => {
+describe('getPortfolioProposalVotingState wei precision', () => {
   it('bigint path respects the 1-wei margin → DEFEATED', () => {
     expect(
       state({
@@ -125,7 +125,7 @@ const standardProposal = (voteEnd: number) => ({
   creationTime: '1',
 })
 
-describe('portfolioActiveProposalsAtom — SDK oracle via production seam (CXR-076)', () => {
+describe('portfolioActiveProposalsAtom — SDK oracle via production seam', () => {
   it('yield: at the exact deadline the proposal is ACTIVE, not terminal', () => {
     const rows = activeRows(500, 'yield', standardProposal(500))
     expect(rows).toHaveLength(1)
@@ -176,7 +176,7 @@ const optimisticState = (against: string, now = 501) =>
     now
   ).state
 
-describe('getPortfolioProposalVotingState — optimistic Index veto (CXR-078/085)', () => {
+describe('getPortfolioProposalVotingState — optimistic Index veto', () => {
   it('opposed below the veto threshold → SUCCEEDED', () => {
     expect(optimisticState('999')).toBe(PROPOSAL_STATES.SUCCEEDED)
   })
@@ -211,7 +211,7 @@ describe('getPortfolioProposalVotingState — optimistic Index veto (CXR-078/085
   })
 })
 
-describe('portfolioActiveProposalsAtom — optimistic list membership (CXR-078/085)', () => {
+describe('portfolioActiveProposalsAtom — optimistic list membership', () => {
   it('opposed below the veto threshold stays in the active list (SUCCEEDED)', () => {
     const rows = activeRows(501, 'index', indexOptimistic('999'))
     expect(rows).toHaveLength(1)

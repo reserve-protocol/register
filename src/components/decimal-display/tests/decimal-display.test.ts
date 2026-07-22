@@ -5,7 +5,7 @@ import { formatNumberValue } from '../index'
 const fmt = (value: number | string) =>
   formatNumberValue(value, 2, true, false, true)
 
-describe('formatNumberValue non-finite (Z11)', () => {
+describe('formatNumberValue non-finite', () => {
   it('renders NaN as unavailable, not 0', () => {
     expect(fmt(NaN)).toBe('—')
     expect(fmt('not-a-number')).toBe('—') // parseFloat → NaN

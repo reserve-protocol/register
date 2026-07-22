@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { resolveInputTokenPrice } from '../steps/input-token-price'
 
-describe('resolveInputTokenPrice (Z6)', () => {
+describe('resolveInputTokenPrice', () => {
   it('resolves a real positive price as available', () => {
     expect(resolveInputTokenPrice([{ price: 2000 }])).toEqual({
       price: 2000,

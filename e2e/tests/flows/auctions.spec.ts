@@ -155,7 +155,7 @@ test('historical rebalances render from snapshot with API metrics', async ({
 // read unwraps it. Its metrics row must render "0 auctions" — not a blanked
 // row. RED: revert the SDK array-unwrap and the read errors (row stays
 // skeleton). Recorded in the M2a progress row.
-test('an auctions-less rebalance renders 0-auction metrics, not a blank row (Z30)', async ({
+test('an auctions-less rebalance renders 0-auction metrics, not a blank row', async ({
   page,
   overrides,
   boundaryRequests,
