@@ -87,7 +87,12 @@ const StakeHistory = () => {
     fromTime,
   })
 
-  const rows = useMemo(() => buildStakeHistoryRows(data), [data])
+  // `undefined` while loading (chart spinner), rows once data lands — `[]`
+  // means settled-empty, not loading.
+  const rows = useMemo(
+    () => (data ? buildStakeHistoryRows(data) : undefined),
+    [data]
+  )
 
   const currentValue = rows && rows.length ? rows[rows.length - 1].value : 0
 
