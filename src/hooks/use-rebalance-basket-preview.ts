@@ -286,16 +286,22 @@ const useDTFBasketWeights = (timestamp?: number) => {
 const useRebalanceBasketPreview = (
   calldata: Hex[] | undefined,
   timestamp?: number
-): RebalanceBasketPreview | undefined => {
+): {
+  preview: RebalanceBasketPreview | undefined
+  // Old proposals can predate the API's historical data — the snapshot read
+  // settles in error and the preview can never resolve.
+  snapshotUnavailable: boolean
+} => {
   const rebalance = useDecodedRebalanceCalldata(calldata)
-  const { data: currentWeights } = useDTFBasketWeights(timestamp)
+  const { data: currentWeights, isError: snapshotUnavailable } =
+    useDTFBasketWeights(timestamp)
   const tokens = useTokens(rebalance?.data.tokens ?? [])
   const rebalanceControl = useAtomValue(indexDTFRebalanceControlAtom)
   const { data: prices } = useAssetPricesWithSnapshot(
     tokens ? Object.keys(tokens) : undefined
   )
 
-  return useMemo(() => {
+  const preview = useMemo(() => {
     if (
       !rebalance ||
       !prices ||
@@ -370,6 +376,8 @@ const useRebalanceBasketPreview = (
       basket,
     }
   }, [rebalance, tokens, prices, rebalanceControl, currentWeights])
+
+  return { preview, snapshotUnavailable }
 }
 
 export default useRebalanceBasketPreview
