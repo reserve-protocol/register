@@ -55,3 +55,57 @@ PRs #1053/#1054/#1055/#1063, SDK PR #27). Delete items as they land.
   unavailable (better than fabricating; explicit marker is optional polish).
 - Async-mint wizard e2e (no testids, CoW lifecycle) — deliberate gap, revisit
   with the wizard's next iteration.
+
+## Pre-existing hardening backlog (reconciled from the cross-reviews, 2026-07-22)
+
+Restored owners/acceptance criteria after the plan-doc retirement (Codex D-07).
+Full detail: `docs/claude-hardening-review.md` + `docs/codex-hardening-review.md`.
+All are pre-existing (not introduced by the effort); each is an engineer-review
+surface unless noted.
+
+- **Deploy basket prices** — a missing/zero price becomes a $0 deposit and the
+  allowance gate accepts it. Accept: unpriced asset → indeterminate, deploy
+  write blocked, token-specific reason; tests for zero/missing/mixed baskets.
+- **Deploy platform fee** — `use-platform-fee.ts` fabricates `?? 50` and divides
+  unguarded. Accept: loading/unavailable/value tri-state, `denominator > 0`,
+  dependent form/write blocked while unavailable.
+- **USDT-like approvals** — three paths emit one `approve(spender, amount)` on a
+  non-zero insufficient allowance (`use-batch-approval`, `transaction-modal`,
+  `submit-zap`). Accept: shared zero-first sequencing helper + ordered-tx tests
+  from a seeded non-zero allowance.
+- **Sticky high-impact consent** — zap consent is a global atom not keyed to
+  quote identity. Accept: re-consent required after any amount/token/tab/
+  endpoint change; test proves it.
+- **Stale-signer zap quote** — identity is debounced into the endpoint while the
+  old result stays submittable. Accept: input changes invalidate the visible
+  result immediately; quote identity matched at the write handler.
+- **Frozen Yield redeem** — confirm gates omit `frozen`; a pre-frozen amount can
+  persist. Accept: one predicate incl. frozen at input+button+handler; test a
+  live valid→frozen transition.
+- **Staking-vault APY** — `StakingVaultRevenue.tsx` divides unguarded and uses
+  `|| 1` denominators. Accept: guarded math → undefined → unavailable render;
+  pure vectors.
+- **Async-mint compliance** — restriction is a pointer/opacity gate; the quote
+  screen's handlers never read `isRestricted`. Accept: gate in the real action
+  handlers/buttons; browser test incl. late restriction. (Compliance surface.)
+- **Version identity** — `indexDTFVersionAtom` initializes '4.0.0' and never
+  resets; ABI/calldata consumers can read a stale/fabricated version during
+  nav. Accept: undefined/pending + identity-tied; every consumer gates.
+- **Transport validation** — discover list, historical portfolio, transactions,
+  asset prices still cast raw JSON (chk-4 absorbs portfolio; discover +
+  asset-prices explicit here). Accept: validated mappers with a deliberate
+  partial-body policy.
+- **Manual redeem dust legs** — small redeems can emit zero `minAmountsOut`
+  (live `test.fixme` repro). Accept: product picks floor-or-block; the fixme
+  becomes an active test.
+- **Auction metadata ordering (S-11, to verify)** — `use-rebalance-params.ts` +
+  `manage-weights-view.tsx` may dereference `tokenMap[token]` upstream of the
+  fail-closed guard. Accept: metadata validated before every derivation; shared
+  missing-metadata fixture.
+- **`deriveDtfStatus` production drift (K-04)** — helper is tested but unused;
+  the hook duplicates the fallback inline. Accept: production routes through
+  the helper, or the test targets the real seam.
+- **Overview repro fixmes (owners restored)** — (1) Market-Cap/Supply hero shows
+  unit price; (2) zero supply/price → perpetual chart skeleton; (3) manual
+  redeem zero-protection leg (above). Each keeps its `test.fixme` + this entry
+  as owner until fixed.

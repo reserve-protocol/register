@@ -419,3 +419,57 @@ Recommended action order (no work started, per instruction):
 8. Docs: the three stale wiki claims + TEST_MAP/duration corrections + a
    settings-domain CLAUDE.md; optional pre-hardening history compaction
    (log.md / progress.md).
+
+---
+
+## 6. Codex cross-review reconciliation (2026-07-22)
+
+Codex ran the same three-lens review independently
+(`docs/codex-hardening-review.md`). Reconciliation, each claim verified against
+code before adoption:
+
+**Independent convergence (both reviews, unprompted):** the release blocker and
+its exact mechanics (unpublished SDK symbols; publish must come from the
+integration branch); "guards-only" being too strong a framing (their
+three-category classification ≈ our nine-intended-changes table); the
+governance/sanitizer/launch-guard strengths; incomplete comment diet in
+pre-final waves; the same three `useDtfSdk` escapees; materially stale
+SDK/e2e/area docs.
+
+**Codex-unique findings verified TRUE and actioned:**
+- **I-02** staking history rendered "No data" while loading (introduced by the
+  partial-response guard collapsing the tri-state) — **fixed**: tri-state
+  restored, revert-verified render seam test added.
+- (Authorized separately) **R3/our-#2** snapshot-unavailable preview — **fixed**:
+  explicit copy replaces the indefinite skeleton.
+- **K-04** `deriveDtfStatus` tested but unused by production (the hook
+  duplicates the fallback inline) — verified by grep; queued.
+- **S-11** auction metadata dereferenced upstream of the fail-closed guard
+  (`use-rebalance-params.ts`, `manage-weights-view.tsx`) — credible ordering
+  catch, engineer-review surface; queued for verification + fix.
+
+**Pushed back / corrected:**
+- **T-02** "the comment at portfolio atoms is wrong" — misread: the comment
+  states *why* partial contexts are refused (a partial context would make the
+  oracle report CANCELED); the implementation accordingly builds none. Could be
+  worded clearer; not incorrect.
+- **K-01** (their own qualification concurred): the yield `parseEther`
+  double-scaling preserves ratio comparisons — type-contract debt, not a
+  lifecycle regression.
+
+**Adopted process criticisms:**
+- **D-07**: deleting the plan docs orphaned owners/acceptance criteria for the
+  pre-existing hardening backlog, and the progress row's "shipped" overstated a
+  release-blocked branch — both corrected (FOLLOWUPS absorbed the backlog with
+  acceptance criteria; progress reworded to "integration-complete ·
+  release-blocked").
+- Their broader pre-existing sweep (S-01…S-14: deploy prices/fees, USDT
+  zero-first approvals, sticky impact consent, stale-signer quotes, frozen
+  redeem, staking-vault APY, version identity, transport validation) is now
+  itemized in FOLLOWUPS rather than implied.
+
+**Relative coverage:** Codex is broader on the pre-existing backlog and the
+documentation topology; this review is broader on fresh browser evidence (their
+tester could not run Playwright — port ownership), the AI-texture/style
+analysis, and the auction-builder reshape. Together they form the reconciled
+finding ledger for the next checkpoint.
