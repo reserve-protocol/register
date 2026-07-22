@@ -2,6 +2,12 @@ import { getCurrentBasket } from '@/lib/index-rebalance/utils'
 import { Address, parseUnits } from 'viem'
 import { BasketItem } from '@/components/index-basket-setup'
 
+// A 0 supply makes per-share units indeterminate — return null so the caller surfaces it, never a confident wrong number.
+export const computeFolioUnits = (
+  assets: bigint,
+  supply: bigint
+): bigint | null => (supply > 0n ? (assets * 10n ** 18n) / supply : null)
+
 export const calculateTargetShares = (
   rebalanceTokens: string[],
   tokenMap: Record<string, any>,

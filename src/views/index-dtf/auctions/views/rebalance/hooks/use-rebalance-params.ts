@@ -48,22 +48,10 @@ export type RebalanceParams = {
   bidsEnabled: boolean
 }
 
-const useRebalanceParams = () => {
-  const dtf = useAtomValue(indexDTFAtom)
+// Exposed so the launch UI can distinguish loading from a hard price-fetch error; same queryKey as useRebalanceParams → one fetch.
+export const useRebalancePrices = () => {
   const basket = useAtomValue(indexDTFBasketAtom)
   const rebalance = useAtomValue(currentRebalanceAtom)
-  const rebalanceControl = useAtomValue(indexDTFRebalanceControlAtom)
-  const isHybridDTF = useAtomValue(isHybridDTFAtom)
-  const auctions = useAtomValue(rebalanceAuctionsAtom)
-  const originalWeights = useAtomValue(originalRebalanceWeightsAtom)
-  const tokenPriceVolatility = useRebalancePriceVolatility()
-  const versionString = useAtomValue(indexDTFVersionAtom)
-
-  const folioVersion = useMemo(
-    () => getFolioVersion(versionString),
-    [versionString]
-  )
-  const abi = folioVersion === FOLIO_VERSION_V5 ? dtfIndexAbiV5 : dtfIndexAbiV4
 
   const rebalanceTokens = useMemo(() => {
     if (!rebalance || !basket) return []
@@ -81,7 +69,26 @@ const useRebalanceParams = () => {
     return Array.from(tokens)
   }, [basket, rebalance])
 
-  const { data: prices } = useAssetPricesWithSnapshot(rebalanceTokens)
+  return useAssetPricesWithSnapshot(rebalanceTokens)
+}
+
+const useRebalanceParams = () => {
+  const dtf = useAtomValue(indexDTFAtom)
+  const rebalance = useAtomValue(currentRebalanceAtom)
+  const rebalanceControl = useAtomValue(indexDTFRebalanceControlAtom)
+  const isHybridDTF = useAtomValue(isHybridDTFAtom)
+  const auctions = useAtomValue(rebalanceAuctionsAtom)
+  const originalWeights = useAtomValue(originalRebalanceWeightsAtom)
+  const tokenPriceVolatility = useRebalancePriceVolatility()
+  const versionString = useAtomValue(indexDTFVersionAtom)
+
+  const folioVersion = useMemo(
+    () => getFolioVersion(versionString),
+    [versionString]
+  )
+  const abi = folioVersion === FOLIO_VERSION_V5 ? dtfIndexAbiV5 : dtfIndexAbiV4
+
+  const { data: prices } = useRebalancePrices()
   const { data: currentRebalanceData } = useRebalanceCurrentData()
   const { data: initialRebalanceData } = useRebalanceInitialData()
   const { data: initialRebalanceRaw } = useReadContract({

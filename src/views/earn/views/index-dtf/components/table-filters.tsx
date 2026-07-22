@@ -14,6 +14,7 @@ import {
   dtfDataMapAtom,
 } from '../atoms'
 import { CircleIcon } from 'lucide-react'
+import { INDEX_DTF_CHAINS } from '@/utils/constants'
 
 const DtfFilterDropdown = () => {
   const { t } = useLingui()
@@ -115,7 +116,11 @@ const TableFilters = () => {
         inputClassName="h-[68px]"
       />
       <DtfFilterDropdown />
-      <ChainFilter value={chains} onChange={setChains} />
+      <ChainFilter
+        value={chains}
+        onChange={setChains}
+        supportedChains={INDEX_DTF_CHAINS}
+      />
     </div>
   )
 }

@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { buildExchangeRateRows } from '../components/overview/exchange-rate'
 
-describe('buildExchangeRateRows (Z38)', () => {
+describe('buildExchangeRateRows', () => {
   it('maps snapshots to chart rows', () => {
     const rows = buildExchangeRateRows(
       {
@@ -16,7 +16,7 @@ describe('buildExchangeRateRows (Z38)', () => {
     expect(rows[0].display).toContain('stRSR')
   })
 
-  it('does not throw when rtoken has no snapshots (Z38)', () => {
+  it('does not throw when rtoken has no snapshots', () => {
     // Partial subgraph response: rtoken present, snapshots missing — the
     // pre-guard code threw here (`rtoken?.snapshots.map`), blanking the
     // default StakingMetrics tab.

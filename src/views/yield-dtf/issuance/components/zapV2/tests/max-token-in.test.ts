@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { computeMaxTokenIn } from '../context/max-token-in'
 
-describe('computeMaxTokenIn (Z10)', () => {
+describe('computeMaxTokenIn', () => {
   it('divides the USD max by the input-token price', () => {
     // tokenOut $1 * 1000 available = $1000 USD max; input token at $2 → 500 units.
     expect(computeMaxTokenIn(1, 1000, 2)).toBe(500)

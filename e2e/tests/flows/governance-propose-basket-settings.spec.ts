@@ -214,16 +214,15 @@ test('voting-period change round-trips into a setVotingPeriod calldata on the tr
   expect(Number(setter.args[0])).toBe(newSeconds)
 })
 
-test.fixme(
+test(
   'voting-period-only proposal contains a single action (no phantom threshold)',
   async ({ page, txLog, overrides }) => {
-    // BUG: a voting-period-only basket-settings proposal ALSO emits a
-    // setProposalThreshold (0xece40cc1) calldata the user never touched. Root
-    // cause: propose-basket-settings/updater.tsx seeds basketVotingThreshold from
-    // the SDK's already-percentage proposalThreshold (~L48) but its change
-    // detector compares that field to Number(proposalThreshold) / 1e18 (~L128),
-    // so proposalThreshold is permanently flagged changed. Un-fixme when the
-    // updater compares like-for-like. Repro: exactly one calldata is expected.
+    // E1 regression: a voting-period-only basket-settings proposal must emit
+    // exactly one action. The updater used to seed basketVotingThreshold from
+    // the SDK's already-percentage proposalThreshold but compare it against
+    // Number(proposalThreshold) / 1e18, permanently flagging the threshold
+    // changed and appending a phantom setProposalThreshold calldata. Now it
+    // compares like-for-like (isProposalThresholdChanged).
     const { args } = await submitVotingPeriodChange(page, overrides, txLog)
     const calldatas = args[2] as Hex[]
     expect(calldatas).toHaveLength(1)
@@ -235,14 +234,13 @@ test.fixme(
   }
 )
 
-test.fixme(
+test(
   'no change keeps confirm disabled and never submits',
   async ({ page, txLog, overrides }) => {
-    // BUG (same root cause as above): with nothing changed the confirm button
-    // should stay disabled (isProposalValid = false) and no tx should be
-    // possible. The phantom proposalThreshold change keeps isProposalValid true,
-    // so confirm is enabled on an untouched form and an "empty" proposal can be
-    // submitted. Un-fixme when the threshold change detector is fixed.
+    // E1 regression (same root cause): with nothing changed the confirm button
+    // must stay disabled (isProposalValid = false) and no tx is possible. The
+    // phantom proposalThreshold change used to keep isProposalValid true, so an
+    // untouched form could submit an "empty" proposal.
     await bootProposeBasketSettings(page, overrides)
 
     const input = votingPeriodInput(page)

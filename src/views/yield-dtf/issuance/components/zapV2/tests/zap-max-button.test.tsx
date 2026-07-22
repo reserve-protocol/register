@@ -16,7 +16,7 @@ const baseCtx = {
   onClickMax: () => {},
 }
 
-describe('ZapInputMaxButton (Z10)', () => {
+describe('ZapInputMaxButton', () => {
   it('disables Max when the calculation is unavailable (canCalculateMax=false)', () => {
     mockUseZap.mockReturnValue({ ...baseCtx, canCalculateMax: false })
     const { getByTestId } = render(<ZapInputMaxButton />)

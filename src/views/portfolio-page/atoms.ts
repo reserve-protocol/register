@@ -1,11 +1,16 @@
 import { atom } from 'jotai'
-import { Address } from 'viem'
+import { Address, formatEther } from 'viem'
 import {
   portfolioStTokenAtom,
   stakingSidebarOpenAtom,
   type VoteLockTab,
 } from '@/components/vote-lock/atoms'
-import type { SupportedChainId } from '@reserve-protocol/react-sdk'
+import {
+  getProposalState as getIndexProposalState,
+  getYieldDtfProposalState,
+  type Amount,
+  type SupportedChainId,
+} from '@reserve-protocol/react-sdk'
 import {
   PortfolioPeriod,
   PortfolioProposal,
@@ -99,31 +104,110 @@ const ACTIVE_STATES = new Set([
   PROPOSAL_STATES.QUEUED,
 ])
 
-// WHY: Portfolio proposals are aggregate API rows, not SDK proposal DTOs.
-// Do not rebuild fake SDK Amounts from formatted strings for display filtering.
+// Outcome/lifecycle is the SDK's audited derivation, selected by the row's isIndexDTF flag — no local governor math.
 // Exported for unit testing (pure) — see tests/atoms.test.ts.
+const rawAmount = (value: string): Amount => {
+  const raw = BigInt(value)
+  return { raw, formatted: formatEther(raw) }
+}
+
+const MAX_UINT256 = (1n << 256n) - 1n
+
+// MAX_UINT256 (challenged/transitioned) and 0 (unset threshold) both mean "no usable veto votes".
+const parseVetoThresholdVotes = (value?: string | null): bigint | undefined => {
+  if (value === null || value === undefined) return undefined
+  const raw = BigInt(value)
+  return raw === MAX_UINT256 ? undefined : raw
+}
+
+const parseVetoThreshold = (value?: string | null): bigint | undefined => {
+  const threshold = parseVetoThresholdVotes(value)
+  return threshold === 0n ? undefined : threshold
+}
+
+// Build the optimistic context only when every veto input is valid — a partial context makes the oracle report CANCELED.
+const buildIndexOptimisticContext = (p: PortfolioProposal) => {
+  if (p.isOptimistic !== true) return undefined
+  const vetoThreshold = parseVetoThreshold(p.vetoThreshold)
+  const vetoThresholdVotes = parseVetoThresholdVotes(p.vetoThresholdVotes)
+  if (
+    p.optimisticSnapshot == null ||
+    p.optimisticSnapshotSupply == null ||
+    vetoThreshold === undefined ||
+    vetoThresholdVotes === undefined
+  ) {
+    return undefined
+  }
+  return {
+    proposalId: p.id,
+    voteToken: p.dtfAddress,
+    snapshot: BigInt(p.optimisticSnapshot),
+    snapshotSupply: rawAmount(p.optimisticSnapshotSupply),
+    vetoThreshold,
+    vetoThresholdVotes: rawAmount(vetoThresholdVotes.toString()),
+  }
+}
+
 export const getPortfolioProposalVotingState = (
-  p: PortfolioProposal,
+  p: PortfolioProposal & { isIndexDTF?: boolean },
   timestamp: number
 ): VotingState => {
   const voteStart = Number(p.voteStart)
   const voteEnd = Number(p.voteEnd)
-  const forVotes = Number(p.forWeightedVotes)
-  const abstainVotes = Number(p.abstainWeightedVotes)
-  const againstVotes = Number(p.againstWeightedVotes)
-  const quorumVotes = Number(p.quorumVotes)
-  const totalVotes = forVotes + againstVotes + abstainVotes
-  const isOptimistic = p.isOptimistic === true
+  const forWeightedVotes = rawAmount(p.forWeightedVotes)
+  const againstWeightedVotes = rawAmount(p.againstWeightedVotes)
+  const abstainWeightedVotes = rawAmount(p.abstainWeightedVotes)
+  const quorumVotes = rawAmount(p.quorumVotes)
+
+  if (p.isIndexDTF) {
+    const optimistic = buildIndexOptimisticContext(p)
+    // vetoThreshold stays raw and context-independent — the MAX_UINT256 sentinel is how the oracle resolves a transitioned proposal.
+    const vetoThreshold =
+      optimistic?.vetoThreshold ??
+      (p.vetoThreshold != null ? BigInt(p.vetoThreshold) : undefined)
+    return getIndexProposalState(
+      {
+        state: p.state,
+        isOptimistic: p.isOptimistic === true,
+        voteStart,
+        voteEnd,
+        forWeightedVotes,
+        againstWeightedVotes,
+        abstainWeightedVotes,
+        quorumVotes,
+        executionETA: p.executionETA ? Number(p.executionETA) : undefined,
+        ...(optimistic ? { optimistic } : {}),
+        ...(vetoThreshold !== undefined ? { vetoThreshold } : {}),
+      } as Parameters<typeof getIndexProposalState>[0],
+      timestamp
+    )
+  }
+
+  // The SDK yield oracle owns the state; deadline + display percentages are UI-local.
+  const derivedState = getYieldDtfProposalState(
+    {
+      state: p.state,
+      voteStart,
+      voteEnd,
+      forWeightedVotes,
+      againstWeightedVotes,
+      abstainWeightedVotes,
+      quorumVotes,
+    } as Parameters<typeof getYieldDtfProposalState>[0],
+    timestamp
+  )
+
+  const totalVotes =
+    forWeightedVotes.raw + againstWeightedVotes.raw + abstainWeightedVotes.raw
+  const reachedQuorum =
+    forWeightedVotes.raw > 0n && forWeightedVotes.raw >= quorumVotes.raw
   const state: VotingState = {
-    state: p.state,
+    state: derivedState,
     deadline: null,
-    quorum: isOptimistic ? false : forVotes > 0 && forVotes >= quorumVotes,
-    forVotesReachedQuorum: isOptimistic
-      ? false
-      : forVotes > 0 && forVotes >= quorumVotes,
-    participationQuorumReached: isOptimistic
-      ? false
-      : forVotes + abstainVotes >= quorumVotes,
+    quorum: reachedQuorum,
+    forVotesReachedQuorum: reachedQuorum,
+    participationQuorumReached:
+      forWeightedVotes.raw + abstainWeightedVotes.raw >= quorumVotes.raw,
     vetoReached: false,
     for: 0,
     against: 0,
@@ -132,39 +216,17 @@ export const getPortfolioProposalVotingState = (
 
   if (p.state === PROPOSAL_STATES.QUEUED && p.executionETA) {
     state.deadline = Number(p.executionETA) - timestamp
-  } else if (p.state === PROPOSAL_STATES.PENDING) {
-    if (timestamp >= voteStart && timestamp < voteEnd) {
-      state.state = PROPOSAL_STATES.ACTIVE
-      state.deadline = voteEnd - timestamp
-    } else if (timestamp < voteStart) {
-      state.deadline = voteStart - timestamp
-    } else if (isOptimistic) {
-      // Index vote-lock proposals are optimistic: after the veto window, the
-      // default result is pass unless the veto threshold was reached.
-      state.state = PROPOSAL_STATES.SUCCEEDED
-    } else {
-      state.state = PROPOSAL_STATES.EXPIRED
-    }
-  } else if (p.state === PROPOSAL_STATES.ACTIVE) {
-    if (timestamp >= voteEnd) {
-      if (isOptimistic) {
-        state.state = PROPOSAL_STATES.SUCCEEDED
-      } else if (againstVotes > forVotes || forVotes === 0) {
-        state.state = PROPOSAL_STATES.DEFEATED
-      } else if (forVotes + abstainVotes < quorumVotes) {
-        state.state = PROPOSAL_STATES.QUORUM_NOT_REACHED
-      } else {
-        state.state = PROPOSAL_STATES.SUCCEEDED
-      }
-    } else {
-      state.deadline = voteEnd - timestamp
-    }
+  } else if (derivedState === PROPOSAL_STATES.PENDING) {
+    state.deadline = voteStart - timestamp
+  } else if (derivedState === PROPOSAL_STATES.ACTIVE) {
+    state.deadline = voteEnd - timestamp
   }
 
-  if (totalVotes > 0) {
-    state.for = (forVotes / totalVotes) * 100
-    state.against = (againstVotes / totalVotes) * 100
-    state.abstain = (abstainVotes / totalVotes) * 100
+  if (totalVotes > 0n) {
+    const total = Number(totalVotes)
+    state.for = (Number(forWeightedVotes.raw) / total) * 100
+    state.against = (Number(againstWeightedVotes.raw) / total) * 100
+    state.abstain = (Number(abstainWeightedVotes.raw) / total) * 100
   }
 
   return state

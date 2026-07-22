@@ -1,4 +1,5 @@
 import dtfIndexAbi from '@/abis/dtf-index-abi-v1'
+import { isLoaded } from '@/utils'
 import dtfIndexAbiV2 from '@/abis/dtf-index-abi-v2'
 import dtfIndexAbiV4 from '@/abis/dtf-index-abi-v4'
 import dtfIndexAbiV5 from '@/abis/dtf-index-abi'
@@ -13,6 +14,7 @@ import {
 } from '@/state/dtf/atoms'
 import { Token } from '@/types'
 import { BIGINT_MAX } from '@/utils/constants'
+import { getFeePercentAdjust, isDisplayablePlatformFee } from '@/utils/fees'
 import type { MessageDescriptor } from '@lingui/core'
 import { msg } from '@lingui/core/macro'
 import { atom } from 'jotai'
@@ -565,7 +567,7 @@ export const dtfSettingsProposalDataAtom = atom<ProposalData | undefined>(
 
       // Calculate using the same logic as calculateRevenueDistribution
       const platformFee = get(indexDTFFeeAtom)
-      if (typeof platformFee !== 'number') return undefined
+      if (!isLoaded(platformFee)) return undefined
 
       // Convert from actual percentage (including platform fee) to contract percentage (excluding platform fee)
       // User input: actual % of total revenue -> Contract needs: % of non-platform portion
@@ -915,8 +917,10 @@ export const feeRecipientsAtom = atom((get) => {
   let deployerShare = 0
   let governanceShare = 0
   const platformFee = get(indexDTFFeeAtom)
-  if (typeof platformFee !== 'number') return undefined
-  const PERCENT_ADJUST = 100 / (100 - platformFee)
+  if (!isLoaded(platformFee)) return undefined
+  // A fee outside [0, 100) is indeterminate — render nothing, never a fabricated split.
+  if (!isDisplayablePlatformFee(platformFee)) return undefined
+  const PERCENT_ADJUST = getFeePercentAdjust(platformFee)
 
   const toShare = (pct: number) =>
     Math.round((pct / PERCENT_ADJUST) * 100) / 100

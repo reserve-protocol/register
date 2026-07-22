@@ -4,77 +4,51 @@ import { useQuery } from '@tanstack/react-query'
 import { useAtomValue } from 'jotai'
 import { Address } from 'viem'
 
-type HistoricalPriceResponse = {
-  address: string
-  timeseries: {
-    price: number
-    timestamp: number
-  }[]
-}
-
 export type TokenPriceWithSnapshot = Record<
   string,
   { currentPrice: number; snapshotPrice: number }
 >
 
-const useAssetPricesWithSnapshot = (
-  tokens: string[] | undefined,
-  timestamp?: number
-) => {
+// The API returns `{ statusCode, message }` on error — reject bad shapes loud so prices never degrade to $0-everywhere.
+export function parseCurrentPricesResponse(
+  body: unknown
+): TokenPriceWithSnapshot {
+  if (body && typeof body === 'object' && 'statusCode' in body) {
+    throw new Error(
+      (body as { message?: string }).message ?? 'Failed to fetch prices'
+    )
+  }
+  if (!Array.isArray(body)) {
+    throw new Error('Unexpected prices response shape')
+  }
+
+  return (body as { address: Address; price?: number }[]).reduce(
+    (acc, token) => {
+      const price = token.price ?? 0
+      acc[token.address.toLowerCase()] = {
+        currentPrice: price,
+        snapshotPrice: price,
+      }
+      return acc
+    },
+    {} as TokenPriceWithSnapshot
+  )
+}
+
+const useAssetPricesWithSnapshot = (tokens: string[] | undefined) => {
   const chain = useAtomValue(chainIdAtom)
 
   return useQuery({
-    queryKey: ['asset-price-with-snapshot', tokens, chain, timestamp ?? ''],
+    queryKey: ['asset-price-with-snapshot', tokens, chain],
     queryFn: async () => {
       if (!tokens) return {}
 
       const currentPricesUrl = `${RESERVE_API}current/prices?chainId=${chain}&tokens=${tokens.join(',')}`
-      const currentPrices: {
-        address: Address
-        price?: number
-      }[] = await fetch(currentPricesUrl).then((res) => res.json())
+      const currentPricesBody: unknown = await fetch(currentPricesUrl).then(
+        (res) => res.json()
+      )
 
-      const result = currentPrices.reduce((acc, token) => {
-        const price = token.price ?? 0
-        acc[token.address.toLowerCase()] = {
-          currentPrice: price,
-          snapshotPrice: price,
-        }
-        return acc            
-      }, {} as TokenPriceWithSnapshot)
-
-      // TODO: No longer used!
-      // Fetch snapshot prices if timestamp is provided
-      if (timestamp) {
-        // from is timestamp - 1 hour
-        const from = Number(timestamp) - 1 * 60 * 60
-        const to = Number(timestamp) + 1 * 60 * 60
-        const baseUrl = `${RESERVE_API}historical/prices?chainId=${chain}&from=${from}&to=${to}&interval=1h&address=`
-        const calls = tokens.map((token) =>
-          fetch(`${baseUrl}${token}`).then((res) => res.json())
-        )
-
-        const response = await (<Promise<HistoricalPriceResponse[]>>(
-          Promise.all(calls)
-        ))
-
-        for (const priceResult of response) {
-          const price =
-            priceResult.timeseries.length === 0
-              ? 0
-              : priceResult.timeseries[
-                  Math.floor(priceResult.timeseries.length / 2)
-                ].price
-
-          result[priceResult.address.toLowerCase()] = {
-            snapshotPrice: price,
-            currentPrice:
-              result[priceResult.address.toLowerCase()].currentPrice,
-          }
-        }
-      }
-
-      return result
+      return parseCurrentPricesResponse(currentPricesBody)
     },
     enabled: Boolean(tokens?.length && chain),
   })

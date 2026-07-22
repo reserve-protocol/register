@@ -5,7 +5,7 @@ import { parseDuration } from '@/utils'
 import { Trans, useLingui } from '@lingui/react/macro'
 import { atom, useAtom, useAtomValue } from 'jotai'
 import { LoaderCircle } from 'lucide-react'
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { toast } from 'sonner'
 import { Address } from 'viem'
 import { useWaitForTransactionReceipt, useWriteContract } from 'wagmi'
@@ -19,8 +19,12 @@ import {
   refreshNonceAtom,
   savedWeightsAtom,
 } from '../atoms'
-import useRebalanceParams from '../hooks/use-rebalance-params'
-import getRebalanceOpenAuction from '../utils/get-rebalance-open-auction'
+import useRebalanceParams, {
+  useRebalancePrices,
+} from '../hooks/use-rebalance-params'
+import getRebalanceOpenAuction, {
+  buildRebalanceOpenAuctionArrays,
+} from '../utils/get-rebalance-open-auction'
 import { TransactionButtonContainer } from '@/components/ui/transaction'
 
 const auctionNumberAtom = atom((get) => {
@@ -35,6 +39,7 @@ const LaunchAuctionsButton = () => {
   const rebalancePercent = useAtomValue(rebalancePercentAtom)
   const priceVolatility = useAtomValue(priceVolatilityAtom)
   const rebalanceParams = useRebalanceParams()
+  const { isError: isPriceError } = useRebalancePrices()
   const [refreshNonce, setRefreshNonce] = useAtom(refreshNonceAtom)
   const auctionNumber = useAtomValue(auctionNumberAtom)
   const [isLaunching, setIsLaunching] = useState(false)
@@ -48,7 +53,45 @@ const LaunchAuctionsButton = () => {
   const savedWeights = useAtomValue(savedWeightsAtom)
   const areWeightsSaved = useAtomValue(areWeightsSavedAtom)
   const auctions = useAtomValue(rebalanceAuctionsAtom)
-  const isValid = !!rebalanceParams && rebalancePercent > 0 && rebalance && dtf
+
+  const weightsToUse =
+    isHybridDTF && areWeightsSaved && savedWeights && auctions.length === 0
+      ? savedWeights
+      : rebalanceParams?.initialWeights
+
+  // Validate prices up front so a missing/0 price surfaces "cannot launch" before the click.
+  const priceCheck = useMemo(() => {
+    if (!rebalanceParams || !rebalance || !weightsToUse) return undefined
+    return buildRebalanceOpenAuctionArrays(
+      rebalanceParams.folioVersion,
+      rebalance.rebalance.tokens,
+      rebalanceParams.rebalance,
+      rebalanceParams.currentAssets,
+      rebalanceParams.initialAssets,
+      rebalanceParams.initialPrices,
+      weightsToUse,
+      rebalanceParams.prices,
+      rebalanceParams.tokenPriceVolatility,
+      rebalanceParams.isTrackingDTF,
+      isHybridDTF
+    )
+  }, [rebalanceParams, rebalance, weightsToUse, isHybridDTF])
+
+  // A hard price-fetch error leaves params undefined — surface it, not an inert disabled button.
+  const priceUnavailable = isPriceError || priceCheck?.ok === false
+  const unavailableSymbol =
+    priceCheck && !priceCheck.ok
+      ? rebalance?.rebalance.tokens.find(
+          (token) => token.address.toLowerCase() === priceCheck.token
+        )?.symbol
+      : undefined
+
+  const isValid =
+    !!rebalanceParams &&
+    rebalancePercent > 0 &&
+    rebalance &&
+    dtf &&
+    !priceUnavailable
 
   useEffect(() => {
     if (isSuccess) {
@@ -77,16 +120,10 @@ const LaunchAuctionsButton = () => {
   }, [isError])
 
   const handleStartAuctions = () => {
-    if (!isValid || !rebalanceParams) return
+    if (!isValid || !rebalanceParams || !weightsToUse) return
 
     try {
       setIsLaunching(true)
-
-      // Use saved weights for hybrid DTFs on first auction if available
-      const weightsToUse =
-        isHybridDTF && areWeightsSaved && savedWeights && auctions.length === 0
-          ? savedWeights
-          : rebalanceParams.initialWeights
 
       const [openAuctionArgs] = getRebalanceOpenAuction(
         rebalanceParams.folioVersion,
@@ -132,6 +169,18 @@ const LaunchAuctionsButton = () => {
       connectButtonClassName="w-full"
       switchChainButtonClassName="w-full"
     >
+      {priceUnavailable && (
+        <p
+          data-testid="auctions-price-unavailable"
+          className="text-center text-sm text-destructive px-2 pb-2"
+        >
+          {unavailableSymbol ? (
+            <Trans>Price unavailable for {unavailableSymbol} — cannot launch</Trans>
+          ) : (
+            <Trans>Price unavailable — cannot launch</Trans>
+          )}
+        </p>
+      )}
       <Button
         data-testid="auctions-launch-btn"
         className="rounded-xl py-6 w-full gap-2"

@@ -1,5 +1,5 @@
 import { INDEX_GRAPH_CLIENTS } from '@/state/chain/atoms/chainAtoms'
-import { ChainId } from '@/utils/chains'
+import { INDEX_DTF_CHAINS } from '@/utils/constants'
 import { useQuery } from '@tanstack/react-query'
 import { gql } from 'graphql-request'
 import { Address } from 'viem'
@@ -102,8 +102,7 @@ export const useInternalDTFList = (
     queryFn: async () => {
       const allDTFs: InternalDTF[] = []
       
-      // Fetch from all supported chains
-      const chains = [ChainId.Base, ChainId.Mainnet, ChainId.BSC]
+      const chains = INDEX_DTF_CHAINS
       
       for (const chainId of chains) {
         try {
@@ -145,7 +144,7 @@ export const useInternalDTFCount = (where?: any) => {
     queryFn: async () => {
       let totalCount = 0
 
-      const chains = [ChainId.Base, ChainId.Mainnet, ChainId.BSC]
+      const chains = INDEX_DTF_CHAINS
 
       for (const chainId of chains) {
         try {

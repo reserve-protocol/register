@@ -5,7 +5,7 @@ import DecimalDisplay from '../index'
 // Composed-consumer render (Z11): the real <DecimalDisplay> component — not just
 // the formatter — must render "—" for non-finite input, and a `$`-prefixed
 // caller (the common auction/money pattern) must show "$—", never "$0".
-describe('DecimalDisplay render (Z11)', () => {
+describe('DecimalDisplay render', () => {
   it('renders non-finite values as an em dash, not 0', () => {
     const { container } = render(<DecimalDisplay value={NaN} />)
     expect(container.textContent).toBe('—')

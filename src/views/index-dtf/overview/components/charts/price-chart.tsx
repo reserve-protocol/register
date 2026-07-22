@@ -97,7 +97,7 @@ const useSyncApyHistory = () => {
 }
 
 const useSync7dChange = (
-  timeseries: { timestamp: number; price: number }[]
+  timeseries: readonly { timestamp: number; price: number }[]
 ) => {
   const set7dChange = useSetAtom(indexDTF7dChangeAtom)
   useEffect(() => {
@@ -108,7 +108,7 @@ const useSync7dChange = (
   }, [timeseries, set7dChange])
 }
 
-const useSyncMarketCap = (timeseries: { marketCap: number }[]) => {
+const useSyncMarketCap = (timeseries: readonly { marketCap: number }[]) => {
   const setMarketCap = useSetAtom(indexDTFMarketCapAtom)
   useEffect(() => {
     if (timeseries.length === 0) return
@@ -118,7 +118,9 @@ const useSyncMarketCap = (timeseries: { marketCap: number }[]) => {
 
 const useSyncPriceHistoryAvailability = (
   address: string | undefined,
-  history: { timeseries: { timestamp: number; price: number }[] } | undefined
+  history:
+    | { timeseries: readonly { timestamp: number; price: number }[] }
+    | undefined
 ) => {
   const setPriceHistoryAvailability = useSetAtom(priceHistoryAvailabilityAtom)
 

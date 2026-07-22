@@ -15,6 +15,11 @@ import {
 import { CHAIN_TO_NETWORK, RESERVE_STORAGE, ROUTES } from './constants'
 import dayjs from 'dayjs'
 
+// Narrows `T | 'unavailable' | undefined` (loading) so 0 counts as loaded.
+export const isLoaded = <T>(
+  value: T | 'unavailable' | undefined
+): value is T => value !== undefined && value !== 'unavailable'
+
 export const decimalPattern = /^[0-9]*[.]?[0-9]*$/i
 export const numberPattern = /^\d+$/
 export const addressPattern = /^0x[a-fA-F0-9]{40}$/

@@ -1,19 +1,16 @@
 import { PROPOSAL_STATES, blockDuration } from 'utils/constants'
 import { atom } from 'jotai'
 import { blockAtom, chainIdAtom, rTokenGovernanceAtom } from 'state/atoms'
-import {
-  Address,
-  Hex,
-  encodeAbiParameters,
-  keccak256,
-  parseAbiParameters,
-  parseEther,
-  toBytes,
-} from 'viem'
+import { Address, Hex, keccak256, parseEther, toBytes } from 'viem'
 import { TenderlySimulation } from 'types'
 import { atomWithReset } from 'jotai/utils'
 import { getCurrentTime } from 'utils'
 import { isTimeunitGovernance } from '@/views/yield-dtf/governance/utils'
+import {
+  getGovernorTimelockOperationIdV4,
+  getYieldDtfProposalState,
+  type Amount,
+} from '@reserve-protocol/react-sdk'
 
 export interface ProposalDetail {
   id: string
@@ -73,50 +70,30 @@ export const accountVotesAtom = atom<{
   votePower: null,
 })
 
-export const getProposalStatus = (
-  proposal: Partial<ProposalDetail>,
-  blockNumber: number
-): string => {
-  let status: string = proposal.state || PROPOSAL_STATES.PENDING
-  const timeunit = isTimeunitGovernance(
-    proposal?.governanceFramework?.name ?? '1'
-  )
-    ? getCurrentTime()
-    : blockNumber
-
-  if (!blockNumber || !proposal) {
-    return status
-  }
-
-  if (proposal.state === PROPOSAL_STATES.PENDING) {
-    if (timeunit > (proposal.endBlock || 0)) {
-      return PROPOSAL_STATES.EXPIRED
-    }
-
-    if (timeunit > (proposal.startBlock || 0)) {
-      return PROPOSAL_STATES.ACTIVE
-    }
-  }
-
-  if (
-    proposal.state === PROPOSAL_STATES.ACTIVE &&
-    timeunit > (proposal.endBlock || 0)
-  ) {
-    const forVotes = parseEther(proposal.forWeightedVotes ?? '0')
-    const abstainVotes = parseEther(proposal.abstainWeightedVotes ?? '0')
-    const againstVotes = parseEther(proposal.againstWeightedVotes ?? '0')
-    const quorum = parseEther(proposal.quorumVotes ?? '0')
-
-    if (forVotes <= againstVotes) {
-      return PROPOSAL_STATES.DEFEATED
-    } else if (forVotes + abstainVotes < quorum) {
-      return PROPOSAL_STATES.QUORUM_NOT_REACHED
-    }
-    return PROPOSAL_STATES.SUCCEEDED
-  }
-
-  return status
+// The list seam passes raw wei strings, the detail seam formatEther'd — parseEther keeps the bigint comparison exact in both.
+const weiAmount = (value?: string): Amount => {
+  const raw = parseEther(value ?? '0')
+  return { raw, formatted: value ?? '0' }
 }
+
+// Lifecycle + terminal outcome are the SDK's audited derivation — the one source of truth the list and detail seams share.
+// `currentTimepoint` is the proposal's native unit: unix seconds for Anastasius, block for Alexios.
+const deriveState = (
+  proposal: Partial<ProposalDetail>,
+  currentTimepoint: number
+): string =>
+  getYieldDtfProposalState(
+    {
+      state: proposal.state ?? PROPOSAL_STATES.PENDING,
+      voteStart: Number(proposal.startBlock ?? 0),
+      voteEnd: Number(proposal.endBlock ?? 0),
+      forWeightedVotes: weiAmount(proposal.forWeightedVotes),
+      againstWeightedVotes: weiAmount(proposal.againstWeightedVotes),
+      abstainWeightedVotes: weiAmount(proposal.abstainWeightedVotes),
+      quorumVotes: weiAmount(proposal.quorumVotes),
+    } as Parameters<typeof getYieldDtfProposalState>[0],
+    currentTimepoint
+  )
 
 export const getProposalState = (
   proposal: Partial<ProposalDetail>,
@@ -158,43 +135,20 @@ export const getProposalState = (
     )
     const timeunit = isTimeunit ? timestamp : blockNumber
 
-    // Proposal to be executed
-    // TODO: Guardian can cancel on this state!
+    // The branches below only compute the UI countdown — state itself is the SDK's derivation.
+    state.state = deriveState(proposal, timeunit)
+
+    // TODO: Guardian can cancel on the QUEUED state!
     if (proposal.state === PROPOSAL_STATES.QUEUED && proposal.executionETA) {
       state.deadline = proposal.executionETA - timestamp
-    } else if (proposal.state === PROPOSAL_STATES.PENDING) {
-      if (timeunit > proposal.startBlock && timeunit < proposal.endBlock) {
-        state.state = PROPOSAL_STATES.ACTIVE
-        state.deadline = isTimeunit
-          ? proposal.endBlock - timestamp
-          : (proposal.endBlock - blockNumber) * BLOCK_DURATION
-      } else if (timeunit < proposal.startBlock) {
-        state.deadline = isTimeunit
-          ? proposal.startBlock - timestamp
-          : (proposal.startBlock - blockNumber) * BLOCK_DURATION
-      } else {
-        state.state = PROPOSAL_STATES.EXPIRED
-      }
-    } else if (proposal.state === PROPOSAL_STATES.ACTIVE) {
-      // Proposal voting ended check status
-      if (timeunit > proposal.endBlock) {
-        const forVotes = +proposal.forWeightedVotes
-        const abstainVotes = +proposal.abstainWeightedVotes
-        const againstVotes = +proposal.againstWeightedVotes
-        const quorum = +proposal.quorumVotes
-
-        if (againstVotes > forVotes) {
-          state.state = PROPOSAL_STATES.DEFEATED
-        } else if (forVotes + abstainVotes < quorum) {
-          state.state = PROPOSAL_STATES.QUORUM_NOT_REACHED
-        } else {
-          state.state = PROPOSAL_STATES.SUCCEEDED
-        }
-      } else {
-        state.deadline = isTimeunit
-          ? proposal.endBlock - timestamp
-          : (proposal.endBlock - blockNumber) * BLOCK_DURATION
-      }
+    } else if (state.state === PROPOSAL_STATES.PENDING) {
+      state.deadline = isTimeunit
+        ? proposal.startBlock - timestamp
+        : (proposal.startBlock - blockNumber) * BLOCK_DURATION
+    } else if (state.state === PROPOSAL_STATES.ACTIVE) {
+      state.deadline = isTimeunit
+        ? proposal.endBlock - timestamp
+        : (proposal.endBlock - blockNumber) * BLOCK_DURATION
     }
 
     const totalVotes =
@@ -232,47 +186,32 @@ export const getProposalStateAtom = atom((get) => {
     const isTimeunit = isTimeunitGovernance(proposal.version)
     const timeunit = isTimeunit ? timestamp : blockNumber
 
-    // Proposal to be executed
-    // TODO: Guardian can cancel on this state!
+    // The branches below only compute the UI countdown — state itself is the SDK's derivation.
+    state.state = deriveState(proposal, timeunit)
+
+    // TODO: Guardian can cancel on the QUEUED state!
     if (proposal.state === PROPOSAL_STATES.QUEUED && proposal.executionETA) {
       state.deadline = proposal.executionETA - timestamp
-    } else if (proposal.state === PROPOSAL_STATES.PENDING) {
-      if (timeunit > proposal.startBlock && timeunit < proposal.endBlock) {
-        state.state = PROPOSAL_STATES.ACTIVE
-        state.deadline = isTimeunit
-          ? proposal.endBlock - timestamp
-          : (proposal.endBlock - blockNumber) * BLOCK_DURATION
-      } else if (timeunit < proposal.startBlock) {
-        state.deadline = isTimeunit
-          ? proposal.startBlock - timestamp
-          : (proposal.startBlock - blockNumber) * BLOCK_DURATION
-      } else {
-        state.state = PROPOSAL_STATES.EXPIRED
-      }
-    } else if (proposal.state === PROPOSAL_STATES.ACTIVE) {
-      // Proposal voting ended check status
-      if (timeunit > proposal.endBlock) {
-        const forVotes = +proposal.forWeightedVotes
-        const abstainVotes = +proposal.abstainWeightedVotes
-        const againstVotes = +proposal.againstWeightedVotes
-        const quorum = +proposal.quorumVotes
-
-        if (againstVotes > forVotes) {
-          state.state = PROPOSAL_STATES.DEFEATED
-        } else if (forVotes + abstainVotes < quorum) {
-          state.state = PROPOSAL_STATES.QUORUM_NOT_REACHED
-        } else {
-          state.state = PROPOSAL_STATES.SUCCEEDED
-        }
-      } else {
-        state.deadline = isTimeunit
-          ? proposal.endBlock - timestamp
-          : (proposal.endBlock - blockNumber) * BLOCK_DURATION
-      }
+    } else if (state.state === PROPOSAL_STATES.PENDING) {
+      state.deadline = isTimeunit
+        ? proposal.startBlock - timestamp
+        : (proposal.startBlock - blockNumber) * BLOCK_DURATION
+    } else if (state.state === PROPOSAL_STATES.ACTIVE) {
+      state.deadline = isTimeunit
+        ? proposal.endBlock - timestamp
+        : (proposal.endBlock - blockNumber) * BLOCK_DURATION
     }
   }
 
   return state
+})
+
+// The queue/execute args and the timelock operation id must derive their zero-values from the SAME targets, or they drift.
+const toTimelockPayload = (proposal: ProposalDetail) => ({
+  governor: proposal.governor,
+  targets: proposal.targets,
+  calldatas: proposal.calldatas,
+  description: proposal.description,
 })
 
 export const proposalTxArgsAtom = atom(
@@ -280,19 +219,17 @@ export const proposalTxArgsAtom = atom(
     const governance = get(rTokenGovernanceAtom)
     const proposal = get(proposalDetailAtom)
 
-    if (
-      !proposal ||
-      !proposal.calldatas.length ||
-      !governance.governor
-    ) {
+    if (!proposal || !proposal.calldatas.length || !governance.governor) {
       return undefined
     }
 
+    const payload = toTimelockPayload(proposal)
+
     return [
-      proposal.targets,
-      new Array(proposal.targets.length).fill(0n),
-      proposal.calldatas,
-      keccak256(toBytes(proposal.description)),
+      payload.targets,
+      payload.targets.map(() => 0n),
+      payload.calldatas,
+      keccak256(toBytes(payload.description)),
     ]
   }
 )
@@ -300,20 +237,9 @@ export const proposalTxArgsAtom = atom(
 export const timelockIdAtom = atom((get) => {
   const proposal = get(proposalDetailAtom)
 
-  const encodedParams = proposal
-    ? encodeAbiParameters(
-      parseAbiParameters('address[], uint256[], bytes[], bytes32, bytes32'),
-      [
-        proposal.targets,
-        [0n],
-        proposal.calldatas,
-        '0x0000000000000000000000000000000000000000000000000000000000000000',
-        keccak256(toBytes(proposal.description)),
-      ]
-    )
-    : undefined
+  if (!proposal) return undefined
 
-  return encodedParams ? keccak256(encodedParams) : undefined
+  return getGovernorTimelockOperationIdV4(toTimelockPayload(proposal))
 })
 
 export const canExecuteAtom = atom((get) => {

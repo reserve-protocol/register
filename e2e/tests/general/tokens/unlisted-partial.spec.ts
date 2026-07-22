@@ -1,6 +1,6 @@
 import { test, expect } from '../../../harness'
 
-// Z2 (docs/plans/REGISTER_HARDENING.md): useUnlistedTokens buckets a multichain
+// useUnlistedTokens buckets a multichain
 // GetTokenListOverview fan-out and read `data[chain].rtokens.map` guarding only
 // `data[chain]`. A partial/rtokens-less bucket for one chain threw in the effect
 // and crashed the unlisted-tokens table. Structural GH0 twin of the A1 explorer

@@ -1,10 +1,11 @@
 import { PERMISSIONLESS_VOTE_LOCK } from '@/views/index-dtf/deploy/permissionless-defaults'
 import { ChainId } from '@/utils/chains'
+import { INDEX_DTF_CHAINS } from '@/utils/constants'
 import { Address, zeroAddress } from 'viem'
 import { gql } from 'graphql-request'
 
-// Only include chains with real governance addresses
-export const ACTIVE_CHAINS = [ChainId.Base, ChainId.Mainnet, ChainId.BSC].filter(
+// Index DTF chains, further narrowed to those with real governance addresses.
+export const ACTIVE_CHAINS = INDEX_DTF_CHAINS.filter(
   (chainId) =>
     PERMISSIONLESS_VOTE_LOCK[chainId] &&
     PERMISSIONLESS_VOTE_LOCK[chainId] !== zeroAddress

@@ -7,10 +7,10 @@ import { ControllerFieldState, useFormContext } from 'react-hook-form'
 import { chainIdAtom } from 'state/atoms'
 import { readonlyStepsAtom } from '../../atoms'
 import { AvailableChain, ChainId } from 'utils/chains'
-import { CHAIN_TAGS } from 'utils/constants'
+import { CHAIN_TAGS, INDEX_DTF_CHAINS } from 'utils/constants'
 import { useSwitchChain } from 'wagmi'
 
-const SUPPORTED_CHAINS = [ChainId.Mainnet, ChainId.Base, ChainId.BSC]
+const SUPPORTED_CHAINS = [...INDEX_DTF_CHAINS] as AvailableChain[]
 
 const ChainOption = ({
   chainId,

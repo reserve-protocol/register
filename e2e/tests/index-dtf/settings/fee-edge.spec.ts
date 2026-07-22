@@ -1,13 +1,15 @@
 import { test, expect } from '../../../harness'
 import { REGISTRY } from '../../../helpers/registry'
 
-// Settings fee-math edge (ledger M9): a fee registry with numerator==denominator
-// yields platformFee=100 → PERCENT_ADJUST = 100/(100-100) = Infinity → every
-// recipient share collapses to 0%. Desired: a coherent breakdown (the DTF's
-// governance recipient keeps a non-zero share). See docs/plans/E2E_BUG_LEDGER.md M9.
+// Settings fee-math edge (ledger M9 / B2): a fee registry with
+// numerator==denominator yields platformFee=100 → PERCENT_ADJUST =
+// 100/(100-100) = Infinity → every recipient share collapses to 0%/NaN%.
+// A 100% platform fee is a degenerate/invalid split, so the revenue distribution
+// must fail closed to an explicit "Unavailable" state — never a fabricated
+// numeric allocation.
 const base = REGISTRY.find((d) => d.chainId === 8453 && !d.deprecated)!
 
-test.fixme('settings: platformFee=100 must not zero every recipient share @smoke', async ({
+test('settings: platformFee=100 shows Unavailable, not a fabricated split @smoke', async ({
   harness,
 }) => {
   const page = harness.page
@@ -18,7 +20,11 @@ test.fixme('settings: platformFee=100 must not zero every recipient share @smoke
   await harness.chain.advance(5_000)
   await harness.chain.advance(5_000)
 
-  await expect(page.getByTestId('settings-fee-platform')).toContainText('100', { timeout: 15_000 })
-  // Desired: the governance recipient keeps its real (non-zero) share.
-  await expect(page.getByTestId('settings-fee-governance')).toContainText(/[1-9]/)
+  // Revenue distribution fails closed to Unavailable.
+  await expect(page.getByTestId('settings-fee-unavailable')).toBeVisible({
+    timeout: 15_000,
+  })
+  // No fabricated numeric recipient split renders.
+  await expect(page.getByTestId('settings-fee-platform')).toHaveCount(0)
+  await expect(page.getByTestId('settings-fee-governance')).toHaveCount(0)
 })

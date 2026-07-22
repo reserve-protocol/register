@@ -1,7 +1,8 @@
 import dtfStakingVaultAbi from '@/abis/dtf-index-staking-vault'
 import { indexDTFAtom, indexDTFFeeAtom } from '@/state/dtf/atoms'
 import { IndexDTF } from '@/types'
-import { formatPercentage } from '@/utils'
+import { formatPercentage, isLoaded } from '@/utils'
+import { getFeePercentAdjust, isDisplayablePlatformFee } from '@/utils/fees'
 import { msg } from '@lingui/core/macro'
 import type { MessageDescriptor } from '@lingui/core'
 import { useLingui } from '@lingui/react/macro'
@@ -37,6 +38,8 @@ export const getFeeRecipients = (
   tokenJar: Address | undefined
 ): Recipient[] | undefined => {
   if (!indexDTF || platformFee === undefined) return undefined
+  // A fee outside [0, 100) has no real share-of-total split — signal indeterminate, never fabricate.
+  if (!isDisplayablePlatformFee(platformFee)) return undefined
 
   const platformShare: Recipient = {
     label: msg`Fixed Platform Share`,
@@ -58,7 +61,7 @@ export const getFeeRecipients = (
     testId: 'settings-fee-governance',
   }
   const externalRecipients: Recipient[] = []
-  const PERCENT_ADJUST = 100 / (100 - platformFee)
+  const PERCENT_ADJUST = getFeePercentAdjust(platformFee)
 
   const deployer = indexDTF.deployer.toLowerCase()
   const governanceRecipients = new Set(
@@ -110,7 +113,7 @@ const FeesInfo = () => {
     () =>
       getFeeRecipients(
         indexDTF,
-        typeof platformFee === 'number' ? platformFee : undefined,
+        isLoaded(platformFee) ? platformFee : undefined,
         tokenJar
       ),
     [indexDTF, platformFee, tokenJar]
@@ -147,7 +150,8 @@ const FeesInfo = () => {
         />
       </div>
       <div className="bg-card rounded-3xl mt-1">
-        {platformFee === 'unavailable' ? (
+        {platformFee === 'unavailable' ||
+        (isLoaded(platformFee) && !isDisplayablePlatformFee(platformFee)) ? (
           <InfoCardItem
             label={t`Revenue Distribution`}
             value={t`Unavailable`}

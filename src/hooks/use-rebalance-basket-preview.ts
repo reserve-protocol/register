@@ -172,6 +172,60 @@ export const useDecodedRebalanceCalldata = (
   }, [rebalanceCalldata])
 }
 
+type SnapshotBasketToken = { address: string; price: number; amount: number }
+
+// Any non-finite input yields undefined (indeterminate) — otherwise `.toFixed` renders literal "Infinity"/"NaN" weights.
+export const computeSnapshotWeights = (
+  basket: readonly SnapshotBasketToken[],
+  dtfPrice: number
+): Record<string, string> | undefined => {
+  if (!(Number.isFinite(dtfPrice) && dtfPrice > 0)) return undefined
+
+  const weights: Record<string, string> = {}
+  for (const token of basket) {
+    const weight = ((token.price * token.amount) / dtfPrice) * 100
+    if (!Number.isFinite(weight)) return undefined
+    weights[token.address.toLowerCase()] = weight.toFixed(2)
+  }
+  return weights
+}
+
+// Unusable historical data throws — never substitute today's basket as the proposal-time snapshot.
+export const resolveSnapshotWeights = (
+  response: IndexDTFPerformance
+): Record<string, string> => {
+  if (!response.timeseries.length) {
+    throw new Error('Historical snapshot unavailable (empty timeseries)')
+  }
+
+  const middlePoint = Math.floor(response.timeseries.length / 2)
+  const { basket, price } = response.timeseries[middlePoint]
+  const weights = computeSnapshotWeights(basket, price)
+  if (!weights) {
+    throw new Error('Historical snapshot price unavailable')
+  }
+  return weights
+}
+
+// Extracted so the fetch → resolve wiring is testable with only a fetch mock.
+export const fetchSnapshotWeights = async (
+  dtf: { id: string },
+  chainId: number,
+  timestamp: number | undefined,
+  currentWeights: Record<string, string>
+): Promise<Record<string, string>> => {
+  if (!timestamp) return currentWeights
+
+  const from = Number(timestamp) - 1 * 60 * 60
+  const to = Number(timestamp) + 1 * 60 * 60
+  const historical = `${RESERVE_API}historical/dtf?chainId=${chainId}&address=${dtf.id}&from=${from}&to=${to}&interval=1h`
+  const response = (await fetch(historical).then((res) =>
+    res.json()
+  )) as IndexDTFPerformance
+
+  return resolveSnapshotWeights(response)
+}
+
 const currentBasketMapAtom = atom<Record<string, Token> | undefined>((get) => {
   const currentBasket = get(indexDTFBasketAtom)
   return (
@@ -217,36 +271,7 @@ const useDTFBasketWeights = (timestamp?: number) => {
     queryKey: ['dtf-basket-weights', dtf, chainId, timestamp, currentWeights],
     queryFn: async () => {
       if (!dtf) return {}
-
-      if (!timestamp) return currentWeights
-
-      const from = Number(timestamp) - 1 * 60 * 60
-      const to = Number(timestamp) + 1 * 60 * 60
-      const historical = `${RESERVE_API}historical/dtf?chainId=${chainId}&address=${dtf.id}&from=${from}&to=${to}&interval=1h`
-      const response = (await fetch(historical).then((res) =>
-        res.json()
-      )) as IndexDTFPerformance
-
-      if (!response.timeseries.length) return currentWeights
-
-      // Grab the basket of the middle point of the timeseries
-      const middlePoint = Math.floor(response.timeseries.length / 2)
-      const basket = response.timeseries[middlePoint].basket
-      const dtfPrice = response.timeseries[middlePoint].price
-
-      // Now with the basket of that snapshot, we calculate the weights using the token amounts and pricing
-      const weights = basket.reduce(
-        (acc, token) => {
-          const price = token.price
-          const amount = token.amount
-          const weight = ((price * amount) / dtfPrice) * 100
-          acc[token.address.toLowerCase()] = weight.toFixed(2)
-          return acc
-        },
-        {} as Record<string, string>
-      )
-
-      return weights
+      return fetchSnapshotWeights(dtf, chainId, timestamp, currentWeights)
     },
     enabled: Boolean(dtf && Object.keys(currentWeights).length),
   })
@@ -267,8 +292,7 @@ const useRebalanceBasketPreview = (
   const tokens = useTokens(rebalance?.data.tokens ?? [])
   const rebalanceControl = useAtomValue(indexDTFRebalanceControlAtom)
   const { data: prices } = useAssetPricesWithSnapshot(
-    tokens ? Object.keys(tokens) : undefined,
-    timestamp
+    tokens ? Object.keys(tokens) : undefined
   )
 
   return useMemo(() => {

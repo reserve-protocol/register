@@ -3,7 +3,8 @@ import { chainIdAtom } from '@/state/atoms'
 import { indexDTFAtom, indexDTFFeeAtom } from '@/state/dtf/atoms'
 import { DecodedCalldata } from '@/types'
 import EnsName from '@/components/utils/ens-name'
-import { shortenAddress } from '@/utils'
+import { isLoaded, shortenAddress } from '@/utils'
+import { getFeePercentAdjust, isDisplayablePlatformFee } from '@/utils/fees'
 import { ExplorerDataType, getExplorerLink } from '@/utils/getExplorerLink'
 import type { MessageDescriptor } from '@lingui/core'
 import { msg } from '@lingui/core/macro'
@@ -243,7 +244,29 @@ export const SetFeeRecipientsPreview = ({
     portion: bigint
   }>
 
-  if (!indexDTF || typeof platformFee !== 'number') return null
+  if (!indexDTF || !isLoaded(platformFee)) return null
+
+  // A fee outside [0, 100) has no real share-of-total split — surface "Unavailable", never fabricate.
+  if (!isDisplayablePlatformFee(platformFee)) {
+    return (
+      <div className="rounded-2xl border bg-muted/70 p-2 space-y-3">
+        <div className="flex items-center gap-2 ml-2 pt-2">
+          <Users size={16} className="text-primary" />
+          <div className="text-sm font-medium">
+            <Trans>Update Revenue Distribution</Trans>
+          </div>
+        </div>
+        <div
+          className="p-3 rounded-xl bg-background/80 border"
+          data-testid="settings-preview-fee-unavailable"
+        >
+          <span className="text-sm text-muted-foreground">
+            <Trans>Revenue distribution unavailable</Trans>
+          </span>
+        </div>
+      </div>
+    )
+  }
 
   // Parse recipients into categories
   const externalRecipients: Array<{ address: string; percentage: number }> = []
@@ -273,10 +296,8 @@ export const SetFeeRecipientsPreview = ({
     }
   })
 
-  // The percentages from the calldata sum to 100% (excluding platform fee)
-  // For display, we show the actual percentage of total revenue
-  // So we divide by PERCENT_ADJUST = 100 / (100 - platformFee)
-  const PERCENT_ADJUST = 100 / (100 - platformFee)
+  // Calldata percentages exclude the platform fee — divide by PERCENT_ADJUST for share of total revenue.
+  const PERCENT_ADJUST = getFeePercentAdjust(platformFee)
   const adjustedDeployerShare = deployerShare / PERCENT_ADJUST
   const adjustedGovernanceShare = governanceShare / PERCENT_ADJUST
   const adjustedExternalRecipients = externalRecipients.map((r) => ({

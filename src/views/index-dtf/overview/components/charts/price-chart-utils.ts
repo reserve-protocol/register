@@ -11,7 +11,7 @@ const isValidPricePoint = (point: PricePoint) =>
   point.price > 0
 
 export const calculateTrailingSevenDayChange = (
-  timeseries: PricePoint[]
+  timeseries: readonly PricePoint[]
 ): number | undefined => {
   const validTimeseries = timeseries.filter(isValidPricePoint)
   const latest = validTimeseries[validTimeseries.length - 1]

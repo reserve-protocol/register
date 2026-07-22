@@ -103,4 +103,22 @@ describe('getFeeRecipients', () => {
     expect(find(result, 'Governance Share')?.value).toBe('0%')
     expect(find(result, 'Deployer Share')?.value).toBe('0%')
   })
+
+  it('returns undefined (→ Unavailable) for a degenerate platformFee=100', () => {
+    // A 100% platform fee is not a displayable split — indeterminate, never fabricated.
+    expect(
+      getFeeRecipients(
+        makeDTF([{ address: STTOKEN, percentage: '80' }], STTOKEN),
+        100,
+        undefined
+      )
+    ).toBeUndefined()
+  })
+
+  it('returns undefined for a non-finite / out-of-range platformFee', () => {
+    const dtf = makeDTF([{ address: STTOKEN, percentage: '80' }], STTOKEN)
+    expect(getFeeRecipients(dtf, NaN, undefined)).toBeUndefined()
+    expect(getFeeRecipients(dtf, 150, undefined)).toBeUndefined()
+    expect(getFeeRecipients(dtf, -1, undefined)).toBeUndefined()
+  })
 })

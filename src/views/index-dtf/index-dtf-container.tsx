@@ -8,7 +8,6 @@ import {
   indexDTFBasketAtom,
   indexDTFBasketPricesAtom,
   indexDTFBasketSharesAtom,
-  IndexDTFBrand,
   indexDTFBrandAtom,
   indexDTFExposureDataAtom,
   indexDTFFeeAtom,
@@ -20,7 +19,7 @@ import {
   performanceTimeRangeAtom,
 } from '@/state/dtf/atoms'
 import { resetIndexDTFAtomsAtom } from '@/state/dtf/reset-index-dtf-atoms'
-import { deriveDtfStatus, isInactiveDTF } from '@/hooks/use-dtf-status'
+import { isInactiveDTF } from '@/hooks/use-dtf-status'
 import { isAddress } from '@/utils'
 import { AvailableChain } from '@/utils/chains'
 import { NETWORKS, RESERVE_API, ROUTES, ZAPPER_API } from '@/utils/constants'
@@ -35,7 +34,6 @@ import {
   useIndexDtfStatus,
   useIndexDtfVersion,
   supportedChainIds,
-  type IndexDtfBrand as SdkIndexDtfBrand,
   type IndexDtfData,
   type SupportedChainId,
 } from '@reserve-protocol/react-sdk'
@@ -59,44 +57,6 @@ const DEFAULT_DESCRIPTION =
 
 const isIndexDtfChain = (chainId: number): chainId is SupportedChainId =>
   supportedChainIds.includes(chainId as SupportedChainId)
-
-const mapSdkBrand = (brand: SdkIndexDtfBrand | undefined) => {
-  if (!brand) return undefined
-
-  return {
-    dtf: {
-      icon: brand.icon ?? '',
-      cover: brand.cover ?? '',
-      video: brand.video ?? '',
-      description: brand.description ?? '',
-      notesFromCreator: brand.notesFromCreator ?? '',
-      prospectus: brand.prospectus ?? '',
-      files: brand.files.map((file) => ({
-        url: file.url ?? '',
-        name: file.name ?? '',
-      })),
-      tags: [...brand.tags],
-      basketType:
-        brand.basketType === 'unit-based' ? 'unit-based' : 'percentage-based',
-    },
-    creator: {
-      name: brand.creator?.name ?? '',
-      icon: brand.creator?.icon ?? '',
-      link: brand.creator?.link ?? '',
-    },
-    curator: {
-      name: brand.curator?.name ?? '',
-      icon: brand.curator?.icon ?? '',
-      link: brand.curator?.link ?? '',
-    },
-    socials: {
-      twitter: brand.socials.twitter ?? '',
-      telegram: brand.socials.telegram ?? '',
-      discord: brand.socials.discord ?? '',
-      website: brand.socials.website ?? '',
-    },
-  } satisfies IndexDTFBrand
-}
 
 const getBasketState = (dtf: IndexDtfData) => {
   const prices: Record<string, number> = {
@@ -161,7 +121,9 @@ const useChainWatch = () => {
   }, [chainId, walletChain, switchChain])
 }
 
-const IndexDTFDataUpdater = () => {
+// The atoms stay because each SDK read has several consumers that can't take the hook directly yet.
+const IndexDtfUpdaters = () => {
+  const identity = useIndexDtfIdentity()
   const setIndexDTF = useSetAtom(indexDTFAtom)
   const setIndexDTFBrand = useSetAtom(indexDTFBrandAtom)
   const setBasket = useSetAtom(indexDTFBasketAtom)
@@ -169,7 +131,21 @@ const IndexDTFDataUpdater = () => {
   const setBasketAmounts = useSetAtom(indexDTFBasketAmountsAtom)
   const setBasketShares = useSetAtom(indexDTFBasketSharesAtom)
   const setRebalanceControl = useSetAtom(indexDTFRebalanceControlAtom)
+  const setIndexDTFVersion = useSetAtom(indexDTFVersionAtom)
+  const setFee = useSetAtom(indexDTFFeeAtom)
+  const setExposureData = useSetAtom(indexDTFExposureDataAtom)
+  const setPerformanceLoading = useSetAtom(indexDTFPerformanceLoadingAtom)
+  const setStatus = useSetAtom(indexDTFStatusAtom)
+
   const { data } = useCurrentIndexDtf()
+  const { data: version } = useIndexDtfVersion(identity)
+  // A failed registry read flags 'unavailable' — consumers render it explicitly, never a fabricated fee.
+  const { data: fee, isError: feeUnavailable } = useIndexDtfPlatformFee(identity)
+  const period = useAtomValue(performanceTimeRangeAtom)
+  const { data: exposureData, isLoading: exposureLoading } = useIndexDtfExposure(
+    { ...identity, period }
+  )
+  const status = useIndexDtfStatus(identity)
 
   useEffect(() => {
     if (!data) return
@@ -177,7 +153,7 @@ const IndexDTFDataUpdater = () => {
     const { basket, prices, amounts, shares } = getBasketState(data)
 
     setIndexDTF(data)
-    setIndexDTFBrand(mapSdkBrand(data.brand))
+    setIndexDTFBrand(data.brand)
     setBasket(basket)
     setBasketPrices(prices)
     setBasketAmounts(amounts)
@@ -197,56 +173,19 @@ const IndexDTFDataUpdater = () => {
     setRebalanceControl,
   ])
 
-  return null
-}
-
-const IndexDTFVersionUpdater = () => {
-  const { address, chainId } = useIndexDtfIdentity()
-  const setIndexDTFVersion = useSetAtom(indexDTFVersionAtom)
-
-  const { data: version } = useIndexDtfVersion({ address, chainId })
-
   useEffect(() => {
     if (version) {
       setIndexDTFVersion(version)
     }
   }, [version, setIndexDTFVersion])
 
-  return null
-}
-
-// Thin atom adapter: derived proposal atoms consume the fee, so consumers
-// can't all take the hook yet. A failed registry read flags 'unavailable' —
-// consumers render an explicit unavailable state, never a fabricated fee.
-const PlatformFeeUpdater = () => {
-  const identity = useIndexDtfIdentity()
-  const setFee = useSetAtom(indexDTFFeeAtom)
-  const { data, isError } = useIndexDtfPlatformFee(identity)
-
   useEffect(() => {
-    if (data) {
-      setFee(data.percent)
-    } else if (isError) {
+    if (fee) {
+      setFee(fee.percent)
+    } else if (feeUnavailable) {
       setFee('unavailable')
     }
-  }, [data, isError, setFee])
-
-  return null
-}
-
-// Thin atom adapter: several consumers (incl. the yield-index updater and
-// derived atoms) still read the exposure atom — migrate them off it
-// consumer-by-consumer before deleting the mirror.
-const IndexDTFExposureUpdater = () => {
-  const identity = useIndexDtfIdentity()
-  const setExposureData = useSetAtom(indexDTFExposureDataAtom)
-  const setPerformanceLoading = useSetAtom(indexDTFPerformanceLoadingAtom)
-  const period = useAtomValue(performanceTimeRangeAtom)
-
-  const { data: exposureData, isLoading } = useIndexDtfExposure(
-    { ...identity, period },
-    { refetchInterval: 60000 }
-  )
+  }, [fee, feeUnavailable, setFee])
 
   useEffect(() => {
     if (exposureData) {
@@ -257,24 +196,12 @@ const IndexDTFExposureUpdater = () => {
   }, [exposureData, setExposureData])
 
   useEffect(() => {
-    setPerformanceLoading(isLoading)
-  }, [isLoading, setPerformanceLoading])
-
-  return null
-}
-
-const STATUS_REFRESH_INTERVAL = 1000 * 60 * 10
-
-const DeprecationStatusUpdater = () => {
-  const identity = useIndexDtfIdentity()
-  const setStatus = useSetAtom(indexDTFStatusAtom)
-  const { data: status } = useIndexDtfStatus(identity, {
-    refetchInterval: STATUS_REFRESH_INTERVAL,
-  })
+    setPerformanceLoading(exposureLoading)
+  }, [exposureLoading, setPerformanceLoading])
 
   useEffect(() => {
-    setStatus(deriveDtfStatus(status, identity.address, identity.chainId))
-  }, [status, identity.address, identity.chainId, setStatus])
+    setStatus(status)
+  }, [status, setStatus])
 
   return null
 }
@@ -329,12 +256,8 @@ const Updater = () => {
 
   return (
     <div key={key}>
-      <IndexDTFDataUpdater />
-      <IndexDTFVersionUpdater />
-      <PlatformFeeUpdater />
-      <IndexDTFExposureUpdater />
+      <IndexDtfUpdaters />
       <YieldIndexUpdater chainId={chainId} />
-      <DeprecationStatusUpdater />
       <GovernanceUpdater />
     </div>
   )

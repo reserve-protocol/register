@@ -15,8 +15,11 @@ import {
 } from '../atoms'
 import useRebalanceParams, {
   RebalanceParams,
+  useRebalancePrices,
 } from '../hooks/use-rebalance-params'
-import getRebalanceOpenAuction from '../utils/get-rebalance-open-auction'
+import getRebalanceOpenAuction, {
+  PriceUnavailableError,
+} from '../utils/get-rebalance-open-auction'
 
 const RebalanceMetricsUpdater = () => {
   const { t } = useLingui()
@@ -24,6 +27,7 @@ const RebalanceMetricsUpdater = () => {
   const setRebalanceError = useSetAtom(rebalanceErrorAtom)
   const rebalancePercent = useAtomValue(rebalancePercentAtom)
   const rebalanceParams = useRebalanceParams()
+  const { isError: isPriceError } = useRebalancePrices()
   const currentRebalance = useAtomValue(currentRebalanceAtom)
   const isHybridDTF = useAtomValue(isHybridDTFAtom)
   const savedWeights = useAtomValue(savedWeightsAtom)
@@ -124,7 +128,16 @@ const RebalanceMetricsUpdater = () => {
         })
       } catch (e) {
         console.error('Error getting rebalance metrics', e)
-        if (e instanceof Error && e.message.includes('out of bounds')) {
+        if (e instanceof PriceUnavailableError) {
+          const symbol = currentRebalance.rebalance.tokens.find(
+            (token) => token.address.toLowerCase() === e.token
+          )?.symbol
+          setRebalanceError(
+            symbol
+              ? t`Price unavailable for "${symbol}" — cannot launch auction.`
+              : t`Price unavailable for a basket token — cannot launch auction.`
+          )
+        } else if (e instanceof Error && e.message.includes('out of bounds')) {
           // The rebalance lib prints the token as "[object Object]" on v5, so
           // identify it by matching the locked low price from the message.
           const lockedLow = e.message.match(/initial range \[(\d+)/)?.[1]
@@ -164,6 +177,13 @@ const RebalanceMetricsUpdater = () => {
       updateMetrics(rebalanceParams, currentRebalance, rebalancePercent)
     }
   }, [rebalanceParams, currentRebalance, updateMetrics, rebalancePercent])
+
+  // A hard price-fetch error leaves rebalanceParams undefined — surface the reason, not a silent skeleton.
+  useEffect(() => {
+    if (isPriceError) {
+      setRebalanceError(t`Price data unavailable — cannot launch auction.`)
+    }
+  }, [isPriceError, setRebalanceError, t])
 
   return null
 }
