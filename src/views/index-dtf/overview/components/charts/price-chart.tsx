@@ -1,5 +1,9 @@
 import { cn } from '@/lib/utils'
 import {
+  getChartReferenceTimestamp,
+  isAIDTF,
+} from '@/utils/chart-reference-date'
+import {
   indexDTF7dChangeAtom,
   indexDTFAtom,
   indexDTFMarketCapAtom,
@@ -63,7 +67,12 @@ const ChartBodyArea = ({
       chartData={chartData as any}
       range={range}
       dtfStart={dtf?.timestamp}
-      launchTimestamp={dtf?.timestamp}
+      launchTimestamp={getChartReferenceTimestamp(
+        dtf?.id,
+        dtf?.chainId,
+        dtf?.timestamp
+      )}
+      useLaunchLabel={isAIDTF(dtf?.id, dtf?.chainId)}
       xDomain={xDomain}
       className={bodyHeight}
     />

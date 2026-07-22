@@ -3485,9 +3485,14 @@ msgstr ""
 msgid "DTF cover"
 msgstr ""
 
-#: src/views/home/components/highlighted-dtfs/performance-chart-launch-marker.tsx:35
-#: src/views/index-dtf/overview/components/charts/price-chart-launch-marker.tsx:39
+#: src/views/home/components/highlighted-dtfs/performance-chart-launch-marker.tsx:37
+#: src/views/index-dtf/overview/components/charts/price-chart-launch-marker.tsx:41
 msgid "DTF Created"
+msgstr ""
+
+#: src/views/home/components/highlighted-dtfs/performance-chart-launch-marker.tsx:37
+#: src/views/index-dtf/overview/components/charts/price-chart-launch-marker.tsx:41
+msgid "DTF Launch"
 msgstr ""
 
 #: src/views/home/components/dtf-explainer-button.tsx:26

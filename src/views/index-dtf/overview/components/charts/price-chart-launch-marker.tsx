@@ -11,12 +11,14 @@ type ChartOffset = {
 export const PriceChartLaunchMarker = ({
   launchTimestamp,
   offset,
+  useLaunchLabel = false,
   visible,
   width,
   xAxisMap,
 }: {
   launchTimestamp?: number
   offset?: ChartOffset
+  useLaunchLabel?: boolean
   visible: boolean
   width?: number
   xAxisMap?: AxisMap
@@ -36,7 +38,7 @@ export const PriceChartLaunchMarker = ({
   const labelY = offset.top + offset.height - labelHeight - 10
   const chartWidth = width ?? offset.width ?? markerX * 2
   const labelPadding = 8
-  const createdLabel = t`DTF Created`
+  const createdLabel = useLaunchLabel ? t`DTF Launch` : t`DTF Created`
   const createdLabelWidth = 74
   const segmentLabel = t`Est. Historical Price ✱`
   const segmentLabelWidth = 112
