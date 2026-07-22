@@ -3,7 +3,7 @@ import { YIELD_REGISTRY } from '../../../helpers/registry'
 import { setYieldReplay } from '../../../helpers/rpc'
 import { yieldPinnedTimestamp } from '../../../helpers/yield'
 
-// Z38 (docs/plans/REGISTER_HARDENING.md): StakeHistory (live on the staking
+// StakeHistory (live on the staking
 // route under the "Staked RSR" tab) reads `data.rtoken?.snapshots.map` —
 // guarding only `rtoken`. A partial subgraph response (rtoken present, snapshots
 // absent) threw on the render path and blanked the staking page. The guard

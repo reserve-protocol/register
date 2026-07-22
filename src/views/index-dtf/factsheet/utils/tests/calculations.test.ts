@@ -37,7 +37,7 @@ describe('calculateMonthlyChartData (pure)', () => {
   })
 })
 
-// Z12 (docs/plans/REGISTER_HARDENING.md): the monthly P&L now guards the prior
+// The monthly P&L guards the prior
 // month's last price like the other performance sites — a zero prior price
 // yields an unavailable point (null), not Infinity.
 describe('calculateMonthlyChartData zero prior price (guard)', () => {

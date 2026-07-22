@@ -6,7 +6,7 @@ import { REGISTRY } from '../../../helpers/registry'
 // 100/(100-100) = Infinity → every recipient share collapses to 0%/NaN%.
 // A 100% platform fee is a degenerate/invalid split, so the revenue distribution
 // must fail closed to an explicit "Unavailable" state — never a fabricated
-// numeric allocation. See docs/plans/E2E_BUG_LEDGER.md M9.
+// numeric allocation.
 const base = REGISTRY.find((d) => d.chainId === 8453 && !d.deprecated)!
 
 test('settings: platformFee=100 shows Unavailable, not a fabricated split @smoke', async ({
