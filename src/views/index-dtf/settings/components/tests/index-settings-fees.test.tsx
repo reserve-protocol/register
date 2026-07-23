@@ -104,6 +104,11 @@ describe('getFeeRecipients', () => {
     expect(find(result, 'Deployer Share')?.value).toBe('0%')
   })
 
+  it('formats a fractional platform fee for display (100/3 → 33.33%, never a raw float)', () => {
+    const result = getFeeRecipients(makeDTF([], STTOKEN), 100 / 3, TOKEN_JAR)
+    expect(find(result, 'Fixed Platform Share')?.value).toBe('33.33%')
+  })
+
   it('returns undefined (→ Unavailable) for a degenerate platformFee=100', () => {
     // A 100% platform fee is not a displayable split — indeterminate, never fabricated.
     expect(

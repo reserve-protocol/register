@@ -43,7 +43,7 @@ export const getFeeRecipients = (
 
   const platformShare: Recipient = {
     label: msg`Fixed Platform Share`,
-    value: `${platformFee}%`,
+    value: formatPercentage(platformFee),
     icon: <IconWrapper Component={TrainTrack} />,
     testId: 'settings-fee-platform',
   }
