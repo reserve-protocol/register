@@ -11447,6 +11447,10 @@ msgstr ""
 msgid "Weight Control"
 msgstr ""
 
+#: src/views/index-dtf/auctions/views/rebalance/components/manage-weights/manage-weights-view.tsx:158
+msgid "Weight management is unavailable — rebalance token data is incomplete or still indexing. Try again shortly."
+msgstr ""
+
 #: src/views/index-dtf/auctions/views/rebalance/components/rebalance-overview.tsx:50
 msgid "Weights saved:"
 msgstr ""

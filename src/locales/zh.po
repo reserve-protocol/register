@@ -11458,6 +11458,10 @@ msgstr "权重控制"
 msgid "Weight Control"
 msgstr "权重控制"
 
+#: src/views/index-dtf/auctions/views/rebalance/components/manage-weights/manage-weights-view.tsx:158
+msgid "Weight management is unavailable — rebalance token data is incomplete or still indexing. Try again shortly."
+msgstr "权重管理不可用 — 再平衡代币数据不完整或仍在索引中。请稍后重试。"
+
 #: src/views/index-dtf/auctions/views/rebalance/components/rebalance-overview.tsx:50
 msgid "Weights saved:"
 msgstr "权重已保存："

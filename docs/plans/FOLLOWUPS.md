@@ -3,15 +3,12 @@
 The forward queue after the hardening × SDK-integration effort (history: git,
 PRs #1053/#1054/#1055/#1063, SDK PR #27). Delete items as they land.
 
-## Release boundary (blocks master)
+## Remaining to ship
 
-1. Merge SDK PR #27 → publish via changesets (minor; all changesets written).
-2. Pin published `@reserve-protocol/{sdk,react-sdk}` in register, drop the local
-   `link:`, clean `pnpm install` — CI green for the first time.
-3. Full gates against the pinned SDK (typecheck/unit/e2e; re-sync the e2e
-   capture `GetIndexDTF` query if it changed — see [[sdk]] wiki).
-4. `feature/hardening` → master PR.
-5. After merge: reserve-api PR #227 (strip stale server-side `votingState`) —
+1. `feature/hardening` → master PR. Everything upstream is done: SDK 0.5.0
+   published and pinned exact, `link:` entries gone, clean install proven,
+   master merged in, full gates green on the merge result (2026-07-23).
+2. After merge: reserve-api PR #227 (strip stale server-side `votingState`) —
    hold until confirmed reserve-ai does not read `votingState`.
 
 ## Next slices (in rough order)
@@ -47,6 +44,11 @@ PRs #1053/#1054/#1055/#1063, SDK PR #27). Delete items as they land.
   auctions views move to SDK reads alongside the version's heavy rebalance
   testing. Reminder: hybrid stays a curated allowlist (see log 2026-07-21) —
   do not re-derive from weightControl.
+
+- **Zap max provider-seam regression**: the unavailable-max path is covered at
+  the compute (`computeMaxTokenIn` → null) and button seams; a ZapProvider-
+  mounted test asserting Max resolves to 0 (not the wallet balance) would pin
+  the context wiring too. Advisable, not blocking.
 
 ## Standing questions (product/engineer)
 
@@ -93,19 +95,19 @@ surface unless noted.
   nav. Accept: undefined/pending + identity-tied; every consumer gates.
 - **Transport validation** — discover list, historical portfolio, transactions,
   asset prices still cast raw JSON (chk-4 absorbs portfolio; discover +
-  asset-prices explicit here). Accept: validated mappers with a deliberate
+  asset-prices explicit here). Malformed portfolio proposal rows — including
+  optimistic veto/snapshot fields and non-finite timestamps — are already
+  dropped at the atom guard (unit + browser pinned); the mappers themselves
+  remain unvalidated. Accept: validated mappers with a deliberate
   partial-body policy.
 - **Manual redeem dust legs** — small redeems can emit zero `minAmountsOut`
   (live `test.fixme` repro). Accept: product picks floor-or-block; the fixme
   becomes an active test.
-- **Auction metadata ordering (S-11, to verify)** — `use-rebalance-params.ts` +
-  `manage-weights-view.tsx` may dereference `tokenMap[token]` upstream of the
-  fail-closed guard. Accept: metadata validated before every derivation; shared
-  missing-metadata fixture.
-- **`deriveDtfStatus` production drift (K-04)** — helper is tested but unused;
+- **`deriveDtfStatus` production drift** — helper is tested but unused;
   the hook duplicates the fallback inline. Accept: production routes through
   the helper, or the test targets the real seam.
-- **Overview repro fixmes (owners restored)** — (1) Market-Cap/Supply hero shows
-  unit price; (2) zero supply/price → perpetual chart skeleton; (3) manual
-  redeem zero-protection leg (above). Each keeps its `test.fixme` + this entry
-  as owner until fixed.
+- **Active `test.fixme` owners (2)** — (1) Market-Cap data-type hero shows unit
+  price (`e2e/tests/index-dtf/overview/edge-cases.spec.ts`); (2) manual redeem
+  zero-protection dust leg (above,
+  `e2e/tests/flows/issuance-manual-boundaries.spec.ts`). Each keeps its
+  `test.fixme` + this entry as owner until fixed.

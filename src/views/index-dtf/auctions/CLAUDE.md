@@ -92,6 +92,10 @@ Quick loop: `pnpm exec playwright test e2e/tests/smoke/auctions.spec.ts`
   AND `auctions-rebalance-error` (an error banner = incoherent decoded tuple).
 - Expired detail flips to the completed card (`isCompletedAtom`).
 - Disconnected visitor (launcher CTAs gate on `isAuctionLauncherAtom`).
+- Manage Weights fails closed: any rebalance token missing from the subgraph
+  token map, or a 0 supply, renders `manage-weights-unavailable` instead of the
+  basket — weights from a partial map would misattribute shares and silently
+  break Save (unit-pinned in `manage-weights/tests/`).
 
 ## Traps
 

@@ -11458,6 +11458,10 @@ msgstr "가중치 제어"
 msgid "Weight Control"
 msgstr "가중치 제어"
 
+#: src/views/index-dtf/auctions/views/rebalance/components/manage-weights/manage-weights-view.tsx:158
+msgid "Weight management is unavailable — rebalance token data is incomplete or still indexing. Try again shortly."
+msgstr "가중치 관리를 사용할 수 없습니다 — 리밸런싱 토큰 데이터가 불완전하거나 아직 인덱싱 중입니다. 잠시 후 다시 시도하세요."
+
 #: src/views/index-dtf/auctions/views/rebalance/components/rebalance-overview.tsx:50
 msgid "Weights saved:"
 msgstr "저장된 가중치:"

@@ -116,40 +116,52 @@ const toAmount = (raw: bigint): Amount => ({ raw, formatted: formatEther(raw) })
 
 const MAX_UINT256 = (1n << 256n) - 1n
 
-// MAX_UINT256 (challenged/transitioned) and 0 (unset threshold) both mean "no usable veto votes".
-const parseVetoThresholdVotes = (value?: string | null): bigint | undefined => {
-  const raw = parseWei(value)
-  if (raw === null) return undefined
-  return raw === MAX_UINT256 ? undefined : raw
-}
+type OptimisticFields =
+  | { malformed: true }
+  | {
+      malformed: false
+      context?: {
+        proposalId: string
+        voteToken: Address
+        snapshot: bigint
+        snapshotSupply: Amount
+        vetoThreshold: bigint
+        vetoThresholdVotes: Amount
+      }
+    }
 
-const parseVetoThreshold = (value?: string | null): bigint | undefined => {
-  const threshold = parseVetoThresholdVotes(value)
-  return threshold === 0n ? undefined : threshold
-}
-
-// Build the optimistic context only when every veto input is valid — a partial context makes the oracle report CANCELED.
-const buildIndexOptimisticContext = (p: PortfolioProposal) => {
-  if (p.isOptimistic !== true) return undefined
-  const vetoThreshold = parseVetoThreshold(p.vetoThreshold)
-  const vetoThresholdVotes = parseVetoThresholdVotes(p.vetoThresholdVotes)
+// A MAX_UINT256 vetoThreshold marks a transitioned proposal the oracle resolves
+// DEFEATED without any context. Every other optimistic row needs all four
+// veto/snapshot fields valid — calling the oracle as optimistic without its
+// context leaves an expired opposed proposal ACTIVE forever, so a broken row is
+// dropped instead.
+const parseIndexOptimisticFields = (p: PortfolioProposal): OptimisticFields => {
+  if (p.isOptimistic !== true) return { malformed: false }
+  const vetoThreshold = parseWei(p.vetoThreshold)
+  if (vetoThreshold === MAX_UINT256) return { malformed: false }
   const snapshot = parseWei(p.optimisticSnapshot)
   const snapshotSupply = parseWei(p.optimisticSnapshotSupply)
+  const vetoThresholdVotes = parseWei(p.vetoThresholdVotes)
   if (
+    vetoThreshold === null ||
     snapshot === null ||
     snapshotSupply === null ||
-    vetoThreshold === undefined ||
-    vetoThresholdVotes === undefined
+    vetoThresholdVotes === null
   ) {
-    return undefined
+    return { malformed: true }
   }
+  // Zero supply/threshold values pass through intact — the oracle owns those
+  // semantics (zero snapshot supply resolves CANCELED).
   return {
-    proposalId: p.id,
-    voteToken: p.dtfAddress,
-    snapshot,
-    snapshotSupply: toAmount(snapshotSupply),
-    vetoThreshold,
-    vetoThresholdVotes: toAmount(vetoThresholdVotes),
+    malformed: false,
+    context: {
+      proposalId: p.id,
+      voteToken: p.dtfAddress,
+      snapshot,
+      snapshotSupply: toAmount(snapshotSupply),
+      vetoThreshold,
+      vetoThresholdVotes: toAmount(vetoThresholdVotes),
+    },
   }
 }
 
@@ -161,6 +173,14 @@ export const getPortfolioProposalVotingState = (
 ): VotingState | null => {
   const voteStart = Number(p.voteStart)
   const voteEnd = Number(p.voteEnd)
+  const executionETA = p.executionETA ? Number(p.executionETA) : undefined
+  if (
+    !Number.isFinite(voteStart) ||
+    !Number.isFinite(voteEnd) ||
+    (executionETA !== undefined && !Number.isFinite(executionETA))
+  ) {
+    return null
+  }
   const forWei = parseWei(p.forWeightedVotes)
   const againstWei = parseWei(p.againstWeightedVotes)
   const abstainWei = parseWei(p.abstainWeightedVotes)
@@ -179,7 +199,9 @@ export const getPortfolioProposalVotingState = (
   const quorumVotes = toAmount(quorumWei)
 
   if (p.isIndexDTF) {
-    const optimistic = buildIndexOptimisticContext(p)
+    const optimisticFields = parseIndexOptimisticFields(p)
+    if (optimisticFields.malformed) return null
+    const optimistic = optimisticFields.context
     // vetoThreshold stays raw and context-independent — the MAX_UINT256 sentinel is how the oracle resolves a transitioned proposal.
     const vetoThreshold =
       optimistic?.vetoThreshold ?? parseWei(p.vetoThreshold) ?? undefined
@@ -193,7 +215,7 @@ export const getPortfolioProposalVotingState = (
         againstWeightedVotes,
         abstainWeightedVotes,
         quorumVotes,
-        executionETA: p.executionETA ? Number(p.executionETA) : undefined,
+        executionETA,
         ...(optimistic ? { optimistic } : {}),
         ...(vetoThreshold !== undefined ? { vetoThreshold } : {}),
       } as Parameters<typeof getIndexProposalState>[0],
@@ -232,8 +254,8 @@ export const getPortfolioProposalVotingState = (
     abstain: 0,
   }
 
-  if (p.state === PROPOSAL_STATES.QUEUED && p.executionETA) {
-    state.deadline = Number(p.executionETA) - timestamp
+  if (p.state === PROPOSAL_STATES.QUEUED && executionETA !== undefined) {
+    state.deadline = executionETA - timestamp
   } else if (derivedState === PROPOSAL_STATES.PENDING) {
     state.deadline = voteStart - timestamp
   } else if (derivedState === PROPOSAL_STATES.ACTIVE) {

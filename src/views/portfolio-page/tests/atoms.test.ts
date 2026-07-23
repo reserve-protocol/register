@@ -149,6 +149,10 @@ describe('portfolioActiveProposalsAtom — SDK oracle via production seam', () =
       ...standardProposal(500),
       isOptimistic: true,
       againstWeightedVotes: '0',
+      vetoThreshold: '100000000000000000',
+      vetoThresholdVotes: '1000',
+      optimisticSnapshot: '1',
+      optimisticSnapshotSupply: '10000',
     })
     expect(rows).toHaveLength(1)
     expect(rows[0].voting.state).toBe(PROPOSAL_STATES.SUCCEEDED)
@@ -244,7 +248,7 @@ describe('portfolioActiveProposalsAtom — optimistic list membership', () => {
 
 // A malformed wei field marks the row null (dropped) — never a synchronous
 // throw that blanks the Portfolio route, and never a fabricated outcome.
-describe('malformed proposal rows (I-01)', () => {
+describe('malformed proposal rows', () => {
   it.each([
     ['empty string', ''],
     ['decimal string', '1.5'],
@@ -291,17 +295,77 @@ describe('malformed proposal rows (I-01)', () => {
     expect(survivors[0].id).not.toBe('bad')
   })
 
-  it('malformed optimistic veto fields refuse the context without throwing', () => {
+  // An optimistic call without a valid context makes the oracle report an
+  // expired opposed proposal ACTIVE forever — so any invalid veto/snapshot
+  // field drops the whole row, it never degrades to context-less optimistic.
+  it.each([
+    ['vetoThreshold', { vetoThreshold: 'garbage' }],
+    ['vetoThresholdVotes', { vetoThresholdVotes: '1.23' }],
+    ['optimisticSnapshot', { optimisticSnapshot: 'x' }],
+    ['optimisticSnapshotSupply', { optimisticSnapshotSupply: '' }],
+    ['missing optimisticSnapshot', { optimisticSnapshot: undefined }],
+  ])('optimistic row with invalid %s → null', (_label, bad) => {
     const row = {
-      ...standardProposal(500),
-      isIndexDTF: true,
-      isOptimistic: true,
-      vetoThreshold: 'garbage',
-      vetoThresholdVotes: '1.23',
-      optimisticSnapshot: 'x',
-      optimisticSnapshotSupply: '',
-      againstWeightedVotes: '10',
+      ...indexOptimistic('10'),
+      ...bad,
     } as unknown as PortfolioProposal
     expect(() => getPortfolioProposalVotingState(row, 501)).not.toThrow()
+    expect(getPortfolioProposalVotingState(row, 501)).toBeNull()
+  })
+
+  it('transitioned row (MAX_UINT256 sentinel) resolves DEFEATED even with garbage context fields', () => {
+    const row = {
+      ...indexOptimistic('10', {
+        vetoThreshold: MAX_UINT256,
+        optimisticSnapshot: 'x',
+        optimisticSnapshotSupply: '',
+        vetoThresholdVotes: 'garbage',
+      }),
+    } as unknown as PortfolioProposal
+    expect(getPortfolioProposalVotingState(row, 300)?.state).toBe(
+      PROPOSAL_STATES.DEFEATED
+    )
+  })
+
+  it('a malformed optimistic row is dropped from the active list while a healthy optimistic sibling survives', () => {
+    const store = createStore()
+    store.set(portfolioNowAtom, 300)
+    store.set(portfolioDataAtom, {
+      indexDTFs: [],
+      yieldDTFs: [],
+      rsrBalances: [],
+      stakedRSR: [],
+      voteLocks: [
+        {
+          amount: '1',
+          name: 'Test',
+          symbol: 'TEST',
+          address: ADDR,
+          chainId: 1,
+          dtfs: [{ name: 'Test', symbol: 'TEST', address: ADDR }],
+          activeProposals: [
+            { ...indexOptimistic('10'), id: 'healthy' },
+            { ...indexOptimistic('10'), id: 'bad', optimisticSnapshot: 'NaN' },
+          ],
+        },
+      ],
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } as any)
+
+    const survivors = store.get(portfolioActiveProposalsAtom)
+    expect(survivors).toHaveLength(1)
+    expect(survivors[0].id).toBe('healthy')
+  })
+
+  it.each([
+    ['voteEnd', { voteEnd: 'soon' }],
+    ['voteStart', { voteStart: undefined }],
+    ['executionETA', { state: PROPOSAL_STATES.QUEUED, executionETA: 'later' }],
+  ])('non-finite %s timestamp → null', (_label, bad) => {
+    const row = {
+      ...standardProposal(500),
+      ...bad,
+    } as unknown as PortfolioProposal
+    expect(getPortfolioProposalVotingState(row, 501)).toBeNull()
   })
 })
