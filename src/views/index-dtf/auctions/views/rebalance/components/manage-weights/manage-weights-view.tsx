@@ -77,20 +77,24 @@ const ManageWeightsView = () => {
     }
 
     const tokenData = rebalanceTokens
-      .map((tokenAddress) => {
-        const address = tokenAddress.toLowerCase()
+      .map((tokenAddress) => tokenAddress.toLowerCase())
+      // Missing metadata is filtered BEFORE dereferencing it.
+      .filter((address) => tokenMap[address])
+      .map((address) => {
         const token = tokenMap[address]
-        const assets = rebalanceParams.currentAssets[address] || 0n
 
         return {
           address,
           token,
-          assets,
+          assets: rebalanceParams.currentAssets[address] || 0n,
           decimals: BigInt(token.decimals),
           price: rebalanceParams.prices[address]?.currentPrice || 0,
         }
       })
-      .filter((d) => d.token && d.assets !== undefined)
+
+    // No resolvable token → indeterminate; getCurrentBasket reduces and would
+    // throw on an empty list.
+    if (!tokenData.length) return { initialBasket: basket, priceMap: prices }
 
     const currentShares = getCurrentBasket(
       tokenData.map((d) => d.assets),
@@ -123,7 +127,13 @@ const ManageWeightsView = () => {
     return { initialBasket: basket, priceMap: prices }
   }, [rebalanceParams, hasSupply, tokenMap, savedProposedUnits, rebalanceControl])
 
-  if (!showView || !rebalanceParams || !rebalanceControl || !hasSupply)
+  if (
+    !showView ||
+    !rebalanceParams ||
+    !rebalanceControl ||
+    !hasSupply ||
+    !Object.keys(initialBasket).length
+  )
     return null
 
   return (

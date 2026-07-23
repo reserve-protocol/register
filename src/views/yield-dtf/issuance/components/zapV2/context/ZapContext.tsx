@@ -286,12 +286,10 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
     let maxTokenIn = +(tokenIn.balance ?? '0')
 
     if (operation === 'mint') {
-      // Max is disabled when the input token can't be priced (canCalculateMax),
-      // so this normally returns a real value; fall back to the balance rather
-      // than a $1 divisor as defense (Z10).
+      // null means the price/cap is unavailable — never fall back to the full
+      // wallet balance.
       maxTokenIn =
-        computeMaxTokenIn(tokenOut.price, issuanceAvailable, tokenIn.price) ||
-        maxTokenIn
+        computeMaxTokenIn(tokenOut.price, issuanceAvailable, tokenIn.price) ?? 0
     } else {
       maxTokenIn = redemptionAvailable || maxTokenIn
     }

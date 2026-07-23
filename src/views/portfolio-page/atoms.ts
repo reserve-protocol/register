@@ -106,17 +106,20 @@ const ACTIVE_STATES = new Set([
 
 // Outcome/lifecycle is the SDK's audited derivation, selected by the row's isIndexDTF flag — no local governor math.
 // Exported for unit testing (pure) — see tests/atoms.test.ts.
-const rawAmount = (value: string): Amount => {
-  const raw = BigInt(value)
-  return { raw, formatted: formatEther(raw) }
-}
+
+// A wei quantity from the API must be an integer string — anything else marks
+// the field malformed instead of throwing mid-atom.
+const parseWei = (value: unknown): bigint | null =>
+  typeof value === 'string' && /^\d+$/.test(value) ? BigInt(value) : null
+
+const toAmount = (raw: bigint): Amount => ({ raw, formatted: formatEther(raw) })
 
 const MAX_UINT256 = (1n << 256n) - 1n
 
 // MAX_UINT256 (challenged/transitioned) and 0 (unset threshold) both mean "no usable veto votes".
 const parseVetoThresholdVotes = (value?: string | null): bigint | undefined => {
-  if (value === null || value === undefined) return undefined
-  const raw = BigInt(value)
+  const raw = parseWei(value)
+  if (raw === null) return undefined
   return raw === MAX_UINT256 ? undefined : raw
 }
 
@@ -130,9 +133,11 @@ const buildIndexOptimisticContext = (p: PortfolioProposal) => {
   if (p.isOptimistic !== true) return undefined
   const vetoThreshold = parseVetoThreshold(p.vetoThreshold)
   const vetoThresholdVotes = parseVetoThresholdVotes(p.vetoThresholdVotes)
+  const snapshot = parseWei(p.optimisticSnapshot)
+  const snapshotSupply = parseWei(p.optimisticSnapshotSupply)
   if (
-    p.optimisticSnapshot == null ||
-    p.optimisticSnapshotSupply == null ||
+    snapshot === null ||
+    snapshotSupply === null ||
     vetoThreshold === undefined ||
     vetoThresholdVotes === undefined
   ) {
@@ -141,30 +146,43 @@ const buildIndexOptimisticContext = (p: PortfolioProposal) => {
   return {
     proposalId: p.id,
     voteToken: p.dtfAddress,
-    snapshot: BigInt(p.optimisticSnapshot),
-    snapshotSupply: rawAmount(p.optimisticSnapshotSupply),
+    snapshot,
+    snapshotSupply: toAmount(snapshotSupply),
     vetoThreshold,
-    vetoThresholdVotes: rawAmount(vetoThresholdVotes.toString()),
+    vetoThresholdVotes: toAmount(vetoThresholdVotes),
   }
 }
 
+// null = a malformed row (non-integer wei fields): the caller drops it rather
+// than crashing the page or fabricating an outcome.
 export const getPortfolioProposalVotingState = (
   p: PortfolioProposal & { isIndexDTF?: boolean },
   timestamp: number
-): VotingState => {
+): VotingState | null => {
   const voteStart = Number(p.voteStart)
   const voteEnd = Number(p.voteEnd)
-  const forWeightedVotes = rawAmount(p.forWeightedVotes)
-  const againstWeightedVotes = rawAmount(p.againstWeightedVotes)
-  const abstainWeightedVotes = rawAmount(p.abstainWeightedVotes)
-  const quorumVotes = rawAmount(p.quorumVotes)
+  const forWei = parseWei(p.forWeightedVotes)
+  const againstWei = parseWei(p.againstWeightedVotes)
+  const abstainWei = parseWei(p.abstainWeightedVotes)
+  const quorumWei = parseWei(p.quorumVotes)
+  if (
+    forWei === null ||
+    againstWei === null ||
+    abstainWei === null ||
+    quorumWei === null
+  ) {
+    return null
+  }
+  const forWeightedVotes = toAmount(forWei)
+  const againstWeightedVotes = toAmount(againstWei)
+  const abstainWeightedVotes = toAmount(abstainWei)
+  const quorumVotes = toAmount(quorumWei)
 
   if (p.isIndexDTF) {
     const optimistic = buildIndexOptimisticContext(p)
     // vetoThreshold stays raw and context-independent — the MAX_UINT256 sentinel is how the oracle resolves a transitioned proposal.
     const vetoThreshold =
-      optimistic?.vetoThreshold ??
-      (p.vetoThreshold != null ? BigInt(p.vetoThreshold) : undefined)
+      optimistic?.vetoThreshold ?? parseWei(p.vetoThreshold) ?? undefined
     return getIndexProposalState(
       {
         state: p.state,
@@ -268,7 +286,10 @@ export const portfolioActiveProposalsAtom = atom<ActiveProposalRow[]>((get) => {
       ...p,
       voting: getPortfolioProposalVotingState(p, timestamp),
     }))
-    .filter((p) => ACTIVE_STATES.has(p.voting.state))
+    .filter(
+      (p): p is ActiveProposalRow =>
+        p.voting !== null && ACTIVE_STATES.has(p.voting.state)
+    )
     .sort((a, b) => Number(b.creationTime) - Number(a.creationTime))
 })
 

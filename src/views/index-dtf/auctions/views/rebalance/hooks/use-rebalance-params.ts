@@ -139,9 +139,15 @@ const useRebalanceParams = () => {
 
     for (let i = 0; i < historicalTokens.length; i++) {
       const token = historicalTokens[i].toLowerCase()
-      const decimals = tokenMap[token].decimals
+      // Indexer lag can omit a rebalance token's metadata — skip it here and
+      // the downstream builder fails the launch closed instead of crashing.
+      const meta = tokenMap[token]
+      if (!meta) continue
 
-      initialPrices[token] = calculatePriceFromRange(historicalPrices[i], decimals)
+      initialPrices[token] = calculatePriceFromRange(
+        historicalPrices[i],
+        meta.decimals
+      )
       initialWeights[token] = historicalWeights[i]
     }
 

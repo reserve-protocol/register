@@ -213,6 +213,17 @@ export async function mockApiRoutes(page: Page, options: ApiMockOptions) {
       return json(route, { address, isRestricted: false, shouldSkipRestrictions: false })
     }
 
+    // Portfolio transaction history is an ARRAY — must match before the
+    // portfolio-object branch below (its path is a prefix of this one).
+    if (path.includes('/v1/portfolio/') && path.endsWith('/transactions')) {
+      return json(route, [])
+    }
+
+    // Connected-portfolio history chart (per-period fan-out) — empty series.
+    if (path.includes('/v1/historical/portfolio/')) {
+      return json(route, { timeseries: [] })
+    }
+
     // Connected-wallet portfolio (header + contact criteria) — empty holdings.
     if (path.includes('/v1/portfolio/')) {
       return json(route, {

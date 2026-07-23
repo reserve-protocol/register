@@ -34,7 +34,7 @@ const prop = (v: {
   }) as unknown as PortfolioProposal
 
 const state = (v: Parameters<typeof prop>[0]) =>
-  getPortfolioProposalVotingState(prop(v), NOW).state
+  getPortfolioProposalVotingState(prop(v), NOW)?.state
 
 describe('getPortfolioProposalVotingState — terminal outcomes', () => {
   it('for > against, quorum met → SUCCEEDED', () => {
@@ -174,7 +174,7 @@ const optimisticState = (against: string, now = 501) =>
   getPortfolioProposalVotingState(
     indexOptimistic(against) as unknown as PortfolioProposal,
     now
-  ).state
+  )?.state
 
 describe('getPortfolioProposalVotingState — optimistic Index veto', () => {
   it('opposed below the veto threshold → SUCCEEDED', () => {
@@ -193,7 +193,7 @@ describe('getPortfolioProposalVotingState — optimistic Index veto', () => {
       isOptimistic: true,
       vetoThreshold: MAX_UINT256,
     } as unknown as PortfolioProposal
-    expect(getPortfolioProposalVotingState(transitioned, 501).state).toBe(
+    expect(getPortfolioProposalVotingState(transitioned, 501)?.state).toBe(
       PROPOSAL_STATES.DEFEATED
     )
   })
@@ -205,7 +205,7 @@ describe('getPortfolioProposalVotingState — optimistic Index veto', () => {
       vetoThreshold: MAX_UINT256,
     } as unknown as PortfolioProposal
     // The sentinel resolves mid-window — it does not wait for the deadline.
-    expect(getPortfolioProposalVotingState(transitioned, 300).state).toBe(
+    expect(getPortfolioProposalVotingState(transitioned, 300)?.state).toBe(
       PROPOSAL_STATES.DEFEATED
     )
   })
@@ -239,5 +239,69 @@ describe('portfolioActiveProposalsAtom — optimistic list membership', () => {
       vetoThreshold: MAX_UINT256,
     })
     expect(rows).toHaveLength(0)
+  })
+})
+
+// A malformed wei field marks the row null (dropped) — never a synchronous
+// throw that blanks the Portfolio route, and never a fabricated outcome.
+describe('malformed proposal rows (I-01)', () => {
+  it.each([
+    ['empty string', ''],
+    ['decimal string', '1.5'],
+    ['non-numeric', 'abc'],
+    ['missing', undefined],
+  ])('forWeightedVotes %s → null, no throw', (_label, bad) => {
+    const row = {
+      ...standardProposal(500),
+      forWeightedVotes: bad,
+    } as unknown as PortfolioProposal
+    expect(() => getPortfolioProposalVotingState(row, 501)).not.toThrow()
+    expect(getPortfolioProposalVotingState(row, 501)).toBeNull()
+  })
+
+  it('a malformed row is dropped from the active list while a healthy sibling survives', () => {
+    const rows = activeRows(501, 'yield', standardProposal(500))
+    expect(rows).toHaveLength(1)
+
+    const store = createStore()
+    store.set(portfolioNowAtom, 501)
+    store.set(portfolioDataAtom, {
+      indexDTFs: [],
+      yieldDTFs: [],
+      rsrBalances: [],
+      voteLocks: [],
+      stakedRSR: [
+        {
+          amount: '1',
+          name: 'Test',
+          symbol: 'TEST',
+          address: ADDR,
+          chainId: 1,
+          activeProposals: [
+            standardProposal(500),
+            { ...standardProposal(500), id: 'bad', forWeightedVotes: '' },
+          ],
+        },
+      ],
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } as any)
+
+    const survivors = store.get(portfolioActiveProposalsAtom)
+    expect(survivors).toHaveLength(1)
+    expect(survivors[0].id).not.toBe('bad')
+  })
+
+  it('malformed optimistic veto fields refuse the context without throwing', () => {
+    const row = {
+      ...standardProposal(500),
+      isIndexDTF: true,
+      isOptimistic: true,
+      vetoThreshold: 'garbage',
+      vetoThresholdVotes: '1.23',
+      optimisticSnapshot: 'x',
+      optimisticSnapshotSupply: '',
+      againstWeightedVotes: '10',
+    } as unknown as PortfolioProposal
+    expect(() => getPortfolioProposalVotingState(row, 501)).not.toThrow()
   })
 })

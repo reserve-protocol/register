@@ -45,4 +45,32 @@ describe('ManageWeightsView 0-supply guard', () => {
     const { queryByTestId } = renderView(0n)
     expect(queryByTestId('mwc')).toBeNull()
   })
+
+  // Positive rendering path is browser-covered by the auctions launch flow;
+  // seeding the derived token-map atom here would rebuild that fixture.
+  it('a rebalance token missing from the token map bails, never crashes', () => {
+    // Indexer lag: the on-chain rebalance lists a token the metadata map
+    // doesn't know — it must be filtered, not dereferenced.
+    mockParams.mockReturnValue({
+      supply: 1n,
+      currentAssets: {},
+      prices: {},
+      rebalance: {
+        tokens: ['0x000000000000000000000000000000000000dEaD'],
+        weights: [{ low: 1n, spot: 2n, high: 3n }],
+      },
+      folioVersion: 4,
+    })
+    const store = createStore()
+    store.set(showManageWeightsViewAtom, true)
+    store.set(indexDTFRebalanceControlAtom, {
+      weightControl: true,
+      priceControl: 0,
+    })
+    const wrapper = ({ children }: { children: ReactNode }) => (
+      <Provider store={store}>{children}</Provider>
+    )
+    const { queryByTestId } = render(<ManageWeightsView />, { wrapper })
+    expect(queryByTestId('mwc')).toBeNull()
+  })
 })
