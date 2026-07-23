@@ -43,7 +43,7 @@ needs an invalidate/prefetch-style react-sdk primitive).
 
 ## Repo & versioning facts
 
-- pnpm+turbo monorepo: `packages/sdk` (`@reserve-protocol/sdk`) + `packages/react-sdk` (which `export *`s the core — import only from react-sdk) are **version-linked** via changesets and bump together (0.3.x line); `packages/dtf-catalog` versions independently. ESM-only.
+- pnpm+turbo monorepo: `packages/sdk` (`@reserve-protocol/sdk`) + `packages/react-sdk` (which `export *`s the core — import only from react-sdk) are **version-linked** via changesets and bump together (register pins the published `0.5.0`); `packages/dtf-catalog` versions independently. ESM-only.
 - **Register's pin is a caret on a 0.x minor** (`^0.2.0` does NOT pull 0.3.x) — check `package.json` and bump deliberately when SDK features are needed.
 - **Yield namespace is implemented** (`sdk.yield.*`, ~40 `useYieldDtf*` hooks + query options) — the SDK repo's root README claiming otherwise is stale. Long-term migration target for register's hand-rolled yield reads.
 - **Catalog**: `dtfCatalog`/`indexDtfCatalog`/`yieldDtfCatalog` are exported from the SDK barrel (successor to `@reserve-protocol/rtokens`); on address collisions index wins.
