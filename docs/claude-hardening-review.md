@@ -1,5 +1,13 @@
 # Hardening Effort — Deep Review (Claude)
 
+> **Superseded — historical audit (final disposition 2026-07-23).** Written
+> against the 2026-07-22 fixed point. The release blocker below (R1,
+> unpublished/linked SDK) is resolved — SDK 0.5.0 published and pinned exact —
+> and the post-review Codex blockers (malformed optimistic portfolio rows,
+> manage-weights partial metadata, zap max) are fixed with RED-verified tests.
+> Current state: `docs/wiki/progress.md` + `docs/plans/FOLLOWUPS.md`. Keep this
+> file only for per-finding detail.
+
 Final review of the full hardening × SDK-integration effort on `feature/hardening`
 (diff `9065b3e27...HEAD`, 166 files, +5185/−6171; SDK counterpart `sdk/hardening`
 vs `main`). Method: three specialized review agents (safety / tester / code

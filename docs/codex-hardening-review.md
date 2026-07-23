@@ -1,5 +1,14 @@
 # Codex hardening review
 
+> **Superseded — historical audit (final disposition 2026-07-23).** This
+> reviews the 2026-07-22 fixed point. Every blocker below has since been
+> resolved: SDK 0.5.0 is published and pinned exact (no `link:`), the
+> malformed-portfolio rows (including optimistic veto context), the
+> manage-weights partial-metadata seam, and the zap-max fallback are fixed
+> with RED-verified tests, master is merged, and Codex re-ran gates green on
+> the final HEAD. Current state: `docs/wiki/progress.md` +
+> `docs/plans/FOLLOWUPS.md`. Keep this file only for per-finding detail.
+
 Date: 2026-07-22  
 Review type: read-only, three-agent safety/test/code audit with primary-agent reconciliation  
 Fixed point: `9065b3e27e54fdb8445689fc0f4299b2520c85db`  

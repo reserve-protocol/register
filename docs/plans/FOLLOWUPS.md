@@ -60,8 +60,11 @@ PRs #1053/#1054/#1055/#1063, SDK PR #27). Delete items as they land.
 
 ## Pre-existing hardening backlog (reconciled from the cross-reviews, 2026-07-22)
 
-Restored owners/acceptance criteria after the plan-doc retirement (Codex D-07).
-Full detail: `docs/claude-hardening-review.md` + `docs/codex-hardening-review.md`.
+Restored owners/acceptance criteria after the plan-doc retirement.
+Per-finding detail: `docs/claude-hardening-review.md` +
+`docs/codex-hardening-review.md` — both are superseded historical audits
+(final disposition noted at their top); this file and `docs/wiki/progress.md`
+are the current state.
 All are pre-existing (not introduced by the effort); each is an engineer-review
 surface unless noted.
 
