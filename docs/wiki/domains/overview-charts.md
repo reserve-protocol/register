@@ -1,6 +1,6 @@
 ---
 title: Overview Charts
-updated: 2026-07-14
+updated: 2026-07-22
 type: domain
 sources:
   - src/views/index-dtf/overview/components/charts/**
@@ -23,6 +23,12 @@ current price), range prefetch, and the 30-min refresh. A shared-key queryFn
 must return the raw point array — derive scalars (e.g. week-ago last-positive
 price) locally, never inside the cache entry. Candlesticks still use the REST
 `v2/historical/dtf/candles` endpoint directly.
+
+Zero is a resolved on-chain value, not a loading sentinel: the history query
+and range prefetch enable once RPC supply and current price are defined, even
+when either is `0`. The SDK accepts those zeroes when composing the synthetic
+live point, and the historical request settles the chart instead of leaving
+its skeleton mounted forever.
 
 ## Granularity policy (line chart)
 

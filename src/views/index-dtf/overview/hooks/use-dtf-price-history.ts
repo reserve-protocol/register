@@ -70,7 +70,9 @@ const useIndexDTFPriceHistory = ({
         }
       : undefined,
     {
-      enabled: Boolean(enabled && address && supply && currentPrice),
+      enabled: Boolean(
+        enabled && address && supply !== undefined && currentPrice !== undefined
+      ),
       refetchInterval: REFRESH_INTERVAL,
       staleTime: REFRESH_INTERVAL,
     }
@@ -87,8 +89,8 @@ const useIndexDTFPriceHistory = ({
     if (
       !enabled ||
       !address ||
-      !supply ||
-      !currentPrice ||
+      supply === undefined ||
+      currentPrice === undefined ||
       prefetchRanges.length === 0
     ) {
       return
@@ -106,7 +108,15 @@ const useIndexDTFPriceHistory = ({
         REFRESH_INTERVAL
       )
     })
-  }, [enabled, address, supply, currentPrice, chainId, prefetchRanges, prefetch])
+  }, [
+    enabled,
+    address,
+    supply,
+    currentPrice,
+    chainId,
+    prefetchRanges,
+    prefetch,
+  ])
 
   return { ...query, data }
 }

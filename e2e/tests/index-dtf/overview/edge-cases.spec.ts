@@ -6,9 +6,9 @@ import { loadSnapshot } from '../../../helpers/snapshots'
 const TOTAL_SUPPLY = encodeFunctionData({ abi: erc20Abi, functionName: 'totalSupply' })
 const ZERO_UINT = encodeAbiParameters([{ type: 'uint256' }], [0n])
 
-// Overview edge cases that reach ledger bugs. Each asserts the DESIRED behavior
-// and is `test.fixme` because the app is currently buggy — the failing assertion
-// IS the validation that the suite catches the bug (flip to `test` when fixed).
+// Overview edge cases that reach ledger bugs. Active tests cover fixed
+// regressions; remaining `test.fixme` cases document desired behavior and are
+// promoted after their implementation lands.
 
 const base = REGISTRY.find((d) => d.chainId === 8453 && !d.deprecated)!
 const expectedName = loadSnapshot<{ dtf: { token: { name: string } } }>(
@@ -38,11 +38,9 @@ test.fixme(
   }
 )
 
-// BUG H3 — use-dtf-price-history.ts: the history query's `enabled` gate requires
-// a truthy `supply` (RPC totalSupply). A 0-supply DTF (totalSupply=0n) never
-// fires the query, so the chart stays a perpetual skeleton with no empty/error
-// state. Desired: the chart resolves to an empty/no-data state.
-test.fixme(
+// H3 regression — a 0-supply DTF must still run the history query. Guarding on
+// a truthy RPC totalSupply left the chart in a perpetual skeleton.
+test(
   'overview: 0-supply DTF resolves the chart to an empty state, not a perpetual skeleton @smoke',
   async ({ harness }) => {
     const page = harness.page
@@ -53,7 +51,7 @@ test.fixme(
     await expect(page.getByTestId('overview-dtf-name')).toContainText(expectedName, {
       timeout: 15_000,
     })
-    // Desired: the chart skeleton clears (empty state or content). BUG: stuck.
+    // The history request settles, so the skeleton clears to content or empty state.
     await expect(page.getByTestId('overview-chart-skeleton').first()).toBeHidden({
       timeout: 8_000,
     })

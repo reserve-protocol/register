@@ -72,7 +72,7 @@ const useWeekAgoPnl = ({
     { staleTime: Infinity }
   )
 
-  const priceThen = price.data ? selectPriceAtMark(price.data) : null
+  const priceThen = price.data ? selectPriceAtMark(price.data, weekAgo) : null
 
   // Resolved = every fetch this PnL depends on has settled (success or error),
   // so a null pnl now means "hide the row", not "still loading". Consumers use
