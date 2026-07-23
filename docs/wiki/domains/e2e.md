@@ -1,6 +1,6 @@
 ---
 title: E2E Suite
-updated: 2026-07-14
+updated: 2026-07-23
 type: domain
 sources:
   - e2e/**
@@ -171,10 +171,11 @@ exposure/status), and the suite pins the hardening that rode on it:
   `BrandFilesUpdater` is gone). Unbranded DTFs (`/folio-manager/read` → `{}`)
   are a settled state: the cover slot collapses (`overview-cover-slot`,
   `overview-cover-skeleton`) — see `index-dtf/overview/edge-cases.spec.ts`.
-- **Status**: container deprecation status comes from the SDK discovery read
-  (`/discover/dtfs` with a `limit` param — same api.ts branch); the
-  KNOWN_DEPRECATED instant fail-safe stays and is unit-pinned
-  (`src/hooks/tests/use-dtf-status.test.ts`).
+- **Status**: container deprecation status is a synchronous static-catalog
+  lookup (`@reserve-protocol/dtf-catalog` via the SDK) — zero fetches, nothing
+  to mock. The KNOWN_DEPRECATED fail-safe survives only inside the wider
+  `useDTFStatus` hook (non-container consumers), unit-pinned in
+  `src/hooks/tests/use-dtf-status.test.ts`.
 
 ## Yield DTF (RToken) — Phase F + audit hardening (2026-07-12)
 
