@@ -39,6 +39,6 @@ Register is one node in a multi-repo system. Work touching a boundary usually me
 
 ## Cross-repo docs that already exist (link, don't duplicate)
 
-- Register: `docs/data-sources.md` (canonical RPC-vs-subgraph-vs-API routing), `docs/protocol-context.md` (concepts), `docs/local-sdk-development.md`, `docs/architecture/`.
+- Register: `docs/data-sources.md` (canonical RPC-vs-subgraph-vs-API routing), `docs/protocol-context.md` (concepts), `docs/local-sdk-development.md`.
 - SDK repo: `docs/README.md` reading map, `docs/known-gotchas.md`, per-domain docs — see [[sdk]].
 - Protocol repos: `README.md` + `CHANGELOG.md` in each are authoritative for mechanics and releases.

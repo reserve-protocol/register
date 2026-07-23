@@ -12,23 +12,30 @@ hook/updater here.
 
 The Index DTF landing page: hero stats (name/symbol/price), the price chart
 across time ranges, the Holdings table (Exposure/Collateral tabs), plus
-about/cover/creator/socials/metrics blocks. Name/symbol/price provenance is
-split and load-bearing: **name/symbol come from the SDK** (`GetIndexDTF`
-snapshot → mappers), **price comes from the reserve-api REST endpoint**
-(`current/dtf` in `use-dtf-price.ts`), **chart series from `historical/dtf`
-REST** — none of these three is the subgraph. Basket rows are RPC
-`totalAssets` + token metadata joined with api prices. Don't move live state
-into the subgraph mock to "fix" a test.
+about/cover/creator/socials/metrics blocks. Name/symbol/price all come from
+the SDK's `GetIndexDTF` snapshot (`useCurrentIndexDtf()` in
+`index-dtf-container.tsx` → `indexDTFAtom`/`indexDTFBasketPricesAtom`); hero
+price is `indexDTFPriceAtom`, the DTF's own basket price keyed off that same
+snapshot (`state/dtf/atoms.ts`) — `overview/hooks/use-dtf-price.ts` (a
+standalone `current/dtf` fetch) has zero importers, dead code. Chart series
+is the SDK's price-history query (`use-dtf-price-history.ts` →
+`useIndexDtfPerformance`, still backed by `historical/dtf` under the hood) —
+none of these three is the subgraph. Basket rows are RPC `totalAssets` +
+token metadata (same SDK snapshot) joined with api prices. Don't move live
+state into the subgraph mock to "fix" a test.
 
 ## Did a diff here — which test?
 
 | You changed | Run / extend |
 |---|---|
 | Hero name/symbol/price render | `e2e/tests/smoke/overview.spec.ts` (base/bsc/mainnet matrix) |
+| Hero loading lifecycle (skeleton→content, no reflow), chart island independence | `e2e/tests/index-dtf/overview/lifecycle.spec.ts` |
 | SDK data path / mappers / atoms | `e2e/tests/smoke/dtf-data.spec.ts` (the canary) |
 | Holdings table, Exposure/Collateral tabs, mcap cell | `e2e/tests/flows/overview.spec.ts` (holdings test) |
 | Price chart, time-range selector, ranges | `e2e/tests/flows/overview.spec.ts` (chart test) |
-| Deprecated/inactive-state rendering | `e2e/tests/flows/overview.spec.ts` (deprecated test) |
+| Degenerate chart/holdings data (empty/single-point history, 0-supply, zeroed mcap) | `e2e/tests/flows/overview-edge.spec.ts`, `e2e/tests/index-dtf/overview/edge-cases.spec.ts` |
+| Deprecated/inactive-state rendering | `e2e/tests/index-dtf/overview/state-space.spec.ts`, `e2e/tests/flows/overview.spec.ts` (deprecated test) |
+| Unbranded DTF / cover slot | `e2e/tests/index-dtf/overview/edge-cases.spec.ts` |
 | Anything in hooks/atoms shared across the above | smoke + full: `pnpm exec playwright test e2e/tests/flows/overview.spec.ts` |
 
 Quick loop: `pnpm e2e:smoke` (overview + dtf-data smokes, seconds); full flow
@@ -59,9 +66,14 @@ answer. If you touch chain-conditional overview logic, this matrix is the guard
 - **No frozen clock here.** Overview specs run on real time (unlike governance)
   — ranges compute `from`/`to` from `Date.now()`, so keep assertions relative
   (`from < to`), never pin absolute timestamps.
-- **Deprecated/inactive**: driven by the discover/dtfs snapshot `status` (read
-  through the SDK's `useIndexDtfStatus`, with the KNOWN_DEPRECATED instant
-  fail-safe in `use-dtf-status.ts`); the Inactive badge
+- **Deprecated/inactive**: `useIndexDtfStatus(identity)` is a SYNCHRONOUS
+  lookup in `@reserve-protocol/dtf-catalog` — no fetch, not mockable via
+  api/subgraph override; a DTF must genuinely be curated deprecated in the
+  catalog package to render the badge (see the `deprecated` registry entry).
+  Feeds `indexDTFStatusAtom` (`index-dtf-container.tsx`), consumed via the
+  pure `isInactiveDTF()` predicate (`@/hooks/use-dtf-status.ts` — that file's
+  own `useDTFStatus`/discover-fetch/KNOWN_DEPRECATED path isn't used here, it
+  backs the Discover/Earn views instead). The Inactive badge
   (`overview-inactive-badge`, rendered in `chart-overlay.tsx`) keys on the
   testid — label is Lingui-translated, never assert copy.
 - **Unbranded DTF**: `overrides.api({ pathname: '/folio-manager/read' }, {})`
@@ -86,13 +98,22 @@ mock serves candles line-shaped, so specs exercise the line-chart fallback.
 
 ## Coverage ledger (honest)
 
-- **Covered**: name/symbol/price @smoke on all three chains; the dtf-data
-  canary (raw SDK snapshot shape — first suspect when every surface renders
-  skeletons); Exposure↔Collateral mcap framing; price chart across ranges with
-  request-window/interval/identity + real area-curve `d` assertions;
-  deprecated-DTF inactive badge.
-- **Not covered — planned**: chart empty / young-DTF states; performance vs
-  BTC/ETH denominations (BTC data-type mode is BTC+ yield-index only).
+- **Covered**: name/symbol/price @smoke on all three chains; hero L1→L3
+  loading lifecycle + no-reflow, chart island resolving independently of the
+  hero; the dtf-data canary (raw SDK snapshot shape — first suspect when every
+  surface renders skeletons); Exposure↔Collateral mcap framing; price chart
+  across ranges with request-window/interval/identity + real area-curve `d`
+  assertions; deprecated-DTF inactive badge; a 0-supply DTF still resolves the
+  chart instead of hanging on a truthy-totalSupply guard; unbranded DTF
+  collapses the cover skeleton once loaded; empty/single-point price history
+  and a zeroed-mcap Holdings table degrade without blanking the hero or
+  crashing.
+- **Not covered — known bug (`test.fixme`)**: selecting the Market
+  Cap/Supply data-type only swaps the chart's Y-axis — the hero keeps
+  showing the unit price, because `PriceValue` in `chart-overlay.tsx` always
+  reads `indexDTFPriceAtom` regardless of data-type.
+- **Not covered — planned**: performance vs BTC/ETH denominations (BTC
+  data-type mode is BTC+ yield-index only).
 - **Not covered — deferred**: the factsheet route
   (`index-factsheet-overview.tsx`, parallel range map — see overview-charts
   wiki; don't half-sync it).

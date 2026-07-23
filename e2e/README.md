@@ -24,7 +24,9 @@ proposal/governance/historical snapshots that committed flow specs pin to.
 dtf.json shape drifts from the installed SDK's `GetIndexDtfDocument` (the
 query is copied verbatim into `scripts/capture.ts`; the SDK doesn't export it).
 
-The dev server is reused if already running on :3005; first run boots it (~20s).
+Each run boots its own server on :3005 (~20s) — `reuseExistingServer` is off so
+a foreign server can never bypass the pinned E2E env; if :3005 is occupied the
+run fails (free it with `lsof -ti :3005 | xargs kill`).
 Never uses :3000 — that's the human's dev server.
 
 ## How the mocks layer

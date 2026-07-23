@@ -21,14 +21,11 @@ import type { Page } from '@playwright/test'
 // description) payload to prove the setVotingPeriod setter calldata round-trips
 // against the trading governor with value 0.
 //
-// FINDING (app bug, see report): this surface ALSO emits a phantom
-// setProposalThreshold calldata on every proposal, and its empty-change guard
-// never trips — the updater seeds `basketVotingThreshold` from the SDK's
-// already-percentage `proposalThreshold` but compares it against
-// `Number(proposalThreshold) / 1e18` (updater.tsx ~L48 vs ~L128), so the field
-// value never equals its own baseline and proposalThreshold is ALWAYS flagged
-// changed. The two assertions that depend on correct behaviour are test.fixme'd
-// below; the round-trip test is written to tolerate the extra calldata.
+// This surface used to emit a phantom setProposalThreshold calldata on every
+// proposal (the updater compared the SDK's already-percentage proposalThreshold
+// against `Number(proposalThreshold) / 1e18`, so the threshold always read as
+// changed). Fixed via a like-for-like compare (isProposalThresholdChanged);
+// the single-action and disabled-confirm regressions below pin it.
 //
 // Like propose-dtf-settings, these components ship NO data-testids on the
 // confirm / submit buttons, so we fall back to the stable section DOM id
@@ -198,8 +195,7 @@ test('voting-period change round-trips into a setVotingPeriod calldata on the tr
   }
   expect(values).toEqual(targets.map(() => 0n))
 
-  // Exactly one setVotingPeriod action, carrying our change. (Tolerant of the
-  // phantom setProposalThreshold calldata — see the fixme test + report.)
+  // Exactly one setVotingPeriod action, carrying our change.
   const votingPeriodCalldatas = (calldatas as Hex[]).filter((calldata) =>
     calldata.toLowerCase().startsWith(SET_VOTING_PERIOD_SELECTOR)
   )
@@ -217,12 +213,8 @@ test('voting-period change round-trips into a setVotingPeriod calldata on the tr
 test(
   'voting-period-only proposal contains a single action (no phantom threshold)',
   async ({ page, txLog, overrides }) => {
-    // E1 regression: a voting-period-only basket-settings proposal must emit
-    // exactly one action. The updater used to seed basketVotingThreshold from
-    // the SDK's already-percentage proposalThreshold but compare it against
-    // Number(proposalThreshold) / 1e18, permanently flagging the threshold
-    // changed and appending a phantom setProposalThreshold calldata. Now it
-    // compares like-for-like (isProposalThresholdChanged).
+    // A voting-period-only basket-settings proposal must emit exactly one
+    // action — regression for the phantom-threshold bug described up top.
     const { args } = await submitVotingPeriodChange(page, overrides, txLog)
     const calldatas = args[2] as Hex[]
     expect(calldatas).toHaveLength(1)
@@ -237,10 +229,9 @@ test(
 test(
   'no change keeps confirm disabled and never submits',
   async ({ page, txLog, overrides }) => {
-    // E1 regression (same root cause): with nothing changed the confirm button
-    // must stay disabled (isProposalValid = false) and no tx is possible. The
-    // phantom proposalThreshold change used to keep isProposalValid true, so an
-    // untouched form could submit an "empty" proposal.
+    // With nothing changed the confirm button must stay disabled
+    // (isProposalValid = false) and no tx is possible — the phantom threshold
+    // change used to let an untouched form submit an "empty" proposal.
     await bootProposeBasketSettings(page, overrides)
 
     const input = votingPeriodInput(page)

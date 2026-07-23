@@ -1,6 +1,6 @@
 ---
 title: Home
-updated: 2026-07-14
+updated: 2026-07-23
 type: domain
 sources:
   - src/views/home/**
@@ -10,7 +10,9 @@ sources:
 
 Marketing landing: hero + packing animation, highlighted (featured) DTF
 cards, discover table, metrics. (The hero's "Watch explainer" button and the
-DTF explainer dialog were removed 2026-07.)
+DTF explainer dialog were removed 2026-07.) The highlighted card's transcript
+preview still opens a `VideoModal` explainer, instrumented via
+`trackClick('home' | 'discover', 'video', address)` on open.
 
 ## Featured cards data
 

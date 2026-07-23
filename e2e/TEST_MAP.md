@@ -1,196 +1,109 @@
-# E2E Test Map — domain-organized coverage matrix
+# E2E Test Map
 
-The authoritative map of what the e2e suite covers, organized by ROUTE →
-SUBROUTE → STATE, with two cross-cutting dimensions applied to EVERY page:
-the **loading lifecycle** and **mobile**. Replaces the flat `smoke/` + `flows/`
-split. Status: ✅ covered · 🟡 partial · ⬜ gap · 🐛 known bug (test.fixme).
-
-Three test dimensions, every page gets all three:
-1. **State-space** — every meaningful state of the page (not just the happy render).
-2. **Loading lifecycle** — blank → skeleton → partial → full (see § Lifecycle).
-3. **Mobile** — the same, at the mobile breakpoint (see § Mobile).
-
----
-
-## § Lifecycle (applies to EVERY route)
-
-Observed problem: several current specs assert on a testid that renders during
-the SKELETON phase, so they pass while the page is still loading — they test the
-shell, not the data, and they mask layout shift. The lifecycle becomes a
-first-class, ordered assertion per page:
-
-| Phase | What to assert |
-|---|---|
-| **L0 blank** | Route mounts, no crash, container present (pre-data). |
-| **L1 skeleton** | The skeleton has the RIGHT shape/count for the eventual content (a 5-row skeleton for a 5-row table), and occupies the SAME box the content will (no reflow). Assert skeleton testids exist. |
-| **L2 partial** | Each independent data island resolves on its own (hero, chart, basket, balance, proposal list…). Assert each island's skeleton→content transition, and that resolving island A does NOT shift island B. **Layout-shift budget: 0 unexpected reflows.** |
-| **L3 full** | All islands resolved → run the actual behavior/value assertions (what the current suite does). |
-
-Mechanics: freeze the clock, delay specific boundary responses per-island
-(`overrides` can hold a response), assert the skeleton, then release and assert
-the content in the SAME layout box. A CLS-style probe records boundingRect
-deltas across the transition. Skeleton testids (`<area>-skeleton`) are added
-attribute-only where missing.
-
-## § Mobile (applies to EVERY route)
-
-Every page spec runs a `@mobile` variant at a phone viewport (e.g. 390×844,
-`devices['iPhone 13']`) covering L0–L3 + the mobile-specific chrome (bottom nav,
-hamburger/portal menu, mobile CTA bar, collapsed tables → cards, mobile
-dialogs). Playwright project matrix: `{smoke, full} × {desktop, mobile}`.
-
----
-
-## "General" (top-level routes)
-
-| Route | Sub | States to cover | Lifecycle | Mobile | Status |
-|---|---|---|---|---|---|
-| Home | — | hero, featured marquee (weight-desc order), packing animation, empty/error featured | L0–L3 | ⬜ | 🟡 shell + featured count only |
-| Discover | — | index list, search narrow/restore, index↔yield tab, deprecated-DTF search (Stage 2), empty/error, row→overview | L0–L3 | ⬜ | 🟡 search+tab+nav |
-| Earn | IndexDTF / YieldDTF / DeFi | each earn tab list, sort, empty/error, APY columns | L0–L3 | ⬜ | ⬜ |
-| Portfolio | — | connected holdings, empty (no activity), past-activity-only edge, disconnected | L0–L3 | ⬜ | ⬜ |
-| Tokens (`/tokens`) | listed + unlisted | listed/unlisted RTokens tables; unlisted partial-chain survival (Z2, `general/tokens/unlisted-partial.spec.ts`) | L0–L3 | ⬜ | 🟡 Z2 partial-response only |
-| Create Index DTF | deploy wizard | coming-soon gate + permissionless deploy path (multi-step: basket/CSV, governance, confirm) | L0–L3 | ⬜ | ⬜ (deferred non-goal) |
-| Create Yield DTF | deploy wizard | multi-step deploy | L0–L3 | ⬜ | ⬜ (deferred non-goal) |
-| Explorer | Transactions | list, filters, chain filter, pagination, empty | L0–L3 | ⬜ | ⬜ |
-| Explorer | Tokens | list, filter, row link chain-correctness | L0–L3 | ⬜ | ⬜ |
-| Explorer | Collaterals | list, status states | L0–L3 | ⬜ | ⬜ |
-| Explorer | Governance | cross-DTF gov list | L0–L3 | ⬜ | ⬜ |
-| Explorer | Revenue | available revenue table | L0–L3 | ⬜ | ⬜ |
-| Bridge | — | bridge form, quote, chain select, errors | L0–L3 | ⬜ | ⬜ |
-
-Explorer + Earn + Portfolio + Bridge are **entirely uncovered** today.
-
-## "Index DTF" (`/:chain/index-dtf/:tokenId/*`)
-
-| Route | Sub | States to cover | Lifecycle | Mobile | Status |
-|---|---|---|---|---|---|
-| Overview | — | render ×3 chains, chart per range, **empty/single-point/price-0 chart** (🐛 #20 infinite skeleton), exposure vs collateral mcap, deprecated badge, SPA cross-chain nav (🐛 #1/#18 wrong-chain) | L0–L3 (the layout-shift work lives here) | ⬜ | 🟡 render+chart+edges; SPA fixme |
-| Issuance | Zap | buy/sell + calldata, impact≥5% gate, quote-error, insufficient funds, low-liquidity variant, compliance | L0–L3 | ⬜ | ✅ zap; ⬜ low-liq/mobile |
-| Issuance | Manual | mint/redeem + math boundaries (MAX/rounding/minOut/decimals), reject/revert, compliance on manual | L0–L3 | ⬜ | ✅ math+failures; ⬜ mobile |
-| Issuance | Automated | async-mint CoW wizard: gnosis-required, configure, quote, sign, lifecycle, error | L0–L3 | ⬜ | ⬜ (no testids yet) |
-| Governance | Overview | proposal LIST + pagination/"show all", delegates, vote-lock sidebar, empty (no proposals) | L0–L3 | ⬜ | 🟡 list+delegates |
-| Governance | **Proposal (view/vote)** | **BIG MATRIX — see § Proposal matrix below** | L0–L3 per state | ⬜ | 🟡 several states |
-| Governance | Create — Basket | form + price/liquidity preview, submit `startRebalance` calldata (needs golden fixture), validation | L0–L3 | ⬜ | 🟡 form/guards only |
-| Governance | Create — DTF Settings | fee round-trip decode, injection, empty-change guard | L0–L3 | ⬜ | ✅ calldata; ⬜ mobile |
-| Governance | Create — DAO (Other) | param change decode | L0–L3 | ⬜ | ✅ |
-| Governance | Create — Basket Settings | trading-gov params (🐛 #3 phantom threshold) | L0–L3 | ⬜ | 🐛 fixme |
-| Governance | Create — **Whitelist** | whitelist proposal type — **entirely uncovered** | L0–L3 | ⬜ | ⬜ |
-| Governance | **Optimistic Governance** | the optimistic variant of ALL the above (different flow/stages) — subset run | L0–L3 | ⬜ | ⬜ |
-| Auctions | Rebalance list | idle/history/active bucketing, ×3 chains | L0–L3 | ⬜ | ✅ read; ⬜ mobile |
-| Auctions | Rebalance detail | **states: idle, running/restricted, running/permissionless, completed, expired**; launch/community-launch/bid WRITES + permission matrix; legacy v2 auctions | L0–L3 per state | ⬜ | 🟡 active+completed read; writes ⬜ |
-| Details + Roles (Settings) | — | exact fee %s, roles roster, distributeFees write, 🐛 #15 zero-denom DoS, 🐛 #16 fabricated-fee fallback | L0–L3 | ⬜ | ✅ values+roles; ⬜ mobile |
-| Manage | — | brand SIWE / upload / save flow | L0–L3 | ⬜ | ⬜ |
-| Factsheet | — | render, data | L0–L3 | ⬜ | ⬜ |
-
-## "Yield DTF" (`/:chain/token/:tokenId/*`)
-
-| Route | Sub | States to cover | Lifecycle | Mobile | Status |
-|---|---|---|---|---|---|
-| Overview | — | render ×2 fixtures, backing, price, charts, edges | L0–L3 | ⬜ | ✅ render; ⬜ edges/mobile |
-| Issuance | Manual | mint/redeem, redeem-only (paused hyUSD), math, compliance geo | L0–L3 | ⬜ | 🟡 render only |
-| Issuance | Zap | zap mint/redeem, quote states | L0–L3 | ⬜ | ⬜ |
-| Stake | — | stake/unstake/withdraw/cancel, exchange-rate, cooldown vs available, draft queue, staked-history snapshots-partial survival (Z38, `history-partial.spec.ts`, desktop+mobile) | L0–L3 | 🟡 Z38 only | 🟡 render + stake/unstake write + Z38 partial-response |
-| Auctions | — | revenue auctions, recollateralization, dutch bid, claim — read + write | L0–L3 | ⬜ | ⬜ |
-| Governance | Overview | proposal list, delegates | L0–L3 | ⬜ | ⬜ |
-| Governance | Create proposal | RToken param proposals | L0–L3 | ⬜ | ⬜ |
-| Governance | Proposal (per parameter) | vote/view for EACH governed parameter (own matrix) | L0–L3 | ⬜ | ⬜ |
-| Details + Roles | — | pause/freeze/unfreeze writes (role-gated), roles roster | L0–L3 | ⬜ | ⬜ |
-
-Yield governance/auctions/settings + all yield mobile + yield lifecycle are gaps.
-
----
-
-## § Proposal matrix (the big one)
-
-Every proposal is different — TYPE determines the create form + the decoded
-calldata + the detail-view changes rendered; STATE determines the workflow stage
-+ available actions. Cover the product TYPE × STATE, not one representative.
-
-**Types:** BASKET · DTF (settings) · BASKET_SETTINGS · OTHER (DAO) · WHITELIST — ×
-**standard vs optimistic** governance.
-
-**States / workflow stages** (each with its CTA + decoded action):
-PENDING (before voteStart) · ACTIVE (vote: For/Against/Abstain) · DEFEATED ·
-QUORUM_NOT_REACHED · SUCCEEDED (queue) · QUEUED (execute, after ETA) ·
-EXECUTED · CANCELED (canceller-gated) · EXPIRED.
-
-Per TYPE, the DETAIL view renders the type-specific "changes" preview
-(basket diff, fee diff, gov-param diff, whitelist diff) — assert the preview
-matches the proposed on-chain change, and the executed result matches.
-
-Coverage today: standard states (PENDING/DEFEATED/QUORUM/EXECUTED/QUEUED) on a
-governance-param proposal ✅; vote support variants ✅; permissions/cancel ✅;
-DTF-settings + DAO create ✅. **Gaps:** per-TYPE detail previews, basket + basket-
-settings + whitelist detail/execute, optimistic variant, PENDING→ACTIVE→SUCCEEDED
-transitions with live tally, EXPIRED.
-
----
-
-## § Proposed folder reorganization
+Route/state coverage matrix for the e2e suite. Regenerate the ground truth
+before editing this file:
 
 ```
-e2e/tests/
-  general/          home · discover · earn · portfolio · explorer-* · bridge · create-*
-  index-dtf/
-    overview/       render · charts-edges · spa-nav
-    issuance/       zap · manual · automated
-    governance/     overview · proposal-<state> · create-<type> · optimistic
-    auctions/       rebalance-list · rebalance-<state> · writes · legacy
-    settings/       values-roles · distribute-fees
-    manage/  factsheet/
-  yield-dtf/
-    overview/ issuance/ staking/ auctions/ governance/ settings/
-  _shared/          lifecycle helpers, mobile matrix, boundary catalog
+find e2e/tests -name "*.spec.ts" | sort              # spec inventory
+grep -rn "test.fixme\|it.fixme" e2e/tests             # active fixmes
+grep -rln "@mobile" e2e/tests                         # mobile-tagged specs
 ```
-Tags: `@smoke` (fast render+lifecycle-L1), `@mobile` (mobile project),
-default = full behavior. Playwright projects: desktop-smoke, desktop-full,
-mobile-smoke, mobile-full.
 
-Migration is mechanical (move + retag existing 42 specs into the tree; no logic
-change), then fill the ⬜ gaps + add the lifecycle/mobile dimensions per page.
+Harness architecture (mock layer, trust contract, CI split) lives in
+`docs/wiki/domains/e2e.md`; mock mechanics and recipes live in `e2e/CLAUDE.md`.
+Playwright runs 3 projects (`playwright.config.ts`): **smoke** (`@smoke`-tagged,
+Desktop Chrome), **full** (everything else, Desktop Chrome), **mobile**
+(`@mobile`-tagged, Pixel 7 viewport — off CI, `pnpm e2e:mobile`).
 
----
+73 specs across 5 top-level dirs: `general/` (8), `index-dtf/` (17),
+`yield-dtf/` (6), `smoke/` (12), `flows/` (30). `index-dtf/` and `yield-dtf/`
+hold render/lifecycle/mobile specs per route; `flows/` holds deeper
+behavior/write/edge-case specs (desktop only, no `@mobile` tags anywhere in
+the directory).
 
-## § 2026-07 deep-read reconciliation (authoritative — supersedes stale rows above)
+## General (top-level routes)
 
-A full code-level read of every domain (7 parallel deep-dives) corrected the map
-and surfaced concrete states/edge-cases; bugs found are recorded in git history.
+| Area | Spec file(s) | States covered | Lifecycle | Mobile | Gaps |
+|---|---|---|---|---|---|
+| Bridge | [general/bridge/render](tests/general/bridge/render.spec.ts) | static page render | none (static) | yes | — |
+| Discover | [general/discover/lifecycle](tests/general/discover/lifecycle.spec.ts), [flows/home-discover](tests/flows/home-discover.spec.ts) | skeleton→rows; search narrow/restore; tab switch; row→overview nav; home hero+featured render | partial | no | — |
+| Earn | [general/earn/render](tests/general/earn/render.spec.ts), [general/earn/tabs](tests/general/earn/tabs.spec.ts) | DeFi tab empty-state render; index-dtf vote-lock tab render; yield-dtf staking tab render (disconnected empty-state) | none | yes | sort, non-empty list, error state |
+| Explorer | [general/explorer/render](tests/general/explorer/render.spec.ts) | transactions tab (default) render; governance tab proposals render; one chain returning malformed transactions body doesn't blank the page | none | no | filters, pagination, tokens/collaterals/revenue tabs |
+| Portfolio | [general/portfolio/state-space](tests/general/portfolio/state-space.spec.ts), [general/portfolio/partial-response](tests/general/portfolio/partial-response.spec.ts) | disconnected shows connect prompt; malformed proposal row survives, healthy row still renders | none | partial (state-space only) | connected-with-holdings render, empty-vs-past-activity-only |
+| Tokens | [general/tokens/unlisted-partial](tests/general/tokens/unlisted-partial.spec.ts) | one chain returning an rtokens-less bucket doesn't crash the table | none | no | plain listed-table render, sort |
+| Create (Index/Yield deploy) | — | — | — | — | entirely uncovered |
 
-**Status corrections**
-- 🐛 **#15 zero-denom DoS → ✅ CLOSED** (FIX-B; crash test un-fixmed, passes).
-- 🐛 **#1/#18 chain-init subgraph/REST → ✅ CLOSED** (react-zapper 2.6.0; SPA tests un-fixmed, pass).
-- 🐛 **#17 chain-init (register `tokenJar()` RPC) → STILL OPEN** — the react-zapper fix did NOT cover register's own `chainIdAtom` RPC consumers. Add an **RPC-chain SPA assertion** (eth_call chain, not just subgraph).
-- **"Whitelist" proposal type does NOT exist.** `ProposalType = standard | optimistic` only. The four create forms are **Basket · DTF Settings · Basket Settings · DAO**. Allowlist calldata has no propose UI (falls to raw-call preview). Replace every "Whitelist" cell with **Optimistic**.
-- **Bridge is a STATIC link page** — no form/quote/chain-select. Scope to href/deep-link/copy only.
+## Index DTF (`/:chain/index-dtf/:tokenId/*`)
 
-**Highest-value gaps the deep-read confirmed (ranked)**
-1. **Optimistic governance — entire surface uncovered, no fixture** (challenge-vote AGAINST-only, veto window, SUCCEEDED→execute-no-queue, selector-registry preview, eligibility fork, optimistic delegates tab, optimistic-params create form). Largest combinatorial + highest-risk (fail-open eligibility M17).
-2. **Governance detail "changes" previews per TYPE** — 18 dtf-settings handlers + basket rebalance diff + gov-param diffs are decoded-but-untested; a decode bug silently misleads voters. Orthogonal to STATE (previews render identically in every state).
-3. **Automated CoW issuance wizard — zero coverage AND zero testids** (gnosis-check → configure → quote-summary → execution lifecycle → success; slow-quote 20s cancel; ondo-paused; convert-held). Testids must be added first.
-4. **Yield DTF — all write flows uncovered** (mint/redeem/stake/unstake/withdraw/cancel/dutch-bid/claim/vote/pause-freeze); render-only smokes today. Prioritize stake→unstake→cooldown→withdraw lifecycle + paused/frozen/redeem-only gating (hyUSD fixture already redeem-only).
-5. **Auctions `openAuction`/`openAuctionUnrestricted` writes + permission matrix** (launcher vs community vs disconnected; restricted vs permissionless window — needs a synthesized `getRebalance()` tuple since lcap has zero-width windows) + positive `auctions-rebalance-error` + legacy v2 (read-only, launch button dead).
-6. **General routes — portfolio / explorer(×5) / earn(×3) / tokens / top100** entirely uncovered; each needs NEW capture (see below). Deploy gates uncovered (no capture; assert route wiring).
-7. **Loading lifecycle (L1/L2) + mobile — uncovered everywhere.** No `<area>-skeleton` testids; the layout-shift surfaces (overview time-range selector reflow, chart→null collapse, balance/cover animations) are exactly where dimension-2 belongs.
+| Area | Spec file(s) | States covered | Lifecycle | Mobile | Gaps |
+|---|---|---|---|---|---|
+| Overview | [overview/lifecycle](tests/index-dtf/overview/lifecycle.spec.ts), [overview/state-space](tests/index-dtf/overview/state-space.spec.ts), [overview/edge-cases](tests/index-dtf/overview/edge-cases.spec.ts), [flows/overview](tests/flows/overview.spec.ts), [flows/overview-edge](tests/flows/overview-edge.spec.ts), [flows/dtf-nav-state-cleanup](tests/flows/dtf-nav-state-cleanup.spec.ts), [flows/reload-chain-identity](tests/flows/reload-chain-identity.spec.ts) | hero L1→L3 no-reflow; chart island resolves independently; deprecated badge; holdings/mcap framings; empty/single-point/0-supply chart; SPA cross-chain nav (symbol, stat-card cleanup); full-reload cross-chain query-chain correctness | full (hero+chart) | yes (index-dtf/ specs); flows/ desktop only | fixme below (Market Cap datatype) |
+| Issuance – Zap | [issuance/zap-render](tests/index-dtf/issuance/zap-render.spec.ts), [issuance/compliance](tests/index-dtf/issuance/compliance.spec.ts), [flows/zap-buy-sell](tests/flows/zap-buy-sell.spec.ts), [flows/zap-edge](tests/flows/zap-edge.spec.ts), [flows/failures-zap](tests/flows/failures-zap.spec.ts) | widget+tabs render; geo-restriction gates trade surface; buy/sell full tx flow; high-impact warning+ack gate; quote-error recovery; insufficient-funds gating; reject/revert on buy and sell | none | partial (render+compliance only) | — |
+| Issuance – Manual | [issuance/manual-write](tests/index-dtf/issuance/manual-write.spec.ts), [flows/issuance-manual](tests/flows/issuance-manual.spec.ts), [flows/issuance-manual-boundaries](tests/flows/issuance-manual-boundaries.spec.ts), [flows/issuance-deprecated](tests/flows/issuance-deprecated.spec.ts), [flows/failures-issuance](tests/flows/failures-issuance.spec.ts), [flows/compliance-surfaces](tests/flows/compliance-surfaces.spec.ts) | mint/redeem full tx flow; MAX/minSharesOut/decimal-truncation/disabled-input math boundaries; mint-twice no re-approve; deprecated forces sell-only; reject/revert recovery; per-DTF restriction disables mint, redeem stays open | none | no | fixme below (redeem zero-slippage leg) |
+| Issuance – Automated (CoW) | — | — | — | — | entirely uncovered, no testids yet |
+| Governance – list/overview | [governance/lifecycle](tests/index-dtf/governance/lifecycle.spec.ts), [governance/photon-featured](tests/index-dtf/governance/photon-featured.spec.ts) | list skeleton→proposals; real captured proposal history renders | partial | yes | — |
+| Governance – proposal (view/vote) | [flows/governance-states](tests/flows/governance-states.spec.ts), [flows/governance-multichain](tests/flows/governance-multichain.spec.ts), [flows/governance-permissions](tests/flows/governance-permissions.spec.ts), [flows/governance-support-variants](tests/flows/governance-support-variants.spec.ts), [flows/governance-vote](tests/flows/governance-vote.spec.ts), [flows/governance-queue-execute](tests/flows/governance-queue-execute.spec.ts), [flows/governance-writes-v4](tests/flows/governance-writes-v4.spec.ts), [flows/failures-governance](tests/flows/failures-governance.spec.ts), [flows/governance-description-render](tests/flows/governance-description-render.spec.ts) | PENDING/DEFEATED/QUORUM_NOT_REACHED/EXECUTED/QUEUED states (×chains, v4 governor); For/Against/Abstain vote encode; zero-power/already-voted/window-closed CTA gating; canceller-gated cancel; vote/queue/execute full tx + reject/revert; markdown sanitizer XSS hardening (script/iframe/img-onerror) | none | no | optimistic governance flow (see gaps) |
+| Governance – create Basket | [flows/governance-propose-basket](tests/flows/governance-propose-basket.spec.ts) | form renders current basket; empty-change guard blocks prepare | none | no | price/liquidity preview, submitted calldata assertion |
+| Governance – create DTF Settings | [flows/governance-propose-dtf-settings](tests/flows/governance-propose-dtf-settings.spec.ts) | TVL fee / Mint fee round-trip into setter calldata; no-change keeps confirm disabled | none | no | — |
+| Governance – create Basket Settings | [flows/governance-propose-basket-settings](tests/flows/governance-propose-basket-settings.spec.ts), [governance/fee-bounds](tests/index-dtf/governance/fee-bounds.spec.ts) | voting-period round-trips setVotingPeriod calldata (trading governor); single-action guard (no phantom threshold); no-change disabled; out-of-range TVL fee rejected | none | no | — |
+| Governance – create DAO (Other) | [flows/governance-propose](tests/flows/governance-propose.spec.ts) | DAO-settings proposal full submit flow | none | no | — |
+| Auctions – rebalance list | [auctions/lifecycle](tests/index-dtf/auctions/lifecycle.spec.ts), [flows/auctions](tests/flows/auctions.spec.ts), [flows/auctions-multichain](tests/flows/auctions-multichain.spec.ts) | list skeleton→list; idle/historical bucketing; auctions-less 0-metrics row; in-window active row (×chains) | partial | yes (lifecycle spec only) | — |
+| Auctions – rebalance detail + writes | [auctions/launch-price-guard](tests/index-dtf/auctions/launch-price-guard.spec.ts), [auctions/launch-write](tests/index-dtf/auctions/launch-write.spec.ts), [flows/auctions](tests/flows/auctions.spec.ts) | active detail from encoded `getRebalance()`; expired→completed card; price-error / single-0-price blocks launch; launcher `openAuction()`; non-launcher-in-permissionless-window `openAuctionUnrestricted()` | none | no | legacy v2 auctions UI, bid writes |
+| Settings / Roles | [settings/lifecycle](tests/index-dtf/settings/lifecycle.spec.ts), [settings/distribute-fees](tests/index-dtf/settings/distribute-fees.spec.ts), [settings/fee-edge](tests/index-dtf/settings/fee-edge.spec.ts), [flows/settings](tests/flows/settings.spec.ts) | roster skeleton→roster; any-wallet `distributeFees()`; platformFee=100 shows Unavailable not a fabricated split; snapshot-scaled fee %s; registry-read-failure→UNAVAILABLE; zero-denominator/zero-numerator edges; public roles roster; governance cards; disconnected hides submit control | partial | yes (lifecycle only) | — |
+| Manage | [manage/render](tests/index-dtf/manage/render.spec.ts) | form renders offline | none | yes | SIWE→upload→save write flow |
+| Factsheet | [factsheet/render](tests/index-dtf/factsheet/render.spec.ts) | renders offline | none | yes | performance math (CSV, inception clamp) |
 
-**Per-domain edge cases worth a dedicated test** (beyond the happy path)
-- **Overview:** price-0 / 0-supply (H3/M3 permanent skeletons), all-zero-weight exposure (M5 infinite basket skeleton), Market-Cap/Supply data-type shows unit price (M6), `%`-change firstValue=0 (M4), candlestick↔line toggle (default candlestick — current test only passes via line fallback), young-DTF range availability + auto-reset-to-`all` reflow, stale `dataType`/`chartType` on yield→standard SPA nav (M13).
-- **Issuance (index):** v1 vs v2 mint calldata (minSharesOut present/absent), redeem dust minOut=0 (zero slippage floor), USDT-fork approve→revoke→re-approve, approve-all partial/retry, manual deprecated sell-only (manual surface, not just zap), async compliance fail-open (H2), async convert-held, async no-collateral-legs skip-to-mint, wallet-disconnect mid-wizard reset.
-- **Governance:** CANCELED & EXPIRED as *fetched* terminal states (only post-tx CANCELED tested), QUEUED-with-null-ETA stuck (M15), delegate/undelegated-balance CTA replacing vote, shared-governor propose menu (3 vs 4 options), threshold/quorum/delay round-trips, vote-lock card variants (reward-token single/multi, APR badge threshold, governed-DTFs hovercard).
-- **Auctions:** restricted↔permissionless window boundary, `<`vs`<=` completion off-by-one (L4), token map mismatch white-screen (M7), hybrid manage-weights, Ondo cap auto-default.
-- **Settings/Manage/Factsheet:** Manage SIWE→upload→save→error + brand-manager gate (M8 whitelist backdoor); Factsheet performance math (`calculatePerformance`, monthly P&L, CSV, inception clamp, empty state); Settings optimistic veto rows, reward-tokens card, governance-token hidden-when-no-stToken, trading-gov hidden-when-equal-owner, `platformFee===100` Infinity (M9). **Manage + Factsheet have ZERO testids today.**
-- **Yield:** frozen-redeem enabled-but-reverts (M11), undercollateralized redeem block + dead `redeemCustom` path, cooldown/draft time-boundary (pending↔available split, `endId` semantics L17), settings role-gating (pauser/freezer/owner), legacy single-pause branch.
-- **General:** portfolio past-activity-only hides tx history (GM1), empty-vs-loading-vs-error tri-state everywhere (GH1/GM2/GM3/GM6), earn Arb↔BSC chain swap (GM5) + BSC casing drop (GL2) + yield search bypasses DTF filter (GL3), explorer revenue Arb-gates-all (GH2), tokens dead sort (GH3), top100 dedup/table↔card swap, deploy route collision (GH4), empty-chain-filter empties table (GL1).
+## Yield DTF (`/:chain/token/:tokenId/*`)
 
-**NEW capture fixtures required** (not covered by existing SDK/subgraph/zapper/RPC boundaries)
-- **Portfolio:** REST `v1/portfolio/{a}`, `v1/historical/portfolio/{a}?period=×6`, `v1/portfolio/{a}/transactions` — variants: full / empty / past-activity-only / error / impersonation (`?account=`).
-- **Explorer:** per-tab subgraph + RPC (transactions, tokens, collaterals, governance+block-number, revenue FacadeRead).
-- **Earn:** DefiLlama `yields.llama.fi/pools`, REST `dtf/daos` (vote-lock), yield subgraph `tokenDailySnapshots`.
-- **Tokens / Top100:** yield `rtokens` subgraph / `TOP100_QUERY` subgraph.
-- **Automated wizard:** CoW quote + order-status boundaries (+ ondo-paused).
-- **Synthesized (no capture):** optimistic proposal fixture, rebalance `getRebalance()` tuple with `availableUntil>restrictedUntil`, price-0/0-supply DTF, all-zero-weight basket, QUEUED-null-ETA proposal.
+| Area | Spec file(s) | States covered | Lifecycle | Mobile | Gaps |
+|---|---|---|---|---|---|
+| Overview | [overview/render](tests/yield-dtf/overview/render.spec.ts) | renders offline from captured RPC+subgraph | none | yes | edge cases (empty/error chart) |
+| Issuance | [issuance/state-space](tests/yield-dtf/issuance/state-space.spec.ts) | active DTF: mint+redeem panels; mint-paused DTF: redeem-only, no mint panel | none | yes | zap variant, write flow |
+| Staking | [staking/render](tests/yield-dtf/staking/render.spec.ts), [staking/history-partial](tests/yield-dtf/staking/history-partial.spec.ts), [staking/stake-write](tests/yield-dtf/staking/stake-write.spec.ts), [staking/unstake-write](tests/yield-dtf/staking/unstake-write.spec.ts) | exchange-rate+APY render; staked-history survives a snapshots-less response; `stake()`/`unstake()` submit to stRSR | none | partial (render + history only) | withdraw, cancel, cooldown-vs-available |
+| Governance | — | — | — | — | entirely uncovered |
+| Auctions | — | — | — | — | entirely uncovered |
+| Settings / Roles | — | — | — | — | entirely uncovered (pause/freeze writes, roles) |
 
-**Engineer-review surfaces** (tests are coverage, not sign-off): all governance
-calldata/decode + optimistic, auctions `openAuction*` + weight/limit math, yield
-mint/redeem/stake writes + pause/freeze, all fee math, the price/supply SDK
-pipeline (H3), and #17 chain correctness.
+## Smoke tier (`e2e/tests/smoke/`, fast per-diff confidence check)
+
+Cross-cutting offline renders reused as the fast gate (`pnpm e2e:smoke`), not
+additional state coverage: [boot](tests/smoke/boot.spec.ts) (home shell),
+[home](tests/smoke/home.spec.ts) (discover table), [overview](tests/smoke/overview.spec.ts)
+(×3 chains), [dtf-data](tests/smoke/dtf-data.spec.ts), [issuance](tests/smoke/issuance.spec.ts),
+[zap](tests/smoke/zap.spec.ts), [governance](tests/smoke/governance.spec.ts),
+[auctions](tests/smoke/auctions.spec.ts), [settings](tests/smoke/settings.spec.ts),
+[yield-overview](tests/smoke/yield-overview.spec.ts), [yield-issuance](tests/smoke/yield-issuance.spec.ts),
+[yield-staking](tests/smoke/yield-staking.spec.ts).
+
+## Known gaps
+
+- Optimistic governance: no dedicated flow test. Existing specs pin
+  `isOptimistic: false`; `governance/photon-featured.spec.ts` documents that
+  none of its 8 captured proposals are optimistic, so the badge/tally path is
+  unexercised.
+- Automated (CoW) issuance wizard: zero specs, zero testids.
+- Legacy v2 auctions UI and bid writes: no specs.
+- Yield DTF governance, auctions, and settings/roles: no specs at all (no
+  `yield-dtf/governance|auctions|settings` dirs exist).
+- Create Index DTF / Create Yield DTF deploy wizards: no specs.
+- Explorer: only 3 of the tab surfaces render-tested (transactions, governance,
+  malformed-body edge); tokens/collaterals/revenue tabs, filters, and
+  pagination are untested.
+- Portfolio: no connected-with-holdings render test; only disconnected and a
+  malformed-row edge case exist.
+- Mobile: only tagged in `general/`, `index-dtf/`, and `yield-dtf/` render/
+  lifecycle specs. The entire `flows/` directory (30 specs — all governance/
+  auction/issuance write and edge-case behavior) and all of `smoke/` have zero
+  `@mobile` coverage.
+
+## Active fixmes (2)
+
+- `tests/index-dtf/overview/edge-cases.spec.ts:22` — Market Cap data-type
+  shows the market cap, not the unit price. Reason: `chart-overlay.tsx` always
+  reads the unit-price atom for the hero value, so switching the chart
+  data-type doesn't change the hero.
+- `tests/flows/issuance-manual-boundaries.spec.ts:407` — redeem must never
+  ship zero slippage protection on a leg. Reason: a low-rate/low-decimal asset
+  (e.g. cbBTC) can round its required amount to 0 below a dust threshold,
+  collapsing the 5% floor to 0 and silently removing that leg's slippage
+  protection; engineer must pick enforce-nonzero-floor vs. block-the-redeem.

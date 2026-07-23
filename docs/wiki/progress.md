@@ -1,6 +1,6 @@
 ---
 title: Progress
-updated: 2026-07-22
+updated: 2026-07-23
 type: ledger
 ---
 
@@ -10,7 +10,7 @@ Stage ledger. One row per stage; keep entries short. Verifier = exact fresh comm
 
 | Stage | Status | Verifier | Review | Next |
 |---|---|---|---|---|
-| Hardening × SDK-integration effort — sanitizer/e2e foundation · overview SDK adoption + portfolio governance-state adoption · crash + money-display guards · rebalance launch guards | **release boundary cleared** (PRs #1053/#1054/#1055/#1063 merged; SDK 0.5.0 published + pinned, links removed) | clean registry install: typecheck 0 · 836 unit · production build · smoke 56 · full flows 108; guards revert-verified at their seams | cross-reviews reconciled in docs/claude-hardening-review.md (+ codex-hardening-review.md) | remaining: merge master into the branch → gates on the merge → master PR; queue in docs/plans/FOLLOWUPS.md |
+| Hardening × SDK-integration effort — sanitizer/e2e foundation · overview SDK adoption + portfolio governance-state adoption · crash + money-display guards · rebalance launch guards | **ready for master PR** (stacked PRs merged; SDK 0.5.0 pinned exact; master merged 2026-07-23) | typecheck 0 · unit green · smoke 56 · full flows green · wiki-lint green; guards revert-verified at their seams | cross-reviews reconciled in docs/claude-hardening-review.md; release blockers fixed + pinned (malformed portfolio rows incl. optimistic context, manage-weights fail-closed, zap max) | master PR on go; queue in docs/plans/FOLLOWUPS.md |
 | E2E suite: offline playwright foundation → 3-dim domain coverage → yield replay → chain-scoped identity + trust hardening | done (2026-07-05→12) | flows/smokes/helper units green at every stage; zero-unmocked teardown enforced | audits converged (log ≤2026-07-12); recipes in e2e/CLAUDE.md + [[e2e]] | stages 2–5 in § E2E coverage debt below |
 | uni-pool-swaps-24h-volume-stat | done (base eaa2925ed) | `scope.mjs` gate-equivalent green: typecheck + lint + test:run (581 tests, 4 new) · live parity: PHOTON stat $28,764 = $0 mint + $28,764 swaps (independent subgraph+price calc); Base DTF $276 mint-only, no swap query | correctness+product: Dark & Light, per-claim verify — no correctness blockers; adopted: swap loading folded into stat skeleton (convergent), hook rename; declined: shared window const (parity documented at site) | product acks: stat composition differs on the 5 gated DTFs w/o disclosure (`help` tooltip is a 1-liner if wanted); AMM pool volume is wash-tradeable vs mint flow |
 | uni-pool-swaps-transaction-table | done (base dfaac6ebf, shipped in eaa2925ed) | `scope.mjs --gate` green (577 tests, 16 new) · Playwright: PHOTON Buy/Sell merged with Mint/Redeem desktop+mobile; Base DTF falls back w/o swap query; atom untouched | correctness+product: Dark & Light, per-claim verify — zero Critical/Important; adopted prettier nit; Buy/Sell msgids already translated | product ack: LP add/remove would label Buy/Sell (rare; refinement: cross-check v4 `Swap` events) |
