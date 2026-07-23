@@ -17,17 +17,19 @@ import {
 import { Trans } from '@lingui/react/macro'
 import { useQuote, useZapperModal } from '@reserve-protocol/react-zapper'
 import { useAtomValue } from 'jotai'
-import { useEffect, useState, type SyntheticEvent } from 'react'
+import { useEffect, useRef, useState, type SyntheticEvent } from 'react'
 import { createPortal } from 'react-dom'
 import { Address } from 'viem'
 import { useTrackIndexDTFClick } from '../../hooks/useTrackIndexDTFPage'
-import { getPancakeSwapUrl } from './pancake-swap'
+import { getPancakeSwapTradeUrl, getPancakeSwapUrl } from './pancake-swap'
+import { usePcsxAmountOut } from './use-pcsx-quote'
 import LargeMintCardBody from './large-mint-prompt-body'
 import {
   deriveMintPromptSignals,
   INITIAL_MINT_PROMPT_STATE,
   reduceMintPrompt,
   type MintPromptState,
+  type MintPromptVariant,
 } from './large-mint-prompt-state'
 
 type LargeMintPromptProps = {
@@ -58,6 +60,11 @@ const LargeMintPrompt = ({ mode, dtfAddress, chain }: LargeMintPromptProps) => {
   // the modal is open.
   const inContext = isInline || isOpen
   const hasValidQuote = !!data?.quote
+  const pcsxAmountOut = usePcsxAmountOut(chain, data?.quote)
+  const pcsxBetter =
+    !!data?.quote &&
+    !!pcsxAmountOut &&
+    BigInt(pcsxAmountOut) > BigInt(data.quote.amountOut)
   const mintingAvailable = isOndoMintingAvailable(market, assets)
   const mintingUnavailable = isOndoMintingUnavailable(market, assets)
   // Each asset only absorbs its basket weight of a mint, so the binding cap
@@ -70,6 +77,7 @@ const LargeMintPrompt = ({ mode, dtfAddress, chain }: LargeMintPromptProps) => {
     rawCapacity,
     rawClosedImpact,
     rawClosedError,
+    rawBetterPrice,
     rawImpact,
     rawLarge,
     rawError,
@@ -84,6 +92,7 @@ const LargeMintPrompt = ({ mode, dtfAddress, chain }: LargeMintPromptProps) => {
     mintingAvailable,
     mintingUnavailable,
     maxMintUsd,
+    pcsxBetter,
   })
 
   // Latch the suggestion so it persists across the zapper's periodic refetch
@@ -95,6 +104,7 @@ const LargeMintPrompt = ({ mode, dtfAddress, chain }: LargeMintPromptProps) => {
         rawCapacity,
         rawClosedImpact,
         rawClosedError,
+        rawBetterPrice,
         rawImpact,
         rawLarge,
         rawError,
@@ -107,6 +117,7 @@ const LargeMintPrompt = ({ mode, dtfAddress, chain }: LargeMintPromptProps) => {
     rawCapacity,
     rawClosedImpact,
     rawClosedError,
+    rawBetterPrice,
     rawImpact,
     rawLarge,
     rawError,
@@ -122,15 +133,55 @@ const LargeMintPrompt = ({ mode, dtfAddress, chain }: LargeMintPromptProps) => {
     setState(INITIAL_MINT_PROMPT_STATE)
   }, [currentTab])
 
-  const dismiss = () => setState((prev) => ({ ...prev, dismissed: true }))
+  const dismiss = () => {
+    // Guard against the mobile dialog's onOpenChange re-firing dismiss after the
+    // card is already dismissed (state.dismissed flips on the next render).
+    if (state.variant && !state.dismissed) {
+      trackClick('mint_prompt_dismiss', {
+        variant: state.variant,
+        tab: currentTab,
+      })
+    }
+    setState((prev) => ({ ...prev, dismissed: true }))
+  }
   // These notices target the BSC AI DTFs only (Ondo-backed baskets + a
   // PancakeSwap fallback). Other chains never show the card.
   const show =
     chain === ChainId.BSC && state.variant !== null && !state.dismissed
 
+  // One impression per variant surfaced. The reducer only escalates (never
+  // downgrades or flickers on refetch), so a changed variant is a genuinely new
+  // concern that earns its own impression. Reset when the card hides so a later
+  // re-show tracks again. Covers all 7 variants — including the 3 informational
+  // ones (capacity, closed-impact, closed-error) that have no CTA and were
+  // otherwise invisible in analytics.
+  const shownVariantRef = useRef<MintPromptVariant>(null)
+  useEffect(() => {
+    if (show && state.variant) {
+      if (shownVariantRef.current !== state.variant) {
+        shownVariantRef.current = state.variant
+        trackClick('mint_prompt_shown', {
+          variant: state.variant,
+          tab: currentTab,
+        })
+      }
+    } else {
+      shownVariantRef.current = null
+    }
+  }, [show, state.variant, currentTab, trackClick])
+
   // PancakeSwap only needs the DTF and the trade direction — buying makes it
-  // the output currency, selling the input.
-  const swapUrl = getPancakeSwapUrl({ dtfAddress, isBuy })
+  // the output currency, selling the input. The better-price variant instead
+  // links the exact quoted trade; if the quote clears mid-refetch it falls
+  // back to the plain link until the next quote resolves.
+  const swapUrl =
+    state.variant === 'better-price' && data?.quote
+      ? getPancakeSwapTradeUrl({
+          tokenIn: data.quote.tokenIn,
+          tokenOut: data.quote.tokenOut,
+          exactAmountIn: data.input.amount,
+        })
+      : getPancakeSwapUrl({ dtfAddress, isBuy })
   // The capacity card only shows while the market is open, so the session is
   // always live. Lowercase mid-sentence, matching the closed variants.
   const sessionLabel = market?.session ?? 'regular'

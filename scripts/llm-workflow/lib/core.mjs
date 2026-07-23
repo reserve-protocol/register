@@ -85,6 +85,32 @@ export function computeTierHint(files, lenses, maxLowFiles = 5) {
   return { profile, radius, size };
 }
 
+// Area guides: CLAUDE.md files living beside the code they describe. A diff that
+// touches an area but not its guide gets a directive to re-verify the guide.
+// Every ancestor guide counts (a nested area can be described at two levels);
+// the repo-root CLAUDE.md is the router, not an area guide, so it never matches.
+export function staleAreaGuides(files, root = repoRoot()) {
+  const changed = new Set(files);
+  const guides = new Map();
+  const checked = new Map();
+  for (const file of files) {
+    const segments = file.split("/");
+    for (let depth = segments.length - 1; depth > 0; depth--) {
+      const guide = `${segments.slice(0, depth).join("/")}/CLAUDE.md`;
+      let exists = checked.get(guide);
+      if (exists === undefined) {
+        exists = existsSync(join(root, guide));
+        checked.set(guide, exists);
+      }
+      if (exists) guides.set(guide, (guides.get(guide) ?? 0) + 1);
+    }
+  }
+  return [...guides.entries()]
+    .filter(([guide]) => !changed.has(guide))
+    .map(([guide, touched]) => ({ guide, touched }))
+    .sort((a, b) => a.guide.localeCompare(b.guide));
+}
+
 export const CONFIG_FILE = "llm-workflow.config.json";
 
 export function loadConfig(root = repoRoot()) {

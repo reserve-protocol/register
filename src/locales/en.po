@@ -34,7 +34,7 @@ msgstr ""
 msgid "(in their Github repository)"
 msgstr ""
 
-#: src/views/index-dtf/overview/components/index-disclousure.tsx:338
+#: src/views/index-dtf/overview/components/index-disclousure.tsx:361
 msgid "(the “Website”), you expressly acknowledge that you have read and understood the"
 msgstr ""
 
@@ -206,7 +206,7 @@ msgid "{0} buffer as % of mcap:"
 msgstr ""
 
 #. placeholder {0}: dtf.token.name
-#: src/views/index-dtf/overview/components/landing-mint/dtf-cover.tsx:177
+#: src/views/index-dtf/overview/components/landing-mint/dtf-cover.tsx:179
 msgid "{0} cover"
 msgstr ""
 
@@ -221,14 +221,14 @@ msgid "{0} Est. APY"
 msgstr ""
 
 #. placeholder {0}: dtf.token.symbol
-#: src/views/index-dtf/overview/components/landing-mint/dtf-cover.tsx:101
-#: src/views/index-dtf/overview/components/landing-mint/dtf-cover.tsx:106
+#: src/views/index-dtf/overview/components/landing-mint/dtf-cover.tsx:103
+#: src/views/index-dtf/overview/components/landing-mint/dtf-cover.tsx:108
 msgid "{0} explainer"
 msgstr ""
 
 #. placeholder {0}: selectedVersion.symbol
-#: src/views/home/components/highlighted-dtfs/transcript-preview.tsx:62
 #: src/views/home/components/highlighted-dtfs/transcript-preview.tsx:63
+#: src/views/home/components/highlighted-dtfs/transcript-preview.tsx:64
 msgid "{0} Explainer"
 msgstr ""
 
@@ -276,12 +276,12 @@ msgid "{0} selected"
 msgstr ""
 
 #. placeholder {0}: config.tokenName
-#: src/views/index-dtf/overview/components/index-disclousure.tsx:151
+#: src/views/index-dtf/overview/components/index-disclousure.tsx:157
 msgid "{0} Token Whitepaper"
 msgstr ""
 
 #. placeholder {0}: config.tokenName
-#: src/views/index-dtf/overview/components/index-disclousure.tsx:149
+#: src/views/index-dtf/overview/components/index-disclousure.tsx:155
 msgid "{0} Token Whitepapers"
 msgstr ""
 
@@ -589,7 +589,7 @@ msgid "<0>Reserve Optimistic Governor upgrade</0> introduces a new governor syst
 msgstr ""
 
 #: src/views/home/components/highlighted-dtfs/historical-price-disclaimer.tsx:5
-#: src/views/index-dtf/overview/components/index-disclousure.tsx:393
+#: src/views/index-dtf/overview/components/index-disclousure.tsx:416
 msgid "✱ Estimated historical price is a hypothetical illustration of how the DTF’s launch-day basket would have performed before the DTF was created, using historical prices for those assets. The basket did not actually exist during this period. The figure assumes a fixed basket — it does not reflect actual trading, management fees, slippage, or the rebalancing the DTF performs in practice — and is constructed with the benefit of hindsight. Hypothetical performance is not indicative of future results and is not investment advice."
 msgstr ""
 
@@ -794,7 +794,7 @@ msgstr ""
 
 #: src/views/index-dtf/manage/components/manage-about.tsx:119
 #: src/views/index-dtf/manage/components/manage-about.tsx:122
-#: src/views/index-dtf/overview/components/index-about-overview.tsx:109
+#: src/views/index-dtf/overview/components/index-about-overview.tsx:110
 msgid "About this DTF"
 msgstr ""
 
@@ -830,7 +830,7 @@ msgstr ""
 msgid "Active"
 msgstr ""
 
-#: src/views/portfolio-page/components/active-proposals.tsx:166
+#: src/views/portfolio-page/components/active-proposals.tsx:169
 msgid "Active Proposals"
 msgstr ""
 
@@ -940,7 +940,7 @@ msgstr ""
 msgid "Added"
 msgstr ""
 
-#: src/views/index-dtf/overview/components/index-disclousure.tsx:86
+#: src/views/index-dtf/overview/components/index-disclousure.tsx:87
 msgid "Added Kraken as an additional trading platform, including its market identifier code (\"MIC\") (E.33/34)."
 msgstr ""
 
@@ -1172,7 +1172,7 @@ msgstr ""
 msgid "An Index DTF is a tokenized basket of assets. Please add the tokens that will compose your index DTF basket at launch. The basket can be changed by governance in the future."
 msgstr ""
 
-#: src/views/yield-dtf/issuance/components/zapV2/context/ZapContext.tsx:543
+#: src/views/yield-dtf/issuance/components/zapV2/context/ZapContext.tsx:541
 msgid "An unknown error occurred"
 msgstr ""
 
@@ -1184,7 +1184,7 @@ msgstr ""
 msgid "and"
 msgstr ""
 
-#: src/views/index-dtf/overview/components/index-disclousure.tsx:349
+#: src/views/index-dtf/overview/components/index-disclousure.tsx:372
 msgid "and agree to the terms therein. ABC Labs, LLC (\"ABC Labs\") created the Website to help facilitate interaction with the Reserve protocol, including the minting and redeeming of DTFs. However, the Website is only one of several ways in which you can interact with the Reserve protocol. ABC Labs has neither created nor deployed any DTF and your ability to interact with specific DTFs via the Website in no way suggests that a DTF is endorsed by ABC Labs. In fact, ABC Labs assumes no liability for your use of the Website and interaction with the Reserve protocol, as covered in the Terms and Conditions."
 msgstr ""
 
@@ -1333,7 +1333,7 @@ msgstr ""
 msgid "As RToken"
 msgstr ""
 
-#: src/components/dtf-chat/index.tsx:111
+#: src/components/dtf-chat/index.tsx:112
 #: src/views/index-dtf/overview/components/index-ctas-overview-mobile.tsx:175
 #: src/views/index-dtf/overview/components/index-ctas-overview-mobile.tsx:182
 msgid "Ask Reserve AI"
@@ -1481,7 +1481,7 @@ msgstr ""
 msgid "Auctions run"
 msgstr ""
 
-#: src/views/index-dtf/overview/components/index-disclousure.tsx:93
+#: src/views/index-dtf/overview/components/index-disclousure.tsx:94
 msgid "Audit Status"
 msgstr ""
 
@@ -1705,7 +1705,7 @@ msgid "Basket composition"
 msgstr ""
 
 #: src/views/index-dtf/overview/components/index-governance-overview.tsx:37
-#: src/views/index-dtf/settings/components/index-settings-governance.tsx:160
+#: src/views/index-dtf/settings/components/index-settings-governance.tsx:170
 msgid "Basket Governance"
 msgstr ""
 
@@ -1836,6 +1836,14 @@ msgstr ""
 
 #: src/views/yield-dtf/issuance/components/zapV2/settings/ZapSettingsQuoteSource.tsx:20
 msgid "Best Quote"
+msgstr ""
+
+#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:41
+msgid "Better price found"
+msgstr ""
+
+#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:59
+msgid "Better price on PancakeSwap"
 msgstr ""
 
 #. placeholder {0}: formatCurrency( +formatUnits(currentPrice, data.buyingTokenDecimals) )
@@ -1971,7 +1979,7 @@ msgstr ""
 msgid "Buy"
 msgstr ""
 
-#: src/views/home/components/highlighted-dtfs/feature-card-header.tsx:102
+#: src/views/home/components/highlighted-dtfs/feature-card-header.tsx:116
 #: src/views/home/components/highlighted-dtfs/identity-card.tsx:48
 msgctxt "DTF card"
 msgid "Buy"
@@ -1991,7 +1999,7 @@ msgstr ""
 msgid "Buy / Sell"
 msgstr ""
 
-#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:231
+#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:252
 msgid "Buy on PancakeSwap"
 msgstr ""
 
@@ -2031,7 +2039,7 @@ msgstr ""
 msgid "By enabling this option, the zapper will only attempt to mint RTokens instead of trading for them. This can help you avoid trading fees and slippage."
 msgstr ""
 
-#: src/views/index-dtf/overview/components/index-disclousure.tsx:330
+#: src/views/index-dtf/overview/components/index-disclousure.tsx:353
 msgid "By using"
 msgstr ""
 
@@ -2289,7 +2297,7 @@ msgstr ""
 msgid "Claiming"
 msgstr ""
 
-#: src/views/index-dtf/overview/components/index-disclousure.tsx:94
+#: src/views/index-dtf/overview/components/index-disclousure.tsx:95
 msgid "Clarified in H.8/H.9 that the LCAP token contracts are based on the Reserve Index Protocol factory smart contracts, which have been audited by Trust Security, Cantina, and Trail of Bits with no critical issues ever found."
 msgstr ""
 
@@ -2323,7 +2331,7 @@ msgstr ""
 msgid "Closes"
 msgstr ""
 
-#: src/views/index-dtf/overview/components/index-disclousure.tsx:119
+#: src/views/index-dtf/overview/components/index-disclousure.tsx:120
 msgid "CMC20 whitepaper documentation"
 msgstr ""
 
@@ -2665,19 +2673,19 @@ msgstr ""
 msgid "Contracts"
 msgstr ""
 
-#: src/views/index-dtf/settings/components/index-settings-governance.tsx:149
+#: src/views/index-dtf/settings/components/index-settings-governance.tsx:159
 msgid "Controls changes to the basket of an Index DTF"
 msgstr ""
 
-#: src/views/index-dtf/settings/components/index-settings-governance.tsx:153
+#: src/views/index-dtf/settings/components/index-settings-governance.tsx:163
 msgid "Controls fees, voting parameters, and anything other than basket changes for an Index DTF"
 msgstr ""
 
-#: src/views/index-dtf/settings/components/index-settings-governance.tsx:152
+#: src/views/index-dtf/settings/components/index-settings-governance.tsx:162
 msgid "Controls fees, voting parameters, and basket changes for an Index DTF"
 msgstr ""
 
-#: src/views/index-dtf/settings/components/index-settings-governance.tsx:154
+#: src/views/index-dtf/settings/components/index-settings-governance.tsx:164
 msgid "Controls settings of the vlDAO including vote lock duration and approving revenue tokens"
 msgstr ""
 
@@ -2732,7 +2740,7 @@ msgstr ""
 msgid "Copy to clipboard"
 msgstr ""
 
-#: src/views/index-dtf/overview/components/index-disclousure.tsx:90
+#: src/views/index-dtf/overview/components/index-disclousure.tsx:91
 msgid "Corrected F.6 to reflect that the CFB token has a dynamic collateral-based supply mechanism, not a fixed supply."
 msgstr ""
 
@@ -3016,11 +3024,11 @@ msgstr ""
 msgid "Current value in buffer:"
 msgstr ""
 
-#: src/views/index-dtf/overview/components/index-disclousure.tsx:116
+#: src/views/index-dtf/overview/components/index-disclousure.tsx:117
 msgid "Current Version (v1)"
 msgstr ""
 
-#: src/views/index-dtf/overview/components/index-disclousure.tsx:57
+#: src/views/index-dtf/overview/components/index-disclousure.tsx:58
 msgid "Current Version (v2)"
 msgstr ""
 
@@ -3029,7 +3037,7 @@ msgstr ""
 msgid "Current votes"
 msgstr ""
 
-#: src/views/index-dtf/overview/components/index-disclousure.tsx:247
+#: src/views/index-dtf/overview/components/index-disclousure.tsx:270
 msgid "Custodial Risks: Ondo Tokenized Stocks represent claims on SPVs and other structures that hold underlying equity positions through custodians. DTF exposure therefore depends on the operational integrity and solvency of third parties. Any failure, suspension, error, insolvency, fraud, cyber incident, or transfer restriction affecting these parties could result in delayed settlement, blocked transfers, impaired redemptions, forced liquidation, or partial or total loss of value for the DTF’s holdings."
 msgstr ""
 
@@ -3059,7 +3067,7 @@ msgstr ""
 msgid "DAO"
 msgstr ""
 
-#: src/views/index-dtf/settings/components/index-settings-governance.tsx:163
+#: src/views/index-dtf/settings/components/index-settings-governance.tsx:173
 msgid "DAO Governance"
 msgstr ""
 
@@ -3079,7 +3087,7 @@ msgstr ""
 msgid "Date Proposed"
 msgstr ""
 
-#: src/views/index-dtf/overview/components/index-disclousure.tsx:73
+#: src/views/index-dtf/overview/components/index-disclousure.tsx:74
 msgid "Dates Added"
 msgstr ""
 
@@ -3330,7 +3338,7 @@ msgstr ""
 msgid "Discard"
 msgstr ""
 
-#: src/views/index-dtf/overview/components/index-disclousure.tsx:324
+#: src/views/index-dtf/overview/components/index-disclousure.tsx:347
 msgid "Disclosures"
 msgstr ""
 
@@ -3366,7 +3374,7 @@ msgstr ""
 msgid "Dismiss invitation"
 msgstr ""
 
-#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:197
+#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:218
 msgid "Dismiss suggestion"
 msgstr ""
 
@@ -3453,7 +3461,7 @@ msgid "Download snapshot"
 msgstr ""
 
 #: src/views/index-dtf/manage/components/manage-about.tsx:37
-#: src/views/index-dtf/overview/components/dtf-downloadable-resources.tsx:140
+#: src/views/index-dtf/overview/components/dtf-downloadable-resources.tsx:142
 msgid "Downloadable resources"
 msgstr ""
 
@@ -3479,18 +3487,18 @@ msgstr ""
 msgid "DTF Category Tags"
 msgstr ""
 
-#: src/views/index-dtf/overview/components/landing-mint/dtf-cover.tsx:177
+#: src/views/index-dtf/overview/components/landing-mint/dtf-cover.tsx:179
 #: src/views/top100/components/top100-card.tsx:39
 msgid "DTF cover"
 msgstr ""
 
-#: src/views/home/components/highlighted-dtfs/performance-chart-launch-marker.tsx:35
-#: src/views/index-dtf/overview/components/charts/price-chart-launch-marker.tsx:39
+#: src/views/home/components/highlighted-dtfs/performance-chart-launch-marker.tsx:37
+#: src/views/index-dtf/overview/components/charts/price-chart-launch-marker.tsx:41
 msgid "DTF Created"
 msgstr ""
 
 #: src/views/home/components/dtf-explainer-button.tsx:26
-#: src/views/index-dtf/overview/components/landing-mint/dtf-cover.tsx:107
+#: src/views/index-dtf/overview/components/landing-mint/dtf-cover.tsx:109
 msgid "DTF Explainer"
 msgstr ""
 
@@ -3507,7 +3515,7 @@ msgstr ""
 msgid "DTF Factsheet"
 msgstr ""
 
-#: src/views/index-dtf/settings/components/index-settings-governance.tsx:162
+#: src/views/index-dtf/settings/components/index-settings-governance.tsx:172
 msgid "DTF Governance"
 msgstr ""
 
@@ -3524,11 +3532,16 @@ msgstr ""
 msgid "DTF Inactive"
 msgstr ""
 
+#: src/views/home/components/highlighted-dtfs/performance-chart-launch-marker.tsx:37
+#: src/views/index-dtf/overview/components/charts/price-chart-launch-marker.tsx:41
+msgid "DTF Launch"
+msgstr ""
+
 #: src/views/index-dtf/components/navigation/index.tsx:408
 msgid "DTF pages"
 msgstr ""
 
-#: src/views/home/components/highlighted-dtfs/performance-chart-launch-marker.tsx:39
+#: src/views/home/components/highlighted-dtfs/performance-chart-launch-marker.tsx:41
 msgid "DTF price data"
 msgstr ""
 
@@ -3792,7 +3805,7 @@ msgstr ""
 msgid "Ends at"
 msgstr ""
 
-#: src/views/index-dtf/overview/components/index-disclousure.tsx:97
+#: src/views/index-dtf/overview/components/index-disclousure.tsx:98
 msgid "Energy Consumption"
 msgstr ""
 
@@ -3898,7 +3911,7 @@ msgstr ""
 msgid "Error fetching price"
 msgstr ""
 
-#: src/views/yield-dtf/issuance/components/zapV2/context/ZapContext.tsx:560
+#: src/views/yield-dtf/issuance/components/zapV2/context/ZapContext.tsx:558
 msgid "Error occurred, try again"
 msgstr ""
 
@@ -3922,12 +3935,12 @@ msgstr ""
 msgid "Est. APY:"
 msgstr ""
 
-#: src/views/home/components/highlighted-dtfs/performance-chart-launch-marker.tsx:37
+#: src/views/home/components/highlighted-dtfs/performance-chart-launch-marker.tsx:39
 msgid "Est. Hist. Price ✱"
 msgstr ""
 
-#: src/views/home/components/highlighted-dtfs/performance-chart-launch-marker.tsx:36
-#: src/views/index-dtf/overview/components/charts/price-chart-launch-marker.tsx:41
+#: src/views/home/components/highlighted-dtfs/performance-chart-launch-marker.tsx:38
+#: src/views/index-dtf/overview/components/charts/price-chart-launch-marker.tsx:43
 msgid "Est. Historical Price ✱"
 msgstr ""
 
@@ -3935,7 +3948,7 @@ msgstr ""
 msgid "Est. Partner Revenue"
 msgstr ""
 
-#: src/views/home/components/highlighted-dtfs/performance-chart-launch-marker.tsx:38
+#: src/views/home/components/highlighted-dtfs/performance-chart-launch-marker.tsx:40
 msgid "Est. Price ✱"
 msgstr ""
 
@@ -4064,7 +4077,7 @@ msgstr ""
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/sections/propose-dao-governance.tsx:93
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/atoms.ts:888
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-governance-settings.tsx:91
-#: src/views/index-dtf/settings/components/index-settings-governance.tsx:118
+#: src/views/index-dtf/settings/components/index-settings-governance.tsx:128
 #: src/views/yield-dtf/settings/components/governance-info.tsx:57
 msgid "Execution Delay"
 msgstr ""
@@ -4105,11 +4118,11 @@ msgstr ""
 msgid "Exit Deployer"
 msgstr ""
 
-#: src/views/index-dtf/overview/components/index-disclousure.tsx:98
+#: src/views/index-dtf/overview/components/index-disclousure.tsx:99
 msgid "Expanded J.1 to include energy usage data and the sources and methodologies used for its calculation."
 msgstr ""
 
-#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:54
+#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:63
 msgid "Expect a worse price"
 msgstr ""
 
@@ -4202,7 +4215,7 @@ msgstr ""
 msgid "Failed to connect wallet"
 msgstr ""
 
-#: src/views/yield-dtf/issuance/components/zapV2/context/ZapContext.tsx:540
+#: src/views/yield-dtf/issuance/components/zapV2/context/ZapContext.tsx:538
 msgid "Failed to find a route"
 msgstr ""
 
@@ -4425,11 +4438,11 @@ msgstr ""
 msgid "For approved governors to fast-track proposals."
 msgstr ""
 
-#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:137
+#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:158
 msgid "For larger amounts, split your order into multiple transactions."
 msgstr ""
 
-#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:94
+#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:115
 msgid "For larger orders, a DEX like PancakeSwap may get you a better price by routing your trade across multiple sources of liquidity."
 msgstr ""
 
@@ -4454,7 +4467,7 @@ msgstr ""
 msgid "Force minting RTokens"
 msgstr ""
 
-#: src/views/index-dtf/overview/components/index-disclousure.tsx:65
+#: src/views/index-dtf/overview/components/index-disclousure.tsx:66
 msgid "Formatting Guidance"
 msgstr ""
 
@@ -4654,7 +4667,7 @@ msgstr ""
 msgid "Governor address"
 msgstr ""
 
-#: src/views/index-dtf/settings/components/index-settings-governance.tsx:56
+#: src/views/index-dtf/settings/components/index-settings-governance.tsx:57
 msgid "Governor Address"
 msgstr ""
 
@@ -4744,7 +4757,7 @@ msgid "High liquidity"
 msgstr ""
 
 #: src/views/index-dtf/auctions/views/rebalance/components/rebalance-liquidity-checker.tsx:244
-#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:41
+#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:48
 #: src/views/index-dtf/governance/views/propose/basket/components/proposal-liquidity-checker.tsx:311
 msgid "High price impact"
 msgstr ""
@@ -4907,7 +4920,7 @@ msgstr ""
 #: src/components/inactive-badge.tsx:18
 #: src/views/home/components/discover-index-dtf/index-dtf-table-columns.tsx:197
 #: src/views/home/components/discover-yield-dtf/yield-dtf-card.tsx:95
-#: src/views/home/components/highlighted-dtfs/feature-card-header.tsx:116
+#: src/views/home/components/highlighted-dtfs/feature-card-header.tsx:130
 msgid "Inactive"
 msgstr ""
 
@@ -4919,7 +4932,7 @@ msgstr ""
 msgid "Include Price Ranges"
 msgstr ""
 
-#: src/views/index-dtf/overview/components/index-disclousure.tsx:70
+#: src/views/index-dtf/overview/components/index-disclousure.tsx:71
 msgid "Included the token abbreviation \"CFB Token\" in the title."
 msgstr ""
 
@@ -5065,7 +5078,7 @@ msgstr ""
 msgid "Inputs are locked while swap quotes are fetched."
 msgstr ""
 
-#: src/views/index-dtf/overview/components/index-disclousure.tsx:74
+#: src/views/index-dtf/overview/components/index-disclousure.tsx:75
 msgid "Inserted missing dates - notification date, admission to trading start date, and publication date (01./F.9/F.10)."
 msgstr ""
 
@@ -5083,7 +5096,7 @@ msgstr ""
 msgid "Insufficient balance"
 msgstr ""
 
-#: src/views/yield-dtf/issuance/components/zapV2/context/ZapContext.tsx:584
+#: src/views/yield-dtf/issuance/components/zapV2/context/ZapContext.tsx:582
 msgid "Insufficient funds"
 msgstr ""
 
@@ -5253,7 +5266,7 @@ msgstr ""
 msgid "Language"
 msgstr ""
 
-#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:36
+#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:43
 msgid "Large Order"
 msgstr ""
 
@@ -5283,7 +5296,7 @@ msgstr ""
 msgid "Launch Settings"
 msgstr ""
 
-#: src/views/index-dtf/overview/components/index-disclousure.tsx:77
+#: src/views/index-dtf/overview/components/index-disclousure.tsx:78
 msgid "Launch Status"
 msgstr ""
 
@@ -5361,7 +5374,7 @@ msgstr ""
 msgid "Liquidity"
 msgstr ""
 
-#: src/views/index-dtf/overview/components/index-disclousure.tsx:274
+#: src/views/index-dtf/overview/components/index-disclousure.tsx:297
 msgid "Liquidity Risk: Although on-chain trading is 24/7, primary minting/redeeming of Ondo Tokenized Stocks may be limited, permissioned, delayed, or available only during specific windows. In stressed markets, secondary market liquidity may deteriorate, spreads may widen, and token prices may deviate materially from the value of the referenced underlying equities. As a result, the DTF may experience tracking error versus its intended index composition and may be unable to dispose of or rebalance positions at or near observable net asset value."
 msgstr ""
 
@@ -5580,7 +5593,7 @@ msgstr ""
 msgid "Manually estimated APY calculated from basket averaged yield."
 msgstr ""
 
-#: src/views/index-dtf/overview/components/dtf-downloadable-resources.tsx:68
+#: src/views/index-dtf/overview/components/dtf-downloadable-resources.tsx:69
 msgid "Markdown file for your LLM"
 msgstr ""
 
@@ -5588,7 +5601,7 @@ msgstr ""
 msgid "Market"
 msgstr ""
 
-#: src/views/index-dtf/overview/components/index-disclousure.tsx:287
+#: src/views/index-dtf/overview/components/index-disclousure.tsx:310
 msgid "Market Access and Redemption Risk: Minting and redemption for Ondo Tokenized Stocks may be permissioned, capacity-limited, subject to eligibility/whitelisting, and available only during defined windows or business-hour cutoffs tied to traditional market operations. These frictions can prevent arbitrage, impair exits at or near NAV, and amplify secondary-market dislocations, thereby resulting in a partial or total loss of the DTFs' holdings."
 msgstr ""
 
@@ -5758,7 +5771,7 @@ msgstr ""
 msgid "Minimum trade volume ($)"
 msgstr ""
 
-#: src/views/index-dtf/overview/components/index-disclousure.tsx:81
+#: src/views/index-dtf/overview/components/index-disclousure.tsx:82
 msgid "Minor Text Edit"
 msgstr ""
 
@@ -5812,7 +5825,7 @@ msgstr ""
 msgid "Mint amount"
 msgstr ""
 
-#: src/views/yield-dtf/issuance/components/zapV2/context/ZapContext.tsx:313
+#: src/views/yield-dtf/issuance/components/zapV2/context/ZapContext.tsx:311
 msgid "Mint amount above Global Max Mint"
 msgstr ""
 
@@ -5879,7 +5892,7 @@ msgstr ""
 msgid "Minted"
 msgstr ""
 
-#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:156
+#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:177
 msgid "Minting {symbol} is currently unavailable and we couldn't find another route to buy it."
 msgstr ""
 
@@ -5936,7 +5949,7 @@ msgstr ""
 msgid "More"
 msgstr ""
 
-#: src/views/index-dtf/overview/components/dtf-downloadable-resources.tsx:143
+#: src/views/index-dtf/overview/components/dtf-downloadable-resources.tsx:145
 msgid "More information on what {dtfName} is, what it’s all about, methodology and thesis."
 msgstr ""
 
@@ -6176,7 +6189,7 @@ msgstr ""
 
 #: src/components/charts/area/AreaChart.tsx:132
 #: src/views/home/components/discover-index-dtf/index-dtf-table-columns.tsx:109
-#: src/views/home/components/highlighted-dtfs/feature-card-header.tsx:146
+#: src/views/home/components/highlighted-dtfs/feature-card-header.tsx:160
 #: src/views/index-dtf/overview/components/charts/percentage-change.tsx:30
 #: src/views/top100/components/top100-table.tsx:35
 #: src/views/top100/components/top100-table.tsx:43
@@ -6267,7 +6280,7 @@ msgstr ""
 msgid "No results."
 msgstr ""
 
-#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:38
+#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:45
 msgid "No route found"
 msgstr ""
 
@@ -6443,11 +6456,11 @@ msgstr ""
 msgid "of"
 msgstr ""
 
-#: src/views/index-dtf/overview/components/index-disclousure.tsx:53
+#: src/views/index-dtf/overview/components/index-disclousure.tsx:54
 msgid "Official documentation for the CFB LCAP token"
 msgstr ""
 
-#: src/views/index-dtf/overview/components/index-disclousure.tsx:112
+#: src/views/index-dtf/overview/components/index-disclousure.tsx:113
 msgid "Official documentation for the CMC20 token"
 msgstr ""
 
@@ -6586,7 +6599,7 @@ msgstr ""
 msgid "or drag and drop it here"
 msgstr ""
 
-#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:52
+#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:61
 msgid "Order too large"
 msgstr ""
 
@@ -6605,7 +6618,7 @@ msgstr ""
 msgid "Orders expire in {0}"
 msgstr ""
 
-#: src/views/index-dtf/overview/components/index-disclousure.tsx:106
+#: src/views/index-dtf/overview/components/index-disclousure.tsx:107
 msgid "Original whitepaper documentation"
 msgstr ""
 
@@ -6668,6 +6681,14 @@ msgstr ""
 
 #: src/views/yield-dtf/governance/views/proposal/components/RolesProposal.tsx:17
 msgid "Owners"
+msgstr ""
+
+#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:103
+msgid "PancakeSwap is currently offering a better price for this exact order. We recommend buying {symbol} there instead."
+msgstr ""
+
+#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:108
+msgid "PancakeSwap is currently offering a better price for this exact order. We recommend selling {symbol} there instead."
 msgstr ""
 
 #: src/views/index-dtf/governance/components/proposal-preview/raw-call-preview.tsx:28
@@ -6885,8 +6906,8 @@ msgstr ""
 msgid "Platforms"
 msgstr ""
 
-#: src/views/index-dtf/overview/components/landing-mint/dtf-cover.tsx:206
-#: src/views/index-dtf/overview/components/landing-mint/dtf-cover.tsx:217
+#: src/views/index-dtf/overview/components/landing-mint/dtf-cover.tsx:213
+#: src/views/index-dtf/overview/components/landing-mint/dtf-cover.tsx:224
 msgid "Play video"
 msgstr ""
 
@@ -6932,7 +6953,7 @@ msgstr ""
 msgid "Please read more about the different roles in Alexios and the Reserve protocol in the documentation."
 msgstr ""
 
-#: src/views/index-dtf/overview/components/index-disclousure.tsx:387
+#: src/views/index-dtf/overview/components/index-disclousure.tsx:410
 msgid "please see here."
 msgstr ""
 
@@ -6970,7 +6991,7 @@ msgstr ""
 msgid "Please try again later"
 msgstr ""
 
-#: src/views/yield-dtf/issuance/components/zapV2/context/ZapContext.tsx:545
+#: src/views/yield-dtf/issuance/components/zapV2/context/ZapContext.tsx:543
 msgid "Please try again. If the problem persists, please <0>contact support.</0>"
 msgstr ""
 
@@ -7086,7 +7107,7 @@ msgstr ""
 msgid "Previous basket"
 msgstr ""
 
-#: src/views/index-dtf/overview/components/index-disclousure.tsx:104
+#: src/views/index-dtf/overview/components/index-disclousure.tsx:105
 msgid "Previous Version (v1)"
 msgstr ""
 
@@ -7274,7 +7295,7 @@ msgstr ""
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/sections/propose-dao-governance.tsx:60
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/atoms.ts:869
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-governance-settings.tsx:58
-#: src/views/index-dtf/settings/components/index-settings-governance.tsx:84
+#: src/views/index-dtf/settings/components/index-settings-governance.tsx:94
 #: src/views/yield-dtf/settings/components/governance-info.tsx:61
 msgid "Proposal Threshold"
 msgstr ""
@@ -7400,7 +7421,7 @@ msgid "Provider"
 msgstr ""
 
 #. placeholder {0}: version.date
-#: src/views/index-dtf/overview/components/index-disclousure.tsx:185
+#: src/views/index-dtf/overview/components/index-disclousure.tsx:198
 msgid "Published: {0}"
 msgstr ""
 
@@ -7500,11 +7521,11 @@ msgstr ""
 msgid "Read docs"
 msgstr ""
 
-#: src/views/index-dtf/overview/components/index-about-overview.tsx:149
+#: src/views/index-dtf/overview/components/index-about-overview.tsx:156
 msgid "Read less"
 msgstr ""
 
-#: src/views/index-dtf/overview/components/index-about-overview.tsx:124
+#: src/views/index-dtf/overview/components/index-about-overview.tsx:128
 #: src/views/yield-dtf/issuance/components/warnings/index.tsx:67
 #: src/views/yield-dtf/issuance/components/warnings/index.tsx:101
 #: src/views/yield-dtf/staking/components/trading-paused-banner.tsx:33
@@ -7640,7 +7661,7 @@ msgstr ""
 msgid "Redeem amount"
 msgstr ""
 
-#: src/views/yield-dtf/issuance/components/zapV2/context/ZapContext.tsx:314
+#: src/views/yield-dtf/issuance/components/zapV2/context/ZapContext.tsx:312
 msgid "Redeem amount above Global Max Redeem"
 msgstr ""
 
@@ -7674,7 +7695,7 @@ msgstr ""
 msgid "Redeeming {0} for {1}."
 msgstr ""
 
-#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:161
+#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:182
 msgid "Redeeming {symbol} is currently unavailable and we couldn't find another route to sell it."
 msgstr ""
 
@@ -7761,7 +7782,7 @@ msgstr ""
 msgid "Regular minting "
 msgstr ""
 
-#: src/views/index-dtf/overview/components/index-disclousure.tsx:259
+#: src/views/index-dtf/overview/components/index-disclousure.tsx:282
 msgid "Regulatory and Compliance Risk: Tokenized equities and related on-chain transfer mechanisms may be subject to evolving regulatory interpretations and enforcement actions. Ondo Tokenized Stocks may also be subject to contractual eligibility requirements, permissioning, whitelisting, jurisdictional limitations, sanctions screening, or other compliance gating that can be changed or applied with little notice. If regulations or compliance requirements change, the DTF may be forced to restrict access, halt mints/redemptions, rebalance away from affected components, or wind down positions under adverse market conditions, potentially causing tracking error, reduced liquidity, and losses."
 msgstr ""
 
@@ -7859,11 +7880,11 @@ msgstr ""
 msgid "Removed reward token"
 msgstr ""
 
-#: src/views/index-dtf/overview/components/index-disclousure.tsx:66
+#: src/views/index-dtf/overview/components/index-disclousure.tsx:67
 msgid "Removed the column on forms and standards which had guidelines on formatting standards to the white paper."
 msgstr ""
 
-#: src/views/index-dtf/overview/components/index-disclousure.tsx:82
+#: src/views/index-dtf/overview/components/index-disclousure.tsx:83
 msgid "Removed the word \"ongoing\" from Section E.18 (no material impact)."
 msgstr ""
 
@@ -8065,7 +8086,7 @@ msgid "Revert All"
 msgstr ""
 
 #. placeholder {0}: config.tokenName
-#: src/views/index-dtf/overview/components/index-disclousure.tsx:140
+#: src/views/index-dtf/overview/components/index-disclousure.tsx:146
 msgid "Review {0} Whitepaper"
 msgstr ""
 
@@ -8450,6 +8471,10 @@ msgstr ""
 msgid "Selected image"
 msgstr ""
 
+#: src/views/index-dtf/settings/components/index-settings-governance.tsx:73
+msgid "Selector Registry"
+msgstr ""
+
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-optimistic-parameters.tsx:51
 msgid "Selector registry is not available for this optimistic governor."
 msgstr ""
@@ -8484,7 +8509,7 @@ msgstr ""
 msgid "Sell collateral"
 msgstr ""
 
-#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:233
+#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:254
 msgid "Sell on PancakeSwap"
 msgstr ""
 
@@ -8857,13 +8882,13 @@ msgstr ""
 
 #. placeholder {0}: rToken?.symbol
 #. placeholder {1}: tokenIn.symbol
-#: src/views/yield-dtf/issuance/components/zapV2/context/ZapContext.tsx:317
+#: src/views/yield-dtf/issuance/components/zapV2/context/ZapContext.tsx:315
 msgid "Sorry, your request exceeds the Global Max Mint limit. The Global Max Mint is set at {maxFormatted} {0}. You can only zap a maximum of {maxZap} {1}."
 msgstr ""
 
 #. placeholder {0}: rToken?.symbol
 #. placeholder {1}: tokenIn.symbol
-#: src/views/yield-dtf/issuance/components/zapV2/context/ZapContext.tsx:318
+#: src/views/yield-dtf/issuance/components/zapV2/context/ZapContext.tsx:316
 msgid "Sorry, your request exceeds the Global Max Redeem limit. The Global Max Redeem is set at {maxFormatted} {0}. You can only zap a maximum of {maxZap} {1}."
 msgstr ""
 
@@ -9182,7 +9207,7 @@ msgstr ""
 msgid "Summary"
 msgstr ""
 
-#: src/views/index-dtf/overview/components/index-disclousure.tsx:62
+#: src/views/index-dtf/overview/components/index-disclousure.tsx:63
 msgid "Summary of Changes from v1"
 msgstr ""
 
@@ -9295,7 +9320,7 @@ msgstr ""
 msgid "Target(s)"
 msgstr ""
 
-#: src/views/index-dtf/overview/components/dtf-downloadable-resources.tsx:65
+#: src/views/index-dtf/overview/components/dtf-downloadable-resources.tsx:66
 msgid "Tear Sheet"
 msgstr ""
 
@@ -9314,11 +9339,11 @@ msgstr ""
 msgid "Telegram username"
 msgstr ""
 
-#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:56
+#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:65
 msgid "Temporarily unavailable"
 msgstr ""
 
-#: src/views/index-dtf/overview/components/index-disclousure.tsx:347
+#: src/views/index-dtf/overview/components/index-disclousure.tsx:370
 msgid "Terms and Conditions"
 msgstr ""
 
@@ -9391,7 +9416,7 @@ msgstr ""
 msgid "The impact your trade has on the market price."
 msgstr ""
 
-#: src/views/index-dtf/overview/components/index-disclousure.tsx:363
+#: src/views/index-dtf/overview/components/index-disclousure.tsx:386
 msgid "The information provided on the Website comes from on-chain sources. Past performance is not indicative of future results. Although index DTFs are intended to track indexes, their ability to successfully track indexes are dependent on the governance structure of the DTF and the governance’s ability to make appropriate trades. There is no guarantee that such trades will be successful or will track its corresponding index exactly. There are many risks associated with digital assets, including but not limited to security risk, counterparty risk, volatility risk, conflicts of interest, and many more. DTFs are no exception. By using the Website, you agree that your interaction with any DTFs is solely at your own risk and the Website and DTFs come as is, without any warranty or condition of any kind."
 msgstr ""
 
@@ -9403,7 +9428,7 @@ msgstr ""
 msgid "The mandate describes what goals its governors should try to achieve. By briefly explaining the RToken's purpose and what the RToken is intended to do, it provides common ground for the governors to decide upon priorities and how to weigh tradeoffs."
 msgstr ""
 
-#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:70
+#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:79
 msgid "The market reopens {nextOpenLabel}."
 msgstr ""
 
@@ -9473,7 +9498,7 @@ msgstr ""
 msgid "The price impact for this trade is very high. You will get significantly less value than expected."
 msgstr ""
 
-#: src/views/yield-dtf/issuance/components/zapV2/context/ZapContext.tsx:593
+#: src/views/yield-dtf/issuance/components/zapV2/context/ZapContext.tsx:591
 msgid "The price impact of this transaction is too high. Please consider using a smaller amount or a different token."
 msgstr ""
 
@@ -9601,7 +9626,7 @@ msgstr ""
 msgid "There are a <0>handful of risks</0> associated with any given RToken's collateral assets, including assets' redeemability, the health of their reserves, price volatility, etc. Likewise, because many RTokens leverage assets from external protocols, RToken holders assume all of the risks of its underlying protocols (smart contract, governance, or otherwise)."
 msgstr ""
 
-#: src/views/index-dtf/overview/components/index-disclousure.tsx:240
+#: src/views/index-dtf/overview/components/index-disclousure.tsx:263
 msgid "There are potential risks associated with Ondo Tokenized Stocks, including but not limited to:"
 msgstr ""
 
@@ -9781,7 +9806,7 @@ msgstr ""
 msgid "Timelock address"
 msgstr ""
 
-#: src/views/index-dtf/settings/components/index-settings-governance.tsx:64
+#: src/views/index-dtf/settings/components/index-settings-governance.tsx:65
 msgid "Timelock Address"
 msgstr ""
 
@@ -9789,11 +9814,11 @@ msgstr ""
 msgid "Title"
 msgstr ""
 
-#: src/views/index-dtf/overview/components/index-disclousure.tsx:69
+#: src/views/index-dtf/overview/components/index-disclousure.tsx:70
 msgid "Title Update"
 msgstr ""
 
-#: src/views/index-dtf/overview/components/index-disclousure.tsx:381
+#: src/views/index-dtf/overview/components/index-disclousure.tsx:404
 msgid "To learn more about the risks associated with DTFs,"
 msgstr ""
 
@@ -9903,7 +9928,7 @@ msgstr ""
 msgid "Token not supported"
 msgstr ""
 
-#: src/views/index-dtf/overview/components/index-disclousure.tsx:89
+#: src/views/index-dtf/overview/components/index-disclousure.tsx:90
 msgid "Token Supply"
 msgstr ""
 
@@ -10040,7 +10065,7 @@ msgstr ""
 msgid "Trade remaining {0} into collateral"
 msgstr ""
 
-#: src/views/index-dtf/components/zapper/large-mint-prompt.tsx:202
+#: src/views/index-dtf/components/zapper/large-mint-prompt.tsx:253
 msgid "Trade suggestion"
 msgstr ""
 
@@ -10104,7 +10129,7 @@ msgstr ""
 msgid "Trading paused"
 msgstr ""
 
-#: src/views/index-dtf/overview/components/index-disclousure.tsx:85
+#: src/views/index-dtf/overview/components/index-disclousure.tsx:86
 msgid "Trading Platforms"
 msgstr ""
 
@@ -10117,7 +10142,7 @@ msgstr ""
 msgid "Trading Timelock"
 msgstr ""
 
-#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:43
+#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:50
 msgid "Trading unavailable"
 msgstr ""
 
@@ -10250,15 +10275,15 @@ msgstr ""
 msgid "Try again"
 msgstr ""
 
-#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:73
+#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:82
 msgid "Try again during {nextSessionLabel} hours in the US."
 msgstr ""
 
-#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:75
+#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:84
 msgid "Try again later when trading resumes."
 msgstr ""
 
-#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:58
+#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:67
 msgid "Try PancakeSwap"
 msgstr ""
 
@@ -10589,11 +10614,11 @@ msgstr ""
 msgid "Update Voting Quorum"
 msgstr ""
 
-#: src/views/index-dtf/overview/components/index-disclousure.tsx:78
+#: src/views/index-dtf/overview/components/index-disclousure.tsx:79
 msgid "Updated references to reflect that the token was launched on 24 September 2025 (Section 10)."
 msgstr ""
 
-#: src/views/index-dtf/overview/components/index-disclousure.tsx:60
+#: src/views/index-dtf/overview/components/index-disclousure.tsx:61
 msgid "Updated whitepaper documentation"
 msgstr ""
 
@@ -10638,7 +10663,7 @@ msgstr ""
 msgid "Uploading files..."
 msgstr ""
 
-#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:211
+#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:232
 msgid "US stock market hours are <0>9:30 AM</0> to <1>4:00 PM</1> Eastern Time. Current time is: <2>{currentTimeLabel} ET</2>. Please try again in <3>{reopenInLabel}</3>."
 msgstr ""
 
@@ -10711,7 +10736,7 @@ msgstr ""
 msgid "Validating..."
 msgstr ""
 
-#: src/views/index-dtf/overview/components/index-disclousure.tsx:298
+#: src/views/index-dtf/overview/components/index-disclousure.tsx:321
 msgid "Valuation & NAV Calculation Risk – The DTF’s NAV depends on accurate, timely marks for tokenized equities and any associated components. Pricing inputs may be derived from thinly traded on-chain markets, off-chain reference feeds, or oracle mechanisms that can be stale, interrupted, manipulated, or subject to methodology changes. Market-hour mismatches, delayed corporate action processing, and settlement lags can further distort marks. Misvaluation may cause incorrect mint/redeem pricing, unfair dilution among holders, and adverse or mistimed rebalances."
 msgstr ""
 
@@ -10785,7 +10810,7 @@ msgstr ""
 
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/changes/optimistic-governance-changes.tsx:228
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-optimistic-parameters.tsx:122
-#: src/views/index-dtf/settings/components/index-settings-governance.tsx:98
+#: src/views/index-dtf/settings/components/index-settings-governance.tsx:108
 msgid "Veto Delay"
 msgstr ""
 
@@ -10804,11 +10829,11 @@ msgstr ""
 
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/changes/optimistic-governance-changes.tsx:246
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-optimistic-parameters.tsx:150
-#: src/views/index-dtf/settings/components/index-settings-governance.tsx:110
+#: src/views/index-dtf/settings/components/index-settings-governance.tsx:120
 msgid "Veto Threshold"
 msgstr ""
 
-#: src/views/index-dtf/settings/components/index-settings-governance.tsx:104
+#: src/views/index-dtf/settings/components/index-settings-governance.tsx:114
 msgid "Veto Window"
 msgstr ""
 
@@ -10925,7 +10950,7 @@ msgstr ""
 msgid "View orders"
 msgstr ""
 
-#: src/views/index-dtf/overview/components/index-disclousure.tsx:180
+#: src/views/index-dtf/overview/components/index-disclousure.tsx:193
 msgid "View PDF →"
 msgstr ""
 
@@ -10938,7 +10963,7 @@ msgstr ""
 msgid "View proposal"
 msgstr ""
 
-#: src/views/portfolio-page/components/active-proposals.tsx:168
+#: src/views/portfolio-page/components/active-proposals.tsx:171
 msgid "View proposals from different DTFs you have vote-locked."
 msgstr ""
 
@@ -11134,7 +11159,7 @@ msgstr ""
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/sections/propose-dao-governance.tsx:34
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/atoms.ts:851
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-governance-settings.tsx:32
-#: src/views/index-dtf/settings/components/index-settings-governance.tsx:72
+#: src/views/index-dtf/settings/components/index-settings-governance.tsx:82
 msgid "Voting Delay"
 msgstr ""
 
@@ -11166,7 +11191,7 @@ msgstr ""
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/sections/propose-dao-governance.tsx:47
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/atoms.ts:860
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-governance-settings.tsx:45
-#: src/views/index-dtf/settings/components/index-settings-governance.tsx:78
+#: src/views/index-dtf/settings/components/index-settings-governance.tsx:88
 #: src/views/yield-dtf/governance/views/proposal-detail/components/proposal-timeline/TimelineItem.tsx:131
 #: src/views/yield-dtf/settings/components/governance-info.tsx:48
 msgid "Voting Period"
@@ -11219,7 +11244,7 @@ msgstr ""
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/sections/propose-dao-governance.tsx:71
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/atoms.ts:879
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-governance-settings.tsx:69
-#: src/views/index-dtf/settings/components/index-settings-governance.tsx:90
+#: src/views/index-dtf/settings/components/index-settings-governance.tsx:100
 msgid "Voting Quorum"
 msgstr ""
 
@@ -11317,18 +11342,18 @@ msgstr ""
 msgid "Warmup period (s)"
 msgstr ""
 
-#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:45
+#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:52
 #: src/views/yield-dtf/issuance/components/warnings/index.tsx:54
 #: src/views/yield-dtf/issuance/components/warnings/index.tsx:87
 msgid "Warning"
 msgstr ""
 
-#: src/views/yield-dtf/issuance/components/zapV2/context/ZapContext.tsx:592
+#: src/views/yield-dtf/issuance/components/zapV2/context/ZapContext.tsx:590
 msgid "Warning: High price impact"
 msgstr ""
 
 #. placeholder {0}: selectedVersion.symbol
-#: src/views/home/components/highlighted-dtfs/transcript-preview.tsx:70
+#: src/views/home/components/highlighted-dtfs/transcript-preview.tsx:83
 msgid "Watch {0} explainer"
 msgstr ""
 
@@ -11336,7 +11361,7 @@ msgstr ""
 msgid "Watch an intro to RTokens"
 msgstr ""
 
-#: src/views/index-dtf/overview/components/landing-mint/dtf-cover.tsx:103
+#: src/views/index-dtf/overview/components/landing-mint/dtf-cover.tsx:105
 msgid "Watch explainer"
 msgstr ""
 
@@ -11344,7 +11369,7 @@ msgstr ""
 msgid "Watch Explainer"
 msgstr ""
 
-#: src/views/home/components/highlighted-dtfs/transcript-preview.tsx:73
+#: src/views/home/components/highlighted-dtfs/transcript-preview.tsx:86
 msgid "Watch Video"
 msgstr ""
 
@@ -11352,11 +11377,11 @@ msgstr ""
 msgid "We call these tokenized portfolios DTFs:"
 msgstr ""
 
-#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:101
+#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:122
 msgid "We couldn't find a good price for this trade right now. We recommend using a DEX like PancakeSwap to buy {symbol}."
 msgstr ""
 
-#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:106
+#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:127
 msgid "We couldn't find a good price for this trade right now. We recommend using a DEX like PancakeSwap to sell {symbol}."
 msgstr ""
 
@@ -11616,7 +11641,7 @@ msgstr ""
 msgid "Yield:"
 msgstr ""
 
-#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:127
+#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:148
 msgid "You can buy up to {maxAmountLabel} per transaction during {sessionLabel} hours in the US."
 msgstr ""
 
@@ -11632,7 +11657,7 @@ msgstr ""
 msgid "You can proceed directly."
 msgstr ""
 
-#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:132
+#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:153
 msgid "You can sell up to {maxAmountLabel} per transaction during {sessionLabel} hours in the US."
 msgstr ""
 
@@ -11645,7 +11670,7 @@ msgstr ""
 msgid "You created the {0} DTF"
 msgstr ""
 
-#: src/views/yield-dtf/issuance/components/zapV2/context/ZapContext.tsx:585
+#: src/views/yield-dtf/issuance/components/zapV2/context/ZapContext.tsx:583
 msgid "You do not have enough funds to complete this transaction. Please try again with a smaller amount."
 msgstr ""
 
@@ -11751,7 +11776,7 @@ msgstr ""
 msgid "You'll receive:"
 msgstr ""
 
-#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:147
+#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:168
 msgid "You're getting a worse price than usual because {symbol}'s underlying stocks aren't trading right now."
 msgstr ""
 
@@ -11776,11 +11801,11 @@ msgstr ""
 msgid "Your lock"
 msgstr ""
 
-#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:113
+#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:134
 msgid "Your order has unusually high price impact. We recommend buying {symbol} on PancakeSwap to get the best price possible."
 msgstr ""
 
-#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:118
+#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:139
 msgid "Your order has unusually high price impact. We recommend selling {symbol} on PancakeSwap to get the best price possible."
 msgstr ""
 
@@ -11825,7 +11850,7 @@ msgstr ""
 msgid "Zap Mint"
 msgstr ""
 
-#: src/views/yield-dtf/issuance/components/zapV2/context/ZapContext.tsx:597
+#: src/views/yield-dtf/issuance/components/zapV2/context/ZapContext.tsx:595
 msgid "Zap Mint Anyway"
 msgstr ""
 
@@ -11837,7 +11862,7 @@ msgstr ""
 msgid "Zap Redeem"
 msgstr ""
 
-#: src/views/yield-dtf/issuance/components/zapV2/context/ZapContext.tsx:597
+#: src/views/yield-dtf/issuance/components/zapV2/context/ZapContext.tsx:595
 msgid "Zap Redeem Anyway"
 msgstr ""
 

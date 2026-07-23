@@ -79,6 +79,7 @@ const MandateSkeleton = () => (
 const Mandate = ({ anchorId = 'about' }: { anchorId?: string }) => {
   const data = useAtomValue(indexDTFAtom)
   const brandData = useAtomValue(indexDTFBrandAtom)
+  const { trackClick } = useTrackIndexDTFClick('overview', 'overview')
   const [expanded, setExpanded] = useState(false)
 
   if (!data || !brandData) {
@@ -119,7 +120,10 @@ const Mandate = ({ anchorId = 'about' }: { anchorId?: string }) => {
                 <button
                   type="button"
                   className="font-medium text-primary"
-                  onClick={() => setExpanded(true)}
+                  onClick={() => {
+                    setExpanded(true)
+                    trackClick('about_read_more')
+                  }}
                 >
                   <Trans>Read more</Trans>
                 </button>
@@ -144,7 +148,10 @@ const Mandate = ({ anchorId = 'about' }: { anchorId?: string }) => {
           <button
             type="button"
             className="mt-2 text-sm font-medium text-primary sm:hidden"
-            onClick={() => setExpanded(false)}
+            onClick={() => {
+              setExpanded(false)
+              trackClick('about_read_less')
+            }}
           >
             <Trans>Read less</Trans>
           </button>

@@ -33,6 +33,7 @@ Loader, not playbook. Reusable workflow rules live in `skills/` (kit-owned, upda
 - Calibrate first: `skills/workflow.md` § Calibrate: Radius × Size (touch-up / low / medium / high) — radius buys review, size buys ceremony; `scope.mjs` prints the signals; when debating, take the heavier profile. Touch-up and low ship on scoped verify + self-review; medium is one heavily-reviewed stage; high is a plan of stages.
 - `node scripts/llm-workflow/workflow-start.mjs --stage "<stage>"` for medium/high; implement the smallest complete slice.
 - Inner loop: `node scripts/llm-workflow/scope.mjs --base <base-ref>` (verify commands + required review lenses + red flags + tier hint for the touched files).
+- When a slice adds or changes a user-facing interaction, check whether it needs a Mixpanel event and instrument it in the same change — `docs/wiki/project.md` § Analytics / Instrumentation.
 - Stage closeout (medium/high): `node scripts/llm-workflow/scope.mjs --gate` (skip if the final scoped run printed `gate-equivalent: yes`), visual check for UI stages, one progress row, wiki ingest, `node scripts/llm-workflow/wiki-lint.mjs` green.
 
 ## Review Budget

@@ -43,6 +43,7 @@ export const PerformanceChart = ({
   launchTimestamp,
   performance,
   showPattern = true,
+  useLaunchLabel = false,
 }: {
   chartKey: string
   className: string
@@ -52,6 +53,7 @@ export const PerformanceChart = ({
   launchTimestamp?: number
   performance: FeaturedDTFItem['performance']
   showPattern?: boolean
+  useLaunchLabel?: boolean
 }) => {
   const [isLaunchMarkerActive, setIsLaunchMarkerActive] = useState(false)
   const [chartWidth, setChartWidth] = useState(0)
@@ -236,6 +238,7 @@ export const PerformanceChart = ({
           onActiveChange={setIsLaunchMarkerActive}
           performanceDirection={direction}
           token={launchMarkerToken}
+          useLaunchLabel={useLaunchLabel}
         />
       )}
     </div>

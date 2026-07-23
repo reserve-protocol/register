@@ -4,6 +4,7 @@ import VideoModal from '@/components/video-modal'
 import { cn } from '@/lib/utils'
 import { indexDTFAtom, indexDTFBrandAtom } from '@/state/dtf/atoms'
 import { getYouTubeEmbedUrl } from '@/utils/youtube'
+import { useTrackIndexDTFClick } from '../../../hooks/useTrackIndexDTFPage'
 import { Trans, useLingui } from '@lingui/react/macro'
 import { atom, useAtom, useAtomValue } from 'jotai'
 import { Play } from 'lucide-react'
@@ -68,6 +69,7 @@ const DtfCover = ({
   showBrandImage?: boolean
 }) => {
   const { t } = useLingui()
+  const { trackClick } = useTrackIndexDTFClick('overview', 'overview')
   const brand = useAtomValue(indexDTFBrandAtom)
   const dtf = useAtomValue(indexDTFAtom)
   const [isVideoLoaded, setIsVideoLoaded] = useState(false)
@@ -198,7 +200,12 @@ const DtfCover = ({
                 title={videoTitle}
                 iframeTitle={iframeTitle}
                 onOpenChange={(open) => {
-                  if (open && dtf) setWatchedCoverDtf(dtf.id)
+                  if (open) {
+                    if (dtf) setWatchedCoverDtf(dtf.id)
+                    trackClick('video_open', { video: playableVideo })
+                  } else {
+                    trackClick('video_close', { video: playableVideo })
+                  }
                 }}
               >
                 <Button className="gap-2 rounded-full border-2 border-white bg-white/50 px-5 text-primary hover:bg-white">

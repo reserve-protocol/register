@@ -62,6 +62,7 @@ const PriceChartBody = ({
   range,
   dtfStart,
   launchTimestamp,
+  useLaunchLabel = false,
   xDomain,
   className,
 }: {
@@ -69,6 +70,7 @@ const PriceChartBody = ({
   range: TimeRange
   dtfStart?: number
   launchTimestamp?: number
+  useLaunchLabel?: boolean
   xDomain?: readonly [number, number]
   className?: string
 }) => {
@@ -240,6 +242,7 @@ const PriceChartBody = ({
             <PriceChartLaunchMarker
               {...props}
               launchTimestamp={launchTimestamp}
+              useLaunchLabel={useLaunchLabel}
               visible={showLaunchLine}
             />
           )}

@@ -7,6 +7,7 @@ import { isSafeHttpUrl } from '@/utils/url'
 import { Trans, useLingui } from '@lingui/react/macro'
 import { useAtomValue } from 'jotai'
 import { Download } from 'lucide-react'
+import { useTrackIndexDTFClick } from '../../hooks/useTrackIndexDTFPage'
 
 // Per-token resources for the AI DTF suite, hardcoded in Register and keyed by
 // DTF address (lowercase) across every chain the token is deployed on:
@@ -119,6 +120,7 @@ const DownloadableResources = ({
 }) => {
   const data = useAtomValue(indexDTFAtom)
   const { resources, dtfName } = useDownloadableResources()
+  const { trackClick } = useTrackIndexDTFClick('overview', 'overview')
 
   if (!data) {
     return (
@@ -153,6 +155,12 @@ const DownloadableResources = ({
               href={file.url}
               target="_blank"
               rel="noopener noreferrer"
+              onClick={() =>
+                trackClick('downloadable_resource', {
+                  resource: file.name,
+                  url: file.url,
+                })
+              }
               className="flex min-w-0 items-center justify-start gap-2.5 rounded-full border p-3 text-base font-medium text-primary hover:underline sm:flex-none sm:gap-2 sm:rounded-none sm:border-none sm:p-0 sm:text-sm"
             >
               <div className="flex size-6 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground">

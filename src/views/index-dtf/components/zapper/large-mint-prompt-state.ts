@@ -8,6 +8,7 @@ export type MintPromptVariant =
   | 'capacity'
   | 'closed-impact'
   | 'closed-error'
+  | 'better-price'
   | 'impact'
   | 'large'
   | 'error'
@@ -25,6 +26,8 @@ export type MintPromptSignals = {
   rawClosedImpact: boolean
   // In context + Ondo minting unavailable + a quote error.
   rawClosedError: boolean
+  // In context + minting not blocked + a resolved quote that PCSX beats outright.
+  rawBetterPrice: boolean
   // In context + minting not blocked + a resolved quote + price impact above the threshold.
   rawImpact: boolean
   // In context + minting not blocked + a resolved quote + input >= LARGE_MINT_MIN_INPUT.
@@ -63,6 +66,8 @@ export type MintPromptInputs = {
   mintingUnavailable: boolean
   // Weighted per-transaction cap, already floored to the displayed number.
   maxMintUsd: number | undefined
+  // PCSX quoted the same pair/amount with a higher amountOut than the zapper.
+  pcsxBetter: boolean
 }
 
 export const deriveMintPromptSignals = ({
@@ -75,6 +80,7 @@ export const deriveMintPromptSignals = ({
   mintingAvailable,
   mintingUnavailable,
   maxMintUsd,
+  pcsxBetter,
 }: MintPromptInputs): MintPromptSignals => ({
   // Purely input-derived — fires before any quote resolves, getting ahead of
   // the enso mint that will fail above the cap. Only while minting is
@@ -103,6 +109,12 @@ export const deriveMintPromptSignals = ({
     mintingUnavailable &&
     hasQuoteError &&
     inputValue >= ERROR_MINT_MIN_INPUT,
+  rawBetterPrice:
+    inContext &&
+    !mintingUnavailable &&
+    hasValidQuote &&
+    inputValue >= ERROR_MINT_MIN_INPUT &&
+    pcsxBetter,
   // The input floor keeps every raw signal inside the `isApplicable` domain;
   // without it a sub-$100 high-impact quote would reset and re-latch (and
   // re-pop the mobile dialog) on every refetch cycle.
@@ -128,9 +140,10 @@ export const deriveMintPromptSignals = ({
 })
 
 const VARIANT_PRIORITY: Record<Exclude<MintPromptVariant, null>, number> = {
-  capacity: 5,
-  'closed-impact': 4,
-  'closed-error': 3,
+  capacity: 6,
+  'closed-impact': 5,
+  'closed-error': 4,
+  'better-price': 3,
   impact: 2,
   large: 1,
   error: 0,
@@ -154,6 +167,7 @@ export const reduceMintPrompt = (
     rawCapacity,
     rawClosedImpact,
     rawClosedError,
+    rawBetterPrice,
     rawImpact,
     rawLarge,
     rawError,
@@ -175,13 +189,15 @@ export const reduceMintPrompt = (
     ? ('closed-impact' as const)
     : rawClosedError
       ? ('closed-error' as const)
-      : rawImpact
-        ? ('impact' as const)
-        : rawLarge
-          ? ('large' as const)
-          : rawError
-            ? ('error' as const)
-            : null
+      : rawBetterPrice
+        ? ('better-price' as const)
+        : rawImpact
+          ? ('impact' as const)
+          : rawLarge
+            ? ('large' as const)
+            : rawError
+              ? ('error' as const)
+              : null
 
   if (winner) {
     // Quotes race providers and refetch, so consecutive quotes can raise

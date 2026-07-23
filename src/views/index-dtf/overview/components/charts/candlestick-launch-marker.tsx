@@ -20,6 +20,7 @@ export const CandlestickLaunchMarker = ({
   candles,
   intervalSeconds,
   launchTimestamp,
+  useLaunchLabel = false,
   offset,
   width,
   xAxisMap,
@@ -27,6 +28,7 @@ export const CandlestickLaunchMarker = ({
   candles: ChartCandle[]
   intervalSeconds: number
   launchTimestamp?: number
+  useLaunchLabel?: boolean
 }) => {
   const scale = xAxisMap?.[0]?.scale
   if (launchTimestamp === undefined || !scale) return null
@@ -42,6 +44,7 @@ export const CandlestickLaunchMarker = ({
     <PriceChartLaunchMarker
       launchTimestamp={launchTimestamp}
       offset={offset}
+      useLaunchLabel={useLaunchLabel}
       visible
       width={width}
       xAxisMap={{ 0: { scale: () => markerX } }}

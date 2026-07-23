@@ -1,4 +1,5 @@
 import { useIsDesktop } from '@/hooks/use-media-query'
+import { trackClick } from '@/hooks/useTrackPage'
 import { chainIdAtom } from '@/state/atoms'
 import {
   iTokenAddressAtom,
@@ -114,6 +115,19 @@ const DtfChat = () => {
         zIndex={50}
         // Assistant links to app pages route through react-router — no full reload.
         onNavigate={navigate}
+        // Track chat opens (desktop only). Mobile DTF pages open the panel via
+        // their own action-bar button, which already tracks ask-ai — gating to
+        // desktop avoids double counting.
+        onOpen={() => {
+          if (!isDesktop) return
+          trackClick(
+            onDtf ? 'overview' : (viewForPath(pathname) ?? 'home'),
+            'ask-ai',
+            onDtf ? address : undefined,
+            onDtf ? dtf?.token.symbol : undefined,
+            onDtf ? chainId : undefined
+          )
+        }}
       />
     </div>
   )
