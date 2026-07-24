@@ -8,6 +8,7 @@ import {
   rTokenAtom,
   rTokenConfigurationAtom,
   rTokenStateAtom,
+  stRsrBalanceAtom,
   walletAtom,
 } from '@/state/atoms'
 import {
@@ -101,12 +102,13 @@ const exchangeRateAtom = atom((get) => get(rTokenStateAtom).exchangeRate)
 export const accountCurrentPositionAtom = atom((get) => {
   const lots = get(accountStakeLotsAtom)
   const exchangeRate = get(exchangeRateAtom)
+  const stRsrBalance = get(stRsrBalanceAtom)
 
   if (!lots) {
     return 0
   }
 
-  return calculateStakeRewards(lots, exchangeRate)
+  return calculateStakeRewards(lots, exchangeRate, +stRsrBalance.balance)
 })
 
 export const rateAtom = atom((get) => {

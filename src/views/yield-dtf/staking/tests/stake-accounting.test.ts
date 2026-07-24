@@ -11,8 +11,13 @@ const EUSD_EXCHANGE_RATE = 1.244143154429324799
 const totalStaked = (records: AccountStakeRecord[]) =>
   calculateStakeLots(records).reduce((total, lot) => total + lot.amount, 0)
 
+// Rewards of an account still holding every stRSR its records account for
 const rewards = (records: AccountStakeRecord[], exchangeRate: number) =>
-  calculateStakeRewards(calculateStakeLots(records), exchangeRate)
+  calculateStakeRewards(
+    calculateStakeLots(records),
+    exchangeRate,
+    totalStaked(records)
+  )
 
 // accountStakeRecords of 0x34a5e1bcda39f63d8937f324ebd2cfda542ccbc9 on eUSD:
 // a single stake followed by an unstake of ~42% of it
@@ -96,6 +101,42 @@ const stakesAroundUnstake: AccountStakeRecord[] = [
   },
 ]
 
+// accountStakeRecords of 0xcde4bfa44a874fe9e482caa4e2fe09996498a683 on eUSD:
+// the account holds no stRSR on chain, but the subgraph never recorded the
+// unstakes that emptied it
+const unrecordedUnstakes: AccountStakeRecord[] = [
+  {
+    exchangeRate: '0.988395296534066387',
+    amount: '7951003.174021738097224151',
+    rsrAmount: '7858734.139930518545479687',
+    isStake: true,
+  },
+  {
+    exchangeRate: '1.115840233388174727',
+    amount: '62934.195902751771393208',
+    rsrAmount: '70224.507844219810045868',
+    isStake: true,
+  },
+  {
+    exchangeRate: '1.171691014375621023',
+    amount: '1202090.605488673480292603',
+    rsrAmount: '1408478.760916428298611293',
+    isStake: false,
+  },
+  {
+    exchangeRate: '1.171787176200367621',
+    amount: '546093.757112913310820019',
+    rsrAmount: '639905.661587989010458533',
+    isStake: true,
+  },
+  {
+    exchangeRate: '1.171787176200367621',
+    amount: '81914.063566936996623002',
+    rsrAmount: '95985.849238198516286138',
+    isStake: false,
+  },
+]
+
 // accountStakeRecords of 0x58915ae59cb0d6c7664b2d90deb3726b721367c3 on eUSD:
 // staked at parity, fully unstaked later
 const fullUnstake: AccountStakeRecord[] = [
@@ -126,6 +167,17 @@ describe('calculateStakeLots', () => {
   it('drops every lot on a full unstake', () => {
     expect(calculateStakeLots(fullUnstake)).toEqual([])
     expect(rewards(fullUnstake, EUSD_EXCHANGE_RATE)).toBe(0)
+  })
+
+  it('leaves the stake of an in-progress unstake out of the position', () => {
+    // stRSR is burnt when the unstake is queued, so the RSR waiting out the
+    // cooldown no longer counts towards the position or its rewards
+    const [stake, unstake] = singleStakeThenPartialUnstake
+
+    expect(totalStaked(singleStakeThenPartialUnstake)).toBeCloseTo(
+      Number(stake.amount) - Number(unstake.amount),
+      6
+    )
   })
 
   it('never leaves a lot behind when the unstake exceeds the tracked history', () => {
@@ -170,5 +222,34 @@ describe('calculateStakeRewards', () => {
 
   it('has no rewards without stakes', () => {
     expect(rewards([], EUSD_EXCHANGE_RATE)).toBe(0)
+  })
+
+  it('has no rewards once the stRSR is gone, even if records say otherwise', () => {
+    const lots = calculateStakeLots(unrecordedUnstakes)
+
+    // The records leave stake open and would report ~1.7M RSR of rewards
+    expect(lots.length).toBeGreaterThan(0)
+    expect(calculateStakeRewards(lots, EUSD_EXCHANGE_RATE, 0)).toBe(0)
+  })
+
+  it('scales rewards down to the stRSR actually held', () => {
+    const lots = calculateStakeLots(stakesAroundUnstake)
+    const held = lots.reduce((total, lot) => total + lot.amount, 0) / 4
+
+    expect(calculateStakeRewards(lots, EUSD_EXCHANGE_RATE, held)).toBeCloseTo(
+      1871984.7830356685 / 4,
+      6
+    )
+  })
+
+  it('does not credit rewards to stRSR the records cannot explain', () => {
+    // Cancelling an unstake mints stRSR back; until it shows up in the records
+    // it has no cost basis to earn rewards against
+    const lots = calculateStakeLots(stakesAroundUnstake)
+    const held = lots.reduce((total, lot) => total + lot.amount, 0)
+
+    expect(
+      calculateStakeRewards(lots, EUSD_EXCHANGE_RATE, held * 3)
+    ).toBeCloseTo(calculateStakeRewards(lots, EUSD_EXCHANGE_RATE, held), 6)
   })
 })
