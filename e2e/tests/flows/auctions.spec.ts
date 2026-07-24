@@ -2,7 +2,6 @@ import { decodeFunctionData, multicall3Abi, type Hex } from 'viem'
 import { expect, test } from '../../fixtures/base'
 import { advanceTime, freezeTime, rebalanceTime } from '../../helpers/clock'
 import { dtfPath, findDtfByAddress } from '../../helpers/registry'
-import { loadSnapshot } from '../../helpers/snapshots'
 import type { BoundaryRequest } from '../../helpers/requests'
 import {
   encodeActiveRebalance as encodeActiveRebalanceShared,
@@ -148,6 +147,57 @@ test('historical rebalances render from snapshot with API metrics', async ({
   const firstRow = page.getByTestId('auctions-historical-item').first()
   await expect(firstRow).toContainText('99.9%')
   await expect(firstRow).toContainText('1,234,567')
+})
+
+// Z30: a completed rebalance that ran no auctions returns `auctions: []`
+// present-empty (verified against api.reserve.org base/lcap nonce 5). The
+// /dtf/rebalance endpoint wraps the detail in a single-element ARRAY; the SDK
+// read unwraps it. Its metrics row must render "0 auctions" — not a blanked
+// row. RED: revert the SDK array-unwrap and the read errors (row stays
+// skeleton). Recorded in the M2a progress row.
+test('an auctions-less rebalance renders 0-auction metrics, not a blank row', async ({
+  page,
+  overrides,
+  boundaryRequests,
+}) => {
+  const dtf = findDtfByAddress(DTF_ADDRESS)!
+  const rebalances = loadRebalances()
+
+  await freezeTime(page, idleTime())
+
+  // Present-empty auctions (ran none) + distinct accuracy/traded values that
+  // prove the row resolved from this payload vs a skeleton.
+  overrides.api({ pathname: '/dtf/rebalance' }, [
+    {
+      id: 'rebalance-metrics',
+      nonce: Number(rebalances[0].nonce),
+      timestamp: Number(rebalances[0].timestamp),
+      availableUntil: Number(rebalances[0].availableUntil),
+      blockNumber: Number(rebalances[0].blockNumber),
+      tokens: [],
+      auctions: [],
+      rebalanceAccuracy: 42.5,
+      totalRebalancedUsd: 7_654_321,
+    },
+  ])
+
+  await page.goto(dtfPath(dtf, 'auctions'))
+  await expect(page.getByTestId('dtf-auctions')).toBeVisible()
+
+  await settleListData(page, boundaryRequests)
+  await expect(page.getByTestId('auctions-historical-item')).toHaveCount(
+    rebalances.length
+  )
+
+  // Pump the per-row metrics queries.
+  await advanceTime(page, 5_000)
+
+  // The row resolved from the auctions-less payload: accuracy + traded value
+  // render (not a skeleton), so the SDK unwrapped the array and mapped the
+  // present-empty auctions to 0.
+  const firstRow = page.getByTestId('auctions-historical-item').first()
+  await expect(firstRow).toContainText('42.5%')
+  await expect(firstRow).toContainText('7,654,321')
 })
 
 test('an in-window rebalance renders as an active list row', async ({

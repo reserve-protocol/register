@@ -10,3 +10,10 @@ export const mapToAssets = (
     {} as Record<string, bigint>
   )
 }
+
+// Background polling keys off this — a missing/NaN window reads as not-ongoing so polling fails toward off, never on.
+export const isRebalanceOngoing = (
+  availableUntil: string | undefined,
+  nowSeconds: number
+): boolean =>
+  availableUntil !== undefined && Number(availableUntil) >= nowSeconds

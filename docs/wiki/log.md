@@ -106,3 +106,17 @@ Append-only chronological record: lessons, corrections, friction. Newest section
 - E2E audit hardening (2 independent audits converged; goal = push B+ → S with speed + agent-workflow as the levers). Landed: Stage 1 chain-scoped identity + closed the yield fail-loud hole (uncaptured yield reads no longer fall through to index wildcards / the $1 feed); Stage 2.1 `e2e:check` yield identity + collision validation; speed — per-worker snapshot parse cache + local workers capped at 5 (single Vite server doesn't scale past ~5; 3× flake-free vs an intermittent zap flake at 7); agent-ergonomics — self-explaining unmocked failures (`helpers/selectors.ts` decodes the selector name + names the helper to model it in) + a boundary map / new-test recipe / speed tiers in `e2e/CLAUDE.md`; CI + scoped-verify now run the mock-contract unit tests.
 - Speed tiers established for the agent quick-loop: unit tests <1s (mock-contract logic) → one scoped spec ~3–5s → smoke ~16s → full ~78s. The floor per browser test (~4–5s) is app boot + hydration + clock pumps; the win for agents is running the NARROWEST tier, which the domain diff→test tables already route.
 - Chain-identity is NOT uniform across boundaries: RPC (host-routed) and subgraph (chain-specific Goldsky URL) genuinely encode chain, so they enforce it. The reserve-api does NOT — it keys DTF endpoints on the globally-unique folio address and treats `chainId` as advisory (the app sends `/current/dtf?address=<base DTF>&chainId=1`). Enforcing chain there fails legitimate requests — verified empirically, then reverted. Match the real boundary's semantics, don't assume a uniform rule.
+
+
+## 2026-07-14 → 07-22 — Hardening × SDK-integration effort (compact record)
+
+Play-by-play lives in git (PRs #1053/#1054/#1055/#1063, SDK PR #27). Durable outcomes:
+
+- "Migration IS the fix" validated: every SDK-read adoption surfaced a real pre-existing SDK bug (completed-rebalance read 100% broken via an array envelope; governance tie semantics; stale-PENDING outcomes; missing optimistic veto context). One owned boundary beats parallel implementations.
+- Three-tier ownership rule → [[sdk]] (sdk primitives / react-sdk hook-per-read / register product hooks; register never imports `useDtfSdk`).
+- Governance display states are SDK-derived bigint. Visible change: a nonzero tie shows DEFEATED (OZ strict majority).
+- Auction launch: a 0/missing price hard-blocks with a visible reason (product decision, Luis 2026-07-20). Price volatility is a separate, non-blocking signal.
+- Hybrid DTF is a curated designation — requires weight control but is not implied by it (Luis 2026-07-21). The weightControl derivation was reverted before shipping; the allowlist stays the source of truth.
+- Deeper auctions SDK migration deferred to protocol-vNext, riding its rebalance-testing window.
+- Comment discipline hard rule → `skills/code-standards.md`: one-line WHYs only, no finding/review IDs in source, agent warnings go to area-guide traps.
+- Remaining queue: `docs/plans/FOLLOWUPS.md`.

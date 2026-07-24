@@ -26,6 +26,27 @@ const query = gql`
   }
 `
 
+interface ExchangeRateSnapshot {
+  timestamp: string
+  rsrExchangeRate: string
+}
+interface ExchangeRateData {
+  rtoken?: { snapshots?: ExchangeRateSnapshot[] }
+}
+
+export const buildExchangeRateRows = (
+  data: ExchangeRateData | undefined,
+  stToken: string
+) =>
+  // Guard `snapshots`, not just `rtoken` — a partial subgraph response can
+  // return the rtoken without snapshots (Z38, same class as stake-history;
+  // this chart is the default StakingMetrics tab).
+  (data?.rtoken?.snapshots ?? []).map(({ timestamp, rsrExchangeRate }) => ({
+    value: +rsrExchangeRate,
+    label: dayjs.unix(+timestamp).format('YYYY-M-D HH:mm:ss'),
+    display: `1 ${stToken} = ${formatCurrency(+rsrExchangeRate, 5)} RSR`,
+  }))
+
 const ExchangeRate = () => {
   const rToken = useRToken()
   const { exchangeRate: rate } = useAtomValue(rTokenStateAtom)
@@ -37,28 +58,12 @@ const ExchangeRate = () => {
   })
   const stToken = useAtomValue(stRsrTickerAtom)
 
-  const rows = useMemo(() => {
-    if (data) {
-      return (
-        data.rtoken?.snapshots.map(
-          ({
-            timestamp,
-            rsrExchangeRate,
-          }: {
-            timestamp: string
-            rsrExchangeRate: string
-          }) => ({
-            value: +rsrExchangeRate,
-            label: dayjs.unix(+timestamp).format('YYYY-M-D HH:mm:ss'),
-            display: `1 ${stToken} = ${formatCurrency(
-              +rsrExchangeRate,
-              5
-            )} RSR`,
-          })
-        ) || []
-      )
-    }
-  }, [data])
+  // `undefined` while loading (chart skeleton), rows once data lands — same
+  // distinction the pre-guard code had.
+  const rows = useMemo(
+    () => (data ? buildExchangeRateRows(data, stToken) : undefined),
+    [data, stToken]
+  )
 
   const handleChange = (range: string) => {
     setCurrent(range)

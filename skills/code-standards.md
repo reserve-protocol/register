@@ -42,7 +42,10 @@ The dumb solution wins. Code an agent or a human can rewrite in a week beats cod
 ## Comments
 
 - A comment states a constraint the code cannot show: a WHY, a security boundary, an upstream compatibility note, a deliberate shortcut with its ceiling and upgrade trigger.
+- **One line.** If the WHY needs more, the paragraph goes in the commit message, the area guide, or the wiki — and the code probably needs a better name instead.
 - Never narrate what the next line does, where code came from, or why a change is correct.
+- No finding/review IDs in source (Z12, CXR-nnn, PR numbers) — those anchor commits, not code.
+- "Don't reintroduce X" warnings for future agents belong in the area guide's traps section, never inline.
 
 ## Tests
 

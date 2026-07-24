@@ -1,18 +1,13 @@
-import daoFeeRegistryAbi from '@/abis/dao-fee-registry-abi'
-import dtfIndexAbi from '@/abis/dtf-index-abi-v1'
 import SEO from '@/components/seo'
 import useFavicon from '@/hooks/useFavicon'
 import useIndexDTFTransactions from '@/hooks/useIndexDTFTransactions'
 import { chainIdAtom, walletChainAtom } from '@/state/atoms'
 import {
-  indexDTF7dChangeAtom,
   indexDTFAtom,
-  indexDTFBrandExtrasResolvedAtom,
   indexDTFBasketAmountsAtom,
   indexDTFBasketAtom,
   indexDTFBasketPricesAtom,
   indexDTFBasketSharesAtom,
-  IndexDTFBrand,
   indexDTFBrandAtom,
   indexDTFExposureDataAtom,
   indexDTFFeeAtom,
@@ -23,39 +18,30 @@ import {
   iTokenAddressAtom,
   performanceTimeRangeAtom,
 } from '@/state/dtf/atoms'
-import {
-  indexDTFApyAtom,
-  indexDTFPoolsDataAtom,
-  indexDTFUnderlyingNamesAtom,
-} from '@/state/dtf/yield-index-atoms'
-import { isInactiveDTF, useDTFStatus } from '@/hooks/use-dtf-status'
+import { resetIndexDTFAtomsAtom } from '@/state/dtf/reset-index-dtf-atoms'
+import { isInactiveDTF } from '@/hooks/use-dtf-status'
 import { isAddress } from '@/utils'
 import { AvailableChain } from '@/utils/chains'
-import {
-  FALLBACK_PLATFORM_FEES,
-  NETWORKS,
-  RESERVE_API,
-  ROUTES,
-  ZAPPER_API,
-} from '@/utils/constants'
+import { NETWORKS, RESERVE_API, ROUTES, ZAPPER_API } from '@/utils/constants'
 import {
   IndexDtfProvider,
   type Amount,
   useCurrentIndexDtf,
   useIndexCatalog,
+  useIndexDtfExposure,
   useIndexDtfIdentity,
+  useIndexDtfPlatformFee,
+  useIndexDtfStatus,
   useIndexDtfVersion,
   supportedChainIds,
-  type IndexDtfBrand as SdkIndexDtfBrand,
   type IndexDtfData,
   type SupportedChainId,
 } from '@reserve-protocol/react-sdk'
-import { useQuery } from '@tanstack/react-query'
 import { atom, useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { useCallback, useEffect, useLayoutEffect, useState } from 'react'
 import { Outlet, useNavigate, useParams, useLocation } from 'react-router-dom'
 import { Address } from 'viem'
-import { useReadContract, useSwitchChain } from 'wagmi'
+import { useSwitchChain } from 'wagmi'
 import IndexDTFNavigation from './components/navigation'
 import ConfirmEligibilityModal from './components/confirm-eligibility-modal'
 import GovernanceUpdater from './governance/updater'
@@ -71,52 +57,6 @@ const DEFAULT_DESCRIPTION =
 
 const isIndexDtfChain = (chainId: number): chainId is SupportedChainId =>
   supportedChainIds.includes(chainId as SupportedChainId)
-
-const mapSdkBrand = (brand: SdkIndexDtfBrand | undefined) => {
-  if (!brand) return undefined
-
-  // `files` and `video` are not typed on the SDK brand yet (0.1.5), but the API
-  // returns them.
-  const brandWithApiFields = brand as SdkIndexDtfBrand & {
-    files?: { url?: string; name?: string }[]
-    video?: string
-  }
-  const files = brandWithApiFields.files ?? []
-
-  return {
-    dtf: {
-      icon: brand.icon ?? '',
-      cover: brand.cover ?? '',
-      video: brandWithApiFields.video ?? '',
-      description: brand.description ?? '',
-      notesFromCreator: brand.notesFromCreator ?? '',
-      prospectus: brand.prospectus ?? '',
-      files: files.map((file) => ({
-        url: file.url ?? '',
-        name: file.name ?? '',
-      })),
-      tags: [...brand.tags],
-      basketType:
-        brand.basketType === 'unit-based' ? 'unit-based' : 'percentage-based',
-    },
-    creator: {
-      name: brand.creator?.name ?? '',
-      icon: brand.creator?.icon ?? '',
-      link: brand.creator?.link ?? '',
-    },
-    curator: {
-      name: brand.curator?.name ?? '',
-      icon: brand.curator?.icon ?? '',
-      link: brand.curator?.link ?? '',
-    },
-    socials: {
-      twitter: brand.socials.twitter ?? '',
-      telegram: brand.socials.telegram ?? '',
-      discord: brand.socials.discord ?? '',
-      website: brand.socials.website ?? '',
-    },
-  } satisfies IndexDTFBrand
-}
 
 const getBasketState = (dtf: IndexDtfData) => {
   const prices: Record<string, number> = {
@@ -181,7 +121,9 @@ const useChainWatch = () => {
   }, [chainId, walletChain, switchChain])
 }
 
-const IndexDTFDataUpdater = () => {
+// The atoms stay because each SDK read has several consumers that can't take the hook directly yet.
+const IndexDtfUpdaters = () => {
+  const identity = useIndexDtfIdentity()
   const setIndexDTF = useSetAtom(indexDTFAtom)
   const setIndexDTFBrand = useSetAtom(indexDTFBrandAtom)
   const setBasket = useSetAtom(indexDTFBasketAtom)
@@ -189,7 +131,21 @@ const IndexDTFDataUpdater = () => {
   const setBasketAmounts = useSetAtom(indexDTFBasketAmountsAtom)
   const setBasketShares = useSetAtom(indexDTFBasketSharesAtom)
   const setRebalanceControl = useSetAtom(indexDTFRebalanceControlAtom)
+  const setIndexDTFVersion = useSetAtom(indexDTFVersionAtom)
+  const setFee = useSetAtom(indexDTFFeeAtom)
+  const setExposureData = useSetAtom(indexDTFExposureDataAtom)
+  const setPerformanceLoading = useSetAtom(indexDTFPerformanceLoadingAtom)
+  const setStatus = useSetAtom(indexDTFStatusAtom)
+
   const { data } = useCurrentIndexDtf()
+  const { data: version } = useIndexDtfVersion(identity)
+  // A failed registry read flags 'unavailable' — consumers render it explicitly, never a fabricated fee.
+  const { data: fee, isError: feeUnavailable } = useIndexDtfPlatformFee(identity)
+  const period = useAtomValue(performanceTimeRangeAtom)
+  const { data: exposureData, isLoading: exposureLoading } = useIndexDtfExposure(
+    { ...identity, period }
+  )
+  const status = useIndexDtfStatus(identity)
 
   useEffect(() => {
     if (!data) return
@@ -197,21 +153,7 @@ const IndexDTFDataUpdater = () => {
     const { basket, prices, amounts, shares } = getBasketState(data)
 
     setIndexDTF(data)
-    // Merge-preserve video/files: the SDK brand payload can omit them, and a
-    // bare overwrite made the cover card unmount until BrandFilesUpdater
-    // re-merged — the ugliest layout shift on the page.
-    setIndexDTFBrand((prev) => {
-      const next = mapSdkBrand(data.brand)
-      if (!prev || !next) return next
-      return {
-        ...next,
-        dtf: {
-          ...next.dtf,
-          video: next.dtf.video || prev.dtf.video,
-          files: next.dtf.files.length ? next.dtf.files : prev.dtf.files,
-        },
-      }
-    })
+    setIndexDTFBrand(data.brand)
     setBasket(basket)
     setBasketPrices(prices)
     setBasketAmounts(amounts)
@@ -231,206 +173,31 @@ const IndexDTFDataUpdater = () => {
     setRebalanceControl,
   ])
 
-  return null
-}
-
-// The SDK's brand mapping whitelists fields and can drop newer `dtf` fields, so
-// read them straight from the folio-manager API and merge them into the brand
-// atom. Remove once the SDK maps these fields.
-const BrandFilesUpdater = () => {
-  const dtf = useAtomValue(indexDTFAtom)
-  const setIndexDTFBrand = useSetAtom(indexDTFBrandAtom)
-  const setBrandExtrasResolved = useSetAtom(indexDTFBrandExtrasResolvedAtom)
-  const brand = useAtomValue(indexDTFBrandAtom)
-
-  const {
-    data: brandExtras,
-    isSuccess,
-    isError,
-  } = useQuery({
-    queryKey: ['brand-files', dtf?.id, dtf?.chainId],
-    queryFn: async () => {
-      const response = await fetch(
-        `${RESERVE_API}folio-manager/read?folio=${dtf!.id.toLowerCase()}&chainId=${dtf!.chainId}`
-      )
-
-      if (!response.ok) {
-        throw new Error(`Failed to fetch brand files: ${response.statusText}`)
-      }
-
-      const body = await response.json()
-      const rawDtf = body?.parsedData?.dtf ?? {}
-      const brandFiles = (rawDtf.files ?? []) as {
-        url?: string
-        name?: string
-      }[]
-
-      return {
-        files: brandFiles.map((file) => ({
-          url: file.url ?? '',
-          name: file.name ?? '',
-        })),
-        video: rawDtf.video ?? '',
-      }
-    },
-    enabled: !!dtf?.id,
-  })
-
-  useEffect(() => {
-    if (!brandExtras) return
-
-    setIndexDTFBrand((prev) => {
-      if (!prev) return prev
-
-      const current = prev.dtf.files ?? []
-      const files = brandExtras.files
-      const unchanged =
-        current.length === files.length &&
-        current.every((file, i) => {
-          return file.url === files[i].url && file.name === files[i].name
-        }) &&
-        prev.dtf.video === brandExtras.video
-      if (unchanged) return prev
-
-      return {
-        ...prev,
-        dtf: { ...prev.dtf, files, video: brandExtras.video },
-      }
-    })
-    // re-merge when the SDK brand lands/refreshes (it resets SDK-missing fields)
-  }, [brandExtras, brand, setIndexDTFBrand])
-
-  useEffect(() => {
-    if (isSuccess || isError) setBrandExtrasResolved(true)
-  }, [isSuccess, isError, setBrandExtrasResolved])
-
-  return null
-}
-
-const IndexDTFVersionUpdater = () => {
-  const { address, chainId } = useIndexDtfIdentity()
-  const setIndexDTFVersion = useSetAtom(indexDTFVersionAtom)
-
-  const { data: version } = useIndexDtfVersion({ address, chainId })
-
   useEffect(() => {
     if (version) {
       setIndexDTFVersion(version)
     }
   }, [version, setIndexDTFVersion])
 
-  return null
-}
-
-const PlatformFeeUpdater = ({
-  tokenAddress,
-  chainId,
-}: {
-  tokenAddress?: string
-  chainId: number
-}) => {
-  const setFee = useSetAtom(indexDTFFeeAtom)
-
-  const { data: registryAddress, isError: registryError } = useReadContract({
-    address: tokenAddress as Address,
-    abi: dtfIndexAbi,
-    functionName: 'daoFeeRegistry',
-    chainId,
-    query: { enabled: !!tokenAddress },
-  })
-
-  const { data: feeDetails, isError: feeError } = useReadContract({
-    address: registryAddress as Address,
-    abi: daoFeeRegistryAbi,
-    functionName: 'getFeeDetails',
-    args: [tokenAddress as Address],
-    chainId,
-    query: { enabled: !!registryAddress && !!tokenAddress },
-  })
-
   useEffect(() => {
-    if (feeDetails) {
-      const [, feeNumerator, feeDenominator] = feeDetails
-      setFee(
-        feeDenominator === 0n
-          ? (FALLBACK_PLATFORM_FEES[chainId] ?? 50)
-          : Number((feeNumerator * 100n) / feeDenominator)
-      )
-    } else if (registryError || feeError) {
-      setFee(FALLBACK_PLATFORM_FEES[chainId] ?? 50)
+    if (fee) {
+      setFee(fee.percent)
+    } else if (feeUnavailable) {
+      setFee('unavailable')
     }
-  }, [feeDetails, registryError, feeError, chainId, setFee])
-
-  return null
-}
-
-const IndexDTFExposureUpdater = ({ chainId }: { chainId: number }) => {
-  const dtf = useAtomValue(indexDTFAtom)
-  const setExposureData = useSetAtom(indexDTFExposureDataAtom)
-  const setPerformanceLoading = useSetAtom(indexDTFPerformanceLoadingAtom)
-  const period = useAtomValue(performanceTimeRangeAtom)
-
-  const { data: exposureData, isLoading } = useQuery({
-    queryKey: ['dtf-exposure', dtf?.id, chainId, period],
-    queryFn: async () => {
-      if (!dtf?.id) return null
-
-      const response = await fetch(
-        `${RESERVE_API}dtf/exposure?chainId=${chainId}&address=${dtf.id}&period=${period}`
-      )
-
-      if (!response.ok) {
-        throw new Error(`Failed to fetch exposure data: ${response.statusText}`)
-      }
-
-      return response.json()
-    },
-    enabled: !!dtf?.id && !!chainId,
-    refetchInterval: 60000,
-  })
+  }, [fee, feeUnavailable, setFee])
 
   useEffect(() => {
     if (exposureData) {
-      setExposureData(exposureData)
+      setExposureData(
+        exposureData.map((group) => ({ ...group, tokens: [...group.tokens] }))
+      )
     }
   }, [exposureData, setExposureData])
 
   useEffect(() => {
-    setPerformanceLoading(isLoading)
-  }, [isLoading, setPerformanceLoading])
-
-  return null
-}
-
-const resetStateAtom = atom(null, (_, set) => {
-  set(indexDTFBasketAtom, undefined)
-  set(indexDTFBasketPricesAtom, {})
-  set(indexDTFBasketAmountsAtom, {})
-  set(indexDTFBasketSharesAtom, {})
-  set(indexDTFAtom, undefined)
-  set(indexDTFBrandAtom, undefined)
-  set(indexDTFBrandExtrasResolvedAtom, false)
-  set(indexDTFRebalanceControlAtom, undefined)
-  set(indexDTFFeeAtom, undefined)
-  set(indexDTF7dChangeAtom, undefined)
-  set(indexDTFPerformanceLoadingAtom, false)
-  set(indexDTFExposureDataAtom, null)
-  set(indexDTFApyAtom, undefined)
-  set(indexDTFPoolsDataAtom, undefined)
-  set(indexDTFUnderlyingNamesAtom, {})
-  set(performanceTimeRangeAtom, 'ytd')
-  set(indexDTFStatusAtom, 'active')
-})
-
-const DeprecationStatusUpdater = ({
-  tokenAddress,
-  chainId,
-}: {
-  tokenAddress?: string
-  chainId: number
-}) => {
-  const status = useDTFStatus(tokenAddress, chainId)
-  const setStatus = useSetAtom(indexDTFStatusAtom)
+    setPerformanceLoading(exposureLoading)
+  }, [exposureLoading, setPerformanceLoading])
 
   useEffect(() => {
     setStatus(status)
@@ -447,7 +214,7 @@ const Updater = () => {
   const setChain = useSetAtom(chainIdAtom)
   const currentChainId = useAtomValue(chainIdAtom)
   const [currentToken, setTokenAddress] = useAtom(iTokenAddressAtom)
-  const resetAtoms = useSetAtom(resetStateAtom)
+  const resetAtoms = useSetAtom(resetIndexDTFAtomsAtom)
   const setRefreshFn = useSetAtom(indexDTFRefreshFnAtom)
   const [key, setKey] = useState(0)
   useIndexDTFTransactions(tokenAddress, chainId)
@@ -489,13 +256,8 @@ const Updater = () => {
 
   return (
     <div key={key}>
-      <IndexDTFDataUpdater />
-      <BrandFilesUpdater />
-      <IndexDTFVersionUpdater />
-      <PlatformFeeUpdater tokenAddress={tokenAddress} chainId={chainId} />
-      <IndexDTFExposureUpdater chainId={chainId} />
+      <IndexDtfUpdaters />
       <YieldIndexUpdater chainId={chainId} />
-      <DeprecationStatusUpdater tokenAddress={tokenAddress} chainId={chainId} />
       <GovernanceUpdater />
     </div>
   )

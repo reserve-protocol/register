@@ -3,6 +3,10 @@ import { Decimal } from 'decimal.js-light'
 import { bn, D18d, D27d, ONE, TWO } from './numbers'
 import { Auction } from './types'
 
+// Prices are divisors and supply divides every limit — fail loud instead of coercing a bad input into a skewed auction.
+const isUsablePrice = (price: number): boolean =>
+  Number.isFinite(price) && price > 0
+
 /**
  * Get the arguments needed to call `openAuction()` by the auction launcher, after prices have already
  * moved from the initial ones used to approve the auction.
@@ -34,17 +38,29 @@ export const openAuction = (
   _dtfPrice: number,
   ejectFully: boolean = false
 ): [bigint, bigint, bigint, bigint] => {
-  console.log(
-    'openAuction()',
-    auction,
-    _supply,
-    tokens,
-    decimals,
-    _targetBasket,
-    _prices,
-    _priceError,
-    _dtfPrice
-  )
+  if (_supply <= 0n) {
+    throw new Error('openAuction: supply must be > 0')
+  }
+
+  // Validate the raw prices before any Decimal construction so a bad price fails with a clear message.
+  let x = _prices.length
+  let y = _prices.length
+
+  for (let i = 0; i < _prices.length; i++) {
+    if (tokens[i] == auction.sell) {
+      x = i
+    } else if (tokens[i] == auction.buy) {
+      y = i
+    }
+  }
+
+  if (x == _prices.length || y == _prices.length) {
+    throw new Error('auction tokens not found in tokens array')
+  }
+
+  if (!isUsablePrice(_prices[x]) || !isUsablePrice(_prices[y])) {
+    throw new Error('openAuction: sell/buy token price unavailable')
+  }
 
   // convert price number inputs to bigints
 
@@ -64,26 +80,6 @@ export const openAuction = (
 
   // {USD} = {USD/wholeShare} * {wholeShare}
   const sharesValue = new Decimal(_dtfPrice).mul(supply)
-
-  // ====
-
-  // indices
-  let x = prices.length
-  let y = prices.length
-
-  // find indices
-
-  for (let i = 0; i < prices.length; i++) {
-    if (tokens[i] == auction.sell) {
-      x = i
-    } else if (tokens[i] == auction.buy) {
-      y = i
-    }
-  }
-
-  if (x == prices.length || y == prices.length) {
-    throw new Error('auction tokens not found in tokens array')
-  }
 
   // calculate startPrice/endPrice
 
@@ -168,14 +164,6 @@ export const openAuction = (
   if ((sellLimit == 0n && ejectFully) || buyLimit > auction.buyLimit.high) {
     buyLimit = auction.buyLimit.high
   }
-
-  console.log(
-    'sellLimit',
-    auction.sellLimit.low,
-    sellLimit,
-    auction.sellLimit.high
-  )
-  console.log('buyLimit', auction.buyLimit.low, buyLimit, auction.buyLimit.high)
 
   return [sellLimit, buyLimit, startPrice, endPrice]
 }

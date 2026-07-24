@@ -85,6 +85,12 @@ export const proposalThresholdToPercentage = (
   return Number(threshold)
 }
 
+// The form field is seeded as a percentage — compare on the same basis or every proposal appends a phantom threshold calldata.
+export const isProposalThresholdChanged = (
+  formPercentage: number,
+  governanceThreshold: bigint | number
+): boolean => formPercentage !== proposalThresholdToPercentage(governanceThreshold)
+
 /**
  * Check if governance changes object has any changes
  */

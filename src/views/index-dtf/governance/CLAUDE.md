@@ -25,7 +25,7 @@ time.
 | Propose flow — DAO settings | `e2e/tests/flows/governance-propose.spec.ts` |
 | Propose flow — fees (dtf-settings) | `e2e/tests/flows/governance-propose-dtf-settings.spec.ts` (fee calldata round-trip) |
 | Propose flow — basket | `e2e/tests/flows/governance-propose-basket.spec.ts` (form + guards; full submit blocked on golden `startRebalance` fixture) |
-| Propose flow — basket-settings (trading-gov params) | `e2e/tests/flows/governance-propose-basket-settings.spec.ts` (setVotingPeriod round-trip; phantom-threshold + empty-guard `test.fixme` pending app fix) |
+| Propose flow — basket-settings (trading-gov params) | `e2e/tests/flows/governance-propose-basket-settings.spec.ts` (setVotingPeriod round-trip; phantom-threshold single-action + untouched-form-disabled regressions, live since E1) |
 | Proposal description markdown/XSS rendering | `e2e/tests/flows/governance-description-render.spec.ts` |
 | Queue/execute CTAs | `e2e/tests/flows/governance-queue-execute.spec.ts` + `flows/failures-governance.spec.ts` |
 | Chain/version-gated behavior | `e2e/tests/flows/governance-multichain.spec.ts` (bsc v5 + mainnet v4) + `flows/governance-writes-v4.spec.ts` (v4 castVote/queue/execute calldata) |
@@ -81,13 +81,15 @@ mapper dereferences — serve proposals ONLY through it or the list breaks).
   Still open: rebalance-preview price path on non-lcap chains (central price
   mock only knows current-basket tokens).
 - Description XSS (`governance-description-render.spec.ts`): `<script>` inert,
-  `onerror`/`javascript:` neutralized, control markdown renders — but raw
-  `<iframe>` RENDERS AND LOADS ITS SRC (attacker-controlled on-chain
-  description → live external frame). BUG, `test.fixme`'d, engineer triage;
-  same renderer in yield governance too (`ProposalMdDescription.tsx` ×2).
-- Validation caveat: zod form bounds (fee min/max etc.) are BYPASSED on
-  localhost/dev (`shouldBypassFormValidation`) — the e2e harness cannot
-  exercise them; bounds need schema unit tests instead.
+  `onerror`/`javascript:` neutralized, control markdown renders. The historical
+  raw-`<iframe>` hole is FIXED (S3): one shared allowlist-sanitized renderer
+  (`src/components/governance/proposal-md-description.tsx` — the two legacy
+  unsanitized copies were deleted); iframe/object/embed are stripped, with a
+  live regression test that also trips on any src egress.
+- Validation: zod form bounds (fee min/max etc.) are bypassed on localhost/dev
+  (`shouldBypassFormValidation`) but NOT in e2e — the harness Vite server sets
+  `VITE_E2E`, which pins the bypass off, so bounds are assertable
+  (`index-dtf/governance/fee-bounds.spec.ts`).
 
 ## Traps
 
@@ -98,12 +100,13 @@ mapper dereferences — serve proposals ONLY through it or the list breaks).
   subgraph. Don't "fix" a test by moving live state into the subgraph mock.
 - ERC-6372 `clock()` is mocked (timestamp mode); governor deadline math
   breaks silently if a new read bypasses the frozen clock.
-- KNOWN APP BUG (`propose-basket-settings/updater.tsx`): the threshold
-  change-detector seeds the field from the already-percentage
-  `proposalThreshold` (identity `proposalThresholdToPercentage`) but compares
-  it against `Number(proposalThreshold) / 1e18` — never equal, so EVERY
-  basket-settings proposal appends a phantom `setProposalThreshold` calldata
-  and the empty-change guard never trips. Two tests `test.fixme`'d until fixed.
+- Threshold change-detection MUST go through the shared
+  `isProposalThresholdChanged` (percentage basis on both sides — all three
+  settings updaters use it). The historical bug (E1, fixed): comparing the
+  already-percentage form field against `raw / 1e18` never matched, so every
+  basket-settings proposal appended a phantom `setProposalThreshold` calldata
+  and the empty-change guard never tripped. Don't reintroduce a raw-basis
+  comparison; the two e2e regressions in the basket-settings spec pin it.
 - Wallet-connected MAINNET specs need mainnet ZAP_TOKENS `balanceOf` +
   `/current/prices` seeding — the central mock only seeds base/bsc, so a
   connected mainnet spec fails teardown without per-test `overrides.ethCall`/

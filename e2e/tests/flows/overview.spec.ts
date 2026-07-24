@@ -161,9 +161,9 @@ test('deprecated DTF overview renders its inactive state', async ({
   // The overview still renders DTF data for a deprecated (v4.0.0) DTF.
   await expect(page.getByTestId('overview-dtf-name')).toContainText(token.name)
 
-  // Deprecated status (discover/dtfs snapshot: status "deprecated") surfaces as
-  // the Inactive badge next to the title. Label is Lingui-translated, so key on
-  // the testid, never the copy.
+  // Deprecated status (synchronous dtf-catalog lookup — the fixture DTF is
+  // catalog-listed, nothing to mock) surfaces as the Inactive badge next to the
+  // title. Label is Lingui-translated, so key on the testid, never the copy.
   await expect(page.getByTestId('overview-inactive-badge')).toBeVisible()
 
   expect(unmockedCalls).toEqual([])

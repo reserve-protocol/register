@@ -1,9 +1,8 @@
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
-import { chainIdAtom } from '@/state/atoms'
 import { indexDTFAtom } from '@/state/dtf/atoms'
 import { formatCurrency } from '@/utils'
-import { CHAIN_TAGS } from '@/utils/constants'
+import { isSafeHttpUrl } from '@/utils/url'
 import { Trans } from '@lingui/react/macro'
 import { useAtomValue } from 'jotai'
 import { BadgePercent, CalendarRange, Coins } from 'lucide-react'
@@ -38,6 +37,10 @@ const IndexCampaignOverview = () => {
 
   if (!indexDTF || !campaignData || campaignData.status !== 'LIVE') return null
 
+  const rewardTokenUrl = isSafeHttpUrl(campaignData.rewardToken?.url)
+    ? campaignData.rewardToken?.url
+    : undefined
+
   return (
     <Card className="p-6">
       <div className="flex items-center gap-1 mb-4">
@@ -63,8 +66,9 @@ const IndexCampaignOverview = () => {
         <Trans>
           Earn rewards in{' '}
           <a
-            href={campaignData.rewardToken?.url}
+            href={rewardTokenUrl}
             target="_blank"
+            rel="noopener noreferrer"
             className="underline"
           >
             {campaignData.rewardToken?.name} ({campaignData.rewardToken?.symbol}

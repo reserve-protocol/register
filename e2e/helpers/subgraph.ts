@@ -181,7 +181,7 @@ function graphError(message: string) {
 // Refusing that request makes the query refetch on the correct chain and succeed
 // — the transient self-heals. A PERSISTENT wrong-chain request (the real
 // regression this suite exists to catch — a valid address sent to the wrong
-// host) never loads data, so its spec fails. `flows/spa-chain-identity.spec.ts`
+// host) never loads data, so its spec fails. `flows/reload-chain-identity.spec.ts`
 // additionally asserts the positive request-boundary identity. See CODEX P0
 // (HARN-001/002).
 export function resolveIndexQuery(
@@ -229,14 +229,18 @@ export function resolveIndexQuery(
   }
 
   // Per-test overlay wins over snapshots — keyed by the exact operationName so a
-  // spec can, e.g., serve a fresher voting snapshot after a vote tx.
-  const overlaid = overrides?.lookupSubgraph(op, vars)
+  // spec can, e.g., serve a fresher voting snapshot after a vote tx. urlChain
+  // scopes chain-bearing overrides to this host's chain.
+  const overlaid = overrides?.lookupSubgraph(op, vars, urlChain)
   if (overlaid !== undefined) return { data: overlaid }
 
   // Past-week PnL balance snapshot (overview balance card, wallet-gated). Empty
   // is the product default — "wasn't holding a week ago" hides the PnL row. A
   // spec that wants a non-zero week-ago position overrides via overrides.subgraph.
-  if (op === 'AccountBalanceWeekAgo') return { data: { accountBalanceDailySnapshots: [] } }
+  // SDK week-ago PnL snapshot read (was register-local `AccountBalanceWeekAgo`).
+  // Empty = the wallet holds no history at the mark → PnL row hidden.
+  if (op === 'IndexDtfAccountBalanceSnapshot')
+    return { data: { accountBalanceDailySnapshots: [] } }
 
   // The SDK sends the proposal id as `proposalId`; older callers used `id`.
   const proposalId = (vars.proposalId as string) ?? (vars.id as string) ?? ''
@@ -448,7 +452,7 @@ export function resolveYieldQuery(
   const op = parsed.operationName ?? ''
   const vars = parsed.variables ?? {}
 
-  const overlaid = overrides?.lookupSubgraph(op, vars)
+  const overlaid = overrides?.lookupSubgraph(op, vars, chainId)
   if (overlaid !== undefined) return { data: overlaid }
 
   // Explorer transactions tab (default route) — a cross-chain feed on the
@@ -517,12 +521,21 @@ export async function mockSubgraphRoutes(
     // (isYieldReplayActive) — so index tests, which incidentally poll a
     // dtf-yield subgraph via app updaters, keep the pre-yield EMPTY_SHAPE
     // behavior verbatim instead of hitting the yield replay's fail-loud.
+    // The fallback branch (yield URLs outside yield replay + legacy hosts) still
+    // consults the per-test overlay: cross-chain feeds like the explorer's
+    // Transactions query live here, and per-chain override shapes (A1) must be
+    // expressible without activating the yield replay.
+    const fallbackOverlaid = overrides?.lookupSubgraph(
+      parsed.operationName,
+      parsed.variables ?? {},
+      subgraphChainForUrl(url)
+    )
     const response =
       url.includes('dtf-yield') && isYieldReplayActive()
         ? resolveYieldQuery(yieldChainForUrl(url), body, log, overrides)
         : url.includes('dtf-index')
           ? resolveIndexQuery(body, log, overrides, subgraphChainForUrl(url))
-          : { data: EMPTY_SHAPE }
+          : { data: fallbackOverlaid !== undefined ? fallbackOverlaid : EMPTY_SHAPE }
 
     return route.fulfill({
       status: 200,

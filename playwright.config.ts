@@ -59,11 +59,17 @@ export default defineConfig({
     // human's dev-server port.
     command: `pnpm exec vite --host ${HOST} --port ${PORT} --strictPort`,
     url: baseURL,
-    reuseExistingServer: !process.env.CI,
+    // Never reuse: the pinned env below (incl. VITE_E2E validation mode) only
+    // holds for a server this config started — a foreign :3005 vite would run
+    // with the developer's env and silently void the mock/validation contract.
+    reuseExistingServer: false,
     timeout: 120_000,
     // Pin env so a developer's .env can't route around the mocks: staging flips
     // the API/zapper host, and RPC keys add hosts our intercept list won't match.
     env: {
+      // Prod-like form validation in e2e (B3): shouldBypassFormValidation is
+      // OFF under this flag, so zod form bounds are assertable in specs.
+      VITE_E2E: 'true',
       VITE_WALLETCONNECT_ID: 'test-project',
       VITE_STAGING_API: '',
       VITE_USE_STAGING: '',

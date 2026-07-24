@@ -1,35 +1,13 @@
-import useIndexDTFSubgraph from '@/hooks/useIndexDTFSugbraph'
-import { chainIdAtom } from '@/state/atoms'
-import { RESERVE_API } from '@/utils/constants'
-import { useQuery } from '@tanstack/react-query'
-import { gql } from 'graphql-request'
-import { useAtomValue } from 'jotai'
+import {
+  selectPriceAtMark,
+  useIndexDtfAccountBalanceSnapshot,
+  useIndexDtfIdentity,
+  useIndexDtfPriceHistory,
+} from '@reserve-protocol/react-sdk'
 import { useMemo } from 'react'
-import { Address, formatEther } from 'viem'
+import { Address } from 'viem'
 
 const WEEK_SECONDS = 7 * 24 * 60 * 60
-
-// Latest daily balance snapshot at or before the week-ago mark. Snapshots only
-// exist for days with balance activity, so this is the carry-forward balance
-// the wallet held one week ago. No row at all = the wallet's history is
-// younger than a week (or it never held).
-const weekAgoSnapshotQuery = gql`
-  query AccountBalanceWeekAgo(
-    $account: String!
-    $token: String!
-    $before: BigInt!
-  ) {
-    accountBalanceDailySnapshots(
-      where: { account: $account, token: $token, timestamp_lte: $before }
-      orderBy: timestamp
-      orderDirection: desc
-      first: 1
-    ) {
-      amount
-      timestamp
-    }
-  }
-`
 
 // "Past week" PnL = current position value minus the position's USD value one
 // week ago (snapshot balance × price at that time). Deliberately a plain value
@@ -50,6 +28,7 @@ export const calculateWeekAgoPnl = ({
   return currentValue - snapshotAmount * priceThen
 }
 
+// The SDK hooks own fetching/caching; the period framing and value-diff semantics live here.
 const useWeekAgoPnl = ({
   account,
   token,
@@ -59,7 +38,7 @@ const useWeekAgoPnl = ({
   token?: Address
   currentValue?: number
 }) => {
-  const chainId = useAtomValue(chainIdAtom)
+  const { chainId } = useIndexDtfIdentity()
 
   // Hour-floored so query keys stay stable within the hour.
   const weekAgo = useMemo(
@@ -67,69 +46,43 @@ const useWeekAgoPnl = ({
     []
   )
 
-  const {
-    data: snapshotData,
-    isSuccess: snapshotSettled,
-    isError: snapshotFailed,
-  } = useIndexDTFSubgraph(
-    account && token ? weekAgoSnapshotQuery : null,
-    {
-      account: account?.toLowerCase(),
-      token: token?.toLowerCase(),
-      before: weekAgo.toString(),
-    },
-    {},
-    chainId
+  const snapshot = useIndexDtfAccountBalanceSnapshot(
+    account && token
+      ? { account, dtf: token, chainId, before: weekAgo }
+      : undefined
   )
 
-  // The wallet held a week ago only if a snapshot at/before that mark exists
+  const snapshotAmount = snapshot.data
+    ? Number(snapshot.data.balance.formatted)
+    : null
+  // The wallet held a week ago only if a snapshot at/before the mark exists
   // with a positive amount; skip the price fetch otherwise.
-  const snapshotAmount = useMemo(() => {
-    const snapshot = snapshotData?.accountBalanceDailySnapshots?.[0]
-    if (!snapshot) return null
-    return Number(formatEther(BigInt(snapshot.amount)))
-  }, [snapshotData])
+  const holding = snapshotAmount !== null && snapshotAmount > 0
 
-  const {
-    data: priceThen,
-    isSuccess: priceSettled,
-    isError: priceFailed,
-  } = useQuery({
-    queryKey: ['dtf-price-at', chainId, token, weekAgo],
-    queryFn: async (): Promise<number | null> => {
-      const sp = new URLSearchParams()
-      sp.set('chainId', chainId.toString())
-      sp.set('address', token?.toLowerCase() ?? '')
-      sp.set('from', (weekAgo - 3_600).toString())
-      sp.set('to', weekAgo.toString())
-      sp.set('interval', '1h')
+  const price = useIndexDtfPriceHistory(
+    token && holding
+      ? {
+          address: token,
+          chainId,
+          from: weekAgo - 3_600,
+          to: weekAgo,
+          interval: '1h' as const,
+        }
+      : undefined,
+    { staleTime: Infinity }
+  )
 
-      const response = await fetch(
-        `${RESERVE_API}historical/dtf?${sp.toString()}`
-      )
-      if (!response.ok) throw new Error('Failed to fetch dtf price at week ago')
-
-      const data = (await response.json()) as {
-        timeseries: { timestamp: number; price: number }[]
-      }
-      const point = [...data.timeseries].reverse().find((p) => p.price > 0)
-      return point?.price ?? null
-    },
-    enabled: !!token && snapshotAmount !== null && snapshotAmount > 0,
-    staleTime: Infinity,
-  })
+  const priceThen = price.data ? selectPriceAtMark(price.data, weekAgo) : null
 
   // Resolved = every fetch this PnL depends on has settled (success or error),
   // so a null pnl now means "hide the row", not "still loading". Consumers use
   // it to animate the balance card in exactly once, with its final content.
-  const needsPrice = snapshotAmount !== null && snapshotAmount > 0
-  const isResolved =
-    (snapshotSettled || snapshotFailed) &&
-    (!needsPrice || priceSettled || priceFailed)
+  const snapshotSettled = snapshot.isSuccess || snapshot.isError
+  const priceSettled = price.isSuccess || price.isError
 
   return {
     pnl: calculateWeekAgoPnl({ snapshotAmount, priceThen, currentValue }),
-    isResolved,
+    isResolved: snapshotSettled && (!holding || priceSettled),
   }
 }
 

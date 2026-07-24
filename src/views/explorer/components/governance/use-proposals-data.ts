@@ -12,7 +12,11 @@ import { useAtomValue } from 'jotai'
 import { useMemo } from 'react'
 import { walletAtom } from 'state/atoms'
 import { ChainId } from 'utils/chains'
-import { LISTED_RTOKEN_ADDRESSES, supportedChainList } from 'utils/constants'
+import {
+  INDEX_DTF_CHAINS,
+  LISTED_RTOKEN_ADDRESSES,
+  supportedChainList,
+} from 'utils/constants'
 import { Address, formatEther, getAddress, zeroAddress } from 'viem'
 import { useBlockNumber } from 'wagmi'
 import { type ProposalRecord, filtersAtom } from './atoms'
@@ -122,8 +126,6 @@ type IndexProposalsResponse = {
     votes: { choice: string }[]
   }[]
 }
-
-const INDEX_DTF_CHAINS = [ChainId.Mainnet, ChainId.Base, ChainId.BSC] as const
 
 const amountFromRaw = (value: string): Amount => {
   const raw = BigInt(value)

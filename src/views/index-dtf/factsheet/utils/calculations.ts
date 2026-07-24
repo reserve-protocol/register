@@ -17,7 +17,7 @@ export const calculatePerformance = (
 type Point = { timestamp: number; price: number }
 
 // Binary search: index of the last point with timestamp <= target, or -1 if none.
-function idxAtOrBefore(timeseries: Point[], targetTs: number): number {
+function idxAtOrBefore(timeseries: readonly Point[], targetTs: number): number {
   let lo = 0,
     hi = timeseries.length - 1,
     ans = -1
@@ -36,7 +36,7 @@ function idxAtOrBefore(timeseries: Point[], targetTs: number): number {
 
 // Get price at or before target; if none, fallback to first at or after.
 export function priceAtBoundary(
-  timeseries: Point[],
+  timeseries: readonly Point[],
   targetTs: number
 ): number | null {
   if (timeseries.length === 0) return null
@@ -72,7 +72,7 @@ const monthIndexToKey = (i: number): MonthKey => monthKeys[i] as MonthKey
  */
 
 export const generateNetPerformanceData = (
-  timeseries: Array<{ timestamp: number; price: number }>
+  timeseries: ReadonlyArray<{ timestamp: number; price: number }>
 ): NetPerformanceYear[] => {
   if (!timeseries?.length) return []
 
@@ -223,7 +223,7 @@ export const generateNetPerformanceData = (
  * @returns Array of { timestamp, monthlyPL } for each month
  */
 export const calculateMonthlyChartData = (
-  timeseries: Array<{ timestamp: number; price: number }>
+  timeseries: ReadonlyArray<{ timestamp: number; price: number }>
 ): MonthlyChartDataPoint[] => {
   // 1) Sort data by timestamp (ascending)
   const sorted = [...timeseries].sort((a, b) => a.timestamp - b.timestamp)
@@ -261,14 +261,12 @@ export const calculateMonthlyChartData = (
     return yearA !== yearB ? yearA - yearB : monthA - monthB
   })
 
-  // 4) Calculate monthly P&L using last price of each month vs last price of previous month
   return months.map(([, current], index) => {
-    const monthlyPL =
-      index === 0
-        ? null // no previous month to compare
-        : ((current.lastPrice - months[index - 1][1].lastPrice) /
-            months[index - 1][1].lastPrice) *
-          100
+    const prevMonthPrice = index === 0 ? 0 : months[index - 1][1].lastPrice
+    const hasPriorMonthPrice = prevMonthPrice > 0
+    const monthlyPL = hasPriorMonthPrice
+      ? ((current.lastPrice - prevMonthPrice) / prevMonthPrice) * 100
+      : null
 
     // Use the end of month timestamp (normalized)
     const date = new Date(current.lastTs * 1000)

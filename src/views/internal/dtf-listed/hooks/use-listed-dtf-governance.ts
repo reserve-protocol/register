@@ -1,12 +1,12 @@
 import { INDEX_GRAPH_CLIENTS } from '@/state/chain/atoms/chainAtoms'
-import { ChainId } from '@/utils/chains'
+import { INDEX_DTF_CHAINS } from '@/utils/constants'
 import { useQuery } from '@tanstack/react-query'
 import { gql } from 'graphql-request'
 import { Address } from 'viem'
 import { IndexDTFItem } from '@/hooks/useIndexDTFList'
 import { ListedDTFGovernance } from '../atoms'
 
-type DTFGovernanceResponse = {
+export type DTFGovernanceResponse = {
   dtfs: {
     id: Address
     token: {
@@ -52,7 +52,54 @@ const governanceQuery = gql`
   }
 `
 
-const SUPPORTED_CHAINS = [ChainId.Mainnet, ChainId.Base, ChainId.BSC] as const
+export const mapGovernanceResponse = (
+  response: DTFGovernanceResponse,
+  apiDataMap: Map<string, IndexDTFItem>,
+  chainId: number
+): ListedDTFGovernance[] =>
+  response.dtfs.map((dtf) => {
+    const apiData = apiDataMap.get(dtf.id.toLowerCase())
+    return {
+      id: dtf.id,
+      name: dtf.token.name,
+      symbol: dtf.token.symbol,
+      chainId,
+      icon: apiData?.brand?.icon,
+      marketCap: apiData?.marketCap ?? 0,
+      tradingGovernance: dtf.tradingGovernance?.id,
+      tradingTimelock: dtf.tradingGovernance?.timelock.id,
+      ownerGovernance: dtf.ownerGovernance?.id,
+      ownerTimelock: dtf.ownerGovernance?.timelock.id,
+    }
+  })
+
+export const fetchListedDTFGovernanceRows = async (
+  chains: readonly number[],
+  dtfsByChain: Record<number, string[]>,
+  apiDataMap: Map<string, IndexDTFItem>,
+  request: (chainId: number, ids: string[]) => Promise<DTFGovernanceResponse>
+): Promise<ListedDTFGovernance[]> => {
+  const results = await Promise.all(
+    chains.map(async (chainId) => {
+      const ids = dtfsByChain[chainId]
+      if (!ids || ids.length === 0) return []
+
+      // One chain failing degrades to the chains that answered.
+      try {
+        return mapGovernanceResponse(await request(chainId, ids), apiDataMap, chainId)
+      } catch (error) {
+        console.error(
+          `Failed to fetch listed DTF governance from chain ${chainId}:`,
+          error
+        )
+        return []
+      }
+    })
+  )
+
+  // Sort by marketCap descending
+  return results.flat().sort((a, b) => b.marketCap - a.marketCap)
+}
 
 const useListedDTFGovernance = (dtfList: IndexDTFItem[] | undefined) => {
   return useQuery({
@@ -65,7 +112,7 @@ const useListedDTFGovernance = (dtfList: IndexDTFItem[] | undefined) => {
         dtfList.map((dtf) => [dtf.address.toLowerCase(), dtf])
       )
 
-      const dtfsByChain = SUPPORTED_CHAINS.reduce(
+      const dtfsByChain = INDEX_DTF_CHAINS.reduce(
         (acc, chainId) => {
           acc[chainId] = dtfList
             .filter((dtf) => dtf.chainId === chainId)
@@ -75,37 +122,13 @@ const useListedDTFGovernance = (dtfList: IndexDTFItem[] | undefined) => {
         {} as Record<number, string[]>
       )
 
-      const results = await Promise.all(
-        SUPPORTED_CHAINS.map(async (chainId) => {
-          const ids = dtfsByChain[chainId]
-          if (ids.length === 0) return []
-
-          const client = INDEX_GRAPH_CLIENTS[chainId]
-          const response: DTFGovernanceResponse = await client.request(
-            governanceQuery,
-            { ids }
-          )
-
-          return response.dtfs.map((dtf) => {
-            const apiData = apiDataMap.get(dtf.id.toLowerCase())
-            return {
-              id: dtf.id,
-              name: dtf.token.name,
-              symbol: dtf.token.symbol,
-              chainId,
-              icon: apiData?.brand?.icon,
-              marketCap: apiData?.marketCap ?? 0,
-              tradingGovernance: dtf.tradingGovernance?.id,
-              tradingTimelock: dtf.tradingGovernance?.timelock.id,
-              ownerGovernance: dtf.ownerGovernance?.id,
-              ownerTimelock: dtf.ownerGovernance?.timelock.id,
-            }
-          })
-        })
+      return fetchListedDTFGovernanceRows(
+        INDEX_DTF_CHAINS,
+        dtfsByChain,
+        apiDataMap,
+        (chainId, ids) =>
+          INDEX_GRAPH_CLIENTS[chainId].request(governanceQuery, { ids })
       )
-
-      // Sort by marketCap descending
-      return results.flat().sort((a, b) => b.marketCap - a.marketCap)
     },
     enabled: !!dtfList && dtfList.length > 0,
     staleTime: 1000 * 60 * 5, // 5 minutes

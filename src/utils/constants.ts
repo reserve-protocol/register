@@ -281,6 +281,13 @@ export const supportedChainList = [
   ChainId.Arbitrum,
 ]
 
+// Index DTF chains, distinct from supportedChainList (Yield/RToken) — Arbitrum is deprecated for Index, never add it.
+export const INDEX_DTF_CHAINS = [
+  ChainId.Mainnet,
+  ChainId.Base,
+  ChainId.BSC,
+] as const
+
 export const FALLBACK_PLATFORM_FEES: Record<number, number> = {
   [ChainId.Mainnet]: 50,
   [ChainId.Base]: 50,

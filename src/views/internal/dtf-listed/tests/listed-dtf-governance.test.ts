@@ -1,0 +1,74 @@
+import { afterEach, describe, expect, it, vi } from 'vitest'
+import { Address } from 'viem'
+import {
+  fetchListedDTFGovernanceRows,
+  mapGovernanceResponse,
+} from '../hooks/use-listed-dtf-governance'
+import { IndexDTFItem } from '@/hooks/useIndexDTFList'
+
+const dtf = {
+  id: '0x00000000000000000000000000000000000000aa' as Address,
+  token: { name: 'DTF A', symbol: 'DTFA' },
+  ownerGovernance: {
+    id: '0x00000000000000000000000000000000000000b1' as Address,
+    timelock: { id: '0x00000000000000000000000000000000000000b2' as Address },
+  },
+  tradingGovernance: {
+    id: '0x00000000000000000000000000000000000000c1' as Address,
+    timelock: { id: '0x00000000000000000000000000000000000000c2' as Address },
+  },
+}
+
+describe('mapGovernanceResponse', () => {
+  it('maps dtfs and enriches from the API data map', () => {
+    const apiMap = new Map<string, IndexDTFItem>([
+      [dtf.id.toLowerCase(), { marketCap: 42, brand: { icon: 'x' } } as IndexDTFItem],
+    ])
+
+    const rows = mapGovernanceResponse({ dtfs: [dtf] }, apiMap, 1)
+
+    expect(rows).toHaveLength(1)
+    expect(rows[0].symbol).toBe('DTFA')
+    expect(rows[0].marketCap).toBe(42)
+    expect(rows[0].icon).toBe('x')
+    expect(rows[0].ownerTimelock).toBe(dtf.ownerGovernance.timelock.id)
+  })
+
+})
+
+// One chain's failed request must degrade to the healthy chains, not reject
+// the whole fan-out.
+describe('fetchListedDTFGovernanceRows degrades on a bad chain', () => {
+  const CHAINS = [1, 8453] as const
+  const dtfsByChain = { 1: ['0xaaa'], 8453: [dtf.id.toLowerCase()] }
+  const apiMap = new Map<string, IndexDTFItem>([
+    [dtf.id.toLowerCase(), { marketCap: 7 } as IndexDTFItem],
+  ])
+
+  // The fan-out logs the rejected chain (kept in prod) — silence it here so the
+  // green suite doesn't print a failure-looking stack (CXR-026-M1). afterEach
+  // restore ensures an assertion failure can't leak the mock.
+  afterEach(() => vi.restoreAllMocks())
+
+  it('keeps the healthy chain when another chain rejects', async () => {
+    vi.spyOn(console, 'error').mockImplementation(() => {})
+    const request = vi.fn((chainId: number) =>
+      chainId === 1
+        ? Promise.reject(new Error('chain 1 subgraph down'))
+        : Promise.resolve({ dtfs: [dtf] })
+    )
+
+    const rows = await fetchListedDTFGovernanceRows(
+      CHAINS,
+      dtfsByChain,
+      apiMap,
+      request
+    )
+
+    // Chain 1 rejected, chain 8453 answered — result has only the healthy row.
+    expect(rows).toHaveLength(1)
+    expect(rows[0].chainId).toBe(8453)
+    expect(rows[0].symbol).toBe('DTFA')
+    expect(request).toHaveBeenCalledTimes(2)
+  })
+})

@@ -6,7 +6,7 @@ import { walletAtom } from '../atoms'
 import { UNIVERSAL_ASSETS, WORMHOLE_ASSETS } from '@/utils/constants'
 import { checkVersion } from '@/utils'
 import { Bridge, MarketCapData, NativeToken } from '@/types/token-mappings'
-import type { Amount } from '@reserve-protocol/react-sdk'
+import type { Amount, IndexDtfBrand } from '@reserve-protocol/react-sdk'
 
 // TODO: placeholders
 export interface IToken extends Token {
@@ -40,35 +40,8 @@ export interface ITokenGovernance {
   token: Token
 }
 
-export interface IndexDTFBrand {
-  dtf: {
-    icon: string
-    cover: string
-    video: string
-    description: string
-    notesFromCreator: string
-    prospectus: string
-    files: { url: string; name: string }[]
-    tags: string[]
-    basketType: 'percentage-based' | 'unit-based'
-  }
-  creator: {
-    name: string
-    icon: string
-    link: string
-  }
-  curator: {
-    name: string
-    icon: string
-    link: string
-  }
-  socials: {
-    twitter: string
-    telegram: string
-    discord: string
-    website: string
-  }
-}
+// Brand shape is owned by the SDK mapper (display-ready) — register stores it as-is.
+export type IndexDTFBrand = IndexDtfBrand
 
 export type Transaction = {
   id: string
@@ -134,14 +107,13 @@ export const performanceTimeRangeAtom = atom<TimeRange>('ytd')
 export const indexDTFPerformanceLoadingAtom = atom<boolean>(false)
 export const indexDTFMarketCapAtom = atom<number | undefined>(undefined)
 export const indexDTFBrandAtom = atom<IndexDTFBrand | undefined>(undefined)
-// True once the folio-manager brand read settles — the authoritative source
-// for `dtf.video`/`files`. The SDK brand write can land WITHOUT video (its
-// mapping drops untyped fields), so anything gating on the cover video must
-// hold its skeleton until this flips or the cover flaps out and back in.
-export const indexDTFBrandExtrasResolvedAtom = atom(false)
 export const indexDTFTransactionsAtom = atom<Transaction[]>([])
 
-export const indexDTFFeeAtom = atom<number | undefined>(undefined)
+// undefined = read in flight; 'unavailable' = registry read failed. Consumers
+// must render an explicit unavailable state — never substitute a made-up fee.
+export const indexDTFFeeAtom = atom<number | 'unavailable' | undefined>(
+  undefined
+)
 
 export const indexDTF24hVolumeAtom = atom<number>((get) => {
   const txs = get(indexDTFTransactionsAtom)
@@ -252,7 +224,7 @@ export const isSingletonRebalanceAtom = atom((get) => {
   return checkVersion('4.0.0', version)
 })
 
-// ! Exclusive case for CFB DTF
+// Hybrid is a curated designation — requires weight control but is not implied by it.
 export const isHybridDTFAtom = atom((get) => {
   const dtf = get(indexDTFAtom)
 

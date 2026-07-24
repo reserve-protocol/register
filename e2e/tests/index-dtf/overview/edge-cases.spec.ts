@@ -6,10 +6,10 @@ import { loadSnapshot } from '../../../helpers/snapshots'
 const TOTAL_SUPPLY = encodeFunctionData({ abi: erc20Abi, functionName: 'totalSupply' })
 const ZERO_UINT = encodeAbiParameters([{ type: 'uint256' }], [0n])
 
-// Overview edge cases that reach ledger bugs. Each asserts the DESIRED behavior
-// and is `test.fixme` because the app is currently buggy — the failing assertion
-// IS the validation that the suite catches the bug (flip to `test` when fixed).
-// See E2E_BUG_LEDGER.md for the root-cause file:line.
+// Overview edge cases that reach ledger bugs. Active tests cover fixed
+// regressions; remaining `test.fixme` cases document desired behavior and are
+// promoted after their implementation lands.
+
 const base = REGISTRY.find((d) => d.chainId === 8453 && !d.deprecated)!
 const expectedName = loadSnapshot<{ dtf: { token: { name: string } } }>(
   `${base.snapshotDir}/dtf.json`
@@ -38,11 +38,9 @@ test.fixme(
   }
 )
 
-// BUG H3 — use-dtf-price-history.ts: the history query's `enabled` gate requires
-// a truthy `supply` (RPC totalSupply). A 0-supply DTF (totalSupply=0n) never
-// fires the query, so the chart stays a perpetual skeleton with no empty/error
-// state. Desired: the chart resolves to an empty/no-data state.
-test.fixme(
+// H3 regression — a 0-supply DTF must still run the history query. Guarding on
+// a truthy RPC totalSupply left the chart in a perpetual skeleton.
+test(
   'overview: 0-supply DTF resolves the chart to an empty state, not a perpetual skeleton @smoke',
   async ({ harness }) => {
     const page = harness.page
@@ -53,9 +51,36 @@ test.fixme(
     await expect(page.getByTestId('overview-dtf-name')).toContainText(expectedName, {
       timeout: 15_000,
     })
-    // Desired: the chart skeleton clears (empty state or content). BUG: stuck.
+    // The history request settles, so the skeleton clears to content or empty state.
     await expect(page.getByTestId('overview-chart-skeleton').first()).toBeHidden({
       timeout: 8_000,
     })
+  }
+)
+
+// M1 regression (CXR-008-I1): an UNBRANDED DTF — folio-manager answers with no
+// parsedData, so the SDK settles brand as undefined — must collapse the cover
+// slot once the DTF itself loads. Gating the skeleton on brand-value presence
+// (brand === undefined) held the skeleton forever, because undefined is ALSO
+// the settled "no brand" result.
+test(
+  'overview: unbranded DTF collapses the cover skeleton once loaded @smoke',
+  async ({ harness }) => {
+    const page = harness.page
+    harness.mock.api({ pathname: '/folio-manager/read' }, {})
+    await harness.goto(base, 'overview')
+
+    // The rest of the overview still renders (brand is optional data).
+    // overview-dtf-name reads the same indexDTFAtom the cover gates on, so once
+    // the name paints the DTF has settled.
+    await expect(page.getByTestId('overview-dtf-name')).toContainText(expectedName, {
+      timeout: 15_000,
+    })
+    // Loaded + no brand → the cover skeleton is dropped from the DOM (not merely
+    // clipped by a collapsing grid, which raced the render). The slot stays
+    // mounted; asserting its presence first keeps a vanished testid from
+    // false-greening the skeleton check.
+    await expect(page.getByTestId('overview-cover-slot')).toBeAttached()
+    await expect(page.getByTestId('overview-cover-skeleton')).toHaveCount(0)
   }
 )

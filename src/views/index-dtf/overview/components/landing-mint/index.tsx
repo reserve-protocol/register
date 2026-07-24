@@ -9,13 +9,13 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { Skeleton } from '@/components/ui/skeleton'
 import { cn } from '@/lib/utils'
+import { isSafeHttpUrl } from '@/utils/url'
 import useComplianceRestrictions from '@/hooks/use-compliance-restrictions'
 import { useIsLargeDesktop } from '@/hooks/use-media-query'
 import { isInactiveDTF } from '@/hooks/use-dtf-status'
 import {
   indexDTFAtom,
   indexDTFBrandAtom,
-  indexDTFBrandExtrasResolvedAtom,
   indexDTFStatusAtom,
 } from '@/state/dtf/atoms'
 import { useTrackIndexDTFClick } from '@/views/index-dtf/hooks/useTrackIndexDTFPage'
@@ -46,8 +46,9 @@ const ExternalDexDropdown = ({
   onSelect: (link: DtfDexLink) => void
 }) => {
   const { t } = useLingui()
+  const safeLinks = links.filter((link) => isSafeHttpUrl(link.url))
 
-  if (!links.length) return null
+  if (!safeLinks.length) return null
 
   return (
     <DropdownMenu>
@@ -62,7 +63,7 @@ const ExternalDexDropdown = ({
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-48 rounded-xl p-1">
-        {links.map((link) => (
+        {safeLinks.map((link) => (
           <DropdownMenuItem key={link.url} className="rounded-lg" asChild>
             <a
               href={link.url}
@@ -159,7 +160,6 @@ const MintBox = () => {
 const LandingMint = (props: React.HTMLAttributes<HTMLDivElement>) => {
   const { data: complianceData } = useComplianceRestrictions()
   const brand = useAtomValue(indexDTFBrandAtom)
-  const brandExtrasResolved = useAtomValue(indexDTFBrandExtrasResolvedAtom)
   const dtf = useAtomValue(indexDTFAtom)
   const isGeoRestricted = complianceData?.reason === 'geolocation-restricted'
   const isLargeDesktop = useIsLargeDesktop()
@@ -172,14 +172,15 @@ const LandingMint = (props: React.HTMLAttributes<HTMLDivElement>) => {
       className="hidden xl:flex xl:w-[480px] xl:flex-col xl:gap-1 relative max-w-[480px]"
       {...props}
     >
-      {/* The slot assumes a video cover (they all get one eventually) and
-          holds a skeleton while brand data loads. If the DTF turns out to
-          have none, it collapses smoothly — the skeleton stays rendered
-          inside the shrinking row instead of vanishing in one frame. */}
+      {/* While the DTF loads, the slot holds a video-shaped skeleton. Once it
+          settles: a cover fades in, or — no cover — the skeleton is dropped
+          and the row collapses. The skeleton never lingers on the settled
+          no-cover state (that was a permanent-skeleton bug). */}
       <div
+        data-testid="overview-cover-slot"
         className={cn(
           'grid transition-[grid-template-rows] duration-500 ease-out motion-reduce:transition-none',
-          hasCover || brand === undefined || !brandExtrasResolved
+          hasCover || dtf === undefined
             ? 'grid-rows-[1fr]'
             : 'grid-rows-[0fr]'
         )}
@@ -188,9 +189,9 @@ const LandingMint = (props: React.HTMLAttributes<HTMLDivElement>) => {
           <div className="rounded-3xl bg-card p-2">
             {hasCover ? (
               <DtfCover className="rounded-xl" />
-            ) : (
+            ) : dtf === undefined ? (
               <DtfCoverSkeleton className="rounded-xl" />
-            )}
+            ) : null}
           </div>
         </div>
       </div>

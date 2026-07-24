@@ -1,3 +1,4 @@
+import { Trans } from '@lingui/macro'
 import { getCurrentBasket } from '@/lib/index-rebalance/utils'
 import { indexDTFRebalanceControlAtom } from '@/state/dtf/atoms'
 import { useAtom, useAtomValue } from 'jotai'
@@ -14,6 +15,7 @@ import {
   BasketItem,
 } from '@/components/index-basket-setup'
 import ManageWeightsContent from './manage-weights-content'
+import { computeFolioUnits } from './utils/weight-calculation-utils'
 import { getRebalanceTokens, getRebalanceWeights } from '../../utils/transforms'
 
 const ManageWeightsView = () => {
@@ -23,11 +25,30 @@ const ManageWeightsView = () => {
   const rebalanceControl = useAtomValue(indexDTFRebalanceControlAtom)
   const savedProposedUnits = useAtomValue(managedWeightUnitsAtom)
 
+  // A 0 supply makes every per-share unit indeterminate — bail rather than render a fabricated basket.
+  const hasSupply = !!rebalanceParams && rebalanceParams.supply > 0n
+
+  // The token map comes from the subgraph while the rebalance token list is
+  // on-chain — indexer lag can leave a token unmapped. Weights derived from a
+  // partial map would misattribute shares and break Save, so the whole view
+  // fails closed until every token resolves.
+  const hasCompleteMetadata = useMemo(() => {
+    if (!rebalanceParams) return false
+    const rebalanceTokens = getRebalanceTokens(
+      rebalanceParams.rebalance,
+      rebalanceParams.folioVersion
+    )
+    return (
+      rebalanceTokens.length > 0 &&
+      rebalanceTokens.every((address) => tokenMap[address.toLowerCase()])
+    )
+  }, [rebalanceParams, tokenMap])
+
   const { initialBasket, priceMap } = useMemo(() => {
     const basket: Record<string, BasketItem> = {}
     const prices: Record<string, number> = {}
 
-    if (!rebalanceParams || !rebalanceControl) {
+    if (!rebalanceParams || !rebalanceControl || !hasSupply || !hasCompleteMetadata) {
       return { initialBasket: basket, priceMap: prices }
     }
 
@@ -72,21 +93,21 @@ const ManageWeightsView = () => {
       })
     }
 
+    // hasCompleteMetadata guarantees every token resolves, so tokenData keeps
+    // the on-chain order and currentShares stays index-aligned below.
     const tokenData = rebalanceTokens
-      .map((tokenAddress) => {
-        const address = tokenAddress.toLowerCase()
+      .map((tokenAddress) => tokenAddress.toLowerCase())
+      .map((address) => {
         const token = tokenMap[address]
-        const assets = rebalanceParams.currentAssets[address] || 0n
 
         return {
           address,
           token,
-          assets,
+          assets: rebalanceParams.currentAssets[address] || 0n,
           decimals: BigInt(token.decimals),
           price: rebalanceParams.prices[address]?.currentPrice || 0,
         }
       })
-      .filter((d) => d.token && d.assets !== undefined)
 
     const currentShares = getCurrentBasket(
       tokenData.map((d) => d.assets),
@@ -98,12 +119,11 @@ const ManageWeightsView = () => {
       const address = tokenAddress.toLowerCase()
       const token = tokenMap[address]
       const assets = rebalanceParams.currentAssets[address] || 0n
-      const totalSupply = rebalanceParams.supply || 1n
 
-      // TODO @audit
-      const folio = (assets * 10n ** 18n) / totalSupply
+      // supply is guaranteed > 0n here (hasSupply gate), so folio is never null.
+      const folio = computeFolioUnits(assets, rebalanceParams.supply)
 
-      if (token) {
+      if (token && folio !== null) {
         const folioValue = formatUnits(folio, token.decimals)
         const proposedValue = proposedUnitsFromWeights[address] || folioValue
         basket[address] = {
@@ -118,9 +138,30 @@ const ManageWeightsView = () => {
     })
 
     return { initialBasket: basket, priceMap: prices }
-  }, [rebalanceParams, tokenMap, savedProposedUnits, rebalanceControl])
+  }, [
+    rebalanceParams,
+    hasSupply,
+    hasCompleteMetadata,
+    tokenMap,
+    savedProposedUnits,
+    rebalanceControl,
+  ])
 
   if (!showView || !rebalanceParams || !rebalanceControl) return null
+
+  if (!hasSupply || !hasCompleteMetadata || !Object.keys(initialBasket).length) {
+    return (
+      <div
+        data-testid="manage-weights-unavailable"
+        className="bg-background rounded-3xl p-6 text-sm text-legend"
+      >
+        <Trans>
+          Weight management is unavailable — rebalance token data is incomplete
+          or still indexing. Try again shortly.
+        </Trans>
+      </div>
+    )
+  }
 
   return (
     <BasketSetupProvider

@@ -70,7 +70,8 @@ const RebalancePreview = ({
   timestamp?: number
 }) => {
   const dtf = useAtomValue(indexDTFAtom)
-  const rebalanceBasketPreview = useRebalanceBasketPreview(calldatas, timestamp)
+  const { preview: rebalanceBasketPreview, snapshotUnavailable } =
+    useRebalanceBasketPreview(calldatas, timestamp)
 
   const basket = useMemo(() => {
     if (!rebalanceBasketPreview) return {}
@@ -86,6 +87,19 @@ const RebalancePreview = ({
       return acc
     }, {} as EstimatedBasket)
   }, [rebalanceBasketPreview])
+
+  if (snapshotUnavailable)
+    return (
+      <div
+        className="rounded-3xl border p-6 text-center text-legend"
+        data-testid="rebalance-preview-unavailable"
+      >
+        <Trans>
+          Basket snapshot unavailable — historical data for this proposal's
+          rebalance window is no longer served.
+        </Trans>
+      </div>
+    )
 
   if (!dtf || !rebalanceBasketPreview)
     return <GovernanceProposalPreviewSkeleton />

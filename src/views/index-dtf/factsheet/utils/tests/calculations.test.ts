@@ -37,22 +37,15 @@ describe('calculateMonthlyChartData (pure)', () => {
   })
 })
 
-// BUG Z12 (REGISTER_HARDENING.md). The monthly P&L divides by the previous
-// month's last price with NO zero-guard — the base calculatePerformance IS
-// guarded, but this inline path does not reuse it — so a zero prior-month price
-// yields Infinity instead of an unavailable point. `it.fails` documents it and
-// flips (starts failing) when the guard is added.
-describe('calculateMonthlyChartData zero prior price — KNOWN BUG (Z12)', () => {
-  it.fails('zero prior-month price should be unavailable (null), not Infinity', () => {
+// The monthly P&L guards the prior
+// month's last price like the other performance sites — a zero prior price
+// yields an unavailable point (null), not Infinity.
+describe('calculateMonthlyChartData zero prior price (guard)', () => {
+  it('zero prior-month price is unavailable (null), not Infinity', () => {
     const r = calculateMonthlyChartData([
       { timestamp: JAN_15, price: 0 }, // Jan last = 0
-      { timestamp: FEB_15, price: 110 }, // Feb P&L = (110-0)/0 = Infinity today
+      { timestamp: FEB_15, price: 110 }, // Feb P&L = (110-0)/0 would be Infinity
     ])
-    // Desired = null (mirrors the guarded calculatePerformance). Today it's
-    // Infinity, so this fails → it.fails passes. When the guard lands and returns
-    // null, this passes → it.fails FLIPS red, prompting removal of the marker.
-    // (Asserting Number.isFinite === true would NOT flip: isFinite(null) is also
-    // false, so the marker would wrongly survive the fix.)
     expect(r[1].monthlyPL).toBeNull()
   })
 })

@@ -13,9 +13,13 @@ These changes are only needed while developing against `~/projects/dtf-sdk`:
 
 ## Turn Local SDK On
 
+Link **both** packages — react-sdk re-exports the core, and mismatched
+instances duplicate the viem/react-query peers:
+
 ```bash
-pnpm add @reserve-protocol/react-sdk@link:../dtf-sdk/packages/react-sdk
-pnpm --dir ../dtf-sdk --filter @reserve-protocol/react-sdk build
+pnpm add @reserve-protocol/sdk@link:../dtf-sdk/packages/sdk \
+  @reserve-protocol/react-sdk@link:../dtf-sdk/packages/react-sdk
+pnpm --dir ../dtf-sdk build
 ```
 
 For active SDK work, run the SDK watcher in one terminal and Register in another:
@@ -27,13 +31,16 @@ pnpm start
 
 ## Turn Local SDK Off
 
-Replace the local link with the published version:
+Replace the local links with the exact published version register pins
+(check `package.json` on master for the current one):
 
 ```bash
-pnpm add @reserve-protocol/react-sdk@^0.0.1
+pnpm add @reserve-protocol/sdk@<published> @reserve-protocol/react-sdk@<published>
 ```
 
-Then keep the provider wiring unchanged and verify Register typecheck against the published package.
+Then keep the provider wiring unchanged and verify Register typecheck against
+the published package. **`link:` entries must never be committed** — pin the
+released paired versions before merge.
 
 ## Permanent Integration Changes
 

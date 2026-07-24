@@ -1,8 +1,8 @@
 import dtfStakingVaultAbi from '@/abis/dtf-index-staking-vault'
-import { chainIdAtom } from '@/state/atoms'
 import { indexDTFAtom, indexDTFFeeAtom } from '@/state/dtf/atoms'
 import { IndexDTF } from '@/types'
-import { formatPercentage } from '@/utils'
+import { formatPercentage, isLoaded } from '@/utils'
+import { getFeePercentAdjust, isDisplayablePlatformFee } from '@/utils/fees'
 import { msg } from '@lingui/core/macro'
 import type { MessageDescriptor } from '@lingui/core'
 import { useLingui } from '@lingui/react/macro'
@@ -38,10 +38,12 @@ export const getFeeRecipients = (
   tokenJar: Address | undefined
 ): Recipient[] | undefined => {
   if (!indexDTF || platformFee === undefined) return undefined
+  // A fee outside [0, 100) has no real share-of-total split — signal indeterminate, never fabricate.
+  if (!isDisplayablePlatformFee(platformFee)) return undefined
 
   const platformShare: Recipient = {
     label: msg`Fixed Platform Share`,
-    value: `${platformFee}%`,
+    value: formatPercentage(platformFee),
     icon: <IconWrapper Component={TrainTrack} />,
     testId: 'settings-fee-platform',
   }
@@ -59,7 +61,7 @@ export const getFeeRecipients = (
     testId: 'settings-fee-governance',
   }
   const externalRecipients: Recipient[] = []
-  const PERCENT_ADJUST = 100 / (100 - platformFee)
+  const PERCENT_ADJUST = getFeePercentAdjust(platformFee)
 
   const deployer = indexDTF.deployer.toLowerCase()
   const governanceRecipients = new Set(
@@ -96,20 +98,24 @@ const FeesInfo = () => {
   const { t } = useLingui()
   const indexDTF = useAtomValue(indexDTFAtom)
   const platformFee = useAtomValue(indexDTFFeeAtom)
-  const chainId = useAtomValue(chainIdAtom)
 
   const { data: tokenJar } = useReadContract({
     abi: dtfStakingVaultAbi,
     address: indexDTF?.stToken?.id,
     functionName: 'tokenJar',
-    chainId,
+    chainId: indexDTF?.chainId,
     query: {
       enabled: Boolean(indexDTF?.stToken),
     },
   })
 
   const feeRecipients = useMemo(
-    () => getFeeRecipients(indexDTF, platformFee, tokenJar),
+    () =>
+      getFeeRecipients(
+        indexDTF,
+        isLoaded(platformFee) ? platformFee : undefined,
+        tokenJar
+      ),
     [indexDTF, platformFee, tokenJar]
   )
 
@@ -144,17 +150,28 @@ const FeesInfo = () => {
         />
       </div>
       <div className="bg-card rounded-3xl mt-1">
-        {feeRecipients?.map((recipient, index) => (
+        {platformFee === 'unavailable' ||
+        (isLoaded(platformFee) && !isDisplayablePlatformFee(platformFee)) ? (
           <InfoCardItem
-            key={recipient.address ?? index}
-            label={t(recipient.label)}
-            value={recipient.value}
-            icon={recipient.icon}
-            address={recipient.address}
-            border={!!index}
-            testId={recipient.testId}
+            label={t`Revenue Distribution`}
+            value={t`Unavailable`}
+            icon={<IconWrapper Component={TrainTrack} />}
+            border={false}
+            testId="settings-fee-unavailable"
           />
-        ))}
+        ) : (
+          feeRecipients?.map((recipient, index) => (
+            <InfoCardItem
+              key={recipient.address ?? index}
+              label={t(recipient.label)}
+              value={recipient.value}
+              icon={recipient.icon}
+              address={recipient.address}
+              border={!!index}
+              testId={recipient.testId}
+            />
+          ))
+        )}
       </div>
     </InfoCard>
   )

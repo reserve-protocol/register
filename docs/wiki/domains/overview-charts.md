@@ -1,6 +1,6 @@
 ---
 title: Overview Charts
-updated: 2026-07-09
+updated: 2026-07-22
 type: domain
 sources:
   - src/views/index-dtf/overview/components/charts/**
@@ -12,8 +12,23 @@ sources:
 
 # Overview Charts (Index DTF price/candles)
 
-Line + candlestick charts on the Index DTF overview page. Data comes from the
-Reserve API REST endpoints, not the SDK and not the subgraph.
+Line + candlestick charts on the Index DTF overview page. The line-chart
+timeseries now reads through the **SDK** (`sdk.index.getPriceHistory`, wrapping
+the same `historical/dtf` REST endpoint) under the canonical
+`dtfQueryKeys.index.priceHistory` key — shared by the chart, factsheet, and
+week-ago PnL (`use-dtf-price-history.ts`, `use-week-ago-pnl.ts`). The
+register-side hooks keep the product composition on top of the SDK's raw
+points: dedupe-by-timestamp, the live current-point append (RPC supply ×
+current price), range prefetch, and the 30-min refresh. A shared-key queryFn
+must return the raw point array — derive scalars (e.g. week-ago last-positive
+price) locally, never inside the cache entry. Candlesticks still use the REST
+`v2/historical/dtf/candles` endpoint directly.
+
+Zero is a resolved on-chain value, not a loading sentinel: the history query
+and range prefetch enable once RPC supply and current price are defined, even
+when either is `0`. The SDK accepts those zeroes when composing the synthetic
+live point, and the historical request settles the chart instead of leaving
+its skeleton mounted forever.
 
 ## Granularity policy (line chart)
 

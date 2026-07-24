@@ -100,6 +100,10 @@ export interface PortfolioStakedProposal {
   description: string
   state: string
   isOptimistic?: boolean | null
+  vetoThreshold?: string | null
+  vetoThresholdVotes?: string | null
+  optimisticSnapshot?: string | null
+  optimisticSnapshotSupply?: string | null
   proposer: string
   creationTime: string
   voteStart: string

@@ -122,8 +122,8 @@ importers:
         specifier: ^3.2.1
         version: 3.2.1(decimal.js-light@2.5.1)
       '@reserve-protocol/react-sdk':
-        specifier: ^0.4.0
-        version: 0.4.0(@tanstack/react-query@5.99.0(react@18.3.1))(bufferutil@4.1.0)(react@18.3.1)(typescript@5.9.3)(utf-8-validate@5.0.10)(viem@2.52.0(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@5.0.10)(zod@4.3.6))
+        specifier: 0.5.0
+        version: 0.5.0(@tanstack/react-query@5.99.0(react@18.3.1))(bufferutil@4.1.0)(react@18.3.1)(typescript@5.9.3)(utf-8-validate@5.0.10)(viem@2.52.0(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@5.0.10)(zod@4.3.6))
       '@reserve-protocol/react-zapper':
         specifier: 2.7.1
         version: 2.7.1(@babel/core@7.29.0)(@babel/template@7.28.6)(@tanstack/react-query@5.99.0(react@18.3.1))(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(ajv@8.18.0)(multiformats@14.0.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(viem@2.52.0(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@5.0.10)(zod@4.3.6))(wagmi@2.19.5(@tanstack/query-core@5.99.0)(@tanstack/react-query@5.99.0(react@18.3.1))(@types/react@18.3.28)(bufferutil@4.1.0)(react@18.3.1)(typescript@5.9.3)(utf-8-validate@5.0.10)(viem@2.52.0(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@5.0.10)(zod@4.3.6))(zod@4.3.6))
@@ -241,6 +241,9 @@ importers:
       recharts:
         specifier: ^2.15.4
         version: 2.15.4(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      rehype-sanitize:
+        specifier: ^5.0.1
+        version: 5.0.1
       sonner:
         specifier: ^1.7.4
         version: 1.7.4(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -3216,8 +3219,8 @@ packages:
       viem: ^2.50.4
       wagmi: ^2.19.5
 
-  '@reserve-protocol/dtf-catalog@0.1.2':
-    resolution: {integrity: sha512-KoJBtDiE29IL2uUHFy2RH77kshYUkHRAl6MM0r+pBAfqCNCTJPDL3EucsXOwJNbfu/nuJw7gDrb+5gq8mdyC2A==}
+  '@reserve-protocol/dtf-catalog@0.1.3':
+    resolution: {integrity: sha512-03E4RbXiKLoz5sjKrdFTZCMD9KZSU1ldOgKXuMNJO9zYn/r7tkHIi+mvi+LGnZzzuKdhGjTNFgT3B7eDjJ47Xw==}
     engines: {node: '>=24'}
 
   '@reserve-protocol/dtf-chat@0.0.6':
@@ -3233,8 +3236,8 @@ packages:
     peerDependencies:
       decimal.js-light: ^2.5.1
 
-  '@reserve-protocol/react-sdk@0.4.0':
-    resolution: {integrity: sha512-MRZzk8DdBvJOsNPx4Zs0vZ7w1scfekqNJNu+iv8id/dJ8KPPHerfpuiekpYscVQjmAiL2lNdf6uR2ulA0N0YZQ==}
+  '@reserve-protocol/react-sdk@0.5.0':
+    resolution: {integrity: sha512-BMN8QxjN08BHN66uzW6dxm9zG9T6eb8wJ1zWMl5oyUgCy2mT9zy9TmRjHve0wO5eWrz6J39ZJ1WFZ/HPB0ROfg==}
     engines: {node: '>=24'}
     peerDependencies:
       '@tanstack/react-query': ^5.99.0
@@ -3253,8 +3256,8 @@ packages:
   '@reserve-protocol/rtokens@1.1.23':
     resolution: {integrity: sha512-VYP0BNhULhFzAGpzaqe1pkuMpCvLmuNYsYHE0xkKgiqaMZdztSlnCNK2BRlsDbFD/HQZwcoAoYjFpEHQbq2GoA==}
 
-  '@reserve-protocol/sdk@0.4.0':
-    resolution: {integrity: sha512-EHtIHxzkSUlX73PnkIpDhEZ9Zie+VOkEkK1dcuemqakmuKv1rM6oK5L11qAw2nxDHYdI5apqqs6AvvxJMAKNnQ==}
+  '@reserve-protocol/sdk@0.5.0':
+    resolution: {integrity: sha512-PeXPNlMnXghTjd3T0pPH3Bg1uBXkuVm5AMwy3R8PjETLrJZ6AqCj2Ugjl8SHFSDZbC+nviBYzAMO+K4R05gABQ==}
     engines: {node: '>=24'}
 
   '@reserve-protocol/trusted-fillers-sdk@0.3.0':
@@ -5439,6 +5442,9 @@ packages:
   hast-util-raw@7.2.3:
     resolution: {integrity: sha512-RujVQfVsOrxzPOPSzZFiwofMArbQke6DJjnFfceiEbFh7S05CbPt0cYN+A5YeD3pso0JQk6O1aHBnx9+Pm2uqg==}
 
+  hast-util-sanitize@4.1.0:
+    resolution: {integrity: sha512-Hd9tU0ltknMGRDv+d6Ro/4XKzBqQnP/EZrpiTbpFYfXv/uOhWeKc+2uajcbEvAEH98VZd7eII2PiXm13RihnLw==}
+
   hast-util-select@5.0.5:
     resolution: {integrity: sha512-QQhWMhgTFRhCaQdgTKzZ5g31GLQ9qRb1hZtDPMqQaOhpLBziWcshUS0uCR5IJ0U1jrK/mxg35fmcq+Dp/Cy2Aw==}
 
@@ -7121,6 +7127,9 @@ packages:
   rehype-rewrite@3.0.6:
     resolution: {integrity: sha512-REDTNCvsKcAazy8IQWzKp66AhSUDSOIKssSCqNqCcT9sN7JCwAAm3mWGTUdUzq80ABuy8d0D6RBwbnewu1aY1g==}
     engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
+
+  rehype-sanitize@5.0.1:
+    resolution: {integrity: sha512-da/jIOjq8eYt/1r9GN6GwxIR3gde7OZ+WV8pheu1tL8K0D9KxM2AyMh+UEfke+FfdM3PvGHeYJU0Td5OWa7L5A==}
 
   rehype-slug@5.1.0:
     resolution: {integrity: sha512-Gf91dJoXneiorNEnn+Phx97CO7oRMrpi+6r155tTxzGuLtm+QrI4cTwCa9e1rtePdL4i9tSO58PeSS6HWfgsiw==}
@@ -11855,7 +11864,7 @@ snapshots:
       - multiformats
       - supports-color
 
-  '@reserve-protocol/dtf-catalog@0.1.2': {}
+  '@reserve-protocol/dtf-catalog@0.1.3': {}
 
   '@reserve-protocol/dtf-chat@0.0.6(@ai-sdk/react@2.0.199(react@18.3.1)(zod@4.3.6))(ai@5.0.197(zod@4.3.6))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
@@ -11870,9 +11879,9 @@ snapshots:
     dependencies:
       decimal.js-light: 2.5.1
 
-  '@reserve-protocol/react-sdk@0.4.0(@tanstack/react-query@5.99.0(react@18.3.1))(bufferutil@4.1.0)(react@18.3.1)(typescript@5.9.3)(utf-8-validate@5.0.10)(viem@2.52.0(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@5.0.10)(zod@4.3.6))':
+  '@reserve-protocol/react-sdk@0.5.0(@tanstack/react-query@5.99.0(react@18.3.1))(bufferutil@4.1.0)(react@18.3.1)(typescript@5.9.3)(utf-8-validate@5.0.10)(viem@2.52.0(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@5.0.10)(zod@4.3.6))':
     dependencies:
-      '@reserve-protocol/sdk': 0.4.0(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@5.0.10)
+      '@reserve-protocol/sdk': 0.5.0(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@5.0.10)
       '@tanstack/react-query': 5.99.0(react@18.3.1)
       react: 18.3.1
       viem: 2.52.0(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@5.0.10)(zod@4.3.6)
@@ -11920,10 +11929,10 @@ snapshots:
 
   '@reserve-protocol/rtokens@1.1.23': {}
 
-  '@reserve-protocol/sdk@0.4.0(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@5.0.10)':
+  '@reserve-protocol/sdk@0.5.0(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@5.0.10)':
     dependencies:
       '@graphql-typed-document-node/core': 3.2.0(graphql@16.13.2)
-      '@reserve-protocol/dtf-catalog': 0.1.2
+      '@reserve-protocol/dtf-catalog': 0.1.3
       '@reserve-protocol/dtf-rebalance-lib': 3.2.1(decimal.js-light@2.5.1)
       decimal.js-light: 2.5.1
       graphql: 16.13.2
@@ -14828,6 +14837,10 @@ snapshots:
       web-namespaces: 2.0.1
       zwitch: 2.0.4
 
+  hast-util-sanitize@4.1.0:
+    dependencies:
+      '@types/hast': 2.3.10
+
   hast-util-select@5.0.5:
     dependencies:
       '@types/hast': 2.3.10
@@ -16858,6 +16871,12 @@ snapshots:
       hast-util-select: 5.0.5
       unified: 10.1.2
       unist-util-visit: 4.1.2
+
+  rehype-sanitize@5.0.1:
+    dependencies:
+      '@types/hast': 2.3.10
+      hast-util-sanitize: 4.1.0
+      unified: 10.1.2
 
   rehype-slug@5.1.0:
     dependencies:

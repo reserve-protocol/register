@@ -64,11 +64,51 @@ describe('appendLivePoint', () => {
     expect(live.rsr).toBe(3)
   })
 
+  it('treats a position without a value as 0, never NaN', () => {
+    const portfolio: PortfolioResponse = {
+      ...emptyPortfolio,
+      totalHoldingsUSD: 10,
+      // A partial API row missing `value` must not poison the category total.
+      indexDTFs: [{ value: 10 }, {}] as PortfolioResponse['indexDTFs'],
+    }
+
+    const [, live] = appendLivePoint([historicalPoint], portfolio)
+
+    expect(live.indexDTFs).toBe(10)
+    expect(Number.isNaN(live.indexDTFs)).toBe(false)
+  })
+
   it('does not mutate the original series', () => {
     const original = [historicalPoint]
     const result = appendLivePoint(original, emptyPortfolio)
 
     expect(original).toHaveLength(1)
     expect(result).not.toBe(original)
+  })
+
+  it('skips the live point when the headline total is not finite', () => {
+    const original = [historicalPoint]
+    const broken = {
+      ...emptyPortfolio,
+      totalHoldingsUSD: NaN,
+    }
+
+    // Appending would paint $NaN / a fake crash-to-zero at the chart's end.
+    const result = appendLivePoint(original, broken)
+
+    expect(result).toBe(original)
+  })
+
+  it('treats a missing position array as empty, not a crash', () => {
+    const partial = {
+      ...emptyPortfolio,
+      totalHoldingsUSD: 5,
+      indexDTFs: undefined,
+    } as unknown as PortfolioResponse
+
+    const [, live] = appendLivePoint([historicalPoint], partial)
+
+    expect(live.value).toBe(5)
+    expect(live.indexDTFs).toBe(0)
   })
 })

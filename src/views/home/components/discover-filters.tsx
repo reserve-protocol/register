@@ -1,13 +1,21 @@
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
-import { chainFilterAtom, searchFilterAtom } from '../atoms'
+import { chainFilterAtom, dtfTypeFilterAtom, searchFilterAtom } from '../atoms'
 import { SearchInput } from '@/components/ui/input'
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { ChainId } from '@/utils/chains'
+import { INDEX_DTF_CHAINS, supportedChainList } from '@/utils/constants'
 import ChainLogo from '@/components/icons/ChainLogo'
 import { cn } from '@/lib/utils'
 import SquareStackedChainLogo from '@/components/icons/SquareStackedChainLogo'
 import { useLingui } from '@lingui/react/macro'
+
+const CHAIN_LABELS: Record<number, string> = {
+  [ChainId.Mainnet]: 'Ethereum',
+  [ChainId.Base]: 'Base',
+  [ChainId.BSC]: 'Binance',
+  [ChainId.Arbitrum]: 'Arbitrum',
+}
 
 const SingleToggleFilter = ({
   options,
@@ -57,41 +65,33 @@ const SingleToggleFilter = ({
   )
 }
 
-const ChainFilter = () => {
+export const ChainFilter = () => {
   const { t } = useLingui()
-  const currentFilter = useAtomValue(chainFilterAtom)
-  const [selected, setSelected] = useState(
-    currentFilter.length > 1 ? '0' : currentFilter[0] === 1 ? '1' : '2'
-  )
+  const [selected, setSelected] = useState('0')
   const setFilters = useSetAtom(chainFilterAtom)
+  const dtfType = useAtomValue(dtfTypeFilterAtom)
+
+  // The chain set follows the active tab's domain — never impose one domain's set on the other.
+  const chainSet = dtfType === 'yield' ? supportedChainList : [...INDEX_DTF_CHAINS]
+
+  // Reset the applied filter on tab switch — a stale cross-domain chain silently hides rows.
+  useEffect(() => {
+    setFilters([...chainSet])
+    setSelected('0')
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dtfType])
 
   const chains = [
     {
       text: t`All chains`,
-      icon: (
-        <SquareStackedChainLogo
-          chains={[ChainId.Mainnet, ChainId.Base, ChainId.BSC]}
-        />
-      ),
-      filter: [ChainId.Base, ChainId.Mainnet, ChainId.BSC],
+      icon: <SquareStackedChainLogo chains={[...chainSet]} />,
+      filter: [...chainSet],
     },
-    {
-      icon: (
-        <ChainLogo chain={ChainId.Mainnet} className="h-5 w-5 rounded-md" />
-      ),
-      text: 'Ethereum',
-      filter: [ChainId.Mainnet],
-    },
-    {
-      icon: <ChainLogo chain={ChainId.Base} className="h-5 w-5 rounded-md" />,
-      text: 'Base',
-      filter: [ChainId.Base],
-    },
-    {
-      icon: <ChainLogo chain={ChainId.BSC} className="h-5 w-5 rounded-md" />,
-      text: 'Binance',
-      filter: [ChainId.BSC],
-    },
+    ...chainSet.map((chain) => ({
+      icon: <ChainLogo chain={chain} className="h-5 w-5 rounded-md" />,
+      text: CHAIN_LABELS[chain] ?? String(chain),
+      filter: [chain],
+    })),
   ]
 
   const handleSelect = (value: string) => {

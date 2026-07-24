@@ -160,7 +160,10 @@ const ActiveProposals = () => {
   if (!proposals.length) return null
 
   return (
-    <div>
+    <div
+      data-testid="portfolio-active-proposals"
+      data-proposal-count={proposals.length}
+    >
       <SectionHeader
         icon={ScrollText}
         title={<Trans>Active Proposals</Trans>}

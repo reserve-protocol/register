@@ -1,4 +1,5 @@
 import dtfIndexAbiV5 from '@/abis/dtf-index-abi'
+import { isLoaded } from '@/utils'
 import dtfStakingVaultAbi from '@/abis/dtf-index-staking-vault'
 import {
   indexDTFAtom,
@@ -31,7 +32,11 @@ import {
   currentQuorumPercentageAtom,
   tokenJarAtom,
 } from './atoms'
-import { proposalThresholdToPercentage, secondsToDays } from '../../shared'
+import {
+  isProposalThresholdChanged,
+  proposalThresholdToPercentage,
+  secondsToDays,
+} from '../../shared'
 import {
   DEFAULT_OPTIMISTIC_VETO_DELAY,
   DEFAULT_OPTIMISTIC_VETO_PERIOD,
@@ -280,7 +285,7 @@ const Updater = () => {
           revenueDistributionChanges.additionalRecipients !== undefined
             ? revenueDistributionChanges.additionalRecipients
             : feeRecipients.externalRecipients,
-        fixedPlatformFee: platformFee ?? 0,
+        fixedPlatformFee: isLoaded(platformFee) ? platformFee : 0,
         auctionLength:
           auctionLengthChange !== undefined
             ? auctionLengthChange
@@ -586,12 +591,14 @@ const Updater = () => {
           }
         }
 
-        // Check proposal threshold (convert to percentage for comparison)
+        // Threshold compares on the seeded percentage basis
         if (governanceVotingThreshold !== undefined) {
-          const currentThreshold = proposalThresholdToPercentage(
-            governance.proposalThreshold
-          )
-          if (governanceVotingThreshold !== currentThreshold) {
+          if (
+            isProposalThresholdChanged(
+              governanceVotingThreshold,
+              governance.proposalThreshold
+            )
+          ) {
             changes.proposalThreshold = governanceVotingThreshold
           } else {
             delete changes.proposalThreshold

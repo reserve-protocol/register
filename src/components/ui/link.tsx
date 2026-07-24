@@ -5,10 +5,11 @@ import { cn } from '@/lib/utils'
 const Link = React.forwardRef<
   HTMLAnchorElement,
   React.AnchorHTMLAttributes<HTMLAnchorElement>
->(({ className, ...props }, ref) => (
+>(({ className, rel, target = '_blank', ...props }, ref) => (
   <a
     ref={ref}
-    target="_blank"
+    target={target}
+    rel={rel ?? (target === '_blank' ? 'noopener noreferrer' : undefined)}
     className={cn(
       'flex items-center gap-1.5 hover:text-primary cursor-pointer',
       className

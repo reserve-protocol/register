@@ -1,6 +1,6 @@
 ---
 title: E2E Suite
-updated: 2026-07-13
+updated: 2026-07-23
 type: domain
 sources:
   - e2e/**
@@ -11,14 +11,15 @@ sources:
 # E2E Suite (Playwright)
 
 Offline Index-DTF acceptance coverage for home/discover, overview, issuance,
-zaps, compliance, auctions, governance, and settings. The suite characterizes
-Register behavior at the installed `@reserve-protocol/react-sdk` version; SDK
-mapper/math/calldata correctness remains the SDK repositories' responsibility.
+zaps, compliance, auctions, governance, and settings, plus Yield (RToken)
+render smokes. The suite characterizes Register behavior at the installed
+`@reserve-protocol/react-sdk` version; SDK mapper/math/calldata correctness
+remains the SDK repositories' responsibility.
 
 ## How the suite is organized (foundational)
 
 Tests are grouped by **route → subroute** (domain), not by test-type; the
-canonical coverage matrix is `E2E_TEST_MAP.md` at repo root. EVERY page is
+canonical coverage matrix is `e2e/TEST_MAP.md`. EVERY page is
 tested across three dimensions, and a spec missing any of them is incomplete:
 
 1. **State-space** — every product-distinct state (governance proposals =
@@ -31,12 +32,9 @@ tested across three dimensions, and a spec missing any of them is incomplete:
 3. **Mobile** — the same L0–L3 at a phone viewport (`@mobile` project) + mobile
    chrome.
 
-Known quality gap (2026-07-13): the original suite was built flat (`smoke/` +
-`flows/`) and desktop-happy-path-only, so several specs assert on a testid that
-renders during the skeleton phase — they test the shell, race hydration, and
-miss layout shift. Migrating to the domain tree + adding the lifecycle/mobile
-dimensions is tracked in `E2E_TEST_MAP.md`. `e2e/CLAUDE.md` § Foundational Rule
-is binding for all new specs.
+Some pre-tree specs are still desktop-happy-path only; per-spec coverage,
+lifecycle depth, and gaps live in `e2e/TEST_MAP.md`. `e2e/CLAUDE.md`
+§ Foundational Rule is binding for all new specs.
 
 ## Trust contract
 
@@ -53,6 +51,9 @@ is binding for all new specs.
 - Live protocol state comes from RPC. Subgraph captures supply history/events.
   Registry DTF reads are seeded from captured chain state; captured v4 and v5
   versions stay address-specific so version gates cannot collapse to one value.
+- The webServer boots its own :3005 every run (`reuseExistingServer: false`) —
+  a foreign server can't bypass the pinned env (`VITE_E2E` keeps production
+  form validation ON, so zod bounds ARE assertable in specs).
 
 ## Transactions and time
 
@@ -114,125 +115,57 @@ hand-copied `GetIndexDTF` query in `e2e/scripts/capture.ts` from the new SDK
 dist (it is not exported) and re-run `pnpm e2e:capture` — the `dtf-data` canary
 smoke fails on drift but only a fresh capture fixes it.
 
-Coverage intentionally does not claim forked-chain execution, visual/pixel
-regression, v6 contracts, or full settings/auction write families yet. Mobile
-and the loading lifecycle are NO LONGER non-goals — they are required dimensions
-per the Foundational Rule (previously skipped; now tracked debt in
-`E2E_TEST_MAP.md`). Governance, issuance, compliance, and transaction-contract
-edits require engineer review.
+Non-goals: forked-chain execution, visual/pixel regression, v6 contracts.
+Coverage state and open gaps live in `e2e/TEST_MAP.md`; harness-level debt in
+[[progress]] § Backlog. Governance, issuance, compliance, and
+transaction-contract edits require engineer review.
 
-## Coverage pass 2 (landed 2026-07-10)
+Hard-won spec traps:
 
-Failure paths (reject + revert) are covered for every write flow — vote/queue/
-execute, mint/redeem, zap buy/sell — and register's error handling proved
-CORRECT (viem marks reverted receipts as query-status error, so success
-branches can't fire); the suite now regression-locks that. Multichain:
-governance states + auctions bucketing run on bsc/cmc20 (v5) and mainnet/open
-(v4) with chain-correct explorer links. Propose: fee-change calldata
-round-trips (UI % → `setTVLFee`/`setMintFee` args), injection + empty-change
-guards; basket propose covers form/guards only. Zap edges: impact ≥5%
-acknowledgment gate (via the `overrides.ethBalance` opt-in), quote-error
-recovery, client-side insufficient-funds (server flag is dead code).
-Compliance: manual-surface gating + over-block guard (overview/governance stay
-open). Three captured edge fixtures (`zap-buy-highimpact`, `zap-buy-
-insufficient`, `zap-error` with real 500) are preserved flow files.
+- Error-path specs that wait for react-query retry exhaustion must pump ~10s
+  past the retry backoff (see the settings fee-unavailable spec).
+- Atom-reset specs must drive a REAL in-app DTF→DTF navigation — `page.goto`
+  reboots the app and proves nothing about resets; the reset list is unit-pinned
+  in `src/state/dtf/tests/reset-index-dtf-atoms.test.ts`.
+- Index DTF status is a synchronous `@reserve-protocol/dtf-catalog` lookup —
+  zero fetches, nothing to mock; the `KNOWN_DEPRECATED` fail-safe survives only
+  inside `useDTFStatus` (unit-pinned in `src/hooks/tests/use-dtf-status.test.ts`).
+- Brand is ONE folio-manager request (the SDK full-DTF read); unbranded (`{}`)
+  is a settled state — the cover slot collapses, not a skeleton forever.
 
-Still open, in priority order: golden `startRebalance` calldata fixture to
-unlock full basket-propose submit; v4 write-ABI coverage on mainnet/open
-(wallet-connected); central price mock only knows current-basket tokens
-(blocks rebalance-preview on non-lcap chains); Tenderly simulation model
-(currently gated off per-test); basket-settings (trading-gov params) spec;
-propose-form + error-state testids; centralize the reverted-tx reason re-call.
-Deferred (needs src/roles + engineer review): settings distribute-fees write,
-auction launch/bid, async-mint wizard, manage/factsheet, legacy v2 auctions,
-wallet disconnect mid-flow. Validation caveat: zod form bounds are bypassed on
-localhost/dev, so bounds need schema unit tests, not e2e.
+## Yield DTF (RToken) replay architecture
 
-## Yield DTF (RToken) — Phase F + audit hardening (2026-07-12)
+Yield views read almost everything from RPC via vendored ABIs (FacadeRead,
+Main, StRSR, BasketHandler, RToken, governor), not the SDK — so the yield seam
+is a **record/replay eth_call map** (`chainId:address:calldata → return`)
+captured at a pinned block per RToken (eUSD mainnet, hyUSD base;
+`pnpm e2e:capture:yield`). Two extra captured boundary kinds, both fail-loud:
 
-Foundation: `YIELD_REGISTRY` (eUSD mainnet, hyUSD base) + `rtokenPath`; a
-record/replay eth_call map per RToken captured at a pinned block by
-`scripts/capture-yield.ts` (`pnpm e2e:capture:yield`); yield seams in rpc.ts,
-subgraph.ts (`resolveYieldQuery`), api.ts (yield price tokens). Render smokes for
-THREE read-only views render offline with zero unmocked calls: `yield-overview`
-(name/symbol/price/backing), `yield-issuance` (manual mint/redeem panels, Zaps
-toggled off), `yield-staking` (StRSR exchange-rate + estimated APY). The capture
-script walks all three views (`overview`/`issuance`/`staking`) at ONE pinned
-block into the shared `rtoken-chain-state.json` + `yield-graph.json` (graph ops
-deduped). Value derivations are shared via `helpers/yield.ts`
-(`yieldTokenMeta`/`yieldPinnedTimestamp`). Structural testids added
-(attribute-only) on the yield views: `issuance-mint-panel`,
-`issuance-redeem-panel`, `issuance-manual-toggle`, `staking-exchange-rate`,
-`staking-apy`.
+- **Storage reads** — exact `address:slot → word` for `eth_getStorageAt` (the
+  staking withdraw updater); no blanket zero word.
+- **Allow-failure reverts** — legacy probes (e.g. `Broker.auctionLength()`)
+  that revert on modern contracts are captured as a sentinel and replayed as a
+  genuine multicall `success: false`, keeping the app on its on-chain branch.
+- **Yield geo-compliance** — RToken issuance probes Cloudflare `cdn-cgi/trace`
+  (distinct from index compliance); the base fixture serves a deterministic
+  trace carrying the `compliance` fixture's country.
 
-Two additional captured-boundary kinds the per-view smokes needed (both
-trust-preserving — an UNcaptured read still fails loud):
-- **Storage reads** — the staking withdraw updater reads the stToken draft-era
-  slot via `eth_getStorageAt` on every render. Capture records the exact
-  `address:slot → word`; replay serves it chain-scoped, no blanket zero word.
-- **Allow-failure reverts** — the config updater probes a legacy
-  `Broker.auctionLength()` (and other legacy fns) that REVERT on modern
-  contracts; the app reads them with `allowFailure` and ignores the failure.
-  Capture records the revert as a `YIELD_REVERT_SENTINEL` marker; replay serves
-  a genuine multicall `success:false` so the app stays on its on-chain branch.
-- **Yield geo-compliance** — RToken issuance reads `geolocationAtom`, which
-  probes Cloudflare `cdn-cgi/trace` (distinct from the index Reserve-API
-  compliance). The base fixture serves a deterministic trace carrying the
-  `compliance` fixture's country, so mint-enabled state is test-controllable.
+Trust rules (a yield test can't go green while wrong):
 
-Trust rules (post-audit; the whole point is that a yield test can't go green
-while wrong):
+- Chain-scoped keys everywhere (eth_call map + subgraph
+  `chainId::op::query::identity`) — a shared address can't serve another
+  chain's data.
+- Under replay, an uncaptured contract read fails loud — no borrowing the index
+  `*:selector` tables or the $1 price default; no blanket `hasRole`/storage
+  answers.
+- Index isolation: the yield subgraph resolver engages only while a yield test
+  is active; off-chain/zero-address transients are absorbed unlogged, but an
+  on-chain-shaped read at the fixture's chain still fails loud.
+- `e2e:check` validates yield snapshot identity, pinned block, nonempty map,
+  and within-chain key collisions.
 
-- **Chain-scoped replay** — the eth_call map is keyed `chainId:address:calldata`
-  and the subgraph key `chainId::op::query::identity`, so a shared address (RSR
-  feed) or a no-identity op can't serve one chain's data to another.
-- **Fail-loud, no wildcard fall-through** — under `setYieldReplay(chainId)`, an
-  uncaptured contract read fails loud rather than borrowing the index
-  `*:selector` tables or the $1 Chainlink default. Only time/balance infra backs
-  the captured map. There is NO blanket `hasRole`/`eth_getStorageAt` answer —
-  removed until a write flow models them exactly.
-- **Index isolation** — the yield subgraph resolver engages only while a yield
-  test is active (`isYieldReplayActive`; index pages incidentally poll a
-  dtf-yield subgraph). A read arriving off the fixture's chain (or on the zero
-  address) is a pre-`chainIdAtom`-switch transient, absorbed unlogged; a read
-  AT the fixture's chain on a real address still fails loud, so a stuck-chain
-  bug surfaces as an assertion failure, never a false green.
-- `e2e:check` validates yield snapshot identity, pinned block, nonempty map, and
-  within-chain key collisions.
-
-Still to build: remaining per-view smokes (auctions/governance/settings) then
-flows (mint → stake → vote) — see the blueprint below. Overview/issuance/staking
-render smokes are DONE (2026-07-12).
-
-### Blueprint (for the remaining phases)
-
-Feasibility confirmed: yield subgraph reachable, public no-auth RPCs
-(`ethereum-rpc.publicnode.com`, `1rpc.io`) execute `eth_call` — capture needs no
-credentials. Architecture is FUNDAMENTALLY different from Index: yield views
-read almost everything from RPC via vendored ABIs (FacadeRead/FacadeAct, Main,
-StRSR, BasketHandler, RToken, governor), NOT off-chain via the SDK. So the core
-new mechanism is a **record/replay eth_call map** (`address:calldata → return`)
-captured at a pinned block per RToken — do not hand-encode selectors like the
-index chain-state seeding.
-
-Fixtures: eUSD (mainnet `0xA0d69E286B938e21CBf7E51D71F6A4c8918f482F`, active
-staking + rewards) + hyUSD (base `0xCc7FF230365bD730eE4B352cC2492CEdAC49383e`).
-Route shape `/:chain/token/:tokenId/<page>`. Skip arbitrum/KNOX.
-
-Orchestrator-owned seams (additive, serialized, engineer-review): `YIELD_REGISTRY`
-+ `rtokenPath` in registry.ts; URL-based index/yield fork (`resolveYieldQuery`)
-in subgraph.ts leaving the index path untouched; record/replay lookup layer +
-`eth_getStorageAt` case + `hasRole`/account wildcards in rpc.ts; extend
-`knownPriceResponse` for yield tokens in api.ts; `captureYieldDtf` +
-`YIELD_DTF_FILES` in the manifest; Tenderly gate in base.ts. Reuse unchanged:
-provider/tx-ledger, overrides (incl. `ethBalance`), `mockZapperRoutes`.
-
-Phases: F (capture eUSD+hyUSD eth_call map + subgraph snapshots + api tokens →
-one overview render smoke green) → S (per-view render smokes: overview,
-issuance, staking, auctions-idle, governance list/detail, settings) → W (flows:
-manual mint `RToken.issue` FIRST — reuses wallet/tx-ledger; then stake RSR with
-draft-queue/`getStorageAt`/time-advance; then vote). Defer: deploy (non-goal),
-redeemCustom (needs undercollateralized fixture), auction/settings writes
-(role-gated + golden simulate fixtures), propose submit (Tenderly), wrap/unwrap.
+Covered: overview / issuance / staking render smokes. Remaining yield phases
+(auctions/governance/settings smokes, then mint → stake → vote flows) and
+deferred writes are tracked in `e2e/TEST_MAP.md` § gaps.
 
 Related: [[project]], [[sdk]], [[yield-protocol]], [[subgraphs]].
