@@ -161,7 +161,7 @@ describe('calculateStakeLots', () => {
       20302145.976314919,
       6
     )
-    expect(totalStaked(stakesAroundUnstake)).toBeCloseTo(90944333.400094186, 6)
+    expect(totalStaked(stakesAroundUnstake)).toBeCloseTo(90944333.40009418, 6)
   })
 
   it('drops every lot on a full unstake', () => {
