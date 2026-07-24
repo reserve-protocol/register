@@ -1,6 +1,6 @@
 ---
 title: Progress
-updated: 2026-07-23
+updated: 2026-07-24
 type: ledger
 ---
 
@@ -10,6 +10,7 @@ Stage ledger. One row per stage; keep entries short. Verifier = exact fresh comm
 
 | Stage | Status | Verifier | Review | Next |
 |---|---|---|---|---|
+| merge master RFQ into feature hardening | human-review-required (base 0237e747c; merged `origin/master` 981b634d7; observed CLS explicitly out of scope) | frozen install · scoped gate-equivalent: lint/typecheck, 832 unit, 70 helper, 56 smoke + 1 known fixme · zap 21 · production build · wiki-lint pending | Dark + Light pass; SDK 0.5.0 pin + zapper 2.7.1 reconciled; hardening guards preserved; engineer review required for live RFQ/intent execution | commit merge locally; do not push |
 | Hardening × SDK-integration effort — sanitizer/e2e foundation · overview SDK adoption + portfolio governance-state adoption · crash + money-display guards · rebalance launch guards | **ready for master PR** (stacked PRs merged; SDK 0.5.0 pinned exact; master merged 2026-07-23) | typecheck 0 · unit green · smoke 56 · full flows green · wiki-lint green; guards revert-verified at their seams | cross-reviews reconciled in docs/claude-hardening-review.md; release blockers fixed + pinned (malformed portfolio rows incl. optimistic context, manage-weights fail-closed, zap max) | master PR on go; queue in docs/plans/FOLLOWUPS.md |
 | E2E suite: offline playwright foundation → 3-dim domain coverage → yield replay → chain-scoped identity + trust hardening | done (2026-07-05→12) | flows/smokes/helper units green at every stage; zero-unmocked teardown enforced | audits converged (log ≤2026-07-12); recipes in e2e/CLAUDE.md + [[e2e]] | stages 2–5 in § E2E coverage debt below |
 | uni-pool-swaps-24h-volume-stat | done (base eaa2925ed) | `scope.mjs` gate-equivalent green: typecheck + lint + test:run (581 tests, 4 new) · live parity: PHOTON stat $28,764 = $0 mint + $28,764 swaps (independent subgraph+price calc); Base DTF $276 mint-only, no swap query | correctness+product: Dark & Light, per-claim verify — no correctness blockers; adopted: swap loading folded into stat skeleton (convergent), hook rename; declined: shared window const (parity documented at site) | product acks: stat composition differs on the 5 gated DTFs w/o disclosure (`help` tooltip is a 1-liner if wanted); AMM pool volume is wash-tradeable vs mint flow |
@@ -77,7 +78,6 @@ buried comment — so "fail-loud" never degrades into "avoid-the-boundary" (re-a
 - Zapper prompt: a sub-$1k weighted cap floors to $0 and suppresses the capacity card (the quote-failure path owns it) — revisit with a $100 step if it ever occurs in practice.
 - Zapper prompt: an enso quote resolving above 1% impact while minting is unavailable renders no card (deliberate fail-safe: enso resolving means minting works) — pending product ack.
 - Async-mint: `maxOrderValueUsd` (`async-zap-context.tsx`) still feeds un-weighted per-asset caps to the SDK while the instant zapper now uses weighted caps — likely correct there (the SDK splits per leg, where per-asset caps apply directly), but confirm with an engineer.
-- Mixpanel: zapper prompt CTA label changed `compare_automated_mint` → `cowswap_redirect` (props: variant, tab) — repin any AI-DTF board charts using the old label.
 - Locales: ~117 pre-existing missing msgstr in es/ko/zh surfaced by re-extract (unrelated to any stage) — needs a translation pass.
 - Upstream dtf-chat launcher theming (props/CSS vars) into `@reserve-protocol/dtf-chat` (reserve-ai repo), then delete the `.rc-*` overrides in `src/app.css`.
 - Homepage animation hooks (from old IMPROVEMENTS_PLAN): move scroll/ticker/transcript side effects into focused hooks with observer/timer cleanup; respect `prefers-reduced-motion`.
