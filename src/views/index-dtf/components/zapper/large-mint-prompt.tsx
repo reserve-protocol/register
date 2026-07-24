@@ -19,10 +19,7 @@ import { useQuote, useZapperModal } from '@reserve-protocol/react-zapper'
 import { useAtomValue } from 'jotai'
 import { useEffect, useRef, useState, type SyntheticEvent } from 'react'
 import { createPortal } from 'react-dom'
-import { Address } from 'viem'
 import { useTrackIndexDTFClick } from '../../hooks/useTrackIndexDTFPage'
-import { getPancakeSwapTradeUrl, getPancakeSwapUrl } from './pancake-swap'
-import { usePcsxAmountOut } from './use-pcsx-quote'
 import LargeMintCardBody from './large-mint-prompt-body'
 import {
   deriveMintPromptSignals,
@@ -34,11 +31,10 @@ import {
 
 type LargeMintPromptProps = {
   mode: 'inline' | 'modal' | 'simple'
-  dtfAddress: Address
   chain: number
 }
 
-const LargeMintPrompt = ({ mode, dtfAddress, chain }: LargeMintPromptProps) => {
+const LargeMintPrompt = ({ mode, chain }: LargeMintPromptProps) => {
   const { data, error } = useQuote()
   const { currentTab, isOpen } = useZapperModal()
   const isDesktop = useIsDesktop()
@@ -48,23 +44,16 @@ const LargeMintPrompt = ({ mode, dtfAddress, chain }: LargeMintPromptProps) => {
   const shares = useAtomValue(indexDTFBasketSharesAtom)
 
   const isInline = mode === 'inline'
-  const isBuy = currentTab === 'buy'
   const inputValue = data?.input.value ?? 0
   // The DTF being traded — `data.input.token` is the *spent* token on the buy
   // tab, so the symbol comes from the active DTF instead.
   const symbol = useAtomValue(indexDTFAtom)?.token.symbol ?? ''
 
-  // Flow: input -> quote renders -> raise the strongest applicable concern:
-  // Ondo per-transaction cap, minting-unavailable premium or dead end, high
-  // price impact, large order, or no route. For the modal zapper only while
-  // the modal is open.
+  // Flow: input -> quote renders -> raise the strongest applicable Ondo
+  // concern: per-transaction cap, or the minting-unavailable premium / dead
+  // end. For the modal zapper only while the modal is open.
   const inContext = isInline || isOpen
   const hasValidQuote = !!data?.quote
-  const pcsxAmountOut = usePcsxAmountOut(chain, data?.quote)
-  const pcsxBetter =
-    !!data?.quote &&
-    !!pcsxAmountOut &&
-    BigInt(pcsxAmountOut) > BigInt(data.quote.amountOut)
   const mintingAvailable = isOndoMintingAvailable(market, assets)
   const mintingUnavailable = isOndoMintingUnavailable(market, assets)
   // Each asset only absorbs its basket weight of a mint, so the binding cap
@@ -73,29 +62,20 @@ const LargeMintPrompt = ({ mode, dtfAddress, chain }: LargeMintPromptProps) => {
   const weightedMaxUsd = getOndoWeightedMaxUsd(assets, shares)
   const maxMintUsd =
     weightedMaxUsd === undefined ? undefined : floorOndoMaxUsd(weightedMaxUsd)
-  const {
-    rawCapacity,
-    rawClosedImpact,
-    rawClosedError,
-    rawBetterPrice,
-    rawImpact,
-    rawLarge,
-    rawError,
-    isApplicable,
-  } = deriveMintPromptSignals({
-    inContext,
-    inputValue,
-    hasValidQuote,
-    hasQuoteError: !!error,
-    source: data?.source,
-    truePriceImpact: data?.quote?.truePriceImpact ?? 0,
-    mintingAvailable,
-    mintingUnavailable,
-    maxMintUsd,
-    pcsxBetter,
-  })
+  const { rawCapacity, rawClosedImpact, rawClosedError, isApplicable } =
+    deriveMintPromptSignals({
+      inContext,
+      inputValue,
+      hasValidQuote,
+      hasQuoteError: !!error,
+      source: data?.source,
+      truePriceImpact: data?.quote?.truePriceImpact ?? 0,
+      mintingAvailable,
+      mintingUnavailable,
+      maxMintUsd,
+    })
 
-  // Latch the suggestion so it persists across the zapper's periodic refetch
+  // Latch the notice so it persists across the zapper's periodic refetch
   // (where `error`/`quote` briefly clear) until the user dismisses it, the
   // concern resolves, or the trigger condition drops.
   useEffect(() => {
@@ -104,10 +84,6 @@ const LargeMintPrompt = ({ mode, dtfAddress, chain }: LargeMintPromptProps) => {
         rawCapacity,
         rawClosedImpact,
         rawClosedError,
-        rawBetterPrice,
-        rawImpact,
-        rawLarge,
-        rawError,
         hasValidQuote,
         mintingUnavailable,
         isApplicable,
@@ -117,10 +93,6 @@ const LargeMintPrompt = ({ mode, dtfAddress, chain }: LargeMintPromptProps) => {
     rawCapacity,
     rawClosedImpact,
     rawClosedError,
-    rawBetterPrice,
-    rawImpact,
-    rawLarge,
-    rawError,
     hasValidQuote,
     mintingUnavailable,
     isApplicable,
@@ -144,17 +116,15 @@ const LargeMintPrompt = ({ mode, dtfAddress, chain }: LargeMintPromptProps) => {
     }
     setState((prev) => ({ ...prev, dismissed: true }))
   }
-  // These notices target the BSC AI DTFs only (Ondo-backed baskets + a
-  // PancakeSwap fallback). Other chains never show the card.
+  // These notices target the BSC AI DTFs only (Ondo-backed baskets). Other
+  // chains never show the card.
   const show =
     chain === ChainId.BSC && state.variant !== null && !state.dismissed
 
   // One impression per variant surfaced. The reducer only escalates (never
   // downgrades or flickers on refetch), so a changed variant is a genuinely new
   // concern that earns its own impression. Reset when the card hides so a later
-  // re-show tracks again. Covers all 7 variants — including the 3 informational
-  // ones (capacity, closed-impact, closed-error) that have no CTA and were
-  // otherwise invisible in analytics.
+  // re-show tracks again.
   const shownVariantRef = useRef<MintPromptVariant>(null)
   useEffect(() => {
     if (show && state.variant) {
@@ -170,18 +140,6 @@ const LargeMintPrompt = ({ mode, dtfAddress, chain }: LargeMintPromptProps) => {
     }
   }, [show, state.variant, currentTab, trackClick])
 
-  // PancakeSwap only needs the DTF and the trade direction — buying makes it
-  // the output currency, selling the input. The better-price variant instead
-  // links the exact quoted trade; if the quote clears mid-refetch it falls
-  // back to the plain link until the next quote resolves.
-  const swapUrl =
-    state.variant === 'better-price' && data?.quote
-      ? getPancakeSwapTradeUrl({
-          tokenIn: data.quote.tokenIn,
-          tokenOut: data.quote.tokenOut,
-          exactAmountIn: data.input.amount,
-        })
-      : getPancakeSwapUrl({ dtfAddress, isBuy })
   // The capacity card only shows while the market is open, so the session is
   // always live. Lowercase mid-sentence, matching the closed variants.
   const sessionLabel = market?.session ?? 'regular'
@@ -215,11 +173,11 @@ const LargeMintPrompt = ({ mode, dtfAddress, chain }: LargeMintPromptProps) => {
     formatRetryIn(getNextUsMarketOpen().toISOString())
 
   // Keep clicks inside the box from reaching Radix's outside-click handler, so
-  // the CTA navigates instead of dismissing the zapper modal.
+  // interacting with the card doesn't dismiss the zapper modal behind it.
   const stop = (e: SyntheticEvent) => e.stopPropagation()
   const body = (
     <LargeMintCardBody
-      variant={state.variant ?? 'large'}
+      variant={state.variant ?? 'capacity'}
       tab={currentTab}
       symbol={symbol}
       maxAmountLabel={`$${formatCurrency(maxMintUsd ?? 0, 0)}`}
@@ -228,13 +186,6 @@ const LargeMintPrompt = ({ mode, dtfAddress, chain }: LargeMintPromptProps) => {
       nextSessionLabel={nextSessionLabel}
       currentTimeLabel={currentTimeLabel}
       reopenInLabel={reopenInLabel}
-      swapUrl={swapUrl}
-      onCta={() =>
-        trackClick('swap_redirect', {
-          variant: state.variant,
-          tab: currentTab,
-        })
-      }
       onDismiss={dismiss}
     />
   )

@@ -86,11 +86,7 @@ const ZapperWrapper = (props: ZapperWrapperProps) => {
       ) : (
         <Zapper {...zapperProps} />
       )}
-      <LargeMintPrompt
-        mode={props.mode ?? 'modal'}
-        dtfAddress={props.dtfAddress}
-        chain={props.chain}
-      />
+      <LargeMintPrompt mode={props.mode ?? 'modal'} chain={props.chain} />
     </>
   )
 }

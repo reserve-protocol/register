@@ -21,29 +21,11 @@ type LargeMintCardBodyProps = {
   currentTimeLabel: string
   // "2 hours" / "45 minutes" until the market reopens; null unless it's closed.
   reopenInLabel: string | null
-  swapUrl: string
-  onCta: () => void
   onDismiss: () => void
 }
 
-// Capacity and the closed variants are informational — PancakeSwap liquidity is
-// as stale as the pools while ondo minting is blocked, so no CTA.
-const SWAP_CTA_VARIANTS: PromptVariant[] = [
-  'better-price',
-  'impact',
-  'large',
-  'error',
-]
-
 const badge = (variant: PromptVariant): ReactNode => {
   switch (variant) {
-    case 'better-price':
-      return <Trans>Better price found</Trans>
-    case 'large':
-      return <Trans>Large Order</Trans>
-    case 'error':
-      return <Trans>No route found</Trans>
-    case 'impact':
     case 'closed-impact':
       return <Trans>High price impact</Trans>
     case 'closed-error':
@@ -55,16 +37,12 @@ const badge = (variant: PromptVariant): ReactNode => {
 
 const title = (variant: PromptVariant): ReactNode => {
   switch (variant) {
-    case 'better-price':
-      return <Trans>Better price on PancakeSwap</Trans>
     case 'capacity':
       return <Trans>Order too large</Trans>
     case 'closed-impact':
       return <Trans>Expect a worse price</Trans>
     case 'closed-error':
       return <Trans>Temporarily unavailable</Trans>
-    default:
-      return <Trans>Try PancakeSwap</Trans>
   }
 }
 
@@ -98,49 +76,6 @@ const description = ({
   const isBuy = tab === 'buy'
 
   switch (variant) {
-    case 'better-price':
-      return isBuy ? (
-        <Trans>
-          PancakeSwap is currently offering a better price for this exact
-          order. We recommend buying {symbol} there instead.
-        </Trans>
-      ) : (
-        <Trans>
-          PancakeSwap is currently offering a better price for this exact
-          order. We recommend selling {symbol} there instead.
-        </Trans>
-      )
-    case 'large':
-      return (
-        <Trans>
-          For larger orders, a DEX like PancakeSwap may get you a better price
-          by routing your trade across multiple sources of liquidity.
-        </Trans>
-      )
-    case 'error':
-      return isBuy ? (
-        <Trans>
-          We couldn't find a good price for this trade right now. We recommend
-          using a DEX like PancakeSwap to buy {symbol}.
-        </Trans>
-      ) : (
-        <Trans>
-          We couldn't find a good price for this trade right now. We recommend
-          using a DEX like PancakeSwap to sell {symbol}.
-        </Trans>
-      )
-    case 'impact':
-      return isBuy ? (
-        <Trans>
-          Your order has unusually high price impact. We recommend buying{' '}
-          {symbol} on PancakeSwap to get the best price possible.
-        </Trans>
-      ) : (
-        <Trans>
-          Your order has unusually high price impact. We recommend selling{' '}
-          {symbol} on PancakeSwap to get the best price possible.
-        </Trans>
-      )
     case 'capacity':
       return (
         <>
@@ -190,20 +125,13 @@ const description = ({
   }
 }
 
-// Presentational card body (badge, dismiss, title, description, CTA). Shared by
+// Presentational card body (badge, dismiss, title, description). Shared by
 // every presentation (desktop side-box, modal-attached box, mobile popup).
+// Every variant is informational — the zapper itself already quotes every
+// RFQ/AMM source, so the card never links out to an external DEX.
 const LargeMintCardBody = (props: LargeMintCardBodyProps) => {
-  const {
-    variant,
-    tab,
-    currentTimeLabel,
-    reopenInLabel,
-    swapUrl,
-    onCta,
-    onDismiss,
-  } = props
+  const { variant, currentTimeLabel, reopenInLabel, onDismiss } = props
   const { t } = useLingui()
-  const isBuy = tab === 'buy'
 
   return (
     <>
@@ -239,21 +167,6 @@ const LargeMintCardBody = (props: LargeMintCardBodyProps) => {
               <span className="whitespace-nowrap">{reopenInLabel}</span>.
             </Trans>
           </p>
-        )}
-        {SWAP_CTA_VARIANTS.includes(variant) && (
-          <a
-            href={swapUrl}
-            target="_blank"
-            rel="noreferrer"
-            onClick={onCta}
-            className="mt-4 inline-flex h-8 items-center justify-center rounded-full bg-primary px-4 text-xs font-medium text-primary-foreground no-underline transition-colors hover:bg-primary/90"
-          >
-            {isBuy ? (
-              <Trans>Buy on PancakeSwap</Trans>
-            ) : (
-              <Trans>Sell on PancakeSwap</Trans>
-            )}
-          </a>
         )}
       </div>
     </>

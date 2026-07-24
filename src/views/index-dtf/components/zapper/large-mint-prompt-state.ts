@@ -1,6 +1,4 @@
-// Show the PancakeSwap suggestion once the user's input is this large.
-export const LARGE_MINT_MIN_INPUT = 50_000
-export const ERROR_MINT_MIN_INPUT = 100
+export const MIN_PROMPT_INPUT = 100
 // truePriceImpact is a percentage where positive means the user loses value.
 export const HIGH_PRICE_IMPACT_THRESHOLD = 1
 
@@ -8,10 +6,6 @@ export type MintPromptVariant =
   | 'capacity'
   | 'closed-impact'
   | 'closed-error'
-  | 'better-price'
-  | 'impact'
-  | 'large'
-  | 'error'
   | null
 
 export type MintPromptState = {
@@ -26,19 +20,11 @@ export type MintPromptSignals = {
   rawClosedImpact: boolean
   // In context + Ondo minting unavailable + a quote error.
   rawClosedError: boolean
-  // In context + minting not blocked + a resolved quote that PCSX beats outright.
-  rawBetterPrice: boolean
-  // In context + minting not blocked + a resolved quote + price impact above the threshold.
-  rawImpact: boolean
-  // In context + minting not blocked + a resolved quote + input >= LARGE_MINT_MIN_INPUT.
-  rawLarge: boolean
-  // In context + minting not blocked + a quote error + input >= ERROR_MINT_MIN_INPUT.
-  rawError: boolean
   // A quote has resolved (the zapper found a route).
   hasValidQuote: boolean
-  // Ondo minting is currently blocked — a latched CoW card must not survive it.
+  // Ondo minting is currently blocked — a latched closed card must not outlive it.
   mintingUnavailable: boolean
-  // In context + input >= ERROR_MINT_MIN_INPUT — the prompt could be relevant.
+  // In context + input >= MIN_PROMPT_INPUT — the prompt could be relevant.
   isApplicable: boolean
 }
 
@@ -66,8 +52,6 @@ export type MintPromptInputs = {
   mintingUnavailable: boolean
   // Weighted per-transaction cap, already floored to the displayed number.
   maxMintUsd: number | undefined
-  // PCSX quoted the same pair/amount with a higher amountOut than the zapper.
-  pcsxBetter: boolean
 }
 
 export const deriveMintPromptSignals = ({
@@ -80,7 +64,6 @@ export const deriveMintPromptSignals = ({
   mintingAvailable,
   mintingUnavailable,
   maxMintUsd,
-  pcsxBetter,
 }: MintPromptInputs): MintPromptSignals => ({
   // Purely input-derived — fires before any quote resolves, getting ahead of
   // the enso mint that will fail above the cap. Only while minting is
@@ -91,72 +74,39 @@ export const deriveMintPromptSignals = ({
     maxMintUsd !== undefined &&
     maxMintUsd > 0 &&
     inputValue > maxMintUsd,
-  // While ondo minting is blocked, quotes defer to secondary pools that can't
-  // be arbitraged until minting resumes. A resolved non-enso quote at high
-  // impact means the user pays that premium; no quote at all means no route,
-  // period. Both say when to come back instead of pushing to PancakeSwap (whose
-  // liquidity is equally stale while arbitrage is blocked) — that also keeps
-  // the three CoW-CTA signals below gated off while unavailable.
+  // While ondo minting is blocked, quotes defer to secondary liquidity that
+  // can't be arbitraged until minting resumes. A resolved non-enso quote at
+  // high impact means the user pays that premium; no quote at all means no
+  // route, period. Both say when to come back — there's nowhere better to send
+  // the user, since the zapper already quotes every RFQ/AMM source and their
+  // liquidity is equally stale while arbitrage is blocked.
+  // The input floor keeps every raw signal inside the `isApplicable` domain;
+  // without it a sub-$100 high-impact quote would reset and re-latch (and
+  // re-pop the mobile dialog) on every refetch cycle.
   rawClosedImpact:
     inContext &&
     mintingUnavailable &&
     hasValidQuote &&
     source !== 'enso' &&
-    inputValue >= ERROR_MINT_MIN_INPUT &&
+    inputValue >= MIN_PROMPT_INPUT &&
     truePriceImpact > HIGH_PRICE_IMPACT_THRESHOLD,
   rawClosedError:
     inContext &&
     mintingUnavailable &&
     hasQuoteError &&
-    inputValue >= ERROR_MINT_MIN_INPUT,
-  rawBetterPrice:
-    inContext &&
-    !mintingUnavailable &&
-    hasValidQuote &&
-    inputValue >= ERROR_MINT_MIN_INPUT &&
-    pcsxBetter,
-  // The input floor keeps every raw signal inside the `isApplicable` domain;
-  // without it a sub-$100 high-impact quote would reset and re-latch (and
-  // re-pop the mobile dialog) on every refetch cycle.
-  rawImpact:
-    inContext &&
-    !mintingUnavailable &&
-    hasValidQuote &&
-    inputValue >= ERROR_MINT_MIN_INPUT &&
-    truePriceImpact > HIGH_PRICE_IMPACT_THRESHOLD,
-  rawLarge:
-    inContext &&
-    !mintingUnavailable &&
-    hasValidQuote &&
-    inputValue >= LARGE_MINT_MIN_INPUT,
-  rawError:
-    inContext &&
-    !mintingUnavailable &&
-    hasQuoteError &&
-    inputValue >= ERROR_MINT_MIN_INPUT,
+    inputValue >= MIN_PROMPT_INPUT,
   hasValidQuote,
   mintingUnavailable,
-  isApplicable: inContext && inputValue >= ERROR_MINT_MIN_INPUT,
+  isApplicable: inContext && inputValue >= MIN_PROMPT_INPUT,
 })
 
 const VARIANT_PRIORITY: Record<Exclude<MintPromptVariant, null>, number> = {
-  capacity: 6,
-  'closed-impact': 5,
-  'closed-error': 4,
-  'better-price': 3,
-  impact: 2,
-  large: 1,
-  error: 0,
+  capacity: 2,
+  'closed-impact': 1,
+  'closed-error': 0,
 }
 
-// Variants that only apply while Ondo minting is unavailable (market closed or
-// an asset paused) — the mutually exclusive counterpart of the CoW variants.
-const CLOSED_VARIANTS = new Set<Exclude<MintPromptVariant, null>>([
-  'closed-impact',
-  'closed-error',
-])
-
-// Latches which suggestion (if any) the card shows. The card must persist through
+// Latches which notice (if any) the card shows. The card must persist through
 // the zapper's periodic refetch, where `error`/`quote` momentarily clear: in that
 // transient window none of the raw signals are true, so we keep the previous state.
 export const reduceMintPrompt = (
@@ -167,10 +117,6 @@ export const reduceMintPrompt = (
     rawCapacity,
     rawClosedImpact,
     rawClosedError,
-    rawBetterPrice,
-    rawImpact,
-    rawLarge,
-    rawError,
     hasValidQuote,
     mintingUnavailable,
     isApplicable,
@@ -183,34 +129,22 @@ export const reduceMintPrompt = (
   if (rawCapacity) return { variant: 'capacity', dismissed: prev.dismissed }
   const base = prev.variant === 'capacity' ? INITIAL_MINT_PROMPT_STATE : prev
 
-  // `rawError`/`rawClosedError` mean no quote, so they never compete with the
-  // resolved-quote signals within one commit.
+  // `rawClosedError` means no quote, so it never competes with
+  // `rawClosedImpact` within one commit.
   const winner = rawClosedImpact
     ? ('closed-impact' as const)
     : rawClosedError
       ? ('closed-error' as const)
-      : rawBetterPrice
-        ? ('better-price' as const)
-        : rawImpact
-          ? ('impact' as const)
-          : rawLarge
-            ? ('large' as const)
-            : rawError
-              ? ('error' as const)
-              : null
+      : null
 
   if (winner) {
     // Quotes race providers and refetch, so consecutive quotes can raise
-    // different concerns (impact 1.2%, then 0.9% on a still-large order, then
-    // a transient error). A latched card only escalates in priority — never
-    // downgrades — or its copy flickers between variants on every quote.
-    // Exception: a live CoW winner proves minting is available again, so it
-    // replaces a latched closed variant despite its lower priority — otherwise
-    // a stale "come back later" card would pin through the market reopening.
+    // different concerns (impact 1.2%, then a transient error). A latched card
+    // only escalates in priority — never downgrades — or its copy flickers
+    // between variants on every quote.
     const keep =
       base.variant !== null &&
-      VARIANT_PRIORITY[base.variant] > VARIANT_PRIORITY[winner] &&
-      !(CLOSED_VARIANTS.has(base.variant) && !CLOSED_VARIANTS.has(winner))
+      VARIANT_PRIORITY[base.variant] > VARIANT_PRIORITY[winner]
     return { variant: keep ? base.variant : winner, dismissed: base.dismissed }
   }
 
@@ -222,16 +156,15 @@ export const reduceMintPrompt = (
     return INITIAL_MINT_PROMPT_STATE
   }
 
-  // Otherwise we're mid-refetch with no resolved quote — keep showing. One
-  // exception: a CoW-CTA card latched right before minting flipped unavailable
-  // must not point at CoW's equally stale liquidity for even one cycle; drop
-  // it now and let the closed signals take over when the next quote resolves.
-  if (
-    mintingUnavailable &&
-    base.variant !== null &&
-    !CLOSED_VARIANTS.has(base.variant)
-  ) {
+  // A latched closed card must not outlive the blocked market: once minting is
+  // no longer unavailable its "come back later" copy is stale, even if the next
+  // quote hasn't resolved yet. Ondo state comes from its own endpoint — unlike
+  // the quote signals it doesn't transiently clear during the refetch cycle, so
+  // this is a real transition, not a mid-refetch gap.
+  if (!mintingUnavailable && base.variant !== null) {
     return INITIAL_MINT_PROMPT_STATE
   }
+
+  // Otherwise we're mid-refetch with no resolved quote — keep showing.
   return base
 }
