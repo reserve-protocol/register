@@ -42,11 +42,12 @@ export const useVoteLockDAO = (): VoteLockPosition | undefined => {
       position.token.address.toLowerCase() === stTokenAddress
   )
 
+  // Detail fallback: no answer in the shared list — the DTF is unlisted, or
+  // the list settled (success/error) without this DAO. A cached list hit
+  // counts as an answer even for unlisted DTFs; it's the same DAO row.
+  const listSettled = listQuery.isError || listQuery.isSuccess
   const needsDetail =
-    !!stTokenAddress &&
-    (!isListed ||
-      listQuery.isError ||
-      (listQuery.isSuccess && !listedDao))
+    !!stTokenAddress && !listedDao && (!isListed || listSettled)
   const daoQuery = useQuery({
     queryKey: ['vote-lock-dao', indexDTF?.id, chainId],
     queryFn: async () => {
