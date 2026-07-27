@@ -28,7 +28,7 @@ export type VoteLockPosition = {
   apr: number
 }
 
-const useVoteLockPositions = () => {
+const useVoteLockPositions = (options?: { enabled?: boolean }) => {
   return useQuery({
     queryKey: ['vote-lock-positions'],
     queryFn: async () => {
@@ -41,6 +41,7 @@ const useVoteLockPositions = () => {
       return data as VoteLockPosition[]
     },
     staleTime: 1000 * 60 * 10, // 10 minutes
+    enabled: options?.enabled ?? true,
   })
 }
 

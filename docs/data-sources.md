@@ -51,7 +51,7 @@ Base URL: `https://api.reserve.org`
 | `GET /v2/historical/dtf/candles` | Candlestick OHLC series | `address`, `chainId`, `from`, `to`, `interval` | `src/views/index-dtf/overview/components/charts/use-candlestick-data.ts` |
 | `GET /v1/dtf/apy/historical/:id` | Yield-index hybrid APY history | `chainId` | `src/views/index-dtf/overview/hooks/use-dtf-apy-history.ts` |
 | `GET /historical/prices` | Token price history | `chainId`, `address`, `from`, `to`, `interval` | `src/hooks/useSimulatedBasket.ts` |
-| `GET /dtf/daos` | Vote-lock positions + yields (list, or `/dtf/daos/:id` per-DTF) | `chainId` | `src/views/earn/views/index-dtf/hooks/use-vote-lock-positions.ts`, `overview/hooks/use-staking-vault-apy.ts` |
+| `GET /dtf/daos` | Vote-lock positions + yields (list, or `/dtf/daos/:id` per-DTF fallback) | `chainId` | `src/views/earn/views/index-dtf/hooks/use-vote-lock-positions.ts`, `overview/hooks/use-staking-vault-apy.ts` |
 | `GET /v1/portfolio/:address` | Cross-DTF wallet balances | — | `src/views/portfolio-page/hooks/use-portfolio.ts` |
 | `GET /v1/historical/portfolio/:address` | Portfolio value history | `period` | `src/views/portfolio-page/hooks/use-historical-portfolio.ts` |
 

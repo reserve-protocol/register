@@ -1,6 +1,6 @@
 ---
 title: Progress
-updated: 2026-07-24
+updated: 2026-07-27
 type: ledger
 ---
 
@@ -10,6 +10,7 @@ Stage ledger. One row per stage; keep entries short. Verifier = exact fresh comm
 
 | Stage | Status | Verifier | Review | Next |
 |---|---|---|---|---|
+| vote-lock APR unified on /dtf/daos list | done (base 771c92873) | gate-equivalent green (lint/typecheck/unit, 70 helper, 56 smoke, wiki-lint) · live visual: BUILDOUT + POWER overviews and earn all 46.83% from one list request | Dark + Light, per-claim verify — adopted: list-miss/error fallback gating, plain-data return, catalog mixed-case normalization; API re-key REVERTED by Luis (sdk `getVoteLockDao` needs the DTF-address key); accepted: unlisted DTFs keep per-DTF detail cache split | pre-existing reserve-api debt flagged, not shipped: maxAge-before-await caches 500s 24h; unguarded `underlyingPrice.price` deref can 500 whole list |
 | merge master RFQ into feature hardening | human-review-required (base 0237e747c; merged `origin/master` 981b634d7; observed CLS explicitly out of scope) | frozen install · scoped gate-equivalent: lint/typecheck, 832 unit, 70 helper, 56 smoke + 1 known fixme · zap 21 · production build · wiki-lint pending | Dark + Light pass; SDK 0.5.0 pin + zapper 2.7.1 reconciled; hardening guards preserved; engineer review required for live RFQ/intent execution | commit merge locally; do not push |
 | Hardening × SDK-integration effort — sanitizer/e2e foundation · overview SDK adoption + portfolio governance-state adoption · crash + money-display guards · rebalance launch guards | **ready for master PR** (stacked PRs merged; SDK 0.5.0 pinned exact; master merged 2026-07-23) | typecheck 0 · unit green · smoke 56 · full flows green · wiki-lint green; guards revert-verified at their seams | cross-reviews reconciled in docs/claude-hardening-review.md; release blockers fixed + pinned (malformed portfolio rows incl. optimistic context, manage-weights fail-closed, zap max) | master PR on go; queue in docs/plans/FOLLOWUPS.md |
 | E2E suite: offline playwright foundation → 3-dim domain coverage → yield replay → chain-scoped identity + trust hardening | done (2026-07-05→12) | flows/smokes/helper units green at every stage; zero-unmocked teardown enforced | audits converged (log ≤2026-07-12); recipes in e2e/CLAUDE.md + [[e2e]] | stages 2–5 in § E2E coverage debt below |
