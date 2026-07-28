@@ -1,6 +1,6 @@
 ---
 title: Project
-updated: 2026-07-14
+updated: 2026-07-28
 type: context
 ---
 
@@ -51,6 +51,7 @@ Register — the web interface for Reserve Protocol: **Index DTFs** (current foc
 - **Live state → RPC, not subgraph.** Basket balances, live proposal state, live rebalance/auction state come from RPC. Subgraph = metadata/history only.
 - **Money is `Amount`/`bigint`.** Never `Number` for on-chain math; convert only at display leaves. Keep SDK `Amount` objects intact through atoms and logic.
 - **Feature isolation.** One feature = one folder under `views/<domain>/<feature>/` owning its `components/`, `hooks/`, `atoms.ts`, `utils.ts`. Shared code never imports from a feature; features never reach into each other's internals. Fix local bugs locally — never via shared containers, providers, routing shells, or component defaults.
+- **Automatic DTF chain switching is focus-owned.** Only the focused, visible document may synchronize the wallet to its route chain; background tabs stay passive. The route/provider identity is the target — never a lagging global chain atom.
 - **Shared components keep their defaults** (`DataTable`, legacy `Table`, …) — behavior via opt-in props only.
 - **Design tokens only** — no hardcoded hex/hsl anywhere; see [[design-system]].
 - **e2e suite health is part of every stage.** Register work is agent-driven and the offline suite ([[e2e]]) is the contract that makes that safe. Stages touching covered surfaces update mocks/snapshots as part of the stage (fail-loud misses are work, not noise), never leave a new `test.fixme` without a tracked owner, and keep re-capture cheap. A red or routed-around e2e is a blocker.

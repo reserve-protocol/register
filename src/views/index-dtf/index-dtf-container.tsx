@@ -1,7 +1,8 @@
 import SEO from '@/components/seo'
 import useFavicon from '@/hooks/useFavicon'
+import useActiveChainSwitch from '@/hooks/use-active-chain-switch'
 import useIndexDTFTransactions from '@/hooks/useIndexDTFTransactions'
-import { chainIdAtom, walletChainAtom } from '@/state/atoms'
+import { chainIdAtom } from '@/state/atoms'
 import {
   indexDTFAtom,
   indexDTFBasketAmountsAtom,
@@ -41,7 +42,6 @@ import { atom, useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { useCallback, useEffect, useLayoutEffect, useState } from 'react'
 import { Outlet, useNavigate, useParams, useLocation } from 'react-router-dom'
 import { Address } from 'viem'
-import { useSwitchChain } from 'wagmi'
 import IndexDTFNavigation from './components/navigation'
 import ConfirmEligibilityModal from './components/confirm-eligibility-modal'
 import GovernanceUpdater from './governance/updater'
@@ -107,18 +107,6 @@ const IndexDTFSEO = () => {
       url={location.pathname}
     />
   )
-}
-
-const useChainWatch = () => {
-  const { switchChain } = useSwitchChain()
-  const walletChain = useAtomValue(walletChainAtom)
-  const chainId = useAtomValue(chainIdAtom)
-
-  useEffect(() => {
-    if (chainId !== walletChain && walletChain) {
-      switchChain({ chainId })
-    }
-  }, [chainId, walletChain, switchChain])
 }
 
 // The atoms stay because each SDK read has several consumers that can't take the hook directly yet.
@@ -219,7 +207,7 @@ const Updater = () => {
   const [key, setKey] = useState(0)
   useIndexDTFTransactions(tokenAddress, chainId)
 
-  useChainWatch()
+  useActiveChainSwitch(chainId as AvailableChain)
 
   const resetState = useCallback(() => {
     // Remove duplicates

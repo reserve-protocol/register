@@ -1,6 +1,6 @@
 ---
 title: Log
-updated: 2026-07-10
+updated: 2026-07-28
 type: log
 ---
 
@@ -120,3 +120,8 @@ Play-by-play lives in git (PRs #1053/#1054/#1055/#1063, SDK PR #27). Durable out
 - Deeper auctions SDK migration deferred to protocol-vNext, riding its rebalance-testing window.
 - Comment discipline hard rule → `skills/code-standards.md`: one-line WHYs only, no finding/review IDs in source, agent warnings go to area-guide traps.
 - Remaining queue: `docs/plans/FOLLOWUPS.md`.
+
+## 2026-07-28
+
+- Production chain cycling was a multi-tab feedback loop: each mounted DTF route automatically reasserted its own Ethereum/Base/BSC chain against one wallet-global network. Transaction buttons and the zapper only exposed the changing state. Automatic switching remains, but only the focused, visible document may request it; focusing another DTF tab makes that tab the new chain owner. Index and Yield DTF route contexts share the same guard.
+- Review caught two smaller bounce paths before closeout: Index initially targeted the lagging global chain atom instead of its provider identity, and cached focus state was not revalidated at the wallet-mutation boundary. Both are now regression-protected; future route-chain synchronization must use the route/provider chain directly.
