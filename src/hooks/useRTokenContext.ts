@@ -1,9 +1,10 @@
 import rtokens from '@reserve-protocol/rtokens'
 import RToken from 'abis/RToken'
+import useActiveChainSwitch from 'hooks/use-active-chain-switch'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { useEffect, useMemo } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import { chainIdAtom, walletChainAtom } from 'state/atoms'
+import { chainIdAtom } from 'state/atoms'
 import {
   rTokenMetaAtom,
   selectedRTokenAtom,
@@ -11,7 +12,7 @@ import {
 import { AvailableChain } from 'utils/chains'
 import { NETWORKS, ROUTES } from 'utils/constants'
 import { Address, getAddress } from 'viem'
-import { useReadContracts, useSwitchChain } from 'wagmi'
+import { useReadContracts } from 'wagmi'
 
 const getListedRToken = (tokenId: string, chainId: number) => {
   if (!tokenId || !rtokens[chainId]) {
@@ -27,8 +28,6 @@ const getListedRToken = (tokenId: string, chainId: number) => {
 
 const useRTokenContext = () => {
   const navigate = useNavigate()
-  const { switchChain } = useSwitchChain()
-  const walletChain = useAtomValue(walletChainAtom)
   const { chain, tokenId } = useParams()
   const chainId = NETWORKS[chain ?? ''] as AvailableChain
   const rToken = useMemo(() => {
@@ -102,11 +101,7 @@ const useRTokenContext = () => {
     }
   }, [unlistedToken.status])
 
-  useEffect(() => {
-    if (switchChain && chainId && selected && chainId !== walletChain) {
-      switchChain({ chainId })
-    }
-  }, [chainId, selected])
+  useActiveChainSwitch(chainId, !!selected)
 
   // Cleanup RToken
   useEffect(() => {
