@@ -108,19 +108,6 @@ const WHITEPAPER_CONFIG: Record<string, WhitepaperConfig> = {
       },
     ],
   },
-  '0x2f8a339b5889ffac4c5a956787cda593b3c36867': {
-    tokenName: 'CMC20',
-    description: msg`Official documentation for the CMC20 token`,
-    chainId: ChainId.BSC,
-    versions: [
-      {
-        label: msg`Current Version (v1)`,
-        url: 'https://storage.reserve.org/cmc20-whitepaper.pdf',
-        date: 'March 2026',
-        description: msg`CMC20 whitepaper documentation`,
-      },
-    ],
-  },
 }
 
 // Required for legal compliance
