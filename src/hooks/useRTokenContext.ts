@@ -34,7 +34,7 @@ const useRTokenContext = () => {
     const listedToken = getListedRToken(tokenId as string, chainId)
 
     return listedToken
-  }, [chain, tokenId])
+  }, [chainId, tokenId])
 
   const setChain = useSetAtom(chainIdAtom)
   const setRToken = useSetAtom(rTokenMetaAtom)
@@ -79,7 +79,7 @@ const useRTokenContext = () => {
       })
       setChain(chainId)
     }
-  }, [rToken?.address])
+  }, [chainId, rToken, setChain, setRToken])
 
   useEffect(() => {
     if (unlistedToken.isFetched && !rToken) {
@@ -99,7 +99,16 @@ const useRTokenContext = () => {
         navigate(ROUTES.NOT_FOUND)
       }
     }
-  }, [unlistedToken.status])
+  }, [
+    chainId,
+    navigate,
+    rToken,
+    setChain,
+    setRToken,
+    tokenId,
+    unlistedToken.data,
+    unlistedToken.isFetched,
+  ])
 
   useActiveChainSwitch(chainId, !!selected)
 
@@ -108,7 +117,7 @@ const useRTokenContext = () => {
     return () => {
       setRToken(null)
     }
-  }, [])
+  }, [setRToken])
 }
 
 export default useRTokenContext
