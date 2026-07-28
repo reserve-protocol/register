@@ -6,7 +6,6 @@ import { chainIdAtom } from '@/state/atoms'
 import { indexDTFAtom, indexDTFVersionAtom } from '@/state/dtf/atoms'
 import { getCurrentTime } from '@/utils'
 import { ChainId } from '@/utils/chains'
-import { PROPOSAL_STATES } from '@/utils/constants'
 import { Trans, useLingui } from '@lingui/react/macro'
 import type { IndexDtfProposalSummary } from '@reserve-protocol/react-sdk'
 import { useAtomValue, useSetAtom } from 'jotai'
@@ -167,10 +166,6 @@ export const newFeeRecipientAddress: Record<number, Address> = {
 }
 
 const UPGRADE_FOLIO_MESSAGE = 'Reserve Optimistic Governor upgrade'
-
-const matchesUpgradeMessage = (description: string) =>
-  description === UPGRADE_FOLIO_MESSAGE ||
-  description.startsWith(`${UPGRADE_FOLIO_MESSAGE} #`)
 
 const getNextUpgradeDescription = (
   proposals: readonly IndexDtfProposalSummary[]
@@ -368,29 +363,6 @@ const ProposeBanner = ({ refetch, description }: SpellUpgradeProps) => {
   )
 }
 
-const validProposalExists = (
-  proposals: readonly IndexDtfProposalSummary[]
-): boolean => {
-  const states = [
-    PROPOSAL_STATES.PENDING,
-    PROPOSAL_STATES.ACTIVE,
-    PROPOSAL_STATES.SUCCEEDED,
-    PROPOSAL_STATES.QUEUED,
-    PROPOSAL_STATES.EXECUTED,
-  ]
-  return proposals.some((p) => {
-    if (!matchesUpgradeMessage(p.description)) {
-      return false
-    }
-
-    if (p.votingState.state === PROPOSAL_STATES.EXPIRED) {
-      return false
-    }
-
-    return states.includes(p.votingState.state)
-  })
-}
-
 export default function ProposeV5Upgrade() {
   const { isProposeAllowed } = useIsProposeAllowed()
   const proposals = useAtomValue(governanceProposalsAtom)
@@ -405,12 +377,6 @@ export default function ProposeV5Upgrade() {
   const isUpgradeable = typeof version === 'string' && version.startsWith('5.')
 
   if (!isProposeAllowed || !proposals || !isUpgradeable) return null
-
-  const existsFolioUpgrade = validProposalExists(proposals)
-
-  // if (existsFolioUpgrade) {
-  //   return null
-  // }
 
   const description = getNextUpgradeDescription(proposals)
 
