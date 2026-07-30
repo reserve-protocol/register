@@ -13,15 +13,8 @@ import { wizardStepAtom } from './async-mint/atoms'
 import { panelModeAtom } from './atoms'
 import PanelModeSwitch from './panel-mode-switch'
 
-const DTF_DISABLED_FOR_ZAP = [] as string[]
-
 export const indexDTFQuoteSourceAtom = atom<ZapperProps['defaultSource']>(
-  (get) => {
-    // const dtf = get(indexDTFAtom)
-    // if (dtf?.id && DTF_DISABLED_FOR_ZAP.includes(dtf?.id.toLowerCase())) {
-    //   return 'odos'†
-    // }
-    // return 'best'
+  () => {
     return 'best'
   }
 )

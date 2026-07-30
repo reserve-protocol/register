@@ -13,7 +13,7 @@ import { loadSnapshot, loadSnapshotRaw, snapshotExists } from './snapshots'
 //
 //   native zap:  /api/zapper/{chainId}/swap?chainId&signer&tokenIn&amountIn
 //                  &tokenOut&slippage&trade&bypassCache&deepLiquidity
-//   aggregators: /{odos|velora|enso}/swap?chainId&tokenIn&tokenOut&amountIn
+//   aggregators: /{velora|enso}/swap?chainId&tokenIn&tokenOut&amountIn
 //                  &slippage&signer
 //
 // In its default "best" mode the widget fires ALL enabled providers in
@@ -136,7 +136,7 @@ export async function fillAmountAwaitQuote(
   }).toPass({ timeout: 90_000 })
 }
 
-const AGGREGATORS = ['odos', 'velora', 'enso'] as const
+const AGGREGATORS = ['velora', 'enso'] as const
 
 // Logger the zap specs hand to mockZapperRoutes: mirrors the base fixture's
 // collector — push into the test's `unmockedCalls` (so strict teardown fails on

@@ -1,10 +1,5 @@
 import { useConnectModal } from '@rainbow-me/rainbowkit'
-import {
-  Zapper,
-  ZapperProps,
-  PROVIDER_ENABLED,
-} from '@reserve-protocol/react-zapper'
-import { bsc } from 'viem/chains'
+import { Zapper, ZapperProps } from '@reserve-protocol/react-zapper'
 import { useMemo } from 'react'
 import { useAccount } from 'wagmi'
 import { useAtomValue } from 'jotai'
@@ -21,11 +16,6 @@ import { hasLockedZapSettings } from './locked-zap-settings'
 const LOCKED_SETTINGS: ZapperProps['disabledSettings'] = {
   deepLiquidity: true,
   forceMint: true,
-}
-
-const bscProviders = PROVIDER_ENABLED[bsc.id]
-if (bscProviders) {
-  bscProviders.odos = false
 }
 
 type ZapperWrapperProps = ZapperProps
