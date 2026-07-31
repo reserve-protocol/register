@@ -3,8 +3,7 @@ import { chainIdAtom } from '@/state/atoms'
 import { indexDTFAtom } from '@/state/dtf/atoms'
 import { useLingui } from '@lingui/react/macro'
 import { useAtomValue } from 'jotai'
-import { Hash } from 'lucide-react'
-import { IconWrapper, InfoCard, InfoCardItem } from './settings-info-card'
+import { InfoCard, InfoCardItem } from './settings-info-card'
 
 const GovernanceTokenInfo = () => {
   const { t } = useLingui()
@@ -17,7 +16,14 @@ const GovernanceTokenInfo = () => {
     <InfoCard title={t`Governance Token`} id="governance-token">
       <InfoCardItem
         label={t`Vote-Lock DAO Token`}
-        icon={<IconWrapper Component={Hash} />}
+        icon={
+          <TokenLogo
+            chain={chainId}
+            symbol={indexDTF?.stToken?.token.symbol}
+            address={indexDTF?.stToken?.id}
+            size="xl"
+          />
+        }
         value={indexDTF?.stToken?.token.symbol}
         address={indexDTF?.stToken?.id}
         border={false}

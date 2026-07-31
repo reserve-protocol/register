@@ -3,7 +3,8 @@ import { describe, expect, it, vi } from 'vitest'
 import { chainIdForUrl, handleRpcMethod, setYieldReplay, type RpcContext } from '../rpc'
 import { MockOverrides } from '../overrides'
 import type { TxRecord } from '../provider'
-import { findDtfByAddress, TEST_ADDRESS } from '../registry'
+import { findDtfByAddress, REGISTRY, TEST_ADDRESS } from '../registry'
+import { loadSnapshot } from '../snapshots'
 
 const HASH = `0x${'1'.repeat(64)}`
 
@@ -381,6 +382,34 @@ describe('connected-wallet yield defaults (KNOWN → silent zero, UNKNOWN → fa
   })
 })
 
+// Non-yield (index) path: TokenBalancesUpdater polls balanceOf on the chain's
+// ZAP_TOKENS + RSR_ADDRESS for every connected wallet, on every chain,
+// regardless of which page is open. BSC's set (WETH, USDT) must be KNOWN
+// centrally like Mainnet's and Base's, or the FIRST wallet-connected BSC spec
+// fails loud on a boundary that has nothing to do with what it's testing.
+describe('connected-wallet INDEX defaults (BSC ZAP tokens)', () => {
+  const call = (to: string, data: string, ctx: RpcContext, overrides?: MockOverrides) =>
+    handleRpcMethod('eth_call', [{ to, data }], { ...ctx, overrides })
+  const balanceOf = (owner: string) =>
+    encodeFunctionData({
+      abi: parseAbi(['function balanceOf(address)']),
+      functionName: 'balanceOf',
+      args: [owner as `0x${string}`],
+    })
+
+  it('BSC ZAP tokens (WETH, USDT): test-wallet balanceOf → 0, silently', () => {
+    const ctx = { ...context(), chainId: 56 }
+    for (const token of [
+      '0x2170Ed0880ac9A755fd29B2688956BD959F933F8', // WETH
+      '0x55d398326f99059fF775485246999027B3197955', // USDT
+    ]) {
+      const r = call(token, balanceOf(TEST_ADDRESS), ctx) as `0x${string}`
+      expect(BigInt(r)).toBe(0n)
+    }
+    expect(ctx.log).not.toHaveBeenCalled()
+  })
+})
+
 describe('failure-oriented unmocked messages', () => {
   it('names the function and points at the helper for an uncaptured yield read', () => {
     setYieldReplay(1)
@@ -399,6 +428,37 @@ describe('failure-oriented unmocked messages', () => {
     } finally {
       setYieldReplay(false)
     }
+  })
+})
+
+describe('vote-lock vault identity defaults (convertToAssets / previewRedeem)', () => {
+  const photon = REGISTRY.find((d) => d.slug === 'photon')!
+  interface PhotonSnapshot {
+    dtf: { stToken: { id: string } }
+  }
+  const { dtf } = loadSnapshot<PhotonSnapshot>(`${photon.snapshotDir}/dtf.json`)
+  const vault = dtf.stToken.id
+
+  // The governance card's exchange-rate badge reads previewRedeem(1 share)
+  // UNCONDITIONALLY for a self-appreciating vault (no wallet, no per-test
+  // seed) — every DTF page view needs a default, not just vote-lock-drawer
+  // specs, or the whole page fails loud on a read it doesn't control.
+  it('convertToAssets(1e18) and previewRedeem(1e18) answer identity (1:1) with no override', () => {
+    const abi = parseAbi([
+      'function convertToAssets(uint256) view returns (uint256)',
+      'function previewRedeem(uint256) view returns (uint256)',
+    ])
+    const call = (functionName: 'convertToAssets' | 'previewRedeem') => {
+      const data = encodeFunctionData({ abi, functionName, args: [10n ** 18n] })
+      const result = handleRpcMethod('eth_call', [{ to: vault, data }], {
+        ...context(),
+        chainId: photon.chainId,
+      }) as `0x${string}`
+      return decodeAbiParameters([{ type: 'uint256' }], result)[0]
+    }
+
+    expect(call('convertToAssets')).toBe(10n ** 18n)
+    expect(call('previewRedeem')).toBe(10n ** 18n)
   })
 })
 

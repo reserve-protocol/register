@@ -24,15 +24,58 @@ import {
   earnWalletColumnClassName,
 } from '@/views/earn/components/earn-table-styles'
 import PositionBalance from '@/views/earn/components/position-balance'
+import StRSR from '@/abis/StRSR'
 import { Trans, useLingui } from '@lingui/react/macro'
 import { createColumnHelper } from '@tanstack/react-table'
 import { useAtomValue } from 'jotai'
 import { useMemo, useState } from 'react'
-import { Address } from 'viem'
+import { Address, formatEther } from 'viem'
+import { useReadContract } from 'wagmi'
 import { filteredYieldDTFListAtom } from '../atoms'
 import TableFilters from './table-filters'
 
 const columnHelper = createColumnHelper<ListedToken>()
+
+// Same math as reserve-api portfolioService: rsrEquivalent = shares ×
+// exchangeRate, value = rsrEquivalent × rsrPrice. The raw stRSR balance ×
+// rsrPrice understates by the exchange rate (~1.25 on eUSD).
+const YourStakeCell = ({
+  dtf,
+  rsrPrice,
+}: {
+  dtf: ListedToken
+  rsrPrice: number
+}) => {
+  const { data: rateRaw, isError } = useReadContract({
+    abi: StRSR,
+    address: dtf.stToken.address as Address,
+    functionName: 'exchangeRate',
+    chainId: dtf.chain,
+    query: { staleTime: 30_000, refetchInterval: 30_000 },
+  })
+
+  // No 1:1 first paint: wait for the rate so the first number is the real one.
+  // On RPC error fall back to 1:1 instead of a permanent skeleton.
+  if (rateRaw === undefined && !isError) {
+    return (
+      <div className="flex flex-col gap-1">
+        <Skeleton className="h-4 w-24" />
+        <Skeleton className="h-3 w-20" />
+      </div>
+    )
+  }
+
+  return (
+    <PositionBalance
+      address={dtf.stToken.address as Address}
+      chain={dtf.chain}
+      price={rsrPrice}
+      symbol="RSR"
+      decimals={dtf.stToken.decimals}
+      conversionRate={rateRaw !== undefined ? Number(formatEther(rateRaw)) : 1}
+    />
+  )
+}
 
 const useColumns = () => {
   const { t } = useLingui()
@@ -84,12 +127,9 @@ const useColumns = () => {
                 className: earnWalletColumnClassName,
               },
               cell: (data) => (
-                <PositionBalance
-                  address={data.row.original.stToken.address as Address}
-                  chain={data.row.original.chain}
-                  price={rsrPrice || 0}
-                  symbol={data.row.original.stToken.symbol}
-                  decimals={data.row.original.stToken.decimals}
+                <YourStakeCell
+                  dtf={data.row.original}
+                  rsrPrice={rsrPrice || 0}
                 />
               ),
             }),

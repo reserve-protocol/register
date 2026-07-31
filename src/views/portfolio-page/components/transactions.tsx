@@ -29,9 +29,13 @@ const TokenCell = ({ tx }: { tx: PortfolioTransaction }) => {
   if (!tx.token) return <span className="text-sm text-legend">—</span>
 
   const underlying = tx.token.underlying
-  const logoSymbol = underlying?.symbol ?? tx.token.symbol
-  const logoAddress = (underlying?.address ?? tx.token.address) as Address
   const isIndexStToken = tx.protocol === 'index' && !!underlying
+  const logoSymbol = isIndexStToken
+    ? tx.token.symbol
+    : (underlying?.symbol ?? tx.token.symbol)
+  const logoAddress = (isIndexStToken
+    ? tx.token.address
+    : (underlying?.address ?? tx.token.address)) as Address
 
   const handleStTokenClick = (e: React.MouseEvent) => {
     e.stopPropagation()

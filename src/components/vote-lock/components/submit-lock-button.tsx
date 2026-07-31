@@ -1,4 +1,3 @@
-import dtfIndexStakingVault from '@/abis/dtf-index-staking-vault'
 import TransactionButton from '@/components/ui/transaction-button'
 import { walletAtom } from '@/state/atoms'
 import { useLingui } from '@lingui/react/macro'
@@ -11,11 +10,7 @@ import { useResetAtom } from 'jotai/utils'
 import { useEffect, useRef, useState } from 'react'
 import { toast } from 'sonner'
 import { parseUnits, zeroAddress } from 'viem'
-import {
-  useReadContract,
-  useWaitForTransactionReceipt,
-  useWriteContract,
-} from 'wagmi'
+import { useWaitForTransactionReceipt, useWriteContract } from 'wagmi'
 import {
   closeDrawerAtom,
   lockCheckboxAtom,
@@ -25,6 +20,7 @@ import {
   updateCurrentDtfStTokenSupplyAtom,
   voteLockStateAtom,
 } from '../atoms'
+import { useLockQuote } from '../hooks/use-vote-lock-quotes'
 import { getWriteContractParams, isSameAddress } from '../utils'
 
 const PROCESSING_DELAY = 10_000
@@ -89,14 +85,11 @@ const SubmitLockButton = ({ onSuccess }: { onSuccess?: () => void }) => {
   const approvalCall =
     plan?.type === 'approval-required' ? plan.approvals[0] : undefined
   const lockCall = plan?.call
-  const { data: sharesToMint } = useReadContract({
-    abi: dtfIndexStakingVault,
-    functionName: 'previewDeposit',
-    address: stToken?.id,
-    args: [amountToLock],
-    chainId: stToken?.chainId,
-    query: { enabled: amountToLock > 0n && stToken?.id !== undefined },
-  })
+  const {
+    data: sharesToMint,
+    quotedAmount,
+    isPlaceholderData: quoteIsStale,
+  } = useLockQuote()
 
   const {
     writeContract: writeApprove,
@@ -130,7 +123,10 @@ const SubmitLockButton = ({ onSuccess }: { onSuccess?: () => void }) => {
   const write = (call: ContractCall | undefined) => {
     if (!account || !call) return
 
-    pendingSupplyDelta.current = sharesToMint ?? 0n
+    pendingSupplyDelta.current =
+      sharesToMint !== undefined && !quoteIsStale && quotedAmount === amountToLock
+        ? sharesToMint
+        : 0n
     writeContract(getWriteContractParams(call))
   }
 
@@ -227,6 +223,7 @@ const SubmitLockButton = ({ onSuccess }: { onSuccess?: () => void }) => {
       error={
         readyToSubmit ? error || txError : approvalError || approvalTxError
       }
+      data-testid="vote-lock-submit"
     />
   )
 }

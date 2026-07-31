@@ -14,6 +14,10 @@ import { forwardRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { InnerGovernanceInfo } from '../../settings/components/index-settings-governance'
 import RSRBNBHelp from '../../governance/components/rsr-bnb-help'
+import {
+  isSelfAppreciatingVoteLock,
+  toCompoundApy,
+} from '@/utils/constants'
 import { useVoteLockAPR } from '../hooks/use-staking-vault-apy'
 import { ChainId } from '@/utils/chains'
 import SectionAnchor from '@/components/section-anchor'
@@ -55,6 +59,14 @@ const OpenLockDrawerButton = forwardRef<
 
   if (!dtf) return
 
+  // Self-appreciating vaults auto-compound → daily-compounded APY.
+  const selfAppreciating = isSelfAppreciatingVoteLock(
+    dtf.chainId,
+    dtf.stToken?.id
+  )
+  const displayRate =
+    apr !== undefined && selfAppreciating ? toCompoundApy(apr) : apr
+
   return (
     <Button
       ref={ref}
@@ -74,9 +86,12 @@ const OpenLockDrawerButton = forwardRef<
         <Trans>
           Lock ${dtf.stToken?.underlying.symbol ?? 'Unknown'} to Govern
         </Trans>{' '}
-        {Number(apr?.toFixed(2)) > 0 && (
-          <Trans>& Earn {apr?.toFixed(2)}% APR</Trans>
-        )}
+        {Number(displayRate?.toFixed(2)) > 0 &&
+          (selfAppreciating ? (
+            <Trans>& Earn {displayRate?.toFixed(2)}% APY</Trans>
+          ) : (
+            <Trans>& Earn {displayRate?.toFixed(2)}% APR</Trans>
+          ))}
       </span>
     </Button>
   )

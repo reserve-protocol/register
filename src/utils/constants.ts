@@ -612,3 +612,29 @@ export const HIDDEN_DTF_SYMBOLS = new Set(['COMPUTE', 'ENERGY', 'QUANTUM'])
 
 export const isHiddenDtfSymbol = (symbol: string) =>
   HIDDEN_DTF_SYMBOLS.has(symbol)
+
+// Vote-lock vaults whose rewards are converted to the underlying by a tokenJar
+// and stream back into the vault (exchange rate > 1, no claimable reward
+// tokens) — like stRSR, unlike legacy 1:1 StakingVaults. Long-term this can be
+// replaced by an on-chain tokenJar() probe.
+export const SELF_APPRECIATING_VOTE_LOCK_VAULTS: Record<
+  number,
+  readonly string[]
+> = {
+  [ChainId.BSC]: ['0xe744c8157c346b2931807f42552c8cbc0bb6d34f'],
+}
+
+export const isSelfAppreciatingVoteLock = (
+  chainId: number,
+  address?: string
+) =>
+  !!address &&
+  (SELF_APPRECIATING_VOTE_LOCK_VAULTS[chainId] ?? []).includes(
+    address.toLowerCase()
+  )
+
+// /dtf/daos returns simple annualized yield (dailyYield × 365). Self-
+// appreciating vaults auto-compound, so their honest APY is the daily-
+// compounded figure.
+export const toCompoundApy = (simpleApr: number) =>
+  ((1 + simpleApr / 100 / 365) ** 365 - 1) * 100
