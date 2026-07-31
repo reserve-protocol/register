@@ -43,7 +43,7 @@ Everything runs on **base/lcap** (`0x4dA9…E6e8`). Two different mock shapes:
 - **Zap surface**: `seedZapSurface(overrides, DTF)` seeds the folio's own
   name/symbol; `mockZapperRoutes(page, DTF, log)` serves ONE pinned quote per
   direction keyed on (chainId, tokenIn, tokenOut, amountIn) — **fill the exact
-  pinned `amountIn`** or you hit the fail-loud 500. Aggregators (odos/velora/
+  pinned `amountIn`** or you hit the fail-loud 500. Aggregators (velora/
   enso) answer a deterministic error on purpose so `best` mode has one
   candidate. `seedDtfBalance` funds the sell side + pre-answers the approve
   simulation. Assert the submitted tx equals the quote's `tx` byte-for-byte.

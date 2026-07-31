@@ -55,7 +55,7 @@ Base URL: `https://api.reserve.org`
 | `GET /v1/portfolio/:address` | Cross-DTF wallet balances | — | `src/views/portfolio-page/hooks/use-portfolio.ts` |
 | `GET /v1/historical/portfolio/:address` | Portfolio value history | `period` | `src/views/portfolio-page/hooks/use-historical-portfolio.ts` |
 
-**Price consensus**: 7 sources (Coinbase, CMC, Alchemy, DefiLlama, Odos, Moralis, internal). Cached ~60s with 30s stale-while-revalidate.
+**Price consensus**: 6 sources (Coinbase, CMC, Alchemy, DefiLlama, Moralis, internal). Cached ~60s with 30s stale-while-revalidate.
 
 **Important**: `/current/dtf` basket uses `Folio.toAssets(1e18, 0)` — rounding=0 is Floor. Only relevant to the legacy consumers above; the SDK snapshot hook does not use this endpoint.
 
