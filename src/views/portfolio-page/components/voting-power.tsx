@@ -51,8 +51,8 @@ const columns: ColumnDef<VotingPowerRow, any>[] = [
         return (
           <div className="flex items-center gap-2">
             <TokenLogoWithChain
-              symbol={d.underlying.symbol}
-              address={d.underlying.address}
+              symbol={d.symbol}
+              address={d.stTokenAddress}
               chain={d.chainId}
               size="md"
             />

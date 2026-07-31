@@ -69,6 +69,7 @@ export const VoteLockDrawer = ({
                 <TabsTrigger
                   key={key}
                   value={key}
+                  data-testid={`vote-lock-tab-${key}`}
                   className="flex h-8 items-center gap-1 py-0 pl-2 pr-3 data-[state=active]:text-primary"
                 >
                   {icon}

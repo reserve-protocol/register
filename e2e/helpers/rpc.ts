@@ -210,6 +210,12 @@ for (const address of [
   '0x4200000000000000000000000000000000000006', // WETH
   '0xcbB7C0000aB88B473b1f5aFd9ef808440eed33Bf', // cbBTC
   '0xaB36452DbAC151bE02b16Ca17d8919826072f64a', // RSR
+  // BSC — mirrors TokenBalancesUpdater's ZAP_TOKENS[BSC]; RSR bsc is already
+  // seeded via the photon fixture's basket metadata, but that's incidental
+  // (per-fixture), so list the chain's canonical set explicitly like the
+  // other chains above.
+  '0x2170Ed0880ac9A755fd29B2688956BD959F933F8', // WETH
+  '0x55d398326f99059fF775485246999027B3197955', // USDT
 ]) {
   knownTokenAddresses.add(address.toLowerCase())
 }
@@ -437,6 +443,30 @@ function seedChainState() {
       for (const selector of KNOWN_ZERO_SELECTORS) {
         callOverrides[`${contract.toLowerCase()}:${selector}`] = ZERO_RETURN
       }
+    }
+    // Vote-lock state multicall reads shares + rate off the vault. Baseline:
+    // zero share balance, identity (1:1) exchange rate — self-appreciating
+    // vault specs override convertToAssets per-address with a real rate.
+    if (metadata.stToken?.id) {
+      const vault = metadata.stToken.id.toLowerCase()
+      callOverrides[`${vault}:0x70a08231`] = ZERO_RETURN // balanceOf(account)
+      callOverrides[`${vault}:0x07a2d13a`] = encodeAbiParameters(
+        // convertToAssets(1e18) → 1e18
+        [{ type: 'uint256' }],
+        [10n ** 18n]
+      )
+      // The governance card's exchange-rate badge fires previewRedeem(1 share)
+      // UNCONDITIONALLY on every self-appreciating-vault DTF page view (no
+      // wallet needed) — every such page, not just vote-lock-drawer specs,
+      // needs an answer. Same identity baseline + same caveat as
+      // convertToAssets above: this answers ANY previewRedeem call on the
+      // vault (selector-only match), so a spec quoting a DIFFERENT share
+      // amount must still override it per-test with the real rate.
+      callOverrides[`${vault}:0x4cdad506`] = encodeAbiParameters(
+        // previewRedeem(1e18 shares) → 1e18 assets
+        [{ type: 'uint256' }],
+        [10n ** 18n]
+      )
     }
   }
 

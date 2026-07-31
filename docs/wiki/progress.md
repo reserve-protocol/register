@@ -1,6 +1,6 @@
 ---
 title: Progress
-updated: 2026-07-28
+updated: 2026-07-31
 type: ledger
 ---
 
@@ -10,6 +10,7 @@ Stage ledger. One row per stage; keep entries short. Verifier = exact fresh comm
 
 | Stage | Status | Verifier | Review | Next |
 |---|---|---|---|---|
+| vlRSR self-appreciating vaults: drawer shares/redeem + rate line · governance card · portfolio · earn rate-corrected + APY | human-review-required (base d0427a7cf; SDK local-linked) | gate green: typecheck+lint+847 unit · 72 helper · smoke 58 · drawer spec 2/2 · live BSC visual light+dark incl. earn TVL 261.5M RSR = totalAssets | Dark + Light on both diffs; all blockers fixed; details in git | PR #1072 open on SDK 0.5.1 (published, pinned exact; direct sdk dep dropped). Companions: dtf-interface#29, reserve-api#236 (deploy w/ daos CDN purge). **Engineer review**: withdraw→redeem for ALL vaults, governance card, api token.price×rate. [plan](../plans/vlrsr-self-appreciating-vaults.md) |
 | focused-tab automatic chain switching | human-review-required (base b2fcf72c6) | lint/typecheck · unit 840 incl. 8 focus/visibility · helpers 70 · smoke 56 + 1 skipped · wiki-lint | Dark + Light: stale Index target + mutation-boundary focus recheck fixed; automatic switching preserved, background tabs passive | Engineer review wallet/chain flow; then ship |
 | vote-lock APR unified on /dtf/daos list | done (base 771c92873) | gate-equivalent green (lint/typecheck/unit, 70 helper, 56 smoke, wiki-lint) · live visual: BUILDOUT + POWER overviews and earn all 46.83% from one list request | Dark + Light, per-claim verify — adopted: list-miss/error fallback gating, plain-data return, catalog mixed-case normalization; API re-key REVERTED by Luis (sdk `getVoteLockDao` needs the DTF-address key); accepted: unlisted DTFs keep per-DTF detail cache split | pre-existing reserve-api debt flagged, not shipped: maxAge-before-await caches 500s 24h; unguarded `underlyingPrice.price` deref can 500 whole list |
 | merge master RFQ into feature hardening | human-review-required (base 0237e747c; merged `origin/master` 981b634d7; observed CLS explicitly out of scope) | frozen install · scoped gate-equivalent: lint/typecheck, 832 unit, 70 helper, 56 smoke + 1 known fixme · zap 21 · production build · wiki-lint pending | Dark + Light pass; SDK 0.5.0 pin + zapper 2.7.1 reconciled; hardening guards preserved; engineer review required for live RFQ/intent execution | commit merge locally; do not push |
@@ -42,6 +43,7 @@ Stage ledger. One row per stage; keep entries short. Verifier = exact fresh comm
 ### E2E coverage debt (fail-loud workarounds to pay down)
 
 - **Index/Arbitrum egress assertion owed**: a spec inspecting `boundaryRequests` asserting NO Index-domain call carries chainId 42161 (with a Yield-positive counterpart — dtf-yield keeps Arbitrum). A green smoke does NOT prove this: teardown only fails on unmocked calls and the RPC mock answers Arbitrum generically.
+- **Vote-lock (vlRSR) uncovered paths** (Codex review 2026-07-31): external Earn/portfolio drawer first-open (the hook-order crash path — fixed, untested); portfolio live-zero + RPC-error fallback branches; governance card rate/redeemable presentation; a legacy 1:1 vault through the universal redeem path (drawer spec only covers vlRSR); earn cell RPC-failure fallback (skeleton→1:1).
 
 A mock strict enough that a spec routes AROUND its gap silently shrinks the
 covered surface. Every in-spec workaround belongs here as tracked debt — not a

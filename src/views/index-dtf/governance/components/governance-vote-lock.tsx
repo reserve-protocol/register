@@ -7,24 +7,31 @@ import {
   HoverCardTrigger,
 } from '@/components/ui/hover-card'
 import { Skeleton } from '@/components/ui/skeleton'
+import { AnimatedNumber } from '@/components/ui/animated-number'
 import { CurrentDtfVoteLock } from '@/components/vote-lock'
+import { useVoteLockExchangeRate } from '@/components/vote-lock/hooks/use-vote-lock-exchange-rate'
 import { isInactiveDTF } from '@/hooks/use-dtf-status'
 import useIndexDTFList from '@/hooks/useIndexDTFList'
-import { chainIdAtom } from '@/state/atoms'
+import { chainIdAtom, walletAtom } from '@/state/atoms'
 import { indexDTFAtom } from '@/state/dtf/atoms'
-import { getFolioRoute } from '@/utils'
-import { isHiddenDtfSymbol } from '@/utils/constants'
+import { formatCurrency, getFolioRoute } from '@/utils'
+import {
+  isHiddenDtfSymbol,
+  isSelfAppreciatingVoteLock,
+  toCompoundApy,
+} from '@/utils/constants'
 import { Trans } from '@lingui/react/macro'
+import {
+  useIndexDtfVoteLockState,
+  type SupportedChainId,
+} from '@reserve-protocol/react-sdk'
 import { useAtomValue } from 'jotai'
 import { ChevronDown } from 'lucide-react'
 import { ReactNode, useMemo, useState } from 'react'
+import { type Address } from 'viem'
 import { useVoteLockAPR } from '../../overview/hooks/use-staking-vault-apy'
 import useGovernedDtfs, { GovernedDtf } from '../hooks/use-governed-dtfs'
 import RSRBNBHelp from './rsr-bnb-help'
-
-const AUTO_ACCRUING_REWARD_VAULTS = new Set([
-  '0xe744c8157c346b2931807f42552c8cbc0bb6d34f',
-])
 
 const Placeholder = () => (
   <div className="bg-background space-y-6 p-2 rounded-3xl">
@@ -202,6 +209,73 @@ const RewardTokensHoverCard = ({
   )
 }
 
+// Rate is an account-less previewRedeem(1 share); redeemable is the connected
+// account's maxWithdraw — both appreciation-aware, no fabricated "earned".
+const SelfAppreciatingFacts = ({
+  stToken,
+  underlyingSymbol,
+  voteLockSymbol,
+  chainId,
+  dtfAddress,
+}: {
+  stToken: { id: Address; decimals: number; underlyingDecimals: number }
+  underlyingSymbol: string
+  voteLockSymbol: string
+  chainId: SupportedChainId
+  dtfAddress: Address
+}) => {
+  const account = useAtomValue(walletAtom)
+  const { rate } = useVoteLockExchangeRate({
+    stToken: stToken.id,
+    chainId,
+    shareDecimals: stToken.decimals,
+    underlyingDecimals: stToken.underlyingDecimals,
+  })
+  const { data: voteLockState } = useIndexDtfVoteLockState(
+    account ? { address: dtfAddress, chainId, account } : undefined
+  )
+  const redeemable = voteLockState?.maxWithdraw
+
+  if (rate === undefined && !redeemable) return null
+
+  return (
+    <>
+      <div className="h-px bg-border" />
+      <div className="space-y-1 pt-4 pb-2 text-base">
+        {rate !== undefined && (
+          <div className="flex items-center justify-between">
+            <div className="text-legend">
+              <Trans>Exchange rate</Trans>
+            </div>
+            <div className="font-medium" data-testid="vote-lock-exchange-rate">
+              1 {voteLockSymbol} ={' '}
+              <AnimatedNumber
+                value={rate}
+                formatter={(value) => formatCurrency(value, 4)}
+              />{' '}
+              {underlyingSymbol}
+            </div>
+          </div>
+        )}
+        {!!redeemable && redeemable.raw > 0n && (
+          <div className="flex items-center justify-between">
+            <div className="text-legend">
+              <Trans>Your redeemable</Trans>
+            </div>
+            <div className="font-medium" data-testid="vote-lock-redeemable">
+              <AnimatedNumber
+                value={Number(redeemable.formatted)}
+                formatter={(value) => formatCurrency(value)}
+              />{' '}
+              {underlyingSymbol}
+            </div>
+          </div>
+        )}
+      </div>
+    </>
+  )
+}
+
 const RewardFacts = ({
   rewardsIn,
   claiming,
@@ -276,10 +350,16 @@ const GovernanceVoteLock = () => {
   const voteLockGovernedLabel = `${voteLockSymbol}-governed`
   const underlyingSymbol = `$${indexDTF.stToken.underlying.symbol}`
   const rewardLabel = rewardSymbols.map((symbol) => `$${symbol}`).join(', ')
-  const rewardsAccrueAutomatically = AUTO_ACCRUING_REWARD_VAULTS.has(
-    indexDTF.stToken.id.toLowerCase()
+  const rewardsAccrueAutomatically = isSelfAppreciatingVoteLock(
+    indexDTF.chainId,
+    indexDTF.stToken.id
   )
-  const aprLabel = apr && apr >= 0.01 ? `${apr.toFixed(2)}% APR` : ''
+  const aprLabel =
+    apr && apr >= 0.01
+      ? rewardsAccrueAutomatically
+        ? `${toCompoundApy(apr).toFixed(2)}% APY`
+        : `${apr.toFixed(2)}% APR`
+      : ''
   const rewardsInLabel =
     rewardLabel ||
     (rewardsAccrueAutomatically
@@ -298,8 +378,8 @@ const GovernanceVoteLock = () => {
         <div className="flex items-center gap-2 mb-10">
           <TokenLogo
             size="xl"
-            symbol={indexDTF.stToken.underlying.symbol}
-            address={indexDTF.stToken.underlying.address}
+            symbol={indexDTF.stToken.token.symbol}
+            address={indexDTF.stToken.id}
             chain={chainId}
           />
           {!!aprLabel && (
@@ -318,44 +398,51 @@ const GovernanceVoteLock = () => {
             />
           )}
         </h4>
-        {otherDtfCount > 0 && rewardsAccrueAutomatically ? (
-          <div className="space-y-0 text-sm">
-            <p className="text-base text-legend max-w-84 mb-4">
+        <div className="space-y-0">
+          <p className="text-base text-legend max-w-84 mb-4">
+            {otherDtfCount > 0 ? (
               <Trans>
                 Vote-lock {underlyingSymbol} in {voteLockSymbol} to govern and
                 earn from TVL fees across all {voteLockGovernedLabel} DTFs.
               </Trans>
-            </p>
-            <RewardFacts
-              rewardsIn={rewardsIn}
-              claiming={<Trans>Automatic</Trans>}
-            />
-          </div>
-        ) : (
-          <div className="space-y-0">
-            <p className="text-base text-legend max-w-84 mb-4">
-              {otherDtfCount > 0 ? (
-                <Trans>
-                  Vote-lock {underlyingSymbol} in {voteLockSymbol} to govern and
-                  earn from TVL fees across all {voteLockGovernedLabel} DTFs.
-                </Trans>
+            ) : (
+              <Trans>
+                Vote-lock {underlyingSymbol} in {voteLockSymbol} to govern and
+                earn from this DTF&apos;s TVL fee.
+              </Trans>
+            )}
+          </p>
+          <RewardFacts
+            rewardsIn={rewardsIn}
+            claiming={
+              rewardsAccrueAutomatically ? (
+                <Trans>Automatic</Trans>
               ) : (
-                <Trans>
-                  Vote-lock {underlyingSymbol} in {voteLockSymbol} to govern and
-                  earn from this DTF&apos;s TVL fee.
-                </Trans>
-              )}
-            </p>
-            <RewardFacts
-              rewardsIn={rewardsIn}
-              claiming={<Trans>Manual</Trans>}
+                <Trans>Manual</Trans>
+              )
+            }
+          />
+          {rewardsAccrueAutomatically && (
+            <SelfAppreciatingFacts
+              stToken={{
+                id: indexDTF.stToken.id,
+                decimals: indexDTF.stToken.token.decimals,
+                underlyingDecimals: indexDTF.stToken.underlying.decimals,
+              }}
+              underlyingSymbol={underlyingSymbol}
+              voteLockSymbol={voteLockSymbol}
+              chainId={indexDTF.chainId}
+              dtfAddress={indexDTF.id}
             />
-          </div>
-        )}
+          )}
+        </div>
       </div>
 
       <CurrentDtfVoteLock>
-        <Button className="rounded-xl w-full gap-1.5 h-[40px]">
+        <Button
+          className="rounded-xl w-full gap-1.5 h-[40px]"
+          data-testid="vote-lock-open-btn"
+        >
           <div className="border border-card rounded-full">
             <TokenLogo
               size="sm"

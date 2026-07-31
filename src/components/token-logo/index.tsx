@@ -7,6 +7,7 @@ import { useAtom, useAtomValue } from 'jotai'
 import * as React from 'react'
 import { routeCacheAtom } from './atoms'
 import { TOKEN_LOGO_MAPPINGS } from './token-logo-mappings'
+import { getVoteLockTokenLogo } from './vote-lock-token-logo'
 
 type Sizes = 'sm' | 'md' | 'lg' | 'xl'
 
@@ -80,6 +81,13 @@ const TokenLogo = React.forwardRef<HTMLImageElement, Props>((props, ref) => {
 
   const loadImage = React.useCallback(async () => {
     try {
+      const voteLockTokenLogo = getVoteLockTokenLogo(symbol)
+      if (voteLockTokenLogo) {
+        cacheUrl(voteLockTokenLogo)
+        setCurrentSrc(voteLockTokenLogo)
+        return
+      }
+
       // check cache first
       if (address && chain) {
         const cacheKey = `${address.toLowerCase()}-${chain}`
@@ -392,17 +400,19 @@ const TRUST_WALLET_CHAINS: Record<number, string> = {
 }
 
 function getKnownTokenLogo(symbol: string) {
-  if (SVGS.has(symbol.toLowerCase())) {
-    return `/svgs/${symbol.toLowerCase()}.svg`
+  const normalizedSymbol = symbol.toLowerCase()
+
+  if (SVGS.has(normalizedSymbol)) {
+    return `/svgs/${normalizedSymbol}.svg`
   }
-  if (PNGS.has(symbol.toLowerCase())) {
-    return `/imgs/${symbol.toLowerCase()}.png`
+  if (PNGS.has(normalizedSymbol)) {
+    return `/imgs/${normalizedSymbol}.png`
   }
-  if (WEBP.has(symbol.toLowerCase())) {
-    return `/imgs/${symbol.toLowerCase()}.webp`
+  if (WEBP.has(normalizedSymbol)) {
+    return `/imgs/${normalizedSymbol}.webp`
   }
-  if (EXTERNAL_ASSETS[symbol.toLowerCase()]) {
-    return EXTERNAL_ASSETS[symbol.toLowerCase()]
+  if (EXTERNAL_ASSETS[normalizedSymbol]) {
+    return EXTERNAL_ASSETS[normalizedSymbol]
   }
   return ''
 }

@@ -1,3 +1,4 @@
+import { AnimatedNumber } from '@/components/ui/animated-number'
 import DecimalDisplay from '@/components/decimal-display'
 import { cn } from '@/lib/utils'
 import DataTable, { SorteableButton } from '@/components/ui/data-table'
@@ -14,6 +15,7 @@ import {
 } from '@/components/vote-lock'
 import { walletAtom } from '@/state/atoms'
 import { formatCurrency, getFolioRoute } from '@/utils'
+import { isSelfAppreciatingVoteLock, toCompoundApy } from '@/utils/constants'
 import {
   EarnGovernanceTokenCell,
   EarnGovernanceTokenSkeleton,
@@ -30,6 +32,8 @@ import {
   earnWalletColumnClassName,
 } from '@/views/earn/components/earn-table-styles'
 import PositionBalance from '@/views/earn/components/position-balance'
+import { useVoteLockExchangeRate } from '@/components/vote-lock/hooks/use-vote-lock-exchange-rate'
+import { type SupportedChainId } from '@reserve-protocol/react-sdk'
 import { Trans, useLingui } from '@lingui/react/macro'
 import { createColumnHelper } from '@tanstack/react-table'
 import { useAtomValue } from 'jotai'
@@ -41,6 +45,66 @@ import { VoteLockPosition } from '../hooks/use-vote-lock-positions'
 import TableFilters from './table-filters'
 
 const columnHelper = createColumnHelper<VoteLockPosition>()
+
+// /dtf/daos reports lockedAmount in SHARES and prices shares 1:1 with the
+// underlying — wrong denomination and undervalued for self-appreciating vaults
+// (vlRSR). Convert to assets with the vault rate; rate is exactly 1 for legacy
+// vaults so their display is unchanged.
+const usePositionExchangeRate = (position: VoteLockPosition) =>
+  useVoteLockExchangeRate({
+    stToken: position.token.address as Address,
+    chainId: position.chainId as SupportedChainId,
+    shareDecimals: position.token.decimals,
+    underlyingDecimals: position.underlying.token.decimals,
+  })
+
+// TVL comes rate-corrected from /dtf/daos (reserve-api converts share supply
+// to underlying via convertToAssets) — do NOT multiply by the rate here.
+const TvlCell = ({ position }: { position: VoteLockPosition }) => (
+  <div className="flex flex-col">
+    <span>
+      $
+      <AnimatedNumber
+        value={position.lockedAmountUsd}
+        formatter={(value) => formatCurrency(value, 0)}
+      />
+    </span>
+    <span className="text-xs whitespace-nowrap sm:text-sm text-legend">
+      <DecimalDisplay
+        value={position.lockedAmount}
+        decimals={2}
+        compact={true}
+      />{' '}
+      {position.underlying.token.symbol}
+    </span>
+  </div>
+)
+
+const YourLockCell = ({ position }: { position: VoteLockPosition }) => {
+  const { rate, isError } = usePositionExchangeRate(position)
+
+  // Skeleton only while the rate is genuinely loading — on RPC error fall
+  // back to 1:1 (legacy behavior) instead of a permanent skeleton.
+  if (rate === undefined && !isError) {
+    return (
+      <div className="flex flex-col gap-1">
+        <Skeleton className="h-4 w-24" />
+        <Skeleton className="h-3 w-20" />
+      </div>
+    )
+  }
+
+  return (
+    <PositionBalance
+      address={position.token.address as Address}
+      chain={position.chainId}
+      price={position.underlying.token.price}
+      symbol={position.underlying.token.symbol}
+      decimals={position.token.decimals}
+      conversionRate={rate ?? 1}
+    />
+  )
+}
 
 const GovernedDtfsCell = ({
   dtfs,
@@ -80,17 +144,15 @@ const GovernedDtfsCell = ({
   }
 
   return (
-    <div className="flex min-w-0 items-center text-legend">
+    <div className="flex flex-col min-w-0  text-legend">
       <span className="font-semibold">${largestDtf.symbol}</span>
       {otherDtfs.length > 0 && (
-        <>
-          <span className="mx-1">+</span>
+        <div className="flex items-center text-sm">
+          <span className="mr-1">+</span>
           <HoverCard open={open} onOpenChange={setOpen} openDelay={150}>
             <HoverCardTrigger asChild>
               <button
                 type="button"
-                // WHY: HoverCard has no touch affordance — click toggles it so
-                // the disclosure works on mobile without swallowing the row tap.
                 onClick={(e) => {
                   e.stopPropagation()
                   setOpen(!open)
@@ -101,15 +163,10 @@ const GovernedDtfsCell = ({
                 )}
               >
                 <span>
-                  {otherDtfs.length}{' '}
-                  {otherDtfs.length === 1 ? (
-                    <Trans>other DTF</Trans>
-                  ) : (
-                    <Trans>other DTFs</Trans>
-                  )}
+                  {otherDtfs.length} <Trans>other</Trans>
                 </span>
                 <ChevronDown
-                  size={16}
+                  size={12}
                   strokeWidth={2}
                   className={cn('transition-transform', open && 'rotate-180')}
                 />
@@ -140,7 +197,7 @@ const GovernedDtfsCell = ({
               </div>
             </HoverCardContent>
           </HoverCard>
-        </>
+        </div>
       )}
     </div>
   )
@@ -177,19 +234,7 @@ const useColumns = () => {
         meta: {
           className: earnTvlColumnClassName,
         },
-        cell: (data) => (
-          <div className="flex flex-col">
-            <span>${formatCurrency(data.row.original.lockedAmountUsd, 0)}</span>
-            <span className="text-xs whitespace-nowrap sm:text-sm text-legend">
-              <DecimalDisplay
-                value={data.row.original.lockedAmount}
-                decimals={2}
-                compact={true}
-              />{' '}
-              {data.row.original.underlying.token.symbol}
-            </span>
-          </div>
-        ),
+        cell: (data) => <TvlCell position={data.row.original} />,
       }),
       ...(wallet
         ? [
@@ -198,15 +243,7 @@ const useColumns = () => {
               meta: {
                 className: earnWalletColumnClassName,
               },
-              cell: (data) => (
-                <PositionBalance
-                  address={data.row.original.token.address as Address}
-                  chain={data.row.original.chainId}
-                  price={data.row.original.token.price}
-                  symbol={data.row.original.underlying.token.symbol}
-                  decimals={data.row.original.token.decimals}
-                />
-              ),
+              cell: (data) => <YourLockCell position={data.row.original} />,
             }),
           ]
         : []),
@@ -232,7 +269,23 @@ const useColumns = () => {
           className: earnMetricColumnClassName,
         },
         cell: (data) => {
-          return <EarnMetricCtaCell value={data.getValue()} label="APR" />
+          // Self-appreciating vaults compound into the exchange rate → show
+          // the daily-compounded APY instead of the API's simple APR.
+          const selfAppreciating = isSelfAppreciatingVoteLock(
+            data.row.original.chainId,
+            data.row.original.token.address
+          )
+
+          return (
+            <EarnMetricCtaCell
+              value={
+                selfAppreciating
+                  ? toCompoundApy(data.getValue())
+                  : data.getValue()
+              }
+              label={selfAppreciating ? 'APY' : 'APR'}
+            />
+          )
         },
       }),
     ]

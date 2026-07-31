@@ -54,6 +54,7 @@ type SwapItem = {
   onMax?: () => void
   value?: string
   onChange?: (value: string) => void
+  inputTestId?: string
   tokens?: TokenWithBalance[]
   onTokenSelect?: (token: Token) => void
   disabled?: boolean
@@ -71,8 +72,11 @@ type SwapProps = {
 const TokenInput = ({
   value = '',
   onChange = () => {},
+  inputTestId,
   disabled = false,
-}: Pick<SwapItem, 'value' | 'onChange'> & { disabled?: boolean }) => {
+}: Pick<SwapItem, 'value' | 'onChange' | 'inputTestId'> & {
+  disabled?: boolean
+}) => {
   const ref = useRef<HTMLInputElement>(null)
   const isDesktop = useMediaQuery('(min-width: 768px)')
 
@@ -95,6 +99,7 @@ const TokenInput = ({
       ref={ref}
       autoFocus={isDesktop}
       disabled={disabled}
+      data-testid={inputTestId}
     />
   )
 }
@@ -373,6 +378,7 @@ export const TokenOutputBox = ({
               autoFocus
               disabled
               className="disabled:cursor-auto disabled:opacity-100"
+              data-testid={to.inputTestId}
             />
           )}
           <TokenSelector

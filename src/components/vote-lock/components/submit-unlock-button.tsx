@@ -1,24 +1,19 @@
-import dtfIndexStakingVault from '@/abis/dtf-index-staking-vault'
 import TransactionButton from '@/components/ui/transaction-button'
 import { walletAtom } from '@/state/atoms'
 import { useLingui } from '@lingui/react/macro'
-import { prepareVoteLockWithdraw } from '@reserve-protocol/react-sdk'
+import { prepareVoteLockRedeem } from '@reserve-protocol/react-sdk'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { useResetAtom } from 'jotai/utils'
 import { useEffect, useRef, useState } from 'react'
 import { toast } from 'sonner'
 import { parseUnits } from 'viem'
-import {
-  useReadContract,
-  useWaitForTransactionReceipt,
-  useWriteContract,
-} from 'wagmi'
+import { useWaitForTransactionReceipt, useWriteContract } from 'wagmi'
 import {
   closeDrawerAtom,
   stakingInputAtom,
   stTokenAtom,
-  unlockBalanceRawAtom,
   unlockDelayAtom,
+  unlockShareBalanceRawAtom,
   updateCurrentDtfStTokenSupplyAtom,
 } from '../atoms'
 import { getWriteContractParams } from '../utils'
@@ -30,7 +25,7 @@ const SubmitUnlockButton = ({ onSuccess }: { onSuccess?: () => void }) => {
   const account = useAtomValue(walletAtom)
   const stToken = useAtomValue(stTokenAtom)
   const input = useAtomValue(stakingInputAtom)
-  const balance = useAtomValue(unlockBalanceRawAtom)
+  const balance = useAtomValue(unlockShareBalanceRawAtom)
   const unlockDelay = useAtomValue(unlockDelayAtom)
   const resetInput = useResetAtom(stakingInputAtom)
   const setShouldClose = useSetAtom(closeDrawerAtom)
@@ -48,28 +43,20 @@ const SubmitUnlockButton = ({ onSuccess }: { onSuccess?: () => void }) => {
     }
   }, [])
 
-  const amountToUnlock = stToken
-    ? parseUnits(input || '0', stToken.underlying.decimals)
+  const sharesToUnlock = stToken
+    ? parseUnits(input || '0', stToken.token.decimals)
     : 0n
   const readyToSubmit =
-    !!account && !!balance && amountToUnlock > 0n && amountToUnlock <= balance
+    !!account && !!balance && sharesToUnlock > 0n && sharesToUnlock <= balance
   const call =
     stToken && account
-      ? prepareVoteLockWithdraw({
+      ? prepareVoteLockRedeem({
           chainId: stToken.chainId,
           stToken: stToken.id,
-          amount: amountToUnlock,
+          shares: sharesToUnlock,
           account,
         })
       : undefined
-  const { data: sharesToBurn } = useReadContract({
-    abi: dtfIndexStakingVault,
-    functionName: 'previewWithdraw',
-    address: stToken?.id,
-    args: [amountToUnlock],
-    chainId: stToken?.chainId,
-    query: { enabled: readyToSubmit && !!stToken?.id },
-  })
 
   const {
     writeContract,
@@ -85,7 +72,7 @@ const SubmitUnlockButton = ({ onSuccess }: { onSuccess?: () => void }) => {
   const write = () => {
     if (!readyToSubmit || !call) return
 
-    pendingSupplyDelta.current = sharesToBurn ? -sharesToBurn : 0n
+    pendingSupplyDelta.current = -sharesToUnlock
     writeContract(getWriteContractParams(call))
   }
 
@@ -147,6 +134,7 @@ const SubmitUnlockButton = ({ onSuccess }: { onSuccess?: () => void }) => {
       }
       className="w-full"
       error={error || txError}
+      data-testid="vote-unlock-submit"
     />
   )
 }

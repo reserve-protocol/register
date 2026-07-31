@@ -32,6 +32,8 @@ export type VoteLockDrawerState = Pick<
   | 'delegate'
   | 'optimisticDelegate'
   | 'maxWithdraw'
+  | 'shareBalance'
+  | 'exchangeRate'
   | 'optimisticVotingPower'
   | 'hasOptimisticVotingPower'
   | 'unstakingDelay'
@@ -86,8 +88,8 @@ export const underlyingBalanceRawAtom = atom(
   (get) => get(voteLockStateAtom)?.underlyingBalance.raw
 )
 
-export const unlockBalanceRawAtom = atom(
-  (get) => get(voteLockStateAtom)?.maxWithdraw.raw
+export const unlockShareBalanceRawAtom = atom(
+  (get) => get(voteLockStateAtom)?.shareBalance.raw
 )
 
 export const unlockDelayAtom = atom<number | undefined>((get) => {
@@ -106,14 +108,19 @@ export const inputBalanceAtom = atom<string>((get) => {
   return get(voteLockStateAtom)?.underlyingBalance.formatted ?? '0'
 })
 
-export const unlockBalanceAtom = atom<string>((get) => {
-  const stToken = get(stTokenAtom)
-  const unlockBalanceRaw = get(unlockBalanceRawAtom)
-  const decimals = stToken?.underlying.decimals
+export const unlockShareBalanceAtom = atom<string>(
+  (get) => get(voteLockStateAtom)?.shareBalance.formatted ?? '0'
+)
 
-  return decimals !== undefined && unlockBalanceRaw !== undefined
-    ? formatUnits(unlockBalanceRaw, decimals)
-    : '0'
+// USD price of one vault share; legacy 1:1 vaults have rate 1 so this equals
+// the underlying price there.
+export const sharePriceAtom = atom<number | undefined>((get) => {
+  const state = get(voteLockStateAtom)
+  const rate = Number(state?.exchangeRate.formatted ?? 1)
+
+  return state?.underlyingPrice !== undefined
+    ? state.underlyingPrice * (rate || 1)
+    : undefined
 })
 
 export const hasVoteLockedBalanceAtom = atom((get) =>

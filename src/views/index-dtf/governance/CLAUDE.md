@@ -30,6 +30,7 @@ time.
 | Queue/execute CTAs | `e2e/tests/flows/governance-queue-execute.spec.ts` + `flows/failures-governance.spec.ts` |
 | Chain/version-gated behavior | `e2e/tests/flows/governance-multichain.spec.ts` (bsc v5 + mainnet v4) + `flows/governance-writes-v4.spec.ts` (v4 castVote/queue/execute calldata) |
 | Delegation UI | `e2e/tests/smoke/governance.spec.ts` (delegates section) |
+| Vote-lock card (claiming label, exchange rate) or drawer (lock/unlock quotes, redeem tx) | `e2e/tests/flows/vote-lock-drawer.spec.ts` + `governance/photon-featured.spec.ts` (card renders on the self-appreciating fixture) |
 | Anything in hooks/updaters/atoms here | all of the above: `pnpm exec playwright test --project=full e2e/tests/flows/governance-*.spec.ts` + smoke |
 
 Quick loop: `pnpm exec playwright test e2e/tests/smoke/governance.spec.ts`
@@ -98,6 +99,13 @@ mapper dereferences — serve proposals ONLY through it or the list breaks).
   governance branch. Renaming it requires updating `e2e/helpers/subgraph.ts`.
 - Vote weights come from RPC (`getVotes`), proposals/history from the
   subgraph. Don't "fix" a test by moving live state into the subgraph mock.
+- Self-appreciating vote-lock vaults (catalog: `SELF_APPRECIATING_VOTE_LOCK_VAULTS`
+  in `src/utils/constants.ts`; bsc/photon's vlRSR is one): the card fires an
+  account-less `previewRedeem(1 share)` on page load. The central mock answers
+  identity-rate (1:1) defaults for vault `previewRedeem`/`convertToAssets`/
+  `balanceOf`; specs asserting a real rate override per-address (see
+  `flows/vote-lock-drawer.spec.ts`). The unlock tx is `redeem(shares)` for ALL
+  vaults — assert decoded share args, not asset amounts.
 - ERC-6372 `clock()` is mocked (timestamp mode); governor deadline math
   breaks silently if a new read bypasses the frozen clock.
 - Threshold change-detection MUST go through the shared
