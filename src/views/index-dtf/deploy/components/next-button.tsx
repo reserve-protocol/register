@@ -3,6 +3,8 @@ import { Trans } from '@lingui/react/macro'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { useEffect } from 'react'
 import { FieldErrors, FieldValues, useFormContext } from 'react-hook-form'
+import { useSearchParams } from 'react-router-dom'
+import { shouldBypassFormValidation } from '@/utils/form-validation'
 import { deployStepAtom, readonlyStepsAtom, validatedSectionsAtom } from '../atoms'
 import { DeployInputs, DeployStepId, dtfDeploySteps } from '../form-fields'
 import { triggerDeployDrawerAtom } from '../steps/confirm-deploy/atoms'
@@ -25,6 +27,8 @@ const NextButton = () => {
   const { trigger, formState, watch, clearErrors } = useFormContext<DeployInputs>()
   const setValidatedSections = useSetAtom(validatedSectionsAtom)
   const setTriggerDeploy = useSetAtom(triggerDeployDrawerAtom)
+  const [searchParams] = useSearchParams()
+  const bypassValidation = shouldBypassFormValidation(searchParams)
 
   const formErrors = formState.errors as ExtendedFieldErrors<
     typeof formState.errors
@@ -60,10 +64,10 @@ const NextButton = () => {
 
     setValidatedSections((prev) => ({
       ...prev,
-      [deployStep as DeployStepId]: Boolean(output),
+      [deployStep as DeployStepId]: bypassValidation || Boolean(output),
     }))
 
-    if (!output) return
+    if (!output && !bypassValidation) return
 
     // If next step is readonly, collapse accordion and open deploy drawer
     if (isDeployTrigger) {

@@ -10,6 +10,8 @@ import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { useResetAtom } from 'jotai/utils'
 import { useEffect, useState } from 'react'
 import { SubmitHandler, useFormContext } from 'react-hook-form'
+import { useSearchParams } from 'react-router-dom'
+import { shouldBypassFormValidation } from '@/utils/form-validation'
 import {
   basketDerivedSharesAtom,
   basketInputTypeAtom,
@@ -47,7 +49,8 @@ const Header = () => {
 }
 
 const ConfirmIndexDeploy = ({ isActive }: { isActive: boolean }) => {
-  const { handleSubmit, watch } = useFormContext<DeployInputs>()
+  const { handleSubmit, watch, getValues } = useFormContext<DeployInputs>()
+  const [searchParams] = useSearchParams()
   const deployedDTF = useAtomValue(deployedDTFAtom)
   const setFormData = useSetAtom(indexDeployFormDataAtom)
   const setStTokenAddress = useSetAtom(daoTokenAddressAtom)
@@ -82,6 +85,10 @@ const ConfirmIndexDeploy = ({ isActive }: { isActive: boolean }) => {
   }
 
   const submitForm = () => {
+    if (shouldBypassFormValidation(searchParams)) {
+      processForm(getValues())
+      return
+    }
     handleSubmit(processForm)()
   }
 
