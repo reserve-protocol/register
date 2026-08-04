@@ -15,6 +15,7 @@ import {
 import { Token } from '@/types'
 import { BIGINT_MAX } from '@/utils/constants'
 import {
+  absorbShareDrift,
   getFeePercentAdjust,
   isDisplayablePlatformFee,
   revenuePortionFromShare,
@@ -946,9 +947,24 @@ export const feeRecipientsAtom = atom((get) => {
     }
   }
 
+  // Per-recipient rounding can leave the shares a hundredth off the pot, which
+  // would render an untouched form as over/under-allocated.
+  const [correctedDeployer, correctedGovernance, ...correctedExternal] =
+    absorbShareDrift(
+      [
+        deployerShare,
+        governanceShare,
+        ...externalRecipients.map((r) => r.share),
+      ],
+      100 - platformFee
+    )
+
   return {
-    deployerShare,
-    governanceShare,
-    externalRecipients,
+    deployerShare: correctedDeployer,
+    governanceShare: correctedGovernance,
+    externalRecipients: externalRecipients.map((recipient, index) => ({
+      ...recipient,
+      share: correctedExternal[index],
+    })),
   }
 })

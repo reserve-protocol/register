@@ -213,6 +213,12 @@ const EvenDistributionButton = () => {
           })
         )
       )
+
+      // The recipient inputs register per index, and a write to the array alone
+      // leaves them showing their old share.
+      additionalShares.forEach((share, index) =>
+        setValue(`additionalRevenueRecipients[${index}].share`, share)
+      )
     }
   }, [getValues, setValue])
 

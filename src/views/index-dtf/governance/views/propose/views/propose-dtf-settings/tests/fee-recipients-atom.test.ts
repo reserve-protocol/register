@@ -5,18 +5,23 @@ import { indexDTFAtom, indexDTFFeeAtom } from '@/state/dtf/atoms'
 import { revenuePortionFromShare } from '@/utils/fees'
 import { feeRecipientsAtom } from '../atoms'
 
-const makeStore = (platformFee: number, percentage = '80') => {
+type Recipient = { address: string; percentage: string }
+
+const makeStoreWith = (platformFee: number, feeRecipients: Recipient[]) => {
   const store = createStore()
   store.set(indexDTFAtom, {
     deployer: '0x1111111111111111111111111111111111111111',
-    feeRecipients: [
-      { address: '0x2222222222222222222222222222222222222222', percentage },
-    ],
+    feeRecipients,
     stToken: { id: '0x2222222222222222222222222222222222222222' },
   } as any)
   store.set(indexDTFFeeAtom, platformFee)
   return store
 }
+
+const makeStore = (platformFee: number, percentage = '80') =>
+  makeStoreWith(platformFee, [
+    { address: '0x2222222222222222222222222222222222222222', percentage },
+  ])
 
 describe('feeRecipientsAtom platform-fee guard', () => {
   it('returns a split for a displayable fee', () => {
@@ -34,6 +39,32 @@ describe('feeRecipientsAtom platform-fee guard', () => {
     expect(revenuePortionFromShare(result!.governanceShare, 33.33)).toBe(
       parseEther('1')
     )
+  })
+
+  it('shows shares that total the pot when per-recipient rounding drifts', () => {
+    // 80/10/10 of the pot each round up: the naive read-back totals 66.68% of
+    // revenue, rendering an untouched form as over-allocated.
+    const result = makeStoreWith(33.33, [
+      {
+        address: '0x2222222222222222222222222222222222222222',
+        percentage: '80',
+      },
+      {
+        address: '0x3333333333333333333333333333333333333333',
+        percentage: '10',
+      },
+      {
+        address: '0x4444444444444444444444444444444444444444',
+        percentage: '10',
+      },
+    ]).get(feeRecipientsAtom)
+
+    const total =
+      result!.deployerShare +
+      result!.governanceShare +
+      result!.externalRecipients.reduce((sum, r) => sum + r.share, 0)
+
+    expect(+total.toFixed(2)).toBe(66.67)
   })
 
   it('returns undefined (indeterminate) at platformFee=100 — no fabricated split', () => {

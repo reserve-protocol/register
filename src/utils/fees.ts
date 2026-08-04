@@ -44,6 +44,37 @@ export const revenuePortionFromShare = (
     : (shareBps * ONE) / TOTAL_BPS
 }
 
+// Rounding each contract portion to the 0.01% grid independently can leave the
+// displayed shares a few hundredths off the pot, which reads back as an
+// over/under-allocated form nobody edited. The largest share absorbs the drift;
+// a gap bigger than one grid step per share is real, so it is left alone.
+export const absorbShareDrift = (
+  shares: number[],
+  totalPercent: number
+): number[] => {
+  if (!shares.length || !Number.isFinite(totalPercent)) return shares
+
+  const driftBps =
+    toBps(totalPercent) - shares.reduce((sum, share) => sum + toBps(share), 0n)
+
+  const tolerance = BigInt(shares.length)
+
+  if (driftBps === 0n || driftBps > tolerance || driftBps < -tolerance)
+    return shares
+
+  const largest = shares.reduce(
+    (best, share, index) => (share > shares[best] ? index : best),
+    0
+  )
+  const correctedBps = toBps(shares[largest]) + driftBps
+
+  if (correctedBps < 0n) return shares
+
+  return shares.map((share, index) =>
+    index === largest ? Number(correctedBps) / BPS_PER_PERCENT : share
+  )
+}
+
 // Even split of a pot across participants; the last one absorbs the remainder so the shares total the pot exactly.
 export const splitSharesEvenly = (
   totalPercent: number,

@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { parseEther } from 'viem'
 import {
+  absorbShareDrift,
   getFeePercentAdjust,
   isDisplayablePlatformFee,
   platformFeePercent,
@@ -94,6 +95,26 @@ describe('revenuePortionFromShare', () => {
 
   it('falls back to the share of total when the pot is empty', () => {
     expect(revenuePortionFromShare(50, 100)).toBe(parseEther('0.5'))
+  })
+})
+
+describe('absorbShareDrift', () => {
+  it('puts a hundredth of drift on the largest share', () => {
+    expect(absorbShareDrift([56.72, 4.98, 4.98], 66.67)).toEqual([
+      56.71, 4.98, 4.98,
+    ])
+    expect(absorbShareDrift([56.7, 4.98, 4.98], 66.67)).toEqual([
+      56.71, 4.98, 4.98,
+    ])
+  })
+
+  it('leaves shares that already total the pot untouched', () => {
+    expect(absorbShareDrift([33.33, 33.34], 66.67)).toEqual([33.33, 33.34])
+  })
+
+  it('leaves a real mismatch alone', () => {
+    expect(absorbShareDrift([50, 10], 66.67)).toEqual([50, 10])
+    expect(absorbShareDrift([], 66.67)).toEqual([])
   })
 })
 
