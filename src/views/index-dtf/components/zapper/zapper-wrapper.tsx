@@ -1,5 +1,9 @@
 import { useConnectModal } from '@rainbow-me/rainbowkit'
-import { Zapper, ZapperProps } from '@reserve-protocol/react-zapper'
+import {
+  PROVIDER_ENABLED,
+  Zapper,
+  ZapperProps,
+} from '@reserve-protocol/react-zapper'
 import { useMemo } from 'react'
 import { useAccount } from 'wagmi'
 import { useAtomValue } from 'jotai'
@@ -12,6 +16,10 @@ import {
 } from '@/utils/schedule-call'
 import LargeMintPrompt from './large-mint-prompt'
 import { hasLockedZapSettings } from './locked-zap-settings'
+
+for (const providers of Object.values(PROVIDER_ENABLED)) {
+  if (providers) providers.enso = false
+}
 
 const LOCKED_SETTINGS: ZapperProps['disabledSettings'] = {
   deepLiquidity: true,
