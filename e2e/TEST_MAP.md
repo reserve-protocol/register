@@ -31,7 +31,7 @@ the directory).
 | Explorer | [general/explorer/render](tests/general/explorer/render.spec.ts) | transactions tab (default) render; governance tab proposals render; one chain returning malformed transactions body doesn't blank the page | none | no | filters, pagination, tokens/collaterals/revenue tabs |
 | Portfolio | [general/portfolio/state-space](tests/general/portfolio/state-space.spec.ts), [general/portfolio/partial-response](tests/general/portfolio/partial-response.spec.ts) | disconnected shows connect prompt; malformed proposal row survives, healthy row still renders | none | partial (state-space only) | connected-with-holdings render, empty-vs-past-activity-only |
 | Tokens | [general/tokens/unlisted-partial](tests/general/tokens/unlisted-partial.spec.ts) | one chain returning an rtokens-less bucket doesn't crash the table | none | no | plain listed-table render, sort |
-| Create (Index/Yield deploy) | — | — | — | — | entirely uncovered |
+| Create (Index/Yield deploy) | [general/deploy/index-dtf-revenue](tests/general/deploy/index-dtf-revenue.spec.ts) | Index deploy Fees & Distribution: fractional (1/3) platform fee shown at 0.01% precision; 0.01%-grid shares close the allocation; even distribution allocates the whole non-platform pot | none | yes (precision spec) | every other wizard step (basket, governance, roles, confirm/deploy tx) and the Yield deploy wizard uncovered |
 
 ## Index DTF (`/:chain/index-dtf/:tokenId/*`)
 
@@ -86,7 +86,9 @@ additional state coverage: [boot](tests/smoke/boot.spec.ts) (home shell),
 - Legacy v2 auctions UI and bid writes: no specs.
 - Yield DTF governance, auctions, and settings/roles: no specs at all (no
   `yield-dtf/governance|auctions|settings` dirs exist).
-- Create Index DTF / Create Yield DTF deploy wizards: no specs.
+- Create Index DTF: only the Fees & Distribution step's precision behavior is
+  covered (`general/deploy/index-dtf-revenue`); basket, governance, roles, and
+  the confirm/deploy transactions have no specs. Create Yield DTF: no specs.
 - Explorer: only 3 of the tab surfaces render-tested (transactions, governance,
   malformed-body edge); tokens/collaterals/revenue tabs, filters, and
   pagination are untested.

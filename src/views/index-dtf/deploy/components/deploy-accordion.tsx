@@ -131,6 +131,7 @@ const DeployAccordionTrigger = ({
 
   return (
     <AccordionTrigger
+      data-testid={`deploy-step-${id}`}
       withChevron={false}
       className={cn(
         'flex items-center justify-between w-full p-6',
@@ -238,27 +239,29 @@ const DeployAccordion = () => {
         }
       }}
     >
-      {DEPLOY_STEPS.filter((step) => !readonlySteps.has(step.id)).map(({ id, icon, title, titleSecondary, content }) => (
-        <AccordionItem
-          key={id}
-          value={id}
-          id={`deploy-section-${id}`}
-          className="[&:not(:last-child)]:border-b-4 [&:not(:first-child)]:border-t border-secondary rounded-[1.25rem] bg-card"
-        >
-          <DeployAccordionTrigger
-            id={id}
-            icon={icon}
-            title={title}
-            validated={validatedSections[id]}
-          />
-          <AccordionContent className="flex flex-col animate-fade-in">
-            <div className="text-2xl font-bold text-primary ml-6 mb-2">
-              {t(titleSecondary)}
-            </div>
-            {content}
-          </AccordionContent>
-        </AccordionItem>
-      ))}
+      {DEPLOY_STEPS.filter((step) => !readonlySteps.has(step.id)).map(
+        ({ id, icon, title, titleSecondary, content }) => (
+          <AccordionItem
+            key={id}
+            value={id}
+            id={`deploy-section-${id}`}
+            className="[&:not(:last-child)]:border-b-4 [&:not(:first-child)]:border-t border-secondary rounded-[1.25rem] bg-card"
+          >
+            <DeployAccordionTrigger
+              id={id}
+              icon={icon}
+              title={title}
+              validated={validatedSections[id]}
+            />
+            <AccordionContent className="flex flex-col animate-fade-in">
+              <div className="text-2xl font-bold text-primary ml-6 mb-2">
+                {t(titleSecondary)}
+              </div>
+              {content}
+            </AccordionContent>
+          </AccordionItem>
+        )
+      )}
     </Accordion>
   )
 }

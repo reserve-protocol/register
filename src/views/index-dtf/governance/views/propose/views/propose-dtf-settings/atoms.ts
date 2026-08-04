@@ -14,7 +14,11 @@ import {
 } from '@/state/dtf/atoms'
 import { Token } from '@/types'
 import { BIGINT_MAX } from '@/utils/constants'
-import { getFeePercentAdjust, isDisplayablePlatformFee } from '@/utils/fees'
+import {
+  getFeePercentAdjust,
+  isDisplayablePlatformFee,
+  revenuePortionFromShare,
+} from '@/utils/fees'
 import type { MessageDescriptor } from '@lingui/core'
 import { msg } from '@lingui/core/macro'
 import { atom } from 'jotai'
@@ -569,16 +573,10 @@ export const dtfSettingsProposalDataAtom = atom<ProposalData | undefined>(
       const platformFee = get(indexDTFFeeAtom)
       if (!isLoaded(platformFee)) return undefined
 
-      // Convert from actual percentage (including platform fee) to contract percentage (excluding platform fee)
-      // User input: actual % of total revenue -> Contract needs: % of non-platform portion
-      // Example BSC: User inputs 67% -> Contract needs 100% (67% is 100% of the 67% non-platform portion)
-      const calculateShare = (sharePercentage: number) => {
-        // Convert actual percentage to fraction of non-platform portion
-        const actualFraction = sharePercentage / 100
-        const nonPlatformFraction = (100 - platformFee) / 100
-        const contractFraction = actualFraction / nonPlatformFraction
-        return parseEther(contractFraction.toString())
-      }
+      // Shares are entered as % of total revenue; the contract wants % of the
+      // non-platform portion (BSC: 66.67% of revenue IS the whole pot → 100%).
+      const calculateShare = (sharePercentage: number) =>
+        revenuePortionFromShare(sharePercentage, platformFee)
 
       // Get current values
       const governanceShare =

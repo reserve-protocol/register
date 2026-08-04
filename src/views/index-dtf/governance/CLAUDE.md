@@ -106,6 +106,12 @@ mapper dereferences — serve proposals ONLY through it or the list breaks).
   `balanceOf`; specs asserting a real rate override per-address (see
   `flows/vote-lock-drawer.spec.ts`). The unlock tx is `redeem(shares)` for ALL
   vaults — assert decoded share args, not asset amounts.
+- Revenue-share math is shared with the deploy wizard: percentages of TOTAL
+  revenue become contract portions of the NON-platform pot through
+  `revenuePortionFromShare` (`src/utils/fees.ts`), on a 0.01% basis-point grid —
+  the DAO fee registry can hold a fractional fee (BSC = 1/3 → 33.33%), so float
+  division or an integer fee makes the shares unable to total 100%. Even-split
+  buttons use `splitSharesEvenly`. Don't reintroduce local float math here.
 - ERC-6372 `clock()` is mocked (timestamp mode); governor deadline math
   breaks silently if a new read bypasses the frozen clock.
 - Threshold change-detection MUST go through the shared

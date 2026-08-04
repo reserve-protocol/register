@@ -7,6 +7,7 @@ import { ReactNode, useCallback } from 'react'
 import { useFormContext, useWatch } from 'react-hook-form'
 import { Address } from 'viem'
 import { cn } from '@/lib/utils'
+import { splitSharesEvenly } from '@/utils/fees'
 
 type Recipient = {
   address: Address
@@ -192,22 +193,23 @@ const EvenDistributionButton = () => {
     ].filter(Boolean).length
 
     const remainingPercentage = new Decimal(100).minus(fixedPlatformFee)
-    const baseShare =
-      Math.floor((remainingPercentage.value / participantsCount) * 100) / 100
-    const totalPercentage = baseShare * (participantsCount - 1)
-    const lastShare = +(remainingPercentage.value - totalPercentage).toFixed(2)
+    const shares = splitSharesEvenly(
+      remainingPercentage.value,
+      participantsCount
+    )
 
-    setValue('deployerShare', baseShare)
-    setValue('governanceShare', baseShare)
+    setValue('deployerShare', shares[0])
+    setValue('governanceShare', shares[1])
 
     if (isAdditionalRecipientsPresent) {
+      const additionalShares = shares.slice(2)
+
       setValue(
         'additionalRevenueRecipients',
         additionalRecipients.map(
           (recipient: { address: string; share: number }, index: number) => ({
             ...recipient,
-            share:
-              index === additionalRecipients.length - 1 ? lastShare : baseShare,
+            share: additionalShares[index],
           })
         )
       )

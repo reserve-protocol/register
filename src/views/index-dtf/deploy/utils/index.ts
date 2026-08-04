@@ -6,6 +6,7 @@ import { Address, erc20Abi, isAddress, parseEther } from 'viem'
 import { readContract } from 'wagmi/actions'
 import { FeeRecipient } from '../steps/confirm-deploy/manual/components/confirm-manual-deploy-button'
 import { AvailableChain } from '@/utils/chains'
+import { revenuePortionFromShare } from '@/utils/fees'
 
 export const isERC20 = async (address: Address, chainId: number) => {
   try {
@@ -77,36 +78,25 @@ export const isNotStRSR = async (address: Address, chainId: number) => {
   return !Boolean(await getStRSR(address, chainId))
 }
 
-const calculateShare = (sharePercentage: number, denominator: number) => {
-  const share = sharePercentage / 100
-
-  if (denominator > 0) {
-    const shareNumerator = share / denominator
-    return parseEther(shareNumerator.toString())
-  }
-
-  return parseEther(share.toString())
-}
-
 export const calculateRevenueDistribution = (
   formData: DeployInputs,
   wallet: Address,
   stToken?: Address
 ) => {
-  const totalSharesDenominator = (100 - formData.fixedPlatformFee) / 100
+  const platformFee = formData.fixedPlatformFee
 
   let revenueDistribution: FeeRecipient[] = (
     formData.additionalRevenueRecipients || []
   ).map((recipient) => ({
     recipient: recipient.address,
-    portion: calculateShare(recipient.share, totalSharesDenominator),
+    portion: revenuePortionFromShare(recipient.share, platformFee),
   }))
 
   // Add deployer share if not the last one
   if (formData.deployerShare > 0) {
     revenueDistribution.push({
       recipient: wallet,
-      portion: calculateShare(formData.deployerShare, totalSharesDenominator),
+      portion: revenuePortionFromShare(formData.deployerShare, platformFee),
     })
   }
 
@@ -114,7 +104,7 @@ export const calculateRevenueDistribution = (
   if (formData.governanceShare > 0 && stToken) {
     revenueDistribution.push({
       recipient: stToken,
-      portion: calculateShare(formData.governanceShare, totalSharesDenominator),
+      portion: revenuePortionFromShare(formData.governanceShare, platformFee),
     })
   }
 

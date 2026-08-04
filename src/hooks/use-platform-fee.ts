@@ -2,6 +2,7 @@ import daoFeeRegistryAbi from '@/abis/dao-fee-registry-abi'
 import dtfIndexDeployerAbi from '@/abis/dtf-index-deployer-abi'
 import { INDEX_DEPLOYER_ADDRESS } from '@/utils/addresses'
 import { FALLBACK_PLATFORM_FEES } from '@/utils/constants'
+import { platformFeePercent } from '@/utils/fees'
 import { Address, zeroAddress } from 'viem'
 import { useReadContract } from 'wagmi'
 
@@ -29,7 +30,7 @@ const usePlatformFee = (chainId: number): number => {
   if (!feeDetails) return fallback
 
   const [, feeNumerator, feeDenominator] = feeDetails
-  return Number(feeNumerator * 100n / feeDenominator)
+  return platformFeePercent(feeNumerator, feeDenominator) ?? fallback
 }
 
 export default usePlatformFee

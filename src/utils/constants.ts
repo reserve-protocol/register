@@ -291,7 +291,7 @@ export const INDEX_DTF_CHAINS = [
 export const FALLBACK_PLATFORM_FEES: Record<number, number> = {
   [ChainId.Mainnet]: 50,
   [ChainId.Base]: 50,
-  [ChainId.BSC]: 33,
+  [ChainId.BSC]: 33.33,
 }
 
 // Load environment variables.
