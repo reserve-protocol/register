@@ -1,37 +1,31 @@
-import DecimalDisplay from '@/components/decimal-display'
-import { Button } from '@/components/ui/button'
-import { SorteableButton } from '@/components/ui/data-table'
-import {
-  formatCurrency,
-  getCurrentTime,
-  relativeTime,
-  shortenString,
-} from '@/utils'
-import { ExplorerDataType, getExplorerLink } from '@/utils/getExplorerLink'
-import type { MessageDescriptor } from '@lingui/core'
-import { msg } from '@lingui/core/macro'
-import { Trans, useLingui } from '@lingui/react/macro'
-import { ColumnDef } from '@tanstack/react-table'
-import { ArrowUpRight } from 'lucide-react'
-import { TransactionRow } from './swap-transactions'
+import DecimalDisplay from "@/components/decimal-display";
+import { Button } from "@/components/ui/button";
+import { SorteableButton } from "@/components/ui/data-table";
+import { formatCurrency, getCurrentTime, relativeTime, shortenString } from "@/utils";
+import { ExplorerDataType, getExplorerLink } from "@/utils/getExplorerLink";
+import type { MessageDescriptor } from "@lingui/core";
+import { msg } from "@lingui/core/macro";
+import { Trans, useLingui } from "@lingui/react/macro";
+import { ColumnDef } from "@tanstack/react-table";
+import { ArrowUpRight } from "lucide-react";
+import { TransactionRow } from "./swap-transactions";
 
 // Mirrors the columns in ../index-transaction-table.tsx (retyped for the
 // widened Buy/Sell row type) — keep visual parity if that file changes.
 
-const TRANSACTION_TYPE_LABELS: Record<TransactionRow['type'], MessageDescriptor> =
-  {
-    Mint: msg`Mint`,
-    Redeem: msg`Redeem`,
-    Transfer: msg`Transfer`,
-    Buy: msg`Buy`,
-    Sell: msg`Sell`,
-  }
+const TRANSACTION_TYPE_LABELS: Record<TransactionRow["type"], MessageDescriptor> = {
+  Mint: msg`Mint`,
+  Redeem: msg`Redeem`,
+  Transfer: msg`Transfer`,
+  Buy: msg`Buy`,
+  Sell: msg`Sell`,
+};
 
-const TransactionTypeCell = ({ type }: { type: TransactionRow['type'] }) => {
-  const { t } = useLingui()
-  const label = TRANSACTION_TYPE_LABELS[type]
-  return <span className="font-medium">{label ? t(label) : type}</span>
-}
+const TransactionTypeCell = ({ type }: { type: TransactionRow["type"] }) => {
+  const { t } = useLingui();
+  const label = TRANSACTION_TYPE_LABELS[type];
+  return <span className="font-medium">{label ? t(label) : type}</span>;
+};
 
 // Columns type/amount/usdAmount/Time/From/Hash
 export const columns: ColumnDef<TransactionRow>[] = [
@@ -41,10 +35,10 @@ export const columns: ColumnDef<TransactionRow>[] = [
         <Trans>Type</Trans>
       </SorteableButton>
     ),
-    accessorKey: 'type',
+    accessorKey: "type",
     cell: ({ row }) => <TransactionTypeCell type={row.original.type} />,
     meta: {
-      className: 'pl-5 sm:pl-6',
+      className: "pl-5 sm:pl-6",
     },
   },
   {
@@ -53,7 +47,7 @@ export const columns: ColumnDef<TransactionRow>[] = [
         <Trans>Amount</Trans>
       </SorteableButton>
     ),
-    accessorKey: 'amount',
+    accessorKey: "amount",
     cell: ({ row }) => {
       return (
         <div className="flex items-center justify-end gap-1">
@@ -62,10 +56,10 @@ export const columns: ColumnDef<TransactionRow>[] = [
             (<DecimalDisplay value={row.original.amount} />)
           </span>
         </div>
-      )
+      );
     },
     meta: {
-      className: 'text-right',
+      className: "text-right",
     },
   },
   {
@@ -74,12 +68,12 @@ export const columns: ColumnDef<TransactionRow>[] = [
         <Trans>Time</Trans>
       </SorteableButton>
     ),
-    accessorKey: 'timestamp',
+    accessorKey: "timestamp",
     cell: ({ row }) => {
-      return relativeTime(row.original.timestamp, getCurrentTime())
+      return relativeTime(row.original.timestamp, getCurrentTime());
     },
     meta: {
-      className: 'text-right',
+      className: "text-right",
     },
   },
   {
@@ -88,14 +82,14 @@ export const columns: ColumnDef<TransactionRow>[] = [
         <Trans>Explore</Trans>
       </span>
     ),
-    accessorKey: 'hash',
+    accessorKey: "hash",
     cell: ({ row }) => {
       return (
         <a
           href={getExplorerLink(
             row.original.hash,
             row.original.chain,
-            ExplorerDataType.TRANSACTION
+            ExplorerDataType.TRANSACTION,
           )}
           className="ml-auto flex w-fit items-center"
           target="_blank"
@@ -116,10 +110,10 @@ export const columns: ColumnDef<TransactionRow>[] = [
             <ArrowUpRight size={14} />
           </span>
         </a>
-      )
+      );
     },
     meta: {
-      className: 'pr-5 text-right sm:pr-6',
+      className: "pr-5 text-right sm:pr-6",
     },
   },
-]
+];
