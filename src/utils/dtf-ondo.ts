@@ -139,18 +139,16 @@ export const getNextTradableSession = (
   return undefined
 }
 
-// Rough time-until as "2 hours" / "45 minutes"; null when unknown or already
-// past. Used to tell the user how long until the US market reopens.
-export const formatRetryIn = (
+// Time-until in hours with one decimal ("3.4", "0.8"); null when unknown or
+// already past. Anything under 6 minutes still reads "0.1" rather than "0.0",
+// so the countdown never claims the market is already open.
+export const formatHoursUntil = (
   iso: string | null | undefined
 ): string | null => {
   if (!iso) return null
   const ms = new Date(iso).getTime() - Date.now()
   if (Number.isNaN(ms) || ms <= 0) return null
-  const minutes = Math.ceil(ms / 60_000)
-  if (minutes < 60) return `${minutes} minute${minutes === 1 ? '' : 's'}`
-  const hours = Math.round(minutes / 60)
-  return `${hours} hour${hours === 1 ? '' : 's'}`
+  return Math.max(Math.round(ms / 360_000) / 10, 0.1).toFixed(1)
 }
 
 // "Jul 6, 9:30 AM" in the viewer's locale and timezone; null when unknown.

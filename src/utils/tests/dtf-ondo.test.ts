@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest'
 import {
   floorOndoMaxUsd,
   formatOndoTime,
-  formatRetryIn,
+  formatHoursUntil,
   getNextTradableSession,
   getNextUsMarketOpen,
   getOndoWeightedMaxUsd,
@@ -262,30 +262,25 @@ describe('formatOndoTime', () => {
   })
 })
 
-describe('formatRetryIn', () => {
+describe('formatHoursUntil', () => {
   const isoInMinutes = (minutes: number) =>
     new Date(Date.now() + minutes * 60_000).toISOString()
 
-  it('reports minutes under an hour', () => {
-    expect(formatRetryIn(isoInMinutes(45))).toBe('45 minutes')
+  it('reports hours with one decimal', () => {
+    expect(formatHoursUntil(isoInMinutes(120))).toBe('2.0')
+    expect(formatHoursUntil(isoInMinutes(110))).toBe('1.8')
+    expect(formatHoursUntil(isoInMinutes(45))).toBe('0.8')
   })
 
-  it('reports whole hours at or above an hour', () => {
-    expect(formatRetryIn(isoInMinutes(120))).toBe('2 hours')
-    // 1h50m rounds to 2 hours
-    expect(formatRetryIn(isoInMinutes(110))).toBe('2 hours')
-  })
-
-  it('singularizes 1 hour and 1 minute', () => {
-    expect(formatRetryIn(isoInMinutes(60))).toBe('1 hour')
-    expect(formatRetryIn(isoInMinutes(0.5))).toBe('1 minute')
+  it('never rounds down to zero', () => {
+    expect(formatHoursUntil(isoInMinutes(1))).toBe('0.1')
   })
 
   it('returns null when past, missing, or invalid', () => {
-    expect(formatRetryIn(isoInMinutes(-30))).toBeNull()
-    expect(formatRetryIn(null)).toBeNull()
-    expect(formatRetryIn(undefined)).toBeNull()
-    expect(formatRetryIn('not-a-date')).toBeNull()
+    expect(formatHoursUntil(isoInMinutes(-30))).toBeNull()
+    expect(formatHoursUntil(null)).toBeNull()
+    expect(formatHoursUntil(undefined)).toBeNull()
+    expect(formatHoursUntil('not-a-date')).toBeNull()
   })
 })
 

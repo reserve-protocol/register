@@ -1,6 +1,13 @@
 export const MIN_PROMPT_INPUT = 100
+
 // truePriceImpact is a percentage where positive means the user loses value.
-export const HIGH_PRICE_IMPACT_THRESHOLD = 1
+// Larger trades warn earlier: small traders are less slippage-sensitive and
+// less willing to come back later, so the notice targets the sizes that care.
+export const getHighPriceImpactThreshold = (inputValue: number): number => {
+  if (inputValue < 1_000) return 3
+  if (inputValue <= 100_000) return 1.5
+  return 1
+}
 
 export type MintPromptVariant =
   | 'capacity'
@@ -89,7 +96,7 @@ export const deriveMintPromptSignals = ({
     hasValidQuote &&
     source !== 'enso' &&
     inputValue >= MIN_PROMPT_INPUT &&
-    truePriceImpact > HIGH_PRICE_IMPACT_THRESHOLD,
+    truePriceImpact > getHighPriceImpactThreshold(inputValue),
   rawClosedError:
     inContext &&
     mintingUnavailable &&
