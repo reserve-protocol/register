@@ -1,4 +1,5 @@
 import { ChainId } from '@/utils/chains'
+import { quantizeFeePercent } from '@/utils/fees'
 import { Address, zeroAddress } from 'viem'
 import { DeployInputs, DeployStepId } from './form-fields'
 
@@ -59,7 +60,7 @@ export const getPermissionlessDefaults = (
     // Fees
     folioFee: 0.15,
     mintFee: 0.15,
-    governanceShare: 100 - platformFee,
+    governanceShare: quantizeFeePercent(100 - platformFee),
     deployerShare: 0,
     fixedPlatformFee: platformFee,
     additionalRevenueRecipients: [],

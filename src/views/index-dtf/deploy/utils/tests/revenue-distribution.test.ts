@@ -173,6 +173,59 @@ describe('calculateRevenueDistribution', () => {
     expect(totalPortion).toBe(parseEther('1'))
   })
 
+  it('gives the whole pot to a single share matching a fractional platform fee', () => {
+    // BSC platform fee is 33.33% (1/3 of revenue) — a 66.67% governance share IS
+    // the entire non-platform pot, so the portion must be exactly 1e18, never above.
+    const data = {
+      ...baseFormData,
+      governanceShare: 66.67,
+      deployerShare: 0,
+      fixedPlatformFee: 33.33,
+    } as DeployInputs
+
+    const result = calculateRevenueDistribution(data, WALLET, ST_TOKEN)
+
+    expect(result).toHaveLength(1)
+    expect(result[0].portion).toBe(parseEther('1'))
+  })
+
+  it('keeps hundredths-of-a-percent shares distinct under a fractional platform fee', () => {
+    const data = {
+      ...baseFormData,
+      governanceShare: 33.34,
+      deployerShare: 33.33,
+      fixedPlatformFee: 33.33,
+    } as DeployInputs
+
+    const result = calculateRevenueDistribution(data, WALLET, ST_TOKEN)
+
+    const deployer = result.find((r) => r.recipient === WALLET)!
+    const governance = result.find((r) => r.recipient === ST_TOKEN)!
+
+    // 33.33/66.67 and 33.34/66.67 of the pot — a 0.01% edit must move the portion
+    expect(deployer.portion).toBe((3333n * parseEther('1')) / 6667n)
+    expect(governance.portion).toBe(parseEther('1') - deployer.portion)
+    expect(deployer.portion + governance.portion).toBe(parseEther('1'))
+  })
+
+  it('totals exactly 1 ether across many decimal shares', () => {
+    const data = {
+      ...baseFormData,
+      governanceShare: 20.01,
+      deployerShare: 13.33,
+      fixedPlatformFee: 33.33,
+      additionalRevenueRecipients: [
+        { address: RECIPIENT_1, share: 16.66 },
+        { address: RECIPIENT_2, share: 16.67 },
+      ],
+    } as DeployInputs
+
+    const result = calculateRevenueDistribution(data, WALLET, ST_TOKEN)
+
+    expect(result).toHaveLength(4)
+    expect(result.reduce((sum, r) => sum + r.portion, 0n)).toBe(parseEther('1'))
+  })
+
   it('applies denominator based on platform fee', () => {
     // platformFee = 50 → denominator = (100-50)/100 = 0.5
     // governanceShare = 50 → share = 50/100 = 0.5 → portion = 0.5/0.5 = 1.0

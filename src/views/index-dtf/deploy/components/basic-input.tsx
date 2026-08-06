@@ -20,7 +20,8 @@ export type BasicInputProps = {
   highlightLabel?: boolean
   decimalPlaces?: number
   autoFocus?: boolean
-  inputProps?: React.ComponentProps<typeof Input>,
+  testId?: string
+  inputProps?: React.ComponentProps<typeof Input>
 }
 
 const BasicInput = ({
@@ -34,6 +35,7 @@ const BasicInput = ({
   highlightLabel = false,
   autoFocus = false,
   decimalPlaces,
+  testId,
   inputProps,
   ...props
 }: React.HTMLAttributes<HTMLDivElement> & BasicInputProps) => {
@@ -78,6 +80,7 @@ const BasicInput = ({
                   }
                 }}
                 type={type}
+                data-testid={testId}
                 placeholder={placeholder}
                 startAdornment={
                   labelPosition === 'start' ? adornment : undefined

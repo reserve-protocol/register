@@ -14,7 +14,12 @@ import {
 } from '@/state/dtf/atoms'
 import { Token } from '@/types'
 import { BIGINT_MAX } from '@/utils/constants'
-import { getFeePercentAdjust, isDisplayablePlatformFee } from '@/utils/fees'
+import {
+  absorbShareDrift,
+  getFeePercentAdjust,
+  isDisplayablePlatformFee,
+  revenuePortionFromShare,
+} from '@/utils/fees'
 import type { MessageDescriptor } from '@lingui/core'
 import { msg } from '@lingui/core/macro'
 import { atom } from 'jotai'
@@ -569,16 +574,10 @@ export const dtfSettingsProposalDataAtom = atom<ProposalData | undefined>(
       const platformFee = get(indexDTFFeeAtom)
       if (!isLoaded(platformFee)) return undefined
 
-      // Convert from actual percentage (including platform fee) to contract percentage (excluding platform fee)
-      // User input: actual % of total revenue -> Contract needs: % of non-platform portion
-      // Example BSC: User inputs 67% -> Contract needs 100% (67% is 100% of the 67% non-platform portion)
-      const calculateShare = (sharePercentage: number) => {
-        // Convert actual percentage to fraction of non-platform portion
-        const actualFraction = sharePercentage / 100
-        const nonPlatformFraction = (100 - platformFee) / 100
-        const contractFraction = actualFraction / nonPlatformFraction
-        return parseEther(contractFraction.toString())
-      }
+      // Shares are entered as % of total revenue; the contract wants % of the
+      // non-platform portion (BSC: 66.67% of revenue IS the whole pot → 100%).
+      const calculateShare = (sharePercentage: number) =>
+        revenuePortionFromShare(sharePercentage, platformFee)
 
       // Get current values
       const governanceShare =
@@ -948,9 +947,24 @@ export const feeRecipientsAtom = atom((get) => {
     }
   }
 
+  // Per-recipient rounding can leave the shares a hundredth off the pot, which
+  // would render an untouched form as over/under-allocated.
+  const [correctedDeployer, correctedGovernance, ...correctedExternal] =
+    absorbShareDrift(
+      [
+        deployerShare,
+        governanceShare,
+        ...externalRecipients.map((r) => r.share),
+      ],
+      100 - platformFee
+    )
+
   return {
-    deployerShare,
-    governanceShare,
-    externalRecipients,
+    deployerShare: correctedDeployer,
+    governanceShare: correctedGovernance,
+    externalRecipients: externalRecipients.map((recipient, index) => ({
+      ...recipient,
+      share: correctedExternal[index],
+    })),
   }
 })

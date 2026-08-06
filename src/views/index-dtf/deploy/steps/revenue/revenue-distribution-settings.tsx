@@ -3,13 +3,10 @@ import { msg } from '@lingui/core/macro'
 import { Trans, useLingui } from '@lingui/react/macro'
 import type { MessageDescriptor } from '@lingui/core'
 import { useAtomValue } from 'jotai'
-import {
-  Landmark,
-  LandPlot,
-  TrainTrack,
-} from 'lucide-react'
+import { Landmark, LandPlot, TrainTrack } from 'lucide-react'
 import { ReactNode, useCallback, useEffect } from 'react'
 import { useFormContext, useWatch } from 'react-hook-form'
+import { splitSharesEvenly } from '@/utils/fees'
 import { selectedGovernanceOptionAtom } from '../../atoms'
 import BasicInput from '../../components/basic-input'
 import { Decimal } from '../../utils/decimals'
@@ -96,7 +93,10 @@ const RemainingAllocation = () => {
       <span className="text-muted-foreground">
         <Trans>Remaining allocation:</Trans>
       </span>{' '}
-      <span className={isNegative ? 'text-red-500' : ''}>
+      <span
+        data-testid="deploy-remaining-allocation"
+        className={isNegative ? 'text-red-500' : ''}
+      >
         {isNegative ? `-${displayValue}` : displayValue}%
       </span>
     </div>
@@ -120,27 +120,34 @@ const EvenDistributionButton = () => {
     ].filter(Boolean).length
 
     const remainingPercentage = new Decimal(100).minus(platformFee)
-    const baseShare =
-      Math.floor((remainingPercentage.value / participantsCount) * 100) / 100
-    const totalPercentage = baseShare * (participantsCount - 1)
-    const lastShare = +(remainingPercentage.value - totalPercentage).toFixed(2)
+    const shares = splitSharesEvenly(
+      remainingPercentage.value,
+      participantsCount
+    )
 
-    setValue('deployerShare', baseShare)
+    setValue('deployerShare', shares[0])
 
     if (isGovSharePresent) {
-      setValue('governanceShare', baseShare)
+      setValue('governanceShare', shares[1])
     }
 
     if (isAdditionalRecipientsPresent) {
+      const additionalShares = shares.slice(isGovSharePresent ? 2 : 1)
+
       setValue(
         'additionalRevenueRecipients',
         additionalRecipients.map(
           (recipient: { address: string; share: number }, index: number) => ({
             ...recipient,
-            share:
-              index === additionalRecipients.length - 1 ? lastShare : baseShare,
+            share: additionalShares[index],
           })
         )
+      )
+
+      // The recipient inputs register per index, and a write to the array alone
+      // leaves them showing their old share.
+      additionalShares.forEach((share, index) =>
+        setValue(`additionalRevenueRecipients[${index}].share`, share)
       )
     }
   }, [getValues, setValue, selectedGovOption])
@@ -148,6 +155,7 @@ const EvenDistributionButton = () => {
   return (
     <Button
       variant="accent"
+      data-testid="deploy-even-distribution"
       className="flex gap-2 text-base pl-3 pr-4 rounded-xl text-nowrap w-48 py-7 -mr-2 bg-muted/80"
       onClick={onEvenDistribution}
     >
@@ -198,13 +206,17 @@ const RevenueDistributionSettings = () => {
               </div>
             </div>
             {disabled ? (
-              <div className="flex justify-end items-center gap-1 font-semibold px-[18px] border-lg bg-muted-foreground/5 rounded-lg w-19 h-10 flex-nowrap">
+              <div
+                data-testid="deploy-platform-fee"
+                className="flex justify-end items-center gap-1 font-semibold px-[18px] border-lg bg-muted-foreground/5 rounded-lg w-19 h-10 flex-nowrap"
+              >
                 {currentPlatformFee} %
               </div>
             ) : (
               <BasicInput
                 className="max-w-32"
                 fieldName={field}
+                testId={`deploy-share-${field}`}
                 label="%"
                 placeholder="0"
                 defaultValue={0}

@@ -40,6 +40,18 @@ describe('getPermissionlessDefaults', () => {
     expect(total).toBe(100)
   })
 
+  it('revenue shares sum to 100% with a fractional platform fee', () => {
+    // BSC DAO fee registry takes 1/3 of revenue → 33.33% on the 0.01% grid
+    const defaults = getPermissionlessDefaults(56, 33.33)
+
+    expect(defaults.governanceShare).toBe(66.67)
+    expect(
+      defaults.governanceShare +
+        defaults.deployerShare +
+        defaults.fixedPlatformFee
+    ).toBe(100)
+  })
+
   it('deployer share is always 0', () => {
     expect(getPermissionlessDefaults(1, 50).deployerShare).toBe(0)
     expect(getPermissionlessDefaults(8453, 50).deployerShare).toBe(0)

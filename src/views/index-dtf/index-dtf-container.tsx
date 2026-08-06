@@ -24,6 +24,7 @@ import { isInactiveDTF } from '@/hooks/use-dtf-status'
 import { isAddress } from '@/utils'
 import { AvailableChain } from '@/utils/chains'
 import { NETWORKS, RESERVE_API, ROUTES, ZAPPER_API } from '@/utils/constants'
+import { quantizeFeePercent } from '@/utils/fees'
 import {
   IndexDtfProvider,
   type Amount,
@@ -169,7 +170,7 @@ const IndexDtfUpdaters = () => {
 
   useEffect(() => {
     if (fee) {
-      setFee(fee.percent)
+      setFee(quantizeFeePercent(fee.percent))
     } else if (feeUnavailable) {
       setFee('unavailable')
     }
