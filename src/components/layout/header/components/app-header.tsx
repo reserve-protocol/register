@@ -59,11 +59,13 @@ const Brand = () => {
       to="/"
       className="relative z-[50] -ml-0.5 mr-2 cursor-pointer text-primary sm:mr-4 md:-mt-1 lg:ml-0"
     >
-      <div className="hidden md:hidden lg:flex items-center cursor-pointer dark:text-foreground">
+      <div className="hidden md:hidden lg:flex items-center gap-1.5 cursor-pointer dark:text-foreground">
         <Reserve className="h-[22px] w-auto" />
+        <span aria-hidden="true">🚀</span>
       </div>
-      <div className="flex h-9 items-center justify-center dark:text-foreground lg:hidden">
+      <div className="flex h-9 items-center justify-center gap-1 dark:text-foreground lg:hidden">
         <Reserve className="h-5 w-auto" />
+        <span aria-hidden="true">🚀</span>
       </div>
     </Link>
   )
