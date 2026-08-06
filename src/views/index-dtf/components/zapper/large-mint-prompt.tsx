@@ -7,7 +7,7 @@ import { ChainId } from '@/utils/chains'
 import {
   floorOndoMaxUsd,
   formatOndoTime,
-  formatRetryIn,
+  formatHoursUntil,
   getNextTradableSession,
   getNextUsMarketOpen,
   getOndoWeightedMaxUsd,
@@ -169,8 +169,8 @@ const LargeMintPrompt = ({ mode, chain }: LargeMintPromptProps) => {
   // holiday aware). When it's open but the DTF's stocks are paused this session,
   // there's no timestamp — fall back to the next regular open (9:30 AM ET).
   const reopenInLabel =
-    (market?.isOpen === false ? formatRetryIn(market.nextOpen) : null) ??
-    formatRetryIn(getNextUsMarketOpen().toISOString())
+    (market?.isOpen === false ? formatHoursUntil(market.nextOpen) : null) ??
+    formatHoursUntil(getNextUsMarketOpen().toISOString())
 
   // Keep clicks inside the box from reaching Radix's outside-click handler, so
   // interacting with the card doesn't dismiss the zapper modal behind it.

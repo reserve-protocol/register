@@ -69,9 +69,9 @@ describe('reduceMintPrompt', () => {
   })
 
   it('prioritizes capacity over the closed variants', () => {
-    expect(run([{ ...BASE, rawCapacity: true, rawClosedImpact: true }])).toEqual(
-      { variant: 'capacity', dismissed: false }
-    )
+    expect(
+      run([{ ...BASE, rawCapacity: true, rawClosedImpact: true }])
+    ).toEqual({ variant: 'capacity', dismissed: false })
     expect(run([{ ...BASE, rawCapacity: true, rawClosedError: true }])).toEqual(
       { variant: 'capacity', dismissed: false }
     )
@@ -226,7 +226,8 @@ describe('deriveMintPromptSignals', () => {
     const highImpact: Partial<MintPromptInputs> = {
       ...closed,
       hasValidQuote: true,
-      truePriceImpact: 1.2,
+      // $1,000 input -> 1.5% threshold
+      truePriceImpact: 2,
     }
     expect(derive({ ...highImpact, source: 'zap' }).rawClosedImpact).toBe(true)
     expect(derive({ ...highImpact, source: 'velora' }).rawClosedImpact).toBe(
@@ -236,7 +237,7 @@ describe('deriveMintPromptSignals', () => {
       false
     )
     expect(
-      derive({ ...highImpact, source: 'zap', truePriceImpact: 1 })
+      derive({ ...highImpact, source: 'zap', truePriceImpact: 1.5 })
         .rawClosedImpact
     ).toBe(false)
     // Positive-for-user impact never warns.
@@ -247,9 +248,31 @@ describe('deriveMintPromptSignals', () => {
     // Market open and healthy: high impact raises nothing — the zapper already
     // quotes every RFQ/AMM source, so there's no better venue to point at.
     expect(
-      derive({ hasValidQuote: true, truePriceImpact: 1.2, source: 'zap' })
+      derive({ hasValidQuote: true, truePriceImpact: 2, source: 'zap' })
         .rawClosedImpact
     ).toBe(false)
+  })
+
+  it('scales the impact threshold with trade size', () => {
+    const quote = (inputValue: number, truePriceImpact: number) =>
+      derive({
+        ...closed,
+        hasValidQuote: true,
+        source: 'zap',
+        inputValue,
+        truePriceImpact,
+      }).rawClosedImpact
+
+    // < $1,000: only above 3%
+    expect(quote(999, 3)).toBe(false)
+    expect(quote(999, 3.1)).toBe(true)
+    // $1,000 - $100,000: only above 1.5%
+    expect(quote(1_000, 1.5)).toBe(false)
+    expect(quote(1_000, 1.6)).toBe(true)
+    expect(quote(100_000, 1.6)).toBe(true)
+    // > $100,000: only above 1%
+    expect(quote(100_001, 1)).toBe(false)
+    expect(quote(100_001, 1.1)).toBe(true)
   })
 
   it('raises closed-error only while unavailable', () => {
@@ -279,6 +302,7 @@ describe('deriveMintPromptSignals', () => {
       inputValue: 1_000_000,
       hasValidQuote: true,
       truePriceImpact: 10,
+      source: 'zap',
     })
     expect(signals).toEqual({
       rawCapacity: false,

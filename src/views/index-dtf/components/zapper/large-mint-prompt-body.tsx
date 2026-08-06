@@ -19,15 +19,16 @@ type LargeMintCardBodyProps = {
   nextSessionLabel: string | null
   // "6:12 PM" — current Eastern Time, for the closed-impact market-hours note.
   currentTimeLabel: string
-  // "2 hours" / "45 minutes" until the market reopens; null unless it's closed.
+  // "3.4" — hours until the market reopens; null unless it's closed.
   reopenInLabel: string | null
   onDismiss: () => void
 }
 
+// closed-impact is informational rather than a warning, so it carries no badge.
 const badge = (variant: PromptVariant): ReactNode => {
   switch (variant) {
     case 'closed-impact':
-      return <Trans>High price impact</Trans>
+      return null
     case 'closed-error':
       return <Trans>Trading unavailable</Trans>
     case 'capacity':
@@ -40,7 +41,7 @@ const title = (variant: PromptVariant): ReactNode => {
     case 'capacity':
       return <Trans>Order too large</Trans>
     case 'closed-impact':
-      return <Trans>Expect a worse price</Trans>
+      return <Trans>US markets are closed</Trans>
     case 'closed-error':
       return <Trans>Temporarily unavailable</Trans>
   }
@@ -101,8 +102,9 @@ const description = ({
       // "come back" guidance, so nothing is appended here.
       return (
         <Trans>
-          You're getting a worse price than usual because {symbol}'s underlying
-          stocks aren't trading right now.
+          You can buy and sell the {symbol} DTF 24/7, but you will usually get
+          the best price during US market hours, since your trade will draw from
+          traditional market liquidity.
         </Trans>
       )
     case 'closed-error':
@@ -132,13 +134,18 @@ const description = ({
 const LargeMintCardBody = (props: LargeMintCardBodyProps) => {
   const { variant, currentTimeLabel, reopenInLabel, onDismiss } = props
   const { t } = useLingui()
+  const badgeContent = badge(variant)
 
   return (
     <>
       <div className="flex items-center justify-between gap-3">
-        <div className="mb-3 inline-flex h-6 items-center rounded-full border border-warning/30 bg-warning/10 px-2.5 text-[11px] font-medium text-warning">
-          {badge(variant)}
-        </div>
+        {badgeContent ? (
+          <div className="mb-3 inline-flex h-6 items-center rounded-full border border-warning/30 bg-warning/10 px-2.5 text-[11px] font-medium text-warning">
+            {badgeContent}
+          </div>
+        ) : (
+          <div className="mb-3 h-6" />
+        )}
         <button
           type="button"
           className="mb-3 flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
@@ -163,8 +170,8 @@ const LargeMintCardBody = (props: LargeMintCardBodyProps) => {
               <span className="whitespace-nowrap">4:00 PM</span> Eastern Time.
               Current time is:{' '}
               <span className="whitespace-nowrap">{currentTimeLabel} ET</span>.
-              Please try again in{' '}
-              <span className="whitespace-nowrap">{reopenInLabel}</span>.
+              Markets open in{' '}
+              <span className="whitespace-nowrap">{reopenInLabel} hours</span>.
             </Trans>
           </p>
         )}
