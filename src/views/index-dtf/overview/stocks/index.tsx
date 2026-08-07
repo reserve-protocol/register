@@ -1,15 +1,15 @@
 import useScrollToHash from '@/hooks/use-scroll-to-hash'
-import { useEffect } from 'react'
-import { watchedCoverDtfAtom } from '../components/landing-mint/dtf-cover'
 import { useIsLargeDesktop, useIsMobile } from '@/hooks/use-media-query'
 import { Card } from '@/components/ui/card'
 import { indexDTFAtom } from '@/state/dtf/atoms'
 import { isYieldIndexDTFAtom } from '@/state/dtf/yield-index-atoms'
-import { useAtomValue, useSetAtom } from 'jotai'
+import { useAtomValue } from 'jotai'
 import useTrackIndexDTFPage from '../../hooks/useTrackIndexDTFPage'
+import AboutReserveDtfs from './about-reserve-dtfs'
 import OndoBackedBadge from './ondo-backed-badge'
+import StocksFaq from './faq'
+import StocksVideoLibrary from './video-library'
 import PriceChart from '../components/charts/price-chart'
-import IndexAboutOverview from '../components/index-about-overview'
 import IndexCreatorNotes from '../components/index-creator-notes'
 import IndexDisclousure from '../components/index-disclousure'
 import IndexGovernanceOverview from '../components/index-governance-overview'
@@ -23,9 +23,9 @@ import YieldIndexComposition from '../components/yield-index/yield-index-composi
 
 const AboutSection = () => {
   const isYieldIndexDTF = useAtomValue(isYieldIndexDTFAtom)
-  // WHY: the about card (autoplaying cover video) also lives in the xl-only
-  // LandingMint rail — mount only one copy so the video isn't fetched and
-  // played twice; the xl:hidden class stays as a resize-timing backstop.
+  // WHY: the trust cards (video library, AI chat, About Reserve) also live in
+  // the xl-only LandingMint rail — mount only one copy per viewport, keyed on
+  // the same useIsLargeDesktop hook the rail uses.
   const isLargeDesktop = useIsLargeDesktop()
   const isMobile = useIsMobile()
 
@@ -43,13 +43,15 @@ const AboutSection = () => {
     )
   }
 
+  // Below xl the rail is hidden, so the trust cards render in the page flow
+  // instead — replacing the legacy About card (old About copy + autoplaying
+  // cover video), which the stocks layout drops entirely.
   const aboutCard = !isLargeDesktop && (
-    <Card
-      id="about"
-      className="group/section pb-0 pt-0 sm:pb-0 sm:pt-0 xl:hidden"
-    >
-      <IndexAboutOverview className="xl:hidden" showCover />
-    </Card>
+    <div id="about" className="flex flex-col gap-0.5 sm:gap-1 xl:hidden">
+      <StocksVideoLibrary />
+      <StocksFaq />
+      <AboutReserveDtfs />
+    </div>
   )
 
   const basketCard = (
@@ -62,10 +64,27 @@ const AboutSection = () => {
     </Card>
   )
 
+  // Mobile: the About card leads (below the chart, above holdings); the
+  // heavier chat and About Reserve cards follow the table so it stays
+  // reachable. Tablet keeps the full trust stack ahead of holdings.
+  if (isMobile) {
+    return (
+      <>
+        <div id="about">
+          <StocksVideoLibrary />
+        </div>
+        {basketCard}
+        <StocksFaq />
+        <AboutReserveDtfs />
+        <FeesStats />
+      </>
+    )
+  }
+
   return (
     <>
-      {isMobile ? basketCard : aboutCard}
-      {isMobile ? aboutCard : basketCard}
+      {aboutCard}
+      {basketCard}
       <FeesStats />
     </>
   )
@@ -91,13 +110,6 @@ const Content = () => {
 
 const StocksIndexDTFOverview = () => {
   useTrackIndexDTFPage('overview')
-  const setWatchedCoverDtf = useSetAtom(watchedCoverDtfAtom)
-
-  // Leaving the overview resets the frozen cover so a fresh visit loops again.
-  useEffect(
-    () => () => setWatchedCoverDtf(null),
-    [setWatchedCoverDtf]
-  )
 
   return (
     <div

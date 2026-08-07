@@ -163,6 +163,12 @@ const StocksLandingMint = (props: React.HTMLAttributes<HTMLDivElement>) => {
   const isGeoRestricted = complianceData?.reason === 'geolocation-restricted'
   const isLargeDesktop = useIsLargeDesktop()
 
+  // Below xl the page flow renders the trust cards instead (see the stocks
+  // AboutSection) — unmount the rail entirely so the video library and the
+  // embedded chat never exist twice. The hidden/xl:flex classes stay as a
+  // resize-timing backstop.
+  if (!isLargeDesktop) return null
+
   return (
     <div
       className="hidden xl:flex xl:w-[480px] xl:flex-col xl:gap-1 relative max-w-[480px]"
