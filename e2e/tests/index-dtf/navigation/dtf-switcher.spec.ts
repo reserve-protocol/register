@@ -71,6 +71,48 @@ test('dtf switcher: search narrows the list to the typed DTF @smoke', async ({
   await expect(optionFor(page, bsc.address)).toBeVisible()
 })
 
+test('dtf switcher: ticker search ignores address hex noise', async ({
+  harness,
+}) => {
+  const page = harness.page
+  await harness.goto(base, 'overview')
+  await page.getByTestId('dtf-switcher-trigger').click()
+
+  const options = page.getByTestId('dtf-switcher-option')
+  await expect(options.first()).toBeVisible({ timeout: 15_000 })
+
+  // Ticker queries match symbols/names only — addresses would fuzzy-match every
+  // short hex-ish query and drown the intended row.
+  await page.getByTestId('dtf-switcher-search').fill(symbolOf(bsc.snapshotDir))
+  await expect(options).toHaveCount(1)
+  await expect(optionFor(page, bsc.address)).toBeVisible()
+
+  await page.getByTestId('dtf-switcher-search').fill('zzzznotadtf')
+  await expect(options).toHaveCount(0)
+})
+
+test('dtf switcher: issuance panel switcher keeps the issuance section', async ({
+  harness,
+}) => {
+  const page = harness.page
+  await harness.goto(base, 'issuance')
+  await expect(page.getByTestId('dtf-issuance')).toBeVisible({
+    timeout: 20_000,
+  })
+
+  await page.getByTestId('dtf-switcher-trigger-issuance').click()
+  const target = optionFor(page, bsc.address)
+  await expect(target).toBeVisible({ timeout: 15_000 })
+  await target.click()
+
+  await expect(page).toHaveURL(
+    new RegExp(`/bsc/index-dtf/${bsc.address}/issuance$`, 'i')
+  )
+  await expect(page.getByTestId('dtf-issuance')).toBeVisible({
+    timeout: 20_000,
+  })
+})
+
 test('dtf switcher: inactive DTF falls back to overview from auctions', async ({
   harness,
 }) => {

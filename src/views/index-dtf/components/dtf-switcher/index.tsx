@@ -49,6 +49,28 @@ export const useCurrentDTFSection = () => {
 
 const isActiveDTF = (dtf: IndexDTFItem) => dtf.status === 'active'
 
+// Addresses only match address-shaped queries, otherwise their hex characters
+// fuzzy-match every short ticker search
+const filterDTF = (_value: string, search: string, keywords?: string[]) => {
+  const query = search.trim().toLowerCase()
+
+  if (!query) return 1
+
+  const [address = '', symbol = '', name = ''] = keywords ?? []
+
+  if (query.startsWith('0x')) {
+    return address.toLowerCase().startsWith(query) ? 1 : 0
+  }
+
+  if (symbol.toLowerCase().startsWith(query)) return 1
+  if (name.toLowerCase().startsWith(query)) return 0.9
+
+  return symbol.toLowerCase().includes(query) ||
+    name.toLowerCase().includes(query)
+    ? 0.5
+    : 0
+}
+
 const DTFOption = ({
   dtf,
   section,
@@ -62,13 +84,11 @@ const DTFOption = ({
 }) => {
   // Auctions are unavailable on inactive DTFs, so land on overview instead
   const route =
-    section === ROUTES.AUCTIONS && !isActiveDTF(dtf)
-      ? ROUTES.OVERVIEW
-      : section
+    section === ROUTES.AUCTIONS && !isActiveDTF(dtf) ? ROUTES.OVERVIEW : section
 
   return (
     <CommandItem
-      value={`${dtf.name} ${dtf.symbol} ${dtf.address}`}
+      value={`${dtf.chainId}-${dtf.address}`}
       keywords={[dtf.address, dtf.symbol, dtf.name]}
       data-testid="dtf-switcher-option"
       data-address={dtf.address.toLowerCase()}
@@ -149,7 +169,7 @@ const DTFSwitcher = ({
         className={cn('w-[320px] p-0', className)}
         data-testid="dtf-switcher-content"
       >
-        <Command loop>
+        <Command loop filter={filterDTF}>
           <CommandInput
             placeholder={t`Switch DTF...`}
             data-testid="dtf-switcher-search"
