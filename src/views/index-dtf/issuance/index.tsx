@@ -9,6 +9,7 @@ import ZapperWrapper from '../components/zapper/zapper-wrapper'
 import useTrackIndexDTFPage from '../hooks/useTrackIndexDTFPage'
 import useIsComplianceRestricted from '@/hooks/use-is-compliance-restricted'
 import AsyncMint from './async-mint'
+import IssuanceDTFSwitcher from './dtf-switcher-header'
 import { wizardStepAtom } from './async-mint/atoms'
 import { panelModeAtom } from './atoms'
 import PanelModeSwitch from './panel-mode-switch'
@@ -43,6 +44,7 @@ const IndexDTFIssuance = () => {
           <AsyncMint embedded />
         ) : (
           <div className="relative flex w-full flex-col items-center gap-3 rounded-4xl sm:w-[420px] lg:gap-3">
+            <IssuanceDTFSwitcher />
             <ComplianceAlert />
             <div
               data-testid="issuance-zap-widget"

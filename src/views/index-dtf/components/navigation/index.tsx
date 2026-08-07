@@ -14,11 +14,13 @@ import {
 import { BRIDGED_INDEX_DTFS, CHAIN_TAGS, ROUTES } from '@/utils/constants'
 import { shortenAddress } from '@/utils'
 import { ChainId } from '@/utils/chains'
+import DTFSwitcher from '@/views/index-dtf/components/dtf-switcher'
 import { useLingui } from '@lingui/react/macro'
 import { useAtomValue } from 'jotai'
 import {
   ArrowLeftRight,
   Blend,
+  ChevronsUpDown,
   CirclePlus,
   Copy,
   EllipsisVertical,
@@ -143,18 +145,34 @@ const NavigationHeader = () => {
   }
 
   return (
-    <div className="hidden items-center gap-3 lg:flex">
-      <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full">
-        <TokenLogo
-          src={brand?.dtf?.icon || undefined}
-          alt={indexDTF?.token.symbol ?? t`dtf token logo`}
-          size="lg"
-        />
-      </div>
+    <div className="hidden items-center gap-1 lg:flex">
+      <DTFSwitcher align="start">
+        <button
+          type="button"
+          data-testid="dtf-switcher-trigger"
+          aria-label={t`Switch DTF`}
+          className="flex min-w-0 items-center gap-3 rounded-full transition-colors hover:text-primary"
+        >
+          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full">
+            <TokenLogo
+              src={brand?.dtf?.icon || undefined}
+              alt={indexDTF?.token.symbol ?? t`dtf token logo`}
+              size="lg"
+            />
+          </div>
+          <div className="hidden min-w-0 items-center gap-1 opacity-0 transition-opacity duration-150 group-hover/nav:flex group-hover/nav:opacity-100">
+            <span className="min-w-0 truncate text-base font-semibold">
+              {indexDTF?.token.symbol}
+            </span>
+            <ChevronsUpDown
+              strokeWidth={1.5}
+              size={16}
+              className="shrink-0 text-muted-foreground"
+            />
+          </div>
+        </button>
+      </DTFSwitcher>
       <div className="hidden min-w-0 flex-1 items-center gap-2 opacity-0 transition-opacity duration-150 group-hover/nav:flex group-hover/nav:opacity-100">
-        <div className="min-w-0 flex-1 truncate text-base font-semibold">
-          {indexDTF?.token.symbol}
-        </div>
         <div className="flex shrink-0 items-center gap-1">
           {!!indexDTF?.chainId && (
             <ChainLogo
@@ -358,6 +376,7 @@ export const DTFMobilePagesMenuButton = ({
   const { pathname } = useLocation()
   const { chain, tokenId } = useParams()
   const dtf = useAtomValue(indexDTFAtom)
+  const brand = useAtomValue(indexDTFBrandAtom)
   const status = useAtomValue(indexDTFStatusAtom)
   const isDeprecated = isInactiveDTF(status)
   const [open, setOpen] = useState(false)
@@ -385,6 +404,7 @@ export const DTFMobilePagesMenuButton = ({
       <Button
         variant="outline"
         className={buttonClassName}
+        data-testid="dtf-nav-mobile-menu"
         aria-label={t`Open DTF pages`}
         aria-expanded={open}
         onClick={() => setOpen((current) => !current)}
@@ -404,7 +424,35 @@ export const DTFMobilePagesMenuButton = ({
               role="menu"
               className="fixed bottom-20 right-2 z-50 flex max-w-[calc(100vw-1rem)] w-80 flex-col gap-2 rounded-3xl border border-card bg-card/90 p-2 shadow-[0_-16px_60px_rgba(0,0,0,0.18)] backdrop-blur-[7px] dark:shadow-[0_-22px_90px_rgba(0,0,0,0.82),0_0_0_1px_rgba(255,255,255,0.08)] sm:bottom-24 lg:hidden"
             >
-              <div className="px-3 pb-1 pt-2 text-sm text-muted-foreground">
+              <DTFSwitcher
+                align="end"
+                className="w-[300px]"
+                onNavigate={() => setOpen(false)}
+              >
+                <button
+                  type="button"
+                  data-testid="dtf-switcher-trigger-mobile"
+                  className="flex min-h-11 w-full items-center gap-3 rounded-xl border border-border px-3 py-3 text-left"
+                >
+                  <TokenLogo
+                    src={brand?.dtf?.icon || undefined}
+                    symbol={dtf?.token.symbol}
+                    address={dtf?.id}
+                    chain={dtf?.chainId}
+                    size="lg"
+                    className="shrink-0"
+                  />
+                  <span className="min-w-0 flex-1 truncate">
+                    {ticker || t`Switch DTF`}
+                  </span>
+                  <ChevronsUpDown
+                    strokeWidth={1.5}
+                    size={16}
+                    className="shrink-0 text-muted-foreground"
+                  />
+                </button>
+              </DTFSwitcher>
+              <div className="px-3 pb-1 text-sm text-muted-foreground">
                 {ticker ? t`${ticker} pages` : t`DTF pages`}
               </div>
               <div className="overflow-hidden rounded-xl border border-border">

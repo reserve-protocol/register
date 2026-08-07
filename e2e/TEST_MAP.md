@@ -15,8 +15,8 @@ Playwright runs 3 projects (`playwright.config.ts`): **smoke** (`@smoke`-tagged,
 Desktop Chrome), **full** (everything else, Desktop Chrome), **mobile**
 (`@mobile`-tagged, Pixel 7 viewport — off CI, `pnpm e2e:mobile`).
 
-73 specs across 5 top-level dirs: `general/` (8), `index-dtf/` (17),
-`yield-dtf/` (6), `smoke/` (12), `flows/` (30). `index-dtf/` and `yield-dtf/`
+75 specs across 5 top-level dirs: `general/` (8), `index-dtf/` (18),
+`yield-dtf/` (6), `smoke/` (12), `flows/` (31). `index-dtf/` and `yield-dtf/`
 hold render/lifecycle/mobile specs per route; `flows/` holds deeper
 behavior/write/edge-case specs (desktop only, no `@mobile` tags anywhere in
 the directory).
@@ -53,6 +53,7 @@ the directory).
 | Settings / Roles | [settings/lifecycle](tests/index-dtf/settings/lifecycle.spec.ts), [settings/distribute-fees](tests/index-dtf/settings/distribute-fees.spec.ts), [settings/fee-edge](tests/index-dtf/settings/fee-edge.spec.ts), [flows/settings](tests/flows/settings.spec.ts) | roster skeleton→roster; any-wallet `distributeFees()`; platformFee=100 shows Unavailable not a fabricated split; snapshot-scaled fee %s; registry-read-failure→UNAVAILABLE; zero-denominator/zero-numerator edges; public roles roster; governance cards; disconnected hides submit control | partial | yes (lifecycle only) | — |
 | Manage | [manage/render](tests/index-dtf/manage/render.spec.ts) | form renders offline | none | yes | SIWE→upload→save write flow |
 | Factsheet | [factsheet/render](tests/index-dtf/factsheet/render.spec.ts) | renders offline | none | yes | performance math (CSV, inception clamp) |
+| Navigation – DTF switcher | [navigation/dtf-switcher](tests/index-dtf/navigation/dtf-switcher.spec.ts) | cross-DTF switch keeps the current section (governance→governance, cross-chain); issuance-panel switcher keeps `/issuance`; address search narrows to one option; ticker search ignores address hex + no-match empty list; inactive target falls back auctions→overview; mobile menu switch closes the parent sheet | none | yes | keyboard-only selection, unsupported-status filtering |
 
 ## Yield DTF (`/:chain/token/:tokenId/*`)
 
