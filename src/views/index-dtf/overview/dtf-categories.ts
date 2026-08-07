@@ -1,4 +1,5 @@
 import { ChainId } from '@/utils/chains'
+import { NETWORKS, ROUTES } from '@/utils/constants'
 
 // TEMPORARY: DTF categories are hardcoded until the backend serves category
 // metadata (expected alongside the catalog/brand data). Once that lands,
@@ -23,4 +24,16 @@ export const isStocksDTF = (
   if (!chainId || !tokenId) return false
 
   return STOCKS_DTFS[chainId]?.has(tokenId.trim().toLowerCase()) ?? false
+}
+
+// For consumers outside the route tree (e.g. the global chat mount in
+// Layout) that only have a pathname: /:chain/index-dtf/:tokenId/overview.
+export const isStocksOverviewPathname = (pathname: string): boolean => {
+  const [, chain, section, tokenId, subpage] = pathname.split('/')
+
+  return (
+    section === 'index-dtf' &&
+    subpage?.toLowerCase() === ROUTES.OVERVIEW &&
+    isStocksDTF(NETWORKS[chain ?? ''], tokenId)
+  )
 }

@@ -7,13 +7,14 @@ import { indexDTFAtom } from '@/state/dtf/atoms'
 import { isYieldIndexDTFAtom } from '@/state/dtf/yield-index-atoms'
 import { useAtomValue, useSetAtom } from 'jotai'
 import useTrackIndexDTFPage from '../../hooks/useTrackIndexDTFPage'
+import OndoBackedBadge from './ondo-backed-badge'
 import PriceChart from '../components/charts/price-chart'
 import IndexAboutOverview from '../components/index-about-overview'
 import IndexCreatorNotes from '../components/index-creator-notes'
 import IndexDisclousure from '../components/index-disclousure'
 import IndexGovernanceOverview from '../components/index-governance-overview'
 import IndexTransactionTable from '../components/index-transaction-table-with-swaps'
-import LandingMint from '../components/landing-mint'
+import StocksLandingMint from './landing-mint'
 import { IndexBasketOverviewInner } from '../components/basket-overview'
 import FeesStats from '../components/fees-stats'
 import YieldIndexAbout from '../components/yield-index/yield-index-about'
@@ -56,7 +57,8 @@ const AboutSection = () => {
       id="basket"
       className="group/section !bg-card pb-0 pt-0 sm:pb-0 sm:pt-0"
     >
-      <IndexBasketOverviewInner />
+      <OndoBackedBadge />
+      <IndexBasketOverviewInner progressive />
     </Card>
   )
 
@@ -104,7 +106,7 @@ const StocksIndexDTFOverview = () => {
     >
       <div className="mb-16 flex gap-1 bg-secondary px-0 pb-0 pt-0.5 sm:mb-0 sm:rounded-4xl sm:p-1">
         <Content />
-        <LandingMint />
+        <StocksLandingMint />
       </div>
     </div>
   )

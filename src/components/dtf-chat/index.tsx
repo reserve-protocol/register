@@ -1,5 +1,6 @@
-import { useIsDesktop } from '@/hooks/use-media-query'
+import { useIsDesktop, useIsLargeDesktop } from '@/hooks/use-media-query'
 import { trackClick } from '@/hooks/useTrackPage'
+import { isStocksOverviewPathname } from '@/views/index-dtf/overview/dtf-categories'
 import { chainIdAtom } from '@/state/atoms'
 import {
   iTokenAddressAtom,
@@ -61,7 +62,7 @@ function viewForPath(pathname: string): ReserveView | undefined {
   return undefined
 }
 
-const DtfChat = () => {
+const DtfChat = ({ embedded = false }: { embedded?: boolean }) => {
   const { pathname } = useLocation()
   const navigate = useNavigate()
   const address = useAtomValue(iTokenAddressAtom)
@@ -86,6 +87,7 @@ const DtfChat = () => {
 
   // 24px gap on desktop, 12px on mobile.
   const isDesktop = useIsDesktop()
+  const isLargeDesktop = useIsLargeDesktop()
   const gap = isDesktop ? 24 : 12
   const bottomOffset = gap
   const rightOffset = gap
@@ -101,6 +103,30 @@ const DtfChat = () => {
         basket: basket?.map((t) => ({ symbol: t.symbol })),
       }
     : undefined
+
+  // Inline variant: fills the host container (the stocks overview mounts one
+  // in its FAQ card). Offsets/launcher/open-tracking don't apply — the widget
+  // never fires onOpen for embedded mounts.
+  if (embedded) {
+    return (
+      <ReserveChat
+        apiBase={apiBase}
+        turnstileSiteKey={local ? undefined : TURNSTILE_SITE_KEY}
+        dtfContext={dtfContext}
+        embedded
+        onNavigate={navigate}
+      />
+    )
+  }
+
+  // The stocks overview embeds its own chat instance in the xl rail — yield
+  // the floating launcher there so the page has ONE chat entry point. Below
+  // xl the rail is hidden and the mobile action bar still needs this floating
+  // instance (it opens the panel via the launcher element). Keyed on the same
+  // useIsLargeDesktop hook as the rail — keep them in lockstep.
+  if (isStocksOverviewPathname(pathname) && isLargeDesktop) {
+    return null
+  }
 
   return (
     <div className={hideLauncher ? 'dtf-chat-hide-mobile-launcher' : undefined}>

@@ -4,6 +4,7 @@ import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { useIsMobile } from '@/hooks/use-media-query'
 import { cn } from '@/lib/utils'
 import { Trans, useLingui } from '@lingui/react/macro'
+import { ChevronDown } from 'lucide-react'
 import { useMemo, useState } from 'react'
 import { BasketTableBody } from './basket-table-body'
 import {
@@ -22,7 +23,15 @@ const MAX_TOKENS = 10
 
 const DEFAULT_SORT: SortConfig = { field: 'weight', direction: 'desc' }
 
-const IndexBasketOverview = () => {
+const IndexBasketOverview = ({
+  progressive = false,
+}: {
+  /**
+   * Limit the table to the top rows with a "Show N more" expander on ALL
+   * viewports, not just mobile (the default keeps desktop unlimited).
+   */
+  progressive?: boolean
+}) => {
   const { t } = useLingui()
   const isMobile = useIsMobile()
   const [viewAll, setViewAll] = useState(false)
@@ -100,11 +109,14 @@ const IndexBasketOverview = () => {
   const activeCount = isExposure
     ? (sortedExposureRows?.length ?? 0)
     : (sortedFiltered?.length ?? 0)
-  const limitRows = isMobile && !viewAll
-  const showViewAll = isMobile && activeCount > MAX_TOKENS
+  const limitRows = (isMobile || progressive) && !viewAll
+  const showViewAll = (isMobile || progressive) && activeCount > MAX_TOKENS
+  // Desktop progressive mode swaps the footer button for a frosted shelf
+  // (below); mobile keeps the standard button.
+  const useShelf = progressive && !isMobile && showViewAll
 
   return (
-    <div data-testid="overview-basket" className="flex flex-col">
+    <div data-testid="overview-basket" className="relative flex flex-col">
       <div className={cn('sm:px-6 sm:pt-6', !showViewAll && 'sm:pb-6')}>
         <Tabs defaultValue="exposure">
           <div className="px-5 pb-2 pt-5 sm:hidden">
@@ -182,20 +194,45 @@ const IndexBasketOverview = () => {
           </Table>
         </Tabs>
       </div>
-      {showViewAll && (
-        <div className="px-2 pb-2 pt-3">
-          <Button
-            variant="outline"
-            className="w-full rounded-xl"
-            onClick={() => setViewAll(!viewAll)}
+      {useShelf ? (
+        /* Expansion is one-way: once opened there's no collapse control —
+           the full list is the resting state and a toggle there was jarring. */
+        !viewAll && (
+          /* Frosted shelf: the last visible rows diffuse into the card —
+             a gradually-masked backdrop blur (same 7px frost as the app's
+             floating nav) under an alpha gradient that resolves to the card
+             background. The whole shelf is the expand affordance. */
+          <button
+            type="button"
+            aria-label={t`Show ${activeCount - MAX_TOKENS} more`}
+            onClick={() => setViewAll(true)}
+            className="group absolute inset-x-0 bottom-0 h-32 rounded-b-4xl focus-visible:outline-none"
           >
-            {viewAll
-              ? t`View less`
-              : isExposure
-                ? t`View all ${activeCount} assets`
-                : t`View all ${activeCount} tokens`}
-          </Button>
-        </div>
+            <div className="pointer-events-none absolute inset-0 rounded-[inherit] backdrop-blur-[7px] [-webkit-mask-image:linear-gradient(to_bottom,transparent,black_70%)] [mask-image:linear-gradient(to_bottom,transparent,black_70%)]" />
+            <div className="pointer-events-none absolute inset-0 rounded-[inherit] bg-gradient-to-b from-transparent via-card/60 to-card" />
+            <span className="absolute inset-x-0 bottom-4 flex items-center justify-center gap-1 text-sm font-medium text-muted-foreground transition-colors group-hover:text-foreground">
+              {t`Show ${activeCount - MAX_TOKENS} more`}
+              <ChevronDown className="h-4 w-4 transition-transform duration-200 ease-out group-hover:translate-y-0.5 motion-reduce:transition-none" />
+            </span>
+            <span className="absolute inset-x-6 bottom-2 hidden h-8 rounded-full ring-2 ring-ring group-focus-visible:block" />
+          </button>
+        )
+      ) : (
+        showViewAll && (
+          <div className="px-2 pb-2 pt-3">
+            <Button
+              variant="outline"
+              className="w-full rounded-xl"
+              onClick={() => setViewAll(!viewAll)}
+            >
+              {viewAll
+                ? t`View less`
+                : isExposure
+                  ? t`View all ${activeCount} assets`
+                  : t`View all ${activeCount} tokens`}
+            </Button>
+          </div>
+        )
       )}
     </div>
   )
