@@ -21,7 +21,7 @@ time.
 |---|---|
 | Proposal list, filters, pagination | `e2e/tests/smoke/governance.spec.ts` |
 | Proposal detail, state banners/CTAs | `e2e/tests/flows/governance-states.spec.ts` |
-| Vote UI/submission | `e2e/tests/flows/governance-vote.spec.ts` + `flows/failures-governance.spec.ts` (reject/revert) |
+| Vote UI/submission | `e2e/tests/flows/governance-vote.spec.ts` + `flows/failures-governance.spec.ts` (reject/revert) + `index-dtf/governance/vote-modal-long-title.spec.ts` (modal layout) |
 | Propose flow — DAO settings | `e2e/tests/flows/governance-propose.spec.ts` |
 | Propose flow — fees (dtf-settings) | `e2e/tests/flows/governance-propose-dtf-settings.spec.ts` (fee calldata round-trip) |
 | Propose flow — basket | `e2e/tests/flows/governance-propose-basket.spec.ts` (form + guards; full submit blocked on golden `startRebalance` fixture) |
@@ -106,6 +106,10 @@ mapper dereferences — serve proposals ONLY through it or the list breaks).
   `balanceOf`; specs asserting a real rate override per-address (see
   `flows/vote-lock-drawer.spec.ts`). The unlock tx is `redeem(shares)` for ALL
   vaults — assert decoded share args, not asset amounts.
+- Proposal titles can be address-length with nothing to wrap on. The vote modal
+  is a fixed 420px box, so its title needs `[overflow-wrap:anywhere]` — plain
+  `break-words` does not shrink a flex item's min-content width, and the
+  overflow pushes the checkboxes and separators outside the dialog.
 - ERC-6372 `clock()` is mocked (timestamp mode); governor deadline math
   breaks silently if a new read bypasses the frozen clock.
 - Threshold change-detection MUST go through the shared
