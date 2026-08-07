@@ -1,6 +1,6 @@
 ---
 title: Design System
-updated: 2026-07-02
+updated: 2026-08-07
 type: domain
 sources:
   - tailwind.config.ts

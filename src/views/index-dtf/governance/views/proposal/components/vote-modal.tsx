@@ -133,7 +133,10 @@ const VoteModal = (props: ModalProps) => {
       {!isOptimistic && (
         <>
           <div className="flex flex-col items-center">
-            <span className="text-xl font-medium">
+            <span
+              data-testid="vote-proposal-title"
+              className="w-full break-all text-center text-xl font-medium"
+            >
               "
               {proposal?.description ? (
                 getProposalTitle(proposal.description)

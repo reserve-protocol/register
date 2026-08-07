@@ -35,6 +35,48 @@ function loadProposal(): ProposalSnapshot {
   return loadSnapshot<ProposalSnapshot>(`${dtf.snapshotDir}/proposals/${PROPOSAL_ID}.json`)
 }
 
+test('keeps a long proposal title inside the voting modal @mobile', async ({
+  page,
+  overrides,
+}) => {
+  const dtf = findDtfByAddress(DTF_ADDRESS)!
+  const { proposal } = loadProposal()
+  const overlay = loadEnrichedProposal(PROPOSAL_ID)!
+  const { dtf: dtfSnapshot } = loadSnapshot<{ dtf: Record<string, unknown> }>(
+    `${dtf.snapshotDir}/dtf.json`
+  )
+  const longTitle =
+    '# "Add 0xb3CF59A5f12cA319861376C5e63Eef4790a42B44 as an optimistic proposer"'
+
+  overrides.subgraph(
+    {
+      operationName: 'GetIndexDtfProposal',
+      variables: { proposalId: PROPOSAL_ID },
+    },
+    {
+      dtf: dtfSnapshot,
+      proposal: { ...overlay.proposal, description: longTitle },
+    }
+  )
+  await freezeTime(page, proposalTime(proposal, 'active'))
+  await page.goto(dtfPath(dtf, `governance/proposal/${PROPOSAL_ID}`))
+  await connectWallet(page)
+  await advanceTime(page, 5_000)
+  await page.getByTestId('proposal-vote-btn').click()
+
+  const dialog = page.getByRole('dialog')
+  const title = page.getByTestId('vote-proposal-title')
+  await expect(title).toBeVisible()
+  await expect
+    .poll(async () => {
+      const dialogBox = await dialog.boundingBox()
+      const titleBox = await title.boundingBox()
+      if (!dialogBox || !titleBox) return false
+      return titleBox.x + titleBox.width <= dialogBox.x + dialogBox.width
+    })
+    .toBe(true)
+})
+
 test('cast a For vote through the full transaction flow', async ({
   page,
   overrides,
