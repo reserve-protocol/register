@@ -39,7 +39,12 @@ const SET_MINT_FEE_ABI = parseAbi(['function setMintFee(uint256 _newFee)'])
 const dtf = findDtfByAddress(DTF_ADDRESS)!
 
 type DtfSnapshot = {
-  dtf: { ownerGovernance: { id: string }; stToken: { id: string } }
+  dtf: {
+    mandate: string
+    feeRecipients: string
+    ownerGovernance: { id: string }
+    stToken: { id: string }
+  }
 }
 const loadDtf = () => loadSnapshot<DtfSnapshot>(`${dtf.snapshotDir}/dtf.json`).dtf
 
@@ -48,14 +53,18 @@ const UINT_ZERO = encodeAbiParameters([{ type: 'uint256' }], [0n])
 
 // Anchor the frozen clock inside the captured proposal's voting window so every
 // time-derived read stays consistent with the snapshots.
-async function bootProposeFees(page: Page, overrides: MockOverrides) {
+async function bootProposeFees(
+  page: Page,
+  overrides: MockOverrides,
+  platformFee: readonly [numerator: bigint, denominator: bigint] = [1n, 5n]
+) {
   const snapshot = loadDtf()
 
   // The propose form's revenue seeding is gated on the platform fee resolving
   // (feeRecipientsAtom returns undefined otherwise). Since B1/M1 a failed
   // registry read is 'unavailable' — it no longer falls back to a fabricated
   // 50% that happened to unblock this form — so model a real registry read.
-  seedFeeRegistry(overrides, dtf, 1n, 5n) // platformFee = 20%
+  seedFeeRegistry(overrides, dtf, ...platformFee)
 
   // bidsEnabled() (0x459cf24b) on the folio is read by the DTF-settings Updater
   // (v5) but isn't in the central chain-state seed — answer it (inert: we never
@@ -117,6 +126,34 @@ const confirmButton = (page: Page) =>
   page.getByRole('button', { name: 'Confirm & prepare proposal' })
 const submitButton = (page: Page) =>
   page.getByRole('button', { name: 'Submit proposal onchain' })
+
+test('unchanged distribution rounding drift does not block a mandate change', async ({
+  page,
+  overrides,
+}) => {
+  const snapshot = structuredClone(loadDtf())
+  const oneThird = '333333333333333333'
+  snapshot.feeRecipients = [
+    `${snapshot.stToken.id}:${oneThird}`,
+    `0x280730d9277EF586d58dB74c277Aa710ca8F87C9:${oneThird}`,
+  ].join(',')
+  overrides.subgraph({ operationName: 'GetIndexDTF' }, { dtf: snapshot })
+
+  await bootProposeFees(page, overrides, [1n, 3n])
+
+  await expect(page.getByText('Remaining allocation: 22.23%')).toBeVisible()
+  await page
+    .locator('#propose-section-mandate')
+    .getByRole('button')
+    .first()
+    .click()
+  await advanceTime(page, 1_000)
+  await page.getByLabel('Mandate').fill(`${snapshot.mandate} updated`)
+  await advanceTime(page, 1_000)
+
+  await expect(page.getByText('Basics Update')).toBeVisible()
+  await expect(confirmButton(page)).toBeEnabled()
+})
 
 test('TVL fee change: UI percent round-trips into setTVLFee calldata', async ({
   page,
