@@ -34,7 +34,7 @@ const ConfirmProposalButton = ({ canProceed }: { canProceed: boolean }) => {
   return (
     <Button
       className="w-full"
-      disabled={!canProceed}
+      disabled={!canProceed && !isProposalConfirmed}
       variant={isProposalConfirmed ? 'outline' : 'default'}
       onClick={handleConfirm}
     >

@@ -141,17 +141,17 @@ test('unchanged distribution rounding drift does not block a mandate change', as
 
   await bootProposeFees(page, overrides, [1n, 3n])
 
-  await expect(page.getByText('Remaining allocation: 22.23%')).toBeVisible()
+  await expect(page.getByTestId('remaining-allocation')).toContainText('22.23%')
   await page
     .locator('#propose-section-mandate')
     .getByRole('button')
     .first()
     .click()
   await advanceTime(page, 1_000)
-  await page.getByLabel('Mandate').fill(`${snapshot.mandate} updated`)
+  await page.getByTestId('mandate-input').fill(`${snapshot.mandate} updated`)
   await advanceTime(page, 1_000)
 
-  await expect(page.getByText('Basics Update')).toBeVisible()
+  await expect(page.getByTestId('basics-update')).toBeVisible()
   await expect(confirmButton(page)).toBeEnabled()
 })
 

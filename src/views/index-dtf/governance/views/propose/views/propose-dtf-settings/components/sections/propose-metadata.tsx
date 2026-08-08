@@ -52,6 +52,7 @@ const ProposeMetadata = () => {
             </FormLabel>
             <FormControl>
               <Textarea
+                data-testid="mandate-input"
                 placeholder={t`This Index DTF will…`}
                 rows={6}
                 className="px-1 text-base [&:focus::placeholder]:opacity-0 [&:focus::placeholder]:transition-opacity"
