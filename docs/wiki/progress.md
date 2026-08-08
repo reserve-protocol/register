@@ -1,6 +1,6 @@
 ---
 title: Progress
-updated: 2026-07-31
+updated: 2026-08-08
 type: ledger
 ---
 
@@ -10,6 +10,7 @@ Stage ledger. One row per stage; keep entries short. Verifier = exact fresh comm
 
 | Stage | Status | Verifier | Review | Next |
 |---|---|---|---|---|
+| Fix DTF settings confirm button | human-review-required (base 6854a370b) | RED: rounded seeded distribution blocked mandate confirm; GREEN: unit 878 incl. mapper 27/27 · focused E2E 5/5 · typecheck · lint | Dark HOLD on untested mapping → 27 exhaustive mapper tests → Dark PASS; Light PASS; CodeRabbit 2 Minor → resolved (test IDs + editable confirmed state) | PR #1084 open; Engineer review required before merge; wiki-lint blocked by pre-existing stale design-system page |
 | vlRSR self-appreciating vaults: drawer shares/redeem + rate line · governance card · portfolio · earn rate-corrected + APY | human-review-required (base d0427a7cf; SDK local-linked) | gate green: typecheck+lint+847 unit · 72 helper · smoke 58 · drawer spec 2/2 · live BSC visual light+dark incl. earn TVL 261.5M RSR = totalAssets | Dark + Light on both diffs; all blockers fixed; details in git | PR #1072 open on SDK 0.5.1 (published, pinned exact; direct sdk dep dropped). Companions: dtf-interface#29, reserve-api#236 (deploy w/ daos CDN purge). **Engineer review**: withdraw→redeem for ALL vaults, governance card, api token.price×rate. [plan](../plans/vlrsr-self-appreciating-vaults.md) |
 | focused-tab automatic chain switching | human-review-required (base b2fcf72c6) | lint/typecheck · unit 840 incl. 8 focus/visibility · helpers 70 · smoke 56 + 1 skipped · wiki-lint | Dark + Light: stale Index target + mutation-boundary focus recheck fixed; automatic switching preserved, background tabs passive | Engineer review wallet/chain flow; then ship |
 | vote-lock APR unified on /dtf/daos list | done (base 771c92873) | gate-equivalent green (lint/typecheck/unit, 70 helper, 56 smoke, wiki-lint) · live visual: BUILDOUT + POWER overviews and earn all 46.83% from one list request | Dark + Light, per-claim verify — adopted: list-miss/error fallback gating, plain-data return, catalog mixed-case normalization; API re-key REVERTED by Luis (sdk `getVoteLockDao` needs the DTF-address key); accepted: unlisted DTFs keep per-DTF detail cache split | pre-existing reserve-api debt flagged, not shipped: maxAge-before-await caches 500s 24h; unguarded `underlyingPrice.price` deref can 500 whole list |
