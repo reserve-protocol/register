@@ -1,6 +1,6 @@
 ---
 title: E2E Suite
-updated: 2026-07-23
+updated: 2026-08-10
 type: domain
 sources:
   - e2e/**
