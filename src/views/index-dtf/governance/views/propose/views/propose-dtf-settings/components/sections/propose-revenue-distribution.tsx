@@ -155,7 +155,7 @@ const RemainingAllocation = () => {
 
   return (
     <div className="flex flex-col gap-2">
-      <div className="text-base ml-auto px-4">
+      <div data-testid="remaining-allocation" className="text-base ml-auto px-4">
         <span className="text-muted-foreground">
           <Trans>Remaining allocation:</Trans>
         </span>{' '}
