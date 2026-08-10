@@ -1,6 +1,6 @@
 ---
 title: Progress
-updated: 2026-08-08
+updated: 2026-08-10
 type: ledger
 ---
 
@@ -10,6 +10,7 @@ Stage ledger. One row per stage; keep entries short. Verifier = exact fresh comm
 
 | Stage | Status | Verifier | Review | Next |
 |---|---|---|---|---|
+| Preserve Index DTF section in cmd-k navigation | human-review-required (base ebcd6febe) | RED: proposal/rebalance both landed overview; GREEN 2/2 · gate typecheck/lint/880 unit · live Ctrl+K proposal→governance + rebalance→auctions | independent Intent + Engineering Risk PASS, no findings; shared route-selection behavior requires Engineer review | merge only after Engineer review; wiki-lint blocked by pre-existing stale design-system page |
 | vote modal: address-length title overflowed the dialog | done (base 6854a370b) | lint · typecheck · test:run · e2e helper units · smoke 58 · new `vote-modal-long-title` spec desktop+mobile green · RED-verified (reverted the index-dtf modal fix → checkbox right edge 943 vs dialog 849.9) | product/correctness: self — copy + layout only, no tx path touched | — |
 | Fix DTF settings confirm button | human-review-required (base 6854a370b) | RED: rounded seeded distribution blocked mandate confirm; GREEN: unit 878 incl. mapper 27/27 · focused E2E 5/5 · typecheck · lint | Dark HOLD on untested mapping → 27 exhaustive mapper tests → Dark PASS; Light PASS; CodeRabbit 2 Minor → resolved (test IDs + editable confirmed state) | PR #1084 open; Engineer review required before merge; wiki-lint blocked by pre-existing stale design-system page |
 | vlRSR self-appreciating vaults: drawer shares/redeem + rate line · governance card · portfolio · earn rate-corrected + APY | human-review-required (base d0427a7cf; SDK local-linked) | gate green: typecheck+lint+847 unit · 72 helper · smoke 58 · drawer spec 2/2 · live BSC visual light+dark incl. earn TVL 261.5M RSR = totalAssets | Dark + Light on both diffs; all blockers fixed; details in git | PR #1072 open on SDK 0.5.1 (published, pinned exact; direct sdk dep dropped). Companions: dtf-interface#29, reserve-api#236 (deploy w/ daos CDN purge). **Engineer review**: withdraw→redeem for ALL vaults, governance card, api token.price×rate. [plan](../plans/vlrsr-self-appreciating-vaults.md) |
