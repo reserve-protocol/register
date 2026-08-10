@@ -8,14 +8,14 @@ import ProposalVote from './components/proposal-vote'
 import Updater from './updater'
 
 const Header = () => (
-  <div className="grid grid-cols-1 lg:grid-cols-[10fr_5fr] bg-card rounded-3xl mb-1 lg:mb-0">
+  <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,10fr)_minmax(0,5fr)] bg-card rounded-3xl mb-1 lg:mb-0">
     <ProposalHeader />
     <ProposalVote />
   </div>
 )
 
 const Overview = () => (
-  <div className="flex flex-col gap-1 lg:gap-2 lg:border-l lg:pl-2 border-background">
+  <div className="flex flex-col gap-1 lg:gap-2 lg:border-l lg:pl-2 border-background min-w-0">
     <ProposalDetailStats />
     <ProposalDetailTimeline />
     <ProposalDetailVotes />
@@ -23,7 +23,7 @@ const Overview = () => (
 )
 
 const Body = () => (
-  <div className="grid grid-cols-1 lg:grid-cols-[10fr_5fr] lg:gap-2 gap-1 rounded-3xl">
+  <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,10fr)_minmax(0,5fr)] lg:gap-2 gap-1 rounded-3xl">
     <ProposalDetailContent />
     <Overview />
   </div>
