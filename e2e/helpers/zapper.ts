@@ -1,5 +1,6 @@
 import { expect, type Locator, type Page } from '@playwright/test'
 import { encodeAbiParameters, encodeFunctionData, erc20Abi, parseUnits } from 'viem'
+import { fulfillFromLive, type LiveConfig } from './live'
 import type { UnmockedLogger } from './logger'
 import type { MockOverrides } from './overrides'
 import { findDtfByAddress, TEST_ADDRESS } from './registry'
@@ -136,6 +137,25 @@ export async function fillAmountAwaitQuote(
   }).toPass({ timeout: 90_000 })
 }
 
+// Live-mode counterpart of fillAmountAwaitQuote: the quote comes from a real
+// deployment, so there is no pinned output to expect — the oracle is "a
+// non-zero quote arrived in the read-only field". Same fill/quote retry unit
+// (balance hydration can still wipe an early fill). Returns the rendered
+// output amount.
+export async function fillAmountAwaitLiveQuote(
+  panel: Locator,
+  amount: string
+): Promise<string> {
+  const input = panel.locator('input[inputmode="decimal"]:not([disabled])')
+  const output = panel.locator('input[inputmode="decimal"][disabled]')
+  await expect(async () => {
+    await input.fill(amount)
+    // Anything but empty/zero — a live quote's magnitude is not predictable.
+    await expect(output).toHaveValue(/^(?!0(\.0*)?$)\d*\.?\d+$/, { timeout: 30_000 })
+  }).toPass({ timeout: 150_000 })
+  return (await output.inputValue()) ?? ''
+}
+
 const AGGREGATORS = ['velora', 'enso'] as const
 
 // Logger the zap specs hand to mockZapperRoutes: mirrors the base fixture's
@@ -161,17 +181,41 @@ function matches(params: ZapQuoteParams, query: URLSearchParams): boolean {
 // Install the zapper mock for one DTF. `log` should push into the spec's
 // `unmockedCalls` fixture array (same contract as helpers/provider.ts) so
 // committed specs fail loudly on any quote request outside the pinned inputs.
+export interface ZapperMockOptions {
+  // Live-API mode (helpers/live.ts). With a zapper target configured, the
+  // planner endpoints (/api/zapper/**: swap quotes AND deploy zaps) are passed
+  // through to the real deployment and validated against their contract
+  // instead of being served from pinned snapshots. The aggregator proxies
+  // follow the RESERVE surface, since that is where they live.
+  live?: LiveConfig
+  liveViolations?: string[]
+}
+
 export async function mockZapperRoutes(
   page: Page,
   dtfAddress: string,
-  log: UnmockedLogger
+  log: UnmockedLogger,
+  options: ZapperMockOptions = {}
 ) {
+  const { live, liveViolations } = options
+
+  if (live?.zapper && liveViolations) {
+    await page.route('**/api.reserve.org/api/zapper/**', (route) =>
+      fulfillFromLive(route, live.zapper!, { violations: liveViolations, log })
+    )
+  }
+
   const snapshots = ZAP_FIXTURES.filter((fixture) => {
     const dtf = findDtfByAddress(dtfAddress)
     return dtf && snapshotExists(`${dtf.snapshotDir}/zap-${fixture}.json`)
   }).map((fixture) => loadZapSnapshot(dtfAddress, fixture))
 
+  // Live mode owns the planner endpoints outright — never register the snapshot
+  // route alongside it, so no request can fall back to a pinned quote.
+  if (live?.zapper) return installAggregatorRoutes(page, live, liveViolations)
+
   // Native zap quotes: pinned-input snapshot or fail-loud 500.
+
   await page.route('**/api.reserve.org/api/zapper/**', (route) => {
     const url = new URL(route.request().url())
     if (!url.pathname.endsWith('/swap')) {
@@ -203,11 +247,43 @@ export async function mockZapperRoutes(
     })
   })
 
-  // Aggregator quotes: deterministic provider error (NOT unmocked — this is the
-  // designed single-provider setup, see header comment).
-  for (const slug of AGGREGATORS) {
-    await page.route(`**/api.reserve.org/${slug}/swap**`, (route) =>
+  await installAggregatorRoutes(page, live, liveViolations)
+}
+
+// Aggregator quotes: deterministic provider error (NOT unmocked — this is the
+// designed single-provider setup, see header comment). In live mode they are
+// only passed through when the RESERVE surface is live, because that is the
+// deployment that proxies them; with only the zapper surface live they stay
+// disabled, keeping the native zap the single quote candidate.
+async function installAggregatorRoutes(
+  page: Page,
+  live: LiveConfig | undefined,
+  liveViolations: string[] | undefined
+) {
+  // react-zapper also carries a CoW Swap quote source that talks to
+  // api.cow.fi DIRECTLY (not through the reserve API). It is a third-party
+  // boundary, not part of what this suite validates, and it never answers in
+  // offline mode (default-deny egress) — so in live mode it is disabled
+  // explicitly, keeping the planner quote the single candidate on both paths.
+  if (live?.reserve || live?.zapper) {
+    await page.route('**/api.cow.fi/**', (route) =>
       route.fulfill({
+        status: 503,
+        contentType: 'application/json',
+        body: JSON.stringify({
+          errorType: 'E2E',
+          description: '[E2E] CoW disabled — the planner zap is the validated provider',
+        }),
+      })
+    )
+  }
+
+  for (const slug of AGGREGATORS) {
+    await page.route(`**/api.reserve.org/${slug}/swap**`, (route) => {
+      if (live?.reserve && liveViolations) {
+        return fulfillFromLive(route, live.reserve, { violations: liveViolations })
+      }
+      return route.fulfill({
         status: 200,
         contentType: 'application/json',
         body: JSON.stringify({
@@ -215,7 +291,7 @@ export async function mockZapperRoutes(
           error: `[E2E] ${slug} disabled — native zap is the only mocked provider`,
         }),
       })
-    )
+    })
   }
 }
 

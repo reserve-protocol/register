@@ -3,6 +3,7 @@ import { DEFAULT_GEOLOCATION, mockApiRoutes, type GeolocationStatus } from '../h
 import type { UnmockedLogger } from '../helpers/logger'
 import { MockOverrides } from '../helpers/overrides'
 import { resetFrozenTime } from '../helpers/clock'
+import { describeLiveConfig, isLiveMode, liveConfig, type LiveConfig } from '../helpers/live'
 import type { TxRecord } from '../helpers/provider'
 import type { BoundaryRequest } from '../helpers/requests'
 import { mockRpcRoutes, setMockNow, setYieldReplay } from '../helpers/rpc'
@@ -26,6 +27,15 @@ export interface BaseFixtures {
   // Every handled API/subgraph/RPC request. Tests use this to prove source,
   // identity, parameters, and request counts rather than only rendered shells.
   boundaryRequests: BoundaryRequest[]
+  // Live-API surfaces resolved from E2E_LIVE_RESERVE_API / E2E_LIVE_ZAPPER_API
+  // (helpers/live.ts). Empty object = the default fully-offline suite. Specs
+  // read it to skip when their target is not configured; the API mock reads it
+  // to pass a surface through to the real deployment.
+  live: LiveConfig
+  // Response-contract failures recorded by the live passthrough. Fails the test
+  // at teardown, exactly like `unmockedCalls` — a live run that quietly accepts
+  // a drifted payload would validate nothing.
+  liveViolations: string[]
   // Escape hatch for genuinely exploratory specs: when true, unmocked calls are
   // still logged/attached but don't fail the test. Default false — a committed
   // migration flow must fail on any unmocked RPC/API/subgraph/egress call.
@@ -43,6 +53,16 @@ async function fulfillEmpty(route: import('@playwright/test').Route, body: unkno
 export const test = base.extend<BaseFixtures>({
   compliance: [DEFAULT_GEOLOCATION, { option: true }],
   allowUnmocked: [false, { option: true }],
+
+  // oxlint-disable-next-line no-empty-pattern -- {} = no deps
+  live: async ({}, use) => {
+    await use(liveConfig())
+  },
+
+  // oxlint-disable-next-line no-empty-pattern -- {} = no deps
+  liveViolations: async ({}, use) => {
+    await use([])
+  },
 
   // Fresh per test — a new instance means overrides never leak between tests.
   // oxlint-disable-next-line no-empty-pattern -- Playwright derives fixture deps from the destructuring pattern; {} = no deps
@@ -63,7 +83,16 @@ export const test = base.extend<BaseFixtures>({
 
   unmockedCalls: [
     async (
-      { page, compliance, overrides, txLog, boundaryRequests, allowUnmocked },
+      {
+        page,
+        compliance,
+        overrides,
+        txLog,
+        boundaryRequests,
+        allowUnmocked,
+        live,
+        liveViolations,
+      },
       use,
       testInfo
     ) => {
@@ -122,7 +151,13 @@ export const test = base.extend<BaseFixtures>({
         geolocation: compliance,
         overrides,
         requests: boundaryRequests,
+        live,
+        liveViolations,
       })
+
+      if (isLiveMode(live)) {
+        console.log(`[E2E] live API mode: ${describeLiveConfig(live)}`)
+      }
 
       // WalletConnect / relay / explorer: fulfill empty (NOT abort) — connectors
       // init eagerly on mount and aborts surface unhandled rejections.
@@ -214,6 +249,18 @@ export const test = base.extend<BaseFixtures>({
       if (!allowUnmocked && calls.length) {
         throw new Error(
           `test hit ${calls.length} unmocked call(s):\n${calls.join('\n')}`
+        )
+      }
+
+      // Live contract drift is a failure of the deployment under validation —
+      // never a soft warning, and never silenced by allowUnmocked.
+      if (liveViolations.length) {
+        await testInfo.attach('live-contract-violations', {
+          body: liveViolations.join('\n'),
+          contentType: 'text/plain',
+        })
+        throw new Error(
+          `live API returned ${liveViolations.length} contract violation(s):\n${liveViolations.join('\n')}`
         )
       }
     },

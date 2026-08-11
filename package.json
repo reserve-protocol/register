@@ -115,6 +115,7 @@
     "e2e": "playwright test",
     "e2e:smoke": "playwright test --project=smoke",
     "e2e:mobile": "playwright test --project=mobile",
+    "e2e:live": "playwright test --project=live",
     "e2e:ui": "playwright test --ui",
     "e2e:capture": "tsx e2e/scripts/capture.ts",
     "e2e:capture:yield": "tsx e2e/scripts/capture-yield.ts",
