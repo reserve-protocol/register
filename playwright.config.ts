@@ -37,11 +37,12 @@ export default defineConfig({
     {
       name: 'smoke',
       grep: /@smoke/,
+      grepInvert: /@live/,
       use: { ...devices['Desktop Chrome'] },
     },
     {
       name: 'full',
-      grepInvert: /@smoke/,
+      grepInvert: /@smoke|@live/,
       use: { ...devices['Desktop Chrome'] },
     },
     // Mobile variants at a phone viewport. Pixel 7 keeps the Chromium engine
@@ -50,7 +51,24 @@ export default defineConfig({
     {
       name: 'mobile',
       grep: /@mobile/,
+      grepInvert: /@live/,
       use: { ...devices['Pixel 7'] },
+    },
+    // Live-API validation project (`pnpm e2e:live`). @live specs are EXCLUDED
+    // from every other project: they need a real Reserve/zapper deployment and
+    // skip themselves when E2E_LIVE_RESERVE_API / E2E_LIVE_ZAPPER_API name no
+    // target (see e2e/helpers/live.ts). Live upstreams are slow (a cold token
+    // list or deep-liquidity quote can take tens of seconds) and their data is
+    // not deterministic — so: generous timeout, no retries (a retry would mask
+    // an intermittently-broken deployment, which is exactly the signal here),
+    // and serial workers so one run cannot rate-limit itself.
+    {
+      name: 'live',
+      grep: /@live/,
+      timeout: 180_000,
+      retries: 0,
+      workers: 1,
+      use: { ...devices['Desktop Chrome'] },
     },
   ],
   webServer: {

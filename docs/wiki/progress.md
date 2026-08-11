@@ -1,6 +1,6 @@
 ---
 title: Progress
-updated: 2026-08-10
+updated: 2026-08-11
 type: ledger
 ---
 
@@ -10,6 +10,7 @@ Stage ledger. One row per stage; keep entries short. Verifier = exact fresh comm
 
 | Stage | Status | Verifier | Review | Next |
 |---|---|---|---|---|
+| Live API validation mode for the E2E suite (reserve + zapper/planner, zrs1) | human-review-required (base a6f20e340) | offline unchanged: typecheck · lint · 95 helper units (23 new) · smoke 58 · `e2e:check` · `E2E_LIVE_RESERVE_API=production E2E_LIVE_ZAPPER_API=zrs1 pnpm e2e:live` → 39 passed / 1 skipped (CMC20 basket drift) | self: default-deny, request recording and strict teardown unchanged; no `allowUnmocked`, no wildcard mocks; findings recorded, not asserted away | **Engineer review required**: deploy is quote-level only; token-list drift needs a client-or-API decision — § E2E coverage debt |
 | Preserve Index DTF section in cmd-k navigation | human-review-required (base ebcd6febe) | RED: proposal/rebalance both landed overview; GREEN 2/2 · gate typecheck/lint/880 unit · live Ctrl+K proposal→governance + rebalance→auctions | independent Intent + Engineering Risk PASS, no findings; shared route-selection behavior requires Engineer review | merge only after Engineer review; wiki-lint blocked by pre-existing stale design-system page |
 | vote modal: address-length title overflowed the dialog | done (base 6854a370b) | lint · typecheck · test:run · e2e helper units · smoke 58 · new `vote-modal-long-title` spec desktop+mobile green · RED-verified (reverted the index-dtf modal fix → checkbox right edge 943 vs dialog 849.9) | product/correctness: self — copy + layout only, no tx path touched | — |
 | Fix DTF settings confirm button | human-review-required (base 6854a370b) | RED: rounded seeded distribution blocked mandate confirm; GREEN: unit 878 incl. mapper 27/27 · focused E2E 5/5 · typecheck · lint | Dark HOLD on untested mapping → 27 exhaustive mapper tests → Dark PASS; Light PASS; CodeRabbit 2 Minor → resolved (test IDs + editable confirmed state) | PR #1084 open; Engineer review required before merge; wiki-lint blocked by pre-existing stale design-system page |
@@ -46,6 +47,30 @@ Stage ledger. One row per stage; keep entries short. Verifier = exact fresh comm
 ### E2E coverage debt (fail-loud workarounds to pay down)
 
 - **Index/Arbitrum egress assertion owed**: a spec inspecting `boundaryRequests` asserting NO Index-domain call carries chainId 42161 (with a Yield-positive counterpart — dtf-yield keeps Arbitrum). A green smoke does NOT prove this: teardown only fails on unmocked calls and the RPC mock answers Arbitrum generically.
+- **Live API mode findings + limits** (`pnpm e2e:live`, 2026-08-11 against
+  reserve=production, zapper=zrs1 — 39 passed / 1 skipped):
+  - **`fetchZapperTokens` cannot read any deployment's token list** (`src/utils/zapper.ts`):
+    it reads `data.tokens[]`, every deployment answers `{status, result[]}`, and
+    the helper's `catch` turns the mismatch into an empty Set — "no token is
+    zappable", silently. Pinned with `test.fail()` in
+    `tests/live/zapper-api-contract.spec.ts`. Fix = parse `result[]` (or align the
+    API) and drop the pin; needs a decision on which side moves.
+  - **The planner prices no PHOTON Ondo RWA token on BSC** (`/api/prices/56`
+    returns `result: []` for 9 basket tokens; the route doesn't exist on
+    api.reserve.org at all). Not a register bug today — register reads
+    `/current/prices`, which covers them — so the spec asserts exactly that
+    cross-surface guarantee: a planner gap must be covered by the Reserve API,
+    else the basket renders $0.
+  - **Live UI specs are hybrid** (live API + pinned chain state), so a real
+    basket change invalidates them: CMC20 skips because the live basket added
+    `0x2859e4544c4bb03966803b044a93563bd2d0dd4d` and the SDK can't join the two.
+    Pay down by re-capturing (`pnpm e2e:capture`) or by making the live UI specs
+    seed chain state from the live basket.
+  - **Deploy is quote-level only** — the planner's deploy/deploy-ungoverned tx is
+    validated as a contract, never submitted; on-chain deploy stays uncovered.
+  - **Aggregators are deliberately disabled in live mode** (CoW/velora/enso get an
+    explicit 503) so the planner is the provider under validation; live CoW
+    routing is therefore uncovered.
 - **Vote-lock (vlRSR) uncovered paths** (Codex review 2026-07-31): external Earn/portfolio drawer first-open (the hook-order crash path — fixed, untested); portfolio live-zero + RPC-error fallback branches; governance card rate/redeemable presentation; a legacy 1:1 vault through the universal redeem path (drawer spec only covers vlRSR); earn cell RPC-failure fallback (skeleton→1:1).
 
 A mock strict enough that a spec routes AROUND its gap silently shrinks the

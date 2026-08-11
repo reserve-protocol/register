@@ -63,6 +63,62 @@ default-denies any non-local request that is not explicitly modeled:
 shared by mocks, capture, and tests. `helpers/snapshots.ts` loads the
 `{_meta, data}` envelope from `snapshots/<chain>/<slug>/*.json`.
 
+## Live API mode (validating the real Reserve / zapper APIs)
+
+The committed suite is offline and stays that way. Live mode is a separate
+opt-in project (`pnpm e2e:live`, `@live`-tagged specs under `tests/live/`,
+excluded from smoke/full/mobile) that swaps ONLY the API boundary for a
+recording passthrough:
+
+```bash
+E2E_LIVE_ZAPPER_API=zrs1 pnpm e2e:live                       # planner surface only
+E2E_LIVE_RESERVE_API=production E2E_LIVE_ZAPPER_API=zrs1 pnpm e2e:live   # both
+```
+
+The two surfaces are independent env vars, each taking a named target or an
+absolute URL (anything else is a hard error, not a silent offline fallback):
+
+| Var | Targets | Surface (`surfaceForPath`) |
+|---|---|---|
+| `E2E_LIVE_RESERVE_API` | `production` (api.reserve.org), `staging`, `https://…` | everything except the two paths below |
+| `E2E_LIVE_ZAPPER_API` | `zrs1` (zrs-1.reserve-api.com), `production`, `staging`, `https://…` | `/api/zapper/**`, `/api/prices/**` |
+
+What live mode does and does not touch:
+
+- **Live**: the configured surface's HTTP responses, rewritten onto the target
+  origin, recorded in `boundaryRequests` exactly like a mocked call, and
+  validated against `helpers/live-contracts.ts` (zod shape + invariants:
+  `minAmountOut <= amountOut`, non-zero `amountOut`, a `tx` whenever funds are
+  sufficient, candle `high >= low`, open/close inside high/low). Drift fails the
+  test; the unmocked-egress default-deny is still in force.
+- **Still mocked, always**: RPC, subgraph, wallet, receipts, chain state, and
+  the CoW/velora/enso aggregators (an explicit disabled 503, so the planner zap
+  is the provider under validation). Chain state therefore stays pinned to the
+  committed snapshots — see the hybrid-test limitation below.
+
+Coverage: `tests/live/reserve-api-contract.spec.ts` and
+`zapper-api-contract.spec.ts` are request-level (no browser) and cover prices,
+current/historical DTF, candles, compliance, discover, portfolio, exposure,
+rebalance + liquidity, the zappable token lists, planner health, buy quotes and
+the ungoverned deploy quote. `pricing-live.spec.ts` and `zap-widget-live.spec.ts`
+drive the real UI against live responses.
+
+Limitations (all deliberate, tracked in `docs/wiki/progress.md` § E2E coverage debt):
+
+- **Hybrid tests can be invalidated by real basket changes.** The UI specs join
+  live API data with pinned chain state; when the live basket gains or loses a
+  token the SDK cannot join the two and the spec skips with a `basketDrift`
+  message telling you to run `pnpm e2e:capture`. It reports drift, it does not
+  paper over it.
+- **`/api/zapper/{chain}/tokens` is ~500 MB.** It is probed in bounded form
+  (`liveProbe`), never buffered.
+- **The token list is pinned as known drift**: `fetchZapperTokens` reads
+  `data.tokens[]`, every deployment answers `{status, result[]}`, and the
+  helper's catch-all turns that into "nothing is zappable" with no error. The
+  spec asserts the mismatch with `test.fail()`.
+- **Deploy is quote-level only.** On-chain deployment is not executed; the
+  deploy transaction the planner returns is not submitted to a real chain.
+
 ## Fail-loud philosophy
 
 Every mock that can't answer calls the logger (`[E2E] unmocked ...`). The base

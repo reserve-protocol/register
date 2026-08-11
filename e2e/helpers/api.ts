@@ -1,4 +1,5 @@
 import type { Page } from '@playwright/test'
+import { fulfillFromLive, surfaceForPath, type LiveConfig } from './live'
 import type { UnmockedLogger } from './logger'
 import type { MockOverrides } from './overrides'
 import type { BoundaryRequest } from './requests'
@@ -28,6 +29,11 @@ export interface ApiMockOptions {
   geolocation: GeolocationStatus
   overrides?: MockOverrides
   requests?: BoundaryRequest[]
+  // Live-API mode (helpers/live.ts). A surface with a target configured is
+  // passed through to the real deployment instead of being answered from
+  // snapshots; the other surface stays mocked. Empty/absent = fully offline.
+  live?: LiveConfig
+  liveViolations?: string[]
 }
 
 function json(route: import('@playwright/test').Route, data: unknown, status = 200) {
@@ -163,7 +169,7 @@ export function knownPriceResponse(
 }
 
 export async function mockApiRoutes(page: Page, options: ApiMockOptions) {
-  const { log, geolocation, overrides, requests } = options
+  const { log, geolocation, overrides, requests, live, liveViolations } = options
 
   const handler = async (route: Parameters<Parameters<Page['route']>[1]>[0]) => {
     const url = new URL(route.request().url())
@@ -177,6 +183,14 @@ export async function mockApiRoutes(page: Page, options: ApiMockOptions) {
       search: Object.fromEntries(url.searchParams),
     })
     await overrides?.holds.gate({ boundary: 'api', pathname: path })
+
+    // Live passthrough wins over BOTH snapshots and per-test overrides: a live
+    // run must report what the deployment actually returns, never a local
+    // substitute. Only the surfaces explicitly pointed at a target are live.
+    const liveTarget = live?.[surfaceForPath(path)]
+    if (liveTarget && liveViolations) {
+      return fulfillFromLive(route, liveTarget, { violations: liveViolations, log, requests })
+    }
 
     // Per-test overlay wins over snapshots — exact method/path plus any
     // identity-bearing query fields the spec supplies.

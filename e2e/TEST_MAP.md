@@ -11,9 +11,11 @@ grep -rln "@mobile" e2e/tests                         # mobile-tagged specs
 
 Harness architecture (mock layer, trust contract, CI split) lives in
 `docs/wiki/domains/e2e.md`; mock mechanics and recipes live in `e2e/CLAUDE.md`.
-Playwright runs 3 projects (`playwright.config.ts`): **smoke** (`@smoke`-tagged,
+Playwright runs 4 projects (`playwright.config.ts`): **smoke** (`@smoke`-tagged,
 Desktop Chrome), **full** (everything else, Desktop Chrome), **mobile**
-(`@mobile`-tagged, Pixel 7 viewport — off CI, `pnpm e2e:mobile`).
+(`@mobile`-tagged, Pixel 7 viewport — off CI, `pnpm e2e:mobile`), and **live**
+(`@live`-tagged, opt-in, excluded from the other three — see § Live API
+validation).
 
 73 specs across 5 top-level dirs: `general/` (8), `index-dtf/` (17),
 `yield-dtf/` (6), `smoke/` (12), `flows/` (30). `index-dtf/` and `yield-dtf/`
@@ -96,6 +98,21 @@ additional state coverage: [boot](tests/smoke/boot.spec.ts) (home shell),
   lifecycle specs. The entire `flows/` directory (30 specs — all governance/
   auction/issuance write and edge-case behavior) and all of `smoke/` have zero
   `@mobile` coverage.
+
+## Live API validation (`tests/live/`, opt-in)
+
+Off by default; enabled per surface with `E2E_LIVE_RESERVE_API` /
+`E2E_LIVE_ZAPPER_API` and run with `pnpm e2e:live`. Not part of the offline
+coverage matrix above — these specs validate Register's API *usage* against a
+real deployment (zrs1 for the planner) and are excluded from smoke/full/mobile.
+Operator guide: `e2e/README.md` § Live API mode.
+
+| Surface | Spec | Covers | Not covered |
+|---|---|---|---|
+| Reserve API (request-level) | [live/reserve-api-contract](tests/live/reserve-api-contract.spec.ts) | `/current/prices`, `/current/dtf`, `/historical/prices`, `/historical/dtf` (+ v2 candles), compliance (geolocation, per-DTF, wallet), `/v1/discover/dtfs`, `/v1/portfolio/:address`, `/dtf/exposure`, `/dtf/rebalance`, `POST /rebalance/liquidity`, legacy `/zapper/tokens` | auth'd surfaces, write endpoints |
+| Zapper/planner (request-level) | [live/zapper-api-contract](tests/live/zapper-api-contract.spec.ts) | planner `health`, bounded `/api/zapper/{chain}/tokens` probe per chain, `/api/prices/{chain}` per basket (+ reserve-covers-the-gap cross-check), buy quotes per DTF, ungoverned deploy quote | sell quotes, governed deploy body variants, on-chain execution |
+| Pricing UI | [live/pricing-live](tests/live/pricing-live.spec.ts) | overview hero price + plotted chart geometry from live Reserve responses per registry DTF | any DTF whose live basket drifted from the captured chain state (skips with a re-capture instruction) |
+| Zap widget UI | [live/zap-widget-live](tests/live/zap-widget-live.spec.ts) | buy quote through the real widget on Base, submitted tx equals the live quote's `tx` (mocked wallet/receipts) | sell, other chains, real chain execution |
 
 ## Active fixmes (2)
 

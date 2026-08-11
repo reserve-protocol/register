@@ -55,6 +55,49 @@ lifecycle depth, and gaps live in `e2e/TEST_MAP.md`. `e2e/CLAUDE.md`
   a foreign server can't bypass the pinned env (`VITE_E2E` keeps production
   form validation ON, so zod bounds ARE assertable in specs).
 
+## Live API mode (opt-in, separate project)
+
+The offline suite is the acceptance suite; live mode is a validation suite for
+Register's *usage* of the Reserve and zapper APIs, in its own `live` Playwright
+project (`pnpm e2e:live`, `@live` grep, 1 worker, no retries) that the smoke,
+full, and mobile projects exclude. It is off unless an env var names a target:
+`E2E_LIVE_RESERVE_API` and `E2E_LIVE_ZAPPER_API`, resolved independently by
+`helpers/live.ts` (`production` / `staging` / `zrs1` / an absolute URL; an
+unknown value throws rather than silently falling back offline).
+
+Design decisions worth keeping:
+
+- **One surface classifier, not a URL soup.** `surfaceForPath` owns the split —
+  `/api/zapper/**` and `/api/prices/**` are the zapper surface, everything else
+  is Reserve — so a planner deployment (zrs1) and api.reserve.org can be
+  validated in the same run.
+- **Live is a boundary swap, not an escape hatch.** `helpers/api.ts` consults the
+  live target *before* snapshots and overrides; everything else (default-deny
+  egress, `boundaryRequests` recording, teardown failure) is unchanged, and
+  `allowUnmocked` is still not a live toggle. Live responses are additionally
+  validated by `helpers/live-contracts.ts` — per-endpoint zod shapes plus
+  invariants (quote `minAmountOut <= amountOut`, non-zero `amountOut`, a `tx`
+  whenever funds suffice, candle `high >= low` and open/close within range).
+  Shape drift or a broken invariant fails the test.
+- **Everything non-API stays mocked**: RPC, subgraph, wallet, receipts, chain
+  state, and the CoW/velora/enso aggregators (explicit disabled 503 — the
+  planner zap is the provider under validation). So live UI specs are *hybrid*:
+  live API data joined to pinned chain state. When the live basket drifts from
+  the captured one the SDK can't join them, so `basketDrift` detects it and the
+  spec skips with a re-capture instruction instead of reporting a fake failure
+  or a fake pass.
+- **Bounded probing.** `/api/zapper/{chain}/tokens` is ~500 MB; `liveProbe`
+  reads a prefix and validates on that, never buffering the response.
+- **Teardown races are not violations.** `isTeardownRace` filters only
+  browser/page-closed messages from in-flight passthrough fetches; real
+  transport failures and timeouts remain contract violations.
+
+Coverage lives in `e2e/tests/live/` (contract specs for the Reserve and planner
+surfaces, plus live pricing and zap-widget UI specs); `e2e/README.md` § Live API
+mode is the operator guide, and the standing findings/limitations (token-list
+parser drift, planner price gaps, hybrid-basket drift, deploy being quote-level
+only) are in [[progress]] § E2E coverage debt.
+
 ## Transactions and time
 
 The injected EIP-6963/EIP-1193 provider records every send in the per-test
@@ -89,6 +132,8 @@ age, and DTF/chain identity.
 - `pnpm e2e:check`: manifest, identity, and freshness.
 - `pnpm e2e:capture:yield`: re-capture the yield RToken eth_call + subgraph maps.
 - `pnpm exec vitest run e2e/helpers/tests`: mock-contract unit tests.
+- `E2E_LIVE_ZAPPER_API=zrs1 pnpm e2e:live`: the opt-in live API validation
+  project (never runs in CI; needs egress to the target).
 
 CI uses pnpm, Node 24, current actions, and Chromium only. PR/push runs
 typecheck, the mock-contract unit tests, snapshot check, and smoke; nightly/

@@ -190,6 +190,8 @@ Then follow the steps below to fill it in.
 ## Commands
 
 `pnpm e2e:smoke` (fast, per-diff) · `pnpm e2e:full` (flows) · `pnpm e2e` (both)
+· `E2E_LIVE_ZAPPER_API=zrs1 pnpm e2e:live` (opt-in live API validation — the
+`@live` project, never part of the offline suites; `e2e/README.md` § Live API mode)
 · `pnpm e2e:ui` (headed debug) · `pnpm exec vitest run e2e/helpers/tests`
 (mock contracts, fastest tier) · `pnpm e2e:check` / `pnpm e2e:capture` /
 `pnpm e2e:capture:yield` (snapshots).
