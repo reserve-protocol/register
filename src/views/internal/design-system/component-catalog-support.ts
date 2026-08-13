@@ -1,0 +1,544 @@
+import { openDefinitionSlots, type ComponentGroup } from './catalog-types'
+import { pendingComponent as component } from './component-catalog-item'
+
+const mapped = {
+  status: 'evidence-found' as const,
+  auditStatus: 'mapped' as const,
+}
+
+export const SUPPORT_COMPONENT_GROUPS: ComponentGroup[] = [
+  {
+    id: 'overlays',
+    name: 'Overlays',
+    description: 'Temporary surfaces that appear above the current context.',
+    foundationDependencies: [
+      'Elevation',
+      'Color',
+      'Shape',
+      'Spacing',
+      'Motion',
+    ],
+    defaultStates: ['Closed', 'Opening', 'Open', 'Closing', 'Disabled trigger'],
+    expectedDecisions: openDefinitionSlots(
+      'Trigger and dismissal',
+      'Focus management',
+      'Placement and sizing',
+      'Constrained-screen adaptation'
+    ),
+    items: [
+      {
+        ...component(
+          'dialog',
+          'Dialog',
+          'Focuses attention on a blocking decision or contained task.',
+          'Dialogs need consistent focus, dismissal, action, and destructive behavior.',
+          {
+            priority: 'v1-core',
+            ...mapped,
+            evidence: [
+              'Nineteen direct product dialogs use the shared Dialog or legacy Modal shells; the package-owned Zapper adds a third shell system.',
+              'Current jobs collapse to review, configure, select, attest, explain, and outcome; media and drawers remain adjacent overlay families.',
+            ],
+            decisionPrompts: [
+              'Compare source-faithful current and foundation-applied versions of several real modal jobs before naming a shared grammar.',
+              'Define long-content scrolling, destructive confirmation, pending/error states, and nested-overlay restrictions.',
+              'Confirm when a meaningful milestone earns illustration rather than a status glyph or no visual lead.',
+            ],
+            stateAdditions: [
+              'Long content',
+              'Destructive',
+              'Pending action',
+              'Error',
+            ],
+            nextAction:
+              'Review the real Eligibility comparison, then reconstruct Liquidity config and real transaction lifecycle states without inventing product content.',
+          }
+        ),
+        outputStatus: 'proposal',
+      },
+      component(
+        'drawer',
+        'Drawer',
+        'Presents contextual detail or a task from a screen edge.',
+        'Drawers need clear use criteria, sizing, focus, and responsive behavior.',
+        {
+          priority: 'v1-core',
+          ...mapped,
+          evidence: [
+            'Eight product imports use shared Drawer; token selection, staking, voting, and deploy all depend on it.',
+          ],
+          decisionPrompts: [
+            'Define side/bottom placement, widths, header/footer, scrolling, nesting, and when a dialog is preferable.',
+          ],
+          nextAction:
+            'Compare task drawers with selector drawers; retain one shell with composition-specific bodies if behavior aligns.',
+        }
+      ),
+      component(
+        'popover',
+        'Popover',
+        'Shows contextual interactive content near a trigger.',
+        'Popovers require stable placement, collision, focus, and dismissal behavior.',
+        {
+          priority: 'v1-core',
+          ...mapped,
+          evidence: [
+            'Nine product imports use shared Popover; many selectors and filters compose on it.',
+          ],
+          decisionPrompts: [
+            'Define spacing from trigger, width ownership, collision, focus entry, dismissal, and contained chrome.',
+          ],
+          relationships: [
+            {
+              id: 'tooltip',
+              note: 'Popover contains interactive content; tooltip does not.',
+            },
+            {
+              id: 'dropdown-menu',
+              note: 'Use Menu when the content is primarily actions.',
+            },
+          ],
+          nextAction:
+            'Audit filter, help, and picker popovers for shell convergence.',
+        }
+      ),
+      component(
+        'dropdown-menu',
+        'Menu',
+        'Presents a compact list of contextual actions.',
+        'Menus need semantic action grouping and complete keyboard behavior.',
+        {
+          priority: 'v1-core',
+          ...mapped,
+          evidence: ['Nine product imports use shared DropdownMenu.'],
+          decisionPrompts: [
+            'Define item anatomy, icons, shortcuts, separators, destructive items, submenus-if-needed, and selection versus action.',
+          ],
+          relationships: [
+            {
+              id: 'select',
+              note: 'Select chooses a form value; Menu invokes actions.',
+            },
+          ],
+          nextAction:
+            'Inspect overflow and account/navigation menus for one item contract.',
+        }
+      ),
+      component(
+        'tooltip',
+        'Tooltip',
+        'Provides brief non-essential explanation on demand.',
+        'Tooltips must not carry information unavailable to touch or keyboard users.',
+        {
+          priority: 'v1-core',
+          ...mapped,
+          evidence: [
+            '21 product imports use shared Tooltip; 13 Help imports indicate adjacent explanatory behavior.',
+          ],
+          decisionPrompts: [
+            'Define delay, placement, maximum copy, icon-button naming support, and touch alternatives.',
+          ],
+          nextAction:
+            'Audit Tooltip and Help together; prevent long instructional content from entering tooltips.',
+        }
+      ),
+    ],
+  },
+  {
+    id: 'feedback',
+    name: 'Feedback',
+    description:
+      'Communicates status, progress, results, loading, and absence.',
+    foundationDependencies: [
+      'Feedback color',
+      'Typography',
+      'Iconography',
+      'Motion',
+    ],
+    defaultStates: [
+      'Informational',
+      'Success',
+      'Warning',
+      'Danger',
+      'In progress',
+    ],
+    expectedDecisions: openDefinitionSlots(
+      'Intent hierarchy',
+      'Persistence and dismissal',
+      'Loading lifecycle',
+      'Recovery actions'
+    ),
+    items: [
+      component(
+        'alert',
+        'Inline message',
+        'Communicates important contextual status or risk within the current flow.',
+        'Inline feedback needs consistent intent, prominence, and recovery guidance.',
+        {
+          priority: 'v1-core',
+          ...mapped,
+          evidence: ['18 product imports use shared Alert.'],
+          decisionPrompts: [
+            'Define info/success/warning/danger anatomy, title/body/action, compact use, dismissal, and icon treatment.',
+          ],
+          nextAction:
+            'Audit Alert plus ad hoc banners and validation summaries by persistence and required action.',
+        }
+      ),
+      component(
+        'toast',
+        'Toast',
+        'Confirms a transient result without blocking work.',
+        'Toasts need strict timing, stacking, announcement, and action rules.',
+        {
+          priority: 'v1-core',
+          ...mapped,
+          evidence: [
+            'Sonner is installed as the shared toast implementation and transaction results use notifications.',
+          ],
+          decisionPrompts: [
+            'Define which results qualify, duration, pause, stacking, action/retry, and persistent-error fallback.',
+          ],
+          relationships: [
+            {
+              id: 'alert',
+              note: 'Use Inline message when users must retain or act on the information in context.',
+            },
+          ],
+          nextAction:
+            'Classify current notifications by transient versus persistent need.',
+        }
+      ),
+      component(
+        'progress',
+        'Progress indicator',
+        'Shows determinate completion of an operation.',
+        'Progress indicators need meaningful values and completion behavior.',
+        {
+          priority: 'v1-core',
+          ...mapped,
+          evidence: [
+            'Three product imports use shared Progress; steppers and transaction flows add progress-like states.',
+          ],
+          decisionPrompts: [
+            'Define bar anatomy, labels, percentages, indeterminate fallback, completion, and error interruption.',
+          ],
+          nextAction:
+            'Audit upload/deploy/transaction progress separately from step navigation.',
+        }
+      ),
+      component(
+        'spinner',
+        'Spinner',
+        'Shows short indeterminate activity.',
+        'Spinners need constraints so they do not replace informative loading states.',
+        {
+          priority: 'v1-core',
+          ...mapped,
+          evidence: ['29 product imports use shared Spinner.'],
+          decisionPrompts: [
+            'Define sizes, accessible label, delayed appearance, inline versus blocking use, and timeout escalation.',
+          ],
+          relationships: [
+            {
+              id: 'skeleton',
+              note: 'Use Skeleton when preserving content geometry is more informative.',
+            },
+          ],
+          nextAction:
+            'Map spinner contexts by expected duration and blocked scope.',
+        }
+      ),
+      component(
+        'skeleton',
+        'Skeleton',
+        'Reserves layout while content loads.',
+        'Skeletons should preserve final geometry and avoid false detail.',
+        {
+          priority: 'v1-core',
+          ...mapped,
+          evidence: [
+            '73 product imports make Skeleton the second-most-used shared primitive.',
+          ],
+          decisionPrompts: [
+            'Define base tone, motion policy, shape matching, repetition limits, and transition to empty/error.',
+          ],
+          nextAction:
+            'Pressure-test real tables, cards, and metrics; avoid one generic rounded bar language.',
+        }
+      ),
+      component(
+        'empty-state',
+        'Empty state',
+        'Explains why content is absent and what can happen next.',
+        'Empty states turn absence into a clear product state rather than a blank surface.',
+        {
+          priority: 'v1-core',
+          auditStatus: 'partial',
+          evidence: [
+            'Tables, portfolio, governance, and search all expose materially different empty conditions.',
+          ],
+          decisionPrompts: [
+            'Define no-data, no-results, first-use, filtered-empty, unavailable, and permission states.',
+            'Choose when an action is useful versus distracting.',
+          ],
+          relationships: [
+            {
+              id: 'alert',
+              note: 'An empty state owns an absent content region; an alert annotates existing context.',
+            },
+          ],
+          nextAction:
+            'Inventory empty copy and actions across golden screens; define a composition recipe, not one rigid component.',
+        }
+      ),
+    ],
+  },
+  {
+    id: 'data-display',
+    name: 'Data display',
+    description: 'Presents identity, status, metrics, and structured data.',
+    foundationDependencies: ['Typography', 'Spacing', 'Color', 'Iconography'],
+    defaultStates: [
+      'Default',
+      'Loading',
+      'Missing',
+      'Truncated',
+      'Interactive if applicable',
+    ],
+    expectedDecisions: openDefinitionSlots(
+      'Information hierarchy',
+      'Formatting and truncation',
+      'Responsive transformation',
+      'Loading and missing data'
+    ),
+    items: [
+      component(
+        'badge',
+        'Badge',
+        'Labels status, category, or compact metadata.',
+        'Badges need semantic roles that do not become decorative noise.',
+        {
+          priority: 'v1-core',
+          auditStatus: 'partial',
+          evidence: [
+            'Status pills and metadata chips appear widely without one obvious shared Badge primitive.',
+          ],
+          decisionPrompts: [
+            'Separate status, category, count, and removable-chip jobs; define icon, dot, and long-label behavior.',
+          ],
+          nextAction:
+            'Cluster badges, pills, and chips by meaning before choosing one anatomy.',
+        }
+      ),
+      component(
+        'entity-identity',
+        'Entity identity',
+        'Pairs logo/avatar with name, symbol, chain, and optional supporting metadata.',
+        'Token, DTF, account, and governance identity appears across nearly every golden screen.',
+        {
+          priority: 'product-extension',
+          ...mapped,
+          evidence: [
+            'TokenLogo appears in 78 product consumer files; Avatar has shared support but different fallback needs.',
+          ],
+          decisionPrompts: [
+            'Define sizes, logo/fallback, primary/supporting text, chain indicator, truncation, and interactive affordance.',
+            'Keep token, account, and DTF identity semantically distinct while sharing geometry.',
+          ],
+          nextAction:
+            'Audit the most reused token/logo rows before cards and tables, since they consume this primitive.',
+        }
+      ),
+      component(
+        'metric',
+        'Metric',
+        'Presents a label, formatted value, supporting comparison, and optional trend.',
+        'Financial screens repeatedly need consistent value hierarchy and missing-data behavior.',
+        {
+          priority: 'product-extension',
+          auditStatus: 'partial',
+          evidence: [
+            'Overview, portfolio, governance, and Earn repeat label/value/change compositions.',
+          ],
+          decisionPrompts: [
+            'Define stacked versus inline pairs, contextual type roles, tabular numerals, units, missing/stale values, and movement color.',
+            'Preserve the rule that horizontal peers share text size.',
+          ],
+          nextAction:
+            'Cluster metric compositions on overview and governance; avoid inventing one universal card wrapper.',
+        }
+      ),
+      component(
+        'card',
+        'Card / content region',
+        'Groups a coherent repeated or actionable unit when framing is meaningful.',
+        'Clear criteria prevent every page section from becoming nested rounded cards.',
+        {
+          priority: 'v1-core',
+          ...mapped,
+          evidence: [
+            '50 product imports use shared Card, while many page regions compose surfaces directly.',
+          ],
+          decisionPrompts: [
+            'Define when Card is appropriate, flat versus interactive behavior, padding ownership, media, selected state, and nesting ban.',
+            'Keep substrate-reveal corner logic in page composition rather than Card defaults.',
+          ],
+          nextAction:
+            'Audit repeated interactive cards separately from page sections and supporting panels.',
+        }
+      ),
+      component(
+        'table',
+        'Table',
+        'Displays structured rows and columns for comparison.',
+        'Tables require shared alignment and density rules without forcing one rigid composition.',
+        {
+          priority: 'v1-core',
+          ...mapped,
+          evidence: [
+            '27 imports use Table, 18 DataTable, and 13 legacy Table; at least three table systems coexist.',
+          ],
+          decisionPrompts: [
+            'Define header, alignment, density, dividers, rich rows, truncation, overflow, empty/loading, and responsive transformation.',
+            'Retain open divider-free tables by default; use contained grids only when structure earns them.',
+          ],
+          relationships: [
+            {
+              id: 'data-table',
+              note: 'Data table adds interaction to the same display anatomy.',
+            },
+          ],
+          nextAction:
+            'Audit the three table implementations and golden-screen row types before choosing migration boundaries.',
+        }
+      ),
+      component(
+        'data-table',
+        'Data table',
+        'Adds sorting, filtering, selection, or pagination to tabular data.',
+        'Interactive tables need consistent controls without turning every table into a framework.',
+        {
+          priority: 'v1-core',
+          ...mapped,
+          evidence: [
+            '18 product imports use DataTable across Discover, Overview, Earn, and Portfolio.',
+          ],
+          decisionPrompts: [
+            'Define sorting, filtering, selection, pagination, loading, error, empty, sticky regions, and responsive behavior.',
+            'Allow product-specific columns and cells; standardize interaction contracts and geometry.',
+          ],
+          stateAdditions: [
+            'Sorted',
+            'Filtered',
+            'Selected rows',
+            'Paginated',
+            'No results',
+          ],
+          nextAction:
+            'Use Discover/Earn plus Portfolio as complementary stress tests after base Table anatomy.',
+        }
+      ),
+      component(
+        'chart',
+        'Chart',
+        'Visualizes change, comparison, or composition in data.',
+        'Charts need truthful scales, accessible summaries, and consistent interaction.',
+        {
+          priority: 'product-extension',
+          ...mapped,
+          evidence: [
+            'Eight product imports use shared chart helpers; recent Home and Overview performance charts establish a reviewed color direction.',
+          ],
+          decisionPrompts: [
+            'Define container anatomy, axis/type, tooltip, legend, time range, loading/empty/error, accessible summary, and performance/categorical color use.',
+          ],
+          nextAction:
+            'Treat performance, allocation, and comparison charts as separate chart patterns sharing foundations.',
+        }
+      ),
+      component(
+        'copy-value',
+        'Copyable value',
+        'Displays a value with safe truncation and an explicit copy action.',
+        'Addresses and transaction identifiers recur throughout the product and need reliable feedback.',
+        {
+          priority: 'product-extension',
+          ...mapped,
+          evidence: ['CopyValue has ten product imports and Copy has nine.'],
+          decisionPrompts: [
+            'Define truncation, visible label, copy affordance, success feedback, failure, and sensitive-value policy.',
+          ],
+          relationships: [
+            {
+              id: 'tooltip',
+              note: 'Tooltip may reveal the full value but must not be the only accessible text.',
+            },
+          ],
+          nextAction:
+            'Converge Copy and CopyValue presentation without changing clipboard behavior.',
+        }
+      ),
+    ],
+  },
+  {
+    id: 'disclosure',
+    name: 'Disclosure',
+    description:
+      'Reveals secondary detail without changing the user’s location.',
+    foundationDependencies: ['Typography', 'Spacing', 'Iconography', 'Motion'],
+    defaultStates: [
+      'Collapsed',
+      'Expanded',
+      'Hover',
+      'Focus-visible',
+      'Disabled',
+    ],
+    expectedDecisions: openDefinitionSlots(
+      'Disclosure semantics',
+      'Trigger anatomy',
+      'Motion',
+      'Nested content'
+    ),
+    items: [
+      component(
+        'accordion',
+        'Accordion',
+        'Reveals one or more stacked content sections.',
+        'Repeated expandable regions need consistent headers and keyboard behavior.',
+        {
+          priority: 'v1-core',
+          ...mapped,
+          evidence: ['13 product imports use shared Accordion.'],
+          decisionPrompts: [
+            'Define single/multiple expansion, trigger hierarchy, icon position, content inset, separators, and long labels.',
+          ],
+          nextAction:
+            'Audit FAQ/help and product-detail accordions for one anatomy.',
+        }
+      ),
+      component(
+        'collapsible',
+        'Collapsible',
+        'Toggles a single contextual block of content.',
+        'A light disclosure primitive is useful when accordion grouping semantics do not apply.',
+        {
+          priority: 'v1-conditional',
+          ...mapped,
+          evidence: ['Nine product imports use shared Collapsible.'],
+          decisionPrompts: [
+            'Confirm distinct need from Accordion and Details patterns; define trigger ownership and animation.',
+          ],
+          relationships: [
+            {
+              id: 'accordion',
+              note: 'Use Accordion for a coordinated set; Collapsible for one independent region.',
+            },
+          ],
+          nextAction:
+            'Inspect all nine consumers and merge the slot with Accordion if no distinct contract remains.',
+        }
+      ),
+    ],
+  },
+]

@@ -1,0 +1,21 @@
+[data-testid='design-system-lab'] nav {
+  position: static !important;
+}
+
+html,
+body,
+#root,
+#root > div,
+#root > div > div {
+  height: auto !important;
+  overflow: visible !important;
+}
+
+#app-container {
+  flex-grow: 0 !important;
+  overflow: visible !important;
+}
+
+.rc-root {
+  display: none !important;
+}

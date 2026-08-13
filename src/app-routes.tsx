@@ -56,6 +56,7 @@ import Discover from './views/home/discover'
 const AsyncMintWizard = lazy(
   () => import('./views/index-dtf/issuance/async-mint')
 )
+const DesignSystemLab = lazy(() => import('./views/internal/design-system'))
 
 // TODO: Fix recoll call on yield dtf auction page
 const AppRoutes = () => (
@@ -65,6 +66,20 @@ const AppRoutes = () => (
     {/* Internal routes */}
     <Route path="/internal/dtf-list" element={<InternalDTFList />} />
     <Route path="/internal/dtf-listed" element={<InternalDTFListed />} />
+    <Route
+      path="/internal/design-system/*"
+      element={
+        <Suspense
+          fallback={
+            <div className="flex h-screen w-full items-center justify-center">
+              <Spinner size={24} />
+            </div>
+          }
+        >
+          <DesignSystemLab />
+        </Suspense>
+      }
+    />
     <Route path="/top100" element={<Top100 />} />
     <Route path={'/internal/deploy'} element={<DeployIndexDTF />} />
 

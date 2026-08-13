@@ -116,6 +116,8 @@
     "e2e:smoke": "playwright test --project=smoke",
     "e2e:mobile": "playwright test --project=mobile",
     "e2e:ui": "playwright test --ui",
+    "design-system:capture": "playwright test --config=playwright.design-system.config.ts --update-snapshots",
+    "design-system:verify": "playwright test --config=playwright.design-system.config.ts",
     "e2e:capture": "tsx e2e/scripts/capture.ts",
     "e2e:capture:yield": "tsx e2e/scripts/capture-yield.ts",
     "e2e:check": "tsx e2e/scripts/check.ts",
