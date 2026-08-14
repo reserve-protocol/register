@@ -26,12 +26,33 @@ export const PRIMARY_COMPONENT_GROUPS: ComponentGroup[] = [
       'Disabled',
       'Loading',
     ],
-    expectedDecisions: openDefinitionSlots(
-      'Hierarchy and intent',
-      'Sizes and content',
-      'Interaction states',
-      'Loading and destructive behavior'
-    ),
+    expectedDecisions: [
+      {
+        name: 'Hierarchy and intent',
+        status: 'defined',
+        detail:
+          'Primary is blue; secondary is outlined white; quiet is visually bare until interaction; destructive is red and reserved for destructive consequences.',
+      },
+      {
+        name: 'Sizes and content',
+        status: 'defined',
+        detail:
+          'Micro, compact, and default actions use 28px, 32px, and 44px heights with 14px medium labels and size-matched icons.',
+      },
+      ...openDefinitionSlots('Interaction states'),
+      {
+        name: 'Loading communication',
+        status: 'defined',
+        detail:
+          'Ordinary work uses a progress verb; user-required wallet states use direct instructions; submitted transactions use lifecycle status. Width, size, role, placement, spinner, and disabled interaction stay stable.',
+      },
+      {
+        name: 'Destructive behavior',
+        status: 'defined',
+        detail:
+          'Destructive confirmation pairs an outlined Cancel action with a red, consequence-specific action rather than a generic Confirm label.',
+      },
+    ],
     items: [
       {
         ...component(
@@ -45,20 +66,19 @@ export const PRIMARY_COMPONENT_GROUPS: ComponentGroup[] = [
             evidence: [
               '229 product-source imports of the shared Button make it the highest-reach primitive.',
               'The current component exposes many overlapping variants and seven sizes.',
-              'A provisional 28/32/44px candidate matrix is ready in Studies.',
+              'V1 hierarchy now defines primary, outlined-white secondary, quiet, and destructive roles.',
+              'The reviewed 28/32/44px geometry is accepted for micro, compact, and default actions.',
             ],
             decisionPrompts: [
-              'Collapse the current variants into a small hierarchy based on importance and consequence.',
-              'Confirm micro, compact, and default sizes across text-only and icon content.',
-              'Define pressed, loading, destructive confirmation, and long-label behavior.',
+              'Define pressed treatment across the accepted hierarchy roles.',
+              'Define long-label behavior.',
             ],
-            nextAction:
-              'Review the prepared Actions matrix, then compare it with high-traffic Button consumers.',
+            nextAction: 'Define the remaining pressed and long-label contract.',
           }
         ),
         outputStatus: 'proposal',
         statusDetail:
-          'Current API and a provisional V1 candidate matrix are rendered; human review is pending.',
+          'Hierarchy, intent, control sizes, loading communication, and destructive confirmation are accepted; pressed and long-label behavior remain open.',
       },
       component(
         'icon-button',
@@ -128,10 +148,12 @@ export const PRIMARY_COMPONENT_GROUPS: ComponentGroup[] = [
           evidence: [
             '40 product-source imports use the shared TransactionButton.',
             'Transaction and seamless-transaction primitives already encode product behavior.',
+            'V1 distinguishes direct wallet instructions before submission from transaction lifecycle status after submission.',
+            'In dialogs, the anchored action remains stable while complex workflow bodies may update; recoverable errors preserve inputs and expose a contextual retry.',
           ],
           decisionPrompts: [
             'Separate visual Button roles from wallet and transaction lifecycle behavior.',
-            'Define approval, signing, pending, success, failure, retry, and wrong-network states.',
+            'Map approval, signing, submitted, confirmed, failed, retry, and wrong-network source states onto the accepted communication and recovery rules.',
             'Keep money and chain behavior in existing trusted seams while restyling presentation.',
           ],
           stateAdditions: [
@@ -491,6 +513,34 @@ export const PRIMARY_COMPONENT_GROUPS: ComponentGroup[] = [
       'Keyboard and history behavior'
     ),
     items: [
+      component(
+        'product-navigation',
+        'Product navigation',
+        'Moves between the persistent sections of a product object or workspace.',
+        'The Index DTF rail is present across the most important routes and materially shapes product identity beyond a generic Link.',
+        {
+          priority: 'product-extension',
+          ...mapped,
+          evidence: [
+            'One persistent Index DTF route model supplies Overview, Swap, Governance, Auctions, Details + Roles, nested routes, disabled routes, and the DTF identity header.',
+            'The same route truth is recomposed into the constrained-screen menu; this is a presentation change, not a second navigation vocabulary.',
+            'Current production uses a 40px framed icon slot, hover-expanded labels, blue active treatment, nested active dots, and a distinct disabled treatment.',
+          ],
+          decisionPrompts: [
+            'Define current, hover, focus, disabled, and nested treatment for the persistent Index DTF navigation.',
+            'Decide whether labels disclose on hover or occupy persistent width, and define the DTF identity relationship.',
+            'Preserve one route/state model across desktop rail and constrained-screen compositions.',
+          ],
+          relationships: [
+            {
+              id: 'link',
+              note: 'Each destination retains link semantics; Product navigation owns the recurring item and route-state composition.',
+            },
+          ],
+          nextAction:
+            'Review the prepared current-state alternatives with real Overview, Governance, Auctions, nested, and deprecated-route evidence.',
+        }
+      ),
       component(
         'link',
         'Link',

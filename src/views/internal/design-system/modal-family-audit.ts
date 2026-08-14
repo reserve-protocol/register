@@ -21,7 +21,7 @@ export const modalFamilyAudit: ModalFamilyAuditEntry[] = [
     requiredContent:
       'Short explanation, labeled controls, validation, and one clear completion action.',
     representativeTest: 'Liquidity simulation configuration',
-    status: 'Mapped · next',
+    status: 'Action rule accepted · composition partial',
   },
   {
     job: 'Select or search',
@@ -49,11 +49,13 @@ export const modalFamilyAudit: ModalFamilyAuditEntry[] = [
   },
   {
     job: 'Report an outcome',
-    evidence: 'Transaction success, transaction error, and Zapper completion',
+    evidence:
+      'Transaction confirmation, governance vote completion, and Zapper completion',
     requiredContent:
-      'Outcome, consequence, useful details or recovery, and the next action.',
-    representativeTest: 'Real transaction success, pending, and error',
-    status: 'Mapped · after task cases',
+      'Outcome, consequence, useful details, and a relevant next action.',
+    representativeTest:
+      'Real transaction confirmation and richer Zapper completion',
+    status: 'Success behavior mapped · visual composition next',
   },
   {
     job: 'Show media',

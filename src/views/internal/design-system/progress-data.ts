@@ -114,19 +114,19 @@ export const PROGRESS_GROUPS: ProgressGroup[] = [
 
 export const NEXT_QUEUE = [
   {
-    name: 'Review candidate foundations',
+    name: 'Stress-test information rows',
     detail:
-      'Challenge the carry, adapt, and discard recommendations before choosing values.',
+      'Apply the accepted 32px two-line asset identity to long names and richer Discover/Earn cells; surface a decision only if the anatomy stops holding.',
   },
   {
-    name: 'Render the first foundation proposals',
+    name: 'Audit metric role consistency',
     detail:
-      'Start with color, typography, spacing, radius, and elevation in complete states.',
+      'Map inline, headline, and outcome metrics to the shared anatomy and flag only concrete typography, icon, or state conflicts.',
   },
   {
-    name: 'Pressure-test on real screens',
+    name: 'Inspect Index navigation alignment',
     detail:
-      'Use Home, Discover, and the Index overview before broad auditing or migration.',
+      'Use the faithful collapsed and hover-expanded baseline to identify specific spacing, color, icon, shape, or motion conflicts before asking for visual direction; do not treat unused generic subitem support as a product requirement.',
   },
 ]
 

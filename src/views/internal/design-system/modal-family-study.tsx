@@ -318,8 +318,7 @@ const PressureTestQueue = () => (
         number="01"
         title="Eligibility"
         detail="Attestation, long copy, disclosure, gated action"
-        status="Review now"
-        active
+        status="Behavior reviewed"
       />
       <QueueItem
         number="02"
@@ -331,13 +330,14 @@ const PressureTestQueue = () => (
         number="03"
         title="Liquidity config"
         detail="Ordinary input, slider, explanatory copy, save action"
-        status="Next reconstruction"
+        status="Action rule accepted"
       />
       <QueueItem
         number="04"
-        title="Transaction outcome"
-        detail="Pending, success, error, recovery and optional illustration"
-        status="After task cases"
+        title="Consequential completion"
+        detail="Real confirmation details, next action and optional milestone illustration"
+        status="Success composition next"
+        active
       />
     </div>
   </article>
@@ -478,7 +478,9 @@ const InlineLink = ({
 )
 
 const PrivacyNote = ({ className }: { className?: string }) => (
-  <p className={`text-sm font-light leading-5 text-muted-foreground ${className}`}>
+  <p
+    className={`text-sm font-light leading-5 text-muted-foreground ${className}`}
+  >
     Your privacy is protected. This confirmation is only ever associated with
     your wallet address — never your personal information.{' '}
     <InlineLink href="https://reserve.org/terms-and-conditions#privacy">
@@ -564,7 +566,9 @@ const QueueItem = ({
   status: string
   active?: boolean
 }) => (
-  <div className={`bg-card p-5 ${active ? 'ring-1 ring-inset ring-primary' : ''}`}>
+  <div
+    className={`bg-card p-5 ${active ? 'ring-1 ring-inset ring-primary' : ''}`}
+  >
     <span className="text-xs font-medium text-primary">{number}</span>
     <h4 className="mt-3 font-medium">{title}</h4>
     <p className="mt-1 text-sm font-light leading-5 text-muted-foreground">

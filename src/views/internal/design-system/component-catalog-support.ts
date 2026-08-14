@@ -19,12 +19,22 @@ export const SUPPORT_COMPONENT_GROUPS: ComponentGroup[] = [
       'Motion',
     ],
     defaultStates: ['Closed', 'Opening', 'Open', 'Closing', 'Disabled trigger'],
-    expectedDecisions: openDefinitionSlots(
-      'Trigger and dismissal',
-      'Focus management',
-      'Placement and sizing',
-      'Constrained-screen adaptation'
-    ),
+    expectedDecisions: [
+      {
+        name: 'Trigger and dismissal',
+        status: 'defined',
+        detail:
+          'Shell dismissal cancels ordinary reversible tasks; destructive dialogs also show an explicit Cancel action; dialogs never nest.',
+      },
+      ...openDefinitionSlots('Focus management'),
+      {
+        name: 'Long-content behavior',
+        status: 'defined',
+        detail:
+          'When content overflows the viewport, the body scrolls while header and action regions remain anchored.',
+      },
+      ...openDefinitionSlots('Constrained-screen adaptation'),
+    ],
     items: [
       {
         ...component(
@@ -40,9 +50,9 @@ export const SUPPORT_COMPONENT_GROUPS: ComponentGroup[] = [
               'Current jobs collapse to review, configure, select, attest, explain, and outcome; media and drawers remain adjacent overlay families.',
             ],
             decisionPrompts: [
-              'Compare source-faithful current and foundation-applied versions of several real modal jobs before naming a shared grammar.',
-              'Define long-content scrolling, destructive confirmation, pending/error states, and nested-overlay restrictions.',
-              'Confirm when a meaningful milestone earns illustration rather than a status glyph or no visual lead.',
+              'Define the exact composition for evidenced consequential success outcomes.',
+              'Define the visual style and placement of milestone illustration.',
+              'Verify focus management and constrained-screen adaptation in the shared shell.',
             ],
             stateAdditions: [
               'Long content',
@@ -51,7 +61,7 @@ export const SUPPORT_COMPONENT_GROUPS: ComponentGroup[] = [
               'Error',
             ],
             nextAction:
-              'Review the real Eligibility comparison, then reconstruct Liquidity config and real transaction lifecycle states without inventing product content.',
+              'Visually resolve consequential outcome composition using real transaction requirements.',
           }
         ),
         outputStatus: 'proposal',
@@ -197,7 +207,7 @@ export const SUPPORT_COMPONENT_GROUPS: ComponentGroup[] = [
             'Sonner is installed as the shared toast implementation and transaction results use notifications.',
           ],
           decisionPrompts: [
-            'Define which results qualify, duration, pause, stacking, action/retry, and persistent-error fallback.',
+            'Apply the accepted routine-versus-consequential outcome boundary, then define duration, pause, stacking, action/retry, and persistent-error fallback.',
           ],
           relationships: [
             {
@@ -276,11 +286,11 @@ export const SUPPORT_COMPONENT_GROUPS: ComponentGroup[] = [
           priority: 'v1-core',
           auditStatus: 'partial',
           evidence: [
-            'Tables, portfolio, governance, and search all expose materially different empty conditions.',
+            'No proposals, delegates, rebalances, yield opportunities, and token-search results are evidenced product states with different recovery needs.',
           ],
           decisionPrompts: [
-            'Define no-data, no-results, first-use, filtered-empty, unavailable, and permission states.',
-            'Choose when an action is useful versus distracting.',
+            'Separate quiet absence from an actionable empty region according to whether the user can or should resolve it.',
+            'Choose when explanation, action, or illustration is earned without inventing onboarding states.',
           ],
           relationships: [
             {
@@ -289,7 +299,7 @@ export const SUPPORT_COMPONENT_GROUPS: ComponentGroup[] = [
             },
           ],
           nextAction:
-            'Inventory empty copy and actions across golden screens; define a composition recipe, not one rigid component.',
+            'Review illustration only for meaningful evidenced first-use states; fast-track routine no-results anatomy.',
         }
       ),
     ],
@@ -331,25 +341,30 @@ export const SUPPORT_COMPONENT_GROUPS: ComponentGroup[] = [
             'Cluster badges, pills, and chips by meaning before choosing one anatomy.',
         }
       ),
-      component(
-        'entity-identity',
-        'Entity identity',
-        'Pairs logo/avatar with name, symbol, chain, and optional supporting metadata.',
-        'Token, DTF, account, and governance identity appears across nearly every golden screen.',
-        {
-          priority: 'product-extension',
-          ...mapped,
-          evidence: [
-            'TokenLogo appears in 78 product consumer files; Avatar has shared support but different fallback needs.',
-          ],
-          decisionPrompts: [
-            'Define sizes, logo/fallback, primary/supporting text, chain indicator, truncation, and interactive affordance.',
-            'Keep token, account, and DTF identity semantically distinct while sharing geometry.',
-          ],
-          nextAction:
-            'Audit the most reused token/logo rows before cards and tables, since they consume this primitive.',
-        }
-      ),
+      {
+        ...component(
+          'entity-identity',
+          'Entity identity',
+          'Pairs logo/avatar with name, symbol, chain, and optional supporting metadata.',
+          'Token, DTF, account, and governance identity appears across nearly every golden screen.',
+          {
+            priority: 'product-extension',
+            ...mapped,
+            evidence: [
+              'TokenLogo appears in 78 product consumer files; the Overview asset table provides high-density name/symbol/logo evidence while Avatar has different fallback needs.',
+              'TokenLogoWithChain has repeated Portfolio consumers, while recent Index surfaces locally reconstruct the same DTF-logo plus chain-badge composition.',
+              'Overlapping asset identity uses two StackTokenLogo implementations; separating borders are currently added by individual consumers such as Discover.',
+            ],
+            decisionPrompts: [
+              'Pressure-test long and missing names, logo fallbacks, and account identity before accepting the full contract.',
+              'Keep token, account, and DTF identity semantically distinct while sharing geometry.',
+            ],
+            nextAction:
+              'Pressure-test the canonical candidate against dense Overview rows, long names, fallback states, and account identity before product adoption.',
+          }
+        ),
+        outputStatus: 'proposal',
+      },
       component(
         'metric',
         'Metric',
@@ -357,16 +372,16 @@ export const SUPPORT_COMPONENT_GROUPS: ComponentGroup[] = [
         'Financial screens repeatedly need consistent value hierarchy and missing-data behavior.',
         {
           priority: 'product-extension',
-          auditStatus: 'partial',
+          ...mapped,
           evidence: [
-            'Overview, portfolio, governance, and Earn repeat label/value/change compositions.',
+            'Overview and Governance use inline key/value pairs; Home uses headline stacked values; Auctions uses three parallel outcome metrics.',
           ],
           decisionPrompts: [
             'Define stacked versus inline pairs, contextual type roles, tabular numerals, units, missing/stale values, and movement color.',
             'Preserve the rule that horizontal peers share text size.',
           ],
           nextAction:
-            'Cluster metric compositions on overview and governance; avoid inventing one universal card wrapper.',
+            'Review the prepared inline, headline, and outcome roles; the parent region continues to own framing and layout.',
         }
       ),
       component(
@@ -398,6 +413,7 @@ export const SUPPORT_COMPONENT_GROUPS: ComponentGroup[] = [
           ...mapped,
           evidence: [
             '27 imports use Table, 18 DataTable, and 13 legacy Table; at least three table systems coexist.',
+            'Overview holdings and transactions provide divider-free dense rows; Governance proposals and Auctions rebalances prove that rich navigable records need a distinct composition.',
           ],
           decisionPrompts: [
             'Define header, alignment, density, dividers, rich rows, truncation, overflow, empty/loading, and responsive transformation.',
@@ -410,7 +426,7 @@ export const SUPPORT_COMPONENT_GROUPS: ComponentGroup[] = [
             },
           ],
           nextAction:
-            'Audit the three table implementations and golden-screen row types before choosing migration boundaries.',
+            'Review the prepared dense and rich row anatomy before choosing opt-in migration boundaries for the three table systems.',
         }
       ),
       component(

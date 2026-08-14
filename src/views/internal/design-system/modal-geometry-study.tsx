@@ -35,7 +35,7 @@ const ModalGeometryStudy = () => (
 
     <StudyCard
       label="Compact is a content role, not a Zapper state"
-      copy="A brief acknowledgement with one consequence and one action can use 384px. If it gains transaction details, forms, warnings, or multiple decisions, it moves to the 432px task role."
+      copy="A consequential acknowledgement with one useful next action can use 384px. Routine non-blocking results use a toast instead. If the outcome gains transaction details, forms, warnings, or multiple decisions, it moves to the 432px task role."
     >
       <div className="flex justify-center bg-secondary px-4 py-6 sm:px-8">
         <CompactConfirmation />
@@ -221,15 +221,15 @@ const CompactConfirmation = () => (
       <span className="mx-auto flex h-10 w-10 items-center justify-center rounded-full border border-success text-success">
         <CircleCheck className="h-4 w-4" />
       </span>
-      <h3 className="mt-4 text-2xl font-light">Preference saved</h3>
+      <h3 className="mt-4 text-2xl font-light">Proposal submitted</h3>
       <p className="mx-auto mt-2 max-w-[30ch] text-sm font-light leading-5 text-muted-foreground">
-        Future governance updates will use your new notification preference.
+        Your proposal is onchain and ready for the community to review.
       </p>
       <button
         type="button"
         className="mt-8 flex h-11 w-full items-center justify-center rounded-full bg-primary px-5 text-sm font-medium text-primary-foreground"
       >
-        Done
+        View proposal
       </button>
     </div>
   </div>

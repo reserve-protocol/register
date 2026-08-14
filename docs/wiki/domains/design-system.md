@@ -1,6 +1,6 @@
 ---
 title: Design System
-updated: 2026-08-13
+updated: 2026-08-14
 type: domain
 sources:
   - tailwind.config.ts
@@ -43,9 +43,86 @@ feedback surface/foreground roles without changing production tokens. This
 prevents candidates from choosing legacy aliases ad hoc; production
 tokenization remains a later explicit migration.
 
+Canonical product-facing candidates use the narrower production-consumable
+`src/components/ui/v1-semantic-recipes.ts` bridge. It currently exposes only
+canvas/content/structural surfaces, primary/supporting text, and matching
+surface-separation recipes. These still alias existing semantic tokens; they do
+not change global token values or production consumers. Add a recipe only when
+a canonical component proves the role is needed rather than speculating about
+the complete system in advance.
+
+The V1 Button hierarchy is partially accepted. Primary actions use the blue
+brand fill; secondary actions use white content-surface fill with the neutral
+control border; quiet actions remain visually bare until interaction; and
+destructive actions use red only for destructive consequences. Neutral gray
+fill is control chrome, not another secondary-action variant. Micro, compact,
+and default actions use the reviewed 28px, 32px, and 44px geometry. Ordinary
+asynchronous work uses a progress verb; a wallet-required state uses a direct
+instruction; and a submitted transaction uses lifecycle status. Those states
+preserve the control's width, size, hierarchy role, placement, and spinner and
+prevent repeat activation. Destructive confirmation pairs a red,
+consequence-specific action with an outlined Cancel action. Pressed and
+long-label behavior remain open, so the production Button API has not yet been
+migrated or marked complete.
+
+The V1 Dialog behavior contract is partially accepted. Ordinary reversible
+tasks use one visible completion action when shell dismissal already cancels;
+destructive confirmation adds an explicit safe exit. Long content scrolls in
+the body while header and action regions remain anchored. Dialogs never nest;
+supporting popovers, menus, and selectors may still appear within them. During
+progress, the anchored action communicates the current operation while complex
+workflow bodies may update. Recoverable failures preserve inputs and show
+contextual recovery; V1 does not define a standalone failure-dialog pattern
+without a real product requirement. Routine non-blocking completion uses a
+toast, while consequential outcomes that require detail or a next action remain
+in the dialog. Routine outcomes use a semantic framed icon; meaningful
+milestones may earn bespoke illustration. Exact outcome composition and
+illustration style remain open, and no production Dialog default has been
+migrated.
+
+Across V1, do not invent states, screens, flow steps, or component families to
+fill theoretical system slots. Standardize and facelift evidenced product jobs;
+add a new category only when a demonstrated functional gap cannot be served by
+an accepted pattern.
+
+The first product-facing preparation pass keeps three recurring jobs distinct:
+dense comparable data rows, rich navigable records, and compact metric
+compositions. They may share Entity identity, Metric, Status, Copyable value,
+and table-cell anatomy, but V1 must not hide their different behavior inside a
+universal `Row` prop matrix. Metric regions own inline, headline-stacked, and
+outcome-summary compositions; their parent owns framing and layout rather than
+Metric becoming another Card primitive.
+
+Entity identity is the first canonical product-facing candidate. The lab
+directly renders the shared `EntityIdentity`, `ChainBadgedLogo`, and
+`TokenLogoStack` implementations from `src/components/entity-identity/` rather
+than lab-only replicas. The badge follows the strongest recent Index treatment;
+the stack owns overlap order and surface-colored separation. Production
+consumers and the two legacy stack implementations are intentionally unchanged
+until an explicit adoption slice. Long-name, fallback, and account-identity
+pressure tests remain before the contract is accepted.
+
+Persistent product navigation is a Register extension, not a Button variant.
+The Index DTF rail and its constrained-screen menu consume one route/current/
+disabled model while composing it differently for available space. Generic
+Link semantics remain intact. Review starts from faithful collapsed and
+hover-expanded states of the real rail, not invented alternative directions.
+The designer owns visual refinement while accepted foundation rules constrain
+spacing, color, shape, icon, motion, and accessibility. The category exists
+because repeated real product use demonstrates the contract, not because a
+generic component catalog expects it.
+
 The contained lab is designer/developer working metadata and remains English-only. This is not an exemption for migrated product UI: any copy that reaches product users follows the repository's Lingui and es/ko/zh translation rule.
 
 Keep Tailwind, Radix, CVA, and local shadcn-style primitives as the implementation base. Storybook is deferred until the in-app lab demonstrates a concrete unmet need. Progress gates are independent: catalog maturity, rendered output, individual definition decisions, review, adoption, and verification must not collapse into one status. Missing capabilities use explicit statuses and subdued styling, never disabled navigation, because their detail pages are part of the planning surface.
+
+The component-work queue and design-decision queue are independent. Component
+work tracks audit, faithful states, V1 design/update, system alignment, stress
+testing, and migration readiness. The decision queue contains only genuine
+ambiguities that require designer judgment. An unfinished or visually dated
+component is work to perform, not automatically a question to ask; apply accepted
+rules and correct clear inconsistencies before escalating a specific unresolved
+choice.
 
 ## Color tokens (semantic — never hardcode hex/hsl)
 

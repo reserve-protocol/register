@@ -101,13 +101,47 @@ test.describe('design system lab', () => {
     await page.getByTestId('design-system-nav-components').click()
     const componentCatalog = page.getByTestId('components-overview')
     await expect(componentCatalog).toBeVisible()
+    const productComponentBoard = page.getByTestId('product-component-board')
+    await expect(productComponentBoard).toBeVisible()
+    await expect(
+      productComponentBoard.getByText('Information rows')
+    ).toBeVisible()
+    await expect(productComponentBoard.getByText('Metric roles')).toBeVisible()
+    await expect(
+      productComponentBoard.getByText('Index navigation')
+    ).toBeVisible()
+    await expect(
+      productComponentBoard.getByText('Identity marks')
+    ).toBeVisible()
+    await expect(
+      productComponentBoard.getByTestId('canonical-entity-identity').first()
+    ).toBeVisible()
+    await expect(
+      productComponentBoard.getByTestId('canonical-chain-badged-logo')
+    ).toBeVisible()
+    await expect(
+      productComponentBoard.getByTestId('canonical-token-logo-stack')
+    ).toBeVisible()
+    await page.goto('/internal/design-system/components/entity-identity')
+    await expect(page.getByTestId('entity-identity-state-sheet')).toBeVisible()
+    await expect(page.getByTestId('component-output-missing')).toHaveCount(0)
+    await page.goto('/internal/design-system/components')
     const coreComponentBoard = page.getByTestId('core-component-board')
     await expect(coreComponentBoard).toBeVisible()
-    const coreControlScale = coreComponentBoard.getByTestId('core-control-scale')
-    await expect(coreControlScale.getByText('Micro', { exact: true })).toBeVisible()
-    await expect(coreControlScale.getByText('Compact', { exact: true })).toBeVisible()
-    await expect(coreControlScale.getByText('Default', { exact: true })).toBeVisible()
-    await expect(coreComponentBoard.getByText('Selection', { exact: true })).toBeVisible()
+    const coreControlScale =
+      coreComponentBoard.getByTestId('core-control-scale')
+    await expect(
+      coreControlScale.getByText('Micro', { exact: true })
+    ).toBeVisible()
+    await expect(
+      coreControlScale.getByText('Compact', { exact: true })
+    ).toBeVisible()
+    await expect(
+      coreControlScale.getByText('Default', { exact: true })
+    ).toBeVisible()
+    await expect(
+      coreComponentBoard.getByText('Selection', { exact: true })
+    ).toBeVisible()
     await expect(
       coreComponentBoard.getByText('Selected + focus', { exact: true })
     ).toBeVisible()
@@ -117,7 +151,9 @@ test.describe('design system lab', () => {
     await expect(
       coreComponentBoard.getByText('Destructive + loading', { exact: true })
     ).toBeVisible()
-    await expect(coreComponentBoard.getByText('Feedback', { exact: true })).toBeVisible()
+    await expect(
+      coreComponentBoard.getByText('Feedback', { exact: true })
+    ).toBeVisible()
     await componentCatalog
       .locator('a[href="/internal/design-system/components/chart"]')
       .last()

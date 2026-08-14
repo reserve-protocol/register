@@ -525,6 +525,339 @@ Everything on this board remains a working candidate. Rendering an item here
 does not mark its component definition, design review, adoption, or product
 verification complete.
 
+### Fast design-decision loop — 2026-08-13
+
+The focused component review optimizes for human decision throughput. Capture
+and propagation are separate operations:
+
+1. Record each accepted decision in this plan immediately, including its scope
+   and any important exclusions or state distinctions.
+2. Decide whether the next visual judgment depends on seeing that choice
+   applied. If it does, update only the smallest candidate or fixture needed to
+   make that judgment reliable. If it does not, continue to the next decision.
+3. Add all other affected candidates, registries, documentation, fixtures,
+   screens, tests, and product implementations to the pending sync queue below.
+4. Run a synchronization pass after a useful decision batch, before product
+   migration, or whenever another decision depends on the affected surfaces.
+   Reconcile the queue, verify the synchronized result, and then clear it.
+
+Before building a new visual comparison, triage the decision into the cheapest
+reliable lane:
+
+- **Lane 1 — high-confidence recommendation:** accepted rules, strong product
+  evidence, usability/accessibility constraints, or avoiding a needless special
+  case strongly imply one answer. Present the recommendation, reasons,
+  confidence, and expected value of seeing alternatives; do not render by
+  default.
+- **Lane 2 — lightweight choice:** several answers are legitimate but their
+  tradeoff can be understood from concise descriptions or an existing lab or
+  product reference. Offer the smallest useful A/B/C choice.
+- **Lane 3 — visual decision:** alternatives are genuinely competitive or the
+  choice materially shapes identity, composition, visual quality, or product
+  character. Build only the lowest-cost visual evidence that can settle it.
+
+Conventional safety is not grounds to fast-track an identity-shaping choice.
+Conversely, a consequence of an accepted rule does not earn a new specimen just
+because it can be illustrated.
+
+For an existing product-defining component whose behavior and visual character
+already provide a meaningful baseline, do not invent competing directions by
+default. Reconstruct its real default, interaction, and relevant edge states
+faithfully; identify specific mismatches with accepted foundations; then let the
+designer direct the refinement. A/B alternatives are appropriate only after a
+real unresolved choice emerges from that review. This preserves designer control
+without exempting the component from logical spacing, color, shape, icon, motion,
+and accessibility constraints.
+
+Recurring product components belong in the ordinary component grid/catalog,
+not in a permanent decision queue. Show what the product actually has, along
+with accepted candidate attributes where already decided. Request designer input
+only when inspection reveals a specific broken rule, unresolved visual choice,
+or meaningful facelift opportunity; otherwise reconcile straightforward system
+consequences without turning them into review prompts.
+
+Component work and design decisions are separate queues:
+
+- **Component work queue:** components and product patterns that still need
+  source audit, faithful state coverage, canonical V1 design, system alignment,
+  stress testing, or eventual production migration. An item can require
+  substantial design/update work without presenting a decision to the designer.
+- **Design decision queue:** only unresolved questions where accepted rules and
+  product evidence do not determine the answer and human visual judgment would
+  materially affect the result. Each prompt must name the actual choice or rule
+  conflict; the existence of an unfinished component is not itself a decision.
+
+Codex should move component work forward autonomously through evidence gathering,
+rule application, state completion, and obvious corrections. It should surface a
+decision only at a real ambiguity or identity-shaping judgment, then return the
+accepted answer to the component work rather than treating the component itself
+as resolved.
+
+V1 standardizes and visually improves product states demonstrated by real
+requirements. It does not invent a new state, screen, flow step, or component
+family merely to make the system appear complete. A new category requires an
+evidenced functional gap that existing product behavior and accepted patterns
+cannot satisfy. Audits preserve jobs, content, behavior, and constraints; they
+do not elevate every legacy implementation detail or hypothetical state into a
+design-system contract.
+
+An accepted decision recorded here overrides any unsynchronized exploratory
+specimen. A stale specimen is evidence awaiting reconciliation, not a new design
+question. Intentionally deferred work and component decisions not yet reached
+do not enter the queue until an accepted decision actually creates downstream
+work.
+
+**Pending synchronization queue:** mark the dense two-line asset-row identity
+candidate as accepted at 32px across the component audit and relevant catalog
+guidance after its long-name/rich-cell stress test; reconcile remaining
+product-navigation catalog guidance with the faithful-baseline-first review
+rule. The review board now shows the accepted centered headline-metric reference
+and faithful collapsed/hover-expanded navigation baseline. Decisions 03–10 are
+synchronized across the lab-stage Dialog contract, affected catalogs, canonical
+guidance, and modal studies. Product migration remains intentionally out of
+scope; it will be planned from the accepted contract rather than treated as
+leftover propagation.
+
+### Product-facing component queue — 2026-08-14
+
+The reviewed foundations and basic component work are sufficiently mature to
+design the next product-facing layer without substantial expected rework.
+Surface/substrate roles, type hierarchy, spacing axes, shape roles, control
+geometry, icon usage, elevation, motion, and core action behavior constrain the
+work meaningfully. Remaining exact neutral values, pressed treatments, and
+field-specific anatomy should be resolved when real compositions expose a
+problem rather than blocking this layer in advance.
+
+Prioritize recurring product anatomy by reach, visual impact, foundation
+readiness, and how much it pressure-tests the system:
+
+1. **Repeated information rows.** Use real Index overview asset rows,
+   transaction rows, and governance proposal rows to define shared identity,
+   title/supporting text, status, metric alignment, truncation, density, and row
+   action rules. Do not force these different jobs into one universal Row
+   component; extract only the anatomy that survives the comparison.
+2. **Metric blocks.** Compare Overview, Governance, Home, and Earn label/value/
+   trend compositions to define stacked and inline roles, units, supporting
+   comparison, help/actions, missing values, and loading without inventing a
+   universal card wrapper.
+3. **Product navigation items.** Start with the persistent Index DTF rail and
+   related section navigation because they appear across high-value routes and
+   materially shape the product identity. Preserve route semantics while
+   reviewing current, hover, disabled, expanded, and long-label states. The
+   current rail item configuration has no nested navigation; dormant generic
+   `subItems` support is not product evidence and does not create V1 scope.
+
+Cards/content regions, contained form rows, action groups, and empty-state
+recipes follow this first batch. Consequential dialog completion remains valid
+visual work but no longer automatically outranks these higher-reach product
+surfaces. Real product source and realistic content are the evidence base;
+canonical candidates remain lab-only unless a deliberately named route
+integration experiment becomes necessary.
+
+### Product-facing preparation audit — 2026-08-14
+
+The first preparation pass reviewed source and live BSC CMC20 Overview,
+Governance, and Auctions surfaces. It confirms that this phase should extract a
+small anatomy layer rather than introduce universal product wrappers:
+
+- **Comparable data rows** occur in the Overview holdings and transaction
+  tables and are stress-tested by Discover and Index Earn. They need entity
+  identity, sortable headers, aligned/tabular numeric cells, secondary values,
+  long names/tags, basket counts, governed-entity overflow, APR/APY units,
+  performance meaning, row actions, loading, and overflow. Their default remains
+  divider-free inside white content regions.
+- **Rich navigable records** occur in Governance proposals and Rebalance
+  history. They need long titles, lifecycle/status, optional progress, several
+  metrics, qualifiers, provenance, and whole-item navigation. They should share
+  lower-level identity/status/metric anatomy with tables but remain a separate
+  composition rather than a universal `Row` variant.
+- **Metrics** have three evidenced jobs: inline key/value pairs in Overview and
+  Governance, headline stacked values on Home, and parallel outcome summaries
+  in Auctions. Standardize label/value/units/loading/missing anatomy; parent
+  regions continue to own grids and framing.
+- **Product navigation** is an evidenced Register extension missing from the
+  earlier generic registry. The persistent Index DTF rail combines DTF identity,
+  icon-led routes, current/hover/focus/disabled states, hover expansion, and a
+  constrained-screen recomposition. It is now cataloged separately from generic
+  Link and Button contracts while preserving one route model. Although the
+  generic item component contains `subItems` support, no current navigation item
+  supplies it, so nested navigation is excluded from V1 evidence.
+
+The next visual runway in the Components lab is intentionally compact. It uses
+real CMC20 labels and values to prepare three judgments: asset-row identity and
+density, metric emphasis/icon treatment, and Index navigation state language.
+The cards are candidates, not decisions, and no product component or route was
+changed.
+
+The first information-row judgment accepts a 32px identity mark for dense,
+two-line asset rows. This preserves the scale already used by the current Index
+DTF Overview exposure table (`TokenLogo` `xl` = 32×32px) and gives the asset
+name/symbol pair enough visual presence beside aligned numeric columns. The
+decision does not make every entity mark or every table-row icon 32px; compact
+single-line rows and other entity jobs keep their own evidenced geometry. Long
+asset names and the richer Discover/Earn cells remain the next stress test for
+this row anatomy.
+
+Headline protocol metrics remain center aligned. This is a composition-specific
+consequence of the one established headline-metric strip, not a general Metric
+primitive setting: inline key/value metrics and outcome summaries keep the
+alignment required by their own layouts. The discarded left-aligned comparison
+did not represent a meaningful product alternative and should not have entered
+the visual-decision lane.
+
+Decision triage for this layer:
+
+- **Lane 1:** numeric alignment, tabular numerals, equal sizing for horizontal
+  peers, three role-led metric compositions, the framed icon slot in the
+  persistent vertical rail, page region versus repeated-card criteria, the
+  accepted contained-form axis, and quiet-versus-actionable empty-state logic.
+- **Lane 2:** always-visible versus revealed row actions, missing/stale/loading
+  metric language, expanded navigation-label behavior, and routine action-group
+  ordering. These should use source evidence before new comparisons are built.
+- **Lane 3:** dense asset-row identity/density, rich navigable-record hierarchy,
+  metric emphasis/icon treatment, Index navigation current/hover-expanded state,
+  interactive card/media character, complex repeated form groups, and the
+  small set of meaningful illustrated empty states.
+
+Prepared order after the first three reviews: cards/content regions, contained
+form rows, action groups, and empty states. The audit source map lives in
+`product-facing-component-audit.ts`; it names source evidence, decision lane,
+migration seam, and the abstraction to avoid for each family. This lets a later
+migration plan group consumers by stable seam instead of translating legacy
+class combinations one by one.
+
+The first focused component decision loop accepted Button hierarchy and intent:
+
+- Primary actions use the blue brand fill.
+- Secondary actions use a white content-surface fill with the neutral control
+  border. The rejected neutral-filled alternative is not retained as another
+  secondary variant; neutral gray remains contained control chrome.
+- Quiet actions are visually bare until interaction. Destructive actions use
+  red only when the consequence is destructive, not merely because the label
+  says cancel or remove.
+- The reviewed micro, compact, and default action geometry remains 28px, 32px,
+  and 44px with 14px medium labels and size-matched icons.
+- This is a partial Button definition, not production migration. Pressed and
+  long-label behavior remain open; destructive confirmation is defined below.
+
+The decision was pressure-tested with the real Async Mint completion pair (`New
+mint` / `View DTF`) and the real Governance simulation follow-up (`View on
+Tenderly`).
+
+The second focused decision accepted state-led loading communication:
+
+- Ordinary asynchronous work uses a progress verb such as `Simulating…`.
+- When the user must act in a wallet, the control uses a direct instruction
+  such as `Confirm in wallet`; it does not call that waiting state `pending`.
+- After submission, transaction-aware controls use lifecycle status such as
+  `Transaction pending`. These are Transaction Action states, not extra visual
+  Button variants.
+- Width, size, hierarchy role, placement, and spinner remain stable; repeat
+  activation is disabled.
+
+Current source evidence mixes `Pending, sign in wallet`, `Sign in your wallet`,
+`Waiting for confirmation`, and `Confirming`. That is a later reconciliation
+target, not a reason to preserve all four as V1 vocabulary. That decision led
+to the dialog action comparison using the real Liquidity Simulation
+configuration requirements.
+
+The third focused decision accepted one visible completion action for a
+reversible task dialog:
+
+- Liquidity Simulation uses one full-width primary `Simulate` action.
+- Close, Escape, and outside dismissal already provide cancellation, so the
+  footer does not duplicate that behavior with an outlined `Cancel` action.
+- This does not apply to destructive confirmations, non-dismissible gates, or
+  flows where leaving has a distinct consequence that needs explicit wording.
+- This rule is synchronized in the lab-stage Dialog contract. Product migration
+  remains a later explicit stage.
+
+The fourth focused decision accepted body-owned scrolling for long dialog
+content:
+
+- When content exceeds the available viewport, the dialog header and action
+  region remain anchored while the body owns vertical scrolling.
+- This keeps task context and the required action available while users inspect
+  long legal or reference detail.
+- Ordinary short dialogs do not gain fixed regions or visible scroll chrome;
+  this rule changes behavior only at an actual overflow boundary.
+- The real expanded eligibility jurisdiction list was the pressure case. The
+  rule is synchronized in the lab-stage Dialog contract.
+
+The fifth focused decision accepted an explicit safe exit for destructive
+confirmation dialogs:
+
+- Pair a red destructive action with an outlined `Cancel` action. Shell close,
+  Escape, and outside dismissal retain the same cancellation behavior.
+- Name the destructive action for its consequence, such as `Delete proposal`,
+  rather than using a generic `Confirm` label.
+- This is a risk-specific exception to the one-visible-action rule for ordinary
+  reversible task dialogs, not a second general footer layout.
+- Dialog and Button guidance now reflects this rule; production migration
+  remains a later explicit stage.
+
+The sixth focused decision prohibited nested blocking dialogs:
+
+- Do not open a dialog on top of another dialog. Continue the task within the
+  current shell or replace its content when a blocking subtask is required.
+- Popovers, menus, and selectors may appear within a dialog when they are
+  supporting controls rather than separate blocking tasks.
+- This keeps focus ownership, dismissal, and elevation unambiguous without
+  creating another overlay-shell variation.
+- Dialog and related overlay guidance now reflects this rule.
+
+The seventh focused decision kept the action region stable during in-progress
+dialog states without freezing the dialog body:
+
+- The anchored action stays in the same location and at the same width, becomes
+  non-repeatable, and communicates the current operation using the accepted
+  state-led loading vocabulary.
+- Ordinary asynchronous tasks keep their content stable. Complex workflows may
+  update the body with steps, progress, transaction detail, or partial results
+  while the action continues to communicate the active operation.
+- The shell should not resize or reorganize for incidental loading changes. A
+  deliberate transition to a meaningfully different workflow stage may change
+  the composition.
+- Dialog and Transaction Action guidance now reflects this rule.
+
+The eighth focused decision preserved task context and user input after a
+recoverable dialog failure:
+
+- Keep the dialog open and retain entered values. Place the error near the
+  affected content and use the anchored action for a consequence-specific
+  recovery such as `Try again`.
+- Do not create a standalone failure-dialog pattern. Only an evidenced product
+  flow that genuinely cannot continue in its current composition may justify a
+  full-surface failure state.
+- This distinguishes recoverable validation or operation failure without
+  inventing another modal category.
+- Dialog, Transaction Action, and error-feedback guidance now reflects this
+  rule.
+
+The ninth focused decision accepted a tiered use of outcome illustration:
+
+- Routine success and error outcomes use a semantic framed icon rather than a
+  bespoke illustration.
+- Meaningful product milestones may earn purpose-made illustration when it adds
+  emotional or explanatory value. Illustration is not required merely because
+  a transaction finished.
+- This creates a deliberate role for Reserve illustration without making
+  routine confirmations visually excessive or dependent on an ever-growing
+  asset set.
+- Exact illustration style and composition remain a later visual decision.
+  Dialog outcome and illustration guidance reflects the accepted usage rule.
+
+The tenth focused decision tied outcome presentation to consequence and
+required attention:
+
+- Keep completion in the dialog when users need confirmation details, a next
+  action, recovery information, or assurance for a consequential operation.
+- Use a toast when the result is routine and non-blocking and users can safely
+  continue without inspecting it.
+- This prevents empty success dialogs and keeps the feedback component aligned
+  with the amount of attention the result actually requires.
+- Dialog and Toast guidance now reflects this boundary.
+
 ## Instant Zapper modal evidence — 2026-08-12
 
 Read-only inspection of the real overview modal and the installed
@@ -666,8 +999,31 @@ Read-only source evidence used for initial prioritization:
   The imported Zapper and local issuance flows supply specialized Amount field
   and Asset picker evidence but should not be collapsed into ordinary text
   fields or reimplemented inside Register.
+- Entity identity also includes two recurring visual primitives that the first
+  lab grid omitted. `TokenLogoWithChain` already has repeated Portfolio consumers,
+  while recent Index surfaces locally rebuild DTF logo + chain badge with
+  different size, offset, and background-border choices. Overlapping asset logos
+  are implemented by two `StackTokenLogo` files whose names differ only by case,
+  and consumers such as Discover add the separating surface-colored borders
+  themselves. Both belong in the component grid. V1 should consolidate each
+  recipe rather than asking the designer to rediscover its existence or
+  preserving every local variation.
+- The first canonical product-facing candidate now lives in
+  `src/components/entity-identity/` and is consumed directly by the lab. It
+  separates `ChainBadgedLogo`, `TokenLogoStack`, and the identity text
+  composition so rows can reuse the same marks without a universal Row prop
+  matrix. The badge recipe follows the strongest recent Index treatment, and
+  the stack owns its surface-colored separation rather than relying on
+  consumer selectors. Existing production consumers and the two legacy stack
+  files remain unchanged until an explicit migration slice.
+- `src/components/ui/v1-semantic-recipes.ts` is the deliberately small first
+  bridge from reviewed semantic roles to consumable candidate components. It
+  currently exposes only canvas/content/structural surfaces, primary/supporting
+  text, and matching surface-separation recipes. Extend it only when the next
+  canonical component demonstrates a real need; do not prebuild a second token
+  system.
 
-The registry currently contains 42 contracts: 32 V1 core, seven Register
+The registry currently contains 43 contracts: 32 V1 core, eight Register
 product extensions, and three conditional capabilities. Conditional slots stay
 visible but should be marked not-needed when product evidence fails to justify
 them; inclusion is not a commitment to build.

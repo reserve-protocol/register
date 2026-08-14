@@ -8,9 +8,14 @@ import {
   PageHeader,
 } from './catalog-ui'
 import ButtonStateSheet from './button-state-sheet'
+import ButtonHierarchyDecision from './button-hierarchy-decision'
+import ButtonLoadingDecision from './button-loading-decision'
+import ModalActionDecision from './modal-action-decision'
+import EntityIdentityStateSheet from './entity-identity-state-sheet'
 import { COMPONENT_GROUPS, getComponentItem } from './component-catalog'
 import ComponentWorkMap from './component-work-map'
 import CoreComponentBoard from './core-component-board'
+import ProductFacingReviewBoard from './product-facing-review-board'
 
 export const ComponentsOverview = () => (
   <div data-testid="components-overview" className="space-y-10">
@@ -19,6 +24,7 @@ export const ComponentsOverview = () => (
       title="Components"
       description="Working candidates first; capability inventory and audit status below."
     />
+    <ProductFacingReviewBoard />
     <CoreComponentBoard />
     <ComponentWorkMap />
     {COMPONENT_GROUPS.map((group) => (
@@ -76,6 +82,14 @@ export const ComponentDetail = () => {
           description={item.description}
           trailing={<CatalogBadges item={item} />}
         />
+        {item.id === 'button' && (
+          <div className="space-y-10">
+            <ButtonLoadingDecision />
+            <ButtonHierarchyDecision />
+          </div>
+        )}
+        {item.id === 'dialog' && <ModalActionDecision />}
+        {item.id === 'entity-identity' && <EntityIdentityStateSheet />}
         <section className="grid gap-4 sm:grid-cols-2">
           <InfoCard title="What it is used for" copy={item.why} />
           <InfoCard title="Why this status" copy={item.statusDetail} />
