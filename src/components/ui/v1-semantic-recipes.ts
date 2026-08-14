@@ -15,4 +15,11 @@ export const v1SemanticRecipes = {
     content: 'border-card bg-card',
     structural: 'border-secondary bg-secondary',
   },
+  focus: {
+    onContent:
+      'focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-card',
+  },
+  disabled: {
+    control: 'border border-border bg-muted text-muted-foreground',
+  },
 } as const

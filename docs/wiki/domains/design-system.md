@@ -19,7 +19,7 @@ Source of truth: `tailwind.config.ts` (tokens) + `src/app.css` (CSS variables, `
 
 The active contract is [design-system-v1](../../plans/design-system-v1.md). The contained `/internal/design-system` route is a routed capability map: Foundations, Components, and real-product Screens are direct top-level destinations, while the full tracker lives under the quieter Project Status route. Their landing pages own discovery; dropdowns do not duplicate the same catalogs. Expected foundation and component slots remain visible and navigable before audit or implementation; each detail page explains the capability, its current evidence/status, the decisions still open, and why no lab output exists yet. A listed slot is a question to resolve, not a commitment to build or preserve it.
 
-Real local golden screens are the canonical composition-testing surface; deterministic fixtures supplement live data for repeatable edge states. The lab's current evidence and Button state sheet document the existing system, not an approved new direction. The component catalog is product-shaped: established interaction-system references such as shadcn and Radix inform its vocabulary, but Register's audited needs decide what v1 defines, combines, or marks not needed.
+Real local golden screens are the canonical composition-testing surface; deterministic fixtures supplement live data for repeatable edge states. Foundation evidence still documents the existing system, while the Button state sheet now renders the actual reusable V1 candidate. The component catalog is product-shaped: established interaction-system references such as shadcn and Radix inform its vocabulary, but Register's audited needs decide what v1 defines, combines, or marks not needed.
 
 Foundation detail pages separate three layers: current evidence, a provisional candidate system, and the accepted v1 definition. Current evidence must name its audit method and limits; hand-picked token samples are not an audit. Candidate systems render expected semantic roles and their status alongside the source-review rationale, so an open exact value cannot look accepted merely because its structural role is proposed. Color is the first implemented pattern: audited surface usage, a rendered surface hierarchy, role tables, and separate feedback versus financial-movement semantics. Multi-value treatments such as chart gradients must show their stops, markers, text, theme variants, and derived fills before a smaller candidate mapping is proposed; one swatch is not complete evidence. A candidate may earn a rendered `proposal` status while every definition slot remains open; never translate that status into approval. When an inherited color fails text contrast, render it as a labeled swatch and state the limitation rather than presenting inaccessible text as a viable candidate.
 
@@ -44,9 +44,10 @@ prevents candidates from choosing legacy aliases ad hoc; production
 tokenization remains a later explicit migration.
 
 Canonical product-facing candidates use the narrower production-consumable
-`src/components/ui/v1-semantic-recipes.ts` bridge. It currently exposes only
-canvas/content/structural surfaces, primary/supporting text, and matching
-surface-separation recipes. These still alias existing semantic tokens; they do
+`src/components/ui/v1-semantic-recipes.ts` bridge. It currently exposes
+canvas/content/structural surfaces, primary/supporting text, matching
+surface-separation recipes, and the proven focus and disabled-control recipes.
+These still alias existing semantic tokens; they do
 not change global token values or production consumers. Add a recipe only when
 a canonical component proves the role is needed rather than speculating about
 the complete system in advance.
@@ -62,8 +63,19 @@ instruction; and a submitted transaction uses lifecycle status. Those states
 preserve the control's width, size, hierarchy role, placement, and spinner and
 prevent repeat activation. Destructive confirmation pairs a red,
 consequence-specific action with an outlined Cancel action. Pressed and
-long-label behavior remain open, so the production Button API has not yet been
-migrated or marked complete.
+long-label behavior remain open. A separate reusable candidate lives at
+`src/components/button/` and is consumed by the lab; the legacy production
+Button API and its consumers have not been migrated or marked complete.
+
+Button width is owned by composition, not by the size variant. Buttons are
+intrinsic/content-width by default. Compact buttons primarily serve dense
+horizontal toolbars, inline actions, and small secondary controls; stretching a
+compact button across a parent usually makes its height and label feel
+under-proportioned. Action groups should prefer a horizontal intrinsic-width
+arrangement when space allows. A narrow vertical action stack should use equal
+widths—usually full-width default 44px actions—rather than a ragged stack of
+differently sized content-width buttons. Full-width compact actions remain an
+evidenced exception, not a default pattern.
 
 The V1 Dialog behavior contract is partially accepted. Ordinary reversible
 tasks use one visible completion action when shell dismissal already cancels;
@@ -97,10 +109,26 @@ Entity identity is the first canonical product-facing candidate. The lab
 directly renders the shared `EntityIdentity`, `ChainBadgedLogo`, and
 `TokenLogoStack` implementations from `src/components/entity-identity/` rather
 than lab-only replicas. The badge follows the strongest recent Index treatment;
-the stack owns overlap order and surface-colored separation. Production
-consumers and the two legacy stack implementations are intentionally unchanged
-until an explicit adoption slice. Long-name, fallback, and account-identity
-pressure tests remain before the contract is accepted.
+its 16px xl and 14px lg chain marks include the separating border rather than
+growing around it. The lg mark uses an optical floor because the fixed 2px
+separator otherwise overwhelms the visible chain symbol. The stack owns overlap
+order and surface-colored separation. Long names,
+deterministic logo fallback, account marks, and a dense 32px Index holdings
+composition now pass in the lab. Production consumers and the two legacy stack
+implementations are intentionally unchanged until an explicit adoption slice.
+
+The canonical product kernel now also includes `Button`, `Metric`/`MetricValue`,
+and `EmptyState`. Button owns the accepted action hierarchy, 28/32/44px scale,
+icon spacing, focus, disabled, and loading behavior while leaving pressed and
+long-label behavior open. Metric owns accepted inline and centered-headline label/value
+anatomy; horizontal peers remain 16px/300, right aligned, and tabular. Its
+parent owns framing, grids, help, and responsive composition. Outcome-summary
+icon treatment and emphasis remain a visual decision, so that role is not yet
+in the canonical API. Empty state owns only quiet versus user-resolvable absence
+hierarchy; parent regions own height and framing, while bespoke illustration is
+reserved for later review of meaningful evidenced states. A realistic
+divider-free Index slice composes Entity identity with Metric values without
+introducing a universal Row component.
 
 Persistent product navigation is a Register extension, not a Button variant.
 The Index DTF rail and its constrained-screen menu consume one route/current/
@@ -114,7 +142,34 @@ generic component catalog expects it.
 
 The contained lab is designer/developer working metadata and remains English-only. This is not an exemption for migrated product UI: any copy that reaches product users follows the repository's Lingui and es/ko/zh translation rule.
 
-Keep Tailwind, Radix, CVA, and local shadcn-style primitives as the implementation base. Storybook is deferred until the in-app lab demonstrates a concrete unmet need. Progress gates are independent: catalog maturity, rendered output, individual definition decisions, review, adoption, and verification must not collapse into one status. Missing capabilities use explicit statuses and subdued styling, never disabled navigation, because their detail pages are part of the planning surface.
+Keep Tailwind, Radix, CVA, and local shadcn-style primitives as the implementation base. Storybook is deferred until the in-app lab demonstrates a concrete unmet need. Progress gates are independent: catalog maturity, rendered output, reusable implementation, production adoption, individual definition decisions, review, and verification must not collapse into one status. In particular, a rendered proposal may be only a specimen; the catalog must say whether a reusable canonical candidate actually exists and whether any product consumer has adopted it. Missing capabilities use explicit statuses and subdued styling, never disabled navigation, because their detail pages are part of the planning surface.
+
+Composition review readiness is a separate gate. A composition is ready for
+canonical V1 review only when every visually meaningful dependency is either a
+reusable V1 candidate or an explicitly retained domain/behavior primitive.
+Otherwise label the composition provisional, blocked, or exploration-only,
+state exactly what the reviewer may judge, and list the unresolved dependency.
+A canonical child inside hand-built framing does not make the parent
+composition canonical.
+
+The minimal canonical interaction kernel now includes `Button`, a 20px square
+binary `Checkbox`, a named compact 32px `IconButton`, and a Radix-backed
+`Dialog` shell. Checkbox promotion covers checked, unchecked, focus-visible,
+and disabled states only; indeterminate, invalid, and rich label/help rows stay
+open. IconButton promotion covers the dialog/header action role only; tooltip,
+toggle/selected, and invisible hit-target contracts stay open. Dialog provides
+384px compact and 432px standard shells, the 24px content axis, anchored
+header/body/footer regions, compact close action, and non-dismissible behavior.
+Final elevation, consequential outcomes, illustration, and constrained-screen
+adaptation remain provisional. These candidates are lab-only and have no
+production adoption.
+
+Verification is also phase-aware. A bounded candidate edit gets focused type,
+behavior, and rendered checks for its current seam; a coherent canonicalization
+batch gets the broader design-system suite and reconciliation pass; repository
+smoke/full gates begin when work reaches production or another genuinely global
+boundary. Interactive browser review may reuse the running lab, but committed
+Playwright evidence continues to use its controlled E2E environment.
 
 The component-work queue and design-decision queue are independent. Component
 work tracks audit, faithful states, V1 design/update, system alignment, stress

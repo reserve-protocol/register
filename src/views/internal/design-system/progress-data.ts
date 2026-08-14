@@ -114,14 +114,14 @@ export const PROGRESS_GROUPS: ProgressGroup[] = [
 
 export const NEXT_QUEUE = [
   {
-    name: 'Stress-test information rows',
+    name: 'Review outcome metric emphasis',
     detail:
-      'Apply the accepted 32px two-line asset identity to long names and richer Discover/Earn cells; surface a decision only if the anatomy stops holding.',
+      'Use real Rebalance outcomes to decide icon treatment and emphasis before adding an outcome role to the canonical Metric API.',
   },
   {
-    name: 'Audit metric role consistency',
+    name: 'Review rich navigable records',
     detail:
-      'Map inline, headline, and outcome metrics to the shared anatomy and flag only concrete typography, icon, or state conflicts.',
+      'Use real Governance proposals and Rebalance history to judge hierarchy without treating them as dense table-row variants.',
   },
   {
     name: 'Inspect Index navigation alignment',

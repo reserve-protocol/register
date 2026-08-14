@@ -1,5 +1,7 @@
 import type { ReactNode } from 'react'
-import { Check, LoaderCircle } from 'lucide-react'
+import { Check } from 'lucide-react'
+
+import { Button } from '@/components/button'
 
 const ButtonLoadingDecision = () => (
   <section
@@ -67,15 +69,9 @@ const AcceptedState = ({
 )
 
 const StateButton = ({ label }: { label: string }) => (
-  <button
-    type="button"
-    aria-busy="true"
-    disabled
-    className="inline-flex h-11 w-full items-center justify-center gap-2 rounded-full bg-primary px-5 text-sm font-medium text-primary-foreground"
-  >
-    <LoaderCircle className="size-4 animate-spin" />
+  <Button loading className="w-full">
     {label}
-  </button>
+  </Button>
 )
 
 export default ButtonLoadingDecision

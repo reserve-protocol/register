@@ -65,6 +65,20 @@ export const SUPPORT_COMPONENT_GROUPS: ComponentGroup[] = [
           }
         ),
         outputStatus: 'proposal',
+        implementationStatus: 'canonical-candidate',
+        adoptionStatus: 'none',
+        review: {
+          status: 'ready',
+          scope:
+            'Review the reusable 384/432px shell, square structure, 24px content axis, close action, anchored regions, and non-dismissible behavior. Outcome composition, illustration, constrained screens, and final elevation remain provisional.',
+          dependencies: [
+            { name: 'Button', status: 'canonical' },
+            { name: 'IconButton', status: 'canonical' },
+            { name: 'Radix Dialog behavior', status: 'retained' },
+          ],
+        },
+        statusDetail:
+          'A reusable V1 shell implements the accepted width, content-axis, region, close-action, and non-dismissible contracts. Outcome composition, final elevation, and constrained-screen behavior remain provisional; production adoption has not started.',
       },
       component(
         'drawer',
@@ -277,31 +291,44 @@ export const SUPPORT_COMPONENT_GROUPS: ComponentGroup[] = [
             'Pressure-test real tables, cards, and metrics; avoid one generic rounded bar language.',
         }
       ),
-      component(
-        'empty-state',
-        'Empty state',
-        'Explains why content is absent and what can happen next.',
-        'Empty states turn absence into a clear product state rather than a blank surface.',
-        {
-          priority: 'v1-core',
-          auditStatus: 'partial',
-          evidence: [
-            'No proposals, delegates, rebalances, yield opportunities, and token-search results are evidenced product states with different recovery needs.',
-          ],
-          decisionPrompts: [
-            'Separate quiet absence from an actionable empty region according to whether the user can or should resolve it.',
-            'Choose when explanation, action, or illustration is earned without inventing onboarding states.',
-          ],
-          relationships: [
-            {
-              id: 'alert',
-              note: 'An empty state owns an absent content region; an alert annotates existing context.',
-            },
-          ],
-          nextAction:
-            'Review illustration only for meaningful evidenced first-use states; fast-track routine no-results anatomy.',
-        }
-      ),
+      {
+        ...component(
+          'empty-state',
+          'Empty state',
+          'Explains why content is absent and what can happen next.',
+          'Empty states turn absence into a clear product state rather than a blank surface.',
+          {
+            priority: 'v1-core',
+            auditStatus: 'mapped',
+            evidence: [
+              'No proposals, delegates, rebalances, yield opportunities, and token-search results establish routine quiet absence.',
+              'The deploy token picker establishes a user-resolvable absence with explanation and existing follow-up actions.',
+            ],
+            decisionPrompts: [
+              'Choose bespoke illustration only for a small evidenced set of meaningful first-use or milestone states.',
+            ],
+            relationships: [
+              {
+                id: 'alert',
+                note: 'An empty state owns an absent content region; an alert annotates existing context.',
+              },
+            ],
+            nextAction:
+              'Pressure-test the canonical quiet anatomy in a table and reserve illustration decisions for meaningful real states.',
+          }
+        ),
+        outputStatus: 'proposal',
+        implementationStatus: 'canonical-candidate',
+        adoptionStatus: 'none',
+        review: {
+          status: 'ready',
+          scope:
+            'Review quiet and user-resolvable absence anatomy. Illustration-led milestone states remain outside this candidate.',
+          dependencies: [{ name: 'Button', status: 'canonical' }],
+        },
+        statusDetail:
+          'A reusable V1 candidate implements quiet and user-resolvable absence anatomy using canonical actions. Illustration-led milestone states remain open; production adoption has not started.',
+      },
     ],
   },
   {
@@ -354,36 +381,64 @@ export const SUPPORT_COMPONENT_GROUPS: ComponentGroup[] = [
               'TokenLogo appears in 78 product consumer files; the Overview asset table provides high-density name/symbol/logo evidence while Avatar has different fallback needs.',
               'TokenLogoWithChain has repeated Portfolio consumers, while recent Index surfaces locally reconstruct the same DTF-logo plus chain-badge composition.',
               'Overlapping asset identity uses two StackTokenLogo implementations; separating borders are currently added by individual consumers such as Discover.',
+              'The canonical candidate now passes long-name truncation, deterministic logo fallback, account-mark composition, and a dense 32px Index holdings slice.',
             ],
             decisionPrompts: [
-              'Pressure-test long and missing names, logo fallbacks, and account identity before accepting the full contract.',
-              'Keep token, account, and DTF identity semantically distinct while sharing geometry.',
+              'Choose the first opt-in production adoption slice after visual review; legacy stack and badge consumers remain unchanged.',
             ],
             nextAction:
-              'Pressure-test the canonical candidate against dense Overview rows, long names, fallback states, and account identity before product adoption.',
+              'Review the corrected chain-badge ratio and dense holdings slice, then choose one opt-in production adoption seam.',
           }
         ),
         outputStatus: 'proposal',
+        implementationStatus: 'canonical-candidate',
+        adoptionStatus: 'none',
+        review: {
+          status: 'ready',
+          scope:
+            'Review identity anatomy, truncation, fallbacks, chain-badge ratio, and overlapping-logo separation. The domain logo renderers are retained intentionally.',
+          dependencies: [
+            { name: 'TokenLogo', status: 'retained' },
+            { name: 'ChainLogo', status: 'retained' },
+            { name: 'Blockies', status: 'retained' },
+          ],
+        },
+        statusDetail:
+          'A reusable V1 candidate implements identity text, domain marks, chain-badge geometry, overlapping stacks, fallbacks, and truncation. Existing product consumers remain unchanged.',
       },
-      component(
-        'metric',
-        'Metric',
-        'Presents a label, formatted value, supporting comparison, and optional trend.',
-        'Financial screens repeatedly need consistent value hierarchy and missing-data behavior.',
-        {
-          priority: 'product-extension',
-          ...mapped,
-          evidence: [
-            'Overview and Governance use inline key/value pairs; Home uses headline stacked values; Auctions uses three parallel outcome metrics.',
-          ],
-          decisionPrompts: [
-            'Define stacked versus inline pairs, contextual type roles, tabular numerals, units, missing/stale values, and movement color.',
-            'Preserve the rule that horizontal peers share text size.',
-          ],
-          nextAction:
-            'Review the prepared inline, headline, and outcome roles; the parent region continues to own framing and layout.',
-        }
-      ),
+      {
+        ...component(
+          'metric',
+          'Metric',
+          'Presents a label and formatted value without owning the surrounding card or grid.',
+          'Financial screens repeatedly need consistent value hierarchy, alignment, and missing-data behavior.',
+          {
+            priority: 'product-extension',
+            ...mapped,
+            evidence: [
+              'Overview and Governance use inline key/value pairs; Home uses headline stacked values; Auctions uses three parallel outcome metrics.',
+              'The canonical candidate now covers accepted inline and centered-headline anatomy while preserving equal sizing for horizontal peers.',
+            ],
+            decisionPrompts: [
+              'Review outcome-summary emphasis and icon treatment before adding that role to the canonical API.',
+              'Confirm stale-data language only when a real product source distinguishes stale from missing or loading.',
+            ],
+            nextAction:
+              'Pressure-test the canonical inline anatomy inside dense Index data and review outcome-summary emphasis separately.',
+          }
+        ),
+        outputStatus: 'proposal',
+        implementationStatus: 'canonical-candidate',
+        adoptionStatus: 'none',
+        review: {
+          status: 'ready',
+          scope:
+            'Review inline and centered-headline metric anatomy. Outcome emphasis, help affordances, and the shown legacy loading skeleton are not canonical Metric variants.',
+          dependencies: [],
+        },
+        statusDetail:
+          'Reusable V1 Metric and MetricValue candidates implement inline and centered-headline anatomy. Outcome emphasis, help affordances, and loading presentation remain open; production adoption has not started.',
+      },
       component(
         'card',
         'Card / content region',
@@ -403,32 +458,48 @@ export const SUPPORT_COMPONENT_GROUPS: ComponentGroup[] = [
             'Audit repeated interactive cards separately from page sections and supporting panels.',
         }
       ),
-      component(
-        'table',
-        'Table',
-        'Displays structured rows and columns for comparison.',
-        'Tables require shared alignment and density rules without forcing one rigid composition.',
-        {
-          priority: 'v1-core',
-          ...mapped,
-          evidence: [
-            '27 imports use Table, 18 DataTable, and 13 legacy Table; at least three table systems coexist.',
-            'Overview holdings and transactions provide divider-free dense rows; Governance proposals and Auctions rebalances prove that rich navigable records need a distinct composition.',
+      {
+        ...component(
+          'table',
+          'Table',
+          'Displays structured rows and columns for comparison.',
+          'Tables require shared alignment and density rules without forcing one rigid composition.',
+          {
+            priority: 'v1-core',
+            ...mapped,
+            evidence: [
+              '27 imports use Table, 18 DataTable, and 13 legacy Table; at least three table systems coexist.',
+              'Overview holdings establishes a divider-free dense row with 32px two-line identity and equally sized, right-aligned numeric peers.',
+              'Governance proposals and Auctions rebalances prove that rich navigable records need a distinct composition.',
+            ],
+            decisionPrompts: [
+              'Review rich navigable-record hierarchy separately; it is not a dense Table row variant.',
+              'Resolve responsive transformation when a real route integration experiment begins, not in the desktop-only lab.',
+            ],
+            relationships: [
+              {
+                id: 'data-table',
+                note: 'Data table adds interaction to the same display anatomy.',
+              },
+            ],
+            nextAction:
+              'Use the canonical Entity identity and Metric value seams in one opt-in route experiment before consolidating the three table systems.',
+          }
+        ),
+        outputStatus: 'proposal',
+        implementationStatus: 'specimen',
+        adoptionStatus: 'none',
+        review: {
+          status: 'provisional',
+          scope:
+            'Review only the source-grounded data density and how canonical Entity identity and Metric value compose. Table, row, header, and responsive contracts are still hand-built specimens.',
+          dependencies: [
+            { name: 'Entity identity', status: 'canonical' },
+            { name: 'Metric value', status: 'canonical' },
+            { name: 'Table / row anatomy', status: 'provisional' },
           ],
-          decisionPrompts: [
-            'Define header, alignment, density, dividers, rich rows, truncation, overflow, empty/loading, and responsive transformation.',
-            'Retain open divider-free tables by default; use contained grids only when structure earns them.',
-          ],
-          relationships: [
-            {
-              id: 'data-table',
-              note: 'Data table adds interaction to the same display anatomy.',
-            },
-          ],
-          nextAction:
-            'Review the prepared dense and rich row anatomy before choosing opt-in migration boundaries for the three table systems.',
-        }
-      ),
+        },
+      },
       component(
         'data-table',
         'Data table',

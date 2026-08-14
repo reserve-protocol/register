@@ -77,40 +77,69 @@ export const PRIMARY_COMPONENT_GROUPS: ComponentGroup[] = [
           }
         ),
         outputStatus: 'proposal',
+        implementationStatus: 'canonical-candidate',
+        adoptionStatus: 'none',
+        review: {
+          status: 'ready',
+          scope:
+            'Review the accepted hierarchy, 28/32/44px geometry, icon spacing, focus, disabled, and loading presentation. Pressed and long-label behavior remain outside this review.',
+          dependencies: [
+            {
+              name: 'Semantic state recipes',
+              status: 'canonical',
+            },
+          ],
+        },
         statusDetail:
-          'Hierarchy, intent, control sizes, loading communication, and destructive confirmation are accepted; pressed and long-label behavior remain open.',
+          'A reusable V1 candidate implements the accepted hierarchy, sizes, focus, disabled, loading, and icon-spacing rules. Pressed and long-label behavior remain open; production adoption has not started.',
       },
-      component(
-        'icon-button',
-        'Icon button',
-        'A compact action represented primarily by an icon.',
-        'Icon-only actions need consistent sizing, labeling, tooltip, and target-area behavior.',
-        {
-          priority: 'v1-core',
-          auditStatus: 'partial',
-          evidence: [
-            'Icon-only actions appear throughout headers, tables, dialogs, and the Zapper modal.',
-            'The Zapper study validates a 32px visible button with glyph alignment to a 24px content axis.',
+      {
+        ...component(
+          'icon-button',
+          'Icon button',
+          'A compact action represented primarily by an icon.',
+          'Icon-only actions need consistent sizing, labeling, tooltip, and target-area behavior.',
+          {
+            priority: 'v1-core',
+            auditStatus: 'partial',
+            evidence: [
+              'Icon-only actions appear throughout headers, tables, dialogs, and the Zapper modal.',
+              'The Zapper study validates a 32px visible button with glyph alignment to a 24px content axis.',
+            ],
+            decisionPrompts: [
+              'Confirm when an icon is recognizable enough to omit visible text.',
+              'Define visible geometry separately from the minimum hit target.',
+              'Define tooltip, aria-label, and selected/toggle behavior.',
+            ],
+            relationships: [
+              {
+                id: 'button',
+                note: 'Shares size, tone, and state rules with Button.',
+              },
+              {
+                id: 'tooltip',
+                note: 'May provide non-essential naming support.',
+              },
+            ],
+            nextAction:
+              'Use the compact candidate in the canonical Dialog shell, then revisit target-area and toggle behavior only when a real composition requires it.',
+          }
+        ),
+        outputStatus: 'proposal',
+        implementationStatus: 'canonical-candidate',
+        adoptionStatus: 'none',
+        review: {
+          status: 'ready',
+          scope:
+            'Review the compact 32px dialog/header action only. Tooltip policy, toggle/selected behavior, and invisible hit-target expansion remain intentionally open.',
+          dependencies: [
+            { name: 'Button', status: 'canonical' },
+            { name: 'Lucide glyphs', status: 'retained' },
           ],
-          decisionPrompts: [
-            'Confirm when an icon is recognizable enough to omit visible text.',
-            'Define visible geometry separately from the minimum hit target.',
-            'Define tooltip, aria-label, and selected/toggle behavior.',
-          ],
-          relationships: [
-            {
-              id: 'button',
-              note: 'Shares size, tone, and state rules with Button.',
-            },
-            {
-              id: 'tooltip',
-              note: 'May provide non-essential naming support.',
-            },
-          ],
-          nextAction:
-            'Extract representative header, table, and modal examples into the Actions state sheet.',
-        }
-      ),
+        },
+        statusDetail:
+          'A reusable V1 candidate implements the compact 32px named-action role needed by dialog headers and disclosures. Tooltip, toggle/selected, and expanded hit-target behavior remain open; production adoption has not started.',
+      },
       component(
         'button-group',
         'Action group',
@@ -403,22 +432,41 @@ export const PRIMARY_COMPONENT_GROUPS: ComponentGroup[] = [
       'Indeterminate and disabled states'
     ),
     items: [
-      component(
-        'checkbox',
-        'Checkbox',
-        'Selects zero or more independent options.',
-        'Checkboxes need clear checked, unchecked, and indeterminate behavior.',
-        {
-          priority: 'v1-core',
-          ...mapped,
-          evidence: ['22 product-source imports use the shared Checkbox.'],
-          decisionPrompts: [
-            'Define control/label/help composition and checked, indeterminate, invalid, disabled behavior.',
+      {
+        ...component(
+          'checkbox',
+          'Checkbox',
+          'Selects zero or more independent options.',
+          'Checkboxes need clear checked, unchecked, and indeterminate behavior.',
+          {
+            priority: 'v1-core',
+            ...mapped,
+            evidence: ['22 product-source imports use the shared Checkbox.'],
+            decisionPrompts: [
+              'Define control/label/help composition and checked, indeterminate, invalid, disabled behavior.',
+            ],
+            nextAction:
+              'Use the 20px candidate in the eligibility composition; define indeterminate, invalid, and richer label/help anatomy only when evidenced.',
+          }
+        ),
+        outputStatus: 'proposal',
+        implementationStatus: 'canonical-candidate',
+        adoptionStatus: 'none',
+        review: {
+          status: 'ready',
+          scope:
+            'Review the 20px square mark and its unchecked, checked, focus-visible, and disabled states. Indeterminate, invalid, and row composition remain intentionally open.',
+          dependencies: [
+            {
+              name: 'Semantic state recipes',
+              status: 'canonical',
+            },
+            { name: 'Radix Checkbox behavior', status: 'retained' },
           ],
-          nextAction:
-            'Audit checkbox use in governance forms and data selection together.',
-        }
-      ),
+        },
+        statusDetail:
+          'A reusable V1 candidate implements the 20px square binary mark and its essential focus and disabled states. Indeterminate, invalid, and rich row composition remain open; production adoption has not started.',
+      },
       component(
         'radio-group',
         'Radio group',

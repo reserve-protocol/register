@@ -1,5 +1,6 @@
 import CoreComponentScaleBoard from './core-component-scale-board'
 import CoreComponentStateBoard from './core-component-state-board'
+import { ComponentReviewReadiness } from './catalog-ui'
 
 const CoreComponentBoard = () => (
   <section data-testid="core-component-board" className="space-y-4">
@@ -19,6 +20,21 @@ const CoreComponentBoard = () => (
         Lab only · shared primitives unchanged
       </p>
     </div>
+
+    <ComponentReviewReadiness
+      testId="core-board-readiness"
+      review={{
+        status: 'exploration',
+        scope:
+          'Use this board only to compare scale and state hypotheses across families. It is not a library of reusable V1 components; follow each component detail page for canonical review.',
+        dependencies: [
+          { name: 'Button', status: 'canonical' },
+          { name: 'Checkbox', status: 'canonical' },
+          { name: 'IconButton', status: 'canonical' },
+          { name: 'Remaining controls', status: 'provisional' },
+        ],
+      }}
+    />
 
     <CoreComponentScaleBoard />
     <CoreComponentStateBoard />

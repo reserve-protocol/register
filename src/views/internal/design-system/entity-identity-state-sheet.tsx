@@ -3,6 +3,7 @@ import {
   EntityIdentity,
   TokenLogoStack,
 } from '@/components/entity-identity'
+import BlockiesAvatar from '@/components/utils/blockies-avatar'
 import { ChainId } from '@/utils/chains'
 
 const ASSETS = [
@@ -84,12 +85,56 @@ const EntityIdentityStateSheet = () => (
           </span>
         </div>
       </CandidateCell>
+      <CandidateCell label="Constrained name">
+        <EntityIdentity
+          className="max-w-56"
+          mark={
+            <ChainBadgedLogo
+              src="/imgs/socials/cmc20.png"
+              chain={ChainId.BSC}
+              size="xl"
+              alt="CMC20"
+            />
+          }
+          name="CoinMarketCap 20 Diversified Digital Asset Index DTF"
+          supporting="$CMC20 · BNB Chain"
+        />
+      </CandidateCell>
+      <CandidateCell label="Resolved fallback">
+        <EntityIdentity
+          density="compact"
+          mark={
+            <ChainBadgedLogo
+              symbol="UNLISTED"
+              chain={ChainId.BSC}
+              size="lg"
+              alt="Unlisted collateral"
+            />
+          }
+          name="Unlisted collateral"
+          supporting="$UNLISTED · BNB Chain"
+        />
+      </CandidateCell>
+      <CandidateCell label="Account identity">
+        <EntityIdentity
+          density="compact"
+          mark={
+            <BlockiesAvatar
+              address="0x6B175474E89094C44Da98b954EedeAC495271d0F"
+              size={24}
+            />
+          }
+          name="0x6B17…1d0F"
+          supporting="Voted for · 128K vlRSR"
+        />
+      </CandidateCell>
     </div>
 
     <p className="border border-border bg-card p-4 text-sm font-light leading-6 text-muted-foreground">
-      Still to prove before acceptance: long and missing names, logo fallback,
-      account identity, and one dense real-product composition. Those are
-      pressure tests, not invitations to invent alternate visual directions.
+      The same anatomy now survives long names, the existing deterministic logo
+      fallback, token stacks, and account marks without absorbing their domain
+      logic. The Table detail page supplies the remaining dense real-product
+      composition test.
     </p>
   </section>
 )

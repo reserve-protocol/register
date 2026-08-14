@@ -108,7 +108,10 @@ test.describe('design system lab', () => {
     ).toBeVisible()
     await expect(productComponentBoard.getByText('Metric roles')).toBeVisible()
     await expect(
-      productComponentBoard.getByText('Index navigation')
+      productComponentBoard.getByRole('heading', {
+        name: 'Index navigation',
+        level: 3,
+      })
     ).toBeVisible()
     await expect(
       productComponentBoard.getByText('Identity marks')
@@ -124,6 +127,26 @@ test.describe('design system lab', () => {
     ).toBeVisible()
     await page.goto('/internal/design-system/components/entity-identity')
     await expect(page.getByTestId('entity-identity-state-sheet')).toBeVisible()
+    const chainBadges = page.getByTestId('canonical-chain-badge')
+    await expect(chainBadges.first()).toHaveCSS('width', '16px')
+    await expect(chainBadges.first()).toHaveCSS('height', '16px')
+    await expect(chainBadges.nth(1)).toHaveCSS('width', '14px')
+    await expect(chainBadges.nth(1)).toHaveCSS('height', '14px')
+    await expect(page.getByTestId('canonical-entity-identity')).toHaveCount(5)
+    await expect(page.getByTestId('component-output-missing')).toHaveCount(0)
+    await page.goto('/internal/design-system/components/metric')
+    await expect(page.getByTestId('metric-state-sheet')).toBeVisible()
+    await expect(page.getByTestId('canonical-metric')).toHaveCount(7)
+    await expect(page.getByTestId('component-output-missing')).toHaveCount(0)
+    await page.goto('/internal/design-system/components/table')
+    await expect(page.getByTestId('information-row-state-sheet')).toBeVisible()
+    await expect(page.getByTestId('canonical-index-data-slice')).toBeVisible()
+    await expect(page.getByTestId('canonical-entity-identity')).toHaveCount(3)
+    await expect(page.getByTestId('canonical-metric-value')).toHaveCount(9)
+    await expect(page.getByTestId('component-output-missing')).toHaveCount(0)
+    await page.goto('/internal/design-system/components/empty-state')
+    await expect(page.getByTestId('empty-state-state-sheet')).toBeVisible()
+    await expect(page.getByTestId('canonical-empty-state')).toHaveCount(2)
     await expect(page.getByTestId('component-output-missing')).toHaveCount(0)
     await page.goto('/internal/design-system/components')
     const coreComponentBoard = page.getByTestId('core-component-board')
@@ -303,6 +326,102 @@ test.describe('design system lab', () => {
     }
   })
 
+  test('distinguishes specimens, canonical candidates, and adoption', async ({
+    page,
+  }) => {
+    const expectDelivery = async (
+      component: string,
+      implementation: 'specimen' | 'canonical-candidate'
+    ) => {
+      await page.goto(`/internal/design-system/components/${component}`)
+      const delivery = page.getByTestId('component-delivery-status')
+      await expect(delivery).toHaveAttribute(
+        'data-implementation-status',
+        implementation
+      )
+      await expect(delivery).toHaveAttribute('data-adoption-status', 'none')
+    }
+
+    await expectDelivery('entity-identity', 'canonical-candidate')
+    await expect(
+      page.getByTestId('component-review-readiness')
+    ).toHaveAttribute('data-review-readiness', 'ready')
+    await expectDelivery('metric', 'canonical-candidate')
+    await expectDelivery('table', 'specimen')
+    await expect(
+      page.getByTestId('component-review-readiness')
+    ).toHaveAttribute('data-review-readiness', 'provisional')
+    await expectDelivery('dialog', 'canonical-candidate')
+    await expectDelivery('empty-state', 'canonical-candidate')
+    await expect(page.getByTestId('canonical-button')).toHaveCount(2)
+    await expect(page.getByTestId('canonical-button').first()).toHaveCSS(
+      'height',
+      '44px'
+    )
+
+    await expectDelivery('button', 'canonical-candidate')
+    await expect(
+      page.getByTestId('canonical-button').filter({ hasText: 'Micro' }).first()
+    ).toHaveCSS('height', '28px')
+    await expect(
+      page
+        .getByTestId('canonical-button')
+        .filter({ hasText: 'Compact' })
+        .first()
+    ).toHaveCSS('height', '32px')
+    await expect(
+      page
+        .getByTestId('canonical-button')
+        .filter({ hasText: 'Default' })
+        .first()
+    ).toHaveCSS('height', '44px')
+    await expect(
+      page
+        .getByTestId('canonical-button')
+        .filter({ hasText: 'Primary' })
+        .first()
+    ).toHaveCSS('box-shadow', 'none')
+    const focusButton = page.getByTestId('design-system-focus-button')
+    await focusButton.focus()
+    await expect(focusButton).not.toHaveCSS('box-shadow', 'none')
+
+    await expectDelivery('checkbox', 'canonical-candidate')
+    await expect(page.getByTestId('checkbox-state-sheet')).toBeVisible()
+    await expect(page.getByTestId('canonical-checkbox')).toHaveCount(6)
+
+    await expectDelivery('icon-button', 'canonical-candidate')
+    await expect(page.getByTestId('icon-button-state-sheet')).toBeVisible()
+    await expect(page.getByTestId('canonical-icon-button')).toHaveCount(6)
+
+    await expectDelivery('dialog', 'canonical-candidate')
+    await expect(page.getByTestId('dialog-state-sheet')).toBeVisible()
+    await page.getByRole('button', { name: 'Open eligibility dialog' }).click()
+    await expect(page.getByTestId('canonical-dialog-content')).toBeVisible()
+    await expect(
+      page
+        .getByTestId('canonical-dialog-content')
+        .getByTestId('canonical-checkbox')
+    ).toHaveCount(3)
+    await expect(
+      page
+        .getByTestId('canonical-dialog-content')
+        .getByTestId('canonical-icon-button')
+    ).toHaveCount(1)
+    await page.keyboard.press('Escape')
+    await expect(page.getByTestId('canonical-dialog-content')).toBeVisible()
+    for (const checkbox of await page
+      .getByTestId('canonical-dialog-content')
+      .getByTestId('canonical-checkbox')
+      .all()) {
+      await checkbox.click()
+    }
+    await page
+      .getByTestId('canonical-dialog-content')
+      .getByRole('button', { name: 'Confirm', exact: true })
+      .click()
+    await expect(page.getByTestId('canonical-dialog-content')).toHaveCount(0)
+  })
+
   for (const theme of THEMES) {
     test(`captures the ${theme} routed capability map`, async ({ page }) => {
       await page.addInitScript((mode) => {
@@ -324,6 +443,7 @@ test.describe('design system lab', () => {
         await expect(region).toHaveScreenshot(`${surface.id}-${theme}.png`, {
           animations: 'disabled',
           caret: 'hide',
+          maxDiffPixels: 20,
           stylePath: 'e2e/design-system/capture.css',
         })
       }

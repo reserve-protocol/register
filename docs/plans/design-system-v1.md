@@ -11,7 +11,7 @@ The system should provide strong foundations and small reusable primitives while
 - Register uses Tailwind CSS 3, semantic CSS variables in `src/app.css`, local shadcn-style primitives in `src/components/ui`, Radix primitives, CVA, and `cn()`.
 - Color and radius are partially tokenized. Typography, spacing, elevation, motion, and control geometry are less systematically expressed.
 - The product and its design files contain years of inconsistent patterns. Some recent surfaces represent a stronger quality bar.
-- The contained `/internal/design-system` lab now provides routed Foundations, Components, real-product Screens, and Project Status surfaces. Its expected slots, current-foundation evidence, provisional source-review layer, and complete current Button API/state baseline are ready for design work and targeted audit evidence.
+- The contained `/internal/design-system` lab now provides routed Foundations, Components, real-product Screens, and Project Status surfaces. Its expected slots, current-foundation evidence, provisional source-review layer, and reusable V1 Button candidate/state sheet are ready for design work and targeted audit evidence.
 - `pnpm design-system:capture` and `pnpm design-system:verify` own a pinned local Vite server and capture the lab in light/dark at desktop/mobile sizes. An external base URL remains available for host-browser capture when a dev container cannot run Chromium reliably.
 - The existing design-system facts remain in `docs/wiki/domains/design-system.md`. This plan is the active project contract; durable decisions belong in `docs/wiki/decisions.md`.
 - A previous branch, `codex/ui-standardization`, contains useful process ideas but stale implementation. Reuse concepts selectively; do not merge or cherry-pick the branch wholesale.
@@ -37,7 +37,7 @@ The system should provide strong foundations and small reusable primitives while
 - The lab uses direct routed navigation for Foundations, Components, Screens, and Project Status; the category landing pages expose the relevant catalog without duplicating it in dropdowns or one long scrolling document.
 - Expected foundation and component slots remain visible before they are audited or defined. Every slot explains its purpose, expected decisions, current evidence, maturity status, reason for any missing output, and next action.
 - Unavailable slots remain navigable and keyboard-accessible rather than using disabled controls; subdued styling and explicit statuses distinguish them from implemented lab surfaces.
-- Catalog maturity, rendered lab output, and individual definition-slot completion remain independent so a slot can fill incrementally without implying review, adoption, or verification.
+- Catalog maturity, rendered lab output, reusable implementation, production adoption, and individual definition-slot completion remain independent so a specimen cannot masquerade as a consumable component and a candidate cannot imply product use.
 - The full project tracker lives under Project Status, while category and detail pages show only the local status needed to guide the next design decision.
 - The lab exposes separate progress for definition, implementation, design review, adoption, and visual verification; provisional inventory is visibly labeled.
 - A repeatable Playwright command captures stable light/dark and desktop/mobile lab screenshots using deterministic fixtures.
@@ -59,9 +59,25 @@ The system should provide strong foundations and small reusable primitives while
 
 Use three levels of verification so active designer–Codex iteration stays fast without weakening meaningful checkpoints:
 
-1. **Fast lab loop — default during active review.** Implement the smallest visible proposal, run focused lint or type checks for the touched surface, and inspect the changed desktop light view. Check dark mode only when color or theming changed. Do not regenerate stable screenshots, run the full test suite, request independent review, update multiple project records, or verify the lab on mobile unless the change specifically affects those concerns.
-2. **Checkpoint batch — after several accepted iterations or when the designer steps away.** Reconcile the accepted work, update durable project context, run relevant type and behavior tests, refresh stable screenshots when the UI is sufficiently settled, and perform the appropriate independent review once for the batch.
-3. **Release or migration gate — before shared product foundations, product migrations, a commit/PR, or stage completion.** Run the repository workflow gate, inspect affected real golden screens and supported product breakpoints, verify accessibility and theme behavior, complete required review, and close out progress and documentation.
+1. **Bounded component loop — default during active review.** Verify the files and behavior changed in the current iteration, not the entire accumulated dirty design-system diff. Run formatting/lint or type checking as relevant, the focused component or registry assertion, and an affected desktop browser check against realistic states. Check dark mode only when color or theming changed; check another breakpoint only when layout behavior crossed it. Do not regenerate unrelated snapshots, run broad route suites, request independent review, or reconcile every downstream artifact after each judgment.
+2. **Canonicalization sync/checkpoint — after a coherent batch, at a dependency boundary, when the designer steps away, or before a design-system checkpoint commit.** Reconcile accepted candidates and source-of-truth records, run typecheck plus affected unit/behavior tests, run the broader design-system Playwright suite, refresh only intentional stable baselines, and review the batch once. A lab-only checkpoint does not by itself require the full repository smoke gate.
+3. **Repository integration gate — before production adoption, a shared/global primitive or token change, a release/PR, or another milestone whose plausible blast radius extends beyond the lab.** Run the repository workflow gate, inspect affected real golden screens and supported product breakpoints, verify accessibility and theme behavior, complete required review, and close out progress and documentation.
+
+During the bounded loop, an old fixed point that includes already-reviewed dirty
+design-system work is not a useful verification boundary. Record the current
+iteration's touched seam and run explicit focused checks; use `scope.mjs` on the
+accumulated fixed-point diff at synchronization or integration boundaries. A
+failure outside the changed seam is reported but does not automatically expand
+the iteration into repository debugging.
+
+Reuse the already-running lab for interactive inspection and focused browser
+assertions when the assertion does not depend on the pinned E2E environment.
+`DESIGN_SYSTEM_BASE_URL=http://127.0.0.1:3005` is the existing supported seam
+for that reuse. The canonical design-system Playwright checkpoint keeps its
+owned clean Vite process and `VITE_E2E` configuration; never run it concurrently
+with another Playwright suite on port 3005. TypeScript remains project-wide
+because the repository has no trustworthy per-component typecheck, but it is a
+fast structural check rather than a reason to invoke unrelated route tests.
 
 Keep a design-system stage active across provisional lab turns. A lab edit is not a stage closeout, and static explanatory copy does not need bespoke assertion tests. Mobile support remains a product requirement, but routine mobile verification of the designer-only lab is deferred unless its layout becomes part of the decision being reviewed.
 
@@ -607,16 +623,18 @@ question. Intentionally deferred work and component decisions not yet reached
 do not enter the queue until an accepted decision actually creates downstream
 work.
 
-**Pending synchronization queue:** mark the dense two-line asset-row identity
-candidate as accepted at 32px across the component audit and relevant catalog
-guidance after its long-name/rich-cell stress test; reconcile remaining
-product-navigation catalog guidance with the faithful-baseline-first review
-rule. The review board now shows the accepted centered headline-metric reference
-and faithful collapsed/hover-expanded navigation baseline. Decisions 03–10 are
-synchronized across the lab-stage Dialog contract, affected catalogs, canonical
-guidance, and modal studies. Product migration remains intentionally out of
-scope; it will be planned from the accepted contract rather than treated as
-leftover propagation.
+**Pending synchronization queue:** none for the current canonicalization batch.
+The Button dependency boundary is synchronized: the accepted candidate is a
+reusable component, active Button sheets/boards and EmptyState consume it, and
+the catalog separately reports specimen, canonical-candidate, and adoption
+status. Unrelated exploratory studies and product consumers remain untouched.
+The accepted 32px dense two-line identity now passes long-name, fallback,
+account-mark, and realistic Index-row pressure tests. The review board renders
+the canonical centered headline metric and faithful collapsed/hover-expanded
+navigation baseline. Decisions 03–10 remain synchronized across the lab-stage
+Dialog contract, affected catalogs, canonical guidance, and modal studies.
+Product migration remains intentionally out of scope; it will be planned from
+the accepted contract rather than treated as leftover propagation.
 
 ### Product-facing component queue — 2026-08-14
 
@@ -694,9 +712,10 @@ two-line asset rows. This preserves the scale already used by the current Index
 DTF Overview exposure table (`TokenLogo` `xl` = 32×32px) and gives the asset
 name/symbol pair enough visual presence beside aligned numeric columns. The
 decision does not make every entity mark or every table-row icon 32px; compact
-single-line rows and other entity jobs keep their own evidenced geometry. Long
-asset names and the richer Discover/Earn cells remain the next stress test for
-this row anatomy.
+single-line rows and other entity jobs keep their own evidenced geometry. The
+canonical candidate now survives a long asset name, deterministic fallback,
+account mark, and aligned weight/performance/market-cap peers in a realistic
+divider-free Index slice.
 
 Headline protocol metrics remain center aligned. This is a composition-specific
 consequence of the one established headline-metric strip, not a general Metric
@@ -739,6 +758,10 @@ The first focused component decision loop accepted Button hierarchy and intent:
   and 44px with 14px medium labels and size-matched icons.
 - This is a partial Button definition, not production migration. Pressed and
   long-label behavior remain open; destructive confirmation is defined below.
+- The accepted contract is implemented as the reusable lab candidate in
+  `src/components/button/`. Active Button matrices and dependent canonical lab
+  output import it directly; the production `src/components/ui/button.tsx`
+  component and its consumers remain unchanged.
 
 The decision was pressure-tested with the real Async Mint completion pair (`New
 mint` / `View DTF`) and the real Governance simulation follow-up (`View on
@@ -1018,10 +1041,10 @@ Read-only source evidence used for initial prioritization:
   files remain unchanged until an explicit migration slice.
 - `src/components/ui/v1-semantic-recipes.ts` is the deliberately small first
   bridge from reviewed semantic roles to consumable candidate components. It
-  currently exposes only canvas/content/structural surfaces, primary/supporting
-  text, and matching surface-separation recipes. Extend it only when the next
-  canonical component demonstrates a real need; do not prebuild a second token
-  system.
+  exposes canvas/content/structural surfaces, primary/supporting text, matching
+  surface-separation recipes, and focus/disabled-control recipes proven by the
+  canonical Button. Extend it only when the next canonical component
+  demonstrates a real need; do not prebuild a second token system.
 
 The registry currently contains 43 contracts: 32 V1 core, eight Register
 product extensions, and three conditional capabilities. Conditional slots stay
@@ -1032,6 +1055,11 @@ Every component contract now records:
 
 - V1 core, conditional, or Register-extension priority.
 - Mapped, partial, or pending source-audit status.
+- Whether its rendered output is only a specimen or a reusable canonical
+  candidate, separately from whether production adoption has begun.
+- Whether the composition is ready for canonical V1 review, provisional,
+  blocked, or exploration-only; the exact review scope; and the status of each
+  visually meaningful dependency.
 - Current implementation and product evidence.
 - The exact questions to resolve before defining it.
 - Shared family states plus component-specific lifecycle states.
@@ -1190,6 +1218,44 @@ definition slots, and next action. Future state sheets should read the same
 metadata rather than introduce a second checklist. No product component,
 shared default, or production token changed during this preparation.
 
+### Canonical product kernel — 2026-08-14
+
+The first unattended canonicalization batch establishes real shared candidates
+instead of lab-only copies:
+
+- `EntityIdentity`, `ChainBadgedLogo`, and `TokenLogoStack` share geometry while
+  leaving token resolution and account-avatar domain logic in their existing
+  specialized primitives. The corrected chain badges are 16px at xl and an
+  optically floored 14px at lg, including their surface-separating borders.
+- `Metric` owns inline and centered-headline label/value anatomy, while
+  `MetricValue` gives comparable data cells the same 16px/300 tabular baseline.
+  Parents continue to own cards, grids, help, and responsive composition.
+- The Table lab composes those seams in a realistic divider-free Index holdings
+  slice. This is deliberately not a universal Row abstraction and is not a
+  production Table-default migration.
+- `EmptyState` distinguishes quiet absence from a user-resolvable absence while
+  leaving region size, surface, and illustration outside the primitive.
+- `Button` is a real reusable candidate rather than repeated lab markup. It
+  implements the accepted four tones, 28/32/44px scale, optical icon padding,
+  two-color focus, structured disabled state, and state-led loading. Pressed
+  and long-label behavior remain explicitly open.
+
+The lab directly imports every component above. Existing production badge,
+stack, metric, table, and empty-state consumers remain unchanged until a named
+opt-in adoption experiment. The next genuine visual judgments are outcome
+metric emphasis/icon treatment, rich navigable-record hierarchy, Index rail
+refinement, interactive-card character, complex repeated form groups, and the
+small set of states that may earn illustration.
+
+The next bounded dependency pass adds only the interaction seams needed by a
+real dialog composition: a 20px square binary Checkbox, a compact named
+IconButton built on Button, and a minimal Radix-backed Dialog shell. Their open
+variants remain explicit rather than being completed speculatively. The real
+eligibility composition consumes those candidates plus an explicitly retained
+Collapsible behavior primitive. Core scale boards remain exploration, modal
+geometry copies remain provisional, and the realistic Index data slice remains
+a Table specimen rather than a canonical Table/DataRow claim.
+
 ## Slices
 
 - Slice: Establish the project contract and a contained, lazy-loaded `/internal/design-system` lab with a provisional progress dashboard, current-foundation reference, Button state sheet, and deterministic desktop/mobile light/dark capture; blocked by: none.
@@ -1216,10 +1282,12 @@ shared default, or production token changed during this preparation.
 
 ## Active slice
 
-Use the dense core component board to resolve the shared primitive language,
-then use real modal families as the first composed pressure test against the
-accepted foundation kernel. Auctions is the one committed structural migration:
-prepare its browse-and-inspect implementation as a separate real-screen slice
-after the relevant components are ready. Governance retains its current
-composition for V1. Do not turn the five layout archetypes into a universal
-production wrapper.
+Review the small canonical product and interaction kernel now rendered in the
+lab: Entity identity, inline/headline Metric anatomy, routine Empty states,
+Button, the bounded Checkbox/IconButton roles, and the minimal Dialog shell in
+the real eligibility composition. Then return to source-grounded
+product-facing canonicalization; rich navigable records, outcome-metric
+emphasis, and specific Index rail refinements are the next genuine visual work.
+The realistic divider-free Index slice remains a Table specimen. Do not reopen
+settled foundations or turn these seams into universal Row/Card wrappers.
+Broad production migration has not started.

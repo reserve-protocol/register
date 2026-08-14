@@ -3,12 +3,15 @@ import { Check, ChevronDown, Scale } from 'lucide-react'
 
 import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
+import { DialogSurface } from '@/components/dialog'
 import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
 } from '@/components/ui/collapsible'
 import { modalFamilyAudit } from './modal-family-audit'
+import { ComponentReviewReadiness } from './catalog-ui'
+import { EligibilityDialogCandidate } from './eligibility-dialog-candidate'
 
 const PROHIBITED_JURISDICTIONS = [
   'Afghanistan',
@@ -35,6 +38,23 @@ const ModalFamilyStudy = () => (
     aria-labelledby="modal-family-heading"
   >
     <Heading />
+
+    <ComponentReviewReadiness
+      testId="eligibility-composition-readiness"
+      review={{
+        status: 'ready',
+        scope:
+          'Judge the eligibility composition against its real requirements and the canonical shell dependencies. Collapsible behavior and inline legal links are explicitly retained; outcome and constrained-screen dialog work are not represented.',
+        dependencies: [
+          { name: 'Dialog shell', status: 'canonical' },
+          { name: 'Button', status: 'canonical' },
+          { name: 'Checkbox', status: 'canonical' },
+          { name: 'IconButton', status: 'canonical' },
+          { name: 'Radix Collapsible', status: 'retained' },
+          { name: 'Inline legal links', status: 'retained' },
+        ],
+      }}
+    />
 
     <div className="grid gap-px bg-secondary sm:grid-cols-2 xl:grid-cols-4">
       <Evidence value="19" label="Direct product dialogs found" />
@@ -92,7 +112,7 @@ const EligibilityPressureTest = () => (
       </SpecimenCanvas>
       <SpecimenCanvas
         label="Same requirements with foundations applied · 432px"
-        status="Candidate"
+        status="Canonical V1 composition"
       >
         <CandidateEligibilitySpecimen />
       </SpecimenCanvas>
@@ -170,72 +190,13 @@ const CurrentEligibilitySpecimen = () => {
 }
 
 const CandidateEligibilitySpecimen = () => {
-  const state = useEligibilityState()
-
   return (
-    <div
+    <DialogSurface
       data-real-modal-specimen="eligibility-candidate"
-      className="w-full max-w-[432px] bg-card p-2 shadow-lg"
+      width="standard"
     >
-      <div className="px-4 pb-2 pt-4">
-        <span className="flex h-8 w-8 items-center justify-center rounded-full border border-border">
-          <Scale className="h-4 w-4" strokeWidth={1.5} />
-        </span>
-        <h4 className="mt-5 text-2xl font-light leading-8">
-          Verify your eligibility
-        </h4>
-        <p className="mt-2 text-base font-light leading-6 text-muted-foreground">
-          Before continuing, please confirm the following.
-        </p>
-      </div>
-
-      <div className="divide-y divide-border px-4">
-        <CandidateAttestationRow
-          id="candidate-terms"
-          checked={state.acceptedTerms}
-          onCheckedChange={state.setAcceptedTerms}
-        >
-          I have read and agree to the{' '}
-          <InlineLink href="https://reserve.org/terms-and-conditions">
-            Terms of Use
-          </InlineLink>
-          .
-        </CandidateAttestationRow>
-        <Collapsible>
-          <CandidateAttestationRow
-            id="candidate-jurisdiction"
-            checked={state.confirmedJurisdiction}
-            onCheckedChange={state.setConfirmedJurisdiction}
-            trailing={<DisclosureButton />}
-          >
-            I confirm I am not located in, a resident of, or a citizen of a{' '}
-            <InlineLink href="https://docs.ondo.finance/ondo-global-markets/eligibility">
-              restricted jurisdiction
-            </InlineLink>
-            .
-          </CandidateAttestationRow>
-          <CandidateJurisdictionList />
-        </Collapsible>
-        <CandidateAttestationRow
-          id="candidate-tokenized-stocks"
-          checked={state.confirmedTokenizedStocks}
-          onCheckedChange={state.setConfirmedTokenizedStocks}
-        >
-          I confirm that I am allowed to purchase tokenized stocks under the
-          laws of my country of residence.
-        </CandidateAttestationRow>
-      </div>
-
-      <div className="px-4 pb-4 pt-3">
-        <Button
-          className="h-11 w-full rounded-full px-5 text-sm"
-          disabled={!state.canConfirm}
-        >
-          Confirm
-        </Button>
-        <PrivacyNote className="mt-4" />
-      </div>
-    </div>
+      <EligibilityDialogCandidate idPrefix="candidate" />
+    </DialogSurface>
   )
 }
 
@@ -397,27 +358,6 @@ const CurrentAttestationRow = ({
   </div>
 )
 
-const CandidateAttestationRow = ({
-  id,
-  checked,
-  onCheckedChange,
-  trailing,
-  children,
-}: AttestationRowProps) => (
-  <div className="flex min-h-16 items-center gap-4 py-3">
-    <Checkbox
-      id={id}
-      checked={checked}
-      onCheckedChange={(value) => onCheckedChange(value === true)}
-      className="h-6 w-6 shrink-0 rounded-full"
-    />
-    <label htmlFor={id} className="text-base font-light leading-6">
-      {children}
-    </label>
-    {trailing}
-  </div>
-)
-
 type AttestationRowProps = {
   id: string
   checked: boolean
@@ -438,14 +378,6 @@ const DisclosureButton = () => (
 const CurrentJurisdictionList = () => (
   <CollapsibleContent className="px-4 pb-4 sm:px-5">
     <JurisdictionList />
-  </CollapsibleContent>
-)
-
-const CandidateJurisdictionList = () => (
-  <CollapsibleContent className="border-t border-border py-4">
-    <div className="max-h-44 overflow-y-auto pr-3">
-      <JurisdictionList />
-    </div>
   </CollapsibleContent>
 )
 

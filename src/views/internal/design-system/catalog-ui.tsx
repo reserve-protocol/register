@@ -4,11 +4,16 @@ import { Link, NavLink } from 'react-router-dom'
 import { cn } from '@/lib/utils'
 import {
   COMPONENT_AUDIT_LABELS,
+  COMPONENT_ADOPTION_LABELS,
+  COMPONENT_DEPENDENCY_LABELS,
+  COMPONENT_IMPLEMENTATION_LABELS,
   COMPONENT_PRIORITY_LABELS,
+  COMPONENT_REVIEW_LABELS,
   OUTPUT_LABELS,
   STATUS_LABELS,
   type CatalogItem,
   type ComponentItem,
+  type ComponentReviewContract,
   type DefinitionSlot,
 } from './catalog-types'
 
@@ -53,6 +58,87 @@ export const CatalogBadges = ({ item }: { item: CatalogItem }) => (
     {isComponentItem(item) && <ComponentPriorityBadge item={item} />}
     <StatusBadge item={item} />
     <OutputBadge item={item} />
+    {isComponentItem(item) && item.implementationStatus !== 'none' && (
+      <ComponentDeliveryBadge item={item} />
+    )}
+    {isComponentItem(item) && item.outputStatus !== 'none' && (
+      <ComponentReviewBadge review={item.review} />
+    )}
+  </span>
+)
+
+export const ComponentReviewBadge = ({
+  review,
+}: {
+  review: ComponentReviewContract
+}) => (
+  <span
+    className={cn(
+      'w-fit rounded-full px-2.5 py-1 text-xs font-medium',
+      review.status === 'ready' && 'bg-success/10 text-foreground',
+      review.status === 'provisional' && 'bg-warning/10 text-foreground',
+      review.status === 'blocked' && 'bg-destructive/10 text-destructive',
+      review.status === 'exploration' && 'bg-muted text-muted-foreground'
+    )}
+  >
+    {COMPONENT_REVIEW_LABELS[review.status]}
+  </span>
+)
+
+export const ComponentReviewReadiness = ({
+  review,
+  testId = 'component-review-readiness',
+}: {
+  review: ComponentReviewContract
+  testId?: string
+}) => (
+  <section
+    data-testid={testId}
+    data-review-readiness={review.status}
+    className={cn(
+      'border p-4',
+      review.status === 'ready' && 'border-success/30 bg-success/5',
+      review.status === 'provisional' && 'border-warning/30 bg-warning/5',
+      review.status === 'blocked' && 'border-destructive/30 bg-destructive/5',
+      review.status === 'exploration' && 'border-border bg-muted/30'
+    )}
+  >
+    <div className="flex flex-wrap items-center gap-2">
+      <ComponentReviewBadge review={review} />
+      <p className="text-sm font-light leading-6 text-muted-foreground">
+        {review.scope}
+      </p>
+    </div>
+    {review.dependencies.length > 0 && (
+      <ul className="mt-3 flex flex-wrap gap-2">
+        {review.dependencies.map((dependency) => (
+          <li
+            key={dependency.name}
+            className="border border-border bg-card px-2.5 py-1 text-xs"
+            title={dependency.detail}
+          >
+            <span className="font-medium">{dependency.name}</span>
+            <span className="text-muted-foreground">
+              {' · '}
+              {COMPONENT_DEPENDENCY_LABELS[dependency.status]}
+            </span>
+          </li>
+        ))}
+      </ul>
+    )}
+  </section>
+)
+
+export const ComponentDeliveryBadge = ({ item }: { item: ComponentItem }) => (
+  <span
+    data-testid="component-delivery-status"
+    data-implementation-status={item.implementationStatus}
+    data-adoption-status={item.adoptionStatus}
+    className="w-fit rounded-full border border-border px-2.5 py-1 text-xs font-medium text-muted-foreground"
+  >
+    {COMPONENT_IMPLEMENTATION_LABELS[item.implementationStatus]}
+    {' · '}
+    {COMPONENT_ADOPTION_LABELS[item.adoptionStatus]}
   </span>
 )
 

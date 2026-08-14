@@ -1,9 +1,5 @@
-import { ArrowRight, LoaderCircle, Plus, Trash2 } from 'lucide-react'
-import { cn } from '@/lib/utils'
-import { candidateSemanticRoles as roles } from './candidate-semantic-roles'
-
-type Tone = 'primary' | 'secondary' | 'quiet' | 'destructive'
-type Size = 'micro' | 'compact' | 'default'
+import { ArrowRight, Plus, Trash2 } from 'lucide-react'
+import { Button, type ButtonSize } from '@/components/button'
 
 const ActionsCandidateStudy = () => (
   <section
@@ -30,12 +26,12 @@ const ActionsCandidateStudy = () => (
       copy="Four jobs, shown together. If two variants communicate the same priority, one should disappear."
     >
       <div className="flex min-h-36 flex-wrap items-center gap-3 bg-card p-6">
-        <CandidateButton tone="primary">Review proposal</CandidateButton>
-        <CandidateButton tone="secondary">Save draft</CandidateButton>
-        <CandidateButton tone="quiet">Cancel</CandidateButton>
-        <CandidateButton tone="destructive" icon={<Trash2 />}>
+        <Button tone="primary">Review proposal</Button>
+        <Button tone="secondary">Save draft</Button>
+        <Button tone="quiet">Cancel</Button>
+        <Button tone="destructive" leadingIcon={<Trash2 />}>
           Delete
-        </CandidateButton>
+        </Button>
       </div>
     </StudyCard>
 
@@ -56,17 +52,12 @@ const ActionsCandidateStudy = () => (
         copy="Leading and trailing icons reduce padding on the icon side by 2px; icon-only actions preserve the size category."
       >
         <div className="flex min-h-60 flex-wrap content-center items-center gap-3 bg-card p-6">
-          <CandidateButton tone="secondary" icon={<Plus />}>
+          <Button tone="secondary" leadingIcon={<Plus />}>
             Add token
-          </CandidateButton>
-          <CandidateButton tone="primary" trailingIcon={<ArrowRight />}>
+          </Button>
+          <Button tone="primary" trailingIcon={<ArrowRight />}>
             Continue
-          </CandidateButton>
-          <CandidateButton
-            tone="secondary"
-            icon={<Plus />}
-            ariaLabel="Add item"
-          />
+          </Button>
         </div>
       </StudyCard>
     </div>
@@ -77,33 +68,25 @@ const ActionsCandidateStudy = () => (
     >
       <div className="grid gap-px bg-secondary sm:grid-cols-2 xl:grid-cols-5">
         <State label="Default">
-          <CandidateButton tone="primary">Continue</CandidateButton>
+          <Button tone="primary">Continue</Button>
         </State>
         <State label="Hover">
-          <CandidateButton tone="primary" className="bg-primary/80">
+          <Button tone="primary" className="bg-primary/80">
             Continue
-          </CandidateButton>
+          </Button>
         </State>
         <State label="Focus">
-          <CandidateButton
-            tone="primary"
-            className={roles.focus.onContent}
-          >
-            Continue
-          </CandidateButton>
+          <Button tone="primary">Continue</Button>
         </State>
         <State label="Loading">
-          <CandidateButton
-            tone="primary"
-            icon={<LoaderCircle className="animate-spin" />}
-          >
+          <Button tone="primary" loading>
             Submitting
-          </CandidateButton>
+          </Button>
         </State>
         <State label="Disabled">
-          <CandidateButton tone="primary" disabled>
+          <Button tone="primary" disabled>
             Continue
-          </CandidateButton>
+          </Button>
         </State>
       </div>
     </StudyCard>
@@ -125,67 +108,6 @@ const ActionsCandidateStudy = () => (
   </section>
 )
 
-const CandidateButton = ({
-  children,
-  tone,
-  size = 'default',
-  icon,
-  trailingIcon,
-  ariaLabel,
-  disabled,
-  className,
-}: {
-  children?: React.ReactNode
-  tone: Tone
-  size?: Size
-  icon?: React.ReactElement
-  trailingIcon?: React.ReactElement
-  ariaLabel?: string
-  disabled?: boolean
-  className?: string
-}) => (
-  <button
-    type="button"
-    aria-label={ariaLabel}
-    disabled={disabled}
-    className={cn(
-      'inline-flex items-center justify-center rounded-full font-medium transition-colors duration-[120ms] disabled:pointer-events-none',
-      disabled && roles.disabled.control,
-      !disabled && tone === 'primary' &&
-        'bg-primary text-primary-foreground hover:bg-primary/80',
-      !disabled && tone === 'secondary' &&
-        'border border-border bg-card text-foreground hover:bg-muted',
-      !disabled && tone === 'quiet' && 'bg-transparent text-foreground hover:bg-muted',
-      !disabled && tone === 'destructive' &&
-        'bg-destructive text-destructive-foreground hover:bg-destructive/80',
-      size === 'micro' &&
-        'h-7 gap-1.5 px-2.5 text-xs [&>svg]:h-3.5 [&>svg]:w-3.5',
-      size === 'compact' && 'h-8 gap-2 px-3 text-sm [&>svg]:h-4 [&>svg]:w-4',
-      size === 'default' && 'h-11 gap-2 px-5 text-sm [&>svg]:h-4 [&>svg]:w-4',
-      icon &&
-        (size === 'micro'
-          ? 'pl-2'
-          : size === 'compact'
-            ? 'pl-2.5'
-            : 'pl-[18px]'),
-      trailingIcon &&
-        (size === 'micro'
-          ? 'pr-2'
-          : size === 'compact'
-            ? 'pr-2.5'
-            : 'pr-[18px]'),
-      !children && size === 'micro' && 'w-7 p-0',
-      !children && size === 'compact' && 'w-8 p-0',
-      !children && size === 'default' && 'w-11 p-0',
-      className
-    )}
-  >
-    {icon}
-    {children}
-    {trailingIcon}
-  </button>
-)
-
 const SizeRow = ({
   label,
   value,
@@ -193,7 +115,7 @@ const SizeRow = ({
 }: {
   label: string
   value: string
-  size: Size
+  size: ButtonSize
 }) => (
   <div className="grid min-h-24 items-center gap-4 bg-card p-5 sm:grid-cols-[7rem_1fr]">
     <div>
@@ -201,18 +123,12 @@ const SizeRow = ({
       <code className="text-xs text-muted-foreground">{value}</code>
     </div>
     <div className="flex flex-wrap items-center gap-3">
-      <CandidateButton tone="secondary" size={size}>
+      <Button tone="secondary" size={size}>
         Filter
-      </CandidateButton>
-      <CandidateButton tone="secondary" size={size} icon={<Plus />}>
+      </Button>
+      <Button tone="secondary" size={size} leadingIcon={<Plus />}>
         Add
-      </CandidateButton>
-      <CandidateButton
-        tone="secondary"
-        size={size}
-        icon={<Plus />}
-        ariaLabel={`Add · ${label}`}
-      />
+      </Button>
     </div>
   </div>
 )

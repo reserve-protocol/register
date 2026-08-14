@@ -1,6 +1,6 @@
 ---
 title: Log
-updated: 2026-08-11
+updated: 2026-08-14
 type: log
 ---
 
@@ -149,3 +149,12 @@ Play-by-play lives in git (PRs #1053/#1054/#1055/#1063, SDK PR #27). Durable out
 - Responsive review was justified here because layout itself was the decision. Desktop plus phone route tests and two phone region baselines now pin equal modal state widths, viewport containment, and readable stacking. The existing designer-only lab remains otherwise desktop-first.
 - Route-level layout audit now precedes component-family work so legacy composition does not accidentally define component anatomy. Static source review plus local Auctions/Governance inspection produced five task-led archetypes. The clearest decisions to test are Auctions as persistent browse-and-inspect, Governance as proposals plus a contextual/selected inspection region, and automated mint as the retained compact-to-paired progressive-workflow reference. The lab keeps these schematic and records which component contracts each hypothesis blocks; no product route or shared component changed.
 - Human scope decision: Auctions is the structural migration worth doing in V1—the opened auction will be recomposed for a persistent list plus wider workspace, not merely stretched. Governance stays structurally intact for the compressed release; improve it through foundations and components, while keeping the proposal-summary idea as later work. A future summary must end clearly in the full proposal route rather than masquerading as the complete view.
+
+## 2026-08-14
+
+- The first product-facing canonical kernel now follows the strongest current Index evidence instead of manufacturing alternatives: Entity identity, Metric/MetricValue, EmptyState, and a realistic dense Index data slice all render the actual candidate components in the lab. Production consumers remain unchanged.
+- Entity pressure testing exposed a composition bug rather than a design question: placing a 2px background-matching wrapper around a 16px chain mark made the badge 20px overall and broke the ratio used on strong recent screens. The background-matching edge now belongs inside the chain mark's 16px footprint.
+- Dense data review found the useful reusable seam is identity plus formatted value, not a universal Row. The table/list parent still owns columns, density, dividers, navigation, and responsive behavior; prematurely extracting those would encode one composition as a shared component.
+- Safe autonomous canonicalization stops before outcome-metric emphasis, illustrated empty states, rich navigable records, Index rail refinement, or complex form groups. Those materially affect the product's visual character and should return as real visual judgments rather than quietly becoming conventional defaults.
+- EmptyState review exposed a progress-model bug: its actions looked like the old system because the state sheet imported the legacy production Button even though the catalog called Button a V1 proposal. The fix is general rather than specimen-specific: the catalog now separates visual output, reusable implementation, and product adoption; Button is a real candidate; and active canonical lab compositions consume it. This prevents visual replicas from silently drifting while preserving the explicit no-migration boundary.
+- Composition review gained its missing gate: a visually meaningful dependency must be canonical V1 or explicitly retained before the parent can be called canonical-review-ready. This immediately reclassifies the core board as exploration, copied modal geometry as provisional, and the dense Index slice as a Table specimen without throwing away their evidence. The real eligibility dialog now proves the narrow interaction kernel—20px binary Checkbox, compact named IconButton, 384/432px Radix-backed Dialog shell, and canonical Button—while leaving indeterminate/invalid selection, toggle/tooltips, outcomes, final elevation, constrained screens, Table/DataRow, and production migration open. Scoped verification caught one infrastructure false start (the container lab server had exited); restarting only the lab and reusing it produced a green focused interaction check.

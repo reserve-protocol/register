@@ -3,6 +3,7 @@ import { Link, Navigate, useParams } from 'react-router-dom'
 import {
   CatalogCard,
   CatalogBadges,
+  ComponentReviewReadiness,
   DetailSidebar,
   ExpectedDecisions,
   PageHeader,
@@ -12,6 +13,12 @@ import ButtonHierarchyDecision from './button-hierarchy-decision'
 import ButtonLoadingDecision from './button-loading-decision'
 import ModalActionDecision from './modal-action-decision'
 import EntityIdentityStateSheet from './entity-identity-state-sheet'
+import MetricStateSheet from './metric-state-sheet'
+import InformationRowStateSheet from './information-row-state-sheet'
+import EmptyStateStateSheet from './empty-state-state-sheet'
+import CheckboxStateSheet from './checkbox-state-sheet'
+import IconButtonStateSheet from './icon-button-state-sheet'
+import DialogStateSheet from './dialog-state-sheet'
 import { COMPONENT_GROUPS, getComponentItem } from './component-catalog'
 import ComponentWorkMap from './component-work-map'
 import CoreComponentBoard from './core-component-board'
@@ -82,6 +89,9 @@ export const ComponentDetail = () => {
           description={item.description}
           trailing={<CatalogBadges item={item} />}
         />
+        {item.outputStatus !== 'none' && (
+          <ComponentReviewReadiness review={item.review} />
+        )}
         {item.id === 'button' && (
           <div className="space-y-10">
             <ButtonLoadingDecision />
@@ -89,7 +99,13 @@ export const ComponentDetail = () => {
           </div>
         )}
         {item.id === 'dialog' && <ModalActionDecision />}
+        {item.id === 'checkbox' && <CheckboxStateSheet />}
+        {item.id === 'icon-button' && <IconButtonStateSheet />}
+        {item.id === 'dialog' && <DialogStateSheet />}
         {item.id === 'entity-identity' && <EntityIdentityStateSheet />}
+        {item.id === 'metric' && <MetricStateSheet />}
+        {item.id === 'table' && <InformationRowStateSheet />}
+        {item.id === 'empty-state' && <EmptyStateStateSheet />}
         <section className="grid gap-4 sm:grid-cols-2">
           <InfoCard title="What it is used for" copy={item.why} />
           <InfoCard title="Why this status" copy={item.statusDetail} />

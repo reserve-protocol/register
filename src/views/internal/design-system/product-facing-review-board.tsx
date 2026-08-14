@@ -14,10 +14,12 @@ import {
   EntityIdentity as CanonicalEntityIdentity,
   TokenLogoStack,
 } from '@/components/entity-identity'
+import { Metric, MetricValue } from '@/components/metric'
 import TokenLogo from '@/components/token-logo'
 import { cn } from '@/lib/utils'
 import { ChainId } from '@/utils/chains'
 import { READY_PRODUCT_FACING_REVIEWS } from './product-facing-component-audit'
+import { ComponentReviewReadiness } from './catalog-ui'
 
 const reviewLinks = new Map(
   READY_PRODUCT_FACING_REVIEWS.map((review) => [review.id, review.componentId])
@@ -49,6 +51,21 @@ const ProductFacingReviewBoard = () => (
         Source-grounded · no product migration
       </p>
     </div>
+
+    <ComponentReviewReadiness
+      testId="product-board-readiness"
+      review={{
+        status: 'exploration',
+        scope:
+          'This board is source-grounded product evidence, not one combined canonical composition. Entity identity and Metric are canonical candidates; navigation and information-row framing remain evidence to normalize later.',
+        dependencies: [
+          { name: 'Entity identity', status: 'canonical' },
+          { name: 'Metric', status: 'canonical' },
+          { name: 'Index navigation', status: 'provisional' },
+          { name: 'Information-row anatomy', status: 'provisional' },
+        ],
+      }}
+    />
 
     <div className="grid gap-4 xl:grid-cols-3">
       <ReviewCard
@@ -124,10 +141,10 @@ const InformationRowSpecimen = () => (
           name="Bitcoin"
           supporting="$BTC"
         />
-        <span className="text-right tabular-nums">71.00%</span>
-        <span className="text-right tabular-nums text-destructive">
+        <MetricValue align="end">71.00%</MetricValue>
+        <MetricValue align="end" className="text-destructive">
           −27.60%
-        </span>
+        </MetricValue>
       </div>
       <div className="grid grid-cols-[minmax(0,1fr)_4.25rem_4.25rem] items-center gap-3 px-4 py-3 text-sm font-light">
         <CanonicalEntityIdentity
@@ -136,10 +153,10 @@ const InformationRowSpecimen = () => (
           name="Ethereum"
           supporting="$ETH"
         />
-        <span className="text-right tabular-nums">12.70%</span>
-        <span className="text-right tabular-nums text-destructive">
+        <MetricValue align="end">12.70%</MetricValue>
+        <MetricValue align="end" className="text-destructive">
           −36.43%
-        </span>
+        </MetricValue>
       </div>
     </SpecimenGroup>
 
@@ -180,16 +197,19 @@ const MetricSpecimen = () => (
       Accepted reference · Homepage headline strip
     </p>
     <div className="grid flex-1 grid-cols-2 gap-px bg-border">
-      <HeadlineMetric label="TVL" value="$531M" />
-      <HeadlineMetric label="Mint volume" value="$1.7B" />
+      <Metric
+        className="bg-card p-4"
+        role="headline"
+        label="TVL"
+        value="$531M"
+      />
+      <Metric
+        className="bg-card p-4"
+        role="headline"
+        label="Mint volume"
+        value="$1.7B"
+      />
     </div>
-  </div>
-)
-
-const HeadlineMetric = ({ label, value }: { label: string; value: string }) => (
-  <div className="flex flex-col justify-center bg-card p-4 text-center">
-    <p className="text-xs text-muted-foreground">{label}</p>
-    <p className="mt-1 text-xl font-light tabular-nums">{value}</p>
   </div>
 )
 

@@ -1,8 +1,7 @@
-import {
-  ChevronDown,
-  MoreHorizontal,
-  Search,
-} from 'lucide-react'
+import { ChevronDown, MoreHorizontal, Search } from 'lucide-react'
+import { Button } from '@/components/button'
+import { Checkbox } from '@/components/checkbox'
+import { IconButton } from '@/components/icon-button'
 import { cn } from '@/lib/utils'
 import { candidateSemanticRoles as roles } from './candidate-semantic-roles'
 
@@ -14,22 +13,10 @@ const sizeClasses: Record<ControlSize, string> = {
   default: 'h-11 px-5',
 }
 
-const actionTextClasses: Record<ControlSize, string> = {
-  micro: 'text-xs',
-  compact: 'text-sm',
-  default: 'text-sm',
-}
-
 const valueTextClasses = {
   compact: 'text-sm',
   default: 'text-base',
 } as const
-
-const iconSizeClasses: Record<ControlSize, string> = {
-  micro: 'h-7 w-7 [&>svg]:h-3.5 [&>svg]:w-3.5',
-  compact: 'h-8 w-8 [&>svg]:h-4 [&>svg]:w-4',
-  default: 'h-11 w-11 [&>svg]:h-4 [&>svg]:w-4',
-}
 
 const CoreComponentScaleBoard = () => (
   <section className="overflow-hidden border border-border bg-card">
@@ -44,49 +31,97 @@ const CoreComponentScaleBoard = () => (
       <ColumnHeader label="Default" value="44px" />
 
       <RowLabel label="Button" />
-      <Cell><CandidateButton size="micro">Filter</CandidateButton></Cell>
-      <Cell><CandidateButton size="compact">Filter</CandidateButton></Cell>
-      <Cell><CandidateButton size="default">Continue</CandidateButton></Cell>
+      <Cell>
+        <Button size="micro" tone="secondary">
+          Filter
+        </Button>
+      </Cell>
+      <Cell>
+        <Button size="compact" tone="secondary">
+          Filter
+        </Button>
+      </Cell>
+      <Cell>
+        <Button size="default" tone="secondary">
+          Continue
+        </Button>
+      </Cell>
 
       <RowLabel label="Primary" />
       <NotApplicable />
-      <Cell><CandidateButton size="compact" primary>Apply</CandidateButton></Cell>
-      <Cell><CandidateButton size="default" primary>Continue</CandidateButton></Cell>
+      <Cell>
+        <Button size="compact">Apply</Button>
+      </Cell>
+      <Cell>
+        <Button size="default">Continue</Button>
+      </Cell>
 
       <RowLabel label="Icon action" />
-      <Cell><CandidateIconButton size="micro" /></Cell>
-      <Cell><CandidateIconButton size="compact" /></Cell>
-      <Cell><CandidateIconButton size="default" /></Cell>
+      <Cell>
+        <CandidateIconButton size="micro" />
+      </Cell>
+      <Cell>
+        <CandidateIconButton size="compact" />
+      </Cell>
+      <Cell>
+        <CandidateIconButton size="default" />
+      </Cell>
 
       <RowLabel label="Text field" />
       <NotApplicable />
-      <Cell><CandidateInput size="compact" /></Cell>
-      <Cell><CandidateInput size="default" /></Cell>
+      <Cell>
+        <CandidateInput size="compact" />
+      </Cell>
+      <Cell>
+        <CandidateInput size="default" />
+      </Cell>
 
       <RowLabel label="Search" />
       <NotApplicable />
-      <Cell><CandidateSearch size="compact" /></Cell>
-      <Cell><CandidateSearch size="default" /></Cell>
+      <Cell>
+        <CandidateSearch size="compact" />
+      </Cell>
+      <Cell>
+        <CandidateSearch size="default" />
+      </Cell>
 
       <RowLabel label="Select" />
       <NotApplicable />
-      <Cell><CandidateSelect size="compact" /></Cell>
-      <Cell><CandidateSelect size="default" /></Cell>
+      <Cell>
+        <CandidateSelect size="compact" />
+      </Cell>
+      <Cell>
+        <CandidateSelect size="default" />
+      </Cell>
 
       <RowLabel label="Checkbox row" />
       <NotApplicable />
-      <Cell><CandidateCheckboxRow size="compact" /></Cell>
-      <Cell><CandidateCheckboxRow size="default" /></Cell>
+      <Cell>
+        <CandidateCheckboxRow size="compact" />
+      </Cell>
+      <Cell>
+        <CandidateCheckboxRow size="default" />
+      </Cell>
 
       <RowLabel label="Segmented tabs" />
-      <Cell><CandidateSegmented size="micro" /></Cell>
-      <Cell><CandidateSegmented size="compact" /></Cell>
-      <Cell><CandidateSegmented size="default" /></Cell>
+      <Cell>
+        <CandidateSegmented size="micro" />
+      </Cell>
+      <Cell>
+        <CandidateSegmented size="compact" />
+      </Cell>
+      <Cell>
+        <CandidateSegmented size="default" />
+      </Cell>
 
       <RowLabel label="Text tabs" />
       <NotApplicable />
-      <Cell><CandidateTextTabs size="compact" /></Cell>
-      <Cell><CandidateTextTabs size="default" /></Cell>
+      <Cell>
+        <CandidateTextTabs size="compact" />
+      </Cell>
+      <Cell>
+        <CandidateTextTabs size="default" />
+      </Cell>
     </div>
   </section>
 )
@@ -123,42 +158,12 @@ const NotApplicable = () => (
   </div>
 )
 
-const CandidateButton = ({
-  size,
-  primary = false,
-  children,
-}: {
-  size: ControlSize
-  primary?: boolean
-  children: React.ReactNode
-}) => (
-  <button
-    type="button"
-    className={cn(
-      sizeClasses[size],
-      actionTextClasses[size],
-      'inline-flex items-center justify-center rounded-full font-medium',
-      primary
-        ? 'bg-primary text-primary-foreground'
-        : `border border-border ${roles.surface.content}`
-    )}
-  >
-    {children}
-  </button>
-)
-
 const CandidateIconButton = ({ size }: { size: ControlSize }) => (
-  <button
-    type="button"
-    aria-label={`${size} more actions`}
-    className={cn(
-      iconSizeClasses[size],
-      roles.surface.content,
-      'flex items-center justify-center rounded-full border border-border'
-    )}
-  >
-    <MoreHorizontal />
-  </button>
+  <IconButton
+    label={`${size} more actions`}
+    icon={<MoreHorizontal />}
+    size={size}
+  />
 )
 
 const CandidateInput = ({ size }: { size: 'compact' | 'default' }) => (
@@ -214,14 +219,30 @@ const CandidateSegmented = ({ size }: { size: ControlSize }) => {
   const trackClass =
     size === 'micro' ? 'h-7' : size === 'compact' ? 'h-8' : 'h-11'
   const itemClass =
-    size === 'micro' ? 'h-6 px-2 text-xs' : size === 'compact' ? 'h-7 px-2.5 text-sm' : 'h-10 px-4 text-sm'
+    size === 'micro'
+      ? 'h-6 px-2 text-xs'
+      : size === 'compact'
+        ? 'h-7 px-2.5 text-sm'
+        : 'h-10 px-4 text-sm'
 
   return (
-    <div className={cn(trackClass, roles.surface.neutralControl, 'inline-flex items-center rounded-full p-0.5')}>
-      <button type="button" className={`${itemClass} rounded-full bg-card font-medium shadow-sm`}>
+    <div
+      className={cn(
+        trackClass,
+        roles.surface.neutralControl,
+        'inline-flex items-center rounded-full p-0.5'
+      )}
+    >
+      <button
+        type="button"
+        className={`${itemClass} rounded-full bg-card font-medium shadow-sm`}
+      >
         All
       </button>
-      <button type="button" className={`${itemClass} rounded-full font-medium text-muted-foreground`}>
+      <button
+        type="button"
+        className={`${itemClass} rounded-full font-medium text-muted-foreground`}
+      >
         Active
       </button>
     </div>
@@ -232,8 +253,7 @@ const CandidateCheckboxRow = ({ size }: { size: 'compact' | 'default' }) => (
   <label
     className={`${size === 'compact' ? 'min-h-8 text-sm' : 'min-h-11 text-base'} flex items-center gap-3 font-light`}
   >
-    <input type="checkbox" className="sr-only" />
-    <span className="h-5 w-5 rounded-[4px] border border-border bg-card" />
+    <Checkbox aria-label="Include asset" />
     Include asset
   </label>
 )

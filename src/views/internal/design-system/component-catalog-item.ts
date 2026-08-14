@@ -31,6 +31,14 @@ export const pendingComponent = (
       ? 'audit-pending'
       : 'evidence-found',
   outputStatus: 'none',
+  implementationStatus: 'none',
+  adoptionStatus: 'none',
+  review: {
+    status: 'blocked',
+    scope:
+      'No V1 implementation is ready for visual review. Current evidence may still inform later work.',
+    dependencies: [],
+  },
   statusDetail:
     (options.auditStatus ?? 'pending') === 'pending'
       ? 'Expected capability; current product usage has not been classified yet.'

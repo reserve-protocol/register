@@ -1,6 +1,6 @@
 ---
 title: Decisions
-updated: 2026-08-13
+updated: 2026-08-14
 type: decision
 ---
 
@@ -63,3 +63,19 @@ Auctions will replace its separate centered list and detail islands with a persi
 ## 2026-08-13 — V1 candidates share semantic roles and combinable state axes
 
 Component-family work consumes a lab-only semantic role map instead of choosing legacy color tokens case by case. It aliases reviewed content, substrate, neutral control, selected, line, focus, disabled, and feedback roles while exact values and production token migration remain open. Intent, selection, focus, validation, disabled, and async lifecycle may combine, so the lab shows important pairings rather than one exclusive state list. Default entered/selected values use 16px/300, compact values use 14px/300, and action labels use 14px/500. Atomic one-row controls—including ordinary inputs, search, and select triggers—use full radius; composite amount panels, multiline fields, menus, popovers, and thumbnails use the restrained 8px role. Earlier 8px one-row input/select experiments are superseded.
+
+## 2026-08-14 — Rendered output, reusable implementation, and adoption are separate
+
+A lab proposal does not prove that a reusable component exists. Component metadata records rendered-output status, implementation status (`none`, `specimen`, or `canonical-candidate`), and product adoption independently. Once a component is called canonical, its active state sheet and dependent canonical lab compositions import the real candidate rather than maintaining visual replicas. The first enforced boundary is Button: the accepted V1 action contract now lives in `src/components/button/`, while the legacy production Button and product consumers remain unchanged until an explicit adoption slice.
+
+## 2026-08-14 — Design-system verification follows the current blast radius
+
+Bounded component iterations verify the current component seam and affected rendered behavior; coherent canonicalization checkpoints verify the reconciled design-system batch; full repository gates are reserved for production adoption, shared/global changes, release work, or another genuine integration boundary. An accumulated dirty design-system diff is not rerun as a full repository gate after every small visual change. The running lab may be reused for iterative visual checks, while canonical Playwright checkpoints retain their controlled `VITE_E2E` server and must not compete with another suite on port 3005.
+
+## 2026-08-14 — Button width belongs to the action-group composition
+
+V1 Buttons remain intrinsic/content-width by default. Compact actions are primarily horizontal or inline controls and should not routinely stretch to fill a parent. When actions must stack vertically in a narrow surface, use equal widths—normally full-width default 44px actions—rather than vertically stacking different intrinsic widths. This is parent-layout guidance, not a new Button size or width variant.
+
+## 2026-08-14 — Canonical composition review requires canonical or retained dependencies
+
+A rendered composition is ready for canonical V1 review only when every visually meaningful dependency is either a real reusable V1 candidate or an explicitly retained domain/behavior primitive. Otherwise the lab labels it provisional, blocked, or exploration-only and states the narrow scope that may be judged. This prevents a canonical child inside copied framing from making the entire specimen appear canonical. The first dependency-complete composition is the real eligibility dialog: canonical Button, 20px square binary Checkbox, compact named IconButton, and minimal Radix-backed Dialog shell, with Radix Collapsible and inline legal links explicitly retained. Unresolved Checkbox/IconButton variants, final dialog elevation, outcomes, illustration, constrained-screen behavior, Table/DataRow, and production adoption remain outside this promotion.

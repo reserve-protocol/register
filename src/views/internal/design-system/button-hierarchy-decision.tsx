@@ -1,6 +1,7 @@
-import type { ReactNode } from 'react'
 import { ArrowUpRight, Check, RotateCcw } from 'lucide-react'
-import { cn } from '@/lib/utils'
+import type { ReactNode } from 'react'
+
+import { Button } from '@/components/button'
 
 const ButtonHierarchyDecision = () => (
   <section
@@ -37,8 +38,10 @@ const ButtonHierarchyDecision = () => (
             <Check className="size-4" strokeWidth={1.75} />
           </div>
           <div className="flex items-center gap-2">
-            <SecondaryButton icon={<RotateCcw />}>New mint</SecondaryButton>
-            <PrimaryButton>View DTF</PrimaryButton>
+            <Button tone="secondary" size="compact" leadingIcon={<RotateCcw />}>
+              New mint
+            </Button>
+            <Button size="compact">View DTF</Button>
           </div>
         </div>
         <div className="mt-8">
@@ -60,63 +63,18 @@ const ButtonHierarchyDecision = () => (
           </div>
         </div>
         <div className="mt-6 grid gap-2">
-          <PrimaryButton fullWidth>Simulation successful</PrimaryButton>
-          <SecondaryButton trailingIcon={<ArrowUpRight />} fullWidth>
+          <Button className="w-full">Simulation successful</Button>
+          <Button
+            tone="secondary"
+            trailingIcon={<ArrowUpRight />}
+            className="w-full"
+          >
             View on Tenderly
-          </SecondaryButton>
+          </Button>
         </div>
       </ProductSlice>
     </div>
   </section>
-)
-
-const buttonBase =
-  'inline-flex h-8 items-center justify-center gap-2 rounded-full px-3 text-sm font-medium transition-colors duration-[120ms] [&>svg]:size-4'
-
-const PrimaryButton = ({
-  children,
-  fullWidth = false,
-}: {
-  children: ReactNode
-  fullWidth?: boolean
-}) => (
-  <button
-    type="button"
-    className={cn(
-      buttonBase,
-      'bg-primary text-primary-foreground hover:bg-primary/80',
-      fullWidth && 'w-full'
-    )}
-  >
-    {children}
-  </button>
-)
-
-const SecondaryButton = ({
-  children,
-  icon,
-  trailingIcon,
-  fullWidth = false,
-}: {
-  children: ReactNode
-  icon?: ReactNode
-  trailingIcon?: ReactNode
-  fullWidth?: boolean
-}) => (
-  <button
-    type="button"
-    className={cn(
-      buttonBase,
-      'border border-border bg-card text-foreground hover:bg-muted',
-      icon && 'pl-2.5',
-      trailingIcon && 'pr-2.5',
-      fullWidth && 'w-full'
-    )}
-  >
-    {icon}
-    {children}
-    {trailingIcon}
-  </button>
 )
 
 const ProductSlice = ({

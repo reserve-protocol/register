@@ -1,5 +1,6 @@
 import { Check, ChevronDown, CircleCheck, ExternalLink, X } from 'lucide-react'
 import { ZapperModalSpecimen } from './zapper-modal-study'
+import { ComponentReviewReadiness } from './catalog-ui'
 
 const ModalGeometryStudy = () => (
   <section
@@ -8,6 +9,21 @@ const ModalGeometryStudy = () => (
     aria-labelledby="modal-geometry-heading"
   >
     <Heading />
+
+    <ComponentReviewReadiness
+      testId="modal-geometry-readiness"
+      review={{
+        status: 'provisional',
+        scope:
+          'Use these copied specimens to judge width and state continuity only. Their bodies, actions, and outcome layouts are not canonical dialog compositions.',
+        dependencies: [
+          { name: '432/384px width roles', status: 'canonical' },
+          { name: 'Dialog shell', status: 'canonical' },
+          { name: 'Zapper body copy', status: 'provisional' },
+          { name: 'Outcome composition', status: 'blocked' },
+        ],
+      }}
+    />
 
     <div className="grid gap-px bg-secondary sm:grid-cols-2 lg:grid-cols-4">
       <Evidence value="432px" label="Substantial task dialog" selected />
