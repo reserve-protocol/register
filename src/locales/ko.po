@@ -2121,6 +2121,11 @@ msgstr "캔들"
 msgid "Candlestick chart"
 msgstr "캔들 차트"
 
+#: src/views/index-dtf/auctions/views/rebalance/components/community-launch-auctions-button.tsx:159
+#: src/views/index-dtf/auctions/views/rebalance/components/launch-auctions-button.tsx:198
+msgid "Cannot launch: auction would overlap the daily TVL fee handout"
+msgstr "시작할 수 없음: 경매가 일일 TVL 수수료 분배와 겹칩니다"
+
 #: src/views/yield-dtf/governance/views/proposal/components/SpellUpgrade4_2_0.tsx:79
 msgid "Cast Spell"
 msgstr "Spell 시전"

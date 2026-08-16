@@ -116,7 +116,9 @@ failure paths. Receipts resolve only recorded hashes.
 **Frozen time.** `freezeTime(page, seconds)` BEFORE navigation (browser +
 Node RPC clocks in lockstep), `advanceTime(page, ms)` after actions. Compute
 timestamps relative to snapshot data (`proposalTime`, `rebalanceTime`) so
-re-captures keep working.
+recaptures keep working. Use `harness.chain.jumpTo(seconds)` only to model a
+deadline crossing between render timer ticks: it moves `Date.now()` and the RPC
+clock without firing timers, so handler-time defenses can be tested directly.
 
 **Compliance/geolocation.** `test.use({ compliance: {...} })` sets the
 API-level geolocation for the whole spec; per-DTF restriction goes through

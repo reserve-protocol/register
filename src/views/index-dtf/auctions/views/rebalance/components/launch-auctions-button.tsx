@@ -8,7 +8,11 @@ import { LoaderCircle } from 'lucide-react'
 import { useEffect, useMemo, useState } from 'react'
 import { toast } from 'sonner'
 import { Address } from 'viem'
-import { useWaitForTransactionReceipt, useWriteContract } from 'wagmi'
+import {
+  usePublicClient,
+  useWaitForTransactionReceipt,
+  useWriteContract,
+} from 'wagmi'
 import { currentRebalanceAtom } from '../../../atoms'
 import {
   areWeightsSavedAtom,
@@ -26,6 +30,11 @@ import getRebalanceOpenAuction, {
   buildRebalanceOpenAuctionArrays,
 } from '../utils/get-rebalance-open-auction'
 import { TransactionButtonContainer } from '@/components/ui/transaction'
+import useCurrentTime from '@/hooks/useCurrentTime'
+import {
+  wouldAuctionOverlapFeeHandout,
+  wouldAuctionOverlapFeeHandoutNow,
+} from '../utils/auction-fee-handout-overlap'
 
 const auctionNumberAtom = atom((get) => {
   const auctions = get(rebalanceAuctionsAtom)
@@ -44,6 +53,7 @@ const LaunchAuctionsButton = () => {
   const auctionNumber = useAtomValue(auctionNumberAtom)
   const [isLaunching, setIsLaunching] = useState(false)
   const { writeContract, isError, isPending, data } = useWriteContract()
+  const publicClient = usePublicClient({ chainId: dtf?.chainId })
   const { isSuccess } = useWaitForTransactionReceipt({
     hash: data,
     chainId: dtf?.chainId,
@@ -53,6 +63,10 @@ const LaunchAuctionsButton = () => {
   const savedWeights = useAtomValue(savedWeightsAtom)
   const areWeightsSaved = useAtomValue(areWeightsSavedAtom)
   const auctions = useAtomValue(rebalanceAuctionsAtom)
+  const currentTime = useCurrentTime()
+  const isFeeHandoutOverlap =
+    !!rebalanceParams &&
+    wouldAuctionOverlapFeeHandout(currentTime, rebalanceParams.auctionLength)
 
   const weightsToUse =
     isHybridDTF && areWeightsSaved && savedWeights && auctions.length === 0
@@ -91,7 +105,8 @@ const LaunchAuctionsButton = () => {
     rebalancePercent > 0 &&
     rebalance &&
     dtf &&
-    !priceUnavailable
+    !priceUnavailable &&
+    !isFeeHandoutOverlap
 
   useEffect(() => {
     if (isSuccess) {
@@ -119,11 +134,30 @@ const LaunchAuctionsButton = () => {
     }
   }, [isError])
 
-  const handleStartAuctions = () => {
-    if (!isValid || !rebalanceParams || !weightsToUse) return
+  const handleStartAuctions = async () => {
+    if (
+      !isValid ||
+      !dtf ||
+      !publicClient ||
+      !rebalanceParams ||
+      !weightsToUse
+    )
+      return
 
     try {
       setIsLaunching(true)
+
+      const auctionLength = Number(
+        await publicClient.readContract({
+          address: dtf.id,
+          abi: dtfIndexAbi,
+          functionName: 'auctionLength',
+        })
+      )
+      if (wouldAuctionOverlapFeeHandoutNow(auctionLength)) {
+        setIsLaunching(false)
+        return
+      }
 
       const [openAuctionArgs] = getRebalanceOpenAuction(
         rebalanceParams.folioVersion,
@@ -143,7 +177,7 @@ const LaunchAuctionsButton = () => {
       )
 
       writeContract({
-        address: dtf?.id,
+        address: dtf.id,
         abi: dtfIndexAbi,
         functionName: 'openAuction',
         args: [
@@ -179,6 +213,16 @@ const LaunchAuctionsButton = () => {
           ) : (
             <Trans>Price unavailable — cannot launch</Trans>
           )}
+        </p>
+      )}
+      {isFeeHandoutOverlap && (
+        <p
+          data-testid="auctions-fee-handout-overlap"
+          className="text-center text-sm text-destructive px-2 pb-2"
+        >
+          <Trans>
+            Cannot launch: auction would overlap the daily TVL fee handout
+          </Trans>
         </p>
       )}
       <Button

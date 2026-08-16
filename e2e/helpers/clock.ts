@@ -33,6 +33,15 @@ export async function advanceTime(page: Page, ms: number) {
   }
 }
 
+// Move Date.now() and the RPC clock without firing browser timers. This models
+// crossing a deadline between React timer ticks so click handlers must recheck
+// time instead of trusting their last rendered state.
+export async function jumpTime(page: Page, timestampSeconds: number) {
+  frozenMs = timestampSeconds * 1000
+  await page.clock.setSystemTime(frozenMs)
+  setMockNow(frozenMs)
+}
+
 // A timestamp (seconds) placed inside/around a proposal's voting window, read
 // from snapshot data so the frozen clock lands the proposal in a known phase.
 export function proposalTime(

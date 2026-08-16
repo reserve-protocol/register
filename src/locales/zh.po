@@ -2121,6 +2121,11 @@ msgstr "蜡烛图"
 msgid "Candlestick chart"
 msgstr "K线图"
 
+#: src/views/index-dtf/auctions/views/rebalance/components/community-launch-auctions-button.tsx:159
+#: src/views/index-dtf/auctions/views/rebalance/components/launch-auctions-button.tsx:198
+msgid "Cannot launch: auction would overlap the daily TVL fee handout"
+msgstr "无法启动：拍卖将与每日 TVL 费用分发时间重叠"
+
 #: src/views/yield-dtf/governance/views/proposal/components/SpellUpgrade4_2_0.tsx:79
 msgid "Cast Spell"
 msgstr "施放咒语"
