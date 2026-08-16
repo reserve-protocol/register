@@ -179,6 +179,7 @@ const callOverrides: Record<string, Hex> = {
   '*:0x01e1d114': EMPTY_ASSETS, // totalAssets() — registry DTFs get real baskets (chain-state)
   '*:0x4d2301cc': ETH_BALANCE, // Multicall3.getEthBalance(address)
   '*:0xaa3b5568': IDLE_REBALANCE, // getRebalance() — no active rebalance by default
+  '*:0x325c25a2': encodeAbiParameters([{ type: 'uint256' }], [1800n]), // auctionLength()
   // Fee-display reads on the DTF container (peripheral to governance). A DTF
   // with no DAO fee registry reads as fee-free — a valid, deterministic state.
   '*:0x9980cb23': ZERO_RETURN, // daoFeeRegistry() → zero address

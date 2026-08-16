@@ -19,6 +19,7 @@ import {
 
 export type RebalanceCurrentData = {
   supply: bigint
+  auctionLength: number
   rebalance: RebalanceV4 | RebalanceV5
   currentAssets: Record<string, bigint>
   folioVersion: FolioVersion
@@ -58,15 +59,22 @@ const useRebalanceCurrentData = () => {
         args: [],
         chainId: dtf?.chainId,
       },
+      {
+        abi,
+        address: dtf?.id,
+        functionName: 'auctionLength',
+        chainId: dtf?.chainId,
+      },
     ],
     allowFailure: false,
     query: {
       enabled: !!dtf?.id,
       select: (data): RebalanceCurrentData => {
-        const [supply, rebalanceRaw, assetsData] = data as unknown as [
+        const [supply, rebalanceRaw, assetsData, auctionLength] = data as unknown as [
           bigint,
           readonly unknown[],
           readonly [readonly `0x${string}`[], readonly bigint[]],
+          bigint,
         ]
 
         const [assets, balances] = assetsData
@@ -83,6 +91,7 @@ const useRebalanceCurrentData = () => {
 
         return {
           supply,
+          auctionLength: Number(auctionLength),
           rebalance,
           currentAssets: mapToAssets(assets, balances),
           folioVersion,

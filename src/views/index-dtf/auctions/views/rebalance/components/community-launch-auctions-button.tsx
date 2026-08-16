@@ -6,7 +6,11 @@ import { Trans, useLingui } from '@lingui/react/macro'
 import { atom, useAtom, useAtomValue } from 'jotai'
 import { LoaderCircle, MousePointerBan } from 'lucide-react'
 import { useEffect, useState } from 'react'
-import { useWaitForTransactionReceipt, useWriteContract } from 'wagmi'
+import {
+  usePublicClient,
+  useWaitForTransactionReceipt,
+  useWriteContract,
+} from 'wagmi'
 import { currentRebalanceAtom } from '../../../atoms'
 import {
   isAuctionOngoingAtom,
@@ -17,7 +21,10 @@ import {
 import useRebalanceParams from '../hooks/use-rebalance-params'
 import Help from '@/components/ui/help'
 import useCurrentTime from '@/hooks/useCurrentTime'
-import { wouldAuctionOverlapFeeHandout } from '../utils/auction-fee-handout-overlap'
+import {
+  wouldAuctionOverlapFeeHandout,
+  wouldAuctionOverlapFeeHandoutNow,
+} from '../utils/auction-fee-handout-overlap'
 
 const auctionNumberAtom = atom((get) => {
   const auctions = get(rebalanceAuctionsAtom)
@@ -34,6 +41,7 @@ const CommunityLaunchAuctionsButton = () => {
   const auctionNumber = useAtomValue(auctionNumberAtom)
   const [isLaunching, setIsLaunching] = useState(false)
   const { writeContract, isError, isPending, data } = useWriteContract()
+  const publicClient = usePublicClient({ chainId: dtf?.chainId })
   const { isSuccess } = useWaitForTransactionReceipt({
     hash: data,
     chainId: dtf?.chainId,
@@ -50,7 +58,8 @@ const CommunityLaunchAuctionsButton = () => {
     ? restrictedUntil - currentTime
     : 0
   const isFeeHandoutOverlap =
-    !!dtf && wouldAuctionOverlapFeeHandout(currentTime, dtf.auctionLength)
+    !!rebalanceParams &&
+    wouldAuctionOverlapFeeHandout(currentTime, rebalanceParams.auctionLength)
   const isValid =
     !!rebalanceParams &&
     rebalancePercent > 0 &&
@@ -96,15 +105,33 @@ const CommunityLaunchAuctionsButton = () => {
     }
   }, [isSuccess])
 
-  const handleStartAuctions = () => {
-    if (!isValid || !rebalanceParams) return
+  const handleStartAuctions = async () => {
+    if (
+      !isValid ||
+      !dtf ||
+      !publicClient ||
+      !rebalanceParams
+    )
+      return
 
     try {
       setIsLaunching(true)
       setError(null)
 
+      const auctionLength = Number(
+        await publicClient.readContract({
+          address: dtf.id,
+          abi: dtfIndexAbi,
+          functionName: 'auctionLength',
+        })
+      )
+      if (wouldAuctionOverlapFeeHandoutNow(auctionLength)) {
+        setIsLaunching(false)
+        return
+      }
+
       writeContract({
-        address: dtf?.id,
+        address: dtf.id,
         abi: dtfIndexAbi,
         functionName: 'openAuctionUnrestricted',
         args: [BigInt(rebalance.rebalance.nonce)],

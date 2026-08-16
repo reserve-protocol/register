@@ -1,5 +1,8 @@
-import { describe, expect, it } from 'vitest'
-import { wouldAuctionOverlapFeeHandout } from '../utils/auction-fee-handout-overlap'
+import { describe, expect, it, vi } from 'vitest'
+import {
+  wouldAuctionOverlapFeeHandout,
+  wouldAuctionOverlapFeeHandoutNow,
+} from '../utils/auction-fee-handout-overlap'
 
 const DAY = 24 * 60 * 60
 const WARMUP = 30
@@ -28,5 +31,14 @@ describe('wouldAuctionOverlapFeeHandout', () => {
 
   it('uses the following handout after launching exactly at a day boundary', () => {
     expect(wouldAuctionOverlapFeeHandout(DAY, 30 * 60)).toBe(false)
+  })
+
+  it('checks the wall clock at invocation time instead of reusing rendered time', () => {
+    vi.useFakeTimers()
+    vi.setSystemTime(timestampAt(23, 29, 31) * 1000)
+
+    expect(wouldAuctionOverlapFeeHandoutNow(30 * 60)).toBe(true)
+
+    vi.useRealTimers()
   })
 })

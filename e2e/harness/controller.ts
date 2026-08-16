@@ -1,6 +1,6 @@
 import type { Page } from '@playwright/test'
 import type { Address, Hex } from 'viem'
-import { advanceTime, freezeTime } from '../helpers/clock'
+import { advanceTime, freezeTime, jumpTime } from '../helpers/clock'
 import type { MockOverrides } from '../helpers/overrides'
 import type { TxRecord } from '../helpers/provider'
 import type { BoundaryRequest } from '../helpers/requests'
@@ -33,6 +33,9 @@ class ChainControl {
   }
   advance(ms: number): Promise<void> {
     return advanceTime(this.page, ms)
+  }
+  jumpTo(seconds: number): Promise<void> {
+    return jumpTime(this.page, seconds)
   }
 }
 

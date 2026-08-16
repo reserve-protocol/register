@@ -11,3 +11,8 @@ export const wouldAuctionOverlapFeeHandout = (
 
   return auctionEnd >= nextFeeHandout
 }
+
+// Re-read the clock in click handlers so a render immediately before the cutoff
+// cannot submit immediately after it.
+export const wouldAuctionOverlapFeeHandoutNow = (auctionLength: number) =>
+  wouldAuctionOverlapFeeHandout(Math.floor(Date.now() / 1000), auctionLength)

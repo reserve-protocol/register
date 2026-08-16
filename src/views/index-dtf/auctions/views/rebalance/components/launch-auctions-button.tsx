@@ -8,7 +8,11 @@ import { LoaderCircle } from 'lucide-react'
 import { useEffect, useMemo, useState } from 'react'
 import { toast } from 'sonner'
 import { Address } from 'viem'
-import { useWaitForTransactionReceipt, useWriteContract } from 'wagmi'
+import {
+  usePublicClient,
+  useWaitForTransactionReceipt,
+  useWriteContract,
+} from 'wagmi'
 import { currentRebalanceAtom } from '../../../atoms'
 import {
   areWeightsSavedAtom,
@@ -27,7 +31,10 @@ import getRebalanceOpenAuction, {
 } from '../utils/get-rebalance-open-auction'
 import { TransactionButtonContainer } from '@/components/ui/transaction'
 import useCurrentTime from '@/hooks/useCurrentTime'
-import { wouldAuctionOverlapFeeHandout } from '../utils/auction-fee-handout-overlap'
+import {
+  wouldAuctionOverlapFeeHandout,
+  wouldAuctionOverlapFeeHandoutNow,
+} from '../utils/auction-fee-handout-overlap'
 
 const auctionNumberAtom = atom((get) => {
   const auctions = get(rebalanceAuctionsAtom)
@@ -46,6 +53,7 @@ const LaunchAuctionsButton = () => {
   const auctionNumber = useAtomValue(auctionNumberAtom)
   const [isLaunching, setIsLaunching] = useState(false)
   const { writeContract, isError, isPending, data } = useWriteContract()
+  const publicClient = usePublicClient({ chainId: dtf?.chainId })
   const { isSuccess } = useWaitForTransactionReceipt({
     hash: data,
     chainId: dtf?.chainId,
@@ -57,7 +65,8 @@ const LaunchAuctionsButton = () => {
   const auctions = useAtomValue(rebalanceAuctionsAtom)
   const currentTime = useCurrentTime()
   const isFeeHandoutOverlap =
-    !!dtf && wouldAuctionOverlapFeeHandout(currentTime, dtf.auctionLength)
+    !!rebalanceParams &&
+    wouldAuctionOverlapFeeHandout(currentTime, rebalanceParams.auctionLength)
 
   const weightsToUse =
     isHybridDTF && areWeightsSaved && savedWeights && auctions.length === 0
@@ -125,11 +134,30 @@ const LaunchAuctionsButton = () => {
     }
   }, [isError])
 
-  const handleStartAuctions = () => {
-    if (!isValid || !rebalanceParams || !weightsToUse) return
+  const handleStartAuctions = async () => {
+    if (
+      !isValid ||
+      !dtf ||
+      !publicClient ||
+      !rebalanceParams ||
+      !weightsToUse
+    )
+      return
 
     try {
       setIsLaunching(true)
+
+      const auctionLength = Number(
+        await publicClient.readContract({
+          address: dtf.id,
+          abi: dtfIndexAbi,
+          functionName: 'auctionLength',
+        })
+      )
+      if (wouldAuctionOverlapFeeHandoutNow(auctionLength)) {
+        setIsLaunching(false)
+        return
+      }
 
       const [openAuctionArgs] = getRebalanceOpenAuction(
         rebalanceParams.folioVersion,
@@ -149,7 +177,7 @@ const LaunchAuctionsButton = () => {
       )
 
       writeContract({
-        address: dtf?.id,
+        address: dtf.id,
         abi: dtfIndexAbi,
         functionName: 'openAuction',
         args: [

@@ -77,8 +77,11 @@ Quick loop: `pnpm exec playwright test e2e/tests/smoke/auctions.spec.ts`
   is tracking so it stays non-hybrid; a hybrid (allowlisted native)
   DTF forces a Manage-Weights step before the launch button, so mock
   `weightControl` to drive that step. Both launcher and community paths are also
-  blocked when the 30s auction warmup plus auction length reaches the next UTC
-  day boundary (the Folio TVL fee handout). ENGINEER REVIEW STILL REQUIRED for
+  blocked when the 30s auction warmup plus the RPC-read `auctionLength()` reaches
+  the next UTC day boundary (the Folio TVL fee handout). Launch handlers re-read
+  `auctionLength()` and the wall clock at invocation, so a governance update or
+  click between render ticks also fails closed.
+  ENGINEER REVIEW STILL REQUIRED for
   the openAuction weight/price MATH (`getRebalanceOpenAuction`) and the UTC
   handout boundary; the smoke proves control-flow wiring, not economic
   correctness.

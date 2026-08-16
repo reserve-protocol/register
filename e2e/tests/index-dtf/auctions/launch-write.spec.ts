@@ -173,6 +173,158 @@ test('auctions: blocks launcher auctions that would overlap the daily TVL fee ha
   expect(harness.tx.log).toHaveLength(0)
 })
 
+test('auctions: rechecks the fee cutoff at click time before the next render @smoke', async ({
+  harness,
+  overrides,
+}) => {
+  const page = harness.page
+  const latest = loadRebalances(dtf)[0]
+  const { dtf: dtfObj } = loadSnapshot<{
+    dtf: { auctionLaunchers: string[] }
+  }>(`${dtf.snapshotDir}/dtf.json`)
+  const nextFeeHandout =
+    (Math.floor(Number(latest.timestamp) / (24 * 60 * 60)) + 1) * 24 * 60 * 60
+  const cutoff = nextFeeHandout - 30 - 30 * 60
+
+  await harness.chain.freezeAt(cutoff - 30)
+  overrides.subgraph(
+    { operationName: 'GetIndexDTF' },
+    {
+      dtf: {
+        ...dtfObj,
+        auctionLaunchers: [
+          ...dtfObj.auctionLaunchers,
+          TEST_ADDRESS.toLowerCase(),
+        ],
+      },
+    }
+  )
+  seedAuctionDetail(overrides)
+  overrides.ethCall(
+    dtf.address,
+    '0xaa3b5568',
+    encodeActiveRebalance(dtf, latest)
+  )
+
+  await harness.goto(dtf, `auctions/rebalance/${proposalIdFor(dtf, latest)}`)
+  await harness.wallet.connect()
+  await expect(page.getByTestId('dtf-auctions')).toBeVisible({
+    timeout: 20_000,
+  })
+
+  const launch = page.getByTestId('auctions-launch-btn')
+  await expect(async () => {
+    await harness.chain.advance(5_000)
+    await expect(launch).toBeEnabled()
+  }).toPass({ timeout: 30_000 })
+
+  await harness.chain.jumpTo(cutoff)
+  await expect(launch).toBeEnabled()
+  await launch.click()
+  await harness.chain.advance(1_000)
+
+  expect(harness.tx.log).toHaveLength(0)
+})
+
+test('auctions: uses live RPC auction length when the subgraph is stale @smoke', async ({
+  harness,
+  overrides,
+}) => {
+  const page = harness.page
+  const latest = loadRebalances(dtf)[0]
+  const { dtf: dtfObj } = loadSnapshot<{
+    dtf: { auctionLaunchers: string[]; auctionLength: string }
+  }>(`${dtf.snapshotDir}/dtf.json`)
+  const nextFeeHandout =
+    (Math.floor(Number(latest.timestamp) / (24 * 60 * 60)) + 1) * 24 * 60 * 60
+
+  await harness.chain.freezeAt(nextFeeHandout - 60 * 60)
+  overrides.subgraph(
+    { operationName: 'GetIndexDTF' },
+    {
+      dtf: {
+        ...dtfObj,
+        auctionLaunchers: [
+          ...dtfObj.auctionLaunchers,
+          TEST_ADDRESS.toLowerCase(),
+        ],
+      },
+    }
+  )
+  overrides.ethCall(
+    dtf.address,
+    '0x325c25a2',
+    encodeAbiParameters([{ type: 'uint256' }], [2n * 60n * 60n])
+  )
+  seedAuctionDetail(overrides)
+  overrides.ethCall(
+    dtf.address,
+    '0xaa3b5568',
+    encodeActiveRebalance(dtf, latest)
+  )
+
+  await harness.goto(dtf, `auctions/rebalance/${proposalIdFor(dtf, latest)}`)
+  await harness.wallet.connect()
+  await expect(page.getByTestId('dtf-auctions')).toBeVisible({
+    timeout: 20_000,
+  })
+
+  const launch = page.getByTestId('auctions-launch-btn')
+  await expect(async () => {
+    await harness.chain.advance(5_000)
+    await expect(launch).toBeVisible()
+    await expect(launch).toBeDisabled()
+    await expect(page.getByTestId('auctions-fee-handout-overlap')).toBeVisible()
+  }).toPass({ timeout: 30_000 })
+  expect(harness.tx.log).toHaveLength(0)
+})
+
+test('auctions: rechecks live RPC auction length at click time @smoke', async ({
+  harness,
+  overrides,
+}) => {
+  const page = harness.page
+  const latest = loadRebalances(dtf)[0]
+  const { dtf: dtfObj } = loadSnapshot<{
+    dtf: { auctionLaunchers: string[] }
+  }>(`${dtf.snapshotDir}/dtf.json`)
+  const nextFeeHandout =
+    (Math.floor(Number(latest.timestamp) / (24 * 60 * 60)) + 1) * 24 * 60 * 60
+
+  await harness.chain.freezeAt(nextFeeHandout - 60 * 60)
+  overrides.subgraph(
+    { operationName: 'GetIndexDTF' },
+    {
+      dtf: {
+        ...dtfObj,
+        auctionLaunchers: [...dtfObj.auctionLaunchers, TEST_ADDRESS.toLowerCase()],
+      },
+    }
+  )
+  seedAuctionDetail(overrides)
+  overrides.ethCall(dtf.address, '0xaa3b5568', encodeActiveRebalance(dtf, latest))
+
+  await harness.goto(dtf, `auctions/rebalance/${proposalIdFor(dtf, latest)}`)
+  await harness.wallet.connect()
+  await expect(page.getByTestId('dtf-auctions')).toBeVisible({ timeout: 20_000 })
+
+  const launch = page.getByTestId('auctions-launch-btn')
+  await expect(async () => {
+    await harness.chain.advance(5_000)
+    await expect(launch).toBeEnabled()
+  }).toPass({ timeout: 30_000 })
+
+  overrides.ethCall(
+    dtf.address,
+    '0x325c25a2',
+    encodeAbiParameters([{ type: 'uint256' }], [2n * 60n * 60n])
+  )
+  await launch.click()
+  await harness.chain.advance(1_000)
+
+  expect(harness.tx.log).toHaveLength(0)
+})
+
 test('auctions: blocks community auctions that would overlap the daily TVL fee handout @smoke', async ({
   harness,
   overrides,
@@ -262,7 +414,9 @@ test('auctions: a non-launcher in the permissionless window submits openAuctionU
 
   await harness.goto(dtf, `auctions/rebalance/${proposalIdFor(dtf, raw)}`)
   await harness.wallet.connect()
-  await expect(page.getByTestId('dtf-auctions')).toBeVisible({ timeout: 20_000 })
+  await expect(page.getByTestId('dtf-auctions')).toBeVisible({
+    timeout: 20_000,
+  })
 
   const launch = page.getByTestId('auctions-community-launch-btn')
   await expect(async () => {
