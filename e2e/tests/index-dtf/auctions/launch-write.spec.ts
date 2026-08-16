@@ -124,6 +124,104 @@ test('auctions: an auction launcher submits openAuction() to the folio @smoke', 
   expect(decoded.args[0]).toBe(BigInt(latest.nonce))
 })
 
+test('auctions: blocks launcher auctions that would overlap the daily TVL fee handout @smoke', async ({
+  harness,
+  overrides,
+}) => {
+  const page = harness.page
+  const latest = loadRebalances(dtf)[0]
+  const { dtf: dtfObj } = loadSnapshot<{
+    dtf: { auctionLaunchers: string[] }
+  }>(`${dtf.snapshotDir}/dtf.json`)
+  const nextFeeHandout =
+    (Math.floor(Number(latest.timestamp) / (24 * 60 * 60)) + 1) * 24 * 60 * 60
+
+  await harness.chain.freezeAt(nextFeeHandout - 30 * 60)
+  overrides.subgraph(
+    { operationName: 'GetIndexDTF' },
+    {
+      dtf: {
+        ...dtfObj,
+        auctionLaunchers: [
+          ...dtfObj.auctionLaunchers,
+          TEST_ADDRESS.toLowerCase(),
+        ],
+      },
+    }
+  )
+  seedAuctionDetail(overrides)
+  overrides.ethCall(
+    dtf.address,
+    '0xaa3b5568',
+    encodeActiveRebalance(dtf, latest)
+  )
+
+  await harness.goto(dtf, `auctions/rebalance/${proposalIdFor(dtf, latest)}`)
+  await harness.wallet.connect()
+  await expect(page.getByTestId('dtf-auctions')).toBeVisible({
+    timeout: 20_000,
+  })
+
+  const launch = page.getByTestId('auctions-launch-btn')
+  await expect(async () => {
+    await harness.chain.advance(5_000)
+    await expect(launch).toBeVisible()
+    await expect(launch).toBeDisabled()
+    await expect(page.getByTestId('auctions-fee-handout-overlap')).toBeVisible()
+  }).toPass({ timeout: 30_000 })
+
+  expect(harness.tx.log).toHaveLength(0)
+})
+
+test('auctions: blocks community auctions that would overlap the daily TVL fee handout @smoke', async ({
+  harness,
+  overrides,
+}) => {
+  const page = harness.page
+  const raw = loadRebalances(dtf)[0]
+  const nextFeeHandout =
+    (Math.floor(Number(raw.restrictedUntil) / (24 * 60 * 60)) + 1) *
+    24 *
+    60 *
+    60
+  const availableUntil = String(nextFeeHandout + 60 * 60)
+  const permissionless = { ...raw, availableUntil }
+
+  await harness.chain.freezeAt(nextFeeHandout - 30 * 60)
+  const rebSnap = loadSnapshot<{ rebalances: Array<Record<string, unknown>> }>(
+    `${dtf.snapshotDir}/rebalances.json`
+  )
+  overrides.subgraph(
+    { operationName: 'getRebalances' },
+    {
+      rebalances: rebSnap.rebalances.map((r) =>
+        r.blockNumber === raw.blockNumber ? { ...r, availableUntil } : r
+      ),
+    }
+  )
+  seedAuctionDetail(overrides)
+  overrides.ethCall(
+    dtf.address,
+    '0xaa3b5568',
+    encodeActiveRebalance(dtf, permissionless)
+  )
+
+  await harness.goto(dtf, `auctions/rebalance/${proposalIdFor(dtf, raw)}`)
+  await harness.wallet.connect()
+  await expect(page.getByTestId('dtf-auctions')).toBeVisible({
+    timeout: 20_000,
+  })
+
+  const launch = page.getByTestId('auctions-community-launch-btn')
+  await expect(async () => {
+    await harness.chain.advance(5_000)
+    await expect(launch).toBeVisible()
+    await expect(launch).toBeDisabled()
+    await expect(page.getByTestId('auctions-fee-handout-overlap')).toBeVisible()
+  }).toPass({ timeout: 30_000 })
+  expect(harness.tx.log).toHaveLength(0)
+})
+
 test('auctions: a non-launcher in the permissionless window submits openAuctionUnrestricted() @smoke', async ({
   harness,
   overrides,

@@ -16,6 +16,8 @@ import {
 } from '../atoms'
 import useRebalanceParams from '../hooks/use-rebalance-params'
 import Help from '@/components/ui/help'
+import useCurrentTime from '@/hooks/useCurrentTime'
+import { wouldAuctionOverlapFeeHandout } from '../utils/auction-fee-handout-overlap'
 
 const auctionNumberAtom = atom((get) => {
   const auctions = get(rebalanceAuctionsAtom)
@@ -39,7 +41,7 @@ const CommunityLaunchAuctionsButton = () => {
   const [error, setError] = useState<string | null>(null)
   const [countdown, setCountdown] = useState<number>(0)
   const isAuctionOngoing = useAtomValue(isAuctionOngoingAtom)
-  const currentTime = Math.floor(Date.now() / 1000)
+  const currentTime = useCurrentTime()
   const restrictedUntil = rebalance
     ? Number(rebalance.rebalance.restrictedUntil)
     : 0
@@ -47,7 +49,14 @@ const CommunityLaunchAuctionsButton = () => {
   const timeUntilPermissionless = isRestrictedPeriod
     ? restrictedUntil - currentTime
     : 0
-  const isValid = !!rebalanceParams && rebalancePercent > 0 && rebalance && dtf
+  const isFeeHandoutOverlap =
+    !!dtf && wouldAuctionOverlapFeeHandout(currentTime, dtf.auctionLength)
+  const isValid =
+    !!rebalanceParams &&
+    rebalancePercent > 0 &&
+    rebalance &&
+    dtf &&
+    !isFeeHandoutOverlap
   const isNotCommunityLaunch =
     rebalance?.rebalance.availableUntil === rebalance?.rebalance.restrictedUntil
 
@@ -141,6 +150,16 @@ const CommunityLaunchAuctionsButton = () => {
 
   return (
     <div className="flex flex-col gap-2 p-2">
+      {isFeeHandoutOverlap && (
+        <p
+          data-testid="auctions-fee-handout-overlap"
+          className="text-center text-sm text-destructive px-2"
+        >
+          <Trans>
+            Cannot launch: auction would overlap the daily TVL fee handout
+          </Trans>
+        </p>
+      )}
       <Button
         data-testid="auctions-community-launch-btn"
         className="rounded-xl w-full py-6 gap-2"
@@ -149,7 +168,8 @@ const CommunityLaunchAuctionsButton = () => {
           isPending ||
           isAuctionOngoing ||
           isLaunching ||
-          isRestrictedPeriod
+          isRestrictedPeriod ||
+          isFeeHandoutOverlap
         }
         onClick={handleStartAuctions}
       >

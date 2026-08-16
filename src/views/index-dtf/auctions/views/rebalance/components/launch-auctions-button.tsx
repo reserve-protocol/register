@@ -26,6 +26,8 @@ import getRebalanceOpenAuction, {
   buildRebalanceOpenAuctionArrays,
 } from '../utils/get-rebalance-open-auction'
 import { TransactionButtonContainer } from '@/components/ui/transaction'
+import useCurrentTime from '@/hooks/useCurrentTime'
+import { wouldAuctionOverlapFeeHandout } from '../utils/auction-fee-handout-overlap'
 
 const auctionNumberAtom = atom((get) => {
   const auctions = get(rebalanceAuctionsAtom)
@@ -53,6 +55,9 @@ const LaunchAuctionsButton = () => {
   const savedWeights = useAtomValue(savedWeightsAtom)
   const areWeightsSaved = useAtomValue(areWeightsSavedAtom)
   const auctions = useAtomValue(rebalanceAuctionsAtom)
+  const currentTime = useCurrentTime()
+  const isFeeHandoutOverlap =
+    !!dtf && wouldAuctionOverlapFeeHandout(currentTime, dtf.auctionLength)
 
   const weightsToUse =
     isHybridDTF && areWeightsSaved && savedWeights && auctions.length === 0
@@ -91,7 +96,8 @@ const LaunchAuctionsButton = () => {
     rebalancePercent > 0 &&
     rebalance &&
     dtf &&
-    !priceUnavailable
+    !priceUnavailable &&
+    !isFeeHandoutOverlap
 
   useEffect(() => {
     if (isSuccess) {
@@ -179,6 +185,16 @@ const LaunchAuctionsButton = () => {
           ) : (
             <Trans>Price unavailable — cannot launch</Trans>
           )}
+        </p>
+      )}
+      {isFeeHandoutOverlap && (
+        <p
+          data-testid="auctions-fee-handout-overlap"
+          className="text-center text-sm text-destructive px-2 pb-2"
+        >
+          <Trans>
+            Cannot launch: auction would overlap the daily TVL fee handout
+          </Trans>
         </p>
       )}
       <Button
