@@ -56,7 +56,7 @@ export const Metric = React.forwardRef<HTMLDivElement, MetricProps>(
           'min-w-0',
           role === 'inline' && v1SemanticRecipes.text.supporting,
           role === 'headline' &&
-            `text-xs font-medium ${v1SemanticRecipes.text.supporting}`
+            `text-base font-light leading-6 ${v1SemanticRecipes.text.supporting}`
         )}
       >
         {label}
@@ -64,7 +64,7 @@ export const Metric = React.forwardRef<HTMLDivElement, MetricProps>(
       <MetricValue
         className={cn(
           'min-w-0',
-          role === 'headline' && 'mt-1 text-xl leading-7'
+          role === 'headline' && 'mt-1 text-base font-medium leading-6'
         )}
         align={role === 'inline' ? 'end' : 'start'}
       >

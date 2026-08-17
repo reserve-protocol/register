@@ -1,7 +1,6 @@
 import { ArrowLeft, CircleDashed, ExternalLink } from 'lucide-react'
 import { Link, Navigate, useParams } from 'react-router-dom'
 import {
-  CatalogCard,
   CatalogBadges,
   ComponentReviewReadiness,
   DetailSidebar,
@@ -15,46 +14,30 @@ import ModalActionDecision from './modal-action-decision'
 import EntityIdentityStateSheet from './entity-identity-state-sheet'
 import MetricStateSheet from './metric-state-sheet'
 import InformationRowStateSheet from './information-row-state-sheet'
+import RichRecordReview from './rich-record-review'
 import EmptyStateStateSheet from './empty-state-state-sheet'
 import CheckboxStateSheet from './checkbox-state-sheet'
 import IconButtonStateSheet from './icon-button-state-sheet'
 import DialogStateSheet from './dialog-state-sheet'
-import { COMPONENT_GROUPS, getComponentItem } from './component-catalog'
-import ComponentWorkMap from './component-work-map'
-import CoreComponentBoard from './core-component-board'
-import ProductFacingReviewBoard from './product-facing-review-board'
+import LifecycleStatusStateSheet from './lifecycle-status-state-sheet'
+import { getComponentItem } from './component-catalog'
+import CanonicalComponentsOverview, {
+  ProvisionalCompositionsOverview,
+  RemainingComponentInventory,
+} from './canonical-components-overview'
+import { CurrentReviewSpotlight } from './current-review-panel'
 
 export const ComponentsOverview = () => (
   <div data-testid="components-overview" className="space-y-10">
     <PageHeader
-      eyebrow="Expected capability catalog"
+      eyebrow="Reusable design system"
       title="Components"
-      description="Working candidates first; capability inventory and audit status below."
+      description="Actual canonical candidates first, then useful provisional compositions and a compact capability inventory."
     />
-    <ProductFacingReviewBoard />
-    <CoreComponentBoard />
-    <ComponentWorkMap />
-    {COMPONENT_GROUPS.map((group) => (
-      <section key={group.id} aria-labelledby={`${group.id}-heading`}>
-        <div className="mb-4">
-          <h2 id={`${group.id}-heading`} className="text-xl font-semibold">
-            {group.name}
-          </h2>
-          <p className="mt-1 text-sm text-muted-foreground">
-            {group.description}
-          </p>
-        </div>
-        <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
-          {group.items.map((item) => (
-            <CatalogCard
-              key={item.id}
-              item={item}
-              to={`/internal/design-system/components/${item.id}`}
-            />
-          ))}
-        </div>
-      </section>
-    ))}
+    <CurrentReviewSpotlight />
+    <CanonicalComponentsOverview />
+    <ProvisionalCompositionsOverview />
+    <RemainingComponentInventory />
   </div>
 )
 
@@ -92,40 +75,7 @@ export const ComponentDetail = () => {
         {item.outputStatus !== 'none' && (
           <ComponentReviewReadiness review={item.review} />
         )}
-        {item.id === 'button' && (
-          <div className="space-y-10">
-            <ButtonLoadingDecision />
-            <ButtonHierarchyDecision />
-          </div>
-        )}
-        {item.id === 'dialog' && <ModalActionDecision />}
-        {item.id === 'checkbox' && <CheckboxStateSheet />}
-        {item.id === 'icon-button' && <IconButtonStateSheet />}
-        {item.id === 'dialog' && <DialogStateSheet />}
-        {item.id === 'entity-identity' && <EntityIdentityStateSheet />}
-        {item.id === 'metric' && <MetricStateSheet />}
-        {item.id === 'table' && <InformationRowStateSheet />}
-        {item.id === 'empty-state' && <EmptyStateStateSheet />}
-        <section className="grid gap-4 sm:grid-cols-2">
-          <InfoCard title="What it is used for" copy={item.why} />
-          <InfoCard title="Why this status" copy={item.statusDetail} />
-        </section>
-
-        <section className="grid gap-4 xl:grid-cols-2">
-          <ListCard title="Current evidence" items={item.evidence} />
-          <ListCard
-            title="Foundation dependencies"
-            items={group.foundationDependencies}
-          />
-        </section>
-
-        <section className="grid gap-4 xl:grid-cols-2">
-          <ListCard
-            title="States to prove"
-            items={[...group.defaultStates, ...(item.stateAdditions ?? [])]}
-          />
-          <ListCard title="Questions to resolve" items={item.decisionPrompts} />
-        </section>
+        <ComponentVisualOutput itemId={item.id} />
 
         {item.relationships && item.relationships.length > 0 && (
           <section className="space-y-4">
@@ -159,28 +109,6 @@ export const ComponentDetail = () => {
           </section>
         )}
 
-        <ExpectedDecisions items={group.expectedDecisions} />
-        {item.id === 'button' && (
-          <section className="space-y-10">
-            <ButtonStateSheet />
-            <Link
-              to="/internal/design-system/studies#actions-candidate-study"
-              className="inline-flex min-h-11 items-center gap-2 rounded-full border border-border px-5 text-sm font-medium hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-            >
-              Review the provisional V1 Actions matrix
-              <ExternalLink className="h-4 w-4" />
-            </Link>
-          </section>
-        )}
-        {item.id === 'dialog' && (
-          <Link
-            to="/internal/design-system/studies#modal-family-study"
-            className="inline-flex min-h-11 items-center gap-2 rounded-full border border-border px-5 text-sm font-medium hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-          >
-            Review the real modal pressure tests
-            <ExternalLink className="h-4 w-4" />
-          </Link>
-        )}
         {item.outputStatus === 'none' && (
           <section
             data-testid="component-output-missing"
@@ -197,9 +125,80 @@ export const ComponentDetail = () => {
             <p className="mt-4 text-sm font-medium">Next: {item.nextAction}</p>
           </section>
         )}
+        <details
+          data-testid="component-secondary-details"
+          className="group border border-border bg-card"
+        >
+          <summary className="cursor-pointer list-none p-4 text-sm font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring">
+            Evidence, dependencies, states, and definition history
+            <span className="ml-2 text-xs font-light text-muted-foreground group-open:hidden">
+              Show
+            </span>
+          </summary>
+          <div className="space-y-8 border-t border-border p-5">
+            {item.id === 'button' && (
+              <div className="space-y-10">
+                <ButtonLoadingDecision />
+                <ButtonHierarchyDecision />
+              </div>
+            )}
+            {item.id === 'dialog' && <ModalActionDecision />}
+            <section className="grid gap-4 sm:grid-cols-2">
+              <InfoCard title="What it is used for" copy={item.why} />
+              <InfoCard title="Why this status" copy={item.statusDetail} />
+            </section>
+            <section className="grid gap-4 xl:grid-cols-2">
+              <ListCard title="Current evidence" items={item.evidence} />
+              <ListCard
+                title="Foundation dependencies"
+                items={group.foundationDependencies}
+              />
+            </section>
+            <section className="grid gap-4 xl:grid-cols-2">
+              <ListCard
+                title="States to prove"
+                items={[...group.defaultStates, ...(item.stateAdditions ?? [])]}
+              />
+              <ListCard
+                title="Questions to resolve"
+                items={item.decisionPrompts}
+              />
+            </section>
+            <ExpectedDecisions items={group.expectedDecisions} />
+            {item.id === 'dialog' && (
+              <Link
+                to="/internal/design-system/studies#modal-family-study"
+                className="inline-flex min-h-11 items-center gap-2 rounded-full border border-border px-5 text-sm font-medium hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+              >
+                Review the real modal pressure tests
+                <ExternalLink className="h-4 w-4" />
+              </Link>
+            )}
+          </div>
+        </details>
       </div>
     </div>
   )
+}
+
+const ComponentVisualOutput = ({ itemId }: { itemId: string }) => {
+  if (itemId === 'button') return <ButtonStateSheet />
+  if (itemId === 'checkbox') return <CheckboxStateSheet />
+  if (itemId === 'icon-button') return <IconButtonStateSheet />
+  if (itemId === 'dialog') return <DialogStateSheet />
+  if (itemId === 'badge') return <LifecycleStatusStateSheet />
+  if (itemId === 'entity-identity') return <EntityIdentityStateSheet />
+  if (itemId === 'metric') return <MetricStateSheet />
+  if (itemId === 'table') {
+    return (
+      <div className="space-y-8">
+        <InformationRowStateSheet />
+        <RichRecordReview />
+      </div>
+    )
+  }
+  if (itemId === 'empty-state') return <EmptyStateStateSheet />
+  return null
 }
 
 const InfoCard = ({ title, copy }: { title: string; copy: string }) => (

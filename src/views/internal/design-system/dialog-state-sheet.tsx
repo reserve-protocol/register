@@ -1,5 +1,5 @@
 import { Button } from '@/components/button'
-import { Dialog, DialogContent, DialogTrigger } from '@/components/dialog'
+import { Dialog, DialogContent } from '@/components/dialog'
 import { EligibilityDialogCandidate } from './eligibility-dialog-candidate'
 import { useState } from 'react'
 
@@ -25,20 +25,20 @@ const DialogStateSheet = () => {
       </div>
       <div className="border border-border bg-card p-5">
         <Dialog open={open} onOpenChange={setOpen}>
-          <DialogTrigger asChild>
-            <Button>Open eligibility dialog</Button>
-          </DialogTrigger>
-          <DialogContent dismissible={false} showClose={false} width="standard">
+          <Button onClick={() => setOpen(true)}>Open eligibility dialog</Button>
+          <DialogContent dismissible={false} width="standard">
             <EligibilityDialogCandidate
               idPrefix="dialog-review"
               onConfirm={() => setOpen(false)}
+              showClosePreview
             />
           </DialogContent>
         </Dialog>
         <p className="mt-3 max-w-2xl text-xs font-light leading-5 text-muted-foreground">
-          Judge shell geometry, content axis, anchored regions, and dependency
-          consistency. Do not judge outcome layouts, illustration, final shadow,
-          or constrained-screen adaptation here.
+          Judge the desktop and phone shell geometry, content axis, anchored
+          regions, and dependency consistency. Do not judge outcome layouts,
+          illustration, or final shadow here. The close action is temporarily
+          shown for visual review; the source eligibility flow still omits it.
         </p>
       </div>
     </section>

@@ -44,7 +44,7 @@ const ModalFamilyStudy = () => (
       review={{
         status: 'ready',
         scope:
-          'Judge the eligibility composition against its real requirements and the canonical shell dependencies. Collapsible behavior and inline legal links are explicitly retained; outcome and constrained-screen dialog work are not represented.',
+          'Judge the eligibility composition against its real requirements and the canonical shell dependencies. Collapsible behavior and inline legal links are explicitly retained; outcome work is not represented, while phone adaptation is inherited from the canonical Dialog shell.',
         dependencies: [
           { name: 'Dialog shell', status: 'canonical' },
           { name: 'Button', status: 'canonical' },

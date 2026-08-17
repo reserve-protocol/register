@@ -33,7 +33,12 @@ export const SUPPORT_COMPONENT_GROUPS: ComponentGroup[] = [
         detail:
           'When content overflows the viewport, the body scrolls while header and action regions remain anchored.',
       },
-      ...openDefinitionSlots('Constrained-screen adaptation'),
+      {
+        name: 'Constrained-screen adaptation',
+        status: 'defined',
+        detail:
+          'The same blocking Dialog becomes a full-width, bottom-flush sheet below 640px; it keeps Dialog semantics, anchored regions, safe-area padding, and no implied drag dismissal.',
+      },
     ],
     items: [
       {
@@ -48,11 +53,13 @@ export const SUPPORT_COMPONENT_GROUPS: ComponentGroup[] = [
             evidence: [
               'Nineteen direct product dialogs use the shared Dialog or legacy Modal shells; the package-owned Zapper adds a third shell system.',
               'Current jobs collapse to review, configure, select, attest, explain, and outcome; media and drawers remain adjacent overlay families.',
+              'The accepted spacing foundation sets a 4px title-to-description relationship and a 24px ordinary contained-dialog content axis.',
+              'The compact 32px close action participates in DialogHeader layout, so its visible control boundary follows the same 24px content axis as the rest of the header.',
             ],
             decisionPrompts: [
               'Define the exact composition for evidenced consequential success outcomes.',
               'Define the visual style and placement of milestone illustration.',
-              'Verify focus management and constrained-screen adaptation in the shared shell.',
+              'Verify focus management in the shared shell.',
             ],
             stateAdditions: [
               'Long content',
@@ -64,13 +71,13 @@ export const SUPPORT_COMPONENT_GROUPS: ComponentGroup[] = [
               'Visually resolve consequential outcome composition using real transaction requirements.',
           }
         ),
-        outputStatus: 'proposal',
+        outputStatus: 'accepted',
         implementationStatus: 'canonical-candidate',
         adoptionStatus: 'none',
         review: {
           status: 'ready',
           scope:
-            'Review the reusable 384/432px shell, square structure, 24px content axis, close action, anchored regions, and non-dismissible behavior. Outcome composition, illustration, constrained screens, and final elevation remain provisional.',
+            'Review the reusable 384/432px desktop shell, full-width bottom-flush phone presentation, square structure, 24px content axis, 4px title/description relationship, close action, anchored regions, and non-dismissible behavior. Outcome composition, illustration, and final elevation remain provisional.',
           dependencies: [
             { name: 'Button', status: 'canonical' },
             { name: 'IconButton', status: 'canonical' },
@@ -78,7 +85,7 @@ export const SUPPORT_COMPONENT_GROUPS: ComponentGroup[] = [
           ],
         },
         statusDetail:
-          'A reusable V1 shell implements the accepted width, content-axis, region, close-action, and non-dismissible contracts. Outcome composition, final elevation, and constrained-screen behavior remain provisional; production adoption has not started.',
+          'A reusable V1 shell implements the accepted desktop widths, adaptive phone presentation, content axis, region, close-action, and non-dismissible contracts. Outcome composition and final elevation remain provisional; production adoption has not started.',
       },
       component(
         'drawer',
@@ -350,24 +357,42 @@ export const SUPPORT_COMPONENT_GROUPS: ComponentGroup[] = [
       'Loading and missing data'
     ),
     items: [
-      component(
-        'badge',
-        'Badge',
-        'Labels status, category, or compact metadata.',
-        'Badges need semantic roles that do not become decorative noise.',
-        {
-          priority: 'v1-core',
-          auditStatus: 'partial',
-          evidence: [
-            'Status pills and metadata chips appear widely without one obvious shared Badge primitive.',
+      {
+        ...component(
+          'badge',
+          'Lifecycle status',
+          'Communicates a process phase, actionable state, or final outcome.',
+          'Lifecycle meaning should be consistent without turning every compact label into the same component.',
+          {
+            priority: 'v1-core',
+            auditStatus: 'partial',
+            evidence: [
+              'Governance proposals and Auctions rebalances require consistent waiting, active, actionable, processing, successful, unsuccessful, and closed lifecycle states.',
+              'Category labels, counts, qualifiers, and removable chips remain distinct jobs and are not generalized into this lifecycle candidate.',
+            ],
+            decisionPrompts: [
+              'Pressure-test the lifecycle role mapping, standardized icons, and restricted motion in real proposal and auction records.',
+              'Resolve category, count, qualifier, and removable-chip anatomy only when their product compositions are reviewed.',
+            ],
+            nextAction:
+              'Review the lifecycle status candidate in the real proposal and auction records before promoting it; leave other badge jobs open.',
+          }
+        ),
+        outputStatus: 'proposal',
+        implementationStatus: 'specimen',
+        adoptionStatus: 'none',
+        review: {
+          status: 'provisional',
+          scope:
+            'Review the shared 24px lifecycle anatomy, role-to-icon and role-to-tone mapping, supporting countdown pairing, and spinner only for short indeterminate processing. Category labels, counts, qualifiers, removable chips, proposal outcome-detail composition, progress behavior, and production adoption remain outside this candidate.',
+          dependencies: [
+            { name: 'Feedback color roles', status: 'provisional' },
+            { name: 'Iconography', status: 'canonical' },
           ],
-          decisionPrompts: [
-            'Separate status, category, count, and removable-chip jobs; define icon, dot, and long-label behavior.',
-          ],
-          nextAction:
-            'Cluster badges, pills, and chips by meaning before choosing one anatomy.',
-        }
-      ),
+        },
+        statusDetail:
+          'A provisional lab-only lifecycle status component now owns semantic role, standardized icon, tone, and restricted motion. It is being pressure-tested in Governance and Auctions records; other badge jobs and production adoption remain open.',
+      },
       {
         ...component(
           'entity-identity',
@@ -417,14 +442,14 @@ export const SUPPORT_COMPONENT_GROUPS: ComponentGroup[] = [
             ...mapped,
             evidence: [
               'Overview and Governance use inline key/value pairs; Home uses headline stacked values; Auctions uses three parallel outcome metrics.',
-              'The canonical candidate now covers accepted inline and centered-headline anatomy while preserving equal sizing for horizontal peers.',
+              'The strong Home source uses a 16px/300 headline label and 16px/500 value. The canonical candidate preserves that typography and equal sizing for horizontal peers.',
             ],
             decisionPrompts: [
-              'Review outcome-summary emphasis and icon treatment before adding that role to the canonical API.',
+              'Keep auction-selector alignment parent-owned without adding an outcome role or icon API.',
               'Confirm stale-data language only when a real product source distinguishes stale from missing or loading.',
             ],
             nextAction:
-              'Pressure-test the canonical inline anatomy inside dense Index data and review outcome-summary emphasis separately.',
+              'Preserve the reviewed inline anatomy in auction selectors; pressure-test any separate full-view outcome composition only when that surface is reviewed.',
           }
         ),
         outputStatus: 'proposal',
@@ -433,11 +458,11 @@ export const SUPPORT_COMPONENT_GROUPS: ComponentGroup[] = [
         review: {
           status: 'ready',
           scope:
-            'Review inline and centered-headline metric anatomy. Outcome emphasis, help affordances, and the shown legacy loading skeleton are not canonical Metric variants.',
+            'Inline and centered-headline metric anatomy are accepted, including the source-faithful 16px/300 label and 16px/500 value. Auction selectors reuse inline anatomy with one consistent parent-owned value emphasis; icons, help affordances, and the shown legacy loading skeleton are not canonical Metric variants.',
           dependencies: [],
         },
         statusDetail:
-          'Reusable V1 Metric and MetricValue candidates implement inline and centered-headline anatomy. Outcome emphasis, help affordances, and loading presentation remain open; production adoption has not started.',
+          'Reusable V1 Metric and MetricValue candidates implement the accepted inline and centered-headline anatomy. Auction selector metrics reuse inline anatomy while their parent owns consistent value emphasis, framing, and layout. Production adoption has not started.',
       },
       component(
         'card',
@@ -471,10 +496,11 @@ export const SUPPORT_COMPONENT_GROUPS: ComponentGroup[] = [
               '27 imports use Table, 18 DataTable, and 13 legacy Table; at least three table systems coexist.',
               'Overview holdings establishes a divider-free dense row with 32px two-line identity and equally sized, right-aligned numeric peers.',
               'Governance proposals and Auctions rebalances prove that rich navigable records need a distinct composition.',
+              'The reviewed fixtures map real CMC20 proposal and rebalance mechanics with deterministic names, values, dates, vote distribution, metrics, and provenance; fixture copy is not a migration source.',
             ],
             decisionPrompts: [
               'Review rich navigable-record hierarchy separately; it is not a dense Table row variant.',
-              'Resolve responsive transformation when a real route integration experiment begins, not in the desktop-only lab.',
+              'Preserve the pressure-tested constrained-width record wrapping; resolve dense-table transformation and final Auctions route behavior in a deliberate integration experiment.',
             ],
             relationships: [
               {
@@ -483,7 +509,7 @@ export const SUPPORT_COMPONENT_GROUPS: ComponentGroup[] = [
               },
             ],
             nextAction:
-              'Use the canonical Entity identity and Metric value seams in one opt-in route experiment before consolidating the three table systems.',
+              'Use the reviewed Governance proposal and Auction selector compositions as evidence for the next product-facing component; keep rich navigable records distinct from dense Table rows.',
           }
         ),
         outputStatus: 'proposal',
@@ -492,10 +518,16 @@ export const SUPPORT_COMPONENT_GROUPS: ComponentGroup[] = [
         review: {
           status: 'provisional',
           scope:
-            'Review only the source-grounded data density and how canonical Entity identity and Metric value compose. Table, row, header, and responsive contracts are still hand-built specimens.',
+            'The source-grounded dense data slice and reviewed rich proposal/rebalance compositions remain separate evidence. Accepted per-record constrained-width wrapping does not define a universal Table/Row API, final Auctions split, dense-table transformation, route-to-detail behavior, or production adoption.',
           dependencies: [
             { name: 'Entity identity', status: 'canonical' },
             { name: 'Metric value', status: 'canonical' },
+            {
+              name: 'Lifecycle status pill',
+              status: 'provisional',
+              detail:
+                'The 24px pill candidate passed this composition review but remains provisional until its own component contract is promoted.',
+            },
             { name: 'Table / row anatomy', status: 'provisional' },
           ],
         },

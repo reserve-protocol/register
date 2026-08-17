@@ -19,7 +19,7 @@ const REVIEWED_RULES = [
   {
     title: 'Feedback family',
     detail:
-      'Success, warning, danger, and information use vivid main colors with dark icon foregrounds and quiet derived backgrounds. Information is a brighter relative of the deeper brand/action blue.',
+      'Success, warning, danger, and information use vivid main colors with dark icon foregrounds and quiet opaque derived surfaces. These preserve their white-card appearance without mixing with a selected parent surface. Information is a brighter relative of the deeper brand/action blue.',
   },
   {
     title: 'Financial movement',
@@ -34,7 +34,7 @@ const REVIEWED_RULES = [
 ] as const
 
 const OPEN_ITEMS = [
-  'Final opaque light and dark token values, including the information blue',
+  'Final cross-theme tuning of the information blue and semantic foreground contrast',
   'Exact primary, selected, focus-ring, divider, and overlay values',
   'When feedback indicators should be filled, outlined, or text-only',
   'Categorical chart colors when a real multi-series product need appears',
@@ -52,7 +52,7 @@ const ColorFoundationDefinition = () => (
           accepted working constraints; exact token values remain open.
         </p>
       </div>
-      <span className="w-fit rounded-full bg-success/10 px-2.5 py-1 text-xs font-medium text-foreground ring-1 ring-inset ring-success/25">
+      <span className="w-fit rounded-full bg-[var(--feedback-success-surface)] px-2.5 py-1 text-xs font-medium text-foreground ring-1 ring-inset ring-[var(--feedback-success-border)]">
         Direction reviewed
       </span>
     </div>

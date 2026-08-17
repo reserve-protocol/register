@@ -130,7 +130,7 @@ export const PRODUCT_FACING_REVIEWS: ProductFacingReview[] = [
       {
         name: 'Homepage headline metrics',
         requirement:
-          'Compact stacked label/value pairs that remain scannable in a horizontal stats bar and expose definitions through help.',
+          'Compact stacked pairs use a 16px/300 label and 16px/500 value in the strong current source; the parent stats bar owns centering and help.',
         sources: ['src/views/home/components/protocol-metrics.tsx'],
       },
       {
@@ -144,7 +144,7 @@ export const PRODUCT_FACING_REVIEWS: ProductFacingReview[] = [
       {
         name: 'Rebalance outcomes',
         requirement:
-          'Three parallel stacked metrics with semantic icons, performance meaning, and skeletons.',
+          'Three parallel headline metrics with performance meaning and skeletons. Existing semantic icons are parent-owned composition evidence, not a Metric API requirement.',
         sources: [
           'src/views/index-dtf/auctions/views/rebalance-list/components/metrics-row.tsx',
         ],
@@ -152,16 +152,22 @@ export const PRODUCT_FACING_REVIEWS: ProductFacingReview[] = [
     ],
     decisions: [
       {
-        name: 'Inline, stacked, and outcome roles',
+        name: 'Inline and headline roles',
         lane: 1,
         reason:
-          'The real content jobs justify three compositions, while accepted horizontal-peer rules constrain each role.',
+          'The real content jobs reuse two label/value anatomies; outcome summaries do not justify a third Metric role.',
       },
       {
-        name: 'Visual emphasis and icon treatment by role',
+        name: 'Headline alignment in parallel groups',
         lane: 3,
         reason:
-          'Scale, weight, and framed versus bare icons materially affect hierarchy across Overview, Home, Governance, and Auctions.',
+          'Centered and start-aligned headline groups are both evidenced compositions, and the choice materially changes the auction record hierarchy.',
+      },
+      {
+        name: 'Icon and help composition boundary',
+        lane: 1,
+        reason:
+          'Icons and help describe the surrounding record or label context, so the parent composes them without expanding Metric into a universal content wrapper.',
       },
       {
         name: 'Missing, stale, and loading value language',

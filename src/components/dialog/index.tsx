@@ -1,13 +1,12 @@
 import * as DialogPrimitive from '@radix-ui/react-dialog'
-import { X } from 'lucide-react'
 import {
   forwardRef,
   type ComponentPropsWithoutRef,
   type ElementRef,
   type HTMLAttributes,
+  type ReactNode,
 } from 'react'
 
-import { IconButton } from '@/components/icon-button'
 import { cn } from '@/lib/utils'
 
 export type DialogWidth = 'compact' | 'standard'
@@ -41,7 +40,6 @@ export interface DialogContentProps extends ComponentPropsWithoutRef<
   typeof DialogPrimitive.Content
 > {
   dismissible?: boolean
-  showClose?: boolean
   width?: DialogWidth
 }
 
@@ -57,7 +55,6 @@ export const DialogContent = forwardRef<
       onEscapeKeyDown,
       onInteractOutside,
       onPointerDownOutside,
-      showClose = true,
       width = 'standard',
       ...props
     },
@@ -70,7 +67,7 @@ export const DialogContent = forwardRef<
         data-testid="canonical-dialog-content"
         data-width={width}
         className={cn(
-          'fixed left-1/2 top-1/2 z-50 flex max-h-[calc(100vh-2rem)] w-[calc(100%-2rem)] -translate-x-1/2 -translate-y-1/2 flex-col bg-card p-2 shadow-lg duration-200 data-[state=closed]:animate-out data-[state=open]:animate-in data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95',
+          'fixed inset-x-0 bottom-0 z-50 flex max-h-[calc(100dvh-0.5rem)] w-full flex-col bg-card p-2 pb-[max(0.5rem,env(safe-area-inset-bottom))] shadow-lg duration-200 data-[state=closed]:animate-out data-[state=open]:animate-in data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:slide-out-to-bottom-[100%] data-[state=open]:slide-in-from-bottom-[100%] sm:bottom-auto sm:left-1/2 sm:right-auto sm:top-1/2 sm:max-h-[calc(100vh-2rem)] sm:w-[calc(100%-2rem)] sm:-translate-x-1/2 sm:-translate-y-1/2 sm:pb-2 sm:data-[state=closed]:slide-out-to-bottom-0 sm:data-[state=open]:slide-in-from-bottom-0 sm:data-[state=closed]:zoom-out-95 sm:data-[state=open]:zoom-in-95',
           widthClasses[width],
           className
         )}
@@ -89,17 +86,6 @@ export const DialogContent = forwardRef<
         {...props}
       >
         {children}
-        {showClose && dismissible && (
-          <DialogPrimitive.Close asChild>
-            <IconButton
-              label="Close dialog"
-              icon={<X />}
-              size="compact"
-              tone="secondary"
-              className="absolute right-2 top-2"
-            />
-          </DialogPrimitive.Close>
-        )}
       </DialogPrimitive.Content>
     </DialogPrimitive.Portal>
   )
@@ -130,11 +116,27 @@ export const DialogSurface = ({
   )
 }
 
+export interface DialogHeaderProps extends HTMLAttributes<HTMLDivElement> {
+  action?: ReactNode
+  leading?: ReactNode
+}
+
 export const DialogHeader = ({
+  action,
+  children,
   className,
+  leading,
   ...props
-}: HTMLAttributes<HTMLDivElement>) => (
-  <div className={cn('shrink-0 px-4 pb-2 pt-4', className)} {...props} />
+}: DialogHeaderProps) => (
+  <div className={cn('shrink-0 px-4 pb-2 pt-4', className)} {...props}>
+    {(leading || action) && (
+      <div className="flex min-h-8 items-center gap-4">
+        {leading}
+        {action && <div className="ml-auto">{action}</div>}
+      </div>
+    )}
+    {children}
+  </div>
 )
 
 export const DialogBody = ({
@@ -174,7 +176,7 @@ export const DialogDescription = forwardRef<
   <DialogPrimitive.Description
     ref={ref}
     className={cn(
-      'mt-2 text-base font-light leading-6 text-muted-foreground',
+      'mt-1 text-base font-light leading-6 text-muted-foreground',
       className
     )}
     {...props}

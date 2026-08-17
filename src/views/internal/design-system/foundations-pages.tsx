@@ -1,7 +1,6 @@
 import { ArrowLeft, CircleDashed } from 'lucide-react'
 import { Link, Navigate, useParams } from 'react-router-dom'
 import {
-  CatalogCard,
   CatalogBadges,
   DetailSidebar,
   ExpectedDecisions,
@@ -11,23 +10,25 @@ import FoundationReference from './foundation-reference'
 import FoundationCandidateDirection from './foundation-candidate-direction'
 import ColorFoundationDefinition from './color-foundation-definition'
 import { FOUNDATION_ITEMS, getFoundationItem } from './foundation-catalog'
+import FoundationOverview, { FoundationSpecimen } from './foundation-overview'
+import { CurrentReviewSpotlight } from './current-review-panel'
+import TypographyStudy from './typography-study'
+import SpacingRhythmStudy from './spacing-rhythm-study'
+import ShapeStudy from './shape-study'
+import ElevationStudy from './elevation-study'
+import IconographyStudy from './iconography-study'
+import MotionStudy from './motion-study'
+import AccessibilityStudy from './accessibility-study'
 
 export const FoundationsOverview = () => (
   <div data-testid="foundations-overview" className="space-y-8">
     <PageHeader
-      eyebrow="Expected system layer"
+      eyebrow="Current visual system"
       title="Foundations"
-      description="The structural decisions every component and screen should inherit. Slots stay visible before they are audited or defined so missing work is explicit."
+      description="Scan the system itself. Each specimen opens the full definition, local readiness, and deeper evidence."
     />
-    <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-      {FOUNDATION_ITEMS.map((item) => (
-        <CatalogCard
-          key={item.id}
-          item={item}
-          to={`/internal/design-system/foundations/${item.id}`}
-        />
-      ))}
-    </div>
+    <CurrentReviewSpotlight />
+    <FoundationOverview />
   </div>
 )
 
@@ -62,16 +63,32 @@ export const FoundationDetail = () => {
           description={item.description}
           trailing={<CatalogBadges item={item} />}
         />
-        <section className="grid gap-4 sm:grid-cols-2">
-          <InfoCard title="Why it matters" copy={item.why} />
-          <InfoCard title="Current status" copy={item.statusDetail} />
+        <section
+          className="space-y-4"
+          aria-labelledby="visual-definition-heading"
+        >
+          <div>
+            <p className="text-sm font-medium text-primary">
+              Visual definition
+            </p>
+            <h2
+              id="visual-definition-heading"
+              className="mt-1 text-2xl font-light"
+            >
+              {item.name} in V1
+            </h2>
+            <p className="mt-1 max-w-3xl text-sm font-light leading-6 text-muted-foreground">
+              {item.statusDetail}
+            </p>
+          </div>
+          <div className="flex min-h-48 items-center justify-center border border-border bg-background p-6">
+            <FoundationSpecimen foundationId={item.id} />
+          </div>
         </section>
-        <ExpectedDecisions items={item.expectedDecisions} />
-        <FoundationReference foundationId={item.id} />
+        <FoundationRichDefinition foundationId={item.id} />
         <FoundationCandidateDirection foundationId={item.id} />
-        {item.id === 'color' ? (
-          <ColorFoundationDefinition />
-        ) : (
+        {item.id === 'color' && <ColorFoundationDefinition />}
+        {item.outputStatus !== 'accepted' && item.id !== 'color' && (
           <section className="rounded-2xl border border-dashed border-border bg-card/50 p-5">
             <div className="flex items-center gap-2">
               <CircleDashed className="h-4 w-4 text-muted-foreground" />
@@ -83,6 +100,25 @@ export const FoundationDetail = () => {
             </p>
           </section>
         )}
+        <details
+          data-testid="foundation-secondary-details"
+          className="group border border-border bg-card"
+        >
+          <summary className="cursor-pointer list-none p-4 text-sm font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring">
+            Evidence, rationale, and definition status
+            <span className="ml-2 text-xs font-light text-muted-foreground group-open:hidden">
+              Show
+            </span>
+          </summary>
+          <div className="space-y-8 border-t border-border p-5">
+            <section className="grid gap-4 sm:grid-cols-2">
+              <InfoCard title="Why it matters" copy={item.why} />
+              <InfoCard title="Current status" copy={item.statusDetail} />
+            </section>
+            <ExpectedDecisions items={item.expectedDecisions} />
+            <FoundationReference foundationId={item.id} />
+          </div>
+        </details>
       </div>
     </div>
   )
@@ -94,3 +130,18 @@ const InfoCard = ({ title, copy }: { title: string; copy: string }) => (
     <p className="mt-2 text-sm leading-6 text-muted-foreground">{copy}</p>
   </div>
 )
+
+const FoundationRichDefinition = ({
+  foundationId,
+}: {
+  foundationId: string
+}) => {
+  if (foundationId === 'typography') return <TypographyStudy />
+  if (foundationId === 'spacing') return <SpacingRhythmStudy />
+  if (foundationId === 'radius') return <ShapeStudy />
+  if (foundationId === 'elevation') return <ElevationStudy />
+  if (foundationId === 'iconography') return <IconographyStudy />
+  if (foundationId === 'motion') return <MotionStudy />
+  if (foundationId === 'accessibility') return <AccessibilityStudy />
+  return null
+}

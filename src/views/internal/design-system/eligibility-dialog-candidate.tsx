@@ -1,10 +1,11 @@
-import { useState } from 'react'
-import { ChevronDown, Scale } from 'lucide-react'
+import { useCallback, useEffect, useState } from 'react'
+import { ChevronDown, Scale, X } from 'lucide-react'
 
 import { Button } from '@/components/button'
 import { Checkbox } from '@/components/checkbox'
 import {
   DialogBody,
+  DialogClose,
   DialogDescription,
   DialogFooter,
   DialogHeader,
@@ -39,9 +40,11 @@ const PROHIBITED_JURISDICTIONS = [
 export const EligibilityDialogCandidate = ({
   idPrefix = 'candidate',
   onConfirm,
+  showClosePreview = false,
 }: {
   idPrefix?: string
   onConfirm?: () => void
+  showClosePreview?: boolean
 }) => {
   const [acceptedTerms, setAcceptedTerms] = useState(false)
   const [confirmedJurisdiction, setConfirmedJurisdiction] = useState(false)
@@ -52,10 +55,21 @@ export const EligibilityDialogCandidate = ({
 
   return (
     <>
-      <DialogHeader>
-        <span className="flex size-8 items-center justify-center rounded-full border border-border">
-          <Scale className="size-4" strokeWidth={1.5} />
-        </span>
+      <DialogHeader
+        leading={<PassiveLeadingIcon />}
+        action={
+          showClosePreview ? (
+            <DialogClose asChild>
+              <IconButton
+                label="Close dialog"
+                icon={<X />}
+                size="compact"
+                tone="secondary"
+              />
+            </DialogClose>
+          ) : undefined
+        }
+      >
         <DialogTitle className="mt-5">Verify your eligibility</DialogTitle>
         <DialogDescription>
           Before continuing, please confirm the following.
@@ -98,17 +112,8 @@ export const EligibilityDialogCandidate = ({
             </InlineLink>
             .
           </AttestationRow>
-          <CollapsibleContent className="border-t border-border py-4">
-            <div className="max-h-44 overflow-y-auto pr-3">
-              <p className="mb-2 text-sm font-medium">
-                Jurisdiction-Based Prohibitions:
-              </p>
-              <ul className="space-y-1 text-sm font-light leading-5 text-muted-foreground">
-                {PROHIBITED_JURISDICTIONS.map((jurisdiction) => (
-                  <li key={jurisdiction}>{jurisdiction}</li>
-                ))}
-              </ul>
-            </div>
+          <CollapsibleContent className="border-t border-border">
+            <JurisdictionList />
           </CollapsibleContent>
         </Collapsible>
         <AttestationRow
@@ -131,6 +136,63 @@ export const EligibilityDialogCandidate = ({
   )
 }
 
+const PassiveLeadingIcon = () => (
+  <span
+    data-testid="eligibility-passive-icon"
+    className="flex size-8 items-center justify-center"
+  >
+    <Scale className="size-5" strokeWidth={1.5} />
+  </span>
+)
+
+const JurisdictionList = () => {
+  const [viewport, setViewport] = useState<HTMLDivElement | null>(null)
+  const [canScrollFurther, setCanScrollFurther] = useState(false)
+
+  const updateScrollState = useCallback((node: HTMLDivElement) => {
+    setCanScrollFurther(
+      node.scrollTop + node.clientHeight < node.scrollHeight - 1
+    )
+  }, [])
+
+  useEffect(() => {
+    if (!viewport) return
+
+    updateScrollState(viewport)
+    const resizeObserver = new ResizeObserver(() => updateScrollState(viewport))
+    resizeObserver.observe(viewport)
+
+    return () => resizeObserver.disconnect()
+  }, [updateScrollState, viewport])
+
+  return (
+    <div className="relative">
+      <div
+        ref={setViewport}
+        data-testid="jurisdiction-scroll-viewport"
+        className="max-h-44 overflow-y-auto py-4 pr-3"
+        onScroll={(event) => updateScrollState(event.currentTarget)}
+      >
+        <p className="mb-2 text-sm font-medium">
+          Jurisdiction-Based Prohibitions:
+        </p>
+        <ul className="space-y-1 text-sm font-light leading-5 text-muted-foreground">
+          {PROHIBITED_JURISDICTIONS.map((jurisdiction) => (
+            <li key={jurisdiction}>{jurisdiction}</li>
+          ))}
+        </ul>
+      </div>
+      {canScrollFurther && (
+        <div
+          data-testid="jurisdiction-scroll-fade"
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-x-0 bottom-0 h-8 bg-gradient-to-b from-card/0 via-card/80 to-card"
+        />
+      )}
+    </div>
+  )
+}
+
 const AttestationRow = ({
   id,
   checked,
@@ -144,7 +206,7 @@ const AttestationRow = ({
   trailing?: React.ReactNode
   children: React.ReactNode
 }) => (
-  <div className="flex min-h-16 items-center gap-4 py-3">
+  <div className="flex min-h-16 items-center gap-3 py-3">
     <Checkbox id={id} checked={checked} onCheckedChange={onCheckedChange} />
     <label htmlFor={id} className="text-base font-light leading-6">
       {children}

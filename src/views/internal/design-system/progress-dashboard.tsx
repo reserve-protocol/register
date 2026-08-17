@@ -1,5 +1,9 @@
 import { Check, Circle, ListChecks } from 'lucide-react'
-import { NEXT_QUEUE, PROGRESS_GATES, PROGRESS_GROUPS } from './progress-data'
+import {
+  COMPONENT_WORK_QUEUE,
+  PROGRESS_GATES,
+  PROGRESS_GROUPS,
+} from './progress-data'
 
 const GATE_LABELS = {
   inventoried: 'Inventoried',
@@ -93,10 +97,10 @@ const ProgressDashboard = () => (
       <aside className="h-fit rounded-2xl border border-border bg-card p-5">
         <div className="flex items-center gap-2">
           <ListChecks className="h-4 w-4 text-primary" />
-          <h3 className="font-semibold">Next 3</h3>
+          <h3 className="font-semibold">Next component work</h3>
         </div>
         <ol className="mt-4 space-y-4">
-          {NEXT_QUEUE.map((item, index) => (
+          {COMPONENT_WORK_QUEUE.map((item, index) => (
             <li key={item.name} className="flex gap-3">
               <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary text-xs font-semibold text-primary-foreground">
                 {index + 1}

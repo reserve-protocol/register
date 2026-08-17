@@ -7,27 +7,25 @@ const LabShell = ({ children }: { children: ReactNode }) => (
     data-testid="design-system-lab"
     className="min-h-full bg-background text-foreground"
   >
-    <div className="container px-4 py-6 sm:px-6 sm:py-8">
-      <header className="flex flex-col justify-between gap-5 border-b border-border pb-6 lg:flex-row lg:items-start">
-        <div>
-          <div className="flex flex-wrap items-center gap-2">
-            <span className="rounded-full bg-primary px-3 py-1 text-xs font-semibold text-primary-foreground">
-              V1 cockpit
-            </span>
-            <span className="rounded-full bg-muted px-3 py-1 text-xs font-medium text-muted-foreground">
-              Capability map · provisional
-            </span>
-          </div>
-          <p className="mt-4 text-2xl font-semibold tracking-tight">
+    <div className="container px-4 py-4 sm:px-6">
+      <header className="flex items-center justify-between gap-4 border-b border-border pb-4">
+        <div className="flex min-w-0 flex-wrap items-center gap-3">
+          <p className="text-lg font-medium tracking-tight">
             Register design system
           </p>
-          <p className="mt-2 max-w-2xl text-sm leading-6 text-muted-foreground">
-            Expected structure, current evidence, open decisions, and adoption
-            status in one working surface.
-          </p>
+          <div className="flex flex-wrap items-center gap-2">
+            <span className="rounded-full bg-primary px-3 py-1 text-xs font-semibold text-primary-foreground">
+              V1 lab
+            </span>
+            <span className="rounded-full bg-muted px-3 py-1 text-xs font-medium text-muted-foreground">
+              Visual system · readiness labeled
+            </span>
+          </div>
         </div>
-        <div className="flex items-center gap-3">
-          <span className="text-sm text-muted-foreground">Theme</span>
+        <div className="flex shrink-0 items-center gap-3">
+          <span className="hidden text-sm text-muted-foreground sm:inline">
+            Theme
+          </span>
           <div className="[&>button]:h-11 [&>button]:w-11">
             <DarkModeToggle />
           </div>
@@ -38,7 +36,7 @@ const LabShell = ({ children }: { children: ReactNode }) => (
         <LabNavigation />
       </div>
 
-      <div className="py-8 sm:py-10">{children}</div>
+      <div className="py-6 sm:py-8">{children}</div>
     </div>
   </main>
 )

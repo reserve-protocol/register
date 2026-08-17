@@ -139,6 +139,57 @@ body {
     --success: 164 83% 40%;
     --success-foreground: 0 0% 100%;
     --warning: 32 100% 50%;
+    --surface-recessed-content: color-mix(
+      in srgb,
+      hsl(var(--card)) 75%,
+      hsl(var(--secondary))
+    );
+    --status-neutral-surface: hsl(var(--muted));
+    --status-neutral-border: color-mix(
+      in srgb,
+      hsl(var(--muted-foreground)) 20%,
+      hsl(var(--muted))
+    );
+    --feedback-information-surface: color-mix(
+      in srgb,
+      hsl(var(--primary)) 8%,
+      hsl(var(--card))
+    );
+    --feedback-information-border: color-mix(
+      in srgb,
+      hsl(var(--primary)) 31%,
+      hsl(var(--card))
+    );
+    --feedback-success-surface: color-mix(
+      in srgb,
+      hsl(var(--success)) 10%,
+      hsl(var(--card))
+    );
+    --feedback-success-border: color-mix(
+      in srgb,
+      hsl(var(--success)) 32.5%,
+      hsl(var(--card))
+    );
+    --feedback-warning-surface: color-mix(
+      in srgb,
+      hsl(var(--warning)) 10%,
+      hsl(var(--card))
+    );
+    --feedback-warning-border: color-mix(
+      in srgb,
+      hsl(var(--warning)) 32.5%,
+      hsl(var(--card))
+    );
+    --feedback-danger-surface: color-mix(
+      in srgb,
+      hsl(var(--destructive)) 10%,
+      hsl(var(--card))
+    );
+    --feedback-danger-border: color-mix(
+      in srgb,
+      hsl(var(--destructive)) 32.5%,
+      hsl(var(--card))
+    );
   }
 
   .dark {
@@ -224,4 +275,3 @@ body {
     @apply bg-background text-foreground font-normal;
   }
 }
-

@@ -446,7 +446,7 @@ export const PRIMARY_COMPONENT_GROUPS: ComponentGroup[] = [
               'Define control/label/help composition and checked, indeterminate, invalid, disabled behavior.',
             ],
             nextAction:
-              'Use the 20px candidate in the eligibility composition; define indeterminate, invalid, and richer label/help anatomy only when evidenced.',
+              'Use the transparent 28px slot with its 20px mark in the eligibility composition; define indeterminate, invalid, and richer label/help anatomy only when evidenced.',
           }
         ),
         outputStatus: 'proposal',
@@ -455,7 +455,7 @@ export const PRIMARY_COMPONENT_GROUPS: ComponentGroup[] = [
         review: {
           status: 'ready',
           scope:
-            'Review the 20px square mark and its unchecked, checked, focus-visible, and disabled states. Indeterminate, invalid, and row composition remain intentionally open.',
+            'Review the transparent 28px alignment slot, 20px square mark, and its unchecked, checked, focus-visible, and disabled states. Indeterminate, invalid, and row composition remain intentionally open.',
           dependencies: [
             {
               name: 'Semantic state recipes',
@@ -465,7 +465,7 @@ export const PRIMARY_COMPONENT_GROUPS: ComponentGroup[] = [
           ],
         },
         statusDetail:
-          'A reusable V1 candidate implements the 20px square binary mark and its essential focus and disabled states. Indeterminate, invalid, and rich row composition remain open; production adoption has not started.',
+          'A reusable V1 candidate implements a transparent 28px alignment slot around the 20px square binary mark and its essential focus and disabled states. Indeterminate, invalid, and rich row composition remain open; production adoption has not started.',
       },
       component(
         'radio-group',

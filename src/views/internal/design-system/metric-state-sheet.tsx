@@ -14,6 +14,8 @@ const MetricStateSheet = () => (
       <p className="mt-1 max-w-3xl text-sm font-light leading-6 text-muted-foreground">
         Metric owns label/value typography and alignment. Its parent owns the
         card, grid, separators, help affordances, and responsive composition.
+        Headline anatomy follows the strong Home source: a 16px/300 label and
+        16px/500 value.
       </p>
     </div>
 
@@ -52,9 +54,10 @@ const MetricStateSheet = () => (
       </CandidateCell>
       <CandidateCell label="Boundary">
         <p className="text-sm font-light leading-6 text-muted-foreground">
-          Outcome summaries remain a distinct evidenced role, but their icon
-          treatment and visual emphasis need design review before they become a
-          canonical Metric variant.
+          Parent compositions own grids, framing, help, and optional icons.
+          Auction selector evidence reuses inline Metric anatomy rather than
+          creating an auction-specific variant; the parent may consistently
+          emphasize every value in the group.
         </p>
       </CandidateCell>
     </div>

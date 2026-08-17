@@ -6,6 +6,7 @@ import LayoutStudiesPage from './layout-studies-page'
 import { PageHeader } from './catalog-ui'
 import ProgressDashboard from './progress-dashboard'
 import ScreensPage from './screens-page'
+import { CurrentReviewList } from './current-review-panel'
 
 const DesignSystemLab = () => (
   <LabShell>
@@ -36,6 +37,7 @@ const StatusPage = () => (
       title="Project status"
       description="The full tracker lives here rather than competing with the design work on every visit."
     />
+    <CurrentReviewList />
     <ProgressDashboard />
   </div>
 )

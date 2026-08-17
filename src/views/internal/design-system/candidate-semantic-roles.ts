@@ -1,6 +1,7 @@
 export const candidateSemanticRoles = {
   surface: {
     content: 'bg-card',
+    recessedContent: 'bg-[var(--surface-recessed-content)]',
     structuralSubstrate: 'bg-secondary',
     neutralControl: 'bg-muted',
     selected: 'bg-accent/60',
@@ -16,22 +17,33 @@ export const candidateSemanticRoles = {
   disabled: {
     control: 'border border-border bg-muted text-muted-foreground',
   },
+  lifecycle: {
+    neutral: {
+      surface: 'bg-[var(--status-neutral-surface)]',
+      foreground: 'text-muted-foreground',
+      border: 'ring-[var(--status-neutral-border)]',
+    },
+  },
   feedback: {
     information: {
-      surface: 'bg-primary/[0.08]',
+      surface: 'bg-[var(--feedback-information-surface)]',
       foreground: 'text-primary',
+      border: 'ring-[var(--feedback-information-border)]',
     },
     success: {
-      surface: 'bg-success/10',
+      surface: 'bg-[var(--feedback-success-surface)]',
       foreground: 'text-success',
+      border: 'ring-[var(--feedback-success-border)]',
     },
     warning: {
-      surface: 'bg-warning/10',
+      surface: 'bg-[var(--feedback-warning-surface)]',
       foreground: 'text-warning',
+      border: 'ring-[var(--feedback-warning-border)]',
     },
     danger: {
-      surface: 'bg-destructive/10',
+      surface: 'bg-[var(--feedback-danger-surface)]',
       foreground: 'text-destructive',
+      border: 'ring-[var(--feedback-danger-border)]',
     },
   },
 } as const

@@ -1,6 +1,6 @@
 ---
 title: Decisions
-updated: 2026-08-14
+updated: 2026-08-18
 type: decision
 ---
 
@@ -79,3 +79,20 @@ V1 Buttons remain intrinsic/content-width by default. Compact actions are primar
 ## 2026-08-14 — Canonical composition review requires canonical or retained dependencies
 
 A rendered composition is ready for canonical V1 review only when every visually meaningful dependency is either a real reusable V1 candidate or an explicitly retained domain/behavior primitive. Otherwise the lab labels it provisional, blocked, or exploration-only and states the narrow scope that may be judged. This prevents a canonical child inside copied framing from making the entire specimen appear canonical. The first dependency-complete composition is the real eligibility dialog: canonical Button, 20px square binary Checkbox, compact named IconButton, and minimal Radix-backed Dialog shell, with Radix Collapsible and inline legal links explicitly retained. Unresolved Checkbox/IconButton variants, final dialog elevation, outcomes, illustration, constrained-screen behavior, Table/DataRow, and production adoption remain outside this promotion.
+
+## 2026-08-18 — Rich records share foundations, not a universal Row
+
+Governance proposals and Auction rebalance selectors remain distinct reviewed
+compositions. Both use square structural records, a 24px outer inset, 16px
+between internal regions, 8px between related rows, 4px for tight icon/text
+pairs, 16px/500 titles, and reusable lifecycle and Metric seams. This shared
+grammar does not promote Table/DataRow or Lifecycle Status to canonical V1.
+
+Auction selector items show the current auction state and only the timing needed
+to decide what happens next. Current-auction bid count and value traded remain
+in the selected/full view. Operational and historical selector evidence reuses
+inline Metric anatomy with consistent 16px/500 value emphasis; provenance reads
+as one left-aligned sentence. At constrained widths, status wraps below the
+title rather than squeezing it. Neutral lifecycle surfaces and borders are
+opaque semantic colors so their appearance does not depend on the parent
+surface.

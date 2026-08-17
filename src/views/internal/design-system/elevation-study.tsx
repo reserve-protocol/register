@@ -1,8 +1,8 @@
 import { ChevronDown, MoreHorizontal } from 'lucide-react'
 
-const FLOATING_SHADOW =
+export const FLOATING_SHADOW =
   'shadow-[0_12px_32px_-14px_hsl(var(--foreground)/0.22),0_4px_12px_-8px_hsl(var(--foreground)/0.12)]'
-const MODAL_SHADOW =
+export const MODAL_SHADOW =
   'shadow-[0_24px_64px_-22px_hsl(var(--foreground)/0.3),0_8px_24px_-14px_hsl(var(--foreground)/0.18)]'
 
 const ElevationStudy = () => (

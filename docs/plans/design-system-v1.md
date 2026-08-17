@@ -79,7 +79,7 @@ with another Playwright suite on port 3005. TypeScript remains project-wide
 because the repository has no trustworthy per-component typecheck, but it is a
 fast structural check rather than a reason to invoke unrelated route tests.
 
-Keep a design-system stage active across provisional lab turns. A lab edit is not a stage closeout, and static explanatory copy does not need bespoke assertion tests. Mobile support remains a product requirement, but routine mobile verification of the designer-only lab is deferred unless its layout becomes part of the decision being reviewed.
+Keep a design-system stage active across provisional lab turns. A lab edit is not a stage closeout, and static explanatory copy does not need bespoke assertion tests. Mobile support remains a product requirement, but routine mobile verification of the designer-only lab is deferred unless its layout becomes part of the decision being reviewed. This exception applies only to lab presentation: before a product component becomes canonical-review-ready, determine whether a constrained viewport materially changes its anatomy, composition, or interaction. If it does, define and verify that adaptive contract as part of the component rather than carrying it as an unspecified follow-up.
 
 ## Progress model
 
@@ -137,7 +137,9 @@ Human-reviewed working rules from the lab studies; these remain provisional unti
   treatments and state the unavailable reason when it is not obvious. Exact
   values remain open.
 - Feedback uses a vivid success, warning, danger, and information family with
-  dark icon foregrounds and quiet derived backgrounds. Information is a
+  dark icon foregrounds and quiet opaque derived surfaces. The opaque surfaces
+  and borders match the former alpha treatments on a white card but no longer
+  mix with selected or otherwise tinted parent surfaces. Information is a
   brighter relative of the deeper brand/action blue; the roles remain
   semantically separate even where they share a hue family.
 - Preserve the reviewed positive and negative performance colors and gradients;
@@ -239,11 +241,13 @@ Provisional candidate after lab review:
   inheriting the atomic-control shape.
 - Visible compact and micro controls may need larger invisible production hit
   areas. Interaction target size and visible geometry are separate concerns.
-- Align an icon glyph with the surrounding surface's content inset. The chosen
-  button size determines its outer placement; a surface does not have to use a
-  compact button merely to preserve alignment. In the current Zapper study,
-  32px header icon buttons place their 16px glyphs on the same 24px inset as
-  the amount content below.
+- Parent layout owns control placement. In an ordinary padded region, align the
+  visible boundary of a framed control with the parent's content inset rather
+  than absolutely positioning it against the shell. A composition may instead
+  align a glyph to another content axis only when that relationship is explicit;
+  the current Zapper study does this for 32px header icon buttons and the amount
+  content below. Keep that exception in the composition rather than turning it
+  into a self-positioning component default.
 - These values are good enough to carry into component-family work but remain
   provisional until representative product use shows that the scale holds.
 
@@ -358,6 +362,9 @@ Accepted as the provisional foundation direction after visual comparison:
   edge. A heading and its supporting explanation use a tight 4px gap; distinct
   relationships such as label/control/help use 8px, and complete field groups
   use 24px.
+- Inline evidence label/value pairs use the same tight 4px relationship so
+  `Quorum` and `Reached` read as one phrase. Separate evidence groups use 16px,
+  while an icon and the value it directly describes retain the related 8px gap.
 - A normal contained form is the default for settings, governance, deploy, and
   general card forms. Labels describe the complete control, so they align with
   its outer edge rather than its internal value text.
@@ -434,14 +441,17 @@ Accepted as the provisional foundation direction after visual comparison:
   describes a complete two-line item, use a fixed passive leading slot centered
   against the full text block. The current candidate is a ghost 32px slot with
   a 20px icon and 12px gap to text.
-- A visible 32px icon well with a 16px glyph is reserved for a passive icon
-  above a vertically stacked, left-aligned block, where the circle establishes
-  a real optical edge. Do not place a bare glyph above such a stack.
-- Passive icon wells have no interaction states. Icon buttons are named
-  controls with border/fill treatment, adequate hit targets, and complete
-  hover/focus/active/disabled behavior. Item-level icon actions sit at the
-  trailing edge; leading icon buttons belong to toolbars, navigation, or
-  isolated control groups rather than preceding item content.
+- Passive semantic icons use a fixed invisible slot by default. The current
+  dialog candidate uses a 32px slot with a 20px glyph, preserving the parent
+  content axis without introducing control-like chrome. Add a visible frame
+  only when it communicates semantic meaning or identity, or materially
+  improves alignment across a repeated stack—not merely because the icon sits
+  above text.
+- Passive icon slots have no interaction states. Icon buttons are named
+  controls with visible or interactive treatment, adequate hit targets, and
+  complete hover/focus/active/disabled behavior. Item-level icon actions sit
+  at the trailing edge; leading icon buttons belong to toolbars, navigation,
+  or isolated control groups rather than preceding item content.
 - Disclosure/navigation icons generally sit at the trailing edge. Repeated rows
   reserve the same leading slot across the set; if only one arbitrary row would
   receive an icon, omit it rather than breaking the shared text axis.
@@ -520,16 +530,33 @@ candidate changes a shared production primitive:
   inactive items rather than turning selection into a primary-blue action.
   The text-only candidate follows the recent Index overview timespan treatment
   without an underline or wrapper, at 14px compact and 16px default sizes.
-- Selection marks keep one 20px visual size across densities. The switch
-  candidate is 36×20px with a 16px thumb; its surrounding row or label owns the
-  larger interaction target rather than enlarging the visible track.
+- Selection marks keep one 20px visual size across densities. Checkbox marks
+  sit inside a transparent 28px alignment slot, using the accepted micro-control
+  rhythm to provide a 4px optical inset without adding visible chrome. The
+  switch candidate is 36×20px with a 16px thumb; its surrounding row or label
+  owns the larger interaction target rather than enlarging the visible track.
 - Status pills use one compact 24px geometry and a role vocabulary grounded in
   governance: neutral pending/inactive outcomes, active lifecycle, attention,
   completed success, and unsuccessful outcomes. Fast and Contested are shown
   separately as qualifiers rather than being confused with lifecycle states.
+- Status pills provide the frame, so their 14px indicators use unframed glyphs:
+  an active dot, clock, arrow, spinner, check, x, or minus according to role.
+  Evidenced domain phases may replace the default role glyph with an approved
+  semantic indicator: a ballot for active voting or shield-alert for an active
+  challenge. Icons inherit the semantic foreground rather than adding color.
+- Proposal qualifiers remain bare, neutral 14px medium-weight icon/text
+  metadata at the title edge. They do not become lifecycle pills; Fast uses a
+  bolt and Contested a calm shield so neither competes with the state below.
 - Slider and progress tracks use contained neutral chrome on white. Beige is
   never an unfilled control track; it remains reserved for structural substrate
   revealed between regions.
+- Current proposal progress uses brand blue; historical proposal progress uses
+  neutral completed segments. Outcome color remains in status rather than
+  turning the lifecycle bar green or red. Quorum evidence is separated from
+  vote distribution by a short neutral divider contained inside the white row.
+  Within that evidence cluster, 14px icon/value pairs use the 4px tight-text
+  relationship and adjacent vote units use 8px. The divider separates distinct
+  quorum and vote regions, so it keeps 16px internal-region spacing.
 - Explanatory copy is deliberately short. The board is for visual comparison,
   while real modals and golden screens remain the pressure-test seam for
   behavior, composition, and exceptions.
@@ -585,6 +612,21 @@ real unresolved choice emerges from that review. This preserves designer control
 without exempting the component from logical spacing, color, shape, icon, motion,
 and accessibility constraints.
 
+Every canonical visual property must trace to either an accepted foundation role
+or the named strongest source implementation. Record that provenance in the
+component evidence. A deliberate deviation in type size, weight, line height,
+spacing, color, shape, or control geometry remains provisional and must be shown
+as a human judgment before documentation can call it accepted. Generic design-
+system convention is not sufficient provenance when strong product evidence
+exists.
+
+This provenance gate is not grandfathered. Before a previously marked
+canonical candidate is shown for another human review, used as a canonical
+dependency, or described as dependency-complete, recheck its rendered type,
+spacing, color, shape, and geometry against the accepted foundations and named
+source evidence. A mismatch returns the affected property or composition to
+provisional until it is corrected or explicitly reviewed.
+
 Recurring product components belong in the ordinary component grid/catalog,
 not in a permanent decision queue. Show what the product actually has, along
 with accepted candidate attributes where already decided. Request designer input
@@ -616,6 +658,13 @@ evidenced functional gap that existing product behavior and accepted patterns
 cannot satisfy. Audits preserve jobs, content, behavior, and constraints; they
 do not elevate every legacy implementation detail or hypothetical state into a
 design-system contract.
+
+Deterministic lab fixtures may use fictional names, values, and dates to expose
+an evidenced state, but their copy must not imply unsupported product or
+protocol behavior. Product-mechanics language must trace to product source or
+domain documentation. Lab-authored copy is review metadata, not migration copy;
+production migration preserves evidenced product meaning unless a copy change
+is separately and explicitly accepted.
 
 An accepted decision recorded here overrides any unsynchronized exploratory
 specimen. A stale specimen is evidence awaiting reconciliation, not a new design
@@ -689,10 +738,11 @@ small anatomy layer rather than introduce universal product wrappers:
   metrics, qualifiers, provenance, and whole-item navigation. They should share
   lower-level identity/status/metric anatomy with tables but remain a separate
   composition rather than a universal `Row` variant.
-- **Metrics** have three evidenced jobs: inline key/value pairs in Overview and
-  Governance, headline stacked values on Home, and parallel outcome summaries
-  in Auctions. Standardize label/value/units/loading/missing anatomy; parent
-  regions continue to own grids and framing.
+- **Metrics** have two reusable anatomies: inline key/value pairs in Overview,
+  Governance, and Auction selectors, plus headline stacked values used on Home.
+  Standardize label/value/units/loading/missing anatomy; parent regions continue
+  to own alignment, consistent group emphasis, optional icons, grids, and
+  framing.
 - **Product navigation** is an evidenced Register extension missing from the
   earlier generic registry. The persistent Index DTF rail combines DTF identity,
   icon-led routes, current/hover/focus/disabled states, hover expansion, and a
@@ -702,8 +752,9 @@ small anatomy layer rather than introduce universal product wrappers:
   supplies it, so nested navigation is excluded from V1 evidence.
 
 The next visual runway in the Components lab is intentionally compact. It uses
-real CMC20 labels and values to prepare three judgments: asset-row identity and
-density, metric emphasis/icon treatment, and Index navigation state language.
+real CMC20 labels and values to prepare asset-row identity/density and Index
+navigation state-language judgments while canonicalizing source-faithful Metric
+anatomy without manufacturing an outcome-specific role.
 The cards are candidates, not decisions, and no product component or route was
 changed.
 
@@ -727,14 +778,14 @@ the visual-decision lane.
 Decision triage for this layer:
 
 - **Lane 1:** numeric alignment, tabular numerals, equal sizing for horizontal
-  peers, three role-led metric compositions, the framed icon slot in the
+  peers, two Metric anatomies across three product compositions, the framed icon slot in the
   persistent vertical rail, page region versus repeated-card criteria, the
   accepted contained-form axis, and quiet-versus-actionable empty-state logic.
 - **Lane 2:** always-visible versus revealed row actions, missing/stale/loading
   metric language, expanded navigation-label behavior, and routine action-group
   ordering. These should use source evidence before new comparisons are built.
 - **Lane 3:** dense asset-row identity/density, rich navigable-record hierarchy,
-  metric emphasis/icon treatment, Index navigation current/hover-expanded state,
+  Index navigation current/hover-expanded state,
   interactive card/media character, complex repeated form groups, and the
   small set of meaningful illustrated empty states.
 
@@ -1227,7 +1278,9 @@ instead of lab-only copies:
   leaving token resolution and account-avatar domain logic in their existing
   specialized primitives. The corrected chain badges are 16px at xl and an
   optically floored 14px at lg, including their surface-separating borders.
-- `Metric` owns inline and centered-headline label/value anatomy, while
+- `Metric` owns inline and centered-headline label/value anatomy. The headline
+  treatment follows the strong Home source with a 16px/300 label and 16px/500
+  value, while
   `MetricValue` gives comparable data cells the same 16px/300 tabular baseline.
   Parents continue to own cards, grids, help, and responsive composition.
 - The Table lab composes those seams in a realistic divider-free Index holdings
@@ -1242,19 +1295,113 @@ instead of lab-only copies:
 
 The lab directly imports every component above. Existing production badge,
 stack, metric, table, and empty-state consumers remain unchanged until a named
-opt-in adoption experiment. The next genuine visual judgments are outcome
-metric emphasis/icon treatment, rich navigable-record hierarchy, Index rail
-refinement, interactive-card character, complex repeated form groups, and the
-small set of states that may earn illustration.
+opt-in adoption experiment. Auction selector groups reuse inline Metric with
+consistent parent-owned value emphasis; full-view outcomes remain a separate
+composition question, while icons stay outside the Metric API. The next genuine
+visual judgments are Index rail refinement,
+interactive-card character, complex repeated form groups, and the small set of
+states that may earn illustration. Rich proposal and auction records remain
+separate reviewed compositions rather than entering a universal Row API.
 
 The next bounded dependency pass adds only the interaction seams needed by a
-real dialog composition: a 20px square binary Checkbox, a compact named
+real dialog composition: a 20px square binary Checkbox in a transparent 28px
+alignment slot, a compact named
 IconButton built on Button, and a minimal Radix-backed Dialog shell. Their open
 variants remain explicit rather than being completed speculatively. The real
 eligibility composition consumes those candidates plus an explicitly retained
-Collapsible behavior primitive. Core scale boards remain exploration, modal
-geometry copies remain provisional, and the realistic Index data slice remains
-a Table specimen rather than a canonical Table/DataRow claim.
+Collapsible behavior primitive. The superseded core scale boards are no longer
+rendered, modal geometry copies remain provisional, and the realistic Index
+data slice remains a Table specimen rather than a canonical Table/DataRow
+claim.
+
+Human review accepted this interaction kernel in the eligibility composition.
+That acceptance covers the reusable shell and canonical dependencies, not every
+dialog composition. Consequential outcomes, illustration, and final elevation
+remain explicit later composition-level work grounded in real product flows.
+
+## Lab visual-review reorganization — 2026-08-14
+
+### Goal
+
+Reorganize the existing lab so Foundations and Components lead with dense,
+accurate visual output; canonical, provisional, exploratory, and production
+adoption states remain visibly distinct; Studies contains only unresolved
+questions; and Project Status carries the deeper tracker and history.
+
+### Delivered state
+
+- Foundations opens with nine compact visual specimens; accepted rich studies
+  live on their authoritative foundation detail routes.
+- Components opens with seven registry-derived canonical candidates rendered
+  from shared implementations, followed by one clearly provisional composition
+  and a compact inventory that exposes audit and review maturity.
+- Representative detail pages lead with visual output and local readiness;
+  evidence, dependencies, definition slots, and history remain available in a
+  secondary disclosure.
+- Studies renders only unresolved color, layout, and modal pressure
+  tests.
+- A typed Current Review list owns human judgments. Project Status
+  derives per-item progress and autonomous next work from the registries.
+
+### Non-goals
+
+- No new foundation values, component APIs, production adoption, product-route
+  migration, token migration, or design-strategy decisions.
+- No filters, scores, elaborate dashboards, new orchestration, or duplicated
+  product-screen gallery.
+- Screens remain structurally intact.
+
+### Acceptance evidence
+
+- The running desktop lab shows foundation specimens directly on the
+  Foundations landing page and actual reusable implementations directly on the
+  Components landing page before secondary metadata.
+- Canonical candidates, provisional compositions, exploration, and production
+  adoption are labeled independently and truthfully from the existing typed
+  registries.
+- Representative Foundation and Component details lead with visual output and
+  local readiness; evidence, dependencies, definition slots, and history are
+  progressively disclosed.
+- Studies renders only open questions and pressure tests; accepted foundation
+  visuals have one authoritative rendered home.
+- A typed manual Current Review source contains at most three genuine human
+  judgments with title, reason, destination, and review type.
+- Existing focused catalog tests, typecheck, lint, design-system Playwright,
+  fresh desktop visual inspection, scoped verification, and wiki-lint are green.
+
+### Test seams
+
+- Playwright at `/internal/design-system/*` remains the highest stable seam for
+  route hierarchy, readiness labels, progressive disclosure, theme, overflow,
+  and rendered visual output.
+- Focused Vitest covers typed catalog/current-review derivation only when it
+  contains behavior; static specimen composition relies on typecheck plus
+  rendered assertions.
+
+### Slices
+
+- Slice: make Foundations and Components visual-first by reusing compact
+  foundation specimens and actual canonical component implementations; blocked
+  by: none.
+- Slice: reorder representative details and validate the primary desktop review
+  experience in the running lab; blocked by: visual-first overviews.
+- Slice: remove accepted material from Studies, add the typed Current Review
+  source, and collapse secondary inventory/evidence behind disclosure; blocked
+  by: primary review experience.
+- Slice: reconcile Project Status and durable documentation only where current
+  claims became stale; blocked by: primary and secondary lab reorganization.
+
+### Unresolved decisions
+
+- None block implementation. Existing registry metadata is authoritative; any
+  contradiction that would require a new design decision stops that affected
+  promotion rather than inventing a direction.
+
+Strongest case against this plan: compressing the lab could hide evidence or
+make provisional work look canonical. The response is progressive disclosure,
+not deletion: visual output moves first while registry-backed readiness,
+dependencies, evidence, and the full tracker remain reachable and independently
+labeled.
 
 ## Slices
 
@@ -1282,12 +1429,10 @@ a Table specimen rather than a canonical Table/DataRow claim.
 
 ## Active slice
 
-Review the small canonical product and interaction kernel now rendered in the
-lab: Entity identity, inline/headline Metric anatomy, routine Empty states,
-Button, the bounded Checkbox/IconButton roles, and the minimal Dialog shell in
-the real eligibility composition. Then return to source-grounded
-product-facing canonicalization; rich navigable records, outcome-metric
-emphasis, and specific Index rail refinements are the next genuine visual work.
-The realistic divider-free Index slice remains a Table specimen. Do not reopen
-settled foundations or turn these seams into universal Row/Card wrappers.
-Broad production migration has not started.
+Resume source-grounded product-facing canonicalization after the reviewed rich
+record batch. Auction selectors use inline metrics and keep current-auction bid
+count and value traded in the selected/full view; Table/DataRow and Lifecycle
+Status are still not canonical, and broad production migration has not started.
+Preserve the established foundation and interaction decisions,
+canonical-implementation versus adoption boundary, and registry-backed
+readiness distinctions.

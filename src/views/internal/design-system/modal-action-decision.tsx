@@ -64,8 +64,9 @@ const ModalActionDecision = () => (
       </h2>
       <p className="mt-2 max-w-3xl text-sm font-light leading-6 text-muted-foreground">
         These rules now replace the earlier action and overflow comparisons.
-        Outcome composition, illustration style, focus verification, and
-        constrained-screen adaptation remain unresolved.
+        Outcome composition, illustration style, and focus verification remain
+        unresolved. The adaptive phone shell is defined with the canonical
+        Dialog.
       </p>
     </header>
 

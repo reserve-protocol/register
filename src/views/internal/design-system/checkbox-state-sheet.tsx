@@ -11,9 +11,10 @@ const CheckboxStateSheet = () => (
         Canonical candidate · selection mark
       </h2>
       <p className="mt-1 max-w-3xl text-sm font-light leading-6 text-muted-foreground">
-        This candidate owns the 20px square mark and its essential binary
-        states. Label, help, indeterminate, invalid, and rich-row composition
-        remain outside this narrow promotion.
+        This candidate centers the 20px square mark in a transparent 28px
+        alignment slot and owns its essential binary states. Label, help,
+        indeterminate, invalid, and rich-row composition remain outside this
+        narrow promotion.
       </p>
     </div>
     <div className="grid gap-0.5 bg-secondary p-0.5 sm:grid-cols-3">
@@ -24,10 +25,7 @@ const CheckboxStateSheet = () => (
         <Checkbox aria-label="Checked checkbox" checked />
       </State>
       <State label="Focus-visible">
-        <Checkbox
-          aria-label="Focused checkbox"
-          className="ring-2 ring-ring ring-offset-2 ring-offset-card"
-        />
+        <Checkbox aria-label="Focused checkbox" autoFocus />
       </State>
       <State label="Unchecked · disabled">
         <Checkbox aria-label="Disabled unchecked checkbox" disabled />
