@@ -367,7 +367,10 @@ const GovernanceVoteLock = () => {
       : `$${indexDTF.token.symbol}`)
   const rewardsIn =
     rewardTokens.length > 1 ? (
-      <RewardTokensHoverCard chainId={chainId} tokens={rewardTokens} />
+      <RewardTokensHoverCard
+        chainId={indexDTF.stToken.chainId}
+        tokens={rewardTokens}
+      />
     ) : (
       rewardsInLabel
     )
@@ -380,7 +383,7 @@ const GovernanceVoteLock = () => {
             size="xl"
             symbol={indexDTF.stToken.token.symbol}
             address={indexDTF.stToken.id}
-            chain={chainId}
+            chain={indexDTF.stToken.chainId}
           />
           {!!aprLabel && (
             <div className="rounded-full bg-primary/10 border border-primary px-3 py-1 text-primary text-sm font-semibold ml-auto">
@@ -448,7 +451,7 @@ const GovernanceVoteLock = () => {
               size="sm"
               symbol={indexDTF.stToken.underlying.symbol}
               address={indexDTF.stToken.underlying.address}
-              chain={chainId}
+              chain={indexDTF.stToken.chainId}
             />
           </div>
           <span>
