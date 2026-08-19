@@ -211,6 +211,7 @@ export const PerformanceChart = ({
       {launchMarkerLeftPercent !== undefined && (
         <div
           aria-hidden="true"
+          data-testid="feature-card-launch-line"
           className="pointer-events-none absolute z-20 w-px opacity-65"
           style={{
             backgroundColor: isLaunchMarkerLineActive

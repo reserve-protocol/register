@@ -1,6 +1,6 @@
 ---
 title: Design System
-updated: 2026-08-18
+updated: 2026-08-19
 type: domain
 sources:
   - tailwind.config.ts
@@ -17,11 +17,33 @@ Source of truth: `tailwind.config.ts` (tokens) + `src/app.css` (CSS variables, `
 
 ## Active v1 project
 
-The active contract is [design-system-v1](../../plans/design-system-v1.md). The contained `/internal/design-system` route is a visual-review workspace: Foundations renders the current system as compact specimens, and Components renders actual canonical candidates before provisional compositions and a compact remaining inventory. Screens remains a reference to unchanged production routes; it cannot validate an unadopted candidate. Detail pages lead with visual output and local readiness; evidence, dependencies, definition slots, and history are progressively disclosed. Studies contains only unresolved alternatives and active pressure tests. Project Status owns the typed Current Review queue plus the deeper registry-derived tracker and work queue. Expected missing slots remain navigable, but they do not receive large overview cards or imply a commitment to build.
+The active contract is [design-system-v1](../../plans/design-system-v1.md). The contained `/internal/design-system` route is a visual-review workspace: Foundations renders the current system as compact specimens, and Components renders reusable V1 candidates with acceptance and adoption shown separately before provisional compositions and a compact remaining inventory. Screens remains a reference to unchanged production routes; it cannot validate an unadopted candidate. Detail pages lead with visual output and local readiness; evidence, dependencies, definition slots, and history are progressively disclosed. Studies contains only unresolved alternatives and active pressure tests. Project Status owns the typed Current Review queue plus the deeper registry-derived tracker and work queue. Expected missing slots remain navigable, but they do not receive large overview cards or imply a commitment to build.
+
+V1 work is canonical-first. Reuse the audits, synthesize the strongest complete
+candidate from accepted owners and strong product evidence, self-review it, and
+only then surface the meaningful judgment that remains. Resolve a visually
+meaningful prerequisite before its parent review rather than recreating it
+locally. After feedback, classify the correction as local, component,
+pattern/composition, foundation, or reusable heuristic and update the most
+reusable justified owner immediately. Unrelated consumers, documentation, and
+baselines may wait for the next synchronization pass. The full nine-principle
+operating model and source precedence live at the top of the active plan;
+chronological plan sections are evidence, not competing workflow authority.
 
 Real local golden screens are the canonical composition-testing surface; deterministic fixtures supplement live data for repeatable edge states. Foundation evidence still documents the existing system, while the Button state sheet now renders the actual reusable V1 candidate. The component catalog is product-shaped: established interaction-system references such as shadcn and Radix inform its vocabulary, but Register's audited needs decide what v1 defines, combines, or marks not needed.
 
-Foundation detail pages separate three layers: current evidence, a provisional candidate system, and the accepted v1 definition. Current evidence must name its audit method and limits; hand-picked token samples are not an audit. Candidate systems render expected semantic roles and their status alongside the source-review rationale, so an open exact value cannot look accepted merely because its structural role is proposed. Color is the first implemented pattern: audited surface usage, a rendered surface hierarchy, role tables, and separate feedback versus financial-movement semantics. Multi-value treatments such as chart gradients must show their stops, markers, text, theme variants, and derived fills before a smaller candidate mapping is proposed; one swatch is not complete evidence. A candidate may earn a rendered `proposal` status while every definition slot remains open; never translate that status into approval. When an inherited color fails text contrast, render it as a labeled swatch and state the limitation rather than presenting inaccessible text as a viable candidate.
+Foundation detail pages separate current evidence, an exploratory direction,
+and the current authoritative baseline. Current evidence must name its audit
+method and limits; hand-picked token samples are not an audit. Rendered output
+is tracked separately from design authority, so a visible specimen cannot imply
+that its contract is the current baseline. Color is the first implemented
+pattern: audited surface usage, a rendered surface hierarchy, role tables, and
+separate feedback versus financial-movement semantics. Multi-value treatments
+such as chart gradients must show their stops, markers, text, theme variants,
+and derived fills before a smaller candidate mapping is proposed; one swatch is
+not complete evidence. When an inherited color fails text contrast, render it
+as a labeled swatch and state the limitation rather than presenting inaccessible
+text as a viable candidate.
 
 Color now also has a partial reviewed V1 definition. White owns page-canvas and
 ordinary-content roles; beige is a structural substrate revealed by 2px major
@@ -114,7 +136,7 @@ so alignment remains stable while the icon stays clearly non-interactive. A
 visible frame must communicate meaning or identity, or solve alignment across a
 repeated stack; position above text alone does not earn a frame.
 
-Lifecycle status pills own their frame and therefore use unframed 14px
+The canonical V1 Lifecycle Status candidate owns its frame and therefore uses unframed 14px
 indicators: an active dot, clock, arrow, spinner, check, x, or no icon. Evidenced
 domain phases may replace the default role indicator with an approved semantic
 one: a ballot for active voting or shield-alert for an active challenge.
@@ -162,18 +184,45 @@ composition now pass in the lab. Production consumers and the two legacy stack
 implementations are intentionally unchanged until an explicit adoption slice.
 
 The canonical product kernel now also includes `Button`, `Metric`/`MetricValue`,
-and `EmptyState`. Button owns the accepted action hierarchy, 28/32/44px scale,
-icon spacing, focus, disabled, and loading behavior while leaving pressed and
-long-label behavior open. Metric owns accepted inline and centered-headline label/value
-anatomy. The headline treatment preserves the strong Home source's 16px/300
-label and 16px/500 value; horizontal peers remain 16px/300, right aligned, and tabular. Its
-parent owns framing, grids, help, and responsive composition. Outcome-summary
-groups do not add a Metric role or icon API; centered versus parent-owned start
-alignment remains a visual composition decision. Empty state owns only quiet versus user-resolvable absence
-hierarchy; parent regions own height and framing, while bespoke illustration is
-reserved for later review of meaningful evidenced states. A realistic
-divider-free Index slice composes Entity identity with Metric values without
-introducing a universal Row component.
+`EmptyState`, and `LifecycleStatusPill`. Button owns the accepted action
+hierarchy, 28/32/44px scale, icon spacing, focus, disabled, and loading behavior
+while leaving pressed and long-label behavior open. Metric owns accepted inline
+and centered-headline label/value anatomy. The headline treatment preserves the
+strong Home source's 16px/300 label and 16px/500 value; horizontal peers remain
+16px/300, right aligned, and tabular. Its parent owns framing, grids, help, and
+responsive composition. Outcome-summary groups do not add a Metric role or icon
+API; centered versus parent-owned start alignment remains a visual composition
+decision. Empty state owns only quiet versus user-resolvable absence hierarchy;
+parent regions own height and framing, while bespoke illustration is reserved
+for later review of meaningful evidenced states. A realistic divider-free Index
+slice composes Entity identity with Metric values without introducing a
+universal Row component.
+
+Lifecycle Status owns the reviewed 24px lifecycle roles, standardized
+indicators, opaque semantic tones, subtle countdown pairing, and processing-only
+motion. Category labels, counts, qualifiers, removable chips, proposal progress,
+and outcome-detail composition remain separate work. Its implementation lives
+in `src/components/lifecycle-status/` and consumes the shared V1 semantic-role
+map from `src/components/design-system-v1/`; no product consumer has adopted it
+yet.
+
+Card usage does not support one universal migration target. The 50 shared Card
+imports are dominated by legacy Yield consumers, while the Index imports mostly
+frame structural Overview regions. The production primitive's rounded-3xl,
+20px-padding, and title defaults conflict with accepted V1 foundations and stay
+unchanged evidence. Structural regions already resolve to square white surfaces,
+an ordinary 24px content axis, layout-owned substrate corners, and no nested-card
+default. The Home Index feature card is the authoritative source for a later
+media-rich interactive-card shell; its hierarchy and detailed behavior are not
+being redesigned. The accepted preservation-first review applies a square
+shell, an 8px shell inset and contained-media radius, 24px primary and
+supporting-row axes, 16px between internal regions, and 8px between directly
+related title/market content. Title spacing is measured from the complete top
+row rather than the logo alone, so Discover naturally accounts for its taller
+chart without a new spacing value. Full chart/launch, ticker, transcript/video,
+chain, and interaction behavior remain protected; Discover is supporting
+compact adaptation evidence. Reusable extraction remains queued and production
+is not adopted.
 
 Persistent product navigation is a Register extension, not a Button variant.
 The Index DTF rail and its constrained-screen menu consume one route/current/
@@ -185,17 +234,19 @@ spacing, color, shape, icon, motion, and accessibility. The category exists
 because repeated real product use demonstrates the contract, not because a
 generic component catalog expects it.
 
-The contained lab is designer/developer working metadata and remains English-only. This is not an exemption for migrated product UI: any copy that reaches product users follows the repository's Lingui and es/ko/zh translation rule. Current Review contains only genuine human visual judgment (`visual decision`, `canonical review`, or `real-screen validation`); autonomous component work stays in the registry-backed Project Status work queue.
+The contained lab is designer/developer working metadata and remains English-only. This is not an exemption for migrated product UI: any copy that reaches product users follows the repository's Lingui and es/ko/zh translation rule. Current Review contains only a nearly complete candidate that has reached the boundary of what Codex can confidently resolve and still needs genuine human visual judgment (`visual decision`, `canonical review`, or `real-screen validation`). It is not a list of unfinished slots. Autonomous component work and evidence preparation stay in the registry-backed Project Status work queue.
 
-Keep Tailwind, Radix, CVA, and local shadcn-style primitives as the implementation base. Storybook is deferred until the in-app lab demonstrates a concrete unmet need. Progress gates are independent: catalog maturity, rendered output, reusable implementation, production adoption, individual definition decisions, review, and verification must not collapse into one status. In particular, a rendered proposal may be only a specimen; the catalog must say whether a reusable canonical candidate actually exists and whether any product consumer has adopted it. Missing capabilities use explicit statuses and subdued styling, never disabled navigation, because their detail pages are part of the planning surface.
+Keep Tailwind, Radix, CVA, and local shadcn-style primitives as the implementation base. Storybook is deferred until the in-app lab demonstrates a concrete unmet need. Progress gates are independent: catalog maturity, design authority, rendered output, reusable implementation, production adoption, individual definition decisions, review, and verification must not collapse into one status. In particular, rendered exploratory work may be only a specimen; the catalog must say whether a reusable component or recipe exists, whether its contract is the current baseline, and whether any product consumer has adopted it. Missing capabilities use explicit statuses and subdued styling, never disabled navigation, because their detail pages are part of the planning surface.
 
 Composition review readiness is a separate gate. A composition is ready for
-canonical V1 review only when every visually meaningful dependency is either a
-reusable V1 candidate or an explicitly retained domain/behavior primitive.
-Otherwise label the composition provisional, blocked, or exploration-only,
-state exactly what the reviewer may judge, and list the unresolved dependency.
-A canonical child inside hand-built framing does not make the parent
-composition canonical.
+canonical V1 review only when every visually meaningful dependency is either
+accepted for the contract the parent relies on or an explicitly retained
+domain/behavior primitive. A reusable but exploratory candidate may be reviewed
+as part of the parent only when that scope is explicit; it cannot be silently
+excluded from judgment merely because an implementation exists. Otherwise
+label the composition provisional, blocked, or exploration-only, state exactly
+what the reviewer may judge, and list the unresolved dependency. A canonical
+child inside hand-built framing does not make the parent composition canonical.
 
 The minimal canonical interaction kernel now includes `Button`, a 20px square
 binary `Checkbox` centered in a transparent 28px alignment slot, a named compact
@@ -233,6 +284,16 @@ component is work to perform, not automatically a question to ask; apply accepte
 rules and correct clear inconsistencies before escalating a specific unresolved
 choice.
 
+Registry terminology is deliberately literal and split across independent
+axes. Design authority is `undefined`, `exploratory`, `current-baseline`, or
+`superseded`; current baseline means authoritative now, not final forever.
+Rendered output records only whether the lab shows the item. Implementation is
+`none`, `specimen`, `reusable-recipe`, or `canonical-candidate`; only the latter
+two name an authoritative source under `src/components`. Adoption remains
+`none`, `opt-in`, or `in-use`. The Components overview may show reusable work
+before it becomes the current baseline, but it must expose that distinction and
+never imply that implementation or production use settled the design.
+
 ## Color tokens (semantic — never hardcode hex/hsl)
 
 Every color is an HSL CSS variable exposed as a Tailwind color:
@@ -266,6 +327,22 @@ A new color means adding the CSS var in **both** `:root` and `.dark` in `src/app
   items rather than primary blue. The text-only candidate follows the recent
   Index overview timespan treatment without an underline or wrapper, at 14px
   compact and 16px default sizes.
+- A contained single-selection strip uses one shared visual language regardless
+  of whether its eventual semantics are Tabs, a segmented mode control, or a
+  submitted radio value: a fully rounded neutral track, 2px track inset, no
+  additional inter-item gap, a subtly elevated white selected item, 14px/500
+  labels, and size-category horizontal padding (12px compact, 20px default).
+  Hover uses a quiet neutral fill; focus separates against the neutral track;
+  disabled items retain structure at 50% opacity. Semantics, keyboard behavior,
+  overflow, and content-panel relationships remain owned by each component.
+  This visual contract is the current baseline and its compact/default
+  treatment lives in `src/components/design-system-v1/contained-selection.ts`
+  so related controls can consume it without reconstruction. The accepted
+  text-only and contained Tabs presentations are rendered from
+  `src/components/design-system-v1/tab-presentation.ts`. Tabs still has no
+  complete reusable V1 component: presentation roles, panel semantics,
+  overflow, counts, deep linking, and its final API remain open, while the
+  current production Tabs primitive remains retained behavioral evidence.
 - Layout: centered `container` capped at 1400px. Standard spacing utilities; arbitrary values only for measured/chart geometry.
 - Motion: reuse predefined animations in `tailwind.config.ts` (`animate-fade-in`, `animate-slide-up`, `animate-spin-slow`, `animate-shimmer`, accordion/dialog) — don't write keyframes for standard motion.
 

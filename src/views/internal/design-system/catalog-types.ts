@@ -4,11 +4,13 @@ export type CatalogStatus =
   | 'defined'
   | 'not-needed'
 
-export type CatalogOutputStatus =
-  | 'none'
+export type CatalogOutputStatus = 'none' | 'rendered'
+
+export type DesignAuthorityStatus =
+  | 'undefined'
+  | 'exploratory'
   | 'current-baseline'
-  | 'proposal'
-  | 'accepted'
+  | 'superseded'
 
 export type DefinitionSlot =
   | { name: string; status: 'open'; detail?: string }
@@ -21,6 +23,7 @@ export interface CatalogItem {
   why: string
   status: CatalogStatus
   outputStatus: CatalogOutputStatus
+  designAuthority: DesignAuthorityStatus
   statusDetail: string
 }
 
@@ -38,6 +41,7 @@ export type ComponentAuditStatus = 'mapped' | 'partial' | 'pending'
 export type ComponentImplementationStatus =
   | 'none'
   | 'specimen'
+  | 'reusable-recipe'
   | 'canonical-candidate'
 
 export type ComponentAdoptionStatus = 'none' | 'opt-in' | 'in-use'
@@ -75,6 +79,7 @@ export interface ComponentItem extends CatalogItem {
   priority: ComponentPriority
   auditStatus: ComponentAuditStatus
   implementationStatus: ComponentImplementationStatus
+  implementationSource?: string
   adoptionStatus: ComponentAdoptionStatus
   evidence: string[]
   decisionPrompts: string[]
@@ -103,9 +108,14 @@ export const STATUS_LABELS: Record<CatalogStatus, string> = {
 
 export const OUTPUT_LABELS: Record<CatalogOutputStatus, string> = {
   none: 'No lab output',
+  rendered: 'Rendered in lab',
+}
+
+export const DESIGN_AUTHORITY_LABELS: Record<DesignAuthorityStatus, string> = {
+  undefined: 'Not defined',
+  exploratory: 'Exploratory direction',
   'current-baseline': 'Current baseline',
-  proposal: 'V1 proposal',
-  accepted: 'Accepted output',
+  superseded: 'Superseded',
 }
 
 export const COMPONENT_PRIORITY_LABELS: Record<ComponentPriority, string> = {
@@ -126,7 +136,8 @@ export const COMPONENT_IMPLEMENTATION_LABELS: Record<
 > = {
   none: 'No implementation',
   specimen: 'Specimen only',
-  'canonical-candidate': 'Canonical candidate',
+  'reusable-recipe': 'Reusable V1 recipe',
+  'canonical-candidate': 'Reusable V1 candidate',
 }
 
 export const COMPONENT_ADOPTION_LABELS: Record<
@@ -140,7 +151,7 @@ export const COMPONENT_ADOPTION_LABELS: Record<
 
 export const COMPONENT_REVIEW_LABELS: Record<ComponentReviewReadiness, string> =
   {
-    ready: 'Canonical V1 review',
+    ready: 'Ready for canonical review',
     provisional: 'Provisional composition',
     blocked: 'Blocked composition',
     exploration: 'Exploration only',

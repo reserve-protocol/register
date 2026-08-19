@@ -31,6 +31,7 @@ export const pendingComponent = (
       ? 'audit-pending'
       : 'evidence-found',
   outputStatus: 'none',
+  designAuthority: 'undefined',
   implementationStatus: 'none',
   adoptionStatus: 'none',
   review: {

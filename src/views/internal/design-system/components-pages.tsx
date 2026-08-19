@@ -20,11 +20,12 @@ import CheckboxStateSheet from './checkbox-state-sheet'
 import IconButtonStateSheet from './icon-button-state-sheet'
 import DialogStateSheet from './dialog-state-sheet'
 import LifecycleStatusStateSheet from './lifecycle-status-state-sheet'
+import CardContentRegionReview from './card-content-region-review'
+import ContainedFormRowReview from './contained-form-row-review'
+import SingleChoiceGroupStateSheet from './single-choice-group-state-sheet'
+import TabsStateSheet from './tabs-state-sheet'
 import { getComponentItem } from './component-catalog'
-import CanonicalComponentsOverview, {
-  ProvisionalCompositionsOverview,
-  RemainingComponentInventory,
-} from './canonical-components-overview'
+import CanonicalComponentsOverview from './canonical-components-overview'
 import { CurrentReviewSpotlight } from './current-review-panel'
 
 export const ComponentsOverview = () => (
@@ -32,12 +33,10 @@ export const ComponentsOverview = () => (
     <PageHeader
       eyebrow="Reusable design system"
       title="Components"
-      description="Actual canonical candidates first, then useful provisional compositions and a compact capability inventory."
+      description="Scroll through rendered component work and unresolved capabilities by family. Open a detail page only when you need complete states, evidence, dependencies, or remaining decisions."
     />
     <CurrentReviewSpotlight />
     <CanonicalComponentsOverview />
-    <ProvisionalCompositionsOverview />
-    <RemainingComponentInventory />
   </div>
 )
 
@@ -119,8 +118,9 @@ export const ComponentDetail = () => {
               <h2 className="font-semibold">No lab output yet</h2>
             </div>
             <p className="mt-2 max-w-2xl text-sm leading-6 text-muted-foreground">
-              The product audit must identify current implementations, use
-              cases, and exceptions before a v1 proposal is designed here.
+              No complete component specimen is rendered here. Existing evidence
+              or a reusable recipe may still constrain later work; the authority
+              and source badges above state what can be inherited.
             </p>
             <p className="mt-4 text-sm font-medium">Next: {item.nextAction}</p>
           </section>
@@ -146,6 +146,12 @@ export const ComponentDetail = () => {
             <section className="grid gap-4 sm:grid-cols-2">
               <InfoCard title="What it is used for" copy={item.why} />
               <InfoCard title="Why this status" copy={item.statusDetail} />
+              {item.implementationSource && (
+                <InfoCard
+                  title="Authoritative reusable source"
+                  copy={item.implementationSource}
+                />
+              )}
             </section>
             <section className="grid gap-4 xl:grid-cols-2">
               <ListCard title="Current evidence" items={item.evidence} />
@@ -189,6 +195,10 @@ const ComponentVisualOutput = ({ itemId }: { itemId: string }) => {
   if (itemId === 'badge') return <LifecycleStatusStateSheet />
   if (itemId === 'entity-identity') return <EntityIdentityStateSheet />
   if (itemId === 'metric') return <MetricStateSheet />
+  if (itemId === 'card') return <CardContentRegionReview />
+  if (itemId === 'input') return <ContainedFormRowReview />
+  if (itemId === 'radio-group') return <SingleChoiceGroupStateSheet />
+  if (itemId === 'tabs') return <TabsStateSheet />
   if (itemId === 'table') {
     return (
       <div className="space-y-8">

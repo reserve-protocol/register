@@ -76,8 +76,10 @@ export const PRIMARY_COMPONENT_GROUPS: ComponentGroup[] = [
             nextAction: 'Define the remaining pressed and long-label contract.',
           }
         ),
-        outputStatus: 'proposal',
+        outputStatus: 'rendered',
+        designAuthority: 'current-baseline',
         implementationStatus: 'canonical-candidate',
+        implementationSource: 'src/components/button/index.tsx',
         adoptionStatus: 'none',
         review: {
           status: 'ready',
@@ -125,8 +127,10 @@ export const PRIMARY_COMPONENT_GROUPS: ComponentGroup[] = [
               'Use the compact candidate in the canonical Dialog shell, then revisit target-area and toggle behavior only when a real composition requires it.',
           }
         ),
-        outputStatus: 'proposal',
+        outputStatus: 'rendered',
+        designAuthority: 'current-baseline',
         implementationStatus: 'canonical-candidate',
+        implementationSource: 'src/components/icon-button/index.tsx',
         adoptionStatus: 'none',
         review: {
           status: 'ready',
@@ -238,25 +242,50 @@ export const PRIMARY_COMPONENT_GROUPS: ComponentGroup[] = [
       'Affixes and formatting'
     ),
     items: [
-      component(
-        'input',
-        'Text input',
-        'Collects a short text or formatted value.',
-        'The default field establishes label, help, validation, and affix anatomy.',
-        {
-          priority: 'v1-core',
-          ...mapped,
-          evidence: [
-            '38 product-source imports use the shared Input; 13 additional raw inputs remain outside shared UI.',
+      {
+        ...component(
+          'input',
+          'Text input',
+          'Collects a short text or formatted value.',
+          'The default field establishes label, help, validation, and affix anatomy.',
+          {
+            priority: 'v1-core',
+            ...mapped,
+            evidence: [
+              '38 product-source imports use the shared Input; 13 additional raw inputs remain outside shared UI.',
+              'Index deploy BasicInput and governance metadata establish text, number, address, percentage, suffix, help, validation, and multiline requirements.',
+            ],
+            decisionPrompts: [
+              'Review whether unboxed repeated parameter groups have enough hierarchy without legacy tinted subsection cards.',
+              'Later pressure-test clear actions, read-only, long-value, and repeated-addition behavior when real compositions require them.',
+            ],
+            nextAction:
+              'Accept or revise the single-choice prerequisite, then return to the unboxed repeated governance-parameter composition. The ordinary shared field stack already follows accepted foundations.',
+          }
+        ),
+        outputStatus: 'rendered',
+        designAuthority: 'exploratory',
+        implementationStatus: 'canonical-candidate',
+        implementationSource: 'src/components/design-system-v1/field.tsx',
+        adoptionStatus: 'none',
+        review: {
+          status: 'blocked',
+          scope:
+            'The ordinary label/control/help/error stack is a reusable foundation-conforming candidate. The repeated governance-parameter composition is blocked until its single-choice prerequisite is accepted; business validation and the production flow remain outside this work.',
+          dependencies: [
+            { name: 'Spacing and typography', status: 'canonical' },
+            { name: 'Button', status: 'canonical' },
+            {
+              name: 'Single-choice pill group',
+              status: 'provisional',
+              detail:
+                'A reusable candidate exists, but its visual contract is the current human review and is not yet accepted.',
+            },
           ],
-          decisionPrompts: [
-            'Confirm full-radius one-line geometry and the shared label/help/error stack.',
-            'Define prefix, suffix, clear action, read-only, and long-value behavior.',
-          ],
-          nextAction:
-            'Cluster ordinary text, number, address, and percentage fields to find one stable anatomy.',
-        }
-      ),
+        },
+        statusDetail:
+          'A reusable V1 candidate implements the foundation-constrained ordinary field anatomy and one-row/multiline geometry. Complex repeated grouping is blocked on the single-choice prerequisite; production adoption has not started.',
+      },
       component(
         'textarea',
         'Textarea',
@@ -449,8 +478,10 @@ export const PRIMARY_COMPONENT_GROUPS: ComponentGroup[] = [
               'Use the transparent 28px slot with its 20px mark in the eligibility composition; define indeterminate, invalid, and richer label/help anatomy only when evidenced.',
           }
         ),
-        outputStatus: 'proposal',
+        outputStatus: 'rendered',
+        designAuthority: 'current-baseline',
         implementationStatus: 'canonical-candidate',
+        implementationSource: 'src/components/checkbox/index.tsx',
         adoptionStatus: 'none',
         review: {
           status: 'ready',
@@ -467,27 +498,52 @@ export const PRIMARY_COMPONENT_GROUPS: ComponentGroup[] = [
         statusDetail:
           'A reusable V1 candidate implements a transparent 28px alignment slot around the 20px square binary mark and its essential focus and disabled states. Indeterminate, invalid, and rich row composition remain open; production adoption has not started.',
       },
-      component(
-        'radio-group',
-        'Radio group',
-        'Selects exactly one option from a visible set.',
-        'Visible alternatives need a semantic single-selection control even if card-style options are used.',
-        {
-          priority: 'v1-core',
-          auditStatus: 'pending',
-          decisionPrompts: [
-            'Define simple radio rows versus rich selectable cards, keyboard movement, help, and error placement.',
+      {
+        ...component(
+          'radio-group',
+          'Radio group',
+          'Selects exactly one option from a visible set.',
+          'Visible alternatives need a semantic single-selection control even if card-style options are used.',
+          {
+            priority: 'v1-core',
+            ...mapped,
+            evidence: [
+              'Index deploy and governance parameter forms use compact ToggleGroup presets to select one submitted value from a visible set.',
+              'The accepted geometry requires horizontally paired default controls to share a 44px height; the form-value labels use the 14px medium control role.',
+              'The accepted color grammar assigns neutral control chrome to the resting track and reserves structural beige for substrate between regions.',
+            ],
+            decisionPrompts: [
+              'Later define standard radio rows, rich selectable cards, error placement, and long-option behavior from real evidence.',
+            ],
+            relationships: [
+              {
+                id: 'segmented-control',
+                note: 'Radio is for a form value; segmented control immediately changes a mode or view.',
+              },
+            ],
+            nextAction:
+              'Review the complete default-size form-value candidate, then let the blocked contained-form composition inherit it. Defer standard radio rows and rich choice cards until evidenced.',
+          }
+        ),
+        outputStatus: 'rendered',
+        designAuthority: 'exploratory',
+        implementationStatus: 'canonical-candidate',
+        implementationSource:
+          'src/components/design-system-v1/single-choice-group.tsx',
+        adoptionStatus: 'none',
+        review: {
+          status: 'ready',
+          scope:
+            'Review the complete one-row presentation for a submitted single-choice form value. It uses native radio semantics and faithfully inherits the contained-selection language: 44px default peer height, 14px medium labels, 20px item padding, two-pixel track inset, zero inter-item gap, full radius, neutral control chrome, and a subtly elevated white selected item. Standard rows, rich choice cards, and production adoption remain open.',
+          dependencies: [
+            { name: 'Control geometry', status: 'canonical' },
+            { name: 'Shape and color roles', status: 'canonical' },
+            { name: 'Native radio behavior', status: 'retained' },
           ],
-          relationships: [
-            {
-              id: 'segmented-control',
-              note: 'Radio is for form choice; segmented control immediately changes a mode or view.',
-            },
-          ],
-          nextAction:
-            'Find single-choice form patterns currently implemented as cards, buttons, or custom toggles.',
-        }
-      ),
+        },
+        statusDetail:
+          'A reusable V1 candidate implements only the one-row pill-style single-choice job evidenced by governance parameter forms. It is the current human review; other radio compositions and production adoption remain open.',
+      },
       component(
         'switch',
         'Switch',
@@ -613,34 +669,55 @@ export const PRIMARY_COMPONENT_GROUPS: ComponentGroup[] = [
             'Audit inline content links and button-shaped route links separately.',
         }
       ),
-      component(
-        'tabs',
-        'Tabs',
-        'Switches between related content panels in one context.',
-        'Tabs need to be separated from route navigation and segmented view controls.',
-        {
-          priority: 'v1-core',
-          ...mapped,
-          evidence: [
-            '20 product-source imports use shared Tabs, with additional tab-like implementations likely.',
+      {
+        ...component(
+          'tabs',
+          'Tabs',
+          'Switches between related content panels in one context.',
+          'Tabs need to be separated from route navigation and segmented view controls.',
+          {
+            priority: 'v1-core',
+            ...mapped,
+            evidence: [
+              '20 product-source imports use shared Tabs, with additional tab-like implementations likely.',
+              'The contained-selection visual treatment is an accepted cross-component baseline and is now available as a reusable recipe.',
+              'The recent Index overview timespan treatment remains the strongest text-only evidence.',
+            ],
+            decisionPrompts: [
+              'Define content-panel semantics, text-only versus contained presentation, overflow, counts, and deep-link policy.',
+            ],
+            relationships: [
+              {
+                id: 'segmented-control',
+                note: 'Segmented control changes a mode; tabs organize content panels.',
+              },
+              {
+                id: 'link',
+                note: 'Route navigation may look tab-like but must retain link behavior.',
+              },
+            ],
+            nextAction:
+              'Classify real Tabs semantics and variants before building the component; consume the existing contained-selection recipe whenever that accepted presentation applies.',
+          }
+        ),
+        outputStatus: 'rendered',
+        designAuthority: 'current-baseline',
+        implementationStatus: 'reusable-recipe',
+        implementationSource:
+          'src/components/design-system-v1/tab-presentation.ts',
+        review: {
+          status: 'provisional',
+          scope:
+            'The compact/default text-only and contained presentations are accepted visual baselines. The complete Tabs contract remains provisional until panel semantics, variant roles, overflow, counts, deep linking, and the reusable API are resolved.',
+          dependencies: [
+            { name: 'Control geometry', status: 'canonical' },
+            { name: 'Typography and color roles', status: 'canonical' },
+            { name: 'Radix Tabs behavior', status: 'retained' },
           ],
-          decisionPrompts: [
-            'Define content-panel semantics, text-only versus contained presentation, overflow, counts, and deep-link policy.',
-          ],
-          relationships: [
-            {
-              id: 'segmented-control',
-              note: 'Segmented control changes a mode; tabs organize content panels.',
-            },
-            {
-              id: 'link',
-              note: 'Route navigation may look tab-like but must retain link behavior.',
-            },
-          ],
-          nextAction:
-            'Use the planned tabs family audit to classify behavior before collapsing visual variants.',
-        }
-      ),
+        },
+        statusDetail:
+          'The accepted compact/default text-only and contained visual treatments are restored as a current reusable recipe. The broader Tabs family remains incomplete: presentation roles, panel semantics, overflow, counts, deep linking, and the final API are unresolved.',
+      },
       component(
         'pagination',
         'Pagination',

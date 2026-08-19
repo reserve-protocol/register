@@ -1,33 +1,24 @@
-import { ExternalLink, MoreHorizontal, Search } from 'lucide-react'
+import { ExternalLink } from 'lucide-react'
 import { Link } from 'react-router-dom'
-import { Button } from '@/components/button'
-import { Checkbox } from '@/components/checkbox'
-import {
-  DialogBody,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogSurface,
-  DialogTitle,
-} from '@/components/dialog'
-import { EmptyState } from '@/components/empty-state'
-import { ChainBadgedLogo, EntityIdentity } from '@/components/entity-identity'
-import { IconButton } from '@/components/icon-button'
-import { Metric } from '@/components/metric'
-import { ChainId } from '@/utils/chains'
+import { cn } from '@/lib/utils'
 import {
   ComponentAuditBadge,
   ComponentDeliveryBadge,
+  ComponentPriorityBadge,
   ComponentReviewBadge,
+  DesignAuthorityBadge,
 } from './catalog-ui'
 import { COMPONENT_GROUPS } from './component-catalog'
 import type { ComponentItem } from './catalog-types'
-import InformationRowStateSheet from './information-row-state-sheet'
+import ComponentOverviewSpecimen from './component-overview-specimens'
 
-const canonicalItems = COMPONENT_GROUPS.flatMap((group) => group.items).filter(
-  (item) => item.implementationStatus === 'canonical-candidate'
+const visibleItems = COMPONENT_GROUPS.flatMap((group) => group.items).filter(
+  (item) => item.outputStatus === 'rendered'
 )
-const adoptedCount = canonicalItems.filter(
+const baselineCount = visibleItems.filter(
+  (item) => item.designAuthority === 'current-baseline'
+).length
+const adoptedCount = visibleItems.filter(
   (item) => item.adoptionStatus === 'in-use'
 ).length
 
@@ -36,38 +27,97 @@ const CanonicalComponentsOverview = () => (
     <div className="flex flex-col justify-between gap-3 sm:flex-row sm:items-end">
       <div>
         <p className="text-sm font-medium text-primary">
-          Reusable implementation
+          Visual component catalog
         </p>
         <h2
           id="canonical-components-heading"
           className="mt-1 text-2xl font-light"
         >
-          Canonical V1 candidates
+          Components at a glance
         </h2>
         <p className="mt-1 max-w-3xl text-sm font-light text-muted-foreground">
-          Actual shared candidates, rendered directly. Product adoption remains
-          a separate gate.
+          Scroll through every family without opening detail pages. Rendered
+          work appears directly; unresolved capabilities remain visible as
+          clearly labeled records without invented UI.
         </p>
       </div>
       <span className="text-xs font-light text-muted-foreground">
-        {canonicalItems.length} reusable candidates · {adoptedCount} adopted
+        {visibleItems.length} rendered · {baselineCount} current baseline ·{' '}
+        {adoptedCount} adopted · {COMPONENT_GROUPS.length} families
       </span>
     </div>
-    <div
-      data-testid="canonical-component-overview"
-      className="grid gap-4 lg:grid-cols-2"
-    >
-      {canonicalItems.map((item) => (
-        <CanonicalCard key={item.id} item={item} />
-      ))}
+    <div data-testid="canonical-component-overview" className="space-y-8">
+      {COMPONENT_GROUPS.map((group) => {
+        const renderedItems = group.items.filter(
+          (item) => item.outputStatus === 'rendered'
+        )
+        const unresolvedItems = group.items.filter(
+          (item) => item.outputStatus === 'none'
+        )
+
+        return (
+          <section
+            key={group.id}
+            data-testid={`component-group-${group.id}`}
+            aria-labelledby={`component-group-${group.id}-title`}
+            className="space-y-4"
+          >
+            <div className="border-b border-border pb-3">
+              <div className="flex flex-wrap items-baseline justify-between gap-3">
+                <h3
+                  id={`component-group-${group.id}-title`}
+                  className="text-xl font-medium"
+                >
+                  {group.name}
+                </h3>
+                <span className="text-xs font-light text-muted-foreground">
+                  {renderedItems.length} rendered · {unresolvedItems.length}{' '}
+                  unresolved
+                </span>
+              </div>
+              <p className="mt-1 text-sm font-light text-muted-foreground">
+                {group.description}
+              </p>
+            </div>
+
+            {renderedItems.length > 0 && (
+              <div className="grid gap-4 lg:grid-cols-2">
+                {renderedItems.map((item) => (
+                  <CanonicalCard key={item.id} item={item} />
+                ))}
+              </div>
+            )}
+
+            {unresolvedItems.length > 0 && (
+              <div className="divide-y divide-border border border-border bg-card">
+                {unresolvedItems.map((item) => (
+                  <UnrenderedComponentRow key={item.id} item={item} />
+                ))}
+              </div>
+            )}
+          </section>
+        )
+      })}
     </div>
   </section>
 )
 
 const CanonicalCard = ({ item }: { item: ComponentItem }) => (
-  <article className="flex min-h-64 flex-col border border-border bg-card">
-    <div className="flex min-h-40 flex-1 items-center justify-center overflow-hidden border-b border-border bg-background p-5">
-      <CanonicalSpecimen id={item.id} />
+  <article
+    data-testid={`component-overview-${item.id}`}
+    className={cn(
+      'flex min-h-64 flex-col border border-border bg-card',
+      (item.id === 'card' || item.id === 'table') && 'lg:col-span-2'
+    )}
+  >
+    <div
+      className={cn(
+        'flex min-h-48 flex-1 items-center justify-center overflow-hidden border-b border-border bg-background p-6',
+        (item.id === 'card' || item.id === 'table') &&
+          'items-stretch justify-start overflow-x-auto'
+      )}
+    >
+      <ComponentOverviewSpecimen id={item.id} />
     </div>
     <div className="p-4">
       <div className="flex items-start justify-between gap-3">
@@ -93,184 +143,33 @@ const CanonicalCard = ({ item }: { item: ComponentItem }) => (
   </article>
 )
 
-const CanonicalSpecimen = ({ id }: { id: string }) => {
-  if (id === 'button') {
-    return (
-      <div className="flex flex-wrap items-center justify-center gap-2">
-        <Button>Primary</Button>
-        <Button tone="secondary">Secondary</Button>
-        <Button tone="quiet">Quiet</Button>
-        <Button tone="destructive">Delete</Button>
-      </div>
-    )
-  }
-
-  if (id === 'icon-button') {
-    return (
-      <div className="flex items-center gap-3">
-        <IconButton label="Search" icon={<Search />} />
-        <IconButton
-          label="More options"
-          icon={<MoreHorizontal />}
-          tone="quiet"
-        />
-      </div>
-    )
-  }
-
-  if (id === 'checkbox') {
-    return (
-      <div className="flex items-center gap-6">
-        <Checkbox aria-label="Unchecked specimen" />
-        <Checkbox aria-label="Checked specimen" checked />
-        <Checkbox aria-label="Disabled specimen" checked disabled />
-      </div>
-    )
-  }
-
-  if (id === 'dialog') {
-    return (
-      <DialogSurface
-        width="compact"
-        className="max-w-sm border border-border shadow-lg"
-      >
-        <DialogHeader>
-          <DialogTitle>Review transaction</DialogTitle>
-          <DialogDescription>
-            Confirm the operation before continuing.
-          </DialogDescription>
-        </DialogHeader>
-        <DialogBody>
-          <div className="h-12 bg-muted" />
-        </DialogBody>
-        <DialogFooter>
-          <Button className="w-full">Confirm</Button>
-        </DialogFooter>
-      </DialogSurface>
-    )
-  }
-
-  if (id === 'entity-identity') {
-    return (
-      <EntityIdentity
-        className="max-w-full"
-        mark={
-          <ChainBadgedLogo
-            src="/imgs/socials/cmc20.png"
-            chain={ChainId.BSC}
-            size="xl"
-            alt="CMC20"
-          />
-        }
-        name="CoinMarketCap 20 Index DTF"
-        supporting="$CMC20 · BNB Chain"
-      />
-    )
-  }
-
-  if (id === 'metric') {
-    return (
-      <div className="grid w-full max-w-sm grid-cols-2 gap-px bg-secondary p-px">
-        <Metric className="bg-card p-4" label="Market cap" value="$8.42M" />
-        <Metric className="bg-card p-4" label="Basket" value="20 assets" />
-        <Metric
-          className="col-span-2 bg-card p-4"
-          role="headline"
-          label="TVL"
-          value="$21.8M"
-        />
-      </div>
-    )
-  }
-
-  return (
-    <EmptyState
-      className="min-h-32"
-      mode="actionable"
-      title="No proposals found"
-      description="New governance proposals will appear here."
-      actions={<Button tone="secondary">Browse governance</Button>}
-    />
-  )
-}
-
-export const ProvisionalCompositionsOverview = () => (
-  <section
-    className="space-y-4"
-    aria-labelledby="provisional-compositions-heading"
+const UnrenderedComponentRow = ({ item }: { item: ComponentItem }) => (
+  <Link
+    data-testid={`component-unrendered-${item.id}`}
+    to={`/internal/design-system/components/${item.id}`}
+    className="group grid gap-3 p-4 hover:bg-muted/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring md:grid-cols-[minmax(12rem,0.7fr)_minmax(16rem,1fr)_auto] md:items-center"
   >
     <div>
-      <p className="text-sm font-medium text-primary">Composition evidence</p>
-      <h2
-        id="provisional-compositions-heading"
-        className="mt-1 text-2xl font-light"
-      >
-        Provisional product-facing compositions
-      </h2>
-      <p className="mt-1 max-w-3xl text-sm font-light text-muted-foreground">
-        Useful pressure tests whose canonical children are real, while their
-        framing or responsive contract is still provisional.
+      <div className="flex items-center gap-2">
+        <h4 className="text-sm font-medium">{item.name}</h4>
+        <ExternalLink className="size-3.5 text-muted-foreground" />
+      </div>
+      <p className="mt-1 text-xs font-light leading-5 text-muted-foreground">
+        {item.description}
       </p>
     </div>
-    <InformationRowStateSheet />
-  </section>
-)
-
-export const RemainingComponentInventory = () => (
-  <section className="space-y-4" aria-labelledby="remaining-inventory-heading">
-    <div>
-      <p className="text-sm font-medium text-primary">Capability map</p>
-      <h2 id="remaining-inventory-heading" className="mt-1 text-2xl font-light">
-        Remaining inventory
-      </h2>
-      <p className="mt-1 text-sm font-light text-muted-foreground">
-        Mapped, blocked, or untouched capabilities stay reachable without
-        competing visually with implemented candidates.
-      </p>
+    <p className="text-xs font-light leading-5 text-muted-foreground">
+      {item.statusDetail}
+    </p>
+    <div className="flex flex-wrap items-center gap-2 md:justify-end">
+      <ComponentPriorityBadge item={item} />
+      <DesignAuthorityBadge item={item} />
+      {item.implementationStatus !== 'none' && (
+        <ComponentDeliveryBadge item={item} />
+      )}
+      <ComponentAuditBadge item={item} />
     </div>
-    <div className="border border-border bg-card">
-      {COMPONENT_GROUPS.map((group) => {
-        const remainingItems = group.items.filter(
-          (item) => item.implementationStatus !== 'canonical-candidate'
-        )
-
-        if (remainingItems.length === 0) return null
-
-        return (
-          <div
-            key={group.id}
-            className="grid gap-3 border-b border-border p-4 last:border-b-0 lg:grid-cols-[10rem_minmax(0,1fr)]"
-          >
-            <div>
-              <h3 className="text-sm font-medium">{group.name}</h3>
-              <p className="mt-1 text-xs font-light text-muted-foreground">
-                {remainingItems.length} capabilities
-              </p>
-            </div>
-            <div className="flex flex-wrap gap-2">
-              {remainingItems.map((item) => (
-                <Link
-                  key={item.id}
-                  to={`/internal/design-system/components/${item.id}`}
-                  className="border border-border px-2.5 py-1.5 text-xs hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-                >
-                  {item.name}
-                  <span className="text-muted-foreground"> · </span>
-                  <ComponentAuditBadge item={item} />
-                  <span className="text-muted-foreground">
-                    {' · '}
-                    {item.review.status === 'ready'
-                      ? 'reviewable'
-                      : item.review.status}
-                  </span>
-                </Link>
-              ))}
-            </div>
-          </div>
-        )
-      })}
-    </div>
-  </section>
+  </Link>
 )
 
 export default CanonicalComponentsOverview

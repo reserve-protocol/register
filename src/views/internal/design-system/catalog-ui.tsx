@@ -9,6 +9,7 @@ import {
   COMPONENT_IMPLEMENTATION_LABELS,
   COMPONENT_PRIORITY_LABELS,
   COMPONENT_REVIEW_LABELS,
+  DESIGN_AUTHORITY_LABELS,
   OUTPUT_LABELS,
   STATUS_LABELS,
   type CatalogItem,
@@ -39,13 +40,7 @@ export const OutputBadge = ({ item }: { item: CatalogItem }) => {
   return (
     <span
       className={cn(
-        'w-fit rounded-full px-2.5 py-1 text-xs font-medium',
-        item.outputStatus === 'current-baseline' &&
-          'bg-primary/10 text-primary',
-        item.outputStatus === 'proposal' &&
-          'bg-warning/10 text-foreground ring-1 ring-inset ring-warning/30',
-        item.outputStatus === 'accepted' &&
-          'bg-success/10 text-foreground ring-1 ring-inset ring-success/30'
+        'w-fit rounded-full border border-border px-2.5 py-1 text-xs font-medium text-muted-foreground'
       )}
     >
       {OUTPUT_LABELS[item.outputStatus]}
@@ -53,10 +48,29 @@ export const OutputBadge = ({ item }: { item: CatalogItem }) => {
   )
 }
 
+export const DesignAuthorityBadge = ({ item }: { item: CatalogItem }) => (
+  <span
+    data-design-authority={item.designAuthority}
+    className={cn(
+      'w-fit rounded-full px-2.5 py-1 text-xs font-medium',
+      item.designAuthority === 'undefined' && 'bg-muted text-muted-foreground',
+      item.designAuthority === 'exploratory' &&
+        'bg-warning/10 text-foreground ring-1 ring-inset ring-warning/30',
+      item.designAuthority === 'current-baseline' &&
+        'bg-success/10 text-foreground ring-1 ring-inset ring-success/30',
+      item.designAuthority === 'superseded' &&
+        'border border-border text-muted-foreground line-through'
+    )}
+  >
+    {DESIGN_AUTHORITY_LABELS[item.designAuthority]}
+  </span>
+)
+
 export const CatalogBadges = ({ item }: { item: CatalogItem }) => (
   <span className="flex flex-wrap items-center gap-2">
     {isComponentItem(item) && <ComponentPriorityBadge item={item} />}
     <StatusBadge item={item} />
+    <DesignAuthorityBadge item={item} />
     <OutputBadge item={item} />
     {isComponentItem(item) && item.implementationStatus !== 'none' && (
       <ComponentDeliveryBadge item={item} />

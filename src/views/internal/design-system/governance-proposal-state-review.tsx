@@ -10,7 +10,7 @@ import {
   type ProposalDecisionEvidence,
   type ProposalQualifier,
 } from './governance-proposal-state-fixtures'
-import { LifecycleStatusPill } from './lifecycle-status-pill'
+import { LifecycleStatusPill } from '@/components/lifecycle-status'
 
 const GOVERNANCE_ROUTE = '/bsc/index-dtf/cmc20/governance'
 

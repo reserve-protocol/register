@@ -32,12 +32,15 @@ const foundationProgress: ProgressItem[] = FOUNDATION_ITEMS.map((item) => {
   const gates: ProgressGate[] = ['inventoried']
 
   if (
-    item.expectedDecisions.some((decision) => decision.status === 'defined')
+    item.expectedDecisions.some((decision) => decision.status === 'defined') ||
+    item.designAuthority === 'current-baseline'
   ) {
     gates.push('defined')
   }
-  if (item.outputStatus !== 'none') gates.push('lab')
-  if (item.outputStatus === 'accepted') gates.push('design-reviewed')
+  if (item.outputStatus === 'rendered') gates.push('lab')
+  if (item.designAuthority === 'current-baseline') {
+    gates.push('design-reviewed')
+  }
 
   return {
     id: item.id,
@@ -52,9 +55,16 @@ const componentProgress: ProgressItem[] = COMPONENT_GROUPS.flatMap((group) =>
   group.items.map((item) => {
     const gates: ProgressGate[] = ['inventoried']
 
-    if (item.status === 'defined') gates.push('defined')
-    if (item.outputStatus !== 'none') gates.push('lab')
-    if (item.outputStatus === 'accepted') gates.push('design-reviewed')
+    if (
+      item.status === 'defined' ||
+      item.designAuthority === 'current-baseline'
+    ) {
+      gates.push('defined')
+    }
+    if (item.outputStatus === 'rendered') gates.push('lab')
+    if (item.designAuthority === 'current-baseline') {
+      gates.push('design-reviewed')
+    }
     if (item.adoptionStatus !== 'none') gates.push('applied')
     if (item.adoptionStatus === 'in-use') gates.push('in-use')
 
@@ -93,9 +103,9 @@ export const PROGRESS_GROUPS: ProgressGroup[] = [
 ]
 
 export const COMPONENT_WORK_QUEUE = [
-  getComponentItem('table').item,
-  getComponentItem('card').item,
-  getComponentItem('product-navigation').item,
+  getComponentItem('radio-group').item,
+  getComponentItem('input').item,
+  getComponentItem('button-group').item,
 ].flatMap((item) =>
   item
     ? [

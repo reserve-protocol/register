@@ -50,7 +50,7 @@ test.describe('design system lab', () => {
     await expect(page).toHaveURL(/\/internal\/design-system\/foundations$/)
     await expect(page.getByTestId('design-system-nav-screens')).toBeInViewport()
     await expect(page.getByTestId('design-system-nav-status')).toBeInViewport()
-    await expect(page.getByTestId('current-review-spotlight')).toHaveCount(0)
+    await expect(page.getByTestId('current-review-spotlight')).toHaveCount(1)
     await expect(
       page.getByTestId('foundation-visual-overview').locator('a')
     ).toHaveCount(9)
@@ -107,7 +107,7 @@ test.describe('design system lab', () => {
     const componentCatalog = page.getByTestId('components-overview')
     await expect(componentCatalog).toBeVisible()
     const canonicalOverview = page.getByTestId('canonical-component-overview')
-    await expect(canonicalOverview.locator('article')).toHaveCount(7)
+    await expect(canonicalOverview.locator('article')).toHaveCount(13)
     await expect(
       canonicalOverview.getByTestId('canonical-button').first()
     ).toBeVisible()
@@ -118,7 +118,7 @@ test.describe('design system lab', () => {
       canonicalOverview.getByTestId('canonical-dialog-surface')
     ).toBeVisible()
     await expect(
-      canonicalOverview.getByTestId('canonical-entity-identity')
+      canonicalOverview.getByTestId('canonical-entity-identity').first()
     ).toBeVisible()
     await expect(
       canonicalOverview.getByTestId('canonical-metric').first()
@@ -129,6 +129,81 @@ test.describe('design system lab', () => {
     await expect(
       componentCatalog.getByTestId('information-row-state-sheet')
     ).toBeVisible()
+    await expect(
+      componentCatalog.getByTestId('component-group-navigation')
+    ).toBeVisible()
+    await expect(
+      componentCatalog.getByTestId('component-overview-tabs')
+    ).toBeVisible()
+    await expect(
+      componentCatalog.getByTestId('component-unrendered-product-navigation')
+    ).toBeVisible()
+    await expect(
+      componentCatalog.locator('[data-testid^="component-unrendered-"]')
+    ).toHaveCount(30)
+    await expect(
+      componentCatalog.getByText(
+        'This rendered catalog item is missing its overview specimen.',
+        { exact: true }
+      )
+    ).toHaveCount(0)
+    await page.goto('/internal/design-system/components/input')
+    await expect(page.getByTestId('contained-form-row-review')).toBeVisible()
+    await expect(page.getByTestId('canonical-text-input')).toHaveCount(5)
+    await expect(page.getByTestId('canonical-textarea')).toHaveCount(1)
+    await expect(
+      page.getByTestId('component-review-readiness')
+    ).toHaveAttribute('data-review-readiness', 'blocked')
+    await expect(page.getByTestId('component-output-missing')).toHaveCount(0)
+    await page.goto('/internal/design-system/components/radio-group')
+    await expect(
+      page.getByTestId('single-choice-group-state-sheet')
+    ).toBeVisible()
+    await expect(page.getByTestId('canonical-single-choice-group')).toHaveCount(
+      2
+    )
+    const singleChoiceGeometry = await page
+      .getByTestId('canonical-single-choice-group')
+      .first()
+      .evaluate((group) => {
+        const selected = group.querySelector('input:checked + span')
+        const inactive = group.querySelector(
+          'input:not(:checked):not(:disabled) + span'
+        )
+        const groupStyle = getComputedStyle(group)
+        const selectedStyle = selected ? getComputedStyle(selected) : null
+        const inactiveStyle = inactive ? getComputedStyle(inactive) : null
+        return {
+          groupHeight: groupStyle.height,
+          groupBackground: groupStyle.backgroundColor,
+          groupGap: groupStyle.columnGap,
+          groupPadding: groupStyle.padding,
+          selectedHeight: selectedStyle?.height,
+          selectedPaddingInline: selectedStyle?.paddingInline,
+          selectedShadow: selectedStyle?.boxShadow,
+          inactivePaddingInline: inactiveStyle?.paddingInline,
+        }
+      })
+    expect(singleChoiceGeometry).toEqual({
+      groupHeight: '44px',
+      groupBackground: 'rgb(242, 240, 238)',
+      groupGap: '0px',
+      groupPadding: '2px',
+      selectedHeight: '40px',
+      selectedPaddingInline: '20px',
+      selectedShadow:
+        'rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.05) 0px 1px 2px 0px',
+      inactivePaddingInline: '20px',
+    })
+    const disabledChoiceOpacity = await page
+      .getByRole('radio', { name: '25%' })
+      .evaluate((input) =>
+        input.nextElementSibling
+          ? getComputedStyle(input.nextElementSibling).opacity
+          : null
+      )
+    expect(disabledChoiceOpacity).toBe('0.5')
+    await expect(page.getByTestId('component-output-missing')).toHaveCount(0)
     await page.goto('/internal/design-system/components/entity-identity')
     await expect(page.getByTestId('entity-identity-state-sheet')).toBeVisible()
     const chainBadges = page.getByTestId('canonical-chain-badge')
@@ -186,7 +261,8 @@ test.describe('design system lab', () => {
       .click()
 
     await expect(page.getByTestId('component-detail-tabs')).toBeVisible()
-    await expect(page.getByTestId('component-output-missing')).toBeVisible()
+    await expect(page.getByTestId('tabs-state-sheet')).toBeVisible()
+    await expect(page.getByTestId('component-output-missing')).toHaveCount(0)
 
     await page.goto('/internal/design-system/components/button')
     const focusButton = page.getByTestId('design-system-focus-button')
@@ -201,10 +277,10 @@ test.describe('design system lab', () => {
     const currentReview = page
       .getByTestId('project-status-page')
       .locator('section[aria-labelledby="current-review-heading"]')
-    await expect(currentReview.locator('a')).toHaveCount(0)
+    await expect(currentReview.locator('a')).toHaveCount(1)
     await expect(
-      currentReview.getByText('No human design judgment is waiting.', {
-        exact: false,
+      currentReview.getByText('Single-choice form control', {
+        exact: true,
       })
     ).toBeVisible()
     await expect(
@@ -347,7 +423,8 @@ test.describe('design system lab', () => {
   }) => {
     const expectDelivery = async (
       component: string,
-      implementation: 'specimen' | 'canonical-candidate'
+      implementation: 'specimen' | 'reusable-recipe' | 'canonical-candidate',
+      designAuthority: 'exploratory' | 'current-baseline'
     ) => {
       await page.goto(`/internal/design-system/components/${component}`)
       const delivery = page.getByTestId('component-delivery-status')
@@ -356,26 +433,42 @@ test.describe('design system lab', () => {
         implementation
       )
       await expect(delivery).toHaveAttribute('data-adoption-status', 'none')
+      await expect(page.locator('[data-design-authority]')).toHaveAttribute(
+        'data-design-authority',
+        designAuthority
+      )
     }
 
-    await expectDelivery('entity-identity', 'canonical-candidate')
+    await expectDelivery(
+      'entity-identity',
+      'canonical-candidate',
+      'current-baseline'
+    )
     await expect(
       page.getByTestId('component-review-readiness')
     ).toHaveAttribute('data-review-readiness', 'ready')
-    await expectDelivery('metric', 'canonical-candidate')
-    await expectDelivery('table', 'specimen')
+    await expectDelivery('metric', 'canonical-candidate', 'current-baseline')
+    await expectDelivery('input', 'canonical-candidate', 'exploratory')
+    await expect(
+      page.getByTestId('component-review-readiness')
+    ).toHaveAttribute('data-review-readiness', 'blocked')
+    await expectDelivery('radio-group', 'canonical-candidate', 'exploratory')
+    await expect(
+      page.getByTestId('component-review-readiness')
+    ).toHaveAttribute('data-review-readiness', 'ready')
+    await expectDelivery('table', 'specimen', 'exploratory')
     await expect(
       page.getByTestId('component-review-readiness')
     ).toHaveAttribute('data-review-readiness', 'provisional')
-    await expectDelivery('dialog', 'canonical-candidate')
-    await expectDelivery('empty-state', 'canonical-candidate')
+    await expectDelivery('dialog', 'canonical-candidate', 'current-baseline')
+    await expectDelivery('empty-state', 'canonical-candidate', 'exploratory')
     await expect(page.getByTestId('canonical-button')).toHaveCount(2)
     await expect(page.getByTestId('canonical-button').first()).toHaveCSS(
       'height',
       '44px'
     )
 
-    await expectDelivery('button', 'canonical-candidate')
+    await expectDelivery('button', 'canonical-candidate', 'current-baseline')
     await expect(
       page.getByTestId('canonical-button').filter({ hasText: 'Micro' }).first()
     ).toHaveCSS('height', '28px')
@@ -401,15 +494,19 @@ test.describe('design system lab', () => {
     await focusButton.focus()
     await expect(focusButton).not.toHaveCSS('box-shadow', 'none')
 
-    await expectDelivery('checkbox', 'canonical-candidate')
+    await expectDelivery('checkbox', 'canonical-candidate', 'current-baseline')
     await expect(page.getByTestId('checkbox-state-sheet')).toBeVisible()
     await expect(page.getByTestId('canonical-checkbox')).toHaveCount(6)
 
-    await expectDelivery('icon-button', 'canonical-candidate')
+    await expectDelivery(
+      'icon-button',
+      'canonical-candidate',
+      'current-baseline'
+    )
     await expect(page.getByTestId('icon-button-state-sheet')).toBeVisible()
     await expect(page.getByTestId('canonical-icon-button')).toHaveCount(6)
 
-    await expectDelivery('dialog', 'canonical-candidate')
+    await expectDelivery('dialog', 'canonical-candidate', 'current-baseline')
     await expect(page.getByTestId('dialog-state-sheet')).toBeVisible()
     await page.getByRole('button', { name: 'Open eligibility dialog' }).click()
     await expect(page.getByTestId('canonical-dialog-content')).toBeVisible()
@@ -461,6 +558,32 @@ test.describe('design system lab', () => {
       .getByRole('button', { name: 'Confirm', exact: true })
       .click()
     await expect(page.getByTestId('canonical-dialog-content')).toHaveCount(0)
+
+    await expectDelivery('tabs', 'reusable-recipe', 'current-baseline')
+    await expect(page.getByTestId('tabs-state-sheet')).toBeVisible()
+    await expect(page.getByTestId('component-output-missing')).toHaveCount(0)
+    await expect(page.getByLabel('compact time range')).toHaveCSS(
+      'height',
+      '32px'
+    )
+    await expect(page.getByLabel('default time range')).toHaveCSS(
+      'height',
+      '44px'
+    )
+    await expect(
+      page.getByLabel('compact time range').getByRole('tab').first()
+    ).toHaveCSS('font-size', '14px')
+    await expect(
+      page.getByLabel('default time range').getByRole('tab').first()
+    ).toHaveCSS('font-size', '16px')
+    await expect(page.getByLabel('compact basket view')).toHaveCSS(
+      'height',
+      '32px'
+    )
+    await expect(page.getByLabel('default basket view')).toHaveCSS(
+      'height',
+      '44px'
+    )
   })
 
   test('routes through the adaptive dialog presentation', async ({ page }) => {
@@ -849,6 +972,12 @@ test.describe('design system lab', () => {
     const matrix = sheet.getByTestId('lifecycle-status-role-matrix')
     await expect(sheet).toBeVisible()
     await expect(page.getByTestId('component-output-missing')).toHaveCount(0)
+    await expect(
+      sheet.getByText('Canonical V1 candidate', { exact: true })
+    ).toBeVisible()
+    await expect(
+      sheet.getByText('Provisional component', { exact: true })
+    ).toHaveCount(0)
 
     for (const role of [
       'waiting',
@@ -898,6 +1027,129 @@ test.describe('design system lab', () => {
     await expect(
       sheet.getByTestId('lifecycle-status-supporting-pair')
     ).toContainText('Voting activeEnds in 6h')
+  })
+
+  test('preserves the Home feature card while reviewing only foundation corrections', async ({
+    page,
+  }) => {
+    await page.goto('/internal/design-system/components/card')
+
+    const review = page.getByTestId('card-content-region-review')
+    const homeSource = page.getByTestId('home-feature-card-source')
+    const discoverSource = page.getByTestId('discover-feature-card-source')
+    const card = homeSource.locator(':scope > a')
+
+    await expect(review).toBeVisible()
+    await expect(page.getByTestId('component-output-missing')).toHaveCount(0)
+    await expect(
+      review.getByText('Home feature card foundation alignment', {
+        exact: true,
+      })
+    ).toBeVisible()
+    await expect(
+      review.getByText('Primary evidence · Home featured card', { exact: true })
+    ).toBeVisible()
+    await expect(
+      review.getByText('Supporting evidence · Discover compact adaptation', {
+        exact: true,
+      })
+    ).toBeVisible()
+    await expect(homeSource.locator('.h-52')).toHaveCount(2)
+    await expect(homeSource).toHaveAttribute('data-source-point-count', '188')
+    const launchMarker = homeSource.getByTestId('feature-card-launch-marker')
+    const launchLine = homeSource.getByTestId('feature-card-launch-line')
+    await expect(launchMarker).toBeVisible()
+    await launchMarker.hover()
+    await expect(homeSource.getByTestId('feature-card-launch-label')).toHaveCSS(
+      'opacity',
+      '1'
+    )
+    await expect(launchLine).toHaveCSS('background-image', 'none')
+    await expect(discoverSource.locator('.h-52')).toHaveCount(0)
+    await expect(card).toHaveCSS('border-radius', '0px')
+    await expect(card).toHaveCSS('gap', '8px')
+    await expect(card).toHaveCSS('padding-top', '8px')
+    await expect(card).toHaveCSS('padding-right', '8px')
+    await expect(card).toHaveCSS('padding-bottom', '8px')
+    await expect(card).toHaveCSS('padding-left', '8px')
+    await expect(card.locator(':scope > div').first()).toHaveCSS(
+      'border-radius',
+      '8px'
+    )
+    const contentHeader = card
+      .locator(':scope > div')
+      .first()
+      .locator(':scope > div')
+      .first()
+    const logo = contentHeader
+      .locator(':scope > div')
+      .first()
+      .locator(':scope > div')
+      .first()
+    const title = contentHeader
+      .locator('[data-feature-card-title-slot]')
+      .locator('h3')
+    const marketRow = contentHeader.locator('[data-feature-card-market-row]')
+    const discoverCard = discoverSource.locator(':scope > div > a')
+    const discoverContentHeader = discoverCard
+      .locator(':scope > div')
+      .first()
+      .locator(':scope > div')
+      .first()
+    const discoverTopRow = discoverContentHeader.locator(':scope > div').first()
+    const discoverTitle = discoverContentHeader
+      .locator('[data-feature-card-title-slot]')
+      .locator('h3')
+    const discoverMarketRow = discoverContentHeader.locator(
+      '[data-feature-card-market-row]'
+    )
+    const homeSupportingRow = homeSource.locator(
+      '[data-feature-card-supporting-row]'
+    )
+    const discoverSupportingRow = discoverSource.locator(
+      '[data-feature-card-supporting-row]'
+    )
+    await expect(contentHeader).toHaveCSS('gap', '16px')
+    await expect(contentHeader).toHaveCSS('padding-top', '24px')
+    const logoBox = await logo.boundingBox()
+    const titleBox = await title.boundingBox()
+    const marketRowBox = await marketRow.boundingBox()
+    expect(logoBox).not.toBeNull()
+    expect(titleBox).not.toBeNull()
+    expect(marketRowBox).not.toBeNull()
+    expect(Math.round(titleBox!.y - (logoBox!.y + logoBox!.height))).toBe(16)
+    expect(Math.round(marketRowBox!.y - (titleBox!.y + titleBox!.height))).toBe(
+      8
+    )
+    const discoverTopRowBox = await discoverTopRow.boundingBox()
+    const discoverTitleBox = await discoverTitle.boundingBox()
+    const discoverMarketRowBox = await discoverMarketRow.boundingBox()
+    expect(discoverTopRowBox).not.toBeNull()
+    expect(discoverTitleBox).not.toBeNull()
+    expect(discoverMarketRowBox).not.toBeNull()
+    expect(
+      Math.round(
+        discoverTitleBox!.y - (discoverTopRowBox!.y + discoverTopRowBox!.height)
+      )
+    ).toBe(16)
+    expect(
+      Math.round(
+        discoverMarketRowBox!.y -
+          (discoverTitleBox!.y + discoverTitleBox!.height)
+      )
+    ).toBe(8)
+    await expect(homeSupportingRow).toHaveCSS('padding-left', '24px')
+    await expect(homeSupportingRow).toHaveCSS('padding-right', '24px')
+    await expect(discoverSupportingRow).toHaveCSS('padding-left', '24px')
+    await expect(discoverSupportingRow).toHaveCSS('padding-right', '24px')
+    await expect(contentHeader).toHaveCSS('padding-right', '24px')
+    await expect(contentHeader).toHaveCSS('padding-bottom', '24px')
+    await expect(contentHeader).toHaveCSS('padding-left', '24px')
+    await expect(review.getByText('Review only this delta')).toBeVisible()
+    await expect(review.getByText('Preservation contract')).toBeVisible()
+    await expect(review.getByText('What acceptance records')).toBeVisible()
+    await expect(review.getByText('Already resolved')).toBeVisible()
+    await expect(review.getByText('Leave for later')).toBeVisible()
   })
 
   test('keeps the dialog close action inside the header content axis', async ({

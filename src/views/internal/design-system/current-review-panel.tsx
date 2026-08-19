@@ -37,8 +37,9 @@ export const CurrentReviewList = () => (
         Current review
       </h2>
       <p className="mt-1 text-sm font-light text-muted-foreground">
-        Only open visual judgments belong here. Implementation work stays in the
-        project tracker.
+        Only nearly complete candidates at the boundary of confident autonomous
+        resolution belong here. Earlier implementation work stays in the project
+        tracker.
       </p>
     </div>
     {CURRENT_REVIEW.length === 0 ? (

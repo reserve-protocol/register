@@ -1,3 +1,4 @@
+import { candidateSemanticRoles as roles } from '@/components/design-system-v1/semantic-roles'
 import { cn } from '@/lib/utils'
 import {
   ArrowRight,
@@ -9,7 +10,6 @@ import {
   X,
   type LucideIcon,
 } from 'lucide-react'
-import { candidateSemanticRoles as roles } from './candidate-semantic-roles'
 
 export type LifecycleStatusRole =
   | 'waiting'

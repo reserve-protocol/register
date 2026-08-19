@@ -8,7 +8,8 @@ export const FOUNDATION_ITEMS: FoundationItem[] = [
       'Semantic roles for surfaces, text, controls, intent, and data.',
     why: 'Color establishes hierarchy and meaning across themes without tying components to raw values.',
     status: 'evidence-found',
-    outputStatus: 'proposal',
+    outputStatus: 'rendered',
+    designAuthority: 'exploratory',
     statusDetail:
       'Surface, interaction, feedback, performance, and foreground direction is reviewed; exact opaque token values and usage details remain open.',
     expectedDecisions: [
@@ -45,7 +46,8 @@ export const FOUNDATION_ITEMS: FoundationItem[] = [
       'Font families, hierarchy, weights, sizing, and data treatment.',
     why: 'A deliberate type system makes dense financial information readable and product hierarchy predictable.',
     status: 'evidence-found',
-    outputStatus: 'proposal',
+    outputStatus: 'rendered',
+    designAuthority: 'exploratory',
     statusDetail:
       'Lausanne, recent product hierarchy, and the previous role matrix inform a structural proposal; the exact scale remains open.',
     expectedDecisions: openDefinitionSlots(
@@ -62,7 +64,8 @@ export const FOUNDATION_ITEMS: FoundationItem[] = [
       'A spacing scale and rules for rhythm, grouping, and data density.',
     why: 'Spacing needs intent so screens feel related without forcing every product composition into one layout.',
     status: 'defined',
-    outputStatus: 'accepted',
+    outputStatus: 'rendered',
+    designAuthority: 'current-baseline',
     statusDetail:
       'The provisional spacing grammar is design-reviewed; table-family and real-screen work may still pressure-test its application.',
     expectedDecisions: [
@@ -99,7 +102,8 @@ export const FOUNDATION_ITEMS: FoundationItem[] = [
       'Corner treatments for controls, containers, overlays, and emphasis.',
     why: 'A small semantic radius set creates coherence and prevents arbitrary component-by-component rounding.',
     status: 'evidence-found',
-    outputStatus: 'proposal',
+    outputStatus: 'rendered',
+    designAuthority: 'exploratory',
     statusDetail:
       'Atomic one-row controls are fully rounded; composite amount panels, multiline fields, menus, popovers, and thumbnails use the restrained contained-object role. Exact values remain open.',
     expectedDecisions: openDefinitionSlots(
@@ -116,7 +120,8 @@ export const FOUNDATION_ITEMS: FoundationItem[] = [
       'Outer frames, page templates, column roles, gutters, and stacking behavior.',
     why: 'A small layout grammar prevents route-to-route shifting without making complex product compositions rigid.',
     status: 'evidence-found',
-    outputStatus: 'proposal',
+    outputStatus: 'rendered',
+    designAuthority: 'exploratory',
     statusDetail:
       'The 1400px shell, 220px Index navigation, competing 1.5:1 and 2:1 splits, fixed overview rail, and workflow widths now inform three candidate page templates.',
     expectedDecisions: [
@@ -153,7 +158,8 @@ export const FOUNDATION_ITEMS: FoundationItem[] = [
       'Surface layering through borders, shadows, contrast, and overlap.',
     why: 'Elevation clarifies which surfaces are interactive, floating, nested, or temporarily above the page.',
     status: 'defined',
-    outputStatus: 'accepted',
+    outputStatus: 'rendered',
+    designAuthority: 'current-baseline',
     statusDetail:
       'A restrained three-role elevation grammar is design-reviewed; exact recipes remain provisional until real application.',
     expectedDecisions: [
@@ -189,7 +195,8 @@ export const FOUNDATION_ITEMS: FoundationItem[] = [
     description: 'Durations, easing, transitions, and reduced-motion behavior.',
     why: 'Purposeful motion explains state changes without making a financial product feel decorative or slow.',
     status: 'defined',
-    outputStatus: 'accepted',
+    outputStatus: 'rendered',
+    designAuthority: 'current-baseline',
     statusDetail:
       'A restrained three-duration motion grammar is accepted provisionally; real use may tune shared recipes without adding local exceptions.',
     expectedDecisions: [
@@ -225,7 +232,8 @@ export const FOUNDATION_ITEMS: FoundationItem[] = [
     description: 'Icon sources, sizing, stroke character, and semantic usage.',
     why: 'Consistent icon rules improve recognition while preventing visual noise and mismatched metaphors.',
     status: 'defined',
-    outputStatus: 'accepted',
+    outputStatus: 'rendered',
+    designAuthority: 'current-baseline',
     statusDetail:
       'Icon sizing, placement, restraint, and exception rules are design-reviewed; Lucide remains a reversible working source.',
     expectedDecisions: [
@@ -262,7 +270,8 @@ export const FOUNDATION_ITEMS: FoundationItem[] = [
       'Cross-system requirements for input, perception, navigation, and content.',
     why: 'Accessibility criteria must shape foundations and components rather than being checked only at handoff.',
     status: 'defined',
-    outputStatus: 'accepted',
+    outputStatus: 'rendered',
+    designAuthority: 'current-baseline',
     statusDetail:
       'A pragmatic V1 baseline is accepted: shared primitives own mechanics while product work supplies meaningful labels, messages, and reading order.',
     expectedDecisions: [

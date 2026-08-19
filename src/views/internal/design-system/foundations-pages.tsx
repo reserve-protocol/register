@@ -88,15 +88,15 @@ export const FoundationDetail = () => {
         <FoundationRichDefinition foundationId={item.id} />
         <FoundationCandidateDirection foundationId={item.id} />
         {item.id === 'color' && <ColorFoundationDefinition />}
-        {item.outputStatus !== 'accepted' && item.id !== 'color' && (
+        {item.designAuthority !== 'current-baseline' && item.id !== 'color' && (
           <section className="rounded-2xl border border-dashed border-border bg-card/50 p-5">
             <div className="flex items-center gap-2">
               <CircleDashed className="h-4 w-4 text-muted-foreground" />
               <h2 className="font-semibold">V1 definition</h2>
             </div>
             <p className="mt-2 text-sm text-muted-foreground">
-              Not defined yet. This slot will hold accepted values, rules, and
-              usage guidance after design review.
+              This direction is not the current authoritative baseline yet. It
+              remains open to design review before later work can inherit it.
             </p>
           </section>
         )}

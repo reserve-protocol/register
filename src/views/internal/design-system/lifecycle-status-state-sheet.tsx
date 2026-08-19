@@ -1,7 +1,7 @@
 import {
   LifecycleStatusPill,
   type LifecycleStatusRole,
-} from './lifecycle-status-pill'
+} from '@/components/lifecycle-status'
 
 const LIFECYCLE_ROLES: {
   role: LifecycleStatusRole
@@ -56,7 +56,7 @@ const LIFECYCLE_ROLES: {
 const LifecycleStatusStateSheet = () => (
   <section data-testid="lifecycle-status-state-sheet" className="space-y-6">
     <div>
-      <p className="text-sm font-medium text-primary">Provisional component</p>
+      <p className="text-sm font-medium text-primary">Canonical V1 candidate</p>
       <h2 className="mt-1 text-xl font-medium text-foreground">
         Lifecycle status roles
       </h2>

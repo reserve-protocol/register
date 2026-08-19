@@ -16,7 +16,7 @@ export interface ProductFacingReview {
   id: string
   componentId: string
   name: string
-  status: 'ready' | 'queued'
+  status: 'ready' | 'queued' | 'complete'
   purpose: string
   evidence: ProductEvidenceFamily[]
   decisions: ProductFacingDecision[]
@@ -231,7 +231,7 @@ export const PRODUCT_FACING_REVIEWS: ProductFacingReview[] = [
     id: 'content-regions',
     componentId: 'card',
     name: 'Cards and content regions',
-    status: 'queued',
+    status: 'complete',
     purpose:
       'Separate repeated/actionable cards from structural page regions before migration removes legacy rounded wrappers.',
     evidence: [
@@ -249,7 +249,8 @@ export const PRODUCT_FACING_REVIEWS: ProductFacingReview[] = [
         requirement:
           'Whole-card navigation, hover/current treatment, repeated identity, media, metrics, and long content.',
         sources: [
-          'src/views/home/components/discover-yield-dtf/yield-dtf-card.tsx',
+          'src/views/home/components/highlighted-dtfs/feature-card.tsx',
+          'src/views/home/components/highlighted-dtfs/constants.ts',
           'src/views/index-dtf/auctions/views/rebalance-list/components/historical-rebalance-item.tsx',
         ],
       },
@@ -269,7 +270,7 @@ export const PRODUCT_FACING_REVIEWS: ProductFacingReview[] = [
       },
     ],
     migrationSeam:
-      'Provide low-level region/card recipes with opt-in interaction; keep layout-owned corners outside the shared Card default.',
+      'Keep the accepted structural-region recipe separate from a later repeated interactive-card shell; interaction and media opt in, while layout-owned corners stay outside both defaults.',
     avoid:
       'Do not migrate every current Card import to one replacement component or encode page substrate geometry as Card variants.',
   },

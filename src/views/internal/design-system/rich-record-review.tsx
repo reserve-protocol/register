@@ -5,7 +5,7 @@ import { cn } from '@/lib/utils'
 import { PERFORMANCE_TEXT_CLASSES } from '@/utils/chart-performance-colors'
 import { candidateSemanticRoles as roles } from './candidate-semantic-roles'
 import GovernanceProposalStateReview from './governance-proposal-state-review'
-import { LifecycleStatusPill } from './lifecycle-status-pill'
+import { LifecycleStatusPill } from '@/components/lifecycle-status'
 
 const AUCTIONS_ROUTE = '/bsc/index-dtf/cmc20/auctions'
 

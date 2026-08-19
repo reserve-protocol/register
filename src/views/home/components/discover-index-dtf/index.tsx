@@ -10,7 +10,10 @@ import { IndexDTFItem } from '@/hooks/useIndexDTFList'
 import { Trans } from '@lingui/react/macro'
 
 const MarketCapRow = ({ marketCap }: { marketCap: number }) => (
-  <div className="flex w-full items-center justify-between px-5 py-4 pt-3 text-sm">
+  <div
+    className="flex w-full items-center justify-between px-5 py-4 pt-3 text-sm"
+    data-feature-card-supporting-row
+  >
     <span className="text-legend">
       <Trans>Market Cap:</Trans>
     </span>
@@ -24,7 +27,7 @@ const MarketCapRow = ({ marketCap }: { marketCap: number }) => (
   </div>
 )
 
-const DiscoverIndexDTFCard = ({ dtf }: { dtf: IndexDTFItem }) => {
+export const DiscoverIndexDTFCard = ({ dtf }: { dtf: IndexDTFItem }) => {
   return (
     <div>
       <IndexDTFFeatureCard

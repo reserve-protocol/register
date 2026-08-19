@@ -11,13 +11,68 @@ The system should provide strong foundations and small reusable primitives while
 - Register uses Tailwind CSS 3, semantic CSS variables in `src/app.css`, local shadcn-style primitives in `src/components/ui`, Radix primitives, CVA, and `cn()`.
 - Color and radius are partially tokenized. Typography, spacing, elevation, motion, and control geometry are less systematically expressed.
 - The product and its design files contain years of inconsistent patterns. Some recent surfaces represent a stronger quality bar.
-- The contained `/internal/design-system` lab now provides routed Foundations, Components, real-product Screens, and Project Status surfaces. Its expected slots, current-foundation evidence, provisional source-review layer, and reusable V1 Button candidate/state sheet are ready for design work and targeted audit evidence.
+- The contained `/internal/design-system` lab provides routed Foundations, Components, real-product Screens, Studies, and Project Status surfaces. Components renders reusable V1 candidates with acceptance and production adoption kept separate; Current Review holds only the next nearly complete confidence-boundary candidate.
 - `pnpm design-system:capture` and `pnpm design-system:verify` own a pinned local Vite server and capture the lab in light/dark at desktop/mobile sizes. An external base URL remains available for host-browser capture when a dev container cannot run Chromium reliably.
 - The existing design-system facts remain in `docs/wiki/domains/design-system.md`. This plan is the active project contract; durable decisions belong in `docs/wiki/decisions.md`.
 - A previous branch, `codex/ui-standardization`, contains useful process ideas but stale implementation. Reuse concepts selectively; do not merge or cherry-pick the branch wholesale.
 - The first source review compared that branch with the current Home, Discover, and Index DTF overview. Candidate directions now distinguish what to carry forward, adapt, leave behind, and validate next; none of those recommendations are accepted values yet.
 - The first focused Color audit now replaces the lab's hand-picked swatches with an explicit source snapshot. It maps current surface frequency and observed roles, renders a provisional semantic surface hierarchy, and keeps role decisions separate from exact light/dark values.
 - The provisional golden-screen set is Home/Discover, Index DTF overview, swap/automated mint, governance/proposals, Portfolio, and Earn. Deploy is a secondary overlap route for form patterns. Portfolio needs deterministic holdings fixtures; the instant Zapper widget needs an explicit upstream boundary.
+
+## Authoritative operating model
+
+This section governs day-to-day V1 work. Later dated sections preserve product
+evidence and decisions, but any superseded workflow or queue in that history is
+not active guidance.
+
+1. Reuse the existing audits and product evidence before gathering the same
+   requirements again.
+2. Synthesize the strongest complete candidate first from accepted foundations,
+   reusable components and recipes, and strong source UI. Triage only the
+   meaningful judgment that remains afterward.
+3. Preserve product jobs, behavior, content constraints, and strong existing
+   design. Consolidate accidental legacy variation rather than mirroring it.
+4. Resolve a visually meaningful lower-level prerequisite before asking for
+   judgment on its parent. If no baseline exists, resolve it; if a current
+   baseline exists but is not consumable, promote that baseline into the
+   smallest justified reusable component or recipe; if it is consumable, use
+   it directly. A reusable but unreviewed candidate remains visible as a
+   candidate rather than becoming authoritative by implication.
+5. Self-review and correct consequences of accepted rules before human review.
+   Current Review contains only a nearly complete candidate at the boundary of
+   what Codex can confidently resolve.
+6. Classify meaningful feedback as local, component, pattern/composition,
+   foundation, or reusable heuristic. Update the most reusable justified owner
+   so subsequent work starts from the correction.
+7. Let realistic compositions pressure-test and, when evidence warrants it,
+   revise lower-level decisions instead of creating local exceptions.
+8. Keep rendered output, reusable implementation, human acceptance,
+   verification, and production adoption independent and truthfully labeled.
+9. Verify at the owning seam and in proportion to blast radius. Update the
+   accepted owner immediately; batch unrelated consumers, documentation,
+   baselines, and broader reconciliation until a synchronization boundary.
+
+Source-of-truth precedence for this project:
+
+1. Repository safety and engineering rules in `CLAUDE.md` and `skills/`.
+2. Accepted design decisions in `docs/wiki/decisions.md`.
+3. Current synthesized design-system guidance in
+   `docs/wiki/domains/design-system.md`.
+4. Typed registries for design authority, rendered output, implementation,
+   review readiness, verification, and adoption state.
+5. This plan for project goal, active slice, unresolved risks, and pending
+   synchronization.
+6. Lab output, which must be derived from the sources above and never override
+   them by appearance alone.
+
+`current-baseline` means the designer-reviewed contract is authoritative for
+new work today and remains revisable when realistic evidence justifies an
+owner-level change. `canonical-candidate` means a reusable V1 component exists;
+`reusable-recipe` means only the named shared treatment is consumable. Rendered
+output and production adoption are separate. A candidate may be useful evidence
+without being authoritative, and a dependency may be treated as settled outside
+the parent review only when its relevant contract is the current baseline or it
+is explicitly retained product/domain behavior.
 
 ## Non-goals
 
@@ -482,22 +537,20 @@ Accepted as the provisional foundation direction after visual review:
   easing recipe—or clarify the semantic role—instead of adding a screen-local
   duration exception.
 
-The morning review path is now visible at the top of the Studies page:
+## Superseded core component review board — 2026-08-13
 
-1. Spacing and density.
-2. Elevation and floating surfaces.
-3. Iconography.
-4. Motion, including a replayable three-duration comparison.
-5. Cross-foundation accessibility guardrails.
-6. An Actions-family starting matrix combining the provisional foundations.
+Historical evidence only. The board and its Studies-first review path were
+replaced by the visual-first Components catalog, actual reusable candidates,
+and Current Review. The rules recorded below remain evidence where they were
+subsequently accepted, but this section does not define the active review order.
 
-The Actions matrix is preparation, not acceptance or migration. It shows four
-candidate hierarchy roles, all three control sizes, optical icon padding,
-icon-only geometry, and default/hover/focus/loading/disabled states together.
-Use it only after the remaining foundation pass to expose contradictions in the
-kernel before implementing product components.
-
-## Core component review board — 2026-08-13
+The 2026-08-19 reconciliation corrected an over-broad deletion from that
+transition: accepted rows must be extracted before a mixed-authority board is
+removed. The Components landing page now shows every family directly, renders
+all available candidates/specimens/recipes, and lists unresolved capabilities
+without invented UI. Accepted compact/default text-only and contained Tabs are
+again visible; unresolved Product navigation remains inventory for the later
+navigation-family review.
 
 The Components landing page now leads with a compact, lab-only review board.
 It is the primary place to compare the emerging component language before any
@@ -568,18 +621,22 @@ Everything on this board remains a working candidate. Rendering an item here
 does not mark its component definition, design review, adoption, or product
 verification complete.
 
-### Fast design-decision loop — 2026-08-13
+### Residual design-decision triage — 2026-08-13, superseded 2026-08-19
 
-The focused component review optimizes for human decision throughput. Capture
-and propagation are separate operations:
+This lane model applies only after the authoritative canonical-first synthesis
+and self-review above. It is not a question-first runway. Capture and broad
+propagation remain separate operations:
 
-1. Record each accepted decision in this plan immediately, including its scope
-   and any important exclusions or state distinctions.
-2. Decide whether the next visual judgment depends on seeing that choice
+1. Record each accepted decision in `docs/wiki/decisions.md` and update the
+   reusable owner immediately, including scope and important exclusions.
+2. Classify the feedback as local, component, pattern/composition, foundation,
+   or reusable heuristic, then decide whether the next visual judgment depends
+   on seeing that choice
    applied. If it does, update only the smallest candidate or fixture needed to
    make that judgment reliable. If it does not, continue to the next decision.
-3. Add all other affected candidates, registries, documentation, fixtures,
-   screens, tests, and product implementations to the pending sync queue below.
+3. Add unrelated affected consumers, documentation, fixtures, baselines, and
+   product implementations to the pending sync queue below. Never defer the
+   accepted owner or a dependency required for the next review.
 4. Run a synchronization pass after a useful decision batch, before product
    migration, or whenever another decision depends on the affected surfaces.
    Reconcile the queue, verify the synchronized result, and then clear it.
@@ -672,7 +729,8 @@ question. Intentionally deferred work and component decisions not yet reached
 do not enter the queue until an accepted decision actually creates downstream
 work.
 
-**Pending synchronization queue:** none for the current canonicalization batch.
+**Historical synchronization note:** the canonicalization batch described
+below was synchronized on 2026-08-14. It is not the current queue.
 The Button dependency boundary is synchronized: the accepted candidate is a
 reusable component, active Button sheets/boards and EmptyState consume it, and
 the catalog separately reports specimen, canonical-candidate, and adoption
@@ -685,7 +743,10 @@ Dialog contract, affected catalogs, canonical guidance, and modal studies.
 Product migration remains intentionally out of scope; it will be planned from
 the accepted contract rather than treated as leftover propagation.
 
-### Product-facing component queue — 2026-08-14
+### Superseded product-facing preparation queue — 2026-08-14
+
+Historical prioritization only. The typed registry and Active slice below own
+current work; this section remains product evidence rather than an active queue.
 
 The reviewed foundations and basic component work are sufficiently mature to
 design the next product-facing layer without substantial expected rework.
@@ -1119,7 +1180,8 @@ Every component contract now records:
   Tabs versus Segmented control, Select versus Menu, and Dialog versus Drawer.
 - One next action that moves the slot from inventory to complete state sheet.
 
-Recommended working order after foundations:
+Historical initial working order after foundations (superseded by the active
+registry queue and Active slice):
 
 1. Actions: Button, Icon button, Action group, then Transaction action.
 2. Fields and Selection: shared anatomy first, then Amount field and Asset
@@ -1403,7 +1465,7 @@ not deletion: visual output moves first while registry-backed readiness,
 dependencies, evidence, and the full tracker remain reachable and independently
 labeled.
 
-## Slices
+## Original project slices (historical)
 
 - Slice: Establish the project contract and a contained, lazy-loaded `/internal/design-system` lab with a provisional progress dashboard, current-foundation reference, Button state sheet, and deterministic desktop/mobile light/dark capture; blocked by: none.
 - Slice: Restructure the lab into routed category and detail pages with direct category navigation, an expected-foundation template, a component capability catalog, navigable missing-state explanations, golden-screen links, and a quieter Project Status page; blocked by: initial lab.
@@ -1429,10 +1491,10 @@ labeled.
 
 ## Active slice
 
-Resume source-grounded product-facing canonicalization after the reviewed rich
-record batch. Auction selectors use inline metrics and keep current-auction bid
-count and value traded in the selected/full view; Table/DataRow and Lifecycle
-Status are still not canonical, and broad production migration has not started.
-Preserve the established foundation and interaction decisions,
-canonical-implementation versus adoption boundary, and registry-backed
-readiness distinctions.
+Contained form rows remain the active product-facing slice. The ordinary Field
+candidate is reusable, but the repeated governance-parameter composition is
+blocked until its single-choice prerequisite has a reviewed visual contract.
+Prepare that prerequisite as the one review-ready candidate, keep the parent
+composition provisional, and hold Action group as evidence-prepared next work.
+Do not change the shared legacy Card default, promote Table/DataRow, define the
+opened-auction view, or begin production migration.

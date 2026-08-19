@@ -10,7 +10,7 @@ const LayoutStudiesPage = () => (
     <PageHeader
       eyebrow="Unresolved visual work"
       title="Studies"
-      description="Only open questions, competing alternatives, and active pressure tests live here. Accepted output is promoted to its Foundation or Component detail."
+      description="Only open questions, competing alternatives, and active pressure tests live here. Current baselines are promoted to their Foundation or Component detail."
     />
 
     <MeaningColorStudy />

@@ -86,7 +86,10 @@ Governance proposals and Auction rebalance selectors remain distinct reviewed
 compositions. Both use square structural records, a 24px outer inset, 16px
 between internal regions, 8px between related rows, 4px for tight icon/text
 pairs, 16px/500 titles, and reusable lifecycle and Metric seams. This shared
-grammar does not promote Table/DataRow or Lifecycle Status to canonical V1.
+grammar does not promote Table/DataRow to canonical V1. Lifecycle Status was
+subsequently promoted after this pressure test established its reusable
+contract; the rich-record compositions themselves remain separate and
+provisional.
 
 Auction selector items show the current auction state and only the timing needed
 to decide what happens next. Current-auction bid count and value traded remain
@@ -96,3 +99,77 @@ as one left-aligned sentence. At constrained widths, status wraps below the
 title rather than squeezing it. Neutral lifecycle surfaces and borders are
 opaque semantic colors so their appearance does not depend on the parent
 surface.
+
+## 2026-08-18 — Lifecycle Status is canonical; other compact labels are not
+
+The reviewed 24px Lifecycle Status component is a canonical V1 candidate after
+pressure testing across Governance proposals and Auction rebalance selectors.
+It owns waiting, active, actionable, processing, success, unsuccessful, and
+closed roles; standardized unframed indicators; opaque semantic tones; a
+separate subtle countdown pill; and motion only for short indeterminate
+processing. This promotion does not generalize category labels, counts,
+qualifiers, removable chips, proposal progress, or outcome-detail composition,
+and it does not imply production adoption.
+
+## 2026-08-18 — Structural content regions and interactive Cards are separate jobs
+
+Square white page regions, the ordinary 24px content axis, layout-owned
+substrate-reveal corners, and the absence of a default nested-card treatment are
+already foundation decisions. They do not require a universal Card component.
+
+Repeated interactive objects remain a component-level job. The Home feature
+card is authoritative existing design rather than an unresolved alternative.
+Its V1 review is delta-based: judge only the accepted square outer structure,
+8px shell inset/contained-media radius, 24px primary and supporting-row content
+axes, 16px internal-region gap, and 8px directly related content gap. The title
+flows without a hidden fixed-height reservation: both Home and Discover measure
+16px from the complete top row to the name and 8px from the name to its market
+row; Discover's taller chart therefore creates the appropriate additional
+distance from its smaller logo without a separate spacing rule. Full chart
+density and launch treatment, identity and
+market context, exposure ticker, transcript/video, chain variants, and
+whole-card interaction form a preservation contract and cannot be removed just
+because a static lab moment does not expose them. The compact Discover treatment
+is supporting adaptation evidence. The legacy shared Card default remains
+evidence only: it is not a migration target, and this review does not change
+production adoption or define non-media card families.
+
+## 2026-08-19 — V1 work is canonical-first and feedback updates its owner
+
+Design-system work now begins by synthesizing the strongest complete candidate
+from existing audits, accepted foundations, reusable components and recipes,
+and strong product evidence. Decision lanes apply only to the meaningful
+judgment left after that synthesis and self-review; they are not a question-first
+runway. Current Review therefore contains a nearly complete candidate at the
+boundary of what Codex can confidently resolve, not every unfinished slot.
+
+After meaningful feedback, classify it as local, component,
+pattern/composition, foundation, or reusable heuristic and update the most
+reusable justified owner immediately. Unrelated consumers, documentation,
+baselines, and broad verification may be reconciled at the next synchronization
+boundary. A `canonical-candidate` is a reusable implementation, while a
+`current-baseline` is the human-reviewed visual contract that new work inherits;
+implementation alone cannot make a dependency authoritative. Studies remains
+reserved for genuine alternatives, high-impact ambiguity, and active pressure
+tests.
+
+## 2026-08-19 — Current baselines compound without becoming permanent
+
+Design authority is independent from rendered output, reusable implementation,
+and production adoption. A `current-baseline` is the authoritative answer that
+new work inherits today; realistic composition or later design feedback may
+still revise its owning foundation, component, or recipe. Exploratory work does
+not become authoritative merely because it renders, and a reusable candidate
+does not become authoritative merely because code exists.
+
+When downstream work needs a dependency, resolve an undefined prerequisite,
+promote an existing but non-consumable baseline into the smallest justified
+reusable component or recipe, or consume the existing reusable source directly.
+Do not reconstruct an accepted treatment locally. The contained-selection
+visual language is the first explicit recipe boundary: its compact/default
+geometry and states live in
+`src/components/design-system-v1/contained-selection.ts` and are consumed by
+SingleChoice. The accepted text-only and contained Tabs presentations live in
+`src/components/design-system-v1/tab-presentation.ts`; they are visible current
+baselines without implying that Tabs panel semantics, variant roles, overflow,
+counts, deep linking, or the final component API are complete.

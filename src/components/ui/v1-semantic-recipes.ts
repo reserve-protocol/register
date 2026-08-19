@@ -5,6 +5,7 @@ export const v1SemanticRecipes = {
     canvas: 'bg-background',
     content: 'bg-card',
     structural: 'bg-secondary',
+    neutralControl: 'bg-muted',
   },
   text: {
     primary: 'text-foreground',

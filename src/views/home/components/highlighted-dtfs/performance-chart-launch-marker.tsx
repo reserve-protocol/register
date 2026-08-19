@@ -107,6 +107,7 @@ export const PerformanceChartLaunchMarker = ({
       </span>
       <span
         aria-hidden={!isCreatedLabelVisible}
+        data-testid="feature-card-launch-label"
         className={annotationClassName}
         style={{
           bottom: 32,
@@ -152,6 +153,7 @@ export const PerformanceChartLaunchMarker = ({
           aria-label={createdLabel}
           className="absolute z-40 outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-card"
           data-card-action="launch-marker"
+          data-testid="feature-card-launch-marker"
           role="button"
           tabIndex={0}
           onBlur={() => onActiveChange(false)}

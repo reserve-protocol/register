@@ -1,6 +1,6 @@
 ---
 title: E2E Suite
-updated: 2026-07-23
+updated: 2026-08-18
 type: domain
 sources:
   - e2e/**
@@ -101,6 +101,12 @@ Quick-loop tiers — unit tests <1s → one scoped spec ~3–5s → smoke ~16s �
 change (the domain guides' diff→test tables name the spec). An unmocked-call
 failure names the function + the helper to model it in (`e2e/CLAUDE.md` has the
 boundary map + new-test recipe).
+
+The internal design-system lab has a focused contract suite in
+`e2e/design-system/lab.spec.ts`. It verifies route availability, registry and
+review semantics, and only the rendered geometry needed to keep a current human
+judgment foundation-conformant; it is not a substitute for product-route
+acceptance or a broad visual-regression suite.
 
 ## Maintenance rules
 

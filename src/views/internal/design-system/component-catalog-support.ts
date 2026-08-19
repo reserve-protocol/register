@@ -71,8 +71,10 @@ export const SUPPORT_COMPONENT_GROUPS: ComponentGroup[] = [
               'Visually resolve consequential outcome composition using real transaction requirements.',
           }
         ),
-        outputStatus: 'accepted',
+        outputStatus: 'rendered',
+        designAuthority: 'current-baseline',
         implementationStatus: 'canonical-candidate',
+        implementationSource: 'src/components/dialog/index.tsx',
         adoptionStatus: 'none',
         review: {
           status: 'ready',
@@ -324,8 +326,10 @@ export const SUPPORT_COMPONENT_GROUPS: ComponentGroup[] = [
               'Pressure-test the canonical quiet anatomy in a table and reserve illustration decisions for meaningful real states.',
           }
         ),
-        outputStatus: 'proposal',
+        outputStatus: 'rendered',
+        designAuthority: 'exploratory',
         implementationStatus: 'canonical-candidate',
+        implementationSource: 'src/components/empty-state/index.tsx',
         adoptionStatus: 'none',
         review: {
           status: 'ready',
@@ -365,33 +369,35 @@ export const SUPPORT_COMPONENT_GROUPS: ComponentGroup[] = [
           'Lifecycle meaning should be consistent without turning every compact label into the same component.',
           {
             priority: 'v1-core',
-            auditStatus: 'partial',
+            auditStatus: 'mapped',
             evidence: [
               'Governance proposals and Auctions rebalances require consistent waiting, active, actionable, processing, successful, unsuccessful, and closed lifecycle states.',
+              'The shared 24px anatomy, opaque semantic tones, standardized indicators, countdown pairing, and restricted processing motion were pressure-tested across active, waiting, actionable, successful, unsuccessful, and closed proposal and auction records.',
               'Category labels, counts, qualifiers, and removable chips remain distinct jobs and are not generalized into this lifecycle candidate.',
             ],
             decisionPrompts: [
-              'Pressure-test the lifecycle role mapping, standardized icons, and restricted motion in real proposal and auction records.',
               'Resolve category, count, qualifier, and removable-chip anatomy only when their product compositions are reviewed.',
             ],
             nextAction:
-              'Review the lifecycle status candidate in the real proposal and auction records before promoting it; leave other badge jobs open.',
+              'Choose an opt-in production adoption seam when a reviewed product composition is migrated; leave other compact-label jobs open.',
           }
         ),
-        outputStatus: 'proposal',
-        implementationStatus: 'specimen',
+        outputStatus: 'rendered',
+        designAuthority: 'current-baseline',
+        implementationStatus: 'canonical-candidate',
+        implementationSource: 'src/components/lifecycle-status/index.tsx',
         adoptionStatus: 'none',
         review: {
-          status: 'provisional',
+          status: 'ready',
           scope:
-            'Review the shared 24px lifecycle anatomy, role-to-icon and role-to-tone mapping, supporting countdown pairing, and spinner only for short indeterminate processing. Category labels, counts, qualifiers, removable chips, proposal outcome-detail composition, progress behavior, and production adoption remain outside this candidate.',
+            'The shared 24px lifecycle anatomy, role-to-icon and role-to-tone mapping, supporting countdown pairing, and spinner only for short indeterminate processing are accepted. Category labels, counts, qualifiers, removable chips, proposal outcome-detail composition, progress behavior, and production adoption remain outside this candidate.',
           dependencies: [
             { name: 'Feedback color roles', status: 'provisional' },
             { name: 'Iconography', status: 'canonical' },
           ],
         },
         statusDetail:
-          'A provisional lab-only lifecycle status component now owns semantic role, standardized icon, tone, and restricted motion. It is being pressure-tested in Governance and Auctions records; other badge jobs and production adoption remain open.',
+          'A reusable V1 candidate owns lifecycle role, standardized indicator, opaque semantic tone, and restricted motion after pressure testing in Governance and Auctions records. Other compact-label jobs and production adoption remain open.',
       },
       {
         ...component(
@@ -415,8 +421,10 @@ export const SUPPORT_COMPONENT_GROUPS: ComponentGroup[] = [
               'Review the corrected chain-badge ratio and dense holdings slice, then choose one opt-in production adoption seam.',
           }
         ),
-        outputStatus: 'proposal',
+        outputStatus: 'rendered',
+        designAuthority: 'current-baseline',
         implementationStatus: 'canonical-candidate',
+        implementationSource: 'src/components/entity-identity/index.ts',
         adoptionStatus: 'none',
         review: {
           status: 'ready',
@@ -452,8 +460,10 @@ export const SUPPORT_COMPONENT_GROUPS: ComponentGroup[] = [
               'Preserve the reviewed inline anatomy in auction selectors; pressure-test any separate full-view outcome composition only when that surface is reviewed.',
           }
         ),
-        outputStatus: 'proposal',
+        outputStatus: 'rendered',
+        designAuthority: 'current-baseline',
         implementationStatus: 'canonical-candidate',
+        implementationSource: 'src/components/metric/index.tsx',
         adoptionStatus: 'none',
         review: {
           status: 'ready',
@@ -464,25 +474,45 @@ export const SUPPORT_COMPONENT_GROUPS: ComponentGroup[] = [
         statusDetail:
           'Reusable V1 Metric and MetricValue candidates implement the accepted inline and centered-headline anatomy. Auction selector metrics reuse inline anatomy while their parent owns consistent value emphasis, framing, and layout. Production adoption has not started.',
       },
-      component(
-        'card',
-        'Card / content region',
-        'Groups a coherent repeated or actionable unit when framing is meaningful.',
-        'Clear criteria prevent every page section from becoming nested rounded cards.',
-        {
-          priority: 'v1-core',
-          ...mapped,
-          evidence: [
-            '50 product imports use shared Card, while many page regions compose surfaces directly.',
+      {
+        ...component(
+          'card',
+          'Card / content region',
+          'Groups a coherent repeated or actionable unit when framing is meaningful.',
+          'Clear criteria prevent every page section from becoming nested rounded cards.',
+          {
+            priority: 'v1-core',
+            ...mapped,
+            evidence: [
+              'The 50 shared Card imports are dominated by 29 legacy Yield DTF consumers; 12 Index imports primarily frame Overview sections rather than repeated interactive objects.',
+              'The shared production Card default hardcodes rounded-3xl, 20px header/content padding, and title typography that conflict with accepted V1 shape, spacing, and typography rules, so it is evidence rather than a migration target.',
+              'The recent Home Index feature card is authoritative existing visual and interaction evidence; the compact Discover treatment shows how that source adapts without proving a universal Card shell.',
+              'Reviewed Governance proposals and Auction selectors establish a separate square repeated-record grammar and must not become generic Card variants.',
+            ],
+            decisionPrompts: [
+              'Preserve the accepted square shell, 8/24/16px structural spacing, 8px related-content spacing, and 24px supporting-row axis.',
+              'Keep all unspecified Home behavior plus structural content-region and selective substrate-corner rules outside the repeated-card API.',
+            ],
+            nextAction:
+              'At the next synchronization boundary, extract preservation-first from the production Home source without removing unspecified chart, ticker, transcript, video, chain, or interaction behavior.',
+          }
+        ),
+        outputStatus: 'rendered',
+        designAuthority: 'current-baseline',
+        implementationStatus: 'specimen',
+        adoptionStatus: 'none',
+        review: {
+          status: 'provisional',
+          scope:
+            'The accepted review preserves the Home source while applying a square outer shell, 8px shell inset and contained-media radius, 24px primary and supporting-row axes, 16px internal-region spacing, and 8px directly related spacing. Final API, non-media families, responsive edge cases, and production adoption remain later.',
+          dependencies: [
+            { name: 'Index feature card', status: 'retained' },
+            { name: 'Metric', status: 'canonical' },
           ],
-          decisionPrompts: [
-            'Define when Card is appropriate, flat versus interactive behavior, padding ownership, media, selected state, and nesting ban.',
-            'Keep substrate-reveal corner logic in page composition rather than Card defaults.',
-          ],
-          nextAction:
-            'Audit repeated interactive cards separately from page sections and supporting panels.',
-        }
-      ),
+        },
+        statusDetail:
+          'The preservation-first Home feature-card foundation alignment is accepted. Real usage and structural-region rules are mapped; reusable extraction is queued and no production adoption is claimed.',
+      },
       {
         ...component(
           'table',
@@ -512,7 +542,8 @@ export const SUPPORT_COMPONENT_GROUPS: ComponentGroup[] = [
               'Use the reviewed Governance proposal and Auction selector compositions as evidence for the next product-facing component; keep rich navigable records distinct from dense Table rows.',
           }
         ),
-        outputStatus: 'proposal',
+        outputStatus: 'rendered',
+        designAuthority: 'exploratory',
         implementationStatus: 'specimen',
         adoptionStatus: 'none',
         review: {
@@ -524,9 +555,9 @@ export const SUPPORT_COMPONENT_GROUPS: ComponentGroup[] = [
             { name: 'Metric value', status: 'canonical' },
             {
               name: 'Lifecycle status pill',
-              status: 'provisional',
+              status: 'canonical',
               detail:
-                'The 24px pill candidate passed this composition review but remains provisional until its own component contract is promoted.',
+                'The reviewed 24px lifecycle contract is canonical; the rich record and Table/Row anatomy remain provisional.',
             },
             { name: 'Table / row anatomy', status: 'provisional' },
           ],

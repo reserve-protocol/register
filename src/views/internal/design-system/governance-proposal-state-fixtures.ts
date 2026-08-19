@@ -2,7 +2,7 @@ import type { ProposalStage } from '@/components/proposal-status-bar'
 import type {
   LifecycleStatusIndicator,
   LifecycleStatusRole,
-} from './lifecycle-status-pill'
+} from '@/components/lifecycle-status'
 
 export type ProposalStateKey =
   | 'pending'
