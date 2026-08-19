@@ -665,14 +665,6 @@ msgstr "15개 파라미터"
 msgid "24 hour"
 msgstr "24시간"
 
-#: src/views/index-dtf/overview/components/index-metrics-overview.tsx:137
-#~ msgid "24h Supply Change"
-#~ msgstr "24시간 공급량 변동"
-
-#: src/views/index-dtf/overview/components/index-metrics-overview.tsx:151
-#~ msgid "24h Tx Volume"
-#~ msgstr "24시간 트랜잭션 거래량"
-
 #: src/views/index-dtf/overview/components/fees-stats.tsx:78
 msgid "24h Volume"
 msgstr "24시간 거래량"
@@ -1322,7 +1314,7 @@ msgstr "이 탭을 닫으시겠습니까? 경매가 실패하고 가치가 손�
 msgid "Are you sure you want to leave? This may cause the auction to fail and value to be lost."
 msgstr "나가시겠습니까? 경매가 실패하고 가치가 손실될 수 있습니다."
 
-#: src/views/index-dtf/governance/views/proposal/components/vote-modal.tsx:166
+#: src/views/index-dtf/governance/views/proposal/components/vote-modal.tsx:165
 msgid "Are you sure you wish to challenge?"
 msgstr "이의를 제기하시겠습니까?"
 
@@ -1679,7 +1671,7 @@ msgstr "현재 담보 견적을 기준으로 합니다. 최종 Mint 수량은 �
 msgid "Basics"
 msgstr "기본 정보"
 
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/changes/basics-changes.tsx:41
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/changes/basics-changes.tsx:43
 msgid "Basics Update"
 msgstr "기본 정보 업데이트"
 
@@ -1843,14 +1835,6 @@ msgstr "최고"
 msgid "Best Quote"
 msgstr "최적 견적"
 
-#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:41
-#~ msgid "Better price found"
-#~ msgstr "더 나은 가격 발견"
-
-#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:59
-#~ msgid "Better price on PancakeSwap"
-#~ msgstr "PancakeSwap에서 더 나은 가격"
-
 #. placeholder {0}: formatCurrency( +formatUnits(currentPrice, data.buyingTokenDecimals) )
 #. placeholder {1}: data.buyingTokenSymbol
 #: src/views/yield-dtf/auctions/dutch/components/AuctionActions.tsx:96
@@ -2004,10 +1988,6 @@ msgstr "{0} 매수"
 msgid "Buy / Sell"
 msgstr "매수 / 매도"
 
-#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:252
-#~ msgid "Buy on PancakeSwap"
-#~ msgstr "PancakeSwap에서 구매"
-
 #: src/views/index-dtf/auctions/views/rebalance/components/rebalance-action.tsx:37
 msgid "Buy/sell tokens to move closer to proposed weights."
 msgstr "제안된 가중치에 더 가까워지도록 토큰을 매수/매도합니다."
@@ -2080,7 +2060,7 @@ msgstr "생성하려는 DTF를 설명해 주세요. *"
 #: src/views/index-dtf/governance/views/propose/basket/components/basket-proposal-overview.tsx:37
 #: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/basket-settings-proposal-overview.tsx:110
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/dao-settings-proposal-overview.tsx:102
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/dtf-settings-proposal-overview.tsx:110
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/dtf-settings-proposal-overview.tsx:101
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1243
 #: src/views/yield-dtf/staking/components/stake/edit-delegate.tsx:40
 msgid "Cancel"
@@ -2176,7 +2156,7 @@ msgstr "Chain: {chainId}"
 msgid "Challenge"
 msgstr "이의 제기"
 
-#: src/views/index-dtf/governance/views/proposal/components/vote-modal.tsx:195
+#: src/views/index-dtf/governance/views/proposal/components/vote-modal.tsx:194
 msgid "Challenge proposal"
 msgstr "제안에 이의 제기"
 
@@ -2336,10 +2316,6 @@ msgstr "마감"
 msgid "Closes"
 msgstr "마감"
 
-#: src/views/index-dtf/overview/components/index-disclousure.tsx:120
-#~ msgid "CMC20 whitepaper documentation"
-#~ msgstr "CMC20 백서 문서"
-
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1644
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1651
 msgid "Collapse orders"
@@ -2488,7 +2464,7 @@ msgstr "Optimistic 제안 파라미터, 신뢰된 Optimistic 제안자, 그리�
 #: src/views/index-dtf/governance/views/propose/basket/components/basket-proposal-overview.tsx:77
 #: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/basket-settings-proposal-overview.tsx:69
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/dao-settings-proposal-overview.tsx:61
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/dtf-settings-proposal-overview.tsx:69
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/dtf-settings-proposal-overview.tsx:60
 msgid "Configure proposal"
 msgstr "제안 구성"
 
@@ -2522,7 +2498,7 @@ msgstr "확인"
 #: src/views/index-dtf/governance/views/propose/basket/components/basket-proposal-overview.tsx:65
 #: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/basket-settings-proposal-overview.tsx:53
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/dao-settings-proposal-overview.tsx:45
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/dtf-settings-proposal-overview.tsx:53
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/dtf-settings-proposal-overview.tsx:41
 #: src/views/yield-dtf/governance/views/proposal/components/ProposalOverview.tsx:41
 msgid "Confirm & prepare proposal"
 msgstr "제안 확인 및 준비"
@@ -2601,7 +2577,7 @@ msgid "Confirming tx..."
 msgstr "트랜잭션 확인 중..."
 
 #: src/views/index-dtf/deploy/steps/confirm-deploy/manual/components/deploy-assets-approvals.tsx:165
-#: src/views/index-dtf/governance/views/proposal/components/vote-modal.tsx:196
+#: src/views/index-dtf/governance/views/proposal/components/vote-modal.tsx:195
 #: src/views/index-dtf/issuance/manual/components/asset-list.tsx:110
 msgid "Confirming..."
 msgstr "확인 중..."
@@ -3000,7 +2976,7 @@ msgstr "현재 보유자"
 msgid "Current locked amount:"
 msgstr "현재 잠긴 수량:"
 
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/changes/basics-changes.tsx:67
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/changes/basics-changes.tsx:71
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/changes/mandate-changes.tsx:31
 msgid "Current mandate:"
 msgstr "현재 강령:"
@@ -3028,10 +3004,6 @@ msgstr "현재 단위"
 #: src/views/yield-dtf/overview/components/backing/backing-buffer.tsx:68
 msgid "Current value in buffer:"
 msgstr "버퍼의 현재 가치:"
-
-#: src/views/index-dtf/overview/components/index-disclousure.tsx:117
-#~ msgid "Current Version (v1)"
-#~ msgstr "현재 버전 (v1)"
 
 #: src/views/index-dtf/overview/components/index-disclousure.tsx:58
 msgid "Current Version (v2)"
@@ -3745,7 +3717,7 @@ msgstr "페이지 편집"
 #: src/views/index-dtf/governance/views/propose/basket/components/basket-proposal-overview.tsx:64
 #: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/basket-settings-proposal-overview.tsx:51
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/dao-settings-proposal-overview.tsx:43
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/dtf-settings-proposal-overview.tsx:53
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/dtf-settings-proposal-overview.tsx:41
 msgid "Edit proposal"
 msgstr "제안 편집"
 
@@ -4049,7 +4021,7 @@ msgstr "독점 알파 및 인사이트"
 msgid "Exclusive Auction Launcher Window"
 msgstr "독점 경매 실행자 윈도우"
 
-#: src/views/index-dtf/governance/components/proposal-preview/raw-call-preview.tsx:43
+#: src/views/index-dtf/governance/components/proposal-preview/raw-call-preview.tsx:44
 #: src/views/index-dtf/governance/components/proposal-preview/rebalance-preview/legacy-basket-proposal-preview.tsx:317
 #: src/views/index-dtf/governance/components/proposal-preview/unknown-contract-preview.tsx:72
 #: src/views/index-dtf/governance/views/propose/basket/components/proposal-basket-preview.tsx:400
@@ -4085,7 +4057,7 @@ msgstr "실행 가능 시점:"
 #: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/sections/propose-basket-governance.tsx:82
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/atoms.ts:185
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/sections/propose-dao-governance.tsx:93
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/atoms.ts:888
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/atoms.ts:883
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-governance-settings.tsx:91
 #: src/views/index-dtf/settings/components/index-settings-governance.tsx:128
 #: src/views/yield-dtf/settings/components/governance-info.tsx:57
@@ -4414,7 +4386,7 @@ msgstr "최종 투표"
 
 #: src/views/index-dtf/governance/views/propose/basket/components/basket-proposal-overview.tsx:82
 #: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/basket-settings-proposal-overview.tsx:74
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/dtf-settings-proposal-overview.tsx:74
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/dtf-settings-proposal-overview.tsx:65
 msgid "Finalize basket proposal"
 msgstr "바스켓 제안 확정"
 
@@ -4451,10 +4423,6 @@ msgstr "승인된 거버너가 제안을 신속 처리할 수 있도록 합니�
 #: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:93
 msgid "For larger amounts, split your order into multiple transactions."
 msgstr "더 큰 금액은 주문을 여러 건의 거래로 나누어 진행하세요."
-
-#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:115
-#~ msgid "For larger orders, a DEX like PancakeSwap may get you a better price by routing your trade across multiple sources of liquidity."
-#~ msgstr "대규모 주문의 경우 PancakeSwap 같은 DEX가 여러 유동성 소스로 거래를 라우팅해 더 나은 가격을 제공할 수 있습니다."
 
 #: src/views/index-dtf/components/compliance-alert.tsx:20
 msgid "For more information, see our <0>Terms of Use</0>."
@@ -5276,10 +5244,6 @@ msgstr "알려진 지원 Wallet"
 msgid "Language"
 msgstr "언어"
 
-#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:43
-#~ msgid "Large Order"
-#~ msgstr "대규모 주문"
-
 #. placeholder {0}: Math.ceil(amountUsd / ondo.capacityUsd)
 #: src/components/ondo-badge.tsx:156
 msgid "Larger than the max single trade — fills as ~{0} sequential trades."
@@ -5461,13 +5425,13 @@ msgstr "포트폴리오 데이터를 불러오는 중..."
 #: src/views/index-dtf/governance/views/proposal/components/proposal-header.tsx:58
 #: src/views/index-dtf/governance/views/proposal/components/proposal-header.tsx:99
 #: src/views/index-dtf/governance/views/proposal/components/proposal-header.tsx:122
-#: src/views/index-dtf/governance/views/proposal/components/vote-modal.tsx:141
+#: src/views/index-dtf/governance/views/proposal/components/vote-modal.tsx:140
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/sections/propose-revenue-tokens.tsx:63
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/vault-proposal-form.tsx:65
 #: src/views/index-dtf/overview/components/zap-mint/submit-zap.tsx:44
 #: src/views/index-dtf/settings/components/distribute-fees.tsx:83
 #: src/views/yield-dtf/governance/components/GovernanceOverview.tsx:169
-#: src/views/yield-dtf/governance/views/proposal-detail/components/VoteModal.tsx:92
+#: src/views/yield-dtf/governance/views/proposal-detail/components/VoteModal.tsx:91
 #: src/views/yield-dtf/governance/views/proposal-detail/ProposalHeader.tsx:64
 #: src/views/yield-dtf/governance/views/proposal-detail/ProposalHeader.tsx:104
 #: src/views/yield-dtf/governance/views/proposal-detail/ProposalHeader.tsx:121
@@ -6088,7 +6052,7 @@ msgstr "새 실행 지연:"
 msgid "New Index DTF"
 msgstr "새 Index DTF"
 
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/changes/basics-changes.tsx:76
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/changes/basics-changes.tsx:80
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/changes/mandate-changes.tsx:40
 msgid "New mandate:"
 msgstr "새 권한:"
@@ -6248,7 +6212,7 @@ msgstr "이 역할에 대한 보유자 없음..."
 msgid "No listed DTFs found"
 msgstr "등록된 DTF가 없습니다"
 
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/changes/basics-changes.tsx:70
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/changes/basics-changes.tsx:74
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/changes/mandate-changes.tsx:34
 msgid "No mandate set"
 msgstr "설정된 권한 없음"
@@ -6282,17 +6246,13 @@ msgstr "리밸런싱을 찾을 수 없음"
 msgid "No Reserve activity found in this wallet"
 msgstr "이 지갑에서 Reserve 활동을 찾을 수 없습니다"
 
-#: src/components/command-menu/index.tsx:129
+#: src/components/command-menu/index.tsx:151
 msgid "No results found."
 msgstr "결과를 찾을 수 없습니다."
 
 #: src/components/ui/data-table.tsx:349
 msgid "No results."
 msgstr "결과 없음."
-
-#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:45
-#~ msgid "No route found"
-#~ msgstr "경로를 찾을 수 없음"
 
 #: src/views/yield-dtf/staking/components/withdraw/cooldown-unstake.tsx:90
 msgid "No RSR in cooldown"
@@ -6469,10 +6429,6 @@ msgstr "/"
 #: src/views/index-dtf/overview/components/index-disclousure.tsx:54
 msgid "Official documentation for the CFB LCAP token"
 msgstr "CFB LCAP 토큰 공식 문서"
-
-#: src/views/index-dtf/overview/components/index-disclousure.tsx:113
-#~ msgid "Official documentation for the CMC20 token"
-#~ msgstr "CMC20 토큰 공식 문서"
 
 #: src/views/index-dtf/governance/views/propose/basket/components/proposal-basket-setup/proposal-basket-table.tsx:54
 msgid "Old units"
@@ -6694,14 +6650,6 @@ msgstr "Owner 주소"
 #: src/views/yield-dtf/governance/views/proposal/components/RolesProposal.tsx:17
 msgid "Owners"
 msgstr "Owners"
-
-#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:103
-#~ msgid "PancakeSwap is currently offering a better price for this exact order. We recommend buying {symbol} there instead."
-#~ msgstr "PancakeSwap에서 현재 이와 동일한 주문에 대해 더 나은 가격을 제공하고 있습니다. 대신 PancakeSwap에서 {symbol}을(를) 구매하는 것을 권장합니다."
-
-#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:108
-#~ msgid "PancakeSwap is currently offering a better price for this exact order. We recommend selling {symbol} there instead."
-#~ msgstr "PancakeSwap에서 현재 이와 동일한 주문에 대해 더 나은 가격을 제공하고 있습니다. 대신 PancakeSwap에서 {symbol}을(를) 판매하는 것을 권장합니다."
 
 #: src/views/index-dtf/governance/components/proposal-preview/raw-call-preview.tsx:28
 #: src/views/index-dtf/governance/components/proposal-preview/rebalance-preview/legacy-basket-proposal-preview.tsx:305
@@ -7305,7 +7253,7 @@ msgstr "제안이 통과됨"
 #: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/sections/propose-basket-governance.tsx:48
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/atoms.ts:166
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/sections/propose-dao-governance.tsx:60
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/atoms.ts:869
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/atoms.ts:864
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-governance-settings.tsx:58
 #: src/views/index-dtf/settings/components/index-settings-governance.tsx:94
 #: src/views/yield-dtf/settings/components/governance-info.tsx:61
@@ -7380,8 +7328,8 @@ msgid "Proposed"
 msgstr "제안됨"
 
 #: src/views/index-dtf/governance/views/proposal/components/proposal-header.tsx:103
-#: src/views/index-dtf/governance/views/proposal/components/vote-modal.tsx:146
-#: src/views/yield-dtf/governance/views/proposal-detail/components/VoteModal.tsx:96
+#: src/views/index-dtf/governance/views/proposal/components/vote-modal.tsx:145
+#: src/views/yield-dtf/governance/views/proposal-detail/components/VoteModal.tsx:95
 #: src/views/yield-dtf/governance/views/proposal-detail/ProposalHeader.tsx:107
 msgid "Proposed by"
 msgstr "제안자"
@@ -7393,7 +7341,7 @@ msgstr "제안자:"
 
 #: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/basket-settings-proposal-overview.tsx:126
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/dao-settings-proposal-overview.tsx:117
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/dtf-settings-proposal-overview.tsx:125
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/dtf-settings-proposal-overview.tsx:116
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalDetailContent.tsx:56
 msgid "Proposed changes"
 msgstr "제안된 변경 사항"
@@ -8105,7 +8053,7 @@ msgstr "{0} 백서 검토"
 #: src/views/index-dtf/governance/views/propose/basket/components/basket-proposal-overview.tsx:88
 #: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/basket-settings-proposal-overview.tsx:80
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/dao-settings-proposal-overview.tsx:72
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/dtf-settings-proposal-overview.tsx:80
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/dtf-settings-proposal-overview.tsx:71
 msgid "Review & describe your proposal"
 msgstr "제안 검토 및 설명"
 
@@ -8389,7 +8337,7 @@ msgstr "미팅 예약"
 msgid "Scheduled event"
 msgstr "예정된 이벤트"
 
-#: src/components/command-menu/index.tsx:101
+#: src/components/command-menu/index.tsx:123
 #: src/components/layout/header/components/header-actions-menu.tsx:72
 #: src/views/internal/dtf-list/components/dtf-date-chain-filters.tsx:50
 #: src/views/tokens/components/TableFilters.tsx:20
@@ -8422,7 +8370,7 @@ msgstr "토큰 이름 또는 주소로 검색"
 msgid "Search DTF name or symbol"
 msgstr "DTF 이름 또는 심볼 검색"
 
-#: src/components/command-menu/index.tsx:112
+#: src/components/command-menu/index.tsx:134
 msgid "Search for a DTF..."
 msgstr "DTF 검색..."
 
@@ -8520,10 +8468,6 @@ msgstr "${0} 판매"
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1008
 msgid "Sell collateral"
 msgstr "담보 매도"
-
-#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:254
-#~ msgid "Sell on PancakeSwap"
-#~ msgstr "PancakeSwap에서 판매"
 
 #: src/views/index-dtf/auctions/views/rebalance/components/auction-bids-chart.tsx:334
 #: src/views/index-dtf/auctions/views/rebalance/components/rebalance-liquidity-checker.tsx:278
@@ -9739,7 +9683,7 @@ msgid "This impacts whether the RToken charges higher rates for issuance when co
 msgstr "이는 담보가 페그 아래로 떨어졌을 때 RToken이 발행에 더 높은 요율을 부과할지 여부에 영향을 미칩니다. 이 메커니즘은 유해한 발행을 방지하는 데 유용할 수 있지만, 담보가 디페그 임계값에 가까워질수록 발행/상환 범위가 넓어져 온체인 오라클 가격을 신뢰할 수 없게 만드는 트레이드오프가 있습니다."
 
 #: src/views/index-dtf/deploy/steps/metadata/form-basic-metadata.tsx:18
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-metadata.tsx:55
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-metadata.tsx:56
 msgid "This Index DTF will…"
 msgstr "이 Index DTF는…"
 
@@ -9915,7 +9859,7 @@ msgstr "토큰 노출"
 msgid "Token name"
 msgstr "토큰 이름"
 
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/changes/basics-changes.tsx:49
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/changes/basics-changes.tsx:53
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-metadata.tsx:30
 msgid "Token Name"
 msgstr "토큰 이름"
@@ -10305,10 +10249,6 @@ msgstr "미국 {nextSessionLabel} 시간대에 다시 시도해 주세요."
 #: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:62
 msgid "Try again later when trading resumes."
 msgstr "거래가 재개되면 나중에 다시 시도해 주세요."
-
-#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:67
-#~ msgid "Try PancakeSwap"
-#~ msgstr "PancakeSwap 시도"
 
 #: src/views/yield-dtf/issuance/components/zapV2/ZapToggle.tsx:23
 msgid "Turn on Zaps to mint using 1 asset"
@@ -11024,8 +10964,8 @@ msgid "Volume (last 7d)"
 msgstr "거래량 (최근 7일)"
 
 #: src/views/index-dtf/governance/views/proposal/components/vote-modal.tsx:84
-#: src/views/index-dtf/governance/views/proposal/components/vote-modal.tsx:195
-#: src/views/yield-dtf/governance/views/proposal-detail/components/VoteModal.tsx:130
+#: src/views/index-dtf/governance/views/proposal/components/vote-modal.tsx:194
+#: src/views/yield-dtf/governance/views/proposal-detail/components/VoteModal.tsx:129
 msgid "Vote"
 msgstr "투표"
 
@@ -11179,7 +11119,7 @@ msgstr "투표 지연"
 #: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/sections/propose-basket-governance.tsx:22
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/atoms.ts:148
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/sections/propose-dao-governance.tsx:34
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/atoms.ts:851
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/atoms.ts:846
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-governance-settings.tsx:32
 #: src/views/index-dtf/settings/components/index-settings-governance.tsx:82
 msgid "Voting Delay"
@@ -11188,7 +11128,7 @@ msgstr "투표 지연"
 #: src/views/index-dtf/governance/views/propose/basket/components/basket-proposal-overview.tsx:93
 #: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/basket-settings-proposal-overview.tsx:85
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/dao-settings-proposal-overview.tsx:77
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/dtf-settings-proposal-overview.tsx:85
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/dtf-settings-proposal-overview.tsx:76
 msgid "Voting delay begins"
 msgstr "투표 지연 시작"
 
@@ -11211,7 +11151,7 @@ msgstr "Stake한 RToken에 대해 투표하려면 자신 또는 다른 Eth 주�
 #: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/sections/propose-basket-governance.tsx:35
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/atoms.ts:157
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/sections/propose-dao-governance.tsx:47
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/atoms.ts:860
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/atoms.ts:855
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-governance-settings.tsx:45
 #: src/views/index-dtf/settings/components/index-settings-governance.tsx:88
 #: src/views/yield-dtf/governance/views/proposal-detail/components/proposal-timeline/TimelineItem.tsx:131
@@ -11264,7 +11204,7 @@ msgstr "투표권 위임"
 #: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/sections/propose-basket-governance.tsx:59
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/atoms.ts:176
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/sections/propose-dao-governance.tsx:71
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/atoms.ts:879
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/atoms.ts:874
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-governance-settings.tsx:69
 #: src/views/index-dtf/settings/components/index-settings-governance.tsx:100
 msgid "Voting Quorum"
@@ -11398,14 +11338,6 @@ msgstr "영상 보기"
 #: src/views/home/components/homepage-hero.tsx:31
 msgid "We call these tokenized portfolios DTFs:"
 msgstr "이러한 토큰화된 포트폴리오를 DTF라고 부릅니다:"
-
-#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:122
-#~ msgid "We couldn't find a good price for this trade right now. We recommend using a DEX like PancakeSwap to buy {symbol}."
-#~ msgstr "현재 이 거래에 좋은 가격을 찾을 수 없습니다. {symbol} 구매에는 PancakeSwap 같은 DEX 사용을 권장합니다."
-
-#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:127
-#~ msgid "We couldn't find a good price for this trade right now. We recommend using a DEX like PancakeSwap to sell {symbol}."
-#~ msgstr "현재 이 거래에 좋은 가격을 찾을 수 없습니다. {symbol} 판매에는 PancakeSwap 같은 DEX 사용을 권장합니다."
 
 #: src/views/index-dtf/governance/components/proposal-preview/unknown-contract-preview.tsx:52
 msgid "We couldn’t retrieve the contract’s ABI from Etherscan. This usually means the contract is not verified. Without its interface, we’re unable to decode any function calls or parameters."
@@ -11826,14 +11758,6 @@ msgstr "DTF가 Mint되었습니다."
 #: src/views/earn/views/index-dtf/components/vote-lock-positions.tsx:242
 msgid "Your lock"
 msgstr "나의 Vote-lock"
-
-#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:134
-#~ msgid "Your order has unusually high price impact. We recommend buying {symbol} on PancakeSwap to get the best price possible."
-#~ msgstr "주문에 비정상적으로 높은 가격 영향이 있습니다. 가능한 최적의 가격을 위해 PancakeSwap에서 {symbol} 구매를 권장합니다."
-
-#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:139
-#~ msgid "Your order has unusually high price impact. We recommend selling {symbol} on PancakeSwap to get the best price possible."
-#~ msgstr "주문에 비정상적으로 높은 가격 영향이 있습니다. 가능한 최적의 가격을 위해 PancakeSwap에서 {symbol} 판매를 권장합니다."
 
 #: src/views/portfolio-page/index.tsx:41
 msgid "Your portfolio brings together DTF holdings, staked and vote-locked governance positions, rewards, pending withdrawals, voting power, RSR balances, and recent transactions."

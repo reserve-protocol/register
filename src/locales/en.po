@@ -665,14 +665,6 @@ msgstr ""
 msgid "24 hour"
 msgstr ""
 
-#: src/views/index-dtf/overview/components/index-metrics-overview.tsx:137
-#~ msgid "24h Supply Change"
-#~ msgstr ""
-
-#: src/views/index-dtf/overview/components/index-metrics-overview.tsx:151
-#~ msgid "24h Tx Volume"
-#~ msgstr ""
-
 #: src/views/index-dtf/overview/components/fees-stats.tsx:78
 msgid "24h Volume"
 msgstr ""
@@ -1322,7 +1314,7 @@ msgstr ""
 msgid "Are you sure you want to leave? This may cause the auction to fail and value to be lost."
 msgstr ""
 
-#: src/views/index-dtf/governance/views/proposal/components/vote-modal.tsx:166
+#: src/views/index-dtf/governance/views/proposal/components/vote-modal.tsx:165
 msgid "Are you sure you wish to challenge?"
 msgstr ""
 
@@ -1679,7 +1671,7 @@ msgstr ""
 msgid "Basics"
 msgstr ""
 
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/changes/basics-changes.tsx:41
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/changes/basics-changes.tsx:43
 msgid "Basics Update"
 msgstr ""
 
@@ -1843,14 +1835,6 @@ msgstr ""
 msgid "Best Quote"
 msgstr ""
 
-#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:41
-#~ msgid "Better price found"
-#~ msgstr ""
-
-#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:59
-#~ msgid "Better price on PancakeSwap"
-#~ msgstr ""
-
 #. placeholder {0}: formatCurrency( +formatUnits(currentPrice, data.buyingTokenDecimals) )
 #. placeholder {1}: data.buyingTokenSymbol
 #: src/views/yield-dtf/auctions/dutch/components/AuctionActions.tsx:96
@@ -2004,10 +1988,6 @@ msgstr ""
 msgid "Buy / Sell"
 msgstr ""
 
-#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:252
-#~ msgid "Buy on PancakeSwap"
-#~ msgstr ""
-
 #: src/views/index-dtf/auctions/views/rebalance/components/rebalance-action.tsx:37
 msgid "Buy/sell tokens to move closer to proposed weights."
 msgstr ""
@@ -2080,7 +2060,7 @@ msgstr ""
 #: src/views/index-dtf/governance/views/propose/basket/components/basket-proposal-overview.tsx:37
 #: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/basket-settings-proposal-overview.tsx:110
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/dao-settings-proposal-overview.tsx:102
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/dtf-settings-proposal-overview.tsx:110
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/dtf-settings-proposal-overview.tsx:101
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1243
 #: src/views/yield-dtf/staking/components/stake/edit-delegate.tsx:40
 msgid "Cancel"
@@ -2176,7 +2156,7 @@ msgstr ""
 msgid "Challenge"
 msgstr ""
 
-#: src/views/index-dtf/governance/views/proposal/components/vote-modal.tsx:195
+#: src/views/index-dtf/governance/views/proposal/components/vote-modal.tsx:194
 msgid "Challenge proposal"
 msgstr ""
 
@@ -2336,10 +2316,6 @@ msgstr ""
 msgid "Closes"
 msgstr ""
 
-#: src/views/index-dtf/overview/components/index-disclousure.tsx:120
-#~ msgid "CMC20 whitepaper documentation"
-#~ msgstr ""
-
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1644
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1651
 msgid "Collapse orders"
@@ -2488,7 +2464,7 @@ msgstr ""
 #: src/views/index-dtf/governance/views/propose/basket/components/basket-proposal-overview.tsx:77
 #: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/basket-settings-proposal-overview.tsx:69
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/dao-settings-proposal-overview.tsx:61
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/dtf-settings-proposal-overview.tsx:69
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/dtf-settings-proposal-overview.tsx:60
 msgid "Configure proposal"
 msgstr ""
 
@@ -2522,7 +2498,7 @@ msgstr ""
 #: src/views/index-dtf/governance/views/propose/basket/components/basket-proposal-overview.tsx:65
 #: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/basket-settings-proposal-overview.tsx:53
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/dao-settings-proposal-overview.tsx:45
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/dtf-settings-proposal-overview.tsx:53
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/dtf-settings-proposal-overview.tsx:41
 #: src/views/yield-dtf/governance/views/proposal/components/ProposalOverview.tsx:41
 msgid "Confirm & prepare proposal"
 msgstr ""
@@ -2601,7 +2577,7 @@ msgid "Confirming tx..."
 msgstr ""
 
 #: src/views/index-dtf/deploy/steps/confirm-deploy/manual/components/deploy-assets-approvals.tsx:165
-#: src/views/index-dtf/governance/views/proposal/components/vote-modal.tsx:196
+#: src/views/index-dtf/governance/views/proposal/components/vote-modal.tsx:195
 #: src/views/index-dtf/issuance/manual/components/asset-list.tsx:110
 msgid "Confirming..."
 msgstr ""
@@ -3000,7 +2976,7 @@ msgstr ""
 msgid "Current locked amount:"
 msgstr ""
 
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/changes/basics-changes.tsx:67
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/changes/basics-changes.tsx:71
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/changes/mandate-changes.tsx:31
 msgid "Current mandate:"
 msgstr ""
@@ -3028,10 +3004,6 @@ msgstr ""
 #: src/views/yield-dtf/overview/components/backing/backing-buffer.tsx:68
 msgid "Current value in buffer:"
 msgstr ""
-
-#: src/views/index-dtf/overview/components/index-disclousure.tsx:117
-#~ msgid "Current Version (v1)"
-#~ msgstr ""
 
 #: src/views/index-dtf/overview/components/index-disclousure.tsx:58
 msgid "Current Version (v2)"
@@ -3745,7 +3717,7 @@ msgstr ""
 #: src/views/index-dtf/governance/views/propose/basket/components/basket-proposal-overview.tsx:64
 #: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/basket-settings-proposal-overview.tsx:51
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/dao-settings-proposal-overview.tsx:43
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/dtf-settings-proposal-overview.tsx:53
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/dtf-settings-proposal-overview.tsx:41
 msgid "Edit proposal"
 msgstr ""
 
@@ -4049,7 +4021,7 @@ msgstr ""
 msgid "Exclusive Auction Launcher Window"
 msgstr ""
 
-#: src/views/index-dtf/governance/components/proposal-preview/raw-call-preview.tsx:43
+#: src/views/index-dtf/governance/components/proposal-preview/raw-call-preview.tsx:44
 #: src/views/index-dtf/governance/components/proposal-preview/rebalance-preview/legacy-basket-proposal-preview.tsx:317
 #: src/views/index-dtf/governance/components/proposal-preview/unknown-contract-preview.tsx:72
 #: src/views/index-dtf/governance/views/propose/basket/components/proposal-basket-preview.tsx:400
@@ -4085,7 +4057,7 @@ msgstr ""
 #: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/sections/propose-basket-governance.tsx:82
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/atoms.ts:185
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/sections/propose-dao-governance.tsx:93
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/atoms.ts:888
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/atoms.ts:883
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-governance-settings.tsx:91
 #: src/views/index-dtf/settings/components/index-settings-governance.tsx:128
 #: src/views/yield-dtf/settings/components/governance-info.tsx:57
@@ -4414,7 +4386,7 @@ msgstr ""
 
 #: src/views/index-dtf/governance/views/propose/basket/components/basket-proposal-overview.tsx:82
 #: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/basket-settings-proposal-overview.tsx:74
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/dtf-settings-proposal-overview.tsx:74
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/dtf-settings-proposal-overview.tsx:65
 msgid "Finalize basket proposal"
 msgstr ""
 
@@ -4451,10 +4423,6 @@ msgstr ""
 #: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:93
 msgid "For larger amounts, split your order into multiple transactions."
 msgstr ""
-
-#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:115
-#~ msgid "For larger orders, a DEX like PancakeSwap may get you a better price by routing your trade across multiple sources of liquidity."
-#~ msgstr ""
 
 #: src/views/index-dtf/components/compliance-alert.tsx:20
 msgid "For more information, see our <0>Terms of Use</0>."
@@ -5276,10 +5244,6 @@ msgstr ""
 msgid "Language"
 msgstr ""
 
-#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:43
-#~ msgid "Large Order"
-#~ msgstr ""
-
 #. placeholder {0}: Math.ceil(amountUsd / ondo.capacityUsd)
 #: src/components/ondo-badge.tsx:156
 msgid "Larger than the max single trade — fills as ~{0} sequential trades."
@@ -5461,13 +5425,13 @@ msgstr ""
 #: src/views/index-dtf/governance/views/proposal/components/proposal-header.tsx:58
 #: src/views/index-dtf/governance/views/proposal/components/proposal-header.tsx:99
 #: src/views/index-dtf/governance/views/proposal/components/proposal-header.tsx:122
-#: src/views/index-dtf/governance/views/proposal/components/vote-modal.tsx:141
+#: src/views/index-dtf/governance/views/proposal/components/vote-modal.tsx:140
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/sections/propose-revenue-tokens.tsx:63
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/vault-proposal-form.tsx:65
 #: src/views/index-dtf/overview/components/zap-mint/submit-zap.tsx:44
 #: src/views/index-dtf/settings/components/distribute-fees.tsx:83
 #: src/views/yield-dtf/governance/components/GovernanceOverview.tsx:169
-#: src/views/yield-dtf/governance/views/proposal-detail/components/VoteModal.tsx:92
+#: src/views/yield-dtf/governance/views/proposal-detail/components/VoteModal.tsx:91
 #: src/views/yield-dtf/governance/views/proposal-detail/ProposalHeader.tsx:64
 #: src/views/yield-dtf/governance/views/proposal-detail/ProposalHeader.tsx:104
 #: src/views/yield-dtf/governance/views/proposal-detail/ProposalHeader.tsx:121
@@ -6088,7 +6052,7 @@ msgstr ""
 msgid "New Index DTF"
 msgstr ""
 
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/changes/basics-changes.tsx:76
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/changes/basics-changes.tsx:80
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/changes/mandate-changes.tsx:40
 msgid "New mandate:"
 msgstr ""
@@ -6248,7 +6212,7 @@ msgstr ""
 msgid "No listed DTFs found"
 msgstr ""
 
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/changes/basics-changes.tsx:70
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/changes/basics-changes.tsx:74
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/changes/mandate-changes.tsx:34
 msgid "No mandate set"
 msgstr ""
@@ -6282,17 +6246,13 @@ msgstr ""
 msgid "No Reserve activity found in this wallet"
 msgstr ""
 
-#: src/components/command-menu/index.tsx:129
+#: src/components/command-menu/index.tsx:151
 msgid "No results found."
 msgstr ""
 
 #: src/components/ui/data-table.tsx:349
 msgid "No results."
 msgstr ""
-
-#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:45
-#~ msgid "No route found"
-#~ msgstr ""
 
 #: src/views/yield-dtf/staking/components/withdraw/cooldown-unstake.tsx:90
 msgid "No RSR in cooldown"
@@ -6469,10 +6429,6 @@ msgstr ""
 #: src/views/index-dtf/overview/components/index-disclousure.tsx:54
 msgid "Official documentation for the CFB LCAP token"
 msgstr ""
-
-#: src/views/index-dtf/overview/components/index-disclousure.tsx:113
-#~ msgid "Official documentation for the CMC20 token"
-#~ msgstr ""
 
 #: src/views/index-dtf/governance/views/propose/basket/components/proposal-basket-setup/proposal-basket-table.tsx:54
 msgid "Old units"
@@ -6694,14 +6650,6 @@ msgstr ""
 #: src/views/yield-dtf/governance/views/proposal/components/RolesProposal.tsx:17
 msgid "Owners"
 msgstr ""
-
-#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:103
-#~ msgid "PancakeSwap is currently offering a better price for this exact order. We recommend buying {symbol} there instead."
-#~ msgstr ""
-
-#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:108
-#~ msgid "PancakeSwap is currently offering a better price for this exact order. We recommend selling {symbol} there instead."
-#~ msgstr ""
 
 #: src/views/index-dtf/governance/components/proposal-preview/raw-call-preview.tsx:28
 #: src/views/index-dtf/governance/components/proposal-preview/rebalance-preview/legacy-basket-proposal-preview.tsx:305
@@ -7305,7 +7253,7 @@ msgstr ""
 #: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/sections/propose-basket-governance.tsx:48
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/atoms.ts:166
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/sections/propose-dao-governance.tsx:60
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/atoms.ts:869
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/atoms.ts:864
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-governance-settings.tsx:58
 #: src/views/index-dtf/settings/components/index-settings-governance.tsx:94
 #: src/views/yield-dtf/settings/components/governance-info.tsx:61
@@ -7380,8 +7328,8 @@ msgid "Proposed"
 msgstr ""
 
 #: src/views/index-dtf/governance/views/proposal/components/proposal-header.tsx:103
-#: src/views/index-dtf/governance/views/proposal/components/vote-modal.tsx:146
-#: src/views/yield-dtf/governance/views/proposal-detail/components/VoteModal.tsx:96
+#: src/views/index-dtf/governance/views/proposal/components/vote-modal.tsx:145
+#: src/views/yield-dtf/governance/views/proposal-detail/components/VoteModal.tsx:95
 #: src/views/yield-dtf/governance/views/proposal-detail/ProposalHeader.tsx:107
 msgid "Proposed by"
 msgstr ""
@@ -7393,7 +7341,7 @@ msgstr ""
 
 #: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/basket-settings-proposal-overview.tsx:126
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/dao-settings-proposal-overview.tsx:117
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/dtf-settings-proposal-overview.tsx:125
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/dtf-settings-proposal-overview.tsx:116
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalDetailContent.tsx:56
 msgid "Proposed changes"
 msgstr ""
@@ -8105,7 +8053,7 @@ msgstr ""
 #: src/views/index-dtf/governance/views/propose/basket/components/basket-proposal-overview.tsx:88
 #: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/basket-settings-proposal-overview.tsx:80
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/dao-settings-proposal-overview.tsx:72
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/dtf-settings-proposal-overview.tsx:80
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/dtf-settings-proposal-overview.tsx:71
 msgid "Review & describe your proposal"
 msgstr ""
 
@@ -8389,7 +8337,7 @@ msgstr ""
 msgid "Scheduled event"
 msgstr ""
 
-#: src/components/command-menu/index.tsx:101
+#: src/components/command-menu/index.tsx:123
 #: src/components/layout/header/components/header-actions-menu.tsx:72
 #: src/views/internal/dtf-list/components/dtf-date-chain-filters.tsx:50
 #: src/views/tokens/components/TableFilters.tsx:20
@@ -8422,7 +8370,7 @@ msgstr ""
 msgid "Search DTF name or symbol"
 msgstr ""
 
-#: src/components/command-menu/index.tsx:112
+#: src/components/command-menu/index.tsx:134
 msgid "Search for a DTF..."
 msgstr ""
 
@@ -8520,10 +8468,6 @@ msgstr ""
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1008
 msgid "Sell collateral"
 msgstr ""
-
-#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:254
-#~ msgid "Sell on PancakeSwap"
-#~ msgstr ""
 
 #: src/views/index-dtf/auctions/views/rebalance/components/auction-bids-chart.tsx:334
 #: src/views/index-dtf/auctions/views/rebalance/components/rebalance-liquidity-checker.tsx:278
@@ -9728,7 +9672,7 @@ msgid "This impacts whether the RToken charges higher rates for issuance when co
 msgstr ""
 
 #: src/views/index-dtf/deploy/steps/metadata/form-basic-metadata.tsx:18
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-metadata.tsx:55
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-metadata.tsx:56
 msgid "This Index DTF will…"
 msgstr ""
 
@@ -9904,7 +9848,7 @@ msgstr ""
 msgid "Token name"
 msgstr ""
 
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/changes/basics-changes.tsx:49
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/changes/basics-changes.tsx:53
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-metadata.tsx:30
 msgid "Token Name"
 msgstr ""
@@ -10294,10 +10238,6 @@ msgstr ""
 #: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:62
 msgid "Try again later when trading resumes."
 msgstr ""
-
-#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:67
-#~ msgid "Try PancakeSwap"
-#~ msgstr ""
 
 #: src/views/yield-dtf/issuance/components/zapV2/ZapToggle.tsx:23
 msgid "Turn on Zaps to mint using 1 asset"
@@ -11013,8 +10953,8 @@ msgid "Volume (last 7d)"
 msgstr ""
 
 #: src/views/index-dtf/governance/views/proposal/components/vote-modal.tsx:84
-#: src/views/index-dtf/governance/views/proposal/components/vote-modal.tsx:195
-#: src/views/yield-dtf/governance/views/proposal-detail/components/VoteModal.tsx:130
+#: src/views/index-dtf/governance/views/proposal/components/vote-modal.tsx:194
+#: src/views/yield-dtf/governance/views/proposal-detail/components/VoteModal.tsx:129
 msgid "Vote"
 msgstr ""
 
@@ -11168,7 +11108,7 @@ msgstr ""
 #: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/sections/propose-basket-governance.tsx:22
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/atoms.ts:148
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/sections/propose-dao-governance.tsx:34
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/atoms.ts:851
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/atoms.ts:846
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-governance-settings.tsx:32
 #: src/views/index-dtf/settings/components/index-settings-governance.tsx:82
 msgid "Voting Delay"
@@ -11177,7 +11117,7 @@ msgstr ""
 #: src/views/index-dtf/governance/views/propose/basket/components/basket-proposal-overview.tsx:93
 #: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/basket-settings-proposal-overview.tsx:85
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/dao-settings-proposal-overview.tsx:77
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/dtf-settings-proposal-overview.tsx:85
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/dtf-settings-proposal-overview.tsx:76
 msgid "Voting delay begins"
 msgstr ""
 
@@ -11200,7 +11140,7 @@ msgstr ""
 #: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/sections/propose-basket-governance.tsx:35
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/atoms.ts:157
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/sections/propose-dao-governance.tsx:47
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/atoms.ts:860
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/atoms.ts:855
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-governance-settings.tsx:45
 #: src/views/index-dtf/settings/components/index-settings-governance.tsx:88
 #: src/views/yield-dtf/governance/views/proposal-detail/components/proposal-timeline/TimelineItem.tsx:131
@@ -11253,7 +11193,7 @@ msgstr ""
 #: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/sections/propose-basket-governance.tsx:59
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/atoms.ts:176
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/sections/propose-dao-governance.tsx:71
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/atoms.ts:879
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/atoms.ts:874
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-governance-settings.tsx:69
 #: src/views/index-dtf/settings/components/index-settings-governance.tsx:100
 msgid "Voting Quorum"
@@ -11387,14 +11327,6 @@ msgstr ""
 #: src/views/home/components/homepage-hero.tsx:31
 msgid "We call these tokenized portfolios DTFs:"
 msgstr ""
-
-#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:122
-#~ msgid "We couldn't find a good price for this trade right now. We recommend using a DEX like PancakeSwap to buy {symbol}."
-#~ msgstr ""
-
-#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:127
-#~ msgid "We couldn't find a good price for this trade right now. We recommend using a DEX like PancakeSwap to sell {symbol}."
-#~ msgstr ""
 
 #: src/views/index-dtf/governance/components/proposal-preview/unknown-contract-preview.tsx:52
 msgid "We couldn’t retrieve the contract’s ABI from Etherscan. This usually means the contract is not verified. Without its interface, we’re unable to decode any function calls or parameters."
@@ -11815,14 +11747,6 @@ msgstr ""
 #: src/views/earn/views/index-dtf/components/vote-lock-positions.tsx:242
 msgid "Your lock"
 msgstr ""
-
-#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:134
-#~ msgid "Your order has unusually high price impact. We recommend buying {symbol} on PancakeSwap to get the best price possible."
-#~ msgstr ""
-
-#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:139
-#~ msgid "Your order has unusually high price impact. We recommend selling {symbol} on PancakeSwap to get the best price possible."
-#~ msgstr ""
 
 #: src/views/portfolio-page/index.tsx:41
 msgid "Your portfolio brings together DTF holdings, staked and vote-locked governance positions, rewards, pending withdrawals, voting power, RSR balances, and recent transactions."

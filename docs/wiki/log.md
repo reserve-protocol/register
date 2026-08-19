@@ -1,6 +1,6 @@
 ---
 title: Log
-updated: 2026-08-08
+updated: 2026-08-19
 type: log
 ---
 
@@ -129,3 +129,7 @@ Play-by-play lives in git (PRs #1053/#1054/#1055/#1063, SDK PR #27). Durable out
 ## 2026-08-08
 
 - DTF Settings confirmation was globally gated by deploy-time schema validity, so unchanged on-chain values with display-rounding drift blocked unrelated governance changes even though those values were omitted from proposal calldata. The gate now scopes errors to changed settings while preserving no-change and changed-invalid guards; the E2E regression models an unchanged invalid distribution plus a valid mandate update.
+
+## 2026-08-19
+
+- Locale initialization now uses the first supported browser preference for visitors without a saved choice; a persisted explicit choice still wins. A clean Lingui extraction confirmed 2,543 active catalog messages with zero missing Spanish, Korean, or Simplified Chinese translations and removed obsolete catalog entries. This supersedes the earlier ~117-missing-message backlog entry. Live browser verification covered Spanish auto-selection plus a Korean selection surviving reload.
