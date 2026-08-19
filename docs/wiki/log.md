@@ -132,4 +132,4 @@ Play-by-play lives in git (PRs #1053/#1054/#1055/#1063, SDK PR #27). Durable out
 
 ## 2026-08-19
 
-- Locale initialization now uses the first supported browser preference for visitors without a saved choice; a persisted explicit choice still wins. A clean Lingui extraction confirmed 2,543 active messages with zero missing Spanish, Korean, or Chinese translations and removed obsolete catalog entries. Live browser verification covered Spanish auto-selection plus a Korean selection surviving reload.
+- Locale initialization now uses the first supported browser preference for visitors without a saved choice; a persisted explicit choice still wins. A clean Lingui extraction confirmed 2,543 active catalog messages with zero missing Spanish, Korean, or Simplified Chinese translations and removed obsolete catalog entries. This supersedes the earlier ~117-missing-message backlog entry. Live browser verification covered Spanish auto-selection plus a Korean selection surviving reload.
