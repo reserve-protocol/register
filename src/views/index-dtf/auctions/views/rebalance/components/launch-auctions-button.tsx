@@ -65,8 +65,7 @@ const LaunchAuctionsButton = () => {
   const auctions = useAtomValue(rebalanceAuctionsAtom)
   const currentTime = useCurrentTime()
   const isFeeHandoutOverlap =
-    !!rebalanceParams &&
-    wouldAuctionOverlapFeeHandout(currentTime, rebalanceParams.auctionLength)
+    !!dtf && wouldAuctionOverlapFeeHandout(currentTime, dtf.auctionLength)
 
   const weightsToUse =
     isHybridDTF && areWeightsSaved && savedWeights && auctions.length === 0
@@ -156,6 +155,9 @@ const LaunchAuctionsButton = () => {
       )
       if (wouldAuctionOverlapFeeHandoutNow(auctionLength)) {
         setIsLaunching(false)
+        toast.error(
+          t`Cannot launch: auction would overlap the daily TVL fee handout`
+        )
         return
       }
 

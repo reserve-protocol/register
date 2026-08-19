@@ -47,19 +47,15 @@ const CommunityLaunchAuctionsButton = () => {
     chainId: dtf?.chainId,
   })
   const [error, setError] = useState<string | null>(null)
-  const [countdown, setCountdown] = useState<number>(0)
   const isAuctionOngoing = useAtomValue(isAuctionOngoingAtom)
   const currentTime = useCurrentTime()
   const restrictedUntil = rebalance
     ? Number(rebalance.rebalance.restrictedUntil)
     : 0
-  const isRestrictedPeriod = rebalance && restrictedUntil > currentTime
-  const timeUntilPermissionless = isRestrictedPeriod
-    ? restrictedUntil - currentTime
-    : 0
+  const isRestrictedPeriod = !!rebalance && restrictedUntil > currentTime
+  const countdown = Math.max(0, restrictedUntil - currentTime)
   const isFeeHandoutOverlap =
-    !!rebalanceParams &&
-    wouldAuctionOverlapFeeHandout(currentTime, rebalanceParams.auctionLength)
+    !!dtf && wouldAuctionOverlapFeeHandout(currentTime, dtf.auctionLength)
   const isValid =
     !!rebalanceParams &&
     rebalancePercent > 0 &&
@@ -68,23 +64,6 @@ const CommunityLaunchAuctionsButton = () => {
     !isFeeHandoutOverlap
   const isNotCommunityLaunch =
     rebalance?.rebalance.availableUntil === rebalance?.rebalance.restrictedUntil
-
-  // Countdown effect for restricted period
-  useEffect(() => {
-    if (isRestrictedPeriod) {
-      const interval = setInterval(() => {
-        const newTime = Math.floor(Date.now() / 1000)
-        const remaining = restrictedUntil - newTime
-        setCountdown(Math.max(0, remaining))
-
-        if (remaining <= 0) {
-          clearInterval(interval)
-        }
-      }, 1000)
-
-      return () => clearInterval(interval)
-    }
-  }, [isRestrictedPeriod, restrictedUntil])
 
   useEffect(() => {
     if (isSuccess) {
@@ -127,6 +106,9 @@ const CommunityLaunchAuctionsButton = () => {
       )
       if (wouldAuctionOverlapFeeHandoutNow(auctionLength)) {
         setIsLaunching(false)
+        setError(
+          t`Cannot launch: auction would overlap the daily TVL fee handout`
+        )
         return
       }
 
@@ -155,7 +137,7 @@ const CommunityLaunchAuctionsButton = () => {
     )
   }
 
-  if (isRestrictedPeriod && timeUntilPermissionless > 0) {
+  if (isRestrictedPeriod && countdown > 0) {
     return (
       <div className="flex flex-col gap-2 p-2 text-center">
         <Button className="rounded-xl w-full py-6 gap-2" disabled={true}>
@@ -222,7 +204,11 @@ const CommunityLaunchAuctionsButton = () => {
           </>
         )}
       </Button>
-      {error && <div className="text-red-500">{error}</div>}
+      {error && (
+        <div data-testid="auctions-launch-error" className="text-red-500">
+          {error}
+        </div>
+      )}
     </div>
   )
 }

@@ -1,4 +1,4 @@
-import { describe, expect, it, vi } from 'vitest'
+import { afterEach, describe, expect, it, vi } from 'vitest'
 import {
   wouldAuctionOverlapFeeHandout,
   wouldAuctionOverlapFeeHandoutNow,
@@ -9,6 +9,8 @@ const WARMUP = 30
 
 const timestampAt = (hours: number, minutes = 0, seconds = 0) =>
   hours * 60 * 60 + minutes * 60 + seconds
+
+afterEach(() => vi.useRealTimers())
 
 describe('wouldAuctionOverlapFeeHandout', () => {
   it('allows an auction that ends before the next daily fee handout', () => {
@@ -38,7 +40,5 @@ describe('wouldAuctionOverlapFeeHandout', () => {
     vi.setSystemTime(timestampAt(23, 29, 31) * 1000)
 
     expect(wouldAuctionOverlapFeeHandoutNow(30 * 60)).toBe(true)
-
-    vi.useRealTimers()
   })
 })

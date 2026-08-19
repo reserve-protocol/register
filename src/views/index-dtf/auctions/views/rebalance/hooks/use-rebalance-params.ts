@@ -35,7 +35,6 @@ import useRebalancePriceVolatility from './use-rebalance-price-volatility'
 
 export type RebalanceParams = {
   supply: bigint
-  auctionLength: number
   initialSupply: bigint
   rebalance: RebalanceV4 | RebalanceV5
   currentAssets: Record<string, bigint>
@@ -164,7 +163,6 @@ const useRebalanceParams = () => {
       initialAssets,
       currentAssets: currentRebalanceData.currentAssets,
       supply: currentRebalanceData.supply,
-      auctionLength: currentRebalanceData.auctionLength,
       prices,
       tokenPriceVolatility,
       isTrackingDTF: !rebalanceControl.weightControl,

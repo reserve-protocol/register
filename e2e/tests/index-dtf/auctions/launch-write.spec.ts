@@ -46,11 +46,15 @@ const BSC_USDT = '0x55d398326f99059fF775485246999027B3197955'
 // Detail-page fills shared by both launch paths: empty token list → 'medium'
 // volatility; empty liquidity → no warnings; connected wallet's BSC-USDT (a
 // cmc20 basket token) balanceOf → 0. COVERAGE DEBT: bsc-connected specs need
-// central basket balanceOf seeding once they grow beyond this.
-function seedAuctionDetail(overrides: {
-  api: (m: { method?: string; pathname: string }, data: unknown) => unknown
-  ethCall: (a: string, c: string, r: `0x${string}`) => unknown
-}) {
+// central basket balanceOf seeding once they grow beyond this. The Folio RPC
+// auction length defaults to 30m here and can be changed per scenario.
+function seedAuctionDetail(
+  overrides: {
+    api: (m: { method?: string; pathname: string }, data: unknown) => unknown
+    ethCall: (a: string, c: string, r: `0x${string}`) => unknown
+  },
+  auctionLength = 30 * 60
+) {
   overrides.api({ pathname: '/zapper/tokens' }, [])
   overrides.api({ method: 'POST', pathname: '/rebalance/liquidity' }, {
     market: null,
@@ -65,6 +69,11 @@ function seedAuctionDetail(overrides: {
       args: [TEST_ADDRESS],
     }),
     encodeAbiParameters([{ type: 'uint256' }], [0n])
+  )
+  overrides.ethCall(
+    dtf.address,
+    '0x325c25a2',
+    encodeAbiParameters([{ type: 'uint256' }], [BigInt(auctionLength)])
   )
 }
 
@@ -221,8 +230,15 @@ test('auctions: rechecks the fee cutoff at click time before the next render @sm
   await harness.chain.jumpTo(cutoff)
   await expect(launch).toBeEnabled()
   await launch.click()
-  await harness.chain.advance(1_000)
 
+  const overlapToast = page.locator('[data-sonner-toast][data-type="error"]')
+  await expect(async () => {
+    await harness.chain.advance(1_000)
+    await expect(overlapToast).toContainText(
+      'Cannot launch: auction would overlap the daily TVL fee handout',
+      { timeout: 1_000 }
+    )
+  }).toPass({ timeout: 15_000 })
   expect(harness.tx.log).toHaveLength(0)
 })
 
@@ -244,6 +260,7 @@ test('auctions: uses live RPC auction length when the subgraph is stale @smoke',
     {
       dtf: {
         ...dtfObj,
+        auctionLength: String(30 * 60),
         auctionLaunchers: [
           ...dtfObj.auctionLaunchers,
           TEST_ADDRESS.toLowerCase(),
@@ -251,12 +268,7 @@ test('auctions: uses live RPC auction length when the subgraph is stale @smoke',
       },
     }
   )
-  overrides.ethCall(
-    dtf.address,
-    '0x325c25a2',
-    encodeAbiParameters([{ type: 'uint256' }], [2n * 60n * 60n])
-  )
-  seedAuctionDetail(overrides)
+  seedAuctionDetail(overrides, 2 * 60 * 60)
   overrides.ethCall(
     dtf.address,
     '0xaa3b5568',
@@ -273,9 +285,19 @@ test('auctions: uses live RPC auction length when the subgraph is stale @smoke',
   await expect(async () => {
     await harness.chain.advance(5_000)
     await expect(launch).toBeVisible()
-    await expect(launch).toBeDisabled()
-    await expect(page.getByTestId('auctions-fee-handout-overlap')).toBeVisible()
+    await expect(launch).toBeEnabled()
   }).toPass({ timeout: 30_000 })
+
+  await launch.click()
+
+  const overlapToast = page.locator('[data-sonner-toast][data-type="error"]')
+  await expect(async () => {
+    await harness.chain.advance(1_000)
+    await expect(overlapToast).toContainText(
+      'Cannot launch: auction would overlap the daily TVL fee handout',
+      { timeout: 1_000 }
+    )
+  }).toPass({ timeout: 15_000 })
   expect(harness.tx.log).toHaveLength(0)
 })
 
@@ -320,8 +342,15 @@ test('auctions: rechecks live RPC auction length at click time @smoke', async ({
     encodeAbiParameters([{ type: 'uint256' }], [2n * 60n * 60n])
   )
   await launch.click()
-  await harness.chain.advance(1_000)
 
+  const overlapToast = page.locator('[data-sonner-toast][data-type="error"]')
+  await expect(async () => {
+    await harness.chain.advance(1_000)
+    await expect(overlapToast).toContainText(
+      'Cannot launch: auction would overlap the daily TVL fee handout',
+      { timeout: 1_000 }
+    )
+  }).toPass({ timeout: 15_000 })
   expect(harness.tx.log).toHaveLength(0)
 })
 
@@ -371,6 +400,64 @@ test('auctions: blocks community auctions that would overlap the daily TVL fee h
     await expect(launch).toBeDisabled()
     await expect(page.getByTestId('auctions-fee-handout-overlap')).toBeVisible()
   }).toPass({ timeout: 30_000 })
+  expect(harness.tx.log).toHaveLength(0)
+})
+
+test('auctions: community launch surfaces a click-time fee cutoff block @smoke', async ({
+  harness,
+  overrides,
+}) => {
+  const page = harness.page
+  const raw = loadRebalances(dtf)[0]
+  const nextFeeHandout =
+    (Math.floor(Number(raw.restrictedUntil) / (24 * 60 * 60)) + 1) *
+    24 *
+    60 *
+    60
+  const auctionLength = 30 * 60
+  const cutoff = nextFeeHandout - 30 - auctionLength
+  const availableUntil = String(nextFeeHandout + 60 * 60)
+  const permissionless = { ...raw, availableUntil }
+
+  await harness.chain.freezeAt(cutoff - 30)
+  const rebSnap = loadSnapshot<{ rebalances: Array<Record<string, unknown>> }>(
+    `${dtf.snapshotDir}/rebalances.json`
+  )
+  overrides.subgraph(
+    { operationName: 'getRebalances' },
+    {
+      rebalances: rebSnap.rebalances.map((r) =>
+        r.blockNumber === raw.blockNumber ? { ...r, availableUntil } : r
+      ),
+    }
+  )
+  seedAuctionDetail(overrides, auctionLength)
+  overrides.ethCall(
+    dtf.address,
+    '0xaa3b5568',
+    encodeActiveRebalance(dtf, permissionless)
+  )
+
+  await harness.goto(dtf, `auctions/rebalance/${proposalIdFor(dtf, raw)}`)
+  await harness.wallet.connect()
+  await expect(page.getByTestId('dtf-auctions')).toBeVisible({
+    timeout: 20_000,
+  })
+
+  const launch = page.getByTestId('auctions-community-launch-btn')
+  await expect(async () => {
+    await harness.chain.advance(5_000)
+    await expect(launch).toBeEnabled()
+  }).toPass({ timeout: 30_000 })
+
+  await harness.chain.jumpTo(cutoff)
+  await expect(launch).toBeEnabled()
+  await launch.click()
+  await harness.chain.advance(1_000)
+
+  await expect(page.getByTestId('auctions-launch-error')).toContainText(
+    'Cannot launch: auction would overlap the daily TVL fee handout'
+  )
   expect(harness.tx.log).toHaveLength(0)
 })
 
