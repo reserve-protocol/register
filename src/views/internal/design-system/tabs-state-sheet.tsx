@@ -29,11 +29,31 @@ const TabsStateSheet = () => (
       <TabSpecimen title="Text only · default" detail="16px · 44px row">
         <TextOnlyTabs size="default" />
       </TabSpecimen>
-      <TabSpecimen title="Contained · compact" detail="32px track · 12px inset">
+      <TabSpecimen
+        title="Text only · full width"
+        detail="44px row · equal-width items"
+        wide
+      >
+        <TextOnlyTabs size="default" width="full" />
+      </TabSpecimen>
+      <TabSpecimen
+        title="Contained · compact"
+        detail="32px track · 12px item padding"
+      >
         <ContainedTabs size="compact" />
       </TabSpecimen>
-      <TabSpecimen title="Contained · default" detail="44px track · 20px inset">
+      <TabSpecimen
+        title="Contained · default"
+        detail="44px track · 20px item padding"
+      >
         <ContainedTabs size="default" />
+      </TabSpecimen>
+      <TabSpecimen
+        title="Contained · full width"
+        detail="44px track · equal-width items"
+        wide
+      >
+        <ContainedTabs size="default" width="full" />
       </TabSpecimen>
     </div>
   </section>
@@ -62,17 +82,32 @@ export const TabsOverviewSpecimen = () => (
   </div>
 )
 
-const TextOnlyTabs = ({ size }: { size: 'compact' | 'default' }) => {
+const TextOnlyTabs = ({
+  size,
+  width = 'content',
+}: {
+  size: 'compact' | 'default'
+  width?: 'content' | 'full'
+}) => {
   const recipe = tabPresentationRecipe.textOnly[size]
+  const layout = tabPresentationRecipe.textOnly.layout[width]
 
   return (
     <Tabs defaultValue="30d">
-      <TabsList className={recipe.list} aria-label={`${size} time range`}>
+      <TabsList
+        className={cn(recipe.list, layout.track)}
+        data-text-tabs-layout={width}
+        aria-label={`${size} time range`}
+      >
         {['1d', '7d', '30d', '90d', 'YTD'].map((label) => (
           <TabsTrigger
             key={label}
             value={label}
-            className={cn(recipe.item, tabPresentationRecipe.textOnly.state)}
+            className={cn(
+              recipe.item,
+              layout.item,
+              tabPresentationRecipe.textOnly.state
+            )}
           >
             {label}
           </TabsTrigger>
@@ -82,28 +117,51 @@ const TextOnlyTabs = ({ size }: { size: 'compact' | 'default' }) => {
   )
 }
 
-const ContainedTabs = ({ size }: { size: 'compact' | 'default' }) => {
+const ContainedTabs = ({
+  size,
+  width = 'content',
+}: {
+  size: 'compact' | 'default'
+  width?: 'content' | 'full'
+}) => {
   const recipe = tabPresentationRecipe.contained[size]
+  const layout = tabPresentationRecipe.contained.layout[width]
 
   return (
     <Tabs defaultValue="exposure">
-      <TabsList className={recipe.list} aria-label={`${size} basket view`}>
+      <TabsList
+        className={cn(recipe.list, layout.track)}
+        data-contained-tabs-layout={width}
+        aria-label={`${size} basket view`}
+      >
         <TabsTrigger
           value="exposure"
-          className={cn(recipe.item, tabPresentationRecipe.contained.state)}
+          className={cn(
+            recipe.item,
+            layout.item,
+            tabPresentationRecipe.contained.state
+          )}
         >
           Exposure
         </TabsTrigger>
         <TabsTrigger
           value="collateral"
-          className={cn(recipe.item, tabPresentationRecipe.contained.state)}
+          className={cn(
+            recipe.item,
+            layout.item,
+            tabPresentationRecipe.contained.state
+          )}
         >
           Collateral
         </TabsTrigger>
         <TabsTrigger
           value="disabled"
           disabled
-          className={cn(recipe.item, tabPresentationRecipe.contained.state)}
+          className={cn(
+            recipe.item,
+            layout.item,
+            tabPresentationRecipe.contained.state
+          )}
         >
           Disabled
         </TabsTrigger>
@@ -116,12 +174,16 @@ const TabSpecimen = ({
   title,
   detail,
   children,
+  wide = false,
 }: {
   title: string
   detail: string
   children: React.ReactNode
+  wide?: boolean
 }) => (
-  <div className="border border-border bg-card p-6">
+  <div
+    className={cn('border border-border bg-card p-6', wide && 'xl:col-span-2')}
+  >
     <div className="mb-6 flex items-baseline justify-between gap-4">
       <h3 className="text-sm font-medium">{title}</h3>
       <span className="text-xs font-light text-muted-foreground">{detail}</span>

@@ -7,33 +7,22 @@ import {
   ExpectedDecisions,
   PageHeader,
 } from './catalog-ui'
-import ButtonStateSheet from './button-state-sheet'
 import ButtonHierarchyDecision from './button-hierarchy-decision'
 import ButtonLoadingDecision from './button-loading-decision'
 import ModalActionDecision from './modal-action-decision'
-import EntityIdentityStateSheet from './entity-identity-state-sheet'
-import MetricStateSheet from './metric-state-sheet'
-import InformationRowStateSheet from './information-row-state-sheet'
 import RichRecordReview from './rich-record-review'
-import EmptyStateStateSheet from './empty-state-state-sheet'
-import CheckboxStateSheet from './checkbox-state-sheet'
-import IconButtonStateSheet from './icon-button-state-sheet'
-import DialogStateSheet from './dialog-state-sheet'
-import LifecycleStatusStateSheet from './lifecycle-status-state-sheet'
-import CardContentRegionReview from './card-content-region-review'
-import ContainedFormRowReview from './contained-form-row-review'
-import SingleChoiceGroupStateSheet from './single-choice-group-state-sheet'
-import TabsStateSheet from './tabs-state-sheet'
 import { getComponentItem } from './component-catalog'
 import CanonicalComponentsOverview from './canonical-components-overview'
 import { CurrentReviewSpotlight } from './current-review-panel'
+import ComponentVisualOutput from './component-visual-output'
+import { EligibilityDialogInteractionReview } from './dialog-state-sheet'
 
 export const ComponentsOverview = () => (
   <div data-testid="components-overview" className="space-y-10">
     <PageHeader
       eyebrow="Reusable design system"
       title="Components"
-      description="Scroll through rendered component work and unresolved capabilities by family. Open a detail page only when you need complete states, evidence, dependencies, or remaining decisions."
+      description="Scroll through complete rendered state sheets by family, followed by one compact unresolved inventory. Open a detail page only for evidence, dependencies, extended compositions, or remaining decisions."
     />
     <CurrentReviewSpotlight />
     <CanonicalComponentsOverview />
@@ -75,6 +64,8 @@ export const ComponentDetail = () => {
           <ComponentReviewReadiness review={item.review} />
         )}
         <ComponentVisualOutput itemId={item.id} />
+        {item.id === 'dialog' && <EligibilityDialogInteractionReview />}
+        {item.id === 'table' && <RichRecordReview />}
 
         {item.relationships && item.relationships.length > 0 && (
           <section className="space-y-4">
@@ -185,30 +176,6 @@ export const ComponentDetail = () => {
       </div>
     </div>
   )
-}
-
-const ComponentVisualOutput = ({ itemId }: { itemId: string }) => {
-  if (itemId === 'button') return <ButtonStateSheet />
-  if (itemId === 'checkbox') return <CheckboxStateSheet />
-  if (itemId === 'icon-button') return <IconButtonStateSheet />
-  if (itemId === 'dialog') return <DialogStateSheet />
-  if (itemId === 'badge') return <LifecycleStatusStateSheet />
-  if (itemId === 'entity-identity') return <EntityIdentityStateSheet />
-  if (itemId === 'metric') return <MetricStateSheet />
-  if (itemId === 'card') return <CardContentRegionReview />
-  if (itemId === 'input') return <ContainedFormRowReview />
-  if (itemId === 'radio-group') return <SingleChoiceGroupStateSheet />
-  if (itemId === 'tabs') return <TabsStateSheet />
-  if (itemId === 'table') {
-    return (
-      <div className="space-y-8">
-        <InformationRowStateSheet />
-        <RichRecordReview />
-      </div>
-    )
-  }
-  if (itemId === 'empty-state') return <EmptyStateStateSheet />
-  return null
 }
 
 const InfoCard = ({ title, copy }: { title: string; copy: string }) => (

@@ -1,5 +1,6 @@
 import {
   ChainBadgedLogo,
+  ChainLogoStack,
   EntityIdentity,
   TokenLogoStack,
 } from '@/components/entity-identity'
@@ -77,12 +78,22 @@ const EntityIdentityStateSheet = () => (
           supporting="BNB Chain"
         />
       </CandidateCell>
-      <CandidateCell label="Basket assets">
-        <div className="flex items-center gap-3">
-          <TokenLogoStack tokens={ASSETS} size={24} />
-          <span className="text-sm font-light text-muted-foreground">
-            3 assets
-          </span>
+      <CandidateCell label="Stacked identities">
+        <div className="grid gap-3">
+          <div className="flex items-center gap-3">
+            <TokenLogoStack tokens={ASSETS} size={24} />
+            <span className="text-sm font-light text-muted-foreground">
+              3 assets
+            </span>
+          </div>
+          <div className="flex items-center gap-3">
+            <ChainLogoStack
+              chains={[ChainId.Mainnet, ChainId.Base, ChainId.BSC]}
+            />
+            <span className="text-sm font-light text-muted-foreground">
+              All chains
+            </span>
+          </div>
         </div>
       </CandidateCell>
       <CandidateCell label="Constrained name">

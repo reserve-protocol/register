@@ -144,32 +144,54 @@ export const PRIMARY_COMPONENT_GROUPS: ComponentGroup[] = [
         statusDetail:
           'A reusable V1 candidate implements the compact 32px named-action role needed by dialog headers and disclosures. Tooltip, toggle/selected, and expanded hit-target behavior remain open; production adoption has not started.',
       },
-      component(
-        'button-group',
-        'Action group',
-        'A visually related set of peer or primary/secondary actions.',
-        'Action groups need simple hierarchy, spacing, order, and responsive-wrap rules.',
-        {
-          priority: 'v1-core',
-          auditStatus: 'partial',
-          evidence: [
-            'A shared ButtonGroup exists but has only one direct product import.',
-            'Paired actions are frequently composed ad hoc in dialogs and proposal flows.',
-          ],
-          decisionPrompts: [
-            'Define primary/secondary ordering and when destructive actions separate.',
-            'Choose wrapping, stacking, and full-width behavior at constrained widths.',
-          ],
-          relationships: [
-            {
-              id: 'segmented-control',
-              note: 'Groups actions; does not represent a selected mode.',
-            },
-          ],
-          nextAction:
-            'Audit dialog and proposal action rows rather than preserving the existing wrapper API.',
-        }
-      ),
+      {
+        ...component(
+          'button-group',
+          'Action group',
+          'A visually related set of peer or primary/secondary actions.',
+          'Action groups apply accepted Button hierarchy and width relationships without adding another action family.',
+          {
+            priority: 'v1-core',
+            ...mapped,
+            evidence: [
+              'A shared ButtonGroup exists but has only one direct product import.',
+              'Paired actions are frequently composed ad hoc in dialogs and proposal flows.',
+              'The accepted Button width rule prefers intrinsic horizontal groups and equal-width default actions in intentional vertical stacks.',
+              'Async Mint completion supplies evidence for a real compact two-action relationship; destructive dialogs supply the safe Cancel / consequence relationship. Their exact action choice and icon use remain composition-owned.',
+            ],
+            decisionPrompts: [
+              'Verify that product compositions switch intentionally between the horizontal and vertical recipes instead of allowing ragged wrapping.',
+              'Keep persistent or floating action wrappers in their owning compositions rather than expanding this recipe.',
+            ],
+            relationships: [
+              {
+                id: 'button',
+                note: 'Consumes Button hierarchy, size, and state without redefining them.',
+              },
+              {
+                id: 'segmented-control',
+                note: 'Groups actions; does not represent a selected mode.',
+              },
+            ],
+            nextAction:
+              'Review the recipe in real horizontal and constrained-width action rows before any production adoption.',
+          }
+        ),
+        outputStatus: 'rendered',
+        designAuthority: 'current-baseline',
+        implementationStatus: 'reusable-recipe',
+        implementationSource:
+          'src/components/design-system-v1/action-group.tsx',
+        adoptionStatus: 'none',
+        review: {
+          status: 'ready',
+          scope:
+            'Review intrinsic horizontal grouping, intentional full-width vertical grouping, and the accepted 8px peer gap. Button hierarchy and transaction lifecycle remain owned elsewhere.',
+          dependencies: [{ name: 'Button', status: 'canonical' }],
+        },
+        statusDetail:
+          'The accepted reusable composition recipe encodes intrinsic horizontal groups, intentional equal-width vertical groups, and the 8px peer gap. It adds no new Button tone, size, lifecycle, or production adoption.',
+      },
       component(
         'transaction-action',
         'Transaction action',
@@ -256,35 +278,30 @@ export const PRIMARY_COMPONENT_GROUPS: ComponentGroup[] = [
               'Index deploy BasicInput and governance metadata establish text, number, address, percentage, suffix, help, validation, and multiline requirements.',
             ],
             decisionPrompts: [
-              'Review whether unboxed repeated parameter groups have enough hierarchy without legacy tinted subsection cards.',
-              'Later pressure-test clear actions, read-only, long-value, and repeated-addition behavior when real compositions require them.',
+              'Pressure-test clear actions and unusually long values only when real compositions require them.',
+              'Keep preset-or-custom mutual exclusion in its reusable composition rather than changing Field or SingleChoice semantics.',
             ],
             nextAction:
-              'Accept or revise the single-choice prerequisite, then return to the unboxed repeated governance-parameter composition. The ordinary shared field stack already follows accepted foundations.',
+              'Use the accepted repeated-group and preset-or-custom composition in a bounded opt-in adoption only when migration begins.',
           }
         ),
         outputStatus: 'rendered',
-        designAuthority: 'exploratory',
+        designAuthority: 'current-baseline',
         implementationStatus: 'canonical-candidate',
         implementationSource: 'src/components/design-system-v1/field.tsx',
         adoptionStatus: 'none',
         review: {
-          status: 'blocked',
+          status: 'ready',
           scope:
-            'The ordinary label/control/help/error stack is a reusable foundation-conforming candidate. The repeated governance-parameter composition is blocked until its single-choice prerequisite is accepted; business validation and the production flow remain outside this work.',
+            'Review the independent label/control/help/error stack, default one-row geometry, affixes, validation, disabled, and read-only states. Repeated governance grouping, SingleChoice, business validation, multiline input, and production adoption remain outside this review.',
           dependencies: [
             { name: 'Spacing and typography', status: 'canonical' },
-            { name: 'Button', status: 'canonical' },
-            {
-              name: 'Single-choice pill group',
-              status: 'provisional',
-              detail:
-                'A reusable candidate exists, but its visual contract is the current human review and is not yet accepted.',
-            },
+            { name: 'Control geometry and shape', status: 'canonical' },
+            { name: 'Semantic state recipes', status: 'canonical' },
           ],
         },
         statusDetail:
-          'A reusable V1 candidate implements the foundation-constrained ordinary field anatomy and one-row/multiline geometry. Complex repeated grouping is blocked on the single-choice prerequisite; production adoption has not started.',
+          'The accepted reusable V1 baseline implements the independent Field / TextInput anatomy and evidenced states. The reviewed repeated-group composition and PresetOrCustomField recipe consume it without moving business validation into the design system; multiline input and production adoption remain separate.',
       },
       component(
         'textarea',
@@ -304,79 +321,195 @@ export const PRIMARY_COMPONENT_GROUPS: ComponentGroup[] = [
             'Pair with Text input in one state sheet and pressure-test proposal descriptions.',
         }
       ),
-      component(
-        'select',
-        'Select',
-        'Chooses one value from a bounded list.',
-        'A predictable select covers common short lists without turning every choice into a custom picker.',
-        {
-          priority: 'v1-core',
-          ...mapped,
-          evidence: [
-            'Eight product-source imports use the shared custom Select; two raw selects remain.',
+      {
+        ...component(
+          'select',
+          'Select',
+          'Chooses one value from a bounded list.',
+          'A predictable select covers common short lists without turning every choice into a custom picker.',
+          {
+            priority: 'v1-core',
+            ...mapped,
+            evidence: [
+              'Eight product-source imports use the shared custom Select; two raw selects remain.',
+              'The internal DTF date and chain filters provide the strongest simple bounded-list fixtures.',
+              'Data table pagination proves a real 32px compact trigger requirement alongside the accepted 44px ordinary Field geometry.',
+            ],
+            decisionPrompts: ['State when native select is preferable.'],
+            relationships: [
+              {
+                id: 'combobox',
+                note: 'Use Combobox when filtering is a meaningful part of selection.',
+              },
+            ],
+            nextAction:
+              'Consume this baseline in bounded-value compositions; review native-select policy, Combobox, and Menu separately when their real requirements are active.',
+          }
+        ),
+        outputStatus: 'rendered',
+        designAuthority: 'current-baseline',
+        implementationStatus: 'canonical-candidate',
+        implementationSource: 'src/components/design-system-v1/select.tsx',
+        adoptionStatus: 'none',
+        review: {
+          status: 'ready',
+          scope:
+            'The accepted baseline covers popup anatomy, subtle focus treatment, persistent right-side selected check, leading chain-identity support, and the relationship between 44px default and evidenced fixed-width 32px compact triggers. The rendered options currently participate in the shared provisional balanced-inset candidate: 8px popup-list padding and 12px item padding on both axes, plus a 14px/16px single-line option role, produce 40px ordinary rows and 44px rows when a 20px visual owns the content height. Text-only compact triggers use the shared 14px-leading/10px-trailing optical padding recipe. Search, rich entity options, action menus, native-select policy, mobile dropdown substitution, and production adoption remain outside this scope.',
+          dependencies: [
+            { name: 'Field and TextInput geometry', status: 'canonical' },
+            { name: 'Typography and spacing', status: 'canonical' },
+            { name: 'Radius and semantic color roles', status: 'canonical' },
+            { name: 'Entity identity stack geometry', status: 'canonical' },
+            { name: 'Radix Select behavior', status: 'retained' },
+            { name: 'Popup item row density', status: 'provisional' },
           ],
-          decisionPrompts: [
-            'Define trigger geometry, value/placeholder, menu sizing, grouping, keyboard, and disabled items.',
-            'State when native select is preferable.',
+        },
+        statusDetail:
+          'The accepted reusable V1 baseline applies Field geometry to bounded lists, retains Radix selection semantics, and defines default and compact triggers, popup and option anatomy, shared interaction treatment, selected-check placement, and optional leading identity. Width and visible-label treatment remain composition-owned; no production consumer has adopted it.',
+      },
+      {
+        ...component(
+          'combobox',
+          'Combobox',
+          'Searches and chooses from a potentially large list.',
+          'Large token, chain, and entity lists require filtering, empty states, and keyboard access.',
+          {
+            priority: 'v1-core',
+            auditStatus: 'mapped',
+            evidence: [
+              'Source inspection found no recurring single-value searchable form control that justifies a generic Combobox candidate today.',
+              'Global DTF search is navigation Command; Earn DTF and governance tag filters are multi-select; token selection is a drawer-based asset picker.',
+            ],
+            decisionPrompts: [
+              'Reopen only when a real searchable single-value form job cannot use Select, Search, Command navigation, multi-select, or Asset picker semantics.',
+            ],
+            relationships: [
+              {
+                id: 'select',
+                note: 'Not needed when the bounded list is short and immediately scannable.',
+              },
+            ],
+            nextAction:
+              'Do not manufacture a Combobox from adjacent jobs; keep the classification available for future evidenced use.',
+          }
+        ),
+        status: 'not-needed',
+        statusDetail:
+          'No recurring generic Combobox job is evidenced in the current product. Reopen only when a real single-value searchable form seam appears.',
+        review: {
+          status: 'blocked',
+          scope:
+            'No Combobox review is active. Navigation Command, Search, multi-select, and Asset picker remain distinct product jobs.',
+          dependencies: [],
+        },
+      },
+      {
+        ...component(
+          'multi-select-filter',
+          'Multi-select filter',
+          'Stages and applies more than one value from a bounded filter list.',
+          'Earn DTF and governance filtering need multi-value choice without being misclassified as Select, Menu, or Combobox.',
+          {
+            priority: 'v1-core',
+            auditStatus: 'mapped',
+            evidence: [
+              'The shared multi-select dropdown is used by Index and Yield Earn DTF filters; governance and explorer filters retain a second duplicate implementation.',
+              'Real fixtures include identity-rich DTF and network options, text-only proposal statuses, an optional minimum selection, and staged Apply behavior.',
+              'The current implementations use Switch for set membership and locally override popup, trigger, and footer geometry.',
+            ],
+            decisionPrompts: [
+              'Judge the checkbox-row density, staged-selection clarity, trigger summary, and footer action relationship.',
+            ],
+            relationships: [
+              {
+                id: 'select',
+                note: 'Select immediately commits one bounded value; this pattern stages multiple filter values.',
+              },
+              {
+                id: 'popover',
+                note: 'Consumes the shared floating shell while owning filter-specific rows and actions.',
+              },
+              {
+                id: 'combobox',
+                note: 'Search remains a later composition concern when a long multi-value list requires it.',
+              },
+            ],
+            nextAction:
+              'Consume the accepted baseline where multi-value filtering is needed; keep search, mobile drawer substitution, token-result density, and production adoption separate.',
+          }
+        ),
+        outputStatus: 'rendered',
+        designAuthority: 'current-baseline',
+        implementationStatus: 'canonical-candidate',
+        implementationSource:
+          'src/components/design-system-v1/multi-select-filter.tsx',
+        adoptionStatus: 'none',
+        review: {
+          status: 'ready',
+          scope:
+            'The accepted baseline covers the 44px summary trigger with 16px/300 selection-value typography, 12px summary-to-chevron spacing, and 20px-leading/18px-trailing optical padding. Its identity-first 44px rows use the shared 8px popup and 12px item balanced insets, 14px/16px labels, and matching 20px leading identity and visible Checkbox marks while preserving the Checkbox’s 28px target. The no-divider footer uses canonical compact secondary Clear and primary Apply actions grouped right with an 8px gap, 20px horizontal and bottom insets, and 8px top padding. Staged Apply and minimum-selection behavior are included. Search, large-list loading and empty states, mobile drawer substitution, token-result density, and production adoption remain separate.',
+          dependencies: [
+            { name: 'Button and ActionGroup', status: 'canonical' },
+            { name: 'Checkbox', status: 'canonical' },
+            { name: 'Entity identity stack geometry', status: 'canonical' },
+            { name: 'Shared Popover shell', status: 'canonical' },
+            { name: 'Floating elevation', status: 'provisional' },
+            { name: 'Popup item row density', status: 'provisional' },
           ],
-          relationships: [
-            {
-              id: 'combobox',
-              note: 'Use Combobox when filtering is a meaningful part of selection.',
-            },
+        },
+        statusDetail:
+          'The accepted reusable V1 baseline replaces Switch-based set membership with canonical trailing Checkbox rows, preserves the clean leading identity axis and real staged Apply job, and uses selection-value rather than action typography in its trigger. Search, responsive substitution, and production consumers remain unchanged.',
+      },
+      {
+        ...component(
+          'search',
+          'Search field',
+          'Filters or retrieves content from a query.',
+          'Search needs recognizable clearing, loading, keyboard, and no-result behavior.',
+          {
+            priority: 'v1-core',
+            auditStatus: 'mapped',
+            evidence: [
+              'The shared legacy SearchInput has ten product consumers across Discover, Top 100, Earn filters, token drawers, and deploy flows, but locally varies between 64px and 68px treatments.',
+              'The current Discover filter row provides the strongest composition evidence: standalone search paired with a chain filter rather than a labeled form field.',
+              'Global DTF search proves grouped navigation-result requirements, while token drawers prove async loading and empty-result requirements owned by their surrounding compositions.',
+            ],
+            decisionPrompts: [
+              'Judge whether the inherited 44px Field geometry, 16px search mark, clear action, and quiet loading state form a complete reusable search-field baseline.',
+            ],
+            relationships: [
+              {
+                id: 'input',
+                note: 'Consumes TextInput geometry while owning search-specific semantics and affordances.',
+              },
+              {
+                id: 'combobox',
+                note: 'Search does not imply committing one selected value.',
+              },
+            ],
+            nextAction:
+              'Review the reusable SearchField in standalone and real Discover-style filter compositions; keep result-list semantics outside the field.',
+          }
+        ),
+        outputStatus: 'rendered',
+        designAuthority: 'current-baseline',
+        implementationStatus: 'canonical-candidate',
+        implementationSource:
+          'src/components/design-system-v1/search-field.tsx',
+        adoptionStatus: 'none',
+        review: {
+          status: 'ready',
+          scope:
+            'The accepted baseline covers the inherited 44px TextInput geometry, leading search mark, optional clear action with focus return, retained query while loading, and alignment beside a default Select. Result rows, no-results recovery, grouping, command navigation, asset selection, compact sizing, responsive substitution, and production adoption remain outside this field baseline.',
+          dependencies: [
+            { name: 'Field and TextInput', status: 'canonical' },
+            { name: 'IconButton clear action', status: 'canonical' },
+            { name: 'Select filter peer', status: 'canonical' },
           ],
-          nextAction:
-            'Compare simple product selects before token pickers and multiselects.',
-        }
-      ),
-      component(
-        'combobox',
-        'Combobox',
-        'Searches and chooses from a potentially large list.',
-        'Large token, chain, and entity lists require filtering, empty states, and keyboard access.',
-        {
-          priority: 'v1-core',
-          auditStatus: 'partial',
-          evidence: [
-            'Command, popover, multiselect, and bespoke selector primitives indicate multiple overlapping implementations.',
-          ],
-          decisionPrompts: [
-            'Define input/list anatomy, async loading, no results, creation policy, single vs multiple selection, and mobile adaptation.',
-          ],
-          relationships: [
-            {
-              id: 'select',
-              note: 'Not needed when the bounded list is short and immediately scannable.',
-            },
-          ],
-          nextAction:
-            'Inventory Command/Popover and multiselect compositions as one behavioral cluster.',
-        }
-      ),
-      component(
-        'search',
-        'Search field',
-        'Filters or retrieves content from a query.',
-        'Search needs recognizable clearing, loading, keyboard, and no-result behavior.',
-        {
-          priority: 'v1-core',
-          auditStatus: 'partial',
-          evidence: [
-            'Search appears in global navigation and list/table filtering, often as ad hoc Input composition.',
-          ],
-          decisionPrompts: [
-            'Define submit-as-you-type behavior, clear action, shortcut hint, loading, and compact toolbar use.',
-          ],
-          relationships: [
-            {
-              id: 'input',
-              note: 'Shares field anatomy but owns search-specific affordances and behavior.',
-            },
-          ],
-          nextAction:
-            'Compare global search with table/list filters before defining variants.',
-        }
-      ),
+        },
+        statusDetail:
+          'The accepted reusable V1 baseline composes TextInput and IconButton for standalone search, clear, and loading behavior. One 44px size is sufficient for evidenced use; result semantics and production consumers remain unchanged.',
+      },
       component(
         'amount-field',
         'Amount field',
@@ -522,11 +655,11 @@ export const PRIMARY_COMPONENT_GROUPS: ComponentGroup[] = [
               },
             ],
             nextAction:
-              'Review the complete default-size form-value candidate, then let the blocked contained-form composition inherit it. Defer standard radio rows and rich choice cards until evidenced.',
+              'Use the accepted default-size form-value control when the contained-form composition resumes. Defer standard radio rows and rich choice cards until evidenced.',
           }
         ),
         outputStatus: 'rendered',
-        designAuthority: 'exploratory',
+        designAuthority: 'current-baseline',
         implementationStatus: 'canonical-candidate',
         implementationSource:
           'src/components/design-system-v1/single-choice-group.tsx',
@@ -534,7 +667,7 @@ export const PRIMARY_COMPONENT_GROUPS: ComponentGroup[] = [
         review: {
           status: 'ready',
           scope:
-            'Review the complete one-row presentation for a submitted single-choice form value. It uses native radio semantics and faithfully inherits the contained-selection language: 44px default peer height, 14px medium labels, 20px item padding, two-pixel track inset, zero inter-item gap, full radius, neutral control chrome, and a subtly elevated white selected item. Standard rows, rich choice cards, and production adoption remain open.',
+            'Review the complete one-row presentation for a submitted single-choice form value. It uses native radio semantics and faithfully inherits the contained-selection language: 44px default peer height, 14px medium labels, 20px item padding, matching two-pixel track inset and inter-item gap, intrinsic track and item sizing by default, equal item growth when explicitly full width, full radius, neutral control chrome, and a subtly elevated white selected item. Standard rows, rich choice cards, and production adoption remain open.',
           dependencies: [
             { name: 'Control geometry', status: 'canonical' },
             { name: 'Shape and color roles', status: 'canonical' },
@@ -542,7 +675,7 @@ export const PRIMARY_COMPONENT_GROUPS: ComponentGroup[] = [
           ],
         },
         statusDetail:
-          'A reusable V1 candidate implements only the one-row pill-style single-choice job evidenced by governance parameter forms. It is the current human review; other radio compositions and production adoption remain open.',
+          'The accepted reusable V1 baseline implements only the one-row pill-style single-choice job evidenced by governance parameter forms. Other radio compositions and production adoption remain open.',
       },
       component(
         'switch',

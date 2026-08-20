@@ -1,10 +1,8 @@
 import TokenLogo from '@/components/token-logo'
-import {
-  V1SurfaceRole,
-  v1SemanticRecipes,
-} from '@/components/ui/v1-semantic-recipes'
-import { cn } from '@/lib/utils'
+import { V1SurfaceRole } from '@/components/ui/v1-semantic-recipes'
 import * as React from 'react'
+
+import { LogoStackFrames } from './logo-stack-frames'
 
 export interface TokenLogoStackItem {
   symbol: string
@@ -39,39 +37,30 @@ export const TokenLogoStack = React.forwardRef<
     },
     ref
   ) => {
-    const overlapAmount = Math.round(size / 2) + overlap
-
     return (
-      <span
+      <LogoStackFrames
         ref={ref}
         data-testid="canonical-token-logo-stack"
-        className={cn('inline-flex min-w-max items-center', className)}
+        artworkSize={size}
+        className={className}
+        frameRadius="9999px"
+        overlap={overlap}
+        surface={surface}
         {...props}
       >
         {tokens.map((token, index) => (
-          <span
+          <TokenLogo
             key={`${token.chain ?? 'token'}-${token.address ?? token.symbol}-${index}`}
-            className={cn(
-              'relative inline-flex shrink-0 rounded-full border-2',
-              v1SemanticRecipes.surfaceSeparation[surface]
-            )}
-            style={{
-              marginLeft: index === 0 ? 0 : -overlapAmount,
-              zIndex: tokens.length - index,
-            }}
-          >
-            <TokenLogo
-              src={token.logo}
-              symbol={token.symbol}
-              address={token.address}
-              chain={token.chain}
-              width={size}
-              height={size}
-              alt={token.name ?? token.symbol}
-            />
-          </span>
+            src={token.logo}
+            symbol={token.symbol}
+            address={token.address}
+            chain={token.chain}
+            width={size}
+            height={size}
+            alt={token.name ?? token.symbol}
+          />
         ))}
-      </span>
+      </LogoStackFrames>
     )
   }
 )

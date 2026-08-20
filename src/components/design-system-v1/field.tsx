@@ -78,27 +78,45 @@ export const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
     <div
       data-testid="canonical-text-input"
       data-invalid={invalid || undefined}
+      data-disabled={disabled || undefined}
+      data-readonly={readOnly || undefined}
       className={cn(
-        'flex h-11 w-full items-center gap-2 rounded-full border border-input bg-card px-4 text-foreground transition-colors duration-120 focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2 focus-within:ring-offset-card',
-        (disabled || readOnly) && roles.disabled.control,
+        'flex h-11 w-full items-center gap-2 rounded-full border border-input bg-card text-foreground transition-colors duration-120 focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2 focus-within:ring-offset-card',
+        leading ? 'pl-[18px]' : 'pl-5',
+        trailing ? 'pr-[18px]' : 'pr-5',
+        disabled && roles.disabled.control,
+        readOnly && roles.surface.neutralControl,
         invalid && 'border-destructive',
         className
       )}
     >
-      {leading && <span className="shrink-0 text-sm">{leading}</span>}
+      {leading && (
+        <span
+          className={cn(
+            'shrink-0 text-sm [&>svg]:size-4',
+            roles.text.supporting
+          )}
+        >
+          {leading}
+        </span>
+      )}
       <input
         ref={ref}
         disabled={disabled}
         readOnly={readOnly}
         aria-invalid={invalid || undefined}
         className={cn(
-          'min-w-0 flex-1 bg-transparent text-base font-light leading-6 outline-none placeholder:text-muted-foreground disabled:cursor-not-allowed',
+          'min-w-0 flex-1 bg-transparent text-base font-light leading-6 outline-none placeholder:text-muted-foreground read-only:cursor-default disabled:cursor-not-allowed',
           inputClassName
         )}
         {...props}
       />
       {trailing && (
-        <span className="shrink-0 text-base font-light">{trailing}</span>
+        <span
+          className={cn('shrink-0 text-base font-light', roles.text.supporting)}
+        >
+          {trailing}
+        </span>
       )}
     </div>
   )

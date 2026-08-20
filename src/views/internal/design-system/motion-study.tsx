@@ -260,9 +260,9 @@ const TimingComparison = () => {
       </div>
       <div className="grid gap-px bg-secondary lg:grid-cols-3">
         {[
-          ['120ms', 'duration-[120ms]'],
-          ['180ms', 'duration-[180ms]'],
-          ['240ms', 'duration-[240ms]'],
+          ['120ms', 'duration-120'],
+          ['180ms', 'duration-180'],
+          ['240ms', 'duration-240'],
         ].map(([label, duration]) => (
           <div key={label} className="bg-card p-5">
             <div className="relative h-8 overflow-hidden bg-muted">

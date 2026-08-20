@@ -22,6 +22,11 @@ export const v1SemanticRecipes = {
     onContentWithinGroup:
       'group-focus-visible:ring-2 group-focus-visible:ring-ring group-focus-visible:ring-offset-2 group-focus-visible:ring-offset-card',
   },
+  interaction: {
+    subtleHover: 'hover:bg-foreground/5',
+    subtleFocus: 'focus:bg-foreground/5',
+    subtleHighlight: 'data-[highlighted]:bg-foreground/5',
+  },
   disabled: {
     control: 'border border-border bg-muted text-muted-foreground',
   },

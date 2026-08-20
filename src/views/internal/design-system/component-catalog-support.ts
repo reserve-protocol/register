@@ -107,74 +107,152 @@ export const SUPPORT_COMPONENT_GROUPS: ComponentGroup[] = [
             'Compare task drawers with selector drawers; retain one shell with composition-specific bodies if behavior aligns.',
         }
       ),
-      component(
-        'popover',
-        'Popover',
-        'Shows contextual interactive content near a trigger.',
-        'Popovers require stable placement, collision, focus, and dismissal behavior.',
-        {
-          priority: 'v1-core',
-          ...mapped,
-          evidence: [
-            'Nine product imports use shared Popover; many selectors and filters compose on it.',
+      {
+        ...component(
+          'popover',
+          'Popover',
+          'Shows contextual interactive content near a trigger.',
+          'Popovers require stable placement, collision, focus, and dismissal behavior.',
+          {
+            priority: 'v1-core',
+            ...mapped,
+            evidence: [
+              'Nine product imports use shared Popover; multi-select filters provide the first active V1 consumer.',
+              'Select and Menu already establish the transferable 8px offset, 8px shell radius, collision inset, semantic surface, and restrained elevation.',
+            ],
+            decisionPrompts: [
+              'Resolve composition-owned width, padding, scrolling, and responsive substitution only from the content job being hosted.',
+            ],
+            relationships: [
+              {
+                id: 'tooltip',
+                note: 'Popover contains interactive content; tooltip does not.',
+              },
+              {
+                id: 'dropdown-menu',
+                note: 'Use Menu when the content is primarily actions.',
+              },
+            ],
+            nextAction:
+              'Consume the shell in source-grounded compositions; do not add generic padding, width, or inner anatomy.',
+          }
+        ),
+        status: 'defined',
+        outputStatus: 'none',
+        designAuthority: 'current-baseline',
+        implementationStatus: 'canonical-candidate',
+        implementationSource: 'src/components/design-system-v1/popover.tsx',
+        adoptionStatus: 'none',
+        review: {
+          status: 'ready',
+          scope:
+            'The shared shell inherits the accepted 8px popup offset and radius, collision inset, semantic floating surface, restrained elevation, and Radix focus/dismissal behavior. Width, padding, scrolling, inner anatomy, responsive substitution, and production adoption remain composition-owned.',
+          dependencies: [
+            { name: 'Radius and semantic color roles', status: 'canonical' },
+            { name: 'Radix Popover behavior', status: 'retained' },
+            { name: 'Floating elevation', status: 'provisional' },
           ],
-          decisionPrompts: [
-            'Define spacing from trigger, width ownership, collision, focus entry, dismissal, and contained chrome.',
+        },
+        statusDetail:
+          'A minimal reusable V1 shell exists for interactive floating content. Multi-select filter is its first rendered candidate consumer; no production consumer has adopted it.',
+      },
+      {
+        ...component(
+          'dropdown-menu',
+          'Menu',
+          'Presents a compact list of contextual actions.',
+          'Menus need semantic action grouping and complete keyboard behavior.',
+          {
+            priority: 'v1-core',
+            ...mapped,
+            evidence: [
+              'Nine product imports use shared DropdownMenu.',
+              'Index DTF contract-address actions, About links, external-market links, and the header Search invocation provide real immediate-action and external-link jobs.',
+              'Chart type, time range, language, theme, and social-channel choice commit values; they remain selection evidence rather than authority for an action Menu.',
+              'The accepted Select popup provides transferable surface, spacing, radius, and interaction recipes without lending Menu its selection semantics.',
+            ],
+            decisionPrompts: [
+              'Judge the action-item density, optional leading/trailing visual axes, ordinary versus destructive treatment, and relationship to canonical Button and IconButton triggers.',
+            ],
+            relationships: [
+              {
+                id: 'select',
+                note: 'Select commits one bounded value; Menu invokes an action or follows a link.',
+              },
+              {
+                id: 'popover',
+                note: 'Popover hosts arbitrary interactive content; Menu owns a keyboard-navigable action list.',
+              },
+            ],
+            nextAction:
+              'Defer selection items, grouped header panels, submenus, responsive substitution, and production adoption until real requirements need them.',
+          }
+        ),
+        status: 'defined',
+        outputStatus: 'rendered',
+        designAuthority: 'current-baseline',
+        implementationStatus: 'canonical-candidate',
+        implementationSource: 'src/components/design-system-v1/menu.tsx',
+        adoptionStatus: 'none',
+        review: {
+          status: 'ready',
+          scope:
+            'The accepted baseline covers the 8px floating surface, 4px nested item radius, edge-to-edge group separators, 16px optional leading/trailing visuals, subtle focus treatment, destructive action placement, external-link item, and canonical trigger relationships. The rendered action rows currently participate in the shared provisional balanced-inset candidate: 8px popup padding and 12px item padding on both axes pair with a 14px/16px single-line role to produce 40px rows. Labeled compact Menu and Select triggers share the same 14px-leading/10px-trailing optical padding and 120ms open-state chevron; icon-only triggers remain unchanged. The exact destructive foreground remains dependent on the provisional feedback palette. Value selection, shortcuts, grouped header panels, submenus, responsive substitution, and production adoption remain outside this baseline.',
+          dependencies: [
+            { name: 'Button and IconButton triggers', status: 'canonical' },
+            { name: 'Typography and spacing', status: 'canonical' },
+            { name: 'Radius and neutral color roles', status: 'canonical' },
+            { name: 'Destructive feedback foreground', status: 'provisional' },
+            { name: 'Radix DropdownMenu behavior', status: 'retained' },
+            { name: 'Floating elevation', status: 'provisional' },
+            { name: 'Popup item row density', status: 'provisional' },
           ],
-          relationships: [
-            {
-              id: 'tooltip',
-              note: 'Popover contains interactive content; tooltip does not.',
-            },
-            {
-              id: 'dropdown-menu',
-              note: 'Use Menu when the content is primarily actions.',
-            },
+        },
+        statusDetail:
+          'The accepted reusable V1 baseline covers immediate actions and external links while preserving Radix menu behavior. Selection menus, grouped header panels, submenus, and production consumers remain unchanged.',
+      },
+      {
+        ...component(
+          'tooltip',
+          'Tooltip',
+          'Provides brief non-essential explanation on demand.',
+          'Tooltips must not carry information unavailable to touch or keyboard users.',
+          {
+            priority: 'v1-core',
+            ...mapped,
+            evidence: [
+              '21 product imports use shared Tooltip; 13 Help imports indicate adjacent explanatory behavior.',
+              'Index and homepage metrics exercise label explanation and long copy; CopyValue and SectionAnchor exercise transient action feedback.',
+              'The two current Help wrappers disagree on glyph, size, click, touch, and keyboard handling.',
+            ],
+            decisionPrompts: [
+              'Resolve other tooltip jobs only from real product evidence; keep essential instructions visible and action feedback in its owning component.',
+            ],
+            nextAction:
+              'Defer other tooltip jobs and production adoption until a real composition requires them.',
+          }
+        ),
+        status: 'defined',
+        outputStatus: 'rendered',
+        designAuthority: 'current-baseline',
+        implementationStatus: 'canonical-candidate',
+        implementationSource:
+          'src/components/design-system-v1/help-tooltip.tsx',
+        adoptionStatus: 'none',
+        review: {
+          status: 'ready',
+          scope:
+            'The explanatory help trigger beside accepted field and metric labels, its 4px visible relationship, bare 16px glyph, bounded dynamic-width 8px floating surface, and click/touch behavior are accepted. Truncated values, icon-button naming, transient action feedback, essential instructions, menus, and production adoption remain outside this baseline.',
+          dependencies: [
+            { name: 'Typography and spacing', status: 'canonical' },
+            { name: 'Iconography', status: 'canonical' },
+            { name: 'Radix Tooltip behavior', status: 'retained' },
+            { name: 'Floating elevation', status: 'provisional' },
           ],
-          nextAction:
-            'Audit filter, help, and picker popovers for shell convergence.',
-        }
-      ),
-      component(
-        'dropdown-menu',
-        'Menu',
-        'Presents a compact list of contextual actions.',
-        'Menus need semantic action grouping and complete keyboard behavior.',
-        {
-          priority: 'v1-core',
-          ...mapped,
-          evidence: ['Nine product imports use shared DropdownMenu.'],
-          decisionPrompts: [
-            'Define item anatomy, icons, shortcuts, separators, destructive items, submenus-if-needed, and selection versus action.',
-          ],
-          relationships: [
-            {
-              id: 'select',
-              note: 'Select chooses a form value; Menu invokes actions.',
-            },
-          ],
-          nextAction:
-            'Inspect overflow and account/navigation menus for one item contract.',
-        }
-      ),
-      component(
-        'tooltip',
-        'Tooltip',
-        'Provides brief non-essential explanation on demand.',
-        'Tooltips must not carry information unavailable to touch or keyboard users.',
-        {
-          priority: 'v1-core',
-          ...mapped,
-          evidence: [
-            '21 product imports use shared Tooltip; 13 Help imports indicate adjacent explanatory behavior.',
-          ],
-          decisionPrompts: [
-            'Define delay, placement, maximum copy, icon-button naming support, and touch alternatives.',
-          ],
-          nextAction:
-            'Audit Tooltip and Help together; prevent long instructional content from entering tooltips.',
-        }
-      ),
+        },
+        statusDetail:
+          'The accepted reusable baseline consolidates the explanatory-help job with a bare inline trigger, retained Radix semantics, explicit click/touch access, and a bounded dynamic-width floating surface. Other tooltip jobs and production consumers remain unchanged.',
+      },
     ],
   },
   {
@@ -411,7 +489,7 @@ export const SUPPORT_COMPONENT_GROUPS: ComponentGroup[] = [
             evidence: [
               'TokenLogo appears in 78 product consumer files; the Overview asset table provides high-density name/symbol/logo evidence while Avatar has different fallback needs.',
               'TokenLogoWithChain has repeated Portfolio consumers, while recent Index surfaces locally reconstruct the same DTF-logo plus chain-badge composition.',
-              'Overlapping asset identity uses two StackTokenLogo implementations; separating borders are currently added by individual consumers such as Discover.',
+              'Overlapping asset identity uses two legacy StackTokenLogo implementations; the canonical chain and token stacks now own a shared outside-artwork separator and optical leading-axis correction.',
               'The canonical candidate now passes long-name truncation, deterministic logo fallback, account-mark composition, and a dense 32px Index holdings slice.',
             ],
             decisionPrompts: [
@@ -437,7 +515,7 @@ export const SUPPORT_COMPONENT_GROUPS: ComponentGroup[] = [
           ],
         },
         statusDetail:
-          'A reusable V1 candidate implements identity text, domain marks, chain-badge geometry, overlapping stacks, fallbacks, and truncation. Existing product consumers remain unchanged.',
+          'A reusable V1 candidate implements identity text, domain marks, chain-badge geometry, shared chain/token stack frames, fallbacks, and truncation. Existing product consumers remain unchanged.',
       },
       {
         ...component(

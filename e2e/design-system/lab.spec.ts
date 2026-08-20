@@ -107,25 +107,63 @@ test.describe('design system lab', () => {
     const componentCatalog = page.getByTestId('components-overview')
     await expect(componentCatalog).toBeVisible()
     const canonicalOverview = page.getByTestId('canonical-component-overview')
-    await expect(canonicalOverview.locator('article')).toHaveCount(13)
+    await expect(canonicalOverview.locator('article')).toHaveCount(14)
+    const overviewOutputs = canonicalOverview.getByTestId(
+      'component-overview-output'
+    )
+    await expect(overviewOutputs).toHaveCount(14)
+    await expect
+      .poll(() =>
+        overviewOutputs.evaluateAll((outputs) =>
+          outputs.every((output) => output.childElementCount > 0)
+        )
+      )
+      .toBe(true)
+    await expect(
+      canonicalOverview.getByTestId('component-overview-authority')
+    ).toHaveCount(14)
+    await expect
+      .poll(() =>
+        page.evaluate(
+          () =>
+            document.documentElement.scrollWidth ===
+            document.documentElement.clientWidth
+        )
+      )
+      .toBe(true)
     await expect(
       canonicalOverview.getByTestId('canonical-button').first()
     ).toBeVisible()
     await expect(
       canonicalOverview.getByTestId('canonical-checkbox').first()
     ).toBeVisible()
-    await expect(
-      canonicalOverview.getByTestId('canonical-dialog-surface')
-    ).toBeVisible()
+    const dialogSurfaces = canonicalOverview.getByTestId(
+      'canonical-dialog-surface'
+    )
+    await expect(dialogSurfaces).toHaveCount(3)
+    await expect(dialogSurfaces.first()).toHaveAttribute(
+      'data-width',
+      'compact'
+    )
+    await expect(dialogSurfaces.nth(1)).toHaveAttribute(
+      'data-width',
+      'standard'
+    )
     await expect(
       canonicalOverview.getByTestId('canonical-entity-identity').first()
     ).toBeVisible()
     await expect(
       canonicalOverview.getByTestId('canonical-metric').first()
     ).toBeVisible()
+    const emptyStates = canonicalOverview.getByTestId('canonical-empty-state')
+    await expect(emptyStates).toHaveCount(2)
+    await expect(emptyStates.first()).toBeVisible()
     await expect(
-      canonicalOverview.getByTestId('canonical-empty-state')
+      canonicalOverview.getByTestId('action-group-state-sheet')
     ).toBeVisible()
+    await expect(
+      canonicalOverview.getByTestId('canonical-action-group')
+    ).toHaveCount(3)
     await expect(
       componentCatalog.getByTestId('information-row-state-sheet')
     ).toBeVisible()
@@ -140,7 +178,7 @@ test.describe('design system lab', () => {
     ).toBeVisible()
     await expect(
       componentCatalog.locator('[data-testid^="component-unrendered-"]')
-    ).toHaveCount(30)
+    ).toHaveCount(29)
     await expect(
       componentCatalog.getByText(
         'This rendered catalog item is missing its overview specimen.',
@@ -148,12 +186,32 @@ test.describe('design system lab', () => {
       )
     ).toHaveCount(0)
     await page.goto('/internal/design-system/components/input')
+    await expect(page.getByTestId('field-state-sheet')).toBeVisible()
     await expect(page.getByTestId('contained-form-row-review')).toBeVisible()
-    await expect(page.getByTestId('canonical-text-input')).toHaveCount(5)
-    await expect(page.getByTestId('canonical-textarea')).toHaveCount(1)
+    await expect(page.locator('#complex-field-group-review')).toBeVisible()
+    const fieldSheet = page.getByTestId('field-state-sheet')
+    const fieldInputs = fieldSheet.getByTestId('canonical-text-input')
+    await expect(fieldInputs).toHaveCount(6)
+    await expect(fieldInputs.first()).toHaveCSS('height', '44px')
+    const tokenName = fieldSheet.getByLabel('Token Name')
+    await tokenName.focus()
+    await expect(fieldInputs.first()).not.toHaveCSS('box-shadow', 'none')
+    await expect(fieldSheet.getByLabel('Wallet address')).toHaveAttribute(
+      'aria-invalid',
+      'true'
+    )
+    await expect(fieldSheet.getByLabel('Wallet address')).toHaveAttribute(
+      'aria-errormessage',
+      'field-wallet-error'
+    )
+    await expect(fieldSheet.getByLabel('Governor')).toHaveAttribute(
+      'readonly',
+      ''
+    )
+    await expect(fieldSheet.getByLabel('Email')).toBeDisabled()
     await expect(
       page.getByTestId('component-review-readiness')
-    ).toHaveAttribute('data-review-readiness', 'blocked')
+    ).toHaveAttribute('data-review-readiness', 'ready')
     await expect(page.getByTestId('component-output-missing')).toHaveCount(0)
     await page.goto('/internal/design-system/components/radio-group')
     await expect(
@@ -187,7 +245,7 @@ test.describe('design system lab', () => {
     expect(singleChoiceGeometry).toEqual({
       groupHeight: '44px',
       groupBackground: 'rgb(242, 240, 238)',
-      groupGap: '0px',
+      groupGap: '2px',
       groupPadding: '2px',
       selectedHeight: '40px',
       selectedPaddingInline: '20px',
@@ -195,6 +253,39 @@ test.describe('design system lab', () => {
         'rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.05) 0px 1px 2px 0px',
       inactivePaddingInline: '20px',
     })
+    const singleChoiceWidths = await page
+      .getByTestId('canonical-single-choice-group')
+      .evaluateAll((groups) =>
+        groups.map((group) => {
+          const parent = group.parentElement
+          const parentStyle = parent ? getComputedStyle(parent) : null
+          const availableWidth = parent
+            ? parent.clientWidth -
+              Number(parentStyle?.paddingLeft.replace('px', '') ?? '0') -
+              Number(parentStyle?.paddingRight.replace('px', '') ?? '0')
+            : 0
+          const itemWidths = Array.from(group.querySelectorAll('label')).map(
+            (item) => item.getBoundingClientRect().width
+          )
+
+          return {
+            availableWidth,
+            groupWidth: group.getBoundingClientRect().width,
+            itemWidths,
+          }
+        })
+      )
+    expect(singleChoiceWidths[0].groupWidth).toBeLessThan(
+      singleChoiceWidths[0].availableWidth
+    )
+    expect(singleChoiceWidths[1].groupWidth).toBeCloseTo(
+      singleChoiceWidths[1].availableWidth,
+      0
+    )
+    expect(
+      Math.max(...singleChoiceWidths[1].itemWidths) -
+        Math.min(...singleChoiceWidths[1].itemWidths)
+    ).toBeLessThan(1)
     const disabledChoiceOpacity = await page
       .getByRole('radio', { name: '25%' })
       .evaluate((input) =>
@@ -262,6 +353,43 @@ test.describe('design system lab', () => {
 
     await expect(page.getByTestId('component-detail-tabs')).toBeVisible()
     await expect(page.getByTestId('tabs-state-sheet')).toBeVisible()
+    const tabsSheet = page.getByTestId('tabs-state-sheet')
+    const intrinsicTextTabs = tabsSheet.locator(
+      '[data-text-tabs-layout="content"]'
+    )
+    const fullTextTabs = tabsSheet.locator('[data-text-tabs-layout="full"]')
+    const intrinsicContainedTabs = tabsSheet.locator(
+      '[data-contained-tabs-layout="content"]'
+    )
+    const fullContainedTabs = tabsSheet.locator(
+      '[data-contained-tabs-layout="full"]'
+    )
+    await expect(intrinsicTextTabs).toHaveCount(2)
+    await expect(fullTextTabs).toHaveCount(1)
+    await expect(intrinsicContainedTabs).toHaveCount(2)
+    await expect(fullContainedTabs).toHaveCount(1)
+    const fullTabsWidths = await fullTextTabs
+      .or(fullContainedTabs)
+      .evaluateAll((tracks) =>
+        tracks.map((track) => {
+          const parent = track.parentElement
+          const itemWidths = Array.from(track.children).map(
+            (item) => item.getBoundingClientRect().width
+          )
+
+          return {
+            parentWidth: parent?.getBoundingClientRect().width ?? 0,
+            trackWidth: track.getBoundingClientRect().width,
+            itemWidths,
+          }
+        })
+      )
+    for (const tabsWidths of fullTabsWidths) {
+      expect(tabsWidths.trackWidth).toBeCloseTo(tabsWidths.parentWidth, 0)
+      expect(
+        Math.max(...tabsWidths.itemWidths) - Math.min(...tabsWidths.itemWidths)
+      ).toBeLessThan(1)
+    }
     await expect(page.getByTestId('component-output-missing')).toHaveCount(0)
 
     await page.goto('/internal/design-system/components/button')
@@ -279,7 +407,7 @@ test.describe('design system lab', () => {
       .locator('section[aria-labelledby="current-review-heading"]')
     await expect(currentReview.locator('a')).toHaveCount(1)
     await expect(
-      currentReview.getByText('Single-choice form control', {
+      currentReview.getByText('Repeated governance parameter composition', {
         exact: true,
       })
     ).toBeVisible()
@@ -448,11 +576,15 @@ test.describe('design system lab', () => {
       page.getByTestId('component-review-readiness')
     ).toHaveAttribute('data-review-readiness', 'ready')
     await expectDelivery('metric', 'canonical-candidate', 'current-baseline')
-    await expectDelivery('input', 'canonical-candidate', 'exploratory')
+    await expectDelivery('input', 'canonical-candidate', 'current-baseline')
     await expect(
       page.getByTestId('component-review-readiness')
-    ).toHaveAttribute('data-review-readiness', 'blocked')
-    await expectDelivery('radio-group', 'canonical-candidate', 'exploratory')
+    ).toHaveAttribute('data-review-readiness', 'ready')
+    await expectDelivery(
+      'radio-group',
+      'canonical-candidate',
+      'current-baseline'
+    )
     await expect(
       page.getByTestId('component-review-readiness')
     ).toHaveAttribute('data-review-readiness', 'ready')
@@ -510,7 +642,8 @@ test.describe('design system lab', () => {
     await expect(page.getByTestId('dialog-state-sheet')).toBeVisible()
     await page.getByRole('button', { name: 'Open eligibility dialog' }).click()
     await expect(page.getByTestId('canonical-dialog-content')).toBeVisible()
-    const passiveIcon = page.getByTestId('eligibility-passive-icon')
+    const dialogContent = page.getByTestId('canonical-dialog-content')
+    const passiveIcon = dialogContent.getByTestId('eligibility-passive-icon')
     await expect(passiveIcon).toHaveCSS('border-top-width', '0px')
     await expect(passiveIcon).toHaveCSS('width', '32px')
     await expect(passiveIcon.locator('svg')).toHaveCSS('width', '20px')
@@ -535,16 +668,20 @@ test.describe('design system lab', () => {
       .getByTestId('canonical-dialog-content')
       .getByRole('button', { name: 'Show restricted jurisdictions' })
       .click()
-    const jurisdictionViewport = page.getByTestId(
+    const jurisdictionViewport = dialogContent.getByTestId(
       'jurisdiction-scroll-viewport'
     )
     await expect(jurisdictionViewport).toBeVisible()
-    await expect(page.getByTestId('jurisdiction-scroll-fade')).toBeVisible()
+    await expect(
+      dialogContent.getByTestId('jurisdiction-scroll-fade')
+    ).toBeVisible()
     await jurisdictionViewport.evaluate((node) => {
       node.scrollTop = node.scrollHeight
       node.dispatchEvent(new Event('scroll'))
     })
-    await expect(page.getByTestId('jurisdiction-scroll-fade')).toHaveCount(0)
+    await expect(
+      dialogContent.getByTestId('jurisdiction-scroll-fade')
+    ).toHaveCount(0)
     await page.keyboard.press('Escape')
     await expect(page.getByTestId('canonical-dialog-content')).toBeVisible()
     for (const checkbox of await page
@@ -580,9 +717,17 @@ test.describe('design system lab', () => {
       'height',
       '32px'
     )
+    await expect(page.getByLabel('compact basket view')).toHaveCSS(
+      'column-gap',
+      '2px'
+    )
     await expect(page.getByLabel('default basket view')).toHaveCSS(
       'height',
       '44px'
+    )
+    await expect(page.getByLabel('default basket view')).toHaveCSS(
+      'column-gap',
+      '2px'
     )
   })
 
@@ -1064,7 +1209,11 @@ test.describe('design system lab', () => {
       'opacity',
       '1'
     )
-    await expect(launchLine).toHaveCSS('background-image', 'none')
+    if ((page.viewportSize()?.width ?? 0) >= 1024) {
+      await expect(launchLine).toHaveCSS('background-image', 'none')
+    } else {
+      await expect(launchLine).not.toHaveCSS('background-image', 'none')
+    }
     await expect(discoverSource.locator('.h-52')).toHaveCount(0)
     await expect(card).toHaveCSS('border-radius', '0px')
     await expect(card).toHaveCSS('gap', '8px')

@@ -1,4 +1,5 @@
 import type { IndexDTFItem } from '@/hooks/useIndexDTFList'
+import { cn } from '@/lib/utils'
 import { ChainId } from '@/utils/chains'
 import { DiscoverIndexDTFCard } from '@/views/home/components/discover-index-dtf'
 import { IndexDTFFeatureCard } from '@/views/home/components/highlighted-dtfs'
@@ -100,7 +101,7 @@ export const HomeFeatureCardOverviewSpecimen = () => (
   <div
     data-testid="home-feature-card-overview-specimen"
     data-source-point-count={HOME_FEATURE_CARD_FIXTURE.performance.length}
-    className={HOME_FEATURE_CARD_FOUNDATION_CLASSES}
+    className={cn('min-w-0', HOME_FEATURE_CARD_FOUNDATION_CLASSES)}
   >
     <IndexDTFFeatureCard dtf={HOME_FEATURE_CARD_FIXTURE} />
   </div>
@@ -109,7 +110,7 @@ export const HomeFeatureCardOverviewSpecimen = () => (
 const CardContentRegionReview = () => (
   <section
     data-testid="card-content-region-review"
-    className="space-y-8"
+    className="min-w-0 space-y-8"
     aria-labelledby="card-content-region-review-title"
   >
     <div>
@@ -129,8 +130,8 @@ const CardContentRegionReview = () => (
     </div>
 
     <div className="space-y-8">
-      <div className="grid gap-8 xl:grid-cols-[minmax(0,28rem)_minmax(18rem,1fr)]">
-        <div>
+      <div className="grid min-w-0 gap-8 xl:grid-cols-[minmax(0,28rem)_minmax(18rem,1fr)]">
+        <div className="min-w-0">
           <p className="mb-2 text-sm font-medium text-foreground">
             Primary evidence · Home featured card
           </p>
@@ -139,7 +140,7 @@ const CardContentRegionReview = () => (
             data-source-point-count={
               HOME_FEATURE_CARD_FIXTURE.performance.length
             }
-            className={HOME_FEATURE_CARD_FOUNDATION_CLASSES}
+            className={cn('min-w-0', HOME_FEATURE_CARD_FOUNDATION_CLASSES)}
           >
             <IndexDTFFeatureCard dtf={HOME_FEATURE_CARD_FIXTURE} />
           </div>
@@ -177,14 +178,14 @@ const CardContentRegionReview = () => (
       </div>
 
       <div className="border-t border-border pt-8">
-        <div className="grid gap-8 xl:grid-cols-[minmax(0,28rem)_minmax(18rem,1fr)]">
-          <div>
+        <div className="grid min-w-0 gap-8 xl:grid-cols-[minmax(0,28rem)_minmax(18rem,1fr)]">
+          <div className="min-w-0">
             <p className="mb-2 text-sm font-medium text-foreground">
               Supporting evidence · Discover compact adaptation
             </p>
             <div
               data-testid="discover-feature-card-source"
-              className="[&>div>a]:!gap-2 [&>div>a]:!rounded-none [&>div>a]:!p-2 [&>div>a>div:first-child]:!rounded-lg [&>div>a>div:first-child>div:first-child]:!gap-4 [&>div>a>div:first-child>div:first-child]:!p-6 [&_[data-feature-card-market-row]]:!mt-2 [&_[data-feature-card-supporting-row]]:!px-6 [&_[data-feature-card-title-slot]]:!min-h-0 [&_[data-feature-card-title-slot]]:!items-start"
+              className="min-w-0 [&>div>a]:!gap-2 [&>div>a]:!rounded-none [&>div>a]:!p-2 [&>div>a>div:first-child]:!rounded-lg [&>div>a>div:first-child>div:first-child]:!gap-4 [&>div>a>div:first-child>div:first-child]:!p-6 [&_[data-feature-card-market-row]]:!mt-2 [&_[data-feature-card-supporting-row]]:!px-6 [&_[data-feature-card-title-slot]]:!min-h-0 [&_[data-feature-card-title-slot]]:!items-start"
             >
               <DiscoverIndexDTFCard dtf={DISCOVER_CARD_FIXTURE} />
             </div>

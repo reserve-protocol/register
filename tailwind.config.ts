@@ -3,7 +3,11 @@ import defaultTheme from 'tailwindcss/defaultTheme'
 
 const config = {
   darkMode: ['class'],
-  content: ['./index.html', './src/**/*.{ts,tsx,js,jsx}', './node_modules/@reserve-protocol/react-zapper/dist/**/*.js'],
+  content: [
+    './index.html',
+    './src/**/*.{ts,tsx,js,jsx}',
+    './node_modules/@reserve-protocol/react-zapper/dist/**/*.js',
+  ],
   prefix: '',
   theme: {
     container: {
@@ -25,6 +29,11 @@ const config = {
       '4xl': '1.5rem',
     },
     extend: {
+      transitionDuration: {
+        120: '120ms',
+        180: '180ms',
+        240: '240ms',
+      },
       colors: {
         border: 'hsl(var(--border))',
         borderSecondary: 'hsl(var(--border-secondary))',

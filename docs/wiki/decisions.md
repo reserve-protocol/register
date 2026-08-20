@@ -169,7 +169,135 @@ Do not reconstruct an accepted treatment locally. The contained-selection
 visual language is the first explicit recipe boundary: its compact/default
 geometry and states live in
 `src/components/design-system-v1/contained-selection.ts` and are consumed by
-SingleChoice. The accepted text-only and contained Tabs presentations live in
+SingleChoice. Its 2px track inset is also the 2px gap between items so adjacent
+hovered and selected shapes remain optically distinct. The default layout is
+intrinsic: the track wraps its items and each item wraps its content. An
+explicit full-width layout makes the track fill its parent and all peer items
+grow equally while their accepted geometry fits. Below that readable minimum,
+the full-width track preserves intrinsic peer geometry, scrolls horizontally,
+and reveals the selected option rather than compressing or wrapping labels. The
+accepted text-only and contained Tabs presentations live in
 `src/components/design-system-v1/tab-presentation.ts`; they are visible current
 baselines without implying that Tabs panel semantics, variant roles, overflow,
 counts, deep linking, or the final component API are complete.
+
+SingleChoice exposes only the default 44px size for now. Compact or micro
+versions should be added only when a real product use requires them rather than
+preemptively expanding the component API.
+
+## 2026-08-19 — SingleChoice default presentation accepted
+
+The one-row submitted-value SingleChoice control is a current V1 baseline. It
+uses the default 44px contained-selection geometry, 14px/500 labels, 20px item
+padding, full radius, a 2px track inset and peer gap, and the shared intrinsic
+versus equal-growth full-width rule. A full-width group falls back to intrinsic
+horizontal overflow and keeps its selected option visible when its peers cannot
+fit without breaking that geometry. Only this pill-style form-value job is
+accepted; standard radio rows, rich choice cards, compact/micro sizes, and
+production adoption remain open until real usage requires them.
+
+## 2026-08-19 — Repeated preset-or-custom form composition accepted
+
+The repeated governance-parameter composition is an accepted V1 pattern. It
+uses the 24px contained-form inset and complete-group rhythm without nested
+tinted cards or divider-dependent grouping. `PresetOrCustomField` composes the
+accepted SingleChoice and TextInput controls as two mutually exclusive sources
+for one value: typing selects an explicit Custom option, choosing a preset
+clears custom entry, and Custom owns custom validation. At constrained widths
+the controls stack at full width; SingleChoice preserves its 44px geometry and
+uses selected-option-aware horizontal overflow when its peers cannot fit.
+Business validation and governance semantics remain feature-owned, and no
+production consumer is adopted by this decision.
+
+## 2026-08-19 — Read-only fields stay context-neutral
+
+The shared Field/TextInput candidate does not add a lock icon automatically for
+`readOnly`. Read-only behavior and the quiet non-editable surface belong to the
+component; a lock or permission explanation belongs to the composition only
+when the reason is important or surprising. A summary/review display should use
+an information or key/value row rather than a read-only input. Disabled fields
+preserve visible values and use the shared disabled treatment; form submission
+progress remains owned by the action or form lifecycle rather than becoming a
+generic field state.
+
+## 2026-08-19 — Field and TextInput baseline accepted
+
+The ordinary short-value Field/TextInput anatomy is a current V1 baseline:
+visible 14px/500 labels; 16px/300 entered values; 14px/300 supporting and error
+copy; an 8px label/control/help relationship; a 44px fully rounded control;
+20px ordinary horizontal inset; and semantic invalid, read-only, and disabled
+states. Labels and supporting text align to the control's outer edge rather
+than its internal value text so forms retain one stable content axis. Leading
+and trailing adornments are supported without becoming required decoration.
+Multiline inputs, repeated parameter compositions, business validation, and
+production adoption remain separate.
+
+## 2026-08-19 — ActionGroup composition baseline accepted
+
+ActionGroup is a current V1 baseline for ordinary related actions. Horizontal
+groups remain intrinsic-width and do not wrap into ragged partial stacks.
+When a narrow composition deliberately switches to vertical actions, every
+action takes the same full width. Both directions use the accepted 8px peer
+gap. Button continues to own hierarchy, size, tone, and state; transaction
+lifecycle and persistent or floating action wrappers remain outside this
+recipe. Production adoption has not started.
+
+The state-sheet action labels are relationship evidence, not an accepted
+completion-state design. Action choice, order, copy, and icon use remain owned
+by the real composition and must be reviewed there when that flow is addressed.
+
+## 2026-08-19 — Explanatory HelpTooltip baseline accepted
+
+Explanatory help uses a bare 16px help glyph beside the owning field or metric
+label, with a 4px visible relationship and an approximately 44px invisible
+interaction target. The Radix-backed floating surface supports hover, focus,
+and explicit click or touch persistence. Essential instructions remain visible;
+accessible action names and transient action feedback stay with their owning
+components rather than becoming HelpTooltip variants.
+
+The surface uses bounded dynamic width rather than a fixed or minimum width:
+short explanations size naturally, while longer explanations wrap at the
+smaller of a 340px maximum or Radix's available collision-aware viewport width.
+Normal wrapping is retained because balancing lines inside a shrink-to-fit
+popover can leave the surface substantially wider than its rendered text. Other
+tooltip jobs, long educational content, responsive drawer substitution, and
+production adoption remain outside this baseline.
+
+## 2026-08-19 — Stacked identity separators preserve artwork size and axis
+
+Chain and token stacks share one canonical frame model. The requested size
+describes the identity artwork itself; a 2px surface-colored separator wraps
+outside that artwork rather than shrinking it. The stack optically compensates
+for the first separator so its first artwork aligns with a singular identity on
+the same content axis. Chain frames retain proportional rounded-square geometry
+and token frames remain circular. Overlap stays component-owned and can vary by
+stack size or composition. Existing legacy product consumers are not migrated
+by this decision.
+
+## 2026-08-19 — Bounded-value Select baseline accepted
+
+Bounded-value Select uses the accepted 44px default Field geometry and an
+evidenced 32px compact utility size. The popup sits 8px from its trigger with an
+8px outer radius and 4px nested option radius; 40px options use the shared
+subtle interaction surface, retain a persistent right-side selected check, and
+support canonical leading identity without redefining identity geometry.
+
+Width and labeling remain composition-owned. Form fields may use an external
+label; self-describing filters may use a standalone trigger with a stable
+accessible name. A context label inside the trigger is permitted only when a
+real ambiguous-value composition warrants it and does not create another Select
+variant. Compact bounded utilities reserve enough width for their widest known
+option instead of resizing when selection changes. Searchable choices,
+multi-value selection, action menus, native-select policy, mobile substitution,
+and production adoption remain separate.
+
+## 2026-08-20 — SearchField baseline accepted
+
+SearchField is a current V1 baseline for standalone query entry. It composes the
+accepted 44px TextInput and IconButton sources, owns a 16px leading search mark,
+an optional clear action that returns focus, and a non-interactive loading
+indicator while retaining the editable query. One size covers the product use
+currently evidenced; a compact size waits for a real dense-toolbar requirement.
+Result lists, grouping, empty-result recovery, navigation Command, multi-select,
+Asset picker behavior, responsive substitution, and production adoption remain
+owned by their surrounding compositions.

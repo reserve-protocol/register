@@ -1,4 +1,4 @@
-import { type HTMLAttributes, useId } from 'react'
+import { type HTMLAttributes, useId, useLayoutEffect, useRef } from 'react'
 
 import { containedSelectionRecipe } from './contained-selection'
 import { cn } from '@/lib/utils'
@@ -19,6 +19,7 @@ export interface SingleChoiceGroupProps extends Omit<
   onValueChange?: (value: string) => void
   options: SingleChoiceOption[]
   value?: string
+  width?: 'content' | 'full'
 }
 
 export const SingleChoiceGroup = ({
@@ -29,23 +30,49 @@ export const SingleChoiceGroup = ({
   onValueChange,
   options,
   value,
+  width = 'content',
   ...props
 }: SingleChoiceGroupProps) => {
   const generatedName = useId()
   const groupName = name ?? generatedName
+  const layout = containedSelectionRecipe.layout[width]
+  const groupRef = useRef<HTMLDivElement>(null)
+
+  useLayoutEffect(() => {
+    revealSelectedOption(groupRef.current)
+  }, [defaultValue, value])
+
+  useLayoutEffect(() => {
+    const group = groupRef.current
+    if (!group || typeof ResizeObserver === 'undefined') return
+
+    const observer = new ResizeObserver(() => revealSelectedOption(group))
+    observer.observe(group)
+
+    return () => observer.disconnect()
+  }, [])
 
   return (
     <div
+      ref={groupRef}
       role="radiogroup"
       aria-label={accessibleLabel}
       data-testid="canonical-single-choice-group"
-      className={cn(containedSelectionRecipe.default.track, className)}
+      data-width={width}
+      className={cn(
+        containedSelectionRecipe.default.track,
+        layout.track,
+        className
+      )}
       {...props}
     >
       {options.map((option) => (
         <label
           key={option.value}
-          className="relative shrink-0 cursor-pointer has-[:disabled]:cursor-not-allowed"
+          className={cn(
+            'relative cursor-pointer has-[:disabled]:cursor-not-allowed',
+            layout.item
+          )}
         >
           <input
             className="peer sr-only"
@@ -57,12 +84,19 @@ export const SingleChoiceGroup = ({
               value === undefined ? defaultValue === option.value : undefined
             }
             disabled={option.disabled}
-            onChange={() => onValueChange?.(option.value)}
+            onChange={(event) => {
+              revealOption(
+                groupRef.current,
+                event.currentTarget.closest('label')
+              )
+              onValueChange?.(option.value)
+            }}
           />
           <span
             className={cn(
               containedSelectionRecipe.default.item,
-              containedSelectionRecipe.radioItemState
+              containedSelectionRecipe.radioItemState,
+              'w-full'
             )}
           >
             {option.label}
@@ -71,4 +105,30 @@ export const SingleChoiceGroup = ({
       ))}
     </div>
   )
+}
+
+const revealSelectedOption = (group: HTMLDivElement | null) => {
+  const selectedOption = group
+    ?.querySelector<HTMLInputElement>('input:checked')
+    ?.closest<HTMLElement>('label')
+
+  revealOption(group, selectedOption ?? null)
+}
+
+const revealOption = (
+  group: HTMLDivElement | null,
+  option: HTMLElement | null
+) => {
+  if (!group || !option || group.scrollWidth <= group.clientWidth) return
+
+  const groupRect = group.getBoundingClientRect()
+  const optionRect = option.getBoundingClientRect()
+  const optionStart = group.scrollLeft + optionRect.left - groupRect.left
+  const optionEnd = optionStart + optionRect.width
+
+  if (optionStart < group.scrollLeft) {
+    group.scrollLeft = optionStart
+  } else if (optionEnd > group.scrollLeft + group.clientWidth) {
+    group.scrollLeft = optionEnd - group.clientWidth
+  }
 }

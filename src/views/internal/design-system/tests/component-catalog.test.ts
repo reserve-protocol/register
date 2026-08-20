@@ -7,8 +7,11 @@ import {
   getComponentItem,
 } from '../component-catalog'
 import { CURRENT_REVIEW, FOUNDATION_CONFORMANCE_AREAS } from '../current-review'
+import { PRODUCT_FACING_REVIEWS } from '../product-facing-component-audit'
 import { v1LayoutRecipes } from '@/components/ui/v1-layout-recipes'
 import { containedSelectionRecipe } from '@/components/design-system-v1/contained-selection'
+import { actionGroupRecipe } from '@/components/design-system-v1/action-group'
+import { tabPresentationRecipe } from '@/components/design-system-v1/tab-presentation'
 
 describe('component contract registry', () => {
   it('uses unique ids so every contract remains directly addressable', () => {
@@ -58,7 +61,7 @@ describe('component contract registry', () => {
     })
     expect(getComponentItem('radio-group').item).toMatchObject({
       outputStatus: 'rendered',
-      designAuthority: 'exploratory',
+      designAuthority: 'current-baseline',
       implementationStatus: 'canonical-candidate',
       adoptionStatus: 'none',
     })
@@ -70,9 +73,18 @@ describe('component contract registry', () => {
     ).toEqual([
       'button',
       'icon-button',
+      'button-group',
+      'input',
+      'select',
+      'multi-select-filter',
+      'search',
       'checkbox',
+      'radio-group',
       'tabs',
       'dialog',
+      'popover',
+      'dropdown-menu',
+      'tooltip',
       'badge',
       'entity-identity',
       'metric',
@@ -90,9 +102,20 @@ describe('component contract registry', () => {
       adoptionStatus: 'none',
     })
     expect(containedSelectionRecipe.compact.track).toContain('h-8')
+    expect(containedSelectionRecipe.compact.track).toContain('gap-0.5')
     expect(containedSelectionRecipe.compact.item).toContain('h-7')
     expect(containedSelectionRecipe.default.track).toContain('h-11')
+    expect(containedSelectionRecipe.default.track).toContain('gap-0.5')
     expect(containedSelectionRecipe.default.item).toContain('h-10')
+    expect(containedSelectionRecipe.layout.content.track).toContain('w-fit')
+    expect(containedSelectionRecipe.layout.content.item).toContain('shrink-0')
+    expect(containedSelectionRecipe.layout.full.track).toContain('w-full')
+    expect(containedSelectionRecipe.layout.full.item).toContain('flex-1')
+    expect(tabPresentationRecipe.textOnly.layout).toBe(
+      containedSelectionRecipe.layout
+    )
+    expect(tabPresentationRecipe.textOnly.compact.list).not.toContain('flex')
+    expect(tabPresentationRecipe.textOnly.default.list).not.toContain('flex')
   })
 
   it('keeps every declared relationship navigable', () => {
@@ -103,21 +126,43 @@ describe('component contract registry', () => {
     }
   })
 
-  it('blocks the contained form composition on its unaccepted single-choice prerequisite', () => {
+  it('keeps the Field baseline independent from repeated form composition', () => {
     const input = getComponentItem('input').item
 
     expect(input).toMatchObject({
       outputStatus: 'rendered',
-      designAuthority: 'exploratory',
+      designAuthority: 'current-baseline',
       implementationStatus: 'canonical-candidate',
       adoptionStatus: 'none',
-      review: { status: 'blocked' },
+      review: { status: 'ready' },
     })
+    expect(input?.review.dependencies).not.toContainEqual(
+      expect.objectContaining({ name: 'Single-choice pill group' })
+    )
+  })
+
+  it('encodes ActionGroup without adding another Button family', () => {
+    expect(getComponentItem('button-group').item).toMatchObject({
+      outputStatus: 'rendered',
+      designAuthority: 'current-baseline',
+      implementationStatus: 'reusable-recipe',
+      implementationSource: 'src/components/design-system-v1/action-group.tsx',
+      adoptionStatus: 'none',
+      review: { status: 'ready' },
+    })
+    expect(actionGroupRecipe.horizontal).toContain('gap-2')
+    expect(actionGroupRecipe.horizontal).not.toContain('flex-wrap')
+    expect(actionGroupRecipe.vertical).toContain('[&>*]:w-full')
+
     expect(
-      input?.review.dependencies.find(
-        (dependency) => dependency.name === 'Single-choice pill group'
-      )
-    ).toMatchObject({ status: 'provisional' })
+      PRODUCT_FACING_REVIEWS.find((review) => review.id === 'action-groups')
+        ?.status
+    ).toBe('complete')
+    expect(
+      PRODUCT_FACING_REVIEWS.find(
+        (review) => review.id === 'contained-form-rows'
+      )?.status
+    ).toBe('complete')
   })
 
   it('keeps compact form choice separate from navigation and mode switching', () => {
@@ -125,7 +170,7 @@ describe('component contract registry', () => {
 
     expect(radio).toMatchObject({
       outputStatus: 'rendered',
-      designAuthority: 'exploratory',
+      designAuthority: 'current-baseline',
       implementationStatus: 'canonical-candidate',
       adoptionStatus: 'none',
       review: { status: 'ready' },
@@ -161,13 +206,83 @@ describe('component contract registry', () => {
       )
     ).toMatchObject({ status: 'canonical' })
   })
+
+  it('keeps explanatory help reviewable without claiming other tooltip jobs', () => {
+    const tooltip = getComponentItem('tooltip').item
+
+    expect(tooltip).toMatchObject({
+      outputStatus: 'rendered',
+      designAuthority: 'current-baseline',
+      implementationStatus: 'canonical-candidate',
+      adoptionStatus: 'none',
+      review: { status: 'ready' },
+      implementationSource: 'src/components/design-system-v1/help-tooltip.tsx',
+    })
+    expect(tooltip?.review.scope).toContain('Truncated values')
+  })
+
+  it('accepts bounded-value Select without claiming Combobox or Menu', () => {
+    const select = getComponentItem('select').item
+
+    expect(select).toMatchObject({
+      outputStatus: 'rendered',
+      designAuthority: 'current-baseline',
+      implementationStatus: 'canonical-candidate',
+      adoptionStatus: 'none',
+      review: { status: 'ready' },
+      implementationSource: 'src/components/design-system-v1/select.tsx',
+    })
+    expect(select?.review.scope).toContain('Search, rich entity options')
+    expect(
+      PRODUCT_FACING_REVIEWS.find(
+        (review) => review.id === 'value-and-action-popups'
+      )?.status
+    ).toBe('ready')
+  })
+
+  it('does not manufacture Combobox and keeps the real Search baseline separate', () => {
+    const combobox = getComponentItem('combobox').item
+    const search = getComponentItem('search').item
+
+    expect(combobox).toMatchObject({
+      status: 'not-needed',
+      outputStatus: 'none',
+      designAuthority: 'undefined',
+      implementationStatus: 'none',
+      auditStatus: 'mapped',
+    })
+    expect(combobox?.statusDetail).toContain(
+      'No recurring generic Combobox job'
+    )
+    expect(search).toMatchObject({
+      outputStatus: 'rendered',
+      designAuthority: 'current-baseline',
+      implementationStatus: 'canonical-candidate',
+      implementationSource: 'src/components/design-system-v1/search-field.tsx',
+      adoptionStatus: 'none',
+      review: { status: 'ready' },
+    })
+    expect(search?.review.scope).toContain('Result rows')
+  })
+
+  it('keeps action Menu separate from bounded and committed value selection', () => {
+    const menu = getComponentItem('dropdown-menu').item
+
+    expect(menu).toMatchObject({
+      outputStatus: 'rendered',
+      designAuthority: 'current-baseline',
+      implementationStatus: 'canonical-candidate',
+      implementationSource: 'src/components/design-system-v1/menu.tsx',
+      adoptionStatus: 'none',
+      review: { status: 'ready' },
+    })
+    expect(menu?.review.scope).toContain('Value selection')
+  })
 })
 
 describe('current review', () => {
   it('contains only a small typed queue of human judgments', () => {
-    expect(CURRENT_REVIEW.map((item) => item.title)).toEqual([
-      'Single-choice form control',
-    ])
+    expect(CURRENT_REVIEW.map((item) => item.title)).toEqual([])
 
     for (const item of CURRENT_REVIEW) {
       expect(item.title).not.toBe('')

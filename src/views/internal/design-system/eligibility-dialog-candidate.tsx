@@ -39,10 +39,12 @@ const PROHIBITED_JURISDICTIONS = [
 
 export const EligibilityDialogCandidate = ({
   idPrefix = 'candidate',
+  jurisdictionsDefaultOpen = false,
   onConfirm,
   showClosePreview = false,
 }: {
   idPrefix?: string
+  jurisdictionsDefaultOpen?: boolean
   onConfirm?: () => void
   showClosePreview?: boolean
 }) => {
@@ -88,7 +90,7 @@ export const EligibilityDialogCandidate = ({
           </InlineLink>
           .
         </AttestationRow>
-        <Collapsible>
+        <Collapsible defaultOpen={jurisdictionsDefaultOpen}>
           <AttestationRow
             id={`${idPrefix}-jurisdiction`}
             checked={confirmedJurisdiction}

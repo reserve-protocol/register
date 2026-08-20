@@ -17,7 +17,7 @@ Source of truth: `tailwind.config.ts` (tokens) + `src/app.css` (CSS variables, `
 
 ## Active v1 project
 
-The active contract is [design-system-v1](../../plans/design-system-v1.md). The contained `/internal/design-system` route is a visual-review workspace: Foundations renders the current system as compact specimens, and Components renders reusable V1 candidates with acceptance and adoption shown separately before provisional compositions and a compact remaining inventory. Screens remains a reference to unchanged production routes; it cannot validate an unadopted candidate. Detail pages lead with visual output and local readiness; evidence, dependencies, definition slots, and history are progressively disclosed. Studies contains only unresolved alternatives and active pressure tests. Project Status owns the typed Current Review queue plus the deeper registry-derived tracker and work queue. Expected missing slots remain navigable, but they do not receive large overview cards or imply a commitment to build.
+The active contract is [design-system-v1](../../plans/design-system-v1.md). The contained `/internal/design-system` route is a visual-review workspace: Foundations renders the current system as compact specimens, and Components mounts the same complete state sheets used by detail routes for all 14 rendered items, with review readiness, design authority, implementation/adoption, and one 29-item unresolved inventory shown explicitly. Product Navigation remains named and unresolved; no placeholder output is invented for it. Screens remains a reference to unchanged production routes; it cannot validate an unadopted candidate. Detail pages lead with visual output and local readiness, then add interaction evidence or extended compositions where useful; evidence, dependencies, definition slots, and history are progressively disclosed. Studies contains only unresolved alternatives and active pressure tests. Project Status owns the typed Current Review queue plus the deeper registry-derived tracker and work queue. Expected missing slots remain navigable, but they do not receive large overview cards or imply a commitment to build.
 
 V1 work is canonical-first. Reuse the audits, synthesize the strongest complete
 candidate from accepted owners and strong product evidence, self-review it, and
@@ -115,6 +115,21 @@ widths—usually full-width default 44px actions—rather than a ragged stack of
 differently sized content-width buttons. Full-width compact actions remain an
 evidenced exception, not a default pattern.
 
+The lab now implements that width rule as a provisional `ActionGroup` recipe:
+horizontal peers use the accepted 8px gap without wrapping, while an explicitly
+vertical group makes its default actions share full width. The sheet uses the
+real Async Mint completion pair and the real proposal-cancellation action as
+fixtures. This is an exploratory reusable recipe awaiting human review, not a
+current baseline, transaction-lifecycle owner, or production adoption.
+
+The independent Field/TextInput candidate no longer depends on SingleChoice or
+the blocked repeated-governance composition. It renders the evidenced empty,
+filled, numeric-affix, invalid, read-only, and submission-disabled jobs with the
+accepted 44px atomic geometry, 20px ordinary inset, and 18px adorned inset.
+Labels, help, and errors remain connected to the native input; business
+validation, multiline input, repeated groups, and production adoption stay out
+of scope. The candidate is exploratory and ready for bounded review.
+
 The V1 Dialog behavior contract is partially accepted. Ordinary reversible
 tasks use one visible completion action when shell dismissal already cancels;
 destructive confirmation adds an explicit safe exit. Long content scrolls in
@@ -172,16 +187,151 @@ own alignment, optional icons, framing, and layout rather than Metric becoming
 another Card primitive.
 
 Entity identity is the first canonical product-facing candidate. The lab
-directly renders the shared `EntityIdentity`, `ChainBadgedLogo`, and
-`TokenLogoStack` implementations from `src/components/entity-identity/` rather
-than lab-only replicas. The badge follows the strongest recent Index treatment;
+directly renders the shared `EntityIdentity`, `ChainBadgedLogo`,
+`ChainLogoStack`, and `TokenLogoStack` implementations from
+`src/components/entity-identity/` rather than lab-only replicas. The badge
+follows the strongest recent Index treatment;
 its 16px xl and 14px lg chain marks include the separating border rather than
 growing around it. The lg mark uses an optical floor because the fixed 2px
-separator otherwise overwhelms the visible chain symbol. The stack owns overlap
-order and surface-colored separation. Long names,
+separator otherwise overwhelms the visible chain symbol. Chain and token stacks
+share one frame recipe: requested size always describes the artwork, the 2px
+surface-colored separator wraps outside it, and the stack compensates for that
+separator so the first artwork retains the same leading axis as a singular
+mark. Chain frames preserve proportional rounded-square geometry while token
+frames remain circular. The stack owns overlap order and surface separation.
+Long names,
 deterministic logo fallback, account marks, and a dense 32px Index holdings
 composition now pass in the lab. Production consumers and the two legacy stack
 implementations are intentionally unchanged until an explicit adoption slice.
+
+The 2026-08-19 safe-autonomy pass rechecked this boundary against the strongest
+recent sources: `basket-overview/exposure-table-rows.tsx` for 32px Index
+identity, `highlighted-dtfs/feature-card.tsx` for badged DTF marks, and
+`earn/views/index-dtf/components/table-filters.tsx` for overlapping marks and
+surface separation. The existing shared candidate already matched those
+requirements at that checkpoint, so no entity code or production consumer
+changed then. The later Select pressure test corrected only the reusable stack
+frame geometry described above; production consumers remain unchanged.
+
+The first popup-related candidate now isolates explanatory HelpTooltip from
+accessible action naming and transient copy feedback. It consumes the existing
+Radix-backed Tooltip behavior with a bare inline trigger and explicit click or
+touch persistence. Its accepted floating surface is content-sized rather than
+fixed-width: short explanations stay compact, longer explanations wrap at a
+collision-aware 340px maximum, and collision padding preserves an 8px viewport
+boundary.
+The accepted Select popup may eventually supply presentation recipes to
+Combobox and Menu, but bounded value choice, searchable entity choice, and
+immediate actions retain distinct behavior. Long help copy and responsive
+popover-versus-drawer behavior still require evidence; Combobox and Menu do not
+inherit authority from Select merely because some visual anatomy may match.
+
+The bounded-value Select is an accepted reusable Radix-backed V1 baseline. Its
+ordinary trigger inherits the accepted 44px Field
+geometry, 16px/300 value, 20px inset, full radius, semantic control line, and
+focus treatment. A real pagination requirement adds a 32px, 14px/300 compact
+trigger rather than another general control scale. The floating list uses an
+8px offset and radius; its 40px, 14px/300 option surfaces use a nested 4px
+radius within the popup's 4px inset. A neutral highlighted surface and a
+persistent right-side check for the committed value keep focus and selection
+distinct. Its down chevron uses the shared labeled-popup trigger indicator and
+rotates on open; option content and its trailing check retain the trigger's
+leading value and trailing-indicator axes. Temporary option focus consumes the
+same
+subtle foreground-at-5% interaction recipe as contained Tabs and SingleChoice
+rather than the stronger neutral-control fill. A source-grounded chain fixture
+supports a 16px direct leading mark beside 14px option text while using the
+canonical `ChainLogoStack` for the `All chains` composite summary. Direct brand,
+token, and chain marks preserve their authored geometry rather than inheriting
+an interface-control radius. Trigger width and visible-label treatment remain
+composition-owned: form fields may use an external label, self-describing
+filters may use the trigger alone with an accessible name, and an internal
+context label may be added only when a real ambiguous-value composition needs
+it. Compact bounded utilities reserve space for their widest known option rather
+than resizing with the selected value; the current pagination fixture remains
+70px wide. Text-only compact popup triggers use 14px leading and 10px trailing
+padding around their 8px text-to-chevron relationship. This transfers the
+existing 2px optical adjustment across the control, balancing the text edge
+against the chevron sidebearing without introducing a new spacing token. This
+does not turn searchable or
+multi-value results into Select variants. Combobox, Menu, native-select policy,
+mobile drawer substitution, and production adoption remain separate.
+
+Default 44px selection triggers use a 12px gap between the submitted value or
+summary and their chevron, with 20px leading padding and 18px on the trailing
+Lucide-chevron side. Compact 32px triggers retain the tighter 8px relationship
+and their accepted 14px-leading/10px-trailing optical padding. This distinction
+belongs to popup-trigger geometry rather than to MultiSelectFilter alone;
+content identity logos do not trigger the chrome-icon adjustment.
+
+The rendered Select, Menu, and MultiSelectFilter rows currently share a
+provisional balanced-inset candidate prompted by review of their visible hover
+surfaces. The popup uses 8px padding on both axes and each item uses 12px padding
+on both axes. A provisional 14px/16px single-line popup-label role produces a
+40px ordinary Select/Menu row while 20px identity or selection controls keep
+MultiSelect rows at 44px. The balancing rule is accepted; the exact resulting
+density and line-height treatment remain under visual review and must not
+compound as authority yet.
+
+The source-grounded `SearchField` is an accepted current baseline. Source inspection
+corrected an earlier audit assumption before implementation: the app does not
+currently demonstrate one recurring generic Combobox job. Global DTF search is
+navigation Command, Earn and governance filters are multi-select, and token
+selection is a drawer-based Asset picker. Those jobs remain separate rather
+than lending speculative authority to a Combobox.
+
+`SearchField` composes the accepted `TextInput` and `IconButton`. It
+inherits the 44px fully rounded field, 16px/300 query text, semantic focus and
+disabled treatment, and adds a 16px search mark, optional clear action with
+focus return, and a non-interactive loading indicator. Search results, grouping,
+no-results recovery, Command navigation, asset selection, compact sizing, and
+responsive substitution remain composition-owned. One 44px size covers the
+current evidence; compact sizing waits for a real dense-toolbar requirement.
+The accepted state sheet includes standalone states and a real Discover-style
+Search plus Select alignment test; no production consumer changed.
+
+The source-grounded action `Menu` is an accepted current baseline. It retains Radix
+keyboard and dismissal behavior, consumes canonical Button/IconButton triggers,
+and reuses the accepted popup surface, item geometry, and subtle interaction
+recipe without inheriting Select semantics. Real authority comes from Index
+contract-address actions, About and external-market links, and the header Search
+invocation. Chart type, time range, language, theme, and social-channel choice
+commit values and therefore remain selection evidence. The baseline covers
+ordinary, external-link, disabled, and destructive action anatomy;
+the destructive role is semantically correct but its exact cross-theme
+foreground value remains dependent on the provisional feedback palette.
+Labeled Menu and Select triggers consume one shared down-chevron indicator:
+opening rotates it 180 degrees over the 120ms immediate-feedback duration,
+while reduced-motion removes the transition. Icon-only triggers do not add it.
+Menu separators cross the 4px popup inset and meet the inside of its border,
+clearly separating action groups rather than aligning to the item-content axis.
+The labeled compact Menu trigger consumes the same 14px-leading/10px-trailing
+text-and-chevron recipe as compact Select; ordinary action-icon Buttons do not
+inherit it automatically.
+Grouped header panels, selection items, shortcuts, submenus, responsive
+substitution, and production adoption remain separate.
+
+The minimal V1 `Popover` shell is accepted by consequence of the Select and
+Menu reviews: it owns the shared 8px trigger offset and shell radius, collision
+inset, semantic floating surface, restrained elevation, and retained Radix
+focus/dismissal behavior. Width, padding, scrolling, and inner anatomy belong
+to the hosted composition.
+
+`MultiSelectFilter` is an accepted current baseline derived from the real Earn
+DTF and governance filter jobs; Current Review is empty after its approval. It
+preserves staged Apply behavior while replacing Switch-based set membership
+with canonical Checkbox rows. Its 44px summary trigger composes Button geometry
+but uses the accepted 16px/300 selection-value role, a 12px
+summary-to-chevron gap, and 20px-leading/18px-trailing optical padding. Rows
+retain the same 8px popup and 12px item insets as Select and Menu. A 20px leading
+identity mark balances the canonical 20px Checkbox mark without changing
+identity sizing elsewhere; the Checkbox's 28px transparent target overlaps 4px
+into the row-owned inset. The provisional 14px/16px single-line role and those
+20px marks retain a 44px row. The no-divider footer consumes horizontal
+ActionGroup with compact secondary Clear and primary Apply actions grouped
+right at an 8px gap, 20px horizontal and bottom insets, and 8px top padding.
+Search, large-list loading and empty states, token-result density, mobile drawer
+substitution, and production adoption remain separate.
 
 The canonical product kernel now also includes `Button`, `Metric`/`MetricValue`,
 `EmptyState`, and `LifecycleStatusPill`. Button owns the accepted action
@@ -326,19 +476,29 @@ A new color means adding the CSS var in **both** `:root` and `.dark` in `src/app
 - Tabs use foreground text for the active item and supporting text for inactive
   items rather than primary blue. The text-only candidate follows the recent
   Index overview timespan treatment without an underline or wrapper, at 14px
-  compact and 16px default sizes.
+  compact and 16px default sizes. Text-only and contained presentations wrap
+  their items by default; an explicitly full-width Tabs list distributes all
+  peer triggers equally.
 - A contained single-selection strip uses one shared visual language regardless
   of whether its eventual semantics are Tabs, a segmented mode control, or a
-  submitted radio value: a fully rounded neutral track, 2px track inset, no
-  additional inter-item gap, a subtly elevated white selected item, 14px/500
+  submitted radio value: a fully rounded neutral track, 2px track inset, a
+  matching 2px inter-item gap, a subtly elevated white selected item, 14px/500
   labels, and size-category horizontal padding (12px compact, 20px default).
+  The default track and items are intrinsic-width. When a composition explicitly
+  needs the track to fill its parent, every peer item grows equally with it;
+  when those peers cannot fit without compressing or wrapping their accepted
+  geometry, the full-width track preserves intrinsic peer width, scrolls
+  horizontally, and reveals the selected option. This is an overflow fallback,
+  not another ordinary mixed-width layout mode.
   Hover uses a quiet neutral fill; focus separates against the neutral track;
   disabled items retain structure at 50% opacity. Semantics, keyboard behavior,
   overflow, and content-panel relationships remain owned by each component.
   This visual contract is the current baseline and its compact/default
   treatment lives in `src/components/design-system-v1/contained-selection.ts`
-  so related controls can consume it without reconstruction. The accepted
-  text-only and contained Tabs presentations are rendered from
+  so related controls can consume it without reconstruction. SingleChoice
+  consumes only the default 44px treatment until a real product use justifies
+  a compact or micro size. The accepted text-only and contained Tabs
+  presentations are rendered from
   `src/components/design-system-v1/tab-presentation.ts`. Tabs still has no
   complete reusable V1 component: presentation roles, panel semantics,
   overflow, counts, deep linking, and its final API remain open, while the

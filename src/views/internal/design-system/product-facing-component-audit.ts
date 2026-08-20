@@ -278,7 +278,7 @@ export const PRODUCT_FACING_REVIEWS: ProductFacingReview[] = [
     id: 'contained-form-rows',
     componentId: 'input',
     name: 'Contained form rows',
-    status: 'queued',
+    status: 'complete',
     purpose:
       'Standardize label, field, help, validation, affix, and repeated-group anatomy across deploy and proposal flows.',
     evidence: [
@@ -324,7 +324,7 @@ export const PRODUCT_FACING_REVIEWS: ProductFacingReview[] = [
     id: 'action-groups',
     componentId: 'button-group',
     name: 'Action groups',
-    status: 'queued',
+    status: 'complete',
     purpose:
       'Apply the accepted Button hierarchy to real primary/secondary, continuation, retry, and transaction follow-up compositions.',
     evidence: [
@@ -355,16 +355,156 @@ export const PRODUCT_FACING_REVIEWS: ProductFacingReview[] = [
           'The accepted Button and Dialog decisions already determine most ordinary, reversible, and destructive group hierarchy.',
       },
       {
-        name: 'Full-width, inline, wrapping, and persistent compositions',
-        lane: 2,
+        name: 'Inline and shared-width compositions',
+        lane: 1,
         reason:
-          'Real task width and label length determine composition; source-grounded rules should settle most cases before new visuals are built.',
+          'Source-grounded success and destructive actions establish compact horizontal groups without ragged wrapping and vertical groups with shared full width.',
       },
     ],
     migrationSeam:
       'Use a small composition recipe around accepted Button roles; transaction lifecycle stays in Transaction action rather than Action group.',
     avoid:
       'Do not create page-specific Button variants to solve group layout or encode business lifecycle into a visual wrapper.',
+  },
+  {
+    id: 'tooltip-help-labels',
+    componentId: 'tooltip',
+    name: 'Tooltip, help, and label icons',
+    status: 'complete',
+    purpose:
+      'Separate supplemental explanation, accessible naming support, and transient action feedback before consolidating overlapping help wrappers.',
+    evidence: [
+      {
+        name: 'Metric and field explanation',
+        requirement:
+          'Short labels need optional explanatory content without moving ownership of the label or metric into Tooltip.',
+        sources: [
+          'src/views/index-dtf/overview/components/metrics-item.tsx',
+          'src/views/home/components/protocol-metrics.tsx',
+          'src/components/ui/help.tsx',
+        ],
+      },
+      {
+        name: 'Named actions and transient feedback',
+        requirement:
+          'Icon-only copy and anchor actions need an accessible name, while the popup may change briefly to confirm completion.',
+        sources: [
+          'src/components/ui/copy-value.tsx',
+          'src/components/section-anchor.tsx',
+          'src/components/help/index.tsx',
+        ],
+      },
+    ],
+    decisions: [
+      {
+        name: 'Explanation versus action-feedback contract',
+        lane: 1,
+        reason:
+          'The source jobs are semantically distinct and should share popup presentation without sharing state ownership or trigger behavior.',
+      },
+      {
+        name: 'Help trigger, label relationship, and touch behavior',
+        lane: 3,
+        reason:
+          'Two current Help wrappers disagree on glyph, size, click, touch, and keyboard handling; the visible label-help composition needs one deliberate product choice.',
+      },
+      {
+        name: 'Content length and non-hover fallback',
+        lane: 2,
+        reason:
+          'Current metric explanations can be long and hover is unavailable on touch, so content limits and escalation to persistent disclosure need explicit rules before a visual sheet.',
+      },
+    ],
+    migrationSeam:
+      'Keep Radix Tooltip as the popup primitive; consolidate Help only after trigger semantics and label ownership are decided, and keep copy-success state in Copy value.',
+    avoid:
+      'Do not make Tooltip the sole accessible name, put essential instructions behind hover, or preserve both legacy Help wrappers as variants.',
+  },
+  {
+    id: 'value-and-action-popups',
+    componentId: 'select',
+    name: 'Select, combobox, and action menus',
+    status: 'ready',
+    purpose:
+      'Define the semantic split between bounded value selection, searchable entity selection, and immediate actions before standardizing their shared popup visuals.',
+    evidence: [
+      {
+        name: 'Bounded value selection',
+        requirement:
+          'Short date and chain lists need label, placeholder/value, disabled-item, keyboard, and narrow-screen behavior using Select semantics.',
+        sources: [
+          'src/views/internal/dtf-list/components/dtf-date-chain-filters.tsx',
+          'src/components/ui/select.tsx',
+        ],
+      },
+      {
+        name: 'Navigation search',
+        requirement:
+          'Global DTF search filters grouped identity-rich results and navigates immediately; it is Command search rather than a form-value Combobox.',
+        sources: ['src/components/command-menu/index.tsx'],
+      },
+      {
+        name: 'Multi-value filtering',
+        requirement:
+          'Earn DTF filters and governance tags commit zero or more values and must remain multi-select rather than being used as Combobox evidence.',
+        sources: [
+          'src/views/earn/views/index-dtf/components/table-filters.tsx',
+          'src/views/index-dtf/manage/components/manage-tags.tsx',
+        ],
+      },
+      {
+        name: 'Asset picking',
+        requirement:
+          'Token selection uses searchable drawer-based identity lists with loading, empty, and selected states; it is an Asset picker composition.',
+        sources: ['src/components/token-selector-drawer/index.tsx'],
+      },
+      {
+        name: 'Immediate action menus',
+        requirement:
+          'Contract-address and external-link menus invoke actions rather than committing a value and need disabled, destructive, and external-link rules.',
+        sources: [
+          'src/views/index-dtf/overview/components/index-token-address.tsx',
+          'src/views/index-dtf/overview/components/index-about-meta.tsx',
+          'src/components/layout/header/components/header-actions-menu.tsx',
+        ],
+      },
+    ],
+    decisions: [
+      {
+        name: 'Select, combobox, and menu semantic boundary',
+        lane: 1,
+        reason:
+          'Whether the user chooses a bounded value, searches a collection, or invokes an action determines behavior more reliably than visual similarity.',
+      },
+      {
+        name: 'No generic Combobox without a real form-value job',
+        lane: 1,
+        reason:
+          'The audited searchable sources resolve into Command navigation, multi-select filtering, and Asset picker behavior; combining them would invent a generic component without a product seam.',
+      },
+      {
+        name: 'One-line trigger geometry',
+        lane: 1,
+        reason:
+          'Ordinary Select triggers should inherit the accepted Field height, radius, focus, disabled, and text rules instead of creating a parallel control geometry.',
+      },
+      {
+        name: 'Popup density, selected state, and responsive adaptation',
+        lane: 3,
+        reason:
+          'Identity-rich token results, simple value lists, and action menus need visibly related but distinct compositions; mobile popover-versus-drawer behavior also needs product judgment.',
+      },
+      {
+        name: 'Multi-value rows use selection controls',
+        lane: 1,
+        reason:
+          'Checkboxes communicate staged set membership; Switch implies an immediate setting change and is not a reusable multi-select row treatment.',
+      },
+    ],
+    migrationSeam:
+      'Share popup surface, item, focus, and empty/loading recipes while retaining separate Select, Multi-select filter, Combobox, Menu, and domain-specific entity-row behaviors.',
+    avoid:
+      'Do not treat action menus as value selects, force short lists through search, or turn every token picker into a generic Select variant.',
   },
   {
     id: 'empty-states',

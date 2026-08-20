@@ -18,10 +18,12 @@ const SingleChoiceGroupStateSheet = () => (
         Tabs and not an immediately applied mode switch. The complete candidate
         applies the accepted 44px default peer height, neutral control track,
         white selected item, 14px medium labels, full radius, and two-pixel
-        track inset. It inherits the contained-selection language: no extra gap
-        between items, default-size horizontal padding, and the same quiet
-        selected elevation. Standard radio rows and rich selectable cards remain
-        separate future compositions.
+        track inset. It inherits the contained-selection language: the same 2px
+        spacing inside the track and between peer items, default-size horizontal
+        padding, and the same quiet selected elevation. The track and items wrap
+        their content by default; a full-width track makes every item grow
+        equally. Standard radio rows and rich selectable cards remain separate
+        future compositions.
       </p>
     </div>
 
@@ -38,10 +40,11 @@ const SingleChoiceGroupStateSheet = () => (
           ]}
         />
       </Specimen>
-      <Specimen label="Disabled option">
+      <Specimen label="Full width · disabled option">
         <SingleChoiceGroup
           accessibleLabel="Voting quorum"
           defaultValue="20"
+          width="full"
           options={[
             { value: '10', label: '10%' },
             { value: '15', label: '15%' },

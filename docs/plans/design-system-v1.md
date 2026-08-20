@@ -291,6 +291,17 @@ Provisional candidate after lab review:
   compact, and 20px for default. On a side containing an icon, reduce that
   side by 2px for optical balance; keep an 8px text-to-icon gap except where a
   micro composition requires the tighter 6px gap.
+- A text-only compact popup trigger with one persistent trailing 16px chevron
+  transfers that 2px optical adjustment rather than simply removing it: use
+  14px leading and 10px trailing padding with the same 8px gap. This preserves
+  the 24px compact padding budget while balancing the text edge against the
+  chevron's internal sidebearing. Composition-owned widths remain unchanged;
+  the pagination Select stays fixed at 70px.
+- Default 44px selection triggers use a 12px value-to-chevron gap; compact 32px
+  triggers retain 8px. Default triggers pair 20px leading padding with 18px on
+  the trailing Lucide-chevron side, following the accepted 2px icon-side
+  optical adjustment. The larger relationship prevents a rich selected-value
+  summary from visually collapsing into its disclosure indicator.
 - Atomic one-row controls remain fully rounded. Composite financial input and
   output objects use the restrained 8px contained-object radius instead of
   inheriting the atomic-control shape.
@@ -1145,12 +1156,14 @@ Read-only source evidence used for initial prioritization:
   preserving every local variation.
 - The first canonical product-facing candidate now lives in
   `src/components/entity-identity/` and is consumed directly by the lab. It
-  separates `ChainBadgedLogo`, `TokenLogoStack`, and the identity text
-  composition so rows can reuse the same marks without a universal Row prop
-  matrix. The badge recipe follows the strongest recent Index treatment, and
-  the stack owns its surface-colored separation rather than relying on
-  consumer selectors. Existing production consumers and the two legacy stack
-  files remain unchanged until an explicit migration slice.
+  separates `ChainBadgedLogo`, `ChainLogoStack`, `TokenLogoStack`, and the
+  identity text composition so rows can reuse the same marks without a
+  universal Row prop matrix. The badge recipe follows the strongest recent
+  Index treatment. Both stack types now use one frame recipe in which requested
+  size describes the artwork, the 2px surface-colored separator wraps outside
+  it, and optical leading compensation aligns the first artwork with a singular
+  peer. Existing production consumers and the two legacy stack files remain
+  unchanged until an explicit migration slice.
 - `src/components/ui/v1-semantic-recipes.ts` is the deliberately small first
   bridge from reviewed semantic roles to consumable candidate components. It
   exposes canvas/content/structural surfaces, primary/supporting text, matching
@@ -1489,12 +1502,96 @@ labeled.
 - Which migration metrics are reliable enough to automate versus requiring human review.
 - Whether feedback and financial-movement roles should share the same underlying visual ramps, diverge only in exact values, or diverge visually as well; their semantic aliases remain separate in the current candidate. The three-role performance structure is provisional, including the `--data-*` naming.
 
+## Slices
+
+- Slice: replace thumbnail-first Components output with compact complete state
+  sheets shared by the overview and detail routes, plus one unresolved
+  inventory; blocked by: none.
+- Slice: complete the independent Field / TextInput candidate and state sheet
+  from accepted form, geometry, type, shape, and semantic-role baselines;
+  blocked by: none.
+- Slice: encode and render the Action group composition recipe derived from the
+  accepted Button width, hierarchy, spacing, and size rules; blocked by: none.
+- Slice: verify and, only where needed, finish the canonical entity-mark
+  boundary for chain badges, overlapping token marks, and identity text;
+  blocked by: none.
+- Slice: prepare the highest-value remaining Yellow evidence without making a
+  consequential visual decision; blocked by: completed independent Green work.
+- Slice: run the design-system synchronization checks, reconcile only stale
+  project state, and hand off at the human-judgment boundary; blocked by: the
+  preceding bounded slices.
+
 ## Active slice
 
-Contained form rows remain the active product-facing slice. The ordinary Field
-candidate is reusable, but the repeated governance-parameter composition is
-blocked until its single-choice prerequisite has a reviewed visual contract.
-Prepare that prerequisite as the one review-ready candidate, keep the parent
-composition provisional, and hold Action group as evidence-prepared next work.
-Do not change the shared legacy Card default, promote Table/DataRow, define the
-opened-auction view, or begin production migration.
+The independent safe-autonomy frontier from checkpoint `15f6dae9e` is at its
+human-review boundary. Components now mounts all 14 complete shared state sheets
+and one compact 29-item unresolved inventory; Product Navigation stays explicit
+and unresolved. SingleChoice, Field/TextInput, and ActionGroup are accepted
+current baselines. The repeated governance-parameter composition and reusable
+PresetOrCustomField relationship are now accepted, including the constrained
+width overflow rule owned by SingleChoice. The source-grounded explanatory
+HelpTooltip candidate is also accepted, including its bare trigger, label
+relationship, touch behavior, and bounded dynamic-width floating surface.
+The source-grounded bounded-value Select is now an accepted current baseline:
+Field geometry determines its default trigger, real pagination evidence
+determines its compact trigger, and the reviewed popup owns density, shared
+subtle-interaction treatment, selected-check character, and optional leading
+chain identity. Its source-grounded chain fixture covers both
+individual 16px marks and a canonical stacked `All chains` summary without
+adding a control-radius override to their authored identity geometry or
+claiming multi-value selection or mobile filter substitution. The Select
+pressure test exposed one shared identity issue: legacy-style separator borders
+were reducing visible artwork and indenting stacked marks. `ChainLogoStack` and
+`TokenLogoStack` now consume the corrected common frame recipe; production
+consumers remain unchanged.
+Trigger width and visible-label treatment remain composition-owned. Compact
+bounded utilities reserve width for their widest known option rather than
+resizing with the current value.
+
+The attempted next Combobox slice stopped at source inspection because its
+prepared evidence conflated three real jobs: navigation Command search,
+multi-select filtering, and drawer-based Asset picking. The component registry
+now records that no generic single-value searchable form control is evidenced;
+future Combobox work must start from a real product seam rather than combining
+those adjacent behaviors.
+
+SearchField is now an accepted current baseline. It composes TextInput and
+IconButton, preserves the 44px Field scale, and owns only the search mark,
+controlled clear action with focus return, and loading indicator. One size is
+sufficient for current evidence; compact sizing may be added only when a real
+dense-toolbar use requires it. Results, grouping, no-results recovery, Command
+navigation, Asset picker behavior, responsive substitution, and production
+adoption remain separate.
+
+The source-grounded action Menu is now an accepted current baseline. Source
+inspection keeps Index contract actions, external links, and the header Search
+invocation as Menu evidence while treating chart type, time range, language,
+theme, and social-channel choice as value selection. The reusable candidate
+retains Radix action semantics, consumes canonical Button/IconButton triggers,
+and reuses the accepted popup rhythm without importing Select behavior. Labeled
+Menu and Select triggers consume one shared down-chevron indicator: opening
+rotates it 180 degrees over the 120ms immediate-feedback duration, while
+reduced-motion removes the transition; icon-only triggers do not add it.
+Menu separators cross the popup padding to meet the inside of its border,
+clearly separating action groups rather than aligning to the item-content axis.
+Selection items, grouped header panels, submenus, responsive substitution, and
+production adoption remain separate.
+The minimal Popover shell is accepted by consequence of the reviewed Select
+and Menu geometry, without inventing generic padding, width, or inner anatomy.
+MultiSelectFilter is now an accepted current baseline and Current Review is
+empty. It preserves the real staged Apply behavior, replaces Switch-based set
+membership with canonical trailing Checkbox rows, keeps optional identity and
+labels on one clean leading axis, and composes accepted Button geometry,
+selection-value typography, identity, Popover, motion, and ActionGroup
+dependencies. The accepted 44px trigger uses a 12px summary-to-chevron gap and
+20px-leading/18px-trailing optical padding. Its rows retain 8px popup and 12px
+item insets; the provisional 14px/16px single-line role combines with matching
+20px leading identity and visible Checkbox marks to retain a 44px row. The
+Checkbox keeps its 28px target by overlapping 4px into the row-owned inset.
+The accepted no-divider footer groups compact secondary Clear and primary Apply
+actions on the right with an 8px gap, 20px horizontal and bottom insets, and 8px
+top padding. Search, large-list loading and empty states, token-result density,
+mobile drawer substitution, and production adoption remain separate.
+Do not change the shared legacy Card default, promote Table/DataRow, redesign
+Product Navigation, begin production migration, commit, or push as part of this
+slice.
