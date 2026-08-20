@@ -1,0 +1,22 @@
+# Capability Role Profile
+
+- Role/job:
+- Artifact or decision seam:
+- Allowed inputs:
+- Required outputs:
+- Exact verifier:
+- Required observable abilities:
+- Recent held-out evidence pointers:
+- Known failures and repair cost:
+- Evidence expiry/reassessment trigger:
+- Readable roots:
+- Writable roots:
+- Allowed tools and effects:
+- Human approval gates:
+- Money/spend and remote-write gates:
+- Maximum blast radius:
+- Explicitly withheld authority:
+- One-agent serial fallback:
+- Independence available: yes | no
+- Unknown capabilities and resulting limits:
+- Status: provisional | earned | expired | demoted
