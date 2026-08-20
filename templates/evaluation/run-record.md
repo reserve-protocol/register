@@ -1,0 +1,22 @@
+# Neutral Run Record
+
+- Neutral label:
+- Workspace/ref and artifact digest:
+- Organic task digest:
+- Base fixture digest:
+- Tools, permissions, limits, and context digest:
+- Initial artifact project-relative/opaque pointer + digest:
+- Final artifact project-relative/opaque pointer + digest:
+- Held-out acceptance result and evidence:
+- Real-surface result and evidence:
+- Rollback result and evidence:
+- Instructions actually opened (project-relative path + privacy-safe workspace log/event pointer):
+- Instruction-read unknowns:
+- Total-task usage source/proxy and amount:
+- Repair turns, changed artifacts, reruns, usage, and elapsed time:
+- Trust gates encountered and disposition:
+- Isolation or blinding violations:
+- Redactions and confirmation rubric-relevant behavior remains visible:
+- Evidence readers/access grants:
+- Raw artifact/log retention deadline, deletion owner, and deletion result:
+- Stops, failures, and unknowns:

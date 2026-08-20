@@ -54,7 +54,7 @@ Present at most three: **Strong**, **Worth exploring**, or **Speculative**. Each
 - migration risk and compatibility constraints;
 - why doing nothing is acceptable or costly.
 
-Steelman each candidate into its strongest version before trying to falsify it; rank what survives.
+Steelman each candidate before trying to falsify it; rank what survives.
 
 Default to concise Markdown. Add a diagram only when call/dependency relationships are materially clearer visually. Do not generate HTML/CDN artifacts by default.
 
