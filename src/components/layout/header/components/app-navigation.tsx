@@ -37,6 +37,7 @@ import {
   headerNavItemClassName,
   HeaderNavItemContent,
 } from './header-nav-items'
+import { useHoverOpenTrigger } from './use-hover-open-trigger'
 
 const DiscoverItem = () => {
   const { pathname } = useLocation()
@@ -70,6 +71,7 @@ const DiscoverItem = () => {
 const AppNavigation = () => {
   const { t } = useLingui()
   const { pathname } = useLocation()
+  const hoverOpenTriggerProps = useHoverOpenTrigger()
   const [menuItems, moreLinks, externalLinks] = useMemo(
     () => [
       [
@@ -233,7 +235,10 @@ const AppNavigation = () => {
           </NavigationMenuItem>
         ))}
         <NavigationMenuItem>
-          <NavigationMenuTrigger className="text-foreground hover:text-primary focus:text-primary data-[state=open]:text-primary dark:text-muted-foreground dark:hover:text-foreground dark:focus:text-foreground dark:data-[state=open]:text-foreground">
+          <NavigationMenuTrigger
+            {...hoverOpenTriggerProps}
+            className="text-foreground hover:text-primary focus:text-primary data-[state=open]:text-primary dark:text-muted-foreground dark:hover:text-foreground dark:focus:text-foreground dark:data-[state=open]:text-foreground"
+          >
             <span className="hidden text-base font-normal min-[850px]:block">
               <Trans>More</Trans>
             </span>

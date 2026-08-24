@@ -13,6 +13,37 @@ export type SupportedLocale = 'en' | 'es' | 'ko' | 'zh' | 'pseudo'
 
 export const DEFAULT_LOCALE: SupportedLocale = 'en'
 
+const BROWSER_LOCALES: SupportedLocale[] = ['en', 'es', 'ko']
+
+export function getBrowserLocale(): SupportedLocale {
+  if (typeof navigator === 'undefined') return DEFAULT_LOCALE
+
+  const languages = navigator.languages.length ? navigator.languages : [navigator.language]
+
+  for (const language of languages) {
+    const subtags = language.toLowerCase().split('-')
+    const locale = subtags[0] as SupportedLocale
+
+    if (locale === 'zh') {
+      if (subtags.includes('hant')) continue
+
+      if (
+        subtags.length === 1 ||
+        subtags.includes('hans') ||
+        subtags.includes('cn') ||
+        subtags.includes('sg')
+      ) {
+        return 'zh'
+      }
+      continue
+    }
+
+    if (BROWSER_LOCALES.includes(locale)) return locale
+  }
+
+  return DEFAULT_LOCALE
+}
+
 // 'pseudo' is a dev-only debugging locale that mangles every wrapped string,
 // making unwrapped (untranslated) text visually obvious.
 export const SUPPORTED_LOCALES: SupportedLocale[] = import.meta.env.DEV
@@ -48,7 +79,7 @@ export async function dynamicActivate(locale: SupportedLocale) {
 
 const storedLocaleAtom = atomWithStorage<SupportedLocale>(
   'register.locale',
-  DEFAULT_LOCALE,
+  getBrowserLocale(),
   undefined,
   { getOnInit: true }
 )

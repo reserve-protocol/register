@@ -28,7 +28,6 @@ import {
   governanceChangesAtom,
   optimisticGovernanceChangesAtom,
   currentOptimisticAllowedActionsAtom,
-  isFormValidAtom,
   currentQuorumPercentageAtom,
   tokenJarAtom,
 } from './atoms'
@@ -140,7 +139,7 @@ const Updater = () => {
   })
   const setTokenJar = useSetAtom(tokenJarAtom)
   const reset = useSetAtom(resetAtom)
-  const { reset: resetForm, watch, formState, control } = useFormContext()
+  const { reset: resetForm, watch, control } = useFormContext()
   const governanceChanges = useAtomValue(governanceChangesAtom)
   const tokenNameChange = useAtomValue(tokenNameChangeAtom)
   const mandateChange = useAtomValue(mandateChangeAtom)
@@ -176,7 +175,6 @@ const Updater = () => {
   const setCurrentOptimisticAllowedActions = useSetAtom(
     currentOptimisticAllowedActionsAtom
   )
-  const setIsFormValid = useSetAtom(isFormValidAtom)
 
   // Watch form fields
   const tokenName = watch('tokenName')
@@ -719,11 +717,6 @@ const Updater = () => {
     indexDTF?.ownerGovernance,
     setOptimisticGovernanceChanges,
   ])
-
-  // Track form validation state
-  useEffect(() => {
-    setIsFormValid(formState.isValid)
-  }, [formState.isValid, setIsFormValid])
 
   useEffect(() => {
     return () => {

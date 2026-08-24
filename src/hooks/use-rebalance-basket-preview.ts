@@ -334,7 +334,13 @@ const useRebalanceBasketPreview = (
     // if weight control is true (tracking dtf), use current price, otherwise use snapshot price
     const priceList = tokenList.map((token, index) => {
       if (rebalanceControl.weightControl) {
-        return prices[token].currentPrice
+        return (
+          prices[token].currentPrice ||
+          calculatePriceFromRange(
+            rebalance.data.prices[index],
+            tokens[token].decimals
+          )
+        )
       } else {
         // Calculate from rebalance initial prices
         const priceRange = rebalance.data.prices[index]

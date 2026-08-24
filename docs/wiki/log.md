@@ -1,6 +1,6 @@
 ---
 title: Log
-updated: 2026-07-28
+updated: 2026-08-19
 type: log
 ---
 
@@ -125,3 +125,11 @@ Play-by-play lives in git (PRs #1053/#1054/#1055/#1063, SDK PR #27). Durable out
 
 - Production chain cycling was a multi-tab feedback loop: each mounted DTF route automatically reasserted its own Ethereum/Base/BSC chain against one wallet-global network. Transaction buttons and the zapper only exposed the changing state. Automatic switching remains, but only the focused, visible document may request it; focusing another DTF tab makes that tab the new chain owner. Index and Yield DTF route contexts share the same guard.
 - Review caught two smaller bounce paths before closeout: Index initially targeted the lagging global chain atom instead of its provider identity, and cached focus state was not revalidated at the wallet-mutation boundary. Both are now regression-protected; future route-chain synchronization must use the route/provider chain directly.
+
+## 2026-08-08
+
+- DTF Settings confirmation was globally gated by deploy-time schema validity, so unchanged on-chain values with display-rounding drift blocked unrelated governance changes even though those values were omitted from proposal calldata. The gate now scopes errors to changed settings while preserving no-change and changed-invalid guards; the E2E regression models an unchanged invalid distribution plus a valid mandate update.
+
+## 2026-08-19
+
+- Locale initialization now uses the first supported browser preference for visitors without a saved choice; a persisted explicit choice still wins. A clean Lingui extraction confirmed 2,543 active catalog messages with zero missing Spanish, Korean, or Simplified Chinese translations and removed obsolete catalog entries. This supersedes the earlier ~117-missing-message backlog entry. Live browser verification covered Spanish auto-selection plus a Korean selection surviving reload.

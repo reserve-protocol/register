@@ -1,7 +1,7 @@
 import useIndexDTFList from '@/hooks/useIndexDTFList'
 import useTokenList from '@/hooks/useTokenList'
 import { getFolioRoute, getTokenRoute } from '@/utils'
-import { CHAIN_TAGS } from '@/utils/constants'
+import { CHAIN_TAGS, ROUTES } from '@/utils/constants'
 import { msg } from '@lingui/core/macro'
 import { Trans, useLingui } from '@lingui/react/macro'
 import type { MessageDescriptor } from '@lingui/core'
@@ -9,7 +9,7 @@ import { atom, useAtom } from 'jotai'
 import { Search } from 'lucide-react'
 import { useEffect, useMemo, useRef } from 'react'
 import Skeleton from 'react-loading-skeleton'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import ChainLogo from '../icons/ChainLogo'
 import TokenLogo from '../token-logo'
 import {
@@ -67,7 +67,28 @@ const SECTION_TITLES: Record<string, MessageDescriptor> = {
   index: msg`Index DTFs`,
   yield: msg`Yield DTFs`,
 }
-const SECTIONS = ['index', 'yield']
+const SECTIONS = ['index', 'yield'] as const
+type DTFType = (typeof SECTIONS)[number]
+
+const DTF_ROUTES: Record<DTFType, Set<string>> = {
+  index: new Set([
+    ROUTES.OVERVIEW,
+    ROUTES.MANAGE,
+    ROUTES.FACTSHEET,
+    ROUTES.ISSUANCE,
+    ROUTES.AUCTIONS,
+    ROUTES.SETTINGS,
+    ROUTES.GOVERNANCE,
+  ]),
+  yield: new Set([
+    ROUTES.OVERVIEW,
+    ROUTES.ISSUANCE,
+    ROUTES.STAKING,
+    ROUTES.AUCTIONS,
+    ROUTES.SETTINGS,
+    ROUTES.GOVERNANCE,
+  ]),
+}
 
 export const searchMenuOpenAtom = atom(false)
 
@@ -82,6 +103,7 @@ const CommandMenu = () => {
   const [open, setOpen] = useAtom(searchMenuOpenAtom)
   const listRef = useRef<HTMLDivElement | null>(null)
   const navigate = useNavigate()
+  const { pathname } = useLocation()
 
   useEffect(() => {
     const down = (e: KeyboardEvent) => {
@@ -130,43 +152,39 @@ const CommandMenu = () => {
             </CommandEmpty>
             {SECTIONS.map((section) => (
               <CommandGroup key={section} heading={t(SECTION_TITLES[section])}>
-                {dtfs[section].map((dtf) => (
-                  <Link
-                    key={dtf.address}
-                    to={
-                      section === 'index'
-                        ? getFolioRoute(dtf.address, dtf.chain)
-                        : getTokenRoute(dtf.address, dtf.chain)
-                    }
-                    onClick={() => setOpen(false)}
-                  >
-                    <CommandItem
-                      keywords={dtf.keywords}
-                      value={`${dtf.name} ${dtf.symbol}`}
-                      className="gap-3 cursor-pointer"
-                      onSelect={() => {
-                        navigate(
-                          section === 'index'
-                            ? getFolioRoute(dtf.address, dtf.chain)
-                            : getTokenRoute(dtf.address, dtf.chain)
-                        )
-                        setOpen(false)
-                      }}
+                {dtfs[section].map((dtf) => {
+                  const destination = getDTFRoute(pathname, section, dtf)
+
+                  return (
+                    <Link
+                      key={dtf.address}
+                      to={destination}
+                      onClick={() => setOpen(false)}
                     >
-                      <div className="relative">
-                        <TokenLogo src={dtf.icon} size="xl" />
-                        <ChainLogo
-                          chain={dtf.chain}
-                          className="absolute -bottom-1 -right-1 w-4 h-2"
-                        />
-                      </div>
-                      <div className="break-words  max-w-[420px]">
-                        <h4 className="font-semibold ">{dtf.name}</h4>
-                        <span className="text-legend">${dtf.symbol}</span>
-                      </div>
-                    </CommandItem>
-                  </Link>
-                ))}
+                      <CommandItem
+                        keywords={dtf.keywords}
+                        value={`${dtf.name} ${dtf.symbol}`}
+                        className="gap-3 cursor-pointer"
+                        onSelect={() => {
+                          navigate(destination)
+                          setOpen(false)
+                        }}
+                      >
+                        <div className="relative">
+                          <TokenLogo src={dtf.icon} size="xl" />
+                          <ChainLogo
+                            chain={dtf.chain}
+                            className="absolute -bottom-1 -right-1 w-4 h-2"
+                          />
+                        </div>
+                        <div className="break-words  max-w-[420px]">
+                          <h4 className="font-semibold ">{dtf.name}</h4>
+                          <span className="text-legend">${dtf.symbol}</span>
+                        </div>
+                      </CommandItem>
+                    </Link>
+                  )
+                })}
               </CommandGroup>
             ))}
           </CommandList>
@@ -177,3 +195,20 @@ const CommandMenu = () => {
 }
 
 export default CommandMenu
+
+const getDTFRoute = (pathname: string, type: DTFType, dtf: DTF) => {
+  const segments = pathname.split('/').filter(Boolean)
+  const dtfRootIndex = segments.findIndex(
+    (segment) => segment === 'index-dtf' || segment === 'token'
+  )
+  const currentRoute =
+    dtfRootIndex === -1 ? undefined : segments[dtfRootIndex + 2]
+  const route =
+    currentRoute && DTF_ROUTES[type].has(currentRoute)
+      ? currentRoute
+      : ROUTES.OVERVIEW
+
+  return type === 'index'
+    ? getFolioRoute(dtf.address, dtf.chain, route)
+    : getTokenRoute(dtf.address, dtf.chain, route)
+}
