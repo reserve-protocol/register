@@ -5,10 +5,13 @@ import type { MockOverrides } from '../../helpers/overrides'
 import { dtfPath, findDtfByAddress } from '../../helpers/registry'
 import {
   fillAmountAwaitQuote,
+  flipZapDirection,
+  formatZapOutput,
   loadZapSnapshot,
   mockZapperRoutes,
   seedDtfBalance,
   seedZapSurface,
+  selectZapToken,
   zapUnmockedLogger,
   type ZapDirection,
 } from '../../helpers/zapper'
@@ -38,8 +41,11 @@ function activePanel(page: Page): Locator {
     .locator('div[role="tabpanel"][data-state="active"]')
 }
 
+// The success view is a "Transaction successful" dialog portalled outside the
+// widget since react-zapper 2.10, so "no success view" is a page-wide check:
+// an explorer /tx/ link anywhere means a success view mounted.
 function txLink(page: Page): Locator {
-  return page.getByTestId('issuance-zap-widget').locator('a[href*="/tx/0x"]')
+  return page.locator('a[href*="/tx/0x"]')
 }
 
 function pinned(direction: ZapDirection) {
@@ -50,7 +56,7 @@ function pinned(direction: ZapDirection) {
     params: snapshot.params,
     result,
     inputAmount: (Number(BigInt(snapshot.params.amountIn)) / 1e18).toString(),
-    outputPrefix: (Number(BigInt(result.amountOut)) / 1e18).toString().slice(0, 4),
+    outputPrefix: formatZapOutput(result.amountOut),
   }
 }
 
@@ -60,7 +66,10 @@ function pinned(direction: ZapDirection) {
 // POST the failure to /zapper/report. The success path never issues these (it
 // unmounts the panel for the success view). Neither is in the central mock, so
 // seed both per-test — the sanctioned workaround (overrides, not shared edits).
-function seedFailureBoundaries(overrides: MockOverrides, direction: ZapDirection) {
+function seedFailureBoundaries(
+  overrides: MockOverrides,
+  direction: ZapDirection
+) {
   const result = loadZapSnapshot(DTF_ADDRESS, direction).data.result!
   const tx = result.tx!
   overrides.ethCall(tx.to, tx.data as Hex, ('0x' + '0'.repeat(64)) as Hex)
@@ -82,7 +91,11 @@ async function setupZapPage(
 // Enter the pinned amount and wait for the quote to resolve into the read-only
 // output field (wipe-resilient — see fillAmountAwaitQuote in helpers/zapper).
 // Returns the submit button (last button in the panel).
-async function enterAmountAndQuote(panel: Locator, amount: string, outputPrefix: string) {
+async function enterAmountAndQuote(
+  panel: Locator,
+  amount: string,
+  outputPrefix: string
+) {
   await fillAmountAwaitQuote(panel, amount, outputPrefix)
   return panel.locator('button').last()
 }
@@ -101,7 +114,13 @@ test('buy: user rejects the swap — no success view, submit recovers', async ({
   await setupZapPage(page, overrides, unmockedCalls)
   const panel = activePanel(page)
   await expect(panel).toBeVisible({ timeout: 15_000 })
-  const submit = await enterAmountAndQuote(panel, buy.inputAmount, buy.outputPrefix)
+  // Pinned buy quote is ETH -> LCAP; settle the input token before typing.
+  await selectZapToken(panel, 'ETH')
+  const submit = await enterAmountAndQuote(
+    panel,
+    buy.inputAmount,
+    buy.outputPrefix
+  )
   await expect(submit).toBeEnabled()
 
   seedFailureBoundaries(overrides, 'buy')
@@ -127,7 +146,13 @@ test('buy: swap reverts on-chain — widget must not show the success view', asy
   await setupZapPage(page, overrides, unmockedCalls)
   const panel = activePanel(page)
   await expect(panel).toBeVisible({ timeout: 15_000 })
-  const submit = await enterAmountAndQuote(panel, buy.inputAmount, buy.outputPrefix)
+  // Pinned buy quote is ETH -> LCAP; settle the input token before typing.
+  await selectZapToken(panel, 'ETH')
+  const submit = await enterAmountAndQuote(
+    panel,
+    buy.inputAmount,
+    buy.outputPrefix
+  )
   await expect(submit).toBeEnabled()
 
   seedFailureBoundaries(overrides, 'buy')
@@ -140,8 +165,9 @@ test('buy: swap reverts on-chain — widget must not show the success view', asy
   expect(txLog[0].to).toBe(buy.result.tx!.to.toLowerCase())
 
   // ...so the widget must NOT surface the success view, and the submit control
-  // must re-arm rather than hang on "confirming".
-  await expect(submit).toBeEnabled({ timeout: 15_000 })
+  // must re-arm rather than hang on "confirming". Re-arming waits on the
+  // post-receipt re-quote, which runs past 15s under full-suite load.
+  await expect(submit).toBeEnabled({ timeout: 45_000 })
   await expect(txLink(page)).toHaveCount(0)
   expect(unmockedCalls).toEqual([])
 })
@@ -158,10 +184,18 @@ async function openSellPanel(
   const sell = pinned('sell')
   seedDtfBalance(overrides, DTF_ADDRESS, '20')
   await setupZapPage(page, overrides, unmockedCalls)
-  await page.locator('button[role="tab"][id$="-trigger-sell"]').click()
-  const panel = activePanel(page)
-  await expect(panel).toBeVisible({ timeout: 15_000 })
-  const submit = await enterAmountAndQuote(panel, sell.inputAmount, sell.outputPrefix)
+  await expect(activePanel(page)).toBeVisible({ timeout: 15_000 })
+  const panel = await flipZapDirection(
+    page.getByTestId('issuance-zap-widget'),
+    'sell'
+  )
+  // Pinned sell quote is LCAP -> ETH; the widget defaults the output to USDC.
+  await selectZapToken(panel, 'ETH')
+  const submit = await enterAmountAndQuote(
+    panel,
+    sell.inputAmount,
+    sell.outputPrefix
+  )
   await expect(submit).toBeEnabled()
   seedFailureBoundaries(overrides as MockOverrides, 'sell')
   return { sell, submit }

@@ -80,7 +80,10 @@ const EMPTY_ASSETS: Hex = encodeAbiParameters(
 
 // Properly ABI-encoded EMPTY address[] — a real dynamic-array head (offset 0x20,
 // length 0), NOT ZERO_RETURN (whose leading word is an invalid array offset).
-const EMPTY_ADDRESS_ARRAY: Hex = encodeAbiParameters([{ type: 'address[]' }], [[]])
+const EMPTY_ADDRESS_ARRAY: Hex = encodeAbiParameters(
+  [{ type: 'address[]' }],
+  [[]]
+)
 
 // folio.getRebalance() v5 output tuple, idle (no active rebalance): nonce 0, no
 // tokens, zero limits/timestamps, bids off. Keeps the auctions "idle" state from
@@ -158,7 +161,10 @@ const IDLE_REBALANCE: Hex = encodeFunctionResult({
 })
 
 // Multicall3.getEthBalance(address) — mirror the 100 ETH eth_getBalance answers.
-const ETH_BALANCE: Hex = encodeAbiParameters([{ type: 'uint256' }], [100n * 10n ** 18n])
+const ETH_BALANCE: Hex = encodeAbiParameters(
+  [{ type: 'uint256' }],
+  [100n * 10n ** 18n]
+)
 
 // Per-(address, selector) override table for eth_call return data.
 // Key is `${address}:${selector}` (address lowercased) or `*:${selector}` for
@@ -191,6 +197,13 @@ const callOverrides: Record<string, Hex> = {
 }
 const knownTokenAddresses = new Set<string>()
 const knownContractAddresses = new Set<string>([TEST_ADDRESS.toLowerCase()])
+
+// CoW Protocol vault relayer (same address on every chain): react-zapper >= 2.10
+// queries the CoW RFQ venue and reads the input token's allowance against this
+// spender alongside the quote — even when the quote itself is answered with an
+// error by the zap mock boundary (helpers/zapper.ts). A known token's allowance
+// for it is the honest 0; an unknown token still fails loud.
+knownContractAddresses.add('0xc92e8bdf79f0507f65a392b0ab4667716bfe0110')
 
 // Canonical cross-chain majors the app-wide portfolio/wallet updater reads
 // balanceOf on for every connected session (not necessarily in any single
@@ -265,16 +278,38 @@ interface ChainState {
   totalSupply: string
   decimals: number
   version: string
-  basketTokens: Array<{ address: string; name: string; symbol: string; decimals: number }>
+  basketTokens: Array<{
+    address: string
+    name: string
+    symbol: string
+    decimals: number
+  }>
 }
 
 interface DtfMetadataSnapshot {
   dtf: {
-    token: { address: string; name: string; symbol: string; decimals: number; totalSupply: string }
+    token: {
+      address: string
+      name: string
+      symbol: string
+      decimals: number
+      totalSupply: string
+    }
     stToken?: {
       id: string
-      token?: { address: string; name: string; symbol: string; decimals: number; totalSupply: string }
-      underlying?: { address: string; name: string; symbol: string; decimals: number }
+      token?: {
+        address: string
+        name: string
+        symbol: string
+        decimals: number
+        totalSupply: string
+      }
+      underlying?: {
+        address: string
+        name: string
+        symbol: string
+        decimals: number
+      }
       governance?: { id: string; timelock?: { id: string } }
     }
     ownerGovernance?: { id: string; timelock?: { id: string } }
@@ -359,12 +394,14 @@ function seedNestedTokenMetadata(value: unknown) {
     typeof candidate.symbol === 'string' &&
     typeof candidate.decimals === 'number'
   ) {
-    seedTokenMetadata(candidate as {
-      address: string
-      name: string
-      symbol: string
-      decimals: number
-    })
+    seedTokenMetadata(
+      candidate as {
+        address: string
+        name: string
+        symbol: string
+        decimals: number
+      }
+    )
   }
   for (const nested of Object.values(candidate)) seedNestedTokenMetadata(nested)
 }
@@ -407,7 +444,9 @@ function seedChainState() {
       seedNestedTokenMetadata(loadSnapshot(rebalancesPath))
     }
 
-    const metadata = loadSnapshot<DtfMetadataSnapshot>(`${dtf.snapshotDir}/dtf.json`).dtf
+    const metadata = loadSnapshot<DtfMetadataSnapshot>(
+      `${dtf.snapshotDir}/dtf.json`
+    ).dtf
     const metadataTokens = [
       metadata.token,
       metadata.stToken?.token,
@@ -423,10 +462,11 @@ function seedChainState() {
       const tokenAddress = token.address.toLowerCase()
       seedTokenMetadata(token)
       if (token.totalSupply) {
-        callOverrides[`${tokenAddress}:${SELECTOR.totalSupply}`] = encodeAbiParameters(
-          [{ type: 'uint256' }],
-          [BigInt(token.totalSupply)]
-        )
+        callOverrides[`${tokenAddress}:${SELECTOR.totalSupply}`] =
+          encodeAbiParameters(
+            [{ type: 'uint256' }],
+            [BigInt(token.totalSupply)]
+          )
       }
     }
     const knownContracts = [
@@ -502,7 +542,13 @@ function latestRoundData(to: string): Hex {
   const answer = PRICE_FEEDS[to.toLowerCase()] ?? 10n ** 8n
   const now = BigInt(mockNowSeconds())
   return encodeAbiParameters(
-    [{ type: 'uint80' }, { type: 'int256' }, { type: 'uint256' }, { type: 'uint256' }, { type: 'uint80' }],
+    [
+      { type: 'uint80' },
+      { type: 'int256' },
+      { type: 'uint256' },
+      { type: 'uint256' },
+      { type: 'uint80' },
+    ],
     [1n, answer, now, now, 1n]
   )
 }
@@ -580,7 +626,6 @@ export function isYieldReplayActive(): boolean {
   return yieldReplayChain !== 0
 }
 
-
 function seedYieldChainState() {
   if (yieldSeeded) return
   yieldSeeded = true
@@ -606,22 +651,40 @@ function seedYieldChainState() {
   }
 }
 
-function lookupYieldExact(chainId: number, to: string, data: string): Hex | undefined {
+function lookupYieldExact(
+  chainId: number,
+  to: string,
+  data: string
+): Hex | undefined {
   seedYieldChainState()
-  return yieldCallMap.get(`${chainId}:${to.toLowerCase()}:${data.toLowerCase()}`)
+  return yieldCallMap.get(
+    `${chainId}:${to.toLowerCase()}:${data.toLowerCase()}`
+  )
 }
 
 // Exact captured word for a storage slot, chain-scoped (a slot key is a bare
 // 32-byte word — 0x + 64 hex — so it shares the yield map with calldata keys
 // without colliding). No blanket fallback: an uncaptured slot fails loud.
-function lookupYieldStorage(chainId: number, to: string, slot: string): Hex | undefined {
+function lookupYieldStorage(
+  chainId: number,
+  to: string,
+  slot: string
+): Hex | undefined {
   seedYieldChainState()
-  return yieldCallMap.get(`${chainId}:${to.toLowerCase()}:${slot.toLowerCase()}`)
+  return yieldCallMap.get(
+    `${chainId}:${to.toLowerCase()}:${slot.toLowerCase()}`
+  )
 }
 
-function lookupYieldFallback(chainId: number, to: string, selector: string): Hex | undefined {
+function lookupYieldFallback(
+  chainId: number,
+  to: string,
+  selector: string
+): Hex | undefined {
   if (CLOCK_PARAM_SELECTORS.has(selector)) {
-    const hit = yieldSelectorMap.get(`${chainId}:${to.toLowerCase()}:${selector}`)
+    const hit = yieldSelectorMap.get(
+      `${chainId}:${to.toLowerCase()}:${selector}`
+    )
     if (hit) return hit
   }
   // NOTE: blanket hasRole/storage fallbacks were removed (audit P1) — read-only
@@ -681,7 +744,10 @@ function handleSingleCall(
     if (fallback) return fallback
     if (selector === CLOCK) return clockValue()
     if (selector === '0x4d2301cc') {
-      const [account] = decodeAbiParameters([{ type: 'address' }], (`0x${data.slice(10)}`) as Hex)
+      const [account] = decodeAbiParameters(
+        [{ type: 'address' }],
+        `0x${data.slice(10)}` as Hex
+      )
       const balance = overrides?.lookupEthBalance(account)
       return balance !== undefined
         ? encodeAbiParameters([{ type: 'uint256' }], [balance])
@@ -698,15 +764,21 @@ function handleSingleCall(
       knownTokenAddresses.has(a.toLowerCase()) ||
       knownContractAddresses.has(a.toLowerCase())
     if (selector === '0x70a08231' && isKnownAddr(to)) {
-      const [owner] = decodeAbiParameters([{ type: 'address' }], (`0x${data.slice(10)}`) as Hex)
+      const [owner] = decodeAbiParameters(
+        [{ type: 'address' }],
+        `0x${data.slice(10)}` as Hex
+      )
       if (owner.toLowerCase() === TEST_ADDRESS.toLowerCase()) return ZERO_RETURN
     }
     if (selector === '0xdd62ed3e' && isKnownAddr(to)) {
       const [owner, spender] = decodeAbiParameters(
         [{ type: 'address' }, { type: 'address' }],
-        (`0x${data.slice(10)}`) as Hex
+        `0x${data.slice(10)}` as Hex
       )
-      if (owner.toLowerCase() === TEST_ADDRESS.toLowerCase() && isKnownAddr(spender)) {
+      if (
+        owner.toLowerCase() === TEST_ADDRESS.toLowerCase() &&
+        isKnownAddr(spender)
+      ) {
         return ZERO_RETURN
       }
     }
@@ -722,7 +794,7 @@ function handleSingleCall(
     if (selector === '0xe5cea2f6' && isKnownAddr(to)) {
       const [rToken, , account] = decodeAbiParameters(
         [{ type: 'address' }, { type: 'uint256' }, { type: 'address' }],
-        (`0x${data.slice(10)}`) as Hex
+        `0x${data.slice(10)}` as Hex
       )
       if (
         account.toLowerCase() === TEST_ADDRESS.toLowerCase() &&
@@ -748,7 +820,7 @@ function handleSingleCall(
   if (selector === '0x70a08231' && knownTokenAddresses.has(to.toLowerCase())) {
     const [owner] = decodeAbiParameters(
       [{ type: 'address' }],
-      (`0x${data.slice(10)}`) as Hex
+      `0x${data.slice(10)}` as Hex
     )
     if (
       owner.toLowerCase() === TEST_ADDRESS.toLowerCase() ||
@@ -760,7 +832,7 @@ function handleSingleCall(
   if (selector === '0xdd62ed3e' && knownTokenAddresses.has(to.toLowerCase())) {
     const [owner, spender] = decodeAbiParameters(
       [{ type: 'address' }, { type: 'address' }],
-      (`0x${data.slice(10)}`) as Hex
+      `0x${data.slice(10)}` as Hex
     )
     if (
       owner.toLowerCase() === TEST_ADDRESS.toLowerCase() &&
@@ -776,7 +848,7 @@ function handleSingleCall(
   if (selector === '0x4d2301cc') {
     const [account] = decodeAbiParameters(
       [{ type: 'address' }],
-      (`0x${data.slice(10)}`) as Hex
+      `0x${data.slice(10)}` as Hex
     )
     const balance = overrides?.lookupEthBalance(account)
     if (balance !== undefined) {
@@ -801,9 +873,18 @@ function handleMulticall3(
     return ZERO_RETURN
   }
 
-  const calls = decoded.args[0] as ReadonlyArray<{ target: string; callData: string }>
+  const calls = decoded.args[0] as ReadonlyArray<{
+    target: string
+    callData: string
+  }>
   const results = calls.map((call) => {
-    const returnData = handleSingleCall(chainId, call.target, call.callData, log, overrides)
+    const returnData = handleSingleCall(
+      chainId,
+      call.target,
+      call.callData,
+      log,
+      overrides
+    )
     // A captured revert replays as a real allowFailure failure (success:false),
     // not a zero-word success — the app must see the on-chain outcome.
     return returnData === YIELD_REVERT_SENTINEL
@@ -909,7 +990,8 @@ export function handleRpcMethod(
       const balanceOverride = ctx.overrides?.lookupEthBalance(
         String((params?.[0] as string) ?? '')
       )
-      if (balanceOverride !== undefined) return '0x' + balanceOverride.toString(16)
+      if (balanceOverride !== undefined)
+        return '0x' + balanceOverride.toString(16)
       return '0x56bc75e2d63100000'
     }
 
@@ -941,10 +1023,15 @@ export function handleRpcMethod(
       if (yieldReplayChain) {
         const address = String((params?.[0] as string) ?? '').toLowerCase()
         const slot = String((params?.[1] as string) ?? '').toLowerCase()
-        if (ctx.chainId !== yieldReplayChain || address === ZERO_ADDRESS) return ZERO_WORD
+        if (ctx.chainId !== yieldReplayChain || address === ZERO_ADDRESS)
+          return ZERO_WORD
         const hit = lookupYieldStorage(ctx.chainId, address, slot)
         if (hit) return hit
-        ctx.log('unmocked storage read', { chainId: ctx.chainId, address, slot })
+        ctx.log('unmocked storage read', {
+          chainId: ctx.chainId,
+          address,
+          slot,
+        })
         return ZERO_WORD
       }
       // Index path unchanged: fail loud (audit P1). The blanket zero-word answer
@@ -963,10 +1050,14 @@ export function handleRpcMethod(
       const tx =
         hash &&
         ctx.txLog?.find(
-          (entry) => entry.hash.toLowerCase() === hash && entry.chainId === ctx.chainId
+          (entry) =>
+            entry.hash.toLowerCase() === hash && entry.chainId === ctx.chainId
         )
       if (!hash || !tx) {
-        ctx.log('unmocked transaction receipt', { hash: hash ?? '(missing)', chainId: ctx.chainId })
+        ctx.log('unmocked transaction receipt', {
+          hash: hash ?? '(missing)',
+          chainId: ctx.chainId,
+        })
         return null
       }
       const polls = ctx.receiptPolls?.get(hash) ?? 0
@@ -980,10 +1071,14 @@ export function handleRpcMethod(
       const tx =
         hash &&
         ctx.txLog?.find(
-          (entry) => entry.hash.toLowerCase() === hash && entry.chainId === ctx.chainId
+          (entry) =>
+            entry.hash.toLowerCase() === hash && entry.chainId === ctx.chainId
         )
       if (!hash || !tx) {
-        ctx.log('unmocked transaction lookup', { hash: hash ?? '(missing)', chainId: ctx.chainId })
+        ctx.log('unmocked transaction lookup', {
+          hash: hash ?? '(missing)',
+          chainId: ctx.chainId,
+        })
         return null
       }
       return {
@@ -1028,8 +1123,15 @@ export function handleRpcMethod(
       const call = params?.[0] as { to?: string; data?: string } | undefined
       const to = (call?.to ?? '').toLowerCase()
       const data = call?.data ?? '0x'
-      if (to === MULTICALL3) return handleMulticall3(ctx.chainId, data, ctx.log, ctx.overrides)
-      const single = handleSingleCall(ctx.chainId, to, data, ctx.log, ctx.overrides)
+      if (to === MULTICALL3)
+        return handleMulticall3(ctx.chainId, data, ctx.log, ctx.overrides)
+      const single = handleSingleCall(
+        ctx.chainId,
+        to,
+        data,
+        ctx.log,
+        ctx.overrides
+      )
       // A captured revert reached as a STANDALONE call (not inside a multicall):
       // the app read it with allowFailure, so a zero-word answer is inert. The
       // key is captured, so this is deterministic — not a fail-loud miss.
@@ -1054,19 +1156,38 @@ function rpcResult(id: number, result: unknown) {
 // `{ to, data }` — surface both so a hold can target one contract call by
 // selector (calldata prefix), not just the coarse method.
 function rpcHoldIdentity(method: string, params?: unknown[]): HoldIdentity {
-  const call = Array.isArray(params) ? (params[0] as { to?: string; data?: string } | undefined) : undefined
+  const call = Array.isArray(params)
+    ? (params[0] as { to?: string; data?: string } | undefined)
+    : undefined
   const to = call && typeof call === 'object' ? call.to : undefined
   const data = call && typeof call === 'object' ? call.data : undefined
-  const base: HoldIdentity = { boundary: 'rpc', method, ...(to ? { to } : {}), ...(data ? { data } : {}) }
+  const base: HoldIdentity = {
+    boundary: 'rpc',
+    method,
+    ...(to ? { to } : {}),
+    ...(data ? { data } : {}),
+  }
 
   // Surface inner calls of a multicall3 aggregate3 so a selector/`to` hold can
   // target a batched read (aggregate3 selector 0x82ad56cb).
-  if (to?.toLowerCase() === MULTICALL3 && data?.toLowerCase().startsWith('0x82ad56cb')) {
+  if (
+    to?.toLowerCase() === MULTICALL3 &&
+    data?.toLowerCase().startsWith('0x82ad56cb')
+  ) {
     try {
-      const decoded = decodeFunctionData({ abi: multicall3Abi, data: data as Hex })
+      const decoded = decodeFunctionData({
+        abi: multicall3Abi,
+        data: data as Hex,
+      })
       if (decoded.functionName === 'aggregate3') {
-        const calls = decoded.args[0] as ReadonlyArray<{ target: string; callData: string }>
-        return { ...base, inner: calls.map((c) => ({ to: c.target, data: c.callData })) }
+        const calls = decoded.args[0] as ReadonlyArray<{
+          target: string
+          callData: string
+        }>
+        return {
+          ...base,
+          inner: calls.map((c) => ({ to: c.target, data: c.callData })),
+        }
       }
     } catch {
       // fall through to the un-decoded identity
@@ -1109,7 +1230,10 @@ export async function mockRpcRoutes(
       }
 
       if (Array.isArray(body)) {
-        for (const req of body as Array<{ method: string; params?: unknown[] }>) {
+        for (const req of body as Array<{
+          method: string
+          params?: unknown[]
+        }>) {
           requests?.push({
             boundary: 'rpc',
             chainId,
@@ -1117,11 +1241,15 @@ export async function mockRpcRoutes(
             params: req.params ?? [],
           })
         }
-        for (const req of body as Array<{ method: string; params?: unknown[] }>) {
+        for (const req of body as Array<{
+          method: string
+          params?: unknown[]
+        }>) {
           await overrides?.holds.gate(rpcHoldIdentity(req.method, req.params))
         }
-        const responses = body.map((req: { id: number; method: string; params?: unknown[] }) =>
-          rpcResult(req.id, handleRpcMethod(req.method, req.params, ctx))
+        const responses = body.map(
+          (req: { id: number; method: string; params?: unknown[] }) =>
+            rpcResult(req.id, handleRpcMethod(req.method, req.params, ctx))
         )
         return route.fulfill({
           status: 200,
@@ -1141,7 +1269,12 @@ export async function mockRpcRoutes(
       return route.fulfill({
         status: 200,
         contentType: 'application/json',
-        body: JSON.stringify(rpcResult(single.id, handleRpcMethod(single.method, single.params, ctx))),
+        body: JSON.stringify(
+          rpcResult(
+            single.id,
+            handleRpcMethod(single.method, single.params, ctx)
+          )
+        ),
       })
     })
   }

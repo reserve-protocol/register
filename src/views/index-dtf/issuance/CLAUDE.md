@@ -41,14 +41,38 @@ Quick loop: `pnpm e2e:smoke` (issuance + zap smokes, seconds); flows
 Everything runs on **base/lcap** (`0x4dA9…E6e8`). Two different mock shapes:
 
 - **Zap surface**: `seedZapSurface(overrides, DTF)` seeds the folio's own
-  name/symbol; `mockZapperRoutes(page, DTF, log)` serves ONE pinned quote per
-  direction keyed on (chainId, tokenIn, tokenOut, amountIn) — **fill the exact
-  pinned `amountIn`** or you hit the fail-loud 500. Aggregators (velora/
-  enso) answer a deterministic error on purpose so `best` mode has one
-  candidate. `seedDtfBalance` funds the sell side + pre-answers the approve
-  simulation. Assert the submitted tx equals the quote's `tx` byte-for-byte.
-  Time is deliberately NOT frozen here (nothing derives from snapshot
-  timestamps; every mock answers instantly).
+  name/symbol AND pins `/current/prices` for both quote legs to their
+  capture-time values (react-zapper ≥ 2.10 re-values every quote with Reserve
+  prices; the $1 lean would flip a captured impact negative — a spec's own
+  `overrides.price` set beforehand stays authoritative). `mockZapperRoutes(page,
+  DTF, log)` serves ONE pinned quote per direction keyed on (chainId, tokenIn,
+  tokenOut, amountIn) — **fill the exact pinned `amountIn`** or you hit the
+  fail-loud 500. Aggregators (velora/enso) and the CoW RFQ venue (direct to
+  `api.cow.fi`, enabled on every chain since 2.10) answer a deterministic
+  error on purpose so `best` mode has one candidate; CoW also reads the input
+  token's allowance for its vault relayer, modeled as a known spender in
+  `helpers/rpc.ts`. `seedDtfBalance` funds the sell side + pre-answers the
+  approve simulation. Assert the submitted tx equals the quote's `tx`
+  byte-for-byte. Time is deliberately NOT frozen here (nothing derives from
+  snapshot timestamps; every mock answers instantly).
+  - **Widget structure (2.10)** — contract in `e2e/helpers/zapper.ts`: the
+    Buy/Sell tab *triggers* are hidden (`showTabs` off); the Radix panels keep
+    their `…-content-buy|sell` ids + `data-state`; `flipZapDirection` clicks
+    the arrow between the amount boxes (absent under `sellOnly`);
+    `selectZapToken` settles the token selector (the slippage `0.5%` button is
+    also `aria-haspopup="menu"`). Stables lead every token list, so the
+    default in/out token is USDC — pinned ETH quotes pick ETH **before typing**
+    or the USDC quote escapes as an unmocked call. `formatZapOutput` mirrors
+    the amount-out rendering (2 dp ≥ 1, 6 dp < 1). The success view is a
+    "Transaction successful" **dialog portalled outside the widget**.
+  - **Guardrails (2.10)**: the client balance check (typed amount > wallet
+    balance) still only disables the submit — and now also skips the
+    pre-select tx simulation — while the quote resolves regardless; quotes
+    above 8% dust-adjusted true impact are discarded as toxic *before* the
+    ≥5% acknowledgment checkbox, so the gate only exists in [5%, 8%)
+    (zap-edge pins ETH into that window); a round with no usable quote is
+    NOT an error state — the widget stays in "Sourcing liquidity" with the
+    submit disabled and simply retries.
 - **Manual surface**: seed `toAssets(1e18,0)` (per-share rates from
   `chain-state.json`), then per basket token `balanceOf`, `allowance`, AND the
   `useIsUSDT` `approve(deployer,1)` simulate probe (bool) — the page fires all

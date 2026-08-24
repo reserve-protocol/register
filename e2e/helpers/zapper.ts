@@ -1,5 +1,11 @@
 import { expect, type Locator, type Page } from '@playwright/test'
-import { encodeAbiParameters, encodeFunctionData, erc20Abi, parseUnits } from 'viem'
+import {
+  encodeAbiParameters,
+  encodeFunctionData,
+  erc20Abi,
+  formatUnits,
+  parseUnits,
+} from 'viem'
 import type { UnmockedLogger } from './logger'
 import type { MockOverrides } from './overrides'
 import { findDtfByAddress, TEST_ADDRESS } from './registry'
@@ -16,12 +22,17 @@ import { loadSnapshot, loadSnapshotRaw, snapshotExists } from './snapshots'
 //   aggregators: /{velora|enso}/swap?chainId&tokenIn&tokenOut&amountIn
 //                  &slippage&signer
 //
+// plus, since react-zapper 2.10, the CoW Swap RFQ venue (enabled on every
+// chain) which the widget's cow-sdk client calls DIRECTLY at
+// api.cow.fi/<chain>/api/v1/quote — a third egress host, not on api.reserve.org.
+//
 // In its default "best" mode the widget fires ALL enabled providers in
 // parallel and picks the best quote by minAmountOut (ties prefer zap). We mock
-// the native zap endpoint from captured snapshots and answer every aggregator
-// with a deterministic provider-level error: the widget then has exactly one
-// successful candidate, which (a) makes "best" mode deterministic and (b)
-// skips the candidate tx-simulation pass (it only runs with >= 2 candidates).
+// the native zap endpoint from captured snapshots and answer every other
+// provider (aggregators + CoW) with a deterministic provider-level error: the
+// widget then has exactly one successful candidate, which (a) makes "best"
+// mode deterministic and (b) skips the candidate tx-simulation pass (it only
+// runs with >= 2 candidates).
 //
 // Quote snapshots live at snapshots/<chain>/<slug>/zap-{buy,sell}.json with the
 // pinned request params recorded in _meta.params. A request matching the pinned
@@ -114,6 +125,26 @@ export function loadZapSnapshot(
   return { params: meta.params, data: raw.data, status: meta.httpStatus ?? 200 }
 }
 
+// The amount-out field as react-zapper renders it (its formatOutputAmount):
+// 2 fraction digits from 1 up, 6 below 1, and 4 significant digits when that
+// still rounds to 0. Mirrored here so specs can await the exact rendered value
+// instead of guessing a raw-formatUnits prefix.
+export function formatZapOutput(rawAmount: string, decimals = 18): string {
+  const value = Number(formatUnits(BigInt(rawAmount), decimals))
+  if (!isFinite(value) || value === 0) return '0'
+  const formatted = new Intl.NumberFormat('en-US', {
+    maximumFractionDigits: value < 1 ? 6 : 2,
+    useGrouping: false,
+  }).format(value)
+  if (Number(formatted) === 0) {
+    return new Intl.NumberFormat('en-US', {
+      maximumSignificantDigits: 4,
+      useGrouping: false,
+    }).format(value)
+  }
+  return formatted
+}
+
 // Fill the zap amount-in and wait for the pinned quote to land in the
 // read-only output field — as ONE retried unit. The widget's balance hydration
 // re-renders the input and can WIPE a value typed too early (the input snaps
@@ -136,6 +167,69 @@ export async function fillAmountAwaitQuote(
   }).toPass({ timeout: 90_000 })
 }
 
+// Widget structure contract (react-zapper >= 2.10). The package ships no
+// data-testids and its copy is Lingui-translated, so specs anchor on
+// locale-independent structure inside register's `issuance-zap-widget`:
+//   - the Radix Tabs root still renders value-derived panels
+//     ("…-content-buy"/"…-content-sell" with data-state), but the Buy/Sell
+//     TRIGGERS are hidden by default (`showTabs` is false) — direction flips
+//     through the unlabeled arrow button between the amount boxes (a lucide
+//     ArrowUpDown icon), which `sellOnly` removes entirely;
+//   - the amount fields are the only inputmode="decimal" inputs (enabled =
+//     amount-in, disabled = quote-out);
+//   - the token selector is the panel's aria-haspopup="menu" button that
+//     isn't the slippage picker ("0.5%"); its menu items are named by symbol.
+//     Since 2.10 stables lead every token list, so the first paint defaults
+//     to USDC; with a wallet the list re-orders by holdings once balances
+//     resolve and the default can flip to ETH a beat later. Specs pinned on
+//     ETH quotes must settle the token BEFORE typing an amount, or the USDC
+//     quote escapes as an unmocked call.
+export function zapPanel(widget: Locator, direction: ZapDirection): Locator {
+  return widget.locator(`div[role="tabpanel"][id$="-content-${direction}"]`)
+}
+
+export function activeZapPanel(widget: Locator): Locator {
+  return widget.locator('div[role="tabpanel"][data-state="active"]')
+}
+
+export function zapFlipButton(scope: Locator): Locator {
+  return scope.locator('button:has(svg.lucide-arrow-up-down)')
+}
+
+// Flip buy <-> sell through the arrow and wait for the target panel to take
+// over. The flip resets the selected token to the list default (USDC).
+export async function flipZapDirection(
+  widget: Locator,
+  to: ZapDirection
+): Promise<Locator> {
+  await zapFlipButton(activeZapPanel(widget)).click()
+  const panel = zapPanel(widget, to)
+  await expect(panel).toHaveAttribute('data-state', 'active')
+  await expect(panel).toBeVisible({ timeout: 15_000 })
+  return panel
+}
+
+// Settle the panel's token on `symbol` (symbols aren't translated): wait for
+// the selector to mount, then pick from the menu unless the widget already
+// landed on it (holdings-ordered default).
+export async function selectZapToken(
+  panel: Locator,
+  symbol: string
+): Promise<void> {
+  const trigger = panel.locator('button[aria-haspopup="menu"]', {
+    hasNotText: '%',
+  })
+  await expect(trigger).toBeVisible({ timeout: 15_000 })
+  if (!(await trigger.textContent())?.includes(symbol)) {
+    await trigger.click()
+    await panel
+      .page()
+      .getByRole('menuitem', { name: new RegExp(`^${symbol}\\b`) })
+      .click()
+  }
+  await expect(trigger).toContainText(symbol)
+}
+
 const AGGREGATORS = ['velora', 'enso'] as const
 
 // Logger the zap specs hand to mockZapperRoutes: mirrors the base fixture's
@@ -152,8 +246,10 @@ export function zapUnmockedLogger(unmockedCalls: string[]): UnmockedLogger {
 function matches(params: ZapQuoteParams, query: URLSearchParams): boolean {
   return (
     query.get('chainId') === String(params.chainId) &&
-    (query.get('tokenIn') ?? '').toLowerCase() === params.tokenIn.toLowerCase() &&
-    (query.get('tokenOut') ?? '').toLowerCase() === params.tokenOut.toLowerCase() &&
+    (query.get('tokenIn') ?? '').toLowerCase() ===
+      params.tokenIn.toLowerCase() &&
+    (query.get('tokenOut') ?? '').toLowerCase() ===
+      params.tokenOut.toLowerCase() &&
     query.get('amountIn') === params.amountIn
   )
 }
@@ -179,7 +275,10 @@ export async function mockZapperRoutes(
       return route.fulfill({
         status: 500,
         contentType: 'application/json',
-        body: JSON.stringify({ status: 'error', error: '[E2E] unmocked zap endpoint' }),
+        body: JSON.stringify({
+          status: 'error',
+          error: '[E2E] unmocked zap endpoint',
+        }),
       })
     }
     const hit = snapshots.find((s) => matches(s.params, url.searchParams))
@@ -199,9 +298,27 @@ export async function mockZapperRoutes(
     return route.fulfill({
       status: 500,
       contentType: 'application/json',
-      body: JSON.stringify({ status: 'error', error: '[E2E] unmocked zap quote' }),
+      body: JSON.stringify({
+        status: 'error',
+        error: '[E2E] unmocked zap quote',
+      }),
     })
   })
+
+  // CoW Swap RFQ quotes (direct to api.cow.fi): deterministic 4xx in CoW's
+  // error shape so cow-sdk fails the provider once, without its 5xx retries
+  // (NOT unmocked — designed single-provider setup, see header comment).
+  await page.route('**/api.cow.fi/**', (route) =>
+    route.fulfill({
+      status: 400,
+      contentType: 'application/json',
+      body: JSON.stringify({
+        errorType: 'UnsupportedToken',
+        description:
+          '[E2E] cowswap disabled — native zap is the only mocked provider',
+      }),
+    })
+  )
 
   // Aggregator quotes: deterministic provider error (NOT unmocked — this is the
   // designed single-provider setup, see header comment).
@@ -245,7 +362,8 @@ export function seedZapSurface(overrides: MockOverrides, dtfAddress: string) {
   const dtf = findDtfByAddress(dtfAddress)
   if (!dtf) throw new Error(`Unknown registry DTF: ${dtfAddress}`)
 
-  const dtfToken = loadSnapshot<DtfSnapshot>(`${dtf.snapshotDir}/dtf.json`).dtf.token
+  const dtfToken = loadSnapshot<DtfSnapshot>(`${dtf.snapshotDir}/dtf.json`).dtf
+    .token
   overrides.ethCall(
     dtfAddress,
     SELECTORS.name,
@@ -256,6 +374,52 @@ export function seedZapSurface(overrides: MockOverrides, dtfAddress: string) {
     SELECTORS.symbol,
     encodeAbiParameters([{ type: 'string' }], [dtfToken.symbol])
   )
+
+  // Since react-zapper 2.10 every quote is re-valued with Reserve prices
+  // (/current/prices) and the price-impact math keys off THAT, not the
+  // quote's own USD fields. Pin both legs to the prices in force at capture
+  // so the mocked $1 lean can't turn a captured impact into a negative one.
+  // A price the spec pinned itself (before calling this) stays authoritative.
+  const pinned = pinnedZapPrices(dtfAddress)
+  if (pinned) {
+    for (const [token, price] of [
+      [pinned.tokenIn, pinned.tokenInPrice],
+      [pinned.tokenOut, pinned.tokenOutPrice],
+    ] as const) {
+      if (overrides.lookupPrice(pinned.chainId, token) === undefined) {
+        overrides.price(pinned.chainId, token, price)
+      }
+    }
+  }
+}
+
+// USD prices in force when the DTF's buy quote was captured (USD value /
+// amount per leg, both 18-decimal tokens in the current fixtures). undefined
+// when the DTF has no zap-buy snapshot or it carries no USD values.
+export function pinnedZapPrices(dtfAddress: string):
+  | {
+      chainId: number
+      tokenIn: string
+      tokenOut: string
+      tokenInPrice: number
+      tokenOutPrice: number
+    }
+  | undefined {
+  const dtf = findDtfByAddress(dtfAddress)
+  if (!dtf || !snapshotExists(`${dtf.snapshotDir}/zap-buy.json`))
+    return undefined
+  const { params, data } = loadZapSnapshot(dtfAddress, 'buy')
+  const result = data.result
+  if (!result?.amountInValue || !result.amountOutValue) return undefined
+  const amountIn = Number(formatUnits(BigInt(result.amountIn), 18))
+  const amountOut = Number(formatUnits(BigInt(result.amountOut), 18))
+  return {
+    chainId: params.chainId,
+    tokenIn: params.tokenIn,
+    tokenOut: params.tokenOut,
+    tokenInPrice: result.amountInValue / amountIn,
+    tokenOutPrice: result.amountOutValue / amountOut,
+  }
 }
 
 // Give the test wallet a DTF balance so the SELL direction has funds (the
@@ -285,7 +449,10 @@ export function seedDtfBalance(
     encodeFunctionData({
       abi: erc20Abi,
       functionName: 'approve',
-      args: [sell.approvalAddress as `0x${string}`, (BigInt(sell.amountIn) * 120n) / 100n],
+      args: [
+        sell.approvalAddress as `0x${string}`,
+        (BigInt(sell.amountIn) * 120n) / 100n,
+      ],
     }),
     encodeAbiParameters([{ type: 'bool' }], [true])
   )

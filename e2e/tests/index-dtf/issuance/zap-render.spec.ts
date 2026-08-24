@@ -1,14 +1,22 @@
 import { test, expect } from '../../../harness'
 import { REGISTRY } from '../../../helpers/registry'
-import { mockZapperRoutes, seedZapSurface, zapUnmockedLogger } from '../../../helpers/zapper'
+import {
+  activeZapPanel,
+  mockZapperRoutes,
+  seedZapSurface,
+  zapFlipButton,
+  zapPanel,
+  zapUnmockedLogger,
+} from '../../../helpers/zapper'
 
-// Issuance zap surface renders offline (widget + buy/sell tabs) on desktop AND
-// mobile — adds the mobile dimension to the zap panel. Read-only render.
+// Issuance zap surface renders offline (widget + buy panel + direction flip)
+// on desktop AND mobile — adds the mobile dimension to the zap panel.
+// Read-only render; structure contract in helpers/zapper.ts.
 test.use({ wallet: false })
 
 const base = REGISTRY.find((d) => d.chainId === 8453 && !d.deprecated)!
 
-test('issuance zap: widget + buy/sell tabs render @smoke @mobile', async ({
+test('issuance zap: widget + buy panel + direction flip render @smoke @mobile', async ({
   harness,
   overrides,
   unmockedCalls,
@@ -20,6 +28,6 @@ test('issuance zap: widget + buy/sell tabs render @smoke @mobile', async ({
 
   const widget = page.getByTestId('issuance-zap-widget')
   await expect(widget).toBeVisible({ timeout: 15_000 })
-  await expect(widget.locator('button[role="tab"][id$="-trigger-buy"]')).toBeVisible()
-  await expect(widget.locator('button[role="tab"][id$="-trigger-sell"]')).toBeVisible()
+  await expect(zapPanel(widget, 'buy')).toHaveAttribute('data-state', 'active')
+  await expect(zapFlipButton(activeZapPanel(widget))).toBeVisible()
 })
