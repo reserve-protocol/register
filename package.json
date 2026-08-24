@@ -46,7 +46,7 @@
     "@rainbow-me/rainbowkit": "^2.2.10",
     "@reserve-protocol/async-zap-sdk": "^0.8.0",
     "@reserve-protocol/dtf-catalog": "0.1.4",
-    "@reserve-protocol/dtf-chat": "^0.0.6",
+    "@reserve-protocol/dtf-chat": "^0.0.7",
     "@reserve-protocol/dtf-rebalance-lib": "^3.2.1",
     "@reserve-protocol/react-sdk": "0.5.2",
     "@reserve-protocol/react-zapper": "2.10.3",

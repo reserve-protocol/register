@@ -12,11 +12,13 @@ import { t } from '@lingui/core/macro'
 import {
   ReserveChat,
   type DtfContext,
+  type ReserveChatHandle,
   type ReserveView,
 } from '@reserve-protocol/dtf-chat'
 import '@reserve-protocol/dtf-chat/styles.css'
 import './overrides.css'
 import { useAtomValue } from 'jotai'
+import { forwardRef } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 
 // Public Turnstile site key for the chat.reserve.org deployment (paired with
@@ -62,7 +64,20 @@ function viewForPath(pathname: string): ReserveView | undefined {
   return undefined
 }
 
-const DtfChat = ({ embedded = false }: { embedded?: boolean }) => {
+type DtfChatProps = {
+  embedded?: boolean
+  /** Embedded only: placeholder copy for the chat input. */
+  inputPlaceholder?: string
+  /** Embedded only: fires with every message the visitor sends. */
+  onMessageSent?: (text: string) => void
+}
+
+// The ref exposes the widget's `send(text)` for host-owned suggestion chips
+// (stocks FAQ); only meaningful for the embedded variant.
+const DtfChat = forwardRef<ReserveChatHandle, DtfChatProps>(function DtfChat(
+  { embedded = false, inputPlaceholder, onMessageSent },
+  ref
+) {
   const { pathname } = useLocation()
   const navigate = useNavigate()
   const address = useAtomValue(iTokenAddressAtom)
@@ -110,11 +125,14 @@ const DtfChat = ({ embedded = false }: { embedded?: boolean }) => {
   if (embedded) {
     return (
       <ReserveChat
+        ref={ref}
         apiBase={apiBase}
         turnstileSiteKey={local ? undefined : TURNSTILE_SITE_KEY}
         dtfContext={dtfContext}
         embedded
         onNavigate={navigate}
+        inputPlaceholder={inputPlaceholder}
+        onMessageSent={onMessageSent}
       />
     )
   }
@@ -157,6 +175,6 @@ const DtfChat = ({ embedded = false }: { embedded?: boolean }) => {
       />
     </div>
   )
-}
+})
 
 export default DtfChat

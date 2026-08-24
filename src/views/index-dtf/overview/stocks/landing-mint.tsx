@@ -1,5 +1,3 @@
-import Ondo from '@/components/icons/logos/Ondo'
-import PancakeSwap from '@/components/icons/logos/PancakeSwap'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Skeleton } from '@/components/ui/skeleton'
 import useComplianceRestrictions from '@/hooks/use-compliance-restrictions'
@@ -16,6 +14,7 @@ import ZapperWrapper from '../../components/zapper/zapper-wrapper'
 import { indexDTFQuoteSourceAtom } from '../../issuance'
 import EligibilityCard from '../components/eligibility-card'
 import DTFBalance from '../components/landing-mint/dtf-balance'
+import { DEX_ICONS } from '../components/landing-mint'
 import { getDtfDexLinks } from '../components/landing-mint/external-dex-links'
 import AboutReserveDtfs from './about-reserve-dtfs'
 import StocksFaq from './faq'
@@ -34,18 +33,18 @@ type ExternalPlatform = {
 
 // Quiet "Also available on" plug under the swap panel — replaces the old
 // external-markets dropdown, which read as a competing action and confused
-// users. PancakeSwap resolves to this DTF's listing via external-dex-links;
-// the Ondo Finance URL is a PLACEHOLDER for the token's actual listing page.
+// users. Venues resolve to this DTF's listings via external-dex-links.
 const useExternalPlatforms = (): ExternalPlatform[] => {
   const dtf = useAtomValue(indexDTFAtom)
   const dexLinks = getDtfDexLinks(dtf?.chainId, dtf?.id)
 
-  return [
-    ...dexLinks
-      .filter((link) => isSafeHttpUrl(link.url))
-      .map((link) => ({ label: link.label, url: link.url, Icon: PancakeSwap })),
-    { label: 'Ondo Finance', url: 'https://ondo.finance', Icon: Ondo },
-  ]
+  return dexLinks
+    .filter((link) => isSafeHttpUrl(link.url))
+    .map((link) => ({
+      label: link.label,
+      url: link.url,
+      Icon: DEX_ICONS[link.dex],
+    }))
 }
 
 const ExternalPlatformsPlug = () => {

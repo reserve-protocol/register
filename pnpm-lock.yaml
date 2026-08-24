@@ -119,8 +119,8 @@ importers:
         specifier: 0.1.4
         version: 0.1.4
       '@reserve-protocol/dtf-chat':
-        specifier: ^0.0.6
-        version: 0.0.6(@ai-sdk/react@2.0.199(react@18.3.1)(zod@4.3.6))(ai@5.0.197(zod@4.3.6))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: ^0.0.7
+        version: 0.0.7(@ai-sdk/react@2.0.199(react@18.3.1)(zod@4.3.6))(ai@5.0.197(zod@4.3.6))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@reserve-protocol/dtf-rebalance-lib':
         specifier: ^3.2.1
         version: 3.2.1(decimal.js-light@2.5.1)
@@ -3226,8 +3226,8 @@ packages:
     resolution: {integrity: sha512-ZUud47nPTaUoYsL7/6vH82IyrI0UUjfKn7h1aIDoAwGpIMe+BUGdwbH5uH3mYGv5lolFBKX9Rp6s5hHUlicODg==}
     engines: {node: '>=24'}
 
-  '@reserve-protocol/dtf-chat@0.0.6':
-    resolution: {integrity: sha512-pYrRHrf5qfaQWsQ/HlregqXq8UXvruoI54VislVA3rquSvldzvFTyLs3++1z1NBbVXY6/8KUlroHU+y8rhlyLw==}
+  '@reserve-protocol/dtf-chat@0.0.7':
+    resolution: {integrity: sha512-3Qz6hA+QdNz7f/TUm+soKl6VyKXg/1uUGjCyghoWH9AlQ3V5Flc4DI4bL6VQ4Oacev+ak1ZTS5jhGEOodxeOCA==}
     peerDependencies:
       '@ai-sdk/react': ^2.0.0
       ai: ^5.0.0
@@ -11869,7 +11869,7 @@ snapshots:
 
   '@reserve-protocol/dtf-catalog@0.1.4': {}
 
-  '@reserve-protocol/dtf-chat@0.0.6(@ai-sdk/react@2.0.199(react@18.3.1)(zod@4.3.6))(ai@5.0.197(zod@4.3.6))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
+  '@reserve-protocol/dtf-chat@0.0.7(@ai-sdk/react@2.0.199(react@18.3.1)(zod@4.3.6))(ai@5.0.197(zod@4.3.6))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
       '@ai-sdk/react': 2.0.199(react@18.3.1)(zod@4.3.6)
       '@thumbmarkjs/thumbmarkjs': 0.16.1
