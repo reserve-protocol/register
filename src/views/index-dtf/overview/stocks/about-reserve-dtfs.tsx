@@ -15,7 +15,7 @@ const AboutReserveDtfs = () => {
           src="/imgs/reserve-brand.png"
           alt={t`Reserve logo`}
           draggable={false}
-          className="h-8 w-8 shrink-0"
+          className="h-6 w-6 shrink-0"
         />
         <h3 className="font-medium">
           <Trans>About Reserve</Trans>
@@ -25,15 +25,19 @@ const AboutReserveDtfs = () => {
         <p>
           <Trans>
             Reserve has been operating since 2018 with backing from{' '}
-            <strong className="font-semibold text-foreground">Coinbase</strong>
-            ,{' '}
-            <strong className="font-semibold text-foreground">
-              Sam Altman
-            </strong>{' '}
-            and{' '}
-            <strong className="font-semibold text-foreground">
-              Peter Thiel
-            </strong>
+            <span className="whitespace-nowrap">
+              <strong className="font-semibold text-foreground">
+                Coinbase
+              </strong>
+              ,{' '}
+              <strong className="font-semibold text-foreground">
+                Sam Altman
+              </strong>{' '}
+              and{' '}
+              <strong className="font-semibold text-foreground">
+                Peter Thiel
+              </strong>
+            </span>
             . We exist to help you own your share of the world’s wealth.
           </Trans>
         </p>
@@ -49,7 +53,7 @@ const AboutReserveDtfs = () => {
             }}
             className="font-medium text-primary transition-opacity hover:opacity-80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
           >
-            <Trans>Learn more</Trans>
+            <Trans>Learn more about the Reserve project</Trans>
           </a>
         </p>
       </div>

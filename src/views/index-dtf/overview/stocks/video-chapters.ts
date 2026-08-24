@@ -36,7 +36,7 @@ export const VIDEO_CHAPTERS: VideoChapter[] = [
     'what-is-a-dtf',
     '01_Buildout DTF SECTIONS_01.mp4',
     msg`What is a DTF?`,
-    msg`How a single token gives you a whole basket of assets.`,
+    msg`How a single token gives you a basket of assets.`,
     '0:33'
   ),
   chapter(
@@ -57,7 +57,7 @@ export const VIDEO_CHAPTERS: VideoChapter[] = [
     'who-can-buy',
     '04_Buildout DTF SECTIONS_01.mp4',
     msg`Who can buy $BUILDOUT?`,
-    msg`Eligibility, regional restrictions, and how to get started.`,
+    msg`Eligibility and how to get started.`,
     '1:15'
   ),
 ]
