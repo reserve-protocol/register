@@ -17,8 +17,8 @@ export type FeaturedIdentity = {
 // marketing-curated and non-dynamic; logos are the hosted brand icons the
 // featured API serves. When the endpoint lands, the live cards replace these.
 // Keep the length in sync with HIGHLIGHTED_LIMIT — these drive the hero's
-// loading cards. Order mirrors reserve-api FEATURED_TOKENS so the skeletons
-// don't reshuffle when the live cards land.
+// loading cards. The live endpoint orders groups by market cap, so the
+// skeleton order is only a best guess until the cards land.
 export const FEATURED_DTFS: FeaturedIdentity[] = [
   {
     key: 'buildout',
@@ -59,6 +59,14 @@ export const FEATURED_DTFS: FeaturedIdentity[] = [
     symbol: 'ROBOTS',
     name: 'Reserve Robotics DTF',
     logo: 'https://l5394zf57b.ufs.sh/f/mupND8QUUvXxmEIFouUUvXxgOp9n53Rqlys7HtMJG1oZVT6a',
+  },
+  {
+    key: 'mag7',
+    address: '0xcef8db49e456f872e288e1c042f916e9ced7c781',
+    chainId: ChainId.BASE,
+    symbol: 'MAG7',
+    name: 'Reserve Magnificent 7 DTF',
+    logo: 'https://l5394zf57b.ufs.sh/f/mupND8QUUvXxzqKDLfYQHYMkBg1Lxv2Gn7Nsbhq6KaVwfopl',
   },
 ]
 
