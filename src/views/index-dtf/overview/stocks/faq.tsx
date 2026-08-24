@@ -26,13 +26,18 @@ const FAQ_QUESTIONS: MessageDescriptor[] = [
 // `suggestions` prop, so chips inject the question through the widget's DOM
 // (React-controlled input needs the native value setter). The send button
 // stays disabled while Turnstile verifies, so retry briefly instead of firing
-// once. Replace with the package's suggestions prop when it ships — the
-// rc-* testids are internal, not a stable API (same caveat as overrides.css).
-const askEmbeddedChat = (container: HTMLElement | null, question: string) => {
+// once. Resolves true once the send was dispatched, false if the widget never
+// became sendable (the typed question stays in the input either way). Replace
+// with the package's suggestions prop when it ships — the rc-* testids are
+// internal, not a stable API (same caveat as overrides.css).
+const askEmbeddedChat = (
+  container: HTMLElement | null,
+  question: string
+): Promise<boolean> => {
   const input = container?.querySelector<HTMLInputElement>(
     '[data-testid="rc-input"]'
   )
-  if (!input) return
+  if (!input) return Promise.resolve(false)
 
   const setValue = Object.getOwnPropertyDescriptor(
     HTMLInputElement.prototype,
@@ -41,20 +46,24 @@ const askEmbeddedChat = (container: HTMLElement | null, question: string) => {
   setValue?.call(input, question)
   input.dispatchEvent(new Event('input', { bubbles: true }))
 
-  const started = Date.now()
-  const trySend = () => {
-    const send = container?.querySelector<HTMLButtonElement>(
-      '[data-testid="rc-send"]'
-    )
-    if (send && !send.disabled) {
-      send.click()
-      return
+  return new Promise((resolve) => {
+    const started = Date.now()
+    const trySend = () => {
+      const send = container?.querySelector<HTMLButtonElement>(
+        '[data-testid="rc-send"]'
+      )
+      if (send && !send.disabled) {
+        send.click()
+        resolve(true)
+        return
+      }
+      // Generous window: on first load the send button stays disabled until
+      // Turnstile mints a token, which can take several seconds.
+      if (Date.now() - started < 10000) setTimeout(trySend, 150)
+      else resolve(false)
     }
-    // Generous window: on first load the send button stays disabled until
-    // Turnstile mints a token, which can take several seconds.
-    if (Date.now() - started < 10000) setTimeout(trySend, 150)
-  }
-  requestAnimationFrame(trySend)
+    requestAnimationFrame(trySend)
+  })
 }
 
 const StocksFaq = () => {
@@ -106,10 +115,14 @@ const StocksFaq = () => {
     return () => observer.disconnect()
   }, [t])
 
-  const ask = (question: string) => {
+  // Chips only yield to the thread once the question was actually sent; if
+  // the widget never became sendable the chips stay (the question remains in
+  // the input for the user to submit by hand) and the miss is tracked.
+  const ask = async (question: string) => {
     trackClick('faq-chip', { question })
-    setAsked(true)
-    askEmbeddedChat(chatRef.current, question)
+    const sent = await askEmbeddedChat(chatRef.current, question)
+    if (sent) setAsked(true)
+    else trackClick('faq-chip-unsent', { question })
   }
 
   return (

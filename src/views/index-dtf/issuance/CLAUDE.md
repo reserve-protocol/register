@@ -119,18 +119,22 @@ Covered (failure paths, `failures-issuance.spec.ts` / `failures-zap.spec.ts`):
 reject + revert for manual mint/redeem and zap buy/sell (incl. the approve and
 swap sub-steps) — error surfaces, controls recover, no fake success, staged
 post-tx data stays hidden. Covered (edge states, `zap-edge.spec.ts`): high
-price impact — both the insufficient-balance masking at the default 100 ETH
-AND the ≥5% acknowledgment checkbox gate (via `overrides.ethBalance` funding);
-quote-error surface + recovery; client-side insufficient-funds gating (the
-widget IGNORES the server `insufficientFunds` field — balance math wins).
+price impact (ETH price pinned so the fixture sits in the [5%, 8%) gate
+window — above 8% the quote is toxic-filtered) — both the insufficient-balance
+masking at the default 100 ETH AND the ≥5% acknowledgment checkbox gate (via
+`overrides.ethBalance` funding); dead quote round = silent sourcing (no error
+text, submit disabled) + recovery on a valid amount; client-side
+insufficient-funds gating (the widget IGNORES the server `insufficientFunds`
+field — balance math wins; the quote still resolves).
 Covered (compliance, `compliance-surfaces.spec.ts`): `geolocation-prohibited`
 + `vpn` gate manual MINT inputs while redeem stays open; overview + governance
 stay fully functional under restriction (over-block guard).
 
 Covered (`issuance-deprecated.spec.ts`): deprecated-DTF redeem-only UX on
-base/deprecated VTF — `sellOnly` forces the sell tab active, disables buy,
-a forced buy-tab click does not switch panels, no mint submittable (txLog
-empty); redeem stays interactive.
+base/deprecated VTF — `sellOnly` pins the sell panel active (buy panel
+inactive) and removes the buy↔sell direction arrow (the widget's only switch
+since the tab triggers went away), so no buy panel is reachable and no mint is
+submittable (txLog empty); redeem stays interactive.
 
 Not covered — **planned**: the widget's low-liquidity checkbox variant
 (distinct from the impact gate; needs a deepLiquidity-flagged capture).

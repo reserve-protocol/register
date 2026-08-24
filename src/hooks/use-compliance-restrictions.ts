@@ -95,18 +95,6 @@ const useComplianceRestrictions = () => {
   const dtfRestriction = useDTFRestricted()
 
   return useMemo<ComplianceRestrictionsResult>(() => {
-    // TEMPORARY (local testing only): skip every geo/compliance restriction so
-    // geo-blocked surfaces (e.g. the zapper swap panel) render in local dev.
-    // Dev builds only — dead code in production bundles — and disabled under
-    // e2e (VITE_E2E, set by playwright.config.ts) so the compliance specs
-    // still exercise real behavior. Remove before merging.
-    if (import.meta.env.DEV && import.meta.env.VITE_E2E !== 'true') {
-      return {
-        data: allowed(geolocation.data, walletCompliance.data),
-        isLoading: false,
-      }
-    }
-
     // Wallet compliance only applies once a wallet is connected; geolocation
     // and DTF checks are IP-based and run regardless.
     if (wallet) {
