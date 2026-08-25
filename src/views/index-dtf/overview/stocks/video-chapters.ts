@@ -35,7 +35,7 @@ export const VIDEO_CHAPTERS: VideoChapter[] = [
   chapter(
     'what-is-a-dtf',
     '01_Buildout DTF SECTIONS_01.mp4',
-    msg`What is a Diversified Token Fund (DTF)?`,
+    msg`What is a Diversified Token Fund?`,
     msg`How to buy an entire portfolio in a single token.`,
     '0:33'
   ),
@@ -43,14 +43,14 @@ export const VIDEO_CHAPTERS: VideoChapter[] = [
     'meet-buildout',
     '02_Buildout DTF SECTIONS_01.mp4',
     msg`Meet $BUILDOUT`,
-    msg`The power companies behind the AI buildout.`,
+    msg`What this is all about.`,
     '0:28'
   ),
   chapter(
     'what-is-reserve',
     '03_Buildout DTF SECTIONS_01.mp4',
     msg`What is Reserve?`,
-    msg`The platform behind DTFs, and the team.`,
+    msg`The platform and team behind DTFs.`,
     '0:53'
   ),
   chapter(

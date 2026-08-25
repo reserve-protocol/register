@@ -6,7 +6,7 @@ import { isYieldIndexDTFAtom } from '@/state/dtf/yield-index-atoms'
 import { useAtomValue } from 'jotai'
 import useTrackIndexDTFPage from '../../hooks/useTrackIndexDTFPage'
 import AboutReserveDtfs from './about-reserve-dtfs'
-import OndoBackedBadge from './ondo-backed-badge'
+import BackedBadge from './backed-badge'
 import StocksFaq from './faq'
 import StocksVideoLibrary from './video-library'
 import PriceChart from '../components/charts/price-chart'
@@ -59,7 +59,7 @@ const AboutSection = () => {
       id="basket"
       className="group/section !bg-card pb-0 pt-0 sm:pb-0 sm:pt-0"
     >
-      <OndoBackedBadge />
+      <BackedBadge />
       <IndexBasketOverviewInner progressive />
     </Card>
   )

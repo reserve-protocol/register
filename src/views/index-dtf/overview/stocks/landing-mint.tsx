@@ -138,7 +138,14 @@ const InlineSwapBox = () => {
         </Alert>
       ) : (
         isLargeDesktop && (
-          <div data-testid="stocks-inline-zapper">
+          // The zapper's TabsContent ships an mt-2 from the package; with the
+          // Buy/Sell tablist hidden in this inline mount nothing sits above
+          // it, so the margin makes the panel's top inset 16px vs the card's
+          // 8px sides — zero it here to keep the inset even.
+          <div
+            data-testid="stocks-inline-zapper"
+            className="[&_[role=tabpanel]]:mt-0"
+          >
             <ZapperWrapper
               chain={dtf.chainId}
               dtfAddress={dtf.id}

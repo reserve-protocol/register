@@ -14,7 +14,6 @@ import { useRef, useState } from 'react'
 // chips that feed the embedded Reserve AI chat below, which answers with live
 // DTF data instead of canned copy.
 const FAQ_QUESTIONS: MessageDescriptor[] = [
-  msg`Why an AI infrastructure DTF?`,
   msg`Am I buying real stocks?`,
   msg`How is the price determined?`,
   msg`How do US market hours affect stock DTF pricing?`,
@@ -64,14 +63,19 @@ const StocksFaq = () => {
       </div>
       {!asked && (
         <div className="mb-3 flex flex-wrap gap-2 px-2">
-          {FAQ_QUESTIONS.map((question) => (
+          {/* The lead chip names the DTF being viewed — the box is shared by
+              every stocks DTF, so the symbol comes from the atom. */}
+          {[
+            t`What is the $${dtf?.token.symbol ?? 'DTF'} DTF?`,
+            ...FAQ_QUESTIONS.map((question) => t(question)),
+          ].map((question) => (
             <button
-              key={question.id}
+              key={question}
               type="button"
-              onClick={() => ask(t(question))}
+              onClick={() => ask(question)}
               className="rounded-full border border-primary/20 bg-primary/5 px-3 py-1.5 text-left text-sm transition-colors hover:border-primary/40 hover:bg-primary/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
             >
-              {t(question)}
+              {question}
             </button>
           ))}
         </div>
