@@ -28,13 +28,9 @@ const LOCKED_SETTINGS: ZapperProps['disabledSettings'] = {
 
 type ZapperWrapperProps = ZapperProps
 
-const ZapperWithConnect = (props: ZapperProps) => {
-  const { openConnectModal } = useConnectModal()
-  return <Zapper {...props} connectWallet={openConnectModal} />
-}
-
 const ZapperWrapper = (props: ZapperWrapperProps) => {
   const { isConnected, address } = useAccount()
+  const { openConnectModal } = useConnectModal()
   // Drive the widget's language from the app locale. The zapper only ships
   // en/es/ko/zh, so the dev-only `pseudo` locale falls back to English.
   const appLocale = useAtomValue(localeAtom)
@@ -79,11 +75,14 @@ const ZapperWrapper = (props: ZapperWrapperProps) => {
   // and overlap the card.
   return (
     <>
-      {!isConnected ? (
-        <ZapperWithConnect {...zapperProps} />
-      ) : (
-        <Zapper {...zapperProps} />
-      )}
+      {/* One element type regardless of wallet state: switching between two
+          component types on `isConnected` remounted the whole widget (input,
+          quote and in-flight tx state wiped) whenever wagmi's connection flag
+          flickered — e.g. right after a transaction receipt. */}
+      <Zapper
+        {...zapperProps}
+        connectWallet={isConnected ? undefined : openConnectModal}
+      />
       <LargeMintPrompt mode={props.mode ?? 'modal'} chain={props.chain} />
     </>
   )
