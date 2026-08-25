@@ -62,6 +62,8 @@ export type ExposureToken = {
   // Real-company mcap for Ondo tokenized equities — shown on the Exposure tab
   underlyingMarketCap?: number
   symbol: string
+  // Underlying equity ticker for tokenized stocks (AAPL for AAPLc / AAPLon)
+  ticker?: string
   name?: string
   weight: number
   bridge?: Bridge

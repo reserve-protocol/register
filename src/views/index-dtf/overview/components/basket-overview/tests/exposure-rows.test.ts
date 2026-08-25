@@ -1,7 +1,11 @@
 import { ExposureGroup } from '@/state/dtf/atoms'
 import { formatMarketCap } from '@/utils'
 import { describe, expect, it } from 'vitest'
-import { ExposureRow, getExposureMarketCap } from '../exposure-rows'
+import {
+  ExposureRow,
+  formatExchangeSymbol,
+  getExposureMarketCap,
+} from '../exposure-rows'
 
 const makeGroup = (partial: Partial<ExposureGroup>): ExposureGroup =>
   ({ tokens: [], totalWeight: 0, ...partial }) as ExposureGroup
@@ -25,6 +29,18 @@ const groupRow = (group: ExposureGroup): ExposureRow => ({
   group,
   weight: 1,
   change: null,
+})
+
+describe('formatExchangeSymbol', () => {
+  it('prefers the underlying ticker sent by the API', () => {
+    expect(formatExchangeSymbol('AAPLc', 'NASDAQ', 'AAPL')).toBe(
+      'NASDAQ: $AAPL'
+    )
+  })
+
+  it('falls back to stripping the Ondo suffix', () => {
+    expect(formatExchangeSymbol('MRVLon', 'NASDAQ')).toBe('NASDAQ: $MRVL')
+  })
 })
 
 describe('getExposureMarketCap', () => {

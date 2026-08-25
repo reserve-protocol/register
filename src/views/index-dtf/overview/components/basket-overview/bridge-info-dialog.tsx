@@ -37,6 +37,7 @@ interface BridgeInfoDialogProps {
     bridge: Bridge
     mapping: {
       symbol?: string
+      ticker?: string
       wrappedVersion?: boolean
     }
   } | null
@@ -68,6 +69,12 @@ const BridgeInfoDialog = ({
   const exchangeLabel = EXCHANGE_LABELS[native.caip2]
   const isExchange = !!exchangeLabel
   const exchangeTokenSymbol = mapping.symbol || tokenSymbol || native.symbol
+  // Only Ondo has a per-asset page; other issuers link to the bridge itself
+  const linkUrl = isExchange
+    ? bridge.id === 'ondo'
+      ? `https://app.ondo.finance/assets/${exchangeTokenSymbol.toLowerCase()}`
+      : bridge.url
+    : native.url
 
   const handleCopyAddress = () => {
     navigator.clipboard.writeText(isAddress(tokenAddress) || tokenAddress)
@@ -178,17 +185,17 @@ const BridgeInfoDialog = ({
                     {native.address
                       ? shortenAddress(native.address)
                       : isExchange
-                        ? formatExchangeSymbol(exchangeTokenSymbol, exchangeLabel)
+                        ? formatExchangeSymbol(
+                            exchangeTokenSymbol,
+                            exchangeLabel,
+                            mapping.ticker
+                          )
                         : t`Native L1 Asset`}
                   </span>
                 </div>
-                {(isExchange || native.url) && (
+                {linkUrl && (
                   <Link
-                    to={
-                      isExchange
-                        ? `https://app.ondo.finance/assets/${exchangeTokenSymbol.toLowerCase()}`
-                        : native.url!
-                    }
+                    to={linkUrl}
                     target="_blank"
                   >
                     <Button variant="muted" size="icon-rounded">

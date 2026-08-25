@@ -49,11 +49,16 @@ export const MobileExposureRows = ({
         const name = isToken
           ? getTokenName(
               tokenNames[row.token.address.toLowerCase()] ??
+                row.token.ticker ??
                 row.token.symbol.replace(/on$/, '')
             )
           : (row.group.native?.name ?? row.key)
         const symbol = isToken
-          ? formatExchangeSymbol(row.token.symbol, row.exchange)
+          ? formatExchangeSymbol(
+              row.token.symbol,
+              row.exchange,
+              row.token.ticker
+            )
           : `$${row.group.native?.symbol ?? row.key}`
         const logo = isToken ? (
           <MobileTokenLogo
