@@ -118,6 +118,13 @@ Node RPC clocks in lockstep), `advanceTime(page, ms)` after actions. Compute
 timestamps relative to snapshot data (`proposalTime`, `rebalanceTime`) so
 re-captures keep working.
 
+**Reverting reads.** `overrides.ethCallRevert(to, calldata, reason)` makes one
+eth_call answer a JSON-RPC `execution reverted` error with `Error(string)` —
+what a node returns when a reverted tx is replayed (wagmi's
+`waitForTransactionReceipt` does exactly that to surface the reason). Use it
+for the reverted-tx replay in failure specs; a zero-word `ethCall` there
+decodes to an empty reason, which the zapper reads as "no error".
+
 **Compliance/geolocation.** `test.use({ compliance: {...} })` sets the
 API-level geolocation for the whole spec; per-DTF restriction goes through
 `overrides.api` on `/v2/compliance/geolocation/dtf/...`. Restricted flows must

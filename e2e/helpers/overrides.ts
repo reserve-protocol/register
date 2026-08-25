@@ -39,6 +39,9 @@ export class MockOverrides {
   // `${address}:${calldata}` (both lowercased) -> eth_call return hex. A
   // selector-only key is allowed only for no-argument functions.
   private ethCalls = new Map<string, Hex>()
+  // `${address}:${calldata}` -> revert reason for eth_call (answered as a
+  // JSON-RPC `execution reverted` error carrying Error(string), like a node).
+  private ethCallReverts = new Map<string, string>()
   private apiRequests: ApiOverride[] = []
   private transactionOutcomes: MockTransactionOutcome[] = []
   // lowercased address -> native balance in wei (eth_getBalance). Opt-in:
@@ -84,6 +87,17 @@ export class MockOverrides {
     this.ethCalls.set(
       `${address.toLowerCase()}:${calldata.toLowerCase()}`,
       returnHex
+    )
+  }
+
+  // Make a single eth_call REVERT with `reason` (Error(string)), the way a
+  // node answers a replayed reverted transaction — e.g. wagmi's
+  // waitForTransactionReceipt re-runs a reverted tx's calldata via eth_call
+  // to extract the reason. Wins over an `ethCall` return for the same key.
+  ethCallRevert(address: string, calldata: string, reason: string): void {
+    this.ethCallReverts.set(
+      `${address.toLowerCase()}:${calldata.toLowerCase()}`,
+      reason
     )
   }
 
@@ -153,6 +167,12 @@ export class MockOverrides {
 
   lookupEthCall(address: string, calldata: string): Hex | undefined {
     return this.ethCalls.get(
+      `${address.toLowerCase()}:${calldata.toLowerCase()}`
+    )
+  }
+
+  lookupEthCallRevert(address: string, calldata: string): string | undefined {
+    return this.ethCallReverts.get(
       `${address.toLowerCase()}:${calldata.toLowerCase()}`
     )
   }

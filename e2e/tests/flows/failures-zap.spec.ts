@@ -72,7 +72,12 @@ function seedFailureBoundaries(
 ) {
   const result = loadZapSnapshot(DTF_ADDRESS, direction).data.result!
   const tx = result.tx!
-  overrides.ethCall(tx.to, tx.data as Hex, ('0x' + '0'.repeat(64)) as Hex)
+  // On a reverted receipt wagmi replays the tx calldata through eth_call to
+  // extract the revert reason. A node reverts that call; answer the same way.
+  // (A successful zero-word answer would decode to an EMPTY reason, and the
+  // widget treats an empty error string as "no error" — it then never leaves
+  // its in-flight state after a buy revert.)
+  overrides.ethCallRevert(tx.to, tx.data as Hex, 'e2e: swap reverted')
   overrides.api({ method: 'POST', pathname: '/zapper/report' }, { ok: true })
 }
 

@@ -1123,6 +1123,16 @@ export function handleRpcMethod(
       const call = params?.[0] as { to?: string; data?: string } | undefined
       const to = (call?.to ?? '').toLowerCase()
       const data = call?.data ?? '0x'
+      // A seeded revert answers like a node: JSON-RPC error 3 "execution
+      // reverted" carrying Error(string) — viem decodes the reason from it.
+      const revertReason = ctx.overrides?.lookupEthCallRevert(to, data)
+      if (revertReason !== undefined) {
+        return new RpcError(
+          3,
+          `execution reverted: ${revertReason}`,
+          `0x08c379a0${encodeAbiParameters([{ type: 'string' }], [revertReason]).slice(2)}`
+        )
+      }
       if (to === MULTICALL3)
         return handleMulticall3(ctx.chainId, data, ctx.log, ctx.overrides)
       const single = handleSingleCall(
@@ -1146,7 +1156,21 @@ export function handleRpcMethod(
   }
 }
 
+// A handler result that must be delivered as a JSON-RPC error object rather
+// than a `result` (currently: seeded eth_call reverts).
+class RpcError {
+  constructor(
+    readonly code: number,
+    readonly message: string,
+    readonly data?: Hex
+  ) {}
+}
+
 function rpcResult(id: number, result: unknown) {
+  if (result instanceof RpcError) {
+    const { code, message, data } = result
+    return { jsonrpc: '2.0', id, error: { code, message, data } }
+  }
   return { jsonrpc: '2.0', id, result }
 }
 

@@ -62,7 +62,9 @@ const DtfDescription = () => {
   const { trackClick } = useTrackIndexDTFClick('overview', 'overview')
   const [expanded, setExpanded] = useState(false)
 
-  if (!dtf || !brand) {
+  // Brand is optional (an unbranded DTF leaves the atom undefined for good),
+  // so only the DTF itself gates the skeleton; the mandate covers the rest.
+  if (!dtf) {
     return (
       <div className="mb-2 space-y-1.5 px-2 py-0.5">
         <Skeleton className="h-4 w-full" />
@@ -72,7 +74,7 @@ const DtfDescription = () => {
     )
   }
 
-  const description = (brand.dtf?.description || dtf.mandate || '').trim()
+  const description = (brand?.dtf?.description || dtf.mandate || '').trim()
   if (!description) return null
 
   const collapsible = description.length > 240

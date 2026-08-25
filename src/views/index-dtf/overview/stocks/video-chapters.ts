@@ -44,7 +44,7 @@ export const VIDEO_CHAPTERS: VideoChapter[] = [
     '02_Buildout DTF SECTIONS_01.mp4',
     msg`Meet $BUILDOUT`,
     msg`The power companies behind the AI buildout.`,
-    '0:56'
+    '0:28'
   ),
   chapter(
     'what-is-reserve',

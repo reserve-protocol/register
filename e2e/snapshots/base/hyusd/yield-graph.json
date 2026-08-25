@@ -1,7 +1,7 @@
 {
   "_meta": {
     "source": "e2e/scripts/capture-yield.ts",
-    "capturedAt": "2026-07-12T20:29:24.339Z",
+    "capturedAt": "2026-08-25T16:34:22.932Z",
     "dtf": "0xcc7ff230365bd730ee4b352cc2492cedac49383e",
     "chainId": 8453,
     "subgraph": "https://api.goldsky.com/api/public/project_cmgzim3e100095np2gjnbh6ry/subgraphs/dtf-yield-base/4.2.0-v2/gn"
@@ -18,7 +18,7 @@
           "0xc9a3e2b3064c1c0546d3d0edc0a748e9f93cf18d",
           "0x641b0453487c9d14c5df96d45a481ef1dc84e31f"
         ],
-        "fromTime": 1783283297
+        "fromTime": 1787070791
       },
       "data": {
         "tokenDailySnapshots": [
@@ -26,103 +26,109 @@
             "token": {
               "id": "0xcb327b99ff831bf8223cced12b1338ff3aa322ff"
             },
-            "dailyVolume": "112528876527573021057"
-          },
-          {
-            "token": {
-              "id": "0xcc7ff230365bd730ee4b352cc2492cedac49383e"
-            },
-            "dailyVolume": "754794861853484435"
+            "dailyVolume": "216937640400001389574"
           },
           {
             "token": {
               "id": "0xcb327b99ff831bf8223cced12b1338ff3aa322ff"
             },
-            "dailyVolume": "796600022869768522199"
+            "dailyVolume": "655241475476184966666"
           },
           {
             "token": {
               "id": "0xcc7ff230365bd730ee4b352cc2492cedac49383e"
             },
-            "dailyVolume": "10314518667475929826"
+            "dailyVolume": "891499791366984440148"
           },
           {
             "token": {
               "id": "0xcb327b99ff831bf8223cced12b1338ff3aa322ff"
             },
-            "dailyVolume": "438442346422238430586"
+            "dailyVolume": "495390400806803340732"
           },
           {
             "token": {
               "id": "0xcc7ff230365bd730ee4b352cc2492cedac49383e"
             },
-            "dailyVolume": "12277230845471905620801"
+            "dailyVolume": "49173850277521259751"
           },
           {
             "token": {
               "id": "0xcb327b99ff831bf8223cced12b1338ff3aa322ff"
             },
-            "dailyVolume": "28630043128217943775"
+            "dailyVolume": "35288019327116986466"
           },
           {
             "token": {
               "id": "0xcc7ff230365bd730ee4b352cc2492cedac49383e"
             },
-            "dailyVolume": "6222406289343463826"
+            "dailyVolume": "1678153924351456617"
+          },
+          {
+            "token": {
+              "id": "0xc9a3e2b3064c1c0546d3d0edc0a748e9f93cf18d"
+            },
+            "dailyVolume": "306942437188606915"
           },
           {
             "token": {
               "id": "0xcb327b99ff831bf8223cced12b1338ff3aa322ff"
             },
-            "dailyVolume": "601860025424273297"
+            "dailyVolume": "21066047445745514420"
           },
           {
             "token": {
               "id": "0xcc7ff230365bd730ee4b352cc2492cedac49383e"
             },
-            "dailyVolume": "540982635616254320"
+            "dailyVolume": "413052102814981701536"
           },
           {
             "token": {
               "id": "0xcb327b99ff831bf8223cced12b1338ff3aa322ff"
             },
-            "dailyVolume": "4576501202477979494"
+            "dailyVolume": "29666742912705280740"
           },
           {
             "token": {
               "id": "0xcc7ff230365bd730ee4b352cc2492cedac49383e"
             },
-            "dailyVolume": "6708206143449870005"
+            "dailyVolume": "38092076473771137490"
           },
           {
             "token": {
               "id": "0xcb327b99ff831bf8223cced12b1338ff3aa322ff"
             },
-            "dailyVolume": "47233522263607266753"
+            "dailyVolume": "44226472242740413844"
           },
           {
             "token": {
               "id": "0xcc7ff230365bd730ee4b352cc2492cedac49383e"
             },
-            "dailyVolume": "553813094664648304"
+            "dailyVolume": "7539304709957846075"
+          },
+          {
+            "token": {
+              "id": "0xc9a3e2b3064c1c0546d3d0edc0a748e9f93cf18d"
+            },
+            "dailyVolume": "384399578103207116"
           },
           {
             "token": {
               "id": "0xcb327b99ff831bf8223cced12b1338ff3aa322ff"
             },
-            "dailyVolume": "375653634557095964370"
+            "dailyVolume": "682817122343880014"
           }
         ],
         "tokens": [
           {
             "id": "0xcc7ff230365bd730ee4b352cc2492cedac49383e",
-            "lastPriceUSD": "1.137281375416788996",
+            "lastPriceUSD": "1.137336285335922769",
             "name": "High Yield USD",
             "symbol": "hyUSD",
-            "totalSupply": "56770406533703810144111",
-            "holderCount": "3442",
-            "transferCount": "192608",
-            "cumulativeVolume": "276991415534806140717813311",
+            "totalSupply": "54430098921646383761048",
+            "holderCount": "3429",
+            "transferCount": "193342",
+            "cumulativeVolume": "277065044058561271708669302",
             "rToken": {
               "backing": "1000000000000000000",
               "targetUnits": "USD",
@@ -250,18 +256,18 @@
           },
           {
             "id": "0xc9a3e2b3064c1c0546d3d0edc0a748e9f93cf18d",
-            "lastPriceUSD": "1.000185788762230332",
+            "lastPriceUSD": "1.000962476343515389",
             "name": "Vaya",
             "symbol": "Vaya",
             "totalSupply": "1507698922759436516357",
             "holderCount": "-3",
-            "transferCount": "1175",
-            "cumulativeVolume": "85022011823602839915167",
+            "transferCount": "1197",
+            "cumulativeVolume": "85029833817261240960784",
             "rToken": {
               "backing": "1000000000000000000",
               "targetUnits": "USD",
-              "rsrStaked": "88035000000000000000000",
-              "rsrLocked": "204812671904870000000000",
+              "rsrStaked": "83035000000000000000000",
+              "rsrLocked": "203045000000000000000000",
               "collaterals": [
                 {
                   "id": "0x073f98792ef4c00bb5f11b1f64f13cb25cde0d8d",
@@ -308,65 +314,6 @@
                   "id": "0x663a141bea6756a1d3ab1da068defa4d6b523fbe",
                   "name": "vayaRSR Token",
                   "symbol": "vayaRSR",
-                  "decimals": 18
-                }
-              }
-            }
-          },
-          {
-            "id": "0xcb327b99ff831bf8223cced12b1338ff3aa322ff",
-            "lastPriceUSD": "1963.236933509642988847",
-            "name": "Based ETH",
-            "symbol": "bsdETH",
-            "totalSupply": "900317450641275799357",
-            "holderCount": "12452",
-            "transferCount": "749859",
-            "cumulativeVolume": "780875966097797048834283",
-            "rToken": {
-              "backing": "1000000000000000000",
-              "targetUnits": "ETH",
-              "rsrStaked": "116542617128357041686676314",
-              "rsrLocked": "145931029238108924390383512",
-              "collaterals": [
-                {
-                  "id": "0x2ae3f1ec7f1f5012cfeab0185bfc7aa3cf0dec22",
-                  "symbol": "cbETH"
-                },
-                {
-                  "id": "0x7fcd174e80f264448ebee8c88a7c4476aaf58ea6",
-                  "symbol": "wsuperOETHb"
-                },
-                {
-                  "id": "0xc1cba3fcea344f92d9239c08c0568f6f2f0ee452",
-                  "symbol": "wstETH"
-                }
-              ],
-              "contracts": [
-                {
-                  "id": "0x2b79ebb020e4f374a44c5eead609e2703fb3ddc4",
-                  "name": "BASKET_HANDLER"
-                }
-              ],
-              "collateralDistribution": "{\"0x7fcd174e80f264448ebee8c88a7c4476aaf58ea6\":{\"dist\":\"0.335510845945121582\",\"target\":\"ETH\"},\"0x2ae3f1ec7f1f5012cfeab0185bfc7aa3cf0dec22\":{\"dist\":\"0.332719168347725613\",\"target\":\"ETH\"},\"0xc1cba3fcea344f92d9239c08c0568f6f2f0ee452\":{\"dist\":\"0.331769985707152803\",\"target\":\"ETH\"}}",
-              "revenueDistribution": [
-                {
-                  "id": "0x0000000000000000000000000000000000000001-0xcb327b99ff831bf8223cced12b1338ff3aa322ff",
-                  "rTokenDist": 9000,
-                  "rsrDist": 0,
-                  "destination": "0x0000000000000000000000000000000000000001"
-                },
-                {
-                  "id": "0x0000000000000000000000000000000000000002-0xcb327b99ff831bf8223cced12b1338ff3aa322ff",
-                  "rTokenDist": 0,
-                  "rsrDist": 1000,
-                  "destination": "0x0000000000000000000000000000000000000002"
-                }
-              ],
-              "rewardToken": {
-                "token": {
-                  "id": "0x3d190d968a8985673285b3b9cd5f5bdc12c9b368",
-                  "name": "bsdethRSR Token",
-                  "symbol": "bsdethRSR",
                   "decimals": 18
                 }
               }
@@ -444,6 +391,65 @@
                 }
               }
             }
+          },
+          {
+            "id": "0xcb327b99ff831bf8223cced12b1338ff3aa322ff",
+            "lastPriceUSD": "2671.200772718900657758",
+            "name": "Based ETH",
+            "symbol": "bsdETH",
+            "totalSupply": "543746757823195870304",
+            "holderCount": "12608",
+            "transferCount": "758416",
+            "cumulativeVolume": "792747578981809629273349",
+            "rToken": {
+              "backing": "1000000000000000000",
+              "targetUnits": "ETH",
+              "rsrStaked": "113046074802199422685712730",
+              "rsrLocked": "115512899256410937037519748",
+              "collaterals": [
+                {
+                  "id": "0x2ae3f1ec7f1f5012cfeab0185bfc7aa3cf0dec22",
+                  "symbol": "cbETH"
+                },
+                {
+                  "id": "0x7fcd174e80f264448ebee8c88a7c4476aaf58ea6",
+                  "symbol": "wsuperOETHb"
+                },
+                {
+                  "id": "0xc1cba3fcea344f92d9239c08c0568f6f2f0ee452",
+                  "symbol": "wstETH"
+                }
+              ],
+              "contracts": [
+                {
+                  "id": "0x2b79ebb020e4f374a44c5eead609e2703fb3ddc4",
+                  "name": "BASKET_HANDLER"
+                }
+              ],
+              "collateralDistribution": "{\"0x7fcd174e80f264448ebee8c88a7c4476aaf58ea6\":{\"dist\":\"0.335510845945121582\",\"target\":\"ETH\"},\"0x2ae3f1ec7f1f5012cfeab0185bfc7aa3cf0dec22\":{\"dist\":\"0.332719168347725613\",\"target\":\"ETH\"},\"0xc1cba3fcea344f92d9239c08c0568f6f2f0ee452\":{\"dist\":\"0.331769985707152803\",\"target\":\"ETH\"}}",
+              "revenueDistribution": [
+                {
+                  "id": "0x0000000000000000000000000000000000000001-0xcb327b99ff831bf8223cced12b1338ff3aa322ff",
+                  "rTokenDist": 9000,
+                  "rsrDist": 0,
+                  "destination": "0x0000000000000000000000000000000000000001"
+                },
+                {
+                  "id": "0x0000000000000000000000000000000000000002-0xcb327b99ff831bf8223cced12b1338ff3aa322ff",
+                  "rTokenDist": 0,
+                  "rsrDist": 1000,
+                  "destination": "0x0000000000000000000000000000000000000002"
+                }
+              ],
+              "rewardToken": {
+                "token": {
+                  "id": "0x3d190d968a8985673285b3b9cd5f5bdc12c9b368",
+                  "name": "bsdethRSR Token",
+                  "symbol": "bsdethRSR",
+                  "decimals": 18
+                }
+              }
+            }
           }
         ]
       }
@@ -456,6 +462,601 @@
       },
       "data": {
         "entries": [
+          {
+            "id": "0xcc7ff230365bd730ee4b352cc2492cedac49383e-0xfd1424858fb508e685e87b2ee9a59ee5562b23d7aa74340eca546dff8780cf91-0x242-REDEEM",
+            "type": "REDEEM",
+            "amount": "52204506942516224283",
+            "amountUSD": "59.37321170720464777076356154548514",
+            "hash": "0xfd1424858fb508e685e87b2ee9a59ee5562b23d7aa74340eca546dff8780cf91",
+            "from": {
+              "id": "0xb26fd0fe37d5711ee2959b0be9e9c8bc965eeeea"
+            },
+            "to": {
+              "id": "0x0000000000000000000000000000000000000000"
+            },
+            "token": {
+              "symbol": "hyUSD"
+            },
+            "timestamp": "1787567693"
+          },
+          {
+            "id": "0xcc7ff230365bd730ee4b352cc2492cedac49383e-0xfd1424858fb508e685e87b2ee9a59ee5562b23d7aa74340eca546dff8780cf91-0x23f-BURN",
+            "type": "BURN",
+            "amount": "607543387",
+            "amountUSD": "0.000000000690971033925917314953912364",
+            "hash": "0xfd1424858fb508e685e87b2ee9a59ee5562b23d7aa74340eca546dff8780cf91",
+            "from": {
+              "id": "0x8532b667150f53f209f71fdf4ca2173805d16680"
+            },
+            "to": {
+              "id": "0x0000000000000000000000000000000000000000"
+            },
+            "token": {
+              "symbol": "hyUSD"
+            },
+            "timestamp": "1787567693"
+          },
+          {
+            "id": "0xcc7ff230365bd730ee4b352cc2492cedac49383e-0x02d84ff083ca41fa0bb9cd2e2b36900bc85cd9640b22756b1f2ce469bbfaf3f1-0xc1-REDEEM",
+            "type": "REDEEM",
+            "amount": "48422676758593001978",
+            "amountUSD": "55.07206191571219102168805623533806",
+            "hash": "0x02d84ff083ca41fa0bb9cd2e2b36900bc85cd9640b22756b1f2ce469bbfaf3f1",
+            "from": {
+              "id": "0xb26fd0fe37d5711ee2959b0be9e9c8bc965eeeea"
+            },
+            "to": {
+              "id": "0x0000000000000000000000000000000000000000"
+            },
+            "token": {
+              "symbol": "hyUSD"
+            },
+            "timestamp": "1787564965"
+          },
+          {
+            "id": "0xcc7ff230365bd730ee4b352cc2492cedac49383e-0x02d84ff083ca41fa0bb9cd2e2b36900bc85cd9640b22756b1f2ce469bbfaf3f1-0xbe-BURN",
+            "type": "BURN",
+            "amount": "167363054",
+            "amountUSD": "0.000000000190345290456398518221656888",
+            "hash": "0x02d84ff083ca41fa0bb9cd2e2b36900bc85cd9640b22756b1f2ce469bbfaf3f1",
+            "from": {
+              "id": "0x8532b667150f53f209f71fdf4ca2173805d16680"
+            },
+            "to": {
+              "id": "0x0000000000000000000000000000000000000000"
+            },
+            "token": {
+              "symbol": "hyUSD"
+            },
+            "timestamp": "1787564965"
+          },
+          {
+            "id": "0xcc7ff230365bd730ee4b352cc2492cedac49383e-0xc3f09c5bfce29ab4d66192d2df63a90c8025faf87cf282c6ee63b4921499efce-0x185-REDEEM",
+            "type": "REDEEM",
+            "amount": "77085397900503850354",
+            "amountUSD": "87.68546979826547411733159796178912",
+            "hash": "0xc3f09c5bfce29ab4d66192d2df63a90c8025faf87cf282c6ee63b4921499efce",
+            "from": {
+              "id": "0xb26fd0fe37d5711ee2959b0be9e9c8bc965eeeea"
+            },
+            "to": {
+              "id": "0x0000000000000000000000000000000000000000"
+            },
+            "token": {
+              "symbol": "hyUSD"
+            },
+            "timestamp": "1787564215"
+          },
+          {
+            "id": "0xcc7ff230365bd730ee4b352cc2492cedac49383e-0xc3f09c5bfce29ab4d66192d2df63a90c8025faf87cf282c6ee63b4921499efce-0x182-BURN",
+            "type": "BURN",
+            "amount": "66930708191",
+            "amountUSD": "0.000000076134400956631628689093238682",
+            "hash": "0xc3f09c5bfce29ab4d66192d2df63a90c8025faf87cf282c6ee63b4921499efce",
+            "from": {
+              "id": "0x8532b667150f53f209f71fdf4ca2173805d16680"
+            },
+            "to": {
+              "id": "0x0000000000000000000000000000000000000000"
+            },
+            "token": {
+              "symbol": "hyUSD"
+            },
+            "timestamp": "1787564215"
+          },
+          {
+            "id": "0xcc7ff230365bd730ee4b352cc2492cedac49383e-0x675e83fda98457e4b7d31b21bf0df0c00f769dcea43be1c8f957c0743e123a42-0x174-REDEEM",
+            "type": "REDEEM",
+            "amount": "64309318049116447740",
+            "amountUSD": "73.18698997346286235153297403559205",
+            "hash": "0x675e83fda98457e4b7d31b21bf0df0c00f769dcea43be1c8f957c0743e123a42",
+            "from": {
+              "id": "0xb26fd0fe37d5711ee2959b0be9e9c8bc965eeeea"
+            },
+            "to": {
+              "id": "0x0000000000000000000000000000000000000000"
+            },
+            "token": {
+              "symbol": "hyUSD"
+            },
+            "timestamp": "1787306507"
+          },
+          {
+            "id": "0xcc7ff230365bd730ee4b352cc2492cedac49383e-0x675e83fda98457e4b7d31b21bf0df0c00f769dcea43be1c8f957c0743e123a42-0x171-BURN",
+            "type": "BURN",
+            "amount": "503190021310",
+            "amountUSD": "0.00000057265360855226023394591071665",
+            "hash": "0x675e83fda98457e4b7d31b21bf0df0c00f769dcea43be1c8f957c0743e123a42",
+            "from": {
+              "id": "0x8532b667150f53f209f71fdf4ca2173805d16680"
+            },
+            "to": {
+              "id": "0x0000000000000000000000000000000000000000"
+            },
+            "token": {
+              "symbol": "hyUSD"
+            },
+            "timestamp": "1787306507"
+          },
+          {
+            "id": "0xcc7ff230365bd730ee4b352cc2492cedac49383e-0xce2792d5764ffbbc0691d1e7cf3e8ae657b3864759a369f7216dbf641913efba-0x166-REDEEM",
+            "type": "REDEEM",
+            "amount": "48439973334147868287",
+            "amountUSD": "55.09876763171188766852851514159",
+            "hash": "0xce2792d5764ffbbc0691d1e7cf3e8ae657b3864759a369f7216dbf641913efba",
+            "from": {
+              "id": "0xb26fd0fe37d5711ee2959b0be9e9c8bc965eeeea"
+            },
+            "to": {
+              "id": "0x0000000000000000000000000000000000000000"
+            },
+            "token": {
+              "symbol": "hyUSD"
+            },
+            "timestamp": "1786370727"
+          },
+          {
+            "id": "0xcc7ff230365bd730ee4b352cc2492cedac49383e-0xce2792d5764ffbbc0691d1e7cf3e8ae657b3864759a369f7216dbf641913efba-0x163-BURN",
+            "type": "BURN",
+            "amount": "135813661903",
+            "amountUSD": "0.000000154483268328515037259362745155",
+            "hash": "0xce2792d5764ffbbc0691d1e7cf3e8ae657b3864759a369f7216dbf641913efba",
+            "from": {
+              "id": "0x8532b667150f53f209f71fdf4ca2173805d16680"
+            },
+            "to": {
+              "id": "0x0000000000000000000000000000000000000000"
+            },
+            "token": {
+              "symbol": "hyUSD"
+            },
+            "timestamp": "1786370727"
+          },
+          {
+            "id": "0xcc7ff230365bd730ee4b352cc2492cedac49383e-0xd4bd9cdcea69328488d7977a71cb10de40deb6ae80ee25b600da3f6f3576c5f8-0x7f-REDEEM",
+            "type": "REDEEM",
+            "amount": "22538599093630502516",
+            "amountUSD": "25.63461164080028721268122067062296",
+            "hash": "0xd4bd9cdcea69328488d7977a71cb10de40deb6ae80ee25b600da3f6f3576c5f8",
+            "from": {
+              "id": "0xf38274900789a082dc526bda85f05bdbb1d53bdb"
+            },
+            "to": {
+              "id": "0x0000000000000000000000000000000000000000"
+            },
+            "token": {
+              "symbol": "hyUSD"
+            },
+            "timestamp": "1786228119"
+          },
+          {
+            "id": "0xcc7ff230365bd730ee4b352cc2492cedac49383e-0xd4bd9cdcea69328488d7977a71cb10de40deb6ae80ee25b600da3f6f3576c5f8-0x7c-BURN",
+            "type": "BURN",
+            "amount": "53681307",
+            "amountUSD": "0.000000000061055234693112097961533107",
+            "hash": "0xd4bd9cdcea69328488d7977a71cb10de40deb6ae80ee25b600da3f6f3576c5f8",
+            "from": {
+              "id": "0x8532b667150f53f209f71fdf4ca2173805d16680"
+            },
+            "to": {
+              "id": "0x0000000000000000000000000000000000000000"
+            },
+            "token": {
+              "symbol": "hyUSD"
+            },
+            "timestamp": "1786228119"
+          },
+          {
+            "id": "0xcc7ff230365bd730ee4b352cc2492cedac49383e-0x7193a1296ad3ff02e640ee690eb80db7717b8c6ede01c3f7595fc36475be4488-0x15a-REDEEM",
+            "type": "REDEEM",
+            "amount": "818105024516841811609",
+            "amountUSD": "930.4839443549689213884288891025514",
+            "hash": "0x7193a1296ad3ff02e640ee690eb80db7717b8c6ede01c3f7595fc36475be4488",
+            "from": {
+              "id": "0xea546012d7a57c637bb74c3a72068414fe68b2f0"
+            },
+            "to": {
+              "id": "0x0000000000000000000000000000000000000000"
+            },
+            "token": {
+              "symbol": "hyUSD"
+            },
+            "timestamp": "1786228067"
+          },
+          {
+            "id": "0xcc7ff230365bd730ee4b352cc2492cedac49383e-0x7193a1296ad3ff02e640ee690eb80db7717b8c6ede01c3f7595fc36475be4488-0x157-BURN",
+            "type": "BURN",
+            "amount": "2385849244",
+            "amountUSD": "0.000000002713581201270007657018814844",
+            "hash": "0x7193a1296ad3ff02e640ee690eb80db7717b8c6ede01c3f7595fc36475be4488",
+            "from": {
+              "id": "0x8532b667150f53f209f71fdf4ca2173805d16680"
+            },
+            "to": {
+              "id": "0x0000000000000000000000000000000000000000"
+            },
+            "token": {
+              "symbol": "hyUSD"
+            },
+            "timestamp": "1786228067"
+          },
+          {
+            "id": "0xcc7ff230365bd730ee4b352cc2492cedac49383e-0x5b249f4a6f2d4a2ac895fd28c58d67d2dc1a1321418e1dc1705cae1e36666707-0xff-REDEEM",
+            "type": "REDEEM",
+            "amount": "275230003312257574711",
+            "amountUSD": "313.0480829601170763076553354679068",
+            "hash": "0x5b249f4a6f2d4a2ac895fd28c58d67d2dc1a1321418e1dc1705cae1e36666707",
+            "from": {
+              "id": "0xea546012d7a57c637bb74c3a72068414fe68b2f0"
+            },
+            "to": {
+              "id": "0x0000000000000000000000000000000000000000"
+            },
+            "token": {
+              "symbol": "hyUSD"
+            },
+            "timestamp": "1786225759"
+          },
+          {
+            "id": "0xcc7ff230365bd730ee4b352cc2492cedac49383e-0x5b249f4a6f2d4a2ac895fd28c58d67d2dc1a1321418e1dc1705cae1e36666707-0xfc-BURN",
+            "type": "BURN",
+            "amount": "91093214",
+            "amountUSD": "0.000000000103609910511909993056515784",
+            "hash": "0x5b249f4a6f2d4a2ac895fd28c58d67d2dc1a1321418e1dc1705cae1e36666707",
+            "from": {
+              "id": "0x8532b667150f53f209f71fdf4ca2173805d16680"
+            },
+            "to": {
+              "id": "0x0000000000000000000000000000000000000000"
+            },
+            "token": {
+              "symbol": "hyUSD"
+            },
+            "timestamp": "1786225759"
+          },
+          {
+            "id": "0xcc7ff230365bd730ee4b352cc2492cedac49383e-0xf0397a3f8cb7fd57dc93704daa98862cb34eabde2ea164dfc600374894080051-0xe2-REDEEM",
+            "type": "REDEEM",
+            "amount": "110257067588444697856",
+            "amountUSD": "125.4069804381297479356680700348768",
+            "hash": "0xf0397a3f8cb7fd57dc93704daa98862cb34eabde2ea164dfc600374894080051",
+            "from": {
+              "id": "0xb26fd0fe37d5711ee2959b0be9e9c8bc965eeeea"
+            },
+            "to": {
+              "id": "0x0000000000000000000000000000000000000000"
+            },
+            "token": {
+              "symbol": "hyUSD"
+            },
+            "timestamp": "1786225671"
+          },
+          {
+            "id": "0xcc7ff230365bd730ee4b352cc2492cedac49383e-0xf0397a3f8cb7fd57dc93704daa98862cb34eabde2ea164dfc600374894080051-0xdf-BURN",
+            "type": "BURN",
+            "amount": "8281656",
+            "amountUSD": "0.000000000009419599983050575704315936",
+            "hash": "0xf0397a3f8cb7fd57dc93704daa98862cb34eabde2ea164dfc600374894080051",
+            "from": {
+              "id": "0x8532b667150f53f209f71fdf4ca2173805d16680"
+            },
+            "to": {
+              "id": "0x0000000000000000000000000000000000000000"
+            },
+            "token": {
+              "symbol": "hyUSD"
+            },
+            "timestamp": "1786225671"
+          },
+          {
+            "id": "0xcc7ff230365bd730ee4b352cc2492cedac49383e-0x163c786dbcd7fe23c41f681c48c376907676310a058fbe932e6d6181d69c01a2-0xb6-REDEEM",
+            "type": "REDEEM",
+            "amount": "40493303366005328728",
+            "amountUSD": "46.05730058095695047005004712637331",
+            "hash": "0x163c786dbcd7fe23c41f681c48c376907676310a058fbe932e6d6181d69c01a2",
+            "from": {
+              "id": "0xb26fd0fe37d5711ee2959b0be9e9c8bc965eeeea"
+            },
+            "to": {
+              "id": "0x0000000000000000000000000000000000000000"
+            },
+            "token": {
+              "symbol": "hyUSD"
+            },
+            "timestamp": "1786225663"
+          },
+          {
+            "id": "0xcc7ff230365bd730ee4b352cc2492cedac49383e-0x163c786dbcd7fe23c41f681c48c376907676310a058fbe932e6d6181d69c01a2-0xb3-BURN",
+            "type": "BURN",
+            "amount": "8281732",
+            "amountUSD": "0.000000000009419686425858476907137392",
+            "hash": "0x163c786dbcd7fe23c41f681c48c376907676310a058fbe932e6d6181d69c01a2",
+            "from": {
+              "id": "0x8532b667150f53f209f71fdf4ca2173805d16680"
+            },
+            "to": {
+              "id": "0x0000000000000000000000000000000000000000"
+            },
+            "token": {
+              "symbol": "hyUSD"
+            },
+            "timestamp": "1786225663"
+          },
+          {
+            "id": "0xcc7ff230365bd730ee4b352cc2492cedac49383e-0x3b4cc1b7cb971029ed497e9ad924ee091059c2c3f425a387f0cf6c30a1980d12-0x5f-REDEEM",
+            "type": "REDEEM",
+            "amount": "48420735509494103641",
+            "amountUSD": "55.0740044484493279843128179403274",
+            "hash": "0x3b4cc1b7cb971029ed497e9ad924ee091059c2c3f425a387f0cf6c30a1980d12",
+            "from": {
+              "id": "0xb26fd0fe37d5711ee2959b0be9e9c8bc965eeeea"
+            },
+            "to": {
+              "id": "0x0000000000000000000000000000000000000000"
+            },
+            "token": {
+              "symbol": "hyUSD"
+            },
+            "timestamp": "1786225655"
+          },
+          {
+            "id": "0xcc7ff230365bd730ee4b352cc2492cedac49383e-0x3b4cc1b7cb971029ed497e9ad924ee091059c2c3f425a387f0cf6c30a1980d12-0x5c-BURN",
+            "type": "BURN",
+            "amount": "194642581",
+            "amountUSD": "0.000000000221387516299701449640500236",
+            "hash": "0x3b4cc1b7cb971029ed497e9ad924ee091059c2c3f425a387f0cf6c30a1980d12",
+            "from": {
+              "id": "0x8532b667150f53f209f71fdf4ca2173805d16680"
+            },
+            "to": {
+              "id": "0x0000000000000000000000000000000000000000"
+            },
+            "token": {
+              "symbol": "hyUSD"
+            },
+            "timestamp": "1786225655"
+          },
+          {
+            "id": "0xcc7ff230365bd730ee4b352cc2492cedac49383e-0x9d909637aa60d883973ee93ff4864daf47c206ea73d7545472a624bff4c962a1-0x195-REDEEM",
+            "type": "REDEEM",
+            "amount": "48422825367836584301",
+            "amountUSD": "55.07638146454458827152728570788152",
+            "hash": "0x9d909637aa60d883973ee93ff4864daf47c206ea73d7545472a624bff4c962a1",
+            "from": {
+              "id": "0xb26fd0fe37d5711ee2959b0be9e9c8bc965eeeea"
+            },
+            "to": {
+              "id": "0x0000000000000000000000000000000000000000"
+            },
+            "token": {
+              "symbol": "hyUSD"
+            },
+            "timestamp": "1786225467"
+          },
+          {
+            "id": "0xcc7ff230365bd730ee4b352cc2492cedac49383e-0x9d909637aa60d883973ee93ff4864daf47c206ea73d7545472a624bff4c962a1-0x192-BURN",
+            "type": "BURN",
+            "amount": "8283593",
+            "amountUSD": "0.000000000009421803137246689255173308",
+            "hash": "0x9d909637aa60d883973ee93ff4864daf47c206ea73d7545472a624bff4c962a1",
+            "from": {
+              "id": "0x8532b667150f53f209f71fdf4ca2173805d16680"
+            },
+            "to": {
+              "id": "0x0000000000000000000000000000000000000000"
+            },
+            "token": {
+              "symbol": "hyUSD"
+            },
+            "timestamp": "1786225467"
+          },
+          {
+            "id": "0xcc7ff230365bd730ee4b352cc2492cedac49383e-0xb35cc87be000a582201b3e42c0906063ba2253f5a1ac887147557f970c5aa354-0x137-REDEEM",
+            "type": "REDEEM",
+            "amount": "88113107591807239749",
+            "amountUSD": "100.2203214886395944186620191432399",
+            "hash": "0xb35cc87be000a582201b3e42c0906063ba2253f5a1ac887147557f970c5aa354",
+            "from": {
+              "id": "0xb26fd0fe37d5711ee2959b0be9e9c8bc965eeeea"
+            },
+            "to": {
+              "id": "0x0000000000000000000000000000000000000000"
+            },
+            "token": {
+              "symbol": "hyUSD"
+            },
+            "timestamp": "1786225459"
+          },
+          {
+            "id": "0xcc7ff230365bd730ee4b352cc2492cedac49383e-0x48eee9d6160cb8007e479a38a120340e8dc6c35973287d4a6dd6070dcbb963bf-0xf2-REDEEM",
+            "type": "REDEEM",
+            "amount": "131528089905319993647",
+            "amountUSD": "149.6007553854961869402849645816368",
+            "hash": "0x48eee9d6160cb8007e479a38a120340e8dc6c35973287d4a6dd6070dcbb963bf",
+            "from": {
+              "id": "0xb26fd0fe37d5711ee2959b0be9e9c8bc965eeeea"
+            },
+            "to": {
+              "id": "0x0000000000000000000000000000000000000000"
+            },
+            "token": {
+              "symbol": "hyUSD"
+            },
+            "timestamp": "1786225459"
+          },
+          {
+            "id": "0xcc7ff230365bd730ee4b352cc2492cedac49383e-0x48eee9d6160cb8007e479a38a120340e8dc6c35973287d4a6dd6070dcbb963bf-0xef-BURN",
+            "type": "BURN",
+            "amount": "62320909497",
+            "amountUSD": "0.000000070884136945755494123689812732",
+            "hash": "0x48eee9d6160cb8007e479a38a120340e8dc6c35973287d4a6dd6070dcbb963bf",
+            "from": {
+              "id": "0x8532b667150f53f209f71fdf4ca2173805d16680"
+            },
+            "to": {
+              "id": "0x0000000000000000000000000000000000000000"
+            },
+            "token": {
+              "symbol": "hyUSD"
+            },
+            "timestamp": "1786225459"
+          },
+          {
+            "id": "0xcc7ff230365bd730ee4b352cc2492cedac49383e-0xa1cdd3f0439b5d3ed2a0c5f42be307e0fe977b51c53832cf78172cd22ab78935-0x12c-REDEEM",
+            "type": "REDEEM",
+            "amount": "56351959140192975207",
+            "amountUSD": "64.08770090038403568948158025924746",
+            "hash": "0xa1cdd3f0439b5d3ed2a0c5f42be307e0fe977b51c53832cf78172cd22ab78935",
+            "from": {
+              "id": "0xb26fd0fe37d5711ee2959b0be9e9c8bc965eeeea"
+            },
+            "to": {
+              "id": "0x0000000000000000000000000000000000000000"
+            },
+            "token": {
+              "symbol": "hyUSD"
+            },
+            "timestamp": "1786167257"
+          },
+          {
+            "id": "0xcc7ff230365bd730ee4b352cc2492cedac49383e-0xa1cdd3f0439b5d3ed2a0c5f42be307e0fe977b51c53832cf78172cd22ab78935-0x129-BURN",
+            "type": "BURN",
+            "amount": "112996220942",
+            "amountUSD": "0.000000128507830448072120110435548706",
+            "hash": "0xa1cdd3f0439b5d3ed2a0c5f42be307e0fe977b51c53832cf78172cd22ab78935",
+            "from": {
+              "id": "0x8532b667150f53f209f71fdf4ca2173805d16680"
+            },
+            "to": {
+              "id": "0x0000000000000000000000000000000000000000"
+            },
+            "token": {
+              "symbol": "hyUSD"
+            },
+            "timestamp": "1786167257"
+          },
+          {
+            "id": "0xcc7ff230365bd730ee4b352cc2492cedac49383e-0xded585b4dfc8eb1c3fae6b2fe25da355ab2e87945baeb156e43a5a7ac1f06c82-0x110-REDEEM",
+            "type": "REDEEM",
+            "amount": "88153863352407318765",
+            "amountUSD": "100.2544117278496033104198574918075",
+            "hash": "0xded585b4dfc8eb1c3fae6b2fe25da355ab2e87945baeb156e43a5a7ac1f06c82",
+            "from": {
+              "id": "0xb26fd0fe37d5711ee2959b0be9e9c8bc965eeeea"
+            },
+            "to": {
+              "id": "0x0000000000000000000000000000000000000000"
+            },
+            "token": {
+              "symbol": "hyUSD"
+            },
+            "timestamp": "1786070715"
+          },
+          {
+            "id": "0xcc7ff230365bd730ee4b352cc2492cedac49383e-0xded585b4dfc8eb1c3fae6b2fe25da355ab2e87945baeb156e43a5a7ac1f06c82-0x10d-BURN",
+            "type": "BURN",
+            "amount": "3595475677835",
+            "amountUSD": "0.000004089013064828946809035962822215",
+            "hash": "0xded585b4dfc8eb1c3fae6b2fe25da355ab2e87945baeb156e43a5a7ac1f06c82",
+            "from": {
+              "id": "0x8532b667150f53f209f71fdf4ca2173805d16680"
+            },
+            "to": {
+              "id": "0x0000000000000000000000000000000000000000"
+            },
+            "token": {
+              "symbol": "hyUSD"
+            },
+            "timestamp": "1786070715"
+          },
+          {
+            "id": "0xcc7ff230365bd730ee4b352cc2492cedac49383e-0x295b11813a27a372d9b5664d141985d08428699803b0239743a51f7739832bbc-0x170-REDEEM",
+            "type": "REDEEM",
+            "amount": "46954769869423312566",
+            "amountUSD": "53.40342965596401311367822036698852",
+            "hash": "0x295b11813a27a372d9b5664d141985d08428699803b0239743a51f7739832bbc",
+            "from": {
+              "id": "0xb26fd0fe37d5711ee2959b0be9e9c8bc965eeeea"
+            },
+            "to": {
+              "id": "0x0000000000000000000000000000000000000000"
+            },
+            "token": {
+              "symbol": "hyUSD"
+            },
+            "timestamp": "1784791369"
+          },
+          {
+            "id": "0xcc7ff230365bd730ee4b352cc2492cedac49383e-0x295b11813a27a372d9b5664d141985d08428699803b0239743a51f7739832bbc-0x16d-BURN",
+            "type": "BURN",
+            "amount": "229679568106",
+            "amountUSD": "0.00000026122323020367538334940800742",
+            "hash": "0x295b11813a27a372d9b5664d141985d08428699803b0239743a51f7739832bbc",
+            "from": {
+              "id": "0x8532b667150f53f209f71fdf4ca2173805d16680"
+            },
+            "to": {
+              "id": "0x0000000000000000000000000000000000000000"
+            },
+            "token": {
+              "symbol": "hyUSD"
+            },
+            "timestamp": "1784791369"
+          },
+          {
+            "id": "0xcc7ff230365bd730ee4b352cc2492cedac49383e-0x023e932d2853644f723921f8cea9fc12ebc0b433a230078f785ea745bc157bf8-0xde-REDEEM",
+            "type": "REDEEM",
+            "amount": "275276373801022674778",
+            "amountUSD": "313.0821960150591245755664723138932",
+            "hash": "0x023e932d2853644f723921f8cea9fc12ebc0b433a230078f785ea745bc157bf8",
+            "from": {
+              "id": "0xea546012d7a57c637bb74c3a72068414fe68b2f0"
+            },
+            "to": {
+              "id": "0x0000000000000000000000000000000000000000"
+            },
+            "token": {
+              "symbol": "hyUSD"
+            },
+            "timestamp": "1784749515"
+          },
+          {
+            "id": "0xcc7ff230365bd730ee4b352cc2492cedac49383e-0x023e932d2853644f723921f8cea9fc12ebc0b433a230078f785ea745bc157bf8-0xdb-BURN",
+            "type": "BURN",
+            "amount": "11947933084795",
+            "amountUSD": "0.000013588834655067304087323423085775",
+            "hash": "0x023e932d2853644f723921f8cea9fc12ebc0b433a230078f785ea745bc157bf8",
+            "from": {
+              "id": "0x8532b667150f53f209f71fdf4ca2173805d16680"
+            },
+            "to": {
+              "id": "0x0000000000000000000000000000000000000000"
+            },
+            "token": {
+              "symbol": "hyUSD"
+            },
+            "timestamp": "1784749515"
+          },
           {
             "id": "0xcc7ff230365bd730ee4b352cc2492cedac49383e-0x103515e05ed4a8bbaea2a6fa95f74b5381a0889edbfc3e6b995ea2e8487d2e5e-0xeb-REDEEM",
             "type": "REDEEM",
@@ -3206,591 +3807,6 @@
               "symbol": "hyUSD"
             },
             "timestamp": "1768077035"
-          },
-          {
-            "id": "0xcc7ff230365bd730ee4b352cc2492cedac49383e-0x29a9c2edf4de69ae5431bf114ee99d760d52f9740d8bb0553517b3212884a3fb-0x228-WITHDRAW",
-            "type": "WITHDRAW",
-            "amount": "1085257786410282468987631",
-            "amountUSD": "3108.94883330740029173355640201",
-            "hash": "0x29a9c2edf4de69ae5431bf114ee99d760d52f9740d8bb0553517b3212884a3fb",
-            "from": {
-              "id": "0x6129a2cf9d4f67c433a3ec867a912884936c1cbf"
-            },
-            "to": null,
-            "token": {
-              "symbol": "hyUSD"
-            },
-            "timestamp": "1767976287"
-          },
-          {
-            "id": "0xcc7ff230365bd730ee4b352cc2492cedac49383e-0xf8b69d2b86684b4c419808a90dcbffc06afbbe79ad98ba704bf4124be1de1ab2-0x523-UNSTAKE",
-            "type": "UNSTAKE",
-            "amount": "26080585221210251481632198",
-            "amountUSD": "76289.88466567537922401124030168",
-            "hash": "0xf8b69d2b86684b4c419808a90dcbffc06afbbe79ad98ba704bf4124be1de1ab2",
-            "from": {
-              "id": "0xcfc0805e42589d04a5ab4bcaff49f81d5210e065"
-            },
-            "to": null,
-            "token": {
-              "symbol": "hyUSD"
-            },
-            "timestamp": "1767794931"
-          },
-          {
-            "id": "0xcc7ff230365bd730ee4b352cc2492cedac49383e-0xe11e032123e00c149018f8b2615dc7a2c9c1c04ce939e18558b77a1e173bd9db-0x825-UNSTAKE",
-            "type": "UNSTAKE",
-            "amount": "19107290810390250911714",
-            "amountUSD": "57.19920362416804732428879612",
-            "hash": "0xe11e032123e00c149018f8b2615dc7a2c9c1c04ce939e18558b77a1e173bd9db",
-            "from": {
-              "id": "0x185cfafca1f2d364c1acb7d568b0f221623d40ed"
-            },
-            "to": null,
-            "token": {
-              "symbol": "hyUSD"
-            },
-            "timestamp": "1767789587"
-          },
-          {
-            "id": "0xcc7ff230365bd730ee4b352cc2492cedac49383e-0xa52c5a8fcfc4fbd905fa848f80cc92614331666c82c1cf32a3424783b1f932b9-0x335-BURN",
-            "type": "BURN",
-            "amount": "2245487519159616884",
-            "amountUSD": "2.539100703803015916460043394490604",
-            "hash": "0xa52c5a8fcfc4fbd905fa848f80cc92614331666c82c1cf32a3424783b1f932b9",
-            "from": {
-              "id": "0x8532b667150f53f209f71fdf4ca2173805d16680"
-            },
-            "to": {
-              "id": "0x0000000000000000000000000000000000000000"
-            },
-            "token": {
-              "symbol": "hyUSD"
-            },
-            "timestamp": "1767637079"
-          },
-          {
-            "id": "0xcc7ff230365bd730ee4b352cc2492cedac49383e-0x7021e5b25e145a6561cb88e19c736eb71f0c00c12ebe1cc32de8a315d25c0df5-0x18d-BURN",
-            "type": "BURN",
-            "amount": "38422091355124522554",
-            "amountUSD": "43.44604829417701427019935006059136",
-            "hash": "0x7021e5b25e145a6561cb88e19c736eb71f0c00c12ebe1cc32de8a315d25c0df5",
-            "from": {
-              "id": "0x8532b667150f53f209f71fdf4ca2173805d16680"
-            },
-            "to": {
-              "id": "0x0000000000000000000000000000000000000000"
-            },
-            "token": {
-              "symbol": "hyUSD"
-            },
-            "timestamp": "1767635427"
-          },
-          {
-            "id": "0xcc7ff230365bd730ee4b352cc2492cedac49383e-0xc093ab0cdd576f4c5d406d0958774f2683fa05e4474d2889f9312123b81679a7-0xf0-BURN",
-            "type": "BURN",
-            "amount": "2450358439860517835",
-            "amountUSD": "2.770683268548680066198922643314657",
-            "hash": "0xc093ab0cdd576f4c5d406d0958774f2683fa05e4474d2889f9312123b81679a7",
-            "from": {
-              "id": "0x8532b667150f53f209f71fdf4ca2173805d16680"
-            },
-            "to": {
-              "id": "0x0000000000000000000000000000000000000000"
-            },
-            "token": {
-              "symbol": "hyUSD"
-            },
-            "timestamp": "1767592621"
-          },
-          {
-            "id": "0xcc7ff230365bd730ee4b352cc2492cedac49383e-0x7671be86b251a96c5ddc97e5ba5ad7982b960161d9b0b124900c13f602da39bc-0x228-MINT",
-            "type": "MINT",
-            "amount": "522223437911202281029",
-            "amountUSD": "590.491463749647030445085146370997",
-            "hash": "0x7671be86b251a96c5ddc97e5ba5ad7982b960161d9b0b124900c13f602da39bc",
-            "from": {
-              "id": "0x0000000000000000000000000000000000000000"
-            },
-            "to": {
-              "id": "0xa1e1a94977ec3159db546bf01d7a8d17dd3ebbed"
-            },
-            "token": {
-              "symbol": "hyUSD"
-            },
-            "timestamp": "1767589961"
-          },
-          {
-            "id": "0xcc7ff230365bd730ee4b352cc2492cedac49383e-0x7671be86b251a96c5ddc97e5ba5ad7982b960161d9b0b124900c13f602da39bc-0x225-BURN",
-            "type": "BURN",
-            "amount": "173507464045439682604",
-            "amountUSD": "196.1394753945622882775031825013587",
-            "hash": "0x7671be86b251a96c5ddc97e5ba5ad7982b960161d9b0b124900c13f602da39bc",
-            "from": {
-              "id": "0x8532b667150f53f209f71fdf4ca2173805d16680"
-            },
-            "to": {
-              "id": "0x0000000000000000000000000000000000000000"
-            },
-            "token": {
-              "symbol": "hyUSD"
-            },
-            "timestamp": "1767589961"
-          },
-          {
-            "id": "0xcc7ff230365bd730ee4b352cc2492cedac49383e-0x2398c92cebe6bc5a9b92e95522a46b8324ed99af74b2b9d9b0d4f8b8444dbff2-0x258-STAKE",
-            "type": "STAKE",
-            "amount": "175519166647450000000000",
-            "amountUSD": "503.84531977816997",
-            "hash": "0x2398c92cebe6bc5a9b92e95522a46b8324ed99af74b2b9d9b0d4f8b8444dbff2",
-            "from": {
-              "id": "0xda14865a0d9ac1009741302910ae830180265fe1"
-            },
-            "to": null,
-            "token": {
-              "symbol": "hyUSD"
-            },
-            "timestamp": "1767581351"
-          },
-          {
-            "id": "0xcc7ff230365bd730ee4b352cc2492cedac49383e-0x38f511dba48faa24d5665625705ca1c1aa7791438412ad4ae038abc3fbbc96e2-0x279-REDEEM",
-            "type": "REDEEM",
-            "amount": "18130151386180360863518",
-            "amountUSD": "20474.81500021903167149369190280391",
-            "hash": "0x38f511dba48faa24d5665625705ca1c1aa7791438412ad4ae038abc3fbbc96e2",
-            "from": {
-              "id": "0xc57775a3e13c7941eccfbaf740392c650b51453d"
-            },
-            "to": {
-              "id": "0x0000000000000000000000000000000000000000"
-            },
-            "token": {
-              "symbol": "hyUSD"
-            },
-            "timestamp": "1767419653"
-          },
-          {
-            "id": "0xcc7ff230365bd730ee4b352cc2492cedac49383e-0x38f511dba48faa24d5665625705ca1c1aa7791438412ad4ae038abc3fbbc96e2-0x276-BURN",
-            "type": "BURN",
-            "amount": "536251576818569312180",
-            "amountUSD": "605.6017732596071579212411477116794",
-            "hash": "0x38f511dba48faa24d5665625705ca1c1aa7791438412ad4ae038abc3fbbc96e2",
-            "from": {
-              "id": "0x8532b667150f53f209f71fdf4ca2173805d16680"
-            },
-            "to": {
-              "id": "0x0000000000000000000000000000000000000000"
-            },
-            "token": {
-              "symbol": "hyUSD"
-            },
-            "timestamp": "1767419653"
-          },
-          {
-            "id": "0xcc7ff230365bd730ee4b352cc2492cedac49383e-0x658d553ecb987da780a2d26bb3c4174557958f9c1d17ba95279999545514302f-0x21e-MINT",
-            "type": "MINT",
-            "amount": "274337947690179487883",
-            "amountUSD": "309.7067361949705430622051849029971",
-            "hash": "0x658d553ecb987da780a2d26bb3c4174557958f9c1d17ba95279999545514302f",
-            "from": {
-              "id": "0x0000000000000000000000000000000000000000"
-            },
-            "to": {
-              "id": "0xea5d1297d63622f1950c32d8ecd00064d0705850"
-            },
-            "token": {
-              "symbol": "hyUSD"
-            },
-            "timestamp": "1767038367"
-          },
-          {
-            "id": "0xcc7ff230365bd730ee4b352cc2492cedac49383e-0x658d553ecb987da780a2d26bb3c4174557958f9c1d17ba95279999545514302f-0x1db-BURN",
-            "type": "BURN",
-            "amount": "6944139931438323",
-            "amountUSD": "0.007839407314790218975240944741915603",
-            "hash": "0x658d553ecb987da780a2d26bb3c4174557958f9c1d17ba95279999545514302f",
-            "from": {
-              "id": "0x8532b667150f53f209f71fdf4ca2173805d16680"
-            },
-            "to": {
-              "id": "0x0000000000000000000000000000000000000000"
-            },
-            "token": {
-              "symbol": "hyUSD"
-            },
-            "timestamp": "1767038367"
-          },
-          {
-            "id": "0xcc7ff230365bd730ee4b352cc2492cedac49383e-0x87b39c07b423f5a0be50cb11316e515ea030757921b46b8491204098ae8079a4-0x2b3-REDEEM",
-            "type": "REDEEM",
-            "amount": "809442459291724022549",
-            "amountUSD": "913.7991455997326114137944224966964",
-            "hash": "0x87b39c07b423f5a0be50cb11316e515ea030757921b46b8491204098ae8079a4",
-            "from": {
-              "id": "0xea546012d7a57c637bb74c3a72068414fe68b2f0"
-            },
-            "to": {
-              "id": "0x0000000000000000000000000000000000000000"
-            },
-            "token": {
-              "symbol": "hyUSD"
-            },
-            "timestamp": "1767038363"
-          },
-          {
-            "id": "0xcc7ff230365bd730ee4b352cc2492cedac49383e-0x87b39c07b423f5a0be50cb11316e515ea030757921b46b8491204098ae8079a4-0x2b0-BURN",
-            "type": "BURN",
-            "amount": "2209851941004796478",
-            "amountUSD": "2.494755238512035732558649098184995",
-            "hash": "0x87b39c07b423f5a0be50cb11316e515ea030757921b46b8491204098ae8079a4",
-            "from": {
-              "id": "0x8532b667150f53f209f71fdf4ca2173805d16680"
-            },
-            "to": {
-              "id": "0x0000000000000000000000000000000000000000"
-            },
-            "token": {
-              "symbol": "hyUSD"
-            },
-            "timestamp": "1767038363"
-          },
-          {
-            "id": "0xcc7ff230365bd730ee4b352cc2492cedac49383e-0x844cba1b9aabe52ed639269c26302604ca339f579e1d1cc4792aee5637f80479-0x303-REDEEM",
-            "type": "REDEEM",
-            "amount": "1711056861254890173327",
-            "amountUSD": "1931.653423833761554830504513348932",
-            "hash": "0x844cba1b9aabe52ed639269c26302604ca339f579e1d1cc4792aee5637f80479",
-            "from": {
-              "id": "0xea5d1297d63622f1950c32d8ecd00064d0705850"
-            },
-            "to": {
-              "id": "0x0000000000000000000000000000000000000000"
-            },
-            "token": {
-              "symbol": "hyUSD"
-            },
-            "timestamp": "1767038363"
-          },
-          {
-            "id": "0xcc7ff230365bd730ee4b352cc2492cedac49383e-0x65c29b9da82f783347e954ba7b57685c42795c1f7728933cf3b45b7ac2612b00-0x338-MINT",
-            "type": "MINT",
-            "amount": "3171231740150060576861",
-            "amountUSD": "3580.080117348382446134728725822521",
-            "hash": "0x65c29b9da82f783347e954ba7b57685c42795c1f7728933cf3b45b7ac2612b00",
-            "from": {
-              "id": "0x0000000000000000000000000000000000000000"
-            },
-            "to": {
-              "id": "0xea5d1297d63622f1950c32d8ecd00064d0705850"
-            },
-            "token": {
-              "symbol": "hyUSD"
-            },
-            "timestamp": "1767037091"
-          },
-          {
-            "id": "0xcc7ff230365bd730ee4b352cc2492cedac49383e-0x65c29b9da82f783347e954ba7b57685c42795c1f7728933cf3b45b7ac2612b00-0x2f5-BURN",
-            "type": "BURN",
-            "amount": "10624937017329109380",
-            "amountUSD": "11.99474806026595573603677134243935",
-            "hash": "0x65c29b9da82f783347e954ba7b57685c42795c1f7728933cf3b45b7ac2612b00",
-            "from": {
-              "id": "0x8532b667150f53f209f71fdf4ca2173805d16680"
-            },
-            "to": {
-              "id": "0x0000000000000000000000000000000000000000"
-            },
-            "token": {
-              "symbol": "hyUSD"
-            },
-            "timestamp": "1767037091"
-          },
-          {
-            "id": "0xcc7ff230365bd730ee4b352cc2492cedac49383e-0x49753fe82ec59525e99f13bc3d84d2ce06da36c765da9f5f5426c6ab14e7246a-0x2a4-REDEEM",
-            "type": "REDEEM",
-            "amount": "47209520271940570410",
-            "amountUSD": "53.29574287970898387515636905601351",
-            "hash": "0x49753fe82ec59525e99f13bc3d84d2ce06da36c765da9f5f5426c6ab14e7246a",
-            "from": {
-              "id": "0x0d497975d18c55144745ccc3daf462df47d112ff"
-            },
-            "to": {
-              "id": "0x0000000000000000000000000000000000000000"
-            },
-            "token": {
-              "symbol": "hyUSD"
-            },
-            "timestamp": "1767031001"
-          },
-          {
-            "id": "0xcc7ff230365bd730ee4b352cc2492cedac49383e-0x49753fe82ec59525e99f13bc3d84d2ce06da36c765da9f5f5426c6ab14e7246a-0x2a1-BURN",
-            "type": "BURN",
-            "amount": "98067410199452040567",
-            "amountUSD": "110.7102010095072150813928251993434",
-            "hash": "0x49753fe82ec59525e99f13bc3d84d2ce06da36c765da9f5f5426c6ab14e7246a",
-            "from": {
-              "id": "0x8532b667150f53f209f71fdf4ca2173805d16680"
-            },
-            "to": {
-              "id": "0x0000000000000000000000000000000000000000"
-            },
-            "token": {
-              "symbol": "hyUSD"
-            },
-            "timestamp": "1767031001"
-          },
-          {
-            "id": "0xcc7ff230365bd730ee4b352cc2492cedac49383e-0x74348bf05c5a6255c5c10184c1207736fc7f4d6b7f89e44dc464c5a08a5f8681-0x1d6-REDEEM",
-            "type": "REDEEM",
-            "amount": "55989271573012314790",
-            "amountUSD": "63.19566985784667453717224594850782",
-            "hash": "0x74348bf05c5a6255c5c10184c1207736fc7f4d6b7f89e44dc464c5a08a5f8681",
-            "from": {
-              "id": "0x0d497975d18c55144745ccc3daf462df47d112ff"
-            },
-            "to": {
-              "id": "0x0000000000000000000000000000000000000000"
-            },
-            "token": {
-              "symbol": "hyUSD"
-            },
-            "timestamp": "1766976711"
-          },
-          {
-            "id": "0xcc7ff230365bd730ee4b352cc2492cedac49383e-0x74348bf05c5a6255c5c10184c1207736fc7f4d6b7f89e44dc464c5a08a5f8681-0x1d3-BURN",
-            "type": "BURN",
-            "amount": "28552692168417855113",
-            "amountUSD": "32.22771893852983407845089254901285",
-            "hash": "0x74348bf05c5a6255c5c10184c1207736fc7f4d6b7f89e44dc464c5a08a5f8681",
-            "from": {
-              "id": "0x8532b667150f53f209f71fdf4ca2173805d16680"
-            },
-            "to": {
-              "id": "0x0000000000000000000000000000000000000000"
-            },
-            "token": {
-              "symbol": "hyUSD"
-            },
-            "timestamp": "1766976711"
-          },
-          {
-            "id": "0xcc7ff230365bd730ee4b352cc2492cedac49383e-0x3f0f92dfd90847ac58b341e290a2745a3a6259975d0381d0d14c57e29099802d-0x17d-REDEEM",
-            "type": "REDEEM",
-            "amount": "122207614632233268453",
-            "amountUSD": "137.7981980114522159542822884596956",
-            "hash": "0x3f0f92dfd90847ac58b341e290a2745a3a6259975d0381d0d14c57e29099802d",
-            "from": {
-              "id": "0x0d497975d18c55144745ccc3daf462df47d112ff"
-            },
-            "to": {
-              "id": "0x0000000000000000000000000000000000000000"
-            },
-            "token": {
-              "symbol": "hyUSD"
-            },
-            "timestamp": "1766961519"
-          },
-          {
-            "id": "0xcc7ff230365bd730ee4b352cc2492cedac49383e-0x3f0f92dfd90847ac58b341e290a2745a3a6259975d0381d0d14c57e29099802d-0x17a-BURN",
-            "type": "BURN",
-            "amount": "585411461150950951730",
-            "amountUSD": "660.0950741458567335504253379078858",
-            "hash": "0x3f0f92dfd90847ac58b341e290a2745a3a6259975d0381d0d14c57e29099802d",
-            "from": {
-              "id": "0x8532b667150f53f209f71fdf4ca2173805d16680"
-            },
-            "to": {
-              "id": "0x0000000000000000000000000000000000000000"
-            },
-            "token": {
-              "symbol": "hyUSD"
-            },
-            "timestamp": "1766961519"
-          },
-          {
-            "id": "0xcc7ff230365bd730ee4b352cc2492cedac49383e-0x08b4172520e0d37c69cdd5cd4a0d18b14f7c2bbd8f9a8526daed4d3882284c5d-0x200-MINT",
-            "type": "MINT",
-            "amount": "442031719895420336965",
-            "amountUSD": "497.6389740237009708699383925362038",
-            "hash": "0x08b4172520e0d37c69cdd5cd4a0d18b14f7c2bbd8f9a8526daed4d3882284c5d",
-            "from": {
-              "id": "0x0000000000000000000000000000000000000000"
-            },
-            "to": {
-              "id": "0xea5d1297d63622f1950c32d8ecd00064d0705850"
-            },
-            "token": {
-              "symbol": "hyUSD"
-            },
-            "timestamp": "1766697155"
-          },
-          {
-            "id": "0xcc7ff230365bd730ee4b352cc2492cedac49383e-0x08b4172520e0d37c69cdd5cd4a0d18b14f7c2bbd8f9a8526daed4d3882284c5d-0x1bd-BURN",
-            "type": "BURN",
-            "amount": "10267190999188177",
-            "amountUSD": "0.01155879581707438688254828753202091",
-            "hash": "0x08b4172520e0d37c69cdd5cd4a0d18b14f7c2bbd8f9a8526daed4d3882284c5d",
-            "from": {
-              "id": "0x8532b667150f53f209f71fdf4ca2173805d16680"
-            },
-            "to": {
-              "id": "0x0000000000000000000000000000000000000000"
-            },
-            "token": {
-              "symbol": "hyUSD"
-            },
-            "timestamp": "1766697155"
-          },
-          {
-            "id": "0xcc7ff230365bd730ee4b352cc2492cedac49383e-0xe7dbb2b13152cb20c2f0718b3ac4210daca8f0031ade95d4b2e96485ed0eed6b-0x1b6-REDEEM",
-            "type": "REDEEM",
-            "amount": "813640925750642793528",
-            "amountUSD": "915.9963353083320074392255963377597",
-            "hash": "0xe7dbb2b13152cb20c2f0718b3ac4210daca8f0031ade95d4b2e96485ed0eed6b",
-            "from": {
-              "id": "0xea546012d7a57c637bb74c3a72068414fe68b2f0"
-            },
-            "to": {
-              "id": "0x0000000000000000000000000000000000000000"
-            },
-            "token": {
-              "symbol": "hyUSD"
-            },
-            "timestamp": "1766697151"
-          },
-          {
-            "id": "0xcc7ff230365bd730ee4b352cc2492cedac49383e-0xe7dbb2b13152cb20c2f0718b3ac4210daca8f0031ade95d4b2e96485ed0eed6b-0x1b3-BURN",
-            "type": "BURN",
-            "amount": "980286107372219280621",
-            "amountUSD": "1103.60535401806333589163632488007",
-            "hash": "0xe7dbb2b13152cb20c2f0718b3ac4210daca8f0031ade95d4b2e96485ed0eed6b",
-            "from": {
-              "id": "0x8532b667150f53f209f71fdf4ca2173805d16680"
-            },
-            "to": {
-              "id": "0x0000000000000000000000000000000000000000"
-            },
-            "token": {
-              "symbol": "hyUSD"
-            },
-            "timestamp": "1766697151"
-          },
-          {
-            "id": "0xcc7ff230365bd730ee4b352cc2492cedac49383e-0x6ae152fe55f0c34012749442e8ae89359f5c901209a0ce47c2972b989842cab5-0x22e-REDEEM",
-            "type": "REDEEM",
-            "amount": "2682693854568263474471",
-            "amountUSD": "3020.174700862841132352620841777091",
-            "hash": "0x6ae152fe55f0c34012749442e8ae89359f5c901209a0ce47c2972b989842cab5",
-            "from": {
-              "id": "0xea5d1297d63622f1950c32d8ecd00064d0705850"
-            },
-            "to": {
-              "id": "0x0000000000000000000000000000000000000000"
-            },
-            "token": {
-              "symbol": "hyUSD"
-            },
-            "timestamp": "1766697151"
-          },
-          {
-            "id": "0xcc7ff230365bd730ee4b352cc2492cedac49383e-0xedeb91eb63f736df8a7a3c3f52c5542ac1ba7fd707621909e83678b303c6680f-0x1f2-UNSTAKE",
-            "type": "UNSTAKE",
-            "amount": "1085257786410282468987630",
-            "amountUSD": "2669.5713659013333313392216555",
-            "hash": "0xedeb91eb63f736df8a7a3c3f52c5542ac1ba7fd707621909e83678b303c6680f",
-            "from": {
-              "id": "0x6129a2cf9d4f67c433a3ec867a912884936c1cbf"
-            },
-            "to": null,
-            "token": {
-              "symbol": "hyUSD"
-            },
-            "timestamp": "1766681933"
-          },
-          {
-            "id": "0xcc7ff230365bd730ee4b352cc2492cedac49383e-0x0d220d2ce3cd787e42a2da688bfa293d683fb5fa70d6541466a8ddf559a37618-0x1ae-MINT",
-            "type": "MINT",
-            "amount": "189574000936490152192",
-            "amountUSD": "213.2886456533695665635357009449847",
-            "hash": "0x0d220d2ce3cd787e42a2da688bfa293d683fb5fa70d6541466a8ddf559a37618",
-            "from": {
-              "id": "0x0000000000000000000000000000000000000000"
-            },
-            "to": {
-              "id": "0xea5d1297d63622f1950c32d8ecd00064d0705850"
-            },
-            "token": {
-              "symbol": "hyUSD"
-            },
-            "timestamp": "1766380381"
-          },
-          {
-            "id": "0xcc7ff230365bd730ee4b352cc2492cedac49383e-0x0d220d2ce3cd787e42a2da688bfa293d683fb5fa70d6541466a8ddf559a37618-0x16b-BURN",
-            "type": "BURN",
-            "amount": "4993135897097756826",
-            "amountUSD": "5.617749205029361699611756858871347",
-            "hash": "0x0d220d2ce3cd787e42a2da688bfa293d683fb5fa70d6541466a8ddf559a37618",
-            "from": {
-              "id": "0x8532b667150f53f209f71fdf4ca2173805d16680"
-            },
-            "to": {
-              "id": "0x0000000000000000000000000000000000000000"
-            },
-            "token": {
-              "symbol": "hyUSD"
-            },
-            "timestamp": "1766380381"
-          },
-          {
-            "id": "0xcc7ff230365bd730ee4b352cc2492cedac49383e-0x5fbd63aa2ad5897756e8b87274b19107a02a0a499a91320a6c79f1ab7720ed6b-0x1fc-REDEEM",
-            "type": "REDEEM",
-            "amount": "49405561522883147268747",
-            "amountUSD": "55585.92028919739173598653391564961",
-            "hash": "0x5fbd63aa2ad5897756e8b87274b19107a02a0a499a91320a6c79f1ab7720ed6b",
-            "from": {
-              "id": "0xc57775a3e13c7941eccfbaf740392c650b51453d"
-            },
-            "to": {
-              "id": "0x0000000000000000000000000000000000000000"
-            },
-            "token": {
-              "symbol": "hyUSD"
-            },
-            "timestamp": "1766379029"
-          },
-          {
-            "id": "0xcc7ff230365bd730ee4b352cc2492cedac49383e-0x5fbd63aa2ad5897756e8b87274b19107a02a0a499a91320a6c79f1ab7720ed6b-0x1f9-BURN",
-            "type": "BURN",
-            "amount": "1131177354807728095",
-            "amountUSD": "1.272681300224967107243617412250911",
-            "hash": "0x5fbd63aa2ad5897756e8b87274b19107a02a0a499a91320a6c79f1ab7720ed6b",
-            "from": {
-              "id": "0x8532b667150f53f209f71fdf4ca2173805d16680"
-            },
-            "to": {
-              "id": "0x0000000000000000000000000000000000000000"
-            },
-            "token": {
-              "symbol": "hyUSD"
-            },
-            "timestamp": "1766379029"
-          },
-          {
-            "id": "0xcc7ff230365bd730ee4b352cc2492cedac49383e-0xaa2226c74b066e335e0cb81817378fabf3ed909a90570fb7bd448ccd3ac74765-0x21a-REDEEM",
-            "type": "REDEEM",
-            "amount": "53000000000000000000000",
-            "amountUSD": "59630.002868461268773",
-            "hash": "0xaa2226c74b066e335e0cb81817378fabf3ed909a90570fb7bd448ccd3ac74765",
-            "from": {
-              "id": "0xc57775a3e13c7941eccfbaf740392c650b51453d"
-            },
-            "to": {
-              "id": "0x0000000000000000000000000000000000000000"
-            },
-            "token": {
-              "symbol": "hyUSD"
-            },
-            "timestamp": "1766378723"
           }
         ]
       }
@@ -3800,294 +3816,155 @@
       "query": "query getTokenDailyPrice($id: String!, $fromTime: Int!) { token(id: $id) { snapshots: dailyTokenSnapshot( first: 1000 where: { timestamp_gte: $fromTime } ) { timestamp priceUSD basketRate } } }",
       "variables": {
         "id": "0xcc7ff230365bd730ee4b352cc2492cedac49383e",
-        "fromTime": 1781296097
+        "fromTime": 1785083591
       },
       "data": {
         "token": {
           "snapshots": [
             {
-              "timestamp": "1781376341",
-              "priceUSD": "1.137104648428485846",
-              "basketRate": "1.137497414593440331242622661541145"
+              "timestamp": "1785122241",
+              "priceUSD": "1.137205696946262738",
+              "basketRate": "1.137497421829626082483172690818197"
             },
             {
-              "timestamp": "1781479275",
-              "priceUSD": "1.137146404445092174",
-              "basketRate": "1.137497414593440331242622661541145"
+              "timestamp": "1785276971",
+              "priceUSD": "1.137137426377636502",
+              "basketRate": "1.137497421829626082483172690818197"
             },
             {
-              "timestamp": "1781567243",
-              "priceUSD": "1.137214764286982511",
-              "basketRate": "1.137497414593440331242622661541145"
+              "timestamp": "1785354333",
+              "priceUSD": "1.137141877877474034",
+              "basketRate": "1.137497421829626082483172690818197"
             },
             {
-              "timestamp": "1781634059",
-              "priceUSD": "1.137241094041412335",
-              "basketRate": "1.137497414593440331242622661541145"
+              "timestamp": "1785444759",
+              "priceUSD": "1.137233418179413988",
+              "basketRate": "1.137497421829626082483172690818197"
             },
             {
-              "timestamp": "1781711365",
-              "priceUSD": "1.137275385597192497",
-              "basketRate": "1.137497414593440331242622661541145"
+              "timestamp": "1785509183",
+              "priceUSD": "1.137588484742329965",
+              "basketRate": "1.137497421829626082483172690818197"
             },
             {
-              "timestamp": "1781788623",
-              "priceUSD": "1.137594723837470124",
-              "basketRate": "1.137497414593440331242622661541145"
+              "timestamp": "1785616095",
+              "priceUSD": "1.13774739330135347",
+              "basketRate": "1.137497421829626082483172690818197"
             },
             {
-              "timestamp": "1781867337",
-              "priceUSD": "1.137680889430618706",
-              "basketRate": "1.137497414593440331242622661541145"
+              "timestamp": "1785664023",
+              "priceUSD": "1.137950667543469713",
+              "basketRate": "1.137497421829626082483172690818197"
             },
             {
-              "timestamp": "1781992715",
-              "priceUSD": "1.137554038444243537",
-              "basketRate": "1.137497414593440331242622661541145"
+              "timestamp": "1785787031",
+              "priceUSD": "1.137955117205376041",
+              "basketRate": "1.137497421829626082483172690818197"
             },
             {
-              "timestamp": "1782042361",
-              "priceUSD": "1.137842195053243552",
-              "basketRate": "1.137497414593440331242622661541145"
+              "timestamp": "1785827093",
+              "priceUSD": "1.137981611601872046",
+              "basketRate": "1.137497421829626082483172690818197"
             },
             {
-              "timestamp": "1782146623",
-              "priceUSD": "1.13760338481254901",
-              "basketRate": "1.137497414593440331242622661541145"
+              "timestamp": "1785973635",
+              "priceUSD": "1.138029220812206596",
+              "basketRate": "1.137497421829626082483172690818197"
             },
             {
-              "timestamp": "1782253023",
-              "priceUSD": "1.137756267713949462",
-              "basketRate": "1.137497414593440331242622661541145"
+              "timestamp": "1786051069",
+              "priceUSD": "1.13817956263453409",
+              "basketRate": "1.137497421829626082483172690818197"
             },
             {
-              "timestamp": "1782330527",
-              "priceUSD": "1.13700057357587791",
-              "basketRate": "1.137497420282053140984239365806288"
+              "timestamp": "1786128419",
+              "priceUSD": "1.137250185297613447",
+              "basketRate": "1.137497421902079165096965839925948"
             },
             {
-              "timestamp": "1782412297",
-              "priceUSD": "1.1368054563456905",
-              "basketRate": "1.137497420282053140984239365806288"
+              "timestamp": "1786228119",
+              "priceUSD": "1.137364906057747401",
+              "basketRate": "1.137497421905675069251337350017122"
             },
             {
-              "timestamp": "1782503817",
-              "priceUSD": "1.137068335622211409",
-              "basketRate": "1.137497420282053140984239365806288"
+              "timestamp": "1786283209",
+              "priceUSD": "1.137302988407632734",
+              "basketRate": "1.137497421905675069251337350017122"
             },
             {
-              "timestamp": "1782579125",
-              "priceUSD": "1.136854225543697053",
-              "basketRate": "1.137497420282053140984239365806288"
+              "timestamp": "1786381001",
+              "priceUSD": "1.137443949470735378",
+              "basketRate": "1.137497421908498280271652131532968"
             },
             {
-              "timestamp": "1782662693",
-              "priceUSD": "1.137006163775884799",
-              "basketRate": "1.137497420282053140984239365806288"
+              "timestamp": "1786439989",
+              "priceUSD": "1.137489541348795285",
+              "basketRate": "1.137497421908498280271652131532968"
             },
             {
-              "timestamp": "1782723351",
-              "priceUSD": "1.137049626918071027",
-              "basketRate": "1.137497420282053140984239365806288"
+              "timestamp": "1786527163",
+              "priceUSD": "1.137094970199790909",
+              "basketRate": "1.137497421908498280271652131532968"
             },
             {
-              "timestamp": "1782851245",
-              "priceUSD": "1.136708464333406527",
-              "basketRate": "1.137497421056364214163644313461128"
+              "timestamp": "1786647837",
+              "priceUSD": "1.137226061597002911",
+              "basketRate": "1.137497421908498280271652131532968"
             },
             {
-              "timestamp": "1782944175",
-              "priceUSD": "1.136967374187194983",
-              "basketRate": "1.137497421056364214163644313461128"
+              "timestamp": "1786747543",
+              "priceUSD": "1.137097135709993103",
+              "basketRate": "1.137497421908498280271652131532968"
             },
             {
-              "timestamp": "1783033327",
-              "priceUSD": "1.136693473316122798",
-              "basketRate": "1.137497421056364214163644313461128"
+              "timestamp": "1786825005",
+              "priceUSD": "1.137137067248267879",
+              "basketRate": "1.137497421908498280271652131532968"
             },
             {
-              "timestamp": "1783113427",
-              "priceUSD": "1.137022911854696213",
-              "basketRate": "1.137497421288713985656626657448452"
+              "timestamp": "1786923655",
+              "priceUSD": "1.137141551117490817",
+              "basketRate": "1.137497421908498280271652131532968"
             },
             {
-              "timestamp": "1783202463",
-              "priceUSD": "1.13692316575359707",
-              "basketRate": "1.137497421288713985656626657448452"
+              "timestamp": "1786979715",
+              "priceUSD": "1.137148091903165688",
+              "basketRate": "1.137497421908498280271652131532968"
             },
             {
-              "timestamp": "1783264895",
-              "priceUSD": "1.13696144170661944",
-              "basketRate": "1.137497421288713985656626657448452"
+              "timestamp": "1787057125",
+              "priceUSD": "1.137437177588580311",
+              "basketRate": "1.137497421908498280271652131532968"
             },
             {
-              "timestamp": "1783342293",
-              "priceUSD": "1.137002752909070999",
-              "basketRate": "1.137497421288713985656626657448452"
+              "timestamp": "1787182507",
+              "priceUSD": "1.137733246650817942",
+              "basketRate": "1.137497421908498280271652131532968"
             },
             {
-              "timestamp": "1783456075",
-              "priceUSD": "1.137107335119475176",
-              "basketRate": "1.137497421288713985656626657448452"
+              "timestamp": "1787244523",
+              "priceUSD": "1.137528878772842102",
+              "basketRate": "1.137497421908498280271652131532968"
             },
             {
-              "timestamp": "1783497079",
-              "priceUSD": "1.137141547272856872",
-              "basketRate": "1.137497421288713985656626657448452"
+              "timestamp": "1787331655",
+              "priceUSD": "1.137346623300590182",
+              "basketRate": "1.137497421918967553154644166599327"
             },
             {
-              "timestamp": "1783621739",
-              "priceUSD": "1.13714459513025681",
-              "basketRate": "1.137497421288713985656626657448452"
+              "timestamp": "1787402119",
+              "priceUSD": "1.137366561459088235",
+              "basketRate": "1.137497421918967553154644166599327"
             },
             {
-              "timestamp": "1783704931",
-              "priceUSD": "1.136827679136080944",
-              "basketRate": "1.137497421585603239432908389702051"
+              "timestamp": "1787521535",
+              "priceUSD": "1.137471450905130386",
+              "basketRate": "1.137497421918967553154644166599327"
             },
             {
-              "timestamp": "1783806549",
-              "priceUSD": "1.137277821756652968",
-              "basketRate": "1.137497421585603239432908389702051"
-            },
-            {
-              "timestamp": "1783883985",
-              "priceUSD": "1.137281375416788996",
-              "basketRate": "1.137497421585603239432908389702051"
-            }
-          ]
-        }
-      }
-    },
-    {
-      "op": "getTokenDailyPrice",
-      "query": "query getTokenDailyPrice($id: String!, $fromTime: Int!) { token(id: $id) { snapshots: dailyTokenSnapshot( first: 1000 where: { timestamp_gte: $fromTime } ) { timestamp supply: dailyTotalSupply } } }",
-      "variables": {
-        "id": "0xcc7ff230365bd730ee4b352cc2492cedac49383e",
-        "fromTime": 1781296097
-      },
-      "data": {
-        "token": {
-          "snapshots": [
-            {
-              "timestamp": "1781376341",
-              "supply": "58407241661365215456805"
-            },
-            {
-              "timestamp": "1781479275",
-              "supply": "58407241661365215456805"
-            },
-            {
-              "timestamp": "1781567243",
-              "supply": "58407241661365215456805"
-            },
-            {
-              "timestamp": "1781634059",
-              "supply": "58407241661365215456805"
-            },
-            {
-              "timestamp": "1781711365",
-              "supply": "58407241661365215456805"
-            },
-            {
-              "timestamp": "1781788623",
-              "supply": "58407241661365215456805"
-            },
-            {
-              "timestamp": "1781867337",
-              "supply": "58407241661365215456805"
-            },
-            {
-              "timestamp": "1781992715",
-              "supply": "58407241661365215456805"
-            },
-            {
-              "timestamp": "1782042361",
-              "supply": "58407241661365215456805"
-            },
-            {
-              "timestamp": "1782146623",
-              "supply": "58407241661365215456805"
-            },
-            {
-              "timestamp": "1782253023",
-              "supply": "58407241661365215456805"
-            },
-            {
-              "timestamp": "1782330527",
-              "supply": "58318642628955324038915"
-            },
-            {
-              "timestamp": "1782412297",
-              "supply": "58318642628955324038915"
-            },
-            {
-              "timestamp": "1782503817",
-              "supply": "58318642628955324038915"
-            },
-            {
-              "timestamp": "1782579125",
-              "supply": "58318642628955324038915"
-            },
-            {
-              "timestamp": "1782662693",
-              "supply": "58318642628955324038915"
-            },
-            {
-              "timestamp": "1782723351",
-              "supply": "58318642628955324038915"
-            },
-            {
-              "timestamp": "1782851245",
-              "supply": "57963315404508970567909"
-            },
-            {
-              "timestamp": "1782944175",
-              "supply": "57963315404508970567909"
-            },
-            {
-              "timestamp": "1783033327",
-              "supply": "57963315404508970567909"
-            },
-            {
-              "timestamp": "1783113427",
-              "supply": "57963315392669152000272"
-            },
-            {
-              "timestamp": "1783202463",
-              "supply": "57963315392669152000272"
-            },
-            {
-              "timestamp": "1783264895",
-              "supply": "57963315392669152000272"
-            },
-            {
-              "timestamp": "1783342293",
-              "supply": "57963315392669152000272"
-            },
-            {
-              "timestamp": "1783456075",
-              "supply": "57963315392669152000272"
-            },
-            {
-              "timestamp": "1783497079",
-              "supply": "57963315392669152000272"
-            },
-            {
-              "timestamp": "1783621739",
-              "supply": "57963315392669152000272"
-            },
-            {
-              "timestamp": "1783704931",
-              "supply": "56770406533703810144111"
-            },
-            {
-              "timestamp": "1783806549",
-              "supply": "56770406533703810144111"
-            },
-            {
-              "timestamp": "1783883985",
-              "supply": "56770406533703810144111"
+              "timestamp": "1787599025",
+              "priceUSD": "1.137336285335922769",
+              "basketRate": "1.137497421920377915904848120162466"
             }
           ]
         }
@@ -4296,140 +4173,6 @@
     },
     {
       "op": "getTokenDailyPrice",
-      "query": "query getTokenDailyPrice($id: String!, $fromTime: Int!) { rtoken(id: $id) { snapshots: dailySnapshots( first: 365 where: { timestamp_gte: $fromTime } ) { timestamp rsrStaked } } }",
-      "variables": {
-        "id": "0xcc7ff230365bd730ee4b352cc2492cedac49383e",
-        "fromTime": 1781296097
-      },
-      "data": {
-        "rtoken": {
-          "snapshots": [
-            {
-              "timestamp": "1781376341",
-              "rsrStaked": "32182751590122406204307347"
-            },
-            {
-              "timestamp": "1781479275",
-              "rsrStaked": "32182751590122406204307347"
-            },
-            {
-              "timestamp": "1781567243",
-              "rsrStaked": "32182751590122406204307347"
-            },
-            {
-              "timestamp": "1781634059",
-              "rsrStaked": "32182751590122406204307347"
-            },
-            {
-              "timestamp": "1781711365",
-              "rsrStaked": "32182751590122406204307347"
-            },
-            {
-              "timestamp": "1781788623",
-              "rsrStaked": "32182751590122406204307347"
-            },
-            {
-              "timestamp": "1781876509",
-              "rsrStaked": "22830030147282651155249484"
-            },
-            {
-              "timestamp": "1781992715",
-              "rsrStaked": "22830030147282651155249484"
-            },
-            {
-              "timestamp": "1782042361",
-              "rsrStaked": "22830030147282651155249484"
-            },
-            {
-              "timestamp": "1782146623",
-              "rsrStaked": "22830030147282651155249484"
-            },
-            {
-              "timestamp": "1782253023",
-              "rsrStaked": "22830030147282651155249484"
-            },
-            {
-              "timestamp": "1782330527",
-              "rsrStaked": "22830030147282651155249484"
-            },
-            {
-              "timestamp": "1782412297",
-              "rsrStaked": "22830030147282651155249484"
-            },
-            {
-              "timestamp": "1782503817",
-              "rsrStaked": "22830030147282651155249484"
-            },
-            {
-              "timestamp": "1782579125",
-              "rsrStaked": "22830030147282651155249484"
-            },
-            {
-              "timestamp": "1782662693",
-              "rsrStaked": "22830030147282651155249484"
-            },
-            {
-              "timestamp": "1782723351",
-              "rsrStaked": "22830030147282651155249484"
-            },
-            {
-              "timestamp": "1782851245",
-              "rsrStaked": "22830030147282651155249484"
-            },
-            {
-              "timestamp": "1782944175",
-              "rsrStaked": "22830030147282651155249484"
-            },
-            {
-              "timestamp": "1783033327",
-              "rsrStaked": "22830030147282651155249484"
-            },
-            {
-              "timestamp": "1783113427",
-              "rsrStaked": "22830030147282651155249484"
-            },
-            {
-              "timestamp": "1783202463",
-              "rsrStaked": "22830030147282651155249484"
-            },
-            {
-              "timestamp": "1783264895",
-              "rsrStaked": "22830030147282651155249484"
-            },
-            {
-              "timestamp": "1783342293",
-              "rsrStaked": "22830030147282651155249484"
-            },
-            {
-              "timestamp": "1783456075",
-              "rsrStaked": "22830030147282651155249484"
-            },
-            {
-              "timestamp": "1783497079",
-              "rsrStaked": "22830030147282651155249484"
-            },
-            {
-              "timestamp": "1783621739",
-              "rsrStaked": "22830030147282651155249484"
-            },
-            {
-              "timestamp": "1783704931",
-              "rsrStaked": "22830030147282651155249484"
-            },
-            {
-              "timestamp": "1783806549",
-              "rsrStaked": "22830030147282651155249484"
-            },
-            {
-              "timestamp": "1783883985",
-              "rsrStaked": "22830030147282651155249484"
-            }
-          ]
-        }
-      }
-    },
-    {
-      "op": "getTokenDailyPrice",
       "query": "query getTokenDailyPrice($id: String!) { rtoken(id: $id) { snapshots: dailySnapshots( first: 365 orderBy: timestamp orderDirection: desc ) { timestamp rsrStaked } } token(id: $id) { snapshots: dailyTokenSnapshot( first: 365 orderBy: timestamp orderDirection: desc ) { timestamp supply: dailyTotalSupply } } }",
       "variables": {
         "id": "0xcc7ff230365bd730ee4b352cc2492cedac49383e"
@@ -4437,6 +4180,178 @@
       "data": {
         "rtoken": {
           "snapshots": [
+            {
+              "timestamp": "1787599025",
+              "rsrStaked": "22830030147282651155249484"
+            },
+            {
+              "timestamp": "1787521535",
+              "rsrStaked": "22830030147282651155249484"
+            },
+            {
+              "timestamp": "1787402119",
+              "rsrStaked": "22830030147282651155249484"
+            },
+            {
+              "timestamp": "1787331655",
+              "rsrStaked": "22830030147282651155249484"
+            },
+            {
+              "timestamp": "1787244523",
+              "rsrStaked": "22830030147282651155249484"
+            },
+            {
+              "timestamp": "1787182507",
+              "rsrStaked": "22830030147282651155249484"
+            },
+            {
+              "timestamp": "1787057125",
+              "rsrStaked": "22830030147282651155249484"
+            },
+            {
+              "timestamp": "1786979715",
+              "rsrStaked": "22830030147282651155249484"
+            },
+            {
+              "timestamp": "1786923655",
+              "rsrStaked": "22830030147282651155249484"
+            },
+            {
+              "timestamp": "1786825005",
+              "rsrStaked": "22830030147282651155249484"
+            },
+            {
+              "timestamp": "1786747543",
+              "rsrStaked": "22830030147282651155249484"
+            },
+            {
+              "timestamp": "1786647837",
+              "rsrStaked": "22830030147282651155249484"
+            },
+            {
+              "timestamp": "1786527163",
+              "rsrStaked": "22830030147282651155249484"
+            },
+            {
+              "timestamp": "1786439989",
+              "rsrStaked": "22830030147282651155249484"
+            },
+            {
+              "timestamp": "1786381001",
+              "rsrStaked": "22830030147282651155249484"
+            },
+            {
+              "timestamp": "1786283209",
+              "rsrStaked": "22830030147282651155249484"
+            },
+            {
+              "timestamp": "1786228119",
+              "rsrStaked": "22830030147282651155249484"
+            },
+            {
+              "timestamp": "1786128419",
+              "rsrStaked": "22830030147282651155249484"
+            },
+            {
+              "timestamp": "1786051069",
+              "rsrStaked": "22830030147282651155249484"
+            },
+            {
+              "timestamp": "1785973635",
+              "rsrStaked": "22830030147282651155249484"
+            },
+            {
+              "timestamp": "1785827093",
+              "rsrStaked": "22830030147282651155249484"
+            },
+            {
+              "timestamp": "1785787031",
+              "rsrStaked": "22830030147282651155249484"
+            },
+            {
+              "timestamp": "1785664023",
+              "rsrStaked": "22830030147282651155249484"
+            },
+            {
+              "timestamp": "1785616095",
+              "rsrStaked": "22830030147282651155249484"
+            },
+            {
+              "timestamp": "1785509183",
+              "rsrStaked": "22830030147282651155249484"
+            },
+            {
+              "timestamp": "1785444759",
+              "rsrStaked": "22830030147282651155249484"
+            },
+            {
+              "timestamp": "1785354333",
+              "rsrStaked": "22830030147282651155249484"
+            },
+            {
+              "timestamp": "1785276971",
+              "rsrStaked": "22830030147282651155249484"
+            },
+            {
+              "timestamp": "1785122241",
+              "rsrStaked": "22830030147282651155249484"
+            },
+            {
+              "timestamp": "1785057509",
+              "rsrStaked": "22830030147282651155249484"
+            },
+            {
+              "timestamp": "1785023709",
+              "rsrStaked": "22830030147282651155249484"
+            },
+            {
+              "timestamp": "1784901317",
+              "rsrStaked": "22830030147282651155249484"
+            },
+            {
+              "timestamp": "1784812727",
+              "rsrStaked": "22830030147282651155249484"
+            },
+            {
+              "timestamp": "1784749515",
+              "rsrStaked": "22830030147282651155249484"
+            },
+            {
+              "timestamp": "1784657943",
+              "rsrStaked": "22830030147282651155249484"
+            },
+            {
+              "timestamp": "1784580517",
+              "rsrStaked": "22830030147282651155249484"
+            },
+            {
+              "timestamp": "1784503071",
+              "rsrStaked": "22830030147282651155249484"
+            },
+            {
+              "timestamp": "1784373823",
+              "rsrStaked": "22830030147282651155249484"
+            },
+            {
+              "timestamp": "1784309437",
+              "rsrStaked": "22830030147282651155249484"
+            },
+            {
+              "timestamp": "1784209263",
+              "rsrStaked": "22830030147282651155249484"
+            },
+            {
+              "timestamp": "1784145247",
+              "rsrStaked": "22830030147282651155249484"
+            },
+            {
+              "timestamp": "1784070459",
+              "rsrStaked": "22830030147282651155249484"
+            },
+            {
+              "timestamp": "1783982091",
+              "rsrStaked": "22830030147282651155249484"
+            },
             {
               "timestamp": "1783883985",
               "rsrStaked": "22830030147282651155249484"
@@ -5724,183 +5639,183 @@
             {
               "timestamp": "1756163609",
               "rsrStaked": "70803150980536124891097566"
-            },
-            {
-              "timestamp": "1756079421",
-              "rsrStaked": "70803150980536124891097566"
-            },
-            {
-              "timestamp": "1755992813",
-              "rsrStaked": "70803150980536124891097566"
-            },
-            {
-              "timestamp": "1755905403",
-              "rsrStaked": "70803150980536124891097566"
-            },
-            {
-              "timestamp": "1755819487",
-              "rsrStaked": "70803150980536124891097566"
-            },
-            {
-              "timestamp": "1755730407",
-              "rsrStaked": "70803150980536124891097566"
-            },
-            {
-              "timestamp": "1755642875",
-              "rsrStaked": "70803150980536124891097566"
-            },
-            {
-              "timestamp": "1755559693",
-              "rsrStaked": "70803150980536124891097566"
-            },
-            {
-              "timestamp": "1755472727",
-              "rsrStaked": "70803150980536124891097566"
-            },
-            {
-              "timestamp": "1755387943",
-              "rsrStaked": "70803150980536124891097566"
-            },
-            {
-              "timestamp": "1755295263",
-              "rsrStaked": "70810168593702329648161804"
-            },
-            {
-              "timestamp": "1755214885",
-              "rsrStaked": "70780845884590676334543813"
-            },
-            {
-              "timestamp": "1755127677",
-              "rsrStaked": "70780845884590676334543813"
-            },
-            {
-              "timestamp": "1755041395",
-              "rsrStaked": "70780845884590676334543813"
-            },
-            {
-              "timestamp": "1754955003",
-              "rsrStaked": "70780845884590676334543813"
-            },
-            {
-              "timestamp": "1754868951",
-              "rsrStaked": "70780845884590676334543813"
-            },
-            {
-              "timestamp": "1754774149",
-              "rsrStaked": "70780845884590676334543813"
-            },
-            {
-              "timestamp": "1754694075",
-              "rsrStaked": "70357213977545190063131052"
-            },
-            {
-              "timestamp": "1754601505",
-              "rsrStaked": "70357213977545190063131052"
-            },
-            {
-              "timestamp": "1754521143",
-              "rsrStaked": "70357213977545190063131052"
-            },
-            {
-              "timestamp": "1754436993",
-              "rsrStaked": "70357213977545190063131052"
-            },
-            {
-              "timestamp": "1754344257",
-              "rsrStaked": "70357213977545190063131052"
-            },
-            {
-              "timestamp": "1754255623",
-              "rsrStaked": "70357213977545190063131052"
-            },
-            {
-              "timestamp": "1754176733",
-              "rsrStaked": "70357213977545190063131052"
-            },
-            {
-              "timestamp": "1754086965",
-              "rsrStaked": "70357213977545190063131052"
-            },
-            {
-              "timestamp": "1753994831",
-              "rsrStaked": "70357213977545190063131052"
-            },
-            {
-              "timestamp": "1753914969",
-              "rsrStaked": "70357213977545190063131052"
-            },
-            {
-              "timestamp": "1753825109",
-              "rsrStaked": "70357213977545190063131052"
-            },
-            {
-              "timestamp": "1753743805",
-              "rsrStaked": "70357213977545190063131052"
-            },
-            {
-              "timestamp": "1753651527",
-              "rsrStaked": "70357213977545190063131052"
-            },
-            {
-              "timestamp": "1753566431",
-              "rsrStaked": "70357213977545190063131052"
-            },
-            {
-              "timestamp": "1753486203",
-              "rsrStaked": "70357213977545190063131052"
-            },
-            {
-              "timestamp": "1753394403",
-              "rsrStaked": "70357213977545190063131052"
-            },
-            {
-              "timestamp": "1753313417",
-              "rsrStaked": "70357213977545190063131052"
-            },
-            {
-              "timestamp": "1753226787",
-              "rsrStaked": "70357213977545190063131052"
-            },
-            {
-              "timestamp": "1753139785",
-              "rsrStaked": "70357213977545190063131052"
-            },
-            {
-              "timestamp": "1753055507",
-              "rsrStaked": "70357213977545190063131052"
-            },
-            {
-              "timestamp": "1752968179",
-              "rsrStaked": "70357213977545190063131052"
-            },
-            {
-              "timestamp": "1752877111",
-              "rsrStaked": "70357213977545190063131052"
-            },
-            {
-              "timestamp": "1752789639",
-              "rsrStaked": "70357213977545190063131052"
-            },
-            {
-              "timestamp": "1752710351",
-              "rsrStaked": "70357213977545190063131052"
-            },
-            {
-              "timestamp": "1752621777",
-              "rsrStaked": "70357213977545190063131052"
-            },
-            {
-              "timestamp": "1752535129",
-              "rsrStaked": "70357213977545190063131052"
-            },
-            {
-              "timestamp": "1752450489",
-              "rsrStaked": "70357213977545190063131052"
             }
           ]
         },
         "token": {
           "snapshots": [
+            {
+              "timestamp": "1787599025",
+              "supply": "54430098921646383761048"
+            },
+            {
+              "timestamp": "1787521535",
+              "supply": "54607811503315702452295"
+            },
+            {
+              "timestamp": "1787402119",
+              "supply": "54607811503315702452295"
+            },
+            {
+              "timestamp": "1787331655",
+              "supply": "54607811503315702452295"
+            },
+            {
+              "timestamp": "1787244523",
+              "supply": "54672120821868008921345"
+            },
+            {
+              "timestamp": "1787182507",
+              "supply": "54672120821868008921345"
+            },
+            {
+              "timestamp": "1787057125",
+              "supply": "54672120821868008921345"
+            },
+            {
+              "timestamp": "1786979715",
+              "supply": "54672120821868008921345"
+            },
+            {
+              "timestamp": "1786923655",
+              "supply": "54672120821868008921345"
+            },
+            {
+              "timestamp": "1786825005",
+              "supply": "54672120821868008921345"
+            },
+            {
+              "timestamp": "1786747543",
+              "supply": "54672120821868008921345"
+            },
+            {
+              "timestamp": "1786647837",
+              "supply": "54672120821868008921345"
+            },
+            {
+              "timestamp": "1786527163",
+              "supply": "54672120821868008921345"
+            },
+            {
+              "timestamp": "1786439989",
+              "supply": "54672120821868008921345"
+            },
+            {
+              "timestamp": "1786381001",
+              "supply": "54672120821868008921345"
+            },
+            {
+              "timestamp": "1786283209",
+              "supply": "54720560795337970451535"
+            },
+            {
+              "timestamp": "1786228119",
+              "supply": "54720560795337970451535"
+            },
+            {
+              "timestamp": "1786128419",
+              "supply": "56360021510907868507266"
+            },
+            {
+              "timestamp": "1786051069",
+              "supply": "56448175377855751503866"
+            },
+            {
+              "timestamp": "1785973635",
+              "supply": "56448175377855751503866"
+            },
+            {
+              "timestamp": "1785827093",
+              "supply": "56448175377855751503866"
+            },
+            {
+              "timestamp": "1785787031",
+              "supply": "56448175377855751503866"
+            },
+            {
+              "timestamp": "1785664023",
+              "supply": "56448175377855751503866"
+            },
+            {
+              "timestamp": "1785616095",
+              "supply": "56448175377855751503866"
+            },
+            {
+              "timestamp": "1785509183",
+              "supply": "56448175377855751503866"
+            },
+            {
+              "timestamp": "1785444759",
+              "supply": "56448175377855751503866"
+            },
+            {
+              "timestamp": "1785354333",
+              "supply": "56448175377855751503866"
+            },
+            {
+              "timestamp": "1785276971",
+              "supply": "56448175377855751503866"
+            },
+            {
+              "timestamp": "1785122241",
+              "supply": "56448175377855751503866"
+            },
+            {
+              "timestamp": "1785057509",
+              "supply": "56448175377855751503866"
+            },
+            {
+              "timestamp": "1785023709",
+              "supply": "56448175377855751503866"
+            },
+            {
+              "timestamp": "1784901317",
+              "supply": "56448175377855751503866"
+            },
+            {
+              "timestamp": "1784812727",
+              "supply": "56448175377855751503866"
+            },
+            {
+              "timestamp": "1784749515",
+              "supply": "56495130147954854384538"
+            },
+            {
+              "timestamp": "1784657943",
+              "supply": "56770406533703810144111"
+            },
+            {
+              "timestamp": "1784580517",
+              "supply": "56770406533703810144111"
+            },
+            {
+              "timestamp": "1784503071",
+              "supply": "56770406533703810144111"
+            },
+            {
+              "timestamp": "1784373823",
+              "supply": "56770406533703810144111"
+            },
+            {
+              "timestamp": "1784309437",
+              "supply": "56770406533703810144111"
+            },
+            {
+              "timestamp": "1784209263",
+              "supply": "56770406533703810144111"
+            },
+            {
+              "timestamp": "1784145247",
+              "supply": "56770406533703810144111"
+            },
+            {
+              "timestamp": "1784070459",
+              "supply": "56770406533703810144111"
+            },
+            {
+              "timestamp": "1783982091",
+              "supply": "56770406533703810144111"
+            },
             {
               "timestamp": "1783883985",
               "supply": "56770406533703810144111"
@@ -7188,178 +7103,266 @@
             {
               "timestamp": "1756163609",
               "supply": "2683194938357087099655909"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "op": "getTokenDailyPrice",
+      "query": "query getTokenDailyPrice($id: String!, $fromTime: Int!) { token(id: $id) { snapshots: dailyTokenSnapshot( first: 1000 where: { timestamp_gte: $fromTime } ) { timestamp supply: dailyTotalSupply } } }",
+      "variables": {
+        "id": "0xcc7ff230365bd730ee4b352cc2492cedac49383e",
+        "fromTime": 1785083591
+      },
+      "data": {
+        "token": {
+          "snapshots": [
+            {
+              "timestamp": "1785122241",
+              "supply": "56448175377855751503866"
             },
             {
-              "timestamp": "1756079421",
-              "supply": "2582865021891683275866091"
+              "timestamp": "1785276971",
+              "supply": "56448175377855751503866"
             },
             {
-              "timestamp": "1755992813",
-              "supply": "2582314978464384315144322"
+              "timestamp": "1785354333",
+              "supply": "56448175377855751503866"
             },
             {
-              "timestamp": "1755905403",
-              "supply": "2579004607473573404077067"
+              "timestamp": "1785444759",
+              "supply": "56448175377855751503866"
             },
             {
-              "timestamp": "1755819487",
-              "supply": "2780977581786590296581137"
+              "timestamp": "1785509183",
+              "supply": "56448175377855751503866"
             },
             {
-              "timestamp": "1755730407",
-              "supply": "2975276993383977534701181"
+              "timestamp": "1785616095",
+              "supply": "56448175377855751503866"
             },
             {
-              "timestamp": "1755642875",
-              "supply": "2964180141755840750034706"
+              "timestamp": "1785664023",
+              "supply": "56448175377855751503866"
             },
             {
-              "timestamp": "1755559693",
-              "supply": "2955737787180471173955579"
+              "timestamp": "1785787031",
+              "supply": "56448175377855751503866"
             },
             {
-              "timestamp": "1755472727",
-              "supply": "2955558451465918530546676"
+              "timestamp": "1785827093",
+              "supply": "56448175377855751503866"
             },
             {
-              "timestamp": "1755387943",
-              "supply": "2950732898743259594704285"
+              "timestamp": "1785973635",
+              "supply": "56448175377855751503866"
             },
             {
-              "timestamp": "1755295263",
-              "supply": "2856027478456040252156069"
+              "timestamp": "1786051069",
+              "supply": "56448175377855751503866"
             },
             {
-              "timestamp": "1755214885",
-              "supply": "2854979695765598766726730"
+              "timestamp": "1786128419",
+              "supply": "56360021510907868507266"
             },
             {
-              "timestamp": "1755127677",
-              "supply": "2627764431291923512697537"
+              "timestamp": "1786228119",
+              "supply": "54720560795337970451535"
             },
             {
-              "timestamp": "1755041395",
-              "supply": "2628171243402173300465751"
+              "timestamp": "1786283209",
+              "supply": "54720560795337970451535"
             },
             {
-              "timestamp": "1754955003",
-              "supply": "2717702052616212926930497"
+              "timestamp": "1786381001",
+              "supply": "54672120821868008921345"
             },
             {
-              "timestamp": "1754868951",
-              "supply": "2717702052616212926930497"
+              "timestamp": "1786439989",
+              "supply": "54672120821868008921345"
             },
             {
-              "timestamp": "1754774149",
-              "supply": "2717456510916857167548006"
+              "timestamp": "1786527163",
+              "supply": "54672120821868008921345"
             },
             {
-              "timestamp": "1754694075",
-              "supply": "2718049992608725707721336"
+              "timestamp": "1786647837",
+              "supply": "54672120821868008921345"
             },
             {
-              "timestamp": "1754601505",
-              "supply": "2718049992608725707721336"
+              "timestamp": "1786747543",
+              "supply": "54672120821868008921345"
             },
             {
-              "timestamp": "1754521143",
-              "supply": "2719443497407327529289863"
+              "timestamp": "1786825005",
+              "supply": "54672120821868008921345"
             },
             {
-              "timestamp": "1754436993",
-              "supply": "2542208504690105847049346"
+              "timestamp": "1786923655",
+              "supply": "54672120821868008921345"
             },
             {
-              "timestamp": "1754344257",
-              "supply": "2551018909936753385176789"
+              "timestamp": "1786979715",
+              "supply": "54672120821868008921345"
             },
             {
-              "timestamp": "1754255623",
-              "supply": "2551018909936753385176789"
+              "timestamp": "1787057125",
+              "supply": "54672120821868008921345"
             },
             {
-              "timestamp": "1754176733",
-              "supply": "2551018909936753385176789"
+              "timestamp": "1787182507",
+              "supply": "54672120821868008921345"
             },
             {
-              "timestamp": "1754086965",
-              "supply": "2552381757112982096582821"
+              "timestamp": "1787244523",
+              "supply": "54672120821868008921345"
             },
             {
-              "timestamp": "1753994831",
-              "supply": "2556074093969837866661239"
+              "timestamp": "1787331655",
+              "supply": "54607811503315702452295"
             },
             {
-              "timestamp": "1753914969",
-              "supply": "2557040119818322273199376"
+              "timestamp": "1787402119",
+              "supply": "54607811503315702452295"
             },
             {
-              "timestamp": "1753825109",
-              "supply": "2558215722953441366102673"
+              "timestamp": "1787521535",
+              "supply": "54607811503315702452295"
             },
             {
-              "timestamp": "1753743805",
-              "supply": "2560550931025046150965080"
+              "timestamp": "1787599025",
+              "supply": "54430098921646383761048"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "op": "getTokenDailyPrice",
+      "query": "query getTokenDailyPrice($id: String!, $fromTime: Int!) { rtoken(id: $id) { snapshots: dailySnapshots( first: 365 where: { timestamp_gte: $fromTime } ) { timestamp rsrStaked } } }",
+      "variables": {
+        "id": "0xcc7ff230365bd730ee4b352cc2492cedac49383e",
+        "fromTime": 1785083591
+      },
+      "data": {
+        "rtoken": {
+          "snapshots": [
+            {
+              "timestamp": "1785122241",
+              "rsrStaked": "22830030147282651155249484"
             },
             {
-              "timestamp": "1753651527",
-              "supply": "3041379322920243993665495"
+              "timestamp": "1785276971",
+              "rsrStaked": "22830030147282651155249484"
             },
             {
-              "timestamp": "1753566431",
-              "supply": "3041379322920243993665495"
+              "timestamp": "1785354333",
+              "rsrStaked": "22830030147282651155249484"
             },
             {
-              "timestamp": "1753486203",
-              "supply": "3041379322920243993665495"
+              "timestamp": "1785444759",
+              "rsrStaked": "22830030147282651155249484"
             },
             {
-              "timestamp": "1753394403",
-              "supply": "3177402402095621307177262"
+              "timestamp": "1785509183",
+              "rsrStaked": "22830030147282651155249484"
             },
             {
-              "timestamp": "1753313417",
-              "supply": "3291909246109891627173047"
+              "timestamp": "1785616095",
+              "rsrStaked": "22830030147282651155249484"
             },
             {
-              "timestamp": "1753226787",
-              "supply": "3291909246109891627173047"
+              "timestamp": "1785664023",
+              "rsrStaked": "22830030147282651155249484"
             },
             {
-              "timestamp": "1753139785",
-              "supply": "3550182269859122041904253"
+              "timestamp": "1785787031",
+              "rsrStaked": "22830030147282651155249484"
             },
             {
-              "timestamp": "1753055507",
-              "supply": "3633813229100071941487342"
+              "timestamp": "1785827093",
+              "rsrStaked": "22830030147282651155249484"
             },
             {
-              "timestamp": "1752968179",
-              "supply": "3745114299389733218431902"
+              "timestamp": "1785973635",
+              "rsrStaked": "22830030147282651155249484"
             },
             {
-              "timestamp": "1752877111",
-              "supply": "3746166040263450897443739"
+              "timestamp": "1786051069",
+              "rsrStaked": "22830030147282651155249484"
             },
             {
-              "timestamp": "1752789639",
-              "supply": "3836772873993921989642729"
+              "timestamp": "1786128419",
+              "rsrStaked": "22830030147282651155249484"
             },
             {
-              "timestamp": "1752710351",
-              "supply": "3836772873993921989642729"
+              "timestamp": "1786228119",
+              "rsrStaked": "22830030147282651155249484"
             },
             {
-              "timestamp": "1752621777",
-              "supply": "3823865766106517389350639"
+              "timestamp": "1786283209",
+              "rsrStaked": "22830030147282651155249484"
             },
             {
-              "timestamp": "1752535129",
-              "supply": "3818639251008538863085995"
+              "timestamp": "1786381001",
+              "rsrStaked": "22830030147282651155249484"
             },
             {
-              "timestamp": "1752450489",
-              "supply": "3818639251008538863085995"
+              "timestamp": "1786439989",
+              "rsrStaked": "22830030147282651155249484"
+            },
+            {
+              "timestamp": "1786527163",
+              "rsrStaked": "22830030147282651155249484"
+            },
+            {
+              "timestamp": "1786647837",
+              "rsrStaked": "22830030147282651155249484"
+            },
+            {
+              "timestamp": "1786747543",
+              "rsrStaked": "22830030147282651155249484"
+            },
+            {
+              "timestamp": "1786825005",
+              "rsrStaked": "22830030147282651155249484"
+            },
+            {
+              "timestamp": "1786923655",
+              "rsrStaked": "22830030147282651155249484"
+            },
+            {
+              "timestamp": "1786979715",
+              "rsrStaked": "22830030147282651155249484"
+            },
+            {
+              "timestamp": "1787057125",
+              "rsrStaked": "22830030147282651155249484"
+            },
+            {
+              "timestamp": "1787182507",
+              "rsrStaked": "22830030147282651155249484"
+            },
+            {
+              "timestamp": "1787244523",
+              "rsrStaked": "22830030147282651155249484"
+            },
+            {
+              "timestamp": "1787331655",
+              "rsrStaked": "22830030147282651155249484"
+            },
+            {
+              "timestamp": "1787402119",
+              "rsrStaked": "22830030147282651155249484"
+            },
+            {
+              "timestamp": "1787521535",
+              "rsrStaked": "22830030147282651155249484"
+            },
+            {
+              "timestamp": "1787599025",
+              "rsrStaked": "22830030147282651155249484"
             }
           ]
         }
@@ -7401,187 +7404,11 @@
       "query": "query getRTokenExchangeRate($id: String!, $fromTime: Int!) { rtoken(id: $id) { snapshots: dailySnapshots( first: 365 where: { timestamp_gte: $fromTime } ) { timestamp rsrExchangeRate } } }",
       "variables": {
         "id": "0xcc7ff230365bd730ee4b352cc2492cedac49383e",
-        "fromTime": 1752784147
+        "fromTime": 1756571646
       },
       "data": {
         "rtoken": {
           "snapshots": [
-            {
-              "timestamp": "1752789639",
-              "rsrExchangeRate": "1.05601604984345768"
-            },
-            {
-              "timestamp": "1752877111",
-              "rsrExchangeRate": "1.05601604984345768"
-            },
-            {
-              "timestamp": "1752968179",
-              "rsrExchangeRate": "1.05601604984345768"
-            },
-            {
-              "timestamp": "1753055507",
-              "rsrExchangeRate": "1.05601604984345768"
-            },
-            {
-              "timestamp": "1753139785",
-              "rsrExchangeRate": "1.05601604984345768"
-            },
-            {
-              "timestamp": "1753226787",
-              "rsrExchangeRate": "1.059116567148759176"
-            },
-            {
-              "timestamp": "1753313417",
-              "rsrExchangeRate": "1.059116567148759176"
-            },
-            {
-              "timestamp": "1753394403",
-              "rsrExchangeRate": "1.059116567148759176"
-            },
-            {
-              "timestamp": "1753486203",
-              "rsrExchangeRate": "1.059116567148759176"
-            },
-            {
-              "timestamp": "1753566431",
-              "rsrExchangeRate": "1.059116567148759176"
-            },
-            {
-              "timestamp": "1753651527",
-              "rsrExchangeRate": "1.059116567148759176"
-            },
-            {
-              "timestamp": "1753743805",
-              "rsrExchangeRate": "1.059116567148759176"
-            },
-            {
-              "timestamp": "1753825109",
-              "rsrExchangeRate": "1.059116567148759176"
-            },
-            {
-              "timestamp": "1753914969",
-              "rsrExchangeRate": "1.059116567148759176"
-            },
-            {
-              "timestamp": "1753994831",
-              "rsrExchangeRate": "1.059116567148759176"
-            },
-            {
-              "timestamp": "1754086965",
-              "rsrExchangeRate": "1.059116567148759176"
-            },
-            {
-              "timestamp": "1754176733",
-              "rsrExchangeRate": "1.059116567148759176"
-            },
-            {
-              "timestamp": "1754255623",
-              "rsrExchangeRate": "1.059116567148759176"
-            },
-            {
-              "timestamp": "1754344257",
-              "rsrExchangeRate": "1.059116567148759176"
-            },
-            {
-              "timestamp": "1754436993",
-              "rsrExchangeRate": "1.059116567148759176"
-            },
-            {
-              "timestamp": "1754521143",
-              "rsrExchangeRate": "1.059116567148759176"
-            },
-            {
-              "timestamp": "1754601505",
-              "rsrExchangeRate": "1.059116567148759176"
-            },
-            {
-              "timestamp": "1754694075",
-              "rsrExchangeRate": "1.059116567148759176"
-            },
-            {
-              "timestamp": "1754774149",
-              "rsrExchangeRate": "1.06238538694475374"
-            },
-            {
-              "timestamp": "1754868951",
-              "rsrExchangeRate": "1.06238538694475374"
-            },
-            {
-              "timestamp": "1754955003",
-              "rsrExchangeRate": "1.06238538694475374"
-            },
-            {
-              "timestamp": "1755041395",
-              "rsrExchangeRate": "1.06238538694475374"
-            },
-            {
-              "timestamp": "1755127677",
-              "rsrExchangeRate": "1.06238538694475374"
-            },
-            {
-              "timestamp": "1755214885",
-              "rsrExchangeRate": "1.06238538694475374"
-            },
-            {
-              "timestamp": "1755295263",
-              "rsrExchangeRate": "1.062888373837787661"
-            },
-            {
-              "timestamp": "1755387943",
-              "rsrExchangeRate": "1.062960084406110669"
-            },
-            {
-              "timestamp": "1755472727",
-              "rsrExchangeRate": "1.062960084406110669"
-            },
-            {
-              "timestamp": "1755559693",
-              "rsrExchangeRate": "1.062960084406110669"
-            },
-            {
-              "timestamp": "1755642875",
-              "rsrExchangeRate": "1.062960084406110669"
-            },
-            {
-              "timestamp": "1755730407",
-              "rsrExchangeRate": "1.062960084406110669"
-            },
-            {
-              "timestamp": "1755819487",
-              "rsrExchangeRate": "1.062960084406110669"
-            },
-            {
-              "timestamp": "1755905403",
-              "rsrExchangeRate": "1.062960084406110669"
-            },
-            {
-              "timestamp": "1755992813",
-              "rsrExchangeRate": "1.062960084406110669"
-            },
-            {
-              "timestamp": "1756079421",
-              "rsrExchangeRate": "1.062960084406110669"
-            },
-            {
-              "timestamp": "1756163609",
-              "rsrExchangeRate": "1.062960084406110669"
-            },
-            {
-              "timestamp": "1756250865",
-              "rsrExchangeRate": "1.062960084406110669"
-            },
-            {
-              "timestamp": "1756338237",
-              "rsrExchangeRate": "1.062960084406110669"
-            },
-            {
-              "timestamp": "1756419673",
-              "rsrExchangeRate": "1.062960084406110669"
-            },
-            {
-              "timestamp": "1756511071",
-              "rsrExchangeRate": "1.062960084406110669"
-            },
             {
               "timestamp": "1756583907",
               "rsrExchangeRate": "1.062960084406110669"
@@ -8848,6 +8675,178 @@
             },
             {
               "timestamp": "1783883985",
+              "rsrExchangeRate": "1.091753409976339298"
+            },
+            {
+              "timestamp": "1783982091",
+              "rsrExchangeRate": "1.091753409976339298"
+            },
+            {
+              "timestamp": "1784070459",
+              "rsrExchangeRate": "1.091753409976339298"
+            },
+            {
+              "timestamp": "1784145247",
+              "rsrExchangeRate": "1.091753409976339298"
+            },
+            {
+              "timestamp": "1784209263",
+              "rsrExchangeRate": "1.091753409976339298"
+            },
+            {
+              "timestamp": "1784309437",
+              "rsrExchangeRate": "1.091753409976339298"
+            },
+            {
+              "timestamp": "1784373823",
+              "rsrExchangeRate": "1.091753409976339298"
+            },
+            {
+              "timestamp": "1784503071",
+              "rsrExchangeRate": "1.091753409976339298"
+            },
+            {
+              "timestamp": "1784580517",
+              "rsrExchangeRate": "1.091753409976339298"
+            },
+            {
+              "timestamp": "1784657943",
+              "rsrExchangeRate": "1.091753409976339298"
+            },
+            {
+              "timestamp": "1784749515",
+              "rsrExchangeRate": "1.091753409976339298"
+            },
+            {
+              "timestamp": "1784812727",
+              "rsrExchangeRate": "1.091753409976339298"
+            },
+            {
+              "timestamp": "1784901317",
+              "rsrExchangeRate": "1.091753409976339298"
+            },
+            {
+              "timestamp": "1785023709",
+              "rsrExchangeRate": "1.091753409976339298"
+            },
+            {
+              "timestamp": "1785057509",
+              "rsrExchangeRate": "1.091753409976339298"
+            },
+            {
+              "timestamp": "1785122241",
+              "rsrExchangeRate": "1.091753409976339298"
+            },
+            {
+              "timestamp": "1785276971",
+              "rsrExchangeRate": "1.091753409976339298"
+            },
+            {
+              "timestamp": "1785354333",
+              "rsrExchangeRate": "1.091753409976339298"
+            },
+            {
+              "timestamp": "1785444759",
+              "rsrExchangeRate": "1.091753409976339298"
+            },
+            {
+              "timestamp": "1785509183",
+              "rsrExchangeRate": "1.091753409976339298"
+            },
+            {
+              "timestamp": "1785616095",
+              "rsrExchangeRate": "1.091753409976339298"
+            },
+            {
+              "timestamp": "1785664023",
+              "rsrExchangeRate": "1.091753409976339298"
+            },
+            {
+              "timestamp": "1785787031",
+              "rsrExchangeRate": "1.091753409976339298"
+            },
+            {
+              "timestamp": "1785827093",
+              "rsrExchangeRate": "1.091753409976339298"
+            },
+            {
+              "timestamp": "1785973635",
+              "rsrExchangeRate": "1.091753409976339298"
+            },
+            {
+              "timestamp": "1786051069",
+              "rsrExchangeRate": "1.091753409976339298"
+            },
+            {
+              "timestamp": "1786128419",
+              "rsrExchangeRate": "1.091753409976339298"
+            },
+            {
+              "timestamp": "1786228119",
+              "rsrExchangeRate": "1.091753409976339298"
+            },
+            {
+              "timestamp": "1786283209",
+              "rsrExchangeRate": "1.091753409976339298"
+            },
+            {
+              "timestamp": "1786381001",
+              "rsrExchangeRate": "1.091753409976339298"
+            },
+            {
+              "timestamp": "1786439989",
+              "rsrExchangeRate": "1.091753409976339298"
+            },
+            {
+              "timestamp": "1786527163",
+              "rsrExchangeRate": "1.091753409976339298"
+            },
+            {
+              "timestamp": "1786647837",
+              "rsrExchangeRate": "1.091753409976339298"
+            },
+            {
+              "timestamp": "1786747543",
+              "rsrExchangeRate": "1.091753409976339298"
+            },
+            {
+              "timestamp": "1786825005",
+              "rsrExchangeRate": "1.091753409976339298"
+            },
+            {
+              "timestamp": "1786923655",
+              "rsrExchangeRate": "1.091753409976339298"
+            },
+            {
+              "timestamp": "1786979715",
+              "rsrExchangeRate": "1.091753409976339298"
+            },
+            {
+              "timestamp": "1787057125",
+              "rsrExchangeRate": "1.091753409976339298"
+            },
+            {
+              "timestamp": "1787182507",
+              "rsrExchangeRate": "1.091753409976339298"
+            },
+            {
+              "timestamp": "1787244523",
+              "rsrExchangeRate": "1.091753409976339298"
+            },
+            {
+              "timestamp": "1787331655",
+              "rsrExchangeRate": "1.091753409976339298"
+            },
+            {
+              "timestamp": "1787402119",
+              "rsrExchangeRate": "1.091753409976339298"
+            },
+            {
+              "timestamp": "1787521535",
+              "rsrExchangeRate": "1.091753409976339298"
+            },
+            {
+              "timestamp": "1787599025",
               "rsrExchangeRate": "1.091753409976339298"
             }
           ]
