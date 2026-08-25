@@ -1,6 +1,10 @@
+import { Skeleton } from '@/components/ui/skeleton'
+import { cn } from '@/lib/utils'
+import { indexDTFAtom, indexDTFBrandAtom } from '@/state/dtf/atoms'
 import DownloadableResources from '../components/dtf-downloadable-resources'
 import { useTrackIndexDTFClick } from '@/views/index-dtf/hooks/useTrackIndexDTFPage'
 import { Trans, useLingui } from '@lingui/react/macro'
+import { useAtomValue } from 'jotai'
 import { Play } from 'lucide-react'
 import { useState } from 'react'
 import { VIDEO_CHAPTERS, type VideoChapter } from './video-chapters'
@@ -49,6 +53,56 @@ const ChapterRow = ({
   )
 }
 
+// Same source as the standard overview's About card: the brand manager's
+// description, falling back to the on-chain mandate. Collapsed past a few
+// lines so a long description doesn't push the video list down the card.
+const DtfDescription = () => {
+  const dtf = useAtomValue(indexDTFAtom)
+  const brand = useAtomValue(indexDTFBrandAtom)
+  const { trackClick } = useTrackIndexDTFClick('overview', 'overview')
+  const [expanded, setExpanded] = useState(false)
+
+  if (!dtf || !brand) {
+    return (
+      <div className="mb-2 space-y-1.5 px-2 py-0.5">
+        <Skeleton className="h-4 w-full" />
+        <Skeleton className="h-4 w-full" />
+        <Skeleton className="h-4 w-2/3" />
+      </div>
+    )
+  }
+
+  const description = (brand.dtf?.description || dtf.mandate || '').trim()
+  if (!description) return null
+
+  const collapsible = description.length > 240
+
+  return (
+    <div className="mb-2 px-2 text-sm leading-relaxed text-muted-foreground">
+      <p
+        className={cn(
+          'whitespace-pre-line',
+          collapsible && !expanded && 'line-clamp-3'
+        )}
+      >
+        {description}
+      </p>
+      {collapsible && (
+        <button
+          type="button"
+          className="mt-1 font-medium text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+          onClick={() => {
+            setExpanded((value) => !value)
+            if (!expanded) trackClick('about_read_more')
+          }}
+        >
+          {expanded ? <Trans>Show less</Trans> : <Trans>Read more</Trans>}
+        </button>
+      )}
+    </div>
+  )
+}
+
 const StocksVideoLibrary = () => {
   const { trackClick } = useTrackIndexDTFClick('overview', 'overview')
   const [openChapter, setOpenChapter] = useState<string | null>(null)
@@ -68,16 +122,7 @@ const StocksVideoLibrary = () => {
       <h3 className="mb-1 px-2 pt-2 font-medium">
         <Trans>About this DTF</Trans>
       </h3>
-      {/* PLACEHOLDER basket summary, hardcoded for BUILDOUT — needs per-DTF
-          sourcing (and a fact-check: the backend About copy describes
-          semiconductors with a 10% cap) before another stocks DTF ships. */}
-      <p className="mb-2 px-2 text-sm leading-relaxed text-muted-foreground">
-        <Trans>
-          $BUILDOUT is a basket of US-listed power companies at the center of
-          the AI buildout weighted by market cap with a 20% cap and a $10B
-          minimum market cap, rebalanced quarterly.
-        </Trans>
-      </p>
+      <DtfDescription />
       <div className="flex flex-col">
         {VIDEO_CHAPTERS.map((chapter) => (
           <ChapterRow
