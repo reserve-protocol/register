@@ -8,17 +8,17 @@ const ColorFoundationEvidence = () => (
       <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
         Focused source audit · 11 August 2026
       </p>
-      <p className="mt-2 text-sm leading-6">
+      <p className="mt-2 text-sm leading-5">
         Counts are token-boundary background-utility matches in product TSX,
-        including opacity variants and excluding this internal lab. They
-        measure implementation frequency, not design quality or a
-        recommendation to keep the value.
+        including opacity variants and excluding this internal lab. They measure
+        implementation frequency, not design quality or a recommendation to keep
+        the value.
       </p>
     </div>
 
     <div>
       <h3 className="font-semibold">Surface evidence</h3>
-      <p className="mt-1 text-sm leading-6 text-muted-foreground">
+      <p className="mt-1 text-sm leading-5 text-muted-foreground">
         Rendered from the active theme variables. Observed roles describe how
         the product uses each token today, even when the token name suggests
         something else.
@@ -77,7 +77,7 @@ const ColorFoundationEvidence = () => (
 const EvidenceFinding = ({ title, copy }: { title: string; copy: string }) => (
   <div className="rounded-xl border border-border bg-card p-4">
     <h3 className="font-medium">{title}</h3>
-    <p className="mt-2 text-sm leading-6 text-muted-foreground">{copy}</p>
+    <p className="mt-2 text-sm leading-5 text-muted-foreground">{copy}</p>
   </div>
 )
 

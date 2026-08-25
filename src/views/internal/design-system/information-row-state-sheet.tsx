@@ -46,7 +46,7 @@ const InformationRowStateSheet = () => (
       >
         Canonical anatomy in context
       </h2>
-      <p className="mt-1 max-w-3xl text-sm font-light leading-6 text-muted-foreground">
+      <p className="mt-1 max-w-3xl text-sm font-light leading-5 text-muted-foreground">
         A realistic Index holdings slice using the canonical Entity identity and
         Metric value seams. The table owns columns and row behavior; neither
         lower-level component becomes a universal row.

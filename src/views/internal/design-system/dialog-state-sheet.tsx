@@ -25,7 +25,7 @@ const DialogStateSheet = () => (
       <h2 id="dialog-state-sheet-title" className="text-xl font-medium">
         Canonical candidate · shell states
       </h2>
-      <p className="mt-1 max-w-3xl text-sm font-light leading-6 text-muted-foreground">
+      <p className="mt-1 max-w-3xl text-sm font-light leading-5 text-muted-foreground">
         Compact reversible tasks, standard non-dismissible gates, and long
         body-owned scrolling use the same anchored header, body, and action
         regions. The shell changes only where the evidenced task requires it.
@@ -87,7 +87,7 @@ const CompactSimulationDialog = () => (
       </DialogDescription>
     </DialogHeader>
     <DialogBody>
-      <p className="py-4 text-sm font-light leading-6 text-muted-foreground">
+      <p className="py-4 text-sm font-light leading-5 text-muted-foreground">
         The result remains in this task and can link to Tenderly after the
         simulation completes.
       </p>
@@ -107,7 +107,7 @@ export const EligibilityDialogInteractionReview = () => {
       className="border border-border bg-card p-5"
     >
       <h2 className="text-xl font-medium">Extended interaction evidence</h2>
-      <p className="mt-1 max-w-2xl text-sm font-light leading-6 text-muted-foreground">
+      <p className="mt-1 max-w-2xl text-sm font-light leading-5 text-muted-foreground">
         Open the real Radix shell to verify focus, dismissal prevention,
         disclosure, and constrained-screen presentation. This interaction is
         detail-only; the complete visual states remain in the shared sheet.

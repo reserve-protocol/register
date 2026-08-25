@@ -5,7 +5,7 @@ const ColorPerformanceCandidate = () => (
     <div className="flex flex-col justify-between gap-3 sm:flex-row sm:items-start">
       <div>
         <h3 className="font-semibold">Smaller V1 performance candidate</h3>
-        <p className="mt-1 max-w-3xl text-sm leading-6 text-muted-foreground">
+        <p className="mt-1 max-w-3xl text-sm leading-5 text-muted-foreground">
           Reduce today’s independent chart, dot, text, and dark-surface values
           to three stable jobs per direction. The structure is proposed; names
           and exact light/dark values remain open.

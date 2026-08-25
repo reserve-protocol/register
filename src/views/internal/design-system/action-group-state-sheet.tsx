@@ -17,7 +17,7 @@ const ActionGroupStateSheet = () => (
       >
         Action groups
       </h2>
-      <p className="mt-1 max-w-3xl text-sm font-light leading-6 text-muted-foreground">
+      <p className="mt-1 max-w-3xl text-sm font-light leading-5 text-muted-foreground">
         Prefer intrinsic-width horizontal groups when the actions fit. When a
         narrow surface needs a vertical group, switch deliberately to equal
         full-width default actions instead of stacking uneven compact buttons.
@@ -50,7 +50,7 @@ const ActionGroupStateSheet = () => (
       </Specimen>
     </div>
 
-    <p className="border border-border bg-card p-4 text-sm font-light leading-6 text-muted-foreground">
+    <p className="border border-border bg-card p-4 text-sm font-light leading-5 text-muted-foreground">
       Do not allow a horizontal group to wrap into a ragged partial stack. The
       owning composition chooses the vertical recipe when its available width
       cannot preserve the horizontal relationship. Transaction lifecycle stays

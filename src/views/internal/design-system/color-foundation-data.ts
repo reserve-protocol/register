@@ -154,7 +154,7 @@ export const COLOR_FOREGROUND_ROLES: CandidateColorRole[] = [
   {
     role: 'Supporting foreground',
     previewTone: 'supporting-foreground',
-    startingPoint: '--muted-foreground',
+    startingPoint: '--supporting-foreground',
     usage: 'Metadata, helper copy, secondary labels, and unavailable content',
     roleStatus: 'provisional',
     valueStatus: 'open',

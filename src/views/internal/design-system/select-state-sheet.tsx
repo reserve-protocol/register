@@ -23,7 +23,7 @@ const SelectStateSheet = () => (
       <h2 id="select-state-sheet-title" className="mt-1 text-2xl font-light">
         Bounded-value Select
       </h2>
-      <p className="mt-1 max-w-3xl text-sm font-light leading-6 text-muted-foreground">
+      <p className="mt-1 max-w-3xl text-sm font-light leading-5 text-muted-foreground">
         The trigger inherits the accepted Field geometry: 44px and 16px light
         values for ordinary forms, plus an evidenced 32px and 14px compact
         option for pagination or dense toolbars. The accepted popup uses an 8px

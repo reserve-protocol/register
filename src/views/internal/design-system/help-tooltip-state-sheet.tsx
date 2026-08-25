@@ -20,7 +20,7 @@ const HelpTooltipStateSheet = () => (
       <h2 id="help-tooltip-title" className="mt-1 text-2xl font-light">
         Explanatory help
       </h2>
-      <p className="mt-1 max-w-3xl text-sm font-light leading-6 text-muted-foreground">
+      <p className="mt-1 max-w-3xl text-sm font-light leading-5 text-muted-foreground">
         Judge the bare help trigger beside real label roles and the quiet
         floating surface. The icon supplements an already visible label; it is
         not an icon-only action name. Hover or focus opens brief explanation,
@@ -84,7 +84,7 @@ const HelpTooltipStateSheet = () => (
       </Specimen>
 
       <Specimen label="Boundary · other tooltip jobs stay separate">
-        <p className="text-sm font-light leading-6 text-muted-foreground">
+        <p className="text-sm font-light leading-5 text-muted-foreground">
           Truncated-value disclosure, accessible naming for icon-only actions,
           and temporary “Copied” feedback may share the floating surface, but
           their state and trigger behavior remain owned by those components.

@@ -182,6 +182,59 @@ export const PRODUCT_FACING_REVIEWS: ProductFacingReview[] = [
       'Do not make every metric a Card or allow each route to invent label/value typography and missing-data symbols.',
   },
   {
+    id: 'global-navigation',
+    componentId: 'global-navigation',
+    name: 'Global application navigation',
+    status: 'ready',
+    purpose:
+      'Keep application-level hierarchy clear above object-scoped navigation across desktop and constrained screens.',
+    evidence: [
+      {
+        name: 'Desktop application header',
+        requirement:
+          'Reserve identity, primary destinations, grouped overflow, current route, and application actions share one quiet persistent header.',
+        sources: [
+          'src/components/layout/header/components/app-header.tsx',
+          'src/components/layout/header/components/app-navigation.tsx',
+          'src/components/layout/header/components/header-nav-items.tsx',
+        ],
+      },
+      {
+        name: 'Constrained-screen application navigation',
+        requirement:
+          'The same destination truth recomposes into grouped full navigation regions rather than shrinking the desktop route row.',
+        sources: [
+          'src/components/layout/header/components/mobile-navigation-drawer.tsx',
+          'src/components/layout/header/components/header-nav-items.tsx',
+        ],
+      },
+    ],
+    decisions: [
+      {
+        name: 'Global versus Product hierarchy',
+        lane: 3,
+        reason:
+          'Both systems are visible together and their relative weight materially shapes the application, while their ownership and route models must remain separate.',
+      },
+      {
+        name: 'Desktop overflow and constrained-screen recomposition',
+        lane: 1,
+        reason:
+          'Current source evidence already establishes grouped overflow on desktop and full navigation regions on constrained screens; V1 should refine rather than invent the structure.',
+      },
+      {
+        name: 'Route taxonomy and destination copy',
+        lane: 2,
+        reason:
+          'Information architecture is source-owned and may be revisited separately; it is not implied by accepting the navigation presentation.',
+      },
+    ],
+    migrationSeam:
+      'Keep one application destination model, render separate desktop-header and constrained-screen compositions, and consume accepted Link and popup owners.',
+    avoid:
+      'Do not merge Global and Product navigation, use legacy Yield DTF surfaces as authority, or redesign route information architecture inside the visual-system review.',
+  },
+  {
     id: 'product-navigation',
     componentId: 'product-navigation',
     name: 'Product navigation items',

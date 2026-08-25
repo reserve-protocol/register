@@ -16,9 +16,10 @@ const ColorFoundationCandidate = () => (
       <div className="flex flex-col justify-between gap-3 sm:flex-row sm:items-start">
         <div>
           <h3 className="font-semibold">Surface hierarchy specimen</h3>
-          <p className="mt-1 max-w-2xl text-sm leading-6 text-muted-foreground">
-            A first structural mapping rendered with today’s tokens. The roles
-            are proposed; the final light and dark values are still open.
+          <p className="mt-1 max-w-2xl text-sm leading-5 text-muted-foreground">
+            The accepted structural role mapping rendered with today’s tokens.
+            Exact values remain revisitable when complex screens provide better
+            evidence.
           </p>
         </div>
         <CandidateStatus />
@@ -52,7 +53,7 @@ const ColorFoundationCandidate = () => (
 
     <div className="rounded-2xl border border-border bg-card p-5">
       <h3 className="font-semibold">Feedback versus data movement</h3>
-      <p className="mt-1 max-w-3xl text-sm leading-6 text-muted-foreground">
+      <p className="mt-1 max-w-3xl text-sm leading-5 text-muted-foreground">
         These roles remain technically separate even if design review chooses
         the same hue or exact value. A completed action is not the same meaning
         as a price increase; an error is not the same meaning as a loss.
@@ -80,9 +81,9 @@ const ColorFoundationCandidate = () => (
         />
       </div>
       <p className="mt-3 text-xs leading-5 text-muted-foreground">
-        Color chips preview today’s nearest values. Labels use accessible
-        foreground text because the current success and destructive values do
-        not yet pass normal-text contrast in both themes.
+        Color chips preview the underlying semantic hues. Labels use the
+        accepted semantic foreground aliases rather than placing ordinary text
+        directly on vivid source colors.
       </p>
     </div>
 
@@ -111,7 +112,9 @@ const ColorRoleTable = ({
     <div className="border-b border-border p-5">
       <h3 className="font-semibold">{title}</h3>
       <p className="mt-1 text-sm text-muted-foreground">
-        Starting points show today’s nearest source, not accepted V1 values.
+        Starting points show the source of each role. Accepted roles are the
+        working V1 baseline; explicitly open roles still require product
+        evidence.
       </p>
     </div>
     <div className="overflow-x-auto">
@@ -191,7 +194,7 @@ const previewClassNames: Record<ColorPreviewTone, string> = {
   'performance-neutral': 'bg-muted-foreground',
   categorical: '',
   'primary-foreground': 'bg-foreground',
-  'supporting-foreground': 'bg-muted-foreground',
+  'supporting-foreground': 'bg-supporting-foreground',
 }
 
 const RoleStatus = ({ row }: { row: CandidateColorRole }) => (
@@ -200,21 +203,23 @@ const RoleStatus = ({ row }: { row: CandidateColorRole }) => (
       className={cn(
         'w-fit rounded-full px-2 py-1 text-xs',
         row.roleStatus === 'provisional'
-          ? 'bg-warning/10 text-foreground ring-1 ring-inset ring-warning/30'
+          ? 'bg-primary/10 text-primary ring-1 ring-inset ring-primary/30'
           : 'bg-muted text-muted-foreground'
       )}
     >
-      {row.roleStatus === 'provisional' ? 'Role proposed' : 'Role open'}
+      {row.roleStatus === 'provisional' ? 'Role baseline' : 'Role open'}
     </span>
     <span className="text-xs text-muted-foreground">
-      {row.valueStatus === 'needs-token' ? 'Token needed' : 'Values open'}
+      {row.valueStatus === 'needs-token'
+        ? 'Token needed'
+        : 'Values revisitable'}
     </span>
   </span>
 )
 
 const CandidateStatus = () => (
-  <span className="w-fit rounded-full bg-warning/10 px-2.5 py-1 text-xs font-medium text-foreground ring-1 ring-inset ring-warning/30">
-    Role proposal · values open
+  <span className="w-fit rounded-full bg-primary/10 px-2.5 py-1 text-xs font-medium text-primary ring-1 ring-inset ring-primary/30">
+    Working role baseline
   </span>
 )
 

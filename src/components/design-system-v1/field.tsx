@@ -9,6 +9,14 @@ import {
 
 import { v1SemanticRecipes as roles } from '@/components/ui/v1-semantic-recipes'
 import { cn } from '@/lib/utils'
+import { v1Typography } from './typography'
+
+export const textInputRecipe = {
+  frame:
+    'flex h-11 w-full items-center gap-2 rounded-full border border-input bg-card text-foreground transition-colors duration-120 focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2 focus-within:ring-offset-card',
+  leading: 'shrink-0 text-sm [&>svg]:size-4',
+  text: 'min-w-0 flex-1 bg-transparent text-base font-light leading-6 outline-none',
+} as const
 
 export const Field = ({
   className,
@@ -21,10 +29,7 @@ export const FieldLabel = ({
   className,
   ...props
 }: LabelHTMLAttributes<HTMLLabelElement>) => (
-  <label
-    className={cn('block text-sm font-medium leading-5', className)}
-    {...props}
-  />
+  <label className={cn('block', v1Typography.label, className)} {...props} />
 )
 
 export const FieldDescription = ({
@@ -32,11 +37,7 @@ export const FieldDescription = ({
   ...props
 }: HTMLAttributes<HTMLParagraphElement>) => (
   <p
-    className={cn(
-      'text-sm font-light leading-5',
-      roles.text.supporting,
-      className
-    )}
+    className={cn(v1Typography.supporting, roles.text.supporting, className)}
     {...props}
   />
 )
@@ -46,7 +47,7 @@ export const FieldMessage = ({
   ...props
 }: HTMLAttributes<HTMLParagraphElement>) => (
   <p
-    className={cn('text-sm font-light leading-5 text-destructive', className)}
+    className={cn(v1Typography.supporting, 'text-destructive', className)}
     {...props}
   />
 )
@@ -81,7 +82,7 @@ export const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
       data-disabled={disabled || undefined}
       data-readonly={readOnly || undefined}
       className={cn(
-        'flex h-11 w-full items-center gap-2 rounded-full border border-input bg-card text-foreground transition-colors duration-120 focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2 focus-within:ring-offset-card',
+        textInputRecipe.frame,
         leading ? 'pl-[18px]' : 'pl-5',
         trailing ? 'pr-[18px]' : 'pr-5',
         disabled && roles.disabled.control,
@@ -91,12 +92,7 @@ export const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
       )}
     >
       {leading && (
-        <span
-          className={cn(
-            'shrink-0 text-sm [&>svg]:size-4',
-            roles.text.supporting
-          )}
-        >
+        <span className={cn(textInputRecipe.leading, roles.text.supporting)}>
           {leading}
         </span>
       )}
@@ -106,7 +102,8 @@ export const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
         readOnly={readOnly}
         aria-invalid={invalid || undefined}
         className={cn(
-          'min-w-0 flex-1 bg-transparent text-base font-light leading-6 outline-none placeholder:text-muted-foreground read-only:cursor-default disabled:cursor-not-allowed',
+          textInputRecipe.text,
+          'placeholder:text-muted-foreground read-only:cursor-default disabled:cursor-not-allowed',
           inputClassName
         )}
         {...props}
@@ -129,15 +126,27 @@ export interface TextAreaProps extends TextareaHTMLAttributes<HTMLTextAreaElemen
 }
 
 export const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
-  ({ className, disabled = false, invalid = false, ...props }, ref) => (
+  (
+    {
+      className,
+      disabled = false,
+      invalid = false,
+      readOnly = false,
+      ...props
+    },
+    ref
+  ) => (
     <textarea
       ref={ref}
       disabled={disabled}
+      readOnly={readOnly}
       aria-invalid={invalid || undefined}
       data-testid="canonical-textarea"
+      data-readonly={readOnly || undefined}
       className={cn(
-        'min-h-32 w-full resize-y rounded-lg border border-input bg-card px-4 py-3 text-base font-light leading-6 text-foreground outline-none transition-colors duration-120 placeholder:text-muted-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-card disabled:cursor-not-allowed',
+        'min-h-32 w-full resize-y rounded-lg border border-input bg-card px-5 py-4 text-base font-light leading-6 text-foreground outline-none transition-colors duration-120 placeholder:text-muted-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-card disabled:cursor-not-allowed',
         disabled && roles.disabled.control,
+        readOnly && cn(roles.surface.neutralControl, 'cursor-default'),
         invalid && 'border-destructive',
         className
       )}

@@ -43,7 +43,10 @@ export const CurrentReviewList = () => (
       </p>
     </div>
     {CURRENT_REVIEW.length === 0 ? (
-      <p className="border border-border bg-card p-4 text-sm font-light text-muted-foreground">
+      <p
+        data-testid="current-review-empty"
+        className="border border-border bg-card p-4 text-sm font-light text-muted-foreground"
+      >
         No human design judgment is waiting. The next review will appear after
         its source-grounded candidate is ready.
       </p>

@@ -31,7 +31,7 @@ const MenuStateSheet = () => (
       <h2 id="menu-state-sheet-title" className="mt-1 text-2xl font-light">
         Action Menu
       </h2>
-      <p className="mt-1 max-w-3xl text-sm font-light leading-6 text-muted-foreground">
+      <p className="mt-1 max-w-3xl text-sm font-light leading-5 text-muted-foreground">
         The candidate retains Radix action-menu behavior and reuses the accepted
         floating-surface and option rhythm where that language transfers from
         Select: 8px popup offset and radius, 4px item radius, 16px icons, and

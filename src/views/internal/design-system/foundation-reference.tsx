@@ -40,6 +40,12 @@ const FoundationEvidence = ({ foundationId }: { foundationId: string }) => {
         <TypeSample label="Light · 300" className="font-light" />
         <TypeSample label="Medium · 500" className="font-medium" />
         <TypeSample label="Bold · 700" className="font-bold" />
+        <p className="text-sm font-light leading-5 text-muted-foreground">
+          Evidence source: the three installed Lausanne weights and current
+          Home, Discover, Overview, governance, and form compositions. These
+          samples prove availability only; the decision candidate below owns the
+          proposed role map and deliberately parks 700.
+        </p>
       </div>
     )
   }
@@ -125,10 +131,12 @@ const TypeSample = ({
   className: string
 }) => (
   <div className="flex items-baseline justify-between gap-4 border-b border-border pb-3 last:border-0 last:pb-0">
-    <p className={cn('text-xl', className)}>
+    <p className={cn('text-xl leading-7', className)}>
       Reserve builds durable onchain products.
     </p>
-    <span className="shrink-0 text-xs text-muted-foreground">{label}</span>
+    <span className="shrink-0 text-xs font-light leading-4 text-muted-foreground">
+      {label}
+    </span>
   </div>
 )
 

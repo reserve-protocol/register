@@ -30,7 +30,7 @@ const GovernanceProposalStateReview = ({
       >
         Governance proposal records
       </h3>
-      <p className="max-w-3xl text-sm font-light leading-6 text-muted-foreground">
+      <p className="max-w-3xl text-sm font-light leading-5 text-muted-foreground">
         Real proposal behavior is mapped across standard, fast optimistic, and
         contested flows. Titles preserve real product density; fixtures simulate
         state branches that are not simultaneously available in local data.

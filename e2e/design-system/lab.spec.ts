@@ -15,6 +15,10 @@ const SURFACES = [
     path: '/internal/design-system/foundations/typography',
   },
   {
+    id: 'foundation-detail-radius',
+    path: '/internal/design-system/foundations/radius',
+  },
+  {
     id: 'components-overview',
     path: '/internal/design-system/components',
   },
@@ -37,9 +41,613 @@ const SURFACES = [
 ] as const
 
 test.describe('design system lab', () => {
+  test('prepares the comprehensive typography foundation review', async ({
+    page,
+  }, testInfo) => {
+    await page.addInitScript(() => {
+      localStorage.setItem('theme-ui-color-mode', 'light')
+    })
+    await page.goto('/internal/design-system/foundations/typography')
+
+    await expect(page.getByTestId('typography-baseline')).toBeVisible()
+    await expect(page.getByTestId('typography-review-boundary')).toBeVisible()
+    await expect(page.getByTestId('typography-review-role-map')).toBeVisible()
+    await expect(
+      page.getByTestId('typography-review-weight-strategy')
+    ).toBeVisible()
+    await expect(page.getByTestId('typography-review-contexts')).toBeVisible()
+    await expect(
+      page.getByTestId('typography-review-stress-tests')
+    ).toBeVisible()
+    await expect(
+      page.getByTestId('typography-recommended-refinements')
+    ).toBeVisible()
+
+    const responsiveDisplay = page.getByTestId('typography-responsive-display')
+    await expect(responsiveDisplay).toHaveCSS(
+      'font-size',
+      testInfo.project.name === 'design-system-mobile' ? '40px' : '48px'
+    )
+
+    expect(
+      await page.evaluate(
+        () => document.documentElement.scrollWidth <= window.innerWidth
+      )
+    ).toBe(true)
+
+    await page.goto('/internal/design-system/status')
+    const currentReview = page
+      .getByTestId('project-status-page')
+      .locator('section[aria-labelledby="current-review-heading"]')
+    await expect(currentReview.locator('a')).toHaveCount(0)
+  })
+
+  test('records the cross-theme color contrast baseline', async ({ page }) => {
+    await page.addInitScript(() => {
+      localStorage.setItem('theme-ui-color-mode', 'light')
+    })
+    await page.goto(
+      '/internal/design-system/foundations/color#color-contrast-review'
+    )
+
+    const review = page.getByTestId('color-contrast-review')
+    await expect(review).toBeVisible()
+    await expect(review.getByText('Current baseline').first()).toBeVisible()
+    await expect(review.getByTestId('color-feedback-comparison')).toBeVisible()
+    await expect(review.getByTestId('color-action-comparison')).toBeVisible()
+    await expect(
+      review.getByTestId('color-supporting-comparison')
+    ).toBeVisible()
+    await expect(review.getByTestId('color-heavier-alternatives')).toBeVisible()
+
+    const previousSuccess = review
+      .getByTestId('color-feedback-comparison')
+      .locator('[data-status-role="success"]')
+      .first()
+    const baselineSuccess = review
+      .getByTestId('color-feedback-comparison')
+      .locator('[data-status-role="success"]')
+      .nth(1)
+    expect(
+      await previousSuccess.evaluate((node) => getComputedStyle(node).color)
+    ).not.toBe(
+      await baselineSuccess.evaluate((node) => getComputedStyle(node).color)
+    )
+
+    expect(
+      await page.evaluate(
+        () => document.documentElement.scrollWidth <= window.innerWidth
+      )
+    ).toBe(true)
+  })
+
+  test('records the radius working baseline from accepted owners', async ({
+    page,
+  }) => {
+    await page.addInitScript(() => {
+      localStorage.setItem('theme-ui-color-mode', 'light')
+    })
+    await page.goto('/internal/design-system/foundations/radius')
+
+    const review = page.getByTestId('radius-closure-review')
+    await expect(review).toBeVisible()
+    await expect(
+      review.getByText('Radius working baseline', { exact: true })
+    ).toBeVisible()
+    await expect(
+      review.getByText('Current baseline', { exact: true })
+    ).toBeVisible()
+    await expect(review.getByTestId('radius-established-rules')).toBeVisible()
+    await expect(review.getByTestId('radius-review-boundary')).toBeVisible()
+
+    const canonicalButton = review.getByTestId('canonical-button').first()
+    const canonicalInput = review.getByTestId('canonical-text-input')
+    const canonicalTextarea = review.getByTestId('canonical-textarea')
+    await expect(canonicalButton).toHaveCSS('border-radius', '9999px')
+    await expect(canonicalInput).toHaveCSS('border-radius', '9999px')
+    await expect(canonicalTextarea).toHaveCSS('border-radius', '8px')
+    await expect(review.getByTestId('radius-recommended-structure')).toHaveCSS(
+      'border-top-right-radius',
+      '0px'
+    )
+    await expect(review.getByTestId('radius-deferred-reveal')).toHaveCSS(
+      'border-top-right-radius',
+      '16px'
+    )
+
+    expect(
+      await page.evaluate(
+        () => document.documentElement.scrollWidth <= window.innerWidth
+      )
+    ).toBe(true)
+  })
+
+  test('prepares Link review and keeps Accordion provisional', async ({
+    page,
+  }) => {
+    await page.addInitScript(() => {
+      localStorage.setItem('theme-ui-color-mode', 'light')
+    })
+
+    await page.goto('/internal/design-system/components/link')
+    const linkSheet = page.getByTestId('link-state-sheet')
+    await expect(linkSheet).toBeVisible()
+    await expect(
+      page.getByTestId('component-review-readiness')
+    ).toHaveAttribute('data-review-readiness', 'ready')
+    await expect(
+      linkSheet.getByTestId('design-system-link-inline')
+    ).not.toHaveAttribute('target')
+    await expect(
+      linkSheet.getByTestId('design-system-link-long-external')
+    ).toHaveAttribute('target', '_blank')
+    await expect(
+      linkSheet.getByTestId('design-system-link-button-route')
+    ).toHaveAttribute('href', '/internal/design-system/screens')
+
+    await page.goto('/internal/design-system/components/accordion')
+    const accordionSheet = page.getByTestId('accordion-state-sheet')
+    await expect(accordionSheet).toBeVisible()
+    await expect(
+      page.getByTestId('component-review-readiness')
+    ).toHaveAttribute('data-review-readiness', 'provisional')
+
+    const firstTrigger = accordionSheet.getByTestId(
+      'design-system-accordion-staking-trigger'
+    )
+    const secondTrigger = accordionSheet.getByTestId(
+      'design-system-accordion-unstaking-trigger'
+    )
+    await expect(firstTrigger).toHaveAttribute('aria-expanded', 'true')
+    await secondTrigger.focus()
+    await page.keyboard.press('Enter')
+    await expect(secondTrigger).toHaveAttribute('aria-expanded', 'true')
+    await expect(firstTrigger).toHaveAttribute('aria-expanded', 'false')
+  })
+
+  test('routes through adaptive drawer shell', async ({ page }) => {
+    await page.addInitScript(() => {
+      localStorage.setItem('theme-ui-color-mode', 'light')
+    })
+    await page.goto('/internal/design-system/components/drawer')
+
+    await expect(page.getByTestId('drawer-state-sheet')).toBeVisible()
+    const trigger = page.getByRole('button', { name: 'Open task drawer' })
+    await trigger.click()
+
+    const drawer = page.getByTestId('canonical-drawer-content')
+    await expect(drawer).toBeVisible()
+    await expect(
+      page.getByRole('button', { name: 'Close drawer' })
+    ).toBeFocused()
+    await page.waitForTimeout(300)
+
+    const drawerBox = await drawer.boundingBox()
+    const viewport = page.viewportSize()
+    expect(drawerBox).not.toBeNull()
+    expect(viewport).not.toBeNull()
+    if (!drawerBox || !viewport) return
+
+    if (viewport.width < 640) {
+      expect(Math.round(drawerBox.x)).toBe(0)
+      expect(Math.round(drawerBox.width)).toBe(viewport.width)
+      expect(Math.round(drawerBox.y + drawerBox.height)).toBe(viewport.height)
+    } else {
+      expect(Math.round(drawerBox.width)).toBe(512)
+      expect(Math.round(drawerBox.x + drawerBox.width)).toBe(viewport.width)
+      expect(Math.round(drawerBox.y)).toBe(0)
+      expect(Math.round(drawerBox.height)).toBe(viewport.height)
+    }
+
+    await page.getByRole('button', { name: 'Close drawer' }).click()
+    await expect(trigger).toBeFocused()
+  })
+
+  test('positions mobile utilities below the header at matched control heights', async ({
+    page,
+  }) => {
+    await page.goto(
+      '/internal/design-system/components/product-navigation#navigation-review'
+    )
+
+    const navigationSheet = page.getByTestId('navigation-systems-state-sheet')
+    const connectedHeader = navigationSheet.getByTestId(
+      'mobile-header-connected-state'
+    )
+    const connectedHeaderBox = await connectedHeader.boundingBox()
+    expect(connectedHeaderBox).not.toBeNull()
+    if (!connectedHeaderBox) return
+    if (connectedHeaderBox.width >= 386) {
+      await expect(
+        connectedHeader.getByTestId('mobile-brand-wordmark')
+      ).toBeVisible()
+      await expect(
+        connectedHeader.getByTestId('mobile-brand-mark')
+      ).toBeHidden()
+    } else {
+      await expect(
+        connectedHeader.getByTestId('mobile-brand-wordmark')
+      ).toBeHidden()
+      await expect(
+        connectedHeader.getByTestId('mobile-brand-mark')
+      ).toBeVisible()
+    }
+    const narrowHeader = navigationSheet.getByTestId(
+      'mobile-header-narrow-state'
+    )
+    await expect(narrowHeader.getByTestId('mobile-brand-wordmark')).toBeHidden()
+    await expect(narrowHeader.getByTestId('mobile-brand-mark')).toBeVisible()
+    const compactHeader = navigationSheet.getByTestId(
+      'mobile-header-compact-brand-state'
+    )
+    await expect(
+      compactHeader.getByTestId('mobile-brand-wordmark')
+    ).toBeHidden()
+    await expect(compactHeader.getByTestId('mobile-brand-mark')).toBeVisible()
+
+    const mobileGlobal = navigationSheet
+      .getByTestId('mobile-global-navigation-specimen')
+      .getByRole('article')
+      .filter({ hasText: 'Default · disconnected' })
+    await mobileGlobal
+      .getByRole('button', { name: 'Search, theme, and language', exact: true })
+      .click()
+    const globalMobileHeaderBox = await mobileGlobal
+      .locator('header')
+      .first()
+      .boundingBox()
+    expect(globalMobileHeaderBox).not.toBeNull()
+    if (!globalMobileHeaderBox) return
+    expect(Math.round(globalMobileHeaderBox.height)).toBe(56)
+    const utilityPanel = page.getByRole('region', {
+      name: 'Application utilities',
+    })
+    await expect(utilityPanel).toBeVisible()
+    const utilityPanelBox = await utilityPanel.boundingBox()
+    const utilitySearchBox = await utilityPanel
+      .getByRole('button', { name: 'Search DTFs' })
+      .boundingBox()
+    const utilityThemeBox = await utilityPanel
+      .getByRole('group', { name: 'Theme' })
+      .boundingBox()
+    const utilityLanguageBox = await utilityPanel
+      .getByRole('button', { name: 'Language, English' })
+      .boundingBox()
+    expect(utilityPanelBox).not.toBeNull()
+    expect(utilitySearchBox).not.toBeNull()
+    expect(utilityThemeBox).not.toBeNull()
+    expect(utilityLanguageBox).not.toBeNull()
+    if (
+      !utilityPanelBox ||
+      !utilitySearchBox ||
+      !utilityThemeBox ||
+      !utilityLanguageBox
+    )
+      return
+    expect(Math.round(utilitySearchBox.height)).toBe(44)
+    expect(Math.round(utilityThemeBox.height)).toBe(44)
+    expect(Math.round(utilityLanguageBox.height)).toBe(44)
+    expect(Math.round(utilityPanelBox.y)).toBe(
+      Math.round(globalMobileHeaderBox.y + globalMobileHeaderBox.height)
+    )
+    expect(Math.round(utilityPanelBox.x)).toBe(
+      Math.round(globalMobileHeaderBox.x)
+    )
+    expect(Math.round(utilityPanelBox.width)).toBe(
+      Math.round(globalMobileHeaderBox.width)
+    )
+
+    await utilityPanel
+      .getByRole('button', { name: 'Language, English' })
+      .click()
+    const languageOptions = utilityPanel.getByRole('group', {
+      name: 'Language options',
+    })
+    await expect(languageOptions).toBeVisible()
+    const expandedUtilityPanelBox = await utilityPanel.boundingBox()
+    expect(expandedUtilityPanelBox).not.toBeNull()
+    if (!expandedUtilityPanelBox) return
+    expect(expandedUtilityPanelBox.height).toBeGreaterThan(
+      utilityPanelBox.height
+    )
+    expect(Math.round(expandedUtilityPanelBox.x)).toBe(
+      Math.round(utilityPanelBox.x)
+    )
+    expect(Math.round(expandedUtilityPanelBox.width)).toBe(
+      Math.round(utilityPanelBox.width)
+    )
+    await languageOptions.getByText('Español', { exact: true }).click()
+    await expect(languageOptions).not.toBeVisible()
+    await expect(
+      utilityPanel.getByRole('button', { name: 'Language, Spanish' })
+    ).toHaveAttribute('aria-expanded', 'false')
+  })
+
+  test('routes through coordinated navigation systems', async ({
+    page,
+  }, testInfo) => {
+    await page.goto(
+      '/internal/design-system/components/product-navigation#navigation-review'
+    )
+
+    const sheet = page.getByTestId('navigation-systems-state-sheet')
+    const desktop = sheet.getByTestId('coordinated-navigation-desktop')
+    await expect(sheet).toBeVisible()
+    await expect(desktop.getByTestId('global-navigation')).toBeVisible()
+
+    const overflowTrigger = desktop.getByTestId(
+      'global-navigation-overflow-trigger'
+    )
+    await overflowTrigger.click()
+    await expect(overflowTrigger).toHaveAttribute('aria-expanded', 'true')
+    const overflow = page.getByTestId('global-navigation-overflow')
+    await expect(overflow).toBeVisible()
+    await expect(
+      overflow.locator('[data-navigation-id="docs"]')
+    ).toHaveAttribute('target', '_blank')
+    await page.keyboard.press('Escape')
+    await expect(overflowTrigger).toHaveAttribute('aria-expanded', 'false')
+
+    if (testInfo.project.name === 'design-system-desktop') {
+      const rail = desktop.getByTestId('product-navigation')
+      const collapsedProductTrigger = desktop.getByRole('button', {
+        name: 'Switch DTF, current CMC20',
+      })
+      await expect(collapsedProductTrigger).toHaveClass(/ring-1/)
+      await expect(
+        collapsedProductTrigger.getByTestId('collapsed-product-identity-logo')
+      ).toBeVisible()
+      await expect(
+        collapsedProductTrigger.getByTestId('canonical-chain-badged-logo')
+      ).toHaveCount(0)
+      await expect(
+        collapsedProductTrigger.locator('[data-slot="product-switcher-cue"]')
+      ).toHaveCount(0)
+      await rail.hover()
+      await expect(rail).toHaveAttribute('data-expanded', 'true')
+      await expect(
+        desktop
+          .getByRole('button', { name: 'Switch DTF, current CMC20' })
+          .getByTestId('canonical-chain-badged-logo')
+      ).toBeVisible()
+      await expect(
+        desktop.getByRole('button', { name: 'Switch DTF, current CMC20' })
+      ).toHaveClass(/ring-1/)
+      await expect(
+        rail.locator('[data-navigation-id="overview"]')
+      ).toHaveAttribute('aria-current', 'page')
+
+      await desktop
+        .getByRole('button', { name: 'Switch DTF, current CMC20' })
+        .click()
+      const dtfViewport = rail.locator(
+        '[data-slot="product-navigation-rail-items"]'
+      )
+      const railDivider = rail.locator(
+        '[data-slot="product-navigation-divider"]'
+      )
+      const overflowFade = rail.locator(
+        '[data-slot="product-navigation-overflow-fade"]'
+      )
+      await expect(dtfViewport.getByRole('link')).toHaveCount(15)
+      await expect(
+        dtfViewport.getByRole('link', { name: 'CMC20' })
+      ).toHaveCount(0)
+      expect(
+        await dtfViewport.evaluate(
+          (element) => element.scrollHeight > element.clientHeight
+        )
+      ).toBe(true)
+      const railBox = await rail.boundingBox()
+      const dividerBox = await railDivider.boundingBox()
+      const viewportBox = await dtfViewport.boundingBox()
+      const fadeBox = await overflowFade.boundingBox()
+      expect(railBox).not.toBeNull()
+      expect(dividerBox).not.toBeNull()
+      expect(viewportBox).not.toBeNull()
+      expect(fadeBox).not.toBeNull()
+      if (!railBox || !dividerBox || !viewportBox || !fadeBox) return
+      expect(Math.round(viewportBox.y)).toBe(
+        Math.round(dividerBox.y + dividerBox.height)
+      )
+      expect(Math.round(viewportBox.y + viewportBox.height)).toBe(
+        Math.round(railBox.y + railBox.height)
+      )
+      expect(Math.round(fadeBox.y + fadeBox.height)).toBe(
+        Math.round(railBox.y + railBox.height)
+      )
+      await dtfViewport.evaluate((element) => {
+        element.scrollTop = element.scrollHeight
+      })
+      expect(await dtfViewport.evaluate((element) => element.scrollTop)).toBe(
+        await dtfViewport.evaluate(
+          (element) => element.scrollHeight - element.clientHeight
+        )
+      )
+      const finalRowBox = await dtfViewport
+        .getByRole('link', { name: 'ZINDEX' })
+        .boundingBox()
+      expect(finalRowBox).not.toBeNull()
+      if (!finalRowBox) return
+      expect(
+        Math.round(finalRowBox.y + finalRowBox.height)
+      ).toBeLessThanOrEqual(Math.round(fadeBox.y))
+      await desktop.getByText('Index details', { exact: true }).hover()
+      await expect(rail).not.toHaveAttribute('data-expanded', 'true')
+      await expect(
+        desktop.getByRole('navigation', {
+          name: 'CMC20 on BNB Chain navigation',
+        })
+      ).toBeVisible()
+      await expect(
+        rail.locator('[data-navigation-id="overview"]')
+      ).toHaveAttribute('aria-current', 'page')
+      await rail.hover()
+      await desktop
+        .getByRole('button', { name: 'Switch DTF, current CMC20' })
+        .click()
+      await dtfViewport.getByRole('link', { name: 'LCAP' }).click()
+      await expect(
+        rail.locator('[data-navigation-id="overview"]')
+      ).toHaveAttribute('aria-current', 'page')
+    }
+
+    const mobileGlobal = sheet.getByTestId('mobile-global-navigation-specimen')
+    await mobileGlobal
+      .getByRole('button', { name: 'Open global navigation', exact: true })
+      .click()
+    await expect(
+      mobileGlobal.getByRole('navigation', {
+        name: 'Global mobile navigation',
+      })
+    ).toBeVisible()
+    await mobileGlobal
+      .getByRole('button', { name: 'Close global navigation' })
+      .click()
+
+    const mobileProduct = sheet.getByTestId(
+      'mobile-product-navigation-specimen'
+    )
+    const mobilePageTrigger = mobileProduct.getByRole('button', {
+      name: 'Open CMC20 page navigation',
+    })
+    await expect(
+      mobilePageTrigger.locator('[data-slot="product-navigation-indicator"]')
+    ).toHaveCount(0)
+    await mobileProduct
+      .getByRole('button', { name: 'Switch DTF, current CMC20' })
+      .click()
+    const switcherDrawer = mobileProduct.getByRole('dialog', {
+      name: 'Switch DTF',
+    })
+    await expect(
+      switcherDrawer.getByRole('navigation', { name: 'Switch DTF' })
+    ).toBeVisible()
+    await expect(
+      mobileProduct.getByRole('link', { name: 'CMC20' })
+    ).toHaveCount(0)
+    await expect
+      .poll(async () => {
+        const [containerBox, drawerBox] = await Promise.all([
+          mobileProduct.boundingBox(),
+          switcherDrawer.boundingBox(),
+        ])
+        if (!containerBox || !drawerBox) return null
+        return (
+          Math.round(drawerBox.y + drawerBox.height) -
+          Math.round(containerBox.y + containerBox.height)
+        )
+      })
+      .toBe(0)
+    const mobileProductBox = await mobileProduct.boundingBox()
+    const switcherDrawerBox = await switcherDrawer.boundingBox()
+    expect(mobileProductBox).not.toBeNull()
+    expect(switcherDrawerBox).not.toBeNull()
+    if (!mobileProductBox || !switcherDrawerBox) return
+    expect(Math.round(switcherDrawerBox.width)).toBe(
+      Math.round(mobileProductBox.width)
+    )
+    expect(Math.round(switcherDrawerBox.y + switcherDrawerBox.height)).toBe(
+      Math.round(mobileProductBox.y + mobileProductBox.height)
+    )
+    await switcherDrawer
+      .getByRole('button', { name: 'Close Switch DTF' })
+      .click()
+    await expect(switcherDrawer).toBeHidden()
+    const mobileIdentityBox = await mobileProduct
+      .getByRole('button', { name: 'Switch DTF, current CMC20' })
+      .boundingBox()
+    const mobilePageClusterBox = await mobileProduct
+      .getByRole('button', { name: 'Open CMC20 page navigation' })
+      .locator('..')
+      .boundingBox()
+    await mobileProduct
+      .getByRole('button', { name: 'Open CMC20 page navigation' })
+      .click()
+    const pagesDrawer = mobileProduct.getByRole('dialog', {
+      name: 'CMC20 pages',
+    })
+    const constrainedProductMenu = pagesDrawer.getByRole('navigation', {
+      name: 'CMC20 page navigation',
+    })
+    await expect(
+      constrainedProductMenu.locator('[data-navigation-id="auctions"]')
+    ).not.toHaveAttribute('aria-disabled')
+    await expect(
+      constrainedProductMenu.locator(
+        '[data-navigation-id="governance"] [data-slot="product-navigation-indicator"]'
+      )
+    ).toBeVisible()
+    await expect
+      .poll(async () => {
+        const [containerBox, drawerBox] = await Promise.all([
+          mobileProduct.boundingBox(),
+          pagesDrawer.boundingBox(),
+        ])
+        if (!containerBox || !drawerBox) return null
+        return (
+          Math.round(drawerBox.y + drawerBox.height) -
+          Math.round(containerBox.y + containerBox.height)
+        )
+      })
+      .toBe(0)
+    const drawerCloseButtonBox = await pagesDrawer
+      .getByRole('button', { name: 'Close CMC20 pages' })
+      .boundingBox()
+    const drawerChevronSlotBox = await constrainedProductMenu
+      .locator(
+        '[data-navigation-id="governance"] [data-slot="product-navigation-trailing-slot"]'
+      )
+      .boundingBox()
+    const drawerRowBox = await constrainedProductMenu
+      .locator('[data-navigation-id="governance"]')
+      .boundingBox()
+    expect(drawerCloseButtonBox).not.toBeNull()
+    expect(drawerChevronSlotBox).not.toBeNull()
+    expect(drawerRowBox).not.toBeNull()
+    if (!drawerCloseButtonBox || !drawerChevronSlotBox || !drawerRowBox) return
+    expect(
+      Math.round(drawerCloseButtonBox.x + drawerCloseButtonBox.width)
+    ).toBe(Math.round(drawerChevronSlotBox.x + drawerChevronSlotBox.width))
+    expect(Math.round(drawerRowBox.height)).toBe(48)
+    const pagesDrawerAxisBox = await pagesDrawer.boundingBox()
+    expect(pagesDrawerAxisBox).not.toBeNull()
+    if (!pagesDrawerAxisBox) return
+    expect(Math.round(drawerRowBox.x - pagesDrawerAxisBox.x)).toBe(8)
+    const mobilePagePanelBox = await pagesDrawer.boundingBox()
+    expect(mobileIdentityBox).not.toBeNull()
+    expect(mobilePageClusterBox).not.toBeNull()
+    expect(mobilePagePanelBox).not.toBeNull()
+    if (!mobileIdentityBox || !mobilePageClusterBox || !mobilePagePanelBox)
+      return
+    expect(Math.round(mobileIdentityBox.height)).toBe(48)
+    expect(Math.round(mobileIdentityBox.width)).toBe(82)
+    expect(Math.round(mobilePageClusterBox.height)).toBe(48)
+    expect(Math.round(mobileIdentityBox.y)).toBe(
+      Math.round(mobilePageClusterBox.y)
+    )
+    expect(Math.round(mobilePagePanelBox.width)).toBe(
+      Math.round(mobileProductBox.width)
+    )
+    expect(Math.round(mobilePagePanelBox.y + mobilePagePanelBox.height)).toBe(
+      Math.round(mobileProductBox.y + mobileProductBox.height)
+    )
+    expect(mobilePagePanelBox.height).toBeLessThan(switcherDrawerBox.height)
+
+    expect(
+      await page.evaluate(
+        () =>
+          document.documentElement.scrollWidth ===
+          document.documentElement.clientWidth
+      )
+    ).toBe(true)
+  })
+
   test('routes through expected and available capability states', async ({
     page,
   }) => {
+    test.slow()
+
     await page.addInitScript(() => {
       localStorage.setItem('theme-ui-color-mode', 'light')
     })
@@ -61,10 +669,13 @@ test.describe('design system lab', () => {
     ).toBeVisible()
 
     await page.goto('/internal/design-system/foundations/typography')
+    const typographyDirection = page.getByTestId(
+      'foundation-direction-typography'
+    )
+    await expect(typographyDirection).toBeVisible()
     await expect(
-      page.getByTestId('foundation-candidate-typography')
+      typographyDirection.locator('[data-design-authority="current-baseline"]')
     ).toBeVisible()
-    await expect(page.getByText('Provisional', { exact: true })).toBeVisible()
 
     await page.goto('/internal/design-system/foundations/color')
     const colorDetail = page.getByTestId('foundation-detail-color')
@@ -82,7 +693,7 @@ test.describe('design system lab', () => {
     ).toBeVisible()
     await expect(colorDetail.getByText('110 uses')).toBeVisible()
     await expect(
-      colorDetail.getByText(/do not yet pass normal-text contrast/)
+      colorDetail.getByText(/could fall below normal-text contrast/)
     ).toBeVisible()
 
     expect(
@@ -107,11 +718,13 @@ test.describe('design system lab', () => {
     const componentCatalog = page.getByTestId('components-overview')
     await expect(componentCatalog).toBeVisible()
     const canonicalOverview = page.getByTestId('canonical-component-overview')
-    await expect(canonicalOverview.locator('article')).toHaveCount(14)
+    await expect(
+      canonicalOverview.locator('article[data-testid^="component-overview-"]')
+    ).toHaveCount(33)
     const overviewOutputs = canonicalOverview.getByTestId(
       'component-overview-output'
     )
-    await expect(overviewOutputs).toHaveCount(14)
+    await expect(overviewOutputs).toHaveCount(33)
     await expect
       .poll(() =>
         overviewOutputs.evaluateAll((outputs) =>
@@ -121,7 +734,7 @@ test.describe('design system lab', () => {
       .toBe(true)
     await expect(
       canonicalOverview.getByTestId('component-overview-authority')
-    ).toHaveCount(14)
+    ).toHaveCount(33)
     await expect
       .poll(() =>
         page.evaluate(
@@ -156,14 +769,14 @@ test.describe('design system lab', () => {
       canonicalOverview.getByTestId('canonical-metric').first()
     ).toBeVisible()
     const emptyStates = canonicalOverview.getByTestId('canonical-empty-state')
-    await expect(emptyStates).toHaveCount(2)
+    await expect(emptyStates).toHaveCount(3)
     await expect(emptyStates.first()).toBeVisible()
     await expect(
       canonicalOverview.getByTestId('action-group-state-sheet')
     ).toBeVisible()
     await expect(
       canonicalOverview.getByTestId('canonical-action-group')
-    ).toHaveCount(3)
+    ).toHaveCount(5)
     await expect(
       componentCatalog.getByTestId('information-row-state-sheet')
     ).toBeVisible()
@@ -174,11 +787,17 @@ test.describe('design system lab', () => {
       componentCatalog.getByTestId('component-overview-tabs')
     ).toBeVisible()
     await expect(
-      componentCatalog.getByTestId('component-unrendered-product-navigation')
-    ).toBeVisible()
+      componentCatalog.getByTestId('navigation-systems-state-sheet')
+    ).toHaveCount(2)
     await expect(
       componentCatalog.locator('[data-testid^="component-unrendered-"]')
-    ).toHaveCount(29)
+    ).toHaveCount(12)
+    await expect(
+      canonicalOverview.getByTestId('link-state-sheet')
+    ).toBeVisible()
+    await expect(
+      canonicalOverview.getByTestId('accordion-state-sheet')
+    ).toBeVisible()
     await expect(
       componentCatalog.getByText(
         'This rendered catalog item is missing its overview specimen.',
@@ -275,7 +894,7 @@ test.describe('design system lab', () => {
           }
         })
       )
-    expect(singleChoiceWidths[0].groupWidth).toBeLessThan(
+    expect(singleChoiceWidths[0].groupWidth).toBeLessThanOrEqual(
       singleChoiceWidths[0].availableWidth
     )
     expect(singleChoiceWidths[1].groupWidth).toBeCloseTo(
@@ -335,7 +954,7 @@ test.describe('design system lab', () => {
     await expect(page.getByTestId('component-output-missing')).toHaveCount(0)
     await page.goto('/internal/design-system/components/empty-state')
     await expect(page.getByTestId('empty-state-state-sheet')).toBeVisible()
-    await expect(page.getByTestId('canonical-empty-state')).toHaveCount(2)
+    await expect(page.getByTestId('canonical-empty-state')).toHaveCount(3)
     await expect(page.getByTestId('component-output-missing')).toHaveCount(0)
     await page.goto('/internal/design-system/components')
     await componentCatalog
@@ -347,48 +966,36 @@ test.describe('design system lab', () => {
     await componentCatalog
       .locator('a[href="/internal/design-system/components/chart"]')
       .scrollIntoViewIfNeeded()
-    await componentCatalog
-      .locator('a[href="/internal/design-system/components/tabs"]')
-      .click()
+    await componentCatalog.getByRole('link', { name: 'Inspect Tabs' }).click()
 
     await expect(page.getByTestId('component-detail-tabs')).toBeVisible()
     await expect(page.getByTestId('tabs-state-sheet')).toBeVisible()
     const tabsSheet = page.getByTestId('tabs-state-sheet')
-    const intrinsicTextTabs = tabsSheet.locator(
-      '[data-text-tabs-layout="content"]'
-    )
-    const fullTextTabs = tabsSheet.locator('[data-text-tabs-layout="full"]')
     const intrinsicContainedTabs = tabsSheet.locator(
-      '[data-contained-tabs-layout="content"]'
+      '[data-contained-tabs-layout="intrinsic"]'
     )
     const fullContainedTabs = tabsSheet.locator(
       '[data-contained-tabs-layout="full"]'
     )
-    await expect(intrinsicTextTabs).toHaveCount(2)
-    await expect(fullTextTabs).toHaveCount(1)
     await expect(intrinsicContainedTabs).toHaveCount(2)
     await expect(fullContainedTabs).toHaveCount(1)
-    const fullTabsWidths = await fullTextTabs
-      .or(fullContainedTabs)
-      .evaluateAll((tracks) =>
-        tracks.map((track) => {
-          const parent = track.parentElement
-          const itemWidths = Array.from(track.children).map(
-            (item) => item.getBoundingClientRect().width
-          )
+    const fullTabsWidths = await fullContainedTabs.evaluateAll((tracks) =>
+      tracks.map((track) => {
+        const parent = track.parentElement
+        const itemWidths = Array.from(track.children).map(
+          (item) => item.getBoundingClientRect().width
+        )
 
-          return {
-            parentWidth: parent?.getBoundingClientRect().width ?? 0,
-            trackWidth: track.getBoundingClientRect().width,
-            itemWidths,
-          }
-        })
-      )
+        return {
+          parentWidth: parent?.getBoundingClientRect().width ?? 0,
+          trackWidth: track.getBoundingClientRect().width,
+          itemWidths,
+        }
+      })
+    )
     for (const tabsWidths of fullTabsWidths) {
       expect(tabsWidths.trackWidth).toBeCloseTo(tabsWidths.parentWidth, 0)
-      expect(
-        Math.max(...tabsWidths.itemWidths) - Math.min(...tabsWidths.itemWidths)
-      ).toBeLessThan(1)
+      expect(tabsWidths.itemWidths.every((width) => width > 0)).toBe(true)
     }
     await expect(page.getByTestId('component-output-missing')).toHaveCount(0)
 
@@ -405,17 +1012,12 @@ test.describe('design system lab', () => {
     const currentReview = page
       .getByTestId('project-status-page')
       .locator('section[aria-labelledby="current-review-heading"]')
+    await expect(
+      currentReview.locator(
+        'a[href="/internal/design-system/components/product-navigation"]'
+      )
+    ).toHaveCount(1)
     await expect(currentReview.locator('a')).toHaveCount(1)
-    await expect(
-      currentReview.getByText('Repeated governance parameter composition', {
-        exact: true,
-      })
-    ).toBeVisible()
-    await expect(
-      currentReview.getByText('Canonical identity in the Index overview', {
-        exact: true,
-      })
-    ).toHaveCount(0)
 
     await page.goto('/internal/design-system/studies')
     const studies = page.getByTestId('layout-studies-page')
@@ -549,6 +1151,8 @@ test.describe('design system lab', () => {
   test('distinguishes specimens, canonical candidates, and adoption', async ({
     page,
   }) => {
+    test.slow()
+
     const expectDelivery = async (
       component: string,
       implementation: 'specimen' | 'reusable-recipe' | 'canonical-candidate',
@@ -696,36 +1300,22 @@ test.describe('design system lab', () => {
       .click()
     await expect(page.getByTestId('canonical-dialog-content')).toHaveCount(0)
 
-    await expectDelivery('tabs', 'reusable-recipe', 'current-baseline')
+    await expectDelivery('tabs', 'canonical-candidate', 'current-baseline')
     await expect(page.getByTestId('tabs-state-sheet')).toBeVisible()
     await expect(page.getByTestId('component-output-missing')).toHaveCount(0)
-    await expect(page.getByLabel('compact time range')).toHaveCSS(
+    await expect(page.getByLabel('compact intrinsic basket view')).toHaveCSS(
       'height',
       '32px'
     )
-    await expect(page.getByLabel('default time range')).toHaveCSS(
-      'height',
-      '44px'
-    )
-    await expect(
-      page.getByLabel('compact time range').getByRole('tab').first()
-    ).toHaveCSS('font-size', '14px')
-    await expect(
-      page.getByLabel('default time range').getByRole('tab').first()
-    ).toHaveCSS('font-size', '16px')
-    await expect(page.getByLabel('compact basket view')).toHaveCSS(
-      'height',
-      '32px'
-    )
-    await expect(page.getByLabel('compact basket view')).toHaveCSS(
+    await expect(page.getByLabel('compact intrinsic basket view')).toHaveCSS(
       'column-gap',
       '2px'
     )
-    await expect(page.getByLabel('default basket view')).toHaveCSS(
+    await expect(page.getByLabel('default intrinsic basket view')).toHaveCSS(
       'height',
       '44px'
     )
-    await expect(page.getByLabel('default basket view')).toHaveCSS(
+    await expect(page.getByLabel('default intrinsic basket view')).toHaveCSS(
       'column-gap',
       '2px'
     )

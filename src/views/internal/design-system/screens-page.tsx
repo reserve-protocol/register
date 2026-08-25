@@ -21,10 +21,10 @@ const ScreensPage = () => (
             <div className="flex items-start justify-between gap-3">
               <h2 className="font-semibold">{item.name}</h2>
             </div>
-            <p className="mt-2 text-sm leading-6 text-muted-foreground">
+            <p className="mt-2 text-sm leading-5 text-muted-foreground">
               {item.note}
             </p>
-            <p className="mt-4 text-sm leading-6">{item.testingRole}</p>
+            <p className="mt-4 text-sm leading-5">{item.testingRole}</p>
             {item.constraint && (
               <p className="mt-3 rounded-xl bg-muted p-3 text-xs leading-5 text-muted-foreground">
                 {item.constraint}

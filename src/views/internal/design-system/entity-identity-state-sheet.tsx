@@ -41,7 +41,7 @@ const EntityIdentityStateSheet = () => (
       >
         Canonical candidate
       </h2>
-      <p className="mt-1 max-w-3xl text-sm font-light leading-6 text-muted-foreground">
+      <p className="mt-1 max-w-3xl text-sm font-light leading-5 text-muted-foreground">
         Actual shared implementations extracted from strong Index DTF usage. The
         mark owns its geometry and surface separation; the parent row still owns
         padding, selection, and interaction.
@@ -141,7 +141,7 @@ const EntityIdentityStateSheet = () => (
       </CandidateCell>
     </div>
 
-    <p className="border border-border bg-card p-4 text-sm font-light leading-6 text-muted-foreground">
+    <p className="border border-border bg-card p-4 text-sm font-light leading-5 text-muted-foreground">
       The same anatomy now survives long names, the existing deterministic logo
       fallback, token stacks, and account marks without absorbing their domain
       logic. The Table detail page supplies the remaining dense real-product

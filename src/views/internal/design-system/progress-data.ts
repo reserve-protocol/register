@@ -1,4 +1,4 @@
-import { COMPONENT_GROUPS, getComponentItem } from './component-catalog'
+import { COMPONENT_GROUPS } from './component-catalog'
 import { FOUNDATION_ITEMS } from './foundation-catalog'
 import { GOLDEN_SCREEN_CANDIDATES } from './golden-screen-candidates'
 
@@ -102,17 +102,4 @@ export const PROGRESS_GROUPS: ProgressGroup[] = [
   },
 ]
 
-export const COMPONENT_WORK_QUEUE = [
-  getComponentItem('radio-group').item,
-  getComponentItem('input').item,
-  getComponentItem('button-group').item,
-].flatMap((item) =>
-  item
-    ? [
-        {
-          name: item.name,
-          detail: item.nextAction,
-        },
-      ]
-    : []
-)
+export const COMPONENT_WORK_QUEUE: { name: string; detail: string }[] = []

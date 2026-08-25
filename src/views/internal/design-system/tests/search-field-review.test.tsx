@@ -2,7 +2,10 @@ import { fireEvent, render, screen } from '@testing-library/react'
 import { useState } from 'react'
 import { describe, expect, it } from 'vitest'
 
-import { SearchField } from '@/components/design-system-v1/search-field'
+import {
+  SearchField,
+  SearchFieldLauncher,
+} from '@/components/design-system-v1/search-field'
 
 const ClearableSearch = () => {
   const [value, setValue] = useState('ethereum')
@@ -57,5 +60,17 @@ describe('V1 SearchField candidate', () => {
     expect(
       screen.queryByRole('button', { name: 'Clear search' })
     ).not.toBeInTheDocument()
+  })
+
+  it('offers the same field language with truthful button semantics when search opens elsewhere', () => {
+    render(<SearchFieldLauncher>Search DTFs</SearchFieldLauncher>)
+
+    const launcher = screen.getByRole('button', { name: 'Search DTFs' })
+    expect(launcher).toHaveAttribute(
+      'data-testid',
+      'canonical-search-field-launcher'
+    )
+    expect(launcher).toHaveAttribute('aria-haspopup', 'dialog')
+    expect(launcher).toHaveClass('h-11', 'rounded-full')
   })
 })

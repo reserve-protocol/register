@@ -1,6 +1,6 @@
 import { Button } from '@/components/button'
 import { EmptyState } from '@/components/empty-state'
-import { MessageCirclePlus, MessageSquare } from 'lucide-react'
+import { PackageOpen } from 'lucide-react'
 
 const EmptyStateStateSheet = () => (
   <section
@@ -10,38 +10,52 @@ const EmptyStateStateSheet = () => (
   >
     <div>
       <h2 id="empty-state-state-sheet-title" className="text-xl font-medium">
-        Canonical candidate
+        Accepted current baseline
       </h2>
-      <p className="mt-1 max-w-3xl text-sm font-light leading-6 text-muted-foreground">
-        Empty state owns absence hierarchy only. The table, picker, or page
-        region owns its available height, surface, and framing.
+      <p className="mt-1 max-w-3xl text-sm font-light leading-5 text-muted-foreground">
+        Judge the shared hierarchy for quiet and actionable absence. The token
+        picker supplies real evidence for the actionable role; host framing and
+        its specific request channels are not part of the primitive. The
+        optional icon is independent of mode and action count; one specimen
+        shows it only to avoid repeating every combination.
       </p>
     </div>
 
-    <div className="grid gap-0.5 bg-secondary p-0.5 xl:grid-cols-2">
-      <CandidateCell label="Quiet absence">
-        <EmptyState title="No proposals found" />
+    <div className="grid gap-0.5 bg-secondary p-0.5">
+      <CandidateCell label="Quiet table absence">
+        <EmptyState className="w-full" title="No proposals found" />
       </CandidateCell>
-      <CandidateCell label="User-resolvable absence">
+      <CandidateCell label="Actionable absence">
         <EmptyState
+          className="w-full"
           mode="actionable"
           title="No tokens found"
-          description="Would you like us to add support for this token?"
+          description="Request a token through Canny, or message us on Telegram."
           actions={
             <>
-              <Button tone="secondary" leadingIcon={<MessageCirclePlus />}>
-                Request on Canny
+              <Button size="compact" tone="secondary">
+                Open Canny
               </Button>
-              <Button tone="secondary" leadingIcon={<MessageSquare />}>
-                Message us on Telegram
+              <Button size="compact" tone="secondary">
+                Open Telegram
               </Button>
             </>
           }
         />
       </CandidateCell>
+      <CandidateCell label="Single primary action · icon shown">
+        <EmptyState
+          className="w-full"
+          mode="actionable"
+          icon={<PackageOpen />}
+          title="No tokens in basket"
+          description="An Index DTF is a tokenized basket of assets. Add the tokens that will compose your basket at launch."
+          actions={<Button size="compact">Add token</Button>}
+        />
+      </CandidateCell>
     </div>
 
-    <p className="border border-border bg-card p-4 text-sm font-light leading-6 text-muted-foreground">
+    <p className="border border-border bg-card p-4 text-sm font-light leading-5 text-muted-foreground">
       Illustration is intentionally absent from this contract. A small set of
       meaningful first-use or milestone states may earn bespoke artwork after
       visual review; routine no-results states do not.

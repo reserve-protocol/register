@@ -24,7 +24,7 @@ export const ProgressiveWorkflowStudy = () => (
         </div>
       </WorkflowStage>
     </div>
-    <div className="border-t border-secondary p-5 text-sm font-light leading-6 text-muted-foreground">
+    <div className="border-t border-secondary p-5 text-sm font-light leading-5 text-muted-foreground">
       Apply the same logic to proposal creation: a focused intent choice can be
       valid, then expand when form and review must coexist. Do not force the
       wider shell merely to make every step geometrically identical.

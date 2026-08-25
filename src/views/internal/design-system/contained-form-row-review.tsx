@@ -30,7 +30,7 @@ const ContainedFormRowReview = ({
           >
             Ordinary field stack
           </h2>
-          <p className="mt-1 max-w-3xl text-sm font-light leading-6 text-muted-foreground">
+          <p className="mt-1 max-w-3xl text-sm font-light leading-5 text-muted-foreground">
             The label and control share one outer axis. Label, control, help,
             and validation use the accepted 8px related-content relationship;
             complete fields use 24px. One-row controls are fully rounded, while
@@ -110,7 +110,7 @@ const ContainedFormRowReview = ({
         <h2 id="complex-field-group-title" className="mt-1 text-2xl font-light">
           Repeated governance parameters
         </h2>
-        <p className="mt-1 max-w-3xl text-sm font-light leading-6 text-muted-foreground">
+        <p className="mt-1 max-w-3xl text-sm font-light leading-5 text-muted-foreground">
           Judge the unboxed hierarchy and density: does the accepted 24px
           complete-group rhythm separate repeated parameters clearly enough
           without dividers or the current stack of tinted mini-cards? The

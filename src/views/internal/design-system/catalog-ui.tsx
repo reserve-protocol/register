@@ -119,7 +119,7 @@ export const ComponentReviewReadiness = ({
   >
     <div className="flex flex-wrap items-center gap-2">
       <ComponentReviewBadge review={review} />
-      <p className="text-sm font-light leading-6 text-muted-foreground">
+      <p className="text-sm font-light leading-5 text-muted-foreground">
         {review.scope}
       </p>
     </div>
@@ -195,7 +195,7 @@ export const CatalogCard = ({
         <h3 className="font-semibold">{item.name}</h3>
         <ArrowRight className="h-4 w-4 shrink-0 text-muted-foreground transition-transform group-hover:translate-x-0.5" />
       </div>
-      <p className="mt-2 text-sm leading-6 text-muted-foreground">
+      <p className="mt-2 text-sm leading-5 text-muted-foreground">
         {item.description}
       </p>
     </div>
@@ -222,7 +222,7 @@ export const PageHeader = ({
     <div>
       <p className="text-sm font-medium text-primary">{eyebrow}</p>
       <h1 className="mt-1 text-3xl font-semibold tracking-tight">{title}</h1>
-      <p className="mt-3 max-w-3xl text-sm leading-6 text-muted-foreground">
+      <p className="mt-3 max-w-3xl text-sm leading-5 text-muted-foreground">
         {description}
       </p>
     </div>

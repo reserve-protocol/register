@@ -14,12 +14,12 @@ const REVIEWED_RULES = [
   {
     title: 'Interaction states',
     detail:
-      'Selection uses a quiet blue surface with a stronger blue indicator. Focus uses a context-matching inner gap and an outer ring. Disabled content stays structurally intact and explains why it is unavailable when needed.',
+      'Selection uses a quiet blue surface with a stronger blue indicator. Filled actions use opaque theme-derived hover and pressed surfaces so their color does not depend on the host background. Focus uses a context-matching inner gap and an outer ring. Disabled content stays structurally intact and explains why it is unavailable when needed.',
   },
   {
     title: 'Feedback family',
     detail:
-      'Success, warning, danger, and information use vivid main colors with dark icon foregrounds and quiet opaque derived surfaces. These preserve their white-card appearance without mixing with a selected parent surface. Information is a brighter relative of the deeper brand/action blue.',
+      'Success, warning, danger, and information use vivid main colors, calibrated semantic foregrounds, and quiet opaque derived surfaces. These preserve their white-card appearance without mixing with a selected parent surface. Information is a brighter relative of the deeper brand/action blue.',
   },
   {
     title: 'Financial movement',
@@ -29,13 +29,12 @@ const REVIEWED_RULES = [
   {
     title: 'Foreground hierarchy',
     detail:
-      'V1 starts with primary and supporting neutral foregrounds. Disabled content may reuse the supporting role until component studies prove that a consistently quieter alias is necessary.',
+      'V1 starts with primary and supporting neutral foregrounds. The supporting alias is calibrated for light muted surfaces while retaining its existing dark-theme value. Disabled content may reuse that role until component studies prove that a consistently quieter alias is necessary.',
   },
 ] as const
 
 const OPEN_ITEMS = [
-  'Final cross-theme tuning of the information blue and semantic foreground contrast',
-  'Exact primary, selected, focus-ring, divider, and overlay values',
+  'Real-screen pressure testing of brand, accent, selection, focus, and overlay values',
   'When feedback indicators should be filled, outlined, or text-only',
   'Categorical chart colors when a real multi-series product need appears',
 ] as const
@@ -47,13 +46,14 @@ const ColorFoundationDefinition = () => (
         <h2 id="color-definition-heading" className="text-xl font-semibold">
           V1 definition
         </h2>
-        <p className="mt-1 max-w-3xl text-sm leading-6 text-muted-foreground">
-          The visual and semantic direction reviewed in the lab. These rules are
-          accepted working constraints; exact token values remain open.
+        <p className="mt-1 max-w-3xl text-sm leading-5 text-muted-foreground">
+          The reviewed semantic roles and contrast calibration are the current
+          working baseline. Complex screens may still justify evidence-based
+          value refinements before production migration.
         </p>
       </div>
       <span className="w-fit rounded-full bg-[var(--feedback-success-surface)] px-2.5 py-1 text-xs font-medium text-foreground ring-1 ring-inset ring-[var(--feedback-success-border)]">
-        Direction reviewed
+        Current baseline
       </span>
     </div>
 
@@ -77,9 +77,9 @@ const ColorFoundationDefinition = () => (
     <div className="rounded-2xl border border-dashed border-border bg-card/50 p-5">
       <div className="flex items-center gap-2">
         <CircleDashed className="h-4 w-4 text-muted-foreground" />
-        <h3 className="font-semibold">Still open before final tokenization</h3>
+        <h3 className="font-semibold">Still open in real-screen adoption</h3>
       </div>
-      <ul className="mt-3 grid gap-2 text-sm leading-6 text-muted-foreground md:grid-cols-2">
+      <ul className="mt-3 grid gap-2 text-sm leading-5 text-muted-foreground md:grid-cols-2">
         {OPEN_ITEMS.map((item) => (
           <li key={item} className="flex gap-2">
             <span

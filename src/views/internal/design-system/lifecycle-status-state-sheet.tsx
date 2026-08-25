@@ -60,7 +60,7 @@ const LifecycleStatusStateSheet = () => (
       <h2 className="mt-1 text-xl font-medium text-foreground">
         Lifecycle status roles
       </h2>
-      <p className="mt-1 max-w-3xl text-sm font-light leading-6 text-muted-foreground">
+      <p className="mt-1 max-w-3xl text-sm font-light leading-5 text-muted-foreground">
         One shared 24px status anatomy communicates process meaning through its
         label, tone, optional indicator, and restrained motion. Category labels,
         counts, and removable chips remain separate unresolved jobs.

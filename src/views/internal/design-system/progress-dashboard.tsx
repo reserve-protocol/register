@@ -99,21 +99,28 @@ const ProgressDashboard = () => (
           <ListChecks className="h-4 w-4 text-primary" />
           <h3 className="font-semibold">Next component work</h3>
         </div>
-        <ol className="mt-4 space-y-4">
-          {COMPONENT_WORK_QUEUE.map((item, index) => (
-            <li key={item.name} className="flex gap-3">
-              <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary text-xs font-semibold text-primary-foreground">
-                {index + 1}
-              </span>
-              <div>
-                <p className="text-sm font-medium">{item.name}</p>
-                <p className="mt-1 text-xs leading-5 text-muted-foreground">
-                  {item.detail}
-                </p>
-              </div>
-            </li>
-          ))}
-        </ol>
+        {COMPONENT_WORK_QUEUE.length ? (
+          <ol className="mt-4 space-y-4">
+            {COMPONENT_WORK_QUEUE.map((item, index) => (
+              <li key={item.name} className="flex gap-3">
+                <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary text-xs font-semibold text-primary-foreground">
+                  {index + 1}
+                </span>
+                <div>
+                  <p className="text-sm font-medium">{item.name}</p>
+                  <p className="mt-1 text-xs leading-5 text-muted-foreground">
+                    {item.detail}
+                  </p>
+                </div>
+              </li>
+            ))}
+          </ol>
+        ) : (
+          <p className="mt-3 text-sm font-light leading-5 text-muted-foreground">
+            No component is ready to advance without first resolving its
+            source-grounded context or another prerequisite.
+          </p>
+        )}
       </aside>
     </div>
   </section>

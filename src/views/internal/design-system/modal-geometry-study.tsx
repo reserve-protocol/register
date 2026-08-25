@@ -85,7 +85,7 @@ const Heading = () => (
         Provisional
       </span>
     </div>
-    <p className="mt-1 max-w-3xl text-sm font-light leading-6 text-muted-foreground">
+    <p className="mt-1 max-w-3xl text-sm font-light leading-5 text-muted-foreground">
       Start with two deliberate widths rather than allowing every modal to size
       itself: one substantial task role and one genuinely compact role.
     </p>

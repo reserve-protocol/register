@@ -49,6 +49,8 @@ const config = {
         primary: {
           DEFAULT: 'hsl(var(--primary))',
           foreground: 'hsl(var(--primary-foreground))',
+          hover: 'var(--primary-hover)',
+          pressed: 'var(--primary-pressed)',
         },
         secondary: {
           DEFAULT: 'hsl(var(--secondary))',
@@ -57,6 +59,8 @@ const config = {
         destructive: {
           DEFAULT: 'hsl(var(--destructive))',
           foreground: 'hsl(var(--destructive-foreground))',
+          hover: 'var(--destructive-hover)',
+          pressed: 'var(--destructive-pressed)',
         },
         muted: {
           DEFAULT: 'hsl(var(--muted))',
@@ -65,6 +69,9 @@ const config = {
         mutedSecondary: {
           DEFAULT: 'hsl(var(--muted-secondary))',
           foreground: 'hsl(var(--muted-foreground))',
+        },
+        supporting: {
+          foreground: 'var(--supporting-foreground)',
         },
         accent: {
           DEFAULT: 'hsl(var(--accent))',
@@ -88,6 +95,17 @@ const config = {
         },
         warning: {
           DEFAULT: 'hsl(var(--warning))',
+        },
+        feedback: {
+          'information-foreground': 'var(--feedback-information-foreground)',
+          'success-foreground': 'var(--feedback-success-foreground)',
+          'warning-foreground': 'var(--feedback-warning-foreground)',
+          'danger-foreground': 'var(--feedback-danger-foreground)',
+        },
+        'destructive-action': {
+          DEFAULT: 'var(--destructive-action)',
+          hover: 'var(--destructive-action-hover)',
+          pressed: 'var(--destructive-action-pressed)',
         },
       },
       borderRadius: {
@@ -168,6 +186,8 @@ const config = {
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
         'accordion-up': 'accordion-up 0.2s ease-out',
+        'accordion-down-v1': 'accordion-down 180ms ease-out',
+        'accordion-up-v1': 'accordion-up 180ms ease-in',
         'fade-in': 'fade-in 0.5s ease-in-out 0s 1 forwards',
         'fade-out': 'fade-out 0.5s ease-in-out 0s 1 forwards',
         'dialog-in': 'fade-in 0.2s ease-out',

@@ -3,7 +3,7 @@ import { v1SemanticRecipes as roles } from '@/components/ui/v1-semantic-recipes'
 export const containedSelectionRecipe = {
   compact: {
     track: `h-8 max-w-full gap-0.5 overflow-x-auto rounded-full p-0.5 ${roles.surface.neutralControl}`,
-    item: 'flex h-7 items-center justify-center rounded-full px-3 text-sm font-medium transition-colors duration-120',
+    item: 'flex h-7 items-center justify-center whitespace-nowrap rounded-full px-3 text-sm font-medium transition-colors duration-120',
   },
   default: {
     track: `h-11 max-w-full gap-0.5 overflow-x-auto rounded-full p-0.5 ${roles.surface.neutralControl}`,

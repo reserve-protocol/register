@@ -1,11 +1,20 @@
 import { LoaderCircle, Search, X } from 'lucide-react'
-import { forwardRef, type MutableRefObject, type Ref, useRef } from 'react'
+import {
+  forwardRef,
+  type ButtonHTMLAttributes,
+  type MutableRefObject,
+  type ReactNode,
+  type Ref,
+  useRef,
+} from 'react'
 
 import { IconButton } from '@/components/icon-button'
 import {
   TextInput,
+  textInputRecipe,
   type TextInputProps,
 } from '@/components/design-system-v1/field'
+import { v1SemanticRecipes as roles } from '@/components/ui/v1-semantic-recipes'
 import { cn } from '@/lib/utils'
 
 export interface SearchFieldProps extends Omit<
@@ -88,3 +97,44 @@ export const SearchField = forwardRef<HTMLInputElement, SearchFieldProps>(
 )
 
 SearchField.displayName = 'SearchField'
+
+export interface SearchFieldLauncherProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+  children?: ReactNode
+}
+
+/**
+ * Search-shaped button for the established application pattern where the real
+ * query field and results live in a separate dialog. This preserves truthful
+ * button semantics while consuming the SearchField family's visual owner.
+ */
+export const SearchFieldLauncher = forwardRef<
+  HTMLButtonElement,
+  SearchFieldLauncherProps
+>(({ children = 'Search', className, type = 'button', ...props }, ref) => (
+  <button
+    ref={ref}
+    type={type}
+    aria-haspopup="dialog"
+    data-testid="canonical-search-field-launcher"
+    className={cn(
+      textInputRecipe.frame,
+      'cursor-pointer pl-[18px] pr-5 text-left hover:bg-muted',
+      className
+    )}
+    {...props}
+  >
+    <span className={cn(textInputRecipe.leading, roles.text.supporting)}>
+      <Search aria-hidden="true" strokeWidth={1.5} />
+    </span>
+    <span
+      className={cn(
+        textInputRecipe.text,
+        'truncate text-left text-muted-foreground'
+      )}
+    >
+      {children}
+    </span>
+  </button>
+))
+
+SearchFieldLauncher.displayName = 'SearchFieldLauncher'

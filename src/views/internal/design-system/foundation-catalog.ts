@@ -1,4 +1,4 @@
-import { openDefinitionSlots, type FoundationItem } from './catalog-types'
+import type { FoundationItem } from './catalog-types'
 
 export const FOUNDATION_ITEMS: FoundationItem[] = [
   {
@@ -7,17 +7,17 @@ export const FOUNDATION_ITEMS: FoundationItem[] = [
     description:
       'Semantic roles for surfaces, text, controls, intent, and data.',
     why: 'Color establishes hierarchy and meaning across themes without tying components to raw values.',
-    status: 'evidence-found',
+    status: 'defined',
     outputStatus: 'rendered',
-    designAuthority: 'exploratory',
+    designAuthority: 'current-baseline',
     statusDetail:
-      'Surface, interaction, feedback, performance, and foreground direction is reviewed; exact opaque token values and usage details remain open.',
+      'The reviewed semantic structure and cross-theme contrast calibration are the current working baseline; complex screens may still expose evidence-based refinements.',
     expectedDecisions: [
       {
         name: 'Brand and accent roles',
-        status: 'open',
+        status: 'defined',
         detail:
-          'Primary remains the deep brand/action blue and information derives from its hue; exact values remain open.',
+          'Primary remains the deep brand/action blue and information derives from its hue; later real-screen tuning must preserve those semantic roles.',
       },
       {
         name: 'Surface and text hierarchy',
@@ -33,9 +33,9 @@ export const FOUNDATION_ITEMS: FoundationItem[] = [
       },
       {
         name: 'Dark theme and contrast rules',
-        status: 'open',
+        status: 'defined',
         detail:
-          'Feedback foreground logic is established; final dark values and full component coverage remain open.',
+          'Components consume one semantic alias in both themes; the theme boundary owns tuned values, with full-screen pressure testing deferred to adoption.',
       },
     ],
   },
@@ -45,17 +45,37 @@ export const FOUNDATION_ITEMS: FoundationItem[] = [
     description:
       'Font families, hierarchy, weights, sizing, and data treatment.',
     why: 'A deliberate type system makes dense financial information readable and product hierarchy predictable.',
-    status: 'evidence-found',
+    status: 'defined',
     outputStatus: 'rendered',
-    designAuthority: 'exploratory',
+    designAuthority: 'current-baseline',
     statusDetail:
-      'Lausanne, recent product hierarchy, and the previous role matrix inform a structural proposal; the exact scale remains open.',
-    expectedDecisions: openDefinitionSlots(
-      'Font roles and available weights',
-      'Heading and body hierarchy',
-      'Labels, captions, and numeric data',
-      'Responsive and long-content behavior'
-    ),
+      'The reviewed role scale, 300/500 weight strategy, multiline rhythm, display-only phone exception, numeric treatment, and wrapping rules are the current baseline. Real product usage may still expose evidence-based refinements.',
+    expectedDecisions: [
+      {
+        name: 'Font roles and available weights',
+        status: 'defined',
+        detail:
+          'Use 300 for reading and ordinary hierarchy, 500 for structure and emphasis, and no routine role for the installed 700 weight.',
+      },
+      {
+        name: 'Heading and body hierarchy',
+        status: 'defined',
+        detail:
+          'Use the reviewed display, page, section, lead, panel, item, and body relationships according to their semantic jobs.',
+      },
+      {
+        name: 'Labels, captions, and numeric data',
+        status: 'defined',
+        detail:
+          'Use the 14px label/supporting roles, restricted 12px auxiliary exception, tabular financial numbers, and monospace identifiers.',
+      },
+      {
+        name: 'Responsive and long-content behavior',
+        status: 'defined',
+        detail:
+          'Keep application roles stable across breakpoints except the reviewed display-only phone step; use natural wrapping, readable measures, and narrow truncation boundaries.',
+      },
+    ],
   },
   {
     id: 'spacing',
@@ -101,17 +121,37 @@ export const FOUNDATION_ITEMS: FoundationItem[] = [
     description:
       'Corner treatments for controls, containers, overlays, and emphasis.',
     why: 'A small semantic radius set creates coherence and prevents arbitrary component-by-component rounding.',
-    status: 'evidence-found',
+    status: 'defined',
     outputStatus: 'rendered',
-    designAuthority: 'exploratory',
+    designAuthority: 'current-baseline',
     statusDetail:
-      'Atomic one-row controls are fully rounded; composite amount panels, multiline fields, menus, popovers, and thumbnails use the restrained contained-object role. Exact values remain open.',
-    expectedDecisions: openDefinitionSlots(
-      'Control radius',
-      'Container and card radius',
-      'Overlay radius',
-      'Pill and circular exceptions'
-    ),
+      'The semantic roles are accepted: structural surfaces, contained objects, atomic controls, and layout-owned reveals. The current 0 / 8 / full mapping is a working baseline that complex screens may refine without reopening the taxonomy.',
+    expectedDecisions: [
+      {
+        name: 'Control radius',
+        status: 'defined',
+        detail:
+          'Atomic one-row controls use full rounding; multiline and composite controls use the 8px contained-object role.',
+      },
+      {
+        name: 'Container and card radius',
+        status: 'defined',
+        detail:
+          'Structural surfaces are square by default in the working mapping. Complex screens may justify tuning the value; the earlier 16px substrate reveal remains a separate layout-owned question.',
+      },
+      {
+        name: 'Overlay radius',
+        status: 'defined',
+        detail:
+          'Anchored floating content uses the 8px contained-object role, while modal task structure remains square.',
+      },
+      {
+        name: 'Pill and circular exceptions',
+        status: 'defined',
+        detail:
+          'Pills, bounded selections, switches, status, and circular icon or identity objects use full rounding.',
+      },
+    ],
   },
   {
     id: 'layout',
@@ -254,6 +294,12 @@ export const FOUNDATION_ITEMS: FoundationItem[] = [
         status: 'defined',
         detail:
           'Icon-only actions require a familiar metaphor, accessible name, sufficient hit target, and complete interaction states; item actions sit at the trailing edge.',
+      },
+      {
+        name: 'Directional and disclosure semantics',
+        status: 'defined',
+        detail:
+          'Ordinary routes omit icons by default; arrows express forward, return, or external direction, chevrons express row drill-in or in-place disclosure, and a more specific outcome icon such as Download may replace the generic external indicator.',
       },
       {
         name: 'Product and chain exceptions',

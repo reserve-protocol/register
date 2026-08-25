@@ -1,10 +1,10 @@
+import { Spinner } from '@/components/design-system-v1/loading'
 import { candidateSemanticRoles as roles } from '@/components/design-system-v1/semantic-roles'
 import { cn } from '@/lib/utils'
 import {
   ArrowRight,
   Check,
   Clock3,
-  Loader2,
   ShieldAlert,
   Vote,
   X,
@@ -51,7 +51,7 @@ const ROLE_PRESENTATION = {
     ),
   },
   processing: {
-    Icon: Loader2,
+    Icon: null,
     iconName: 'spinner',
     className: cn(
       roles.feedback.information.surface,
@@ -129,14 +129,13 @@ export const LifecycleStatusPill = ({
         className
       )}
     >
-      {Icon ? (
+      {iconName === 'spinner' ? (
+        <Spinner data-status-icon={iconName} className="shrink-0" size={14} />
+      ) : Icon ? (
         <Icon
           aria-hidden="true"
           data-status-icon={iconName}
-          className={cn(
-            'size-3.5 shrink-0 stroke-[1.5]',
-            role === 'processing' && 'animate-spin motion-reduce:animate-none'
-          )}
+          className={cn('size-3.5 shrink-0 stroke-[1.5]')}
         />
       ) : iconName ? (
         <span

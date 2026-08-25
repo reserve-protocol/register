@@ -115,15 +115,28 @@ body {
     --popover-foreground: 222.2 84% 4.9%;
     --primary: 212 99% 35%;
     --primary-foreground: 0 0% 100%;
+    --primary-hover: color-mix(in srgb, hsl(var(--primary)) 92%, black);
+    --primary-pressed: color-mix(in srgb, hsl(var(--primary)) 84%, black);
     --secondary: 34 70% 92%;
     --secondary-foreground: 222.2 47.4% 11.2%;
     --muted: 30 12% 94%;
     --muted-foreground: 215.4 16.3% 46.9%;
+    --supporting-foreground: color-mix(
+      in srgb,
+      hsl(var(--muted-foreground)) 92%,
+      hsl(var(--foreground))
+    );
     --muted-secondary: 0 0 80%;
     --accent: 212 90% 92%;
     --accent-foreground: 222.2 47.4% 11.2%;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
+    --destructive-hover: color-mix(in srgb, hsl(var(--destructive)) 92%, black);
+    --destructive-pressed: color-mix(
+      in srgb,
+      hsl(var(--destructive)) 84%,
+      black
+    );
     --border: 0 0% 90%;
     --border-secondary: 34 29% 83%;
     --input: 214.3 31.8% 91.4%;
@@ -145,6 +158,11 @@ body {
       hsl(var(--secondary))
     );
     --status-neutral-surface: hsl(var(--muted));
+    --disabled-structure: color-mix(
+      in srgb,
+      hsl(var(--muted-foreground)) 60%,
+      hsl(var(--muted))
+    );
     --status-neutral-border: color-mix(
       in srgb,
       hsl(var(--muted-foreground)) 20%,
@@ -160,6 +178,11 @@ body {
       hsl(var(--primary)) 31%,
       hsl(var(--card))
     );
+    --feedback-information-foreground: color-mix(
+      in srgb,
+      hsl(var(--primary)) 65%,
+      hsl(var(--foreground))
+    );
     --feedback-success-surface: color-mix(
       in srgb,
       hsl(var(--success)) 10%,
@@ -169,6 +192,11 @@ body {
       in srgb,
       hsl(var(--success)) 32.5%,
       hsl(var(--card))
+    );
+    --feedback-success-foreground: color-mix(
+      in srgb,
+      hsl(var(--success)) 65%,
+      hsl(var(--foreground))
     );
     --feedback-warning-surface: color-mix(
       in srgb,
@@ -180,6 +208,11 @@ body {
       hsl(var(--warning)) 32.5%,
       hsl(var(--card))
     );
+    --feedback-warning-foreground: color-mix(
+      in srgb,
+      hsl(var(--warning)) 65%,
+      hsl(var(--foreground))
+    );
     --feedback-danger-surface: color-mix(
       in srgb,
       hsl(var(--destructive)) 10%,
@@ -189,6 +222,26 @@ body {
       in srgb,
       hsl(var(--destructive)) 32.5%,
       hsl(var(--card))
+    );
+    --feedback-danger-foreground: color-mix(
+      in srgb,
+      hsl(var(--destructive)) 65%,
+      hsl(var(--foreground))
+    );
+    --destructive-action: color-mix(
+      in srgb,
+      hsl(var(--destructive)) 88%,
+      black
+    );
+    --destructive-action-hover: color-mix(
+      in srgb,
+      hsl(var(--destructive)) 80%,
+      black
+    );
+    --destructive-action-pressed: color-mix(
+      in srgb,
+      hsl(var(--destructive)) 72%,
+      black
     );
   }
 
@@ -209,20 +262,64 @@ body {
     /* Accent & Primary */
     --primary: 212 99% 40%;
     --primary-foreground: 0 0% 100%;
+    --primary-hover: color-mix(in srgb, hsl(var(--primary)) 92%, black);
+    --primary-pressed: color-mix(in srgb, hsl(var(--primary)) 84%, black);
     --accent: 212 99% 7.5%;
     --accent-foreground: 0 0% 95%;
 
     /* Muted & Secondary Foregrounds */
     --muted-foreground: 220 15% 60%;
+    --supporting-foreground: hsl(var(--muted-foreground));
     --muted-secondary: 220 20% 22%;
     --secondary-foreground: 0 0% 85%;
 
     /* Destructive & Status */
     --destructive: 0 70% 45%;
     --destructive-foreground: 210 40% 98%;
+    --destructive-hover: color-mix(in srgb, hsl(var(--destructive)) 92%, black);
+    --destructive-pressed: color-mix(
+      in srgb,
+      hsl(var(--destructive)) 84%,
+      black
+    );
     --success: 164 70% 30%;
     --success-foreground: 0 0% 98%;
     --warning: 32 90% 45%;
+    --feedback-information-foreground: color-mix(
+      in srgb,
+      hsl(var(--primary)) 65%,
+      hsl(var(--foreground))
+    );
+    --feedback-success-foreground: color-mix(
+      in srgb,
+      hsl(var(--success)) 65%,
+      hsl(var(--foreground))
+    );
+    --feedback-warning-foreground: color-mix(
+      in srgb,
+      hsl(var(--warning)) 65%,
+      hsl(var(--foreground))
+    );
+    --feedback-danger-foreground: color-mix(
+      in srgb,
+      hsl(var(--destructive)) 65%,
+      hsl(var(--foreground))
+    );
+    --destructive-action: color-mix(
+      in srgb,
+      hsl(var(--destructive)) 88%,
+      black
+    );
+    --destructive-action-hover: color-mix(
+      in srgb,
+      hsl(var(--destructive)) 80%,
+      black
+    );
+    --destructive-action-pressed: color-mix(
+      in srgb,
+      hsl(var(--destructive)) 72%,
+      black
+    );
 
     /* Borders, Inputs & Rings */
     --border: 220 20% 16%;

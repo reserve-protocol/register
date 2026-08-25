@@ -27,22 +27,22 @@ export const candidateSemanticRoles = {
   feedback: {
     information: {
       surface: 'bg-[var(--feedback-information-surface)]',
-      foreground: 'text-primary',
+      foreground: 'text-feedback-information-foreground',
       border: 'ring-[var(--feedback-information-border)]',
     },
     success: {
       surface: 'bg-[var(--feedback-success-surface)]',
-      foreground: 'text-success',
+      foreground: 'text-feedback-success-foreground',
       border: 'ring-[var(--feedback-success-border)]',
     },
     warning: {
       surface: 'bg-[var(--feedback-warning-surface)]',
-      foreground: 'text-warning',
+      foreground: 'text-feedback-warning-foreground',
       border: 'ring-[var(--feedback-warning-border)]',
     },
     danger: {
       surface: 'bg-[var(--feedback-danger-surface)]',
-      foreground: 'text-destructive',
+      foreground: 'text-feedback-danger-foreground',
       border: 'ring-[var(--feedback-danger-border)]',
     },
   },

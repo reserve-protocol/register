@@ -1,11 +1,4 @@
-import {
-  ArrowDown,
-  ArrowUp,
-  Check,
-  Info,
-  TriangleAlert,
-  X,
-} from 'lucide-react'
+import { ArrowDown, ArrowUp, Check, Info, TriangleAlert, X } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import {
   PERFORMANCE_COLORS,
@@ -23,7 +16,7 @@ const MeaningColorStudy = () => (
           Values open
         </span>
       </div>
-      <p className="mt-1 max-w-3xl text-sm leading-6 text-muted-foreground">
+      <p className="mt-1 max-w-3xl text-sm leading-5 text-muted-foreground">
         The remaining color roles shown in realistic contexts. Feedback
         describes an event or product state; performance describes financial
         movement even when both happen to use related green and red hues.
@@ -76,7 +69,9 @@ const MeaningColorStudy = () => (
           <p className="text-xs font-medium text-muted-foreground">
             Portfolio value
           </p>
-          <p className="mt-2 text-2xl font-medium text-foreground">$42,860.20</p>
+          <p className="mt-2 text-2xl font-medium text-foreground">
+            $42,860.20
+          </p>
           <p className="mt-1 text-sm text-muted-foreground">
             Updated a few seconds ago
           </p>
@@ -248,7 +243,11 @@ const PerformanceCard = ({
   )
 }
 
-const PerformanceLine = ({ direction }: { direction: PerformanceDirection }) => {
+const PerformanceLine = ({
+  direction,
+}: {
+  direction: PerformanceDirection
+}) => {
   if (direction === 'neutral') {
     return <div className="mt-6 h-0.5 bg-muted-foreground/50" />
   }
@@ -279,7 +278,12 @@ const ForegroundRow = ({
 }) => (
   <div className="flex items-center justify-between gap-4">
     <span className={cn('flex items-center gap-2 text-sm', className)}>
-      <span className={cn('h-2.5 w-2.5 rounded-full bg-current', disabled && 'opacity-50')} />
+      <span
+        className={cn(
+          'h-2.5 w-2.5 rounded-full bg-current',
+          disabled && 'opacity-50'
+        )}
+      />
       {label}
     </span>
     <code className="text-[10px] text-muted-foreground">{token}</code>
@@ -298,7 +302,7 @@ const StudyPanel = ({
   <article className="overflow-hidden rounded-2xl border border-border bg-card">
     <div className="border-b border-border p-5">
       <h3 className="font-semibold">{title}</h3>
-      <p className="mt-1 max-w-3xl text-sm leading-6 text-muted-foreground">
+      <p className="mt-1 max-w-3xl text-sm leading-5 text-muted-foreground">
         {description}
       </p>
     </div>

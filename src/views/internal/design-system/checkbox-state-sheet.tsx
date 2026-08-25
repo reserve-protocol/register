@@ -10,7 +10,7 @@ const CheckboxStateSheet = () => (
       <h2 id="checkbox-state-sheet-title" className="text-xl font-medium">
         Canonical candidate · selection mark
       </h2>
-      <p className="mt-1 max-w-3xl text-sm font-light leading-6 text-muted-foreground">
+      <p className="mt-1 max-w-3xl text-sm font-light leading-5 text-muted-foreground">
         This candidate centers the 20px square mark in a transparent 28px
         alignment slot and owns its essential binary states. Label, help,
         indeterminate, invalid, and rich-row composition remain outside this

@@ -8,12 +8,12 @@ import {
 const ColorPerformanceEvidence = () => (
   <section>
     <h3 className="font-semibold">Current performance implementation</h3>
-    <p className="mt-1 max-w-3xl text-sm leading-6 text-muted-foreground">
+    <p className="mt-1 max-w-3xl text-sm leading-5 text-muted-foreground">
       Home, Discover, and Index overview share these source values. Highlighted
       Home and overview lines use a vertical gradient; Discover sparklines use
       the same stops horizontally. Home also derives its translucent area fill
-      from the dot color. Dark theme currently keeps the default chart values;
-      a separate dark-surface set is defined but has no product consumer.
+      from the dot color. Dark theme currently keeps the default chart values; a
+      separate dark-surface set is defined but has no product consumer.
     </p>
 
     <div className="mt-4 grid gap-3 lg:grid-cols-2">
@@ -63,11 +63,7 @@ const ColorPerformanceEvidence = () => (
   </section>
 )
 
-const FillEvidence = ({
-  defaultDot,
-}: {
-  defaultDot: string
-}) => (
+const FillEvidence = ({ defaultDot }: { defaultDot: string }) => (
   <div>
     <p className="text-xs font-medium">Derived area fills</p>
     <div className="mt-2 grid grid-cols-3 gap-2">

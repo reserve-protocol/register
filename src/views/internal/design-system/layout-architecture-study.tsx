@@ -32,7 +32,7 @@ const Heading = () => (
         Structural audit
       </span>
     </div>
-    <p className="mt-1 max-w-4xl text-sm font-light leading-6 text-muted-foreground">
+    <p className="mt-1 max-w-4xl text-sm font-light leading-5 text-muted-foreground">
       Map routes to a small set of task-led compositions before legacy screens
       dictate component anatomy. These are migration hypotheses, not universal
       layout components or finished screen designs.

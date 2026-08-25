@@ -80,7 +80,7 @@ const Heading = () => (
         Eligibility · first pass
       </span>
     </div>
-    <p className="mt-1 max-w-4xl text-sm font-light leading-6 text-muted-foreground">
+    <p className="mt-1 max-w-4xl text-sm font-light leading-5 text-muted-foreground">
       Reconstruct real product requirements first, apply the provisional
       foundations second, and extract a shared modal grammar only after several
       different flows survive the same treatment.
@@ -97,7 +97,7 @@ const EligibilityPressureTest = () => (
       <h3 className="mt-1 text-2xl font-light">
         Current implementation versus foundations applied
       </h3>
-      <p className="mt-2 max-w-4xl text-sm font-light leading-6 text-muted-foreground">
+      <p className="mt-2 max-w-4xl text-sm font-light leading-5 text-muted-foreground">
         Both specimens preserve the real copy, three required attestations,
         expandable jurisdiction list, disabled-action logic, privacy note, and
         intentional lack of a close action. Try the checkboxes and disclosure.

@@ -89,24 +89,48 @@ export const SUPPORT_COMPONENT_GROUPS: ComponentGroup[] = [
         statusDetail:
           'A reusable V1 shell implements the accepted desktop widths, adaptive phone presentation, content axis, region, close-action, and non-dismissible contracts. Outcome composition and final elevation remain provisional; production adoption has not started.',
       },
-      component(
-        'drawer',
-        'Drawer',
-        'Presents contextual detail or a task from a screen edge.',
-        'Drawers need clear use criteria, sizing, focus, and responsive behavior.',
-        {
-          priority: 'v1-core',
-          ...mapped,
-          evidence: [
-            'Eight product imports use shared Drawer; token selection, staking, voting, and deploy all depend on it.',
+      {
+        ...component(
+          'drawer',
+          'Drawer',
+          'Presents contextual detail or a task from a screen edge.',
+          'Drawers need clear use criteria, sizing, focus, and responsive behavior.',
+          {
+            priority: 'v1-conditional',
+            ...mapped,
+            evidence: [
+              'Eight product imports use the shared Drawer; token selection, staking, voting, and deploy all depend on it.',
+              'Current task and selector drawers share a 512px wider-screen shell while composing materially different bodies.',
+              'The accepted Dialog contract establishes Radix focus and dismissal behavior, anchored regions, a 24px content axis, and bottom-attached phone adaptation without implied drag dismissal.',
+            ],
+            decisionPrompts: [
+              'Pressure-test each existing right-side Drawer flow against the canonical responsive Dialog before retaining a desktop edge surface.',
+              'Retain Drawer only if a real flow cannot move to Dialog without losing important context or usability.',
+            ],
+            nextAction:
+              'Evaluate existing task and selector flows one at a time as Dialog migrations; do not promote Drawer by default.',
+          }
+        ),
+        outputStatus: 'rendered',
+        designAuthority: 'exploratory',
+        implementationStatus: 'canonical-candidate',
+        implementationSource: 'src/components/design-system-v1/drawer.tsx',
+        adoptionStatus: 'none',
+        review: {
+          status: 'exploration',
+          scope:
+            'This rendered shell preserves existing right-side desktop Drawer evidence and its bottom-attached phone behavior, but it is not a V1 baseline or ready for canonical review. The migration target is the accepted centered-desktop/bottom-phone Dialog pattern. Task lifecycle, selector rows, tabs, validation, drag gestures, mobile navigation, and production adoption remain separate. Revisit Drawer only if a concrete flow cannot migrate to Dialog without meaningful loss.',
+          dependencies: [
+            { name: 'Button', status: 'canonical' },
+            { name: 'IconButton', status: 'canonical' },
+            { name: 'Dialog overlay behavior', status: 'canonical' },
+            { name: 'Radix Dialog behavior', status: 'retained' },
+            { name: 'Floating elevation', status: 'provisional' },
           ],
-          decisionPrompts: [
-            'Define side/bottom placement, widths, header/footer, scrolling, nesting, and when a dialog is preferable.',
-          ],
-          nextAction:
-            'Compare task drawers with selector drawers; retain one shell with composition-specific bodies if behavior aligns.',
-        }
-      ),
+        },
+        statusDetail:
+          'Conditional migration evidence preserves current task and selector behavior without turning legacy right-side placement into V1 authority. Existing flows should be pressure-tested against responsive Dialog one at a time. The shell owns an 8px structural edge and body scrolling; compositions may add 16px for the ordinary 24px axis or remain edge-aligned for dense input/output flows. Existing production behavior remains unchanged.',
+      },
       {
         ...component(
           'popover',
@@ -280,22 +304,58 @@ export const SUPPORT_COMPONENT_GROUPS: ComponentGroup[] = [
       'Recovery actions'
     ),
     items: [
-      component(
-        'alert',
-        'Inline message',
-        'Communicates important contextual status or risk within the current flow.',
-        'Inline feedback needs consistent intent, prominence, and recovery guidance.',
-        {
-          priority: 'v1-core',
-          ...mapped,
-          evidence: ['18 product imports use shared Alert.'],
-          decisionPrompts: [
-            'Define info/success/warning/danger anatomy, title/body/action, compact use, dismissal, and icon treatment.',
+      {
+        ...component(
+          'alert',
+          'Inline message',
+          'Communicates important contextual status or risk within the current flow.',
+          'Inline feedback needs consistent intent, prominence, and recovery guidance.',
+          {
+            priority: 'v1-core',
+            ...mapped,
+            evidence: [
+              'Eighteen product imports use shared Alert, while warning, compliance, upload, approval, and transaction consumers locally reconstruct icon placement, radius, color, and density.',
+              'Trading-paused and low-liquidity notices establish persistent warning jobs with title/body and compact titleless anatomy.',
+              'Approval failures establish an actionable danger job; transient confirmation remains Toast and transaction orchestration remains a higher-level lifecycle composition.',
+            ],
+            decisionPrompts: [
+              'Judge the shared information/success/warning/danger anatomy, 8px icon/content relationship, 16px default and 12px compact inset, restrained 8px radius, opaque semantic surface/border roles, title/body hierarchy, and compact use.',
+              'Confirm that persistence and announcement urgency remain caller-owned: the component has no generic close action and no blanket alert role.',
+            ],
+            relationships: [
+              {
+                id: 'toast',
+                note: 'Use Toast for routine transient confirmation; use Inline Message when information must remain in context.',
+              },
+              {
+                id: 'transaction-action',
+                note: 'Transaction lifecycle compositions may consume Inline Message, but retry orchestration and modal lifecycle are not part of this primitive.',
+              },
+            ],
+            nextAction:
+              'Build source-grounded surrounding compositions before returning this anatomy to Current Review; do not judge prominence, spacing, or density from the isolated tone grid.',
+          }
+        ),
+        outputStatus: 'rendered',
+        designAuthority: 'exploratory',
+        implementationStatus: 'canonical-candidate',
+        implementationSource:
+          'src/components/design-system-v1/inline-message.tsx',
+        adoptionStatus: 'none',
+        review: {
+          status: 'provisional',
+          scope:
+            'The rendered tone grid proves implementation anatomy only; it is not ready for canonical visual judgment without source-grounded content immediately before and after the message. Persistent information, success, warning, and danger, default/compact density, icons, and actions remain provisional. Toast timing/stacking, field validation, compliance copy, transaction orchestration, and production adoption remain outside.',
+          dependencies: [
+            { name: 'Feedback color direction', status: 'provisional' },
+            { name: 'Typography and spacing roles', status: 'canonical' },
+            { name: 'Iconography', status: 'canonical' },
+            { name: 'Button', status: 'canonical' },
           ],
-          nextAction:
-            'Audit Alert plus ad hoc banners and validation summaries by persistence and required action.',
-        }
-      ),
+        },
+        statusDetail:
+          'A reusable, unadopted implementation explores one persistent message contract, but human review correctly deferred it because isolated examples cannot establish contextual prominence or spacing. It returns only with realistic source-grounded surroundings.',
+      },
       component(
         'toast',
         'Toast',
@@ -338,46 +398,78 @@ export const SUPPORT_COMPONENT_GROUPS: ComponentGroup[] = [
             'Audit upload/deploy/transaction progress separately from step navigation.',
         }
       ),
-      component(
-        'spinner',
-        'Spinner',
-        'Shows short indeterminate activity.',
-        'Spinners need constraints so they do not replace informative loading states.',
-        {
-          priority: 'v1-core',
-          ...mapped,
-          evidence: ['29 product imports use shared Spinner.'],
-          decisionPrompts: [
-            'Define sizes, accessible label, delayed appearance, inline versus blocking use, and timeout escalation.',
+      {
+        ...component(
+          'spinner',
+          'Spinner',
+          'Shows short indeterminate activity.',
+          'Spinners need constraints so they do not replace informative loading states.',
+          {
+            priority: 'v1-core',
+            ...mapped,
+            evidence: ['29 product imports use shared Spinner.'],
+            decisionPrompts: [
+              'Define sizes, accessible label, delayed appearance, inline versus blocking use, and timeout escalation.',
+            ],
+            relationships: [
+              {
+                id: 'skeleton',
+                note: 'Use Skeleton when preserving content geometry is more informative.',
+              },
+            ],
+            nextAction:
+              'Preserve the accepted role-based scale and contextual color during adoption; keep timing, timeout, and transaction progress composition-owned.',
+          }
+        ),
+        outputStatus: 'rendered',
+        designAuthority: 'current-baseline',
+        implementationStatus: 'canonical-candidate',
+        implementationSource: 'src/components/design-system-v1/loading.tsx',
+        adoptionStatus: 'none',
+        review: {
+          status: 'ready',
+          scope:
+            'The candidate covers 14px status, 16px inline/control, and 24px local-region indeterminate activity with inherited contextual color, labeled or context-hidden accessibility, and reduced-motion treatment.',
+          dependencies: [
+            { name: 'Contextual semantic foreground', status: 'canonical' },
           ],
-          relationships: [
-            {
-              id: 'skeleton',
-              note: 'Use Skeleton when preserving content geometry is more informative.',
-            },
-          ],
-          nextAction:
-            'Map spinner contexts by expected duration and blocked scope.',
-        }
-      ),
-      component(
-        'skeleton',
-        'Skeleton',
-        'Reserves layout while content loads.',
-        'Skeletons should preserve final geometry and avoid false detail.',
-        {
-          priority: 'v1-core',
-          ...mapped,
-          evidence: [
-            '73 product imports make Skeleton the second-most-used shared primitive.',
-          ],
-          decisionPrompts: [
-            'Define base tone, motion policy, shape matching, repetition limits, and transition to empty/error.',
-          ],
-          nextAction:
-            'Pressure-test real tables, cards, and metrics; avoid one generic rounded bar language.',
-        }
-      ),
+        },
+        statusDetail:
+          'The accepted unadopted Spinner baseline covers three distinct placement roles and does not replace Skeleton or determinate progress.',
+      },
+      {
+        ...component(
+          'skeleton',
+          'Skeleton',
+          'Reserves layout while content loads.',
+          'Skeletons should preserve final geometry and avoid false detail.',
+          {
+            priority: 'v1-core',
+            ...mapped,
+            evidence: [
+              '73 product imports make Skeleton the second-most-used shared primitive.',
+            ],
+            decisionPrompts: [
+              'Define base tone, motion policy, shape matching, repetition limits, and transition to empty/error.',
+            ],
+            nextAction:
+              'Preserve host-authored loading geometry during consumer migration; do not replace refined overview or feature-card compositions wholesale.',
+          }
+        ),
+        outputStatus: 'rendered',
+        designAuthority: 'current-baseline',
+        implementationStatus: 'canonical-candidate',
+        implementationSource: 'src/components/design-system-v1/loading.tsx',
+        adoptionStatus: 'none',
+        review: {
+          status: 'ready',
+          scope:
+            'The primitive owns border-neutral fill, quiet pulse, reduced-motion handling, and no default shape. Hosts retain truthful width, height, radius, repetition, and loading boundaries; migration must preserve refined product compositions and audit consumers that relied on the legacy default radius.',
+          dependencies: [{ name: 'Border neutral', status: 'canonical' }],
+        },
+        statusDetail:
+          'The accepted unadopted Skeleton baseline supplies material and motion only; existing overview and feature-card loading compositions remain authoritative evidence.',
+      },
       {
         ...component(
           'empty-state',
@@ -401,22 +493,25 @@ export const SUPPORT_COMPONENT_GROUPS: ComponentGroup[] = [
               },
             ],
             nextAction:
-              'Pressure-test the canonical quiet anatomy in a table and reserve illustration decisions for meaningful real states.',
+              'Review quiet and actionable absence hierarchy without treating host framing, request-channel copy, or bespoke milestone artwork as part of the primitive.',
           }
         ),
         outputStatus: 'rendered',
-        designAuthority: 'exploratory',
+        designAuthority: 'current-baseline',
         implementationStatus: 'canonical-candidate',
         implementationSource: 'src/components/empty-state/index.tsx',
         adoptionStatus: 'none',
         review: {
           status: 'ready',
           scope:
-            'Review quiet and user-resolvable absence anatomy. Illustration-led milestone states remain outside this candidate.',
-          dependencies: [{ name: 'Button', status: 'canonical' }],
+            'The accepted baseline covers quiet title-only absence and actionable title, description, optional bare icon, and canonical ActionGroup hierarchy. Host framing, exact request-channel actions, bespoke milestone artwork, loading/error states, and production adoption remain outside it.',
+          dependencies: [
+            { name: 'Button', status: 'canonical' },
+            { name: 'ActionGroup', status: 'canonical' },
+          ],
         },
         statusDetail:
-          'A reusable V1 candidate implements quiet and user-resolvable absence anatomy using canonical actions. Illustration-led milestone states remain open; production adoption has not started.',
+          'The accepted unadopted baseline covers quiet and actionable absence anatomy; bespoke milestone compositions and production adoption remain separate.',
       },
     ],
   },
@@ -491,6 +586,7 @@ export const SUPPORT_COMPONENT_GROUPS: ComponentGroup[] = [
               'TokenLogoWithChain has repeated Portfolio consumers, while recent Index surfaces locally reconstruct the same DTF-logo plus chain-badge composition.',
               'Overlapping asset identity uses two legacy StackTokenLogo implementations; the canonical chain and token stacks now own a shared outside-artwork separator and optical leading-axis correction.',
               'The canonical candidate now passes long-name truncation, deterministic logo fallback, account-mark composition, and a dense 32px Index holdings slice.',
+              'EntityIdentity owns the accepted 8px direct mark-slot-to-copy relationship; alignment slots remain parent-owned and must not add a second arbitrary text gap.',
             ],
             decisionPrompts: [
               'Choose the first opt-in production adoption slice after visual review; legacy stack and badge consumers remain unchanged.',
@@ -515,7 +611,7 @@ export const SUPPORT_COMPONENT_GROUPS: ComponentGroup[] = [
           ],
         },
         statusDetail:
-          'A reusable V1 candidate implements identity text, domain marks, chain-badge geometry, shared chain/token stack frames, fallbacks, and truncation. Existing product consumers remain unchanged.',
+          'A reusable V1 candidate implements identity text with an 8px mark-to-copy relationship, domain marks, chain-badge geometry, shared chain/token stack frames, fallbacks, and truncation. Existing product consumers remain unchanged.',
       },
       {
         ...component(
@@ -685,28 +781,50 @@ export const SUPPORT_COMPONENT_GROUPS: ComponentGroup[] = [
             'Treat performance, allocation, and comparison charts as separate chart patterns sharing foundations.',
         }
       ),
-      component(
-        'copy-value',
-        'Copyable value',
-        'Displays a value with safe truncation and an explicit copy action.',
-        'Addresses and transaction identifiers recur throughout the product and need reliable feedback.',
-        {
-          priority: 'product-extension',
-          ...mapped,
-          evidence: ['CopyValue has ten product imports and Copy has nine.'],
-          decisionPrompts: [
-            'Define truncation, visible label, copy affordance, success feedback, failure, and sensitive-value policy.',
-          ],
-          relationships: [
+      {
+        ...component(
+          'copy-value',
+          'Copyable value',
+          'Displays a deliberately formatted value with an explicit copy action.',
+          'Addresses and transaction identifiers recur throughout the product and need reliable feedback.',
+          {
+            priority: 'product-extension',
+            ...mapped,
+            evidence: ['CopyValue has ten product imports and Copy has nine.'],
+            decisionPrompts: [
+              'Define visible formatting, copy affordance, success feedback, failure, and sensitive-value policy.',
+            ],
+            relationships: [
+              {
+                id: 'tooltip',
+                note: 'Tooltip may reveal the full value but must not be the only accessible text.',
+              },
+            ],
+            nextAction:
+              'Use the accepted primitive in later source-grounded address/action compositions; define failure presentation and sensitive-value policy only from real requirements.',
+          }
+        ),
+        outputStatus: 'rendered',
+        designAuthority: 'current-baseline',
+        implementationStatus: 'canonical-candidate',
+        implementationSource:
+          'src/components/design-system-v1/copyable-value.tsx',
+        adoptionStatus: 'none',
+        review: {
+          status: 'ready',
+          scope:
+            'The candidate covers one inline value plus its copy action: full accessible text, deliberate address shortening without CSS clipping, address normalization, resolved clipboard writes, event isolation, polite success announcement, Escape dismissal, and two-second semantic-success feedback that transforms the existing open prompt without replaying entrance motion. Failure presentation, paired explorer actions, native/bridged chain-address lists, and sensitive-value policy remain outside scope.',
+          dependencies: [
+            { name: 'IconButton', status: 'canonical' },
             {
-              id: 'tooltip',
-              note: 'Tooltip may reveal the full value but must not be the only accessible text.',
+              name: 'Tooltip primitive for transient feedback',
+              status: 'retained',
             },
           ],
-          nextAction:
-            'Converge Copy and CopyValue presentation without changing clipboard behavior.',
-        }
-      ),
+        },
+        statusDetail:
+          'The accepted unadopted Copyable Value owns deliberate formatting, canonical action geometry, truthful transient success feedback, and 14px monospace machine-value typography. Explorer and multi-chain address compositions remain tracked separately.',
+      },
     ],
   },
   {
@@ -729,44 +847,104 @@ export const SUPPORT_COMPONENT_GROUPS: ComponentGroup[] = [
       'Nested content'
     ),
     items: [
-      component(
-        'accordion',
-        'Accordion',
-        'Reveals one or more stacked content sections.',
-        'Repeated expandable regions need consistent headers and keyboard behavior.',
-        {
-          priority: 'v1-core',
-          ...mapped,
-          evidence: ['13 product imports use shared Accordion.'],
-          decisionPrompts: [
-            'Define single/multiple expansion, trigger hierarchy, icon position, content inset, separators, and long labels.',
-          ],
-          nextAction:
-            'Audit FAQ/help and product-detail accordions for one anatomy.',
-        }
-      ),
-      component(
-        'collapsible',
-        'Collapsible',
-        'Toggles a single contextual block of content.',
-        'A light disclosure primitive is useful when accordion grouping semantics do not apply.',
-        {
-          priority: 'v1-conditional',
-          ...mapped,
-          evidence: ['Nine product imports use shared Collapsible.'],
-          decisionPrompts: [
-            'Confirm distinct need from Accordion and Details patterns; define trigger ownership and animation.',
-          ],
-          relationships: [
+      {
+        ...component(
+          'accordion',
+          'Accordion',
+          'Reveals one or more stacked content sections.',
+          'Repeated expandable regions need consistent headers and keyboard behavior.',
+          {
+            priority: 'v1-core',
+            ...mapped,
+            evidence: [
+              'Thirteen product imports use shared Accordion, but FAQ/help, product detail, and task-section compositions currently override its anatomy differently.',
+              'Earn FAQ and Yield staking About converge on coordinated question-and-answer rows with a trailing chevron and full-width trigger.',
+              'The Index whitepaper change summary supplies a nested product-detail disclosure with long structured content.',
+              'Deploy, manage, governance, and legacy auction consumers add progress, validation, edit controls, and bespoke step headers; those jobs are explicitly excluded from the shared informational candidate.',
+            ],
+            decisionPrompts: [
+              'Judge the stable 16px row/content axis, 48px minimum trigger, 16px medium hierarchy, trailing 16px chevron, divider-free grouping, focus, long-label wrapping, and 14px/20px supporting content.',
+              'Confirm that informational FAQ/detail anatomy is coherent without absorbing task-section progress, validation, or actions.',
+            ],
+            relationships: [
+              {
+                id: 'collapsible',
+                note: 'Accordion coordinates a set; the audited independent disclosures remain a distinct Collapsible job and do not inherit this proposal as authority.',
+              },
+            ],
+            nextAction:
+              'Pressure-test the accepted informational anatomy in real FAQ/detail consumers without absorbing task-section behavior or starting broad production adoption.',
+          }
+        ),
+        outputStatus: 'rendered',
+        designAuthority: 'current-baseline',
+        implementationStatus: 'canonical-candidate',
+        implementationSource: 'src/components/design-system-v1/accordion.tsx',
+        adoptionStatus: 'none',
+        review: {
+          status: 'ready',
+          scope:
+            'The accepted baseline covers coordinated informational FAQ and product-detail rows with retained Radix single/multiple expansion, keyboard behavior, stable 16px row/content axis, 48px minimum trigger, an 8px expanded title/body relationship, a 20px body-to-next-title rhythm, 16px medium label, trailing unframed chevron, divider-free grouping, text-and-chevron hover feedback, focus, long labels, disabled state, 14px/20px supporting content, and V1-specific 180ms content-height motion. Multiple expansion is the recommended ordinary informational mode; single expansion is explicit for mutually substitutive or unusually long regions. Task-section headers, progress, validation, edit actions, content-specific internal layout, one independent disclosure, and production adoption remain outside.',
+          dependencies: [
             {
-              id: 'accordion',
-              note: 'Use Accordion for a coordinated set; Collapsible for one independent region.',
+              name: 'Spacing, typography, and iconography',
+              status: 'canonical',
             },
+            { name: 'Focus and content color roles', status: 'canonical' },
+            { name: 'Radix Accordion behavior', status: 'retained' },
+            { name: 'Ordinary component motion', status: 'canonical' },
           ],
-          nextAction:
-            'Inspect all nine consumers and merge the slot with Accordion if no distinct contract remains.',
-        }
-      ),
+        },
+        statusDetail:
+          'The accepted, unadopted V1 baseline covers only the coherent informational FAQ/detail seam. Callers explicitly choose single or multiple behavior; multiple is the normal informational recommendation. Task accordions remain composition evidence and independent disclosures remain Collapsible work.',
+      },
+      {
+        ...component(
+          'collapsible',
+          'Collapsible',
+          'Toggles a single contextual block of content.',
+          'A light disclosure primitive is useful when accordion grouping semantics do not apply.',
+          {
+            priority: 'v1-conditional',
+            ...mapped,
+            evidence: [
+              'All nine product importers were classified: bridge token help and eligibility jurisdiction detail are subordinate one-off disclosures; auction bids and max-auction-size controls reveal optional dense regions; two dev-only rebalance diagnostics reveal raw data; four governance previews repeat the same executable-code disclosure job.',
+              'None of these consumers coordinates peer sections or needs Accordion single/multiple set semantics.',
+              'The governance consumers suggest one product-specific CodeDisclosure composition on top of Collapsible; they do not justify absorbing arbitrary code layout into a shared disclosure primitive.',
+            ],
+            decisionPrompts: [
+              'Define whether the trigger is fully owned by the primitive or always composition-owned, and align disclosure motion with the accepted 180ms ordinary-component duration.',
+              'Decide whether native details supplies enough behavior for static help while controlled product disclosures retain Radix Collapsible.',
+            ],
+            relationships: [
+              {
+                id: 'accordion',
+                note: 'Use Accordion for a coordinated set; retain Collapsible for one independent region or optional adjunct.',
+              },
+            ],
+            nextAction:
+              'Human-review the one-region disclosure anatomy and its inheritance from the accepted Accordion presentation; keep hosted content and production migration outside.',
+          }
+        ),
+        outputStatus: 'rendered',
+        designAuthority: 'current-baseline',
+        auditStatus: 'mapped',
+        implementationStatus: 'canonical-candidate',
+        implementationSource: 'src/components/design-system-v1/collapsible.tsx',
+        adoptionStatus: 'none',
+        review: {
+          status: 'ready',
+          scope:
+            'The rendered candidate covers one independently controlled disclosure with retained Radix behavior, the accepted disclosure trigger/content presentation, 180ms motion, and an optional caller-owned closed/open action cue for ambiguous resting states. Trigger and cue copy must name the actual hidden subject and action; they are never product copy defaults. It does not coordinate peer items, choose single versus multiple expansion, or standardize hosted help, auction fields, bid lists, executable code, or debug content. Native details, bespoke composition triggers, and production adoption remain outside.',
+          dependencies: [
+            { name: 'Radix Collapsible behavior', status: 'retained' },
+            { name: 'Accordion disclosure presentation', status: 'canonical' },
+            { name: 'Ordinary component motion', status: 'canonical' },
+          ],
+        },
+        statusDetail:
+          'The accepted, unadopted V1 baseline covers one independently controlled disclosure. It consumes the Accordion presentation rather than rebuilding it; hosts own their surrounding composition, revealed content, specific trigger wording, and any truthful closed/open cue.',
+      },
     ],
   },
 ]

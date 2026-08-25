@@ -54,9 +54,9 @@ export const FOUNDATION_CANDIDATE_DIRECTIONS: Record<
       'Tabular numeric treatment and a restricted smallest text role',
     ],
     adapt: [
-      'Re-test the exact ten-step scale against current screens',
-      'Add explicit display, data, and long-form behavior without wrapper sprawl',
-      'Let compact tables and marketing moments share roles, not identical sizing',
+      'Let real product compositions expose evidence-based refinements without reopening the scale by default',
+      'Use the display-only phone step without creating responsive sizing for ordinary application roles',
+      'Let compact tables and expressive moments share semantic rules without forcing identical roles',
     ],
     leaveBehind: [
       'A component wrapper for every typographic combination',
@@ -64,9 +64,9 @@ export const FOUNDATION_CANDIDATE_DIRECTIONS: Record<
       '700 weight as a routine substitute for hierarchy',
     ],
     validateNext: [
-      'Homepage hero and feature-card hierarchy',
-      'Discover and overview table density',
-      'Governance proposals, addresses, and extreme numeric values',
+      'Homepage hero and feature-card application',
+      'Discover and overview table application',
+      'Governance proposals, addresses, localization, and extreme numeric values in real use',
     ],
   },
   spacing: {
@@ -129,31 +129,32 @@ export const FOUNDATION_CANDIDATE_DIRECTIONS: Record<
   },
   radius: {
     summary:
-      'Collapse the broad current radius usage into a few semantic roles for controls, containers, overlays, and true pill or circular exceptions.',
+      'Use the accepted role taxonomy with a current 0 / 8 / full mapping: structural surfaces, contained objects, atomic controls, and separately owned structural reveals.',
     sources: [
       'Current rounded Home and overview compositions',
       'Current Tailwind radius extensions and CSS radius variable',
       'Previous tabs, buttons, and surface-standard work',
     ],
     carryForward: [
-      'Friendly rounded geometry as part of the Reserve character',
-      'Pills for bounded selections and compact status',
-      'Larger corners for major containers than for nested controls',
+      'Square page regions, cards, dialogs, and rich record structure',
+      '8px containment for multiline fields, composites, menus, popovers, tooltips, thumbnails, and framed messages',
+      'Full rounding for buttons, one-row fields and selects, contained selection, pills, switches, and circular controls',
     ],
     adapt: [
-      'Reduce near-duplicate 20px, 24px, 3xl, and 4xl choices',
-      'Pair radius with component size and nesting depth',
-      'Give overlays an explicit role instead of inheriting card rounding',
+      'Treat the earlier 16px substrate reveal as layout-owned evidence rather than a shared Card radius',
+      'Map legacy near-duplicate 20px, 24px, 3xl, and 4xl choices onto the three proven roles during migration',
+      'Let contained floating overlays use 8px while modal task structure stays square',
     ],
     leaveBehind: [
-      'Rounded-full as a default for unrelated controls',
+      'Large rounded containers as a default visual treatment',
       'Per-component radius values with no semantic relationship',
       'Nested large radii that visually compete with their parent',
     ],
     validateNext: [
-      'Buttons, fields, tabs, cards, dialogs, and tooltips together',
-      'Nested cards on the Index overview',
-      'Touch targets and compact controls on mobile',
+      'Whether complex screens show that the working 0 / 8 values should be tuned while preserving the accepted role taxonomy',
+      'Whether a real overview or workflow composition earns the deferred 16px structural-reveal treatment',
+      'Legacy consumer migration without changing already refined product compositions',
+      'Any future component whose geometry cannot map cleanly to 0, 8px, or full rounding',
     ],
   },
   elevation: {

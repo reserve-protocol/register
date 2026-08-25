@@ -21,7 +21,7 @@ const FieldStateSheet = () => (
       <h2 id="field-state-sheet-title" className="mt-1 text-xl font-medium">
         Field and TextInput
       </h2>
-      <p className="mt-1 max-w-3xl text-sm font-light leading-6 text-muted-foreground">
+      <p className="mt-1 max-w-3xl text-sm font-light leading-5 text-muted-foreground">
         The candidate covers the ordinary short-value jobs evidenced in Index
         deploy and governance: visible labels, hints, filled values, prefixes,
         suffixes, validation, disabled state, and read-only addresses. It uses

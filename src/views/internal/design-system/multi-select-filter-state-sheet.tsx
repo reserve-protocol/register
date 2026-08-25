@@ -44,7 +44,7 @@ const MultiSelectFilterStateSheet = () => {
         >
           Multi-select filter
         </h2>
-        <p className="mt-1 max-w-3xl text-sm font-light leading-6 text-muted-foreground">
+        <p className="mt-1 max-w-3xl text-sm font-light leading-5 text-muted-foreground">
           Accepted baseline derived from the real Earn DTF and governance filter
           jobs. It covers the summary trigger, balanced identity and Checkbox
           rows, staged selection, and the compact footer action relationship.

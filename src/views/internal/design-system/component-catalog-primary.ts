@@ -39,7 +39,12 @@ export const PRIMARY_COMPONENT_GROUPS: ComponentGroup[] = [
         detail:
           'Micro, compact, and default actions use 28px, 32px, and 44px heights with 14px medium labels and size-matched icons.',
       },
-      ...openDefinitionSlots('Interaction states'),
+      {
+        name: 'Interaction states',
+        status: 'defined',
+        detail:
+          'Filled actions use opaque semantic hover and pressed colors with a centered 0.98 momentary press scale. Neutral actions retain their accepted quiet interaction surfaces; focus stays independent and reduced motion removes scale.',
+      },
       {
         name: 'Loading communication',
         status: 'defined',
@@ -70,10 +75,10 @@ export const PRIMARY_COMPONENT_GROUPS: ComponentGroup[] = [
               'The reviewed 28/32/44px geometry is accepted for micro, compact, and default actions.',
             ],
             decisionPrompts: [
-              'Define pressed treatment across the accepted hierarchy roles.',
-              'Define long-label behavior.',
+              'Validate the accepted action hierarchy in production compositions before adoption.',
             ],
-            nextAction: 'Define the remaining pressed and long-label contract.',
+            nextAction:
+              'Consume the accepted baseline in bounded production compositions without reopening its visual contract.',
           }
         ),
         outputStatus: 'rendered',
@@ -84,7 +89,7 @@ export const PRIMARY_COMPONENT_GROUPS: ComponentGroup[] = [
         review: {
           status: 'ready',
           scope:
-            'Review the accepted hierarchy, 28/32/44px geometry, icon spacing, focus, disabled, and loading presentation. Pressed and long-label behavior remain outside this review.',
+            'The accepted baseline covers hierarchy, 28/32/44px geometry, icon spacing, focus, disabled, loading presentation, concise single-line label policy, opaque semantic interaction colors, and centered momentary pressed feedback. Persistent toggle selection and production adoption remain separate.',
           dependencies: [
             {
               name: 'Semantic state recipes',
@@ -93,7 +98,7 @@ export const PRIMARY_COMPONENT_GROUPS: ComponentGroup[] = [
           ],
         },
         statusDetail:
-          'A reusable V1 candidate implements the accepted hierarchy, sizes, focus, disabled, loading, and icon-spacing rules. Pressed and long-label behavior remain open; production adoption has not started.',
+          'A reusable V1 candidate implements the accepted hierarchy, sizes, focus, disabled, loading, icon-spacing, label-fit, and pressed-interaction rules. Production adoption remains open.',
       },
       {
         ...component(
@@ -303,24 +308,43 @@ export const PRIMARY_COMPONENT_GROUPS: ComponentGroup[] = [
         statusDetail:
           'The accepted reusable V1 baseline implements the independent Field / TextInput anatomy and evidenced states. The reviewed repeated-group composition and PresetOrCustomField recipe consume it without moving business validation into the design system; multiline input and production adoption remain separate.',
       },
-      component(
-        'textarea',
-        'Textarea',
-        'Collects longer multi-line text.',
-        'Long-form input needs coherent field anatomy without inheriting the pill shape.',
-        {
-          priority: 'v1-core',
-          ...mapped,
-          evidence: [
-            'Four product-source imports use the shared Textarea, especially governance and deploy flows.',
+      {
+        ...component(
+          'textarea',
+          'Textarea',
+          'Collects longer multi-line text.',
+          'Long-form input needs coherent field anatomy without inheriting the pill shape.',
+          {
+            priority: 'v1-core',
+            ...mapped,
+            evidence: [
+              'Four product-source imports use the shared Textarea, especially governance and deploy flows.',
+              'Governance rationale and deploy summary fixtures pressure-test help, validation, disabled, and read-only states.',
+            ],
+            decisionPrompts: [
+              'Confirm restrained radius, vertical resize, and inherited Field states; add character guidance only when a real limit requires it.',
+            ],
+            nextAction:
+              'Review the provisional multiline Field candidate before any opt-in adoption.',
+          }
+        ),
+        outputStatus: 'rendered',
+        designAuthority: 'current-baseline',
+        implementationStatus: 'canonical-candidate',
+        implementationSource: 'src/components/design-system-v1/field.tsx',
+        adoptionStatus: 'none',
+        review: {
+          status: 'ready',
+          scope:
+            'The accepted candidate inherits Field anatomy and state semantics, including the accepted 20px ordinary horizontal field inset, while using a 16px multiline vertical inset, restrained radius, and vertical resize. Character count, rich text, and production adoption remain outside scope.',
+          dependencies: [
+            { name: 'Field / TextInput', status: 'canonical' },
+            { name: 'Native textarea behavior', status: 'retained' },
           ],
-          decisionPrompts: [
-            'Inherit field states while choosing restrained object radius, resize behavior, and character guidance.',
-          ],
-          nextAction:
-            'Pair with Text input in one state sheet and pressure-test proposal descriptions.',
-        }
-      ),
+        },
+        statusDetail:
+          'The accepted reusable V1 Textarea baseline covers governance and deploy long-form states without adding a new Field family. Production adoption has not started.',
+      },
       {
         ...component(
           'select',
@@ -677,47 +701,89 @@ export const PRIMARY_COMPONENT_GROUPS: ComponentGroup[] = [
         statusDetail:
           'The accepted reusable V1 baseline implements only the one-row pill-style single-choice job evidenced by governance parameter forms. Other radio compositions and production adoption remain open.',
       },
-      component(
-        'switch',
-        'Switch',
-        'Changes an immediately applied boolean setting.',
-        'Switches must be distinguished from choices submitted later.',
-        {
-          priority: 'v1-core',
-          ...mapped,
-          evidence: ['Ten product-source imports use the shared Switch.'],
-          decisionPrompts: [
-            'Confirm immediate-commit semantics, label placement, pending/error feedback, and disabled state.',
+      {
+        ...component(
+          'switch',
+          'Switch',
+          'Changes an immediately applied boolean setting.',
+          'Switches must be distinguished from choices submitted later.',
+          {
+            priority: 'v1-core',
+            ...mapped,
+            evidence: ['Ten product-source imports use the shared Switch.'],
+            decisionPrompts: [
+              'Confirm immediate-commit semantics, label placement, pending/error feedback, and disabled state.',
+            ],
+            nextAction:
+              'Review immediate checked/focus/disabled geometry; keep async recovery separate.',
+          }
+        ),
+        outputStatus: 'rendered',
+        designAuthority: 'current-baseline',
+        implementationStatus: 'canonical-candidate',
+        implementationSource: 'src/components/design-system-v1/switch.tsx',
+        adoptionStatus: 'none',
+        review: {
+          status: 'ready',
+          scope:
+            'The accepted 36×20 immediate Switch baseline covers checked, focus-visible, disabled-on, and disabled-off states. Disabled preserves position and uses the semantic disabled-structure role in inverse neutral contrast while removing active color and thumb elevation. Every enabled specimen is interactive. Rows own the 44px target; pending and recovery stay outside scope.',
+          dependencies: [
+            { name: 'Radix Switch behavior', status: 'retained' },
+            { name: 'Semantic state recipes', status: 'canonical' },
           ],
-          nextAction:
-            'Inspect settings and feature-toggle uses for async edge states.',
-        }
-      ),
-      component(
-        'segmented-control',
-        'Segmented control',
-        'Switches between a small set of peer modes.',
-        'Segmented controls are often confused with tabs and need a separate semantic role.',
-        {
-          priority: 'v1-core',
-          ...mapped,
-          evidence: [
-            'ToggleGroup has 16 product imports and current overview controls supply a strong visual reference.',
-          ],
-          decisionPrompts: [
-            'Define two-to-five option limits, micro/default density, selection, icons, and overflow.',
-            'Use only for mode changes whose content does not require tab semantics.',
-          ],
-          relationships: [
+        },
+        statusDetail:
+          'The accepted reusable V1 Switch baseline implements the recorded geometry and disabled-state recipe without changing production consumers or adding async lifecycle.',
+      },
+      {
+        ...component(
+          'segmented-control',
+          'Segmented control',
+          'Switches between a small set of peer modes.',
+          'Segmented controls are often confused with tabs and need a separate semantic role.',
+          {
+            priority: 'v1-core',
+            ...mapped,
+            evidence: [
+              'ToggleGroup has 16 product imports, while the recent Index overview supplies the accepted unframed time-range and data-type treatment.',
+            ],
+            decisionPrompts: [
+              'Confirm the text-only versus contained presentation boundary and compact/default sizing.',
+              'Add icons or new overflow behavior only when a real composition requires them.',
+              'Use only for mode changes whose content does not require tab semantics.',
+            ],
+            relationships: [
+              {
+                id: 'tabs',
+                note: 'Tabs own content panels and keyboard tab semantics.',
+              },
+            ],
+            nextAction:
+              'Review the controlled immediate-mode contract independently from Tabs.',
+          }
+        ),
+        outputStatus: 'rendered',
+        designAuthority: 'current-baseline',
+        implementationStatus: 'canonical-candidate',
+        implementationSource:
+          'src/components/design-system-v1/segmented-control.tsx',
+        adoptionStatus: 'none',
+        review: {
+          status: 'ready',
+          scope:
+            'The accepted controlled single-value baseline prevents deselection. Text-only compact/default preserves the accepted Index overview range and data-type language, including the full-width compact mobile chart range; contained compact/default reuses the accepted contained-selection geometry. Intrinsic/full remain layout settings selected by composition. Routes, panels, icons, and new overflow policy remain outside scope.',
+          dependencies: [
             {
-              id: 'tabs',
-              note: 'Tabs own content panels and keyboard tab semantics.',
+              name: 'Index overview text-only selection treatment',
+              status: 'canonical',
             },
+            { name: 'Contained-selection presentation', status: 'canonical' },
+            { name: 'Radix ToggleGroup behavior', status: 'retained' },
           ],
-          nextAction:
-            'Audit ToggleGroup and pill-tab lookalikes together, then classify by behavior.',
-        }
-      ),
+        },
+        statusDetail:
+          'The accepted reusable V1 baseline owns text-only and contained immediate mode selection without depending on Tabs or submitted form values. Production adoption has not started.',
+      },
       component(
         'slider',
         'Slider',
@@ -750,58 +816,179 @@ export const PRIMARY_COMPONENT_GROUPS: ComponentGroup[] = [
       'Keyboard and history behavior'
     ),
     items: [
-      component(
-        'product-navigation',
-        'Product navigation',
-        'Moves between the persistent sections of a product object or workspace.',
-        'The Index DTF rail is present across the most important routes and materially shapes product identity beyond a generic Link.',
-        {
-          priority: 'product-extension',
-          ...mapped,
-          evidence: [
-            'One persistent Index DTF route model supplies Overview, Swap, Governance, Auctions, Details + Roles, nested routes, disabled routes, and the DTF identity header.',
-            'The same route truth is recomposed into the constrained-screen menu; this is a presentation change, not a second navigation vocabulary.',
-            'Current production uses a 40px framed icon slot, hover-expanded labels, blue active treatment, nested active dots, and a distinct disabled treatment.',
-          ],
-          decisionPrompts: [
-            'Define current, hover, focus, disabled, and nested treatment for the persistent Index DTF navigation.',
-            'Decide whether labels disclose on hover or occupy persistent width, and define the DTF identity relationship.',
-            'Preserve one route/state model across desktop rail and constrained-screen compositions.',
-          ],
-          relationships: [
+      {
+        ...component(
+          'global-navigation',
+          'Global navigation',
+          'Moves between the application’s primary destinations and resources.',
+          'The application header appears across routes and establishes hierarchy above object-scoped navigation.',
+          {
+            priority: 'product-extension',
+            ...mapped,
+            evidence: [
+              'The production App Header uses one desktop route row plus a grouped More menu for Discover, Earn, Portfolio, creation, tools, and resources.',
+              'The constrained-screen header recomposes the same destinations into Main, Create & tools, and Resources regions rather than shrinking the desktop row.',
+              'Global and Index DTF navigation are visible in the same product context, so their hierarchy must be judged together without merging their component contracts.',
+            ],
+            decisionPrompts: [
+              'Judge the quiet desktop hierarchy, current destination treatment, grouped overflow, and relationship to application actions.',
+              'Judge the full-region constrained-screen composition and its continuity with the application header.',
+              'Keep route information architecture and destination copy source-owned; this candidate reviews presentation and behavior only.',
+            ],
+            relationships: [
+              {
+                id: 'link',
+                note: 'Each destination retains link semantics while Global navigation owns recurring application hierarchy and current state.',
+              },
+              {
+                id: 'product-navigation',
+                note: 'Product navigation is a separate object-scoped system that may be visible beneath the global header.',
+              },
+              {
+                id: 'dropdown-menu',
+                note: 'The grouped desktop overflow consumes accepted popup geometry without turning the complete header into a Menu.',
+              },
+            ],
+            nextAction:
+              'Consume the accepted baseline in later realistic screen validation; keep route taxonomy, account behavior, analytics, and production header adoption separate.',
+          }
+        ),
+        status: 'defined',
+        outputStatus: 'rendered',
+        designAuthority: 'current-baseline',
+        implementationStatus: 'canonical-candidate',
+        implementationSource: 'src/components/design-system-v1/navigation.tsx',
+        adoptionStatus: 'none',
+        review: {
+          status: 'ready',
+          scope:
+            'The accepted baseline covers desktop application hierarchy, current state, grouped More overflow, external-resource indication, application-action separation, and the grouped constrained-screen composition. Route taxonomy, destination copy, analytics, account behavior, and production adoption remain source-owned and outside.',
+          dependencies: [
+            { name: 'Link and Button semantics', status: 'canonical' },
+            { name: 'Menu popup geometry', status: 'canonical' },
             {
-              id: 'link',
-              note: 'Each destination retains link semantics; Product navigation owns the recurring item and route-state composition.',
+              name: 'Typography, color, spacing, and motion',
+              status: 'canonical',
             },
           ],
-          nextAction:
-            'Review the prepared current-state alternatives with real Overview, Governance, Auctions, nested, and deprecated-route evidence.',
-        }
-      ),
-      component(
-        'link',
-        'Link',
-        'Navigates to a route, resource, or content location.',
-        'Links need a recognizable contract distinct from actions.',
-        {
-          priority: 'v1-core',
-          ...mapped,
-          evidence: [
-            'A shared Link exists, while route and inline links are also composed directly.',
-          ],
-          decisionPrompts: [
-            'Define inline, standalone, external, current, visited-if-needed, and disabled/non-link alternatives.',
-          ],
-          relationships: [
+        },
+        statusDetail:
+          'The accepted, reusable, unadopted V1 baseline renders the source-grounded desktop and constrained-screen global navigation compositions. It was reviewed with—but remains structurally independent from—the Index DTF Product navigation baseline.',
+      },
+      {
+        ...component(
+          'product-navigation',
+          'Product navigation',
+          'Moves between the persistent sections of a product object or workspace.',
+          'The Index DTF rail is present across the most important routes and materially shapes product identity beyond a generic Link.',
+          {
+            priority: 'product-extension',
+            ...mapped,
+            evidence: [
+              'One persistent Index DTF route model supplies Overview, Swap, Governance, Auctions, Details + Roles, disabled routes, and the DTF identity header.',
+              'The same route truth is recomposed into the constrained-screen menu; this is a presentation change, not a second navigation vocabulary.',
+              'Current production uses a 40px framed icon slot, hover-expanded labels, blue active treatment, and a distinct disabled treatment. Dormant generic subitem support has no current route evidence and is excluded.',
+              'The current Index DTF rail header presents the symbol and chain mark on one line rather than using the two-line asset-row identity anatomy.',
+            ],
+            decisionPrompts: [
+              'Judge current, hover, focus, and disabled treatment for the persistent Index DTF navigation.',
+              'Decide whether labels disclose on hover or occupy persistent width, and define the DTF identity relationship.',
+              'Preserve one route/state model across desktop rail and constrained-screen compositions.',
+              'Evaluate a source-grounded DTF-switcher submode entered from the identity row, including which DTF set it exposes, how the rail returns to page navigation, and its constrained-screen equivalent.',
+              'Judge whether small public active/notable indicators communicate destination activity without counts or wallet-personalized state, and whether compact 30-day performance adds useful switcher context without overpowering DTF identity.',
+            ],
+            relationships: [
+              {
+                id: 'link',
+                note: 'Each destination retains link semantics; Product navigation owns the recurring item and route-state composition.',
+              },
+              {
+                id: 'global-navigation',
+                note: 'Global navigation remains a separate application-level system even when both are visible in the same shell.',
+              },
+            ],
+            nextAction:
+              'Consume the accepted desktop and mobile baseline in later realistic screen validation. Keep production list sourcing, ranking, search threshold, route preservation, domain-event logic, analytics, and adoption separate.',
+          }
+        ),
+        status: 'defined',
+        outputStatus: 'rendered',
+        designAuthority: 'current-baseline',
+        implementationStatus: 'canonical-candidate',
+        implementationSource: 'src/components/design-system-v1/navigation.tsx',
+        adoptionStatus: 'none',
+        review: {
+          status: 'ready',
+          scope:
+            'The accepted baseline covers the non-wrapping desktop Global header at its explicit 1200px host boundary and bounded More overflow; the one-line desktop DTF identity trigger, its plain token logo inside an outlined 40px collapsed container, the badged expanded identity and far-edge chevron, expandable rail, switcher transition, bottom-reaching scroll viewport and fade, alternative-only DTF rows, public active/notable route indicators, right-aligned 30-day performance, outside-rail dismissal back to page routes, and return after selection. It also covers the mobile top-global trigger and detached 82 × 48px DTF identity pill with its unbadged 32px token logo and separate 32px ghost switch cue at the established 2px contained-control gap beside the 48px page-navigation/action cluster. Both DTF triggers use the canonical Radix-backed full-width bottom drawer, with a taller scrollable switcher and shorter content-led page drawer; Escape, outside dismissal, and close restore the initiating trigger. The page drawer keeps chain-identified copyable token-address actions outside the navigation landmark. The static snapshot-derived fixture set demonstrates density, overflow, and metadata composition only; production sourcing, ranking, search threshold, route-preservation policy, domain event logic, personalized state, analytics, and adoption remain outside.',
+          dependencies: [
+            { name: 'Link semantics', status: 'canonical' },
+            { name: 'Entity identity and IconButton', status: 'canonical' },
             {
-              id: 'button',
-              note: 'Use Button for an operation and Link for navigation, regardless of visual treatment.',
+              name: 'Typography, color, spacing, and motion',
+              status: 'canonical',
             },
           ],
-          nextAction:
-            'Audit inline content links and button-shaped route links separately.',
-        }
-      ),
+        },
+        statusDetail:
+          'The accepted, reusable, unadopted V1 baseline preserves the evidenced Index DTF route model through a compact expandable rail and mobile floating entry points. Desktop identity opens the DTF submode; mobile gives switching to the detached DTF mark and page routes to the neighboring action cluster, with both opening the shared bottom-drawer presentation. Generic public-state and trailing-metadata seams exercise active/notable route indicators and compact 30-day DTF performance without authorizing live sourcing or personalized logic. List sourcing and production adoption remain unresolved.',
+      },
+      {
+        ...component(
+          'link',
+          'Link',
+          'Navigates to a route, resource, or content location.',
+          'Links need a recognizable contract distinct from actions.',
+          {
+            priority: 'v1-core',
+            ...mapped,
+            evidence: [
+              'The shared legacy Link defaults every destination to a new tab, while direct React Router and native anchors retain route-appropriate behavior.',
+              'Inline legal and help links repeatedly use the brand foreground; standalone flow-switch links add a recognizable icon and hover underline.',
+              'Existing Button asChild consumers prove that route navigation can compose Button presentation without nesting an operation inside an anchor.',
+              'External explorer, documentation, and social-resource links repeatedly pair navigation with a trailing ArrowUpRight indicator.',
+              'A new-window cue must reach assistive technology as caller-owned localized copy; the decorative external icon alone is insufficient.',
+            ],
+            decisionPrompts: [
+              'Validate the accepted inline and standalone treatments in real product compositions before adoption.',
+              'Keep recurring route state, breadcrumbs, and product-navigation hierarchy in their owning composition contracts.',
+            ],
+            relationships: [
+              {
+                id: 'button',
+                note: 'Operations use Button. Button-shaped navigation composes canonical Button presentation with an anchor or router link.',
+              },
+              {
+                id: 'product-navigation',
+                note: 'Product navigation owns recurring route/current-state composition; each destination retains link semantics.',
+              },
+            ],
+            nextAction:
+              'Consume the accepted navigation contract in bounded compositions while keeping recurring product navigation and production adoption separate.',
+          }
+        ),
+        outputStatus: 'rendered',
+        designAuthority: 'current-baseline',
+        implementationStatus: 'canonical-candidate',
+        implementationSource: 'src/components/design-system-v1/link.tsx',
+        adoptionStatus: 'none',
+        review: {
+          status: 'ready',
+          scope:
+            'The accepted baseline covers inline underlining with inherited typography, 14px medium standalone hierarchy, the quiet named-return treatment, secure external-resource behavior, outcome-specific trailing visuals, caller-owned accessible new-window announcement, long-label wrapping, visible focus, and canonical Button composition for button-shaped navigation. Current/visited styling, unavailable destinations, Product navigation, tab routes, breadcrumbs, analytics policy, and production adoption remain outside scope.',
+          dependencies: [
+            { name: 'Typography, color, and focus roles', status: 'canonical' },
+            { name: 'Iconography and motion', status: 'canonical' },
+            { name: 'Button presentation', status: 'canonical' },
+            {
+              name: 'Native and React Router link behavior',
+              status: 'retained',
+            },
+          ],
+        },
+        statusDetail:
+          'The accepted, unadopted V1 baseline covers evidenced inline, standalone, return, external-resource, router, and Button-shaped navigation boundaries. Product navigation, current and visited state, breadcrumbs, and production adoption remain separate.',
+      },
       {
         ...component(
           'tabs',
@@ -814,10 +1001,10 @@ export const PRIMARY_COMPONENT_GROUPS: ComponentGroup[] = [
             evidence: [
               '20 product-source imports use shared Tabs, with additional tab-like implementations likely.',
               'The contained-selection visual treatment is an accepted cross-component baseline and is now available as a reusable recipe.',
-              'The recent Index overview timespan treatment remains the strongest text-only evidence.',
+              'Current product panel-switching evidence supports the contained treatment; chart ranges and other immediate modes belong to Segmented Control.',
             ],
             decisionPrompts: [
-              'Define content-panel semantics, text-only versus contained presentation, overflow, counts, and deep-link policy.',
+              'Add counts, route behavior, deep linking, or a new overflow policy only when real panel evidence requires them.',
             ],
             relationships: [
               {
@@ -830,18 +1017,17 @@ export const PRIMARY_COMPONENT_GROUPS: ComponentGroup[] = [
               },
             ],
             nextAction:
-              'Classify real Tabs semantics and variants before building the component; consume the existing contained-selection recipe whenever that accepted presentation applies.',
+              'Consume the accepted contained compact/default contract in a bounded panel composition when migration begins.',
           }
         ),
         outputStatus: 'rendered',
         designAuthority: 'current-baseline',
-        implementationStatus: 'reusable-recipe',
-        implementationSource:
-          'src/components/design-system-v1/tab-presentation.ts',
+        implementationStatus: 'canonical-candidate',
+        implementationSource: 'src/components/design-system-v1/tabs.tsx',
         review: {
-          status: 'provisional',
+          status: 'ready',
           scope:
-            'The compact/default text-only and contained presentations are accepted visual baselines. The complete Tabs contract remains provisional until panel semantics, variant roles, overflow, counts, deep linking, and the reusable API are resolved.',
+            'The accepted Tabs contract uses contained compact/default presentation with retained Radix panel and keyboard behavior. Intrinsic/full width are layout settings rather than variants. Text-only navigation, routes, counts, deep linking, and new overflow policy are excluded until real evidence requires them.',
           dependencies: [
             { name: 'Control geometry', status: 'canonical' },
             { name: 'Typography and color roles', status: 'canonical' },
@@ -849,32 +1035,50 @@ export const PRIMARY_COMPONENT_GROUPS: ComponentGroup[] = [
           ],
         },
         statusDetail:
-          'The accepted compact/default text-only and contained visual treatments are restored as a current reusable recipe. The broader Tabs family remains incomplete: presentation roles, panel semantics, overflow, counts, deep linking, and the final API are unresolved.',
+          'The accepted reusable Radix-backed V1 baseline applies contained compact/default geometry to real panels. Text-only presentation was removed after its strongest assumed uses were correctly classified as Segmented Control; production adoption remains unchanged.',
       },
-      component(
-        'pagination',
-        'Pagination',
-        'Moves through ordered pages of a data set.',
-        'Dense product tables need consistent counts, pages, and constrained-width behavior.',
-        {
-          priority: 'v1-core',
-          ...mapped,
-          evidence: [
-            'DataTable pagination is shared and covered by focused unit tests.',
+      {
+        ...component(
+          'pagination',
+          'Pagination',
+          'Moves through ordered pages of a data set.',
+          'Dense product tables need consistent counts, pages, and constrained-width behavior.',
+          {
+            priority: 'v1-core',
+            ...mapped,
+            evidence: [
+              'DataTable pagination is shared and covered by focused unit tests.',
+            ],
+            decisionPrompts: [
+              'Define page-size, item count, previous/next, direct pages, loading, and reset after filtering.',
+            ],
+            relationships: [
+              {
+                id: 'data-table',
+                note: 'Usually composed by Data table but remains independently usable.',
+              },
+            ],
+            nextAction:
+              'Review the table-independent API without changing DataTable defaults.',
+          }
+        ),
+        outputStatus: 'rendered',
+        designAuthority: 'current-baseline',
+        implementationStatus: 'canonical-candidate',
+        implementationSource: 'src/components/design-system-v1/pagination.tsx',
+        adoptionStatus: 'none',
+        review: {
+          status: 'ready',
+          scope:
+            'The candidate builds from the approved responsive DataTable treatment through 1-based callbacks, aligns all peers to the compact 32px control scale, and uses fixed edge actions plus a five-item mobile page window. Available navigation is quiet, the current page is a non-clickable neutral selection, and unavailable quiet actions are bare and muted. Pagination owns row geometry while its host owns outer inset; page-size selection is optional. A shared mobile 44px hit-target treatment is intentionally deferred to the accessibility pass rather than improvised locally. Loading, filtering reset, and DataTable adoption remain separate.',
+          dependencies: [
+            { name: 'DataTable pagination treatment', status: 'canonical' },
+            { name: 'Button and Select', status: 'canonical' },
           ],
-          decisionPrompts: [
-            'Define page-size, item count, previous/next, direct pages, loading, and reset after filtering.',
-          ],
-          relationships: [
-            {
-              id: 'data-table',
-              note: 'Usually composed by Data table but remains independently usable.',
-            },
-          ],
-          nextAction:
-            'Audit current pagination together with large portfolio and transaction result sets.',
-        }
-      ),
+        },
+        statusDetail:
+          'The accepted reusable V1 Pagination baseline is independent of TanStack Table and leaves shared DataTable defaults untouched. Production adoption has not started.',
+      },
       component(
         'stepper',
         'Stepper',

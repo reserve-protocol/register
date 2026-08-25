@@ -13,7 +13,7 @@ const SingleChoiceGroupStateSheet = () => (
       <h2 id="single-choice-group-title" className="mt-1 text-2xl font-light">
         Single-choice pill group
       </h2>
-      <p className="mt-1 max-w-3xl text-sm font-light leading-6 text-muted-foreground">
+      <p className="mt-1 max-w-3xl text-sm font-light leading-5 text-muted-foreground">
         This is a radio group for a value submitted with a form—not navigation
         Tabs and not an immediately applied mode switch. The complete candidate
         applies the accepted 44px default peer height, neutral control track,

@@ -24,7 +24,7 @@ const ButtonLoadingDecision = () => (
       >
         Busy controls communicate the current state
       </h2>
-      <p className="mt-2 max-w-3xl text-sm font-light leading-6 text-muted-foreground">
+      <p className="mt-2 max-w-3xl text-sm font-light leading-5 text-muted-foreground">
         Ordinary asynchronous work uses a progress verb. A wallet-required state
         uses a direct instruction. Once submitted, a transaction-aware control
         names the lifecycle status rather than pretending it is still an

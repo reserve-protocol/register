@@ -207,9 +207,9 @@ Human-reviewed working rules from the lab studies; these remain provisional unti
   variables have no product consumer, so a future real multi-series need should
   determine the number and character of categorical colors.
 
-## Provisional typography grammar — 2026-08-12
+## Accepted typography baseline — 2026-08-22
 
-Working candidate under human review:
+Human-approved current baseline; production adoption remains separate:
 
 - Use Lausanne 300 for spacious hierarchy and reading: display, page and
   section titles, lead copy, body copy, ordinary values, and supporting text.
@@ -220,7 +220,10 @@ Working candidate under human review:
   concrete gap.
 - The six candidate sizes are 48, 32, 24, 20, 16, and 14px. Restrict 12px to
   genuinely auxiliary chart or dense metadata cases rather than treating it as
-  a normal hierarchy tier.
+  a normal hierarchy tier. Application typography remains stable across
+  breakpoints except for the rare display/hero role, which provisionally steps
+  from 48px/54px to 40px/46px on narrow phones; page titles, sections, body,
+  controls, and data do not inherit a responsive scale.
 - Use 24px/300 for major page regions such as Transactions, Governance, or
   Recent proposals when it owns the primary content area.
 - Use 20px/28px at 300 for prominent supporting copy beneath a hero or major
@@ -233,8 +236,15 @@ Working candidate under human review:
   visual treatment as other body emphasis.
 - Use 16px/300 for ordinary body copy and values; use 14px/300 for supporting
   copy and 14px/500 for labels and compact actions.
-- Numeric text inherits its contextual role and adds tabular numerals. Long
-  readable content targets roughly 65 characters per line.
+- Use a 20px line height for 14px typography by default across weights and
+  roles. Tighter treatment requires a reviewed component-specific geometry and
+  remains an exception rather than a reusable typography default.
+- Human-readable financial values stay in Lausanne, inherit their contextual
+  role, add tabular numerals, and align right in comparable columns. Monospace
+  is reserved for machine identifiers such as addresses and transaction hashes.
+  Peer values use consistent precision, a true minus sign, and an em dash for
+  unavailable data. Long readable content targets roughly 65 characters per
+  line; meaningful titles wrap, while only known-width machine cells truncate.
 - Horizontally aligned peer content uses the same text size. Table headers
   across one header row share a size and weight; values aligned within one data
   row do not change size merely because one is semantic or emphasized. Use
@@ -257,7 +267,7 @@ Current evidence and first candidate under human review:
   selectively round inward-facing corners where a major beige substrate seam
   begins, ends, or intersects; this reveal radius belongs to the layout, not
   the shared Card component.
-- Compact standalone controls—buttons, segmented tabs, badges, icon controls,
+- Compact standalone controls—buttons, segmented controls, badges, icon controls,
   avatars, switches, and handles—use a full radius.
 - This early study grouped inputs and selects with menus, popovers, and
   thumbnails under a restrained symmetric radius. The later control-geometry
@@ -291,6 +301,13 @@ Provisional candidate after lab review:
   compact, and 20px for default. On a side containing an icon, reduce that
   side by 2px for optical balance; keep an 8px text-to-icon gap except where a
   micro composition requires the tighter 6px gap.
+- The later accepted Button-family refinement supersedes those provisional
+  compact and default values for actions only: text-only compact Buttons use
+  14px on each side and 12px on an icon side; text-only default Buttons use
+  24px on each side and 22px on an icon side. Micro Buttons retain 10px/8px.
+  Selection triggers, contained-selection items, and icon-only controls keep
+  their separately reviewed geometry rather than inheriting the Button
+  correction.
 - A text-only compact popup trigger with one persistent trailing 16px chevron
   transfers that 2px optical adjustment rather than simply removing it: use
   14px leading and 10px trailing padding with the same 8px gap. This preserves
@@ -521,6 +538,12 @@ Accepted as the provisional foundation direction after visual comparison:
 - Disclosure/navigation icons generally sit at the trailing edge. Repeated rows
   reserve the same leading slot across the set; if only one arbitrary row would
   receive an icon, omit it rather than breaking the shared text axis.
+- Ordinary routes omit icons by default. A trailing ArrowRight may add forward
+  emphasis, ArrowLeft leads return navigation, ArrowUpRight signals an external
+  or new-tab destination unless a more specific outcome icon applies, and
+  Download is reserved for real file/resource outcomes. Navigable rows and
+  cards use a far-trailing ChevronRight;
+  ChevronDown belongs to in-place disclosure and is not a route indicator.
 - Brand marks, token and chain identity, and bespoke product diagrams remain
   explicit exceptions rather than being forced into the ordinary UI icon
   language.
@@ -559,9 +582,10 @@ The 2026-08-19 reconciliation corrected an over-broad deletion from that
 transition: accepted rows must be extracted before a mixed-authority board is
 removed. The Components landing page now shows every family directly, renders
 all available candidates/specimens/recipes, and lists unresolved capabilities
-without invented UI. Accepted compact/default text-only and contained Tabs are
-again visible; unresolved Product navigation remains inventory for the later
-navigation-family review.
+without invented UI. The contained Tabs work recovered during that transition
+remains visible; its former text-only proposal is superseded by the later
+Tabs-versus-Segmented-Control review. Unresolved Product navigation remains
+inventory for the later navigation-family review.
 
 The Components landing page now leads with a compact, lab-only review board.
 It is the primary place to compare the emerging component language before any
@@ -570,9 +594,9 @@ candidate changes a shared production primitive:
 - One scale matrix aligns compatible controls to the accepted 28px micro, 32px
   compact, and 44px default heights. A dash is shown when a size has no clear
   semantic use instead of creating a complete Cartesian product of variants.
-- Actions, icon actions, text fields, search, select, checkbox rows, segmented
-  tabs, and text tabs share the same columns so shape, padding, type, icon, and
-  alignment errors are visible across families rather than only in composed
+- Actions, icon actions, text fields, search, select, checkbox rows, and
+  segmented controls shared the same columns so shape, padding, type, icon, and
+  alignment errors were visible across families rather than only in composed
   examples.
 - Separate dense boards compare action hierarchy and loading/disabled states;
   checkbox, radio, and switch states; field states; value/loading/placeholder
@@ -590,10 +614,11 @@ candidate changes a shared production primitive:
 - Default entered and selected control values use 16px/300. Compact values use
   14px/300, while ordinary action labels remain 14px/500 at both compact and
   default sizes.
-- Tab variants use foreground text for the active item and supporting text for
-  inactive items rather than turning selection into a primary-blue action.
-  The text-only candidate follows the recent Index overview timespan treatment
-  without an underline or wrapper, at 14px compact and 16px default sizes.
+- Tab variants used foreground text for the active item and supporting text for
+  inactive items rather than turning selection into a primary-blue action. The
+  former text-only candidate followed the Index overview timespan treatment;
+  later review correctly moved that immediate range-selection job to Segmented
+  Control and removed text-only Tabs from the active baseline.
 - Selection marks keep one 20px visual size across densities. Checkbox marks
   sit inside a transparent 28px alignment slot, using the accepted micro-control
   rhythm to provide a 4px optical inset without adding visible chrome. The
@@ -879,8 +904,9 @@ The first focused component decision loop accepted Button hierarchy and intent:
   says cancel or remove.
 - The reviewed micro, compact, and default action geometry remains 28px, 32px,
   and 44px with 14px medium labels and size-matched icons.
-- This is a partial Button definition, not production migration. Pressed and
-  long-label behavior remain open; destructive confirmation is defined below.
+- This was a partial Button definition, not production migration. Pressed and
+  long-label behavior remained open at this stage; the active slice below now
+  owns their current status. Destructive confirmation is defined below.
 - The accepted contract is implemented as the reusable lab candidate in
   `src/components/button/`. Active Button matrices and dependent canonical lab
   output import it directly; the production `src/components/ui/button.tsx`
@@ -1158,7 +1184,10 @@ Read-only source evidence used for initial prioritization:
   `src/components/entity-identity/` and is consumed directly by the lab. It
   separates `ChainBadgedLogo`, `ChainLogoStack`, `TokenLogoStack`, and the
   identity text composition so rows can reuse the same marks without a
-  universal Row prop matrix. The badge recipe follows the strongest recent
+  universal Row prop matrix. `EntityIdentity` owns the accepted 8px direct
+  mark-to-copy relationship; host layouts may reserve a larger alignment slot
+  around the mark without adding another component-specific text gap. The
+  badge recipe follows the strongest recent
   Index treatment. Both stack types now use one frame recipe in which requested
   size describes the artwork, the 2px surface-colored separator wraps outside
   it, and optical leading compensation aligns the first artwork with a singular
@@ -1344,15 +1373,18 @@ definition slots, and next action. Future state sheets should read the same
 metadata rather than introduce a second checklist. No product component,
 shared default, or production token changed during this preparation.
 
-### Canonical product kernel — 2026-08-14
+### Reusable product-kernel evidence — 2026-08-14
 
-The first unattended canonicalization batch establishes real shared candidates
-instead of lab-only copies:
+The first unattended synthesis batch establishes real shared candidates instead
+of lab-only copies. Authority remains component-specific rather than applying
+to every item in this evidence set:
 
 - `EntityIdentity`, `ChainBadgedLogo`, and `TokenLogoStack` share geometry while
   leaving token resolution and account-avatar domain logic in their existing
-  specialized primitives. The corrected chain badges are 16px at xl and an
-  optically floored 14px at lg, including their surface-separating borders.
+  specialized primitives. The corrected chain badges are 16px at xl, an
+  optically floored 14px at lg and 12px at md, including their 1px
+  surface-separating borders. Their 4px rounded-square treatment stays legible
+  instead of collapsing into a circle at small sizes.
 - `Metric` owns inline and centered-headline label/value anatomy. The headline
   treatment follows the strong Home source with a 16px/300 label and 16px/500
   value, while
@@ -1361,12 +1393,14 @@ instead of lab-only copies:
 - The Table lab composes those seams in a realistic divider-free Index holdings
   slice. This is deliberately not a universal Row abstraction and is not a
   production Table-default migration.
-- `EmptyState` distinguishes quiet absence from a user-resolvable absence while
-  leaving region size, surface, and illustration outside the primitive.
+- Exploratory `EmptyState` evidence distinguishes quiet absence from a
+  user-resolvable absence while leaving region size, surface, and illustration
+  outside the primitive. It is not canonical without explicit human acceptance.
 - `Button` is a real reusable candidate rather than repeated lab markup. It
   implements the accepted four tones, 28/32/44px scale, optical icon padding,
-  two-color focus, structured disabled state, and state-led loading. Pressed
-  and long-label behavior remain explicitly open.
+  two-color focus, structured disabled state, state-led loading, and pressed
+  treatment. Long-label overflow remained open in this historical evidence
+  batch and is resolved by the active slice below.
 
 The lab directly imports every component above. Existing production badge,
 stack, metric, table, and empty-state consumers remain unchanged until a named
@@ -1523,75 +1557,551 @@ labeled.
 
 ## Active slice
 
-The independent safe-autonomy frontier from checkpoint `15f6dae9e` is at its
-human-review boundary. Components now mounts all 14 complete shared state sheets
-and one compact 29-item unresolved inventory; Product Navigation stays explicit
-and unresolved. SingleChoice, Field/TextInput, and ActionGroup are accepted
-current baselines. The repeated governance-parameter composition and reusable
-PresetOrCustomField relationship are now accepted, including the constrained
-width overflow rule owned by SingleChoice. The source-grounded explanatory
-HelpTooltip candidate is also accepted, including its bare trigger, label
-relationship, touch behavior, and bounded dynamic-width floating surface.
-The source-grounded bounded-value Select is now an accepted current baseline:
-Field geometry determines its default trigger, real pagination evidence
-determines its compact trigger, and the reviewed popup owns density, shared
-subtle-interaction treatment, selected-check character, and optional leading
-chain identity. Its source-grounded chain fixture covers both
-individual 16px marks and a canonical stacked `All chains` summary without
-adding a control-radius override to their authored identity geometry or
-claiming multi-value selection or mobile filter substitution. The Select
-pressure test exposed one shared identity issue: legacy-style separator borders
-were reducing visible artwork and indenting stacked marks. `ChainLogoStack` and
-`TokenLogoStack` now consume the corrected common frame recipe; production
-consumers remain unchanged.
-Trigger width and visible-label treatment remain composition-owned. Compact
-bounded utilities reserve width for their widest known option rather than
-resizing with the current value.
+The safe-autonomy frontier from checkpoint `9c40640d5` is implemented as one
+uncommitted, unadopted lab stage. Existing accepted recipes retain authority
+only within their reviewed scope. Tabs is now an accepted current baseline;
+the other newly synthesized contracts remain exploratory and every item keeps
+`adoptionStatus: none`.
 
-The attempted next Combobox slice stopped at source inspection because its
-prepared evidence conflated three real jobs: navigation Command search,
-multi-select filtering, and drawer-based Asset picking. The component registry
-now records that no generic single-value searchable form control is evidenced;
-future Combobox work must start from a real product seam rather than combining
-those adjacent behaviors.
+Accepted in human review:
 
-SearchField is now an accepted current baseline. It composes TextInput and
-IconButton, preserves the 44px Field scale, and owns only the search mark,
-controlled clear action with focus return, and loading indicator. One size is
-sufficient for current evidence; compact sizing may be added only when a real
-dense-toolbar use requires it. Results, grouping, no-results recovery, Command
-navigation, Asset picker behavior, responsive substitution, and production
-adoption remain separate.
+- Radix-backed `Tabs`, `TabsList`, `TabsTrigger`, and `TabsContent` now apply the
+  accepted contained compact/default geometry to real keyboard-connected
+  panels. Intrinsic/full are layout settings rather than variants. Text-only
+  presentation was removed after its strongest assumed uses were correctly
+  classified as Segmented Control behavior. Tiny sizing, counts, routes, deep
+  links, and new overflow policy remain excluded.
+- `SegmentedControl` now owns immediate peer-mode selection in reviewed
+  text-only and contained compact/default presentations. Intrinsic is the
+  ordinary text-only layout; the compact mobile DTF chart range provides the
+  accepted full-width text-only case. It does not inherit Tabs panels or
+  SingleChoice form-value semantics.
+- `TextArea` now extends the accepted Field anatomy with a restrained 8px
+  contained-object radius, 20px horizontal and 16px vertical inset, vertical
+  resize, and inherited invalid, read-only, and disabled states. Character
+  count, rich text, and production adoption remain excluded.
+- `Switch` now owns the accepted 36×20 immediate boolean treatment with a 16px
+  thumb and a semantic inverse-neutral disabled pair that preserves stored
+  state without active color, blanket opacity, borders, or elevation. Async
+  recovery, settings-row composition, and production adoption remain excluded.
+- Table-independent `Pagination` now owns the accepted 1-based contract,
+  optional page-size selection, 32px peer-control row, seven/five-item responsive
+  windows, non-clickable current page, quiet available/unavailable hierarchy,
+  and host-owned outer inset. Shared 44px mobile hit-target expansion is
+  intentionally deferred to the accessibility pass; DataTable defaults and
+  production adoption remain unchanged.
+- `CopyableValue` now owns the accepted 14px monospace machine-value
+  presentation, deliberate address shortening, canonical micro copy action,
+  truthful clipboard success, polite announcement, Escape dismissal, and
+  two-second neutral-to-success feedback transformation. Full-value layout,
+  failure presentation, sensitive-value policy, explorer-action pairs,
+  native/bridged address composition, and production adoption remain separate.
+- `Skeleton` owns neutral material and pulse only; hosts retain truthful size,
+  radius, repetition, and loading boundaries. `Spinner` owns the accepted
+  14/16/24px placement scale and inherits contextual color. Both remain
+  unadopted and do not replace refined product loading compositions.
+- `EmptyState` now owns quiet title-only and actionable absence with the
+  accepted 4px title/description relationship, 384px centered description
+  measure, optional unframed neutral icon, and canonical intrinsic actions.
+  Host framing, exact request channels, bespoke milestone artwork,
+  loading/error states, and production adoption remain separate.
 
-The source-grounded action Menu is now an accepted current baseline. Source
-inspection keeps Index contract actions, external links, and the header Search
-invocation as Menu evidence while treating chart type, time range, language,
-theme, and social-channel choice as value selection. The reusable candidate
-retains Radix action semantics, consumes canonical Button/IconButton triggers,
-and reuses the accepted popup rhythm without importing Select behavior. Labeled
-Menu and Select triggers consume one shared down-chevron indicator: opening
-rotates it 180 degrees over the 120ms immediate-feedback duration, while
-reduced-motion removes the transition; icon-only triggers do not add it.
-Menu separators cross the popup padding to meet the inside of its border,
-clearly separating action groups rather than aligning to the item-content axis.
-Selection items, grouped header panels, submenus, responsive substitution, and
-production adoption remain separate.
-The minimal Popover shell is accepted by consequence of the reviewed Select
-and Menu geometry, without inventing generic padding, width, or inner anatomy.
-MultiSelectFilter is now an accepted current baseline and Current Review is
-empty. It preserves the real staged Apply behavior, replaces Switch-based set
-membership with canonical trailing Checkbox rows, keeps optional identity and
-labels on one clean leading axis, and composes accepted Button geometry,
-selection-value typography, identity, Popover, motion, and ActionGroup
-dependencies. The accepted 44px trigger uses a 12px summary-to-chevron gap and
-20px-leading/18px-trailing optical padding. Its rows retain 8px popup and 12px
-item insets; the provisional 14px/16px single-line role combines with matching
-20px leading identity and visible Checkbox marks to retain a 44px row. The
-Checkbox keeps its 28px target by overlapping 4px into the row-owned inset.
-The accepted no-divider footer groups compact secondary Clear and primary Apply
-actions on the right with an 8px gap, 20px horizontal and bottom insets, and 8px
-top padding. Search, large-list loading and empty states, token-result density,
-mobile drawer substitution, and production adoption remain separate.
-Do not change the shared legacy Card default, promote Table/DataRow, redesign
-Product Navigation, begin production migration, commit, or push as part of this
-slice.
+Previously accepted baseline carried into this slice:
+
+- Button now includes its centered 0.98 momentary press scale and opaque filled
+  interaction colors derived from the theme token at 8% hover and 16% pressed
+  darkening. The scale uses the accepted 120ms duration, leaves layout fixed,
+  and is omitted under reduced motion. Persistent `aria-pressed` selection
+  remains outside ordinary Button. The accepted label-fit policy remains
+  concise, intrinsic, and single-line by default, with deliberate default-size
+  wrapping reserved for unavoidable localized copy.
+
+Accepted in the subsequent human review:
+
+- `Link` now provides one accepted, unadopted navigation contract for inline reading
+  links, standalone navigation, and the evidenced quiet return-navigation
+  pattern. Return navigation uses the accepted 14px light supporting role with
+  a 4px arrow-label relationship and promotes from supporting-neutral to
+  primary underline on hover or focus. This is not a universal Back default:
+  named return links orient users when the parent is not otherwise clear, while
+  compact headers with obvious parent context use the canonical framed
+  IconButton. Link retains native or React Router anchors,
+  merges secure external-resource rel tokens, requires caller-owned localized
+  new-window announcement copy alongside the visual external indicator, wraps
+  long labels, and composes the canonical Button through `asChild` for
+  button-shaped routes rather than inventing a Link-button variant. Current and
+  visited states, unavailable destinations, product navigation, tabs,
+  breadcrumbs, analytics policy, and production adoption remain separate.
+  Accepted in the subsequent human review:
+
+- `Accordion` is now an accepted, unadopted baseline for coordinated
+  informational FAQ/product-detail sets. It retains Radix single/multiple
+  behavior, keyboard navigation, long labels, disabled state, a stable 16px
+  row/content axis, 48px minimum triggers, an 8px expanded title/body
+  relationship, a 20px body-to-next-title rhythm, and 14px/20px supporting
+  content. Callers explicitly choose the behavior: multiple is the ordinary
+  informational recommendation, while single is reserved for mutually
+  substitutive or unusually long regions. Its V1-specific height animation
+  uses the accepted 180ms ordinary-component duration without changing the
+  legacy 200ms production animation or any consumer.
+- `Collapsible` is now an accepted, unadopted baseline for one independently
+  controlled disclosure. It consumes the Accordion presentation and 180ms
+  motion without inheriting set semantics. Clear caller-owned subject copy is
+  required; the optional closed/open cue stays muted at rest, becomes primary
+  on hover/focus, and hides below the small breakpoint. Hosted content,
+  bespoke triggers, native `details`, and production adoption remain outside.
+
+System Learning: button-shaped navigation exposed a semantics-only gap in the
+accepted Button implementation. `asChild` now transfers the unchanged Button
+presentation to a real anchor instead of nesting navigation inside an
+operation. This adds no tone, size, or visual default. Unavailable/loading
+`asChild` controls are defensively removed from sequential focus and suppress
+activation, while the Link contract still forbids representing an unavailable
+destination as an anchor.
+
+Current Review:
+
+### Navigation audit remediation contract — 2026-08-25
+
+## Goal
+
+Make the coordinated Global and Product navigation candidate truthful and
+review-ready by fixing the verified behavior, responsive-fit, semantic,
+ownership, and source-of-truth failures without changing the accepted visual
+direction or adopting the candidate in production.
+
+## Current state
+
+The lab renders a strong visual direction, but its mobile Product drawers are
+locally recreated modal surfaces without canonical focus/dismissal behavior,
+the mobile Global menu drops focus when opened, the desktop header permits
+wrapped route labels at supported widths, the More popup has no bounded-height
+overflow strategy, and active guidance still describes removed or superseded
+states.
+
+## Non-goals
+
+- No production navigation migration, live route wiring, analytics, DTF
+  sourcing/ranking, account-menu redesign, or personalized activity logic.
+- No broad component registry, dependency graph, or general Drawer redesign.
+- No promotion of navigation-specific 40/36px rail geometry, outlined 48px
+  drawer rows, 82x48px mobile identity, or 6px optical spacing into general
+  component authority.
+
+## Acceptance evidence
+
+- Focused component tests prove mobile Product drawers use the canonical Drawer
+  contract, Escape/outside dismissal and focus return work, mobile Global menu
+  receives and returns focus, language alternatives meet the 44px touch target,
+  supplementary address actions sit outside the navigation landmark, and
+  drawer rows retain their geometry without depending on optional icons.
+- Browser inspection proves desktop route labels remain single-line with a
+  deliberate overflow transition, More remains usable under constrained
+  height, and mobile Global/Product navigation works in light and dark themes.
+- Scoped lint, typecheck, focused tests, route browser checks, wiki lint, and
+  diff checks are green after the final edit.
+- Current Review, catalog, plan, wiki, and progress claims match the rendered
+  candidate and preserve candidate/unadopted status.
+
+## Test seams
+
+Use the public V1 navigation components for structure and semantics, focused
+Testing Library interaction tests for focus/dismissal, and the routed design-
+system lab for responsive and visual behavior. Production navigation remains
+evidence only.
+
+## Slices
+
+- Slice: canonical mobile overlay and focus behavior; blocked by: none.
+- Slice: desktop fit, popup overflow, touch, and landmark semantics; blocked by:
+  canonical overlay behavior.
+- Slice: simplify shared destination/copy ownership and reconcile authority;
+  blocked by: resulting component contracts.
+- Slice: final scoped and routed verification; blocked by: all implementation
+  slices.
+
+## Unresolved decisions
+
+None block remediation. Navigation-specific geometry remains deliberately local
+until realistic product adoption pressure-tests it.
+
+## Outcome
+
+Remediation is complete and human review accepted Global and Product
+navigation as separate current baselines. Mobile Product navigation
+now consumes the canonical Drawer contract with contained-bottom placement,
+focus entry/return, Escape and outside dismissal; mobile Global navigation
+owns equivalent focus entry/return without pretending its inline utility panel
+is a modal. Desktop Global navigation has an explicit non-wrapping 1200px host
+boundary and a bounded, scrollable More surface. Navigation landmarks contain
+destinations only, supplementary token-address actions remain outside them,
+drawer rows retain 48px geometry without depending on optional content, and
+caller-owned labels replace hidden English defaults. Lab fixtures are isolated
+from reusable owners. The coordinated result remains unadopted; production
+wiring, inventory unification, and
+navigation-specific geometry promotion remain separate work.
+
+- Current Review is empty. Human review accepted Global navigation and Index
+  DTF Product navigation after rendering them together in one realistic
+  application shell. They remain separate reusable current baselines and
+  sources of truth. The accepted result uses current Index DTF and
+  application-header evidence plus
+  accepted Link, Button, IconButton, Menu, identity, popup, and foundation
+  baselines. It covers the non-wrapping 1200px-and-wider desktop header,
+  bounded anchored grouped overflow, collapsed and hover/focus-expanded
+  product rail, current/public-activity states, and
+  separate constrained-screen global and DTF-page menus. The product identity
+  mark and route icons share one 40px rail axis in both collapsed and expanded
+  states instead of relying on the intrinsic logo box; the constrained menu
+  keeps its own 24px content-led identity slot. The lab exposes the real
+  lower-level global route, shared global destination row, product identity,
+  and product route owners above the complete compositions. Top-level global
+  destinations use meaningful 16px icons plus labels and a quiet selected
+  surface rather than an underline. Adjacent top-level destinations retain a
+  2px sibling gap so neighboring hover and selected pills never visually merge.
+  The coordinated lab also renders the application home state, where the same
+  global owner has no current destination instead of inventing a selected
+  fallback. More and constrained global navigation use one single-line
+  destination-row owner. Constrained navigation shares the outlined 48px
+  drawer recipe with DTF page navigation, while desktop More retains the same
+  outlined pill treatment and icon-label-trailing anatomy at the established
+  40px popup density. Both surfaces carry the complete current navigation
+  inventory: four primary destinations, three internal tool destinations, and
+  five external resource destinations. Mobile
+  group headings replace repetitive per-row subtitles. Internal destinations
+  end in a chevron and external destinations replace it with the external-link
+  indicator. The common desktop application-control cluster is also in
+  scope: Search, theme, language, and Account/Connect. The conditional
+  contact-team bell is not misrepresented as a permanent Notifications action.
+  Deterministic disconnected and connected-account fixtures expose the account
+  width and hierarchy without requiring a live wallet session; the connected
+  fixture retains the current chain-mark-plus-short-address information model.
+  The current comparison groups these actions in one 40px rounded toolbar
+  shell. Its outlined 32px compact controls use 4px on both wrapper axes and a
+  matching 4px sibling gap, aligning the cluster silhouette with the 40px
+  global-route surfaces without creating a new Button size.
+  Within that cluster, the disconnected Connect gateway uses the accepted
+  primary action tone; once connected, the chain-and-address account control
+  returns to secondary outline treatment because it acts as identity/menu
+  access rather than the cluster's acquisition action.
+  The closed mobile application-header candidate is now a reusable 56px shell
+  rather than a locally styled specimen. It retains the existing grouped
+  Search/Theme/Language decision, but the trigger, Connect/account control, and
+  global-menu trigger consume canonical Button/IconButton owners. The utility
+  surface is a header-owned composite disclosure rather than an action Menu: a truthful
+  SearchField-family launcher opens the existing search dialog, default
+  contained Segmented Control owns theme, and a 44px disclosure row expands
+  only the alternative language choices inline. The summary and alternatives
+  form one connected outlined control, so the selected value is not repeated.
+  Selection collapses that list, and the utility surface grows in place instead
+  of opening a second popup. The panel shares the header's `card` surface in
+  both themes; containment alone does not authorize a structural `secondary`
+  or separate `popover` background. The three resting
+  controls share the accepted 44px scale. On mobile the
+  surface spans the full header width and begins directly at the 56px header
+  boundary. That produces viewport width in product use and the truthful
+  simulated-phone width in the lab without trigger-relative offsets.
+  Human review rejected the initial transfer of
+  44px ordinary mobile form/action geometry into this dense navigation context;
+  all visible header controls instead use the canonical 32px compact size, with
+  a 4px relationship between peers. Disconnected, chain-and-address connected,
+  transparent landing-surface, 360px square-mark, and 320px lower-bound
+  fixtures are rendered together. The grouped utility trigger uses the existing
+  14px micro glyph scale with a 4px internal gap; retaining three 16px glyphs
+  inside the compact control made the icons read as a cramped block. The
+  connected account retains its chain mark and shortened address across those
+  widths. Desktop and constrained account controls share the existing 14px
+  micro mark and 4px relationship gap; constrained headers shorten only the
+  visible address to `0x71…2A6C`, while the accessible account identity remains
+  `0x71F9…2A6C`. The brand keeps the full Reserve wordmark when the header content box
+  has room, then switches to the existing square mark before the wordmark would
+  compress or lose its gap to the controls. The panel contains one search
+  launcher, both theme choices, and access to all four production languages; search closes
+  the panel before handing focus to its dialog. Closing the utility surface also
+  resets the inline language disclosure. It does not copy the legacy
+  duplicate Search row or raw shadow. Opened global-menu
+  redesign, account-menu behavior, production state wiring, analytics, and
+  production adoption remain outside this closed-header review.
+  Product rail routes retain a stable 40px target and icon axis.
+  The collapsed state uses one 40px circle; expansion reveals a 40px outer pill
+  and contracts the inner icon circle to 36px with the same accepted 2px inset
+  relationship as contained selection. A 6px structural gap plus the circle's
+  2px inset produces the intended 8px optical circle-to-label relationship, and
+  the persistent rail fills its containing page region rather than ending at
+  its final route. The constrained Product menu reuses the same selected,
+  hover, focus, icon, and 14px/500 label language, while retaining an explicit
+  mobile-appropriate 48px full-width route independent of optional icon
+  content. It uses one fully rounded state surface, a 4px sibling gap, symmetric
+  8px outer inset, a 24px alignment slot
+  containing the 16px glyph, and the accepted 8px slot-to-label relationship.
+  Product Navigation owns a one-line identity trigger rather than transferring
+  the shared two-line asset-row `EntityIdentity` anatomy. It consumes the
+  canonical logo and label roles while keeping chain context in the expanded or
+  constrained badged mark and navigation region label. Its constrained 24px mark slot and
+  route-icon slot share one centerline, while the DTF name and route labels
+  start on the same axis. The desktop rail retains its separate fixed 40px
+  alignment slot and uses the same 6px structural gap as its route rows. The
+  trigger places a plain 24px token logo inside an outlined 40px clickable
+  container when collapsed, without a separate switch cue or chain badge. That
+  clickable region keeps its outline through expansion, changing from the 40px
+  collapsed circle to the complete identity pill. The expanded rail restores
+  the badged logo and moves the ordinary chevron to the
+  far edge when labels are visible; constrained navigation keeps its 20px
+  badged logo. The 16px chevron is
+  centered in an invisible 24px trailing slot so it gains optical inset without
+  implying a second control. The rail-only nested route-icon circle remains
+  deliberately absent from the menu because the menu never collapses.
+  It does not alter production
+  navigation, invent route
+  hierarchy, use legacy Yield DTF presentation as authority, or allow either
+  accepted baseline to become authority for the other. Production adoption
+  remains separate.
+
+  The DTF identity row is an accepted, unadopted interaction: activation pins the
+  desktop rail open, replaces page routes with DTF rows using the same alignment
+  and state language, and restores page navigation after selection. Because the
+  identity trigger already owns current context, the switcher list excludes the
+  current DTF and presents alternatives only. The desktop list keeps its 16px
+  resting gap below the identity divider as scroll-content padding, making the
+  divider itself the clipping boundary instead of leaving a static blank strip
+  where rows disappear. Pointer or keyboard focus leaving the desktop rail
+  dismisses switching as well as expansion, restoring the current DTF's default
+  page navigation instead of leaving the alternative-DTF list pinned open.
+  Mobile does not copy that
+  in-place identity row: its detached 82 × 48px pill uses an unbadged 32px DTF
+  token logo and a separate 32px ghost switch cue. The shell retains the
+  adjacent mobile action cluster's 8px outer inset, while the two related units
+  use the established 2px contained-control gap. The 16px switch glyph is
+  centered in that control. Hover/focus/open feedback belongs to the ghost cue
+  while the floating pill surface remains stable; press reuses the accepted
+  centered 0.98 button transform.
+  The trigger opens DTF switching directly, while a separate
+  48px right-hand floating cluster owns page navigation and contextual actions.
+  Both open one full-width bottom-drawer presentation: the long switcher grows
+  to the shell's maximum height and scrolls, while the shorter page list remains
+  content-led. Both consume the canonical Drawer header's equal 24px top/right
+  action axis. The visible gap from header controls to the first row also
+  resolves to 24px, while navigation row content aligns to that same 24px axis
+  rather than recreating drawer padding locally. Drawer headers use the existing
+  16px/500/24px item-title role and a compact secondary close control. Drawer
+  rows place their 16px trailing chevron inside a 24px slot matching the leading
+  icon wrapper. A shared 12px gap follows that leading slot in both the DTF
+  switcher and page-navigation drawers, giving full-slot identity marks and
+  inset glyphs one stable relationship to their labels; popup rows retain their
+  bare 16px treatment. The current
+  human-review experiment moves the drawer row shape to the canonical 8px shell
+  edge, uses 16px horizontal/12px vertical padding, gives each row a visible
+  default outline, and separates siblings by 4px. The active row reuses the
+  established `primary/30` selected-pill outline. The content axis stays 24px
+  and row height returns to 48px. Supplementary content begins after a 16px
+  section gap rather than the 8px sibling-row gap. The drawer shell alone owns
+  the final 8px bottom inset, matching the 8px horizontal row-shape inset
+  without duplicated supplementary padding. Drawer presentation omits the
+  popup recipe's identity and supplementary divider lines. The DTF page drawer does not
+  demote token contracts to quiet footer text or introduce a nested card.
+  A single-chain DTF uses one non-navigation row with the same fully rounded
+  drawer-row recipe; its badged DTF mark and “DTF on Chain” copy establish the
+  token as the address owner. A multi-chain DTF adds one wrapping “{ticker}
+  token addresses” group label, then uses chain-led rows with a 16px chain mark
+  centered in the shared 24px leading slot and inline muted Native/Bridged
+  roles. This avoids repeating a potentially long ticker while
+  keeping each shortened contract and accepted `CopyableValue` action attached
+  to its chain. Copy actions always write the full captured contract address.
+  This is not yet an
+  accepted replacement for the balanced 12px popup-row recipe.
+  Its 8px wrapper inset and sibling gap
+  keep the two floating surfaces aligned without making global and product
+  navigation one component. A separate phone specimen shows the 56px top
+  application bar and its global-menu trigger. The rail pins its identity while the remaining
+  height scrolls to the bottom edge of the navigation surface; the constrained
+  menu bounds its item viewport at 288px. Switcher mode uses a 32px bottom fade
+  in the owning surface color plus equal scroll-end padding, so overflow is
+  legible while the final row can still clear the fade completely. A 16-item
+  fixture set sourced from the captured Discover snapshot tests density, logos,
+  chain badges, and overflow only; it does not authorize a production list or
+  ranking. The real list source, search
+  threshold, current-subroute preservation/fallback policy, analytics, and
+  production integration remain unresolved. These mobile compositions are
+  lab-only proposals; the current production logo-to-overview link and floating
+  page-menu trigger are evidence, not adoption authority.
+
+  The current review also pressure-tests compact public metadata without making
+  navigation depend on governance, auction, wallet, or market domain models.
+  Destinations accept a generic indicator descriptor and optional trailing
+  metadata. A small `NavigationIndicator` candidate distinguishes an active
+  public phase with the semantic information role from a notable or
+  time-sensitive public phase with the semantic warning role. It deliberately
+  omits counts and user-personalized states: current evidence supports at most
+  one relevant auction and the candidate is communicating what is happening in
+  the destination, not what a connected account must do. The detached mobile
+  page-navigation trigger does not aggregate public activity; indicators appear
+  only on the specific destination rows after the drawer opens. Collapsed rail
+  placements use the compact 4px dot inside an 8px slot so the signal remains
+  peripheral. In the collapsed rail, that 8px slot starts at 32px and
+  ends at the 40px row edge, sitting on the icon's horizontal centerline rather
+  than floating at the top like a notification badge or clipping outside the
+  rail. Expanded destination rows retain the default 6px dot in a 16px slot
+  where its meaning has more room to resolve.
+
+  Alternative-DTF rows use the same generic trailing seam for a compact
+  `PerformanceValue`. The fixture period is explicitly the Discover table's
+  default Last 30 Days, while the row shows only the signed percentage and
+  exposes the period accessibly. It reuses accepted positive/negative financial
+  colors, tabular numerals, a true minus sign, and an unavailable-data state.
+  Performance replaces the ordinary destination chevron in switcher mode so
+  the trailing edge has one job. The expanded rail uses the accepted 256px
+  layout width so realistic tickers and values retain distinct columns without
+  crowding; that width remains stable between page routes and switcher mode.
+  These additions are unadopted review candidates and
+  do not authorize live market sourcing, personalized governance logic, or
+  production migration.
+
+Deferred spacing-exception reconciliation (non-blocking for the current
+navigation review): recheck prior accepted/provisional optical corrections that
+use off-grid edge values—especially Button icon-side inset pairs and compact or
+default Select/Menu trigger leading/trailing pairs. Determine whether each can
+converge on the accepted spacing scale or one shared icon-aware inset recipe.
+Existing recipes remain current until reviewed, but they are not precedent for
+new component-specific relationship gaps. Do not turn this follow-up into a
+broad spacing audit during an unrelated component review.
+
+- Human review accepted the Color calibration as a
+  working baseline: feedback foregrounds retain 65% semantic hue and mix 35%
+  theme foreground; the destructive action ramp uses 88% / 80% / 72% of the
+  destructive hue mixed with black; and the light supporting role moves 8%
+  toward ordinary foreground while dark retains its existing supporting value.
+  Components consume the same semantic aliases in both themes. The recorded
+  comparison remains in the lab, but this does not authorize production
+  migration, performance-color retuning, overlays, brand/accent redesign, or
+  component-level dark-theme overrides.
+
+- Human review accepted the Radius role taxonomy, so it no longer blocks
+  subsequent work: structural surfaces, contained objects, atomic controls,
+  and separately layout-owned structural reveals. The current 0 / 8 / full
+  mapping is a working baseline rather than an irreversible value commitment.
+  Complex screens may justify tuning the first two values while preserving the
+  semantic categories. The earlier 16px substrate-reveal idea remains
+  unapproved until a real composition provides evidence and clarifies whether
+  its owner is a layout, Card, or another specific component.
+
+System Learning: the desired theme invariant is architectural, not a demand
+for identical raw values. A component should consume one semantic alias in
+both themes; `:root` and `.dark`, or a theme-responsive derived token, own the
+different values. Existing `dark:` color utilities in product code are
+migration evidence, not precedent for V1 component contracts. Accessibility
+corrections should first tune the semantic foreground at its reusable owner
+while preserving quiet surfaces and hierarchy rather than adding fill, border,
+or neutral text weight indiscriminately.
+
+The popup-row transfer pressure test found no unresolved shared-rule judgment:
+Select and Menu both render 40px rows from the shared 12px inset and 16px line
+box; MultiSelectFilter intentionally reaches 44px because its 20px identity and
+Checkbox marks own content height. The shared source remains provisional and
+does not enter Current Review.
+
+Accordion's former 180ms motion mismatch is resolved through a V1-specific
+animation without modifying the legacy 200ms production class. Human review
+accepted the result and its single/multiple usage guidance.
+
+Prepared next — Yellow only:
+
+- `Inline Message` retains its source audit, reusable implementation, and tone
+  grid as evidence preparation only. Before returning to Current Review, show
+  source-grounded content immediately before and after representative messages
+  inside a real task composition. If the surrounding transaction, form, or
+  policy composition is not yet ready, defer the message with it rather than
+  inventing framing. Toast and Progress do not advance ahead of this boundary
+  merely because they are adjacent feedback components.
+
+- Drawer-to-Dialog source matrix:
+
+  | Flow                              | Preserve                                                                                                                                | Responsive Dialog pressure test                                                                                        | Boundary                                                                 |
+  | --------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------ |
+  | Stake / unstake                   | tab state, amount and balance context, delayed-unstake detail, delegate/checkbox adjuncts, error and transaction footer, reset-on-close | centered desktop task shell; bottom-attached phone; ordinary 24px axes around dense amount content                     | migration candidate; no Drawer exception established                     |
+  | Vote lock / unlock / delegate     | three-mode tabs, governance context, refresh/reset behavior, scroll ownership, transaction footer                                       | centered desktop task shell; bottom-attached phone; preserve mode and lifecycle before geometry                        | migration candidate; no Drawer exception established                     |
+  | Shared and deploy token selectors | search, all/selected tabs, chain identity, list loading/empty states, multi-select draft, submit footer, close resets                   | centered desktop selection Dialog with bounded scroll; phone sheet; keep list density inside the shell-owned 24px axis | one selector composition, not Drawer authority                           |
+  | Confirm deploy                    | simple/manual modes, guarded trigger, long scroll, pointer containment, success replacement, deploy lifecycle                           | wider centered desktop task Dialog; bottom-attached phone; success remains the same Dialog lifecycle                   | migration candidate; transaction behavior requires later engineer review |
+  | Package-owned Zapper input/output | one-instance route state, quote/input/output geometry, success state, package focus and transaction behavior                            | retain its evidenced compact centered modal and 8px dense structural edge; do not route through local Drawer           | upstream/package boundary; not a Drawer migration                        |
+  | Mobile navigation                 | full-screen navigation regions, header continuity, route dismissal                                                                      | do not convert to a task Dialog                                                                                        | navigation production migration is Red and excluded                      |
+
+  The matrix authorizes no production migration. A desktop Drawer exception can
+  reopen only after a named flow demonstrates meaningful context or usability
+  loss in its Dialog pressure test.
+
+Blocked or skipped: production adoption and migration, route navigation, mobile
+popup substitution, async Switch recovery, Table/DataRow, accepted feedback-token migration,
+transaction lifecycle, AmountField, AssetPicker, dense-table transformation,
+Auction/Governance restructuring, navigation production migration, shared defaults, Card
+extraction, commits, and pushes.
+
+### Next recommended frontier — transaction-system map, not started
+
+Before preparing another isolated component or choosing one flow as the model,
+reconcile the existing modal-family, Zapper, Drawer-to-Dialog, layout, action,
+and component audits into one source-grounded map of the transaction system.
+This is a bounded synthesis pass, not a new broad audit and not production
+migration.
+
+The comparison covers the common Index instant Zapper, vote-lock/unlock/
+delegate, relevant Yield DTF Zapper and stake/unstake evidence, manual mint/
+redeem, and automated mint/redeem. Confirm Deploy and token selection enter
+only where they expose a lifecycle, selector, or outcome requirement missing
+from those primary families. Imported Zapper structure remains package-owned;
+Yield DTF presentation is coverage evidence rather than visual authority; and
+automated mint is a complexity stress test rather than the default model. Index
+DTF Zapper and automated mint are the primary anchors because they have the
+highest current product importance and the strongest recent functional or
+design attention. That makes them high-value evidence, not presumed-correct
+authority: current omissions, confusing transitions, weak recovery, and
+under-specified outcomes remain findings to resolve.
+
+For each flow, record:
+
+- entry point and shell across page, centered Dialog, current Drawer, and phone
+  bottom-sheet presentations;
+- amount/input/output, asset identity and selection, balance/Max, quote, fee,
+  route, slippage, and supporting-detail requirements;
+- validation, compliance, wallet, network, allowance/approval, signing,
+  submitted, confirming, multi-step, success, recoverable failure, retry, and
+  dismissal/reset behavior;
+- duration and execution visibility as separate dimensions: near-instant,
+  opaque asynchronous waiting, transparent staged execution, and delayed or
+  later-claimable settlement. Verify whether each source exposes real progress,
+  elapsed/estimated time, only a truthful waiting message, or named internal
+  steps; never manufacture progress detail to make unlike flows look alike;
+- a step-by-step truth gap: the user goal and decision at that step, the real
+  protocol/package/application state available, what the current UI shows, what
+  a user needs for comprehension, confidence, recovery, or follow-up, and what
+  is missing or unnecessarily exposed. Current copy and information density are
+  evidence to evaluate, not requirements to preserve;
+- which accepted primitives already apply, which open contracts are genuinely
+  shared, and which behavior must remain flow-owned.
+
+The output is a flow-by-stage matrix, a shared-layer ownership map, responsive
+shell criteria, and a prioritized review sequence using realistic states. It
+must not invent a universal `TransactionFlow` component, preserve accidental
+legacy variation, restyle package internals from Register, or promote Amount
+Field, Asset Picker, Transaction Action, Inline Message, Progress/Stepper, or an
+outcome composition before multiple real flows support the seam.
+
+Outcome review works backward from the actual result rather than copying the
+current success screen. For every terminal or resumable state, identify what
+changed, which assets, amounts, positions, or permissions resulted, final
+versus quoted values where knowable, chain and transaction identity, remaining
+or later-claimable work, useful next actions, and recovery or support context.
+Show only information that is reliable and useful, but treat currently missing
+result information as a design-system gap rather than proof it is unnecessary.
+
+Family resemblance should come from shared shell hierarchy, spacing and type
+roles, input/output anatomy where applicable, state vocabulary, anchored-action
+behavior, transaction-detail presentation, feedback and recovery hierarchy,
+and outcome composition. It must not require the same quantity of information,
+the same progress visualization, or the same success layout. An opaque Zapper
+wait may use package-owned messaging, timing, and animation while a transparent
+automated-mint process names justified internal stages; instant flows should not
+gain ceremonial progress UI merely to match either one.
+
+Home feature-card extraction and the Home golden screen remain ready follow-up
+work, not prerequisites for this transaction stage. Overview can preserve its
+current chart composition; its meaningful remaining prerequisite is bounded
+Table/DataRow work rather than a generic Chart contract.

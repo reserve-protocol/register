@@ -108,7 +108,7 @@ export const ComponentDetail = () => {
               <CircleDashed className="h-4 w-4 text-muted-foreground" />
               <h2 className="font-semibold">No lab output yet</h2>
             </div>
-            <p className="mt-2 max-w-2xl text-sm leading-6 text-muted-foreground">
+            <p className="mt-2 max-w-2xl text-sm leading-5 text-muted-foreground">
               No complete component specimen is rendered here. Existing evidence
               or a reusable recipe may still constrain later work; the authority
               and source badges above state what can be inherited.
@@ -181,14 +181,14 @@ export const ComponentDetail = () => {
 const InfoCard = ({ title, copy }: { title: string; copy: string }) => (
   <div className="border border-border bg-card p-5">
     <h2 className="font-semibold">{title}</h2>
-    <p className="mt-2 text-sm leading-6 text-muted-foreground">{copy}</p>
+    <p className="mt-2 text-sm leading-5 text-muted-foreground">{copy}</p>
   </div>
 )
 
 const ListCard = ({ title, items }: { title: string; items: string[] }) => (
   <section className="border border-border bg-card p-5">
     <h2 className="font-semibold">{title}</h2>
-    <ul className="mt-3 space-y-2 text-sm leading-6 text-muted-foreground">
+    <ul className="mt-3 space-y-2 text-sm leading-5 text-muted-foreground">
       {items.map((item) => (
         <li key={item} className="flex gap-2">
           <span className="mt-[0.65rem] h-1 w-1 shrink-0 rounded-full bg-primary" />

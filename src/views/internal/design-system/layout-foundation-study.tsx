@@ -111,7 +111,7 @@ const Heading = () => (
         Decision ready
       </span>
     </div>
-    <p className="mt-1 max-w-3xl text-sm font-light leading-6 text-muted-foreground">
+    <p className="mt-1 max-w-3xl text-sm font-light leading-5 text-muted-foreground">
       A small page grammar for stable alignment and column behavior. It does not
       prescribe the composition inside product regions.
     </p>

@@ -126,7 +126,7 @@ const RichRecordReview = () => (
       <h2 id="rich-record-review-title" className="mt-1 text-xl font-medium">
         Rich navigable record hierarchy
       </h2>
-      <p className="mt-1 max-w-3xl text-sm font-light leading-6 text-muted-foreground">
+      <p className="mt-1 max-w-3xl text-sm font-light leading-5 text-muted-foreground">
         Real CMC20 proposal and rebalance records normalized with the accepted
         typography, spacing, color, and shape rules. Review each family in its
         own evidenced composition before comparing their shared grammar.
@@ -149,7 +149,7 @@ const RichRecordReview = () => (
       />
       <RebalanceRecordReview />
 
-      <div className="border-t border-border pt-4 text-sm font-light leading-6 text-muted-foreground">
+      <div className="border-t border-border pt-4 text-sm font-light leading-5 text-muted-foreground">
         <p className="font-medium text-foreground">Compare only after review</p>
         <p className="mt-1 max-w-3xl">
           Decide whether their shared 24px axis, 16px/500 title, square white
@@ -170,7 +170,7 @@ const RebalanceRecordReview = () => (
       >
         Auction rebalance browse list
       </h3>
-      <p className="mt-1 text-sm font-light leading-6 text-muted-foreground">
+      <p className="mt-1 text-sm font-light leading-5 text-muted-foreground">
         Source-grounded lifecycle and outcome jobs use deterministic fixture
         values in a wider browse-column trial. The selected detail region is
         present only to establish the future left-list context.
@@ -467,7 +467,7 @@ const ReviewScope = ({
 }) => (
   <aside
     className={cn(
-      'border border-border bg-card p-4 text-sm font-light leading-6 text-muted-foreground',
+      'border border-border bg-card p-4 text-sm font-light leading-5 text-muted-foreground',
       columns && 'grid gap-4 lg:grid-cols-2'
     )}
   >

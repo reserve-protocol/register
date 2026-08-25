@@ -20,7 +20,7 @@ const ZapperModalStudy = () => (
           Working reconstruction
         </span>
       </div>
-      <p className="mt-1 max-w-3xl text-sm font-light leading-6 text-muted-foreground">
+      <p className="mt-1 max-w-3xl text-sm font-light leading-5 text-muted-foreground">
         A focused reconstruction of the real package-owned quote-ready modal.
         Use it to judge foundations together without recreating the surrounding
         overview page or the other issuance flows.

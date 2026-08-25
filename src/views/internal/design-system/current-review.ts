@@ -8,6 +8,7 @@ export const FOUNDATION_CONFORMANCE_AREAS = [
   'typography',
   'color',
   'radius',
+  'motion',
   'component-dependencies',
 ] as const
 
@@ -26,8 +27,12 @@ export interface FoundationConformanceClaim {
   verification: string
 }
 
+export type CurrentReviewTarget =
+  | { kind: 'component'; id: string }
+  | { kind: 'foundation'; id: string }
+
 export interface CurrentReviewItem {
-  componentId: string
+  target: CurrentReviewTarget
   title: string
   reason: string
   destination: string

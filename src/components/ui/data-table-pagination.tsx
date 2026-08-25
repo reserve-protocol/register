@@ -11,45 +11,11 @@ import { Trans } from '@lingui/react/macro'
 import { Table as TableType } from '@tanstack/react-table'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { useMemo } from 'react'
+import { getPaginationPages } from './pagination-pages'
 
 const PAGE_SIZE_OPTIONS = [10, 25, 50, 100]
 
-type PaginationPage = number | 'start-ellipsis' | 'end-ellipsis'
-
-export const getPaginationPages = (
-  pageCount: number,
-  currentPage: number
-): PaginationPage[] => {
-  if (pageCount <= 7) {
-    return Array.from({ length: pageCount }, (_, index) => index + 1)
-  }
-
-  if (currentPage <= 4) {
-    return [1, 2, 3, 4, 5, 'end-ellipsis', pageCount]
-  }
-
-  if (currentPage >= pageCount - 3) {
-    return [
-      1,
-      'start-ellipsis',
-      pageCount - 4,
-      pageCount - 3,
-      pageCount - 2,
-      pageCount - 1,
-      pageCount,
-    ]
-  }
-
-  return [
-    1,
-    'start-ellipsis',
-    currentPage - 1,
-    currentPage,
-    currentPage + 1,
-    'end-ellipsis',
-    pageCount,
-  ]
-}
+export { getPaginationPages } from './pagination-pages'
 
 const usePaginationPages = <TData,>(table: TableType<TData>) => {
   const pageCount = table.getPageCount()

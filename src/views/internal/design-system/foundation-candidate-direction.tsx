@@ -1,6 +1,7 @@
 import { ArrowRight, Check, CircleHelp, Minus } from 'lucide-react'
 import ColorFoundationCandidate from './color-foundation-candidate'
 import { getFoundationCandidateDirection } from './foundation-candidate-directions'
+import { getFoundationItem } from './foundation-catalog'
 
 const FoundationCandidateDirection = ({
   foundationId,
@@ -8,9 +9,12 @@ const FoundationCandidateDirection = ({
   foundationId: string
 }) => {
   const candidate = getFoundationCandidateDirection(foundationId)
+  const isCurrentBaseline =
+    getFoundationItem(foundationId)?.designAuthority === 'current-baseline'
   const hasStructuredCandidate = foundationId === 'color'
-  const candidateLabel =
-    foundationId === 'color' || foundationId === 'layout'
+  const candidateLabel = isCurrentBaseline
+    ? 'Accepted direction'
+    : foundationId === 'color' || foundationId === 'layout'
       ? 'Candidate system'
       : 'Candidate direction'
 
@@ -18,7 +22,7 @@ const FoundationCandidateDirection = ({
 
   return (
     <section
-      data-testid={`foundation-candidate-${foundationId}`}
+      data-testid={`foundation-direction-${foundationId}`}
       aria-labelledby="candidate-direction-heading"
       className="space-y-6"
     >
@@ -30,15 +34,22 @@ const FoundationCandidateDirection = ({
           >
             {candidateLabel}
           </h2>
-          <span className="rounded-full bg-warning/10 px-2.5 py-1 text-xs font-medium text-foreground ring-1 ring-inset ring-warning/30">
-            Provisional
+          <span
+            data-design-authority={
+              isCurrentBaseline ? 'current-baseline' : 'exploratory'
+            }
+            className={`rounded-full px-2.5 py-1 text-xs font-medium ring-1 ring-inset ${isCurrentBaseline ? 'bg-primary/10 text-primary ring-primary/30' : 'bg-warning/10 text-foreground ring-warning/30'}`}
+          >
+            {isCurrentBaseline ? 'Current baseline' : 'Provisional'}
           </span>
         </div>
-        <p className="mt-1 max-w-3xl text-sm leading-6 text-muted-foreground">
+        <p className="mt-1 max-w-3xl text-sm leading-5 text-muted-foreground">
           {candidate.summary}{' '}
-          {hasStructuredCandidate
-            ? 'The proposed roles are now structured below; exact values stay open until visual review.'
-            : 'Values and rules stay open until design review.'}
+          {isCurrentBaseline
+            ? 'These rules are the working authority for subsequent design-system work and remain open to evidence-based refinement in real usage.'
+            : hasStructuredCandidate
+              ? 'The proposed roles are now structured below; exact values stay open until visual review.'
+              : 'Values and rules stay open until design review.'}
         </p>
       </div>
 
@@ -108,7 +119,7 @@ const DirectionList = ({
       <Icon className="h-4 w-4 text-primary" />
       <h3 className="font-semibold">{title}</h3>
     </div>
-    <ul className="mt-3 space-y-2 text-sm leading-6 text-muted-foreground">
+    <ul className="mt-3 space-y-2 text-sm leading-5 text-muted-foreground">
       {items.map((item) => (
         <li key={item} className="flex gap-2">
           <span

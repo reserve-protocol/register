@@ -121,7 +121,7 @@ const CardContentRegionReview = () => (
       >
         Home feature card foundation alignment
       </h2>
-      <p className="mt-1 max-w-3xl text-sm font-light leading-6 text-muted-foreground">
+      <p className="mt-1 max-w-3xl text-sm font-light leading-5 text-muted-foreground">
         The production Home card is the authoritative design. This check renders
         that actual component with captured Home data and applies only the named
         foundation corrections below. Missing lab states never authorize their
@@ -146,7 +146,7 @@ const CardContentRegionReview = () => (
           </div>
         </div>
 
-        <aside className="border border-border bg-card p-4 text-sm font-light leading-6 text-muted-foreground">
+        <aside className="border border-border bg-card p-4 text-sm font-light leading-5 text-muted-foreground">
           <p className="font-medium text-foreground">Review only this delta</p>
           <p className="mt-2">
             Does the existing Home card still feel right after changing only its
@@ -191,7 +191,7 @@ const CardContentRegionReview = () => (
             </div>
           </div>
 
-          <div className="border border-border bg-card p-4 text-sm font-light leading-6 text-muted-foreground">
+          <div className="border border-border bg-card p-4 text-sm font-light leading-5 text-muted-foreground">
             <p className="font-medium text-foreground">Why this is secondary</p>
             <p className="mt-2">
               Discover keeps the same identity and whole-card affordance but

@@ -6,12 +6,14 @@ import {
   COMPONENT_ITEMS,
   getComponentItem,
 } from '../component-catalog'
+import { getFoundationItem } from '../foundation-catalog'
 import { CURRENT_REVIEW, FOUNDATION_CONFORMANCE_AREAS } from '../current-review'
 import { PRODUCT_FACING_REVIEWS } from '../product-facing-component-audit'
 import { v1LayoutRecipes } from '@/components/ui/v1-layout-recipes'
 import { containedSelectionRecipe } from '@/components/design-system-v1/contained-selection'
 import { actionGroupRecipe } from '@/components/design-system-v1/action-group'
 import { tabPresentationRecipe } from '@/components/design-system-v1/tab-presentation'
+import { segmentedControlPresentationRecipe } from '@/components/design-system-v1/segmented-control-presentation'
 
 describe('component contract registry', () => {
   it('uses unique ids so every contract remains directly addressable', () => {
@@ -75,31 +77,44 @@ describe('component contract registry', () => {
       'icon-button',
       'button-group',
       'input',
+      'textarea',
       'select',
       'multi-select-filter',
       'search',
       'checkbox',
       'radio-group',
+      'switch',
+      'segmented-control',
+      'global-navigation',
+      'product-navigation',
+      'link',
       'tabs',
+      'pagination',
       'dialog',
       'popover',
       'dropdown-menu',
       'tooltip',
+      'spinner',
+      'skeleton',
+      'empty-state',
       'badge',
       'entity-identity',
       'metric',
       'card',
+      'copy-value',
+      'accordion',
+      'collapsible',
     ])
   })
 
-  it('makes the accepted contained-selection baseline consumable without claiming Tabs is complete', () => {
+  it('records contained Tabs as the accepted unadopted contract', () => {
     expect(getComponentItem('tabs').item).toMatchObject({
       outputStatus: 'rendered',
       designAuthority: 'current-baseline',
-      implementationStatus: 'reusable-recipe',
-      implementationSource:
-        'src/components/design-system-v1/tab-presentation.ts',
+      implementationStatus: 'canonical-candidate',
+      implementationSource: 'src/components/design-system-v1/tabs.tsx',
       adoptionStatus: 'none',
+      review: { status: 'ready' },
     })
     expect(containedSelectionRecipe.compact.track).toContain('h-8')
     expect(containedSelectionRecipe.compact.track).toContain('gap-0.5')
@@ -111,11 +126,95 @@ describe('component contract registry', () => {
     expect(containedSelectionRecipe.layout.content.item).toContain('shrink-0')
     expect(containedSelectionRecipe.layout.full.track).toContain('w-full')
     expect(containedSelectionRecipe.layout.full.item).toContain('flex-1')
-    expect(tabPresentationRecipe.textOnly.layout).toBe(
-      containedSelectionRecipe.layout
+    expect(tabPresentationRecipe.layout).toBe(containedSelectionRecipe.layout)
+    expect(tabPresentationRecipe.compact.list).toBe(
+      containedSelectionRecipe.compact.track
     )
-    expect(tabPresentationRecipe.textOnly.compact.list).not.toContain('flex')
-    expect(tabPresentationRecipe.textOnly.default.list).not.toContain('flex')
+    expect(tabPresentationRecipe.default.list).toBe(
+      containedSelectionRecipe.default.track
+    )
+  })
+
+  it('records synthesized candidates at their actual authority without claiming adoption', () => {
+    expect(getComponentItem('spinner').item).toMatchObject({
+      outputStatus: 'rendered',
+      designAuthority: 'current-baseline',
+      implementationStatus: 'canonical-candidate',
+      adoptionStatus: 'none',
+      review: { status: 'ready' },
+    })
+
+    expect(getComponentItem('skeleton').item).toMatchObject({
+      outputStatus: 'rendered',
+      designAuthority: 'current-baseline',
+      implementationStatus: 'canonical-candidate',
+      adoptionStatus: 'none',
+      review: { status: 'ready' },
+    })
+
+    expect(getComponentItem('segmented-control').item).toMatchObject({
+      outputStatus: 'rendered',
+      designAuthority: 'current-baseline',
+      implementationStatus: 'canonical-candidate',
+      adoptionStatus: 'none',
+      review: { status: 'ready' },
+    })
+    expect(getComponentItem('textarea').item).toMatchObject({
+      outputStatus: 'rendered',
+      designAuthority: 'current-baseline',
+      implementationStatus: 'canonical-candidate',
+      adoptionStatus: 'none',
+      review: { status: 'ready' },
+    })
+    expect(getComponentItem('switch').item).toMatchObject({
+      outputStatus: 'rendered',
+      designAuthority: 'current-baseline',
+      implementationStatus: 'canonical-candidate',
+      adoptionStatus: 'none',
+      review: { status: 'ready' },
+    })
+    expect(getComponentItem('pagination').item).toMatchObject({
+      outputStatus: 'rendered',
+      designAuthority: 'current-baseline',
+      implementationStatus: 'canonical-candidate',
+      adoptionStatus: 'none',
+      review: { status: 'ready' },
+    })
+    expect(getComponentItem('copy-value').item).toMatchObject({
+      outputStatus: 'rendered',
+      designAuthority: 'current-baseline',
+      implementationStatus: 'canonical-candidate',
+      adoptionStatus: 'none',
+      review: { status: 'ready' },
+    })
+
+    expect(getComponentItem('empty-state').item).toMatchObject({
+      outputStatus: 'rendered',
+      designAuthority: 'current-baseline',
+      adoptionStatus: 'none',
+      review: { status: 'ready' },
+    })
+    expect(
+      getComponentItem('copy-value').item?.review.dependencies
+    ).not.toContainEqual(expect.objectContaining({ name: 'HelpTooltip' }))
+  })
+
+  it('keeps both Segmented Control presentations under mode-selection semantics', () => {
+    expect(
+      segmentedControlPresentationRecipe['text-only'].compact.item
+    ).toContain('text-sm font-light')
+    expect(
+      segmentedControlPresentationRecipe['text-only'].default.item
+    ).toContain('text-base font-light')
+    expect(segmentedControlPresentationRecipe.contained.compact.track).toBe(
+      containedSelectionRecipe.compact.track
+    )
+    expect(segmentedControlPresentationRecipe.contained.default.track).toBe(
+      containedSelectionRecipe.default.track
+    )
+    expect(getComponentItem('segmented-control').item?.review.scope).toContain(
+      'Text-only compact/default'
+    )
   })
 
   it('keeps every declared relationship navigable', () => {
@@ -278,17 +377,110 @@ describe('component contract registry', () => {
     })
     expect(menu?.review.scope).toContain('Value selection')
   })
+
+  it('keeps Drawer exploratory without absorbing task or selector orchestration', () => {
+    expect(getComponentItem('drawer').item).toMatchObject({
+      outputStatus: 'rendered',
+      designAuthority: 'exploratory',
+      implementationStatus: 'canonical-candidate',
+      implementationSource: 'src/components/design-system-v1/drawer.tsx',
+      adoptionStatus: 'none',
+      review: { status: 'exploration' },
+    })
+    expect(getComponentItem('drawer').item?.review.scope).toContain(
+      'Task lifecycle, selector rows, tabs, validation'
+    )
+  })
+
+  it('accepts Link, Accordion, and Collapsible while keeping context-blocked Inline Message provisional and unadopted', () => {
+    expect(getComponentItem('link').item).toMatchObject({
+      outputStatus: 'rendered',
+      designAuthority: 'current-baseline',
+      implementationStatus: 'canonical-candidate',
+      implementationSource: 'src/components/design-system-v1/link.tsx',
+      adoptionStatus: 'none',
+      review: { status: 'ready' },
+    })
+    expect(getComponentItem('accordion').item).toMatchObject({
+      outputStatus: 'rendered',
+      designAuthority: 'current-baseline',
+      implementationStatus: 'canonical-candidate',
+      implementationSource: 'src/components/design-system-v1/accordion.tsx',
+      adoptionStatus: 'none',
+      review: { status: 'ready' },
+    })
+    expect(getComponentItem('accordion').item?.review.scope).toContain(
+      'Task-section headers'
+    )
+    expect(getComponentItem('collapsible').item).toMatchObject({
+      outputStatus: 'rendered',
+      designAuthority: 'current-baseline',
+      implementationStatus: 'canonical-candidate',
+      implementationSource: 'src/components/design-system-v1/collapsible.tsx',
+      adoptionStatus: 'none',
+      review: { status: 'ready' },
+    })
+    expect(getComponentItem('alert').item).toMatchObject({
+      outputStatus: 'rendered',
+      designAuthority: 'exploratory',
+      implementationStatus: 'canonical-candidate',
+      implementationSource:
+        'src/components/design-system-v1/inline-message.tsx',
+      adoptionStatus: 'none',
+      review: { status: 'provisional' },
+    })
+  })
+
+  it('keeps accepted navigation baselines separate and unadopted', () => {
+    expect(getComponentItem('global-navigation').item).toMatchObject({
+      outputStatus: 'rendered',
+      designAuthority: 'current-baseline',
+      implementationStatus: 'canonical-candidate',
+      implementationSource: 'src/components/design-system-v1/navigation.tsx',
+      adoptionStatus: 'none',
+      review: { status: 'ready' },
+    })
+    expect(getComponentItem('product-navigation').item).toMatchObject({
+      outputStatus: 'rendered',
+      designAuthority: 'current-baseline',
+      implementationStatus: 'canonical-candidate',
+      implementationSource: 'src/components/design-system-v1/navigation.tsx',
+      adoptionStatus: 'none',
+      review: { status: 'ready' },
+    })
+    expect(
+      getComponentItem('global-navigation').item?.relationships
+    ).toContainEqual(expect.objectContaining({ id: 'product-navigation' }))
+    expect(
+      getComponentItem('product-navigation').item?.relationships
+    ).toContainEqual(expect.objectContaining({ id: 'global-navigation' }))
+    expect(getComponentItem('product-navigation').item?.review.scope).toContain(
+      'route-preservation policy'
+    )
+  })
 })
 
 describe('current review', () => {
   it('contains only a small typed queue of human judgments', () => {
-    expect(CURRENT_REVIEW.map((item) => item.title)).toEqual([])
+    expect(CURRENT_REVIEW).toHaveLength(0)
+    expect(getFoundationItem('color')).toMatchObject({
+      status: 'defined',
+      designAuthority: 'current-baseline',
+    })
+    expect(getFoundationItem('radius')).toMatchObject({
+      status: 'defined',
+      designAuthority: 'current-baseline',
+    })
 
     for (const item of CURRENT_REVIEW) {
       expect(item.title).not.toBe('')
       expect(item.reason.length).toBeGreaterThan(20)
       expect(item.destination).toMatch(/^\/internal\/design-system\//)
-      expect(getComponentItem(item.componentId).item).toBeDefined()
+      if (item.target.kind === 'component') {
+        expect(getComponentItem(item.target.id).item).toBeDefined()
+      } else {
+        expect(getFoundationItem(item.target.id)).toBeDefined()
+      }
       expect([
         'visual decision',
         'canonical review',

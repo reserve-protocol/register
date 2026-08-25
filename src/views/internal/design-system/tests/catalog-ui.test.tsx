@@ -27,22 +27,22 @@ describe('ExpectedDecisions', () => {
 })
 
 describe('FoundationCandidateDirection', () => {
-  it('keeps a candidate separate from an accepted definition', () => {
+  it('shows an accepted foundation as the current baseline', () => {
     render(<FoundationCandidateDirection foundationId="typography" />)
 
-    expect(screen.getByText('Candidate direction')).toBeInTheDocument()
-    expect(screen.getByText('Provisional')).toBeInTheDocument()
+    expect(screen.getByText('Accepted direction')).toBeInTheDocument()
+    expect(screen.getByText('Current baseline')).toBeInTheDocument()
     expect(screen.getByText('Carry forward')).toBeInTheDocument()
     expect(screen.getByText('Leave behind')).toBeInTheDocument()
     expect(
-      screen.getByText(/Values and rules stay open until design review/)
+      screen.getByText(/working authority for subsequent design-system work/)
     ).toBeInTheDocument()
   })
 
-  it('renders the color candidate as a structured system', () => {
+  it('renders the accepted color direction as a structured system', () => {
     render(<FoundationCandidateDirection foundationId="color" />)
 
-    expect(screen.getByText('Candidate system')).toBeInTheDocument()
+    expect(screen.getByText('Accepted direction')).toBeInTheDocument()
     expect(screen.getByText('Grouping surface')).toBeInTheDocument()
     expect(screen.getByText('Performance positive')).toBeInTheDocument()
     expect(screen.getByText('Success feedback')).toBeInTheDocument()
@@ -50,7 +50,7 @@ describe('FoundationCandidateDirection', () => {
       screen.getByText(/^These roles remain technically separate/)
     ).toBeInTheDocument()
     expect(
-      screen.getByText(/do not yet pass normal-text contrast/)
+      screen.getByText(/Labels use the accepted semantic foreground aliases/)
     ).toBeInTheDocument()
     expect(
       screen.getByText('Smaller V1 performance candidate')
@@ -100,14 +100,14 @@ describe('FoundationReference', () => {
 })
 
 describe('ColorFoundationDefinition', () => {
-  it('separates reviewed direction from open token work', () => {
+  it('separates the working baseline from real-screen validation', () => {
     render(<ColorFoundationDefinition />)
 
-    expect(screen.getByText('Direction reviewed')).toBeInTheDocument()
+    expect(screen.getByText('Current baseline')).toBeInTheDocument()
     expect(screen.getByText('Feedback family')).toBeInTheDocument()
     expect(screen.getByText('Financial movement')).toBeInTheDocument()
     expect(
-      screen.getByText('Still open before final tokenization')
+      screen.getByText('Still open in real-screen adoption')
     ).toBeInTheDocument()
     expect(
       screen.getByText(/Categorical chart colors when a real multi-series/)

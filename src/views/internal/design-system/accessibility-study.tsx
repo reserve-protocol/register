@@ -141,7 +141,7 @@ const Heading = () => (
         Cross-foundation
       </span>
     </div>
-    <p className="mt-1 max-w-3xl text-sm font-light leading-6 text-muted-foreground">
+    <p className="mt-1 max-w-3xl text-sm font-light leading-5 text-muted-foreground">
       These constraints shape every foundation and component; they are not a
       final audit performed after visual design. V1 uses a pragmatic baseline,
       not accessibility work for its own sake.

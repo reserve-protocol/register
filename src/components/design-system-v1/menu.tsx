@@ -92,6 +92,17 @@ export const MenuItem = forwardRef<
 
 MenuItem.displayName = 'MenuItem'
 
+export const MenuItemSlot = forwardRef<
+  ElementRef<typeof MenuPrimitive.Item>,
+  ComponentPropsWithoutRef<typeof MenuPrimitive.Item>
+>(({ children, ...props }, ref) => (
+  <MenuPrimitive.Item ref={ref} {...props} asChild>
+    {children}
+  </MenuPrimitive.Item>
+))
+
+MenuItemSlot.displayName = 'MenuItemSlot'
+
 export interface MenuLinkItemProps extends AnchorHTMLAttributes<HTMLAnchorElement> {
   leadingIcon?: ReactNode
   trailingVisual?: ReactNode

@@ -25,7 +25,7 @@ const SpacingRhythmStudy = () => (
           Accepted provisional foundation
         </span>
       </div>
-      <p className="mt-1 max-w-3xl text-sm font-light leading-6 text-muted-foreground">
+      <p className="mt-1 max-w-3xl text-sm font-light leading-5 text-muted-foreground">
         Compare equivalent content to choose layout distances, content insets,
         nested alignment, form rhythm, and data density. Control padding remains
         governed by the separate geometry study.

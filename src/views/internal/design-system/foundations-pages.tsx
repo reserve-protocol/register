@@ -9,6 +9,7 @@ import {
 import FoundationReference from './foundation-reference'
 import FoundationCandidateDirection from './foundation-candidate-direction'
 import ColorFoundationDefinition from './color-foundation-definition'
+import ColorContrastReview from './color-contrast-review'
 import { FOUNDATION_ITEMS, getFoundationItem } from './foundation-catalog'
 import FoundationOverview, { FoundationSpecimen } from './foundation-overview'
 import { CurrentReviewSpotlight } from './current-review-panel'
@@ -77,7 +78,7 @@ export const FoundationDetail = () => {
             >
               {item.name} in V1
             </h2>
-            <p className="mt-1 max-w-3xl text-sm font-light leading-6 text-muted-foreground">
+            <p className="mt-1 max-w-3xl text-sm font-light leading-5 text-muted-foreground">
               {item.statusDetail}
             </p>
           </div>
@@ -85,6 +86,7 @@ export const FoundationDetail = () => {
             <FoundationSpecimen foundationId={item.id} />
           </div>
         </section>
+        {item.id === 'color' && <ColorContrastReview />}
         <FoundationRichDefinition foundationId={item.id} />
         <FoundationCandidateDirection foundationId={item.id} />
         {item.id === 'color' && <ColorFoundationDefinition />}
@@ -127,7 +129,7 @@ export const FoundationDetail = () => {
 const InfoCard = ({ title, copy }: { title: string; copy: string }) => (
   <div className="rounded-2xl border border-border bg-card p-5">
     <h2 className="font-semibold">{title}</h2>
-    <p className="mt-2 text-sm leading-6 text-muted-foreground">{copy}</p>
+    <p className="mt-2 text-sm leading-5 text-muted-foreground">{copy}</p>
   </div>
 )
 

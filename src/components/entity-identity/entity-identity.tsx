@@ -23,7 +23,7 @@ export const EntityIdentity = React.forwardRef<
     <span
       ref={ref}
       data-testid="canonical-entity-identity"
-      className={cn('inline-flex min-w-0 items-center gap-3', className)}
+      className={cn('inline-flex min-w-0 items-center gap-2', className)}
       {...props}
     >
       {mark}

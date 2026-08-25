@@ -1,9 +1,13 @@
 import {
+  ArrowLeft,
   ArrowRight,
   ArrowUpRight,
   Check,
   ChevronDown,
+  ChevronRight,
+  Download,
   MoreHorizontal,
+  Plus,
   Search,
   Settings,
   TriangleAlert,
@@ -68,18 +72,61 @@ const IconographyStudy = () => (
     </div>
 
     <StudyCard
+      label="Directional and disclosure semantics"
+      copy="Use the smallest stable mapping that communicates behavior. Clear labels do not receive decorative icons by default."
+    >
+      <div className="grid gap-px bg-secondary sm:grid-cols-2 xl:grid-cols-3">
+        <Direction
+          label="Ordinary route"
+          copy="Optional trailing emphasis when the label alone is not enough."
+          icon={<ArrowRight className="size-4" strokeWidth={1.5} />}
+        />
+        <Direction
+          label="Return"
+          copy="Leading direction; name the parent when that improves orientation."
+          icon={<ArrowLeft className="size-4" strokeWidth={1.5} />}
+        />
+        <Direction
+          label="External or new tab"
+          copy="Trailing indication when context changes, unless a more specific outcome icon applies."
+          icon={<ArrowUpRight className="size-4" strokeWidth={1.5} />}
+        />
+        <Direction
+          label="Download"
+          copy="Use only when the result is genuinely a file or resource."
+          icon={<Download className="size-4" strokeWidth={1.5} />}
+        />
+        <Direction
+          label="Navigable row or card"
+          copy="A trailing drill-in cue aligned to the far edge of the item."
+          icon={<ChevronRight className="size-4" strokeWidth={1.5} />}
+        />
+        <Direction
+          label="Expand or collapse"
+          copy="Reveals content in place; it is a disclosure control, not a route."
+          icon={<ChevronDown className="size-4" strokeWidth={1.5} />}
+        />
+      </div>
+    </StudyCard>
+
+    <StudyCard
       label="Usage roles"
       copy="This is a classification of icon jobs, not a placement template. Component context decides whether an icon is inline, framed, or omitted."
     >
-      <div className="grid gap-px bg-secondary sm:grid-cols-2 lg:grid-cols-4">
+      <div className="grid gap-px bg-secondary sm:grid-cols-2 lg:grid-cols-5">
         <Role
           label="Action"
           copy="Verb or command"
-          icon={<ArrowUpRight className="h-4 w-4" strokeWidth={1.5} />}
+          icon={<Plus className="h-4 w-4" strokeWidth={1.5} />}
         />
         <Role
           label="Navigation"
-          copy="Direction or disclosure"
+          copy="Route direction or drill-in"
+          icon={<ArrowRight className="h-4 w-4" strokeWidth={1.5} />}
+        />
+        <Role
+          label="Disclosure"
+          copy="Content revealed in place"
           icon={<ChevronDown className="h-4 w-4" strokeWidth={1.5} />}
         />
         <Role
@@ -211,7 +258,7 @@ const Heading = () => (
         Accepted provisional foundation
       </span>
     </div>
-    <p className="mt-1 max-w-3xl text-sm font-light leading-6 text-muted-foreground">
+    <p className="mt-1 max-w-3xl text-sm font-light leading-5 text-muted-foreground">
       Choose a productive icon character and clear exceptions without turning
       icons into decorative furniture.
     </p>
@@ -273,6 +320,26 @@ const Role = ({
         {copy}
       </p>
     </div>
+  </div>
+)
+
+const Direction = ({
+  label,
+  copy,
+  icon,
+}: {
+  label: string
+  copy: string
+  icon: React.ReactElement
+}) => (
+  <div className="grid min-h-32 grid-cols-[20px_1fr] content-center gap-x-2 bg-card p-5">
+    <span className="flex items-center justify-center text-foreground">
+      {icon}
+    </span>
+    <p className="text-sm font-medium">{label}</p>
+    <p className="col-start-2 mt-1 text-xs font-light leading-5 text-muted-foreground">
+      {copy}
+    </p>
   </div>
 )
 

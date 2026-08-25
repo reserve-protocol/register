@@ -8,6 +8,7 @@ import {
   TooltipTrigger,
 } from '@/components/ui/tooltip'
 import { cn } from '@/lib/utils'
+import { tooltipSurfaceRecipe } from './tooltip-surface'
 
 export interface HelpTooltipProps {
   accessibleLabel: string
@@ -48,7 +49,7 @@ export const HelpTooltip = ({
           side={side}
           sideOffset={8}
           collisionPadding={8}
-          className="max-w-[min(340px,var(--radix-tooltip-content-available-width))] rounded-lg border-border px-3 py-2 text-sm font-light leading-5 shadow-sm motion-reduce:animate-none"
+          className={tooltipSurfaceRecipe}
         >
           {content}
         </TooltipContent>

@@ -18,7 +18,7 @@ const IconButtonStateSheet = () => (
       <h2 id="icon-button-state-sheet-title" className="text-xl font-medium">
         Canonical candidate · compact shell action
       </h2>
-      <p className="mt-1 max-w-3xl text-sm font-light leading-6 text-muted-foreground">
+      <p className="mt-1 max-w-3xl text-sm font-light leading-5 text-muted-foreground">
         The promoted slice is the 32px named action used by dialog headers and
         disclosures. Toggle, selected, tooltip, and expanded hit-target
         contracts remain intentionally open.

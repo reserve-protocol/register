@@ -38,7 +38,7 @@ describe('V1 MultiSelectFilter candidate', () => {
     const trigger = screen.getByRole('button', { name: 'Filter by network' })
     expect(trigger).toHaveClass(
       'group',
-      'h-11',
+      'min-h-11',
       'rounded-full',
       'text-base',
       'font-light',

@@ -24,7 +24,7 @@ const ButtonHierarchyDecision = () => (
       >
         Secondary actions use outlined white
       </h2>
-      <p className="mt-2 max-w-3xl text-sm font-light leading-6 text-muted-foreground">
+      <p className="mt-2 max-w-3xl text-sm font-light leading-5 text-muted-foreground">
         A secondary action stays on the white content surface and uses the
         neutral control border. Neutral gray fill is not another secondary
         variant; it remains available for contained control chrome.

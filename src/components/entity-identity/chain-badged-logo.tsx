@@ -14,7 +14,7 @@ const badgeGeometry: Record<
   { size: number; position: string }
 > = {
   sm: { size: 10, position: '-bottom-0.5 -right-0.5' },
-  md: { size: 10, position: '-bottom-0.5 -right-1' },
+  md: { size: 12, position: '-bottom-0.5 -right-1' },
   lg: { size: 14, position: '-bottom-0.5 -right-1' },
   xl: { size: 16, position: '-bottom-1 -right-1' },
 }
@@ -73,7 +73,7 @@ export const ChainBadgedLogo = React.forwardRef<
           width={badge.size}
           height={badge.size}
           className={cn(
-            'absolute rounded-md border-2',
+            'absolute rounded border',
             badge.position,
             v1SemanticRecipes.surfaceSeparation[surface]
           )}

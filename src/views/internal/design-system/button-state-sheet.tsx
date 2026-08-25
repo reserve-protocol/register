@@ -13,13 +13,14 @@ const ButtonStateSheet = () => (
         Button state sheet
       </h2>
       <p className="mt-2 max-w-3xl text-sm text-muted-foreground">
-        This sheet renders the reusable V1 candidate—not a local visual replica
-        or the production baseline. Pressed treatment and long-label behavior
-        remain intentionally open.
+        This sheet renders the accepted reusable V1 candidate—not a production
+        baseline. It includes centered momentary press feedback and opaque
+        semantic interaction colors. Button labels stay concise and single-line;
+        constrained compositions restructure before overflow.
       </p>
     </div>
 
-    <div className="overflow-hidden border border-border bg-card">
+    <div className="border border-border bg-card">
       <StateRow label="Hierarchy">
         <Button>Primary</Button>
         <Button tone="secondary">Secondary</Button>
@@ -40,10 +41,12 @@ const ButtonStateSheet = () => (
       <StateRow label="Content">
         <Button leadingIcon={<Plus />}>Add token</Button>
         <Button trailingIcon={<ArrowRight />}>Continue</Button>
-        <Button>A deliberately longer action label</Button>
       </StateRow>
       <StateRow label="Unavailable">
         <Button disabled>Disabled</Button>
+        <Button disabled tone="quiet">
+          Quiet disabled
+        </Button>
         <Button loading>Submitting…</Button>
         <Button tone="destructive" loading>
           Deleting…
@@ -51,13 +54,9 @@ const ButtonStateSheet = () => (
       </StateRow>
       <StateRow label="Interaction states">
         <Button>Default</Button>
-        <Button className="bg-primary/80">Hover preview</Button>
-        <Button data-testid="design-system-focus-button">
-          Focus with keyboard
-        </Button>
-        <span className="border border-dashed border-border px-3 py-2 text-sm text-muted-foreground">
-          Pressed · open
-        </span>
+        <Button className="bg-primary-hover">Hover preview</Button>
+        <Button data-testid="design-system-focus-button">Tab to focus</Button>
+        <Button>Press and hold</Button>
       </StateRow>
     </div>
   </section>

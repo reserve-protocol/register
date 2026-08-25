@@ -1,6 +1,6 @@
 ---
 title: Decisions
-updated: 2026-08-18
+updated: 2026-08-25
 type: decision
 ---
 
@@ -176,14 +176,25 @@ explicit full-width layout makes the track fill its parent and all peer items
 grow equally while their accepted geometry fits. Below that readable minimum,
 the full-width track preserves intrinsic peer geometry, scrolls horizontally,
 and reveals the selected option rather than compressing or wrapping labels. The
-accepted text-only and contained Tabs presentations live in
-`src/components/design-system-v1/tab-presentation.ts`; they are visible current
-baselines without implying that Tabs panel semantics, variant roles, overflow,
-counts, deep linking, or the final component API are complete.
+contained Tabs presentation is bound to
+`src/components/design-system-v1/tab-presentation.ts`. Text-only Tabs were
+subsequently removed from the Tabs baseline once their strongest assumed uses
+were correctly classified and transferred to Segmented Control behavior.
 
 SingleChoice exposes only the default 44px size for now. Compact or micro
 versions should be added only when a real product use requires them rather than
 preemptively expanding the component API.
+
+## 2026-08-20 — Segmented Control presentations accepted
+
+Segmented Control is the current V1 baseline for immediate selection among a
+small set of peer modes. It owns the reviewed unframed text-only compact/default
+treatment and the shared contained compact/default treatment without inheriting
+Tabs panel semantics or SingleChoice form-value semantics. Intrinsic is the
+ordinary text-only layout; the compact DTF overview chart range is the evidenced
+full-width mobile case and distributes its peers across the available width.
+Icons, counts, tiny sizing, routes, panels, and production adoption remain
+outside the accepted contract.
 
 ## 2026-08-19 — SingleChoice default presentation accepted
 
@@ -231,6 +242,49 @@ than its internal value text so forms retain one stable content axis. Leading
 and trailing adornments are supported without becoming required decoration.
 Multiline inputs, repeated parameter compositions, business validation, and
 production adoption remain separate.
+
+## 2026-08-20 — Textarea baseline accepted
+
+Textarea extends the accepted Field anatomy rather than creating another field
+family. It uses the restrained 8px contained-object radius, the shared 20px
+ordinary horizontal field inset, a 16px multiline vertical inset, 16px/300
+content, vertical resize, and the inherited invalid, read-only, and disabled
+states. Character count, rich text, surrounding form composition, and
+production adoption remain outside the accepted contract.
+
+## 2026-08-20 — Switch and disabled structure baseline accepted
+
+Switch is the current V1 baseline for an immediate boolean setting. The track
+is 36×20px with a 16px thumb and a consistent 2px inset; a labeled row owns the
+44px interaction target and 8px switch-to-label relationship. Enabled on uses
+the active primary fill while enabled off remains neutral.
+
+Disabled controls preserve their stored on/off value through position and an
+inverse neutral treatment rather than active color, blanket opacity, a border,
+hover, or elevation. The accepted opaque `disabled-structure` role is a 60/40
+mix between the supporting neutral and quiet disabled surface, owned by the
+semantic disabled recipe rather than Switch-local styling. Async recovery,
+settings-row composition, and production adoption remain outside this
+baseline.
+
+## 2026-08-20 — Pagination baseline accepted
+
+Pagination is the current table-independent V1 baseline. It uses 1-based
+callbacks, optional page-size selection, a seven-item desktop and five-item
+mobile page window, and one 32px compact control height across page actions and
+the compact Select. Previous and Next remain fixed-width edge actions rather
+than stretched mobile surfaces. Available navigation uses quiet actions, the
+current page is a non-clickable neutral selection, and unavailable quiet
+actions are bare and muted rather than inheriting the bordered disabled-control
+treatment.
+
+Pagination owns only row geometry and peer relationships; its host owns the
+surrounding inset. The lab uses the accepted equal 24px ordinary-content inset,
+while the existing DataTable footer retains its production composition until a
+deliberate adoption pass. Shared 44px mobile hit-target expansion is
+intentionally deferred to the accessibility pass rather than implemented as a
+local Pagination exception. Loading, filter-reset behavior, DataTable adoption,
+and production migration remain outside this baseline.
 
 ## 2026-08-19 — ActionGroup composition baseline accepted
 
@@ -301,3 +355,91 @@ currently evidenced; a compact size waits for a real dense-toolbar requirement.
 Result lists, grouping, empty-result recovery, navigation Command, multi-select,
 Asset picker behavior, responsive substitution, and production adoption remain
 owned by their surrounding compositions.
+
+## 2026-08-20 — Contained Tabs baseline accepted
+
+Tabs use the contained-selection language for genuine content-panel switching,
+with compact 32px and default 44px sizes plus intrinsic and equal-growth
+full-width layout settings. The reusable component retains Radix tab, panel,
+and keyboard behavior. Active labels use foreground rather than primary blue.
+
+Text-only Tabs are not part of the current V1 contract. Their strongest prior
+evidence—chart ranges and adjacent immediate choices—belongs to Segmented
+Control, where the reviewed unframed compact/default visual treatment remains
+available under the correct semantics. Current real panel evidence supports
+contained Tabs. Quiet text-only panel navigation, tiny Tabs sizing, counts,
+routes, deep links, and new overflow behavior may be added only when a real
+composition requires them. Production adoption remains unchanged.
+
+## 2026-08-21 — Navigation Link baseline accepted
+
+Link is the current V1 baseline for navigation to routes, resources, and content
+locations. Inline links inherit their reading typography and remain underlined;
+standalone resource links use the 14px/500 compact-structure role. The evidenced
+named-return treatment is unframed, uses the 14px/300 supporting role with a 4px
+leading-arrow relationship, and promotes to primary with an underline on hover
+or focus. It is not a universal Back default: compact headers whose parent is
+already obvious use the canonical framed IconButton instead.
+
+Ordinary routes omit icons by default. ArrowRight may add forward emphasis,
+ArrowLeft identifies return navigation, ArrowUpRight signals a new-tab or
+external destination unless its outcome has a more specific icon, and Download
+is reserved for real file or resource outcomes. Native and Router anchors retain
+their semantics. External resources merge secure rel tokens and require
+caller-owned localized new-window announcement copy. Button-shaped navigation
+composes canonical Button through `asChild`; it does not create a parallel Link
+appearance. Current and visited state, unavailable destinations, recurring
+Product Navigation, Tabs, breadcrumbs, analytics policy, and production
+adoption remain outside this baseline.
+
+## 2026-08-21 — Informational Accordion baseline accepted
+
+Accordion is the current V1 baseline for coordinated informational FAQ and
+product-detail sets. It owns the divider-free 48px trigger cadence, 16px
+row/content axis, 8px title-to-body relationship, 20px body-to-next-title
+rhythm, 16px/500 item title, 14px/20px supporting content, trailing unframed
+chevron, semantic states, and 180ms disclosure motion. Card framing and hosted
+content remain composition-owned; task progress, validation, editing, and
+actions are not Accordion variants.
+
+Callers choose `single` or `multiple` explicitly. Multiple is the ordinary
+informational recommendation because independently useful answers remain open
+for comparison. Single is reserved for mutually substitutive or unusually long
+regions where simultaneous expansion harms navigation. One independent region
+uses Collapsible rather than an Accordion containing one item. This acceptance
+does not migrate production consumers.
+
+## 2026-08-21 — Independent Collapsible baseline accepted
+
+Collapsible is the current V1 baseline for one independently controlled
+disclosure. It consumes the accepted Accordion trigger, content, chevron,
+focus, and 180ms motion presentation without inheriting coordinated-set
+semantics. Trigger copy names the hidden subject. An optional caller-owned
+closed/open cue may clarify the action, stays muted at rest, becomes primary on
+hover or keyboard focus, and hides below the small breakpoint where the nearby
+chevron and clear subject label carry the affordance.
+
+The primitive owns no product-copy defaults, surrounding frame, or revealed
+content anatomy. Native `details`, bespoke composition triggers, auction
+fields, bid lists, executable code, diagnostics, and production adoption remain
+outside this acceptance.
+
+## 2026-08-25 — Global and Product navigation baselines accepted
+
+Global navigation and Index DTF Product navigation are separate current V1
+baselines. They were judged together because both appear in the application
+shell, but neither component owns or inherits the other's hierarchy. Global
+navigation owns the non-wrapping desktop destination row, grouped overflow,
+application-control separation, and constrained-screen global menu. Product
+navigation owns DTF identity and switching, the expandable desktop rail,
+public row-specific activity, compact 30-day switcher performance, and the
+detached mobile DTF switching and page-navigation entry points.
+
+The accepted mobile presentations consume the canonical Drawer behavior and
+keep navigation landmarks limited to destinations; copyable token contracts
+remain supplementary actions. At constrained widths, the Reserve wordmark
+compresses before account identity, and public activity appears only on its
+specific opened destination row rather than on the closed page-navigation
+trigger. Route taxonomy, live DTF inventory and ranking, domain-event sourcing,
+analytics, account-menu behavior, navigation-specific geometry promotion, and
+production adoption remain outside this acceptance.

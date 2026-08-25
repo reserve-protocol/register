@@ -30,7 +30,7 @@ const SearchFieldStateSheet = () => {
         >
           Search field
         </h2>
-        <p className="mt-1 max-w-3xl text-sm font-light leading-6 text-muted-foreground">
+        <p className="mt-1 max-w-3xl text-sm font-light leading-5 text-muted-foreground">
           Search inherits the accepted 44px TextInput geometry and adds only the
           semantics it owns: a leading search mark, search input behavior, an
           optional clear action that returns focus, and a restrained loading
