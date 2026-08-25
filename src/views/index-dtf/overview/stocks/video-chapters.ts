@@ -35,8 +35,8 @@ export const VIDEO_CHAPTERS: VideoChapter[] = [
   chapter(
     'what-is-a-dtf',
     '01_Buildout DTF SECTIONS_01.mp4',
-    msg`What is a DTF?`,
-    msg`How a single token gives you a basket of assets.`,
+    msg`What is a Diversified Token Fund (DTF)?`,
+    msg`How to buy an entire portfolio in a single token.`,
     '0:33'
   ),
   chapter(
