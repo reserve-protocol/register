@@ -9,7 +9,7 @@ const AboutReserveDtfs = () => {
     <div data-testid="stocks-about-reserve" className="rounded-3xl bg-card p-4">
       <div className="mb-1 flex items-center gap-2 px-2 pt-2">
         <img
-          src="/imgs/reserve-brand.png"
+          src="/imgs/reserve-brand.svg"
           alt={t`Reserve logo`}
           draggable={false}
           className="h-6 w-6 shrink-0"
