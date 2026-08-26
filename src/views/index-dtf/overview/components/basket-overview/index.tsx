@@ -26,10 +26,7 @@ const DEFAULT_SORT: SortConfig = { field: 'weight', direction: 'desc' }
 const IndexBasketOverview = ({
   progressive = false,
 }: {
-  /**
-   * Limit the table to the top rows with a "Show N more" expander on ALL
-   * viewports, not just mobile (the default keeps desktop unlimited).
-   */
+  /** Cap desktop to the top rows too, with a "Show N more" expander. */
   progressive?: boolean
 }) => {
   const { t } = useLingui()

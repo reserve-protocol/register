@@ -75,10 +75,7 @@ const ZapperWrapper = (props: ZapperWrapperProps) => {
   // and overlap the card.
   return (
     <>
-      {/* One element type regardless of wallet state: switching between two
-          component types on `isConnected` remounted the whole widget (input,
-          quote and in-flight tx state wiped) whenever wagmi's connection flag
-          flickered — e.g. right after a transaction receipt. */}
+      {/* One element type across wallet state: swapping types on isConnected remounts the widget mid-tx. */}
       <Zapper
         {...zapperProps}
         connectWallet={isConnected ? undefined : openConnectModal}
