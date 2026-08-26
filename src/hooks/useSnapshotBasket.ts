@@ -23,6 +23,9 @@ const getSnapshotBasket = async (
   const response = await fetch(
     `${RESERVE_API}${route}/dtf?address=${indexDTF}&chainId=${chainId}&blockNumber=${block}&cache=false`
   )
+  if (!response.ok) {
+    throw new Error(`Failed to fetch ${route} basket: ${response.status}`)
+  }
   return response.json()
 }
 
