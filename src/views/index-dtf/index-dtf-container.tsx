@@ -130,11 +130,11 @@ const IndexDtfUpdaters = () => {
   const { data } = useCurrentIndexDtf()
   const { data: version } = useIndexDtfVersion(identity)
   // A failed registry read flags 'unavailable' — consumers render it explicitly, never a fabricated fee.
-  const { data: fee, isError: feeUnavailable } = useIndexDtfPlatformFee(identity)
+  const { data: fee, isError: feeUnavailable } =
+    useIndexDtfPlatformFee(identity)
   const period = useAtomValue(performanceTimeRangeAtom)
-  const { data: exposureData, isLoading: exposureLoading } = useIndexDtfExposure(
-    { ...identity, period }
-  )
+  const { data: exposureData, isLoading: exposureLoading } =
+    useIndexDtfExposure({ ...identity, period })
   const status = useIndexDtfStatus(identity)
 
   useEffect(() => {
@@ -275,10 +275,7 @@ const IndexDTFMobileActions = () => {
   // (debug, inline prompt) — never mount a second instance there, or the two
   // fight over shared zapper state. One Zapper per route.
   const isIssuanceRoute = pathname.includes(`/${ROUTES.ISSUANCE}`)
-  // WHY: same one-instance rule — the stocks overview mounts the zapper
-  // inline in its xl-only rail (overview/stocks/landing-mint.tsx), so yield
-  // the modal there at xl. Below xl the rail's mount is off and mobile CTAs
-  // still need this modal. Both sides key on the same useIsLargeDesktop hook.
+  // One Zapper per route: the stocks overview mounts it inline in its xl rail.
   const isStocksOverviewInline =
     isStocksDTF(NETWORKS[chain ?? ''], tokenId) &&
     pathname.includes(`/${ROUTES.OVERVIEW}`) &&

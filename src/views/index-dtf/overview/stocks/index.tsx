@@ -23,9 +23,7 @@ import YieldIndexComposition from '../components/yield-index/yield-index-composi
 
 const AboutSection = () => {
   const isYieldIndexDTF = useAtomValue(isYieldIndexDTFAtom)
-  // WHY: the trust cards (video library, AI chat, About Reserve) also live in
-  // the xl-only LandingMint rail — mount only one copy per viewport, keyed on
-  // the same useIsLargeDesktop hook the rail uses.
+  // The trust cards also live in the xl-only rail — one copy per viewport.
   const isLargeDesktop = useIsLargeDesktop()
   const isMobile = useIsMobile()
 
@@ -43,9 +41,6 @@ const AboutSection = () => {
     )
   }
 
-  // Below xl the rail is hidden, so the trust cards render in the page flow
-  // instead — replacing the legacy About card (old About copy + autoplaying
-  // cover video), which the stocks layout drops entirely.
   const aboutCard = !isLargeDesktop && (
     <div id="about" className="flex flex-col gap-0.5 sm:gap-1 xl:hidden">
       <StocksVideoLibrary />
@@ -64,9 +59,7 @@ const AboutSection = () => {
     </Card>
   )
 
-  // Mobile: the About card leads (below the chart, above holdings); the
-  // heavier chat and About Reserve cards follow the table so it stays
-  // reachable. Tablet keeps the full trust stack ahead of holdings.
+  // Mobile keeps holdings reachable: only the videos lead, chat/About follow.
   if (isMobile) {
     return (
       <>

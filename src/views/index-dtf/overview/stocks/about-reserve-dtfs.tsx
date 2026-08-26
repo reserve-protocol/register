@@ -1,9 +1,6 @@
 import { useTrackIndexDTFClick } from '@/views/index-dtf/hooks/useTrackIndexDTFPage'
 import { Trans, useLingui } from '@lingui/react/macro'
 
-// PLACEHOLDER copy — investor references describe backers of Reserve (the
-// platform), not of any individual DTF. Needs legal/compliance sign-off on
-// phrasing before this ships beyond local work.
 const AboutReserveDtfs = () => {
   const { t } = useLingui()
   const { trackClick } = useTrackIndexDTFClick('overview', 'overview')

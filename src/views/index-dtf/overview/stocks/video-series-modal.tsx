@@ -31,13 +31,14 @@ const ChapterTab = ({
   const { t } = useLingui()
 
   return (
-    <button
-      type="button"
+    <Button
+      variant="ghost"
+      size="inline"
       onClick={onSelect}
       aria-label={t`Play video: ${t(chapter.title)} (${chapter.duration})`}
       aria-current={active ? 'true' : undefined}
       className={cn(
-        'group flex min-w-0 flex-1 items-center gap-2 rounded-xl p-1.5 text-left transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',
+        'group flex min-w-0 flex-1 items-center justify-start gap-2 whitespace-normal rounded-xl p-1.5 text-left font-normal',
         active ? 'bg-muted' : 'hover:bg-muted/60'
       )}
     >
@@ -70,13 +71,10 @@ const ChapterTab = ({
           {t(chapter.title)}
         </p>
       </div>
-    </button>
+    </Button>
   )
 }
 
-// One modal for the whole series: plays the chapter that was clicked and lets
-// the viewer step through the rest without closing. Chapter changes are
-// tracked; the row click that opened the modal is tracked by the caller.
 const VideoSeriesModal = ({ chapterId, onClose }: Props) => {
   const { t } = useLingui()
   const { trackClick } = useTrackIndexDTFClick('overview', 'overview')
@@ -132,8 +130,6 @@ const VideoSeriesModal = ({ chapterId, onClose }: Props) => {
           </DialogClose>
         </div>
         <div className="aspect-video w-full min-w-0 bg-black">
-          {/* key remounts the element so the new source autoplays cleanly
-              instead of holding the previous chapter's playback state. */}
           <video
             key={chapter.id}
             src={chapter.src}

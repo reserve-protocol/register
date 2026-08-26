@@ -72,8 +72,6 @@ type DtfChatProps = {
   onMessageSent?: (text: string) => void
 }
 
-// The ref exposes the widget's `send(text)` for host-owned suggestion chips
-// (stocks FAQ); only meaningful for the embedded variant.
 const DtfChat = forwardRef<ReserveChatHandle, DtfChatProps>(function DtfChat(
   { embedded = false, inputPlaceholder, onMessageSent },
   ref
@@ -119,9 +117,7 @@ const DtfChat = forwardRef<ReserveChatHandle, DtfChatProps>(function DtfChat(
       }
     : undefined
 
-  // Inline variant: fills the host container (the stocks overview mounts one
-  // in its FAQ card). Offsets/launcher/open-tracking don't apply — the widget
-  // never fires onOpen for embedded mounts.
+  // Inline variant (stocks FAQ card): no launcher/offsets, onOpen never fires.
   if (embedded) {
     return (
       <ReserveChat
@@ -137,11 +133,7 @@ const DtfChat = forwardRef<ReserveChatHandle, DtfChatProps>(function DtfChat(
     )
   }
 
-  // The stocks overview embeds its own chat instance in the xl rail — yield
-  // the floating launcher there so the page has ONE chat entry point. Below
-  // xl the rail is hidden and the mobile action bar still needs this floating
-  // instance (it opens the panel via the launcher element). Keyed on the same
-  // useIsLargeDesktop hook as the rail — keep them in lockstep.
+  // The stocks overview embeds its own chat in the xl rail — one entry point.
   if (isStocksOverviewPathname(pathname) && isLargeDesktop) {
     return null
   }

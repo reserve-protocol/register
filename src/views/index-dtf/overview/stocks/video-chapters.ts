@@ -11,10 +11,7 @@ export type VideoChapter = {
   poster: string
 }
 
-// H264 1080p cuts self-hosted on the Reserve storage bucket (uploaded under
-// the editor's original file names) so the modal can use a native <video>
-// with no third-party player chrome. Posters are frames extracted from each
-// cut, uploaded alongside with the same base name.
+// Cuts + posters live on the Reserve storage bucket under the same base name.
 const chapter = (
   id: string,
   file: string,
@@ -30,7 +27,6 @@ const chapter = (
   poster: `${RESERVE_STORAGE}${encodeURIComponent(file.replace(/\.mp4$/, '.jpg'))}`,
 })
 
-// Copy is a first pass pending marketing's final wording.
 export const VIDEO_CHAPTERS: VideoChapter[] = [
   chapter(
     'what-is-a-dtf',

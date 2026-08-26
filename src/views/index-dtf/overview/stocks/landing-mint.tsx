@@ -20,20 +20,12 @@ import AboutReserveDtfs from './about-reserve-dtfs'
 import StocksFaq from './faq'
 import StocksVideoLibrary from './video-library'
 
-// Stocks-category rail: the swap panel lives inline where other DTFs show a
-// Buy/Sell button that opens the zapper modal. Seeing the full trade surface
-// (amounts, balances, the receiving token) before committing is the point —
-// no modal interruption between "I'm interested" and "what exactly do I get".
-
 type ExternalPlatform = {
   label: string
   url: string
   Icon: ComponentType<SVGProps<SVGSVGElement>>
 }
 
-// Quiet "Also available on" plug under the swap panel — replaces the old
-// external-markets dropdown, which read as a competing action and confused
-// users. Venues resolve to this DTF's listings via external-dex-links.
 const useExternalPlatforms = (): ExternalPlatform[] => {
   const dtf = useAtomValue(indexDTFAtom)
   const dexLinks = getDtfDexLinks(dtf?.chainId, dtf?.id)
@@ -88,11 +80,8 @@ const InlineSwapBox = () => {
   const { isLoading: isComplianceLoading, data: complianceData } =
     useComplianceRestrictions()
   const isRestricted = !!complianceData?.restricted
-  // One Zapper instance per route (shared module-level atoms — see
-  // docs/wiki/zapper.md). This inline mount only exists at xl (the rail is
-  // hidden below it) and the container skips its modal mount on this route at
-  // xl, so the two are never mounted together. Conditional on the SAME
-  // useIsLargeDesktop hook the container uses — keep them in lockstep.
+  // One Zapper per route (docs/wiki/zapper.md): mounted here only at xl, the
+  // container skips its modal mount at xl — same useIsLargeDesktop on both sides.
   const isLargeDesktop = useIsLargeDesktop()
 
   if (!dtf) {
@@ -138,10 +127,7 @@ const InlineSwapBox = () => {
         </Alert>
       ) : (
         isLargeDesktop && (
-          // The zapper's TabsContent ships an mt-2 from the package; with the
-          // Buy/Sell tablist hidden in this inline mount nothing sits above
-          // it, so the margin makes the panel's top inset 16px vs the card's
-          // 8px sides — zero it here to keep the inset even.
+          // Zero the package's tabpanel mt-2: nothing sits above it here.
           <div
             data-testid="stocks-inline-zapper"
             className="[&_[role=tabpanel]]:mt-0"
@@ -169,10 +155,7 @@ const StocksLandingMint = (props: React.HTMLAttributes<HTMLDivElement>) => {
   const isGeoRestricted = complianceData?.reason === 'geolocation-restricted'
   const isLargeDesktop = useIsLargeDesktop()
 
-  // Below xl the page flow renders the trust cards instead (see the stocks
-  // AboutSection) — unmount the rail entirely so the video library and the
-  // embedded chat never exist twice. The hidden/xl:flex classes stay as a
-  // resize-timing backstop.
+  // Below xl the page flow renders these cards (stocks AboutSection).
   if (!isLargeDesktop) return null
 
   return (
@@ -180,8 +163,6 @@ const StocksLandingMint = (props: React.HTMLAttributes<HTMLDivElement>) => {
       className="hidden xl:flex xl:w-[480px] xl:flex-col xl:gap-1 relative max-w-[480px]"
       {...props}
     >
-      {/* Swap panel leads the rail and scrolls with the page (deliberately
-          not sticky, unlike the shared rail's MintBox). */}
       <div>
         {isGeoRestricted ? (
           <EligibilityCard className="bg-card" />
@@ -189,17 +170,9 @@ const StocksLandingMint = (props: React.HTMLAttributes<HTMLDivElement>) => {
           <InlineSwapBox />
         )}
       </div>
-      {/* The single explainer video is broken out into four short chapters,
-          each individually playable, with an FAQ beneath — trust content the
-          visitor can consume next to the trade surface. */}
       <StocksVideoLibrary />
       <StocksFaq />
       <div className="flex flex-col gap-1">
-        {/* WHY: the sub-xl stocks page mounts its own #about card (see
-            overview AboutSection) — gate on xl so only one copy exists. The
-            rail swaps the per-DTF About for a platform-level plug; the
-            per-DTF About (and its downloadable resources) still renders
-            sub-xl. */}
         {isLargeDesktop && (
           <div id="about">
             <AboutReserveDtfs />

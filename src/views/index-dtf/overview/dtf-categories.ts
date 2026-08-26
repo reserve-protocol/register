@@ -1,15 +1,10 @@
 import { ChainId } from '@/utils/chains'
 import { NETWORKS, ROUTES } from '@/utils/constants'
 
-// TEMPORARY: DTF categories are hardcoded until the backend serves category
-// metadata (expected alongside the catalog/brand data). Once that lands,
-// delete this file and read the category from the DTF record instead.
+// TEMPORARY until the backend serves DTF categories — then delete this file.
 export type DTFCategory = 'stocks'
 
-// DTFs composed of on-chain (tokenized) stocks. Keyed by chainId; values hold
-// both the route alias (lowercased symbol) and the DTF address so category
-// checks match either URL form
-// (/bsc/index-dtf/buildout and /bsc/index-dtf/0xd7ce...).
+// Route alias + address per chain, so both URL forms match.
 const STOCKS_DTFS: Record<number, Set<string>> = {
   [ChainId.BSC]: new Set([
     'buildout',
@@ -26,8 +21,6 @@ export const isStocksDTF = (
   return STOCKS_DTFS[chainId]?.has(tokenId.trim().toLowerCase()) ?? false
 }
 
-// For consumers outside the route tree (e.g. the global chat mount in
-// Layout) that only have a pathname: /:chain/index-dtf/:tokenId/overview.
 export const isStocksOverviewPathname = (pathname: string): boolean => {
   const [, chain, section, tokenId, subpage] = pathname.split('/')
 

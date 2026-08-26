@@ -1,3 +1,4 @@
+import { Button } from '@/components/ui/button'
 import DownloadableResources from '../components/dtf-downloadable-resources'
 import { useTrackIndexDTFClick } from '@/views/index-dtf/hooks/useTrackIndexDTFPage'
 import { Trans, useLingui } from '@lingui/react/macro'
@@ -16,11 +17,12 @@ const ChapterRow = ({
   const { t } = useLingui()
 
   return (
-    <button
-      type="button"
+    <Button
+      variant="ghost"
+      size="inline"
       onClick={onPlay}
       aria-label={t`Play video: ${t(chapter.title)} (${chapter.duration})`}
-      className="group flex w-full items-center gap-3 rounded-xl p-2 text-left transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+      className="group flex w-full items-center justify-start gap-3 whitespace-normal rounded-xl p-2 text-left font-normal hover:bg-muted"
     >
       <div className="relative aspect-video w-32 shrink-0 overflow-hidden rounded-lg bg-muted">
         <img
@@ -45,7 +47,7 @@ const ChapterRow = ({
           {t(chapter.description)}
         </p>
       </div>
-    </button>
+    </Button>
   )
 }
 
