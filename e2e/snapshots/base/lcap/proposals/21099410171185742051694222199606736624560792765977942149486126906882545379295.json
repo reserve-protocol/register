@@ -1,7 +1,7 @@
 {
   "_meta": {
     "source": "https://api.goldsky.com/api/public/project_cmgzim3e100095np2gjnbh6ry/subgraphs/dtf-index-base/prod/gn",
-    "capturedAt": "2026-07-09T21:47:25.064Z",
+    "capturedAt": "2026-08-25T16:34:51.391Z",
     "dtf": "0x4da9a0f397db1397902070f93a4d6ddbc0e0e6e8",
     "chainId": 8453,
     "query": "getProposalDetail",
@@ -105,7 +105,14 @@
       "againstDelegateVotes": "8",
       "executionTxnHash": null,
       "governance": {
-        "id": "0x719eded05c7a6468e44acfbbd19b2df2eed7759e"
+        "id": "0x719eded05c7a6468e44acfbbd19b2df2eed7759e",
+        "token": {
+          "id": "0x45a96cd0e4d89a41eebf3cc4204b00b1cf1582fa"
+        },
+        "timelock": {
+          "id": "0x98e702320f055c1073f9cee2b93f46c9715bc32d",
+          "type": "OWNER"
+        }
       }
     }
   }

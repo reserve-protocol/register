@@ -96,7 +96,7 @@ const GnosisRequired = () => {
     : t`Mint large USDC amounts through batched CoW Swap orders, or redeem DTFs into the underlying assets. Recommended for market makers or transactions over 50,000 USDC.`
   const verifiedWallets = (
     <div>
-      <p className="text-md text-primary dark:text-foreground font-medium mb-4">
+      <p className="text-primary dark:text-foreground font-medium mb-4">
         <Trans>Known supported wallets</Trans>
       </p>
       <div className="flex items-center gap-2">
@@ -155,7 +155,7 @@ const GnosisRequired = () => {
           <div className="flex items-center rounded-full justify-center h-8 w-8 bg-amber-700/15 border border-amber-700/20 dark:bg-amber-300/10 dark:border-amber-300/25">
             <Info size={20} strokeWidth={1.5} />
           </div>
-          <p className="text-md font-medium">
+          <p className="font-medium">
             <Trans>Most users should use Swap</Trans>
           </p>
         </div>
@@ -289,7 +289,7 @@ const GnosisRequired = () => {
                   <>
                     <div className="flex items-center gap-2 px-5 mb-[64px]">
                       <Combine size={16} strokeWidth={1.5} />
-                      <p className="text-md">
+                      <p>
                         <Trans>Advanced</Trans>
                       </p>
                     </div>

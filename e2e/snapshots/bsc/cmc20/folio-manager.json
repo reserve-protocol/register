@@ -1,7 +1,7 @@
 {
   "_meta": {
     "source": "https://api.reserve.org/folio-manager/read?folio=0x2f8a339b5889ffac4c5a956787cda593b3c36867&chainId=56",
-    "capturedAt": "2026-07-09T21:47:26.755Z",
+    "capturedAt": "2026-08-25T16:34:55.924Z",
     "dtf": "0x2f8a339b5889ffac4c5a956787cda593b3c36867",
     "chainId": 56
   },
@@ -10,8 +10,8 @@
     "parsedData": {
       "hidden": false,
       "dtf": {
-        "icon": "https://l5394zf57b.ufs.sh/f/mupND8QUUvXxhO6t9I2BbMt4sV2Y6jmzwPSZ3Hrav0gfieuo",
-        "cover": "https://l5394zf57b.ufs.sh/f/mupND8QUUvXxIC8FNf6xZOd2tbVAjQ406SzW5e3InqXoRl1x",
+        "icon": "https://folio-assets.reserve.org/0x2f8a339b5889ffac4c5a956787cda593b3c36867/mupND8QUUvXxhO6t9I2BbMt4sV2Y6jmzwPSZ3Hrav0gfieuo.png",
+        "cover": "https://folio-assets.reserve.org/0x2f8a339b5889ffac4c5a956787cda593b3c36867/mupND8QUUvXxIC8FNf6xZOd2tbVAjQ406SzW5e3InqXoRl1x.png",
         "mobileCover": "",
         "description": "",
         "notesFromCreator": "",
@@ -29,7 +29,7 @@
       },
       "creator": {
         "name": "ListaDAO",
-        "icon": "https://l5394zf57b.ufs.sh/f/mupND8QUUvXxgMjiAn1eYbLsDMlPqd2rjVCTxwy1a7J04GWK",
+        "icon": "https://folio-assets.reserve.org/0x2f8a339b5889ffac4c5a956787cda593b3c36867/mupND8QUUvXxgMjiAn1eYbLsDMlPqd2rjVCTxwy1a7J04GWK.png",
         "link": "https://lista.org/"
       },
       "curator": {

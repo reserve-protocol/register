@@ -39,7 +39,7 @@ import IndexDTFContainer from './views/index-dtf/index-dtf-container'
 import IndexDTFIssuance from './views/index-dtf/issuance'
 import IndexDTFManualIssuance from './views/index-dtf/issuance/manual'
 import IndexDTFManage from './views/index-dtf/manage'
-import IndexDTFOverview from './views/index-dtf/overview'
+import IndexDTFOverviewSelector from './views/index-dtf/overview/overview-selector'
 import IndexDTFSettings from './views/index-dtf/settings'
 import PortfolioPage from './views/portfolio-page'
 import AllYieldDTFList from './views/tokens/Tokens'
@@ -104,7 +104,7 @@ const AppRoutes = () => (
     {/* Index DTF */}
     <Route path={`/:chain/index-dtf/:tokenId`} element={<IndexDTFContainer />}>
       <Route index element={<Navigate replace to={ROUTES.OVERVIEW} />} />
-      <Route path={ROUTES.OVERVIEW} element={<IndexDTFOverview />} />
+      <Route path={ROUTES.OVERVIEW} element={<IndexDTFOverviewSelector />} />
       <Route path={ROUTES.MANAGE} element={<IndexDTFManage />} />
       <Route path={ROUTES.FACTSHEET} element={<IndexDTFFactsheet />} />
       <Route path={ROUTES.ISSUANCE} element={<IndexDTFIssuance />} />

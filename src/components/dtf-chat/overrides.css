@@ -70,3 +70,63 @@
     height: 1rem;
   }
 }
+
+/* Embedded instance in the stocks overview FAQ card (stocks/faq.tsx): the
+   card supplies the header, subtitle, and quick-question chips, so strip the
+   widget down to thread + input — no frame, no internal header, no built-in
+   suggestions or empty-state copy. Without this it reads as a boxed modal
+   floating inside the card. */
+.stocks-embedded-chat .rc-suggestions,
+.stocks-embedded-chat .rc-header,
+.stocks-embedded-chat .rc-empty {
+  display: none;
+}
+
+.stocks-embedded-chat .rc-embedded {
+  border: none;
+  border-radius: 0;
+  background: transparent;
+}
+
+/* Read as an interactive AI surface, not a static form: no divider above
+   the input row, and a roomier primary-tinted input that warms on focus. */
+.stocks-embedded-chat .rc-input {
+  border-top: none;
+}
+
+.stocks-embedded-chat .rc-input input {
+  border-color: hsl(var(--primary) / 0.2);
+  border-radius: 12px;
+  padding: 14px 16px;
+  font-size: 15px;
+}
+
+.stocks-embedded-chat .rc-input button {
+  width: 48px;
+  border-radius: 12px;
+}
+
+.stocks-embedded-chat .rc-input input:focus {
+  border-color: hsl(var(--primary) / 0.5);
+  box-shadow: 0 0 0 2px hsl(var(--primary) / 0.15);
+  outline: none;
+}
+
+/* Swap the widget's "➤" send glyph for an up arrow (masked SVG so it stays
+   crisp and inherits the button's text color in every state). */
+.stocks-embedded-chat [data-testid='rc-send'] {
+  font-size: 0;
+}
+
+.stocks-embedded-chat [data-testid='rc-send']::after {
+  content: '';
+  display: inline-block;
+  vertical-align: middle;
+  width: 1rem;
+  height: 1rem;
+  background-color: currentcolor;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 19V5'/%3E%3Cpath d='m5 12 7-7 7 7'/%3E%3C/svg%3E")
+    center / contain no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 19V5'/%3E%3Cpath d='m5 12 7-7 7 7'/%3E%3C/svg%3E")
+    center / contain no-repeat;
+}

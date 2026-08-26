@@ -39,6 +39,9 @@ export class MockOverrides {
   // `${address}:${calldata}` (both lowercased) -> eth_call return hex. A
   // selector-only key is allowed only for no-argument functions.
   private ethCalls = new Map<string, Hex>()
+  // `${address}:${calldata}` -> revert reason for eth_call (answered as a
+  // JSON-RPC `execution reverted` error carrying Error(string), like a node).
+  private ethCallReverts = new Map<string, string>()
   private apiRequests: ApiOverride[] = []
   private transactionOutcomes: MockTransactionOutcome[] = []
   // lowercased address -> native balance in wei (eth_getBalance). Opt-in:
@@ -48,6 +51,9 @@ export class MockOverrides {
   // mock leans unknown-but-admitted tokens to $1; this is the explicit escape:
   // 'omit' drops the token from the response, 'zero' answers price 0.
   private priceGaps = new Map<string, 'omit' | 'zero'>()
+  // `${chain}:${address}` -> explicit USD price for /current/prices; beats the
+  // captured snapshot price and the $1 lean, loses to a priceGap.
+  private prices = new Map<string, number>()
 
   // Controllable-latency gates for the loading lifecycle. Dispatchers call
   // `holds.gate(identity)` before fulfilling; the harness `mock.hold()` adds one.
@@ -60,7 +66,11 @@ export class MockOverrides {
   // `chain` scopes the override to one chain's subgraph host; omit it to answer
   // every chain (unchanged default).
   subgraph(
-    match: { operationName: string; variables?: Record<string, unknown>; chain?: number },
+    match: {
+      operationName: string
+      variables?: Record<string, unknown>
+      chain?: number
+    },
     data: unknown
   ): void {
     this.subgraphOps.push({
@@ -74,7 +84,21 @@ export class MockOverrides {
   // Override a single eth_call return. `returnHex` is the ABI-encoded result.
   // The full calldata is required, including encoded arguments.
   ethCall(address: string, calldata: string, returnHex: Hex): void {
-    this.ethCalls.set(`${address.toLowerCase()}:${calldata.toLowerCase()}`, returnHex)
+    this.ethCalls.set(
+      `${address.toLowerCase()}:${calldata.toLowerCase()}`,
+      returnHex
+    )
+  }
+
+  // Make a single eth_call REVERT with `reason` (Error(string)), the way a
+  // node answers a replayed reverted transaction — e.g. wagmi's
+  // waitForTransactionReceipt re-runs a reverted tx's calldata via eth_call
+  // to extract the reason. Wins over an `ethCall` return for the same key.
+  ethCallRevert(address: string, calldata: string, reason: string): void {
+    this.ethCallReverts.set(
+      `${address.toLowerCase()}:${calldata.toLowerCase()}`,
+      reason
+    )
   }
 
   // Override the native balance one address reports via eth_getBalance —
@@ -87,7 +111,11 @@ export class MockOverrides {
   // Override an exact reserve-api method/path, optionally constraining the
   // relevant query-string identity fields.
   api(
-    match: { method?: string; pathname: string; search?: Record<string, string> },
+    match: {
+      method?: string
+      pathname: string
+      search?: Record<string, string>
+    },
     data: unknown
   ): void {
     this.apiRequests.push({
@@ -102,8 +130,19 @@ export class MockOverrides {
   // overrides both a captured snapshot price and the $1 lean. Chain-keyed:
   // shared addresses (e.g. the native sentinel) exist on every chain, so an
   // address-only gap would leak across all price batches in the test.
-  priceGap(chain: number, address: string, kind: 'omit' | 'zero' = 'omit'): void {
+  priceGap(
+    chain: number,
+    address: string,
+    kind: 'omit' | 'zero' = 'omit'
+  ): void {
     this.priceGaps.set(`${chain}:${address.toLowerCase()}`, kind)
+  }
+
+  // Pin a token's USD price for /current/prices — the seam for surfaces whose
+  // math (e.g. the zapper's price-impact gate, valued with Reserve prices) must
+  // agree with the prices in force when a quote snapshot was captured.
+  price(chain: number, address: string, usd: number): void {
+    this.prices.set(`${chain}:${address.toLowerCase()}`, usd)
   }
 
   transaction(outcome: MockTransactionOutcome): void {
@@ -127,7 +166,15 @@ export class MockOverrides {
   }
 
   lookupEthCall(address: string, calldata: string): Hex | undefined {
-    return this.ethCalls.get(`${address.toLowerCase()}:${calldata.toLowerCase()}`)
+    return this.ethCalls.get(
+      `${address.toLowerCase()}:${calldata.toLowerCase()}`
+    )
+  }
+
+  lookupEthCallRevert(address: string, calldata: string): string | undefined {
+    return this.ethCallReverts.get(
+      `${address.toLowerCase()}:${calldata.toLowerCase()}`
+    )
   }
 
   lookupEthBalance(address: string): bigint | undefined {
@@ -136,6 +183,10 @@ export class MockOverrides {
 
   lookupPriceGap(chain: number, address: string): 'omit' | 'zero' | undefined {
     return this.priceGaps.get(`${chain}:${address.toLowerCase()}`)
+  }
+
+  lookupPrice(chain: number, address: string): number | undefined {
+    return this.prices.get(`${chain}:${address.toLowerCase()}`)
   }
 
   lookupApi(method: string, url: URL): unknown | undefined {
@@ -148,7 +199,9 @@ export class MockOverrides {
   }
 
   consumeTransactionOutcome(): MockTransactionOutcome {
-    return this.transactionOutcomes.shift() ?? { kind: 'success', pendingPolls: 1 }
+    return (
+      this.transactionOutcomes.shift() ?? { kind: 'success', pendingPolls: 1 }
+    )
   }
 }
 

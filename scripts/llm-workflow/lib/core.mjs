@@ -1,88 +1,95 @@
 // Shared core for llm-workflow scripts. Zero dependencies, Node stdlib only.
-import { execFileSync } from "node:child_process";
-import { existsSync, readFileSync } from "node:fs";
-import { join } from "node:path";
+import { execFileSync } from 'node:child_process'
+import { existsSync, readFileSync } from 'node:fs'
+import { join } from 'node:path'
 
 export function git(args, options = {}) {
-  return execFileSync("git", args, { encoding: "utf8", ...options }).trim();
+  return execFileSync('git', args, { encoding: 'utf8', ...options }).trim()
 }
 
 export function repoRoot() {
-  return git(["rev-parse", "--show-toplevel"]);
+  return git(['rev-parse', '--show-toplevel'])
 }
 
 export function headSha() {
-  return git(["rev-parse", "--short", "HEAD"]);
+  return git(['rev-parse', '--short', 'HEAD'])
 }
 
 // Tracked changes vs base (committed + staged + working tree) plus untracked files.
 export function changedFiles(baseRef) {
-  const tracked = git(["diff", "--name-only", baseRef]);
-  const untracked = git(["ls-files", "--others", "--exclude-standard"]);
-  const files = new Set([...tracked.split("\n"), ...untracked.split("\n")].filter(Boolean));
-  return [...files].sort();
+  const tracked = git(['diff', '--name-only', baseRef])
+  const untracked = git(['ls-files', '--others', '--exclude-standard'])
+  const files = new Set(
+    [...tracked.split('\n'), ...untracked.split('\n')].filter(Boolean)
+  )
+  return [...files].sort()
 }
 
 export function isTrackedTreeClean() {
   // Untracked files do not block starting a stage; modified/staged tracked files do.
-  const status = git(["status", "--porcelain"]);
+  const status = git(['status', '--porcelain'])
   return status
-    .split("\n")
+    .split('\n')
     .filter(Boolean)
-    .every((line) => line.startsWith("??"));
+    .every((line) => line.startsWith('??'))
 }
 
 // Glob subset: ** (any segments), * (within segment), {a,b} literal alternation.
 export function globToRegExp(glob) {
-  let source = "";
-  let i = 0;
+  let source = ''
+  let i = 0
   while (i < glob.length) {
-    if (glob[i] === "{") {
-      const end = glob.indexOf("}", i);
-      if (end === -1) throw new Error(`unclosed { in glob: ${glob}`);
+    if (glob[i] === '{') {
+      const end = glob.indexOf('}', i)
+      if (end === -1) throw new Error(`unclosed { in glob: ${glob}`)
       // Alternatives may contain * (within-segment); nested braces are unsupported.
       const body = glob
         .slice(i + 1, end)
-        .split(",")
-        .map((alt) => alt.split("*").map(escapeLiteral).join("[^/]*"))
-        .join("|");
-      source += `(?:${body})`;
-      i = end + 1;
-    } else if (glob.startsWith("**/", i)) {
-      source += "(?:.*/)?";
-      i += 3;
-    } else if (glob.startsWith("**", i)) {
-      source += ".*";
-      i += 2;
-    } else if (glob[i] === "*") {
-      source += "[^/]*";
-      i += 1;
+        .split(',')
+        .map((alt) => alt.split('*').map(escapeLiteral).join('[^/]*'))
+        .join('|')
+      source += `(?:${body})`
+      i = end + 1
+    } else if (glob.startsWith('**/', i)) {
+      source += '(?:.*/)?'
+      i += 3
+    } else if (glob.startsWith('**', i)) {
+      source += '.*'
+      i += 2
+    } else if (glob[i] === '*') {
+      source += '[^/]*'
+      i += 1
     } else {
-      source += escapeLiteral(glob[i]);
-      i += 1;
+      source += escapeLiteral(glob[i])
+      i += 1
     }
   }
-  return new RegExp(`^${source}$`);
+  return new RegExp(`^${source}$`)
 }
 
 function escapeLiteral(text) {
-  return text.replace(/[.+?^$()[\]\\|]/g, "\\$&");
+  return text.replace(/[.+?^$()[\]\\|]/g, '\\$&')
 }
 
 export function matchesAny(file, globs) {
-  return globs.some((glob) => globToRegExp(glob).test(file));
+  return globs.some((glob) => globToRegExp(glob).test(file))
 }
 
 // Mechanical signals on two independent axes — semantics stay with the agent.
 // Radius (how far can it break) buys checks and review; size (how much changed) buys ceremony.
 export function computeTierHint(files, lenses, maxLowFiles = 5) {
-  const radius = [];
-  if (lenses.includes("security")) radius.push("security lens");
-  if (lenses.includes("complexity")) radius.push("complexity lens (shared machinery)");
-  const size = files.length > maxLowFiles ? [`${files.length} files`] : [];
+  const radius = []
+  if (lenses.includes('security')) radius.push('security lens')
+  if (lenses.includes('complexity'))
+    radius.push('complexity lens (shared machinery)')
+  const size = files.length > maxLowFiles ? [`${files.length} files`] : []
   const profile =
-    radius.length > 0 && size.length > 0 ? "high" : radius.length > 0 || size.length > 0 ? "medium" : "low";
-  return { profile, radius, size };
+    radius.length > 0 && size.length > 0
+      ? 'high'
+      : radius.length > 0 || size.length > 0
+        ? 'medium'
+        : 'low'
+  return { profile, radius, size }
 }
 
 // Area guides: CLAUDE.md files living beside the code they describe. A diff that
@@ -90,92 +97,114 @@ export function computeTierHint(files, lenses, maxLowFiles = 5) {
 // Every ancestor guide counts (a nested area can be described at two levels);
 // the repo-root CLAUDE.md is the router, not an area guide, so it never matches.
 export function staleAreaGuides(files, root = repoRoot()) {
-  const changed = new Set(files);
-  const guides = new Map();
-  const checked = new Map();
+  const changed = new Set(files)
+  const guides = new Map()
+  const checked = new Map()
   for (const file of files) {
-    const segments = file.split("/");
+    const segments = file.split('/')
     for (let depth = segments.length - 1; depth > 0; depth--) {
-      const guide = `${segments.slice(0, depth).join("/")}/CLAUDE.md`;
-      let exists = checked.get(guide);
+      const guide = `${segments.slice(0, depth).join('/')}/CLAUDE.md`
+      let exists = checked.get(guide)
       if (exists === undefined) {
-        exists = existsSync(join(root, guide));
-        checked.set(guide, exists);
+        exists = existsSync(join(root, guide))
+        checked.set(guide, exists)
       }
-      if (exists) guides.set(guide, (guides.get(guide) ?? 0) + 1);
+      if (exists) guides.set(guide, (guides.get(guide) ?? 0) + 1)
     }
   }
   return [...guides.entries()]
     .filter(([guide]) => !changed.has(guide))
     .map(([guide, touched]) => ({ guide, touched }))
-    .sort((a, b) => a.guide.localeCompare(b.guide));
+    .sort((a, b) => a.guide.localeCompare(b.guide))
 }
 
-export const CONFIG_FILE = "llm-workflow.config.json";
+export const CONFIG_FILE = 'llm-workflow.config.json'
 
 export function loadConfig(root = repoRoot()) {
-  const path = join(root, CONFIG_FILE);
-  if (!existsSync(path)) throw new Error(`${CONFIG_FILE} not found at ${root} — run the llm-workflow installer first`);
-  const config = JSON.parse(readFileSync(path, "utf8"));
+  const path = join(root, CONFIG_FILE)
+  if (!existsSync(path))
+    throw new Error(
+      `${CONFIG_FILE} not found at ${root} — run the llm-workflow installer first`
+    )
+  const config = JSON.parse(readFileSync(path, 'utf8'))
   if (!Array.isArray(config.gate) || config.gate.length === 0)
-    throw new Error("config.gate must be a non-empty array of commands");
-  if (!Array.isArray(config.verify)) throw new Error("config.verify must be an array of {name, globs, commands} rules");
+    throw new Error('config.gate must be a non-empty array of commands')
+  if (!Array.isArray(config.verify))
+    throw new Error(
+      'config.verify must be an array of {name, globs, commands} rules'
+    )
   for (const rule of config.verify) {
-    if (!rule.name || !Array.isArray(rule.globs) || !Array.isArray(rule.commands)) {
-      throw new Error(`invalid verify rule: ${JSON.stringify(rule)}`);
+    if (
+      !rule.name ||
+      !Array.isArray(rule.globs) ||
+      !Array.isArray(rule.commands)
+    ) {
+      throw new Error(`invalid verify rule: ${JSON.stringify(rule)}`)
     }
   }
-  return config;
+  return config
 }
 
 // Argv-style command runner: "pnpm run test:smoke" → execFileSync("pnpm", ["run", "test:smoke"]).
 // No shell interpretation — wrap pipes or chaining in a script instead.
 export function runCommand(command, cwd) {
-  const [bin, ...args] = command.split(/\s+/);
-  if (bin.includes("="))
-    throw new Error(`env prefixes are not supported ("${bin}") — wrap the command in a package script`);
-  const startedAt = Date.now();
-  execFileSync(bin, args, { stdio: "inherit", cwd });
-  return Date.now() - startedAt;
+  const [bin, ...args] = command.split(/\s+/)
+  if (bin.includes('='))
+    throw new Error(
+      `env prefixes are not supported ("${bin}") — wrap the command in a package script`
+    )
+  const startedAt = Date.now()
+  execFileSync(bin, args, { stdio: 'inherit', cwd })
+  return Date.now() - startedAt
 }
 
 const RED_FLAG_PATTERNS = [
   {
-    id: "console-log",
+    id: 'console-log',
     regex: /console\.(log|debug)\(/,
-    files: ["**/*.{ts,tsx,js,jsx}"],
-    allowKey: "consoleAllow",
+    files: ['**/*.{ts,tsx,js,jsx}'],
+    allowKey: 'consoleAllow',
   },
   {
-    id: "empty-catch",
+    id: 'empty-catch',
     regex: /catch\s*(\([^)]*\))?\s*\{\s*\}/,
-    files: ["**/*.{ts,tsx,js,jsx,mjs}"],
+    files: ['**/*.{ts,tsx,js,jsx,mjs}'],
   },
-  { id: "broad-any", regex: /:\s*any\b/, files: ["**/*.{ts,tsx}"] },
-];
+  { id: 'broad-any', regex: /:\s*any\b/, files: ['**/*.{ts,tsx}'] },
+  // Three or more consecutive comment lines (or a block/JSX comment spanning
+  // three lines) in app code: the comment budget is one line per WHY.
+  {
+    id: 'comment-block',
+    regex:
+      /(?:^[ \t]*\/\/[^\n]*\n){3,}|\/\*(?:[^*]|\*(?!\/))*?\n(?:[^*]|\*(?!\/))*?\n(?:[^*]|\*(?!\/))*?\*\//m,
+    files: ['src/**/*.{ts,tsx}'],
+    allowKey: 'commentBlockAllow',
+  },
+]
 
 export function scanRedFlags(files, config, root = repoRoot()) {
-  const allow = config.redFlags ?? {};
-  const findings = [];
+  const allow = config.redFlags ?? {}
+  const findings = []
   for (const file of files) {
-    const path = join(root, file);
-    if (!existsSync(path)) continue; // deleted file
-    let content;
+    const path = join(root, file)
+    if (!existsSync(path)) continue // deleted file
+    let content
     try {
-      content = readFileSync(path, "utf8");
+      content = readFileSync(path, 'utf8')
     } catch {
-      continue; // binary or unreadable
+      continue // binary or unreadable
     }
     for (const pattern of RED_FLAG_PATTERNS) {
-      if (!matchesAny(file, pattern.files)) continue;
-      if (pattern.allowKey && (allow[pattern.allowKey] ?? []).includes(file)) continue;
+      if (!matchesAny(file, pattern.files)) continue
+      if (pattern.allowKey && (allow[pattern.allowKey] ?? []).includes(file))
+        continue
       // Scan the whole file so patterns spanning lines (e.g. an empty catch
       // with the brace on the next line) still fire; report the match's line.
-      for (const match of content.matchAll(new RegExp(pattern.regex, "g"))) {
-        const line = content.slice(0, match.index).split("\n").length;
-        findings.push({ file, line, id: pattern.id });
+      for (const match of content.matchAll(new RegExp(pattern.regex, 'g'))) {
+        const line = content.slice(0, match.index).split('\n').length
+        findings.push({ file, line, id: pattern.id })
       }
     }
   }
-  return findings;
+  return findings
 }
