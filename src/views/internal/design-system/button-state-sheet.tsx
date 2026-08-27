@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react'
 import { ArrowRight, Plus, Trash2 } from 'lucide-react'
 
-import { Button } from '@/components/button'
+import { Button, InlineAction } from '@/components/button'
 
 const ButtonStateSheet = () => (
   <section id="buttons" aria-labelledby="buttons-heading" className="space-y-5">
@@ -16,7 +16,10 @@ const ButtonStateSheet = () => (
         This sheet renders the accepted reusable V1 candidate—not a production
         baseline. It includes centered momentary press feedback and opaque
         semantic interaction colors. Button labels stay concise and single-line;
-        constrained compositions restructure before overflow.
+        constrained compositions restructure before overflow. Inline Action is
+        the bounded text-action treatment for dense field accessories such as
+        Max or Use; it is neither navigation nor a replacement for ordinary
+        Buttons.
       </p>
     </div>
 
@@ -41,6 +44,10 @@ const ButtonStateSheet = () => (
       <StateRow label="Content">
         <Button leadingIcon={<Plus />}>Add token</Button>
         <Button trailingIcon={<ArrowRight />}>Continue</Button>
+      </StateRow>
+      <StateRow label="Dense field action">
+        <InlineAction>Max</InlineAction>
+        <InlineAction disabled>Unavailable</InlineAction>
       </StateRow>
       <StateRow label="Unavailable">
         <Button disabled>Disabled</Button>

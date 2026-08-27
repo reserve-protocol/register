@@ -3,7 +3,7 @@ import { Link, Navigate, useParams } from 'react-router-dom'
 import {
   CatalogBadges,
   ComponentReviewReadiness,
-  DetailSidebar,
+  DetailNavigation,
   ExpectedDecisions,
   PageHeader,
 } from './catalog-ui'
@@ -38,11 +38,8 @@ export const ComponentDetail = () => {
   }
 
   return (
-    <div
-      data-testid={`component-detail-${item.id}`}
-      className="grid gap-8 lg:grid-cols-[13rem_minmax(0,1fr)]"
-    >
-      <DetailSidebar
+    <div data-testid={`component-detail-${item.id}`} className="space-y-8">
+      <DetailNavigation
         title={group.name}
         items={group.items}
         path="/internal/design-system/components"

@@ -89,7 +89,7 @@ is explicitly retained product/domain behavior.
 
 - `docs/plans/design-system-v1.md` remains an accurate contract with the active slice, explicit decisions, and the next unblocked work.
 - `/internal/design-system` provides an in-app lab that can show foundations, complete component states, progress, migration mapping, and unresolved gaps without duplicating product screens.
-- The lab uses direct routed navigation for Foundations, Components, Screens, and Project Status; the category landing pages expose the relevant catalog without duplicating it in dropdowns or one long scrolling document.
+- The lab uses direct routed navigation for Foundations, Components, Screens, and Project Status; category landing pages expose the relevant catalog, while detail-route group navigation moves into a closed full-width disclosure so it remains reachable without reserving specimen width.
 - Expected foundation and component slots remain visible before they are audited or defined. Every slot explains its purpose, expected decisions, current evidence, maturity status, reason for any missing output, and next action.
 - Unavailable slots remain navigable and keyboard-accessible rather than using disabled controls; subdued styling and explicit statuses distinguish them from implemented lab surfaces.
 - Catalog maturity, rendered lab output, reusable implementation, production adoption, and individual definition-slot completion remain independent so a specimen cannot masquerade as a consumable component and a candidate cannot imply product use.
@@ -475,6 +475,16 @@ Accepted as the provisional foundation direction after visual comparison:
   section padding, list padding, and last-row padding to produce the same gap,
   and do not require screen-level last-row exceptions. Exact table/list
   implementation remains deferred to the Data display component-family pass.
+- A divider belongs directly to one boundary and never supplies spacing by
+  itself. Adjacent regions use matching semantic insets unless an intentional
+  hierarchy difference is being reviewed. Do not combine a parent stack gap
+  on one side with unrelated child padding on the other; remove the divider
+  when spacing or surface contrast already provides enough separation. When a
+  bordered region leads directly into an action, that region owns symmetric
+  inset and the attached footer contributes no additional top gap; only a
+  genuinely separated footer owns a new gap. For compact transaction task
+  shells, divider-to-facts and facts-to-primary-action are 16px internal-region
+  relationships; related fact rows remain 8px apart.
 
 ## Elevation decision — 2026-08-13
 
@@ -755,9 +765,14 @@ design-system contract.
 Deterministic lab fixtures may use fictional names, values, and dates to expose
 an evidenced state, but their copy must not imply unsupported product or
 protocol behavior. Product-mechanics language must trace to product source or
-domain documentation. Lab-authored copy is review metadata, not migration copy;
-production migration preserves evidenced product meaning unless a copy change
-is separately and explicitly accepted.
+domain documentation. Lab-authored copy is review metadata, not migration copy.
+Product-facing copy is preserved verbatim from its evidenced source—including
+in lab specimens: agents have no authority to edit visible wording, labels,
+placeholders, accessibility names, or lifecycle/status language unless the
+user explicitly approves that specific copy change. Copy concerns and
+alternatives may be reported separately, but must not be silently implemented.
+This includes apparent typo and clarity corrections. If a new UI has no
+evidenced copy owner, stop and request the copy rather than inventing it.
 
 An accepted decision recorded here overrides any unsynchronized exploratory
 specimen. A stale specimen is evidence awaiting reconciliation, not a new design
@@ -2034,13 +2049,15 @@ transaction lifecycle, AmountField, AssetPicker, dense-table transformation,
 Auction/Governance restructuring, navigation production migration, shared defaults, Card
 extraction, commits, and pushes.
 
-### Next recommended frontier — transaction-system map, not started
+### Transaction-system map complete; truth-spectrum review active
 
-Before preparing another isolated component or choosing one flow as the model,
-reconcile the existing modal-family, Zapper, Drawer-to-Dialog, layout, action,
-and component audits into one source-grounded map of the transaction system.
-This is a bounded synthesis pass, not a new broad audit and not production
-migration.
+The source-grounded map now lives in
+`docs/plans/transaction-system-audit.md`. It reconciles the existing
+modal-family, Zapper, Drawer-to-Dialog, layout, action, and component evidence
+without choosing one flow as the model. The first recommended visual artifact
+is now the sole Current Review item: a deterministic action-to-outcome truth
+spectrum spanning atomic, RFQ/order, transparent staged, and delayed
+settlement. It remains a bounded presentation review, not production migration.
 
 The comparison covers the common Index instant Zapper, vote-lock/unlock/
 delegate, relevant Yield DTF Zapper and stake/unstake evidence, manual mint/
@@ -2054,6 +2071,12 @@ highest current product importance and the strongest recent functional or
 design attention. That makes them high-value evidence, not presumed-correct
 authority: current omissions, confusing transitions, weak recovery, and
 under-specified outcomes remain findings to resolve.
+
+The correction-heavy human review that followed is diagnosed in
+`docs/plans/transaction-review-feedback-postmortem.md`. That report is not
+authority; it distinguishes existing-rule violations, missing composition
+rules, product-evidence dependencies, and legitimate design judgment so future
+transaction work does not turn every correction into a new variant.
 
 For each flow, record:
 
@@ -2105,3 +2128,533 @@ Home feature-card extraction and the Home golden screen remain ready follow-up
 work, not prerequisites for this transaction stage. Overview can preserve its
 current chart composition; its meaningful remaining prerequisite is bounded
 Table/DataRow work rather than a generic Chart contract.
+
+The active board now treats the complete audit registry as the inventory rather
+than limiting itself to the first outcome-language artifact. It consumes
+accepted Dialog, Field, Entity Identity, Button, Action Group, Lifecycle Status,
+Copyable Value, Link, typography, spacing, color, and radius baselines, and uses
+Inline Message only as a declared provisional recovery treatment inside
+realistic context. Four stateful compositions preserve the product shape each
+family actually needs: manual mint remains a focused page with basket
+requirements; RFQ remains a compact package-owned reference; automated mint
+expands from amount/quote work into a paired order workspace; delayed settlement
+crosses from initiation Dialog to durable account state. Secondary vote-unlock
+and local-selector pressure tests exercise the canonical task shell and the
+missing local selection seam without pretending they are two more transaction
+families.
+
+The board proposes complete, orchestration-free presentation candidates for a
+local Amount object, local asset-picker trigger/list/options, approval/
+requirement row, and transaction identity block. Lifecycle vocabulary composes
+the accepted status owner. Consequential outcomes remain independently composed
+family evidence rather than one extracted summary component. It separately
+labels input/output hierarchy, transparent stage lists, delayed settlement, and
+selector Dialog structure as composition recipes or flow-owned work where the
+audit requires that boundary.
+Every composition exposes a credible review/action state plus execution,
+consequential result, and source-backed recovery/follow-up through one review
+control, so those phases can be judged without multiplying disconnected
+specimens. A coverage map assigns the remaining important audit jobs to a
+composition, an existing owner, an upstream/flow-owned seam, or explicit
+deferral. No proposal is promoted by its appearance in the board.
+
+The earlier faithful Zapper reconstruction at
+`src/views/internal/design-system/zapper-modal-study.tsx` is now explicitly
+routed as the strongest visual composition evidence for paired input/output
+surfaces, financial hierarchy, density, asset and balance context, and focused
+action treatment. The real host seam at
+`src/views/index-dtf/components/zapper/zapper-wrapper.tsx` confirms the product
+context and upstream boundary. Neither source is canonical V1 authority and
+neither authorizes copying package-owned selectors, settings, quote mechanics,
+or local provisional styling. The review board carries a visible predecessor
+transfer contract: preserve or improve each successful quality, and record the
+stronger evidence or product constraint whenever one is intentionally removed.
+
+The board defines no universal transaction component or orchestration API and
+does not resolve exact result sources, queue persistence, polling, receipt
+decoding, guarded dismissal, or production behavior. Confirm Deploy result and
+readiness remain excluded as visual authority behind their P0 correctness
+findings. Human review should judge the coherent whole and then decide whether
+any proposed seam deserves a reusable contract.
+
+#### Baseline Context trace before knowledge-routing restructuring
+
+- Actually needed: this active plan; the complete transaction-system audit;
+  design-system authority and project safety guidance; accepted Button,
+  Action Group, Dialog, Field, Entity Identity, Metric, Lifecycle Status,
+  Search, Segmented Control, Empty State, Skeleton/Spinner, Copyable Value,
+  Link, typography, semantic-role, and layout-recipe owners; the named Zapper
+  visual predecessor and real package host seam; and only the manual issuance,
+  automated mint, installed Zapper, vote-unlock, and unstake/withdraw sources
+  already routed by the audit.
+- Decision authority: accepted V1 foundations and component owners governed
+  presentation and semantics; the audit governed required jobs, lifecycle
+  truth, source priority, ownership, and deferral. The named Zapper study and
+  real package host supply strong visual composition evidence without becoming
+  canonical authority; other product sources supply behavioral or coverage
+  evidence according to their audited role.
+- Substantial irrelevant material: most of this plan's long chronological
+  record, general project guidance outside UI safety, and full product-flow
+  implementations beyond the exact audited seams. They were useful for
+  precedence checks but expensive as primary task context.
+- Duplicated, stale, or conflicting guidance: the prior plan still described a
+  narrow 16-snapshot truth board after the scope widened; product flows disagree
+  on shell, lifecycle words, outcome persistence, and transaction-versus-order
+  identity. This section and the expanded contract supersede that narrow board
+  description; the audit's ownership/lifecycle matrices resolve product
+  precedence without treating variation as authority.
+- Difficult to discover: no single consumable owner joined Amount anatomy,
+  local selection, requirements, lifecycle presentation, identity, durable
+  state, and outcomes into a review sequence. The audit registry was the only
+  reliable index; the strongest earlier Zapper composition was mentioned only
+  in prose without a direct path or evidence role. Exact package host callbacks
+  and safe-dismissal behavior remained difficult to locate and stay deferred.
+- Inferred or reconstructed: candidate prop seams and composition boundaries
+  had to be reconstructed from repeated audited jobs because no reusable owner
+  exists yet. Reliable final values, automated reconciliation, queue indices,
+  and Confirm Deploy truth were not inferred; the board labels estimates,
+  preserves flow/upstream ownership, and defers those claims.
+
+### Expanded composition-first transaction review contract
+
+#### Goal
+
+Use the complete transaction-system audit as the requirements inventory and
+rework Current Review into the smallest set of credible transaction
+compositions that collectively pressure-test the shared system. Every visible
+piece is either an accepted V1 baseline, a faithfully retained current or
+upstream boundary, a complete review candidate, a flow-owned treatment, or an
+explicitly deferred dependency.
+
+#### Current state
+
+The narrow truth-spectrum board has been superseded by a composition-first
+transaction-system review. Four realistic family compositions, two bounded
+pressure tests, six proposed presentation candidates, and one coverage map now
+make Amount, selection, requirements, details, lifecycle, identity, recovery,
+durable state, outcomes, and ownership intentional. The work remains
+exploratory and unadopted pending human review.
+
+#### Non-goals
+
+- No production migration, transaction orchestration, package restyling,
+  product-mechanics change, shared-default adoption, or new authority without
+  human review.
+- No universal `TransactionFlow`, fixed progress model, fabricated result
+  source, or identical information volume across transaction families.
+- Do not use Confirm Deploy outcomes or readiness as visual truth while its P0
+  result-source and multi-asset readiness findings remain unresolved.
+
+#### Acceptance evidence
+
+- Current Review leads with realistic atomic/manual, package RFQ, transparent
+  automated, and delayed-settlement compositions rather than isolated state
+  specimens; task-shell and local-selector pressure tests appear where the
+  audit requires them.
+- A visible, path-backed predecessor transfer contract distinguishes strong
+  visual composition evidence from canonical authority and requires a reason
+  whenever a successful predecessor quality is intentionally removed.
+- The compositions exercise input/output, identity, transaction details,
+  prerequisites, action hierarchy, execution, recovery, consequential outcome,
+  and later work in the amount appropriate to each family.
+- A visible coverage map assigns every important audit registry job and
+  lifecycle requirement to a composition, an accepted/current owner, or an
+  explicit unresolved/deferred state.
+- Every composition declares the authority status of its visible parts without
+  turning lab proposals into current baseline by implication.
+- Focused RTL tests pin the coverage and family distinctions; scoped lint,
+  typecheck, the repository gate, desktop/phone light/dark inspection, wiki
+  lint, and `git diff --check` are green after the final edit.
+
+#### Test seams
+
+- `src/views/internal/design-system/tests/transaction-truth-spectrum.test.tsx`
+  is the stable composition/coverage seam: it asserts family-specific jobs,
+  candidate ownership labels, and audited deferred boundaries rather than
+  private component structure.
+- The routed lab in the in-app browser owns responsive, theme, overflow,
+  hierarchy, and whole-composition inspection.
+
+#### Slices
+
+- Slice: audit-to-composition coverage map and explicit status taxonomy;
+  blocked by: none.
+- Slice: atomic/manual composition exercising Amount, requirement/approval,
+  action lifecycle, recovery, identity, and outcome candidates; blocked by:
+  coverage map.
+- Slice: package RFQ and transparent automated compositions preserving their
+  different orchestration and information volumes; blocked by: none after the
+  direct-source and predecessor evidence contracts are available.
+- Slice: delayed settlement across initiation and durable multi-entry account
+  state, plus responsive vote-lock/task and local-selector pressure tests;
+  blocked by: none after the direct-source contract is available.
+- Slice: whole-board self-review, coverage reconciliation, Context trace,
+  verification, and human-review handoff; blocked by: all composition slices.
+
+#### Unresolved decisions
+
+- Exact receipt/RPC result sources, automated result reconciliation, package
+  host callbacks, post-receipt synchronization, queue-index semantics, guarded
+  dismissal, and Confirm Deploy P0 findings remain engineer-review questions.
+- Human review must decide whether the proposed Amount object,
+  requirement/approval row, transaction identity, and local asset-selection
+  composition deserve reusable V1 contracts.
+  Outcome similarity must first emerge independently across families; this
+  stage may render complete compositions but cannot promote a shared layout.
+
+### Transaction composition synthesis pass
+
+The composition-first board now applies the strongest relevant accepted owners
+and predecessor lessons as one product experience rather than as adjacent valid
+parts. Review states lead with financial intent, recognizable asset identity,
+balance/Max context, material quote or requirement detail, and one dominant
+action. Once execution, recovery, or completion becomes the user's real task,
+that state moves ahead of the preserved financial context instead of remaining
+below the fold as an appended status specimen.
+
+The local Amount candidate restores the predecessor's strongest relationship:
+input and output remain a 4px composite with explicit direction, editable input
+values carry the interactive primary emphasis, and fiat plus balance/Max
+information share one 20px amount footer rather than competing with the label.
+The bounded InlineAction gives terse Max/Use field accessories button semantics,
+primary text, and a transparent 28px target without increasing that footer's
+layout height. Submitted read-only amounts preserve geometry while moving to
+the content surface and foreground text. Accepted Metric
+anatomy now owns ordinary transaction facts. Requirement rows align comparable
+financial values in columns, lifecycle steps use a quiet connected sequence
+instead of a bordered administrative list, durable queues use open structured
+rows, and consequential outcomes lead with the result rather than nesting it
+inside a generic success card.
+
+The visible predecessor contract now marks each major quality as preserved,
+improved, or intentionally not transferred. Compact task focus and a dominant
+action are preserved. Financial hierarchy, input/output truth, supporting-data
+density, lifecycle language, recovery, and consequential outcomes are improved.
+Package-owned control internals and one universal shell are intentionally not
+transferred because the package boundary and audited family differences are
+stronger product constraints. No accepted foundation or component owner was
+changed by this synthesis; all transaction presentation seams remain
+provisional and unadopted. The installed Zapper review-to-quote-search
+transition now preserves shell geometry: selectors, Max, quote details, and
+action remain mounted; temporarily unavailable controls disable in place; and
+expanded uncertain quote values use equal-height skeleton rows. The animated
+output is the only materially changing region.
+
+Final review-panel reconciliation also keeps interaction truth aligned with
+visual truth. Deterministic values render as non-interactive financial text
+rather than invisible-focus read-only fields. RFQ and staged execution states
+replace asset-selection and swap affordances with locked identity plus a
+direction marker once work has started. Atomic execution names the permission
+step without implying the final mint is already underway. The shared outcome
+candidate is explicitly success-only until another consequential outcome has
+enough evidence for a truthful visual contract.
+
+### Transaction current-flow reconciliation
+
+#### Goal
+
+Re-ground every represented transaction composition in direct inspection of
+the current product implementation. Preserve current mechanics and useful
+structural relationships, apply accepted V1 presentation deliberately, and
+separate evidenced consolidation or improvement from larger UX redesign.
+
+#### Current state
+
+The composition board expresses the audit's lifecycle distinctions and uses
+accepted V1 owners, but its interaction structure was synthesized primarily
+from the audit. Manual issuance, installed Index Zapper, automated mint, and
+Yield unstake/withdraw now need a source-first comparison against the actual
+render tree, state ownership, sequencing, and current outcome behavior.
+
+#### Non-goals
+
+- No production migration or transaction-behavior change.
+- No redesign of package-owned Zapper internals.
+- No attempt to force one shell, lifecycle, outcome, or amount pattern onto
+  every flow.
+- No silent adoption of larger UX redesign opportunities discovered during
+  reconciliation.
+- No accepted foundation or component-baseline changes solely to fit these
+  compositions.
+
+#### Acceptance evidence
+
+- A source-grounded preserve / standardize visually / consolidate /
+  deliberately improve / do-not-touch classification for each represented
+  family.
+- Every material structural difference between the lab and current product is
+  either restored or carries a visible evidence-backed reason.
+- The lab renders the smallest credible current-flow compositions in light and
+  dark, including default plus execution/recovery/outcome states that materially
+  differ.
+- Focused transaction/catalog tests, app and E2E typecheck, lint, full unit
+  suite, Dark/Light review, wiki lint, and diff check are green.
+
+#### Test seams
+
+- `src/views/internal/design-system/tests/transaction-truth-spectrum.test.tsx`
+  owns visible flow structure, state transitions, ownership labels, and
+  unsupported-invention regressions.
+- `src/views/internal/design-system/tests/component-catalog.test.ts` owns the
+  provisional catalog and Current Review routing.
+- Current product E2E specifications are evidence for mechanics; lab work does
+  not rewrite their production snapshots or behavior.
+
+#### Slices
+
+- Slice: direct source reconstruction for the four represented families;
+  **complete**.
+- Slice: explicit lab-versus-product structural reconciliation and
+  classification; **complete**.
+- Slice: conservative composition correction using accepted V1 presentation;
+  **complete**.
+- Slice: whole-board visual, review-panel, verification, and context-trace
+  closeout; **complete**.
+
+#### Unresolved decisions
+
+- Which weak current outcomes can be improved inside the lab without implying
+  unverified result sourcing or production behavior.
+- Whether any currently proposed shared seam survives direct source comparison
+  in at least two local flows; otherwise it remains a recipe or flow-owned.
+- Larger interaction redesign opportunities stay separately flagged for human
+  review and do not block conservative reconciliation.
+
+#### Reconciliation decisions
+
+- **Manual issuance:** preserve the editable share goal, Buy/Sell mode, one
+  approval-to-mint action slot, persistent requirements, per-asset permission
+  state, and the separate Zapper escape hatch. Remove the invented read-only
+  review summary, action pair, global lifecycle timeline, and unrelated quote
+  metrics. An in-context successful mint result remains visibly labeled as a
+  deliberate improvement candidate because the current product only toasts and
+  resets. Requirement headers now use a deterministic content/status grid
+  rather than allowing approval progress to run into explanatory prose. Their
+  narrow rows pair identity with status and required amount with balance,
+  while desktop retains the four comparable columns.
+- **Installed Index Zapper:** preserve one compact package-owned widget with
+  Buy/Sell, paired input/output, selection, quote, approval or signature,
+  waiting, expiry/refund handling, and package result. Remove locally invented
+  order metadata and controls. The lab is a faithful boundary reference; only
+  the Register host surface and cross-family lifecycle language are locally
+  standardizable.
+- **Automated mint:** preserve the narrow configure step, widening only after a
+  quote exposes collateral orders, flow-owned per-order progress, completed-leg
+  preservation, scoped retry, the separate final mint boundary, and the
+  dedicated detailed outcome. Remove the prior one-workspace-for-every-state
+  synthesis and do not reveal orders during configuration.
+- **Delayed unstake:** preserve the staking input page, review/confirmation
+  modal, and durable withdrawal queue as separate surfaces. Remove the invented
+  combined lifecycle panel. Standardize the modal, amount pair, state language,
+  and queue presentation while deferring queue-index, cancellation, and broader
+  legacy Yield architecture changes. The durable queue is an open divided list
+  aligned to its section title rather than a stack of separately boxed
+  mini-cards.
+
+Genuinely shared work is now limited to amount and entity presentation,
+action-required versus waiting language, transaction/order identity,
+contextual recovery hierarchy, and consequential outcome anatomy. Approval
+orchestration, package economics, automated-order execution, queue ownership,
+and shell transitions remain flow-owned.
+
+#### Context-trace update
+
+- Directly needed product sources were the manual issuance render tree and E2E
+  flow, the installed Zapper host plus package README/type contract and Zapper
+  E2E states, automated mint configure/quote/order/success sources and area
+  guide, and Yield unstake modal plus withdraw-queue sources and E2E flow.
+- Important design authority remained the accepted V1 foundation/component
+  owners and canonical-first plan. Product sources authorized mechanics and
+  relationships; the earlier Zapper study supplied strong noncanonical visual
+  evidence; the transaction audit supplied cross-flow vocabulary and risks.
+- The complete transaction audit and broad design-system plan contained much
+  more family inventory and history than this four-flow correction needed.
+  They were useful routers but insufficient substitutes for the render trees.
+- The stale claim to reconcile was that the audit-derived composition itself
+  represented current flow structure. Direct inspection showed the manual
+  action slot, automated progressive shell, and delayed page/modal/queue
+  boundaries had been flattened. No clear consumable owner summarized those
+  relationships, so they had to be reconstructed from adjacent components,
+  state atoms/context, and behavior tests.
+
+### Transaction composition correction
+
+#### Goal
+
+Correct the composition-first transaction review so it is concise, visually
+coherent, source-grounded, and genuinely reviewable. Preserve real transaction
+mechanics while removing audit prose, invented controls, blanket dialog
+geometry, and premature shared layout that weakened the product experience.
+
+#### Current state
+
+This pre-correction snapshot is superseded by the focused correction below.
+The four-family board preserves more current-flow structure than its first
+iteration, but several specimens still turn audit requirements into visible
+explanation, apply the ordinary 24px Dialog content axis to dense amount flows,
+and reuse an unproven left-icon outcome template. The Zapper reference also
+reconstructs upstream-owned internals too freely, and automated configuration
+shows a selector that the current flow does not own.
+
+#### Non-goals
+
+- No production migration or transaction-orchestration change.
+- No package-owned Zapper redesign, production reimplementation of its
+  internals, or promotion of the bounded visual reference as a Register V1
+  component contract.
+- No change to accepted foundation or component defaults merely to fit the
+  transaction board.
+- No attempt to render every transaction family, permutation, or engineering
+  dependency.
+
+#### Acceptance evidence
+
+- Review/input states keep financial intent and one dominant action visually
+  primary; explanatory copy appears only when it changes the decision.
+- Dense amount pairs and their action use the accepted 8px shell edge while
+  ordinary explanatory dialog content may retain the 24px content axis.
+- Automated configuration retains its fixed current input token and presents
+  future steps as one coherent staged surface.
+- Delayed unstake states state cooldown timing once, keep current-state language
+  above preserved context, and expose the durable queue without a permanent
+  overlay.
+- Outcomes preserve family-specific evidence and no longer derive similarity
+  from one premature icon-left template.
+- Coverage and catalog claims describe only what is visibly exercised or
+  explicitly deferred.
+- Focused tests, scoped lint/typecheck, desktop/phone light/dark inspection,
+  wiki lint, and `git diff --check` are green.
+
+#### Test seams
+
+- `src/views/internal/design-system/tests/transaction-truth-spectrum.test.tsx`
+  owns visible composition structure, prohibited inventions, concise copy, and
+  truthful coverage claims.
+- The routed lab owns density, hierarchy, overflow, theme, and complete-board
+  visual inspection.
+
+#### Slices
+
+- Slice: concise review states and corrected dense-input geometry; blocked by:
+  none.
+- Slice: family-specific outcome compositions and delayed durable-state review;
+  blocked by: concise review states.
+- Slice: coverage/catalog reconciliation, whole-board review, verification, and
+  documentation housekeeping; blocked by: both composition slices.
+
+#### Unresolved decisions
+
+- Exact production Zapper styling and package outcome internals remain
+  upstream-owned.
+- Production result sourcing, queue indices, guarded dismissal, and Confirm
+  Deploy correctness remain engineer-review dependencies.
+- Shared outcome code may be extracted only after independently composed
+  families demonstrate stable repeated anatomy.
+
+### Focused installed-Zapper composition correction
+
+#### Goal
+
+Make the ordinary quote-ready Zapper slice visually and semantically complete
+enough to review before returning to the other transaction families.
+
+#### Current state
+
+The slice now defaults to its ordinary quote-ready state, preserves functional
+Buy/Sell and close controls, aligns financial and asset evidence, exposes a
+real bounded selector and quote-details state, and restores the installed
+package's distinctive delayed quote-search treatment as an inspectable
+upstream-owned state. Input and output assets now share the same prominent 20px
+amount-context label, circular token mark, and canonical chain badge rather
+than mixing picker and static-display treatments. Compact selector-list rows
+retain their 14px label role. It also keeps order identity, expiry, exact outcome
+value, and fixture-specific recovery visible. Dead alternate-operation controls
+were removed only from other single-branch specimens where no alternate fixture
+exists. Amount language now follows transaction truth rather than flow variety:
+Zapper consistently uses `You use` plus `Estimated output` before completion,
+an expired order clears its stale estimate, automated mint retains the same
+estimate label until collateral execution makes the output final, delayed
+unstake consistently says `Available to withdraw later` and names the immediate
+review action `Start 14-day cooldown`, and outcome facts distinguish confirmed
+values from pre-transaction estimates.
+
+#### Non-goals
+
+- No production Zapper or package change.
+- No claim that the lab reconstruction owns package internals.
+- No universal transaction component or redesign of quote/orchestration logic.
+- No changes to accepted component or foundation defaults.
+
+#### Acceptance evidence
+
+- The default state is the complete ordinary quote-ready widget and is named
+  as Zapper rather than as an RFQ order.
+- Input/output values, asset identity, fiat context, balance/Max, quote source,
+  minimum output, impact, and network estimate form one aligned composition.
+- The asset trigger opens a bounded package-reference selector state rather
+  than behaving as a dead button.
+- Compact selector rows use 14px/16px primary and supporting roles for their
+  forced-single-line metadata stack; the full
+  asset-selection task uses the existing 16px/24px item-title role over
+  14px/20px support. Both use 8px outer and symmetric 12px row insets. A quiet
+  selected surface plus `aria-pressed` replaces the trailing checkmark and its
+  blank alignment slot, and balance values retain the asset symbol.
+- In-flight order execution keeps Buy/Sell, settings, and refresh mounted but
+  disabled, preventing the stable header from implying that the pending order
+  can change operation or quote configuration.
+- Atomic confirmation and RFQ fill waiting retain the submitted amount pair and
+  quote facts while using route-specific source and lifecycle language; no
+  order identity or expiry is invented before the package exposes it.
+- Lifecycle states, review-only variants, and optional outcome attachments are
+  separate review groups rather than one ambiguous flat state strip.
+- Filled, failed, expired, and native-refund states contain only evidence
+  relevant to their fixture.
+- Focused behavior tests and desktop/phone light/dark visual inspection are
+  green.
+
+#### Test seams
+
+- `src/views/internal/design-system/tests/transaction-truth-spectrum.test.tsx`
+  owns the visible Zapper state contract and interactive selector/details.
+- The routed lab owns alignment, density, overflow, and theme inspection.
+
+#### Slices
+
+- Slice: correct the quote-ready composition and interactive supporting states;
+  blocked by: none.
+- Slice: recheck waiting, outcome, and expiry against the corrected quote
+  anatomy; blocked by: quote-ready composition.
+- Slice: focused verification and visual critique; blocked by: both slices.
+
+#### Unresolved decisions
+
+- Exact upstream package styling and production behavior stay package-owned.
+- Atomic transaction and RFQ order execution remain different lifecycle
+  branches even when they share the same quote-ready entry composition.
+
+### Transaction sidecar pressure test
+
+The installed-Zapper board now tests one neutral, lab-only sidecar shell across
+two different lifecycle jobs instead of duplicating their geometry. The
+existing outcome update and intro-call follow-ups compose the shell after the
+main success transition. A separate review state composes the same shell with
+the exact current production high-price-impact wording from
+`large-mint-prompt-body.tsx`; it appears immediately because no outcome motion
+precedes it. The historical CoW redirect/promo is not current product behavior
+and was not recreated.
+
+The shell owns responsive attachment, width, a semantic secondary-to-card
+vertical gradient, 16px inset, header alignment, dismissal, depth, and a
+360ms reveal. It stays below the modal on
+constrained host widths and attaches to the right only when its actual host can
+preserve the centered task plus a visible outer gutter; the main modal remains
+anchored while the sidecar appears. This placement is container-driven rather
+than viewport-driven, preventing the lab column from clipping desktop-class
+layouts. The advisory uses the canonical 24px actionable-status pill with a
+warning indicator and warning title foreground; the two outcome attachments use
+the primary brand foreground for their titles while retaining the canonical
+32px compact dismiss action. The shell intentionally has no structural border;
+its 4px attachment gap, gradient, and depth own separation. Outcome content, advisory content,
+visibility rules, and product triggers remain separately owned. Production
+`LargeMintPrompt` is unchanged, so adopting the shared shell there remains a
+deliberate later migration rather than an implication of this review specimen.

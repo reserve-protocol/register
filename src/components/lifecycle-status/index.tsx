@@ -6,6 +6,7 @@ import {
   Check,
   Clock3,
   ShieldAlert,
+  TriangleAlert,
   Vote,
   X,
   type LucideIcon,
@@ -20,7 +21,11 @@ export type LifecycleStatusRole =
   | 'unsuccessful'
   | 'closed'
 
-export type LifecycleStatusIndicator = 'role' | 'voting' | 'challenge'
+export type LifecycleStatusIndicator =
+  | 'role'
+  | 'voting'
+  | 'challenge'
+  | 'warning'
 
 const ROLE_PRESENTATION = {
   waiting: {
@@ -98,6 +103,7 @@ const ROLE_PRESENTATION = {
 const SEMANTIC_INDICATORS = {
   voting: { Icon: Vote, iconName: 'vote' },
   challenge: { Icon: ShieldAlert, iconName: 'shield-alert' },
+  warning: { Icon: TriangleAlert, iconName: 'warning' },
 } satisfies Record<
   Exclude<LifecycleStatusIndicator, 'role'>,
   { Icon: LucideIcon; iconName: string }

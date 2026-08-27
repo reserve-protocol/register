@@ -52,6 +52,15 @@ const config = {
           hover: 'var(--primary-hover)',
           pressed: 'var(--primary-pressed)',
         },
+        brand: {
+          DEFAULT: 'var(--brand-surface)',
+          foreground: 'hsl(var(--primary-foreground))',
+          atmosphere: {
+            cyan: 'var(--brand-atmosphere-cyan)',
+            violet: 'var(--brand-atmosphere-violet)',
+            glow: 'var(--brand-atmosphere-glow)',
+          },
+        },
         secondary: {
           DEFAULT: 'hsl(var(--secondary))',
           foreground: 'hsl(var(--secondary-foreground))',

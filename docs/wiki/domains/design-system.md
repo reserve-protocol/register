@@ -1,6 +1,6 @@
 ---
 title: Design System
-updated: 2026-08-23
+updated: 2026-08-27
 type: domain
 sources:
   - tailwind.config.ts
@@ -17,7 +17,7 @@ Source of truth: `tailwind.config.ts` (tokens) + `src/app.css` (CSS variables, `
 
 ## Active v1 project
 
-The active contract is [design-system-v1](../../plans/design-system-v1.md). The contained `/internal/design-system` route is a visual-review workspace: Foundations renders the current system as compact specimens, and Components mounts the same complete state sheets used by detail routes for all 33 rendered items, with review readiness, design authority, implementation/adoption, and one 12-item unresolved inventory shown explicitly. Global and Product navigation now render as separate accepted current baselines in one coordinated shell; neither has production adoption or authority over the other. Screens remains a reference to unchanged production routes; it cannot validate an unadopted baseline. Detail pages lead with visual output and local readiness, then add interaction evidence or extended compositions where useful; evidence, dependencies, definition slots, and history are progressively disclosed. Studies contains only unresolved alternatives and active pressure tests. Project Status owns the typed Current Review queue plus the deeper registry-derived tracker and work queue. Expected missing slots remain navigable, but they do not receive large overview cards or imply a commitment to build.
+The active contract is [design-system-v1](../../plans/design-system-v1.md). The contained `/internal/design-system` route is a visual-review workspace: Foundations renders the current system as compact specimens, and Components mounts the same complete state sheets used by detail routes for all 33 rendered items, with review readiness, design authority, implementation/adoption, and one 12-item unresolved inventory shown explicitly. Global and Product navigation now render as separate accepted current baselines in one coordinated shell; neither has production adoption or authority over the other. Screens remains a reference to unchanged production routes; it cannot validate an unadopted baseline. Detail pages lead with visual output and local readiness, then add interaction evidence or extended compositions where useful; their group navigation is a closed full-width disclosure rather than a persistent width-reserving sidebar, so large specimens use the complete review canvas. Evidence, dependencies, definition slots, and history are progressively disclosed. Studies contains only unresolved alternatives and active pressure tests. Project Status owns the typed Current Review queue plus the deeper registry-derived tracker and work queue. Expected missing slots remain navigable, but they do not receive large overview cards or imply a commitment to build.
 
 V1 work is canonical-first. Reuse the audits, synthesize the strongest complete
 candidate from accepted owners and strong product evidence, self-review it, and
@@ -165,6 +165,15 @@ measure. Micro Button remains 10px text-only and 8px on an icon side. These
 Button values do not change independently reviewed Field or selection-trigger
 geometry.
 
+Dense financial-field accessories use the bounded `InlineAction` member of the
+Button family rather than Link or a locally stripped Button. It is a semantic
+button with 14px/20px medium primary text, no visible container or layout
+padding, and a transparent 28px interaction target. Hover underlines, active
+color, focus, and disabled treatment remain visible without increasing the
+owning row's 20px layout height. This role is limited to terse actions such as
+Max or Use inside an already-labeled field; ordinary actions retain the shaped
+28/32/44px Button treatments, and navigation retains Link.
+
 The lab now implements that width rule as a provisional `ActionGroup` recipe:
 horizontal peers use the accepted 8px gap without wrapping, while an explicitly
 vertical group makes its default actions share full width. The sheet uses the
@@ -231,8 +240,14 @@ an accepted pattern.
 Deterministic fixtures may fictionalize names, values, and dates only within an
 evidenced product state. They must not invent mechanics or imply unsupported
 relationships such as a known total for a dynamically repeated process.
-Lab-authored wording is not a product-copy source: migration preserves
-source-evidenced meaning unless a copy change receives explicit approval.
+Lab-authored wording is not a product-copy source. Product-facing copy is
+preserved verbatim from its evidenced source—including in lab specimens:
+agents have no authority to edit visible wording, labels, placeholders,
+accessibility names, or lifecycle/status language unless the user explicitly
+approves that specific copy change. Copy concerns and alternatives may be
+reported separately, but must not be silently implemented. This includes
+apparent typo and clarity corrections. If a new UI has no evidenced copy owner,
+stop and request the copy rather than inventing it.
 
 The first product-facing preparation pass keeps three recurring jobs distinct:
 dense comparable data rows, rich navigable records, and compact metric
@@ -252,6 +267,14 @@ directly renders the shared `EntityIdentity`, `ChainBadgedLogo`,
 uses the accepted 8px direct relationship between its mark slot and text. A
 host may reserve a larger fixed slot to establish an alignment axis, but must
 not add a second arbitrary gap between that slot and the identity copy. The
+default copy stack uses the 16px/24px item-title role over 14px/20px
+supporting text; compact identity uses the 14px/20px label role over the same
+14px/20px supporting role. The two lines add no separate vertical margin.
+Compact transaction selector rows are a narrower exception: when both lines
+are forced single-line metadata, they use 14px/16px for a tighter row stack;
+ordinary compact identity and multiline support remain 14px/20px.
+Ordinary entity context is not a use of the restricted 12px auxiliary
+exception. The
 badge follows the strongest recent Index treatment;
 its 16px xl, 14px lg, and 12px md chain marks include the separating border
 rather than growing around it. Floating badges use the standard 1px separator;
@@ -343,6 +366,16 @@ currently demonstrate one recurring generic Combobox job. Global DTF search is
 navigation Command, Earn and governance filters are multi-select, and token
 selection is a drawer-based Asset picker. Those jobs remain separate rather
 than lending speculative authority to a Combobox.
+
+The transaction Asset-picker candidate keeps those selection semantics
+composition-owned. Its popup uses the accepted 8px outer inset, each rich row
+uses a symmetric 12px inset and 4px sibling gap, and selection is carried by
+the row surface plus `aria-pressed` rather than a trailing checkmark column
+that reserves empty space in every unselected row. Compact popup identities
+use 14px/20px label and supporting roles; a full task/drawer selector promotes
+only the primary name to the existing 16px/24px item-title role. Balance copy
+stays 14px/20px and includes the asset symbol. This remains a provisional
+transaction composition, not a generic Select or production adoption.
 
 `SearchField` composes the accepted `TextInput` and `IconButton`. It
 inherits the 44px fully rounded field, 16px/300 query text, semantic focus and
@@ -646,6 +679,11 @@ definition may map that alias to different raw values. The V1 supporting role
 is intentionally separate from legacy `muted-foreground`, so adopting the
 baseline does not silently restyle older screens.
 
+The transaction outcome review provisionally exposes `brand` as a persistent
+inverse-content surface derived from `primary` in both themes. It is a lab
+candidate, not a current-baseline replacement for `primary` or an interaction
+state such as `primary-hover`/`primary-pressed`.
+
 ## Type, radius, layout, motion
 
 - Font: TWK Lausanne — only three weights exist: `font-light`/`font-normal` → 300, `font-medium`/`font-semibold` → 500, `font-bold` → 700. 400/600 collapse to these.
@@ -681,6 +719,18 @@ baseline does not silently restyle older screens.
   labels and values—8px for directly related content, 16px between internal
   regions, and 24px for ordinary content insets and complete groups. Semantic
   layout recipes own these relationships in reviewable compositions.
+- A divider marks one owned boundary; it is not a spacing mechanism. Attach it
+  directly to that boundary and give the adjacent regions matching semantic
+  insets unless their hierarchy intentionally differs. Do not place a parent
+  gap on only one side and then add unrelated row padding on the other. When
+  spacing or surface contrast already communicates the grouping, omit the
+  divider rather than preserving decorative structure. At a bordered
+  region-to-action seam, the bordered region owns equal top and bottom inset;
+  an attached footer starts at zero additional top inset. A separated footer
+  may add its own gap only when the preceding region does not already own it.
+  In compact transaction task shells, a divider-separated facts group uses the
+  16px internal-region inset on both boundaries and 8px only between related
+  fact rows.
 - Off-grid edge values used for optical sidebearing correction are not general
   spacing tokens and must not justify new component-specific relationship
   gaps. A deferred reconciliation will recheck the existing Button icon-side
@@ -1074,3 +1124,104 @@ Global menu likewise moves focus to its close action on open and restores the
 opening trigger on close. Utility language alternatives use explicit 44px touch
 targets, and utility copy is caller-owned so production adoption cannot bypass
 Lingui.
+
+## 2026-08-25 — Transaction composition evidence routing
+
+The transaction-system review treats
+`src/views/internal/design-system/zapper-modal-study.tsx` as the strongest
+earlier visual-composition study and
+`src/views/index-dtf/components/zapper/zapper-wrapper.tsx` as the discoverable
+real package-host seam. They are strong evidence for input/output pairing,
+financial hierarchy, asset identity, balance and Max context, compact task
+framing, and one dominant action. Neither is canonical authority: accepted V1
+foundations and components retain that role, and package-owned controls remain
+upstream-owned rather than copied into Register.
+
+The exploratory transaction compositions must preserve or improve those
+successful qualities while adding the audit's stronger lifecycle truth,
+transaction-versus-order identity, scoped recovery, consequential outcomes,
+and durable delayed-settlement semantics. A visible predecessor-transfer
+contract names both source paths and records the reason for intentional
+departures, including the evidence-backed decision not to force atomic, RFQ,
+transparent-staged, and delayed work into one universal shell. Any later
+removal of an important successful predecessor quality must name the stronger
+evidence or product constraint that replaces it. These rules do not promote
+the transaction candidates, change accepted foundations, restyle the package,
+or authorize production adoption.
+
+The installed Zapper's delayed quote-search overlay is part of that product
+evidence: progressive search language, elapsed time, and an animated output
+surface communicate a genuinely longer upstream operation. The lab exposes a
+bounded, persistent `Quote search` review state (and also enters it through
+Refresh) so it can be found and inspected without racing a timer, and routes
+the current animated artwork so the state is judged in motion rather than as a
+still reconstruction. The package continues to own its exact animation, delay,
+quote mechanics, and production implementation. Review and quote search
+preserve one geometry: input selection,
+Max, quote-details trigger, and action remain mounted; unavailable controls are
+disabled rather than removed; an open details region replaces uncertain values
+with equal-height skeleton rows. Only the output region materially transforms,
+so the shell, amount pair, and collapsed or expanded details retain their
+dimensions across the transition.
+
+The follow-up synthesis treats state as composition hierarchy rather than an
+appended footer. Review keeps financial intent first. Zapper execution preserves
+that composition and expresses route-specific progress in the stable action
+slot; recovery and outcome may lead when they become the user's current job.
+The relevant amounts, requirements, orders, and queue context remain present.
+The Amount candidate keeps a 4px paired seam, widened from the predecessor's
+current 2px during human review, plus explicit direction, primary editable
+input value, and one 20px footer relationship for fiat, balance, and the bounded
+InlineAction. A submitted read-only amount preserves geometry but moves from
+neutral control fill and primary text to the content surface and foreground
+text. Accepted Metric anatomy
+handles ordinary financial facts. Requirement values align into comparable
+columns; truthful lifecycle steps use a quiet connected sequence; durable queue
+rows remain open; and outcomes lead with the consequential result instead of a
+nested generic success card. These are provisional transaction-composition
+decisions, not changes to accepted lower-level baselines.
+
+Direct current-flow reconciliation is now a required evidence layer for this
+board. Manual issuance retains its editable amount, single approval-to-mint
+action slot, and persistent requirement region. Automated mint retains its
+narrow configure step, later widening into the flow-owned order workspace,
+scoped retry, final-mint boundary, and dedicated outcome. Delayed unstake
+retains separate input-page, confirmation-Dialog, and durable-queue surfaces.
+Installed Zapper retains one package-owned interaction and result boundary.
+Accepted V1 owners standardize the presentation inside those structures; the
+audit supplies shared lifecycle requirements but cannot authorize a replacement
+flow architecture. Any deliberate structural improvement must be labeled as
+such, with larger product redesign kept outside this review.
+
+The correction pass removed three false system signals. Audit explanations do
+not become task copy unless they change the user's decision; dense financial
+tasks use the accepted 8px shell edge rather than inheriting the ordinary 24px
+Dialog content axis; and outcome similarity is not evidence for a reusable
+layout until independently composed families converge. Manual requirements now
+report state while the one approval-to-mint action slot owns action. Automated
+configuration keeps its real fixed USDC input and one visually continuous
+three-step surface. Delayed confirmation states cooldown timing once, then
+dismiss the task shell and move the durable queue ahead of the old input form.
+Atomic, RFQ, automated, and delayed outcomes share semantic ingredients but
+retain family-specific composition. Max/Use fixtures update every visibly
+dependent value so the lab does not teach stale financial relationships.
+
+The Zapper pressure test now separates a neutral attached-sidecar shell from
+the content that uses it. Outcome follow-ups and the current production
+high-price-impact advisory share the provisional shell's responsive placement,
+semantic secondary-to-card vertical gradient, inset, header alignment,
+dismissal, depth, and reveal without sharing
+their triggers or semantics. The advisory appears immediately during review;
+outcome follow-ups mount only after the 360ms success transition completes.
+The advisory composes the canonical 24px actionable-status pill with its
+semantic warning indicator and warning title foreground; outcome follow-up
+titles use the primary brand foreground. The 32px dismiss control remains a
+separate compact action rather than inflating status geometry to match it.
+The shell has no structural border; its 4px attachment gap, gradient, and depth
+provide separation from the main task.
+At constrained host widths the shell grows below the modal; only a host wide
+enough to preserve the centered task and a visible outer gutter grows it from
+the right edge. Placement follows the host container rather than the viewport,
+so a narrow lab column cannot clip a nominally desktop sidecar. This remains
+lab-only: production `LargeMintPrompt` has not
+adopted the candidate, and the historical CoW redirect copy is not restored.

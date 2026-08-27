@@ -30,9 +30,11 @@ import SingleChoiceGroupStateSheet from './single-choice-group-state-sheet'
 import SwitchStateSheet from './switch-state-sheet'
 import TabsStateSheet from './tabs-state-sheet'
 import TextAreaStateSheet from './textarea-state-sheet'
+import TransactionTruthSpectrum from './transaction-truth-spectrum'
 
 const ComponentVisualOutput = ({ itemId }: { itemId: string }) => {
   if (itemId === 'button') return <ButtonStateSheet />
+  if (itemId === 'transaction-action') return <TransactionTruthSpectrum />
   if (itemId === 'accordion') return <AccordionStateSheet />
   if (itemId === 'collapsible') return <CollapsibleStateSheet />
   if (itemId === 'icon-button') return <IconButtonStateSheet />

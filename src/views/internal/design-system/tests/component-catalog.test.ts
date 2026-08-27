@@ -37,6 +37,36 @@ describe('component contract registry', () => {
     }
   })
 
+  it('routes transaction synthesis to named strong visual evidence without promoting it', () => {
+    const transaction = getComponentItem('transaction-action').item
+    const amount = getComponentItem('amount-field').item
+
+    for (const item of [transaction, amount]) {
+      expect(item?.evidence).toContainEqual(
+        expect.stringContaining(
+          'src/views/internal/design-system/zapper-modal-study.tsx'
+        )
+      )
+      expect(item?.evidence).toContainEqual(
+        expect.stringContaining('strong visual composition evidence')
+      )
+      expect(item?.evidence).toContainEqual(
+        expect.stringContaining('not canonical authority')
+      )
+    }
+
+    expect(transaction?.evidence).toContainEqual(
+      expect.stringContaining(
+        'src/views/index-dtf/components/zapper/zapper-wrapper.tsx'
+      )
+    )
+    expect(transaction).toMatchObject({
+      designAuthority: 'exploratory',
+      implementationStatus: 'specimen',
+      adoptionStatus: 'none',
+    })
+  })
+
   it('names the authoritative source for every reusable component or recipe', () => {
     for (const item of COMPONENT_ITEMS.filter(
       (candidate) =>
@@ -462,7 +492,7 @@ describe('component contract registry', () => {
 
 describe('current review', () => {
   it('contains only a small typed queue of human judgments', () => {
-    expect(CURRENT_REVIEW).toHaveLength(0)
+    expect(CURRENT_REVIEW).toHaveLength(1)
     expect(getFoundationItem('color')).toMatchObject({
       status: 'defined',
       designAuthority: 'current-baseline',
@@ -499,6 +529,22 @@ describe('current review', () => {
         expect(claim.verification.length).toBeGreaterThan(10)
       }
     }
+  })
+
+  it('keeps the transaction truth spectrum exploratory and unadopted', () => {
+    expect(getComponentItem('transaction-action').item).toMatchObject({
+      outputStatus: 'rendered',
+      designAuthority: 'exploratory',
+      implementationStatus: 'specimen',
+      adoptionStatus: 'none',
+      review: { status: 'ready' },
+    })
+    expect(CURRENT_REVIEW[0]).toMatchObject({
+      target: { kind: 'component', id: 'transaction-action' },
+      destination:
+        '/internal/design-system/components/transaction-action#transaction-truth-spectrum',
+      type: 'visual decision',
+    })
   })
 
   it('keeps accepted layout relationships behind semantic recipes', () => {

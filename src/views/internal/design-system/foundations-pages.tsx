@@ -2,7 +2,7 @@ import { ArrowLeft, CircleDashed } from 'lucide-react'
 import { Link, Navigate, useParams } from 'react-router-dom'
 import {
   CatalogBadges,
-  DetailSidebar,
+  DetailNavigation,
   ExpectedDecisions,
   PageHeader,
 } from './catalog-ui'
@@ -42,11 +42,8 @@ export const FoundationDetail = () => {
   }
 
   return (
-    <div
-      data-testid={`foundation-detail-${item.id}`}
-      className="grid gap-8 lg:grid-cols-[13rem_minmax(0,1fr)]"
-    >
-      <DetailSidebar
+    <div data-testid={`foundation-detail-${item.id}`} className="space-y-8">
+      <DetailNavigation
         title="Foundations"
         items={FOUNDATION_ITEMS}
         path="/internal/design-system/foundations"

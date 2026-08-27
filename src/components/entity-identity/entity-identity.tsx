@@ -1,3 +1,4 @@
+import { v1Typography } from '@/components/design-system-v1/typography'
 import { v1SemanticRecipes } from '@/components/ui/v1-semantic-recipes'
 import { cn } from '@/lib/utils'
 import * as React from 'react'
@@ -29,18 +30,21 @@ export const EntityIdentity = React.forwardRef<
       {mark}
       <span className="min-w-0">
         <span
+          data-slot="entity-identity-name"
           className={cn(
-            'block truncate font-medium leading-tight',
+            'block truncate',
             v1SemanticRecipes.text.primary,
-            density === 'compact' ? 'text-sm' : 'text-base'
+            density === 'compact' ? v1Typography.label : v1Typography.itemTitle
           )}
         >
           {name}
         </span>
         {supporting && (
           <span
+            data-slot="entity-identity-supporting"
             className={cn(
-              'mt-1 block truncate text-xs font-light leading-tight',
+              'block truncate',
+              v1Typography.supporting,
               v1SemanticRecipes.text.supporting
             )}
           >

@@ -1,5 +1,10 @@
 import type { ReactNode } from 'react'
-import { ArrowRight, CircleCheck, CircleDashed } from 'lucide-react'
+import {
+  ArrowRight,
+  ChevronDown,
+  CircleCheck,
+  CircleDashed,
+} from 'lucide-react'
 import { Link, NavLink } from 'react-router-dom'
 import { cn } from '@/lib/utils'
 import {
@@ -280,7 +285,7 @@ export const ExpectedDecisions = ({ items }: { items: DefinitionSlot[] }) => (
   </section>
 )
 
-export const DetailSidebar = ({
+export const DetailNavigation = ({
   title,
   items,
   path,
@@ -289,11 +294,18 @@ export const DetailSidebar = ({
   items: CatalogItem[]
   path: string
 }) => (
-  <aside className="hidden lg:block">
-    <p className="mb-3 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+  <details
+    data-testid="detail-navigation"
+    className="group border border-border bg-card"
+  >
+    <summary className="flex min-h-11 cursor-pointer list-none items-center justify-between gap-3 px-4 text-sm font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring">
       {title}
-    </p>
-    <nav aria-label={`${title} items`} className="space-y-1">
+      <ChevronDown className="size-4 text-muted-foreground transition-transform duration-180 group-open:rotate-180 motion-reduce:transition-none" />
+    </summary>
+    <nav
+      aria-label={`${title} items`}
+      className="grid gap-1 border-t border-border p-2 sm:grid-cols-2 lg:grid-cols-4"
+    >
       {items.map((item) => (
         <NavLink
           key={item.id}
@@ -315,5 +327,5 @@ export const DetailSidebar = ({
         </NavLink>
       ))}
     </nav>
-  </aside>
+  </details>
 )

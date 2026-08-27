@@ -22,6 +22,8 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   loading?: boolean
 }
 
+export type InlineActionProps = ButtonHTMLAttributes<HTMLButtonElement>
+
 const sizeClasses: Record<ButtonSize, string> = {
   micro: 'h-7 gap-1.5 px-2.5 text-sm [&>svg]:size-3.5',
   compact: 'h-8 gap-2 px-3.5 text-sm [&>svg]:size-4',
@@ -124,3 +126,23 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
 )
 
 Button.displayName = 'Button'
+
+export const InlineAction = forwardRef<HTMLButtonElement, InlineActionProps>(
+  ({ children, className, type = 'button', ...props }, ref) => (
+    <button
+      ref={ref}
+      type={type}
+      data-testid="inline-action"
+      className={cn(
+        "relative inline-flex h-5 shrink-0 cursor-pointer items-center justify-center whitespace-nowrap p-0 text-sm font-medium leading-5 text-primary underline-offset-2 transition-colors duration-120 before:absolute before:-inset-x-1 before:-inset-y-1 before:content-[''] hover:underline active:text-primary-pressed focus-visible:outline-none disabled:pointer-events-none disabled:text-muted-foreground disabled:no-underline",
+        roles.focus.onContentInset,
+        className
+      )}
+      {...props}
+    >
+      {children}
+    </button>
+  )
+)
+
+InlineAction.displayName = 'InlineAction'

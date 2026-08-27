@@ -197,48 +197,94 @@ export const PRIMARY_COMPONENT_GROUPS: ComponentGroup[] = [
         statusDetail:
           'The accepted reusable composition recipe encodes intrinsic horizontal groups, intentional equal-width vertical groups, and the 8px peer gap. It adds no new Button tone, size, lifecycle, or production adoption.',
       },
-      component(
-        'transaction-action',
-        'Transaction action',
-        'Owns wallet, approval, pending, success, and failure states around an on-chain action.',
-        'Register repeatedly needs one trusted lifecycle contract beyond a visual Button.',
-        {
-          priority: 'product-extension',
-          ...mapped,
-          evidence: [
-            '40 product-source imports use the shared TransactionButton.',
-            'Transaction and seamless-transaction primitives already encode product behavior.',
-            'V1 distinguishes direct wallet instructions before submission from transaction lifecycle status after submission.',
-            'In dialogs, the anchored action remains stable while complex workflow bodies may update; recoverable errors preserve inputs and expose a contextual retry.',
-          ],
-          decisionPrompts: [
-            'Separate visual Button roles from wallet and transaction lifecycle behavior.',
-            'Map approval, signing, submitted, confirmed, failed, retry, and wrong-network source states onto the accepted communication and recovery rules.',
-            'Keep money and chain behavior in existing trusted seams while restyling presentation.',
-          ],
-          stateAdditions: [
-            'Connect wallet',
-            'Wrong network',
-            'Approval required',
-            'Signing',
-            'Pending',
-            'Succeeded',
-            'Failed and retryable',
-          ],
-          relationships: [
+      {
+        ...component(
+          'transaction-action',
+          'Transaction system',
+          'Assembles truthful transaction amounts, selection, requirements, details, actions, execution, recovery, durable state, identity, and outcomes without owning product mechanics.',
+          'Register needs one composition-first transaction family built from shared candidates, recipes, retained behavior, and flow-owned truth.',
+          {
+            priority: 'product-extension',
+            ...mapped,
+            evidence: [
+              'The transaction-system audit maps atomic, RFQ, transparent staged, and delayed-settlement models across primary and supporting flows.',
+              'Direct implementation evidence: manual issuance preserves an editable share goal, a stateful approval-to-mint action slot, and persistent per-asset requirements.',
+              'Direct implementation evidence: automated mint progresses from a narrow configure step to a wider order workspace and dedicated result, while delayed unstake crosses from its input page through a confirmation modal into a page-owned durable queue.',
+              'Named strong visual composition evidence, not canonical authority: src/views/internal/design-system/zapper-modal-study.tsx preserves the best evidenced input/output relationship, financial hierarchy, density, and focused action treatment from the earlier lab.',
+              'Real package-host evidence, not local styling authority: src/views/index-dtf/components/zapper/zapper-wrapper.tsx establishes the installed Zapper context and upstream ownership boundary.',
+              '40 product-source imports use the shared TransactionButton, while consequential outcomes remain inconsistent across local flows.',
+              'V1 distinguishes direct wallet instructions before submission from transaction lifecycle status after submission.',
+              'In dialogs, the anchored action remains stable while complex workflow bodies may update; recoverable errors preserve inputs and expose a contextual retry.',
+            ],
+            decisionPrompts: [
+              'Judge whether the four execution models feel like one product family without implying identical orchestration or information volume.',
+              'Confirm the narrow lifecycle vocabulary, stable action hierarchy, identity treatment, recovery prominence, and consequential outcome anatomy.',
+              'Keep money, chain, order, queue, and package behavior in existing trusted seams while reviewing presentation.',
+              'Preserve or improve every successful quality from the named strongest predecessor; if one is removed, record the stronger evidence or product constraint that replaces it.',
+            ],
+            stateAdditions: [
+              'Wallet action required',
+              'Submitted and confirming',
+              'Open order and expiry',
+              'Partial completion and scoped retry',
+              'Confirmed with follow-up remaining',
+              'Claimable later',
+              'Complete',
+            ],
+            relationships: [
+              {
+                id: 'button',
+                note: 'Consumes Button presentation without becoming a visual variant.',
+              },
+              {
+                id: 'alert',
+                note: 'Uses the provisional Inline Message anatomy for persistent contextual recovery.',
+              },
+              {
+                id: 'copy-value',
+                note: 'Uses Copyable Value inside transaction and order identity compositions.',
+              },
+              {
+                id: 'toast',
+                note: 'Routine transient acknowledgement remains Toast; consequential results stay in context.',
+              },
+            ],
+            nextAction:
+              'Review the shared truth spectrum, then extract only the lifecycle, identity, and outcome seams that remain stable across the four models.',
+          }
+        ),
+        outputStatus: 'rendered',
+        designAuthority: 'exploratory',
+        implementationStatus: 'specimen',
+        implementationSource:
+          'src/views/internal/design-system/transaction-truth-spectrum.tsx',
+        adoptionStatus: 'none',
+        review: {
+          status: 'ready',
+          scope:
+            'Review the input/output and selection candidates, requirement and detail hierarchy, action stability, lifecycle language, identity, recovery, durable state, and consequential outcomes inside compositions that preserve each current flow’s real structural boundaries. Compare them against the direct-source disposition contract and named Zapper predecessor transfer contract without treating either local study or package internals as authority. This is a lab-only pressure test: orchestration, exact result sourcing, complete production screens, package internals, and adoption remain outside.',
+          dependencies: [
+            { name: 'Button and Action Group', status: 'canonical' },
+            { name: 'Field and Entity Identity', status: 'canonical' },
+            { name: 'Lifecycle Status', status: 'canonical' },
+            { name: 'Copyable Value and Link', status: 'canonical' },
             {
-              id: 'button',
-              note: 'Consumes Button presentation without becoming a visual variant.',
+              name: 'Inline Message presentation',
+              status: 'provisional',
+              detail:
+                'The board supplies realistic recovery context so its prominence can be judged without promoting it indirectly.',
             },
             {
-              id: 'toast',
-              note: 'May announce non-blocking lifecycle results.',
+              name: 'Transaction-system audit',
+              status: 'retained',
+              detail:
+                'Source-grounded requirements and ownership boundaries remain evidence, not component authority.',
             },
           ],
-          nextAction:
-            'Map the existing transaction lifecycle before changing any shared behavior or defaults.',
-        }
-      ),
+        },
+        statusDetail:
+          'Four deterministic flow slices now compose financial intent, current lifecycle focus, consequential result, and evidence-backed recovery/follow-up on top of the current product’s real page, package, progressive-workspace, modal, and durable-queue structures. The direct-source disposition and predecessor contracts record what is preserved, standardized, improved, deferred, or intentionally not transferred. The work defines no universal controller, adopted transaction component, or production behavior.',
+      },
     ],
   },
   {
@@ -544,7 +590,7 @@ export const PRIMARY_COMPONENT_GROUPS: ComponentGroup[] = [
           auditStatus: 'partial',
           evidence: [
             'The imported Zapper and local issuance flows use specialized amount surfaces.',
-            'The Zapper study already tests input/output distinction, Max spacing, quote details, and swap direction.',
+            'Named strong visual composition evidence, not canonical authority: src/views/internal/design-system/zapper-modal-study.tsx tests input/output distinction, amount and asset prominence, Max spacing, quote details, and swap direction.',
           ],
           decisionPrompts: [
             'Define input versus output anatomy, asset selector, fiat equivalent, balance/Max, precision, errors, and loading.',
