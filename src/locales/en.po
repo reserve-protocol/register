@@ -624,6 +624,10 @@ msgstr ""
 msgid "0-100% Recharge time"
 msgstr ""
 
+#: src/views/earn/views/index-dtf/components/faq-graphics.tsx:146
+msgid "1 · Observe"
+msgstr ""
+
 #: src/views/index-dtf/factsheet/components/performance-table.tsx:29
 msgid "1 Month"
 msgstr ""
@@ -661,12 +665,20 @@ msgstr ""
 msgid "15 params"
 msgstr ""
 
+#: src/views/earn/views/index-dtf/components/faq-graphics.tsx:154
+msgid "2 · Annualize"
+msgstr ""
+
 #: src/views/index-dtf/overview/components/basket-overview/performance-cell.tsx:18
 msgid "24 hour"
 msgstr ""
 
 #: src/views/index-dtf/overview/components/fees-stats.tsx:78
 msgid "24h Volume"
+msgstr ""
+
+#: src/views/earn/views/index-dtf/components/faq-graphics.tsx:162
+msgid "3 · Display"
 msgstr ""
 
 #: src/views/index-dtf/factsheet/components/performance-table.tsx:30
@@ -679,6 +691,10 @@ msgstr ""
 
 #: src/views/index-dtf/overview/components/basket-overview/performance-cell.tsx:20
 msgid "30 day"
+msgstr ""
+
+#: src/views/earn/views/index-dtf/components/faq-graphics.tsx:198
+msgid "30 days ago"
 msgstr ""
 
 #: src/views/yield-dtf/governance/views/proposal-detail/components/proposal-summary/BasketChangeSummary.tsx:157
@@ -789,14 +805,14 @@ msgstr ""
 msgid "About {0}"
 msgstr ""
 
-#: src/views/index-dtf/overview/stocks/about-reserve-dtfs.tsx:21
+#: src/views/index-dtf/overview/stocks/about-reserve-dtfs.tsx:18
 msgid "About Reserve"
 msgstr ""
 
 #: src/views/index-dtf/manage/components/manage-about.tsx:119
 #: src/views/index-dtf/manage/components/manage-about.tsx:122
 #: src/views/index-dtf/overview/components/index-about-overview.tsx:110
-#: src/views/index-dtf/overview/stocks/video-library.tsx:69
+#: src/views/index-dtf/overview/stocks/video-library.tsx:71
 msgid "About this DTF"
 msgstr ""
 
@@ -1154,11 +1170,11 @@ msgstr ""
 msgid "Almost there..."
 msgstr ""
 
-#: src/views/index-dtf/overview/stocks/landing-mint.tsx:59
+#: src/views/index-dtf/overview/stocks/landing-mint.tsx:51
 msgid "Also available on:"
 msgstr ""
 
-#: src/views/index-dtf/overview/stocks/faq.tsx:17
+#: src/views/index-dtf/overview/stocks/faq.tsx:15
 msgid "Am I buying real stocks?"
 msgstr ""
 
@@ -1204,6 +1220,10 @@ msgstr ""
 
 #: src/views/earn/hooks/useEarnTableColumns.tsx:170
 msgid "Annualised percentage yield from trading fees/supplying. For dexes 24h fees are used and scaled those to a year."
+msgstr ""
+
+#: src/views/earn/views/index-dtf/components/faq-graphics.tsx:201
+msgid "Annualized APY / APR"
 msgstr ""
 
 #: src/views/home/components/protocol-metrics.tsx:63
@@ -1298,6 +1318,14 @@ msgstr ""
 msgid "Approving..."
 msgstr ""
 
+#: src/views/earn/views/index-dtf/components/faq-graphics.tsx:163
+msgid "APR — or compounded APY when rewards accrue automatically"
+msgstr ""
+
+#: src/views/earn/views/index-dtf/components/faq.tsx:102
+msgid "APR annualizes the recent reward rate without assuming that rewards are reinvested. It is used for vaults that pay separate reward tokens."
+msgstr ""
+
 #: src/views/index-dtf/overview/components/index-campaign-overview.tsx:55
 msgid "April 1"
 msgstr ""
@@ -1309,6 +1337,10 @@ msgstr ""
 
 #: src/views/earn/hooks/useEarnTableColumns.tsx:151
 msgid "APY = Base APY + Reward APY. For non-autocompounding pools reinvesting is not accounted, in which case APY = APR."
+msgstr ""
+
+#: src/views/earn/views/index-dtf/components/faq.tsx:109
+msgid "APY includes compounding. It is used for vlRSR-style vaults because rewards are automatically added to the vault’s backing and increase the exchange rate."
 msgstr ""
 
 #: src/views/yield-dtf/governance/views/proposal-detail/components/proposal-summary/BasketChangeSummary.tsx:97
@@ -1343,11 +1375,11 @@ msgstr ""
 msgid "As RToken"
 msgstr ""
 
-#: src/components/dtf-chat/index.tsx:156
+#: src/components/dtf-chat/index.tsx:148
 #: src/views/index-dtf/overview/components/index-ctas-overview-mobile.tsx:175
 #: src/views/index-dtf/overview/components/index-ctas-overview-mobile.tsx:182
-#: src/views/index-dtf/overview/stocks/faq.tsx:55
-#: src/views/index-dtf/overview/stocks/faq.tsx:93
+#: src/views/index-dtf/overview/stocks/faq.tsx:48
+#: src/views/index-dtf/overview/stocks/faq.tsx:85
 msgid "Ask Reserve AI"
 msgstr ""
 
@@ -1509,6 +1541,7 @@ msgstr ""
 msgid "Automated minting is an advanced feature. For most people, simple swaps are recommended."
 msgstr ""
 
+#: src/views/earn/views/index-dtf/components/faq-graphics.tsx:61
 #: src/views/index-dtf/governance/components/governance-vote-lock.tsx:422
 msgid "Automatic"
 msgstr ""
@@ -1550,6 +1583,10 @@ msgstr ""
 msgid "Available Trades:"
 msgstr ""
 
+#: src/views/earn/views/index-dtf/components/faq-graphics.tsx:155
+msgid "Average daily rewards × 365 ÷ vault value locked"
+msgstr ""
+
 #. placeholder {0}: formatPercentage(stats.avg)
 #. placeholder {1}: formatPercentage(stats.min)
 #. placeholder {2}: formatPercentage(stats.max)
@@ -1562,7 +1599,7 @@ msgstr ""
 msgid "Avg Cost"
 msgstr ""
 
-#: src/views/earn/views/index-dtf/components/vote-lock-positions.tsx:265
+#: src/views/earn/views/index-dtf/components/vote-lock-positions.tsx:295
 #: src/views/earn/views/yield-dtf/components/staking-positions.tsx:159
 msgid "Avg. 30d%"
 msgstr ""
@@ -2060,12 +2097,16 @@ msgstr ""
 msgid "Campaign ends:"
 msgstr ""
 
-#: src/views/index-dtf/overview/stocks/faq.tsx:21
+#: src/views/index-dtf/overview/stocks/faq.tsx:19
 msgid "Can I sell whenever I want?"
 msgstr ""
 
 #: src/views/earn/views/index-dtf/index.tsx:50
-msgid "Can I unlock my tokens anytime?"
+#~ msgid "Can I unlock my tokens anytime?"
+#~ msgstr ""
+
+#: src/views/earn/views/index-dtf/components/faq.tsx:199
+msgid "Can I unlock my tokens at any time?"
 msgstr ""
 
 #: src/views/earn/views/yield-dtf/index.tsx:26
@@ -2293,6 +2334,10 @@ msgstr ""
 msgid "Claimable emissions"
 msgstr ""
 
+#: src/views/earn/views/index-dtf/components/faq-graphics.tsx:97
+msgid "Claimable reward tokens."
+msgstr ""
+
 #: src/views/portfolio-page/components/available-rewards.tsx:80
 msgid "Claimed"
 msgstr ""
@@ -2316,7 +2361,7 @@ msgstr ""
 
 #: src/components/video-modal/index.tsx:58
 #: src/views/index-dtf/overview/components/charts/candlestick-tooltip.tsx:36
-#: src/views/index-dtf/overview/stocks/video-series-modal.tsx:130
+#: src/views/index-dtf/overview/stocks/video-series-modal.tsx:128
 msgid "Close"
 msgstr ""
 
@@ -2346,7 +2391,7 @@ msgid "Collateral"
 msgstr ""
 
 #: src/views/index-dtf/overview/components/basket-overview/basket-table-header.tsx:106
-#: src/views/index-dtf/overview/components/basket-overview/index.tsx:140
+#: src/views/index-dtf/overview/components/basket-overview/index.tsx:135
 msgctxt "DTF basket"
 msgid "Collateral"
 msgstr ""
@@ -2648,7 +2693,7 @@ msgstr ""
 msgid "Contact me"
 msgstr ""
 
-#: src/views/index-dtf/overview/components/eligibility-card.tsx:184
+#: src/views/index-dtf/overview/components/eligibility-card.tsx:195
 msgid "Contact us for eligibility"
 msgstr ""
 
@@ -3380,6 +3425,10 @@ msgstr ""
 msgid "Display only {0} related collaterals"
 msgstr ""
 
+#: src/views/earn/views/index-dtf/components/faq-graphics.tsx:180
+msgid "Displayed estimate"
+msgstr ""
+
 #: src/views/explorer/components/revenue/index.tsx:550
 msgid "Distribute"
 msgstr ""
@@ -3420,7 +3469,7 @@ msgstr ""
 msgid "Diversity Factor"
 msgstr ""
 
-#: src/views/earn/views/index-dtf/index.tsx:46
+#: src/views/earn/views/index-dtf/components/faq.tsx:194
 #: src/views/earn/views/yield-dtf/index.tsx:22
 msgid "Do I need to vote on proposals to earn rewards?"
 msgstr ""
@@ -3741,11 +3790,11 @@ msgstr ""
 msgid "Edit proposal"
 msgstr ""
 
-#: src/views/index-dtf/overview/stocks/video-chapters.ts:60
+#: src/views/index-dtf/overview/stocks/video-chapters.ts:56
 msgid "Eligibility and how to get started."
 msgstr ""
 
-#: src/views/index-dtf/overview/components/eligibility-card.tsx:122
+#: src/views/index-dtf/overview/components/eligibility-card.tsx:133
 #: src/views/yield-dtf/issuance/components/zapV2/minters-modal/SocialMediaInput.tsx:111
 msgid "Email"
 msgstr ""
@@ -4188,7 +4237,7 @@ msgid "Explorer"
 msgstr ""
 
 #: src/views/index-dtf/overview/components/basket-overview/basket-table-header.tsx:96
-#: src/views/index-dtf/overview/components/basket-overview/index.tsx:133
+#: src/views/index-dtf/overview/components/basket-overview/index.tsx:128
 msgid "Exposure"
 msgstr ""
 
@@ -4456,6 +4505,10 @@ msgstr ""
 msgid "For redemptions, please wait until the process is complete."
 msgstr ""
 
+#: src/views/earn/views/index-dtf/components/faq.tsx:63
+msgid "For vlRSR, rewards are converted to RSR and added to the vault’s backing, increasing how much RSR each share can redeem. Other vaults may pay separate reward tokens that you claim manually."
+msgstr ""
+
 #: src/views/index-dtf/overview/components/zap-mint/zap-settings.tsx:62
 msgid "Force DTF mint?"
 msgstr ""
@@ -4517,6 +4570,10 @@ msgstr ""
 msgid "Fully Charged"
 msgstr ""
 
+#: src/views/earn/views/index-dtf/components/faq-graphics.tsx:125
+msgid "Fully reflected"
+msgstr ""
+
 #: src/views/yield-dtf/staking/components/overview/unstake-delay-overview.tsx:35
 msgid "Funds will be used in the case of a collateral default during the unstaking delay and up until the point of the manually triggered withdraw transaction."
 msgstr ""
@@ -4560,7 +4617,11 @@ msgstr ""
 msgid "Gov Speed"
 msgstr ""
 
-#: src/views/earn/views/index-dtf/components/vote-lock-positions.tsx:215
+#: src/views/earn/views/index-dtf/components/faq-graphics.tsx:86
+msgid "Gov. token"
+msgstr ""
+
+#: src/views/earn/views/index-dtf/components/vote-lock-positions.tsx:245
 #: src/views/earn/views/yield-dtf/components/staking-positions.tsx:88
 msgid "Gov. Token"
 msgstr ""
@@ -4661,7 +4722,7 @@ msgstr ""
 msgid "Governance with an execution delay greater than 1 week unstaking delay"
 msgstr ""
 
-#: src/views/earn/views/index-dtf/components/vote-lock-positions.tsx:177
+#: src/views/earn/views/index-dtf/components/vote-lock-positions.tsx:207
 msgid "Governed DTFs"
 msgstr ""
 
@@ -4677,7 +4738,7 @@ msgstr ""
 msgid "Governor mandate"
 msgstr ""
 
-#: src/views/earn/views/index-dtf/components/vote-lock-positions.tsx:251
+#: src/views/earn/views/index-dtf/components/vote-lock-positions.tsx:281
 #: src/views/earn/views/yield-dtf/components/staking-positions.tsx:141
 #: src/views/portfolio-page/components/staked-positions.tsx:42
 #: src/views/portfolio-page/components/vote-locked-positions.tsx:192
@@ -4791,7 +4852,7 @@ msgstr ""
 msgid "Holders APY"
 msgstr ""
 
-#: src/views/index-dtf/overview/components/basket-overview/index.tsx:124
+#: src/views/index-dtf/overview/components/basket-overview/index.tsx:119
 msgid "Holdings"
 msgstr ""
 
@@ -4803,8 +4864,12 @@ msgstr ""
 msgid "How can we reach you? *"
 msgstr ""
 
-#: src/views/index-dtf/overview/stocks/faq.tsx:19
+#: src/views/index-dtf/overview/stocks/faq.tsx:17
 msgid "How do US market hours affect stock DTF pricing?"
+msgstr ""
+
+#: src/views/earn/views/index-dtf/components/faq.tsx:51
+msgid "How do vote-lock rewards work?"
 msgstr ""
 
 #: src/views/index-dtf/deploy/components/deploy-coming-soon.tsx:155
@@ -4815,8 +4880,16 @@ msgstr ""
 msgid "How does first-loss capital work?"
 msgstr ""
 
-#: src/views/index-dtf/overview/stocks/faq.tsx:18
+#: src/views/earn/views/index-dtf/components/faq.tsx:126
+msgid "How is the estimated APY or APR calculated?"
+msgstr ""
+
+#: src/views/index-dtf/overview/stocks/faq.tsx:16
 msgid "How is the price determined?"
+msgstr ""
+
+#: src/views/earn/components/earn-table-cells.tsx:84
+msgid "How is this rate calculated?"
 msgstr ""
 
 #: src/views/index-dtf/deploy/steps/auctions/auctions-form.tsx:80
@@ -4861,7 +4934,7 @@ msgstr ""
 msgid "How much the value of the DTF basket changed due to the latest rebalance"
 msgstr ""
 
-#: src/views/index-dtf/overview/stocks/video-chapters.ts:39
+#: src/views/index-dtf/overview/stocks/video-chapters.ts:35
 msgid "How to buy an entire portfolio in a single token."
 msgstr ""
 
@@ -4892,6 +4965,10 @@ msgstr ""
 
 #: src/views/home/components/register-about.tsx:122
 msgid "If a DTF is listed on this app, it doesn't mean that ABC Labs endorses the safety or risk levels of the DTF or that ABC Labs was involved in the creation of or is in anyway responsible for the DTF."
+msgstr ""
+
+#: src/views/earn/views/index-dtf/components/faq.tsx:173
+msgid "If several DTFs use the same vault, does it matter where I lock?"
 msgstr ""
 
 #. placeholder {0}: stToken.underlying.symbol
@@ -4925,6 +5002,10 @@ msgstr ""
 #: src/views/index-dtf/overview/components/zap-mint/sell/index.tsx:131
 #: src/views/yield-dtf/issuance/components/zapV2/output/ZapOutputUSD.tsx:28
 msgid "in dust"
+msgstr ""
+
+#: src/views/earn/views/index-dtf/components/faq.tsx:40
+msgid "In return, vote lockers earn rewards from the DTF’s fees — a portion of the TVL and mint fees collected by each Index DTF is distributed to the holders who vote-lock its governance token."
 msgstr ""
 
 #: src/views/yield-dtf/staking/components/withdraw/index.tsx:16
@@ -5172,7 +5253,7 @@ msgstr ""
 msgid "Invalid destination address"
 msgstr ""
 
-#: src/views/index-dtf/overview/components/eligibility-card.tsx:24
+#: src/views/index-dtf/overview/components/eligibility-card.tsx:25
 msgid "Invalid email"
 msgstr ""
 
@@ -5324,11 +5405,11 @@ msgstr ""
 #: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:370
 #: src/views/index-dtf/overview/components/index-ctas-overview-mobile.tsx:62
 #: src/views/index-dtf/overview/components/landing-mint/index.tsx:144
-#: src/views/index-dtf/overview/stocks/landing-mint.tsx:135
+#: src/views/index-dtf/overview/stocks/landing-mint.tsx:124
 msgid "Learn More"
 msgstr ""
 
-#: src/views/index-dtf/overview/components/eligibility-card.tsx:200
+#: src/views/index-dtf/overview/components/eligibility-card.tsx:211
 msgid "Learn more about eligibility requirements."
 msgstr ""
 
@@ -5340,7 +5421,7 @@ msgstr ""
 msgid "Learn more about Reserve on their website."
 msgstr ""
 
-#: src/views/index-dtf/overview/stocks/about-reserve-dtfs.tsx:56
+#: src/views/index-dtf/overview/stocks/about-reserve-dtfs.tsx:53
 msgid "Learn more about the Reserve project"
 msgstr ""
 
@@ -5348,7 +5429,7 @@ msgstr ""
 msgid "Learn more about this DTF, the assets it tracks, how the basket is weighted, and the role each component plays inside the fund."
 msgstr ""
 
-#: src/views/index-dtf/overview/stocks/video-library.tsx:72
+#: src/views/index-dtf/overview/stocks/video-library.tsx:74
 msgid "Learn more by watching these short videos."
 msgstr ""
 
@@ -5484,13 +5565,17 @@ msgstr ""
 msgid "Loading..."
 msgstr ""
 
-#: src/views/index-dtf/overview/components/eligibility-card.tsx:162
+#: src/views/index-dtf/overview/components/eligibility-card.tsx:173
 msgid "Location restricted"
 msgstr ""
 
 #. placeholder {0}: dtf.stToken?.underlying.symbol ?? 'Unknown'
 #: src/views/index-dtf/overview/components/index-governance-overview.tsx:86
 msgid "Lock ${0} to Govern"
+msgstr ""
+
+#: src/views/earn/views/index-dtf/components/faq.tsx:184
+msgid "Locking from a particular DTF page does not create a separate reward rate for that DTF."
 msgstr ""
 
 #: src/views/yield-dtf/settings/components/freeze-manager.tsx:69
@@ -5716,9 +5801,17 @@ msgstr ""
 msgid "Maximum trade volume - maximum sized trade for any trade involving RToken, in terms of the unit of account eg. USD."
 msgstr ""
 
+#: src/views/earn/views/index-dtf/components/faq-graphics.tsx:81
+msgid "May require claim"
+msgstr ""
+
 #: src/views/index-dtf/overview/components/charts/market-cap.tsx:15
 #: src/views/top100/components/top100-card.tsx:93
 msgid "MCap:"
+msgstr ""
+
+#: src/views/earn/views/index-dtf/components/faq-graphics.tsx:210
+msgid "Measures exchange-rate change during your window."
 msgstr ""
 
 #: src/views/yield-dtf/staking/components/overview/about.tsx:24
@@ -5738,7 +5831,7 @@ msgstr ""
 msgid "Medium liquidity"
 msgstr ""
 
-#: src/views/index-dtf/overview/stocks/video-chapters.ts:45
+#: src/views/index-dtf/overview/stocks/video-chapters.ts:41
 msgid "Meet $BUILDOUT"
 msgstr ""
 
@@ -5980,6 +6073,10 @@ msgstr ""
 msgid "More options"
 msgstr ""
 
+#: src/views/earn/views/index-dtf/components/faq-graphics.tsx:73
+msgid "More RSR per share"
+msgstr ""
+
 #: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:159
 msgid "Most users should use Swap"
 msgstr ""
@@ -6011,7 +6108,7 @@ msgstr ""
 #: src/views/home/components/discover-index-dtf/index-dtf-table-columns.tsx:167
 #: src/views/home/components/discover-index-dtf/index-dtf-table-placeholder.tsx:17
 #: src/views/index-dtf/deploy/steps/metadata/form-basic-metadata.tsx:10
-#: src/views/index-dtf/overview/components/eligibility-card.tsx:107
+#: src/views/index-dtf/overview/components/eligibility-card.tsx:118
 #: src/views/index-dtf/settings/components/index-settings-basic.tsx:40
 #: src/views/portfolio-page/components/dtf-positions.tsx:31
 #: src/views/portfolio-page/components/rsr-section.tsx:18
@@ -6171,7 +6268,7 @@ msgstr ""
 msgid "Next steps"
 msgstr ""
 
-#: src/views/index-dtf/overview/stocks/video-series-modal.tsx:174
+#: src/views/index-dtf/overview/stocks/video-series-modal.tsx:170
 msgid "Next video"
 msgstr ""
 
@@ -6379,11 +6476,15 @@ msgid "No yield opportunities found"
 msgstr ""
 
 #: src/views/earn/views/index-dtf/index.tsx:51
-msgid "No. Locked RSR follows the DTF’s timelock rules, which are set when the DTF is created. You should always check the lock duration before committing, as early unlocks are not allowed. This prevents short-term manipulation and keeps governance aligned with long-term holders."
-msgstr ""
+#~ msgid "No. Locked RSR follows the DTF’s timelock rules, which are set when the DTF is created. You should always check the lock duration before committing, as early unlocks are not allowed. This prevents short-term manipulation and keeps governance aligned with long-term holders."
+#~ msgstr ""
 
 #: src/views/earn/views/yield-dtf/index.tsx:23
 msgid "No. Stakers earn rewards as long as their RSR is actively staked, even if they don’t vote on proposals. Voting is optional, but participating helps shape how the Yield DTF is governed."
+msgstr ""
+
+#: src/views/earn/views/index-dtf/components/faq.tsx:177
+msgid "No. When several DTFs use the same vote-lock vault, your locked tokens belong to that shared vault. Its reward rate reflects rewards flowing to the vault across all the DTFs it governs."
 msgstr ""
 
 #: src/views/earn/views/yield-dtf/index.tsx:27
@@ -6391,7 +6492,11 @@ msgid "No. When you unstake, your RSR enters an unstaking cooldown period define
 msgstr ""
 
 #: src/views/earn/views/index-dtf/index.tsx:47
-msgid "No. You earn rewards as long as your ERC2O tokens are vote-locked, even if you don’t participate in every proposal. Voting is encouraged, but it’s not required to receive your share of rewards."
+#~ msgid "No. You earn rewards as long as your ERC2O tokens are vote-locked, even if you don’t participate in every proposal. Voting is encouraged, but it’s not required to receive your share of rewards."
+#~ msgstr ""
+
+#: src/views/earn/views/index-dtf/components/faq.tsx:195
+msgid "No. You earn your share of rewards while your tokens are vote-locked, even if you don’t participate in every proposal. Voting is encouraged because vote lockers are responsible for the DTFs they govern."
 msgstr ""
 
 #: src/views/index-dtf/deploy/components/deploy-accordion.tsx:116
@@ -6514,6 +6619,10 @@ msgstr ""
 msgid "One or more tokens in the rebalance is out of bounds. Rebalance must be closed."
 msgstr ""
 
+#: src/views/earn/views/index-dtf/components/faq-graphics.tsx:107
+msgid "One reward deposit, released over time"
+msgstr ""
+
 #: src/views/index-dtf/auctions/legacy/components/proposal-trades.tsx:93
 msgid "Ongoing"
 msgstr ""
@@ -6527,7 +6636,7 @@ msgid "Ongoing dutch auctions"
 msgstr ""
 
 #. placeholder {0}: dtf?.token.symbol ?? 'DTF'
-#: src/views/index-dtf/overview/stocks/faq.tsx:58
+#: src/views/index-dtf/overview/stocks/faq.tsx:51
 msgid "Online — answers use live {0} data."
 msgstr ""
 
@@ -6646,7 +6755,7 @@ msgstr ""
 msgid "Original whitepaper documentation"
 msgstr ""
 
-#: src/views/earn/views/index-dtf/components/vote-lock-positions.tsx:166
+#: src/views/earn/views/index-dtf/components/vote-lock-positions.tsx:196
 msgid "other"
 msgstr ""
 
@@ -6684,6 +6793,10 @@ msgstr ""
 #: src/views/yield-dtf/overview/components/backing/asset-breakdown.tsx:42
 #: src/views/yield-dtf/overview/components/backing/risks.tsx:116
 msgid "Other Risks"
+msgstr ""
+
+#: src/views/earn/views/index-dtf/components/faq-graphics.tsx:80
+msgid "Other vault rewards"
 msgstr ""
 
 #: src/components/layout/navigation/index.tsx:77
@@ -6931,8 +7044,8 @@ msgstr ""
 
 #. placeholder {0}: t(chapter.title)
 #. placeholder {1}: chapter.duration
-#: src/views/index-dtf/overview/stocks/video-library.tsx:22
-#: src/views/index-dtf/overview/stocks/video-series-modal.tsx:37
+#: src/views/index-dtf/overview/stocks/video-library.tsx:24
+#: src/views/index-dtf/overview/stocks/video-series-modal.tsx:38
 msgid "Play video: {0} ({1})"
 msgstr ""
 
@@ -7136,7 +7249,7 @@ msgstr ""
 msgid "Previous Version (v1)"
 msgstr ""
 
-#: src/views/index-dtf/overview/stocks/video-series-modal.tsx:154
+#: src/views/index-dtf/overview/stocks/video-series-modal.tsx:150
 msgid "Previous video"
 msgstr ""
 
@@ -7259,6 +7372,10 @@ msgstr ""
 #: src/views/earn/components/pools-table.tsx:40
 #: src/views/earn/hooks/useEarnTableColumns.tsx:117
 msgid "Project"
+msgstr ""
+
+#: src/views/earn/views/index-dtf/components/faq-graphics.tsx:183
+msgid "Projects recent reward activity forward."
 msgstr ""
 
 #: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:209
@@ -7633,6 +7750,10 @@ msgstr ""
 msgid "Recent proposals"
 msgstr ""
 
+#: src/views/earn/views/index-dtf/components/faq.tsx:160
+msgid "Recent rewards may still be streaming into the exchange rate, and your own observation window may not match the 30-day window used for the estimate. That is why a short-term realized calculation can differ significantly from the displayed forward-looking estimate."
+msgstr ""
+
 #. placeholder {0}: index + 1
 #: src/views/index-dtf/deploy/steps/revenue/additional-revenue-recipients.tsx:63
 msgid "Recipient {0} address"
@@ -7935,7 +8056,7 @@ msgid "Request plugin"
 msgstr ""
 
 #: src/views/index-dtf/deploy/components/deploy-coming-soon.tsx:25
-#: src/views/index-dtf/overview/components/eligibility-card.tsx:23
+#: src/views/index-dtf/overview/components/eligibility-card.tsx:24
 msgid "Required"
 msgstr ""
 
@@ -7965,11 +8086,11 @@ msgstr ""
 msgid "Reserve aims to help people around the world maintain their spending power by allowing anyone to create asset-backed currencies with tokenized assets on the Ethereum blockchain in customizable and novel ways."
 msgstr ""
 
-#: src/views/index-dtf/overview/stocks/backed-badge.tsx:10
+#: src/views/index-dtf/overview/stocks/backed-badge.tsx:8
 msgid "Reserve equity DTFs are 100% backed by real stocks."
 msgstr ""
 
-#: src/views/index-dtf/overview/stocks/about-reserve-dtfs.tsx:26
+#: src/views/index-dtf/overview/stocks/about-reserve-dtfs.tsx:23
 msgid "Reserve has been operating since 2018 with backing from <0><1>Coinbase</1>, <2>Sam Altman</2> and <3>Peter Thiel</3></0>. We exist to help you own your share of the world’s wealth."
 msgstr ""
 
@@ -7977,7 +8098,7 @@ msgstr ""
 msgid "Reserve lets you buy entire portfolios as a single token"
 msgstr ""
 
-#: src/views/index-dtf/overview/stocks/about-reserve-dtfs.tsx:16
+#: src/views/index-dtf/overview/stocks/about-reserve-dtfs.tsx:13
 msgid "Reserve logo"
 msgstr ""
 
@@ -8213,6 +8334,10 @@ msgstr ""
 msgid "Rewards"
 msgstr ""
 
+#: src/views/earn/views/index-dtf/components/faq-graphics.tsx:119
+msgid "Rewards added"
+msgstr ""
+
 #: src/views/portfolio-page/components/rewards-available.tsx:17
 msgid "Rewards Available"
 msgstr ""
@@ -8221,8 +8346,20 @@ msgstr ""
 msgid "Rewards claimed"
 msgstr ""
 
+#: src/views/earn/views/index-dtf/components/faq.tsx:55
+msgid "Rewards come from the fees of the DTFs a vault governs, but vaults distribute them in two different ways. Check the vault’s reward details before locking."
+msgstr ""
+
+#: src/views/earn/views/index-dtf/components/faq-graphics.tsx:147
+msgid "Rewards distributed during the trailing 30-day window"
+msgstr ""
+
 #: src/views/index-dtf/governance/components/governance-vote-lock.tsx:291
 msgid "Rewards in"
+msgstr ""
+
+#: src/views/earn/views/index-dtf/components/faq-graphics.tsx:75
+msgid "Rewards increase the vault’s backing."
 msgstr ""
 
 #: src/views/yield-dtf/governance/views/proposal/components/ConfirmProposalForm.tsx:60
@@ -8411,6 +8548,8 @@ msgid "Save Weights {editedRows}/{totalRows} edited"
 msgstr ""
 
 #: src/components/layout/contact-modal/bell-button.tsx:64
+#: src/views/index-dtf/overview/components/eligibility-card.tsx:103
+#: src/views/index-dtf/overview/components/eligibility-card.tsx:151
 msgid "Schedule a meeting"
 msgstr ""
 
@@ -8575,6 +8714,10 @@ msgstr ""
 msgid "Send dust back to wallet"
 msgstr ""
 
+#: src/views/earn/views/index-dtf/components/faq-graphics.tsx:95
+msgid "Separate rewards"
+msgstr ""
+
 #: src/views/index-dtf/governance/views/propose/basket/components/basket-proposal.tsx:43
 msgid "Set basket composition"
 msgstr ""
@@ -8696,8 +8839,7 @@ msgid "Short freezers have the responsibility of freezing an RToken if anything 
 msgstr ""
 
 #. placeholder {0}: activeCount - MAX_TOKENS
-#: src/views/index-dtf/overview/components/basket-overview/index.tsx:207
-#: src/views/index-dtf/overview/components/basket-overview/index.tsx:214
+#: src/views/index-dtf/overview/components/basket-overview/index.tsx:203
 msgid "Show {0} more"
 msgstr ""
 
@@ -8911,7 +9053,7 @@ msgstr ""
 msgid "Some quotes couldn't be fetched."
 msgstr ""
 
-#: src/views/index-dtf/overview/components/eligibility-card.tsx:144
+#: src/views/index-dtf/overview/components/eligibility-card.tsx:155
 msgid "Something went wrong. Please try again."
 msgstr ""
 
@@ -9172,6 +9314,10 @@ msgstr ""
 msgid "Strategies"
 msgstr ""
 
+#: src/views/earn/views/index-dtf/components/faq-graphics.tsx:122
+msgid "Streaming"
+msgstr ""
+
 #: src/views/index-dtf/deploy/form-fields.ts:98
 msgid "stRSR DAO contracts for Index DTFs are not supported"
 msgstr ""
@@ -9185,8 +9331,8 @@ msgid "stRSR Token"
 msgstr ""
 
 #: src/views/index-dtf/overview/components/eligibility-card.tsx:140
-msgid "Submit"
-msgstr ""
+#~ msgid "Submit"
+#~ msgstr ""
 
 #: src/views/index-dtf/manage/components/submit-button.tsx:318
 msgid "Submit all changes"
@@ -9213,7 +9359,7 @@ msgstr ""
 
 #: src/views/index-dtf/deploy/components/deploy-coming-soon.tsx:182
 #: src/views/index-dtf/manage/components/submit-button.tsx:321
-#: src/views/index-dtf/overview/components/eligibility-card.tsx:140
+#: src/views/index-dtf/overview/components/eligibility-card.tsx:151
 msgid "Submitting..."
 msgstr ""
 
@@ -9391,7 +9537,7 @@ msgid "Terms and Conditions"
 msgstr ""
 
 #: src/views/index-dtf/deploy/components/deploy-coming-soon.tsx:109
-#: src/views/index-dtf/overview/components/eligibility-card.tsx:92
+#: src/views/index-dtf/overview/components/eligibility-card.tsx:95
 msgid "Thank you! We'll be in touch soon."
 msgstr ""
 
@@ -9439,12 +9585,24 @@ msgstr ""
 msgid "The DAO governance provides a Guardian role that can improve the safety of DTF holders and governors. Guardians have the ability to veto any proposal prior to execution. This role is mutable and can be changed by governance in the future."
 msgstr ""
 
+#: src/views/earn/views/index-dtf/components/faq.tsx:153
+msgid "The displayed APY or APR and your realized return measure different things."
+msgstr ""
+
+#: src/views/earn/views/index-dtf/components/faq.tsx:130
+msgid "The displayed rate estimates what would happen if the vault’s recent reward pace continued for one year, based on rewards distributed over approximately the last 30 days."
+msgstr ""
+
 #: src/components/rtoken-setup/basket/EmergencyCollateral.tsx:160
 msgid "The diversity factor determines the amount of emergency collateral that will be deployed to the RToken basket in the case of a default."
 msgstr ""
 
 #: src/components/rtoken-setup/token/BackingForm.tsx:76
 msgid "The dutch auction length is how many seconds long falling-price dutch auctions should be. A longer period will result in less slippage due to better price granularity, and a shorter period will result in more slippage."
+msgstr ""
+
+#: src/views/earn/views/index-dtf/components/faq.tsx:138
+msgid "The estimate is not guaranteed. It changes when rewards, vault deposits and withdrawals, token prices, or the calculation window change."
 msgstr ""
 
 #: src/components/rtoken-setup/token/OtherForm.tsx:53
@@ -9461,6 +9619,10 @@ msgstr ""
 
 #: src/views/index-dtf/overview/components/index-disclousure.tsx:373
 msgid "The information provided on the Website comes from on-chain sources. Past performance is not indicative of future results. Although index DTFs are intended to track indexes, their ability to successfully track indexes are dependent on the governance structure of the DTF and the governance’s ability to make appropriate trades. There is no guarantee that such trades will be successful or will track its corresponding index exactly. There are many risks associated with digital assets, including but not limited to security risk, counterparty risk, volatility risk, conflicts of interest, and many more. DTFs are no exception. By using the Website, you agree that your interaction with any DTFs is solely at your own risk and the Website and DTFs come as is, without any warranty or condition of any kind."
+msgstr ""
+
+#: src/views/earn/views/index-dtf/components/faq.tsx:116
+msgid "The label follows the reward mechanism: automatic in-vault compounding shows APY; separate claimable rewards show APR."
 msgstr ""
 
 #: src/components/rtoken-setup/governance/RoleSetup.tsx:30
@@ -9537,13 +9699,17 @@ msgstr ""
 msgid "The pauser(s) can put the RToken in two states which can be either true or false (no set duration):"
 msgstr ""
 
-#: src/views/index-dtf/overview/stocks/video-chapters.ts:53
-msgid "The platform behind DTFs, and the team."
+#: src/views/index-dtf/overview/stocks/video-chapters.ts:49
+msgid "The platform and team behind DTFs."
 msgstr ""
 
+#: src/views/index-dtf/overview/stocks/video-chapters.ts:53
+#~ msgid "The platform behind DTFs, and the team."
+#~ msgstr ""
+
 #: src/views/index-dtf/overview/stocks/video-chapters.ts:46
-msgid "The power companies behind the AI buildout."
-msgstr ""
+#~ msgid "The power companies behind the AI buildout."
+#~ msgstr ""
 
 #: src/views/index-dtf/overview/components/zap-mint/zap-warning-checkbox.tsx:39
 msgid "The price impact for this trade is very high. You will get significantly less value than expected."
@@ -9720,7 +9886,7 @@ msgid "This DTF"
 msgstr ""
 
 #: src/views/index-dtf/overview/components/landing-mint/index.tsx:118
-#: src/views/index-dtf/overview/stocks/landing-mint.tsx:112
+#: src/views/index-dtf/overview/stocks/landing-mint.tsx:101
 msgid "This DTF can only be sold"
 msgstr ""
 
@@ -9757,12 +9923,16 @@ msgstr ""
 #. placeholder {0}: dtf.token.symbol
 #. placeholder {0}: dtf?.token.symbol
 #: src/views/index-dtf/overview/components/landing-mint/index.tsx:121
-#: src/views/index-dtf/overview/stocks/landing-mint.tsx:115
+#: src/views/index-dtf/overview/stocks/landing-mint.tsx:104
 msgid "This DTF is no longer actively governed, cannot rebalance, and no new ${0} can be created."
 msgstr ""
 
 #: src/components/field/index.tsx:35
 msgid "This field is required"
+msgstr ""
+
+#: src/views/earn/views/index-dtf/components/faq.tsx:86
+msgid "This helps prevent someone from locking immediately before a reward payment, taking part of that reward, and withdrawing right afterward. Streaming makes distribution fairer to users who remain in the vault."
 msgstr ""
 
 #: src/views/yield-dtf/deploy/components/TokenForm.tsx:91
@@ -9876,8 +10046,12 @@ msgstr ""
 msgid "To learn more about the risks associated with DTFs,"
 msgstr ""
 
-#: src/views/index-dtf/overview/components/eligibility-card.tsx:187
+#: src/views/index-dtf/overview/components/eligibility-card.tsx:198
 msgid "To verify eligibility, please leave us your name and email, and we will reach out to you personally."
+msgstr ""
+
+#: src/views/earn/views/index-dtf/components/faq-graphics.tsx:233
+msgid "Today"
 msgstr ""
 
 #: src/components/ui/swap.tsx:495
@@ -10898,7 +11072,7 @@ msgstr ""
 
 #. placeholder {0}: index + 1
 #. placeholder {1}: VIDEO_CHAPTERS.length
-#: src/views/index-dtf/overview/stocks/video-series-modal.tsx:119
+#: src/views/index-dtf/overview/stocks/video-series-modal.tsx:117
 msgid "Video {0} of {1}"
 msgstr ""
 
@@ -10919,11 +11093,11 @@ msgstr ""
 msgid "View {0} on block explorer"
 msgstr ""
 
-#: src/views/index-dtf/overview/components/basket-overview/index.tsx:231
+#: src/views/index-dtf/overview/components/basket-overview/index.tsx:218
 msgid "View all {activeCount} assets"
 msgstr ""
 
-#: src/views/index-dtf/overview/components/basket-overview/index.tsx:232
+#: src/views/index-dtf/overview/components/basket-overview/index.tsx:219
 msgid "View all {activeCount} tokens"
 msgstr ""
 
@@ -10954,7 +11128,7 @@ msgstr ""
 msgid "View in explorer"
 msgstr ""
 
-#: src/views/index-dtf/overview/components/basket-overview/index.tsx:229
+#: src/views/index-dtf/overview/components/basket-overview/index.tsx:216
 msgid "View less"
 msgstr ""
 
@@ -11048,6 +11222,14 @@ msgstr ""
 msgid "Visit {name}"
 msgstr ""
 
+#: src/views/earn/views/index-dtf/components/faq-graphics.tsx:68
+msgid "vlRSR vault"
+msgstr ""
+
+#: src/views/earn/views/index-dtf/components/faq-graphics.tsx:60
+msgid "vlRSR-style rewards"
+msgstr ""
+
 #: src/views/tokens/components/UnlistedTokensTable.tsx:107
 msgid "Volume (all time)"
 msgstr ""
@@ -11075,7 +11257,7 @@ msgstr ""
 msgid "Vote Lock address is not allowed for new DAO"
 msgstr ""
 
-#: src/views/earn/views/index-dtf/index.tsx:84
+#: src/views/earn/views/index-dtf/components/faq.tsx:236
 msgid "Vote Lock Frequently Asked Questions"
 msgstr ""
 
@@ -11088,16 +11270,16 @@ msgid "Vote locked"
 msgstr ""
 
 #: src/views/earn/views/index-dtf/index.tsx:34
-msgid "Vote lockers earn rewards from the DTF’s fees. A portion of the TVL fees and mint fees collected by the Index DTF are distributed to vote-locked token holders. The more tokens locked, the larger the share of rewards an individual vote-locked token holder will receive."
-msgstr ""
+#~ msgid "Vote lockers earn rewards from the DTF’s fees. A portion of the TVL fees and mint fees collected by the Index DTF are distributed to vote-locked token holders. The more tokens locked, the larger the share of rewards an individual vote-locked token holder will receive."
+#~ msgstr ""
 
-#: src/views/earn/views/index-dtf/index.tsx:27
+#: src/views/earn/views/index-dtf/components/faq.tsx:33
 msgid "Vote lockers govern the key parameters of an Index DTF, including which assets are in the basket, their weights, fees, and contract upgrades."
 msgstr ""
 
 #: src/views/earn/views/index-dtf/index.tsx:19
-msgid "Vote locking is the process of locking an ERC20 token for a set period to gain governance power of an Index DTF and earn rewards. While locked, the RSR cannot be transferred or sold until the lock period ends."
-msgstr ""
+#~ msgid "Vote locking is the process of locking an ERC20 token for a set period to gain governance power of an Index DTF and earn rewards. While locked, the RSR cannot be transferred or sold until the lock period ends."
+#~ msgstr ""
 
 #: src/views/index-dtf/governance/views/proposal/components/proposal-vote-button.tsx:59
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalVote.tsx:177
@@ -11151,6 +11333,10 @@ msgstr ""
 msgid "Vote-Lock on Index DTFs"
 msgstr ""
 
+#: src/views/earn/views/index-dtf/components/faq-graphics.tsx:90
+msgid "Vote-lock vault"
+msgstr ""
+
 #: src/views/portfolio-page/components/portfolio-breakdown.tsx:39
 #: src/views/portfolio-page/components/portfolio-chart.tsx:74
 msgid "Vote-locked"
@@ -11162,6 +11348,10 @@ msgstr ""
 
 #: src/views/portfolio-page/components/voting-power.tsx:99
 msgid "Vote-locker Address"
+msgstr ""
+
+#: src/views/earn/views/index-dtf/components/faq.tsx:26
+msgid "Vote-locking means locking an ERC20 governance token in a vault to receive governance power over one or more Index DTFs. While locked, your tokens cannot be transferred or sold."
 msgstr ""
 
 #: src/views/index-dtf/governance/components/governance-delegate-list.tsx:64
@@ -11463,7 +11653,7 @@ msgstr ""
 msgid "We're sorry, but the swap quote is unavailable. The amount may be too small to cover fees. Please <0>retry</0>, or <1>edit the amount</1>, and try again."
 msgstr ""
 
-#: src/views/index-dtf/overview/components/eligibility-card.tsx:165
+#: src/views/index-dtf/overview/components/eligibility-card.tsx:176
 msgid "We're sorry, this product isn't available to customers in your region. In order to access this DTF, you may need to qualify as a <0>qualified investor</0>."
 msgstr ""
 
@@ -11506,11 +11696,11 @@ msgstr ""
 msgid "Welcome to Reserve — a platform for creating, exploring, and interacting with Decentralized Token Funds (“DTFs”). A DTF is the generic name given to any onchain asset-backed index. DTFs can be created on Reserve’s Yield Protocol or Index Protocol permissionlessly, by any person or entity."
 msgstr ""
 
-#: src/views/index-dtf/overview/stocks/faq.tsx:20
+#: src/views/index-dtf/overview/stocks/faq.tsx:18
 msgid "What are the fees?"
 msgstr ""
 
-#: src/views/index-dtf/overview/stocks/faq.tsx:22
+#: src/views/index-dtf/overview/stocks/faq.tsx:20
 msgid "What are the risks?"
 msgstr ""
 
@@ -11518,7 +11708,7 @@ msgstr ""
 msgid "What is a <0>DTF</0>?"
 msgstr ""
 
-#: src/views/index-dtf/overview/stocks/video-chapters.ts:38
+#: src/views/index-dtf/overview/stocks/video-chapters.ts:34
 msgid "What is a Diversified Token Fund?"
 msgstr ""
 
@@ -11526,7 +11716,7 @@ msgstr ""
 msgid "What is Reserve Governor Alexios?"
 msgstr ""
 
-#: src/views/index-dtf/overview/stocks/video-chapters.ts:52
+#: src/views/index-dtf/overview/stocks/video-chapters.ts:48
 msgid "What is Reserve?"
 msgstr ""
 
@@ -11535,12 +11725,20 @@ msgid "What is staking?"
 msgstr ""
 
 #. placeholder {0}: dtf?.token.symbol ?? 'DTF'
-#: src/views/index-dtf/overview/stocks/faq.tsx:69
+#: src/views/index-dtf/overview/stocks/faq.tsx:60
 msgid "What is the ${0} DTF?"
 msgstr ""
 
-#: src/views/earn/views/index-dtf/index.tsx:15
+#: src/views/earn/views/index-dtf/components/faq.tsx:22
 msgid "What is vote-locking?"
+msgstr ""
+
+#: src/views/index-dtf/overview/stocks/video-chapters.ts:42
+msgid "What this is all about."
+msgstr ""
+
+#: src/views/earn/views/index-dtf/components/faq.tsx:78
+msgid "When rewards are added to a self-appreciating vault like vlRSR, they become redeemable gradually rather than all at once. This is often called streaming or dripping."
 msgstr ""
 
 #: src/views/yield-dtf/staking/components/overview/about.tsx:14
@@ -11567,12 +11765,20 @@ msgstr ""
 msgid "Whitelisted Index DTFs displayed on the discover page with their governance addresses"
 msgstr ""
 
-#: src/views/index-dtf/overview/stocks/video-chapters.ts:59
+#: src/views/index-dtf/overview/stocks/video-chapters.ts:55
 msgid "Who can buy $BUILDOUT?"
 msgstr ""
 
 #: src/views/index-dtf/governance/views/propose/basket/components/proposal-rebalance-launch-settings.tsx:311
 msgid "Who will be able to launch auctions and how long will they have before the auctions expire."
+msgstr ""
+
+#: src/views/earn/views/index-dtf/components/faq.tsx:74
+msgid "Why are rewards released gradually?"
+msgstr ""
+
+#: src/views/earn/views/index-dtf/components/faq.tsx:98
+msgid "Why do some vaults show APY and others show APR?"
 msgstr ""
 
 #: src/views/index-dtf/deploy/components/deploy-coming-soon.tsx:167
@@ -11581,6 +11787,10 @@ msgstr ""
 
 #: src/views/yield-dtf/issuance/components/zapV2/submit/ZapRevokeButton.tsx:47
 msgid "Why I do need to revoke my allowance?"
+msgstr ""
+
+#: src/views/earn/views/index-dtf/components/faq.tsx:149
+msgid "Why might my actual return differ from the displayed rate?"
 msgstr ""
 
 #: src/components/transactions/table/index.tsx:56
@@ -11715,6 +11925,10 @@ msgstr ""
 
 #: src/views/yield-dtf/overview/components/backing/collateral-exposure.tsx:89
 msgid "Yield:"
+msgstr ""
+
+#: src/views/earn/views/index-dtf/components/faq.tsx:200
+msgid "You can begin the unlock process at any time, but you cannot withdraw immediately. The vault’s unlock delay must finish first, and you stop earning rewards once the unlock process begins. Always check the displayed delay before locking."
 msgstr ""
 
 #: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:83
@@ -11873,7 +12087,7 @@ msgstr ""
 msgid "Your DTF has been minted."
 msgstr ""
 
-#: src/views/earn/views/index-dtf/components/vote-lock-positions.tsx:242
+#: src/views/earn/views/index-dtf/components/vote-lock-positions.tsx:272
 msgid "Your lock"
 msgstr ""
 
@@ -11883,6 +12097,10 @@ msgstr ""
 
 #: src/views/index-dtf/components/confirm-eligibility-modal.tsx:271
 msgid "Your privacy is protected. This confirmation is only ever associated with your wallet address - never your personal information. <0>Privacy Policy</0>"
+msgstr ""
+
+#: src/views/earn/views/index-dtf/components/faq-graphics.tsx:207
+msgid "Your realized return"
 msgstr ""
 
 #: src/views/portfolio-page/components/transactions.tsx:167
@@ -11899,6 +12117,10 @@ msgstr ""
 
 #: src/views/yield-dtf/staking/components/stake-position.tsx:29
 msgid "Your stake position"
+msgstr ""
+
+#: src/views/earn/views/index-dtf/components/faq-graphics.tsx:230
+msgid "Your start date"
 msgstr ""
 
 #: src/views/portfolio-page/components/rewards-available.tsx:20

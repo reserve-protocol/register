@@ -23,4 +23,4 @@ A 1px `border-border` plus one token shadow on a `bg-surface` card is the defaul
 
 - New raw color families, inline rgba shadows, and off-scale radii are review blockers.
 - Dark mode (when supported) flips the semantic layer, not the components.
-- The register — playful vs sober, dense vs airy — is a project decision. Write it in `docs/wiki/project.md` and apply it through token choices, not per-component improvisation.
+- The voice — playful vs sober, dense vs airy — is a project decision. Write it in `docs/wiki/project.md` and apply it through token choices, not per-component improvisation.

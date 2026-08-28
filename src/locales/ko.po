@@ -624,6 +624,10 @@ msgstr "0초"
 msgid "0-100% Recharge time"
 msgstr "0-100% 재충전 시간"
 
+#: src/views/earn/views/index-dtf/components/faq-graphics.tsx:146
+msgid "1 · Observe"
+msgstr ""
+
 #: src/views/index-dtf/factsheet/components/performance-table.tsx:29
 msgid "1 Month"
 msgstr "1개월"
@@ -661,6 +665,10 @@ msgstr "14일 잠금 해제 지연"
 msgid "15 params"
 msgstr "15개 파라미터"
 
+#: src/views/earn/views/index-dtf/components/faq-graphics.tsx:154
+msgid "2 · Annualize"
+msgstr ""
+
 #: src/views/index-dtf/overview/components/basket-overview/performance-cell.tsx:18
 msgid "24 hour"
 msgstr "24시간"
@@ -668,6 +676,10 @@ msgstr "24시간"
 #: src/views/index-dtf/overview/components/fees-stats.tsx:78
 msgid "24h Volume"
 msgstr "24시간 거래량"
+
+#: src/views/earn/views/index-dtf/components/faq-graphics.tsx:162
+msgid "3 · Display"
+msgstr ""
 
 #: src/views/index-dtf/factsheet/components/performance-table.tsx:30
 msgid "3 Month"
@@ -680,6 +692,10 @@ msgstr "3.4.0 업그레이드 spell"
 #: src/views/index-dtf/overview/components/basket-overview/performance-cell.tsx:20
 msgid "30 day"
 msgstr "30일"
+
+#: src/views/earn/views/index-dtf/components/faq-graphics.tsx:198
+msgid "30 days ago"
+msgstr ""
 
 #: src/views/yield-dtf/governance/views/proposal-detail/components/proposal-summary/BasketChangeSummary.tsx:157
 msgid "30-day blended APY:"
@@ -789,14 +805,14 @@ msgstr "소개"
 msgid "About {0}"
 msgstr "{0} 정보"
 
-#: src/views/index-dtf/overview/stocks/about-reserve-dtfs.tsx:21
+#: src/views/index-dtf/overview/stocks/about-reserve-dtfs.tsx:18
 msgid "About Reserve"
 msgstr ""
 
 #: src/views/index-dtf/manage/components/manage-about.tsx:119
 #: src/views/index-dtf/manage/components/manage-about.tsx:122
 #: src/views/index-dtf/overview/components/index-about-overview.tsx:110
-#: src/views/index-dtf/overview/stocks/video-library.tsx:69
+#: src/views/index-dtf/overview/stocks/video-library.tsx:71
 msgid "About this DTF"
 msgstr "이 DTF 소개"
 
@@ -1154,11 +1170,11 @@ msgstr "가중치 제어를 허용하면 리밸런싱 시 바스켓 내 토큰�
 msgid "Almost there..."
 msgstr "거의 완료되었습니다..."
 
-#: src/views/index-dtf/overview/stocks/landing-mint.tsx:59
+#: src/views/index-dtf/overview/stocks/landing-mint.tsx:51
 msgid "Also available on:"
 msgstr ""
 
-#: src/views/index-dtf/overview/stocks/faq.tsx:17
+#: src/views/index-dtf/overview/stocks/faq.tsx:15
 msgid "Am I buying real stocks?"
 msgstr ""
 
@@ -1205,6 +1221,10 @@ msgstr "인센티브로 발생하는 연환산 수익률"
 #: src/views/earn/hooks/useEarnTableColumns.tsx:170
 msgid "Annualised percentage yield from trading fees/supplying. For dexes 24h fees are used and scaled those to a year."
 msgstr "거래 수수료/공급으로 발생하는 연환산 수익률. dex의 경우 24시간 수수료를 사용하여 연 단위로 환산합니다."
+
+#: src/views/earn/views/index-dtf/components/faq-graphics.tsx:201
+msgid "Annualized APY / APR"
+msgstr ""
 
 #: src/views/home/components/protocol-metrics.tsx:63
 msgid "Annualized revenue distributed to DTF creators, index providers, and all other ecosystem partners. Calculated based on TVL and minting fees of all Index DTFs in the last 30 days."
@@ -1298,6 +1318,14 @@ msgstr "승인된 수익 토큰"
 msgid "Approving..."
 msgstr "승인 중..."
 
+#: src/views/earn/views/index-dtf/components/faq-graphics.tsx:163
+msgid "APR — or compounded APY when rewards accrue automatically"
+msgstr ""
+
+#: src/views/earn/views/index-dtf/components/faq.tsx:102
+msgid "APR annualizes the recent reward rate without assuming that rewards are reinvested. It is used for vaults that pay separate reward tokens."
+msgstr ""
+
 #: src/views/index-dtf/overview/components/index-campaign-overview.tsx:55
 msgid "April 1"
 msgstr "4월 1일"
@@ -1310,6 +1338,10 @@ msgstr "APY"
 #: src/views/earn/hooks/useEarnTableColumns.tsx:151
 msgid "APY = Base APY + Reward APY. For non-autocompounding pools reinvesting is not accounted, in which case APY = APR."
 msgstr "APY = Base APY + Reward APY. 자동 복리가 아닌 pool의 경우 재투자가 반영되지 않으며, 이 경우 APY = APR입니다."
+
+#: src/views/earn/views/index-dtf/components/faq.tsx:109
+msgid "APY includes compounding. It is used for vlRSR-style vaults because rewards are automatically added to the vault’s backing and increase the exchange rate."
+msgstr ""
 
 #: src/views/yield-dtf/governance/views/proposal-detail/components/proposal-summary/BasketChangeSummary.tsx:97
 msgid "APY:"
@@ -1343,11 +1375,11 @@ msgstr "RSR로"
 msgid "As RToken"
 msgstr "RToken으로"
 
-#: src/components/dtf-chat/index.tsx:156
+#: src/components/dtf-chat/index.tsx:148
 #: src/views/index-dtf/overview/components/index-ctas-overview-mobile.tsx:175
 #: src/views/index-dtf/overview/components/index-ctas-overview-mobile.tsx:182
-#: src/views/index-dtf/overview/stocks/faq.tsx:55
-#: src/views/index-dtf/overview/stocks/faq.tsx:93
+#: src/views/index-dtf/overview/stocks/faq.tsx:48
+#: src/views/index-dtf/overview/stocks/faq.tsx:85
 msgid "Ask Reserve AI"
 msgstr "Reserve AI에게 질문"
 
@@ -1509,6 +1541,7 @@ msgstr "자동 Mint와 Redeem에는 스마트 계정을 지원하는 Wallet이 �
 msgid "Automated minting is an advanced feature. For most people, simple swaps are recommended."
 msgstr "자동 Mint는 고급 기능입니다. 대부분의 사용자에게는 간단한 Swap을 권장합니다."
 
+#: src/views/earn/views/index-dtf/components/faq-graphics.tsx:61
 #: src/views/index-dtf/governance/components/governance-vote-lock.tsx:422
 msgid "Automatic"
 msgstr "자동"
@@ -1550,6 +1583,10 @@ msgstr "사용 가능한 리워드"
 msgid "Available Trades:"
 msgstr "사용 가능한 거래:"
 
+#: src/views/earn/views/index-dtf/components/faq-graphics.tsx:155
+msgid "Average daily rewards × 365 ÷ vault value locked"
+msgstr ""
+
 #. placeholder {0}: formatPercentage(stats.avg)
 #. placeholder {1}: formatPercentage(stats.min)
 #. placeholder {2}: formatPercentage(stats.max)
@@ -1562,7 +1599,7 @@ msgstr "평균 {0} · 범위 {1}–{2} ({3})"
 msgid "Avg Cost"
 msgstr "평균 단가"
 
-#: src/views/earn/views/index-dtf/components/vote-lock-positions.tsx:265
+#: src/views/earn/views/index-dtf/components/vote-lock-positions.tsx:295
 #: src/views/earn/views/yield-dtf/components/staking-positions.tsx:159
 msgid "Avg. 30d%"
 msgstr "평균 30일%"
@@ -2060,13 +2097,17 @@ msgstr "계산:"
 msgid "Campaign ends:"
 msgstr "캠페인 종료:"
 
-#: src/views/index-dtf/overview/stocks/faq.tsx:21
+#: src/views/index-dtf/overview/stocks/faq.tsx:19
 msgid "Can I sell whenever I want?"
 msgstr ""
 
 #: src/views/earn/views/index-dtf/index.tsx:50
-msgid "Can I unlock my tokens anytime?"
-msgstr "토큰을 언제든지 잠금 해제할 수 있나요?"
+#~ msgid "Can I unlock my tokens anytime?"
+#~ msgstr "토큰을 언제든지 잠금 해제할 수 있나요?"
+
+#: src/views/earn/views/index-dtf/components/faq.tsx:199
+msgid "Can I unlock my tokens at any time?"
+msgstr ""
 
 #: src/views/earn/views/yield-dtf/index.tsx:26
 msgid "Can I unstake my RSR anytime?"
@@ -2293,6 +2334,10 @@ msgstr "모든 트레이더의 보상 청구"
 msgid "Claimable emissions"
 msgstr "청구 가능한 배출량"
 
+#: src/views/earn/views/index-dtf/components/faq-graphics.tsx:97
+msgid "Claimable reward tokens."
+msgstr ""
+
 #: src/views/portfolio-page/components/available-rewards.tsx:80
 msgid "Claimed"
 msgstr "청구 완료"
@@ -2316,7 +2361,7 @@ msgstr "재시도를 클릭하거나 아래의 개별 승인 버튼을 사용하
 
 #: src/components/video-modal/index.tsx:58
 #: src/views/index-dtf/overview/components/charts/candlestick-tooltip.tsx:36
-#: src/views/index-dtf/overview/stocks/video-series-modal.tsx:130
+#: src/views/index-dtf/overview/stocks/video-series-modal.tsx:128
 msgid "Close"
 msgstr "닫기"
 
@@ -2346,7 +2391,7 @@ msgid "Collateral"
 msgstr "담보"
 
 #: src/views/index-dtf/overview/components/basket-overview/basket-table-header.tsx:106
-#: src/views/index-dtf/overview/components/basket-overview/index.tsx:140
+#: src/views/index-dtf/overview/components/basket-overview/index.tsx:135
 msgctxt "DTF basket"
 msgid "Collateral"
 msgstr "담보"
@@ -2648,7 +2693,7 @@ msgstr "포트폴리오를 보려면 Wallet을 연결하세요"
 msgid "Contact me"
 msgstr "문의하기"
 
-#: src/views/index-dtf/overview/components/eligibility-card.tsx:184
+#: src/views/index-dtf/overview/components/eligibility-card.tsx:195
 msgid "Contact us for eligibility"
 msgstr "자격 확인 문의"
 
@@ -3380,6 +3425,10 @@ msgstr "제안 닫기"
 msgid "Display only {0} related collaterals"
 msgstr "{0} 관련 담보만 표시"
 
+#: src/views/earn/views/index-dtf/components/faq-graphics.tsx:180
+msgid "Displayed estimate"
+msgstr ""
+
 #: src/views/explorer/components/revenue/index.tsx:550
 msgid "Distribute"
 msgstr "분배"
@@ -3420,7 +3469,7 @@ msgstr "다양성 계수"
 msgid "Diversity Factor"
 msgstr "다양성 계수"
 
-#: src/views/earn/views/index-dtf/index.tsx:46
+#: src/views/earn/views/index-dtf/components/faq.tsx:194
 #: src/views/earn/views/yield-dtf/index.tsx:22
 msgid "Do I need to vote on proposals to earn rewards?"
 msgstr "보상을 받으려면 제안에 투표해야 하나요?"
@@ -3741,11 +3790,11 @@ msgstr "페이지 편집"
 msgid "Edit proposal"
 msgstr "제안 편집"
 
-#: src/views/index-dtf/overview/stocks/video-chapters.ts:60
+#: src/views/index-dtf/overview/stocks/video-chapters.ts:56
 msgid "Eligibility and how to get started."
 msgstr ""
 
-#: src/views/index-dtf/overview/components/eligibility-card.tsx:122
+#: src/views/index-dtf/overview/components/eligibility-card.tsx:133
 #: src/views/yield-dtf/issuance/components/zapV2/minters-modal/SocialMediaInput.tsx:111
 msgid "Email"
 msgstr "Email"
@@ -4188,7 +4237,7 @@ msgid "Explorer"
 msgstr "Explorer"
 
 #: src/views/index-dtf/overview/components/basket-overview/basket-table-header.tsx:96
-#: src/views/index-dtf/overview/components/basket-overview/index.tsx:133
+#: src/views/index-dtf/overview/components/basket-overview/index.tsx:128
 msgid "Exposure"
 msgstr "노출"
 
@@ -4456,6 +4505,10 @@ msgstr "자세한 내용은 <0>이용 약관</0>을 참조하세요."
 msgid "For redemptions, please wait until the process is complete."
 msgstr "Redemption의 경우, 프로세스가 완료될 때까지 기다려 주세요."
 
+#: src/views/earn/views/index-dtf/components/faq.tsx:63
+msgid "For vlRSR, rewards are converted to RSR and added to the vault’s backing, increasing how much RSR each share can redeem. Other vaults may pay separate reward tokens that you claim manually."
+msgstr ""
+
 #: src/views/index-dtf/overview/components/zap-mint/zap-settings.tsx:62
 msgid "Force DTF mint?"
 msgstr "DTF Mint를 강제로 진행할까요?"
@@ -4517,6 +4570,10 @@ msgstr "전체 익스포저 보기"
 msgid "Fully Charged"
 msgstr "완전 충전됨"
 
+#: src/views/earn/views/index-dtf/components/faq-graphics.tsx:125
+msgid "Fully reflected"
+msgstr ""
+
 #: src/views/yield-dtf/staking/components/overview/unstake-delay-overview.tsx:35
 msgid "Funds will be used in the case of a collateral default during the unstaking delay and up until the point of the manually triggered withdraw transaction."
 msgstr "해당 자금은 unstaking 지연 기간 동안, 그리고 수동으로 트리거되는 출금 트랜잭션 시점까지 담보 디폴트가 발생할 경우 사용됩니다."
@@ -4560,7 +4617,11 @@ msgstr "RToken Deployer로 이동"
 msgid "Gov Speed"
 msgstr "거버넌스 속도"
 
-#: src/views/earn/views/index-dtf/components/vote-lock-positions.tsx:215
+#: src/views/earn/views/index-dtf/components/faq-graphics.tsx:86
+msgid "Gov. token"
+msgstr ""
+
+#: src/views/earn/views/index-dtf/components/vote-lock-positions.tsx:245
 #: src/views/earn/views/yield-dtf/components/staking-positions.tsx:88
 msgid "Gov. Token"
 msgstr "거버넌스 토큰"
@@ -4661,7 +4722,7 @@ msgstr "거버넌스 토큰"
 msgid "Governance with an execution delay greater than 1 week unstaking delay"
 msgstr "Unstaking 지연이 1주를 초과하는 실행 지연이 있는 거버넌스"
 
-#: src/views/earn/views/index-dtf/components/vote-lock-positions.tsx:177
+#: src/views/earn/views/index-dtf/components/vote-lock-positions.tsx:207
 msgid "Governed DTFs"
 msgstr "거버넌스 중인 DTF"
 
@@ -4677,7 +4738,7 @@ msgstr "Governor 주소"
 msgid "Governor mandate"
 msgstr "Governor 위임 사항"
 
-#: src/views/earn/views/index-dtf/components/vote-lock-positions.tsx:251
+#: src/views/earn/views/index-dtf/components/vote-lock-positions.tsx:281
 #: src/views/earn/views/yield-dtf/components/staking-positions.tsx:141
 #: src/views/portfolio-page/components/staked-positions.tsx:42
 #: src/views/portfolio-page/components/vote-locked-positions.tsx:192
@@ -4791,7 +4852,7 @@ msgstr "보유자"
 msgid "Holders APY"
 msgstr "보유자 APY"
 
-#: src/views/index-dtf/overview/components/basket-overview/index.tsx:124
+#: src/views/index-dtf/overview/components/basket-overview/index.tsx:119
 msgid "Holdings"
 msgstr "보유 자산"
 
@@ -4803,8 +4864,12 @@ msgstr "APY가 왜 이렇게 높은가요?"
 msgid "How can we reach you? *"
 msgstr "어떻게 연락드리면 될까요? *"
 
-#: src/views/index-dtf/overview/stocks/faq.tsx:19
+#: src/views/index-dtf/overview/stocks/faq.tsx:17
 msgid "How do US market hours affect stock DTF pricing?"
+msgstr ""
+
+#: src/views/earn/views/index-dtf/components/faq.tsx:51
+msgid "How do vote-lock rewards work?"
 msgstr ""
 
 #: src/views/index-dtf/deploy/components/deploy-coming-soon.tsx:155
@@ -4815,8 +4880,16 @@ msgstr "사람들이 귀하의 DTF에 투자하도록 어떻게 유도할 계획
 msgid "How does first-loss capital work?"
 msgstr "퍼스트 로스 캐피탈은 어떻게 작동하나요?"
 
-#: src/views/index-dtf/overview/stocks/faq.tsx:18
+#: src/views/earn/views/index-dtf/components/faq.tsx:126
+msgid "How is the estimated APY or APR calculated?"
+msgstr ""
+
+#: src/views/index-dtf/overview/stocks/faq.tsx:16
 msgid "How is the price determined?"
+msgstr ""
+
+#: src/views/earn/components/earn-table-cells.tsx:84
+msgid "How is this rate calculated?"
 msgstr ""
 
 #: src/views/index-dtf/deploy/steps/auctions/auctions-form.tsx:80
@@ -4861,7 +4934,7 @@ msgstr "얼마나 Mint 하시겠습니까?"
 msgid "How much the value of the DTF basket changed due to the latest rebalance"
 msgstr "최근 리밸런싱으로 인해 DTF 바스켓의 가치가 얼마나 변동했는지"
 
-#: src/views/index-dtf/overview/stocks/video-chapters.ts:39
+#: src/views/index-dtf/overview/stocks/video-chapters.ts:35
 msgid "How to buy an entire portfolio in a single token."
 msgstr ""
 
@@ -4893,6 +4966,10 @@ msgstr "ID"
 #: src/views/home/components/register-about.tsx:122
 msgid "If a DTF is listed on this app, it doesn't mean that ABC Labs endorses the safety or risk levels of the DTF or that ABC Labs was involved in the creation of or is in anyway responsible for the DTF."
 msgstr "DTF가 이 앱에 등록되어 있다고 해서 ABC Labs가 해당 DTF의 안전성이나 위험 수준을 보증하거나, 해당 DTF의 생성에 관여했거나 어떤 식으로든 책임이 있다는 것을 의미하지는 않습니다."
+
+#: src/views/earn/views/index-dtf/components/faq.tsx:173
+msgid "If several DTFs use the same vault, does it matter where I lock?"
+msgstr ""
 
 #. placeholder {0}: stToken.underlying.symbol
 #: src/components/vote-lock/components/drawer-footer.tsx:32
@@ -4926,6 +5003,10 @@ msgstr "일일 지급액"
 #: src/views/yield-dtf/issuance/components/zapV2/output/ZapOutputUSD.tsx:28
 msgid "in dust"
 msgstr "더스트로"
+
+#: src/views/earn/views/index-dtf/components/faq.tsx:40
+msgid "In return, vote lockers earn rewards from the DTF’s fees — a portion of the TVL and mint fees collected by each Index DTF is distributed to the holders who vote-lock its governance token."
+msgstr ""
 
 #: src/views/yield-dtf/staking/components/withdraw/index.tsx:16
 msgid "In Withdraw Process"
@@ -5172,7 +5253,7 @@ msgstr "유효하지 않은 위임 주소"
 msgid "Invalid destination address"
 msgstr "유효하지 않은 대상 주소"
 
-#: src/views/index-dtf/overview/components/eligibility-card.tsx:24
+#: src/views/index-dtf/overview/components/eligibility-card.tsx:25
 msgid "Invalid email"
 msgstr "유효하지 않은 이메일"
 
@@ -5324,11 +5405,11 @@ msgstr "시작 중..."
 #: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:370
 #: src/views/index-dtf/overview/components/index-ctas-overview-mobile.tsx:62
 #: src/views/index-dtf/overview/components/landing-mint/index.tsx:144
-#: src/views/index-dtf/overview/stocks/landing-mint.tsx:135
+#: src/views/index-dtf/overview/stocks/landing-mint.tsx:124
 msgid "Learn More"
 msgstr "자세히 보기"
 
-#: src/views/index-dtf/overview/components/eligibility-card.tsx:200
+#: src/views/index-dtf/overview/components/eligibility-card.tsx:211
 msgid "Learn more about eligibility requirements."
 msgstr "자격 요건에 대해 자세히 알아보기."
 
@@ -5340,7 +5421,7 @@ msgstr "APY를 얻는 방법 자세히 보기"
 msgid "Learn more about Reserve on their website."
 msgstr "Reserve에 대한 자세한 내용은 웹사이트에서 확인하세요."
 
-#: src/views/index-dtf/overview/stocks/about-reserve-dtfs.tsx:56
+#: src/views/index-dtf/overview/stocks/about-reserve-dtfs.tsx:53
 msgid "Learn more about the Reserve project"
 msgstr ""
 
@@ -5348,7 +5429,7 @@ msgstr ""
 msgid "Learn more about this DTF, the assets it tracks, how the basket is weighted, and the role each component plays inside the fund."
 msgstr "이 DTF가 추적하는 자산, 바스켓 가중 방식, 그리고 각 구성 요소가 펀드 안에서 맡는 역할을 자세히 알아보세요."
 
-#: src/views/index-dtf/overview/stocks/video-library.tsx:72
+#: src/views/index-dtf/overview/stocks/video-library.tsx:74
 msgid "Learn more by watching these short videos."
 msgstr ""
 
@@ -5484,7 +5565,7 @@ msgstr "포트폴리오 데이터를 불러오는 중..."
 msgid "Loading..."
 msgstr "로딩 중..."
 
-#: src/views/index-dtf/overview/components/eligibility-card.tsx:162
+#: src/views/index-dtf/overview/components/eligibility-card.tsx:173
 msgid "Location restricted"
 msgstr "위치 제한"
 
@@ -5492,6 +5573,10 @@ msgstr "위치 제한"
 #: src/views/index-dtf/overview/components/index-governance-overview.tsx:86
 msgid "Lock ${0} to Govern"
 msgstr "거버넌스 참여를 위해 ${0} 잠금"
+
+#: src/views/earn/views/index-dtf/components/faq.tsx:184
+msgid "Locking from a particular DTF page does not create a separate reward rate for that DTF."
+msgstr ""
 
 #: src/views/yield-dtf/settings/components/freeze-manager.tsx:69
 #: src/views/yield-dtf/settings/components/freeze-manager.tsx:73
@@ -5716,10 +5801,18 @@ msgstr "RToken에 대한 최대 거래"
 msgid "Maximum trade volume - maximum sized trade for any trade involving RToken, in terms of the unit of account eg. USD."
 msgstr "최대 거래량 - RToken이 관련된 모든 거래에 대한 최대 거래 규모로, 회계 단위(예: USD) 기준입니다."
 
+#: src/views/earn/views/index-dtf/components/faq-graphics.tsx:81
+msgid "May require claim"
+msgstr ""
+
 #: src/views/index-dtf/overview/components/charts/market-cap.tsx:15
 #: src/views/top100/components/top100-card.tsx:93
 msgid "MCap:"
 msgstr "시총:"
+
+#: src/views/earn/views/index-dtf/components/faq-graphics.tsx:210
+msgid "Measures exchange-rate change during your window."
+msgstr ""
 
 #: src/views/yield-dtf/staking/components/overview/about.tsx:24
 msgid "Mechanics"
@@ -5738,7 +5831,7 @@ msgstr "중간"
 msgid "Medium liquidity"
 msgstr "중간 유동성"
 
-#: src/views/index-dtf/overview/stocks/video-chapters.ts:45
+#: src/views/index-dtf/overview/stocks/video-chapters.ts:41
 msgid "Meet $BUILDOUT"
 msgstr ""
 
@@ -5980,6 +6073,10 @@ msgstr "{dtfName}이(가) 무엇인지, 어떤 프로젝트인지, 방법론과 
 msgid "More options"
 msgstr "추가 옵션"
 
+#: src/views/earn/views/index-dtf/components/faq-graphics.tsx:73
+msgid "More RSR per share"
+msgstr ""
+
 #: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:159
 msgid "Most users should use Swap"
 msgstr "대부분의 사용자는 Swap을 사용해야 합니다"
@@ -6011,7 +6108,7 @@ msgstr "0에서 100 사이여야 합니다"
 #: src/views/home/components/discover-index-dtf/index-dtf-table-columns.tsx:167
 #: src/views/home/components/discover-index-dtf/index-dtf-table-placeholder.tsx:17
 #: src/views/index-dtf/deploy/steps/metadata/form-basic-metadata.tsx:10
-#: src/views/index-dtf/overview/components/eligibility-card.tsx:107
+#: src/views/index-dtf/overview/components/eligibility-card.tsx:118
 #: src/views/index-dtf/settings/components/index-settings-basic.tsx:40
 #: src/views/portfolio-page/components/dtf-positions.tsx:31
 #: src/views/portfolio-page/components/rsr-section.tsx:18
@@ -6171,7 +6268,7 @@ msgstr "다음 개장"
 msgid "Next steps"
 msgstr "다음 단계"
 
-#: src/views/index-dtf/overview/stocks/video-series-modal.tsx:174
+#: src/views/index-dtf/overview/stocks/video-series-modal.tsx:170
 msgid "Next video"
 msgstr ""
 
@@ -6379,20 +6476,28 @@ msgid "No yield opportunities found"
 msgstr "수익 기회를 찾을 수 없습니다"
 
 #: src/views/earn/views/index-dtf/index.tsx:51
-msgid "No. Locked RSR follows the DTF’s timelock rules, which are set when the DTF is created. You should always check the lock duration before committing, as early unlocks are not allowed. This prevents short-term manipulation and keeps governance aligned with long-term holders."
-msgstr "아니요. 잠긴 RSR은 DTF 생성 시 설정되는 DTF의 Timelock 규칙을 따릅니다. 조기 잠금 해제는 허용되지 않으므로 약정하기 전에 항상 잠금 기간을 확인해야 합니다. 이는 단기 조작을 방지하고 거버넌스를 장기 보유자와 일치시킵니다."
+#~ msgid "No. Locked RSR follows the DTF’s timelock rules, which are set when the DTF is created. You should always check the lock duration before committing, as early unlocks are not allowed. This prevents short-term manipulation and keeps governance aligned with long-term holders."
+#~ msgstr "아니요. 잠긴 RSR은 DTF 생성 시 설정되는 DTF의 Timelock 규칙을 따릅니다. 조기 잠금 해제는 허용되지 않으므로 약정하기 전에 항상 잠금 기간을 확인해야 합니다. 이는 단기 조작을 방지하고 거버넌스를 장기 보유자와 일치시킵니다."
 
 #: src/views/earn/views/yield-dtf/index.tsx:23
 msgid "No. Stakers earn rewards as long as their RSR is actively staked, even if they don’t vote on proposals. Voting is optional, but participating helps shape how the Yield DTF is governed."
 msgstr "아니요. Stakers는 제안에 투표하지 않더라도 RSR이 활발히 Stake되어 있는 한 보상을 받습니다. 투표는 선택 사항이지만, 참여하면 Yield DTF의 거버넌스 방향을 만들어가는 데 도움이 됩니다."
+
+#: src/views/earn/views/index-dtf/components/faq.tsx:177
+msgid "No. When several DTFs use the same vote-lock vault, your locked tokens belong to that shared vault. Its reward rate reflects rewards flowing to the vault across all the DTFs it governs."
+msgstr ""
 
 #: src/views/earn/views/yield-dtf/index.tsx:27
 msgid "No. When you unstake, your RSR enters an unstaking cooldown period defined by the Yield DTF’s parameters. During this time, the tokens remain locked and cannot be withdrawn. Once the cooldown ends, you can fully withdraw your RSR."
 msgstr "아니요. Unstake하면 RSR은 Yield DTF의 매개변수로 정의된 unstaking 쿨다운 기간에 들어갑니다. 이 기간 동안 토큰은 잠긴 상태로 유지되며 출금할 수 없습니다. 쿨다운이 끝나면 RSR을 전액 출금할 수 있습니다."
 
 #: src/views/earn/views/index-dtf/index.tsx:47
-msgid "No. You earn rewards as long as your ERC2O tokens are vote-locked, even if you don’t participate in every proposal. Voting is encouraged, but it’s not required to receive your share of rewards."
-msgstr "아니요. 모든 제안에 참여하지 않더라도 ERC20 토큰이 투표 잠금되어 있는 한 보상을 받습니다. 투표는 권장되지만, 보상 몫을 받기 위해 필수는 아닙니다."
+#~ msgid "No. You earn rewards as long as your ERC2O tokens are vote-locked, even if you don’t participate in every proposal. Voting is encouraged, but it’s not required to receive your share of rewards."
+#~ msgstr "아니요. 모든 제안에 참여하지 않더라도 ERC20 토큰이 투표 잠금되어 있는 한 보상을 받습니다. 투표는 권장되지만, 보상 몫을 받기 위해 필수는 아닙니다."
+
+#: src/views/earn/views/index-dtf/components/faq.tsx:195
+msgid "No. You earn your share of rewards while your tokens are vote-locked, even if you don’t participate in every proposal. Voting is encouraged because vote lockers are responsible for the DTFs they govern."
+msgstr ""
 
 #: src/views/index-dtf/deploy/components/deploy-accordion.tsx:116
 #: src/views/index-dtf/deploy/components/deploy-accordion.tsx:117
@@ -6514,6 +6619,10 @@ msgstr "하나 이상의 승인이 실패했습니다"
 msgid "One or more tokens in the rebalance is out of bounds. Rebalance must be closed."
 msgstr "리밸런싱의 토큰 중 하나 이상이 범위를 벗어났습니다. 리밸런싱을 종료해야 합니다."
 
+#: src/views/earn/views/index-dtf/components/faq-graphics.tsx:107
+msgid "One reward deposit, released over time"
+msgstr ""
+
 #: src/views/index-dtf/auctions/legacy/components/proposal-trades.tsx:93
 msgid "Ongoing"
 msgstr "진행 중"
@@ -6527,7 +6636,7 @@ msgid "Ongoing dutch auctions"
 msgstr "진행 중인 더치 경매"
 
 #. placeholder {0}: dtf?.token.symbol ?? 'DTF'
-#: src/views/index-dtf/overview/stocks/faq.tsx:58
+#: src/views/index-dtf/overview/stocks/faq.tsx:51
 msgid "Online — answers use live {0} data."
 msgstr ""
 
@@ -6646,7 +6755,7 @@ msgstr "주문이 {0} 후 만료됩니다"
 msgid "Original whitepaper documentation"
 msgstr "원본 백서 문서"
 
-#: src/views/earn/views/index-dtf/components/vote-lock-positions.tsx:166
+#: src/views/earn/views/index-dtf/components/vote-lock-positions.tsx:196
 msgid "other"
 msgstr "기타"
 
@@ -6685,6 +6794,10 @@ msgstr "기타 수령인 {0}"
 #: src/views/yield-dtf/overview/components/backing/risks.tsx:116
 msgid "Other Risks"
 msgstr "기타 리스크"
+
+#: src/views/earn/views/index-dtf/components/faq-graphics.tsx:80
+msgid "Other vault rewards"
+msgstr ""
 
 #: src/components/layout/navigation/index.tsx:77
 #: src/components/layout/navigation/TokenNavigation.tsx:176
@@ -6931,8 +7044,8 @@ msgstr "동영상 재생"
 
 #. placeholder {0}: t(chapter.title)
 #. placeholder {1}: chapter.duration
-#: src/views/index-dtf/overview/stocks/video-library.tsx:22
-#: src/views/index-dtf/overview/stocks/video-series-modal.tsx:37
+#: src/views/index-dtf/overview/stocks/video-library.tsx:24
+#: src/views/index-dtf/overview/stocks/video-series-modal.tsx:38
 msgid "Play video: {0} ({1})"
 msgstr ""
 
@@ -7136,7 +7249,7 @@ msgstr "이전 바스켓"
 msgid "Previous Version (v1)"
 msgstr "이전 버전 (v1)"
 
-#: src/views/index-dtf/overview/stocks/video-series-modal.tsx:154
+#: src/views/index-dtf/overview/stocks/video-series-modal.tsx:150
 msgid "Previous video"
 msgstr ""
 
@@ -7260,6 +7373,10 @@ msgstr "진행 중"
 #: src/views/earn/hooks/useEarnTableColumns.tsx:117
 msgid "Project"
 msgstr "프로젝트"
+
+#: src/views/earn/views/index-dtf/components/faq-graphics.tsx:183
+msgid "Projects recent reward activity forward."
+msgstr ""
 
 #: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:209
 msgid "Proposal canceled"
@@ -7633,6 +7750,10 @@ msgstr "수신 eth 주소"
 msgid "Recent proposals"
 msgstr "최근 제안"
 
+#: src/views/earn/views/index-dtf/components/faq.tsx:160
+msgid "Recent rewards may still be streaming into the exchange rate, and your own observation window may not match the 30-day window used for the estimate. That is why a short-term realized calculation can differ significantly from the displayed forward-looking estimate."
+msgstr ""
+
 #. placeholder {0}: index + 1
 #: src/views/index-dtf/deploy/steps/revenue/additional-revenue-recipients.tsx:63
 msgid "Recipient {0} address"
@@ -7935,7 +8056,7 @@ msgid "Request plugin"
 msgstr "플러그인 요청"
 
 #: src/views/index-dtf/deploy/components/deploy-coming-soon.tsx:25
-#: src/views/index-dtf/overview/components/eligibility-card.tsx:23
+#: src/views/index-dtf/overview/components/eligibility-card.tsx:24
 msgid "Required"
 msgstr "필수"
 
@@ -7965,11 +8086,11 @@ msgstr "필수:"
 msgid "Reserve aims to help people around the world maintain their spending power by allowing anyone to create asset-backed currencies with tokenized assets on the Ethereum blockchain in customizable and novel ways."
 msgstr "Reserve는 누구나 Ethereum 블록체인에서 토큰화된 자산을 활용해 맞춤형의 새로운 방식으로 자산 기반 통화를 만들 수 있도록 함으로써, 전 세계 사람들이 구매력을 유지할 수 있도록 돕는 것을 목표로 합니다."
 
-#: src/views/index-dtf/overview/stocks/backed-badge.tsx:10
+#: src/views/index-dtf/overview/stocks/backed-badge.tsx:8
 msgid "Reserve equity DTFs are 100% backed by real stocks."
 msgstr ""
 
-#: src/views/index-dtf/overview/stocks/about-reserve-dtfs.tsx:26
+#: src/views/index-dtf/overview/stocks/about-reserve-dtfs.tsx:23
 msgid "Reserve has been operating since 2018 with backing from <0><1>Coinbase</1>, <2>Sam Altman</2> and <3>Peter Thiel</3></0>. We exist to help you own your share of the world’s wealth."
 msgstr ""
 
@@ -7977,7 +8098,7 @@ msgstr ""
 msgid "Reserve lets you buy entire portfolios as a single token"
 msgstr "Reserve를 통해 전체 포트폴리오를 단일 토큰으로 구매할 수 있습니다"
 
-#: src/views/index-dtf/overview/stocks/about-reserve-dtfs.tsx:16
+#: src/views/index-dtf/overview/stocks/about-reserve-dtfs.tsx:13
 msgid "Reserve logo"
 msgstr ""
 
@@ -8213,6 +8334,10 @@ msgstr "보상 토큰"
 msgid "Rewards"
 msgstr "보상"
 
+#: src/views/earn/views/index-dtf/components/faq-graphics.tsx:119
+msgid "Rewards added"
+msgstr ""
+
 #: src/views/portfolio-page/components/rewards-available.tsx:17
 msgid "Rewards Available"
 msgstr "사용 가능한 리워드"
@@ -8221,9 +8346,21 @@ msgstr "사용 가능한 리워드"
 msgid "Rewards claimed"
 msgstr "청구된 리워드"
 
+#: src/views/earn/views/index-dtf/components/faq.tsx:55
+msgid "Rewards come from the fees of the DTFs a vault governs, but vaults distribute them in two different ways. Check the vault’s reward details before locking."
+msgstr ""
+
+#: src/views/earn/views/index-dtf/components/faq-graphics.tsx:147
+msgid "Rewards distributed during the trailing 30-day window"
+msgstr ""
+
 #: src/views/index-dtf/governance/components/governance-vote-lock.tsx:291
 msgid "Rewards in"
 msgstr "보상 토큰"
+
+#: src/views/earn/views/index-dtf/components/faq-graphics.tsx:75
+msgid "Rewards increase the vault’s backing."
+msgstr ""
 
 #: src/views/yield-dtf/governance/views/proposal/components/ConfirmProposalForm.tsx:60
 msgid "RFC"
@@ -8411,6 +8548,8 @@ msgid "Save Weights {editedRows}/{totalRows} edited"
 msgstr "가중치 저장 {editedRows}/{totalRows} 편집됨"
 
 #: src/components/layout/contact-modal/bell-button.tsx:64
+#: src/views/index-dtf/overview/components/eligibility-card.tsx:103
+#: src/views/index-dtf/overview/components/eligibility-card.tsx:151
 msgid "Schedule a meeting"
 msgstr "미팅 예약"
 
@@ -8575,6 +8714,10 @@ msgstr "판매 중:"
 msgid "Send dust back to wallet"
 msgstr "더스트를 Wallet으로 돌려보내기"
 
+#: src/views/earn/views/index-dtf/components/faq-graphics.tsx:95
+msgid "Separate rewards"
+msgstr ""
+
 #: src/views/index-dtf/governance/views/propose/basket/components/basket-proposal.tsx:43
 msgid "Set basket composition"
 msgstr "바스켓 구성 설정"
@@ -8696,8 +8839,7 @@ msgid "Short freezers have the responsibility of freezing an RToken if anything 
 msgstr "단기 동결자는 위험하거나 의심스러운 일이 발생할 경우 RToken을 동결할 책임이 있습니다. 이는 일회성 동결이며 한 번 사용하면 역할이 회수됩니다. 이 필드는 동결이 만료되거나 다른 행위자에 의해 연장될 때까지 RToken이 동결 상태로 유지되는 기간을 결정합니다."
 
 #. placeholder {0}: activeCount - MAX_TOKENS
-#: src/views/index-dtf/overview/components/basket-overview/index.tsx:207
-#: src/views/index-dtf/overview/components/basket-overview/index.tsx:214
+#: src/views/index-dtf/overview/components/basket-overview/index.tsx:203
 msgid "Show {0} more"
 msgstr ""
 
@@ -8911,7 +9053,7 @@ msgstr "Aave 및 Convex와 같은 프로토콜의 일부 담보 토큰은 기술
 msgid "Some quotes couldn't be fetched."
 msgstr "일부 견적을 가져오지 못했습니다."
 
-#: src/views/index-dtf/overview/components/eligibility-card.tsx:144
+#: src/views/index-dtf/overview/components/eligibility-card.tsx:155
 msgid "Something went wrong. Please try again."
 msgstr "문제가 발생했습니다. 다시 시도해 주세요."
 
@@ -9172,6 +9314,10 @@ msgstr "중지"
 msgid "Strategies"
 msgstr "전략"
 
+#: src/views/earn/views/index-dtf/components/faq-graphics.tsx:122
+msgid "Streaming"
+msgstr ""
+
 #: src/views/index-dtf/deploy/form-fields.ts:98
 msgid "stRSR DAO contracts for Index DTFs are not supported"
 msgstr "Index DTF에는 stRSR DAO 컨트랙트가 지원되지 않습니다"
@@ -9185,8 +9331,8 @@ msgid "stRSR Token"
 msgstr "stRSR 토큰"
 
 #: src/views/index-dtf/overview/components/eligibility-card.tsx:140
-msgid "Submit"
-msgstr "제출"
+#~ msgid "Submit"
+#~ msgstr "제출"
 
 #: src/views/index-dtf/manage/components/submit-button.tsx:318
 msgid "Submit all changes"
@@ -9213,7 +9359,7 @@ msgstr "제출됨!"
 
 #: src/views/index-dtf/deploy/components/deploy-coming-soon.tsx:182
 #: src/views/index-dtf/manage/components/submit-button.tsx:321
-#: src/views/index-dtf/overview/components/eligibility-card.tsx:140
+#: src/views/index-dtf/overview/components/eligibility-card.tsx:151
 msgid "Submitting..."
 msgstr "제출 중..."
 
@@ -9391,7 +9537,7 @@ msgid "Terms and Conditions"
 msgstr "이용약관"
 
 #: src/views/index-dtf/deploy/components/deploy-coming-soon.tsx:109
-#: src/views/index-dtf/overview/components/eligibility-card.tsx:92
+#: src/views/index-dtf/overview/components/eligibility-card.tsx:95
 msgid "Thank you! We'll be in touch soon."
 msgstr "감사합니다! 곧 연락드리겠습니다."
 
@@ -9439,6 +9585,14 @@ msgstr "새로운 RToken 설계는 누구나 자유롭게 생성할 수 있습�
 msgid "The DAO governance provides a Guardian role that can improve the safety of DTF holders and governors. Guardians have the ability to veto any proposal prior to execution. This role is mutable and can be changed by governance in the future."
 msgstr "DAO 거버넌스는 DTF 보유자와 거버너의 안전성을 높일 수 있는 가디언 역할을 제공합니다. 가디언은 실행 전 모든 제안을 거부할 수 있는 권한을 가집니다. 이 역할은 변경 가능하며 향후 거버넌스를 통해 변경될 수 있습니다."
 
+#: src/views/earn/views/index-dtf/components/faq.tsx:153
+msgid "The displayed APY or APR and your realized return measure different things."
+msgstr ""
+
+#: src/views/earn/views/index-dtf/components/faq.tsx:130
+msgid "The displayed rate estimates what would happen if the vault’s recent reward pace continued for one year, based on rewards distributed over approximately the last 30 days."
+msgstr ""
+
 #: src/components/rtoken-setup/basket/EmergencyCollateral.tsx:160
 msgid "The diversity factor determines the amount of emergency collateral that will be deployed to the RToken basket in the case of a default."
 msgstr "다양성 계수는 디폴트 발생 시 RToken 바스켓에 배포될 비상 담보의 양을 결정합니다."
@@ -9446,6 +9600,10 @@ msgstr "다양성 계수는 디폴트 발생 시 RToken 바스켓에 배포될 �
 #: src/components/rtoken-setup/token/BackingForm.tsx:76
 msgid "The dutch auction length is how many seconds long falling-price dutch auctions should be. A longer period will result in less slippage due to better price granularity, and a shorter period will result in more slippage."
 msgstr "더치 경매 기간은 가격 하락형 더치 경매가 몇 초 동안 지속되어야 하는지를 나타냅니다. 기간이 길수록 가격 세분화가 향상되어 슬리피지가 줄어들고, 기간이 짧을수록 슬리피지가 늘어납니다."
+
+#: src/views/earn/views/index-dtf/components/faq.tsx:138
+msgid "The estimate is not guaranteed. It changes when rewards, vault deposits and withdrawals, token prices, or the calculation window change."
+msgstr ""
 
 #: src/components/rtoken-setup/token/OtherForm.tsx:53
 msgid "The fraction of RSR stake that should be permitted to withdraw without a refresh. When cumulative withdrawals (or a single withdrawal) exceed this fraction, gas must be paid to refresh all assets."
@@ -9462,6 +9620,10 @@ msgstr "거래가 시장 가격에 미치는 영향입니다."
 #: src/views/index-dtf/overview/components/index-disclousure.tsx:373
 msgid "The information provided on the Website comes from on-chain sources. Past performance is not indicative of future results. Although index DTFs are intended to track indexes, their ability to successfully track indexes are dependent on the governance structure of the DTF and the governance’s ability to make appropriate trades. There is no guarantee that such trades will be successful or will track its corresponding index exactly. There are many risks associated with digital assets, including but not limited to security risk, counterparty risk, volatility risk, conflicts of interest, and many more. DTFs are no exception. By using the Website, you agree that your interaction with any DTFs is solely at your own risk and the Website and DTFs come as is, without any warranty or condition of any kind."
 msgstr "웹사이트에서 제공되는 정보는 온체인 소스에서 가져옵니다. 과거의 성과가 미래의 결과를 보장하지 않습니다. 인덱스 DTF는 지수를 추종하도록 설계되었지만, 지수를 성공적으로 추종할 수 있는지는 DTF의 거버넌스 구조와 거버넌스가 적절한 거래를 수행할 수 있는 능력에 달려 있습니다. 그러한 거래가 성공하거나 해당 지수를 정확히 추종한다는 보장은 없습니다. 디지털 자산에는 보안 위험, 거래상대방 위험, 변동성 위험, 이해 상충 등 수많은 위험이 존재합니다. DTF도 예외가 아닙니다. 웹사이트를 사용함으로써 귀하는 DTF와의 모든 상호작용이 전적으로 귀하의 책임이며, 웹사이트와 DTF가 어떠한 종류의 보증이나 조건 없이 있는 그대로 제공된다는 데 동의합니다."
+
+#: src/views/earn/views/index-dtf/components/faq.tsx:116
+msgid "The label follows the reward mechanism: automatic in-vault compounding shows APY; separate claimable rewards show APR."
+msgstr ""
 
 #: src/components/rtoken-setup/governance/RoleSetup.tsx:30
 msgid "The long freezer has the ability to freeze an RToken's system for a long period of time. The LONG_FREEZER role should be assigned to an address that will highly optimize for no false positives. It is much longer than the short freeze. It can act slowly and needs to be trusted. It is probably expected to have only one long-freezer address. It allows only 6x uses per long-freezer. It exists so that in the case of a zero-day exploit, governance can act before the system unfreezes and resumes functioning."
@@ -9537,13 +9699,17 @@ msgstr "pauser는 RToken 시스템을 일시중지하고 재개할 수 있는 �
 msgid "The pauser(s) can put the RToken in two states which can be either true or false (no set duration):"
 msgstr "pauser는 RToken을 true 또는 false가 될 수 있는 두 가지 상태로 전환할 수 있습니다(기간 설정 없음):"
 
-#: src/views/index-dtf/overview/stocks/video-chapters.ts:53
-msgid "The platform behind DTFs, and the team."
+#: src/views/index-dtf/overview/stocks/video-chapters.ts:49
+msgid "The platform and team behind DTFs."
 msgstr ""
 
+#: src/views/index-dtf/overview/stocks/video-chapters.ts:53
+#~ msgid "The platform behind DTFs, and the team."
+#~ msgstr ""
+
 #: src/views/index-dtf/overview/stocks/video-chapters.ts:46
-msgid "The power companies behind the AI buildout."
-msgstr ""
+#~ msgid "The power companies behind the AI buildout."
+#~ msgstr ""
 
 #: src/views/index-dtf/overview/components/zap-mint/zap-warning-checkbox.tsx:39
 msgid "The price impact for this trade is very high. You will get significantly less value than expected."
@@ -9731,7 +9897,7 @@ msgid "This DTF"
 msgstr "이 DTF"
 
 #: src/views/index-dtf/overview/components/landing-mint/index.tsx:118
-#: src/views/index-dtf/overview/stocks/landing-mint.tsx:112
+#: src/views/index-dtf/overview/stocks/landing-mint.tsx:101
 msgid "This DTF can only be sold"
 msgstr "이 DTF는 매도만 가능합니다"
 
@@ -9768,13 +9934,17 @@ msgstr "이 DTF는 더 이상 적극적으로 거버넌스되지 않으며 매�
 #. placeholder {0}: dtf.token.symbol
 #. placeholder {0}: dtf?.token.symbol
 #: src/views/index-dtf/overview/components/landing-mint/index.tsx:121
-#: src/views/index-dtf/overview/stocks/landing-mint.tsx:115
+#: src/views/index-dtf/overview/stocks/landing-mint.tsx:104
 msgid "This DTF is no longer actively governed, cannot rebalance, and no new ${0} can be created."
 msgstr "이 DTF는 더 이상 활발히 거버넌스되지 않으며, 리밸런싱할 수 없고, 새로운 ${0}을(를) 생성할 수 없습니다."
 
 #: src/components/field/index.tsx:35
 msgid "This field is required"
 msgstr "필수 입력 항목입니다"
+
+#: src/views/earn/views/index-dtf/components/faq.tsx:86
+msgid "This helps prevent someone from locking immediately before a reward payment, taking part of that reward, and withdrawing right afterward. Streaming makes distribution fairer to users who remain in the vault."
+msgstr ""
 
 #: src/views/yield-dtf/deploy/components/TokenForm.tsx:91
 msgid "This impacts whether the RToken charges higher rates for issuance when collateral is under-peg. This mechanism can be useful for preventing toxic issuance but comes with the tradeoff of making the onchain oracle price unreliable, as the issuance/redemption band widens as a collateral approaches its de-peg threshold."
@@ -9887,9 +10057,13 @@ msgstr "제목 업데이트"
 msgid "To learn more about the risks associated with DTFs,"
 msgstr "DTF와 관련된 위험에 대해 자세히 알아보려면"
 
-#: src/views/index-dtf/overview/components/eligibility-card.tsx:187
+#: src/views/index-dtf/overview/components/eligibility-card.tsx:198
 msgid "To verify eligibility, please leave us your name and email, and we will reach out to you personally."
 msgstr "자격 확인을 위해 이름과 이메일을 남겨 주시면 직접 연락드리겠습니다."
+
+#: src/views/earn/views/index-dtf/components/faq-graphics.tsx:233
+msgid "Today"
+msgstr ""
 
 #: src/components/ui/swap.tsx:495
 msgid "Toggle {option}"
@@ -10909,7 +11083,7 @@ msgstr "영상"
 
 #. placeholder {0}: index + 1
 #. placeholder {1}: VIDEO_CHAPTERS.length
-#: src/views/index-dtf/overview/stocks/video-series-modal.tsx:119
+#: src/views/index-dtf/overview/stocks/video-series-modal.tsx:117
 msgid "Video {0} of {1}"
 msgstr ""
 
@@ -10930,11 +11104,11 @@ msgstr "보기"
 msgid "View {0} on block explorer"
 msgstr "블록 탐색기에서 {0} 보기"
 
-#: src/views/index-dtf/overview/components/basket-overview/index.tsx:231
+#: src/views/index-dtf/overview/components/basket-overview/index.tsx:218
 msgid "View all {activeCount} assets"
 msgstr "전체 {activeCount}개 자산 보기"
 
-#: src/views/index-dtf/overview/components/basket-overview/index.tsx:232
+#: src/views/index-dtf/overview/components/basket-overview/index.tsx:219
 msgid "View all {activeCount} tokens"
 msgstr "전체 {activeCount}개 토큰 보기"
 
@@ -10965,7 +11139,7 @@ msgstr "거버넌스 설정 보기"
 msgid "View in explorer"
 msgstr "익스플로러에서 보기"
 
-#: src/views/index-dtf/overview/components/basket-overview/index.tsx:229
+#: src/views/index-dtf/overview/components/basket-overview/index.tsx:216
 msgid "View less"
 msgstr "간략히 보기"
 
@@ -11059,6 +11233,14 @@ msgstr "포트폴리오 조회 대상"
 msgid "Visit {name}"
 msgstr "{name} 방문"
 
+#: src/views/earn/views/index-dtf/components/faq-graphics.tsx:68
+msgid "vlRSR vault"
+msgstr ""
+
+#: src/views/earn/views/index-dtf/components/faq-graphics.tsx:60
+msgid "vlRSR-style rewards"
+msgstr ""
+
 #: src/views/tokens/components/UnlistedTokensTable.tsx:107
 msgid "Volume (all time)"
 msgstr "거래량 (전체 기간)"
@@ -11086,7 +11268,7 @@ msgstr "Vote Lock 주소"
 msgid "Vote Lock address is not allowed for new DAO"
 msgstr "새 DAO에는 Vote Lock 주소가 허용되지 않습니다"
 
-#: src/views/earn/views/index-dtf/index.tsx:84
+#: src/views/earn/views/index-dtf/components/faq.tsx:236
 msgid "Vote Lock Frequently Asked Questions"
 msgstr "투표 잠금 자주 묻는 질문"
 
@@ -11099,16 +11281,16 @@ msgid "Vote locked"
 msgstr "투표 잠금됨"
 
 #: src/views/earn/views/index-dtf/index.tsx:34
-msgid "Vote lockers earn rewards from the DTF’s fees. A portion of the TVL fees and mint fees collected by the Index DTF are distributed to vote-locked token holders. The more tokens locked, the larger the share of rewards an individual vote-locked token holder will receive."
-msgstr "투표 잠금자는 DTF의 수수료에서 보상을 받습니다. Index DTF가 징수한 TVL 수수료와 mint 수수료의 일부가 투표 잠금된 토큰 보유자에게 분배됩니다. 잠긴 토큰이 많을수록 개별 투표 잠금 토큰 보유자가 받는 보상 몫이 커집니다."
+#~ msgid "Vote lockers earn rewards from the DTF’s fees. A portion of the TVL fees and mint fees collected by the Index DTF are distributed to vote-locked token holders. The more tokens locked, the larger the share of rewards an individual vote-locked token holder will receive."
+#~ msgstr "투표 잠금자는 DTF의 수수료에서 보상을 받습니다. Index DTF가 징수한 TVL 수수료와 mint 수수료의 일부가 투표 잠금된 토큰 보유자에게 분배됩니다. 잠긴 토큰이 많을수록 개별 투표 잠금 토큰 보유자가 받는 보상 몫이 커집니다."
 
-#: src/views/earn/views/index-dtf/index.tsx:27
+#: src/views/earn/views/index-dtf/components/faq.tsx:33
 msgid "Vote lockers govern the key parameters of an Index DTF, including which assets are in the basket, their weights, fees, and contract upgrades."
 msgstr "투표 잠금자는 바스켓에 포함되는 자산, 그 가중치, 수수료, 컨트랙트 업그레이드 등 Index DTF의 핵심 매개변수를 거버넌스합니다."
 
 #: src/views/earn/views/index-dtf/index.tsx:19
-msgid "Vote locking is the process of locking an ERC20 token for a set period to gain governance power of an Index DTF and earn rewards. While locked, the RSR cannot be transferred or sold until the lock period ends."
-msgstr "투표 잠금은 ERC20 토큰을 일정 기간 잠가 Index DTF의 거버넌스 권한을 얻고 보상을 받는 과정입니다. 잠금 기간 동안 RSR은 잠금 기간이 끝날 때까지 전송하거나 판매할 수 없습니다."
+#~ msgid "Vote locking is the process of locking an ERC20 token for a set period to gain governance power of an Index DTF and earn rewards. While locked, the RSR cannot be transferred or sold until the lock period ends."
+#~ msgstr "투표 잠금은 ERC20 토큰을 일정 기간 잠가 Index DTF의 거버넌스 권한을 얻고 보상을 받는 과정입니다. 잠금 기간 동안 RSR은 잠금 기간이 끝날 때까지 전송하거나 판매할 수 없습니다."
 
 #: src/views/index-dtf/governance/views/proposal/components/proposal-vote-button.tsx:59
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalVote.tsx:177
@@ -11162,6 +11344,10 @@ msgstr "투표 잠금 DAO 토큰"
 msgid "Vote-Lock on Index DTFs"
 msgstr "Index DTF의 투표 잠금"
 
+#: src/views/earn/views/index-dtf/components/faq-graphics.tsx:90
+msgid "Vote-lock vault"
+msgstr ""
+
 #: src/views/portfolio-page/components/portfolio-breakdown.tsx:39
 #: src/views/portfolio-page/components/portfolio-chart.tsx:74
 msgid "Vote-locked"
@@ -11174,6 +11360,10 @@ msgstr "투표 잠금 포지션"
 #: src/views/portfolio-page/components/voting-power.tsx:99
 msgid "Vote-locker Address"
 msgstr "투표 잠금자 주소"
+
+#: src/views/earn/views/index-dtf/components/faq.tsx:26
+msgid "Vote-locking means locking an ERC20 governance token in a vault to receive governance power over one or more Index DTFs. While locked, your tokens cannot be transferred or sold."
+msgstr ""
 
 #: src/views/index-dtf/governance/components/governance-delegate-list.tsx:64
 #: src/views/yield-dtf/governance/components/TopVoters.tsx:108
@@ -11474,7 +11664,7 @@ msgstr "Mint에 필요한 자산을 확보하기 위해 {0}을(를) 사용합니
 msgid "We're sorry, but the swap quote is unavailable. The amount may be too small to cover fees. Please <0>retry</0>, or <1>edit the amount</1>, and try again."
 msgstr "죄송합니다. Swap 견적을 사용할 수 없습니다. 금액이 너무 작아 수수료를 충당하지 못할 수 있습니다. <0>다시 시도</0>하거나 <1>금액 수정</1> 후 다시 시도해 주세요."
 
-#: src/views/index-dtf/overview/components/eligibility-card.tsx:165
+#: src/views/index-dtf/overview/components/eligibility-card.tsx:176
 msgid "We're sorry, this product isn't available to customers in your region. In order to access this DTF, you may need to qualify as a <0>qualified investor</0>."
 msgstr "죄송합니다. 이 상품은 고객님의 지역에서 이용하실 수 없습니다. 이 DTF에 접근하려면 <0>적격 투자자</0> 자격이 필요할 수 있습니다."
 
@@ -11517,11 +11707,11 @@ msgstr "저장된 가중치:"
 msgid "Welcome to Reserve — a platform for creating, exploring, and interacting with Decentralized Token Funds (“DTFs”). A DTF is the generic name given to any onchain asset-backed index. DTFs can be created on Reserve’s Yield Protocol or Index Protocol permissionlessly, by any person or entity."
 msgstr "Reserve에 오신 것을 환영합니다. Decentralized Token Funds(“DTF”)를 생성, 탐색하고 상호작용할 수 있는 플랫폼입니다. DTF는 자산으로 백킹되는 모든 온체인 인덱스를 가리키는 일반 명칭입니다. DTF는 누구나 어떤 개인이나 단체든 권한 없이 Reserve의 Yield Protocol 또는 Index Protocol에서 생성할 수 있습니다."
 
-#: src/views/index-dtf/overview/stocks/faq.tsx:20
+#: src/views/index-dtf/overview/stocks/faq.tsx:18
 msgid "What are the fees?"
 msgstr ""
 
-#: src/views/index-dtf/overview/stocks/faq.tsx:22
+#: src/views/index-dtf/overview/stocks/faq.tsx:20
 msgid "What are the risks?"
 msgstr ""
 
@@ -11529,7 +11719,7 @@ msgstr ""
 msgid "What is a <0>DTF</0>?"
 msgstr "<0>DTF</0>란 무엇인가요?"
 
-#: src/views/index-dtf/overview/stocks/video-chapters.ts:38
+#: src/views/index-dtf/overview/stocks/video-chapters.ts:34
 msgid "What is a Diversified Token Fund?"
 msgstr ""
 
@@ -11537,7 +11727,7 @@ msgstr ""
 msgid "What is Reserve Governor Alexios?"
 msgstr "Reserve Governor Alexios란 무엇인가요?"
 
-#: src/views/index-dtf/overview/stocks/video-chapters.ts:52
+#: src/views/index-dtf/overview/stocks/video-chapters.ts:48
 msgid "What is Reserve?"
 msgstr ""
 
@@ -11546,13 +11736,21 @@ msgid "What is staking?"
 msgstr "Staking이란?"
 
 #. placeholder {0}: dtf?.token.symbol ?? 'DTF'
-#: src/views/index-dtf/overview/stocks/faq.tsx:69
+#: src/views/index-dtf/overview/stocks/faq.tsx:60
 msgid "What is the ${0} DTF?"
 msgstr ""
 
-#: src/views/earn/views/index-dtf/index.tsx:15
+#: src/views/earn/views/index-dtf/components/faq.tsx:22
 msgid "What is vote-locking?"
 msgstr "투표 잠금이란?"
+
+#: src/views/index-dtf/overview/stocks/video-chapters.ts:42
+msgid "What this is all about."
+msgstr ""
+
+#: src/views/earn/views/index-dtf/components/faq.tsx:78
+msgid "When rewards are added to a self-appreciating vault like vlRSR, they become redeemable gradually rather than all at once. This is often called streaming or dripping."
+msgstr ""
 
 #: src/views/yield-dtf/staking/components/overview/about.tsx:14
 msgid "When staking RSR, you are putting your RSR at risk in the case of a collateral default in exchange for 1) the rights to govern the RToken and 2) for a portion of the revenue generated by the collateral. The revenue sent to the staked RSR pool will be distributed amongst RSR stakers proportionally to their stake in the pool."
@@ -11578,13 +11776,21 @@ msgstr "사용할 견적 제공자를 선택합니다. 'Best Quote'는 Reserve�
 msgid "Whitelisted Index DTFs displayed on the discover page with their governance addresses"
 msgstr "거버넌스 주소와 함께 discover 페이지에 표시되는 화이트리스트 등록 Index DTF"
 
-#: src/views/index-dtf/overview/stocks/video-chapters.ts:59
+#: src/views/index-dtf/overview/stocks/video-chapters.ts:55
 msgid "Who can buy $BUILDOUT?"
 msgstr ""
 
 #: src/views/index-dtf/governance/views/propose/basket/components/proposal-rebalance-launch-settings.tsx:311
 msgid "Who will be able to launch auctions and how long will they have before the auctions expire."
 msgstr "누가 경매를 실행할 수 있는지, 그리고 경매가 만료되기까지 얼마의 시간이 주어지는지."
+
+#: src/views/earn/views/index-dtf/components/faq.tsx:74
+msgid "Why are rewards released gradually?"
+msgstr ""
+
+#: src/views/earn/views/index-dtf/components/faq.tsx:98
+msgid "Why do some vaults show APY and others show APR?"
+msgstr ""
 
 #: src/views/index-dtf/deploy/components/deploy-coming-soon.tsx:167
 msgid "Why do you think people want this DTF?"
@@ -11593,6 +11799,10 @@ msgstr "사람들이 이 DTF를 원할 거라고 생각하는 이유는 무엇�
 #: src/views/yield-dtf/issuance/components/zapV2/submit/ZapRevokeButton.tsx:47
 msgid "Why I do need to revoke my allowance?"
 msgstr "왜 승인을 취소해야 하나요?"
+
+#: src/views/earn/views/index-dtf/components/faq.tsx:149
+msgid "Why might my actual return differ from the displayed rate?"
+msgstr ""
 
 #: src/components/transactions/table/index.tsx:56
 #: src/components/transactions/table/index.tsx:58
@@ -11727,6 +11937,10 @@ msgstr "Yield DTF(Reserve Yield Protocol에서 생성)는 백킹 자산이 디�
 #: src/views/yield-dtf/overview/components/backing/collateral-exposure.tsx:89
 msgid "Yield:"
 msgstr "수익:"
+
+#: src/views/earn/views/index-dtf/components/faq.tsx:200
+msgid "You can begin the unlock process at any time, but you cannot withdraw immediately. The vault’s unlock delay must finish first, and you stop earning rewards once the unlock process begins. Always check the displayed delay before locking."
+msgstr ""
 
 #: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:83
 msgid "You can buy up to {maxAmountLabel} per transaction during {sessionLabel} hours in the US."
@@ -11884,7 +12098,7 @@ msgstr "보유 중인 Decentralized Token Fund 투자."
 msgid "Your DTF has been minted."
 msgstr "DTF가 Mint되었습니다."
 
-#: src/views/earn/views/index-dtf/components/vote-lock-positions.tsx:242
+#: src/views/earn/views/index-dtf/components/vote-lock-positions.tsx:272
 msgid "Your lock"
 msgstr "나의 Vote-lock"
 
@@ -11895,6 +12109,10 @@ msgstr "포트폴리오에서는 DTF 보유량, Stake 및 Vote-lock된 거버넌
 #: src/views/index-dtf/components/confirm-eligibility-modal.tsx:271
 msgid "Your privacy is protected. This confirmation is only ever associated with your wallet address - never your personal information. <0>Privacy Policy</0>"
 msgstr "귀하의 개인정보는 보호됩니다. 이 확인은 오직 지갑 주소에만 연결되며, 개인 정보와는 절대 연결되지 않습니다. <0>개인정보 처리방침</0>"
+
+#: src/views/earn/views/index-dtf/components/faq-graphics.tsx:207
+msgid "Your realized return"
+msgstr ""
 
 #: src/views/portfolio-page/components/transactions.tsx:167
 msgid "Your recent on-chain activity."
@@ -11911,6 +12129,10 @@ msgstr "나의 Stake"
 #: src/views/yield-dtf/staking/components/stake-position.tsx:29
 msgid "Your stake position"
 msgstr "내 Stake 포지션"
+
+#: src/views/earn/views/index-dtf/components/faq-graphics.tsx:230
+msgid "Your start date"
+msgstr ""
 
 #: src/views/portfolio-page/components/rewards-available.tsx:20
 msgid "Your total participation awards available across all chains"

@@ -1,6 +1,7 @@
 ---
 title: Log
 updated: 2026-08-19
+updated: 2026-08-18
 type: log
 ---
 
@@ -133,3 +134,9 @@ Play-by-play lives in git (PRs #1053/#1054/#1055/#1063, SDK PR #27). Durable out
 ## 2026-08-19
 
 - Locale initialization now uses the first supported browser preference for visitors without a saved choice; a persisted explicit choice still wins. A clean Lingui extraction confirmed 2,543 active catalog messages with zero missing Spanish, Korean, or Simplified Chinese translations and removed obsolete catalog entries. This supersedes the earlier ~117-missing-message backlog entry. Live browser verification covered Spanish auto-selection plus a Korean selection surviving reload.
+## 2026-08-18
+
+- Kit refresh via `install.mjs --update` from agent-workflow @ b0da65a (+working-tree). 18 new skills landed (stage, foundation-review, scar-mining, codebase-deep-scan, taste, topology, wayfinder, experience-design, create/maintain-verification, evaluate-workflow, release-evidence, resume-work, resolving-merge-conflicts, model-capabilities, pair trio); router routes them all. Medium/high stage machinery moved from `workflow.md` to `skills/stage.md`.
+- Register's local area-guide drift detection (`scope.mjs` `area-guide:` lines) was upstreamed into the kit (now AGENTS.md/CLAUDE.md-aware, with a kit test) instead of being clobbered by the wholesale update; the kit had already absorbed the wiki-lint duplicate-key check and the one-line comment rules. Zero local rules lost.
+- Kit installer gap found and fixed upstream: skills reference `templates/{design,evaluation,evidence,verification}` in-repo but the installer never shipped them; they are now kit-owned dirs and live at `templates/` here.
+- All Overrides in [[project]] re-checked: none absorbed, all stand. Config schema unchanged. Chatty's capsule pilot is explicitly Chatty-only and was not ported; chatty itself is behind the current kit.

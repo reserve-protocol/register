@@ -24,57 +24,28 @@ Profiles:
 
 The **fixed point** is the single commit/ref the whole task diffs against — every scoped run, review, and completion claim compares to it. `workflow-start` prints it as the base ref.
 
-## Medium Task Contract
+**Medium and high work loads `skills/stage.md`** — the staged loop it owns (task contract, operating loop, ordered stage closeout, valid states). Touch-up and low tasks skip it: scoped verify, self-review through the fired lenses, done.
 
-Before medium edits, pin:
+## Topology Gate
 
-- fixed point (commit/ref);
-- current and desired behavior;
-- non-goals;
-- acceptance evidence: commands, behavior, visual state, or artifact that proves each criterion;
-- highest stable test seam for changed behavior;
-- unresolved decisions or assumptions.
-
-Keep it compact in the active progress note. Ask the human only when an unresolved choice materially changes behavior, architecture, risk, or scope. Routine implementation details are the agent's responsibility. High work uses `skills/planning.md` instead.
-
-## Operating Loop (Medium and High)
-
-1. Pin the medium contract, or follow `skills/planning.md` for high.
-2. Run `node scripts/llm-workflow/workflow-start.mjs --stage "<name>"` for medium. High adds `--contract <plan>`. `--allow-dirty` is only for inspected in-progress/adoption input.
-3. Implement the smallest unblocked slice.
-4. For changed behavior, use `skills/testing.md`.
-5. Run `node scripts/llm-workflow/scope.mjs --base <fixed-point>`; fix mapped failures and inspect red flags.
-6. Review at the profile's budget (`skills/review-panel.md`).
-7. Reconcile verified findings once; re-review only after material fixes.
-8. Close out and ingest (`skills/wiki.md`).
+**One implementation agent is the default.** Load `skills/topology.md` only for parallel-looking work, competing candidates, or a requested agent count — it owns the fan-out admission criteria (substantive independent packets, low overlap, stable cut edges, enough work, real speedup, permitted posture, cheap convergence). If one answer is unclear, stay single-agent. A requested count authorizes Burst spend, not skipped proof or trust gates.
 
 ## Feedback Branches
 
 - Bug, failure, flake, or regression: read `skills/debugging.md` before proposing a fix.
 - New or changed non-trivial behavior: read `skills/testing.md` before implementation.
+- Consequential experience, agent-interaction, public-seam, ownership, or persistent-shape choice: use `skills/experience-design.md` before planning or implementation.
+- Assigning a workflow role or widening agent authority: use `skills/model-capabilities.md`; capability evidence never replaces human approval.
+- Missing repeatable real-surface proof: use `skills/create-verification.md`. If an existing verification package may have drifted, use `skills/maintain-verification.md`.
+- Evaluate a workflow/skill change with `skills/evaluate-workflow.md` only when its behavior is uncertain or has misfired; ordinary work never pays this tax.
+- Explicit pause, unavoidable context boundary, or multi-session resume: use `skills/resume-work.md`; ordinary same-session next steps do not create checkpoints.
 - Copy, docs, data-only config, generated code, and trivial wiring use mapped checks; do not manufacture low-value tests.
 
 ## Scoped Verification
 
 `scope.mjs` unions commands mapped to touched files and prints `verify-gap` for unmapped files. Run focused tests during iteration, scoped verification after a coherent edit, and the full gate once after the final edit. Boundary-crossing files must map to wider commands. A code/config gap requires a mapping or an explicit appropriate check; docs/scratch may close with stated self-review.
 
-## Stage Closeout
-
-1. Fresh full gate with `scope.mjs --gate`, unless the final post-edit scoped run printed `gate-equivalent: yes`.
-2. UI: inspect the real rendered surface with realistic data, default plus one edge state, and every breakpoint band crossed by the change.
-3. Review through Intent and Engineering Risk at the allowed budget.
-4. Update the progress row with exact verifier evidence, review disposition, state, and next action.
-5. Ingest only stale wiki pages; run wiki-lint.
-
-Valid states:
-
-- `active` — implementation in progress;
-- `implementation-verified` — automated/behavior evidence green, review incomplete;
-- `review-pending` — required independent review unavailable;
-- `human-review-required` — named risk needs human judgment;
-- `done` — acceptance evidence, required review, closeout, and documentation are complete.
-
-Unavailable review never becomes `done`. Human-review-required work may be handed off but must keep that label.
+## Shared-Tree Safety
 
 Before reverting, restoring, or reconciling a shared-tree file, inspect its live diff and latest handoff. Unexpected changes belong to the user or another worker until proven otherwise; report them, never discard them from a stale instruction.
 

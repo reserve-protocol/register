@@ -624,6 +624,10 @@ msgstr "0 秒"
 msgid "0-100% Recharge time"
 msgstr "0-100% 充能时间"
 
+#: src/views/earn/views/index-dtf/components/faq-graphics.tsx:146
+msgid "1 · Observe"
+msgstr ""
+
 #: src/views/index-dtf/factsheet/components/performance-table.tsx:29
 msgid "1 Month"
 msgstr "1 个月"
@@ -661,6 +665,10 @@ msgstr "14 天解锁延迟"
 msgid "15 params"
 msgstr "15 个参数"
 
+#: src/views/earn/views/index-dtf/components/faq-graphics.tsx:154
+msgid "2 · Annualize"
+msgstr ""
+
 #: src/views/index-dtf/overview/components/basket-overview/performance-cell.tsx:18
 msgid "24 hour"
 msgstr "24 小时"
@@ -668,6 +676,10 @@ msgstr "24 小时"
 #: src/views/index-dtf/overview/components/fees-stats.tsx:78
 msgid "24h Volume"
 msgstr "24 小时交易量"
+
+#: src/views/earn/views/index-dtf/components/faq-graphics.tsx:162
+msgid "3 · Display"
+msgstr ""
 
 #: src/views/index-dtf/factsheet/components/performance-table.tsx:30
 msgid "3 Month"
@@ -680,6 +692,10 @@ msgstr "3.4.0 升级咒语"
 #: src/views/index-dtf/overview/components/basket-overview/performance-cell.tsx:20
 msgid "30 day"
 msgstr "30 天"
+
+#: src/views/earn/views/index-dtf/components/faq-graphics.tsx:198
+msgid "30 days ago"
+msgstr ""
 
 #: src/views/yield-dtf/governance/views/proposal-detail/components/proposal-summary/BasketChangeSummary.tsx:157
 msgid "30-day blended APY:"
@@ -789,14 +805,14 @@ msgstr "关于"
 msgid "About {0}"
 msgstr "关于 {0}"
 
-#: src/views/index-dtf/overview/stocks/about-reserve-dtfs.tsx:21
+#: src/views/index-dtf/overview/stocks/about-reserve-dtfs.tsx:18
 msgid "About Reserve"
 msgstr ""
 
 #: src/views/index-dtf/manage/components/manage-about.tsx:119
 #: src/views/index-dtf/manage/components/manage-about.tsx:122
 #: src/views/index-dtf/overview/components/index-about-overview.tsx:110
-#: src/views/index-dtf/overview/stocks/video-library.tsx:69
+#: src/views/index-dtf/overview/stocks/video-library.tsx:71
 msgid "About this DTF"
 msgstr "关于此 DTF"
 
@@ -1154,11 +1170,11 @@ msgstr "启用权重控制后，再平衡可以调整篮子中代币的权重；
 msgid "Almost there..."
 msgstr "即将完成..."
 
-#: src/views/index-dtf/overview/stocks/landing-mint.tsx:59
+#: src/views/index-dtf/overview/stocks/landing-mint.tsx:51
 msgid "Also available on:"
 msgstr ""
 
-#: src/views/index-dtf/overview/stocks/faq.tsx:17
+#: src/views/index-dtf/overview/stocks/faq.tsx:15
 msgid "Am I buying real stocks?"
 msgstr ""
 
@@ -1205,6 +1221,10 @@ msgstr "来自激励的年化收益率"
 #: src/views/earn/hooks/useEarnTableColumns.tsx:170
 msgid "Annualised percentage yield from trading fees/supplying. For dexes 24h fees are used and scaled those to a year."
 msgstr "来自交易费用/供应的年化收益率。对于 dexes，采用 24 小时费用并按年折算。"
+
+#: src/views/earn/views/index-dtf/components/faq-graphics.tsx:201
+msgid "Annualized APY / APR"
+msgstr ""
 
 #: src/views/home/components/protocol-metrics.tsx:63
 msgid "Annualized revenue distributed to DTF creators, index providers, and all other ecosystem partners. Calculated based on TVL and minting fees of all Index DTFs in the last 30 days."
@@ -1298,6 +1318,14 @@ msgstr "已授权的收入代币"
 msgid "Approving..."
 msgstr "授权中..."
 
+#: src/views/earn/views/index-dtf/components/faq-graphics.tsx:163
+msgid "APR — or compounded APY when rewards accrue automatically"
+msgstr ""
+
+#: src/views/earn/views/index-dtf/components/faq.tsx:102
+msgid "APR annualizes the recent reward rate without assuming that rewards are reinvested. It is used for vaults that pay separate reward tokens."
+msgstr ""
+
 #: src/views/index-dtf/overview/components/index-campaign-overview.tsx:55
 msgid "April 1"
 msgstr "4 月 1 日"
@@ -1310,6 +1338,10 @@ msgstr "APY"
 #: src/views/earn/hooks/useEarnTableColumns.tsx:151
 msgid "APY = Base APY + Reward APY. For non-autocompounding pools reinvesting is not accounted, in which case APY = APR."
 msgstr "APY = Base APY + Reward APY。对于非自动复利的 pool，不计入再投资，此时 APY = APR。"
+
+#: src/views/earn/views/index-dtf/components/faq.tsx:109
+msgid "APY includes compounding. It is used for vlRSR-style vaults because rewards are automatically added to the vault’s backing and increase the exchange rate."
+msgstr ""
 
 #: src/views/yield-dtf/governance/views/proposal-detail/components/proposal-summary/BasketChangeSummary.tsx:97
 msgid "APY:"
@@ -1343,11 +1375,11 @@ msgstr "以 RSR 形式"
 msgid "As RToken"
 msgstr "以 RToken 形式"
 
-#: src/components/dtf-chat/index.tsx:156
+#: src/components/dtf-chat/index.tsx:148
 #: src/views/index-dtf/overview/components/index-ctas-overview-mobile.tsx:175
 #: src/views/index-dtf/overview/components/index-ctas-overview-mobile.tsx:182
-#: src/views/index-dtf/overview/stocks/faq.tsx:55
-#: src/views/index-dtf/overview/stocks/faq.tsx:93
+#: src/views/index-dtf/overview/stocks/faq.tsx:48
+#: src/views/index-dtf/overview/stocks/faq.tsx:85
 msgid "Ask Reserve AI"
 msgstr "询问 Reserve AI"
 
@@ -1509,6 +1541,7 @@ msgstr "自动 Mint 和 Redeem 需要支持智能账户的 Wallet。不支持硬
 msgid "Automated minting is an advanced feature. For most people, simple swaps are recommended."
 msgstr "自动 Mint 是一项高级功能。对大多数人而言，推荐使用简单的 Swap。"
 
+#: src/views/earn/views/index-dtf/components/faq-graphics.tsx:61
 #: src/views/index-dtf/governance/components/governance-vote-lock.tsx:422
 msgid "Automatic"
 msgstr "自动"
@@ -1550,6 +1583,10 @@ msgstr "可用奖励"
 msgid "Available Trades:"
 msgstr "可用交易："
 
+#: src/views/earn/views/index-dtf/components/faq-graphics.tsx:155
+msgid "Average daily rewards × 365 ÷ vault value locked"
+msgstr ""
+
 #. placeholder {0}: formatPercentage(stats.avg)
 #. placeholder {1}: formatPercentage(stats.min)
 #. placeholder {2}: formatPercentage(stats.max)
@@ -1562,7 +1599,7 @@ msgstr "平均 {0} · 范围 {1}–{2}（{3}）"
 msgid "Avg Cost"
 msgstr "平均成本"
 
-#: src/views/earn/views/index-dtf/components/vote-lock-positions.tsx:265
+#: src/views/earn/views/index-dtf/components/vote-lock-positions.tsx:295
 #: src/views/earn/views/yield-dtf/components/staking-positions.tsx:159
 msgid "Avg. 30d%"
 msgstr "30 天平均%"
@@ -2060,13 +2097,17 @@ msgstr "计算方式:"
 msgid "Campaign ends:"
 msgstr "活动结束："
 
-#: src/views/index-dtf/overview/stocks/faq.tsx:21
+#: src/views/index-dtf/overview/stocks/faq.tsx:19
 msgid "Can I sell whenever I want?"
 msgstr ""
 
 #: src/views/earn/views/index-dtf/index.tsx:50
-msgid "Can I unlock my tokens anytime?"
-msgstr "我可以随时解锁我的代币吗？"
+#~ msgid "Can I unlock my tokens anytime?"
+#~ msgstr "我可以随时解锁我的代币吗？"
+
+#: src/views/earn/views/index-dtf/components/faq.tsx:199
+msgid "Can I unlock my tokens at any time?"
+msgstr ""
 
 #: src/views/earn/views/yield-dtf/index.tsx:26
 msgid "Can I unstake my RSR anytime?"
@@ -2293,6 +2334,10 @@ msgstr "领取所有交易者的奖励"
 msgid "Claimable emissions"
 msgstr "可领取的发放"
 
+#: src/views/earn/views/index-dtf/components/faq-graphics.tsx:97
+msgid "Claimable reward tokens."
+msgstr ""
+
 #: src/views/portfolio-page/components/available-rewards.tsx:80
 msgid "Claimed"
 msgstr "已领取"
@@ -2316,7 +2361,7 @@ msgstr "点击重试或使用下方的单独授权按钮。"
 
 #: src/components/video-modal/index.tsx:58
 #: src/views/index-dtf/overview/components/charts/candlestick-tooltip.tsx:36
-#: src/views/index-dtf/overview/stocks/video-series-modal.tsx:130
+#: src/views/index-dtf/overview/stocks/video-series-modal.tsx:128
 msgid "Close"
 msgstr "关闭"
 
@@ -2346,7 +2391,7 @@ msgid "Collateral"
 msgstr "抵押品"
 
 #: src/views/index-dtf/overview/components/basket-overview/basket-table-header.tsx:106
-#: src/views/index-dtf/overview/components/basket-overview/index.tsx:140
+#: src/views/index-dtf/overview/components/basket-overview/index.tsx:135
 msgctxt "DTF basket"
 msgid "Collateral"
 msgstr "底层资产"
@@ -2648,7 +2693,7 @@ msgstr "连接 Wallet 以查看你的投资组合"
 msgid "Contact me"
 msgstr "联系我"
 
-#: src/views/index-dtf/overview/components/eligibility-card.tsx:184
+#: src/views/index-dtf/overview/components/eligibility-card.tsx:195
 msgid "Contact us for eligibility"
 msgstr "联系我们验证资格"
 
@@ -3380,6 +3425,10 @@ msgstr "关闭建议"
 msgid "Display only {0} related collaterals"
 msgstr "仅显示与 {0} 相关的抵押品"
 
+#: src/views/earn/views/index-dtf/components/faq-graphics.tsx:180
+msgid "Displayed estimate"
+msgstr ""
+
 #: src/views/explorer/components/revenue/index.tsx:550
 msgid "Distribute"
 msgstr "分配"
@@ -3420,7 +3469,7 @@ msgstr "多样化系数"
 msgid "Diversity Factor"
 msgstr "多样性系数"
 
-#: src/views/earn/views/index-dtf/index.tsx:46
+#: src/views/earn/views/index-dtf/components/faq.tsx:194
 #: src/views/earn/views/yield-dtf/index.tsx:22
 msgid "Do I need to vote on proposals to earn rewards?"
 msgstr "我需要对提案投票才能赚取奖励吗？"
@@ -3741,11 +3790,11 @@ msgstr "编辑页面"
 msgid "Edit proposal"
 msgstr "编辑提案"
 
-#: src/views/index-dtf/overview/stocks/video-chapters.ts:60
+#: src/views/index-dtf/overview/stocks/video-chapters.ts:56
 msgid "Eligibility and how to get started."
 msgstr ""
 
-#: src/views/index-dtf/overview/components/eligibility-card.tsx:122
+#: src/views/index-dtf/overview/components/eligibility-card.tsx:133
 #: src/views/yield-dtf/issuance/components/zapV2/minters-modal/SocialMediaInput.tsx:111
 msgid "Email"
 msgstr "Email"
@@ -4188,7 +4237,7 @@ msgid "Explorer"
 msgstr "浏览器"
 
 #: src/views/index-dtf/overview/components/basket-overview/basket-table-header.tsx:96
-#: src/views/index-dtf/overview/components/basket-overview/index.tsx:133
+#: src/views/index-dtf/overview/components/basket-overview/index.tsx:128
 msgid "Exposure"
 msgstr "成分股"
 
@@ -4456,6 +4505,10 @@ msgstr "如需了解更多信息，请参阅我们的<0>使用条款</0>。"
 msgid "For redemptions, please wait until the process is complete."
 msgstr "对于 Redemption，请等待流程完成。"
 
+#: src/views/earn/views/index-dtf/components/faq.tsx:63
+msgid "For vlRSR, rewards are converted to RSR and added to the vault’s backing, increasing how much RSR each share can redeem. Other vaults may pay separate reward tokens that you claim manually."
+msgstr ""
+
 #: src/views/index-dtf/overview/components/zap-mint/zap-settings.tsx:62
 msgid "Force DTF mint?"
 msgstr "强制 Mint DTF？"
@@ -4517,6 +4570,10 @@ msgstr "完整敞口视图"
 msgid "Fully Charged"
 msgstr "已充满"
 
+#: src/views/earn/views/index-dtf/components/faq-graphics.tsx:125
+msgid "Fully reflected"
+msgstr ""
+
 #: src/views/yield-dtf/staking/components/overview/unstake-delay-overview.tsx:35
 msgid "Funds will be used in the case of a collateral default during the unstaking delay and up until the point of the manually triggered withdraw transaction."
 msgstr "在 Unstaking 延迟期间,直至手动触发提取交易为止,若发生抵押品违约,这些资金将被动用。"
@@ -4560,7 +4617,11 @@ msgstr "前往 RToken Deployer"
 msgid "Gov Speed"
 msgstr "治理速度"
 
-#: src/views/earn/views/index-dtf/components/vote-lock-positions.tsx:215
+#: src/views/earn/views/index-dtf/components/faq-graphics.tsx:86
+msgid "Gov. token"
+msgstr ""
+
+#: src/views/earn/views/index-dtf/components/vote-lock-positions.tsx:245
 #: src/views/earn/views/yield-dtf/components/staking-positions.tsx:88
 msgid "Gov. Token"
 msgstr "治理代币"
@@ -4661,7 +4722,7 @@ msgstr "治理代币"
 msgid "Governance with an execution delay greater than 1 week unstaking delay"
 msgstr "执行延迟大于 1 周 Unstake 延迟的治理"
 
-#: src/views/earn/views/index-dtf/components/vote-lock-positions.tsx:177
+#: src/views/earn/views/index-dtf/components/vote-lock-positions.tsx:207
 msgid "Governed DTFs"
 msgstr "治理中的 DTF"
 
@@ -4677,7 +4738,7 @@ msgstr "Governor 地址"
 msgid "Governor mandate"
 msgstr "Governor 授权声明"
 
-#: src/views/earn/views/index-dtf/components/vote-lock-positions.tsx:251
+#: src/views/earn/views/index-dtf/components/vote-lock-positions.tsx:281
 #: src/views/earn/views/yield-dtf/components/staking-positions.tsx:141
 #: src/views/portfolio-page/components/staked-positions.tsx:42
 #: src/views/portfolio-page/components/vote-locked-positions.tsx:192
@@ -4791,7 +4852,7 @@ msgstr "持有者"
 msgid "Holders APY"
 msgstr "持有者 APY"
 
-#: src/views/index-dtf/overview/components/basket-overview/index.tsx:124
+#: src/views/index-dtf/overview/components/basket-overview/index.tsx:119
 msgid "Holdings"
 msgstr "持仓"
 
@@ -4803,8 +4864,12 @@ msgstr "APY 为何如此之高？"
 msgid "How can we reach you? *"
 msgstr "我们如何联系您？*"
 
-#: src/views/index-dtf/overview/stocks/faq.tsx:19
+#: src/views/index-dtf/overview/stocks/faq.tsx:17
 msgid "How do US market hours affect stock DTF pricing?"
+msgstr ""
+
+#: src/views/earn/views/index-dtf/components/faq.tsx:51
+msgid "How do vote-lock rewards work?"
 msgstr ""
 
 #: src/views/index-dtf/deploy/components/deploy-coming-soon.tsx:155
@@ -4815,8 +4880,16 @@ msgstr "您打算如何吸引人们投资您的 DTF？"
 msgid "How does first-loss capital work?"
 msgstr "首损资本如何运作？"
 
-#: src/views/index-dtf/overview/stocks/faq.tsx:18
+#: src/views/earn/views/index-dtf/components/faq.tsx:126
+msgid "How is the estimated APY or APR calculated?"
+msgstr ""
+
+#: src/views/index-dtf/overview/stocks/faq.tsx:16
 msgid "How is the price determined?"
+msgstr ""
+
+#: src/views/earn/components/earn-table-cells.tsx:84
+msgid "How is this rate calculated?"
 msgstr ""
 
 #: src/views/index-dtf/deploy/steps/auctions/auctions-form.tsx:80
@@ -4861,7 +4934,7 @@ msgstr "您想要 Mint 多少？"
 msgid "How much the value of the DTF basket changed due to the latest rebalance"
 msgstr "DTF 篮子价值因最近一次再平衡而变化的幅度"
 
-#: src/views/index-dtf/overview/stocks/video-chapters.ts:39
+#: src/views/index-dtf/overview/stocks/video-chapters.ts:35
 msgid "How to buy an entire portfolio in a single token."
 msgstr ""
 
@@ -4893,6 +4966,10 @@ msgstr "ID"
 #: src/views/home/components/register-about.tsx:122
 msgid "If a DTF is listed on this app, it doesn't mean that ABC Labs endorses the safety or risk levels of the DTF or that ABC Labs was involved in the creation of or is in anyway responsible for the DTF."
 msgstr "某个 DTF 在本应用中列出，并不意味着 ABC Labs 认可该 DTF 的安全性或风险水平，也不意味着 ABC Labs 参与了该 DTF 的创建或以任何方式对其负责。"
+
+#: src/views/earn/views/index-dtf/components/faq.tsx:173
+msgid "If several DTFs use the same vault, does it matter where I lock?"
+msgstr ""
 
 #. placeholder {0}: stToken.underlying.symbol
 #: src/components/vote-lock/components/drawer-footer.tsx:32
@@ -4926,6 +5003,10 @@ msgstr "每日派发"
 #: src/views/yield-dtf/issuance/components/zapV2/output/ZapOutputUSD.tsx:28
 msgid "in dust"
 msgstr "的碎屑"
+
+#: src/views/earn/views/index-dtf/components/faq.tsx:40
+msgid "In return, vote lockers earn rewards from the DTF’s fees — a portion of the TVL and mint fees collected by each Index DTF is distributed to the holders who vote-lock its governance token."
+msgstr ""
 
 #: src/views/yield-dtf/staking/components/withdraw/index.tsx:16
 msgid "In Withdraw Process"
@@ -5172,7 +5253,7 @@ msgstr "委托地址无效"
 msgid "Invalid destination address"
 msgstr "目标地址无效"
 
-#: src/views/index-dtf/overview/components/eligibility-card.tsx:24
+#: src/views/index-dtf/overview/components/eligibility-card.tsx:25
 msgid "Invalid email"
 msgstr "邮箱格式无效"
 
@@ -5324,11 +5405,11 @@ msgstr "发起中……"
 #: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:370
 #: src/views/index-dtf/overview/components/index-ctas-overview-mobile.tsx:62
 #: src/views/index-dtf/overview/components/landing-mint/index.tsx:144
-#: src/views/index-dtf/overview/stocks/landing-mint.tsx:135
+#: src/views/index-dtf/overview/stocks/landing-mint.tsx:124
 msgid "Learn More"
 msgstr "了解更多"
 
-#: src/views/index-dtf/overview/components/eligibility-card.tsx:200
+#: src/views/index-dtf/overview/components/eligibility-card.tsx:211
 msgid "Learn more about eligibility requirements."
 msgstr "了解更多资格要求。"
 
@@ -5340,7 +5421,7 @@ msgstr "了解更多关于如何赚取 APY 的信息"
 msgid "Learn more about Reserve on their website."
 msgstr "在 Reserve 的网站上了解更多信息。"
 
-#: src/views/index-dtf/overview/stocks/about-reserve-dtfs.tsx:56
+#: src/views/index-dtf/overview/stocks/about-reserve-dtfs.tsx:53
 msgid "Learn more about the Reserve project"
 msgstr ""
 
@@ -5348,7 +5429,7 @@ msgstr ""
 msgid "Learn more about this DTF, the assets it tracks, how the basket is weighted, and the role each component plays inside the fund."
 msgstr "进一步了解这个 DTF、它追踪的资产、篮子的加权方式，以及每个组成部分在基金中的作用。"
 
-#: src/views/index-dtf/overview/stocks/video-library.tsx:72
+#: src/views/index-dtf/overview/stocks/video-library.tsx:74
 msgid "Learn more by watching these short videos."
 msgstr ""
 
@@ -5484,7 +5565,7 @@ msgstr "正在加载你的投资组合数据..."
 msgid "Loading..."
 msgstr "加载中..."
 
-#: src/views/index-dtf/overview/components/eligibility-card.tsx:162
+#: src/views/index-dtf/overview/components/eligibility-card.tsx:173
 msgid "Location restricted"
 msgstr "地区受限"
 
@@ -5492,6 +5573,10 @@ msgstr "地区受限"
 #: src/views/index-dtf/overview/components/index-governance-overview.tsx:86
 msgid "Lock ${0} to Govern"
 msgstr "锁定 ${0} 以参与治理"
+
+#: src/views/earn/views/index-dtf/components/faq.tsx:184
+msgid "Locking from a particular DTF page does not create a separate reward rate for that DTF."
+msgstr ""
 
 #: src/views/yield-dtf/settings/components/freeze-manager.tsx:69
 #: src/views/yield-dtf/settings/components/freeze-manager.tsx:73
@@ -5716,10 +5801,18 @@ msgstr "RToken 的最大交易额"
 msgid "Maximum trade volume - maximum sized trade for any trade involving RToken, in terms of the unit of account eg. USD."
 msgstr "最大交易额——以记账单位（例如 USD）计的、任何涉及 RToken 的交易的最大规模。"
 
+#: src/views/earn/views/index-dtf/components/faq-graphics.tsx:81
+msgid "May require claim"
+msgstr ""
+
 #: src/views/index-dtf/overview/components/charts/market-cap.tsx:15
 #: src/views/top100/components/top100-card.tsx:93
 msgid "MCap:"
 msgstr "市值："
+
+#: src/views/earn/views/index-dtf/components/faq-graphics.tsx:210
+msgid "Measures exchange-rate change during your window."
+msgstr ""
 
 #: src/views/yield-dtf/staking/components/overview/about.tsx:24
 msgid "Mechanics"
@@ -5738,7 +5831,7 @@ msgstr "中"
 msgid "Medium liquidity"
 msgstr "中等流动性"
 
-#: src/views/index-dtf/overview/stocks/video-chapters.ts:45
+#: src/views/index-dtf/overview/stocks/video-chapters.ts:41
 msgid "Meet $BUILDOUT"
 msgstr ""
 
@@ -5980,6 +6073,10 @@ msgstr "了解 {dtfName} 是什么、其核心理念、方法论与投资逻辑�
 msgid "More options"
 msgstr "更多选项"
 
+#: src/views/earn/views/index-dtf/components/faq-graphics.tsx:73
+msgid "More RSR per share"
+msgstr ""
+
 #: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:159
 msgid "Most users should use Swap"
 msgstr "大多数用户应使用 Swap"
@@ -6011,7 +6108,7 @@ msgstr "必须介于 0 到 100 之间"
 #: src/views/home/components/discover-index-dtf/index-dtf-table-columns.tsx:167
 #: src/views/home/components/discover-index-dtf/index-dtf-table-placeholder.tsx:17
 #: src/views/index-dtf/deploy/steps/metadata/form-basic-metadata.tsx:10
-#: src/views/index-dtf/overview/components/eligibility-card.tsx:107
+#: src/views/index-dtf/overview/components/eligibility-card.tsx:118
 #: src/views/index-dtf/settings/components/index-settings-basic.tsx:40
 #: src/views/portfolio-page/components/dtf-positions.tsx:31
 #: src/views/portfolio-page/components/rsr-section.tsx:18
@@ -6171,7 +6268,7 @@ msgstr "下次开盘"
 msgid "Next steps"
 msgstr "后续步骤"
 
-#: src/views/index-dtf/overview/stocks/video-series-modal.tsx:174
+#: src/views/index-dtf/overview/stocks/video-series-modal.tsx:170
 msgid "Next video"
 msgstr ""
 
@@ -6379,20 +6476,28 @@ msgid "No yield opportunities found"
 msgstr "未找到收益机会"
 
 #: src/views/earn/views/index-dtf/index.tsx:51
-msgid "No. Locked RSR follows the DTF’s timelock rules, which are set when the DTF is created. You should always check the lock duration before committing, as early unlocks are not allowed. This prevents short-term manipulation and keeps governance aligned with long-term holders."
-msgstr "不能。Locked 的 RSR 遵循 DTF 的 Timelock 规则，该规则在 DTF 创建时设定。你应始终在投入前查看锁定期限，因为不允许提前解锁。这可防止短期操纵，并使治理与长期持有者保持一致。"
+#~ msgid "No. Locked RSR follows the DTF’s timelock rules, which are set when the DTF is created. You should always check the lock duration before committing, as early unlocks are not allowed. This prevents short-term manipulation and keeps governance aligned with long-term holders."
+#~ msgstr "不能。Locked 的 RSR 遵循 DTF 的 Timelock 规则，该规则在 DTF 创建时设定。你应始终在投入前查看锁定期限，因为不允许提前解锁。这可防止短期操纵，并使治理与长期持有者保持一致。"
 
 #: src/views/earn/views/yield-dtf/index.tsx:23
 msgid "No. Stakers earn rewards as long as their RSR is actively staked, even if they don’t vote on proposals. Voting is optional, but participating helps shape how the Yield DTF is governed."
 msgstr "不需要。只要 RSR 处于积极 staked 状态，stakers 即可赚取奖励，即使他们不对提案投票。投票是可选的，但参与有助于塑造 Yield DTF 的治理方式。"
+
+#: src/views/earn/views/index-dtf/components/faq.tsx:177
+msgid "No. When several DTFs use the same vote-lock vault, your locked tokens belong to that shared vault. Its reward rate reflects rewards flowing to the vault across all the DTFs it governs."
+msgstr ""
 
 #: src/views/earn/views/yield-dtf/index.tsx:27
 msgid "No. When you unstake, your RSR enters an unstaking cooldown period defined by the Yield DTF’s parameters. During this time, the tokens remain locked and cannot be withdrawn. Once the cooldown ends, you can fully withdraw your RSR."
 msgstr "不能。当你 Unstake 时，你的 RSR 将进入由 Yield DTF 参数定义的 unstaking 冷却期。在此期间，代币仍处于锁定状态，无法提取。冷却期结束后，你即可完全提取你的 RSR。"
 
 #: src/views/earn/views/index-dtf/index.tsx:47
-msgid "No. You earn rewards as long as your ERC2O tokens are vote-locked, even if you don’t participate in every proposal. Voting is encouraged, but it’s not required to receive your share of rewards."
-msgstr "不需要。只要你的 ERC2O 代币处于 vote-locked 状态，你即可赚取奖励，即使你没有参与每一项提案。我们鼓励投票，但投票并非获得奖励份额的必要条件。"
+#~ msgid "No. You earn rewards as long as your ERC2O tokens are vote-locked, even if you don’t participate in every proposal. Voting is encouraged, but it’s not required to receive your share of rewards."
+#~ msgstr "不需要。只要你的 ERC2O 代币处于 vote-locked 状态，你即可赚取奖励，即使你没有参与每一项提案。我们鼓励投票，但投票并非获得奖励份额的必要条件。"
+
+#: src/views/earn/views/index-dtf/components/faq.tsx:195
+msgid "No. You earn your share of rewards while your tokens are vote-locked, even if you don’t participate in every proposal. Voting is encouraged because vote lockers are responsible for the DTFs they govern."
+msgstr ""
 
 #: src/views/index-dtf/deploy/components/deploy-accordion.tsx:116
 #: src/views/index-dtf/deploy/components/deploy-accordion.tsx:117
@@ -6514,6 +6619,10 @@ msgstr "一项或多项授权失败"
 msgid "One or more tokens in the rebalance is out of bounds. Rebalance must be closed."
 msgstr "再平衡中有一个或多个代币超出范围。必须关闭再平衡。"
 
+#: src/views/earn/views/index-dtf/components/faq-graphics.tsx:107
+msgid "One reward deposit, released over time"
+msgstr ""
+
 #: src/views/index-dtf/auctions/legacy/components/proposal-trades.tsx:93
 msgid "Ongoing"
 msgstr "进行中"
@@ -6527,7 +6636,7 @@ msgid "Ongoing dutch auctions"
 msgstr "正在进行的荷兰式拍卖"
 
 #. placeholder {0}: dtf?.token.symbol ?? 'DTF'
-#: src/views/index-dtf/overview/stocks/faq.tsx:58
+#: src/views/index-dtf/overview/stocks/faq.tsx:51
 msgid "Online — answers use live {0} data."
 msgstr ""
 
@@ -6646,7 +6755,7 @@ msgstr "Orders 将于 {0} 后过期"
 msgid "Original whitepaper documentation"
 msgstr "原始白皮书文档"
 
-#: src/views/earn/views/index-dtf/components/vote-lock-positions.tsx:166
+#: src/views/earn/views/index-dtf/components/vote-lock-positions.tsx:196
 msgid "other"
 msgstr "其他"
 
@@ -6685,6 +6794,10 @@ msgstr "其他接收者 {0}"
 #: src/views/yield-dtf/overview/components/backing/risks.tsx:116
 msgid "Other Risks"
 msgstr "其他风险"
+
+#: src/views/earn/views/index-dtf/components/faq-graphics.tsx:80
+msgid "Other vault rewards"
+msgstr ""
 
 #: src/components/layout/navigation/index.tsx:77
 #: src/components/layout/navigation/TokenNavigation.tsx:176
@@ -6931,8 +7044,8 @@ msgstr "播放视频"
 
 #. placeholder {0}: t(chapter.title)
 #. placeholder {1}: chapter.duration
-#: src/views/index-dtf/overview/stocks/video-library.tsx:22
-#: src/views/index-dtf/overview/stocks/video-series-modal.tsx:37
+#: src/views/index-dtf/overview/stocks/video-library.tsx:24
+#: src/views/index-dtf/overview/stocks/video-series-modal.tsx:38
 msgid "Play video: {0} ({1})"
 msgstr ""
 
@@ -7136,7 +7249,7 @@ msgstr "上一个篮子"
 msgid "Previous Version (v1)"
 msgstr "先前版本（v1）"
 
-#: src/views/index-dtf/overview/stocks/video-series-modal.tsx:154
+#: src/views/index-dtf/overview/stocks/video-series-modal.tsx:150
 msgid "Previous video"
 msgstr ""
 
@@ -7260,6 +7373,10 @@ msgstr "进行中"
 #: src/views/earn/hooks/useEarnTableColumns.tsx:117
 msgid "Project"
 msgstr "项目"
+
+#: src/views/earn/views/index-dtf/components/faq-graphics.tsx:183
+msgid "Projects recent reward activity forward."
+msgstr ""
 
 #: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:209
 msgid "Proposal canceled"
@@ -7633,6 +7750,10 @@ msgstr "接收 eth 的地址"
 msgid "Recent proposals"
 msgstr "近期提案"
 
+#: src/views/earn/views/index-dtf/components/faq.tsx:160
+msgid "Recent rewards may still be streaming into the exchange rate, and your own observation window may not match the 30-day window used for the estimate. That is why a short-term realized calculation can differ significantly from the displayed forward-looking estimate."
+msgstr ""
+
 #. placeholder {0}: index + 1
 #: src/views/index-dtf/deploy/steps/revenue/additional-revenue-recipients.tsx:63
 msgid "Recipient {0} address"
@@ -7935,7 +8056,7 @@ msgid "Request plugin"
 msgstr "申请插件"
 
 #: src/views/index-dtf/deploy/components/deploy-coming-soon.tsx:25
-#: src/views/index-dtf/overview/components/eligibility-card.tsx:23
+#: src/views/index-dtf/overview/components/eligibility-card.tsx:24
 msgid "Required"
 msgstr "必填"
 
@@ -7965,11 +8086,11 @@ msgstr "所需："
 msgid "Reserve aims to help people around the world maintain their spending power by allowing anyone to create asset-backed currencies with tokenized assets on the Ethereum blockchain in customizable and novel ways."
 msgstr "Reserve 旨在帮助世界各地的人们维持其购买力，让任何人都能以可定制的全新方式，使用 Ethereum 区块链上的代币化资产创建资产支撑的货币。"
 
-#: src/views/index-dtf/overview/stocks/backed-badge.tsx:10
+#: src/views/index-dtf/overview/stocks/backed-badge.tsx:8
 msgid "Reserve equity DTFs are 100% backed by real stocks."
 msgstr ""
 
-#: src/views/index-dtf/overview/stocks/about-reserve-dtfs.tsx:26
+#: src/views/index-dtf/overview/stocks/about-reserve-dtfs.tsx:23
 msgid "Reserve has been operating since 2018 with backing from <0><1>Coinbase</1>, <2>Sam Altman</2> and <3>Peter Thiel</3></0>. We exist to help you own your share of the world’s wealth."
 msgstr ""
 
@@ -7977,7 +8098,7 @@ msgstr ""
 msgid "Reserve lets you buy entire portfolios as a single token"
 msgstr "Reserve 让你以单一 token 买入整个投资组合"
 
-#: src/views/index-dtf/overview/stocks/about-reserve-dtfs.tsx:16
+#: src/views/index-dtf/overview/stocks/about-reserve-dtfs.tsx:13
 msgid "Reserve logo"
 msgstr ""
 
@@ -8213,6 +8334,10 @@ msgstr "奖励代币"
 msgid "Rewards"
 msgstr "奖励"
 
+#: src/views/earn/views/index-dtf/components/faq-graphics.tsx:119
+msgid "Rewards added"
+msgstr ""
+
 #: src/views/portfolio-page/components/rewards-available.tsx:17
 msgid "Rewards Available"
 msgstr "可用奖励"
@@ -8221,9 +8346,21 @@ msgstr "可用奖励"
 msgid "Rewards claimed"
 msgstr "已领取奖励"
 
+#: src/views/earn/views/index-dtf/components/faq.tsx:55
+msgid "Rewards come from the fees of the DTFs a vault governs, but vaults distribute them in two different ways. Check the vault’s reward details before locking."
+msgstr ""
+
+#: src/views/earn/views/index-dtf/components/faq-graphics.tsx:147
+msgid "Rewards distributed during the trailing 30-day window"
+msgstr ""
+
 #: src/views/index-dtf/governance/components/governance-vote-lock.tsx:291
 msgid "Rewards in"
 msgstr "奖励币种"
+
+#: src/views/earn/views/index-dtf/components/faq-graphics.tsx:75
+msgid "Rewards increase the vault’s backing."
+msgstr ""
 
 #: src/views/yield-dtf/governance/views/proposal/components/ConfirmProposalForm.tsx:60
 msgid "RFC"
@@ -8411,6 +8548,8 @@ msgid "Save Weights {editedRows}/{totalRows} edited"
 msgstr "保存权重 已编辑 {editedRows}/{totalRows}"
 
 #: src/components/layout/contact-modal/bell-button.tsx:64
+#: src/views/index-dtf/overview/components/eligibility-card.tsx:103
+#: src/views/index-dtf/overview/components/eligibility-card.tsx:151
 msgid "Schedule a meeting"
 msgstr "预约会议"
 
@@ -8575,6 +8714,10 @@ msgstr "卖出："
 msgid "Send dust back to wallet"
 msgstr "将碎屑退回 Wallet"
 
+#: src/views/earn/views/index-dtf/components/faq-graphics.tsx:95
+msgid "Separate rewards"
+msgstr ""
+
 #: src/views/index-dtf/governance/views/propose/basket/components/basket-proposal.tsx:43
 msgid "Set basket composition"
 msgstr "设置篮子组成"
@@ -8696,8 +8839,7 @@ msgid "Short freezers have the responsibility of freezing an RToken if anything 
 msgstr "Short freezer 负责在发生任何危险或可疑情况时冻结 RToken。这是一次性冻结，该角色在使用一次后即被撤销。此字段决定 RToken 将保持冻结多长时间，直至冻结到期或被其他参与者延长。"
 
 #. placeholder {0}: activeCount - MAX_TOKENS
-#: src/views/index-dtf/overview/components/basket-overview/index.tsx:207
-#: src/views/index-dtf/overview/components/basket-overview/index.tsx:214
+#: src/views/index-dtf/overview/components/basket-overview/index.tsx:203
 msgid "Show {0} more"
 msgstr ""
 
@@ -8911,7 +9053,7 @@ msgstr "来自 Aave 和 Convex 等协议的某些抵押品代币在技术上与�
 msgid "Some quotes couldn't be fetched."
 msgstr "部分报价无法获取。"
 
-#: src/views/index-dtf/overview/components/eligibility-card.tsx:144
+#: src/views/index-dtf/overview/components/eligibility-card.tsx:155
 msgid "Something went wrong. Please try again."
 msgstr "出现错误，请重试。"
 
@@ -9172,6 +9314,10 @@ msgstr "停止"
 msgid "Strategies"
 msgstr "策略"
 
+#: src/views/earn/views/index-dtf/components/faq-graphics.tsx:122
+msgid "Streaming"
+msgstr ""
+
 #: src/views/index-dtf/deploy/form-fields.ts:98
 msgid "stRSR DAO contracts for Index DTFs are not supported"
 msgstr "Index DTF 不支持 stRSR DAO 合约"
@@ -9185,8 +9331,8 @@ msgid "stRSR Token"
 msgstr "stRSR 代币"
 
 #: src/views/index-dtf/overview/components/eligibility-card.tsx:140
-msgid "Submit"
-msgstr "提交"
+#~ msgid "Submit"
+#~ msgstr "提交"
 
 #: src/views/index-dtf/manage/components/submit-button.tsx:318
 msgid "Submit all changes"
@@ -9213,7 +9359,7 @@ msgstr "已提交！"
 
 #: src/views/index-dtf/deploy/components/deploy-coming-soon.tsx:182
 #: src/views/index-dtf/manage/components/submit-button.tsx:321
-#: src/views/index-dtf/overview/components/eligibility-card.tsx:140
+#: src/views/index-dtf/overview/components/eligibility-card.tsx:151
 msgid "Submitting..."
 msgstr "提交中…"
 
@@ -9391,7 +9537,7 @@ msgid "Terms and Conditions"
 msgstr "条款与条件"
 
 #: src/views/index-dtf/deploy/components/deploy-coming-soon.tsx:109
-#: src/views/index-dtf/overview/components/eligibility-card.tsx:92
+#: src/views/index-dtf/overview/components/eligibility-card.tsx:95
 msgid "Thank you! We'll be in touch soon."
 msgstr "谢谢！我们会尽快与您联系。"
 
@@ -9439,6 +9585,14 @@ msgstr "创建新的 RToken 设计是无需许可的。如果你富有创造力�
 msgid "The DAO governance provides a Guardian role that can improve the safety of DTF holders and governors. Guardians have the ability to veto any proposal prior to execution. This role is mutable and can be changed by governance in the future."
 msgstr "DAO 治理设有守护者角色,可提升 DTF 持有者和治理者的安全性。守护者有权在执行前否决任何提案。该角色可变,未来可由治理进行变更。"
 
+#: src/views/earn/views/index-dtf/components/faq.tsx:153
+msgid "The displayed APY or APR and your realized return measure different things."
+msgstr ""
+
+#: src/views/earn/views/index-dtf/components/faq.tsx:130
+msgid "The displayed rate estimates what would happen if the vault’s recent reward pace continued for one year, based on rewards distributed over approximately the last 30 days."
+msgstr ""
+
 #: src/components/rtoken-setup/basket/EmergencyCollateral.tsx:160
 msgid "The diversity factor determines the amount of emergency collateral that will be deployed to the RToken basket in the case of a default."
 msgstr "多样性因子决定了在发生违约时将部署到 RToken 篮子中的紧急抵押品数量。"
@@ -9446,6 +9600,10 @@ msgstr "多样性因子决定了在发生违约时将部署到 RToken 篮子中�
 #: src/components/rtoken-setup/token/BackingForm.tsx:76
 msgid "The dutch auction length is how many seconds long falling-price dutch auctions should be. A longer period will result in less slippage due to better price granularity, and a shorter period will result in more slippage."
 msgstr "荷兰式拍卖时长是指降价荷兰式拍卖应持续的秒数。时长越长，因价格粒度更细而产生的滑点越小；时长越短，滑点越大。"
+
+#: src/views/earn/views/index-dtf/components/faq.tsx:138
+msgid "The estimate is not guaranteed. It changes when rewards, vault deposits and withdrawals, token prices, or the calculation window change."
+msgstr ""
 
 #: src/components/rtoken-setup/token/OtherForm.tsx:53
 msgid "The fraction of RSR stake that should be permitted to withdraw without a refresh. When cumulative withdrawals (or a single withdrawal) exceed this fraction, gas must be paid to refresh all assets."
@@ -9462,6 +9620,10 @@ msgstr "你的交易对市场价格的影响。"
 #: src/views/index-dtf/overview/components/index-disclousure.tsx:373
 msgid "The information provided on the Website comes from on-chain sources. Past performance is not indicative of future results. Although index DTFs are intended to track indexes, their ability to successfully track indexes are dependent on the governance structure of the DTF and the governance’s ability to make appropriate trades. There is no guarantee that such trades will be successful or will track its corresponding index exactly. There are many risks associated with digital assets, including but not limited to security risk, counterparty risk, volatility risk, conflicts of interest, and many more. DTFs are no exception. By using the Website, you agree that your interaction with any DTFs is solely at your own risk and the Website and DTFs come as is, without any warranty or condition of any kind."
 msgstr "本网站提供的信息来自链上数据源。过往表现并不预示未来结果。尽管指数 DTF 旨在跟踪指数，但其能否成功跟踪取决于 DTF 的治理结构以及治理方进行适当交易的能力。无法保证此类交易会成功或精确跟踪相应指数。数字资产存在诸多风险，包括但不限于安全风险、交易对手风险、波动性风险、利益冲突等。DTF 也不例外。使用本网站即表示您同意，您与任何 DTF 的交互完全由您自行承担风险，且本网站和 DTF 均按“现状”提供，不附带任何形式的保证或条件。"
+
+#: src/views/earn/views/index-dtf/components/faq.tsx:116
+msgid "The label follows the reward mechanism: automatic in-vault compounding shows APY; separate claimable rewards show APR."
+msgstr ""
 
 #: src/components/rtoken-setup/governance/RoleSetup.tsx:30
 msgid "The long freezer has the ability to freeze an RToken's system for a long period of time. The LONG_FREEZER role should be assigned to an address that will highly optimize for no false positives. It is much longer than the short freeze. It can act slowly and needs to be trusted. It is probably expected to have only one long-freezer address. It allows only 6x uses per long-freezer. It exists so that in the case of a zero-day exploit, governance can act before the system unfreezes and resumes functioning."
@@ -9537,13 +9699,17 @@ msgstr "pauser 有权暂停和恢复 RToken 系统。PAUSER 角色应分配给�
 msgid "The pauser(s) can put the RToken in two states which can be either true or false (no set duration):"
 msgstr "暂停者可将 RToken 设置为两种状态,每种状态均可为 true 或 false(无固定时长):"
 
-#: src/views/index-dtf/overview/stocks/video-chapters.ts:53
-msgid "The platform behind DTFs, and the team."
+#: src/views/index-dtf/overview/stocks/video-chapters.ts:49
+msgid "The platform and team behind DTFs."
 msgstr ""
 
+#: src/views/index-dtf/overview/stocks/video-chapters.ts:53
+#~ msgid "The platform behind DTFs, and the team."
+#~ msgstr ""
+
 #: src/views/index-dtf/overview/stocks/video-chapters.ts:46
-msgid "The power companies behind the AI buildout."
-msgstr ""
+#~ msgid "The power companies behind the AI buildout."
+#~ msgstr ""
 
 #: src/views/index-dtf/overview/components/zap-mint/zap-warning-checkbox.tsx:39
 msgid "The price impact for this trade is very high. You will get significantly less value than expected."
@@ -9731,7 +9897,7 @@ msgid "This DTF"
 msgstr "此 DTF"
 
 #: src/views/index-dtf/overview/components/landing-mint/index.tsx:118
-#: src/views/index-dtf/overview/stocks/landing-mint.tsx:112
+#: src/views/index-dtf/overview/stocks/landing-mint.tsx:101
 msgid "This DTF can only be sold"
 msgstr "此 DTF 仅可卖出"
 
@@ -9768,13 +9934,17 @@ msgstr "该 DTF 已不再受到积极治理，只能被卖出。该 DTF 无法�
 #. placeholder {0}: dtf.token.symbol
 #. placeholder {0}: dtf?.token.symbol
 #: src/views/index-dtf/overview/components/landing-mint/index.tsx:121
-#: src/views/index-dtf/overview/stocks/landing-mint.tsx:115
+#: src/views/index-dtf/overview/stocks/landing-mint.tsx:104
 msgid "This DTF is no longer actively governed, cannot rebalance, and no new ${0} can be created."
 msgstr "此 DTF 已不再受积极治理，无法再平衡，也无法创建新的 ${0}。"
 
 #: src/components/field/index.tsx:35
 msgid "This field is required"
 msgstr "此字段为必填项"
+
+#: src/views/earn/views/index-dtf/components/faq.tsx:86
+msgid "This helps prevent someone from locking immediately before a reward payment, taking part of that reward, and withdrawing right afterward. Streaming makes distribution fairer to users who remain in the vault."
+msgstr ""
 
 #: src/views/yield-dtf/deploy/components/TokenForm.tsx:91
 msgid "This impacts whether the RToken charges higher rates for issuance when collateral is under-peg. This mechanism can be useful for preventing toxic issuance but comes with the tradeoff of making the onchain oracle price unreliable, as the issuance/redemption band widens as a collateral approaches its de-peg threshold."
@@ -9887,9 +10057,13 @@ msgstr "标题更新"
 msgid "To learn more about the risks associated with DTFs,"
 msgstr "如需进一步了解与 DTF 相关的风险，"
 
-#: src/views/index-dtf/overview/components/eligibility-card.tsx:187
+#: src/views/index-dtf/overview/components/eligibility-card.tsx:198
 msgid "To verify eligibility, please leave us your name and email, and we will reach out to you personally."
 msgstr "如需验证资格，请留下您的姓名和邮箱，我们将与您本人联系。"
+
+#: src/views/earn/views/index-dtf/components/faq-graphics.tsx:233
+msgid "Today"
+msgstr ""
 
 #: src/components/ui/swap.tsx:495
 msgid "Toggle {option}"
@@ -10909,7 +11083,7 @@ msgstr "视频"
 
 #. placeholder {0}: index + 1
 #. placeholder {1}: VIDEO_CHAPTERS.length
-#: src/views/index-dtf/overview/stocks/video-series-modal.tsx:119
+#: src/views/index-dtf/overview/stocks/video-series-modal.tsx:117
 msgid "Video {0} of {1}"
 msgstr ""
 
@@ -10930,11 +11104,11 @@ msgstr "查看"
 msgid "View {0} on block explorer"
 msgstr "在区块浏览器上查看 {0}"
 
-#: src/views/index-dtf/overview/components/basket-overview/index.tsx:231
+#: src/views/index-dtf/overview/components/basket-overview/index.tsx:218
 msgid "View all {activeCount} assets"
 msgstr "查看全部 {activeCount} 项资产"
 
-#: src/views/index-dtf/overview/components/basket-overview/index.tsx:232
+#: src/views/index-dtf/overview/components/basket-overview/index.tsx:219
 msgid "View all {activeCount} tokens"
 msgstr "查看全部 {activeCount} 个代币"
 
@@ -10965,7 +11139,7 @@ msgstr "查看治理设置"
 msgid "View in explorer"
 msgstr "在浏览器中查看"
 
-#: src/views/index-dtf/overview/components/basket-overview/index.tsx:229
+#: src/views/index-dtf/overview/components/basket-overview/index.tsx:216
 msgid "View less"
 msgstr "收起"
 
@@ -11059,6 +11233,14 @@ msgstr "正在查看的投资组合："
 msgid "Visit {name}"
 msgstr "访问 {name}"
 
+#: src/views/earn/views/index-dtf/components/faq-graphics.tsx:68
+msgid "vlRSR vault"
+msgstr ""
+
+#: src/views/earn/views/index-dtf/components/faq-graphics.tsx:60
+msgid "vlRSR-style rewards"
+msgstr ""
+
 #: src/views/tokens/components/UnlistedTokensTable.tsx:107
 msgid "Volume (all time)"
 msgstr "交易量（历史总计）"
@@ -11086,7 +11268,7 @@ msgstr "投票锁定地址"
 msgid "Vote Lock address is not allowed for new DAO"
 msgstr "新 DAO 不允许使用投票锁定地址"
 
-#: src/views/earn/views/index-dtf/index.tsx:84
+#: src/views/earn/views/index-dtf/components/faq.tsx:236
 msgid "Vote Lock Frequently Asked Questions"
 msgstr "投票锁定常见问题"
 
@@ -11099,16 +11281,16 @@ msgid "Vote locked"
 msgstr "已投票锁定"
 
 #: src/views/earn/views/index-dtf/index.tsx:34
-msgid "Vote lockers earn rewards from the DTF’s fees. A portion of the TVL fees and mint fees collected by the Index DTF are distributed to vote-locked token holders. The more tokens locked, the larger the share of rewards an individual vote-locked token holder will receive."
-msgstr "投票锁定者可从 DTF 的费用中赚取奖励。Index DTF 收取的部分 TVL 费用和 mint 费用将分配给 vote-locked 代币持有者。锁定的代币越多，单个 vote-locked 代币持有者获得的奖励份额就越大。"
+#~ msgid "Vote lockers earn rewards from the DTF’s fees. A portion of the TVL fees and mint fees collected by the Index DTF are distributed to vote-locked token holders. The more tokens locked, the larger the share of rewards an individual vote-locked token holder will receive."
+#~ msgstr "投票锁定者可从 DTF 的费用中赚取奖励。Index DTF 收取的部分 TVL 费用和 mint 费用将分配给 vote-locked 代币持有者。锁定的代币越多，单个 vote-locked 代币持有者获得的奖励份额就越大。"
 
-#: src/views/earn/views/index-dtf/index.tsx:27
+#: src/views/earn/views/index-dtf/components/faq.tsx:33
 msgid "Vote lockers govern the key parameters of an Index DTF, including which assets are in the basket, their weights, fees, and contract upgrades."
 msgstr "投票锁定者治理 Index DTF 的关键参数，包括篮子中包含哪些资产、它们的权重、费用以及合约升级。"
 
 #: src/views/earn/views/index-dtf/index.tsx:19
-msgid "Vote locking is the process of locking an ERC20 token for a set period to gain governance power of an Index DTF and earn rewards. While locked, the RSR cannot be transferred or sold until the lock period ends."
-msgstr "投票锁定是将 ERC20 代币锁定一段固定期限，以获得某个 Index DTF 的治理权并赚取奖励的过程。锁定期间，RSR 无法转移或出售，直至锁定期结束。"
+#~ msgid "Vote locking is the process of locking an ERC20 token for a set period to gain governance power of an Index DTF and earn rewards. While locked, the RSR cannot be transferred or sold until the lock period ends."
+#~ msgstr "投票锁定是将 ERC20 代币锁定一段固定期限，以获得某个 Index DTF 的治理权并赚取奖励的过程。锁定期间，RSR 无法转移或出售，直至锁定期结束。"
 
 #: src/views/index-dtf/governance/views/proposal/components/proposal-vote-button.tsx:59
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalVote.tsx:177
@@ -11162,6 +11344,10 @@ msgstr "投票锁定 DAO 代币"
 msgid "Vote-Lock on Index DTFs"
 msgstr "在 Index DTF 上进行投票锁定"
 
+#: src/views/earn/views/index-dtf/components/faq-graphics.tsx:90
+msgid "Vote-lock vault"
+msgstr ""
+
 #: src/views/portfolio-page/components/portfolio-breakdown.tsx:39
 #: src/views/portfolio-page/components/portfolio-chart.tsx:74
 msgid "Vote-locked"
@@ -11174,6 +11360,10 @@ msgstr "Vote-locked 仓位"
 #: src/views/portfolio-page/components/voting-power.tsx:99
 msgid "Vote-locker Address"
 msgstr "Vote-locker 地址"
+
+#: src/views/earn/views/index-dtf/components/faq.tsx:26
+msgid "Vote-locking means locking an ERC20 governance token in a vault to receive governance power over one or more Index DTFs. While locked, your tokens cannot be transferred or sold."
+msgstr ""
 
 #: src/views/index-dtf/governance/components/governance-delegate-list.tsx:64
 #: src/views/yield-dtf/governance/components/TopVoters.tsx:108
@@ -11474,7 +11664,7 @@ msgstr "我们用你的 {0} 获取 Mint 所需的资产。"
 msgid "We're sorry, but the swap quote is unavailable. The amount may be too small to cover fees. Please <0>retry</0>, or <1>edit the amount</1>, and try again."
 msgstr "抱歉，Swap 报价不可用。金额可能太小，不足以覆盖费用。请<0>重试</0>，或<1>修改金额</1>后再试一次。"
 
-#: src/views/index-dtf/overview/components/eligibility-card.tsx:165
+#: src/views/index-dtf/overview/components/eligibility-card.tsx:176
 msgid "We're sorry, this product isn't available to customers in your region. In order to access this DTF, you may need to qualify as a <0>qualified investor</0>."
 msgstr "很抱歉，本产品不向您所在地区的客户提供。如需使用此 DTF，您可能需要符合<0>合格投资者</0>资格。"
 
@@ -11517,11 +11707,11 @@ msgstr "权重已保存："
 msgid "Welcome to Reserve — a platform for creating, exploring, and interacting with Decentralized Token Funds (“DTFs”). A DTF is the generic name given to any onchain asset-backed index. DTFs can be created on Reserve’s Yield Protocol or Index Protocol permissionlessly, by any person or entity."
 msgstr "欢迎使用 Reserve —— 一个用于创建、探索 Decentralized Token Funds（“DTF”）并与之交互的平台。DTF 是对任何链上资产支撑指数的通用名称。任何个人或实体都可以无需许可地在 Reserve 的 Yield Protocol 或 Index Protocol 上创建 DTF。"
 
-#: src/views/index-dtf/overview/stocks/faq.tsx:20
+#: src/views/index-dtf/overview/stocks/faq.tsx:18
 msgid "What are the fees?"
 msgstr ""
 
-#: src/views/index-dtf/overview/stocks/faq.tsx:22
+#: src/views/index-dtf/overview/stocks/faq.tsx:20
 msgid "What are the risks?"
 msgstr ""
 
@@ -11529,7 +11719,7 @@ msgstr ""
 msgid "What is a <0>DTF</0>?"
 msgstr "什么是 <0>DTF</0>？"
 
-#: src/views/index-dtf/overview/stocks/video-chapters.ts:38
+#: src/views/index-dtf/overview/stocks/video-chapters.ts:34
 msgid "What is a Diversified Token Fund?"
 msgstr ""
 
@@ -11537,7 +11727,7 @@ msgstr ""
 msgid "What is Reserve Governor Alexios?"
 msgstr "什么是 Reserve Governor Alexios?"
 
-#: src/views/index-dtf/overview/stocks/video-chapters.ts:52
+#: src/views/index-dtf/overview/stocks/video-chapters.ts:48
 msgid "What is Reserve?"
 msgstr ""
 
@@ -11546,13 +11736,21 @@ msgid "What is staking?"
 msgstr "什么是 Staking？"
 
 #. placeholder {0}: dtf?.token.symbol ?? 'DTF'
-#: src/views/index-dtf/overview/stocks/faq.tsx:69
+#: src/views/index-dtf/overview/stocks/faq.tsx:60
 msgid "What is the ${0} DTF?"
 msgstr ""
 
-#: src/views/earn/views/index-dtf/index.tsx:15
+#: src/views/earn/views/index-dtf/components/faq.tsx:22
 msgid "What is vote-locking?"
 msgstr "什么是投票锁定？"
+
+#: src/views/index-dtf/overview/stocks/video-chapters.ts:42
+msgid "What this is all about."
+msgstr ""
+
+#: src/views/earn/views/index-dtf/components/faq.tsx:78
+msgid "When rewards are added to a self-appreciating vault like vlRSR, they become redeemable gradually rather than all at once. This is often called streaming or dripping."
+msgstr ""
 
 #: src/views/yield-dtf/staking/components/overview/about.tsx:14
 msgid "When staking RSR, you are putting your RSR at risk in the case of a collateral default in exchange for 1) the rights to govern the RToken and 2) for a portion of the revenue generated by the collateral. The revenue sent to the staked RSR pool will be distributed amongst RSR stakers proportionally to their stake in the pool."
@@ -11578,13 +11776,21 @@ msgstr "使用哪个报价提供方。“Best Quote”会并行从 Reserve 和 E
 msgid "Whitelisted Index DTFs displayed on the discover page with their governance addresses"
 msgstr "在发现页面展示的已列入白名单的 Index DTF 及其治理地址"
 
-#: src/views/index-dtf/overview/stocks/video-chapters.ts:59
+#: src/views/index-dtf/overview/stocks/video-chapters.ts:55
 msgid "Who can buy $BUILDOUT?"
 msgstr ""
 
 #: src/views/index-dtf/governance/views/propose/basket/components/proposal-rebalance-launch-settings.tsx:311
 msgid "Who will be able to launch auctions and how long will they have before the auctions expire."
 msgstr "谁能够发起拍卖，以及在拍卖到期前他们有多长时间。"
+
+#: src/views/earn/views/index-dtf/components/faq.tsx:74
+msgid "Why are rewards released gradually?"
+msgstr ""
+
+#: src/views/earn/views/index-dtf/components/faq.tsx:98
+msgid "Why do some vaults show APY and others show APR?"
+msgstr ""
 
 #: src/views/index-dtf/deploy/components/deploy-coming-soon.tsx:167
 msgid "Why do you think people want this DTF?"
@@ -11593,6 +11799,10 @@ msgstr "你认为人们为什么会想要这个 DTF？"
 #: src/views/yield-dtf/issuance/components/zapV2/submit/ZapRevokeButton.tsx:47
 msgid "Why I do need to revoke my allowance?"
 msgstr "为什么我需要撤销授权？"
+
+#: src/views/earn/views/index-dtf/components/faq.tsx:149
+msgid "Why might my actual return differ from the displayed rate?"
+msgstr ""
 
 #: src/components/transactions/table/index.tsx:56
 #: src/components/transactions/table/index.tsx:58
@@ -11727,6 +11937,10 @@ msgstr "Yield DTF（在 Reserve Yield Protocol 上创建）内置超额抵押机
 #: src/views/yield-dtf/overview/components/backing/collateral-exposure.tsx:89
 msgid "Yield:"
 msgstr "收益："
+
+#: src/views/earn/views/index-dtf/components/faq.tsx:200
+msgid "You can begin the unlock process at any time, but you cannot withdraw immediately. The vault’s unlock delay must finish first, and you stop earning rewards once the unlock process begins. Always check the displayed delay before locking."
+msgstr ""
 
 #: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:83
 msgid "You can buy up to {maxAmountLabel} per transaction during {sessionLabel} hours in the US."
@@ -11884,7 +12098,7 @@ msgstr "你的 Decentralized Token Fund 投资。"
 msgid "Your DTF has been minted."
 msgstr "你的 DTF 已被 Mint。"
 
-#: src/views/earn/views/index-dtf/components/vote-lock-positions.tsx:242
+#: src/views/earn/views/index-dtf/components/vote-lock-positions.tsx:272
 msgid "Your lock"
 msgstr "您的 Vote-lock"
 
@@ -11895,6 +12109,10 @@ msgstr "您的投资组合汇总了 DTF 持仓、Stake 和 Vote-lock 的治理�
 #: src/views/index-dtf/components/confirm-eligibility-modal.tsx:271
 msgid "Your privacy is protected. This confirmation is only ever associated with your wallet address - never your personal information. <0>Privacy Policy</0>"
 msgstr "您的隐私受到保护。此确认仅与您的钱包地址相关联，绝不涉及您的个人信息。<0>隐私政策</0>"
+
+#: src/views/earn/views/index-dtf/components/faq-graphics.tsx:207
+msgid "Your realized return"
+msgstr ""
 
 #: src/views/portfolio-page/components/transactions.tsx:167
 msgid "Your recent on-chain activity."
@@ -11911,6 +12129,10 @@ msgstr "您的 Stake"
 #: src/views/yield-dtf/staking/components/stake-position.tsx:29
 msgid "Your stake position"
 msgstr "您的 Stake 仓位"
+
+#: src/views/earn/views/index-dtf/components/faq-graphics.tsx:230
+msgid "Your start date"
+msgstr ""
 
 #: src/views/portfolio-page/components/rewards-available.tsx:20
 msgid "Your total participation awards available across all chains"
