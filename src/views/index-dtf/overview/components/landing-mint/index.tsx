@@ -1,4 +1,5 @@
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
+import CowSwap from '@/components/icons/logos/CowSwap'
 import PancakeSwap from '@/components/icons/logos/PancakeSwap'
 import { Button } from '@/components/ui/button'
 import {
@@ -24,6 +25,7 @@ import { useZapperModal } from '@reserve-protocol/react-zapper'
 import { useAtomValue } from 'jotai'
 import { ChevronDown } from 'lucide-react'
 import React from 'react'
+import type { ComponentType, SVGProps } from 'react'
 import EligibilityCard from '../eligibility-card'
 import IndexAboutOverview from '../index-about-overview'
 import DTFBalance from './dtf-balance'
@@ -32,7 +34,19 @@ import DtfCover, {
   getDtfCoverImage,
   getDtfCoverVideo,
 } from './dtf-cover'
-import { getDtfDexLinks, type DtfDexLink } from './external-dex-links'
+import {
+  getDtfDexLinks,
+  type DtfDex,
+  type DtfDexLink,
+} from './external-dex-links'
+
+export const DEX_ICONS: Record<
+  DtfDex,
+  ComponentType<SVGProps<SVGSVGElement>>
+> = {
+  pancakeswap: PancakeSwap,
+  cowswap: CowSwap,
+}
 
 const TokenInfo = () => {
   return <DTFBalance />
@@ -71,7 +85,10 @@ const ExternalDexDropdown = ({
               rel="noopener noreferrer"
               onClick={() => onSelect(link)}
             >
-              <PancakeSwap className="h-4 w-4" />
+              {(() => {
+                const Icon = DEX_ICONS[link.dex]
+                return <Icon className="h-4 w-4" />
+              })()}
               <span>{link.label}</span>
             </a>
           </DropdownMenuItem>
@@ -180,9 +197,7 @@ const LandingMint = (props: React.HTMLAttributes<HTMLDivElement>) => {
         data-testid="overview-cover-slot"
         className={cn(
           'grid transition-[grid-template-rows] duration-500 ease-out motion-reduce:transition-none',
-          hasCover || dtf === undefined
-            ? 'grid-rows-[1fr]'
-            : 'grid-rows-[0fr]'
+          hasCover || dtf === undefined ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'
         )}
       >
         <div className="overflow-hidden">

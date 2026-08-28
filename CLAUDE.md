@@ -8,6 +8,7 @@ Loader, not playbook. Reusable workflow rules live in `skills/` (kit-owned, upda
 - Index DTF data goes through `@reserve-protocol/react-sdk` — read `docs/wiki/sdk.md` before writing any Index DTF hook/updater.
 - Money is `Amount`/`bigint`, never `Number` for on-chain math. Live state comes from RPC, not the subgraph.
 - Shared components keep their defaults; design tokens only (no hardcoded hex/hsl); feature isolation (`docs/wiki/project.md` § Safety Rules).
+- **Comment budget:** a comment is one line stating a WHY the code cannot show (a human choice, a constraint, an upstream quirk). Never narrate what the code does, why the diff is right, or the layout intent — `scope.mjs` flags `comment-block`, reviewers reject it (`docs/wiki/project.md` § Overrides).
 - **Never commit or push unless told. Never push to main/master. No Co-Authored-By. PR descriptions: clean human summary, no AI attribution.**
 - **Docs hygiene:** plans/ledgers/findings live in `docs/plans/`, never the repo root (root allows only README/LICENSE/SECURITY + the AGENTS/CLAUDE routers). Domain references live next to their domain (e.g. `e2e/TEST_MAP.md`). Delete superseded docs — git keeps history; stale docs at root leak into every agent's context. **Any task that creates or invalidates documentation ends with its own housekeeping pass** — delete/merge what it superseded, update the claims it made stale (wiki pages, area guides, TEST_MAP, FOLLOWUPS), don't wait to be asked.
 

@@ -1,7 +1,7 @@
 {
   "_meta": {
     "source": "https://api.goldsky.com/api/public/project_cmgzim3e100095np2gjnbh6ry/subgraphs/dtf-index-base/prod/gn",
-    "capturedAt": "2026-07-10T00:20:53.813Z",
+    "capturedAt": "2026-08-25T16:34:48.584Z",
     "dtf": "0x4da9a0f397db1397902070f93a4d6ddbc0e0e6e8",
     "chainId": 8453,
     "query": "GetIndexDTF"
@@ -33,10 +33,10 @@
         "0x718841c68eab4038ef389c154f8e91f9923b2fda",
         "0x7daaf7bc2ee8bf4c0ac7f37e6b6cfaeb3ed9a868"
       ],
-      "totalRevenue": "9812839877090131027389",
-      "protocolRevenue": "4488343270909489700885",
-      "governanceRevenue": "488407797729922743464",
-      "externalRevenue": "4836088808450718583040",
+      "totalRevenue": "12427339811246703082802",
+      "protocolRevenue": "5548226261875241151789",
+      "governanceRevenue": "604423987520282659442",
+      "externalRevenue": "6274689561851179271571",
       "feeRecipients": "0x45a96cd0e4d89a41eebf3cc4204b00b1cf1582fa:74626865671641900,0x718841c68eab4038ef389c154f8e91f9923b2fda:746268656716417800,0xcbca96091f43c024730a020e57515a18b5dc633b:179104477611940300",
       "bidsEnabled": true,
       "trustedFillerRegistry": "0x72db5f49d0599c314e2f2fedf6fe33e1ba6c7a18",
@@ -112,14 +112,14 @@
         "name": "CF Large Cap Index",
         "symbol": "LCAP",
         "decimals": 18,
-        "totalSupply": "402305380140808029527182",
-        "currentHolderCount": "19490",
-        "cumulativeHolderCount": "29446",
-        "transferCount": "446238",
-        "mintCount": "8855",
-        "burnCount": "3132",
-        "totalBurned": "662368579192472459914735",
-        "totalMinted": "1064673959333280489441917"
+        "totalSupply": "727756808595248079994223",
+        "currentHolderCount": "19537",
+        "cumulativeHolderCount": "29713",
+        "transferCount": "492879",
+        "mintCount": "9583",
+        "burnCount": "3207",
+        "totalBurned": "772878747909172743916731",
+        "totalMinted": "1500635556504420823910954"
       },
       "stToken": {
         "id": "0x45a96cd0e4d89a41eebf3cc4204b00b1cf1582fa",
@@ -129,18 +129,18 @@
           "name": "Vote Lock vlRSR-LCAP",
           "symbol": "vlRSR-LCAP",
           "decimals": 18,
-          "totalSupply": "78030917751780873812273001",
+          "totalSupply": "85713253413316069288514920",
           "currentHolderCount": "149",
-          "cumulativeHolderCount": "188",
+          "cumulativeHolderCount": "191",
           "transferCount": "157",
-          "mintCount": "219",
-          "burnCount": "49",
-          "totalBurned": "90529265663783149886418846",
-          "totalMinted": "168560183415564023698691847"
+          "mintCount": "271",
+          "burnCount": "54",
+          "totalBurned": "117459895184887717733254341",
+          "totalMinted": "203173148598203787021769261"
         },
-        "currentDelegates": "32",
-        "totalDelegates": "70",
-        "delegatedVotesRaw": "70637015751877081644722771",
+        "currentDelegates": "34",
+        "totalDelegates": "73",
+        "delegatedVotesRaw": "78345374413412277120964690",
         "currentOptimisticDelegates": "0",
         "totalOptimisticDelegates": "0",
         "optimisticDelegatedVotesRaw": "0",
@@ -181,7 +181,6 @@
           }
         },
         "legacyGovernance": [
-          "0x0000000000000000000000000000000000000000",
           "0x1a7d043c84fe781b6df046fefcf673f71110208d"
         ],
         "rewards": [

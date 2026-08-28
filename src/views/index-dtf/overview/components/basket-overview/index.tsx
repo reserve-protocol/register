@@ -4,6 +4,7 @@ import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { useIsMobile } from '@/hooks/use-media-query'
 import { cn } from '@/lib/utils'
 import { Trans, useLingui } from '@lingui/react/macro'
+import { ChevronDown } from 'lucide-react'
 import { useMemo, useState } from 'react'
 import { BasketTableBody } from './basket-table-body'
 import {
@@ -22,7 +23,12 @@ const MAX_TOKENS = 10
 
 const DEFAULT_SORT: SortConfig = { field: 'weight', direction: 'desc' }
 
-const IndexBasketOverview = () => {
+const IndexBasketOverview = ({
+  progressive = false,
+}: {
+  /** Cap desktop to the top rows too, with a "Show N more" expander. */
+  progressive?: boolean
+}) => {
   const { t } = useLingui()
   const isMobile = useIsMobile()
   const [viewAll, setViewAll] = useState(false)
@@ -100,11 +106,12 @@ const IndexBasketOverview = () => {
   const activeCount = isExposure
     ? (sortedExposureRows?.length ?? 0)
     : (sortedFiltered?.length ?? 0)
-  const limitRows = isMobile && !viewAll
-  const showViewAll = isMobile && activeCount > MAX_TOKENS
+  const limitRows = (isMobile || progressive) && !viewAll
+  const showViewAll = (isMobile || progressive) && activeCount > MAX_TOKENS
+  const useShelf = progressive && !isMobile && showViewAll
 
   return (
-    <div data-testid="overview-basket" className="flex flex-col">
+    <div data-testid="overview-basket" className="relative flex flex-col">
       <div className={cn('sm:px-6 sm:pt-6', !showViewAll && 'sm:pb-6')}>
         <Tabs defaultValue="exposure">
           <div className="px-5 pb-2 pt-5 sm:hidden">
@@ -182,21 +189,37 @@ const IndexBasketOverview = () => {
           </Table>
         </Tabs>
       </div>
-      {showViewAll && (
-        <div className="px-2 pb-2 pt-3">
-          <Button
-            variant="outline"
-            className="w-full rounded-xl"
-            onClick={() => setViewAll(!viewAll)}
-          >
-            {viewAll
-              ? t`View less`
-              : isExposure
-                ? t`View all ${activeCount} assets`
-                : t`View all ${activeCount} tokens`}
-          </Button>
-        </div>
-      )}
+      {useShelf
+        ? // One-way expand: the frosted shelf over the last rows is the control.
+          !viewAll && (
+            <Button
+              variant="none"
+              size="inline"
+              onClick={() => setViewAll(true)}
+              className="group absolute inset-x-0 bottom-0 h-32 w-full items-end justify-center rounded-b-4xl rounded-t-none pb-4 text-muted-foreground hover:text-foreground"
+            >
+              <span className="pointer-events-none absolute inset-0 rounded-[inherit] bg-gradient-to-b from-transparent via-card/60 to-card backdrop-blur-[7px] [mask-image:linear-gradient(to_bottom,transparent,black_70%)]" />
+              <span className="relative flex items-center gap-1">
+                {t`Show ${activeCount - MAX_TOKENS} more`}
+                <ChevronDown className="h-4 w-4 transition-transform group-hover:translate-y-0.5 motion-reduce:transition-none" />
+              </span>
+            </Button>
+          )
+        : showViewAll && (
+            <div className="px-2 pb-2 pt-3">
+              <Button
+                variant="outline"
+                className="w-full rounded-xl"
+                onClick={() => setViewAll(!viewAll)}
+              >
+                {viewAll
+                  ? t`View less`
+                  : isExposure
+                    ? t`View all ${activeCount} assets`
+                    : t`View all ${activeCount} tokens`}
+              </Button>
+            </div>
+          )}
     </div>
   )
 }

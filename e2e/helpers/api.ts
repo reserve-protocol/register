@@ -30,7 +30,11 @@ export interface ApiMockOptions {
   requests?: BoundaryRequest[]
 }
 
-function json(route: import('@playwright/test').Route, data: unknown, status = 200) {
+function json(
+  route: import('@playwright/test').Route,
+  data: unknown,
+  status = 200
+) {
   return route.fulfill({
     status,
     contentType: 'application/json',
@@ -57,7 +61,8 @@ function isCapturedDiscoverDtf(url: URL, addressParam = 'address'): boolean {
     'shared/discover-dtfs.json'
   )
   return discover.some(
-    (dtf) => dtf.address.toLowerCase() === address && Number(dtf.chainId) === chainId
+    (dtf) =>
+      dtf.address.toLowerCase() === address && Number(dtf.chainId) === chainId
   )
 }
 
@@ -68,13 +73,14 @@ export function knownPriceResponse(
   overrides?: MockOverrides
 ) {
   const known = new Set<string>(['0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'])
-  const prices: Array<{ address: string; price: number; timestamp?: number }> = []
+  const prices: Array<{ address: string; price: number; timestamp?: number }> =
+    []
 
   for (const dtf of REGISTRY.filter((entry) => entry.chainId === chainId)) {
     if (snapshotExists(`${dtf.snapshotDir}/token-prices.json`)) {
-      for (const price of loadSnapshot<Array<{ address: string; price: number; timestamp?: number }>>(
-        `${dtf.snapshotDir}/token-prices.json`
-      )) {
+      for (const price of loadSnapshot<
+        Array<{ address: string; price: number; timestamp?: number }>
+      >(`${dtf.snapshotDir}/token-prices.json`)) {
         known.add(price.address.toLowerCase())
         prices.push(price)
       }
@@ -83,7 +89,8 @@ export function knownPriceResponse(
       const state = loadSnapshot<{ basketTokens: Array<{ address: string }> }>(
         `${dtf.snapshotDir}/chain-state.json`
       )
-      for (const token of state.basketTokens) known.add(token.address.toLowerCase())
+      for (const token of state.basketTokens)
+        known.add(token.address.toLowerCase())
     }
     const snapshot = loadSnapshot<{
       dtf: {
@@ -99,7 +106,9 @@ export function knownPriceResponse(
       snapshot.token?.address,
       snapshot.stToken?.token?.address,
       snapshot.stToken?.underlying?.address,
-      ...(snapshot.stToken?.rewards?.map((reward) => reward.rewardToken?.address) ?? []),
+      ...(snapshot.stToken?.rewards?.map(
+        (reward) => reward.rewardToken?.address
+      ) ?? []),
     ]) {
       if (address) known.add(address.toLowerCase())
     }
@@ -109,7 +118,9 @@ export function knownPriceResponse(
   // Their identities live in the captured eth_call map (address:calldata keys),
   // so admit every contract address that appears there for this chain — the
   // truthful set of tokens a yield view can request, without a wildcard.
-  for (const dtf of YIELD_REGISTRY.filter((entry) => entry.chainId === chainId)) {
+  for (const dtf of YIELD_REGISTRY.filter(
+    (entry) => entry.chainId === chainId
+  )) {
     const path = `${dtf.snapshotDir}/rtoken-chain-state.json`
     if (!snapshotExists(path)) continue
     const callMap = loadSnapshot<Record<string, string>>(path)
@@ -145,19 +156,28 @@ export function knownPriceResponse(
     ],
   }
   for (const address of commonByChain[chainId] ?? []) known.add(address)
-  if (![...requestedTokens].every((address) => known.has(address))) return undefined
+  if (![...requestedTokens].every((address) => known.has(address)))
+    return undefined
 
-  const byAddress = new Map(prices.map((price) => [price.address.toLowerCase(), price]))
+  const byAddress = new Map(
+    prices.map((price) => [price.address.toLowerCase(), price])
+  )
   return [...requestedTokens].flatMap((address) => {
     // Per-test price gap beats both the captured price and the $1 lean — the
     // seam for "this token has no price" states (RG2/F1).
     const gap = overrides?.lookupPriceGap(chainId, address)
     if (gap === 'omit') return []
-    const price = byAddress.get(address) ?? {
-      address,
-      price: 1,
-      timestamp: Math.floor(Date.now() / 1000),
-    }
+    // An explicit per-test price (overrides.price) beats the captured price
+    // and the $1 lean — the seam for math that must match a quote capture.
+    const pinned = overrides?.lookupPrice(chainId, address)
+    const price =
+      pinned !== undefined
+        ? { address, price: pinned, timestamp: Math.floor(Date.now() / 1000) }
+        : (byAddress.get(address) ?? {
+            address,
+            price: 1,
+            timestamp: Math.floor(Date.now() / 1000),
+          })
     return [gap === 'zero' ? { ...price, price: 0 } : price]
   })
 }
@@ -165,7 +185,9 @@ export function knownPriceResponse(
 export async function mockApiRoutes(page: Page, options: ApiMockOptions) {
   const { log, geolocation, overrides, requests } = options
 
-  const handler = async (route: Parameters<Parameters<Page['route']>[1]>[0]) => {
+  const handler = async (
+    route: Parameters<Parameters<Page['route']>[1]>[0]
+  ) => {
     const url = new URL(route.request().url())
     const method = route.request().method()
     const path = url.pathname // e.g. /discover/dtfs, /v2/compliance/geolocation
@@ -183,7 +205,10 @@ export async function mockApiRoutes(page: Page, options: ApiMockOptions) {
     const overlaid = overrides?.lookupApi(method, url)
     if (overlaid !== undefined) return json(route, overlaid)
 
-    if (method !== 'GET' && !(method === 'POST' && path === '/rebalance/liquidity')) {
+    if (
+      method !== 'GET' &&
+      !(method === 'POST' && path === '/rebalance/liquidity')
+    ) {
       log('unmocked reserve-api method', { method, path })
       return json(route, { error: 'unexpected reserve-api method' }, 405)
     }
@@ -210,7 +235,11 @@ export async function mockApiRoutes(page: Page, options: ApiMockOptions) {
     // Per-wallet compliance — unrestricted. `address` is the last path segment.
     if (path.includes('/v2/compliance/wallet/')) {
       const address = path.split('/').pop() ?? ''
-      return json(route, { address, isRestricted: false, shouldSkipRestrictions: false })
+      return json(route, {
+        address,
+        isRestricted: false,
+        shouldSkipRestrictions: false,
+      })
     }
 
     // Portfolio transaction history is an ARRAY — must match before the
@@ -253,7 +282,10 @@ export async function mockApiRoutes(page: Page, options: ApiMockOptions) {
     if (path.includes('/folio-manager')) {
       const dtf = dtfFromParam(url, 'folio')
       if (dtf && snapshotExists(`${dtf.snapshotDir}/folio-manager.json`)) {
-        return json(route, loadSnapshot(`${dtf.snapshotDir}/folio-manager.json`))
+        return json(
+          route,
+          loadSnapshot(`${dtf.snapshotDir}/folio-manager.json`)
+        )
       }
       log('unmocked reserve-api identity', {
         path,
@@ -275,9 +307,15 @@ export async function mockApiRoutes(page: Page, options: ApiMockOptions) {
         return json(route, { error: 'unknown current-dtf identity' }, 500)
       }
       if (snapshotExists(`${dtf.snapshotDir}/current-price.json`)) {
-        return json(route, loadSnapshot(`${dtf.snapshotDir}/current-price.json`))
+        return json(
+          route,
+          loadSnapshot(`${dtf.snapshotDir}/current-price.json`)
+        )
       }
-      log('unmocked reserve-api', { path, param: url.searchParams.get('address') })
+      log('unmocked reserve-api', {
+        path,
+        param: url.searchParams.get('address'),
+      })
       return json(route, { error: 'no current-price snapshot', path }, 500)
     }
 
@@ -334,7 +372,10 @@ export async function mockApiRoutes(page: Page, options: ApiMockOptions) {
     if (path.includes('/historical/dtf')) {
       const dtf = dtfFromParam(url, 'address')
       if (dtf && snapshotExists(`${dtf.snapshotDir}/historical-price.json`)) {
-        return json(route, loadSnapshot(`${dtf.snapshotDir}/historical-price.json`))
+        return json(
+          route,
+          loadSnapshot(`${dtf.snapshotDir}/historical-price.json`)
+        )
       }
       log('unmocked reserve-api identity', {
         path,
@@ -356,7 +397,11 @@ export async function mockApiRoutes(page: Page, options: ApiMockOptions) {
           .filter(Boolean)
           .map((token) => token.toLowerCase())
       )
-      const response = knownPriceResponse(Number(chainId), requestedTokens, overrides)
+      const response = knownPriceResponse(
+        Number(chainId),
+        requestedTokens,
+        overrides
+      )
       if (response && requestedTokens.size > 0) return json(route, response)
       log('unmocked reserve-api identity', {
         path,
@@ -384,7 +429,11 @@ export async function mockApiRoutes(page: Page, options: ApiMockOptions) {
     // Rebalance liquidity probe (POST) — deterministic empty; auction specs
     // overlay real payloads per-test.
     if (path.includes('/rebalance/liquidity')) {
-      return json(route, { market: null, totals: { sellUsd: 0, buyUsd: 0 }, assets: [] })
+      return json(route, {
+        market: null,
+        totals: { sellUsd: 0, buyUsd: 0 },
+        assets: [],
+      })
     }
 
     if (path.endsWith('/health')) {

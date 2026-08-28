@@ -1,7 +1,7 @@
 {
   "_meta": {
     "source": "https://api.goldsky.com/api/public/project_cmgzim3e100095np2gjnbh6ry/subgraphs/dtf-index-base/prod/gn",
-    "capturedAt": "2026-07-09T21:47:24.669Z",
+    "capturedAt": "2026-08-25T16:34:50.291Z",
     "dtf": "0x4da9a0f397db1397902070f93a4d6ddbc0e0e6e8",
     "chainId": 8453,
     "query": "getGovernanceStats"
@@ -295,9 +295,9 @@
     ],
     "stakingToken": {
       "id": "0x45a96cd0e4d89a41eebf3cc4204b00b1cf1582fa",
-      "totalDelegates": "70",
+      "totalDelegates": "73",
       "token": {
-        "totalSupply": "78030917751780873812273001"
+        "totalSupply": "85713253413316069288514920"
       },
       "delegates": [
         {
@@ -319,6 +319,11 @@
           "address": "0x49b4564cb533e092d43c628386258f0b78d86c52",
           "delegatedVotes": "9011992",
           "numberVotes": 7
+        },
+        {
+          "address": "0xb3e2e1c258a7c218c9b0e26fc848de01b3bce6fb",
+          "delegatedVotes": "6754089.71715212637318666",
+          "numberVotes": 0
         },
         {
           "address": "0x04f6980cbec49220e8bd380e89e962f9e5cf50fc",
@@ -344,11 +349,6 @@
           "address": "0x510c8741f1f752b533011033c142847d3b5a4d53",
           "delegatedVotes": "2053113.629526554138151687",
           "numberVotes": 0
-        },
-        {
-          "address": "0x9458579d65e99c59858fdea120fa59dc618e732c",
-          "delegatedVotes": "1819477.290819645604662491",
-          "numberVotes": 4
         }
       ]
     }

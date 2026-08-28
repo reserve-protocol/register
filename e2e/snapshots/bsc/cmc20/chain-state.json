@@ -1,7 +1,7 @@
 {
   "_meta": {
     "source": "https://bsc-rpc.publicnode.com",
-    "capturedAt": "2026-07-10T02:58:34.888Z",
+    "capturedAt": "2026-08-25T16:35:02.261Z",
     "dtf": "0x2f8a339b5889ffac4c5a956787cda593b3c36867",
     "chainId": 56
   },
@@ -24,29 +24,31 @@
         "0x1ce0c2827e2ef14d5c4f29a091d735a204794041",
         "0x0422f966bf8e978075a97d47ef4c7efd3563fa51",
         "0x4338665cbb7b2485a8855a139b75d5e34ab0db94",
-        "0x1ba42e5193dfa8b03d15dd1b86a3113bbbef8eeb"
+        "0x1ba42e5193dfa8b03d15dd1b86a3113bbbef8eeb",
+        "0x2859e4544c4bb03966803b044a93563bd2d0dd4d"
       ],
       "amounts": [
-        "0x3b9ebb97248519471",
-        "0x166f1e11d0d3c78a8f",
-        "0x191370c7b855da3572",
-        "0x2d3a06ef205c975cb950",
-        "0x6be4c1806f82457f29",
-        "0x4be44e9137",
-        "0x35075601975f",
-        "0x1aa948ba20c2df151edb",
-        "0x2ee1176b34f6471d71",
-        "0x88dc78df2647c2eabd",
-        "0x18ccabcf9f65476a9e24",
-        "0x3b307965c9e18a65e",
-        "0x2f5d0b2c910a7c026d0",
-        "0x50165844c340ddf5cb",
-        "0x1f21a5dd15e2c6fbf053",
-        "0xeafb226a097a0cb13",
-        "0x314d46b9aae1a7413"
+        "0x2e72d84b114b80c13",
+        "0x1176982de35bc90e16",
+        "0x13493e6ab83cb832db",
+        "0x234cdef3b8bca15ddf2c",
+        "0x53e22d47ed87d49a55",
+        "0x3b1d592766",
+        "0x29a81ff38a55",
+        "0x145f06f49dc9c7b11b51",
+        "0x24c456ebe35b08479e",
+        "0x6b546fc489e7f1963d",
+        "0x134f1596852956260fb8",
+        "0x2f1be03fc7625852b",
+        "0x25d12d935fcc3d4a16c",
+        "0x3c9691452058852835",
+        "0x18e8ec3f48c4dd959fc7",
+        "0xb1039962dcc26e0e7",
+        "0x26c70b452acdb68ef",
+        "0x51f8f905ed0d10d2202f351"
       ]
     },
-    "totalSupply": "0xa11d125ff44c0659a5e",
+    "totalSupply": "0x7db246f8d61b2ff9a06",
     "decimals": 18,
     "version": "5.0.0",
     "basketTokens": [
@@ -150,6 +152,12 @@
         "address": "0x1ba42e5193dfa8b03d15dd1b86a3113bbbef8eeb",
         "name": "Zcash Token",
         "symbol": "ZEC",
+        "decimals": 18
+      },
+      {
+        "address": "0x2859e4544c4bb03966803b044a93563bd2d0dd4d",
+        "name": "SHIBA INU",
+        "symbol": "SHIB",
         "decimals": 18
       }
     ]

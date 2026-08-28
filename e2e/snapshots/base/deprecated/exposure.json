@@ -1,7 +1,7 @@
 {
   "_meta": {
     "source": "https://api.reserve.org/dtf/exposure?chainId=8453&address=0x47686106181b3cefe4eaf94c4c10b48ac750370b&period=7d",
-    "capturedAt": "2026-07-09T21:47:37.772Z",
+    "capturedAt": "2026-08-25T16:35:24.813Z",
     "dtf": "0x47686106181b3cefe4eaf94c4c10b48ac750370b",
     "chainId": 8453,
     "window": {
@@ -16,15 +16,15 @@
         {
           "address": "0x4F9Fd6Be4a90f2620860d680c0d4d5Fb53d1A825",
           "symbol": "AIXBT",
-          "weight": 12.97,
-          "change": 0.010878617473190827,
-          "marketCap": 19290157
+          "weight": 7.62,
+          "change": 0.18521745342978618,
+          "marketCap": 21556497
         }
       ],
-      "totalWeight": 12.97,
-      "change": 0.010878617473190827,
+      "totalWeight": 7.62,
+      "change": 0.18521745342978618,
       "hasNewlyAdded": false,
-      "marketCap": 19290157
+      "marketCap": 21556497
     },
     {
       "native": null,
@@ -32,15 +32,15 @@
         {
           "address": "0x1C4CcA7C5DB003824208aDDA61Bd749e55F463a3",
           "symbol": "GAME",
-          "weight": 2.96,
-          "change": -0.04111540147987329,
-          "marketCap": 4162814
+          "weight": 3.15,
+          "change": 1.0544718192378697,
+          "marketCap": 8565000
         }
       ],
-      "totalWeight": 2.96,
-      "change": -0.04111540147987329,
+      "totalWeight": 3.15,
+      "change": 1.0544718192378697,
       "hasNewlyAdded": false,
-      "marketCap": 4162814
+      "marketCap": 8565000
     },
     {
       "native": null,
@@ -48,15 +48,15 @@
         {
           "address": "0x731814e491571A2e9eE3c5b1F7f3b962eE8f4870",
           "symbol": "VADER",
-          "weight": 0.86,
-          "change": -0.12487458408990346,
-          "marketCap": 1321884
+          "weight": 0.49,
+          "change": 0.38205549189234683,
+          "marketCap": 1401817
         }
       ],
-      "totalWeight": 0.86,
-      "change": -0.12487458408990346,
+      "totalWeight": 0.49,
+      "change": 0.38205549189234683,
       "hasNewlyAdded": false,
-      "marketCap": 1321884
+      "marketCap": 1401817
     },
     {
       "native": null,
@@ -64,15 +64,15 @@
         {
           "address": "0x55cD6469F597452B5A7536e2CD98fDE4c1247ee4",
           "symbol": "LUNA",
-          "weight": 2.31,
-          "change": -0.03631645820177657,
-          "marketCap": 4565727
+          "weight": 1.72,
+          "change": 0.3099592030710484,
+          "marketCap": 6485199
         }
       ],
-      "totalWeight": 2.31,
-      "change": -0.03631645820177657,
+      "totalWeight": 1.72,
+      "change": 0.3099592030710484,
       "hasNewlyAdded": false,
-      "marketCap": 4565727
+      "marketCap": 6485199
     },
     {
       "native": null,
@@ -80,15 +80,15 @@
         {
           "address": "0x58Db197E91Bc8Cf1587F75850683e4bd0730e6BF",
           "symbol": "AXR",
-          "weight": 0.25,
-          "change": 0.009535100367533876,
-          "marketCap": 387958
+          "weight": 0.15,
+          "change": 0.2661370363720894,
+          "marketCap": 420066
         }
       ],
-      "totalWeight": 0.25,
-      "change": 0.009535100367533876,
+      "totalWeight": 0.15,
+      "change": 0.2661370363720894,
       "hasNewlyAdded": false,
-      "marketCap": 387958
+      "marketCap": 420066
     },
     {
       "native": null,
@@ -96,15 +96,15 @@
         {
           "address": "0x0b3AE50BaBE7FFa4E1A50569ceE6bDEFd4ccAeE0",
           "symbol": "WIRE",
-          "weight": 1.3,
-          "change": -0.19063113617285618,
-          "marketCap": 1550684
+          "weight": 0.76,
+          "change": 0.21213154346785718,
+          "marketCap": 1841844
         }
       ],
-      "totalWeight": 1.3,
-      "change": -0.19063113617285618,
+      "totalWeight": 0.76,
+      "change": 0.21213154346785718,
       "hasNewlyAdded": false,
-      "marketCap": 1550684
+      "marketCap": 1841844
     },
     {
       "native": null,
@@ -112,15 +112,15 @@
         {
           "address": "0x98aC5B33A4Ef1151f138941c979211599c2fF953",
           "symbol": "VPAY",
-          "weight": 0.44,
-          "change": -0.06539427132777732,
-          "marketCap": 593137
+          "weight": 0.2,
+          "change": 0.17770779052861166,
+          "marketCap": 484460
         }
       ],
-      "totalWeight": 0.44,
-      "change": -0.06539427132777732,
+      "totalWeight": 0.2,
+      "change": 0.17770779052861166,
       "hasNewlyAdded": false,
-      "marketCap": 593137
+      "marketCap": 484460
     },
     {
       "native": null,
@@ -128,15 +128,15 @@
         {
           "address": "0xA4A2E2ca3fBfE21aed83471D28b6f65A233C6e00",
           "symbol": "TIBBIR",
-          "weight": 77.95,
-          "change": 0.13623711396862057,
-          "marketCap": 118796742
+          "weight": 85.2,
+          "change": 0.1597901030352621,
+          "marketCap": 233911852
         }
       ],
-      "totalWeight": 77.95,
-      "change": 0.13623711396862057,
+      "totalWeight": 85.2,
+      "change": 0.1597901030352621,
       "hasNewlyAdded": false,
-      "marketCap": 118796742
+      "marketCap": 233911852
     },
     {
       "native": null,
@@ -144,15 +144,15 @@
         {
           "address": "0xFAC77f01957ed1B3DD1cbEa992199B8f85B6E886",
           "symbol": "FACY",
-          "weight": 0.31,
-          "change": -0.1980988416760815,
-          "marketCap": 957848
+          "weight": 0.21,
+          "change": 1.085164987336292,
+          "marketCap": 1526188
         }
       ],
-      "totalWeight": 0.31,
-      "change": -0.1980988416760815,
+      "totalWeight": 0.21,
+      "change": 1.085164987336292,
       "hasNewlyAdded": false,
-      "marketCap": 957848
+      "marketCap": 1526188
     },
     {
       "native": null,
@@ -160,15 +160,15 @@
         {
           "address": "0xC44141a684f6AA4E36cD9264ab55550B03C88643",
           "symbol": "ETHY",
-          "weight": 0.65,
-          "change": -0.3179203388913066,
-          "marketCap": 1185261
+          "weight": 0.5,
+          "change": 1.206706163863741,
+          "marketCap": 2105167
         }
       ],
-      "totalWeight": 0.65,
-      "change": -0.3179203388913066,
+      "totalWeight": 0.5,
+      "change": 1.206706163863741,
       "hasNewlyAdded": false,
-      "marketCap": 1185261
+      "marketCap": 2105167
     }
   ]
 }
