@@ -84,8 +84,8 @@ refer to the audited working tree on the date above.
 
 | ID  | Evidence                                                                                                                                                                  |
 | --- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| A1  | `docs/plans/design-system-v1.md:2028-2097` — transaction-system frontier, non-goals, outcome requirements, and family resemblance                                         |
-| A2  | `docs/wiki/domains/design-system.md:740-824` — accepted Dialog direction, V1 components, and package-style containment                                                    |
+| A1  | `docs/plans/design-system-v1-history.md` — historical transaction-system frontier, non-goals, outcome requirements, and family resemblance                                |
+| A2  | `docs/wiki/domains/design-system-reference.md` — detailed accepted Dialog direction, V1 components, and package-style containment                                         |
 | A3  | `src/views/internal/design-system/modal-family-audit.ts:1-71` — modal jobs and outcome status                                                                             |
 | A4  | `src/views/internal/design-system/component-catalog-primary.ts:200-240,538-599` — Transaction Action, Amount Field, and Asset Picker are mapped/open                      |
 | A5  | `src/views/internal/design-system/component-catalog-support.ts:299-400` — Inline Message is provisional; Toast and Progress remain mapped/open                            |

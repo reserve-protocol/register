@@ -12,6 +12,7 @@ import ButtonLoadingDecision from './button-loading-decision'
 import ModalActionDecision from './modal-action-decision'
 import RichRecordReview from './rich-record-review'
 import { getComponentItem } from './component-catalog'
+import { getFoundationItem } from './foundation-catalog'
 import CanonicalComponentsOverview from './canonical-components-overview'
 import { CurrentReviewSpotlight } from './current-review-panel'
 import ComponentVisualOutput from './component-visual-output'
@@ -145,7 +146,10 @@ export const ComponentDetail = () => {
               <ListCard title="Current evidence" items={item.evidence} />
               <ListCard
                 title="Foundation dependencies"
-                items={group.foundationDependencies}
+                items={group.foundationDependencies.map(
+                  (foundationId) =>
+                    getFoundationItem(foundationId)?.name ?? foundationId
+                )}
               />
             </section>
             <section className="grid gap-4 xl:grid-cols-2">

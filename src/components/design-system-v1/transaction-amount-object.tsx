@@ -11,10 +11,12 @@ interface TransactionAmountObjectBaseProps extends Omit<
 > {
   label: string
   amount: string
-  asset: ReactNode
+  asset?: ReactNode
+  unit?: ReactNode
   supporting: ReactNode
   balance?: ReactNode
   balanceAction?: ReactNode
+  trailingAction?: ReactNode
   presentation?: 'standalone' | 'input' | 'output'
   tone?: 'default' | 'inverse'
 }
@@ -80,6 +82,8 @@ export const TransactionAmountObject = ({
   readOnly = false,
   supporting,
   tone = 'default',
+  trailingAction,
+  unit,
   ...props
 }: TransactionAmountObjectProps) => (
   <div
@@ -124,6 +128,19 @@ export const TransactionAmountObject = ({
           )}
         >
           {amount}
+          {unit && (
+            <span
+              data-testid="transaction-amount-unit"
+              className={cn(
+                'ml-2',
+                tone === 'inverse'
+                  ? 'text-brand-foreground/70'
+                  : roles.text.supporting
+              )}
+            >
+              {unit}
+            </span>
+          )}
         </p>
       ) : (
         <input
@@ -142,15 +159,18 @@ export const TransactionAmountObject = ({
           onChange={(event) => onAmountChange?.(event.currentTarget.value)}
         />
       )}
-      <div
-        className={cn(
-          'shrink-0',
-          tone === 'inverse' &&
-            '[&_[data-testid=transaction-amount-asset-identity]]:text-primary-foreground'
-        )}
-      >
-        {asset}
-      </div>
+      {asset && (
+        <div
+          className={cn(
+            'shrink-0',
+            tone === 'inverse' &&
+              '[&_[data-testid=transaction-amount-asset-identity]]:text-primary-foreground'
+          )}
+        >
+          {asset}
+        </div>
+      )}
+      {trailingAction && <div className="shrink-0">{trailingAction}</div>}
     </div>
     <div
       className={cn(

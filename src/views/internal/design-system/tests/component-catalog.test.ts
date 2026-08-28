@@ -4,9 +4,11 @@ import { describe, expect, it, vi } from 'vitest'
 import {
   COMPONENT_GROUPS,
   COMPONENT_ITEMS,
+  getComponentContextRoute,
   getComponentItem,
 } from '../component-catalog'
-import { getFoundationItem } from '../foundation-catalog'
+import { FOUNDATION_ITEMS, getFoundationItem } from '../foundation-catalog'
+import { FOUNDATION_IDS } from '../catalog-types'
 import { CURRENT_REVIEW, FOUNDATION_CONFORMANCE_AREAS } from '../current-review'
 import { PRODUCT_FACING_REVIEWS } from '../product-facing-component-audit'
 import { v1LayoutRecipes } from '@/components/ui/v1-layout-recipes'
@@ -26,6 +28,81 @@ describe('component contract registry', () => {
       expect(group.foundationDependencies.length).toBeGreaterThan(0)
       expect(group.defaultStates.length).toBeGreaterThan(0)
       expect(group.expectedDecisions.length).toBeGreaterThan(0)
+    }
+  })
+
+  it('routes component groups through real foundation ids', () => {
+    expect(FOUNDATION_ITEMS.map(({ id }) => id)).toEqual([...FOUNDATION_IDS])
+
+    for (const group of COMPONENT_GROUPS) {
+      for (const foundationId of group.foundationDependencies) {
+        expect(getFoundationItem(foundationId)).toBeDefined()
+      }
+    }
+  })
+
+  it('routes representative targets to typed authority and evidence sources', () => {
+    const contextSources = (id: string) =>
+      getComponentContextRoute(id)?.contextSources ?? []
+
+    for (const id of ['button', 'input', 'dialog']) {
+      expect(contextSources(id)).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({ role: 'authority' }),
+          expect.objectContaining({ role: 'accepted-decision' }),
+          expect.objectContaining({ role: 'implementation' }),
+        ])
+      )
+    }
+
+    const transactionSources = contextSources('transaction-action')
+    expect(transactionSources).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ role: 'implementation' }),
+        expect.objectContaining({ role: 'visual-evidence' }),
+        expect.objectContaining({ role: 'product-evidence' }),
+        expect.objectContaining({ role: 'legacy-evidence' }),
+      ])
+    )
+    expect(transactionSources).not.toContainEqual(
+      expect.objectContaining({ role: 'authority' })
+    )
+    expect(transactionSources).toContainEqual(
+      expect.objectContaining({
+        role: 'implementation',
+        path: 'src/components/design-system-v1/transaction-task-geometry.ts',
+      })
+    )
+
+    for (const source of [...contextSources('button'), ...transactionSources]) {
+      expect(existsSync(resolve(source.path.split('#')[0]))).toBe(true)
+    }
+
+    expect(
+      getComponentContextRoute('button')?.foundations.map(({ id }) => id)
+    ).toEqual([
+      'color',
+      'typography',
+      'spacing',
+      'radius',
+      'iconography',
+      'motion',
+      'accessibility',
+    ])
+  })
+
+  it('keeps every typed context source path discoverable', () => {
+    for (const item of COMPONENT_ITEMS) {
+      for (const source of item.contextSources ?? []) {
+        expect(existsSync(resolve(source.path.split('#')[0]))).toBe(true)
+      }
+
+      const implementation = item.contextSources?.find(
+        ({ role }) => role === 'implementation'
+      )
+      if (implementation) {
+        expect(implementation.path).toBe(item.implementationSource)
+      }
     }
   })
 

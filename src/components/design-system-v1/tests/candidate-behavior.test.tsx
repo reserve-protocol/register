@@ -330,6 +330,9 @@ describe('provisional design-system candidates', () => {
       </div>
     )
 
+    expect(
+      screen.getByRole('button', { name: 'Copy to clipboard' })
+    ).toHaveAttribute('data-tone', 'quiet')
     expect(screen.getByText(address)).toHaveClass('sr-only')
     expect(screen.getByText('0x0000...0000')).toHaveClass('whitespace-nowrap')
     expect(screen.getByText('0x0000...0000')).not.toHaveClass('truncate')

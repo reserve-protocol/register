@@ -7,11 +7,13 @@ import { AtomicTransactionComposition } from './transaction-composition-atomic'
 import { DelayedTransactionComposition } from './transaction-composition-delayed'
 import { RfqTransactionComposition } from './transaction-composition-rfq'
 import { StagedTransactionComposition } from './transaction-composition-staged'
+import { VoteLockTransactionComposition } from './transaction-composition-vote-lock'
 import { TransactionSystemCoverage } from './transaction-system-coverage'
 import { TransactionSystemPressureTests } from './transaction-system-pressure-tests'
 import { TransactionSystemStatusLegend } from './transaction-system-status'
 import { TransactionPredecessorContract } from './transaction-predecessor-contract'
 import { TransactionCurrentFlowContract } from './transaction-current-flow-contract'
+import { TransactionPairedReview } from './transaction-paired-review'
 
 const TransactionTruthSpectrum = () => (
   <section
@@ -45,6 +47,7 @@ const TransactionTruthSpectrum = () => (
     <TransactionSystemStatusLegend />
     <TransactionPredecessorContract />
     <TransactionCurrentFlowContract />
+    <TransactionPairedReview />
 
     <section
       className={v1LayoutRecipes.stack.completeGroups}
@@ -68,12 +71,15 @@ const TransactionTruthSpectrum = () => (
           universal flow. Manual mint supplies the richest local atomic seam;
           the installed Zapper remains upstream; automated mint owns transparent
           orders; delayed settlement crosses from initiation into durable state.
+          Vote Lock is the focused fifth composition, grounded directly in its
+          current lock, unlock, and Portfolio withdrawal implementations.
         </p>
       </header>
       <AtomicTransactionComposition />
       <RfqTransactionComposition />
       <StagedTransactionComposition />
       <DelayedTransactionComposition />
+      <VoteLockTransactionComposition />
     </section>
 
     <TransactionSystemPressureTests />

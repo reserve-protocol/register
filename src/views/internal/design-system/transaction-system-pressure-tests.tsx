@@ -1,22 +1,12 @@
-import { X } from 'lucide-react'
 import type { ReactNode } from 'react'
+import { X } from 'lucide-react'
 
 import { Button } from '@/components/button'
-import {
-  InlineMessage,
-  InlineMessageDescription,
-  InlineMessageTitle,
-} from '@/components/design-system-v1/inline-message'
 import { SearchField } from '@/components/design-system-v1/search-field'
 import {
   TransactionAssetPickerList,
   TransactionAssetPickerOption,
 } from '@/components/design-system-v1/transaction-asset-picker'
-import {
-  TransactionAmountObject,
-  TransactionAmountPair,
-  TransactionAmountRelation,
-} from '@/components/design-system-v1/transaction-amount-object'
 import { v1Typography } from '@/components/design-system-v1/typography'
 import {
   DialogBody,
@@ -31,10 +21,7 @@ import { v1SemanticRecipes as roles } from '@/components/ui/v1-semantic-recipes'
 import { cn } from '@/lib/utils'
 import { ChainId } from '@/utils/chains'
 
-import {
-  TransactionAmountAsset,
-  TransactionAssetIdentity,
-} from './transaction-system-assets'
+import { TransactionAssetIdentity } from './transaction-system-assets'
 import {
   TransactionSystemPart,
   type TransactionSystemPartStatus,
@@ -61,26 +48,12 @@ export const TransactionSystemPressureTests = () => (
           roles.text.supporting
         )}
       >
-        These are not two more transaction families. They exercise canonical
-        task hierarchy and the local asset-selection job that the four families
-        depend on. Viewport attachment remains a separate Dialog behavior check.
+        This is not another transaction family. It exercises the local
+        asset-selection job that several families depend on. Viewport attachment
+        remains a separate Dialog behavior check.
       </p>
     </header>
-    <div className="grid gap-px bg-border xl:grid-cols-2">
-      <PressureTest
-        label="Vote unlock task"
-        description="Static task surface for judging canonical Dialog header, body, and action hierarchy."
-        parts={[
-          { label: 'Dialog and Button', status: 'Current baseline' },
-          { label: 'Vote-lock task content', status: 'Retained current' },
-          {
-            label: 'Amount and delayed explanation',
-            status: 'Proposed candidate',
-          },
-        ]}
-      >
-        <VoteUnlockDialog />
-      </PressureTest>
+    <div className="bg-border">
       <PressureTest
         label="Select an input asset"
         description="One bounded selector composition for local flows; the upstream Zapper selector remains excluded."
@@ -125,65 +98,6 @@ const PressureTest = ({
     </footer>
   </article>
 )
-
-const VoteUnlockDialog = () => {
-  return (
-    <DialogSurface width="standard">
-      <DialogHeader
-        leading={
-          <DialogTitle className={v1Typography.itemTitle}>
-            Unlock voting power
-          </DialogTitle>
-        }
-        action={
-          <IconButton
-            label="Close preview"
-            icon={<X />}
-            size="compact"
-            tone="secondary"
-          />
-        }
-      />
-      <DialogBody className="space-y-3 px-0 pb-0">
-        <TransactionAmountPair>
-          <TransactionAmountObject
-            label="You unlock"
-            amount="1,250"
-            readOnly
-            presentation="input"
-            asset={
-              <TransactionAmountAsset chain={ChainId.Mainnet} symbol="RSR" />
-            }
-            supporting="3,820 RSR locked"
-          />
-          <TransactionAmountObject
-            label="You can withdraw later"
-            amount="1,250"
-            presentation="output"
-            asset={
-              <TransactionAmountAsset chain={ChainId.Mainnet} symbol="RSR" />
-            }
-            supporting="After governance delay"
-            readOnly
-          />
-          <TransactionAmountRelation />
-        </TransactionAmountPair>
-        <InlineMessage tone="warning" density="compact">
-          <InlineMessageTitle>
-            Rewards stop during the unlock period
-          </InlineMessageTitle>
-          <InlineMessageDescription className="mt-1">
-            The confirmed initiation starts a delay; it is not the final
-            withdrawal.
-          </InlineMessageDescription>
-        </InlineMessage>
-      </DialogBody>
-      <DialogFooter className="px-0 pb-0 pt-2">
-        <Button className="w-full">Begin unlock</Button>
-      </DialogFooter>
-    </DialogSurface>
-  )
-}
 
 const AssetSelectorDialog = () => (
   <DialogSurface width="standard">

@@ -12,6 +12,39 @@ export type DesignAuthorityStatus =
   | 'current-baseline'
   | 'superseded'
 
+export const FOUNDATION_IDS = [
+  'color',
+  'typography',
+  'spacing',
+  'radius',
+  'layout',
+  'elevation',
+  'motion',
+  'iconography',
+  'accessibility',
+] as const
+
+export type FoundationId = (typeof FOUNDATION_IDS)[number]
+
+export const CATALOG_CONTEXT_SOURCE_ROLES = [
+  'authority',
+  'accepted-decision',
+  'implementation',
+  'visual-evidence',
+  'product-evidence',
+  'legacy-evidence',
+] as const
+
+export type CatalogContextSourceRole =
+  (typeof CATALOG_CONTEXT_SOURCE_ROLES)[number]
+
+export interface CatalogContextSource {
+  role: CatalogContextSourceRole
+  label: string
+  path: string
+  detail?: string
+}
+
 export type DefinitionSlot =
   | { name: string; status: 'open'; detail?: string }
   | { name: string; status: 'defined'; detail: string }
@@ -28,6 +61,7 @@ export interface CatalogItem {
 }
 
 export interface FoundationItem extends CatalogItem {
+  id: FoundationId
   expectedDecisions: DefinitionSlot[]
 }
 
@@ -80,6 +114,7 @@ export interface ComponentItem extends CatalogItem {
   auditStatus: ComponentAuditStatus
   implementationStatus: ComponentImplementationStatus
   implementationSource?: string
+  contextSources?: CatalogContextSource[]
   adoptionStatus: ComponentAdoptionStatus
   evidence: string[]
   decisionPrompts: string[]
@@ -93,7 +128,7 @@ export interface ComponentGroup {
   id: string
   name: string
   description: string
-  foundationDependencies: string[]
+  foundationDependencies: FoundationId[]
   defaultStates: string[]
   expectedDecisions: DefinitionSlot[]
   items: ComponentItem[]

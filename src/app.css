@@ -128,7 +128,7 @@ body {
   }
 }
 
-@keyframes zapper-success-surface-in {
+@keyframes transaction-outcome-surface-in {
   from {
     transform: scaleY(0);
   }
@@ -138,7 +138,7 @@ body {
   }
 }
 
-@keyframes zapper-success-content-in {
+@keyframes transaction-outcome-content-in {
   0%,
   30% {
     opacity: 0;

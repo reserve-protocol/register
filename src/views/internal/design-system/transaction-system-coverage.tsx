@@ -94,14 +94,14 @@ const COVERAGE_ITEMS: {
     requirement: 'Approval and requirement rows',
     kind: 'Shared candidate',
     coverage:
-      'Manual mint preserves per-asset required amount, wallet balance, permission state, and scoped retry.',
+      'Manual mint preserves per-asset requirements and scoped retry; Vote Lock preserves its conditional underlying approval before deposit.',
     status: 'Proposed candidate',
   },
   {
     requirement: 'Wallet, chain, and compliance prerequisites',
     kind: 'Existing behavior seam',
     coverage:
-      'Existing TransactionButton, SeamlessTransactionContainer, automated capability gate, and Zapper host remain the owners.',
+      'Existing TransactionButton, SeamlessTransactionContainer, automated capability gate, and Zapper host remain the owners. Vote Lock intentionally remains outside compliance gating.',
     status: 'Retained current',
   },
   {
@@ -122,14 +122,14 @@ const COVERAGE_ITEMS: {
     requirement: 'Transaction and order identity',
     kind: 'Shared candidate',
     coverage:
-      'Atomic and automated outcomes show transaction identity. RFQ order identity remains package-owned; delayed initiation identity is not rendered here.',
+      'Atomic, automated, and Vote Lock outcomes show transaction identity. RFQ order identity remains package-owned.',
     status: 'Proposed candidate',
   },
   {
     requirement: 'Consequential outcome composition',
     kind: 'Independent family compositions',
     coverage:
-      'Atomic, RFQ, automated, and cooldown-start outcomes are rendered independently. Final withdrawal remains outside this board.',
+      'Atomic, RFQ, automated, Vote Lock, cooldown-start, claimable, and final-withdrawal outcomes are rendered independently.',
     status: 'Flow-owned',
   },
   {
@@ -157,21 +157,21 @@ const COVERAGE_ITEMS: {
     requirement: 'Delayed settlement across visits',
     kind: 'Composition recipe',
     coverage:
-      'Unstake initiation crosses from a Dialog into a durable multi-entry staking position with claimable and later actions.',
+      'Unstake and Vote Unlock initiation cross from a Dialog into durable rows with cooldown, claimable, and final withdrawal states.',
     status: 'Proposed candidate',
   },
   {
     requirement: 'Stable action area and responsive shell hierarchy',
     kind: 'Current component plus composition recipe',
     coverage:
-      'Page workflows retain page actions, package actions remain upstream, and vote unlock demonstrates canonical Dialog header/body/footer hierarchy without forcing every family into an overlay.',
+      'Page workflows retain page actions, package actions remain upstream, and the focused Vote Lock composition demonstrates canonical Dialog header/body/footer hierarchy without forcing every family into an overlay.',
     status: 'Current baseline',
   },
   {
     requirement: 'Responsive task and selector shells',
     kind: 'Viewport behavior dependency',
     coverage:
-      'The static pressure tests validate Dialog content hierarchy, not centered desktop or bottom-attached phone positioning. Exercise the mounted Dialog primitive separately before claiming viewport behavior.',
+      'The static Vote Lock and selector surfaces validate Dialog content hierarchy, not mounted focus or dismissal behavior. Exercise the mounted Dialog primitive separately before production adoption.',
     status: 'Deferred',
   },
   {

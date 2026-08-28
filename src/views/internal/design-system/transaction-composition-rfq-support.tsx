@@ -1,14 +1,14 @@
 import { useEffect, useState, type ReactNode } from 'react'
-import { ArrowUpRight, Check, ChevronDown, Settings } from 'lucide-react'
+import { ArrowUpRight, ChevronDown, Settings } from 'lucide-react'
 
 import { Button } from '@/components/button'
 import { Checkbox } from '@/components/checkbox'
+import { ActionGroup } from '@/components/design-system-v1/action-group'
 import {
   InlineMessage,
   InlineMessageDescription,
   InlineMessageTitle,
 } from '@/components/design-system-v1/inline-message'
-import { Link } from '@/components/design-system-v1/link'
 import { Skeleton, Spinner } from '@/components/design-system-v1/loading'
 import {
   Popover,
@@ -61,6 +61,14 @@ export const ZAPPER_ASSETS: ZapperAsset[] = [
     supporting: 'Base · 0x0555…A7B8',
   },
 ]
+
+const ZAPPER_ATOMIC_TRANSACTION = {
+  href: 'https://basescan.org/tx/0x7fc2e37d2b9fb28674640223e7655f1d8ca8c3044b52e85523a62fb85e5b92ad',
+} as const
+
+const ZAPPER_RFQ_ORDER = {
+  href: 'https://explorer.cow.fi/orders/0x7fc2e37d2b9fb28674640223e7655f1d8ca8c3044b52e85523a62fb85e5b92ad71a4c2f8e9d5b67319028ae45c6d7f301b4e8c2f66cf1580',
+} as const
 
 export const ZapperAssetSelector = ({
   disabled = false,
@@ -212,24 +220,12 @@ export const ZapperQuoteDetails = ({
         data-testid="zapper-quote-details"
         className={cn('relative z-10 bg-card', className)}
       >
-        <div
-          data-testid="zapper-outcome-details-header"
-          className="flex w-full items-center justify-between gap-3 px-4 py-4"
-        >
-          <span className={cn(v1Typography.supporting, roles.text.supporting)}>
-            {outcomeKind === 'atomic'
-              ? 'Transaction successful'
-              : 'Order filled'}
-          </span>
-          <span className={cn(v1Typography.label, 'whitespace-nowrap')}>
-            {source}
-          </span>
-        </div>
         <ZapperQuoteFacts
           loading={loading}
           mode={mode}
           outcome
           outcomeKind={outcomeKind}
+          source={source}
         />
       </section>
     )
@@ -290,18 +286,30 @@ const ZapperQuoteFacts = ({
   mode,
   outcome = false,
   outcomeKind = 'rfq',
+  source = 'CoW Swap',
 }: {
   loading: boolean
   mode: 'Buy' | 'Sell'
   outcome?: boolean
   outcomeKind?: 'atomic' | 'rfq'
+  source?: string
 }) => (
   <dl
-    data-testid={loading ? 'zapper-quote-details-loading' : undefined}
-    className="grid gap-2 px-4 pb-4 text-sm leading-5"
+    data-testid={
+      outcome
+        ? 'zapper-outcome-facts'
+        : loading
+          ? 'zapper-quote-details-loading'
+          : undefined
+    }
+    className={cn('grid gap-2 px-4 pb-4 text-sm leading-5', outcome && 'pt-4')}
   >
     {outcome ? (
       <>
+        <QuoteFact
+          label={outcomeKind === 'atomic' ? 'Executed via' : 'Filled via'}
+          value={source}
+        />
         <QuoteFact
           label="Used"
           value={mode === 'Buy' ? '1,000 USDC' : '990 CMC20'}
@@ -310,32 +318,6 @@ const ZapperQuoteFacts = ({
         <QuoteFact
           label="Final vs input"
           value={mode === 'Buy' ? '-1.36%' : '-0.36%'}
-        />
-        <QuoteFact
-          label={outcomeKind === 'atomic' ? 'Transaction' : 'Order'}
-          value={
-            <Link
-              href={
-                outcomeKind === 'atomic'
-                  ? 'https://basescan.org'
-                  : 'https://explorer.cow.fi'
-              }
-              treatment="standalone"
-              external
-              externalAnnouncement={
-                outcomeKind === 'atomic'
-                  ? 'Opens the confirmed transaction in a new tab'
-                  : 'Opens the filled CoW order in a new tab'
-              }
-              externalIcon={
-                <ArrowUpRight aria-hidden="true" className="size-3.5" />
-              }
-            >
-              {outcomeKind === 'atomic'
-                ? 'View transaction on explorer'
-                : 'View order'}
-            </Link>
-          }
         />
       </>
     ) : (
@@ -379,18 +361,6 @@ const ZapperQuoteFacts = ({
       </>
     )}
   </dl>
-)
-
-export const ZapperOutcomeStatus = () => (
-  <div
-    data-testid="zapper-outcome-status"
-    className="flex h-8 items-center gap-2 rounded-full bg-card p-0.5 pr-3 text-foreground"
-  >
-    <span className="flex size-7 items-center justify-center rounded-full bg-primary text-primary-foreground">
-      <Check aria-hidden="true" className="size-4 stroke-[1.5]" />
-    </span>
-    <span className={v1Typography.label}>Completed</span>
-  </div>
 )
 
 const ZAPPER_QUOTE_STAGES = [
@@ -577,11 +547,56 @@ export const ZapperPackageState = ({
     )
   }
 
-  if (state === 'RFQ outcome' || state === 'Atomic outcome') {
+  if (state === 'Atomic outcome') {
     return (
-      <Button className="w-full" tone="secondary" onClick={onDone}>
-        Done
-      </Button>
+      <ActionGroup className="w-full">
+        <Button
+          asChild
+          className="flex-1"
+          tone="secondary"
+          trailingIcon={<ArrowUpRight />}
+        >
+          <a
+            href={ZAPPER_ATOMIC_TRANSACTION.href}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            View transaction
+            <span className="sr-only"> on BaseScan (opens in a new tab)</span>
+          </a>
+        </Button>
+        <Button className="flex-1" onClick={onDone}>
+          Done
+        </Button>
+      </ActionGroup>
+    )
+  }
+
+  if (state === 'RFQ outcome') {
+    return (
+      <ActionGroup className="w-full">
+        <Button
+          asChild
+          className="flex-1"
+          tone="secondary"
+          trailingIcon={<ArrowUpRight />}
+        >
+          <a
+            href={ZAPPER_RFQ_ORDER.href}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            View order
+            <span className="sr-only">
+              {' '}
+              on CoW Explorer (opens in a new tab)
+            </span>
+          </a>
+        </Button>
+        <Button className="flex-1" onClick={onDone}>
+          Done
+        </Button>
+      </ActionGroup>
     )
   }
 

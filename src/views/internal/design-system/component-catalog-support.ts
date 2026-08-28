@@ -12,11 +12,13 @@ export const SUPPORT_COMPONENT_GROUPS: ComponentGroup[] = [
     name: 'Overlays',
     description: 'Temporary surfaces that appear above the current context.',
     foundationDependencies: [
-      'Elevation',
-      'Color',
-      'Shape',
-      'Spacing',
-      'Motion',
+      'elevation',
+      'color',
+      'radius',
+      'spacing',
+      'motion',
+      'layout',
+      'accessibility',
     ],
     defaultStates: ['Closed', 'Opening', 'Open', 'Closing', 'Disabled trigger'],
     expectedDecisions: [
@@ -75,6 +77,23 @@ export const SUPPORT_COMPONENT_GROUPS: ComponentGroup[] = [
         designAuthority: 'current-baseline',
         implementationStatus: 'canonical-candidate',
         implementationSource: 'src/components/dialog/index.tsx',
+        contextSources: [
+          {
+            role: 'authority',
+            label: 'Typed Dialog contract',
+            path: 'src/views/internal/design-system/component-catalog-support.ts',
+          },
+          {
+            role: 'accepted-decision',
+            label: 'Modal role and stable-width decision',
+            path: 'docs/wiki/decisions.md#2026-08-13--modal-widths-follow-content-roles-workflows-do-not-resize-between-states',
+          },
+          {
+            role: 'implementation',
+            label: 'Reusable V1 Dialog candidate',
+            path: 'src/components/dialog/index.tsx',
+          },
+        ],
         adoptionStatus: 'none',
         review: {
           status: 'ready',
@@ -285,10 +304,11 @@ export const SUPPORT_COMPONENT_GROUPS: ComponentGroup[] = [
     description:
       'Communicates status, progress, results, loading, and absence.',
     foundationDependencies: [
-      'Feedback color',
-      'Typography',
-      'Iconography',
-      'Motion',
+      'color',
+      'typography',
+      'iconography',
+      'motion',
+      'accessibility',
     ],
     defaultStates: [
       'Informational',
@@ -519,7 +539,13 @@ export const SUPPORT_COMPONENT_GROUPS: ComponentGroup[] = [
     id: 'data-display',
     name: 'Data display',
     description: 'Presents identity, status, metrics, and structured data.',
-    foundationDependencies: ['Typography', 'Spacing', 'Color', 'Iconography'],
+    foundationDependencies: [
+      'typography',
+      'spacing',
+      'color',
+      'iconography',
+      'layout',
+    ],
     defaultStates: [
       'Default',
       'Loading',
@@ -823,7 +849,7 @@ export const SUPPORT_COMPONENT_GROUPS: ComponentGroup[] = [
           ],
         },
         statusDetail:
-          'The accepted unadopted Copyable Value owns deliberate formatting, canonical action geometry, truthful transient success feedback, and 14px monospace machine-value typography. Explorer and multi-chain address compositions remain tracked separately.',
+          'The accepted unadopted Copyable Value owns deliberate formatting, canonical action geometry, truthful transient success feedback, and 14px monospace machine-value typography. Explorer and multi-chain address compositions remain separate composition work.',
       },
     ],
   },
@@ -832,7 +858,13 @@ export const SUPPORT_COMPONENT_GROUPS: ComponentGroup[] = [
     name: 'Disclosure',
     description:
       'Reveals secondary detail without changing the user’s location.',
-    foundationDependencies: ['Typography', 'Spacing', 'Iconography', 'Motion'],
+    foundationDependencies: [
+      'typography',
+      'spacing',
+      'iconography',
+      'motion',
+      'accessibility',
+    ],
     defaultStates: [
       'Collapsed',
       'Expanded',

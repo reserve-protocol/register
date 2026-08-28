@@ -67,6 +67,7 @@ const ASSET_LOGOS: Record<string, string> = {
   CMC20: '/imgs/socials/cmc20.png',
   ETH: '/svgs/eth.svg',
   RSR: '/svgs/rsr.svg',
+  vlRSR: '/svgs/rsr.svg',
   stRSR: '/svgs/strsr.svg',
   USDC: '/svgs/usdc.svg',
   WBTC: '/svgs/wbtc.svg',

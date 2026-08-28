@@ -1,6 +1,6 @@
 ---
 title: Decisions
-updated: 2026-08-25
+updated: 2026-08-27
 type: decision
 ---
 
@@ -443,3 +443,38 @@ specific opened destination row rather than on the closed page-navigation
 trigger. Route taxonomy, live DTF inventory and ranking, domain-event sourcing,
 analytics, account-menu behavior, navigation-specific geometry promotion, and
 production adoption remain outside this acceptance.
+
+## 2026-08-27 — Design-system context routes through active owners
+
+The commonly loaded V1 plan now owns only the current goal, precedence,
+operating model, state, frontier, risks, and active synchronization; its former
+chronology remains load-on-demand history. The design-system domain page is a
+concise router to typed foundation/component catalogs, canonical
+implementations, accepted decisions, Current Review, product evidence, and
+adoption boundaries; its former detailed corpus remains an on-demand reference.
+
+Component groups declare actual typed foundation IDs. Selected high-value
+catalog entries declare source roles for current authority, accepted decisions,
+implementation, strong visual evidence, current product/behavior evidence, and
+legacy coverage. These roles improve discovery without scoring evidence or
+promoting it. Register-specific surface, financial-type, verification-cadence,
+and authorized-redesign rules live in `docs/wiki/project.md` as explicit
+overrides to reusable kit defaults. No design decision, transaction UI,
+production adoption, reusable Skill, or workflow changed.
+
+## 2026-08-27 — Canonical-first ownership resolves by semantic specificity
+
+Canonical-first does not mean that the broadest generic canonical component
+always owns a more specific composition. Use the narrowest established owner
+whose semantics, anatomy, and geometry match the job. If consuming a generic
+component requires locally negating its defining defaults, preserve the generic
+owner and give the specific composition an explicit local owner instead of
+turning the override into an unnamed variant.
+
+Vote Lock exposed the boundary: `DialogSurface` contributes the shared 8px
+outer inset and ordinary `DialogHeader` contributes 16px internally for the
+ordinary 24px dialog axis, while the established compact Zapper transaction
+composition uses 8px internally for a 16px total axis. Vote Lock may use an
+explicit local compact transaction-header owner where that more specific
+composition is the relevant evidence. Two transaction examples do not yet
+promote a universal transaction-header component or recipe.

@@ -12,11 +12,13 @@ export const PRIMARY_COMPONENT_GROUPS: ComponentGroup[] = [
     name: 'Actions',
     description: 'Controls that initiate, confirm, or cancel an operation.',
     foundationDependencies: [
-      'Color',
-      'Typography',
-      'Control geometry',
-      'Iconography',
-      'Motion',
+      'color',
+      'typography',
+      'spacing',
+      'radius',
+      'iconography',
+      'motion',
+      'accessibility',
     ],
     defaultStates: [
       'Default',
@@ -85,6 +87,23 @@ export const PRIMARY_COMPONENT_GROUPS: ComponentGroup[] = [
         designAuthority: 'current-baseline',
         implementationStatus: 'canonical-candidate',
         implementationSource: 'src/components/button/index.tsx',
+        contextSources: [
+          {
+            role: 'authority',
+            label: 'Typed Button contract',
+            path: 'src/views/internal/design-system/component-catalog-primary.ts',
+          },
+          {
+            role: 'accepted-decision',
+            label: 'Button width belongs to its composition',
+            path: 'docs/wiki/decisions.md#2026-08-14--button-width-belongs-to-the-action-group-composition',
+          },
+          {
+            role: 'implementation',
+            label: 'Reusable V1 Button candidate',
+            path: 'src/components/button/index.tsx',
+          },
+        ],
         adoptionStatus: 'none',
         review: {
           status: 'ready',
@@ -98,7 +117,7 @@ export const PRIMARY_COMPONENT_GROUPS: ComponentGroup[] = [
           ],
         },
         statusDetail:
-          'A reusable V1 candidate implements the accepted hierarchy, sizes, focus, disabled, loading, icon-spacing, label-fit, and pressed-interaction rules. Production adoption remains open.',
+          'A reusable V1 candidate implements the accepted hierarchy, sizes, focus, disabled, loading, icon-spacing, label-fit, and pressed-interaction rules. The co-located InlineAction is a provisional transaction-pressure candidate for compact text actions such as Max; it does not expand the accepted Button tones or sizes. Production adoption remains open.',
       },
       {
         ...component(
@@ -210,14 +229,16 @@ export const PRIMARY_COMPONENT_GROUPS: ComponentGroup[] = [
               'The transaction-system audit maps atomic, RFQ, transparent staged, and delayed-settlement models across primary and supporting flows.',
               'Direct implementation evidence: manual issuance preserves an editable share goal, a stateful approval-to-mint action slot, and persistent per-asset requirements.',
               'Direct implementation evidence: automated mint progresses from a narrow configure step to a wider order workspace and dedicated result, while delayed unstake crosses from its input page through a confirmation modal into a page-owned durable queue.',
+              'Direct implementation evidence: Vote Lock keeps Lock, Unlock, and Delegate in one shell; Lock may require approval before deposit; Unlock redeems quote-backed shares into a delayed Portfolio withdrawal.',
               'Named strong visual composition evidence, not canonical authority: src/views/internal/design-system/zapper-modal-study.tsx preserves the best evidenced input/output relationship, financial hierarchy, density, and focused action treatment from the earlier lab.',
               'Real package-host evidence, not local styling authority: src/views/index-dtf/components/zapper/zapper-wrapper.tsx establishes the installed Zapper context and upstream ownership boundary.',
               '40 product-source imports use the shared TransactionButton, while consequential outcomes remain inconsistent across local flows.',
               'V1 distinguishes direct wallet instructions before submission from transaction lifecycle status after submission.',
               'In dialogs, the anchored action remains stable while complex workflow bodies may update; recoverable errors preserve inputs and expose a contextual retry.',
+              'A named provisional transaction-task geometry recipe now owns the shared 432px substantial width, compact header axis, submitted-content boundary, facts-region divider ownership, and action-footer relationship consumed by Zapper and Vote Lock.',
             ],
             decisionPrompts: [
-              'Judge whether the four execution models feel like one product family without implying identical orchestration or information volume.',
+              'Judge whether the four family anchors and focused Vote Lock flow feel like one product family without implying identical orchestration or information volume.',
               'Confirm the narrow lifecycle vocabulary, stable action hierarchy, identity treatment, recovery prominence, and consequential outcome anatomy.',
               'Keep money, chain, order, queue, and package behavior in existing trusted seams while reviewing presentation.',
               'Preserve or improve every successful quality from the named strongest predecessor; if one is removed, record the stronger evidence or product constraint that replaces it.',
@@ -250,7 +271,7 @@ export const PRIMARY_COMPONENT_GROUPS: ComponentGroup[] = [
               },
             ],
             nextAction:
-              'Review the shared truth spectrum, then extract only the lifecycle, identity, and outcome seams that remain stable across the four models.',
+              'Review the shared truth spectrum and focused Vote Lock flow, then extract only the lifecycle, identity, and outcome seams that remain stable across the models.',
           }
         ),
         outputStatus: 'rendered',
@@ -258,6 +279,64 @@ export const PRIMARY_COMPONENT_GROUPS: ComponentGroup[] = [
         implementationStatus: 'specimen',
         implementationSource:
           'src/views/internal/design-system/transaction-truth-spectrum.tsx',
+        contextSources: [
+          {
+            role: 'implementation',
+            label: 'Provisional transaction review composition',
+            path: 'src/views/internal/design-system/transaction-truth-spectrum.tsx',
+          },
+          {
+            role: 'implementation',
+            label: 'Provisional transaction-task geometry recipe',
+            path: 'src/components/design-system-v1/transaction-task-geometry.ts',
+            detail:
+              'Shared relationship geometry only; it does not own flow mechanics, copy, lifecycle, or production adoption.',
+          },
+          {
+            role: 'visual-evidence',
+            label: 'Strong earlier Zapper composition',
+            path: 'src/views/internal/design-system/zapper-modal-study.tsx',
+            detail:
+              'Composition quality evidence only; it is not canonical authority.',
+          },
+          {
+            role: 'product-evidence',
+            label: 'Installed Index Zapper host boundary',
+            path: 'src/views/index-dtf/components/zapper/zapper-wrapper.tsx',
+          },
+          {
+            role: 'product-evidence',
+            label: 'Current Vote Lock shell',
+            path: 'src/components/vote-lock/drawer.tsx',
+          },
+          {
+            role: 'product-evidence',
+            label: 'Current Vote Lock quote composition',
+            path: 'src/components/vote-lock/components/vote-lock.tsx',
+          },
+          {
+            role: 'product-evidence',
+            label: 'Current governance entry',
+            path: 'src/views/index-dtf/governance/components/governance-vote-lock.tsx',
+          },
+          {
+            role: 'product-evidence',
+            label: 'Current delayed Vote Lock withdrawal',
+            path: 'src/views/portfolio-page/components/pending-withdrawals.tsx',
+          },
+          {
+            role: 'product-evidence',
+            label: 'Cross-flow transaction requirements audit',
+            path: 'docs/plans/transaction-system-audit.md',
+          },
+          {
+            role: 'legacy-evidence',
+            label: 'Yield DTF Zapper coverage',
+            path: 'src/views/yield-dtf/issuance/components/zapV2/RTokenZapIssuance.tsx',
+            detail:
+              'Coverage and migration evidence; not current Index DTF visual authority.',
+          },
+        ],
         adoptionStatus: 'none',
         review: {
           status: 'ready',
@@ -280,10 +359,16 @@ export const PRIMARY_COMPONENT_GROUPS: ComponentGroup[] = [
               detail:
                 'Source-grounded requirements and ownership boundaries remain evidence, not component authority.',
             },
+            {
+              name: 'Transaction-task geometry recipe',
+              status: 'provisional',
+              detail:
+                'Zapper and Vote Lock consume the same relationship owner while the pressure register tracks departures from current baselines and retained precedent.',
+            },
           ],
         },
         statusDetail:
-          'Four deterministic flow slices now compose financial intent, current lifecycle focus, consequential result, and evidence-backed recovery/follow-up on top of the current product’s real page, package, progressive-workspace, modal, and durable-queue structures. The direct-source disposition and predecessor contracts record what is preserved, standardized, improved, deferred, or intentionally not transferred. The work defines no universal controller, adopted transaction component, or production behavior.',
+          'Four deterministic family anchors plus a focused Vote Lock / Unlock slice now compose financial intent, current lifecycle focus, consequential result, and evidence-backed recovery/follow-up on top of the current product’s real page, package, progressive-workspace, modal, and durable-queue structures. Zapper and Vote Lock consume one provisional task-geometry recipe; the active-plan pressure register records where current composition choices depart from current baselines or retained precedent. The work defines no universal controller, adopted transaction component, or production behavior.',
       },
     ],
   },
@@ -292,11 +377,11 @@ export const PRIMARY_COMPONENT_GROUPS: ComponentGroup[] = [
     name: 'Fields',
     description: 'Controls for entering, searching, and choosing values.',
     foundationDependencies: [
-      'Typography',
-      'Control geometry',
-      'Spacing',
-      'Shape',
-      'Color',
+      'typography',
+      'spacing',
+      'radius',
+      'color',
+      'accessibility',
     ],
     defaultStates: [
       'Empty',
@@ -340,6 +425,23 @@ export const PRIMARY_COMPONENT_GROUPS: ComponentGroup[] = [
         designAuthority: 'current-baseline',
         implementationStatus: 'canonical-candidate',
         implementationSource: 'src/components/design-system-v1/field.tsx',
+        contextSources: [
+          {
+            role: 'authority',
+            label: 'Typed Field and TextInput contract',
+            path: 'src/views/internal/design-system/component-catalog-primary.ts',
+          },
+          {
+            role: 'accepted-decision',
+            label: 'Field and TextInput baseline',
+            path: 'docs/wiki/decisions.md#2026-08-19--field-and-textinput-baseline-accepted',
+          },
+          {
+            role: 'implementation',
+            label: 'Reusable V1 Field candidate',
+            path: 'src/components/design-system-v1/field.tsx',
+          },
+        ],
         adoptionStatus: 'none',
         review: {
           status: 'ready',
@@ -649,7 +751,13 @@ export const PRIMARY_COMPONENT_GROUPS: ComponentGroup[] = [
     id: 'selection',
     name: 'Selection',
     description: 'Controls for choosing options, modes, and boolean states.',
-    foundationDependencies: ['Color', 'Control geometry', 'Shape', 'Motion'],
+    foundationDependencies: [
+      'color',
+      'spacing',
+      'radius',
+      'motion',
+      'accessibility',
+    ],
     defaultStates: [
       'Default',
       'Hover',
@@ -853,7 +961,14 @@ export const PRIMARY_COMPONENT_GROUPS: ComponentGroup[] = [
     name: 'Navigation',
     description:
       'Controls that move through routes, content regions, and task steps.',
-    foundationDependencies: ['Typography', 'Color', 'Spacing', 'Iconography'],
+    foundationDependencies: [
+      'typography',
+      'color',
+      'spacing',
+      'iconography',
+      'layout',
+      'accessibility',
+    ],
     defaultStates: ['Default', 'Hover', 'Focus-visible', 'Current', 'Disabled'],
     expectedDecisions: openDefinitionSlots(
       'Navigation semantics',

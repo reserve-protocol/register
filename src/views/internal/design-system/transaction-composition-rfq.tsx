@@ -11,6 +11,7 @@ import {
   TransactionAmountPair,
   TransactionAmountRelation,
 } from '@/components/design-system-v1/transaction-amount-object'
+import { transactionTaskGeometry } from '@/components/design-system-v1/transaction-task-geometry'
 import { OrganicBrandSurface } from '@/components/design-system-v1/organic-brand-surface'
 import { IconButton } from '@/components/icon-button'
 import { cn } from '@/lib/utils'
@@ -21,20 +22,22 @@ import { TransactionAmountAsset } from './transaction-system-assets'
 import {
   ZAPPER_ASSETS,
   ZapperAssetSelector,
-  ZapperOutcomeStatus,
   ZapperPackageState,
   ZapperQuoteDetails,
   ZapperQuoteLoading,
   ZapperSettings,
   type ZapperPackageStateKind,
 } from './transaction-composition-rfq-support'
+import { TransactionOutcomeStatus } from './transaction-outcome-status'
+import { transactionOutcomeMotion } from './transaction-outcome-motion'
 import {
   TransactionOutcomeAttachment,
   type TransactionOutcomeAttachmentType,
 } from './transaction-outcome-attachment'
 import { TransactionReviewAdvisory } from './transaction-review-advisory'
+import { TransactionWalletAction } from './transaction-wallet-action'
 
-type ZapperReviewState =
+export type ZapperReviewState =
   | 'Review'
   | 'Quote search'
   | 'Approval'
@@ -102,13 +105,18 @@ export const RfqTransactionComposition = () => (
   </TransactionCompositionFrame>
 )
 
-const ZapperInlineReference = ({ state }: { state: ZapperReviewState }) => {
+export const ZapperInlineReference = ({
+  state,
+}: {
+  state: ZapperReviewState
+}) => {
   const [open, setOpen] = useState(true)
   const [mode, setMode] = useState<'Buy' | 'Sell'>('Buy')
   const [buyAmount, setBuyAmount] = useState('1,000')
   const [sellAmount, setSellAmount] = useState('990')
   const [selectedAsset, setSelectedAsset] = useState(ZAPPER_ASSETS[0]!)
   const [quoteLoading, setQuoteLoading] = useState(false)
+  const [isWalletTracked, setIsWalletTracked] = useState(false)
   const [outcomeAttachmentDismissed, setOutcomeAttachmentDismissed] =
     useState(false)
   const [delayedOutcomeAttachment, setDelayedOutcomeAttachment] = useState<
@@ -216,6 +224,10 @@ const ZapperInlineReference = ({ state }: { state: ZapperReviewState }) => {
   }, [state])
 
   useEffect(() => {
+    if (!isOutcome || mode !== 'Buy') setIsWalletTracked(false)
+  }, [isOutcome, mode])
+
+  useEffect(() => {
     setDelayedOutcomeAttachment(undefined)
     if (!outcomeAttachment) return
 
@@ -237,12 +249,16 @@ const ZapperInlineReference = ({ state }: { state: ZapperReviewState }) => {
   return (
     <div
       data-testid="zapper-outcome-composition"
-      className="relative mx-auto w-full min-w-0 max-w-[420px]"
+      className={cn(
+        'relative mx-auto w-full min-w-0',
+        transactionTaskGeometry.substantialWidth
+      )}
     >
       <div
         data-testid="zapper-shell"
         className={cn(
-          'relative z-10 w-full min-w-0 max-w-[420px] shrink-0 bg-card shadow-lg',
+          'relative z-10 w-full min-w-0 shrink-0 bg-card shadow-lg',
+          transactionTaskGeometry.substantialWidth,
           isOutcome ? 'p-0 ring-2 ring-card' : 'p-2'
         )}
       >
@@ -260,19 +276,25 @@ const ZapperInlineReference = ({ state }: { state: ZapperReviewState }) => {
             {isOutcome && (
               <OrganicBrandSurface
                 data-testid="zapper-outcome-surface"
-                className="z-0 col-start-1 row-start-1 row-end-3 origin-bottom scale-y-100 rounded-lg bg-brand [animation:zapper-success-surface-in_360ms_ease-out_both] motion-reduce:animate-none"
+                className={cn(
+                  'z-0 col-start-1 row-start-1 row-end-3 origin-bottom scale-y-100 rounded-lg bg-brand',
+                  transactionOutcomeMotion.surface
+                )}
               />
             )}
             <header
               className={cn(
                 'relative z-10 col-start-1 row-start-1 flex items-center justify-between gap-4 pb-4',
                 isOutcome
-                  ? 'px-4 pt-4 text-brand-foreground motion-safe:[animation:zapper-success-content-in_360ms_ease-out_both]'
-                  : 'px-2 pt-2'
+                  ? cn(
+                      'px-4 pt-4 text-brand-foreground',
+                      transactionOutcomeMotion.content
+                    )
+                  : transactionTaskGeometry.compactHeaderInset
               )}
             >
               {isOutcome ? (
-                <ZapperOutcomeStatus />
+                <TransactionOutcomeStatus testId="zapper-outcome-status" />
               ) : (
                 <SegmentedControl
                   aria-label="Zapper operation"
@@ -334,11 +356,19 @@ const ZapperInlineReference = ({ state }: { state: ZapperReviewState }) => {
             <TransactionAmountPair
               className={cn(
                 isOutcome &&
-                  'relative z-10 col-start-1 row-start-2 pb-3 motion-safe:[animation:zapper-success-content-in_360ms_ease-out_both]',
+                  cn(
+                    'relative z-10 col-start-1 row-start-2 pb-2',
+                    transactionOutcomeMotion.content
+                  ),
                 (state === 'RFQ execution' ||
                   state === 'Atomic confirmation') &&
-                  'before:absolute before:inset-x-0 before:top-0 before:h-px before:bg-border'
+                  transactionTaskGeometry.submittedContentBoundary
               )}
+              data-task-boundary={
+                state === 'RFQ execution' || state === 'Atomic confirmation'
+                  ? 'leading'
+                  : undefined
+              }
             >
               <div
                 aria-hidden={isOutcome}
@@ -462,8 +492,24 @@ const ZapperInlineReference = ({ state }: { state: ZapperReviewState }) => {
                   }
                   presentation="output"
                   tone={isOutcome ? 'inverse' : 'default'}
+                  unit={
+                    isOutcome
+                      ? mode === 'Buy'
+                        ? 'CMC20'
+                        : selectedAsset.symbol
+                      : undefined
+                  }
+                  trailingAction={
+                    isOutcome && mode === 'Buy' ? (
+                      <TransactionWalletAction
+                        isTracked={isWalletTracked}
+                        onTrack={() => setIsWalletTracked(true)}
+                      />
+                    ) : undefined
+                  }
                   asset={
-                    mode === 'Sell' && controlsMounted ? (
+                    isOutcome ? undefined : mode === 'Sell' &&
+                      controlsMounted ? (
                       <ZapperAssetSelector
                         disabled={isQuoteSearching}
                         label="Select output asset"

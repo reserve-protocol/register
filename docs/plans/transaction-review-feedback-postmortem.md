@@ -331,11 +331,12 @@ rather than reconstructed from an audit summary.
 
 ## Evidence anchors
 
-- `docs/plans/design-system-v1.md` — accepted spacing/form composition,
-  transaction review contracts, correction history, and provisional selector
-  rules.
-- `docs/wiki/domains/design-system.md` — current consumable identity, Drawer,
-  selector, Zapper-evidence, and quote-search guidance.
+- `docs/plans/design-system-v1-history.md` — transaction review contracts,
+  correction history, and provisional selector evidence preserved from the
+  former active plan.
+- `docs/wiki/domains/design-system-reference.md` — detailed identity, Drawer,
+  selector, Zapper-evidence, and quote-search guidance reached through the
+  current router.
 - `docs/plans/transaction-system-audit.md` — transaction-family requirements,
   lifecycle distinctions, and product-source register.
 - `src/views/internal/design-system/tests/transaction-truth-spectrum.test.tsx` —

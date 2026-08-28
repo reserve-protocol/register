@@ -76,6 +76,28 @@ const flows = [
     guardrail:
       'The modal confirms initiation; the page-owned queue persists across visits and exposes cancel or withdraw later.',
   },
+  {
+    name: 'Vote Lock',
+    sources: [
+      'src/components/vote-lock/drawer.tsx',
+      'src/components/vote-lock/components/vote-lock.tsx',
+      'src/components/vote-lock/components/vote-unlock.tsx',
+      'src/components/vote-lock/hooks/use-vote-lock-quotes.ts',
+      'src/components/vote-lock/components/submit-lock-button.tsx',
+      'src/components/vote-lock/components/submit-unlock-button.tsx',
+      'src/views/index-dtf/governance/components/governance-vote-lock.tsx',
+      'src/views/portfolio-page/components/pending-withdrawals.tsx',
+    ],
+    statements: [
+      'Preserve|One shared Lock, Unlock, and Delegate shell; ERC-4626 preview amounts; exchange rate; balances; configured delay; and form reset behavior.',
+      'Standardize visually|Focused Dialog hierarchy, amount relationship, acknowledgement, wallet instruction, confirmation, identity, and durable withdrawal row.',
+      'Consolidate|Approval and lifecycle language plus delayed-state presentation—not SDK plans, share math, or Portfolio ownership.',
+      'Deliberately improve|Keep consequential lock and unlock results in context while retaining the Portfolio row as the later withdrawal owner.',
+      'Do not touch yet|SDK builders, approval/deposit/redeem calls, self-delegation, optimistic delegation, refresh behavior, and final claim calldata.',
+    ],
+    guardrail:
+      'No new required introduction: governance entry context and the lock acknowledgement explain Lock, while the delay and Portfolio return path stay adjacent to Unlock. Delegate remains an unchanged sibling outside this focused candidate; first-lock self-delegation remains an SDK-owned side effect, not a new user step.',
+  },
 ] as const
 
 export const TransactionCurrentFlowContract = () => (

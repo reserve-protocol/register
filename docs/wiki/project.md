@@ -1,6 +1,6 @@
 ---
 title: Project
-updated: 2026-08-26
+updated: 2026-08-27
 type: context
 ---
 
@@ -61,6 +61,7 @@ Register — the web interface for Reserve Protocol: **Index DTFs** (current foc
 ## UI Register
 
 - Professional DeFi product. **UI parity is sacred in refactors**: spacing, copy, hover/focus states, animation timing, responsive behavior, and accessibility preserved unless the task explicitly changes them.
+- **Visual geometry claims are bound to the exact reviewed surface.** Before interpreting a human/agent visual disagreement as an implementation failure, establish that both are inspecting the same current mounted client/build, route/specimen, state, viewport, and theme. Then verify the resulting relationship between the relevant visual landmarks. Source classes, passing tests, isolated component bounds, or measurements from another—even fresh—client cannot resolve what a stale review client is displaying.
 - **Agents have no authority to change product copy.** Preserve all visible wording, labels, placeholders, accessibility names, and lifecycle/status language verbatim from the evidenced source—including in lab specimens—unless the user explicitly approves that specific copy change. Report concerns and proposed alternatives separately; never silently implement them, including apparent typo or clarity fixes. If a new UI requires wording with no evidenced owner, stop and request the copy rather than inventing it.
 - Wrap new user-facing strings with Lingui (`<Trans>` or `t`) **and fill es/ko/zh in the same change** — the agent generates all translations, following the glossary in `docs/i18n.md`. Don't wrap user-authored/external placeholder content unless asked.
 - Reuse `src/components/ui` primitives (incl. blockchain-aware `TransactionButton`, `Transaction`, `Swap`, `CopyValue`); never rebuild dialogs/tables. Tailwind utilities + `cn()`; no custom CSS files, no inline `style`; arbitrary values only for measured/chart geometry.
@@ -78,3 +79,7 @@ Register — the web interface for Reserve Protocol: **Index DTFs** (current foc
 - Review pairs run as **Dark (hostile: hallucinated APIs, instruction violations, bugs, scope creep) + Light (constructive: solves the ask? reuses patterns? simpler way?)** background subagents — a presentation style over the kit's lens taxonomy; reconcile in one pass, don't re-litigate. Pairs spawn at **medium/high profiles only** (wide radius); touch-up and low self-review through the fired lenses (`skills/workflow.md` § Calibrate: Radius × Size).
 - Size gates: component < 200 lines, file < 300, > 500 auto engineer-review, > 1000 is cleanup work — register's stricter numbers win.
 - Feature-level agent docs (e.g. `src/views/index-dtf/issuance/async-mint/CLAUDE.md`) add local context only and never weaken root rules.
+- **Structural surfaces override the kit house card.** Do not default Register UI to a bordered, shadowed `bg-surface` card. The accepted V1 language uses flat semantic surfaces, square structural content regions, substrate reveals and explicit separators; borders or elevation appear only when the owning component/role calls for them. This does not prohibit canonical bordered controls, overlays, or deliberately framed interactive objects.
+- **Human-readable financial typography overrides generic mono-number guidance.** Ordinary prices, balances, amounts, percentages, and metrics use Lausanne with tabular numerals and the accepted financial hierarchy. Monospace is reserved for machine identifiers and code-like values such as hashes or addresses. Do not switch financial UI to monospace merely to align digits.
+- **Design-system closeout uses the three-tier cadence in the active V1 plan.** A bounded lab iteration runs focused seam checks; a coherent design-system checkpoint runs affected catalog/type/browser checks; a full repository gate is reserved for production adoption, shared/global defaults or tokens, release/PR work, or another genuine integration boundary. Generic broad/full closeout guidance does not force unrelated repository gates for every lab-only iteration.
+- **Explicitly authorized V1 design work may change visual composition.** The UI-parity rule remains binding for refactors, bug fixes, and migrations that do not authorize redesign. When the task explicitly asks to design, standardize, improve, or visually revise a V1 surface, preserve product mechanics, truth, content constraints, accessibility, and strong successful qualities while applying the accepted design direction; do not preserve legacy presentation merely for parity. Authorization to redesign one scoped surface does not authorize sibling flows, shared defaults, tokens, or product copy.

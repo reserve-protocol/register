@@ -45,7 +45,7 @@ export const CURRENT_REVIEW: CurrentReviewItem[] = [
     target: { kind: 'component', id: 'transaction-action' },
     title: 'Composition-first transaction system',
     reason:
-      'Judge four compositions reconstructed from their current product implementations as coherent experiences and compare them against the visible predecessor transfer contract. Manual issuance preserves its page split and approval action slot; automated mint preserves progressive disclosure and scoped order recovery; delayed unstake preserves page, modal, and durable-queue boundaries; Zapper remains package-owned. Shared lifecycle, recovery, identity, and outcome language must improve consistency without flattening those structures.',
+      'Judge four transaction-family anchors plus the focused Vote Lock / Unlock candidate reconstructed from current product implementations. Manual issuance preserves its page split and approval action slot; automated mint preserves progressive disclosure and scoped order recovery; delayed unstake preserves page, modal, and durable-queue boundaries; Zapper remains package-owned; Vote Lock preserves quote-backed shares, conditional approval, configured delay, and the later Portfolio withdrawal while retaining Delegate as an unchanged sibling outside this focused V1. Shared lifecycle, recovery, identity, and outcome language must improve consistency without flattening those structures.',
     destination:
       '/internal/design-system/components/transaction-action#transaction-truth-spectrum',
     type: 'visual decision',
@@ -86,7 +86,7 @@ export const CURRENT_REVIEW: CurrentReviewItem[] = [
         area: 'motion',
         status: 'declared-provisional',
         detail:
-          'The board adds no fabricated progress motion. The lab-only transaction sidecar uses one responsive 360ms reveal; outcome follow-ups mount only after the existing 360ms outcome transition, while review advisories begin immediately.',
+          'The board adds no fabricated progress motion. Simple transaction outcomes share one 360ms structural entrance, while their completed or delayed status remains semantically distinct. The lab-only transaction sidecar uses one responsive 360ms reveal; outcome follow-ups mount only after the outcome transition, while review advisories begin immediately.',
         verification:
           'Inspect review and outcome entrances at desktop and phone widths, then confirm reduced motion removes the sidecar reveal.',
       },
@@ -94,7 +94,7 @@ export const CURRENT_REVIEW: CurrentReviewItem[] = [
         area: 'component-dependencies',
         status: 'declared-provisional',
         detail:
-          'Dialog, Field, Entity Identity, Button, Action Group, Lifecycle Status, Link, and Copyable Value are current baselines; Inline Message and the lab-only Transaction Sidecar shell remain provisional inside realistic context. The named Zapper study is strong visual composition evidence rather than authority; the package-owned RFQ and durable-card shells are contextual fixtures, not promoted components.',
+          'Dialog, Field, Entity Identity, Button, Action Group, Segmented Control, Checkbox, Lifecycle Status, Link, and Copyable Value are current baselines; Inline Message and the lab-only Transaction Sidecar shell remain provisional inside realistic context. The named Zapper study is strong visual composition evidence rather than authority; the package-owned RFQ and durable-card shells are contextual fixtures, not promoted components.',
         verification:
           'Inspect catalog dependency badges and ensure the specimen remains lab-only and unadopted.',
       },

@@ -39,7 +39,7 @@ export const TransactionCompositionFrame = <
   states,
   title,
 }: {
-  children: (state: State) => ReactNode
+  children: (state: State, setState: (state: State) => void) => ReactNode
   defaultState?: State
   description: string
   id: string
@@ -157,7 +157,7 @@ export const TransactionCompositionFrame = <
               presentation === 'modal-backdrop' && 'relative z-10 w-full'
             )}
           >
-            {children(state)}
+            {children(state, setState)}
           </div>
         </div>
         <footer className="flex flex-wrap gap-x-4 gap-y-2 p-4 sm:px-6">

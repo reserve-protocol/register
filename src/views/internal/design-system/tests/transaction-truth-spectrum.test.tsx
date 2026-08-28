@@ -33,27 +33,508 @@ describe('composition-first transaction-system review', () => {
     expect(within(contract).getByText(/Removal rule:/)).toBeVisible()
   })
 
-  it('leads with four distinct realistic transaction families', () => {
+  it('leads with the four family anchors and the focused vote-lock flow', () => {
     render(<TransactionTruthSpectrum />)
 
     const board = screen.getByTestId('transaction-system-review')
-    const compositions = within(board).getAllByTestId(
+    const representativeCompositions = within(board).getByRole('region', {
+      name: 'Representative transaction compositions',
+    })
+    const compositions = within(representativeCompositions).getAllByTestId(
       'transaction-family-composition'
     )
 
-    expect(compositions).toHaveLength(4)
-    expect(within(board).getByText('Manual mint')).toBeVisible()
-    expect(within(board).getByText('Instant Zapper')).toBeVisible()
-    expect(within(board).getByText('Automated mint workspace')).toBeVisible()
-    expect(within(board).getByText('Unstake and withdraw')).toBeVisible()
+    expect(compositions).toHaveLength(5)
+    expect(
+      within(representativeCompositions).getByText('Manual mint')
+    ).toBeVisible()
+    expect(
+      within(representativeCompositions).getByText('Instant Zapper')
+    ).toBeVisible()
+    expect(
+      within(representativeCompositions).getByText('Automated mint workspace')
+    ).toBeVisible()
+    expect(
+      within(representativeCompositions).getByText('Unstake and withdraw')
+    ).toBeVisible()
+    expect(
+      within(representativeCompositions).getByText('Vote-lock and unlock')
+    ).toBeVisible()
 
-    expect(within(board).getByText('Required approvals')).toBeVisible()
-    expect(within(board).getByText('Buy CMC20')).toBeVisible()
-    expect(within(board).getByText('Collateral swaps')).toBeVisible()
-    expect(within(board).getByText('In withdrawal process')).toBeVisible()
+    expect(
+      within(representativeCompositions).getByText('Required approvals')
+    ).toBeVisible()
+    expect(
+      within(representativeCompositions).getByText('Buy CMC20')
+    ).toBeVisible()
+    expect(
+      within(representativeCompositions).getByText('Collateral swaps')
+    ).toBeVisible()
+    expect(
+      within(representativeCompositions).getByText('In withdrawal process')
+    ).toBeVisible()
     expect(
       within(board).getAllByTestId('transaction-amount-pair').length
     ).toBeGreaterThanOrEqual(3)
+  })
+
+  it('shares the hardened substantial-task geometry and editable amount actions', () => {
+    render(<TransactionTruthSpectrum />)
+
+    const rfq = screen.getByTestId('transaction-composition-rfq')
+    const voteLock = screen.getByTestId('transaction-composition-vote-lock')
+    const voteLockSurface = within(voteLock)
+      .getByRole('group', { name: 'Vote-lock task mode' })
+      .closest('[data-testid="canonical-dialog-surface"]')
+
+    expect(within(rfq).getByTestId('zapper-shell')).toHaveClass('max-w-[432px]')
+    expect(voteLockSurface).toHaveClass('sm:max-w-[432px]')
+
+    expect(
+      within(voteLock).getByRole('button', { name: 'Max' })
+    ).toHaveAttribute('data-testid', 'inline-action')
+    fireEvent.click(
+      within(voteLock).getByRole('radio', { name: 'Unlock amount' })
+    )
+    expect(
+      within(voteLock).getByRole('button', { name: 'Max' })
+    ).toHaveAttribute('data-testid', 'inline-action')
+
+    fireEvent.click(
+      within(voteLock).getByRole('radio', { name: 'Lock confirming' })
+    )
+    const voteLockBoundary = within(voteLock).getByTestId(
+      'transaction-amount-pair'
+    )
+    expect(voteLockBoundary).toHaveAttribute('data-task-boundary', 'leading')
+    expect(voteLockBoundary).toHaveClass(
+      'before:top-0',
+      'before:h-px',
+      'before:bg-border'
+    )
+
+    fireEvent.click(
+      within(rfq).getByRole('radio', { name: 'Atomic confirmation' })
+    )
+    const zapperBoundary = within(rfq).getByTestId('transaction-amount-pair')
+    expect(zapperBoundary).toHaveAttribute('data-task-boundary', 'leading')
+    expect(zapperBoundary).toHaveClass(
+      'before:top-0',
+      'before:h-px',
+      'before:bg-border'
+    )
+  })
+
+  it('presents the four Zapper and Vote Lock review slices as direct comparisons', () => {
+    render(<TransactionTruthSpectrum />)
+
+    const pairedReview = screen.getByTestId('transaction-paired-review')
+    expect(
+      within(pairedReview).getByTestId('paired-zapper-stage')
+    ).toHaveTextContent('Buy CMC20')
+    expect(
+      within(pairedReview).getByTestId('paired-vote-lock-stage')
+    ).toHaveTextContent('Vote lock RSR')
+
+    fireEvent.click(
+      within(pairedReview).getByRole('radio', {
+        name: 'Submitted',
+        exact: true,
+      })
+    )
+    expect(
+      within(pairedReview).getByTestId('paired-zapper-stage')
+    ).toHaveTextContent('Confirming transaction')
+    expect(
+      within(pairedReview).getByTestId('paired-vote-lock-stage')
+    ).toHaveTextContent('Confirming tx...')
+
+    fireEvent.click(
+      within(pairedReview).getByRole('radio', {
+        name: 'Delayed initiation',
+        exact: true,
+      })
+    )
+    const pairedZapperStage = within(pairedReview).getByTestId(
+      'paired-zapper-stage'
+    )
+    const pairedVoteLockStage = within(pairedReview).getByTestId(
+      'paired-vote-lock-stage'
+    )
+    expect(
+      within(pairedZapperStage).getByTestId('zapper-outcome-status')
+    ).toHaveTextContent('Completed')
+    expect(
+      within(pairedVoteLockStage).getByTestId('vote-lock-outcome-status')
+    ).toHaveTextContent('Unlocking·13d 23h')
+    expect(
+      within(pairedReview).getByTestId('paired-vote-lock-stage')
+    ).toHaveTextContent('Withdraw RSR when ready')
+  })
+
+  it('preserves vote-lock approval, share quotes, and delayed withdrawal states in one composition', () => {
+    render(<TransactionTruthSpectrum />)
+
+    const voteLock = screen.getByTestId('transaction-composition-vote-lock')
+
+    expect(within(voteLock).getByText('You lock:')).toBeVisible()
+    expect(within(voteLock).getByText('0.98155')).toBeVisible()
+    expect(
+      within(voteLock).getAllByText('1 vlRSR = 1.0188 RSR')[0]
+    ).toBeVisible()
+    expect(
+      within(voteLock).getByText('I understand unlocking takes 14 days')
+    ).toBeVisible()
+    expect(
+      within(voteLock).queryByText(/If you decide to unlock RSR in the future/)
+    ).not.toBeInTheDocument()
+    fireEvent.click(
+      within(voteLock).getByRole('button', {
+        name: 'About the 14-day unlock delay',
+      })
+    )
+    expect(
+      screen
+        .getAllByRole('tooltip')
+        .some((node) =>
+          node.textContent?.includes(
+            'If you decide to unlock RSR in the future'
+          )
+        )
+    ).toBe(true)
+    expect(
+      within(voteLock).getByRole('button', { name: 'Vote lock RSR' })
+    ).toBeDisabled()
+    expect(
+      within(voteLock).getByRole('group', { name: 'Vote-lock task mode' })
+    ).toHaveAttribute('data-width', 'intrinsic')
+    const taskSurface = within(voteLock)
+      .getByRole('group', { name: 'Vote-lock task mode' })
+      .closest('[data-testid="canonical-dialog-surface"]')
+    expect(taskSurface).not.toBeNull()
+    const taskHeader = within(taskSurface as HTMLElement).getByRole('group', {
+      name: 'Vote-lock task mode',
+    }).parentElement?.parentElement
+    expect(taskHeader).toHaveClass('px-2', 'pb-4', 'pt-2')
+    expect(taskHeader).not.toHaveClass('px-4')
+    expect(
+      within(taskSurface as HTMLElement).getByTestId('vote-lock-action-footer')
+    ).toHaveClass('pt-0')
+    expect(
+      within(taskSurface as HTMLElement).getByTestId('vote-lock-action-footer')
+    ).not.toHaveClass('pt-3')
+    expect(
+      within(voteLock).getByRole('button', {
+        name: 'Switch to unlock',
+      })
+    ).toBeVisible()
+    fireEvent.click(
+      within(voteLock).getByRole('button', { name: 'Switch to unlock' })
+    )
+    expect(within(voteLock).getByText('You unlock:')).toBeVisible()
+    fireEvent.click(
+      within(voteLock).getByRole('button', { name: 'Switch to vote-lock' })
+    )
+    expect(within(voteLock).getByText('You lock:')).toBeVisible()
+    expect(
+      within(voteLock).getByTestId('vote-lock-task-facts-region')
+    ).toHaveClass('border-t', 'border-border', 'divide-y', 'divide-border')
+    expect(within(voteLock).getByTestId('vote-lock-task-details')).toHaveClass(
+      'grid',
+      'gap-2',
+      'px-4',
+      'py-4'
+    )
+    expect(
+      within(voteLock).getByTestId('vote-lock-exchange-rate')
+    ).not.toHaveClass('border-t', 'px-4', 'py-4')
+    expect(
+      within(voteLock).getByTestId('vote-lock-acknowledgement')
+    ).not.toHaveClass('border-t')
+
+    const lockAmount = within(voteLock).getByRole('textbox', {
+      name: 'You lock: amount',
+    })
+    fireEvent.change(lockAmount, { target: { value: '2' } })
+    expect(lockAmount).toHaveValue('2')
+    expect(within(voteLock).queryByText('0.98155')).not.toBeInTheDocument()
+    fireEvent.change(lockAmount, { target: { value: '1' } })
+
+    fireEvent.click(within(voteLock).getByRole('radio', { name: 'Lock ready' }))
+    expect(
+      within(voteLock).getByRole('checkbox', {
+        name: 'Acknowledge unlock delay',
+      })
+    ).toBeChecked()
+    expect(
+      within(voteLock).getByRole('button', { name: 'Vote lock RSR' })
+    ).toBeEnabled()
+
+    fireEvent.click(
+      within(voteLock).getByRole('radio', { name: 'Lock amount' })
+    )
+    fireEvent.click(
+      within(voteLock).getByRole('checkbox', {
+        name: 'Acknowledge unlock delay',
+      })
+    )
+
+    fireEvent.click(within(voteLock).getByRole('radio', { name: 'Approval' }))
+    expect(
+      within(voteLock).getByRole('button', { name: 'Approve use of RSR' })
+    ).toBeEnabled()
+    expect(
+      within(voteLock).getByRole('button', { name: 'Switch to unlock' })
+    ).toBeVisible()
+    expect(
+      within(voteLock).getByRole('textbox', { name: 'You lock: amount' })
+    ).toBeEnabled()
+
+    fireEvent.click(
+      within(voteLock).getByRole('radio', { name: 'Lock wallet' })
+    )
+    expect(
+      within(voteLock).getByRole('button', { name: 'Pending, sign in wallet' })
+    ).toBeVisible()
+    expect(
+      within(voteLock).queryByRole('button', { name: 'Switch to unlock' })
+    ).not.toBeInTheDocument()
+    expect(
+      within(voteLock).getByTestId('transaction-amount-relation-indicator')
+    ).toBeVisible()
+    expect(
+      within(voteLock).getByRole('radio', {
+        name: 'Vote-lock',
+        exact: true,
+      })
+    ).toBeDisabled()
+    expect(
+      within(voteLock).getByRole('radio', { name: 'Unlock', exact: true })
+    ).toBeDisabled()
+
+    fireEvent.click(
+      within(voteLock).getByRole('radio', { name: 'Lock confirming' })
+    )
+    expect(within(voteLock).getAllByText('Confirming tx...')).toHaveLength(1)
+
+    fireEvent.click(within(voteLock).getByRole('radio', { name: 'Locked' }))
+    expect(
+      within(voteLock).getByTestId('vote-lock-outcome-status')
+    ).toHaveTextContent('Completed')
+    expect(within(voteLock).getByText('Received')).toBeVisible()
+    const voteLockOutcomeValue = within(
+      within(voteLock).getByTestId('vote-lock-outcome-value-region')
+    )
+    expect(
+      voteLockOutcomeValue.queryByTestId('transaction-amount-asset-identity')
+    ).toBeNull()
+    const voteLockOutcomeUnit = voteLockOutcomeValue.getByTestId(
+      'transaction-amount-unit'
+    )
+    expect(voteLockOutcomeUnit).toHaveTextContent('vlRSR')
+    expect(voteLockOutcomeUnit).toHaveClass('text-brand-foreground/70')
+    expect(voteLockOutcomeUnit.parentElement).toHaveTextContent('0.98155vlRSR')
+    expect(
+      voteLockOutcomeValue.queryByRole('button', {
+        name: 'Track token in your wallet',
+      })
+    ).toBeNull()
+    expect(
+      within(voteLock).getByTestId('vote-lock-outcome-surface')
+    ).toHaveAttribute('data-component', 'organic-brand-surface')
+    const lockOutcomeSurface = within(voteLock)
+      .getByTestId('vote-lock-outcome-status')
+      .closest('[data-testid="canonical-dialog-surface"]')
+    expect(lockOutcomeSurface).toHaveClass('flex', 'min-h-[26rem]', 'flex-col')
+    expect(within(voteLock).getByTestId('vote-lock-outcome-hero')).toHaveClass(
+      'flex',
+      'flex-1',
+      'flex-col'
+    )
+    expect(
+      within(voteLock).getByTestId('vote-lock-outcome-value-region')
+    ).toHaveClass('flex', 'flex-col', 'justify-end', 'pb-2')
+    const lockOutcomeDetails = within(voteLock).getByTestId(
+      'vote-lock-outcome-details'
+    )
+    expect(lockOutcomeDetails.firstElementChild).toHaveClass('pb-4', 'pt-4')
+    expect(
+      within(lockOutcomeDetails).queryByText('Vote lock successful')
+    ).not.toBeInTheDocument()
+    expect(within(lockOutcomeDetails).queryByText('Transaction')).toBeNull()
+    expect(within(lockOutcomeDetails).queryByText('0x5a61…56da')).toBeNull()
+    expect(
+      within(voteLock).queryByRole('button', { name: 'Copy to clipboard' })
+    ).toBeNull()
+    expect(
+      within(voteLock).getByRole('link', { name: /View transaction/ })
+    ).toHaveAttribute('data-tone', 'secondary')
+    expect(
+      within(voteLock).getByRole('link', { name: /View transaction/ })
+    ).toHaveAttribute(
+      'href',
+      'https://bscscan.com/tx/0x5a61270a74cda50d2ca2d6ee5016f4502e77a7b6e7996345f1684c67d27d56da'
+    )
+    expect(
+      within(voteLock).getByRole('button', { name: 'Done' })
+    ).toHaveAttribute('data-tone', 'primary')
+    expect(within(voteLock).getByTestId('canonical-action-group')).toHaveClass(
+      'gap-2'
+    )
+
+    fireEvent.click(
+      within(voteLock).getByRole('radio', { name: 'Unlock amount' })
+    )
+    expect(within(voteLock).getByText('You unlock:')).toBeVisible()
+    expect(within(voteLock).getByText('1.0188')).toBeVisible()
+    expect(
+      within(voteLock).getByRole('button', {
+        name: 'Begin 14-day unlock delay',
+      })
+    ).toBeVisible()
+    expect(
+      within(voteLock).getByTestId('vote-lock-unlock-delay')
+    ).toHaveTextContent('Unlock delay14 days · rewards stop')
+    expect(
+      within(voteLock).queryByText(
+        /Come back to your account balance page to withdraw/
+      )
+    ).not.toBeInTheDocument()
+
+    fireEvent.click(
+      within(voteLock).getByRole('radio', { name: 'Unlock processing' })
+    )
+    expect(
+      within(voteLock).getByRole('button', {
+        name: 'Processing transaction...',
+      })
+    ).toBeVisible()
+    expect(
+      within(voteLock).queryByText(
+        /A 14-day unlock delay period begins & you stop accumulating rewards/
+      )
+    ).not.toBeInTheDocument()
+
+    fireEvent.click(
+      within(voteLock).getByRole('radio', { name: 'Unlock initiated' })
+    )
+    const delayedOutcomeStatus = within(voteLock).getByTestId(
+      'vote-lock-outcome-status'
+    )
+    expect(delayedOutcomeStatus).toHaveAttribute(
+      'data-outcome-status',
+      'delayed'
+    )
+    expect(delayedOutcomeStatus).toHaveAccessibleName(
+      'Unlocking, 13 days 23 hours remaining'
+    )
+    expect(
+      within(delayedOutcomeStatus).getByTestId('transaction-outcome-progress')
+    ).toHaveClass('animate-spin', 'motion-reduce:animate-none')
+    expect(
+      within(delayedOutcomeStatus).getByTestId('transaction-outcome-progress')
+        .parentElement
+    ).toHaveClass('bg-foreground/10', 'text-foreground')
+    expect(
+      within(voteLock).getByTestId('vote-lock-outcome-surface')
+    ).toHaveClass(
+      '[animation:transaction-outcome-surface-in_360ms_ease-out_both]',
+      'motion-reduce:animate-none'
+    )
+    expect(
+      within(voteLock).getByTestId('vote-lock-outcome-header')
+    ).toHaveClass(
+      'motion-safe:[animation:transaction-outcome-content-in_360ms_ease-out_both]'
+    )
+    expect(
+      within(voteLock).getByTestId('vote-lock-outcome-value-region')
+    ).toHaveClass(
+      'motion-safe:[animation:transaction-outcome-content-in_360ms_ease-out_both]'
+    )
+    expect(
+      within(delayedOutcomeStatus).getByTestId('transaction-outcome-remaining')
+    ).toHaveTextContent('13d 23h')
+    expect(
+      within(voteLock).getByTestId('vote-lock-outcome-value-region')
+    ).toHaveTextContent('Pending withdrawal')
+    const unlockOutcomeDetails = within(voteLock).getByTestId(
+      'vote-lock-outcome-details'
+    )
+    expect(
+      within(unlockOutcomeDetails).queryByText('Unlock initiated successfully')
+    ).not.toBeInTheDocument()
+    expect(
+      within(unlockOutcomeDetails).getByTestId(
+        'vote-lock-unlock-next-action-fact'
+      )
+    ).toHaveTextContent('Next actionWithdraw RSR when ready')
+    expect(
+      within(unlockOutcomeDetails).queryByText(
+        /Come back to your account balance page/
+      )
+    ).not.toBeInTheDocument()
+    fireEvent.click(within(voteLock).getByRole('button', { name: 'Done' }))
+    expect(within(voteLock).getByText('Pending Withdrawals')).toBeVisible()
+
+    fireEvent.click(within(voteLock).getByRole('radio', { name: 'Cooldown' }))
+    expect(within(voteLock).getByText('Pending Withdrawals')).toBeVisible()
+    expect(
+      within(voteLock).getByTestId('vote-lock-pending-withdrawal-section')
+    ).not.toHaveClass('mt-5')
+    expect(within(voteLock).getByText('13d 23h')).toBeVisible()
+    expect(
+      within(voteLock).getByRole('button', { name: 'Withdraw' })
+    ).toBeDisabled()
+
+    fireEvent.click(within(voteLock).getByRole('radio', { name: 'Ready' }))
+    expect(
+      within(voteLock).getByRole('button', { name: 'Withdraw' })
+    ).toBeEnabled()
+
+    fireEvent.click(within(voteLock).getByRole('radio', { name: 'Withdrawn' }))
+    expect(within(voteLock).getByText('Withdrawal successful')).toBeVisible()
+    expect(
+      within(voteLock).getByTestId('vote-lock-pending-withdrawal-section')
+    ).toHaveClass('mt-5')
+    expect(
+      within(voteLock).getByRole('button', { name: 'Withdrawn' })
+    ).toBeDisabled()
+  })
+
+  it('lets the contained Vote Lock modal close, reopen, and dismiss with Escape', () => {
+    render(<TransactionTruthSpectrum />)
+
+    const voteLock = screen.getByTestId('transaction-composition-vote-lock')
+    const dialog = within(voteLock).getByRole('dialog', {
+      name: 'Govern PHOTON',
+    })
+    expect(dialog).toHaveAttribute('aria-modal', 'true')
+
+    fireEvent.click(
+      within(dialog).getByRole('button', { name: 'Close Vote Lock' })
+    )
+    expect(
+      within(voteLock).queryByRole('dialog', { name: 'Govern PHOTON' })
+    ).not.toBeInTheDocument()
+    expect(
+      within(voteLock).getByRole('button', { name: 'Vote-lock $RSR' })
+    ).toHaveFocus()
+
+    fireEvent.click(
+      within(voteLock).getByRole('button', { name: 'Vote-lock $RSR' })
+    )
+    const reopened = within(voteLock).getByRole('dialog', {
+      name: 'Govern PHOTON',
+    })
+    expect(reopened).toHaveFocus()
+    expect(
+      within(reopened).getByRole('button', { name: 'Close Vote Lock' })
+    ).not.toHaveFocus()
+
+    fireEvent.keyDown(reopened, { key: 'Escape' })
+    expect(
+      within(voteLock).queryByRole('dialog', { name: 'Govern PHOTON' })
+    ).not.toBeInTheDocument()
   })
 
   it('routes direct product implementations and makes the conservative reconciliation explicit', () => {
@@ -66,6 +547,12 @@ describe('composition-first transaction-system review', () => {
       'components/zapper/zapper-wrapper.tsx',
       'async-mint/steps/quote-summary.tsx',
       'staking/components/unstake/unstake-modal.tsx',
+      'components/vote-lock/drawer.tsx',
+      'components/vote-lock/components/vote-lock.tsx',
+      'components/vote-lock/components/vote-unlock.tsx',
+      'components/vote-lock/hooks/use-vote-lock-quotes.ts',
+      'governance/components/governance-vote-lock.tsx',
+      'portfolio-page/components/pending-withdrawals.tsx',
     ]) {
       expect(within(contract).getByText(new RegExp(source))).toBeVisible()
     }
@@ -432,6 +919,27 @@ describe('composition-first transaction-system review', () => {
     expect(within(rfq).getByText('Enso')).toBeVisible()
     expect(within(rfq).getByText('Exchange rate')).toBeVisible()
 
+    fireEvent.click(within(rfq).getByRole('radio', { name: 'Atomic outcome' }))
+    expect(within(rfq).getByText('Executed via')).toBeVisible()
+    expect(within(rfq).getByText('Enso')).toBeVisible()
+    expect(within(rfq).queryByText('0x7fc2…92ad')).toBeNull()
+    expect(
+      within(rfq).queryByRole('button', { name: 'Copy to clipboard' })
+    ).toBeNull()
+    expect(
+      within(rfq).getByRole('link', { name: /View transaction/ })
+    ).toHaveAttribute('data-tone', 'secondary')
+    expect(
+      within(rfq).getByRole('link', { name: /View transaction/ })
+    ).toHaveAttribute(
+      'href',
+      'https://basescan.org/tx/0x7fc2e37d2b9fb28674640223e7655f1d8ca8c3044b52e85523a62fb85e5b92ad'
+    )
+    expect(within(rfq).getByRole('button', { name: 'Done' })).toHaveAttribute(
+      'data-tone',
+      'primary'
+    )
+
     fireEvent.click(within(rfq).getByRole('radio', { name: 'Quote failure' }))
     expect(
       within(rfq).getByText('Zaps are currently experiencing issues')
@@ -528,7 +1036,7 @@ describe('composition-first transaction-system review', () => {
     expect(outcomeSurface).toHaveClass(
       'rounded-lg',
       'bg-brand',
-      '[animation:zapper-success-surface-in_360ms_ease-out_both]'
+      '[animation:transaction-outcome-surface-in_360ms_ease-out_both]'
     )
     expect(within(rfq).getByTestId('zapper-outcome-status')).toHaveClass(
       'bg-card'
@@ -548,6 +1056,9 @@ describe('composition-first transaction-system review', () => {
       within(rfq).getByTestId('transaction-amount-relation-divider')
     ).toHaveClass('opacity-0')
     const outcomeOutput = within(rfq).getByTestId('zapper-output-transition')
+    expect(within(rfq).getByTestId('transaction-amount-pair')).toHaveClass(
+      'pb-2'
+    )
     expect(within(outcomeOutput).getByText('Received')).toBeVisible()
     expect(within(outcomeOutput).getByText('986.42')).toBeVisible()
     expect(within(outcomeOutput).queryByText('Estimated output')).toBeNull()
@@ -557,11 +1068,37 @@ describe('composition-first transaction-system review', () => {
     expect(
       within(outcomeOutput).getByTestId('transaction-amount-object')
     ).toHaveClass('px-6')
-    const outcomeDetailsHeader = within(rfq).getByTestId(
-      'zapper-outcome-details-header'
+    expect(
+      within(outcomeOutput).queryByTestId('transaction-amount-asset-identity')
+    ).toBeNull()
+    const rfqOutcomeUnit = within(outcomeOutput).getByTestId(
+      'transaction-amount-unit'
     )
-    expect(outcomeDetailsHeader).toHaveTextContent('Order filled')
-    expect(outcomeDetailsHeader).toHaveTextContent('CoW Swap')
+    expect(rfqOutcomeUnit).toHaveTextContent('CMC20')
+    expect(rfqOutcomeUnit).toHaveClass('text-brand-foreground/70')
+    expect(rfqOutcomeUnit.parentElement).toHaveTextContent('986.42CMC20')
+    const walletAction = within(outcomeOutput).getByRole('button', {
+      name: 'Track token in your wallet',
+    })
+    expect(walletAction).toHaveAttribute('data-size', 'compact')
+    expect(walletAction).toHaveAttribute('data-tone', 'secondary')
+    expect(
+      within(walletAction).getByTestId('transaction-wallet-add-glyph')
+    ).toBeVisible()
+    fireEvent.click(walletAction)
+    expect(
+      within(walletAction).getByTestId('transaction-wallet-tracked-glyph')
+    ).toBeVisible()
+    const outcomeFacts = within(rfq).getByTestId('zapper-outcome-facts')
+    expect(outcomeFacts).toHaveClass('gap-2', 'pb-4', 'pt-4')
+    expect(within(outcomeFacts).getByText('Filled via')).toBeVisible()
+    expect(within(outcomeFacts).getByText('CoW Swap')).toBeVisible()
+    expect(within(outcomeFacts).queryByText('Order')).toBeNull()
+    expect(
+      within(outcomeFacts).queryByRole('link', { name: /View order/ })
+    ).toBeNull()
+    expect(within(rfq).queryByText('Order filled')).toBeNull()
+    expect(within(rfq).queryByText('Transaction successful')).toBeNull()
     expect(
       within(rfq).queryByRole('button', { name: /outcome details/i })
     ).not.toBeInTheDocument()
@@ -570,9 +1107,14 @@ describe('composition-first transaction-system review', () => {
     expect(within(rfq).getByText('1,000 USDC')).toBeVisible()
     expect(within(rfq).getByText('Final vs input')).toBeVisible()
     expect(within(rfq).getByText('Value received')).toBeVisible()
+    const viewOrder = within(rfq).getByRole('link', { name: /View order/ })
+    expect(viewOrder).toHaveAttribute('data-tone', 'secondary')
+    expect(viewOrder.getAttribute('href')).toMatch(
+      /^https:\/\/explorer\.cow\.fi\/orders\/0x[0-9a-f]{112}$/
+    )
     expect(within(rfq).getByRole('button', { name: 'Done' })).toHaveAttribute(
       'data-tone',
-      'secondary'
+      'primary'
     )
     expect(within(rfq).getByTestId('zapper-outcome-action-inset')).toHaveClass(
       'mx-2',
@@ -628,7 +1170,7 @@ describe('composition-first transaction-system review', () => {
     expect(updatesSidecar).not.toHaveClass('ring-1', 'ring-border')
     expect(within(rfq).getByTestId('zapper-outcome-composition')).toHaveClass(
       'relative',
-      'max-w-[420px]'
+      'max-w-[432px]'
     )
     expect(within(rfq).getByText('986.42')).toBeVisible()
 
@@ -659,7 +1201,7 @@ describe('composition-first transaction-system review', () => {
       within(rfq).queryByTestId('zapper-outcome-attachment')
     ).not.toBeInTheDocument()
     expect(within(rfq).getByTestId('zapper-outcome-composition')).toHaveClass(
-      'max-w-[420px]'
+      'max-w-[432px]'
     )
 
     fireEvent.click(within(rfq).getByRole('radio', { name: 'RFQ recovery' }))
@@ -951,16 +1493,7 @@ describe('composition-first transaction-system review', () => {
     )
     expect(pressureTests).toHaveAttribute('id', 'transaction-pressure-tests')
 
-    expect(within(pressureTests).getByText('Vote unlock task')).toBeVisible()
-    expect(
-      within(pressureTests).queryByText(
-        'Voting power decreases when the unlock begins'
-      )
-    ).not.toBeInTheDocument()
-    expect(within(pressureTests).getByText('3,820 RSR locked')).toBeVisible()
-    expect(
-      within(pressureTests).getByText('After governance delay')
-    ).toBeVisible()
+    expect(within(pressureTests).queryByText('Vote unlock task')).toBeNull()
     expect(
       within(pressureTests).getAllByText('Select an input asset')[0]
     ).toBeVisible()
@@ -986,7 +1519,7 @@ describe('composition-first transaction-system review', () => {
     )
   })
 
-  it('keeps compact transaction dialog titles on the same row as close', () => {
+  it('keeps compact transaction headers on the same row as close', () => {
     render(<TransactionTruthSpectrum />)
 
     const expectInlineCompactHeader = (titleText: string) => {
@@ -1010,8 +1543,21 @@ describe('composition-first transaction-system review', () => {
     }
 
     expectInlineCompactHeader('Unstake')
-    expectInlineCompactHeader('Unlock voting power')
     expectInlineCompactHeader('Select an input asset')
+
+    const voteLock = screen.getByTestId('transaction-composition-vote-lock')
+    const mode = within(voteLock).getByRole('group', {
+      name: 'Vote-lock task mode',
+    })
+    const close = within(voteLock).getByRole('button', {
+      name: 'Close Vote Lock',
+    })
+
+    expect(mode).toHaveAttribute('data-size', 'compact')
+    expect(mode).toHaveAttribute('data-width', 'intrinsic')
+    expect(mode.parentElement).toBe(close.parentElement?.parentElement)
+    expect(mode.parentElement?.parentElement).toHaveClass('px-2')
+    expect(mode.parentElement?.parentElement).not.toHaveClass('px-4')
   })
 
   it('maps audited requirements to compositions, canonical owners, or explicit deferral', () => {
@@ -1175,7 +1721,7 @@ describe('composition-first transaction-system review', () => {
     expect(within(rfq).getByRole('button', { name: 'Buy CMC20' })).toBeVisible()
   })
 
-  it('does not claim unrendered selector, quote, identity, or outcome coverage', () => {
+  it('keeps deferred coverage honest while reflecting rendered vote-lock states', () => {
     render(<TransactionTruthSpectrum />)
 
     const coverage = screen.getByTestId('transaction-coverage-map')
@@ -1190,17 +1736,17 @@ describe('composition-first transaction-system review', () => {
     ).toBeVisible()
     expect(
       within(coverage).getByText(
-        /Atomic and automated outcomes show transaction identity/
+        /Atomic, automated, and Vote Lock outcomes show transaction identity/
       )
     ).toBeVisible()
     expect(
       within(coverage).getByText(
-        /Atomic, RFQ, automated, and cooldown-start outcomes/
+        /Atomic, RFQ, automated, Vote Lock, cooldown-start, claimable, and final-withdrawal outcomes/
       )
     ).toBeVisible()
     expect(
       within(coverage).getByText(
-        /static pressure tests validate Dialog content hierarchy/
+        /static Vote Lock and selector surfaces validate Dialog content hierarchy/
       )
     ).toBeVisible()
   })
