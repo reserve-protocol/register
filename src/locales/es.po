@@ -11720,7 +11720,7 @@ msgid "What is a <0>DTF</0>?"
 msgstr "¿Qué es un <0>DTF</0>?"
 
 #: src/views/index-dtf/overview/stocks/video-chapters.ts:34
-msgid "What is a Diversified Token Fund?"
+msgid "What is a Decentralized Token Fund?"
 msgstr ""
 
 #: src/views/yield-dtf/settings/components/listing-info.tsx:41
