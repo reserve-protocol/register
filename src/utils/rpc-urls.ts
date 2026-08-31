@@ -16,7 +16,7 @@ export const registerRpcUrls = {
         ...(alchemyKey
           ? [`https://eth-mainnet.alchemyapi.io/v2/${alchemyKey}`]
           : []),
-        ...(ankrKey ? [`https://rpc.ankr.com/mainnet/${ankrKey}`] : []),
+        ...(ankrKey ? [`https://rpc.ankr.com/eth/${ankrKey}`] : []),
       ],
   [base.id]: [
     'https://base-rpc.publicnode.com',
