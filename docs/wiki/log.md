@@ -1,6 +1,6 @@
 ---
 title: Log
-updated: 2026-08-28
+updated: 2026-09-01
 type: log
 ---
 
@@ -328,3 +328,33 @@ Play-by-play lives in git (PRs #1053/#1054/#1055/#1063, SDK PR #27). Durable out
 ## 2026-08-28 — Transaction alignment checkpoint
 
 - Human review considers the Zapper/Vote Lock alignment solid enough to proceed while retaining further visual feedback for both flows. The checkpoint keeps their shared substantial-task geometry, paired lifecycle comparisons, and active pressure register provisional and unadopted; it does not accept the exploratory wallet action, outcome treatments, or a universal transaction shell. The Vote Lock plan now reflects the rendered candidate instead of its superseded static pressure-test state. Delegation remains a separate unreviewed sibling: its automatic self-delegation relationship, explicit delegate action, one/two-call execution, and partial-success behavior must be audited directly before any lab proposal.
+- Direct product inspection now establishes Delegation as a provisional third-mode transaction composition rather than an inferred sibling. The lab preserves the existing Normal/Fast address model, optimistic-governance distinction, vote-lock eligibility, current locked amount, automatic first-lock self-delegation boundary, normal-then-fast call ordering, exact loading/action copy, and partial success when Normal completes before Fast fails. It standardizes only the visual shell, canonical fields, stable action placement, lifecycle vocabulary, and in-context outcome; it does not force Delegation into amount-pair anatomy, change production behavior, settle the long-term third-tab information architecture, or invent a combined transaction identity for two independent calls.
+
+## 2026-08-31 — Square transaction amount geometry
+
+- Human review accepted 0px radius for the transaction amount input/output family after a bounded lab comparison. The shared unadopted `TransactionAmountObject` now owns that geometry across editable, read-only, submitted, and outcome use, and the Zapper quote-search animation preserves it as an output replacement rather than reintroducing rounded corners. The radius authority now classifies these as structural financial regions; ordinary Delegation Fields stay fully rounded, multiline and floating contained objects stay 8px, and nested selectors/status controls keep their own radii. No production transaction flow was migrated.
+
+## 2026-08-31 — Delegation multi-transaction outcomes
+
+- The lab preserves one overall `Delegation updated` result while rendering only the relationships that changed and leading with the delegated voting power. Each intended Delegation call owns one directly associated explorer link. A one-call result uses the established secondary explorer + primary Done footer; a two-call result keeps both records in the ordinary fact list and leaves Done as the sole footer action. Approval stays outside the result, and the existing Fast-failed state continues to own partial-success recovery. Production still refreshes and toasts without retaining receipt identities for a persistent result, so adoption requires that separate product integration work.
+
+## 2026-08-31 — Intrinsic status-pill sizing
+
+- Lifecycle Status now owns intrinsic width as part of its canonical default, so direct grid or flex placement cannot stretch a short status across the available row. The transaction audit's separate authority label received the same local correction; no new component, sizing variant, or parent-specific workaround was introduced.
+
+## 2026-08-31 — Integrated Copyable Value treatment
+
+- Copyable Value now exposes an opt-in integrated 20px action for dense aligned facts while preserving its existing separated micro-control default. The shared treatment keeps the 14px shortened value, 14px copy/check mark, 8px internal gap, full-value clipboard behavior, whole-action interaction feedback, and stable success geometry. Delegation outcomes consume it without making Copyable Value own the surrounding role/transaction layout; production remains unadopted.
+
+## 2026-09-01 — Transaction inline-message qualification
+
+- Compact transaction qualifiers now use an opt-in 44px fully rounded Inline Message summary: tone icon, title, and a trailing row-level HelpTooltip share one centered axis with 16px horizontal and 8px vertical inset. High price impact replaces the redundant warning icon with the required Checkbox labeled `I understand the 5.8% price impact`, while temporary Zapper availability and expired-order recovery retain their tone icon. Their titles communicate the immediate state and their explanations are supporting rather than consequential. Material refund, wallet, partial-success, and later-action instructions remain fully visible. The default full-message anatomy was corrected separately so only the title wraps around its icon and the description resumes the full content width below it; this avoids an empty icon column without making the compact transaction treatment the universal default.
+
+## 2026-09-01 — Transaction hardening disposition
+
+- The active transaction plan now distinguishes accepted canonical components and amount-region geometry, provisional transaction relationship geometry, supported lifecycle distinctions, flow-owned composition, and exploratory visual pressure. Repeated lab use no longer implies promotion. The unresolved attached-region, stepper/action, outcome-frame, address-width, compact-message, and dismiss-action choices are routed to a human resolution queue; no shared token, Dialog default, rendered transaction UI, product behavior, or copy changed. Unused speculative fact-list geometry exports were removed rather than retained as an implied future contract.
+
+## 2026-09-01 — Approved transaction hardening implementation
+
+- Human review resolved the hardening queue without introducing a universal transaction shell. The new opaque `substrate-subtle` role supplies shallow attached depth while beige `secondary` retains major structural separation. Progress and pre-submit advisories share only frame, surface, and depth geometry; their semantic/content owners remain separate. Ordered progress now replaces inactive action chrome, while real Buttons remain for actionable steps and recovery.
+- Zapper and Vote Lock outcomes now share a 26rem no-shrink minimum. Organic brand motion remains immediate-result-only; delayed initiation retains the stable branded shell with countdown/pending truth. Inline Message advances to an accepted unadopted full/compact-summary baseline with a strict supporting-only tooltip rule. Vote Lock's 448px address width and the bare advisory dismiss remain local. No production flow, product copy, generic Dialog default, or existing `secondary` behavior changed.

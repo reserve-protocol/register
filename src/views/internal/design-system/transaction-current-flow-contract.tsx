@@ -68,10 +68,10 @@ const flows = [
     ],
     statements: [
       'Preserve|The input page, review modal, and durable queue remain separate surfaces with separate jobs.',
-      'Standardize visually|Input/output, task dialog, confirmation status, queue rows, and withdrawal actions.',
+      'Standardize visually|Input/output, task dialog, confirmation status, and the immediate cooldown handoff.',
       'Consolidate|Shared delayed-settlement language and transaction identity—not one combined lifecycle panel.',
       'Deliberately improve|Make initiation versus final withdrawal truth clearer while retaining the same mechanics.',
-      'Do not touch yet|Queue indexes, cancellation semantics, trading gates, and broader Yield staking architecture.',
+      'Do not touch yet|Persistent queue rows, later withdrawal actions, queue indexes, cancellation semantics, trading gates, and broader Yield staking architecture.',
     ],
     guardrail:
       'The modal confirms initiation; the page-owned queue persists across visits and exposes cancel or withdraw later.',
@@ -85,18 +85,22 @@ const flows = [
       'src/components/vote-lock/hooks/use-vote-lock-quotes.ts',
       'src/components/vote-lock/components/submit-lock-button.tsx',
       'src/components/vote-lock/components/submit-unlock-button.tsx',
+      'src/components/vote-lock/components/delegate.tsx',
+      'src/components/vote-lock/components/submit-delegate-button.tsx',
+      'src/components/vote-lock/hooks/use-vote-lock-drawer.ts',
       'src/views/index-dtf/governance/components/governance-vote-lock.tsx',
+      'src/views/index-dtf/governance/views/proposal/hooks/use-delegate-state.ts',
       'src/views/portfolio-page/components/pending-withdrawals.tsx',
     ],
     statements: [
       'Preserve|One shared Lock, Unlock, and Delegate shell; ERC-4626 preview amounts; exchange rate; balances; configured delay; and form reset behavior.',
-      'Standardize visually|Focused Dialog hierarchy, amount relationship, acknowledgement, wallet instruction, confirmation, identity, and durable withdrawal row.',
-      'Consolidate|Approval and lifecycle language plus delayed-state presentation—not SDK plans, share math, or Portfolio ownership.',
-      'Deliberately improve|Keep consequential lock and unlock results in context while retaining the Portfolio row as the later withdrawal owner.',
-      'Do not touch yet|SDK builders, approval/deposit/redeem calls, self-delegation, optimistic delegation, refresh behavior, and final claim calldata.',
+      'Standardize visually|Focused Dialog hierarchy, amount relationship, acknowledgement, canonical address fields, wallet instruction, confirmation, identity, and the immediate delayed-initiation outcome.',
+      'Consolidate|Shell geometry, action placement, and lifecycle language plus delayed-state presentation—not SDK plans, share math, or Portfolio ownership.',
+      'Deliberately improve|Keep consequential lock, unlock, and delegation results in context; preserve a successful normal update if the following fast update fails.',
+      'Do not touch yet|Persistent Portfolio withdrawal rows, SDK builders, approval/deposit/redeem/delegate calls, self-delegation, optimistic-governance capability, refresh behavior, and final claim calldata.',
     ],
     guardrail:
-      'No new required introduction: governance entry context and the lock acknowledgement explain Lock, while the delay and Portfolio return path stay adjacent to Unlock. Delegate remains an unchanged sibling outside this focused candidate; first-lock self-delegation remains an SDK-owned side effect, not a new user step.',
+      'No new required introduction: governance entry context and the lock acknowledgement explain Lock, while the delay and Portfolio return path stay adjacent to Unlock. Delegate remains the current third mode but keeps address-editing anatomy and truthful one/two-call execution; first-lock self-delegation remains an SDK-owned side effect, not a new user step.',
   },
 ] as const
 

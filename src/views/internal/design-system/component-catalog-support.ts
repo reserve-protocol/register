@@ -335,12 +335,14 @@ export const SUPPORT_COMPONENT_GROUPS: ComponentGroup[] = [
             ...mapped,
             evidence: [
               'Eighteen product imports use shared Alert, while warning, compliance, upload, approval, and transaction consumers locally reconstruct icon placement, radius, color, and density.',
-              'Trading-paused and low-liquidity notices establish persistent warning jobs with title/body and compact titleless anatomy.',
+              'Trading-paused and low-liquidity notices establish persistent warning jobs with full title/body and compact titleless anatomy.',
               'Approval failures establish an actionable danger job; transient confirmation remains Toast and transaction orchestration remains a higher-level lifecycle composition.',
+              'Zapper action qualifiers establish a compact summary presentation that keeps one title row visible and moves nonessential explanation into the accepted Help Tooltip.',
             ],
             decisionPrompts: [
-              'Judge the shared information/success/warning/danger anatomy, 8px icon/content relationship, 16px default and 12px compact inset, restrained 8px radius, opaque semantic surface/border roles, title/body hierarchy, and compact use.',
+              'Judge the shared information/success/warning/danger anatomy, 8px icon/title relationship, full-width explanatory body, 16px default and 12px compact full-message inset, restrained 8px full-message radius, opaque semantic surface/border roles, and the compact summary’s 44px fully rounded one-row geometry.',
               'Confirm that persistence and announcement urgency remain caller-owned: the component has no generic close action and no blanket alert role.',
+              'Confirm that summary presentation hides only supporting explanation; material instructions, recovery truth, and required next actions remain visible in the full layout.',
             ],
             relationships: [
               {
@@ -349,32 +351,49 @@ export const SUPPORT_COMPONENT_GROUPS: ComponentGroup[] = [
               },
               {
                 id: 'transaction-action',
-                note: 'Transaction lifecycle compositions may consume Inline Message, but retry orchestration and modal lifecycle are not part of this primitive.',
+                note: 'Transaction lifecycle compositions may consume the full or summary Inline Message presentation, but tooltip content, retry orchestration, and modal lifecycle remain composition-owned.',
               },
             ],
             nextAction:
-              'Build source-grounded surrounding compositions before returning this anatomy to Current Review; do not judge prominence, spacing, or density from the isolated tone grid.',
+              'Adopt the accepted full or summary presentation explicitly where product context matches; keep announcement urgency, tooltip content, dismissal, and recovery orchestration caller-owned.',
           }
         ),
         outputStatus: 'rendered',
-        designAuthority: 'exploratory',
+        designAuthority: 'current-baseline',
         implementationStatus: 'canonical-candidate',
         implementationSource:
           'src/components/design-system-v1/inline-message.tsx',
+        contextSources: [
+          {
+            role: 'authority',
+            label: 'Typed Inline Message contract',
+            path: 'src/views/internal/design-system/component-catalog-support.ts',
+          },
+          {
+            role: 'accepted-decision',
+            label: 'Inline Message presentation decision',
+            path: 'docs/wiki/decisions.md#2026-09-01--inline-message-supports-full-and-compact-summary-presentations',
+          },
+          {
+            role: 'implementation',
+            label: 'Reusable Inline Message candidate',
+            path: 'src/components/design-system-v1/inline-message.tsx',
+          },
+        ],
         adoptionStatus: 'none',
         review: {
-          status: 'provisional',
+          status: 'ready',
           scope:
-            'The rendered tone grid proves implementation anatomy only; it is not ready for canonical visual judgment without source-grounded content immediately before and after the message. Persistent information, success, warning, and danger, default/compact density, icons, and actions remain provisional. Toast timing/stacking, field validation, compliance copy, transaction orchestration, and production adoption remain outside.',
+            'The accepted unadopted baseline covers persistent information, success, warning, and danger; default and compact full-message density; and the opt-in compact summary. Summary may hide only supporting explanation in a Help Tooltip. Material instructions, consequences, recovery truth, and required next actions remain visible. Toast timing/stacking, field validation, compliance copy, dismissal, transaction orchestration, and production adoption remain outside.',
           dependencies: [
-            { name: 'Feedback color direction', status: 'provisional' },
+            { name: 'Feedback color direction', status: 'canonical' },
             { name: 'Typography and spacing roles', status: 'canonical' },
             { name: 'Iconography', status: 'canonical' },
             { name: 'Button', status: 'canonical' },
           ],
         },
         statusDetail:
-          'A reusable, unadopted implementation explores one persistent message contract, but human review correctly deferred it because isolated examples cannot establish contextual prominence or spacing. It returns only with realistic source-grounded surroundings.',
+          'The accepted reusable implementation separates persistent contextual feedback from Toast and supports a constrained one-row summary without making lifecycle, dismissal, or product explanation component-owned.',
       },
       component(
         'toast',
@@ -816,7 +835,10 @@ export const SUPPORT_COMPONENT_GROUPS: ComponentGroup[] = [
           {
             priority: 'product-extension',
             ...mapped,
-            evidence: ['CopyValue has ten product imports and Copy has nine.'],
+            evidence: [
+              'CopyValue has ten product imports and Copy has nine.',
+              'DTF token-address rows and Delegation outcomes show repeated dense-row pressure where a separate icon button distorts otherwise 20px aligned facts.',
+            ],
             decisionPrompts: [
               'Define visible formatting, copy affordance, success feedback, failure, and sensitive-value policy.',
             ],
@@ -839,9 +861,13 @@ export const SUPPORT_COMPONENT_GROUPS: ComponentGroup[] = [
         review: {
           status: 'ready',
           scope:
-            'The candidate covers one inline value plus its copy action: full accessible text, deliberate address shortening without CSS clipping, address normalization, resolved clipboard writes, event isolation, polite success announcement, Escape dismissal, and two-second semantic-success feedback that transforms the existing open prompt without replaying entrance motion. Failure presentation, paired explorer actions, native/bridged chain-address lists, and sensitive-value policy remain outside scope.',
+            'The candidate covers two explicit treatments. Default keeps the deliberately formatted value beside a canonical micro copy control. Inline integrates the 14px monospace value and 14px copy/check icon into one 20px action with an 8px relationship gap for dense aligned rows. Both preserve full accessible text, deliberate shortening without CSS clipping, address normalization, resolved clipboard writes, event isolation, polite success announcement, Escape dismissal, and two-second semantic-success feedback without geometry shift or replayed entrance motion. Failure presentation, paired explorer layouts, native/bridged chain-address lists, and sensitive-value policy remain outside scope.',
           dependencies: [
             { name: 'IconButton', status: 'canonical' },
+            {
+              name: 'InlineAction presentation',
+              status: 'provisional',
+            },
             {
               name: 'Tooltip primitive for transient feedback',
               status: 'retained',
@@ -849,7 +875,7 @@ export const SUPPORT_COMPONENT_GROUPS: ComponentGroup[] = [
           ],
         },
         statusDetail:
-          'The accepted unadopted Copyable Value owns deliberate formatting, canonical action geometry, truthful transient success feedback, and 14px monospace machine-value typography. Explorer and multi-chain address compositions remain separate composition work.',
+          'The accepted unadopted Copyable Value owns deliberate formatting, separated and integrated copy-action treatments, truthful transient success feedback, and 14px monospace machine-value typography. The inline treatment is opt-in and does not replace the default micro control. Explorer and multi-chain address compositions remain separate composition work.',
       },
     ],
   },

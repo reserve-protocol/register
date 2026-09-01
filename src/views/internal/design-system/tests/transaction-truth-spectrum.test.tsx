@@ -1,6 +1,10 @@
 import { act, fireEvent, render, screen, within } from '@testing-library/react'
 import { describe, expect, it, vi } from 'vitest'
 
+import {
+  FAST_DELEGATE,
+  NORMAL_DELEGATE,
+} from '../transaction-composition-vote-lock-delegate'
 import TransactionTruthSpectrum from '../transaction-truth-spectrum'
 
 describe('composition-first transaction-system review', () => {
@@ -58,7 +62,9 @@ describe('composition-first transaction-system review', () => {
       within(representativeCompositions).getByText('Unstake and withdraw')
     ).toBeVisible()
     expect(
-      within(representativeCompositions).getByText('Vote-lock and unlock')
+      within(representativeCompositions).getByText(
+        'Vote-lock, unlock, and delegate'
+      )
     ).toBeVisible()
 
     expect(
@@ -71,14 +77,14 @@ describe('composition-first transaction-system review', () => {
       within(representativeCompositions).getByText('Collateral swaps')
     ).toBeVisible()
     expect(
-      within(representativeCompositions).getByText('In withdrawal process')
-    ).toBeVisible()
+      within(representativeCompositions).queryByText('In withdrawal process')
+    ).not.toBeInTheDocument()
     expect(
       within(board).getAllByTestId('transaction-amount-pair').length
     ).toBeGreaterThanOrEqual(3)
   })
 
-  it('shares the hardened substantial-task geometry and editable amount actions', () => {
+  it('keeps candidate task widths explicit and shares editable amount actions', () => {
     render(<TransactionTruthSpectrum />)
 
     const rfq = screen.getByTestId('transaction-composition-rfq')
@@ -88,7 +94,7 @@ describe('composition-first transaction-system review', () => {
       .closest('[data-testid="canonical-dialog-surface"]')
 
     expect(within(rfq).getByTestId('zapper-shell')).toHaveClass('max-w-[432px]')
-    expect(voteLockSurface).toHaveClass('sm:max-w-[432px]')
+    expect(voteLockSurface).toHaveClass('sm:max-w-[448px]')
 
     expect(
       within(voteLock).getByRole('button', { name: 'Max' })
@@ -147,7 +153,7 @@ describe('composition-first transaction-system review', () => {
     ).toHaveTextContent('Confirming transaction')
     expect(
       within(pairedReview).getByTestId('paired-vote-lock-stage')
-    ).toHaveTextContent('Confirming tx...')
+    ).toHaveTextContent('Processing')
 
     fireEvent.click(
       within(pairedReview).getByRole('radio', {
@@ -172,7 +178,7 @@ describe('composition-first transaction-system review', () => {
     ).toHaveTextContent('Withdraw RSR when ready')
   })
 
-  it('preserves vote-lock approval, share quotes, and delayed withdrawal states in one composition', () => {
+  it('preserves vote-lock approval, share quotes, and the delayed-initiation handoff in one composition', () => {
     render(<TransactionTruthSpectrum />)
 
     const voteLock = screen.getByTestId('transaction-composition-vote-lock')
@@ -267,7 +273,9 @@ describe('composition-first transaction-system review', () => {
       })
     ).toBeChecked()
     expect(
-      within(voteLock).getByRole('button', { name: 'Vote lock RSR' })
+      within(voteLock).getByRole('button', {
+        name: 'Vote lock RSR · Step 2 of 2',
+      })
     ).toBeEnabled()
 
     fireEvent.click(
@@ -281,8 +289,13 @@ describe('composition-first transaction-system review', () => {
 
     fireEvent.click(within(voteLock).getByRole('radio', { name: 'Approval' }))
     expect(
-      within(voteLock).getByRole('button', { name: 'Approve use of RSR' })
+      within(voteLock).getByRole('button', {
+        name: 'Approve use of RSR · Step 1 of 2',
+      })
     ).toBeEnabled()
+    expect(
+      within(voteLock).queryByTestId('transaction-progress-stepper')
+    ).not.toBeInTheDocument()
     expect(
       within(voteLock).getByRole('button', { name: 'Switch to unlock' })
     ).toBeVisible()
@@ -291,11 +304,80 @@ describe('composition-first transaction-system review', () => {
     ).toBeEnabled()
 
     fireEvent.click(
+      within(voteLock).getByRole('radio', { name: 'Approval signing' })
+    )
+    expect(
+      within(voteLock).queryByRole('button', {
+        name: 'Pending, sign in wallet',
+      })
+    ).not.toBeInTheDocument()
+    expect(
+      within(voteLock).getByRole('checkbox', {
+        name: 'Acknowledge unlock delay',
+      })
+    ).toBeChecked()
+    expect(
+      within(voteLock).getByRole('checkbox', {
+        name: 'Acknowledge unlock delay',
+      })
+    ).toBeDisabled()
+    expect(
+      within(voteLock).queryByTestId('vote-lock-process-button-region')
+    ).not.toBeInTheDocument()
+    const approvalProgress = within(voteLock).getByRole('list', {
+      name: 'Vote-lock progress',
+    })
+    const approvalSteps = within(approvalProgress).getAllByTestId(
+      'transaction-progress-step'
+    )
+    expect(approvalSteps).toHaveLength(2)
+    expect(approvalSteps[0]).toHaveAttribute('data-step-state', 'active')
+    expect(within(approvalSteps[0]).getByText('Approve RSR')).toBeVisible()
+    expect(
+      within(approvalSteps[0]).getByTestId('transaction-progress-position')
+    ).toHaveTextContent('1/2')
+    expect(
+      within(approvalSteps[0]).getByTestId('lifecycle-status-pill')
+    ).toHaveTextContent('Processing')
+    expect(approvalSteps[1]).toHaveAttribute('data-step-state', 'upcoming')
+    expect(within(approvalSteps[1]).getByText('Vote-lock RSR')).toBeVisible()
+    expect(
+      within(approvalSteps[1]).getByTestId('transaction-progress-position')
+    ).toHaveTextContent('2/2')
+    expect(
+      within(approvalSteps[1]).getByTestId('lifecycle-status-pill')
+    ).toHaveTextContent('Upcoming')
+
+    fireEvent.click(within(voteLock).getByRole('radio', { name: 'Lock ready' }))
+    expect(
+      within(voteLock).getByRole('button', {
+        name: 'Vote lock RSR · Step 2 of 2',
+      })
+    ).toBeEnabled()
+    const readyProgress = within(voteLock).getByRole('list', {
+      name: 'Vote-lock progress',
+    })
+    const readySteps = within(readyProgress).getAllByTestId(
+      'transaction-progress-step'
+    )
+    expect(readySteps[0]).toHaveAttribute('data-step-state', 'complete')
+    expect(readySteps[1]).toHaveAttribute('data-step-state', 'actionable')
+    expect(within(readySteps[1]).getByText('Vote-lock RSR')).toBeVisible()
+    expect(
+      within(readySteps[1]).getByTestId('transaction-progress-position')
+    ).toHaveTextContent('2/2')
+    expect(
+      within(readySteps[1]).getByTestId('lifecycle-status-pill')
+    ).toHaveTextContent('Ready')
+
+    fireEvent.click(
       within(voteLock).getByRole('radio', { name: 'Lock wallet' })
     )
     expect(
-      within(voteLock).getByRole('button', { name: 'Pending, sign in wallet' })
-    ).toBeVisible()
+      within(voteLock).queryByRole('button', {
+        name: 'Pending, sign in wallet',
+      })
+    ).not.toBeInTheDocument()
     expect(
       within(voteLock).queryByRole('button', { name: 'Switch to unlock' })
     ).not.toBeInTheDocument()
@@ -315,7 +397,10 @@ describe('composition-first transaction-system review', () => {
     fireEvent.click(
       within(voteLock).getByRole('radio', { name: 'Lock confirming' })
     )
-    expect(within(voteLock).getAllByText('Confirming tx...')).toHaveLength(1)
+    expect(within(voteLock).queryByText('Confirming tx...')).toBeNull()
+    expect(
+      within(voteLock).getByRole('list', { name: 'Vote-lock progress' })
+    ).toHaveTextContent('Processing')
 
     fireEvent.click(within(voteLock).getByRole('radio', { name: 'Locked' }))
     expect(
@@ -442,6 +527,12 @@ describe('composition-first transaction-system review', () => {
       'motion-reduce:animate-none'
     )
     expect(
+      within(voteLock).getByTestId('vote-lock-outcome-surface')
+    ).toHaveAttribute('data-outcome-surface', 'delayed')
+    expect(
+      within(voteLock).getByTestId('vote-lock-outcome-surface')
+    ).not.toHaveAttribute('data-component', 'organic-brand-surface')
+    expect(
       within(voteLock).getByTestId('vote-lock-outcome-header')
     ).toHaveClass(
       'motion-safe:[animation:transaction-outcome-content-in_360ms_ease-out_both]'
@@ -473,32 +564,645 @@ describe('composition-first transaction-system review', () => {
         /Come back to your account balance page/
       )
     ).not.toBeInTheDocument()
+    expect(
+      within(voteLock).queryByRole('radio', { name: 'Cooldown' })
+    ).not.toBeInTheDocument()
+    expect(
+      within(voteLock).queryByRole('radio', { name: 'Ready' })
+    ).not.toBeInTheDocument()
+    expect(
+      within(voteLock).queryByRole('radio', { name: 'Withdrawn' })
+    ).not.toBeInTheDocument()
     fireEvent.click(within(voteLock).getByRole('button', { name: 'Done' }))
-    expect(within(voteLock).getByText('Pending Withdrawals')).toBeVisible()
+    expect(
+      within(voteLock).queryByTestId('canonical-dialog-surface')
+    ).not.toBeInTheDocument()
+    expect(
+      within(voteLock).queryByText('Pending Withdrawals')
+    ).not.toBeInTheDocument()
+  })
 
-    fireEvent.click(within(voteLock).getByRole('radio', { name: 'Cooldown' }))
-    expect(within(voteLock).getByText('Pending Withdrawals')).toBeVisible()
-    expect(
-      within(voteLock).getByTestId('vote-lock-pending-withdrawal-section')
-    ).not.toHaveClass('mt-5')
-    expect(within(voteLock).getByText('13d 23h')).toBeVisible()
-    expect(
-      within(voteLock).getByRole('button', { name: 'Withdraw' })
-    ).toBeDisabled()
+  it('reconstructs delegation as the real third Vote Lock mode without forcing amount anatomy', () => {
+    render(<TransactionTruthSpectrum />)
 
-    fireEvent.click(within(voteLock).getByRole('radio', { name: 'Ready' }))
+    const voteLock = screen.getByTestId('transaction-composition-vote-lock')
+
+    fireEvent.click(
+      within(voteLock).getByRole('radio', { name: 'Delegate ready' })
+    )
+
+    const dialog = within(voteLock).getByRole('dialog', {
+      name: 'Govern PHOTON',
+    })
+    expect(dialog).toHaveClass('sm:max-w-[448px]', 'min-h-96', 'p-2')
+    expect(dialog).not.toHaveClass('ring-2', 'ring-card', 'p-0')
     expect(
-      within(voteLock).getByRole('button', { name: 'Withdraw' })
+      within(dialog).getByRole('radio', { name: 'Delegate', exact: true })
+    ).toBeChecked()
+    const normalInput = within(dialog).getByLabelText(/Voting delegate/)
+    const fastInput = within(dialog).getByLabelText(/Challenge delegate/)
+    expect(normalInput).toHaveValue(
+      '0x7F4a7A93C9a5E8f62d6cA9E2f4dCB0eA72B4a018'
+    )
+    expect(fastInput).toHaveValue('0x3B06fA7B23C5c83eB8A7F99E42F98d2A79F4b6d1')
+    expect(normalInput.parentElement).toHaveClass('rounded-full')
+    expect(fastInput.parentElement).toHaveClass('rounded-full')
+    expect(normalInput.parentElement).not.toHaveClass('rounded-none')
+    expect(fastInput.parentElement).not.toHaveClass('rounded-none')
+    expect(
+      within(normalInput.parentElement!.parentElement!).getByText(
+        'Normal delegates vote on normal proposals.'
+      )
+    ).toBeVisible()
+    expect(
+      within(normalInput.parentElement!.parentElement!).getByText(
+        'Normal delegates vote on normal proposals.'
+      ).parentElement
+    ).toHaveClass('space-y-1', 'px-4')
+    expect(
+      within(fastInput.parentElement!.parentElement!).getByText(
+        'Fast delegates can challenge fast proposals.'
+      )
+    ).toBeVisible()
+    expect(
+      within(fastInput.parentElement!.parentElement!).getByText(
+        'Fast delegates can challenge fast proposals.'
+      ).parentElement
+    ).toHaveClass('space-y-1', 'px-4')
+    expect(within(dialog).getAllByTestId('canonical-text-input')).toHaveLength(
+      2
+    )
+    expect(within(dialog).getByTestId('delegation-fields')).toHaveClass('pb-4')
+    const lockedContext = within(dialog).getByTestId(
+      'delegation-locked-context'
+    )
+    expect(
+      within(lockedContext).getByText('Current locked amount:')
+    ).toBeVisible()
+    const lockedAmount = within(lockedContext).getByText('12.8M RSR')
+    expect(lockedAmount).toHaveAccessibleName('12,843,771.62 RSR')
+    expect(lockedAmount).toHaveAttribute('title', '12,843,771.62 RSR')
+    expect(
+      within(lockedContext).getByTestId('delegation-locked-icon')
+    ).toHaveAttribute('aria-hidden', 'true')
+    expect(lockedContext).toHaveClass('px-4')
+    expect(lockedContext).not.toHaveClass('border', 'border-b', 'divide-y')
+    expect(within(dialog).getByTestId('delegation-field-stack')).toHaveClass(
+      'grid',
+      'gap-4'
+    )
+    expect(
+      normalInput.compareDocumentPosition(lockedContext) &
+        Node.DOCUMENT_POSITION_FOLLOWING
+    ).toBeTruthy()
+    expect(
+      within(dialog).queryByTestId('transaction-amount-pair')
+    ).not.toBeInTheDocument()
+    expect(
+      within(dialog).getByRole('button', { name: 'Update delegates' })
     ).toBeEnabled()
+    expect(
+      within(dialog).queryByTestId('transaction-progress-stepper')
+    ).not.toBeInTheDocument()
 
-    fireEvent.click(within(voteLock).getByRole('radio', { name: 'Withdrawn' }))
-    expect(within(voteLock).getByText('Withdrawal successful')).toBeVisible()
+    fireEvent.click(
+      within(voteLock).getByRole('radio', { name: 'Normal only' })
+    )
     expect(
-      within(voteLock).getByTestId('vote-lock-pending-withdrawal-section')
-    ).toHaveClass('mt-5')
+      within(dialog).getByTestId('vote-lock-delegation-task').parentElement
+    ).toHaveClass('flex', 'flex-col', 'justify-end')
+    expect(within(dialog).getByTestId('delegation-fields')).toHaveClass('pb-4')
     expect(
-      within(voteLock).getByRole('button', { name: 'Withdrawn' })
+      within(dialog).getByText(
+        'Enter the wallet address that should vote on normal governance proposals.'
+      )
+    ).toBeVisible()
+    expect(within(dialog).getByLabelText(/Voting delegate/)).toBeVisible()
+    expect(
+      within(dialog).queryByLabelText(/Challenge delegate/)
+    ).not.toBeInTheDocument()
+    expect(
+      within(dialog).queryByTestId('transaction-progress-stepper')
+    ).not.toBeInTheDocument()
+  })
+
+  it('keeps current self-delegation readable before editing without changing the task structure', () => {
+    render(<TransactionTruthSpectrum />)
+
+    const voteLock = screen.getByTestId('transaction-composition-vote-lock')
+
+    fireEvent.click(
+      within(voteLock).getByRole('radio', { name: 'Delegated to you' })
+    )
+
+    const dialog = within(voteLock).getByRole('dialog', {
+      name: 'Govern PHOTON',
+    })
+    const votingField = within(dialog).getByTestId(
+      'delegation-voting-role-field'
+    )
+    const challengeField = within(dialog).getByTestId(
+      'delegation-challenge-role-field'
+    )
+    const votingValue = within(votingField).getByTestId(
+      'delegation-voting-current-value'
+    )
+    const challengeValue = within(challengeField).getByTestId(
+      'delegation-challenge-current-value'
+    )
+
+    expect(within(votingField).getByText('Voting delegate')).toBeVisible()
+    expect(
+      within(votingField).getByText(
+        'Normal delegates vote on normal proposals.'
+      )
+    ).toBeVisible()
+    expect(within(challengeField).getByText('Challenge delegate')).toBeVisible()
+    expect(
+      within(challengeField).getByText(
+        'Fast delegates can challenge fast proposals.'
+      )
+    ).toBeVisible()
+    expect(within(votingValue).getByText('Delegated to you')).toHaveClass(
+      'text-primary'
+    )
+    expect(within(challengeValue).getByText('Delegated to you')).toHaveClass(
+      'text-primary'
+    )
+    expect(within(votingValue).getByText('0x7f4A...A018')).toHaveClass(
+      'text-supporting-foreground'
+    )
+    expect(within(challengeValue).getByText('0x7f4A...A018')).toHaveClass(
+      'text-supporting-foreground'
+    )
+    expect(votingValue).toHaveClass('flex', 'flex-col', 'items-end')
+    expect(challengeValue).toHaveClass('flex', 'flex-col', 'items-end')
+    expect(votingValue.parentElement).toBe(
+      within(votingField).getByText('Voting delegate').parentElement
+        ?.parentElement
+    )
+    expect(challengeValue.parentElement).toBe(
+      within(challengeField).getByText('Challenge delegate').parentElement
+        ?.parentElement
+    )
+    expect(votingValue.parentElement).toHaveClass(
+      'grid',
+      'grid-cols-[minmax(0,1fr)_auto]',
+      'gap-x-4'
+    )
+    expect(
+      within(dialog).getByTestId('vote-lock-delegation-task').parentElement
+    ).toHaveClass('flex', 'flex-col', 'justify-end')
+    expect(
+      within(dialog).queryByTestId('canonical-text-input')
+    ).not.toBeInTheDocument()
+    expect(within(dialog).getAllByText('0x7f4A...A018')).toHaveLength(2)
+    expect(
+      within(dialog).queryByRole('button', { name: /Copy .* to clipboard/ })
+    ).not.toBeInTheDocument()
+    const changeDelegates = within(dialog).getByRole('button', {
+      name: 'Change delegates',
+    })
+    expect(changeDelegates).toBeEnabled()
+    expect(changeDelegates).toHaveAttribute('data-tone', 'secondary')
+    expect(
+      within(dialog).getByTestId('delegation-locked-context')
+    ).toBeVisible()
+
+    fireEvent.click(changeDelegates)
+
+    expect(
+      within(voteLock).getByRole('radio', { name: 'Delegate ready' })
+    ).toBeChecked()
+    expect(
+      within(dialog).getByTestId('vote-lock-delegation-task').parentElement
+    ).toHaveClass('flex', 'flex-col', 'justify-end')
+    const votingInput = within(votingField).getByLabelText(/Voting delegate/)
+    const challengeInput =
+      within(challengeField).getByLabelText(/Challenge delegate/)
+    expect(votingInput).toHaveValue(NORMAL_DELEGATE)
+    expect(challengeInput).toHaveValue(NORMAL_DELEGATE)
+    expect(votingInput.parentElement).toHaveClass('h-11', 'pl-5', 'pr-5')
+    expect(challengeInput.parentElement).toHaveClass('h-11', 'pl-5', 'pr-5')
+    expect(
+      within(dialog).getByRole('button', { name: 'Update delegates' })
+    ).toBeEnabled()
+    expect(within(votingField).getByText('Voting delegate')).toBeVisible()
+    expect(within(challengeField).getByText('Challenge delegate')).toBeVisible()
+    expect(
+      within(dialog).getByTestId('delegation-locked-context')
+    ).toBeVisible()
+  })
+
+  it('keeps the two-call delegation sequence truthful and preserves partial success', () => {
+    render(<TransactionTruthSpectrum />)
+
+    const voteLock = screen.getByTestId('transaction-composition-vote-lock')
+
+    fireEvent.click(
+      within(voteLock).getByRole('radio', { name: 'Normal signing' })
+    )
+    expect(
+      within(voteLock).queryByRole('button', {
+        name: 'Updating normal delegate...',
+      })
+    ).not.toBeInTheDocument()
+    const normalProgress = within(voteLock).getByRole('list', {
+      name: 'Delegation progress',
+    })
+    const processDialog = within(voteLock).getByRole('dialog', {
+      name: 'Govern PHOTON',
+    })
+    expect(processDialog).toHaveClass(
+      'overflow-hidden',
+      'p-0',
+      'ring-2',
+      'ring-card',
+      'ring-offset-0'
+    )
+    expect(
+      within(processDialog).getByTestId('vote-lock-process-content-frame')
+    ).toHaveClass('relative', 'z-10', 'bg-card', 'p-2', 'shadow-sm')
+    expect(
+      within(processDialog).queryByTestId('vote-lock-process-button-region')
+    ).not.toBeInTheDocument()
+    expect(within(processDialog).getByTestId('delegation-fields')).toHaveClass(
+      'pb-0'
+    )
+    const processPanel = within(processDialog).getByTestId(
+      'vote-lock-action-footer'
+    )
+    expect(processPanel).toHaveAttribute('data-presentation', 'process-panel')
+    expect(processPanel).toHaveClass('bg-substrate-subtle', 'px-6', 'py-4')
+    const normalSteps = within(normalProgress).getAllByTestId(
+      'transaction-progress-step'
+    )
+    expect(normalSteps).toHaveLength(2)
+    expect(normalSteps[0]).toHaveAttribute('data-step-state', 'active')
+    expect(normalSteps[0]).toHaveAttribute('aria-current', 'step')
+    expect(normalSteps[0]).toHaveClass('gap-2', 'py-2')
+    expect(normalSteps[0]).not.toHaveClass(
+      'h-11',
+      'px-2.5',
+      'rounded-full',
+      'border'
+    )
+    expect(
+      within(normalSteps[0]).getByTestId('transaction-progress-active-dot')
+    ).toHaveClass('size-2', 'rounded-full', 'bg-current')
+    expect(
+      within(normalProgress).getAllByTestId('lifecycle-status-pill')
+    ).toHaveLength(2)
+    expect(
+      within(normalSteps[0]).getByTestId('lifecycle-status-pill')
+    ).toHaveAttribute('data-status-role', 'processing')
+    expect(normalSteps[0]).toHaveTextContent('Voting delegate · 1/2')
+    expect(normalSteps[0]).not.toHaveTextContent('Tx.')
+    expect(normalSteps[1]).toHaveAttribute('data-step-state', 'upcoming')
+    expect(normalSteps[1]).toHaveClass('gap-2', 'py-2')
+    expect(normalSteps[1]).not.toHaveClass(
+      'h-11',
+      'px-2.5',
+      'rounded-full',
+      'border',
+      'bg-card/50'
+    )
+    expect(normalProgress.querySelectorAll('li')).toHaveLength(2)
+    expect(
+      within(normalSteps[1]).getByTestId('transaction-progress-upcoming-dot')
+    ).toHaveClass('size-2', 'rounded-full', 'border', 'border-current')
+    const sequencePosition = within(normalSteps[0]).getByTestId(
+      'transaction-progress-position'
+    )
+    expect(sequencePosition).toHaveClass('tabular-nums')
+    const connector = within(normalProgress).getByTestId(
+      'transaction-progress-connector'
+    )
+    expect(connector).toHaveClass(
+      'left-3',
+      'top-5',
+      'bottom-5',
+      '-translate-x-1/2'
+    )
+    expect(connector.parentElement).toHaveClass('relative')
+    for (const indicator of within(normalProgress).getAllByTestId(
+      'transaction-progress-indicator'
+    )) {
+      expect(indicator).toHaveClass('size-6')
+    }
+    expect(within(voteLock).getByLabelText(/Voting delegate/)).toBeDisabled()
+    expect(within(voteLock).getByLabelText(/Challenge delegate/)).toBeDisabled()
+
+    fireEvent.click(
+      within(voteLock).getByRole('radio', { name: 'Fast signing' })
+    )
+    expect(
+      within(voteLock).queryByRole('button', {
+        name: 'Updating fast delegate...',
+      })
+    ).not.toBeInTheDocument()
+    const inProgress = within(voteLock).getByRole('list', {
+      name: 'Delegation progress',
+    })
+    expect(
+      within(inProgress).getByText('Complete', { exact: true })
+    ).toBeVisible()
+    expect(
+      within(inProgress).getByText('Processing', { exact: true })
+    ).toBeVisible()
+
+    fireEvent.click(
+      within(voteLock).getByRole('radio', { name: 'Fast failed' })
+    )
+    const recovery = within(voteLock).getByRole('list', {
+      name: 'Delegation progress',
+    })
+    expect(within(voteLock).getByTestId('vote-lock-action-footer')).toHaveClass(
+      'bg-substrate-subtle',
+      'px-6',
+      'py-4'
+    )
+    expect(within(recovery).getByText('Complete')).toBeVisible()
+    expect(within(recovery).getByText('Failed')).toBeVisible()
+    expect(
+      within(recovery).getAllByTestId('transaction-progress-step')[1]
+    ).toHaveClass('py-2')
+    expect(
+      within(recovery).getAllByTestId('transaction-progress-step')[1]
+    ).not.toHaveClass(
+      'border',
+      'rounded-full',
+      'bg-[var(--feedback-danger-surface)]'
+    )
+    expect(within(voteLock).getByLabelText(/Voting delegate/)).toBeDisabled()
+    expect(within(voteLock).getByLabelText(/Challenge delegate/)).toBeEnabled()
+    const retryFastDelegation = within(voteLock).getByRole('button', {
+      name: 'Retry fast delegation',
+    })
+    expect(retryFastDelegation).toBeEnabled()
+    expect(
+      within(voteLock).getByTestId('vote-lock-process-content-frame')
+    ).toContainElement(retryFastDelegation)
+    expect(
+      within(voteLock).getByTestId('vote-lock-action-footer')
+    ).not.toContainElement(retryFastDelegation)
+
+    fireEvent.click(
+      within(voteLock).getByRole('radio', { name: 'Delegation updated' })
+    )
+    expect(
+      within(voteLock).getByRole('dialog', { name: 'Govern PHOTON' })
+    ).toHaveClass('sm:max-w-[448px]')
+    expect(
+      within(voteLock).getByTestId('vote-lock-outcome-status')
+    ).toHaveTextContent('Completed')
+    expect(
+      within(voteLock).getByRole('heading', { name: 'Delegation updated' })
+    ).toBeVisible()
+    expect(
+      within(voteLock).getByTestId('delegation-outcome-value')
+    ).toHaveTextContent(
+      'Voting power delegated12.84MRSRFull voting power for each role'
+    )
+    expect(
+      within(voteLock).getByTestId('delegation-outcome-value')
+    ).not.toHaveTextContent('12,843,771.62 RSR')
+    const delegationDetails = within(voteLock).getByTestId(
+      'delegation-outcome-details'
+    )
+    expect(within(delegationDetails).getByText('Voting delegate')).toBeVisible()
+    expect(within(delegationDetails).getByText('0x7f4A...A018')).toBeVisible()
+    expect(delegationDetails).not.toHaveTextContent('Voting transaction')
+    expect(
+      within(delegationDetails).getByText('Challenge delegate')
+    ).toBeVisible()
+    expect(within(delegationDetails).getByText('0x3B06...B6d1')).toBeVisible()
+    expect(delegationDetails).not.toHaveTextContent('Challenge transaction')
+    expect(
+      within(delegationDetails).getAllByText('12.84M RSR assigned')
+    ).toHaveLength(2)
+    const delegatedAmountLine = within(
+      within(voteLock).getByTestId('delegation-outcome-value')
+    )
+      .getByTestId('transaction-amount-unit')
+      .parentElement?.textContent?.replaceAll(/\s/g, '')
+    expect(delegatedAmountLine).toBe('12.84MRSR')
+    expect(delegationDetails.querySelector('dl')).toHaveClass('gap-3')
+    const delegationRoleGroups = within(delegationDetails).getAllByTestId(
+      'delegation-outcome-role-group'
+    )
+    expect(delegationRoleGroups).toHaveLength(2)
+    for (const roleGroup of delegationRoleGroups) {
+      expect(roleGroup).toHaveClass(
+        'grid',
+        'grid-cols-[minmax(0,1fr)_auto]',
+        'gap-x-3',
+        'gap-y-1',
+        'sm:gap-x-4'
+      )
+      expect(
+        within(roleGroup).getByTestId('delegation-outcome-role-label')
+      ).toHaveClass('col-start-1', 'row-start-1')
+      expect(
+        within(roleGroup).getByRole('link', {
+          name: /View .* delegate transaction/,
+        }).parentElement
+      ).toHaveClass('col-start-2', 'row-start-1', 'flex', 'justify-self-end')
+      expect(
+        within(roleGroup).getByRole('link', {
+          name: /View .* delegate transaction/,
+        })
+      ).toHaveClass(
+        'text-foreground',
+        'hover:text-primary',
+        'focus-visible:text-primary'
+      )
+      expect(
+        within(roleGroup).getByRole('button', {
+          name: /^Copy 0x.* to clipboard$/,
+        })
+      ).toHaveClass('text-foreground', 'hover:text-primary')
+      expect(
+        within(roleGroup).getByRole('button', {
+          name: /^Copy 0x.* to clipboard$/,
+        }).parentElement?.parentElement
+      ).toHaveClass('col-start-1', 'row-start-2', 'flex', 'justify-self-start')
+      expect(
+        within(roleGroup).getByTestId('delegation-outcome-role-result')
+      ).toHaveClass('col-start-2', 'row-start-2')
+      expect(
+        within(roleGroup).getByTestId('delegation-outcome-role-label')
+      ).toHaveClass('font-medium', 'text-foreground')
+      expect(
+        within(roleGroup).getByTestId('delegation-outcome-role-result')
+      ).toHaveTextContent('12.84M RSR assigned')
+      expect(
+        within(roleGroup)
+          .getByTestId('delegation-outcome-role-result')
+          .textContent?.replace('assigned', '')
+          .replaceAll(/\s/g, '')
+      ).toBe(delegatedAmountLine)
+      expect(
+        within(roleGroup).getByTestId('delegation-outcome-role-result')
+      ).toHaveClass('font-light', 'text-supporting-foreground')
+    }
+    expect(within(delegationDetails).getByText(NORMAL_DELEGATE)).toHaveClass(
+      'sr-only'
+    )
+    expect(within(delegationDetails).getByText(FAST_DELEGATE)).toHaveClass(
+      'sr-only'
+    )
+    const delegateCopyActions = within(delegationDetails).getAllByRole(
+      'button',
+      { name: /^Copy 0x.* to clipboard$/ }
+    )
+    expect(delegateCopyActions).toHaveLength(2)
+    expect(
+      new Set(
+        delegateCopyActions.map((action) => action.getAttribute('aria-label'))
+      ).size
+    ).toBe(2)
+    for (const copyAction of delegateCopyActions) {
+      expect(copyAction).toHaveAttribute('data-testid', 'inline-action')
+      expect(copyAction).toHaveClass('h-5', 'gap-2')
+      expect(copyAction).not.toHaveAttribute('data-tone', 'quiet')
+    }
+    const transactionLinks = within(delegationDetails).getAllByRole('link', {
+      name: /View .* delegate transaction/,
+    })
+    expect(transactionLinks).toHaveLength(2)
+    expect(transactionLinks[0]).toHaveAccessibleName(
+      'View Voting delegate transaction'
+    )
+    expect(transactionLinks[1]).toHaveAccessibleName(
+      'View Challenge delegate transaction'
+    )
+    expect(transactionLinks[0]).not.toHaveAttribute(
+      'href',
+      transactionLinks[1].getAttribute('href')
+    )
+    expect(
+      within(delegationDetails).queryByText('Transactions')
+    ).not.toBeInTheDocument()
+    const delegationOutcome = within(voteLock).getByRole('dialog', {
+      name: 'Govern PHOTON',
+    })
+    expect(
+      within(delegationOutcome).queryByText(/approval/i)
+    ).not.toBeInTheDocument()
+    expect(
+      within(voteLock).getByRole('button', { name: 'Done' })
+    ).toHaveAttribute('data-tone', 'primary')
+
+    fireEvent.click(
+      within(voteLock).getByRole('radio', {
+        name: 'Voting delegate updated',
+      })
+    )
+    expect(
+      within(voteLock).getByRole('heading', { name: 'Delegation updated' })
+    ).toBeVisible()
+    expect(
+      within(voteLock).getByTestId('delegation-outcome-value')
+    ).toHaveTextContent('Voting power delegated12.84MRSR12,843,771.62 RSR')
+    expect(
+      within(voteLock).getByTestId('delegation-outcome-value')
+    ).not.toHaveTextContent('Full voting power for each role')
+    const votingOnlyDetails = within(voteLock).getByTestId(
+      'delegation-outcome-details'
+    )
+    expect(within(votingOnlyDetails).getByText('Voting delegate')).toBeVisible()
+    expect(within(votingOnlyDetails).getByText('0x7f4A...A018')).toBeVisible()
+    const votingOnlyRole = within(votingOnlyDetails).getByTestId(
+      'delegation-outcome-role-group'
+    )
+    expect(
+      within(votingOnlyRole).getByRole('button', {
+        name: /^Copy 0x.* to clipboard$/,
+      }).parentElement?.parentElement
+    ).toHaveClass('col-start-2', 'row-start-1', 'justify-self-end')
+    expect(
+      within(voteLock).queryByText('Challenge delegate')
+    ).not.toBeInTheDocument()
+    const delegationOutcomeFooter = within(voteLock).getByTestId(
+      'delegation-outcome-footer'
+    )
+    expect(
+      within(delegationOutcomeFooter).getByRole('link', {
+        name: 'View transaction on BscScan (opens in a new tab)',
+      })
+    ).toHaveAttribute('data-tone', 'secondary')
+    expect(
+      within(delegationOutcomeFooter).getByRole('button', { name: 'Done' })
+    ).toHaveAttribute('data-tone', 'primary')
+    expect(
+      within(voteLock).getAllByRole('link', {
+        name: /View .*transaction/,
+      })
+    ).toHaveLength(1)
+  })
+
+  it('preserves delegation validation and eligibility boundaries', () => {
+    render(<TransactionTruthSpectrum />)
+
+    const voteLock = screen.getByTestId('transaction-composition-vote-lock')
+
+    fireEvent.click(
+      within(voteLock).getByRole('radio', { name: 'Invalid address' })
+    )
+    expect(within(voteLock).getByLabelText(/Voting delegate/)).toHaveAttribute(
+      'aria-invalid',
+      'true'
+    )
+    expect(
+      within(
+        within(voteLock).getByRole('dialog', { name: 'Govern PHOTON' })
+      ).getByText('Invalid address')
+    ).toBeVisible()
+    expect(
+      within(voteLock).getByRole('button', { name: 'Update delegates' })
     ).toBeDisabled()
+
+    fireEvent.click(
+      within(voteLock).getByRole('radio', { name: 'No locked balance' })
+    )
+    expect(
+      within(voteLock).getByText(
+        'Self-delegation happens automatically when you vote-lock RSR. Come back here after vote-locking to update delegation.'
+      )
+    ).toBeVisible()
+    expect(within(voteLock).getByLabelText(/Voting delegate/)).toBeDisabled()
+    expect(within(voteLock).getByLabelText(/Voting delegate/)).toHaveValue('')
+    expect(within(voteLock).getByLabelText(/Challenge delegate/)).toBeDisabled()
+    expect(within(voteLock).getByLabelText(/Challenge delegate/)).toHaveValue(
+      ''
+    )
+    expect(
+      within(voteLock).queryByTestId('delegation-locked-context')
+    ).not.toBeInTheDocument()
+
+    fireEvent.click(
+      within(voteLock).getByRole('radio', { name: 'Wallet disconnected' })
+    )
+    expect(
+      within(voteLock).getByText(
+        'Connect your wallet to view or change delegates.'
+      )
+    ).toBeVisible()
+    const connectWallet = within(voteLock).getByRole('button', {
+      name: 'Connect wallet',
+    })
+    expect(connectWallet).toBeEnabled()
+    expect(connectWallet).toHaveAttribute('data-tone', 'primary')
+    expect(within(voteLock).getByLabelText(/Voting delegate/)).toBeDisabled()
+    expect(within(voteLock).getByLabelText(/Voting delegate/)).toHaveValue('')
+    expect(within(voteLock).getByLabelText(/Challenge delegate/)).toBeDisabled()
+    expect(within(voteLock).getByLabelText(/Challenge delegate/)).toHaveValue(
+      ''
+    )
+    expect(
+      within(voteLock).queryByTestId('delegation-locked-context')
+    ).not.toBeInTheDocument()
   })
 
   it('lets the contained Vote Lock modal close, reopen, and dismiss with Escape', () => {
@@ -550,6 +1254,8 @@ describe('composition-first transaction-system review', () => {
       'components/vote-lock/drawer.tsx',
       'components/vote-lock/components/vote-lock.tsx',
       'components/vote-lock/components/vote-unlock.tsx',
+      'components/vote-lock/components/delegate.tsx',
+      'components/vote-lock/components/submit-delegate-button.tsx',
       'components/vote-lock/hooks/use-vote-lock-quotes.ts',
       'governance/components/governance-vote-lock.tsx',
       'portfolio-page/components/pending-withdrawals.tsx',
@@ -685,6 +1391,10 @@ describe('composition-first transaction-system review', () => {
     const outputIdentity = within(outputAmount).getByTestId(
       'transaction-amount-asset-identity'
     )
+    expect(inputAmount).toHaveClass('rounded-none')
+    expect(outputAmount).toHaveClass('rounded-none')
+    expect(inputAmount).not.toHaveClass('rounded-lg')
+    expect(outputAmount).not.toHaveClass('rounded-lg')
     expect(inputIdentity).toHaveClass('text-xl')
     expect(outputIdentity).toHaveClass('text-xl')
     expect(
@@ -697,7 +1407,8 @@ describe('composition-first transaction-system review', () => {
     expect(
       within(outputAmount).getByTestId('zapper-output-value-delta')
     ).toHaveTextContent('(-1.00%)')
-    expect(outputAmount).toHaveClass('border-b', 'rounded-b-none')
+    expect(outputAmount).toHaveClass('border-b', 'rounded-none')
+    expect(outputAmount).not.toHaveClass('rounded-b-none')
     expect(
       within(outputAmount).queryByText(/final after order fill/)
     ).not.toBeInTheDocument()
@@ -786,7 +1497,7 @@ describe('composition-first transaction-system review', () => {
     const optionRows = within(assetOptions).getAllByTestId(
       'transaction-asset-picker-option'
     )
-    expect(optionRows).toHaveLength(3)
+    expect(optionRows).toHaveLength(4)
     expect(optionRows[0]).toHaveAttribute('aria-pressed', 'true')
     expect(optionRows[0]).toHaveClass('bg-accent/60')
     expect(optionRows[0]).not.toHaveClass('ring-1', 'ring-inset')
@@ -855,6 +1566,11 @@ describe('composition-first transaction-system review', () => {
       })
     ).toBeVisible()
     expect(
+      within(reviewVariants).getByRole('radio', {
+        name: 'CoW redirect · retired',
+      })
+    ).toBeVisible()
+    expect(
       within(outcomeAttachments).getByRole('radio', { name: 'Updates' })
     ).toBeVisible()
   })
@@ -866,13 +1582,58 @@ describe('composition-first transaction-system review', () => {
     fireEvent.click(
       within(rfq).getByRole('button', { name: 'Open Zapper settings' })
     )
-    expect(
-      screen.getByRole('dialog', { name: 'Zapper settings' })
-    ).toBeVisible()
+    const settingsPanel = screen.getByRole('dialog', {
+      name: 'Zapper settings',
+    })
+    expect(settingsPanel).toBeVisible()
     expect(screen.getByText('Quote Source')).toBeVisible()
     expect(screen.getByText('Best Quote')).toBeVisible()
     expect(screen.getByText('Max. mint slippage')).toBeVisible()
     expect(screen.getByText('Deep liquidity search')).toBeVisible()
+    const quoteSource = screen.getByRole('group', { name: 'Quote Source' })
+    const slippage = screen.getByRole('group', {
+      name: 'Max. mint slippage',
+    })
+    expect(
+      within(quoteSource).getByRole('radio', { name: 'Best Quote' })
+    ).toBeChecked()
+    expect(within(slippage).getByRole('radio', { name: '1%' })).toBeChecked()
+    fireEvent.click(
+      within(quoteSource).getByRole('radio', { name: 'CoW Swap' })
+    )
+    fireEvent.click(within(slippage).getByRole('radio', { name: '3%' }))
+    expect(
+      within(quoteSource).getByRole('radio', { name: 'CoW Swap' })
+    ).toBeChecked()
+    expect(within(slippage).getByRole('radio', { name: '3%' })).toBeChecked()
+    expect(
+      screen.getByRole('button', { name: 'About quote sources' })
+    ).toBeVisible()
+    expect(
+      screen.getByRole('button', { name: 'About maximum mint slippage' })
+    ).toBeVisible()
+    expect(
+      screen.getByRole('button', { name: 'About deep liquidity search' })
+    ).toBeVisible()
+    expect(
+      screen.getByRole('button', { name: 'About forcing a DTF mint' })
+    ).toBeVisible()
+    fireEvent.click(
+      screen.getByRole('checkbox', { name: 'Deep liquidity search' })
+    )
+    fireEvent.click(screen.getByRole('checkbox', { name: 'Force DTF mint' }))
+    fireEvent.click(
+      within(rfq).getByRole('button', { name: 'Open Zapper settings' })
+    )
+    fireEvent.click(
+      within(rfq).getByRole('button', { name: 'Open Zapper settings' })
+    )
+    expect(
+      screen.getByRole('checkbox', { name: 'Deep liquidity search' })
+    ).toBeChecked()
+    expect(
+      screen.getByRole('checkbox', { name: 'Force DTF mint' })
+    ).toBeChecked()
 
     fireEvent.click(
       within(rfq).getByRole('button', {
@@ -902,6 +1663,39 @@ describe('composition-first transaction-system review', () => {
       within(rfq).getByRole('radio', { name: 'Market-hours advisory' })
     )
     expect(within(rfq).getByTestId('zapper-review-advisory')).toBeVisible()
+  })
+
+  it('keeps the retired CoW redirect as labeled evidence with a compact action', () => {
+    render(<TransactionTruthSpectrum />)
+
+    const rfq = screen.getByTestId('transaction-composition-rfq')
+    fireEvent.click(
+      within(rfq).getByRole('radio', { name: 'CoW redirect · retired' })
+    )
+
+    const advisory = within(rfq).getByTestId('transaction-review-advisory')
+    expect(within(advisory).getByTestId('zapper-review-advisory')).toHaveClass(
+      'gap-2'
+    )
+    expect(within(advisory).getByText('Try CoW Swap')).toBeVisible()
+    expect(
+      within(advisory).getByText(
+        'For larger orders, a DEX aggregator like CoW Swap may get you a better price by routing your trade across multiple sources of liquidity.'
+      )
+    ).toBeVisible()
+    const cowSwapAction = within(advisory).getByRole('link', {
+      name: /Open CoW Swap/,
+    })
+    expect(cowSwapAction).toHaveAttribute('data-link-treatment', 'standalone')
+    expect(cowSwapAction).toHaveAttribute('target', '_blank')
+    expect(cowSwapAction).toHaveAttribute(
+      'rel',
+      expect.stringContaining('noopener')
+    )
+    expect(cowSwapAction).toHaveAttribute(
+      'rel',
+      expect.stringContaining('noreferrer')
+    )
   })
 
   it('covers atomic confirmation, quote failure, and native RFQ refund truth', () => {
@@ -944,6 +1738,19 @@ describe('composition-first transaction-system review', () => {
     expect(
       within(rfq).getByText('Zaps are currently experiencing issues')
     ).toBeVisible()
+    expect(
+      within(rfq).queryByText(
+        /we’re having a hard time finding a route that makes sense/
+      )
+    ).toBeNull()
+    fireEvent.click(
+      within(rfq).getByRole('button', {
+        name: 'About Zapper availability',
+      })
+    )
+    expect(screen.getByRole('tooltip')).toHaveTextContent(
+      /we’re having a hard time finding a route that makes sense/
+    )
     expect(within(rfq).getByRole('button', { name: 'Refresh' })).toBeVisible()
 
     fireEvent.click(within(rfq).getByRole('radio', { name: 'Native refund' }))
@@ -951,6 +1758,25 @@ describe('composition-first transaction-system review', () => {
       within(rfq).getByText(/CoW Protocol will automatically refund your ETH/)
     ).toBeVisible()
     expect(within(rfq).getByText('ETH')).toBeVisible()
+    expect(
+      within(rfq).getByRole('textbox', { name: 'You use amount' })
+    ).toHaveValue('0.42')
+    expect(
+      within(rfq).getByRole('textbox', { name: 'You use amount' })
+    ).toBeEnabled()
+    expect(
+      within(rfq).getByRole('button', { name: 'Select input asset' })
+    ).toBeEnabled()
+    expect(within(rfq).getByRole('button', { name: 'Max' })).toBeEnabled()
+    expect(
+      within(rfq).getByRole('button', {
+        name: 'Swap input and output assets',
+      })
+    ).toBeEnabled()
+    expect(within(rfq).getByText('0.18')).toBeVisible()
+    expect(
+      within(rfq).getByRole('button', { name: 'Get fresh quote' })
+    ).toBeVisible()
 
     fireEvent.click(
       within(rfq).getByRole('radio', { name: 'High-impact acknowledgment' })
@@ -958,11 +1784,36 @@ describe('composition-first transaction-system review', () => {
     const priceImpactMessage = within(rfq).getByTestId(
       'canonical-inline-message'
     )
+    const acknowledgment = within(priceImpactMessage).getByRole('checkbox', {
+      name: 'I understand the 5.8% price impact',
+    })
+    const acknowledgmentLabel = within(priceImpactMessage).getByText(
+      'I understand the 5.8% price impact'
+    )
+    expect(acknowledgment).toBeVisible()
+    expect(acknowledgmentLabel.tagName).toBe('LABEL')
+    expect(acknowledgmentLabel).toHaveAttribute('for', acknowledgment.id)
     expect(
-      within(priceImpactMessage).getByRole('checkbox', {
-        name: 'High price impact: 5.8%',
+      within(rfq).queryByText(/You will get significantly less value/)
+    ).toBeNull()
+    fireEvent.click(
+      within(priceImpactMessage).getByRole('button', {
+        name: 'About high price impact',
       })
-    ).toBeVisible()
+    )
+    expect(screen.getByRole('tooltip')).toHaveTextContent(
+      /You will get significantly less value/
+    )
+
+    const qualifiedAction = within(rfq).getByRole('button', {
+      name: 'Buy anyway',
+    })
+    expect(qualifiedAction).toBeDisabled()
+    expect(qualifiedAction).toHaveAttribute('data-tone', 'primary')
+
+    fireEvent.click(acknowledgmentLabel)
+    expect(acknowledgment).toBeChecked()
+    expect(qualifiedAction).toBeEnabled()
   })
 
   it('keeps RFQ execution compact while preserving filled and expired evidence', async () => {
@@ -1023,6 +1874,7 @@ describe('composition-first transaction-system review', () => {
     expect(within(rfq).getByTestId('zapper-shell')).toHaveClass(
       'relative',
       'z-10',
+      'min-h-[26rem]',
       'p-0',
       'ring-2',
       'ring-card'
@@ -1205,13 +2057,31 @@ describe('composition-first transaction-system review', () => {
     )
 
     fireEvent.click(within(rfq).getByRole('radio', { name: 'RFQ recovery' }))
-    expect(within(rfq).getByText(/No purchase completed/)).toBeVisible()
+    expect(
+      within(rfq).getByRole('textbox', { name: 'You use amount' })
+    ).toBeEnabled()
+    expect(
+      within(rfq).getByRole('button', { name: 'Select input asset' })
+    ).toBeEnabled()
+    expect(within(rfq).getByRole('button', { name: 'Max' })).toBeEnabled()
+    expect(
+      within(rfq).getByRole('button', {
+        name: 'Swap input and output assets',
+      })
+    ).toBeEnabled()
+    expect(within(rfq).queryByText(/No purchase completed/)).toBeNull()
+    fireEvent.click(
+      within(rfq).getByRole('button', { name: 'About the expired order' })
+    )
+    expect(screen.getByRole('tooltip')).toHaveTextContent(
+      /No purchase completed/
+    )
     expect(
       within(rfq).queryByText(/Native-input refunds/)
     ).not.toBeInTheDocument()
   })
 
-  it('uses one sidecar shell while sequencing review and outcome entrances', () => {
+  it('uses an attached review region while preserving outcome sidecars', () => {
     vi.useFakeTimers()
 
     try {
@@ -1223,24 +2093,33 @@ describe('composition-first transaction-system review', () => {
         within(rfq).getByRole('radio', { name: 'Market-hours advisory' })
       )
 
-      const advisory = within(rfq).getByTestId('transaction-sidecar')
-      expect(advisory).toHaveAttribute('data-sidecar-kind', 'advisory')
+      const advisory = within(rfq).getByTestId('transaction-review-advisory')
       expect(advisory).toHaveAttribute('data-entrance', 'immediate')
-      const warningPill = within(advisory).getByTestId('lifecycle-status-pill')
-      expect(warningPill).toHaveAttribute('data-status-role', 'actionable')
-      expect(warningPill).toHaveClass('h-6', 'text-xs')
-      expect(
-        warningPill.querySelector('[data-status-icon="warning"]')
-      ).toBeVisible()
-      expect(within(warningPill).getByText('High price impact')).toBeVisible()
+      expect(advisory).toHaveClass('bg-substrate-subtle', 'p-6')
+      expect(within(rfq).queryByTestId('transaction-sidecar')).toBeNull()
+      expect(within(advisory).queryByTestId('lifecycle-status-pill')).toBeNull()
       expect(within(advisory).getByText('Expect a worse price')).toHaveClass(
         'text-feedback-warning-foreground'
+      )
+      const dismissAdvisory = within(advisory).getByRole('button', {
+        name: 'Dismiss suggestion',
+      })
+      expect(dismissAdvisory).toHaveClass('size-5', 'after:-inset-3')
+      expect(dismissAdvisory).not.toHaveAttribute(
+        'data-testid',
+        'canonical-icon-button'
       )
       expect(
         within(advisory).getByText(
           /CMC20's underlying stocks aren't trading right now/
         )
       ).toBeVisible()
+      expect(within(rfq).getByTestId('zapper-outcome-composition')).toHaveClass(
+        'overflow-hidden',
+        'bg-card',
+        'ring-2',
+        'ring-card'
+      )
 
       fireEvent.click(within(rfq).getByRole('radio', { name: 'Updates' }))
       expect(within(rfq).queryByTestId('transaction-sidecar')).toBeNull()
@@ -1308,6 +2187,8 @@ describe('composition-first transaction-system review', () => {
       name: 'Finding best quote',
     })
     expect(quoteSearchSurface).toBeVisible()
+    expect(quoteSearchSurface).toHaveClass('rounded-none')
+    expect(quoteSearchSurface).not.toHaveClass('rounded-lg')
     expect(quoteSearchSurface).not.toHaveClass('border')
     expect(within(rfq).getByTestId('zapper-quote-status-pill')).toHaveClass(
       'gap-1'
@@ -1368,7 +2249,7 @@ describe('composition-first transaction-system review', () => {
     )
   })
 
-  it('keeps delayed initiation concise and makes the durable queue primary after confirmation', () => {
+  it('keeps delayed initiation concise while deferring persistent withdrawal management', () => {
     render(<TransactionTruthSpectrum />)
 
     const delayed = screen.getByTestId('transaction-composition-delayed')
@@ -1376,7 +2257,12 @@ describe('composition-first transaction-system review', () => {
     expect(within(delayed).getByText('Unstake RSR')).toBeVisible()
     expect(within(delayed).getByText('Unstake')).toBeVisible()
     expect(within(delayed).queryByText('Unstake 250 stRSR')).toBeNull()
-    expect(within(delayed).getByText('In withdrawal process')).toBeVisible()
+    expect(
+      within(delayed).queryByText('In withdrawal process')
+    ).not.toBeInTheDocument()
+    expect(
+      within(delayed).queryByTestId('withdrawal-queue-list')
+    ).not.toBeInTheDocument()
     expect(within(delayed).getAllByText('stRSR').length).toBeGreaterThan(0)
     expect(within(delayed).getAllByText('≈286.42').length).toBeGreaterThan(0)
     expect(within(delayed).getAllByText('You unstake')).toHaveLength(2)
@@ -1419,20 +2305,18 @@ describe('composition-first transaction-system review', () => {
       within(delayed).queryByText('Transaction submitted')
     ).not.toBeInTheDocument()
     expect(
-      within(delayed).getByRole('button', { name: 'Cancel unstake' })
-    ).toHaveAttribute('data-tone', 'destructive')
+      within(delayed).queryByRole('button', { name: 'Cancel unstake' })
+    ).not.toBeInTheDocument()
 
     fireEvent.click(within(delayed).getByRole('radio', { name: 'Outcome' }))
     expect(within(delayed).getByText('Cooldown started')).toBeVisible()
-    expect(within(delayed).getByText('286.42 RSR')).toBeVisible()
-    expect(within(delayed).getByTestId('withdrawal-queue-list')).toHaveClass(
-      'divide-y',
-      'border-y'
-    )
-    for (const row of within(delayed).getAllByTestId('withdrawal-queue-row')) {
-      expect(row).toHaveClass('py-4')
-      expect(row).not.toHaveClass('border', 'p-4')
-    }
+    expect(within(delayed).getByText('≈286.42')).toBeVisible()
+    expect(
+      within(delayed).queryByTestId('withdrawal-queue-list')
+    ).not.toBeInTheDocument()
+    expect(
+      within(delayed).queryByRole('button', { name: 'Withdraw' })
+    ).not.toBeInTheDocument()
     expect(within(delayed).queryByText('Review unstake')).toBeNull()
     expect(
       within(delayed).queryByTestId('canonical-dialog-surface')
@@ -1567,6 +2451,7 @@ describe('composition-first transaction-system review', () => {
     const rows = within(coverage).getAllByTestId('transaction-coverage-item')
 
     expect(rows.length).toBeGreaterThanOrEqual(12)
+    expect(rows[0].lastElementChild).toHaveClass('w-fit')
     expect(
       within(coverage).getByText('Amount and input/output anatomy')
     ).toBeVisible()
@@ -1741,7 +2626,12 @@ describe('composition-first transaction-system review', () => {
     ).toBeVisible()
     expect(
       within(coverage).getByText(
-        /Atomic, RFQ, automated, Vote Lock, cooldown-start, claimable, and final-withdrawal outcomes/
+        /Atomic, RFQ, automated, Vote Lock, Delegation one\/two-change, and cooldown-start outcomes/
+      )
+    ).toBeVisible()
+    expect(
+      within(coverage).getByText(
+        /Persistent cooldown, claimable, cancel, and withdrawal management remains page-owned and deferred/
       )
     ).toBeVisible()
     expect(

@@ -90,7 +90,7 @@ export const TransactionAmountObject = ({
     data-testid="transaction-amount-object"
     data-tone={tone}
     className={cn(
-      'rounded-lg p-4 transition-colors duration-120',
+      'rounded-none p-4 transition-colors duration-120',
       tone === 'default' &&
         presentation === 'standalone' &&
         'border border-input bg-card',

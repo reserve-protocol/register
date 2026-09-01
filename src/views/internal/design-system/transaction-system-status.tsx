@@ -30,7 +30,7 @@ export const TransactionSystemStatus = ({
 }) => (
   <span
     className={cn(
-      'inline-flex h-6 shrink-0 items-center whitespace-nowrap rounded-full border px-2.5 text-xs font-medium',
+      'inline-flex h-6 w-fit shrink-0 items-center whitespace-nowrap rounded-full border px-2.5 text-xs font-medium',
       STATUS_CLASSES[status]
     )}
   >

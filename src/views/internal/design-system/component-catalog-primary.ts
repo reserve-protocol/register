@@ -230,12 +230,15 @@ export const PRIMARY_COMPONENT_GROUPS: ComponentGroup[] = [
               'Direct implementation evidence: manual issuance preserves an editable share goal, a stateful approval-to-mint action slot, and persistent per-asset requirements.',
               'Direct implementation evidence: automated mint progresses from a narrow configure step to a wider order workspace and dedicated result, while delayed unstake crosses from its input page through a confirmation modal into a page-owned durable queue.',
               'Direct implementation evidence: Vote Lock keeps Lock, Unlock, and Delegate in one shell; Lock may require approval before deposit; Unlock redeems quote-backed shares into a delayed Portfolio withdrawal.',
+              'Direct implementation evidence: explicit Delegation edits normal and optional fast governance delegates; changing both produces two independent sequential transactions with a real partial-success boundary.',
+              'The Delegation outcome candidate preserves one overall result while associating each changed delegate with its own explorer link; approval transactions remain supporting infrastructure and do not appear in the completed result.',
               'Named strong visual composition evidence, not canonical authority: src/views/internal/design-system/zapper-modal-study.tsx preserves the best evidenced input/output relationship, financial hierarchy, density, and focused action treatment from the earlier lab.',
               'Real package-host evidence, not local styling authority: src/views/index-dtf/components/zapper/zapper-wrapper.tsx establishes the installed Zapper context and upstream ownership boundary.',
               '40 product-source imports use the shared TransactionButton, while consequential outcomes remain inconsistent across local flows.',
               'V1 distinguishes direct wallet instructions before submission from transaction lifecycle status after submission.',
               'In dialogs, the anchored action remains stable while complex workflow bodies may update; recoverable errors preserve inputs and expose a contextual retry.',
               'A named provisional transaction-task geometry recipe now owns the shared 432px substantial width, compact header axis, submitted-content boundary, facts-region divider ownership, and action-footer relationship consumed by Zapper and Vote Lock.',
+              'Transaction amount input/output regions use square structural geometry across editable, read-only, submitted, and loading replacements; ordinary Field inputs retain their own full-radius control geometry.',
             ],
             decisionPrompts: [
               'Judge whether the four family anchors and focused Vote Lock flow feel like one product family without implying identical orchestration or information volume.',
@@ -316,6 +319,16 @@ export const PRIMARY_COMPONENT_GROUPS: ComponentGroup[] = [
           },
           {
             role: 'product-evidence',
+            label: 'Current explicit Delegation composition',
+            path: 'src/components/vote-lock/components/delegate.tsx',
+          },
+          {
+            role: 'product-evidence',
+            label: 'Current sequential Delegation action',
+            path: 'src/components/vote-lock/components/submit-delegate-button.tsx',
+          },
+          {
+            role: 'product-evidence',
             label: 'Current governance entry',
             path: 'src/views/index-dtf/governance/components/governance-vote-lock.tsx',
           },
@@ -349,9 +362,9 @@ export const PRIMARY_COMPONENT_GROUPS: ComponentGroup[] = [
             { name: 'Copyable Value and Link', status: 'canonical' },
             {
               name: 'Inline Message presentation',
-              status: 'provisional',
+              status: 'canonical',
               detail:
-                'The board supplies realistic recovery context so its prominence can be judged without promoting it indirectly.',
+                'The accepted unadopted full and compact-summary presentations supply feedback anatomy; product copy, recovery, and lifecycle remain composition-owned.',
             },
             {
               name: 'Transaction-system audit',
@@ -368,7 +381,7 @@ export const PRIMARY_COMPONENT_GROUPS: ComponentGroup[] = [
           ],
         },
         statusDetail:
-          'Four deterministic family anchors plus a focused Vote Lock / Unlock slice now compose financial intent, current lifecycle focus, consequential result, and evidence-backed recovery/follow-up on top of the current product’s real page, package, progressive-workspace, modal, and durable-queue structures. Zapper and Vote Lock consume one provisional task-geometry recipe; the active-plan pressure register records where current composition choices depart from current baselines or retained precedent. The work defines no universal controller, adopted transaction component, or production behavior.',
+          'Four deterministic family anchors plus a focused Vote Lock / Unlock / Delegate slice now compose financial intent, address-based governance settings, current lifecycle focus, consequential result, and evidence-backed recovery/follow-up on top of the current product’s real page, package, progressive-workspace, modal, and durable-queue structures. Zapper and Vote Lock consume one provisional task-geometry recipe while Delegate keeps canonical Field anatomy and a truthful one/two-call lifecycle; the active-plan pressure register records where current composition choices depart from current baselines or retained precedent. The work defines no universal controller, adopted transaction component, or production behavior.',
       },
     ],
   },
@@ -693,10 +706,11 @@ export const PRIMARY_COMPONENT_GROUPS: ComponentGroup[] = [
           evidence: [
             'The imported Zapper and local issuance flows use specialized amount surfaces.',
             'Named strong visual composition evidence, not canonical authority: src/views/internal/design-system/zapper-modal-study.tsx tests input/output distinction, amount and asset prominence, Max spacing, quote details, and swap direction.',
+            'Human review accepted square transaction amount input/output regions and required replacement states such as quote search to preserve the same boundary.',
           ],
           decisionPrompts: [
             'Define input versus output anatomy, asset selector, fiat equivalent, balance/Max, precision, errors, and loading.',
-            'Keep composite 8px geometry separate from one-line atomic fields.',
+            'Keep square transaction amount geometry separate from fully rounded atomic fields and restrained multiline or floating objects.',
           ],
           stateAdditions: [
             'Insufficient balance',

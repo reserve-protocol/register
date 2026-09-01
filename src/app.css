@@ -313,6 +313,11 @@ body {
       hsl(var(--card)) 75%,
       hsl(var(--secondary))
     );
+    --substrate-subtle: color-mix(
+      in srgb,
+      hsl(var(--card)) 50%,
+      hsl(var(--secondary))
+    );
     --status-neutral-surface: hsl(var(--muted));
     --disabled-structure: color-mix(
       in srgb,

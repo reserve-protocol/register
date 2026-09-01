@@ -11,7 +11,10 @@ import {
   TransactionAmountPair,
   TransactionAmountRelation,
 } from '@/components/design-system-v1/transaction-amount-object'
-import { transactionTaskGeometry } from '@/components/design-system-v1/transaction-task-geometry'
+import {
+  transactionAttachedRegionGeometry,
+  transactionTaskGeometry,
+} from '@/components/design-system-v1/transaction-task-geometry'
 import { OrganicBrandSurface } from '@/components/design-system-v1/organic-brand-surface'
 import { IconButton } from '@/components/icon-button'
 import { cn } from '@/lib/utils'
@@ -29,6 +32,7 @@ import {
   type ZapperPackageStateKind,
 } from './transaction-composition-rfq-support'
 import { TransactionOutcomeStatus } from './transaction-outcome-status'
+import { transactionOutcomeGeometry } from './transaction-outcome-geometry'
 import { transactionOutcomeMotion } from './transaction-outcome-motion'
 import {
   TransactionOutcomeAttachment,
@@ -53,6 +57,7 @@ export type ZapperReviewState =
   | 'Market-hours advisory'
   | 'Capacity advisory'
   | 'Trading unavailable'
+  | 'CoW redirect · retired'
   | 'Updates'
   | 'Intro call'
 
@@ -88,6 +93,7 @@ export const RfqTransactionComposition = () => (
           'Market-hours advisory',
           'Capacity advisory',
           'Trading unavailable',
+          'CoW redirect · retired',
         ],
       },
       {
@@ -115,6 +121,10 @@ export const ZapperInlineReference = ({
   const [buyAmount, setBuyAmount] = useState('1,000')
   const [sellAmount, setSellAmount] = useState('990')
   const [selectedAsset, setSelectedAsset] = useState(ZAPPER_ASSETS[0]!)
+  const [nativeRefundAmount, setNativeRefundAmount] = useState('0.42')
+  const [nativeRefundAsset, setNativeRefundAsset] = useState(
+    ZAPPER_ASSETS.find((asset) => asset.symbol === 'ETH')!
+  )
   const [quoteLoading, setQuoteLoading] = useState(false)
   const [isWalletTracked, setIsWalletTracked] = useState(false)
   const [outcomeAttachmentDismissed, setOutcomeAttachmentDismissed] =
@@ -129,13 +139,17 @@ export const ZapperInlineReference = ({
         ? 'capacity'
         : state === 'Trading unavailable'
           ? 'closed-error'
-          : undefined
+          : state === 'CoW redirect · retired'
+            ? 'cow-redirect'
+            : undefined
   const isReviewAdvisory = Boolean(advisoryVariant)
   const controlsMounted =
     state === 'Review' ||
     state === 'Approval' ||
     state === 'Sign order' ||
     state === 'Quote failure' ||
+    state === 'RFQ recovery' ||
+    state === 'Native refund' ||
     state === 'Quote search' ||
     state === 'High-impact acknowledgment' ||
     isReviewAdvisory
@@ -160,15 +174,22 @@ export const ZapperInlineReference = ({
   const isOutcome =
     packageState === 'RFQ outcome' || packageState === 'Atomic outcome'
   const isNativeRefund = packageState === 'Native refund'
-  const amount = isNativeRefund
-    ? '0.42'
-    : mode === 'Buy'
-      ? buyAmount
+  const activeSelectedAsset = isNativeRefund ? nativeRefundAsset : selectedAsset
+  const amount =
+    mode === 'Buy'
+      ? isNativeRefund
+        ? nativeRefundAmount
+        : buyAmount
       : sellAmount
-  const setAmount = mode === 'Buy' ? setBuyAmount : setSellAmount
+  const setAmount =
+    mode === 'Buy'
+      ? isNativeRefund
+        ? setNativeRefundAmount
+        : setBuyAmount
+      : setSellAmount
   const normalizedAmount = amount.replaceAll(',', '')
   const quote =
-    selectedAsset.symbol === 'USDC'
+    activeSelectedAsset.symbol === 'USDC'
       ? mode === 'Buy'
         ? {
             '1000': {
@@ -251,7 +272,10 @@ export const ZapperInlineReference = ({
       data-testid="zapper-outcome-composition"
       className={cn(
         'relative mx-auto w-full min-w-0',
-        transactionTaskGeometry.substantialWidth
+        transactionTaskGeometry.substantialWidth,
+        advisoryVariant &&
+          !outcomeAttachmentDismissed &&
+          cn(transactionAttachedRegionGeometry.frame, 'bg-card shadow-lg')
       )}
     >
       <div
@@ -259,7 +283,13 @@ export const ZapperInlineReference = ({
         className={cn(
           'relative z-10 w-full min-w-0 shrink-0 bg-card shadow-lg',
           transactionTaskGeometry.substantialWidth,
-          isOutcome ? 'p-0 ring-2 ring-card' : 'p-2'
+          isOutcome
+            ? cn(
+                transactionOutcomeGeometry.minimumSurfaceHeight,
+                'p-0 ring-2 ring-card'
+              )
+            : 'p-2',
+          advisoryVariant && !outcomeAttachmentDismissed && 'shadow-sm'
         )}
       >
         <div
@@ -395,10 +425,20 @@ export const ZapperInlineReference = ({
                       mode === 'Buy' && controlsMounted ? (
                         <ZapperAssetSelector
                           disabled={isQuoteSearching}
-                          selected={selectedAsset}
+                          selected={activeSelectedAsset}
                           onSelect={(asset) => {
-                            setSelectedAsset(asset)
-                            setAmount(asset.symbol === 'USDC' ? '1,000' : '')
+                            if (isNativeRefund) {
+                              setNativeRefundAsset(asset)
+                            } else {
+                              setSelectedAsset(asset)
+                            }
+                            setAmount(
+                              asset.symbol === 'USDC'
+                                ? '1,000'
+                                : asset.symbol === 'ETH'
+                                  ? '0.42'
+                                  : ''
+                            )
                           }}
                         />
                       ) : isNativeRefund ? (
@@ -419,7 +459,9 @@ export const ZapperInlineReference = ({
                       )
                     }
                     supporting={
-                      isNativeRefund
+                      isNativeRefund &&
+                      mode === 'Buy' &&
+                      activeSelectedAsset.symbol === 'ETH'
                         ? '$1,034.82'
                         : (quote?.inputValue ?? 'Quote refreshes after input')
                     }
@@ -427,11 +469,9 @@ export const ZapperInlineReference = ({
                       <>
                         Balance{' '}
                         <span className="font-medium text-foreground tabular-nums">
-                          {isNativeRefund
-                            ? '0.42'
-                            : mode === 'Buy'
-                              ? selectedAsset.balance
-                              : '1,245.80'}
+                          {mode === 'Buy'
+                            ? activeSelectedAsset.balance
+                            : '1,245.80'}
                         </span>
                       </>
                     }
@@ -442,7 +482,7 @@ export const ZapperInlineReference = ({
                           onClick={() =>
                             setAmount(
                               mode === 'Buy'
-                                ? selectedAsset.balance
+                                ? activeSelectedAsset.balance
                                 : '1,245.80'
                             )
                           }
@@ -485,9 +525,9 @@ export const ZapperInlineReference = ({
                   }
                   className={
                     isOutcome
-                      ? 'rounded-none bg-transparent px-6'
+                      ? 'bg-transparent px-6'
                       : quoteDetailsVisible && !isQuoteSearching
-                        ? 'rounded-b-none border-b border-border'
+                        ? 'border-b border-border'
                         : undefined
                   }
                   presentation="output"
@@ -513,16 +553,22 @@ export const ZapperInlineReference = ({
                       <ZapperAssetSelector
                         disabled={isQuoteSearching}
                         label="Select output asset"
-                        selected={selectedAsset}
+                        selected={activeSelectedAsset}
                         onSelect={(asset) => {
-                          setSelectedAsset(asset)
+                          if (isNativeRefund) {
+                            setNativeRefundAsset(asset)
+                          } else {
+                            setSelectedAsset(asset)
+                          }
                           setQuoteLoading(false)
                         }}
                       />
                     ) : (
                       <TransactionAmountAsset
                         chain={ChainId.Base}
-                        symbol={mode === 'Buy' ? 'CMC20' : selectedAsset.symbol}
+                        symbol={
+                          mode === 'Buy' ? 'CMC20' : activeSelectedAsset.symbol
+                        }
                       />
                     )
                   }
@@ -602,6 +648,7 @@ const getZapperPackageState = (
     case 'Market-hours advisory':
     case 'Capacity advisory':
     case 'Trading unavailable':
+    case 'CoW redirect · retired':
       return 'Review'
     default:
       return state

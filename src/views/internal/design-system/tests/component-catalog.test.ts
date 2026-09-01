@@ -137,6 +137,12 @@ describe('component contract registry', () => {
         'src/views/index-dtf/components/zapper/zapper-wrapper.tsx'
       )
     )
+    expect(amount?.evidence).toContainEqual(
+      expect.stringContaining('square transaction amount input/output regions')
+    )
+    expect(amount?.decisionPrompts).toContainEqual(
+      expect.stringContaining('square transaction amount geometry')
+    )
     expect(transaction).toMatchObject({
       designAuthority: 'exploratory',
       implementationStatus: 'specimen',
@@ -201,6 +207,7 @@ describe('component contract registry', () => {
       'popover',
       'dropdown-menu',
       'tooltip',
+      'alert',
       'spinner',
       'skeleton',
       'empty-state',
@@ -499,7 +506,7 @@ describe('component contract registry', () => {
     )
   })
 
-  it('accepts Link, Accordion, and Collapsible while keeping context-blocked Inline Message provisional and unadopted', () => {
+  it('accepts Link, Accordion, Collapsible, and Inline Message while keeping them unadopted', () => {
     expect(getComponentItem('link').item).toMatchObject({
       outputStatus: 'rendered',
       designAuthority: 'current-baseline',
@@ -529,12 +536,12 @@ describe('component contract registry', () => {
     })
     expect(getComponentItem('alert').item).toMatchObject({
       outputStatus: 'rendered',
-      designAuthority: 'exploratory',
+      designAuthority: 'current-baseline',
       implementationStatus: 'canonical-candidate',
       implementationSource:
         'src/components/design-system-v1/inline-message.tsx',
       adoptionStatus: 'none',
-      review: { status: 'provisional' },
+      review: { status: 'ready' },
     })
   })
 
@@ -578,6 +585,11 @@ describe('current review', () => {
       status: 'defined',
       designAuthority: 'current-baseline',
     })
+    expect(
+      getFoundationItem('radius')?.expectedDecisions.find(
+        ({ name }) => name === 'Control radius'
+      )?.detail
+    ).toContain('Transaction amount input/output regions are square')
 
     for (const item of CURRENT_REVIEW) {
       expect(item.title).not.toBe('')

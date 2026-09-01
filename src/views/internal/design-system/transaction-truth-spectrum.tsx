@@ -72,7 +72,9 @@ const TransactionTruthSpectrum = () => (
           the installed Zapper remains upstream; automated mint owns transparent
           orders; delayed settlement crosses from initiation into durable state.
           Vote Lock is the focused fifth composition, grounded directly in its
-          current lock, unlock, and Portfolio withdrawal implementations.
+          current lock, unlock, and explicit delegation implementations. Later
+          Portfolio and staking management rows remain product evidence rather
+          than review specimens here.
         </p>
       </header>
       <AtomicTransactionComposition />

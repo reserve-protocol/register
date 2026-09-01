@@ -1,6 +1,6 @@
 ---
 title: Decisions
-updated: 2026-08-27
+updated: 2026-08-31
 type: decision
 ---
 
@@ -62,7 +62,7 @@ Auctions will replace its separate centered list and detail islands with a persi
 
 ## 2026-08-13 — V1 candidates share semantic roles and combinable state axes
 
-Component-family work consumes a lab-only semantic role map instead of choosing legacy color tokens case by case. It aliases reviewed content, substrate, neutral control, selected, line, focus, disabled, and feedback roles while exact values and production token migration remain open. Intent, selection, focus, validation, disabled, and async lifecycle may combine, so the lab shows important pairings rather than one exclusive state list. Default entered/selected values use 16px/300, compact values use 14px/300, and action labels use 14px/500. Atomic one-row controls—including ordinary inputs, search, and select triggers—use full radius; composite amount panels, multiline fields, menus, popovers, and thumbnails use the restrained 8px role. Earlier 8px one-row input/select experiments are superseded.
+Component-family work consumes a lab-only semantic role map instead of choosing legacy color tokens case by case. It aliases reviewed content, substrate, neutral control, selected, line, focus, disabled, and feedback roles while exact values and production token migration remain open. Intent, selection, focus, validation, disabled, and async lifecycle may combine, so the lab shows important pairings rather than one exclusive state list. Default entered/selected values use 16px/300, compact values use 14px/300, and action labels use 14px/500. Atomic one-row controls—including ordinary inputs, search, and select triggers—use full radius; multiline fields, menus, popovers, and thumbnails use the restrained 8px role. The composite-amount clause originally recorded here is superseded by the 2026-08-31 square transaction-amount decision below. Earlier 8px one-row input/select experiments are superseded.
 
 ## 2026-08-14 — Rendered output, reusable implementation, and adoption are separate
 
@@ -107,7 +107,9 @@ pressure testing across Governance proposals and Auction rebalance selectors.
 It owns waiting, active, actionable, processing, success, unsuccessful, and
 closed roles; standardized unframed indicators; opaque semantic tones; a
 separate subtle countdown pill; and motion only for short indeterminate
-processing. This promotion does not generalize category labels, counts,
+processing. The pill remains intrinsically sized to its contents even when it
+is placed directly in a stretching grid or flex context. This promotion does
+not generalize category labels, counts,
 qualifiers, removable chips, proposal progress, or outcome-detail composition,
 and it does not imply production adoption.
 
@@ -375,11 +377,12 @@ composition requires them. Production adoption remains unchanged.
 
 Link is the current V1 baseline for navigation to routes, resources, and content
 locations. Inline links inherit their reading typography and remain underlined;
-standalone resource links use the 14px/500 compact-structure role. The evidenced
-named-return treatment is unframed, uses the 14px/300 supporting role with a 4px
-leading-arrow relationship, and promotes to primary with an underline on hover
-or focus. It is not a universal Back default: compact headers whose parent is
-already obvious use the canonical framed IconButton instead.
+standalone resource links use the 14px/500 compact-structure role with a 4px
+relationship between the label and an optional destination icon. The evidenced
+named-return treatment is unframed, uses the 14px/300 supporting role with the
+same 4px leading-arrow relationship, and promotes to primary with an underline
+on hover or focus. It is not a universal Back default: compact headers whose
+parent is already obvious use the canonical framed IconButton instead.
 
 Ordinary routes omit icons by default. ArrowRight may add forward emphasis,
 ArrowLeft identifies return navigation, ArrowUpRight signals a new-tab or
@@ -478,3 +481,79 @@ composition uses 8px internally for a 16px total axis. Vote Lock may use an
 explicit local compact transaction-header owner where that more specific
 composition is the relevant evidence. Two transaction examples do not yet
 promote a universal transaction-header component or recipe.
+
+## 2026-08-31 — Transaction amount regions use square structural geometry
+
+Transaction amount input/output regions are structural financial objects, not
+ordinary atomic fields or generic contained panels. They use 0px radius across
+editable, read-only, submitted, and replacement states. A loading animation or
+other state layer that replaces an amount region preserves the same square
+boundary so lifecycle changes do not change the object’s geometry.
+
+This supersedes only the composite-amount clause in the 2026-08-13 radius
+decision. Ordinary one-row Fields—including Delegation address inputs—remain
+fully rounded; multiline fields and floating contained objects retain the 8px
+role. Asset selectors, status pills, and other controls inside an amount region
+retain their own component-owned radii. This decision changes the unadopted V1
+transaction candidate and lab compositions, not production transaction flows.
+
+## 2026-08-31 — Copyable Value supports an integrated dense-row treatment
+
+The accepted Copyable Value keeps its existing separated treatment as the
+default: formatted value plus canonical micro copy control. Dense aligned facts
+may opt into an integrated treatment when a separate icon button would enlarge
+or visually unbalance an otherwise 20px row. That treatment is one semantic
+20px action containing the 14px monospace value and a 14px copy/check icon at an
+8px relationship gap. The whole action owns hover, focus, click, the expanded
+interaction target, and the existing transient Tooltip/live-region feedback.
+Copy success replaces the icon at the same size so row geometry does not move.
+
+The full normalized value remains the copied and accessible value; deliberate
+visible shortening remains unchanged. This does not turn a whole fact row into
+a copy target, replace the default treatment, authorize copy changes, or make
+Copyable Value own a parent list/grid. Delegation outcomes provide the second
+dense aligned composition after DTF token-address pressure, but production
+adoption remains separate.
+
+## 2026-09-01 — Subtle substrate is an opaque attached-surface role
+
+`substrate-subtle` is the accepted opaque surface for shallow regions that are
+visually attached beneath or behind a card-colored task surface. It creates
+quiet depth without inheriting the color of whatever happens to sit below it.
+It is not the ordinary grouping fill, a replacement card color, an interaction
+state, or a softer alias for `secondary`; beige `secondary` retains its stronger
+structural role for major section separation and revealed page depth.
+
+The initial value is the opaque midpoint between the active theme's card and
+secondary colors. The semantic role, not that derivation, is the durable
+contract. New use requires the same attached-surface relationship rather than
+mere preference for a near-white beige.
+
+## 2026-09-01 — Transaction progress replaces inactive action chrome
+
+Once an ordered transaction sequence is underway, its progress region replaces
+the primary action slot whenever no click is currently possible. A real Button
+appears only for an actionable current step or recovery. Loading-looking or
+disabled Buttons must not duplicate progress that the stepper already owns.
+
+Sequential progress and pre-submit advisories may share attached-region frame,
+surface, and depth geometry while retaining separate semantic owners and
+content anatomy. Transaction outcomes share a no-shrink minimum frame so a
+result does not contract below the preceding task. The organic brand surface is
+an immediate-result treatment; delayed initiation uses the same stable shell
+with explicit pending/countdown semantics rather than borrowing immediate
+completion motion. Vote Lock's 448px address-heavy width and the compact bare
+advisory dismiss treatment remain local pending more evidence.
+
+## 2026-09-01 — Inline Message supports full and compact-summary presentations
+
+Inline Message is an accepted, unadopted component with two presentations. The
+full presentation keeps material explanation, instructions, recovery, and
+lifecycle truth visible. The opt-in compact summary places one concise state or
+qualification on a single row and may move only supporting explanation into an
+adjacent Help Tooltip. A tooltip must never hide information needed to decide,
+act, recover, or understand the transaction's state.
+
+The component continues to own feedback anatomy and tone, not product copy,
+acknowledgement policy, dismissal, recovery behavior, or transaction
+orchestration. Production adoption remains explicit and product-owned.

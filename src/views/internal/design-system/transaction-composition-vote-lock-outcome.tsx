@@ -17,8 +17,12 @@ import { v1SemanticRecipes as roles } from '@/components/ui/v1-semantic-recipes'
 import { cn } from '@/lib/utils'
 
 import { TransactionOutcomeStatus } from './transaction-outcome-status'
+import { transactionOutcomeGeometry } from './transaction-outcome-geometry'
 import { transactionOutcomeMotion } from './transaction-outcome-motion'
-import { VOTE_LOCK_TRANSACTION } from './transaction-composition-vote-lock-support'
+import {
+  VOTE_LOCK_TASK_WIDTH,
+  VOTE_LOCK_TRANSACTION,
+} from './transaction-composition-vote-lock-support'
 
 export const VoteLockOutcomeDialog = ({
   kind,
@@ -34,7 +38,11 @@ export const VoteLockOutcomeDialog = ({
   return (
     <DialogSurface
       width="standard"
-      className="min-h-[26rem] overflow-hidden p-0 outline-none ring-2 ring-card"
+      className={cn(
+        VOTE_LOCK_TASK_WIDTH,
+        transactionOutcomeGeometry.minimumSurfaceHeight,
+        'overflow-hidden p-0 outline-none ring-2 ring-card'
+      )}
       role="dialog"
       tabIndex={-1}
       aria-modal="true"
@@ -44,13 +52,26 @@ export const VoteLockOutcomeDialog = ({
         data-testid="vote-lock-outcome-hero"
         className="relative isolate flex flex-1 flex-col text-brand-foreground"
       >
-        <OrganicBrandSurface
-          data-testid="vote-lock-outcome-surface"
-          className={cn(
-            'absolute inset-0 rounded-lg bg-brand',
-            transactionOutcomeMotion.surface
-          )}
-        />
+        {isUnlock ? (
+          <div
+            aria-hidden="true"
+            data-outcome-surface="delayed"
+            data-testid="vote-lock-outcome-surface"
+            className={cn(
+              'absolute inset-0 rounded-lg bg-brand',
+              transactionOutcomeMotion.surface
+            )}
+          />
+        ) : (
+          <OrganicBrandSurface
+            data-outcome-surface="immediate"
+            data-testid="vote-lock-outcome-surface"
+            className={cn(
+              'absolute inset-0 rounded-lg bg-brand',
+              transactionOutcomeMotion.surface
+            )}
+          />
+        )}
         <header
           data-testid="vote-lock-outcome-header"
           className={cn(
@@ -92,7 +113,7 @@ export const VoteLockOutcomeDialog = ({
             readOnly
             presentation="output"
             tone="inverse"
-            className="rounded-none bg-transparent px-6"
+            className="bg-transparent px-6"
             unit={isUnlock ? 'RSR' : 'vlRSR'}
             supporting={isUnlock ? '$8.34' : '$8.18'}
           />

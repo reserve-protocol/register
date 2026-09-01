@@ -1,7 +1,8 @@
 export type ColorPreviewTone =
   | 'canvas'
   | 'content'
-  | 'grouping'
+  | 'structural-substrate'
+  | 'subtle-substrate'
   | 'inset'
   | 'floating'
   | 'selected'
@@ -63,8 +64,9 @@ export const CURRENT_SURFACE_EVIDENCE: CurrentColorEvidence[] = [
     variable: '--secondary',
     className: 'bg-secondary',
     usageCount: 110,
-    observedRole: 'Warm beige grouping wrappers and section shells',
-    finding: 'This is the familiar beige wrapper used across recent screens.',
+    observedRole: 'Warm beige structural seams and legacy section shells',
+    finding:
+      'Observed usage is not role authority: the accepted direction bounds beige to substrate revealed beneath or between near-white regions.',
   },
   {
     name: 'Accent',
@@ -101,10 +103,20 @@ export const COLOR_SURFACE_ROLES: CandidateColorRole[] = [
     valueStatus: 'open',
   },
   {
-    role: 'Grouping surface',
-    previewTone: 'grouping',
+    role: 'Structural substrate',
+    previewTone: 'structural-substrate',
     startingPoint: '--secondary',
-    usage: 'Beige substrate revealed as structural seams between white regions',
+    usage:
+      'Bounded beige revealed beneath or between near-white regions; never general component chrome or a nested fill sitting on white',
+    roleStatus: 'provisional',
+    valueStatus: 'open',
+  },
+  {
+    role: 'Subtle substrate',
+    previewTone: 'subtle-substrate',
+    startingPoint: '--substrate-subtle',
+    usage:
+      'Opaque low-contrast substrate for shallow regions visibly attached beneath a primary content surface; never a grouping fill, card alternative, or interaction state',
     roleStatus: 'provisional',
     valueStatus: 'open',
   },

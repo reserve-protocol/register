@@ -22,7 +22,7 @@ export type LinkProps = LinkBaseProps &
 const treatmentClasses: Record<LinkTreatment, string> = {
   inline:
     'underline decoration-primary/50 underline-offset-2 hover:decoration-primary',
-  standalone: 'inline-flex items-center gap-2 text-sm font-medium',
+  standalone: 'inline-flex items-center gap-1 text-sm font-medium',
   return:
     'inline-flex items-center gap-1 text-sm font-light text-muted-foreground underline-offset-2 hover:text-primary hover:underline focus-visible:text-primary focus-visible:underline',
 }

@@ -2,6 +2,7 @@ export const candidateSemanticRoles = {
   surface: {
     content: 'bg-card',
     recessedContent: 'bg-[var(--surface-recessed-content)]',
+    subtleSubstrate: 'bg-substrate-subtle',
     structuralSubstrate: 'bg-secondary',
     neutralControl: 'bg-muted',
     selected: 'bg-accent/60',

@@ -58,7 +58,9 @@ text as a viable candidate.
 
 Color has a reviewed V1 working baseline. White owns page-canvas and
 ordinary-content roles; beige is a structural substrate revealed by 2px major
-and 1px subsection seams. Gray chrome stays contained in white. Feedback uses
+and 1px subsection seams. The opaque `substrate-subtle` role provides shallower
+attached depth between card and beige without becoming a grouping fill. Gray
+chrome stays contained in white. Feedback uses
 vivid success, warning, danger, and information colors with semantic
 foregrounds and quiet opaque derived surfaces. Those surfaces and borders match
 their former alpha appearance on white cards without mixing with tinted parent
@@ -499,11 +501,12 @@ universal Row component.
 
 Lifecycle Status owns the reviewed 24px lifecycle roles, standardized
 indicators, opaque semantic tones, subtle countdown pairing, and processing-only
-motion. Category labels, counts, qualifiers, removable chips, proposal progress,
-and outcome-detail composition remain separate work. Its implementation lives
-in `src/components/lifecycle-status/` and consumes the shared V1 semantic-role
-map from `src/components/design-system-v1/`; no product consumer has adopted it
-yet.
+motion. It is intrinsically sized and does not fill a parent grid or flex axis
+by default. Category labels, counts, qualifiers, removable chips, proposal
+progress, and outcome-detail composition remain separate work. Its
+implementation lives in `src/components/lifecycle-status/` and consumes the
+shared V1 semantic-role map from `src/components/design-system-v1/`; no product
+consumer has adopted it yet.
 
 Card usage does not support one universal migration target. The 50 shared Card
 imports are dominated by legacy Yield consumers, while the Index imports mostly
@@ -701,9 +704,11 @@ state such as `primary-hover`/`primary-pressed`.
 - Radius: `rounded-sm/md/lg` derive from `--radius` (0.5rem); `rounded-3xl` (1.25rem) and `rounded-4xl` (1.5rem) for cards/dialogs/drawers.
 - V1 radius candidate: atomic one-row controls—including buttons, ordinary
   inputs, search, and select triggers—are fully rounded. Composite amount
-  panels, multiline fields, menus, popovers, and thumbnails use the restrained
-  8px contained-object role. Structural surfaces remain square by default and
-  selective layout-owned corners reveal the substrate.
+  panels are square structural financial regions, including loading or other
+  state layers that replace their content. Multiline fields, menus, popovers,
+  and thumbnails use the restrained 8px contained-object role. Structural
+  surfaces remain square by default and selective layout-owned corners reveal
+  the substrate.
 - Control typography baseline: default entered/selected values are 16px/300;
   compact values are 14px/300; action labels are 14px/500. Intent, selection,
   focus, validation, disabled, and async lifecycle are combinable state axes,
@@ -847,18 +852,26 @@ table-independent 1-based contract without importing TanStack Table or changing
 DataTable defaults.
 
 Accepted Copyable Value owns its clipboard action, 14px monospace
-machine-value typography, and two-second copied state. Addresses
-use deliberate product shortening by default rather than CSS truncation; when a
-full value is shown, its composition must provide enough room without a trailing
-ellipsis. The full copied value remains accessible, and transient Tooltip
-feedback is separate from explanatory `HelpTooltip`: the resting copy prompt
-uses the accepted neutral Tooltip presentation, while confirmed copy feedback
-uses the existing semantic success surface and border with readable foreground
-copy and a success-colored check indicator. Success appears only after the
-clipboard write resolves and is announced politely. The open surface stays
-mounted across that state change, ignores pointer dismissal during the
-two-second confirmation interval, remains Escape-dismissible, and uses the
-accepted 120ms color transition without replaying Tooltip entrance motion.
+machine-value typography, and two-second copied state. Addresses use deliberate
+product shortening by default rather than CSS truncation; when a full value is
+shown, its composition must provide enough room without a trailing ellipsis.
+The default treatment keeps the formatted value beside the canonical micro
+copy control. Dense aligned facts may opt into an integrated treatment where
+the value and copy/check icon form one 20px action: 14px value, 14px icon, and an
+8px internal relationship gap. Its expanded interaction target, hover, focus,
+and click behavior belong to the whole action. Success swaps to the same-sized
+check without moving the row. The integrated treatment does not replace the
+default and does not own its parent list or grid geometry.
+
+The full copied value remains accessible, and transient Tooltip feedback is
+separate from explanatory `HelpTooltip`: the resting copy prompt uses the
+accepted neutral Tooltip presentation, while confirmed copy feedback uses the
+existing semantic success surface and border with readable foreground copy and
+a success-colored check indicator. Success appears only after the clipboard
+write resolves and is announced politely. The open surface stays mounted across
+that state change, ignores pointer dismissal during the two-second confirmation
+interval, remains Escape-dismissible, and uses the accepted 120ms color
+transition without replaying Tooltip entrance motion.
 Skeleton uses the existing border neutral for a quiet fill that is darker than
 light surfaces and lighter than dark surfaces. It has no built-in size or shape:
 the host owns truthful width, height, radius, repetition, and loading boundaries.
@@ -927,10 +940,10 @@ consistent application, not evidence for a universal fixed row height.
 
 Link is an accepted, unadopted current baseline for navigation only. Inline
 links inherit reading typography and remain underlined; standalone links use
-the compact 14px medium role. The evidenced return-navigation pattern remains
-unframed and supporting-neutral, uses the 14px light supporting role and a 4px
-arrow-label relationship, and moves to primary with an underline on hover or
-focus. It is not a universal Back
+the compact 14px medium role with a 4px label-to-destination-icon relationship.
+The evidenced return-navigation pattern remains unframed and supporting-neutral,
+uses the 14px light supporting role and the same 4px arrow-label relationship,
+and moves to primary with an underline on hover or focus. It is not a universal Back
 default: use the named return link when identifying the parent improves
 orientation, and use the canonical framed IconButton in compact headers where
 the parent is already obvious. Native and Router anchors retain their semantics,
@@ -971,23 +984,36 @@ breakpoint the cue text hides, leaving the nearby chevron and clear subject
 label. Host framing, revealed content anatomy, native `details`, bespoke
 triggers, and production adoption remain outside.
 
-Inline Message is a context-blocked, provisional, unadopted candidate for
+Inline Message is an accepted, unadopted candidate for
 persistent contextual feedback. It consolidates eighteen shared Alert importers and repeated local
 warning/error banners into information, success, warning, and danger tones
 using the existing opaque semantic feedback surfaces and borders. Semantic
 color is concentrated in the standard 16px icon while title and body retain
 the normal foreground hierarchy. Default messages use 16px inset; compact
-titleless guidance uses 12px; icon/content and action-peer relationships use
-8px; title/body uses 4px. The root is semantically neutral by default because
+full messages use 12px. The compact one-row summary uses the accepted 44px
+atomic-row geometry with full radius, 16px horizontal inset, and 8px vertical
+inset; icon/title and action-peer relationships use 8px;
+title/body uses 4px. In the full default presentation, the icon shares only the
+first row with the title and the explanatory body returns to the full content
+axis below it, avoiding a dead icon column. The opt-in summary presentation
+centers icon and title on one row. Current Zapper action qualifiers compose that
+summary with Help Tooltip for supporting explanation; the high-impact
+acknowledgement replaces the redundant tone icon with a leading Checkbox and
+makes the adjacent title its label. The title group grows while the row-level
+Help Tooltip anchors to the trailing inset, keeping the action associated with
+the whole summary instead of an individual word. Material instructions or
+recovery truth stay visible in the full presentation. The root is semantically
+neutral by default because
 visual danger and announcement urgency are separate concerns. Hosts opt into
 `status` or `alert` only when insertion timing requires it. The primitive owns
 no generic close action: routine transient confirmation belongs to Toast, and
 transaction recovery remains a later lifecycle composition.
-The isolated tone grid proves implementation anatomy but is not a canonical
-review surface. It returns only with source-grounded content immediately before
-and after representative messages so prominence, spacing, and density can be
-judged without approving invented framing. If the required transaction, form,
-or policy composition is not ready, Inline Message stays deferred with it.
+The isolated tone grid proves implementation anatomy but is not independently
+a canonical review surface. Zapper supplies source-grounded compact-summary
+context. Only supporting explanation may move into its Help Tooltip; material
+decision, action, recovery, or lifecycle truth remains visible. Production
+adoption stays explicit and product-owned, while form and policy use still
+needs its own surrounding evidence.
 
 Existing desktop Drawers remain migration evidence, not authority. Stake,
 vote-lock, token-selection, and deploy flows should each pressure-test the
@@ -1217,22 +1243,38 @@ Atomic, RFQ, automated, and delayed outcomes share semantic ingredients but
 retain family-specific composition. Max/Use fixtures update every visibly
 dependent value so the lab does not teach stale financial relationships.
 
-The Zapper pressure test now separates a neutral attached-sidecar shell from
-the content that uses it. Outcome follow-ups and the current production
-high-price-impact advisory share the provisional shell's responsive placement,
-semantic secondary-to-card vertical gradient, inset, header alignment,
-dismissal, depth, and reveal without sharing
-their triggers or semantics. The advisory appears immediately during review;
-outcome follow-ups mount only after the 360ms success transition completes.
-The advisory composes the canonical 24px actionable-status pill with its
-semantic warning indicator and warning title foreground; outcome follow-up
-titles use the primary brand foreground. The 32px dismiss control remains a
-separate compact action rather than inflating status geometry to match it.
-The shell has no structural border; its 4px attachment gap, gradient, and depth
-provide separation from the main task.
-At constrained host widths the shell grows below the modal; only a host wide
-enough to preserve the centered task and a visible outer gutter grows it from
-the right edge. Placement follows the host container rather than the viewport,
-so a narrow lab column cannot clip a nominally desktop sidecar. This remains
-lab-only: production `LargeMintPrompt` has not
-adopted the candidate, and the historical CoW redirect copy is not restored.
+The Zapper pressure test now distinguishes review qualification from outcome
+follow-up. The current production-derived capacity, market-hours, and
+unavailable notices remain dismissible and preserve their product copy, but the
+lab places them in a compact region revealed directly below the current action.
+A 2px card-color frame owns the assembled task, the card-colored task surface
+casts slight depth over the region, and the region uses the accepted opaque
+`substrate-subtle` attached-surface role tested by `TX-P11`. Its uniform 24px inset is
+composition-owned. The warning title and a local 20px bare dismiss action share
+one horizontal axis. The dismiss action expands its pointer target to 44px
+without making that target part of the row's layout geometry; it is exploratory
+pressure on the still-open Icon Button hit-target question, not an accepted
+Icon Button variant. The former status pill is intentionally removed so the
+attached region does not spend a second row restating warning semantics. It
+shares only frame, substrate, and depth geometry with transaction progress; the
+two regions keep separate semantic and content owners and do not establish a
+generic grouping-surface component.
+
+One separately labeled lab fixture retains the former `Try CoW Swap` large-order
+recommendation and uses an exploratory secondary `Open CoW Swap` micro CTA
+solely to pressure-test an advisory action without competing with the primary
+Zapper action. It is retired product evidence, not a current Zapper state: since
+`react-zapper` 2.7 the package quotes CoW Swap and PancakeSwap X itself, so the
+current production prompt removed every redirect-for-price variant and CTA.
+The distinct high-price-impact fixture keeps the eventual transaction action
+primary but disables it until explicit acknowledgement; its `Buy anyway` /
+`Sell anyway` copy carries the accepted consequence instead of introducing a
+new warning-colored Button tone.
+
+Outcome follow-ups retain the separate responsive sidecar because they are
+optional additions after completion rather than qualifications of the current
+action. They mount only after the 360ms success transition, use the provisional
+secondary-to-card gradient, and move below the modal only when the host cannot
+preserve a centered task plus an outer gutter. Both treatments remain lab-only:
+production `LargeMintPrompt` has not adopted either candidate, and the
+historical CoW redirect copy is not restored.

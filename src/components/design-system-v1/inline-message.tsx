@@ -15,6 +15,8 @@ export type InlineMessageTone = 'information' | 'success' | 'warning' | 'danger'
 
 export type InlineMessageDensity = 'default' | 'compact'
 
+export type InlineMessagePresentation = 'default' | 'summary'
+
 const TONE_PRESENTATION = {
   information: {
     Icon: Info,
@@ -66,6 +68,7 @@ const TONE_PRESENTATION = {
 export interface InlineMessageProps extends React.HTMLAttributes<HTMLDivElement> {
   density?: InlineMessageDensity
   icon?: React.ReactNode | false
+  presentation?: InlineMessagePresentation
   tone?: InlineMessageTone
 }
 
@@ -79,25 +82,29 @@ export const InlineMessage = React.forwardRef<
       className,
       density = 'default',
       icon,
+      presentation = 'default',
       tone = 'information',
       ...props
     },
     ref
   ) => {
-    const presentation = TONE_PRESENTATION[tone]
-    const ToneIcon = presentation.Icon
+    const tonePresentation = TONE_PRESENTATION[tone]
+    const ToneIcon = tonePresentation.Icon
 
     return (
       <div
         ref={ref}
         data-density={density}
+        data-presentation={presentation}
         data-testid="canonical-inline-message"
         data-tone={tone}
         className={cn(
-          'grid w-full grid-cols-[auto_minmax(0,1fr)] items-start gap-2 rounded-lg text-foreground ring-1 ring-inset',
-          density === 'compact' ? 'p-3' : 'p-4',
-          presentation.className,
-          presentation.surfaceVariable,
+          'w-full text-foreground ring-1 ring-inset',
+          presentation === 'summary'
+            ? 'flex min-h-11 items-center gap-2 rounded-full px-4 py-2'
+            : cn('relative rounded-lg', density === 'compact' ? 'p-3' : 'p-4'),
+          tonePresentation.className,
+          tonePresentation.surfaceVariable,
           className
         )}
         {...props}
@@ -106,14 +113,25 @@ export const InlineMessage = React.forwardRef<
           <span
             aria-hidden="true"
             className={cn(
-              'mt-0.5 flex size-4 shrink-0 items-center justify-center [&>svg]:size-4 [&>svg]:stroke-[1.5]',
-              presentation.iconClassName
+              'flex size-4 shrink-0 items-center justify-center [&>svg]:size-4 [&>svg]:stroke-[1.5]',
+              presentation === 'default' &&
+                (density === 'compact'
+                  ? 'absolute left-3 top-3 mt-0.5'
+                  : 'absolute left-4 top-4 mt-0.5'),
+              tonePresentation.iconClassName
             )}
           >
             {icon ?? <ToneIcon />}
           </span>
         )}
-        <div className={cn('min-w-0', icon === false && 'col-span-2')}>
+        <div
+          className={cn(
+            'min-w-0',
+            presentation === 'summary'
+              ? 'flex flex-1 items-center gap-1'
+              : icon !== false && '[&>*:first-child]:pl-6'
+          )}
+        >
           {children}
         </div>
       </div>

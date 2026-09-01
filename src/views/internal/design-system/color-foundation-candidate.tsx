@@ -179,7 +179,8 @@ const ColorPreview = ({ tone }: { tone: ColorPreviewTone }) => {
 const previewClassNames: Record<ColorPreviewTone, string> = {
   canvas: 'bg-card',
   content: 'bg-card',
-  grouping: 'bg-secondary',
+  'structural-substrate': 'bg-secondary',
+  'subtle-substrate': 'bg-substrate-subtle',
   inset: 'bg-muted',
   floating: 'bg-popover shadow-sm',
   selected: 'bg-accent',

@@ -2,6 +2,7 @@ import { Check, Copy } from 'lucide-react'
 import { useLingui } from '@lingui/react/macro'
 import { useEffect, useRef, useState, type ReactNode } from 'react'
 
+import { InlineAction } from '@/components/button'
 import { IconButton } from '@/components/icon-button'
 import {
   Tooltip,
@@ -20,11 +21,15 @@ export interface CopyableValueProps {
   className?: string
   valueClassName?: string
   feedbackSide?: 'top' | 'right' | 'bottom' | 'left'
+  treatment?: 'default' | 'inline'
+  tone?: 'primary' | 'neutral'
 }
 
 export const CopyableValue = ({
   className,
   feedbackSide = 'top',
+  treatment = 'default',
+  tone = 'primary',
   value,
   valueClassName,
   visibleValue,
@@ -39,6 +44,7 @@ export const CopyableValue = ({
   const renderedValue =
     visibleValue ??
     (normalizedAddress ? shortenAddress(normalizedAddress) : value)
+  const isInline = treatment === 'inline'
 
   useEffect(
     () => () => {
@@ -74,14 +80,24 @@ export const CopyableValue = ({
   }
 
   return (
-    <span className={cn('flex min-w-0 items-center gap-2', className)}>
+    <span
+      data-copyable-value-treatment={treatment}
+      data-copyable-value-tone={tone}
+      className={cn(
+        'min-w-0 items-center',
+        isInline ? 'inline-flex' : 'flex gap-2',
+        className
+      )}
+    >
       <span className="sr-only">{value}</span>
-      <span
-        aria-hidden="true"
-        className={cn('whitespace-nowrap font-mono text-sm', valueClassName)}
-      >
-        {renderedValue}
-      </span>
+      {!isInline && (
+        <span
+          aria-hidden="true"
+          className={cn('whitespace-nowrap font-mono text-sm', valueClassName)}
+        >
+          {renderedValue}
+        </span>
+      )}
       {isCopied && (
         <span role="status" aria-live="polite" className="sr-only">
           {t`Copied to clipboard!`}
@@ -95,13 +111,48 @@ export const CopyableValue = ({
           }}
         >
           <TooltipTrigger asChild>
-            <IconButton
-              label={t`Copy to clipboard`}
-              icon={<Copy aria-hidden="true" />}
-              size="micro"
-              tone="quiet"
-              onClick={handleCopy}
-            />
+            {isInline ? (
+              <InlineAction
+                aria-label={t`Copy ${copyValue} to clipboard`}
+                className={cn(
+                  'gap-2',
+                  tone === 'neutral' &&
+                    'text-foreground hover:text-primary focus-visible:text-primary active:text-primary-pressed'
+                )}
+                onClick={handleCopy}
+              >
+                <span
+                  aria-hidden="true"
+                  className={cn(
+                    'whitespace-nowrap font-mono text-sm',
+                    valueClassName
+                  )}
+                >
+                  {renderedValue}
+                </span>
+                {isCopied ? (
+                  <Check
+                    aria-hidden="true"
+                    data-testid="copyable-value-inline-success-icon"
+                    className="size-3.5 shrink-0 stroke-[1.5] text-success"
+                  />
+                ) : (
+                  <Copy
+                    aria-hidden="true"
+                    data-testid="copyable-value-inline-copy-icon"
+                    className="size-3.5 shrink-0 stroke-[1.5]"
+                  />
+                )}
+              </InlineAction>
+            ) : (
+              <IconButton
+                label={t`Copy to clipboard`}
+                icon={<Copy aria-hidden="true" />}
+                size="micro"
+                tone="quiet"
+                onClick={handleCopy}
+              />
+            )}
           </TooltipTrigger>
           <TooltipContent
             side={feedbackSide}

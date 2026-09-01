@@ -1,4 +1,5 @@
 import { Button } from '@/components/button'
+import { HelpTooltip } from '@/components/design-system-v1/help-tooltip'
 import {
   InlineMessage,
   InlineMessageActions,
@@ -83,11 +84,24 @@ const InlineMessageStateSheet = () => (
           Compact density supports short, persistent guidance inside a bounded
           task. It is not a smaller substitute for a title-and-action message.
         </p>
-        <InlineMessage className="mt-4" density="compact" tone="warning">
-          <InlineMessageDescription>
-            This DTF contains assets with relatively low DEX liquidity.
-          </InlineMessageDescription>
-        </InlineMessage>
+        <div className="mt-4 grid gap-3">
+          <InlineMessage
+            density="compact"
+            presentation="summary"
+            tone="warning"
+          >
+            <InlineMessageTitle>Trading paused</InlineMessageTitle>
+            <HelpTooltip
+              accessibleLabel="About the trading pause"
+              content="Some basket assets are outside trading hours. Minting and redeeming will resume when their markets reopen."
+            />
+          </InlineMessage>
+          <InlineMessage density="compact" tone="warning">
+            <InlineMessageDescription>
+              This DTF contains assets with relatively low DEX liquidity.
+            </InlineMessageDescription>
+          </InlineMessage>
+        </div>
       </div>
     </section>
 

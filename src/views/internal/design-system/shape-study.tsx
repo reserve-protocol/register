@@ -55,12 +55,12 @@ const ShapeStudy = () => (
         <RadiusRule
           role="Structural region"
           value="0px"
-          copy="Page regions, cards, dialogs, and rich record structure stay square by default. Layout seams—not decorative rounding—separate them."
+          copy="Page regions, cards, dialogs, rich records, and transaction amount input/output regions stay square by default. Replacement states preserve that same boundary."
         />
         <RadiusRule
           role="Contained object"
           value="8px"
-          copy="Multiline fields, composite amount objects, menus, popovers, tooltips, thumbnails, and framed messages use restrained containment."
+          copy="Multiline fields, menus, popovers, tooltips, thumbnails, and framed messages use restrained containment."
         />
         <RadiusRule
           role="Atomic control"

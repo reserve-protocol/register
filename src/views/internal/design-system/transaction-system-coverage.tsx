@@ -122,14 +122,14 @@ const COVERAGE_ITEMS: {
     requirement: 'Transaction and order identity',
     kind: 'Shared candidate',
     coverage:
-      'Atomic, automated, and Vote Lock outcomes show transaction identity. RFQ order identity remains package-owned.',
+      'Atomic, automated, and Vote Lock outcomes show transaction identity. Delegation associates one or two explorer links with the intended delegate changes while omitting approval transactions. RFQ order identity remains package-owned.',
     status: 'Proposed candidate',
   },
   {
     requirement: 'Consequential outcome composition',
     kind: 'Independent family compositions',
     coverage:
-      'Atomic, RFQ, automated, Vote Lock, cooldown-start, claimable, and final-withdrawal outcomes are rendered independently.',
+      'Atomic, RFQ, automated, Vote Lock, Delegation one/two-change, and cooldown-start outcomes are rendered independently.',
     status: 'Flow-owned',
   },
   {
@@ -150,15 +150,15 @@ const COVERAGE_ITEMS: {
     requirement: 'Partial success and retry scope',
     kind: 'Flow-owned recovery',
     coverage:
-      'Automated WBTC completion remains intact while only the failed WETH order is retried.',
+      'Automated WBTC completion remains intact while only the failed WETH order is retried. Delegation likewise preserves a completed normal update when the following fast update fails and scopes Update to the remaining change.',
     status: 'Flow-owned',
   },
   {
     requirement: 'Delayed settlement across visits',
-    kind: 'Composition recipe',
+    kind: 'Immediate handoff plus deferred page work',
     coverage:
-      'Unstake and Vote Unlock initiation cross from a Dialog into durable rows with cooldown, claimable, and final withdrawal states.',
-    status: 'Proposed candidate',
+      'Unstake and Vote Unlock outcomes communicate the initiated delay, pending amount, timing, and later action. Persistent cooldown, claimable, cancel, and withdrawal management remains page-owned and deferred to contextual row and table review.',
+    status: 'Deferred',
   },
   {
     requirement: 'Stable action area and responsive shell hierarchy',

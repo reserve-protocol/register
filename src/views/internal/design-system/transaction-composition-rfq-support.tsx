@@ -1,9 +1,10 @@
-import { useEffect, useState, type ReactNode } from 'react'
+import { useEffect, useId, useState, type ReactNode } from 'react'
 import { ArrowUpRight, ChevronDown, Settings } from 'lucide-react'
 
 import { Button } from '@/components/button'
 import { Checkbox } from '@/components/checkbox'
 import { ActionGroup } from '@/components/design-system-v1/action-group'
+import { HelpTooltip } from '@/components/design-system-v1/help-tooltip'
 import {
   InlineMessage,
   InlineMessageDescription,
@@ -16,12 +17,9 @@ import {
   PopoverTrigger,
 } from '@/components/design-system-v1/popover'
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/design-system-v1/select'
+  SegmentedControl,
+  SegmentedControlItem,
+} from '@/components/design-system-v1/segmented-control'
 import {
   TransactionAssetPickerList,
   TransactionAssetPickerOption,
@@ -37,9 +35,10 @@ import {
   TransactionAmountAsset,
   TransactionAssetIdentity,
 } from './transaction-system-assets'
+import { TransactionSummaryMessage } from './transaction-summary-message'
 
 export interface ZapperAsset {
-  symbol: 'USDC' | 'WETH' | 'WBTC'
+  symbol: 'USDC' | 'ETH' | 'WETH' | 'WBTC'
   balance: string
   supporting: string
 }
@@ -49,6 +48,11 @@ export const ZAPPER_ASSETS: ZapperAsset[] = [
     symbol: 'USDC',
     balance: '4,280.16',
     supporting: 'Base · 0x8335…2913',
+  },
+  {
+    symbol: 'ETH',
+    balance: '0.18',
+    supporting: 'Base',
   },
   {
     symbol: 'WETH',
@@ -133,6 +137,12 @@ export const ZapperSettings = ({
   disabled?: boolean
 }) => {
   const [open, setOpen] = useState(false)
+  const [quoteSource, setQuoteSource] = useState('best')
+  const [slippage, setSlippage] = useState('1')
+  const [deepLiquidity, setDeepLiquidity] = useState(false)
+  const [forceMint, setForceMint] = useState(false)
+  const deepLiquidityId = useId()
+  const forceMintId = useId()
 
   return (
     <Popover
@@ -155,42 +165,86 @@ export const ZapperSettings = ({
       >
         <div className="grid gap-4">
           <h4 className={v1Typography.itemTitle}>Zapper settings</h4>
-          <label className="grid gap-2">
-            <span className={v1Typography.label}>Quote Source</span>
-            <Select defaultValue="best">
-              <SelectTrigger size="compact" aria-label="Quote Source">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="best">Best Quote</SelectItem>
-                <SelectItem value="enso">Enso</SelectItem>
-                <SelectItem value="cowswap">CoW Swap</SelectItem>
-              </SelectContent>
-            </Select>
-          </label>
-          <label className="grid gap-2">
-            <span className={v1Typography.label}>Max. mint slippage</span>
-            <Select defaultValue="1">
-              <SelectTrigger size="compact" aria-label="Max. mint slippage">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="0.5">0.5%</SelectItem>
-                <SelectItem value="1">1%</SelectItem>
-                <SelectItem value="3">3%</SelectItem>
-              </SelectContent>
-            </Select>
-          </label>
-          <label className="flex items-center justify-between gap-3">
-            <span className={v1Typography.supporting}>
-              Deep liquidity search
-            </span>
-            <Checkbox aria-label="Deep liquidity search" />
-          </label>
-          <label className="flex items-center justify-between gap-3">
-            <span className={v1Typography.supporting}>Force DTF mint?</span>
-            <Checkbox aria-label="Force DTF mint" />
-          </label>
+          <div className="grid gap-2">
+            <div className="flex items-center gap-1">
+              <span className={v1Typography.label}>Quote Source</span>
+              <HelpTooltip
+                accessibleLabel="About quote sources"
+                content="Select which quote provider to use. 'Best' automatically compares all enabled providers and picks the highest output. Picking a specific provider forces a single source."
+              />
+            </div>
+            <SegmentedControl
+              aria-label="Quote Source"
+              onValueChange={setQuoteSource}
+              presentation="contained"
+              size="compact"
+              value={quoteSource}
+              width="full"
+            >
+              <SegmentedControlItem value="best">
+                Best Quote
+              </SegmentedControlItem>
+              <SegmentedControlItem value="enso">Enso</SegmentedControlItem>
+              <SegmentedControlItem value="cowswap">
+                CoW Swap
+              </SegmentedControlItem>
+            </SegmentedControl>
+          </div>
+          <div className="grid gap-2">
+            <div className="flex items-center gap-1">
+              <span className={v1Typography.label}>Max. mint slippage</span>
+              <HelpTooltip
+                accessibleLabel="About maximum mint slippage"
+                content="The maximum amount of slippage you are willing to accept when minting. Higher slippage settings will make the transaction more likely to succeed, but may result in fewer tokens minted."
+              />
+            </div>
+            <SegmentedControl
+              aria-label="Max. mint slippage"
+              onValueChange={setSlippage}
+              presentation="contained"
+              size="compact"
+              value={slippage}
+              width="full"
+            >
+              <SegmentedControlItem value="0.5">0.5%</SegmentedControlItem>
+              <SegmentedControlItem value="1">1%</SegmentedControlItem>
+              <SegmentedControlItem value="3">3%</SegmentedControlItem>
+            </SegmentedControl>
+          </div>
+          <div className="flex items-center justify-between gap-3">
+            <div className="flex min-w-0 items-center gap-1">
+              <label className={v1Typography.label} htmlFor={deepLiquidityId}>
+                Deep liquidity search
+              </label>
+              <HelpTooltip
+                accessibleLabel="About deep liquidity search"
+                content="Can improve price impact but it will take more time to get quotes."
+              />
+            </div>
+            <Checkbox
+              aria-label="Deep liquidity search"
+              checked={deepLiquidity}
+              id={deepLiquidityId}
+              onCheckedChange={setDeepLiquidity}
+            />
+          </div>
+          <div className="flex items-center justify-between gap-3">
+            <div className="flex min-w-0 items-center gap-1">
+              <label className={v1Typography.label} htmlFor={forceMintId}>
+                Force DTF mint?
+              </label>
+              <HelpTooltip
+                accessibleLabel="About forcing a DTF mint"
+                content="This is useful if you want to mint the DTF without trading."
+              />
+            </div>
+            <Checkbox
+              aria-label="Force DTF mint"
+              checked={forceMint}
+              id={forceMintId}
+              onCheckedChange={setForceMint}
+            />
+          </div>
         </div>
       </PopoverContent>
     </Popover>
@@ -396,7 +450,7 @@ export const ZapperQuoteLoading = () => {
   return (
     <div
       aria-label="Finding best quote"
-      className="absolute inset-0 z-10 flex items-center justify-center overflow-hidden rounded-lg bg-card"
+      className="absolute inset-0 z-10 flex items-center justify-center overflow-hidden rounded-none bg-card"
       role="status"
     >
       <div aria-hidden="true" className="absolute inset-0">
@@ -461,6 +515,15 @@ export const ZapperPackageState = ({
   quoteReady: boolean
   state: ZapperPackageStateKind
 }) => {
+  const [highImpactAcknowledged, setHighImpactAcknowledged] = useState(false)
+  const highImpactAcknowledgmentId = useId()
+
+  useEffect(() => {
+    if (state !== 'High-impact acknowledgment') {
+      setHighImpactAcknowledged(false)
+    }
+  }, [state])
+
   if (state === 'Review' || state === 'Quote search') {
     return (
       <Button className="w-full" disabled={!quoteReady}>
@@ -476,25 +539,34 @@ export const ZapperPackageState = ({
   if (state === 'High-impact acknowledgment') {
     return (
       <div className="space-y-3">
-        <label>
-          <InlineMessage tone="warning">
-            <div className="grid grid-cols-[minmax(0,1fr)_auto] items-start gap-3">
-              <div>
-                <InlineMessageTitle>High price impact: 5.8%</InlineMessageTitle>
-                <InlineMessageDescription className="mt-1">
-                  The price impact for this trade is very high. You will get
-                  significantly less value than expected.
-                </InlineMessageDescription>
-              </div>
-              <Checkbox
-                aria-label="High price impact: 5.8%"
-                className="mt-0.5 shrink-0"
-              />
-            </div>
-          </InlineMessage>
-        </label>
-        <Button className="w-full">
-          {mode === 'Buy' ? 'Buy CMC20' : 'Sell CMC20'}
+        <InlineMessage
+          density="compact"
+          icon={false}
+          presentation="summary"
+          tone="warning"
+        >
+          <div className="flex min-w-0 flex-1 items-center gap-2">
+            <Checkbox
+              checked={highImpactAcknowledged}
+              className="relative after:absolute after:-inset-2 after:content-['']"
+              id={highImpactAcknowledgmentId}
+              onCheckedChange={setHighImpactAcknowledged}
+            />
+            <label
+              className={cn(v1Typography.label, 'min-w-0 text-foreground')}
+              htmlFor={highImpactAcknowledgmentId}
+            >
+              I understand the 5.8% price impact
+            </label>
+          </div>
+          <HelpTooltip
+            accessibleLabel="About high price impact"
+            className="focus-visible:ring-offset-[var(--inline-message-surface)]"
+            content="The price impact for this trade is very high. You will get significantly less value than expected."
+          />
+        </InlineMessage>
+        <Button className="w-full" disabled={!highImpactAcknowledged}>
+          {mode === 'Buy' ? 'Buy anyway' : 'Sell anyway'}
         </Button>
       </div>
     )
@@ -503,15 +575,12 @@ export const ZapperPackageState = ({
   if (state === 'Quote failure') {
     return (
       <div className="space-y-3">
-        <InlineMessage tone="warning">
-          <InlineMessageTitle>
-            Zaps are currently experiencing issues
-          </InlineMessageTitle>
-          <InlineMessageDescription className="mt-1">
-            Sorry, we’re having a hard time finding a route that makes sense for
-            you. Please try again in a bit.
-          </InlineMessageDescription>
-        </InlineMessage>
+        <TransactionSummaryMessage
+          title="Zaps are currently experiencing issues"
+          detailLabel="About Zapper availability"
+          detail="Sorry, we’re having a hard time finding a route that makes sense for you. Please try again in a bit."
+          tone="warning"
+        />
         <Button className="w-full">Refresh</Button>
       </div>
     )
@@ -520,13 +589,12 @@ export const ZapperPackageState = ({
   if (state === 'RFQ recovery') {
     return (
       <div className="space-y-3">
-        <InlineMessage tone="warning">
-          <InlineMessageTitle>Order expired without a fill</InlineMessageTitle>
-          <InlineMessageDescription className="mt-1">
-            No {mode === 'Buy' ? 'purchase' : 'sale'} completed. Your amount and
-            selected asset are preserved for a fresh quote.
-          </InlineMessageDescription>
-        </InlineMessage>
+        <TransactionSummaryMessage
+          title="Order expired without a fill"
+          detailLabel="About the expired order"
+          detail={`No ${mode === 'Buy' ? 'purchase' : 'sale'} completed. Your amount and selected asset are preserved for a fresh quote.`}
+          tone="warning"
+        />
         <Button className="w-full">Get fresh quote</Button>
       </div>
     )
@@ -542,7 +610,7 @@ export const ZapperPackageState = ({
             refund your ETH within a few minutes.
           </InlineMessageDescription>
         </InlineMessage>
-        <Button className="w-full">Refresh</Button>
+        <Button className="w-full">Get fresh quote</Button>
       </div>
     )
   }

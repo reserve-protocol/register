@@ -1,16 +1,15 @@
 import { Button } from '@/components/button'
-import {
-  InlineMessage,
-  InlineMessageTitle,
-} from '@/components/design-system-v1/inline-message'
 import { TransactionIdentity } from '@/components/design-system-v1/transaction-identity'
 import { v1Typography } from '@/components/design-system-v1/typography'
-import { LifecycleStatusPill } from '@/components/lifecycle-status'
 import { v1SemanticRecipes as roles } from '@/components/ui/v1-semantic-recipes'
 import { cn } from '@/lib/utils'
 import { ChainId } from '@/utils/chains'
 import type { RefObject } from 'react'
 
+import {
+  TransactionProgressStepper,
+  type TransactionProgressStep,
+} from './transaction-progress-stepper'
 import { TransactionAssetMark } from './transaction-system-assets'
 
 export const VOTE_LOCK_TRANSACTION = {
@@ -19,9 +18,12 @@ export const VOTE_LOCK_TRANSACTION = {
   visibleValue: '0x5a61…56da',
 } as const
 
+export const VOTE_LOCK_TASK_WIDTH = 'sm:max-w-[448px]'
+
 export type VoteLockReviewState =
   | 'Lock amount'
   | 'Approval'
+  | 'Approval signing'
   | 'Lock ready'
   | 'Lock wallet'
   | 'Lock confirming'
@@ -32,9 +34,17 @@ export type VoteLockReviewState =
   | 'Unlock confirming'
   | 'Unlock processing'
   | 'Unlock initiated'
-  | 'Cooldown'
-  | 'Ready'
-  | 'Withdrawn'
+  | 'Delegated to you'
+  | 'Delegate ready'
+  | 'Normal only'
+  | 'Normal signing'
+  | 'Fast signing'
+  | 'Fast failed'
+  | 'Invalid address'
+  | 'No locked balance'
+  | 'Wallet disconnected'
+  | 'Voting delegate updated'
+  | 'Delegation updated'
 
 export const ContextFact = ({
   label,
@@ -79,6 +89,7 @@ export const VoteLockGovernanceContext = ({
 export const LOCK_STATES = [
   'Lock amount',
   'Approval',
+  'Approval signing',
   'Lock ready',
   'Lock wallet',
   'Lock confirming',
@@ -92,9 +103,20 @@ export const UNLOCK_STATES = [
   'Unlock confirming',
   'Unlock processing',
   'Unlock initiated',
-  'Cooldown',
-  'Ready',
-  'Withdrawn',
+] as const satisfies readonly VoteLockReviewState[]
+
+export const DELEGATION_STATES = [
+  'Delegated to you',
+  'Delegate ready',
+  'Normal only',
+  'Normal signing',
+  'Fast signing',
+  'Fast failed',
+  'Invalid address',
+  'No locked balance',
+  'Wallet disconnected',
+  'Voting delegate updated',
+  'Delegation updated',
 ] as const satisfies readonly VoteLockReviewState[]
 
 export const VoteLockAction = ({
@@ -109,11 +131,15 @@ export const VoteLockAction = ({
   if (state === 'Approval') {
     return (
       <Button className="w-full" disabled={!isAcknowledged || !hasQuote}>
-        Approve use of RSR
+        Approve use of RSR · Step 1 of 2
       </Button>
     )
   }
-  if (state === 'Lock wallet' || state === 'Unlock wallet') {
+  if (
+    state === 'Approval signing' ||
+    state === 'Lock wallet' ||
+    state === 'Unlock wallet'
+  ) {
     return (
       <Button className="w-full" loading>
         Pending, sign in wallet
@@ -144,8 +170,35 @@ export const VoteLockAction = ({
     >
       {state === 'Unlock amount'
         ? 'Begin 14-day unlock delay'
-        : 'Vote lock RSR'}
+        : state === 'Lock ready'
+          ? 'Vote lock RSR · Step 2 of 2'
+          : 'Vote lock RSR'}
     </Button>
+  )
+}
+
+export const VoteLockProgressStepper = ({
+  state,
+}: {
+  state: VoteLockReviewState
+}) => {
+  const approvalState: TransactionProgressStep['state'] =
+    state === 'Approval signing' ? 'active' : 'complete'
+  const lockState: TransactionProgressStep['state'] =
+    state === 'Approval signing'
+      ? 'upcoming'
+      : state === 'Lock ready'
+        ? 'actionable'
+        : 'active'
+
+  return (
+    <TransactionProgressStepper
+      label="Vote-lock progress"
+      steps={[
+        { transaction: 1, label: 'Approve RSR', state: approvalState },
+        { transaction: 2, label: 'Vote-lock RSR', state: lockState },
+      ]}
+    />
   )
 }
 
@@ -165,69 +218,3 @@ export const VoteLockTransactionIdentity = ({
     externalAnnouncement="Opens transaction in a new tab"
   />
 )
-
-export const VoteLockPendingWithdrawal = ({
-  state,
-}: {
-  state: 'Cooldown' | 'Ready' | 'Withdrawn'
-}) => {
-  const isReady = state === 'Ready'
-  const isWithdrawn = state === 'Withdrawn'
-
-  return (
-    <div className="mx-auto w-full max-w-4xl bg-background p-4 sm:p-6">
-      {isWithdrawn && (
-        <InlineMessage tone="success">
-          <InlineMessageTitle>Withdrawal successful</InlineMessageTitle>
-        </InlineMessage>
-      )}
-      <section
-        data-testid="vote-lock-pending-withdrawal-section"
-        className={cn('bg-card p-4 sm:p-6', isWithdrawn && 'mt-5')}
-      >
-        <h4 className="text-xl font-medium">Pending Withdrawals</h4>
-        <p
-          className={cn('mt-1', v1Typography.supporting, roles.text.supporting)}
-        >
-          Unstaking and unlock cooldown periods.
-        </p>
-        <div className="mt-4 border-y border-border py-4">
-          <div className="grid gap-4 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-center">
-            <div className="flex min-w-0 items-center gap-3">
-              <TransactionAssetMark chain={ChainId.BSC} symbol="RSR" />
-              <div className="min-w-0">
-                <p className={v1Typography.label}>1.0188 RSR</p>
-                <p
-                  className={cn(
-                    'mt-1',
-                    v1Typography.supporting,
-                    roles.text.supporting
-                  )}
-                >
-                  Source vlRSR · $8.34
-                </p>
-              </div>
-            </div>
-            <div className="flex flex-wrap items-center gap-2">
-              <LifecycleStatusPill
-                role={
-                  isReady ? 'actionable' : isWithdrawn ? 'success' : 'waiting'
-                }
-              >
-                {isReady ? 'Ready' : isWithdrawn ? 'Withdrawn' : '13d 23h'}
-              </LifecycleStatusPill>
-              <Button size="compact" tone="secondary" disabled={!isReady}>
-                {isWithdrawn ? 'Withdrawn' : 'Withdraw'}
-              </Button>
-            </div>
-          </div>
-          {isWithdrawn && (
-            <div className="mt-4 border-t border-border pt-4">
-              <VoteLockTransactionIdentity label="Transaction" />
-            </div>
-          )}
-        </div>
-      </section>
-    </div>
-  )
-}

@@ -366,6 +366,96 @@ describe('provisional design-system candidates', () => {
     expect(screen.queryByRole('tooltip')).not.toBeInTheDocument()
   })
 
+  it('integrates dense copy actions without changing the accepted default treatment', async () => {
+    vi.useFakeTimers()
+    const writeText = vi.fn().mockResolvedValue(undefined)
+    Object.defineProperty(navigator, 'clipboard', {
+      configurable: true,
+      value: { writeText },
+    })
+    const parentClick = vi.fn()
+    const address = '0x8ba1f109551bD432803012645Ac136ddd64DBA72'
+
+    render(
+      <div onClick={parentClick}>
+        <CopyableValue treatment="inline" value={address} />
+      </div>
+    )
+
+    const copyAction = screen.getByRole('button', {
+      name: `Copy ${address} to clipboard`,
+    })
+    expect(
+      copyAction.closest('[data-copyable-value-treatment]')
+    ).toHaveAttribute('data-copyable-value-treatment', 'inline')
+    expect(
+      copyAction.closest('[data-copyable-value-treatment]')
+    ).toHaveAttribute('data-copyable-value-tone', 'primary')
+    expect(copyAction).toHaveAttribute('data-testid', 'inline-action')
+    expect(copyAction).toHaveClass(
+      'h-5',
+      'gap-2',
+      'hover:underline',
+      'focus-visible:ring-2',
+      'before:-inset-x-1',
+      'before:-inset-y-1'
+    )
+    expect(copyAction).not.toHaveAttribute('data-tone', 'quiet')
+    expect(screen.getByText(address)).toHaveClass('sr-only')
+    expect(screen.getByText('0x8ba1...BA72')).toHaveClass(
+      'whitespace-nowrap',
+      'font-mono'
+    )
+    expect(screen.getByTestId('copyable-value-inline-copy-icon')).toHaveClass(
+      'size-3.5',
+      'shrink-0'
+    )
+
+    await act(async () => {
+      fireEvent.click(copyAction)
+    })
+
+    expect(writeText).toHaveBeenCalledWith(address)
+    expect(parentClick).not.toHaveBeenCalled()
+    expect(
+      screen.queryByTestId('copyable-value-inline-copy-icon')
+    ).not.toBeInTheDocument()
+    expect(
+      screen.getByTestId('copyable-value-inline-success-icon')
+    ).toHaveClass('size-3.5', 'shrink-0')
+    expect(screen.getByRole('tooltip')).toHaveTextContent(
+      'Copied to clipboard!'
+    )
+    expect(screen.getByRole('status')).toHaveTextContent('Copied to clipboard!')
+
+    act(() => vi.advanceTimersByTime(2000))
+    expect(
+      screen.getByTestId('copyable-value-inline-copy-icon')
+    ).toBeInTheDocument()
+    expect(
+      screen.queryByTestId('copyable-value-inline-success-icon')
+    ).not.toBeInTheDocument()
+  })
+
+  it('lets data-led inline copy actions stay neutral until interaction', () => {
+    const address = '0x8ba1f109551bD432803012645Ac136ddd64DBA72'
+
+    render(<CopyableValue treatment="inline" tone="neutral" value={address} />)
+
+    const copyAction = screen.getByRole('button', {
+      name: `Copy ${address} to clipboard`,
+    })
+    expect(
+      copyAction.closest('[data-copyable-value-treatment]')
+    ).toHaveAttribute('data-copyable-value-tone', 'neutral')
+    expect(copyAction).toHaveClass(
+      'text-foreground',
+      'hover:text-primary',
+      'focus-visible:text-primary',
+      'active:text-primary-pressed'
+    )
+  })
+
   it('does not claim clipboard success on failure and allows Escape dismissal', async () => {
     vi.useFakeTimers()
     const writeText = vi
@@ -470,8 +560,12 @@ describe('provisional design-system candidates', () => {
     )
     expect(screen.getByRole('link', { name: 'Governance' })).toHaveClass(
       'inline-flex',
+      'gap-1',
       'text-sm',
       'font-medium'
+    )
+    expect(screen.getByRole('link', { name: 'Governance' })).not.toHaveClass(
+      'gap-2'
     )
     expect(
       screen.getByRole('link', { name: 'Back to governance' })
@@ -687,8 +781,9 @@ describe('provisional design-system candidates', () => {
 
     const message = screen.getByTestId('canonical-inline-message')
     expect(message).not.toHaveAttribute('role')
+    expect(message).toHaveAttribute('data-presentation', 'default')
     expect(message).toHaveClass(
-      'gap-2',
+      'relative',
       'rounded-lg',
       'p-4',
       'ring-1',
@@ -697,6 +792,9 @@ describe('provisional design-system candidates', () => {
       'ring-[var(--feedback-warning-border)]'
     )
     expect(message.querySelector('svg')?.parentElement).toHaveClass(
+      'absolute',
+      'left-4',
+      'top-4',
       'size-4',
       '[&>svg]:size-4',
       '[&>svg]:stroke-[1.5]'
@@ -710,6 +808,9 @@ describe('provisional design-system candidates', () => {
     ).toHaveClass(
       ...v1Typography.supporting.split(' '),
       'text-supporting-foreground'
+    )
+    expect(screen.getByText('Trading paused').parentElement).toHaveClass(
+      '[&>*:first-child]:pl-6'
     )
 
     rerender(
@@ -728,13 +829,37 @@ describe('provisional design-system candidates', () => {
       'ring-[var(--feedback-danger-border)]'
     )
     expect(message.querySelector('svg')).toBeNull()
-    expect(screen.getByText('Approval failed.').parentElement).toHaveClass(
-      'col-span-2'
+    expect(screen.getByText('Approval failed.').parentElement).not.toHaveClass(
+      '[&>*:first-child]:pl-6'
     )
     expect(screen.getByTestId('inline-message-actions')).toHaveClass(
       'mt-3',
       'gap-2',
       '[&>*]:focus-visible:ring-offset-[var(--inline-message-surface)]'
+    )
+
+    rerender(
+      <InlineMessage presentation="summary" tone="warning">
+        <InlineMessageTitle>High price impact</InlineMessageTitle>
+        <button type="button">Details</button>
+      </InlineMessage>
+    )
+
+    expect(message).toHaveAttribute('data-presentation', 'summary')
+    expect(message).toHaveClass(
+      'flex',
+      'min-h-11',
+      'items-center',
+      'gap-2',
+      'rounded-full',
+      'px-4',
+      'py-2'
+    )
+    expect(message).not.toHaveClass('rounded-lg', 'p-4')
+    expect(screen.getByText('High price impact').parentElement).toHaveClass(
+      'flex',
+      'items-center',
+      'gap-1'
     )
   })
 
@@ -761,9 +886,11 @@ describe('provisional design-system candidates', () => {
     expect(spinner).toHaveAttribute('width', '24')
     expect(spinner).not.toHaveClass('text-foreground')
 
-    const statusSpinner = screen
-      .getByTestId('lifecycle-status-pill')
-      .querySelector('[data-status-icon="spinner"]')
+    const statusPill = screen.getByTestId('lifecycle-status-pill')
+    expect(statusPill).toHaveClass('w-fit')
+    const statusSpinner = statusPill.querySelector(
+      '[data-status-icon="spinner"]'
+    )
     expect(statusSpinner).toHaveAttribute('width', '14')
     expect(statusSpinner).toHaveAttribute('aria-hidden', 'true')
   })

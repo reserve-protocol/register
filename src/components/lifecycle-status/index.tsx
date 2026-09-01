@@ -130,7 +130,7 @@ export const LifecycleStatusPill = ({
       data-testid="lifecycle-status-pill"
       data-status-role={role}
       className={cn(
-        'inline-flex h-6 shrink-0 items-center gap-1 rounded-full text-xs font-medium ring-1 ring-inset',
+        'inline-flex h-6 w-fit shrink-0 items-center gap-1 rounded-full text-xs font-medium ring-1 ring-inset',
         iconName ? 'pl-2 pr-2.5' : 'px-2.5',
         className
       )}

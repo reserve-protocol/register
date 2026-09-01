@@ -36,18 +36,18 @@ export const DelayedTransactionComposition = () => (
     id="delayed"
     model="Delayed settlement · current Yield unstake structure"
     title="Unstake and withdraw"
-    description="The existing product separates the editable staking page, the review and confirmation task modal, and the persistent withdrawal queue. This slice keeps those boundaries while standardizing their visual language."
+    description="The existing product separates the editable staking page, the review and confirmation task modal, and later page-owned withdrawal management. This slice reviews initiation through the immediate cooldown handoff; persistent queue rows remain deferred for contextual table and row work."
     parts={[
       { label: 'Field, dialog, Button, status', status: 'Current baseline' },
       {
-        label: 'Page → modal → queue relationship',
+        label: 'Page → modal → delayed handoff',
         status: 'Retained current',
       },
       {
-        label: 'Delayed-state language and queue rows',
+        label: 'Delayed-initiation language',
         status: 'Proposed candidate',
       },
-      { label: 'Queue-index correctness', status: 'Deferred' },
+      { label: 'Persistent withdrawal rows and actions', status: 'Deferred' },
     ]}
   >
     {(state) => <DelayedProductContext state={state} />}
@@ -73,7 +73,6 @@ const DelayedProductContext = ({
               </InlineMessageDescription>
             </InlineMessage>
           )}
-          {outcome && <WithdrawalQueue includeCurrent />}
           <section className="bg-card shadow-sm">
             <div className="p-4">
               <TransactionAmountPair>
@@ -109,7 +108,6 @@ const DelayedProductContext = ({
               <Button className="mt-4 w-full">Unstake RSR</Button>
             </div>
           </section>
-          {!outcome && <WithdrawalQueue />}
         </div>
         <aside className="hidden bg-card p-5 lg:block">
           <h4 className={v1Typography.itemTitle}>Staking overview</h4>
@@ -240,77 +238,6 @@ const TaskState = ({ state }: { state: TransactionCompositionState }) => {
 
   return null
 }
-
-const WithdrawalQueue = ({
-  includeCurrent = false,
-}: {
-  includeCurrent?: boolean
-}) => (
-  <section className="bg-card p-4 sm:p-6">
-    <h4 className="text-xl font-medium">In withdrawal process</h4>
-    <div
-      data-testid="withdrawal-queue-list"
-      className="mt-4 divide-y divide-border border-y border-border"
-    >
-      {includeCurrent && (
-        <QueueRow
-          title="RSR cooling down"
-          amount="286.42 RSR"
-          status="Cooling down"
-          role="waiting"
-          action="Cancel unstake"
-        />
-      )}
-      <QueueRow
-        title="RSR available to withdraw"
-        amount="80 RSR"
-        status="Claimable"
-        role="actionable"
-        action="Withdraw"
-      />
-      <QueueRow
-        title="RSR in 14-day cooldown"
-        amount="290 RSR"
-        status="Cooling down"
-        role="waiting"
-        action="Cancel unstake"
-      />
-    </div>
-  </section>
-)
-
-const QueueRow = ({
-  action,
-  amount,
-  role,
-  status,
-  title,
-}: {
-  action: string
-  amount: string
-  role: 'actionable' | 'waiting'
-  status: string
-  title: string
-}) => (
-  <div
-    data-testid="withdrawal-queue-row"
-    className="grid gap-3 py-4 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-center"
-  >
-    <div>
-      <p className={v1Typography.label}>{title}</p>
-      <p className="mt-1 text-xl font-light tabular-nums">{amount}</p>
-    </div>
-    <div className="flex flex-wrap items-center gap-2">
-      <LifecycleStatusPill role={role}>{status}</LifecycleStatusPill>
-      <Button
-        size="compact"
-        tone={role === 'actionable' ? 'primary' : 'destructive'}
-      >
-        {action}
-      </Button>
-    </div>
-  </div>
-)
 
 const Detail = ({ label, value }: { label: string; value: string }) => (
   <div className="flex items-baseline justify-between gap-3">

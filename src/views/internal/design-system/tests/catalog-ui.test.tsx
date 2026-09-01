@@ -43,7 +43,7 @@ describe('FoundationCandidateDirection', () => {
     render(<FoundationCandidateDirection foundationId="color" />)
 
     expect(screen.getByText('Accepted direction')).toBeInTheDocument()
-    expect(screen.getByText('Grouping surface')).toBeInTheDocument()
+    expect(screen.getByText('Structural substrate')).toBeInTheDocument()
     expect(screen.getByText('Performance positive')).toBeInTheDocument()
     expect(screen.getByText('Success feedback')).toBeInTheDocument()
     expect(
@@ -66,7 +66,7 @@ describe('FoundationCandidateDirection', () => {
 })
 
 describe('FoundationReference', () => {
-  it('shows the audited secondary wrapper instead of implying container owns that role', () => {
+  it('shows audited secondary usage without promoting it to general grouping chrome', () => {
     render(<FoundationReference foundationId="color" />)
 
     expect(screen.getByText('Secondary')).toBeInTheDocument()

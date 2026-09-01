@@ -45,9 +45,9 @@ export const VoteLockAmountTask = ({
     state === 'Unlock amount'
   const amount = isUnlock ? unlockAmount : lockAmount
   const hasFixtureQuote = amount === '1'
-  const showAcknowledgement =
-    state === 'Lock amount' || state === 'Approval' || state === 'Lock ready'
+  const showAcknowledgement = !isUnlock
   const isSubmittedState =
+    state === 'Approval signing' ||
     state === 'Lock confirming' ||
     state === 'Lock processing' ||
     state === 'Unlock confirming' ||
@@ -143,6 +143,7 @@ export const VoteLockAmountTask = ({
         {showAcknowledgement && (
           <LockAcknowledgement
             checked={isAcknowledged}
+            disabled={!isInputState}
             onCheckedChange={onAcknowledgedChange}
           />
         )}
@@ -170,9 +171,11 @@ const TaskFact = ({
 
 const LockAcknowledgement = ({
   checked,
+  disabled,
   onCheckedChange,
 }: {
   checked: boolean
+  disabled: boolean
   onCheckedChange: (checked: boolean) => void
 }) => (
   <div
@@ -182,6 +185,7 @@ const LockAcknowledgement = ({
     <Checkbox
       id="vote-lock-delay-acknowledgement"
       checked={checked}
+      disabled={disabled}
       onCheckedChange={onCheckedChange}
       aria-label="Acknowledge unlock delay"
     />
