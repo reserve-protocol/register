@@ -14,7 +14,7 @@ export const registerRpcUrls = {
         'https://mainnet.gateway.tenderly.co/',
         ...(infuraKey ? [`https://mainnet.infura.io/v3/${infuraKey}`] : []),
         ...(alchemyKey
-          ? [`https://eth-mainnet.alchemyapi.io/v2/${alchemyKey}`]
+          ? [`https://eth-mainnet.g.alchemy.com/v2/${alchemyKey}`]
           : []),
         ...(ankrKey ? [`https://rpc.ankr.com/eth/${ankrKey}`] : []),
       ],
@@ -42,7 +42,7 @@ export const registerRpcUrls = {
     ...(infuraKey ? [`https://bsc-mainnet.infura.io/v3/${infuraKey}`] : []),
     ...(ankrKey ? [`https://rpc.ankr.com/bsc/${ankrKey}`] : []),
     ...(alchemyKey
-      ? [`https://bsc-mainnet.g.alchemy.com/v2/${alchemyKey}`]
+      ? [`https://bnb-mainnet.g.alchemy.com/v2/${alchemyKey}`]
       : []),
   ],
 } as const
