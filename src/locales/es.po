@@ -491,7 +491,11 @@ msgid "{swapCount} orders"
 msgstr "{swapCount} órdenes"
 
 #: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:95
-msgid "{symbol} holds tokenized stocks, and they aren't trading right now. Until they are, buys and sells route through secondary markets, where price impact can be much higher than usual."
+#~ msgid "{symbol} holds tokenized stocks, and they aren't trading right now. Until they are, buys and sells route through secondary markets, where price impact can be much higher than usual."
+#~ msgstr ""
+
+#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:106
+msgid "{symbol}'s stocks aren't trading, so buys and sells route through secondary markets — price impact can be much higher than usual."
 msgstr ""
 
 #: src/views/index-dtf/issuance/async-mint/components/ondo-limits-banner.tsx:67
@@ -3420,7 +3424,7 @@ msgstr "Descartar"
 msgid "Dismiss invitation"
 msgstr "Descartar invitación"
 
-#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:176
+#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:210
 msgid "Dismiss suggestion"
 msgstr "Descartar sugerencia"
 
@@ -4497,7 +4501,7 @@ msgstr "A favor"
 msgid "For approved governors to fast-track proposals."
 msgstr "Para que los Governors aprobados agilicen propuestas."
 
-#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:115
+#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:126
 msgid "For larger amounts, split your order into multiple transactions."
 msgstr "Para montos mayores, divide tu orden en varias transacciones."
 
@@ -5739,6 +5743,10 @@ msgstr "Capitalización de mercado:"
 msgid "Market closed"
 msgstr "Mercado cerrado"
 
+#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:224
+msgid "Market opens"
+msgstr ""
+
 #: src/components/ui/swap.tsx:228
 #: src/views/index-dtf/issuance/async-mint/steps/configure-mint.tsx:232
 #: src/views/yield-dtf/issuance/components/zapV2/input/ZapInputMaxButton.tsx:39
@@ -6012,7 +6020,7 @@ msgstr "Disponible para Mint ahora"
 msgid "Minted"
 msgstr "Minted"
 
-#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:134
+#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:145
 msgid "Minting {symbol} is currently unavailable and we couldn't find another route to buy it."
 msgstr "El Mint de {symbol} no está disponible en este momento y no encontramos otra ruta para comprarlo."
 
@@ -6579,6 +6587,10 @@ msgstr "Notas del creador"
 msgid "Notes from the creator"
 msgstr "Notas del creador"
 
+#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:225
+msgid "Now"
+msgstr ""
+
 #: src/views/yield-dtf/auctions/auctions-sidebar/StakingVaultRevenue.tsx:207
 msgid "Nudge"
 msgstr "Impulsar"
@@ -7129,8 +7141,8 @@ msgid "Please try again"
 msgstr "Inténtalo de nuevo"
 
 #: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:203
-msgid "Please try again in <0>{reopenInLabel}</0>."
-msgstr ""
+#~ msgid "Please try again in <0>{reopenInLabel}</0>."
+#~ msgstr ""
 
 #: src/components/token-selector-drawer/index.tsx:212
 #: src/views/index-dtf/deploy/steps/basket/token-selector.tsx:359
@@ -7336,8 +7348,8 @@ msgid "Pricing may be worse right now"
 msgstr ""
 
 #: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:198
-msgid "Pricing usually improves once they reopen, in <0>{reopenInLabel}</0>."
-msgstr ""
+#~ msgid "Pricing usually improves once they reopen, in <0>{reopenInLabel}</0>."
+#~ msgstr ""
 
 #: src/components/layout/navigation/TokenNavigation.tsx:215
 #: src/views/yield-dtf/deploy/components/NavigationSidebar.tsx:20
@@ -7861,7 +7873,7 @@ msgstr "Redeemed"
 msgid "Redeeming {0} for {1}."
 msgstr "Haciendo Redeem de {0} por {1}."
 
-#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:139
+#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:150
 msgid "Redeeming {symbol} is currently unavailable and we couldn't find another route to sell it."
 msgstr "El Redeem de {symbol} no está disponible en este momento y no encontramos otra ruta para venderlo."
 
@@ -8053,6 +8065,10 @@ msgstr "Se eliminó la columna sobre formularios y estándares que contenía dir
 #: src/views/index-dtf/overview/components/index-disclousure.tsx:83
 msgid "Removed the word \"ongoing\" from Section E.18 (no material impact)."
 msgstr "Se eliminó la palabra \"ongoing\" de la sección E.18 (sin impacto material)."
+
+#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:223
+msgid "Reopens in"
+msgstr ""
 
 #: src/components/index-basket-setup/csv-import.tsx:197
 #: src/views/index-dtf/governance/views/propose/basket/components/proposal-basket-setup/basket-csv-setup.tsx:240
@@ -9649,7 +9665,7 @@ msgstr "El long freezer tiene la capacidad de congelar el sistema de un RToken d
 msgid "The mandate describes what goals its governors should try to achieve. By briefly explaining the RToken's purpose and what the RToken is intended to do, it provides common ground for the governors to decide upon priorities and how to weigh tradeoffs."
 msgstr "El mandato describe qué objetivos deben tratar de alcanzar sus gobernadores. Al explicar brevemente el propósito del RToken y para qué está pensado, ofrece una base común para que los gobernadores decidan las prioridades y cómo sopesar las concesiones."
 
-#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:69
+#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:80
 msgid "The market reopens {nextOpenLabel}."
 msgstr "El mercado reabre el {nextOpenLabel}."
 
@@ -10530,11 +10546,11 @@ msgstr "Prueba ajustar los filtros o vuelve más tarde"
 msgid "Try again"
 msgstr "Intentar de nuevo"
 
-#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:72
+#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:83
 msgid "Try again during {nextSessionLabel} hours in the US."
 msgstr "Inténtalo de nuevo durante las horas {nextSessionLabel} en EE. UU."
 
-#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:74
+#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:85
 msgid "Try again later when trading resumes."
 msgstr "Inténtalo de nuevo más tarde, cuando se reanude el trading."
 
@@ -10919,8 +10935,8 @@ msgid "US market closed"
 msgstr ""
 
 #: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:190
-msgid "US stock market hours are <0>9:30 AM</0> to <1>4:00 PM</1> Eastern Time. Current time is: <2>{currentTimeLabel} ET</2>."
-msgstr ""
+#~ msgid "US stock market hours are <0>9:30 AM</0> to <1>4:00 PM</1> Eastern Time. Current time is: <2>{currentTimeLabel} ET</2>."
+#~ msgstr ""
 
 #: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:160
 #~ msgid "US stock market hours are <0>9:30 AM</0> to <1>4:00 PM</1> Eastern Time. Current time is: <2>{currentTimeLabel} ET</2>. Please try again in <3>{reopenInLabel}</3>."
@@ -11966,7 +11982,7 @@ msgstr "Rendimiento:"
 msgid "You can begin the unlock process at any time, but you cannot withdraw immediately. The vault’s unlock delay must finish first, and you stop earning rewards once the unlock process begins. Always check the displayed delay before locking."
 msgstr ""
 
-#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:105
+#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:116
 msgid "You can buy up to {maxAmountLabel} per transaction during {sessionLabel} hours in the US."
 msgstr "Puedes comprar hasta {maxAmountLabel} por transacción durante las horas {sessionLabel} en EE. UU."
 
@@ -11982,7 +11998,7 @@ msgstr "Puedes dejar tu RToken pausado y volver más tarde a configurar la gober
 msgid "You can proceed directly."
 msgstr "Puedes continuar directamente."
 
-#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:110
+#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:121
 msgid "You can sell up to {maxAmountLabel} per transaction during {sessionLabel} hours in the US."
 msgstr "Puedes vender hasta {maxAmountLabel} por transacción durante las horas {sessionLabel} en EE. UU."
 
@@ -12101,7 +12117,7 @@ msgstr "Recibirás"
 msgid "You'll receive:"
 msgstr "Recibirás:"
 
-#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:125
+#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:136
 msgid "You're getting a worse price than usual because {symbol}'s underlying stocks aren't trading right now."
 msgstr "Estás obteniendo un precio peor de lo habitual porque las acciones subyacentes de {symbol} no están operando en este momento."
 
