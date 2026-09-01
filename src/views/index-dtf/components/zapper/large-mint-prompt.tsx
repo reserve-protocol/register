@@ -62,18 +62,23 @@ const LargeMintPrompt = ({ mode, chain }: LargeMintPromptProps) => {
   const weightedMaxUsd = getOndoWeightedMaxUsd(assets, shares)
   const maxMintUsd =
     weightedMaxUsd === undefined ? undefined : floorOndoMaxUsd(weightedMaxUsd)
-  const { rawCapacity, rawClosedImpact, rawClosedError, isApplicable } =
-    deriveMintPromptSignals({
-      inContext,
-      inputValue,
-      hasValidQuote,
-      hasQuoteError: !!error,
-      source: data?.source,
-      truePriceImpact: data?.quote?.truePriceImpact ?? 0,
-      mintingAvailable,
-      mintingUnavailable,
-      maxMintUsd,
-    })
+  const {
+    rawCapacity,
+    rawClosedImpact,
+    rawClosedError,
+    rawClosedHeadsUp,
+    isApplicable,
+  } = deriveMintPromptSignals({
+    inContext,
+    inputValue,
+    hasValidQuote,
+    hasQuoteError: !!error,
+    source: data?.source,
+    truePriceImpact: data?.quote?.truePriceImpact ?? 0,
+    mintingAvailable,
+    mintingUnavailable,
+    maxMintUsd,
+  })
 
   // Latch the notice so it persists across the zapper's periodic refetch
   // (where `error`/`quote` briefly clear) until the user dismisses it, the
@@ -84,6 +89,7 @@ const LargeMintPrompt = ({ mode, chain }: LargeMintPromptProps) => {
         rawCapacity,
         rawClosedImpact,
         rawClosedError,
+        rawClosedHeadsUp,
         hasValidQuote,
         mintingUnavailable,
         isApplicable,
@@ -93,6 +99,7 @@ const LargeMintPrompt = ({ mode, chain }: LargeMintPromptProps) => {
     rawCapacity,
     rawClosedImpact,
     rawClosedError,
+    rawClosedHeadsUp,
     hasValidQuote,
     mintingUnavailable,
     isApplicable,
@@ -190,6 +197,29 @@ const LargeMintPrompt = ({ mode, chain }: LargeMintPromptProps) => {
     />
   )
 
+  const testProps = {
+    'data-testid': 'mint-prompt-card',
+    'data-variant': state.variant ?? '',
+  }
+
+  // Mobile: the heads-up is unprompted (no input, no quote), so it banners
+  // instead of taking over the screen like the quote-driven variants.
+  if (!isDesktop && state.variant === 'closed-heads-up') {
+    if (!show) return null
+
+    return createPortal(
+      <div
+        onPointerDown={stop}
+        onMouseDown={stop}
+        className="fixed inset-x-2 bottom-2 z-[60] rounded-3xl border border-secondary bg-background p-4 text-left shadow-lg"
+        {...testProps}
+      >
+        {body}
+      </div>,
+      document.body
+    )
+  }
+
   // Mobile: a centered modal popup.
   if (!isDesktop) {
     return (
@@ -199,7 +229,7 @@ const LargeMintPrompt = ({ mode, chain }: LargeMintPromptProps) => {
           if (!open) dismiss()
         }}
       >
-        <DialogContent showClose={false} className="rounded-3xl">
+        <DialogContent showClose={false} className="rounded-3xl" {...testProps}>
           <DialogTitle className="sr-only">
             <Trans>Trade suggestion</Trans>
           </DialogTitle>
@@ -222,6 +252,7 @@ const LargeMintPrompt = ({ mode, chain }: LargeMintPromptProps) => {
           onPointerDown={stop}
           onMouseDown={stop}
           className="animate-[large-order-card-slide-out_360ms_ease-out] pointer-events-auto flex w-[260px] flex-col justify-between rounded-3xl rounded-bl-none rounded-tl-none border-2 border-l-0 border-secondary bg-background p-6 text-left"
+          {...testProps}
         >
           {body}
         </div>
@@ -232,7 +263,10 @@ const LargeMintPrompt = ({ mode, chain }: LargeMintPromptProps) => {
 
   // Desktop + inline: box sliding out to the right of the inline zapper.
   return (
-    <div className="animate-[large-order-card-slide-out_360ms_ease-out] absolute bottom-4 left-full top-4 z-10 flex w-[260px] flex-col justify-between rounded-3xl rounded-bl-none rounded-tl-none border-2 border-transparent bg-background bg-clip-padding p-6 text-left">
+    <div
+      className="animate-[large-order-card-slide-out_360ms_ease-out] absolute bottom-4 left-full top-4 z-10 flex w-[260px] flex-col justify-between rounded-3xl rounded-bl-none rounded-tl-none border-2 border-transparent bg-background bg-clip-padding p-6 text-left"
+      {...testProps}
+    >
       {body}
     </div>
   )

@@ -12,10 +12,15 @@ const BASE: MintPromptSignals = {
   rawCapacity: false,
   rawClosedImpact: false,
   rawClosedError: false,
+  rawClosedHeadsUp: false,
   hasValidQuote: false,
   mintingUnavailable: false,
   isApplicable: true,
 }
+
+// `rawClosedHeadsUp` holds whenever minting is unavailable in context, so every
+// minting-unavailable phase carries it — mirroring what `derive` produces.
+const CLOSED = { mintingUnavailable: true, rawClosedHeadsUp: true } as const
 
 // Signal presets for the common quote phases.
 const SIGNALS: Record<string, MintPromptSignals> = {
@@ -29,13 +34,15 @@ const SIGNALS: Record<string, MintPromptSignals> = {
   // Minting unavailable: a high-impact secondary-market quote / no route at all.
   closedImpactQuote: {
     ...BASE,
+    ...CLOSED,
     rawClosedImpact: true,
     hasValidQuote: true,
-    mintingUnavailable: true,
   },
-  closedError: { ...BASE, rawClosedError: true, mintingUnavailable: true },
+  closedError: { ...BASE, ...CLOSED, rawClosedError: true },
+  // Minting unavailable, nothing typed yet / no quote resolved.
+  closedIdle: { ...BASE, ...CLOSED },
   // Mid-refetch while minting stays unavailable (quote signals transiently clear).
-  refetchingUnavailable: { ...BASE, mintingUnavailable: true },
+  refetchingUnavailable: { ...BASE, ...CLOSED },
 }
 
 // Fold a sequence of signal phases onto the initial state.
@@ -69,9 +76,9 @@ describe('reduceMintPrompt', () => {
   })
 
   it('prioritizes capacity over the closed variants', () => {
-    expect(run([{ ...BASE, rawCapacity: true, rawClosedImpact: true }])).toEqual(
-      { variant: 'capacity', dismissed: false }
-    )
+    expect(
+      run([{ ...BASE, rawCapacity: true, rawClosedImpact: true }])
+    ).toEqual({ variant: 'capacity', dismissed: false })
     expect(run([{ ...BASE, rawCapacity: true, rawClosedError: true }])).toEqual(
       { variant: 'capacity', dismissed: false }
     )
@@ -98,6 +105,62 @@ describe('reduceMintPrompt', () => {
       dismissed: true,
     })
     expect(run([SIGNALS.smallValidQuote], userDismissed)).toEqual(
+      INITIAL_MINT_PROMPT_STATE
+    )
+  })
+
+  it('shows the heads-up as soon as minting is unavailable, pre-input and pre-quote', () => {
+    expect(run([{ ...SIGNALS.closedIdle, isApplicable: false }])).toEqual({
+      variant: 'closed-heads-up',
+      dismissed: false,
+    })
+  })
+
+  it('escalates the heads-up to the quote-derived closed variants', () => {
+    expect(run([SIGNALS.closedIdle, SIGNALS.closedImpactQuote])).toEqual({
+      variant: 'closed-impact',
+      dismissed: false,
+    })
+    expect(run([SIGNALS.closedIdle, SIGNALS.closedError])).toEqual({
+      variant: 'closed-error',
+      dismissed: false,
+    })
+  })
+
+  it('re-shows on escalation past a dismissed heads-up', () => {
+    const dismissedHeadsUp: MintPromptState = {
+      variant: 'closed-heads-up',
+      dismissed: true,
+    }
+    expect(run([SIGNALS.closedImpactQuote], dismissedHeadsUp)).toEqual({
+      variant: 'closed-impact',
+      dismissed: false,
+    })
+  })
+
+  it('keeps a dismissed heads-up dismissed while the market stays closed', () => {
+    const dismissedHeadsUp: MintPromptState = {
+      variant: 'closed-heads-up',
+      dismissed: true,
+    }
+    expect(run([SIGNALS.closedIdle], dismissedHeadsUp)).toEqual(
+      dismissedHeadsUp
+    )
+  })
+
+  it('never downgrades a quote-derived closed variant back to the heads-up', () => {
+    expect(run([SIGNALS.closedImpactQuote, SIGNALS.closedIdle])).toEqual({
+      variant: 'closed-impact',
+      dismissed: false,
+    })
+    expect(run([SIGNALS.closedError, SIGNALS.closedIdle])).toEqual({
+      variant: 'closed-error',
+      dismissed: false,
+    })
+  })
+
+  it('drops the heads-up when the market reopens', () => {
+    expect(run([SIGNALS.closedIdle, SIGNALS.refetching])).toEqual(
       INITIAL_MINT_PROMPT_STATE
     )
   })
@@ -257,6 +320,12 @@ describe('deriveMintPromptSignals', () => {
     expect(derive({ hasQuoteError: true }).rawClosedError).toBe(false)
   })
 
+  it('raises the heads-up on the unavailable market alone, regardless of input', () => {
+    expect(derive({ ...closed, inputValue: 0 }).rawClosedHeadsUp).toBe(true)
+    expect(derive({ inputValue: 0 }).rawClosedHeadsUp).toBe(false)
+    expect(derive({ ...closed, inContext: false }).rawClosedHeadsUp).toBe(false)
+  })
+
   it('keeps every raw signal inside the isApplicable domain (input >= $100)', () => {
     const signals = derive({
       ...closed,
@@ -270,6 +339,9 @@ describe('deriveMintPromptSignals', () => {
     expect(signals).toMatchObject({
       rawClosedImpact: false,
       rawClosedError: false,
+      // Except the heads-up, which is input-independent by design and can't
+      // flicker: it isn't quote-derived.
+      rawClosedHeadsUp: true,
     })
   })
 
@@ -284,6 +356,7 @@ describe('deriveMintPromptSignals', () => {
       rawCapacity: false,
       rawClosedImpact: false,
       rawClosedError: false,
+      rawClosedHeadsUp: false,
       hasValidQuote: true,
       mintingUnavailable: false,
       isApplicable: false,

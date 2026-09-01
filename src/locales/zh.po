@@ -490,6 +490,10 @@ msgstr "{swapCount} 个 Order"
 msgid "{swapCount} orders"
 msgstr "{swapCount} 个 Orders"
 
+#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:95
+msgid "{symbol} holds tokenized stocks, and they aren't trading right now. Until they are, buys and sells route through secondary markets, where price impact can be much higher than usual."
+msgstr ""
+
 #: src/views/index-dtf/issuance/async-mint/components/ondo-limits-banner.tsx:67
 msgid "{symbolList} are outside trading hours, so minting and redeeming is unavailable right now."
 msgstr "{symbolList} 当前不在交易时间内，因此暂时无法 Mint 和 Redeem。"
@@ -3416,7 +3420,7 @@ msgstr "忽略"
 msgid "Dismiss invitation"
 msgstr "忽略邀请"
 
-#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:146
+#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:176
 msgid "Dismiss suggestion"
 msgstr "关闭建议"
 
@@ -4177,7 +4181,7 @@ msgstr "退出 Deployer"
 msgid "Expanded J.1 to include energy usage data and the sources and methodologies used for its calculation."
 msgstr "扩充了 J.1，纳入了能源使用数据及其计算所采用的来源和方法。"
 
-#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:43
+#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:46
 msgid "Expect a worse price"
 msgstr "预计价格较差"
 
@@ -4493,7 +4497,7 @@ msgstr "赞成"
 msgid "For approved governors to fast-track proposals."
 msgstr "供已批准的治理者快速处理提案。"
 
-#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:93
+#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:115
 msgid "For larger amounts, split your order into multiple transactions."
 msgstr "如需更大金额，请将订单拆分为多笔交易。"
 
@@ -4820,7 +4824,7 @@ msgid "High liquidity"
 msgstr "高流动性"
 
 #: src/views/index-dtf/auctions/views/rebalance/components/rebalance-liquidity-checker.tsx:244
-#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:30
+#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:31
 #: src/views/index-dtf/governance/views/propose/basket/components/proposal-liquidity-checker.tsx:311
 msgid "High price impact"
 msgstr "价格影响过高"
@@ -6008,7 +6012,7 @@ msgstr "当前可 Mint 量"
 msgid "Minted"
 msgstr "已 Mint"
 
-#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:112
+#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:134
 msgid "Minting {symbol} is currently unavailable and we couldn't find another route to buy it."
 msgstr "{symbol} 的 Mint 当前不可用，且我们未能找到其他买入路径。"
 
@@ -6732,7 +6736,7 @@ msgstr "Optimistic 提案人"
 msgid "or drag and drop it here"
 msgstr "或拖放到此处"
 
-#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:41
+#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:44
 msgid "Order too large"
 msgstr "订单过大"
 
@@ -7124,6 +7128,10 @@ msgstr "请在你的 Wallet 中手动切换到 {chainName}"
 msgid "Please try again"
 msgstr "请重试"
 
+#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:203
+msgid "Please try again in <0>{reopenInLabel}</0>."
+msgstr ""
+
 #: src/components/token-selector-drawer/index.tsx:212
 #: src/views/index-dtf/deploy/steps/basket/token-selector.tsx:359
 msgid "Please try again later"
@@ -7322,6 +7330,14 @@ msgstr "{unavailableSymbol} 的价格不可用 — 无法启动"
 #: src/views/index-dtf/auctions/views/rebalance/updaters/rebalance-metrics-updater.tsx:138
 msgid "Price unavailable for a basket token — cannot launch auction."
 msgstr "篮子代币价格不可用 — 无法启动拍卖。"
+
+#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:50
+msgid "Pricing may be worse right now"
+msgstr ""
+
+#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:198
+msgid "Pricing usually improves once they reopen, in <0>{reopenInLabel}</0>."
+msgstr ""
 
 #: src/components/layout/navigation/TokenNavigation.tsx:215
 #: src/views/yield-dtf/deploy/components/NavigationSidebar.tsx:20
@@ -7845,7 +7861,7 @@ msgstr "已 Redeem"
 msgid "Redeeming {0} for {1}."
 msgstr "正在将 {0} Redeem 为 {1}。"
 
-#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:117
+#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:139
 msgid "Redeeming {symbol} is currently unavailable and we couldn't find another route to sell it."
 msgstr "{symbol} 的 Redeem 当前不可用，且我们未能找到其他卖出路径。"
 
@@ -9528,7 +9544,7 @@ msgstr "Telegram 链接"
 msgid "Telegram username"
 msgstr "Telegram 用户名"
 
-#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:45
+#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:48
 msgid "Temporarily unavailable"
 msgstr "暂时不可用"
 
@@ -9633,7 +9649,7 @@ msgstr "long freezer 有权将 RToken 系统冻结较长一段时间。LONG_FREE
 msgid "The mandate describes what goals its governors should try to achieve. By briefly explaining the RToken's purpose and what the RToken is intended to do, it provides common ground for the governors to decide upon priorities and how to weigh tradeoffs."
 msgstr "该宗旨描述了其治理者应努力实现的目标。通过简要说明 RToken 的用途及其预期功能，它为治理者确定优先事项以及如何权衡取舍提供了共同基础。"
 
-#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:57
+#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:69
 msgid "The market reopens {nextOpenLabel}."
 msgstr "市场将于 {nextOpenLabel} 重新开市。"
 
@@ -10304,7 +10320,7 @@ msgstr "将 {0} 交易为抵押品"
 msgid "Trade remaining {0} into collateral"
 msgstr "将剩余的 {0} 交易为抵押品"
 
-#: src/views/index-dtf/components/zapper/large-mint-prompt.tsx:204
+#: src/views/index-dtf/components/zapper/large-mint-prompt.tsx:234
 msgid "Trade suggestion"
 msgstr "交易建议"
 
@@ -10381,7 +10397,7 @@ msgstr "交易将于 {0} 恢复。"
 msgid "Trading Timelock"
 msgstr "交易 Timelock"
 
-#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:32
+#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:33
 msgid "Trading unavailable"
 msgstr "交易不可用"
 
@@ -10514,11 +10530,11 @@ msgstr "尝试调整筛选条件或稍后再查看"
 msgid "Try again"
 msgstr "重试"
 
-#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:60
+#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:72
 msgid "Try again during {nextSessionLabel} hours in the US."
 msgstr "请在美国 {nextSessionLabel} 时段重试。"
 
-#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:62
+#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:74
 msgid "Try again later when trading resumes."
 msgstr "请稍后在交易恢复后重试。"
 
@@ -10898,9 +10914,17 @@ msgstr "升级至"
 msgid "Uploading files..."
 msgstr "正在上传文件……"
 
+#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:35
+msgid "US market closed"
+msgstr ""
+
+#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:190
+msgid "US stock market hours are <0>9:30 AM</0> to <1>4:00 PM</1> Eastern Time. Current time is: <2>{currentTimeLabel} ET</2>."
+msgstr ""
+
 #: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:160
-msgid "US stock market hours are <0>9:30 AM</0> to <1>4:00 PM</1> Eastern Time. Current time is: <2>{currentTimeLabel} ET</2>. Please try again in <3>{reopenInLabel}</3>."
-msgstr "美国股市交易时间为美国东部时间 <0>9:30 AM</0> 至 <1>4:00 PM</1>。当前时间：<2>{currentTimeLabel} ET</2>。请在 <3>{reopenInLabel}</3> 后重试。"
+#~ msgid "US stock market hours are <0>9:30 AM</0> to <1>4:00 PM</1> Eastern Time. Current time is: <2>{currentTimeLabel} ET</2>. Please try again in <3>{reopenInLabel}</3>."
+#~ msgstr "美国股市交易时间为美国东部时间 <0>9:30 AM</0> 至 <1>4:00 PM</1>。当前时间：<2>{currentTimeLabel} ET</2>。请在 <3>{reopenInLabel}</3> 后重试。"
 
 #: src/views/explorer/components/transactions/useTransactionColumns.tsx:99
 msgid "USD Value"
@@ -11598,7 +11622,7 @@ msgstr "想为治理发行新的 ERC20 吗？"
 msgid "Warmup period (s)"
 msgstr "预热期 (s)"
 
-#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:34
+#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:37
 #: src/views/yield-dtf/issuance/components/warnings/index.tsx:54
 #: src/views/yield-dtf/issuance/components/warnings/index.tsx:87
 msgid "Warning"
@@ -11942,7 +11966,7 @@ msgstr "收益："
 msgid "You can begin the unlock process at any time, but you cannot withdraw immediately. The vault’s unlock delay must finish first, and you stop earning rewards once the unlock process begins. Always check the displayed delay before locking."
 msgstr ""
 
-#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:83
+#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:105
 msgid "You can buy up to {maxAmountLabel} per transaction during {sessionLabel} hours in the US."
 msgstr "在美国{sessionLabel}时段内，每笔交易最多可买入 {maxAmountLabel}。"
 
@@ -11958,7 +11982,7 @@ msgstr "你可以让 RToken 保持暂停状态，稍后再回来设置治理。"
 msgid "You can proceed directly."
 msgstr "你可以直接继续。"
 
-#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:88
+#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:110
 msgid "You can sell up to {maxAmountLabel} per transaction during {sessionLabel} hours in the US."
 msgstr "在美国{sessionLabel}时段内，每笔交易最多可卖出 {maxAmountLabel}。"
 
@@ -12077,7 +12101,7 @@ msgstr "你将收到"
 msgid "You'll receive:"
 msgstr "您将收到："
 
-#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:103
+#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:125
 msgid "You're getting a worse price than usual because {symbol}'s underlying stocks aren't trading right now."
 msgstr "由于 {symbol} 的基础股票当前未在交易，您获得的价格比平时更差。"
 

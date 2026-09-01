@@ -1,3 +1,4 @@
+import { cn } from '@/lib/utils'
 import { Trans, useLingui } from '@lingui/react/macro'
 import { X } from 'lucide-react'
 import type { ReactNode } from 'react'
@@ -30,6 +31,8 @@ const badge = (variant: PromptVariant): ReactNode => {
       return <Trans>High price impact</Trans>
     case 'closed-error':
       return <Trans>Trading unavailable</Trans>
+    case 'closed-heads-up':
+      return <Trans>US market closed</Trans>
     case 'capacity':
       return <Trans>Warning</Trans>
   }
@@ -43,8 +46,17 @@ const title = (variant: PromptVariant): ReactNode => {
       return <Trans>Expect a worse price</Trans>
     case 'closed-error':
       return <Trans>Temporarily unavailable</Trans>
+    case 'closed-heads-up':
+      return <Trans>Pricing may be worse right now</Trans>
   }
 }
+
+// The heads-up shows before the user has done anything, so it stays neutral —
+// warning styling on an unprompted notice trains users past the real warnings.
+const badgeClass = (variant: PromptVariant): string =>
+  variant === 'closed-heads-up'
+    ? 'border-border bg-muted text-muted-foreground'
+    : 'border-warning/30 bg-warning/10 text-warning'
 
 // The closed variants end with when to retry: an exact reopen time while the
 // market is closed, the next tradable session when an asset is paused.
@@ -76,6 +88,16 @@ const description = ({
   const isBuy = tab === 'buy'
 
   switch (variant) {
+    case 'closed-heads-up':
+      // Pre-quote, so it can't promise a number: names the cause and what it
+      // costs, and leaves the actual figure to the quote.
+      return (
+        <Trans>
+          {symbol} holds tokenized stocks, and they aren't trading right now.
+          Until they are, buys and sells route through secondary markets, where
+          price impact can be much higher than usual.
+        </Trans>
+      )
     case 'capacity':
       return (
         <>
@@ -132,11 +154,19 @@ const description = ({
 const LargeMintCardBody = (props: LargeMintCardBodyProps) => {
   const { variant, currentTimeLabel, reopenInLabel, onDismiss } = props
   const { t } = useLingui()
+  const showMarketHours =
+    (variant === 'closed-impact' || variant === 'closed-heads-up') &&
+    !!reopenInLabel
 
   return (
     <>
       <div className="flex items-center justify-between gap-3">
-        <div className="mb-3 inline-flex h-6 items-center rounded-full border border-warning/30 bg-warning/10 px-2.5 text-[11px] font-medium text-warning">
+        <div
+          className={cn(
+            'mb-3 inline-flex h-6 items-center rounded-full border px-2.5 text-[11px] font-medium',
+            badgeClass(variant)
+          )}
+        >
           {badge(variant)}
         </div>
         <button
@@ -155,7 +185,7 @@ const LargeMintCardBody = (props: LargeMintCardBodyProps) => {
         <p className="mt-1 text-sm font-light leading-5 text-muted-foreground">
           {description(props)}
         </p>
-        {variant === 'closed-impact' && reopenInLabel && (
+        {showMarketHours && (
           <p className="mt-2 text-sm font-light leading-5 text-muted-foreground">
             <Trans>
               US stock market hours are{' '}
@@ -163,9 +193,18 @@ const LargeMintCardBody = (props: LargeMintCardBodyProps) => {
               <span className="whitespace-nowrap">4:00 PM</span> Eastern Time.
               Current time is:{' '}
               <span className="whitespace-nowrap">{currentTimeLabel} ET</span>.
-              Please try again in{' '}
-              <span className="whitespace-nowrap">{reopenInLabel}</span>.
-            </Trans>
+            </Trans>{' '}
+            {variant === 'closed-heads-up' ? (
+              <Trans>
+                Pricing usually improves once they reopen, in{' '}
+                <span className="whitespace-nowrap">{reopenInLabel}</span>.
+              </Trans>
+            ) : (
+              <Trans>
+                Please try again in{' '}
+                <span className="whitespace-nowrap">{reopenInLabel}</span>.
+              </Trans>
+            )}
           </p>
         )}
       </div>
