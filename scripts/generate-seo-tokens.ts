@@ -26,6 +26,7 @@ interface IndexDTFItem {
   symbol: string
   name: string
   chainId: number
+  type: 'index' | 'yield'
   brand?: {
     icon?: string
     cover?: string
@@ -57,18 +58,17 @@ const DEFAULT_DESCRIPTION =
   'Reserve is the leading platform for permissionless DTFs and asset-backed currencies. Create, manage & trade tokenized indexes with 24/7 transparency.'
 const DEFAULT_IMAGE = 'https://reserve.org/assets/img/brand/og_image.webp'
 
-async function fetchIndexDTFs(chainId: number): Promise<IndexDTFItem[]> {
+async function fetchIndexDTFs(): Promise<IndexDTFItem[]> {
   try {
-    const response = await fetch(
-      `${API_URL}/discover/dtf?chainId=${chainId}&limit=100`
-    )
+    const response = await fetch(`${API_URL}/discover/dtfs?brand=true`)
     if (!response.ok) {
-      console.error(`Failed to fetch Index DTFs for chain ${chainId}`)
+      console.error('Failed to fetch Index DTFs')
       return []
     }
-    return await response.json()
+    const dtfs: IndexDTFItem[] = await response.json()
+    return dtfs.filter((dtf) => dtf.type === 'index')
   } catch (error) {
-    console.error(`Error fetching Index DTFs for chain ${chainId}:`, error)
+    console.error('Error fetching Index DTFs:', error)
     return []
   }
 }
@@ -99,13 +99,12 @@ async function main() {
   console.log('Fetching Index DTF tokens from API...\n')
 
   const allTokens: SEOToken[] = []
+  const allDtfs = await fetchIndexDTFs()
 
   for (const chainId of CHAINS_TO_FETCH) {
     const chainName = CHAIN_MAP[chainId]
-    console.log(`Fetching tokens for ${chainName} (${chainId})...`)
-
-    const tokens = await fetchIndexDTFs(chainId)
-    console.log(`  Found ${tokens.length} tokens`)
+    const tokens = allDtfs.filter((dtf) => dtf.chainId === chainId)
+    console.log(`Found ${tokens.length} tokens for ${chainName} (${chainId})`)
 
     for (const token of tokens) {
       // Fetch brand data for description
