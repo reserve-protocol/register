@@ -165,20 +165,20 @@ interface IndexDTFItem {
   symbol: string
   basket: BasketToken[]
   chainId: number
+  type: 'index' | 'yield'
 }
 
-async function fetchIndexDTFs(chainId: number): Promise<IndexDTFItem[]> {
+async function fetchIndexDTFs(): Promise<IndexDTFItem[]> {
   try {
-    const response = await fetch(
-      `${API_URL}/discover/dtf?chainId=${chainId}&limit=100`
-    )
+    const response = await fetch(`${API_URL}/discover/dtfs`)
     if (!response.ok) {
-      console.error(`Failed to fetch Index DTFs for chain ${chainId}`)
+      console.error('Failed to fetch Index DTFs')
       return []
     }
-    return await response.json()
+    const dtfs: IndexDTFItem[] = await response.json()
+    return dtfs.filter((dtf) => dtf.type === 'index')
   } catch (error) {
-    console.error(`Error fetching Index DTFs for chain ${chainId}:`, error)
+    console.error('Error fetching Index DTFs:', error)
     return []
   }
 }
@@ -290,10 +290,10 @@ async function main() {
   // Collect all unique tokens by symbol
   const tokensBySymbol = new Map<string, { address: string; chainId: number }>()
 
+  const allDtfs = await fetchIndexDTFs()
   for (const chainId of CHAINS_TO_FETCH) {
-    console.log(`Fetching DTFs for chain ${chainId}...`)
-    const dtfs = await fetchIndexDTFs(chainId)
-    console.log(`  Found ${dtfs.length} DTFs`)
+    const dtfs = allDtfs.filter((dtf) => dtf.chainId === chainId)
+    console.log(`Found ${dtfs.length} DTFs for chain ${chainId}`)
 
     for (const dtf of dtfs) {
       for (const token of dtf.basket || []) {
