@@ -490,6 +490,14 @@ msgstr "{swapCount}건 주문"
 msgid "{swapCount} orders"
 msgstr "{swapCount}건 주문"
 
+#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:95
+#~ msgid "{symbol} holds tokenized stocks, and they aren't trading right now. Until they are, buys and sells route through secondary markets, where price impact can be much higher than usual."
+#~ msgstr ""
+
+#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:106
+msgid "{symbol}'s stocks aren't trading, so buys and sells route through secondary markets — price impact can be much higher than usual."
+msgstr ""
+
 #: src/views/index-dtf/issuance/async-mint/components/ondo-limits-banner.tsx:67
 msgid "{symbolList} are outside trading hours, so minting and redeeming is unavailable right now."
 msgstr "{symbolList}은(는) 거래 시간이 아니므로 지금은 Mint와 Redeem을 이용할 수 없습니다."
@@ -3416,7 +3424,7 @@ msgstr "닫기"
 msgid "Dismiss invitation"
 msgstr "초대 닫기"
 
-#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:146
+#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:210
 msgid "Dismiss suggestion"
 msgstr "제안 닫기"
 
@@ -4177,7 +4185,7 @@ msgstr "Deployer 종료"
 msgid "Expanded J.1 to include energy usage data and the sources and methodologies used for its calculation."
 msgstr "J.1을 확장하여 에너지 사용 데이터와 그 계산에 사용된 출처 및 방법론을 포함했습니다."
 
-#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:43
+#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:46
 msgid "Expect a worse price"
 msgstr "불리한 가격 예상"
 
@@ -4493,7 +4501,7 @@ msgstr "찬성"
 msgid "For approved governors to fast-track proposals."
 msgstr "승인된 거버너가 제안을 신속 처리할 수 있도록 합니다."
 
-#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:93
+#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:126
 msgid "For larger amounts, split your order into multiple transactions."
 msgstr "더 큰 금액은 주문을 여러 건의 거래로 나누어 진행하세요."
 
@@ -4820,7 +4828,7 @@ msgid "High liquidity"
 msgstr "높은 유동성"
 
 #: src/views/index-dtf/auctions/views/rebalance/components/rebalance-liquidity-checker.tsx:244
-#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:30
+#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:31
 #: src/views/index-dtf/governance/views/propose/basket/components/proposal-liquidity-checker.tsx:311
 msgid "High price impact"
 msgstr "높은 가격 영향"
@@ -5735,6 +5743,10 @@ msgstr "시가총액:"
 msgid "Market closed"
 msgstr "시장 마감"
 
+#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:224
+msgid "Market opens"
+msgstr ""
+
 #: src/components/ui/swap.tsx:228
 #: src/views/index-dtf/issuance/async-mint/steps/configure-mint.tsx:232
 #: src/views/yield-dtf/issuance/components/zapV2/input/ZapInputMaxButton.tsx:39
@@ -6008,7 +6020,7 @@ msgstr "현재 Mint 가능"
 msgid "Minted"
 msgstr "Mint됨"
 
-#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:112
+#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:145
 msgid "Minting {symbol} is currently unavailable and we couldn't find another route to buy it."
 msgstr "현재 {symbol} Mint를 이용할 수 없으며 매수할 다른 경로를 찾지 못했습니다."
 
@@ -6575,6 +6587,10 @@ msgstr "제작자의 노트"
 msgid "Notes from the creator"
 msgstr "생성자의 노트"
 
+#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:225
+msgid "Now"
+msgstr ""
+
 #: src/views/yield-dtf/auctions/auctions-sidebar/StakingVaultRevenue.tsx:207
 msgid "Nudge"
 msgstr "넛지"
@@ -6732,7 +6748,7 @@ msgstr "Optimistic 제안자"
 msgid "or drag and drop it here"
 msgstr "또는 여기에 드래그 앤 드롭하세요"
 
-#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:41
+#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:44
 msgid "Order too large"
 msgstr "주문이 너무 큽니다"
 
@@ -7124,6 +7140,10 @@ msgstr "Wallet에서 {chainName}(으)로 직접 전환해 주세요"
 msgid "Please try again"
 msgstr "다시 시도해 주세요"
 
+#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:203
+#~ msgid "Please try again in <0>{reopenInLabel}</0>."
+#~ msgstr ""
+
 #: src/components/token-selector-drawer/index.tsx:212
 #: src/views/index-dtf/deploy/steps/basket/token-selector.tsx:359
 msgid "Please try again later"
@@ -7322,6 +7342,14 @@ msgstr "{unavailableSymbol}의 가격 정보 없음 — 시작할 수 없음"
 #: src/views/index-dtf/auctions/views/rebalance/updaters/rebalance-metrics-updater.tsx:138
 msgid "Price unavailable for a basket token — cannot launch auction."
 msgstr "바스켓 토큰의 가격 정보 없음 — 경매를 시작할 수 없습니다."
+
+#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:50
+msgid "Pricing may be worse right now"
+msgstr ""
+
+#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:198
+#~ msgid "Pricing usually improves once they reopen, in <0>{reopenInLabel}</0>."
+#~ msgstr ""
 
 #: src/components/layout/navigation/TokenNavigation.tsx:215
 #: src/views/yield-dtf/deploy/components/NavigationSidebar.tsx:20
@@ -7845,7 +7873,7 @@ msgstr "Redeem됨"
 msgid "Redeeming {0} for {1}."
 msgstr "{0}을(를) {1}(으)로 Redeem하는 중입니다."
 
-#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:117
+#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:150
 msgid "Redeeming {symbol} is currently unavailable and we couldn't find another route to sell it."
 msgstr "현재 {symbol} Redeem을 이용할 수 없으며 매도할 다른 경로를 찾지 못했습니다."
 
@@ -8037,6 +8065,10 @@ msgstr "백서의 형식 표준 지침이 담긴 양식 및 표준 열을 제거
 #: src/views/index-dtf/overview/components/index-disclousure.tsx:83
 msgid "Removed the word \"ongoing\" from Section E.18 (no material impact)."
 msgstr "섹션 E.18에서 \"ongoing\"이라는 단어를 삭제했습니다 (실질적 영향 없음)."
+
+#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:223
+msgid "Reopens in"
+msgstr ""
 
 #: src/components/index-basket-setup/csv-import.tsx:197
 #: src/views/index-dtf/governance/views/propose/basket/components/proposal-basket-setup/basket-csv-setup.tsx:240
@@ -9528,7 +9560,7 @@ msgstr "Telegram 링크"
 msgid "Telegram username"
 msgstr "Telegram 사용자명"
 
-#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:45
+#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:48
 msgid "Temporarily unavailable"
 msgstr "일시적으로 이용 불가"
 
@@ -9633,7 +9665,7 @@ msgstr "long freezer는 RToken 시스템을 장기간 동결할 수 있는 권�
 msgid "The mandate describes what goals its governors should try to achieve. By briefly explaining the RToken's purpose and what the RToken is intended to do, it provides common ground for the governors to decide upon priorities and how to weigh tradeoffs."
 msgstr "맨데이트는 거버너가 달성해야 할 목표를 설명합니다. RToken의 목적과 RToken이 의도하는 바를 간략히 설명함으로써, 거버너가 우선순위를 정하고 트레이드오프를 어떻게 따져볼지 결정하는 데 공통의 기반을 제공합니다."
 
-#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:57
+#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:80
 msgid "The market reopens {nextOpenLabel}."
 msgstr "시장은 {nextOpenLabel}에 다시 열립니다."
 
@@ -10304,7 +10336,7 @@ msgstr "{0}을(를) 담보로 거래"
 msgid "Trade remaining {0} into collateral"
 msgstr "남은 {0}을(를) 담보로 거래"
 
-#: src/views/index-dtf/components/zapper/large-mint-prompt.tsx:204
+#: src/views/index-dtf/components/zapper/large-mint-prompt.tsx:234
 msgid "Trade suggestion"
 msgstr "거래 제안"
 
@@ -10381,7 +10413,7 @@ msgstr "{0}에 거래가 재개됩니다."
 msgid "Trading Timelock"
 msgstr "Trading Timelock"
 
-#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:32
+#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:33
 msgid "Trading unavailable"
 msgstr "거래 불가"
 
@@ -10514,11 +10546,11 @@ msgstr "필터를 조정하거나 나중에 다시 확인해 보세요"
 msgid "Try again"
 msgstr "다시 시도"
 
-#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:60
+#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:83
 msgid "Try again during {nextSessionLabel} hours in the US."
 msgstr "미국 {nextSessionLabel} 시간대에 다시 시도해 주세요."
 
-#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:62
+#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:85
 msgid "Try again later when trading resumes."
 msgstr "거래가 재개되면 나중에 다시 시도해 주세요."
 
@@ -10898,9 +10930,17 @@ msgstr "업그레이드 대상"
 msgid "Uploading files..."
 msgstr "파일 업로드 중..."
 
+#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:35
+msgid "US market closed"
+msgstr ""
+
+#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:190
+#~ msgid "US stock market hours are <0>9:30 AM</0> to <1>4:00 PM</1> Eastern Time. Current time is: <2>{currentTimeLabel} ET</2>."
+#~ msgstr ""
+
 #: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:160
-msgid "US stock market hours are <0>9:30 AM</0> to <1>4:00 PM</1> Eastern Time. Current time is: <2>{currentTimeLabel} ET</2>. Please try again in <3>{reopenInLabel}</3>."
-msgstr "미국 주식 시장 시간은 동부 시간 기준 <0>9:30 AM</0>부터 <1>4:00 PM</1>까지입니다. 현재 시간: <2>{currentTimeLabel} ET</2>. <3>{reopenInLabel}</3> 후 다시 시도하세요."
+#~ msgid "US stock market hours are <0>9:30 AM</0> to <1>4:00 PM</1> Eastern Time. Current time is: <2>{currentTimeLabel} ET</2>. Please try again in <3>{reopenInLabel}</3>."
+#~ msgstr "미국 주식 시장 시간은 동부 시간 기준 <0>9:30 AM</0>부터 <1>4:00 PM</1>까지입니다. 현재 시간: <2>{currentTimeLabel} ET</2>. <3>{reopenInLabel}</3> 후 다시 시도하세요."
 
 #: src/views/explorer/components/transactions/useTransactionColumns.tsx:99
 msgid "USD Value"
@@ -11598,7 +11638,7 @@ msgstr "거버넌스용 새 ERC20을 출시하시겠습니까?"
 msgid "Warmup period (s)"
 msgstr "워밍업 기간 (초)"
 
-#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:34
+#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:37
 #: src/views/yield-dtf/issuance/components/warnings/index.tsx:54
 #: src/views/yield-dtf/issuance/components/warnings/index.tsx:87
 msgid "Warning"
@@ -11942,7 +11982,7 @@ msgstr "수익:"
 msgid "You can begin the unlock process at any time, but you cannot withdraw immediately. The vault’s unlock delay must finish first, and you stop earning rewards once the unlock process begins. Always check the displayed delay before locking."
 msgstr ""
 
-#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:83
+#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:116
 msgid "You can buy up to {maxAmountLabel} per transaction during {sessionLabel} hours in the US."
 msgstr "미국 {sessionLabel} 시간 동안 거래당 최대 {maxAmountLabel}까지 매수할 수 있습니다."
 
@@ -11958,7 +11998,7 @@ msgstr "RToken을 일시중지 상태로 두고 나중에 거버넌스 설정으
 msgid "You can proceed directly."
 msgstr "바로 진행할 수 있습니다."
 
-#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:88
+#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:121
 msgid "You can sell up to {maxAmountLabel} per transaction during {sessionLabel} hours in the US."
 msgstr "미국 {sessionLabel} 시간 동안 거래당 최대 {maxAmountLabel}까지 매도할 수 있습니다."
 
@@ -12077,7 +12117,7 @@ msgstr "받게 될 수량"
 msgid "You'll receive:"
 msgstr "받게 될 금액:"
 
-#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:103
+#: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:136
 msgid "You're getting a worse price than usual because {symbol}'s underlying stocks aren't trading right now."
 msgstr "{symbol}의 기초 주식이 현재 거래되지 않아 평소보다 불리한 가격이 적용되고 있습니다."
 

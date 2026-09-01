@@ -1,6 +1,6 @@
 ---
 title: Zapper Prompt
-updated: 2026-07-23
+updated: 2026-09-01
 type: domain
 sources:
   - src/views/index-dtf/components/zapper/**
@@ -39,17 +39,27 @@ basket-weight fraction of a mint, so the cap is `min(capacityUsd / weight)`
 
 ## Variants (priority order, reducer-enforced; all informational, no CTA)
 
-1. `capacity` (2) — input USD > floored weighted cap, **only while minting is
+1. `capacity` (3) — input USD > floored weighted cap, **only while minting is
    available**. Pre-quote (input-derived). Copy names the session and invites
    splitting into multiple transactions (limits are per transaction).
-2. `closed-impact` (1) — minting unavailable + resolved **non-enso** quote
+2. `closed-impact` (2) — minting unavailable + resolved **non-enso** quote
    with `truePriceImpact > 1`. The user pays an un-arbitraged premium
    (secondary/RFQ liquidity is equally stale while arbitrage is blocked);
    copy says when to come back.
-3. `closed-error` (0) — minting unavailable + quote error (no route at all).
+3. `closed-error` (1) — minting unavailable + quote error (no route at all).
    Same come-back copy.
+4. `closed-heads-up` (0) — minting unavailable, nothing else required: no
+   input, no quote. Shown from the moment the zapper is in context so the
+   expectation is set before the user picks an amount (users read a 90%-impact
+   quote as a broken product, not a closed market — RES-2234). Neutral badge
+   styling, not warning: an unprompted notice in warning colors trains users
+   past the real warnings. It shares the market-hours paragraph with
+   `closed-impact`, but closes on "pricing usually improves once they reopen"
+   rather than "try again" — the trade is possible, just worse. On mobile it
+   renders as a bottom banner instead of the dialog the quote-driven variants
+   use.
 
-Every quote-derived signal needs input ≥ $100 (`MIN_PROMPT_INPUT`). A high
+Every *quote-derived* signal needs input ≥ $100 (`MIN_PROMPT_INPUT`). A high
 price impact or quote error while minting is healthy shows nothing — the
 zapper already surfaced the best quote across every source, and its own error
 state covers no-route.
@@ -77,8 +87,16 @@ the current session means "tomorrow" and uses the generic fallback copy).
   flips false — the "come back later" copy must not pin through the market
   reopening (Ondo state is endpoint-derived, so the flip is a real transition,
   not a refetch gap).
-- Every raw signal must imply `isApplicable` (input ≥ $100), or refetch cycles
-  reset+relatch and re-pop the mobile dialog.
+- Every *quote-derived* raw signal must imply `isApplicable` (input ≥ $100), or
+  refetch cycles reset+relatch and re-pop the mobile dialog. `closed-heads-up`
+  is exempt: it derives from the Ondo endpoint alone, so it can't flicker.
+- Escalating past a **dismissed** card clears the dismissal — a waved-away
+  heads-up must not swallow the quote's actual price impact.
+- `closed-heads-up` outlives a clean quote (the market is still closed); only
+  minting becoming available, or leaving the context, drops it.
+- Presentations carry `data-testid="mint-prompt-card"` +
+  `data-variant="<variant>"`; e2e drives states through `overrides.api` on
+  `/dtf/ondo` (`e2e/tests/index-dtf/issuance/ondo-market-closed.spec.ts`).
 - The tab-switch reset effect must stay declared after the reducer effect
   (declaration order decides who wins the commit). Folding the tab into the
   reducer is backlogged in [[progress]].

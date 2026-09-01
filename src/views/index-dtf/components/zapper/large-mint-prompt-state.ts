@@ -6,6 +6,7 @@ export type MintPromptVariant =
   | 'capacity'
   | 'closed-impact'
   | 'closed-error'
+  | 'closed-heads-up'
   | null
 
 export type MintPromptState = {
@@ -20,6 +21,8 @@ export type MintPromptSignals = {
   rawClosedImpact: boolean
   // In context + Ondo minting unavailable + a quote error.
   rawClosedError: boolean
+  // In context + Ondo minting unavailable. No input or quote needed.
+  rawClosedHeadsUp: boolean
   // A quote has resolved (the zapper found a route).
   hasValidQuote: boolean
   // Ondo minting is currently blocked — a latched closed card must not outlive it.
@@ -95,15 +98,19 @@ export const deriveMintPromptSignals = ({
     mintingUnavailable &&
     hasQuoteError &&
     inputValue >= MIN_PROMPT_INPUT,
+  // Users read a 90%-impact quote as a broken product, so the expectation has
+  // to be set before they pick an amount — hence no input floor here.
+  rawClosedHeadsUp: inContext && mintingUnavailable,
   hasValidQuote,
   mintingUnavailable,
   isApplicable: inContext && inputValue >= MIN_PROMPT_INPUT,
 })
 
 const VARIANT_PRIORITY: Record<Exclude<MintPromptVariant, null>, number> = {
-  capacity: 2,
-  'closed-impact': 1,
-  'closed-error': 0,
+  capacity: 3,
+  'closed-impact': 2,
+  'closed-error': 1,
+  'closed-heads-up': 0,
 }
 
 // Latches which notice (if any) the card shows. The card must persist through
@@ -117,6 +124,7 @@ export const reduceMintPrompt = (
     rawCapacity,
     rawClosedImpact,
     rawClosedError,
+    rawClosedHeadsUp,
     hasValidQuote,
     mintingUnavailable,
     isApplicable,
@@ -135,7 +143,9 @@ export const reduceMintPrompt = (
     ? ('closed-impact' as const)
     : rawClosedError
       ? ('closed-error' as const)
-      : null
+      : rawClosedHeadsUp
+        ? ('closed-heads-up' as const)
+        : null
 
   if (winner) {
     // Quotes race providers and refetch, so consecutive quotes can raise
@@ -145,7 +155,13 @@ export const reduceMintPrompt = (
     const keep =
       base.variant !== null &&
       VARIANT_PRIORITY[base.variant] > VARIANT_PRIORITY[winner]
-    return { variant: keep ? base.variant : winner, dismissed: base.dismissed }
+    const variant = keep ? base.variant : winner
+    // Escalating is a new, more serious concern: a dismissed heads-up must not
+    // swallow the quote's actual price impact.
+    return {
+      variant,
+      dismissed: variant === base.variant ? base.dismissed : false,
+    }
   }
 
   // Definite "no longer applicable": a valid route resolved with no concern
