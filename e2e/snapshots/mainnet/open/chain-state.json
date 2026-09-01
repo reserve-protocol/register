@@ -1,7 +1,7 @@
 {
   "_meta": {
     "source": "https://ethereum-rpc.publicnode.com",
-    "capturedAt": "2026-07-10T02:58:35.152Z",
+    "capturedAt": "2026-08-25T16:35:16.065Z",
     "dtf": "0x323c03c48660fe31186fa82c289b0766d331ce21",
     "chainId": 1
   },
@@ -20,19 +20,19 @@
         "0xdbdb4d16eda451d0503b854cf79d55697f90c8df"
       ],
       "amounts": [
-        "0x293036d27f096e0b9f",
-        "0xbfc3bab6d6cff06380c",
-        "0x490976a2a440deddda27",
-        "0x659bc910e22a62b7961",
-        "0x2871eafe45a89215e5",
-        "0x171a4194c50f9cf93522",
-        "0x1579b1ac03e33b2c546bc",
-        "0xecda5c8aca3108db408",
-        "0x49f05daae7226d9f6d",
-        "0x467ff5afe82e7098a9"
+        "0x279f254f3101465242",
+        "0xb8786f987c5762cdbf8",
+        "0x4642457472b94e309f22",
+        "0x61be6135fb2866fd891",
+        "0x26e81679c8a1be1064",
+        "0x16394bf1e0ecbe7e9a9c",
+        "0x14a894476dab7c687f520",
+        "0xe3d805e37c7c690fba4",
+        "0x472064175cd224ca7c",
+        "0x43d179005de7112c93"
       ]
     },
-    "totalSupply": "0x5e7b3c0de9ebd3712004",
+    "totalSupply": "0x5af9508fce8824d70ef1",
     "decimals": 18,
     "version": "4.0.0",
     "basketTokens": [

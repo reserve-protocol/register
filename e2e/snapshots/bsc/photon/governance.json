@@ -1,7 +1,7 @@
 {
   "_meta": {
     "source": "https://api.goldsky.com/api/public/project_cmgzim3e100095np2gjnbh6ry/subgraphs/dtf-index-bsc/prod/gn",
-    "capturedAt": "2026-07-14T00:51:27.535Z",
+    "capturedAt": "2026-08-25T16:35:49.218Z",
     "dtf": "0xa0fe4e0aeca5479705ce996615b2eacb6b6a10fb",
     "chainId": 56,
     "query": "getGovernanceStats"
@@ -127,16 +127,16 @@
             "id": "5401711146639244377742387518559779721239034479390927824360819366483007584987",
             "description": "# Mandate change proposal \n [Mandate change proposal](Mandate change proposal) \n Mandate change proposal",
             "creationTime": "1783470235",
-            "state": "ACTIVE",
+            "state": "EXECUTED",
             "forWeightedVotes": "87912000000000000000000000",
             "abstainWeightedVotes": "0",
             "againstWeightedVotes": "0",
-            "executionETA": null,
-            "executionTime": null,
+            "executionETA": "1784851380",
+            "executionTime": "1786545563",
             "quorumVotes": "11344038738202524499024611",
             "voteStart": "1783643035",
             "voteEnd": "1783902235",
-            "executionBlock": null,
+            "executionBlock": "115522111",
             "creationBlock": "108691249",
             "proposer": {
               "address": "0xb209eed4d80fb47e5c16577e44dad1073c5c5015"
@@ -185,20 +185,30 @@
     ],
     "stakingToken": {
       "id": "0xe744c8157c346b2931807f42552c8cbc0bb6d34f",
-      "totalDelegates": "11",
+      "totalDelegates": "47",
       "token": {
-        "totalSupply": "130695268906433002916726348"
+        "totalSupply": "441417450065035720156805493"
       },
       "delegates": [
         {
           "address": "0x49b4564cb533e092d43c628386258f0b78d86c52",
           "delegatedVotes": "78228029.41490359",
-          "numberVotes": 6
+          "numberVotes": 9
+        },
+        {
+          "address": "0x6774db46ff94ff6bc70a5f69c438a3630ee52e68",
+          "delegatedVotes": "60747378.494504316800534314",
+          "numberVotes": 0
+        },
+        {
+          "address": "0x67510e1104112484e73c20bb609070989e4e3f9b",
+          "delegatedVotes": "53757053.092641823434108346",
+          "numberVotes": 0
         },
         {
           "address": "0xb209eed4d80fb47e5c16577e44dad1073c5c5015",
           "delegatedVotes": "24990000",
-          "numberVotes": 12
+          "numberVotes": 13
         },
         {
           "address": "0x5188dbf722df94569d41f3c8a32e6b76939a0ad5",
@@ -206,39 +216,29 @@
           "numberVotes": 0
         },
         {
-          "address": "0x1f55a8e2d2d01b235bbcff4abd812d1d162e4351",
-          "delegatedVotes": "1196146.05859914",
+          "address": "0x7ed457eced2dbe2a90721dcc2cfda60f77d1388f",
+          "delegatedVotes": "21146051.652376238722711011",
+          "numberVotes": 0
+        },
+        {
+          "address": "0xad704b7ec2dadef0d061d0379418f3e60e8f1d27",
+          "delegatedVotes": "19990680.697630537767626441",
+          "numberVotes": 0
+        },
+        {
+          "address": "0x4f3beac0277a9e80fc49d2d60a0849fcdd62ed35",
+          "delegatedVotes": "19471271.721040612309498502",
+          "numberVotes": 0
+        },
+        {
+          "address": "0xb996408cbeecd330ba24a74a14314c4d3eda42ef",
+          "delegatedVotes": "17027748.44032731",
           "numberVotes": 0
         },
         {
           "address": "0x616b7de7560aa30d7ee6d361660309167a4c5139",
-          "delegatedVotes": "929597.64591993",
+          "delegatedVotes": "17026627.831676614268069127",
           "numberVotes": 0
-        },
-        {
-          "address": "0x6f009e8dc2ae81250060987abfd94dd555326012",
-          "delegatedVotes": "800298.9",
-          "numberVotes": 0
-        },
-        {
-          "address": "0xcbd327fe829015636e8e473ccf29f7dbc87c6034",
-          "delegatedVotes": "694405.2546493",
-          "numberVotes": 0
-        },
-        {
-          "address": "0x3aa4fc0b7aca8454de6d7f4f5b49d159e970b05f",
-          "delegatedVotes": "323102.9021715",
-          "numberVotes": 0
-        },
-        {
-          "address": "0x0ce43ee9d1b9a3ab62ff19f23211a889e58ff808",
-          "delegatedVotes": "1746.306763437926480229",
-          "numberVotes": 0
-        },
-        {
-          "address": "0x8d2aa07f1a245d72b009c344690edd8e22a9e993",
-          "delegatedVotes": "500",
-          "numberVotes": 2
         }
       ]
     }

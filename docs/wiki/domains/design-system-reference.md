@@ -1186,15 +1186,16 @@ evidence or product constraint that replaces it. These rules do not promote
 the transaction candidates, change accepted foundations, restyle the package,
 or authorize production adoption.
 
-The installed Zapper's delayed quote-search overlay is part of that product
-evidence: progressive search language, elapsed time, and an animated output
-surface communicate a genuinely longer upstream operation. The lab exposes a
-bounded, persistent `Quote search` review state (and also enters it through
-Refresh) so it can be found and inspected without racing a timer, and routes
-the current animated artwork so the state is judged in motion rather than as a
-still reconstruction. The package continues to own its exact animation, delay,
-quote mechanics, and production implementation. Review and quote search
-preserve one geometry: input selection,
+The installed Zapper's quote-search overlay is part of that product evidence:
+progressive search language, elapsed time, and an animated output surface
+communicate a genuinely longer upstream operation. The lab exposes a bounded,
+persistent `Quote search` review state (and also enters it through Refresh) so
+it can be found and inspected without racing a timer, and keeps its reviewed
+animation in motion rather than presenting a still reconstruction. The package
+continues to own its latest exact animation, timing, quote mechanics, and
+production implementation; after the 2.10.5 reconciliation the lab must not
+claim pixel or speed parity without a same-build comparison. Review and quote
+search preserve one geometry: input selection,
 Max, quote-details trigger, and action remain mounted; unavailable controls are
 disabled rather than removed; an open details region replaces uncertain values
 with equal-height skeleton rows. Only the output region materially transforms,

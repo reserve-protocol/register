@@ -85,10 +85,13 @@ export function computeTierHint(files, lenses, maxLowFiles = 5) {
   return { profile, radius, size };
 }
 
-// Area guides: CLAUDE.md files living beside the code they describe. A diff that
-// touches an area but not its guide gets a directive to re-verify the guide.
-// Every ancestor guide counts (a nested area can be described at two levels);
-// the repo-root CLAUDE.md is the router, not an area guide, so it never matches.
+// Area guides: AGENTS.md/CLAUDE.md files living beside the code they describe. A diff
+// that touches an area but not its guide gets a directive to re-verify the guide.
+// Every ancestor guide counts (a nested area can be described at two levels); the
+// repo-root router is not an area guide, so it never matches. A directory holding
+// both names (symlink convention) counts once, reported as its AGENTS.md.
+const GUIDE_NAMES = ["AGENTS.md", "CLAUDE.md"];
+
 export function staleAreaGuides(files, root = repoRoot()) {
   const changed = new Set(files);
   const guides = new Map();
@@ -96,17 +99,17 @@ export function staleAreaGuides(files, root = repoRoot()) {
   for (const file of files) {
     const segments = file.split("/");
     for (let depth = segments.length - 1; depth > 0; depth--) {
-      const guide = `${segments.slice(0, depth).join("/")}/CLAUDE.md`;
-      let exists = checked.get(guide);
-      if (exists === undefined) {
-        exists = existsSync(join(root, guide));
-        checked.set(guide, exists);
+      const dir = segments.slice(0, depth).join("/");
+      let guide = checked.get(dir);
+      if (guide === undefined) {
+        guide = GUIDE_NAMES.map((name) => `${dir}/${name}`).find((path) => existsSync(join(root, path))) ?? null;
+        checked.set(dir, guide);
       }
-      if (exists) guides.set(guide, (guides.get(guide) ?? 0) + 1);
+      if (guide) guides.set(guide, (guides.get(guide) ?? 0) + 1);
     }
   }
   return [...guides.entries()]
-    .filter(([guide]) => !changed.has(guide))
+    .filter(([guide]) => !GUIDE_NAMES.some((name) => changed.has(`${guide.slice(0, guide.lastIndexOf("/"))}/${name}`)))
     .map(([guide, touched]) => ({ guide, touched }))
     .sort((a, b) => a.guide.localeCompare(b.guide));
 }

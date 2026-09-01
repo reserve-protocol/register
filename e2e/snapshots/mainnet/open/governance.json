@@ -1,7 +1,7 @@
 {
   "_meta": {
     "source": "https://api.goldsky.com/api/public/project_cmgzim3e100095np2gjnbh6ry/subgraphs/dtf-index-mainnet/prod/gn",
-    "capturedAt": "2026-07-09T21:47:34.481Z",
+    "capturedAt": "2026-08-25T16:35:16.998Z",
     "dtf": "0x323c03c48660fe31186fa82c289b0766d331ce21",
     "chainId": 1,
     "query": "getGovernanceStats"

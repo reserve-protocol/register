@@ -1,7 +1,7 @@
 {
   "_meta": {
     "source": "https://base-rpc.publicnode.com",
-    "capturedAt": "2026-07-10T02:58:34.556Z",
+    "capturedAt": "2026-08-25T16:34:48.995Z",
     "dtf": "0x4da9a0f397db1397902070f93a4d6ddbc0e0e6e8",
     "chainId": 8453
   },
@@ -18,17 +18,17 @@
         "0x15d0e0c55a3e7ee67152ad7e89acf164253ff68d"
       ],
       "amounts": [
-        "0x55aeded5",
-        "0xdc2d6df7050a4a92c",
-        "0x3793bbff4f40c17f8fcb",
-        "0x90b7f6bf86023e62a8",
-        "0x8f651c7c6c693f003f0c",
-        "0x2731b32d15ff97df6f9b",
-        "0x1af48ea990d234743d9b",
-        "0x96566d2cf60872d04b"
+        "0x9a7991e4",
+        "0x18cf324452a7c7c1e1",
+        "0x6432a78788a192f409e7",
+        "0x104e866458bef6c2b88",
+        "0x102857ea7763b3ec22a25",
+        "0x46a962a2a00521f31a6a",
+        "0x3098c239621771720a72",
+        "0x10f09c017dc14363625"
       ]
     },
-    "totalSupply": "0x5551350a2ba2eec5ab19",
+    "totalSupply": "0x9a1bc690bc8d9c907d6f",
     "decimals": 18,
     "version": "5.0.0",
     "basketTokens": [

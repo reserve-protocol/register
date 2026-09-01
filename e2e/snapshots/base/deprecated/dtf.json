@@ -1,7 +1,7 @@
 {
   "_meta": {
     "source": "https://api.goldsky.com/api/public/project_cmgzim3e100095np2gjnbh6ry/subgraphs/dtf-index-base/prod/gn",
-    "capturedAt": "2026-07-10T00:20:55.181Z",
+    "capturedAt": "2026-08-25T16:35:26.022Z",
     "dtf": "0x47686106181b3cefe4eaf94c4c10b48ac750370b",
     "chainId": 8453,
     "query": "GetIndexDTF"
@@ -110,8 +110,8 @@
         "decimals": 18,
         "totalSupply": "25630323835171416787539",
         "currentHolderCount": "8132",
-        "cumulativeHolderCount": "10158",
-        "transferCount": "90917",
+        "cumulativeHolderCount": "10165",
+        "transferCount": "91341",
         "mintCount": "14829",
         "burnCount": "7329",
         "totalBurned": "3760330468709926842754910",
@@ -125,18 +125,18 @@
           "name": "Vote Lock vlVIRTUAL-VTF",
           "symbol": "vlVIRTUAL-VTF",
           "decimals": 18,
-          "totalSupply": "4327230779780806421120",
-          "currentHolderCount": "23",
+          "totalSupply": "3490400820806101911896",
+          "currentHolderCount": "21",
           "cumulativeHolderCount": "45",
           "transferCount": "11",
           "mintCount": "100",
-          "burnCount": "26",
-          "totalBurned": "21045689377122667053009",
+          "burnCount": "28",
+          "totalBurned": "21882519336097371562233",
           "totalMinted": "25372920156903473474129"
         },
-        "currentDelegates": "22",
+        "currentDelegates": "20",
         "totalDelegates": "45",
-        "delegatedVotesRaw": "3326358783901531796771",
+        "delegatedVotesRaw": "2489528824926827287547",
         "currentOptimisticDelegates": "0",
         "totalOptimisticDelegates": "0",
         "optimisticDelegatedVotesRaw": "0",
@@ -176,7 +176,6 @@
           }
         },
         "legacyGovernance": [
-          "0x0000000000000000000000000000000000000000",
           "0xdbd9c5a83a3684e80d51fd1c00af4a1fbfe03d14"
         ],
         "rewards": [

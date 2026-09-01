@@ -84,11 +84,10 @@ const VoteModal = (props: ModalProps) => {
 
   return (
     <Modal {...props} title={t`Voting`} style={{ maxWidth: 420 }}>
-      <div className="flex flex-col items-center">
-        <span className="text-xl font-medium">
-          "
+      <div className="flex flex-col items-center min-w-0">
+        <span className="text-xl font-medium text-center [overflow-wrap:anywhere]">
           {proposal?.description
-            ? getProposalTitle(proposal.description)
+            ? `“${getProposalTitle(proposal.description)}”`
             : t`Loading...`}
         </span>
         <div className="flex items-center mt-2">

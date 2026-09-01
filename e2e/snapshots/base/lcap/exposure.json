@@ -1,7 +1,7 @@
 {
   "_meta": {
     "source": "https://api.reserve.org/dtf/exposure?chainId=8453&address=0x4da9a0f397db1397902070f93a4d6ddbc0e0e6e8&period=7d",
-    "capturedAt": "2026-07-09T21:47:22.999Z",
+    "capturedAt": "2026-08-25T16:34:46.934Z",
     "dtf": "0x4da9a0f397db1397902070f93a4d6ddbc0e0e6e8",
     "chainId": 8453,
     "window": {
@@ -23,29 +23,29 @@
         {
           "address": "0xcbB7C0000aB88B473b1f5aFd9ef808440eed33Bf",
           "symbol": "cbBTC",
-          "weight": 42.48,
-          "change": 0.029887128780649357,
-          "marketCap": 5821283562,
+          "weight": 41.14,
+          "change": 0.22470284708774343,
+          "marketCap": 7726930632,
           "bridge": {
             "id": "coinbase",
             "name": "Coinbase",
             "url": "https://www.coinbase.com",
             "description": "Coinbase Wrapped Bitcoin - institutional-grade wrapped Bitcoin on Base",
             "logo": "https://assets.coingecko.com/coins/images/40143/large/cbbtc.webp?1726136727",
+            "logoDark": null,
             "risks": [
               "Custodial risk - Bitcoin is held by Coinbase Custody",
               "Smart contract risk - cbBTC contract implementation",
               "Centralization risk - Depends on Coinbase as the issuer"
             ],
-            "logoDark": null,
             "wrappedVersion": true
           }
         }
       ],
-      "totalWeight": 42.48,
-      "change": 0.029887128780649357,
+      "totalWeight": 41.14,
+      "change": 0.22470284708774343,
       "hasNewlyAdded": false,
-      "marketCap": 1267142805185
+      "marketCap": 1591919624496
     },
     {
       "native": {
@@ -60,28 +60,28 @@
         {
           "address": "0x4200000000000000000000000000000000000006",
           "symbol": "WETH",
-          "weight": 20.72,
-          "change": 0.028934828560279915,
-          "marketCap": 492236797,
+          "weight": 22.73,
+          "change": 0.29322901225280507,
+          "marketCap": 572478779,
           "bridge": {
             "id": "native_wrap",
             "name": "Native Wrapped",
             "url": "",
             "description": "Native blockchain wrapped version (e.g., WBTC for BTC, WETH for ETH)",
             "logo": "",
+            "logoDark": null,
             "risks": [
               "Smart contract risk - Wrapper contracts could have vulnerabilities",
               "Custodial risk - Underlying assets are held by the wrapper protocol"
             ],
-            "logoDark": null,
             "wrappedVersion": true
           }
         }
       ],
-      "totalWeight": 20.72,
-      "change": 0.028934828560279915,
+      "totalWeight": 22.73,
+      "change": 0.29322901225280507,
       "hasNewlyAdded": false,
-      "marketCap": 210540113480
+      "marketCap": 298820465016
     },
     {
       "native": {
@@ -96,29 +96,29 @@
         {
           "address": "0x2615a94df961278DcbC41Fb0a54fEc5f10a693aE",
           "symbol": "uXRP",
-          "weight": 13.46,
-          "change": 0.013542085552208332,
-          "marketCap": 1942799,
+          "weight": 13.98,
+          "change": 0.46781135393404966,
+          "marketCap": 2748052,
           "bridge": {
             "id": "universal",
             "name": "Universal Protocol",
             "url": "https://universal.xyz",
             "description": "Asset-backed token platform with 1:1 backing and Coinbase Custody",
             "logo": "https://storage.reserve.org/universal.svg",
+            "logoDark": null,
             "risks": [
               "Smart contract risk - Tokens are minted and burned using open-source smart contracts",
               "Custodial risks - A custodian holds the underlying asset with Coinbase Custody",
               "Liquidity risks - Redemptions rely on liquidity pools or merchant networks"
             ],
-            "logoDark": null,
             "wrappedVersion": false
           }
         }
       ],
-      "totalWeight": 13.46,
-      "change": 0.013542085552208332,
+      "totalWeight": 13.98,
+      "change": 0.46781135393404966,
       "hasNewlyAdded": false,
-      "marketCap": 68509965270
+      "marketCap": 92431765875
     },
     {
       "native": {
@@ -133,29 +133,29 @@
         {
           "address": "0x9B8Df6E244526ab5F6e6400d331DB28C8fdDdb55",
           "symbol": "uSOL",
-          "weight": 9.73,
-          "change": -0.033030166347329706,
-          "marketCap": 2080150,
+          "weight": 9.5,
+          "change": 0.2757526103530599,
+          "marketCap": 2458769,
           "bridge": {
             "id": "universal",
             "name": "Universal Protocol",
             "url": "https://universal.xyz",
             "description": "Asset-backed token platform with 1:1 backing and Coinbase Custody",
             "logo": "https://storage.reserve.org/universal.svg",
+            "logoDark": null,
             "risks": [
               "Smart contract risk - Tokens are minted and burned using open-source smart contracts",
               "Custodial risks - A custodian holds the underlying asset with Coinbase Custody",
               "Liquidity risks - Redemptions rely on liquidity pools or merchant networks"
             ],
-            "logoDark": null,
             "wrappedVersion": false
           }
         }
       ],
-      "totalWeight": 9.73,
-      "change": -0.033030166347329706,
+      "totalWeight": 9.5,
+      "change": 0.2757526103530599,
       "hasNewlyAdded": false,
-      "marketCap": 45334479419
+      "marketCap": 57343224744
     },
     {
       "native": {
@@ -170,29 +170,29 @@
         {
           "address": "0x12E96C2BFEA6E835CF8Dd38a5834fa61Cf723736",
           "symbol": "uDOGE",
-          "weight": 2.32,
-          "change": -0.018156713123684994,
-          "marketCap": 258202,
+          "weight": 2.18,
+          "change": 0.26643083623422725,
+          "marketCap": 357899,
           "bridge": {
             "id": "universal",
             "name": "Universal Protocol",
             "url": "https://universal.xyz",
             "description": "Asset-backed token platform with 1:1 backing and Coinbase Custody",
             "logo": "https://storage.reserve.org/universal.svg",
+            "logoDark": null,
             "risks": [
               "Smart contract risk - Tokens are minted and burned using open-source smart contracts",
               "Custodial risks - A custodian holds the underlying asset with Coinbase Custody",
               "Liquidity risks - Redemptions rely on liquidity pools or merchant networks"
             ],
-            "logoDark": null,
             "wrappedVersion": false
           }
         }
       ],
-      "totalWeight": 2.32,
-      "change": -0.018156713123684994,
+      "totalWeight": 2.18,
+      "change": 0.26643083623422725,
       "hasNewlyAdded": false,
-      "marketCap": 11346260509
+      "marketCap": 13871553613
     },
     {
       "native": {
@@ -208,28 +208,28 @@
           "address": "0xa3A34A0D9A08CCDDB6Ed422Ac0A28a06731335aA",
           "symbol": "uADA",
           "weight": 1.44,
-          "change": 0.03842565327794329,
-          "marketCap": 169870,
+          "change": 0.22480609611435115,
+          "marketCap": 31.3,
           "bridge": {
             "id": "universal",
             "name": "Universal Protocol",
             "url": "https://universal.xyz",
             "description": "Asset-backed token platform with 1:1 backing and Coinbase Custody",
             "logo": "https://storage.reserve.org/universal.svg",
+            "logoDark": null,
             "risks": [
               "Smart contract risk - Tokens are minted and burned using open-source smart contracts",
               "Custodial risks - A custodian holds the underlying asset with Coinbase Custody",
               "Liquidity risks - Redemptions rely on liquidity pools or merchant networks"
             ],
-            "logoDark": null,
             "wrappedVersion": false
           }
         }
       ],
       "totalWeight": 1.44,
-      "change": 0.03842565327794329,
+      "change": 0.22480609611435115,
       "hasNewlyAdded": false,
-      "marketCap": 6219781507
+      "marketCap": 8081138350
     },
     {
       "native": {
@@ -244,45 +244,66 @@
         {
           "address": "0x378c326A472915d38b2D8D41e1345987835FaB64",
           "symbol": "uXLM",
-          "weight": 1.11,
-          "change": -0.05759829093950332,
-          "marketCap": 103475,
+          "weight": 0.88,
+          "change": 0.21992089513976565,
+          "marketCap": 134418,
           "bridge": {
             "id": "universal",
             "name": "Universal Protocol",
             "url": "https://universal.xyz",
             "description": "Asset-backed token platform with 1:1 backing and Coinbase Custody",
             "logo": "https://storage.reserve.org/universal.svg",
+            "logoDark": null,
             "risks": [
               "Smart contract risk - Tokens are minted and burned using open-source smart contracts",
               "Custodial risks - A custodian holds the underlying asset with Coinbase Custody",
               "Liquidity risks - Redemptions rely on liquidity pools or merchant networks"
             ],
-            "logoDark": null,
             "wrappedVersion": false
           }
         }
       ],
-      "totalWeight": 1.11,
-      "change": -0.05759829093950332,
+      "totalWeight": 0.88,
+      "change": 0.21992089513976565,
       "hasNewlyAdded": false,
-      "marketCap": 6367283433
+      "marketCap": 6595874894
     },
     {
-      "native": null,
+      "native": {
+        "symbol": "HYPE",
+        "name": "Hyperliquid",
+        "logo": "https://assets.coingecko.com/coins/images/50882/standard/hyperliquid.jpg?1729431300",
+        "caip2": "hyperliquid:mainnet",
+        "url": "https://coinmarketcap.com/currencies/hyperliquid/",
+        "coingeckoId": "hyperliquid"
+      },
       "tokens": [
         {
           "address": "0x15D0e0c55a3E7eE67152aD7E89acf164253Ff68d",
           "symbol": "HYPE",
-          "weight": 8.74,
-          "change": 0.015315193810346392,
-          "marketCap": 1248748
+          "weight": 8.15,
+          "change": 0.3686046426716821,
+          "marketCap": 1774157,
+          "bridge": {
+            "id": "wormhole",
+            "name": "Wormhole",
+            "url": "https://wormhole.com",
+            "description": "Cross-chain messaging protocol enabling token transfers across multiple blockchains",
+            "logo": "https://storage.reserve.org/wormwhole.svg",
+            "logoDark": null,
+            "risks": [
+              "Smart contract risks - Bridges rely on smart contracts that could have vulnerabilities",
+              "Custodial risks - Some bridges hold assets in a pool while issuing wrapped versions",
+              "Liquidity concerns - Redemption mechanisms depend on the bridge infrastructure"
+            ],
+            "wrappedVersion": false
+          }
         }
       ],
-      "totalWeight": 8.74,
-      "change": 0.015315193810346392,
+      "totalWeight": 8.15,
+      "change": 0.3686046426716821,
       "hasNewlyAdded": false,
-      "marketCap": 1248748
+      "marketCap": 18101833658
     }
   ]
 }

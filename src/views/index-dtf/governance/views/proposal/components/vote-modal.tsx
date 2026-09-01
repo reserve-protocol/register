@@ -132,11 +132,10 @@ const VoteModal = (props: ModalProps) => {
     >
       {!isOptimistic && (
         <>
-          <div className="flex flex-col items-center">
-            <span className="text-xl font-medium">
-              "
+          <div className="flex flex-col items-center min-w-0">
+            <span className="text-xl font-medium text-center [overflow-wrap:anywhere]">
               {proposal?.description ? (
-                getProposalTitle(proposal.description)
+                `“${getProposalTitle(proposal.description)}”`
               ) : (
                 <Trans>Loading...</Trans>
               )}
@@ -158,7 +157,7 @@ const VoteModal = (props: ModalProps) => {
               />
             </div>
           </div>
-          <Separator className="my-4 -mx-4 w-[calc(100%+2rem)]" />
+          <Separator className="my-4 -mx-6 w-auto" />
         </>
       )}
       {isOptimistic ? (
@@ -187,7 +186,7 @@ const VoteModal = (props: ModalProps) => {
         ))
       )}
 
-      <Separator className="my-4 -mx-4 w-[calc(100%+2rem)]" />
+      <Separator className="my-4 -mx-6 w-auto" />
       <TransactionButton
         data-testid="vote-submit-btn"
         loading={isLoading || isMining}

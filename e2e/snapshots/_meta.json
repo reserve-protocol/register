@@ -1,10 +1,10 @@
 {
   "_meta": {
     "source": "e2e/scripts/capture.ts",
-    "capturedAt": "2026-07-09T21:47:44.056Z"
+    "capturedAt": "2026-08-25T16:35:52.408Z"
   },
   "data": {
-    "capturedAt": "2026-07-09T21:47:44.056Z",
+    "capturedAt": "2026-08-25T16:35:52.408Z",
     "dtfs": [
       {
         "slug": "lcap",
@@ -25,6 +25,11 @@
         "slug": "deprecated",
         "address": "0x47686106181b3cefe4eaf94c4c10b48ac750370b",
         "chainId": 8453
+      },
+      {
+        "slug": "photon",
+        "address": "0xa0Fe4e0aEca5479705ce996615B2EACB6b6a10Fb",
+        "chainId": 56
       }
     ]
   }

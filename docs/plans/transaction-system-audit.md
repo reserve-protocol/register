@@ -4,6 +4,8 @@
 
 **Date:** 2026-08-25
 
+**Current-source reconciliation:** 2026-09-02
+
 **Primary anchors:** Index DTF Zapper and automated mint/redeem
 
 **Supporting coverage:** manual mint/redeem, vote lock/unlock/delegation, Yield DTF Zapper, and Yield DTF stake/unstake/withdraw
@@ -67,7 +69,7 @@ automated-mint screen, or recreating package internals.
 
 | Flow                             | Role in audit | Source coverage                                                                                               | Confidence                                                | Important limitation                                                                              |
 | -------------------------------- | ------------- | ------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------- | ------------------------------------------------------------------------------------------------- |
-| Index DTF Zapper                 | Primary       | Host integration, installed package `2.8.0` README/types, project Zapper wiki                                 | High for public behavior; medium for internal transitions | No live wallet/provider exercise; upstream internals are not a Register styling surface           |
+| Index DTF Zapper                 | Primary       | Host integration, installed package `2.10.5` README/types, current E2E behavior, project Zapper wiki          | High for public behavior; medium for internal transitions | No live wallet/provider exercise; upstream internals are not a Register styling surface           |
 | Automated mint/redeem            | Primary       | Provider/context, atoms, wallet gate, configure, quote/execution, order rows, result states, local area guide | High                                                      | Static trace only; no live CoW fill, expiry, RPC failure, or wallet rejection run                 |
 | Manual mint/redeem               | Supporting    | Amount validation, basket requirements, approvals, execution, receipt watcher, result toast                   | High                                                      | No live multi-approval session                                                                    |
 | Vote lock/unlock/delegate        | Supporting    | Drawer shell, quote views, warnings, SDK plan preparation, sequential calls, receipts, reset/close            | High                                                      | Protocol reason for the post-receipt ten-second delay is not documented in the UI source          |
@@ -82,50 +84,50 @@ automated-mint screen, or recreating package internals.
 The following references are the basis for claims in this report. Line numbers
 refer to the audited working tree on the date above.
 
-| ID  | Evidence                                                                                                                                                                  |
-| --- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| A1  | `docs/plans/design-system-v1-history.md` — historical transaction-system frontier, non-goals, outcome requirements, and family resemblance                                |
-| A2  | `docs/wiki/domains/design-system-reference.md` — detailed accepted Dialog direction, V1 components, and package-style containment                                         |
-| A3  | `src/views/internal/design-system/modal-family-audit.ts:1-71` — modal jobs and outcome status                                                                             |
-| A4  | `src/views/internal/design-system/component-catalog-primary.ts:200-240,538-599` — Transaction Action, Amount Field, and Asset Picker are mapped/open                      |
-| A5  | `src/views/internal/design-system/component-catalog-support.ts:299-400` — Inline Message is provisional; Toast and Progress remain mapped/open                            |
-| A6  | `src/views/internal/design-system/current-review.ts:1-34` — Current Review is empty                                                                                       |
-| A7  | `src/views/internal/design-system/component-catalog-support.ts:538-573` — compact Lifecycle Status is an accepted, unadopted V1 candidate                                 |
-| Z1  | `src/views/index-dtf/components/zapper/zapper-wrapper.tsx:16-80` — host-owned connection, locale, locked settings, schedule-call integration                              |
-| Z2  | `src/views/index-dtf/issuance/index.tsx:22-69` — inline 420px issuance host, compliance disablement, and mode-switch lifecycle                                            |
-| Z3  | `node_modules/@reserve-protocol/react-zapper/package.json` — installed version `2.8.0`                                                                                    |
-| Z4  | `node_modules/@reserve-protocol/react-zapper/README.md:200-221` — provider selection, RFQ signatures, fill/expiry, and native-input refund behavior                       |
-| Z5  | `node_modules/@reserve-protocol/react-zapper/README.md:312-326` — inline errors and exact receipt-log success result                                                      |
-| Z6  | `node_modules/@reserve-protocol/react-zapper/README.md:417-432` — selector ordering and default selection                                                                 |
-| M1  | `src/views/index-dtf/issuance/async-mint/index.tsx:14-76` — wizard routing and 476px-to-1200px responsive workspace                                                       |
-| M2  | `src/views/index-dtf/issuance/async-mint/atoms.ts:30-82` — wizard state, quote cancel/halt, inputs, dust snapshot, reset                                                  |
-| M3  | `src/views/index-dtf/issuance/async-mint/steps/configure-mint.tsx:44-127,140-271` — operation, compliance, balances, amount, Max, and advertised stages                   |
-| M4  | `src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:87-1248` — execution labels, quote states, retry/resume, errors, and actions                             |
-| M5  | `src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1316-1595` — in-place completion, transaction identity, final/estimated amounts, leftovers, next actions |
-| M6  | `src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1598-1736` — live/completed order panel and quote-empty/error states                                     |
-| M7  | `src/views/index-dtf/issuance/async-mint/components/leg-row.tsx:56-280` — leg lifecycle, amounts, impact, and CoW identity                                                |
-| M8  | `src/views/index-dtf/issuance/async-mint/steps/success.tsx:49-332` — duplicate result composition                                                                         |
-| M9  | `src/views/index-dtf/issuance/async-mint/CLAUDE.md` — SDK ownership and test/state map                                                                                    |
-| I1  | `src/views/index-dtf/issuance/manual/components/index-manual-issuance.tsx:44-269` — manual validation, execution, toast, errors, and shell                                |
-| I2  | `src/views/index-dtf/issuance/manual/components/asset-list.tsx:37-338` — required/received assets, balances, approval and revoke rows                                     |
-| I3  | `src/views/index-dtf/issuance/manual/components/approve-all-button.tsx:20-113` — batch approval progress and failed-item retry                                            |
-| V1  | `src/components/vote-lock/drawer.tsx:32-99` and `src/components/vote-lock/components/drawer-footer.tsx:16-115` — three-mode drawer and delayed-unlock explanation         |
-| V2  | `src/components/vote-lock/components/submit-lock-button.tsx:55-227` — SDK deposit plan, approval, receipt, ten-second processing, toast                                   |
-| V3  | `src/components/vote-lock/components/submit-unlock-button.tsx:46-138` — redeem plan, cooldown start, processing delay, toast                                              |
-| V4  | `src/components/vote-lock/components/submit-delegate-button.tsx:35-185` — validation, one/two sequential calls, receipt handling, toast                                   |
-| Y1  | `src/views/yield-dtf/issuance/components/zapV2/context/ZapTxContext.tsx:84-400` — revoke/approval/execute state and receipt-close behavior                                |
-| Y2  | `src/views/yield-dtf/issuance/components/zapV2/submit/ZapSubmitModal.tsx:18-105` and `ZapConfirm.tsx:9-31` — review composition and action sequence                       |
-| Y3  | `src/views/yield-dtf/issuance/components/zapV2/submit/ZapConfirmButton.tsx:9-79` — submitted/failed labels and confirmation state                                         |
-| S1  | `src/views/yield-dtf/staking/components/stake/confirm-stake-button.tsx:17-136` — approval, submission, explorer link, confirmation                                        |
-| S2  | `src/views/yield-dtf/staking/components/unstake/confirm-unstake-button.tsx:17-105` — cooldown-start outcome and explorer link                                             |
-| S3  | `src/views/yield-dtf/staking/components/unstake-delay.tsx:8-69` — initiate/wait/withdraw model                                                                            |
-| S4  | `src/views/yield-dtf/staking/components/withdraw/available-unstake.tsx:46-82` and `cooldown-unstake.tsx:48-75` — withdraw/cancel actions                                  |
-| S5  | `src/views/yield-dtf/staking/components/withdraw/updater.tsx:20-84` and `src/views/yield-dtf/staking/atoms.ts:20-56` — live pending queue and summary                     |
-| D1  | `src/views/index-dtf/deploy/steps/confirm-deploy/index.tsx:49-168` — simple/manual Drawer and success replacement                                                         |
-| D2  | `src/views/index-dtf/deploy/steps/confirm-deploy/simple/simple-deploy-button.tsx:17-156` — approval, deployment receipt, event extraction                                 |
-| D3  | `src/views/index-dtf/deploy/steps/confirm-deploy/manual/components/deploy-assets-approvals.tsx:28-270` — per-asset balance/approval state                                 |
-| D4  | `src/views/index-dtf/deploy/steps/confirm-deploy/success/index.tsx:35-109` — address and genesis-mint outcome                                                             |
-| L1  | `src/views/index-dtf/overview/components/zap-mint/submit-zap.tsx:56-243` — older direct approval/transaction/toast pattern                                                |
+| ID  | Evidence                                                                                                                                                                    |
+| --- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| A1  | `docs/plans/design-system-v1-history.md` — historical transaction-system frontier, non-goals, outcome requirements, and family resemblance                                  |
+| A2  | `docs/wiki/domains/design-system-reference.md` — detailed accepted Dialog direction, V1 components, and package-style containment                                           |
+| A3  | `src/views/internal/design-system/modal-family-audit.ts:1-71` — modal jobs and outcome status                                                                               |
+| A4  | `src/views/internal/design-system/component-catalog-primary.ts:200-240,538-599` — Transaction Action, Amount Field, and Asset Picker are mapped/open                        |
+| A5  | `src/views/internal/design-system/component-catalog-support.ts:299-400` — Inline Message is provisional; Toast and Progress remain mapped/open                              |
+| A6  | `src/views/internal/design-system/current-review.ts:1-34` — Current Review is empty                                                                                         |
+| A7  | `src/views/internal/design-system/component-catalog-support.ts:538-573` — compact Lifecycle Status is an accepted, unadopted V1 candidate                                   |
+| Z1  | `src/views/index-dtf/components/zapper/zapper-wrapper.tsx:16-80` — host-owned connection, locale, locked settings, schedule-call integration                                |
+| Z2  | `src/views/index-dtf/issuance/index.tsx:22-69` — inline 420px issuance host, compliance disablement, and mode-switch lifecycle                                              |
+| Z3  | `node_modules/@reserve-protocol/react-zapper/package.json` — installed version `2.10.5`                                                                                     |
+| Z4  | `node_modules/@reserve-protocol/react-zapper/README.md` — optional inline tabs, parallel provider comparison, route list, RFQ fill/expiry, and native-input refund behavior |
+| Z5  | `e2e/tests/flows/zap-buy-sell.spec.ts` and `e2e/tests/flows/zap-edge.spec.ts` — default direction flip, portalled success dialog, no-route retry, and price-impact gate     |
+| Z6  | `node_modules/@reserve-protocol/react-zapper/README.md` — exact receipt-log result, contact/call attachments, selector ordering, and default selection                      |
+| M1  | `src/views/index-dtf/issuance/async-mint/index.tsx:14-76` — wizard routing and 476px-to-1200px responsive workspace                                                         |
+| M2  | `src/views/index-dtf/issuance/async-mint/atoms.ts:30-82` — wizard state, quote cancel/halt, inputs, dust snapshot, reset                                                    |
+| M3  | `src/views/index-dtf/issuance/async-mint/steps/configure-mint.tsx:44-127,140-271` — operation, compliance, balances, amount, Max, and advertised stages                     |
+| M4  | `src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:87-1248` — execution labels, quote states, retry/resume, errors, and actions                               |
+| M5  | `src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1316-1595` — in-place completion, transaction identity, final/estimated amounts, leftovers, next actions   |
+| M6  | `src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1598-1736` — live/completed order panel and quote-empty/error states                                       |
+| M7  | `src/views/index-dtf/issuance/async-mint/components/leg-row.tsx:56-280` — leg lifecycle, amounts, impact, and CoW identity                                                  |
+| M8  | `src/views/index-dtf/issuance/async-mint/steps/success.tsx:49-332` — duplicate result composition                                                                           |
+| M9  | `src/views/index-dtf/issuance/async-mint/CLAUDE.md` — SDK ownership and test/state map                                                                                      |
+| I1  | `src/views/index-dtf/issuance/manual/components/index-manual-issuance.tsx:44-269` — manual validation, execution, toast, errors, and shell                                  |
+| I2  | `src/views/index-dtf/issuance/manual/components/asset-list.tsx:37-338` — required/received assets, balances, approval and revoke rows                                       |
+| I3  | `src/views/index-dtf/issuance/manual/components/approve-all-button.tsx:20-113` — batch approval progress and failed-item retry                                              |
+| V1  | `src/components/vote-lock/drawer.tsx:32-99` and `src/components/vote-lock/components/drawer-footer.tsx:16-115` — three-mode drawer and delayed-unlock explanation           |
+| V2  | `src/components/vote-lock/components/submit-lock-button.tsx:55-227` — SDK deposit plan, approval, receipt, ten-second processing, toast                                     |
+| V3  | `src/components/vote-lock/components/submit-unlock-button.tsx:46-138` — redeem plan, cooldown start, processing delay, toast                                                |
+| V4  | `src/components/vote-lock/components/submit-delegate-button.tsx:35-185` — validation, one/two sequential calls, receipt handling, toast                                     |
+| Y1  | `src/views/yield-dtf/issuance/components/zapV2/context/ZapTxContext.tsx:84-400` — revoke/approval/execute state and receipt-close behavior                                  |
+| Y2  | `src/views/yield-dtf/issuance/components/zapV2/submit/ZapSubmitModal.tsx:18-105` and `ZapConfirm.tsx:9-31` — review composition and action sequence                         |
+| Y3  | `src/views/yield-dtf/issuance/components/zapV2/submit/ZapConfirmButton.tsx:9-79` — submitted/failed labels and confirmation state                                           |
+| S1  | `src/views/yield-dtf/staking/components/stake/confirm-stake-button.tsx:17-136` — approval, submission, explorer link, confirmation                                          |
+| S2  | `src/views/yield-dtf/staking/components/unstake/confirm-unstake-button.tsx:17-105` — cooldown-start outcome and explorer link                                               |
+| S3  | `src/views/yield-dtf/staking/components/unstake-delay.tsx:8-69` — initiate/wait/withdraw model                                                                              |
+| S4  | `src/views/yield-dtf/staking/components/withdraw/available-unstake.tsx:46-82` and `cooldown-unstake.tsx:48-75` — withdraw/cancel actions                                    |
+| S5  | `src/views/yield-dtf/staking/components/withdraw/updater.tsx:20-84` and `src/views/yield-dtf/staking/atoms.ts:20-56` — live pending queue and summary                       |
+| D1  | `src/views/index-dtf/deploy/steps/confirm-deploy/index.tsx:49-168` — simple/manual Drawer and success replacement                                                           |
+| D2  | `src/views/index-dtf/deploy/steps/confirm-deploy/simple/simple-deploy-button.tsx:17-156` — approval, deployment receipt, event extraction                                   |
+| D3  | `src/views/index-dtf/deploy/steps/confirm-deploy/manual/components/deploy-assets-approvals.tsx:28-270` — per-asset balance/approval state                                   |
+| D4  | `src/views/index-dtf/deploy/steps/confirm-deploy/success/index.tsx:35-109` — address and genesis-mint outcome                                                               |
+| L1  | `src/views/index-dtf/overview/components/zap-mint/submit-zap.tsx:56-243` — older direct approval/transaction/toast pattern                                                  |
 
 ### What was not done
 
@@ -154,8 +156,8 @@ flowchart TD
   C -- "Yes" --> D["Choose buy/redeem, input asset, amount, Max, and settings"]
   D --> E["Fetch enabled providers in parallel; simulate eligible atomic routes"]
   E --> F{"Usable quote?"}
-  F -- "No" --> F1["Inline quote error; preserve editable input and retry"] --> D
-  F -- "Yes" --> G["Review output, USD, impact, minimum out, route, fee/gas details"]
+  F -- "No" --> F1["Keep sourcing; preserve editable input, disable submit, and retry"] --> E
+  F -- "Yes" --> G["Review output, USD, impact, minimum out, all usable routes, and fee/gas details"]
   G --> H{"Route family"}
   H -- "Atomic ERC-20" --> I{"Allowance sufficient?"}
   I -- "No" --> I1["Request approval and wait for confirmation"] --> J["Submit prepared transaction"]
@@ -168,7 +170,7 @@ flowchart TD
   K3 --> L
   L --> M{"Filled before expiry?"}
   M -- "No" --> M1["Expired/cancelled; explain refund when native; reset and fetch fresh quote"] --> D
-  M -- "Yes" --> N["Package-owned success view"]
+  M -- "Yes" --> N["Package-owned portalled success dialog"]
   J --> O["Submitted / confirming"] --> P{"Receipt"}
   P -- "Reverted" --> P1["Inline error and recovery in the same package flow"] --> G
   P -- "Confirmed" --> N

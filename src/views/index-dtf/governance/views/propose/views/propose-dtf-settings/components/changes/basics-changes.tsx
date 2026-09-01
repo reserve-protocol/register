@@ -38,7 +38,11 @@ const BasicsChanges = () => {
 
   return (
     <ChangeSection
-      title={<Trans>Basics Update</Trans>}
+      title={
+        <span data-testid="basics-update">
+          <Trans>Basics Update</Trans>
+        </span>
+      }
       icon={<FileText size={16} />}
     >
       {hasTokenNameChange && isV5 && tokenNameChange && (

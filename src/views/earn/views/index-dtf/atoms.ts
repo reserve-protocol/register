@@ -26,6 +26,9 @@ export const dtfDataMapAtom = atom((get) => {
 
 export const searchFilterAtom = atom('')
 
+// One-shot request to scroll to and open a FAQ question; fresh object identity retriggers
+export const faqQuestionRequestAtom = atom<{ id: string } | null>(null)
+
 // Simple atom that works with ChainFilter - includes all Index DTF supported chains
 // Note: Arbitrum is deprecated for Index DTFs, BSC is supported
 export const chainsFilterAtom = atom([

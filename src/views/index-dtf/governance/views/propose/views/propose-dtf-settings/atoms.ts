@@ -190,9 +190,6 @@ export const currentBasketTokensAtom = atom((get) => {
   )
 })
 
-// Atom to track form validation state
-export const isFormValidAtom = atom(true)
-
 export const isProposalValidAtom = atom((get) => {
   const removedBasketTokens = get(removedBasketTokensAtom)
   const hasTokenNameChange = get(hasTokenNameChangeAtom)
@@ -207,8 +204,6 @@ export const isProposalValidAtom = atom((get) => {
     const hasOptimisticGovernanceChanges = get(
       hasOptimisticGovernanceChangesAtom
     )
-    const isFormValid = get(isFormValidAtom)
-
   const hasChanges =
     removedBasketTokens.length > 0 ||
     hasTokenNameChange ||

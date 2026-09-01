@@ -67,7 +67,7 @@ export const RfqTransactionComposition = () => (
     defaultState="Review"
     model="Opaque asynchronous · current installed Zapper modal boundary"
     title="Instant Zapper"
-    description="The installed Zapper keeps Buy/Sell, selection, quote economics, action, waiting, and outcome together. A quote may execute atomically or settle as an order, so lifecycle truth remains route-specific."
+    description="The installed Zapper keeps operation direction, selection, quote economics, action, waiting, and outcome together. Current inline product behavior uses the amount-pair flip and hides optional Buy/Sell tabs by default; the visible lab tabs are an intentional comparison, not a parity claim. A quote may execute atomically or settle as an order, so lifecycle truth remains route-specific."
     presentation="modal-backdrop"
     stateGroups={[
       {

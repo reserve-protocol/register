@@ -17,8 +17,9 @@ MarketVector™ Token Terminal Fundamental Index DTF is tracking the MarketVecto
 
 ## Basket constituents
 
-`TRX` (0xfA1df3F6108dB461Fd89437F320fE50C125aF5F0), `uSOL` (0x9B8Df6E244526ab5F6e6400d331DB28C8fdDdb55), `bsdETH` (0xCb327b99fF831bF8223cCEd12B1338FF3aA322Ff), `uNEAR` (0x5ed25E305E08F58AFD7995EaC72563E6BE65A617), `UNI` (0xc3De830EA07524a0761646a6a4e4be0e114a3C83), `WBNB` (0x7fdAa50d7399ac436943028edA6ed9a1BD89509f), `cbBTC` (0xcbB7C0000aB88B473b1f5aFd9ef808440eed33Bf), `AAVE` (0x63706e401c06ac8513145b7687A14804d17f814b), `HYPE` (0x15D0e0c55a3E7eE67152aD7E89acf164253Ff68d)
+`TRX` (0xfA1df3F6108dB461Fd89437F320fE50C125aF5F0), `uSOL` (0x9B8Df6E244526ab5F6e6400d331DB28C8fdDdb55), `bsdETH` (0xCb327b99fF831bF8223cCEd12B1338FF3aA322Ff), `uNEAR` (0x5ed25E305E08F58AFD7995EaC72563E6BE65A617), `UNI` (0xc3De830EA07524a0761646a6a4e4be0e114a3C83), `WBNB` (0x7fdAa50d7399ac436943028edA6ed9a1BD89509f), `cbBTC` (0xcbB7C0000aB88B473b1f5aFd9ef808440eed33Bf), `AAVE` (0x63706e401c06ac8513145b7687A14804d17f814b), `HYPE` (0x15D0e0c55a3E7eE67152aD7E89acf164253Ff68d), `uPOL` (0xD76d45358B79564817aa87F02F3b85338B96f06a)
 
 > Volatile values — current basket weights, price, TVL, market cap, performance —
-> change over time. For live data call `https://api.reserve.org/discover/dtf?chainId=8453`
+> change over time. For live data call `https://api.reserve.org/discover/dtfs` (filter by
+> `chainId` 8453 and `status: "active"`)
 > or use the [`@reserve-protocol/dtf-cli`](https://app.reserve.org/skills/dtf.md) skill.

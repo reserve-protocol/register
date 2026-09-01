@@ -349,6 +349,40 @@ product structure supplies the same job. It must not manufacture evidence for
 the remaining local treatments or inherit the current stepper anatomy merely
 because it is visible in this lab.
 
+### 2026-09-02 upstream transaction evidence reconciliation
+
+The branch now includes current `master` and
+`@reserve-protocol/react-zapper@2.10.5`. This updates product evidence without
+changing the authority of the reviewed V1 work: generic upstream workflow and
+design guidance remains subordinate to the project overrides, this plan, and
+accepted V1 owners for this scope.
+
+The current Zapper boundary differs from the earlier audit in five consequential
+ways:
+
+- Register keeps one mounted package element across wallet connection state so
+  connection changes do not reset in-flight work;
+- inline mode hides optional Buy/Sell tabs by default and uses the amount-pair
+  direction control, while the lab's visible tabs remain an explicit design
+  comparison rather than a current-product parity claim;
+- all usable providers appear in the Details route list, the best route is
+  selected automatically, and a user-selected route remains sticky until it is
+  unavailable;
+- background refresh preserves the current quote and action, while an exhausted
+  quote round remains in sourcing/retry with editable input and disabled submit
+  instead of becoming the lab's explicit availability-failure message;
+- successful inline work opens a portalled package dialog with exact received
+  output, used USD, transaction or order navigation, and eligible contact/call
+  attachments.
+
+These facts are requirements for later Zapper reconciliation, not permission to
+copy package internals or silently undo reviewed proposals. In particular, the
+lab's package-availability recovery specimen must not be cited as ordinary
+no-route behavior, and its operation tabs must be evaluated as an intentional
+departure. The upstream merge does not materially change Vote Lock,
+Stake/Unstake, automated-mint orchestration, or the existing deferred
+engineering-review boundaries.
+
 ### Deferred engineering-review register
 
 Engineering review is deferred until the complete design-system project is

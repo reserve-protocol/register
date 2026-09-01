@@ -40,8 +40,6 @@ const SKILL_SRC = path.join(
 )
 const SKILL_DEST = path.join(PUBLIC_DIR, 'skills/dtf.md')
 
-const CHAINS = [1, 8453, 56] as const
-
 // Generic boilerplate that gets written to featured-tokens.json when the DTF
 // has no deployer-set description. Treated as "no real description" so we can
 // fall back to the API-provided mandate/brand.about.
@@ -104,7 +102,7 @@ interface DiscoverDTF {
   symbol: string
   chainId: number
   type: 'index' | 'yield'
-  status: 'active' | 'deprecated'
+  status: 'active' | 'unsupported' | 'deprecated'
   basket: BasketEntry[]
   fee?: number
   brand?: { tags?: string[]; about?: string }
@@ -115,19 +113,17 @@ const featured: FeaturedData = JSON.parse(
   fs.readFileSync(FEATURED_TOKENS_PATH, 'utf-8')
 )
 
-async function fetchDiscover(chainId: number): Promise<DiscoverDTF[]> {
-  const res = await fetch(`${API_URL}/discover/dtf?chainId=${chainId}&limit=200`)
-  if (!res.ok) throw new Error(`discover/dtf ${chainId} failed: ${res.status}`)
-  return res.json()
+async function fetchDiscover(): Promise<DiscoverDTF[]> {
+  const res = await fetch(`${API_URL}/discover/dtfs?brand=true`)
+  if (!res.ok) throw new Error(`discover/dtfs failed: ${res.status}`)
+  const dtfs: DiscoverDTF[] = await res.json()
+  return dtfs.filter((dtf) => dtf.type === 'index')
 }
 
 async function loadApiData() {
   const byAddress = new Map<string, DiscoverDTF>()
-  for (const chainId of CHAINS) {
-    const list = await fetchDiscover(chainId)
-    for (const dtf of list) {
-      byAddress.set(`${chainId}:${dtf.address.toLowerCase()}`, dtf)
-    }
+  for (const dtf of await fetchDiscover()) {
+    byAddress.set(`${dtf.chainId}:${dtf.address.toLowerCase()}`, dtf)
   }
   return byAddress
 }
@@ -433,7 +429,8 @@ ${extraSections}
 ${basketSymbols}
 
 > Volatile values — current basket weights, price, TVL, market cap, performance —
-> change over time. For live data call \`${API_URL}/discover/dtf?chainId=${token.chainId}\`
+> change over time. For live data call \`${API_URL}/discover/dtfs\` (filter by
+> \`chainId\` ${token.chainId} and \`status: "active"\`)
 > or use the [\`@reserve-protocol/dtf-cli\`](${BASE_URL}/skills/dtf.md) skill.
 `
 }

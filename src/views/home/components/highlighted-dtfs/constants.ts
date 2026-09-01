@@ -1,4 +1,4 @@
-export const HIGHLIGHTED_LIMIT = 5
+export const HIGHLIGHTED_LIMIT = 6
 export const BACKING_LIMIT = 7
 export const COLLATERAL_GAP = 8
 export const COLLATERAL_SCROLL_RAMP_PERCENT = 12

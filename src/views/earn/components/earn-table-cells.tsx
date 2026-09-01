@@ -2,7 +2,8 @@ import ChainLogo from '@/components/icons/ChainLogo'
 import TokenLogo from '@/components/token-logo'
 import { Skeleton } from '@/components/ui/skeleton'
 import { formatPercentage } from '@/utils'
-import { ArrowRight } from 'lucide-react'
+import { useLingui } from '@lingui/react/macro'
+import { ArrowRight, CircleHelp } from 'lucide-react'
 
 export const EarnGovernanceTokenCell = ({
   symbol,
@@ -65,15 +66,32 @@ export const EarnGovernanceTokenSkeleton = ({
 export const EarnMetricCtaCell = ({
   value,
   label,
+  onHelpClick,
 }: {
   value: number
   label: string
-}) => (
-  <div className="flex items-center justify-end gap-2 text-primary font-semibold whitespace-nowrap">
-    {formatPercentage(value)} <span className="hidden md:inline">{label}</span>
-    <ArrowRight size={16} strokeWidth={1.5} />
-  </div>
-)
+  onHelpClick?: (event: React.MouseEvent<HTMLButtonElement>) => void
+}) => {
+  const { t } = useLingui()
+
+  return (
+    <div className="flex items-center justify-end gap-2 text-primary font-semibold whitespace-nowrap">
+      {formatPercentage(value)}{' '}
+      <span className="hidden md:inline">{label}</span>
+      {onHelpClick && (
+        <button
+          type="button"
+          aria-label={t`How is this rate calculated?`}
+          onClick={onHelpClick}
+          className="-m-2 p-2 text-legend transition-colors hover:text-primary focus-visible:text-primary focus-visible:outline-none"
+        >
+          <CircleHelp size={16} strokeWidth={1.5} />
+        </button>
+      )}
+      <ArrowRight size={16} strokeWidth={1.5} />
+    </div>
+  )
+}
 
 export const EarnMetricCtaSkeleton = () => (
   <div className="flex items-center justify-end gap-2">

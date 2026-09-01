@@ -1,5 +1,9 @@
 import { useConnectModal } from '@rainbow-me/rainbowkit'
-import { Zapper, ZapperProps } from '@reserve-protocol/react-zapper'
+import {
+  PROVIDER_ENABLED,
+  Zapper,
+  ZapperProps,
+} from '@reserve-protocol/react-zapper'
 import { useMemo } from 'react'
 import { useAccount } from 'wagmi'
 import { useAtomValue } from 'jotai'
@@ -13,6 +17,10 @@ import {
 import LargeMintPrompt from './large-mint-prompt'
 import { hasLockedZapSettings } from './locked-zap-settings'
 
+for (const providers of Object.values(PROVIDER_ENABLED)) {
+  if (providers) providers.enso = false
+}
+
 const LOCKED_SETTINGS: ZapperProps['disabledSettings'] = {
   deepLiquidity: true,
   forceMint: true,
@@ -20,13 +28,9 @@ const LOCKED_SETTINGS: ZapperProps['disabledSettings'] = {
 
 type ZapperWrapperProps = ZapperProps
 
-const ZapperWithConnect = (props: ZapperProps) => {
-  const { openConnectModal } = useConnectModal()
-  return <Zapper {...props} connectWallet={openConnectModal} />
-}
-
 const ZapperWrapper = (props: ZapperWrapperProps) => {
   const { isConnected, address } = useAccount()
+  const { openConnectModal } = useConnectModal()
   // Drive the widget's language from the app locale. The zapper only ships
   // en/es/ko/zh, so the dev-only `pseudo` locale falls back to English.
   const appLocale = useAtomValue(localeAtom)
@@ -71,11 +75,11 @@ const ZapperWrapper = (props: ZapperWrapperProps) => {
   // and overlap the card.
   return (
     <>
-      {!isConnected ? (
-        <ZapperWithConnect {...zapperProps} />
-      ) : (
-        <Zapper {...zapperProps} />
-      )}
+      {/* One element type across wallet state: swapping types on isConnected remounts the widget mid-tx. */}
+      <Zapper
+        {...zapperProps}
+        connectWallet={isConnected ? undefined : openConnectModal}
+      />
       <LargeMintPrompt mode={props.mode ?? 'modal'} chain={props.chain} />
     </>
   )

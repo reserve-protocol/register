@@ -32,10 +32,34 @@ export type PoolSwap = {
   type: SwapDirection
 }
 
+// The subgraph only indexes DTF ERC20 transfers, so a swap is inferred from the
+// PoolManager being the counterparty. Liquidity management (a v4
+// `ModifyLiquidity` — e.g. a Steer vault re-ranging) moves tokens out of and
+// back into the PoolManager against the SAME address in one tx, which would
+// otherwise render as a phantom Buy/Sell pair and double-count 24h volume.
+// Those counterparties are dropped for that tx.
+const roundTripCounterparties = (
+  events: PoolTransferEvent[],
+  pm: string
+): Set<string> => {
+  const received = new Set<string>()
+  const sent = new Set<string>()
+
+  for (const event of events) {
+    const from = event.from.id.toLowerCase()
+    const to = event.to.id.toLowerCase()
+
+    if (from === pm && to !== pm) received.add(`${event.hash}-${to}`)
+    if (to === pm && from !== pm) sent.add(`${event.hash}-${from}`)
+  }
+
+  return new Set([...received].filter((key) => sent.has(key)))
+}
+
 // Split routes emit several PoolManager transfers within one tx — group by
 // (hash, direction) so the table shows one row per trade. Directions are kept
-// separate on purpose: a tx buying and selling in the same pool (arb/multi-hop)
-// renders as two honest rows instead of a confusing netted one.
+// separate on purpose: a tx buying and selling in the same pool through
+// different counterparties renders as two honest rows instead of a netted one.
 export const mapPoolSwapEvents = (
   data: PoolSwapsResponse,
   poolManager: string,
@@ -44,8 +68,10 @@ export const mapPoolSwapEvents = (
   const pm = poolManager.toLowerCase()
   const seen = new Set<string>()
   const groups = new Map<string, { swap: PoolSwap; total: bigint }>()
+  const events = [...data.buys, ...data.sells]
+  const roundTrips = roundTripCounterparties(events, pm)
 
-  for (const event of [...data.buys, ...data.sells]) {
+  for (const event of events) {
     if (seen.has(event.id)) continue
     seen.add(event.id)
 
@@ -56,6 +82,9 @@ export const mapPoolSwapEvents = (
     if (from === pm && to === pm) continue
 
     const type: SwapDirection = from === pm ? 'Buy' : 'Sell'
+
+    if (roundTrips.has(`${event.hash}-${type === 'Buy' ? to : from}`)) continue
+
     const key = `${event.hash}-${type}`
     const timestamp = Number(event.timestamp)
     const existing = groups.get(key)

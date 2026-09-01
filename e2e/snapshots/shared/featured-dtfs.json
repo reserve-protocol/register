@@ -1,8 +1,7 @@
 {
   "_meta": {
     "source": "https://api-staging.reserve.org/v1/discover/featured",
-    "capturedAt": "2026-07-10T00:03:38.340Z",
-    "note": "staging host is deliberate in src (use-featured-dtfs.ts TODO) — mock must intercept api-staging too"
+    "capturedAt": "2026-08-25T16:34:37.803Z"
   },
   "data": {
     "order": [
@@ -18,166 +17,166 @@
           "address": "0xD7cE7a841310982AcD976D1a6fe7BB6063c5689D",
           "name": "Reserve AI Infrastructure DTF",
           "symbol": "BUILDOUT",
-          "price": 96.77625464579502,
-          "marketCap": 826003.8063484435,
+          "price": 87.79999654347363,
+          "marketCap": 1604250.1844074258,
           "chainId": 56,
           "type": "index",
           "status": "active",
+          "createdAt": 1781724378,
           "basket": [
             {
               "address": "0x0fAcaFB97ffDbA3cAe88512070AF49bd30674cD9",
               "symbol": "LITEon",
               "name": "Lumentum Holdings (Ondo Tokenized)",
-              "weight": "0.57"
+              "weight": "0.68"
             },
             {
               "address": "0xA9eE28C80f960B889dFbd1902055218cBa016F75",
               "symbol": "NVDAon",
               "name": "NVIDIA (Ondo Tokenized)",
-              "weight": "9.89"
+              "weight": "11.44"
             },
             {
               "address": "0xC37042A7a4fa510D8884a433762aB87257B91965",
               "symbol": "TSMon",
               "name": "Taiwan Semiconductor Manufacturing (Ondo Tokenized)",
-              "weight": "10.38"
+              "weight": "10.91"
             },
             {
               "address": "0x0ED2E3180EDf393e6bf8Db124bD15DDD54dE150A",
               "symbol": "AVGOon",
               "name": "Broadcom (Ondo Tokenized)",
-              "weight": "10.63"
+              "weight": "10.49"
             },
             {
               "address": "0x8b6ACf6041A81567f012Ff6A4C6D96d5818d74bF",
               "symbol": "MUon",
               "name": "Micron Technology (Ondo Tokenized)",
-              "weight": "9.48"
+              "weight": "9.78"
             },
             {
               "address": "0x9f16E46c73b43BDB70861247d537bEE4eA18F639",
               "symbol": "AMDon",
               "name": "AMD (Ondo Tokenized)",
-              "weight": "8.43"
+              "weight": "8.10"
             },
             {
               "address": "0xb034f6Cb52b7f2Fd5a7EeeffCa6b9aDCD6b9A6F6",
               "symbol": "ASMLon",
               "name": "ASML Holding NV (Ondo Tokenized)",
-              "weight": "6.74"
+              "weight": "7.16"
             },
             {
               "address": "0xA528CaaA2f96090e379d43F90834C75dF54D6E74",
               "symbol": "INTCon",
               "name": "Intel (Ondo Tokenized)",
-              "weight": "5.28"
+              "weight": "4.58"
             },
             {
               "address": "0x35895a1fa1AFf7FB3204fB01257409Fd75acB24C",
               "symbol": "LRCXon",
               "name": "Lam Research (Ondo Tokenized)",
-              "weight": "4.29"
+              "weight": "4.15"
             },
             {
               "address": "0x5ecC352C4640f1d26BD231dbBd171f40f7d0Eec6",
               "symbol": "AMATon",
               "name": "Applied Materials (Ondo Tokenized)",
-              "weight": "4.63"
+              "weight": "4.15"
             },
             {
               "address": "0x527C6436E1eAa4f2065CDE4090F798Cb5D031dD6",
               "symbol": "ARMon",
               "name": "Arm Holdings plc (Ondo Tokenized)",
-              "weight": "3.50"
+              "weight": "2.80"
             },
             {
               "address": "0xFc263946439b0d802bF4C5a6fCd34E2885259f91",
               "symbol": "KLACon",
               "name": "KLA (Ondo Tokenized)",
-              "weight": "2.85"
+              "weight": "2.49"
             },
             {
               "address": "0x4Fd67CB8CFEdc718BAc984b5936abE3330d0a2A4",
               "symbol": "SNDKon",
               "name": "SanDisk (Ondo Tokenized)",
-              "weight": "2.65"
+              "weight": "2.35"
             },
             {
               "address": "0xf26518958935654878De15BE7bC79A26971583Ba",
               "symbol": "DELLon",
               "name": "Dell Technologies (Ondo Tokenized)",
-              "weight": "2.91"
+              "weight": "3.21"
             },
             {
               "address": "0x1501EC83FFEf405B4331CC4f73277a40fb0C627d",
               "symbol": "MRVLon",
               "name": "Marvell Technology (Ondo Tokenized)",
-              "weight": "2.01"
+              "weight": "2.20"
             },
             {
               "address": "0x2Aea1D415D45CCF3EaBE565d45DcaF4ea2035b9c",
               "symbol": "GEVon",
               "name": "GE Vernova (Ondo Tokenized)",
-              "weight": "2.96"
+              "weight": "2.84"
             },
             {
               "address": "0xE8ff70859Ce4cbd72E4352b4fb45F5BF39d07464",
               "symbol": "IBMon",
               "name": "IBM (Ondo Tokenized)",
-              "weight": "2.81"
+              "weight": "2.45"
             },
             {
               "address": "0x538e2838f9ebC9B891399DF4a8dcc42890D9dc20",
               "symbol": "ANETon",
               "name": "Arista Networks (Ondo Tokenized)",
-              "weight": "2.31"
+              "weight": "2.61"
             },
             {
               "address": "0x25a4DbAE9a0Cd8C75656D6b50FFDf4900CC20d8f",
               "symbol": "GLWon",
               "name": "Corning (Ondo Tokenized)",
-              "weight": "1.59"
+              "weight": "1.33"
             },
             {
               "address": "0x4697b2A050f7B5A8e1ebc27c325f9D78D094f041",
               "symbol": "ETNon",
               "name": "Eaton (Ondo Tokenized)",
-              "weight": "1.58"
+              "weight": "1.78"
             },
             {
               "address": "0x9Cea8A7Be1Ab0320b709d368Ad60d8500f55995f",
               "symbol": "VRTon",
               "name": "Vertiv (Ondo Tokenized)",
-              "weight": "1.22"
+              "weight": "1.07"
             },
             {
               "address": "0x2418c2e1aE3B8D767594b3974D32610743f88155",
               "symbol": "PWRon",
               "name": "Quanta Services (Ondo Tokenized)",
-              "weight": "0.99"
+              "weight": "1.02"
             },
             {
               "address": "0x65D84F0990B7394209d591380C2952c83D778aA3",
               "symbol": "CEGon",
               "name": "Constellation Energy (Ondo Tokenized)",
-              "weight": "0.92"
+              "weight": "1.12"
             },
             {
               "address": "0x0585756aAFB241b0f8A9Df62Db26c566091Bde0b",
               "symbol": "COHRon",
               "name": "Coherent (Ondo Tokenized)",
-              "weight": "0.61"
+              "weight": "0.58"
             },
             {
               "address": "0x17D03aE104a9D12E9E5794Efb109B817Dd7f3404",
               "symbol": "BEon",
               "name": "Bloom Energy (Ondo Tokenized)",
-              "weight": "0.77"
+              "weight": "0.71"
             }
           ],
-          "createdAt": 1781724378,
           "brand": {
-            "icon": "https://l5394zf57b.ufs.sh/f/mupND8QUUvXxyHeh2QrX3EJomHD1USwYFd2GKiBg5a8eIx7n",
+            "icon": "https://folio-assets.reserve.org/0xd7ce7a841310982acd976d1a6fe7bb6063c5689d/mupND8QUUvXxyHeh2QrX3EJomHD1USwYFd2GKiBg5a8eIx7n.svg",
             "cover": "",
             "video": "https://youtu.be/Mj43bGvrJ_c",
             "tags": [
@@ -939,17 +938,205 @@
             {
               "timestamp": 1783641388,
               "value": 96.98627438517025
+            },
+            {
+              "timestamp": 1783727776,
+              "value": 96.78041213515401
+            },
+            {
+              "timestamp": 1783814186,
+              "value": 96.71082769618212
+            },
+            {
+              "timestamp": 1783900597,
+              "value": 96.81432561300483
+            },
+            {
+              "timestamp": 1783986999,
+              "value": 91.97382281809286
+            },
+            {
+              "timestamp": 1784073374,
+              "value": 94.92902173579462
+            },
+            {
+              "timestamp": 1784159769,
+              "value": 91.73051462172745
+            },
+            {
+              "timestamp": 1784246177,
+              "value": 87.29587407341435
+            },
+            {
+              "timestamp": 1784332577,
+              "value": 86.52953606623858
+            },
+            {
+              "timestamp": 1784418978,
+              "value": 86.38795235148484
+            },
+            {
+              "timestamp": 1784505387,
+              "value": 87.0276947766717
+            },
+            {
+              "timestamp": 1784591770,
+              "value": 87.43162877494545
+            },
+            {
+              "timestamp": 1784678176,
+              "value": 92.61863390700478
+            },
+            {
+              "timestamp": 1784764577,
+              "value": 92.78366284553333
+            },
+            {
+              "timestamp": 1784850986,
+              "value": 92.74545519892489
+            },
+            {
+              "timestamp": 1784937388,
+              "value": 88.36898125216847
+            },
+            {
+              "timestamp": 1785023783,
+              "value": 89.24036644288297
+            },
+            {
+              "timestamp": 1785110185,
+              "value": 90.06829043513358
+            },
+            {
+              "timestamp": 1785196589,
+              "value": 85.66253807680698
+            },
+            {
+              "timestamp": 1785282988,
+              "value": 82.56328521091437
+            },
+            {
+              "timestamp": 1785369375,
+              "value": 78.05463688143149
+            },
+            {
+              "timestamp": 1785455783,
+              "value": 86.7604954266418
+            },
+            {
+              "timestamp": 1785542204,
+              "value": 84.8091345166505
+            },
+            {
+              "timestamp": 1785628587,
+              "value": 84.54571963212265
+            },
+            {
+              "timestamp": 1785714983,
+              "value": 83.9437477187424
+            },
+            {
+              "timestamp": 1785801396,
+              "value": 85.21854435995344
+            },
+            {
+              "timestamp": 1785887783,
+              "value": 88.96485823031307
+            },
+            {
+              "timestamp": 1785974185,
+              "value": 88.44032697805378
+            },
+            {
+              "timestamp": 1786060577,
+              "value": 91.0721321655869
+            },
+            {
+              "timestamp": 1786146984,
+              "value": 91.59358082265541
+            },
+            {
+              "timestamp": 1786233385,
+              "value": 91.88379207448637
+            },
+            {
+              "timestamp": 1786319771,
+              "value": 91.70848044373277
+            },
+            {
+              "timestamp": 1786406187,
+              "value": 89.84437315784328
+            },
+            {
+              "timestamp": 1786492585,
+              "value": 90.78963426942958
+            },
+            {
+              "timestamp": 1786578971,
+              "value": 93.33043645610971
+            },
+            {
+              "timestamp": 1786665390,
+              "value": 94.46839128687655
+            },
+            {
+              "timestamp": 1786751795,
+              "value": 93.90183480014669
+            },
+            {
+              "timestamp": 1786838201,
+              "value": 94.04582978315855
+            },
+            {
+              "timestamp": 1786924598,
+              "value": 94.20427752747882
+            },
+            {
+              "timestamp": 1787011003,
+              "value": 95.30643787805883
+            },
+            {
+              "timestamp": 1787097363,
+              "value": 90.08011872302077
+            },
+            {
+              "timestamp": 1787183764,
+              "value": 89.24197089318687
+            },
+            {
+              "timestamp": 1787270146,
+              "value": 88.81498770086242
+            },
+            {
+              "timestamp": 1787356602,
+              "value": 88.86900549604005
+            },
+            {
+              "timestamp": 1787443001,
+              "value": 88.72421092662361
+            },
+            {
+              "timestamp": 1787529408,
+              "value": 89.25309079084442
+            },
+            {
+              "timestamp": 1787615785,
+              "value": 86.14467355210202
+            },
+            {
+              "timestamp": 1787673462,
+              "value": 87.70087317889343
             }
           ],
           "priceChange": {
             "period": "ytd",
             "displayPeriod": "YTD",
-            "ratio": 0.7475031770271731,
-            "percent": 74.75031770271731,
+            "ratio": 0.5801983886867131,
+            "percent": 58.019838868671314,
             "startPrice": 55.49991305318362,
-            "endPrice": 96.98627438517025,
+            "endPrice": 87.70087317889343,
             "startTimestamp": 1767225600,
-            "endTimestamp": 1783641388
+            "endTimestamp": 1787673462
           },
           "exposure": [
             {
@@ -962,15 +1149,16 @@
               },
               "tokens": [
                 {
-                  "address": "0x0ED2E3180EDf393e6bf8Db124bD15DDD54dE150A",
-                  "symbol": "AVGOon",
-                  "weight": 10.63,
+                  "address": "0xA9eE28C80f960B889dFbd1902055218cBa016F75",
+                  "symbol": "NVDAon",
+                  "weight": 11.44,
                   "bridge": {
                     "id": "ondo",
                     "name": "Ondo Tokenized Stocks",
                     "url": "https://docs.ondo.finance/",
                     "description": "An Ondo Tokenized Stock is a blockchain token that gives you the same economic exposure as owning the underlying stock or ETF. Please read the documentation for more details.",
                     "logo": "https://storage-logos.reserve.org/logos/Ondo-Icon-Black.png",
+                    "logoDark": "https://storage-logos.reserve.org/logos/Ondo-Icon-White.png",
                     "risks": [
                       "Custodial risks - Tokens are claims on structures holding the underlying equities via third-party custodians, whose failure or insolvency could delay settlement or cause loss of value.",
                       "Regulatory & compliance risks - Tokenized equities face evolving rules and may require whitelisting or eligibility, which can force restricted access, halted redemptions, or unwinding.",
@@ -978,20 +1166,20 @@
                       "Market access & redemption risks - Mint/redeem may be capacity-limited, whitelisted, or tied to market hours, which can block arbitrage and impair exits near NAV.",
                       "Valuation & NAV risks - NAV relies on pricing from on-chain markets or oracles that can be stale or manipulated, distorting marks and mint/redeem pricing."
                     ],
-                    "logoDark": "https://storage-logos.reserve.org/logos/Ondo-Icon-White.png",
                     "wrappedVersion": false
                   }
                 },
                 {
-                  "address": "0xA9eE28C80f960B889dFbd1902055218cBa016F75",
-                  "symbol": "NVDAon",
-                  "weight": 9.89,
+                  "address": "0x0ED2E3180EDf393e6bf8Db124bD15DDD54dE150A",
+                  "symbol": "AVGOon",
+                  "weight": 10.49,
                   "bridge": {
                     "id": "ondo",
                     "name": "Ondo Tokenized Stocks",
                     "url": "https://docs.ondo.finance/",
                     "description": "An Ondo Tokenized Stock is a blockchain token that gives you the same economic exposure as owning the underlying stock or ETF. Please read the documentation for more details.",
                     "logo": "https://storage-logos.reserve.org/logos/Ondo-Icon-Black.png",
+                    "logoDark": "https://storage-logos.reserve.org/logos/Ondo-Icon-White.png",
                     "risks": [
                       "Custodial risks - Tokens are claims on structures holding the underlying equities via third-party custodians, whose failure or insolvency could delay settlement or cause loss of value.",
                       "Regulatory & compliance risks - Tokenized equities face evolving rules and may require whitelisting or eligibility, which can force restricted access, halted redemptions, or unwinding.",
@@ -999,20 +1187,20 @@
                       "Market access & redemption risks - Mint/redeem may be capacity-limited, whitelisted, or tied to market hours, which can block arbitrage and impair exits near NAV.",
                       "Valuation & NAV risks - NAV relies on pricing from on-chain markets or oracles that can be stale or manipulated, distorting marks and mint/redeem pricing."
                     ],
-                    "logoDark": "https://storage-logos.reserve.org/logos/Ondo-Icon-White.png",
                     "wrappedVersion": false
                   }
                 },
                 {
                   "address": "0x8b6ACf6041A81567f012Ff6A4C6D96d5818d74bF",
                   "symbol": "MUon",
-                  "weight": 9.48,
+                  "weight": 9.78,
                   "bridge": {
                     "id": "ondo",
                     "name": "Ondo Tokenized Stocks",
                     "url": "https://docs.ondo.finance/",
                     "description": "An Ondo Tokenized Stock is a blockchain token that gives you the same economic exposure as owning the underlying stock or ETF. Please read the documentation for more details.",
                     "logo": "https://storage-logos.reserve.org/logos/Ondo-Icon-Black.png",
+                    "logoDark": "https://storage-logos.reserve.org/logos/Ondo-Icon-White.png",
                     "risks": [
                       "Custodial risks - Tokens are claims on structures holding the underlying equities via third-party custodians, whose failure or insolvency could delay settlement or cause loss of value.",
                       "Regulatory & compliance risks - Tokenized equities face evolving rules and may require whitelisting or eligibility, which can force restricted access, halted redemptions, or unwinding.",
@@ -1020,20 +1208,20 @@
                       "Market access & redemption risks - Mint/redeem may be capacity-limited, whitelisted, or tied to market hours, which can block arbitrage and impair exits near NAV.",
                       "Valuation & NAV risks - NAV relies on pricing from on-chain markets or oracles that can be stale or manipulated, distorting marks and mint/redeem pricing."
                     ],
-                    "logoDark": "https://storage-logos.reserve.org/logos/Ondo-Icon-White.png",
                     "wrappedVersion": false
                   }
                 },
                 {
                   "address": "0x9f16E46c73b43BDB70861247d537bEE4eA18F639",
                   "symbol": "AMDon",
-                  "weight": 8.43,
+                  "weight": 8.1,
                   "bridge": {
                     "id": "ondo",
                     "name": "Ondo Tokenized Stocks",
                     "url": "https://docs.ondo.finance/",
                     "description": "An Ondo Tokenized Stock is a blockchain token that gives you the same economic exposure as owning the underlying stock or ETF. Please read the documentation for more details.",
                     "logo": "https://storage-logos.reserve.org/logos/Ondo-Icon-Black.png",
+                    "logoDark": "https://storage-logos.reserve.org/logos/Ondo-Icon-White.png",
                     "risks": [
                       "Custodial risks - Tokens are claims on structures holding the underlying equities via third-party custodians, whose failure or insolvency could delay settlement or cause loss of value.",
                       "Regulatory & compliance risks - Tokenized equities face evolving rules and may require whitelisting or eligibility, which can force restricted access, halted redemptions, or unwinding.",
@@ -1041,20 +1229,20 @@
                       "Market access & redemption risks - Mint/redeem may be capacity-limited, whitelisted, or tied to market hours, which can block arbitrage and impair exits near NAV.",
                       "Valuation & NAV risks - NAV relies on pricing from on-chain markets or oracles that can be stale or manipulated, distorting marks and mint/redeem pricing."
                     ],
-                    "logoDark": "https://storage-logos.reserve.org/logos/Ondo-Icon-White.png",
                     "wrappedVersion": false
                   }
                 },
                 {
                   "address": "0xb034f6Cb52b7f2Fd5a7EeeffCa6b9aDCD6b9A6F6",
                   "symbol": "ASMLon",
-                  "weight": 6.74,
+                  "weight": 7.16,
                   "bridge": {
                     "id": "ondo",
                     "name": "Ondo Tokenized Stocks",
                     "url": "https://docs.ondo.finance/",
                     "description": "An Ondo Tokenized Stock is a blockchain token that gives you the same economic exposure as owning the underlying stock or ETF. Please read the documentation for more details.",
                     "logo": "https://storage-logos.reserve.org/logos/Ondo-Icon-Black.png",
+                    "logoDark": "https://storage-logos.reserve.org/logos/Ondo-Icon-White.png",
                     "risks": [
                       "Custodial risks - Tokens are claims on structures holding the underlying equities via third-party custodians, whose failure or insolvency could delay settlement or cause loss of value.",
                       "Regulatory & compliance risks - Tokenized equities face evolving rules and may require whitelisting or eligibility, which can force restricted access, halted redemptions, or unwinding.",
@@ -1062,20 +1250,20 @@
                       "Market access & redemption risks - Mint/redeem may be capacity-limited, whitelisted, or tied to market hours, which can block arbitrage and impair exits near NAV.",
                       "Valuation & NAV risks - NAV relies on pricing from on-chain markets or oracles that can be stale or manipulated, distorting marks and mint/redeem pricing."
                     ],
-                    "logoDark": "https://storage-logos.reserve.org/logos/Ondo-Icon-White.png",
                     "wrappedVersion": false
                   }
                 },
                 {
                   "address": "0xA528CaaA2f96090e379d43F90834C75dF54D6E74",
                   "symbol": "INTCon",
-                  "weight": 5.28,
+                  "weight": 4.58,
                   "bridge": {
                     "id": "ondo",
                     "name": "Ondo Tokenized Stocks",
                     "url": "https://docs.ondo.finance/",
                     "description": "An Ondo Tokenized Stock is a blockchain token that gives you the same economic exposure as owning the underlying stock or ETF. Please read the documentation for more details.",
                     "logo": "https://storage-logos.reserve.org/logos/Ondo-Icon-Black.png",
+                    "logoDark": "https://storage-logos.reserve.org/logos/Ondo-Icon-White.png",
                     "risks": [
                       "Custodial risks - Tokens are claims on structures holding the underlying equities via third-party custodians, whose failure or insolvency could delay settlement or cause loss of value.",
                       "Regulatory & compliance risks - Tokenized equities face evolving rules and may require whitelisting or eligibility, which can force restricted access, halted redemptions, or unwinding.",
@@ -1083,41 +1271,20 @@
                       "Market access & redemption risks - Mint/redeem may be capacity-limited, whitelisted, or tied to market hours, which can block arbitrage and impair exits near NAV.",
                       "Valuation & NAV risks - NAV relies on pricing from on-chain markets or oracles that can be stale or manipulated, distorting marks and mint/redeem pricing."
                     ],
-                    "logoDark": "https://storage-logos.reserve.org/logos/Ondo-Icon-White.png",
-                    "wrappedVersion": false
-                  }
-                },
-                {
-                  "address": "0x5ecC352C4640f1d26BD231dbBd171f40f7d0Eec6",
-                  "symbol": "AMATon",
-                  "weight": 4.63,
-                  "bridge": {
-                    "id": "ondo",
-                    "name": "Ondo Tokenized Stocks",
-                    "url": "https://docs.ondo.finance/",
-                    "description": "An Ondo Tokenized Stock is a blockchain token that gives you the same economic exposure as owning the underlying stock or ETF. Please read the documentation for more details.",
-                    "logo": "https://storage-logos.reserve.org/logos/Ondo-Icon-Black.png",
-                    "risks": [
-                      "Custodial risks - Tokens are claims on structures holding the underlying equities via third-party custodians, whose failure or insolvency could delay settlement or cause loss of value.",
-                      "Regulatory & compliance risks - Tokenized equities face evolving rules and may require whitelisting or eligibility, which can force restricted access, halted redemptions, or unwinding.",
-                      "Liquidity risks - On-chain trading is 24/7, but mint/redeem may be limited or windowed, and in stressed markets token prices can deviate from the underlying equities.",
-                      "Market access & redemption risks - Mint/redeem may be capacity-limited, whitelisted, or tied to market hours, which can block arbitrage and impair exits near NAV.",
-                      "Valuation & NAV risks - NAV relies on pricing from on-chain markets or oracles that can be stale or manipulated, distorting marks and mint/redeem pricing."
-                    ],
-                    "logoDark": "https://storage-logos.reserve.org/logos/Ondo-Icon-White.png",
                     "wrappedVersion": false
                   }
                 },
                 {
                   "address": "0x35895a1fa1AFf7FB3204fB01257409Fd75acB24C",
                   "symbol": "LRCXon",
-                  "weight": 4.29,
+                  "weight": 4.15,
                   "bridge": {
                     "id": "ondo",
                     "name": "Ondo Tokenized Stocks",
                     "url": "https://docs.ondo.finance/",
                     "description": "An Ondo Tokenized Stock is a blockchain token that gives you the same economic exposure as owning the underlying stock or ETF. Please read the documentation for more details.",
                     "logo": "https://storage-logos.reserve.org/logos/Ondo-Icon-Black.png",
+                    "logoDark": "https://storage-logos.reserve.org/logos/Ondo-Icon-White.png",
                     "risks": [
                       "Custodial risks - Tokens are claims on structures holding the underlying equities via third-party custodians, whose failure or insolvency could delay settlement or cause loss of value.",
                       "Regulatory & compliance risks - Tokenized equities face evolving rules and may require whitelisting or eligibility, which can force restricted access, halted redemptions, or unwinding.",
@@ -1125,20 +1292,41 @@
                       "Market access & redemption risks - Mint/redeem may be capacity-limited, whitelisted, or tied to market hours, which can block arbitrage and impair exits near NAV.",
                       "Valuation & NAV risks - NAV relies on pricing from on-chain markets or oracles that can be stale or manipulated, distorting marks and mint/redeem pricing."
                     ],
+                    "wrappedVersion": false
+                  }
+                },
+                {
+                  "address": "0x5ecC352C4640f1d26BD231dbBd171f40f7d0Eec6",
+                  "symbol": "AMATon",
+                  "weight": 4.15,
+                  "bridge": {
+                    "id": "ondo",
+                    "name": "Ondo Tokenized Stocks",
+                    "url": "https://docs.ondo.finance/",
+                    "description": "An Ondo Tokenized Stock is a blockchain token that gives you the same economic exposure as owning the underlying stock or ETF. Please read the documentation for more details.",
+                    "logo": "https://storage-logos.reserve.org/logos/Ondo-Icon-Black.png",
                     "logoDark": "https://storage-logos.reserve.org/logos/Ondo-Icon-White.png",
+                    "risks": [
+                      "Custodial risks - Tokens are claims on structures holding the underlying equities via third-party custodians, whose failure or insolvency could delay settlement or cause loss of value.",
+                      "Regulatory & compliance risks - Tokenized equities face evolving rules and may require whitelisting or eligibility, which can force restricted access, halted redemptions, or unwinding.",
+                      "Liquidity risks - On-chain trading is 24/7, but mint/redeem may be limited or windowed, and in stressed markets token prices can deviate from the underlying equities.",
+                      "Market access & redemption risks - Mint/redeem may be capacity-limited, whitelisted, or tied to market hours, which can block arbitrage and impair exits near NAV.",
+                      "Valuation & NAV risks - NAV relies on pricing from on-chain markets or oracles that can be stale or manipulated, distorting marks and mint/redeem pricing."
+                    ],
                     "wrappedVersion": false
                   }
                 },
                 {
                   "address": "0x527C6436E1eAa4f2065CDE4090F798Cb5D031dD6",
                   "symbol": "ARMon",
-                  "weight": 3.5,
+                  "weight": 2.8,
                   "bridge": {
                     "id": "ondo",
                     "name": "Ondo Tokenized Stocks",
                     "url": "https://docs.ondo.finance/",
                     "description": "An Ondo Tokenized Stock is a blockchain token that gives you the same economic exposure as owning the underlying stock or ETF. Please read the documentation for more details.",
                     "logo": "https://storage-logos.reserve.org/logos/Ondo-Icon-Black.png",
+                    "logoDark": "https://storage-logos.reserve.org/logos/Ondo-Icon-White.png",
                     "risks": [
                       "Custodial risks - Tokens are claims on structures holding the underlying equities via third-party custodians, whose failure or insolvency could delay settlement or cause loss of value.",
                       "Regulatory & compliance risks - Tokenized equities face evolving rules and may require whitelisting or eligibility, which can force restricted access, halted redemptions, or unwinding.",
@@ -1146,20 +1334,20 @@
                       "Market access & redemption risks - Mint/redeem may be capacity-limited, whitelisted, or tied to market hours, which can block arbitrage and impair exits near NAV.",
                       "Valuation & NAV risks - NAV relies on pricing from on-chain markets or oracles that can be stale or manipulated, distorting marks and mint/redeem pricing."
                     ],
-                    "logoDark": "https://storage-logos.reserve.org/logos/Ondo-Icon-White.png",
                     "wrappedVersion": false
                   }
                 },
                 {
                   "address": "0xFc263946439b0d802bF4C5a6fCd34E2885259f91",
                   "symbol": "KLACon",
-                  "weight": 2.85,
+                  "weight": 2.49,
                   "bridge": {
                     "id": "ondo",
                     "name": "Ondo Tokenized Stocks",
                     "url": "https://docs.ondo.finance/",
                     "description": "An Ondo Tokenized Stock is a blockchain token that gives you the same economic exposure as owning the underlying stock or ETF. Please read the documentation for more details.",
                     "logo": "https://storage-logos.reserve.org/logos/Ondo-Icon-Black.png",
+                    "logoDark": "https://storage-logos.reserve.org/logos/Ondo-Icon-White.png",
                     "risks": [
                       "Custodial risks - Tokens are claims on structures holding the underlying equities via third-party custodians, whose failure or insolvency could delay settlement or cause loss of value.",
                       "Regulatory & compliance risks - Tokenized equities face evolving rules and may require whitelisting or eligibility, which can force restricted access, halted redemptions, or unwinding.",
@@ -1167,20 +1355,20 @@
                       "Market access & redemption risks - Mint/redeem may be capacity-limited, whitelisted, or tied to market hours, which can block arbitrage and impair exits near NAV.",
                       "Valuation & NAV risks - NAV relies on pricing from on-chain markets or oracles that can be stale or manipulated, distorting marks and mint/redeem pricing."
                     ],
-                    "logoDark": "https://storage-logos.reserve.org/logos/Ondo-Icon-White.png",
                     "wrappedVersion": false
                   }
                 },
                 {
                   "address": "0x4Fd67CB8CFEdc718BAc984b5936abE3330d0a2A4",
                   "symbol": "SNDKon",
-                  "weight": 2.65,
+                  "weight": 2.35,
                   "bridge": {
                     "id": "ondo",
                     "name": "Ondo Tokenized Stocks",
                     "url": "https://docs.ondo.finance/",
                     "description": "An Ondo Tokenized Stock is a blockchain token that gives you the same economic exposure as owning the underlying stock or ETF. Please read the documentation for more details.",
                     "logo": "https://storage-logos.reserve.org/logos/Ondo-Icon-Black.png",
+                    "logoDark": "https://storage-logos.reserve.org/logos/Ondo-Icon-White.png",
                     "risks": [
                       "Custodial risks - Tokens are claims on structures holding the underlying equities via third-party custodians, whose failure or insolvency could delay settlement or cause loss of value.",
                       "Regulatory & compliance risks - Tokenized equities face evolving rules and may require whitelisting or eligibility, which can force restricted access, halted redemptions, or unwinding.",
@@ -1188,20 +1376,20 @@
                       "Market access & redemption risks - Mint/redeem may be capacity-limited, whitelisted, or tied to market hours, which can block arbitrage and impair exits near NAV.",
                       "Valuation & NAV risks - NAV relies on pricing from on-chain markets or oracles that can be stale or manipulated, distorting marks and mint/redeem pricing."
                     ],
-                    "logoDark": "https://storage-logos.reserve.org/logos/Ondo-Icon-White.png",
                     "wrappedVersion": false
                   }
                 },
                 {
                   "address": "0x1501EC83FFEf405B4331CC4f73277a40fb0C627d",
                   "symbol": "MRVLon",
-                  "weight": 2.01,
+                  "weight": 2.2,
                   "bridge": {
                     "id": "ondo",
                     "name": "Ondo Tokenized Stocks",
                     "url": "https://docs.ondo.finance/",
                     "description": "An Ondo Tokenized Stock is a blockchain token that gives you the same economic exposure as owning the underlying stock or ETF. Please read the documentation for more details.",
                     "logo": "https://storage-logos.reserve.org/logos/Ondo-Icon-Black.png",
+                    "logoDark": "https://storage-logos.reserve.org/logos/Ondo-Icon-White.png",
                     "risks": [
                       "Custodial risks - Tokens are claims on structures holding the underlying equities via third-party custodians, whose failure or insolvency could delay settlement or cause loss of value.",
                       "Regulatory & compliance risks - Tokenized equities face evolving rules and may require whitelisting or eligibility, which can force restricted access, halted redemptions, or unwinding.",
@@ -1209,20 +1397,20 @@
                       "Market access & redemption risks - Mint/redeem may be capacity-limited, whitelisted, or tied to market hours, which can block arbitrage and impair exits near NAV.",
                       "Valuation & NAV risks - NAV relies on pricing from on-chain markets or oracles that can be stale or manipulated, distorting marks and mint/redeem pricing."
                     ],
-                    "logoDark": "https://storage-logos.reserve.org/logos/Ondo-Icon-White.png",
                     "wrappedVersion": false
                   }
                 },
                 {
                   "address": "0x65D84F0990B7394209d591380C2952c83D778aA3",
                   "symbol": "CEGon",
-                  "weight": 0.92,
+                  "weight": 1.12,
                   "bridge": {
                     "id": "ondo",
                     "name": "Ondo Tokenized Stocks",
                     "url": "https://docs.ondo.finance/",
                     "description": "An Ondo Tokenized Stock is a blockchain token that gives you the same economic exposure as owning the underlying stock or ETF. Please read the documentation for more details.",
                     "logo": "https://storage-logos.reserve.org/logos/Ondo-Icon-Black.png",
+                    "logoDark": "https://storage-logos.reserve.org/logos/Ondo-Icon-White.png",
                     "risks": [
                       "Custodial risks - Tokens are claims on structures holding the underlying equities via third-party custodians, whose failure or insolvency could delay settlement or cause loss of value.",
                       "Regulatory & compliance risks - Tokenized equities face evolving rules and may require whitelisting or eligibility, which can force restricted access, halted redemptions, or unwinding.",
@@ -1230,20 +1418,20 @@
                       "Market access & redemption risks - Mint/redeem may be capacity-limited, whitelisted, or tied to market hours, which can block arbitrage and impair exits near NAV.",
                       "Valuation & NAV risks - NAV relies on pricing from on-chain markets or oracles that can be stale or manipulated, distorting marks and mint/redeem pricing."
                     ],
-                    "logoDark": "https://storage-logos.reserve.org/logos/Ondo-Icon-White.png",
                     "wrappedVersion": false
                   }
                 },
                 {
                   "address": "0x0fAcaFB97ffDbA3cAe88512070AF49bd30674cD9",
                   "symbol": "LITEon",
-                  "weight": 0.57,
+                  "weight": 0.68,
                   "bridge": {
                     "id": "ondo",
                     "name": "Ondo Tokenized Stocks",
                     "url": "https://docs.ondo.finance/",
                     "description": "An Ondo Tokenized Stock is a blockchain token that gives you the same economic exposure as owning the underlying stock or ETF. Please read the documentation for more details.",
                     "logo": "https://storage-logos.reserve.org/logos/Ondo-Icon-Black.png",
+                    "logoDark": "https://storage-logos.reserve.org/logos/Ondo-Icon-White.png",
                     "risks": [
                       "Custodial risks - Tokens are claims on structures holding the underlying equities via third-party custodians, whose failure or insolvency could delay settlement or cause loss of value.",
                       "Regulatory & compliance risks - Tokenized equities face evolving rules and may require whitelisting or eligibility, which can force restricted access, halted redemptions, or unwinding.",
@@ -1251,12 +1439,11 @@
                       "Market access & redemption risks - Mint/redeem may be capacity-limited, whitelisted, or tied to market hours, which can block arbitrage and impair exits near NAV.",
                       "Valuation & NAV risks - NAV relies on pricing from on-chain markets or oracles that can be stale or manipulated, distorting marks and mint/redeem pricing."
                     ],
-                    "logoDark": "https://storage-logos.reserve.org/logos/Ondo-Icon-White.png",
                     "wrappedVersion": false
                   }
                 }
               ],
-              "totalWeight": 71.87
+              "totalWeight": 71.49
             },
             {
               "native": {
@@ -1270,13 +1457,14 @@
                 {
                   "address": "0xC37042A7a4fa510D8884a433762aB87257B91965",
                   "symbol": "TSMon",
-                  "weight": 10.38,
+                  "weight": 10.91,
                   "bridge": {
                     "id": "ondo",
                     "name": "Ondo Tokenized Stocks",
                     "url": "https://docs.ondo.finance/",
                     "description": "An Ondo Tokenized Stock is a blockchain token that gives you the same economic exposure as owning the underlying stock or ETF. Please read the documentation for more details.",
                     "logo": "https://storage-logos.reserve.org/logos/Ondo-Icon-Black.png",
+                    "logoDark": "https://storage-logos.reserve.org/logos/Ondo-Icon-White.png",
                     "risks": [
                       "Custodial risks - Tokens are claims on structures holding the underlying equities via third-party custodians, whose failure or insolvency could delay settlement or cause loss of value.",
                       "Regulatory & compliance risks - Tokenized equities face evolving rules and may require whitelisting or eligibility, which can force restricted access, halted redemptions, or unwinding.",
@@ -1284,41 +1472,20 @@
                       "Market access & redemption risks - Mint/redeem may be capacity-limited, whitelisted, or tied to market hours, which can block arbitrage and impair exits near NAV.",
                       "Valuation & NAV risks - NAV relies on pricing from on-chain markets or oracles that can be stale or manipulated, distorting marks and mint/redeem pricing."
                     ],
-                    "logoDark": "https://storage-logos.reserve.org/logos/Ondo-Icon-White.png",
-                    "wrappedVersion": false
-                  }
-                },
-                {
-                  "address": "0x2Aea1D415D45CCF3EaBE565d45DcaF4ea2035b9c",
-                  "symbol": "GEVon",
-                  "weight": 2.96,
-                  "bridge": {
-                    "id": "ondo",
-                    "name": "Ondo Tokenized Stocks",
-                    "url": "https://docs.ondo.finance/",
-                    "description": "An Ondo Tokenized Stock is a blockchain token that gives you the same economic exposure as owning the underlying stock or ETF. Please read the documentation for more details.",
-                    "logo": "https://storage-logos.reserve.org/logos/Ondo-Icon-Black.png",
-                    "risks": [
-                      "Custodial risks - Tokens are claims on structures holding the underlying equities via third-party custodians, whose failure or insolvency could delay settlement or cause loss of value.",
-                      "Regulatory & compliance risks - Tokenized equities face evolving rules and may require whitelisting or eligibility, which can force restricted access, halted redemptions, or unwinding.",
-                      "Liquidity risks - On-chain trading is 24/7, but mint/redeem may be limited or windowed, and in stressed markets token prices can deviate from the underlying equities.",
-                      "Market access & redemption risks - Mint/redeem may be capacity-limited, whitelisted, or tied to market hours, which can block arbitrage and impair exits near NAV.",
-                      "Valuation & NAV risks - NAV relies on pricing from on-chain markets or oracles that can be stale or manipulated, distorting marks and mint/redeem pricing."
-                    ],
-                    "logoDark": "https://storage-logos.reserve.org/logos/Ondo-Icon-White.png",
                     "wrappedVersion": false
                   }
                 },
                 {
                   "address": "0xf26518958935654878De15BE7bC79A26971583Ba",
                   "symbol": "DELLon",
-                  "weight": 2.91,
+                  "weight": 3.21,
                   "bridge": {
                     "id": "ondo",
                     "name": "Ondo Tokenized Stocks",
                     "url": "https://docs.ondo.finance/",
                     "description": "An Ondo Tokenized Stock is a blockchain token that gives you the same economic exposure as owning the underlying stock or ETF. Please read the documentation for more details.",
                     "logo": "https://storage-logos.reserve.org/logos/Ondo-Icon-Black.png",
+                    "logoDark": "https://storage-logos.reserve.org/logos/Ondo-Icon-White.png",
                     "risks": [
                       "Custodial risks - Tokens are claims on structures holding the underlying equities via third-party custodians, whose failure or insolvency could delay settlement or cause loss of value.",
                       "Regulatory & compliance risks - Tokenized equities face evolving rules and may require whitelisting or eligibility, which can force restricted access, halted redemptions, or unwinding.",
@@ -1326,20 +1493,20 @@
                       "Market access & redemption risks - Mint/redeem may be capacity-limited, whitelisted, or tied to market hours, which can block arbitrage and impair exits near NAV.",
                       "Valuation & NAV risks - NAV relies on pricing from on-chain markets or oracles that can be stale or manipulated, distorting marks and mint/redeem pricing."
                     ],
-                    "logoDark": "https://storage-logos.reserve.org/logos/Ondo-Icon-White.png",
                     "wrappedVersion": false
                   }
                 },
                 {
-                  "address": "0xE8ff70859Ce4cbd72E4352b4fb45F5BF39d07464",
-                  "symbol": "IBMon",
-                  "weight": 2.81,
+                  "address": "0x2Aea1D415D45CCF3EaBE565d45DcaF4ea2035b9c",
+                  "symbol": "GEVon",
+                  "weight": 2.84,
                   "bridge": {
                     "id": "ondo",
                     "name": "Ondo Tokenized Stocks",
                     "url": "https://docs.ondo.finance/",
                     "description": "An Ondo Tokenized Stock is a blockchain token that gives you the same economic exposure as owning the underlying stock or ETF. Please read the documentation for more details.",
                     "logo": "https://storage-logos.reserve.org/logos/Ondo-Icon-Black.png",
+                    "logoDark": "https://storage-logos.reserve.org/logos/Ondo-Icon-White.png",
                     "risks": [
                       "Custodial risks - Tokens are claims on structures holding the underlying equities via third-party custodians, whose failure or insolvency could delay settlement or cause loss of value.",
                       "Regulatory & compliance risks - Tokenized equities face evolving rules and may require whitelisting or eligibility, which can force restricted access, halted redemptions, or unwinding.",
@@ -1347,20 +1514,20 @@
                       "Market access & redemption risks - Mint/redeem may be capacity-limited, whitelisted, or tied to market hours, which can block arbitrage and impair exits near NAV.",
                       "Valuation & NAV risks - NAV relies on pricing from on-chain markets or oracles that can be stale or manipulated, distorting marks and mint/redeem pricing."
                     ],
-                    "logoDark": "https://storage-logos.reserve.org/logos/Ondo-Icon-White.png",
                     "wrappedVersion": false
                   }
                 },
                 {
                   "address": "0x538e2838f9ebC9B891399DF4a8dcc42890D9dc20",
                   "symbol": "ANETon",
-                  "weight": 2.31,
+                  "weight": 2.61,
                   "bridge": {
                     "id": "ondo",
                     "name": "Ondo Tokenized Stocks",
                     "url": "https://docs.ondo.finance/",
                     "description": "An Ondo Tokenized Stock is a blockchain token that gives you the same economic exposure as owning the underlying stock or ETF. Please read the documentation for more details.",
                     "logo": "https://storage-logos.reserve.org/logos/Ondo-Icon-Black.png",
+                    "logoDark": "https://storage-logos.reserve.org/logos/Ondo-Icon-White.png",
                     "risks": [
                       "Custodial risks - Tokens are claims on structures holding the underlying equities via third-party custodians, whose failure or insolvency could delay settlement or cause loss of value.",
                       "Regulatory & compliance risks - Tokenized equities face evolving rules and may require whitelisting or eligibility, which can force restricted access, halted redemptions, or unwinding.",
@@ -1368,20 +1535,20 @@
                       "Market access & redemption risks - Mint/redeem may be capacity-limited, whitelisted, or tied to market hours, which can block arbitrage and impair exits near NAV.",
                       "Valuation & NAV risks - NAV relies on pricing from on-chain markets or oracles that can be stale or manipulated, distorting marks and mint/redeem pricing."
                     ],
-                    "logoDark": "https://storage-logos.reserve.org/logos/Ondo-Icon-White.png",
                     "wrappedVersion": false
                   }
                 },
                 {
-                  "address": "0x25a4DbAE9a0Cd8C75656D6b50FFDf4900CC20d8f",
-                  "symbol": "GLWon",
-                  "weight": 1.59,
+                  "address": "0xE8ff70859Ce4cbd72E4352b4fb45F5BF39d07464",
+                  "symbol": "IBMon",
+                  "weight": 2.45,
                   "bridge": {
                     "id": "ondo",
                     "name": "Ondo Tokenized Stocks",
                     "url": "https://docs.ondo.finance/",
                     "description": "An Ondo Tokenized Stock is a blockchain token that gives you the same economic exposure as owning the underlying stock or ETF. Please read the documentation for more details.",
                     "logo": "https://storage-logos.reserve.org/logos/Ondo-Icon-Black.png",
+                    "logoDark": "https://storage-logos.reserve.org/logos/Ondo-Icon-White.png",
                     "risks": [
                       "Custodial risks - Tokens are claims on structures holding the underlying equities via third-party custodians, whose failure or insolvency could delay settlement or cause loss of value.",
                       "Regulatory & compliance risks - Tokenized equities face evolving rules and may require whitelisting or eligibility, which can force restricted access, halted redemptions, or unwinding.",
@@ -1389,20 +1556,20 @@
                       "Market access & redemption risks - Mint/redeem may be capacity-limited, whitelisted, or tied to market hours, which can block arbitrage and impair exits near NAV.",
                       "Valuation & NAV risks - NAV relies on pricing from on-chain markets or oracles that can be stale or manipulated, distorting marks and mint/redeem pricing."
                     ],
-                    "logoDark": "https://storage-logos.reserve.org/logos/Ondo-Icon-White.png",
                     "wrappedVersion": false
                   }
                 },
                 {
                   "address": "0x4697b2A050f7B5A8e1ebc27c325f9D78D094f041",
                   "symbol": "ETNon",
-                  "weight": 1.58,
+                  "weight": 1.78,
                   "bridge": {
                     "id": "ondo",
                     "name": "Ondo Tokenized Stocks",
                     "url": "https://docs.ondo.finance/",
                     "description": "An Ondo Tokenized Stock is a blockchain token that gives you the same economic exposure as owning the underlying stock or ETF. Please read the documentation for more details.",
                     "logo": "https://storage-logos.reserve.org/logos/Ondo-Icon-Black.png",
+                    "logoDark": "https://storage-logos.reserve.org/logos/Ondo-Icon-White.png",
                     "risks": [
                       "Custodial risks - Tokens are claims on structures holding the underlying equities via third-party custodians, whose failure or insolvency could delay settlement or cause loss of value.",
                       "Regulatory & compliance risks - Tokenized equities face evolving rules and may require whitelisting or eligibility, which can force restricted access, halted redemptions, or unwinding.",
@@ -1410,20 +1577,41 @@
                       "Market access & redemption risks - Mint/redeem may be capacity-limited, whitelisted, or tied to market hours, which can block arbitrage and impair exits near NAV.",
                       "Valuation & NAV risks - NAV relies on pricing from on-chain markets or oracles that can be stale or manipulated, distorting marks and mint/redeem pricing."
                     ],
+                    "wrappedVersion": false
+                  }
+                },
+                {
+                  "address": "0x25a4DbAE9a0Cd8C75656D6b50FFDf4900CC20d8f",
+                  "symbol": "GLWon",
+                  "weight": 1.33,
+                  "bridge": {
+                    "id": "ondo",
+                    "name": "Ondo Tokenized Stocks",
+                    "url": "https://docs.ondo.finance/",
+                    "description": "An Ondo Tokenized Stock is a blockchain token that gives you the same economic exposure as owning the underlying stock or ETF. Please read the documentation for more details.",
+                    "logo": "https://storage-logos.reserve.org/logos/Ondo-Icon-Black.png",
                     "logoDark": "https://storage-logos.reserve.org/logos/Ondo-Icon-White.png",
+                    "risks": [
+                      "Custodial risks - Tokens are claims on structures holding the underlying equities via third-party custodians, whose failure or insolvency could delay settlement or cause loss of value.",
+                      "Regulatory & compliance risks - Tokenized equities face evolving rules and may require whitelisting or eligibility, which can force restricted access, halted redemptions, or unwinding.",
+                      "Liquidity risks - On-chain trading is 24/7, but mint/redeem may be limited or windowed, and in stressed markets token prices can deviate from the underlying equities.",
+                      "Market access & redemption risks - Mint/redeem may be capacity-limited, whitelisted, or tied to market hours, which can block arbitrage and impair exits near NAV.",
+                      "Valuation & NAV risks - NAV relies on pricing from on-chain markets or oracles that can be stale or manipulated, distorting marks and mint/redeem pricing."
+                    ],
                     "wrappedVersion": false
                   }
                 },
                 {
                   "address": "0x9Cea8A7Be1Ab0320b709d368Ad60d8500f55995f",
                   "symbol": "VRTon",
-                  "weight": 1.22,
+                  "weight": 1.07,
                   "bridge": {
                     "id": "ondo",
                     "name": "Ondo Tokenized Stocks",
                     "url": "https://docs.ondo.finance/",
                     "description": "An Ondo Tokenized Stock is a blockchain token that gives you the same economic exposure as owning the underlying stock or ETF. Please read the documentation for more details.",
                     "logo": "https://storage-logos.reserve.org/logos/Ondo-Icon-Black.png",
+                    "logoDark": "https://storage-logos.reserve.org/logos/Ondo-Icon-White.png",
                     "risks": [
                       "Custodial risks - Tokens are claims on structures holding the underlying equities via third-party custodians, whose failure or insolvency could delay settlement or cause loss of value.",
                       "Regulatory & compliance risks - Tokenized equities face evolving rules and may require whitelisting or eligibility, which can force restricted access, halted redemptions, or unwinding.",
@@ -1431,20 +1619,20 @@
                       "Market access & redemption risks - Mint/redeem may be capacity-limited, whitelisted, or tied to market hours, which can block arbitrage and impair exits near NAV.",
                       "Valuation & NAV risks - NAV relies on pricing from on-chain markets or oracles that can be stale or manipulated, distorting marks and mint/redeem pricing."
                     ],
-                    "logoDark": "https://storage-logos.reserve.org/logos/Ondo-Icon-White.png",
                     "wrappedVersion": false
                   }
                 },
                 {
                   "address": "0x2418c2e1aE3B8D767594b3974D32610743f88155",
                   "symbol": "PWRon",
-                  "weight": 0.99,
+                  "weight": 1.02,
                   "bridge": {
                     "id": "ondo",
                     "name": "Ondo Tokenized Stocks",
                     "url": "https://docs.ondo.finance/",
                     "description": "An Ondo Tokenized Stock is a blockchain token that gives you the same economic exposure as owning the underlying stock or ETF. Please read the documentation for more details.",
                     "logo": "https://storage-logos.reserve.org/logos/Ondo-Icon-Black.png",
+                    "logoDark": "https://storage-logos.reserve.org/logos/Ondo-Icon-White.png",
                     "risks": [
                       "Custodial risks - Tokens are claims on structures holding the underlying equities via third-party custodians, whose failure or insolvency could delay settlement or cause loss of value.",
                       "Regulatory & compliance risks - Tokenized equities face evolving rules and may require whitelisting or eligibility, which can force restricted access, halted redemptions, or unwinding.",
@@ -1452,20 +1640,20 @@
                       "Market access & redemption risks - Mint/redeem may be capacity-limited, whitelisted, or tied to market hours, which can block arbitrage and impair exits near NAV.",
                       "Valuation & NAV risks - NAV relies on pricing from on-chain markets or oracles that can be stale or manipulated, distorting marks and mint/redeem pricing."
                     ],
-                    "logoDark": "https://storage-logos.reserve.org/logos/Ondo-Icon-White.png",
                     "wrappedVersion": false
                   }
                 },
                 {
                   "address": "0x17D03aE104a9D12E9E5794Efb109B817Dd7f3404",
                   "symbol": "BEon",
-                  "weight": 0.77,
+                  "weight": 0.71,
                   "bridge": {
                     "id": "ondo",
                     "name": "Ondo Tokenized Stocks",
                     "url": "https://docs.ondo.finance/",
                     "description": "An Ondo Tokenized Stock is a blockchain token that gives you the same economic exposure as owning the underlying stock or ETF. Please read the documentation for more details.",
                     "logo": "https://storage-logos.reserve.org/logos/Ondo-Icon-Black.png",
+                    "logoDark": "https://storage-logos.reserve.org/logos/Ondo-Icon-White.png",
                     "risks": [
                       "Custodial risks - Tokens are claims on structures holding the underlying equities via third-party custodians, whose failure or insolvency could delay settlement or cause loss of value.",
                       "Regulatory & compliance risks - Tokenized equities face evolving rules and may require whitelisting or eligibility, which can force restricted access, halted redemptions, or unwinding.",
@@ -1473,20 +1661,20 @@
                       "Market access & redemption risks - Mint/redeem may be capacity-limited, whitelisted, or tied to market hours, which can block arbitrage and impair exits near NAV.",
                       "Valuation & NAV risks - NAV relies on pricing from on-chain markets or oracles that can be stale or manipulated, distorting marks and mint/redeem pricing."
                     ],
-                    "logoDark": "https://storage-logos.reserve.org/logos/Ondo-Icon-White.png",
                     "wrappedVersion": false
                   }
                 },
                 {
                   "address": "0x0585756aAFB241b0f8A9Df62Db26c566091Bde0b",
                   "symbol": "COHRon",
-                  "weight": 0.61,
+                  "weight": 0.58,
                   "bridge": {
                     "id": "ondo",
                     "name": "Ondo Tokenized Stocks",
                     "url": "https://docs.ondo.finance/",
                     "description": "An Ondo Tokenized Stock is a blockchain token that gives you the same economic exposure as owning the underlying stock or ETF. Please read the documentation for more details.",
                     "logo": "https://storage-logos.reserve.org/logos/Ondo-Icon-Black.png",
+                    "logoDark": "https://storage-logos.reserve.org/logos/Ondo-Icon-White.png",
                     "risks": [
                       "Custodial risks - Tokens are claims on structures holding the underlying equities via third-party custodians, whose failure or insolvency could delay settlement or cause loss of value.",
                       "Regulatory & compliance risks - Tokenized equities face evolving rules and may require whitelisting or eligibility, which can force restricted access, halted redemptions, or unwinding.",
@@ -1494,12 +1682,11 @@
                       "Market access & redemption risks - Mint/redeem may be capacity-limited, whitelisted, or tied to market hours, which can block arbitrage and impair exits near NAV.",
                       "Valuation & NAV risks - NAV relies on pricing from on-chain markets or oracles that can be stale or manipulated, distorting marks and mint/redeem pricing."
                     ],
-                    "logoDark": "https://storage-logos.reserve.org/logos/Ondo-Icon-White.png",
                     "wrappedVersion": false
                   }
                 }
               ],
-              "totalWeight": 28.13
+              "totalWeight": 28.51
             }
           ]
         }
@@ -1509,96 +1696,96 @@
           "address": "0x290bCc0Fd5096cC3261AE2021841c7BC67Cb0f51",
           "name": "Reserve AI Power DTF",
           "symbol": "POWER",
-          "price": 95.71841989284718,
-          "marketCap": 803471.2315122632,
+          "price": 86.96620573941235,
+          "marketCap": 1706056.0380348824,
           "chainId": 56,
           "type": "index",
           "status": "active",
+          "createdAt": 1781725454,
           "basket": [
             {
               "address": "0xD381aec27DAAcCC87F102FF4Ad6652F8b5F20bA0",
               "symbol": "POWLon",
               "name": "Powell Industries (Ondo Tokenized)",
-              "weight": "0.93"
+              "weight": "0.83"
             },
             {
               "address": "0x2Aea1D415D45CCF3EaBE565d45DcaF4ea2035b9c",
               "symbol": "GEVon",
               "name": "GE Vernova (Ondo Tokenized)",
-              "weight": "21.31"
+              "weight": "20.40"
             },
             {
               "address": "0x4697b2A050f7B5A8e1ebc27c325f9D78D094f041",
               "symbol": "ETNon",
               "name": "Eaton (Ondo Tokenized)",
-              "weight": "17.08"
+              "weight": "19.22"
             },
             {
               "address": "0x9Cea8A7Be1Ab0320b709d368Ad60d8500f55995f",
               "symbol": "VRTon",
               "name": "Vertiv (Ondo Tokenized)",
-              "weight": "13.51"
+              "weight": "11.85"
             },
             {
               "address": "0x2418c2e1aE3B8D767594b3974D32610743f88155",
               "symbol": "PWRon",
               "name": "Quanta Services (Ondo Tokenized)",
-              "weight": "10.67"
+              "weight": "10.99"
             },
             {
               "address": "0x65D84F0990B7394209d591380C2952c83D778aA3",
               "symbol": "CEGon",
               "name": "Constellation Energy (Ondo Tokenized)",
-              "weight": "9.78"
+              "weight": "11.88"
             },
             {
               "address": "0xbbE4Dfe7a349Fb72aEc6f52d5CD9bDD78AE8f313",
               "symbol": "TLNon",
               "name": "Talen Energy (Ondo Tokenized)",
-              "weight": "1.89"
+              "weight": "1.67"
             },
             {
               "address": "0x17D03aE104a9D12E9E5794Efb109B817Dd7f3404",
               "symbol": "BEon",
               "name": "Bloom Energy (Ondo Tokenized)",
-              "weight": "7.88"
+              "weight": "7.25"
             },
             {
               "address": "0xf2C24c47805f4f72d3919C8674bFDd401505794B",
               "symbol": "VSTon",
               "name": "Vistra (Ondo Tokenized)",
-              "weight": "5.80"
+              "weight": "5.59"
             },
             {
               "address": "0xB35a9EAB5D25282f4e668798B629a9294e9A47aa",
               "symbol": "ONon",
               "name": "ON Semiconductor (Ondo Tokenized)",
-              "weight": "4.16"
+              "weight": "3.37"
             },
             {
               "address": "0x484Ce83BB55b50D70236C7D1E29E0Ba7524f905B",
               "symbol": "NVTon",
               "name": "nVent Electric (Ondo Tokenized)",
-              "weight": "2.74"
+              "weight": "2.96"
             },
             {
               "address": "0xa59469D91563CaeedDd2ffC731f41215E7b691ef",
               "symbol": "VICRon",
               "name": "Vicor (Ondo Tokenized)",
-              "weight": "1.39"
+              "weight": "1.06"
             },
             {
               "address": "0x1C42C07257F936a7c4f84B8D756c95817E23631A",
               "symbol": "HUBBon",
               "name": "Hubbell (Ondo Tokenized)",
-              "weight": "2.86"
+              "weight": "2.93"
             }
           ],
-          "createdAt": 1781725454,
           "brand": {
-            "icon": "https://l5394zf57b.ufs.sh/f/mupND8QUUvXxZKOsPr8JmlcRC50zSbLNDr2MEexXdkwT78ah",
+            "icon": "https://folio-assets.reserve.org/0x290bcc0fd5096cc3261ae2021841c7bc67cb0f51/mupND8QUUvXxZKOsPr8JmlcRC50zSbLNDr2MEexXdkwT78ah.svg",
             "cover": "",
-            "video": "",
+            "video": "https://www.youtube.com/watch?v=AO55IDqMOtw",
             "tags": [
               "AI",
               "RWA"
@@ -2358,17 +2545,205 @@
             {
               "timestamp": 1783641388,
               "value": 95.86389714398435
+            },
+            {
+              "timestamp": 1783727776,
+              "value": 95.45207187809288
+            },
+            {
+              "timestamp": 1783814186,
+              "value": 95.427392864493
+            },
+            {
+              "timestamp": 1783900597,
+              "value": 95.42581948307787
+            },
+            {
+              "timestamp": 1783986999,
+              "value": 92.68215916337489
+            },
+            {
+              "timestamp": 1784073374,
+              "value": 95.23838633465115
+            },
+            {
+              "timestamp": 1784159769,
+              "value": 93.98691948093558
+            },
+            {
+              "timestamp": 1784246177,
+              "value": 90.06931103691674
+            },
+            {
+              "timestamp": 1784332577,
+              "value": 91.03921288889994
+            },
+            {
+              "timestamp": 1784418978,
+              "value": 91.15240514181147
+            },
+            {
+              "timestamp": 1784505387,
+              "value": 91.15090224525431
+            },
+            {
+              "timestamp": 1784591770,
+              "value": 91.30734680324653
+            },
+            {
+              "timestamp": 1784678176,
+              "value": 93.82583619929494
+            },
+            {
+              "timestamp": 1784764577,
+              "value": 92.76377513091111
+            },
+            {
+              "timestamp": 1784850986,
+              "value": 93.89200331084638
+            },
+            {
+              "timestamp": 1784937388,
+              "value": 90.60012241246258
+            },
+            {
+              "timestamp": 1785023783,
+              "value": 90.61356840041115
+            },
+            {
+              "timestamp": 1785110185,
+              "value": 90.61207438805057
+            },
+            {
+              "timestamp": 1785196589,
+              "value": 89.00273039822089
+            },
+            {
+              "timestamp": 1785282988,
+              "value": 85.61891280372535
+            },
+            {
+              "timestamp": 1785369375,
+              "value": 80.35866990926725
+            },
+            {
+              "timestamp": 1785455783,
+              "value": 87.64403055151648
+            },
+            {
+              "timestamp": 1785542204,
+              "value": 88.28926568405372
+            },
+            {
+              "timestamp": 1785628587,
+              "value": 88.19951907661667
+            },
+            {
+              "timestamp": 1785714983,
+              "value": 88.1980648664578
+            },
+            {
+              "timestamp": 1785801396,
+              "value": 92.37366671338927
+            },
+            {
+              "timestamp": 1785887783,
+              "value": 92.80645960422113
+            },
+            {
+              "timestamp": 1785974185,
+              "value": 92.67289857043714
+            },
+            {
+              "timestamp": 1786060577,
+              "value": 92.39645224331615
+            },
+            {
+              "timestamp": 1786146984,
+              "value": 92.16109288581643
+            },
+            {
+              "timestamp": 1786233385,
+              "value": 92.15058058197886
+            },
+            {
+              "timestamp": 1786319771,
+              "value": 91.9853370287097
+            },
+            {
+              "timestamp": 1786406187,
+              "value": 91.1744773450846
+            },
+            {
+              "timestamp": 1786492585,
+              "value": 93.41934404910634
+            },
+            {
+              "timestamp": 1786578971,
+              "value": 95.5417250920789
+            },
+            {
+              "timestamp": 1786665390,
+              "value": 95.33481013709297
+            },
+            {
+              "timestamp": 1786751795,
+              "value": 96.05554813670146
+            },
+            {
+              "timestamp": 1786838201,
+              "value": 96.03972218038642
+            },
+            {
+              "timestamp": 1786924598,
+              "value": 96.03813870304877
+            },
+            {
+              "timestamp": 1787011003,
+              "value": 97.27886940313898
+            },
+            {
+              "timestamp": 1787097363,
+              "value": 90.97523092319257
+            },
+            {
+              "timestamp": 1787183764,
+              "value": 90.30091692999117
+            },
+            {
+              "timestamp": 1787270146,
+              "value": 88.5164424141748
+            },
+            {
+              "timestamp": 1787356602,
+              "value": 87.76212283225415
+            },
+            {
+              "timestamp": 1787443001,
+              "value": 87.73114751457015
+            },
+            {
+              "timestamp": 1787529408,
+              "value": 87.72970102679675
+            },
+            {
+              "timestamp": 1787615785,
+              "value": 86.20860345876997
+            },
+            {
+              "timestamp": 1787673462,
+              "value": 87.1126063190742
             }
           ],
           "priceChange": {
             "period": "ytd",
             "displayPeriod": "YTD",
-            "ratio": 0.39668547128633697,
-            "percent": 39.6685471286337,
+            "ratio": 0.26918386625774954,
+            "percent": 26.918386625774954,
             "startPrice": 68.63671106687636,
-            "endPrice": 95.86389714398435,
+            "endPrice": 87.1126063190742,
             "startTimestamp": 1767225600,
-            "endTimestamp": 1783641388
+            "endTimestamp": 1787673462
           },
           "exposure": [
             {
@@ -2383,13 +2758,14 @@
                 {
                   "address": "0x2Aea1D415D45CCF3EaBE565d45DcaF4ea2035b9c",
                   "symbol": "GEVon",
-                  "weight": 21.31,
+                  "weight": 20.4,
                   "bridge": {
                     "id": "ondo",
                     "name": "Ondo Tokenized Stocks",
                     "url": "https://docs.ondo.finance/",
                     "description": "An Ondo Tokenized Stock is a blockchain token that gives you the same economic exposure as owning the underlying stock or ETF. Please read the documentation for more details.",
                     "logo": "https://storage-logos.reserve.org/logos/Ondo-Icon-Black.png",
+                    "logoDark": "https://storage-logos.reserve.org/logos/Ondo-Icon-White.png",
                     "risks": [
                       "Custodial risks - Tokens are claims on structures holding the underlying equities via third-party custodians, whose failure or insolvency could delay settlement or cause loss of value.",
                       "Regulatory & compliance risks - Tokenized equities face evolving rules and may require whitelisting or eligibility, which can force restricted access, halted redemptions, or unwinding.",
@@ -2397,20 +2773,20 @@
                       "Market access & redemption risks - Mint/redeem may be capacity-limited, whitelisted, or tied to market hours, which can block arbitrage and impair exits near NAV.",
                       "Valuation & NAV risks - NAV relies on pricing from on-chain markets or oracles that can be stale or manipulated, distorting marks and mint/redeem pricing."
                     ],
-                    "logoDark": "https://storage-logos.reserve.org/logos/Ondo-Icon-White.png",
                     "wrappedVersion": false
                   }
                 },
                 {
                   "address": "0x4697b2A050f7B5A8e1ebc27c325f9D78D094f041",
                   "symbol": "ETNon",
-                  "weight": 17.08,
+                  "weight": 19.22,
                   "bridge": {
                     "id": "ondo",
                     "name": "Ondo Tokenized Stocks",
                     "url": "https://docs.ondo.finance/",
                     "description": "An Ondo Tokenized Stock is a blockchain token that gives you the same economic exposure as owning the underlying stock or ETF. Please read the documentation for more details.",
                     "logo": "https://storage-logos.reserve.org/logos/Ondo-Icon-Black.png",
+                    "logoDark": "https://storage-logos.reserve.org/logos/Ondo-Icon-White.png",
                     "risks": [
                       "Custodial risks - Tokens are claims on structures holding the underlying equities via third-party custodians, whose failure or insolvency could delay settlement or cause loss of value.",
                       "Regulatory & compliance risks - Tokenized equities face evolving rules and may require whitelisting or eligibility, which can force restricted access, halted redemptions, or unwinding.",
@@ -2418,20 +2794,20 @@
                       "Market access & redemption risks - Mint/redeem may be capacity-limited, whitelisted, or tied to market hours, which can block arbitrage and impair exits near NAV.",
                       "Valuation & NAV risks - NAV relies on pricing from on-chain markets or oracles that can be stale or manipulated, distorting marks and mint/redeem pricing."
                     ],
-                    "logoDark": "https://storage-logos.reserve.org/logos/Ondo-Icon-White.png",
                     "wrappedVersion": false
                   }
                 },
                 {
                   "address": "0x9Cea8A7Be1Ab0320b709d368Ad60d8500f55995f",
                   "symbol": "VRTon",
-                  "weight": 13.51,
+                  "weight": 11.85,
                   "bridge": {
                     "id": "ondo",
                     "name": "Ondo Tokenized Stocks",
                     "url": "https://docs.ondo.finance/",
                     "description": "An Ondo Tokenized Stock is a blockchain token that gives you the same economic exposure as owning the underlying stock or ETF. Please read the documentation for more details.",
                     "logo": "https://storage-logos.reserve.org/logos/Ondo-Icon-Black.png",
+                    "logoDark": "https://storage-logos.reserve.org/logos/Ondo-Icon-White.png",
                     "risks": [
                       "Custodial risks - Tokens are claims on structures holding the underlying equities via third-party custodians, whose failure or insolvency could delay settlement or cause loss of value.",
                       "Regulatory & compliance risks - Tokenized equities face evolving rules and may require whitelisting or eligibility, which can force restricted access, halted redemptions, or unwinding.",
@@ -2439,20 +2815,20 @@
                       "Market access & redemption risks - Mint/redeem may be capacity-limited, whitelisted, or tied to market hours, which can block arbitrage and impair exits near NAV.",
                       "Valuation & NAV risks - NAV relies on pricing from on-chain markets or oracles that can be stale or manipulated, distorting marks and mint/redeem pricing."
                     ],
-                    "logoDark": "https://storage-logos.reserve.org/logos/Ondo-Icon-White.png",
                     "wrappedVersion": false
                   }
                 },
                 {
                   "address": "0x2418c2e1aE3B8D767594b3974D32610743f88155",
                   "symbol": "PWRon",
-                  "weight": 10.67,
+                  "weight": 10.99,
                   "bridge": {
                     "id": "ondo",
                     "name": "Ondo Tokenized Stocks",
                     "url": "https://docs.ondo.finance/",
                     "description": "An Ondo Tokenized Stock is a blockchain token that gives you the same economic exposure as owning the underlying stock or ETF. Please read the documentation for more details.",
                     "logo": "https://storage-logos.reserve.org/logos/Ondo-Icon-Black.png",
+                    "logoDark": "https://storage-logos.reserve.org/logos/Ondo-Icon-White.png",
                     "risks": [
                       "Custodial risks - Tokens are claims on structures holding the underlying equities via third-party custodians, whose failure or insolvency could delay settlement or cause loss of value.",
                       "Regulatory & compliance risks - Tokenized equities face evolving rules and may require whitelisting or eligibility, which can force restricted access, halted redemptions, or unwinding.",
@@ -2460,20 +2836,20 @@
                       "Market access & redemption risks - Mint/redeem may be capacity-limited, whitelisted, or tied to market hours, which can block arbitrage and impair exits near NAV.",
                       "Valuation & NAV risks - NAV relies on pricing from on-chain markets or oracles that can be stale or manipulated, distorting marks and mint/redeem pricing."
                     ],
-                    "logoDark": "https://storage-logos.reserve.org/logos/Ondo-Icon-White.png",
                     "wrappedVersion": false
                   }
                 },
                 {
                   "address": "0x17D03aE104a9D12E9E5794Efb109B817Dd7f3404",
                   "symbol": "BEon",
-                  "weight": 7.88,
+                  "weight": 7.25,
                   "bridge": {
                     "id": "ondo",
                     "name": "Ondo Tokenized Stocks",
                     "url": "https://docs.ondo.finance/",
                     "description": "An Ondo Tokenized Stock is a blockchain token that gives you the same economic exposure as owning the underlying stock or ETF. Please read the documentation for more details.",
                     "logo": "https://storage-logos.reserve.org/logos/Ondo-Icon-Black.png",
+                    "logoDark": "https://storage-logos.reserve.org/logos/Ondo-Icon-White.png",
                     "risks": [
                       "Custodial risks - Tokens are claims on structures holding the underlying equities via third-party custodians, whose failure or insolvency could delay settlement or cause loss of value.",
                       "Regulatory & compliance risks - Tokenized equities face evolving rules and may require whitelisting or eligibility, which can force restricted access, halted redemptions, or unwinding.",
@@ -2481,20 +2857,20 @@
                       "Market access & redemption risks - Mint/redeem may be capacity-limited, whitelisted, or tied to market hours, which can block arbitrage and impair exits near NAV.",
                       "Valuation & NAV risks - NAV relies on pricing from on-chain markets or oracles that can be stale or manipulated, distorting marks and mint/redeem pricing."
                     ],
-                    "logoDark": "https://storage-logos.reserve.org/logos/Ondo-Icon-White.png",
                     "wrappedVersion": false
                   }
                 },
                 {
                   "address": "0xf2C24c47805f4f72d3919C8674bFDd401505794B",
                   "symbol": "VSTon",
-                  "weight": 5.8,
+                  "weight": 5.59,
                   "bridge": {
                     "id": "ondo",
                     "name": "Ondo Tokenized Stocks",
                     "url": "https://docs.ondo.finance/",
                     "description": "An Ondo Tokenized Stock is a blockchain token that gives you the same economic exposure as owning the underlying stock or ETF. Please read the documentation for more details.",
                     "logo": "https://storage-logos.reserve.org/logos/Ondo-Icon-Black.png",
+                    "logoDark": "https://storage-logos.reserve.org/logos/Ondo-Icon-White.png",
                     "risks": [
                       "Custodial risks - Tokens are claims on structures holding the underlying equities via third-party custodians, whose failure or insolvency could delay settlement or cause loss of value.",
                       "Regulatory & compliance risks - Tokenized equities face evolving rules and may require whitelisting or eligibility, which can force restricted access, halted redemptions, or unwinding.",
@@ -2502,41 +2878,20 @@
                       "Market access & redemption risks - Mint/redeem may be capacity-limited, whitelisted, or tied to market hours, which can block arbitrage and impair exits near NAV.",
                       "Valuation & NAV risks - NAV relies on pricing from on-chain markets or oracles that can be stale or manipulated, distorting marks and mint/redeem pricing."
                     ],
-                    "logoDark": "https://storage-logos.reserve.org/logos/Ondo-Icon-White.png",
-                    "wrappedVersion": false
-                  }
-                },
-                {
-                  "address": "0x1C42C07257F936a7c4f84B8D756c95817E23631A",
-                  "symbol": "HUBBon",
-                  "weight": 2.86,
-                  "bridge": {
-                    "id": "ondo",
-                    "name": "Ondo Tokenized Stocks",
-                    "url": "https://docs.ondo.finance/",
-                    "description": "An Ondo Tokenized Stock is a blockchain token that gives you the same economic exposure as owning the underlying stock or ETF. Please read the documentation for more details.",
-                    "logo": "https://storage-logos.reserve.org/logos/Ondo-Icon-Black.png",
-                    "risks": [
-                      "Custodial risks - Tokens are claims on structures holding the underlying equities via third-party custodians, whose failure or insolvency could delay settlement or cause loss of value.",
-                      "Regulatory & compliance risks - Tokenized equities face evolving rules and may require whitelisting or eligibility, which can force restricted access, halted redemptions, or unwinding.",
-                      "Liquidity risks - On-chain trading is 24/7, but mint/redeem may be limited or windowed, and in stressed markets token prices can deviate from the underlying equities.",
-                      "Market access & redemption risks - Mint/redeem may be capacity-limited, whitelisted, or tied to market hours, which can block arbitrage and impair exits near NAV.",
-                      "Valuation & NAV risks - NAV relies on pricing from on-chain markets or oracles that can be stale or manipulated, distorting marks and mint/redeem pricing."
-                    ],
-                    "logoDark": "https://storage-logos.reserve.org/logos/Ondo-Icon-White.png",
                     "wrappedVersion": false
                   }
                 },
                 {
                   "address": "0x484Ce83BB55b50D70236C7D1E29E0Ba7524f905B",
                   "symbol": "NVTon",
-                  "weight": 2.74,
+                  "weight": 2.96,
                   "bridge": {
                     "id": "ondo",
                     "name": "Ondo Tokenized Stocks",
                     "url": "https://docs.ondo.finance/",
                     "description": "An Ondo Tokenized Stock is a blockchain token that gives you the same economic exposure as owning the underlying stock or ETF. Please read the documentation for more details.",
                     "logo": "https://storage-logos.reserve.org/logos/Ondo-Icon-Black.png",
+                    "logoDark": "https://storage-logos.reserve.org/logos/Ondo-Icon-White.png",
                     "risks": [
                       "Custodial risks - Tokens are claims on structures holding the underlying equities via third-party custodians, whose failure or insolvency could delay settlement or cause loss of value.",
                       "Regulatory & compliance risks - Tokenized equities face evolving rules and may require whitelisting or eligibility, which can force restricted access, halted redemptions, or unwinding.",
@@ -2544,12 +2899,32 @@
                       "Market access & redemption risks - Mint/redeem may be capacity-limited, whitelisted, or tied to market hours, which can block arbitrage and impair exits near NAV.",
                       "Valuation & NAV risks - NAV relies on pricing from on-chain markets or oracles that can be stale or manipulated, distorting marks and mint/redeem pricing."
                     ],
+                    "wrappedVersion": false
+                  }
+                },
+                {
+                  "address": "0x1C42C07257F936a7c4f84B8D756c95817E23631A",
+                  "symbol": "HUBBon",
+                  "weight": 2.93,
+                  "bridge": {
+                    "id": "ondo",
+                    "name": "Ondo Tokenized Stocks",
+                    "url": "https://docs.ondo.finance/",
+                    "description": "An Ondo Tokenized Stock is a blockchain token that gives you the same economic exposure as owning the underlying stock or ETF. Please read the documentation for more details.",
+                    "logo": "https://storage-logos.reserve.org/logos/Ondo-Icon-Black.png",
                     "logoDark": "https://storage-logos.reserve.org/logos/Ondo-Icon-White.png",
+                    "risks": [
+                      "Custodial risks - Tokens are claims on structures holding the underlying equities via third-party custodians, whose failure or insolvency could delay settlement or cause loss of value.",
+                      "Regulatory & compliance risks - Tokenized equities face evolving rules and may require whitelisting or eligibility, which can force restricted access, halted redemptions, or unwinding.",
+                      "Liquidity risks - On-chain trading is 24/7, but mint/redeem may be limited or windowed, and in stressed markets token prices can deviate from the underlying equities.",
+                      "Market access & redemption risks - Mint/redeem may be capacity-limited, whitelisted, or tied to market hours, which can block arbitrage and impair exits near NAV.",
+                      "Valuation & NAV risks - NAV relies on pricing from on-chain markets or oracles that can be stale or manipulated, distorting marks and mint/redeem pricing."
+                    ],
                     "wrappedVersion": false
                   }
                 }
               ],
-              "totalWeight": 81.85
+              "totalWeight": 81.19
             },
             {
               "native": {
@@ -2563,13 +2938,14 @@
                 {
                   "address": "0x65D84F0990B7394209d591380C2952c83D778aA3",
                   "symbol": "CEGon",
-                  "weight": 9.78,
+                  "weight": 11.88,
                   "bridge": {
                     "id": "ondo",
                     "name": "Ondo Tokenized Stocks",
                     "url": "https://docs.ondo.finance/",
                     "description": "An Ondo Tokenized Stock is a blockchain token that gives you the same economic exposure as owning the underlying stock or ETF. Please read the documentation for more details.",
                     "logo": "https://storage-logos.reserve.org/logos/Ondo-Icon-Black.png",
+                    "logoDark": "https://storage-logos.reserve.org/logos/Ondo-Icon-White.png",
                     "risks": [
                       "Custodial risks - Tokens are claims on structures holding the underlying equities via third-party custodians, whose failure or insolvency could delay settlement or cause loss of value.",
                       "Regulatory & compliance risks - Tokenized equities face evolving rules and may require whitelisting or eligibility, which can force restricted access, halted redemptions, or unwinding.",
@@ -2577,20 +2953,20 @@
                       "Market access & redemption risks - Mint/redeem may be capacity-limited, whitelisted, or tied to market hours, which can block arbitrage and impair exits near NAV.",
                       "Valuation & NAV risks - NAV relies on pricing from on-chain markets or oracles that can be stale or manipulated, distorting marks and mint/redeem pricing."
                     ],
-                    "logoDark": "https://storage-logos.reserve.org/logos/Ondo-Icon-White.png",
                     "wrappedVersion": false
                   }
                 },
                 {
                   "address": "0xB35a9EAB5D25282f4e668798B629a9294e9A47aa",
                   "symbol": "ONon",
-                  "weight": 4.16,
+                  "weight": 3.37,
                   "bridge": {
                     "id": "ondo",
                     "name": "Ondo Tokenized Stocks",
                     "url": "https://docs.ondo.finance/",
                     "description": "An Ondo Tokenized Stock is a blockchain token that gives you the same economic exposure as owning the underlying stock or ETF. Please read the documentation for more details.",
                     "logo": "https://storage-logos.reserve.org/logos/Ondo-Icon-Black.png",
+                    "logoDark": "https://storage-logos.reserve.org/logos/Ondo-Icon-White.png",
                     "risks": [
                       "Custodial risks - Tokens are claims on structures holding the underlying equities via third-party custodians, whose failure or insolvency could delay settlement or cause loss of value.",
                       "Regulatory & compliance risks - Tokenized equities face evolving rules and may require whitelisting or eligibility, which can force restricted access, halted redemptions, or unwinding.",
@@ -2598,20 +2974,20 @@
                       "Market access & redemption risks - Mint/redeem may be capacity-limited, whitelisted, or tied to market hours, which can block arbitrage and impair exits near NAV.",
                       "Valuation & NAV risks - NAV relies on pricing from on-chain markets or oracles that can be stale or manipulated, distorting marks and mint/redeem pricing."
                     ],
-                    "logoDark": "https://storage-logos.reserve.org/logos/Ondo-Icon-White.png",
                     "wrappedVersion": false
                   }
                 },
                 {
                   "address": "0xbbE4Dfe7a349Fb72aEc6f52d5CD9bDD78AE8f313",
                   "symbol": "TLNon",
-                  "weight": 1.89,
+                  "weight": 1.67,
                   "bridge": {
                     "id": "ondo",
                     "name": "Ondo Tokenized Stocks",
                     "url": "https://docs.ondo.finance/",
                     "description": "An Ondo Tokenized Stock is a blockchain token that gives you the same economic exposure as owning the underlying stock or ETF. Please read the documentation for more details.",
                     "logo": "https://storage-logos.reserve.org/logos/Ondo-Icon-Black.png",
+                    "logoDark": "https://storage-logos.reserve.org/logos/Ondo-Icon-White.png",
                     "risks": [
                       "Custodial risks - Tokens are claims on structures holding the underlying equities via third-party custodians, whose failure or insolvency could delay settlement or cause loss of value.",
                       "Regulatory & compliance risks - Tokenized equities face evolving rules and may require whitelisting or eligibility, which can force restricted access, halted redemptions, or unwinding.",
@@ -2619,20 +2995,20 @@
                       "Market access & redemption risks - Mint/redeem may be capacity-limited, whitelisted, or tied to market hours, which can block arbitrage and impair exits near NAV.",
                       "Valuation & NAV risks - NAV relies on pricing from on-chain markets or oracles that can be stale or manipulated, distorting marks and mint/redeem pricing."
                     ],
-                    "logoDark": "https://storage-logos.reserve.org/logos/Ondo-Icon-White.png",
                     "wrappedVersion": false
                   }
                 },
                 {
                   "address": "0xa59469D91563CaeedDd2ffC731f41215E7b691ef",
                   "symbol": "VICRon",
-                  "weight": 1.39,
+                  "weight": 1.06,
                   "bridge": {
                     "id": "ondo",
                     "name": "Ondo Tokenized Stocks",
                     "url": "https://docs.ondo.finance/",
                     "description": "An Ondo Tokenized Stock is a blockchain token that gives you the same economic exposure as owning the underlying stock or ETF. Please read the documentation for more details.",
                     "logo": "https://storage-logos.reserve.org/logos/Ondo-Icon-Black.png",
+                    "logoDark": "https://storage-logos.reserve.org/logos/Ondo-Icon-White.png",
                     "risks": [
                       "Custodial risks - Tokens are claims on structures holding the underlying equities via third-party custodians, whose failure or insolvency could delay settlement or cause loss of value.",
                       "Regulatory & compliance risks - Tokenized equities face evolving rules and may require whitelisting or eligibility, which can force restricted access, halted redemptions, or unwinding.",
@@ -2640,20 +3016,20 @@
                       "Market access & redemption risks - Mint/redeem may be capacity-limited, whitelisted, or tied to market hours, which can block arbitrage and impair exits near NAV.",
                       "Valuation & NAV risks - NAV relies on pricing from on-chain markets or oracles that can be stale or manipulated, distorting marks and mint/redeem pricing."
                     ],
-                    "logoDark": "https://storage-logos.reserve.org/logos/Ondo-Icon-White.png",
                     "wrappedVersion": false
                   }
                 },
                 {
                   "address": "0xD381aec27DAAcCC87F102FF4Ad6652F8b5F20bA0",
                   "symbol": "POWLon",
-                  "weight": 0.93,
+                  "weight": 0.83,
                   "bridge": {
                     "id": "ondo",
                     "name": "Ondo Tokenized Stocks",
                     "url": "https://docs.ondo.finance/",
                     "description": "An Ondo Tokenized Stock is a blockchain token that gives you the same economic exposure as owning the underlying stock or ETF. Please read the documentation for more details.",
                     "logo": "https://storage-logos.reserve.org/logos/Ondo-Icon-Black.png",
+                    "logoDark": "https://storage-logos.reserve.org/logos/Ondo-Icon-White.png",
                     "risks": [
                       "Custodial risks - Tokens are claims on structures holding the underlying equities via third-party custodians, whose failure or insolvency could delay settlement or cause loss of value.",
                       "Regulatory & compliance risks - Tokenized equities face evolving rules and may require whitelisting or eligibility, which can force restricted access, halted redemptions, or unwinding.",
@@ -2661,12 +3037,11 @@
                       "Market access & redemption risks - Mint/redeem may be capacity-limited, whitelisted, or tied to market hours, which can block arbitrage and impair exits near NAV.",
                       "Valuation & NAV risks - NAV relies on pricing from on-chain markets or oracles that can be stale or manipulated, distorting marks and mint/redeem pricing."
                     ],
-                    "logoDark": "https://storage-logos.reserve.org/logos/Ondo-Icon-White.png",
                     "wrappedVersion": false
                   }
                 }
               ],
-              "totalWeight": 18.15
+              "totalWeight": 18.81
             }
           ]
         }
@@ -2674,72 +3049,72 @@
       "photon": [
         {
           "address": "0xa0Fe4e0aEca5479705ce996615B2EACB6b6a10Fb",
-          "name": "Reserve Photonics DTF",
+          "name": "Reserve AI Photonics DTF",
           "symbol": "PHOTON",
-          "price": 93.16469431501757,
-          "marketCap": 845711.1114810152,
+          "price": 81.56102447296462,
+          "marketCap": 2272689.794424222,
           "chainId": 56,
           "type": "index",
           "status": "active",
+          "createdAt": 1781718876,
           "basket": [
             {
               "address": "0x0C50323AF81D5C33822c6Add256Fb9093D42BC74",
               "symbol": "AXTIon",
               "name": "AXT (Ondo Tokenized)",
-              "weight": "1.16"
+              "weight": "1.43"
             },
             {
               "address": "0x25a4DbAE9a0Cd8C75656D6b50FFDf4900CC20d8f",
               "symbol": "GLWon",
               "name": "Corning (Ondo Tokenized)",
-              "weight": "23.68"
+              "weight": "20.55"
             },
             {
               "address": "0x89a9F7114bE6b220fAe645ba0cbB720889867415",
               "symbol": "CIENon",
               "name": "Ciena (Ondo Tokenized)",
-              "weight": "18.36"
+              "weight": "17.24"
             },
             {
               "address": "0x0fAcaFB97ffDbA3cAe88512070AF49bd30674cD9",
               "symbol": "LITEon",
               "name": "Lumentum Holdings (Ondo Tokenized)",
-              "weight": "17.29"
+              "weight": "21.35"
             },
             {
               "address": "0x0585756aAFB241b0f8A9Df62Db26c566091Bde0b",
               "symbol": "COHRon",
               "name": "Coherent (Ondo Tokenized)",
-              "weight": "18.02"
+              "weight": "17.76"
             },
             {
               "address": "0x1dCd320C5d7b84CD407437c58d56CbbDd0D9d8f3",
               "symbol": "MTSIon",
               "name": "MACOM Technology Solutions Holdings (Ondo Tokenized)",
-              "weight": "6.76"
+              "weight": "6.47"
             },
             {
               "address": "0xA1DaaB37dA2a29A1eC721922b55962eB8B481001",
               "symbol": "FNon",
               "name": "Fabrinet (Ondo Tokenized)",
-              "weight": "4.85"
+              "weight": "4.91"
             },
             {
               "address": "0x343324170C91c4D8Cf4D439B3E5a619F50621aE7",
               "symbol": "TSEMon",
               "name": "Tower Semiconductor (Ondo Tokenized)",
-              "weight": "7.34"
+              "weight": "7.61"
             },
             {
               "address": "0x149Bda9e7251DC36f536d1fE7F92A5ea203F4F3D",
               "symbol": "AAOIon",
               "name": "Applied Optoelectronics (Ondo Tokenized)",
-              "weight": "2.54"
+              "weight": "2.68"
             }
           ],
-          "createdAt": 1781718876,
           "brand": {
-            "icon": "https://l5394zf57b.ufs.sh/f/mupND8QUUvXxYmQhYtkGhrj2ScsDNeUp3lRftPgCi0ZM65Vz",
+            "icon": "https://folio-assets.reserve.org/0xa0fe4e0aeca5479705ce996615b2eacb6b6a10fb/mupND8QUUvXxYmQhYtkGhrj2ScsDNeUp3lRftPgCi0ZM65Vz.svg",
             "cover": "",
             "video": "https://youtu.be/Ngb7bpd5keA",
             "tags": [
@@ -3493,17 +3868,205 @@
             {
               "timestamp": 1783641388,
               "value": 93.09156687655523
+            },
+            {
+              "timestamp": 1783727776,
+              "value": 91.82315704296383
+            },
+            {
+              "timestamp": 1783814186,
+              "value": 91.8166201218005
+            },
+            {
+              "timestamp": 1783900597,
+              "value": 91.81510627384382
+            },
+            {
+              "timestamp": 1783986999,
+              "value": 87.38291204378157
+            },
+            {
+              "timestamp": 1784073374,
+              "value": 92.10803118616886
+            },
+            {
+              "timestamp": 1784159769,
+              "value": 85.69773379895537
+            },
+            {
+              "timestamp": 1784246177,
+              "value": 78.70983008631806
+            },
+            {
+              "timestamp": 1784332577,
+              "value": 79.44021781293873
+            },
+            {
+              "timestamp": 1784418978,
+              "value": 79.39754373281217
+            },
+            {
+              "timestamp": 1784505387,
+              "value": 79.3962346472764
+            },
+            {
+              "timestamp": 1784591770,
+              "value": 80.7608307300463
+            },
+            {
+              "timestamp": 1784678176,
+              "value": 88.37950229714082
+            },
+            {
+              "timestamp": 1784764577,
+              "value": 86.50969056142169
+            },
+            {
+              "timestamp": 1784850986,
+              "value": 86.63459196265262
+            },
+            {
+              "timestamp": 1784937388,
+              "value": 80.09129572603746
+            },
+            {
+              "timestamp": 1785023783,
+              "value": 80.38477154875685
+            },
+            {
+              "timestamp": 1785110185,
+              "value": 80.71034151090795
+            },
+            {
+              "timestamp": 1785196589,
+              "value": 76.46281562081994
+            },
+            {
+              "timestamp": 1785282988,
+              "value": 71.07946594059875
+            },
+            {
+              "timestamp": 1785369375,
+              "value": 65.35306352917026
+            },
+            {
+              "timestamp": 1785455783,
+              "value": 75.91503260208304
+            },
+            {
+              "timestamp": 1785542204,
+              "value": 75.70488392329949
+            },
+            {
+              "timestamp": 1785628587,
+              "value": 74.98830086782216
+            },
+            {
+              "timestamp": 1785714983,
+              "value": 75.33264829564138
+            },
+            {
+              "timestamp": 1785801396,
+              "value": 82.30114327166271
+            },
+            {
+              "timestamp": 1785887783,
+              "value": 87.70214770257925
+            },
+            {
+              "timestamp": 1785974185,
+              "value": 85.89027607910631
+            },
+            {
+              "timestamp": 1786060577,
+              "value": 89.72673849355861
+            },
+            {
+              "timestamp": 1786146984,
+              "value": 94.64834697148451
+            },
+            {
+              "timestamp": 1786233385,
+              "value": 94.73467565970991
+            },
+            {
+              "timestamp": 1786319771,
+              "value": 94.79439242642647
+            },
+            {
+              "timestamp": 1786406187,
+              "value": 87.35207803557162
+            },
+            {
+              "timestamp": 1786492585,
+              "value": 89.14042322506366
+            },
+            {
+              "timestamp": 1786578971,
+              "value": 94.65559377630598
+            },
+            {
+              "timestamp": 1786665390,
+              "value": 92.38177377412482
+            },
+            {
+              "timestamp": 1786751795,
+              "value": 93.71629385669628
+            },
+            {
+              "timestamp": 1786838201,
+              "value": 93.78710969772446
+            },
+            {
+              "timestamp": 1786924598,
+              "value": 93.82243981971642
+            },
+            {
+              "timestamp": 1787011003,
+              "value": 97.71257745504515
+            },
+            {
+              "timestamp": 1787097363,
+              "value": 86.61881954487184
+            },
+            {
+              "timestamp": 1787183764,
+              "value": 84.15938548263624
+            },
+            {
+              "timestamp": 1787270146,
+              "value": 83.56142674752935
+            },
+            {
+              "timestamp": 1787356602,
+              "value": 83.01424545090339
+            },
+            {
+              "timestamp": 1787443001,
+              "value": 83.00631978312808
+            },
+            {
+              "timestamp": 1787529408,
+              "value": 83.22504988574023
+            },
+            {
+              "timestamp": 1787615785,
+              "value": 78.83937914418695
+            },
+            {
+              "timestamp": 1787673462,
+              "value": 81.53151524703387
             }
           ],
           "priceChange": {
             "period": "ytd",
             "displayPeriod": "YTD",
-            "ratio": 0.9636929366186445,
-            "percent": 96.36929366186445,
+            "ratio": 0.7198427953707269,
+            "percent": 71.9842795370727,
             "startPrice": 47.40637659819312,
-            "endPrice": 93.09156687655523,
+            "endPrice": 81.53151524703387,
             "startTimestamp": 1767225600,
-            "endTimestamp": 1783641388
+            "endTimestamp": 1787673462
           },
           "exposure": [
             {
@@ -3518,13 +4081,14 @@
                 {
                   "address": "0x25a4DbAE9a0Cd8C75656D6b50FFDf4900CC20d8f",
                   "symbol": "GLWon",
-                  "weight": 23.68,
+                  "weight": 20.55,
                   "bridge": {
                     "id": "ondo",
                     "name": "Ondo Tokenized Stocks",
                     "url": "https://docs.ondo.finance/",
                     "description": "An Ondo Tokenized Stock is a blockchain token that gives you the same economic exposure as owning the underlying stock or ETF. Please read the documentation for more details.",
                     "logo": "https://storage-logos.reserve.org/logos/Ondo-Icon-Black.png",
+                    "logoDark": "https://storage-logos.reserve.org/logos/Ondo-Icon-White.png",
                     "risks": [
                       "Custodial risks - Tokens are claims on structures holding the underlying equities via third-party custodians, whose failure or insolvency could delay settlement or cause loss of value.",
                       "Regulatory & compliance risks - Tokenized equities face evolving rules and may require whitelisting or eligibility, which can force restricted access, halted redemptions, or unwinding.",
@@ -3532,41 +4096,20 @@
                       "Market access & redemption risks - Mint/redeem may be capacity-limited, whitelisted, or tied to market hours, which can block arbitrage and impair exits near NAV.",
                       "Valuation & NAV risks - NAV relies on pricing from on-chain markets or oracles that can be stale or manipulated, distorting marks and mint/redeem pricing."
                     ],
-                    "logoDark": "https://storage-logos.reserve.org/logos/Ondo-Icon-White.png",
-                    "wrappedVersion": false
-                  }
-                },
-                {
-                  "address": "0x89a9F7114bE6b220fAe645ba0cbB720889867415",
-                  "symbol": "CIENon",
-                  "weight": 18.36,
-                  "bridge": {
-                    "id": "ondo",
-                    "name": "Ondo Tokenized Stocks",
-                    "url": "https://docs.ondo.finance/",
-                    "description": "An Ondo Tokenized Stock is a blockchain token that gives you the same economic exposure as owning the underlying stock or ETF. Please read the documentation for more details.",
-                    "logo": "https://storage-logos.reserve.org/logos/Ondo-Icon-Black.png",
-                    "risks": [
-                      "Custodial risks - Tokens are claims on structures holding the underlying equities via third-party custodians, whose failure or insolvency could delay settlement or cause loss of value.",
-                      "Regulatory & compliance risks - Tokenized equities face evolving rules and may require whitelisting or eligibility, which can force restricted access, halted redemptions, or unwinding.",
-                      "Liquidity risks - On-chain trading is 24/7, but mint/redeem may be limited or windowed, and in stressed markets token prices can deviate from the underlying equities.",
-                      "Market access & redemption risks - Mint/redeem may be capacity-limited, whitelisted, or tied to market hours, which can block arbitrage and impair exits near NAV.",
-                      "Valuation & NAV risks - NAV relies on pricing from on-chain markets or oracles that can be stale or manipulated, distorting marks and mint/redeem pricing."
-                    ],
-                    "logoDark": "https://storage-logos.reserve.org/logos/Ondo-Icon-White.png",
                     "wrappedVersion": false
                   }
                 },
                 {
                   "address": "0x0585756aAFB241b0f8A9Df62Db26c566091Bde0b",
                   "symbol": "COHRon",
-                  "weight": 18.02,
+                  "weight": 17.76,
                   "bridge": {
                     "id": "ondo",
                     "name": "Ondo Tokenized Stocks",
                     "url": "https://docs.ondo.finance/",
                     "description": "An Ondo Tokenized Stock is a blockchain token that gives you the same economic exposure as owning the underlying stock or ETF. Please read the documentation for more details.",
                     "logo": "https://storage-logos.reserve.org/logos/Ondo-Icon-Black.png",
+                    "logoDark": "https://storage-logos.reserve.org/logos/Ondo-Icon-White.png",
                     "risks": [
                       "Custodial risks - Tokens are claims on structures holding the underlying equities via third-party custodians, whose failure or insolvency could delay settlement or cause loss of value.",
                       "Regulatory & compliance risks - Tokenized equities face evolving rules and may require whitelisting or eligibility, which can force restricted access, halted redemptions, or unwinding.",
@@ -3574,20 +4117,41 @@
                       "Market access & redemption risks - Mint/redeem may be capacity-limited, whitelisted, or tied to market hours, which can block arbitrage and impair exits near NAV.",
                       "Valuation & NAV risks - NAV relies on pricing from on-chain markets or oracles that can be stale or manipulated, distorting marks and mint/redeem pricing."
                     ],
+                    "wrappedVersion": false
+                  }
+                },
+                {
+                  "address": "0x89a9F7114bE6b220fAe645ba0cbB720889867415",
+                  "symbol": "CIENon",
+                  "weight": 17.24,
+                  "bridge": {
+                    "id": "ondo",
+                    "name": "Ondo Tokenized Stocks",
+                    "url": "https://docs.ondo.finance/",
+                    "description": "An Ondo Tokenized Stock is a blockchain token that gives you the same economic exposure as owning the underlying stock or ETF. Please read the documentation for more details.",
+                    "logo": "https://storage-logos.reserve.org/logos/Ondo-Icon-Black.png",
                     "logoDark": "https://storage-logos.reserve.org/logos/Ondo-Icon-White.png",
+                    "risks": [
+                      "Custodial risks - Tokens are claims on structures holding the underlying equities via third-party custodians, whose failure or insolvency could delay settlement or cause loss of value.",
+                      "Regulatory & compliance risks - Tokenized equities face evolving rules and may require whitelisting or eligibility, which can force restricted access, halted redemptions, or unwinding.",
+                      "Liquidity risks - On-chain trading is 24/7, but mint/redeem may be limited or windowed, and in stressed markets token prices can deviate from the underlying equities.",
+                      "Market access & redemption risks - Mint/redeem may be capacity-limited, whitelisted, or tied to market hours, which can block arbitrage and impair exits near NAV.",
+                      "Valuation & NAV risks - NAV relies on pricing from on-chain markets or oracles that can be stale or manipulated, distorting marks and mint/redeem pricing."
+                    ],
                     "wrappedVersion": false
                   }
                 },
                 {
                   "address": "0xA1DaaB37dA2a29A1eC721922b55962eB8B481001",
                   "symbol": "FNon",
-                  "weight": 4.85,
+                  "weight": 4.91,
                   "bridge": {
                     "id": "ondo",
                     "name": "Ondo Tokenized Stocks",
                     "url": "https://docs.ondo.finance/",
                     "description": "An Ondo Tokenized Stock is a blockchain token that gives you the same economic exposure as owning the underlying stock or ETF. Please read the documentation for more details.",
                     "logo": "https://storage-logos.reserve.org/logos/Ondo-Icon-Black.png",
+                    "logoDark": "https://storage-logos.reserve.org/logos/Ondo-Icon-White.png",
                     "risks": [
                       "Custodial risks - Tokens are claims on structures holding the underlying equities via third-party custodians, whose failure or insolvency could delay settlement or cause loss of value.",
                       "Regulatory & compliance risks - Tokenized equities face evolving rules and may require whitelisting or eligibility, which can force restricted access, halted redemptions, or unwinding.",
@@ -3595,12 +4159,11 @@
                       "Market access & redemption risks - Mint/redeem may be capacity-limited, whitelisted, or tied to market hours, which can block arbitrage and impair exits near NAV.",
                       "Valuation & NAV risks - NAV relies on pricing from on-chain markets or oracles that can be stale or manipulated, distorting marks and mint/redeem pricing."
                     ],
-                    "logoDark": "https://storage-logos.reserve.org/logos/Ondo-Icon-White.png",
                     "wrappedVersion": false
                   }
                 }
               ],
-              "totalWeight": 64.91
+              "totalWeight": 60.46
             },
             {
               "native": {
@@ -3614,13 +4177,14 @@
                 {
                   "address": "0x0fAcaFB97ffDbA3cAe88512070AF49bd30674cD9",
                   "symbol": "LITEon",
-                  "weight": 17.29,
+                  "weight": 21.35,
                   "bridge": {
                     "id": "ondo",
                     "name": "Ondo Tokenized Stocks",
                     "url": "https://docs.ondo.finance/",
                     "description": "An Ondo Tokenized Stock is a blockchain token that gives you the same economic exposure as owning the underlying stock or ETF. Please read the documentation for more details.",
                     "logo": "https://storage-logos.reserve.org/logos/Ondo-Icon-Black.png",
+                    "logoDark": "https://storage-logos.reserve.org/logos/Ondo-Icon-White.png",
                     "risks": [
                       "Custodial risks - Tokens are claims on structures holding the underlying equities via third-party custodians, whose failure or insolvency could delay settlement or cause loss of value.",
                       "Regulatory & compliance risks - Tokenized equities face evolving rules and may require whitelisting or eligibility, which can force restricted access, halted redemptions, or unwinding.",
@@ -3628,20 +4192,20 @@
                       "Market access & redemption risks - Mint/redeem may be capacity-limited, whitelisted, or tied to market hours, which can block arbitrage and impair exits near NAV.",
                       "Valuation & NAV risks - NAV relies on pricing from on-chain markets or oracles that can be stale or manipulated, distorting marks and mint/redeem pricing."
                     ],
-                    "logoDark": "https://storage-logos.reserve.org/logos/Ondo-Icon-White.png",
                     "wrappedVersion": false
                   }
                 },
                 {
                   "address": "0x343324170C91c4D8Cf4D439B3E5a619F50621aE7",
                   "symbol": "TSEMon",
-                  "weight": 7.34,
+                  "weight": 7.61,
                   "bridge": {
                     "id": "ondo",
                     "name": "Ondo Tokenized Stocks",
                     "url": "https://docs.ondo.finance/",
                     "description": "An Ondo Tokenized Stock is a blockchain token that gives you the same economic exposure as owning the underlying stock or ETF. Please read the documentation for more details.",
                     "logo": "https://storage-logos.reserve.org/logos/Ondo-Icon-Black.png",
+                    "logoDark": "https://storage-logos.reserve.org/logos/Ondo-Icon-White.png",
                     "risks": [
                       "Custodial risks - Tokens are claims on structures holding the underlying equities via third-party custodians, whose failure or insolvency could delay settlement or cause loss of value.",
                       "Regulatory & compliance risks - Tokenized equities face evolving rules and may require whitelisting or eligibility, which can force restricted access, halted redemptions, or unwinding.",
@@ -3649,20 +4213,20 @@
                       "Market access & redemption risks - Mint/redeem may be capacity-limited, whitelisted, or tied to market hours, which can block arbitrage and impair exits near NAV.",
                       "Valuation & NAV risks - NAV relies on pricing from on-chain markets or oracles that can be stale or manipulated, distorting marks and mint/redeem pricing."
                     ],
-                    "logoDark": "https://storage-logos.reserve.org/logos/Ondo-Icon-White.png",
                     "wrappedVersion": false
                   }
                 },
                 {
                   "address": "0x1dCd320C5d7b84CD407437c58d56CbbDd0D9d8f3",
                   "symbol": "MTSIon",
-                  "weight": 6.76,
+                  "weight": 6.47,
                   "bridge": {
                     "id": "ondo",
                     "name": "Ondo Tokenized Stocks",
                     "url": "https://docs.ondo.finance/",
                     "description": "An Ondo Tokenized Stock is a blockchain token that gives you the same economic exposure as owning the underlying stock or ETF. Please read the documentation for more details.",
                     "logo": "https://storage-logos.reserve.org/logos/Ondo-Icon-Black.png",
+                    "logoDark": "https://storage-logos.reserve.org/logos/Ondo-Icon-White.png",
                     "risks": [
                       "Custodial risks - Tokens are claims on structures holding the underlying equities via third-party custodians, whose failure or insolvency could delay settlement or cause loss of value.",
                       "Regulatory & compliance risks - Tokenized equities face evolving rules and may require whitelisting or eligibility, which can force restricted access, halted redemptions, or unwinding.",
@@ -3670,20 +4234,20 @@
                       "Market access & redemption risks - Mint/redeem may be capacity-limited, whitelisted, or tied to market hours, which can block arbitrage and impair exits near NAV.",
                       "Valuation & NAV risks - NAV relies on pricing from on-chain markets or oracles that can be stale or manipulated, distorting marks and mint/redeem pricing."
                     ],
-                    "logoDark": "https://storage-logos.reserve.org/logos/Ondo-Icon-White.png",
                     "wrappedVersion": false
                   }
                 },
                 {
                   "address": "0x149Bda9e7251DC36f536d1fE7F92A5ea203F4F3D",
                   "symbol": "AAOIon",
-                  "weight": 2.54,
+                  "weight": 2.68,
                   "bridge": {
                     "id": "ondo",
                     "name": "Ondo Tokenized Stocks",
                     "url": "https://docs.ondo.finance/",
                     "description": "An Ondo Tokenized Stock is a blockchain token that gives you the same economic exposure as owning the underlying stock or ETF. Please read the documentation for more details.",
                     "logo": "https://storage-logos.reserve.org/logos/Ondo-Icon-Black.png",
+                    "logoDark": "https://storage-logos.reserve.org/logos/Ondo-Icon-White.png",
                     "risks": [
                       "Custodial risks - Tokens are claims on structures holding the underlying equities via third-party custodians, whose failure or insolvency could delay settlement or cause loss of value.",
                       "Regulatory & compliance risks - Tokenized equities face evolving rules and may require whitelisting or eligibility, which can force restricted access, halted redemptions, or unwinding.",
@@ -3691,20 +4255,20 @@
                       "Market access & redemption risks - Mint/redeem may be capacity-limited, whitelisted, or tied to market hours, which can block arbitrage and impair exits near NAV.",
                       "Valuation & NAV risks - NAV relies on pricing from on-chain markets or oracles that can be stale or manipulated, distorting marks and mint/redeem pricing."
                     ],
-                    "logoDark": "https://storage-logos.reserve.org/logos/Ondo-Icon-White.png",
                     "wrappedVersion": false
                   }
                 },
                 {
                   "address": "0x0C50323AF81D5C33822c6Add256Fb9093D42BC74",
                   "symbol": "AXTIon",
-                  "weight": 1.16,
+                  "weight": 1.43,
                   "bridge": {
                     "id": "ondo",
                     "name": "Ondo Tokenized Stocks",
                     "url": "https://docs.ondo.finance/",
                     "description": "An Ondo Tokenized Stock is a blockchain token that gives you the same economic exposure as owning the underlying stock or ETF. Please read the documentation for more details.",
                     "logo": "https://storage-logos.reserve.org/logos/Ondo-Icon-Black.png",
+                    "logoDark": "https://storage-logos.reserve.org/logos/Ondo-Icon-White.png",
                     "risks": [
                       "Custodial risks - Tokens are claims on structures holding the underlying equities via third-party custodians, whose failure or insolvency could delay settlement or cause loss of value.",
                       "Regulatory & compliance risks - Tokenized equities face evolving rules and may require whitelisting or eligibility, which can force restricted access, halted redemptions, or unwinding.",
@@ -3712,12 +4276,11 @@
                       "Market access & redemption risks - Mint/redeem may be capacity-limited, whitelisted, or tied to market hours, which can block arbitrage and impair exits near NAV.",
                       "Valuation & NAV risks - NAV relies on pricing from on-chain markets or oracles that can be stale or manipulated, distorting marks and mint/redeem pricing."
                     ],
-                    "logoDark": "https://storage-logos.reserve.org/logos/Ondo-Icon-White.png",
                     "wrappedVersion": false
                   }
                 }
               ],
-              "totalWeight": 35.09
+              "totalWeight": 39.54
             }
           ]
         }
@@ -3725,66 +4288,66 @@
       "neocloud": [
         {
           "address": "0xf571Fe3F0d74521Bc7310B111Faea931C748f27B",
-          "name": "Reserve AI NeoCloud DTF",
+          "name": "Reserve AI Capacity & Neocloud DTF",
           "symbol": "NEOCLOUD",
-          "price": 77.88207397796586,
-          "marketCap": 842559.6672015981,
+          "price": 69.69783752440426,
+          "marketCap": 2281108.441551208,
           "chainId": 56,
           "type": "index",
           "status": "active",
+          "createdAt": 1781726065,
           "basket": [
             {
               "address": "0x25eD86472cf3012607DC6576c58e6432968255C2",
               "symbol": "CORZon",
               "name": "Core Scientific (Ondo Tokenized)",
-              "weight": "6.90"
+              "weight": "5.87"
             },
             {
               "address": "0x76E39171Cb665a35981e744e2CEB7012F76caEAc",
               "symbol": "CRWVon",
               "name": "CoreWeave (Ondo Tokenized)",
-              "weight": "20.99"
+              "weight": "23.28"
             },
             {
               "address": "0xee268780473E7a0e47baC41547C6E01512555A16",
               "symbol": "NBISon",
               "name": "Nebius Group (Ondo Tokenized)",
-              "weight": "20.87"
+              "weight": "23.62"
             },
             {
               "address": "0x8FD70eE385f470c8D6FDA2D93a4E49C849BAC6a6",
               "symbol": "IRENon",
               "name": "IREN (Ondo Tokenized)",
-              "weight": "13.78"
+              "weight": "15.38"
             },
             {
               "address": "0x3A82f1C847cc55e52e597fD81c63a812C6722541",
               "symbol": "HUTon",
               "name": "Hut 8 (Ondo Tokenized)",
-              "weight": "10.94"
+              "weight": "9.56"
             },
             {
               "address": "0x18De24acb876C0B8392d9C55583Bb21c0355980b",
               "symbol": "APLDon",
               "name": "Applied Digital (Ondo Tokenized)",
-              "weight": "8.50"
+              "weight": "8.31"
             },
             {
               "address": "0xaD56701D9e57957e28e546Db7db508A16d4f86CC",
               "symbol": "WULFon",
               "name": "Terawulf (Ondo Tokenized)",
-              "weight": "9.30"
+              "weight": "7.23"
             },
             {
               "address": "0xDad07D0Ca26ed4109Bc00893dBee3Ed4cE8ce2a4",
               "symbol": "CIFRon",
               "name": "Cipher Mining (Ondo Tokenized)",
-              "weight": "8.72"
+              "weight": "6.75"
             }
           ],
-          "createdAt": 1781726065,
           "brand": {
-            "icon": "https://l5394zf57b.ufs.sh/f/mupND8QUUvXxSLxvYczdsT15PwoUNnDvJ3hXEatCMQxeHuGm",
+            "icon": "https://folio-assets.reserve.org/0xf571fe3f0d74521bc7310b111faea931c748f27b/mupND8QUUvXxSLxvYczdsT15PwoUNnDvJ3hXEatCMQxeHuGm.svg",
             "cover": "",
             "video": "https://youtu.be/vjHPssKuvuw",
             "tags": [
@@ -4546,17 +5109,205 @@
             {
               "timestamp": 1783641388,
               "value": 78.1368267120705
+            },
+            {
+              "timestamp": 1783727776,
+              "value": 76.40283972489466
+            },
+            {
+              "timestamp": 1783814186,
+              "value": 76.38649726559123
+            },
+            {
+              "timestamp": 1783900597,
+              "value": 76.38523782538694
+            },
+            {
+              "timestamp": 1783986999,
+              "value": 71.4585027823847
+            },
+            {
+              "timestamp": 1784073374,
+              "value": 70.26975102733914
+            },
+            {
+              "timestamp": 1784159769,
+              "value": 69.76521113205045
+            },
+            {
+              "timestamp": 1784246177,
+              "value": 62.77981286197447
+            },
+            {
+              "timestamp": 1784332577,
+              "value": 63.56798259070433
+            },
+            {
+              "timestamp": 1784418978,
+              "value": 63.546313716875304
+            },
+            {
+              "timestamp": 1784505387,
+              "value": 63.54526598219451
+            },
+            {
+              "timestamp": 1784591770,
+              "value": 68.16388807538847
+            },
+            {
+              "timestamp": 1784678176,
+              "value": 75.23965027291571
+            },
+            {
+              "timestamp": 1784764577,
+              "value": 77.04800519900493
+            },
+            {
+              "timestamp": 1784850986,
+              "value": 76.48399586491193
+            },
+            {
+              "timestamp": 1784937388,
+              "value": 69.02405954583266
+            },
+            {
+              "timestamp": 1785023783,
+              "value": 69.03816986958795
+            },
+            {
+              "timestamp": 1785110185,
+              "value": 69.0370315866469
+            },
+            {
+              "timestamp": 1785196589,
+              "value": 66.54257461577713
+            },
+            {
+              "timestamp": 1785282988,
+              "value": 63.11161863376323
+            },
+            {
+              "timestamp": 1785369375,
+              "value": 56.23467149475961
+            },
+            {
+              "timestamp": 1785455783,
+              "value": 70.72055329822201
+            },
+            {
+              "timestamp": 1785542204,
+              "value": 67.3634410960689
+            },
+            {
+              "timestamp": 1785628587,
+              "value": 67.23498547031566
+            },
+            {
+              "timestamp": 1785714983,
+              "value": 67.23387691779831
+            },
+            {
+              "timestamp": 1785801396,
+              "value": 75.8633368933332
+            },
+            {
+              "timestamp": 1785887783,
+              "value": 75.585566465624
+            },
+            {
+              "timestamp": 1785974185,
+              "value": 71.84323261453301
+            },
+            {
+              "timestamp": 1786060577,
+              "value": 69.07630200042483
+            },
+            {
+              "timestamp": 1786146984,
+              "value": 69.68606094343959
+            },
+            {
+              "timestamp": 1786233385,
+              "value": 69.7383730828663
+            },
+            {
+              "timestamp": 1786319771,
+              "value": 69.47465225279261
+            },
+            {
+              "timestamp": 1786406187,
+              "value": 66.8831982582539
+            },
+            {
+              "timestamp": 1786492585,
+              "value": 73.56598682550533
+            },
+            {
+              "timestamp": 1786578971,
+              "value": 78.56342450443772
+            },
+            {
+              "timestamp": 1786665390,
+              "value": 78.09099688955733
+            },
+            {
+              "timestamp": 1786751795,
+              "value": 79.8323169310725
+            },
+            {
+              "timestamp": 1786838201,
+              "value": 79.82524677765345
+            },
+            {
+              "timestamp": 1786924598,
+              "value": 79.8239306402639
+            },
+            {
+              "timestamp": 1787011003,
+              "value": 79.99994193458396
+            },
+            {
+              "timestamp": 1787097363,
+              "value": 71.91584445086305
+            },
+            {
+              "timestamp": 1787183764,
+              "value": 71.29899500192168
+            },
+            {
+              "timestamp": 1787270146,
+              "value": 70.9637432546273
+            },
+            {
+              "timestamp": 1787356602,
+              "value": 68.68974035553956
+            },
+            {
+              "timestamp": 1787443001,
+              "value": 68.70849074248123
+            },
+            {
+              "timestamp": 1787529408,
+              "value": 68.70735789520174
+            },
+            {
+              "timestamp": 1787615785,
+              "value": 66.6373832317883
+            },
+            {
+              "timestamp": 1787673462,
+              "value": 69.89159128104704
             }
           ],
           "priceChange": {
             "period": "ytd",
             "displayPeriod": "YTD",
-            "ratio": 0.5927237738502749,
-            "percent": 59.27237738502748,
+            "ratio": 0.4246547205679382,
+            "percent": 42.46547205679382,
             "startPrice": 49.05861769312411,
-            "endPrice": 78.1368267120705,
+            "endPrice": 69.89159128104704,
             "startTimestamp": 1767225600,
-            "endTimestamp": 1783641388
+            "endTimestamp": 1787673462
           },
           "exposure": [
             {
@@ -4569,15 +5320,16 @@
               },
               "tokens": [
                 {
-                  "address": "0x76E39171Cb665a35981e744e2CEB7012F76caEAc",
-                  "symbol": "CRWVon",
-                  "weight": 20.99,
+                  "address": "0xee268780473E7a0e47baC41547C6E01512555A16",
+                  "symbol": "NBISon",
+                  "weight": 23.62,
                   "bridge": {
                     "id": "ondo",
                     "name": "Ondo Tokenized Stocks",
                     "url": "https://docs.ondo.finance/",
                     "description": "An Ondo Tokenized Stock is a blockchain token that gives you the same economic exposure as owning the underlying stock or ETF. Please read the documentation for more details.",
                     "logo": "https://storage-logos.reserve.org/logos/Ondo-Icon-Black.png",
+                    "logoDark": "https://storage-logos.reserve.org/logos/Ondo-Icon-White.png",
                     "risks": [
                       "Custodial risks - Tokens are claims on structures holding the underlying equities via third-party custodians, whose failure or insolvency could delay settlement or cause loss of value.",
                       "Regulatory & compliance risks - Tokenized equities face evolving rules and may require whitelisting or eligibility, which can force restricted access, halted redemptions, or unwinding.",
@@ -4585,20 +5337,20 @@
                       "Market access & redemption risks - Mint/redeem may be capacity-limited, whitelisted, or tied to market hours, which can block arbitrage and impair exits near NAV.",
                       "Valuation & NAV risks - NAV relies on pricing from on-chain markets or oracles that can be stale or manipulated, distorting marks and mint/redeem pricing."
                     ],
-                    "logoDark": "https://storage-logos.reserve.org/logos/Ondo-Icon-White.png",
                     "wrappedVersion": false
                   }
                 },
                 {
-                  "address": "0xee268780473E7a0e47baC41547C6E01512555A16",
-                  "symbol": "NBISon",
-                  "weight": 20.87,
+                  "address": "0x76E39171Cb665a35981e744e2CEB7012F76caEAc",
+                  "symbol": "CRWVon",
+                  "weight": 23.28,
                   "bridge": {
                     "id": "ondo",
                     "name": "Ondo Tokenized Stocks",
                     "url": "https://docs.ondo.finance/",
                     "description": "An Ondo Tokenized Stock is a blockchain token that gives you the same economic exposure as owning the underlying stock or ETF. Please read the documentation for more details.",
                     "logo": "https://storage-logos.reserve.org/logos/Ondo-Icon-Black.png",
+                    "logoDark": "https://storage-logos.reserve.org/logos/Ondo-Icon-White.png",
                     "risks": [
                       "Custodial risks - Tokens are claims on structures holding the underlying equities via third-party custodians, whose failure or insolvency could delay settlement or cause loss of value.",
                       "Regulatory & compliance risks - Tokenized equities face evolving rules and may require whitelisting or eligibility, which can force restricted access, halted redemptions, or unwinding.",
@@ -4606,20 +5358,20 @@
                       "Market access & redemption risks - Mint/redeem may be capacity-limited, whitelisted, or tied to market hours, which can block arbitrage and impair exits near NAV.",
                       "Valuation & NAV risks - NAV relies on pricing from on-chain markets or oracles that can be stale or manipulated, distorting marks and mint/redeem pricing."
                     ],
-                    "logoDark": "https://storage-logos.reserve.org/logos/Ondo-Icon-White.png",
                     "wrappedVersion": false
                   }
                 },
                 {
                   "address": "0x8FD70eE385f470c8D6FDA2D93a4E49C849BAC6a6",
                   "symbol": "IRENon",
-                  "weight": 13.78,
+                  "weight": 15.38,
                   "bridge": {
                     "id": "ondo",
                     "name": "Ondo Tokenized Stocks",
                     "url": "https://docs.ondo.finance/",
                     "description": "An Ondo Tokenized Stock is a blockchain token that gives you the same economic exposure as owning the underlying stock or ETF. Please read the documentation for more details.",
                     "logo": "https://storage-logos.reserve.org/logos/Ondo-Icon-Black.png",
+                    "logoDark": "https://storage-logos.reserve.org/logos/Ondo-Icon-White.png",
                     "risks": [
                       "Custodial risks - Tokens are claims on structures holding the underlying equities via third-party custodians, whose failure or insolvency could delay settlement or cause loss of value.",
                       "Regulatory & compliance risks - Tokenized equities face evolving rules and may require whitelisting or eligibility, which can force restricted access, halted redemptions, or unwinding.",
@@ -4627,20 +5379,20 @@
                       "Market access & redemption risks - Mint/redeem may be capacity-limited, whitelisted, or tied to market hours, which can block arbitrage and impair exits near NAV.",
                       "Valuation & NAV risks - NAV relies on pricing from on-chain markets or oracles that can be stale or manipulated, distorting marks and mint/redeem pricing."
                     ],
-                    "logoDark": "https://storage-logos.reserve.org/logos/Ondo-Icon-White.png",
                     "wrappedVersion": false
                   }
                 },
                 {
                   "address": "0x3A82f1C847cc55e52e597fD81c63a812C6722541",
                   "symbol": "HUTon",
-                  "weight": 10.94,
+                  "weight": 9.56,
                   "bridge": {
                     "id": "ondo",
                     "name": "Ondo Tokenized Stocks",
                     "url": "https://docs.ondo.finance/",
                     "description": "An Ondo Tokenized Stock is a blockchain token that gives you the same economic exposure as owning the underlying stock or ETF. Please read the documentation for more details.",
                     "logo": "https://storage-logos.reserve.org/logos/Ondo-Icon-Black.png",
+                    "logoDark": "https://storage-logos.reserve.org/logos/Ondo-Icon-White.png",
                     "risks": [
                       "Custodial risks - Tokens are claims on structures holding the underlying equities via third-party custodians, whose failure or insolvency could delay settlement or cause loss of value.",
                       "Regulatory & compliance risks - Tokenized equities face evolving rules and may require whitelisting or eligibility, which can force restricted access, halted redemptions, or unwinding.",
@@ -4648,62 +5400,20 @@
                       "Market access & redemption risks - Mint/redeem may be capacity-limited, whitelisted, or tied to market hours, which can block arbitrage and impair exits near NAV.",
                       "Valuation & NAV risks - NAV relies on pricing from on-chain markets or oracles that can be stale or manipulated, distorting marks and mint/redeem pricing."
                     ],
-                    "logoDark": "https://storage-logos.reserve.org/logos/Ondo-Icon-White.png",
-                    "wrappedVersion": false
-                  }
-                },
-                {
-                  "address": "0xaD56701D9e57957e28e546Db7db508A16d4f86CC",
-                  "symbol": "WULFon",
-                  "weight": 9.3,
-                  "bridge": {
-                    "id": "ondo",
-                    "name": "Ondo Tokenized Stocks",
-                    "url": "https://docs.ondo.finance/",
-                    "description": "An Ondo Tokenized Stock is a blockchain token that gives you the same economic exposure as owning the underlying stock or ETF. Please read the documentation for more details.",
-                    "logo": "https://storage-logos.reserve.org/logos/Ondo-Icon-Black.png",
-                    "risks": [
-                      "Custodial risks - Tokens are claims on structures holding the underlying equities via third-party custodians, whose failure or insolvency could delay settlement or cause loss of value.",
-                      "Regulatory & compliance risks - Tokenized equities face evolving rules and may require whitelisting or eligibility, which can force restricted access, halted redemptions, or unwinding.",
-                      "Liquidity risks - On-chain trading is 24/7, but mint/redeem may be limited or windowed, and in stressed markets token prices can deviate from the underlying equities.",
-                      "Market access & redemption risks - Mint/redeem may be capacity-limited, whitelisted, or tied to market hours, which can block arbitrage and impair exits near NAV.",
-                      "Valuation & NAV risks - NAV relies on pricing from on-chain markets or oracles that can be stale or manipulated, distorting marks and mint/redeem pricing."
-                    ],
-                    "logoDark": "https://storage-logos.reserve.org/logos/Ondo-Icon-White.png",
-                    "wrappedVersion": false
-                  }
-                },
-                {
-                  "address": "0xDad07D0Ca26ed4109Bc00893dBee3Ed4cE8ce2a4",
-                  "symbol": "CIFRon",
-                  "weight": 8.72,
-                  "bridge": {
-                    "id": "ondo",
-                    "name": "Ondo Tokenized Stocks",
-                    "url": "https://docs.ondo.finance/",
-                    "description": "An Ondo Tokenized Stock is a blockchain token that gives you the same economic exposure as owning the underlying stock or ETF. Please read the documentation for more details.",
-                    "logo": "https://storage-logos.reserve.org/logos/Ondo-Icon-Black.png",
-                    "risks": [
-                      "Custodial risks - Tokens are claims on structures holding the underlying equities via third-party custodians, whose failure or insolvency could delay settlement or cause loss of value.",
-                      "Regulatory & compliance risks - Tokenized equities face evolving rules and may require whitelisting or eligibility, which can force restricted access, halted redemptions, or unwinding.",
-                      "Liquidity risks - On-chain trading is 24/7, but mint/redeem may be limited or windowed, and in stressed markets token prices can deviate from the underlying equities.",
-                      "Market access & redemption risks - Mint/redeem may be capacity-limited, whitelisted, or tied to market hours, which can block arbitrage and impair exits near NAV.",
-                      "Valuation & NAV risks - NAV relies on pricing from on-chain markets or oracles that can be stale or manipulated, distorting marks and mint/redeem pricing."
-                    ],
-                    "logoDark": "https://storage-logos.reserve.org/logos/Ondo-Icon-White.png",
                     "wrappedVersion": false
                   }
                 },
                 {
                   "address": "0x18De24acb876C0B8392d9C55583Bb21c0355980b",
                   "symbol": "APLDon",
-                  "weight": 8.5,
+                  "weight": 8.31,
                   "bridge": {
                     "id": "ondo",
                     "name": "Ondo Tokenized Stocks",
                     "url": "https://docs.ondo.finance/",
                     "description": "An Ondo Tokenized Stock is a blockchain token that gives you the same economic exposure as owning the underlying stock or ETF. Please read the documentation for more details.",
                     "logo": "https://storage-logos.reserve.org/logos/Ondo-Icon-Black.png",
+                    "logoDark": "https://storage-logos.reserve.org/logos/Ondo-Icon-White.png",
                     "risks": [
                       "Custodial risks - Tokens are claims on structures holding the underlying equities via third-party custodians, whose failure or insolvency could delay settlement or cause loss of value.",
                       "Regulatory & compliance risks - Tokenized equities face evolving rules and may require whitelisting or eligibility, which can force restricted access, halted redemptions, or unwinding.",
@@ -4711,20 +5421,62 @@
                       "Market access & redemption risks - Mint/redeem may be capacity-limited, whitelisted, or tied to market hours, which can block arbitrage and impair exits near NAV.",
                       "Valuation & NAV risks - NAV relies on pricing from on-chain markets or oracles that can be stale or manipulated, distorting marks and mint/redeem pricing."
                     ],
+                    "wrappedVersion": false
+                  }
+                },
+                {
+                  "address": "0xaD56701D9e57957e28e546Db7db508A16d4f86CC",
+                  "symbol": "WULFon",
+                  "weight": 7.23,
+                  "bridge": {
+                    "id": "ondo",
+                    "name": "Ondo Tokenized Stocks",
+                    "url": "https://docs.ondo.finance/",
+                    "description": "An Ondo Tokenized Stock is a blockchain token that gives you the same economic exposure as owning the underlying stock or ETF. Please read the documentation for more details.",
+                    "logo": "https://storage-logos.reserve.org/logos/Ondo-Icon-Black.png",
                     "logoDark": "https://storage-logos.reserve.org/logos/Ondo-Icon-White.png",
+                    "risks": [
+                      "Custodial risks - Tokens are claims on structures holding the underlying equities via third-party custodians, whose failure or insolvency could delay settlement or cause loss of value.",
+                      "Regulatory & compliance risks - Tokenized equities face evolving rules and may require whitelisting or eligibility, which can force restricted access, halted redemptions, or unwinding.",
+                      "Liquidity risks - On-chain trading is 24/7, but mint/redeem may be limited or windowed, and in stressed markets token prices can deviate from the underlying equities.",
+                      "Market access & redemption risks - Mint/redeem may be capacity-limited, whitelisted, or tied to market hours, which can block arbitrage and impair exits near NAV.",
+                      "Valuation & NAV risks - NAV relies on pricing from on-chain markets or oracles that can be stale or manipulated, distorting marks and mint/redeem pricing."
+                    ],
+                    "wrappedVersion": false
+                  }
+                },
+                {
+                  "address": "0xDad07D0Ca26ed4109Bc00893dBee3Ed4cE8ce2a4",
+                  "symbol": "CIFRon",
+                  "weight": 6.75,
+                  "bridge": {
+                    "id": "ondo",
+                    "name": "Ondo Tokenized Stocks",
+                    "url": "https://docs.ondo.finance/",
+                    "description": "An Ondo Tokenized Stock is a blockchain token that gives you the same economic exposure as owning the underlying stock or ETF. Please read the documentation for more details.",
+                    "logo": "https://storage-logos.reserve.org/logos/Ondo-Icon-Black.png",
+                    "logoDark": "https://storage-logos.reserve.org/logos/Ondo-Icon-White.png",
+                    "risks": [
+                      "Custodial risks - Tokens are claims on structures holding the underlying equities via third-party custodians, whose failure or insolvency could delay settlement or cause loss of value.",
+                      "Regulatory & compliance risks - Tokenized equities face evolving rules and may require whitelisting or eligibility, which can force restricted access, halted redemptions, or unwinding.",
+                      "Liquidity risks - On-chain trading is 24/7, but mint/redeem may be limited or windowed, and in stressed markets token prices can deviate from the underlying equities.",
+                      "Market access & redemption risks - Mint/redeem may be capacity-limited, whitelisted, or tied to market hours, which can block arbitrage and impair exits near NAV.",
+                      "Valuation & NAV risks - NAV relies on pricing from on-chain markets or oracles that can be stale or manipulated, distorting marks and mint/redeem pricing."
+                    ],
                     "wrappedVersion": false
                   }
                 },
                 {
                   "address": "0x25eD86472cf3012607DC6576c58e6432968255C2",
                   "symbol": "CORZon",
-                  "weight": 6.9,
+                  "weight": 5.87,
                   "bridge": {
                     "id": "ondo",
                     "name": "Ondo Tokenized Stocks",
                     "url": "https://docs.ondo.finance/",
                     "description": "An Ondo Tokenized Stock is a blockchain token that gives you the same economic exposure as owning the underlying stock or ETF. Please read the documentation for more details.",
                     "logo": "https://storage-logos.reserve.org/logos/Ondo-Icon-Black.png",
+                    "logoDark": "https://storage-logos.reserve.org/logos/Ondo-Icon-White.png",
                     "risks": [
                       "Custodial risks - Tokens are claims on structures holding the underlying equities via third-party custodians, whose failure or insolvency could delay settlement or cause loss of value.",
                       "Regulatory & compliance risks - Tokenized equities face evolving rules and may require whitelisting or eligibility, which can force restricted access, halted redemptions, or unwinding.",
@@ -4732,7 +5484,6 @@
                       "Market access & redemption risks - Mint/redeem may be capacity-limited, whitelisted, or tied to market hours, which can block arbitrage and impair exits near NAV.",
                       "Valuation & NAV risks - NAV relies on pricing from on-chain markets or oracles that can be stale or manipulated, distorting marks and mint/redeem pricing."
                     ],
-                    "logoDark": "https://storage-logos.reserve.org/logos/Ondo-Icon-White.png",
                     "wrappedVersion": false
                   }
                 }
@@ -4747,53 +5498,54 @@
           "address": "0x75617e7653f86f074Cc30b9Fd4eBf52bA9b62247",
           "name": "Reserve Robotics DTF",
           "symbol": "ROBOTS",
-          "price": 101.15811827289863,
-          "marketCap": 792533.2511835532,
+          "price": 91.78504745006153,
+          "marketCap": 1460290.2556821,
           "chainId": 56,
           "type": "index",
           "status": "active",
+          "createdAt": 1781724769,
           "basket": [
             {
               "address": "0x30033A17ea24E90631532582a1917c64AFBF87Af",
               "symbol": "OUSTon",
               "name": "Ouster (Ondo Tokenized)",
-              "weight": "2.53"
+              "weight": "2.14"
             },
             {
               "address": "0x784584933C2192Caa062E90d8140D94768CE62d8",
               "symbol": "ISRGon",
               "name": "Intuitive Surgical (Ondo Tokenized)",
-              "weight": "19.82"
+              "weight": "19.71"
             },
             {
               "address": "0x95F7423c51Eab71cBD00ca855B0B2B2153F14184",
               "symbol": "ROKon",
               "name": "Rockwell Automation (Ondo Tokenized)",
-              "weight": "19.77"
+              "weight": "20.11"
             },
             {
               "address": "0xc79Fc7aF952c8B41c6b7b7657dd24F44f7C10F2A",
               "symbol": "SYMon",
               "name": "Symbotic (Ondo Tokenized)",
-              "weight": "20.79"
+              "weight": "21.61"
             },
             {
               "address": "0x80F03ABCb2BD85237740dD69f87d2F5De3909012",
               "symbol": "LSCCon",
               "name": "Lattice Semiconductor (Ondo Tokenized)",
-              "weight": "15.81"
+              "weight": "14.42"
             },
             {
               "address": "0x66a1409FE303d00209202933e3d31eE43AaAB39d",
               "symbol": "AURon",
               "name": "Aurora Innovation (Ondo Tokenized)",
-              "weight": "10.13"
+              "weight": "10.43"
             },
             {
               "address": "0x847ef23A3F99aF79A185ce033e1664165b846eEa",
               "symbol": "HSAIon",
               "name": "Hesai Group (Ondo Tokenized)",
-              "weight": "2.24"
+              "weight": "2.74"
             },
             {
               "address": "0xCC977B493f52B4b6B6a0c3594530f2BaEe565E96",
@@ -4805,12 +5557,11 @@
               "address": "0x6cF3b84f0Ba4d86d9f6987812A11Db2c447D9483",
               "symbol": "HIMXon",
               "name": "Himax Technologies (Ondo Tokenized)",
-              "weight": "2.27"
+              "weight": "2.20"
             }
           ],
-          "createdAt": 1781724769,
           "brand": {
-            "icon": "https://l5394zf57b.ufs.sh/f/mupND8QUUvXxmEIFouUUvXxgOp9n53Rqlys7HtMJG1oZVT6a",
+            "icon": "https://folio-assets.reserve.org/0x75617e7653f86f074cc30b9fd4ebf52ba9b62247/mupND8QUUvXxmEIFouUUvXxgOp9n53Rqlys7HtMJG1oZVT6a.svg",
             "cover": "",
             "video": "",
             "tags": [
@@ -5572,17 +6323,205 @@
             {
               "timestamp": 1783641388,
               "value": 100.95913065674557
+            },
+            {
+              "timestamp": 1783727776,
+              "value": 100.7081847005438
+            },
+            {
+              "timestamp": 1783814186,
+              "value": 100.74116870720303
+            },
+            {
+              "timestamp": 1783900597,
+              "value": 100.73950771366833
+            },
+            {
+              "timestamp": 1783986999,
+              "value": 98.33470206582618
+            },
+            {
+              "timestamp": 1784073374,
+              "value": 98.80219275233073
+            },
+            {
+              "timestamp": 1784159769,
+              "value": 97.10555252885757
+            },
+            {
+              "timestamp": 1784246177,
+              "value": 93.83047605123247
+            },
+            {
+              "timestamp": 1784332577,
+              "value": 93.01973215793868
+            },
+            {
+              "timestamp": 1784418978,
+              "value": 93.2627571166968
+            },
+            {
+              "timestamp": 1784505387,
+              "value": 93.26121942521888
+            },
+            {
+              "timestamp": 1784591770,
+              "value": 92.88915117044328
+            },
+            {
+              "timestamp": 1784678176,
+              "value": 96.31457012967387
+            },
+            {
+              "timestamp": 1784764577,
+              "value": 95.28947707029094
+            },
+            {
+              "timestamp": 1784850986,
+              "value": 92.09399705404113
+            },
+            {
+              "timestamp": 1784937388,
+              "value": 91.46760332140461
+            },
+            {
+              "timestamp": 1785023783,
+              "value": 91.47540992274486
+            },
+            {
+              "timestamp": 1785110185,
+              "value": 91.473901700571
+            },
+            {
+              "timestamp": 1785196589,
+              "value": 93.019194879935
+            },
+            {
+              "timestamp": 1785282988,
+              "value": 93.29599696535153
+            },
+            {
+              "timestamp": 1785369375,
+              "value": 90.66580206428134
+            },
+            {
+              "timestamp": 1785455783,
+              "value": 94.19659864136439
+            },
+            {
+              "timestamp": 1785542204,
+              "value": 94.38766225475354
+            },
+            {
+              "timestamp": 1785628587,
+              "value": 94.38835309988512
+            },
+            {
+              "timestamp": 1785714983,
+              "value": 94.38679684988065
+            },
+            {
+              "timestamp": 1785801396,
+              "value": 98.39340648112437
+            },
+            {
+              "timestamp": 1785887783,
+              "value": 100.40688503219921
+            },
+            {
+              "timestamp": 1785974185,
+              "value": 97.34751189110345
+            },
+            {
+              "timestamp": 1786060577,
+              "value": 94.9916086959827
+            },
+            {
+              "timestamp": 1786146984,
+              "value": 96.4268525485687
+            },
+            {
+              "timestamp": 1786233385,
+              "value": 96.42234667614629
+            },
+            {
+              "timestamp": 1786319771,
+              "value": 96.29631932138211
+            },
+            {
+              "timestamp": 1786406187,
+              "value": 96.34230407115997
+            },
+            {
+              "timestamp": 1786492585,
+              "value": 98.07794840245602
+            },
+            {
+              "timestamp": 1786578971,
+              "value": 98.06021898096606
+            },
+            {
+              "timestamp": 1786665390,
+              "value": 98.19061287301629
+            },
+            {
+              "timestamp": 1786751795,
+              "value": 98.89180172451674
+            },
+            {
+              "timestamp": 1786838201,
+              "value": 98.9038753879484
+            },
+            {
+              "timestamp": 1786924598,
+              "value": 98.90224468721621
+            },
+            {
+              "timestamp": 1787011003,
+              "value": 98.28798136306338
+            },
+            {
+              "timestamp": 1787097363,
+              "value": 94.46443663516239
+            },
+            {
+              "timestamp": 1787183764,
+              "value": 95.0988683484539
+            },
+            {
+              "timestamp": 1787270146,
+              "value": 93.25534158243873
+            },
+            {
+              "timestamp": 1787356602,
+              "value": 94.00167071556363
+            },
+            {
+              "timestamp": 1787443001,
+              "value": 93.99835891104283
+            },
+            {
+              "timestamp": 1787529408,
+              "value": 93.99680909115858
+            },
+            {
+              "timestamp": 1787615785,
+              "value": 90.79000625164893
+            },
+            {
+              "timestamp": 1787673462,
+              "value": 91.57694069273519
             }
           ],
           "priceChange": {
             "period": "ytd",
             "displayPeriod": "YTD",
-            "ratio": 0.0023753997289593467,
-            "percent": 0.23753997289593468,
+            "ratio": -0.09077592154660252,
+            "percent": -9.077592154660252,
             "startPrice": 100.71988067947872,
-            "endPrice": 100.95913065674557,
+            "endPrice": 91.57694069273519,
             "startTimestamp": 1767225600,
-            "endTimestamp": 1783641388
+            "endTimestamp": 1787673462
           },
           "exposure": [
             {
@@ -5597,13 +6536,14 @@
                 {
                   "address": "0xc79Fc7aF952c8B41c6b7b7657dd24F44f7C10F2A",
                   "symbol": "SYMon",
-                  "weight": 20.79,
+                  "weight": 21.61,
                   "bridge": {
                     "id": "ondo",
                     "name": "Ondo Tokenized Stocks",
                     "url": "https://docs.ondo.finance/",
                     "description": "An Ondo Tokenized Stock is a blockchain token that gives you the same economic exposure as owning the underlying stock or ETF. Please read the documentation for more details.",
                     "logo": "https://storage-logos.reserve.org/logos/Ondo-Icon-Black.png",
+                    "logoDark": "https://storage-logos.reserve.org/logos/Ondo-Icon-White.png",
                     "risks": [
                       "Custodial risks - Tokens are claims on structures holding the underlying equities via third-party custodians, whose failure or insolvency could delay settlement or cause loss of value.",
                       "Regulatory & compliance risks - Tokenized equities face evolving rules and may require whitelisting or eligibility, which can force restricted access, halted redemptions, or unwinding.",
@@ -5611,20 +6551,20 @@
                       "Market access & redemption risks - Mint/redeem may be capacity-limited, whitelisted, or tied to market hours, which can block arbitrage and impair exits near NAV.",
                       "Valuation & NAV risks - NAV relies on pricing from on-chain markets or oracles that can be stale or manipulated, distorting marks and mint/redeem pricing."
                     ],
-                    "logoDark": "https://storage-logos.reserve.org/logos/Ondo-Icon-White.png",
                     "wrappedVersion": false
                   }
                 },
                 {
                   "address": "0x784584933C2192Caa062E90d8140D94768CE62d8",
                   "symbol": "ISRGon",
-                  "weight": 19.82,
+                  "weight": 19.71,
                   "bridge": {
                     "id": "ondo",
                     "name": "Ondo Tokenized Stocks",
                     "url": "https://docs.ondo.finance/",
                     "description": "An Ondo Tokenized Stock is a blockchain token that gives you the same economic exposure as owning the underlying stock or ETF. Please read the documentation for more details.",
                     "logo": "https://storage-logos.reserve.org/logos/Ondo-Icon-Black.png",
+                    "logoDark": "https://storage-logos.reserve.org/logos/Ondo-Icon-White.png",
                     "risks": [
                       "Custodial risks - Tokens are claims on structures holding the underlying equities via third-party custodians, whose failure or insolvency could delay settlement or cause loss of value.",
                       "Regulatory & compliance risks - Tokenized equities face evolving rules and may require whitelisting or eligibility, which can force restricted access, halted redemptions, or unwinding.",
@@ -5632,20 +6572,20 @@
                       "Market access & redemption risks - Mint/redeem may be capacity-limited, whitelisted, or tied to market hours, which can block arbitrage and impair exits near NAV.",
                       "Valuation & NAV risks - NAV relies on pricing from on-chain markets or oracles that can be stale or manipulated, distorting marks and mint/redeem pricing."
                     ],
-                    "logoDark": "https://storage-logos.reserve.org/logos/Ondo-Icon-White.png",
                     "wrappedVersion": false
                   }
                 },
                 {
                   "address": "0x80F03ABCb2BD85237740dD69f87d2F5De3909012",
                   "symbol": "LSCCon",
-                  "weight": 15.81,
+                  "weight": 14.42,
                   "bridge": {
                     "id": "ondo",
                     "name": "Ondo Tokenized Stocks",
                     "url": "https://docs.ondo.finance/",
                     "description": "An Ondo Tokenized Stock is a blockchain token that gives you the same economic exposure as owning the underlying stock or ETF. Please read the documentation for more details.",
                     "logo": "https://storage-logos.reserve.org/logos/Ondo-Icon-Black.png",
+                    "logoDark": "https://storage-logos.reserve.org/logos/Ondo-Icon-White.png",
                     "risks": [
                       "Custodial risks - Tokens are claims on structures holding the underlying equities via third-party custodians, whose failure or insolvency could delay settlement or cause loss of value.",
                       "Regulatory & compliance risks - Tokenized equities face evolving rules and may require whitelisting or eligibility, which can force restricted access, halted redemptions, or unwinding.",
@@ -5653,20 +6593,20 @@
                       "Market access & redemption risks - Mint/redeem may be capacity-limited, whitelisted, or tied to market hours, which can block arbitrage and impair exits near NAV.",
                       "Valuation & NAV risks - NAV relies on pricing from on-chain markets or oracles that can be stale or manipulated, distorting marks and mint/redeem pricing."
                     ],
-                    "logoDark": "https://storage-logos.reserve.org/logos/Ondo-Icon-White.png",
                     "wrappedVersion": false
                   }
                 },
                 {
                   "address": "0x66a1409FE303d00209202933e3d31eE43AaAB39d",
                   "symbol": "AURon",
-                  "weight": 10.13,
+                  "weight": 10.43,
                   "bridge": {
                     "id": "ondo",
                     "name": "Ondo Tokenized Stocks",
                     "url": "https://docs.ondo.finance/",
                     "description": "An Ondo Tokenized Stock is a blockchain token that gives you the same economic exposure as owning the underlying stock or ETF. Please read the documentation for more details.",
                     "logo": "https://storage-logos.reserve.org/logos/Ondo-Icon-Black.png",
+                    "logoDark": "https://storage-logos.reserve.org/logos/Ondo-Icon-White.png",
                     "risks": [
                       "Custodial risks - Tokens are claims on structures holding the underlying equities via third-party custodians, whose failure or insolvency could delay settlement or cause loss of value.",
                       "Regulatory & compliance risks - Tokenized equities face evolving rules and may require whitelisting or eligibility, which can force restricted access, halted redemptions, or unwinding.",
@@ -5674,7 +6614,6 @@
                       "Market access & redemption risks - Mint/redeem may be capacity-limited, whitelisted, or tied to market hours, which can block arbitrage and impair exits near NAV.",
                       "Valuation & NAV risks - NAV relies on pricing from on-chain markets or oracles that can be stale or manipulated, distorting marks and mint/redeem pricing."
                     ],
-                    "logoDark": "https://storage-logos.reserve.org/logos/Ondo-Icon-White.png",
                     "wrappedVersion": false
                   }
                 },
@@ -5688,6 +6627,7 @@
                     "url": "https://docs.ondo.finance/",
                     "description": "An Ondo Tokenized Stock is a blockchain token that gives you the same economic exposure as owning the underlying stock or ETF. Please read the documentation for more details.",
                     "logo": "https://storage-logos.reserve.org/logos/Ondo-Icon-Black.png",
+                    "logoDark": "https://storage-logos.reserve.org/logos/Ondo-Icon-White.png",
                     "risks": [
                       "Custodial risks - Tokens are claims on structures holding the underlying equities via third-party custodians, whose failure or insolvency could delay settlement or cause loss of value.",
                       "Regulatory & compliance risks - Tokenized equities face evolving rules and may require whitelisting or eligibility, which can force restricted access, halted redemptions, or unwinding.",
@@ -5695,62 +6635,20 @@
                       "Market access & redemption risks - Mint/redeem may be capacity-limited, whitelisted, or tied to market hours, which can block arbitrage and impair exits near NAV.",
                       "Valuation & NAV risks - NAV relies on pricing from on-chain markets or oracles that can be stale or manipulated, distorting marks and mint/redeem pricing."
                     ],
-                    "logoDark": "https://storage-logos.reserve.org/logos/Ondo-Icon-White.png",
-                    "wrappedVersion": false
-                  }
-                },
-                {
-                  "address": "0x30033A17ea24E90631532582a1917c64AFBF87Af",
-                  "symbol": "OUSTon",
-                  "weight": 2.53,
-                  "bridge": {
-                    "id": "ondo",
-                    "name": "Ondo Tokenized Stocks",
-                    "url": "https://docs.ondo.finance/",
-                    "description": "An Ondo Tokenized Stock is a blockchain token that gives you the same economic exposure as owning the underlying stock or ETF. Please read the documentation for more details.",
-                    "logo": "https://storage-logos.reserve.org/logos/Ondo-Icon-Black.png",
-                    "risks": [
-                      "Custodial risks - Tokens are claims on structures holding the underlying equities via third-party custodians, whose failure or insolvency could delay settlement or cause loss of value.",
-                      "Regulatory & compliance risks - Tokenized equities face evolving rules and may require whitelisting or eligibility, which can force restricted access, halted redemptions, or unwinding.",
-                      "Liquidity risks - On-chain trading is 24/7, but mint/redeem may be limited or windowed, and in stressed markets token prices can deviate from the underlying equities.",
-                      "Market access & redemption risks - Mint/redeem may be capacity-limited, whitelisted, or tied to market hours, which can block arbitrage and impair exits near NAV.",
-                      "Valuation & NAV risks - NAV relies on pricing from on-chain markets or oracles that can be stale or manipulated, distorting marks and mint/redeem pricing."
-                    ],
-                    "logoDark": "https://storage-logos.reserve.org/logos/Ondo-Icon-White.png",
-                    "wrappedVersion": false
-                  }
-                },
-                {
-                  "address": "0x6cF3b84f0Ba4d86d9f6987812A11Db2c447D9483",
-                  "symbol": "HIMXon",
-                  "weight": 2.27,
-                  "bridge": {
-                    "id": "ondo",
-                    "name": "Ondo Tokenized Stocks",
-                    "url": "https://docs.ondo.finance/",
-                    "description": "An Ondo Tokenized Stock is a blockchain token that gives you the same economic exposure as owning the underlying stock or ETF. Please read the documentation for more details.",
-                    "logo": "https://storage-logos.reserve.org/logos/Ondo-Icon-Black.png",
-                    "risks": [
-                      "Custodial risks - Tokens are claims on structures holding the underlying equities via third-party custodians, whose failure or insolvency could delay settlement or cause loss of value.",
-                      "Regulatory & compliance risks - Tokenized equities face evolving rules and may require whitelisting or eligibility, which can force restricted access, halted redemptions, or unwinding.",
-                      "Liquidity risks - On-chain trading is 24/7, but mint/redeem may be limited or windowed, and in stressed markets token prices can deviate from the underlying equities.",
-                      "Market access & redemption risks - Mint/redeem may be capacity-limited, whitelisted, or tied to market hours, which can block arbitrage and impair exits near NAV.",
-                      "Valuation & NAV risks - NAV relies on pricing from on-chain markets or oracles that can be stale or manipulated, distorting marks and mint/redeem pricing."
-                    ],
-                    "logoDark": "https://storage-logos.reserve.org/logos/Ondo-Icon-White.png",
                     "wrappedVersion": false
                   }
                 },
                 {
                   "address": "0x847ef23A3F99aF79A185ce033e1664165b846eEa",
                   "symbol": "HSAIon",
-                  "weight": 2.24,
+                  "weight": 2.74,
                   "bridge": {
                     "id": "ondo",
                     "name": "Ondo Tokenized Stocks",
                     "url": "https://docs.ondo.finance/",
                     "description": "An Ondo Tokenized Stock is a blockchain token that gives you the same economic exposure as owning the underlying stock or ETF. Please read the documentation for more details.",
                     "logo": "https://storage-logos.reserve.org/logos/Ondo-Icon-Black.png",
+                    "logoDark": "https://storage-logos.reserve.org/logos/Ondo-Icon-White.png",
                     "risks": [
                       "Custodial risks - Tokens are claims on structures holding the underlying equities via third-party custodians, whose failure or insolvency could delay settlement or cause loss of value.",
                       "Regulatory & compliance risks - Tokenized equities face evolving rules and may require whitelisting or eligibility, which can force restricted access, halted redemptions, or unwinding.",
@@ -5758,12 +6656,53 @@
                       "Market access & redemption risks - Mint/redeem may be capacity-limited, whitelisted, or tied to market hours, which can block arbitrage and impair exits near NAV.",
                       "Valuation & NAV risks - NAV relies on pricing from on-chain markets or oracles that can be stale or manipulated, distorting marks and mint/redeem pricing."
                     ],
+                    "wrappedVersion": false
+                  }
+                },
+                {
+                  "address": "0x6cF3b84f0Ba4d86d9f6987812A11Db2c447D9483",
+                  "symbol": "HIMXon",
+                  "weight": 2.2,
+                  "bridge": {
+                    "id": "ondo",
+                    "name": "Ondo Tokenized Stocks",
+                    "url": "https://docs.ondo.finance/",
+                    "description": "An Ondo Tokenized Stock is a blockchain token that gives you the same economic exposure as owning the underlying stock or ETF. Please read the documentation for more details.",
+                    "logo": "https://storage-logos.reserve.org/logos/Ondo-Icon-Black.png",
                     "logoDark": "https://storage-logos.reserve.org/logos/Ondo-Icon-White.png",
+                    "risks": [
+                      "Custodial risks - Tokens are claims on structures holding the underlying equities via third-party custodians, whose failure or insolvency could delay settlement or cause loss of value.",
+                      "Regulatory & compliance risks - Tokenized equities face evolving rules and may require whitelisting or eligibility, which can force restricted access, halted redemptions, or unwinding.",
+                      "Liquidity risks - On-chain trading is 24/7, but mint/redeem may be limited or windowed, and in stressed markets token prices can deviate from the underlying equities.",
+                      "Market access & redemption risks - Mint/redeem may be capacity-limited, whitelisted, or tied to market hours, which can block arbitrage and impair exits near NAV.",
+                      "Valuation & NAV risks - NAV relies on pricing from on-chain markets or oracles that can be stale or manipulated, distorting marks and mint/redeem pricing."
+                    ],
+                    "wrappedVersion": false
+                  }
+                },
+                {
+                  "address": "0x30033A17ea24E90631532582a1917c64AFBF87Af",
+                  "symbol": "OUSTon",
+                  "weight": 2.14,
+                  "bridge": {
+                    "id": "ondo",
+                    "name": "Ondo Tokenized Stocks",
+                    "url": "https://docs.ondo.finance/",
+                    "description": "An Ondo Tokenized Stock is a blockchain token that gives you the same economic exposure as owning the underlying stock or ETF. Please read the documentation for more details.",
+                    "logo": "https://storage-logos.reserve.org/logos/Ondo-Icon-Black.png",
+                    "logoDark": "https://storage-logos.reserve.org/logos/Ondo-Icon-White.png",
+                    "risks": [
+                      "Custodial risks - Tokens are claims on structures holding the underlying equities via third-party custodians, whose failure or insolvency could delay settlement or cause loss of value.",
+                      "Regulatory & compliance risks - Tokenized equities face evolving rules and may require whitelisting or eligibility, which can force restricted access, halted redemptions, or unwinding.",
+                      "Liquidity risks - On-chain trading is 24/7, but mint/redeem may be limited or windowed, and in stressed markets token prices can deviate from the underlying equities.",
+                      "Market access & redemption risks - Mint/redeem may be capacity-limited, whitelisted, or tied to market hours, which can block arbitrage and impair exits near NAV.",
+                      "Valuation & NAV risks - NAV relies on pricing from on-chain markets or oracles that can be stale or manipulated, distorting marks and mint/redeem pricing."
+                    ],
                     "wrappedVersion": false
                   }
                 }
               ],
-              "totalWeight": 80.23
+              "totalWeight": 79.89
             },
             {
               "native": {
@@ -5777,13 +6716,14 @@
                 {
                   "address": "0x95F7423c51Eab71cBD00ca855B0B2B2153F14184",
                   "symbol": "ROKon",
-                  "weight": 19.77,
+                  "weight": 20.11,
                   "bridge": {
                     "id": "ondo",
                     "name": "Ondo Tokenized Stocks",
                     "url": "https://docs.ondo.finance/",
                     "description": "An Ondo Tokenized Stock is a blockchain token that gives you the same economic exposure as owning the underlying stock or ETF. Please read the documentation for more details.",
                     "logo": "https://storage-logos.reserve.org/logos/Ondo-Icon-Black.png",
+                    "logoDark": "https://storage-logos.reserve.org/logos/Ondo-Icon-White.png",
                     "risks": [
                       "Custodial risks - Tokens are claims on structures holding the underlying equities via third-party custodians, whose failure or insolvency could delay settlement or cause loss of value.",
                       "Regulatory & compliance risks - Tokenized equities face evolving rules and may require whitelisting or eligibility, which can force restricted access, halted redemptions, or unwinding.",
@@ -5791,12 +6731,11 @@
                       "Market access & redemption risks - Mint/redeem may be capacity-limited, whitelisted, or tied to market hours, which can block arbitrage and impair exits near NAV.",
                       "Valuation & NAV risks - NAV relies on pricing from on-chain markets or oracles that can be stale or manipulated, distorting marks and mint/redeem pricing."
                     ],
-                    "logoDark": "https://storage-logos.reserve.org/logos/Ondo-Icon-White.png",
                     "wrappedVersion": false
                   }
                 }
               ],
-              "totalWeight": 19.77
+              "totalWeight": 20.11
             }
           ]
         }

@@ -1,5 +1,6 @@
-import { useIsDesktop } from '@/hooks/use-media-query'
+import { useIsDesktop, useIsLargeDesktop } from '@/hooks/use-media-query'
 import { trackClick } from '@/hooks/useTrackPage'
+import { isStocksOverviewPathname } from '@/views/index-dtf/overview/dtf-categories'
 import { chainIdAtom } from '@/state/atoms'
 import {
   iTokenAddressAtom,
@@ -11,11 +12,13 @@ import { t } from '@lingui/core/macro'
 import {
   ReserveChat,
   type DtfContext,
+  type ReserveChatHandle,
   type ReserveView,
 } from '@reserve-protocol/dtf-chat'
 import '@reserve-protocol/dtf-chat/styles.css'
 import './overrides.css'
 import { useAtomValue } from 'jotai'
+import { forwardRef } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 
 // Public Turnstile site key for the chat.reserve.org deployment (paired with
@@ -61,7 +64,18 @@ function viewForPath(pathname: string): ReserveView | undefined {
   return undefined
 }
 
-const DtfChat = () => {
+type DtfChatProps = {
+  embedded?: boolean
+  /** Embedded only: placeholder copy for the chat input. */
+  inputPlaceholder?: string
+  /** Embedded only: fires with every message the visitor sends. */
+  onMessageSent?: (text: string) => void
+}
+
+const DtfChat = forwardRef<ReserveChatHandle, DtfChatProps>(function DtfChat(
+  { embedded = false, inputPlaceholder, onMessageSent },
+  ref
+) {
   const { pathname } = useLocation()
   const navigate = useNavigate()
   const address = useAtomValue(iTokenAddressAtom)
@@ -86,6 +100,7 @@ const DtfChat = () => {
 
   // 24px gap on desktop, 12px on mobile.
   const isDesktop = useIsDesktop()
+  const isLargeDesktop = useIsLargeDesktop()
   const gap = isDesktop ? 24 : 12
   const bottomOffset = gap
   const rightOffset = gap
@@ -101,6 +116,27 @@ const DtfChat = () => {
         basket: basket?.map((t) => ({ symbol: t.symbol })),
       }
     : undefined
+
+  // Inline variant (stocks FAQ card): no launcher/offsets, onOpen never fires.
+  if (embedded) {
+    return (
+      <ReserveChat
+        ref={ref}
+        apiBase={apiBase}
+        turnstileSiteKey={local ? undefined : TURNSTILE_SITE_KEY}
+        dtfContext={dtfContext}
+        embedded
+        onNavigate={navigate}
+        inputPlaceholder={inputPlaceholder}
+        onMessageSent={onMessageSent}
+      />
+    )
+  }
+
+  // The stocks overview embeds its own chat in the xl rail — one entry point.
+  if (isStocksOverviewPathname(pathname) && isLargeDesktop) {
+    return null
+  }
 
   return (
     <div className={hideLauncher ? 'dtf-chat-hide-mobile-launcher' : undefined}>
@@ -131,6 +167,6 @@ const DtfChat = () => {
       />
     </div>
   )
-}
+})
 
 export default DtfChat

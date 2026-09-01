@@ -1,7 +1,14 @@
 import type { Locator, Page } from '@playwright/test'
 import { connectWallet, expect, test } from '../../fixtures/wallet'
 import { dtfPath, findDtfByAddress } from '../../helpers/registry'
-import { mockZapperRoutes, seedZapSurface, zapUnmockedLogger } from '../../helpers/zapper'
+import {
+  activeZapPanel,
+  mockZapperRoutes,
+  seedZapSurface,
+  zapFlipButton,
+  zapPanel,
+  zapUnmockedLogger,
+} from '../../helpers/zapper'
 
 // Characterizes the DEPRECATED-DTF trade surface on /issuance. base/deprecated
 // (a v4.0.0 VTF) is flagged inactive by the deprecation registry
@@ -10,7 +17,8 @@ import { mockZapperRoutes, seedZapSurface, zapUnmockedLogger } from '../../helpe
 // intent: a deprecated DTF can be REDEEMED (sold) but never MINTED (bought), so
 // holders can exit but no new capital flows in. This spec pins that contract:
 //
-//   - sellOnly forces the widget onto the SELL tab and DISABLES the BUY tab,
+//   - sellOnly pins the widget to the SELL panel and removes the buy<->sell
+//     direction arrow (its only switch since react-zapper 2.10 hid the tabs),
 //   - the sell surface stays interactive (redeem is still available),
 //   - no buy panel is reachable, so no mint tx is ever submittable (txLog empty).
 //
@@ -19,13 +27,19 @@ import { mockZapperRoutes, seedZapSurface, zapUnmockedLogger } from '../../helpe
 // masking it.
 //
 // SELECTORS: the react-zapper package ships no data-testids and its copy is
-// Lingui-translated, so we anchor on locale-independent structure (same
-// contract as zap-buy-sell.spec.ts): register's `issuance-zap-widget` scopes
-// the card; Radix Tabs render value-derived ids ("…-trigger-buy"/"-sell") and
-// data-state; the amount fields are the only inputmode="decimal" inputs.
+// Lingui-translated, so we anchor on locale-independent structure (the widget
+// structure contract in helpers/zapper.ts): register's `issuance-zap-widget`
+// scopes the card; Radix panels carry value-derived ids ("…-content-buy"/
+// "-sell") and data-state; the amount fields are the only inputmode="decimal"
+// inputs.
 //
 // TIME is deliberately NOT frozen — nothing here derives from snapshot
 // timestamps and every mock answers instantly (matches the zap specs).
+
+// 90s per-test budget: page load + wallet connect + the widget's first paint
+// take well past the 30s default when the full suite shares one dev server
+// (same rationale as the zap flow specs; contention, not a product wait).
+test.describe.configure({ timeout: 90_000 })
 
 const DEPRECATED = '0x47686106181b3cefe4eaf94c4c10b48ac750370b' // base/deprecated (VTF, v4.0.0)
 
@@ -33,16 +47,8 @@ function widget(page: Page): Locator {
   return page.getByTestId('issuance-zap-widget')
 }
 
-function buyTab(page: Page): Locator {
-  return widget(page).locator('button[role="tab"][id$="-trigger-buy"]')
-}
-
-function sellTab(page: Page): Locator {
-  return widget(page).locator('button[role="tab"][id$="-trigger-sell"]')
-}
-
 function activePanel(page: Page): Locator {
-  return widget(page).locator('div[role="tabpanel"][data-state="active"]')
+  return activeZapPanel(widget(page))
 }
 
 async function setupDeprecatedIssuance(
@@ -62,7 +68,7 @@ async function setupDeprecatedIssuance(
   await expect(widget(page)).toBeVisible({ timeout: 15_000 })
 }
 
-test('deprecated DTF forces sell-only: buy tab disabled, sell active, no mint submittable', async ({
+test('deprecated DTF forces sell-only: sell active, no direction flip, no mint submittable', async ({
   page,
   overrides,
   unmockedCalls,
@@ -70,24 +76,29 @@ test('deprecated DTF forces sell-only: buy tab disabled, sell active, no mint su
 }) => {
   await setupDeprecatedIssuance(page, overrides, unmockedCalls)
 
-  // sellOnly pins the active tab to SELL and disables BUY. Both triggers still
-  // render (the widget only greys out buy), so redeem is discoverable and the
-  // one-way restriction is visible rather than silently hiding the surface.
-  await expect(sellTab(page)).toHaveAttribute('data-state', 'active')
-  await expect(buyTab(page)).toHaveAttribute('data-state', 'inactive')
-  await expect(buyTab(page)).toBeDisabled()
+  // sellOnly pins the active panel to SELL; the buy panel stays inactive.
+  await expect(zapPanel(widget(page), 'sell')).toHaveAttribute(
+    'data-state',
+    'active'
+  )
+  await expect(zapPanel(widget(page), 'buy')).toHaveAttribute(
+    'data-state',
+    'inactive'
+  )
 
   // Redeem stays interactive: the active (sell) panel mounts its amount fields.
   const panel = activePanel(page)
+  await expect(panel).toBeVisible({ timeout: 15_000 })
   await expect(panel.locator('input[inputmode="decimal"]')).toHaveCount(2)
 
-  // The disabled buy tab must not switch panels even under a forced click — the
-  // widget's onValueChange drops "buy" while sellOnly is set, so no buy panel
-  // ever mounts and there is no reachable mint input.
-  await buyTab(page).click({ force: true })
-  await expect(sellTab(page)).toHaveAttribute('data-state', 'active')
+  // The direction arrow is the only buy<->sell switch and sellOnly drops it
+  // (the sell form renders a static divider instead), so there is no reachable
+  // control that could mount the buy panel and its mint input.
+  await expect(zapFlipButton(widget(page))).toHaveCount(0)
   await expect(
-    widget(page).locator('div[role="tabpanel"][id$="-content-buy"][data-state="active"]')
+    widget(page).locator(
+      'div[role="tabpanel"][id$="-content-buy"][data-state="active"]'
+    )
   ).toHaveCount(0)
 
   // No buy path was reachable, so nothing was ever submitted — the mint side is

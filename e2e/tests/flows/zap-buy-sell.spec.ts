@@ -4,10 +4,13 @@ import { connectWallet, expect, test } from '../../fixtures/wallet'
 import { dtfPath, findDtfByAddress } from '../../helpers/registry'
 import {
   fillAmountAwaitQuote,
+  flipZapDirection,
+  formatZapOutput,
   loadZapSnapshot,
   mockZapperRoutes,
   seedDtfBalance,
   seedZapSurface,
+  selectZapToken,
   zapUnmockedLogger,
   type ZapDirection,
 } from '../../helpers/zapper'
@@ -26,11 +29,11 @@ import {
 //
 // SELECTORS: the react-zapper package ships zero data-testids and its copy is
 // Lingui-translated (en/es/ko/zh), so the specs anchor on locale-independent
-// structure: the register-owned `issuance-zap-widget` testid scopes the widget;
-// inside it, Radix Tabs render `value`-derived ids ("…-trigger-buy",
-// "…-trigger-sell", panels with data-state) and the two amount fields are the
-// only inputmode="decimal" inputs — enabled = amount-in, disabled = quote-out.
-// Token symbols (ETH/LCAP) are not translated copy, so asserting them is safe.
+// structure — the widget structure contract lives in helpers/zapper.ts (Radix
+// panels with data-state, the arrow flips buy/sell, the two amount fields are
+// the only inputmode="decimal" inputs). Token symbols (ETH/LCAP) are not
+// translated copy, so asserting them is safe. The pinned quotes are ETH <->
+// LCAP while the widget defaults to USDC, so each flow picks ETH explicitly.
 
 // Serial + 90s per-test budget: quote round-trips take ~2s isolated but >20s
 // under full-suite load on the single dev server (matches zap-edge/failures-zap;
@@ -38,7 +41,9 @@ import {
 test.describe.configure({ mode: 'serial', timeout: 90_000 })
 
 const DTF_ADDRESS = '0x4dA9A0f397dB1397902070f93a4D6ddBC0E0E6e8' // base/lcap
-const APPROVE_ABI = parseAbi(['function approve(address spender, uint256 amount)'])
+const APPROVE_ABI = parseAbi([
+  'function approve(address spender, uint256 amount)',
+])
 
 function activePanel(page: Page): Locator {
   return page
@@ -75,9 +80,8 @@ function pinned(direction: ZapDirection) {
     params: snapshot.params,
     result,
     inputAmount: formatUnits(BigInt(snapshot.params.amountIn), 18),
-    // Quote output as rendered in the (read-only) amount-out field — the widget
-    // writes the full formatUnits string, so a 6-char prefix is stable.
-    outputPrefix: formatUnits(BigInt(result.amountOut), 18).slice(0, 6),
+    // Quote output exactly as the (read-only) amount-out field renders it.
+    outputPrefix: formatZapOutput(result.amountOut),
     received: formatReceived(result.amountOut, 18),
     approvalNeeded: result.approvalNeeded,
     // The prepared swap calldata — the mock wallet swallows it, so the txLog
@@ -111,8 +115,8 @@ test('buy LCAP with ETH: quote -> submit -> success', async ({
   // First paint waits on the SDK's dtf query (subgraph + api + seeded RPC).
   await expect(buyPanel).toBeVisible({ timeout: 15_000 })
 
-  // Confirm the default input token — the pinned quote is ETH -> LCAP.
-  await expect(buyPanel.locator('button[aria-haspopup="menu"]')).toContainText('ETH')
+  // Pick ETH as input — the pinned quote is ETH -> LCAP.
+  await selectZapToken(buyPanel, 'ETH')
 
   // Enter THE pinned amount (anything else hits the fail-loud 500) and wait
   // for the quote — wipe-resilient, see fillAmountAwaitQuote in helpers/zapper.
@@ -124,13 +128,17 @@ test('buy LCAP with ETH: quote -> submit -> success', async ({
   await submit.click()
 
   // Mock provider returns a unique hash; receipt polling (real timers) resolves
-  // pending -> mining -> success and the success view mounts, linking the tx on
-  // the explorer and showing the received LCAP amount.
-  const widget = page.getByTestId('issuance-zap-widget')
-  const txLink = widget.locator('a[href*="/tx/0x"]')
+  // pending -> mining -> success and the success view mounts — since
+  // react-zapper 2.10 as a "Transaction successful" dialog portalled OUTSIDE
+  // the inline widget — linking the tx on the explorer and showing the
+  // received LCAP amount.
+  const success = page.getByRole('dialog')
+  const txLink = success.locator('a[href*="/tx/0x"]')
   await expect(txLink).toBeVisible({ timeout: 15_000 })
   await expect(
-    widget.locator('span', { hasText: new RegExp(`^${buy.received.replace('.', '\\.')}$`) })
+    success.locator('span', {
+      hasText: new RegExp(`^${buy.received.replace('.', '\\.')}$`),
+    })
   ).toBeVisible()
 
   // Payload assertion: exactly one submitted tx and it is the quote's prepared
@@ -161,12 +169,14 @@ test('sell LCAP for ETH: quote -> approve -> submit -> success', async ({
   seedDtfBalance(overrides, DTF_ADDRESS, '20')
   await setupZapPage(page, overrides, unmockedCalls)
 
-  await page.locator('button[role="tab"][id$="-trigger-sell"]').click()
-  const sellPanel = activePanel(page)
-  await expect(sellPanel).toBeVisible({ timeout: 15_000 })
+  await expect(activePanel(page)).toBeVisible({ timeout: 15_000 })
+  const sellPanel = await flipZapDirection(
+    page.getByTestId('issuance-zap-widget'),
+    'sell'
+  )
 
-  // Sell output token defaults to ETH — matches the pinned LCAP -> ETH quote.
-  await expect(sellPanel.locator('button[aria-haspopup="menu"]')).toContainText('ETH')
+  // Pick ETH as the sell output — matches the pinned LCAP -> ETH quote.
+  await selectZapToken(sellPanel, 'ETH')
 
   await fillAmountAwaitQuote(sellPanel, sell.inputAmount, sell.outputPrefix)
 
@@ -197,7 +207,9 @@ test('sell LCAP for ETH: quote -> approve -> submit -> success', async ({
   expect(decodedApproval.args[0].toLowerCase()).toBe(
     sell.result.approvalAddress.toLowerCase()
   )
-  expect(decodedApproval.args[1]).toBe((BigInt(sell.result.amountIn) * 120n) / 100n)
+  expect(decodedApproval.args[1]).toBe(
+    (BigInt(sell.result.amountIn) * 120n) / 100n
+  )
   expect(BigInt(approval.value)).toBe(0n)
 
   // Step 2 — swap: the same button re-enables armed with the zap calldata once
@@ -205,11 +217,14 @@ test('sell LCAP for ETH: quote -> approve -> submit -> success', async ({
   await expect(submit).toBeEnabled({ timeout: 15_000 })
   await submit.click()
 
-  const widget = page.getByTestId('issuance-zap-widget')
-  const txLink = widget.locator('a[href*="/tx/0x"]')
+  // Success dialog (portalled outside the widget, see the buy flow).
+  const success = page.getByRole('dialog')
+  const txLink = success.locator('a[href*="/tx/0x"]')
   await expect(txLink).toBeVisible({ timeout: 15_000 })
   await expect(
-    widget.locator('span', { hasText: new RegExp(`^${sell.received.replace('.', '\\.')}$`) })
+    success.locator('span', {
+      hasText: new RegExp(`^${sell.received.replace('.', '\\.')}$`),
+    })
   ).toBeVisible()
 
   expect(txLog).toHaveLength(2)

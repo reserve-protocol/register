@@ -78,7 +78,7 @@ const ProposalChanges = () => {
 }
 
 const ProposalDetailContent = () => (
-  <div className="bg-card rounded-3xl h-fit">
+  <div className="bg-card rounded-3xl h-fit min-w-0">
     <ProposalDescription />
     <ProposalChanges />
   </div>

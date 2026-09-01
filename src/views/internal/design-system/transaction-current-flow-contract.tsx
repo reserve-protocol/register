@@ -31,17 +31,17 @@ const flows = [
     name: 'Index DTF Zapper',
     sources: [
       'src/views/index-dtf/components/zapper/zapper-wrapper.tsx',
-      '@reserve-protocol/react-zapper@2.8.0 README and installed type contract',
+      '@reserve-protocol/react-zapper@2.10.5 README, installed type contract, and current E2E behavior',
     ],
     statements: [
-      'Preserve|One inline package widget with Buy/Sell, input/output, quote, approval or signature, waiting, and package result.',
+      'Preserve|One mounted inline package widget across wallet state, paired input/output with a default direction-flip control, parallel route comparison, route-specific approval/signature/waiting, and a portalled package result.',
       'Standardize visually|Only the Register-owned host surface and surrounding context.',
-      'Consolidate|Shared lifecycle words and outcome truth at the package boundary.',
+      'Consolidate|Shared lifecycle words and outcome truth at the package boundary; ordinary no-route rounds remain sourcing/retrying rather than becoming an invented terminal error.',
       'Deliberately improve|None inside the upstream widget in this review.',
-      'Do not touch yet|Package selectors, quote economics, RFQ execution, expiry/refund behavior, and success internals.',
+      'Do not touch yet|Package selectors, optional tabs versus the current default flip, quote economics and route list, RFQ execution, expiry/refund behavior, and success internals.',
     ],
     guardrail:
-      'The RFQ slice is a faithful package reference, not a locally owned transaction-flow proposal.',
+      'The lab may compare a visible Buy/Sell switch, but that is an explicit design proposal: current inline product behavior hides optional tabs by default and flips direction from the amount pair.',
   },
   {
     name: 'Automated mint',

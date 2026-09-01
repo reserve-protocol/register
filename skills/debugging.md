@@ -13,8 +13,8 @@ If a human action is unavoidable, structure the steps and capture the result. If
 1. Reproduce the exact symptom repeatedly enough to trust the signal.
 2. Minimize one input, caller, config value, or step at a time; every remaining element must be load-bearing.
 3. Read errors and recent relevant changes; find a working comparison when one exists.
-4. Rank 3–5 falsifiable hypotheses. Each states what one probe would change if true.
-5. Probe one variable at a time. Prefer debugger/REPL; otherwise tag temporary logs `[DEBUG-<id>]`. For performance, measure a baseline/profile/query plan before changing code.
+4. Rank 3–5 falsifiable hypotheses. Each states what one probe would change if true; a hypothesis with no such prediction is a vibe — discard or sharpen it.
+5. Probe one variable at a time. Prefer debugger/REPL — one breakpoint beats ten logs; otherwise tag temporary logs `[DEBUG-<id>]`. For performance, measure first, fix second: baseline/profile/query plan before any change.
 6. Trace invalid state backward to its writer/source. Before fixing behavior gated by a state variable, search every writer.
 
 Do not add validation at every internal layer by default. Validate at trust boundaries and at the owner of an invariant; add another guard only when a demonstrated bypass or destructive sink justifies it.

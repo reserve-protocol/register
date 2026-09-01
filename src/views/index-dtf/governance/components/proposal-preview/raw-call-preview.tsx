@@ -31,7 +31,8 @@ const RawCallPreview = ({ call }: { call: DecodedCalldata }) => (
           shouldExpandNode={collapseAllNested}
           style={{
             ...defaultStyles,
-            container: 'bg-[#FBF2E8] dark:bg-[#ccc] rounded-2xl p-2',
+            container:
+              'bg-[#FBF2E8] dark:bg-[#ccc] rounded-2xl p-2 min-w-0 break-all',
           }}
           data={call.data}
         />

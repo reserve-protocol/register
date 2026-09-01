@@ -31,7 +31,41 @@ describe('isSupportedLocale', () => {
 describe('localeAtom', () => {
   beforeEach(() => {
     localStorage.clear()
+    vi.spyOn(window.navigator, 'languages', 'get').mockReturnValue(['en-US'])
   })
+
+  it('uses the browser locale when the user has not selected a language', async () => {
+    vi.spyOn(window.navigator, 'languages', 'get').mockReturnValue(['es-ES', 'en-US'])
+
+    const { localeAtom } = await loadI18n()
+    const store = createStore()
+
+    expect(store.get(localeAtom)).toBe('es')
+  })
+
+  it.each(['zh-TW', 'zh-Hant', 'zh-Hant-CN', 'zh-Hant-SG'])(
+    'does not map the Traditional Chinese locale %s to Simplified Chinese',
+    async (language) => {
+      vi.spyOn(window.navigator, 'languages', 'get').mockReturnValue([language, 'en-US'])
+
+      const { localeAtom } = await loadI18n()
+      const store = createStore()
+
+      expect(store.get(localeAtom)).toBe('en')
+    }
+  )
+
+  it.each(['zh', 'zh-CN', 'zh-SG', 'zh-Hans'])(
+    'maps the Simplified Chinese locale %s to Chinese',
+    async (language) => {
+      vi.spyOn(window.navigator, 'languages', 'get').mockReturnValue([language, 'en-US'])
+
+      const { localeAtom } = await loadI18n()
+      const store = createStore()
+
+      expect(store.get(localeAtom)).toBe('zh')
+    }
+  )
 
   it('falls back to the default locale when storage holds garbage', async () => {
     localStorage.setItem('register.locale', JSON.stringify('xx'))
@@ -42,13 +76,14 @@ describe('localeAtom', () => {
     expect(store.get(localeAtom)).toBe(DEFAULT_LOCALE)
   })
 
-  it('reads a valid persisted locale', async () => {
-    localStorage.setItem('register.locale', JSON.stringify('es'))
+  it('reads a valid persisted locale instead of the browser locale', async () => {
+    vi.spyOn(window.navigator, 'languages', 'get').mockReturnValue(['es-ES'])
+    localStorage.setItem('register.locale', JSON.stringify('ko'))
 
     const { localeAtom } = await loadI18n()
     const store = createStore()
 
-    expect(store.get(localeAtom)).toBe('es')
+    expect(store.get(localeAtom)).toBe('ko')
   })
 
   it('coerces invalid writes to the default locale', async () => {

@@ -41,7 +41,7 @@ snapshots — no spec-local `page.route`:
   (`shared/featured-dtfs.json`, `order` + `items`). Spec-local featured routes
   were deliberately removed — **never re-add one**. Per-test overlay:
   `overrides.api({ pathname: '/v1/discover/featured' }, payload)`.
-- **Discover table** = `/discover/dtf` → `shared/discover-dtfs.json` (active
+- **Discover table** = `/discover/dtfs` → `shared/discover-dtfs.json` (active
   index DTFs, market-cap desc; page size 20 so the top entry is on page 1).
   Overlay via `overrides.api({ pathname: '/discover/dtfs' }, rows)`.
 - **Protocol metrics** = `/protocol/metrics` → `shared/protocol-metrics.json`.

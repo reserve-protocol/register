@@ -1,7 +1,7 @@
 {
   "_meta": {
     "source": "https://api.goldsky.com/api/public/project_cmgzim3e100095np2gjnbh6ry/subgraphs/dtf-index-base/prod/gn",
-    "capturedAt": "2026-07-09T21:47:42.779Z",
+    "capturedAt": "2026-08-25T16:35:37.102Z",
     "dtf": "0x47686106181b3cefe4eaf94c4c10b48ac750370b",
     "chainId": 8453,
     "query": "getGovernanceStats"
@@ -563,7 +563,7 @@
       "id": "0x3305c5bd8da08bd6982dd40be3eecc7b2433e5c3",
       "totalDelegates": "45",
       "token": {
-        "totalSupply": "4327230779780806421120"
+        "totalSupply": "3490400820806101911896"
       },
       "delegates": [
         {
@@ -577,19 +577,9 @@
           "numberVotes": 9
         },
         {
-          "address": "0xc6f7067b596e9b14244575584bbb18e4555f5874",
-          "delegatedVotes": "560.768454418919875266",
-          "numberVotes": 0
-        },
-        {
           "address": "0xd8b0f4e54a8dac04e0a57392f5a630cedb99c940",
           "delegatedVotes": "343.47433962323682398",
           "numberVotes": 1
-        },
-        {
-          "address": "0x63c070e5030ed4389042adf741aaf04459579eca",
-          "delegatedVotes": "276.061504555784633958",
-          "numberVotes": 0
         },
         {
           "address": "0x1e8cd608e37fbfede9721ff1b94bd5e5b149c911",
@@ -614,6 +604,16 @@
         {
           "address": "0xb65a214d634c139c26910d142bdd2a358c7865a5",
           "delegatedVotes": "2.776404611223704016",
+          "numberVotes": 0
+        },
+        {
+          "address": "0x767b34bf6ab79ea3aaf15ea823a539dadd154923",
+          "delegatedVotes": "2.643841126205531746",
+          "numberVotes": 0
+        },
+        {
+          "address": "0xd3a5a3b167ff2eab162e1e8a69b5cdbb9c68ba3e",
+          "delegatedVotes": "2.431848286248711793",
           "numberVotes": 0
         }
       ]

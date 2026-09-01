@@ -1,7 +1,7 @@
 {
   "_meta": {
     "source": "https://bsc-rpc.publicnode.com",
-    "capturedAt": "2026-07-14T00:51:27.165Z",
+    "capturedAt": "2026-08-25T16:35:48.201Z",
     "dtf": "0xa0fe4e0aeca5479705ce996615b2eacb6b6a10fb",
     "chainId": 56
   },
@@ -19,18 +19,18 @@
         "0x149bda9e7251dc36f536d1fe7f92a5ea203f4f3d"
       ],
       "amounts": [
-        "0x9a5aff6b970efa4e4",
-        "0x4062e0b2df89c71eb6",
-        "0x14df8a635fe210ff76",
-        "0xb78e7bbd908ce4fd2",
-        "0x1cd9455d56f4afef14",
-        "0xb401f28e9e9c42524",
-        "0x5488d56f0be39146e",
-        "0x10a313292cd6100bef",
-        "0xaf729c8969a98016e"
+        "0x19b3e0f24f0e1d2614",
+        "0xab8a99f85826e5c262",
+        "0x379c8f00f49fc33b7a",
+        "0x1e90aaa218b22b37df",
+        "0x4cdc401e7106a2c92d",
+        "0x1df9617b92f86209d4",
+        "0xe138b71bb46cbd39a",
+        "0x2c5343bab7dab04ff6",
+        "0x1d37002d0b10227664"
       ]
     },
-    "totalSupply": "0x237240e28f8bf24c617",
+    "totalSupply": "0x5e80e11aa6e12a5a647",
     "decimals": 18,
     "version": "5.0.0",
     "basketTokens": [

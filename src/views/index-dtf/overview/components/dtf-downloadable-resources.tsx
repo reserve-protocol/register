@@ -141,7 +141,7 @@ const DownloadableResources = ({
           <h3 className="mb-1 font-medium">
             <Trans>Downloadable resources</Trans>
           </h3>
-          <p className="mb-1 text-legend">
+          <p className="mb-1 text-sm text-legend">
             <Trans>
               More information on what {dtfName} is, what it’s all about,
               methodology and thesis.

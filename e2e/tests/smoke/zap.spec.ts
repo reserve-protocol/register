@@ -1,6 +1,13 @@
 import { expect, test } from '../../fixtures/base'
 import { dtfPath, findDtfByAddress } from '../../helpers/registry'
-import { mockZapperRoutes, seedZapSurface, zapUnmockedLogger } from '../../helpers/zapper'
+import {
+  activeZapPanel,
+  mockZapperRoutes,
+  seedZapSurface,
+  zapFlipButton,
+  zapPanel,
+  zapUnmockedLogger,
+} from '../../helpers/zapper'
 
 // Smoke: the issuance page's zap panel (react-zapper widget) renders for
 // base/lcap fully offline — the base fixture fails this test on ANY unmocked
@@ -9,10 +16,9 @@ import { mockZapperRoutes, seedZapSurface, zapUnmockedLogger } from '../../helpe
 // zapper routes are still installed so a stray quote request 500s loudly
 // instead of escaping to the network.
 //
-// Selectors are structural (the widget ships no testids and its copy is
-// Lingui-translated): register's `issuance-zap-widget` testid scopes the card,
-// Radix Tabs expose value-derived ids, and the amount fields are the only
-// inputmode="decimal" inputs. Token symbols are not translated.
+// Selectors are structural — see the widget structure contract in
+// helpers/zapper.ts (panels keep Radix value-derived ids, the Buy/Sell tab
+// triggers are hidden since react-zapper 2.10 and the arrow flips direction).
 
 const DTF_ADDRESS = '0x4dA9A0f397dB1397902070f93a4D6ddBC0E0E6e8' // base/lcap
 
@@ -31,15 +37,18 @@ test('issuance zap panel renders offline @smoke', async ({
   // First paint waits on the SDK's dtf query (subgraph + api + seeded RPC).
   await expect(widget).toBeVisible({ timeout: 15_000 })
 
-  // Buy/sell tabs mounted (Radix value-derived ids, locale-independent).
-  await expect(widget.locator('button[role="tab"][id$="-trigger-buy"]')).toBeVisible()
-  await expect(widget.locator('button[role="tab"][id$="-trigger-sell"]')).toBeVisible()
+  // Buy panel active by default; the sell side is reachable through the
+  // direction arrow (no tab triggers since react-zapper 2.10).
+  const buyPanel = activeZapPanel(widget)
+  await expect(zapPanel(widget, 'buy')).toHaveAttribute('data-state', 'active')
+  await expect(zapFlipButton(buyPanel)).toBeVisible()
 
-  // The active (buy) panel mounts both amount fields (in + out) and the ETH
-  // input-token selector. Without a wallet they render disabled — the smoke
-  // only proves the surface mounts; the connected behavior lives in
-  // flows/zap-buy-sell.spec.ts.
-  const buyPanel = widget.locator('div[role="tabpanel"][data-state="active"]')
+  // The buy panel mounts both amount fields (in + out) and the input-token
+  // selector (USDC leads the list since 2.10). Without a wallet they render
+  // disabled — the smoke only proves the surface mounts; the connected
+  // behavior lives in flows/zap-buy-sell.spec.ts.
   await expect(buyPanel.locator('input[inputmode="decimal"]')).toHaveCount(2)
-  await expect(buyPanel.getByRole('button', { name: 'ETH', exact: true })).toBeVisible()
+  await expect(
+    buyPanel.getByRole('button', { name: 'USDC', exact: true })
+  ).toBeVisible()
 })

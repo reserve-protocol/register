@@ -62,18 +62,18 @@ const UnlockProcess = () => {
         <Trans>Unlock process</Trans>
       </div>
       <div className="text-primary mt-3">1.</div>
-      <div className="text-md max-w-sm text-center -mt-1">
+      <div className="max-w-sm text-center -mt-1">
         <Trans>
           A {delay}-day unlock delay period begins &amp; you stop accumulating
           rewards
         </Trans>
       </div>
       <div className="text-primary mt-3">2.</div>
-      <div className="text-md max-w-sm text-center -mt-1">
+      <div className="max-w-sm text-center -mt-1">
         <Trans>Wait {delay} days</Trans>
       </div>
       <div className="text-primary mt-3">3.</div>
-      <div className="text-md max-w-sm text-center -mt-1">
+      <div className="max-w-sm text-center -mt-1">
         <Trans>
           Come back to your account balance page to withdraw your unlocked{' '}
           {stToken.underlying.symbol}

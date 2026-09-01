@@ -1,7 +1,7 @@
 {
   "_meta": {
     "source": "https://api.goldsky.com/api/public/project_cmgzim3e100095np2gjnbh6ry/subgraphs/dtf-index-mainnet/prod/gn",
-    "capturedAt": "2026-07-10T00:20:54.797Z",
+    "capturedAt": "2026-08-25T16:35:15.680Z",
     "dtf": "0x323c03c48660fe31186fa82c289b0766d331ce21",
     "chainId": 1,
     "query": "GetIndexDTF"
@@ -32,10 +32,10 @@
       "brandManagers": [
         "0x66f66192f91eaa3d48c95ab6bdaf9ade26db06f1"
       ],
-      "totalRevenue": "16110996795749490906094",
-      "protocolRevenue": "8055498397874745453509",
-      "governanceRevenue": "4833299038724847271556",
-      "externalRevenue": "3222199359149898181029",
+      "totalRevenue": "18475520089800337540411",
+      "protocolRevenue": "8899039529820837322468",
+      "governanceRevenue": "5745888335987700130771",
+      "externalRevenue": "3830592223991800087172",
       "feeRecipients": "0x2aea77c4757d897aae2710b8a60280777f504e8c:600000000000000000,0xde3b1a502a6f25b92434a00c4169b195b2f1528c:400000000000000000",
       "bidsEnabled": null,
       "trustedFillerRegistry": "0x279ccf56441fc74f1aac39e7fac165dec5a88b3a",
@@ -111,14 +111,14 @@
         "name": "Open Stablecoin Index",
         "symbol": "OPEN",
         "decimals": 18,
-        "totalSupply": "445966866494428349564935",
-        "currentHolderCount": "152",
-        "cumulativeHolderCount": "377",
-        "transferCount": "8046",
-        "mintCount": "1936",
-        "burnCount": "1289",
-        "totalBurned": "3694889056940991606113560",
-        "totalMinted": "4140855923435419955678495"
+        "totalSupply": "429612027818150580391665",
+        "currentHolderCount": "157",
+        "cumulativeHolderCount": "396",
+        "transferCount": "8969",
+        "mintCount": "2392",
+        "burnCount": "1564",
+        "totalBurned": "4290970733712515279516943",
+        "totalMinted": "4720582761530665859908608"
       },
       "stToken": {
         "id": "0x2aea77c4757d897aae2710b8a60280777f504e8c",

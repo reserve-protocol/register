@@ -4,6 +4,7 @@ import useGeolocation from '@/hooks/use-geolocation'
 import { cn } from '@/lib/utils'
 import { walletAtom } from '@/state/atoms'
 import { indexDTFAtom } from '@/state/dtf/atoms'
+import { CALENDLY_URL } from '@/utils/schedule-call'
 import { useTrackIndexDTFClick } from '@/views/index-dtf/hooks/useTrackIndexDTFPage'
 import { zodResolver } from '@hookform/resolvers/zod'
 import type { MessageDescriptor } from '@lingui/core'
@@ -57,6 +58,8 @@ const EligibilityForm = () => {
     setSubmitting(true)
     setSubmitError(false)
     trackClick('request_eligibility')
+    // Open before awaiting so the user gesture is still active for popup blockers
+    window.open(CALENDLY_URL, '_blank', 'noopener,noreferrer')
     try {
       const response = await fetch(`${STORAGE_URL}eligibility`, {
         method: 'POST',
@@ -91,6 +94,14 @@ const EligibilityForm = () => {
         <p className="text-primary font-medium">
           <Trans>Thank you! We'll be in touch soon.</Trans>
         </p>
+        <a
+          className="text-primary text-sm underline underline-offset-2"
+          target="_blank"
+          rel="noopener noreferrer"
+          href={CALENDLY_URL}
+        >
+          <Trans>Schedule a meeting</Trans>
+        </a>
       </div>
     )
   }
@@ -137,7 +148,7 @@ const EligibilityForm = () => {
         disabled={submitting || !isValid}
         className="w-full rounded-xl h-12 text-base"
       >
-        {submitting ? t`Submitting...` : t`Submit`}
+        {submitting ? t`Submitting...` : t`Schedule a meeting`}
       </Button>
       {submitError && (
         <p className="text-destructive text-sm">

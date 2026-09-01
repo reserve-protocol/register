@@ -13,6 +13,7 @@ import {
   ExternalVoteLockDrawer,
   type StTokenExtended,
 } from '@/components/vote-lock'
+import { trackClick } from '@/hooks/useTrackPage'
 import { walletAtom } from '@/state/atoms'
 import { formatCurrency, getFolioRoute } from '@/utils'
 import { isSelfAppreciatingVoteLock, toCompoundApy } from '@/utils/constants'
@@ -36,11 +37,15 @@ import { useVoteLockExchangeRate } from '@/components/vote-lock/hooks/use-vote-l
 import { type SupportedChainId } from '@reserve-protocol/react-sdk'
 import { Trans, useLingui } from '@lingui/react/macro'
 import { createColumnHelper } from '@tanstack/react-table'
-import { useAtomValue } from 'jotai'
+import { useAtomValue, useSetAtom } from 'jotai'
 import { ChevronDown } from 'lucide-react'
 import { useMemo, useState } from 'react'
 import { Address } from 'viem'
-import { dtfDataMapAtom, filteredVoteLockPositionsAtom } from '../atoms'
+import {
+  dtfDataMapAtom,
+  faqQuestionRequestAtom,
+  filteredVoteLockPositionsAtom,
+} from '../atoms'
 import { VoteLockPosition } from '../hooks/use-vote-lock-positions'
 import TableFilters from './table-filters'
 
@@ -102,6 +107,31 @@ const YourLockCell = ({ position }: { position: VoteLockPosition }) => {
       symbol={position.underlying.token.symbol}
       decimals={position.token.decimals}
       conversionRate={rate ?? 1}
+    />
+  )
+}
+
+const RateCell = ({ position }: { position: VoteLockPosition }) => {
+  const setFaqRequest = useSetAtom(faqQuestionRequestAtom)
+
+  // Self-appreciating vaults compound into the exchange rate → show the
+  // daily-compounded APY instead of the API's simple APR.
+  const selfAppreciating = isSelfAppreciatingVoteLock(
+    position.chainId,
+    position.token.address
+  )
+
+  const handleHelpClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.stopPropagation()
+    trackClick('earn', 'rate_help')
+    setFaqRequest({ id: 'how_rate_calculated' })
+  }
+
+  return (
+    <EarnMetricCtaCell
+      value={selfAppreciating ? toCompoundApy(position.apr) : position.apr}
+      label={selfAppreciating ? 'APY' : 'APR'}
+      onHelpClick={handleHelpClick}
     />
   )
 }
@@ -268,25 +298,7 @@ const useColumns = () => {
         meta: {
           className: earnMetricColumnClassName,
         },
-        cell: (data) => {
-          // Self-appreciating vaults compound into the exchange rate → show
-          // the daily-compounded APY instead of the API's simple APR.
-          const selfAppreciating = isSelfAppreciatingVoteLock(
-            data.row.original.chainId,
-            data.row.original.token.address
-          )
-
-          return (
-            <EarnMetricCtaCell
-              value={
-                selfAppreciating
-                  ? toCompoundApy(data.getValue())
-                  : data.getValue()
-              }
-              label={selfAppreciating ? 'APY' : 'APR'}
-            />
-          )
-        },
+        cell: (data) => <RateCell position={data.row.original} />,
       }),
     ]
   }, [t, wallet])

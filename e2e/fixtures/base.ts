@@ -86,6 +86,10 @@ export const test = base.extend<BaseFixtures>({
           'assets.coingecko.com',
           'connect.facebook.net',
           'dd.dexscreener.com',
+          // Brand uploads (DTF icon/cover) — served from Reserve's folio-assets
+          // CDN since the 2026-08 capture; the *.ufs.sh entry below covers
+          // the uploadthing URLs older captures still carry.
+          'folio-assets.reserve.org',
           'raw.githubusercontent.com',
           'www.googletagmanager.com',
         ]

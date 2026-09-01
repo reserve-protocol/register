@@ -1,7 +1,7 @@
 {
   "_meta": {
     "source": "https://api.goldsky.com/api/public/project_cmgzim3e100095np2gjnbh6ry/subgraphs/dtf-index-bsc/prod/gn",
-    "capturedAt": "2026-07-14T00:51:28.991Z",
+    "capturedAt": "2026-08-25T16:35:51.362Z",
     "dtf": "0xa0fe4e0aeca5479705ce996615b2eacb6b6a10fb",
     "chainId": 56,
     "query": "getProposalDetail",
@@ -10,16 +10,16 @@
   "data": {
     "proposal": {
       "id": "5401711146639244377742387518559779721239034479390927824360819366483007584987",
-      "timelockId": null,
+      "timelockId": "0x81ed8cc10d53b9dda306a59a7828b3e1cf09bad7c53b19d0d9deded9fee9ca3c",
       "description": "# Mandate change proposal \n [Mandate change proposal](Mandate change proposal) \n Mandate change proposal",
       "creationTime": "1783470235",
       "voteStart": "1783643035",
       "voteEnd": "1783902235",
-      "queueBlock": null,
-      "queueTime": null,
-      "state": "ACTIVE",
-      "executionETA": null,
-      "executionTime": null,
+      "queueBlock": "111375498",
+      "queueTime": "1784678580",
+      "state": "EXECUTED",
+      "executionETA": "1784851380",
+      "executionTime": "1786545563",
       "creationBlock": "108691249",
       "cancellationTime": null,
       "calldatas": [
@@ -54,7 +54,7 @@
       "forDelegateVotes": "2",
       "abstainDelegateVotes": "0",
       "againstDelegateVotes": "0",
-      "executionTxnHash": null,
+      "executionTxnHash": "0x0c8ff768ca30d2ebaa7809f581893899d97a74a4be3af37a65ee01a25fdb9f63",
       "governance": {
         "id": "0xf6f73c085b22d791705b8173712f37a2feee58e1",
         "token": {

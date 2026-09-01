@@ -2,7 +2,7 @@
 
 Use this before building or changing user-facing UI: app shells, dashboards, onboarding, settings, forms, chat surfaces, empty states, and responsive behavior.
 
-Influence: distilled from `https://github.com/pbakaus/impeccable` (Apache 2.0). The project's own register (tone, personality, audience) lives in `docs/wiki/project.md` — read it first; this file carries the register-independent rules.
+Influence: distilled from `https://github.com/pbakaus/impeccable` (Apache 2.0). The project's own voice (tone, personality, audience) lives in `docs/wiki/project.md` — read it first; this file carries the voice-independent rules.
 
 ## Token Discipline
 

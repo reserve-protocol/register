@@ -9,6 +9,8 @@ import {
 
 const PM = '0x28e2ea090877bf75740558f6bfb36a5ffee9e9df'
 const TRADER = '0x9008d19f58aabd9ed0d60971565aa8510560ab41'
+const OTHER = '0x1111111254eeb25477b68fb85ed929f73a960582'
+const LP_VAULT = '0x3ef6232d6f01d143da8eccd8caefa72ebbb731a5'
 const CHAIN = 56
 
 const event = (overrides: Partial<PoolTransferEvent>): PoolTransferEvent => ({
@@ -79,11 +81,11 @@ describe('mapPoolSwapEvents', () => {
     expect(swaps[0].id).toBe('0xhash-Buy')
   })
 
-  it('keeps buy and sell of the same hash as two rows (no netting)', () => {
+  it('keeps buy and sell of the same hash as two rows when counterparties differ', () => {
     const swaps = mapPoolSwapEvents(
       {
         buys: [event({ id: 'a-1' })],
-        sells: [event({ id: 'a-2', from: { id: TRADER }, to: { id: PM } })],
+        sells: [event({ id: 'a-2', from: { id: OTHER }, to: { id: PM } })],
       },
       PM,
       CHAIN
@@ -91,6 +93,82 @@ describe('mapPoolSwapEvents', () => {
 
     expect(swaps).toHaveLength(2)
     expect(swaps.map((s) => s.type).sort()).toEqual(['Buy', 'Sell'])
+  })
+
+  it('drops a liquidity round-trip against the same counterparty in one tx', () => {
+    const swaps = mapPoolSwapEvents(
+      {
+        buys: [event({ id: 'lp-out', to: { id: LP_VAULT } })],
+        sells: [
+          event({
+            id: 'lp-in',
+            amount: '1000000000000000001',
+            from: { id: LP_VAULT },
+            to: { id: PM },
+          }),
+        ],
+      },
+      PM,
+      CHAIN
+    )
+
+    expect(swaps).toEqual([])
+  })
+
+  it('keeps other trades in a tx that also contains a liquidity round-trip', () => {
+    const swaps = mapPoolSwapEvents(
+      {
+        buys: [
+          event({ id: 'lp-out', to: { id: LP_VAULT } }),
+          event({ id: 'trade', to: { id: OTHER } }),
+        ],
+        sells: [event({ id: 'lp-in', from: { id: LP_VAULT }, to: { id: PM } })],
+      },
+      PM,
+      CHAIN
+    )
+
+    expect(swaps).toHaveLength(1)
+    expect(swaps[0].type).toBe('Buy')
+    expect(swaps[0].to?.toLowerCase()).toBe(OTHER)
+  })
+
+  it('matches round-trip counterparties case-insensitively', () => {
+    const swaps = mapPoolSwapEvents(
+      {
+        buys: [
+          event({
+            id: 'lp-out',
+            to: { id: LP_VAULT.toUpperCase().replace('0X', '0x') },
+          }),
+        ],
+        sells: [event({ id: 'lp-in', from: { id: LP_VAULT }, to: { id: PM } })],
+      },
+      PM,
+      CHAIN
+    )
+
+    expect(swaps).toEqual([])
+  })
+
+  it('does not treat the same counterparty in different txs as a round-trip', () => {
+    const swaps = mapPoolSwapEvents(
+      {
+        buys: [event({ id: 'a-1', hash: '0xa' })],
+        sells: [
+          event({
+            id: 'b-1',
+            hash: '0xb',
+            from: { id: TRADER },
+            to: { id: PM },
+          }),
+        ],
+      },
+      PM,
+      CHAIN
+    )
+
+    expect(swaps).toHaveLength(2)
   })
 
   it('skips duplicated event ids and PM→PM transfers', () => {

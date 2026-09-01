@@ -1,6 +1,6 @@
 ---
 title: Log
-updated: 2026-09-01
+updated: 2026-09-02
 type: log
 ---
 
@@ -131,6 +131,10 @@ Play-by-play lives in git (PRs #1053/#1054/#1055/#1063, SDK PR #27). Durable out
 - Review corrected an important progress-model trap: placeholder rows start with no gates complete. A current baseline can count as inventoried only when its relevant surface is actually mapped; it never counts as defined, approved, adopted, or verified.
 - Capture lesson: this app scrolls inside its own layout, so one full-page locator capture produced misleading blank output. Stable evidence captures named lab regions with a pinned server and platform-neutral filenames. Chromium under the x86 dev-container emulation is unreliable, so `DESIGN_SYSTEM_BASE_URL` supports host-browser capture without weakening the default owned-server path.
 
+## 2026-08-08
+
+- DTF Settings confirmation was globally gated by deploy-time schema validity, so unchanged on-chain values with display-rounding drift blocked unrelated governance changes even though those values were omitted from proposal calldata. The gate now scopes errors to changed settings while preserving no-change and changed-invalid guards; the E2E regression models an unchanged invalid distribution plus a valid mandate update.
+
 ## 2026-08-11
 
 - The lab was narrowed to its durable job: foundations, component state sheets, progress, and migration planning. Visual-direction placeholders and the simulated product composition were removed. One visual direction evolves through real local golden screens; deterministic fixtures provide repeatable data and edge states without duplicating the application inside the lab.
@@ -162,6 +166,10 @@ Play-by-play lives in git (PRs #1053/#1054/#1055/#1063, SDK PR #27). Durable out
 
 ## 2026-08-18
 
+- Kit refresh via `install.mjs --update` from agent-workflow @ b0da65a (+working-tree). 18 new skills landed (stage, foundation-review, scar-mining, codebase-deep-scan, taste, topology, wayfinder, experience-design, create/maintain-verification, evaluate-workflow, release-evidence, resume-work, resolving-merge-conflicts, model-capabilities, pair trio); router routes them all. Medium/high stage machinery moved from `workflow.md` to `skills/stage.md`.
+- Register's local area-guide drift detection (`scope.mjs` `area-guide:` lines) was upstreamed into the kit (now AGENTS.md/CLAUDE.md-aware, with a kit test) instead of being clobbered by the wholesale update; the kit had already absorbed the wiki-lint duplicate-key check and the one-line comment rules. Zero local rules lost.
+- Kit installer gap found and fixed upstream: skills reference `templates/{design,evaluation,evidence,verification}` in-repo but the installer never shipped them; they are now kit-owned dirs and live at `templates/` here.
+- All Overrides in [[project]] re-checked: none absorbed, all stand. Config schema unchanged. Chatty's capsule pilot is explicitly Chatty-only and was not ported; chatty itself is behind the current kit.
 - Rich-record review confirmed that Governance proposals and Auction rebalance selectors can share foundations and lower-level seams without becoming one universal Row. Repeated corrections established a stricter composition contract: 24px record inset, 16px region rhythm, 8px related rows, 4px tight icon/text pairs, 16px/500 titles, equal-sized horizontal peers, and semantic layout recipes rather than locally plausible spacing.
 - Auction selectors now prioritize the process loop: current auction/status, current-auction countdown, rebalance permissionless/expiry timing, historical accuracy, impact, and total traded value. Per-auction bid count and value traded stay in the selected/full view. Selector status wraps below the title at constrained widths; provenance remains one left-aligned sentence.
 - Lifecycle pills proved useful across both families but remain provisional. Their semantic feedback surfaces and borders—including neutral waiting/closed roles—are opaque, parent-independent colors. Proposal progress, quorum/vote evidence, optimistic challenge states, and Fast/Contested qualifiers were reviewed in composition without promoting a universal Table/DataRow or beginning production adoption.
@@ -170,6 +178,7 @@ Play-by-play lives in git (PRs #1053/#1054/#1055/#1063, SDK PR #27). Durable out
 
 ## 2026-08-19
 
+- Locale initialization now uses the first supported browser preference for visitors without a saved choice; a persisted explicit choice still wins. A clean Lingui extraction confirmed 2,543 active catalog messages with zero missing Spanish, Korean, or Simplified Chinese translations and removed obsolete catalog entries. This supersedes the earlier ~117-missing-message backlog entry. Live browser verification covered Spanish auto-selection plus a Korean selection surviving reload.
 - The Components landing page now renders the same complete state sheets as detail routes for all 14 available components, shows readiness/authority/delivery separately, and keeps one 29-item unresolved inventory with Product Navigation explicit. Reusing full sheets exposed a Card-study intrinsic-width leak at 390px; the lab composition now owns `min-w-0`, while the protected production card remains unchanged.
 - Field/TextInput is independently reviewable across six source-grounded states without inheriting SingleChoice or the blocked repeated-governance composition. ActionGroup now encodes only accepted Button width/gap relationships, but review caught a maturity error before closeout: reusable synthesis is still exploratory/provisional until a human accepts it.
 - Dialog coverage was corrected from a duplicated Eligibility specimen to compact dismissible, standard non-dismissible, and long body-scroll states; interactive focus/dismissal evidence remains detail-only. The entity-mark kernel was rechecked against Index exposure, badged-card, and Earn stack sources and required no code change.
@@ -358,3 +367,15 @@ Play-by-play lives in git (PRs #1053/#1054/#1055/#1063, SDK PR #27). Durable out
 
 - Human review resolved the hardening queue without introducing a universal transaction shell. The new opaque `substrate-subtle` role supplies shallow attached depth while beige `secondary` retains major structural separation. Progress and pre-submit advisories share only frame, surface, and depth geometry; their semantic/content owners remain separate. Ordered progress now replaces inactive action chrome, while real Buttons remain for actionable steps and recovery.
 - Zapper and Vote Lock outcomes now share a 26rem no-shrink minimum. Organic brand motion remains immediate-result-only; delayed initiation retains the stable branded shell with countdown/pending truth. Inline Message advances to an accepted unadopted full/compact-summary baseline with a strict supporting-only tooltip rule. Vote Lock's 448px address width and the bare advisory dismiss remain local. No production flow, product copy, generic Dialog default, or existing `secondary` behavior changed.
+
+## 2026-09-01 — Earn Index DTF FAQ expansion
+
+- PR #1094 expands the FAQ from three to nine validated questions, adds token-built graphics, and routes the Index DTF rate-help action into the relevant controlled FAQ item without opening the row drawer. The branch gate was green after rebase: lint, typecheck, 895 unit tests, 58 smoke tests, and zero missing active-catalog translations; desktop/mobile, light/dark, and Spanish states were inspected.
+- Review corrections included flexible localized flow chips, answer heading semantics, card-contained realized-value treatment, and delay-accurate unlock copy. Korean and Chinese retain their active-catalog Vote Lock terms. The English catalog must ship with es/ko/zh. The default-open first FAQ item does not emit its open event, so `faq_what_is_vote_locking` analytics remains an acknowledged under-count; the rate-help path emits `rate_help` and uses a one-shot request atom plus controlled open/scroll behavior.
+
+## 2026-09-02 — Current-master transaction evidence reconciliation
+
+- Merged current `origin/master` into the Design System V1 branch after a pre-merge checkpoint. The only textual conflicts were project knowledge: the resolution retained both upstream workflow improvements and the narrower V1 authority overrides, including transaction-specific geometry, typography, verification cadence, and explicit permission for scoped visual-composition work. Generic upstream design guidance does not replace the active V1 plan or accepted owners.
+- The installed Zapper boundary advanced from 2.8.0 to 2.10.5. Current evidence now records one mounted widget across wallet state, hidden-by-default optional tabs with amount-pair direction flipping, parallel provider comparison and a stable route list, background refresh without CTA flicker, sourcing/retry rather than a terminal ordinary no-route error, and a portalled exact-result dialog with contact/call attachments. The reviewed lab tabs and availability-failure specimen remain visible only as explicit proposals/special recovery, not current-product parity claims.
+- No transaction composition, production transaction behavior, accepted component default, or product copy was silently changed by this reconciliation. Vote Lock and Stake/Unstake mechanics were not materially changed upstream; later visual work must use the refreshed Zapper facts while retaining the direct-flow and semantic-specificity rules already established.
+- The first full gate observed one late `TokenLogo` state update after all assertions had passed and the test DOM was already torn down. It did not reproduce in a direct full unit rerun or the final full gate, both of which passed 1,037/1,037; it remains a transient verification observation rather than evidence of a product or merge failure.

@@ -1,7 +1,7 @@
 {
   "_meta": {
     "source": "https://base-rpc.publicnode.com",
-    "capturedAt": "2026-07-10T02:58:35.469Z",
+    "capturedAt": "2026-08-25T16:35:26.626Z",
     "dtf": "0x47686106181b3cefe4eaf94c4c10b48ac750370b",
     "chainId": 8453
   },
@@ -32,7 +32,7 @@
         "0x79acf3e085de8c785f4"
       ]
     },
-    "totalSupply": "0x56e1c8838b69426f508",
+    "totalSupply": "0x56fdf912b6c131a6ffa",
     "decimals": 18,
     "version": "4.0.0",
     "basketTokens": [

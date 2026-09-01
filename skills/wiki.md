@@ -8,7 +8,7 @@ Influence: Andrej Karpathy's "LLM Wiki" pattern (gist `442a6bf555914893e9891c115
 
 - `index.md` — catalog: one line per page with a hook. The entry point for every query.
 - `log.md` — append-only chronological record (`## YYYY-MM-DD` sections). The ONLY append-only file.
-- `project.md` — product context, stack, safety rules, UI register, active risks.
+- `project.md` — product context, stack, safety rules, UI voice, active risks.
 - `progress.md` — stage ledger table + backlog section. One row per stage: status, verifier line, lens lines, next action.
 - `decisions.md` — durable decisions with reasoning; split into pages when it outgrows the split rule.
 - `domains/<name>.md` — one page per feature/domain folder of the codebase.
@@ -37,7 +37,7 @@ boundaries, invariants, gotchas, why.
 **Ingest** (at stage closeout, part of the workflow closeout):
 - Update the domain pages the diff made wrong or stale; the drift lint is the backstop, not every touch. Rewrite, never append — pages are current-state syntheses, not journals. `log.md` is the only file that appends.
 - Brownfield repos: create a domain page the first time a stage touches that domain. Never backfill the whole repo in one sitting.
-- Record new decisions in `decisions.md` with the why.
+- Record a decision in `decisions.md` only when all three hold: hard to reverse, surprising without the context, and the result of a real trade-off. A choice that fails any of these is just the obvious move — leave it in the code. Record the ones that clear the bar with their why.
 - Append the dated summary to `log.md` (lessons, corrections, friction).
 - Update `index.md` if pages were added or removed.
 
