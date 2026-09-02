@@ -219,6 +219,14 @@ The visible system is transparent only where the SDK exposes real stages and
 leg states. It does not need a fabricated percentage. Quote cancellation is an
 escape from fetching, not cancellation of already posted orders. [M1–M7]
 
+The automated-mint audit must exercise both funding branches: a wallet that
+supplies only the configured input token, and a wallet that also contributes
+usable basket collateral through `useExistingBalances`. Existing collateral can
+change which legs are required and their traded amounts, so this is lifecycle
+and order-composition evidence rather than a cosmetic toggle state. Each
+resulting leg must retain its directional sold and bought amounts when the
+workspace is reviewed or migrated.
+
 ### Supporting flows: compact comparison
 
 ```mermaid

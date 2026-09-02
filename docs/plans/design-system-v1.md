@@ -579,8 +579,19 @@ required merely because a lab-only diff is large or long-running.
   adopted. The proof corroborates several relationships while leaving its
   flow-specific outcome floors and any broader promotion to human review.
 - **Manual/automated mint expansion:** consume the proven family while retaining
-  staged and workspace-specific mechanics. It is now eligible after human
-  review of the Stake/Unstake proof and explicit slice selection.
+  staged and workspace-specific mechanics. Automated mint starts with a narrow
+  configuration task, then becomes a full-page two-column workspace rather than
+  a Dialog composition. It must disclose its intrinsic multi-step nature before
+  execution; keep every collateral order's sell amount, buy amount, and lifecycle
+  legible, including branches where existing wallet collateral changes the work
+  required. Reuse accepted components, semantics, lifecycle language, and
+  relationship geometry where their jobs match, but do not force this
+  high-capital professional workflow into the simple Zapper/Vote Lock shell.
+  The proof run must classify every mismatch as existing reuse, a supported
+  variant need, flow-owned composition, exploratory pressure, or a product /
+  engineer-review question; one example does not promote a new shared owner. It
+  is now eligible after human review of the Stake/Unstake proof and explicit
+  slice selection.
 
 ## Acceptance evidence
 
