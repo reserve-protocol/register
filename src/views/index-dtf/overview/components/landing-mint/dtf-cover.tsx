@@ -2,8 +2,10 @@ import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
 import VideoModal from '@/components/video-modal'
 import { cn } from '@/lib/utils'
+import { walletAtom } from '@/state/atoms'
 import { indexDTFAtom, indexDTFBrandAtom } from '@/state/dtf/atoms'
-import { getYouTubeEmbedUrl } from '@/utils/youtube'
+import { trackActivityEvent } from '@/utils/activity-events'
+import { getYouTubeEmbedUrl, getYouTubeVideoId } from '@/utils/youtube'
 import { useTrackIndexDTFClick } from '../../../hooks/useTrackIndexDTFPage'
 import { Trans, useLingui } from '@lingui/react/macro'
 import { atom, useAtom, useAtomValue } from 'jotai'
@@ -72,6 +74,7 @@ const DtfCover = ({
   const { trackClick } = useTrackIndexDTFClick('overview', 'overview')
   const brand = useAtomValue(indexDTFBrandAtom)
   const dtf = useAtomValue(indexDTFAtom)
+  const wallet = useAtomValue(walletAtom)
   const [isVideoLoaded, setIsVideoLoaded] = useState(false)
   const [isImageLoaded, setIsImageLoaded] = useState(false)
   const [coverSettled, setCoverSettled] = useState(false)
@@ -199,6 +202,18 @@ const DtfCover = ({
                 video={playableVideo}
                 title={videoTitle}
                 iframeTitle={iframeTitle}
+                onPlay={() => {
+                  const videoId = getYouTubeVideoId(playableVideo)
+                  if (!dtf || !videoId) return
+                  void trackActivityEvent({
+                    type: 'video_played',
+                    wallet: wallet ?? undefined,
+                    chainId: dtf.chainId,
+                    dtfAddress: dtf.id,
+                    dtfSymbol: dtf.token.symbol,
+                    videoId,
+                  })
+                }}
                 onOpenChange={(open) => {
                   if (open) {
                     if (dtf) setWatchedCoverDtf(dtf.id)

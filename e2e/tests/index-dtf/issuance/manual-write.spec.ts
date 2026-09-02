@@ -6,9 +6,17 @@ import { REGISTRY } from '../../../helpers/registry'
 // step), so a connected wallet mints directly. Proves the write dimension on the
 // issuance surface (tx.confirm + decoded mint calldata). Desktop (write timing).
 const base = REGISTRY.find((d) => d.chainId === 8453 && !d.deprecated)!
-const MINT_ABI = parseAbi(['function mint(uint256 shares, address receiver, uint256 minSharesOut)'])
+const MINT_ABI = parseAbi([
+  'function mint(uint256 shares, address receiver, uint256 minSharesOut)',
+])
 
-test('issuance manual: mint submits mint() to the folio @smoke', async ({ harness }) => {
+const activityCount = (harness: {
+  requests: { api: (pathname?: string) => unknown[] }
+}) => harness.requests.api('/v1/activity-events').length
+
+test('issuance manual: mint submits mint() to the folio @smoke', async ({
+  harness,
+}) => {
   const page = harness.page
   harness.seedManualIssuance(base)
   await harness.chain.freezeAt(Math.floor(Date.now() / 1000))
@@ -16,6 +24,7 @@ test('issuance manual: mint submits mint() to the folio @smoke', async ({ harnes
   await harness.wallet.connect()
   await harness.chain.advance(5_000)
   await harness.chain.advance(5_000)
+  const activityBefore = activityCount(harness)
 
   await page.getByTestId('issuance-amount-input').first().fill('1')
   harness.tx.confirm()
@@ -24,17 +33,25 @@ test('issuance manual: mint submits mint() to the folio @smoke', async ({ harnes
   await submit.click()
   await harness.chain.advance(10_000)
 
-  await expect.poll(() => harness.tx.log.length, { timeout: 10_000 }).toBeGreaterThan(0)
+  await expect
+    .poll(() => harness.tx.log.length, { timeout: 10_000 })
+    .toBeGreaterThan(0)
   const tx = harness.tx.last()!
   expect(tx.to).toBe(base.address.toLowerCase())
-  expect(decodeFunctionData({ abi: MINT_ABI, data: tx.data as `0x${string}` }).functionName).toBe('mint')
+  expect(
+    decodeFunctionData({ abi: MINT_ABI, data: tx.data as `0x${string}` })
+      .functionName
+  ).toBe('mint')
+  await expect.poll(() => activityCount(harness)).toBe(activityBefore + 1)
 })
 
 const REDEEM_ABI = parseAbi([
   'function redeem(uint256 shares, address receiver, address[] assets, uint256[] minAmountsOut)',
 ])
 
-test('issuance manual: redeem submits redeem() to the folio @smoke', async ({ harness }) => {
+test('issuance manual: redeem submits redeem() to the folio @smoke', async ({
+  harness,
+}) => {
   const page = harness.page
   harness.seedManualIssuance(base)
   harness.seedBalance(base, '100') // 100 DTF shares to sell
@@ -43,6 +60,7 @@ test('issuance manual: redeem submits redeem() to the folio @smoke', async ({ ha
   await harness.wallet.connect()
   await harness.chain.advance(5_000)
   await harness.chain.advance(5_000)
+  const activityBefore = activityCount(harness)
 
   await page.getByTestId('issuance-mode-sell').first().click()
   await page.getByTestId('issuance-amount-input').first().fill('1')
@@ -52,10 +70,16 @@ test('issuance manual: redeem submits redeem() to the folio @smoke', async ({ ha
   await submit.click()
   await harness.chain.advance(10_000)
 
-  await expect.poll(() => harness.tx.log.length, { timeout: 10_000 }).toBeGreaterThan(0)
+  await expect
+    .poll(() => harness.tx.log.length, { timeout: 10_000 })
+    .toBeGreaterThan(0)
   const tx = harness.tx.last()!
   expect(tx.to).toBe(base.address.toLowerCase())
-  expect(decodeFunctionData({ abi: REDEEM_ABI, data: tx.data as `0x${string}` }).functionName).toBe('redeem')
+  expect(
+    decodeFunctionData({ abi: REDEEM_ABI, data: tx.data as `0x${string}` })
+      .functionName
+  ).toBe('redeem')
+  await expect.poll(() => activityCount(harness)).toBe(activityBefore + 1)
 })
 
 test('issuance manual: rejected mint leaves txLog empty and recovers @smoke', async ({
@@ -68,6 +92,7 @@ test('issuance manual: rejected mint leaves txLog empty and recovers @smoke', as
   await harness.wallet.connect()
   await harness.chain.advance(5_000)
   await harness.chain.advance(5_000)
+  const activityBefore = activityCount(harness)
 
   await page.getByTestId('issuance-amount-input').first().fill('1')
   harness.tx.decline() // user rejects the signature in the wallet
@@ -78,5 +103,6 @@ test('issuance manual: rejected mint leaves txLog empty and recovers @smoke', as
 
   // Rejected → no transaction was sent, and the control recovers (re-enabled).
   expect(harness.tx.log).toHaveLength(0)
+  expect(activityCount(harness)).toBe(activityBefore)
   await expect(submit).toBeEnabled({ timeout: 10_000 })
 })

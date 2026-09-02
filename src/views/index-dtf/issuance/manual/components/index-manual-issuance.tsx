@@ -8,12 +8,13 @@ import { chainIdAtom, walletAtom } from '@/state/atoms'
 import { indexDTFAtom, indexDTFVersionAtom } from '@/state/dtf/atoms'
 import { formatCurrency, max, safeParseEther } from '@/utils'
 import { ROUTES } from '@/utils/constants'
+import { trackActivityEvent } from '@/utils/activity-events'
 import { msg } from '@lingui/core/macro'
 import type { MessageDescriptor } from '@lingui/core'
 import { Trans, useLingui } from '@lingui/react/macro'
 import { atom, useAtom, useAtomValue } from 'jotai'
 import { AlertCircle } from 'lucide-react'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { toast } from 'sonner'
 import { Address, parseEther } from 'viem'
@@ -119,9 +120,24 @@ const MintRedeemButton = () => {
   const wallet = useAtomValue(walletAtom)
   const indexDTF = useAtomValue(indexDTFAtom)
   const version = useAtomValue(indexDTFVersionAtom)
+  const submittedActivityRef = useRef<{
+    type: 'dtf_buy' | 'dtf_sell'
+    wallet: Address
+    chainId: number
+    dtfAddress: Address
+    dtfSymbol: string
+    amount: string
+  }>()
 
   useEffect(() => {
     if (isSuccess) {
+      if (data && submittedActivityRef.current) {
+        void trackActivityEvent({
+          ...submittedActivityRef.current,
+          transactionHash: data,
+        })
+        submittedActivityRef.current = undefined
+      }
       toast(t`Transaction successful`, {
         description: actionMsg,
         icon: '🎉',
@@ -133,6 +149,14 @@ const MintRedeemButton = () => {
 
   const handleSubmit = () => {
     if (!isValid || !indexDTF || !wallet) return
+    submittedActivityRef.current = {
+      type: mode === 'buy' ? 'dtf_buy' : 'dtf_sell',
+      wallet,
+      chainId,
+      dtfAddress: indexDTF.id,
+      dtfSymbol: indexDTF.token.symbol,
+      amount,
+    }
 
     if (mode === 'buy') {
       setActionMsg(

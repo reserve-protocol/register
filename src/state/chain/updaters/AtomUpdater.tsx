@@ -1,6 +1,6 @@
 import '@rainbow-me/rainbowkit/styles.css'
 import mixpanel from 'mixpanel-browser/src/loaders/loader-module-core'
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import {
@@ -15,11 +15,13 @@ import {
 } from 'state/atoms'
 import { useAccount, useBlock, usePublicClient } from 'wagmi'
 import { linkWalletToReferral } from 'utils/referral'
+import { trackActivityEvent } from '@/utils/activity-events'
 import { Address } from 'viem'
 
 // Keep web3 state in sync with atoms
 const AtomUpdater = () => {
   const account = useAccount()
+  const connectedAddressRef = useRef<Address>()
 
   // Setters
   const setWallet = useSetAtom(walletAtom)
@@ -41,6 +43,18 @@ const AtomUpdater = () => {
         wa: account.address,
       })
       linkWalletToReferral(account.address)
+      if (
+        connectedAddressRef.current?.toLowerCase() !==
+        account.address.toLowerCase()
+      ) {
+        connectedAddressRef.current = account.address
+        void trackActivityEvent({
+          type: 'wallet_connected',
+          wallet: account.address,
+          chainId: account.chainId ?? chainId,
+          connector: account.connector?.name?.slice(0, 50),
+        })
+      }
       // Check if the wallet is a Safe Multisig
       const checkIfSafe = async () => {
         try {
@@ -61,6 +75,7 @@ const AtomUpdater = () => {
 
       checkIfSafe()
     } else {
+      connectedAddressRef.current = undefined
       setWallet(null)
       setWalletChain(undefined)
       setIsSafeMultisig(false)

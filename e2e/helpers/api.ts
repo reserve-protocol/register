@@ -53,6 +53,10 @@ function dtfFromParam(url: URL, param: string) {
   return value ? findDtfByAddress(value) : undefined
 }
 
+export function isActivityEventRequest(method: string, path: string): boolean {
+  return method === 'POST' && path === '/v1/activity-events'
+}
+
 function isCapturedDiscoverDtf(url: URL, addressParam = 'address'): boolean {
   const address = url.searchParams.get(addressParam)?.toLowerCase()
   const chainId = Number(url.searchParams.get('chainId'))
@@ -204,6 +208,10 @@ export async function mockApiRoutes(page: Page, options: ApiMockOptions) {
     // identity-bearing query fields the spec supplies.
     const overlaid = overrides?.lookupApi(method, url)
     if (overlaid !== undefined) return json(route, overlaid)
+
+    if (isActivityEventRequest(method, path)) {
+      return json(route, { status: 'accepted' }, 202)
+    }
 
     if (
       method !== 'GET' &&

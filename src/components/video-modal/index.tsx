@@ -9,7 +9,26 @@ import { cn } from '@/lib/utils'
 import { getYouTubeEmbedUrl } from '@/utils/youtube'
 import { Trans, useLingui } from '@lingui/react/macro'
 import { X } from 'lucide-react'
-import { type ReactElement, type ReactNode } from 'react'
+import {
+  type ReactElement,
+  type ReactNode,
+  useEffect,
+  useRef,
+  useState,
+} from 'react'
+
+const YOUTUBE_EMBED_ORIGIN = 'https://www.youtube-nocookie.com'
+
+const parsePlayerMessage = (data: unknown) => {
+  if (typeof data === 'object' && data !== null) return data
+  if (typeof data !== 'string') return undefined
+  try {
+    const parsed: unknown = JSON.parse(data)
+    return typeof parsed === 'object' && parsed !== null ? parsed : undefined
+  } catch {
+    return undefined
+  }
+}
 
 export {
   getYouTubeEmbedUrl,
@@ -25,6 +44,7 @@ const VideoModal = ({
   // 16:9 (most DTF videos); pass an override for differently-sized ones.
   aspectClassName = 'aspect-video',
   onOpenChange,
+  onPlay,
   children,
 }: {
   video: string
@@ -32,17 +52,54 @@ const VideoModal = ({
   iframeTitle?: string
   aspectClassName?: string
   onOpenChange?: (open: boolean) => void
+  onPlay?: () => void
   children: ReactElement
 }) => {
   const { t } = useLingui()
   const embedUrl = getYouTubeEmbedUrl(video)
+  const [open, setOpen] = useState(false)
+  const iframeRef = useRef<HTMLIFrameElement>(null)
+  const playedRef = useRef(false)
+  const onPlayRef = useRef(onPlay)
+  const hasOnPlay = Boolean(onPlay)
+  onPlayRef.current = onPlay
+
+  useEffect(() => {
+    if (!open || !hasOnPlay || !iframeRef.current) return
+    const onMessage = (event: MessageEvent) => {
+      if (
+        event.origin !== YOUTUBE_EMBED_ORIGIN ||
+        event.source !== iframeRef.current?.contentWindow
+      )
+        return
+      const message = parsePlayerMessage(event.data) as
+        | { event?: unknown; info?: unknown }
+        | undefined
+      if (
+        message?.event === 'onStateChange' &&
+        message.info === 1 &&
+        !playedRef.current
+      ) {
+        playedRef.current = true
+        onPlayRef.current?.()
+      }
+    }
+    window.addEventListener('message', onMessage)
+    return () => window.removeEventListener('message', onMessage)
+  }, [open, embedUrl, hasOnPlay])
 
   if (!embedUrl) {
     return children
   }
 
   return (
-    <Dialog onOpenChange={onOpenChange}>
+    <Dialog
+      onOpenChange={(nextOpen) => {
+        if (nextOpen) playedRef.current = false
+        setOpen(nextOpen)
+        onOpenChange?.(nextOpen)
+      }}
+    >
       <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent
         className="sm:max-w-[960px] max-w-[95vw] p-0 gap-0 overflow-hidden"
@@ -61,7 +118,24 @@ const VideoModal = ({
         </div>
         <div className={cn(aspectClassName, 'w-full bg-black')}>
           <iframe
+            ref={iframeRef}
             src={embedUrl}
+            onLoad={() => {
+              const player = iframeRef.current?.contentWindow
+              player?.postMessage(
+                JSON.stringify({ event: 'listening', id: 'reserve-video' }),
+                YOUTUBE_EMBED_ORIGIN
+              )
+              player?.postMessage(
+                JSON.stringify({
+                  event: 'command',
+                  func: 'addEventListener',
+                  args: ['onStateChange'],
+                  id: 'reserve-video',
+                }),
+                YOUTUBE_EMBED_ORIGIN
+              )
+            }}
             title={iframeTitle ?? t`Video`}
             allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
             allowFullScreen

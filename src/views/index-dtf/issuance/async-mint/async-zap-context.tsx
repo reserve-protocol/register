@@ -4,6 +4,7 @@ import { useWatchReadContract } from '@/hooks/useWatchReadContract'
 import { chainIdAtom, walletAtom } from '@/state/atoms'
 import { indexDTFAtom } from '@/state/dtf/atoms'
 import { safeParseEther } from '@/utils'
+import { trackActivityEvent } from '@/utils/activity-events'
 import {
   AsyncZapExecution,
   AsyncZapLegState,
@@ -21,7 +22,7 @@ import {
   useMemo,
   useRef,
 } from 'react'
-import { Address, erc20Abi, parseUnits, zeroAddress } from 'viem'
+import { Address, erc20Abi, formatUnits, parseUnits, zeroAddress } from 'viem'
 import {
   inputTokenAtom,
   mintAmountAtom,
@@ -210,6 +211,38 @@ export const AsyncZapProvider = ({ children }: { children: ReactNode }) => {
         mintedShares: ex.mintedShares?.toString(),
         shares: active.quote?.shares?.toString(),
       })
+      const completionBatch =
+        operation === 'mint' ? ex.finishBatch : ex.redeemBatch
+      const receipts = completionBatch?.status?.receipts ?? []
+      const hasValidHash = (receipt: (typeof receipts)[number]) =>
+        /^0x[a-fA-F0-9]{64}$/.test(receipt.transactionHash ?? '')
+      const transactionHash =
+        receipts.find(
+          (receipt) =>
+            hasValidHash(receipt) &&
+            receipt.logs?.some(
+              (log) =>
+                log.address.toLowerCase() === indexDTF?.id.toLowerCase()
+            )
+        )?.transactionHash
+      const shareAmount =
+        operation === 'mint' ? ex.mintedShares : active.quote?.shares
+      if (
+        transactionHash &&
+        account &&
+        indexDTF &&
+        shareAmount !== undefined
+      ) {
+        void trackActivityEvent({
+          type: operation === 'mint' ? 'dtf_buy' : 'dtf_sell',
+          wallet: account,
+          chainId,
+          dtfAddress: indexDTF.id,
+          dtfSymbol: indexDTF.token.symbol,
+          transactionHash: transactionHash as `0x${string}`,
+          amount: formatUnits(shareAmount, 18),
+        })
+      }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [active.execution.step])
