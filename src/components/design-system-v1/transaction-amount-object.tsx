@@ -1,6 +1,7 @@
-import { ArrowDown } from 'lucide-react'
+import { ArrowDown, ArrowUpDown } from 'lucide-react'
 import type { HTMLAttributes, ReactNode } from 'react'
 
+import { IconButton } from '@/components/icon-button'
 import { v1Typography } from '@/components/design-system-v1/typography'
 import { v1SemanticRecipes as roles } from '@/components/ui/v1-semantic-recipes'
 import { cn } from '@/lib/utils'
@@ -39,7 +40,7 @@ export const TransactionAmountPair = ({
 }: HTMLAttributes<HTMLDivElement>) => (
   <div
     data-testid="transaction-amount-pair"
-    className={cn('relative space-y-1', className)}
+    className={cn('relative space-y-px', className)}
     {...props}
   />
 )
@@ -69,6 +70,25 @@ export const TransactionAmountRelation = ({
       <ArrowDown className="size-4" strokeWidth={1.5} />
     </span>
   </>
+)
+
+export const TransactionAmountDirectionControl = ({
+  disabled = false,
+  label,
+  onClick,
+}: {
+  disabled?: boolean
+  label: string
+  onClick: () => void
+}) => (
+  <IconButton
+    label={label}
+    icon={<ArrowUpDown />}
+    size="compact"
+    disabled={disabled}
+    onClick={onClick}
+    className="absolute left-1/2 top-1/2 z-20 -translate-x-1/2 -translate-y-1/2 ring-2 ring-card"
+  />
 )
 
 export const TransactionAmountObject = ({

@@ -4,11 +4,11 @@ import { Button } from '@/components/button'
 import { ActionGroup } from '@/components/design-system-v1/action-group'
 import { CopyableValue } from '@/components/design-system-v1/copyable-value'
 import {
+  AddressTextInput,
   Field,
   FieldDescription,
   FieldLabel,
   FieldMessage,
-  TextInput,
 } from '@/components/design-system-v1/field'
 import { InlineMessage } from '@/components/design-system-v1/inline-message'
 import { Link } from '@/components/design-system-v1/link'
@@ -115,7 +115,7 @@ export const VoteLockDelegationTask = ({
           <Field data-testid="delegation-voting-role-field">
             {isCurrentDelegation ? (
               <div className="px-4">
-                <div className="grid min-w-0 grid-cols-[minmax(0,1fr)_auto] gap-x-4">
+                <div className="grid min-w-0 gap-3 sm:grid-cols-[minmax(0,1fr)_auto] sm:gap-x-4">
                   <div className="space-y-1">
                     <FieldLabel>Voting delegate</FieldLabel>
                     <FieldDescription>
@@ -141,7 +141,7 @@ export const VoteLockDelegationTask = ({
               </div>
             )}
             {!isCurrentDelegation && (
-              <TextInput
+              <AddressTextInput
                 id="vote-lock-normal-delegate"
                 value={
                   isUnavailable
@@ -179,7 +179,7 @@ export const VoteLockDelegationTask = ({
             <Field data-testid="delegation-challenge-role-field">
               {isCurrentDelegation ? (
                 <div className="px-4">
-                  <div className="grid min-w-0 grid-cols-[minmax(0,1fr)_auto] gap-x-4">
+                  <div className="grid min-w-0 gap-3 sm:grid-cols-[minmax(0,1fr)_auto] sm:gap-x-4">
                     <div className="space-y-1">
                       <FieldLabel>Challenge delegate</FieldLabel>
                       <FieldDescription>
@@ -203,7 +203,7 @@ export const VoteLockDelegationTask = ({
                 </div>
               )}
               {!isCurrentDelegation && (
-                <TextInput
+                <AddressTextInput
                   id="vote-lock-fast-delegate"
                   value={isUnavailable ? '' : fastDelegate}
                   onChange={(event) => onFastDelegateChange(event.target.value)}
@@ -296,7 +296,7 @@ const CurrentDelegationValue = ({
 }) => (
   <div
     data-testid={testId}
-    className="flex min-w-0 flex-col items-end justify-between"
+    className="flex min-w-0 items-center justify-between gap-3 sm:flex-col sm:items-end"
   >
     <span className={cn(v1Typography.label, 'text-primary')}>
       Delegated to you

@@ -128,6 +128,14 @@ export const VoteLockAction = ({
   isAcknowledged: boolean
   hasQuote: boolean
 }) => {
+  if (state === 'Approval signing') {
+    return (
+      <Button className="w-full" tone="secondary" loading>
+        Approval in progress…
+      </Button>
+    )
+  }
+
   if (state === 'Approval') {
     return (
       <Button className="w-full" disabled={!isAcknowledged || !hasQuote}>
@@ -136,7 +144,6 @@ export const VoteLockAction = ({
     )
   }
   if (
-    state === 'Approval signing' ||
     state === 'Lock wallet' ||
     state === 'Unlock wallet'
   ) {

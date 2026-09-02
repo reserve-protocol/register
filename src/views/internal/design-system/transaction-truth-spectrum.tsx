@@ -4,7 +4,7 @@ import { v1SemanticRecipes as roles } from '@/components/ui/v1-semantic-recipes'
 import { cn } from '@/lib/utils'
 
 import { AtomicTransactionComposition } from './transaction-composition-atomic'
-import { DelayedTransactionComposition } from './transaction-composition-delayed'
+import { StakeTransactionComposition } from './transaction-composition-stake'
 import { RfqTransactionComposition } from './transaction-composition-rfq'
 import { StagedTransactionComposition } from './transaction-composition-staged'
 import { VoteLockTransactionComposition } from './transaction-composition-vote-lock'
@@ -70,8 +70,9 @@ const TransactionTruthSpectrum = () => (
           Four families remain comparison anchors, not templates for one
           universal flow. Manual mint supplies the richest local atomic seam;
           the installed Zapper remains upstream; automated mint owns transparent
-          orders; delayed settlement crosses from initiation into durable state.
-          Vote Lock is the focused fifth composition, grounded directly in its
+          orders; Stake and Unstake test conditional approval, immediate
+          receipt, and delayed initiation inside a host-independent task. Vote
+          Lock is the focused fifth composition, grounded directly in its
           current lock, unlock, and explicit delegation implementations. Later
           Portfolio and staking management rows remain product evidence rather
           than review specimens here.
@@ -80,7 +81,7 @@ const TransactionTruthSpectrum = () => (
       <AtomicTransactionComposition />
       <RfqTransactionComposition />
       <StagedTransactionComposition />
-      <DelayedTransactionComposition />
+      <StakeTransactionComposition />
       <VoteLockTransactionComposition />
     </section>
 

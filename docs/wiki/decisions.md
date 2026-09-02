@@ -529,12 +529,15 @@ secondary colors. The semantic role, not that derivation, is the durable
 contract. New use requires the same attached-surface relationship rather than
 mere preference for a near-white beige.
 
-## 2026-09-01 — Transaction progress replaces inactive action chrome
+## 2026-09-01 — Transaction progress and action-slot ownership
 
-Once an ordered transaction sequence is underway, its progress region replaces
-the primary action slot whenever no click is currently possible. A real Button
-appears only for an actionable current step or recovery. Loading-looking or
-disabled Buttons must not duplicate progress that the stepper already owns.
+Once an ordered transaction sequence is underway, the action slot remains
+stable when a later step will require another user click. While the current
+transaction processes, that slot uses a subdued loading Button; once ready, it
+becomes the next primary action. The progress region still owns the sequence and
+lifecycle truth. It replaces inactive action chrome when remaining steps
+continue automatically, avoiding a duplicate loading Button where no later
+manual action is expected.
 
 Sequential progress and pre-submit advisories may share attached-region frame,
 surface, and depth geometry while retaining separate semantic owners and

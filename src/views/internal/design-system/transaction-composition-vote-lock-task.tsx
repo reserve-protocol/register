@@ -1,16 +1,14 @@
-import { ArrowUpDown } from 'lucide-react'
-
 import { InlineAction } from '@/components/button'
 import { Checkbox } from '@/components/checkbox'
 import { HelpTooltip } from '@/components/design-system-v1/help-tooltip'
 import {
   TransactionAmountObject,
+  TransactionAmountDirectionControl,
   TransactionAmountPair,
   TransactionAmountRelation,
 } from '@/components/design-system-v1/transaction-amount-object'
 import { transactionTaskGeometry } from '@/components/design-system-v1/transaction-task-geometry'
 import { v1Typography } from '@/components/design-system-v1/typography'
-import { IconButton } from '@/components/icon-button'
 import { v1SemanticRecipes as roles } from '@/components/ui/v1-semantic-recipes'
 import { cn } from '@/lib/utils'
 import { ChainId } from '@/utils/chains'
@@ -46,23 +44,24 @@ export const VoteLockAmountTask = ({
   const amount = isUnlock ? unlockAmount : lockAmount
   const hasFixtureQuote = amount === '1'
   const showAcknowledgement = !isUnlock && isInputState
-  const isSubmittedState =
-    state === 'Approval signing' ||
-    state === 'Lock ready' ||
-    state === 'Lock wallet' ||
-    state === 'Lock confirming' ||
-    state === 'Lock processing' ||
-    state === 'Unlock wallet' ||
-    state === 'Unlock confirming' ||
-    state === 'Unlock processing'
+  const hasSubmittedContentBoundary =
+    !isInputState &&
+    (state === 'Approval signing' ||
+      state === 'Lock wallet' ||
+      state === 'Lock confirming' ||
+      state === 'Lock processing' ||
+      state === 'Unlock wallet' ||
+      state === 'Unlock confirming' ||
+      state === 'Unlock processing')
 
   return (
     <div>
       <TransactionAmountPair
         className={cn(
-          isSubmittedState && transactionTaskGeometry.submittedContentBoundary
+          hasSubmittedContentBoundary &&
+            transactionTaskGeometry.submittedContentBoundary
         )}
-        data-task-boundary={isSubmittedState ? 'leading' : undefined}
+        data-task-boundary={hasSubmittedContentBoundary ? 'leading' : undefined}
       >
         <TransactionAmountObject
           label={isUnlock ? 'You unlock:' : 'You lock:'}
@@ -111,12 +110,9 @@ export const VoteLockAmountTask = ({
           supporting={hasFixtureQuote ? (isUnlock ? '$8.34' : '$8.18') : '—'}
         />
         {isInputState ? (
-          <IconButton
+          <TransactionAmountDirectionControl
             label={isUnlock ? 'Switch to vote-lock' : 'Switch to unlock'}
-            icon={<ArrowUpDown />}
-            size="compact"
             onClick={onDirectionChange}
-            className="absolute left-1/2 top-1/2 z-20 -translate-x-1/2 -translate-y-1/2 ring-2 ring-card"
           />
         ) : (
           <TransactionAmountRelation />
@@ -135,12 +131,19 @@ export const VoteLockAmountTask = ({
             value="1 vlRSR = 1.0188 RSR"
             testId="vote-lock-exchange-rate"
           />
-          {state === 'Unlock amount' && (
-            <TaskFact
-              label="Unlock delay"
-              value="14 days · rewards stop"
-              testId="vote-lock-unlock-delay"
-            />
+          {isUnlock && (
+            <>
+              <TaskFact
+                label="Unlock delay"
+                value="14 days"
+                testId="vote-lock-unlock-delay"
+              />
+              <TaskFact
+                label="Rewards end"
+                value="Immediate"
+                testId="vote-lock-unlock-rewards-end"
+              />
+            </>
           )}
         </dl>
         {showAcknowledgement && (
@@ -183,7 +186,7 @@ const LockAcknowledgement = ({
 }) => (
   <div
     data-testid="vote-lock-acknowledgement"
-    className="flex items-center gap-2 px-4 pb-2 pt-4"
+    className="flex items-center gap-2 px-4 py-4"
   >
     <Checkbox
       id="vote-lock-delay-acknowledgement"

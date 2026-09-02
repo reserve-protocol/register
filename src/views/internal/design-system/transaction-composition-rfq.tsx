@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { ArrowUpDown, RefreshCw, X } from 'lucide-react'
+import { RefreshCw, X } from 'lucide-react'
 
 import { Button, InlineAction } from '@/components/button'
 import {
@@ -9,6 +9,7 @@ import {
 import { HelpTooltip } from '@/components/design-system-v1/help-tooltip'
 import {
   TransactionAmountObject,
+  TransactionAmountDirectionControl,
   TransactionAmountPair,
   TransactionAmountRelation,
 } from '@/components/design-system-v1/transaction-amount-object'
@@ -536,17 +537,14 @@ export const ZapperInlineReference = ({
                 </div>
               </div>
               {controlsMounted ? (
-                <IconButton
+                <TransactionAmountDirectionControl
                   label="Swap input and output assets"
-                  icon={<ArrowUpDown />}
-                  size="compact"
                   disabled={interactionLocked}
                   onClick={() => {
                     setMode((current) => (current === 'Buy' ? 'Sell' : 'Buy'))
                     setSelectedAsset(ZAPPER_ASSETS[0]!)
                     setQuoteLoading(false)
                   }}
-                  className="absolute left-1/2 top-1/2 z-20 -translate-x-1/2 -translate-y-1/2 ring-2 ring-card"
                 />
               ) : (
                 <TransactionAmountRelation

@@ -5,6 +5,7 @@ import {
   FAST_DELEGATE,
   NORMAL_DELEGATE,
 } from '../transaction-composition-vote-lock-delegate'
+import { StakeTransactionTask } from '../transaction-composition-stake-task'
 import TransactionTruthSpectrum from '../transaction-truth-spectrum'
 
 describe('composition-first transaction-system review', () => {
@@ -59,7 +60,9 @@ describe('composition-first transaction-system review', () => {
       within(representativeCompositions).getByText('Automated mint workspace')
     ).toBeVisible()
     expect(
-      within(representativeCompositions).getByText('Unstake and withdraw')
+      within(representativeCompositions).getByText(
+        'Stake, unstake, and delegate'
+      )
     ).toBeVisible()
     expect(
       within(representativeCompositions).getByText(
@@ -262,7 +265,7 @@ describe('composition-first transaction-system review', () => {
     ).not.toHaveClass('border-t', 'px-4', 'py-4')
     expect(
       within(voteLock).getByTestId('vote-lock-acknowledgement')
-    ).toHaveClass('px-4', 'pb-2', 'pt-4')
+    ).toHaveClass('px-4', 'py-4')
     expect(
       within(voteLock).getByTestId('vote-lock-acknowledgement')
     ).not.toHaveClass('border-t', 'py-4')
@@ -281,6 +284,9 @@ describe('composition-first transaction-system review', () => {
         name: 'Acknowledge unlock delay',
       })
     ).toBeChecked()
+    expect(
+      within(voteLock).getByTestId('transaction-amount-pair')
+    ).not.toHaveAttribute('data-task-boundary')
     expect(
       within(voteLock).getByRole('button', {
         name: 'Vote lock RSR · Step 2 of 2',
@@ -323,17 +329,17 @@ describe('composition-first transaction-system review', () => {
     expect(
       within(voteLock).getByTestId('transaction-committed-mode')
     ).toHaveTextContent('Vote-lock')
-    expect(
-      within(voteLock).queryByRole('button', {
-        name: 'Pending, sign in wallet',
-      })
-    ).not.toBeInTheDocument()
+    const voteLockApprovalAction = within(voteLock).getByRole('button', {
+      name: 'Approval in progress…',
+    })
+    expect(voteLockApprovalAction).toBeDisabled()
+    expect(voteLockApprovalAction).toHaveAttribute('data-tone', 'secondary')
     expect(
       within(voteLock).queryByTestId('vote-lock-acknowledgement')
     ).not.toBeInTheDocument()
     expect(
-      within(voteLock).queryByTestId('vote-lock-process-button-region')
-    ).not.toBeInTheDocument()
+      within(voteLock).getByTestId('vote-lock-process-button-region')
+    ).toBeVisible()
     const approvalProgress = within(voteLock).getByRole('list', {
       name: 'Vote-lock progress',
     })
@@ -506,7 +512,10 @@ describe('composition-first transaction-system review', () => {
     ).toBeVisible()
     expect(
       within(voteLock).getByTestId('vote-lock-unlock-delay')
-    ).toHaveTextContent('Unlock delay14 days · rewards stop')
+    ).toHaveTextContent('Unlock delay14 days')
+    expect(
+      within(voteLock).getByTestId('vote-lock-unlock-rewards-end')
+    ).toHaveTextContent('Rewards endImmediate')
     expect(
       within(voteLock).queryByText(
         /Come back to your account balance page to withdraw/
@@ -529,6 +538,12 @@ describe('composition-first transaction-system review', () => {
         name: 'Processing transaction...',
       })
     ).toBeVisible()
+    expect(
+      within(voteLock).getByTestId('vote-lock-unlock-delay')
+    ).toHaveTextContent('Unlock delay14 days')
+    expect(
+      within(voteLock).getByTestId('vote-lock-unlock-rewards-end')
+    ).toHaveTextContent('Rewards endImmediate')
     expect(
       within(voteLock).queryByText(
         /A 14-day unlock delay period begins & you stop accumulating rewards/
@@ -771,8 +786,18 @@ describe('composition-first transaction-system review', () => {
     expect(within(challengeValue).getByText('0x7f4A...A018')).toHaveClass(
       'text-supporting-foreground'
     )
-    expect(votingValue).toHaveClass('flex', 'flex-col', 'items-end')
-    expect(challengeValue).toHaveClass('flex', 'flex-col', 'items-end')
+    expect(votingValue).toHaveClass(
+      'flex',
+      'items-center',
+      'sm:flex-col',
+      'sm:items-end'
+    )
+    expect(challengeValue).toHaveClass(
+      'flex',
+      'items-center',
+      'sm:flex-col',
+      'sm:items-end'
+    )
     expect(votingValue.parentElement).toBe(
       within(votingField).getByText('Voting delegate').parentElement
         ?.parentElement
@@ -783,8 +808,9 @@ describe('composition-first transaction-system review', () => {
     )
     expect(votingValue.parentElement).toHaveClass(
       'grid',
-      'grid-cols-[minmax(0,1fr)_auto]',
-      'gap-x-4'
+      'gap-3',
+      'sm:grid-cols-[minmax(0,1fr)_auto]',
+      'sm:gap-x-4'
     )
     expect(
       within(dialog).getByTestId('vote-lock-delegation-task').parentElement
@@ -1366,6 +1392,13 @@ describe('composition-first transaction-system review', () => {
       within(atomic).getByTestId('transaction-requirements-header')
     ).toHaveClass('grid', 'gap-4', 'sm:grid-cols-[minmax(0,1fr)_auto]')
 
+    fireEvent.click(within(atomic).getByRole('radio', { name: 'Execution' }))
+    const manualMintApprovalAction = within(atomic).getByRole('button', {
+      name: 'Approval in progress…',
+    })
+    expect(manualMintApprovalAction).toBeDisabled()
+    expect(manualMintApprovalAction).toHaveAttribute('data-tone', 'secondary')
+
     fireEvent.click(within(atomic).getByRole('radio', { name: 'Outcome' }))
     expect(within(atomic).getByText('Estimated basket value')).toBeVisible()
     expect(within(atomic).getByText('Minted shares')).toBeVisible()
@@ -1474,6 +1507,9 @@ describe('composition-first transaction-system review', () => {
       'zapper-amount-and-details'
     )
     expect(within(rfq).getByTestId('transaction-amount-pair')).toHaveClass(
+      'space-y-px'
+    )
+    expect(within(rfq).getByTestId('transaction-amount-pair')).not.toHaveClass(
       'space-y-1'
     )
     expect(within(rfq).getByTestId('transaction-amount-pair')).not.toHaveClass(
@@ -2615,78 +2651,496 @@ describe('composition-first transaction-system review', () => {
     expect(within(rfq).queryByText('Current package evidence')).toBeNull()
   })
 
-  it('keeps delayed initiation concise while deferring persistent withdrawal management', () => {
+  it('keeps Stake and Unstake source-grounded while separating task content from its dialog host', () => {
     render(<TransactionTruthSpectrum />)
 
-    const delayed = screen.getByTestId('transaction-composition-delayed')
+    const staking = screen.getByTestId('transaction-composition-stake')
+    const dialog = within(staking).getByRole('dialog', {
+      name: 'Stake, unstake, or delegate RSR',
+    })
 
-    expect(within(delayed).getByText('Unstake RSR')).toBeVisible()
-    expect(within(delayed).getByText('Unstake')).toBeVisible()
-    expect(within(delayed).queryByText('Unstake 250 stRSR')).toBeNull()
+    expect(dialog).toHaveAttribute('data-width', 'standard')
+    expect(within(dialog).getByTestId('stake-transaction-task')).toBeVisible()
+    expect(within(dialog).getByText('You stake:')).toBeVisible()
+    expect(within(dialog).getByText('You receive:')).toBeVisible()
     expect(
-      within(delayed).queryByText('In withdrawal process')
-    ).not.toBeInTheDocument()
-    expect(
-      within(delayed).queryByTestId('withdrawal-queue-list')
-    ).not.toBeInTheDocument()
-    expect(within(delayed).getAllByText('stRSR').length).toBeGreaterThan(0)
-    expect(within(delayed).getAllByText('≈286.42').length).toBeGreaterThan(0)
-    expect(within(delayed).getAllByText('You unstake')).toHaveLength(2)
-    expect(
-      within(delayed).getAllByText('Available to withdraw later')
-    ).toHaveLength(2)
-    expect(
-      within(delayed).getAllByText('Estimated at the current exchange rate')
-    ).toHaveLength(2)
-    expect(within(delayed).getByText('Current cooldown')).toBeVisible()
-    expect(within(delayed).getByText('14 days')).toBeVisible()
-    const amountAndDetails = within(delayed).getByTestId(
-      'unstake-amount-and-details'
-    )
-    const unstakeDetails = within(delayed).getByTestId('unstake-details')
-    expect(unstakeDetails.parentElement).toBe(amountAndDetails)
-    expect(unstakeDetails.previousElementSibling).toHaveAttribute(
-      'data-testid',
-      'transaction-amount-pair'
-    )
-    expect(unstakeDetails).toHaveClass('border-t', 'px-4', 'py-4')
-    expect(unstakeDetails).not.toHaveClass('pb-1')
-    expect(unstakeDetails).not.toHaveClass('border-y')
-    expect(
-      within(delayed).getByRole('button', { name: 'Start 14-day cooldown' })
-        .parentElement
-    ).toHaveClass('pt-0')
-    expect(within(delayed).queryByText('Rate-derived')).toBeNull()
-    expect(within(delayed).queryByText('This starts the cooldown')).toBeNull()
-
-    fireEvent.click(within(delayed).getByRole('radio', { name: 'Execution' }))
-    expect(within(delayed).getByText('Confirm unstake in wallet')).toBeVisible()
-    expect(
-      within(delayed).getByText('Wallet confirmation required')
+      within(dialog).getByRole('checkbox', {
+        name: 'Acknowledge unstake delay',
+      })
     ).toBeVisible()
-    expect(within(delayed).getByTestId('unstake-execution-status')).toHaveClass(
-      'px-4'
-    )
     expect(
-      within(delayed).queryByText('Transaction submitted')
-    ).not.toBeInTheDocument()
+      within(dialog).getByText("I'm aware of the 14-day unstake delay")
+    ).toBeVisible()
+    const stakeAcknowledgement = within(dialog)
+      .getByRole('checkbox', { name: 'Acknowledge unstake delay' })
+      .closest('div')
+    expect(stakeAcknowledgement).toHaveClass('px-4', 'py-4')
+    expect(stakeAcknowledgement).not.toHaveClass('pb-2', 'pt-4')
+    const stakeFacts = within(dialog).getByTestId('stake-task-facts-region')
+    for (const fact of within(stakeFacts).getAllByTestId('stake-task-fact')) {
+      expect(fact).toHaveClass('gap-3')
+      expect(fact).not.toHaveClass('gap-4', 'min-h-5')
+    }
     expect(
-      within(delayed).queryByRole('button', { name: 'Cancel unstake' })
+      within(dialog).getByRole('button', { name: 'Stake RSR' })
+    ).toBeDisabled()
+    expect(
+      within(dialog).queryByTestId('transaction-progress-stepper')
     ).not.toBeInTheDocument()
 
-    fireEvent.click(within(delayed).getByRole('radio', { name: 'Outcome' }))
-    expect(within(delayed).getByText('Cooldown started')).toBeVisible()
-    expect(within(delayed).getByText('≈286.42')).toBeVisible()
+    fireEvent.click(
+      within(dialog).getByRole('button', { name: 'Switch to unstake' })
+    )
+    expect(within(dialog).getByText('You unstake:')).toBeVisible()
     expect(
-      within(delayed).queryByTestId('withdrawal-queue-list')
+      within(dialog).queryByTestId('transaction-amount-relation-divider')
+    ).not.toBeInTheDocument()
+    fireEvent.click(
+      within(dialog).getByRole('button', { name: 'Switch to stake' })
+    )
+    expect(within(dialog).getByText('You stake:')).toBeVisible()
+
+    fireEvent.click(
+      within(dialog).getByRole('checkbox', {
+        name: 'Acknowledge unstake delay',
+      })
+    )
+    expect(
+      within(dialog).getByRole('button', { name: 'Stake RSR' })
+    ).toBeEnabled()
+    expect(within(staking).queryByText('Voting delegate')).toBeNull()
+    expect(within(staking).queryByText('Delegated to you')).toBeNull()
+
+    fireEvent.click(within(staking).getByRole('radio', { name: 'Approval' }))
+    expect(
+      within(staking).getByRole('button', {
+        name: 'Approve RSR · Step 1 of 2',
+      })
+    ).toBeVisible()
+
+    fireEvent.click(
+      within(staking).getByRole('radio', { name: 'Approval signing' })
+    )
+    const progress = within(staking).getByTestId('transaction-progress-stepper')
+    expect(within(progress).getByText('Approve RSR')).toBeVisible()
+    expect(within(progress).getByText('Stake RSR')).toBeVisible()
+    const stakeApprovalAction = within(staking).getByRole('button', {
+      name: 'Approval in progress…',
+    })
+    expect(stakeApprovalAction).toBeDisabled()
+    expect(stakeApprovalAction).toHaveAttribute('data-tone', 'secondary')
+    expect(
+      within(staking).queryByRole('checkbox', {
+        name: 'Acknowledge unstake delay',
+      })
+    ).not.toBeInTheDocument()
+
+    fireEvent.click(
+      within(staking).getByRole('radio', { name: 'Stake completed' })
+    )
+    expect(within(staking).getByTestId('canonical-dialog-surface')).toHaveClass(
+      'min-h-[35.5rem]'
+    )
+    expect(within(staking).queryByText('RSR staked successfully!')).toBeNull()
+    expect(within(staking).getByText('Staking yield')).toBeVisible()
+    expect(within(staking).getByText('Active')).toBeVisible()
+    expect(within(staking).getByText('Received')).toBeVisible()
+    expect(within(staking).queryByText('You receive:')).toBeNull()
+    expect(within(staking).queryByText('Voting delegate')).toBeNull()
+    expect(within(staking).queryByText('Delegated to you')).toBeNull()
+    expect(
+      within(staking).getByRole('link', { name: /View transaction/ })
+    ).toBeVisible()
+    expect(within(staking).queryByText('Approve RSR')).not.toBeInTheDocument()
+
+    fireEvent.click(
+      within(staking).getByRole('radio', { name: 'Unstake amount' })
+    )
+    expect(within(staking).getByText('You unstake:')).toBeVisible()
+    expect(within(staking).getByText('Available after delay:')).toBeVisible()
+    const unstakeInput = within(staking).getByTestId('stake-input-amount')
+    expect(
+      within(unstakeInput as HTMLElement).getByText('$1,672.87')
+    ).toBeVisible()
+    expect(within(staking).getByText('Staking yield share ends')).toBeVisible()
+    expect(within(staking).getByText('Immediate')).toBeVisible()
+    expect(
+      within(staking).getByRole('button', {
+        name: 'Begin unstaking process',
+      })
+    ).toBeVisible()
+    expect(
+      within(staking).queryByTestId('transaction-progress-stepper')
+    ).not.toBeInTheDocument()
+
+    fireEvent.click(
+      within(staking).getByRole('radio', { name: 'Unstaking initiated' })
+    )
+    expect(within(staking).getByTestId('canonical-dialog-surface')).toHaveClass(
+      'min-h-[29.75rem]'
+    )
+    expect(
+      within(staking).queryByText(
+        'Unstaking initiated! You can withdraw your RSR after the delay period.'
+      )
+    ).toBeNull()
+    expect(within(staking).getByText('Next action')).toBeVisible()
+    expect(within(staking).getByText('Withdraw RSR when ready')).toBeVisible()
+    expect(
+      within(staking).queryByText('In withdrawal process')
     ).not.toBeInTheDocument()
     expect(
-      within(delayed).queryByRole('button', { name: 'Withdraw' })
+      within(staking).queryByTestId('withdrawal-queue-list')
     ).not.toBeInTheDocument()
-    expect(within(delayed).queryByText('Review unstake')).toBeNull()
     expect(
-      within(delayed).queryByTestId('canonical-dialog-surface')
+      within(staking).queryByRole('button', { name: 'Withdraw' })
     ).not.toBeInTheDocument()
+
+    for (const recovery of [
+      { state: 'Stake failed', action: 'Stake RSR' },
+      { state: 'Unstake failed', action: 'Unstake' },
+    ] as const) {
+      fireEvent.click(
+        within(staking).getByRole('radio', { name: recovery.state })
+      )
+      const recoveryMessage = within(staking).getByTestId(
+        'stake-recovery-message'
+      )
+      const actionFooter = within(staking).getByTestId('stake-action-footer')
+      const retryAction = within(actionFooter).getByRole('button', {
+        name: recovery.action,
+      })
+
+      expect(within(actionFooter).getByText('Execution failed')).toBeVisible()
+      expect(
+        within(staking).getByTestId('stake-transaction-task')
+      ).not.toContainElement(recoveryMessage)
+      expect(
+        recoveryMessage.compareDocumentPosition(retryAction) &
+          Node.DOCUMENT_POSITION_FOLLOWING
+      ).toBeTruthy()
+    }
+
+    fireEvent.click(
+      within(staking).getByRole('radio', { name: 'Current delegate' })
+    )
+    const currentDelegation = within(staking).getByTestId(
+      'stake-delegation-task'
+    )
+    expect(currentDelegation).toBeVisible()
+    expect(
+      within(currentDelegation).getByText(
+        /Voting on the RToken you are staked on requires you to delegate/
+      )
+    ).toBeVisible()
+    const votingPower = within(currentDelegation).getByTestId(
+      'stake-delegation-voting-power'
+    )
+    expect(within(votingPower).getByText('Voting power')).toBeVisible()
+    expect(
+      within(votingPower).getByTestId('stake-delegation-voting-power-icon')
+    ).toBeVisible()
+    expect(
+      within(votingPower).getByText('Voting power').parentElement
+    ).toHaveClass('flex', 'items-center', 'gap-2')
+    expect(within(currentDelegation).getByText('1,420 stRSR')).toBeVisible()
+    expect(
+      within(currentDelegation).getByText('Delegated to you')
+    ).toBeVisible()
+    expect(
+      within(staking).getByRole('button', { name: 'Change delegate' })
+    ).toHaveAttribute('data-tone', 'secondary')
+
+    fireEvent.click(
+      within(staking).getByRole('radio', { name: 'Delegate ready' })
+    )
+    expect(
+      within(staking).getByRole('textbox', { name: 'Voting delegate' })
+    ).toBeVisible()
+    expect(
+      within(staking).getByText(
+        /Voting on the RToken you are staked on requires you to delegate/
+      )
+    ).toBeVisible()
+    expect(
+      within(staking).getByRole('button', { name: 'Update delegate' })
+    ).toBeEnabled()
+
+    fireEvent.click(
+      within(staking).getByRole('radio', { name: 'Delegate confirming' })
+    )
+    expect(
+      within(staking).getByRole('button', { name: 'Confirming tx...' })
+    ).toBeDisabled()
+    expect(
+      within(staking).queryByTestId('transaction-progress-stepper')
+    ).not.toBeInTheDocument()
+
+    fireEvent.click(
+      within(staking).getByRole('radio', { name: 'Delegate updated' })
+    )
+    expect(
+      within(staking).getByTestId('stake-delegation-outcome')
+    ).toBeVisible()
+    expect(within(staking).getByText('Voting power delegated')).toBeVisible()
+    expect(
+      within(staking).getByRole('link', { name: /View transaction/ })
+    ).toBeVisible()
+  })
+
+  it('renders the Stake transaction task without inheriting dialog-host behavior', () => {
+    render(
+      <StakeTransactionTask
+        acknowledged={false}
+        onAcknowledgedChange={() => undefined}
+        onDirectionChange={() => undefined}
+        onStakeAmountChange={() => undefined}
+        onUnstakeAmountChange={() => undefined}
+        stakeAmount="1000"
+        state="Stake amount"
+        unstakeAmount="250"
+      />
+    )
+
+    expect(screen.getByTestId('stake-transaction-task')).toBeVisible()
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
+    expect(
+      screen.queryByTestId('transaction-contained-modal-layer')
+    ).not.toBeInTheDocument()
+  })
+
+  it('keeps Stake fixture amounts and values coherent when the input changes', () => {
+    const renderTask = (stakeAmount: string, unstakeAmount: string) => (
+      <StakeTransactionTask
+        acknowledged
+        onAcknowledgedChange={() => undefined}
+        onDirectionChange={() => undefined}
+        onStakeAmountChange={() => undefined}
+        onUnstakeAmountChange={() => undefined}
+        stakeAmount={stakeAmount}
+        state="Stake amount"
+        unstakeAmount={unstakeAmount}
+      />
+    )
+    const { rerender } = render(renderTask('1000', '250'))
+
+    expect(
+      within(screen.getByTestId('stake-output-amount')).getByText('874.25')
+    ).toBeVisible()
+    rerender(renderTask('4250', '250'))
+    expect(
+      within(screen.getByTestId('stake-input-amount')).getByText('$24,862.50')
+    ).toBeVisible()
+    expect(
+      within(screen.getByTestId('stake-output-amount')).getByText('3,715.55')
+    ).toBeVisible()
+
+    rerender(
+      <StakeTransactionTask
+        acknowledged
+        onAcknowledgedChange={() => undefined}
+        onDirectionChange={() => undefined}
+        onStakeAmountChange={() => undefined}
+        onUnstakeAmountChange={() => undefined}
+        stakeAmount="4250"
+        state="Unstake amount"
+        unstakeAmount="1420"
+      />
+    )
+    expect(
+      within(screen.getByTestId('stake-output-amount')).getByText('1,624.25')
+    ).toBeVisible()
+    expect(
+      within(screen.getByTestId('stake-output-amount')).getByText('$9,501.88')
+    ).toBeVisible()
+  })
+
+  it('carries the entered Stake amount into the completed outcome', () => {
+    render(<TransactionTruthSpectrum />)
+
+    const staking = screen.getByTestId('transaction-composition-stake')
+    fireEvent.click(
+      within(staking).getByRole('radio', { name: 'Stake amount' })
+    )
+    fireEvent.change(
+      within(staking).getByRole('textbox', { name: 'You stake: amount' }),
+      { target: { value: '4250' } }
+    )
+    fireEvent.click(
+      within(staking).getByRole('radio', { name: 'Stake completed' })
+    )
+
+    expect(within(staking).getByText('3,715.55')).toBeVisible()
+    expect(within(staking).getByText('$24,862.50')).toBeVisible()
+    expect(within(staking).getByText('4,250 RSR')).toBeVisible()
+  })
+
+  it('uses one address-field treatment and keeps Stake delegation edge states explicit', () => {
+    render(<TransactionTruthSpectrum />)
+
+    const staking = screen.getByTestId('transaction-composition-stake')
+    const voteLock = screen.getByTestId('transaction-composition-vote-lock')
+
+    fireEvent.click(
+      within(staking).getByRole('radio', { name: 'Delegate ready' })
+    )
+    const stakeAddress = within(staking).getByRole('textbox', {
+      name: 'Voting delegate',
+    })
+    expect(stakeAddress).toHaveClass('font-mono', 'text-sm')
+
+    fireEvent.click(
+      within(voteLock).getByRole('radio', { name: 'Delegate ready' })
+    )
+    for (const address of within(voteLock).getAllByRole('textbox')) {
+      expect(address).toHaveClass('font-mono', 'text-sm')
+    }
+
+    fireEvent.click(
+      within(staking).getByRole('radio', { name: 'Invalid address' })
+    )
+    expect(
+      within(staking).getByText('Invalid address', {
+        selector: '#stake-voting-delegate-error',
+      })
+    ).toBeVisible()
+    expect(
+      within(staking).getByRole('button', { name: 'Update delegate' })
+    ).toBeDisabled()
+
+    fireEvent.click(
+      within(staking).getByRole('radio', { name: 'Wallet disconnected' })
+    )
+    expect(
+      within(staking).getByText(
+        'Connect your wallet to view or change your voting delegate.'
+      )
+    ).toBeVisible()
+    expect(
+      within(staking).getByRole('button', { name: 'Connect wallet' })
+    ).toBeEnabled()
+
+    fireEvent.click(
+      within(staking).getByRole('radio', { name: 'No staked balance' })
+    )
+    expect(
+      within(staking).getByText(
+        'Stake RSR before changing your voting delegate.'
+      )
+    ).toBeVisible()
+    expect(
+      within(staking).getByRole('button', { name: 'Update delegate' })
+    ).toBeDisabled()
+
+    fireEvent.click(
+      within(staking).getByRole('radio', { name: 'Delegate failed' })
+    )
+    const recovery = within(staking).getByTestId(
+      'stake-delegation-recovery-message'
+    )
+    expect(within(recovery).getByText('Delegation failed')).toBeVisible()
+    expect(
+      within(staking).getByRole('button', { name: 'Update delegate' })
+    ).toBeEnabled()
+  })
+
+  it('carries the edited Stake delegate into current and outcome states', () => {
+    render(<TransactionTruthSpectrum />)
+
+    const staking = screen.getByTestId('transaction-composition-stake')
+    const editedDelegate = '0x1111111111111111111111111111111111111111'
+
+    fireEvent.click(
+      within(staking).getByRole('radio', { name: 'Delegate ready' })
+    )
+    fireEvent.change(
+      within(staking).getByRole('textbox', { name: 'Voting delegate' }),
+      { target: { value: editedDelegate } }
+    )
+    fireEvent.click(
+      within(staking).getByRole('radio', { name: 'Delegate updated' })
+    )
+    expect(
+      within(staking).getByRole('button', {
+        name: `Copy ${editedDelegate} to clipboard`,
+      })
+    ).toBeVisible()
+
+    fireEvent.click(
+      within(staking).getByRole('radio', { name: 'Current delegate' })
+    )
+    expect(within(staking).getByText('0x1111...1111')).toBeVisible()
+  })
+
+  it('uses an interactive direction control only while Stake amounts remain editable', () => {
+    const renderTask = (
+      state: Parameters<typeof StakeTransactionTask>[0]['state']
+    ) => (
+      <StakeTransactionTask
+        acknowledged
+        onAcknowledgedChange={() => undefined}
+        onDirectionChange={() => undefined}
+        onStakeAmountChange={() => undefined}
+        onUnstakeAmountChange={() => undefined}
+        stakeAmount="1000"
+        state={state}
+        unstakeAmount="250"
+      />
+    )
+    const { rerender } = render(renderTask('Stake amount'))
+
+    for (const state of [
+      'Stake amount',
+      'Approval',
+      'Stake ready',
+      'Unstake amount',
+    ] as const) {
+      rerender(renderTask(state))
+      expect(
+        screen.getByRole('button', {
+          name:
+            state === 'Unstake amount'
+              ? 'Switch to stake'
+              : 'Switch to unstake',
+        })
+      ).toBeVisible()
+      expect(
+        screen.queryByTestId('transaction-amount-relation-divider')
+      ).not.toBeInTheDocument()
+      expect(
+        screen.queryByTestId('transaction-amount-relation-indicator')
+      ).not.toBeInTheDocument()
+      expect(screen.getByTestId('transaction-amount-pair')).not.toHaveAttribute(
+        'data-task-boundary'
+      )
+      expect(screen.getByTestId('transaction-amount-pair')).not.toHaveClass(
+        'before:h-px',
+        'before:bg-border'
+      )
+    }
+
+    for (const state of [
+      'Approval signing',
+      'Stake wallet',
+      'Stake confirming',
+      'Stake processing',
+      'Unstake wallet',
+      'Unstake confirming',
+      'Unstake processing',
+      'Stake failed',
+      'Unstake failed',
+    ] as const) {
+      rerender(renderTask(state))
+      expect(
+        screen.queryByRole('button', { name: /Switch to (?:stake|unstake)/ })
+      ).not.toBeInTheDocument()
+      expect(
+        screen.getByTestId('transaction-amount-relation-divider')
+      ).toBeVisible()
+      expect(
+        screen.getByTestId('transaction-amount-relation-indicator')
+      ).toBeVisible()
+    }
   })
 
   it('keeps real Zapper operation tabs while omitting unrendered alternates elsewhere', () => {
@@ -2794,8 +3248,23 @@ describe('composition-first transaction-system review', () => {
       expect(title.parentElement?.parentElement).toHaveClass('px-4')
     }
 
-    expectInlineCompactHeader('Unstake')
     expectInlineCompactHeader('Select an input asset')
+
+    const staking = screen.getByTestId('transaction-composition-stake')
+    const stakingMode = within(staking).getByRole('group', {
+      name: 'Staking task mode',
+    })
+    const stakingClose = within(staking).getByRole('button', {
+      name: 'Close staking',
+    })
+
+    expect(stakingMode).toHaveAttribute('data-size', 'compact')
+    expect(stakingMode).toHaveAttribute('data-width', 'intrinsic')
+    expect(stakingMode.parentElement).toBe(
+      stakingClose.parentElement?.parentElement
+    )
+    expect(stakingMode.parentElement?.parentElement).toHaveClass('px-2')
+    expect(stakingMode.parentElement?.parentElement).not.toHaveClass('px-4')
 
     const voteLock = screen.getByTestId('transaction-composition-vote-lock')
     const mode = within(voteLock).getByRole('group', {
@@ -2974,7 +3443,7 @@ describe('composition-first transaction-system review', () => {
     expect(within(rfq).getByRole('button', { name: 'Buy CMC20' })).toBeVisible()
   })
 
-  it('keeps deferred coverage honest while reflecting rendered vote-lock states', () => {
+  it('keeps deferred coverage honest while reflecting rendered transaction states', () => {
     render(<TransactionTruthSpectrum />)
 
     const coverage = screen.getByTestId('transaction-coverage-map')
@@ -2989,22 +3458,22 @@ describe('composition-first transaction-system review', () => {
     ).toBeVisible()
     expect(
       within(coverage).getByText(
-        /Atomic, automated, and Vote Lock outcomes show transaction identity/
+        /Atomic, automated, Stake\/Unstake, and Vote Lock outcomes show the primary transaction identity/
       )
     ).toBeVisible()
     expect(
       within(coverage).getByText(
-        /Atomic, RFQ, automated, Vote Lock, Delegation one\/two-change, and cooldown-start outcomes/
+        /Atomic, RFQ, automated, Stake, Unstake, single-role Stake delegation, Vote Lock, Vote Unlock, and Vote Lock delegation one\/two-change outcomes/
       )
     ).toBeVisible()
     expect(
       within(coverage).getByText(
-        /Persistent cooldown, claimable, cancel, and withdrawal management remains page-owned and deferred/
+        /Persistent cooldown, claimable, cancel, and withdrawal management remain page-owned and deferred/
       )
     ).toBeVisible()
     expect(
       within(coverage).getByText(
-        /static Vote Lock and selector surfaces validate Dialog content hierarchy/
+        /Vote Lock and Stake use the shared contained lab host/
       )
     ).toBeVisible()
   })

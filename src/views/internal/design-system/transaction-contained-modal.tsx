@@ -9,7 +9,7 @@ import {
 const FOCUSABLE_SELECTOR =
   'button:not([disabled]), input:not([disabled]), a[href], [tabindex]:not([tabindex="-1"])'
 
-export const VoteLockContainedModal = ({
+export const TransactionContainedModal = ({
   children,
   isOpen,
   onOpenChange,
@@ -28,9 +28,7 @@ export const VoteLockContainedModal = ({
 
   if (!isOpen) return null
 
-  const dismiss = () => {
-    onOpenChange(false)
-  }
+  const dismiss = () => onOpenChange(false)
 
   const handleKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
     if (event.key === 'Escape') {
@@ -63,7 +61,7 @@ export const VoteLockContainedModal = ({
   return (
     <div
       ref={layerRef}
-      data-testid="vote-lock-modal-layer"
+      data-testid="transaction-contained-modal-layer"
       className="absolute inset-0 z-20 flex items-end justify-center bg-black/50 p-0 sm:items-center sm:p-4"
       onKeyDown={handleKeyDown}
       onMouseDown={handleBackdropMouseDown}

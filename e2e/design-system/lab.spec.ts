@@ -2062,14 +2062,14 @@ test.describe('design system lab', () => {
 
     await chooseLockState(0).click()
     expect(await acknowledgementGap('vote-lock-action-footer')).toBeCloseTo(
-      8,
+      16,
       0
     )
 
     await chooseLockState(3).click()
     expect(
       await acknowledgementGap('vote-lock-process-button-region')
-    ).toBeCloseTo(8, 0)
+    ).toBeCloseTo(16, 0)
 
     await chooseLockState(2).click()
     await expect(
@@ -2113,6 +2113,138 @@ test.describe('design system lab', () => {
         }
       })
     expect(surfaceOrigin.y).toBeCloseTo(surfaceOrigin.height, 0)
+  })
+
+  test('keeps mounted Stake relationships aligned across task and outcome states', async ({
+    page,
+  }) => {
+    await page.emulateMedia({ reducedMotion: 'reduce' })
+    await page.goto(
+      '/internal/design-system/components/transaction-action#transaction-truth-spectrum'
+    )
+
+    const composition = page.getByTestId('transaction-composition-stake')
+    const chooseStakeState = (index: number) =>
+      composition.getByTestId(
+        `transaction-composition-stake-state-group-0-option-${index}`
+      )
+    const chooseUnstakeState = (index: number) =>
+      composition.getByTestId(
+        `transaction-composition-stake-state-group-1-option-${index}`
+      )
+    const chooseDelegateState = (index: number) =>
+      composition.getByTestId(
+        `transaction-composition-stake-state-group-2-option-${index}`
+      )
+    const surface = composition.getByTestId('canonical-dialog-surface')
+    const measure = async (locator: typeof surface) => {
+      const box = await locator.boundingBox()
+      expect(box).not.toBeNull()
+      return box!
+    }
+    const acknowledgementGap = async () => {
+      const control = await composition
+        .getByTestId('stake-delay-acknowledgement')
+        .locator('[role="checkbox"]')
+        .boundingBox()
+      const action = await surface
+        .getByTestId('stake-action-button')
+        .boundingBox()
+      expect(control).not.toBeNull()
+      expect(action).not.toBeNull()
+      return action!.y - (control!.y + control!.height)
+    }
+
+    await chooseStakeState(0).click()
+    const taskSurface = await measure(surface)
+    const headerBox = await measure(
+      composition.getByTestId('stake-task-header-row')
+    )
+    const amountLabel = await measure(
+      composition.getByTestId('stake-input-amount').locator('p').first()
+    )
+    const factLabel = await measure(
+      composition.getByTestId('stake-task-facts-region').locator('dt').first()
+    )
+    const actionButton = await measure(
+      surface.getByTestId('stake-action-button')
+    )
+
+    expect(Math.round(headerBox.x - taskSurface.x)).toBe(16)
+    expect(Math.round(amountLabel.x - taskSurface.x)).toBe(24)
+    expect(Math.round(factLabel.x - taskSurface.x)).toBe(24)
+    expect(Math.round(actionButton.x - taskSurface.x)).toBe(8)
+    expect(await acknowledgementGap()).toBeCloseTo(16, 0)
+
+    await chooseStakeState(2).click()
+    await expect(
+      composition.getByTestId('stake-delay-acknowledgement')
+    ).toHaveCount(0)
+    await expect(
+      composition.getByTestId('stake-process-content-frame')
+    ).toHaveClass(/p-2/)
+
+    await chooseStakeState(3).click()
+    expect(await acknowledgementGap()).toBeCloseTo(16, 0)
+    await chooseStakeState(6).click()
+    const stakeProcessingHeight = (await measure(surface)).height
+
+    await chooseStakeState(7).click()
+    expect((await measure(surface)).height).toBeGreaterThanOrEqual(
+      stakeProcessingHeight - 1
+    )
+
+    await chooseUnstakeState(0).click()
+    const unstakeTaskHeight = (await measure(surface)).height
+    await chooseUnstakeState(4).click()
+    expect((await measure(surface)).height).toBeGreaterThanOrEqual(
+      unstakeTaskHeight - 1
+    )
+
+    await chooseDelegateState(0).click()
+    const delegateTaskHeight = (await measure(surface)).height
+    const votingPower = await measure(
+      composition.getByTestId('stake-delegation-voting-power')
+    )
+    const changeDelegate = await measure(
+      surface.getByRole('button', { name: 'Change delegate' })
+    )
+    expect(changeDelegate.y - (votingPower.y + votingPower.height)).toBeCloseTo(
+      16,
+      0
+    )
+    await expect(
+      surface.getByRole('button', { name: 'Change delegate' })
+    ).toHaveAttribute('data-tone', 'secondary')
+
+    await chooseDelegateState(1).click()
+    await expect(
+      surface.getByRole('textbox', { name: 'Voting delegate' })
+    ).toBeVisible()
+    await expect(
+      surface.getByRole('button', { name: 'Update delegate' })
+    ).toBeVisible()
+
+    await chooseDelegateState(9).click()
+    await expect(
+      composition.getByTestId('stake-delegation-outcome')
+    ).toBeVisible()
+    expect((await measure(surface)).height).toBeGreaterThanOrEqual(
+      delegateTaskHeight - 1
+    )
+
+    const stateOptions = composition.locator(
+      '[data-testid^="transaction-composition-stake-state-group-"][data-testid*="-option-"]'
+    )
+    for (let index = 0; index < (await stateOptions.count()); index += 1) {
+      await stateOptions.nth(index).click()
+      await expect(surface).toHaveCount(1)
+      expect(
+        await surface.evaluate(
+          (element) => element.scrollWidth <= element.clientWidth + 1
+        )
+      ).toBe(true)
+    }
   })
 
   for (const theme of THEMES) {

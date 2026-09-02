@@ -31,7 +31,7 @@ import {
   VoteLockDelegationProcessAction,
   VoteLockDelegationTask,
 } from './transaction-composition-vote-lock-delegate'
-import { VoteLockContainedModal } from './transaction-composition-vote-lock-modal'
+import { TransactionContainedModal } from './transaction-contained-modal'
 import { VoteLockAmountTask } from './transaction-composition-vote-lock-task'
 import {
   LOCK_STATES,
@@ -104,13 +104,16 @@ export const VoteLockProductContext = ({
         openButtonRef={openButtonRef}
         onOpen={() => setIsOpen(true)}
       />
-      <VoteLockContainedModal isOpen={isOpen} onOpenChange={handleOpenChange}>
+      <TransactionContainedModal
+        isOpen={isOpen}
+        onOpenChange={handleOpenChange}
+      >
         <VoteLockDialog
           state={state}
           setState={setState}
           onClose={() => handleOpenChange(false)}
         />
-      </VoteLockContainedModal>
+      </TransactionContainedModal>
     </div>
   )
 }
@@ -172,7 +175,8 @@ const VoteLockDialog = ({
   const hasProcessPanel = hasDelegationProcessPanel || hasVoteLockProcessPanel
   const hasProcessAction =
     (isDelegate && state === 'Fast failed') ||
-    (!isDelegate && state === 'Lock ready')
+    (!isDelegate &&
+      (state === 'Approval signing' || state === 'Lock ready'))
   if (state === 'Voting delegate updated' || state === 'Delegation updated') {
     return (
       <VoteLockDelegationOutcome

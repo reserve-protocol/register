@@ -121,6 +121,21 @@ export const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
 
 TextInput.displayName = 'TextInput'
 
+export const AddressTextInput = forwardRef<HTMLInputElement, TextInputProps>(
+  ({ inputClassName, ...props }, ref) => (
+    <TextInput
+      ref={ref}
+      autoCapitalize="none"
+      autoCorrect="off"
+      spellCheck={false}
+      inputClassName={cn('font-mono text-sm', inputClassName)}
+      {...props}
+    />
+  )
+)
+
+AddressTextInput.displayName = 'AddressTextInput'
+
 export interface TextAreaProps extends TextareaHTMLAttributes<HTMLTextAreaElement> {
   invalid?: boolean
 }

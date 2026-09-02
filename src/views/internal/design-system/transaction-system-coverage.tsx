@@ -66,7 +66,7 @@ const COVERAGE_ITEMS: {
     requirement: 'Amount and input/output anatomy',
     kind: 'Shared candidate',
     coverage:
-      'Manual mint, automated mint, unstake, and vote unlock compositions.',
+      'Manual mint, automated mint, Stake/Unstake, Zapper, and Vote Lock/Unlock compositions.',
     status: 'Proposed candidate',
   },
   {
@@ -94,7 +94,7 @@ const COVERAGE_ITEMS: {
     requirement: 'Approval and requirement rows',
     kind: 'Shared candidate',
     coverage:
-      'Manual mint preserves per-asset requirements and scoped retry; Vote Lock preserves its conditional underlying approval before deposit.',
+      'Manual mint preserves per-asset requirements and scoped retry; Vote Lock and Stake preserve conditional underlying approval before the primary transaction.',
     status: 'Proposed candidate',
   },
   {
@@ -108,7 +108,7 @@ const COVERAGE_ITEMS: {
     requirement: 'Action-required versus waiting language',
     kind: 'Shared candidate',
     coverage:
-      'Atomic approval, package open order, automated recovery, and delayed cooldown use one semantic vocabulary.',
+      'Atomic approval, conditional Stake and Vote Lock approval, package open order, automated recovery, and delayed initiation use one semantic vocabulary.',
     status: 'Proposed candidate',
   },
   {
@@ -122,14 +122,14 @@ const COVERAGE_ITEMS: {
     requirement: 'Transaction and order identity',
     kind: 'Shared candidate',
     coverage:
-      'Atomic, automated, and Vote Lock outcomes show transaction identity. Delegation associates one or two explorer links with the intended delegate changes while omitting approval transactions. RFQ order identity remains package-owned.',
+      'Atomic, automated, Stake/Unstake, and Vote Lock outcomes show the primary transaction identity. Stake delegation associates one explorer link with its single role; Vote Lock delegation associates one or two explorer links with the intended role changes. Approval transactions remain omitted, and RFQ order identity remains package-owned.',
     status: 'Proposed candidate',
   },
   {
     requirement: 'Consequential outcome composition',
     kind: 'Independent family compositions',
     coverage:
-      'Atomic, RFQ, automated, Vote Lock, Delegation one/two-change, and cooldown-start outcomes are rendered independently.',
+      'Atomic, RFQ, automated, Stake, Unstake, single-role Stake delegation, Vote Lock, Vote Unlock, and Vote Lock delegation one/two-change outcomes are rendered independently.',
     status: 'Flow-owned',
   },
   {
@@ -157,21 +157,21 @@ const COVERAGE_ITEMS: {
     requirement: 'Delayed settlement across visits',
     kind: 'Immediate handoff plus deferred page work',
     coverage:
-      'Unstake and Vote Unlock outcomes communicate the initiated delay, pending amount, timing, and later action. Persistent cooldown, claimable, cancel, and withdrawal management remains page-owned and deferred to contextual row and table review.',
+      'Unstake and Vote Unlock outcomes communicate the initiated delay, pending amount, timing, and later action. Persistent cooldown, claimable, cancel, and withdrawal management remain page-owned and deferred to contextual row and table review.',
     status: 'Deferred',
   },
   {
     requirement: 'Stable action area and responsive shell hierarchy',
     kind: 'Current component plus composition recipe',
     coverage:
-      'Page workflows retain page actions, package actions remain upstream, and the focused Vote Lock composition demonstrates canonical Dialog header/body/footer hierarchy without forcing every family into an overlay.',
+      'Page workflows retain page actions, package actions remain upstream, and the Stake proof keeps transaction content independent from the host that supplies overlay, placement, focus, and dismissal. The lab mounts its full lifecycle in a dialog without requiring production entry to begin there.',
     status: 'Current baseline',
   },
   {
     requirement: 'Responsive task and selector shells',
     kind: 'Viewport behavior dependency',
     coverage:
-      'The static Vote Lock and selector surfaces validate Dialog content hierarchy, not mounted focus or dismissal behavior. Exercise the mounted Dialog primitive separately before production adoption.',
+      'Vote Lock and Stake use the shared contained lab host to exercise current focus, dismissal, and responsive placement around separate flow-owned tasks. Exercise the canonical mounted Dialog primitive separately before production adoption.',
     status: 'Deferred',
   },
   {

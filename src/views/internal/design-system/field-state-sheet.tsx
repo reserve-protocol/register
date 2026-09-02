@@ -1,6 +1,7 @@
 import { AtSign, DollarSign } from 'lucide-react'
 
 import {
+  AddressTextInput,
   Field,
   FieldDescription,
   FieldLabel,
@@ -68,7 +69,7 @@ const FieldStateSheet = () => (
       <Specimen label="Invalid · connected message">
         <Field className="w-full">
           <FieldLabel htmlFor="field-wallet">Wallet address</FieldLabel>
-          <TextInput
+          <AddressTextInput
             id="field-wallet"
             defaultValue="0x83a1…24"
             invalid
@@ -83,7 +84,7 @@ const FieldStateSheet = () => (
       <Specimen label="Read only · derived value">
         <Field className="w-full">
           <FieldLabel htmlFor="field-governor">Governor</FieldLabel>
-          <TextInput
+          <AddressTextInput
             id="field-governor"
             defaultValue="0x6B17…1d0F"
             readOnly

@@ -203,8 +203,8 @@ const AtomicAction = ({
             same action slot becomes Mint after both permissions confirm.
           </InlineMessageDescription>
         </InlineMessage>
-        <Button className="w-full" loading>
-          Awaiting approvals (1/2)
+        <Button className="w-full" tone="secondary" loading>
+          Approval in progress…
         </Button>
       </div>
     )
