@@ -54,6 +54,7 @@ const config = {
         },
         brand: {
           DEFAULT: 'var(--brand-surface)',
+          deep: 'var(--brand-surface-deep)',
           foreground: 'hsl(var(--primary-foreground))',
           atmosphere: {
             cyan: 'var(--brand-atmosphere-cyan)',

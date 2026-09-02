@@ -62,19 +62,7 @@ body {
   }
 }
 
-@keyframes transaction-sidecar-grow-out {
-  from {
-    opacity: 0;
-    transform: translateX(-16px) scaleX(0.92);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateX(0) scaleX(1);
-  }
-}
-
-@keyframes transaction-sidecar-grow-down {
+@keyframes transaction-attached-region-grow-down {
   from {
     opacity: 0;
     transform: translateY(-16px) scaleY(0.92);
@@ -250,6 +238,18 @@ body {
     organic-brand-glow-drift 21s 1000ms ease-in-out infinite alternate;
 }
 
+.dark .organic-brand-surface--deep .organic-brand-surface__field--cyan {
+  --organic-brand-field-opacity: 0.14;
+}
+
+.dark .organic-brand-surface--deep .organic-brand-surface__field--violet {
+  --organic-brand-field-opacity: 0.12;
+}
+
+.dark .organic-brand-surface--deep .organic-brand-surface__field--glow {
+  --organic-brand-field-opacity: 0.1;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .organic-brand-surface__field {
     animation: none;
@@ -270,6 +270,7 @@ body {
     --primary-hover: color-mix(in srgb, hsl(var(--primary)) 92%, black);
     --primary-pressed: color-mix(in srgb, hsl(var(--primary)) 84%, black);
     --brand-surface: color-mix(in srgb, hsl(var(--primary)) 88%, black);
+    --brand-surface-deep: var(--brand-surface);
     --brand-atmosphere-cyan: hsl(190 96% 54%);
     --brand-atmosphere-violet: hsl(255 84% 66%);
     --brand-atmosphere-glow: hsl(218 100% 70%);
@@ -426,6 +427,7 @@ body {
     --primary-hover: color-mix(in srgb, hsl(var(--primary)) 92%, black);
     --primary-pressed: color-mix(in srgb, hsl(var(--primary)) 84%, black);
     --brand-surface: color-mix(in srgb, hsl(var(--primary)) 88%, black);
+    --brand-surface-deep: color-mix(in srgb, hsl(var(--primary)) 64%, black);
     --brand-atmosphere-cyan: hsl(190 90% 48%);
     --brand-atmosphere-violet: hsl(255 74% 60%);
     --brand-atmosphere-glow: hsl(218 92% 62%);

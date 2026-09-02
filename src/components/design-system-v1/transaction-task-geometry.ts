@@ -16,3 +16,7 @@ export const transactionAttachedRegionGeometry = {
   content: 'relative z-10 bg-card',
   surface: semanticRoles.surface.subtleSubstrate,
 } as const
+
+export const transactionOutcomeGeometry = {
+  minimumSurfaceHeight: 'min-h-[26rem]',
+} as const

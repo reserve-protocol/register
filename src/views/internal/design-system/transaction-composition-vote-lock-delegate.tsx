@@ -27,7 +27,7 @@ import { cn } from '@/lib/utils'
 import { shortenAddress } from '@/utils'
 
 import { transactionOutcomeMotion } from './transaction-outcome-motion'
-import { transactionOutcomeGeometry } from './transaction-outcome-geometry'
+import { transactionOutcomeGeometry } from '@/components/design-system-v1/transaction-task-geometry'
 import { TransactionOutcomeStatus } from './transaction-outcome-status'
 import {
   TransactionProgressStepper,
@@ -92,11 +92,19 @@ export const VoteLockDelegationTask = ({
         className={hasProcessPanel ? 'pb-0' : 'pb-4'}
       >
         {isUnavailable && (
-          <InlineMessage density="compact" icon={false}>
+          <InlineMessage density="compact" icon={false} className="px-4 py-3">
             <p className={cn(v1Typography.supporting, roles.text.supporting)}>
-              {state === 'No locked balance'
-                ? 'Self-delegation happens automatically when you vote-lock RSR. Come back here after vote-locking to update delegation.'
-                : 'Connect your wallet to view or change delegates.'}
+              {state === 'No locked balance' ? (
+                <>
+                  <strong className="font-medium text-foreground">
+                    Self-delegation happens automatically
+                  </strong>{' '}
+                  when you vote-lock RSR. Come back here after vote-locking to
+                  update delegation.
+                </>
+              ) : (
+                'Connect your wallet to view or change delegates.'
+              )}
             </p>
           </InlineMessage>
         )}

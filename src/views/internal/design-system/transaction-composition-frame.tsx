@@ -106,8 +106,12 @@ export const TransactionCompositionFrame = <
               !hasGroupedStates && 'xl:justify-items-end'
             )}
           >
-            {reviewStateGroups.map((group) => (
-              <div key={group.label} className="grid min-w-0 gap-1">
+            {reviewStateGroups.map((group, groupIndex) => (
+              <div
+                key={group.label}
+                data-testid={`transaction-composition-${id}-state-group-${groupIndex}`}
+                className="grid min-w-0 gap-1"
+              >
                 {hasGroupedStates && (
                   <span
                     className={cn(v1Typography.label, roles.text.supporting)}
@@ -125,8 +129,12 @@ export const TransactionCompositionFrame = <
                     value={state}
                     onValueChange={(value) => setState(value as State)}
                   >
-                    {group.states.map((item) => (
-                      <SegmentedControlItem key={item} value={item}>
+                    {group.states.map((item, itemIndex) => (
+                      <SegmentedControlItem
+                        key={item}
+                        value={item}
+                        data-testid={`transaction-composition-${id}-state-group-${groupIndex}-option-${itemIndex}`}
+                      >
                         {item}
                       </SegmentedControlItem>
                     ))}

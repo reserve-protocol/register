@@ -11,9 +11,11 @@ interface TransactionAmountObjectBaseProps extends Omit<
 > {
   label: string
   amount: string
+  amountPlaceholder?: string
   asset?: ReactNode
   unit?: ReactNode
   supporting: ReactNode
+  supportingRowClassName?: string
   balance?: ReactNode
   balanceAction?: ReactNode
   trailingAction?: ReactNode
@@ -71,6 +73,7 @@ export const TransactionAmountRelation = ({
 
 export const TransactionAmountObject = ({
   amount,
+  amountPlaceholder,
   asset,
   balance,
   balanceAction,
@@ -81,6 +84,7 @@ export const TransactionAmountObject = ({
   presentation = 'standalone',
   readOnly = false,
   supporting,
+  supportingRowClassName,
   tone = 'default',
   trailingAction,
   unit,
@@ -147,6 +151,10 @@ export const TransactionAmountObject = ({
           aria-label={`${label} amount`}
           className={cn(
             'min-w-0 flex-1 bg-transparent text-[28px] font-light leading-8 tabular-nums outline-none sm:text-[32px] sm:leading-[38px]',
+            amountPlaceholder &&
+              tone === 'default' &&
+              presentation === 'input' &&
+              'placeholder:text-primary/70',
             tone === 'inverse'
               ? 'text-primary-foreground'
               : presentation === 'input'
@@ -154,6 +162,7 @@ export const TransactionAmountObject = ({
                 : 'text-foreground'
           )}
           inputMode="decimal"
+          placeholder={amountPlaceholder}
           disabled={disabled}
           value={amount}
           onChange={(event) => onAmountChange?.(event.currentTarget.value)}
@@ -173,10 +182,12 @@ export const TransactionAmountObject = ({
       {trailingAction && <div className="shrink-0">{trailingAction}</div>}
     </div>
     <div
+      data-testid="transaction-amount-supporting-row"
       className={cn(
         'mt-1 flex min-h-5 min-w-0 flex-wrap items-center justify-between gap-x-3 gap-y-1',
         v1Typography.supporting,
-        tone === 'inverse' ? 'text-primary-foreground' : roles.text.supporting
+        tone === 'inverse' ? 'text-primary-foreground' : roles.text.supporting,
+        supportingRowClassName
       )}
     >
       <span className="min-w-0">{supporting}</span>

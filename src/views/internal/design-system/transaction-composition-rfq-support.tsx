@@ -21,6 +21,13 @@ import {
   SegmentedControlItem,
 } from '@/components/design-system-v1/segmented-control'
 import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/design-system-v1/select'
+import {
   TransactionAssetPickerList,
   TransactionAssetPickerOption,
   TransactionAssetPickerTrigger,
@@ -28,6 +35,7 @@ import {
 import { v1Typography } from '@/components/design-system-v1/typography'
 import { v1SemanticRecipes as roles } from '@/components/ui/v1-semantic-recipes'
 import { IconButton } from '@/components/icon-button'
+import { LifecycleStatusPill } from '@/components/lifecycle-status'
 import { cn } from '@/lib/utils'
 import { ChainId } from '@/utils/chains'
 
@@ -37,32 +45,43 @@ import {
 } from './transaction-system-assets'
 import { TransactionSummaryMessage } from './transaction-summary-message'
 
-export interface ZapperAsset {
+interface ZapperAssetBase {
   symbol: 'USDC' | 'ETH' | 'WETH' | 'WBTC'
   balance: string
-  supporting: string
 }
+
+export type ZapperAsset = ZapperAssetBase &
+  (
+    | { kind: 'native' }
+    | {
+        kind: 'token'
+        address: string
+      }
+  )
 
 export const ZAPPER_ASSETS: ZapperAsset[] = [
   {
     symbol: 'USDC',
     balance: '4,280.16',
-    supporting: 'Base · 0x8335…2913',
+    kind: 'token',
+    address: '0x8335…2913',
   },
   {
     symbol: 'ETH',
     balance: '0.18',
-    supporting: 'Base',
+    kind: 'native',
   },
   {
     symbol: 'WETH',
     balance: '1.804',
-    supporting: 'Base · 0x4200…0006',
+    kind: 'token',
+    address: '0x4200…0006',
   },
   {
     symbol: 'WBTC',
     balance: '0.0041',
-    supporting: 'Base · 0x0555…A7B8',
+    kind: 'token',
+    address: '0x0555…A7B8',
   },
 ]
 
@@ -109,11 +128,18 @@ export const ZapperAssetSelector = ({
           {ZAPPER_ASSETS.map((asset) => (
             <TransactionAssetPickerOption
               key={asset.symbol}
+              aria-label={`${asset.symbol} on Base, ${
+                asset.kind === 'native'
+                  ? 'native asset'
+                  : `token address ${asset.address}`
+              }, balance ${asset.balance} ${asset.symbol}`}
               identity={
                 <TransactionAssetIdentity
                   chain={ChainId.Base}
                   symbol={asset.symbol}
-                  supporting={asset.supporting}
+                  supporting={
+                    asset.kind === 'native' ? 'Native on Base' : asset.address
+                  }
                   textRhythm="compact-row"
                 />
               }
@@ -253,6 +279,8 @@ export const ZapperSettings = ({
 
 export const ZapperQuoteDetails = ({
   className,
+  selectableRoutes = false,
+  defaultOpen = false,
   loading = false,
   mode,
   outcome = false,
@@ -260,13 +288,19 @@ export const ZapperQuoteDetails = ({
   source = 'CoW Swap',
 }: {
   className?: string
+  selectableRoutes?: boolean
+  defaultOpen?: boolean
   loading?: boolean
   mode: 'Buy' | 'Sell'
   outcome?: boolean
   outcomeKind?: 'atomic' | 'rfq'
   source?: string
 }) => {
-  const [open, setOpen] = useState(false)
+  const [open, setOpen] = useState(defaultOpen)
+
+  useEffect(() => {
+    setOpen(defaultOpen)
+  }, [defaultOpen])
 
   if (outcome) {
     return (
@@ -301,16 +335,32 @@ export const ZapperQuoteDetails = ({
         )}
         onClick={() => setOpen((current) => !current)}
       >
-        <span
-          data-testid="zapper-fees-label"
-          className={cn(v1Typography.supporting, roles.text.supporting)}
-        >
-          Fees included
-        </span>
-        <span className="flex items-center gap-2">
-          <span className={cn(v1Typography.label, 'whitespace-nowrap')}>
-            {source}
+        {loading ? (
+          <span className="flex h-5 items-center">
+            <Skeleton className="h-3 w-28" />
           </span>
+        ) : (
+          <span
+            className={cn(
+              v1Typography.supporting,
+              roles.text.supporting,
+              'whitespace-nowrap'
+            )}
+          >
+            {mode === 'Buy' ? '1 USDC = 0.99 CMC20' : '1 CMC20 = 0.996 USDC'}
+          </span>
+        )}
+        <span className="flex h-5 items-center gap-2">
+          {loading ? (
+            <Skeleton
+              data-slot="zapper-quote-source-loading"
+              className="h-3 w-20"
+            />
+          ) : (
+            <span className={cn(v1Typography.label, 'whitespace-nowrap')}>
+              {source}
+            </span>
+          )}
           <ChevronDown
             aria-hidden="true"
             className={cn(
@@ -328,20 +378,259 @@ export const ZapperQuoteDetails = ({
         )}
       >
         <div className="min-h-0 overflow-hidden">
-          <ZapperQuoteFacts loading={loading} mode={mode} />
+          {selectableRoutes && <ZapperRouteOptions />}
+          <ZapperQuoteFacts
+            selectableRoutes={selectableRoutes}
+            loading={loading}
+            mode={mode}
+          />
         </div>
       </div>
     </section>
   )
 }
 
+const ZAPPER_SLIPPAGE_OPTIONS = ['0.1%', '0.5%', '1%', '5%'] as const
+
+export const ZapperSelectableQuoteMeta = ({
+  mode,
+  quoteReady,
+  source,
+}: {
+  mode: 'Buy' | 'Sell'
+  quoteReady: boolean
+  source: string
+}) => {
+  const [open, setOpen] = useState(false)
+  const [selectedSource, setSelectedSource] = useState(source)
+  const [slippageTolerance, setSlippageTolerance] = useState('0.5%')
+
+  useEffect(() => {
+    if (!quoteReady) setOpen(false)
+  }, [quoteReady])
+
+  useEffect(() => {
+    setSelectedSource(source)
+  }, [source])
+
+  return (
+    <section
+      data-testid="zapper-selectable-quote-meta"
+      className="relative z-10 bg-card py-2"
+    >
+      <div
+        data-testid="zapper-selectable-quote-meta-row"
+        className="flex h-11 items-center px-4"
+      >
+        <div className="flex min-w-0 flex-1 items-center justify-between gap-3">
+          <span className="flex min-w-0 items-center gap-1">
+            <span
+              className={cn(
+                v1Typography.supporting,
+                roles.text.supporting,
+                'whitespace-nowrap'
+              )}
+            >
+              Slippage tolerance
+            </span>
+            <HelpTooltip
+              accessibleLabel="About slippage tolerance"
+              content="Permissible price deviation (%) between quoted and execution price"
+            />
+          </span>
+          <Select
+            value={slippageTolerance}
+            onValueChange={setSlippageTolerance}
+          >
+            <SelectTrigger
+              aria-label="Change slippage tolerance"
+              className="w-[84px] shrink-0"
+              size="compact"
+            >
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent align="end">
+              {ZAPPER_SLIPPAGE_OPTIONS.map((option) => (
+                <SelectItem key={option} value={option}>
+                  {option}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+        <div
+          aria-hidden={!quoteReady}
+          data-testid="zapper-selectable-route-meta"
+          className={cn(
+            'shrink-0 overflow-hidden transition-[max-width,opacity] duration-180 motion-reduce:transition-none',
+            quoteReady
+              ? 'max-w-48 opacity-100'
+              : 'pointer-events-none max-w-0 opacity-0'
+          )}
+        >
+          <div className="flex min-w-0 items-center gap-2 overflow-hidden pl-4">
+            <span
+              className={cn(
+                v1Typography.supporting,
+                roles.text.supporting,
+                'whitespace-nowrap'
+              )}
+            >
+              Via
+            </span>
+            <span
+              className={cn(v1Typography.label, 'truncate whitespace-nowrap')}
+            >
+              {selectedSource}
+            </span>
+            <IconButton
+              aria-expanded={open}
+              disabled={!quoteReady}
+              icon={
+                <ChevronDown
+                  aria-hidden="true"
+                  className={cn(
+                    'transition-transform duration-180',
+                    open && 'rotate-180'
+                  )}
+                />
+              }
+              label={open ? 'Hide quote details' : 'Show quote details'}
+              size="micro"
+              tabIndex={quoteReady ? 0 : -1}
+              tone="secondary"
+              onClick={() => setOpen((current) => !current)}
+            />
+          </div>
+        </div>
+      </div>
+      <div
+        aria-hidden={!open}
+        className={cn(
+          'grid transition-[grid-template-rows] duration-180 motion-reduce:transition-none',
+          open ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'
+        )}
+      >
+        <div className="min-h-0 overflow-hidden">
+          <ZapperRouteOptions
+            selectedSource={selectedSource}
+            onSelect={setSelectedSource}
+          />
+          <ZapperQuoteFacts selectableRoutes loading={false} mode={mode} />
+        </div>
+      </div>
+    </section>
+  )
+}
+
+const CURRENT_ZAPPER_ROUTES = [
+  {
+    source: 'CoW Swap',
+    amount: '990.00',
+    value: '$990.00',
+    best: true,
+  },
+  {
+    source: 'Zap',
+    amount: '988.40',
+    value: '$988.40',
+    best: false,
+  },
+  {
+    source: 'Velora',
+    amount: '986.70',
+    value: '$986.70',
+    best: false,
+  },
+] as const
+
+const ZapperRouteOptions = ({
+  onSelect,
+  selectedSource: controlledSelectedSource,
+}: {
+  onSelect?: (source: string) => void
+  selectedSource?: string
+} = {}) => {
+  const [internalSelectedSource, setInternalSelectedSource] =
+    useState('CoW Swap')
+  const selectedSource = controlledSelectedSource ?? internalSelectedSource
+
+  const selectSource = (source: string) => {
+    if (onSelect) {
+      onSelect(source)
+      return
+    }
+
+    setInternalSelectedSource(source)
+  }
+
+  return (
+    <div
+      aria-label="Quote routes"
+      data-testid="zapper-route-options"
+      role="group"
+      className="grid grid-cols-1 gap-1 px-0 pb-3 pt-2"
+    >
+      {CURRENT_ZAPPER_ROUTES.map((route) => {
+        const selected = route.source === selectedSource
+
+        return (
+          <button
+            key={route.source}
+            type="button"
+            aria-label={`Use ${route.source} route`}
+            aria-pressed={selected}
+            className={cn(
+              'flex min-h-11 min-w-0 items-center justify-between gap-3 rounded-full border px-4 py-2 text-left transition-colors duration-120',
+              selected
+                ? 'border-primary/30 bg-accent/60'
+                : cn('border-border bg-card', roles.interaction.subtleHover),
+              roles.focus.onContentInset
+            )}
+            onClick={() => selectSource(route.source)}
+          >
+            <span className="flex min-w-0 items-center gap-2">
+              <span
+                className={cn(
+                  v1Typography.label,
+                  'min-w-0 truncate',
+                  selected && 'text-primary'
+                )}
+              >
+                {route.source}
+              </span>
+              {route.best && (
+                <LifecycleStatusPill role="success">Best</LifecycleStatusPill>
+              )}
+            </span>
+            <span
+              data-testid="zapper-route-value"
+              className="flex shrink-0 flex-row items-center justify-end gap-1 whitespace-nowrap text-xs leading-4 tabular-nums"
+            >
+              <span className="font-medium text-foreground">
+                {route.amount}
+              </span>
+              <span aria-hidden="true" className={roles.text.supporting}>
+                ·
+              </span>
+              <span className={roles.text.supporting}>{route.value}</span>
+            </span>
+          </button>
+        )
+      })}
+    </div>
+  )
+}
+
 const ZapperQuoteFacts = ({
+  selectableRoutes = false,
   loading,
   mode,
   outcome = false,
   outcomeKind = 'rfq',
   source = 'CoW Swap',
 }: {
+  selectableRoutes?: boolean
   loading: boolean
   mode: 'Buy' | 'Sell'
   outcome?: boolean
@@ -356,7 +645,11 @@ const ZapperQuoteFacts = ({
           ? 'zapper-quote-details-loading'
           : undefined
     }
-    className={cn('grid gap-2 px-4 pb-4 text-sm leading-5', outcome && 'pt-4')}
+    className={cn(
+      'grid gap-2 px-4 text-sm leading-5',
+      selectableRoutes ? 'pb-2' : 'pb-4',
+      outcome && 'pt-4'
+    )}
   >
     {outcome ? (
       <>
@@ -374,20 +667,45 @@ const ZapperQuoteFacts = ({
           value={mode === 'Buy' ? '-1.36%' : '-0.36%'}
         />
       </>
-    ) : (
+    ) : selectableRoutes ? (
       <>
         <QuoteFact
-          label="Exchange rate"
-          value={
-            loading ? (
-              <Skeleton className="h-3 w-28" />
-            ) : mode === 'Buy' ? (
-              '1 USDC = 0.99 CMC20'
-            ) : (
-              '1 CMC20 = 0.996 USDC'
-            )
-          }
+          label="Current price"
+          value="1 USDC = 0.99 CMC20"
+          help={{
+            accessibleLabel: 'About current price',
+            content: 'The current exchange rate between the tokens.',
+          }}
         />
+        <QuoteFact
+          label="Projected slippage"
+          value="1.00% ($10.00)"
+          help={{
+            accessibleLabel: 'About projected slippage',
+            content:
+              'Projected difference (%) between the value you pay and the value you receive, at current prices.',
+          }}
+        />
+        <QuoteFact
+          label="Max slippage"
+          value="2.00% ($20.00)"
+          help={{
+            accessibleLabel: 'About maximum slippage',
+            content:
+              'Worst case: the value difference (%) if the trade executes at the minimum amount out allowed by your slippage tolerance.',
+          }}
+        />
+        <QuoteFact
+          label="Min Amount Out"
+          value="980.10 CMC20"
+          help={{
+            accessibleLabel: 'About minimum amount out',
+            content: 'The minimum amount of tokens you will receive.',
+          }}
+        />
+      </>
+    ) : (
+      <>
         <QuoteFact
           label="Minimum output"
           value={
@@ -478,12 +796,28 @@ export const ZapperQuoteLoading = () => {
   )
 }
 
-const QuoteFact = ({ label, value }: { label: string; value: ReactNode }) => (
+const QuoteFact = ({
+  help,
+  label,
+  value,
+}: {
+  help?: { accessibleLabel: string; content: ReactNode }
+  label: string
+  value: ReactNode
+}) => (
   <div
     data-testid="zapper-quote-fact"
     className="flex h-5 items-center justify-between gap-4"
   >
-    <dt className={roles.text.supporting}>{label}</dt>
+    <dt className={cn('flex items-center gap-1', roles.text.supporting)}>
+      <span>{label}</span>
+      {help && (
+        <HelpTooltip
+          accessibleLabel={help.accessibleLabel}
+          content={help.content}
+        />
+      )}
+    </dt>
     <dd className="flex h-5 items-center justify-end text-right font-medium tabular-nums text-foreground">
       {value}
     </dd>
@@ -505,14 +839,20 @@ export type ZapperPackageStateKind =
   | 'High-impact acknowledgment'
 
 export const ZapperPackageState = ({
+  currentPhase,
   mode,
   onDone,
   quoteReady,
+  reviewActionDisposition,
+  showDone = true,
   state,
 }: {
+  currentPhase?: 'pre-quote' | 'sourcing' | 'quote-received'
   mode: 'Buy' | 'Sell'
   onDone?: () => void
   quoteReady: boolean
+  reviewActionDisposition?: 'blocking' | 'cautionary'
+  showDone?: boolean
   state: ZapperPackageStateKind
 }) => {
   const [highImpactAcknowledged, setHighImpactAcknowledged] = useState(false)
@@ -525,13 +865,34 @@ export const ZapperPackageState = ({
   }, [state])
 
   if (state === 'Review' || state === 'Quote search') {
-    return (
-      <Button className="w-full" disabled={!quoteReady}>
-        {quoteReady
+    if (currentPhase) {
+      return (
+        <Button className="w-full" disabled={currentPhase !== 'quote-received'}>
+          {currentPhase === 'sourcing' ? 'Loading...' : `Market ${mode}`}
+        </Button>
+      )
+    }
+
+    const actionLabel =
+      reviewActionDisposition === 'cautionary'
+        ? mode === 'Buy'
+          ? 'Buy anyway'
+          : 'Sell anyway'
+        : quoteReady
           ? mode === 'Buy'
             ? 'Buy CMC20'
             : 'Sell CMC20'
-          : 'Updating quote…'}
+          : 'Updating quote…'
+
+    return (
+      <Button
+        className="w-full"
+        disabled={!quoteReady || reviewActionDisposition === 'blocking'}
+        tone={
+          reviewActionDisposition === 'cautionary' ? 'secondary' : 'primary'
+        }
+      >
+        {actionLabel}
       </Button>
     )
   }
@@ -606,8 +967,10 @@ export const ZapperPackageState = ({
         <InlineMessage tone="warning">
           <InlineMessageTitle>Quote expired</InlineMessageTitle>
           <InlineMessageDescription className="mt-1">
-            The order expired without filling — CoW Protocol will automatically
-            refund your ETH within a few minutes.
+            The order expired without filling — CoW Protocol will{' '}
+            <strong className="font-medium text-foreground">
+              automatically refund your ETH within a few minutes.
+            </strong>
           </InlineMessageDescription>
         </InlineMessage>
         <Button className="w-full">Get fresh quote</Button>
@@ -633,9 +996,11 @@ export const ZapperPackageState = ({
             <span className="sr-only"> on BaseScan (opens in a new tab)</span>
           </a>
         </Button>
-        <Button className="flex-1" onClick={onDone}>
-          Done
-        </Button>
+        {showDone ? (
+          <Button className="flex-1" onClick={onDone}>
+            Done
+          </Button>
+        ) : null}
       </ActionGroup>
     )
   }
@@ -661,9 +1026,11 @@ export const ZapperPackageState = ({
             </span>
           </a>
         </Button>
-        <Button className="flex-1" onClick={onDone}>
-          Done
-        </Button>
+        {showDone ? (
+          <Button className="flex-1" onClick={onDone}>
+            Done
+          </Button>
+        ) : null}
       </ActionGroup>
     )
   }

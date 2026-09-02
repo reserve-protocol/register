@@ -4,14 +4,17 @@ import { cn } from '@/lib/utils'
 
 export const OrganicBrandSurface = ({
   className,
+  tone = 'default',
   ...props
-}: HTMLAttributes<HTMLDivElement>) => (
+}: HTMLAttributes<HTMLDivElement> & { tone?: 'default' | 'deep' }) => (
   <div
     {...props}
     aria-hidden="true"
     data-component="organic-brand-surface"
+    data-tone={tone}
     className={cn(
       'organic-brand-surface pointer-events-none relative isolate overflow-hidden bg-brand',
+      tone === 'deep' && 'organic-brand-surface--deep bg-brand-deep',
       className
     )}
   >

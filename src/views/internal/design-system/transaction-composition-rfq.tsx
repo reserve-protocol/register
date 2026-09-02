@@ -6,6 +6,7 @@ import {
   SegmentedControl,
   SegmentedControlItem,
 } from '@/components/design-system-v1/segmented-control'
+import { HelpTooltip } from '@/components/design-system-v1/help-tooltip'
 import {
   TransactionAmountObject,
   TransactionAmountPair,
@@ -13,6 +14,7 @@ import {
 } from '@/components/design-system-v1/transaction-amount-object'
 import {
   transactionAttachedRegionGeometry,
+  transactionOutcomeGeometry,
   transactionTaskGeometry,
 } from '@/components/design-system-v1/transaction-task-geometry'
 import { OrganicBrandSurface } from '@/components/design-system-v1/organic-brand-surface'
@@ -21,6 +23,7 @@ import { cn } from '@/lib/utils'
 import { ChainId } from '@/utils/chains'
 
 import { TransactionCompositionFrame } from './transaction-composition-frame'
+import { TransactionCommittedMode } from './transaction-committed-mode'
 import { TransactionAmountAsset } from './transaction-system-assets'
 import {
   ZAPPER_ASSETS,
@@ -28,11 +31,11 @@ import {
   ZapperPackageState,
   ZapperQuoteDetails,
   ZapperQuoteLoading,
+  ZapperSelectableQuoteMeta,
   ZapperSettings,
   type ZapperPackageStateKind,
 } from './transaction-composition-rfq-support'
 import { TransactionOutcomeStatus } from './transaction-outcome-status'
-import { transactionOutcomeGeometry } from './transaction-outcome-geometry'
 import { transactionOutcomeMotion } from './transaction-outcome-motion'
 import {
   TransactionOutcomeAttachment,
@@ -60,6 +63,10 @@ export type ZapperReviewState =
   | 'CoW redirect · retired'
   | 'Updates'
   | 'Intro call'
+  | 'Pre-quote'
+  | 'Route selection'
+
+const ZAPPER_REVIEW_TASK_WIDTH = 'max-w-[448px]'
 
 export const RfqTransactionComposition = () => (
   <TransactionCompositionFrame<ZapperReviewState>
@@ -67,14 +74,15 @@ export const RfqTransactionComposition = () => (
     defaultState="Review"
     model="Opaque asynchronous · current installed Zapper modal boundary"
     title="Instant Zapper"
-    description="The installed Zapper keeps operation direction, selection, quote economics, action, waiting, and outcome together. Current inline product behavior uses the amount-pair flip and hides optional Buy/Sell tabs by default; the visible lab tabs are an intentional comparison, not a parity claim. A quote may execute atomically or settle as an order, so lifecycle truth remains route-specific."
+    description="The Zapper keeps operation direction, selection, quote economics, action, waiting, and outcome together. Fixed-route and selectable-route quotes share one reviewed composition while exposing only the controls each route policy supports. A quote may execute atomically or settle as an order, so lifecycle truth remains route-specific."
     presentation="modal-backdrop"
     stateGroups={[
       {
         label: 'Lifecycle state',
         states: [
-          'Review',
+          'Pre-quote',
           'Quote search',
+          'Review',
           'Approval',
           'Sign order',
           'RFQ execution',
@@ -89,6 +97,7 @@ export const RfqTransactionComposition = () => (
       {
         label: 'Review variant',
         states: [
+          'Route selection',
           'High-impact acknowledgment',
           'Market-hours advisory',
           'Capacity advisory',
@@ -119,6 +128,8 @@ export const ZapperInlineReference = ({
   const [open, setOpen] = useState(true)
   const [mode, setMode] = useState<'Buy' | 'Sell'>('Buy')
   const [buyAmount, setBuyAmount] = useState('1,000')
+  const [capacityAmount, setCapacityAmount] = useState('250,000')
+  const [currentPreQuoteAmount, setCurrentPreQuoteAmount] = useState('')
   const [sellAmount, setSellAmount] = useState('990')
   const [selectedAsset, setSelectedAsset] = useState(ZAPPER_ASSETS[0]!)
   const [nativeRefundAmount, setNativeRefundAmount] = useState('0.42')
@@ -127,11 +138,7 @@ export const ZapperInlineReference = ({
   )
   const [quoteLoading, setQuoteLoading] = useState(false)
   const [isWalletTracked, setIsWalletTracked] = useState(false)
-  const [outcomeAttachmentDismissed, setOutcomeAttachmentDismissed] =
-    useState(false)
-  const [delayedOutcomeAttachment, setDelayedOutcomeAttachment] = useState<
-    TransactionOutcomeAttachmentType | undefined
-  >()
+  const [advisoryDismissed, setAdvisoryDismissed] = useState(false)
   const advisoryVariant =
     state === 'Market-hours advisory'
       ? 'closed-impact'
@@ -142,7 +149,16 @@ export const ZapperInlineReference = ({
           : state === 'CoW redirect · retired'
             ? 'cow-redirect'
             : undefined
+  const reviewActionDisposition =
+    state === 'Capacity advisory' || state === 'Trading unavailable'
+      ? 'blocking'
+      : state === 'Market-hours advisory'
+        ? 'cautionary'
+        : undefined
   const isReviewAdvisory = Boolean(advisoryVariant)
+  const isPreQuote = state === 'Pre-quote'
+  const isSelectableRouteQuote = state === 'Route selection'
+  const usesSelectableQuoteControls = isPreQuote || isSelectableRouteQuote
   const controlsMounted =
     state === 'Review' ||
     state === 'Approval' ||
@@ -152,9 +168,11 @@ export const ZapperInlineReference = ({
     state === 'Native refund' ||
     state === 'Quote search' ||
     state === 'High-impact acknowledgment' ||
+    usesSelectableQuoteControls ||
     isReviewAdvisory
   const isQuoteSearching =
     state === 'Quote search' || (state === 'Review' && quoteLoading)
+  const quoteOutputLoading = isQuoteSearching
   const interactionLocked =
     isQuoteSearching ||
     state === 'Approval' ||
@@ -167,26 +185,36 @@ export const ZapperInlineReference = ({
       : state === 'Intro call'
         ? 'intro-call'
         : undefined
-  const visibleOutcomeAttachment = outcomeAttachmentDismissed
-    ? undefined
-    : delayedOutcomeAttachment
+  const visibleOutcomeAttachment = outcomeAttachment
   const packageState = getZapperPackageState(state)
   const isOutcome =
     packageState === 'RFQ outcome' || packageState === 'Atomic outcome'
   const isNativeRefund = packageState === 'Native refund'
+  const usesCapacityFixture = state === 'Capacity advisory' && mode === 'Buy'
   const activeSelectedAsset = isNativeRefund ? nativeRefundAsset : selectedAsset
-  const amount =
-    mode === 'Buy'
-      ? isNativeRefund
-        ? nativeRefundAmount
-        : buyAmount
-      : sellAmount
-  const setAmount =
-    mode === 'Buy'
-      ? isNativeRefund
-        ? setNativeRefundAmount
-        : setBuyAmount
-      : setSellAmount
+  const amount = isPreQuote
+    ? currentPreQuoteAmount
+    : usesCapacityFixture
+      ? capacityAmount
+      : mode === 'Buy'
+        ? isNativeRefund
+          ? nativeRefundAmount
+          : buyAmount
+        : sellAmount
+  const setAmount = isPreQuote
+    ? setCurrentPreQuoteAmount
+    : usesCapacityFixture
+      ? setCapacityAmount
+      : mode === 'Buy'
+        ? isNativeRefund
+          ? setNativeRefundAmount
+          : setBuyAmount
+        : setSellAmount
+  const availableBalance = usesCapacityFixture
+    ? '280,000.00'
+    : mode === 'Buy'
+      ? activeSelectedAsset.balance
+      : '1,245.80'
   const normalizedAmount = amount.replaceAll(',', '')
   const quote =
     activeSelectedAsset.symbol === 'USDC'
@@ -203,6 +231,12 @@ export const ZapperInlineReference = ({
               outputAmount: '≈4,237.36',
               outputDelta: '-1.00%',
               outputValue: '≈$4,237.36',
+            },
+            '250000': {
+              inputValue: '$250,000.00',
+              outputAmount: '≈247,500.00',
+              outputDelta: '-1.00%',
+              outputValue: '≈$247,500.00',
             },
           }[normalizedAmount]
         : {
@@ -224,10 +258,12 @@ export const ZapperInlineReference = ({
     state === 'RFQ recovery' ||
     state === 'Quote failure' ||
     state === 'Native refund' ||
-    isQuoteSearching
+    isPreQuote ||
+    quoteOutputLoading
       ? undefined
       : quote
-  const quoteDetailsVisible = Boolean(displayedQuote) || isQuoteSearching
+  const quoteDetailsVisible =
+    Boolean(displayedQuote) || quoteOutputLoading || isPreQuote
   const quoteSource =
     packageState === 'Atomic confirmation' || packageState === 'Atomic outcome'
       ? 'Enso'
@@ -241,23 +277,12 @@ export const ZapperInlineReference = ({
   }, [quoteLoading])
 
   useEffect(() => {
-    setOutcomeAttachmentDismissed(false)
+    setAdvisoryDismissed(false)
   }, [state])
 
   useEffect(() => {
     if (!isOutcome || mode !== 'Buy') setIsWalletTracked(false)
   }, [isOutcome, mode])
-
-  useEffect(() => {
-    setDelayedOutcomeAttachment(undefined)
-    if (!outcomeAttachment) return
-
-    const timer = window.setTimeout(
-      () => setDelayedOutcomeAttachment(outcomeAttachment),
-      360
-    )
-    return () => window.clearTimeout(timer)
-  }, [outcomeAttachment])
 
   if (!open) {
     return (
@@ -272,9 +297,15 @@ export const ZapperInlineReference = ({
       data-testid="zapper-outcome-composition"
       className={cn(
         'relative mx-auto w-full min-w-0',
-        transactionTaskGeometry.substantialWidth,
+        ZAPPER_REVIEW_TASK_WIDTH,
+        visibleOutcomeAttachment &&
+          cn(
+            transactionAttachedRegionGeometry.frame,
+            transactionOutcomeGeometry.minimumSurfaceHeight,
+            'bg-card shadow-lg'
+          ),
         advisoryVariant &&
-          !outcomeAttachmentDismissed &&
+          !advisoryDismissed &&
           cn(transactionAttachedRegionGeometry.frame, 'bg-card shadow-lg')
       )}
     >
@@ -282,32 +313,41 @@ export const ZapperInlineReference = ({
         data-testid="zapper-shell"
         className={cn(
           'relative z-10 w-full min-w-0 shrink-0 bg-card shadow-lg',
-          transactionTaskGeometry.substantialWidth,
+          ZAPPER_REVIEW_TASK_WIDTH,
           isOutcome
             ? cn(
-                transactionOutcomeGeometry.minimumSurfaceHeight,
-                'p-0 ring-2 ring-card'
+                !visibleOutcomeAttachment &&
+                  transactionOutcomeGeometry.minimumSurfaceHeight,
+                'grid p-0',
+                visibleOutcomeAttachment
+                  ? 'ring-0 shadow-sm'
+                  : 'ring-2 ring-card'
               )
             : 'p-2',
-          advisoryVariant && !outcomeAttachmentDismissed && 'shadow-sm'
+          advisoryVariant && !advisoryDismissed && 'shadow-sm'
         )}
       >
         <div
           data-testid="zapper-review-stack"
           className={cn(
             'min-w-0',
+            isOutcome && 'flex flex-col',
             quoteDetailsVisible ? 'space-y-0' : 'space-y-2'
           )}
         >
           <div
             data-testid="zapper-amount-and-details"
-            className="relative isolate grid grid-cols-1"
+            className={cn(
+              'relative isolate grid grid-cols-1',
+              isOutcome && 'flex-1 grid-rows-[auto_minmax(0,1fr)_auto]'
+            )}
           >
             {isOutcome && (
               <OrganicBrandSurface
                 data-testid="zapper-outcome-surface"
+                tone={visibleOutcomeAttachment ? 'deep' : 'default'}
                 className={cn(
-                  'z-0 col-start-1 row-start-1 row-end-3 origin-bottom scale-y-100 rounded-lg bg-brand',
+                  'z-0 col-start-1 row-start-1 row-end-3 scale-y-100 rounded-lg',
                   transactionOutcomeMotion.surface
                 )}
               />
@@ -325,6 +365,8 @@ export const ZapperInlineReference = ({
             >
               {isOutcome ? (
                 <TransactionOutcomeStatus testId="zapper-outcome-status" />
+              ) : interactionLocked ? (
+                <TransactionCommittedMode assetSymbol="CMC20" label={mode} />
               ) : (
                 <SegmentedControl
                   aria-label="Zapper operation"
@@ -353,19 +395,19 @@ export const ZapperInlineReference = ({
                 </SegmentedControl>
               )}
               <div className="flex items-center gap-1">
-                {!isOutcome && (
+                {!isOutcome && !interactionLocked && (
                   <>
                     <ZapperSettings disabled={interactionLocked} />
                     <IconButton
                       label={
-                        isQuoteSearching
+                        quoteOutputLoading
                           ? 'Finding best quote'
                           : 'Refresh quote'
                       }
                       icon={
                         <RefreshCw
                           className={
-                            isQuoteSearching ? 'motion-safe:animate-spin' : ''
+                            quoteOutputLoading ? 'motion-safe:animate-spin' : ''
                           }
                         />
                       }
@@ -387,7 +429,7 @@ export const ZapperInlineReference = ({
               className={cn(
                 isOutcome &&
                   cn(
-                    'relative z-10 col-start-1 row-start-2 pb-2',
+                    'relative z-10 col-start-1 row-start-2 flex flex-col justify-end pb-2',
                     transactionOutcomeMotion.content
                   ),
                 (state === 'RFQ execution' ||
@@ -411,8 +453,11 @@ export const ZapperInlineReference = ({
               >
                 <div className="min-h-0 overflow-hidden">
                   <TransactionAmountObject
-                    label="You use"
+                    label={
+                      usesSelectableQuoteControls ? 'Order size' : 'You use'
+                    }
                     amount={amount}
+                    amountPlaceholder={isPreQuote ? '0' : undefined}
                     tone={isOutcome ? 'inverse' : 'default'}
                     {...(controlsMounted
                       ? {
@@ -433,11 +478,13 @@ export const ZapperInlineReference = ({
                               setSelectedAsset(asset)
                             }
                             setAmount(
-                              asset.symbol === 'USDC'
-                                ? '1,000'
-                                : asset.symbol === 'ETH'
-                                  ? '0.42'
-                                  : ''
+                              usesCapacityFixture && asset.symbol === 'USDC'
+                                ? '250,000'
+                                : asset.symbol === 'USDC'
+                                  ? '1,000'
+                                  : asset.symbol === 'ETH'
+                                    ? '0.42'
+                                    : ''
                             )
                           }}
                         />
@@ -463,15 +510,15 @@ export const ZapperInlineReference = ({
                       mode === 'Buy' &&
                       activeSelectedAsset.symbol === 'ETH'
                         ? '$1,034.82'
-                        : (quote?.inputValue ?? 'Quote refreshes after input')
+                        : isPreQuote
+                          ? '$0.00'
+                          : (quote?.inputValue ?? 'Quote refreshes after input')
                     }
                     balance={
                       <>
                         Balance{' '}
                         <span className="font-medium text-foreground tabular-nums">
-                          {mode === 'Buy'
-                            ? activeSelectedAsset.balance
-                            : '1,245.80'}
+                          {availableBalance}
                         </span>
                       </>
                     }
@@ -479,13 +526,7 @@ export const ZapperInlineReference = ({
                       controlsMounted ? (
                         <InlineAction
                           disabled={interactionLocked}
-                          onClick={() =>
-                            setAmount(
-                              mode === 'Buy'
-                                ? activeSelectedAsset.balance
-                                : '1,245.80'
-                            )
-                          }
+                          onClick={() => setAmount(availableBalance)}
                         >
                           Max
                         </InlineAction>
@@ -519,15 +560,30 @@ export const ZapperInlineReference = ({
                 className="relative transition-transform duration-180 motion-reduce:transition-none"
               >
                 <TransactionAmountObject
-                  label={isOutcome ? 'Received' : 'Estimated output'}
+                  label={
+                    isOutcome
+                      ? 'Received'
+                      : usesSelectableQuoteControls
+                        ? 'Projected proceeds'
+                        : 'Estimated output'
+                  }
                   amount={
-                    isOutcome ? '986.42' : (displayedQuote?.outputAmount ?? '—')
+                    isOutcome
+                      ? '986.42'
+                      : isPreQuote
+                        ? '0'
+                        : (displayedQuote?.outputAmount ?? '—')
                   }
                   className={
                     isOutcome
                       ? 'bg-transparent px-6'
-                      : quoteDetailsVisible && !isQuoteSearching
-                        ? 'border-b border-border'
+                      : quoteDetailsVisible
+                        ? cn(
+                            'border-b',
+                            quoteOutputLoading
+                              ? 'border-transparent'
+                              : 'border-border'
+                          )
                         : undefined
                   }
                   presentation="output"
@@ -575,6 +631,8 @@ export const ZapperInlineReference = ({
                   supporting={
                     isOutcome ? (
                       <span className="tabular-nums">$986.42</span>
+                    ) : isPreQuote ? (
+                      '$0.00'
                     ) : displayedQuote ? (
                       <span className="flex flex-wrap items-baseline gap-1 tabular-nums">
                         <span>{displayedQuote.outputValue}</span>
@@ -590,16 +648,40 @@ export const ZapperInlineReference = ({
                       'Updates after the package returns a quote'
                     )
                   }
+                  supportingRowClassName={
+                    quoteDetailsVisible && !isOutcome
+                      ? 'min-h-11 sm:min-h-5'
+                      : undefined
+                  }
+                  balance={
+                    !isOutcome && displayedQuote ? (
+                      <span className="flex items-center gap-1 whitespace-nowrap">
+                        <span>Quote includes fees</span>
+                        <HelpTooltip
+                          accessibleLabel="About included quote fees"
+                          content="The displayed quote already includes all applicable fees."
+                        />
+                      </span>
+                    ) : undefined
+                  }
                   readOnly
                 />
-                {isQuoteSearching && <ZapperQuoteLoading />}
+                {quoteOutputLoading && <ZapperQuoteLoading />}
               </div>
             </TransactionAmountPair>
-            {quoteDetailsVisible && (
+            {usesSelectableQuoteControls ? (
+              <div className="col-start-1 row-start-3">
+                <ZapperSelectableQuoteMeta
+                  mode={mode}
+                  quoteReady={isSelectableRouteQuote}
+                  source={quoteSource}
+                />
+              </div>
+            ) : quoteDetailsVisible ? (
               <ZapperQuoteDetails
                 key={isOutcome ? 'outcome-details' : 'quote-details'}
                 className={cn('col-start-1 row-start-3', isOutcome && 'mx-2')}
-                loading={isQuoteSearching}
+                loading={quoteOutputLoading}
                 mode={mode}
                 outcome={isOutcome}
                 outcomeKind={
@@ -607,7 +689,7 @@ export const ZapperInlineReference = ({
                 }
                 source={quoteSource}
               />
-            )}
+            ) : null}
           </div>
           <div
             data-testid={isOutcome ? 'zapper-outcome-action-inset' : undefined}
@@ -617,21 +699,27 @@ export const ZapperInlineReference = ({
               state={packageState}
               mode={mode}
               onDone={() => setOpen(false)}
-              quoteReady={Boolean(displayedQuote) && !isQuoteSearching}
+              quoteReady={Boolean(displayedQuote) && !quoteOutputLoading}
+              reviewActionDisposition={reviewActionDisposition}
+              showDone={!visibleOutcomeAttachment}
+              currentPhase={
+                isPreQuote
+                  ? 'pre-quote'
+                  : isSelectableRouteQuote
+                    ? 'quote-received'
+                    : undefined
+              }
             />
           </div>
         </div>
       </div>
       {visibleOutcomeAttachment && (
-        <TransactionOutcomeAttachment
-          type={visibleOutcomeAttachment}
-          onDismiss={() => setOutcomeAttachmentDismissed(true)}
-        />
+        <TransactionOutcomeAttachment type={visibleOutcomeAttachment} />
       )}
-      {advisoryVariant && !outcomeAttachmentDismissed && (
+      {advisoryVariant && !advisoryDismissed && (
         <TransactionReviewAdvisory
           variant={advisoryVariant}
-          onDismiss={() => setOutcomeAttachmentDismissed(true)}
+          onDismiss={() => setAdvisoryDismissed(true)}
         />
       )}
     </div>
@@ -649,6 +737,8 @@ const getZapperPackageState = (
     case 'Capacity advisory':
     case 'Trading unavailable':
     case 'CoW redirect · retired':
+    case 'Pre-quote':
+    case 'Route selection':
       return 'Review'
     default:
       return state

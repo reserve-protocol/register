@@ -1,4 +1,4 @@
-import { Check, CirclePlus, Wallet2 } from 'lucide-react'
+import { Bookmark } from 'lucide-react'
 
 import { tooltipSurfaceRecipe } from '@/components/design-system-v1/tooltip-surface'
 import { IconButton } from '@/components/icon-button'
@@ -25,24 +25,15 @@ export const TransactionWalletAction = ({
           aria-pressed={isTracked}
           label={TRACK_TOKEN_LABEL}
           icon={
-            isTracked ? (
-              <Check
-                aria-hidden="true"
-                data-testid="transaction-wallet-tracked-glyph"
-              />
-            ) : (
-              <span
-                aria-hidden="true"
-                data-testid="transaction-wallet-add-glyph"
-                className="relative flex size-4 items-center justify-center"
-              >
-                <Wallet2 className="size-4" strokeWidth={1.5} />
-                <CirclePlus
-                  className="absolute -bottom-1 -right-1 size-2.5 rounded-full bg-card"
-                  strokeWidth={1.5}
-                />
-              </span>
-            )
+            <Bookmark
+              aria-hidden="true"
+              data-testid={
+                isTracked
+                  ? 'transaction-wallet-tracked-glyph'
+                  : 'transaction-wallet-add-glyph'
+              }
+              className={isTracked ? 'fill-current' : undefined}
+            />
           }
           size="compact"
           tone="secondary"

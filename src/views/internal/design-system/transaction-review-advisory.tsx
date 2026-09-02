@@ -19,7 +19,7 @@ export const TransactionReviewAdvisory = ({
     <aside
       data-testid="transaction-review-advisory"
       data-entrance="immediate"
-      className={`${transactionAttachedRegionGeometry.surface} relative z-0 flex w-full origin-top flex-col p-6 text-left [animation:transaction-sidecar-grow-down_360ms_ease-out_both] motion-reduce:animate-none`}
+      className={`${transactionAttachedRegionGeometry.surface} relative z-0 flex w-full origin-top flex-col p-6 text-left [animation:transaction-attached-region-grow-down_360ms_ease-out_both] motion-reduce:animate-none`}
     >
       <div data-testid="zapper-review-advisory" className="grid gap-2">
         <div className="grid gap-1">
@@ -72,15 +72,30 @@ const AdvisoryDismissAction = ({ onDismiss }: { onDismiss: () => void }) => (
 const REVIEW_ADVISORY_CONTENT = {
   capacity: {
     title: 'Order too large',
-    description:
-      'You can buy up to $200,000 per transaction during regular hours in the US. For larger amounts, split your order into multiple transactions.',
+    description: (
+      <>
+        You can buy{' '}
+        <strong className="font-medium text-foreground tabular-nums">
+          up to $200,000 per transaction
+        </strong>{' '}
+        during regular hours in the US. For larger amounts, split your order
+        into multiple transactions.
+      </>
+    ),
     supporting: undefined,
     action: undefined,
   },
   'closed-error': {
     title: 'Temporarily unavailable',
-    description:
-      "Minting CMC20 is currently unavailable and we couldn't find another route to buy it. Try again later when trading resumes.",
+    description: (
+      <>
+        Minting CMC20 is currently unavailable and we couldn&apos;t find another
+        route to buy it.{' '}
+        <strong className="font-medium text-foreground">
+          Try again later when trading resumes.
+        </strong>
+      </>
+    ),
     supporting: undefined,
     action: undefined,
   },
@@ -88,14 +103,28 @@ const REVIEW_ADVISORY_CONTENT = {
     title: 'Expect a worse price',
     description:
       "You're getting a worse price than usual because CMC20's underlying stocks aren't trading right now.",
-    supporting:
-      'US stock market hours are 9:30 AM to 4:00 PM Eastern Time. Current time is: 6:12 PM ET. Please try again in 2 hours.',
+    supporting: (
+      <>
+        US stock market hours are 9:30 AM to 4:00 PM Eastern Time. Current time
+        is: 6:12 PM ET.{' '}
+        <strong className="font-medium text-foreground">
+          Please try again in 2 hours.
+        </strong>
+      </>
+    ),
     action: undefined,
   },
   'cow-redirect': {
     title: 'Try CoW Swap',
-    description:
-      'For larger orders, a DEX aggregator like CoW Swap may get you a better price by routing your trade across multiple sources of liquidity.',
+    description: (
+      <>
+        For larger orders, a DEX aggregator like CoW Swap{' '}
+        <strong className="font-medium text-foreground">
+          may get you a better price
+        </strong>{' '}
+        by routing your trade across multiple sources of liquidity.
+      </>
+    ),
     supporting: undefined,
     action: {
       label: 'Open CoW Swap',

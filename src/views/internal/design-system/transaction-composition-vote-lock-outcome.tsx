@@ -17,7 +17,7 @@ import { v1SemanticRecipes as roles } from '@/components/ui/v1-semantic-recipes'
 import { cn } from '@/lib/utils'
 
 import { TransactionOutcomeStatus } from './transaction-outcome-status'
-import { transactionOutcomeGeometry } from './transaction-outcome-geometry'
+import { transactionOutcomeGeometry } from '@/components/design-system-v1/transaction-task-geometry'
 import { transactionOutcomeMotion } from './transaction-outcome-motion'
 import {
   VOTE_LOCK_TASK_WIDTH,

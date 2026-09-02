@@ -1,6 +1,6 @@
 ---
 title: Design System Reference
-updated: 2026-08-27
+updated: 2026-09-02
 type: domain
 sources:
   - tailwind.config.ts
@@ -1250,16 +1250,16 @@ unavailable notices remain dismissible and preserve their product copy, but the
 lab places them in a compact region revealed directly below the current action.
 A 2px card-color frame owns the assembled task, the card-colored task surface
 casts slight depth over the region, and the region uses the accepted opaque
-`substrate-subtle` attached-surface role tested by `TX-P11`. Its uniform 24px inset is
+`substrate-subtle` attached-surface role. Its uniform 24px content inset is
 composition-owned. The warning title and a local 20px bare dismiss action share
 one horizontal axis. The dismiss action expands its pointer target to 44px
 without making that target part of the row's layout geometry; it is exploratory
 pressure on the still-open Icon Button hit-target question, not an accepted
 Icon Button variant. The former status pill is intentionally removed so the
 attached region does not spend a second row restating warning semantics. It
-shares only frame, substrate, and depth geometry with transaction progress; the
-two regions keep separate semantic and content owners and do not establish a
-generic grouping-surface component.
+shares only approved frame, substrate, and depth geometry with transaction
+progress; the two regions keep separate semantic and content owners and do not
+establish a generic grouping-surface component.
 
 One separately labeled lab fixture retains the former `Try CoW Swap` large-order
 recommendation and uses an exploratory secondary `Open CoW Swap` micro CTA
@@ -1272,10 +1272,15 @@ primary but disables it until explicit acknowledgement; its `Buy anyway` /
 `Sell anyway` copy carries the accepted consequence instead of introducing a
 new warning-colored Button tone.
 
-Outcome follow-ups retain the separate responsive sidecar because they are
-optional additions after completion rather than qualifications of the current
-action. They mount only after the 360ms success transition, use the provisional
-secondary-to-card gradient, and move below the modal only when the host cannot
-preserve a centered task plus an outer gutter. Both treatments remain lab-only:
-production `LargeMintPrompt` has not adopted either candidate, and the
-historical CoW redirect copy is not restored.
+Outcome follow-ups remain optional additions after completion rather than
+qualifications of the current action, but no longer use a responsive sidecar.
+They mount with the outcome at every width as one full-width attached
+`substrate-subtle` region beneath the result, with 24px text and 8px control
+axes. The combined outcome-plus-attachment frame owns the no-shrink minimum so
+the main result card can remain content-height. A persistent close action makes
+Done redundant; Schedule or Subscribe is the one primary continuation, while
+the explorer action fills the result footer. The Organic Brand `deep` tone adds
+depth only in dark mode; light mode retains the ordinary result surface. The
+attachment tone, composition, and entrance remain lab-only: production
+`LargeMintPrompt` has not adopted them, and the historical CoW redirect copy is
+not restored.

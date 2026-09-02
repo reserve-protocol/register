@@ -68,11 +68,11 @@ export const CURRENT_REVIEW: CurrentReviewItem[] = [
       },
       {
         area: 'color',
-        status: 'conforms',
+        status: 'declared-provisional',
         detail:
-          'Surfaces, text, lifecycle roles, focus, and feedback use semantic theme recipes with the same light/dark role names.',
+          'Surfaces, text, lifecycle roles, focus, and feedback use semantic theme recipes. Attachment outcomes locally pressure the hierarchy with an opt-in deeper Organic Brand tone; standalone outcomes keep the default tone.',
         verification:
-          'Inspect both themes and confirm no raw or theme-specific color override exists.',
+          'Inspect attachment and standalone outcomes in both themes; confirm the deeper tone separates atmosphere from actions without becoming a new baseline by implication.',
       },
       {
         area: 'radius',
@@ -86,15 +86,15 @@ export const CURRENT_REVIEW: CurrentReviewItem[] = [
         area: 'motion',
         status: 'declared-provisional',
         detail:
-          'The board adds no fabricated progress motion. Simple transaction outcomes share one 360ms structural entrance, while their completed or delayed status remains semantically distinct. Outcome follow-ups use the responsive sidecar reveal after the outcome transition; Zapper review advisories instead reveal immediately beneath the action surface without changing the action axis.',
+          'The board adds no fabricated progress motion. Simple transaction outcomes share one 360ms bottom-anchored structural entrance, so the outcome color rises from the former action edge while their completed or delayed status remains semantically distinct. Outcome follow-ups mount with the outcome and use one attached reveal; the no-shrink minimum belongs to that combined frame rather than inflating its main result card. Zapper review advisories instead reveal immediately beneath the action surface without changing the action axis.',
         verification:
-          'Inspect attached review and sidecar outcome entrances at desktop and phone widths, then confirm reduced motion removes both reveals.',
+          'Inspect review and outcome attachment entrances at desktop and phone widths, then confirm reduced motion removes both reveals.',
       },
       {
         area: 'component-dependencies',
         status: 'declared-provisional',
         detail:
-          'Dialog, Field, Entity Identity, Button, Action Group, Segmented Control, Checkbox, Lifecycle Status, Link, and Copyable Value are current baselines; Inline Message, the attached Zapper review region, and the outcome-only Transaction Sidecar remain provisional inside realistic context. The named Zapper study is strong visual composition evidence rather than authority; the package-owned RFQ and durable-card shells are contextual fixtures, not promoted components.',
+          'Dialog, Field, Entity Identity, Button, Action Group, Segmented Control, Checkbox, Lifecycle Status, Link, and Copyable Value are current baselines; Inline Message, the attached Zapper review region, the outcome attachment, and the theme-aware Organic Brand deep tone remain provisional inside realistic context. Its extra depth applies only in dark mode; light mode retains the standard outcome surface. Attachment states omit the redundant Done action at composition level without changing the Button default. The named Zapper study is strong visual composition evidence rather than authority; the package-owned RFQ and durable-card shells are contextual fixtures, not promoted components.',
         verification:
           'Inspect catalog dependency badges and ensure the specimen remains lab-only and unadopted.',
       },

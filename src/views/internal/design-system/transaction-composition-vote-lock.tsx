@@ -21,6 +21,7 @@ import {
   TransactionCompositionFrame,
   type TransactionCompositionStateGroup,
 } from './transaction-composition-frame'
+import { TransactionCommittedMode } from './transaction-committed-mode'
 import { VoteLockOutcomeDialog } from './transaction-composition-vote-lock-outcome'
 import {
   FAST_DELEGATE,
@@ -154,6 +155,8 @@ const VoteLockDialog = ({
     state === 'Unlock processing' ||
     state === 'Normal signing' ||
     state === 'Fast signing'
+  const isModeCommitted =
+    isInteractionLocked || state === 'Lock ready' || state === 'Fast failed'
   const hasDelegationProcessPanel =
     isDelegate &&
     (state === 'Normal signing' ||
@@ -200,33 +203,42 @@ const VoteLockDialog = ({
       >
         <div className={transactionTaskGeometry.compactHeaderRow}>
           <DialogTitle className="sr-only">Govern PHOTON</DialogTitle>
-          <SegmentedControl
-            aria-label="Vote-lock task mode"
-            presentation="contained"
-            size="compact"
-            width="intrinsic"
-            value={mode}
-            onValueChange={(value) => {
-              if (value === 'delegate') {
-                setState('Delegated to you')
-              } else {
-                setState(value === 'unlock' ? 'Unlock amount' : 'Lock amount')
+          {isModeCommitted ? (
+            <TransactionCommittedMode
+              assetSymbol={mode === 'lock' ? 'RSR' : 'vlRSR'}
+              isActive={isInteractionLocked}
+              label={
+                mode === 'lock'
+                  ? 'Vote-lock'
+                  : mode === 'unlock'
+                    ? 'Unlock'
+                    : 'Delegate'
               }
-            }}
-          >
-            <SegmentedControlItem value="lock" disabled={isInteractionLocked}>
-              Vote-lock
-            </SegmentedControlItem>
-            <SegmentedControlItem value="unlock" disabled={isInteractionLocked}>
-              Unlock
-            </SegmentedControlItem>
-            <SegmentedControlItem
-              value="delegate"
-              disabled={isInteractionLocked}
+            />
+          ) : (
+            <SegmentedControl
+              aria-label="Vote-lock task mode"
+              presentation="contained"
+              size="compact"
+              width="intrinsic"
+              value={mode}
+              onValueChange={(value) => {
+                if (value === 'delegate') {
+                  setState('Delegated to you')
+                } else {
+                  setState(value === 'unlock' ? 'Unlock amount' : 'Lock amount')
+                }
+              }}
             >
-              Delegate
-            </SegmentedControlItem>
-          </SegmentedControl>
+              <SegmentedControlItem value="lock">
+                Vote-lock
+              </SegmentedControlItem>
+              <SegmentedControlItem value="unlock">Unlock</SegmentedControlItem>
+              <SegmentedControlItem value="delegate">
+                Delegate
+              </SegmentedControlItem>
+            </SegmentedControl>
+          )}
           <div className="ml-auto">
             <IconButton
               label="Close Vote Lock"
@@ -272,7 +284,10 @@ const VoteLockDialog = ({
       </DialogBody>
       {hasProcessAction && (
         <DialogFooter
-          className="px-0 pb-0 pt-4"
+          className={cn(
+            'px-0 pb-0',
+            hasDelegationProcessPanel ? 'pt-4' : 'pt-0'
+          )}
           data-testid="vote-lock-process-button-region"
         >
           {hasDelegationProcessPanel ? (

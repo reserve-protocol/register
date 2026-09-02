@@ -45,11 +45,14 @@ export const VoteLockAmountTask = ({
     state === 'Unlock amount'
   const amount = isUnlock ? unlockAmount : lockAmount
   const hasFixtureQuote = amount === '1'
-  const showAcknowledgement = !isUnlock
+  const showAcknowledgement = !isUnlock && isInputState
   const isSubmittedState =
     state === 'Approval signing' ||
+    state === 'Lock ready' ||
+    state === 'Lock wallet' ||
     state === 'Lock confirming' ||
     state === 'Lock processing' ||
+    state === 'Unlock wallet' ||
     state === 'Unlock confirming' ||
     state === 'Unlock processing'
 
@@ -180,7 +183,7 @@ const LockAcknowledgement = ({
 }) => (
   <div
     data-testid="vote-lock-acknowledgement"
-    className="flex items-center gap-2 px-4 py-4"
+    className="flex items-center gap-2 px-4 pb-2 pt-4"
   >
     <Checkbox
       id="vote-lock-delay-acknowledgement"

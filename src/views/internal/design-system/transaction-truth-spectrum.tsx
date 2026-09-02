@@ -97,9 +97,10 @@ const TransactionTruthSpectrum = () => (
         )}
       >
         <li>
-          Decide whether Amount, requirement/approval, lifecycle, identity,
-          outcome, and local asset-selection proposals have the right reusable
-          seams; none are current baseline yet.
+          Judge only the declared transaction pressure: relationship geometry is
+          provisionally reusable, accepted components keep their current
+          contracts, and flow-local or exploratory treatments do not become
+          authority from appearing in this board.
         </li>
         <li>
           Judge whether the compositions share enough hierarchy without making

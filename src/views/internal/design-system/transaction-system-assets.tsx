@@ -1,4 +1,6 @@
 import { ChainBadgedLogo, EntityIdentity } from '@/components/entity-identity'
+import TokenLogo from '@/components/token-logo'
+import type { ComponentProps } from 'react'
 
 export interface TransactionAssetIdentityProps {
   symbol: string
@@ -63,8 +65,27 @@ export const TransactionAmountAsset = ({
   </span>
 )
 
+export const TransactionAssetLogo = ({
+  className,
+  symbol,
+  ...props
+}: {
+  className?: string
+  symbol: string
+} & Omit<ComponentProps<typeof TokenLogo>, 'alt' | 'size' | 'src'>) => (
+  <TokenLogo
+    aria-hidden="true"
+    alt=""
+    className={className}
+    size="sm"
+    src={ASSET_LOGOS[symbol] ?? '/svgs/defaultLogo.svg'}
+    symbol={symbol}
+    {...props}
+  />
+)
+
 const ASSET_LOGOS: Record<string, string> = {
-  CMC20: '/imgs/socials/cmc20.png',
+  CMC20: '/imgs/cmc20.png',
   ETH: '/svgs/eth.svg',
   RSR: '/svgs/rsr.svg',
   vlRSR: '/svgs/rsr.svg',

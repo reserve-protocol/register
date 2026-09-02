@@ -1,5 +1,5 @@
-import { act, fireEvent, render, screen, within } from '@testing-library/react'
-import { describe, expect, it, vi } from 'vitest'
+import { fireEvent, render, screen, within } from '@testing-library/react'
+import { describe, expect, it } from 'vitest'
 
 import {
   FAST_DELEGATE,
@@ -93,7 +93,7 @@ describe('composition-first transaction-system review', () => {
       .getByRole('group', { name: 'Vote-lock task mode' })
       .closest('[data-testid="canonical-dialog-surface"]')
 
-    expect(within(rfq).getByTestId('zapper-shell')).toHaveClass('max-w-[432px]')
+    expect(within(rfq).getByTestId('zapper-shell')).toHaveClass('max-w-[448px]')
     expect(voteLockSurface).toHaveClass('sm:max-w-[448px]')
 
     expect(
@@ -122,6 +122,12 @@ describe('composition-first transaction-system review', () => {
     fireEvent.click(
       within(rfq).getByRole('radio', { name: 'Atomic confirmation' })
     )
+    expect(
+      within(rfq).queryByRole('group', { name: 'Zapper operation' })
+    ).not.toBeInTheDocument()
+    expect(
+      within(rfq).getByTestId('transaction-committed-mode')
+    ).toHaveTextContent('Buy')
     const zapperBoundary = within(rfq).getByTestId('transaction-amount-pair')
     expect(zapperBoundary).toHaveAttribute('data-task-boundary', 'leading')
     expect(zapperBoundary).toHaveClass(
@@ -256,7 +262,10 @@ describe('composition-first transaction-system review', () => {
     ).not.toHaveClass('border-t', 'px-4', 'py-4')
     expect(
       within(voteLock).getByTestId('vote-lock-acknowledgement')
-    ).not.toHaveClass('border-t')
+    ).toHaveClass('px-4', 'pb-2', 'pt-4')
+    expect(
+      within(voteLock).getByTestId('vote-lock-acknowledgement')
+    ).not.toHaveClass('border-t', 'py-4')
 
     const lockAmount = within(voteLock).getByRole('textbox', {
       name: 'You lock: amount',
@@ -307,20 +316,21 @@ describe('composition-first transaction-system review', () => {
       within(voteLock).getByRole('radio', { name: 'Approval signing' })
     )
     expect(
+      within(voteLock).queryByRole('group', {
+        name: 'Vote-lock task mode',
+      })
+    ).not.toBeInTheDocument()
+    expect(
+      within(voteLock).getByTestId('transaction-committed-mode')
+    ).toHaveTextContent('Vote-lock')
+    expect(
       within(voteLock).queryByRole('button', {
         name: 'Pending, sign in wallet',
       })
     ).not.toBeInTheDocument()
     expect(
-      within(voteLock).getByRole('checkbox', {
-        name: 'Acknowledge unlock delay',
-      })
-    ).toBeChecked()
-    expect(
-      within(voteLock).getByRole('checkbox', {
-        name: 'Acknowledge unlock delay',
-      })
-    ).toBeDisabled()
+      within(voteLock).queryByTestId('vote-lock-acknowledgement')
+    ).not.toBeInTheDocument()
     expect(
       within(voteLock).queryByTestId('vote-lock-process-button-region')
     ).not.toBeInTheDocument()
@@ -357,6 +367,14 @@ describe('composition-first transaction-system review', () => {
     const readyProgress = within(voteLock).getByRole('list', {
       name: 'Vote-lock progress',
     })
+    const readyCommittedMode = within(voteLock).getByTestId(
+      'transaction-committed-mode'
+    )
+    expect(readyCommittedMode).toHaveAttribute('data-activity', 'static')
+    expect(readyCommittedMode).toHaveAttribute('data-asset-symbol', 'RSR')
+    expect(
+      within(readyCommittedMode).getByTestId('transaction-committed-mode-logo')
+    ).not.toHaveClass('motion-safe:animate-[spin_12s_linear_infinite]')
     const readySteps = within(readyProgress).getAllByTestId(
       'transaction-progress-step'
     )
@@ -369,6 +387,12 @@ describe('composition-first transaction-system review', () => {
     expect(
       within(readySteps[1]).getByTestId('lifecycle-status-pill')
     ).toHaveTextContent('Ready')
+    expect(
+      within(voteLock).getByTestId('vote-lock-acknowledgement')
+    ).toBeVisible()
+    expect(
+      within(voteLock).getByTestId('vote-lock-process-button-region')
+    ).toHaveClass('pt-0')
 
     fireEvent.click(
       within(voteLock).getByRole('radio', { name: 'Lock wallet' })
@@ -385,14 +409,14 @@ describe('composition-first transaction-system review', () => {
       within(voteLock).getByTestId('transaction-amount-relation-indicator')
     ).toBeVisible()
     expect(
-      within(voteLock).getByRole('radio', {
-        name: 'Vote-lock',
-        exact: true,
-      })
-    ).toBeDisabled()
+      within(voteLock).getByTestId('transaction-committed-mode')
+    ).toHaveTextContent('Vote-lock')
     expect(
-      within(voteLock).getByRole('radio', { name: 'Unlock', exact: true })
-    ).toBeDisabled()
+      within(voteLock).getByTestId('transaction-amount-pair')
+    ).toHaveAttribute('data-task-boundary', 'leading')
+    expect(
+      within(voteLock).queryByTestId('vote-lock-acknowledgement')
+    ).not.toBeInTheDocument()
 
     fireEvent.click(
       within(voteLock).getByRole('radio', { name: 'Lock confirming' })
@@ -427,6 +451,9 @@ describe('composition-first transaction-system review', () => {
     expect(
       within(voteLock).getByTestId('vote-lock-outcome-surface')
     ).toHaveAttribute('data-component', 'organic-brand-surface')
+    expect(
+      within(voteLock).getByTestId('vote-lock-outcome-surface')
+    ).toHaveClass('origin-bottom')
     const lockOutcomeSurface = within(voteLock)
       .getByTestId('vote-lock-outcome-status')
       .closest('[data-testid="canonical-dialog-surface"]')
@@ -489,6 +516,14 @@ describe('composition-first transaction-system review', () => {
     fireEvent.click(
       within(voteLock).getByRole('radio', { name: 'Unlock processing' })
     )
+    const unlockCommittedMode = within(voteLock).getByTestId(
+      'transaction-committed-mode'
+    )
+    expect(unlockCommittedMode).toHaveTextContent('Unlock')
+    expect(unlockCommittedMode).toHaveAttribute('data-asset-symbol', 'vlRSR')
+    expect(
+      within(unlockCommittedMode).getByTestId('transaction-committed-mode-logo')
+    ).toHaveClass('motion-safe:animate-[spin_12s_linear_infinite]')
     expect(
       within(voteLock).getByRole('button', {
         name: 'Processing transaction...',
@@ -523,6 +558,7 @@ describe('composition-first transaction-system review', () => {
     expect(
       within(voteLock).getByTestId('vote-lock-outcome-surface')
     ).toHaveClass(
+      'origin-bottom',
       '[animation:transaction-outcome-surface-in_360ms_ease-out_both]',
       'motion-reduce:animate-none'
     )
@@ -802,6 +838,11 @@ describe('composition-first transaction-system review', () => {
     fireEvent.click(
       within(voteLock).getByRole('radio', { name: 'Normal signing' })
     )
+    const delegateCommittedMode = within(voteLock).getByTestId(
+      'transaction-committed-mode'
+    )
+    expect(delegateCommittedMode).toHaveTextContent('Delegate')
+    expect(delegateCommittedMode).toHaveAttribute('data-asset-symbol', 'vlRSR')
     expect(
       within(voteLock).queryByRole('button', {
         name: 'Updating normal delegate...',
@@ -839,6 +880,9 @@ describe('composition-first transaction-system review', () => {
     )
     expect(normalSteps).toHaveLength(2)
     expect(normalSteps[0]).toHaveAttribute('data-step-state', 'active')
+    expect(
+      within(voteLock).getByTestId('transaction-committed-mode')
+    ).toHaveAttribute('data-activity', 'active')
     expect(normalSteps[0]).toHaveAttribute('aria-current', 'step')
     expect(normalSteps[0]).toHaveClass('gap-2', 'py-2')
     expect(normalSteps[0]).not.toHaveClass(
@@ -1167,10 +1211,15 @@ describe('composition-first transaction-system review', () => {
       within(voteLock).getByRole('radio', { name: 'No locked balance' })
     )
     expect(
-      within(voteLock).getByText(
-        'Self-delegation happens automatically when you vote-lock RSR. Come back here after vote-locking to update delegation.'
-      )
-    ).toBeVisible()
+      within(voteLock).getByTestId('canonical-inline-message')
+    ).toHaveClass('px-4', 'py-3')
+    const selfDelegationEmphasis = within(voteLock).getByText(
+      'Self-delegation happens automatically'
+    )
+    expect(selfDelegationEmphasis).toHaveClass('font-medium', 'text-foreground')
+    expect(selfDelegationEmphasis.parentElement).toHaveTextContent(
+      'Self-delegation happens automatically when you vote-lock RSR. Come back here after vote-locking to update delegation.'
+    )
     expect(within(voteLock).getByLabelText(/Voting delegate/)).toBeDisabled()
     expect(within(voteLock).getByLabelText(/Voting delegate/)).toHaveValue('')
     expect(within(voteLock).getByLabelText(/Challenge delegate/)).toBeDisabled()
@@ -1184,6 +1233,9 @@ describe('composition-first transaction-system review', () => {
     fireEvent.click(
       within(voteLock).getByRole('radio', { name: 'Wallet disconnected' })
     )
+    expect(
+      within(voteLock).getByTestId('canonical-inline-message')
+    ).toHaveClass('px-4', 'py-3')
     expect(
       within(voteLock).getByText(
         'Connect your wallet to view or change delegates.'
@@ -1407,6 +1459,12 @@ describe('composition-first transaction-system review', () => {
     expect(
       within(outputAmount).getByTestId('zapper-output-value-delta')
     ).toHaveTextContent('(-1.00%)')
+    expect(within(outputAmount).getByText('Quote includes fees')).toBeVisible()
+    expect(
+      within(outputAmount).getByRole('button', {
+        name: 'About included quote fees',
+      })
+    ).toBeVisible()
     expect(outputAmount).toHaveClass('border-b', 'rounded-none')
     expect(outputAmount).not.toHaveClass('rounded-b-none')
     expect(
@@ -1446,9 +1504,8 @@ describe('composition-first transaction-system review', () => {
         name: 'Show quote details',
       })
     ).toHaveClass('py-4')
-    expect(
-      within(quoteDetails).getByTestId('zapper-fees-label').querySelector('svg')
-    ).not.toBeInTheDocument()
+    expect(within(quoteDetails).getByText('1 USDC = 0.99 CMC20')).toBeVisible()
+    expect(within(quoteDetails).getByText('CoW Swap')).toBeVisible()
 
     fireEvent.click(within(rfq).getByRole('radio', { name: 'Sell' }))
     expect(within(rfq).getByText('You use')).toBeVisible()
@@ -1483,6 +1540,8 @@ describe('composition-first transaction-system review', () => {
     expect(within(rfq).getByText('Minimum output')).toBeVisible()
     expect(within(rfq).getByText('Price impact')).toBeVisible()
     expect(within(rfq).getByText('Network estimate')).toBeVisible()
+    expect(within(rfq).queryByText('Exchange rate')).toBeNull()
+    expect(within(rfq).getAllByText('1 USDC = 0.99 CMC20')).toHaveLength(1)
 
     fireEvent.click(
       within(rfq).getByRole('button', { name: 'Select input asset' })
@@ -1493,7 +1552,14 @@ describe('composition-first transaction-system review', () => {
     const assetOptions = screen.getByRole('group', {
       name: 'Zapper input assets',
     })
-    expect(within(assetOptions).getByText('Base · 0x8335…2913')).toBeVisible()
+    expect(within(assetOptions).getByText('0x8335…2913')).toBeVisible()
+    expect(within(assetOptions).getByText('Native on Base')).toBeVisible()
+    expect(within(assetOptions).queryByText('Base · 0x8335…2913')).toBeNull()
+    expect(
+      within(assetOptions).getByRole('button', {
+        name: 'ETH on Base, native asset, balance 0.18 ETH',
+      })
+    ).toBeVisible()
     const optionRows = within(assetOptions).getAllByTestId(
       'transaction-asset-picker-option'
     )
@@ -1524,6 +1590,17 @@ describe('composition-first transaction-system review', () => {
       expect(supporting).not.toHaveClass('mt-1', 'text-xs', 'leading-tight')
       expect(balance).toHaveClass('text-sm', 'leading-4')
     }
+
+    fireEvent.click(
+      within(rfq).getByRole('button', { name: 'Select input asset' })
+    )
+    fireEvent.click(within(rfq).getByRole('radio', { name: 'Sell' }))
+    fireEvent.click(within(rfq).getByRole('radio', { name: 'RFQ execution' }))
+    const sellCommittedMode = within(rfq).getByTestId(
+      'transaction-committed-mode'
+    )
+    expect(sellCommittedMode).toHaveTextContent('Sell')
+    expect(sellCommittedMode).toHaveAttribute('data-asset-symbol', 'CMC20')
   })
 
   it('separates Zapper lifecycle, review variants, and outcome attachments', () => {
@@ -1678,11 +1755,13 @@ describe('composition-first transaction-system review', () => {
       'gap-2'
     )
     expect(within(advisory).getByText('Try CoW Swap')).toBeVisible()
-    expect(
-      within(advisory).getByText(
-        'For larger orders, a DEX aggregator like CoW Swap may get you a better price by routing your trade across multiple sources of liquidity.'
-      )
-    ).toBeVisible()
+    const cowRedirectEmphasis = within(advisory).getByText(
+      'may get you a better price'
+    )
+    expect(cowRedirectEmphasis).toHaveClass('font-medium', 'text-foreground')
+    expect(cowRedirectEmphasis.parentElement).toHaveTextContent(
+      'For larger orders, a DEX aggregator like CoW Swap may get you a better price by routing your trade across multiple sources of liquidity.'
+    )
     const cowSwapAction = within(advisory).getByRole('link', {
       name: /Open CoW Swap/,
     })
@@ -1711,7 +1790,8 @@ describe('composition-first transaction-system review', () => {
     ).toHaveAttribute('aria-busy', 'true')
     expect(within(rfq).queryByText('CoW Swap')).toBeNull()
     expect(within(rfq).getByText('Enso')).toBeVisible()
-    expect(within(rfq).getByText('Exchange rate')).toBeVisible()
+    expect(within(rfq).getByText('1 USDC = 0.99 CMC20')).toBeVisible()
+    expect(within(rfq).queryByText('Exchange rate')).toBeNull()
 
     fireEvent.click(within(rfq).getByRole('radio', { name: 'Atomic outcome' }))
     expect(within(rfq).getByText('Executed via')).toBeVisible()
@@ -1754,9 +1834,13 @@ describe('composition-first transaction-system review', () => {
     expect(within(rfq).getByRole('button', { name: 'Refresh' })).toBeVisible()
 
     fireEvent.click(within(rfq).getByRole('radio', { name: 'Native refund' }))
-    expect(
-      within(rfq).getByText(/CoW Protocol will automatically refund your ETH/)
-    ).toBeVisible()
+    const nativeRefundEmphasis = within(rfq).getByText(
+      'automatically refund your ETH within a few minutes.'
+    )
+    expect(nativeRefundEmphasis).toHaveClass('font-medium', 'text-foreground')
+    expect(nativeRefundEmphasis.parentElement).toHaveTextContent(
+      /CoW Protocol will automatically refund your ETH/
+    )
     expect(within(rfq).getByText('ETH')).toBeVisible()
     expect(
       within(rfq).getByRole('textbox', { name: 'You use amount' })
@@ -1816,20 +1900,68 @@ describe('composition-first transaction-system review', () => {
     expect(qualifiedAction).toBeEnabled()
   })
 
+  it('distinguishes blocking capacity from a cautionary executable quote', () => {
+    render(<TransactionTruthSpectrum />)
+
+    const rfq = screen.getByTestId('transaction-composition-rfq')
+
+    fireEvent.click(
+      within(rfq).getByRole('radio', { name: 'Capacity advisory' })
+    )
+    expect(
+      within(rfq).getByRole('textbox', { name: 'You use amount' })
+    ).toHaveValue('250,000')
+    expect(within(rfq).getByText('280,000.00')).toBeVisible()
+    expect(
+      within(rfq).getByRole('button', { name: 'Buy CMC20' })
+    ).toBeDisabled()
+    expect(within(rfq).getByText('up to $200,000 per transaction')).toHaveClass(
+      'font-medium',
+      'text-foreground'
+    )
+
+    fireEvent.click(
+      within(rfq).getByRole('radio', { name: 'Market-hours advisory' })
+    )
+    const cautionaryAction = within(rfq).getByRole('button', {
+      name: 'Buy anyway',
+    })
+    expect(cautionaryAction).toBeEnabled()
+    expect(cautionaryAction).toHaveAttribute('data-tone', 'secondary')
+    expect(within(rfq).getByText('Please try again in 2 hours.')).toHaveClass(
+      'font-medium',
+      'text-foreground'
+    )
+
+    fireEvent.click(
+      within(rfq).getByRole('radio', { name: 'Trading unavailable' })
+    )
+    expect(
+      within(rfq).getByRole('button', { name: 'Buy CMC20' })
+    ).toBeDisabled()
+    expect(
+      within(rfq).getByText('Try again later when trading resumes.')
+    ).toHaveClass('font-medium', 'text-foreground')
+  })
+
   it('keeps RFQ execution compact while preserving filled and expired evidence', async () => {
     render(<TransactionTruthSpectrum />)
 
     const rfq = screen.getByTestId('transaction-composition-rfq')
 
     fireEvent.click(within(rfq).getByRole('radio', { name: 'RFQ execution' }))
-    expect(within(rfq).getByRole('radio', { name: 'Buy' })).toBeDisabled()
-    expect(within(rfq).getByRole('radio', { name: 'Sell' })).toBeDisabled()
+    const committedMode = within(rfq).getByTestId('transaction-committed-mode')
+    expect(committedMode).toHaveTextContent('Buy')
+    expect(committedMode).toHaveAttribute('data-asset-symbol', 'CMC20')
     expect(
-      within(rfq).getByRole('button', { name: 'Open Zapper settings' })
-    ).toBeDisabled()
+      within(committedMode).getByTestId('transaction-committed-mode-logo')
+    ).toHaveClass('motion-safe:animate-[spin_12s_linear_infinite]')
     expect(
-      within(rfq).getByRole('button', { name: 'Refresh quote' })
-    ).toBeDisabled()
+      within(rfq).queryByRole('button', { name: 'Open Zapper settings' })
+    ).not.toBeInTheDocument()
+    expect(
+      within(rfq).queryByRole('button', { name: 'Refresh quote' })
+    ).not.toBeInTheDocument()
     expect(
       within(rfq).getByRole('button', {
         name: 'Waiting for order to fill…',
@@ -1871,7 +2003,8 @@ describe('composition-first transaction-system review', () => {
     expect(within(rfq).getByTestId('zapper-outcome-status')).toHaveTextContent(
       'Completed'
     )
-    expect(within(rfq).getByTestId('zapper-shell')).toHaveClass(
+    const outcomeShell = within(rfq).getByTestId('zapper-shell')
+    expect(outcomeShell).toHaveClass(
       'relative',
       'z-10',
       'min-h-[26rem]',
@@ -1879,6 +2012,19 @@ describe('composition-first transaction-system review', () => {
       'ring-2',
       'ring-card'
     )
+    expect(outcomeShell.classList.contains('grid')).toBe(true)
+    const outcomeStack = within(rfq).getByTestId('zapper-review-stack')
+    expect(outcomeStack.classList.contains('flex')).toBe(true)
+    expect(outcomeStack.classList.contains('flex-col')).toBe(true)
+    const outcomeAmountAndDetails = within(rfq).getByTestId(
+      'zapper-amount-and-details'
+    )
+    expect(outcomeAmountAndDetails.classList.contains('flex-1')).toBe(true)
+    expect(
+      outcomeAmountAndDetails.classList.contains(
+        'grid-rows-[auto_minmax(0,1fr)_auto]'
+      )
+    ).toBe(true)
     const outcomeSurface = within(rfq).getByTestId('zapper-outcome-surface')
     expect(outcomeSurface).toHaveAttribute(
       'data-component',
@@ -1886,6 +2032,7 @@ describe('composition-first transaction-system review', () => {
     )
     expect(outcomeSurface).toHaveAttribute('aria-hidden', 'true')
     expect(outcomeSurface).toHaveClass(
+      'origin-bottom',
       'rounded-lg',
       'bg-brand',
       '[animation:transaction-outcome-surface-in_360ms_ease-out_both]'
@@ -1908,9 +2055,11 @@ describe('composition-first transaction-system review', () => {
       within(rfq).getByTestId('transaction-amount-relation-divider')
     ).toHaveClass('opacity-0')
     const outcomeOutput = within(rfq).getByTestId('zapper-output-transition')
-    expect(within(rfq).getByTestId('transaction-amount-pair')).toHaveClass(
-      'pb-2'
-    )
+    const outcomeAmountPair = within(rfq).getByTestId('transaction-amount-pair')
+    expect(outcomeAmountPair).toHaveClass('pb-2')
+    expect(outcomeAmountPair.classList.contains('flex')).toBe(true)
+    expect(outcomeAmountPair.classList.contains('flex-col')).toBe(true)
+    expect(outcomeAmountPair.classList.contains('justify-end')).toBe(true)
     expect(within(outcomeOutput).getByText('Received')).toBeVisible()
     expect(within(outcomeOutput).getByText('986.42')).toBeVisible()
     expect(within(outcomeOutput).queryByText('Estimated output')).toBeNull()
@@ -1936,11 +2085,11 @@ describe('composition-first transaction-system review', () => {
     expect(walletAction).toHaveAttribute('data-tone', 'secondary')
     expect(
       within(walletAction).getByTestId('transaction-wallet-add-glyph')
-    ).toBeVisible()
+    ).toHaveClass('lucide-bookmark')
     fireEvent.click(walletAction)
     expect(
       within(walletAction).getByTestId('transaction-wallet-tracked-glyph')
-    ).toBeVisible()
+    ).toHaveClass('lucide-bookmark', 'fill-current')
     const outcomeFacts = within(rfq).getByTestId('zapper-outcome-facts')
     expect(outcomeFacts).toHaveClass('gap-2', 'pb-4', 'pt-4')
     expect(within(outcomeFacts).getByText('Filled via')).toBeVisible()
@@ -1982,6 +2131,10 @@ describe('composition-first transaction-system review', () => {
     expect(
       within(updatesAttachment).getByText('Stay informed about this DTF')
     ).toHaveClass('text-base', 'font-medium', 'leading-6', 'text-primary')
+    expect(updatesAttachment.querySelector('strong')).toBeNull()
+    expect(
+      within(updatesAttachment).getByTestId('outcome-attachment-copy')
+    ).toHaveClass('px-4', 'pt-4')
     expect(
       within(updatesAttachment).getByRole('textbox', {
         name: 'Email',
@@ -1993,36 +2146,49 @@ describe('composition-first transaction-system review', () => {
     ).toHaveClass('w-full')
     expect(
       within(updatesAttachment).getByTestId('outcome-attachment-email-actions')
-    ).toHaveClass('flex-col', 'gap-2')
+    ).toHaveClass('flex-col', 'gap-2', '[@container(min-width:440px)]:flex-row')
     expect(
-      within(updatesAttachment).getByRole('button', {
+      within(updatesAttachment).getByRole('button', { name: 'Subscribe' })
+    ).toHaveClass('w-full', '[@container(min-width:440px)]:w-auto')
+    expect(
+      within(updatesAttachment).queryByRole('button', {
         name: 'Dismiss invitation',
       })
-    ).toHaveAttribute('data-tone', 'secondary')
+    ).toBeNull()
     expect(
-      within(updatesAttachment).getByTestId('outcome-attachment-icon')
-    ).toHaveClass('size-8', 'text-foreground', '[&>svg]:size-5')
-    expect(
-      within(updatesAttachment).getByTestId('outcome-attachment-icon')
-    ).not.toHaveClass('rounded-full', 'bg-muted')
-    const updatesSidecar = within(rfq).getByTestId('transaction-sidecar')
-    expect(updatesSidecar).toHaveClass(
+      within(updatesAttachment).queryByTestId('outcome-attachment-icon')
+    ).toBeNull()
+    const updatesRegion = within(rfq).getByTestId(
+      'transaction-outcome-attachment-region'
+    )
+    expect(updatesRegion).toHaveClass(
       'relative',
       'z-0',
+      'w-full',
+      'max-w-none',
       'rounded-none',
-      'bg-gradient-to-b',
-      'from-secondary',
-      'to-card',
-      'justify-between',
-      '[@container(min-width:980px)]:bottom-6',
-      '[@container(min-width:980px)]:top-6',
-      '[@container(min-width:980px)_and_(max-width:1159px)]:w-[272px]',
-      '[@container(min-width:1160px)]:w-[360px]'
+      'bg-substrate-subtle',
+      'p-2'
     )
-    expect(updatesSidecar).not.toHaveClass('ring-1', 'ring-border')
-    expect(within(rfq).getByTestId('zapper-outcome-composition')).toHaveClass(
+    expect(updatesRegion).not.toHaveClass(
+      'absolute',
+      'bg-gradient-to-b',
+      'ring-1',
+      'ring-border'
+    )
+    const outcomeComposition = within(rfq).getByTestId(
+      'zapper-outcome-composition'
+    )
+    expect(outcomeComposition).toHaveClass(
       'relative',
-      'max-w-[432px]'
+      'max-w-[448px]',
+      'min-h-[26rem]',
+      'overflow-hidden',
+      'ring-2',
+      'ring-card'
+    )
+    expect(within(rfq).getByTestId('zapper-shell')).not.toHaveClass(
+      'min-h-[26rem]'
     )
     expect(within(rfq).getByText('986.42')).toBeVisible()
 
@@ -2034,6 +2200,15 @@ describe('composition-first transaction-system review', () => {
     expect(
       within(introAttachment).getByText('A direct line to the team')
     ).toHaveClass('text-primary')
+    const introApplicabilityEmphasis =
+      within(introAttachment).getByText('As a larger holder')
+    expect(introApplicabilityEmphasis).toHaveClass(
+      'font-medium',
+      'text-foreground'
+    )
+    expect(introApplicabilityEmphasis.parentElement).toHaveTextContent(
+      'As a larger holder, you can schedule an intro call with the Reserve team to meet us, get help when needed, and share feedback as we continue to build.'
+    )
     expect(
       within(introAttachment).getByRole('link', {
         name: /Schedule an intro call/,
@@ -2044,16 +2219,13 @@ describe('composition-first transaction-system review', () => {
         name: 'Email',
       })
     ).not.toBeInTheDocument()
-    fireEvent.click(
-      within(introAttachment).getByRole('button', {
+    expect(
+      within(introAttachment).queryByRole('button', {
         name: 'Dismiss invitation',
       })
-    )
-    expect(
-      within(rfq).queryByTestId('zapper-outcome-attachment')
-    ).not.toBeInTheDocument()
+    ).toBeNull()
     expect(within(rfq).getByTestId('zapper-outcome-composition')).toHaveClass(
-      'max-w-[432px]'
+      'max-w-[448px]'
     )
 
     fireEvent.click(within(rfq).getByRole('radio', { name: 'RFQ recovery' }))
@@ -2081,62 +2253,67 @@ describe('composition-first transaction-system review', () => {
     ).not.toBeInTheDocument()
   })
 
-  it('uses an attached review region while preserving outcome sidecars', () => {
-    vi.useFakeTimers()
+  it('keeps review and outcome attachments semantically distinct', () => {
+    render(<TransactionTruthSpectrum />)
 
-    try {
-      render(<TransactionTruthSpectrum />)
+    const rfq = screen.getByTestId('transaction-composition-rfq')
 
-      const rfq = screen.getByTestId('transaction-composition-rfq')
+    fireEvent.click(
+      within(rfq).getByRole('radio', { name: 'Market-hours advisory' })
+    )
 
-      fireEvent.click(
-        within(rfq).getByRole('radio', { name: 'Market-hours advisory' })
+    const advisory = within(rfq).getByTestId('transaction-review-advisory')
+    expect(advisory).toHaveAttribute('data-entrance', 'immediate')
+    expect(advisory).toHaveClass('bg-substrate-subtle', 'p-6')
+    expect(
+      within(rfq).queryByTestId('transaction-outcome-attachment-region')
+    ).toBeNull()
+    expect(within(advisory).queryByTestId('lifecycle-status-pill')).toBeNull()
+    expect(within(advisory).getByText('Expect a worse price')).toHaveClass(
+      'text-feedback-warning-foreground'
+    )
+    const dismissAdvisory = within(advisory).getByRole('button', {
+      name: 'Dismiss suggestion',
+    })
+    expect(dismissAdvisory).toHaveClass('size-5', 'after:-inset-3')
+    expect(dismissAdvisory).not.toHaveAttribute(
+      'data-testid',
+      'canonical-icon-button'
+    )
+    expect(
+      within(advisory).getByText(
+        /CMC20's underlying stocks aren't trading right now/
       )
+    ).toBeVisible()
+    expect(within(rfq).getByTestId('zapper-outcome-composition')).toHaveClass(
+      'overflow-hidden',
+      'bg-card',
+      'ring-2',
+      'ring-card'
+    )
 
-      const advisory = within(rfq).getByTestId('transaction-review-advisory')
-      expect(advisory).toHaveAttribute('data-entrance', 'immediate')
-      expect(advisory).toHaveClass('bg-substrate-subtle', 'p-6')
-      expect(within(rfq).queryByTestId('transaction-sidecar')).toBeNull()
-      expect(within(advisory).queryByTestId('lifecycle-status-pill')).toBeNull()
-      expect(within(advisory).getByText('Expect a worse price')).toHaveClass(
-        'text-feedback-warning-foreground'
-      )
-      const dismissAdvisory = within(advisory).getByRole('button', {
-        name: 'Dismiss suggestion',
-      })
-      expect(dismissAdvisory).toHaveClass('size-5', 'after:-inset-3')
-      expect(dismissAdvisory).not.toHaveAttribute(
-        'data-testid',
-        'canonical-icon-button'
-      )
-      expect(
-        within(advisory).getByText(
-          /CMC20's underlying stocks aren't trading right now/
-        )
-      ).toBeVisible()
-      expect(within(rfq).getByTestId('zapper-outcome-composition')).toHaveClass(
-        'overflow-hidden',
-        'bg-card',
-        'ring-2',
-        'ring-card'
-      )
+    fireEvent.click(within(rfq).getByRole('radio', { name: 'Updates' }))
+    const outcome = within(rfq).getByTestId(
+      'transaction-outcome-attachment-region'
+    )
+    expect(outcome).toHaveAttribute('data-entrance', 'with-outcome')
+    expect(
+      within(outcome).getByText('Stay informed about this DTF')
+    ).toBeVisible()
+    expect(within(rfq).getByTestId('zapper-outcome-surface')).toHaveClass(
+      'bg-brand-deep'
+    )
+    expect(within(rfq).getByTestId('zapper-outcome-surface')).toHaveAttribute(
+      'data-tone',
+      'deep'
+    )
+    expect(within(rfq).queryByRole('button', { name: 'Done' })).toBeNull()
 
-      fireEvent.click(within(rfq).getByRole('radio', { name: 'Updates' }))
-      expect(within(rfq).queryByTestId('transaction-sidecar')).toBeNull()
-
-      act(() => vi.advanceTimersByTime(359))
-      expect(within(rfq).queryByTestId('transaction-sidecar')).toBeNull()
-
-      act(() => vi.advanceTimersByTime(1))
-      const outcome = within(rfq).getByTestId('transaction-sidecar')
-      expect(outcome).toHaveAttribute('data-sidecar-kind', 'outcome')
-      expect(outcome).toHaveAttribute('data-entrance', 'after-outcome')
-      expect(
-        within(outcome).getByText('Stay informed about this DTF')
-      ).toBeVisible()
-    } finally {
-      vi.useRealTimers()
-    }
+    fireEvent.click(within(rfq).getByRole('radio', { name: 'Intro call' }))
+    expect(
+      within(rfq).getByRole('link', { name: /Schedule an intro call/ })
+    ).toHaveAttribute('data-tone', 'primary')
+    expect(within(rfq).queryByRole('button', { name: 'Done' })).toBeNull()
   })
 
   it('keeps the Zapper close action functional and recoverable in the lab', () => {
@@ -2183,6 +2360,12 @@ describe('composition-first transaction-system review', () => {
     )
     fireEvent.click(within(rfq).getByRole('radio', { name: 'Quote search' }))
 
+    expect(
+      within(rfq).getByTestId('transaction-committed-mode')
+    ).toHaveTextContent('Buy')
+    expect(
+      within(rfq).queryByRole('group', { name: 'Zapper operation' })
+    ).not.toBeInTheDocument()
     const quoteSearchSurface = within(rfq).getByRole('status', {
       name: 'Finding best quote',
     })
@@ -2210,10 +2393,28 @@ describe('composition-first transaction-system review', () => {
     expect(
       within(searchingOutput).queryByTestId('zapper-output-value-delta')
     ).toBeNull()
-    expect(searchingOutput).not.toHaveClass('border-b')
+    expect(searchingOutput).toHaveClass('border-b', 'border-transparent')
+    expect(searchingOutput).not.toHaveClass('border-border')
     expect(within(rfq).getByTestId('zapper-quote-details')).not.toHaveClass(
       'border-t'
     )
+    const quoteSearchDetails = within(rfq).getByTestId('zapper-quote-details')
+    const quoteSearchDetailsTrigger = within(quoteSearchDetails).getByRole(
+      'button',
+      { name: 'Hide quote details' }
+    )
+    expect(quoteSearchDetailsTrigger.firstElementChild).toHaveClass(
+      'flex',
+      'h-5',
+      'items-center'
+    )
+    expect(quoteSearchDetailsTrigger.lastElementChild).toHaveClass('h-5')
+    expect(within(quoteSearchDetails).queryByText('CoW Swap')).toBeNull()
+    expect(
+      quoteSearchDetails.querySelector(
+        '[data-slot="zapper-quote-source-loading"]'
+      )
+    ).toHaveClass('h-3', 'w-20')
     expect(within(rfq).getByText('Searching DEX liquidity')).toBeVisible()
     expect(
       within(rfq).getByRole('button', { name: 'Updating quote…' })
@@ -2240,13 +2441,178 @@ describe('composition-first transaction-system review', () => {
       within(rfq)
         .getByTestId('zapper-quote-details')
         .querySelectorAll('[data-testid="v1-skeleton"]')
-    ).toHaveLength(5)
+    ).toHaveLength(6)
     for (const fact of within(rfq).getAllByTestId('zapper-quote-fact')) {
       expect(fact).toHaveClass('h-5', 'items-center')
     }
     expect(within(rfq).getByTestId('zapper-review-stack')).toHaveClass(
       'space-y-0'
     )
+  })
+
+  it('keeps only distinct current Zapper behavior inside the reviewed composition', () => {
+    render(<TransactionTruthSpectrum />)
+
+    const rfq = screen.getByTestId('transaction-composition-rfq')
+
+    expect(within(rfq).getByRole('radio', { name: 'Review' })).toBeChecked()
+    expect(within(rfq).getByRole('radio', { name: 'Buy' })).toBeVisible()
+
+    fireEvent.click(within(rfq).getByRole('radio', { name: 'Pre-quote' }))
+    expect(within(rfq).getByRole('radio', { name: 'Buy' })).toBeVisible()
+    expect(
+      within(rfq).getByRole('button', { name: 'Close Zapper' })
+    ).toBeVisible()
+    expect(
+      within(rfq).getByRole('button', { name: 'Swap input and output assets' })
+    ).toBeVisible()
+    expect(within(rfq).getByText('Slippage tolerance')).toBeVisible()
+    const preQuoteInput = within(rfq).getByRole('textbox', {
+      name: 'Order size amount',
+    })
+    expect(preQuoteInput).toHaveValue('')
+    expect(preQuoteInput).toHaveAttribute('placeholder', '0')
+    expect(within(rfq).getByText('Projected proceeds')).toBeVisible()
+    expect(within(rfq).getByText('0')).toBeVisible()
+    expect(within(rfq).getAllByText('$0.00')).toHaveLength(2)
+    expect(within(rfq).getByTestId('zapper-selectable-quote-meta')).toHaveClass(
+      'py-2'
+    )
+    const preQuoteMetaRow = within(rfq).getByTestId(
+      'zapper-selectable-quote-meta-row'
+    )
+    expect(
+      within(preQuoteMetaRow).getByText('Slippage tolerance')
+    ).toBeVisible()
+    expect(
+      within(preQuoteMetaRow).getByRole('button', {
+        name: 'About slippage tolerance',
+      })
+    ).toBeVisible()
+    const preQuoteSlippage = within(preQuoteMetaRow).getByRole('combobox', {
+      name: 'Change slippage tolerance',
+    })
+    expect(preQuoteSlippage).toHaveAttribute('data-size', 'compact')
+    expect(preQuoteSlippage).toHaveClass('w-[84px]', 'shrink-0')
+    expect(preQuoteSlippage).toHaveTextContent('0.5%')
+    fireEvent.click(preQuoteSlippage)
+    expect(screen.getByRole('option', { name: '0.1%' })).toBeVisible()
+    expect(screen.getByRole('option', { name: '0.5%' })).toBeVisible()
+    expect(screen.getByRole('option', { name: '1%' })).toBeVisible()
+    expect(screen.getByRole('option', { name: '5%' })).toBeVisible()
+    fireEvent.click(screen.getByRole('option', { name: '1%' }))
+    expect(preQuoteSlippage).toHaveTextContent('1%')
+    expect(
+      within(rfq).queryByRole('button', { name: 'Show quote details' })
+    ).toBeNull()
+    expect(within(rfq).getByTestId('zapper-selectable-route-meta')).toHaveClass(
+      'max-w-0'
+    )
+    expect(
+      within(rfq).getByRole('button', { name: 'Market Buy' })
+    ).toBeDisabled()
+
+    fireEvent.click(within(rfq).getByRole('radio', { name: 'Route selection' }))
+    expect(within(rfq).getByText('Slippage tolerance')).toBeVisible()
+    const currentQuoteOutput = within(rfq)
+      .getByText('Projected proceeds')
+      .closest('[data-testid="transaction-amount-object"]')
+    expect(currentQuoteOutput).not.toBeNull()
+    expect(
+      within(currentQuoteOutput as HTMLElement).getByText('Quote includes fees')
+    ).toBeVisible()
+    expect(
+      within(currentQuoteOutput as HTMLElement).getByRole('button', {
+        name: 'About included quote fees',
+      })
+    ).toBeVisible()
+
+    const currentDetails = within(rfq).getByRole('button', {
+      name: 'Show quote details',
+    })
+    const quoteReadyMetaRow = within(rfq).getByTestId(
+      'zapper-selectable-quote-meta-row'
+    )
+    expect(quoteReadyMetaRow).toHaveClass('flex')
+    expect(within(rfq).getByTestId('zapper-selectable-route-meta')).toHaveClass(
+      'max-w-48',
+      'shrink-0'
+    )
+    expect(quoteReadyMetaRow).toContainElement(currentDetails)
+    expect(
+      within(quoteReadyMetaRow).getByText('Slippage tolerance')
+    ).toBeVisible()
+    expect(within(quoteReadyMetaRow).getByText('Via')).toBeVisible()
+    expect(within(quoteReadyMetaRow).getByText('CoW Swap')).toBeVisible()
+    expect(within(currentDetails).queryByText('CoW Swap')).toBeNull()
+    expect(currentDetails).toHaveAttribute(
+      'data-testid',
+      'canonical-icon-button'
+    )
+    expect(currentDetails).toHaveAttribute('data-size', 'micro')
+    expect(currentDetails).toHaveAttribute('data-tone', 'secondary')
+    expect(within(quoteReadyMetaRow).queryByText('Fees included')).toBeNull()
+    expect(currentDetails).toHaveAttribute('aria-expanded', 'false')
+    fireEvent.click(currentDetails)
+    expect(currentDetails).toHaveAttribute('aria-expanded', 'true')
+    expect(within(rfq).queryByText('Routes')).toBeNull()
+    const routeOptions = within(rfq).getByTestId('zapper-route-options')
+    expect(routeOptions).toHaveClass('grid-cols-1')
+    expect(routeOptions).toHaveClass('px-0', 'pt-2')
+    expect(within(rfq).getByText('Best')).toBeVisible()
+    const cowRoute = within(rfq).getByRole('button', {
+      name: 'Use CoW Swap route',
+    })
+    expect(cowRoute).toHaveClass('min-h-11', 'rounded-full', 'px-4')
+    expect(cowRoute).toHaveClass('border-primary/30')
+    const cowRouteValue = within(cowRoute).getByTestId('zapper-route-value')
+    expect(cowRouteValue).toHaveClass('flex-row')
+    expect(within(cowRouteValue).getByText('990.00')).toBeVisible()
+    expect(within(cowRouteValue).getByText('$990.00')).toBeVisible()
+    expect(within(rfq).getByText('Current price')).toBeVisible()
+    expect(within(rfq).getByText('Projected slippage')).toBeVisible()
+    expect(within(rfq).getByText('Max slippage')).toBeVisible()
+    expect(within(rfq).getByText('Min Amount Out')).toBeVisible()
+    const currentQuoteFacts = within(rfq)
+      .getByText('Min Amount Out')
+      .closest('dl')
+    expect(currentQuoteFacts).toHaveClass('pb-2')
+    expect(within(rfq).getAllByText('Quote includes fees')).toHaveLength(1)
+    expect(
+      within(currentQuoteFacts as HTMLElement).getByRole('button', {
+        name: 'About current price',
+      })
+    ).toBeVisible()
+    expect(
+      within(currentQuoteFacts as HTMLElement).getByRole('button', {
+        name: 'About projected slippage',
+      })
+    ).toBeVisible()
+    expect(
+      within(currentQuoteFacts as HTMLElement).getByRole('button', {
+        name: 'About maximum slippage',
+      })
+    ).toBeVisible()
+    expect(
+      within(currentQuoteFacts as HTMLElement).getByRole('button', {
+        name: 'About minimum amount out',
+      })
+    ).toBeVisible()
+    const veloraRoute = within(rfq).getByRole('button', {
+      name: 'Use Velora route',
+    })
+    fireEvent.click(veloraRoute)
+    expect(veloraRoute).toHaveAttribute('aria-pressed', 'true')
+    expect(within(quoteReadyMetaRow).getByText('Velora')).toBeVisible()
+    expect(within(quoteReadyMetaRow).queryByText('CoW Swap')).toBeNull()
+
+    expect(
+      within(rfq).getByRole('radio', { name: 'Quote search' })
+    ).toBeVisible()
+    expect(
+      within(rfq).queryByRole('radio', { name: /Current package/ })
+    ).toBeNull()
+    expect(within(rfq).queryByText('Current package evidence')).toBeNull()
   })
 
   it('keeps delayed initiation concise while deferring persistent withdrawal management', () => {
@@ -2386,6 +2752,8 @@ describe('composition-first transaction-system review', () => {
     ).toBeVisible()
     expect(within(pressureTests).getByText('USD Coin')).toBeVisible()
     expect(within(pressureTests).getByText('Wrapped Ether')).toBeVisible()
+    expect(within(pressureTests).getByText('0x8335…2913')).toBeVisible()
+    expect(within(pressureTests).queryByText('Base · 0x8335…2913')).toBeNull()
 
     const fullSelector = within(pressureTests).getByRole('group', {
       name: 'Available input assets',

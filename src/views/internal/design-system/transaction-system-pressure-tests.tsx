@@ -125,12 +125,13 @@ const AssetSelectorDialog = () => (
       />
       <TransactionAssetPickerList aria-label="Available input assets">
         <TransactionAssetPickerOption
+          aria-label="USD Coin on Base, token address 0x8335…2913, balance 4,280.16 USDC"
           identity={
             <TransactionAssetIdentity
               chain={ChainId.Base}
               symbol="USDC"
               name="USD Coin"
-              supporting="Base · 0x8335…2913"
+              supporting="0x8335…2913"
               size="default"
             />
           }
@@ -138,24 +139,26 @@ const AssetSelectorDialog = () => (
           selected
         />
         <TransactionAssetPickerOption
+          aria-label="Wrapped Ether on Base, token address 0x4200…0006, balance 1.804 WETH"
           identity={
             <TransactionAssetIdentity
               chain={ChainId.Base}
               symbol="WETH"
               name="Wrapped Ether"
-              supporting="Base · 0x4200…0006"
+              supporting="0x4200…0006"
               size="default"
             />
           }
           balance="1.804 WETH"
         />
         <TransactionAssetPickerOption
+          aria-label="Wrapped Bitcoin on Base, token address 0x0555…A7B8, balance 0.0041 WBTC"
           identity={
             <TransactionAssetIdentity
               chain={ChainId.Base}
               symbol="WBTC"
               name="Wrapped Bitcoin"
-              supporting="Base · 0x0555…A7B8"
+              supporting="0x0555…A7B8"
               size="default"
             />
           }

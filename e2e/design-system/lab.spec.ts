@@ -1963,6 +1963,158 @@ test.describe('design system lab', () => {
     await expect(interactiveCheckbox).toHaveAttribute('aria-checked', 'true')
   })
 
+  test('keeps mounted transaction geometry stable across lifecycle changes', async ({
+    page,
+  }) => {
+    await page.goto(
+      '/internal/design-system/components/transaction-action#transaction-truth-spectrum'
+    )
+
+    const composition = page.getByTestId('transaction-composition-rfq')
+    const shell = composition.getByTestId('zapper-shell')
+    const amountPair = composition.getByTestId('transaction-amount-pair')
+    const details = composition.getByTestId('zapper-quote-details')
+    const measure = async (locator: typeof shell) => {
+      const box = await locator.boundingBox()
+      expect(box).not.toBeNull()
+      return box!
+    }
+
+    await composition
+      .getByTestId('transaction-composition-rfq-state-group-0-option-2')
+      .click()
+    const reviewShell = await measure(shell)
+    const reviewAmountPair = await measure(amountPair)
+    const reviewDetails = await measure(details)
+
+    await composition
+      .getByTestId('transaction-composition-rfq-state-group-0-option-1')
+      .click()
+    await expect(
+      composition.getByTestId('zapper-quote-animation')
+    ).toBeVisible()
+    const searchShell = await measure(shell)
+    const searchAmountPair = await measure(amountPair)
+    const searchDetails = await measure(details)
+
+    expect(
+      Math.abs(searchShell.height - reviewShell.height)
+    ).toBeLessThanOrEqual(1)
+    expect(Math.abs(searchShell.x - reviewShell.x)).toBeLessThanOrEqual(1)
+    expect(
+      Math.abs(searchAmountPair.height - reviewAmountPair.height)
+    ).toBeLessThanOrEqual(1)
+    expect(
+      Math.abs(searchDetails.height - reviewDetails.height)
+    ).toBeLessThanOrEqual(1)
+
+    await composition
+      .getByTestId('transaction-composition-rfq-state-group-0-option-7')
+      .click()
+    const outcomeShell = await measure(shell)
+    expect(outcomeShell.height).toBeGreaterThanOrEqual(reviewShell.height - 1)
+
+    await composition
+      .getByTestId('transaction-composition-rfq-state-group-2-option-0')
+      .click()
+    const attachedOutcome = await measure(
+      composition.getByTestId('zapper-outcome-composition')
+    )
+    expect(attachedOutcome.height).toBeGreaterThanOrEqual(
+      reviewShell.height - 1
+    )
+    expect(
+      await page.evaluate(
+        () => document.documentElement.scrollWidth <= window.innerWidth
+      )
+    ).toBe(true)
+  })
+
+  test('keeps mounted Vote Lock relationships aligned across action and submitted states', async ({
+    page,
+  }) => {
+    await page.goto(
+      '/internal/design-system/components/transaction-action#transaction-truth-spectrum'
+    )
+
+    const composition = page.getByTestId('transaction-composition-vote-lock')
+    const chooseLockState = (index: number) =>
+      composition.getByTestId(
+        `transaction-composition-vote-lock-state-group-0-option-${index}`
+      )
+    const chooseDelegationState = (index: number) =>
+      composition.getByTestId(
+        `transaction-composition-vote-lock-state-group-2-option-${index}`
+      )
+    const acknowledgementGap = async (actionRegionTestId: string) => {
+      const control = await composition
+        .getByTestId('vote-lock-acknowledgement')
+        .getByTestId('canonical-checkbox')
+        .boundingBox()
+      const action = await composition
+        .getByTestId(actionRegionTestId)
+        .getByTestId('canonical-button')
+        .boundingBox()
+      expect(control).not.toBeNull()
+      expect(action).not.toBeNull()
+      return action!.y - (control!.y + control!.height)
+    }
+
+    await chooseLockState(0).click()
+    expect(await acknowledgementGap('vote-lock-action-footer')).toBeCloseTo(
+      8,
+      0
+    )
+
+    await chooseLockState(3).click()
+    expect(
+      await acknowledgementGap('vote-lock-process-button-region')
+    ).toBeCloseTo(8, 0)
+
+    await chooseLockState(2).click()
+    await expect(
+      composition.getByTestId('vote-lock-acknowledgement')
+    ).toHaveCount(0)
+
+    await chooseLockState(4).click()
+    await expect(
+      composition.getByTestId('transaction-amount-pair')
+    ).toHaveAttribute('data-task-boundary', 'leading')
+
+    for (const stateIndex of [7, 8]) {
+      await chooseDelegationState(stateIndex).click()
+      const padding = await composition
+        .getByTestId('canonical-inline-message')
+        .evaluate((element) => {
+          const style = getComputedStyle(element)
+          return {
+            bottom: style.paddingBottom,
+            left: style.paddingLeft,
+            right: style.paddingRight,
+            top: style.paddingTop,
+          }
+        })
+      expect(padding).toEqual({
+        bottom: '12px',
+        left: '16px',
+        right: '16px',
+        top: '12px',
+      })
+    }
+
+    await chooseLockState(7).click()
+    const surfaceOrigin = await composition
+      .getByTestId('vote-lock-outcome-surface')
+      .evaluate((element) => {
+        const [, y] = getComputedStyle(element).transformOrigin.split(' ')
+        return {
+          height: (element as HTMLElement).offsetHeight,
+          y: Number.parseFloat(y ?? ''),
+        }
+      })
+    expect(surfaceOrigin.y).toBeCloseTo(surfaceOrigin.height, 0)
+  })
+
   for (const theme of THEMES) {
     test(`captures the ${theme} routed capability map`, async ({ page }) => {
       await page.addInitScript((mode) => {

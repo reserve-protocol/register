@@ -8,20 +8,16 @@ import {
   FieldLabel,
   TextInput,
 } from '@/components/design-system-v1/field'
+import { transactionAttachedRegionGeometry } from '@/components/design-system-v1/transaction-task-geometry'
 import { v1Typography } from '@/components/design-system-v1/typography'
-import AsteriskIcon from '@/components/icons/AsteriskIcon'
 import { v1SemanticRecipes as roles } from '@/components/ui/v1-semantic-recipes'
 import { CALENDLY_URL } from '@/utils/schedule-call'
-
-import { TransactionSidecar } from './transaction-sidecar'
 
 export type TransactionOutcomeAttachmentType = 'updates' | 'intro-call'
 
 export const TransactionOutcomeAttachment = ({
-  onDismiss,
   type,
 }: {
-  onDismiss: () => void
   type: TransactionOutcomeAttachmentType
 }) => {
   const emailId = useId()
@@ -35,24 +31,16 @@ export const TransactionOutcomeAttachment = ({
   }
 
   return (
-    <TransactionSidecar
-      contentState={type}
-      contentTestId="zapper-outcome-attachment"
-      dismissLabel="Dismiss invitation"
-      entrance="after-outcome"
-      kind="outcome"
-      onDismiss={onDismiss}
-      headerStart={
-        <span
-          data-testid="outcome-attachment-icon"
-          className="flex size-8 shrink-0 items-center justify-center text-foreground [&>svg]:size-5"
-        >
-          <AsteriskIcon aria-hidden="true" />
-        </span>
-      }
+    <aside
+      data-testid="transaction-outcome-attachment-region"
+      data-entrance="with-outcome"
+      className={`${transactionAttachedRegionGeometry.surface} relative z-0 w-full max-w-none origin-top rounded-none p-2 [animation:transaction-attached-region-grow-down_360ms_ease-out_both] motion-reduce:animate-none`}
     >
-      <div>
-        <div className="grid gap-1">
+      <div data-testid="zapper-outcome-attachment" data-attachment={type}>
+        <div
+          data-testid="outcome-attachment-copy"
+          className="grid gap-1 px-4 pt-4"
+        >
           <h4
             id={headingId}
             className={`${v1Typography.itemTitle} text-primary`}
@@ -62,9 +50,18 @@ export const TransactionOutcomeAttachment = ({
               : 'A direct line to the team'}
           </h4>
           <p className={`${v1Typography.supporting} ${roles.text.supporting}`}>
-            {type === 'updates'
-              ? 'Get relevant updates about changes that may affect this DTF.'
-              : 'As a larger holder, you can schedule an intro call with the Reserve team to meet us, get help when needed, and share feedback as we continue to build.'}
+            {type === 'updates' ? (
+              'Get relevant updates about changes that may affect this DTF.'
+            ) : (
+              <>
+                <strong className="font-medium text-foreground">
+                  As a larger holder
+                </strong>
+                , you can schedule an intro call with the Reserve team to meet
+                us, get help when needed, and share feedback as we continue to
+                build.
+              </>
+            )}
           </p>
         </div>
 
@@ -80,7 +77,7 @@ export const TransactionOutcomeAttachment = ({
               </FieldLabel>
               <div
                 data-testid="outcome-attachment-email-actions"
-                className="flex min-w-0 flex-col gap-2"
+                className="flex min-w-0 flex-col gap-2 [@container(min-width:440px)]:flex-row"
               >
                 <TextInput
                   id={emailId}
@@ -89,14 +86,14 @@ export const TransactionOutcomeAttachment = ({
                   placeholder="Enter your email"
                   value={email}
                   disabled={subscribed}
-                  className="min-w-0"
+                  className="min-w-0 flex-1"
                   onChange={(event) => setEmail(event.target.value)}
                   required
                 />
                 <Button
                   type="submit"
                   disabled={!email || subscribed}
-                  className="w-full"
+                  className="w-full [@container(min-width:440px)]:w-auto"
                 >
                   Subscribe
                 </Button>
@@ -120,6 +117,6 @@ export const TransactionOutcomeAttachment = ({
           </Field>
         )}
       </div>
-    </TransactionSidecar>
+    </aside>
   )
 }
