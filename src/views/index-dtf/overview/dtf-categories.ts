@@ -9,6 +9,12 @@ const STOCKS_DTFS: Record<number, Set<string>> = {
   [ChainId.BSC]: new Set([
     'buildout',
     '0xd7ce7a841310982acd976d1a6fe7bb6063c5689d',
+    'power',
+    '0x290bcc0fd5096cc3261ae2021841c7bc67cb0f51',
+    'photon',
+    '0xa0fe4e0aeca5479705ce996615b2eacb6b6a10fb',
+    'neocloud',
+    '0xf571fe3f0d74521bc7310b111faea931c748f27b',
   ]),
 }
 

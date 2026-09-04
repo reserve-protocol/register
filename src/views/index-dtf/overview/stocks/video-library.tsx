@@ -4,7 +4,7 @@ import { useTrackIndexDTFClick } from '@/views/index-dtf/hooks/useTrackIndexDTFP
 import { Trans, useLingui } from '@lingui/react/macro'
 import { Play } from 'lucide-react'
 import { useState } from 'react'
-import { VIDEO_CHAPTERS, type VideoChapter } from './video-chapters'
+import { useVideoChapters, type VideoChapter } from './video-chapters'
 import VideoSeriesModal from './video-series-modal'
 
 const ChapterRow = ({
@@ -53,6 +53,7 @@ const ChapterRow = ({
 
 const StocksVideoLibrary = () => {
   const { trackClick } = useTrackIndexDTFClick('overview', 'overview')
+  const chapters = useVideoChapters()
   const [openChapter, setOpenChapter] = useState<string | null>(null)
 
   const play = (id: string) => {
@@ -74,7 +75,7 @@ const StocksVideoLibrary = () => {
         <Trans>Learn more by watching these short videos.</Trans>
       </p>
       <div className="flex flex-col">
-        {VIDEO_CHAPTERS.map((chapter) => (
+        {chapters.map((chapter) => (
           <ChapterRow
             key={chapter.id}
             chapter={chapter}

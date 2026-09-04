@@ -24,6 +24,21 @@ none of these three is the subgraph. Basket rows are RPC `totalAssets` +
 token metadata (same SDK snapshot) joined with api prices. Don't move live
 state into the subgraph mock to "fix" a test.
 
+## The stocks variant (BUILDOUT, POWER, PHOTON, NEOCLOUD)
+
+`overview-selector.tsx` routes the BSC AI DTFs listed in `dtf-categories.ts`
+(alias + lowercase address per chain, TEMPORARY until the backend serves
+categories) to `stocks/index.tsx` — a different layout (video library, FAQ
+chat, inline zapper rail on xl). Adding a DTF there also hides the floating
+chat on its overview (`components/dtf-chat`) and moves the Zapper inline
+(`index-dtf-container.tsx`). The "About this DTF" chapters come from
+`stocks/video-chapters.ts`: three cuts shared across the suite plus one
+"Meet $SYMBOL" cut per DTF (`MEET_VIDEO_BY_SYMBOL`), all served from
+`storage.reserve.org` with the poster as `<same base name>.jpg`. A DTF in the
+category without a "Meet" entry renders the three shared chapters only.
+There is no e2e spec for this variant yet; verify it in the running app
+(`/bsc/index-dtf/<alias>/overview`).
+
 ## Did a diff here — which test?
 
 | You changed | Run / extend |
