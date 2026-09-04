@@ -86,6 +86,16 @@ const InlineMessageStateSheet = () => (
         </p>
         <div className="mt-4 grid gap-3">
           <InlineMessage
+            iconPresentation="contained"
+            presentation="summary"
+            tone="information"
+          >
+            <InlineMessageTitle>Alternative route available</InlineMessageTitle>
+            <Button className="ml-auto shrink-0" size="compact">
+              View route
+            </Button>
+          </InlineMessage>
+          <InlineMessage
             density="compact"
             presentation="summary"
             tone="warning"

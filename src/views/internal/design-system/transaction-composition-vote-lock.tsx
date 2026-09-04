@@ -175,8 +175,7 @@ const VoteLockDialog = ({
   const hasProcessPanel = hasDelegationProcessPanel || hasVoteLockProcessPanel
   const hasProcessAction =
     (isDelegate && state === 'Fast failed') ||
-    (!isDelegate &&
-      (state === 'Approval signing' || state === 'Lock ready'))
+    (!isDelegate && (state === 'Approval signing' || state === 'Lock ready'))
   if (state === 'Voting delegate updated' || state === 'Delegation updated') {
     return (
       <VoteLockDelegationOutcome
@@ -205,7 +204,12 @@ const VoteLockDialog = ({
       <header
         className={cn('shrink-0', transactionTaskGeometry.compactHeaderInset)}
       >
-        <div className={transactionTaskGeometry.compactHeaderRow}>
+        <div
+          className={cn(
+            transactionTaskGeometry.compactHeaderRow,
+            'max-[359px]:gap-2'
+          )}
+        >
           <DialogTitle className="sr-only">Govern PHOTON</DialogTitle>
           {isModeCommitted ? (
             <TransactionCommittedMode
@@ -234,11 +238,19 @@ const VoteLockDialog = ({
                 }
               }}
             >
-              <SegmentedControlItem value="lock">
+              <SegmentedControlItem value="lock" className="max-[359px]:px-1.5">
                 Vote-lock
               </SegmentedControlItem>
-              <SegmentedControlItem value="unlock">Unlock</SegmentedControlItem>
-              <SegmentedControlItem value="delegate">
+              <SegmentedControlItem
+                value="unlock"
+                className="max-[359px]:px-1.5"
+              >
+                Unlock
+              </SegmentedControlItem>
+              <SegmentedControlItem
+                value="delegate"
+                className="max-[359px]:px-1.5"
+              >
                 Delegate
               </SegmentedControlItem>
             </SegmentedControl>
@@ -326,7 +338,8 @@ const VoteLockDialog = ({
         <div
           className={cn(
             transactionAttachedRegionGeometry.content,
-            'p-2 shadow-sm'
+            transactionTaskGeometry.shellInset,
+            'shadow-sm'
           )}
           data-testid="vote-lock-process-content-frame"
         >

@@ -507,6 +507,37 @@ body {
   }
 }
 
+@container (min-width: 408px) {
+  .zapper-selectable-quote-meta {
+    padding-block: 0.5rem;
+  }
+
+  .zapper-selectable-quote-meta-row {
+    height: 2.75rem;
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .zapper-selectable-route-meta {
+    width: auto;
+    max-height: none;
+  }
+
+  .zapper-selectable-route-meta[data-visible='true'] {
+    max-width: 12rem;
+  }
+
+  .zapper-selectable-route-meta[data-visible='false'] {
+    max-width: 0;
+  }
+
+  .zapper-selectable-route-meta-content {
+    width: auto;
+    justify-content: flex-start;
+    padding-left: 1rem;
+  }
+}
+
 @font-face {
   font-family: 'TWK Lausanne';
   src: url('/fonts/TWKLausanne-300.otf') format('opentype');

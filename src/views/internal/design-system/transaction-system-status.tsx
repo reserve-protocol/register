@@ -39,7 +39,10 @@ export const TransactionSystemStatus = ({
 )
 
 export const TransactionSystemStatusLegend = () => (
-  <section className="border border-border bg-card p-4 sm:p-6">
+  <section
+    id="transaction-review-reference"
+    className="scroll-mt-28 border border-border bg-card p-4 sm:p-6"
+  >
     <h3 className={v1Typography.itemTitle}>How to read visible parts</h3>
     <p
       className={cn(

@@ -846,6 +846,7 @@ describe('provisional design-system candidates', () => {
     )
 
     expect(message).toHaveAttribute('data-presentation', 'summary')
+    expect(message).toHaveAttribute('data-icon-presentation', 'plain')
     expect(message).toHaveClass(
       'flex',
       'min-h-11',
@@ -861,6 +862,40 @@ describe('provisional design-system candidates', () => {
       'items-center',
       'gap-1'
     )
+
+    rerender(
+      <InlineMessage
+        iconPresentation="contained"
+        presentation="summary"
+        tone="information"
+      >
+        <InlineMessageTitle>Most users should use Swap</InlineMessageTitle>
+        <Button size="compact">Use Swap</Button>
+      </InlineMessage>
+    )
+
+    expect(message).toHaveAttribute('data-icon-presentation', 'contained')
+    expect(message).toHaveClass('p-2')
+    expect(message).not.toHaveClass('px-4', 'py-2')
+    expect(message.querySelector('svg')?.parentElement).toHaveClass(
+      'size-8',
+      'rounded-full',
+      'bg-[var(--inline-message-icon-surface)]',
+      '[&>svg]:size-4'
+    )
+
+    rerender(
+      <InlineMessage iconPresentation="contained" tone="information">
+        <InlineMessageTitle>Wallet connection required</InlineMessageTitle>
+      </InlineMessage>
+    )
+
+    expect(message).toHaveAttribute('data-icon-presentation', 'plain')
+    expect(message.querySelector('svg')?.parentElement).toHaveClass('size-4')
+    expect(message.querySelector('svg')?.parentElement).not.toHaveClass(
+      'size-8',
+      'rounded-full'
+    )
   })
 
   it('keeps Textarea and loading semantics bounded', () => {
@@ -870,6 +905,7 @@ describe('provisional design-system candidates', () => {
         <Skeleton className="h-8 w-full rounded-full" />
         <Spinner label="Refreshing quote" size={24} />
         <LifecycleStatusPill role="processing">Processing</LifecycleStatusPill>
+        <LifecycleStatusPill role="closed">Closed</LifecycleStatusPill>
       </>
     )
 
@@ -886,9 +922,12 @@ describe('provisional design-system candidates', () => {
     expect(spinner).toHaveAttribute('width', '24')
     expect(spinner).not.toHaveClass('text-foreground')
 
-    const statusPill = screen.getByTestId('lifecycle-status-pill')
-    expect(statusPill).toHaveClass('w-fit')
-    const statusSpinner = statusPill.querySelector(
+    const [processingPill, closedPill] = screen.getAllByTestId(
+      'lifecycle-status-pill'
+    )
+    expect(processingPill).toHaveClass('h-7', 'w-fit', 'pl-2.5', 'pr-3')
+    expect(closedPill).toHaveClass('h-7', 'w-fit', 'px-3')
+    const statusSpinner = processingPill.querySelector(
       '[data-status-icon="spinner"]'
     )
     expect(statusSpinner).toHaveAttribute('width', '14')

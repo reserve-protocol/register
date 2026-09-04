@@ -1,6 +1,6 @@
 ---
 title: Design System
-updated: 2026-08-27
+updated: 2026-09-04
 type: domain
 sources:
   - docs/plans/design-system-v1.md
@@ -70,6 +70,49 @@ load the bounded product/audit evidence that owns mechanics, content, and
 behavior. Strong visual precedent is a quality bar, not canonical authority;
 legacy coverage is not a design target.
 
+Before implementing or multiplying an existing product flow, complete the
+[flow composition transfer brief](../../../templates/design/flow-composition-transfer.md)
+in the active project plan, or point each of its sections to an equivalent
+source-backed owner. The preflight is complete only when:
+
+- every visible production state, action, content relationship, recovery branch,
+  and responsive substitution has a disposition;
+- the at-a-glance task and supporting-detail hierarchy are explicit;
+- every component use names its exact size, tone, state, and authority boundary;
+- every inset, sibling gap, divider, action seam, and scroll boundary has one
+  geometry owner;
+- important state transitions identify preserved context, legitimate
+  replacement, and movement or information loss to test; and
+- every consequential value names its truth category and authoritative source.
+
+Render and correct one representative happy-path state plus one structurally
+different pressure state before applying the composition to the complete state
+matrix. Passing behavior tests or listing token names does not make a
+composition review-ready.
+
+For a greenfield flow, use the experience-design brief to establish journeys,
+constraints, and human gates first. Then use the hierarchy, exact reuse,
+geometry, continuity, truth, and first-slice sections of the same composition
+brief; replace production dispositions with an intended state contract and
+explicit non-goals.
+
+The automated-mint review is a provisional example of a flow-owned
+page-workspace exception: it narrows for amount-entry configuration and widens
+only when quotes create independently inspectable orders. Its detailed
+production/SDK state map
+and classified reuse gaps live in the
+[transaction-system audit](../../plans/transaction-system-audit.md#12-automated-mint-lab-reconciliation-2026-09-03).
+Its entry sequence preserves the production distinction between advanced-flow
+guidance, a disconnected smart-account requirement, and a connected but
+incompatible wallet before configuration; do not collapse these into a generic
+empty state or infer that the lab's simulated actions are wallet behavior.
+Treat the current product and SDK mechanics as the behavioral baseline: improve
+their hierarchy and presentation in the lab, but do not reinterpret funding,
+execution, result sourcing, or recovery without an explicit product or
+engineering decision.
+Do not infer a Dialog host, universal stepper, shared order row, or production
+adoption from that lab composition.
+
 ### Respond to designer feedback
 
 Classify the correction as local, component, composition/pattern, foundation,
@@ -87,6 +130,24 @@ Treat adoption as a new explicit slice. Re-read the owning product area guide,
 preserve mechanics and copy unless the task authorizes change, instrument new
 interactions where required, and run verification for the real blast radius.
 Lab acceptance alone does not authorize migration or shared-default changes.
+
+Before changing a production surface, make a source-backed inventory of its
+current visible states, actions, content, data relationships, and recovery
+branches. Give every item one explicit disposition:
+
+- **Reviewed replacement:** the lab reviewed this same job and state, so the
+  accepted decision transfers within its stated boundary.
+- **Preserved behavior:** the lab did not review it, so retain its functionality
+  and meaning while applying only already-compatible foundations or components.
+- **Unresolved:** the lab and production disagree, or the migration cannot
+  preserve the current behavior without improvising. Stop that item, record it,
+  and request design or engineering review.
+
+Absence from the lab is never evidence that production behavior is obsolete,
+unimportant, or safe to simplify. A lab specimen also does not authorize a
+replacement for adjacent flows merely because they look similar. Migration
+proof must compare the resulting production surface against the pre-change
+inventory so omitted states cannot disappear silently.
 
 ## Foundation routing
 

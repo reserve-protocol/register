@@ -138,10 +138,12 @@ describe('component contract registry', () => {
       )
     )
     expect(amount?.evidence).toContainEqual(
-      expect.stringContaining('square transaction amount input/output regions')
+      expect.stringContaining(
+        'restrained 8px transaction amount input/output regions'
+      )
     )
     expect(amount?.decisionPrompts).toContainEqual(
-      expect.stringContaining('square transaction amount geometry')
+      expect.stringContaining('restrained 8px transaction amount geometry')
     )
     expect(transaction).toMatchObject({
       designAuthority: 'exploratory',
@@ -589,7 +591,9 @@ describe('current review', () => {
       getFoundationItem('radius')?.expectedDecisions.find(
         ({ name }) => name === 'Control radius'
       )?.detail
-    ).toContain('Transaction amount input/output regions are square')
+    ).toContain(
+      'transaction amount input/output regions use the restrained 8px'
+    )
 
     for (const item of CURRENT_REVIEW) {
       expect(item.title).not.toBe('')

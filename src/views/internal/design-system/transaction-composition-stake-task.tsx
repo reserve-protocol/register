@@ -100,6 +100,14 @@ export const StakeTransactionTask = ({
             ) : undefined
           }
         />
+        {isInputState ? (
+          <TransactionAmountDirectionControl
+            label={isUnstake ? 'Switch to stake' : 'Switch to unstake'}
+            onClick={onDirectionChange}
+          />
+        ) : (
+          <TransactionAmountRelation />
+        )}
         <TransactionAmountObject
           data-testid="stake-output-amount"
           label={isUnstake ? 'Available after delay:' : 'You receive:'}
@@ -114,14 +122,6 @@ export const StakeTransactionTask = ({
           }
           supporting={quote?.usdValue ?? '—'}
         />
-        {isInputState ? (
-          <TransactionAmountDirectionControl
-            label={isUnstake ? 'Switch to stake' : 'Switch to unstake'}
-            onClick={onDirectionChange}
-          />
-        ) : (
-          <TransactionAmountRelation />
-        )}
       </TransactionAmountPair>
 
       <div

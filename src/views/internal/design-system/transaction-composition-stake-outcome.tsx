@@ -4,7 +4,6 @@ import { Button } from '@/components/button'
 import { ActionGroup } from '@/components/design-system-v1/action-group'
 import { OrganicBrandSurface } from '@/components/design-system-v1/organic-brand-surface'
 import { TransactionAmountObject } from '@/components/design-system-v1/transaction-amount-object'
-import { v1Typography } from '@/components/design-system-v1/typography'
 import {
   DialogBody,
   DialogFooter,
@@ -12,9 +11,9 @@ import {
   DialogTitle,
 } from '@/components/dialog'
 import { IconButton } from '@/components/icon-button'
-import { v1SemanticRecipes as roles } from '@/components/ui/v1-semantic-recipes'
 import { cn } from '@/lib/utils'
 
+import { TransactionOutcomeDetailRow } from './transaction-outcome-detail-row'
 import { transactionOutcomeMotion } from './transaction-outcome-motion'
 import { TransactionOutcomeStatus } from './transaction-outcome-status'
 import { STAKE_TRANSACTION } from './transaction-composition-stake-support'
@@ -113,21 +112,27 @@ export const StakeOutcomeDialog = ({
 
       <section className="mx-2 bg-card" data-testid="stake-outcome-details">
         <dl className="grid gap-2 px-4 py-4">
-          <OutcomeFact
+          <TransactionOutcomeDetailRow
             label={isUnstake ? 'You unstake:' : 'You stake:'}
             value={`${quote?.inputAmount ?? '—'} ${isUnstake ? 'stRSR' : 'RSR'}`}
           />
           {isUnstake ? (
             <>
-              <OutcomeFact label="Unstaking delay" value="14 days" />
-              <OutcomeFact label="Staking yield share ends" value="Immediate" />
-              <OutcomeFact
+              <TransactionOutcomeDetailRow
+                label="Unstaking delay"
+                value="14 days"
+              />
+              <TransactionOutcomeDetailRow
+                label="Staking yield share ends"
+                value="Immediate"
+              />
+              <TransactionOutcomeDetailRow
                 label="Next action"
                 value="Withdraw RSR when ready"
               />
             </>
           ) : (
-            <OutcomeFact label="Staking yield" value="Active" />
+            <TransactionOutcomeDetailRow label="Staking yield" value="Active" />
           )}
         </dl>
       </section>
@@ -160,12 +165,3 @@ export const StakeOutcomeDialog = ({
     </DialogSurface>
   )
 }
-
-const OutcomeFact = ({ label, value }: { label: string; value: string }) => (
-  <div className="flex min-h-5 items-center justify-between gap-4">
-    <dt className={cn(v1Typography.supporting, roles.text.supporting)}>
-      {label}
-    </dt>
-    <dd className={cn(v1Typography.label, 'text-right')}>{value}</dd>
-  </div>
-)

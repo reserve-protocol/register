@@ -1,11 +1,9 @@
 import { ArrowUpRight, X } from 'lucide-react'
-import type { ReactNode } from 'react'
 
 import { Button } from '@/components/button'
 import { ActionGroup } from '@/components/design-system-v1/action-group'
 import { OrganicBrandSurface } from '@/components/design-system-v1/organic-brand-surface'
 import { TransactionAmountObject } from '@/components/design-system-v1/transaction-amount-object'
-import { v1Typography } from '@/components/design-system-v1/typography'
 import {
   DialogBody,
   DialogFooter,
@@ -13,9 +11,9 @@ import {
   DialogTitle,
 } from '@/components/dialog'
 import { IconButton } from '@/components/icon-button'
-import { v1SemanticRecipes as roles } from '@/components/ui/v1-semantic-recipes'
 import { cn } from '@/lib/utils'
 
+import { TransactionOutcomeDetailRow } from './transaction-outcome-detail-row'
 import { TransactionOutcomeStatus } from './transaction-outcome-status'
 import { transactionOutcomeGeometry } from '@/components/design-system-v1/transaction-task-geometry'
 import { transactionOutcomeMotion } from './transaction-outcome-motion'
@@ -122,13 +120,16 @@ export const VoteLockOutcomeDialog = ({
 
       <section className="mx-2 bg-card" data-testid="vote-lock-outcome-details">
         <dl className="grid gap-2 px-4 pb-4 pt-4">
-          <OutcomeFact
+          <TransactionOutcomeDetailRow
             label={isUnlock ? 'You unlock:' : 'You lock:'}
             value={isUnlock ? '1 vlRSR' : '1 RSR'}
           />
-          <OutcomeFact label="Exchange rate" value="1 vlRSR = 1.0188 RSR" />
+          <TransactionOutcomeDetailRow
+            label="Exchange rate"
+            value="1 vlRSR = 1.0188 RSR"
+          />
           {isUnlock && (
-            <OutcomeFact
+            <TransactionOutcomeDetailRow
               testId="vote-lock-unlock-next-action-fact"
               label="Next action"
               value="Withdraw RSR when ready"
@@ -162,23 +163,3 @@ export const VoteLockOutcomeDialog = ({
     </DialogSurface>
   )
 }
-
-const OutcomeFact = ({
-  label,
-  testId,
-  value,
-}: {
-  label: string
-  testId?: string
-  value: ReactNode
-}) => (
-  <div
-    data-testid={testId}
-    className="flex min-h-5 items-center justify-between gap-4"
-  >
-    <dt className={cn(v1Typography.supporting, roles.text.supporting)}>
-      {label}
-    </dt>
-    <dd className={cn(v1Typography.label, 'text-right')}>{value}</dd>
-  </div>
-)

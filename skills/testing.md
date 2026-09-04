@@ -10,6 +10,12 @@ Expected values come from an independent oracle: specification, worked literal, 
 
 Mock true external boundaries, time/randomness, or expensive local substitutes. Do not mock internal collaborators merely to make construction easy. A fixture standing in for an external payload must keep the real payload's full shape and its ids.
 
+For a state-rich interactive specimen, model independent user dimensions
+(input, mode/branch, lifecycle) independently. Exercise one ordinary non-preset
+value, branch preservation into recovery, terminal reset, and every enabled
+external action. A state-picker shortcut must not silently rewrite another
+dimension unless the product contract requires it.
+
 ## Red → Green → Refactor
 
 1. **RED:** write one minimal behavior test. Run the narrow command and confirm it fails for the expected missing/broken behavior—not a syntax, import, or fixture error. Capture the command and decisive failure.

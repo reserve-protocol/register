@@ -706,11 +706,11 @@ export const PRIMARY_COMPONENT_GROUPS: ComponentGroup[] = [
           evidence: [
             'The imported Zapper and local issuance flows use specialized amount surfaces.',
             'Named strong visual composition evidence, not canonical authority: src/views/internal/design-system/zapper-modal-study.tsx tests input/output distinction, amount and asset prominence, Max spacing, quote details, and swap direction.',
-            'Human review accepted square transaction amount input/output regions and required replacement states such as quote search to preserve the same boundary.',
+            'Human review accepted restrained 8px transaction amount input/output regions and required replacement states such as quote search to preserve the same boundary.',
           ],
           decisionPrompts: [
             'Define input versus output anatomy, asset selector, fiat equivalent, balance/Max, precision, errors, and loading.',
-            'Keep square transaction amount geometry separate from fully rounded atomic fields and restrained multiline or floating objects.',
+            'Keep restrained 8px transaction amount geometry separate from fully rounded atomic fields and square structural sections.',
           ],
           stateAdditions: [
             'Insufficient balance',

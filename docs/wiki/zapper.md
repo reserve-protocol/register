@@ -23,7 +23,7 @@ Register pins the exact version (no caret) and wraps it in `src/views/index-dtf/
 
 ## 2. `@reserve-protocol/async-zap-sdk` — Index DTF automated wizard
 
-CoW-Swap-backed mint/redeem at `src/views/index-dtf/issuance/async-mint/**` (`useFolioMintZap`/`useFolioRedeemZap`). The SDK owns quoting/order signing; register owns UI + price-impact checks against Reserve API reference prices. Local agent doc: `src/views/index-dtf/issuance/async-mint/CLAUDE.md`.
+CoW-Swap-backed mint/redeem at `src/views/index-dtf/issuance/async-mint/**` (`useFolioMintZap`/`useFolioRedeemZap`). The SDK owns quoting, individual order submission, and normally batched wallet authorization; register owns UI + price-impact checks against Reserve API reference prices. Local agent doc: `src/views/index-dtf/issuance/async-mint/CLAUDE.md`.
 
 ## 3. Legacy zap v2 — Yield DTF only
 

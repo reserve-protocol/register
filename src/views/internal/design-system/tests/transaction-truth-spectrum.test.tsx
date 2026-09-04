@@ -9,6 +9,34 @@ import { StakeTransactionTask } from '../transaction-composition-stake-task'
 import TransactionTruthSpectrum from '../transaction-truth-spectrum'
 
 describe('composition-first transaction-system review', () => {
+  it('puts direct flow navigation and reviewable compositions before reference material', () => {
+    render(<TransactionTruthSpectrum />)
+
+    const board = screen.getByTestId('transaction-system-review')
+    const navigation = within(board).getByRole('navigation', {
+      name: 'Transaction families in realistic composition',
+    })
+    expect(
+      within(navigation).getByRole('link', {
+        name: 'Automated mint workspace',
+      })
+    ).toHaveAttribute('href', '#transaction-composition-staged')
+    expect(
+      within(navigation).getByRole('link', {
+        name: 'Vote-lock, unlock, and delegate',
+      })
+    ).toHaveAttribute('href', '#transaction-composition-vote-lock')
+
+    const automatedMint = screen
+      .getByTestId('transaction-composition-staged')
+      .closest('article')
+    const reference = screen.getByTestId('transaction-predecessor-contract')
+    expect(automatedMint).toHaveClass('scroll-mt-28')
+    expect(automatedMint?.compareDocumentPosition(reference) ?? 0).toBe(
+      Node.DOCUMENT_POSITION_FOLLOWING
+    )
+  })
+
   it('routes the strongest predecessor and makes its transfer contract inspectable', () => {
     render(<TransactionTruthSpectrum />)
 
@@ -38,7 +66,7 @@ describe('composition-first transaction-system review', () => {
     expect(within(contract).getByText(/Removal rule:/)).toBeVisible()
   })
 
-  it('leads with the four family anchors and the focused vote-lock flow', () => {
+  it('leads with the established family flows before the focused review and manual mint', () => {
     render(<TransactionTruthSpectrum />)
 
     const board = screen.getByTestId('transaction-system-review')
@@ -49,15 +77,17 @@ describe('composition-first transaction-system review', () => {
       'transaction-family-composition'
     )
 
-    expect(compositions).toHaveLength(5)
+    expect(compositions).toHaveLength(4)
     expect(
-      within(representativeCompositions).getByText('Manual mint')
-    ).toBeVisible()
+      within(representativeCompositions).queryByText('Manual mint')
+    ).not.toBeInTheDocument()
     expect(
       within(representativeCompositions).getByText('Instant Zapper')
     ).toBeVisible()
     expect(
-      within(representativeCompositions).getByText('Automated mint workspace')
+      within(representativeCompositions).getByText(
+        'Automated mint / redeem workspace'
+      )
     ).toBeVisible()
     expect(
       within(representativeCompositions).getByText(
@@ -69,15 +99,16 @@ describe('composition-first transaction-system review', () => {
         'Vote-lock, unlock, and delegate'
       )
     ).toBeVisible()
-
+    const pairedReview = screen.getByTestId('transaction-paired-review')
+    const manualMint = screen.getByTestId('transaction-composition-atomic')
     expect(
-      within(representativeCompositions).getByText('Required approvals')
-    ).toBeVisible()
+      pairedReview.compareDocumentPosition(manualMint) &
+        Node.DOCUMENT_POSITION_FOLLOWING
+    ).toBeTruthy()
+
+    expect(within(manualMint).getByText('Required approvals')).toBeVisible()
     expect(
       within(representativeCompositions).getByText('Buy CMC20')
-    ).toBeVisible()
-    expect(
-      within(representativeCompositions).getByText('Collateral swaps')
     ).toBeVisible()
     expect(
       within(representativeCompositions).queryByText('In withdrawal process')
@@ -1405,25 +1436,54 @@ describe('composition-first transaction-system review', () => {
     expect(within(atomic).queryByText('Basket value spent')).toBeNull()
   })
 
-  it('preserves automated mint progressive disclosure instead of forcing one persistent workspace', () => {
+  it('preserves automated issuance progressive disclosure instead of forcing one persistent workspace', () => {
     render(<TransactionTruthSpectrum />)
 
     const staged = screen.getByTestId('transaction-composition-staged')
-    fireEvent.click(within(staged).getByRole('radio', { name: 'Configure' }))
-
+    fireEvent.click(
+      within(staged).getByRole('radio', { name: 'Initial configuration' })
+    )
+    expect(
+      screen.getByTestId('transaction-composition-staged-stage')
+    ).toHaveClass('p-0', 'sm:p-6')
+    expect(
+      within(staged).getByTestId('automated-mint-narrow-stage')
+    ).toHaveClass(
+      'min-h-[calc(100dvh-3.5rem)]',
+      'sm:min-h-0',
+      'sm:max-w-[476px]'
+    )
     expect(within(staged).getByText('Enter USDC amount')).toBeVisible()
     expect(
-      within(staged).getByRole('button', { name: 'Get quote' })
-    ).toBeVisible()
+      within(staged).queryByText('Enter an amount to fetch quotes')
+    ).not.toBeInTheDocument()
+    expect(
+      within(staged).queryByText('Choose how much USDC to use for this mint.')
+    ).not.toBeInTheDocument()
+    expect(
+      within(staged).getByRole('button', { name: 'Enter amount' })
+    ).toBeDisabled()
     expect(
       within(staged).queryByRole('button', { name: 'Select input asset' })
     ).not.toBeInTheDocument()
-    expect(within(staged).getByText('1')).toBeVisible()
+    expect(within(staged).getByRole('radio', { name: 'Mint' })).toBeChecked()
+    expect(within(staged).getByRole('radio', { name: 'Redeem' })).toBeEnabled()
+    expect(
+      within(
+        within(staged).getByTestId('automated-mint-configure-frame')
+      ).queryByText('1', { exact: true })
+    ).not.toBeInTheDocument()
+    expect(
+      within(staged)
+        .getByTestId('automated-mint-configure-active')
+        .querySelector('a')
+    ).toHaveTextContent('Switch to manual minting')
     const configureSteps = within(staged).getAllByTestId(
       'automated-configure-step-content'
     )
     expect(configureSteps).toHaveLength(3)
-    for (const step of configureSteps) {
+    expect(configureSteps[0]).not.toHaveClass('items-center')
+    for (const step of configureSteps.slice(1)) {
       expect(step).toHaveClass('items-center')
       expect(step).not.toHaveClass('items-start')
     }
@@ -1431,10 +1491,22 @@ describe('composition-first transaction-system review', () => {
       within(staged).queryByText('Collateral swaps')
     ).not.toBeInTheDocument()
 
-    fireEvent.click(within(staged).getByRole('radio', { name: 'Execution' }))
-    expect(within(staged).getByText('Collateral swaps')).toBeVisible()
-    expect(within(staged).getByText('1 of 2 orders filled')).toBeVisible()
-    expect(within(staged).getByText('Estimated output')).toBeVisible()
+    fireEvent.click(
+      within(staged).getByRole('radio', { name: 'Orders filling' })
+    )
+    fireEvent.click(within(staged).getByRole('button', { name: 'View orders' }))
+    expect(
+      within(staged).getByTestId('automated-mint-collateral-stage')
+    ).toBeVisible()
+    const fillingCollateral = within(staged).getByTestId(
+      'automated-mint-collateral-stage'
+    )
+    expect(within(fillingCollateral).getByText('4/5')).toBeVisible()
+    expect(
+      within(fillingCollateral).getByText('1 order open · expires in 1m 42s')
+    ).toBeVisible()
+    expect(within(staged).getByText('Mint CMC20')).toBeVisible()
+    expect(within(staged).getByText('Step 2 of 2')).toBeVisible()
     expect(
       within(staged).queryByText(/final after collateral trades/)
     ).not.toBeInTheDocument()
@@ -1447,8 +1519,11 @@ describe('composition-first transaction-system review', () => {
     expect(screen.getByTestId('transaction-composition-rfq-stage')).toHaveClass(
       'h-[980px]',
       '[@container(min-width:980px)]:h-[760px]',
-      'items-center',
+      'items-end',
+      'sm:items-center',
       'justify-center',
+      'p-0',
+      'sm:p-6',
       'bg-background'
     )
     expect(rfq.closest('article')).toHaveClass('[container-type:inline-size]')
@@ -1476,12 +1551,12 @@ describe('composition-first transaction-system review', () => {
     const outputIdentity = within(outputAmount).getByTestId(
       'transaction-amount-asset-identity'
     )
-    expect(inputAmount).toHaveClass('rounded-none')
-    expect(outputAmount).toHaveClass('rounded-none')
-    expect(inputAmount).not.toHaveClass('rounded-lg')
-    expect(outputAmount).not.toHaveClass('rounded-lg')
-    expect(inputIdentity).toHaveClass('text-xl')
-    expect(outputIdentity).toHaveClass('text-xl')
+    expect(inputAmount).toHaveClass('rounded-lg')
+    expect(outputAmount).toHaveClass('rounded-lg')
+    expect(inputAmount).not.toHaveClass('rounded-none')
+    expect(outputAmount).not.toHaveClass('rounded-none')
+    expect(inputIdentity).toHaveClass('text-lg', 'min-[360px]:text-xl')
+    expect(outputIdentity).toHaveClass('text-lg', 'min-[360px]:text-xl')
     expect(
       within(inputAmount).getByTestId('canonical-chain-badged-logo')
     ).toBeVisible()
@@ -1492,14 +1567,25 @@ describe('composition-first transaction-system review', () => {
     expect(
       within(outputAmount).getByTestId('zapper-output-value-delta')
     ).toHaveTextContent('(-1.00%)')
-    expect(within(outputAmount).getByText('Quote includes fees')).toBeVisible()
+    expect(within(outputAmount).getByText('After fees')).toBeVisible()
     expect(
       within(outputAmount).getByRole('button', {
         name: 'About included quote fees',
       })
     ).toBeVisible()
-    expect(outputAmount).toHaveClass('border-b', 'rounded-none')
+    expect(outputAmount).toHaveClass('rounded-lg')
+    expect(outputAmount).not.toHaveClass('border-b')
     expect(outputAmount).not.toHaveClass('rounded-b-none')
+    expect(
+      within(rfq).getByTestId('zapper-output-details-divider')
+    ).toHaveClass(
+      'absolute',
+      'inset-x-0',
+      'bottom-0',
+      'h-px',
+      'bg-border',
+      'opacity-100'
+    )
     expect(
       within(outputAmount).queryByText(/final after order fill/)
     ).not.toBeInTheDocument()
@@ -1507,7 +1593,8 @@ describe('composition-first transaction-system review', () => {
       'zapper-amount-and-details'
     )
     expect(within(rfq).getByTestId('transaction-amount-pair')).toHaveClass(
-      'space-y-px'
+      'flex',
+      'flex-col'
     )
     expect(within(rfq).getByTestId('transaction-amount-pair')).not.toHaveClass(
       'space-y-1'
@@ -1575,6 +1662,10 @@ describe('composition-first transaction-system review', () => {
     )
     expect(within(rfq).getByText('Minimum output')).toBeVisible()
     expect(within(rfq).getByText('Price impact')).toBeVisible()
+    expect(within(rfq).getByText('0.24%')).toHaveAttribute(
+      'data-transaction-metric-tone',
+      'neutral'
+    )
     expect(within(rfq).getByText('Network estimate')).toBeVisible()
     expect(within(rfq).queryByText('Exchange rate')).toBeNull()
     expect(within(rfq).getAllByText('1 USDC = 0.99 CMC20')).toHaveLength(1)
@@ -1710,6 +1801,13 @@ describe('composition-first transaction-system review', () => {
     expect(
       within(quoteSource).getByRole('radio', { name: 'Best Quote' })
     ).toBeChecked()
+    expect(
+      within(quoteSource).getByRole('radio', { name: 'Best Quote' })
+    ).toHaveFocus()
+    expect(
+      screen.getByRole('button', { name: 'About quote sources' })
+    ).not.toHaveFocus()
+    expect(screen.queryByRole('tooltip')).not.toBeInTheDocument()
     expect(within(slippage).getByRole('radio', { name: '1%' })).toBeChecked()
     fireEvent.click(
       within(quoteSource).getByRole('radio', { name: 'CoW Swap' })
@@ -1851,9 +1949,7 @@ describe('composition-first transaction-system review', () => {
     )
 
     fireEvent.click(within(rfq).getByRole('radio', { name: 'Quote failure' }))
-    expect(
-      within(rfq).getByText('Zaps are currently experiencing issues')
-    ).toBeVisible()
+    expect(within(rfq).getByText('Zaps are experiencing issues')).toBeVisible()
     expect(
       within(rfq).queryByText(
         /we’re having a hard time finding a route that makes sense/
@@ -2016,7 +2112,7 @@ describe('composition-first transaction-system review', () => {
     )
     expect(
       within(rfq).getByTestId('transaction-amount-relation-divider')
-    ).toHaveClass('inset-x-0', 'h-px', 'bg-border')
+    ).toHaveClass('relative', 'h-px', 'bg-border')
     expect(
       within(rfq).getByTestId('transaction-amount-relation-indicator')
     ).toHaveClass('size-8', 'bg-card', 'ring-card')
@@ -2143,6 +2239,10 @@ describe('composition-first transaction-system review', () => {
     expect(within(rfq).getByText('Used')).toBeVisible()
     expect(within(rfq).getByText('1,000 USDC')).toBeVisible()
     expect(within(rfq).getByText('Final vs input')).toBeVisible()
+    expect(within(rfq).getByText('-1.36%')).toHaveAttribute(
+      'data-transaction-metric-tone',
+      'realized-adverse'
+    )
     expect(within(rfq).getByText('Value received')).toBeVisible()
     const viewOrder = within(rfq).getByRole('link', { name: /View order/ })
     expect(viewOrder).toHaveAttribute('data-tone', 'secondary')
@@ -2380,10 +2480,10 @@ describe('composition-first transaction-system review', () => {
       'transaction-amount-object'
     )
     expect(within(outputAmount).getByText('Estimated output')).toBeVisible()
-    expect(within(outputAmount).getByText('—')).toBeVisible()
+    expect(within(outputAmount).getAllByText('—')).toHaveLength(2)
     expect(
-      within(outputAmount).getByText('Get a fresh quote to update')
-    ).toBeVisible()
+      within(outputAmount).queryByText('Get a fresh quote to update')
+    ).toBeNull()
     expect(within(outputAmount).queryByText('≈990.00')).toBeNull()
   })
 
@@ -2406,8 +2506,8 @@ describe('composition-first transaction-system review', () => {
       name: 'Finding best quote',
     })
     expect(quoteSearchSurface).toBeVisible()
-    expect(quoteSearchSurface).toHaveClass('rounded-none')
-    expect(quoteSearchSurface).not.toHaveClass('rounded-lg')
+    expect(quoteSearchSurface).toHaveClass('rounded-lg')
+    expect(quoteSearchSurface).not.toHaveClass('rounded-none')
     expect(quoteSearchSurface).not.toHaveClass('border')
     expect(within(rfq).getByTestId('zapper-quote-status-pill')).toHaveClass(
       'gap-1'
@@ -2429,8 +2529,14 @@ describe('composition-first transaction-system review', () => {
     expect(
       within(searchingOutput).queryByTestId('zapper-output-value-delta')
     ).toBeNull()
-    expect(searchingOutput).toHaveClass('border-b', 'border-transparent')
-    expect(searchingOutput).not.toHaveClass('border-border')
+    expect(searchingOutput).not.toHaveClass(
+      'border-b',
+      'border-transparent',
+      'border-border'
+    )
+    expect(
+      within(rfq).getByTestId('zapper-output-details-divider')
+    ).toHaveClass('bg-border', 'opacity-0')
     expect(within(rfq).getByTestId('zapper-quote-details')).not.toHaveClass(
       'border-t'
     )
@@ -2512,7 +2618,8 @@ describe('composition-first transaction-system review', () => {
     expect(within(rfq).getByText('0')).toBeVisible()
     expect(within(rfq).getAllByText('$0.00')).toHaveLength(2)
     expect(within(rfq).getByTestId('zapper-selectable-quote-meta')).toHaveClass(
-      'py-2'
+      'zapper-selectable-quote-meta',
+      'py-3'
     )
     const preQuoteMetaRow = within(rfq).getByTestId(
       'zapper-selectable-quote-meta-row'
@@ -2542,7 +2649,8 @@ describe('composition-first transaction-system review', () => {
       within(rfq).queryByRole('button', { name: 'Show quote details' })
     ).toBeNull()
     expect(within(rfq).getByTestId('zapper-selectable-route-meta')).toHaveClass(
-      'max-w-0'
+      'max-h-0',
+      'zapper-selectable-route-meta'
     )
     expect(
       within(rfq).getByRole('button', { name: 'Market Buy' })
@@ -2555,7 +2663,7 @@ describe('composition-first transaction-system review', () => {
       .closest('[data-testid="transaction-amount-object"]')
     expect(currentQuoteOutput).not.toBeNull()
     expect(
-      within(currentQuoteOutput as HTMLElement).getByText('Quote includes fees')
+      within(currentQuoteOutput as HTMLElement).getByText('After fees')
     ).toBeVisible()
     expect(
       within(currentQuoteOutput as HTMLElement).getByRole('button', {
@@ -2569,10 +2677,16 @@ describe('composition-first transaction-system review', () => {
     const quoteReadyMetaRow = within(rfq).getByTestId(
       'zapper-selectable-quote-meta-row'
     )
-    expect(quoteReadyMetaRow).toHaveClass('flex')
+    expect(quoteReadyMetaRow).toHaveClass(
+      'flex',
+      'flex-col',
+      'zapper-selectable-quote-meta-row'
+    )
     expect(within(rfq).getByTestId('zapper-selectable-route-meta')).toHaveClass(
-      'max-w-48',
-      'shrink-0'
+      'max-h-11',
+      'w-full',
+      'shrink-0',
+      'zapper-selectable-route-meta'
     )
     expect(quoteReadyMetaRow).toContainElement(currentDetails)
     expect(
@@ -2608,12 +2722,20 @@ describe('composition-first transaction-system review', () => {
     expect(within(rfq).getByText('Current price')).toBeVisible()
     expect(within(rfq).getByText('Projected slippage')).toBeVisible()
     expect(within(rfq).getByText('Max slippage')).toBeVisible()
+    expect(within(rfq).getByText('1.00% ($10.00)')).toHaveAttribute(
+      'data-transaction-metric-tone',
+      'neutral'
+    )
+    expect(within(rfq).getByText('2.00% ($20.00)')).toHaveAttribute(
+      'data-transaction-metric-tone',
+      'neutral'
+    )
     expect(within(rfq).getByText('Min Amount Out')).toBeVisible()
     const currentQuoteFacts = within(rfq)
       .getByText('Min Amount Out')
       .closest('dl')
     expect(currentQuoteFacts).toHaveClass('pb-2')
-    expect(within(rfq).getAllByText('Quote includes fees')).toHaveLength(1)
+    expect(within(rfq).getAllByText('After fees')).toHaveLength(1)
     expect(
       within(currentQuoteFacts as HTMLElement).getByRole('button', {
         name: 'About current price',
@@ -3143,13 +3265,19 @@ describe('composition-first transaction-system review', () => {
     }
   })
 
-  it('keeps real Zapper operation tabs while omitting unrendered alternates elsewhere', () => {
+  it('keeps evidenced operation tabs scoped to the flows that own them', () => {
     render(<TransactionTruthSpectrum />)
 
     const rfq = screen.getByTestId('transaction-composition-rfq')
+    const staged = screen.getByTestId('transaction-composition-staged')
     expect(within(rfq).getByRole('radio', { name: 'Sell' })).toBeEnabled()
-    expect(screen.queryByText('Redeem')).not.toBeInTheDocument()
-    expect(screen.queryByText('Stake')).not.toBeInTheDocument()
+    fireEvent.click(
+      within(staged).getByRole('radio', { name: 'Initial configuration' })
+    )
+    expect(within(staged).getByRole('radio', { name: 'Redeem' })).toBeEnabled()
+    expect(
+      screen.queryByRole('radio', { name: 'Stake', exact: true })
+    ).not.toBeInTheDocument()
   })
 
   it('makes missing shared work intentional and keeps real ownership visible', () => {
@@ -3349,26 +3477,35 @@ describe('composition-first transaction-system review', () => {
     ).not.toBeInTheDocument()
 
     const staged = screen.getByTestId('transaction-composition-staged')
-    expect(within(staged).getByText('1 of 2 orders filled')).toBeVisible()
+    fireEvent.click(
+      within(staged).getByRole('radio', { name: 'Orders filling' })
+    )
+    fireEvent.click(within(staged).getByRole('button', { name: 'View orders' }))
+    const fillingCollateral = within(staged).getByTestId(
+      'automated-mint-collateral-stage'
+    )
+    expect(within(fillingCollateral).getByText('4/5')).toBeVisible()
+    expect(
+      within(fillingCollateral).getByText('1 order open · expires in 1m 42s')
+    ).toBeVisible()
     expect(within(staged).getByTestId('staged-orders-header')).toHaveClass(
-      'grid',
-      'gap-4',
-      'sm:grid-cols-[minmax(0,1fr)_auto]'
+      'p-4'
     )
-    expect(within(staged).getByTestId('staged-orders-summary')).toHaveClass(
-      'justify-self-start',
-      'sm:justify-self-end'
-    )
-    for (const row of within(staged).getAllByTestId('staged-order-row')) {
-      expect(row).toHaveClass(
-        'grid-cols-[minmax(0,1fr)_auto]',
-        'gap-x-3',
-        'gap-y-2'
+    expect(within(staged).queryByTestId('staged-orders-summary')).toBeNull()
+    for (const direction of within(staged).getAllByTestId(
+      'staged-order-direction'
+    )) {
+      expect(direction).toHaveClass(
+        'grid',
+        'gap-3',
+        'grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)]'
       )
     }
     expect(within(staged).queryByText('2 of 3 orders filled')).toBeNull()
 
-    fireEvent.click(within(staged).getByRole('radio', { name: 'Outcome' }))
+    fireEvent.click(
+      within(staged).getByRole('radio', { name: 'Mint complete' })
+    )
     expect(within(staged).getByText('Completed orders')).toBeVisible()
     expect(within(staged).queryByText('3 of 3 filled')).toBeNull()
   })
@@ -3391,7 +3528,7 @@ describe('composition-first transaction-system review', () => {
     expect(within(selector).queryByRole('listbox')).not.toBeInTheDocument()
   })
 
-  it('keeps upstream and fixed-input boundaries honest across RFQ and staged states', () => {
+  it('keeps upstream and amount-entry boundaries honest across RFQ and staged states', () => {
     render(<TransactionTruthSpectrum />)
 
     const rfq = screen.getByTestId('transaction-composition-rfq')
@@ -3415,12 +3552,17 @@ describe('composition-first transaction-system review', () => {
     ).toBeNull()
 
     const staged = screen.getByTestId('transaction-composition-staged')
+    fireEvent.click(
+      within(staged).getByRole('radio', { name: 'Input only ready' })
+    )
     expect(
       within(staged).queryByRole('button', { name: 'Select input asset' })
     ).not.toBeInTheDocument()
     expect(within(staged).queryByRole('button', { name: 'Max' })).toBeNull()
 
-    fireEvent.click(within(staged).getByRole('radio', { name: 'Configure' }))
+    fireEvent.click(
+      within(staged).getByRole('radio', { name: 'Initial configuration' })
+    )
     expect(
       within(staged).queryByRole('button', { name: 'Select input asset' })
     ).not.toBeInTheDocument()
@@ -3458,7 +3600,7 @@ describe('composition-first transaction-system review', () => {
     ).toBeVisible()
     expect(
       within(coverage).getByText(
-        /Atomic, automated, Stake\/Unstake, and Vote Lock outcomes show the primary transaction identity/
+        /Automated issuance keeps each submitted CoW identity with its quoted sell amount, estimated buy amount, and status/
       )
     ).toBeVisible()
     expect(
@@ -3508,7 +3650,9 @@ describe('composition-first transaction-system review', () => {
     expect(within(rfq).getByText('≈4,237.36')).toBeVisible()
 
     const staged = screen.getByTestId('transaction-composition-staged')
-    fireEvent.click(within(staged).getByRole('radio', { name: 'Configure' }))
+    fireEvent.click(
+      within(staged).getByRole('radio', { name: 'Initial configuration' })
+    )
     fireEvent.click(within(staged).getByRole('button', { name: 'Max' }))
     expect(within(staged).getByText('$14,802.63')).toBeVisible()
 
@@ -3527,9 +3671,13 @@ describe('composition-first transaction-system review', () => {
       within(rfq).getByRole('textbox', { name: 'You use amount' }),
       { target: { value: '200' } }
     )
+    const changedQuoteOutput = within(rfq)
+      .getByText('Estimated output')
+      .closest('[data-testid="transaction-amount-object"]')
+    expect(changedQuoteOutput).not.toBeNull()
     expect(
-      within(rfq).getByText('Updates after the package returns a quote')
-    ).toBeVisible()
+      within(changedQuoteOutput as HTMLElement).getAllByText('—')
+    ).toHaveLength(2)
     expect(
       within(rfq).getByRole('button', { name: 'Updating quote…' })
     ).toBeDisabled()
@@ -3538,8 +3686,9 @@ describe('composition-first transaction-system review', () => {
       within(staged).getByRole('textbox', { name: 'You provide amount' }),
       { target: { value: '200' } }
     )
+    expect(within(staged).getByText('$200.00')).toBeVisible()
     expect(
-      within(staged).getByRole('button', { name: 'Updating amount…' })
-    ).toBeDisabled()
+      within(staged).getByRole('button', { name: 'Get quote' })
+    ).toBeEnabled()
   })
 })

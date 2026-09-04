@@ -75,6 +75,13 @@ uses an 88% / 80% / 72% default-hover-pressed ramp mixed with black. Generic
 categorical colors remain deferred because the current `chart-1`…`chart-5`
 variables have no product consumer.
 
+Transaction metrics resolve phase, meaning, and severity before choosing one
+of those roles; numeric sign alone never selects a color. Settings, limits, and
+routine estimates stay neutral, warning and danger belong to preflight risk,
+and only meaningful realized financial movement uses performance color.
+Superseded estimates become supporting and struck through when the actual
+value is shown. Materiality thresholds remain owned by the product flow.
+
 The recorded Color closure comparison preserves that structure and documents
 the three corrected contrast gaps: semantic foregrounds on quiet feedback
 surfaces, the light-theme destructive filled action, and supporting text on a
@@ -499,10 +506,13 @@ for later review of meaningful evidenced states. A realistic divider-free Index
 slice composes Entity identity with Metric values without introducing a
 universal Row component.
 
-Lifecycle Status owns the reviewed 24px lifecycle roles, standardized
-indicators, opaque semantic tones, subtle countdown pairing, and processing-only
-motion. It is intrinsically sized and does not fill a parent grid or flex axis
-by default. Category labels, counts, qualifiers, removable chips, proposal
+Lifecycle Status owns the reviewed lifecycle roles, standardized indicators,
+opaque semantic tones, subtle countdown pairing, and processing-only motion.
+The lab currently reopens exact compact geometry through one 28px intrinsic
+trial, with increased icon-aware side inset, so status and micro actions can be
+judged on a common control axis; the earlier 24px geometry remains the accepted
+decision until that visual review resolves. It does not fill a parent grid or
+flex axis by default. Category labels, counts, qualifiers, removable chips, proposal
 progress, and outcome-detail composition remain separate work. Its
 implementation lives in `src/components/lifecycle-status/` and consumes the
 shared V1 semantic-role map from `src/components/design-system-v1/`; no product
@@ -704,11 +714,11 @@ state such as `primary-hover`/`primary-pressed`.
 - Radius: `rounded-sm/md/lg` derive from `--radius` (0.5rem); `rounded-3xl` (1.25rem) and `rounded-4xl` (1.5rem) for cards/dialogs/drawers.
 - V1 radius candidate: atomic one-row controls—including buttons, ordinary
   inputs, search, and select triggers—are fully rounded. Composite amount
-  panels are square structural financial regions, including loading or other
-  state layers that replace their content. Multiline fields, menus, popovers,
-  and thumbnails use the restrained 8px contained-object role. Structural
-  surfaces remain square by default and selective layout-owned corners reveal
-  the substrate.
+  panels and loading or other state layers that replace their content use the
+  restrained 8px contained-object radius. Multiline fields, menus, popovers,
+  and thumbnails use the same restrained radius role. Structural surfaces
+  remain square by default and selective layout-owned corners reveal the
+  substrate.
 - Control typography baseline: default entered/selected values are 16px/300;
   compact values are 14px/300; action labels are 14px/500. Intent, selection,
   focus, validation, disabled, and async lifecycle are combinable state axes,
@@ -735,6 +745,10 @@ state such as `primary-hover`/`primary-pressed`.
   labels and values—8px for directly related content, 16px between internal
   regions, and 24px for ordinary content insets and complete groups. Semantic
   layout recipes own these relationships in reviewable compositions.
+- When a fully rounded container embeds a smaller rounded action at its edge,
+  the action keeps the same visible cushion from that edge as it has above and
+  below. Text and icons may retain their normal content axis; the trailing
+  control inset is an object relationship, not a replacement content inset.
 - A divider marks one owned boundary; it is not a spacing mechanism. Attach it
   directly to that boundary and give the adjacent regions matching semantic
   insets unless their hierarchy intentionally differs. Do not place a parent
@@ -879,7 +893,8 @@ The recently refined Index overview and Home feature-card loading compositions
 remain authoritative product evidence; migration may replace primitive material
 and motion only while preserving their geometry, and must audit consumers that
 relied on the legacy primitive's default radius. Spinner is restricted to short
-indeterminate work: 14px inside the accepted 24px lifecycle pill, 16px for
+indeterminate work: 14px inside the Lifecycle Status pill, including its current
+28px geometry trial, 16px for
 inline/control use, and 24px for a local region. It inherits currentColor so
 each canonical host owns tone; standalone instances supply an accessible label,
 while contexts with visible status copy may hide the redundant mark. It must

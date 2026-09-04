@@ -56,13 +56,16 @@ const LIFECYCLE_ROLES: {
 const LifecycleStatusStateSheet = () => (
   <section data-testid="lifecycle-status-state-sheet" className="space-y-6">
     <div>
-      <p className="text-sm font-medium text-primary">Canonical V1 candidate</p>
+      <p className="text-sm font-medium text-primary">
+        Canonical V1 · geometry under review
+      </p>
       <h2 className="mt-1 text-xl font-medium text-foreground">
         Lifecycle status roles
       </h2>
       <p className="mt-1 max-w-3xl text-sm font-light leading-5 text-muted-foreground">
-        One shared 24px status anatomy communicates process meaning through its
-        label, tone, optional indicator, and restrained motion. Category labels,
+        One shared 28px geometry trial tests whether lifecycle states align more
+        naturally with micro actions while preserving the accepted label, tone,
+        optional indicator, and restrained-motion contract. Category labels,
         counts, and removable chips remain separate unresolved jobs.
       </p>
     </div>

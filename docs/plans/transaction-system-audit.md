@@ -30,8 +30,8 @@ Five conclusions govern the next work:
 
 1. **The two primary anchors prove different but compatible lifecycle needs.**
    The installed Index DTF Zapper owns a compact, mostly opaque flow that may be
-   atomic or RFQ-based. Automated mint owns a transparent, resumable sequence of
-   quote legs, order fills, and a final protocol transaction. They should share
+   atomic or RFQ-based. Automated mint owns a transparent, locally recoverable
+   sequence of quote legs, order fills, and a final protocol transaction. They should share
    state words, action hierarchy, shell rules, transaction identity, recovery
    hierarchy, and outcome anatomy; they should not share orchestration or the
    same progress visualization.
@@ -91,7 +91,7 @@ refer to the audited working tree on the date above.
 | A3  | `src/views/internal/design-system/modal-family-audit.ts:1-71` — modal jobs and outcome status                                                                               |
 | A4  | `src/views/internal/design-system/component-catalog-primary.ts:200-240,538-599` — Transaction Action, Amount Field, and Asset Picker are mapped/open                        |
 | A5  | `src/views/internal/design-system/component-catalog-support.ts:299-400` — Inline Message is provisional; Toast and Progress remain mapped/open                              |
-| A6  | `src/views/internal/design-system/current-review.ts:1-34` — Current Review is empty                                                                                         |
+| A6  | `src/views/internal/design-system/current-review.ts` — the active transaction-composition review route, scope, and foundation-conformance claims                            |
 | A7  | `src/views/internal/design-system/component-catalog-support.ts:538-573` — compact Lifecycle Status is an accepted, unadopted V1 candidate                                   |
 | Z1  | `src/views/index-dtf/components/zapper/zapper-wrapper.tsx:16-80` — host-owned connection, locale, locked settings, schedule-call integration                                |
 | Z2  | `src/views/index-dtf/issuance/index.tsx:22-69` — inline 420px issuance host, compliance disablement, and mode-switch lifecycle                                              |
@@ -129,19 +129,17 @@ refer to the audited working tree on the date above.
 | D4  | `src/views/index-dtf/deploy/steps/confirm-deploy/success/index.tsx:35-109` — address and genesis-mint outcome                                                               |
 | L1  | `src/views/index-dtf/overview/components/zap-mint/submit-zap.tsx:56-243` — older direct approval/transaction/toast pattern                                                  |
 
-### What was not done
+### What remains outside the evidence
 
-- No browser, wallet, RPC, API, CoW order, or transaction was executed.
-- No package source or local component was restyled.
-- No authority document, Current Review entry, test, fixture, or production file
-  was changed.
-- The source plan's “transaction-system map, not started” progress label is now
-  stale by completion of this audit, but remains intentionally unchanged under
-  the single-file write boundary. Reconcile it only in a separately authorized
-  authority/docs housekeeping pass.
-- Dynamic focus, dismissal, screen-reader announcements, viewport behavior, and
-  wallet-specific rejection copy remain to be pressure-tested visually and
-  interactively.
+- No live wallet, RPC transaction, API quote, or CoW order was executed. The lab
+  uses deterministic fixtures and cannot validate production orchestration.
+- No package source, production transaction behavior, production UI, or shared
+  component default was changed. The later lab stage changed only the internal
+  specimen, its tests, and the documents that route its provisional review.
+- Mounted desktop/mobile checks cover the review specimen, but a real wallet
+  session must still prove rejection copy and post-receipt synchronization
+  before production adoption. Guarded dismissal and focus restoration apply
+  only when a transaction composition is hosted in a dialog.
 
 ## 3. Journey maps
 
@@ -224,7 +222,7 @@ supplies only the configured input token, and a wallet that also contributes
 usable basket collateral through `useExistingBalances`. Existing collateral can
 change which legs are required and their traded amounts, so this is lifecycle
 and order-composition evidence rather than a cosmetic toggle state. Each
-resulting leg must retain its directional sold and bought amounts when the
+resulting leg must retain its directional quoted sell and buy amounts when the
 workspace is reviewed or migrated.
 
 ### Supporting flows: compact comparison
@@ -618,7 +616,145 @@ Include current Drawer screenshots only as comparison evidence. Do not add a
 Drawer exception unless the centered version demonstrates a named loss of
 context or usability.
 
-## 12. Engineer-review questions
+## 12. Automated issuance lab reconciliation (2026-09-04)
+
+This addendum replaces the coarse four-state automated-mint lab model with a
+source-backed Mint/Redeem lifecycle. Both operations consume one composition
+tree; their assets, order direction, action boundaries, and completion facts
+vary through a narrow operation contract. It does not change production
+behavior or authorize production adoption. The inspected fixed point is
+`c87d5ca113c9aea3daab7417af7699d6956a5101`; installed package evidence is
+`@reserve-protocol/async-zap-sdk@0.8.0` and
+`@reserve-protocol/react-sdk@0.5.3`.
+
+### Entry, gating, ownership, and reset
+
+| Boundary         | Evidence-backed behavior                                                                                                                                                                                                                                                                        | Owner                                      |
+| ---------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------ |
+| Entry            | The issuance Auto panel and lazy `/issuance/automated` route mount the async-mint provider and wizard.                                                                                                                                                                                          | Register route and issuance composition    |
+| Preconditions    | Compliance may make entry unavailable; the user must connect, use the route chain, and satisfy EIP-5792/Safe atomic-batch capability.                                                                                                                                                           | Register wallet/compliance gate            |
+| Configuration    | Mainnet/Base mint input is USDC and Redeem input is DTF shares; the view owns balance, Max, amount validation, operation mode, and advertised stages. Positive over-balance amounts may preview quotes but cannot execute; idle Redeem quotes cap their share basis to the live wallet balance. | Register atoms and configure step          |
+| Quote/execution  | Base quote plus leg quotes, order submission, signing/pre-signing, fill polling, retryable leg selection, collateral readiness, and final Folio call are package-owned.                                                                                                                         | async-zap SDK                              |
+| Session lifetime | Execution state is provider-local. Edit, start over, disconnect, unmount, and route leave reset local progress; no durable cross-session resume contract was found.                                                                                                                             | Register provider lifecycle plus SDK reset |
+
+### Rendered issuance state map
+
+| Lab state                 | Production/SDK truth                                                                                                                                                                | Primary action and preserved evidence                                                                         |
+| ------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------- |
+| Introduction              | Production describes automated mint/redeem as advanced, recommends Swap for most users, and summarizes the funding-to-mint sequence before wallet gating.                           | `Use Swap` remains the recommended action; `Continue` enters the smart-account check                          |
+| Wallet required           | No wallet is connected, so atomic-batch capability cannot be established. Production lists known compatible wallets and notes that hardware wallets are unsupported.                | `Connect Wallet` plus supported-wallet and learn-more links                                                   |
+| Incompatible wallet       | A wallet is connected but does not report the required EIP-5792/Safe atomic-batch capability.                                                                                       | `Switch wallet`; the same capability guidance remains visible                                                 |
+| Initial configuration     | Fixed USDC input for Mint or DTF-share input for Redeem before a quote exists.                                                                                                      | `Get quote`; no order workspace yet                                                                           |
+| Quote searching           | Base and per-leg quotes are unresolved; production exposes `Cancel` after its slow-quote threshold, but the request is not proven abortable.                                        | Lab uses `Pause quote search`; input preserved                                                                |
+| Quote paused              | Register gates further quote work after the user leaves the search. An already-started request may continue.                                                                        | `Resume quote search` or `Edit amount`                                                                        |
+| Quote unavailable         | Quote error halts automatic refetch until user recovery.                                                                                                                            | `Fetch again` or `Edit amount`                                                                                |
+| Input only ready          | Actionable quote with no wallet basket collateral applied. No CoW UID exists before submission.                                                                                     | Mint starts collateral trades; Redeem prepares the atomic redeem-and-order authorization                      |
+| Existing collateral ready | Existing balances are applied directly and required swap legs shrink; applied collateral stays separate from CoW orders.                                                            | Same execution boundary with funding branch visible                                                           |
+| Existing collateral only  | Redeem may convert held basket collateral even when the share input is zero; zero-value order legs are omitted.                                                                     | `Prepare redeem`; only the held collateral and resulting sale legs remain visible                             |
+| Authorizing orders        | SDK submits each CoW intent, then normally requests one atomic wallet batch containing the required approvals and pre-sign calls. MetaMask splits batches above its ten-call limit. | One shared wallet-authorization instruction; order rows stay uniformly prepared until the batch is authorized |
+| Orders filling            | Submitted orders are independently polled; a fulfilled leg is durable within the local execution instance.                                                                          | Per-order pending/filled evidence; no replay of fulfilled work                                                |
+| Recoverable failure       | Cow `expired`/`cancelled` statuses become SDK phase `failed` with retryable leg IDs; successful legs remain fulfilled.                                                              | `Retry 1 failed order` or `Start over`; existing collateral and filled order remain visible                   |
+| Collateral ready          | SDK execution step is `collateral_ready`; swaps succeeded but Folio shares do not yet exist.                                                                                        | Explicit `Mint CMC20`                                                                                         |
+| Final mint signing        | `finish()` derives mintable shares from post-fill on-chain balances, approves required collateral, submits the Folio mint batch, and waits for its receipt.                         | Wallet/receipt wait; never labeled complete                                                                   |
+| Mint complete             | Only final batch success advances the SDK to `complete`.                                                                                                                            | Minted amount, final transaction, CoW identities, input delta, leftovers, and next actions                    |
+| Redeem complete           | Redeem and its presign calls are authorized atomically before collateral-sale orders fill; there is no later Mint-style final action.                                               | Received quote token, redeemed shares, final redeem transaction, CoW identities, and leftovers                |
+
+### Amount and result truth
+
+- Fixture math remains bigint-backed through display conversion. Quote-ready
+  and fulfilled rows keep sell/buy values explicitly labeled as quotes; the lab
+  does not relabel them as receipt-decoded executed amounts.
+- Mint applies existing collateral only to the corresponding required basket
+  legs and derives the displayed applied value from those same capped
+  reductions. Redeem derives orders and estimated output from the same
+  balance-capped quote input. Small, Max, and over-balance fixtures therefore
+  cannot create negative funding or zero-sell/nonzero-buy order rows.
+- The SDK exposes fulfilled CoW executed amounts through `cowOrder`, while the
+  current production row continues to render quote-leg amounts. Production uses
+  executed values for aggregate actual impact when available. This inconsistency
+  needs engineer disposition before a production result-source migration.
+- Final minted shares come from `execution.mintedShares` or Register's
+  post-transaction balance reconciliation. Leftovers are balance-derived and
+  fiat values remain price-derived. The final mint receipt/hash and individual
+  CoW order UIDs are different identities and stay visibly separate.
+- Redeem reverses every order leg (collateral sold, quote token bought) and
+  reconciles the displayed received total from the same bigint-backed legs.
+  Exact production executed values and cross-session restoration remain
+  engineer-owned questions; the lab keeps fulfilled values labeled as quotes.
+- The duplicate `success` wizard component has no reachable setter in the
+  inspected Register source. The active completion is rendered in-place by the
+  quote summary.
+
+### Classified reuse-gap register
+
+The seven classifications below are the goal's decision taxonomy, not maturity
+labels. Rows without a fit say why and name the narrowest possible owner.
+
+| Item / user job                                                                                      | Classification                                                   | Closest owner and insufficiency                                                                                                                                  | Gap type             | Narrow owner                             | Standardize now?       | Evidence required for promotion                                                                   |
+| ---------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------- | ---------------------------------------- | ---------------------- | ------------------------------------------------------------------------------------------------- |
+| Submit, retry, edit, or finish with one dominant action                                              | 1. Existing component used correctly                             | Button + Action Group already own hierarchy and states                                                                                                           | —                    | Existing components                      | Yes: reuse defaults    | None                                                                                              |
+| Read token input and estimated/final output                                                          | 1. Existing component used correctly                             | Transaction Amount Object/Pair own token amount relationships and qualifiers                                                                                     | —                    | Existing components                      | Yes: reuse defaults    | Production adoption is a separate review                                                          |
+| Read a mixed USDC + wallet-collateral budget                                                         | 4. Automated-mint-specific composition                           | No accepted amount object can label a composite funding total as one token without changing its meaning                                                          | Semantic, financial  | Automated-mint funding summary           | No                     | A second mixed-source flow plus human review before proposing a reusable composite amount pattern |
+| Read lifecycle, recovery, and exact-record identity                                                  | 1. Existing component used correctly                             | Lifecycle Status, Inline Message, Link, Copyable Value, and Transaction Identity cover the semantic jobs                                                         | —                    | Existing components                      | Yes: reuse defaults    | Approval identity remains intentionally excluded                                                  |
+| Understand Input → Collateral → Mint/Receive without mistaking per-order status for overall progress | 3. Existing transaction relationship or recipe applies           | Amount and action primitives apply, but the substantial collateral and terminal-output sections own their stages directly                                        | Semantic             | Flow-owned stage composition             | Yes: primitives only   | Another direct-source staged family before considering a reusable embedded-stage recipe           |
+| Keep Mint and Redeem structurally aligned without erasing their execution differences                | 3. Existing transaction relationship or recipe applies           | One operation-aware tree reuses configuration, workspace, order, recovery, and outcome regions; operation policy supplies direction and final-action differences | Semantic, behavioral | Automated issuance composition           | Yes: local shared tree | Production adoption plus engineer review of result and recovery sources                           |
+| Keep each CoW direction, quoted amounts, lifecycle, and UID associated                               | 4. Automated-mint-specific composition                           | No accepted order row owns CoW-specific status/UID semantics                                                                                                     | Semantic, responsive | Automated-mint order row                 | No                     | Another flow with identical data and recovery ownership; engineer-approved executed amount source |
+| Distinguish wallet basket collateral from swap-acquired collateral                                   | 4. Automated-mint-specific composition                           | Amount and identity primitives do not own the SDK's all-or-nothing funding branch                                                                                | Behavioral           | Automated-mint funding section           | No                     | Another product flow using the same funding policy and result math                                |
+| Move from a 476px configuration task to an inspectable wide workspace                                | 4. Automated-mint-specific composition                           | Existing Dialog/task shells would erase production progressive disclosure                                                                                        | Responsive           | Automated-mint page workspace            | No                     | A second page flow with the same disclosure and association constraints                           |
+| Compare whether CoW order anatomy can generalize                                                     | 5. Exploratory pressure that might generalize with more evidence | Current transaction recipe has lifecycle vocabulary but no order relationship owner                                                                              | Visual, semantic     | Lab-only order composition               | No                     | Direct product evidence from another multi-order flow and human comparison                        |
+| Know whether Cancel stops in-flight quote work                                                       | 6. Product or production-behavior question                       | Current UI halts refetching; SDK request abort is not proven                                                                                                     | Behavioral           | Existing async-mint product/SDK boundary | No                     | Authoritative SDK abort contract or instrumented real execution                                   |
+| Resume after route leave or reload                                                                   | 6. Product or production-behavior question                       | Provider-local execution has no persistence/reconstruction owner                                                                                                 | Behavioral           | Existing async-mint product/SDK boundary | No                     | Product decision plus SDK persistence contract and recovery test                                  |
+| Label fulfilled-leg values as executed Sold/Bought amounts                                           | 7. Engineer-review requirement                                   | Production rows retain quote-leg amounts although `cowOrder` exposes execution data                                                                              | Semantic, behavioral | Async-mint result reconciliation         | No                     | Engineer-approved source priority and receipt/order fixtures proving units and partial fills      |
+| Promote a universal transaction controller, order primitive, or stepper                              | 7. Engineer-review requirement                                   | One flow cannot establish shared orchestration, math, or persistence ownership                                                                                   | Behavioral           | None proposed                            | No                     | Multiple production families with matching mechanics plus architecture and engineer review        |
+
+No supported variant is requested under classification 2: the lab's unmatched
+jobs are relationship- or flow-owned gaps, not missing options on an accepted
+component.
+
+### Discrepancies and deferred decisions
+
+The local area guide's direct test example now follows the root pnpm rule.
+`docs/wiki/sdk.md` names an older React SDK version than the installed
+`0.5.3`; this audit records the observed version without changing package
+policy. SDK order phase does not distinguish expired from cancelled even though
+the underlying CoW status does, quote cancellation is not proven to abort an
+already-started request, and provider-local progress cannot survive route
+leave. These are engineering constraints, not visual gaps the lab may invent
+away. The follow-up production reconciliation found production-backed UI
+branches for zero-swap completion, Ondo quote blocking and capacity-based split
+orders, per-leg quote failure, wallet-client loss, and missing input-token
+price; each now has a reviewable lab pressure state. MetaMask call splitting
+remains mechanically real, but production exposes no distinct UI for it, so it
+is not a current lab-state requirement. The visible branches' coverage and
+recommended disposition live in
+`docs/plans/manual-mint-design-system-readiness.md`, which is also the owner for
+the next manual-issuance design pass.
+
+### Review disposition
+
+Use the production flow as the behavioral baseline. The lab may improve visual
+hierarchy, component consistency, and wording that otherwise overstates known
+behavior, but it must not reinterpret mixed funding, collateral selection,
+order execution, result reconciliation, or recovery. In particular:
+
+- fulfilled order rows remain explicitly quote-derived until engineering
+  approves an executed-amount source and fallback policy;
+- quote escape is presented as a pause because current production only gates
+  continued work rather than proving request abort;
+- provider-local recovery remains the supported boundary, with no return-later
+  promise;
+- focus restoration is not an automated-mint requirement while the production
+  host remains a page;
+- existing-collateral calculations remain production/SDK-owned, while the lab
+  reviews only their presentation; and
+- the production Input → collateral acquisition → Mint sequence remains intact;
+  Input stays context, the collateral and Mint sections own their high-level
+  state and current action, and the right column owns subordinate per-order
+  evidence on desktop or behind explicit inspection at narrow widths; and
+- the order row, mixed-funding summary, and stage composition remain flow-owned
+  until matching production evidence justifies promotion.
+
+## 13. Engineer-review questions
 
 **Engineer review required.** The following questions affect on-chain math,
 transaction truth, SDK contracts, permissions, or protocol state and must be
@@ -671,6 +807,21 @@ answered before visual candidates become implementation plans.
 15. Which transaction outcomes are routine enough for Toast only? The proposed
     default is that permission-only acknowledgement may be transient, while an
     asset/position/ownership change with useful detail remains in context.
+16. Automated issuance can split large MetaMask call sets, but the current app
+    exposes no distinct progress UI for those batches. Do not add a lab state
+    for UI parity; revisit the SDK count/index signal only if product later asks
+    to disclose multiple confirmations.
+17. Manual issuance stores `toAssets` requirements under lowercase addresses
+    while some balances and row lookups retain checksummed addresses. Which
+    normalization boundary should own all manual balance, requirement, and
+    allowance records?
+18. Manual Redeem can round a low-decimal asset's minimum output to zero. Should
+    the contract call enforce a nonzero floor or should the UI block the unsafe
+    dust amount? The existing E2E `fixme` must remain red until one policy is
+    approved.
+19. Is firing every manual token approval transaction in parallel supported for
+    all target wallets, and how must USDT Revoke → Approve participate in the
+    aggregate action? The UI must not describe this as one atomic batch.
 
 Until these questions are answered, this audit authorizes only deterministic
 lab boards and review of presentation seams. It does not authorize production

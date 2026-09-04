@@ -3,6 +3,8 @@ import { candidateSemanticRoles as semanticRoles } from './semantic-roles'
 // Shared relationships only; flow anatomy, mechanics, lifecycle, and copy remain composition-owned.
 export const transactionTaskGeometry = {
   substantialWidth: 'max-w-[432px]',
+  shellInset: 'p-2',
+  contentInsetWithinShell: 'px-4',
   compactHeaderInset: 'px-2 pb-4 pt-2',
   compactHeaderRow: 'flex min-h-8 items-center gap-4',
   submittedContentBoundary:

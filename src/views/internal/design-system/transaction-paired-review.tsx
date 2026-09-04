@@ -64,8 +64,9 @@ export const TransactionPairedReview = () => {
 
   return (
     <section
+      id="transaction-paired-review"
       data-testid="transaction-paired-review"
-      className={v1LayoutRecipes.stack.completeGroups}
+      className={cn('scroll-mt-28', v1LayoutRecipes.stack.completeGroups)}
       aria-labelledby="transaction-paired-review-title"
     >
       <header className={v1LayoutRecipes.stack.tightText}>

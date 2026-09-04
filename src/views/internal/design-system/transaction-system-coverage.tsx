@@ -66,14 +66,14 @@ const COVERAGE_ITEMS: {
     requirement: 'Amount and input/output anatomy',
     kind: 'Shared candidate',
     coverage:
-      'Manual mint, automated mint, Stake/Unstake, Zapper, and Vote Lock/Unlock compositions.',
+      'Manual mint, automated Mint/Redeem, Stake/Unstake, Zapper, and Vote Lock/Unlock compositions.',
     status: 'Proposed candidate',
   },
   {
     requirement: 'Balance, Max, precision, and validation',
     kind: 'Shared candidate plus existing Field semantics',
     coverage:
-      'Automated mint exercises wallet balance and Max; amount precision, read-only output, and supporting estimates use the same Amount candidate while invalid Field behavior remains canonical.',
+      'Automated Mint/Redeem exercise operation-specific wallet balance and Max; amount precision, read-only output, and supporting estimates use the same Amount candidate while invalid Field behavior remains canonical.',
     status: 'Proposed candidate',
   },
   {
@@ -122,7 +122,7 @@ const COVERAGE_ITEMS: {
     requirement: 'Transaction and order identity',
     kind: 'Shared candidate',
     coverage:
-      'Atomic, automated, Stake/Unstake, and Vote Lock outcomes show the primary transaction identity. Stake delegation associates one explorer link with its single role; Vote Lock delegation associates one or two explorer links with the intended role changes. Approval transactions remain omitted, and RFQ order identity remains package-owned.',
+      'Automated issuance keeps each submitted CoW identity with its quoted sell amount, estimated buy amount, and status, then completion adds the separate final mint or redeem transaction. Atomic, Stake/Unstake, and Vote Lock outcomes show their primary transaction identity. Approval transactions remain omitted, and RFQ order identity remains package-owned.',
     status: 'Proposed candidate',
   },
   {
@@ -136,21 +136,21 @@ const COVERAGE_ITEMS: {
     requirement: 'Inline recovery in context',
     kind: 'Provisional feedback candidate',
     coverage:
-      'Wallet rejection, order expiry, failed order retry, and cancellation consequence remain beside the preserved task context.',
+      'Pausing quote search preserves the input, quote failure offers fetch/edit recovery, and automated order expiry preserves the filled order while retrying only the failed leg. Wallet rejection and other cancellation consequences remain beside their task context.',
     status: 'Proposed candidate',
   },
   {
     requirement: 'Transparent staged progress',
     kind: 'Composition recipe plus flow-owned rows',
     coverage:
-      'Automated workspace names only real SDK stages and keeps CoW order records flow-owned.',
+      'Automated Mint/Redeem keep high-level collateral work and terminal output in the left task sections, while operation policy preserves Mint’s separate final action and Redeem’s atomic redeem boundary. The right workspace owns flow-specific CoW row phases including prepared, independent waiting and fill, failure, and completed evidence.',
     status: 'Flow-owned',
   },
   {
     requirement: 'Partial success and retry scope',
     kind: 'Flow-owned recovery',
     coverage:
-      'Automated WBTC completion remains intact while only the failed WETH order is retried. Delegation likewise preserves a completed normal update when the following fast update fails and scopes Update to the remaining change.',
+      'Automated WBTC completion and existing wallet collateral remain intact while only the expired WETH order is retried. Delegation likewise preserves a completed normal update when the following fast update fails and scopes Update to the remaining change.',
     status: 'Flow-owned',
   },
   {

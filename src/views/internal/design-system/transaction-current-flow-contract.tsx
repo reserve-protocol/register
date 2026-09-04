@@ -55,7 +55,7 @@ const flows = [
       'Standardize visually|Financial hierarchy, amount objects, action grouping, statuses, rows, and outcome presentation.',
       'Consolidate|Shared amount, identity, lifecycle, recovery, and outcome primitives around flow-owned orders.',
       'Deliberately improve|Composition polish without changing progressive disclosure or resume semantics.',
-      'Do not touch yet|SDK quoting, order signing, retry scope, existing-collateral math, and final mint boundaries.',
+      'Do not touch yet|SDK quoting, order submission and authorization, retry scope, existing-collateral math, and final mint boundaries.',
     ],
     guardrail:
       'The narrow configure step expands; the orders workspace is not present before quote review.',

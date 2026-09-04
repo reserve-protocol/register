@@ -116,6 +116,12 @@ msgstr "{0}"
 msgid "{0} — outside trading hours or larger than the max single Ondo trade. Oversized legs fill as multiple sequential trades."
 msgstr "{0} — 거래 시간이 아니거나 Ondo 단일 최대 거래 한도를 초과합니다. 대형 물량은 여러 번의 순차 거래로 체결됩니다."
 
+#. placeholder {0}: input.usdDisplay
+#. placeholder {1}: formatUsdFixture( EXISTING_COLLATERAL_INPUT_EQUIVALENT.value * 10n ** 12n )
+#: src/views/internal/design-system/transaction-composition-staged-task.tsx:522
+msgid "{0} · {1} existing collateral"
+msgstr ""
+
 #. placeholder {0}: highImpactTokens.map((token) => token.tokenSymbol).join(', ')
 #. placeholder {1}: highImpactTokens.length
 #: src/views/index-dtf/auctions/views/rebalance/components/rebalance-liquidity-checker.tsx:247
@@ -151,6 +157,12 @@ msgstr "{0} {1} Redeem 완료!"
 #: src/views/earn/views/yield-dtf/components/table-filters.tsx:54
 msgid "{0} {noun}"
 msgstr "{0} {noun}"
+
+#. placeholder {0}: formatFixtureAmount(walletFunding, 2)
+#. placeholder {1}: formatUsdFixture( collateral.value * 10n ** BigInt(18 - collateral.decimals) )
+#: src/views/internal/design-system/transaction-composition-staged-task.tsx:514
+msgid "{0} + {1} existing collateral"
+msgstr "{0} + 기존 담보 {1}"
 
 #. placeholder {0}: formatPercentage(s.weight)
 #. placeholder {1}: formatPercentage(s.estApy)
@@ -227,8 +239,8 @@ msgid "{0} explainer"
 msgstr "{0} 설명"
 
 #. placeholder {0}: selectedVersion.symbol
-#: src/views/home/components/highlighted-dtfs/transcript-preview.tsx:63
-#: src/views/home/components/highlighted-dtfs/transcript-preview.tsx:64
+#: src/views/home/components/highlighted-dtfs/transcript-preview.tsx:66
+#: src/views/home/components/highlighted-dtfs/transcript-preview.tsx:67
 msgid "{0} Explainer"
 msgstr "{0} 설명"
 
@@ -259,6 +271,11 @@ msgstr "{0} Native"
 msgid "{0} of {1}"
 msgstr "{1} 중 {0}"
 
+#. placeholder {0}: orders.length
+#: src/views/internal/design-system/transaction-composition-staged-task.tsx:315
+msgid "{0} orders prepared"
+msgstr "{0}개 주문 준비됨"
+
 #. placeholder {0}: dtf?.token?.name || 'Index DTF'
 #. placeholder {0}: dtf?.token?.symbol || 'Index DTF'
 #: src/views/index-dtf/factsheet/index.tsx:31
@@ -274,6 +291,15 @@ msgstr "{0} 성과"
 #: src/views/explorer/components/governance/filters.tsx:45
 msgid "{0} selected"
 msgstr "{0}개 선택됨"
+
+#: src/views/internal/design-system/transaction-composition-staged-task.tsx:324
+#~ msgid "{0} swap quotes ready"
+#~ msgstr "스왑 견적 {0}개 준비됨"
+
+#. placeholder {0}: orders.length
+#: src/views/internal/design-system/transaction-composition-staged-task.tsx:325
+msgid "{0} swaps prepared"
+msgstr ""
 
 #. placeholder {0}: config.tokenName
 #: src/views/index-dtf/overview/components/index-disclousure.tsx:144
@@ -382,6 +408,14 @@ msgstr "{delayInDays, plural, one {#일} other {#일}}"
 msgid "{delayInHours, plural, one {# hour} other {# hours}}"
 msgstr "{delayInHours, plural, one {#시간} other {#시간}}"
 
+#: src/views/internal/design-system/transaction-composition-staged-task.tsx:173
+msgid "{existingCollateralValue} applied"
+msgstr "{existingCollateralValue} 적용됨"
+
+#: src/views/internal/design-system/transaction-composition-staged-task.tsx:175
+msgid "{existingCollateralValue} available"
+msgstr "{existingCollateralValue} 사용 가능"
+
 #: src/views/index-dtf/deploy/steps/confirm-deploy/manual/components/approve-all-deploy-button.tsx:85
 #: src/views/index-dtf/issuance/manual/components/approve-all-button.tsx:77
 msgid "{failedCount, plural, one {# approval failed - Retry} other {# approvals failed - Retry}}"
@@ -390,6 +424,19 @@ msgstr "{failedCount, plural, one {승인 #건 실패 - 재시도} other {승인
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:515
 msgid "{failedOrderCount} need retry"
 msgstr "{failedOrderCount}건 재시도 필요"
+
+#: src/views/internal/design-system/transaction-composition-staged-task.tsx:318
+#~ msgid "{filledCount}/{0} orders filled"
+#~ msgstr "주문 {filledCount}/{0}개 체결"
+
+#: src/views/internal/design-system/transaction-composition-staged-orders.tsx:125
+#: src/views/internal/design-system/transaction-composition-staged-task.tsx:196
+#~ msgid "{filledCount}/{0} Orders filled"
+#~ msgstr "{filledCount}/{0}개 주문 체결됨"
+
+#: src/views/internal/design-system/transaction-composition-staged-task.tsx:314
+#~ msgid "{filledCount}/{0} orders filled · 1m 42s remaining"
+#~ msgstr ""
 
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:492
 msgid "{filledOrderCount}/{orderCount} Orders filled"
@@ -582,6 +629,7 @@ msgid "+${0} leftover collateral"
 msgstr "+${0} 잔여 담보"
 
 #: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:144
+#: src/views/internal/design-system/transaction-composition-staged-entry.tsx:334
 msgid "<0>Note:</0> Some wallets, like MetaMask, need smart accounts enabled."
 msgstr "<0>참고:</0> MetaMask와 같은 일부 Wallet은 스마트 계정을 활성화해야 합니다."
 
@@ -592,6 +640,14 @@ msgstr "<0>릴리스 5.0.0</0>은 토큰별 경매 규모 제한과 개별 토�
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v5-optimistic-upgrade.tsx:339
 msgid "<0>Reserve Optimistic Governor upgrade</0> introduces a new governor system TBD COPY HERE!. <1/>See the <2>changelog</2> for more details."
 msgstr "<0>Reserve Optimistic Governor 업그레이드</0>는 새로운 거버너 시스템을 도입합니다 TBD COPY HERE!. <1/>자세한 내용은 <2>변경 로그</2>를 참조하세요."
+
+#: src/views/internal/design-system/transaction-composition-staged-task.tsx:649
+msgid "≈{outputValue} · Completing mint..."
+msgstr "≈{outputValue} · 민팅 완료 중..."
+
+#: src/views/internal/design-system/transaction-composition-staged-task.tsx:647
+msgid "≈{outputValue} · Ready to mint"
+msgstr "≈{outputValue} · 민팅 준비 완료"
 
 #: src/views/home/components/highlighted-dtfs/historical-price-disclaimer.tsx:5
 #: src/views/index-dtf/overview/components/index-disclousure.tsx:403
@@ -631,6 +687,27 @@ msgstr ""
 #: src/views/index-dtf/factsheet/components/performance-table.tsx:29
 msgid "1 Month"
 msgstr "1개월"
+
+#: src/views/internal/design-system/transaction-composition-staged-support.tsx:271
+#: src/views/internal/design-system/transaction-composition-staged-task.tsx:220
+#~ msgid "1 need retry"
+#~ msgstr "1건을 다시 시도해야 합니다"
+
+#: src/views/internal/design-system/transaction-composition-staged-task.tsx:321
+msgid "1 order cancelled"
+msgstr ""
+
+#: src/views/internal/design-system/transaction-composition-staged-task.tsx:319
+msgid "1 order needs retry"
+msgstr ""
+
+#: src/views/internal/design-system/transaction-composition-staged-task.tsx:758
+msgid "1 order needs retrying"
+msgstr "주문 1건을 다시 시도해야 합니다"
+
+#: src/views/internal/design-system/transaction-composition-staged-task.tsx:317
+msgid "1 order open · expires in 1m 42s"
+msgstr ""
 
 #: src/components/rtoken-setup/basket/PrimaryBasket.tsx:163
 msgid "1 Token ="
@@ -833,9 +910,17 @@ msgstr "기권"
 msgid "Accept unstake delay"
 msgstr "Unstake 지연 동의"
 
+#: src/views/internal/design-system/transaction-composition-staged-support.tsx:72
+#~ msgid "Acquire {0}"
+#~ msgstr "{0} 매수"
+
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:585
 msgid "Acquire assets before minting"
 msgstr "Mint 전에 자산 확보"
+
+#: src/views/internal/design-system/transaction-composition-staged-task.tsx:336
+msgid "Acquire collateral"
+msgstr "담보 확보"
 
 #: src/views/internal/dtf-list/components/dtf-table.tsx:201
 #: src/views/portfolio-page/components/pending-withdrawals.tsx:370
@@ -863,6 +948,10 @@ msgstr "활동 내역"
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1282
 msgid "Actual impact"
 msgstr "실제 영향"
+
+#: src/views/internal/design-system/transaction-composition-staged-task.tsx:462
+msgid "Actual swap impact"
+msgstr ""
 
 #: src/components/rtoken-setup/basket/CustomCollateral.tsx:147
 #: src/views/yield-dtf/governance/views/proposal-detail/components/proposal-summary/BasketChangeSummary.tsx:45
@@ -1011,6 +1100,7 @@ msgid "Admin Timelock"
 msgstr "관리자 Timelock"
 
 #: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:293
+#: src/views/internal/design-system/transaction-composition-staged-entry.tsx:146
 msgid "Advanced"
 msgstr "고급"
 
@@ -1078,6 +1168,10 @@ msgstr "전체 DTFs"
 #: src/views/explorer/components/MultiselectDropdown.tsx:82
 msgid "All options"
 msgstr "모든 옵션"
+
+#: src/views/internal/design-system/transaction-composition-staged-orders.tsx:198
+msgid "All required collateral is already available."
+msgstr ""
 
 #: src/views/explorer/components/governance/filters.tsx:46
 msgid "All statuses"
@@ -1193,6 +1287,10 @@ msgstr "금액"
 #: src/views/index-dtf/issuance/manual/components/asset-list.tsx:179
 msgid "Amount:"
 msgstr "수량:"
+
+#: src/views/internal/design-system/transaction-composition-staged-task.tsx:767
+msgid "An error occurred. Please try again."
+msgstr ""
 
 #: src/views/index-dtf/deploy/steps/basket/index.tsx:22
 msgid "An Index DTF is a tokenized basket of assets. Please add the tokens that will compose your index DTF basket at launch. The basket can be changed by governance in the future."
@@ -1375,7 +1473,7 @@ msgstr "RSR로"
 msgid "As RToken"
 msgstr "RToken으로"
 
-#: src/components/dtf-chat/index.tsx:148
+#: src/components/dtf-chat/index.tsx:151
 #: src/views/index-dtf/overview/components/index-ctas-overview-mobile.tsx:175
 #: src/views/index-dtf/overview/components/index-ctas-overview-mobile.tsx:182
 #: src/views/index-dtf/overview/stocks/faq.tsx:48
@@ -1404,6 +1502,7 @@ msgid "Assets"
 msgstr "자산"
 
 #: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:195
+#: src/views/internal/design-system/transaction-composition-staged-entry.tsx:208
 msgid "Assets arrive"
 msgstr "자산 도착"
 
@@ -1529,15 +1628,26 @@ msgstr "실행된 경매"
 msgid "Audit Status"
 msgstr "감사 상태"
 
+#: src/views/internal/design-system/transaction-composition-staged-orders.tsx:351
+#~ msgid "Authorize every prepared order together in your wallet."
+#~ msgstr ""
+
 #: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:93
+#: src/views/internal/design-system/transaction-composition-staged-entry.tsx:153
 msgid "Automated Mint / Redeem"
 msgstr "자동 Mint / Redeem"
 
+#: src/views/internal/design-system/transaction-composition-staged-support.tsx:162
+#~ msgid "Automated mint progress"
+#~ msgstr "자동 발행 진행 상황"
+
 #: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:95
+#: src/views/internal/design-system/transaction-composition-staged-entry.tsx:295
 msgid "Automated minting and redemption require a wallet with smart account support. Hardware Wallets are not supported."
 msgstr "자동 Mint와 Redeem에는 스마트 계정을 지원하는 Wallet이 필요합니다. 하드웨어 Wallet은 지원되지 않습니다."
 
 #: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:178
+#: src/views/internal/design-system/transaction-composition-staged-entry.tsx:121
 msgid "Automated minting is an advanced feature. For most people, simple swaps are recommended."
 msgstr "자동 Mint는 고급 기능입니다. 대부분의 사용자에게는 간단한 Swap을 권장합니다."
 
@@ -1546,11 +1656,17 @@ msgstr "자동 Mint는 고급 기능입니다. 대부분의 사용자에게는 �
 msgid "Automatic"
 msgstr "자동"
 
+#: src/views/internal/design-system/transaction-composition-staged-task.tsx:337
+msgid "Automatic collateral acquisition"
+msgstr ""
+
 #: src/views/index-dtf/issuance/async-mint/steps/configure-mint.tsx:114
+#: src/views/internal/design-system/transaction-composition-staged-configure.tsx:238
 msgid "Automatically acquire assets"
 msgstr "자동으로 자산 확보"
 
 #: src/views/index-dtf/issuance/async-mint/steps/configure-mint.tsx:124
+#: src/views/internal/design-system/transaction-composition-staged-configure.tsx:262
 msgid "Automatically sell collateral"
 msgstr "자동으로 담보 매도"
 
@@ -1610,6 +1726,7 @@ msgid "Awaiting approvals... ({completedCount}/{totalCount})"
 msgstr "승인 대기 중... ({completedCount}/{totalCount})"
 
 #: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:254
+#: src/views/internal/design-system/transaction-composition-staged-entry.tsx:267
 msgid "Back to automated minting introduction"
 msgstr "자동 Mint 소개로 돌아가기"
 
@@ -1704,6 +1821,10 @@ msgstr "잔액"
 msgid "Balance: "
 msgstr "잔액: "
 
+#: src/views/internal/design-system/transaction-composition-staged-support.tsx:159
+#~ msgid "Base"
+#~ msgstr "Base"
+
 #: src/views/earn/components/pools-table.tsx:47
 #: src/views/earn/hooks/useEarnTableColumns.tsx:167
 #: src/views/index-dtf/overview/components/charts/price-chart-tooltips.tsx:63
@@ -1738,6 +1859,14 @@ msgstr "바스켓"
 #: src/views/explorer/components/tokens/index.tsx:164
 msgid "Basket APY"
 msgstr "바스켓 APY"
+
+#: src/views/internal/design-system/transaction-composition-staged-configure.tsx:142
+msgid "Basket assets are acquired automatically before CMC20 is minted."
+msgstr ""
+
+#: src/views/internal/design-system/transaction-composition-staged-task.tsx:585
+#~ msgid "Basket assets will be sold directly; no CMC20 will be redeemed."
+#~ msgstr ""
 
 #: src/views/index-dtf/governance/components/proposal-preview/rebalance-preview/index.tsx:37
 #: src/views/index-dtf/governance/components/proposal-preview/rebalance-preview/legacy-basket-proposal-preview.tsx:114
@@ -1844,6 +1973,7 @@ msgid "Before continuing, please confirm the following."
 msgstr "계속하기 전에 다음 사항을 확인해 주세요."
 
 #: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:175
+#: src/views/internal/design-system/transaction-composition-staged-entry.tsx:118
 msgid "Before using automated minting"
 msgstr "자동 Mint를 사용하기 전에"
 
@@ -1934,6 +2064,7 @@ msgid "Both Auction Launchers AND community members can start auctions. Auction 
 msgstr "경매 실행자와 커뮤니티 구성원 모두 경매를 시작할 수 있습니다. 경매 실행자는 여전히 독점 실행 윈도우를 가지지만, 그 이후에는 커뮤니티의 누구나 경매를 시작할 수 있습니다. 독점 실행 윈도우 이후 커뮤니티 구성원이 경매를 시작할 수 있는 기간을 지정해 주세요."
 
 #: src/views/index-dtf/auctions/legacy/components/auction-item.tsx:132
+#: src/views/internal/design-system/transaction-composition-staged-support.tsx:132
 #: src/views/yield-dtf/auctions/components/useColumns.tsx:36
 msgid "Bought"
 msgstr "매수됨"
@@ -2040,6 +2171,10 @@ msgstr "{0} 매수"
 msgid "Buy / Sell"
 msgstr "매수 / 매도"
 
+#: src/views/internal/design-system/transaction-composition-staged-support.tsx:130
+msgid "Buy quote"
+msgstr "매수 견적"
+
 #: src/views/index-dtf/auctions/views/rebalance/components/rebalance-action.tsx:37
 msgid "Buy/sell tokens to move closer to proposed weights."
 msgstr "제안된 가중치에 더 가까워지도록 토큰을 매수/매도합니다."
@@ -2059,7 +2194,9 @@ msgid "Buying (current price)"
 msgstr "매수 (현재 가격)"
 
 #. placeholder {0}: leg.asset.symbol
+#. placeholder {0}: order.bought.symbol
 #: src/views/index-dtf/issuance/async-mint/components/leg-row.tsx:173
+#: src/views/internal/design-system/transaction-composition-staged-support.tsx:87
 msgid "Buying {0}"
 msgstr "{0} 매수 중"
 
@@ -2150,6 +2287,7 @@ msgid "Canceled"
 msgstr "취소됨"
 
 #: src/views/index-dtf/issuance/async-mint/components/leg-row.tsx:76
+#: src/views/internal/design-system/transaction-composition-staged-support.tsx:55
 msgid "Cancelled"
 msgstr "취소됨"
 
@@ -2300,6 +2438,14 @@ msgstr "당사의 Alexios Governor와, 지정한 Ethereum 주소 하의 1인 통
 msgid "Choose how much {0} to use for this mint."
 msgstr "이 Mint에 사용할 {0} 수량을 선택하세요."
 
+#: src/views/internal/design-system/transaction-composition-staged-configure.tsx:134
+#~ msgid "Choose how much USDC to use for this mint."
+#~ msgstr "이 민팅에 사용할 USDC 금액을 선택하세요."
+
+#: src/views/internal/design-system/transaction-composition-staged-configure.tsx:132
+#~ msgid "Choose how much USDT to use for this mint."
+#~ msgstr ""
+
 #: src/views/yield-dtf/issuance/components/redeem/RedeemNonceModal.tsx:42
 msgid "Choose Redemption Basket"
 msgstr "Redemption 바스켓 선택"
@@ -2381,6 +2527,14 @@ msgstr "마감"
 msgid "Closes"
 msgstr "마감"
 
+#: src/views/internal/design-system/transaction-composition-staged-configure.tsx:152
+msgid "CMC20 is redeemed and its basket assets are automatically sold for USDC."
+msgstr ""
+
+#: src/views/internal/design-system/transaction-composition-staged-configure.tsx:147
+msgid "CMC20 is redeemed and its basket assets are automatically sold for USDT."
+msgstr ""
+
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1644
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1651
 msgid "Collapse orders"
@@ -2417,6 +2571,10 @@ msgstr "담보 분배"
 msgid "Collateral Exposure"
 msgstr "담보 익스포저"
 
+#: src/views/internal/design-system/transaction-composition-staged-support.tsx:170
+#~ msgid "Collateral orders"
+#~ msgstr "담보 주문"
+
 #: src/views/yield-dtf/overview/components/backing/risks.tsx:59
 msgid "Collateral Plugin Wrappers"
 msgstr "Collateral Plugin Wrappers"
@@ -2425,15 +2583,26 @@ msgstr "Collateral Plugin Wrappers"
 msgid "Collateral Plugins"
 msgstr "담보 플러그인"
 
+#: src/views/internal/design-system/transaction-composition-staged-task.tsx:333
+msgid "Collateral ready"
+msgstr "담보 준비 완료"
+
+#: src/views/internal/design-system/transaction-composition-staged-workspace.tsx:249
+msgid "Collateral swap price impact"
+msgstr "담보 스왑 가격 영향"
+
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1619
+#: src/views/internal/design-system/transaction-composition-staged-orders.tsx:65
 msgid "Collateral swaps"
 msgstr "담보 Swap"
 
 #: src/views/index-dtf/issuance/async-mint/steps/success.tsx:297
+#: src/views/internal/design-system/transaction-composition-staged-orders.tsx:202
 msgid "Collateral swaps for this mint."
 msgstr "이 Mint를 위한 담보 Swap입니다."
 
 #: src/views/index-dtf/issuance/async-mint/steps/success.tsx:299
+#: src/views/internal/design-system/transaction-composition-staged-orders.tsx:204
 msgid "Collateral swaps for this redeem."
 msgstr "이 Redeem을 위한 담보 Swap입니다."
 
@@ -2502,11 +2671,18 @@ msgstr "커뮤니티 실행 윈도우"
 msgid "Community Telegram"
 msgstr "커뮤니티 Telegram"
 
+#: src/views/internal/design-system/transaction-composition-staged-support.tsx:171
+#: src/views/internal/design-system/transaction-composition-staged-support.tsx:183
+#: src/views/internal/design-system/transaction-composition-staged-task.tsx:76
+#~ msgid "Complete"
+#~ msgstr "완료"
+
 #: src/views/index-dtf/auctions/views/rebalance-list/components/historical-rebalance-item.tsx:29
 msgid "Completed"
 msgstr "완료됨"
 
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1615
+#: src/views/internal/design-system/transaction-composition-staged-orders.tsx:63
 msgid "Completed orders"
 msgstr "완료된 주문"
 
@@ -2514,7 +2690,12 @@ msgstr "완료된 주문"
 msgid "Completed:"
 msgstr "완료됨:"
 
+#: src/views/internal/design-system/transaction-composition-staged-support.tsx:180
+#~ msgid "Completing"
+#~ msgstr "완료 중"
+
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:101
+#: src/views/internal/design-system/transaction-composition-staged-actions.tsx:144
 msgid "Completing mint…"
 msgstr "Mint 완료 중…"
 
@@ -2585,6 +2766,10 @@ msgstr "변경 사항 확인"
 msgid "Confirm changes made"
 msgstr "변경 사항 확인"
 
+#: src/views/internal/design-system/transaction-composition-staged-actions.tsx:133
+msgid "Confirm collateral trades in wallet…"
+msgstr ""
+
 #: src/views/yield-dtf/governance/components/DelegateModal.tsx:39
 msgid "Confirm delegate"
 msgstr "위임 확인"
@@ -2598,6 +2783,10 @@ msgstr "Mint 확인"
 #: src/views/yield-dtf/issuance/components/zapV2/submit/ZapConfirmButton.tsx:73
 msgid "Confirm Redeem"
 msgstr "Redeem 확인"
+
+#: src/views/internal/design-system/transaction-composition-staged-actions.tsx:135
+msgid "Confirm redeem in wallet…"
+msgstr ""
 
 #: src/views/yield-dtf/staking/components/stake/confirm-stake-button.tsx:96
 #: src/views/yield-dtf/staking/components/stake/confirm-stake-button.tsx:131
@@ -2674,6 +2863,7 @@ msgstr "Wallet 연결"
 #: src/components/ui/transaction-button.tsx:57
 #: src/components/ui/transaction.tsx:44
 #: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:357
+#: src/views/internal/design-system/transaction-composition-staged-entry.tsx:351
 msgid "Connect Wallet"
 msgstr "Wallet 연결"
 
@@ -2703,6 +2893,7 @@ msgid "Contested"
 msgstr "논쟁 중"
 
 #: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:389
+#: src/views/internal/design-system/transaction-composition-staged-entry.tsx:169
 msgid "Continue"
 msgstr "계속"
 
@@ -2745,6 +2936,8 @@ msgstr "{0}(으)로 전환됨 — 세부 내역 보기"
 msgid "Converting basket tokens held in your wallet to {0}."
 msgstr "Wallet에 보유한 바스켓 토큰을 {0}(으)로 전환합니다."
 
+#: src/components/design-system-v1/copyable-value.tsx:103
+#: src/components/design-system-v1/copyable-value.tsx:178
 #: src/components/ui/copy-value.tsx:59
 #: src/components/ui/copy.tsx:23
 #: src/views/index-dtf/governance/components/governance-account-info.tsx:72
@@ -2760,6 +2953,10 @@ msgstr "복사됨!"
 #: src/views/yield-dtf/issuance/components/zapV2/minters-modal/SocialMediaInput.tsx:194
 msgid "Copy"
 msgstr "복사"
+
+#: src/components/design-system-v1/copyable-value.tsx:116
+msgid "Copy {copyValue} to clipboard"
+msgstr "{copyValue}을(를) 클립보드에 복사"
 
 #: src/views/index-dtf/components/navigation/index.tsx:316
 #: src/views/index-dtf/overview/components/index-token-address.tsx:135
@@ -2779,6 +2976,8 @@ msgstr "엔지니어링 팀과 공유할 페이로드 복사"
 msgid "Copy swap params to share with engineering team"
 msgstr "엔지니어링 팀과 공유할 스왑 파라미터 복사"
 
+#: src/components/design-system-v1/copyable-value.tsx:149
+#: src/components/design-system-v1/copyable-value.tsx:181
 #: src/components/ui/copy-value.tsx:60
 #: src/components/ui/copy.tsx:23
 #: src/views/index-dtf/governance/components/governance-account-info.tsx:72
@@ -2803,7 +3002,12 @@ msgstr "커버 미리보기"
 msgid "cow"
 msgstr "cow"
 
+#: src/views/internal/design-system/transaction-composition-staged-support.tsx:73
+#~ msgid "CoW Protocol order"
+#~ msgstr "CoW Protocol 주문"
+
 #: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:193
+#: src/views/internal/design-system/transaction-composition-staged-entry.tsx:199
 msgid "CoW routes"
 msgstr "CoW 경로"
 
@@ -3772,6 +3976,7 @@ msgstr "{variant} 커버 이미지 편집"
 
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:763
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:769
+#: src/views/internal/design-system/transaction-composition-staged-task.tsx:594
 msgid "Edit amount"
 msgstr "금액 수정"
 
@@ -3868,6 +4073,10 @@ msgstr "등록 해제하려는 자산에 분배 가능한 미지급 수익이 �
 msgid "Enter {0} amount"
 msgstr "{0} 수량 입력"
 
+#: src/views/internal/design-system/transaction-composition-staged-configure.tsx:223
+msgid "Enter amount"
+msgstr "금액 입력"
+
 #: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/basket-settings-proposal-section.tsx:39
 #: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/basket-settings-proposal-section.tsx:99
 #: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/sections/propose-basket-governance.tsx:28
@@ -3943,6 +4152,14 @@ msgstr "<0/>에 대한 중앙화된 제어 권한을 갖게 될 Wallet 주소를
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-metadata.tsx:34
 msgid "Enter token name"
 msgstr "토큰 이름 입력"
+
+#: src/views/internal/design-system/transaction-composition-staged-configure.tsx:134
+msgid "Enter USDC amount"
+msgstr "USDC 금액 입력"
+
+#: src/views/internal/design-system/transaction-composition-staged-configure.tsx:132
+msgid "Enter USDT amount"
+msgstr ""
 
 #: src/components/stake-drawer/components/submit-stake-button.tsx:168
 #: src/components/stake-drawer/components/submit-unstake-button.tsx:76
@@ -4046,6 +4263,26 @@ msgstr "예상 손실: ~${0}"
 msgid "Estimated output"
 msgstr "예상 수령량"
 
+#: src/views/internal/design-system/transaction-composition-staged-task.tsx:657
+msgid "Estimated output · ≈{outputValue} · Upcoming"
+msgstr "예상 결과 · ≈{outputValue} · 예정"
+
+#: src/views/internal/design-system/transaction-composition-staged-task.tsx:653
+msgid "Estimated output · Collateral sales in progress"
+msgstr ""
+
+#: src/views/internal/design-system/transaction-composition-staged-task.tsx:651
+msgid "Estimated output · Confirm redeem in your wallet"
+msgstr ""
+
+#: src/views/internal/design-system/transaction-composition-staged-task.tsx:655
+msgid "Estimated output · One order needs retry"
+msgstr ""
+
+#: src/views/internal/design-system/transaction-composition-staged-task.tsx:441
+msgid "Estimated swap impact"
+msgstr ""
+
 #: src/views/index-dtf/auctions/views/rebalance/components/rebalance-liquidity-checker.tsx:290
 #: src/views/index-dtf/governance/views/propose/basket/components/proposal-liquidity-checker.tsx:359
 msgid "Estimated total impact"
@@ -4069,6 +4306,8 @@ msgstr "균등 분배"
 
 #: src/views/index-dtf/issuance/async-mint/steps/configure-mint.tsx:238
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:967
+#: src/views/internal/design-system/transaction-composition-staged-configure.tsx:198
+#: src/views/internal/design-system/transaction-composition-staged-task.tsx:719
 msgid "Exceeds available balance"
 msgstr "사용 가능한 잔액 초과"
 
@@ -4154,6 +4393,11 @@ msgstr "실행 실패"
 msgid "Execution progress"
 msgstr "실행 진행 상황"
 
+#: src/views/internal/design-system/transaction-composition-staged-workspace.tsx:233
+#: src/views/internal/design-system/transaction-composition-staged-workspace.tsx:255
+msgid "Existing collateral"
+msgstr "보유 담보"
+
 #. placeholder {0}: formatCurrency(walletCollateralUsedUsd)
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:816
 msgid "Existing collateral · ${0} applied"
@@ -4167,6 +4411,10 @@ msgstr "기존 담보 · ${0} 사용 가능"
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:817
 msgid "Existing collateral applied"
 msgstr "기존 담보 적용됨"
+
+#: src/views/internal/design-system/transaction-composition-staged-task.tsx:92
+#~ msgid "Existing collateral available"
+#~ msgstr "사용 가능한 보유 담보"
 
 #: src/components/rtoken-setup/components/BackButton.tsx:28
 #: src/views/yield-dtf/deploy/components/NavigationSidebar.tsx:45
@@ -4198,6 +4446,7 @@ msgstr "예상 변동성"
 #: src/views/explorer/components/governance/filters.tsx:23
 #: src/views/index-dtf/governance/views/proposal/components/proposal-deadline-alert.tsx:35
 #: src/views/index-dtf/issuance/async-mint/components/leg-row.tsx:74
+#: src/views/internal/design-system/transaction-composition-staged-support.tsx:54
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalAlert.tsx:56
 msgid "Expired"
 msgstr "만료됨"
@@ -4263,6 +4512,7 @@ msgid "Extra collateral to keep"
 msgstr "추가로 보유할 담보"
 
 #: src/views/index-dtf/issuance/async-mint/components/leg-row.tsx:77
+#: src/views/internal/design-system/transaction-composition-staged-support.tsx:53
 msgid "Failed"
 msgstr "실패"
 
@@ -4374,8 +4624,13 @@ msgid "Fetch again to load the swap orders for this mint."
 msgstr "이 Mint의 Swap 주문을 불러오려면 다시 가져오세요."
 
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1173
+#: src/views/internal/design-system/transaction-composition-staged-actions.tsx:46
 msgid "Fetch quotes again"
 msgstr "견적 다시 가져오기"
+
+#: src/views/internal/design-system/transaction-composition-staged-support.tsx:156
+#~ msgid "Fetching"
+#~ msgstr "가져오는 중"
 
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:435
 msgid "Fetching {swapCount} swap quote"
@@ -4386,6 +4641,7 @@ msgid "Fetching {swapCount} swap quotes"
 msgstr "Swap 견적 {swapCount}건 가져오는 중"
 
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1626
+#: src/views/internal/design-system/transaction-composition-staged-orders.tsx:193
 msgid "Fetching paused."
 msgstr "가져오기 일시 중지됨."
 
@@ -4394,10 +4650,14 @@ msgid "Fetching quotes from CoW is taking longer than usual."
 msgstr "CoW에서 견적을 가져오는 데 평소보다 오래 걸리고 있습니다."
 
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1205
+#: src/views/internal/design-system/transaction-composition-staged-actions.tsx:28
+#: src/views/internal/design-system/transaction-composition-staged-task.tsx:309
+#: src/views/internal/design-system/transaction-composition-staged-task.tsx:645
 msgid "Fetching quotes..."
 msgstr "견적 가져오는 중..."
 
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:437
+#: src/views/internal/design-system/transaction-composition-staged-orders.tsx:124
 msgid "Fetching swap quotes"
 msgstr "Swap 견적 가져오는 중"
 
@@ -4424,6 +4684,7 @@ msgid "Fill out the information below and ABC Labs will reach out!"
 msgstr "아래 정보를 입력해 주시면 ABC Labs에서 연락드리겠습니다!"
 
 #: src/views/index-dtf/issuance/async-mint/components/leg-row.tsx:71
+#: src/views/internal/design-system/transaction-composition-staged-support.tsx:52
 msgid "Filled"
 msgstr "체결됨"
 
@@ -4432,6 +4693,7 @@ msgid "Filled: {totalDistribution}%"
 msgstr "채워짐: {totalDistribution}%"
 
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:99
+#: src/views/internal/design-system/transaction-composition-staged-actions.tsx:139
 msgid "Filling orders…"
 msgstr "주문 체결 중…"
 
@@ -4444,6 +4706,10 @@ msgstr "DTF로 필터링"
 msgid "Filter by Role"
 msgstr "역할로 필터링"
 
+#: src/views/internal/design-system/transaction-composition-staged-support.tsx:224
+msgid "Final mint transaction"
+msgstr "최종 발행 트랜잭션"
+
 #: src/views/yield-dtf/auctions/dutch/components/DutchAuction.tsx:50
 msgid "Final price"
 msgstr "최종 가격"
@@ -4451,6 +4717,10 @@ msgstr "최종 가격"
 #: src/views/yield-dtf/auctions/dutch/components/AuctionTimeIndicators.tsx:32
 msgid "Final price in:"
 msgstr "최종 가격까지:"
+
+#: src/views/internal/design-system/transaction-composition-staged-support.tsx:226
+msgid "Final redeem transaction"
+msgstr ""
 
 #: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:331
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalDetailStats.tsx:105
@@ -4601,6 +4871,7 @@ msgid "Get easy exposure to narratives, indexes, and ecosystems"
 msgstr "내러티브, 인덱스, 생태계에 손쉽게 노출되세요"
 
 #: src/views/index-dtf/issuance/async-mint/steps/configure-mint.tsx:249
+#: src/views/internal/design-system/transaction-composition-staged-configure.tsx:221
 msgid "Get quote"
 msgstr "견적 받기"
 
@@ -4797,11 +5068,16 @@ msgstr "Mint에 문제가 있나요? (Zap은 베타 단계입니다)"
 msgid "Having issues minting? Zaps are in beta"
 msgstr "Mint에 문제가 있나요? Zap은 베타 버전입니다"
 
+#: src/views/internal/design-system/transaction-composition-staged-task.tsx:590
+#~ msgid "Held basket assets selected"
+#~ msgstr ""
+
 #: src/views/index-dtf/deploy/steps/governance/form-existing-erc20.tsx:37
 msgid "hero-splash"
 msgstr "hero-splash"
 
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:502
+#: src/views/internal/design-system/transaction-composition-staged-workspace.tsx:115
 msgid "Hide orders"
 msgstr "주문 숨기기"
 
@@ -5004,6 +5280,10 @@ msgstr "일일 지급액"
 msgid "in dust"
 msgstr "더스트로"
 
+#: src/views/internal/design-system/transaction-composition-staged-support.tsx:166
+#~ msgid "In progress"
+#~ msgstr "진행 중"
+
 #: src/views/earn/views/index-dtf/components/faq.tsx:40
 msgid "In return, vote lockers earn rewards from the DTF’s fees — a portion of the TVL and mint fees collected by each Index DTF is distributed to the holders who vote-lock its governance token."
 msgstr ""
@@ -5015,7 +5295,7 @@ msgstr "출금 진행 중"
 #: src/components/inactive-badge.tsx:18
 #: src/views/home/components/discover-index-dtf/index-dtf-table-columns.tsx:197
 #: src/views/home/components/discover-yield-dtf/yield-dtf-card.tsx:95
-#: src/views/home/components/highlighted-dtfs/feature-card-header.tsx:130
+#: src/views/home/components/highlighted-dtfs/feature-card-header.tsx:133
 msgid "Inactive"
 msgstr "비활성"
 
@@ -5036,6 +5316,7 @@ msgid "Including any power delegated to me."
 msgstr "나에게 위임된 모든 투표권 포함."
 
 #: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:281
+#: src/views/internal/design-system/transaction-composition-staged-entry.tsx:274
 msgid "Incompatible wallet"
 msgstr "호환되지 않는 Wallet"
 
@@ -5090,6 +5371,7 @@ msgid "Input address"
 msgstr "주소 입력"
 
 #: src/views/index-dtf/issuance/async-mint/steps/success.tsx:220
+#: src/views/internal/design-system/transaction-composition-staged-workspace.tsx:220
 msgid "Input amount"
 msgstr "입력 수량"
 
@@ -5354,6 +5636,7 @@ msgid "just now"
 msgstr "방금 전"
 
 #: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:100
+#: src/views/internal/design-system/transaction-composition-staged-entry.tsx:308
 msgid "Known supported wallets"
 msgstr "알려진 지원 Wallet"
 
@@ -5406,6 +5689,7 @@ msgstr "시작 중..."
 #: src/views/index-dtf/overview/components/index-ctas-overview-mobile.tsx:62
 #: src/views/index-dtf/overview/components/landing-mint/index.tsx:144
 #: src/views/index-dtf/overview/stocks/landing-mint.tsx:124
+#: src/views/internal/design-system/transaction-composition-staged-entry.tsx:360
 msgid "Learn More"
 msgstr "자세히 보기"
 
@@ -5438,6 +5722,7 @@ msgid "Leftover collateral is not included in the DTF output value. It may remai
 msgstr "잔여 담보는 DTF 출력 가치에 포함되지 않습니다. Mint는 고정된 바스켓 비율을 사용하므로 잔여 담보가 남을 수 있습니다."
 
 #: src/views/index-dtf/issuance/async-mint/steps/success.tsx:252
+#: src/views/internal/design-system/transaction-composition-staged-workspace.tsx:272
 msgid "Leftover dust"
 msgstr "잔여 더스트"
 
@@ -5678,6 +5963,7 @@ msgid "Mandate Update"
 msgstr "권한 업데이트"
 
 #: src/views/index-dtf/governance/components/governance-vote-lock.tsx:424
+#: src/views/internal/design-system/transaction-composition-staged-manual-link.tsx:61
 msgid "Manual"
 msgstr "수동"
 
@@ -5685,9 +5971,17 @@ msgstr "수동"
 msgid "Manual deploy"
 msgstr "수동 배포"
 
+#: src/views/internal/design-system/transaction-composition-staged-manual-link.tsx:63
+#~ msgid "Manual mint"
+#~ msgstr ""
+
 #: src/views/yield-dtf/issuance/components/zapV2/token-selector/ZapManualMint.tsx:22
 msgid "Manual Mint"
 msgstr "수동 Mint"
+
+#: src/views/internal/design-system/transaction-composition-staged-manual-link.tsx:61
+#~ msgid "Manual redeem"
+#~ msgstr ""
 
 #: src/views/yield-dtf/issuance/components/zapV2/token-selector/ZapManualMint.tsx:22
 msgid "Manual Redeem"
@@ -5727,7 +6021,7 @@ msgstr "시가총액"
 msgid "Market cap:"
 msgstr "시가총액:"
 
-#: src/views/home/components/discover-index-dtf/index.tsx:15
+#: src/views/home/components/discover-index-dtf/index.tsx:18
 msgid "Market Cap:"
 msgstr "시가총액:"
 
@@ -5737,6 +6031,7 @@ msgstr "시장 마감"
 
 #: src/components/ui/swap.tsx:228
 #: src/views/index-dtf/issuance/async-mint/steps/configure-mint.tsx:232
+#: src/views/internal/design-system/transaction-composition-staged-configure.tsx:185
 #: src/views/yield-dtf/issuance/components/zapV2/input/ZapInputMaxButton.tsx:39
 #: src/views/yield-dtf/staking/components/stake/stake-input.tsx:67
 #: src/views/yield-dtf/staking/components/unstake/unstake-input.tsx:70
@@ -5754,6 +6049,7 @@ msgstr "최대 정밀도는 0.01%입니다"
 
 #: src/components/ui/swap.tsx:479
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1284
+#: src/views/internal/design-system/transaction-composition-staged-task.tsx:464
 msgid "Max slippage"
 msgstr "최대 슬리피지"
 
@@ -5901,6 +6197,7 @@ msgstr "경미한 텍스트 수정"
 #: src/views/index-dtf/issuance/manual/components/index-manual-issuance.tsx:195
 #: src/views/index-dtf/overview/components/index-transaction-table-with-swaps/columns.tsx:23
 #: src/views/index-dtf/overview/components/index-transaction-table.tsx:24
+#: src/views/internal/design-system/transaction-composition-staged-configure.tsx:106
 #: src/views/yield-dtf/issuance/components/issue/Issue.tsx:97
 #: src/views/yield-dtf/issuance/components/zapV2/ZapTabs.tsx:22
 #: src/views/yield-dtf/overview/components/hero/overview-actions.tsx:129
@@ -5950,6 +6247,16 @@ msgstr "Mint 수량이 글로벌 최대 Mint를 초과함"
 msgid "Mint Amount:"
 msgstr "Mint 수량:"
 
+#: src/views/internal/design-system/transaction-composition-staged-actions.tsx:94
+#: src/views/internal/design-system/transaction-composition-staged-configure.tsx:253
+#: src/views/internal/design-system/transaction-composition-staged-task.tsx:668
+msgid "Mint CMC20"
+msgstr "CMC20 민팅"
+
+#: src/views/internal/design-system/transaction-composition-staged-actions.tsx:70
+#~ msgid "Mint CMC20 · Step 2 of 2"
+#~ msgstr ""
+
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1325
 msgid "Mint completed"
 msgstr "Mint 완료됨"
@@ -5957,6 +6264,10 @@ msgstr "Mint 완료됨"
 #: src/views/index-dtf/issuance/async-mint/steps/success.tsx:186
 msgid "Mint Completed"
 msgstr "Mint 완료됨"
+
+#: src/views/internal/design-system/transaction-composition-staged-manual-link.tsx:44
+msgid "Mint directly with basket assets"
+msgstr ""
 
 #: src/views/yield-dtf/issuance/components/issue/Issue.tsx:113
 msgid "Mint disabled"
@@ -5984,7 +6295,12 @@ msgstr "Mint 수수료는 0.15% 이상이어야 합니다"
 msgid "Mint Fee must be 5% or less"
 msgstr "Mint 수수료는 5% 이하여야 합니다"
 
+#: src/views/internal/design-system/transaction-composition-staged-entry.tsx:138
+#~ msgid "Mint large USDC amounts through batched CoW Swap orders, or redeem DTF shares through batched collateral sales. Recommended for market makers or transactions over 50,000 USDC."
+#~ msgstr ""
+
 #: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:96
+#: src/views/internal/design-system/transaction-composition-staged-entry.tsx:156
 msgid "Mint large USDC amounts through batched CoW Swap orders, or redeem DTFs into the underlying assets. Recommended for market makers or transactions over 50,000 USDC."
 msgstr "일괄 처리된 CoW Swap 주문을 통해 대량의 USDC를 Mint하거나 DTF를 기초 자산으로 Redeem하세요. 마켓 메이커 또는 50,000 USDC를 초과하는 거래에 권장됩니다."
 
@@ -6078,6 +6394,7 @@ msgid "More RSR per share"
 msgstr ""
 
 #: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:159
+#: src/views/internal/design-system/transaction-composition-staged-entry.tsx:98
 msgid "Most users should use Swap"
 msgstr "대부분의 사용자는 Swap을 사용해야 합니다"
 
@@ -6155,6 +6472,10 @@ msgstr "배포에 도움이 필요하신가요?"
 #: src/views/index-dtf/issuance/manual/components/index-manual-issuance.tsx:46
 msgid "Need to approve use of tokens"
 msgstr "토큰 사용 승인이 필요합니다"
+
+#: src/views/internal/design-system/transaction-composition-staged-support.tsx:169
+#~ msgid "Needs attention"
+#~ msgstr "확인 필요"
 
 #: src/views/index-dtf/factsheet/components/net-performance-summary.tsx:58
 #: src/views/index-dtf/factsheet/components/net-performance-summary.tsx:105
@@ -6264,6 +6585,10 @@ msgstr "다음 블록 입찰 금액"
 msgid "Next open"
 msgstr "다음 개장"
 
+#: src/views/internal/design-system/transaction-composition-staged-orders.tsx:80
+#~ msgid "Next order expiry in 1m 42s"
+#~ msgstr ""
+
 #: src/views/yield-dtf/deploy/components/NavigationSidebar.tsx:28
 msgid "Next steps"
 msgstr "다음 단계"
@@ -6313,7 +6638,7 @@ msgstr "이 Redeem에는 담보 Swap이 필요하지 않았습니다."
 
 #: src/components/charts/area/AreaChart.tsx:132
 #: src/views/home/components/discover-index-dtf/index-dtf-table-columns.tsx:109
-#: src/views/home/components/highlighted-dtfs/feature-card-header.tsx:160
+#: src/views/home/components/highlighted-dtfs/feature-card-header.tsx:166
 #: src/views/index-dtf/overview/components/charts/percentage-change.tsx:30
 #: src/views/top100/components/top100-table.tsx:35
 #: src/views/top100/components/top100-table.tsx:43
@@ -6426,6 +6751,8 @@ msgstr "이 작업에는 Swap이 필요하지 않습니다."
 
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:442
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1727
+#: src/views/internal/design-system/transaction-composition-staged-orders.tsx:101
+#: src/views/internal/design-system/transaction-composition-staged-task.tsx:307
 msgid "No swaps needed"
 msgstr "Swap 불필요"
 
@@ -6675,6 +7002,7 @@ msgid "Open"
 msgstr "시가"
 
 #: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:120
+#: src/views/internal/design-system/transaction-composition-staged-entry.tsx:319
 msgid "Open Ambire website"
 msgstr "Ambire 웹사이트 열기"
 
@@ -6683,6 +7011,7 @@ msgid "Open DTF pages"
 msgstr "DTF 페이지 열기"
 
 #: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:107
+#: src/views/internal/design-system/transaction-composition-staged-entry.tsx:314
 msgid "Open MetaMask website"
 msgstr "MetaMask 웹사이트 열기"
 
@@ -6691,8 +7020,21 @@ msgid "Open navigation menu"
 msgstr "탐색 메뉴 열기"
 
 #: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:133
+#: src/views/internal/design-system/transaction-composition-staged-entry.tsx:324
 msgid "Open Safe website"
 msgstr "Safe 웹사이트 열기"
+
+#: src/views/internal/design-system/transaction-composition-staged-support.tsx:242
+msgid "Opens Basescan in a new tab"
+msgstr "새 탭에서 Basescan 열기"
+
+#: src/views/internal/design-system/transaction-composition-staged-support.tsx:241
+msgid "Opens BscScan in a new tab"
+msgstr ""
+
+#: src/views/internal/design-system/transaction-composition-staged-support.tsx:179
+msgid "Opens CoW Explorer in a new tab"
+msgstr "새 탭에서 CoW Explorer 열기"
 
 #: src/views/index-dtf/governance/components/governance-delegate-list.tsx:120
 msgid "Optimistic"
@@ -6750,6 +7092,34 @@ msgstr "주문 만료까지"
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:521
 msgid "Orders expire in {0}"
 msgstr "주문이 {0} 후 만료됩니다"
+
+#: src/views/internal/design-system/transaction-composition-staged-orders.tsx:80
+#~ msgid "Orders expire in 18:42"
+#~ msgstr ""
+
+#: src/views/internal/design-system/transaction-composition-staged-orders.tsx:80
+#~ msgid "Orders expire in 1m 42s"
+#~ msgstr "주문이 1분 42초 후 만료됩니다"
+
+#: src/views/internal/design-system/transaction-composition-staged-task.tsx:323
+msgid "Orders filled"
+msgstr ""
+
+#: src/views/internal/design-system/transaction-composition-staged-task.tsx:320
+#~ msgid "Orders filled · 1 cancelled"
+#~ msgstr ""
+
+#: src/views/internal/design-system/transaction-composition-staged-task.tsx:318
+#~ msgid "Orders filled · 1 needs retry"
+#~ msgstr ""
+
+#: src/views/internal/design-system/transaction-composition-staged-task.tsx:316
+#~ msgid "Orders filled · Next order expiry in 1m 42s"
+#~ msgstr ""
+
+#: src/views/internal/design-system/transaction-composition-staged-task.tsx:316
+#~ msgid "Orders filled · Unfilled order expires in 1m 42s"
+#~ msgstr ""
 
 #: src/views/index-dtf/overview/components/index-disclousure.tsx:107
 msgid "Original whitepaper documentation"
@@ -6863,9 +7233,17 @@ msgstr "지난주"
 msgid "Pause issuance"
 msgstr "발행 일시중지"
 
+#: src/views/internal/design-system/transaction-composition-staged-actions.tsx:31
+msgid "Pause quote search"
+msgstr "견적 검색 일시 중지"
+
 #: src/components/rtoken-setup/governance/GovernanceSetup.tsx:128
 msgid "Pause status"
 msgstr "일시중지 상태"
+
+#: src/views/internal/design-system/transaction-composition-staged-support.tsx:158
+#~ msgid "Paused"
+#~ msgstr "일시 중지됨"
 
 #: src/components/rtoken-setup/governance/RoleSetup.tsx:19
 #: src/views/yield-dtf/governance/views/proposal/components/RolesProposal.tsx:18
@@ -6886,6 +7264,7 @@ msgstr "페그:"
 
 #: src/views/explorer/components/governance/filters.tsx:16
 #: src/views/index-dtf/issuance/async-mint/components/leg-row.tsx:80
+#: src/views/internal/design-system/transaction-composition-staged-support.tsx:51
 #: src/views/yield-dtf/issuance/components/issue/CollateralApprovals.tsx:109
 msgid "Pending"
 msgstr "대기 중"
@@ -7198,8 +7577,13 @@ msgid "Prepare for bidding by approving {0}"
 msgstr "{0} 승인으로 입찰 준비"
 
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1223
+#: src/views/internal/design-system/transaction-composition-staged-actions.tsx:67
 msgid "Prepare redeem"
 msgstr "Redeem 준비"
+
+#: src/views/internal/design-system/transaction-composition-staged-support.tsx:50
+msgid "Prepared"
+msgstr ""
 
 #: src/views/yield-dtf/staking/components/stake/confirm-stake-button.tsx:57
 msgid "Preparing approval"
@@ -7304,6 +7688,7 @@ msgstr "가격 설정"
 
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:239
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:305
+#: src/views/internal/design-system/transaction-composition-staged-task.tsx:531
 msgid "Price unavailable"
 msgstr "가격 정보 없음"
 
@@ -7620,9 +8005,22 @@ msgstr "견적 가져오기 취소됨"
 msgid "Quote fetch canceled. Your amount is saved. You may <0>fetch quotes again</0>, or <1>edit the amount</1> and try again."
 msgstr "견적 가져오기가 취소되었습니다. 입력하신 금액은 저장되어 있습니다. <0>견적 다시 가져오기</0> 또는 <1>금액 수정</1> 후 다시 시도할 수 있습니다."
 
+#: src/views/internal/design-system/transaction-composition-staged-task.tsx:728
+msgid "Quote paused · Amount saved"
+msgstr ""
+
+#: src/views/internal/design-system/transaction-composition-staged-support.tsx:49
+msgid "Quote ready"
+msgstr "견적 준비됨"
+
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1332
 msgid "Quote review"
 msgstr "견적 검토"
+
+#: src/views/internal/design-system/transaction-composition-staged-orders.tsx:80
+#: src/views/internal/design-system/transaction-composition-staged-task.tsx:311
+msgid "Quote search paused"
+msgstr "견적 검색이 일시 중지됨"
 
 #: src/views/yield-dtf/issuance/components/zapV2/overview/ZapQuoteSource.tsx:16
 #: src/views/yield-dtf/issuance/components/zapV2/settings/ZapSettingsModal.tsx:43
@@ -7631,12 +8029,20 @@ msgstr "견적 출처"
 
 #: src/views/index-dtf/issuance/async-mint/components/leg-row.tsx:176
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1702
+#: src/views/internal/design-system/transaction-composition-staged-orders.tsx:95
+#: src/views/internal/design-system/transaction-composition-staged-support.tsx:56
+#: src/views/internal/design-system/transaction-composition-staged-support.tsx:90
+#: src/views/internal/design-system/transaction-composition-staged-task.tsx:313
 msgid "Quote unavailable"
 msgstr "견적을 사용할 수 없음"
 
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1257
 msgid "Quoted impact"
 msgstr "견적 영향"
+
+#: src/views/internal/design-system/transaction-composition-staged-task.tsx:439
+msgid "Quoted swap impact"
+msgstr ""
 
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1712
 msgid "Quotes unavailable"
@@ -7736,8 +8142,17 @@ msgstr "리밸런싱 진행 중"
 msgid "Rebalance progress"
 msgstr "리밸런싱 진행 상황"
 
+#: src/views/internal/design-system/transaction-composition-staged-task.tsx:671
+msgid "Receive USDC"
+msgstr ""
+
+#: src/views/internal/design-system/transaction-composition-staged-task.tsx:670
+msgid "Receive USDT"
+msgstr ""
+
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1401
 #: src/views/index-dtf/issuance/async-mint/steps/success.tsx:240
+#: src/views/internal/design-system/transaction-composition-staged-workspace.tsx:242
 msgid "Received"
 msgstr "수령됨"
 
@@ -7765,6 +8180,7 @@ msgstr "수령인 {recipientNumber} 주소"
 
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1216
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1585
+#: src/views/internal/design-system/transaction-composition-staged-actions.tsx:101
 msgid "Reconnect wallet"
 msgstr "Wallet 다시 연결"
 
@@ -7780,6 +8196,7 @@ msgstr "레코드 제한"
 #: src/views/index-dtf/issuance/manual/components/index-manual-issuance.tsx:195
 #: src/views/index-dtf/overview/components/index-transaction-table-with-swaps/columns.tsx:24
 #: src/views/index-dtf/overview/components/index-transaction-table.tsx:25
+#: src/views/internal/design-system/transaction-composition-staged-configure.tsx:112
 #: src/views/yield-dtf/issuance/components/redeem/RedeemInput.tsx:16
 #: src/views/yield-dtf/issuance/components/zapV2/ZapTabs.tsx:24
 #: src/views/yield-dtf/overview/components/hero/overview-actions.tsx:139
@@ -7807,6 +8224,7 @@ msgstr "{0}을(를) {1}(으)로 Redeem합니다."
 
 #: src/views/index-dtf/issuance/async-mint/steps/configure-mint.tsx:170
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:739
+#: src/views/internal/design-system/transaction-composition-staged-configure.tsx:137
 #: src/views/yield-dtf/issuance/components/redeem/RedeemInput.tsx:17
 msgid "Redeem amount"
 msgstr "Redeem 수량"
@@ -7819,6 +8237,14 @@ msgstr "Redeem 수량이 글로벌 최대 Redeem을 초과함"
 msgid "Redeem Amount:"
 msgstr "Redeem 수량:"
 
+#: src/views/internal/design-system/transaction-composition-staged-configure.tsx:139
+#~ msgid "Redeem CMC20 for USDC."
+#~ msgstr ""
+
+#: src/views/internal/design-system/transaction-composition-staged-configure.tsx:137
+#~ msgid "Redeem CMC20 for USDT."
+#~ msgstr ""
+
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1327
 msgid "Redeem completed"
 msgstr "Redeem 완료됨"
@@ -7826,6 +8252,10 @@ msgstr "Redeem 완료됨"
 #: src/views/index-dtf/issuance/async-mint/steps/success.tsx:186
 msgid "Redeem Completed"
 msgstr "Redeem 완료됨"
+
+#: src/views/internal/design-system/transaction-composition-staged-manual-link.tsx:42
+msgid "Redeem directly to basket assets"
+msgstr ""
 
 #: src/views/yield-dtf/issuance/components/zapV2/token-selector/ZapTokensModal.tsx:111
 msgid "Redeem using"
@@ -7836,6 +8266,7 @@ msgid "Redeemable now"
 msgstr "현재 Redeem 가능"
 
 #: src/views/index-dtf/issuance/async-mint/steps/success.tsx:236
+#: src/views/internal/design-system/transaction-composition-staged-workspace.tsx:237
 msgid "Redeemed"
 msgstr "Redeem됨"
 
@@ -8135,6 +8566,18 @@ msgstr "리소스"
 msgid "Restricted in your region"
 msgstr "거주 지역에서 제한됨"
 
+#: src/views/internal/design-system/transaction-composition-staged-actions.tsx:39
+msgid "Resume quote search"
+msgstr "견적 검색 재개"
+
+#: src/views/internal/design-system/transaction-composition-staged-orders.tsx:83
+msgid "Resume the search to load the swap orders for this mint."
+msgstr "이 발행의 스왑 주문을 불러오려면 검색을 재개하세요."
+
+#: src/views/internal/design-system/transaction-composition-staged-orders.tsx:87
+msgid "Resume the search to load the swap orders for this redeem."
+msgstr ""
+
 #: src/views/portfolio-page/components/portfolio-chart.tsx:167
 msgid "Retrieving historical prices..."
 msgstr "과거 가격을 가져오는 중..."
@@ -8152,6 +8595,10 @@ msgstr "실패한 주문 {0}건 재시도"
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1089
 msgid "Retry {0} failed orders"
 msgstr "실패한 주문 {0}건 재시도"
+
+#: src/views/internal/design-system/transaction-composition-staged-actions.tsx:80
+msgid "Retry 1 failed order"
+msgstr "실패한 주문 1건 재시도"
 
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1138
 msgid "Retrying…"
@@ -8686,8 +9133,13 @@ msgid "Sell ${0}"
 msgstr "${0} 판매"
 
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1008
+#: src/views/internal/design-system/transaction-composition-staged-task.tsx:338
 msgid "Sell collateral"
 msgstr "담보 매도"
+
+#: src/views/internal/design-system/transaction-composition-staged-support.tsx:111
+msgid "Sell quote"
+msgstr "매도 견적"
 
 #: src/views/index-dtf/auctions/views/rebalance/components/auction-bids-chart.tsx:334
 #: src/views/index-dtf/auctions/views/rebalance/components/rebalance-liquidity-checker.tsx:278
@@ -8704,6 +9156,10 @@ msgstr "판매 중"
 #: src/views/index-dtf/issuance/async-mint/components/leg-row.tsx:172
 msgid "Selling {0}"
 msgstr "{0} 매도 중"
+
+#: src/views/internal/design-system/transaction-composition-staged-actions.tsx:141
+msgid "Selling collateral…"
+msgstr ""
 
 #: src/views/index-dtf/auctions/views/rebalance/components/rebalance-action-overview.tsx:110
 msgid "Selling:"
@@ -8881,7 +9337,7 @@ msgstr "제한 관할권 보기"
 msgid "Showing {startItem} to {endItem} of {totalCount} DTFs"
 msgstr "{totalCount}개 DTF 중 {startItem}~{endItem} 표시 중"
 
-#: src/components/ui/data-table-pagination.tsx:88
+#: src/components/ui/data-table-pagination.tsx:54
 msgid "Showing {visibleRowCount} out of {filteredRowCount}"
 msgstr "{filteredRowCount}개 중 {visibleRowCount}개 표시"
 
@@ -8915,6 +9371,10 @@ msgstr "거버넌스 DAO를 생성하려면 tx에 서명하세요"
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ContractProposalDetails.tsx:112
 msgid "Signature"
 msgstr "서명"
+
+#: src/views/internal/design-system/transaction-composition-staged-support.tsx:47
+#~ msgid "Signing"
+#~ msgstr "서명 중"
 
 #: src/views/yield-dtf/deploy/components/NavigationSidebar.tsx:51
 msgid "Signing Tx 1"
@@ -9021,6 +9481,7 @@ msgid "Small revenue auctions"
 msgstr "소액 수익 경매"
 
 #: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:92
+#: src/views/internal/design-system/transaction-composition-staged-entry.tsx:292
 msgid "Smart Account Required"
 msgstr "스마트 계정 필요"
 
@@ -9041,6 +9502,7 @@ msgid "Socials"
 msgstr "소셜"
 
 #: src/views/index-dtf/auctions/legacy/components/auction-item.tsx:90
+#: src/views/internal/design-system/transaction-composition-staged-support.tsx:113
 #: src/views/yield-dtf/auctions/components/useColumns.tsx:32
 msgid "Sold"
 msgstr "판매됨"
@@ -9050,6 +9512,9 @@ msgid "Some collateral tokens from protocols like Aave and Convex differ technic
 msgstr "Aave 및 Convex와 같은 프로토콜의 일부 담보 토큰은 기술적으로 다른 담보 토큰과 다릅니다. 적절한 처리와 효과적인 모니터링을 위해 컨트랙트로 래핑되어야 합니다. 래핑된 후에도 담보는 동일하게 유지되지만 가격 및 가치 상승 추적을 위한 새로운 인터페이스를 갖게 됩니다."
 
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1628
+#: src/views/internal/design-system/transaction-composition-staged-orders.tsx:96
+#: src/views/internal/design-system/transaction-composition-staged-orders.tsx:195
+#: src/views/internal/design-system/transaction-composition-staged-task.tsx:749
 msgid "Some quotes couldn't be fetched."
 msgstr "일부 견적을 가져오지 못했습니다."
 
@@ -9077,6 +9542,7 @@ msgstr "죄송합니다. 요청이 Global Max Mint 한도를 초과합니다. Gl
 msgid "Sorry, your request exceeds the Global Max Redeem limit. The Global Max Redeem is set at {maxFormatted} {0}. You can only zap a maximum of {maxZap} {1}."
 msgstr "죄송합니다. 요청이 Global Max Redeem 한도를 초과합니다. Global Max Redeem은 {maxFormatted} {0}로 설정되어 있습니다. 최대 {maxZap} {1}까지만 Zap 할 수 있습니다."
 
+#: src/views/internal/design-system/transaction-composition-staged-workspace.tsx:232
 #: src/views/portfolio-page/components/pending-withdrawals.tsx:332
 msgid "Source"
 msgstr "소스"
@@ -9112,6 +9578,7 @@ msgid "Spell 2"
 msgstr "Spell 2"
 
 #: src/views/index-dtf/issuance/async-mint/steps/success.tsx:224
+#: src/views/internal/design-system/transaction-composition-staged-workspace.tsx:224
 msgid "Spent"
 msgstr "사용됨"
 
@@ -9119,6 +9586,11 @@ msgstr "사용됨"
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1015
 msgid "Split {0} across basket assets."
 msgstr "{0}을(를) 바스켓 자산에 분배합니다."
+
+#: src/views/internal/design-system/transaction-composition-staged-support.tsx:210
+#: src/views/internal/design-system/transaction-composition-staged-support.tsx:223
+#~ msgid "Split USDC across basket assets."
+#~ msgstr "USDC를 바스켓 자산에 분배합니다."
 
 #: src/views/yield-dtf/deploy/components/TokenForm.tsx:45
 msgid "St Token Ticker"
@@ -9239,6 +9711,10 @@ msgstr "시작"
 msgid "Start {selectedCount} new auctions"
 msgstr "신규 경매 {selectedCount}건 시작"
 
+#: src/views/internal/design-system/transaction-composition-staged-actions.tsx:65
+msgid "Start acquisition"
+msgstr ""
+
 #: src/views/index-dtf/auctions/views/rebalance/components/community-launch-auctions-button.tsx:170
 #: src/views/index-dtf/auctions/views/rebalance/components/launch-auctions-button.tsx:204
 msgid "Start auction {auctionNumber}"
@@ -9247,6 +9723,10 @@ msgstr "경매 {auctionNumber} 시작"
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1221
 msgid "Start collateral trades"
 msgstr "담보 거래 시작"
+
+#: src/views/internal/design-system/transaction-composition-staged-actions.tsx:44
+#~ msgid "Start collateral trades · Step 1 of 2"
+#~ msgstr ""
 
 #: src/components/transactions/table/index.tsx:51
 #: src/views/explorer/components/transactions/useTransactionColumns.tsx:35
@@ -9259,6 +9739,8 @@ msgid "Start next recollaterization auction"
 msgstr "다음 재담보화 경매 시작"
 
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1101
+#: src/views/internal/design-system/transaction-composition-staged-actions.tsx:86
+#: src/views/internal/design-system/transaction-composition-staged-actions.tsx:115
 msgid "Start over"
 msgstr "처음부터 다시"
 
@@ -9294,13 +9776,41 @@ msgstr "트랜잭션이 진행되는 동안 기다려 주시고, 이 페이지�
 msgid "Stay up to date in long form"
 msgstr "장문으로 최신 소식 받기"
 
+#: src/views/internal/design-system/transaction-composition-staged-task.tsx:374
+msgid "Step 1 of 1"
+msgstr ""
+
+#: src/views/internal/design-system/transaction-composition-staged-task.tsx:372
+msgid "Step 1 of 2"
+msgstr "2단계 중 1단계"
+
+#: src/views/internal/design-system/transaction-composition-staged-task.tsx:235
+#~ msgid "Step 1 of 2 · Acquire collateral"
+#~ msgstr "2단계 중 1단계 · 담보 확보"
+
 #: src/views/index-dtf/overview/components/zap-mint/submit-zap.tsx:235
 msgid "Step 1. Approve use of {inputSymbol}"
 msgstr "1단계. {inputSymbol} 사용 승인"
 
+#: src/views/internal/design-system/transaction-composition-staged-actions.tsx:44
+#~ msgid "Step 1/2 · Start collateral trades"
+#~ msgstr "1/2단계 · 담보 거래 시작"
+
+#: src/views/internal/design-system/transaction-composition-staged-task.tsx:689
+msgid "Step 2 of 2"
+msgstr "2단계 중 2단계"
+
+#: src/views/internal/design-system/transaction-composition-staged-task.tsx:435
+#~ msgid "Step 2 of 2 · Mint CMC20"
+#~ msgstr "2단계 중 2단계 · CMC20 민팅"
+
 #: src/views/index-dtf/overview/components/zap-mint/submit-zap.tsx:232
 msgid "Step 2. {buttonLabel}"
 msgstr "2단계. {buttonLabel}"
+
+#: src/views/internal/design-system/transaction-composition-staged-actions.tsx:70
+#~ msgid "Step 2/2 · Mint CMC20"
+#~ msgstr "2/2단계 · CMC20 발행"
 
 #: src/views/home/components/register-about.tsx:81
 msgid "Still have questions? Come talk to us in the Reserve Telegram chat. We’d be happy to help! You can also"
@@ -9356,6 +9866,10 @@ msgstr "[stRSR] 보유자가 투표할 수 있도록 제안을 제출합니다. 
 #: src/views/yield-dtf/staking/components/stake/confirm-stake-button.tsx:75
 msgid "Submitted!"
 msgstr "제출됨!"
+
+#: src/views/internal/design-system/transaction-composition-staged-support.tsx:46
+#~ msgid "Submitting"
+#~ msgstr "제출 중"
 
 #: src/views/index-dtf/deploy/components/deploy-coming-soon.tsx:182
 #: src/views/index-dtf/manage/components/submit-button.tsx:321
@@ -9428,10 +9942,12 @@ msgid "Swapped {inputSymbol} for {outputSymbol}"
 msgstr "{inputSymbol}을(를) {outputSymbol}(으)로 교환함"
 
 #: src/views/index-dtf/issuance/async-mint/steps/success.tsx:255
+#: src/views/internal/design-system/transaction-composition-staged-workspace.tsx:284
 msgid "Swaps leave a small residue in your wallet."
 msgstr "Swap은 Wallet에 약간의 잔여물을 남깁니다."
 
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1624
+#: src/views/internal/design-system/transaction-composition-staged-orders.tsx:214
 msgid "Swaps settle via CoW Protocol solvers."
 msgstr "Swap은 CoW Protocol 솔버를 통해 정산됩니다."
 
@@ -9447,6 +9963,8 @@ msgid "Switch to Manual Mint"
 msgstr "수동 Mint로 전환"
 
 #: src/views/index-dtf/issuance/async-mint/components/switch-to-manual-link.tsx:39
+#: src/views/internal/design-system/transaction-composition-staged-manual-link.tsx:67
+#: src/views/internal/design-system/transaction-composition-staged-manual-link.tsx:85
 #: src/views/yield-dtf/issuance/components/zapV2/ZapToggleBottom.tsx:34
 msgid "Switch to manual minting"
 msgstr "수동 Mint로 전환"
@@ -9456,6 +9974,8 @@ msgid "switch to manual redeeming"
 msgstr "수동 Redeem으로 전환"
 
 #: src/views/index-dtf/issuance/async-mint/components/switch-to-manual-link.tsx:37
+#: src/views/internal/design-system/transaction-composition-staged-manual-link.tsx:65
+#: src/views/internal/design-system/transaction-composition-staged-manual-link.tsx:83
 msgid "Switch to manual redeeming"
 msgstr "수동 Redeem으로 전환"
 
@@ -9472,6 +9992,7 @@ msgid "Switch to zap redeeming"
 msgstr "Zap Redeem으로 전환하기"
 
 #: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:326
+#: src/views/internal/design-system/transaction-composition-staged-entry.tsx:349
 msgid "Switch wallet"
 msgstr "Wallet 전환"
 
@@ -9542,8 +10063,13 @@ msgid "Thank you! We'll be in touch soon."
 msgstr "감사합니다! 곧 연락드리겠습니다."
 
 #: src/views/index-dtf/issuance/async-mint/steps/configure-mint.tsx:119
+#: src/views/internal/design-system/transaction-composition-staged-configure.tsx:255
 msgid "The acquired assets are used to mint your DTF."
 msgstr "확보된 자산은 DTF를 Mint하는 데 사용됩니다."
+
+#: src/views/internal/design-system/transaction-composition-staged-task.tsx:740
+msgid "The amount may be too small to cover fees."
+msgstr "금액이 수수료를 충당하기에 너무 적을 수 있습니다."
 
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1719
 msgid "The amount may be too small to cover swap fees. Try a larger amount."
@@ -9787,6 +10313,14 @@ msgstr "토큰 분배의 합계는 100%여야 합니다({displayDifference}% 초
 msgid "The sum of the tokens distribution must be 100% ({displayDifference}% missing)."
 msgstr "토큰 분배의 합계는 100%여야 합니다({displayDifference}% 부족)."
 
+#: src/views/internal/design-system/transaction-composition-staged-task.tsx:737
+msgid "The swap quote is unavailable"
+msgstr "스왑 견적을 사용할 수 없습니다"
+
+#: src/views/internal/design-system/transaction-composition-staged-support.tsx:217
+#~ msgid "The swap quote is unavailable."
+#~ msgstr "스왑 견적을 사용할 수 없습니다."
+
 #: src/views/index-dtf/deploy/steps/basket-changes/basket-changes-form.tsx:78
 msgid "The time between a basket change proposal being submitted and when governors can cast their votes."
 msgstr "바스켓 변경 제안이 제출된 시점과 거버너가 투표를 행사할 수 있는 시점 사이의 시간입니다."
@@ -9870,6 +10404,11 @@ msgstr "최소 플랫폼 수수료는 0.15%입니다. 즉, 위에서 설정한 �
 #: src/views/yield-dtf/settings/components/freeze-manager.tsx:115
 msgid "There's two freezing roles that put the system in the same state for different durations:"
 msgstr "시스템을 동일한 상태로 전환하되 기간이 다른 두 가지 동결 역할이 있습니다:"
+
+#: src/views/internal/design-system/transaction-composition-staged-orders.tsx:190
+#: src/views/internal/design-system/transaction-composition-staged-orders.tsx:219
+msgid "These basket assets will be sold for your output."
+msgstr ""
 
 #: src/components/rtoken-setup/components/RolesEdit.tsx:37
 msgid "This address already holds this role"
@@ -10308,6 +10847,10 @@ msgstr "남은 {0}을(를) 담보로 거래"
 msgid "Trade suggestion"
 msgstr "거래 제안"
 
+#: src/views/internal/design-system/transaction-composition-staged-support.tsx:216
+#~ msgid "Trade USDC into collateral"
+#~ msgstr "USDC를 담보로 교환"
+
 #: src/components/ondo-badge.tsx:34
 msgid "Tradeable"
 msgstr "거래 가능"
@@ -10365,6 +10908,7 @@ msgid "Trading has been temporarily paused due to an abundance of caution relate
 msgstr "Kelp DAO 익스플로잇과 관련하여 신중을 기하기 위해 거래가 일시적으로 일시중지되었습니다. 프로토콜은 재담보가 필요한 경우를 대비한 안전 조치로 Staked RSR을 사용 가능한 상태로 유지합니다. 이는 거래가 재개될 때까지 출금이 차단됨을 의미합니다."
 
 #: src/views/index-dtf/issuance/async-mint/components/ondo-limits-banner.tsx:62
+#: src/views/internal/design-system/transaction-composition-staged-configure.tsx:204
 msgid "Trading paused"
 msgstr "거래 일시 중지됨"
 
@@ -10384,6 +10928,10 @@ msgstr "Trading Timelock"
 #: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:32
 msgid "Trading unavailable"
 msgstr "거래 불가"
+
+#: src/views/internal/design-system/transaction-composition-staged-support.tsx:163
+#~ msgid "Transaction"
+#~ msgstr "트랜잭션"
 
 #: src/views/yield-dtf/deploy/components/RTokenSetup.tsx:49
 #: src/views/yield-dtf/deploy/components/TransactionDivider.tsx:52
@@ -10510,6 +11058,7 @@ msgid "Try adjusting your filters or check back later"
 msgstr "필터를 조정하거나 나중에 다시 확인해 보세요"
 
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1090
+#: src/views/internal/design-system/transaction-composition-staged-actions.tsx:109
 #: src/views/portfolio-page/index.tsx:161
 msgid "Try again"
 msgstr "다시 시도"
@@ -10631,6 +11180,10 @@ msgstr "예기치 않은 오류"
 #: src/views/index-dtf/auctions/views/rebalance/updaters/rebalance-metrics-updater.tsx:158
 msgid "Unexpected error getting Rebalance data."
 msgstr "리밸런싱 데이터를 가져오는 중 예기치 않은 오류가 발생했습니다."
+
+#: src/views/internal/design-system/transaction-composition-staged-orders.tsx:80
+#~ msgid "Unfilled order expires in 1m 42s"
+#~ msgstr ""
 
 #: src/views/yield-dtf/settings/components/freeze-manager.tsx:106
 msgid "Unfreeze"
@@ -10785,6 +11338,7 @@ msgid "Unsupported Vote Lock Address"
 msgstr "지원되지 않는 Vote Lock 주소"
 
 #: src/views/index-dtf/issuance/async-mint/steps/success.tsx:229
+#: src/views/internal/design-system/transaction-composition-staged-workspace.tsx:263
 msgid "Unused (returned)"
 msgstr "미사용 (반환됨)"
 
@@ -10795,6 +11349,10 @@ msgstr "Unwrap"
 #: src/views/yield-dtf/issuance/components/wrapping/WrapTypeToggle.tsx:29
 msgid "Unwrap collaterals"
 msgstr "담보 Unwrap"
+
+#: src/views/internal/design-system/transaction-composition-staged-support.tsx:184
+#~ msgid "Upcoming"
+#~ msgstr "예정"
 
 #: src/components/vote-lock/components/submit-delegate-button.tsx:182
 msgid "Update"
@@ -10870,6 +11428,10 @@ msgstr "수수료, 역할, 투표 매개변수 및 바스켓 변경 이외의 �
 msgid "Updating {0}..."
 msgstr "{0} 업데이트 중..."
 
+#: src/views/internal/design-system/transaction-composition-staged-configure.tsx:88
+#~ msgid "Updating amount…"
+#~ msgstr "금액 업데이트 중…"
+
 #: src/views/yield-dtf/governance/views/proposal/components/ContractUpgrades.tsx:95
 msgid "Upgrade"
 msgstr "업그레이드"
@@ -10930,8 +11492,13 @@ msgstr "Mint 및 TVL 수수료의 일부를 받는 대가로 임의의 ERC20을 
 msgid "Use connected wallet."
 msgstr "연결된 Wallet 사용."
 
+#: src/views/internal/design-system/transaction-composition-staged-task.tsx:163
+msgid "Use existing collateral"
+msgstr "기존 담보 사용"
+
 #: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:168
 #: src/views/index-dtf/issuance/panel-mode-switch.tsx:28
+#: src/views/internal/design-system/transaction-composition-staged-entry.tsx:107
 msgid "Use Swap"
 msgstr "Swap 사용"
 
@@ -10962,6 +11529,10 @@ msgstr "사용자 추적"
 #: src/views/index-dtf/deploy/steps/governance/form-specific-wallet.tsx:19
 msgid "Users will not be able to mint / redeem using zaps in the US"
 msgstr "미국 내 사용자는 zap을 사용하여 Mint / Redeem 할 수 없습니다"
+
+#: src/views/internal/design-system/transaction-composition-staged-task.tsx:585
+msgid "Using basket assets only; no CMC20 will be redeemed."
+msgstr ""
 
 #: src/views/yield-dtf/issuance/components/zapV2/submit/ZapConfirmButton.tsx:44
 msgid "Validating transaction"
@@ -11118,6 +11689,7 @@ msgstr "내부 테스트 목적으로 모든 Network의 Index DTF 전체 보기"
 
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1554
 #: src/views/index-dtf/issuance/async-mint/steps/success.tsx:179
+#: src/views/internal/design-system/transaction-composition-staged-workspace.tsx:302
 msgid "View DTF"
 msgstr "DTF 보기"
 
@@ -11187,7 +11759,12 @@ msgstr "익스플로러에서 보기"
 msgid "View on Tenderly"
 msgstr "Tenderly에서 보기"
 
+#: src/views/internal/design-system/transaction-composition-staged-support.tsx:177
+msgid "View order"
+msgstr "주문 보기"
+
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:505
+#: src/views/internal/design-system/transaction-composition-staged-workspace.tsx:117
 msgid "View orders"
 msgstr "주문 보기"
 
@@ -11219,6 +11796,10 @@ msgstr "보상 토큰 보기"
 #: src/views/yield-dtf/auctions/components/useColumns.tsx:68
 msgid "View settle tx"
 msgstr "정산 트랜잭션 보기"
+
+#: src/views/internal/design-system/transaction-composition-staged-support.tsx:247
+msgid "View transaction"
+msgstr ""
 
 #: src/views/index-dtf/overview/components/index-transaction-table-with-swaps/columns.tsx:105
 #: src/views/index-dtf/overview/components/index-transaction-table.tsx:104
@@ -11552,6 +12133,7 @@ msgid "Waiting for allowance..."
 msgstr "승인 대기 중..."
 
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:583
+#: src/views/internal/design-system/transaction-composition-staged-task.tsx:260
 msgid "Waiting for collateral"
 msgstr "담보 대기 중"
 
@@ -11609,7 +12191,7 @@ msgid "Warning: High price impact"
 msgstr "경고: 높은 가격 영향"
 
 #. placeholder {0}: selectedVersion.symbol
-#: src/views/home/components/highlighted-dtfs/transcript-preview.tsx:83
+#: src/views/home/components/highlighted-dtfs/transcript-preview.tsx:86
 msgid "Watch {0} explainer"
 msgstr "{0} 설명 영상 보기"
 
@@ -11625,9 +12207,13 @@ msgstr "설명 영상 보기"
 msgid "Watch Explainer"
 msgstr "설명 영상 보기"
 
-#: src/views/home/components/highlighted-dtfs/transcript-preview.tsx:86
+#: src/views/home/components/highlighted-dtfs/transcript-preview.tsx:89
 msgid "Watch Video"
 msgstr "영상 보기"
+
+#: src/views/internal/design-system/transaction-composition-staged-configure.tsx:207
+msgid "WBTC is outside trading hours, so minting and redeeming is unavailable right now."
+msgstr ""
 
 #: src/views/home/components/homepage-hero.tsx:31
 msgid "We call these tokenized portfolios DTFs:"
@@ -11655,10 +12241,22 @@ msgstr "새 ERC20 토큰은 <0>CreateMyToken</0>에서 출시하는 것을 권�
 msgid "We redeem your {0} and sell the collateral for {1}."
 msgstr "{0}을(를) Redeem하고 담보를 {1}(으)로 매도합니다."
 
+#: src/views/internal/design-system/transaction-composition-staged-configure.tsx:264
+msgid "We redeem your CMC20 and sell the collateral for USDC."
+msgstr ""
+
 #. placeholder {0}: inputToken.symbol
 #: src/views/index-dtf/issuance/async-mint/steps/configure-mint.tsx:115
 msgid "We use your {0} to get the assets needed for the mint."
 msgstr "Mint에 필요한 자산을 확보하기 위해 {0}을(를) 사용합니다."
+
+#: src/views/internal/design-system/transaction-composition-staged-configure.tsx:245
+msgid "We use your USDC to get the assets needed for the mint."
+msgstr "USDC를 사용해 민팅에 필요한 자산을 확보합니다."
+
+#: src/views/internal/design-system/transaction-composition-staged-configure.tsx:241
+msgid "We use your USDT to get the assets needed for the mint."
+msgstr ""
 
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1107
 msgid "We're sorry, but the swap quote is unavailable. The amount may be too small to cover fees. Please <0>retry</0>, or <1>edit the amount</1>, and try again."
@@ -11955,6 +12553,7 @@ msgid "You can leave your RToken paused and come back to setting up governance l
 msgstr "RToken을 일시중지 상태로 두고 나중에 거버넌스 설정으로 돌아올 수 있습니다."
 
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1730
+#: src/views/internal/design-system/transaction-composition-staged-orders.tsx:102
 msgid "You can proceed directly."
 msgstr "바로 진행할 수 있습니다."
 
@@ -11976,6 +12575,7 @@ msgid "You do not have enough funds to complete this transaction. Please try aga
 msgstr "이 트랜잭션을 완료하기에 자금이 충분하지 않습니다. 더 적은 금액으로 다시 시도하세요."
 
 #: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:191
+#: src/views/internal/design-system/transaction-composition-staged-entry.tsx:190
 msgid "You fund"
 msgstr "투입 금액"
 
@@ -11988,6 +12588,7 @@ msgid "You may need to import it with the L2 contract address."
 msgstr "L2 컨트랙트 주소로 직접 가져와야 할 수 있습니다."
 
 #: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:197
+#: src/views/internal/design-system/transaction-composition-staged-entry.tsx:217
 msgid "You mint"
 msgstr "Mint 수량"
 
@@ -12090,6 +12691,10 @@ msgstr "대규모 RToken 보유자를 위한 Reserve Institutional의 엘리트 
 msgid "Your {0} has been redeemed."
 msgstr "{0}이(가) Redeem되었습니다."
 
+#: src/views/internal/design-system/transaction-composition-staged-task.tsx:730
+#~ msgid "Your amount is saved."
+#~ msgstr "금액이 저장되었습니다."
+
 #: src/views/portfolio-page/components/dtf-positions.tsx:177
 msgid "Your Decentralized Token Fund investments."
 msgstr "보유 중인 Decentralized Token Fund 투자."
@@ -12097,6 +12702,11 @@ msgstr "보유 중인 Decentralized Token Fund 투자."
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1338
 msgid "Your DTF has been minted."
 msgstr "DTF가 Mint되었습니다."
+
+#: src/views/internal/design-system/transaction-composition-staged-orders.tsx:188
+#: src/views/internal/design-system/transaction-composition-staged-orders.tsx:217
+msgid "Your input will be split across these basket assets."
+msgstr ""
 
 #: src/views/earn/views/index-dtf/components/vote-lock-positions.tsx:272
 msgid "Your lock"

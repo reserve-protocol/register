@@ -17,6 +17,8 @@ export type InlineMessageDensity = 'default' | 'compact'
 
 export type InlineMessagePresentation = 'default' | 'summary'
 
+export type InlineMessageIconPresentation = 'plain' | 'contained'
+
 const TONE_PRESENTATION = {
   information: {
     Icon: Info,
@@ -25,8 +27,10 @@ const TONE_PRESENTATION = {
       roles.feedback.information.border
     ),
     iconClassName: roles.feedback.information.foreground,
-    surfaceVariable:
+    surfaceVariable: cn(
       '[--inline-message-surface:var(--feedback-information-surface)]',
+      '[--inline-message-icon-surface:var(--feedback-information-border)]'
+    ),
   },
   success: {
     Icon: CircleCheck,
@@ -35,8 +39,10 @@ const TONE_PRESENTATION = {
       roles.feedback.success.border
     ),
     iconClassName: roles.feedback.success.foreground,
-    surfaceVariable:
+    surfaceVariable: cn(
       '[--inline-message-surface:var(--feedback-success-surface)]',
+      '[--inline-message-icon-surface:var(--feedback-success-border)]'
+    ),
   },
   warning: {
     Icon: TriangleAlert,
@@ -45,15 +51,19 @@ const TONE_PRESENTATION = {
       roles.feedback.warning.border
     ),
     iconClassName: roles.feedback.warning.foreground,
-    surfaceVariable:
+    surfaceVariable: cn(
       '[--inline-message-surface:var(--feedback-warning-surface)]',
+      '[--inline-message-icon-surface:var(--feedback-warning-border)]'
+    ),
   },
   danger: {
     Icon: CircleAlert,
     className: cn(roles.feedback.danger.surface, roles.feedback.danger.border),
     iconClassName: roles.feedback.danger.foreground,
-    surfaceVariable:
+    surfaceVariable: cn(
       '[--inline-message-surface:var(--feedback-danger-surface)]',
+      '[--inline-message-icon-surface:var(--feedback-danger-border)]'
+    ),
   },
 } satisfies Record<
   InlineMessageTone,
@@ -68,6 +78,7 @@ const TONE_PRESENTATION = {
 export interface InlineMessageProps extends React.HTMLAttributes<HTMLDivElement> {
   density?: InlineMessageDensity
   icon?: React.ReactNode | false
+  iconPresentation?: InlineMessageIconPresentation
   presentation?: InlineMessagePresentation
   tone?: InlineMessageTone
 }
@@ -82,6 +93,7 @@ export const InlineMessage = React.forwardRef<
       className,
       density = 'default',
       icon,
+      iconPresentation = 'plain',
       presentation = 'default',
       tone = 'information',
       ...props
@@ -90,18 +102,24 @@ export const InlineMessage = React.forwardRef<
   ) => {
     const tonePresentation = TONE_PRESENTATION[tone]
     const ToneIcon = tonePresentation.Icon
+    const usesContainedIcon =
+      presentation === 'summary' && iconPresentation === 'contained'
 
     return (
       <div
         ref={ref}
         data-density={density}
+        data-icon-presentation={usesContainedIcon ? 'contained' : 'plain'}
         data-presentation={presentation}
         data-testid="canonical-inline-message"
         data-tone={tone}
         className={cn(
           'w-full text-foreground ring-1 ring-inset',
           presentation === 'summary'
-            ? 'flex min-h-11 items-center gap-2 rounded-full px-4 py-2'
+            ? cn(
+                'flex min-h-11 items-center gap-2 rounded-full',
+                usesContainedIcon ? 'p-2' : 'px-4 py-2'
+              )
             : cn('relative rounded-lg', density === 'compact' ? 'p-3' : 'p-4'),
           tonePresentation.className,
           tonePresentation.surfaceVariable,
@@ -113,7 +131,10 @@ export const InlineMessage = React.forwardRef<
           <span
             aria-hidden="true"
             className={cn(
-              'flex size-4 shrink-0 items-center justify-center [&>svg]:size-4 [&>svg]:stroke-[1.5]',
+              'flex shrink-0 items-center justify-center [&>svg]:size-4 [&>svg]:stroke-[1.5]',
+              usesContainedIcon
+                ? 'size-8 rounded-full bg-[var(--inline-message-icon-surface)]'
+                : 'size-4',
               presentation === 'default' &&
                 (density === 'compact'
                   ? 'absolute left-3 top-3 mt-0.5'

@@ -1,3 +1,4 @@
+import { Button } from '@/components/button'
 import { v1Typography } from '@/components/design-system-v1/typography'
 import { v1LayoutRecipes } from '@/components/ui/v1-layout-recipes'
 import { v1SemanticRecipes as roles } from '@/components/ui/v1-semantic-recipes'
@@ -29,25 +30,9 @@ const TransactionTruthSpectrum = () => (
       <h2 id="transaction-system-review-title" className="text-xl font-medium">
         Transaction families in realistic composition
       </h2>
-      <p
-        className={cn(
-          'max-w-4xl',
-          v1Typography.supporting,
-          roles.text.supporting
-        )}
-      >
-        The action-to-outcome truth spectrum remains the shared language, but
-        the primary review surfaces now preserve the input, output, identity,
-        details, action hierarchy, execution, recovery, and outcome each family
-        actually needs. Use each composition’s state control to inspect the same
-        task without comparing disconnected specimens.
-      </p>
     </header>
 
-    <TransactionSystemStatusLegend />
-    <TransactionPredecessorContract />
-    <TransactionCurrentFlowContract />
-    <TransactionPairedReview />
+    <TransactionReviewNavigation />
 
     <section
       className={v1LayoutRecipes.stack.completeGroups}
@@ -60,31 +45,18 @@ const TransactionTruthSpectrum = () => (
         >
           Representative transaction compositions
         </h3>
-        <p
-          className={cn(
-            'max-w-4xl',
-            v1Typography.supporting,
-            roles.text.supporting
-          )}
-        >
-          Four families remain comparison anchors, not templates for one
-          universal flow. Manual mint supplies the richest local atomic seam;
-          the installed Zapper remains upstream; automated mint owns transparent
-          orders; Stake and Unstake test conditional approval, immediate
-          receipt, and delayed initiation inside a host-independent task. Vote
-          Lock is the focused fifth composition, grounded directly in its
-          current lock, unlock, and explicit delegation implementations. Later
-          Portfolio and staking management rows remain product evidence rather
-          than review specimens here.
-        </p>
       </header>
-      <AtomicTransactionComposition />
       <RfqTransactionComposition />
       <StagedTransactionComposition />
       <StakeTransactionComposition />
       <VoteLockTransactionComposition />
     </section>
 
+    <TransactionPairedReview />
+    <AtomicTransactionComposition />
+    <TransactionSystemStatusLegend />
+    <TransactionPredecessorContract />
+    <TransactionCurrentFlowContract />
     <TransactionSystemPressureTests />
     <TransactionSystemCoverage />
 
@@ -109,12 +81,69 @@ const TransactionTruthSpectrum = () => (
         </li>
         <li>
           Engineer review still owns exact result sourcing, partial multi-call
-          truth, queue indexes, guarded dismissal, post-receipt synchronization,
-          package callbacks, and Confirm Deploy correctness.
+          truth, queue indexes, dialog-hosted guarded dismissal, post-receipt
+          synchronization, package callbacks, and Confirm Deploy correctness.
         </li>
       </ul>
     </section>
   </section>
 )
+
+const TransactionReviewNavigation = () => (
+  <nav
+    aria-labelledby="transaction-system-review-title"
+    className="sticky top-14 z-10 -mx-4 border-y border-border bg-background/95 px-4 py-2 backdrop-blur sm:-mx-6 sm:px-6"
+  >
+    <div className="max-w-full overflow-x-auto">
+      <div className="flex w-max items-center gap-1">
+        {TRANSACTION_REVIEW_LINKS.map((item) => (
+          <Button key={item.href} asChild size="compact" tone="quiet">
+            <a href={item.href} aria-label={item.accessibleLabel}>
+              {item.label}
+            </a>
+          </Button>
+        ))}
+      </div>
+    </div>
+  </nav>
+)
+
+const TRANSACTION_REVIEW_LINKS = [
+  {
+    label: 'Zapper',
+    accessibleLabel: 'Instant Zapper',
+    href: '#transaction-composition-rfq',
+  },
+  {
+    label: 'Automated mint',
+    accessibleLabel: 'Automated mint workspace',
+    href: '#transaction-composition-staged',
+  },
+  {
+    label: 'Stake',
+    accessibleLabel: 'Stake, unstake, and delegate',
+    href: '#transaction-composition-stake',
+  },
+  {
+    label: 'Vote lock',
+    accessibleLabel: 'Vote-lock, unlock, and delegate',
+    href: '#transaction-composition-vote-lock',
+  },
+  {
+    label: 'Compare',
+    accessibleLabel: 'Instant Zapper and Vote Lock',
+    href: '#transaction-paired-review',
+  },
+  {
+    label: 'Manual mint',
+    accessibleLabel: 'Manual mint',
+    href: '#transaction-composition-atomic',
+  },
+  {
+    label: 'Reference',
+    accessibleLabel: 'How to read visible parts',
+    href: '#transaction-review-reference',
+  },
+] as const
 
 export default TransactionTruthSpectrum

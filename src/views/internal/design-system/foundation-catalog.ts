@@ -131,7 +131,7 @@ export const FOUNDATION_ITEMS: FoundationItem[] = [
         name: 'Control radius',
         status: 'defined',
         detail:
-          'Atomic one-row controls use full rounding and multiline controls use the 8px contained-object role. Transaction amount input/output regions are square structural financial objects, including state layers that replace their content.',
+          'Atomic one-row controls use full rounding. Multiline controls and transaction amount input/output regions use the restrained 8px contained-object role, including state layers that replace amount content.',
       },
       {
         name: 'Container and card radius',

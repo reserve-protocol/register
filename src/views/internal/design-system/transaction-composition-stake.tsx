@@ -224,7 +224,10 @@ const StakeDialog = ({
       >
         <div
           data-testid="stake-task-header-row"
-          className={transactionTaskGeometry.compactHeaderRow}
+          className={cn(
+            transactionTaskGeometry.compactHeaderRow,
+            'max-[359px]:gap-2'
+          )}
         >
           <DialogTitle className="sr-only">
             Stake, unstake, or delegate RSR
@@ -256,13 +259,19 @@ const StakeDialog = ({
                 )
               }
             >
-              <SegmentedControlItem value="stake">
-                Stake RSR
+              <SegmentedControlItem value="stake" className="max-[359px]:px-2">
+                Stake<span className="max-[359px]:hidden"> RSR</span>
               </SegmentedControlItem>
-              <SegmentedControlItem value="unstake">
+              <SegmentedControlItem
+                value="unstake"
+                className="max-[359px]:px-2"
+              >
                 Unstake
               </SegmentedControlItem>
-              <SegmentedControlItem value="delegate">
+              <SegmentedControlItem
+                value="delegate"
+                className="max-[359px]:px-2"
+              >
                 Delegate
               </SegmentedControlItem>
             </SegmentedControl>
@@ -328,7 +337,8 @@ const StakeDialog = ({
         <div
           className={cn(
             transactionAttachedRegionGeometry.content,
-            'p-2 shadow-sm'
+            transactionTaskGeometry.shellInset,
+            'shadow-sm'
           )}
           data-testid="stake-process-content-frame"
         >

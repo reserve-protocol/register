@@ -104,6 +104,7 @@ const DtfChat = forwardRef<ReserveChatHandle, DtfChatProps>(function DtfChat(
   const gap = isDesktop ? 24 : 12
   const bottomOffset = gap
   const rightOffset = gap
+  const isInternalDesignSystem = pathname.startsWith('/internal/design-system')
 
   const dtfContext: DtfContext | undefined = onDtf
     ? {
@@ -116,6 +117,8 @@ const DtfChat = forwardRef<ReserveChatHandle, DtfChatProps>(function DtfChat(
         basket: basket?.map((t) => ({ symbol: t.symbol })),
       }
     : undefined
+
+  if (!embedded && isInternalDesignSystem) return null
 
   // Inline variant (stocks FAQ card): no launcher/offsets, onOpen never fires.
   if (embedded) {

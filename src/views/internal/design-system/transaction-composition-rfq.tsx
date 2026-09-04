@@ -324,14 +324,14 @@ export const ZapperInlineReference = ({
                   ? 'ring-0 shadow-sm'
                   : 'ring-2 ring-card'
               )
-            : 'p-2',
+            : transactionTaskGeometry.shellInset,
           advisoryVariant && !advisoryDismissed && 'shadow-sm'
         )}
       >
         <div
           data-testid="zapper-review-stack"
           className={cn(
-            'min-w-0',
+            'min-w-0 [container-type:inline-size]',
             isOutcome && 'flex flex-col',
             quoteDetailsVisible ? 'space-y-0' : 'space-y-2'
           )}
@@ -513,7 +513,7 @@ export const ZapperInlineReference = ({
                         ? '$1,034.82'
                         : isPreQuote
                           ? '$0.00'
-                          : (quote?.inputValue ?? 'Quote refreshes after input')
+                          : (quote?.inputValue ?? '—')
                     }
                     balance={
                       <>
@@ -572,18 +572,7 @@ export const ZapperInlineReference = ({
                         ? '0'
                         : (displayedQuote?.outputAmount ?? '—')
                   }
-                  className={
-                    isOutcome
-                      ? 'bg-transparent px-6'
-                      : quoteDetailsVisible
-                        ? cn(
-                            'border-b',
-                            quoteOutputLoading
-                              ? 'border-transparent'
-                              : 'border-border'
-                          )
-                        : undefined
-                  }
+                  className={isOutcome ? 'bg-transparent px-6' : undefined}
                   presentation="output"
                   tone={isOutcome ? 'inverse' : 'default'}
                   unit={
@@ -638,23 +627,19 @@ export const ZapperInlineReference = ({
                           ({displayedQuote.outputDelta})
                         </span>
                       </span>
-                    ) : state === 'RFQ recovery' ? (
-                      'Get a fresh quote to update'
-                    ) : state === 'Native refund' ? (
-                      'Quote expired'
                     ) : (
-                      'Updates after the package returns a quote'
+                      '—'
                     )
                   }
                   supportingRowClassName={
                     quoteDetailsVisible && !isOutcome
-                      ? 'min-h-11 sm:min-h-5'
+                      ? 'min-h-11 content-start items-start min-[360px]:min-h-5 min-[360px]:items-center'
                       : undefined
                   }
                   balance={
                     !isOutcome && displayedQuote ? (
                       <span className="flex items-center gap-1 whitespace-nowrap">
-                        <span>Quote includes fees</span>
+                        <span>After fees</span>
                         <HelpTooltip
                           accessibleLabel="About included quote fees"
                           content="The displayed quote already includes all applicable fees."
@@ -664,6 +649,16 @@ export const ZapperInlineReference = ({
                   }
                   readOnly
                 />
+                {quoteDetailsVisible && !isOutcome && (
+                  <span
+                    aria-hidden="true"
+                    data-testid="zapper-output-details-divider"
+                    className={cn(
+                      'pointer-events-none absolute inset-x-0 bottom-0 z-20 h-px bg-border transition-opacity duration-180 motion-reduce:transition-none',
+                      quoteOutputLoading ? 'opacity-0' : 'opacity-100'
+                    )}
+                  />
+                )}
                 {quoteOutputLoading && <ZapperQuoteLoading />}
               </div>
             </TransactionAmountPair>

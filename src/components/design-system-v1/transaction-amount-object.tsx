@@ -40,7 +40,7 @@ export const TransactionAmountPair = ({
 }: HTMLAttributes<HTMLDivElement>) => (
   <div
     data-testid="transaction-amount-pair"
-    className={cn('relative space-y-px', className)}
+    className={cn('relative flex flex-col', className)}
     {...props}
   />
 )
@@ -50,26 +50,18 @@ export const TransactionAmountRelation = ({
 }: {
   className?: string
 }) => (
-  <>
+  <div
+    aria-hidden="true"
+    data-testid="transaction-amount-relation-divider"
+    className={cn('relative z-10 h-px shrink-0 bg-border', className)}
+  >
     <span
-      aria-hidden="true"
-      data-testid="transaction-amount-relation-divider"
-      className={cn(
-        'absolute inset-x-0 top-1/2 z-10 h-px -translate-y-1/2 bg-border',
-        className
-      )}
-    />
-    <span
-      aria-hidden="true"
       data-testid="transaction-amount-relation-indicator"
-      className={cn(
-        'absolute left-1/2 top-1/2 z-20 flex size-8 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-card text-foreground ring-4 ring-card',
-        className
-      )}
+      className="absolute left-1/2 top-1/2 z-20 flex size-8 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-card text-foreground ring-4 ring-card"
     >
       <ArrowDown className="size-4" strokeWidth={1.5} />
     </span>
-  </>
+  </div>
 )
 
 export const TransactionAmountDirectionControl = ({
@@ -81,14 +73,16 @@ export const TransactionAmountDirectionControl = ({
   label: string
   onClick: () => void
 }) => (
-  <IconButton
-    label={label}
-    icon={<ArrowUpDown />}
-    size="compact"
-    disabled={disabled}
-    onClick={onClick}
-    className="absolute left-1/2 top-1/2 z-20 -translate-x-1/2 -translate-y-1/2 ring-2 ring-card"
-  />
+  <div className="relative z-10 h-px shrink-0">
+    <IconButton
+      label={label}
+      icon={<ArrowUpDown />}
+      size="compact"
+      disabled={disabled}
+      onClick={onClick}
+      className="absolute left-1/2 top-1/2 z-20 -translate-x-1/2 -translate-y-1/2 ring-2 ring-card"
+    />
+  </div>
 )
 
 export const TransactionAmountObject = ({
@@ -114,7 +108,7 @@ export const TransactionAmountObject = ({
     data-testid="transaction-amount-object"
     data-tone={tone}
     className={cn(
-      'rounded-none p-4 transition-colors duration-120',
+      'rounded-lg p-4 transition-colors duration-120',
       tone === 'default' &&
         presentation === 'standalone' &&
         'border border-input bg-card',
@@ -139,11 +133,14 @@ export const TransactionAmountObject = ({
         {label}
       </p>
     </div>
-    <div className="mt-0.5 flex min-h-10 min-w-0 items-center gap-3">
+    <div
+      data-testid="transaction-amount-primary-row"
+      className="mt-0.5 flex min-h-10 min-w-0 items-center gap-2 min-[360px]:gap-3"
+    >
       {readOnly ? (
         <p
           className={cn(
-            'min-w-0 flex-1 truncate text-[28px] font-light leading-8 tabular-nums sm:text-[32px] sm:leading-[38px]',
+            'min-w-0 flex-1 truncate text-[22px] font-light leading-7 tabular-nums min-[360px]:text-[28px] min-[360px]:leading-8 sm:text-[32px] sm:leading-[38px]',
             tone === 'inverse'
               ? 'text-primary-foreground'
               : presentation === 'input' && !readOnly
@@ -156,7 +153,7 @@ export const TransactionAmountObject = ({
             <span
               data-testid="transaction-amount-unit"
               className={cn(
-                'ml-2',
+                'ml-1.5 text-xl min-[360px]:ml-2 min-[360px]:[font-size:inherit] min-[360px]:[line-height:inherit]',
                 tone === 'inverse'
                   ? 'text-brand-foreground/70'
                   : roles.text.supporting
@@ -170,7 +167,7 @@ export const TransactionAmountObject = ({
         <input
           aria-label={`${label} amount`}
           className={cn(
-            'min-w-0 flex-1 bg-transparent text-[28px] font-light leading-8 tabular-nums outline-none sm:text-[32px] sm:leading-[38px]',
+            'min-w-0 flex-1 bg-transparent text-[22px] font-light leading-7 tabular-nums outline-none min-[360px]:text-[28px] min-[360px]:leading-8 sm:text-[32px] sm:leading-[38px]',
             amountPlaceholder &&
               tone === 'default' &&
               presentation === 'input' &&
@@ -212,7 +209,7 @@ export const TransactionAmountObject = ({
     >
       <span className="min-w-0">{supporting}</span>
       {(balance || (!readOnly && balanceAction)) && (
-        <span className="flex min-w-0 items-center gap-2">
+        <span className="ml-auto flex min-w-0 items-center gap-2">
           {balance && <span className="truncate text-right">{balance}</span>}
           {!readOnly && balanceAction}
         </span>

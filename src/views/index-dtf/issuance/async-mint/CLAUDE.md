@@ -77,5 +77,5 @@ SDK params: `mode: 'maxInput'` + `inputAmount` for mint, `shares` for redeem;
 
 ## Tests
 
-`npx vitest run src/views/index-dtf/issuance/async-mint` — atom tests only;
+`pnpm exec vitest run src/views/index-dtf/issuance/async-mint` — atom tests only;
 the SDK owns the previously-tested quoting/iteration logic.

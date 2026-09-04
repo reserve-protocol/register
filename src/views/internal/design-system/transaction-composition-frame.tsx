@@ -33,8 +33,11 @@ export const TransactionCompositionFrame = <
   description,
   id,
   model,
+  onStateChange,
   parts,
   presentation = 'default',
+  stageInset = 'default',
+  state: controlledState,
   stateGroups,
   states,
   title,
@@ -44,8 +47,11 @@ export const TransactionCompositionFrame = <
   description: string
   id: string
   model: string
+  onStateChange?: (state: State) => void
   parts: { label: string; status: TransactionSystemPartStatus }[]
   presentation?: 'default' | 'modal-backdrop'
+  stageInset?: 'default' | 'flush' | 'mobile-flush'
+  state?: State
   stateGroups?: readonly TransactionCompositionStateGroup<State>[]
   states?: readonly State[]
   title: string
@@ -59,9 +65,11 @@ export const TransactionCompositionFrame = <
     ] as const satisfies readonly TransactionCompositionStateGroup<State>[])
   const firstReviewState = reviewStateGroups[0]?.states[0]
   const hasGroupedStates = reviewStateGroups.length > 1
-  const [state, setState] = useState<State>(
+  const [internalState, setInternalState] = useState<State>(
     defaultState ?? firstReviewState ?? (reviewStates[0] as State)
   )
+  const state = controlledState ?? internalState
+  const setState = onStateChange ?? setInternalState
 
   return (
     <article
@@ -69,7 +77,7 @@ export const TransactionCompositionFrame = <
       data-composition-id={id}
       id={`transaction-composition-${id}`}
       className={cn(
-        'border border-border bg-card',
+        'scroll-mt-28 border border-border bg-card',
         presentation === 'modal-backdrop' && '[container-type:inline-size]'
       )}
       aria-labelledby={`transaction-composition-${id}-title`}
@@ -149,8 +157,15 @@ export const TransactionCompositionFrame = <
           className={cn(
             'border-y border-border',
             presentation === 'modal-backdrop'
-              ? 'relative flex h-[980px] items-center justify-center overflow-hidden bg-background p-4 sm:p-6 [@container(min-width:980px)]:h-[760px]'
-              : 'bg-secondary p-4 sm:p-6'
+              ? 'relative flex h-[980px] items-end justify-center overflow-hidden bg-background p-0 sm:items-center sm:p-6 [@container(min-width:980px)]:h-[760px]'
+              : cn(
+                  'bg-secondary',
+                  stageInset === 'flush'
+                    ? 'p-0'
+                    : stageInset === 'mobile-flush'
+                      ? 'p-0 sm:p-6'
+                      : 'p-4 sm:p-6'
+                )
           )}
         >
           {presentation === 'modal-backdrop' && (

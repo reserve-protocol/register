@@ -58,7 +58,7 @@ export const TransactionAmountAsset = ({
 }) => (
   <span
     data-testid="transaction-amount-asset-identity"
-    className="flex items-center gap-2 text-xl font-light leading-7 text-foreground"
+    className="flex items-center gap-1.5 text-lg font-light leading-7 text-foreground min-[360px]:gap-2 min-[360px]:text-xl"
   >
     <TransactionAssetMark chain={chain} symbol={symbol} />
     <span>{symbol}</span>
@@ -67,17 +67,19 @@ export const TransactionAmountAsset = ({
 
 export const TransactionAssetLogo = ({
   className,
+  size = 'sm',
   symbol,
   ...props
 }: {
   className?: string
+  size?: 'sm' | 'md' | 'lg' | 'xl'
   symbol: string
 } & Omit<ComponentProps<typeof TokenLogo>, 'alt' | 'size' | 'src'>) => (
   <TokenLogo
     aria-hidden="true"
     alt=""
     className={className}
-    size="sm"
+    size={size}
     src={ASSET_LOGOS[symbol] ?? '/svgs/defaultLogo.svg'}
     symbol={symbol}
     {...props}
@@ -91,6 +93,9 @@ const ASSET_LOGOS: Record<string, string> = {
   vlRSR: '/svgs/rsr.svg',
   stRSR: '/svgs/strsr.svg',
   USDC: '/svgs/usdc.svg',
+  USDT: '/svgs/usdt.svg',
   WBTC: '/svgs/wbtc.svg',
   WETH: '/svgs/weth.svg',
+  WBNB: '/imgs/bnb.png',
+  AAVE: '/svgs/aave.svg',
 }

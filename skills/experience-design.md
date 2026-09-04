@@ -22,7 +22,12 @@ Copy `templates/design/brief.md` into project scratch. Ground it in current evid
 - **agent affordances**: exposed context, available actions, authority/confirmation, visible result, and use mode versus change mode;
 - constraints, non-goals, compatibility, and smallest independently verifiable outcome.
 
-Pre-register a 3–6 item gradeable rubric and one held-out pressure scenario. **Candidates do not receive the rubric or held-out scenario**; they receive identical intent, grounding, constraints, and output contract.
+Pre-register a 3–6 item gradeable rubric and one held-out pressure scenario in
+reviewer-only context. **Candidates do not receive the rubric or held-out
+scenario**; they receive identical intent, grounding, constraints, and output
+contract. If the candidate can read the artifact containing the scenario, call
+it a visible pressure case rather than held-out evidence and do not claim
+independent evaluation from it.
 
 ## Produce candidates
 

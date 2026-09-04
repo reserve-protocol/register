@@ -2030,6 +2030,766 @@ test.describe('design system lab', () => {
     ).toBe(true)
   })
 
+  test('keeps transaction task hierarchy readable at the narrow phone boundary', async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width: 320, height: 900 })
+    await page.goto(
+      '/internal/design-system/components/transaction-action#transaction-truth-spectrum'
+    )
+
+    const fitsOwnWidth = async (locator: ReturnType<typeof page.locator>) => {
+      expect(
+        await locator.evaluate(
+          (element) => element.scrollWidth <= element.clientWidth + 1
+        )
+      ).toBe(true)
+    }
+    const expectBottomAttachedFullWidth = async (
+      composition: ReturnType<typeof page.locator>
+    ) => {
+      const layerBox = await composition
+        .getByTestId('transaction-contained-modal-layer')
+        .boundingBox()
+      const surfaceBox = await composition
+        .getByTestId('canonical-dialog-surface')
+        .boundingBox()
+      expect(layerBox).not.toBeNull()
+      expect(surfaceBox).not.toBeNull()
+      expect(Math.abs(surfaceBox!.x - layerBox!.x)).toBeLessThanOrEqual(1)
+      expect(Math.abs(surfaceBox!.width - layerBox!.width)).toBeLessThanOrEqual(
+        1
+      )
+      expect(
+        Math.abs(
+          surfaceBox!.y + surfaceBox!.height - (layerBox!.y + layerBox!.height)
+        )
+      ).toBeLessThanOrEqual(1)
+    }
+
+    const rfq = page.getByTestId('transaction-composition-rfq')
+    await rfq.getByRole('radio', { name: 'Review', exact: true }).click()
+    const rfqStage = rfq.getByTestId('transaction-composition-rfq-stage')
+    const rfqShell = rfq.getByTestId('zapper-shell')
+    const rfqStageBox = await rfqStage.boundingBox()
+    const rfqShellBox = await rfqShell.boundingBox()
+    expect(rfqStageBox).not.toBeNull()
+    expect(rfqShellBox).not.toBeNull()
+    expect(Math.abs(rfqShellBox!.x - rfqStageBox!.x)).toBeLessThanOrEqual(1)
+    expect(
+      Math.abs(rfqShellBox!.width - rfqStageBox!.width)
+    ).toBeLessThanOrEqual(1)
+    expect(
+      Math.abs(
+        rfqShellBox!.y +
+          rfqShellBox!.height -
+          (rfqStageBox!.y + rfqStageBox!.height)
+      )
+    ).toBeLessThanOrEqual(1)
+    await fitsOwnWidth(rfq.getByRole('textbox', { name: 'You use amount' }))
+    await fitsOwnWidth(rfq.getByText('≈990.00', { exact: true }))
+    await fitsOwnWidth(
+      rfq.getByTestId('transaction-amount-asset-identity').last()
+    )
+
+    await rfq
+      .getByRole('radio', { name: 'Route selection', exact: true })
+      .click()
+    const quoteMetaRow = rfq.getByTestId('zapper-selectable-quote-meta-row')
+    const quoteMeta = rfq.getByTestId('zapper-selectable-quote-meta')
+    const narrowQuoteMetaBox = await quoteMeta.boundingBox()
+    const slippageMetaBox = await rfq
+      .getByTestId('zapper-slippage-meta')
+      .boundingBox()
+    const routeMetaBox = await rfq
+      .getByTestId('zapper-selectable-route-meta')
+      .boundingBox()
+    await expect(quoteMetaRow).toHaveCSS('flex-direction', 'column')
+    expect(slippageMetaBox).not.toBeNull()
+    expect(routeMetaBox).not.toBeNull()
+    expect(narrowQuoteMetaBox).not.toBeNull()
+    expect(slippageMetaBox!.y - narrowQuoteMetaBox!.y).toBe(12)
+    expect(Math.abs(slippageMetaBox!.x - routeMetaBox!.x)).toBeLessThanOrEqual(
+      1
+    )
+    expect(
+      Math.abs(slippageMetaBox!.width - routeMetaBox!.width)
+    ).toBeLessThanOrEqual(1)
+    expect(routeMetaBox!.y).toBeGreaterThanOrEqual(
+      slippageMetaBox!.y + slippageMetaBox!.height - 1
+    )
+
+    const routeOutput = rfq
+      .getByText('Projected proceeds')
+      .locator('xpath=ancestor::*[@data-testid="transaction-amount-object"]')
+    const routeSupportingValue = routeOutput
+      .getByTestId('transaction-amount-supporting-row')
+      .locator(':scope > span')
+      .first()
+    const routeSupportingBalance = routeOutput
+      .getByTestId('transaction-amount-supporting-row')
+      .locator(':scope > span')
+      .nth(1)
+    const routeSupportingValueBox = await routeSupportingValue.boundingBox()
+    const routeSupportingBalanceBox = await routeSupportingBalance.boundingBox()
+    expect(routeSupportingValueBox).not.toBeNull()
+    expect(routeSupportingBalanceBox).not.toBeNull()
+    expect(
+      Math.abs(routeSupportingValueBox!.y - routeSupportingBalanceBox!.y)
+    ).toBeLessThanOrEqual(1)
+    await expect(routeSupportingBalance).toContainText('After fees')
+
+    await rfq
+      .getByRole('radio', { name: 'Capacity advisory', exact: true })
+      .click()
+    await fitsOwnWidth(rfq.getByText('≈247,500.00', { exact: true }))
+    await rfq
+      .getByRole('radio', { name: 'Route selection', exact: true })
+      .click()
+
+    await page.setViewportSize({ width: 390, height: 900 })
+    const amountObjects = rfq.getByTestId('transaction-amount-object')
+    const inputAmountBox = await amountObjects.first().boundingBox()
+    const outputAmount = amountObjects.nth(1)
+    const outputAmountBox = await outputAmount.boundingBox()
+    const directionBox = await rfq
+      .getByRole('button', { name: 'Swap input and output assets' })
+      .boundingBox()
+    const outputPrimaryRowBox = await outputAmount
+      .getByTestId('transaction-amount-primary-row')
+      .boundingBox()
+    const outputValueBox = await outputAmount
+      .getByTestId('transaction-amount-supporting-row')
+      .locator(':scope > span')
+      .first()
+      .boundingBox()
+    expect(inputAmountBox).not.toBeNull()
+    expect(outputAmountBox).not.toBeNull()
+    expect(directionBox).not.toBeNull()
+    expect(outputPrimaryRowBox).not.toBeNull()
+    expect(outputValueBox).not.toBeNull()
+    const amountSeam =
+      (inputAmountBox!.y + inputAmountBox!.height + outputAmountBox!.y) / 2
+    expect(
+      Math.abs(directionBox!.y + directionBox!.height / 2 - amountSeam)
+    ).toBeLessThanOrEqual(1)
+    expect(
+      outputValueBox!.y - (outputPrimaryRowBox!.y + outputPrimaryRowBox!.height)
+    ).toBeLessThanOrEqual(5)
+    await page.setViewportSize({ width: 464, height: 900 })
+    const responsiveStack = rfq.getByTestId('zapper-review-stack')
+    await expect(responsiveStack).toHaveCSS('container-type', 'inline-size')
+    const responsiveStackBox = await responsiveStack.boundingBox()
+    expect(responsiveStackBox).not.toBeNull()
+    expect(responsiveStackBox!.width).toBeGreaterThanOrEqual(408)
+    await expect(quoteMetaRow).toHaveCSS('flex-direction', 'row')
+    await fitsOwnWidth(quoteMetaRow)
+    const wideSlippageMetaBox = await rfq
+      .getByTestId('zapper-slippage-meta')
+      .boundingBox()
+    const wideQuoteMetaBox = await quoteMeta.boundingBox()
+    const wideRouteMetaBox = await rfq
+      .getByTestId('zapper-selectable-route-meta')
+      .boundingBox()
+    expect(wideSlippageMetaBox).not.toBeNull()
+    expect(wideRouteMetaBox).not.toBeNull()
+    expect(wideQuoteMetaBox).not.toBeNull()
+    expect(wideSlippageMetaBox!.y - wideQuoteMetaBox!.y).toBe(8)
+    expect(
+      Math.abs(wideSlippageMetaBox!.y - wideRouteMetaBox!.y)
+    ).toBeLessThanOrEqual(1)
+    await page.setViewportSize({ width: 640, height: 900 })
+    await expect(rfqStage).toHaveCSS('align-items', 'center')
+    await page.setViewportSize({ width: 320, height: 900 })
+
+    await rfq.getByRole('radio', { name: 'RFQ outcome', exact: true }).click()
+    const outcomeUnit = rfq.getByTestId('transaction-amount-unit')
+    await expect(outcomeUnit).toHaveText('CMC20')
+    await fitsOwnWidth(outcomeUnit.locator('..'))
+
+    const voteLock = page.getByTestId('transaction-composition-vote-lock')
+    await voteLock
+      .getByRole('radio', { name: 'Delegate ready', exact: true })
+      .click()
+    await fitsOwnWidth(
+      voteLock.getByRole('group', { name: 'Vote-lock task mode' })
+    )
+    await expectBottomAttachedFullWidth(voteLock)
+
+    const stake = page.getByTestId('transaction-composition-stake')
+    await stake
+      .getByRole('radio', { name: 'Delegate ready', exact: true })
+      .click()
+    await fitsOwnWidth(stake.getByRole('group', { name: 'Staking task mode' }))
+    await expectBottomAttachedFullWidth(stake)
+
+    const staged = page.getByTestId('transaction-composition-staged')
+    await staged
+      .getByRole('radio', { name: 'Orders filling', exact: true })
+      .click()
+    await fitsOwnWidth(
+      staged
+        .getByTestId('automated-mint-collateral-stage')
+        .getByText('1 order open · expires in 1m 42s', {
+          exact: true,
+        })
+    )
+    await fitsOwnWidth(
+      staged.getByText('Estimated output · ≈$9,982.00 · Upcoming', {
+        exact: true,
+      })
+    )
+    await expect(staged.getByTestId('staged-order-row')).toHaveCount(0)
+    await expect(
+      staged.getByRole('button', { name: 'View orders' })
+    ).toBeVisible()
+    await staged.getByRole('button', { name: 'View orders' }).click()
+    await expect(staged.getByTestId('staged-orders-header')).toHaveCSS(
+      'flex-direction',
+      'column'
+    )
+    await fitsOwnWidth(
+      staged
+        .getByTestId('staged-orders-header')
+        .getByText('Unfilled order expires in 1m 42s', { exact: true })
+    )
+    await fitsOwnWidth(staged.getByTestId('staged-order-direction').first())
+
+    await page.setViewportSize({ width: 1023, height: 900 })
+    const constrainedWorkspace = await staged
+      .getByTestId('automated-mint-workspace-sections')
+      .boundingBox()
+    expect(constrainedWorkspace).not.toBeNull()
+    expect(constrainedWorkspace!.width).toBeLessThanOrEqual(640)
+
+    await page.setViewportSize({ width: 1024, height: 900 })
+    const taskColumn = await staged
+      .getByTestId('automated-mint-task')
+      .boundingBox()
+    const ordersColumn = await staged
+      .getByTestId('automated-mint-orders')
+      .boundingBox()
+    expect(taskColumn).not.toBeNull()
+    expect(ordersColumn).not.toBeNull()
+    expect(Math.abs(taskColumn!.y - ordersColumn!.y)).toBeLessThanOrEqual(1)
+    expect(ordersColumn!.x).toBeGreaterThan(taskColumn!.x)
+  })
+
+  test('keeps every reviewed transaction state inside the narrow phone viewport', async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width: 320, height: 900 })
+    await page.goto(
+      '/internal/design-system/components/transaction-action#transaction-truth-spectrum'
+    )
+
+    for (const family of ['rfq', 'staged', 'stake', 'vote-lock']) {
+      const composition = page.getByTestId(`transaction-composition-${family}`)
+      const options = composition.locator(
+        `[data-testid^="transaction-composition-${family}-state-group-"][data-testid*="-option-"]`
+      )
+      const stage = composition.getByTestId(
+        `transaction-composition-${family}-stage`
+      )
+
+      for (let index = 0; index < (await options.count()); index += 1) {
+        await options.nth(index).click()
+        expect(
+          await stage.evaluate(
+            (element) => element.scrollWidth - element.clientWidth
+          )
+        ).toBeLessThanOrEqual(1)
+      }
+    }
+  })
+
+  test('keeps the global assistant launcher out of design-system reviews', async ({
+    page,
+  }) => {
+    await page.goto(
+      '/internal/design-system/components/transaction-action#transaction-truth-spectrum'
+    )
+    await expect(
+      page.getByTestId('transaction-composition-rfq')
+    ).toBeVisible()
+    await expect(page.getByTestId('reserve-chat-launcher')).toHaveCount(0)
+  })
+
+  test('keeps the automated mint workspace truthful at desktop and constrained widths', async ({
+    page,
+  }) => {
+    if (test.info().project.name === 'design-system-mobile') {
+      await page.setViewportSize({ width: 390, height: 844 })
+    }
+    await page.goto(
+      '/internal/design-system/components/transaction-action#transaction-truth-spectrum'
+    )
+
+    const composition = page.getByTestId('transaction-composition-staged')
+    const chooseState = (group: number, option: number) =>
+      composition.getByTestId(
+        `transaction-composition-staged-state-group-${group}-option-${option}`
+      )
+
+    await chooseState(0, 0).click()
+    await expect(
+      composition.getByText('Most users should use Swap')
+    ).toBeVisible()
+    await expect(
+      composition
+        .getByTestId('automated-mint-introduction-content')
+        .getByRole('link', { name: 'Mint directly with basket assets' })
+    ).toBeVisible()
+    const narrowStage = composition.getByTestId('automated-mint-narrow-stage')
+    const compositionStage = composition.getByTestId(
+      'transaction-composition-staged-stage'
+    )
+    const introductionActions = composition
+      .getByTestId('automated-mint-introduction-content')
+      .getByTestId('canonical-action-group')
+    const introductionStageBox = await narrowStage.boundingBox()
+    const compositionStageBox = await compositionStage.boundingBox()
+    const introductionActionsBox = await introductionActions.boundingBox()
+    const introductionProcess = composition
+      .getByTestId('automated-mint-introduction-content')
+      .getByText('You fund')
+      .locator('..')
+    const introductionProcessBox = await introductionProcess.boundingBox()
+    const continueButtonBox = await composition
+      .getByRole('button', { name: 'Continue' })
+      .boundingBox()
+    expect(introductionStageBox).not.toBeNull()
+    expect(compositionStageBox).not.toBeNull()
+    expect(introductionActionsBox).not.toBeNull()
+    expect(introductionProcessBox).not.toBeNull()
+    expect(continueButtonBox).not.toBeNull()
+    expect(
+      Math.abs(introductionActionsBox!.x - introductionStageBox!.x - 8)
+    ).toBeLessThanOrEqual(1)
+    expect(
+      Math.abs(
+        introductionStageBox!.x +
+          introductionStageBox!.width -
+          introductionActionsBox!.x -
+          introductionActionsBox!.width -
+          8
+      )
+    ).toBeLessThanOrEqual(1)
+    expect(
+      Math.abs(
+        introductionStageBox!.y +
+          introductionStageBox!.height -
+          introductionActionsBox!.y -
+          introductionActionsBox!.height -
+          8
+      )
+    ).toBeLessThanOrEqual(1)
+    expect(
+      continueButtonBox!.y -
+        introductionProcessBox!.y -
+        introductionProcessBox!.height
+    ).toBeGreaterThanOrEqual(20)
+    expect(
+      await introductionProcess.evaluate(
+        (element) => element.scrollWidth - element.clientWidth
+      )
+    ).toBeLessThanOrEqual(0)
+    if (test.info().project.name === 'design-system-mobile') {
+      expect(
+        Math.abs(introductionStageBox!.x - compositionStageBox!.x)
+      ).toBeLessThanOrEqual(1)
+      expect(
+        Math.abs(introductionStageBox!.width - compositionStageBox!.width)
+      ).toBeLessThanOrEqual(1)
+      expect(introductionStageBox!.height).toBeGreaterThanOrEqual(
+        page.viewportSize()!.height - 56
+      )
+    }
+    await composition.getByRole('button', { name: 'Continue' }).click()
+    await expect(composition.getByText('Smart Account Required')).toBeVisible()
+    await expect(
+      composition.getByRole('button', { name: 'Connect Wallet' })
+    ).toBeVisible()
+    const walletActions = composition
+      .getByTestId('automated-mint-wallet-requirement-content')
+      .getByTestId('canonical-action-group')
+    const walletStageBox = await narrowStage.boundingBox()
+    const walletSurfaceBox = await composition
+      .getByTestId('automated-mint-wallet-requirement')
+      .boundingBox()
+    const walletActionsBox = await walletActions.boundingBox()
+    expect(walletStageBox).not.toBeNull()
+    expect(walletSurfaceBox).not.toBeNull()
+    expect(walletActionsBox).not.toBeNull()
+    expect(
+      Math.abs(walletActionsBox!.x - walletStageBox!.x - 8)
+    ).toBeLessThanOrEqual(1)
+    expect(
+      Math.abs(
+        walletStageBox!.x +
+          walletStageBox!.width -
+          walletActionsBox!.x -
+          walletActionsBox!.width -
+          8
+      )
+    ).toBeLessThanOrEqual(1)
+    expect(
+      Math.abs(walletStageBox!.height - introductionStageBox!.height)
+    ).toBeLessThanOrEqual(1)
+    if (test.info().project.name === 'design-system-mobile') {
+      expect(
+        Math.abs(walletSurfaceBox!.x - compositionStageBox!.x)
+      ).toBeLessThanOrEqual(1)
+      expect(
+        Math.abs(walletSurfaceBox!.width - compositionStageBox!.width)
+      ).toBeLessThanOrEqual(1)
+    }
+    await chooseState(0, 2).click()
+    await expect(
+      composition
+        .getByTestId('automated-mint-wallet-requirement')
+        .getByText('Incompatible wallet')
+    ).toBeVisible()
+    const incompatibleStageBox = await narrowStage.boundingBox()
+    expect(incompatibleStageBox).not.toBeNull()
+    expect(
+      Math.abs(incompatibleStageBox!.height - introductionStageBox!.height)
+    ).toBeLessThanOrEqual(1)
+    await chooseState(0, 3).click()
+    await expect(
+      composition.getByTestId('automated-configure-step-content')
+    ).toHaveCount(3)
+    const configureSurface = composition.getByTestId(
+      'automated-mint-configure-surface'
+    )
+    const configureSurfaceBox = await configureSurface.boundingBox()
+    expect(configureSurfaceBox).not.toBeNull()
+    if (test.info().project.name === 'design-system-mobile') {
+      expect(
+        Math.abs(configureSurfaceBox!.x - compositionStageBox!.x)
+      ).toBeLessThanOrEqual(1)
+      expect(
+        Math.abs(configureSurfaceBox!.width - compositionStageBox!.width)
+      ).toBeLessThanOrEqual(1)
+      expect(
+        Math.abs(configureSurfaceBox!.height - introductionStageBox!.height)
+      ).toBeLessThanOrEqual(1)
+    }
+    await expect(
+      configureSurface
+        .getByTestId('automated-mint-configure-active')
+        .getByRole('link', { name: 'Switch to manual minting' })
+    ).toBeVisible()
+    await expect(
+      configureSurface.getByRole('radio', { name: 'Mint', exact: true })
+    ).toBeChecked()
+    await expect(
+      configureSurface.getByRole('radio', { name: 'Redeem', exact: true })
+    ).toBeEnabled()
+    await expect(
+      composition.getByTestId('automated-mint-configure-frame')
+    ).toHaveClass(/ring-2/)
+    const upcomingSteps = composition.getByTestId(
+      'automated-mint-configure-upcoming'
+    )
+    const upcomingStepsBox = await upcomingSteps.boundingBox()
+    const firstUpcomingStepBox = await upcomingSteps
+      .getByTestId('automated-configure-step-content')
+      .first()
+      .boundingBox()
+    expect(upcomingStepsBox).not.toBeNull()
+    expect(firstUpcomingStepBox).not.toBeNull()
+    expect(firstUpcomingStepBox!.y - upcomingStepsBox!.y).toBe(24)
+    await expect(
+      composition
+        .getByTestId('automated-mint-configure-frame')
+        .getByText('1', { exact: true })
+    ).toHaveCount(0)
+    await expect(
+      composition.getByTestId('automated-mint-workspace')
+    ).toHaveCount(0)
+
+    const amountInput = composition.locator('input[inputmode="decimal"]')
+    await amountInput.fill('15,000')
+    await expect(
+      composition.getByTestId('automated-mint-balance-error')
+    ).toHaveText('Exceeds available balance')
+    await expect(
+      composition.getByTestId('automated-mint-get-quote')
+    ).toBeEnabled()
+    await composition.getByTestId('automated-mint-get-quote').click()
+    await chooseState(1, 3).click()
+    await expect(composition.getByTestId('automated-mint-start')).toBeDisabled()
+
+    await chooseState(0, 3).click()
+    await amountInput.fill('5,000.25')
+    await composition.getByTestId('automated-mint-get-quote').click()
+    await expect(
+      composition.getByTestId('automated-mint-workspace')
+    ).toBeVisible()
+
+    await chooseState(1, 3).click()
+    await chooseState(2, 2).click()
+    await expect(
+      composition.getByTestId('automated-mint-applied-collateral')
+    ).toHaveCount(0)
+
+    await chooseState(1, 4).click()
+    await expect(
+      composition.getByRole('region', { name: 'Automated mint task' })
+    ).toBeVisible()
+    if (test.info().project.name !== 'design-system-desktop') {
+      await expect(composition.getByTestId('staged-order-row')).toHaveCount(0)
+      await composition.getByRole('button', { name: 'View orders' }).click()
+    }
+    await expect(
+      composition.getByTestId('automated-mint-existing-collateral-assets')
+    ).toBeVisible()
+    await expect(
+      composition.getByTestId('automated-mint-applied-collateral')
+    ).toHaveCount(0)
+    await expect(
+      composition.getByText('Basket tokens in your wallet')
+    ).toHaveCount(0)
+    await expect(composition.getByTestId('staged-order-row')).toHaveCount(5)
+    await expect(
+      composition.getByText('Quote ready', { exact: true })
+    ).toHaveCount(0)
+    await expect(composition.getByText('CoW Protocol order')).toHaveCount(0)
+    expect(
+      await composition
+        .getByTestId('automated-mint-orders-scroll')
+        .evaluate((element) => element.scrollTop)
+    ).toBe(0)
+
+    await composition.getByTestId('automated-mint-start').click()
+    await expect(
+      composition.getByTestId('automated-mint-existing-collateral-assets')
+    ).toBeVisible()
+    await expect(composition.locator('[data-order-asset="WBTC"]')).toBeVisible()
+    await expect(
+      composition.getByTestId('automated-mint-applied-collateral')
+    ).toHaveCount(0)
+
+    const taskBox = await composition
+      .getByTestId('automated-mint-task')
+      .boundingBox()
+    const ordersBox = await composition
+      .getByTestId('automated-mint-orders')
+      .boundingBox()
+    const workspaceBox = await composition
+      .getByTestId('automated-mint-workspace')
+      .boundingBox()
+    const stageBox = await composition
+      .getByTestId('transaction-composition-staged-stage')
+      .boundingBox()
+    expect(taskBox).not.toBeNull()
+    expect(ordersBox).not.toBeNull()
+    expect(workspaceBox).not.toBeNull()
+    expect(stageBox).not.toBeNull()
+
+    if (test.info().project.name === 'design-system-desktop') {
+      expect(Math.abs(taskBox!.y - ordersBox!.y)).toBeLessThanOrEqual(1)
+      expect(ordersBox!.x).toBeGreaterThan(taskBox!.x)
+      expect(Math.abs(taskBox!.height - ordersBox!.height)).toBeLessThanOrEqual(
+        1
+      )
+      expect(workspaceBox!.height).toBe(688)
+      expect(workspaceBox!.width).toBe(1200)
+      expect(
+        Math.abs(
+          workspaceBox!.x +
+            workspaceBox!.width / 2 -
+            (stageBox!.x + stageBox!.width / 2)
+        )
+      ).toBeLessThanOrEqual(1)
+      const taskOverflow = await composition
+        .getByTestId('automated-mint-task')
+        .evaluate((element) => element.scrollHeight - element.clientHeight)
+      expect(taskOverflow).toBeLessThanOrEqual(0)
+      await expect(composition.getByTestId('automated-mint-task')).toHaveCSS(
+        'box-shadow',
+        'none'
+      )
+      await expect(
+        composition.getByTestId('automated-mint-orders-scroll')
+      ).toHaveCSS('overflow-y', 'auto')
+    } else {
+      expect(ordersBox!.y).toBeGreaterThanOrEqual(taskBox!.y + taskBox!.height)
+      expect(Math.abs(ordersBox!.x - taskBox!.x)).toBeLessThanOrEqual(1)
+    }
+
+    await chooseState(2, 2).click()
+    await expect(
+      composition.locator('[data-order-status="Filled"]')
+    ).toHaveCount(4)
+    await expect(
+      composition.locator('[data-order-status="Expired"]')
+    ).toHaveCount(1)
+    await expect(composition.getByTestId('staged-order-metadata')).toHaveCount(
+      5
+    )
+    await expect(
+      composition.getByTestId('staged-order-metadata').first()
+    ).toContainText('Filled')
+    await expect(
+      composition.getByTestId('staged-order-metadata').first()
+    ).toContainText('View order')
+    await expect(
+      composition.getByTestId('automated-mint-existing-collateral-assets')
+    ).toBeVisible()
+
+    await composition.getByTestId('automated-mint-retry-failed').click()
+    await expect(
+      composition.getByTestId('automated-mint-existing-collateral-assets')
+    ).toBeVisible()
+    await expect(composition.locator('[data-order-asset="WBTC"]')).toBeVisible()
+
+    await chooseState(2, 3).click()
+    await expect(composition.getByTestId('automated-mint-outcome')).toHaveCount(
+      0
+    )
+
+    await chooseState(3, 0).click()
+    await expect(
+      composition.getByTestId('automated-mint-outcome')
+    ).toBeVisible()
+    if (test.info().project.name === 'design-system-desktop') {
+      const outcomeWorkspaceBox = await composition
+        .getByTestId('automated-mint-workspace')
+        .boundingBox()
+      expect(outcomeWorkspaceBox?.height).toBe(workspaceBox!.height)
+      const outcomeOverflow = await composition
+        .getByTestId('automated-mint-outcome')
+        .evaluate((element) => element.scrollHeight - element.clientHeight)
+      expect(outcomeOverflow).toBeLessThanOrEqual(0)
+    }
+    await expect(
+      composition.getByTestId('automated-mint-final-transaction')
+    ).toBeVisible()
+    await expect(
+      composition.locator('a[href^="https://explorer.cow.fi/orders/0x"]')
+    ).toHaveCount(5)
+    for (const href of await composition
+      .locator('a[href^="https://explorer.cow.fi/orders/0x"]')
+      .evaluateAll((links) => links.map((link) => link.getAttribute('href')))) {
+      expect(href).toMatch(
+        /^https:\/\/explorer\.cow\.fi\/orders\/0x[0-9a-f]{112}$/
+      )
+    }
+
+    await expect(
+      composition.getByTestId('automated-mint-view-dtf')
+    ).toHaveAttribute(
+      'href',
+      '/base/index-dtf/0xa0a8481fc246cd12f75227abb96220ff5360fad3/overview'
+    )
+    if (test.info().project.name === 'design-system-desktop') {
+      const workspaceStates: Array<[number, number]> = [
+        [1, 0],
+        [1, 1],
+        [1, 2],
+        [1, 3],
+        [1, 4],
+        [2, 0],
+        [2, 1],
+        [2, 2],
+        [2, 3],
+        [2, 4],
+        [3, 0],
+      ]
+
+      for (const [group, option] of workspaceStates) {
+        await chooseState(group, option).click()
+        const workspace = composition.getByTestId('automated-mint-workspace')
+        await expect(workspace).toHaveCSS('height', '688px')
+        const leftColumn = composition.locator(
+          '[data-testid="automated-mint-task"], [data-testid="automated-mint-outcome"]'
+        )
+        const overflow = await leftColumn.evaluate(
+          (element) => element.scrollHeight - element.clientHeight
+        )
+        expect(overflow).toBeLessThanOrEqual(0)
+      }
+    }
+    await expect(composition.getByTestId('automated-mint-new')).toHaveCount(0)
+    expect(
+      await page.evaluate(
+        () => document.documentElement.scrollWidth <= window.innerWidth
+      )
+    ).toBe(true)
+  })
+
+  test('keeps automated redeem on the shared issuance structure', async ({
+    page,
+  }) => {
+    await page.goto(
+      '/internal/design-system/components/transaction-action#transaction-composition-staged'
+    )
+
+    const composition = page.getByTestId('transaction-composition-staged')
+    const chooseState = (group: number, option: number) =>
+      composition.getByTestId(
+        `transaction-composition-staged-state-group-${group}-option-${option}`
+      )
+
+    await chooseState(0, 3).click()
+    await composition.getByTestId('automated-issuance-operation-redeem').click()
+    await composition
+      .getByTestId('automated-issuance-configure-amount')
+      .locator('input')
+      .fill('100')
+    await composition.getByTestId('automated-mint-get-quote').click()
+    await chooseState(1, 4).click()
+
+    await expect(
+      composition.getByTestId('automated-mint-task')
+    ).toHaveAttribute('aria-label', 'Automated redeem task')
+    if (test.info().project.name !== 'design-system-desktop') {
+      await composition.getByTestId('automated-issuance-orders-toggle').click()
+    }
+    await expect(composition.getByTestId('staged-order-row')).toHaveCount(5)
+    await expect(
+      composition.getByTestId('staged-order-sell').first()
+    ).toContainText('WBTC')
+    await expect(
+      composition.getByTestId('staged-order-buy').first()
+    ).toContainText('USDC')
+
+    await composition.getByTestId('automated-mint-start').click()
+    await expect(
+      composition.getByTestId('automated-mint-collateral-action-region')
+    ).toContainText('Confirm redeem in wallet')
+
+    await chooseState(2, 2).click()
+    await expect(
+      composition.locator('[data-order-status="Filled"]')
+    ).toHaveCount(4)
+    await expect(
+      composition.locator('[data-order-status="Expired"]')
+    ).toHaveCount(1)
+
+    await chooseState(3, 1).click()
+    await expect(
+      composition.getByTestId('automated-mint-outcome')
+    ).toBeVisible()
+    await expect(composition.getByTestId('transaction-amount-unit')).toHaveText(
+      'USDC'
+    )
+    await expect(
+      composition.getByTestId('automated-mint-final-transaction')
+    ).toContainText('Final redeem transaction')
+    await expect(
+      composition.getByTestId('automated-mint-mint-action-region')
+    ).toHaveCount(0)
+
+    await chooseState(1, 5).click()
+    await expect(
+      composition.getByTestId('automated-mint-input-amount')
+    ).toContainText('Existing collateral')
+    await expect(composition.getByTestId('staged-order-row')).toHaveCount(2)
+  })
+
   test('keeps mounted Vote Lock relationships aligned across action and submitted states', async ({
     page,
   }) => {

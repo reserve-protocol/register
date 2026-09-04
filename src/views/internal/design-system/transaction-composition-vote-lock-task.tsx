@@ -96,6 +96,14 @@ export const VoteLockAmountTask = ({
             ) : undefined
           }
         />
+        {isInputState ? (
+          <TransactionAmountDirectionControl
+            label={isUnlock ? 'Switch to vote-lock' : 'Switch to unlock'}
+            onClick={onDirectionChange}
+          />
+        ) : (
+          <TransactionAmountRelation />
+        )}
         <TransactionAmountObject
           label="You receive:"
           amount={hasFixtureQuote ? (isUnlock ? '1.0188' : '0.98155') : '—'}
@@ -109,14 +117,6 @@ export const VoteLockAmountTask = ({
           }
           supporting={hasFixtureQuote ? (isUnlock ? '$8.34' : '$8.18') : '—'}
         />
-        {isInputState ? (
-          <TransactionAmountDirectionControl
-            label={isUnlock ? 'Switch to vote-lock' : 'Switch to unlock'}
-            onClick={onDirectionChange}
-          />
-        ) : (
-          <TransactionAmountRelation />
-        )}
       </TransactionAmountPair>
       <div
         data-testid="vote-lock-task-facts-region"

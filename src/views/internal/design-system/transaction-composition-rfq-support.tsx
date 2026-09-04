@@ -1,4 +1,4 @@
-import { useEffect, useId, useState, type ReactNode } from 'react'
+import { useEffect, useId, useRef, useState, type ReactNode } from 'react'
 import { ArrowUpRight, ChevronDown, Settings } from 'lucide-react'
 
 import { Button } from '@/components/button'
@@ -43,6 +43,10 @@ import {
   TransactionAmountAsset,
   TransactionAssetIdentity,
 } from './transaction-system-assets'
+import {
+  TransactionMetricValue,
+  type TransactionMetricTone,
+} from './transaction-metric-value'
 import { TransactionSummaryMessage } from './transaction-summary-message'
 
 interface ZapperAssetBase {
@@ -169,6 +173,7 @@ export const ZapperSettings = ({
   const [forceMint, setForceMint] = useState(false)
   const deepLiquidityId = useId()
   const forceMintId = useId()
+  const initialSettingRef = useRef<HTMLButtonElement>(null)
 
   return (
     <Popover
@@ -187,6 +192,10 @@ export const ZapperSettings = ({
         align="end"
         aria-label="Zapper settings"
         className="w-72 p-4"
+        onOpenAutoFocus={(event) => {
+          event.preventDefault()
+          initialSettingRef.current?.focus()
+        }}
         role="dialog"
       >
         <div className="grid gap-4">
@@ -207,7 +216,7 @@ export const ZapperSettings = ({
               value={quoteSource}
               width="full"
             >
-              <SegmentedControlItem value="best">
+              <SegmentedControlItem ref={initialSettingRef} value="best">
                 Best Quote
               </SegmentedControlItem>
               <SegmentedControlItem value="enso">Enso</SegmentedControlItem>
@@ -416,13 +425,16 @@ export const ZapperSelectableQuoteMeta = ({
   return (
     <section
       data-testid="zapper-selectable-quote-meta"
-      className="relative z-10 bg-card py-2"
+      className="zapper-selectable-quote-meta relative z-10 bg-card py-3"
     >
       <div
         data-testid="zapper-selectable-quote-meta-row"
-        className="flex h-11 items-center px-4"
+        className="zapper-selectable-quote-meta-row flex flex-col px-4"
       >
-        <div className="flex min-w-0 flex-1 items-center justify-between gap-3">
+        <div
+          data-testid="zapper-slippage-meta"
+          className="flex h-11 min-w-0 w-full flex-1 items-center justify-between gap-3"
+        >
           <span className="flex min-w-0 items-center gap-1">
             <span
               className={cn(
@@ -460,28 +472,31 @@ export const ZapperSelectableQuoteMeta = ({
         </div>
         <div
           aria-hidden={!quoteReady}
+          data-visible={quoteReady}
           data-testid="zapper-selectable-route-meta"
           className={cn(
-            'shrink-0 overflow-hidden transition-[max-width,opacity] duration-180 motion-reduce:transition-none',
+            'zapper-selectable-route-meta w-full shrink-0 overflow-hidden transition-[max-height,max-width,opacity] duration-180 motion-reduce:transition-none',
             quoteReady
-              ? 'max-w-48 opacity-100'
-              : 'pointer-events-none max-w-0 opacity-0'
+              ? 'max-h-11 opacity-100'
+              : 'pointer-events-none max-h-0 opacity-0'
           )}
         >
-          <div className="flex min-w-0 items-center gap-2 overflow-hidden pl-4">
-            <span
-              className={cn(
-                v1Typography.supporting,
-                roles.text.supporting,
-                'whitespace-nowrap'
-              )}
-            >
-              Via
-            </span>
-            <span
-              className={cn(v1Typography.label, 'truncate whitespace-nowrap')}
-            >
-              {selectedSource}
+          <div className="zapper-selectable-route-meta-content flex h-11 min-w-0 w-full items-center justify-between gap-2 overflow-hidden">
+            <span className="flex min-w-0 items-center gap-2">
+              <span
+                className={cn(
+                  v1Typography.supporting,
+                  roles.text.supporting,
+                  'whitespace-nowrap'
+                )}
+              >
+                Via
+              </span>
+              <span
+                className={cn(v1Typography.label, 'truncate whitespace-nowrap')}
+              >
+                {selectedSource}
+              </span>
             </span>
             <IconButton
               aria-expanded={open}
@@ -543,6 +558,14 @@ const CURRENT_ZAPPER_ROUTES = [
     best: false,
   },
 ] as const
+
+const ZAPPER_OUTCOME_FINAL_VS_INPUT = {
+  Buy: { value: '-1.36%', tone: 'realized-adverse' },
+  Sell: { value: '-0.36%', tone: 'neutral' },
+} as const satisfies Record<
+  'Buy' | 'Sell',
+  { value: string; tone: TransactionMetricTone }
+>
 
 const ZapperRouteOptions = ({
   onSelect,
@@ -636,104 +659,112 @@ const ZapperQuoteFacts = ({
   outcome?: boolean
   outcomeKind?: 'atomic' | 'rfq'
   source?: string
-}) => (
-  <dl
-    data-testid={
-      outcome
-        ? 'zapper-outcome-facts'
-        : loading
-          ? 'zapper-quote-details-loading'
-          : undefined
-    }
-    className={cn(
-      'grid gap-2 px-4 text-sm leading-5',
-      selectableRoutes ? 'pb-2' : 'pb-4',
-      outcome && 'pt-4'
-    )}
-  >
-    {outcome ? (
-      <>
-        <QuoteFact
-          label={outcomeKind === 'atomic' ? 'Executed via' : 'Filled via'}
-          value={source}
-        />
-        <QuoteFact
-          label="Used"
-          value={mode === 'Buy' ? '1,000 USDC' : '990 CMC20'}
-        />
-        <QuoteFact label="Value received" value="$986.42" />
-        <QuoteFact
-          label="Final vs input"
-          value={mode === 'Buy' ? '-1.36%' : '-0.36%'}
-        />
-      </>
-    ) : selectableRoutes ? (
-      <>
-        <QuoteFact
-          label="Current price"
-          value="1 USDC = 0.99 CMC20"
-          help={{
-            accessibleLabel: 'About current price',
-            content: 'The current exchange rate between the tokens.',
-          }}
-        />
-        <QuoteFact
-          label="Projected slippage"
-          value="1.00% ($10.00)"
-          help={{
-            accessibleLabel: 'About projected slippage',
-            content:
-              'Projected difference (%) between the value you pay and the value you receive, at current prices.',
-          }}
-        />
-        <QuoteFact
-          label="Max slippage"
-          value="2.00% ($20.00)"
-          help={{
-            accessibleLabel: 'About maximum slippage',
-            content:
-              'Worst case: the value difference (%) if the trade executes at the minimum amount out allowed by your slippage tolerance.',
-          }}
-        />
-        <QuoteFact
-          label="Min Amount Out"
-          value="980.10 CMC20"
-          help={{
-            accessibleLabel: 'About minimum amount out',
-            content: 'The minimum amount of tokens you will receive.',
-          }}
-        />
-      </>
-    ) : (
-      <>
-        <QuoteFact
-          label="Minimum output"
-          value={
-            loading ? (
-              <Skeleton className="h-3 w-24" />
-            ) : mode === 'Buy' ? (
-              '980.10 CMC20'
-            ) : (
-              '976.56 USDC'
-            )
-          }
-        />
-        <QuoteFact
-          label="Price impact"
-          value={loading ? <Skeleton className="h-3 w-12" /> : '0.24%'}
-        />
-        <QuoteFact
-          label="Network estimate"
-          value={loading ? <Skeleton className="h-3 w-14" /> : '$0.18'}
-        />
-        <QuoteFact
-          label="Quote valid for"
-          value={loading ? <Skeleton className="h-3 w-20" /> : '42 seconds'}
-        />
-      </>
-    )}
-  </dl>
-)
+}) => {
+  const finalVsInput = ZAPPER_OUTCOME_FINAL_VS_INPUT[mode]
+
+  return (
+    <dl
+      data-testid={
+        outcome
+          ? 'zapper-outcome-facts'
+          : loading
+            ? 'zapper-quote-details-loading'
+            : undefined
+      }
+      className={cn(
+        'grid gap-2 px-4 text-sm leading-5',
+        selectableRoutes ? 'pb-2' : 'pb-4',
+        outcome && 'pt-4'
+      )}
+    >
+      {outcome ? (
+        <>
+          <QuoteFact
+            label={outcomeKind === 'atomic' ? 'Executed via' : 'Filled via'}
+            value={source}
+          />
+          <QuoteFact
+            label="Used"
+            value={mode === 'Buy' ? '1,000 USDC' : '990 CMC20'}
+          />
+          <QuoteFact label="Value received" value="$986.42" />
+          <QuoteFact
+            label="Final vs input"
+            value={finalVsInput.value}
+            valueTone={finalVsInput.tone}
+          />
+        </>
+      ) : selectableRoutes ? (
+        <>
+          <QuoteFact
+            label="Current price"
+            value="1 USDC = 0.99 CMC20"
+            help={{
+              accessibleLabel: 'About current price',
+              content: 'The current exchange rate between the tokens.',
+            }}
+          />
+          <QuoteFact
+            label="Projected slippage"
+            value="1.00% ($10.00)"
+            valueTone="neutral"
+            help={{
+              accessibleLabel: 'About projected slippage',
+              content:
+                'Projected difference (%) between the value you pay and the value you receive, at current prices.',
+            }}
+          />
+          <QuoteFact
+            label="Max slippage"
+            value="2.00% ($20.00)"
+            valueTone="neutral"
+            help={{
+              accessibleLabel: 'About maximum slippage',
+              content:
+                'Worst case: the value difference (%) if the trade executes at the minimum amount out allowed by your slippage tolerance.',
+            }}
+          />
+          <QuoteFact
+            label="Min Amount Out"
+            value="980.10 CMC20"
+            help={{
+              accessibleLabel: 'About minimum amount out',
+              content: 'The minimum amount of tokens you will receive.',
+            }}
+          />
+        </>
+      ) : (
+        <>
+          <QuoteFact
+            label="Minimum output"
+            value={
+              loading ? (
+                <Skeleton className="h-3 w-24" />
+              ) : mode === 'Buy' ? (
+                '980.10 CMC20'
+              ) : (
+                '976.56 USDC'
+              )
+            }
+          />
+          <QuoteFact
+            label="Price impact"
+            value={loading ? <Skeleton className="h-3 w-12" /> : '0.24%'}
+            valueTone="neutral"
+          />
+          <QuoteFact
+            label="Network estimate"
+            value={loading ? <Skeleton className="h-3 w-14" /> : '$0.18'}
+          />
+          <QuoteFact
+            label="Quote valid for"
+            value={loading ? <Skeleton className="h-3 w-20" /> : '42 seconds'}
+          />
+        </>
+      )}
+    </dl>
+  )
+}
 
 const ZAPPER_QUOTE_STAGES = [
   'Searching DEX liquidity',
@@ -768,7 +799,7 @@ export const ZapperQuoteLoading = () => {
   return (
     <div
       aria-label="Finding best quote"
-      className="absolute inset-0 z-10 flex items-center justify-center overflow-hidden rounded-none bg-card"
+      className="absolute inset-0 z-10 flex items-center justify-center overflow-hidden rounded-lg bg-card"
       role="status"
     >
       <div aria-hidden="true" className="absolute inset-0">
@@ -800,10 +831,12 @@ const QuoteFact = ({
   help,
   label,
   value,
+  valueTone,
 }: {
   help?: { accessibleLabel: string; content: ReactNode }
   label: string
   value: ReactNode
+  valueTone?: TransactionMetricTone
 }) => (
   <div
     data-testid="zapper-quote-fact"
@@ -819,7 +852,13 @@ const QuoteFact = ({
       )}
     </dt>
     <dd className="flex h-5 items-center justify-end text-right font-medium tabular-nums text-foreground">
-      {value}
+      {valueTone ? (
+        <TransactionMetricValue tone={valueTone}>
+          {value}
+        </TransactionMetricValue>
+      ) : (
+        value
+      )}
     </dd>
   </div>
 )
@@ -937,7 +976,7 @@ export const ZapperPackageState = ({
     return (
       <div className="space-y-3">
         <TransactionSummaryMessage
-          title="Zaps are currently experiencing issues"
+          title="Zaps are experiencing issues"
           detailLabel="About Zapper availability"
           detail="Sorry, we’re having a hard time finding a route that makes sense for you. Please try again in a bit."
           tone="warning"

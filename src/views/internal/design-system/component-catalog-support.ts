@@ -338,9 +338,11 @@ export const SUPPORT_COMPONENT_GROUPS: ComponentGroup[] = [
               'Trading-paused and low-liquidity notices establish persistent warning jobs with full title/body and compact titleless anatomy.',
               'Approval failures establish an actionable danger job; transient confirmation remains Toast and transaction orchestration remains a higher-level lifecycle composition.',
               'Zapper action qualifiers establish a compact summary presentation that keeps one title row visible and moves nonessential explanation into the accepted Help Tooltip.',
+              'Automated issuance guidance establishes an opt-in contained summary icon when a leading semantic symbol must balance a trailing compact action.',
             ],
             decisionPrompts: [
-              'Judge the shared information/success/warning/danger anatomy, 8px icon/title relationship, full-width explanatory body, 16px default and 12px compact full-message inset, restrained 8px full-message radius, opaque semantic surface/border roles, and the compact summary’s 44px fully rounded one-row geometry.',
+              'Judge the shared information/success/warning/danger anatomy, 8px icon/title relationship, full-width explanatory body, 16px default and 12px compact full-message inset, restrained 8px full-message radius, opaque semantic surface/border roles, and the compact summary’s fully rounded one-row geometry.',
+              'Judge the summary-only contained icon as a 32px semantic circle with a 16px glyph and 8px outer inset, used to balance a trailing compact action without changing the plain default.',
               'Confirm that persistence and announcement urgency remain caller-owned: the component has no generic close action and no blanket alert role.',
               'Confirm that summary presentation hides only supporting explanation; material instructions, recovery truth, and required next actions remain visible in the full layout.',
             ],
@@ -384,7 +386,7 @@ export const SUPPORT_COMPONENT_GROUPS: ComponentGroup[] = [
         review: {
           status: 'ready',
           scope:
-            'The accepted unadopted baseline covers persistent information, success, warning, and danger; default and compact full-message density; and the opt-in compact summary. Summary may hide only supporting explanation in a Help Tooltip. Material instructions, consequences, recovery truth, and required next actions remain visible. Toast timing/stacking, field validation, compliance copy, dismissal, transaction orchestration, and production adoption remain outside.',
+            'The accepted unadopted baseline covers persistent information, success, warning, and danger; default and compact full-message density; the opt-in compact summary; and its opt-in contained leading icon for a trailing compact action. Summary may hide only supporting explanation in a Help Tooltip. Material instructions, consequences, recovery truth, and required next actions remain visible. Toast timing/stacking, field validation, compliance copy, dismissal, transaction orchestration, and production adoption remain outside.',
           dependencies: [
             { name: 'Feedback color direction', status: 'canonical' },
             { name: 'Typography and spacing roles', status: 'canonical' },
@@ -393,7 +395,7 @@ export const SUPPORT_COMPONENT_GROUPS: ComponentGroup[] = [
           ],
         },
         statusDetail:
-          'The accepted reusable implementation separates persistent contextual feedback from Toast and supports a constrained one-row summary without making lifecycle, dismissal, or product explanation component-owned.',
+          'The accepted reusable implementation separates persistent contextual feedback from Toast and supports a constrained one-row summary with plain or contained icon geometry without making lifecycle, dismissal, or product explanation component-owned.',
       },
       component(
         'toast',
@@ -590,7 +592,7 @@ export const SUPPORT_COMPONENT_GROUPS: ComponentGroup[] = [
             auditStatus: 'mapped',
             evidence: [
               'Governance proposals and Auctions rebalances require consistent waiting, active, actionable, processing, successful, unsuccessful, and closed lifecycle states.',
-              'The shared 24px anatomy, opaque semantic tones, standardized indicators, countdown pairing, and restricted processing motion were pressure-tested across active, waiting, actionable, successful, unsuccessful, and closed proposal and auction records.',
+              'The accepted lifecycle roles, opaque semantic tones, standardized indicators, countdown pairing, and restricted processing motion were pressure-tested across active, waiting, actionable, successful, unsuccessful, and closed proposal and auction records; the current lab reopens only the compact geometry as a 28px trial beside micro actions.',
               'Category labels, counts, qualifiers, and removable chips remain distinct jobs and are not generalized into this lifecycle candidate.',
             ],
             decisionPrompts: [
@@ -608,7 +610,7 @@ export const SUPPORT_COMPONENT_GROUPS: ComponentGroup[] = [
         review: {
           status: 'ready',
           scope:
-            'The shared 24px lifecycle anatomy, role-to-icon and role-to-tone mapping, supporting countdown pairing, and spinner only for short indeterminate processing are accepted. Category labels, counts, qualifiers, removable chips, proposal outcome-detail composition, progress behavior, and production adoption remain outside this candidate.',
+            'Lifecycle roles, role-to-icon and role-to-tone mapping, supporting countdown pairing, and spinner only for short indeterminate processing are accepted. Exact compact geometry is reopened for human review through one shared 28px trial with increased intrinsic side inset. Category labels, counts, qualifiers, removable chips, proposal outcome-detail composition, progress behavior, and production adoption remain outside this candidate.',
           dependencies: [
             { name: 'Feedback color roles', status: 'provisional' },
             { name: 'Iconography', status: 'canonical' },
@@ -776,7 +778,7 @@ export const SUPPORT_COMPONENT_GROUPS: ComponentGroup[] = [
               name: 'Lifecycle status pill',
               status: 'canonical',
               detail:
-                'The reviewed 24px lifecycle contract is canonical; the rich record and Table/Row anatomy remain provisional.',
+                'The lifecycle meaning and presentation contract is canonical; its current 28px geometry trial remains under human review, while rich-record and Table/Row anatomy remain provisional.',
             },
             { name: 'Table / row anatomy', status: 'provisional' },
           ],

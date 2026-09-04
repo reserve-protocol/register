@@ -91,6 +91,21 @@ new design meaning, stop and record the ambiguity for human review.
    verification, and production adoption independent and truthfully labeled.
 9. Verify at the owning seam and with the bounded/checkpoint/integration cadence
    explicitly overridden for this project in `docs/wiki/project.md`.
+10. Treat every enabled lab control as behavior: it must work over a
+    representative domain, be explicitly unavailable with a reason, or be
+    labeled specimen-only. State-rich transaction labs pressure-test an
+    ordinary non-preset amount, branch preservation into recovery, terminal
+    reset, and external-identity shape before review.
+11. Keep candidate evidence out of accepted domain truth until human review.
+    Internal Dark/Light review may report “no blocker identified,” but is not a
+    substitute for human acceptance and must not be recorded as one.
+
+For an existing product-flow composition, the operating model consumes the
+[flow composition transfer brief](../../templates/design/flow-composition-transfer.md)
+before visual implementation. The brief makes state transfer, information
+priority, exact component use, geometry ownership, transition continuity, and
+transaction truth inspectable before a candidate is repeated across many
+fixtures. It is a preparation contract, not new design authority.
 
 ### Anti-cascade rule
 
@@ -111,8 +126,26 @@ New evidence may inform a proposal; it cannot promote itself or its siblings.
 - Global and Product navigation are separate accepted, unadopted baselines.
 - Current Review contains the provisional composition-first transaction system.
   Its four transaction-family anchors, focused Vote Lock / Unlock / Delegate
-  candidate, and installed-Zapper calibration remain under human visual
-  refinement. No transaction candidate is adopted or promoted.
+  candidate, installed-Zapper calibration, and production-backed automated
+  issuance lifecycle remain under human visual refinement. Automated issuance
+  now exposes its production-backed advanced-feature introduction and
+  disconnected versus incompatible smart-account gates before configuration,
+  followed by quote
+  searching/cancellation/failure, both funding branches, per-order execution
+  and scoped recovery, a separate collateral-ready boundary, final mint
+  signing, and completion evidence. Mint and Redeem now consume one local
+  composition tree: the production-backed Input → Collateral → terminal-output
+  relationship remains in the left task column, while operation policy changes
+  assets, order direction, actions, stage count, and outcome facts. Mint retains
+  its separate final action; Redeem authorizes its final transaction before its
+  collateral-sale orders fill. The right column owns only per-order evidence,
+  and the generic transaction stepper remains reserved for flows whose steps are
+  not already represented by substantial content. The cross-family mobile pass
+  keeps compact tasks complete at 320px, wraps rather than truncates high-level
+  stage meaning, and centers Automated issuance in a 640px-max single column
+  until its existing `lg` equal-column layout begins. Its order evidence stays
+  opt-in on narrow screens.
+  No transaction candidate is adopted or promoted.
 - The complete transaction inventory and correctness boundaries live in
   [the transaction-system audit](transaction-system-audit.md). The repeated
   review failures and context gaps are documented in
@@ -201,13 +234,13 @@ part of the reusable content.
 
 Then assemble only the relationships whose jobs match:
 
-| Region / relationship | Transfer by default                                                                                                                                                                                                                                | Conditional or flow-owned boundary                                                                                                                                                                                               |
-| --------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Task shell and header | 432px substantial-task role, 8px shell edge, 16px compact transaction axis                                                                                                                                                                         | A 448px surface and the committed-mode capsule remain explicit flow-local pressure; ordinary dialogs retain `DialogHeader` and its 24px axis                                                                                     |
-| Amount relationship   | `TransactionAmountObject` / `TransactionAmountPair`, square regions, 16px internal inset, and 1px pair seam; editable two-way pairs use `TransactionAmountDirectionControl`, while committed one-way relationships use `TransactionAmountRelation` | Asset selector, balance action, precision, quote terminology, and whether direction remains editable follow the actual flow                                                                                                      |
-| Facts and boundaries  | Parent-owned sibling gaps; divider owned by the semantic boundary and contributing no spacing                                                                                                                                                      | Show only facts needed to understand or verify this operation; route, rate, fees, delay, and acknowledgements remain product-owned                                                                                               |
-| Action and progress   | A real Button for a required click; stable action placement; when another click will be required later, the action slot persists as subdued loading status while the current transaction processes                                                 | Progress may replace inactive action chrome when remaining steps continue automatically; approval disclosure, ordered rows, retry scope, and step count follow actual execution; the current stepper anatomy remains exploratory |
-| Outcome               | Shared no-shrink minimum and distinct immediate-result, delayed-initiation, order-settlement, partial-success, and recovery truth                                                                                                                  | Amount/result source, record identity, later action, organic surface, wallet action, and attachments remain flow-owned or explicitly exploratory                                                                                 |
+| Region / relationship | Transfer by default                                                                                                                                                                                                                                        | Conditional or flow-owned boundary                                                                                                                                                                                               |
+| --------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Task shell and header | 432px substantial-task role, 8px shell edge, 16px compact transaction axis                                                                                                                                                                                 | A 448px surface and the committed-mode capsule remain explicit flow-local pressure; ordinary dialogs retain `DialogHeader` and its 24px axis                                                                                     |
+| Amount relationship   | `TransactionAmountObject` / `TransactionAmountPair`, restrained 8px regions, 16px internal inset, and 1px pair seam; editable two-way pairs use `TransactionAmountDirectionControl`, while committed one-way relationships use `TransactionAmountRelation` | Asset selector, balance action, precision, quote terminology, and whether direction remains editable follow the actual flow                                                                                                      |
+| Facts and boundaries  | Parent-owned sibling gaps; divider owned by the semantic boundary and contributing no spacing                                                                                                                                                              | Show only facts needed to understand or verify this operation; route, rate, fees, delay, and acknowledgements remain product-owned                                                                                               |
+| Action and progress   | A real Button for a required click; stable action placement; when another click will be required later, the action slot persists as subdued loading status while the current transaction processes                                                         | Progress may replace inactive action chrome when remaining steps continue automatically; approval disclosure, ordered rows, retry scope, and step count follow actual execution; the current stepper anatomy remains exploratory |
+| Outcome               | Shared no-shrink minimum and distinct immediate-result, delayed-initiation, order-settlement, partial-success, and recovery truth                                                                                                                          | Amount/result source, record identity, later action, organic surface, wallet action, and attachments remain flow-owned or explicitly exploratory                                                                                 |
 
 Do not transfer Zapper route-choice UI, Vote Lock's two-role Delegation anatomy, 448px flow
 widths, attachment tone, prose emphasis, committed-mode motion, or stepper
@@ -215,14 +248,15 @@ presentation merely because they appear in the review. The Stake-family proof
 consumes only matching relationships; only repeated matching evidence may
 promote an exploratory treatment.
 
-Transaction amount input/output regions now own square structural geometry
-across editable, read-only, submitted, and replacement states. A loading or
-animation layer that replaces an output preserves that same boundary instead
-of reintroducing contained-object rounding. This applies to the shared
+Transaction amount input/output regions now own restrained 8px geometry across
+editable, read-only, submitted, and replacement states. A loading or animation
+layer that replaces an output preserves that same boundary. This applies to the shared
 transaction amount family only; ordinary Fields such as Delegation addresses
 retain their accepted full-radius control geometry, while the asset selector
 and status pills inside an amount region retain their own component-owned
-radii.
+radii. Empty editable amounts keep a `0` primary-value placeholder and a visible
+zero-valued dependent estimate such as `$0.00`; flow formatting owns that value
+rather than a generic component fallback.
 
 The lab now exposes four direct Zapper / Vote Lock comparisons—editable,
 submitted, immediate result, and delayed initiation. They are comparison
@@ -341,7 +375,7 @@ does not promote an exploratory row.
 
 | Classification                  | Consumable now                                                                                                                                                                                                                                                                                                                                                                         | Boundary                                                                                                                                                                        |
 | ------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Accepted current baseline       | Canonical Button, Action Group, Field, Segmented Control, Lifecycle Status, Link, Copyable Value, Inline Message, identity, semantic foundations including opaque `substrate-subtle`, and square transaction amount-region geometry                                                                                                                                                    | Consume the named owner without changing its defaults. Acceptance does not imply production adoption.                                                                           |
+| Accepted current baseline       | Canonical Button, Action Group, Field, Segmented Control, Lifecycle Status, Link, Copyable Value, Inline Message, identity, semantic foundations including opaque `substrate-subtle`, and restrained 8px transaction amount-region geometry                                                                                                                                            | Consume the named owner without changing its defaults. Acceptance does not imply production adoption.                                                                           |
 | Provisional transaction recipe  | 432px substantial-task default, 8px shell edge, compact 16px total header axis, 4px amount-pair seam, submitted-content boundary, parent-owned sibling gaps, semantic-boundary divider ownership, stable action placement, no child outer-margin repairs, attached-region frame/substrate geometry, progress-replaces-inactive-action behavior, and a shared no-shrink outcome minimum | Directly consumable only inside the active transaction-family review. This is relationship geometry, not a universal shell, header, controller, outcome, or workflow component. |
 | Supported lifecycle distinction | Immediate result, delayed initiation, opaque wait/order settlement, transparent staged execution, partial completion, and recovery                                                                                                                                                                                                                                                     | Share lifecycle truth and vocabulary where meaning matches; do not infer shared layout, action count, result source, or orchestration.                                          |
 | Flow-owned composition          | Vote Lock's 448px address-heavy width, Zapper's exploratory 448px route-comparison width, Delegate view/edit anatomy and minimum height, exact acknowledgement/fact placement, Zapper package controls, exact copy, and product-specific requirements                                                                                                                                  | Preserve locally unless another direct-source family establishes the same job and relationship.                                                                                 |
@@ -379,6 +413,7 @@ authorize another candidate through the anti-cascade rule.
 | `TX-P17` | Disabled mode tabs preserve geometry after submission but falsely remain controls, overemphasize unavailable alternatives, and do not connect the selected operation to the eventual outcome status  | Zapper, Vote Lock, and Stake/Unstake locally replace the segmented control with a 32px neutral committed-mode capsule once the operation cannot change. It retains the exact selected operation label plus a 16px primary-asset logo. The logo rotates once every 12 seconds only while work is active and remains static for ready-action, partial-failure, and reduced-motion states. Action and stepper regions continue to own phase and sequence. Zapper removes inoperable settings/refresh actions from the same submitted header. The header slot becomes the existing Completed, Unlocking, or Unstaking status at outcome                                                                                                                                                                                                         | Review the editable-to-committed-to-outcome transition across all three families, including directional asset identity and delayed initiation. Third-family evidence permits a promotion decision but does not make one automatically                                     |
 | `TX-P18` | Longer transaction-supporting copy can hide the phrase that changes the user's interpretation or next action when every word has the same supporting weight                                          | Selected lab messages may emphasize at most one inline **decision anchor** per message block. Eligible anchors identify a binding limit, recovery timing or next action, automatic safety outcome, applicability qualifier, or concrete reason an alternate path helps. The anchor uses semantic `strong` with the accepted 500 weight and neutral foreground while surrounding copy remains supporting 300; primary blue stays reserved for links/actions and feedback color stays with the owning title or surface. Explanatory causes, marketing filler, and meaning already carried by the title or CTA remain unaccented. Exact product copy is unchanged                                                                                                                                                                              | Review the selected advisory, refund, eligibility, and attachment examples in both themes. Keep this transaction-local, revise the eligibility logic, or promote only after broader prose evidence; do not introduce a global typography/component default from this pass |
 | `TX-P19` | One fixed shared outcome minimum cannot guarantee no shrink when preceding task height varies by flow and by conditional approval progress                                                           | Stake and Unstake keep the shared result anatomy but use local minimum floors derived from their tallest immediate predecessor: Stake preserves the approval-stepper height while Unstake preserves its one-transaction task height. Removed task content becomes flexible space inside the brand region rather than bottom whitespace. The shared 26rem baseline and other outcome families remain unchanged                                                                                                                                                                                                                                                                                                                                                                                                                               | Review both transitions and decide whether no-shrink should become a measured host responsibility, remain flow-owned floors, or gain a narrow recipe input; do not raise the shared fixed minimum from this example                                                       |
+| `TX-P20` | The reviewed 24px Lifecycle Status geometry looks undersized when placed directly beside the canonical 28px micro action in dense automated-mint order metadata                                      | The lab globally trials one 28px intrinsic Lifecycle Status default rather than adding a local size variant. Indicator pills use 10px leading and 12px trailing inset; text-only pills use 12px on both sides; the 12px label, role semantics, tones, indicators, and motion contract remain unchanged. Automated-mint View order returns to the existing 28px micro secondary Button so the motivating adjacency can be judged directly                                                                                                                                                                                                                                                                                                                                                                                                    | Review state-sheet roles plus transaction orders, progress, requirements, and rich records in light, dark, and constrained widths. Accept the new shared geometry or revert globally; do not keep a special automated-mint status size                                    |
 
 For future designer feedback, first identify the relevant foundation/component
 baseline and classify the change as conforming reuse, implementation misuse,
@@ -411,8 +446,8 @@ Human review resolves the former questions as follows:
 - the no-shrink minimum is shared outcome-frame geometry, the organic brand
   surface belongs to immediate results, and delayed initiation uses the stable
   shell with explicit pending/countdown treatment;
-- Inline Message's compact summary is accepted with a strict supporting-only
-  tooltip boundary;
+- Inline Message's compact summary, including its opt-in contained leading
+  icon, is accepted with a strict supporting-only tooltip boundary;
 - Vote Lock's 448px width and the 20px bare advisory dismiss remain local until
   another direct-source composition supplies the same need.
 
@@ -479,6 +514,18 @@ must distinguish current product defaults, supported current alternatives,
 recovery/edge cases, and design proposals; exact production copy and proposed
 copy must not be silently merged.
 
+The same preservation contract applies when this lab is eventually migrated
+into product code. Lab coverage is deliberately incomplete: it reviews selected
+component jobs and transaction states, not every screen or operational branch
+in Register. Before migrating an area, inventory the visible production states,
+actions, copy, relationships, and recovery paths from current source, then mark
+each as a reviewed replacement, preserved behavior, or unresolved conflict.
+Only the first category inherits a reviewed lab decision. The second keeps its
+functionality and meaning while adopting compatible system foundations; the
+third stops for an explicit decision. A missing lab specimen never authorizes
+deletion, flattening, or an improvised simpler replacement. Post-migration proof
+must reconcile against that production inventory as well as the lab contract.
+
 ### Deferred engineering-review register
 
 Engineering review is deferred until the complete design-system project is
@@ -489,16 +536,18 @@ product correctness seam, or proposes production adoption. Record the owner
 and reason now so project-closeout review does not depend on reconstructing the
 history from the diff.
 
-| Review surface                                                                                                                  | Why engineering review is required at project closeout                                                                                       | Current boundary                                                                                     |
-| ------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- |
-| Semantic `substrate-subtle` token and its CSS/Tailwind/semantic-role wiring                                                     | Adds an opaque shared surface role whose exact light/dark values and naming affect future consumers                                          | Accepted for the V1 lab; no production migration                                                     |
-| Exploratory `brand-surface-deep` token and Organic Brand `deep` tone                                                            | Adds a shared theme alias and opt-in presentation whose extra depth currently applies only in dark mode and only attachment outcomes need it | Lab pressure only; do not consume or migrate until human disposition                                 |
-| Shared Link directional-icon spacing and Lifecycle Status intrinsic sizing defaults                                             | Changes reusable component defaults outside a single transaction composition                                                                 | Verified in the lab; production adoption remains separate                                            |
-| Copyable Value integrated action and Inline Message compact-summary contracts                                                   | Adds reusable interaction/presentation variants, including copy feedback and tooltip eligibility                                             | Accepted V1 component contracts; production adoption remains separate                                |
-| Square transaction amount-region geometry, opt-in supporting-row reservation, and provisional transaction relationship geometry | Defines reusable input/output/replacement boundaries, stable responsive content height, and cross-flow spacing/divider ownership             | Consumable only in the active transaction review; not a universal Dialog or workflow contract        |
-| Stake delegation split versus the production `stakeAndDelegate` shortcut                                                        | Adopting the lab's distinct Delegate mode could remove or alter an existing combined contract call and changes the product interaction model | Lab-only information architecture proposal; retain the live shortcut until explicit migration review |
-| Transaction result, RPC, package callback, order/queue identity, approval, and partial-success seams                            | Visual fixtures cannot prove the live source of truth or execution/recovery correctness                                                      | Keep exact behavior product-owned; reconcile against direct implementation before adoption           |
-| Any production migration of the current transaction candidates                                                                  | Adoption may change real flow behavior, shared defaults, analytics, accessibility, and integration boundaries                                | Requires separate explicit migration scope after human design review is complete                     |
+| Review surface                                                                                                                          | Why engineering review is required at project closeout                                                                                                    | Current boundary                                                                                     |
+| --------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- |
+| Semantic `substrate-subtle` token and its CSS/Tailwind/semantic-role wiring                                                             | Adds an opaque shared surface role whose exact light/dark values and naming affect future consumers                                                       | Accepted for the V1 lab; no production migration                                                     |
+| Exploratory `brand-surface-deep` token and Organic Brand `deep` tone                                                                    | Adds a shared theme alias and opt-in presentation whose extra depth currently applies only in dark mode and only attachment outcomes need it              | Lab pressure only; do not consume or migrate until human disposition                                 |
+| Shared Link directional-icon spacing and Lifecycle Status intrinsic sizing defaults                                                     | Changes reusable component defaults outside a single transaction composition                                                                              | Verified in the lab; production adoption remains separate                                            |
+| Copyable Value integrated action and Inline Message compact-summary/contained-icon contracts                                            | Adds reusable interaction/presentation variants, including copy feedback, tooltip eligibility, and an opt-in balanced icon treatment                      | Accepted V1 component contracts; production adoption remains separate                                |
+| Restrained 8px transaction amount-region geometry, opt-in supporting-row reservation, and provisional transaction relationship geometry | Defines reusable input/output/replacement boundaries, stable responsive content height, and cross-flow spacing/divider ownership                          | Consumable only in the active transaction review; not a universal Dialog or workflow contract        |
+| Stake delegation split versus the production `stakeAndDelegate` shortcut                                                                | Adopting the lab's distinct Delegate mode could remove or alter an existing combined contract call and changes the product interaction model              | Lab-only information architecture proposal; retain the live shortcut until explicit migration review |
+| Transaction result, RPC, package callback, order/queue identity, approval, and partial-success seams                                    | Visual fixtures cannot prove the live source of truth or execution/recovery correctness                                                                   | Keep exact behavior product-owned; reconcile against direct implementation before adoption           |
+| Automated issuance batch count, cancellation, executed amounts, recovery, and dormant outcome route                                     | The SDK owns call splitting and execution while the current UI reconciles quote, order, receipt, and balance sources without a persisted operation record | Lab may model named states only; source priority and reconstruction require product/SDK review       |
+| Manual issuance address normalization, parallel/USDT approvals, zero-minimum Redeem leg, and result source                              | These boundaries can change balance validity, permission ordering, slippage protection, and the facts a consequential outcome may claim                   | Preserve production behavior in the lab; resolve before any production migration                     |
+| Any production migration of the current transaction candidates                                                                          | Adoption may change real flow behavior, shared defaults, analytics, accessibility, and integration boundaries                                             | Requires separate explicit migration scope after human design review is complete                     |
 
 Exploratory lab-only treatments do not need an engineering decision merely
 because they exist. Add them to this register only if they are promoted into a
@@ -578,20 +627,23 @@ required merely because a lab-only diff is large or long-running.
   separates the tasks. Engineer review is required before that behavior is
   adopted. The proof corroborates several relationships while leaving its
   flow-specific outcome floors and any broader promotion to human review.
-- **Manual/automated mint expansion:** consume the proven family while retaining
-  staged and workspace-specific mechanics. Automated mint starts with a narrow
-  configuration task, then becomes a full-page two-column workspace rather than
+- **Manual/automated issuance expansion:** consume the proven family while
+  retaining staged and workspace-specific mechanics. Automated Mint/Redeem
+  starts with a narrow configuration task, then becomes a full-page two-column
+  workspace rather than
   a Dialog composition. It must disclose its intrinsic multi-step nature before
-  execution; keep every collateral order's sell amount, buy amount, and lifecycle
-  legible, including branches where existing wallet collateral changes the work
-  required. Reuse accepted components, semantics, lifecycle language, and
+  execution through its operation-specific stages; keep every collateral order's sell
+  amount, buy amount, and lifecycle inspectable, including branches where
+  existing wallet collateral changes the work required. On narrow screens the
+  high-level stages lead and the order ledger is explicitly revealed on demand.
+  Reuse accepted components, semantics, lifecycle language, and
   relationship geometry where their jobs match, but do not force this
   high-capital professional workflow into the simple Zapper/Vote Lock shell.
   The proof run must classify every mismatch as existing reuse, a supported
   variant need, flow-owned composition, exploratory pressure, or a product /
   engineer-review question; one example does not promote a new shared owner. It
-  is now eligible after human review of the Stake/Unstake proof and explicit
-  slice selection.
+  is now implemented as a lab-only shared composition and remains subject to
+  human visual review plus the named engineer-review boundaries.
 
 ## Acceptance evidence
 
@@ -611,6 +663,7 @@ required merely because a lab-only diff is large or long-running.
 - [Detailed design-system reference](../wiki/domains/design-system-reference.md)
 - [Accepted decisions](../wiki/decisions.md)
 - [Transaction-system audit](transaction-system-audit.md)
+- [Manual issuance readiness](manual-mint-design-system-readiness.md)
 - [Transaction review feedback postmortem](transaction-review-feedback-postmortem.md)
 - [Chronological project log](../wiki/log.md)
 - [Stage ledger](../wiki/progress.md)

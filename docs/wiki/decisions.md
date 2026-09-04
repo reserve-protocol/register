@@ -62,7 +62,7 @@ Auctions will replace its separate centered list and detail islands with a persi
 
 ## 2026-08-13 — V1 candidates share semantic roles and combinable state axes
 
-Component-family work consumes a lab-only semantic role map instead of choosing legacy color tokens case by case. It aliases reviewed content, substrate, neutral control, selected, line, focus, disabled, and feedback roles while exact values and production token migration remain open. Intent, selection, focus, validation, disabled, and async lifecycle may combine, so the lab shows important pairings rather than one exclusive state list. Default entered/selected values use 16px/300, compact values use 14px/300, and action labels use 14px/500. Atomic one-row controls—including ordinary inputs, search, and select triggers—use full radius; multiline fields, menus, popovers, and thumbnails use the restrained 8px role. The composite-amount clause originally recorded here is superseded by the 2026-08-31 square transaction-amount decision below. Earlier 8px one-row input/select experiments are superseded.
+Component-family work consumes a lab-only semantic role map instead of choosing legacy color tokens case by case. It aliases reviewed content, substrate, neutral control, selected, line, focus, disabled, and feedback roles while exact values and production token migration remain open. Intent, selection, focus, validation, disabled, and async lifecycle may combine, so the lab shows important pairings rather than one exclusive state list. Default entered/selected values use 16px/300, compact values use 14px/300, and action labels use 14px/500. Atomic one-row controls—including ordinary inputs, search, and select triggers—use full radius; multiline fields, menus, popovers, and thumbnails use the restrained 8px role. The composite-amount clause originally recorded here was superseded by the 2026-08-31 square transaction-amount decision, which was itself superseded by the 2026-09-04 restrained-radius decision below. Earlier 8px one-row input/select experiments are superseded.
 
 ## 2026-08-14 — Rendered output, reusable implementation, and adoption are separate
 
@@ -112,6 +112,14 @@ is placed directly in a stretching grid or flex context. This promotion does
 not generalize category labels, counts,
 qualifiers, removable chips, proposal progress, or outcome-detail composition,
 and it does not imply production adoption.
+
+On 2026-09-03, exact compact geometry was reopened for human review after
+Lifecycle Status needed to sit beside the canonical 28px micro action in dense
+automated-mint order metadata. The lab now trials a 28px intrinsic height with
+10px leading and 12px trailing inset when an indicator is present, and 12px on
+both sides without one. The accepted roles, tones, indicators, motion rules,
+and 12px label remain unchanged. This trial does not replace the reviewed 24px
+decision until human visual review accepts it.
 
 ## 2026-08-18 — Structural content regions and interactive Cards are separate jobs
 
@@ -497,6 +505,49 @@ role. Asset selectors, status pills, and other controls inside an amount region
 retain their own component-owned radii. This decision changes the unadopted V1
 transaction candidate and lab compositions, not production transaction flows.
 
+## 2026-09-04 — Transaction amount regions use restrained 8px geometry
+
+Human review reversed the square transaction-amount experiment. Transaction
+amount input/output regions use the restrained 8px contained-object radius
+across editable, read-only, submitted, and replacement states. A loading
+animation or other state layer that replaces an amount region preserves the
+same 8px boundary so lifecycle changes do not change the object’s geometry.
+
+This supersedes the 2026-08-31 square transaction-amount decision. Ordinary
+one-row Fields—including Delegation address inputs—remain fully rounded;
+structural page sections remain square unless their owner says otherwise.
+Asset selectors, status pills, and controls inside an amount region retain
+their component-owned radii. This changes the unadopted V1 candidate and lab,
+not production transaction flows.
+
+An empty editable amount keeps `0` as the primary-value placeholder and shows
+the corresponding zero-valued financial estimate in its supporting row—for
+example, `$0.00` for USD. The supporting value must not disappear merely
+because the input is empty. The flow's value formatter owns this truth because
+the generic amount object also supports non-currency explanations and errors.
+
+## 2026-09-04 — Transaction metrics resolve meaning before color
+
+Transaction compositions must not infer color from a displayed plus or minus
+sign. Production contracts use different sign conventions, and a setting,
+estimate, warning threshold, and realized result do not carry the same meaning.
+Slippage settings, limits, and routine projected impact remain neutral.
+Elevated preflight risk uses warning; critical risk uses danger together with
+explicit explanatory or consequential UI rather than relying on color alone.
+Projected favorable impact normally remains neutral so an estimate is not
+endorsed as a gain.
+
+Meaningful realized favorable or adverse movement uses the existing financial
+performance palette, which remains separate from success and error feedback.
+Negligible routine variance may remain neutral. When an actual value replaces
+an estimate, the superseded quote becomes supporting and struck through while
+the actual value becomes dominant. Thresholds and materiality remain
+flow-owned. The transaction lab expresses this through a local semantic value
+recipe whose callers provide `neutral`, `realized-favorable`,
+`realized-adverse`, `caution`, `critical`, or `superseded`; the recipe never
+derives meaning from the raw number. This is an unadopted composition rule and
+does not restyle production consumers or change shared component defaults.
+
 ## 2026-08-31 — Copyable Value supports an integrated dense-row treatment
 
 The accepted Copyable Value keeps its existing separated treatment as the
@@ -560,3 +611,8 @@ act, recover, or understand the transaction's state.
 The component continues to own feedback anatomy and tone, not product copy,
 acknowledgement policy, dismissal, recovery behavior, or transaction
 orchestration. Production adoption remains explicit and product-owned.
+
+The summary presentation may opt into a contained leading icon when a semantic
+symbol balances a trailing compact action. The contained treatment uses a 32px
+tone-colored circle, a 16px glyph, and 8px outer inset. Plain remains the
+default, and full messages retain their existing icon anatomy.
