@@ -10,7 +10,7 @@ import { useTrackIndexDTFClick } from '@/views/index-dtf/hooks/useTrackIndexDTFP
 import { Trans, useLingui } from '@lingui/react/macro'
 import { ChevronLeft, ChevronRight, Play, X } from 'lucide-react'
 import { useEffect, useState } from 'react'
-import { VIDEO_CHAPTERS, type VideoChapter } from './video-chapters'
+import { useVideoChapters, type VideoChapter } from './chapters'
 
 type Props = {
   chapterId: string | null
@@ -78,23 +78,24 @@ const ChapterTab = ({
 const VideoSeriesModal = ({ chapterId, onClose }: Props) => {
   const { t } = useLingui()
   const { trackClick } = useTrackIndexDTFClick('overview', 'overview')
+  const chapters = useVideoChapters()
   const [index, setIndex] = useState(0)
 
   useEffect(() => {
     if (!chapterId) return
-    const initial = VIDEO_CHAPTERS.findIndex((c) => c.id === chapterId)
+    const initial = chapters.findIndex((c) => c.id === chapterId)
     setIndex(initial === -1 ? 0 : initial)
-  }, [chapterId])
+  }, [chapterId, chapters])
 
-  const chapter = VIDEO_CHAPTERS[index]
+  const chapter = chapters[Math.min(index, chapters.length - 1)]
   const hasPrev = index > 0
-  const hasNext = index < VIDEO_CHAPTERS.length - 1
+  const hasNext = index < chapters.length - 1
 
   const goTo = (next: number, reason: 'prev' | 'next' | 'tab' | 'ended') => {
-    if (next < 0 || next >= VIDEO_CHAPTERS.length || next === index) return
+    if (next < 0 || next >= chapters.length || next === index) return
     setIndex(next)
     trackClick('video_chapter', {
-      video: VIDEO_CHAPTERS[next].id,
+      video: chapters[next].id,
       from: chapter.id,
       reason,
     })
@@ -115,7 +116,7 @@ const VideoSeriesModal = ({ chapterId, onClose }: Props) => {
           <div className="min-w-0">
             <p className="text-xs text-muted-foreground">
               <Trans>
-                Video {index + 1} of {VIDEO_CHAPTERS.length}
+                Video {index + 1} of {chapters.length}
               </Trans>
             </p>
             <DialogTitle className="truncate text-base font-semibold sm:text-lg">
@@ -153,7 +154,7 @@ const VideoSeriesModal = ({ chapterId, onClose }: Props) => {
             <ChevronLeft className="h-4 w-4" />
           </Button>
           <div className="flex min-w-0 flex-1 gap-1">
-            {VIDEO_CHAPTERS.map((c, i) => (
+            {chapters.map((c, i) => (
               <ChapterTab
                 key={c.id}
                 chapter={c}

@@ -52,12 +52,6 @@
 }
 
 
-@media (max-width: 1023px) {
-  .dtf-chat-hide-mobile-launcher .rc-launcher {
-    display: none;
-  }
-}
-
 @media (max-width: 640px) {
   .rc-root .rc-launcher {
     width: 3.5rem;
@@ -76,13 +70,13 @@
    widget down to thread + input — no frame, no internal header, no built-in
    suggestions or empty-state copy. Without this it reads as a boxed modal
    floating inside the card. */
-.stocks-embedded-chat .rc-suggestions,
-.stocks-embedded-chat .rc-header,
-.stocks-embedded-chat .rc-empty {
+.dtf-embedded-chat .rc-suggestions,
+.dtf-embedded-chat .rc-header,
+.dtf-embedded-chat .rc-empty {
   display: none;
 }
 
-.stocks-embedded-chat .rc-embedded {
+.dtf-embedded-chat .rc-embedded {
   border: none;
   border-radius: 0;
   background: transparent;
@@ -90,23 +84,23 @@
 
 /* Read as an interactive AI surface, not a static form: no divider above
    the input row, and a roomier primary-tinted input that warms on focus. */
-.stocks-embedded-chat .rc-input {
+.dtf-embedded-chat .rc-input {
   border-top: none;
 }
 
-.stocks-embedded-chat .rc-input input {
+.dtf-embedded-chat .rc-input input {
   border-color: hsl(var(--primary) / 0.2);
   border-radius: 12px;
   padding: 14px 16px;
   font-size: 15px;
 }
 
-.stocks-embedded-chat .rc-input button {
+.dtf-embedded-chat .rc-input button {
   width: 48px;
   border-radius: 12px;
 }
 
-.stocks-embedded-chat .rc-input input:focus {
+.dtf-embedded-chat .rc-input input:focus {
   border-color: hsl(var(--primary) / 0.5);
   box-shadow: 0 0 0 2px hsl(var(--primary) / 0.15);
   outline: none;
@@ -114,11 +108,11 @@
 
 /* Swap the widget's "➤" send glyph for an up arrow (masked SVG so it stays
    crisp and inherits the button's text color in every state). */
-.stocks-embedded-chat [data-testid='rc-send'] {
+.dtf-embedded-chat [data-testid='rc-send'] {
   font-size: 0;
 }
 
-.stocks-embedded-chat [data-testid='rc-send']::after {
+.dtf-embedded-chat [data-testid='rc-send']::after {
   content: '';
   display: inline-block;
   vertical-align: middle;

@@ -99,8 +99,12 @@ test(
 // PREVIOUS DTF's values keep painting inside the next DTF's load window. The
 // destination's mcap/tx sources are held open so that window is observable.
 test(
-  'SPA DTF→DTF nav: stat cards never show the prior DTF mcap/tx volume',
+  'SPA DTF→DTF nav: stat cards never show the prior DTF mcap/tx volume @mobile',
   async ({ page, overrides }) => {
+    // The overview mounts the zapper inline at xl, so this navigation also
+    // proves the widget never prices the previous chain's token against the
+    // destination chain (react-zapper >= 2.10.6 derives the selection per
+    // chain) — any such request trips the strict unmocked guard.
     await page.goto(dtfPath(baseDtf, 'overview'))
     // Fees & Stats duplicates cards for the mobile/desktop layouts — scope to
     // the visible copy.
@@ -121,15 +125,30 @@ test(
       operationName: '',
     })
 
-    // Real SPA navigation: top nav → discover → click the destination's row.
-    await page.locator('a[href="/discover"]').first().click()
+    // Real SPA navigation: nav → discover → click the destination. The phone
+    // project reaches Discover through the header drawer and picks the
+    // destination from the card grid (the table only renders from lg).
+    const isPhone = (page.viewportSize()?.width ?? 1280) < 1024
+    if (isPhone) {
+      await page.getByRole('button', { name: 'Open navigation menu' }).click()
+      await page.getByRole('link', { name: /Discover DTFs/ }).click()
+    } else {
+      await page.locator('a[href="/discover"]').first().click()
+    }
     const table = page.getByTestId('discover-dtf-table')
     await expect(table).toBeVisible()
-    await table
-      .locator('table tbody tr')
-      .filter({ hasText: symbolOf(bsc) })
-      .first()
-      .click()
+    if (isPhone) {
+      await table
+        .locator(`a[href^="/bsc/index-dtf/${symbolOf(bsc).toLowerCase()}"]`)
+        .first()
+        .click()
+    } else {
+      await table
+        .locator('table tbody tr')
+        .filter({ hasText: symbolOf(bsc) })
+        .first()
+        .click()
+    }
     await expect(page.getByTestId('overview-dtf-symbol')).toHaveText(
       `$${symbolOf(bsc)}`,
       { timeout: 20_000 }

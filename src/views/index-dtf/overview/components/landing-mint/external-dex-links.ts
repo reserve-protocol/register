@@ -19,6 +19,11 @@ const DTF_DEXES: Partial<
         label: 'PancakeSwap',
         url: 'https://pancakeswap.finance/swap?outputCurrency=0xa0Fe4e0aEca5479705ce996615B2EACB6b6a10Fb',
       },
+      {
+        dex: 'cowswap',
+        label: 'CoW Swap',
+        url: 'https://swap.cow.fi/#/56/swap/USDT/PHOTON',
+      },
     ],
     '0xd7ce7a841310982acd976d1a6fe7bb6063c5689d': [
       {
@@ -38,6 +43,11 @@ const DTF_DEXES: Partial<
         label: 'PancakeSwap',
         url: 'https://pancakeswap.finance/swap?outputCurrency=0x75617e7653f86f074Cc30b9Fd4eBf52bA9b62247',
       },
+      {
+        dex: 'cowswap',
+        label: 'CoW Swap',
+        url: 'https://swap.cow.fi/#/56/swap/USDT/ROBOTS',
+      },
     ],
     '0x290bcc0fd5096cc3261ae2021841c7bc67cb0f51': [
       {
@@ -45,12 +55,22 @@ const DTF_DEXES: Partial<
         label: 'PancakeSwap',
         url: 'https://pancakeswap.finance/swap?outputCurrency=0x290bCc0Fd5096cC3261AE2021841c7BC67Cb0f51',
       },
+      {
+        dex: 'cowswap',
+        label: 'CoW Swap',
+        url: 'https://swap.cow.fi/#/56/swap/USDT/POWER',
+      },
     ],
     '0xf571fe3f0d74521bc7310b111faea931c748f27b': [
       {
         dex: 'pancakeswap',
         label: 'PancakeSwap',
         url: 'https://pancakeswap.finance/swap?outputCurrency=0xf571Fe3F0d74521Bc7310B111Faea931C748f27B',
+      },
+      {
+        dex: 'cowswap',
+        label: 'CoW Swap',
+        url: 'https://swap.cow.fi/#/56/swap/USDT/NEOCLOUD',
       },
     ],
   },

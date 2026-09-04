@@ -13,6 +13,7 @@ PRs #1053/#1054/#1055/#1063, SDK PR #27). Delete items as they land.
 
 ## Next slices (in rough order)
 
+
 - **Portfolio SDK adoption (chk-4)**: extend SDK `AccountPortfolio` to the full
   6-field shape + validated partial-body mappers (SDK-side fixtures), migrate
   register's raw `use-portfolio`/`use-historical-portfolio`/
