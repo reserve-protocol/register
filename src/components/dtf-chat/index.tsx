@@ -1,7 +1,7 @@
 import { useIsDesktop, useIsLargeDesktop } from '@/hooks/use-media-query'
 import { trackClick } from '@/hooks/useTrackPage'
 import { chainIdAtom } from '@/state/atoms'
-import { ROUTES } from '@/utils/constants'
+import { isIndexDtfOverviewPathname } from '@/views/index-dtf/utils/index-dtf-pathname'
 import {
   iTokenAddressAtom,
   indexDTFAtom,
@@ -56,13 +56,6 @@ function resolveApiBase(): string | undefined {
 
 // Top-level screen → known view. DTF routes return undefined (handled via
 // dtfContext); unknown routes (home, etc.) → undefined → general mode.
-// `/<chain>/index-dtf/<token>/overview`
-const isIndexDtfOverviewPathname = (pathname: string) => {
-  const [, , section, , subpage] = pathname.split('/')
-
-  return section === 'index-dtf' && subpage?.toLowerCase() === ROUTES.OVERVIEW
-}
-
 function viewForPath(pathname: string): ReserveView | undefined {
   if (pathname.startsWith('/earn')) return 'earn'
   if (pathname.startsWith('/explorer')) return 'explorer'
@@ -149,11 +142,12 @@ const DtfChat = forwardRef<ReserveChatHandle, DtfChatProps>(function DtfChat(
     <div
       className={
         // The overview's floating action bar carries its own chat button up to
-        // xl, where the rail embeds the chat — no launcher on that route.
+        // xl, where the rail embeds the chat — no launcher on that route. Other
+        // DTF pages get the launcher from lg, where their own action bar ends.
         isIndexDtfOverviewPathname(pathname)
-          ? 'dtf-chat-hide-launcher-below-xl'
+          ? '[&_.rc-launcher]:max-xl:hidden'
           : hideLauncher
-            ? 'dtf-chat-hide-mobile-launcher'
+            ? '[&_.rc-launcher]:max-lg:hidden'
             : undefined
       }
     >

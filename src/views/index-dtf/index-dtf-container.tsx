@@ -46,6 +46,7 @@ import IndexDTFNavigation from './components/navigation'
 import ConfirmEligibilityModal from './components/confirm-eligibility-modal'
 import GovernanceUpdater from './governance/updater'
 import YieldIndexUpdater from '@/state/updaters/yield-index-updater'
+import { isIndexDtfOverviewPathname } from './utils/index-dtf-pathname'
 import { resolveIndexDtfRouteToken } from './utils/resolve-index-dtf-route-token'
 import ZapperWrapper from './components/zapper/zapper-wrapper'
 import { indexDTFQuoteSourceAtom } from './issuance'
@@ -275,7 +276,7 @@ const IndexDTFMobileActions = () => {
   const isIssuanceRoute = pathname.includes(`/${ROUTES.ISSUANCE}`)
   // One Zapper per route: the overview mounts it inline in its xl rail.
   const isOverviewInline =
-    pathname.includes(`/${ROUTES.OVERVIEW}`) && isLargeDesktop
+    isIndexDtfOverviewPathname(pathname) && isLargeDesktop
 
   if (!indexDTF) return null
 

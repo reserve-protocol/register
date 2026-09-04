@@ -147,11 +147,7 @@ const InlineSwapBox = () => {
       ) : (
         isLargeDesktop && (
           // Zero the package's tabpanel mt-2: nothing sits above it here.
-          // Keyed by DTF: the widget's selected-token state is module-level, so
-          // a same-route DTF switch (SPA nav) must remount it or it quotes the
-          // previous DTF's tokens against the new chain.
           <div
-            key={`${dtf.chainId}-${dtf.id}`}
             data-testid="overview-inline-zapper"
             className="[&_[role=tabpanel]]:mt-0"
           >

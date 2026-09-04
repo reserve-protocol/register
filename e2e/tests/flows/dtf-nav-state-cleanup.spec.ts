@@ -101,20 +101,10 @@ test(
 test(
   'SPA DTF→DTF nav: stat cards never show the prior DTF mcap/tx volume',
   async ({ page, overrides }) => {
-    // Known react-zapper leak (docs/plans/FOLLOWUPS.md): the overview mounts
-    // the zapper inline at xl, and across a cross-chain switch its first render
-    // prices the PREVIOUS chain's default token (Base USDC) against BSC. Serve
-    // that one identity so the strict guard keeps covering everything else;
-    // delete once react-zapper derives the selection per chain.
-    // Checksummed: the override matches the query string verbatim.
-    const baseUsdc = '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913'
-    overrides.api(
-      {
-        pathname: '/current/prices',
-        search: { chainId: String(bsc.chainId), tokens: baseUsdc },
-      },
-      [{ address: baseUsdc.toLowerCase(), price: 1 }]
-    )
+    // The overview mounts the zapper inline at xl, so this navigation also
+    // proves the widget never prices the previous chain's token against the
+    // destination chain (react-zapper >= 2.10.6 derives the selection per
+    // chain) — any such request trips the strict unmocked guard.
     await page.goto(dtfPath(baseDtf, 'overview'))
     // Fees & Stats duplicates cards for the mobile/desktop layouts — scope to
     // the visible copy.

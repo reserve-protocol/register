@@ -33,6 +33,7 @@ import { Link, useLocation, useParams } from 'react-router-dom'
 import { formatEther } from 'viem'
 import { useAccount, useBalance } from 'wagmi'
 import EligibilityCard from './eligibility-card'
+import { isIndexDtfOverviewPathname } from '../../utils/index-dtf-pathname'
 
 const RestrictionPopover = ({
   enabled,
@@ -82,7 +83,7 @@ const IndexCTAsOverviewMobile = () => {
   const { open, setTab } = useZapperModal()
   const { chain, tokenId } = useParams()
   const { pathname } = useLocation()
-  const isOverviewPage = pathname.endsWith('/overview')
+  const isOverviewPage = isIndexDtfOverviewPathname(pathname)
   const currentPage = isOverviewPage
     ? 'overview'
     : (pathname.split('/').filter(Boolean).pop() ?? 'overview')
