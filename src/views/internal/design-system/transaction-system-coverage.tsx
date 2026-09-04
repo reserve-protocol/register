@@ -73,7 +73,7 @@ const COVERAGE_ITEMS: {
     requirement: 'Balance, Max, precision, and validation',
     kind: 'Shared candidate plus existing Field semantics',
     coverage:
-      'Automated Mint/Redeem exercise operation-specific wallet balance and Max; amount precision, read-only output, and supporting estimates use the same Amount candidate while invalid Field behavior remains canonical.',
+      'Manual and automated Mint/Redeem exercise operation-specific wallet balance and Max; amount precision, read-only output, and supporting estimates use the same Amount candidate while invalid Field behavior remains canonical.',
     status: 'Proposed candidate',
   },
   {
@@ -94,7 +94,7 @@ const COVERAGE_ITEMS: {
     requirement: 'Approval and requirement rows',
     kind: 'Shared candidate',
     coverage:
-      'Manual mint preserves per-asset requirements and scoped retry; Vote Lock and Stake preserve conditional underlying approval before the primary transaction.',
+      'Manual mint preserves five per-asset requirements with independent Approved, Approve, and Revoke boundaries; execution and retry remain deferred. Vote Lock and Stake preserve conditional underlying approval before the primary transaction.',
     status: 'Proposed candidate',
   },
   {
@@ -108,7 +108,7 @@ const COVERAGE_ITEMS: {
     requirement: 'Action-required versus waiting language',
     kind: 'Shared candidate',
     coverage:
-      'Atomic approval, conditional Stake and Vote Lock approval, package open order, automated recovery, and delayed initiation use one semantic vocabulary.',
+      'Conditional Stake and Vote Lock approval, package open order, automated recovery, and delayed initiation use one semantic vocabulary. Manual approval waiting and recovery remain deferred.',
     status: 'Proposed candidate',
   },
   {
@@ -122,14 +122,14 @@ const COVERAGE_ITEMS: {
     requirement: 'Transaction and order identity',
     kind: 'Shared candidate',
     coverage:
-      'Automated issuance keeps each submitted CoW identity with its quoted sell amount, estimated buy amount, and status, then completion adds the separate final mint or redeem transaction. Atomic, Stake/Unstake, and Vote Lock outcomes show their primary transaction identity. Approval transactions remain omitted, and RFQ order identity remains package-owned.',
+      'Automated issuance keeps each submitted CoW identity with its quoted sell amount, estimated buy amount, and status, then completion adds the separate final mint or redeem transaction. Stake/Unstake and Vote Lock outcomes show their primary transaction identity. Manual result identity remains deferred; approval transactions stay omitted, and RFQ order identity remains package-owned.',
     status: 'Proposed candidate',
   },
   {
     requirement: 'Consequential outcome composition',
     kind: 'Independent family compositions',
     coverage:
-      'Atomic, RFQ, automated, Stake, Unstake, single-role Stake delegation, Vote Lock, Vote Unlock, and Vote Lock delegation one/two-change outcomes are rendered independently.',
+      'RFQ, automated, Stake, Unstake, single-role Stake delegation, Vote Lock, Vote Unlock, and Vote Lock delegation one/two-change outcomes are rendered independently. Manual Mint and Redeem outcomes remain deferred until result truth is approved.',
     status: 'Flow-owned',
   },
   {

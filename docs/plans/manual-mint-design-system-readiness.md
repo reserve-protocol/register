@@ -319,8 +319,13 @@ patched with an unowned margin.
   plus one Redeem state with receive-only basket values. Correct their complete
   hierarchy, geometry, theme, and narrow behavior before multiplying the design
   across execution and recovery fixtures.
-- The current atomic lab is early evidence only. It is not a complete manual
-  state contract and must not be copied wholesale.
+- The atomic lab now contains only those two first-review anchors. The Mint task
+  exposes five production-shaped requirements, independent Approved/Approve/
+  Revoke boundaries, and the existing unlimited-approval choice; Redeem keeps
+  the same amount task and turns the ledger into receive-only evidence.
+- These anchors remain human-review-required and are not a complete manual
+  state contract. Execution, recovery, outcomes, wallet/compliance gates, and
+  narrow-screen disclosure must not be inferred from them or copied wholesale.
 
 #### Process evaluation gate
 

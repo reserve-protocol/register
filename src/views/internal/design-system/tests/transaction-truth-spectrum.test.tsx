@@ -106,7 +106,7 @@ describe('composition-first transaction-system review', () => {
         Node.DOCUMENT_POSITION_FOLLOWING
     ).toBeTruthy()
 
-    expect(within(manualMint).getByText('Required approvals')).toBeVisible()
+    expect(within(manualMint).getByText('Required Approvals')).toBeVisible()
     expect(
       within(representativeCompositions).getByText('Buy CMC20')
     ).toBeVisible()
@@ -1393,7 +1393,7 @@ describe('composition-first transaction-system review', () => {
     ).toBeVisible()
   })
 
-  it('preserves the real manual-mint input and approval-to-mint action slot', () => {
+  it('preserves the real manual-mint input and each permission boundary', () => {
     render(<TransactionTruthSpectrum />)
 
     const atomic = screen.getByTestId('transaction-composition-atomic')
@@ -1402,11 +1402,11 @@ describe('composition-first transaction-system review', () => {
       within(atomic).getByRole('textbox', { name: 'Shares to mint amount' })
     ).toHaveValue('100')
     expect(
-      within(atomic).getByRole('button', { name: 'Approve all (2)' })
+      within(atomic).getByRole('button', { name: 'Approve All (2)' })
     ).toBeVisible()
-    expect(within(atomic).getByText('Max 24.63 CMC20')).toBeVisible()
+    expect(within(atomic).getByText('Max 124.63 CMC20')).toBeVisible()
     expect(
-      within(atomic).queryByText('Balance 24.63 CMC20')
+      within(atomic).queryByText('Balance 124.63 CMC20')
     ).not.toBeInTheDocument()
     expect(
       within(atomic).queryByRole('button', { name: 'Edit amount' })
@@ -1415,25 +1415,18 @@ describe('composition-first transaction-system review', () => {
       'data-testid',
       'inline-action'
     )
-    expect(within(atomic).getByText('Required approvals')).toBeVisible()
+    expect(within(atomic).getByText('Required Approvals')).toBeVisible()
     expect(
       within(atomic).getByTestId('transaction-requirements-list')
     ).not.toHaveClass('px-1')
     expect(
-      within(atomic).getByTestId('transaction-requirements-header')
-    ).toHaveClass('grid', 'gap-4', 'sm:grid-cols-[minmax(0,1fr)_auto]')
-
-    fireEvent.click(within(atomic).getByRole('radio', { name: 'Execution' }))
-    const manualMintApprovalAction = within(atomic).getByRole('button', {
-      name: 'Approval in progress…',
-    })
-    expect(manualMintApprovalAction).toBeDisabled()
-    expect(manualMintApprovalAction).toHaveAttribute('data-tone', 'secondary')
-
-    fireEvent.click(within(atomic).getByRole('radio', { name: 'Outcome' }))
-    expect(within(atomic).getByText('Estimated basket value')).toBeVisible()
-    expect(within(atomic).getByText('Minted shares')).toBeVisible()
-    expect(within(atomic).queryByText('Basket value spent')).toBeNull()
+      within(atomic).getAllByTestId('transaction-requirement-row')
+    ).toHaveLength(5)
+    expect(
+      within(atomic).getAllByRole('button', { name: 'Approve' })
+    ).toHaveLength(2)
+    expect(within(atomic).getByRole('button', { name: 'Revoke' })).toBeVisible()
+    expect(within(atomic).getAllByText('Approved')).toHaveLength(2)
   })
 
   it('preserves automated issuance progressive disclosure instead of forcing one persistent workspace', () => {
@@ -3301,7 +3294,7 @@ describe('composition-first transaction-system review', () => {
     ).toBeGreaterThan(1)
     expect(
       within(board).getAllByTestId('transaction-requirement-row')
-    ).toHaveLength(3)
+    ).toHaveLength(5)
     for (const row of within(board).getAllByTestId(
       'transaction-requirement-row'
     )) {
@@ -3434,47 +3427,31 @@ describe('composition-first transaction-system review', () => {
     ).toBeVisible()
   })
 
-  it('lets the reviewer inspect a different credible state without changing the composition', () => {
+  it('lets the reviewer compare the receive-only Redeem anchor', () => {
     render(<TransactionTruthSpectrum />)
 
     const atomic = screen.getByTestId('transaction-composition-atomic')
-    fireEvent.click(within(atomic).getByRole('radio', { name: 'Outcome' }))
+    fireEvent.click(
+      within(atomic).getByRole('radio', { name: 'Redeem preview' })
+    )
 
-    expect(within(atomic).getByText('Mint complete')).toBeVisible()
-    expect(within(atomic).getByText('100 CMC20 minted')).toBeVisible()
-    expect(within(atomic).getByText('Mint transaction')).toBeVisible()
+    expect(within(atomic).getByText('You will receive')).toBeVisible()
+    expect(within(atomic).getAllByText('Expected')).toHaveLength(5)
+    expect(within(atomic).getAllByText('Value')).toHaveLength(5)
+    expect(within(atomic).queryByText('Required Approvals')).toBeNull()
     expect(
-      within(atomic).queryByTestId('transaction-outcome-summary')
-    ).toBeNull()
-    expect(
-      within(atomic).queryByText('Deliberate improvement candidate')
-    ).toBeNull()
-    expect(
-      within(atomic).queryByTestId('transaction-amount-object')
-    ).not.toBeInTheDocument()
-    expect(within(atomic).getByText('Permissions complete')).toBeVisible()
-    expect(within(atomic).getByText('Basket assets used')).toBeVisible()
-    expect(within(atomic).getAllByText('Starting balance')).toHaveLength(3)
-    expect(within(atomic).queryByText('Required approvals')).toBeNull()
-    expect(
-      within(atomic).queryByText('2 approvals needed')
+      within(atomic).queryByRole('checkbox', { name: 'Unlimited approval' })
     ).not.toBeInTheDocument()
     expect(
       within(atomic).queryByRole('button', { name: 'Approve' })
+    ).not.toBeInTheDocument()
+    expect(
+      within(atomic).queryByRole('button', { name: 'Revoke' })
     ).not.toBeInTheDocument()
   })
 
   it('keeps requirement and staged-progress truth consistent across review states', () => {
     render(<TransactionTruthSpectrum />)
-
-    const atomic = screen.getByTestId('transaction-composition-atomic')
-    fireEvent.click(within(atomic).getByRole('radio', { name: 'Recovery' }))
-
-    expect(within(atomic).getByText('1 approval needed')).toBeVisible()
-    expect(within(atomic).getByText('Approval declined')).toBeVisible()
-    expect(
-      within(atomic).queryByRole('button', { name: 'Approve' })
-    ).not.toBeInTheDocument()
 
     const staged = screen.getByTestId('transaction-composition-staged')
     fireEvent.click(
@@ -3544,12 +3521,11 @@ describe('composition-first transaction-system review', () => {
     expect(within(rfq).queryByRole('button', { name: 'Max' })).toBeNull()
 
     const atomic = screen.getByTestId('transaction-composition-atomic')
-    fireEvent.click(within(atomic).getByRole('radio', { name: 'Execution' }))
     const atomicInput = within(atomic).getByTestId('transaction-amount-object')
-    expect(atomicInput).toHaveClass('bg-card')
+    expect(atomicInput).toHaveClass('rounded-lg')
     expect(
       within(atomicInput).queryByRole('button', { name: 'Use' })
-    ).toBeNull()
+    ).toBeVisible()
 
     const staged = screen.getByTestId('transaction-composition-staged')
     fireEvent.click(
@@ -3605,7 +3581,12 @@ describe('composition-first transaction-system review', () => {
     ).toBeVisible()
     expect(
       within(coverage).getByText(
-        /Atomic, RFQ, automated, Stake, Unstake, single-role Stake delegation, Vote Lock, Vote Unlock, and Vote Lock delegation one\/two-change outcomes/
+        /RFQ, automated, Stake, Unstake, single-role Stake delegation, Vote Lock, Vote Unlock, and Vote Lock delegation one\/two-change outcomes/
+      )
+    ).toBeVisible()
+    expect(
+      within(coverage).getByText(
+        /Manual Mint and Redeem outcomes remain deferred/
       )
     ).toBeVisible()
     expect(
@@ -3620,14 +3601,13 @@ describe('composition-first transaction-system review', () => {
     ).toBeVisible()
   })
 
-  it('describes the atomic execution step without overstating mint progress', () => {
+  it('does not import automated execution mechanics into manual issuance', () => {
     render(<TransactionTruthSpectrum />)
 
-    const atomic = screen.getByTestId('transaction-composition-atomic')
-    fireEvent.click(within(atomic).getByRole('radio', { name: 'Execution' }))
-
-    expect(within(atomic).getByText('Approving basket assets')).toBeVisible()
-    expect(within(atomic).queryByText('Minting 100 CMC20')).toBeNull()
+    const manualWorkspace = screen.getByTestId('manual-issuance-workspace')
+    expect(within(manualWorkspace).queryByText(/CoW/i)).toBeNull()
+    expect(within(manualWorkspace).queryByText(/order expires/i)).toBeNull()
+    expect(within(manualWorkspace).queryByText(/Step 1 of/i)).toBeNull()
   })
 
   it('keeps visible fixture values coherent when Max or Use changes the amount', () => {
@@ -3637,11 +3617,9 @@ describe('composition-first transaction-system review', () => {
     fireEvent.click(within(atomic).getByRole('button', { name: 'Use' }))
     expect(
       within(atomic).getByRole('textbox', { name: 'Shares to mint amount' })
-    ).toHaveValue('24.63')
-    expect(
-      within(atomic).getByText('$2,473.15 estimated basket value')
-    ).toBeVisible()
-    expect(within(atomic).getByText('0.00044 WBTC')).toBeVisible()
+    ).toHaveValue('124.63')
+    expect(within(atomic).getByText('$12,514.35')).toBeVisible()
+    expect(within(atomic).getByText('0.00224 WBTC')).toBeVisible()
 
     const rfq = screen.getByTestId('transaction-composition-rfq')
     fireEvent.click(within(rfq).getByRole('radio', { name: 'Review' }))
@@ -3660,12 +3638,10 @@ describe('composition-first transaction-system review', () => {
       within(atomic).getByRole('textbox', { name: 'Shares to mint amount' }),
       { target: { value: '200' } }
     )
-    expect(
-      within(atomic).getByText('$20,082.40 estimated basket value')
-    ).toBeVisible()
+    expect(within(atomic).getByText('$20,082.40')).toBeVisible()
     expect(within(atomic).getByText('0.0036 WBTC')).toBeVisible()
     expect(within(atomic).getByText('2.048 WETH')).toBeVisible()
-    expect(within(atomic).getByText('12,974.40 USDC')).toBeVisible()
+    expect(within(atomic).getByText('2.756 WBNB')).toBeVisible()
 
     fireEvent.change(
       within(rfq).getByRole('textbox', { name: 'You use amount' }),

@@ -1,6 +1,6 @@
 ---
 title: Design System Reference
-updated: 2026-09-02
+updated: 2026-09-04
 type: domain
 sources:
   - tailwind.config.ts
@@ -1255,9 +1255,17 @@ report state while the one approval-to-mint action slot owns action. Automated
 configuration keeps its real fixed USDC input and one visually continuous
 three-step surface. Delayed confirmation states cooldown timing once, then
 dismiss the task shell and move the durable queue ahead of the old input form.
-Atomic, RFQ, automated, and delayed outcomes share semantic ingredients but
-retain family-specific composition. Max/Use fixtures update every visibly
-dependent value so the lab does not teach stale financial relationships.
+RFQ, automated, and delayed outcomes share semantic ingredients but retain
+family-specific composition. Manual outcomes remain deferred until result
+truth is approved. Max/Use fixtures update every visibly dependent value so the
+lab does not teach stale financial relationships.
+
+The first Manual Mint/Redeem proof deliberately stops at two anchors. Mint
+keeps one high-level share task beside a five-asset requirement ledger with
+independent Approved, Approve, and Revoke boundaries plus the retained
+unlimited-approval control. Redeem reuses the amount and ledger geometry but
+removes every approval and order affordance. The ledger is flow-owned; only its
+amount, identity, status, and action primitives are shared candidates.
 
 The Zapper pressure test now distinguishes review qualification from outcome
 follow-up. The current production-derived capacity, market-hours, and
