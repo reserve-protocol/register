@@ -39,6 +39,9 @@ const MEET_VIDEO_BY_SYMBOL: Record<string, { file: string; duration: string }> =
     NEOCLOUD: { file: 'Neocloud DTF SECTION_only DTF.mp4', duration: '0:19' },
   }
 
+export const hasMeetVideo = (symbol: string | undefined) =>
+  !!MEET_VIDEO_BY_SYMBOL[symbol?.toUpperCase() ?? '']
+
 export const getVideoChapters = (
   symbol: string | undefined
 ): VideoChapter[] => {

@@ -1,10 +1,10 @@
 import { ChainId } from '@/utils/chains'
-import { NETWORKS, ROUTES } from '@/utils/constants'
 
 // TEMPORARY until the backend serves DTF categories — then delete this file.
 export type DTFCategory = 'stocks'
 
-// Route alias + address per chain, so both URL forms match.
+// Equity-backed DTFs: route alias + address per chain, so both URL forms match.
+// Drives the stocks-only copy (backed badge, stock FAQ chips).
 const STOCKS_DTFS: Record<number, Set<string>> = {
   [ChainId.BSC]: new Set([
     'buildout',
@@ -25,14 +25,4 @@ export const isStocksDTF = (
   if (!chainId || !tokenId) return false
 
   return STOCKS_DTFS[chainId]?.has(tokenId.trim().toLowerCase()) ?? false
-}
-
-export const isStocksOverviewPathname = (pathname: string): boolean => {
-  const [, chain, section, tokenId, subpage] = pathname.split('/')
-
-  return (
-    section === 'index-dtf' &&
-    subpage?.toLowerCase() === ROUTES.OVERVIEW &&
-    isStocksDTF(NETWORKS[chain ?? ''], tokenId)
-  )
 }

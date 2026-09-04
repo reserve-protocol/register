@@ -52,7 +52,6 @@ import { indexDTFQuoteSourceAtom } from './issuance'
 import useIsComplianceRestricted from '@/hooks/use-is-compliance-restricted'
 import { useIsLargeDesktop } from '@/hooks/use-media-query'
 import IndexCTAsOverviewMobile from './overview/components/index-ctas-overview-mobile'
-import { isStocksDTF } from './overview/dtf-categories'
 
 const DEFAULT_DESCRIPTION =
   'Reserve is the leading platform for permissionless DTFs and asset-backed currencies. Create, manage & trade tokenized indexes with 24/7 transparency.'
@@ -269,24 +268,21 @@ const IndexDTFMobileActions = () => {
   const isDeprecated = isInactiveDTF(useAtomValue(indexDTFStatusAtom))
   const isRestricted = useIsComplianceRestricted()
   const { pathname } = useLocation()
-  const { chain, tokenId } = useParams()
   const isLargeDesktop = useIsLargeDesktop()
   // WHY: issuance mounts its own inline ZapperWrapper with a different config
   // (debug, inline prompt) — never mount a second instance there, or the two
   // fight over shared zapper state. One Zapper per route.
   const isIssuanceRoute = pathname.includes(`/${ROUTES.ISSUANCE}`)
-  // One Zapper per route: the stocks overview mounts it inline in its xl rail.
-  const isStocksOverviewInline =
-    isStocksDTF(NETWORKS[chain ?? ''], tokenId) &&
-    pathname.includes(`/${ROUTES.OVERVIEW}`) &&
-    isLargeDesktop
+  // One Zapper per route: the overview mounts it inline in its xl rail.
+  const isOverviewInline =
+    pathname.includes(`/${ROUTES.OVERVIEW}`) && isLargeDesktop
 
   if (!indexDTF) return null
 
   return (
     <>
       <IndexCTAsOverviewMobile />
-      {!isIssuanceRoute && !isStocksOverviewInline && (
+      {!isIssuanceRoute && !isOverviewInline && (
         <ZapperWrapper
           chain={indexDTF.chainId}
           dtfAddress={indexDTF.id}

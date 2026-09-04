@@ -13,6 +13,18 @@ PRs #1053/#1054/#1055/#1063, SDK PR #27). Delete items as they land.
 
 ## Next slices (in rough order)
 
+- **react-zapper: selected token leaks across a chain switch** (surfaced by
+  mounting the zapper inline on every overview at xl, 2026-09-04). The main
+  widget component sets `selectedTokenAtom` to the chain default on mount AND
+  in its cleanup, so a cross-chain DTF→DTF SPA nav leaves the previous chain's
+  default (Base USDC) selected for the first render on the new chain and
+  `usePrice` fetches `/current/prices?chainId=56&tokens=<Base USDC>`. Fix in
+  react-zapper `src/components/zapper.tsx`: derive the selection per chain
+  (fall back to the chain default when the stored token is not in that chain's
+  zappable list) instead of resetting in effects. Then delete the targeted
+  `/current/prices` override in `e2e/tests/flows/dtf-nav-state-cleanup.spec.ts`
+  so the strict unmocked-call guard covers it again.
+
 - **Portfolio SDK adoption (chk-4)**: extend SDK `AccountPortfolio` to the full
   6-field shape + validated partial-body mappers (SDK-side fixtures), migrate
   register's raw `use-portfolio`/`use-historical-portfolio`/

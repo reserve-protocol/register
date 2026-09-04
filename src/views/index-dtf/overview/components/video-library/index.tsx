@@ -1,11 +1,11 @@
 import { Button } from '@/components/ui/button'
-import DownloadableResources from '../components/dtf-downloadable-resources'
+import DownloadableResources from '../dtf-downloadable-resources'
 import { useTrackIndexDTFClick } from '@/views/index-dtf/hooks/useTrackIndexDTFPage'
 import { Trans, useLingui } from '@lingui/react/macro'
 import { Play } from 'lucide-react'
 import { useState } from 'react'
-import { useVideoChapters, type VideoChapter } from './video-chapters'
-import VideoSeriesModal from './video-series-modal'
+import { useVideoChapters, type VideoChapter } from './chapters'
+import VideoSeriesModal from './series-modal'
 
 const ChapterRow = ({
   chapter,
@@ -51,7 +51,7 @@ const ChapterRow = ({
   )
 }
 
-const StocksVideoLibrary = () => {
+const VideoLibrary = () => {
   const { trackClick } = useTrackIndexDTFClick('overview', 'overview')
   const chapters = useVideoChapters()
   const [openChapter, setOpenChapter] = useState<string | null>(null)
@@ -67,7 +67,10 @@ const StocksVideoLibrary = () => {
   }
 
   return (
-    <div data-testid="stocks-video-library" className="rounded-3xl bg-card p-4">
+    <div
+      data-testid="overview-video-library"
+      className="rounded-3xl bg-card p-4"
+    >
       <h3 className="px-2 pt-2 font-medium">
         <Trans>About this DTF</Trans>
       </h3>
@@ -91,4 +94,4 @@ const StocksVideoLibrary = () => {
   )
 }
 
-export default StocksVideoLibrary
+export default VideoLibrary

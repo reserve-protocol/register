@@ -1,12 +1,15 @@
 import { useTrackIndexDTFClick } from '@/views/index-dtf/hooks/useTrackIndexDTFPage'
 import { Trans, useLingui } from '@lingui/react/macro'
 
-const AboutReserveDtfs = () => {
+const AboutReserve = () => {
   const { t } = useLingui()
   const { trackClick } = useTrackIndexDTFClick('overview', 'overview')
 
   return (
-    <div data-testid="stocks-about-reserve" className="rounded-3xl bg-card p-4">
+    <div
+      data-testid="overview-about-reserve"
+      className="rounded-3xl bg-card p-4"
+    >
       <div className="mb-1 flex items-center gap-2 px-2 pt-2">
         <img
           src="/imgs/reserve-brand.svg"
@@ -58,4 +61,4 @@ const AboutReserveDtfs = () => {
   )
 }
 
-export default AboutReserveDtfs
+export default AboutReserve

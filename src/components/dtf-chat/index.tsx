@@ -1,7 +1,7 @@
 import { useIsDesktop, useIsLargeDesktop } from '@/hooks/use-media-query'
 import { trackClick } from '@/hooks/useTrackPage'
-import { isStocksOverviewPathname } from '@/views/index-dtf/overview/dtf-categories'
 import { chainIdAtom } from '@/state/atoms'
+import { ROUTES } from '@/utils/constants'
 import {
   iTokenAddressAtom,
   indexDTFAtom,
@@ -56,6 +56,13 @@ function resolveApiBase(): string | undefined {
 
 // Top-level screen → known view. DTF routes return undefined (handled via
 // dtfContext); unknown routes (home, etc.) → undefined → general mode.
+// `/<chain>/index-dtf/<token>/overview`
+const isIndexDtfOverviewPathname = (pathname: string) => {
+  const [, , section, , subpage] = pathname.split('/')
+
+  return section === 'index-dtf' && subpage?.toLowerCase() === ROUTES.OVERVIEW
+}
+
 function viewForPath(pathname: string): ReserveView | undefined {
   if (pathname.startsWith('/earn')) return 'earn'
   if (pathname.startsWith('/explorer')) return 'explorer'
@@ -133,13 +140,23 @@ const DtfChat = forwardRef<ReserveChatHandle, DtfChatProps>(function DtfChat(
     )
   }
 
-  // The stocks overview embeds its own chat in the xl rail — one entry point.
-  if (isStocksOverviewPathname(pathname) && isLargeDesktop) {
+  // The DTF overview embeds its own chat in the xl rail — one entry point.
+  if (isIndexDtfOverviewPathname(pathname) && isLargeDesktop) {
     return null
   }
 
   return (
-    <div className={hideLauncher ? 'dtf-chat-hide-mobile-launcher' : undefined}>
+    <div
+      className={
+        // The overview's floating action bar carries its own chat button up to
+        // xl, where the rail embeds the chat — no launcher on that route.
+        isIndexDtfOverviewPathname(pathname)
+          ? 'dtf-chat-hide-launcher-below-xl'
+          : hideLauncher
+            ? 'dtf-chat-hide-mobile-launcher'
+            : undefined
+      }
+    >
       <ReserveChat
         apiBase={apiBase}
         // Turnstile only against the live server; a local dev server runs without it.

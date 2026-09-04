@@ -199,20 +199,31 @@ const IndexCTAsOverviewMobile = () => {
 
   const overviewRoute =
     chain && tokenId ? `/${chain}/index-dtf/${tokenId}/overview` : undefined
+  // The overview's rail (inline zapper + chat) only exists at xl, so the bar
+  // covers the lg→xl gap there; other DTF pages keep their own CTAs from lg.
+  const hiddenFrom = isOverviewPage ? 'xl:hidden' : 'lg:hidden'
 
   return (
     <>
-      {/* Mobile (<sm): floating action bar */}
+      {/* Floating action bar below the desktop breakpoint (below xl on the overview) */}
       {createPortal(
         <>
           <Link
             to={overviewRoute ?? '#'}
             aria-label={t`Go to DTF overview`}
-            className="fixed bottom-2 left-2 z-40 flex h-14 w-14 shrink-0 items-center justify-center rounded-full border border-card bg-card/80 p-2 shadow-[0_-16px_60px_rgba(0,0,0,0.18)] backdrop-blur-[7px] dark:shadow-[0_-20px_80px_rgba(0,0,0,0.76),0_0_0_1px_rgba(255,255,255,0.08)] lg:hidden"
+            className={cn(
+              'fixed bottom-2 left-2 z-40 flex h-14 w-14 shrink-0 items-center justify-center rounded-full border border-card bg-card/80 p-2 shadow-[0_-16px_60px_rgba(0,0,0,0.18)] backdrop-blur-[7px] dark:shadow-[0_-20px_80px_rgba(0,0,0,0.76),0_0_0_1px_rgba(255,255,255,0.08)]',
+              hiddenFrom
+            )}
           >
             {renderDtfLogo(40)}
           </Link>
-          <div className="fixed bottom-2 right-2 z-40 w-fit shrink-0 rounded-full border border-card bg-card/80 p-2 shadow-[0_-16px_60px_rgba(0,0,0,0.18)] backdrop-blur-[7px] dark:shadow-[0_-20px_80px_rgba(0,0,0,0.76),0_0_0_1px_rgba(255,255,255,0.08)] lg:hidden">
+          <div
+            className={cn(
+              'fixed bottom-2 right-2 z-40 w-fit shrink-0 rounded-full border border-card bg-card/80 p-2 shadow-[0_-16px_60px_rgba(0,0,0,0.18)] backdrop-blur-[7px] dark:shadow-[0_-20px_80px_rgba(0,0,0,0.76),0_0_0_1px_rgba(255,255,255,0.08)]',
+              hiddenFrom
+            )}
+          >
             {renderCtas()}
           </div>
         </>,

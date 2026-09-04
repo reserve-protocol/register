@@ -10,8 +10,9 @@ import type { ReserveChatHandle } from '@reserve-protocol/dtf-chat'
 import { useAtomValue } from 'jotai'
 import { Sparkles } from 'lucide-react'
 import { useRef, useState } from 'react'
+import { isStocksDTF } from '../dtf-categories'
 
-const FAQ_QUESTIONS: MessageDescriptor[] = [
+const STOCKS_QUESTIONS: MessageDescriptor[] = [
   msg`Am I buying real stocks?`,
   msg`How is the price determined?`,
   msg`How do US market hours affect stock DTF pricing?`,
@@ -20,9 +21,21 @@ const FAQ_QUESTIONS: MessageDescriptor[] = [
   msg`What are the risks?`,
 ]
 
-const StocksFaq = () => {
+const DEFAULT_QUESTIONS: MessageDescriptor[] = [
+  msg`What's in the basket?`,
+  msg`How is the price determined?`,
+  msg`How does rebalancing work?`,
+  msg`What are the fees?`,
+  msg`Can I sell whenever I want?`,
+  msg`What are the risks?`,
+]
+
+const AskReserveAI = () => {
   const { t } = useLingui()
   const dtf = useAtomValue(indexDTFAtom)
+  const questions = isStocksDTF(dtf?.chainId, dtf?.id)
+    ? STOCKS_QUESTIONS
+    : DEFAULT_QUESTIONS
   const { trackClick } = useTrackIndexDTFClick('overview', 'overview')
   const chatRef = useRef<ReserveChatHandle>(null)
   // Chips yield to the thread once any message (chip or typed) was sent.
@@ -34,7 +47,7 @@ const StocksFaq = () => {
   }
 
   return (
-    <div data-testid="stocks-faq" className="rounded-3xl bg-card p-4">
+    <div data-testid="overview-ask-ai" className="rounded-3xl bg-card p-4">
       <div className="mb-3 flex items-center gap-3 px-2 pt-2">
         <div className="relative flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary">
           <Sparkles className="h-4 w-4" />
@@ -58,7 +71,7 @@ const StocksFaq = () => {
         <div className="mb-3 flex flex-wrap gap-2 px-2">
           {[
             t`What is the $${dtf?.token.symbol ?? 'DTF'} DTF?`,
-            ...FAQ_QUESTIONS.map((question) => t(question)),
+            ...questions.map((question) => t(question)),
           ].map((question) => (
             <Button
               key={question}
@@ -74,10 +87,10 @@ const StocksFaq = () => {
       )}
       <div
         className={cn(
-          'stocks-embedded-chat overflow-hidden px-2 pb-2 transition-[height] duration-300 ease-out motion-reduce:transition-none',
+          'dtf-embedded-chat overflow-hidden px-2 pb-2 transition-[height] duration-300 ease-out motion-reduce:transition-none',
           asked ? 'h-[440px]' : 'h-[116px]'
         )}
-        data-testid="stocks-embedded-chat"
+        data-testid="overview-embedded-chat"
       >
         <DtfChat
           ref={chatRef}
@@ -90,4 +103,4 @@ const StocksFaq = () => {
   )
 }
 
-export default StocksFaq
+export default AskReserveAI

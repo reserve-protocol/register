@@ -10,7 +10,7 @@ import { useTrackIndexDTFClick } from '@/views/index-dtf/hooks/useTrackIndexDTFP
 import { Trans, useLingui } from '@lingui/react/macro'
 import { ChevronLeft, ChevronRight, Play, X } from 'lucide-react'
 import { useEffect, useState } from 'react'
-import { useVideoChapters, type VideoChapter } from './video-chapters'
+import { useVideoChapters, type VideoChapter } from './chapters'
 
 type Props = {
   chapterId: string | null
