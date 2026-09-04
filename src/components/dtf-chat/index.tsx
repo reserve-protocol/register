@@ -1,4 +1,5 @@
 import { useIsDesktop, useIsLargeDesktop } from '@/hooks/use-media-query'
+import { cn } from '@/lib/utils'
 import { trackClick } from '@/hooks/useTrackPage'
 import { chainIdAtom } from '@/state/atoms'
 import { isIndexDtfOverviewPathname } from '@/views/index-dtf/utils/index-dtf-pathname'
@@ -140,16 +141,14 @@ const DtfChat = forwardRef<ReserveChatHandle, DtfChatProps>(function DtfChat(
 
   return (
     <div
-      className={
+      className={cn(
         // The overview's floating action bar carries its own chat button up to
         // xl, where the rail embeds the chat — no launcher on that route. Other
         // DTF pages get the launcher from lg, where their own action bar ends.
         isIndexDtfOverviewPathname(pathname)
           ? '[&_.rc-launcher]:max-xl:hidden'
-          : hideLauncher
-            ? '[&_.rc-launcher]:max-lg:hidden'
-            : undefined
-      }
+          : hideLauncher && '[&_.rc-launcher]:max-lg:hidden'
+      )}
     >
       <ReserveChat
         apiBase={apiBase}

@@ -21,6 +21,10 @@ describe('isIndexDtfOverviewPathname', () => {
       false
     )
     expect(isIndexDtfOverviewPathname('/base/index-dtf/mag7')).toBe(false)
+    expect(
+      isIndexDtfOverviewPathname('/base/index-dtf/mag7/overview/details')
+    ).toBe(false)
+    expect(isIndexDtfOverviewPathname('/index-dtf/mag7/overview')).toBe(false)
     expect(isIndexDtfOverviewPathname('/base/yield-dtf/eusd/overview')).toBe(
       false
     )
