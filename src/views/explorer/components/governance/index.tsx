@@ -19,7 +19,6 @@ import {
 import { PROPOSAL_STATES, ROUTES, formatConstant } from 'utils/constants'
 import useProposalsData, { type ProposalRecord } from './use-proposals-data'
 import Filters from './filters'
-import { getVotingPeriodTiming } from './voting-period-timing'
 
 const BADGE_VARIANT: Record<string, string> = {
   [PROPOSAL_STATES.DEFEATED]: 'danger',
@@ -105,25 +104,22 @@ const ExploreGovernance = () => {
         ),
       }),
       columnHelper.display({
-        id: 'votingStarts',
-        header: t`Voting Starts`,
-        cell: ({ row }) => {
-          const value = getVotingPeriodTiming(row.original).starts
-
-          if (value === 'passed') return <span>{t`Started`}</span>
-          if (value === null) return <span>—</span>
-          return <span>{formatVotingDuration(value)}</span>
-        },
-      }),
-      columnHelper.display({
         id: 'votingEnds',
         header: t`Voting Ends`,
         cell: ({ row }) => {
-          const value = getVotingPeriodTiming(row.original).ends
+          const { status, votingEndsIn } = row.original
 
-          if (value === 'passed') return <span>{t`Ended`}</span>
-          if (value === null) return <span>—</span>
-          return <span>{formatVotingDuration(value)}</span>
+          if (votingEndsIn === null || !Number.isFinite(votingEndsIn)) {
+            return <span>—</span>
+          }
+          if (votingEndsIn <= 0) return <span>{t`Ended`}</span>
+          if (
+            status !== PROPOSAL_STATES.PENDING &&
+            status !== PROPOSAL_STATES.ACTIVE
+          ) {
+            return <span>—</span>
+          }
+          return <span>{formatVotingDuration(votingEndsIn)}</span>
         },
       }),
       columnHelper.accessor('status', {
