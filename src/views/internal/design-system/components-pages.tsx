@@ -2,6 +2,7 @@ import { ArrowLeft, CircleDashed, ExternalLink } from 'lucide-react'
 import { Link, Navigate, useParams } from 'react-router-dom'
 import {
   CatalogBadges,
+  ComponentCompositionSource,
   ComponentReviewReadiness,
   DetailNavigation,
   ExpectedDecisions,
@@ -58,9 +59,8 @@ export const ComponentDetail = () => {
           description={item.description}
           trailing={<CatalogBadges item={item} />}
         />
-        {item.outputStatus !== 'none' && (
-          <ComponentReviewReadiness review={item.review} />
-        )}
+        <ComponentReviewReadiness review={item.review} />
+        <ComponentCompositionSource item={item} />
         <ComponentVisualOutput itemId={item.id} />
         {item.id === 'dialog' && <EligibilityDialogInteractionReview />}
         {item.id === 'table' && <RichRecordReview />}
@@ -104,7 +104,11 @@ export const ComponentDetail = () => {
           >
             <div className="flex items-center gap-2">
               <CircleDashed className="h-4 w-4 text-muted-foreground" />
-              <h2 className="font-semibold">No lab output yet</h2>
+              <h2 className="font-semibold">
+                {item.review.status === 'deferred'
+                  ? 'No specimen scheduled'
+                  : 'No lab output yet'}
+              </h2>
             </div>
             <p className="mt-2 max-w-2xl text-sm leading-5 text-muted-foreground">
               No complete component specimen is rendered here. Existing evidence
@@ -137,7 +141,7 @@ export const ComponentDetail = () => {
               <InfoCard title="Why this status" copy={item.statusDetail} />
               {item.implementationSource && (
                 <InfoCard
-                  title="Authoritative reusable source"
+                  title="Implementation source"
                   copy={item.implementationSource}
                 />
               )}

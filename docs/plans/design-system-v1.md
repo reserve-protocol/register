@@ -7,6 +7,12 @@ product quality bar, keeps complex product compositions flexible, and separates
 design authority, reusable implementation, verification, and production
 adoption.
 
+The system should give developers and designers strong, attractive first-pass
+defaults without prescribing every page or suppressing task-specific judgment.
+Established component contracts stay consistent; justified changes belong in
+their owning component or a supported variant, not hidden consumer overrides.
+Evaluate simplicity and future feature quality alongside migration reliability.
+
 ## Non-goals
 
 - Do not turn the transaction family into one universal flow controller or
@@ -170,6 +176,24 @@ or sibling-flow redesign from the lab.
 The next meaningful work is whichever bounded component,
 composition, or product adoption the human explicitly selects. The catalog is
 a capability map, not an obligation to rush through every unresolved item.
+
+### Inventory reconciliation and outside audit
+
+The bounded inventory reconciliation is complete. The next preparation is to
+define an independent audit of system quality, simplicity, and workflow
+effectiveness; the audit itself has not started. It is not limited to migration
+mechanics. Tables/rows, charts, and realistic page-layout validation are the
+recommended next large workstreams, not yet scheduled implementation.
+Breadcrumbs remain low-priority and conditional; their catalog entry records when a migration owner should
+reconsider them without depending on the original designer personally.
+
+Review readiness is not work scheduling or approval: `not-started` means no
+review specimen is prepared, `deferred` means no review is scheduled, and
+`blocked` requires a named dependency. `in-composition` output points to existing
+rendered evidence without inventing a standalone specimen or promoting it.
+Verification remains in scoped checkpoint reports and component evidence;
+the progress dashboard does not infer a blanket verified gate. Accepted
+baselines, implementation maturity, and production adoption remain separate.
 
 ### Provisional transaction composition contract
 

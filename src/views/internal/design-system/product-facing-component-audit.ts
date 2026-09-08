@@ -114,9 +114,9 @@ export const PRODUCT_FACING_REVIEWS: ProductFacingReview[] = [
     id: 'metric-blocks',
     componentId: 'metric',
     name: 'Metric blocks',
-    status: 'ready',
+    status: 'complete',
     purpose:
-      'Define a small label/value grammar that works inline, stacked, and in outcome summaries without creating a universal metric card.',
+      'The inline and centered-headline Metric baselines are accepted. Parent-owned groups and unreviewed outcome compositions remain separate, not a reopening of Metric.',
     evidence: [
       {
         name: 'Overview key/value rows',
@@ -185,7 +185,7 @@ export const PRODUCT_FACING_REVIEWS: ProductFacingReview[] = [
     id: 'global-navigation',
     componentId: 'global-navigation',
     name: 'Global application navigation',
-    status: 'ready',
+    status: 'complete',
     purpose:
       'Keep application-level hierarchy clear above object-scoped navigation across desktop and constrained screens.',
     evidence: [
@@ -238,7 +238,7 @@ export const PRODUCT_FACING_REVIEWS: ProductFacingReview[] = [
     id: 'product-navigation',
     componentId: 'product-navigation',
     name: 'Product navigation items',
-    status: 'ready',
+    status: 'complete',
     purpose:
       'Make the persistent Index DTF rail feel intentional across current, hover, disabled, and expanded states while preserving route behavior.',
     evidence: [
@@ -475,11 +475,11 @@ export const PRODUCT_FACING_REVIEWS: ProductFacingReview[] = [
   },
   {
     id: 'value-and-action-popups',
-    componentId: 'select',
-    name: 'Select, combobox, and action menus',
+    componentId: 'asset-picker',
+    name: 'Remaining search and asset-selection compositions',
     status: 'ready',
     purpose:
-      'Define the semantic split between bounded value selection, searchable entity selection, and immediate actions before standardizing their shared popup visuals.',
+      'Select, Menu, Multi-select filter, and Search field have accepted baselines; generic Combobox is not needed. Remaining work concerns complete navigation-search results and cross-consumer asset selection, not those primitives.',
     evidence: [
       {
         name: 'Bounded value selection',
@@ -536,16 +536,16 @@ export const PRODUCT_FACING_REVIEWS: ProductFacingReview[] = [
           'The audited searchable sources resolve into Command navigation, multi-select filtering, and Asset picker behavior; combining them would invent a generic component without a product seam.',
       },
       {
-        name: 'One-line trigger geometry',
+        name: 'Preserve accepted control and popup owners',
         lane: 1,
         reason:
-          'Ordinary Select triggers should inherit the accepted Field height, radius, focus, disabled, and text rules instead of creating a parallel control geometry.',
+          'Consume the accepted Field, Search, Select, Menu, and Multi-select contracts. Do not rebuild their geometry while designing result-list composition.',
       },
       {
-        name: 'Popup density, selected state, and responsive adaptation',
+        name: 'Result hierarchy and responsive selection',
         lane: 3,
         reason:
-          'Identity-rich token results, simple value lists, and action menus need visibly related but distinct compositions; mobile popover-versus-drawer behavior also needs product judgment.',
+          'Navigation results and identity-rich asset selection remain different jobs. Test their complete loading, empty, selected, and constrained-width states without treating the standalone selector pressure specimen as accepted.',
       },
       {
         name: 'Multi-value rows use selection controls',
@@ -563,9 +563,9 @@ export const PRODUCT_FACING_REVIEWS: ProductFacingReview[] = [
     id: 'empty-states',
     componentId: 'empty-state',
     name: 'Empty states',
-    status: 'queued',
+    status: 'complete',
     purpose:
-      'Define when absence needs only a quiet message versus explanation, recovery, action, or illustration.',
+      'Quiet and actionable absence baselines are accepted. Bespoke first-use artwork, host framing, and exact product recovery actions remain composition-owned.',
     evidence: [
       {
         name: 'Product absence and no results',

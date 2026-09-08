@@ -102,9 +102,9 @@ export const FOUNDATION_CANDIDATE_DIRECTIONS: Record<
     summary:
       'Use one stable outer frame and a few role-based page templates so routes align without forcing every product composition into the same grid.',
     sources: [
-      'Current 1400px application container and 220px Index navigation rail',
+      'Historical 1400px container and 220px rail audit; current V1 navigation uses 72px collapsed / 256px expanded',
       'Index overview, governance, settings, manage, deploy, and proposal layouts',
-      'Current 408–480px focused workflow and supporting-region widths',
+      'Historical 408–480px focused workflow and supporting-region widths; transaction-specific roles are recorded separately',
     ],
     carryForward: [
       'One centered application frame shared by header and route content',

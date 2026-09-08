@@ -4,7 +4,7 @@ export type CatalogStatus =
   | 'defined'
   | 'not-needed'
 
-export type CatalogOutputStatus = 'none' | 'rendered'
+export type CatalogOutputStatus = 'none' | 'rendered' | 'in-composition'
 
 export type DesignAuthorityStatus =
   | 'undefined'
@@ -81,6 +81,8 @@ export type ComponentImplementationStatus =
 export type ComponentAdoptionStatus = 'none' | 'opt-in' | 'in-use'
 
 export type ComponentReviewReadiness =
+  | 'not-started'
+  | 'deferred'
   | 'ready'
   | 'provisional'
   | 'blocked'
@@ -114,6 +116,7 @@ export interface ComponentItem extends CatalogItem {
   auditStatus: ComponentAuditStatus
   implementationStatus: ComponentImplementationStatus
   implementationSource?: string
+  compositionSource?: { componentId: string; anchor?: string; label: string }
   contextSources?: CatalogContextSource[]
   adoptionStatus: ComponentAdoptionStatus
   evidence: string[]
@@ -144,6 +147,7 @@ export const STATUS_LABELS: Record<CatalogStatus, string> = {
 export const OUTPUT_LABELS: Record<CatalogOutputStatus, string> = {
   none: 'No lab output',
   rendered: 'Rendered in lab',
+  'in-composition': 'Rendered within a composition',
 }
 
 export const DESIGN_AUTHORITY_LABELS: Record<DesignAuthorityStatus, string> = {
@@ -186,7 +190,9 @@ export const COMPONENT_ADOPTION_LABELS: Record<
 
 export const COMPONENT_REVIEW_LABELS: Record<ComponentReviewReadiness, string> =
   {
-    ready: 'Ready for canonical review',
+    'not-started': 'Review not prepared',
+    deferred: 'No review scheduled',
+    ready: 'Reviewable',
     provisional: 'Provisional composition',
     blocked: 'Blocked composition',
     exploration: 'Exploration only',

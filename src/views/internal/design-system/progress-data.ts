@@ -1,6 +1,11 @@
 import { COMPONENT_GROUPS } from './component-catalog'
 import { FOUNDATION_ITEMS } from './foundation-catalog'
 import { GOLDEN_SCREEN_CANDIDATES } from './golden-screen-candidates'
+import {
+  COMPONENT_AUDIT_LABELS,
+  COMPONENT_IMPLEMENTATION_LABELS,
+  COMPONENT_REVIEW_LABELS,
+} from './catalog-types'
 
 export const PROGRESS_GATES = [
   'inventoried',
@@ -9,7 +14,6 @@ export const PROGRESS_GATES = [
   'applied',
   'design-reviewed',
   'in-use',
-  'verified',
 ] as const
 
 export type ProgressGate = (typeof PROGRESS_GATES)[number]
@@ -61,7 +65,7 @@ const componentProgress: ProgressItem[] = COMPONENT_GROUPS.flatMap((group) =>
     ) {
       gates.push('defined')
     }
-    if (item.outputStatus === 'rendered') gates.push('lab')
+    if (item.outputStatus !== 'none') gates.push('lab')
     if (item.designAuthority === 'current-baseline') {
       gates.push('design-reviewed')
     }
@@ -73,7 +77,10 @@ const componentProgress: ProgressItem[] = COMPONENT_GROUPS.flatMap((group) =>
       name: item.name,
       source: item.auditStatus === 'mapped' ? 'audited' : 'provisional',
       gates,
-      note: `${item.auditStatus} · ${item.implementationStatus} · ${item.review.status}`,
+      note:
+        item.status === 'not-needed'
+          ? 'Not needed for V1; reopen only with a real product use.'
+          : `${COMPONENT_AUDIT_LABELS[item.auditStatus]} · ${COMPONENT_IMPLEMENTATION_LABELS[item.implementationStatus]} · ${COMPONENT_REVIEW_LABELS[item.review.status]}`,
     }
   })
 )

@@ -12,7 +12,6 @@ const GATE_LABELS = {
   applied: 'Applied',
   'design-reviewed': 'Design reviewed',
   'in-use': 'In use',
-  verified: 'Verified',
 } as const
 
 const trackedItems = PROGRESS_GROUPS.flatMap((group) => group.items)
@@ -40,6 +39,12 @@ const ProgressDashboard = () => (
           Inventory is provisional until code and visual audits confirm it. Each
           gate is independent, so implementation never silently counts as design
           approval.
+        </p>
+        <p className="mt-2 max-w-3xl text-sm text-muted-foreground">
+          Verification is recorded in scoped checkpoint reports and component
+          evidence, not inferred from these milestones. Current baseline means
+          accepted within the recorded scope, not every variant or production
+          use.
         </p>
       </div>
       <span className="w-fit rounded-full bg-muted px-3 py-1 text-xs font-medium text-muted-foreground">
@@ -97,7 +102,7 @@ const ProgressDashboard = () => (
       <aside className="h-fit rounded-2xl border border-border bg-card p-5">
         <div className="flex items-center gap-2">
           <ListChecks className="h-4 w-4 text-primary" />
-          <h3 className="font-semibold">Next component work</h3>
+          <h3 className="font-semibold">Scheduled component work</h3>
         </div>
         {COMPONENT_WORK_QUEUE.length ? (
           <ol className="mt-4 space-y-4">
@@ -116,10 +121,13 @@ const ProgressDashboard = () => (
             ))}
           </ol>
         ) : (
-          <p className="mt-3 text-sm font-light leading-5 text-muted-foreground">
-            No component is ready to advance without first resolving its
-            source-grounded context or another prerequisite.
-          </p>
+          <div className="mt-3 space-y-2 text-sm font-light leading-5 text-muted-foreground">
+            <p>No component work is currently scheduled.</p>
+            <p>
+              This does not mean the inventory is blocked. Each component
+              records its available evidence, remaining scope, and next action.
+            </p>
+          </div>
         )}
       </aside>
     </div>

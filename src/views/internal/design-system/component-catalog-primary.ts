@@ -589,7 +589,7 @@ export const PRIMARY_COMPONENT_GROUPS: ComponentGroup[] = [
         statusDetail:
           'No recurring generic Combobox job is evidenced in the current product. Reopen only when a real single-value searchable form seam appears.',
         review: {
-          status: 'blocked',
+          status: 'deferred',
           scope:
             'No Combobox review is active. Navigation Command, Search, multi-select, and Asset picker remain distinct product jobs.',
           dependencies: [],
@@ -702,70 +702,110 @@ export const PRIMARY_COMPONENT_GROUPS: ComponentGroup[] = [
         statusDetail:
           'The accepted reusable V1 baseline composes TextInput and IconButton for standalone search, clear, and loading behavior. One 44px size is sufficient for evidenced use; result semantics and production consumers remain unchanged.',
       },
-      component(
-        'amount-field',
-        'Amount field',
-        'Enters or displays a financial amount with asset, balance, and helper actions.',
-        'Swap, mint, redeem, and deploy flows need a reusable financial object rather than a stretched text input.',
-        {
-          priority: 'product-extension',
-          auditStatus: 'partial',
-          evidence: [
-            'The imported Zapper and local issuance flows use specialized amount surfaces.',
-            'Named strong visual composition evidence, not canonical authority: src/views/internal/design-system/zapper-modal-study.tsx tests input/output distinction, amount and asset prominence, Max spacing, quote details, and swap direction.',
-            'Human review accepted restrained 8px transaction amount input/output regions and required replacement states such as quote search to preserve the same boundary.',
-          ],
-          decisionPrompts: [
-            'Define input versus output anatomy, asset selector, fiat equivalent, balance/Max, precision, errors, and loading.',
-            'Keep restrained 8px transaction amount geometry separate from fully rounded atomic fields and square structural sections.',
-          ],
-          stateAdditions: [
-            'Insufficient balance',
-            'Quote loading',
-            'Price impact',
-            'Read-only output',
-            'Unavailable asset',
-          ],
-          relationships: [
-            {
-              id: 'asset-picker',
-              note: 'Contains or triggers an asset picker.',
-            },
-          ],
-          nextAction:
-            'Audit local mint/redeem amount objects after foundations are confirmed; do not recreate upstream Zapper behavior.',
-        }
-      ),
-      component(
-        'asset-picker',
-        'Asset picker',
-        'Chooses a token, DTF, chain, or other financial entity.',
-        'Register needs consistent identity, balances, search, and network context across high-value flows.',
-        {
-          priority: 'product-extension',
-          auditStatus: 'partial',
-          evidence: [
-            'TokenSelectorDrawer and multiple deploy/governance selectors already exist.',
-            'TokenLogo has 78 product consumer files, providing strong shared identity evidence.',
-          ],
-          decisionPrompts: [
-            'Define trigger, search, row identity, balance, chain, disabled/unlisted, empty, and recent-item behavior.',
-            'Choose popover versus drawer adaptation by available space, not by a separate component vocabulary.',
-          ],
-          relationships: [
-            {
-              id: 'combobox',
-              note: 'Reuses combobox behavior with domain-specific row content.',
-            },
-            {
-              id: 'entity-identity',
-              note: 'Rows consume the shared identity primitive.',
-            },
-          ],
-          nextAction:
-            'Cluster token-selector drawer, deploy selectors, and Zapper selector states.',
-        }
-      ),
+      {
+        ...component(
+          'amount-field',
+          'Amount field',
+          'Enters or displays a financial amount with asset, balance, and helper actions.',
+          'Swap, mint, redeem, and deploy flows need a reusable financial object rather than a stretched text input.',
+          {
+            priority: 'product-extension',
+            auditStatus: 'partial',
+            evidence: [
+              'The imported Zapper and local issuance flows use specialized amount surfaces.',
+              'Named strong visual composition evidence, not canonical authority: src/views/internal/design-system/zapper-modal-study.tsx tests input/output distinction, amount and asset prominence, Max spacing, quote details, and swap direction.',
+              'Human review accepted restrained 8px transaction amount input/output regions and required replacement states such as quote search to preserve the same boundary.',
+            ],
+            decisionPrompts: [
+              'Define input versus output anatomy, asset selector, fiat equivalent, balance/Max, precision, errors, and loading.',
+              'Keep restrained 8px transaction amount geometry separate from fully rounded atomic fields and square structural sections.',
+            ],
+            stateAdditions: [
+              'Insufficient balance',
+              'Quote loading',
+              'Price impact',
+              'Read-only output',
+              'Unavailable asset',
+            ],
+            relationships: [
+              {
+                id: 'asset-picker',
+                note: 'Contains or triggers an asset picker.',
+              },
+            ],
+            nextAction:
+              'Reuse the checkpointed transaction amount object within its recorded scope. Review any broader deploy or standalone amount-field contract only with a real consumer; do not recreate upstream Zapper behavior.',
+          }
+        ),
+        outputStatus: 'in-composition',
+        designAuthority: 'exploratory',
+        implementationStatus: 'reusable-recipe',
+        implementationSource:
+          'src/components/design-system-v1/transaction-amount-object.tsx',
+        compositionSource: {
+          componentId: 'transaction-action',
+          anchor: 'transaction-composition-rfq',
+          label: 'Transaction amount input/output in the Zapper checkpoint',
+        },
+        review: {
+          status: 'exploration',
+          scope:
+            'Reusable transaction amount anatomy is exercised across the checkpointed flows. Preserve their reviewed local choices; a generic Amount field baseline, additional consumers, and production adoption are not approved.',
+          dependencies: [],
+        },
+        statusDetail:
+          'Implementation and rendered transaction evidence exist. The inventory routes to that limited recipe rather than treating amount entry as unbuilt or promoting a general field contract.',
+      },
+      {
+        ...component(
+          'asset-picker',
+          'Asset picker',
+          'Chooses a token, DTF, chain, or other financial entity.',
+          'Register needs consistent identity, balances, search, and network context across high-value flows.',
+          {
+            priority: 'product-extension',
+            auditStatus: 'partial',
+            evidence: [
+              'TokenSelectorDrawer and multiple deploy/governance selectors already exist.',
+              'src/components/design-system-v1/transaction-asset-picker.tsx supplies the interactive transaction-local picker. The separate task-shell selector pressure test remains unreviewed and static.',
+            ],
+            decisionPrompts: [
+              'Define trigger, search, row identity, balance, chain, disabled/unlisted, empty, and recent-item behavior.',
+              'Choose popover versus drawer adaptation by available space, not by a separate component vocabulary.',
+            ],
+            relationships: [
+              {
+                id: 'search',
+                note: 'Reuse accepted search-field behavior where appropriate; result selection and navigation remain composition-owned, not a dependency on the unneeded generic Combobox.',
+              },
+              {
+                id: 'entity-identity',
+                note: 'Rows consume the shared identity primitive.',
+              },
+            ],
+            nextAction:
+              'Compare the existing transaction picker with local deploy/governance selection needs. Review the standalone selector separately; the transaction checkpoint does not approve it or authorize upstream widget changes.',
+          }
+        ),
+        outputStatus: 'in-composition',
+        designAuthority: 'exploratory',
+        implementationStatus: 'reusable-recipe',
+        implementationSource:
+          'src/components/design-system-v1/transaction-asset-picker.tsx',
+        compositionSource: {
+          componentId: 'transaction-action',
+          anchor: 'transaction-composition-rfq',
+          label: 'Interactive asset selection within the Zapper checkpoint',
+        },
+        review: {
+          status: 'exploration',
+          scope:
+            'The transaction-local picker is implemented; the standalone selector specimen and broader Asset picker contract are not accepted. Preserve the distinction between local evidence and package-owned production selection.',
+          dependencies: [],
+        },
+        statusDetail:
+          'Rendered transaction-local selection evidence is available. Cross-consumer audit and standalone design review remain open; no generic picker or production adoption is claimed.',
+      },
     ],
   },
   {
@@ -1261,39 +1301,73 @@ export const PRIMARY_COMPONENT_GROUPS: ComponentGroup[] = [
         statusDetail:
           'The accepted reusable V1 Pagination baseline is independent of TanStack Table and leaves shared DataTable defaults untouched. Production adoption has not started.',
       },
-      component(
-        'stepper',
-        'Stepper',
-        'Shows progress through a multi-step task.',
-        'Deploy and proposal flows need explicit progress, completion, and revisiting rules.',
-        {
-          priority: 'v1-core',
-          auditStatus: 'partial',
-          evidence: [
-            'Deploy and proposal creation provide several high-value multi-step flows.',
-          ],
-          decisionPrompts: [
-            'Define current/completed/error states, optional steps, revisiting, labels, and constrained layouts.',
-          ],
-          nextAction:
-            'Compare deploy and governance task navigation; extract shared behavior only.',
-        }
-      ),
-      component(
-        'breadcrumb',
-        'Breadcrumb',
-        'Shows hierarchy and paths back to parent levels.',
-        'Some deep administrative areas may need location context without duplicating primary navigation.',
-        {
-          priority: 'v1-conditional',
-          auditStatus: 'pending',
-          decisionPrompts: [
-            'Validate a real hierarchy need before defining collapse and current-page behavior.',
-          ],
-          nextAction:
-            'Mark not-needed unless route audit finds repeated deep hierarchy with poor orientation.',
-        }
-      ),
+      {
+        ...component(
+          'stepper',
+          'Stepper',
+          'Shows progress through a multi-step task.',
+          'Deploy and proposal flows need explicit progress, completion, and revisiting rules.',
+          {
+            priority: 'v1-core',
+            auditStatus: 'partial',
+            evidence: [
+              'Deploy and proposal creation provide several high-value multi-step flows.',
+              'src/views/internal/design-system/transaction-progress-stepper.tsx provides flow-local lifecycle evidence; automated/manual issuance instead express substantial stages through their content sections.',
+            ],
+            decisionPrompts: [
+              'Define current/completed/error states, optional steps, revisiting, labels, and constrained layouts.',
+            ],
+            nextAction:
+              'Use transaction lifecycle progress as evidence, not a universal stepper. Compare deploy and governance task navigation only when those compositions are active; distinguish navigable form steps from transaction execution.',
+          }
+        ),
+        outputStatus: 'in-composition',
+        designAuthority: 'exploratory',
+        implementationStatus: 'specimen',
+        implementationSource:
+          'src/views/internal/design-system/transaction-progress-stepper.tsx',
+        compositionSource: {
+          componentId: 'transaction-action',
+          anchor: 'transaction-composition-vote-lock',
+          label: 'Flow-local progress within the Vote Lock checkpoint',
+        },
+        review: {
+          status: 'exploration',
+          scope:
+            'Transaction-local progress is available as evidence. Generic workflow navigation, revisiting rules, and shared stepper anatomy remain open; no promotion or production adoption is implied.',
+          dependencies: [],
+        },
+        statusDetail:
+          'The transaction checkpoint contains an implemented local stepper. A broader task-navigation contract remains to be evaluated in deploy/proposal compositions.',
+      },
+      {
+        ...component(
+          'breadcrumb',
+          'Breadcrumb',
+          'Shows hierarchy and paths back to parent levels.',
+          'Nested detail pages may benefit from parent context that existing navigation and a labeled return link cannot provide.',
+          {
+            priority: 'v1-conditional',
+            auditStatus: 'partial',
+            evidence: [
+              'Proposal and rebalance detail headers already link to their parent section; absence of a shared Breadcrumb does not establish whether a trail would improve orientation.',
+              'src/views/index-dtf/auctions/views/rebalance/components/manage-weights/manage-weights-header.tsx shows a breadcrumb-like proposal-title / Manage Basket Weights relationship, but remains a local task header rather than an accepted Breadcrumb pattern.',
+            ],
+            decisionPrompts: [
+              'Use a trail only when meaningful parent destinations remain unclear or difficult to reach, including from direct links; prefer the accepted named-return Link when one parent destination is sufficient.',
+              'Do not derive breadcrumbs from URL depth, duplicate surrounding product navigation, or use them as workflow progress or permission to leave an in-progress task.',
+            ],
+            nextAction:
+              'Low priority: no standalone V1 work is scheduled. Reconsider within a scoped nested-page migration only when a concrete orientation problem remains. The migration owner should assess the need through normal team review without requiring the original designer personally. If uncertain, preserve existing navigation and record the question; do not block unrelated migration or invent a breadcrumb pattern.',
+          }
+        ),
+        review: {
+          status: 'deferred',
+          scope:
+            'Deliberately low priority. No standalone Breadcrumb work is scheduled, and it is not a prerequisite for V1 or unrelated migration.',
+          dependencies: [],
+        },
+      },
     ],
   },
 ]

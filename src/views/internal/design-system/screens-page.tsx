@@ -8,7 +8,7 @@ const ScreensPage = () => (
     <PageHeader
       eyebrow="Real product proving ground"
       title="Golden screens"
-      description="The lab does not duplicate product compositions. This provisional set links directly to real local routes; deterministic fixture entry points will be added where live state is not repeatable."
+      description="These are production reference routes, not approved V1 screens. Flow-specific lab compositions are separate evidence; complete-page validation and deterministic fixture coverage remain explicit work."
     />
     <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
       {GOLDEN_SCREEN_CANDIDATES.map((item) => (

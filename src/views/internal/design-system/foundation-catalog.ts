@@ -163,7 +163,7 @@ export const FOUNDATION_ITEMS: FoundationItem[] = [
     outputStatus: 'rendered',
     designAuthority: 'exploratory',
     statusDetail:
-      'The 1400px shell, 220px Index navigation, competing 1.5:1 and 2:1 splits, fixed overview rail, and workflow widths now inform three candidate page templates.',
+      'Historical 1400px-shell and 220px-rail measurements inform the studies, not a V1 width contract. Current V1 Product navigation is 72px collapsed / 256px expanded. Page proportions, support widths, and responsive composition still require real-content validation.',
     expectedDecisions: [
       {
         name: 'Outer frame and gutters',

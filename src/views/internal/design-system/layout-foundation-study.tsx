@@ -9,15 +9,18 @@ const LayoutFoundationStudy = () => (
     <Heading />
 
     <div className="grid gap-px bg-secondary sm:grid-cols-2 xl:grid-cols-4">
-      <Evidence value="1400px" label="Current outer cap" />
-      <Evidence value="220px" label="Index navigation rail" />
+      <Evidence value="1400px" label="Historical outer-cap evidence" />
+      <Evidence
+        value="72 / 256px"
+        label="V1 navigation · collapsed / expanded"
+      />
       <Evidence value="1.5:1 · 2:1" label="Competing fluid splits" />
       <Evidence value="408–480px" label="Focused and support widths" />
     </div>
 
     <StudyCard
-      label="Current split drift"
-      copy="The same shell changes proportion by route. This is evidence for a few named templates—not a reason to preserve every ratio."
+      label="Historical split evidence"
+      copy="These captured route proportions inform layout candidates; they are not accepted V1 ratios or measurements of the current navigation shell."
     >
       <div className="grid gap-px bg-secondary lg:grid-cols-3">
         <CurrentSplit

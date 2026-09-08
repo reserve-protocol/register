@@ -66,8 +66,8 @@ const FoundationEvidence = ({ foundationId }: { foundationId: string }) => {
       <div className="space-y-4">
         <EvidenceList
           items={[
-            '1400px centered outer container',
-            '220px Index navigation rail',
+            'Historical 1400px centered outer container',
+            'Historical 220px Index rail; current V1 navigation uses 72px collapsed / 256px expanded',
             '1.5:1 governance and settings split',
             '2:1 deploy and manage split',
             'Fluid overview plus 480px support rail',
@@ -75,9 +75,9 @@ const FoundationEvidence = ({ foundationId }: { foundationId: string }) => {
           ]}
         />
         <p className="text-xs font-light leading-5 text-muted-foreground">
-          Method: static source inspection of current Index layout classes and
-          shared dialog defaults. Limits: these are implementation measurements,
-          not runtime content-fit tests or approved V1 values.
+          Method: captured source measurements, with navigation updated to the
+          current V1 implementation. These are not runtime content-fit tests or
+          approved page-layout values.
         </p>
       </div>
     )

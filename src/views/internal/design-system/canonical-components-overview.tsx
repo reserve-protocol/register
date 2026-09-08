@@ -8,23 +8,25 @@ import {
   ComponentPriorityBadge,
   ComponentReviewBadge,
   DesignAuthorityBadge,
+  OutputBadge,
+  StatusBadge,
 } from './catalog-ui'
-import { COMPONENT_GROUPS } from './component-catalog'
+import { COMPONENT_GROUPS, COMPONENT_ITEMS } from './component-catalog'
 import type { ComponentItem } from './catalog-types'
 import ComponentVisualOutput from './component-visual-output'
 
 const visibleItems = COMPONENT_GROUPS.flatMap((group) => group.items).filter(
   (item) => item.outputStatus === 'rendered'
 )
-const baselineCount = visibleItems.filter(
+const baselineCount = COMPONENT_ITEMS.filter(
   (item) => item.designAuthority === 'current-baseline'
 ).length
-const adoptedCount = visibleItems.filter(
+const adoptedCount = COMPONENT_ITEMS.filter(
   (item) => item.adoptionStatus === 'in-use'
 ).length
 const unresolvedItems = COMPONENT_GROUPS.flatMap((group) =>
   group.items
-    .filter((item) => item.outputStatus === 'none')
+    .filter((item) => item.outputStatus !== 'rendered')
     .map((item) => ({ groupName: group.name, item }))
 )
 
@@ -44,12 +46,14 @@ const CanonicalComponentsOverview = () => (
         <p className="mt-1 max-w-3xl text-sm font-light text-muted-foreground">
           Complete shared state sheets appear directly in family order. Detail
           pages retain evidence, rationale, history, and extended compositions;
-          unresolved capabilities appear once below without invented UI.
+          composition-only evidence and unprepared or deferred capabilities
+          appear once below without invented UI.
         </p>
       </div>
       <span className="text-xs font-light text-muted-foreground">
-        {visibleItems.length} rendered · {baselineCount} current baseline ·{' '}
-        {adoptedCount} adopted · {COMPONENT_GROUPS.length} families
+        {visibleItems.length} standalone outputs · {baselineCount} current
+        baselines across the inventory · {adoptedCount} adopted ·{' '}
+        {COMPONENT_GROUPS.length} families
       </span>
     </div>
     <div data-testid="canonical-component-overview" className="space-y-10">
@@ -105,15 +109,16 @@ const CanonicalComponentsOverview = () => (
               id="component-unresolved-inventory-title"
               className="text-xl font-medium"
             >
-              Unresolved and upcoming
+              Additional inventory
             </h3>
             <span className="text-xs font-light text-muted-foreground">
               {unresolvedItems.length} capabilities · no invented output
             </span>
           </div>
           <p className="mt-1 text-sm font-light text-muted-foreground">
-            Compact inventory only. Product Navigation remains explicitly
-            unresolved and no missing capability is presented as designed.
+            Composition-only evidence, work not prepared for review, and
+            deliberately deferred or unnecessary capabilities. This is not a
+            work queue; each entry records its own authority and next action.
           </p>
         </div>
         <div className="divide-y divide-border border border-border bg-card">
@@ -187,6 +192,11 @@ const UnrenderedComponentRow = ({
       <div className="flex items-center gap-2">
         <h4 className="text-sm font-medium">{item.name}</h4>
         <ExternalLink className="size-3.5 text-muted-foreground" />
+      </div>
+      <div className="mt-2 flex flex-wrap gap-2">
+        <OutputBadge item={item} />
+        {item.status === 'not-needed' && <StatusBadge item={item} />}
+        <ComponentReviewBadge review={item.review} />
       </div>
       <p className="mt-1 text-xs font-light leading-5 text-muted-foreground">
         {item.description}

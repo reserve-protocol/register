@@ -97,7 +97,10 @@ export const ComponentReviewBadge = ({
       review.status === 'ready' && 'bg-success/10 text-foreground',
       review.status === 'provisional' && 'bg-warning/10 text-foreground',
       review.status === 'blocked' && 'bg-destructive/10 text-destructive',
-      review.status === 'exploration' && 'bg-muted text-muted-foreground'
+      (review.status === 'exploration' ||
+        review.status === 'not-started' ||
+        review.status === 'deferred') &&
+        'bg-muted text-muted-foreground'
     )}
   >
     {COMPONENT_REVIEW_LABELS[review.status]}
@@ -119,7 +122,10 @@ export const ComponentReviewReadiness = ({
       review.status === 'ready' && 'border-success/30 bg-success/5',
       review.status === 'provisional' && 'border-warning/30 bg-warning/5',
       review.status === 'blocked' && 'border-destructive/30 bg-destructive/5',
-      review.status === 'exploration' && 'border-border bg-muted/30'
+      (review.status === 'exploration' ||
+        review.status === 'not-started' ||
+        review.status === 'deferred') &&
+        'border-border bg-muted/30'
     )}
   >
     <div className="flex flex-wrap items-center gap-2">
@@ -160,6 +166,35 @@ export const ComponentDeliveryBadge = ({ item }: { item: ComponentItem }) => (
     {COMPONENT_ADOPTION_LABELS[item.adoptionStatus]}
   </span>
 )
+
+export const ComponentCompositionSource = ({
+  item,
+}: {
+  item: ComponentItem
+}) => {
+  const source = item.compositionSource
+  if (!source) return null
+
+  return (
+    <section
+      className="space-y-2 border border-border bg-card p-5"
+      data-testid="component-composition-source"
+    >
+      <h2 className="font-semibold">Existing composition evidence</h2>
+      <p className="text-sm text-muted-foreground">
+        This component is rendered within the linked composition, not a separate
+        state sheet. Its recorded review scope still applies.
+      </p>
+      <Link
+        className="inline-flex min-h-11 items-center gap-2 text-sm text-primary underline underline-offset-4"
+        to={`/internal/design-system/components/${source.componentId}${source.anchor ? `#${source.anchor}` : ''}`}
+      >
+        {source.label}
+        <ArrowRight aria-hidden="true" className="size-4 shrink-0" />
+      </Link>
+    </section>
+  )
+}
 
 export const ComponentPriorityBadge = ({ item }: { item: ComponentItem }) => (
   <span

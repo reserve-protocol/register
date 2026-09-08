@@ -181,10 +181,14 @@ export const SUPPORT_COMPONENT_GROUPS: ComponentGroup[] = [
           }
         ),
         status: 'defined',
-        outputStatus: 'none',
+        outputStatus: 'in-composition',
         designAuthority: 'current-baseline',
         implementationStatus: 'canonical-candidate',
         implementationSource: 'src/components/design-system-v1/popover.tsx',
+        compositionSource: {
+          componentId: 'multi-select-filter',
+          label: 'Popover shell in the Multi-select filter state sheet',
+        },
         adoptionStatus: 'none',
         review: {
           status: 'ready',

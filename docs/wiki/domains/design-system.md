@@ -48,6 +48,12 @@ When sources appear to conflict, use the precedence in the active plan. A
 generic Skill default never silently overrides an explicit Register decision.
 A historical or visual source informs work only in its declared evidence role.
 
+Inventory readiness is not an assignment or approval. Unprepared review work is
+not automatically blocked; deferred work has no review scheduled. Entries with
+composition-only output link to their actual lab host without claiming a
+standalone baseline. Verification lives in scoped reports and evidence sources,
+not a blanket progress checkbox.
+
 ## Route by task
 
 ### Refine an existing component

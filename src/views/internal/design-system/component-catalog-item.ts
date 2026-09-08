@@ -35,9 +35,9 @@ export const pendingComponent = (
   implementationStatus: 'none',
   adoptionStatus: 'none',
   review: {
-    status: 'blocked',
+    status: 'not-started',
     scope:
-      'No V1 implementation is ready for visual review. Current evidence may still inform later work.',
+      'No V1 specimen is prepared for review. This is unstarted work, not a blocking dependency; use the next action to establish its scope.',
     dependencies: [],
   },
   statusDetail:
