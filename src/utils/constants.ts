@@ -249,6 +249,7 @@ export const ROUTES = Object.freeze({
   EXPLORER_TOKENS: '/explorer/tokens',
   EXPLORER_COLLATERALS: 'collaterals',
   EXPLORER_GOVERNANCE: '/explorer/governance',
+  EXPLORER_ONGOING_GOVERNANCE: '/explorer/governance/ongoing',
   EXPLORER_REVENUE: '/explorer/revenue',
   EXPLORER_TRANSACTIONS: 'transactions',
   DISCOVER: '/discover',

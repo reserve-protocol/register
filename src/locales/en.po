@@ -12171,3 +12171,79 @@ msgstr ""
 #: src/views/index-dtf/overview/components/zap-mint/zap-healthcheck.tsx:24
 msgid "Zaps are currently experiencing issues"
 msgstr ""
+
+#: src/views/explorer/components/governance/ongoing/proposal-card.tsx
+msgid "Critical setting"
+msgstr ""
+
+#: src/views/explorer/components/governance/ongoing/proposal-card.tsx
+msgid "Untitled proposal"
+msgstr ""
+
+#: src/views/explorer/components/governance/ongoing/proposal-card.tsx
+msgid "Voting starts"
+msgstr ""
+
+#: src/views/explorer/components/governance/ongoing/proposal-card.tsx
+msgid "Voting ends"
+msgstr ""
+
+#: src/views/explorer/components/governance/ongoing/proposal-card.tsx
+msgid "Veto shortfall"
+msgstr ""
+
+#: src/views/explorer/components/governance/ongoing/proposal-card.tsx
+msgid "Quorum shortfall"
+msgstr ""
+
+#: src/views/explorer/components/governance/ongoing/proposal-card.tsx
+msgid "Additional votes to pass"
+msgstr ""
+
+#: src/views/explorer/components/governance/ongoing/proposal-card.tsx
+msgid "Additional votes to defeat"
+msgstr ""
+
+#: src/views/explorer/components/governance/ongoing/proposal-card.tsx
+msgid "USD unavailable"
+msgstr ""
+
+#: src/views/explorer/components/governance/ongoing/proposal-card.tsx
+msgid "Has votes"
+msgstr ""
+
+#: src/views/explorer/components/governance/ongoing/proposal-card.tsx
+msgid "Proposer voted"
+msgstr ""
+
+#: src/views/explorer/components/governance/ongoing/index.tsx
+msgid "Ongoing Index DTF proposals"
+msgstr ""
+
+#: src/views/explorer/components/governance/ongoing/index.tsx
+msgid "No ongoing Index DTF proposals"
+msgstr ""
+
+#: src/views/explorer/components/governance/ongoing/index.tsx
+msgid "Active and pending proposals will appear here."
+msgstr ""
+
+#: src/views/explorer/components/governance/ongoing/index.tsx
+msgid "Index DTF discovery is currently unavailable."
+msgstr ""
+
+#: src/views/explorer/components/governance/ongoing/index.tsx
+msgid "Active and pending proposals across Ethereum, Base, and BSC. Values refresh periodically, and USD estimates use the governance token's underlying asset price."
+msgstr ""
+
+#: src/views/explorer/components/governance/ongoing/index.tsx
+msgid "Proposal data for chain {0} is currently unavailable."
+msgstr ""
+
+#: src/views/explorer/components/governance/ongoing/index.tsx
+msgid "The proposal result limit was reached, so some proposals may be unavailable."
+msgstr ""
+
+#: src/views/explorer/components/governance/ongoing/index.tsx
+msgid "The governance query limit was reached, so that chain is not displayed."
+msgstr ""

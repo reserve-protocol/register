@@ -12182,3 +12182,79 @@ msgstr "Error de Zapper"
 #: src/views/index-dtf/overview/components/zap-mint/zap-healthcheck.tsx:24
 msgid "Zaps are currently experiencing issues"
 msgstr "Los Zaps están presentando problemas actualmente"
+
+#: src/views/explorer/components/governance/ongoing/proposal-card.tsx
+msgid "Critical setting"
+msgstr "Configuración crítica"
+
+#: src/views/explorer/components/governance/ongoing/proposal-card.tsx
+msgid "Untitled proposal"
+msgstr "Propuesta sin título"
+
+#: src/views/explorer/components/governance/ongoing/proposal-card.tsx
+msgid "Voting starts"
+msgstr "La votación comienza"
+
+#: src/views/explorer/components/governance/ongoing/proposal-card.tsx
+msgid "Voting ends"
+msgstr "La votación termina"
+
+#: src/views/explorer/components/governance/ongoing/proposal-card.tsx
+msgid "Veto shortfall"
+msgstr "Votos necesarios para el veto"
+
+#: src/views/explorer/components/governance/ongoing/proposal-card.tsx
+msgid "Quorum shortfall"
+msgstr "Déficit para el quórum"
+
+#: src/views/explorer/components/governance/ongoing/proposal-card.tsx
+msgid "Additional votes to pass"
+msgstr "Votos adicionales para aprobar"
+
+#: src/views/explorer/components/governance/ongoing/proposal-card.tsx
+msgid "Additional votes to defeat"
+msgstr "Votos adicionales para derrotar"
+
+#: src/views/explorer/components/governance/ongoing/proposal-card.tsx
+msgid "USD unavailable"
+msgstr "Valor en USD no disponible"
+
+#: src/views/explorer/components/governance/ongoing/proposal-card.tsx
+msgid "Has votes"
+msgstr "Tiene votos"
+
+#: src/views/explorer/components/governance/ongoing/proposal-card.tsx
+msgid "Proposer voted"
+msgstr "El proponente votó"
+
+#: src/views/explorer/components/governance/ongoing/index.tsx
+msgid "Ongoing Index DTF proposals"
+msgstr "Propuestas en curso de Index DTF"
+
+#: src/views/explorer/components/governance/ongoing/index.tsx
+msgid "No ongoing Index DTF proposals"
+msgstr "No hay propuestas en curso de Index DTF"
+
+#: src/views/explorer/components/governance/ongoing/index.tsx
+msgid "Active and pending proposals will appear here."
+msgstr "Las propuestas activas y pendientes aparecerán aquí."
+
+#: src/views/explorer/components/governance/ongoing/index.tsx
+msgid "Index DTF discovery is currently unavailable."
+msgstr "El descubrimiento de Index DTF no está disponible actualmente."
+
+#: src/views/explorer/components/governance/ongoing/index.tsx
+msgid "Active and pending proposals across Ethereum, Base, and BSC. Values refresh periodically, and USD estimates use the governance token's underlying asset price."
+msgstr "Propuestas activas y pendientes en Ethereum, Base y BSC. Los valores se actualizan periódicamente y las estimaciones en USD usan el precio del activo subyacente del token de gobernanza."
+
+#: src/views/explorer/components/governance/ongoing/index.tsx
+msgid "Proposal data for chain {0} is currently unavailable."
+msgstr "Los datos de propuestas para la cadena {0} no están disponibles actualmente."
+
+#: src/views/explorer/components/governance/ongoing/index.tsx
+msgid "The proposal result limit was reached, so some proposals may be unavailable."
+msgstr "Se alcanzó el límite de resultados de propuestas, por lo que algunas propuestas pueden no estar disponibles."
+
+#: src/views/explorer/components/governance/ongoing/index.tsx
+msgid "The governance query limit was reached, so that chain is not displayed."
+msgstr "Se alcanzó el límite de consultas de gobernanza, por lo que esa cadena no se muestra."
