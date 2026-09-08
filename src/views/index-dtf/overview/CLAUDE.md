@@ -24,19 +24,46 @@ none of these three is the subgraph. Basket rows are RPC `totalAssets` +
 token metadata (same SDK snapshot) joined with api prices. Don't move live
 state into the subgraph mock to "fix" a test.
 
+## Layout: content column + xl rail
+
+`index.tsx` renders the content column (chart, About section, basket, fees,
+governance, creator notes, transactions, disclosure) and, at xl only,
+`components/landing-mint` — the rail: the **inline** Zapper first
+(`overview-inline-zapper`; the container skips its modal mount on `/overview`
+at xl — one Zapper per route, `docs/wiki/zapper.md`), then the cover slot
+(collapses when there is no brand cover, e2e-guarded), About this DTF, Ask Reserve AI (embedded chat,
+`overview-ask-ai`; the floating launcher hides on this route at xl), About
+Reserve. Below xl the same cards render in the content column; on mobile the
+basket leads unless the About card is the compact video library.
+Below xl the floating action bar (`index-ctas-overview-mobile.tsx`, portal
+to body) carries Buy/Sell + chat on the overview — `xl:hidden` here,
+`lg:hidden` on every other DTF route — and the chat launcher hides below xl
+on this route (`dtf-chat-hide-launcher-below-xl`).
+
+**About this DTF** (`components/about-dtf.tsx`): DTFs with their own explainer
+cut render the video library (`components/video-library`, three shared cuts +
+one `Meet $SYMBOL` cut per DTF in `MEET_VIDEO_BY_SYMBOL`, all on
+`storage.reserve.org`, poster = `<same base name>.jpg`); every other DTF keeps
+the written description (`index-about-overview.tsx`, mandate/brand
+description + cover + downloadable resources).
+
+**Equity-backed copy** (`dtf-categories.ts`, TEMPORARY until the backend serves
+categories): `isStocksDTF` gates the "100% backed by real stocks" badge and the
+stock-specific Ask Reserve AI chips; other DTFs get the generic chips.
+
 ## Did a diff here — which test?
 
-| You changed | Run / extend |
-|---|---|
-| Hero name/symbol/price render | `e2e/tests/smoke/overview.spec.ts` (base/bsc/mainnet matrix) |
-| Hero loading lifecycle (skeleton→content, no reflow), chart island independence | `e2e/tests/index-dtf/overview/lifecycle.spec.ts` |
-| SDK data path / mappers / atoms | `e2e/tests/smoke/dtf-data.spec.ts` (the canary) |
-| Holdings table, Exposure/Collateral tabs, mcap cell | `e2e/tests/flows/overview.spec.ts` (holdings test) |
-| Price chart, time-range selector, ranges | `e2e/tests/flows/overview.spec.ts` (chart test) |
-| Degenerate chart/holdings data (empty/single-point history, 0-supply, zeroed mcap) | `e2e/tests/flows/overview-edge.spec.ts`, `e2e/tests/index-dtf/overview/edge-cases.spec.ts` |
-| Deprecated/inactive-state rendering | `e2e/tests/index-dtf/overview/state-space.spec.ts`, `e2e/tests/flows/overview.spec.ts` (deprecated test) |
-| Unbranded DTF / cover slot | `e2e/tests/index-dtf/overview/edge-cases.spec.ts` |
-| Anything in hooks/atoms shared across the above | smoke + full: `pnpm exec playwright test e2e/tests/flows/overview.spec.ts` |
+| You changed                                                                        | Run / extend                                                                                             |
+| ---------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------- |
+| Hero name/symbol/price render                                                      | `e2e/tests/smoke/overview.spec.ts` (base/bsc/mainnet matrix)                                             |
+| Hero loading lifecycle (skeleton→content, no reflow), chart island independence    | `e2e/tests/index-dtf/overview/lifecycle.spec.ts`                                                         |
+| SDK data path / mappers / atoms                                                    | `e2e/tests/smoke/dtf-data.spec.ts` (the canary)                                                          |
+| Holdings table, Exposure/Collateral tabs, mcap cell                                | `e2e/tests/flows/overview.spec.ts` (holdings test)                                                       |
+| Price chart, time-range selector, ranges                                           | `e2e/tests/flows/overview.spec.ts` (chart test)                                                          |
+| Degenerate chart/holdings data (empty/single-point history, 0-supply, zeroed mcap) | `e2e/tests/flows/overview-edge.spec.ts`, `e2e/tests/index-dtf/overview/edge-cases.spec.ts`               |
+| Deprecated/inactive-state rendering                                                | `e2e/tests/index-dtf/overview/state-space.spec.ts`, `e2e/tests/flows/overview.spec.ts` (deprecated test) |
+| Unbranded DTF / cover slot                                                         | `e2e/tests/index-dtf/overview/edge-cases.spec.ts`                                                        |
+| Anything in hooks/atoms shared across the above                                    | smoke + full: `pnpm exec playwright test e2e/tests/flows/overview.spec.ts`                               |
 
 Quick loop: `pnpm e2e:smoke` (overview + dtf-data smokes, seconds); full flow
 `pnpm exec playwright test e2e/tests/flows/overview.spec.ts`.

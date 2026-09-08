@@ -1,32 +1,34 @@
 import useScrollToHash from '@/hooks/use-scroll-to-hash'
-import { useEffect } from 'react'
-import { watchedCoverDtfAtom } from './components/landing-mint/dtf-cover'
 import { useIsLargeDesktop, useIsMobile } from '@/hooks/use-media-query'
 import { Card } from '@/components/ui/card'
 import { indexDTFAtom } from '@/state/dtf/atoms'
 import { isYieldIndexDTFAtom } from '@/state/dtf/yield-index-atoms'
 import { useAtomValue, useSetAtom } from 'jotai'
+import { useEffect } from 'react'
 import useTrackIndexDTFPage from '../hooks/useTrackIndexDTFPage'
+import AboutDTF, { useHasVideoLibrary } from './components/about-dtf'
+import AboutReserve from './components/about-reserve'
+import AskReserveAI from './components/ask-reserve-ai'
+import BackedBadge from './components/backed-badge'
+import { IndexBasketOverviewInner } from './components/basket-overview'
 import PriceChart from './components/charts/price-chart'
-import IndexAboutOverview from './components/index-about-overview'
+import FeesStats from './components/fees-stats'
 import IndexCreatorNotes from './components/index-creator-notes'
 import IndexDisclousure from './components/index-disclousure'
 import IndexGovernanceOverview from './components/index-governance-overview'
 import IndexTransactionTable from './components/index-transaction-table-with-swaps'
 import LandingMint from './components/landing-mint'
-import { IndexBasketOverviewInner } from './components/basket-overview'
-import FeesStats from './components/fees-stats'
+import { watchedCoverDtfAtom } from './components/landing-mint/dtf-cover'
 import YieldIndexAbout from './components/yield-index/yield-index-about'
 import YieldIndexAssetExposure from './components/yield-index/yield-index-asset-exposure'
 import YieldIndexComposition from './components/yield-index/yield-index-composition'
 
 const AboutSection = () => {
   const isYieldIndexDTF = useAtomValue(isYieldIndexDTFAtom)
-  // WHY: the about card (autoplaying cover video) also lives in the xl-only
-  // LandingMint rail — mount only one copy so the video isn't fetched and
-  // played twice; the xl:hidden class stays as a resize-timing backstop.
+  // The about/chat/reserve cards also live in the xl-only rail — one copy per viewport.
   const isLargeDesktop = useIsLargeDesktop()
   const isMobile = useIsMobile()
+  const hasVideoLibrary = useHasVideoLibrary()
 
   if (isYieldIndexDTF) {
     return (
@@ -42,28 +44,46 @@ const AboutSection = () => {
     )
   }
 
-  const aboutCard = !isLargeDesktop && (
-    <Card
-      id="about"
-      className="group/section pb-0 pt-0 sm:pb-0 sm:pt-0 xl:hidden"
-    >
-      <IndexAboutOverview className="xl:hidden" showCover />
-    </Card>
-  )
-
   const basketCard = (
     <Card
       id="basket"
       className="group/section !bg-card pb-0 pt-0 sm:pb-0 sm:pt-0"
     >
-      <IndexBasketOverviewInner />
+      <BackedBadge />
+      <IndexBasketOverviewInner progressive />
     </Card>
   )
 
+  // Mobile keeps holdings reachable: only the compact video library leads,
+  // a text description follows the basket.
+  if (isMobile) {
+    const aboutCard = (
+      <div id="about">
+        <AboutDTF showCover />
+      </div>
+    )
+
+    return (
+      <>
+        {hasVideoLibrary ? aboutCard : basketCard}
+        {hasVideoLibrary ? basketCard : aboutCard}
+        <AskReserveAI />
+        <AboutReserve />
+        <FeesStats />
+      </>
+    )
+  }
+
   return (
     <>
-      {isMobile ? basketCard : aboutCard}
-      {isMobile ? aboutCard : basketCard}
+      {!isLargeDesktop && (
+        <div id="about" className="flex flex-col gap-0.5 sm:gap-1 xl:hidden">
+          <AboutDTF showCover />
+          <AskReserveAI />
+          <AboutReserve />
+        </div>
+      )}
+      {basketCard}
       <FeesStats />
     </>
   )
@@ -92,10 +112,7 @@ const IndexDTFOverview = () => {
   const setWatchedCoverDtf = useSetAtom(watchedCoverDtfAtom)
 
   // Leaving the overview resets the frozen cover so a fresh visit loops again.
-  useEffect(
-    () => () => setWatchedCoverDtf(null),
-    [setWatchedCoverDtf]
-  )
+  useEffect(() => () => setWatchedCoverDtf(null), [setWatchedCoverDtf])
 
   return (
     <div className="-mx-0 bg-secondary sm:mx-0 sm:bg-transparent">

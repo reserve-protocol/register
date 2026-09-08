@@ -50,7 +50,7 @@ const Header = () => {
   }
 
   return (
-    <div className="mb-4 mt-2 flex justify-center px-2">
+    <div className="flex justify-center px-5 pt-5 sm:px-6 sm:pt-6">
       <BrandManagerEditButton />
     </div>
   )
