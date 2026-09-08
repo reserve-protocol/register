@@ -11415,6 +11415,18 @@ msgstr ""
 msgid "Voting delay begins"
 msgstr ""
 
+#: src/views/explorer/components/governance/index.tsx:113
+msgid "Started"
+msgstr ""
+
+#: src/views/explorer/components/governance/index.tsx:120
+msgid "Voting Ends"
+msgstr ""
+
+#: src/views/explorer/components/governance/index.tsx:109
+msgid "Voting Starts"
+msgstr ""
+
 #: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/form-fields.ts:9
 msgid "Voting delay is required"
 msgstr ""

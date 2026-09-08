@@ -14,6 +14,8 @@ export interface ProposalRecord {
   againstWeightedVotes: string
   quorumVotes: string
   status: string
+  votingStartsIn: number | null
+  votingEndsIn: number | null
   tokenAddress: string
   tokenSymbol: string
   tokenLogo?: string

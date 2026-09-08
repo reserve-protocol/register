@@ -11,8 +11,11 @@ import { useMultichainQuery } from 'hooks/use-query'
 import { useAtomValue } from 'jotai'
 import { useMemo } from 'react'
 import { walletAtom } from 'state/atoms'
+import { getCurrentTime } from 'utils'
+import { isTimeunitGovernance } from '@/views/yield-dtf/governance/utils'
 import { ChainId } from 'utils/chains'
 import {
+  blockDuration,
   INDEX_DTF_CHAINS,
   LISTED_RTOKEN_ADDRESSES,
   supportedChainList,
@@ -139,9 +142,9 @@ const useBlockChains = () => {
   const { data: arbitrum } = useBlockNumber({ chainId: ChainId.Arbitrum })
 
   return {
-    [ChainId.Mainnet]: Number(mainnet),
-    [ChainId.Base]: Number(base),
-    [ChainId.Arbitrum]: Number(arbitrum),
+    [ChainId.Mainnet]: mainnet === undefined ? undefined : Number(mainnet),
+    [ChainId.Base]: base === undefined ? undefined : Number(base),
+    [ChainId.Arbitrum]: arbitrum === undefined ? undefined : Number(arbitrum),
   }
 }
 
@@ -253,6 +256,7 @@ const useProposalsData = () => {
 
   return useMemo(() => {
     const proposals: ProposalRecord[] = []
+    const timestamp = getCurrentTime()
 
     // --- Yield DTF proposals ---
     if (yieldData && filters.type !== 'index') {
@@ -273,6 +277,11 @@ const useProposalsData = () => {
             blocks?.[chain] || 0,
             chain
           )
+          const isTimeunit = isTimeunitGovernance(
+            entry.governanceFramework?.name ?? '1'
+          )
+          const currentTimepoint = isTimeunit ? timestamp : blocks?.[chain]
+          const secondsPerTimepoint = isTimeunit ? 1 : blockDuration[chain]
 
           proposals.push({
             id: entry.id,
@@ -284,6 +293,14 @@ const useProposalsData = () => {
             againstWeightedVotes: entry.againstWeightedVotes,
             quorumVotes: entry.quorumVotes,
             status: state.state,
+            votingStartsIn:
+              currentTimepoint === undefined
+                ? null
+                : (+entry.startBlock - currentTimepoint) * secondsPerTimepoint,
+            votingEndsIn:
+              currentTimepoint === undefined
+                ? null
+                : (+entry.endBlock - currentTimepoint) * secondsPerTimepoint,
             votingState: state,
             chain,
             tokenAddress: getAddress(rToken.id),
@@ -336,6 +353,8 @@ const useProposalsData = () => {
             againstWeightedVotes: entry.againstWeightedVotes,
             quorumVotes: entry.quorumVotes,
             status: state.state,
+            votingStartsIn: +entry.voteStart - timestamp,
+            votingEndsIn: +entry.voteEnd - timestamp,
             votingState: state,
             chain: result.chainId,
             tokenAddress: dtfInfo.address,
